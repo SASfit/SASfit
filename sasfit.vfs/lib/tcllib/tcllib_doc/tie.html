@@ -1,0 +1,633 @@
+<html><head>
+<title>tie - Tcl Data Structures </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/tie/tie.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: tie.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ tie.n
+   -->
+
+<body>
+<h1> tie(n) 1.0.1 tie &quot;Tcl Data Structures&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> tie - Array persistence
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#using_ties">USING TIES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tie_api">TIE API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#standard_data_source_types">STANDARD DATA SOURCE TYPES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#creating_new_data_sources">CREATING NEW DATA SOURCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#data_source_objects">DATA SOURCE OBJECTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#registering_a_new_data_source_class">REGISTERING A NEW DATA SOURCE CLASS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#data_source_class">DATA SOURCE CLASS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#data_source_object_api">DATA SOURCE OBJECT API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>tie ?1.0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::tie::tie</b> <i class='arg'>arrayvarname</i> <i class='arg'>options</i>... <i class='arg'>dstype</i> <i class='arg'>dsname</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::tie::untie</b> <i class='arg'>arrayvarname</i> ?<i class='arg'>token</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::tie::info</b> <strong>ties</strong> <i class='arg'>arrayvarname</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::tie::info</b> <strong>types</strong></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::tie::info</b> <strong>type</strong> <i class='arg'>dstype</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::tie::register</b> <i class='arg'>dsclasscmd</i> <strong>as</strong> <i class='arg'>dstype</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>dsclasscmd</b> <i class='arg'>objname</i> ?<i class='arg'>dsname</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>ds</b> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>ds</b> <strong>names</strong></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>ds</b> <strong>size</strong></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>ds</b> <strong>get</strong></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>ds</b> <strong>set</strong> <i class='arg'>dict</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>ds</b> <strong>unset</strong> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>ds</b> <strong>setv</strong> <i class='arg'>index</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>ds</b> <strong>unsetv</strong> <i class='arg'>index</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>ds</b> <strong>getv</strong> <i class='arg'>index</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>tie</strong> package provides a framework for the creation of
+persistent Tcl array variables. It should be noted that the provided
+mechanism is generic enough to also allow its usage for the
+distribution of the contents of Tcl arrays over multiple threads and
+processes, i.e. communication.
+
+<p>
+
+This, persistence and communication, is accomplished by <em>tying</em>)
+a Tcl array variable to a <em>data source</em>. Examples of data
+sources are other Tcl arrays and files.
+
+<p>
+
+It should be noted that a single Tcl array variable can be tied to
+more than one <em>data source</em>. It is this feature which allows
+the framework to be used for communication as well. Just tie several
+Tcl arrays in many client processes to a Tcl array in a server and all
+changes to any of them will be distributed to all. Less centralized
+variants of this are of course possible as well.
+
+<h2><a name="using_ties">USING TIES</a></h2>
+<p>
+
+<h3><a name="tie_api">TIE API</a></h3>
+<p>
+
+This section describes the basic API used to establish and remove ties
+between Tcl array variables and data sources. This interface is the
+only one a casual user has to be concerned about. The following
+sections about the various internal interfaces can be safely skipped.
+
+
+<dl>
+<dt><a name="1"><b class='cmd'>::tie::tie</b> <i class='arg'>arrayvarname</i> <i class='arg'>options</i>... <i class='arg'>dstype</i> <i class='arg'>dsname</i>...</a><dd>
+
+
+This command establishes a tie between the Tcl array whose name is
+provided by the argument <i class='arg'>arrayvarname</i> and the
+
+<em>data source</em> identified by the <i class='arg'>dstype</i> and its series of
+<i class='arg'>dsname</i> arguments. All changes made to the Tcl array after this
+command returns will be saved to the <em>data source</em> for
+safekeeping (or distribution).
+
+<br><br>
+
+The result of the command is always a token which identifies the new
+tie. This token can be used later to destroy this specific tie.
+
+<br><br>
+<dl>
+<dt>varname <i class='arg'>arrayvarname</i> (in)<dd>
+
+The name of the Tcl array variable to connect the new tie to.
+
+<br><br>
+<dt>name|command <i class='arg'>dstype</i> (in)<dd>
+
+This argument specifies the type of the <em>data source</em> we wish
+to access.
+
+The <i class='arg'>dstype</i> can be one of <strong>log</strong>, <strong>array</strong>,
+
+<strong>remotearray</strong>, <strong>file</strong>, or <strong>dsource</strong>; in addition,
+the programmer can register additional data source types.
+
+Each <i class='arg'>dstype</i> is followed by one or more arguments that identify
+the <em>data source</em> to which the array is to be tied.
+
+<br><br>
+<dt>string <i class='arg'>dsname</i> (in)<dd>
+
+The series of <i class='arg'>dsname</i> arguments coming after the <i class='arg'>dstype</i>
+identifies the <em>data source</em> we wish to connect to, and has to
+be appropriate for the chosen type.
+
+</dl>
+<br><br>
+
+The command understands a number of additional options which guide the
+process of setting up the connection between Tcl array and
+<em>data source</em>.
+
+<br><br>
+
+<br><br>
+<dl>
+<dt><strong>-open</strong><dd>
+
+The Tcl array for the new tie is <em>loaded</em> from the
+<em>data source</em>, and the previously existing contents of the Tcl
+array are erased. Care is taken to <em>not</em> erase the previous
+contents should the creation of the tie fail.
+
+<br><br>
+
+This option and the option <strong>-save</strong> exclude each other. If
+neither this nor option <strong>-save</strong> are specified then this option
+is assumed as default.
+
+
+<br><br>
+<dt><strong>-save</strong><dd>
+
+The Tcl array for the new tie is <em>saved</em> to the
+<em>data source</em>, and the previously existing contents of the
+<em>data source</em> are erased.
+
+<br><br>
+
+This option and the option <strong>-open</strong> exclude each other. If
+neither this nor option <strong>-open</strong> are specified then option
+<strong>-open</strong> is assumed as default.
+
+
+<br><br>
+<dt><strong>-merge</strong><dd>
+
+Using this option prevents the erasure of any previously existing
+content and merges the data instead. It can be specified in
+conjunction with either <strong>-open</strong> or <strong>-save</strong>. They
+determine how data existing in both Tcl array and
+<em>data source</em>, i.e duplicates, are dealt with.
+
+<br><br>
+
+When used with <strong>-open</strong> data in the <em>data source</em> has
+precedence.
+
+In other words, for duplicates the data in the <em>data source</em> is
+loaded into the Tcl array.
+
+<br><br>
+
+When used with <strong>-save</strong> data in the Tcl array has precedence. In
+other words, for duplicates the data in the Tcl array is saved into
+the <em>data source</em>.
+
+</dl>
+<br><br>
+
+
+<dt><a name="2"><b class='cmd'>::tie::untie</b> <i class='arg'>arrayvarname</i> ?<i class='arg'>token</i>?</a><dd>
+
+
+This command dissolves one or more ties associated with the Tcl array
+named by <i class='arg'>arrayvarname</i>. If no <i class='arg'>token</i> is specified then all
+ties to that Tcl array are dissolved. Otherwise only the tie the token
+stands for is removed, if it is actually connected to the
+array. Trying to remove a specific tie not belonging to the provided
+array will cause an error.
+
+<br><br>
+
+It should be noted that while severing a tie will destroy management
+information internal to the package the <em>data source</em> which was
+handled by the tie will not be touched, only closed.
+
+<br><br>
+
+After the command returns none of changes made to the array will be
+saved to the <em>data source</em> anymore.
+
+<br><br>
+
+The result of the command is an empty string.
+
+
+<br><br>
+<dl>
+<dt>varname <i class='arg'>arrayname</i> (in)<dd>
+
+The name of a Tcl array variable which may have ties.
+
+<br><br>
+<dt>handle <i class='arg'>token</i> (in)<dd>
+
+A handle representing a specific tie. This argument is optional.
+
+</dl>
+<br><br>
+
+
+<dt><a name="3"><b class='cmd'>::tie::info</b> <strong>ties</strong> <i class='arg'>arrayvarname</i></a><dd>
+
+
+This command returns a list of ties associated with the Tcl array
+variable named by <i class='arg'>arrayvarname</i>. The result list will be empty if
+the variable has no ties associated with it.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::tie::info</b> <strong>types</strong></a><dd>
+
+
+This command returns a dictionary of registered types, and the class
+commands they are associated with.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::tie::info</b> <strong>type</strong> <i class='arg'>dstype</i></a><dd>
+
+
+This command returns the fully resolved class command for a type
+name. This means that the command will follow a chain of type
+definitions ot its end.
+
+</dl>
+
+
+<h3><a name="standard_data_source_types">STANDARD DATA SOURCE TYPES</a></h3>
+<p>
+
+This package provides the five following types as examples and
+standard data sources.
+
+
+<dl>
+
+<dt><strong>log</strong><dd>
+
+This <em>data source</em> does not maintain any actual data, nor
+persistence. It does not accept any identifying arguments. All changes
+are simply logged to <strong>stdout</strong>.
+
+
+<br><br>
+<dt><strong>array</strong><dd>
+
+This <em>data source</em> uses a regular Tcl array as the origin of
+the persistent data. It accepts a single identifying argument, the
+name of this Tcl array. All changes are mirrored to that array.
+
+
+<br><br>
+<dt><strong>remotearray</strong><dd>
+
+This <em>data source</em> is similar to <strong>array</strong>. The difference
+is that the Tcl array to which we are mirroring is not directly
+accessible, but through a <b class='cmd'>send</b>-like command.
+
+<br><br>
+
+It accepts three identifying arguments, the name of the other Tcl
+array, the command prefix for the <b class='cmd'>send</b>-like accessor command,
+and an identifier for the remote entity hosting the array, in this
+order. All changes are mirrored to that array, via the command
+prefix. All commands will be executed in the context of the global
+namespace.
+
+<br><br>
+
+<b class='cmd'>send</b>-like means that the command prefix has to have <b class='cmd'>send</b>
+syntax and semantics. I.e. it is a channel over which we can send
+arbitrary commands to some other entity.
+
+The remote array <em>data source</em> however uses only the commands
+<b class='cmd'>set</b>, <b class='cmd'>unset</b>, <b class='cmd'>array exists</b>, <b class='cmd'>array names</b>, <b class='cmd'>array set</b>, and
+<b class='cmd'>array get</b> to retrieve and set values in the remote array.
+
+<br><br>
+
+The command prefix and the entity id are separate to allow the data
+source to use options like <strong>-async</strong> when assembling the actual
+commands.
+
+<br><br>
+
+Examples of command prefixes, listed with the id of the remote entity,
+without options. In reality only the part before the id is the command
+prefix:
+
+<br><br>
+<dl>
+<dt><b class='cmd'>send</b> <i class='arg'>tkname</i><dd>
+
+The Tcl array is in a remote interpreter and is accessed via Tk's X
+communication.
+
+<br><br>
+<dt><b class='cmd'>comm::comm send</b> <i class='arg'>hostportid</i><dd>
+
+The Tcl array is in a remote interpreter and is accessed through a
+socket.
+
+<br><br>
+<dt><b class='cmd'>thread::send</b> <i class='arg'>threadid</i><dd>
+
+The Tcl array is in a remote interpreter in a different thread of this
+process.
+
+</dl>
+<br><br>
+
+
+<dt><strong>file</strong><dd>
+
+This <em>data source</em> uses a single file as origin of the
+persistent data. It accepts a single identifying argument, the path to
+this file. The file has to be both readable and writable. It may not
+exist, the <em>data source</em> will create it in that case. This (and
+only this) situation will require that the directory for the file
+exists and is writable as well.
+
+<br><br>
+
+All changes are saved in the file, as proper Tcl commands, one command
+per operation. In other words, the file will always contain a proper
+Tcl script.
+
+<br><br>
+
+If the file exists when the tie using it is set up, then it will be
+compacted, i.e. superfluous operations are removed, if the operations
+log stored in it contains either at least one operation clearing the
+whole array, or at least 1.5 times more operations than entries in the
+loaded array.
+
+
+<br><br>
+<dt><strong>dsource</strong><dd>
+
+This <em>data source</em> uses an explicitly specified
+<em>data source object</em> as the source for the persistent
+data. It accepts a single identifying argument, the command prefix,
+i.e. object command.
+
+<br><br>
+
+To use this type it is necessary to know how the framework manages
+ties and what <a href="#data_source_objects">data source objects</a> are.
+
+<br><br>
+
+All changes are delegated to the specified object.
+
+</dl>
+
+
+<h2><a name="creating_new_data_sources">CREATING NEW DATA SOURCES</a></h2>
+<p>
+
+This section is of no interest to the casual user of ties. Only
+developers wishing to create new data sources have to know the
+information provided herein.
+
+
+<h3><a name="data_source_objects">DATA SOURCE OBJECTS</a></h3>
+<p>
+
+All ties are represented internally by an in-memory object which
+mediates between the tie framework and the specific
+<em>data source</em>, like an array, file, etc.
+This is the <em>data source object</em>.
+
+<p>
+
+Its class, the <a href="#data_source_class">data source class</a> is <em>not</em> generic,
+but specific to the type of the <em>data source</em>. Writing a new
+<em>data source</em> requires us to write such a class, and then
+registering it with the framework as a new type.
+
+<p>
+
+The following subsections describe the various APIs a
+<a href="#data_source_class">data source class</a> and the objects it generates will have
+to follow to be compatible with the tie framework.
+
+<p>
+
+Data source objects are normally automatically created and destroyed
+by the framework when a tie is created, or removed. This management
+can be explicitly bypassed through the usage of the &quot;dsource&quot; type.
+
+The <em>data source</em> for this type is a
+<em>data source object</em> itself, and this object is outside of the
+scope of the tie framework and not managed by it.
+
+In other words, this type allows the creation of ties which talk to
+pre-existing <em>data source object</em>s, and these objects will
+survive the removal of the ties using them as well.
+
+
+<h3><a name="registering_a_new_data_source_class">REGISTERING A NEW DATA SOURCE CLASS</a></h3>
+<p>
+
+After a <a href="#data_source_class">data source class</a> has been written it is necessary
+to register it as a new type with the framework.
+
+<dl>
+<dt><a name="6"><b class='cmd'>::tie::register</b> <i class='arg'>dsclasscmd</i> <strong>as</strong> <i class='arg'>dstype</i></a><dd>
+
+
+Using this command causes the tie framework to remember the class
+command <i class='arg'>dsclasscmd</i> of a <a href="#data_source_class">data source class</a> under the
+type name <i class='arg'>dstype</i>.
+
+<br><br>
+
+After the call the argument <i class='arg'>dstype</i> of the basic user command
+<b class='cmd'>::tie::tie</b> will accept <i class='arg'>dstype</i> as a type name and translate
+it internally to the appropriate class command for the creation of
+<a href="#data_source_objects">data source objects</a> for the new <em>data source</em>.
+
+</dl>
+
+
+<h3><a name="data_source_class">DATA SOURCE CLASS</a></h3>
+<p>
+
+Each data source class is represented by a single command, also called
+the <em>class command</em>, or <em>object creation command</em>. Its
+syntax is
+
+<dl>
+
+<dt><a name="7"><b class='cmd'>dsclasscmd</b> <i class='arg'>objname</i> ?<i class='arg'>dsname</i>...?</a><dd>
+
+
+The first argument of the class command is the name of the
+<em>data source object</em> to create.
+
+The framework itself will always supply the string <strong>%AUTO%</strong>, to
+signal that the class command has to generate not only the object, but
+the object name as well.
+
+<br><br>
+
+This is followed by a series of arguments identifying the data source
+the new object is for. These are the same <i class='arg'>dsname</i> arguments which
+are given to the basic user command <b class='cmd'>::tie::tie</b>. Their actual
+meaning is dependent on the <em>data source class</em>.
+
+<br><br>
+
+The result of the class command has to be the fully-qualified name of
+the new <em>data source object</em>, i.e. the name of the
+<em>object command</em>.
+
+The interface this command has to follow is described in the section
+<a href="#data_source_object_api">DATA SOURCE OBJECT API</a>
+
+</dl>
+<p>
+
+<h3><a name="data_source_object_api">DATA SOURCE OBJECT API</a></h3>
+<p>
+
+Please read the section <a href="#data_source_class">DATA SOURCE CLASS</a> first, to know
+how to generate new <em>object commands</em>.
+
+<p>
+
+Each <em>object command</em> for a <em>data source</em> object has to
+provide at least the methods listed below for proper inter-operation
+with the tie framework. Note that the names of most of the methods
+match the subcommands of the builtin <b class='cmd'>array</b> command.
+
+<p>
+<dl>
+<dt><a name="8"><b class='cmd'>ds</b> <strong>destroy</strong></a><dd>
+
+
+This method is called when the object <b class='cmd'>ds</b> is destroyed. It now
+has to release all its internal resources associated with the external
+data source.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>ds</b> <strong>names</strong></a><dd>
+
+
+This command has to return a list containing the names of all keys
+found in the <em>data source</em> the object talks to. This is
+equivalent to <b class='cmd'>array names</b>.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>ds</b> <strong>size</strong></a><dd>
+
+
+This command has to return an integer number specifying the number of
+keys found in the <em>data source</em> the object talks to. This is
+equivalent to <b class='cmd'>array size</b>.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>ds</b> <strong>get</strong></a><dd>
+
+
+This command has to return a dictionary containing the data found in
+the <em>data source</em> the object talks to. This is equivalent to
+<b class='cmd'>array get</b>.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>ds</b> <strong>set</strong> <i class='arg'>dict</i></a><dd>
+
+
+This command takes a dictionary and adds its contents to the data
+source the object talks to. This is equivalent to <b class='cmd'>array set</b>.
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>ds</b> <strong>unset</strong> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+This command takes a pattern and removes all elements whose keys
+matching it from the <em>data source</em>. If no pattern is specified
+it defaults to <strong>*</strong>, causing the removal of all elements. This
+is nearly equivalent to <b class='cmd'>array unset</b>.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>ds</b> <strong>setv</strong> <i class='arg'>index</i> <i class='arg'>value</i></a><dd>
+
+
+This command has to save the <i class='arg'>value</i> in the <em>data source</em>
+the object talks to, under the key <i class='arg'>index</i>.
+
+<br><br>
+
+The result of the command is ignored. If an error is thrown then this
+error will show up as error of the set operation which caused the
+method call.
+
+
+<br><br>
+<dt><a name="15"><b class='cmd'>ds</b> <strong>unsetv</strong> <i class='arg'>index</i></a><dd>
+
+
+This command has to remove the value under the key <i class='arg'>index</i> from
+the <em>data source</em> the object talks to.
+
+<br><br>
+
+The result of the command is ignored. If an error is thrown then this
+error will show up as error of the unset operation which caused the
+method call.
+
+
+<br><br>
+<dt><a name="16"><b class='cmd'>ds</b> <strong>getv</strong> <i class='arg'>index</i></a><dd>
+
+
+This command has to return the value for the key <i class='arg'>index</i> in the
+<em>data source</em> the object talks to.
+
+</dl>
+
+And here a small table comparing the <em>data source</em> methods to
+the regular Tcl commands for accessing an array.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+        Regular Tcl             Data source
+        -----------             -----------
+        array names a           ds names
+        array size  a           ds size
+        array get   a           ds get
+        array set   a dict      ds set   dict
+        array unset a pattern   ds unset ?pattern?
+        -----------             -----------
+        set a($idx) $val        ds setv   idx val
+        unset a($idx)           ds unsetv idx
+        $a($idx)                ds getv   idx
+        -----------             -----------
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+array, database, file, metakit, persistence, tie, untie
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

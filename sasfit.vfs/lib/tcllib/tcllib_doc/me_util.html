@@ -1,0 +1,128 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::me::util - Grammar operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_me/me_util.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: me_util.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ grammar::me::util.n
+   -->
+
+<body>
+<h1> grammar::me::util(n) 0.1 grammar_me &quot;Grammar operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::me::util - AST utilities
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>grammar::me::util ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::grammar::me::util::ast2tree</b> <i class='arg'>ast</i> <i class='arg'>tree</i> ?<i class='arg'>root</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::grammar::me::util::ast2etree</b> <i class='arg'>ast</i> <i class='arg'>mcmd</i> <i class='arg'>tree</i> ?<i class='arg'>root</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>mcmd</b> <strong>lc</strong> <i class='arg'>location</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>mcmd</b> <strong>tok</strong> <i class='arg'>from</i> ?<i class='arg'>to</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::grammar::me::util::tree2ast</b> <i class='arg'>tree</i> ?<i class='arg'>root</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+<p>
+
+This package provides a number of utility command for the conversion
+between the various representations of abstract syntax trees as
+specified in the document <strong>grammar::me_ast</strong>.
+
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::grammar::me::util::ast2tree</b> <i class='arg'>ast</i> <i class='arg'>tree</i> ?<i class='arg'>root</i>?</a><dd>
+
+
+This command converts an <i class='arg'>ast</i> from value to object
+representation. All nodes in the <i class='arg'>ast</i> will be converted into
+nodes of this <i class='arg'>tree</i>, with the root of the AST a child of the node
+<i class='arg'>root</i>. If this node is not explicitly specified the root of the
+tree is used. Existing content of tree is not touched, i.e.  neither
+removed nor changed, with the exception of the specified root node,
+which will gain a new child.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::grammar::me::util::ast2etree</b> <i class='arg'>ast</i> <i class='arg'>mcmd</i> <i class='arg'>tree</i> ?<i class='arg'>root</i>?</a><dd>
+
+
+This command is like <b class='cmd'>::grammar::me::util::ast2tree</b>, except that
+the result is in the extended object representation of the input AST.
+
+The source of the extended information is the command prefix
+
+<i class='arg'>mcmd</i>.
+
+It has to understand two methods, <strong>lc</strong>, and <strong>tok</strong>, with
+the semantics specified below.
+
+<br><br>
+<dl>
+
+<dt><a name="3"><b class='cmd'>mcmd</b> <strong>lc</strong> <i class='arg'>location</i></a><dd>
+
+
+Takes the location of a token given as offset in the input stream and
+return a 2-element list containing the associated line number and
+column index, in this order.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>mcmd</b> <strong>tok</strong> <i class='arg'>from</i> ?<i class='arg'>to</i>?</a><dd>
+
+
+Takes one or two locations <i class='arg'>from</i> and <i class='arg'>to</i> as offset in the
+input stream and returns a Tcl list containing the specified part of
+the input stream. Both location are inclusive. If <i class='arg'>to</i> is not
+specified it will default to the value of <i class='arg'>from</i>.
+
+<br><br>
+
+Each element of the returned list is a list containing the token, its
+associated lexeme, the line number, and column index, in this order.
+
+</dl>
+<br><br>
+
+Both the ensemble command <b class='cmd'>::grammar::me::tcl</b> provided by the
+package <strong>grammar::me::tcl</strong> and the objects command created by
+the package <strong>::grammar::me::cpu</strong> fit the above specification.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::grammar::me::util::tree2ast</b> <i class='arg'>tree</i> ?<i class='arg'>root</i>?</a><dd>
+
+
+This command converts an <i class='arg'>ast</i> in (extended) object representation
+into a value and returns it.
+
+If a <i class='arg'>root</i> node is specified the AST is generated from that node
+downward. Otherwise the root of the tree object is used as the
+starting point. 
+
+</dl>
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+abstract syntax tree, syntax tree, tree
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

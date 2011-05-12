@@ -1,0 +1,636 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>textutil::expander - Text and string utilities, macro processing </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/textutil/expander.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; William H. Duquette, http://www.wjduquette.com/expand
+   -->
+<! -- CVS: $Id: expander.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ textutil::expander.n
+   -->
+
+<body>
+<h1> textutil::expander(n) 1.3 textutil &quot;Text and string utilities, macro processing&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> textutil::expander - Procedures to process templates and expand text.
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#expander_api">EXPANDER API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tutorial">TUTORIAL</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#basics">Basics</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#embedding_macros">Embedding Macros</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#writing_macro_commands">Writing Macro Commands</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#changing_the_expansion_brackets">Changing the Expansion Brackets</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#customized_macro_expansion">Customized Macro Expansion</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#using_the_context_stack">Using the Context Stack</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#history">HISTORY</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>textutil::expander ?1.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::textutil::expander</b> <i class='arg'>expanderName</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><i class='arg'>expanderName</i> <strong>cappend</strong> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>expanderName</i> <strong>cget</strong> <i class='arg'>varname</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>expanderName</i> <strong>cis</strong> <i class='arg'>cname</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>expanderName</i> <strong>cname</strong></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>expanderName</i> <strong>cpop</strong> <i class='arg'>cname</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>expanderName</i> <strong>ctopandclear</strong></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>expanderName</i> <strong>cpush</strong> <i class='arg'>cname</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>expanderName</i> <strong>cset</strong> <i class='arg'>varname</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>expanderName</i> <strong>cvar</strong> <i class='arg'>varname</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>expanderName</i> <strong>errmode</strong> <i class='arg'>newErrmode</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>expanderName</i> <strong>evalcmd</strong> ?<i class='arg'>newEvalCmd</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>expanderName</i> <strong>expand</strong> <i class='arg'>string</i> ?<i class='arg'>brackets</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>expanderName</i> <strong>lb</strong> ?<i class='arg'>newbracket</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>expanderName</i> <strong>rb</strong> ?<i class='arg'>newbracket</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>expanderName</i> <strong>reset</strong></a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>expanderName</i> <strong>setbrackets</strong> <i class='arg'>lbrack rbrack</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><i class='arg'>expanderName</i> <strong>textcmd</strong> ?<i class='arg'>newTextCmd</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#19"><i class='arg'>expanderName</i> <strong>where</strong></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+<p>
+
+The Tcl <b class='cmd'>subst</b> command is often used to support a kind of
+template processing. Given a string with embedded variables or
+function calls, <b class='cmd'>subst</b> will interpolate the variable and function
+values, returning the new string:
+
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % set greeting &quot;Howdy&quot;
+    Howdy
+    % proc place {} {return &quot;World&quot;}
+    % subst {$greeting, [place]!}
+    Howdy, World!
+    %
+</pre></td></tr></table></p>
+
+<p>
+
+By defining a suitable set of Tcl commands, <b class='cmd'>subst</b> can be used to
+implement a markup language similar to HTML.
+
+<p>
+
+The <b class='cmd'>subst</b> command is efficient, but it has three drawbacks for
+this kind of template processing:
+
+<ul>
+
+<li>
+
+There's no way to identify and process the plain text between two
+embedded Tcl commands; that makes it difficult to handle plain text in
+a context-sensitive way.
+
+<br><br>
+<li>
+
+Embedded commands are necessarily bracketed by <strong>[</strong> and
+<strong>]</strong>; it's convenient to be able to choose different brackets
+in special cases.  Someone producing web pages that include a large
+quantity of Tcl code examples might easily prefer to use <strong>&lt;&lt;</strong>
+and <strong>&gt;&gt;</strong> as the embedded code delimiters instead.
+
+<br><br>
+<li>
+
+There's no easy way to handle incremental input, as one might wish to
+do when reading data from a socket.
+
+</ul>
+
+<p>
+
+At present, expander solves the first two problems; eventually it will
+solve the third problem as well.
+
+<p>
+
+The following section describes the command API to the expander; this
+is followed by the tutorial sections, see <a href="#tutorial">TUTORIAL</a>.
+
+<h2><a name="expander_api">EXPANDER API</a></h2>
+<p>
+<p>
+
+The <strong>textutil::expander</strong> package provides only one command,
+described below. The rest of the section is taken by a description of
+the methods for the expander objects created by this command.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::textutil::expander</b> <i class='arg'>expanderName</i></a><dd>
+
+
+The command creates a new expander object with an associated Tcl
+command whose name is <i class='arg'>expanderName</i>. This command may be used to
+invoke various operations on the graph. If the <i class='arg'>expanderName</i> is
+not fully qualified it is interpreted as relative to the current
+namespace.  The command has the following general form:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+<i class='arg'>expanderName</i> option ?<i class='arg'>arg arg ...</i>?
+</pre></td></tr></table></p>
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command.
+
+</dl>
+
+<p>
+
+The following commands are possible for expander objects:
+
+<dl>
+
+
+<dt><a name="2"><i class='arg'>expanderName</i> <strong>cappend</strong> <i class='arg'>text</i></a><dd>
+
+
+Appends a string to the output in the current context.  This command
+should rarely be used by macros or application code.
+
+
+<br><br>
+<dt><a name="3"><i class='arg'>expanderName</i> <strong>cget</strong> <i class='arg'>varname</i></a><dd>
+
+
+Retrieves the value of variable <i class='arg'>varname</i>, defined in the current
+context.
+
+
+<br><br>
+<dt><a name="4"><i class='arg'>expanderName</i> <strong>cis</strong> <i class='arg'>cname</i></a><dd>
+
+
+Determines whether or not the name of the current context is
+
+<i class='arg'>cname</i>.
+
+
+<br><br>
+<dt><a name="5"><i class='arg'>expanderName</i> <strong>cname</strong></a><dd>
+
+
+Returns the name of the current context.
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>expanderName</i> <strong>cpop</strong> <i class='arg'>cname</i></a><dd>
+
+
+Pops a context from the context stack, returning all accumulated
+output in that context.  The context must be named <i class='arg'>cname</i>, or an
+error results.
+
+
+<br><br>
+<dt><a name="7"><i class='arg'>expanderName</i> <strong>ctopandclear</strong></a><dd>
+
+
+Returns the output currently captured in the topmost context and
+clears that buffer. This is similar to a combination of <strong>cpop</strong>
+followed by <strong>cpush</strong>, except that internal state (brackets) is
+preserved here.
+
+<br><br>
+<dt><a name="8"><i class='arg'>expanderName</i> <strong>cpush</strong> <i class='arg'>cname</i></a><dd>
+
+
+Pushes a context named <i class='arg'>cname</i> onto the context stack.  The
+context must be popped by <strong>cpop</strong> before expansion ends or an
+error results.
+
+
+<br><br>
+<dt><a name="9"><i class='arg'>expanderName</i> <strong>cset</strong> <i class='arg'>varname</i> <i class='arg'>value</i></a><dd>
+
+
+Sets variable <i class='arg'>varname</i> to <i class='arg'>value</i> in the current context.
+
+
+<br><br>
+<dt><a name="10"><i class='arg'>expanderName</i> <strong>cvar</strong> <i class='arg'>varname</i></a><dd>
+
+
+Retrieves the internal variable name of context variable
+
+<i class='arg'>varname</i>; this allows the variable to be passed to commands like
+<b class='cmd'>lappend</b>.
+
+
+<br><br>
+<dt><a name="11"><i class='arg'>expanderName</i> <strong>errmode</strong> <i class='arg'>newErrmode</i></a><dd>
+
+
+Sets the macro expansion error mode to one of <strong>nothing</strong>,
+<strong>macro</strong>, <strong>error</strong>, or <strong>fail</strong>; the default value is
+<strong>fail</strong>.  The value determines what the expander does if an
+error is detected during expansion of a macro.
+
+<br><br>
+<dl>
+<dt><strong>fail</strong><dd>
+
+The error propagates normally and can be caught or ignored by the
+application.
+
+<br><br>
+<dt><strong>error</strong><dd>
+
+The macro expands into a detailed error message, and expansion
+continues.
+
+<br><br>
+<dt><strong>macro</strong><dd>
+
+The macro expands to itself; that is, it is passed along to the output
+unchanged.
+
+<br><br>
+<dt><strong>nothing</strong><dd>
+
+The macro expands to the empty string, and is effectively ignored.
+
+</dl>
+<br><br>
+
+<dt><a name="12"><i class='arg'>expanderName</i> <strong>evalcmd</strong> ?<i class='arg'>newEvalCmd</i>?</a><dd>
+
+
+Returns the current evaluation command, which defaults to
+
+<b class='cmd'>uplevel #0</b>.  If specified, <i class='arg'>newEvalCmd</i> will be saved for
+future use and then returned; it must be a Tcl command expecting one
+additional argument: the macro to evaluate.
+
+
+<br><br>
+<dt><a name="13"><i class='arg'>expanderName</i> <strong>expand</strong> <i class='arg'>string</i> ?<i class='arg'>brackets</i>?</a><dd>
+
+
+Expands the input string, replacing embedded macros with their
+expanded values, and returns the expanded string.
+
+<br><br>
+
+If <i class='arg'>brackets</i> is given, it must be a list of two strings; the
+items will be used as the left and right macro expansion bracket
+sequences for this expansion only.
+
+
+<br><br>
+<dt><a name="14"><i class='arg'>expanderName</i> <strong>lb</strong> ?<i class='arg'>newbracket</i>?</a><dd>
+
+
+Returns the current value of the left macro expansion bracket; this is
+for use as or within a macro, when the bracket needs to be included in
+the output text.  If <i class='arg'>newbracket</i> is specified, it becomes the new
+bracket, and is returned.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>expanderName</i> <strong>rb</strong> ?<i class='arg'>newbracket</i>?</a><dd>
+
+
+Returns the current value of the right macro expansion bracket; this
+is for use as or within a macro, when the bracket needs to be included
+in the output text.  If <i class='arg'>newbracket</i> is specified, it becomes the
+new bracket, and is returned.
+
+
+<br><br>
+<dt><a name="16"><i class='arg'>expanderName</i> <strong>reset</strong></a><dd>
+
+
+Resets all expander settings to their initial values.  Unusual results
+are likely if this command is called from within a call to
+
+<strong>expand</strong>.
+
+
+<br><br>
+<dt><a name="17"><i class='arg'>expanderName</i> <strong>setbrackets</strong> <i class='arg'>lbrack rbrack</i></a><dd>
+
+
+Sets the left and right macro expansion brackets.  This command is for
+use as or within a macro, or to permanently change the bracket
+definitions.  By default, the brackets are <strong>[</strong> and
+
+<strong>]</strong>, but any non-empty string can be used; for example,
+<strong>&lt;</strong> and <strong>&gt;</strong> or <strong>(*</strong> and <strong>*)</strong> or even
+<strong>Hello,</strong> and <strong>World!</strong>.
+
+
+<br><br>
+<dt><a name="18"><i class='arg'>expanderName</i> <strong>textcmd</strong> ?<i class='arg'>newTextCmd</i>?</a><dd>
+
+
+Returns the current command for processing plain text, which defaults
+to the empty string, meaning <em>identity</em>. If specified,
+
+<i class='arg'>newTextCmd</i> will be saved for future use and then returned; it
+must be a Tcl command expecting one additional argument: the text to
+process. The expander object will this command for all plain text it
+encounters, giving the user of the object the ability to process all
+plain text in some standard way before writing it to the output. The
+object expects that the command returns the processed plain text.
+
+<br><br>
+
+<em>Note</em> that the combination of &quot;<b class='cmd'>textcmd</b> <i class='arg'>plaintext</i>&quot;
+is run through the <i class='arg'>evalcmd</i> for the actual evaluation. In other
+words, the <i class='arg'>textcmd</i> is treated as a special macro implicitly
+surrounding all plain text in the template.
+
+
+<br><br>
+<dt><a name="19"><i class='arg'>expanderName</i> <strong>where</strong></a><dd>
+
+
+Returns a three-element list containing the current character
+position, line, and column the expander is at in the processing of the
+current input string.
+
+</dl>
+
+<h2><a name="tutorial">TUTORIAL</a></h2>
+<p>
+<h3><a name="basics">Basics</a></h3>
+<p>
+
+To begin, create an expander object:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % package require expander
+    1.2
+    % ::expander::expander myexp
+    ::myexp
+    %
+</pre></td></tr></table></p>
+<p>
+
+The created <b class='cmd'>::myexp</b> object can be used to expand text strings
+containing embedded Tcl commands.  By default, embedded commands are
+delimited by square brackets.  Note that expander doesn't attempt to
+interpolate variables, since variables can be referenced by embedded
+commands:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % set greeting &quot;Howdy&quot;
+    Howdy
+    % proc place {} {return &quot;World&quot;}
+    % ::myexp expand {[set greeting], [place]!}
+    Howdy, World!
+    %
+</pre></td></tr></table></p>
+
+
+<h3><a name="embedding_macros">Embedding Macros</a></h3>
+<p>
+
+An expander macro is simply a Tcl script embedded within a text
+string.  Expander evaluates the script in the global context, and
+replaces it with its result string.  For example,
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % set greetings {Howdy Hi &quot;What's up&quot;}
+    Howdy Hi &quot;What's up&quot;
+    % ::myexp expand {There are many ways to say &quot;Hello, World!&quot;:
+    [set result {}
+    foreach greeting $greetings {
+	append result &quot;$greeting, World!\\n&quot;
+    }
+    set result]
+    And that's just a small sample!}
+    There are many ways to say &quot;Hello, World!&quot;:
+    Howdy, World!
+    Hi, World!
+    What's up, World!
+
+    And that's just a small sample!
+    %
+</pre></td></tr></table></p>
+
+
+<h3><a name="writing_macro_commands">Writing Macro Commands</a></h3>
+<p>
+
+More typically, <em>macro commands</em> are used to create a markup
+language.  A macro command is just a Tcl command that returns an
+output string.  For example, expand can be used to implement a generic
+document markup language that can be retargeted to HTML or any other
+output format:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % proc bold {} {return &quot;&lt;b&gt;&quot;}
+    % proc /bold {} {return &quot;&lt;/b&gt;&quot;}
+    % ::myexp expand {Some of this text is in [bold]boldface[/bold]}
+    Some of this text is in &lt;b&gt;boldface&lt;/b&gt;
+    %
+</pre></td></tr></table></p>
+<p>
+
+The above definitions of <b class='cmd'>bold</b> and <b class='cmd'>/bold</b> returns HTML, but
+such commands can be as complicated as needed; they could, for
+example, decide what to return based on the desired output format.
+
+
+<h3><a name="changing_the_expansion_brackets">Changing the Expansion Brackets</a></h3>
+<p>
+
+By default, embedded macros are enclosed in square brackets,
+
+<strong>[</strong> and <strong>]</strong>.  If square brackets need to be
+included in the output, the input can contain the <b class='cmd'>lb</b> and
+
+<b class='cmd'>rb</b> commands.  Alternatively, or if square brackets are
+objectionable for some other reason, the macro expansion brackets can
+be changed to any pair of non-empty strings.
+
+<p>
+
+The <strong>setbrackets</strong> command changes the brackets permanently.
+For example, you can write pseudo-html by change them to <strong>&lt;</strong>
+and <strong>&gt;</strong>:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::myexp setbrackets &lt; &gt;
+    % ::myexp expand {&lt;bold&gt;This is boldface&lt;/bold&gt;}
+    &lt;b&gt;This is boldface&lt;/b&gt;
+</pre></td></tr></table></p>
+<p>
+
+Alternatively, you can change the expansion brackets temporarily by
+passing the desired brackets to the <strong>expand</strong> command:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::myexp setbrackets &quot;\\[&quot; &quot;\\]&quot;
+    % ::myexp expand {&lt;bold&gt;This is boldface&lt;/bold&gt;} {&lt; &gt;}
+    &lt;b&gt;This is boldface&lt;/b&gt;
+    %
+</pre></td></tr></table></p>
+
+
+<h3><a name="customized_macro_expansion">Customized Macro Expansion</a></h3>
+<p>
+
+By default, macros are evaluated using the Tcl <b class='cmd'>uplevel #0</b>
+command, so that the embedded code executes in the global context.
+The application can provide a different evaluation command using
+<strong>evalcmd</strong>; this allows the application to use a safe
+interpreter, for example, or even to evaluated something other than
+Tcl code.  There is one caveat: to be recognized as valid, a macro
+must return 1 when passed to Tcl's &quot;info complete&quot; command.
+
+<p>
+
+For example, the following code &quot;evaluates&quot; each macro by returning
+the macro text itself.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    proc identity {macro} {return $macro}
+    ::myexp evalcmd identity
+</pre></td></tr></table></p>
+
+
+<h3><a name="using_the_context_stack">Using the Context Stack</a></h3>
+<p>
+
+Often it's desirable to define a pair of macros which operate in some
+way on the plain text between them.  Consider a set of macros for
+adding footnotes to a web page: one could have implement something
+like this:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    Dr. Pangloss, however, thinks that this is the best of all
+    possible worlds.[footnote &quot;See Candide, by Voltaire&quot;]
+</pre></td></tr></table></p>
+<p>
+
+The <b class='cmd'>footnote</b> macro would, presumably, assign a number to this
+footnote and save the text to be formatted later on.  However, this
+solution is ugly if the footnote text is long or should contain
+additional markup.  Consider the following instead:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    Dr. Pangloss, however, thinks that this is the best of all
+    possible worlds.[footnote]See [bookTitle &quot;Candide&quot;], by
+    [authorsName &quot;Voltaire&quot;], for more information.[/footnote]
+</pre></td></tr></table></p>
+<p>
+
+Here the footnote text is contained between <b class='cmd'>footnote</b> and
+<b class='cmd'>/footnote</b> macros, continues onto a second line, and contains
+several macros of its own.  This is both clearer and more flexible;
+however, with the features presented so far there's no easy way to do
+it.  That's the purpose of the context stack.
+
+<p>
+
+All macro expansion takes place in a particular context.  Here, the
+<b class='cmd'>footnote</b> macro pushes a new context onto the context stack.
+Then, all expanded text gets placed in that new context.
+
+<b class='cmd'>/footnote</b> retrieves it by popping the context.  Here's a
+skeleton implementation of these two macros:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    proc footnote {} {
+        ::myexp cpush footnote
+    }
+
+    proc /footnote {} {
+        set footnoteText [::myexp cpop footnote]
+
+        # Save the footnote text, and return an appropriate footnote
+        # number and link.
+    }
+</pre></td></tr></table></p>
+<p>
+
+The <strong>cpush</strong> command pushes a new context onto the stack; the
+argument is the context's name.  It can be any string, but would
+typically be the name of the macro itself.  Then, <strong>cpop</strong>
+verifies that the current context has the expected name, pops it off
+of the stack, and returns the accumulated text.
+
+<p>
+
+Expand provides several other tools related to the context stack.
+Suppose the first macro in a context pair takes arguments or computes
+values which the second macro in the pair needs.  After calling
+<strong>cpush</strong>, the first macro can define one or more context
+variables; the second macro can retrieve their values any time before
+calling <strong>cpop</strong>.  For example, suppose the document must specify
+the footnote number explicitly:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    proc footnote {footnoteNumber} {
+        ::myexp cpush footnote
+        ::myexp csave num $footnoteNumber
+        # Return an appropriate link
+    }
+
+    proc /footnote {} {
+        set footnoteNumber [::myexp cget num]
+        set footnoteText [::myexp cpop footnote]
+
+        # Save the footnote text and its footnoteNumber for future
+        # output.
+    }
+</pre></td></tr></table></p>
+<p>
+
+At times, it might be desirable to define macros that are valid only
+within a particular context pair; such macros should verify that they
+are only called within the correct context using either <strong>cis</strong>
+or <strong>cname</strong>.
+
+<h2><a name="history">HISTORY</a></h2>
+<p>
+
+<b class='cmd'>expander</b> was written by William H. Duquette; it is a repackaging
+of the central algorithm of the expand macro processing tool.
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+<a href="http://www.wjduquette.com/expand">http://www.wjduquette.com/expand</a>, regexp, split, string
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+string, template processing, text expansion
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; William H. Duquette, http://www.wjduquette.com/expand<br>
+</body></html>

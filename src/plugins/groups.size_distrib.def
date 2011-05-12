@@ -1,0 +1,60 @@
+/*
+ * src/plugins/groups.size_distrib.def
+ *
+ * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ */
+
+/*
+ * In this file are all group definitions including their documentation listed.
+ *
+ * For reference on the syntax, see the doxygen documentation:
+ * http://www.stack.nl/~dimitri/doxygen/grouping.html
+ */
+
+// first level group mounted in the GUI
+/**
+ * \defgroup size_distrib Size Distributions
+ * \ingroup model_functions
+ *
+ * \brief In this library distribution functions \f$n(x)\f$ are collected.
+ * A size distribution describes the number of particles in a sample according
+ * to their size.
+ * These function are used to describe the distribution of a parameter
+ * \f$a_i\f$ of a form factor \f$P(Q,\{a_i\})\f$.
+ * \f[
+ *              I(Q) = \int_0^\infty n(a_j)\, P\left(Q,\{\dots, a_j, \dots\}\right) \, da_j
+ * \f] 
+ *
+ * \toplvldescr{size distribution,sasfit_sd,size_distrib}
+ */
+
+/** 
+ * \defgroup sd_plugins by plugins
+ * \ingroup size_distrib
+ *
+ * This group contains size distributions from plugins.
+ *
+ * \modname{sd_plugins}
+ */
+

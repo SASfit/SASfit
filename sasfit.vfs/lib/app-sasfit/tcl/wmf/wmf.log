@@ -1,0 +1,82 @@
+
+revision 1.29	
+  Documentation update
+revision 1.28
+  Continuing with the examples suggested by Alain Zuur, added
+  LineTo, MoveTo, PolylineTo, and simplified bezier functions.
+  Also updated the version to 0.5.0.2
+revision 1.27
+  Updated documentation
+revision 1.26
+  Added WmfRead function, suggested by Alain of Highland Statistics
+revision 1.25
+  Updated comments for release
+  Tested under 8.0.3 and 8.0.5 for compatibility. This limited UNICODE support.
+revision 1.24
+  Preparation for release. Added comments.
+  New approach for problem with locking enhanced metafiles from office
+  products.
+revision 1.23
+  Modified text scaling somewhat--still needs work on EMR parameters
+  (e.g., EMREXTTEXTOUT and EMRCREATEFONTINDIRECT) to make the metafiles
+  able to recreate themselves on a canvas.
+revision 1.22
+  Added a logging to file function for debugging
+  Limited the number of parameters that are considered -- GDICOMMENT and
+  STRETCHDIBITS come up with over 8000 parameters each!
+revision 1.21
+  Fixed a few typos and managed the clipboard type reporting better
+revision 1.20
+  Broke out the different types of clipboard formats, added comments
+revision 1.19
+  Minor corrections in ensuring elements are appended properly
+revision 1.18
+  Added first wmf paste implementation
+revision 1.17
+  Added textual and DIB support
+  DIB support doesn't work right yet. All calls to GetDIBits are failing
+  in nonunderstandable ways.
+revision 1.16
+  Added wmf paste command
+revision 1.15
+  Updated Unicode portions for versions of Tcl earlier than 8.1.1
+revision 1.14
+  Updated version string
+revision 1.13
+  Separated complete verbose information from the canvas output.
+  The canvas output could be derived from the verbose output in a tcl script,
+  but seemed more convenient to add it as an info option.
+revision 1.12
+  Updated wmf info -verbose output to filter out irrelevant information
+revision 1.11
+  Return to non-empty version
+revision 1.10
+  New version created from code update
+revision 1.9
+  Moved free of buffer until after its use.
+revision 1.8
+  Updated comments on copy, and made "both" the default
+revision 1.7
+  Added option to produce old-style metafile on the clipboard
+  Cleaned up the clipboard logic
+revision 1.6
+  Added ability to use hdc context names for wmf reference hdcs
+  Fixed bug where reference hdc was released if created externally to wmf
+revision 1.5
+  Added info function
+  Cleaned up residual warnings. I wish Tcl_SetResult would change its
+  prototype!
+revision 1.4
+  Removed memory cleanup in "detach" logic since the HDC extension
+  will often be unloaded before WMF.
+revision 1.3
+  Added ability to use HDC context addresses as well as names.
+  Allowed extension to work with or without hdc extension
+revision 1.2
+  Added mechanism to set hdc functions after loading extension.
+  Changed default filename extension to .emf rather than .wmf
+  Support copying an existing HDC instead of always using the default.
+  Added the complete skeleton for the DllEntryPoint
+revision 1.1
+  Initial revision
+  =============================================================================

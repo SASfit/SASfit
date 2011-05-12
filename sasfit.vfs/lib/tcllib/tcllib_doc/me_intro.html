@@ -1,0 +1,112 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::me_intro - Grammar operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_me/me_intro.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: me_intro.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ grammar::me_intro.n
+   -->
+
+<body>
+<h1> grammar::me_intro(n) 0.1 grammar_me &quot;Grammar operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::me_intro - Introduction to virtual machines for parsing token streams
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+
+
+
+
+
+This document is an introduction to and overview of the basic
+facilities for the parsing and/or matching of <em>token</em>
+streams. One possibility often used for the token domain are
+characters.
+
+<p>
+
+The packages themselves all provide variants of one
+
+<em>virtual machine</em>, called a <em>match engine</em> (short
+
+<em>ME</em>), which has all the facilities needed for the matching and
+parsing of a stream, and which are either controlled directly, or are
+customized with a match program. The virtual machine is basically a
+pushdown automaton, with additional elements for backtracking and/or
+handling of semantic data and construction of abstract syntax trees
+(<em>AST</em>).
+
+<p>
+
+Because of the high degree of similarity in the actual implementations
+of the aforementioned virtual machine and the data structures they
+receive and generate these common parts are specified in a separate
+document which will be referenced by the documentation for packages
+actually implementing it.
+
+<p>
+
+The relevant documents are:
+
+<p>
+<dl>
+
+<dt><strong>grammar::me_vm</strong><dd>
+
+Virtual machine specification.
+
+<br><br>
+<dt><strong>grammar::me_ast</strong><dd>
+
+Specification of various representations used for abstract syntax
+trees.
+
+<br><br>
+<dt><strong>grammar::me::util</strong><dd>
+
+Utility commands.
+
+<br><br>
+<dt><strong>grammar::me::tcl</strong><dd>
+
+Singleton ME virtual machine implementation tied to Tcl for control
+flow and stacks. Hardwired for pull operation. Uninteruptible during
+processing.
+
+<br><br>
+<dt><strong>grammar::me::cpu</strong><dd>
+
+Object-based ME virtual machine implementation with explicit control
+flow, and stacks, using bytecodes. Suspend/Resumable. Push/pull
+operation.
+
+<br><br>
+<dt><strong>grammar::me::cpu::core</strong><dd>
+
+Core functionality for state manipulation and stepping used in the
+bytecode based implementation of ME virtual machines.
+
+</dl>
+<p>
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+CFG, CFL, LL(k), PEG, TPDL, context-free grammar, context-free languages, expression, grammar, matching, parsing, parsing expression grammar, push down automaton, recursive descent, top-down parsing languages, transducer, virtual machine
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

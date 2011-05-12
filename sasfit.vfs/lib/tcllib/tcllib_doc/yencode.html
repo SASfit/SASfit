@@ -1,0 +1,127 @@
+<html><head>
+<title>yencode - Text encoding &amp; decoding binary data </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/base64/yencode.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002, Pat Thoyts
+   -->
+<! -- CVS: $Id: yencode.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ yencode.n
+   -->
+
+<body>
+<h1> yencode(n) 1.1.1 base64 &quot;Text encoding &amp; decoding binary data&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> yencode - Y-encode/decode binary data
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>yencode ?1.1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::yencode::encode</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::yencode::decode</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::yencode::yencode</b> ?<strong>-name</strong> <i class='arg'>string</i>? ?<strong>-line</strong> <i class='arg'>integer</i>? ?<strong>-crc32</strong> <i class='arg'>boolean</i>? (<strong>-file</strong> <i class='arg'>filename</i> | ?<strong>--</strong>? <i class='arg'>string</i>)</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::yencode::ydecode</b> (<strong>-file</strong> <i class='arg'>filename</i> | ?<strong>--</strong>? <i class='arg'>string</i>)</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides a Tcl-only implementation of the yEnc file
+encoding. This is a recently introduced method of encoding binary
+files for transmission through Usenet. This encoding packs binary data
+into a format that requires an 8-bit clean transmission layer but that
+escapes characters special to the <em>NNTP</em> posting protocols. See 
+<a href="http://www.yenc.org/">http://www.yenc.org/</a> for details concerning the algorithm.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::yencode::encode</b> <i class='arg'>string</i></a><dd>
+
+
+returns the yEnc encoded data.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::yencode::decode</b> <i class='arg'>string</i></a><dd>
+
+
+Decodes the given yEnc encoded data.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::yencode::yencode</b> ?<strong>-name</strong> <i class='arg'>string</i>? ?<strong>-line</strong> <i class='arg'>integer</i>? ?<strong>-crc32</strong> <i class='arg'>boolean</i>? (<strong>-file</strong> <i class='arg'>filename</i> | ?<strong>--</strong>? <i class='arg'>string</i>)</a><dd>
+
+
+Encode a file or block of data.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::yencode::ydecode</b> (<strong>-file</strong> <i class='arg'>filename</i> | ?<strong>--</strong>? <i class='arg'>string</i>)</a><dd>
+
+
+Decode a file or block of data. A file may contain more than one
+embedded file so the result is a list where each element is a three
+element list of filename, file size and data.
+
+</dl>
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+
+<dl>
+
+<dt>-filename name<dd>
+
+Cause the yencode or ydecode commands to read their data from the
+named file rather that taking a string parameter.
+
+<br><br>
+<dt>-name string<dd>
+
+The encoded data header line contains the suggested file name to be
+used when unpacking the data. Use this option to change this from the
+default of &quot;data.dat&quot;.
+
+<br><br>
+<dt>-line integer<dd>
+
+The yencoded data header line contains records the line length used
+during the encoding. Use this option to select a line length other
+that the default of 128. Note that NNTP imposes a 1000 character line
+length limit and some gateways may have trouble with more than 255
+characters per line.
+
+<br><br>
+<dt>-crc32 boolean<dd>
+
+The yEnc specification recommends the inclusion of a cyclic redundancy
+check value in the footer. Use this option to change the default from
+<i class='arg'>true</i> to <i class='arg'>false</i>.
+
+</dl>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set d [yencode::yencode -file testfile.txt]
+=ybegin line=128 size=584 name=testfile.txt
+ -o- data not shown -o-
+=yend size=584 crc32=ded29f4f
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+encoding, yEnc, ydecode, yencode
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002, Pat Thoyts<br>
+</body></html>

@@ -1,0 +1,56 @@
+/**
+ * \page shared_libs About shared libraries in \sf
+ *
+ * Per default the \sf libraries are built as shared libraries 
+ * (*.dll on Windows, *.so on Linux). This is the way \sf uses them.
+ *
+ * \par On Linux
+ * All symbols (e.g. functions) get exported/shared by default. To use
+ * a function from a shared library, you include its header file and tell 
+ * the compiler (gcc) the name of the according binary library file 
+ * (i.e. its location).
+ *
+ * \par On Windows
+ * Symbols have to be exported/shared explicitly via the famous
+ * <tt>__declspec(dllexport)</tt> macro when built as shared library. To use a 
+ * function of a shared library, you have to prepend its declaration by 
+ * the import macro <tt>__declspec(dllimport)</tt>. 
+ *
+ * That is why there are <tt>sasfit_<xyz>_DLLEXP</tt> macros in front of each 
+ * function declaration in the supplied \sf header files (<tt>\<xyz\></tt> 
+ * represents the basename of the particular plugin or old-style library). 
+ * When building 
+ * a \sf library itself, cmake sets the <tt>sasfit_<xyz>_EXPORTS</tt> macro 
+ * automatically. This is used to set the above <tt>DLLEXP</tt> macro to export 
+ * functionality within \sf libraries. When building external code which
+ * uses (<tt>\#include</tt>) a \sf library, the macro provided by CMake 
+ * (<tt>sasfit_<xyz>_EXPORTS</tt>) is not set. This is used to set the DLLEXP 
+ * macro to import functionality within \sf libraries:
+ *
+ * \code
+ * #if defined(sasfit_<xyz>_EXPORTS)
+ *    #ifdef sasfit_<xyz>_DLLEXP
+ *       #undef sasfit_<xyz>_DLLEXP
+ *    #endif
+ *    #define sasfit_<xyz>_DLLEXP SASFIT_LIB_EXPORT
+ * #else
+ *    #ifndef sasfit_<xyz>_DLLEXP
+ *       #define sasfit_<xyz>_DLLEXP SASFIT_LIB_IMPORT
+ *    #endif
+ * #endif
+ * \endcode
+ *
+ * This macro fragment is placed within each public plugin header file which has
+ * to be included when using its functions in external program code.
+ *
+ * The upper part of this conditional is used when the plugin itself is build
+ * by using CMake (which defines the <tt>sasfit_<xyz>_EXPORTS</tt> macro).
+ * This results in exporting all functions via \ref SASFIT_LIB_EXPORT.
+ *
+ * The lower part is used when the according header file is included in
+ * external code (which may also be build by CMake but will have another
+ * project name so that <tt>\<xyz\></tt> expands to something else). If you
+ * haven't set the <tt>DLLEXP</tt> macro yourself it will be set to import all
+ * public plugin functions via \ref SASFIT_LIB_IMPORT.
+ */
+
