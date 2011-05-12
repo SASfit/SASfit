@@ -1,0 +1,83 @@
+/**
+ * \page howto_use_plugin Howto use model functions from a plugin in your own code
+ *
+ * Here is an example source code of a program which evaluates the 
+ * \ref form_fac of a rod-like particle at a \e q value of 0.5 with \e length 2.5 and 
+ * \e eta 0.3:
+ *
+ * \include example_sasfit_ff_rod.c
+ *
+ * \section pre_req Prerequisites
+ *
+ * We assume, you have uncompressed the \sf source package to a directory of
+ * your choice and built the static libraries according to \ref howto_build .
+ * For the example above, your build environment has to know about the include 
+ * directories of \e sasfit_common and the \e Rod plugin. The path to the static 
+ * sasfit_common library (\e sasfit_common_stat) has to be kown, as well as the 
+ * path to the static plugin library (\e sasfit_rod_stat) and the static GSL
+ * libraries on your system (in future versions shipped with \sf).
+ *
+ * \section ex_lin Linux example
+ * Run the following commands in a terminal window:\n
+ * \code
+ * $ cd <your-sasfit_source-directory>/examples
+ * $ gcc example_sasfit_ff_rod.c -static -I../src/sasfit_common/include -I../src/f2c -I../plugins -I/usr/local/include -L../src/plugins/rod/lib -L../src/lib -L/usr/local/lib -lsasfit_rod_stat -lsasfit_common_stat -lgsl -lgslcblas -lm
+ * $ ./a.out
+ * The result is 0.538834
+ * \endcode
+ * Where <tt>/usr/local/lib/</tt> is the path to the GSL library files
+ * and <tt>/usr/local/include</tt> is the path to the GSL include/header files.\n
+ * Used GCC version: 4.2.4
+ *
+ * \section ex_mingw Windows example (MinGW with MSYS)
+ * Start a MSYS terminal window and type the following:\n
+ * \code
+ * $ cd <your-sasfit_source-directory>/examples
+ * $ /C/MinGW/bin/gcc.exe example_sasfit_ff_rod.c -static -DSTATIC_ENABLED -I../src/sasfit_common/include -I../src/f2c -I../plugins -I/C/Program\ Files/GnuWin32/include  -L../src/plugins/rod/lib -L../src/lib -L/C/Program\ Files/GnuWin32/lib -lsasfit_rod_stat -lsasfit_common_stat -lgsl -lgslcblas
+ * $ ./a.exe 
+ * The result is 0.538834
+ * \endcode
+ * Where <tt>/C/Program\ Files/GnuWin32/lib</tt> is the path to the GSL library files
+ * and <tt>/C/Program\ Files/GnuWin32/include</tt> is the path to the GSL include/header files.\n
+ * Used GCC version: 3.4.2 (mingw-special)
+ *
+ * \section ex_win Windows example (\vs)
+ * 
+ *      <ul>
+ *      <li> \vs_new_proj
+ *
+ * 	<li> \vs_select_file{example_sasfit_ff_rod.c}
+ *
+ * 	<li> In the left subwindow select 
+ * 	'Configuration Properties'->'C/C++'->'Preprocessor'.\n 
+ * 	Edit the entry 'Preprocessor Definitions' within the right
+ * 	subwindow: Add the keyword 'STATIC_ENABLED' to its end.\n
+ * 
+ * 	<li> \vs_add_inc{
+ * 	<li><tt>\sf_src\\src\\sasfit_common\\include\\</tt>
+ * 	<li><tt>\sf_src\\src\\f2c\\</tt>
+ * 	<li><tt>\sf_src\\plugins\\</tt>
+ * 	<li><tt>C:\\Program Files\\GnuWin32\\include\\</tt>
+ * 	,(The last one depends on where you installed GSL for Windows.)}
+ *
+ *	<li> \vs_add_lib{
+ *	<li><tt>\sf_src\\src\\lib\\release\\</tt>
+ *	<li><tt>\sf_src\\src\\plugins\\rod\\lib\\release\\</tt>
+ * 	<li><tt>C:\\Program Files\\GnuWin32\\lib\\</tt>
+ * 	,(The last one depends on where you installed GSL for Windows.)}
+ * 
+ *	<li> \vs_add_deps{
+ *	<li><tt>sasfit_common_stat.lib</tt>
+ *	<li><tt>sasfit_rod_stat.lib</tt>
+ *	<li><tt>libgslcblas.a</tt>
+ *	<li><tt>libgsl.a</tt>}
+ * 
+ *	<li> \vs_do_build{<tt>\sf_src\\examples\\release\\</tt>}
+ *
+ *	<li> To run this program, there are no additional libraries required 
+ *	(because of static linking). \n
+ *      <br>
+ *	\b Note: \vs_redistrib_note 
+ *	</ul>
+ */
+

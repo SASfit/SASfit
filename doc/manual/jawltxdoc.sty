@@ -1,0 +1,131 @@
+%%
+%% This is file `jawltxdoc.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% achemso.dtx  (with options: `jawltxdoc')
+%%  ----------------------------------------------------------------
+%%  The achemso package - LaTeX and BibTeX support for American
+%%  Chemical Society publications
+%%  Maintained by Joseph Wright
+%%  E-mail: joseph.wright@morningstar2.co.uk
+%%  Released under the LaTeX Project Public License v1.3 or later
+%%  See http://www.latex-project.org/lppl.txt
+%%  ----------------------------------------------------------------
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jawltxdoc}
+  [2007/10/14 v1.0b]
+\usepackage[T1]{fontenc}
+\usepackage[english,UKenglish]{babel}
+\usepackage[scaled=0.95]{helvet}
+\usepackage[version=3]{mhchem}
+\usepackage[final]{microtype}
+\usepackage[osf]{mathpazo}
+\usepackage{booktabs,array,url,graphicx,courier,unitsdef}
+\usepackage{upgreek,ifpdf,listings}
+\ifpdf
+  \usepackage{embedfile}
+  \embedfile[%
+    stringmethod=escape,%
+    mimetype=plain/text,%
+    desc={LaTeX docstrip source archive for package `\jobname'}%
+    ]{\jobname.dtx}
+\fi
+\usepackage{\jobname}
+\usepackage[numbered]{hypdoc}
+\newlength\LaTeXwidth
+\newlength\LaTeXoutdent
+\newlength\LaTeXgap
+\setlength\LaTeXgap{1em}
+\setlength\LaTeXoutdent{-0.15\textwidth}
+\def\typesetexampleandcode{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin\LaTeXoutdent
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \setlength\LaTeXoutdent{-0.15\textwidth}
+    \begin{minipage}[c]{\textwidth-\LaTeXwidth-\LaTeXoutdent-\LaTeXgap}
+      \lst@sampleInput
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+  \end{list}
+}
+\def\typesetcodeandexample{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin{0pt}
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+    \lst@sampleInput
+  \end{list}
+}
+\def\typesetfloatexample{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin{0pt}
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \lst@sampleInput
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+  \end{list}
+}
+\def\typesetcodeonly{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin{0pt}
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+  \end{list}
+}
+\edef\LaTeXexamplefile{\jobname.tmp}
+\lst@RequireAspects{writefile}
+\newbox\lst@samplebox
+\lstnewenvironment{LaTeXexample}[1][\typesetexampleandcode]{%
+  \let\typesetexample#1
+  \global\let\lst@intname\@empty
+  \setbox\lst@samplebox=\hbox\bgroup
+  \setkeys{lst}{language=[LaTeX]{TeX},tabsize=4,gobble=2,%
+    breakindent=0pt,basicstyle=\small\ttfamily,basewidth=0.51em,%
+    keywordstyle=\color{blue},%
+    morekeywords={bibnote,citenote,bibnotetext,bibnotemark,%
+      thebibnote,bibnotename,includegraphics,schemeref,%
+      floatcontentsleft,floatcontentsright,floatcontentscentre,%
+      schemerefmarker,compound,schemerefformat,color,%
+      startchemical,stopchemical,chemical,setupchemical,bottext,%
+      listofschemes}}
+  \lst@BeginAlsoWriteFile{\LaTeXexamplefile}
+}{%
+  \lst@EndWriteFile\egroup
+  \setlength\LaTeXwidth{\wd\lst@samplebox}
+  \typesetexample%
+}
+\def\lst@sampleInput{%
+  \MakePercentComment\catcode`\^^M=10\relax
+  \small%
+  {\setkeys{lst}{SelectCharTable=\lst@ReplaceInput{\^\^I}%
+    {\lst@ProcessTabulator}}%
+    \leavevmode \input{\LaTeXexamplefile}}%
+  \MakePercentIgnore%
+}
+\hyphenation{PDF-LaTeX}
+\endinput
+%%
+%% End of file `jawltxdoc.sty'.

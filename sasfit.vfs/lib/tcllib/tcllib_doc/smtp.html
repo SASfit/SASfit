@@ -1,0 +1,211 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>smtp - smtp client </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/mime/smtp.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 1999-2000 Marshall T. Rose
+   -->
+<! -- CVS: $Id: smtp.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ smtp.n
+   -->
+
+<body>
+<h1> smtp(n) 1.4.2 mime &quot;smtp client&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> smtp - Client-side tcl implementation of the smtp protocol
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl</b><br>
+package require <b>mime ?1.4.1?</b><br>
+package require <b>smtp ?1.4.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::smtp::sendmessage</b> <i class='arg'>token</i> <i class='arg'>option</i>...</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>smtp</strong> library package provides the client side of the
+Simple Mail Transfer Protocol (SMTP) (1) (2).
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::smtp::sendmessage</b> <i class='arg'>token</i> <i class='arg'>option</i>...</a><dd>
+
+
+This command sends the MIME part (see package <strong>mime</strong>)
+represented by <i class='arg'>token</i> to an SMTP server. <i class='arg'>options</i> is a list
+of options and their associated values.  The recognized options are:
+
+<br><br>
+<dl>
+
+<dt><strong>-servers</strong><dd>
+
+A list of SMTP servers. The default is <strong>localhost</strong>.
+
+<br><br>
+<dt><strong>-ports</strong><dd>
+
+A list of SMTP ports. The default is <strong>25</strong>.
+
+<br><br>
+<dt><strong>-queue</strong><dd>
+
+Indicates that the SMTP server should be asked to queue the message
+for later processing. A boolean value.
+
+<br><br>
+<dt><strong>-atleastone</strong><dd>
+
+Indicates that the SMTP server must find at least one recipient
+acceptable for the message to be sent. A boolean value.
+
+<br><br>
+<dt><strong>-originator</strong><dd>
+
+A string containing an 822-style address specification. If present the
+header isn't examined for an originator address.
+
+<br><br>
+<dt><strong>-recipients</strong><dd>
+
+A string containing one or more 822-style address specifications. If
+present the header isn't examined for recipient addresses). If the
+string contains more than one address they will be separated by
+commas.
+
+<br><br>
+<dt><strong>-header</strong><dd>
+
+A list of keywords and their values (may occur zero or more times).
+
+<br><br>
+<dt><strong>-usetls</strong><dd>
+
+This package supports the RFC 3207 TLS extension (3) by default provided the 
+tls package is available. You can turn this off with this boolean option.
+
+<br><br>
+<dt><strong>-tlspolicy</strong><dd>
+
+This option lets you specify a command to be called if an error occurs 
+during TLS setup. The command is called with the SMTP code and diagnostic
+message appended. The command should return 'secure' or 'insecure' where
+insecure will cause the package to continue on the unencrypted channel.
+Returning 'secure' will cause the socket to be closed and the next server
+in the <strong>-servers</strong> list to be tried.
+
+<br><br>
+<dt><strong>-username</strong><dd>
+<dt><strong>-password</strong><dd>
+
+If your SMTP server requires authentication (RFC 2554 (4)) before
+accepting mail you can use <strong>-username</strong> and <strong>-password</strong>
+to provide your authentication details to the server. Currently this
+package supports DIGEST-MD5, CRAM-MD5, LOGIN and PLAIN authentication
+methods. The most secure method will be tried first and each method
+tried in turn until we are either authorized or we run out of
+methods. Note that if the server permits a TLS connection, then the
+authorization will occur after we begin using the secure channel.
+
+</dl>
+<br><br>
+
+If the <strong>-originator</strong> option is not present, the originator
+address is taken from <strong>From</strong> (or <strong>Resent-From</strong>);
+similarly, if the <strong>-recipients</strong> option is not present,
+recipient addresses are taken from <strong>To</strong>, <strong>cc</strong>, and
+<strong>Bcc</strong> (or <strong>Resent-To</strong>, and so on). Note that the header
+key/values supplied by the <strong>-header</strong> option (not those present
+in the MIME part) are consulted. Regardless, header key/values are
+added to the outgoing message as necessary to ensure that a valid
+822-style message is sent.
+
+<br><br>
+
+The command returns a list indicating which recipients were
+unacceptable to the SMTP server. Each element of the list is another
+list, containing the address, an SMTP error code, and a textual
+diagnostic. Depending on the <strong>-atleastone</strong> option and the
+intended recipients, a non-empty list may still indicate that the
+message was accepted by the server.
+
+</dl>
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+proc send_simple_message {recipient email_server subject body} {
+    package require smtp
+    package require mime
+
+    set token [mime::initialize -canonical text/plain \\
+	-string $body]
+    mime::setheader $token Subject $subject
+    smtp::sendmessage $token \\
+	-recipients $recipient -servers $email_server
+    mime::finalize $token
+}
+
+send_simple_message someone@somewhere.com localhost \\
+    &quot;This is the subject.&quot; &quot;This is the message.&quot;
+</pre></td></tr></table></p>
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+
+<li>
+    Jonathan B. Postel, &quot;SIMPLE MAIL TRANSFER PROTOCOL&quot;, RFC 821, August 1982.
+    (<a href="http://www.rfc-editor.org/rfc/rfc821.txt">http://www.rfc-editor.org/rfc/rfc821.txt</a>)
+
+<br><br>
+<li>
+    J. Klensin, &quot;Simple Mail Transfer Protocol&quot;, RFC 2821, April 2001.
+    (<a href="http://www.rfc-editor.org/rfc/rfc2821.txt">http://www.rfc-editor.org/rfc/rfc2821.txt</a>)
+
+<br><br>
+<li>
+    P. Hoffman, &quot;SMTP Service Extension for Secure SMTP over Transport
+    Layer Security&quot;, RFC 3207, February 2002.
+    (<a href="http://www.rfc-editor.org/rfc/rfc3207.txt">http://www.rfc-editor.org/rfc/rfc3207.txt</a>)
+
+<br><br>
+<li>
+    J. Myers, &quot;SMTP Service Extension for Authentication&quot;, 
+    RFC 2554, March 1999.
+    (<a href="http://www.rfc-editor.org/rfc/rfc2554.txt">http://www.rfc-editor.org/rfc/rfc2554.txt</a>)
+
+</ol>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+ftp, http, mime, pop3
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+email, internet, mail, mime, net, rfc 2554, rfc 2821, rfc 3207, rfc 821, rfc 822, smtp, tls
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 1999-2000 Marshall T. Rose<br>
+</body></html>

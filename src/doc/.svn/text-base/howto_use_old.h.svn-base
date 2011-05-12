@@ -1,0 +1,78 @@
+/**
+ * \page howto_use_old Howto use the model functions (old style) in your own code
+ *
+ * Here is the an example source code of a program which evaluates the 
+ * \ref form_fac of a sphere-like particle at a \e q value of 0.5 with \e radius 2.5 and 
+ * \e eta 0.3 :
+ *
+ * \include example_sasfit_ff_sphere.c
+ *
+ * The same applies to \ref size_distrib and \ref struct_fac. You just have 
+ * to replace \e sasfit_ff by \e sasfit_sd, respectively \e sasfit_sq (and
+ * chose the desired function name).
+ *
+ * We assume, you have uncompressed the \sf source package to a directory of
+ * your choice and built the libraries according to \ref howto_build .
+ * For the example above, your build environment has to know about the include 
+ * directories of \e sasfit_common and \e sasfit_ff. As well as the path to the 
+ * \sf shared library (usually in the lib directory of the sasfit source 
+ * package). The shared library is also required at runtime, see the instructions 
+ * below for more details.
+ *
+ * \sa \ref shared_libs.
+ *
+ * \section ex_lin Linux example
+ * Run the following commands in a terminal window:
+ * \code
+ * $ cd <your-sasfit_source-directory>/examples
+ * $ gcc example_sasfit_ff_sphere.c -I../src/sasfit_common/include/ -I../src/sasfit_ff/include/ -L../src/lib/ -lsasfit -lm
+ * $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../src/lib/
+ * $ ./a.out
+ * The result is 280.004294
+ * \endcode
+ * To let it find the \e libsasfit.so library, we add its path to the local
+ * search path variable (LD_LIBRARY_PATH).
+ * Alternatively, you could copy the \sf libraries into the 
+ * system-wide shared library directories (preferrably /usr/local/lib)
+ * and run '<tt>sudo ldconfig</tt>' afterwards.
+ *
+ * \section ex_mingw Windows example (MinGW with MSYS)
+ * Start a MSYS terminal window and type the following:\n
+ * \code
+ * $ cd <your-sasfit_source-directory>/examples
+ * $ /C/MinGW/bin/gcc.exe example_sasfit_ff_sphere.c -I../src/sasfit_common/include -I../src/sasfit_ff/include -I/C/Program\ Files/GnuWin32/include -I../src/f2c -L../src/lib/ -lsasfit
+ * $ ./a.exe 
+ * The result is 280.004294
+ * \endcode
+ * Where <tt>/C/Program\ Files/GnuWin32/include</tt> is the path to the GSL 
+ * include/header files and needs to be modified according to your 
+ * installation location of the GSL library.\n\n
+ * \win_lib_path{libsasfit.dll}
+ *
+ * \section ex_win Windows example (\vs)
+ * 
+ * 	<ul>
+ * 	<li> \vs_new_proj
+ * 
+ * 	<li> \vs_select_file{example_sasfit_ff_sphere.c}
+ * 
+ * 	<li> \vs_add_inc{
+ * 	<li><tt><your-sasfit_source-directory>\\src\\sasfit_common\\include\\</tt>
+ * 	<li><tt><your-sasfit_source-directory>\\src\\sasfit_ff\\include\\</tt>
+ * 	<li><tt>C:\\Program Files\\GnuWin32\\include\\</tt>
+ * 	,(The last one depends on where you installed GSL for Windows.)}
+ * 
+ *	<li> \vs_add_lib{
+ *	<li><tt><your-sasfit_source-directory>\\src\\lib\\release\\</tt>
+ *	, }
+ * 
+ *	<li> \vs_add_deps{<li><tt>sasfit.lib</tt>}
+ * 
+ *	<li> \vs_do_build{<tt><your-sasfit_source-directory>\\examples\\Release\\</tt>}
+ *
+ *	<li> \win_lib_path{sasfit.dll}
+ *      <br>
+ *	\b Note: \vs_redistrib_note
+ *	</ul>
+ */
+

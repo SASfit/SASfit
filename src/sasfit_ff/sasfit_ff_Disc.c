@@ -1,0 +1,58 @@
+/*
+ * src/sasfit_ff/sasfit_ff_Disc.c
+ *
+ * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ */
+
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_sf.h>
+#include "include/sasfit_ff_utils.h"
+
+/*
+float Disc(Tcl_Interp *interp,
+			float Q,
+			  float R,
+			  float eta,
+			  bool  *error)
+*/
+/**
+ * form factor of a spherical disc with radius R and scattering length desity
+ * eta
+ */
+scalar sasfit_ff_Disc(scalar q, sasfit_param * param)
+{
+	scalar R, eta;
+
+	SASFIT_ASSERT_PTR(param);
+
+	sasfit_get_param(param, 4, &R, EMPTY, EMPTY, &eta);
+
+	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
+	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R);
+
+	if (q == 0.0) return eta*eta*R*R*R*R*M_PI*M_PI;
+	if (R == 0.0) return 0.0;
+	//   return 2.0*eta*eta*M_PI*M_PI*R*R/(Q*Q)*(1.0-bessj1(2.0*Q*R)/(Q*R));
+	return 2.0*eta*eta*M_PI*M_PI*R*R/(q*q)*(1.0-gsl_sf_bessel_J1(2.0*q*R)/(q*R));
+}

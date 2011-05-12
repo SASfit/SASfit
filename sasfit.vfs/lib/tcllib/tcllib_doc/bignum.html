@@ -1,0 +1,365 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>math::bignum - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/bignum.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Salvatore Sanfilippo &lt;antirez at invece dot org&gt;   -- Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus at users dot sourceforge dot net&gt;
+   -->
+<! -- CVS: $Id: bignum.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ math::bignum.n
+   -->
+
+<body>
+<h1> math::bignum(n) 3.1 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::bignum - Arbitrary precision integer numbers
+
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl ?8.4?</b><br>
+package require <b>math::bignum ?3.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::bignum::fromstr</b> <i class='arg'>string</i> ?<i class='arg'>radix</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::bignum::tostr</b> <i class='arg'>bignum</i> ?<i class='arg'>radix</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::bignum::sign</b> <i class='arg'>bignum</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::bignum::abs</b> <i class='arg'>bignum</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::bignum::cmp</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::bignum::iszero</b> <i class='arg'>bignum</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::bignum::lt</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::bignum::le</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::bignum::gt</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::bignum::ge</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::math::bignum::eq</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::math::bignum::ne</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::math::bignum::isodd</b> <i class='arg'>bignum</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::math::bignum::iseven</b> <i class='arg'>bignum</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>::math::bignum::add</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>::math::bignum::sub</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><b class='cmd'>::math::bignum::mul</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><b class='cmd'>::math::bignum::divqr</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#19"><b class='cmd'>::math::bignum::div</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><b class='cmd'>::math::bignum::rem</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><b class='cmd'>::math::bignum::mod</b> <i class='arg'>n</i> <i class='arg'>m</i></a></td></tr>
+<tr valign=top ><td ><a href="#22"><b class='cmd'>::math::bignum::pow</b> <i class='arg'>base</i> <i class='arg'>exp</i></a></td></tr>
+<tr valign=top ><td ><a href="#23"><b class='cmd'>::math::bignum::powm</b> <i class='arg'>base</i> <i class='arg'>exp</i> <i class='arg'>m</i></a></td></tr>
+<tr valign=top ><td ><a href="#24"><b class='cmd'>::math::bignum::sqrt</b> <i class='arg'>bignum</i></a></td></tr>
+<tr valign=top ><td ><a href="#25"><b class='cmd'>::math::bignum::rand</b> <i class='arg'>bits</i></a></td></tr>
+<tr valign=top ><td ><a href="#26"><b class='cmd'>::math::bignum::lshift</b> <i class='arg'>bignum</i> <i class='arg'>bits</i></a></td></tr>
+<tr valign=top ><td ><a href="#27"><b class='cmd'>::math::bignum::rshift</b> <i class='arg'>bignum</i> <i class='arg'>bits</i></a></td></tr>
+<tr valign=top ><td ><a href="#28"><b class='cmd'>::math::bignum::bitand</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#29"><b class='cmd'>::math::bignum::bitor</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#30"><b class='cmd'>::math::bignum::bitxor</b> <i class='arg'>a</i> <i class='arg'>b</i></a></td></tr>
+<tr valign=top ><td ><a href="#31"><b class='cmd'>::math::bignum::setbit</b> <i class='arg'>bignumVar</i> <i class='arg'>bit</i></a></td></tr>
+<tr valign=top ><td ><a href="#32"><b class='cmd'>::math::bignum::clearbit</b> <i class='arg'>bignumVar</i> <i class='arg'>bit</i></a></td></tr>
+<tr valign=top ><td ><a href="#33"><b class='cmd'>::math::bignum::testbit</b> <i class='arg'>bignum</i> <i class='arg'>bit</i></a></td></tr>
+<tr valign=top ><td ><a href="#34"><b class='cmd'>::math::bignum::bits</b> <i class='arg'>bignum</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+The bignum package provides arbitrary precision integer math
+(also known as &quot;big numbers&quot;) capabilities to the Tcl language.
+Big numbers are internally represented at Tcl lists: this
+package provides a set of procedures operating against
+the internal representation in order to:
+<ul>
+<li>
+perform math operations
+
+<br><br>
+<li>
+convert bignums from the internal representation to a string in
+the desired radix and vice versa.
+
+</ul>
+But the two constants &quot;0&quot; and &quot;1&quot; are automatically converted to
+the internal representation, in order to easily compare a number to zero,
+or increment a big number.
+<p>
+
+The bignum interface is opaque, so
+operations on bignums that are not returned by procedures
+in this package (but created by hand) may lead to unspecified behaviours.
+It's safe to treat bignums as pure values, so there is no need
+to free a bignum, or to duplicate it via a special operation.
+
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+This section shows some simple example. This library being just
+a way to perform math operations, examples may be the simplest way
+to learn how to work with it. Consult the API section of
+this man page for information about individual procedures.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require math::bignum
+
+    # Multiplication of two bignums
+    set a [::math::bignum::fromstr 88888881111111]
+    set b [::math::bignum::fromstr 22222220000000]
+    set c [::math::bignum::mul $a $b]
+    puts [::math::bignum::tostr $c] ; # =&gt; will output 1975308271604953086420000000
+    set c [::math::bignum::sqrt $c]
+    puts [::math::bignum::tostr $c] ; # =&gt; will output 44444440277777
+
+    # From/To string conversion in different radix
+    set a [::math::bignum::fromstr 1100010101010111001001111010111 2]
+    puts [::math::bignum::tostr $a 16] ; # =&gt; will output 62ab93d7
+
+    # Factorial example
+    proc fact n {
+        # fromstr is not needed for 0 and 1
+        set z 1
+        for {set i 2} {$i &lt;= $n} {incr i} {
+            set z [::math::bignum::mul $z [::math::bignum::fromstr $i]]
+        }
+        return $z
+    }
+
+    puts [::math::bignum::tostr [fact 100]]
+</pre></td></tr></table></p>
+
+<h2><a name="api">API</a></h2>
+<p>
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::bignum::fromstr</b> <i class='arg'>string</i> ?<i class='arg'>radix</i>?</a><dd>
+
+Convert <em>string</em> into a bignum. If <em>radix</em> is omitted or zero,
+the string is interpreted in hex if prefixed with
+<em>0x</em>, in octal if prefixed with <em>ox</em>,
+in binary if it's pefixed with <em>bx</em>, as a number in
+radix 10 otherwise. If instead the <em>radix</em> argument
+is specified in the range 2-36, the <em>string</em> is interpreted
+in the given radix. Please note that this conversion is
+not needed for two constants : <em>0</em> and <em>1</em>. (see the example)
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::math::bignum::tostr</b> <i class='arg'>bignum</i> ?<i class='arg'>radix</i>?</a><dd>
+
+Convert <em>bignum</em> into a string representing the number
+in the specified radix. If <em>radix</em> is omitted, the
+default is 10.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::math::bignum::sign</b> <i class='arg'>bignum</i></a><dd>
+
+Return the sign of the bignum.
+The procedure returns 0 if the number is positive, 1 if it's negative.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::math::bignum::abs</b> <i class='arg'>bignum</i></a><dd>
+
+Return the absolute value of the bignum.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::math::bignum::cmp</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Compare the two bignums a and b, returning <em>0</em> if <em>a == b</em>,
+<em>1</em> if <em>a &gt; b</em>, and <em>-1</em> if <em>a &lt; b</em>.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::math::bignum::iszero</b> <i class='arg'>bignum</i></a><dd>
+
+Return true if <em>bignum</em> value is zero, otherwise false is returned.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::math::bignum::lt</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return true if <em>a &lt; b</em>, otherwise false is returned.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::math::bignum::le</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return true if <em>a &lt;= b</em>, otherwise false is returned.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::math::bignum::gt</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return true if <em>a &gt; b</em>, otherwise false is returned.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::math::bignum::ge</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return true if <em>a &gt;= b</em>, otherwise false is returned.
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::math::bignum::eq</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return true if <em>a == b</em>, otherwise false is returned.
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::math::bignum::ne</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return true if <em>a != b</em>, otherwise false is returned.
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::math::bignum::isodd</b> <i class='arg'>bignum</i></a><dd>
+
+Return true if <em>bignum</em> is odd.
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::math::bignum::iseven</b> <i class='arg'>bignum</i></a><dd>
+
+Return true if <em>bignum</em> is even.
+
+<br><br>
+<dt><a name="15"><b class='cmd'>::math::bignum::add</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the sum of the two bignums <em>a</em> and <em>b</em>.
+
+<br><br>
+<dt><a name="16"><b class='cmd'>::math::bignum::sub</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the difference of the two bignums <em>a</em> and <em>b</em>.
+
+<br><br>
+<dt><a name="17"><b class='cmd'>::math::bignum::mul</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the product of the two bignums <em>a</em> and <em>b</em>.
+The implementation uses Karatsuba multiplication if both
+the numbers are bigger than a given threshold, otherwise
+the direct algorith is used.
+
+<br><br>
+<dt><a name="18"><b class='cmd'>::math::bignum::divqr</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return a two-elements list containing as first element
+the quotient of the division between the two bignums
+<em>a</em> and <em>b</em>, and the remainder of the division as second element.
+
+<br><br>
+<dt><a name="19"><b class='cmd'>::math::bignum::div</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the quotient of the division between the two
+bignums <em>a</em> and <em>b</em>.
+
+<br><br>
+<dt><a name="20"><b class='cmd'>::math::bignum::rem</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the remainder of the division between the two
+bignums <em>a</em> and <em>b</em>.
+
+<br><br>
+<dt><a name="21"><b class='cmd'>::math::bignum::mod</b> <i class='arg'>n</i> <i class='arg'>m</i></a><dd>
+
+Return <em>n</em> modulo <em>m</em>. This operation is
+called modular reduction.
+
+<br><br>
+<dt><a name="22"><b class='cmd'>::math::bignum::pow</b> <i class='arg'>base</i> <i class='arg'>exp</i></a><dd>
+
+Return <em>base</em> raised to the exponent <em>exp</em>.
+
+<br><br>
+<dt><a name="23"><b class='cmd'>::math::bignum::powm</b> <i class='arg'>base</i> <i class='arg'>exp</i> <i class='arg'>m</i></a><dd>
+
+Return <em>base</em> raised to the exponent <em>exp</em>,
+modulo <em>m</em>. This function is often used in the field
+of cryptography.
+
+<br><br>
+<dt><a name="24"><b class='cmd'>::math::bignum::sqrt</b> <i class='arg'>bignum</i></a><dd>
+
+Return the integer part of the square root of <em>bignum</em>
+
+<br><br>
+<dt><a name="25"><b class='cmd'>::math::bignum::rand</b> <i class='arg'>bits</i></a><dd>
+
+Return a random number of at most <em>bits</em> bits.
+The returned number is internally generated using Tcl's <em>expr rand()</em>
+function and is not suitable where an unguessable and cryptographically
+secure random number is needed.
+
+<br><br>
+<dt><a name="26"><b class='cmd'>::math::bignum::lshift</b> <i class='arg'>bignum</i> <i class='arg'>bits</i></a><dd>
+
+Return the result of left shifting <em>bignum</em>'s binary
+representation of <em>bits</em> positions on the left.
+This is equivalent to multiplying by 2^<em>bits</em> but much faster.
+
+<br><br>
+<dt><a name="27"><b class='cmd'>::math::bignum::rshift</b> <i class='arg'>bignum</i> <i class='arg'>bits</i></a><dd>
+
+Return the result of right shifting <em>bignum</em>'s binary
+representation of <em>bits</em> positions on the right.
+This is equivalent to dividing by <em>2^bits</em> but much faster.
+
+<br><br>
+<dt><a name="28"><b class='cmd'>::math::bignum::bitand</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the result of doing a bitwise AND operation on a
+and b. The operation is restricted to positive numbers,
+including zero. When negative numbers are provided as
+arguments the result is undefined.
+
+<br><br>
+<dt><a name="29"><b class='cmd'>::math::bignum::bitor</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the result of doing a bitwise OR operation on a
+and b. The operation is restricted to positive numbers,
+including zero. When negative numbers are provided as
+arguments the result is undefined.
+
+<br><br>
+<dt><a name="30"><b class='cmd'>::math::bignum::bitxor</b> <i class='arg'>a</i> <i class='arg'>b</i></a><dd>
+
+Return the result of doing a bitwise XOR operation on a
+and b. The operation is restricted to positive numbers,
+including zero. When negative numbers are provided as
+arguments the result is undefined.
+
+<br><br>
+<dt><a name="31"><b class='cmd'>::math::bignum::setbit</b> <i class='arg'>bignumVar</i> <i class='arg'>bit</i></a><dd>
+
+Set the bit at <em>bit</em> position to 1 in the bignum stored
+in the variable <em>bignumVar</em>. Bit 0 is the least significant.
+
+<br><br>
+<dt><a name="32"><b class='cmd'>::math::bignum::clearbit</b> <i class='arg'>bignumVar</i> <i class='arg'>bit</i></a><dd>
+
+Set the bit at <em>bit</em> position to 0 in the bignum stored
+in the variable <em>bignumVar</em>. Bit 0 is the least significant.
+
+<br><br>
+<dt><a name="33"><b class='cmd'>::math::bignum::testbit</b> <i class='arg'>bignum</i> <i class='arg'>bit</i></a><dd>
+
+Return true if the bit at the <em>bit</em> position of <em>bignum</em>
+is on, otherwise false is returned. If <em>bit</em> is out of
+range, it is considered as set to zero.
+
+<br><br>
+<dt><a name="34"><b class='cmd'>::math::bignum::bits</b> <i class='arg'>bignum</i></a><dd>
+
+Return the number of bits needed to represent bignum in radix 2.
+
+</dl>
+<p>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+bignums, math, multiprecision, tcl
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Salvatore Sanfilippo &lt;antirez at invece dot org&gt;<br>
+Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus at users dot sourceforge dot net&gt;<br>
+</body></html>

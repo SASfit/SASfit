@@ -1,0 +1,43 @@
+/**
+ * \page howto_doc Howto generate the \sf source documentation
+ *
+ * \section req Requirements
+ * - doxygen (http://www.doxygen.org)
+ *   - Windows:\n
+ *     http://ftp.stack.nl/pub/users/dimitri/doxygen-1.7.1-setup.exe
+ *   - Linux:\n
+ *     http://ftp.stack.nl/pub/users/dimitri/doxygen-1.7.1.src.tar.gz
+ *   - MacOS X 10.6:\n
+ *     http://ftp.stack.nl/pub/users/dimitri/Doxygen-1.7.1.dmg
+ * 
+ * The documentation is provided inline for extraction with the \e doxygen
+ * program. Basically, it is a command line tool which works according to a
+ * supplied configuration file on the command line. This configuration file
+ * comes with the \sf source package and there is no further configuration
+ * required.
+ *
+ * \section run_dox Run Doxygen
+ *
+ * To generate the \sf documentation, open a command prompt (on Windows)
+ * or a terminal window (on Linux) and type the following:
+ *
+ * \code
+ * cd <your-sasfit_source-directory>
+ * cd src
+ * doxygen Doxyfile
+ * \endcode
+ *
+ * The doxygen command outputs a lot of status messages while it parses the
+ * source code. Per default, the generated HTML documentation resides in
+ * <tt>\sf_src/doc/html/</tt>.
+ * To view and read it, open the index.html file with your Webbrowser.
+ * (<tt>\sf_src/doc/html/index.html</tt>)
+ *
+ * To generate the \sf documentation in a different output format than HTML
+ * you have to edit the Doxyfile. The relevant statements look like 
+ * <tt>GENERATE_<format></tt>. Doxygen supports formats like LaTex, RTF, 
+ * Unix Manpages, XML and others, see the doxygen website for details.
+ *
+ * \see \ref howto_build
+ */
+
