@@ -1,0 +1,18 @@
+# use glob syntax.
+syntax: glob
+
+src/_CPack_Packages*
+#src/CPackConfig.cmake
+src/plugins/*/lib/*
+src/lib/*
+src/scripts/*.tmp
+src/*.tar.*
+sasfit.vfs/lib/app-sasfit/plugins/groups.*
+sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
+sasfit.vfs/lib/Sasfit/sasfit.so
+plugins/*.h
+plugins/*.so
+build*
+b
+sasfit
+
