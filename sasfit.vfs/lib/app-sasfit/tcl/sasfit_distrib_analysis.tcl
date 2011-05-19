@@ -25,7 +25,6 @@ proc assert_input {value type} {
 
 proc sasfit_distrib_analysis {} {
 	puts stderr "ingos test"
-	set ::FitPrecision(int) yes
 #	reset_main_menu
 #	parray ::sasfit
 #	clearGraph_el ::SDGraph

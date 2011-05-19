@@ -3004,26 +3004,21 @@ proc sasfit_menubar_build { p } {
    	       -label  "fit..." \
 	       -underline 0 \
 	       -command {analyticalGlobalSDCmd fit}
-       $p.fit.menu.multiple add command \
+	$p.fit.menu.multiple add command \
 	       -label  "simulate..." \
 	       -underline 0 \
-	       -command {analyticalGlobalSDCmd simulate
-#                         tk_messageBox -message "simulate option for global fitting is still under development"
-                        }
-      $p.fit.menu add command -label "distribution analysis" \
+	       -command {analyticalGlobalSDCmd simulate}
+	$p.fit.menu add command -label "distribution analysis" \
       				-underline 3 \
                                 -command sasfit_distrib_analysis
-
-      if {$::FitPrecision(int)} {
-         $p.fit.menu add command -label "maximum entropy SD ..." \
+	$p.fit.menu add command -label "maximum entropy SD ..." \
                       -command MaxEntFitCmd
-#         setTooltip $p.fit.menu -index "maximum entropy SD ..." \
-#                                  "calculating size distribution by \nmaximum entropy or regularization method"
-         $p.fit.menu add command -label "gnom ..." \
-                      -command GnomRunCmd
-#         setTooltip $p.fit.menu -index "gnom ..." \
-#                                  "calculating size distribution by \nregularization method (gnom)"
-      }
+#	setTooltip $p.fit.menu -index "maximum entropy SD ..." \
+#		"calculating size distribution by \nmaximum entropy or regularization method"
+	$p.fit.menu add command -label "gnom ..." -command GnomRunCmd
+#	setTooltip $p.fit.menu
+#		-index "gnom ..." \
+#		"calculating size distribution by \nregularization method (gnom)"
 
    menubutton $p.tools -text Tools -underline 0 \
               -menu $p.tools.menu
