@@ -1601,7 +1601,6 @@ sasfit.vfs/lib/app-sasfit/tcl/sasfit_main.tcl
 sasfit.vfs/lib/app-sasfit/tcl/printUnix.tar.gz
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_fitrange_old.tcl
 sasfit.vfs/lib/app-sasfit/tcl/test.tcl
-sasfit.vfs/lib/app-sasfit/tcl/gnom.exe
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_resolution.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_stipples.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_utils.tcl
@@ -1617,7 +1616,6 @@ sasfit.vfs/lib/app-sasfit/tcl/gdi/gdi.log
 sasfit.vfs/lib/app-sasfit/tcl/gdi/pkgIndex.tcl
 sasfit.vfs/lib/app-sasfit/tcl/gdi/gdi.c
 sasfit.vfs/lib/app-sasfit/tcl/gdi/install.txt
-sasfit.vfs/lib/app-sasfit/tcl/sizes.exe
 sasfit.vfs/lib/app-sasfit/tcl/ScatteringlengthsTable.xls
 sasfit.vfs/lib/app-sasfit/tcl/bw.rgb
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_globalfitrange.tcl
@@ -1635,7 +1633,6 @@ sasfit.vfs/lib/app-sasfit/tcl/sasfit_graphlayout.tcl
 sasfit.vfs/lib/app-sasfit/tcl/wmf8411.zip
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_readData.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit.err
-sasfit.vfs/lib/app-sasfit/tcl/sizes.zip
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_xsect.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit.ico
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_plotData.tcl
@@ -1656,7 +1653,6 @@ sasfit.vfs/lib/app-sasfit/tcl/jet.rgb
 sasfit.vfs/lib/app-sasfit/tcl/images/lns-logo_e.gif
 sasfit.vfs/lib/app-sasfit/tcl/images/sasfit_logo.gif
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_plugin.tcl
-sasfit.vfs/lib/app-sasfit/tcl/GNOM.BAT
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_analytical.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_g2_1.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_init.tcl
