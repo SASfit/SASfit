@@ -2225,6 +2225,10 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateObjCommand(interp, "sasfit_load_plugin", (Tcl_ObjCmdProc*) sasfit_load_plugin_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_covar", (Tcl_ObjCmdProc*) sasfit_covar_cmd, (void *)SASFIT_CData, NULL);
 
+	// sd analysis
+	// Tcl_CreateObjCommand(interp, "sasfit_sd_analysis", (Tcl_ObjCmdProc*) sasfit_sd_analysis_cmd, NULL, NULL);
+	Tcl_CreateCommand(interp, "sasfit_sd_analysis", (Tcl_CmdProc*) sasfit_sd_analysis_cmd, NULL, NULL);
+
 	// DLS
 	Tcl_CreateCommand(interp, "dls_CumulantFit", (Tcl_CmdProc*) DLS_CumulantFitCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "dls_ExponentialFit", (Tcl_CmdProc*) DLS_ExponentialFitCmd, NULL, NULL);

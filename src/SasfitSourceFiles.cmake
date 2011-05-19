@@ -68,6 +68,7 @@ set(SOURCE_sasfit_core
 	sasfit_plugin_api.c
 	sasfit_plugin_db.c
 	sasfit_tclcmd.c
+	sasfit_analysis.c
 	sasfit_2d.c
 )
 

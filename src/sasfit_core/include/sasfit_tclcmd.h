@@ -82,6 +82,15 @@ sasfit_core_DLLEXP int sasfit_get_lib_suffix_cmd(ClientData     clientData,
                                                  int            objc, 
                                                  Tcl_Obj *CONST objv[]);
 
+/**
+ */
+sasfit_core_DLLEXP int sasfit_sd_analysis_cmd(ClientData     clientData,
+                                              Tcl_Interp   * interp,
+                                              int            argc,
+                                              const char   * argv[]);
+                                            //  int            objc,
+                                            //  Tcl_Obj *CONST objv[]);
+
 sasfit_core_DLLEXP int sasfit_covar_cmd(struct sasfit_CData * SASFIT_CData,
                                         Tcl_Interp          * interp, 
                                         int                   objc, 

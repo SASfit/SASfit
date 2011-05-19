@@ -1312,6 +1312,154 @@ proc load_sasfit_inp_file_old {AanalyticPar filename} {
 }
 
 #------------------------------------------------------------------------------
+# writes the input file for running the program "gnom" of D. Svergun
+#
+proc write_gnom_inp_file {} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+global GnomPar
+set f [open $GnomPar(KeybInpFile) w]
+puts $f "C"
+close $f
+set f [open $GnomPar(CmdInputFileName) w]
+puts $f "Configuration file for running the program gnom.exe from D. Svergun"
+puts $f [format "%9s \[ %20s \]" $GnomPar(Printer,t) $GnomPar(Printer,v) ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Expert,t)  $GnomPar(Expert,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Input1,t)  $GnomPar(Input1,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Input2,t)  $GnomPar(Input2,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Output,t)  $GnomPar(Output,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(PloInp,t)  $GnomPar(PloInp,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(PloRes,t)  $GnomPar(PloRes,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(EvaErr,t)  $GnomPar(EvaErr,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(PloErr,t)  $GnomPar(PloErr,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(LKern,t)   $GnomPar(LKern,v)   ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Kernel,t)  $GnomPar(Kernel,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(JobTyp,t)  $GnomPar(JobTyp,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Rmin,t)    $GnomPar(Rmin,v)    ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Rmax,t)    $GnomPar(Rmax,v)    ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(LZRmin,t)  $GnomPar(LZRmin,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(LZRmax,t)  $GnomPar(LZRmax,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Idet,t)    $GnomPar(Idet,v)    ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Alpha,t)   $GnomPar(Alpha,v)   ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Coef,t)    $GnomPar(Coef,v)    ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Rad56,t)   $GnomPar(Rad56,v)   ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(NReal,t)   $GnomPar(NReal,v)   ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(ForFac,t)  $GnomPar(ForFac,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Deviat,t)  $GnomPar(Deviat,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(FWHM1,t)   $GnomPar(FWHM1,v)   ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(FWHM2,t)   $GnomPar(FWHM2,v)   ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(AH1,t)     $GnomPar(AH1,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(LH1,t)     $GnomPar(LH1,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(AW1,t)     $GnomPar(AW1,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(LW1,t)     $GnomPar(LW1,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(AH2,t)     $GnomPar(AH2,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(LH2,t)     $GnomPar(LH2,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(AW2,t)     $GnomPar(AW2,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(LW2,t)     $GnomPar(LW2,v)     ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Spot1,t)   $GnomPar(Spot1,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(Spot2,t)   $GnomPar(Spot2,v)  ]
+puts $f [format "%9s \[ %20s \]" $GnomPar(NextJob,t) $GnomPar(NextJob,v) ]
+close $f
+}
+
+#------------------------------------------------------------------------------
+#
+proc write_gnom_expdata_file {} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+global GnomPar
+global sasfit IQGraph
+set f [open $GnomPar(Input1,v) w]
+puts $f $IQGraph(title)
+for {set i 0} {$i < $sasfit(npoints)} {incr i} {
+   puts $f [format "%f %f %f" [lindex $sasfit(Q)  $i] \
+                              [expr [lindex $sasfit(I)  $i]-$GnomPar(BckGrd,v)]\
+                              [lindex $sasfit(DI) $i] ]
+}
+close $f
+}
+
+#------------------------------------------------------------------------------
+# writes the input file for running the program "sizes" of P. Jemian
+#
+proc write_sizes_inp_file {} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+global MaxEntPar
+set f [open $MaxEntPar(CmdInputFileName) w]
+puts $f [format "%20s : Project Name  (only 1st item is read)" \
+                $MaxEntPar(ProjectName)]
+puts $f [format "%20s : SAS file" $MaxEntPar(SASFile)]
+puts $f [format "%9s %10s : qMin qMax, 1/nm" $MaxEntPar(Qmin) $MaxEntPar(Qmax)]
+puts $f [format "%20s : rhosq" [expr $MaxEntPar(eta)*$MaxEntPar(eta)]]
+puts $f [format "%20s : fac" $MaxEntPar(fac)]
+puts $f [format "%20s : err" $MaxEntPar(err)]
+puts $f [format "%20s : bkg" $MaxEntPar(bkg)]
+puts $f [format "%20s : Aspect Ratio" $MaxEntPar(AspectRatio)]
+puts $f [format "%20s : Bin Type (1=Lin, 0=Log)" $MaxEntPar(BinType)]
+puts $f [format "%20s : nRadii" $MaxEntPar(nRadii)]
+puts $f [format "%9s %10s : dMin dMax, A" $MaxEntPar(Dmin) $MaxEntPar(Dmax)]
+puts $f [format "%20s : n, in N(D)*V^n" $MaxEntPar(vPower)]
+puts $f [format "%20s : defaultDistLevel" $MaxEntPar(defaultDistLevel)]
+puts $f [format "%20s : IterMax" $MaxEntPar(IterMax)]
+puts $f [format "%20s : iPlot" $MaxEntPar(iPlot)]
+puts $f [format "%20s : dlambda_lambda" $MaxEntPar(dlambda_lambda)]
+puts $f [format "%20s : analysisType (1=MaxEnt, 0=regularization)" \
+                $MaxEntPar(AnalysisType)]
+close $f
+}
+
+#------------------------------------------------------------------------------
+#
+proc write_sizes_expdata_file {} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+global MaxEntPar
+global sasfit
+set f [open $MaxEntPar(SASFile) w]
+for {set i 0} {$i < $sasfit(npoints)} {incr i} {
+   puts $f [format "%f %f %f" [lindex $sasfit(Q)  $i] \
+                              [lindex $sasfit(I)  $i] \
+                              [lindex $sasfit(DI) $i] ]
+}
+close $f
+}
+
+#------------------------------------------------------------------------------
+#
+proc read_sizes_fit_file {filename tQ tSAS tDSAS tFit tZ tStructPar} { 
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+global MaxEntPar
+upvar $tQ Q
+upvar $tSAS SAS
+upvar $tDSAS DSAS
+upvar $tFit Fit
+upvar $tZ Z
+upvar $tStructPar StructPar
+
+set Q {}
+set SAS {}
+set DSAS {}
+set Fit {}
+set Z {}
+set StructPar {}
+set f [open $filename r]
+set line [ gets $f ];                   # title line
+set MaxEntPar(Title) [string range $line 11 end]
+gets $f;                        # column headings
+while {![eof $f]} {
+   set line [ gets $f ]
+   if {[string length $line] == 0} break;
+   scan $line "%s%s%s%s%s" theQ theSAS theDSAS theFit theZ
+   set theSAS [expr ($theSAS+$MaxEntPar(bkg))/$MaxEntPar(fac)]
+   set theFit [expr ($theFit+$MaxEntPar(bkg))/$MaxEntPar(fac)]
+   lappend Q $theQ
+   lappend SAS $theSAS
+   lappend DSAS $theDSAS
+   lappend Fit $theFit
+   lappend Z $theZ
+}
+close $f
+}
+
+
+#------------------------------------------------------------------------------
 #                   Create a variable of Type ASCIIData
 #
 proc create_ASCIIData {ASCIIData} {

@@ -217,6 +217,9 @@ source $sasfit(tcl)/sasfit_xsect.tcl
 source $::sasfit(tcl)/sasfit_plugin.tcl
 source $::sasfit(tcl)/sasfit_plugin_guide.tcl
 source $::sasfit(tcl)/sasfit_batch.tcl
+source $sasfit(tcl)/sasfit_MaxEnt.tcl
+source $sasfit(tcl)/sasfit_gnom.tcl
+source $::sasfit(tcl)/sasfit_distrib_analysis.tcl
 
 sasfit_load_plugins $::sasfit(plugins)
 
@@ -648,6 +651,109 @@ set StructParData(Porodchisq)  -1.0
 set StructParData(I0chisq)     -1.0
 set StructParData(lowQFit)     "Guinier fit results:"
 set StructParData(largeQFit)   "Porod fit results:"
+
+set MaxEntPar(CmdInputFileName) defaultmaxent.inp
+set MaxEntPar(ProjectName) defaultprj
+set MaxEntPar(SASFile) defaultSAS.sas
+set MaxEntPar(SizesRunCmd) $sasfit(tcl)/sizes.exe
+
+set MaxEntPar(Qmin) 1.0e-8
+set MaxEntPar(Qmax) 100.0
+set MaxEntPar(eta) 10.0
+set MaxEntPar(fac) 1.0
+set MaxEntPar(err) 1.0
+set MaxEntPar(bkg) 0.1
+set MaxEntPar(AspectRatio) 1.0
+set MaxEntPar(BinType) 1                      ;# (1=lin 2=log)
+set MaxEntPar(nRadii) 100
+set MaxEntPar(Dmin) 10
+set MaxEntPar(Dmax) 1000
+set MaxEntPar(vPower) 1                       ;# N(D)*V^vPower
+set MaxEntPar(defaultDistLevel) 1.0e-8
+set MaxEntPar(IterMax) 32
+set MaxEntPar(iPlot) 10
+set MaxEntPar(dlambda_lambda) 0.0000
+set MaxEntPar(AnalysisType) 1                 ;# (1=MaxEnt, 0=regularization)
+
+set GnomPar(CmdInputFileName) gnom.cfg
+set GnomPar(KeybInpFile)  gnom.key
+set GnomPar(GnomRunCmd) $sasfit(tcl)/GNOM.BAT
+
+set GnomPar(Printer,v) HPPCL     ;# Printer type
+set GnomPar(Printer,t) "PRINTER C"
+set GnomPar(Expert,v)  none      ;# File containing expert parameters
+set GnomPar(Expert,t)  "EXPERT  C"
+set GnomPar(Input1,v)  GNOM1.DAT ;# Input file name (first file)
+set GnomPar(Input1,t)  "INPUT1  C"
+set GnomPar(Input2,v)  none      ;# Input file name (second file)
+set GnomPar(Input2,t)  "INPUT2  C"
+set GnomPar(Output,v)  GNOM.OUT  ;# Output file
+set GnomPar(Output,t)  "OUTPUT  C"
+set GnomPar(PloInp,v)  N         ;# Plotting flag: input data (Y/N)
+set GnomPar(PloInp,t)  "PLOINP  C"
+set GnomPar(PloRes,v)  N         ;# Plotting flag: results (Y/N)
+set GnomPar(PloRes,t)  "PLORES  C"
+set GnomPar(EvaErr,v)  Y         ;# Error flags: calculate errors (Y/N)
+set GnomPar(EvaErr,t)  "EVAERR  C"
+set GnomPar(PloErr,v)  N         ;# Plotting flag: p(r) with errors (Y/N)
+set GnomPar(PloErr,t)  "PLOERR  C"
+set GnomPar(LKern,v)   N         ;# Kernel file status (Y/N)
+set GnomPar(LKern,t)   "LKERN   C"
+set GnomPar(Kernel,v)  KERN.BIN  ;# Kernel-storage file
+set GnomPar(Kernel,t)  "KERNEL  C"
+set GnomPar(JobTyp,v)  0         ;# Type of system (0/1/2/3/4/5/6)
+set GnomPar(JobTyp,t)  "JOBTYP  I"
+set GnomPar(Rmin,v)    0         ;# Rmin for evaluating p(r)
+set GnomPar(Rmin,t)    "RMIN    R"
+set GnomPar(Rmax,v)    400.0     ;# Rmax for evaluating p(r)
+set GnomPar(Rmax,t)    "RMAX    R"
+set GnomPar(BckGrd,v)  0.0       ;# incoherent background, will be substracted
+                                 ;# from data before running GNOM program
+set GnomPar(BckGrd,t)  "BCKGRD  R"
+set GnomPar(LZRmin,v)  Y         ;# Zero condition at r=Rmin (Y/N)
+set GnomPar(LZRmin,t)  "LZRMIN  C"
+set GnomPar(LZRmax,v)  Y         ;# Zero condition ar r=Rmax (Y/N)
+set GnomPar(LZRmax,t)  "LZRMAX  C"
+set GnomPar(Idet,v)    0         ;# Experimental set up (0/1/2)
+set GnomPar(Idet,t)    "IDET    I"
+set GnomPar(Alpha,v)   1.0       ;# Initial ALPHA
+set GnomPar(Alpha,t)   "ALPHA   R"
+set GnomPar(Coef,v)    ""        ;# scale factor for second run
+set GnomPar(Coef,t)    "COEF    R"
+set GnomPar(Rad56,v)    ""       ;# Radius/thickness (valid for JOB=5,6)
+set GnomPar(Rad56,t)   "RAD56   R"
+set GnomPar(NReal,v)   0         ;# Number of points in real space (default)
+set GnomPar(NReal,t)   "NREAL   R"
+set GnomPar(ForFac,v)  ""        ;# Form factor file (valid for JOB=2)
+set GnomPar(ForFac,t)  "FORFAC  C"
+set GnomPar(Deviat,v)   0.0      ;# Default input error level
+set GnomPar(Deviat,t)  "DEVIAT  R"
+set GnomPar(FWHM1,v)   ""        ;# FWHM for 1st run
+set GnomPar(FWHM1,t)   "FWHM1   R"
+set GnomPar(FWHM2,v)   ""        ;# FWHM for 2nd run
+set GnomPar(FWHM2,t)   "FWHM2   R"
+set GnomPar(AH1,v)     ""        ;# Slit-height parameter AH (first run)
+set GnomPar(AH1,t)     "AH1     R"
+set GnomPar(LH1,v)     ""        ;# Slit-height parameter LH (first run)
+set GnomPar(LH1,t)     "LH1     R"
+set GnomPar(AW1,v)     ""        ;# Slit-width parameter AW (first run)
+set GnomPar(AW1,t)     "AW1     R"
+set GnomPar(LW1,v)     ""        ;# Slit-width parameter LW (first run)
+set GnomPar(LW1,t)     "LW1     R"
+set GnomPar(AH2,v)     ""        ;# Slit-height parameter AH (second run)
+set GnomPar(AH2,t)     "AH2     R"
+set GnomPar(LH2,v)     ""        ;# Slit-height parameter LH (second run)
+set GnomPar(LH2,t)     "LH2     R"
+set GnomPar(AW2,v)     ""        ;# Slit-width parameter AW (second run)
+set GnomPar(AW2,t)     "AW2     R"
+set GnomPar(LW2,v)     ""        ;# Slit-width parameter LW (second run)
+set GnomPar(LW2,t)     "LW2     R"
+set GnomPar(Spot1,v)   ""        ;# Beam profile file (first run)
+set GnomPar(Spot1,t)   "SPOT1   C"
+set GnomPar(Spot2,v)   ""        ;# Beam profile file (second run)
+set GnomPar(Spot2,t)   "SPOT2   C"
+set GnomPar(NextJob,v) N
+set GnomPar(NextJob,t) "NEXTJOB C"
 
 set G2ParData(plottype) 0
 set G2ParData(DLSmodel) "cumulant analysis"
@@ -2008,7 +2114,7 @@ proc LoadCmd { loadProj } {
    global G2ParData
    global distr
    global nomenu
-   global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
+   global MaxEntPar IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
    global adjustvalue
    global FitPrecision
    
@@ -2144,7 +2250,7 @@ proc SaveCmd {} {
    global G2ParData
    global distr
    global nomenu
-   global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
+   global MaxEntPar IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
    global adjustvalue
    global FitPrecision
 
@@ -2194,6 +2300,7 @@ proc SaveCmd {} {
 			      }
 		      }
 	      }
+	      puts_arr $fid MaxEntPar
 	      puts_arr $fid IQGraph
 	      puts_arr $fid GlobalFitIQGraph
 	      puts_arr $fid ResIQGraph
@@ -2903,6 +3010,21 @@ proc sasfit_menubar_build { p } {
 	       -command {analyticalGlobalSDCmd simulate
 #                         tk_messageBox -message "simulate option for global fitting is still under development"
                         }
+      $p.fit.menu add command -label "distribution analysis" \
+      				-underline 3 \
+                                -command sasfit_distrib_analysis
+
+      if {$::FitPrecision(int)} {
+         $p.fit.menu add command -label "maximum entropy SD ..." \
+                      -command MaxEntFitCmd
+#         setTooltip $p.fit.menu -index "maximum entropy SD ..." \
+#                                  "calculating size distribution by \nmaximum entropy or regularization method"
+         $p.fit.menu add command -label "gnom ..." \
+                      -command GnomRunCmd
+#         setTooltip $p.fit.menu -index "gnom ..." \
+#                                  "calculating size distribution by \nregularization method (gnom)"
+      }
+
    menubutton $p.tools -text Tools -underline 0 \
               -menu $p.tools.menu
       menu $p.tools.menu

@@ -730,6 +730,7 @@ src/sasfit_core/include/sasfit_plugin_backend.h
 src/sasfit_core/sasfit_2d.c
 src/sasfit_core/sasfit_analytpar.c
 src/sasfit_core/sasfit_analytpar_utils.c
+src/sasfit_core/sasfit_analysis.c
 src/sasfit_core/sasfit_core.c
 src/sasfit_core/sasfit_env.c
 src/sasfit_core/sasfit_error_core.c
@@ -1600,6 +1601,7 @@ sasfit.vfs/lib/app-sasfit/pkgIndex.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_main.tcl
 sasfit.vfs/lib/app-sasfit/tcl/printUnix.tar.gz
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_fitrange_old.tcl
+sasfit.vfs/lib/app-sasfit/tcl/sasfit_gnom.tcl
 sasfit.vfs/lib/app-sasfit/tcl/test.tcl
 sasfit.vfs/lib/app-sasfit/tcl/gnom.exe
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_resolution.tcl
@@ -1637,6 +1639,7 @@ sasfit.vfs/lib/app-sasfit/tcl/sasfit_readData.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit.err
 sasfit.vfs/lib/app-sasfit/tcl/sizes.zip
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_xsect.tcl
+sasfit.vfs/lib/app-sasfit/tcl/sasfit_MaxEnt.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit.ico
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_plotData.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_fitrange.tcl
@@ -1684,6 +1687,7 @@ sasfit.vfs/lib/app-sasfit/tcl/prnt8411.zip
 sasfit.vfs/lib/app-sasfit/tcl/todo.txt
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_print.tcl
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
+sasfit.vfs/lib/app-sasfit/tcl/sasfit_distrib_analysis.tcl
 sasfit.vfs/lib/app-sasfit/tcl/x_as/Sb.dat
 sasfit.vfs/lib/app-sasfit/tcl/x_as/Ta.dat
 sasfit.vfs/lib/app-sasfit/tcl/x_as/Pd.dat
