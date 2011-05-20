@@ -15,4 +15,7 @@ plugins/*.so
 build*
 b
 sasfit
-
+*/.svn
+*.pyc
+*.pyo
+doc/wikibot/pywikipedia/login-data/*.data

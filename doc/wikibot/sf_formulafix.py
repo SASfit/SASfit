@@ -8,7 +8,7 @@ if minor < 7 and major <= 2:
     print >>sys.stderr, "This script needs at least python 2.7, giving up."
     sys.exit(1)
 
-from pywikipedia import wikipedia
+import wikipedia
 import pagegenerators, catlib, weblinkchecker, upload
 import difflib, pprint
 import pickle
