@@ -15,4 +15,5 @@ plugins/*.so
 build*
 b
 sasfit
-
+*/.svn/*
+*.pyc
