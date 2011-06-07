@@ -1,6 +1,6 @@
 # -*- coding: utf-8  -*-
 
-__version__ = '$Id: wowwiki_family.py 9256 2011-05-17 19:02:14Z xqt $'
+__version__ = '$Id: wowwiki_family.py 9281 2011-05-29 11:13:33Z xqt $'
 
 import config, family, urllib
 
@@ -125,7 +125,7 @@ class Family(family.Family):
             'sr': u'Wow wiki',
             'sv': u'WoWWiki Sverige',
             'ru': u'WoWWiki',
-            'tr': u'Wow Tr Wikiame',
+            'tr': u'WoWWiki Türkçe',
             'zh': u'World of Warcraft Wiki',
             'zh-tw': u'魔獸世界百科全書'
         }
@@ -154,12 +154,12 @@ class Family(family.Family):
             'pl': u'Dyskusja WoWWiki',
             'pt': u'World of Warcraft Discussão',
             'pt-br': u'WowWiki Br Discussão',
-            'ro': u'Discuţie World of Warcraft Romania',
+            'ro': u'Discuție World of Warcraft Romania',
             'ru': u'Обсуждение WoWWiki',
             'sk': u'Diskusia k WoWwiki',
             'sr': u'Разговор о Wow wiki',
             'sv': u'WoWWiki Sverigediskussion',
-            'tr': u'Wow Tr Wikiame tartışma',
+            'tr': u'WoWWiki Türkçe tartışma',
             'zh': u'World of Warcraft Wiki talk',
             'zh-tw': u'魔獸世界百科全書討論'
         }
@@ -188,8 +188,8 @@ class Family(family.Family):
         }
         self.namespaces[401] = {
             '_default': u'Video talk',
-            'cs': u'Videodiskusjon',
             'de': u'Video Diskussion',
+            'no': u'Videodiskusjon',
             'pl': u'Dyskusja Video',
             'ru': u'Обсуждение видео'
         }
@@ -354,7 +354,7 @@ class Family(family.Family):
         return '%s/api.php' % self.scriptpath(code)
 
     def version(self, code):
-        return '1.16.4'
+        return '1.16.5'
 
     def code2encoding(self, code):
         return 'utf-8'
