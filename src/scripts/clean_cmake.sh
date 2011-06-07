@@ -8,7 +8,7 @@
 #    cd "$CURRENT_DIR";
 #done;
 
-
+IFS=$'\n';
 for name in $(find . -name "CMakeCache.txt";
               find . -name "cmake_install.cmake";
               find . -name "create_bin_package.list.tmp";
@@ -29,10 +29,14 @@ for name in $(find . -name "CMakeCache.txt";
               find . -iname "release";
               find . -iname "debug";
               find . -name "Makefile";
-              find . -name "CMakeFiles";);do 
+              find . -name "CMakeFiles";);do
+
+	if echo $name | grep -qF '.hg'; then
+		continue;
+	fi;
 	
 	echo "removing '$name'"
-	rm -Rf "$name";
+#	rm -Rf "$name";
 done;
 
 exit 0;
