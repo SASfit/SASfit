@@ -1,7 +1,7 @@
 # -*- coding: utf-8  -*-
 import family
 
-__version__ = '$Id: wikiversity_family.py 9220 2011-05-08 14:49:00Z xqt $'
+__version__ = '$Id: wikiversity_family.py 9284 2011-06-03 05:45:09Z xqt $'
 
 # The Wikimedia family that is known as Wikiversity
 
@@ -83,11 +83,13 @@ class Family(family.Family):
         }
         self.namespaces[104] = {
             'en': u'Topic',
+            'fr': u'Recherche',
             'it': u'Materia',
             'ja': u'Topic',
         }
         self.namespaces[105] = {
             'en': u'Topic talk',
+            'fr': u'Discussion Recherche',
             'it': u'Discussioni materia',
             'ja': u'Topic‐ノート',
         }

@@ -16,7 +16,7 @@ Parameters:
 #
 # Distributed under the terms of the MIT license.
 #
-__version__ = '$Id: unusedfiles.py 8540 2010-09-12 18:09:11Z amir $'
+__version__ = '$Id: unusedfiles.py 9283 2011-05-31 10:11:56Z xqt $'
 #
 
 import wikipedia as pywikibot
@@ -44,8 +44,8 @@ template_to_the_image = {
     'fa': u'{{تصاویر بدون استفاده}}',
     }
 template_to_the_user = {
-    'en': u'\n\n{{img-sem-uso|%s}}',
-    'fa': u'\n\n{{اخطار به کاربر برای تصاویر بدون استفاده|%s}}--~~~~',
+    'en': u'\n\n{{img-sem-uso|%(title)s}}',
+    'fa': u'\n\n{{اخطار به کاربر برای تصاویر بدون استفاده|%(title)s}}--~~~~',
     'it': u'\n\n{{Utente:Filbot/Immagine orfana}}',
     }
 except_text = {
@@ -110,7 +110,7 @@ def main():
             uploader = page.getFileVersionHistory().pop()[1]
             usertalkname = u'User Talk:%s' % uploader
             usertalkpage = pywikibot.Page(mysite, usertalkname)
-            msg2uploader = template_user % page.title()
+            msg2uploader = template_user % {'title': page.title()}
             appendtext(usertalkpage, msg2uploader)
 
 if __name__ == "__main__":

@@ -120,7 +120,7 @@ from __future__ import generators
 #
 # Distributed under the terms of the MIT license.
 #
-__version__ = '$Id: wikipedia.py 9212 2011-05-04 03:59:16Z xqt $'
+__version__ = '$Id: wikipedia.py 9290 2011-06-06 09:03:07Z alexsh $'
 
 import os, sys
 import httplib, socket, urllib, urllib2, cookielib
@@ -5576,7 +5576,13 @@ u"WARNING: Could not open '%s'. Maybe the server or\n your connection is down. R
 
         # Get user groups and rights
         if 'groups' in text:
-            self._rights[index] = text['groups']
+            self._rights[index] = []
+            for group in text['groups']:
+                # Convert dictionaries to list items (bug 3311663)
+                if isinstance(group, dict):
+                    self._rights[index].extend(group.keys())
+                else:
+                    self._rights[index].append(group)
             self._rights[index].extend(text['rights'])
             # Warnings
             # Don't show warnings for not logged in users, they will just fail to
@@ -7043,7 +7049,7 @@ u"WARNING: Could not open '%s'. Maybe the server or\n your connection is down. R
             value = namespace.get('_default', None)
             if value:
                 if isinstance(value, list):
-                    defaults += value
+                    defaults.append(value[0])
                 else:
                     defaults.append(value)
 

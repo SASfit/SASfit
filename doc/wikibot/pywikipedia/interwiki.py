@@ -333,11 +333,11 @@ that you have to break it off, use "-continue" next time.
 # (C) Rob W.W. Hooft, 2003
 # (C) Daniel Herding, 2004
 # (C) Yuri Astrakhan, 2005-2006
-# (C) Pywikipedia bot team, 2007-2010
+# (C) Pywikipedia bot team, 2007-2011
 #
 # Distributed under the terms of the MIT license.
 #
-__version__ = '$Id: interwiki.py 9173 2011-04-15 06:24:58Z a_engels $'
+__version__ = '$Id: interwiki.py 9272 2011-05-26 06:02:42Z xqt $'
 #
 
 import sys, copy, re, os
@@ -375,6 +375,7 @@ import wikipedia as pywikibot
 import config
 import catlib
 import pagegenerators
+from pywikibot import i18n
 import titletranslate, interwiki_graph
 import webbrowser
 
@@ -397,186 +398,6 @@ class GiveUpOnPage(pywikibot.Error):
     """
     The user chose not to work on this page and its linked pages any more.
     """
-
-msg = {
-    'af': (u'robot ', u'Bygevoeg', u'Verwyder', u'Verander'),
-    'als': (u'Bötli: ', u'Ygfüegt', u'Ussergnoh', u'Gändret'),
-    'am': (u'ሎሌ ', u'መጨመር', u'ማስወገድ', u'ማስተካከል'),
-    'an': (u'Robot ', u'Adhibito', u'Suprimito', u'Modificato'),
-    'ang': (u'Robot ', u'ēcung', u'fornimung', u'onhweorfung'),
-    'ar': (u'روبوت ', u'إضافة', u'إزالة', u'تعديل'),
-    'arc': (u'ܪܘܒܘܛ ', u'ܬܘܣܦܬܐ', u'ܠܚܝܐ', u'ܚܘܠܦܐ'),
-    'arz': (u'روبوت ', u'تزويد', u'مسح', u'تحوير'),
-    'ast': (u'Robó ', u'Añadíu', u'Elimináu', u'Modificáu'),
-    'az': (u'Bot redaktəsi ', u'əlavə edilir', u'çıxardılır', u'dəyişdirilir'),
-    'ba': (u'робот ', u'өҫтәне', u'юйҙы', u'үҙгәртте'),
-    'bar': (u'Boterl: ', u'Aini', u'Aussi', u'Obàsst'),
-    'bat-smg': (u'robots ', u'Pridedama', u'Trėnama', u'Keitama'),
-    'bcl': (u'robot ', u'minadugang', u'minahali', u'minamodifikar'),
-    'be': (u'робат ', u'Дадаем', u'Выдаляем', u'Мяняем'),
-    'be-tarask': (u'робат ', u'дадаў', u'выдаліў', u'зьмяніў'),
-    'be-x-old': (u'робат ', u'дадаў', u'выдаліў', u'зьмяніў'),
-    'bg': (u'Робот ', u'Добавяне', u'Изтриване', u'Промяна'),
-    'bjn': (u'bot ', u'Manambah', u'Mambuang', u'Ma\'ubah'),
-    'bn': (u'রোবট ', u'যোগ করছে', u'মুছে ফেলছে', u'পরিবর্তন করছে'),
-    'bo': (u'འཕྲུལ་ཆས་ཀྱི་མི། ', u'ཁ་སྣོན་རྒྱག་པ།', u'བསུབ་པ།', u'བསྐྱར་བཅོས་བྱེད་པ།'),
-    'bpy': (u'রোবট ', u'তিলকরের', u'থেইকরের', u'বদালার'),
-    'br': (u'Robot ', u'ouzhpennet', u'tennet', u'kemmet'),
-    'bs': (u'robot ', u'dodaje', u'uklanja', u'mijenja'),
-    'ca': (u'Robot ', u'afegeix', u'esborra', u'modifica'),
-    'ce': (u'робот ', u'тIетоьхна', u'дIаяьккхина', u'хийцина'),
-    'ceb': (u'robot ', u'Gidugang', u'Gitangtang', u'Gimodipikar'),
-    'ckb': (u'بۆت ', u'زیادکردن', u'لابردن', u'چاکسازی'),
-    'crh': (u'robot ', u'ekley', u'çetleştire', u'deñiştire'),
-    'cs': (u'robot ', u'přidal', u'odebral', u'změnil'),
-    'csb': (u'robot ', u'dodôwô', u'rëmô', u'pòprôwiô'),
-    'cv': (u'робот ', u'хушрĕ', u'кăларса пăрахрĕ', u'улăштарчĕ'),
-    'cy': (u'robot ', u'yn ychwanegu', u'yn tynnu', u'yn newid'),
-    'da': (u'robot ', u'Tilføjer', u'Fjerner', u'Ændrer'),
-    'de': (u'Bot: ', u'Ergänze', u'Entferne', u'Ändere'),
-    'dv': (u'ރޮބޮޓ ', u'އިތުރު ކުރުނ', u'ފޮހެލުނ', u'ބަދަލު ގެނައުނ'),
-    'el': (u'Ρομπότ: ', u'Προσθήκη', u'Αφαίρεση', u'Τροποποίηση'),
-    'eml': (u'Robot ', u'A Śònt', u'A Tir via', u'A Cambi'),
-    'en': (u'robot ', u'Adding', u'Removing', u'Modifying'),
-    'eo': (u'robota ', u'aldono de', u'forigo de', u'modifo de'),
-    'es': (u'robot ', u'Añadido', u'Eliminado', u'Modificado'),
-    'et': (u'robot ', u'lisas', u'kustutas', u'muutis'),
-    'eu': (u'robota ', u'Erantsia', u'Ezabatua', u'Aldatua'),
-    'ext': (u'Robó ', u'Añiiu', u'Hondeau', u'Moificau'),
-    'fa': (u'ربات ', u'افزودن', u'حذف', u'اصلاح'),
-    'fi': (u'Botti ', u'lisäsi', u'poisti', u'muokkasi'),
-    'fiu-vro': (u'robot ', u'manopandminõ', u'ärqvõtminõ', u'tävvendämine'),
-    'fo': (u'bottur ', u'leggur aftrat', u'strikar', u'broytur'),
-    'fr': (u'robot ', u'Ajoute', u'Retire', u'Modifie'),
-    'frp': (u'robot ', u'Apond', u'Enlève', u'Change'),
-    'frr': (u'Bot:', u'Diartudu', u'Wechnem', u'Feranere'),
-    'fur': (u'Robot: ', u'o zonti', u'o cambii', u'o gjavi'),
-    'fy': (u'Bot ', u'- derby', u'- fuort', u'- oars'),
-    'ga': (u'róbat ', u'ag suimiú', u'ag baint', u'ag mionathrú'),
-    'gan': (u'機械人 ', u'添進', u'刪吥', u'改吥'),
-    'gl': (u'bot ', u'Engadido', u'Eliminado', u'Modificado'),
-    'gn': (u'bot ', u'ojoapy', u'oñembogue', u'oñemoambue'),
-    'gu': (u'રોબોટ ', u'ઉમેરણ', u'હટાવ્યું', u'ફેરફાર'),
-    'gv': (u'bot ', u'currit stiagh ec', u'scryssit magh ec', u'caghlaait ec'),
-    'he': (u'בוט ', u'מוסיף', u'מסיר', u'משנה'),
-    'hif': (u'robot ', u'jorrta hae', u'hatata hae', u'badalta hae'),
-    'hr': (u'robot ', u'Dodaje', u'Uklanja', u'Mijenja'),
-    'hsb': (u'bot ', u'přidał', u'wotstronił', u'změnił'),
-    'ht': (u'wobo ', u'Ajoute', u'Anlve', u'Modifye'),
-    'hu': (u'Bot: ', u'következő hozzáadása', u'következő eltávolítása', u'következő módosítása'),
-    'hy': (u'Ռոբոտը ', u'ավելացնում է․', u'հեռացնում է․', u'փոփոխում է․'),
-    'ia': (u'Robot: ', u'Addition de', u'Elimination de', u'Modification de'),
-    'id': (u'bot ', u'Menambah', u'Membuang', u'Mengubah'),
-    'ie': (u'Bot: ', u'Adjuntet', u'Removet', u'Modificat'),
-    'io': (u'roboto ', u'adjuntas', u'efacas', u'modifikas'),
-    'is': (u'robot ', u'Bæti við', u'Fjarlægi', u'Breyti'),
-    'it': (u'Bot: ', u'Aggiungo', u'Tolgo', u'Modifico'),
-    'ja': (u'ロボットによる ', u'追加', u'除去', u'変更'),
-    'ka': (u'ბოტის ', u'დამატება', u'წაშლა', u'შეცვლა'),
-    'kab': (u'a rubut ', u'ti merniwt', u'a ḍegger', u'a senfel'),
-    'kk': (u'Боттың ', u'үстегені', u'аластағаны', u'түзеткені'),
-    'kl': (u'Robot ', u'Ilassut', u'Peersineq', u'Inisseeqqinneq'),
-    'km': (u'រ៉ូបូ ', u'បន្ថែម', u'ដកចេញ', u'កែសំរួល'),
-    'ko': (u'로봇이 ', u'더함', u'지움', u'바꿈'),
-    'koi': (u'робот ', u'содтiс', u'чышкис', u'мöдкодьсьöтiс'),
-    'krc': (u'робот ', u'къошду', u'кетерди', u'тюрлендирди'),
-    'ksh': (u'Bot: ', u'dobëijedonn', u'erußjenumme', u'ußjewääßelt'),
-    'ku': (u'robot ', u'serzêde kirin', u'jêbirin', u'guhêrandin'),
-    'kv': (u'робот ', u'содтi', u'чышки', u'вежи'),
-    'kw': (u'robot ', u'ow keworra', u'ow dilea', u'ow chanjya'),
-    'ky': (u'робот ', u'кошту', u'өчүрдү', u'өзгөрттү'),
-    'la': (u'automaton ', u'addit', u'abdit', u'mutat'),
-    'lad': (u'Robot ', u'Adjustado', u'Efassado', u'Trokado'),
-    'lb': (u'Bot ', u'Derbäi setzen', u'Ewech huelen', u'Änneren'),
-    'li': (u'Robot ', u'Debie', u'D\'raaf', u'Angers'),
-    'lmo': (u'Robot ', u'jontant', u'trant via', u'modifiant'),
-    'ln': (u'bot ', u'ebakísí', u'elongólí', u'ebóngólí'),
-    'lo': (u'ໂຣບົດ ', u'ພວມເພີ່ມ', u'ພວມລຶບ', u'ພວມແປງ'),
-    'lt': (u'robotas ', u'Pridedama', u'Šalinama', u'Keičiama'),
-    'lv': (u'robots ', u'pievieno', u'izņem', u'izmaina'),
-    'map-bms': (u'Robot ', u'Nambah', u'Ngilangna', u'Ngobah'),
-    'mdf': (u'бот ', u'поладозе', u'нардазе', u'полафтозе'),
-    'mi': (u'he karetao ', u'e tāpiri ana', u'e tango ana', u'e whakarerekē ana'),
-    'mg': (u'Rôbô ', u'Nanampy', u'Nanala', u'Nanova'),
-    'mhr': (u'робот ', u'ешарен', u'кораҥден', u'тӧрлен'),
-    'mk': (u'Бот ', u'Додава', u'Брише', u'Менува'),
-    'ml': (u'യന്ത്രം ', u'ചേര്‍ക്കുന്നു', u'നീക്കുന്നു', u'പുതുക്കുന്നു'),
-    'mn': (u'робот ', u'Нэмж байна', u'Арилгаж байна', u'Өөрчилж байна'),
-    'mr': (u'सांगकाम्याने ', u'वाढविले', u'काढले', u'बदलले'),
-    'mrj': (u'робот ', u'темен', u'карангден', u'вашталтен'),
-    'ms': (u'bot ', u'menambah', u'membuang', u'mengubah'),
-    'mwl': (u'Robó ', u'Adicionando', u'Remobendo', u'Modeficando'),
-    'my': (u'ရိုဘော ', u'ပေါင်းထည့်နေသည', u'ဖယ်ရှားနေသည', u'ပြင်ဆင်နေသည'),
-    'myv': (u'роботось ', u'путызеть', u'нардызеть', u'полавтызеть'),
-    'mzn': (u'ربوت ', u'بیشتن', u'بیتن', u'هکردن'),
-    'nah': (u'Tepozcuayollotl', u'Tlamahxiltilli', u'Tlaquixtilli', u'Tlapatlalli'),
-    'nds': (u'IW-Bot: ', u'dorto', u'rut', u'ännert'),
-    'nds-nl': (u'bot ', u'derbie', u'derof', u'aanders'),
-    'ne': (u'रोबोट ', u'थप्दै', u'हटाउँदै', u'परिवर्तन गर्दै'),
-    'nl': (u'robot ', u'Erbij', u'Eraf', u'Anders'),
-    'nn': (u'robot ', u'la til', u'fjerna', u'endra'),
-    'no': (u'robot ', u'legger til', u'fjerner', u'endrer'),
-    'nov': (u'robote ', u'Adid', u'Ekartad', u'Modifikad'),
-    'nrm': (u'robot ', u'ajouôte', u'hale', u'amende'),
-    'nv': (u'botígíí díí naaltsoos tʼáá bíniʼ łahgo áyiilaa ', u'(+)', u'(-)', u'(+/-)'),
-    'oc': (u'Robòt ', u'Apondre', u'Tirar', u'Modificar'),
-    'os': (u'Робот ', u'баххæст кодта', u'Баивта', u'Аиуварс'),
-    'pcd': (u'Robot ', u'Rajoute', u'Értire', u'Modifie'),
-    'pdc': (u'Bot: ', u'dezu geduh', u'raus gnumme', u'gennert'),
-    'pfl': (u'Bot: ', u'Aigfiecht', u'Rausgenumme', u'Gä\'ännat'),
-    'pl': (u'robot ', u'dodaje', u'usuwa', u'poprawia'),
-    'pnb': (u'روبوٹ ', u'رلانا', u'ہٹانا', u'پلٹنا'),
-    'pms': (u'ël trigomiro ', u'a gionta', u'a gava', u'a modìfica'),
-    'ps': (u'روباټ ', u'زیاتول', u'لرې کول', u'بدلول'),
-    'pt': (u'Bot: ', u'Adicionando', u'Removendo',u'Modificando'),
-    'qu': (u'Rurana antacha ', u'Yapasqa', u'Qullusqa', u'Hukchasqa'),
-    'rm': (u'Bot ', u'Agiunt', u'Stizzà', u'Midà'),
-    'ro': (u'Robot interwiki: ', u'Adăugat', u'Înlăturat',u'Modificat'),
-    'roa-tara': (u'Robbot ', u'Stiche a mette', u'Stoche a lève', u'Stiche a cange'),
-    'ru': (u'робот ', u'добавил', u'удалил', u'изменил'),
-    'rue': (u'робот ', u'додав', u'одобрав', u'змінив'),
-    'rw': (u'Roboti ', u'Guterana', u'Ikurwaho', u'Rihindura'),
-    'sah': (u'робот ', u'эптэ', u'сотто', u'уларытта'),
-    'scn': (u'Robot ', u'junciennu', u'livannu', u'canciannu'),
-    'sco': (u'Robot ', u'Addin', u'Remuivin', u'Modifeein'),
-    'si': (u'රොබෝ ', u'එකතු කරමින්', u'ඉවත් කරමින්', u'වෙනස් කරමින්'),
-    'sk': (u'robot ', u'Pridal', u'Odobral', u'Zmenil'),
-    'sl': (u'robot ', u'Dodajanje', u'Odstranjevanje', u'Spreminjanje'),
-    'sq': (u'roboti ', u'shtoj', u'largoj', u'ndryshoj'),
-    'sr': (u'Робот ', u'додаје', u'уклања', u'мења'),
-    'su': (u'bot ', u'Nambih', u'Miceun', u'Ngarobih'),
-    'sv': (u'robot ', u'Lägger till', u'Tar bort', u'Ändrar'),
-    'sw': (u'roboti ', u'Nyongeza', u'Ondoa', u'Badiliko'),
-    'szl': (u'Bot ', u'dodowo', u'wyćepuje', u'zmjyńo'),
-    'ta': (u'தானியங்கி',u'இணைப்பு',u'அழிப்பு',u'மாற்றல்'),
-    'te': (u'యంత్రము  ', u'కలుపుతున్నది', u'తొలగిస్తున్నది', u'మార్పులు చేస్తున్నది'),
-    'tet': (u'bot ', u'tau tan', u'hasai', u'filak'),
-    'tg': (u'робот ', u'илова карда истодааст', u'дигаргуни карда истодааст', u'ҳaвз карда истодааст'),
-    'th': (u'โรบอต ', u'เพิ่ม', u'ลบ', u'แก้ไข'),
-    'tk': (u'robot ', u'goşdy', u'aýyrdy', u'üýtgetdi'),
-    'tl': (u'robot ', u'dinagdag', u'tinanggal', u'binago'),
-    'to': (u'mīsini', u'ʻoku tānaki', u'ʻoku toʻo', u'ʻoku liliu'),
-    'tr': (u'Bot değişikliği ', u'Ekleniyor', u'Kaldırılıyor', u'Değiştiriliyor'),
-    'tt': (u'робот ', u'кушты', u'бетерде', u'үзгәртте'),
-    'udm': (u'робот ', u'ватсаз', u'ӵушиз', u'воштӥз'),
-    'uk': (u'робот ', u'додав', u'видалив', u'змінив'),
-    'ur': (u'روبالہ ', u'جمع', u'محو', u'ترمیم'),
-    'uz': (u'Bot ', u'Qoʻshdi', u'Tuzatdi', u'Oʻchirdi'),
-    'vec': (u'Bot: ', u'Zonto', u'Cavo', u'Canbio'),
-    'vi': (u'robot ', u'Thêm', u'Dời', u'Thay'),
-    'vls': (u'Robot ', u'Derby', u'Derof', u'Anders'),
-    'vo': (u'bot ', u'läükon', u'moükon', u'votükon'),
-    'wa': (u'robot ', u'radjouter', u'rissaetchî', u'candjî'),
-    'war': (u'robot ', u'Gindugngan', u'Gintanggal', u'Ginliwat'),
-    'xal': (u'көдлвр ', u'немв', u'һарһв', u'сольв'),
-    'yi': (u'באט ', u'צוגעלייגט', u'אראפגענומען', u'געענדערט'),
-    'yo': (u'Bot ', u'Fífikún', u'Yíyọkúrò', u'Títúnṣe'),
-    'yue': (u'機械人 ', u'加', u'減', u'改'),
-    'zh': (u'機器人 ', u'新增', u'移除', u'修改'),
-    'zh-classical': (u'僕 ', u'增', u'削', u'修'),
-    'zh-min-nan': (u'bot ', u'ka-thiam', u'thiah-tû', u'siu-kái'),
-    'zh-yue': (u'機械人 ', u'加', u'減', u'改'),
-}
 
 # Subpage templates. Must be in lower case,
 # whereas subpage itself must be case sensitive
@@ -2038,7 +1859,7 @@ class Subject(object):
         # Allow for special case of a self-pointing interwiki link
         if removing and removing != [page.site()]:
             self.problem(u'Found incorrect link to %s in %s'
-                         % (",".join([x.lang for x in removing]),
+                         % (", ".join([x.lang for x in removing]),
                             page.aslink(True)), createneed=False)
             if pywikibot.unicode_error:
                 for x in removing:
@@ -2141,7 +1962,7 @@ u'\03{lightred}WARNING: This may be false positive due to unicode bug #3081100\0
             raise GiveUpOnPage
         else:
             raise LinkMustBeRemoved(u'Found incorrect link to %s in %s'
-                                    % (",".join([x.lang for x in removing]),
+                                    % (", ".join([x.lang for x in removing]),
                                        page.aslink(True)))
 
     def reportBacklinks(self, new, updatedSites):
@@ -2443,8 +2264,6 @@ def compareLanguages(old, new, insite):
     removing = sorted(oldiw - newiw)
     modifying = sorted(site for site in oldiw & newiw if old[site] != new[site])
 
-    mcomment = mods = u''
-
     if not globalvar.summary and \
        len(adding) + len(removing) + len(modifying) <= 3:
         # Use an extended format for the string linking to all added pages.
@@ -2453,26 +2272,31 @@ def compareLanguages(old, new, insite):
         # Use short format, just the language code
         fmt = lambda d, site: site.lang
 
-    head, add, rem, mod = pywikibot.translate(insite.lang, msg)
-    #Version info marks bots without unicode error
-    #This also prevents abuse filter blocking on de-wiki
-    if not pywikibot.unicode_error:
-        head = u'r%s) (%s' % (sys.version.split()[0], head)
+    mods = mcomment = u''
 
-    colon = u': '
-    comma = u', '
-    sep = u''
-
+    commentname = 'interwiki'
     if adding:
-        mods += (add + colon + comma.join([fmt(new, x) for x in adding]))
-        sep = u' '
+        commentname += '-adding'
     if removing:
-        mods += (sep + rem + colon + comma.join([fmt(old, x) for x in removing]))
-        sep = u' '
+        commentname += '-removing'
     if modifying:
-        mods += (sep + mod + colon + comma.join([fmt(new, x) for x in modifying]))
-    if mods:
-        mcomment = head + globalvar.summary + mods
+        commentname += '-modifying'
+
+    if adding or removing or modifying:
+        #Version info marks bots without unicode error
+        #This also prevents abuse filter blocking on de-wiki
+        if not pywikibot.unicode_error:
+            mcomment += u'r%s) (' % sys.version.split()[0]
+
+        mcomment += globalvar.summary
+
+        changes = {'adding':    ', '.join([fmt(new, x) for x in adding]),
+                   'removing':  ', '.join([fmt(old, x) for x in removing]),
+                   'modifying': ', '.join([fmt(new, x) for x in modifying])}
+
+        mcomment += i18n.twtranslate(insite.lang, commentname) % changes
+        mods = i18n.twtranslate('en', commentname) % changes
+
     return mods, mcomment, adding, removing, modifying
 
 def botMayEdit (page):

@@ -4,7 +4,7 @@ Program to add uncat template to images without categories at commons.
 See imagerecat.py (still working on that one) to add these images to categories.
 
 """
-__version__ = '$Id: imageuncat.py 9042 2011-03-13 10:14:47Z xqt $'
+__version__ = '$Id: imageuncat.py 9287 2011-06-04 10:13:18Z multichill $'
 #
 #  (C) Multichill 2008
 #
@@ -19,13 +19,14 @@ from datetime import datetime
 from datetime import timedelta
 
 #Probably unneeded because these are hidden categories. Have to figure it out.
-ignoreCategories = [u'[[Category:CC-BY-SA-3.0]]',
-                    u'[[Category:GFDL]]',
-                    u'[[Category:Media for cleanup]]',
-                    u'[[Category:Media lacking a description]]',
-                    u'[[Category:Media lacking author information]]',
-                    u'[[Category:Media lacking a description]]',
-                    u'[[Category:Self-published work]]']
+ignoreCategories = [u'Category:CC-BY-SA-3.0',
+                    u'Category:GFDL',
+                    u'Category:Media for cleanup',
+                    u'Category:Media lacking a description',
+                    u'Category:Media lacking author information',
+                    u'Category:Media lacking a description',
+                    u'Category:Self-published work',
+                    u'Category:Uploaded with UploadWizard',]
 
 #Dont bother to put the template on a image with one of these templates
 skipTemplates = [u'Delete',
@@ -1293,9 +1294,10 @@ def isUncat(page):
     pywikibot.output(u'Working on '+ page.title())
 
     for category in page.categories():
-        if category not in ignoreCategories:
+        if category.title() not in ignoreCategories:
             pywikibot.output(u'Got category ' + category.title())
             return False
+        #FIXME: Add check if the category is hidden. If hidden -> ignore
 
     for templateWithTrail in page.templates():
         #Strip of trailing garbage
@@ -1304,6 +1306,8 @@ def isUncat(page):
             # Already tagged with a template, skip it
             pywikibot.output(u'Already tagged, skip it')
             return False
+        elif template.startswith(u'Int:'):
+            pywikibot.output(u'Ignoring internationalization template ' + template)
         elif template in ignoreTemplates:
             # template not relevant for categorization
             pywikibot.output(u'Ignore ' + template)

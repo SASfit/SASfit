@@ -1,7 +1,7 @@
 # -*- coding: utf-8  -*-
 import family
 
-__version__ = '$Id: wikipedia_family.py 9264 2011-05-18 03:47:16Z xqt $'
+__version__ = '$Id: wikipedia_family.py 9285 2011-06-03 10:36:34Z xqt $'
 
 # The Wikimedia family that is known as Wikipedia, the Free Encyclopedia
 
@@ -13,31 +13,31 @@ class Family(family.Family):
         self.languages_by_size = [
             'en', 'de', 'fr', 'it', 'pl', 'es', 'ja', 'ru', 'nl', 'pt', 'sv',
             'zh', 'ca', 'no', 'uk', 'fi', 'vi', 'cs', 'hu', 'tr', 'id', 'ko',
-            'ro', 'da', 'ar', 'eo', 'sr', 'lt', 'fa', 'sk', 'ms', 'vo', 'he',
+            'ro', 'fa', 'da', 'ar', 'eo', 'sr', 'lt', 'sk', 'ms', 'he', 'vo',
             'bg', 'sl', 'war', 'eu', 'hr', 'hi', 'et', 'gl', 'simple', 'new',
-            'th', 'nn', 'el', 'roa-rup', 'az', 'la', 'ht', 'tl', 'ka', 'te',
-            'mk', 'ceb', 'sh', 'pms', 'br', 'be-x-old', 'lv', 'mr', 'jv', 'lb',
-            'cy', 'sq', 'ta', 'is', 'bs', 'be', 'nap', 'oc', 'an', 'bpy', 'bn',
-            'io', 'kk', 'sw', 'lmo', 'fy', 'gu', 'ml', 'af', 'nds', 'ur', 'scn',
-            'qu', 'ku', 'zh-yue', 'su', 'ast', 'hy', 'ne', 'yo', 'bat-smg',
-            'ga', 'cv', 'pnb', 'wa', 'kn', 'mg', 'tg', 'als', 'vec', 'roa-tara',
-            'tt', 'zh-min-nan', 'yi', 'bug', 'gd', 'os', 'uz', 'sah', 'pam',
-            'am', 'arz', 'mi', 'li', 'hsb', 'nah', 'sco', 'mn', 'gan', 'co',
-            'glk', 'my', 'ia', 'bcl', 'fo', 'fiu-vro', 'si', 'sa', 'nds-nl',
-            'vls', 'tk', 'bar', 'ckb', 'gv', 'ilo', 'map-bms', 'dv', 'nrm',
-            'pag', 'mrj', 'diq', 'rm', 'se', 'mzn', 'wuu', 'fur', 'ug', 'bo',
-            'lij', 'mt', 'hif', 'bh', 'csb', 'km', 'ang', 'nov', 'lad', 'udm',
-            'zh-classical', 'sc', 'cbk-zam', 'pi', 'ps', 'mhr', 'ksh', 'frp',
-            'hak', 'rue', 'kw', 'nv', 'pa', 'szl', 'so', 'xal', 'rw', 'ie',
-            'haw', 'stq', 'pdc', 'kv', 'ln', 'krc', 'to', 'pcd', 'crh', 'ace',
-            'ky', 'ext', 'myv', 'gn', 'ba', 'eml', 'ce', 'arc', 'pap', 'ay',
-            'kl', 'bjn', 'frr', 'jbo', 'wo', 'tpi', 'kab', 'ty', 'koi', 'srn',
-            'zea', 'or', 'gag', 'dsb', 'ab', 'lo', 'ig', 'tet', 'av', 'mdf',
-            'kg', 'mwl', 'rmy', 'lbe', 'cu', 'ltg', 'kbd', 'kaa', 'sm', 'got',
-            'pfl', 'ks', 'bm', 'na', 'ik', 'sd', 'as', 'bi', 'iu', 'pih', 'pnt',
-            'ss', 'cdo', 'chr', 'ee', 'ha', 'ti', 'zu', 'bxr', 'om', 'za', 've',
-            'ts', 'rn', 'sg', 'dz', 'tum', 'cr', 'ch', 'lg', 'fj', 'ny', 'st',
-            'xh', 'ff', 'tn', 'ki', 'sn', 'chy', 'ak', 'tw',
+            'th', 'nn', 'az', 'el', 'roa-rup', 'la', 'ht', 'tl', 'ka', 'te',
+            'mk', 'ceb', 'nap', 'sh', 'pms', 'br', 'be-x-old', 'lv', 'mr', 'jv',
+            'lb', 'ta', 'sq', 'cy', 'is', 'bs', 'be', 'oc', 'an', 'bpy', 'bn',
+            'io', 'sw', 'kk', 'lmo', 'fy', 'gu', 'ml', 'af', 'nds', 'ur', 'scn',
+            'qu', 'mg', 'ku', 'zh-yue', 'su', 'ast', 'ne', 'hy', 'yo',
+            'bat-smg', 'pnb', 'ga', 'cv', 'wa', 'kn', 'am', 'als', 'tg', 'vec',
+            'roa-tara', 'zh-min-nan', 'yi', 'tt', 'bug', 'gd', 'os', 'uz',
+            'sah', 'pam', 'arz', 'mi', 'li', 'hsb', 'sco', 'nah', 'mn', 'co',
+            'gan', 'glk', 'my', 'ia', 'bcl', 'fo', 'sa', 'si', 'fiu-vro',
+            'nds-nl', 'vls', 'tk', 'bar', 'ckb', 'mrj', 'gv', 'ilo', 'map-bms',
+            'dv', 'nrm', 'pag', 'diq', 'se', 'rm', 'mzn', 'wuu', 'fur', 'ug',
+            'bo', 'lij', 'mt', 'hif', 'csb', 'km', 'bh', 'ang', 'lad', 'nov',
+            'udm', 'sc', 'zh-classical', 'cbk-zam', 'ps', 'pi', 'mhr', 'kv',
+            'ksh', 'frp', 'rue', 'hak', 'kw', 'nv', 'pa', 'so', 'szl', 'xal',
+            'ie', 'rw', 'stq', 'haw', 'pdc', 'koi', 'ln', 'krc', 'to', 'pcd',
+            'crh', 'ext', 'ky', 'ace', 'myv', 'gn', 'ba', 'eml', 'ce', 'arc',
+            'pap', 'ay', 'kl', 'bjn', 'frr', 'jbo', 'wo', 'or', 'tpi', 'kab',
+            'ty', 'srn', 'zea', 'gag', 'dsb', 'ab', 'lo', 'ig', 'mdf', 'tet',
+            'av', 'kg', 'mwl', 'rmy', 'ltg', 'cu', 'lbe', 'kaa', 'kbd', 'sm',
+            'na', 'pfl', 'got', 'bm', 'as', 'ik', 'sd', 'bi', 'ks', 'iu', 'pih',
+            'ss', 'pnt', 'chr', 'cdo', 'ee', 'ha', 'ti', 'bxr', 'za', 'om',
+            'zu', 've', 'ts', 'rn', 'sg', 'dz', 'tum', 'cr', 'ch', 'lg', 'fj',
+            'ny', 'st', 'xh', 'ff', 'tn', 'ki', 'sn', 'ak', 'chy', 'tw',
         ]
 
         if family.config.SSL_connection:

@@ -5,7 +5,7 @@
 #
 # Distributed under the terms of the MIT license.
 #
-__version__='$Id: family.py 9249 2011-05-15 20:20:09Z xqt $'
+__version__='$Id: family.py 9269 2011-05-22 18:53:42Z xqt $'
 
 import config
 import re
@@ -933,7 +933,7 @@ class Family:
                 'hr': u'Razgovor sa suradnikom',
                 'hsb': u'Diskusija z wužiwarjom',
                 'ht': u'Diskisyon Itilizatè',
-                'hu': u'Szerkesztővita',
+                'hu': [u'Szerkesztővita', u'User vita'],
                 'hy': u'Մասնակցի քննարկում',
                 'ia': u'Discussion Usator',
                 'id': u'Pembicaraan Pengguna',

@@ -11,7 +11,7 @@ and return a unicode string.
 #
 # Distributed under the terms of the MIT license.
 #
-__version__ = '$Id: textlib.py 9225 2011-05-09 18:40:55Z cydeweys $'
+__version__ = '$Id: textlib.py 9280 2011-05-29 09:43:35Z xqt $'
 
 
 import wikipedia as pywikibot
@@ -507,8 +507,8 @@ def interwikiSort(sites, insite = None):
         firstsites = []
         for code in putfirst:
             # The code may not exist in this family?
-            if code in insite.family.obsolete:
-                code = insite.family.obsolete[code]
+##            if code in insite.family.obsolete:
+##                code = insite.family.obsolete[code]
             if code in insite.validLanguageLinks():
                 site = insite.getSite(code = code)
                 if site in sites:
@@ -621,12 +621,12 @@ def replaceCategoryInPlace(oldtext, oldcat, newcat, site=None):
                             % (catNamespace, title), re.I | re.M)
     if newcat is None:
         """ First go through and try the more restrictive regex that removes
-            an entire line, if the category is the only thing on that line (this
-            prevents blank lines left over in category lists following a removal.)
+        an entire line, if the category is the only thing on that line (this
+        prevents blank lines left over in category lists following a removal.)
         """
 
         text = replaceExcept(oldtext, categoryRN, '',
-                                ['nowiki', 'comment', 'math', 'pre', 'source'])
+                             ['nowiki', 'comment', 'math', 'pre', 'source'])
         text = replaceExcept(text, categoryR, '',
                              ['nowiki', 'comment', 'math', 'pre', 'source'])
     else:
