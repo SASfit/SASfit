@@ -28,6 +28,7 @@
 # sasfit_common_FOUND        - Do not attempt to use if "no" or undefined.
   
 GET_FILENAME_COMPONENT(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+GET_FILENAME_COMPONENT(CURRENT_DIR "${CURRENT_DIR}/.." ABSOLUTE)
 
 FIND_PATH(sasfit_common_INCLUDE_DIR sasfit_common.h
     ${CURRENT_DIR}/sasfit_common/include/
