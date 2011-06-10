@@ -10,7 +10,7 @@
 
 cmake_minimum_required(VERSION 2.6.2)
 
-include(${SASFIT_ROOT_DIR}/src/SasfitCmakeUtils.cmake)
+include(${SASFIT_ROOT_DIR}/src/cmake/SasfitCmakeUtils.cmake)
 #message("package dir: ${SASFIT_PCKG_DIR}")
 #message("root dir: ${SASFIT_ROOT_DIR}")
 
@@ -45,19 +45,19 @@ foreach(FILENAME ${SASFIT_FILE_LIST})
 endforeach(FILENAME)
 
 # build zip/tar archive
-replace_str_in_file(${SASFIT_ROOT_DIR}/src/CPackConfig.cmake
+replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
 	"CPACK_PACKAGE_FILE_NAME \\\\\"[^\"]+\\\\\""
 	"CPACK_PACKAGE_FILE_NAME \"${PCKG_DIR_NAME}\""
 )
-replace_str_in_file(${SASFIT_ROOT_DIR}/src/CPackConfig.cmake
+replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
 	"CPACK_CMAKE_GENERATOR \\\\\"[^\"]+\\\\\""
 	"CPACK_CMAKE_GENERATOR \"${CM_GEN}\""
 )
-replace_str_in_file(${SASFIT_ROOT_DIR}/src/CPackConfig.cmake
+replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
 	"CPACK_INSTALLED_DIRECTORIES \\\\\"[^\"]+\\\\\""
 	"CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\\;.\""
 )
-execute_process(COMMAND cpack
+execute_process(COMMAND cpack --config "${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake"
 		WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
 		TIMEOUT 180.0
 		RESULT_VARIABLE CPACK_RES

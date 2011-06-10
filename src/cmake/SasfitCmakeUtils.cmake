@@ -82,8 +82,8 @@ endmacro(get_rev_from_docs)
 
 # determine sasfit-root directory
 if(NOT DEFINED SASFIT_ROOT_DIR)
-	get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
-	set(SASFIT_ROOT_DIR ${CURRENT_DIR}/..)
+	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}/.." ABSOLUTE)
 endif(NOT DEFINED SASFIT_ROOT_DIR)
 
 # copy shared libs to a target dir (where sasfit tcl routines will find them)
