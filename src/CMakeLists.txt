@@ -10,7 +10,7 @@ get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 set(SASFIT_ROOT_DIR ${CURRENT_DIR}/..)
 set(LIBRARY_OUTPUT_PATH ${CURRENT_DIR}/lib)
 
-set(CMAKE_MODULE_PATH ${CURRENT_DIR})
+set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
 include(SasfitCmakeUtils)
 include(SasfitSourceFiles)
 
