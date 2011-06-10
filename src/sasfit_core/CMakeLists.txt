@@ -25,7 +25,7 @@ set(LIBS_INT
 
 # path to 'Find*.cmake' files in sasfit package,
 # relative to the location of this file
-set(REL_CMAKE_MODULE_PATH ..)
+set(REL_CMAKE_MODULE_PATH ../cmake)
 
 set(LIB_IS_PLUGIN false)
 

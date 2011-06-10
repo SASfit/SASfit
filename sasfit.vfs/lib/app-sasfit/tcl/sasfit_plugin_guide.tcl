@@ -647,7 +647,7 @@ $func_files\tinterface.c
 
 # path to 'Find*.cmake' files in sasfit package, 
 # relative to the location of this file
-set(REL_CMAKE_MODULE_PATH ../..)
+set(REL_CMAKE_MODULE_PATH ../../cmake)
 
 #                                                       #
 ### no adjustments required below this line (usually) ###
