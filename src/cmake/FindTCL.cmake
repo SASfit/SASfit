@@ -1,5 +1,12 @@
+# src/cmake/FindTCL.cmake
+#
+# Copyright 2001-2009 Kitware, Inc.
+# Distributed under the OSI-approved BSD License (the "License");
+#
 # original file from CMake 2.6.2 package
-# modified 2008-10-17 by Ingo Bressler (ingo@cs.tu-berlin.de)
+#
+# Modified this file:
+#   Ingo Bressler (ingo.bressler@bam.de) (Okt. 2008)
 #
 # - Find Tcl includes and libraries.
 # This module finds if Tcl is installed and determines where the
