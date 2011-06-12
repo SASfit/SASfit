@@ -1,3 +1,7 @@
+# src/cmake/FindMercurial.cmake
+#
+# Copyright (c) 2011, Ingo Breßler (ingo.bressler@bam.de)
+#
 # - Extract information from a Mercurial repository
 # The module defines the following variables:
 #  MERCURIAL_EXECUTABLE - path to mercurial executable
