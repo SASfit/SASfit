@@ -21,6 +21,8 @@ src/cmake/Findsasfit_sd.cmake
 src/cmake/Findsasfit_peaks.cmake
 src/cmake/Findsasfit_sq.cmake
 src/cmake/Findsasfit_ff.cmake
+src/cmake/create_starpack.cmake
+src/cmake/create_package.cmake
 doc/images/sasfit_screenshot.eps
 doc/images/sasfit_screenshot_w640.png
 doc/images/form_factor/cylindrical_obj/rod.eps
@@ -754,10 +756,8 @@ src/sasfit_old/include/tcl_cmds.h
 src/sasfit_old/include/sasfit.h
 src/sasfit_old/include/SASFIT_nr.h
 src/sasfit_old/include/SASFIT_resolution.h
-src/scripts/create_starpack.cmake
 src/scripts/genStubs.tcl
 src/scripts/create_source_package.list
-src/scripts/create_package.cmake
 src/scripts/create_bin_package.list
 src/scripts/clean_cmake.sh
 src/scripts/addCopyrightNotice.sh
