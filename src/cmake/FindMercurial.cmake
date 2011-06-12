@@ -59,6 +59,7 @@ IF(MERCURIAL_EXECUTABLE)
   SET(MERCURIAL_FOUND TRUE)
 
   MACRO(MERCURIAL_COMMAND dir command)
+    SET(ENV{LANG} "C")
     EXECUTE_PROCESS(COMMAND ${MERCURIAL_EXECUTABLE} ${command} ${ARGN}
       WORKING_DIRECTORY ${dir}
       OUTPUT_VARIABLE MERCURIAL_${command}_OUTPUT
@@ -91,7 +92,8 @@ IF(MERCURIAL_EXECUTABLE)
 	STRING(REGEX REPLACE "^([0-9a-f]+).*"
 	  "\\1" ${prefix}_HG_CHANGESET "${MERCURIAL_id_OUTPUT}")
 
-	MERCURIAL_COMMAND(${dir} log -r ${${prefix}_HG_CHANGESET})
+	MERCURIAL_COMMAND(${dir} log -r ${${prefix}_HG_CHANGESET}
+		--template "user: {author}\ndate: {date|shortdate}\nbranch: {branches}\ntag: {tags}\nsummary: {desc}\n")
 
 	STRING(REGEX REPLACE ";" "\\\\;"
 	  MERCURIAL_log_OUTPUT "${MERCURIAL_log_OUTPUT}")

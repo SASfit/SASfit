@@ -200,9 +200,12 @@ macro(sasfit_update_version)
 		find_package(Mercurial)
 		if(MERCURIAL_FOUND)
 			mercurial_hg_info(${SASFIT_ROOT_DIR} sasfit)
-			message("Current revision is ${sasfit_HG_ID}")
+			set(SASFIT_VERSION 
+				"${sasfit_HG_DATE}-${sasfit_HG_BRANCH}-${sasfit_HG_CHANGESET}")
+			message(STATUS "Current source version is '${SASFIT_VERSION}'")
 		endif(MERCURIAL_FOUND)
 
+# old SVN
 #		# try to get the revision number of the working copy (current dir)
 #		# for a correct rev number it is required to update again after commit
 #		set(SASFIT_SVN_DIRS
@@ -227,7 +230,6 @@ macro(sasfit_update_version)
 #			set(DETERMINED_FROM_DOCS TRUE)
 #		endif(${REV_NR} EQUAL 0)
 #		set(SASFIT_VERSION "r${REV_NR}")
-		set(SASFIT_VERSION "rDUMMY")
 	endif(NOT DEFINED SASFIT_VERSION)
 
 	# let the tcl code know about the svn revision number
@@ -236,7 +238,7 @@ macro(sasfit_update_version)
 	)
 	# let the documentation know about the svn revision number
 	replace_str_in_file(${SASFIT_ROOT_DIR}/src/Doxyfile 
-		"PROJECT_NUMBER         = [a-z]?[0-9]+\\\\.?[0-9]*\\\\.?([a-z]|[0-9])*\\\\.?([a-z]|[0-9])*"
+		"PROJECT_NUMBER         = ([^\n]*)"
 		"PROJECT_NUMBER         = ${SASFIT_VERSION}"
 	)
 
