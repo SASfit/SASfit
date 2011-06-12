@@ -41,8 +41,8 @@ endif(NOT DEFINED CREATE_BINARY)
  #############################################################
 
 # original file containing all required sasfit filenames WITHOUT binaries build by cmake
-set(SASFIT_BIN_LIST_FILE ${CURRENT_DIR}/scripts/create_bin_package.list)
-set(SASFIT_SRC_LIST_FILE ${CURRENT_DIR}/scripts/create_source_package.list)
+set(SASFIT_BIN_LIST_FILE ${CURRENT_DIR}/cmake/create_bin_package.list)
+set(SASFIT_SRC_LIST_FILE ${CURRENT_DIR}/cmake/create_source_package.list)
 set(SASFIT_PCKG_SCRIPT ${CURRENT_DIR}/cmake/create_package.cmake)
 set(SASFIT_STARPACK_SCRIPT ${CURRENT_DIR}/cmake/create_starpack.cmake)
 
