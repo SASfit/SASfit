@@ -1,6 +1,6 @@
-# src/CPackConfig.cmake
+# src/cmake/CPackConfig.cmake
 #
-# Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2011, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #
@@ -18,7 +18,7 @@
 # along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
 
 # Author(s) of this file:
-#   Ingo Bressler (ingo@cs.tu-berlin.de)
+#   Ingo Bressler (ingo.bressler@bam.de)
 
 SET(CPACK_CMAKE_GENERATOR "Unix Makefiles")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "../Readme.txt")
