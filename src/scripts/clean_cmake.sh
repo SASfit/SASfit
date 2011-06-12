@@ -36,7 +36,7 @@ for name in $(find . -name "CMakeCache.txt";
 	fi;
 	
 	echo "removing '$name'"
-#	rm -Rf "$name";
+	rm -Rf "$name";
 done;
 
 exit 0;
