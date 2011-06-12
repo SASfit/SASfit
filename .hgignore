@@ -6,6 +6,7 @@ src/_CPack_Packages*
 src/plugins/*/lib/*
 src/lib/*
 src/scripts/*.tmp
+src/cmake/*.tmp
 src/*.tar.*
 sasfit.vfs/lib/app-sasfit/plugins/groups.*
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
