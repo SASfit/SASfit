@@ -1,4 +1,4 @@
-# modified for use with SASfit by Ingo Bressler (ingo@wollsau.de)
+# modified for use with SASfit by Ingo Bressler (ingo.bressler@bam.de)
 # 2008-12-13
 #
 # genStubs.tcl --
