@@ -197,30 +197,37 @@ macro(sasfit_update_version)
 
 	set(DETERMINED_FROM_DOCS FALSE)
 	if(NOT DEFINED SASFIT_VERSION)
-		# try to get the revision number of the working copy (current dir)
-		# for a correct rev number it is required to update again after commit
-		set(SASFIT_SVN_DIRS
-			${SASFIT_ROOT_DIR}/.svn
-			${SASFIT_ROOT_DIR}/src/.svn
-		)
-		set(REV_NR 0)
-		foreach(DIRNAME ${SASFIT_SVN_DIRS})
-			if(EXISTS ${DIRNAME}/entries)
-				file(STRINGS ${DIRNAME}/entries SASFIT_SVN LIMIT_COUNT 4)
-				foreach(str ${SASFIT_SVN}) ## how to chose the last string of a string-'array' ?
-					if(${str} GREATER ${REV_NR})
-						set(REV_NR ${str}) # set to highest revision if available
-					endif(${str} GREATER ${REV_NR})
-				endforeach(str)
-			endif(EXISTS ${DIRNAME}/entries)
-		endforeach(DIRNAME)
-		if(${REV_NR} EQUAL 0)
-			# get the version number from the documentation if
-			# everything else fails
-			get_rev_from_docs(${SASFIT_ROOT_DIR}/src/Doxyfile)
-			set(DETERMINED_FROM_DOCS TRUE)
-		endif(${REV_NR} EQUAL 0)
-		set(SASFIT_VERSION "r${REV_NR}")
+		find_package(Mercurial)
+		if(MERCURIAL_FOUND)
+			mercurial_hg_info(${SASFIT_ROOT_DIR} sasfit)
+			message("Current revision is ${sasfit_HG_ID}")
+		endif(MERCURIAL_FOUND)
+
+#		# try to get the revision number of the working copy (current dir)
+#		# for a correct rev number it is required to update again after commit
+#		set(SASFIT_SVN_DIRS
+#			${SASFIT_ROOT_DIR}/.svn
+#			${SASFIT_ROOT_DIR}/src/.svn
+#		)
+#		set(REV_NR 0)
+#		foreach(DIRNAME ${SASFIT_SVN_DIRS})
+#			if(EXISTS ${DIRNAME}/entries)
+#				file(STRINGS ${DIRNAME}/entries SASFIT_SVN LIMIT_COUNT 4)
+#				foreach(str ${SASFIT_SVN}) ## how to chose the last string of a string-'array' ?
+#					if(${str} GREATER ${REV_NR})
+#						set(REV_NR ${str}) # set to highest revision if available
+#					endif(${str} GREATER ${REV_NR})
+#				endforeach(str)
+#			endif(EXISTS ${DIRNAME}/entries)
+#		endforeach(DIRNAME)
+#		if(${REV_NR} EQUAL 0)
+#			# get the version number from the documentation if
+#			# everything else fails
+#			get_rev_from_docs(${SASFIT_ROOT_DIR}/src/Doxyfile)
+#			set(DETERMINED_FROM_DOCS TRUE)
+#		endif(${REV_NR} EQUAL 0)
+#		set(SASFIT_VERSION "r${REV_NR}")
+		set(SASFIT_VERSION "rDUMMY")
 	endif(NOT DEFINED SASFIT_VERSION)
 
 	# let the tcl code know about the svn revision number
