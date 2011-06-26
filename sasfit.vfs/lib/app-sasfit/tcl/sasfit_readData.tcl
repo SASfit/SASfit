@@ -2010,20 +2010,21 @@ for {set i 0} {$i < $Graph(e,element)} {incr i} {
   set tmax [llength $dydata($i)]
   if {$tmax > $max} { set max $tmax }
 }
+set fieldwidth 12
 for {set k 0} {$k < $max} {incr k} {
    set line ""
    for {set i 0} {$i < $Graph(e,element)} {incr i} {
       if {[llength [lindex $xdata($i) $k]] != 0 } {
-         append line [format "%12g " [lindex $xdata($i) $k]]
-         append line [format "%12g " [lindex $ydata($i) $k]]
+         append line [format "%${fieldwidth}g " [lindex $xdata($i) $k]]
+         append line [format "%${fieldwidth}g " [lindex $ydata($i) $k]]
          set dy  [lindex $dydata($i) $k]
          if {$dy > 0} {
-            append line [format "%12g " $dy]
+            append line [format "%${fieldwidth}g " $dy]
          } else {
-            append line [format "%12g " -1]
+            append line [format "%${fieldwidth}g " -1]
          }
-         append line [format "%12g " [lindex $resdata($i) $k]]
-      } else { append line "" }
+         append line [format "%${fieldwidth}g " [lindex $resdata($i) $k]]
+      } else { append line [format "%[expr 4*($fieldwidth+1)]s" ""] }
    }
    puts $f $line
 }
