@@ -80,8 +80,7 @@ set sasfit(progname) "SASfit"
 if [catch {set SASFitVersionNo $sasfit(svn_rev)}] {
 	set SASFitVersionNo devel
 }
-set sasfit(version) "vers. $SASFitVersionNo"
-set sasfit(date) ""
+set sasfit(version) "version $SASFitVersionNo"
 set sasfit(author) "written by Joachim Kohlbrecher (LNS,PSI)"
 set sasfit(authorname) ""
 
@@ -155,8 +154,11 @@ frame $w.frame.right.textbox
 pack $w.frame.right.prog $w.frame.right.address $w.frame.right.sasfit \
 	$w.frame.right.notice $w.frame.right.textbox -ipady 5
 
-label $w.frame.right.prog.info -text " $sasfit(progname) $sasfit(version) $sasfit(date) " -relief solid -font {Helvetica 14}
+frame $w.frame.right.prog.info -relief solid -borderwidth 2
 pack $w.frame.right.prog.info
+label $w.frame.right.prog.info.l1 -text $sasfit(progname) -font {Helvetica 14}
+label $w.frame.right.prog.info.l2 -text $sasfit(version) -font {Helvetica 10}
+pack $w.frame.right.prog.info.l1 $w.frame.right.prog.info.l2
 
 label $w.frame.right.address.line1 -text \
 "Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
@@ -1963,34 +1965,6 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 	}
 }
 
-proc  version_compatibility {} {
-   global sasfit
-   global addsasfit
-   global AnalytPar
-   global GlobalAnalytPar
-   global SASFitVersionNo
-
-    set versNo [lindex [split $sasfit(version)] end]
-    if {$versNo < 0.8} {
-       catch {set addsasfit(Nth,sub,Ih) $addsasfit(Nth,I)}
-       catch {set addsasfit(Nth,sub,Ith) $addsasfit(Nth,Ith)}
-       catch {set addsasfit(Nth,sub,res) $addsasfit(Nth,res)}
-       catch {set addsasfit(Nth,Qth) $addsasfit(Nth,Q)}
-       set AnalytPar(substrSDFF) {}
-       for {set i 0} {$i < $AnalytPar(max_SD)} {incr i} {
-	   lappend AnalytPar(substrSDFF) no
-       }
-       set GlobalAnalytPar(substrSDFF) {}
-       for {set i 0} {$i < $GlobalAnalytPar(max_SD)} {incr i} {
-	   lappend GlobalAnalytPar(substrSDFF) no
-       }
-    }
-    if {$versNo < 0.7} {
-	error "you tried to read in a project file of a SASfit version, which is too old"
-    }
-    set sasfit(version)  "vers. $SASFitVersionNo"
-    set addsasfit(version)  "vers. $SASFitVersionNo"
-}
 #------------------------------------------------------------------------------
 #                
 proc LoadCmd { loadProj } {
@@ -2029,7 +2003,7 @@ proc LoadCmd { loadProj } {
    }
 
    if { [string length $loadProj] > 0} {
-      wm title . "[file tail $loadProj], $sasfit(progname) $sasfit(version) $sasfit(date)"
+      wm title . "[file tail $loadProj], $sasfit(progname) $sasfit(version)"
       clearGraph_el GlobalFitIQGraph
       clearGraph_el IQGraph
       clearGraph_el ResIQGraph
@@ -2094,7 +2068,6 @@ proc LoadCmd { loadProj } {
       # delete probably invalid and obsolete filenames
       # filenames with spaces are not encapsulated in list elements
       set addsasfit(filename) {}
-      version_compatibility
       clearGraph_el IQGraph
       clearGraph_el ResIQGraph
       clearGraph_el SDGraph
@@ -2156,7 +2129,7 @@ proc SaveCmd {} {
 	   array unset ::sasfit lastProjectFile
 
 	   if { [string length $filename] > 0} {
-	      wm title . "[file tail $filename], $sasfit(progname) $sasfit(version) $sasfit(date)"
+	      wm title . "[file tail $filename], $sasfit(progname) $sasfit(version)"
 	      set fid [open $filename w]
 	      puts_arr $fid sasfit
 	      puts_arr $fid addsasfit
@@ -3749,7 +3722,7 @@ bind .obW.tab.structpar <Enter> \
          .xycoordinates configure -text ""
         }
 
-   wm title . "UNKNOWN, $sasfit(progname) $sasfit(version) $sasfit(date)"
+   wm title . "UNKNOWN, $sasfit(progname) $sasfit(version)"
 }
 
 proc create_tab_text { widgetname n tabtext analytpar args} {
