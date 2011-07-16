@@ -19,7 +19,7 @@
 
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
-#   Ingo Bressler (ingo@cs.tu-berlin.de)
+#   Ingo Bressler (ingo.bressler@bam.de)
 
 #------------------------------------------------------------------------------
 #                            Global Variables
@@ -176,7 +176,7 @@ pack $w.frame.right.sasfit.left $w.frame.right.sasfit.right -side left
 label $w.frame.right.sasfit.left.writtenby -text "written by:"
 label $w.frame.right.sasfit.right.author1 -text "Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)"
 label $w.frame.right.sasfit.left.contribs -text "contributions since March 2008 by:"
-label $w.frame.right.sasfit.right.author2 -text "Ingo Bressler (ingo@cs.tu-berlin.de)"
+label $w.frame.right.sasfit.right.author2 -text "Ingo Bressler (ingo.bressler@bam.de)"
 
 pack $w.frame.right.sasfit.left.writtenby $w.frame.right.sasfit.left.contribs -anchor e
 pack $w.frame.right.sasfit.right.author1 $w.frame.right.sasfit.right.author2 -anchor w
@@ -2205,7 +2205,7 @@ proc RefreshAnalytParDataTab {AAnalytPar args} {
 	upvar $AAnalytPar ap
 
 	analytpar_get_text ap
-	moments_get_text ap
+        catch {moments_get_text ap}
 
 	set n $::sasfit(par_name)
 	tab_text_update ap $n

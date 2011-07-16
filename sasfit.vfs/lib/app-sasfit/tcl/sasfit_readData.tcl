@@ -1433,10 +1433,11 @@ proc read_Ascii {filename ASCIIData args} {
 
 	   incr lineno
 	   #set tmpsplitline [split $line "\t ,"]
-	   set tmpsplitline [split $line "\t "]
+	   set tmpsplitline [split $line "\t ;"]
 	   set splitline {}
 	   foreach i $tmpsplitline {
-	      if {[llength $i] != 0} {
+	      set leni [string length [string trim $i]]
+	      if {$leni != 0} {
 		 #lappend splitline $i
 		 lappend splitline [regsub "," $i "."]
 	      }
