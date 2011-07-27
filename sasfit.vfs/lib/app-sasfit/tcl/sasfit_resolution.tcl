@@ -154,8 +154,8 @@ button $w.lay2.ok -text OK -highlightthickness 0 \
                              set tmpsasfit(file,Dd) \
                                  [lreplace $tmpsasfit(file,Dd) \
                                            $widcnt $widcnt $resolution(Dd)      ]
-                             set tmpsasfit(file,res) \
-                                 [lreplace $tmpsasfit(file,res) $widcnt $widcnt \
+                             set tmpsasfit(file,res,calc) \
+                                 [lreplace $tmpsasfit(file,res,calc) $widcnt $widcnt \
                                            [sasfit_res $resolution(lambda)  \
                                                        $resolution(Dlambda) \
                                                        $resolution(r1)      \

@@ -269,6 +269,8 @@ set sasfit(Q)         {}
 set sasfit(I)         {}
 set sasfit(DI)        {}
 set sasfit(res)       {}
+set sasfit(res,file)  {}
+set sasfit(res,calc)  {}
 set sasfit(graph)  "123" 
 set sasfit(datatypes) { { Ascii  ".*"      } \
                         { All    "*"         } }
@@ -335,7 +337,7 @@ proc clear_sasfit_file_config { sasfit_arr prefix
 	upvar $sasfit_arr sf
 	set sf(${prefix}widcnt) 0
 	clear_sasfit_config $sasfit_arr $prefix {name divisor firstskip \
-		lastskip hide Q I DI res widname r1 r2 lambda Dlambda l1 \
+		lastskip hide Q I DI res "res,calc" "res,file" widname r1 r2 lambda Dlambda l1 \
 		l2 Dd d dr_by_count dr_percent \
 		dr_loglogdist dr_mindist}
 }
@@ -403,7 +405,7 @@ proc arr_append_dr { sasfit_arr prefix index
 proc equal_length_sasfit_file_config { sasfit_arr prefix
 } {
 	upvar $sasfit_arr sf
-	foreach suffix {hide firstskip lastskip divisor Q I DI res r1 r2 l1 \
+	foreach suffix {hide firstskip lastskip divisor Q I DI res "res,calc" "res,file" r1 r2 l1 \
 	                l2 lambda Dlambda d Dd widname
 	} {
 		if {[llength $sf(${prefix}name)] != [llength $sf($prefix$suffix)]} {
@@ -420,6 +422,8 @@ proc zero_sasfit {argsasfit} {
 	set sasfit(I)         {}
 	set sasfit(DI)        {}
 	set sasfit(res)       {}
+	set sasfit(res,file)  {}
+	set sasfit(res,calc)  {}
 	set sasfit(Comment)   {}
 	set sasfit(npoints)   0
 
@@ -740,7 +744,7 @@ global SDGraph IQGraph ResIQGraph
    RefreshGraph SDGraph
 }
 
-proc dr {redu_arr index sf num_data list_q list_i list_di list_res
+proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile list_rescalc
 } {
 	upvar $redu_arr red
 	upvar $sf sasfit_arr
@@ -777,6 +781,8 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res
 	set tmp_i {}
 	set tmp_di {}
 	set tmp_res {}
+        set tmp_resfile {}
+        set tmp_rescalc {}
 	set i 0.0
 	set idx 0
 	set xval 0.0
@@ -809,6 +815,8 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res
 			lappend tmp_i $yval
 			lappend tmp_di [lindex $list_di $idx]
 			lappend tmp_res [lindex $list_res $idx]
+			lappend tmp_resfile [lindex $list_resfile $idx]
+			lappend tmp_rescalc [lindex $list_rescalc $idx]
 			set xval_old $xval
 			set yval_old $yval
 			if {$dist > 0.0 && $overall_min_dist > $dist} {set overall_min_dist $dist}
@@ -820,10 +828,12 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res
 			incr idx
 		}
 	}; # end while
-	set sasfit_arr(Q)       $tmp_q
-	set sasfit_arr(I)       $tmp_i
-	set sasfit_arr(DI)      $tmp_di
-	set sasfit_arr(res)     $tmp_res
+	set sasfit_arr(Q)        $tmp_q
+	set sasfit_arr(I)        $tmp_i
+	set sasfit_arr(DI)       $tmp_di
+	set sasfit_arr(res)      $tmp_res
+	set sasfit_arr(res,file) $tmp_resfile
+	set sasfit_arr(res,calc) $tmp_rescalc
 	set sasfit_arr(npoints) [llength $tmp_q]
 	puts "Loaded [llength $tmp_q] of $num_data data points, min distance: $overall_min_dist."
 }
@@ -855,11 +865,12 @@ if { [file isfile $ssasfit(filename) ] } {
       Ascii {
              read_Ascii $ssasfit(filename) ASCIIData
 	     if {$ASCIIData(npoints) > 0} {
-		dr ::data_redu 0 ssasfit $ASCIIData(npoints) $ASCIIData(Q) $ASCIIData(I) $ASCIIData(DI) $ASCIIData(res)
+		dr ::data_redu 0 ssasfit $ASCIIData(npoints) $ASCIIData(Q) $ASCIIData(I) $ASCIIData(DI) $ASCIIData(res) $ASCIIData(res) $ASCIIData(res)
                 set error no
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  $ASCIIData(error)
                 set ssasfit(res_enable) $ASCIIData(res_available)
+		set ssasfit(res,file)   $ASCIIData(res)
              }
 	    }
       HMI   {
@@ -867,7 +878,8 @@ if { [file isfile $ssasfit(filename) ] } {
              set Q_IQ_E [HMIgetItem HMIData Counts SANSDIso y]
              set npoints [llength [lindex $Q_IQ_E 0]]
 	     if {$npoints > 0} {
-		dr ::data_redu 0 ssasfit $npoints [lindex $Q_IQ_E 0] [lindex $Q_IQ_E 1] [lindex $Q_IQ_E 2] [lindex $Q_IQ_E 3]
+                set ssasfit(res,file) [lindex $Q_IQ_E 3] 
+		dr ::data_redu 0 ssasfit $npoints [lindex $Q_IQ_E 0] [lindex $Q_IQ_E 1] [lindex $Q_IQ_E 2] [lindex $Q_IQ_E 3] [lindex $Q_IQ_E 3] [lindex $Q_IQ_E 3]
 		set error no
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  1
@@ -925,11 +937,12 @@ if {[string compare $average average] == 0} {
 
 if {$ASCIIData(npoints) > 0} {
     set error no
-    set ssasfit(Q)       $ASCIIData(Q)
-    set ssasfit(I)       $ASCIIData(I)
-    set ssasfit(DI)      $ASCIIData(DI)
-    set ssasfit(res)     $ASCIIData(res)
-    set ssasfit(npoints) $ASCIIData(npoints)
+    set ssasfit(Q)          $ASCIIData(Q)
+    set ssasfit(I)          $ASCIIData(I)
+    set ssasfit(DI)         $ASCIIData(DI)
+    set ssasfit(res)        $ASCIIData(res)
+    set ssasfit(res,file)   $ASCIIData(res)
+    set ssasfit(npoints)    $ASCIIData(npoints)
     set ssasfit(I_enable)   1
     set ssasfit(DI_enable)  $ASCIIData(error)
     set ssasfit(res_enable) $ASCIIData(res_available)
@@ -963,14 +976,17 @@ if {[catch {set ReadSuccess [ReadClipboardCmd tmpsasfit $average]} msg]} {
                  -message "no valid ASCII Data in Clipboard\n$msg"
 } else {
 if {[string compare $ReadSuccess no] == 0} {
-   set tmpsasfit(file,Q)   {}
-   set tmpsasfit(file,I)   {}
-   set tmpsasfit(file,DI)  {}
-   set tmpsasfit(file,res) {}
-   lappend tmpsasfit(file,Q)   $tmpsasfit(Q)
-   lappend tmpsasfit(file,I)   $tmpsasfit(I)
-   lappend tmpsasfit(file,DI)  $tmpsasfit(DI)
-   lappend tmpsasfit(file,res) $tmpsasfit(res)
+   set tmpsasfit(file,Q)        {}
+   set tmpsasfit(file,I)        {}
+   set tmpsasfit(file,DI)       {}
+   set tmpsasfit(file,res)      {}
+   set tmpsasfit(file,res,file) {}
+   set tmpsasfit(file,res,calc) {}
+   lappend tmpsasfit(file,Q)        $tmpsasfit(Q)
+   lappend tmpsasfit(file,I)        $tmpsasfit(I)
+   lappend tmpsasfit(file,DI)       $tmpsasfit(DI)
+   lappend tmpsasfit(file,res)      $tmpsasfit(res)
+   lappend tmpsasfit(file,res,file) $tmpsasfit(res)
    set tmpsasfit(file,widcnt) 0
    set tmpsasfit(file,n) 1
    set tmpsasfit(file,name)  {}
@@ -1379,10 +1395,13 @@ proc NewCmd {} {
 proc FileMergeCmd {ttmpsasfit} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $ttmpsasfit ssasfit
-set ssasfit(Q)  {}
-set ssasfit(I)  {}
-set ssasfit(DI) {}
-set ssasfit(res) {}
+global tmpAnalytPar
+set ssasfit(Q)        {}
+set ssasfit(I)        {}
+set ssasfit(DI)       {}
+set ssasfit(res)      {}
+set ssasfit(res,file) {}
+set ssasfit(res,calc) {}
 for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set tmpwidname  [lindex $ssasfit(file,widname)   $i]
    set j [lindex $tmpwidname 1]
@@ -1397,6 +1416,8 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set I           [lindex $ssasfit(file,I)         $i]
    set DI          [lindex $ssasfit(file,DI)        $i]
    set res         [lindex $ssasfit(file,res)       $i]
+   set resfile     [lindex $ssasfit(file,res,file)  $i]
+   set rescalc     [lindex $ssasfit(file,res,calc)  $i]
 
    set firsti $fskip($j)
    set lasti [expr [llength $Q]-$lskip($j)-1]
@@ -1404,25 +1425,37 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set tmparr(I) [lrange $I $firsti $lasti]
    set tmparr(DI) [lrange $DI $firsti $lasti]
    set tmparr(res) [lrange $res $firsti $lasti]
+   set tmparr(res,file) [lrange $resfile $firsti $lasti]
+   set tmparr(res,calc) [lrange $rescalc $firsti $lasti]
    dr data_redu $j tmparr [llength $tmparr(Q)] \
-      $tmparr(Q) $tmparr(I) $tmparr(DI) $tmparr(res)
+      $tmparr(Q) $tmparr(I) $tmparr(DI) $tmparr(res) $tmparr(res,file) $tmparr(res,calc)
 
    set widcnt      $ssasfit(file,widcnt)
    if {[string compare $hide($j) no] == 0} {
       for {set k 0} {$k < [llength $tmparr(Q)]} {incr k} {
-         set h    [lindex $tmparr(Q)   $k]
-         set Ih   [lindex $tmparr(I)   $k]
-         set DIh  [lindex $tmparr(DI)  $k]
-         set resh [lindex $tmparr(res) $k]
+         set h        [lindex $tmparr(Q)   $k]
+         set Ih       [lindex $tmparr(I)   $k]
+         set DIh      [lindex $tmparr(DI)  $k]
+         set resh     [lindex $tmparr(res) $k]
+         set resfileh [lindex $tmparr(res,file) $k]
+         set rescalch [lindex $tmparr(res,calc) $k]
          lappend ssasfit(Q)   $h
          lappend ssasfit(I)   [expr $Ih /($divisor($j)*1.0)]
          lappend ssasfit(DI)  [expr $DIh/($divisor($j)*1.0)]
          lappend ssasfit(res) $resh
+         lappend ssasfit(res,file) $resfileh
+         lappend ssasfit(res,calc) $rescalch
       } 
-      set ind [lsort_index $ssasfit(Q)]
-      set ssasfit(Q)   [lmindex $ssasfit(Q)   $ind]
-      set ssasfit(I)   [lmindex $ssasfit(I)   $ind]
-      set ssasfit(res) [lmindex $ssasfit(res) $ind]
+      set ind               [lsort_index $ssasfit(Q)]
+      set ssasfit(Q)        [lmindex $ssasfit(Q)   $ind]
+      set ssasfit(I)        [lmindex $ssasfit(I)   $ind]
+      set ssasfit(res,file) [lmindex $ssasfit(res,file) $ind]
+      set ssasfit(res,calc) [lmindex $ssasfit(res,calc) $ind]
+      if {$tmpAnalytPar(geometrical/datafile)} {
+	  set ssasfit(res) $ssasfit(res,calc)
+      } else {
+	  set ssasfit(res) $ssasfit(res,file)
+      }
       if { [llength $ssasfit(DI)] != 0 } {
          set ssasfit(DI)  [lmindex $ssasfit(DI)  $ind]
       }
@@ -1510,7 +1543,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	    } else {
 		sasfit_arr_op lappend sf tmpsasfit "file," "file," $listIndex \
 			{name hide firstskip lastskip divisor widname \
-			Q I DI res r1 r2 l1 l2 lambda Dlambda d Dd \
+			Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd \
 			dr_by_count dr_percent dr_loglogdist dr_mindist}
 	        lset sf(file,widname) $newIndex [lreplace [lindex $sf(file,widname) end] 1 1 [expr $newIndex+1]]
 		incr newIndex
@@ -1518,7 +1551,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	    incr listIndex
 	}
 	sasfit_arr_op set tmpsasfit sf "file," "file," -1 {name hide firstskip lastskip divisor \
-		widname Q I DI res r1 r2 l1 l2 lambda Dlambda d Dd n \
+		widname Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd n \
 		dr_by_count dr_percent dr_loglogdist dr_mindist}
 	
 	set tmpsasfit(file,widcnt) $newIndex
@@ -1721,7 +1754,7 @@ proc MergeCmd {} {
 	       -highlightthickness 0 -pady 1m
 	button $w.layout1.read -text "Read file" -command \
 	{
-               global tmpsasfit
+               global tmpsasfit ASCIIData
                set tmpfnlist $tmpsasfit(filename)
                set errornessFiles {}
                foreach fin $tmpfnlist {
@@ -1730,10 +1763,27 @@ proc MergeCmd {} {
 		  set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
                   if {[string equal "$tmpval" "no"]
 		  } {
-                     lappend tmpsasfit(file,Q)   $tmpsasfit(Q)
-                     lappend tmpsasfit(file,I)   $tmpsasfit(I)
-                     lappend tmpsasfit(file,DI)  $tmpsasfit(DI)
-                     lappend tmpsasfit(file,res) $tmpsasfit(res)
+                     lappend tmpsasfit(file,Q)        $ASCIIData(Q)
+                     lappend tmpsasfit(file,I)        $tmpsasfit(I)
+                     lappend tmpsasfit(file,DI)       $tmpsasfit(DI)
+                     lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
+                     set tmpsasfit(res,calc) [sasfit_res $resolution(lambda)  \
+			                             $resolution(Dlambda) \
+						     $resolution(r1)      \
+						     $resolution(l1)      \
+						     $resolution(r2)      \
+						     $resolution(l2)      \
+						     $resolution(d)       \
+						     $resolution(Dd)      \
+						     $ASCIIData(Q)       \
+						 ]
+                     lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
+
+		     if {$tmpAnalytPar(geometrical/datafile)} {
+			 lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
+		     } else {
+			 lappend tmpsasfit(file,res) $tmpsasfit(res,file)
+		     }
                      incr tmpsasfit(file,n)
                      MergeFileCmd tmpsasfit
 	          } else {
@@ -1923,7 +1973,7 @@ proc destroy_ascii_options {} {
 
 proc merge_cmd_apply { sasfit_arr isGlobal
 } {
-	upvar $sasfit_arr tmpsasfit
+	upvar $sasfit_arr localsasfit
 	global ASCIIData IQGraph GlobalFitIQGraph
 	global fn hide fskip lskip divisor widname
 
@@ -1931,14 +1981,14 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 	if {$isGlobal} { set GlobalFitIQGraph(x,title) $titleText
 	} else {         set IQGraph(x,title) $titleText }
 
-	clear_sasfit_config tmpsasfit "file," {name divisor firstskip lastskip \
+	clear_sasfit_config localsasfit "file," {name divisor firstskip lastskip \
 		hide dr_by_count dr_percent dr_loglogdist dr_mindist}
 
 	set n_no_hide 0
-	for {set i 0} {$i < $tmpsasfit(file,n)} {incr i} {
-		set tmpwidname [lindex $tmpsasfit(file,widname) $i]
+	for {set i 0} {$i < $localsasfit(file,n)} {incr i} {
+		set tmpwidname [lindex $localsasfit(file,widname) $i]
 		set j [lindex $tmpwidname 1]
-		arr_append_dr tmpsasfit "file," $j
+		arr_append_dr localsasfit "file," $j
 		if {[string compare $hide($j) no] == 0} {
 			incr n_no_hide
 		}
@@ -1946,17 +1996,17 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 	# why 2 times ? (see 'save_actual_globalfit_data' in sasfit_addfiles.tcl)
 	for {set i 0} {$i < 2} {incr i} {
 		if {$isGlobal} { 
-			replace_or_append_Nth_globalfit_data tmpsasfit $tmpsasfit(Nth,actual)
+			replace_or_append_Nth_globalfit_data localsasfit $localsasfit(Nth,actual)
 		}
 		if {$n_no_hide > 0} {
-			FileMergeCmd tmpsasfit
+			FileMergeCmd localsasfit
 			if {$isGlobal} {
 				global addsasfit
-				NewGlobalFitDataCmd tmpsasfit
-				cp_arr tmpsasfit addsasfit
+				NewGlobalFitDataCmd localsasfit
+				cp_arr localsasfit addsasfit
 			} else {
 				global sasfit
-				cp_arr tmpsasfit sasfit
+				cp_arr localsasfit sasfit
 				NewDataCmd sasfit
 			}
 		} else {

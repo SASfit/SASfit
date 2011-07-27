@@ -1450,13 +1450,14 @@ proc read_Ascii {filename ASCIIData args} {
 	   set res  0.0
 	   set x    0.0
 	   set y    0.0
+
 	   if { [string length $Data(InputFormat)] <= [llength $splitline]} {
 	     for {set i 0} {$i < [string length $Data(InputFormat)]} {incr i} {
 		switch [string index $Data(InputFormat) $i] {
 		   e   { set e_ok [scan [lindex $splitline $i] "%f" e ] }
 		   x   { set x_ok [scan [lindex $splitline $i] "%f" x ] }
 		   y   { set y_ok [scan [lindex $splitline $i] "%f" y ] }
-		   res { set r_ok [scan [lindex $splitline $i] "%f" r ] }
+		   r   { set r_ok [scan [lindex $splitline $i] "%f" res ] }
 		}
 	     }
 	     if {$y == 0 && [info exists Data(zero_int_chkb)] && $Data(zero_int_chkb)} {
@@ -1465,11 +1466,11 @@ proc read_Ascii {filename ASCIIData args} {
 	     if {($e == 0) && ([llength $args] == 0)} {
 		 set e_ok 0
 	     }
-	     if { !([regexp r $Data(InputFormat)]) } {
-		set res 0.0
-		set Data(res_available) 0
-	     } else { 
+	     if { [regexp r $Data(InputFormat)] } {
 		set Data(res_available) 1 
+	     } else { 
+		set Data(res_available) 0
+		set res 0.0
 	     }
 	     if {$Data(nonneg) && $y_ok} {
 		 if {$y < 0.0} {
