@@ -407,6 +407,8 @@ set tmpsasfit(file,Q)   {}
 set tmpsasfit(file,I)   {}
 set tmpsasfit(file,DI)  {}
 set tmpsasfit(file,res) {}
+set tmpsasfit(file,res,file) {}
+set tmpsasfit(file,res,calc) {}
 set tmpsasfit(file,widcnt) 0
 set tmpsasfit(file,n)       0
 set tmpsasfit(filelabel)    [file tail [lindex $tmpsasfit(filename) 0]]
@@ -444,10 +446,10 @@ if {$addsasfit(Nth,n) < $Nth} {
 set addsasfit(Nth,actual) $Nth
 sasfit_arr_op set addsasfit addsasfit "file," "Nth,file," [expr $Nth-1] \
 	{n name divisor firstskip lastskip hide widname widcnt \
-	Q I DI res r1 r2 lambda Dlambda l1 l2 Dd d \
+	Q I DI res "res,file" "res,calc" r1 r2 lambda Dlambda l1 l2 Dd d \
 	dr_by_count dr_percent dr_loglogdist dr_mindist}
 sasfit_arr_op set addsasfit addsasfit "" "Nth," [expr $Nth-1] \
-	{filelabel hide Q I DI res}
+	{filelabel hide Q I DI res "res,file" "res,calc"}
 }
 
 
@@ -509,17 +511,17 @@ proc replace_or_append_Nth_globalfit_data {globalsasfit Nth} {
 	   incr addsasfit(Nth,n)
 	   sasfit_arr_op lappend addsasfit addsasfit "Nth,file," "file," -1 \
 	      {n name divisor firstskip lastskip hide widname widcnt Q I DI res \
-	      r1 r2 lambda Dlambda l1 l2 Dd d \
+	      "res,file" "res,calc" r1 r2 lambda Dlambda l1 l2 Dd d \
 	      dr_by_count dr_percent dr_loglogdist dr_mindist}
 	   sasfit_arr_op lappend addsasfit addsasfit "Nth," "" -1 \
-	      {filelabel hide Q I DI res}
+	      {filelabel hide Q I DI res "res,file" "res,calc"}
 	} else {
 	   sasfit_arr_op lset addsasfit addsasfit "Nth,file," "file," [expr $Nth-1] \
-	      {n name divisor firstskip lastskip hide widname widcnt Q I DI res \
+	      {n name divisor firstskip lastskip hide widname widcnt Q I DI res "res,file" "res,calc" \
 	      r1 r2 lambda Dlambda l1 l2 Dd d \
 	      dr_by_count dr_percent dr_loglogdist dr_mindist}
 	   sasfit_arr_op lset addsasfit addsasfit "Nth," "" [expr $Nth-1] \
-	      {filelabel hide Q I DI res}
+	      {filelabel hide Q I DI res "res,file" "res,calc"}
 	}
 }
 
@@ -537,10 +539,10 @@ proc remove_Nth_globalfit_data {globalsasfit Nth} {
 	set addsasfit(Nth,actual) $Nth
 	sasfit_arr_op delete addsasfit addsasfit "Nth,file," "Nth,file," [expr $Nth-1] \
 		{n name divisor firstskip lastskip hide widname widcnt Q I DI res \
-		r1 r2 lambda Dlambda l1 l2 Dd d \
+		"res,calc" "res,file" r1 r2 lambda Dlambda l1 l2 Dd d \
 		dr_by_count dr_percent dr_loglogdist dr_mindist}
 	sasfit_arr_op delete addsasfit addsasfit "Nth," "Nth," [expr $Nth-1] \
-		{filelabel hide Q I DI res}
+		{filelabel hide Q I DI res "res,file" "res,calc"}
 
 	if {$Nth == $addsasfit(Nth,n)} {
 		incr addsasfit(Nth,actual) -1
@@ -802,6 +804,8 @@ button $w.layout1.read -text "Read File" \
                      lappend tmpsasfit(file,I)   $tmpsasfit(I)
                      lappend tmpsasfit(file,DI)  $tmpsasfit(DI)
                      lappend tmpsasfit(file,res) $tmpsasfit(res)
+                     lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
+                     lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
                      incr tmpsasfit(file,n)
                      MergeFileCmd tmpsasfit
 	          } else {
@@ -851,6 +855,8 @@ button $w.layout2.readclipboard -text "Read from Clipboard" \
                   lappend tmpsasfit(file,I)   $tmpsasfit(I)
                   lappend tmpsasfit(file,DI)  $tmpsasfit(DI)
                   lappend tmpsasfit(file,res) $tmpsasfit(res)
+                  lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
+                  lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
                   incr tmpsasfit(file,n)
                   MergeFileCmd tmpsasfit
 	       } else {
