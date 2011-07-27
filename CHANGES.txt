@@ -1,3 +1,6 @@
+0.93.?, 2011-??-??
+- bug fix of the resolution parameter handling in case it will be read in from a data file
+
 0.93.3, 2011-05-04
 - bug fix in the model "Stacked Discs". The structure factor describing the stacking order contained a bug.
 - extended plugin for stroboscopic measurements, especially for TISANE
