@@ -2031,12 +2031,13 @@ for {set k 0} {$k < $max} {incr k} {
       if {[llength [lindex $xdata($i) $k]] != 0 } {
          append line [format "%${fieldwidth}g " [lindex $xdata($i) $k]]
          append line [format "%${fieldwidth}g " [lindex $ydata($i) $k]]
-         set dy  [lindex $dydata($i) $k]
-         if {$dy > 0} {
-            append line [format "%${fieldwidth}g " $dy]
-         } else {
-            append line [format "%${fieldwidth}g " -1]
-         }
+         append line [format "%${fieldwidth}g " [lindex $dydata($i) $k]]
+#         set dy  [lindex $dydata($i) $k]
+#         if {$dy > 0} {
+#            append line [format "%${fieldwidth}g " $dy]
+#         } else {
+#            append line [format "%${fieldwidth}g " -1]
+#         }
          append line [format "%${fieldwidth}g " [lindex $resdata($i) $k]]
       } else { append line [format "%[expr 4*($fieldwidth+1)]s" ""] }
    }
