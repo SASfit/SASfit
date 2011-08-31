@@ -1427,13 +1427,25 @@ proc read_Ascii {filename ASCIIData args} {
 	   incr lineno
 	   lappend Data(Comment) $line
 	}
+	set fieldseparator       "\t ;"
+	set fieldseparator_comma "\t ;,"
 	while {![eof $f]} {
 	   gets $f line
 	   if {![string length $line]} { continue }; # skip empty lines
-
 	   incr lineno
-	   #set tmpsplitline [split $line "\t ,"]
-	   set tmpsplitline [split $line "\t ;"]
+
+	   set tmpsplitline {}
+	   set firstcomma [string first "," $line]
+	   set firstdot   [string first "." $line]
+	   if { $firstcomma >= 0
+		&& $firstdot >= 0
+		&& ($firstdot < $firstcomma)
+	   } {
+		   # assume comma as field separator
+		   set tmpsplitline [split $line $fieldseparator_comma]
+	   } else {
+		   set tmpsplitline [split $line $fieldseparator]
+	   }
 	   set splitline {}
 	   foreach i $tmpsplitline {
 	      set leni [string length [string trim $i]]

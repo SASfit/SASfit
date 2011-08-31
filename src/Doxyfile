@@ -31,7 +31,7 @@ PROJECT_NAME           = SASfit
 # This could be handy for archiving the generated documentation or
 # if some version control system is used.
 
-PROJECT_NUMBER         = 2011-06-12-release-a90dc1c0f05f
+PROJECT_NUMBER         = 2011-07-27-release-314a7e7f46e3
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
