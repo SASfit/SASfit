@@ -20,3 +20,6 @@ sasfit
 *.pyc
 *.pyo
 doc/wikibot/pywikipedia/login-data/*.data
+data/workdata
+*.swp
+*.cmake.*
