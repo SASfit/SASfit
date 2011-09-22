@@ -19,7 +19,44 @@
 
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+#   Ingo Breßler (sasfit@ingobressler.net)
 
+proc menuBatch {} {
+
+    set btnApply .analytical.adj.calc
+    set btnFit   .analytical.adj.run
+
+    puts "test: '[$btnApply cget -text]'"
+
+    if {![winfo exists $btnApply] ||
+        ![winfo exists $btnFit]
+    } {
+        tk_messageBox -parent . -icon warning -message [concat \
+            "Please open the fit window first:\n" \
+            "<menubar> -> 'Calc' -> 'Single Data Set' -> 'fit'"]
+        return
+    }
+
+    set w .batch
+
+    if {[winfo exists $w]} {destroy $w}
+    toplevel $w
+    wm geometry $w
+    wm title $w "batch processing"
+    raise $w
+    focus $w
+
+    frame $w.series
+    pack  $w.series
+    #grid $w.series   -column 0 -row 2 -ipady 2m -columnspan 2 -sticky nsew
+
+    array set ::batchConfig {}
+    # reload parameter file before each run/file?
+    set ::batchConfig(seriesLoadCmd) "$btnApply invoke"
+    # TODO, save csv parameter export? parameters&moments
+    # set ::batchConfig(seriesSaveCmd) ""
+    seriesInit ::batchConfig $w.series
+}
 
 ## ********************************************************
 ## tail.tcl version 1.0

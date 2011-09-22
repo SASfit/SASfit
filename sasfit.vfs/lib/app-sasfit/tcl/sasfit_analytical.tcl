@@ -11787,6 +11787,11 @@ proc analytical_menu_bar { simorfit analytPar tmpAnalytPar actualAnalytPar \
 		-label "update menu during fit ?" \
 		-variable ::sasfit(update_menu_during_fit)
 
+	if { !$ap(isGlobal) } {
+		$w.menu.options.menu add command -label "run batch ..." \
+			-command { menuBatch }
+	}
+
 	plot_axis_menu .analytical $iqgraph actap(plottype)
 
 	sasfit_menubar_build_help $w.menu.help
