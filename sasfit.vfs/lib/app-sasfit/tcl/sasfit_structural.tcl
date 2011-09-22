@@ -19,6 +19,7 @@
 
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+#   Ingo Breﬂler (sasfit@ingobressler.net)
 
 #------------------------------------------------------------------------------
 #  calculates Guinier and Porod approximations and integral structural 
@@ -26,10 +27,12 @@
 #  Porod constant, Background, scattering invariant, Porod volume, specific 
 #  surface, correlation length, intersection length
 #
-proc load_data_file { filename } {
+proc load_data_file { configarr filename
+} {
+    upvar $configarr arr
 	set ::sasfit(filename) $filename
 	if {![string equal [ReadFileCmd ::sasfit] no]} {
-		tk_messageBox -parent .structural -icon error -message \
+		tk_messageBox -parent $arr(wls_wid) -icon error -message \
 			"could not read data file $::sasfit(filename)"
 		return
 	}
@@ -51,7 +54,7 @@ proc load_data_file { filename } {
 	set ::sasfit(file,hide)      {no}
 	dr_default_op set ::sasfit "file,"
 	set ::sasfit(file,widname)   {{.addfile.lay2 0}}
-	RefreshStructParFit
+	eval $arr(seriesLoadCmd)
 }
 
 proc structuralParFitCmd {} {
@@ -72,6 +75,9 @@ proc menu_enable {} {
 	.top.file.menu entryconfigure 1 -state normal
 }
 
+set ::StructParData(seriesLoadCmd) { RefreshStructParFit }
+set ::StructParData(seriesSaveCmd) { structparSaveResult }
+
 if {[winfo exists .structural]} {destroy .structural}
 toplevel .structural
 menu_disable
@@ -81,10 +87,12 @@ bindtags .structural $taglist
 bind WindowCloseTag <Destroy> {
 	menu_enable
 	if {[info exists ::StructParData(prev_file)]} {
-		load_data_file [lindex $::StructParData(prev_file) 0]
+		load_data_file ::StructParData [lindex $::StructParData(prev_file) 0]
 	}
 }
-set ::StructParData(prev_file) $::sasfit(file,name)
+if {[info exists ::sasfit(file,name)]} { 
+    set ::StructParData(prev_file) $::sasfit(file,name)
+}
 
 set w .structural
 wm geometry $w
@@ -653,42 +661,55 @@ grid rowconfigure    $w.porodresult {0 1 2 3 4} -weight 1
 ##################################################################
 ################ Fast Analysis of Data Series ####################
 ##################################################################
-set wls $w.loadandsave
-set StructParData(wls_wid) $wls
 
-# init config
-if {![info exists ::StructParData(series_indir)] ||
-    ![file isdirectory $::StructParData(series_indir)]
-} {	set ::StructParData(series_indir) "$::sasfit(datadir)" }
-if {![info exists ::StructParData(series_outfile)]
-} {
-	set ::StructParData(series_outfile) "isp.csv"
-	if {[info exists ::sasfit(lastProjectFile)]} {
-		set fname [file rootname [file tail $::sasfit(lastProjectFile)]]
-		set ::StructParData(series_outfile) \
-			"${fname}_$::StructParData(series_outfile)"
-	}
-	set ::StructParData(series_outfile) \
-		[file join $::StructParData(series_indir) \
-			$::StructParData(series_outfile)]
+seriesInit ::StructParData $w.loadandsave
+catch {RefreshStructParFit} {}
+
 }
-if {![info exists ::StructParData(series_ptrn)]
-} {	set ::StructParData(series_ptrn) "*.*" }
-set ::StructParData(series_runnr) 0
-set numCols 8
-set firstRow 7
+
+proc seriesInit { configarr widgetpath
+} {
+    upvar $configarr arr
+    set arr(wls_wid) $widgetpath
+
+    # init config
+    if {![info exists arr(series_indir)] ||
+        ![file isdirectory $arr(series_indir)]
+    } {
+        set arr(series_indir) "$::sasfit(datadir)"
+    }
+    if {![info exists arr(series_outfile)]
+    } {
+        set arr(series_outfile) "isp.csv"
+        if {[info exists ::sasfit(lastProjectFile)]} {
+            set fname [file rootname [file tail $::sasfit(lastProjectFile)]]
+            set arr(series_outfile) \
+                "${fname}_$arr(series_outfile)"
+        }
+        set arr(series_outfile) \
+            [file join $arr(series_indir) \
+                $arr(series_outfile)]
+    }
+    if {![info exists arr(series_ptrn)]
+    } {
+        set arr(series_ptrn) "*.*"
+    }
+    set arr(series_runnr) 0
+    set arr(numCols) 8
+    set arr(firstRow) 7
 
 # helper functions
 proc getIndir { structpar 
 } {
 	upvar $structpar spd
 	set dir [tk_chooseDirectory -initialdir "$spd(series_indir)" \
-		-parent .structural -mustexist true \
+		-parent $spd(wls_wid) -mustexist true \
 		-title "Please select an input directory"]
+    if {![file isdirectory $dir]} { return }
 	set spd(series_indir) $dir
 	$spd(wls_wid).ptrnNtr validate
 	set fname [file tail $::StructParData(series_outfile)]
-	set ::StructParData(series_outfile) [file join $dir $fname]
+	set spd(series_outfile) [file join $dir $fname]
 }
 proc getOutFile { structpar 
 } {
@@ -696,7 +717,7 @@ proc getOutFile { structpar
 	set types {{{Text Files (Semicolon Separated Values)} {.csv}} {{All Files} *}}
 	set initialfile [file tail $spd(series_outfile)]
 	set initialdir [file dirname $spd(series_outfile)]
-	set outFile [tk_getSaveFile -initialdir "$initialdir" -parent .structural \
+	set outFile [tk_getSaveFile -initialdir "$initialdir" -parent $spd(wls_wid) \
 		-filetypes $types -initialfile "$initialfile" \
 		-title "Please select an output file"]
 	set spd(series_outfile) $outFile
@@ -739,27 +760,31 @@ proc removeFile { structpar } {
 	$lb selection clear 0 end
 }
 
-proc updateFileSelection { args } {
+proc updateFileSelection { configarr args } {
+	upvar $configarr arr
 	if {[llength $args] > 0} {
-		set ::StructParData(series_runnr) [lindex $args 0]
+		set arr(series_runnr) [lindex $args 0]
 	}
-	$::StructParData(wls_wid).fileBox selection clear 0 end
-	$::StructParData(wls_wid).fileBox selection set $::StructParData(series_runnr)
+	$arr(wls_wid).fileBox selection clear 0 end
+	$arr(wls_wid).fileBox selection set $arr(series_runnr)
 }
 
-button $wls.inDirBtn -text "select input directory:" -command { getIndir ::StructParData }
-grid   $wls.inDirBtn -row $firstRow -column 0 -sticky e -columnspan 2
-label  $wls.inDirLbl -textvariable ::StructParData(series_indir)
-grid   $wls.inDirLbl -row $firstRow -column 2 -sticky w -columnspan $numCols
+proc seriesBuildWidgets { configarr wls
+} {
+    upvar $configarr arr
+    button $wls.inDirBtn -text "select input directory:" -command "getIndir $configarr"
+    grid   $wls.inDirBtn -row $arr(firstRow) -column 0 -sticky e -columnspan 2
+    label  $wls.inDirLbl -textvariable [format "%s(series_indir)" $configarr]
+    grid   $wls.inDirLbl -row $arr(firstRow) -column 2 -sticky w -columnspan $arr(numCols)
 
-label  $wls.ptrnLbl -text "enter a file selection pattern: "
-grid   $wls.ptrnLbl -row [expr $firstRow+1] -column 0 -sticky e -columnspan 2
-entry  $wls.ptrnNtr -textvariable ::StructParData(series_ptrn) -width 10 \
-	-justify right -validate key \
-	-validatecommand { processPattern ::StructParData "%P" }
-grid   $wls.ptrnNtr -row [expr $firstRow+1] -column 2 -sticky w
-$wls.ptrnNtr validate
-setTooltip $wls.ptrnNtr \
+    label  $wls.ptrnLbl -text "enter a file selection pattern: "
+    grid   $wls.ptrnLbl -row [expr $arr(firstRow)+1] -column 0 -sticky e -columnspan 2
+    entry  $wls.ptrnNtr -textvariable [format "%s(series_ptrn)" $configarr] -width 10 \
+        -justify right -validate key \
+        -validatecommand "processPattern $configarr \"%P\""
+    grid   $wls.ptrnNtr -row [expr $arr(firstRow)+1] -column 2 -sticky w
+    $wls.ptrnNtr validate
+    setTooltip $wls.ptrnNtr \
 "The pattern may contain any of the following special characters:
 ?
     Matches any single character.
@@ -785,139 +810,172 @@ More Examples:
     Matches all files whose name contains an 'a', a 'b' or 
     the sequence 'cde'."
 
-listbox $wls.fileBox -height 8 -yscrollcommand "$wls.fileScrY set" \
-	-xscrollcommand "$wls.fileScrX set" \
-	-selectmode extended \
-	-listvariable ::StructParData(series_files)
-scrollbar $wls.fileScrY -orient vertical -command "$wls.fileBox yview"
-grid $wls.fileBox -row [expr $firstRow+2] -sticky nsew -columnspan $numCols
-grid $wls.fileScrY -row [expr $firstRow+2] -column $numCols -sticky ns
-scrollbar $wls.fileScrX -orient horizontal -command "$wls.fileBox xview"
-grid $wls.fileScrX -row [expr $firstRow+3] -sticky ew -columnspan $numCols
-menu $wls.fileBox.popup -tearoff 0
-$wls.fileBox.popup add command -label "calculate" -command \
-{
-	set ::StructParData(loadnextfail) 0
-	set idx [lindex [$::StructParData(wls_wid).fileBox curselection] 0]
-	if {$idx < [llength $::StructParData(series_files)]} { 
-		set ::StructParData(series_runnr) $idx
-	}
-	$::StructParData(wls_wid).loadnext invoke
-}
-$wls.fileBox.popup add command -label "remove" \
-	-command { removeFile ::StructParData }
-bind $wls.fileBox <ButtonPress-3> "showFilePopup $wls.fileBox %X %Y %x %y"
-bind $wls.fileBox <Double-ButtonPress-1> "showFilePopup $wls.fileBox %X %Y %x %y"
+    listbox $wls.fileBox -height 8 -yscrollcommand "$wls.fileScrY set" \
+        -xscrollcommand "$wls.fileScrX set" \
+        -selectmode extended \
+        -listvariable [format "%s(series_files)" $configarr]
+    scrollbar $wls.fileScrY -orient vertical -command "$wls.fileBox yview"
+    grid $wls.fileBox -row [expr $arr(firstRow)+2] -sticky nsew -columnspan $arr(numCols)
+    grid $wls.fileScrY -row [expr $arr(firstRow)+2] -column $arr(numCols) -sticky ns
+    scrollbar $wls.fileScrX -orient horizontal -command "$wls.fileBox xview"
+    grid $wls.fileScrX -row [expr $arr(firstRow)+3] -sticky ew -columnspan $arr(numCols)
+    menu $wls.fileBox.popup -tearoff 0
 
-button $wls.storeFNLabel -text "select output file:" -command { getOutFile ::StructParData }
-grid   $wls.storeFNLabel -row [expr $firstRow+4] -column 0 -columnspan 2 -sticky e
-label  $wls.storeFNEntry -textvariable ::StructParData(series_outfile)
-grid   $wls.storeFNEntry -row [expr $firstRow+4] -column 2 -columnspan $numCols -sticky w
-
-
-button $wls.loadnext -text "load next file" -command \
-{
-	updateFileSelection
-	set filename ""
-	if {$::StructParData(series_runnr) >= [llength $::StructParData(series_files)]
-	} {
-		tk_messageBox -parent .structural -icon info -message \
-			"last run number has been reached"
-		#set filename [lindex $::StructParData(prev_file) 0]
-		return
-	} else {
-		set filename [file join $::StructParData(series_indir) \
-				[lindex $::StructParData(series_files) \
-					$::StructParData(series_runnr)]]
-	}
-	set ::StructParData(loadnextfail) 0
-	load_data_file $filename
-	incr ::StructParData(series_runnr)
+proc popupCalculateCmd { configarr
+} {
+    upvar $configarr arr
+    set arr(loadnextfail) 0
+    set idx [lindex [$arr(wls_wid).fileBox curselection] 0]
+    if {$idx < [llength $arr(series_files)]} { 
+        set arr(series_runnr) $idx
+    }
+    $arr(wls_wid).loadnext invoke
 }
+    $wls.fileBox.popup add command -label "calculate" -command "popupCalculateCmd $configarr"
+    $wls.fileBox.popup add command -label "remove" \
+        -command "removeFile $configarr"
+    bind $wls.fileBox <ButtonPress-3> "showFilePopup $wls.fileBox %X %Y %x %y"
+    bind $wls.fileBox <Double-ButtonPress-1> "showFilePopup $wls.fileBox %X %Y %x %y"
 
-button $wls.storeISP -text "save fit result" -command \
-{
-	set fid [open $::StructParData(series_outfile) a+]
-	set c0 [structpar_get_data_descr ::StructParData]
-	set c1 [structpar_get_data_value ::StructParData]
-	set c2 [structpar_get_data_error ::StructParData]
-	if {[file size $::StructParData(series_outfile)] == 0} {
-		set headerStr "runNr;filename"
-		for {set i 0} {$i < [llength $c0]} {incr i
-		} {
-			append headerStr ";[lindex $c0 $i]"
-			# if this value has an error
-			if {[lindex [lindex $c1 $i] 1] >= 0} {
-				append headerStr ";error"
-			}
-		}
-		puts $fid $headerStr
-	}
-	set values [structpar_get_data_value ::StructParData]
-	set errors [structpar_get_data_error ::StructParData]
-	set dataStr [expr $::StructParData(series_runnr)-1]
-	set filename ""
-	if {[info exists ::sasfit(file,name)]} { set filename [lindex $::sasfit(file,name) 0] }
-	append dataStr ";$filename"
-	foreach valpair $c1 {
-		append dataStr ";[lindex $valpair 0]"
-		set errIdx [lindex $valpair 1]
-		if {$errIdx >= 0} {
-			append dataStr ";[lindex $c2 $errIdx]"
-		}
-	}
-	puts $fid $dataStr
-	close $fid
-}
-button $wls.doall -text "Do all" -command \
-{
-	set ::StructParData(loadnextfail) 0
-	while { ($::StructParData(loadnextfail) == 0) && \
-		($::StructParData(series_runnr) < [llength $::StructParData(series_files)])
-	} {
-		$::StructParData(wls_wid).loadnext invoke
-		if {$::StructParData(loadnextfail) == 0} {
-			$::StructParData(wls_wid).storeISP invoke
-		}
-		update
-	}
-}
-button $wls.resetISP -text "reset data file" -command \
-{
-	set fid [open $::StructParData(series_outfile) w]
-	close $fid
-	updateFileSelection 0
+    button $wls.storeFNLabel -text "select output file:" -command "getOutFile $configarr"
+    grid   $wls.storeFNLabel -row [expr $arr(firstRow)+4] -column 0 -columnspan 2 -sticky e
+    label  $wls.storeFNEntry -textvariable [format "%s(series_outfile)" $configarr]
+    grid   $wls.storeFNEntry -row [expr $arr(firstRow)+4] -column 2 -columnspan $arr(numCols) -sticky w
+
+    button $wls.loadnext -text "load next file" -command "seriesLoadNext $configarr"
+    button $wls.storeISP -text "save fit result" -command "seriesSaveResult $configarr"
+    button $wls.doall -text "Do all" -command "seriesDoAll $configarr"
+    button $wls.resetISP -text "reset data file" -command "seriesResetResult $configarr"
+
+    grid $wls.loadnext - $wls.storeISP - $wls.resetISP - $wls.doall - \
+        -row [expr $arr(firstRow)+5] -sticky e
+    grid columnconfigure $wls {0 1 2 3 4 5} -weight 1
+
+    update
+
+    set fboxHeight [winfo reqheight $wls.fileBox]
+    set topParent [winfo toplevel $wls]
+    set winHeight [winfo reqheight $topParent]
+    set heightMargin [expr $winHeight - $fboxHeight ]
+    set rowHeight [expr ($fboxHeight \
+             - 2*[$wls.fileBox cget -borderwidth]) \
+             / [$wls.fileBox cget -height]]
+
+    set taglist [bindtags $topParent]
+    lappend taglist ResizeTag
+    bindtags $topParent $taglist
+    bind ResizeTag <Configure> " resizeCmd $wls %h $heightMargin $rowHeight"
 }
 
-grid $wls.loadnext - $wls.storeISP - $wls.resetISP - $wls.doall - \
-	-row [expr $firstRow+5] -sticky e
-grid columnconfigure $wls {0 1 2 3 4 5} -weight 1
-
-catch {RefreshStructParFit} {}
-update
-
-set fboxHeight [winfo reqheight .structural.user.loadandsave.fileBox]
-set winHeight [winfo reqheight .structural]
-set heightMargin [expr $winHeight - $fboxHeight ]
-set rowHeight [expr ($fboxHeight \
-		 - 2*[.structural.user.loadandsave.fileBox cget -borderwidth]) \
-		 / [.structural.user.loadandsave.fileBox cget -height]]
-
-set taglist [bindtags .structural]
-lappend taglist StructuralResizeTag
-bindtags .structural $taglist
-bind StructuralResizeTag <Configure> " structuralResizeCmd %h $heightMargin $rowHeight"
-
-}
-
-proc structuralResizeCmd { height margin rowHeight } {
+proc resizeCmd { widget height margin rowHeight } {
 	if {$rowHeight < 1} { return }
 	set avail [expr $height - $margin]
 	set count [expr $avail / $rowHeight]
 	if {$count < 1} { set count 1}
-	.structural.user.loadandsave.fileBox configure -height $count
+	$widget.fileBox configure -height $count
 }
 
+proc seriesLoadNext { configarr
+} {
+    upvar $configarr arr
+    updateFileSelection $configarr
+    set filename ""
+    if {$arr(series_runnr) >= [llength $arr(series_files)]
+    } {
+        tk_messageBox -parent $arr(wls_wid) -icon info -message \
+            "last file has been reached"
+        #set filename [lindex $arr(prev_file) 0]
+        return
+    } else {
+        set filename [file join $arr(series_indir) \
+                [lindex $arr(series_files) \
+                    $arr(series_runnr)]]
+    }
+    set arr(loadnextfail) 0
+    if { ![info exists arr(seriesLoadCmd)]
+    } {
+        tk_messageBox -parent $arr(wls_wid) -icon error -message \
+            "No load command defined!"
+    }
+    load_data_file $configarr $filename
+    incr arr(series_runnr)
+}
+
+proc seriesSaveResult { configarr
+} {
+    upvar $configarr arr
+    if { ![info exists arr(seriesSaveCmd)]
+    } {
+        tk_messageBox -parent $arr(wls_wid) -icon error -message \
+            "No save command defined!"
+        return
+    }
+    eval $arr(seriesSaveCmd) $configarr
+}
+
+proc seriesDoAll { configarr
+} {
+    upvar $configarr arr
+    set arr(loadnextfail) 0
+    while { ($arr(loadnextfail) == 0) && \
+        ($arr(series_runnr) < [llength $arr(series_files)])
+    } {
+        $arr(wls_wid).loadnext invoke
+        if {$arr(loadnextfail) == 0} {
+            $arr(wls_wid).storeISP invoke
+        }
+        update
+    }
+}
+
+proc seriesResetResult { configarr
+} {
+    upvar $configarr arr
+    set fid [open $arr(series_outfile) w]
+    close $fid
+    updateFileSelection $configarr 0
+}
+
+    seriesBuildWidgets $configarr $widgetpath
+    return $widgetpath
+
+}
+
+proc structparSaveResult { configarr
+} {
+    upvar $configarr arr
+    set fid [open $arr(series_outfile) a+]
+    set c0 [structpar_get_data_descr $configarr]
+    set c1 [structpar_get_data_value $configarr]
+    set c2 [structpar_get_data_error $configarr]
+    if {[file size $arr(series_outfile)] == 0} {
+        set headerStr "runNr;filename"
+        for {set i 0} {$i < [llength $c0]} {incr i
+        } {
+            append headerStr ";[lindex $c0 $i]"
+            # if this value has an error
+            if {[lindex [lindex $c1 $i] 1] >= 0} {
+                append headerStr ";error"
+            }
+        }
+        puts $fid $headerStr
+    }
+    set values [structpar_get_data_value $configarr]
+    set errors [structpar_get_data_error $configarr]
+    set dataStr [expr $arr(series_runnr)-1]
+    set filename ""
+    if {[info exists ::sasfit(file,name)]} { set filename [lindex $::sasfit(file,name) 0] }
+    append dataStr ";$filename"
+    foreach valpair $c1 {
+        append dataStr ";[lindex $valpair 0]"
+        set errIdx [lindex $valpair 1]
+        if {$errIdx >= 0} {
+            append dataStr ";[lindex $c2 $errIdx]"
+        }
+    }
+    puts $fid $dataStr
+    close $fid
+}
 
 proc RefreshStructParFit {} {
 	global StructParData printer_vars
