@@ -32,7 +32,7 @@ proc load_data_file { configarr filename
     upvar $configarr arr
 	set ::sasfit(filename) $filename
 	if {![string equal [ReadFileCmd ::sasfit] no]} {
-		tk_messageBox -parent $arr(wls_wid) -icon error -message \
+		tk_messageBox -parent . -icon error -message \
 			"could not read data file $::sasfit(filename)"
 		return
 	}
@@ -662,6 +662,12 @@ grid rowconfigure    $w.porodresult {0 1 2 3 4} -weight 1
 ################ Fast Analysis of Data Series ####################
 ##################################################################
 
+set outFile "isp.csv"
+if {[info exists ::sasfit(lastProjectFile)]} {
+	set fname [file rootname [file tail $::sasfit(lastProjectFile)]]
+	set outFile "${fname}_$outFile"
+}
+set ::StructParData(series_outfile) $outFile
 seriesInit ::StructParData $w.loadandsave
 catch {RefreshStructParFit} {}
 
@@ -672,23 +678,29 @@ proc seriesInit { configarr widgetpath
     upvar $configarr arr
     set arr(wls_wid) $widgetpath
 
+proc seriesSetOutFile { configarr outFile
+} {
+	upvar $configarr arr
+	if {[info exists arr(output_individual)]} {
+		set fname [file tail $outFile]
+		set dir [file dirname $outFile]
+		set arr(series_outfile) [file join $dir "%s $fname"]
+	} else {
+		set arr(series_outfile) $outFile
+	}
+}
+
     # init config
     if {![info exists arr(series_indir)] ||
         ![file isdirectory $arr(series_indir)]
     } {
         set arr(series_indir) "$::sasfit(datadir)"
     }
-    if {![info exists arr(series_outfile)]
+    if {![info exists arr(series_outfile)] ||
+		[llength [file split $arr(series_outfile)]] <= 1
     } {
-        set arr(series_outfile) "isp.csv"
-        if {[info exists ::sasfit(lastProjectFile)]} {
-            set fname [file rootname [file tail $::sasfit(lastProjectFile)]]
-            set arr(series_outfile) \
-                "${fname}_$arr(series_outfile)"
-        }
-        set arr(series_outfile) \
-            [file join $arr(series_indir) \
-                $arr(series_outfile)]
+        set outFile [file join $arr(series_indir) $arr(series_outfile)]
+		seriesSetOutFile $configarr $outFile
     }
     if {![info exists arr(series_ptrn)]
     } {
@@ -708,19 +720,25 @@ proc getIndir { structpar
     if {![file isdirectory $dir]} { return }
 	set spd(series_indir) $dir
 	$spd(wls_wid).ptrnNtr validate
-	set fname [file tail $::StructParData(series_outfile)]
+	# update output file name
+	set fname [file tail $spd(series_outfile)]
 	set spd(series_outfile) [file join $dir $fname]
 }
 proc getOutFile { structpar 
 } {
 	upvar $structpar spd
 	set types {{{Text Files (Semicolon Separated Values)} {.csv}} {{All Files} *}}
-	set initialfile [file tail $spd(series_outfile)]
+	set initialfile [string trim [file tail [format $spd(series_outfile) ""]]]
 	set initialdir [file dirname $spd(series_outfile)]
+	set windowtitle "Please select an output file"
+	if {[info exists spd(output_individual)]} {
+		set windowtitle "Please select an output file ending"
+	}
 	set outFile [tk_getSaveFile -initialdir "$initialdir" -parent $spd(wls_wid) \
-		-filetypes $types -initialfile "$initialfile" \
-		-title "Please select an output file"]
-	set spd(series_outfile) $outFile
+		-filetypes $types -initialfile "$initialfile" -title $windowtitle]
+    if {[string length $outFile] <= 0} { return }
+	# separate output file for each data file
+	seriesSetOutFile $structpar $outFile
 }
 proc processPattern { structpar ptrn
 } {
@@ -1208,3 +1226,6 @@ proc setStructParQval { name } {
 		}
 	}
 }
+
+# vim: set ts=4 sw=4 tw=0:
+
