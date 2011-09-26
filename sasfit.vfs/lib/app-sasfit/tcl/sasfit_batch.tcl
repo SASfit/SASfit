@@ -26,8 +26,6 @@ proc menuBatch {} {
     set btnApply .analytical.adj.calc
     set btnFit   .analytical.adj.run
 
-    puts "test: '[$btnApply cget -text]'"
-
     if {![winfo exists $btnApply] ||
         ![winfo exists $btnFit]
     } {
@@ -52,10 +50,44 @@ proc menuBatch {} {
 
     array set ::batchConfig {}
     # reload parameter file before each run/file?
-    set ::batchConfig(seriesLoadCmd) "$btnApply invoke"
-    # TODO, save csv parameter export? parameters&moments
-    # set ::batchConfig(seriesSaveCmd) ""
+    set ::batchConfig(seriesLoadCmd) "$btnFit invoke"
+    set ::batchConfig(seriesSaveCmd) "saveBatchResult"
+    set ::batchConfig(output_individual) true
+    set ::batchConfig(series_outfile) "fitresult.csv"
     seriesInit ::batchConfig $w.series
+}
+
+# TODO, save csv parameter export? parameters&moments
+proc saveBatchResult { configarr } {
+	upvar "::AnalytPar" ap
+	upvar $configarr ca
+	set result {}
+	set suffix "_text_export"
+	foreach key [array names ap *$suffix] {
+		set prefix [string range $key 0 [expr [string first $suffix $key]-1]]
+		set title [join [split "$ap(${prefix}_descr)" {_}] " "]
+		lappend result $title
+		lappend result ""
+		lappend result $ap(${key})
+		lappend result ""
+	}
+	# create output filename
+	set basename [join $::sasfit(filename) " "]
+	# remove the extension first, but may be significant
+#	set index [string last "." $basename]
+#	if {$index > 0} {
+#		set basename [string range $basename 0 [expr $index-1]]
+#	}
+	set fname "$basename fitresult.csv"
+	if {[info exists ca(series_outfile)] &&
+		[string first "%s" $ca(series_outfile)] >= 0
+	} {
+		set fname [format $ca(series_outfile) [file tail $basename]]
+	}
+	set textdata [join $result "\n"]
+	set fh [open "$fname" w+]
+	puts $fh $textdata
+	close $fh
 }
 
 ## ********************************************************
@@ -422,3 +454,5 @@ pack $abf.readbatch \
      $abf.exit \
      -side left -expand yes -fill x -padx 1mm
 }
+
+# vim: set ts=4 sw=4 tw=0: 
