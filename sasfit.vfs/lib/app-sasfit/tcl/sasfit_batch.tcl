@@ -57,7 +57,6 @@ proc menuBatch {} {
     seriesInit ::batchConfig $w.series
 }
 
-# TODO, save csv parameter export? parameters&moments
 proc saveBatchResult { configarr } {
 	upvar "::AnalytPar" ap
 	upvar $configarr ca
