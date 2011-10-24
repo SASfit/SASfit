@@ -60,7 +60,12 @@ proc menuBatch {} {
 proc saveBatchResult { configarr } {
 	upvar "::AnalytPar" ap
 	upvar $configarr ca
+
+	# create output filename
+	set basename [join [lindex $::sasfit(file,name) end] " "]
+
 	set result {}
+	lappend result $basename
 	set suffix "_text_export"
 	foreach key [array names ap *$suffix] {
 		set prefix [string range $key 0 [expr [string first $suffix $key]-1]]
@@ -70,14 +75,11 @@ proc saveBatchResult { configarr } {
 		lappend result $ap(${key})
 		lappend result ""
 	}
-	# create output filename
-	set basename [join $::sasfit(filename) " "]
-	# remove the extension first, but may be significant
-#	set index [string last "." $basename]
-#	if {$index > 0} {
-#		set basename [string range $basename 0 [expr $index-1]]
-#	}
-	set fname "$basename fitresult.csv"
+
+	set fname "fitresult.csv"
+	if {[string length $basename] > 0} {
+		set fname "$basename fitresult.csv"
+	}
 	if {[info exists ca(series_outfile)] &&
 		[string first "%s" $ca(series_outfile)] >= 0
 	} {

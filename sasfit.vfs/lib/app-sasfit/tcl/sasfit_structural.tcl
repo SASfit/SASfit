@@ -46,12 +46,16 @@ proc load_data_file { configarr filename
 	set ::sasfit(file,n) 1
 	set ::sasfit(file,name)  {}
 	lappend ::sasfit(file,name) $::sasfit(filename)
-	set ::sasfit(filename) "{$::sasfit(filename)}"
+	set ::sasfit(filename) ""
 	set ::sasfit(file,widcnt)     0
-	set ::sasfit(file,divisor)   {1}
-	set ::sasfit(file,firstskip) {0}
-	set ::sasfit(file,lastskip)  {0}
+#	set ::sasfit(file,divisor)   {1}
+#	set ::sasfit(file,firstskip) {0}
+#	set ::sasfit(file,lastskip)  {0}
 	set ::sasfit(file,hide)      {no}
+	if {[llength ::sasfit(file,name)] > 0} {
+		set fileindex [expr [llength ::sasfit(file,name)]-1]
+		set ::hide($fileindex) no
+	}
 	dr_default_op set ::sasfit "file,"
 	set ::sasfit(file,widname)   {{.addfile.lay2 0}}
 	eval $arr(seriesLoadCmd)
@@ -87,7 +91,8 @@ bindtags .structural $taglist
 bind WindowCloseTag <Destroy> {
 	menu_enable
 	if {[info exists ::StructParData(prev_file)]} {
-		load_data_file ::StructParData [lindex $::StructParData(prev_file) 0]
+#		load_data_file ::StructParData [lindex $::StructParData(prev_file) 0]
+		merge_cmd_apply tmpsasfit 0
 	}
 }
 if {[info exists ::sasfit(file,name)]} { 
