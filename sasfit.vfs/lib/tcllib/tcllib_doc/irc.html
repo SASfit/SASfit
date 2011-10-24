@@ -1,0 +1,391 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>irc - Low Level Tcl IRC Interface </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/irc/irc.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: irc.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ irc.n
+   -->
+
+<body>
+<h1> irc(n) 0.5 irc &quot;Low Level Tcl IRC Interface&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> irc - Create IRC connection and interface.
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#per-connection_commands">Per-connection Commands</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#callback_commands">Callback Commands</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl</b><br>
+package require <b>irc ?0.5?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::irc::config</b> ?key? ?value?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::irc::connection</b> </a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::irc::connections</b> </a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::irc::destroy</b> <i class='arg'>net</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>net</i> <strong>registerevent</strong> <i class='arg'>event</i> <i class='arg'>script</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>net</i> <strong>getevent</strong> <i class='arg'>event</i> <i class='arg'>script</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>net</i> <strong>eventexists</strong> <i class='arg'>event</i> <i class='arg'>script</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>net</i> <strong>connect</strong> <i class='arg'>hostname</i> ?port?</a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>net</i> <strong>config</strong> ?key? ?value?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>net</i> <strong>log</strong> <i class='arg'>level</i> <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>net</i> <strong>logname</strong></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>net</i> <strong>connected</strong></a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>net</i> <strong>sockname</strong></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>net</i> <strong>peername</strong></a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>net</i> <strong>user</strong> <i class='arg'>username</i> <i class='arg'>localhostname</i> <i class='arg'>localdomainname</i> <i class='arg'>userinfo</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>net</i> <strong>nick</strong> <i class='arg'>nick</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>net</i> <strong>ping</strong> <i class='arg'>target</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><i class='arg'>net</i> <strong>serverping</strong></a></td></tr>
+<tr valign=top ><td ><a href="#19"><i class='arg'>net</i> <strong>join</strong> <i class='arg'>channel</i> ?<i class='arg'>key</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#20"><i class='arg'>net</i> <strong>part</strong> <i class='arg'>channel</i> ?<i class='arg'>message</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#21"><i class='arg'>net</i> <strong>quit</strong> ?<i class='arg'>message</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#22"><i class='arg'>net</i> <strong>privmsg</strong> <i class='arg'>target</i> <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#23"><i class='arg'>net</i> <strong>notice</strong> <i class='arg'>target</i> <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#24"><i class='arg'>net</i> <strong>ctcp</strong> <i class='arg'>target</i> <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#25"><i class='arg'>net</i> <strong>kick</strong> <i class='arg'>channel</i> <i class='arg'>target</i> ?<i class='arg'>message</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#26"><i class='arg'>net</i> <strong>mode</strong> <i class='arg'>target</i> <i class='arg'>args</i></a></td></tr>
+<tr valign=top ><td ><a href="#27"><i class='arg'>net</i> <strong>topic</strong> <i class='arg'>channel</i> <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#28"><i class='arg'>net</i> <strong>invite</strong> <i class='arg'>channel</i> <i class='arg'>target</i></a></td></tr>
+<tr valign=top ><td ><a href="#29"><i class='arg'>net</i> <strong>send</strong> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#30"><b class='cmd'>who</b> ?<strong>address</strong>?</a></td></tr>
+<tr valign=top ><td ><a href="#31"><b class='cmd'>action</b> </a></td></tr>
+<tr valign=top ><td ><a href="#32"><b class='cmd'>target</b> </a></td></tr>
+<tr valign=top ><td ><a href="#33"><b class='cmd'>additional</b> </a></td></tr>
+<tr valign=top ><td ><a href="#34"><b class='cmd'>header</b> </a></td></tr>
+<tr valign=top ><td ><a href="#35"><b class='cmd'>msg</b> </a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides low-level commands to deal with the IRC protocol
+(Internet Relay Chat) for immediate and interactive multi-cast
+communication.
+
+<p>
+
+<dl>
+
+
+<dt><a name="1"><b class='cmd'>::irc::config</b> ?key? ?value?</a><dd>
+
+
+Sets configuration ?key? to ?value?. The configuration keys
+currently defined are the boolean flags <strong>logger</strong> and <strong>debug</strong>.
+<strong>logger</strong> makes <strong>irc</strong> use the logger package for printing
+error. <strong>debug</strong> requires <strong>logger</strong> and prints extra debug output.
+
+If no ?key? or ?value? is given the current values are returned.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::irc::connection</b> </a><dd>
+
+
+The command creates a new object to deal with an IRC connection.
+Creating this IRC object does not automatically create the network
+connection.  It returns a new irc namespace command which can be used
+to interact with the new IRC connection.  NOTE: the old form of the
+connection command, which took a hostname and port as arguments, is
+deprecated.  Use <b class='cmd'>connect</b> instead to specify this information.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::irc::connections</b> </a><dd>
+
+
+Returns a list of all the current connections that were created with
+<strong>connection</strong>
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::irc::destroy</b> <i class='arg'>net</i></a><dd>
+
+
+Deletes a connection and its associated namespace and information.
+
+</dl>
+
+<h2><a name="per-connection_commands">Per-connection Commands</a></h2>
+<p>
+<p>
+
+In the following list of available connection methods <i class='arg'>net</i>
+represents a connection command as returned by
+<b class='cmd'>::irc::connection</b>.
+
+<dl>
+
+<dt><a name="5"><i class='arg'>net</i> <strong>registerevent</strong> <i class='arg'>event</i> <i class='arg'>script</i></a><dd>
+
+
+Registers a callback handler for the specific event.  Events available
+are those described in RFC 1459
+
+<a href="http://www.rfc-editor.org/rfc/rfc1459.txt">http://www.rfc-editor.org/rfc/rfc1459.txt</a>.
+
+In addition, there are several other events defined.
+
+<strong>defaultcmd</strong> adds a command that is called if no other callback
+is present.  <strong>EOF</strong> is called if the connection signals an End of
+File condition. The events <strong>defaultcmd</strong>, <strong>defaultnumeric</strong>,
+and <strong>defaultevent</strong> are required.
+
+<i class='arg'>script</i> is executed in the connection namespace, which can take
+advantage of several commands (see <a href="#callback_commands">Callback Commands</a>
+below) to aid in the parsing of data.
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>net</i> <strong>getevent</strong> <i class='arg'>event</i> <i class='arg'>script</i></a><dd>
+
+
+Returns the current handler for the event if one exists. Otherwise an
+empty string is returned.
+
+
+<br><br>
+<dt><a name="7"><i class='arg'>net</i> <strong>eventexists</strong> <i class='arg'>event</i> <i class='arg'>script</i></a><dd>
+
+
+Returns a boolean value indicating the existence of the event handler.
+
+
+<br><br>
+<dt><a name="8"><i class='arg'>net</i> <strong>connect</strong> <i class='arg'>hostname</i> ?port?</a><dd>
+
+
+This causes the socket to be established.  <b class='cmd'>::irc::connection</b>
+created the namespace and the commands to be used, but did not
+actually open the socket. This is done here.  NOTE: the older form of
+'connect' did not require the user to specify a hostname and port,
+which were specified with 'connection'.  That form is deprecated.
+
+<br><br>
+<dt><a name="9"><i class='arg'>net</i> <strong>config</strong> ?key? ?value?</a><dd>
+
+
+The same as <b class='cmd'>::irc::config</b> but sets and gets options for the <i class='arg'>net</i>
+connection only.
+
+<br><br>
+<dt><a name="10"><i class='arg'>net</i> <strong>log</strong> <i class='arg'>level</i> <i class='arg'>message</i></a><dd>
+
+
+If logger is turned on by <strong>config</strong> this will write a log <i class='arg'>message</i>
+at <i class='arg'>level</i>.
+
+<br><br>
+<dt><a name="11"><i class='arg'>net</i> <strong>logname</strong></a><dd>
+
+
+Returns the name of the logger instance if logger is turned on.
+
+<br><br>
+<dt><a name="12"><i class='arg'>net</i> <strong>connected</strong></a><dd>
+
+
+Returns a boolean value indicating if this connection is connected to a server.
+
+
+<br><br>
+<dt><a name="13"><i class='arg'>net</i> <strong>sockname</strong></a><dd>
+
+
+Returns a 3 element list consisting of the ip address, the hostname, and the port
+of the local end of the connection, if currently connected.
+
+
+<br><br>
+<dt><a name="14"><i class='arg'>net</i> <strong>peername</strong></a><dd>
+
+
+Returns a 3 element list consisting of the ip address, the hostname, and the port
+of the remote end of the connection, if currently connected.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>net</i> <strong>user</strong> <i class='arg'>username</i> <i class='arg'>localhostname</i> <i class='arg'>localdomainname</i> <i class='arg'>userinfo</i></a><dd>
+
+
+Sends USER command to server.  <i class='arg'>username</i> is the username you want
+to appear.  <i class='arg'>localhostname</i> is the host portion of your hostname, <i class='arg'>localdomainname</i>
+is your domain name, and <i class='arg'>userinfo</i> is a short description of who you are. The 2nd and 3rd
+arguments are normally ignored by the IRC server.
+
+
+<br><br>
+<dt><a name="16"><i class='arg'>net</i> <strong>nick</strong> <i class='arg'>nick</i></a><dd>
+
+
+NICK command.  <i class='arg'>nick</i> is the nickname you wish to use for the
+particular connection.
+
+
+<br><br>
+<dt><a name="17"><i class='arg'>net</i> <strong>ping</strong> <i class='arg'>target</i></a><dd>
+
+
+Send a CTCP PING to <i class='arg'>target</i>.
+
+
+<br><br>
+<dt><a name="18"><i class='arg'>net</i> <strong>serverping</strong></a><dd>
+
+
+PING the server.
+
+
+<br><br>
+<dt><a name="19"><i class='arg'>net</i> <strong>join</strong> <i class='arg'>channel</i> ?<i class='arg'>key</i>?</a><dd>
+
+
+<i class='arg'>channel</i> is the IRC channel to join.  IRC channels typically
+begin with a hashmark (&quot;#&quot;) or ampersand (&quot;&amp;&quot;).
+
+
+<br><br>
+<dt><a name="20"><i class='arg'>net</i> <strong>part</strong> <i class='arg'>channel</i> ?<i class='arg'>message</i>?</a><dd>
+
+
+Makes the client leave <i class='arg'>channel</i>. Some networks may support the optional
+argument <i class='arg'>message</i>
+
+<br><br>
+<dt><a name="21"><i class='arg'>net</i> <strong>quit</strong> ?<i class='arg'>message</i>?</a><dd>
+
+
+Instructs the IRC server to close the current connection. The package
+will use a generic default if no <i class='arg'>message</i> was specified.
+
+
+<br><br>
+<dt><a name="22"><i class='arg'>net</i> <strong>privmsg</strong> <i class='arg'>target</i> <i class='arg'>message</i></a><dd>
+
+
+Sends <i class='arg'>message</i> to <i class='arg'>target</i>, which can be either a channel, or
+another user, in which case their nick is used.
+
+
+<br><br>
+<dt><a name="23"><i class='arg'>net</i> <strong>notice</strong> <i class='arg'>target</i> <i class='arg'>message</i></a><dd>
+
+
+Sends a <strong>notice</strong> with message <i class='arg'>message</i> to <i class='arg'>target</i>,
+which can be either a channel, or another user, in which case their nick is used.
+
+
+<br><br>
+<dt><a name="24"><i class='arg'>net</i> <strong>ctcp</strong> <i class='arg'>target</i> <i class='arg'>message</i></a><dd>
+
+
+Sends a CTCP of type <i class='arg'>message</i> to <i class='arg'>target</i>
+
+
+<br><br>
+<dt><a name="25"><i class='arg'>net</i> <strong>kick</strong> <i class='arg'>channel</i> <i class='arg'>target</i> ?<i class='arg'>message</i>?</a><dd>
+
+
+Kicks the user <i class='arg'>target</i> from the channel <i class='arg'>channel</i> with a <i class='arg'>message</i>.
+The latter can be left out.
+
+
+<br><br>
+<dt><a name="26"><i class='arg'>net</i> <strong>mode</strong> <i class='arg'>target</i> <i class='arg'>args</i></a><dd>
+
+
+Sets the mode <i class='arg'>args</i> on the target <i class='arg'>target</i>. <i class='arg'>target</i> may be a channel,
+a channel user, or yourself.
+
+
+<br><br>
+<dt><a name="27"><i class='arg'>net</i> <strong>topic</strong> <i class='arg'>channel</i> <i class='arg'>message</i></a><dd>
+
+
+Sets the topic on <i class='arg'>channel</i> to <i class='arg'>message</i> specifying an empty string
+will remove the topic.
+
+
+<br><br>
+<dt><a name="28"><i class='arg'>net</i> <strong>invite</strong> <i class='arg'>channel</i> <i class='arg'>target</i></a><dd>
+
+
+Invites <i class='arg'>target</i> to join the channel <i class='arg'>channel</i>
+
+
+<br><br>
+<dt><a name="29"><i class='arg'>net</i> <strong>send</strong> <i class='arg'>text</i></a><dd>
+
+
+Sends <i class='arg'>text</i> to the IRC server.
+
+</dl>
+
+<h2><a name="callback_commands">Callback Commands</a></h2>
+<p>
+<p>
+
+These commands can be used within callbacks
+
+<dl>
+
+<dt><a name="30"><b class='cmd'>who</b> ?<strong>address</strong>?</a><dd>
+
+
+Returns the nick of the user who performed a command.  The optional
+keyword <strong>address</strong> causes the command to return the user in the
+format &quot;username@address&quot;.
+
+<br><br>
+<dt><a name="31"><b class='cmd'>action</b> </a><dd>
+
+
+Returns the action performed, such as KICK, PRIVMSG, MODE, etc...
+Normally not useful, as callbacks are bound to a particular event.
+
+<br><br>
+<dt><a name="32"><b class='cmd'>target</b> </a><dd>
+
+
+Returns the target of a particular command, such as the channel or
+user to whom a PRIVMSG is sent. 
+
+<br><br>
+<dt><a name="33"><b class='cmd'>additional</b> </a><dd>
+
+
+Returns a list of any additional arguments after the target.
+
+<br><br>
+<dt><a name="34"><b class='cmd'>header</b> </a><dd>
+
+
+Returns the entire event header (everything up to the :) as a proper list.
+
+<br><br>
+<dt><a name="35"><b class='cmd'>msg</b> </a><dd>
+
+
+Returns the message portion of the command (the part after the :).
+
+</dl>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+rfc 1459
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+chat, irc
+</body></html>

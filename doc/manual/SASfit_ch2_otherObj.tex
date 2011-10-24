@@ -1,0 +1,490 @@
+\section{Other functions}
+
+\subsection{DLS\_Sphere\_RDG}  ~\\
+
+This function has been implemented to simulate the relaxation
+signal $g_2(t)-1 = g_1^2(t)$ of a DLS (dynamic light scattering)
+measurement. The $Q$ dependent contribution to the relaxation
+signal by particles of different radius $R$ is considered by
+weighting $g_2(t)-1$ with the form factor of sperical particles in
+Raylay-Debye-Gans approximation:
+\begin{align}
+   I_\text{DLS\_Sphere\_RDG} (t,\eta,T,Q) &=  \int\limits_0^\infty N(R) \; K^2_\text{sp}(Q,R)
+   \: e^{-D Q^2t} \; dR
+\end{align}
+with
+\begin{align}
+   D        & = \frac{k_BT}{6\pi\eta R} \nonumber \\
+   K_\text{sp}(Q,R) & = \frac{4}{3}\pi R^3  \, 3 \frac{\sin QR - QR \cos
+   QR}{(QR)^3}\nonumber\\
+   R & : \text {radius} \nonumber \\
+   T & : \text {temperature} \nonumber \\
+   \eta & : \text {viscosity} \nonumber \\
+   Q & : \text {scattering vector} \nonumber
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{Langevin}  ~\\
+
+This function has been implemented to simulate the magnetisation
+curve $M(B)$ of superparamagnetic particles following the Langevin
+statistics with a size distribution $N(R)$: Magnetization curve of
+superparamagnetic particles with magnetization a $M_s$ at
+temperature $T$
+\begin{align}
+M(B) & = \dfrac{\int\limits_0^\infty N(R)\, \tfrac{4}{3}\pi R^3\,
+M_{p}(B,R) \; dR}{\int\limits_0^\infty N(R) \tfrac{4}{3}\pi
+R^3\;dR}
+\\[3mm]
+M_{p}(B,R)  & = M_\infty\left(\coth(\alpha) - \tfrac{1}{\alpha}\right)  \nonumber \\
+\alpha       & = \dfrac{B M_s \tfrac{4}{3}\pi R^3}{k_B T}
+\nonumber
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{SuperParStroboPsi}  ~\\
+
+In the following the scattering of polarized incident neutrons with polarization analysis (POLARIS) is described.
+Experimental measured scattering signal are always a mixture of the spin dependent scattering cross-sections
+$I^{\pm\pm}(\BM{Q})$ and $I^{\pm\mp}(\BM{Q})$. The relative contribution of these cross-sections to the measured cross-section
+depend on the polarisation of the polarizer $P_{pol}$ the efficiency of the spin flipper $\epsilon$ and the
+transmission values $T_\pm$ of the polarization analyzer, which is assumed to be an opaque He-filter.
+If the neutron polarization of the polarizer is $P_{pol}\in [-1;1]$ and the spin flipper is off the incident
+polarisation on the sample $P_{in}$ is given by
+\begin{subequations}
+\begin{align}
+P_{in} &= P_{pol}= \frac{N_+-N_-}{N_++N_-}=n_+-n_-
+\end{align}
+with
+\begin{align}
+n_+&=\frac{N_+}{N_++N_-} \text{ and } n_- =\frac{N_-}{N_++N_-} \\
+\Rightarrow n_+ &= \frac{1+P_{pol}}{2} \text{ and } n_- =\frac{1-P_{pol}}{2}
+\end{align}
+\end{subequations}
+$N_\pm$ are the number of incident neutrons with spin polarizations up ($+$) and down ($-$).
+After switching on the spin flipper, which works with an efficiency of $\epsilon \in [0;1]$
+($\epsilon=0$: flipper off, $\epsilon\lessapprox 1$ : flipper on), one gets
+\begin{align}
+\begin{split}
+n_+(P_{pol},\epsilon) &= \epsilon \; \frac{1-P_{pol}}{2}+(1-\epsilon) \; \frac{1+P_{pol}}{2} \quad \text{ and } \\
+n_-(P_{pol},\epsilon) &= \epsilon \; \frac{1+P_{pol}}{2}+(1-\epsilon) \; \frac{1-P_{pol}}{2}
+\end{split}
+\end{align}
+The efficiency of the analyzer to filter spin up
+($+$) or spin down ($-$) neutrons is given in case of an opaque spin filter by its transmission
+$T_\pm(t) \in [0;1]$, which can be a function of time, so that the measured scattering cross section
+$I_\text{m}(\BM{Q})$ is given by
+\newlength\breiteb
+\settowidth\breiteb{$\displaystyle {}+{}$}
+\begin{align}
+\begin{split}
+I_\text{m}(\BM{Q}) = & \hspace{\breiteb} n_+(P_{pol},\epsilon) T_+(t) I_{++}(\BM{Q}) + n_+(P_{pol},\epsilon) T_-(t) I_{+-}(\BM{Q}) \\[3mm]
+           &+                  n_-(P_{pol},\epsilon) T_-(t) I_{--}(\BM{Q}) + n_-(P_{pol},\epsilon) T_+(t) I_{-+}(\BM{Q})
+\end{split}
+\end{align}
+
+\noindent
+The spin dependent scattering intensities of magnetic particles with an orientation distribution
+$f\left(\theta,\phi\right)$ of its magnetic moment can easily be calculated in terms of order
+parameters $S_l$ if one assumes that the particle
+are spherical symmetric or the orientation of the magnetic moment of a particle is not correlated to the
+particle orientation. Furthermore it will be assumed that an external magnetic field is applied perpendicular
+to the incident neutron beam and that all orientations $\phi$ for a given angle $\theta$, which is defined
+as the angle between the magnetisation vector of the particle and the direction of the external field $\BM{B}$
+have the same probability, i.e. the orientation distribution only depends on $\theta$ so that
+$f\left(\theta,\phi\right)=f\left(\theta\right)$. The orientation probability distribution function can be expanded
+in terms of a complete set of orthogonal functions. Expanding it in terms of Legendre polynomials $P_l(\cos\theta)$ gives
+\begin{align}
+f(\theta) &= \sum_l c_l P_l(\cos\theta) = \sum_l \frac{2l+1}{2} S_l P_l(\cos\theta)
+\end{align}
+The expansion coefficients can be calculated by
+\begin{align}
+\begin{split}
+c_l &= \frac{2l+1}{2} \int_0^\pi f(\theta)\, P_l(\cos\theta) \sin\theta \;\mathrm{d}\theta\\
+\mbox{or} \\
+S_l &= \int_0^\pi f(\theta) \, P_l(\cos\theta) \sin\theta\;\mathrm{d}\theta
+\end{split}
+\end{align}
+The first three Legendre polynomials are defined by
+\begin{subequations}
+\begin{align}
+P_0(\cos\theta) &= 1\\
+P_1(\cos\theta) &= \cos\theta\ \\
+P_2(\cos\theta) &= \frac{1}{2}\left(3\cos^2\theta-1\right)
+\end{align}
+\end{subequations}
+For superparamagnetic particle the orientation probability distribution is given by
+\begin{align}
+f(\theta) = \frac{\alpha}{4\pi\sinh\alpha} \exp(\alpha\cos\theta)
+\end{align}
+with $\alpha=BM_pV_p/(k_BT)$ being the Langevin parameter. For this orientation probability distribution
+the first order parameters can be calculates as
+\begin{subequations}
+\label{eq:S_l_Boltzmann}
+\begin{align}
+S_0 & = 1 \\
+S_1 & = L(\alpha) = \coth\alpha - \frac{1}{\alpha} \\
+S_2 & = 1-3\frac{L(\alpha)}{\alpha}
+\end{align}
+\end{subequations}
+The scattering from a system of many particles is obtained
+by summing up the scattering amplitudes of all precipitates
+weighted by the phase shift at each particle position.
+In the decoupling approach scattering intensity is given by
+\begin{align} \label{eq:I_ijSQ}
+\frac{\mathrm{d}\sigma_{{\pm\pm}\atop{\pm\mp}}}{\mathrm{d}\Omega}(\BM{Q}) &=
+N\left\{
+\left\langle \abs{F_{{\pm\pm}\atop{\pm\mp}}(\BM{Q})}^2\right\rangle
++ \abs{\left\langle F_{{\pm\pm}\atop{\pm\mp}}(\BM{Q})\right\rangle}^2 (S(\BM{Q})-1)
+\right\}
+\end{align}
+which consists of two terms. The first one depends only
+on the particle structure and corresponds to the independent
+scattering of $N$ particles, while the second one is also a
+function of their statistical distribution and reflects the interparticle
+interference, which is described by $S(\BM{Q})$. The $\langle\rangle$ indicates
+an average over all possible configurations, sizes and orientations of the
+magnetic moments of the particles. The spin dependent scattering amplitudes
+$F_{{\pm\pm}\atop{\pm\mp}}(\BM{Q})$ can be calculated from the nuclear and magnetic
+amplitudes
+\begin{align}
+F_{\pm\pm}(\BM{Q}) & = F_N(\BM{Q}) \mp F_{M_\perp x}(\BM{Q}) \\
+F_{\pm\mp}(\BM{Q}) & = -\left(F_{M_\perp y}(\BM{Q}) \pm \imath F_{M_\perp z}(\BM{Q})\right)
+\end{align}
+The nuclear scattering amplitude is proportional to the nuclear excess scattering $\beta_N=F_N(Q=0)$
+and the nuclear form factor $f_N(\BM{Q})$
+\begin{align}
+F_N(\BM{Q}) &= \beta_N f_N(\BM{Q})
+\end{align}
+The magnetic scattering amplitude $\BM{F}_{M_\perp}(\BM{Q})$ can be described as a vector,
+with
+\begin{align}
+\BM{F}_{M_\perp}(\BM{Q}) =  \BM{\hat{\mu}}_\perp D_M \mu f_M(\BM{Q})=\BM{\hat{\mu}}_\perp F_M(\BM{Q})
+\end{align}
+where $f_M(Q)$ is the magnetic form factor, $\BM{\mu}=\BM{M}_pV_p$ the magnetic moment of the particle,
+$D_M=\frac{\gamma e}{2\pi\hbar}$, and $\BM{\hat{\mu}}_\perp$ the Halpern-Johnson vector defined as
+\begin{align}
+\BM{\hat{\mu}}_\perp &= \frac{\BM{Q}}{Q}\times\left(\frac{\BM{\mu}}{\mu}\times\frac{\BM{Q}}{Q}\right)
+\end{align}
+It is assumed here that the neutron spin polarization is parallel or antiparallel to the axes $\BM{e}_x$
+which is the direction perpendicular to the incoming neutron beam.
+If only the Halpern-Johnson vector $\BM{\hat{\mu}}_\perp$ depends on the orientation distribution $f(\theta)$ of the
+magnetic moments $\BM{\mu}$ of the particles but not the form factor $f_M(\BM{Q})$, which is valid
+for spherical symmetric particles or anisotropic shaped particles where the particle shape is not
+correlated to the direction of the magnetic moment, the averages in \ref{eq:I_ijSQ}
+can be written in terms of the order parameters $S_1$ and $S_2$
+\begin{subequations}
+\label{eq:F_ijSQ}
+\begin{align}
+\begin{split}
+\left\langle F_{\pm\pm}(\BM{Q})\right\rangle &=  F_N(\BM{Q}) +F_M(\BM{Q})S_1\sin^2\psi
+\end{split} \\[3mm]
+\left\langle F_{\pm\mp}(\BM{Q})\right\rangle &= F_M(\BM{Q})S_1\sin\psi\cos\psi  \\[3mm]
+\begin{split}
+\left\langle \abs{F_{\pm\pm}(\BM{Q})}^2\right\rangle &= \abs{F_N(\BM{Q})}^2+\abs{F_M(\BM{Q})}^2 \left[S_2 \sin^4\psi+ \frac{1-S_2}{3} \sin^2\psi\right] \\
+                                       & \mp \left[F_M(\BM{Q})F^*_N(\BM{Q})+F^*_M(\BM{Q})F_N(\BM{Q})\right]S_1\sin^2\psi
+\end{split} \\[3mm]
+\begin{split}
+\left\langle \abs{F_{\pm\mp}(\BM{Q})}^2\right\rangle &=\abs{F_M(\BM{Q})}^2 \left[2\;\frac{1-S_2}{3}-S_2\sin^4\psi+\frac{4S_2-1}{3}\sin^2\psi\right]
+\end{split}
+\end{align}
+\end{subequations}
+The spin-flip and spin-nonflip cross-section $\frac{\mathrm{d}\sigma_{{\pm\pm}\atop{\pm\mp}}}{\mathrm{d}\Omega}(\BM{Q})$
+can be obtained by combining \ref{eq:I_ijSQ} and \ref{eq:F_ijSQ}. The cross-sections
+without polarization analysis $I_\pm(\BM{Q})$ and for unpolarized neutrons $I_{unp}(\BM{Q})$ are given by
+\begin{subequations} \label{eq:I_iSQ_I_unpSQ}
+\begin{align}
+\begin{split}
+    I_{\pm}(\BM{Q}) &= I_{\pm\pm}(\BM{Q})+I_{\pm\mp}(\BM{Q}) \\[2mm]
+                    &= \Bigl[\abs{F_N(\BM{Q})}^2 + \abs{F_M(\BM{Q})}^2S_1^2\sin^2\psi \\
+                    & \quad  \mp \left[F_M(\BM{Q})F^*_N(\BM{Q})+F^*_M(\BM{Q})F_N(\BM{Q})\right]S_1\sin^2\psi\Bigr] S(\BM{Q}) \\
+                    & \quad \abs{F_M(\BM{Q})}^2\left(\frac{2}{3}\left(1-S_2\right)+\left(S_2-S_1^2\right)\sin^2\psi \right)
+\end{split} \\[3mm]
+\begin{split}
+    I_{unp}(\BM{Q}) &= \frac{1}{2}\left(I_{+}(\BM{Q})+I_{-}(\BM{Q})\right)\\[2mm]
+                    &=  \left(\abs{F_N(\BM{Q})}^2 + \abs{F_M(\BM{Q})}^2S_1^2\sin^2\psi\right) S(\BM{Q}) \\
+                    & \quad + \abs{F_M(\BM{Q})}^2\left(\frac{2}{3}\left(1-S_2\right)+\left(S_2-S_1^2\right)\sin^2\psi\right)
+\end{split}
+\end{align}
+\end{subequations}
+
+In the case of a Boltzmann orientation distribution
+$f(\theta)=\exp\left(\frac{\BM{B\mu}}{k_BT}\right)=\exp\left(\frac{B\mu\cos\theta}{k_BT}\right)$
+the order parameter $S_l$ already have been given in eq.\ \ref{eq:S_l_Boltzmann}
+and the spin dependent intensities can be written as
+\begin{subequations}
+\begin{align}
+\frac{I_{\pm\pm}(\BM{Q})}{N} &=
+\abs{F_M(\BM{Q}) L(\alpha)\,\sin^2\psi
+     \pm F_N(\BM{Q})}^2 S(\BM{Q}) \\
+&+
+\abs{F_M(\BM{Q})}^2\, \left( \frac{L(\alpha)}{\alpha}\,
+\sin^2\psi - \left( L^2(\alpha)-1+3\,\frac{L(\alpha)}{\alpha}\right)
+\, \sin^4\psi \right) \nonumber \\
+\nonumber \\
+\frac{I_{\mp\pm}(\BM{Q})}{N} &=
+\left( \sin^2\psi - \sin^4\psi \right)
+L^2(\alpha)
+\abs{F_M(\BM{Q})}^2 S(\BM{Q}) \\
+&+
+\abs{F_M(\BM{Q})}^2  \left( \left( \sin^4\psi-\sin^2\psi \right)
+\left( L^2(\alpha)-1+3\, \frac{L(\alpha)}{\alpha}\right) +
+(2-\sin^2\psi)\, \frac{L(\alpha)}{\alpha}\right) \nonumber
+\end{align}
+\end{subequations}
+$\psi$ is the angle between $\BM{Q}$ and the horizontal axis in the plane of the detector.
+$L(\alpha)=\coth(\alpha)-\frac{1}{\alpha}$ is the Langevin function. In the case of a static field
+the superparamagnetic particle are thermodynamic equilibrium and $\alpha$ is given by
+\begin{align}
+\alpha&=\frac{BM_PV_P}{k_B T},
+\end{align}
+with $M_P$ being the particle magnetization, $V_P$ the particle volume,
+$T$ the temperature in Kelvin and $k_B$ the Boltzmann constant.
+
+In our experiments we applied an oscillating magnetic field to the sample described by:
+\begin{subequations}
+\begin{align}
+B(t,\nu;d_\text{SD},\lambda,\rho_0) &= B_1 - B_0
+\cos(\phi(t,\nu);\dots) \\
+\phi(t,\nu;d_\text{SD},\lambda,\rho_0) &=2\pi\nu(t-d_\text{SD}\lambda/3956)+\rho_0
+\end{align}
+\end{subequations}
+where $t$ in [s] is the time between neutron detection and the trigger signal
+from the frequency generator, $d_\text{SD}$ in [m] is the sample
+detector distance, $\lambda $ in [\AA] the neutron wavelength, and
+$\nu$ in [Hz] the frequency of the oscillating magnetic field. As
+$t$ is defined here as the time of the neutron detection one has
+therefore to correct the phase in the argument for the magnetic
+field with an additional phase term. The term
+$t_\text{SD}=d_\text{SD}\lambda/3956$ takes into account the flight
+time $t_\text{SD}$ of the neutrons between the sample and the
+detector. The term  $\rho_0$ accounts for any other
+additional constant phase shift between trigger signal and the
+magnetic field due to phase shifts in the amplifier.
+If the neutron polarization can follow adiabatically the varying magnetic field needs to be verified
+experimentally. Therefore we introduce here a parameter $a_\text{ad} \in [0;1]$ which takes into account
+wether ($a_\text{ad}=1$) or not ($a_\text{ad}=0$) the neutron spin adiabatically follows the change
+of of magnetic field direction ($\text{sgn}(B(t))$).
+\begin{align}
+\BM{r}_\text{ad} =
+\left(
+  \begin{array}{c}
+     a_\text{ad} \\
+     (1-a_\text{ad}) \\
+  \end{array}
+\right)
+\text{ and }
+\BM{s}_\text{ad} =
+\left(
+  \begin{array}{c}
+     \text{sgn}(B(t)) \\
+     1 \\
+  \end{array}
+\right)
+\end{align}
+The measured intensity than reads as
+\begin{subequations}
+\begin{align}
+I_\text{m}(\BM{Q},t) =&
+\sum_{i=1,2} r_{ad,i} \Bigg[ \\
+&\hspace{\breiteb} n_+\left(s_{ad,i}P_{pol},\epsilon\right)
+                        A_+ I_{++}(\BM{Q},t)
++                 n_+\left(s_{ad,i}P_{pol},\epsilon\right)
+                        A_- I_{+-}(\BM{Q},t) \nonumber \\
+&+                 n_-\left(s_{ad,i}P_{pol},\epsilon\right)
+                        A_- I_{--}(\BM{Q},t)
++                 n_-\left(s_{ad,i}P_{pol},\epsilon\right)
+                        A_+ I_{-+}(\BM{Q},t)
+\Bigg]  \nonumber \\[3mm]
+= &\sum_{i=1,2} \; \sum_{k,l=+,-}
+r_{ad,i}\; n_k\left(s_{ad,i}P_{pol},\epsilon\right)\; A_l \; I_{kl}(\BM{Q},t)
+\end{align}
+with
+\begin{align}
+\begin{split}
+A_\pm &= \left(\frac{1+s_{ad,2}}{2}r_{ad,1} + \frac{1+s_{ad,1}}{2}r_{ad,2}\right) T_\pm(t) \\
+    &+ \left(\frac{1-s_{ad,2}}{2}r_{ad,1} + \frac{1-s_{ad,1}}{2}r_{ad,2}\right) T_\mp(t)
+\end{split}
+\end{align}
+\end{subequations}
+To calculate the time dependent scattering cross section a model for the time evolution of the
+orientation distribution of the magnetic moments $f(\theta,t)$ is needed, from which the time
+dependent order parameter $S_1(t)$ and $S_2(t)$ can be obtained, as well as a model for the
+time evolution of the structure factor $S(\BM{Q},t)$.
+\begin{subequations}
+\begin{align}
+\frac{\mathrm{d}M}{\mathrm{d}t} &= -\frac{M(t)-M_\infty L(\alpha'(t))}{\tau} \\
+M(t=0) &= M_0 \\
+\alpha'(t) &= \alpha_0\cos(\omega t+\phi_0)+\alpha_1 \\
+\alpha_0 &= \frac{-B_0\mu}{k_BT} \\
+\alpha_1 &= \frac{B_1\mu}{k_BT} \\
+\omega &= 2\pi\nu \\
+\phi_0 &= \varphi_0 - \frac{\omega d_\text{SD}\lambda}{3956}
+\end{align}
+\end{subequations}
+%
+%\begin{align}
+%M(t) &= \textstyle e^{-\frac{t}{\tau}} \left(\int_0^t
+%M_\infty e^{\frac{t'}{\tau}} \frac{\coth\left(\alpha_0\cos(\omega t'+\varphi_0)+\alpha_1\right)\alpha_0\cos(\omega t'+\varphi_0)
+%+\coth(\alpha_0 \cos(\omega t'+\varphi_0)+\alpha_1) \alpha_1-1}{\tau (\alpha_0 \cos(\omega t'+\varphi_0)+\alpha_1)}
+%\mathrm{d}t'+M_0\right)
+%\end{align}
+In the limit of small values for the Langevin parameter $\alpha$ the Langevin function can be approximated
+by
+\begin{align}
+    L(\alpha) \rightarrow \frac{\alpha}{3}
+\end{align}
+for which the differential equation has an analytical solution
+\begin{align}
+M(t) &= e^{-\frac {t}{\tau}} \left[ M_0- M_{\infty}\left(\frac{\alpha_0}{3}\;\frac{
+\cos \left( \phi_0 \right) +\omega\tau\, \sin\left( \phi_0 \right) }{1+{\omega}^{2}{\tau^{2}}}
++\frac{\alpha_1}{3}\right)\right] \nonumber \\
+&+M_\infty \left(\frac{\alpha_0}{3} \; \frac{\cos \left( \omega\,t+\phi_0 \right) +
+\omega\tau\,\sin \left( \omega\,t+\phi_0 \right) }{1+\omega^2\tau^2}+\frac{\alpha_1}{3}\right) \\
+&\underset{t\gg\tau}{\simeq}
+M_\infty \left(\frac{\alpha_0}{3} \; \frac{\cos \left( \omega\,t+\phi_0 -\frac{\pi}{2}+\arcsin\left(\frac{1}{\sqrt{1+\omega^2\tau^2}}\right)\right) }{\sqrt{1+\omega^2\tau^2}}+\frac{\alpha_1}{3}\right)
+\end{align}
+
+Assuming that the system is at any time in thermodynamic equilibrium with the actual magnetic field $B(t)$
+than the time dependent oscillating SANS signal can be described by simply  introducing a time dependent
+value for $\alpha(t)$:
+\begin{align}
+\alpha(t,\lambda,d_\text{SD},\rho_0,\mu_\text{kT}) =
+B(t,\lambda,d_\text{SD},\rho_0) \frac{M_PV_P}{k_B T} = B(\dots)\;
+\mu_\text{kT}
+\end{align}
+with
+\begin{align}
+\mu_\text{kT} = \frac{M_PV_P}{k_B T}
+\end{align}
+In case that the magnetic moments can not follow the external magnetic field this could be described
+by an additional phase $\Delta \phi_\alpha$ between $\alpha$ and $B$ and a damping factor $d_\alpha$ so that
+\begin{align}
+\alpha(t,\lambda,d_\text{SD},\rho_0-\Delta \phi_\alpha,\mu_\text{kT}) =
+d_{\alpha} B(t,\lambda,d_\text{SD},\rho_0-\Delta \phi_\alpha) \frac{M_PV_P}{k_B T}.
+\end{align}
+In such a case of such
+\begin{align}
+\BM{r}_\text{ad} =
+\left(
+  \begin{array}{c}
+    (1-a_\text{ad}) \; \text{sgn}(B(t)) \\
+    a_\text{ad} \; \text{sign}(B(t)\alpha(t))\\
+  \end{array}
+\right)
+\end{align}
+Furthermore we assume here that the size of the form factors
+of the magnetic and nuclear scattering are the same except the
+scattering contrast that means the ratio of magnetic to nuclear
+form factor is $Q$-independent and equal to the squared ratio of
+magnetic to nuclear scattering length density
+\BE
+\frac{F_N^2(Q)}{\tilde{F}_M^2(Q)}  = const = \left( \frac{\Delta
+b_\text{nuc}}{\Delta b_\text{mag}}\right)^2
+\EE
+Therefore the time
+dependent signal on the detector for a given direction $\psi$ is given by
+\begin{align}
+ y(t,\dots) =
+\int_{\lambda_0-\Delta\lambda}^{\lambda_0+\Delta\lambda}
+    p_\triangle(\lambda) \;\; I_m(t,\lambda,\psi,\dots) \;\;  d\lambda
+\end{align}
+whereby $p_\triangle(\lambda)$ describes the triangular shaped
+wave length distribution of the neutron beam.
+
+
+\clearpage
+\subsection{SuperParStroboPsiSQ}  ~\\
+
+The external applied field is given by: \BE
+B(t,d_\text{SD},\lambda,\rho_0) = B_1 - B_0
+\cos(2\pi\nu(t-d_\text{SD}\lambda/3956)+\rho_0) \EE where $t$ in
+[s] is the time between neutron detection and the trigger signal
+from the frequency generator, $d_\text{SD}$ in [m] is the sample
+detector distance, $\lambda $ in [\AA] the neutron wavelength, and
+$\nu$ in [Hz] the frequency of the oscillating magnetic field. As
+$t$ is defined here as the time of the neutron detection one has
+therefore to correct the phase in the argument for the magnetic
+field with an addition phase term. The term
+$t_\text{SD}=d_\text{SD}\lambda/3956$ takes account for the flight
+time $t_\text{SD}$ of the neutrons between the sample and the
+detector. The term  $\rho_0$ takes account for any other
+additional constant phase shift between trigger signal and the
+magnetic field due to phase shifts in the amplifier.
+
+The scattering intensity of superparamagnetic particles including a structure factor
+$S(Q)$is given by
+\begin{align}
+I(Q) &= \underbrace{\tilde{F}_M^2(Q) \; 2
+\frac{L(\alpha)}{\alpha} + F_N^2(Q)S(Q)}_{\displaystyle A(Q)} \\
+     &+ \underbrace{\tilde{F}_M^2(Q) \left[\left(1-3 \frac{L(\alpha)}{\alpha}-L^2(\alpha)\right)+L^2(\alpha)S(Q)\right]}_{\displaystyle B(Q)} \sin^2\Psi
+     \nonumber
+\end{align}
+Assuming that the system is in equilibrium faster than $1/\nu$
+than the above equation can be used to describe the time dependent
+oscillating SANS signal simply by introducing a time dependent
+value for $\alpha$:
+\BE
+\alpha(t,\lambda,d_\text{SD},\rho_0,\mu_\text{kT}) =
+B(t,\lambda,d_\text{SD},\rho_0) \frac{M_PV_P}{k_B T} = B(\dots)\;
+\mu_\text{kT}
+\EE
+with
+\BE
+\mu_\text{kT} = \frac{M_PV_P}{k_B T}
+\EE
+Furthermore we assume here that the size of the form factors
+of the magnetic and nuclear scattering are the same except the
+scattering contrast that means the ratio of magnetic to nuclear
+form factor is $Q$-independent and equal to the squared ratio of
+magnetic to nuclear scattering length density
+\BE
+\frac{F_N^2(Q)}{\tilde{F}_M^2(Q)}  = const = \left( \frac{\Delta
+b_\text{nuc}}{\Delta b_\text{mag}}\right)^2
+\EE
+Therefore the time
+dependent signal on the detector for a given direction $\Psi$ and
+integrated over $Q$ in this direction is given by
+\begin{align}
+i(t,\dots)
+    &= \int_{Q_\text{min}}^{Q_\text{min}} I(Q,t,\lambda,\Psi,d_\text{SD},\rho_0) dQ  \\
+    &= c\left[2\frac{L(\alpha)}{\alpha}
+              + \frac{F_N^2(Q)}{\tilde{F}_M^2(Q)} S(Q)
+              + \left[\left(1-3 \frac{L(\alpha)}{\alpha}-L^2(\alpha)\right)+L^2(\alpha)S(Q)\right]\sin^2\Psi\right] \nonumber \\
+    &= c\left[2\frac{L(\alpha)}{\alpha}
+              + \left( \frac{\Delta b_\text{nuc}}{\Delta b_\text{mag}}\right)^2 S(Q)
+              + \left[\left(1-3 \frac{L(\alpha)}{\alpha}-L^2(\alpha)\right)+L^2(\alpha)S(Q)\right]\sin^2\Psi\right] \nonumber
+\end{align}
+\BE y(t,\dots) =
+\int_{\lambda_0-\Delta\lambda}^{\lambda_0+\Delta\lambda}
+    p_\triangle(\lambda) \;\; i(t,\lambda,\Psi,d_\text{SD},\rho_0) \;\;  d\lambda
+\EE whereby $p_\triangle(\lambda)$ describes the triangular shaped
+wave length distribution of the neutron beam.
+
+\subsection{SuperParStroboPsiSQBt}  ~\\
+The same as {\tt SuperParStroboPsiSQ} except that the structure factor $S(Q,t)$ becomes field
+dependent:
+\begin{align}
+S(Q,t) = 1+\left[S(Q)-1\right] \abs{\frac{B(t,d_\text{SD},\lambda,\rho_0)}{\abs{B_1}+\frac{2}{\pi}\abs{B_0}}}
+\end{align}
+
+
+\subsection{SuperParStroboPsiSQLx}  ~\\
+The same as {\tt SuperParStroboPsiSQ} except that the structure factor $S(Q,t)$ becomes field
+dependent:
+\begin{align}
+S(Q,t) = 1+\left[S(Q)-1\right] \abs{L(\alpha)}
+\end{align}
+
+
+
+\subsection{SuperParStroboPsiSQL2x}  ~\\
+The same as {\tt SuperParStroboPsiSQ} except that the structure factor $S(Q,t)$ becomes field
+dependent:
+\begin{align}
+S(Q,t) = 1+\left[S(Q)-1\right] L^2(\alpha)
+\end{align}

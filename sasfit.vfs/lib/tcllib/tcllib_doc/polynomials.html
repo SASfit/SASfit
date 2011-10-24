@@ -1,0 +1,315 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>math::polynomials - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/polynomials.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: polynomials.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ math::polynomials.n
+   -->
+
+<body>
+<h1> math::polynomials(n) 1.0.1 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::polynomials - Polynomial functions
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#procedures">PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#remarks_on_the_implementation">REMARKS ON THE IMPLEMENTATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl ?8.3?</b><br>
+package require <b>math::polynomials ?1.0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::polynomials::polynomial</b> <i class='arg'>coeffs</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::polynomials::polynCmd</b> <i class='arg'>coeffs</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::polynomials::evalPolyn</b> <i class='arg'>polynomial</i> <i class='arg'>x</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::polynomials::addPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::polynomials::subPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::polynomials::multPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::polynomials::divPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::polynomials::remainderPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::polynomials::derivPolyn</b> <i class='arg'>polyn</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::polynomials::primitivePolyn</b> <i class='arg'>polyn</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::math::polynomials::degreePolyn</b> <i class='arg'>polyn</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::math::polynomials::coeffPolyn</b> <i class='arg'>polyn</i> <i class='arg'>index</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::math::polynomials::allCoeffsPolyn</b> <i class='arg'>polyn</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+This package deals with polynomial functions of one variable:
+
+<ul>
+<li>
+the basic arithmetic operations are extended to polynomials
+<br><br>
+<li>
+computing the derivatives and primitives of these functions
+<br><br>
+<li>
+evaluation through a general procedure or via specific procedures)
+</ul>
+
+<h2><a name="procedures">PROCEDURES</a></h2>
+<p>
+
+The package defines the following public procedures:
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::polynomials::polynomial</b> <i class='arg'>coeffs</i></a><dd>
+
+
+Return an (encoded) list that defines the polynomial. A polynomial
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   f(x) = a + b.x + c.x**2 + d.x**3
+</pre></td></tr></table></p>
+can be defined via:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   set f [::math::polynomials::polynomial [list $a $b $c $d]
+</pre></td></tr></table></p>
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>coeffs</i><dd> Coefficients of the polynomial (in ascending
+order)
+</dl>
+
+<br><br>
+
+<dt><a name="2"><b class='cmd'>::math::polynomials::polynCmd</b> <i class='arg'>coeffs</i></a><dd>
+
+
+Create a new procedure that evaluates the polynomial. The name of the
+polynomial is automatically generated. Useful if you need to evualuate
+the polynomial many times, as the procedure consists of a single
+[expr] command.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>coeffs</i><dd> Coefficients of the polynomial (in ascending
+order) or the polynomial definition returned by the <em>polynomial</em>
+command.
+</dl>
+
+<br><br>
+
+<dt><a name="3"><b class='cmd'>::math::polynomials::evalPolyn</b> <i class='arg'>polynomial</i> <i class='arg'>x</i></a><dd>
+
+
+Evaluate the polynomial at x.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polynomial</i><dd> The polynomial's definition (as returned by
+the polynomial command).
+order)
+
+<br><br>
+<dt>float <i class='arg'>x</i><dd> The coordinate at which to evaluate the polynomial
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="4"><b class='cmd'>::math::polynomials::addPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a><dd>
+
+
+Return a new polynomial which is the sum of the two others.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn1</i><dd> The first polynomial operand
+
+<br><br>
+<dt>list <i class='arg'>polyn2</i><dd> The second polynomial operand
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="5"><b class='cmd'>::math::polynomials::subPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a><dd>
+
+
+Return a new polynomial which is the difference of the two others.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn1</i><dd> The first polynomial operand
+
+<br><br>
+<dt>list <i class='arg'>polyn2</i><dd> The second polynomial operand
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="6"><b class='cmd'>::math::polynomials::multPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a><dd>
+
+
+Return a new polynomial which is the product of the two others. If one
+of the arguments is a scalar value, the other polynomial is simply
+scaled.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn1</i><dd> The first polynomial operand or a scalar
+
+<br><br>
+<dt>list <i class='arg'>polyn2</i><dd> The second polynomial operand or a scalar
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="7"><b class='cmd'>::math::polynomials::divPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a><dd>
+
+
+Divide the first polynomial by the second polynomial and return the
+result. The remainder is dropped
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn1</i><dd> The first polynomial operand
+
+<br><br>
+<dt>list <i class='arg'>polyn2</i><dd> The second polynomial operand
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="8"><b class='cmd'>::math::polynomials::remainderPolyn</b> <i class='arg'>polyn1</i> <i class='arg'>polyn2</i></a><dd>
+
+
+Divide the first polynomial by the second polynomial and return the
+remainder.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn1</i><dd> The first polynomial operand
+
+<br><br>
+<dt>list <i class='arg'>polyn2</i><dd> The second polynomial operand
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="9"><b class='cmd'>::math::polynomials::derivPolyn</b> <i class='arg'>polyn</i></a><dd>
+
+
+Differentiate the polynomial and return the result.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn</i><dd> The polynomial to be differentiated
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="10"><b class='cmd'>::math::polynomials::primitivePolyn</b> <i class='arg'>polyn</i></a><dd>
+
+
+Integrate the polynomial and return the result. The integration
+constant is set to zero.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn</i><dd> The polynomial to be integrated
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="11"><b class='cmd'>::math::polynomials::degreePolyn</b> <i class='arg'>polyn</i></a><dd>
+
+
+Return the degree of the polynomial.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn</i><dd> The polynomial to be examined
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="12"><b class='cmd'>::math::polynomials::coeffPolyn</b> <i class='arg'>polyn</i> <i class='arg'>index</i></a><dd>
+
+
+Return the coefficient of the term of the index'th degree of the
+polynomial.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn</i><dd> The polynomial to be examined
+<br><br>
+<dt>int <i class='arg'>index</i><dd> The degree of the term
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="13"><b class='cmd'>::math::polynomials::allCoeffsPolyn</b> <i class='arg'>polyn</i></a><dd>
+
+
+Return the coefficients of the polynomial (in ascending order).
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyn</i><dd> The polynomial in question
+
+</dl>
+
+</dl>
+
+
+<h2><a name="remarks_on_the_implementation">REMARKS ON THE IMPLEMENTATION</a></h2>
+<p>
+
+The implementation for evaluating the polynomials at some point uses
+Horn's rule, which guarantees numerical stability and a minimum of
+arithmetic operations.
+
+To recognise that a polynomial definition is indeed a correct
+definition, it consists of a list of two elements: the keyword
+&quot;POLYNOMIAL&quot; and the list of coefficients in descending order. The
+latter makes it easier to implement Horner's rule.
+
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+math, polynomial functions
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;<br>
+</body></html>
+

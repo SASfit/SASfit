@@ -1,0 +1,92 @@
+<html><head>
+<title>uuid - uuid </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/uuid/uuid.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: uuid.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ uuid.n
+   -->
+
+<body>
+<h1> uuid(n) 1.0.1 uuid &quot;uuid&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> uuid - UUID generation and comparison
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>uuid ?1.0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::uuid::uuid generate</b> </a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::uuid::uuid equal</b> <i class='arg'>id1</i> <i class='arg'>id2</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides a generator of universally unique identifiers
+(UUID) also known as globally unique identifiers (GUID). This
+implementation follows the draft specification from (1) although this
+is actually an expired draft document.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::uuid::uuid generate</b> </a><dd>
+
+
+Creates a type 4 uuid by MD5 hashing a number of bits of variant data
+including the time and hostname.
+Returns the string representation of the new uuid.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::uuid::uuid equal</b> <i class='arg'>id1</i> <i class='arg'>id2</i></a><dd>
+
+
+Compares two uuids and returns true if both arguments are the same uuid.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% uuid::uuid generate
+b12dc22c-5c36-41d2-57da-e29d0ef5839c
+</pre></td></tr></table></p>
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+
+<li>
+    Paul J. Leach, &quot;UUIDs and GUIDs&quot;, February 1998.
+    (<a href="http://www.opengroup.org/dce/info/draft-leach-uuids-guids-01.txt">http://www.opengroup.org/dce/info/draft-leach-uuids-guids-01.txt</a>)
+
+</ol>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+GUID, UUID
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>

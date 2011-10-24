@@ -1,0 +1,6 @@
+p. **releases**
+
+This directory contains builds of more stable release versions. They are 
+supposed to be feature complete at that time. Experimental features were 
+removed. They appear 2-3 times per year.
+

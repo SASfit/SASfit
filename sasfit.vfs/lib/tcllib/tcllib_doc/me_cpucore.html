@@ -1,0 +1,462 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::me::cpu::core - Grammar operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_me/me_cpucore.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: me_cpucore.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ grammar::me::cpu::core.n
+   -->
+
+<body>
+<h1> grammar::me::cpu::core(n) 0.1 grammar_me &quot;Grammar operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::me::cpu::core - ME virtual machine state manipulation
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#match_program_representation">MATCH PROGRAM REPRESENTATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#cpu_state">CPU STATE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>grammar::me::cpu::core ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::grammar::me::cpu::core</b> <strong>disasm</strong> <i class='arg'>asm</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::grammar::me::cpu::core</b> <strong>asm</strong> <i class='arg'>asm</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::grammar::me::cpu::core</b> <strong>new</strong> <i class='arg'>asm</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::grammar::me::cpu::core</b> <strong>lc</strong> <i class='arg'>state</i> <i class='arg'>location</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::grammar::me::cpu::core</b> <strong>tok</strong> <i class='arg'>state</i> <i class='arg'>from</i> ?<i class='arg'>to</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::grammar::me::cpu::core</b> <strong>sv</strong> <i class='arg'>state</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::grammar::me::cpu::core</b> <strong>ok</strong> <i class='arg'>state</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::grammar::me::cpu::core</b> <strong>error</strong> <i class='arg'>state</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::grammar::me::cpu::core</b> <strong>ast</strong> <i class='arg'>state</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::grammar::me::cpu::core</b> <strong>halted</strong> <i class='arg'>state</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::grammar::me::cpu::core</b> <strong>code</strong> <i class='arg'>state</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::grammar::me::cpu::core</b> <strong>eof</strong> <i class='arg'>statevar</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::grammar::me::cpu::core</b> <strong>put</strong> <i class='arg'>statevar</i> <i class='arg'>tok</i> <i class='arg'>lex</i> <i class='arg'>line</i> <i class='arg'>col</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::grammar::me::cpu::core</b> <strong>run</strong> <i class='arg'>statevar</i> ?<i class='arg'>n</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+<p>
+
+This package provides an implementation of the ME virtual machine.
+
+Please go and read the document <strong>grammar::me_intro</strong> first if
+you do not know what a ME virtual machine is.
+
+<p>
+
+This implementation represents each ME virtual machine as a Tcl value
+and provides commands to manipulate and query such values to show the
+effects of executing instructions, adding tokens, retrieving state,
+etc.
+
+<p>
+
+The values fully follow the paradigm of Tcl that every value is a
+string and while also allowing C implementations for a proper
+Tcl_ObjType to keep all the important data in native data structures.
+
+Because of the latter it is recommended to access the state values
+<em>only</em> through the commands of this package to ensure that
+internal representation is not shimmered away.
+
+<p>
+
+The actual structure used by all state values is described in section
+<a href="#cpu_state">CPU STATE</a>.
+
+
+<h2><a name="api">API</a></h2>
+<p>
+
+The package directly provides only a single command, and all the
+functionality is made available through its methods.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::grammar::me::cpu::core</b> <strong>disasm</strong> <i class='arg'>asm</i></a><dd>
+
+
+This method returns a list containing a disassembly of the match
+instructions in <i class='arg'>asm</i>. The format of <i class='arg'>asm</i> is specified in the
+section <a href="#match_program_representation">MATCH PROGRAM REPRESENTATION</a>.
+
+<br><br>
+
+Each element of the result contains instruction label, instruction
+name, and the instruction arguments, in this order. The label can be
+the empty string. Jump destinations are shown as labels, strings and
+tokens unencoded. Token names are prefixed with their numeric id, if,
+and only if a tokmap is defined. The two components are separated by a
+colon.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::grammar::me::cpu::core</b> <strong>asm</strong> <i class='arg'>asm</i></a><dd>
+
+
+This method returns code in the format as specified in section
+<a href="#match_program_representation">MATCH PROGRAM REPRESENTATION</a> generated from ME assembly
+code <i class='arg'>asm</i>, which is in the format as returned by the method
+<strong>disasm</strong>.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::grammar::me::cpu::core</b> <strong>new</strong> <i class='arg'>asm</i></a><dd>
+
+
+This method creates state value for a ME virtual machine in its
+initial state and returns it as its result.
+
+<br><br>
+
+The argument <i class='arg'>matchcode</i> contains a Tcl representation of the
+match instructions the machine has to execute while parsing the input
+stream. Its format is specified in the section
+<a href="#match_program_representation">MATCH PROGRAM REPRESENTATION</a>.
+
+<br><br>
+
+The <i class='arg'>tokmap</i> argument taken by the implementation provided by the
+package <strong>grammar::me::tcl</strong> is here hidden inside of the match
+instructions and therefore not needed.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::grammar::me::cpu::core</b> <strong>lc</strong> <i class='arg'>state</i> <i class='arg'>location</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine and uses it
+to convert a location in the input stream (as offset) into a line
+number and column index. The result of the method is a 2-element list
+containing the two pieces in the order mentioned in the previous
+sentence.
+
+<br><br>
+
+<em>Note</em> that the method cannot convert locations which the machine
+has not yet read from the input stream. In other words, if the machine
+has read 7 characters so far it is possible to convert the offsets
+<strong>0</strong> to <strong>6</strong>, but nothing beyond that. This also shows that
+it is not possible to convert offsets which refer to locations before
+the beginning of the stream.
+
+<br><br>
+
+This utility allows higher levels to convert the location offsets
+found in the error status and the AST into more human readable data.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::grammar::me::cpu::core</b> <strong>tok</strong> <i class='arg'>state</i> <i class='arg'>from</i> ?<i class='arg'>to</i>?</a><dd>
+
+
+This method takes the state value of a ME virtual machine and returns
+a Tcl list containing the part of the input stream between the
+locations <i class='arg'>from</i> and <i class='arg'>to</i> (both inclusive). If <i class='arg'>to</i> is not
+specified it will default to the value of <i class='arg'>from</i>.
+
+<br><br>
+
+This method places the same restrictions on its location arguments as
+the method <strong>lc</strong>.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::grammar::me::cpu::core</b> <strong>sv</strong> <i class='arg'>state</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine and returns
+the current semantic value stored in it.
+
+This is an abstract syntax tree as specified in the document
+<strong>grammar::me_ast</strong>, section <b>AST VALUES</b>.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::grammar::me::cpu::core</b> <strong>ok</strong> <i class='arg'>state</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine and returns
+the match status stored in it.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::grammar::me::cpu::core</b> <strong>error</strong> <i class='arg'>state</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine and returns
+the current error status stored in it.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::grammar::me::cpu::core</b> <strong>ast</strong> <i class='arg'>state</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine and returns
+the abstract syntax tree currently at the top of the AST stack stored
+in it.
+
+This is an abstract syntax tree as specified in the document
+<strong>grammar::me_ast</strong>, section <b>AST VALUES</b>.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::grammar::me::cpu::core</b> <strong>halted</strong> <i class='arg'>state</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine and returns
+the current halt status stored in it, i.e. if the machine has stopped
+or not.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::grammar::me::cpu::core</b> <strong>code</strong> <i class='arg'>state</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine and returns
+the code stored in it, i.e. the instructions executed by the machine.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::grammar::me::cpu::core</b> <strong>eof</strong> <i class='arg'>statevar</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine as stored in
+the variable named by <i class='arg'>statevar</i> and modifies it so that the eof
+flag inside is set. This signals to the machine that whatever token
+are in the input queue are the last to be processed. There will be no
+more.
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::grammar::me::cpu::core</b> <strong>put</strong> <i class='arg'>statevar</i> <i class='arg'>tok</i> <i class='arg'>lex</i> <i class='arg'>line</i> <i class='arg'>col</i></a><dd>
+
+
+This method takes the state value of a ME virtual machine as stored in
+the variable named by <i class='arg'>statevar</i> and modifies it so that the token
+<i class='arg'>tok</i> is added to the end of the input queue, with associated
+lexeme data <i class='arg'>lex</i> and <i class='arg'>line</i>/<i class='arg'>col</i>umn information.
+
+<br><br>
+
+The operation will fail with an error if the eof flag of the machine
+has been set through the method <strong>eof</strong>.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::grammar::me::cpu::core</b> <strong>run</strong> <i class='arg'>statevar</i> ?<i class='arg'>n</i>?</a><dd>
+
+
+This method takes the state value of a ME virtual machine as stored in
+the variable named by <i class='arg'>statevar</i>, executes a number of
+instructions and stores the state resulting from their modifications
+back into the variable.
+
+<br><br>
+
+The execution loop will run until either
+
+<br><br>
+<ul>
+<li> <i class='arg'>n</i> instructions have been executed, or
+<br><br>
+<li> a halt instruction was executed, or
+<br><br>
+<li>
+the input queue is empty and the code is asking for more tokens to
+process.
+</ul>
+<br><br>
+
+If no limit <i class='arg'>n</i> was set only the last two conditions are checked
+for.
+
+</dl>
+
+
+<h3><a name="match_program_representation">MATCH PROGRAM REPRESENTATION</a></h3>
+<p>
+
+A match program is represented by nested Tcl list. The first element,
+<em>asm</em>, is a list of integer numbers, the instructions to execute,
+and their arguments. The second element, <em>pool</em>, is a list of
+strings, referenced by the instructions, for error messages, token
+names, etc. The third element, <em>tokmap</em>, provides ordering
+information for the tokens, mapping their names to their numerical
+rank. This element can be empty, forcing lexicographic comparison when
+matching ranges.
+
+<p>
+
+All ME instructions are encoded as integer numbers, with the mapping
+given below. A number of the instructions, those which handle error
+messages, have been given an additional argument to supply that
+message explicitly instead of having it constructed from token names,
+etc. This allows the machine state to store only the message ids
+instead of the full strings.
+
+<p>
+
+Jump destination arguments are absolute indices into the <em>asm</em>
+element, refering to the instruction to jump to. Any string arguments
+are absolute indices into the <em>pool</em> element. Tokens, characters,
+messages, and token (actually character) classes to match are coded as
+references into the <em>pool</em> as well.
+
+<p>
+<ol>
+
+<li> &quot;<b class='cmd'>ict_advance</b> <i class='arg'>message</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ict_match_token</b> <i class='arg'>tok</i> <i class='arg'>message</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ict_match_tokrange</b> <i class='arg'>tokbegin</i> <i class='arg'>tokend</i> <i class='arg'>message</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ict_match_tokclass</b> <i class='arg'>code</i> <i class='arg'>message</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>inc_restore</b> <i class='arg'>branchlabel</i> <i class='arg'>nt</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>inc_save</b> <i class='arg'>nt</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icf_ntcall</b> <i class='arg'>branchlabel</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icf_ntreturn</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>iok_ok</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>iok_fail</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>iok_negate</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icf_jalways</b> <i class='arg'>branchlabel</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icf_jok</b> <i class='arg'>branchlabel</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icf_jfail</b> <i class='arg'>branchlabel</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icf_halt</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icl_push</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icl_rewind</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>icl_pop</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ier_push</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ier_clear</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ier_nonterminal</b> <i class='arg'>message</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ier_merge</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>isv_clear</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>isv_terminal</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>isv_nonterminal_leaf</b> <i class='arg'>nt</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>isv_nonterminal_range</b> <i class='arg'>nt</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>isv_nonterminal_reduce</b> <i class='arg'>nt</i>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ias_push</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ias_mark</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ias_mrewind</b>&quot;
+<br><br>
+<li> &quot;<b class='cmd'>ias_mpop</b>&quot;
+</ol>
+
+
+<h2><a name="cpu_state">CPU STATE</a></h2>
+<p>
+
+A state value is a list containing the following elements, in the order listed below:
+
+<ol>
+<li> <em>code</em>: Match instructions, see <a href="#match_program_representation">MATCH PROGRAM REPRESENTATION</a>.
+<br><br>
+<li> <em>pc</em>:   Program counter, <em>int</em>.
+<br><br>
+<li> <em>halt</em>: Halt flag, <em>boolean</em>.
+<br><br>
+<li> <em>eof</em>:  Eof flag, <em>boolean</em>
+<br><br>
+<li> <em>tc</em>:   Terminal cache, and input queue. Structure see below.
+<br><br>
+<li> <em>cl</em>:   Current location, <em>int</em>.
+<br><br>
+<li> <em>ct</em>:   Current token, <em>string</em>.
+<br><br>
+<li> <em>ok</em>:   Match status, <em>boolean</em>.
+<br><br>
+<li> <em>sv</em>:   Semantic value, <em>list</em>.
+<br><br>
+<li> <em>er</em>:   Error status, <em>list</em>.
+<br><br>
+<li> <em>ls</em>:   Location stack, <em>list</em>.
+<br><br>
+<li> <em>as</em>:   AST stack, <em>list</em>.
+<br><br>
+<li> <em>ms</em>:   AST marker stack, <em>list</em>.
+<br><br>
+<li> <em>es</em>:   Error stack, <em>list</em>.
+<br><br>
+<li> <em>rs</em>:   Return stack, <em>list</em>.
+<br><br>
+<li> <em>nc</em>:   Nonterminal cache, <em>dictionary</em>.
+</ol>
+<p>
+
+<em>tc</em>, the input queue of tokens waiting for processing and the
+terminal cache containing the tokens already processing are one
+unified data structure simply holding all tokens and their
+information, with the current location separating that which has been
+processed from that which is waiting.
+
+Each element of the queue/cache is a list containing the token, its
+lexeme information, line number, and column index, in this order.
+
+<p>
+
+All stacks have their top element aat the end, i.e. pushing an item is
+equivalent to appending to the list representing the stack, and
+popping it removes the last element.
+
+<p>
+
+<em>er</em>, the error status is either empty or a list of two elements,
+a location in the input, and a list of messages, encoded as references
+into the <em>pool</em> element of the <em>code</em>.
+
+<p>
+
+<em>nc</em>, the nonterminal cache is keyed by nonterminal name and
+location, each value a four-element list containing current location,
+match status, semantic value, and error status, in this order.
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+grammar, parsing, virtual machine
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

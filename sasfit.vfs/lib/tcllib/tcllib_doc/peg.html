@@ -1,0 +1,862 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::peg - Grammar operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_peg/peg.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: peg.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ grammar::peg.n
+   -->
+
+<body>
+<h1> grammar::peg(n) 0.1 grammar_peg &quot;Grammar operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::peg - Create and manipulate parsing expression grammars
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#terms_&_concepts">TERMS &amp; CONCEPTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#container_class_api">CONTAINER CLASS API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#container_object_api">CONTAINER OBJECT API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parsing_expressions">PARSING EXPRESSIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parsing_expression_grammars">PARSING EXPRESSION GRAMMARS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>snit</b><br>
+package require <b>grammar::peg ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::grammar::peg</b> <i class='arg'>pegName</i> ?<strong>=</strong>|<strong>:=</strong>|<strong>&lt;--</strong>|<strong>as</strong>|<strong>deserialize</strong> <i class='arg'>src</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><i class='arg'>pegName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>pegName</i> <strong>clear</strong></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>pegName</i> <strong>=</strong> <i class='arg'>srcPEG</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>pegName</i> <strong>--&gt;</strong> <i class='arg'>dstPEG</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>pegName</i> <strong>serialize</strong></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>pegName</i> <strong>deserialize</strong> <i class='arg'>serialization</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>pegName</i> <strong>is valid</strong></a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>pegName</i> <strong>start</strong> ?<i class='arg'>pe</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>pegName</i> <strong>nonterminals</strong></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>pegName</i> <strong>nonterminal add</strong> <i class='arg'>nt</i> <i class='arg'>pe</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>pegName</i> <strong>nonterminal delete</strong> <i class='arg'>nt1</i> ?<i class='arg'>nt2</i> ...?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>pegName</i> <strong>nonterminal exists</strong> <i class='arg'>nt</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>pegName</i> <strong>nonterminal rename</strong> <i class='arg'>nt</i> <i class='arg'>ntnew</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>pegName</i> <strong>nonterminal mode</strong> <i class='arg'>nt</i> ?<i class='arg'>mode</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>pegName</i> <strong>nonterminal rule</strong> <i class='arg'>nt</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>pegName</i> <strong>unknown nonterminals</strong></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+
+
+<p>
+
+This package provides a container class for
+<em>parsing expression grammars</em> (Short: PEG).
+
+It allows the incremental definition of the grammar, its manipulation
+and querying of the definition.
+
+The package neither provides complex operations on the grammar, nor has
+it the ability to execute a grammar definition for a stream of symbols.
+
+
+Two packages related to this one are <strong>grammar::mengine</strong> and
+<strong>grammar::peg::interpreter</strong>. The first of them defines a
+general virtual machine for the matching of a character stream, and
+the second implements an interpreter for parsing expression grammars
+on top of that virtual machine.
+
+
+<h3><a name="terms_&amp;_concepts">TERMS &amp; CONCEPTS</a></h3>
+<p>
+
+The formal mathematical definition of parsing expressions and parsing
+expression grammars can be found in section
+<a href="#parsing_expression_grammars">PARSING EXPRESSION GRAMMARS</a>.
+
+<p>
+
+In short, we have <em>terminal symbols</em>, which are the most basic
+building blocks for <em>sentences</em>, and <em>nonterminal symbols</em>
+with associated <em>parsing expressions</em>, defining the grammatical
+structure of the sentences. The two sets of symbols are distinctive,
+and do not overlap. When speaking about symbols the word &quot;symbol&quot; is
+often left out. The union of the sets of terminal and nonterminal
+symbols is called the set of <em>symbols</em>.
+
+<p>
+
+Here the set of <em>terminal symbols</em> is not explicitly managed,
+but implicitly defined as the set of all characters. Note that this
+means that we inherit from Tcl the ability to handle all of Unicode.
+
+<p>
+
+A pair of <em>nonterminal</em> and <em>parsing expression</em> is also
+called a <em>grammatical rule</em>, or <em>rule</em> for short. In the
+context of a rule the nonterminal is often called the left-hand-side
+(LHS), and the parsing expression the right-hand-side (RHS).
+
+<p>
+
+The <em>start expression</em> of a grammar is a parsing expression
+from which all the sentences contained in the language specified by
+the grammar are <em>derived</em>.
+
+To make the understanding of this term easier let us assume for a
+moment that the RHS of each rule, and the start expression, is either
+a sequence of symbols, or a series of alternate parsing expressions.
+In the latter case the rule can be seen as a set of rules, each
+providing one alternative for the nonterminal.
+
+A parsing expression A' is now a derivation of a parsing expression A
+if we pick one of the nonterminals N in the expression, and one of the
+alternative rules R for N, and then replace the nonterminal in A with
+the RHS of the chosen rule. Here we can see why the terminal symbols
+are called such. They cannot be expanded any further, thus terminate
+the process of deriving new expressions.
+
+An example
+
+<p><p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    Rules
+      (1)  A &lt;- a B c
+      (2a) B &lt;- d B
+      (2b) B &lt;- e
+
+    Some derivations, using starting expression A.
+
+      A -/1/-&gt; a B c -/2a/-&gt; a d B c -/2b/-&gt; a d e c
+</pre></td></tr></table></p><p>
+
+A derived expression containing only terminal symbols is a
+<em>sentence</em>. The set of all sentences which can be derived from
+the start expression is the <em>language</em> of the grammar.
+
+<p>
+
+Some definitions for nonterminals and expressions:
+
+<ol>
+<li>
+A nonterminal A is called <em>reachable</em> if it is possible to derive
+a parsing expression from the start expression which contains A.
+
+<br><br>
+<li>
+A nonterminal A is called <em>useful</em> if it is possible to derive a
+sentence from it.
+
+<br><br>
+<li>
+A nonterminal A is called <em>recursive</em> if it is possible to derive
+a parsing expression from it which contains A, again.
+
+<br><br>
+<li>
+The <em>FIRST set</em> of a nonterminal A contains all the symbols which
+can occur of as the leftmost symbol in a parsing expression derived from
+A. If the FIRST set contains A itself then that nonterminal is called
+<em>left-recursive</em>.
+
+<br><br>
+<li>
+The <em>LAST set</em> of a nonterminal A contains all the symbols which
+can occur of as the rightmost symbol in a parsing expression derived from
+A. If the LAST set contains A itself then that nonterminal is called
+<em>right-recursive</em>.
+
+<br><br>
+<li>
+The <em>FOLLOW set</em> of a nonterminal A contains all the symbols which
+can occur after A in a parsing expression derived from the start
+expression.
+
+<br><br>
+<li>
+A nonterminal (or parsing expression) is called <em>nullable</em> if the
+empty sentence can be derived from it.
+
+</ol>
+<p>
+
+And based on the above definitions for grammars:
+
+<ol>
+<li>
+A grammar G is <em>recursive</em> if and only if it contains a nonterminal
+A which is recursive. The terms <em>left-</em> and <em>right-recursive</em>,
+and <em>useful</em> are analogously defined.
+
+<br><br>
+<li>
+A grammar is <em>minimal</em> if it contains only <em>reachable</em> and
+<em>useful</em> nonterminals.
+
+<br><br>
+<li>
+A grammar is <em>wellformed</em> if it is not left-recursive. Such
+grammars are also <em>complete</em>, which means that they always succeed
+or fail on all input sentences. For an incomplete grammar on the
+other hand input sentences exist for which an attempt to match them
+against the grammar will not terminate.
+
+<br><br>
+<li>
+As we wish to allow ourselves to build a grammar incrementally in a
+container object we will encounter stages where the RHS of one or more
+rules reference symbols which are not yet known to the container. Such
+a grammar we call <em>invalid</em>.
+
+We cannot use the term <em>incomplete</em> as this term is already
+taken, see the last item.
+
+</ol>
+<p>
+
+
+<h3><a name="container_class_api">CONTAINER CLASS API</a></h3>
+<p>
+
+The package exports the API described here.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::grammar::peg</b> <i class='arg'>pegName</i> ?<strong>=</strong>|<strong>:=</strong>|<strong>&lt;--</strong>|<strong>as</strong>|<strong>deserialize</strong> <i class='arg'>src</i>?</a><dd>
+
+
+The command creates a new container object for a parsing expression
+grammar and returns the fully qualified name of the object command as
+its result. The API the returned command is following is described in
+the section <a href="#container_object_api">CONTAINER OBJECT API</a>. It may be used to invoke
+various operations on the container and the grammar within.
+
+<br><br>
+
+The new container, i.e. grammar will be empty if no <i class='arg'>src</i> is
+specified. Otherwise it will contain a copy of the grammar contained
+in the <i class='arg'>src</i>.
+
+The <i class='arg'>src</i> has to be a container object reference for all operators
+except <strong>deserialize</strong>.
+
+The <strong>deserialize</strong> operator requires <i class='arg'>src</i> to be the
+serialization of a parsing expression grammar instead.
+
+<br><br>
+
+An empty grammar has no nonterminal symbols, and the start expression
+is the empty expression, i.e. epsilon. It is <em>valid</em>, but not
+<em>useful</em>.
+
+</dl>
+
+
+<h3><a name="container_object_api">CONTAINER OBJECT API</a></h3>
+<p>
+<p>
+
+All grammar container objects provide the following methods for the
+manipulation of their contents:
+
+<dl>
+
+
+<dt><a name="2"><i class='arg'>pegName</i> <strong>destroy</strong></a><dd>
+
+
+Destroys the grammar, including its storage space and associated
+command.
+
+
+<br><br>
+<dt><a name="3"><i class='arg'>pegName</i> <strong>clear</strong></a><dd>
+
+
+Clears out the definition of the grammar contained in <i class='arg'>pegName</i>,
+but does <em>not</em> destroy the object.
+
+
+<br><br>
+<dt><a name="4"><i class='arg'>pegName</i> <strong>=</strong> <i class='arg'>srcPEG</i></a><dd>
+
+
+Assigns the contents of the grammar contained in <i class='arg'>srcPEG</i> to
+<i class='arg'>pegName</i>, overwriting any existing definition.
+
+This is the assignment operator for grammars. It copies the grammar
+contained in the grammar object <i class='arg'>srcPEG</i> over the grammar
+definition in <i class='arg'>pegName</i>. The old contents of <i class='arg'>pegName</i> are
+deleted by this operation.
+
+<br><br>
+
+This operation is in effect equivalent to
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    <i class='arg'>pegName</i> <strong>deserialize</strong> [<i class='arg'>srcPEG</i> <strong>serialize</strong>]
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="5"><i class='arg'>pegName</i> <strong>--&gt;</strong> <i class='arg'>dstPEG</i></a><dd>
+
+
+This is the reverse assignment operator for grammars. It copies the
+automation contained in the object <i class='arg'>pegName</i> over the grammar
+definition in the object <i class='arg'>dstPEG</i>.
+
+The old contents of <i class='arg'>dstPEG</i> are deleted by this operation.
+
+<br><br>
+
+This operation is in effect equivalent to
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    <i class='arg'>dstPEG</i> <strong>deserialize</strong> [<i class='arg'>pegName</i> <strong>serialize</strong>]
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>pegName</i> <strong>serialize</strong></a><dd>
+
+
+This method serializes the grammar stored in <i class='arg'>pegName</i>. In other
+words it returns a tcl <em>value</em> completely describing that
+grammar.
+
+This allows, for example, the transfer of grammars over arbitrary
+channels, persistence, etc.
+
+This method is also the basis for both the copy constructor and the
+assignment operator.
+
+<br><br>
+
+The result of this method has to be semantically identical over all
+implementations of the <strong>grammar::peg</strong> interface. This is what
+will enable us to copy grammars between different implementations of
+the same interface.
+
+<br><br>
+
+The result is a list of four elements with the following structure:
+
+<br><br>
+<ol>
+<li>
+The constant string <strong>grammar::peg</strong>.
+
+<br><br>
+<li>
+A dictionary. Its keys are the names of all known nonterminal symbols,
+and their associated values are the parsing expressions describing
+their sentennial structure.
+
+<br><br>
+<li>
+A dictionary. Its keys are the names of all known nonterminal symbols,
+and their associated values hints to a matcher regarding the semantic
+values produced by the symbol.
+
+<br><br>
+<li>
+The last item is a parsing expression, the <em>start expression</em>
+of the grammar.
+
+</ol>
+<br><br>
+
+Assuming the following PEG for simple mathematical expressions
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    Digit      &lt;- '0'/'1'/'2'/'3'/'4'/'5'/'6'/'7'/'8'/'9'
+    Sign       &lt;- '+' / '-'
+    Number     &lt;- Sign? Digit+
+    Expression &lt;- '(' Expression ')' / (Factor (MulOp Factor)*)
+    MulOp      &lt;- '*' / '/'
+    Factor     &lt;- Term (AddOp Term)*
+    AddOp      &lt;- '+'/'-'
+    Term       &lt;- Number
+</pre></td></tr></table></p>
+<br><br>
+
+a possible serialization is
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    grammar::peg \\
+    {Expression {/ {x ( Expression )} {x Factor {* {x MulOp Factor}}}} \\
+     Factor     {x Term {* {x AddOp Term}}} \\
+     Term       Number \\
+     MulOp      {/ * /} \\
+     AddOp      {/ + -} \\
+     Number     {x {? Sign} {+ Digit}} \\
+     Sign       {/ + -} \\
+     Digit      {/ 0 1 2 3 4 5 6 7 8 9} \\
+    } \\
+    {Expression value     Factor     value \\
+     Term       value     MulOp      value \\
+     AddOp      value     Number     value \\
+     Sign       value     Digit      value \\
+    }
+    Expression
+</pre></td></tr></table></p>
+<br><br>
+
+A possible one, because the order of the nonterminals in the
+dictionary is not relevant.
+
+
+<br><br>
+<dt><a name="7"><i class='arg'>pegName</i> <strong>deserialize</strong> <i class='arg'>serialization</i></a><dd>
+
+
+This is the complement to <strong>serialize</strong>. It replaces the grammar
+definition in <i class='arg'>pegName</i> with the grammar described by the
+<i class='arg'>serialization</i> value. The old contents of <i class='arg'>pegName</i> are
+deleted by this operation.
+
+
+<br><br>
+<dt><a name="8"><i class='arg'>pegName</i> <strong>is valid</strong></a><dd>
+
+
+A predicate. It tests whether the PEG in <i class='arg'>pegName</i> is <em>valid</em>.
+See section <a href="#terms_&amp;_concepts">TERMS &amp; CONCEPTS</a> for the definition of this
+grammar property.
+
+The result is a boolean value. It will be set to <strong>true</strong> if
+the PEG has the tested property, and <strong>false</strong> otherwise.
+
+
+<br><br>
+<dt><a name="9"><i class='arg'>pegName</i> <strong>start</strong> ?<i class='arg'>pe</i>?</a><dd>
+
+
+This method defines the <em>start expression</em> of the grammar. It
+replaces the previously defined start expression with the parsing
+expression <i class='arg'>pe</i>.
+
+The method fails and throws an error if <i class='arg'>pe</i> does not contain a
+valid parsing expression as specified in the section
+<a href="#parsing_expressions">PARSING EXPRESSIONS</a>. In that case the existing start
+expression is not changed.
+
+The method returns the empty string as its result.
+
+<br><br>
+
+If the method is called without an argument it will return the currently
+defined start expression.
+
+
+<br><br>
+<dt><a name="10"><i class='arg'>pegName</i> <strong>nonterminals</strong></a><dd>
+
+
+Returns the set of all nonterminal symbols known to the grammar.
+
+
+<br><br>
+<dt><a name="11"><i class='arg'>pegName</i> <strong>nonterminal add</strong> <i class='arg'>nt</i> <i class='arg'>pe</i></a><dd>
+
+
+This method adds the nonterminal <i class='arg'>nt</i> and its associated parsing
+expression <i class='arg'>pe</i> to the set of nonterminal symbols and rules of the
+PEG contained in the object <i class='arg'>pegName</i>.
+
+The method fails and throws an error if either the string <i class='arg'>nt</i> is
+already known as a symbol of the grammar, or if <i class='arg'>pe</i> does not
+contain a valid parsing expression as specified in the section
+<a href="#parsing_expressions">PARSING EXPRESSIONS</a>. In that case the current set of
+nonterminal symbols and rules is not changed.
+
+The method returns the empty string as its result.
+
+
+<br><br>
+<dt><a name="12"><i class='arg'>pegName</i> <strong>nonterminal delete</strong> <i class='arg'>nt1</i> ?<i class='arg'>nt2</i> ...?</a><dd>
+
+
+This method removes the named symbols <i class='arg'>nt1</i>, <i class='arg'>nt2</i> from the
+set of nonterminal symbols of the PEG contained in the object
+<i class='arg'>pegName</i>.
+
+The method fails and throws an error if any of the strings is not
+known as a nonterminal symbol. In that case the current set of
+nonterminal symbols is not changed.
+
+The method returns the empty string as its result.
+
+<br><br>
+
+The stored grammar becomes invalid if the deleted nonterminals are
+referenced by the RHS of still-known rules.
+
+
+<br><br>
+<dt><a name="13"><i class='arg'>pegName</i> <strong>nonterminal exists</strong> <i class='arg'>nt</i></a><dd>
+
+
+A predicate. It tests whether the nonterminal symbol <i class='arg'>nt</i> is known
+to the PEG in <i class='arg'>pegName</i>.
+
+The result is a boolean value. It will be set to <strong>true</strong> if the
+symbol <i class='arg'>nt</i> is known, and <strong>false</strong> otherwise.
+
+
+<br><br>
+<dt><a name="14"><i class='arg'>pegName</i> <strong>nonterminal rename</strong> <i class='arg'>nt</i> <i class='arg'>ntnew</i></a><dd>
+
+
+This method renames the nonterminal symbol <i class='arg'>nt</i> to <i class='arg'>ntnew</i>.
+
+The method fails and throws an error if either <i class='arg'>nt</i> is not known
+as a nonterminal, or if <i class='arg'>ntnew</i> is a known symbol.
+
+The method returns the empty string as its result.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>pegName</i> <strong>nonterminal mode</strong> <i class='arg'>nt</i> ?<i class='arg'>mode</i>?</a><dd>
+
+
+This mode returns or sets the semantic mode associated with the
+nonterminal symbol <i class='arg'>nt</i>. If no <i class='arg'>mode</i> is specified the
+current mode of the nonterminal is returned. Otherwise the current
+mode is set to <i class='arg'>mode</i>.
+
+The method fails and throws an error if <i class='arg'>nt</i> is not known as a
+nonterminal.
+
+The grammar interpreter implemented by the package
+<strong>grammar::peg::interpreter</strong> recognizes the
+following modes:
+
+<br><br>
+<dl>
+<dt>value<dd>
+
+The semantic value of the nonterminal is the abstract syntax tree
+created from the AST's of the RHS and a node for the nonterminal
+itself.
+
+<br><br>
+<dt>match<dd>
+
+The semantic value of the nonterminal is an the abstract syntax tree
+consisting of single a node for the string matched by the RHS. The ASTs
+generated by the RHS are discarded.
+
+<br><br>
+<dt>leaf<dd>
+
+The semantic value of the nonterminal is an the abstract syntax tree
+consisting of single a node for the nonterminal itself. The ASTs
+generated by the RHS are discarded.
+
+<br><br>
+<dt>discard<dd>
+
+The nonterminal has no semantic value. The ASTs generated by the RHS
+are discarded (as well).
+
+</dl>
+
+
+<dt><a name="16"><i class='arg'>pegName</i> <strong>nonterminal rule</strong> <i class='arg'>nt</i></a><dd>
+
+
+This method returns the parsing expression associated with the
+nonterminal <i class='arg'>nt</i>.
+
+The method fails and throws an error if <i class='arg'>nt</i> is not known as a
+nonterminal.
+
+
+<br><br>
+<dt><a name="17"><i class='arg'>pegName</i> <strong>unknown nonterminals</strong></a><dd>
+
+
+This method returns a list containing the names of all nonterminal
+symbols which are referenced on the RHS of a grammatical rule, but
+have no rule definining their structure. In other words, a list of
+the nonterminal symbols which make the grammar invalid. The grammar
+is valid if this list is empty.
+
+
+</dl>
+
+<p>
+
+<h3><a name="parsing_expressions">PARSING EXPRESSIONS</a></h3>
+<p>
+<p>
+
+Various methods of PEG container objects expect a parsing expression
+as their argument, or will return such. This section specifies the
+format such parsing expressions are in.
+
+<p>
+
+<ol>
+<li>
+The string <strong>epsilon</strong> is an atomic parsing expression. It matches
+the empty string.
+
+<br><br>
+<li>
+The string <strong>alnum</strong> is an atomic parsing expression. It matches
+any alphanumeric character.
+
+<br><br>
+<li>
+The string <strong>alpha</strong> is an atomic parsing expression. It matches
+any alphabetical character.
+
+<br><br>
+<li>
+The string <strong>dot</strong> is an atomic parsing expression. It matches
+any character.
+
+<br><br>
+<li>
+The expression
+    [list t <strong>x</strong>]
+is an atomic parsing expression. It matches the terminal string <strong>x</strong>.
+
+<br><br>
+<li>
+The expression
+    [list n <strong>A</strong>]
+is an atomic parsing expression. It matches the nonterminal <strong>A</strong>.
+
+<br><br>
+<li>
+For parsing expressions <strong>e1</strong>, <strong>e2</strong>, ... the result of
+
+    [list / <strong>e1</strong> <strong>e2</strong> ... ]
+
+is a parsing expression as well.
+
+This is the <em>ordered choice</em>, aka <em>prioritized choice</em>.
+
+<br><br>
+<li>
+For parsing expressions <strong>e1</strong>, <strong>e2</strong>, ... the result of
+
+    [list x <strong>e1</strong> <strong>e2</strong> ... ]
+
+is a parsing expression as well.
+
+This is the <em>sequence</em>.
+
+<br><br>
+<li>
+For a parsing expression <strong>e</strong> the result of
+
+    [list * <strong>e</strong>]
+
+is a parsing expression as well.
+
+This is the <em>kleene closure</em>, describing zero or more
+repetitions.
+
+<br><br>
+<li>
+For a parsing expression <strong>e</strong> the result of
+
+    [list + <strong>e</strong>]
+
+is a parsing expression as well.
+
+This is the <em>positive kleene closure</em>, describing one or more
+repetitions.
+
+<br><br>
+<li>
+For a parsing expression <strong>e</strong> the result of
+
+    [list &amp; <strong>e</strong>]
+
+is a parsing expression as well.
+
+This is the <em>and lookahead predicate</em>.
+
+<br><br>
+<li>
+For a parsing expression <strong>e</strong> the result of
+
+    [list ! <strong>e</strong>]
+
+is a parsing expression as well.
+
+This is the <em>not lookahead predicate</em>.
+
+
+<br><br>
+<li>
+For a parsing expression <strong>e</strong> the result of
+
+    [list ? <strong>e</strong>]
+
+is a parsing expression as well.
+
+This is the <em>optional input</em>.
+
+</ol>
+<p>
+
+Examples of parsing expressions where already shown, in the
+description of the method <strong>serialize</strong>.
+
+
+<h2><a name="parsing_expression_grammars">PARSING EXPRESSION GRAMMARS</a></h2>
+<p>
+<p>
+
+For the mathematically inclined, a PEG is a 4-tuple (VN,VT,R,eS) where
+
+<ul>
+<li>
+VN is a set of <em>nonterminal symbols</em>,
+
+<br><br>
+<li>
+VT is a set of <em>terminal symbols</em>,
+
+<br><br>
+<li>
+R is a finite set of rules, where each rule is a pair (A,e), A in VN,
+and <em>e</em> a <em>parsing expression</em>.
+
+<br><br>
+<li>
+eS is a parsing expression, the <em>start expression</em>.
+
+</ul>
+<p>
+
+Further constraints are
+
+<ul>
+<li>
+The intersection of VN and VT is empty.
+
+<br><br>
+<li>
+For all A in VT exists exactly one pair (A,e) in R. In other words, R
+is a function from nonterminal symbols to parsing expressions.
+
+</ul>
+<p>
+
+Parsing expression are inductively defined via
+
+<ul>
+<li>
+The empty string (epsilon) is a parsing expression.
+
+<br><br>
+<li>
+A terminal symbol <em>a</em> is a parsing expression.
+
+<br><br>
+<li>
+A nonterminal symbol <em>A</em> is a parsing expression.
+
+<br><br>
+<li>
+<em>e1</em><em>e2</em> is a parsing expression for parsing expressions
+<em>e1</em> and <em>2</em>. This is called <em>sequence</em>.
+
+<br><br>
+<li>
+<em>e1</em>/<em>e2</em> is a parsing expression for parsing expressions
+<em>e1</em> and <em>2</em>. This is called <em>ordered choice</em>.
+
+<br><br>
+<li>
+<em>e</em>* is a parsing expression for parsing expression
+<em>e</em>. This is called <em>zero-or-more repetitions</em>, also known
+as <em>kleene closure</em>.
+
+<br><br>
+<li>
+<em>e</em>+ is a parsing expression for parsing expression
+<em>e</em>. This is called <em>one-or-more repetitions</em>, also known
+as <em>positive kleene closure</em>.
+
+<br><br>
+<li>
+!<em>e</em> is a parsing expression for parsing expression
+<em>e1</em>. This is called a <em>not lookahead predicate</em>.
+
+<br><br>
+<li>
+&amp;<em>e</em> is a parsing expression for parsing expression
+<em>e1</em>. This is called an <em>and lookahead predicate</em>.
+
+</ul>
+<p>
+
+<p>
+
+PEGs are used to define a grammatical structure for streams of symbols
+over VT. They are a modern phrasing of older formalisms invented by
+Alexander Birham. These formalisms were called TS (TMG recognition
+scheme), and gTS (generalized TS). Later they were renamed to TPDL
+(Top-Down Parsing Languages) and gTPDL (generalized TPDL).
+
+<p>
+
+They can be easily implemented by recursive descent parsers with
+backtracking. This makes them relatives of LL(k) Context-Free
+Grammars.
+
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+<li>
+<a href="http://www.pdos.lcs.mit.edu/~baford/packrat/">The Packrat Parsing and Parsing Expression Grammars Page</a>,
+by Bryan Ford, Massachusetts Institute of Technology. This is the main
+entry page to PEGs, and their realization through Packrat Parsers.
+
+<br><br>
+<li>
+<a href="http://www.cs.vu.nl/~dick/PTAPG.html">Parsing Techniques - A Practical Guide </a>, an online book
+offering a clear, accessible, and thorough discussion of many
+different parsing techniques with their interrelations and
+applicabilities, including error recovery techniques.
+
+<br><br>
+<li>
+<a href="http://scifac.ru.ac.za/compilers/">Compilers and Compiler Generators</a>, an online book using
+CoCo/R, a generator for recursive descent parsers.
+
+</ol>
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+LL(k), TDPL, context-free languages, expression, grammar, parsing, parsing expression, parsing expression grammar, push down automaton, recursive descent, state, top-down parsing languages, transducer
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

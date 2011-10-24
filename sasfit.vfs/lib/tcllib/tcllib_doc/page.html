@@ -1,0 +1,556 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>page - Development Tools </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/apps/page.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: page.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ page.n
+   -->
+
+<body>
+<h1> page(n) 1.0  &quot;Development Tools&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> page - Parser Generator
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#command_line">COMMAND LINE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#operation">OPERATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#plugins">PLUGINS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#plugin_locations">PLUGIN LOCATIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+<table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>page</b> ?<i class='arg'>options</i>...? ?<i class='arg'>input</i> ?<i class='arg'>output</i>??</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The application described by this document, <strong>page</strong>, is actually
+not just a parser generator, as the name implies, but a generic tool
+for the execution of arbitrary transformations on texts.
+
+<p>
+
+Its genericity comes through the use of <em>plugins</em> for reading,
+transforming, and writing data, and the predefined set of plugins
+provided by Tcllib is for the generation of memoizing recursive
+descent parsers (aka <em>packrat parsers</em>) from grammar
+specifications (<em>Parsing Expression Grammars</em>).
+
+<p>
+
+<strong>page</strong> is written on top of the package
+
+<strong>page::pluginmgr</strong>, wrapping its functionality into a command
+line based application. All the other <strong>page::*</strong> packages are
+plugin and/or supporting packages for the generation of parsers. The
+parsers themselves are based on the packages <strong>grammar::peg</strong>,
+<strong>grammar::peg::interp</strong>, and <strong>grammar::mengine</strong>.
+
+<h3><a name="command_line">COMMAND LINE</a></h3>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>page</b> ?<i class='arg'>options</i>...? ?<i class='arg'>input</i> ?<i class='arg'>output</i>??</a><dd>
+
+
+This is general form for calling <strong>page</strong>. The application will
+read the contents of the file <i class='arg'>input</i>, process them under the
+control of the specified <i class='arg'>options</i>, and then write the result to
+the file <i class='arg'>output</i>.
+
+<br><br>
+
+If <i class='arg'>input</i> is the string <strong>-</strong> the data to process will be
+read from <strong>stdin</strong> instead of a file. Analogously the result will
+be written to <strong>stdout</strong> instead of a file if <i class='arg'>output</i> is the
+string <strong>-</strong>. A missing output or input specification causes the
+application to assume <strong>-</strong>.
+
+<br><br>
+
+The detailed specifications of the recognized <i class='arg'>options</i> are
+provided in section <a href="#options">OPTIONS</a>.
+
+<br><br>
+<dl>
+<dt>path <i class='arg'>input</i> (in)<dd>
+
+This argument specifies the path to the file to be processed by the
+application, or <strong>-</strong>. The last value causes the application to
+read the text from <strong>stdin</strong>. Otherwise it has to exist, and be
+readable. If the argument is missing <strong>-</strong> is assumed.
+
+<br><br>
+<dt>path <i class='arg'>output</i> (in)<dd>
+
+This argument specifies where to write the generated text. It can be
+the path to a file, or <strong>-</strong>. The last value causes the
+application to write the generated documented to <strong>stdout</strong>.
+
+<br><br>
+
+If the file <i class='arg'>output</i> does not exist then
+[file dirname $output] has to exist and must be a writable
+directory, as the application will create the fileto write to.
+
+<br><br>
+
+If the argument is missing <strong>-</strong> is assumed.
+
+</dl>
+</dl>
+
+<h3><a name="operation">OPERATION</a></h3>
+<p>
+
+... reading ... transforming ... writing - plugins - pipeline ...
+
+
+<h3><a name="options">OPTIONS</a></h3>
+<p>
+
+This section describes all the options available to the user of the
+application. Options are always processed in order. I.e. of both
+<strong>--help</strong> and <strong>--version</strong> are specified the option
+encountered first has precedence.
+
+<p>
+
+Unknown options specified before any of the options <strong>-rd</strong>,
+<strong>-wr</strong>, or <strong>-tr</strong> will cause processing to abort with an
+error. Unknown options coming in between these options, or after the
+last of them are assumed to always take a single argument and are
+associated with the last plugin option coming before them. They will
+be checked after all the relevant plugins, and thus the options they
+understand, are known. I.e. such unknown options cause error if and
+only if the plugin option they are associated with does not understand
+them, and was not superceded by a plugin option coming after.
+
+<p>
+
+Default options are used if and only if the command line did not
+contain any options at all. They will set the application up as a
+PEG-based parser generator. The exact list of options is
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>-c peg</pre></td></tr></table></p>
+<p>
+
+And now the recognized options and their arguments, if they have any:
+
+<p>
+<dl>
+
+<dt><strong>--help</strong><dd>
+<dt><strong>-h</strong><dd>
+<dt><strong>-?</strong><dd>
+
+When one of these options is found on the command line all arguments
+coming before or after are ignored. The application will print a short
+description of the recognized options and exit.
+
+<br><br>
+<dt><strong>--version</strong><dd>
+<dt><strong>-V</strong><dd>
+
+When one of these options is found on the command line all arguments
+coming before or after are ignored. The application will print its
+own revision and exit.
+
+<br><br>
+<dt><strong>-P</strong><dd>
+
+This option signals the application to activate visual feedback while
+reading the input.
+
+<br><br>
+<dt><strong>-T</strong><dd>
+
+This option signals the application to collect statistics while
+reading the input and to print them after reading has completed,
+before processing started.
+
+<br><br>
+<dt><strong>-D</strong><dd>
+
+This option signals the application to activate logging in the Safe
+base, for the debugging of problems with plugins.
+
+<br><br>
+<dt><strong>-r</strong> parser<dd>
+<dt><strong>-rd</strong> parser<dd>
+<dt><strong>--reader</strong> parser<dd>
+
+These options specify the plugin the application has to use for
+reading the <i class='arg'>input</i>. If the options are used multiple times the
+last one will be used.
+
+<br><br>
+<dt><strong>-w</strong> generator<dd>
+<dt><strong>-wr</strong> generator<dd>
+<dt><strong>--writer</strong> generator<dd>
+
+These options specify the plugin the application has to use for
+generating and writing the final <i class='arg'>output</i>. If the options are used
+multiple times the last one will be used.
+
+<br><br>
+<dt><strong>-t</strong> process<dd>
+<dt><strong>-tr</strong> process<dd>
+<dt><strong>--transform</strong> process<dd>
+
+These options specify a plugin to run on the input. In contrast to
+readers and writers each use will <em>not</em> supersede previous
+uses, but add each chosen plugin to a list of transformations, either
+at the front, or the end, per the last seen use of either option
+<strong>-p</strong> or <strong>-a</strong>. The initial default is to append the new
+transformations.
+
+<br><br>
+<dt><strong>-a</strong><dd>
+<dt><strong>--append</strong><dd>
+
+These options signal the application that all following
+transformations should be added at the end of the list of
+transformations.
+
+<br><br>
+<dt><strong>-p</strong><dd>
+<dt><strong>--prepend</strong><dd>
+
+These options signal the application that all following
+transformations should be added at the beginning of the list of
+transformations.
+
+<br><br>
+<dt><strong>--reset</strong><dd>
+
+This option signals the application to clear the list of
+transformations. This is necessary to wipe out the default
+transformations used.
+
+<br><br>
+<dt><strong>-c</strong> file<dd>
+<dt><strong>--configuration</strong> file<dd>
+
+This option causes the application to load a configuration file and/or
+plugin. This is a plugin which in essence provides a pre-defined set
+of commandline options. They are processed exactly as if they have
+been specified in place of the option and its arguments. This means
+that unknown options found at the beginning of the configuration file
+are associated with the last plugin, even if that plugin was specified
+before the configuration file itself. Conversely, unknown options
+coming after the configuration file can be associated with a plugin
+specified in the file.
+
+<br><br>
+
+If the argument is a file which cannot be loaded as a plugin the
+application will assume that its contents are a list of options and
+their arguments, separated by space, tabs, and newlines. Options and
+argumentes containing spaces can be quoted via double-quotes (&quot;) and
+quotes ('). The quote character can be specified within in a quoted
+string by doubling it. Newlines in a quoted string are accepted as is.
+
+<! -- &quot;
+   -->
+</dl>
+
+
+<h3><a name="plugins">PLUGINS</a></h3>
+<p>
+
+<strong>page</strong> makes use of four different types of plugins, namely:
+readers, writers, transformations, and configurations. Here we provide
+only a basic introduction on how to use them from <strong>page</strong>. The
+exact APIs provided to and expected from the plugins can be found in
+the documentation for <strong>page::pluginmgr</strong>, for those who wish to
+write their own plugins.
+
+<p>
+
+Plugins are specified as arguments to the options <strong>-r</strong>,
+<strong>-w</strong>, <strong>-t</strong>, <strong>-c</strong>, and their equivalent longer
+forms. See the section <a href="#options">OPTIONS</a> for reference.
+
+<p>
+
+Each such argument will be first treated as the name of a file and
+this file is loaded as the plugin. If however there is no file with
+that name, then it will be translated into the name of a package, and
+this package is then loaded. For each type of plugins the package
+management searches not only the regular paths, but a set application-
+and type-specific paths as well. Please see the section
+<a href="#plugin_locations">PLUGIN LOCATIONS</a> for a listing of all paths and their
+sources.
+
+<p>
+
+<dl>
+<dt><strong>-c</strong> <i class='arg'>name</i><dd>
+
+Configurations. The name of the package for the plugin <i class='arg'>name</i> is
+&quot;page::config::<i class='arg'>name</i>&quot;.
+
+<br><br>
+We have one predefined plugin:
+
+<br><br>
+<dl>
+<dt><em>peg</em><dd>
+
+It sets the application up as a parser generator accepting parsing
+expression grammars and writing a packrat parser in Tcl. The actual
+arguments it specifies are:
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+	--reset
+	--append
+	--reader    peg
+	--transform reach
+	--transform use
+	--writer    me
+</pre></td></tr></table></p>
+<br><br>
+
+</dl>
+
+
+<dt><strong>-r</strong> <i class='arg'>name</i><dd>
+
+Readers. The name of the package for the plugin <i class='arg'>name</i> is
+&quot;page::reader::<i class='arg'>name</i>&quot;.
+
+<br><br>
+We have five predefined plugins:
+
+<br><br>
+<dl>
+<dt><em>peg</em><dd>
+
+Interprets the input as a parsing expression grammar (<em>PEG</em>) and
+generates a tree representation for it. Both the syntax of PEGs and
+the structure of the tree representation are explained in their own
+manpages.
+
+<br><br>
+<dt><em>hb</em><dd>
+
+Interprets the input as Tcl code as generated by the writer plugin
+<em>hb</em> and generates its tree representation.
+
+<br><br>
+<dt><em>ser</em><dd>
+
+Interprets the input as the serialization of a PEG, as generated by
+the writer plugin <em>ser</em>, using the package
+<strong>grammar::peg</strong>.
+
+<br><br>
+<dt><em>lemon</em><dd>
+
+Interprets the input as a grammar specification as understood by
+Richard Hipp's <em>LEMON</em> parser generator and generates a tree
+representation for it. Both the input syntax and the structure of the
+tree representation are explained in their own manpages.
+
+<br><br>
+<dt><em>treeser</em><dd>
+
+Interprets the input as the serialization of a
+<strong>struct::tree</strong>. It is validated as such,
+but nothing else. It is <em>not</em> assumed to
+be the tree representation of a grammar.
+</dl>
+
+
+<dt><strong>-w</strong> <i class='arg'>name</i><dd>
+
+Writers. The name of the package for the plugin <i class='arg'>name</i> is
+&quot;page::writer::<i class='arg'>name</i>&quot;.
+
+<br><br>
+We have eight predefined plugins:
+
+<br><br>
+<dl>
+
+<dt><em>identity</em><dd>
+
+Simply writes the incoming data as it is, without making any
+changes. This is good for inspecting the raw result of a reader or
+transformation.
+
+<br><br>
+<dt><em>null</em><dd>
+
+Generates nothing, and ignores the incoming data structure.
+
+<br><br>
+<dt><em>tree</em><dd>
+
+Assumes that the incoming data structure is a <strong>struct::tree</strong>
+and generates an indented textual representation of all nodes, their
+parental relationships, and their attribute information.
+
+<br><br>
+<dt><em>peg</em><dd>
+
+Assumes that the incoming data structure is a tree representation of a
+<em>PEG</em> or other other grammar and writes it out as a PEG. The
+result is nicely formatted and partially simplified (strings as
+sequences of characters). A pretty printer in essence, but can also be
+used to obtain a canonical representation of the input grammar.
+
+<br><br>
+<dt><em>tpc</em><dd>
+
+Assumes that the incoming data structure is a tree representation of a
+<em>PEG</em> or other other grammar and writes out Tcl code defining a
+package which defines a <strong>grammar::peg</strong> object containing the
+grammar when it is loaded into an interpreter.
+
+
+<br><br>
+<dt><em>hb</em><dd>
+
+This is like the writer plugin <em>tpc</em>, but it writes only the
+statements which define stat expression and grammar rules. The code
+making the result a package is left out.
+
+<br><br>
+<dt><em>ser</em><dd>
+
+Assumes that the incoming data structure is a tree representation of a
+<em>PEG</em> or other other grammar, transforms it internally into a
+<strong>grammar::peg</strong> object and writes out its serialization.
+
+<br><br>
+<dt><em>me</em><dd>
+
+Assumes that the incoming data structure is a tree representation of a
+<em>PEG</em> or other other grammar and writes out Tcl code defining a
+package which implements a memoizing recursive descent parser based on
+the match engine (ME) provided by the package <strong>grammar::mengine</strong>.
+
+</dl>
+
+
+<dt><strong>-t</strong> <i class='arg'>name</i><dd>
+
+Transformers. The name of the package for the plugin <i class='arg'>name</i> is
+&quot;page::transform::<i class='arg'>name</i>&quot;.
+
+<br><br>
+We have two predefined plugins:
+
+<br><br>
+<dl>
+<dt><em>reach</em><dd>
+
+Assumes that the incoming data structure is a tree representation of a
+<em>PEG</em> or other other grammar. It determines which nonterminal
+symbols and rules are reachable from start-symbol/expression. All
+nonterminal symbols which were not reached are removed.
+
+
+<br><br>
+<dt><em>use</em><dd>
+
+Assumes that the incoming data structure is a tree representation of a
+<em>PEG</em> or other other grammar. It determines which nonterminal
+symbols and rules are able to generate a <em>finite</em> sequences of
+terminal symbols (in the sense for a Context Free Grammar). All
+nonterminal symbols which were not deemed useful in this sense are
+removed.
+
+</dl>
+</dl>
+
+<h3><a name="plugin_locations">PLUGIN LOCATIONS</a></h3>
+<p>
+
+The application-specific paths searched by <strong>page</strong> either are,
+or come from:
+
+<p>
+
+<ol>
+<li> The directory            &quot;<strong>~/.page/plugin</strong>&quot;
+<br><br>
+<li> The environment variable <em>PAGE_PLUGINS</em>
+<br><br>
+<li> The registry entry       <em>HKEY_LOCAL_MACHINE\SOFTWARE\PAGE\PLUGINS</em>
+<br><br>
+<li> The registry entry       <em>HKEY_CURRENT_USER\SOFTWARE\PAGE\PLUGINS</em>
+</ol>
+
+<p>
+
+The type-specific paths searched by <strong>page</strong> either are, or come
+from:
+
+<p>
+<ol>
+<li> The directory            &quot;<strong>~/.page/plugin/&lt;TYPE&gt;</strong>&quot;
+<br><br>
+<li> The environment variable <em>PAGE_&lt;TYPE&gt;_PLUGINS</em>
+<br><br>
+<li> The registry entry       <em>HKEY_LOCAL_MACHINE\SOFTWARE\PAGE\&lt;TYPE&gt;\PLUGINS</em>
+<br><br>
+<li> The registry entry       <em>HKEY_CURRENT_USER\SOFTWARE\PAGE\&lt;TYPE&gt;\PLUGINS</em>
+</ol>
+
+<p>
+
+Where the placeholder <em>&lt;TYPE&gt;</em> is always one of the values below,
+properly capitalized.
+
+<ol>
+<li> reader
+<br><br>
+<li> writer
+<br><br>
+<li> transform
+<br><br>
+<li> config
+</ol>
+<p>
+
+The registry entries are specific to the Windows(tm) platform, all
+other platforms will ignore them.
+
+<p>
+
+The contents of both environment variables and registry entries are
+interpreted as a list of paths, with the elements separated by either
+colon (Unix), or semicolon (Windows).
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+page::pluginmgr
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+parser generator, text processing
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

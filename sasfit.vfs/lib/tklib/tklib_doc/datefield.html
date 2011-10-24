@@ -1,0 +1,103 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>datefield - Tk datefield widget </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/datefield/datefield.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; Keith Vetter &lt;keith@ebook.gemstar.com&gt;
+   -->
+<! -- CVS: $Id: datefield.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ datefield.n
+   -->
+
+<body>
+<h1> datefield(n) 0.1 datefield &quot;Tk datefield widget&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> datefield - Tk datefield widget
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tk</b><br>
+package require <b>datefield ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::datefield::datefield</b> <i class='arg'>widgetpath</i> ?<i class='arg'>options</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>datefield</strong> package provides the datefield widget which
+is an enhanced text entry widget for the purpose of date entry. Only
+valid dates of the form MM/DD/YYYY can be entered.
+
+<p>
+
+The datefield widget is, in fact, just an entry widget with
+specialized bindings. This means all the command and options for an
+entry widget apply equally here.
+
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+<dt><a name="1"><b class='cmd'>::datefield::datefield</b> <i class='arg'>widgetpath</i> ?<i class='arg'>options</i>?</a><dd>
+
+
+Creates and configures a date field widget.
+
+</dl>
+
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+
+See the <b class='cmd'>entry</b> manual entry for details on all available options.
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+ package require datefield
+ 
+ wm title . &quot;Datefield example&quot;
+ proc DayOfWeek {args} {
+     set now [clock scan $::myDate]
+     set ::myDate2 [clock format $now -format %A]
+ }
+ trace variable myDate w DayOfWeek
+ 
+ ::datefield::datefield .df -textvariable myDate
+ label .l1 -text &quot;Enter a date:&quot;   -anchor e
+ label .l2 -text &quot;That date is a:&quot; -anchor e
+ label .l3 -textvariable myDate2 -relief sunken -width 12
+ 
+ grid .l1 .df -sticky ew
+ grid .l2 .l3 -sticky ew
+ focus .df
+</pre></td></tr></table></p>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+clock(n), entry(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+clock, entry, widget
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; Keith Vetter &lt;keith@ebook.gemstar.com&gt;<br>
+</body></html>

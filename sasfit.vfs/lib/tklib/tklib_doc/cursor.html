@@ -1,0 +1,91 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>cursor - Tk cursor routines </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/cursor/cursor.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; Jeffrey Hobbs &lt;jeff@hobbs.org&gt;
+   -->
+<! -- CVS: $Id: cursor.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ cursor.n
+   -->
+
+<body>
+<h1> cursor(n) 0.1 cursor &quot;Tk cursor routines&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> cursor - Procedures to handle CURSOR data
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tk</b><br>
+package require <b>cursor ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::cursor::propagate</b> <i class='arg'>widget</i> <i class='arg'>cursor</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::cursor::restore</b> <i class='arg'>widget</i> ?<i class='arg'>cursor</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::cursor::display</b> ?<i class='arg'>parent</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>cursor</strong> package provides commands to handle Tk cursors.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+The following commands are available:
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::cursor::propagate</b> <i class='arg'>widget</i> <i class='arg'>cursor</i></a><dd>
+
+
+Sets the cursor for the specified <i class='arg'>widget</i> and all its descendants
+to <i class='arg'>cursor</i>.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::cursor::restore</b> <i class='arg'>widget</i> ?<i class='arg'>cursor</i>?</a><dd>
+
+
+Restore the original or previously set cursor for the specified
+<i class='arg'>widget</i> and all its descendants.  If <i class='arg'>cursor</i> is specified,
+that will be used if on any widget that did not have a preset cursor
+(set by a previous call to <b class='cmd'>::cursor::propagate</b>).
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::cursor::display</b> ?<i class='arg'>parent</i>?</a><dd>
+
+
+Pops up a dialog with a listbox containing all the cursor names.
+Selecting a cursor name will display it in that dialog.  This is
+simply for viewing any available cursors on the platform.
+
+</dl>
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+Tk_GetCursor(3), cursors(n), options(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+cursor
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; Jeffrey Hobbs &lt;jeff@hobbs.org&gt;<br>
+</body></html>
