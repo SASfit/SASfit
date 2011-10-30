@@ -58,21 +58,7 @@ scalar sasfit_Rod_Gauss_ave_core(scalar x, sasfit_param * param)
 }
 
 
-/*
-float P_Rod_Gauss_Profile(Tcl_Interp *interp,
-				float Q,
-				  float Rc,
-				float n_agg,
-				float Vsh,
-				float rho_c,
-			  float rho_sh,
-			  float rho_solv,
-				float xsolv_core,
-				float t,
-				float sigma,
-				float H,
-				  bool  *error)
-*/
+
 scalar sasfit_ff_Rod_Gauss_Profile(scalar q, sasfit_param * param)
 {
 	scalar Psh, Fsh, Fsh1, Fsh2, Fc, Pc, Vc, V, S, Nagg, b_c, b_sh, Pcs, Pp, Plocal;
@@ -99,7 +85,11 @@ scalar sasfit_ff_Rod_Gauss_Profile(scalar q, sasfit_param * param)
 			Vc	= param->p[1];
 			SASFIT_CHECK_COND1((n_agg < 0.0), param, "n_agg(%lg) < 0",n_agg);
 			if ( n_agg==0.0 ) return 0.0;
-			Rc = sqrt(n_agg*Vc/(1.-xsolv_core)/M_PI);
+//	wrong equation		Rc = sqrt(n_agg*Vc/(1.-xsolv_core)/M_PI);
+//  Solve[{Vc/(1 - xsolv)*nagg*2*Pi*Rc*H == Pi*Rc^2*H}, {Rc}]
+//  here the total volume of the rod is given by V == Vc/(1 - xsolv)*nagg*2*Pi*Rc*H == Pi*Rc^2*H
+//  {{Rc -> 0}, {Rc -> -((2 nagg Vc)/(-1 + xsolv))}}
+			Rc = 2.0*n_agg*Vc/(1.0-xsolv_core);
 			S = 2.0 * M_PI*Rc*H;
 			Nagg = n_agg*S;
 			break;

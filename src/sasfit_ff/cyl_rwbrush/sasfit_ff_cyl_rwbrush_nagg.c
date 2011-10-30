@@ -38,6 +38,10 @@ scalar sasfit_ff_cyl_rwbrush_nagg(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((V[V_CORE] < 0.0), param, "V_core(%lg) < 0",V[V_CORE]);
 	SASFIT_CHECK_COND((V[NAGG] == 0.0), param, "Nagg == 0");
 
+// Solve[{Vc/(1 - xsolv)*Nagg == Pi*Rc^2*H}, {Rc}]
+// {{Rc -> (
+//	Sqrt[Nagg] Sqrt[Vc])/(Sqrt[H] Sqrt[\[Pi]] Sqrt[1 - xsolv])}}
+
 	V[R] = sqrt( fabs(V[NAGG]*(V[V_CORE]/(1.0-V[XSOLV_CORE]))/M_PI/V[H]));
 
 	CYL_RWBRUSH_BODY;
