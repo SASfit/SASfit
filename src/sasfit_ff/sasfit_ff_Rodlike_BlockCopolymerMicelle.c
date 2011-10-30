@@ -28,21 +28,7 @@
 #include <gsl/gsl_math.h>
 #include "include/sasfit_ff_utils.h"
 
-/*
-float Rodlike_BlockCopolymerMicelle(Tcl_Interp *interp,
-			float Q,
-			  float Vpolym_c,	 // in nm^3 if Q in nm^-1, in A^3 if Q in A^-1
-			float Vpolym_sh,	// in nm^3 if Q in nm^-1, in A^3 if Q in A^-1
-			float eta_poly_c,  // (bulk) scattering length density of block unit in core
-			float eta_poly_sh, // (bulk) scattering length density of block unit in shell
-			float eta_solv,	 // scattering length density of solvent
-			float xsolv_c,	  // amount of solvent in the core
-			float Rg,			 // radius of gyration of the chains in the shell
-			float d,			  // should be around 1
-			float n_agg,		 // specific aggregation number, aggregation number per surface are
-			  float H,			  // height of the rodlike micelle
-			  bool  *error)
-*/
+
 scalar sasfit_ff_Rodlike_BlockCopolymerMicelle(scalar q, sasfit_param * param)
 {
 	scalar R, r_core, r_chain, Nagg,S, res;

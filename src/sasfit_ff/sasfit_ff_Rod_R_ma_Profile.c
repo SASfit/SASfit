@@ -45,21 +45,7 @@ scalar sasfit_ff_Rod_R_ma_ave_core(scalar x, sasfit_param * param)
         return pow(x,-alpha)* 2.0 * M_PI * x* gsl_sf_bessel_J0(u);
 }
 
-/*
-float P_Rod_R_ma_Profile(Tcl_Interp *interp,
-				float Q,
-				  float Rc,
-				float n_agg,
-				float Vsh,
-				float rho_c,
-			  float rho_sh,
-			  float rho_solv,
-				float xsolv_core,
-				float alpha,
-				float t,
-				float H,
-				  bool  *error)
-*/
+
 scalar sasfit_ff_Rod_R_ma_Profile(scalar q, sasfit_param * param)
 {
 	scalar Psh, Fsh, res1, res2, Fc, Pc, Vc, V, S, Nagg, b_c, b_sh, Pcs, Pp;
@@ -87,7 +73,11 @@ scalar sasfit_ff_Rod_R_ma_Profile(scalar q, sasfit_param * param)
 			Vc		= param->p[1];
 			SASFIT_CHECK_COND1((n_agg < 0.0), param, "n_agg(%lg) < 0",n_agg);
 			if ( n_agg == 0.0 ) return 0.0;
-			Rc = sqrt(n_agg*Vc/(1.-xsolv_core)/M_PI);
+//	wrong equation		Rc = sqrt(n_agg*Vc/(1.-xsolv_core)/M_PI);
+//  Solve[{Vc/(1 - xsolv)*nagg*2*Pi*Rc*H == Pi*Rc^2*H}, {Rc}]
+//  here the total volume of the rod is given by V == Vc/(1 - xsolv)*nagg*2*Pi*Rc*H == Pi*Rc^2*H
+//  {{Rc -> 0}, {Rc -> -((2 nagg Vc)/(-1 + xsolv))}}
+			Rc = 2.0*n_agg*Vc/(1.0-xsolv_core);
 			if (Rc == 0.0) return 0.0;
 			S = 2. * M_PI *Rc*H;
 			Nagg = n_agg*S;

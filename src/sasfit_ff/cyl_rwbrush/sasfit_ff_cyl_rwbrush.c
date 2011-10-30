@@ -38,7 +38,7 @@ scalar sasfit_ff_cyl_rwbrush(scalar q, sasfit_param * param)
 	CYL_RWBRUSH_TESTS;
 	SASFIT_CHECK_COND1((V[H] < 0.0),           param, "H(%lg) < 0",V[H]);
 
-	s = 2.0*M_PI*V[R]*V[H] + M_PI*pow(V[R],2.0);
+	s = 2.0*M_PI*V[R]*V[H] + 2*M_PI*pow(V[R],2.0);
 	V[NAGG] = V[N_AGG]*s;
 
 	vol = M_PI * pow(V[R],2.)*V[H];
