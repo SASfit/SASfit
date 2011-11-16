@@ -5,9 +5,6 @@ import sys
 import inspect
 import logging
 
-print "version:", cl.VERSION
-print "info:", dir(cl.platform_info)
-
 def getattributes(obj):
     return [(member, getattr(obj, member)) for member in dir(obj) if
         not member.startswith("_") and
@@ -18,10 +15,12 @@ def printobjectinfo(obj, obj_info):
         print name, ":", obj.get_info(attr)
 
 class Descriptor(object):
+    _handle = None
     _info = None
     _name = None
 
     def __init__(self, obj):
+        self._handle = obj
         self._name = self._getinfo(obj, 'NAME')
 
     def _getinfo(self, obj, attrname):
@@ -29,6 +28,9 @@ class Descriptor(object):
 
     def __str__(self):
         return "{0}".format(self._name)
+
+    def handle(self):
+        return self._handle
 
 class Platform(Descriptor):
     _info = cl.platform_info
@@ -53,6 +55,12 @@ class Device(Descriptor):
         self._type = self._getinfo(device, 'TYPE')
         self._typestr = cl.device_type.to_string(self._type)
 
+    def iscpu(self):
+        return self._type == cl.device_type.CPU
+
+    def isgpu(self):
+        return self._type == cl.device_type.GPU
+
     def __str__(self):
         basestr = Descriptor.__str__(self)
         return "{t}: {name} [{platform}]".format(
@@ -60,17 +68,21 @@ class Device(Descriptor):
                                         name = basestr,
                                         platform = self._platform)
 
-def platforminfo():
+def getdevices():
     devices = []
     for p in cl.get_platforms():
         for d in p.get_devices():
             devices.append(d)
     logging.info("Detected {0} devices:".format(len(devices)))
-    for d in devices:
-        device = Device(d)
-        print device
+    return [Device(d) for d in devices]
 
-platforminfo()
+available_devices = getdevices()
+for d in available_devices:
+    print d
+selected_devices = [available_devices[0].handle()]
+
+context = cl.Context(selected_devices)
+queue = cl.CommandQueue(context)
 
 # TODO: create context with specific device(type)
 
