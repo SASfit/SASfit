@@ -1,9 +1,12 @@
 import pyopencl as cl
-import numpy
+import numpy as np
 import numpy.linalg as la
 import sys
 import inspect
 import logging
+
+sys.path.append("/home/ingo/code/masschrom2d/repo/")
+from utils import DataFile
 
 def getattributes(obj):
     return [(member, getattr(obj, member)) for member in dir(obj) if
@@ -13,6 +16,25 @@ def getattributes(obj):
 def printobjectinfo(obj, obj_info):
     for name, attr in getattributes(obj_info):
         print name, ":", obj.get_info(attr)
+
+class ScatteringData1D(DataFile):
+    _dataFromFile = None
+
+    def __init__(self, filename=""):
+        data = DataFile.loadFile(self, filename)
+        if data is not None and len(data) > 0:
+            self._dataFromFile = np.array(data, dtype='float64')
+
+    def processFileRow(self, fields, dummy):
+        if (fields is None
+            or len(fields) < 2):
+            return None
+        col0 = float(fields[0])
+        col1 = float(fields[1])
+        return (col0, col1)
+
+    def data(self):
+        return self._dataFromFile
 
 class Descriptor(object):
     _handle = None
@@ -77,41 +99,52 @@ def getdevices():
     return [Device(d) for d in devices]
 
 available_devices = getdevices()
+if len(available_devices) <= 0:
+    logging.error("No OpenCL compatible devices detected!")
+    sys.exit(0)
+
 for d in available_devices:
     print d
 selected_devices = [available_devices[0].handle()]
 
 context = cl.Context(selected_devices)
 queue = cl.CommandQueue(context)
-
-# TODO: create context with specific device(type)
-
-sys.exit(0)
-
-a = numpy.random.rand(50000).astype(numpy.float32)
-b = numpy.random.rand(50000).astype(numpy.float32)
-
-ctx = cl.create_some_context()
-queue = cl.CommandQueue(ctx)
-
 mf = cl.mem_flags
-a_buf = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=a)
-b_buf = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=b)
-dest_buf = cl.Buffer(ctx, mf.WRITE_ONLY, b.nbytes)
 
-prg = cl.Program(ctx, """
-    __kernel void sum(__global const float *a,
-    __global const float *b, __global float *c)
+# copy src data from file raw data, slices throw error
+# 'TypeError: expected a single-segment buffer object'
+data = np.array(ScatteringData1D("testdata.txt").data()[:,0], dtype='float32')
+print data, data.nbytes, data.shape, data.dtype
+srcbuf = cl.Buffer(context, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=data)
+destbuf = cl.Buffer(context, mf.WRITE_ONLY, data.nbytes)
+
+# TODO: PI?, gsl_pow_3?
+
+kernel = cl.Program(context, """
+    __kernel void sphere(__global const float *in, __global float *out)
     {
+      float R = 10.0, ETA = 1.0;
       int gid = get_global_id(0);
-      c[gid] = a[gid] + b[gid];
+      out[gid] = ETA * 4.0 * 3.14 * 
+                 (sin(in[gid]*R) - in[gid]*R*cos(in[gid]*R))
+                 /(in[gid]*in[gid]*in[gid]);
     }
     """).build()
 
-prg.sum(queue, a.shape, None, a_buf, b_buf, dest_buf)
+kernel.sphere(queue, data.shape, None, srcbuf, destbuf)
 
-a_plus_b = numpy.empty_like(a)
-cl.enqueue_read_buffer(queue, dest_buf, a_plus_b).wait()
+result = np.zeros_like(data)
+cl.enqueue_read_buffer(queue, destbuf, result).wait()
 
-print la.norm(a_plus_b - (a+b))
+print result
+for value in result:
+    print value
+
+print data.shape, result.shape
+
+from PyQt4.QtGui import QApplication, QMainWindow
+app = QApplication(argv)
+w = MainWindow()
+w.show()
+return app.exec_()
 
