@@ -301,6 +301,10 @@ sasfit_peaks_DLLEXP scalar sasfit_peak_LorentzianAmplitude(scalar x, sasfit_para
 sasfit_peaks_DLLEXP scalar sasfit_peak_LorentzianArea(scalar x, sasfit_param * param);
 sasfit_peaks_DLLEXP scalar sasfit_peak_LaplaceAmplitude(scalar x, sasfit_param * param);
 sasfit_peaks_DLLEXP scalar sasfit_peak_LaplaceArea(scalar x, sasfit_param * param);
+sasfit_peaks_DLLEXP scalar sasfit_peak_MaxwellAmplitude(scalar x, sasfit_param * param);
+sasfit_peaks_DLLEXP scalar sasfit_peak_MaxwellArea(scalar x, sasfit_param * param);
+sasfit_peaks_DLLEXP scalar sasfit_peak_generalizedMaxwellAmplitude(scalar x, sasfit_param * param);
+sasfit_peaks_DLLEXP scalar sasfit_peak_generalizedMaxwellArea(scalar x, sasfit_param * param);
 sasfit_peaks_DLLEXP scalar sasfit_peak_PearsonIVAmplitude(scalar x, sasfit_param * param);
 sasfit_peaks_DLLEXP scalar sasfit_peak_PearsonIVArea(scalar x, sasfit_param * param);
 sasfit_peaks_DLLEXP scalar sasfit_peak_PearsonVIIAmplitude(scalar x, sasfit_param * param);
