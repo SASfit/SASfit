@@ -2544,6 +2544,54 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
+        "Maxwell (Amplitude)"   { 
+				  set actualPar(FF,l1,label) "amplitude ="
+				  set actualPar(FF,l2,label) "width ="
+                  set actualPar(FF,l3,label) "offset ="
+                  set actualPar(FF,l4,label) "backgr. ="
+                  set actualPar(FF,l5,label) ""
+                  set actualPar(FF,l6,label) ""
+                  set actualPar(FF,l7,label) ""
+                  set actualPar(FF,l8,label) ""
+                  set actualPar(FF,l9,label) ""
+                  set actualPar(FF,l10,label) ""
+                }
+        "Maxwell (Area)"   { \
+	              set actualPar(FF,l1,label) "area ="
+                  set actualPar(FF,l2,label) "location ="
+                  set actualPar(FF,l3,label) "width ="
+                  set actualPar(FF,l4,label) "backgr. ="
+                  set actualPar(FF,l5,label) ""
+                  set actualPar(FF,l6,label) ""
+                  set actualPar(FF,l7,label) ""
+                  set actualPar(FF,l8,label) ""
+                  set actualPar(FF,l9,label) ""
+			      set actualPar(FF,l10,label) ""
+                }
+        "generalized Maxwell (Amplitude)"   { 
+				  set actualPar(FF,l1,label) "amplitude ="
+				  set actualPar(FF,l2,label) "width ="
+                  set actualPar(FF,l3,label) "offset ="
+                  set actualPar(FF,l4,label) "m ="
+                  set actualPar(FF,l5,label) "n ="
+                  set actualPar(FF,l6,label) "backgr. ="
+                  set actualPar(FF,l7,label) ""
+                  set actualPar(FF,l8,label) ""
+                  set actualPar(FF,l9,label) ""
+                  set actualPar(FF,l10,label) ""
+                }
+        "generalized Maxwell (Area)"   { \
+	              set actualPar(FF,l1,label) "area ="
+                  set actualPar(FF,l2,label) "location ="
+                  set actualPar(FF,l3,label) "width ="
+                  set actualPar(FF,l4,label) "m ="
+                  set actualPar(FF,l5,label) "n ="
+                  set actualPar(FF,l6,label) "backgr. ="
+                  set actualPar(FF,l7,label) ""
+                  set actualPar(FF,l8,label) ""
+                  set actualPar(FF,l9,label) ""
+			      set actualPar(FF,l10,label) ""
+                }
 	   "Pearson IV (Amplitude)"   { \
 				  set actualPar(FF,l1,label) "amplitude ="
 				  set actualPar(FF,l2,label) "center ="
@@ -4599,6 +4647,8 @@ proc analyticalGlobalSDCmd {simorfit
 							  {{LogNormal, 4 parameters (Amplitude)} Monodisperse} \
 							  {{LogNormal (Amplitude)} Monodisperse} \
 							  {{Lorentzian (Amplitude)} Monodisperse} \
+							  {{Maxwell (Amplitude)} Monodisperse} \
+							  {{generalized Maxwell (Amplitude)} Monodisperse} \
 							  {{Pearson IV (Amplitude)} Monodisperse} \
 							  {{Pearson VII (Amplitude)} Monodisperse} \
 							  {{pulse (Amplitude)} Monodisperse} \
@@ -4633,6 +4683,8 @@ proc analyticalGlobalSDCmd {simorfit
 							  {{LogNormal, 4 parameters (Area)} Monodisperse} \
 							  {{LogNormal (Area)} Monodisperse} \
 							  {{Lorentzian (Area)} Monodisperse} \
+							  {{Maxwell (Area)} Monodisperse} \
+							  {{generalized Maxwell (Area)} Monodisperse} \
 							  {{Pearson IV (Area)} Monodisperse} \
 							  {{Pearson VII (Area)} Monodisperse} \
 							  {{power LogNormal (Area)} Monodisperse} \

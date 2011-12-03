@@ -1072,6 +1072,22 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_peak_LorentzianArea;
 	} else
+	if ( strcmp(ff->typestr, "Maxwell (Amplitude)") == 0 )
+	{
+		ff->fct = sasfit_peak_MaxwellAmplitude;
+	} else
+	if ( strcmp(ff->typestr, "Maxwell (Area)") == 0 )
+	{
+		ff->fct = sasfit_peak_MaxwellArea;
+	} else
+	if ( strcmp(ff->typestr, "generalized Maxwell (Amplitude)") == 0 )
+	{
+		ff->fct = sasfit_peak_generalizedMaxwellAmplitude;
+	} else
+	if ( strcmp(ff->typestr, "generalized Maxwell (Area)") == 0 )
+	{
+		ff->fct = sasfit_peak_generalizedMaxwellArea;
+	} else
 	if ( strcmp(ff->typestr, "Pearson IV (Amplitude)") == 0 )
 	{
 		ff->fct = sasfit_peak_PearsonIVAmplitude;

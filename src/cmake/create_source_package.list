@@ -489,6 +489,10 @@ src/sasfit_peaks/sasfit_peak_LogNormalAmplitude.c
 src/sasfit_peaks/sasfit_peak_LogNormalArea.c
 src/sasfit_peaks/sasfit_peak_LorentzianAmplitude.c
 src/sasfit_peaks/sasfit_peak_LorentzianArea.c
+src/sasfit_peaks/sasfit_peak_MaxwellAmplitude.c
+src/sasfit_peaks/sasfit_peak_MaxwellArea.c
+src/sasfit_peaks/sasfit_peak_generalizedMaxwellAmplitude.c
+src/sasfit_peaks/sasfit_peak_generalizedMaxwellArea.c
 src/sasfit_peaks/sasfit_peak_PearsonIVAmplitude.c
 src/sasfit_peaks/sasfit_peak_PearsonIVArea.c
 src/sasfit_peaks/sasfit_peak_PearsonVIIAmplitude.c
