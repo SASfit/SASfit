@@ -2242,7 +2242,7 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l10,label) ""
                         }
    "Lorentzian (Amplitude)"   { \
-	                  set actualPar(FF,l1,label) "amplitude ="
+	                      set actualPar(FF,l1,label) "amplitude ="
                           set actualPar(FF,l2,label) "center ="
                           set actualPar(FF,l3,label) "width ="
                           set actualPar(FF,l4,label) "backgr. ="
@@ -2254,12 +2254,60 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l10,label) ""
                         }
    "Lorentzian (Area)"   { \
-	                  set actualPar(FF,l1,label) "area ="
+	                      set actualPar(FF,l1,label) "area ="
                           set actualPar(FF,l2,label) "center ="
                           set actualPar(FF,l3,label) "width ="
                           set actualPar(FF,l4,label) "backgr. ="
                           set actualPar(FF,l5,label) ""
                           set actualPar(FF,l6,label) ""
+                          set actualPar(FF,l7,label) ""
+                          set actualPar(FF,l8,label) ""
+                          set actualPar(FF,l9,label) ""
+                          set actualPar(FF,l10,label) ""
+                        }
+   "Maxwell (Amplitude)"   { \
+	                      set actualPar(FF,l1,label) "amplitude ="
+                          set actualPar(FF,l2,label) "width="
+                          set actualPar(FF,l3,label) "offset ="
+                          set actualPar(FF,l4,label) "backgr. ="
+                          set actualPar(FF,l5,label) ""
+                          set actualPar(FF,l6,label) ""
+                          set actualPar(FF,l7,label) ""
+                          set actualPar(FF,l8,label) ""
+                          set actualPar(FF,l9,label) ""
+                          set actualPar(FF,l10,label) ""
+                        }
+   "Maxwell (Area)"   { \
+	                      set actualPar(FF,l1,label) "area ="
+                          set actualPar(FF,l2,label) "width ="
+                          set actualPar(FF,l3,label) "offset ="
+                          set actualPar(FF,l4,label) "backgr. ="
+                          set actualPar(FF,l5,label) ""
+                          set actualPar(FF,l6,label) ""
+                          set actualPar(FF,l7,label) ""
+                          set actualPar(FF,l8,label) ""
+                          set actualPar(FF,l9,label) ""
+                          set actualPar(FF,l10,label) ""
+                        }
+   "generalized Maxwell (Amplitude)"   { \
+	                      set actualPar(FF,l1,label) "amplitude ="
+                          set actualPar(FF,l2,label) "width="
+                          set actualPar(FF,l3,label) "offset ="
+                          set actualPar(FF,l4,label) "m ="
+                          set actualPar(FF,l5,label) "n ="
+                          set actualPar(FF,l6,label) "backgr. ="
+                          set actualPar(FF,l7,label) ""
+                          set actualPar(FF,l8,label) ""
+                          set actualPar(FF,l9,label) ""
+                          set actualPar(FF,l10,label) ""
+                        }
+   "generalized Maxwell (Area)"   { \
+	                      set actualPar(FF,l1,label) "area ="
+                          set actualPar(FF,l2,label) "width ="
+                          set actualPar(FF,l3,label) "offset ="
+                          set actualPar(FF,l4,label) "m ="
+                          set actualPar(FF,l5,label) "n ="
+                          set actualPar(FF,l6,label) "backgr. ="
                           set actualPar(FF,l7,label) ""
                           set actualPar(FF,l8,label) ""
                           set actualPar(FF,l9,label) ""
@@ -5757,6 +5805,54 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l4,label) "backgr. ="
 				  set actualAnalytPar(FF,l5,label) ""
 				  set actualAnalytPar(FF,l6,label) ""
+				  set actualAnalytPar(FF,l7,label) ""
+				  set actualAnalytPar(FF,l8,label) ""
+				  set actualAnalytPar(FF,l9,label) ""
+				  set actualAnalytPar(FF,l10,label) ""
+				}
+        "Maxwell (Amplitude)"   { \
+				  set actualAnalytPar(FF,l1,label) "amplitude ="
+				  set actualAnalytPar(FF,l2,label) "width ="
+				  set actualAnalytPar(FF,l3,label) "offset ="
+				  set actualAnalytPar(FF,l4,label) "backgr. ="
+				  set actualAnalytPar(FF,l5,label) ""
+				  set actualAnalytPar(FF,l6,label) ""
+				  set actualAnalytPar(FF,l7,label) ""
+				  set actualAnalytPar(FF,l8,label) ""
+				  set actualAnalytPar(FF,l9,label) ""
+				  set actualAnalytPar(FF,l10,label) ""
+				}
+	   "Maxwell (Area)"     { \
+				  set actualAnalytPar(FF,l1,label) "area ="
+				  set actualAnalytPar(FF,l2,label) "width ="
+				  set actualAnalytPar(FF,l3,label) "offset ="
+				  set actualAnalytPar(FF,l4,label) "backgr. ="
+				  set actualAnalytPar(FF,l5,label) ""
+				  set actualAnalytPar(FF,l6,label) ""
+				  set actualAnalytPar(FF,l7,label) ""
+				  set actualAnalytPar(FF,l8,label) ""
+				  set actualAnalytPar(FF,l9,label) ""
+				  set actualAnalytPar(FF,l10,label) ""
+				}
+        "generalized Maxwell (Amplitude)"   { \
+				  set actualAnalytPar(FF,l1,label) "amplitude ="
+				  set actualAnalytPar(FF,l2,label) "width ="
+				  set actualAnalytPar(FF,l3,label) "offset ="
+				  set actualAnalytPar(FF,l4,label) "m ="
+				  set actualAnalytPar(FF,l5,label) "n ="
+				  set actualAnalytPar(FF,l6,label) "backgr. ="
+				  set actualAnalytPar(FF,l7,label) ""
+				  set actualAnalytPar(FF,l8,label) ""
+				  set actualAnalytPar(FF,l9,label) ""
+				  set actualAnalytPar(FF,l10,label) ""
+				}
+	   "generalized Maxwell (Area)"     { \
+				  set actualAnalytPar(FF,l1,label) "area ="
+				  set actualAnalytPar(FF,l2,label) "width ="
+				  set actualAnalytPar(FF,l3,label) "offset ="
+				  set actualAnalytPar(FF,l4,label) "m ="
+				  set actualAnalytPar(FF,l5,label) "n ="
+				  set actualAnalytPar(FF,l6,label) "backgr. ="
 				  set actualAnalytPar(FF,l7,label) ""
 				  set actualAnalytPar(FF,l8,label) ""
 				  set actualAnalytPar(FF,l9,label) ""
@@ -10261,6 +10357,66 @@ switch -exact $type {
                 10 {return "\n"}
               }
            }
+           "Maxwell (Area)" { 
+              switch $num {
+                 0 {return "Maxwell (Area)\ny(x)=backgr+area..."}
+                 1 {return "area = int(y(x),x=-infinity..infinity))\n"}
+                 2 {return "width: width parameter (width != 0)\n"}
+                 3 {return "offset: offset parameter \n"}
+                 4 {return "backgr.: constant offset\n"}
+                 5 {return "\n"}
+                 6 {return "\n"}
+                 7 {return "\n"}
+                 8 {return "\n"}
+                 9 {return "\n"}
+                10 {return "\n"}
+              }
+           }
+           "Maxwell (Amplitude)" { 
+              switch $num {
+                 0 {return "Maxwell (Amplitude)\ny(x)=backgr+area..."}
+                 1 {return "amplitude:\n"}
+                 2 {return "width: width parameter (width != 0)\n"}
+                 3 {return "offset: offset parameter \n"}
+                 4 {return "backgr.: constant offset\n"}
+                 5 {return "\n"}
+                 6 {return "\n"}
+                 7 {return "\n"}
+                 8 {return "\n"}
+                 9 {return "\n"}
+                10 {return "\n"}
+              }
+           }
+           "generalized Maxwell (Area)" { 
+              switch $num {
+                 0 {return "generalized Maxwell (Area)\ny(x)=backgr+area..."}
+                 1 {return "area = int(y(x),x=-infinity..infinity))\n"}
+                 2 {return "width: width parameter (width != 0)\n"}
+                 3 {return "offset: offset parameter \n"}
+                 4 {return "m: (x-offset)^m*Exp(...)\n"}
+                 5 {return "n:...Exp(-1/2((x-offset),width)^n)\n"}
+                 6 {return "backgr.: constant offset\n"}
+                 7 {return "\n"}
+                 8 {return "\n"}
+                 9 {return "\n"}
+                10 {return "\n"}
+              }
+           }
+           "generalized Maxwell (Amplitude)" { 
+              switch $num {
+                 0 {return "generalized Maxwell (Amplitude)\ny(x)=backgr+area..."}
+                 1 {return "amplitude:\n"}
+                 2 {return "width: width parameter (width != 0)\n"}
+                 3 {return "offset: offset parameter \n"}
+                 4 {return "m: (x-offset)^m*Exp(...)\n"}
+                 5 {return "n:...Exp(-1/2((x-offset),width)^n)\n"}
+                 6 {return "backgr.: constant offset\n"}
+                 7 {return "\n"}
+                 8 {return "\n"}
+                 9 {return "\n"}
+                10 {return "\n"}
+              }
+           }
            "Pearson IV (Amplitude)" { 
               switch $num {
                  0 {return "Pearson IV (Amplitude)\n"}
@@ -12497,6 +12653,8 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 					  {{LogNormal, 4 parameters (Amplitude)} Monodisperse} \
 					  {{LogNormal (Amplitude)} Monodisperse} \
 					  {{Lorentzian (Amplitude)} Monodisperse} \
+					  {{Maxwell (Amplitude)} Monodisperse} \
+					  {{generalized Maxwell (Amplitude)} Monodisperse} \
 					  {{Pearson IV (Amplitude)} Monodisperse} \
 					  {{Pearson VII (Amplitude)} Monodisperse} \
 					  {{pulse (Amplitude)} Monodisperse} \
@@ -12531,6 +12689,8 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 					  {{LogNormal, 4 parameters (Area)} Monodisperse} \
 					  {{LogNormal (Area)} Monodisperse} \
 					  {{Lorentzian (Area)} Monodisperse} \
+					  {{Maxwell (Area)} Monodisperse} \
+					  {{generalized Maxwell (Area)} Monodisperse} \
 					  {{Pearson IV (Area)} Monodisperse} \
 					  {{Pearson VII (Area)} Monodisperse} \
 					  {{power LogNormal (Area)} Monodisperse} \
