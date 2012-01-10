@@ -142,7 +142,7 @@ print result
 #for value in result:
 #    print value
 
-print data.shape, result.shape
+#print data.shape, result.shape
 
 from PyQt4.QtGui import QApplication, QMainWindow
 def eventloop(argv = None):
