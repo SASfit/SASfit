@@ -179,6 +179,10 @@ set(SOURCE_sasfit_peaks
 	sasfit_peak_LogNormalArea.c
 	sasfit_peak_LorentzianAmplitude.c
 	sasfit_peak_LorentzianArea.c
+	sasfit_peak_generalizedMaxwellAmplitude.c
+	sasfit_peak_generalizedMaxwellArea.c
+	sasfit_peak_MaxwellAmplitude.c
+	sasfit_peak_MaxwellArea.c
 	sasfit_peak_PearsonIVAmplitude.c
 	sasfit_peak_PearsonIVArea.c
 	sasfit_peak_PearsonVIIAmplitude.c
