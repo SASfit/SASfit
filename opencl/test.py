@@ -143,8 +143,12 @@ for value in result:
 print data.shape, result.shape
 
 from PyQt4.QtGui import QApplication, QMainWindow
-app = QApplication(argv)
-w = MainWindow()
-w.show()
-return app.exec_()
+def eventloop(argv = None):
+    if argv is None:
+        argv = sys.argv
+    app = QApplication(argv)
+    w = MainWindow()
+    w.show()
+    return app.exec_()
 
+sys.exit(eventloop())
