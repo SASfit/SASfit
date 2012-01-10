@@ -137,7 +137,6 @@ kernel.sphere(queue, data.shape, None, srcbuf, destbuf)
 result = np.zeros_like(data)
 event = cl.enqueue_read_buffer(queue, destbuf, result)
 event.wait()
-# dummy change
 
 print result
 #for value in result:
