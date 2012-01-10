@@ -1,1 +1,74 @@
-../../../masschrom2d/repo/ui_spectrumdock.ui
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SpectrumDock</class>
+ <widget class="QDockWidget" name="SpectrumDock">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="features">
+   <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+  </property>
+  <property name="allowedAreas">
+   <set>Qt::AllDockWidgetAreas</set>
+  </property>
+  <property name="windowTitle">
+   <string>Spectrum</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <property name="acceptDrops">
+    <bool>true</bool>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="SpectrumView" name="view">
+      <property name="contextMenuPolicy">
+       <enum>Qt::ActionsContextMenu</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="resizeAnchor">
+       <enum>QGraphicsView::AnchorViewCenter</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionAutoScale">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>auto scale</string>
+   </property>
+   <property name="toolTip">
+    <string>fits plot into window</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="text">
+    <string>load spectrum</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SpectrumView</class>
+   <extends>QGraphicsView</extends>
+   <header>spectrumview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
