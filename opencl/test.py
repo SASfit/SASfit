@@ -4,6 +4,7 @@ import numpy.linalg as la
 import sys
 import inspect
 import logging
+import time
 
 sys.path.append("/home/ingo/code/masschrom2d/repo/")
 from utils import DataFile
@@ -134,11 +135,12 @@ kernel = cl.Program(context, """
 kernel.sphere(queue, data.shape, None, srcbuf, destbuf)
 
 result = np.zeros_like(data)
-cl.enqueue_read_buffer(queue, destbuf, result).wait()
+event = cl.enqueue_read_buffer(queue, destbuf, result)
+event.wait()
 
 print result
-for value in result:
-    print value
+#for value in result:
+#    print value
 
 print data.shape, result.shape
 
