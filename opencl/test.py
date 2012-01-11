@@ -104,47 +104,61 @@ if len(available_devices) <= 0:
     logging.error("No OpenCL compatible devices detected!")
     sys.exit(0)
 
+#print("available devices: ".format(available_devices))
 for d in available_devices:
     print d
-selected_devices = [available_devices[0].handle()]
+selected_device = available_devices[0]
 
-context = cl.Context(selected_devices)
-queue = cl.CommandQueue(context)
-mf = cl.mem_flags
+def calc(context):
+    queue = cl.CommandQueue(context)
+    mf = cl.mem_flags
 
-# copy src data from file raw data, slices throw error
-# 'TypeError: expected a single-segment buffer object'
-data = np.array(ScatteringData1D("testdata.txt").data()[:,0], dtype='float32')
-print data, data.nbytes, data.shape, data.dtype
-srcbuf = cl.Buffer(context, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=data)
-destbuf = cl.Buffer(context, mf.WRITE_ONLY, data.nbytes)
+    # copy src data from file raw data, slices throw error
+    # 'TypeError: expected a single-segment buffer object'
+    data = np.array(ScatteringData1D("testdata.txt").data()[:,0], dtype='float32')
+    print data, data.nbytes, data.shape, data.dtype
+    srcbuf = cl.Buffer(context, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=data)
+    destbuf = cl.Buffer(context, mf.WRITE_ONLY, data.nbytes)
 
-# TODO: PI?, gsl_pow_3?
+    # TODO: PI?, gsl_pow_3?
 
-kernel = cl.Program(context, """
-    __kernel void sphere(__global const float *in, __global float *out)
-    {
-      float R = 10.0, ETA = 1.0;
-      int gid = get_global_id(0);
-      out[gid] = ETA * 4.0 * 3.14 * 
-                 (sin(in[gid]*R) - in[gid]*R*cos(in[gid]*R))
-                 /(in[gid]*in[gid]*in[gid]);
-    }
-    """).build()
+    kernel = cl.Program(context, """
+        __kernel void sphere(__global const float *in, __global float *out)
+        {
+          float R = 10.0, ETA = 1.0;
+          int gid = get_global_id(0);
+          out[gid] = ETA * 4.0 * 3.14 * 
+                     (sin(in[gid]*R) - in[gid]*R*cos(in[gid]*R))
+                     /(in[gid]*in[gid]*in[gid]);
+        }
+        """).build()
 
-kernel.sphere(queue, data.shape, None, srcbuf, destbuf)
+    kernel.sphere(queue, data.shape, None, srcbuf, destbuf)
 
-result = np.zeros_like(data)
-event = cl.enqueue_read_buffer(queue, destbuf, result)
-event.wait()
+    result = np.zeros_like(data)
+    event = cl.enqueue_read_buffer(queue, destbuf, result)
+    event.wait()
 
-print result
-#for value in result:
-#    print value
+    print result
+    #for value in result:
+    #    print value
 
-#print data.shape, result.shape
+    print data.shape, result.shape
 
-from PyQt4.QtGui import QApplication, QMainWindow
+try:
+    context = cl.Context([selected_device.handle()])
+except cl.RuntimeError, e:
+    print("Could not get context of device '{0}'! "
+          "Is the device occupied by another (OpenGL enabled) program, "
+          "for example a web browser?"
+          .format(str(selected_device)))
+    print(e)
+else:
+    calc(context)
+
+from PyQt4.QtGui import QApplication
+from qt import MainWindow
+
 def eventloop(argv = None):
     if argv is None:
         argv = sys.argv
@@ -154,3 +168,5 @@ def eventloop(argv = None):
     return app.exec_()
 
 sys.exit(eventloop())
+
+# vim: set ts=4 sw=4 tw=0:
