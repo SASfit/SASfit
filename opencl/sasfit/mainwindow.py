@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# __init__.py
+# mainwindow.py
 # 
 # Copyright (c) 2010-2012 BAM
 # Federal Institute for Materials Research and Testing
@@ -22,8 +22,17 @@
 # along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # Author(s) of this file:
-# Ingo Bressler (SASfit@ingobressler.net)
+# Ingo Bressler (sasfit@ingobressler.net)
 
-from mainwindow import MainWindow
+from ui_mainwindow import Ui_MainWindow
+from cutesnake import MainWindowBase
+from cutesnake import AppVersion
+import version
 
-# vim: set ts=4 sw=4 tw=0:
+class MainWindow(MainWindowBase, Ui_MainWindow):
+    def __init__(self, parent = None):
+        MainWindowBase.__init__(self, version.version, parent)
+        self.setupUi(self)
+
+# vim: set ts=4 sw=4 sts=4 tw=0:
+
