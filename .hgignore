@@ -16,11 +16,6 @@ sasfit.vfs/lib/Sasfit/sasfit.dll
 plugins/*.h
 plugins/*.so
 plugins/*.dll
-build*
-b
-w
-sasfit
-sasfit.exe
 */.svn
 *.pyc
 *.pyo
@@ -28,3 +23,11 @@ doc/wikibot/pywikipedia/login-data/*.data
 data/workdata
 *.swp
 *.cmake.*
+
+# switch to regexp syntax.
+syntax: regexp
+^sasfit
+^sasfit.exe
+^b
+^w
+^build.*
