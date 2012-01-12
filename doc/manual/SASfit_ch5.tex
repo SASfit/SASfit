@@ -2009,6 +2009,157 @@ specifies the half-width at half-maximum (HWHM).
 \caption{Plot of \texttt{Lorentzian (Area)} distribution.}
 \label{fig:LorentzianArea}
 \end{figure}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Maxwell-Boltzmann distribution}
+\label{sec:Lorentzian}
+
+The Maxwell-Boltzmann distribution describes particle speeds in
+gases, where the particles do not constantly interact with each
+other but move freely between short collisions. It describes the
+probability of a particle's speed (the magnitude of its velocity
+vector) being near a given value as a function of the temperature
+of the system, the mass of the particle, and that speed value.
+This probability distribution is named after James Clerk Maxwell
+and Ludwig Boltzmann.
+
+The Maxwell-Boltzmann distribution is usually thought of as the
+distribution for molecular speeds, but it can also refer to the
+distribution for velocities, momenta, and magnitude of the momenta
+of the molecules, each of which will have a different probability
+distribution function, all of which are related. Two Maxwell
+distributions have been implemented, one distribution for speed
+and a generalized Maxwell distribution, which includes also the
+energy distribution.
+
+The generalized Maxwell distribution is here defined as
+\begin{align}
+p(x; x_0, \sigma, n, m) &=
+\begin{cases}
+0 & \mbox{for~} x<x_0 \\
+   \frac{\left(x-x_0\right)^m \exp\left(-\frac{1}{2}\left(\frac{x-x_0}{\abs{\sigma}}\right)^n\right)}{
+   2^{(1+m)/n}\abs{\sigma}^{1+m} \frac{1}{\abs{n}}\Gamma\left(\frac{1+m}{n}\right)}
+   & \mbox{for~} x \geq x_0 .\\
+\end{cases}
+\end{align}
+where $x_0$ is the location parameter, specifying the location of
+the peak of the distribution, and $\sigma$ is the scale parameter
+which specifies the width. The mode of the distribution is given
+by
+\begin{align}
+x_\text{mode} &= \left(\frac{2m}{n}\right)^{1/n} \abs{\sigma}+x_0
+.
+\end{align}
+For the case $m=n=2$ one gets the "Maxwell-Boltzmann distribution"
+to refers to the distribution of speed. To get the distribution
+for the energy one has to set $m=1/2$ and $n=1$. In case of the
+width parameter $\sigma$ always the modulus is used in the
+calculation of the distribution function to avoid negative values
+for which the function is not always well defined. For $\sigma=0$
+the distribution function is not defined.
+
+\clearpage
+\subsection{Maxwell (Amplitude)} ~\\
+\label{sec:MaxwellAmplitude}
+\begin{align}
+y(x;A,\sigma,x_0,y_0) &=
+\begin{cases}
+y_0 & \mbox{for~} x < x_0 \\
+y_0 +  A \;
+\frac{\left(x-x_0\right)^2}{\left(x_\text{mode}-x_0\right)^2}
+        \frac{\exp\left(-\frac{1}{2}\left(\frac{x-x_0}{\sigma}\right)^2\right)}{
+        \exp\left(-\frac{1}{2}\left(\frac{x_\text{mode}-x_0}{\sigma}\right)^2\right)}
+& \mbox{for~} x \geq x_0
+\end{cases}
+\end{align}
+with $x_\text{mode}=\sqrt{2}\abs{\sigma}+x_0$.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth,height=0.477\textwidth]{MaxwellAmplitude.png}
+\end{center}
+\caption{Plot of \texttt{Maxwell (Amplitude)} distribution.}
+\label{fig:MaxwellAmplitude}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection{Maxwell (Area)} ~\\
+\label{sec:MaxwellArea}
+
+\begin{align}
+y(x;A,\sigma,x_0,y_0) &=
+\begin{cases}
+y_0 & \mbox{for~} x < x_0 \\
+y_0 +  \sqrt{\frac{2}{\pi}} \frac{A\left(x-x_0\right)^2}{\sigma^3}
+        \exp\left(-\frac{1}{2}\left(\frac{x-x_0}{\sigma}\right)^2\right)
+& \mbox{for~} x \geq x_0
+\end{cases}
+\end{align}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth,height=0.477\textwidth]{MaxwellArea.png}
+\end{center}
+\caption{Plot of \texttt{Maxwell (Area)} distribution.}
+\label{fig:MaxwellArea}
+\end{figure}
+
+\clearpage
+\subsection{generalized Maxwell (Amplitude)} ~\\
+\label{sec:generalizedMaxwellAmplitude}
+
+\begin{align}
+y(x; x_0, \sigma, n, m) &=
+\begin{cases}
+y_0 & \mbox{for~} x<x_0 \\
+y_0+ A\; \frac{\left(x-x_0\right)^m
+\exp\left(-\frac{1}{2}\left(\frac{x-x_0}{\abs{\sigma}}\right)^n\right)}{
+    \left(x_\text{mode}-x_0\right)^m
+\exp\left(-\frac{1}{2}\left(\frac{x_\text{mode}-x_0}{\abs{\sigma}}\right)^n\right)}
+   & \mbox{for~} x \geq x_0 \\
+\end{cases}
+\end{align}
+with $x_\text{mode} = \left(\frac{2m}{n}\right)^{1/n}\abs{\sigma}+x_0$.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth,height=0.477\textwidth]{generalizedMaxwellAmplitude.png}
+\end{center}
+\caption{Plot of \texttt{generalized Maxwell (Amplitude)}
+distribution.} \label{fig:generalizedMaxwellAmplitude}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection{generalized Maxwell (Area)} ~\\
+\label{sec:generalizedMaxwellArea}
+
+\begin{align}
+y(x; x_0, \sigma, n, m) &=
+\begin{cases}
+0 & \mbox{for~} x<x_0 \\
+   A\; \frac{\left(x-x_0\right)^m \exp\left(-\frac{1}{2}\left(\frac{x-x_0}{\abs{\sigma}}\right)^n\right)}{
+   2^{(1+m)/n}\abs{\sigma}^{1+m} \frac{1}{\abs{n}}\Gamma\left(\frac{1+m}{n}\right)}
+   & \mbox{for~} x \geq x_0 .\\
+\end{cases}
+\end{align}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth,height=0.477\textwidth]{generalizedMaxwellArea.png}
+\end{center}
+\caption{Plot of \texttt{generalized Maxwell (Area)}
+distribution.} \label{fig:generalizedMaxwellArea}
+\end{figure}
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Pearson-IV} ~\\
