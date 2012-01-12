@@ -35,7 +35,7 @@ scalar sasfit_peak_MaxwellArea(scalar x, sasfit_param * param)
 
 	SASFIT_ASSERT_PTR( param );
 
-	sasfit_get_param(param, 4, &area, &mode, &width, &bckgr);
+	sasfit_get_param(param, 4, &area, &width, &offset, &bckgr);
 
 	SASFIT_CHECK_COND1((width == 0), param, "width(%lg) == 0",width);
 		

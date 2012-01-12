@@ -43,7 +43,7 @@ scalar sasfit_peak_generalizedMaxwellAmplitude(scalar x, sasfit_param * param)
 	mode=pow(2.0*m/n,1.0/n)*fabs(width)+offset;
 	
 	if (x <= offset)  return bckgr;
-	c = pow(mode-offset,m)*exp(-0.5*pow((mode-offset)/width,n));
+	c = pow(mode-offset,m)*exp(-0.5*pow((mode-offset)/fabs(width),n));
 	return bckgr+amplitude/c*pow(x-offset,m)*exp(-0.5*pow((x-offset)/fabs(width),n));
 }
 

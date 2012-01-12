@@ -1,5 +1,36 @@
 \appendix{History}
 \begin{description}
+    \item[2011-05-4] \SASfit 0.93.3
+        \begin{itemize}
+        \item  bug fix in the model \texttt{Stacked Discs}. The structure factor describing the
+            stacking order contained a bug.
+        \item extended plugin for stroboscopic measurements, especially for \texttt{TISANE}
+        \item plotting: ignore negative y values on log() and sqrt() scales
+        \item included \texttt{Pcs\_homogeneousCyl} form factor
+        \item bug fix of \texttt{ferrofluid plugin}
+        \item added radial averaged form factor in \texttt{ferrofluid plugin}
+        \item extended the spline plugin to be used also as form factors.
+            In case somebody wants to fit a spline function to e.g. a TEM size distribution,
+            this function need to be available as a form factor and not only as a size
+            distribution.
+        \item added configuration file \texttt{config.ini} as replacement for
+            deprecated \texttt{sasfit\_init\_public.tcl}
+        \item added switch for disabling \texttt{About} popup at start time via config file
+        \item added checkbox (ascii options) for ignoring zero(0) intensity at the beginning
+                of data
+        \item removed , as data column separator
+        \item added substitution of $, \Rightarrow .$   for data columns
+                (german decimal format to english format)
+        \item added interface function for covariance matrix output
+        \item covar matrix visualisation with parameter highlighting
+        \item added a chapter about particle number densities, volume fraction
+            and absolute intensities in the manual.
+        \item \texttt{LogNorm\_fp} size distribution is now plugin function.
+            The new plugin is not backwards compatible.
+            The manual explains a bit the difficulties in describing the size distribution
+            in terms of a volume fraction.
+        \item added scrollbars for fit parameter window
+        \end{itemize}
     \item[2010-07-08] \SASfit 0.93.2
         \begin{itemize}
         \item bug fix in ferrofluid plugin
