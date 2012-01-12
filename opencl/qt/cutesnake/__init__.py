@@ -25,7 +25,6 @@
 # Ingo Bressler (cutesnake@ingobressler.net)
 
 from mainwindowbase import MainWindowBase
-from appsettings import AppSettings
 from appversion import AppVersion
 
 # vim: set ts=4 sw=4 sts=4 tw=0:

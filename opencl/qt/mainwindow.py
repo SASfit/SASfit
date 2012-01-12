@@ -28,18 +28,19 @@ from ui_mainwindow import Ui_MainWindow
 from cutesnake import MainWindowBase
 from cutesnake import AppVersion
 
-class TestVersion(AppVersion):
-    _name = "MassChrom2D"
-    _number = "2.0.1"
-    _organizationName = "BAM"
-    _defaultSettings = dict(
+version = AppVersion(
+    programName = "MassChrom2D",
+    versionNumber = "2.0.1",
+    organizationName = "BAM",
+    defaultSettings = dict(
         geometry = r"AdnQywABAAAAAAIKAAAAGAAABh8AAANfAAACEAAAADUAAAYZAAADWQAAAAAAAA==",
         windowState = r"AAAA/wAAAAD9AAAAAgAAAAEAAAMRAAACNfwCAAAAAfsAAAAUAE0AYQB0AHIAaQB4AEQAbwBjAGsBAAAAAAAAAjUAAABlAP///wAAAAMAAAQKAAAAzPwBAAAAAfwAAAAAAAAECgAAAHcA////+gAAAAEBAAAAA/sAAAAOAEwAbwBnAEQAbwBjAGsBAAAAAP////8AAABOAP////sAAAAYAFMAcABlAGMAdAByAHUAbQBEAG8AYwBrAQAAAAD/////AAAAXgD////7AAAAEgBDAGgAcgBvAG0ARABvAGMAawEAAAAA/////wAAAF4A////AAAA8wAAAjUAAAAEAAAABAAAAAgAAAAI/AAAAAA="
+        )
     )
 
 class MainWindow(MainWindowBase, Ui_MainWindow):
     def __init__(self, parent = None):
-        MainWindowBase.__init__(self, TestVersion, parent)
+        MainWindowBase.__init__(self, version, parent)
         self.setupUi(self)
 
 # vim: set ts=4 sw=4 sts=4 tw=0:

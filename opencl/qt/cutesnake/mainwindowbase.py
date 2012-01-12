@@ -24,9 +24,9 @@
 # Author(s) of this file:
 # Ingo Bressler (cutesnake@ingobressler.net)
 
+import logging
 from PyQt4.QtGui import QMainWindow
-from PyQt4.QtCore import QSettings, QByteArray
-from appsettings import AppSettings
+from PyQt4.QtCore import QSettings, QByteArray, QString
 from appversion import AppVersion
 
 class MainWindowBase(QMainWindow):
@@ -35,8 +35,7 @@ class MainWindowBase(QMainWindow):
 
     def __init__(self, appversion, parent = None):
         QMainWindow.__init__(self, parent)
-        if not AppVersion.isValid(appversion):
-            raise NotImplementedError("Please provide a valid AppVersion.")
+        assert AppVersion.isValid(appversion), "Please provide a valid AppVersion."
         self._appversion = appversion
         self._appsettings = self._restoreSettings()
 
@@ -55,13 +54,31 @@ class MainWindowBase(QMainWindow):
         self._appsettings.setValue("windowState", windowState)
 
     def _restoreSettings(self):
-        print self._appversion.defaultSettings()
-        settings = AppSettings(self._appversion)
-        print settings.value('geometry')
-        return settings
+        """
+        Load defaults for settings if missing and available.
+        """
+        settings = QSettings(QString(self._appversion.organizationName()),
+                             QString(self._appversion.settingsKey()))
+        defaultSettings = self._appversion.defaultSettings()
+        if defaultSettings is None:
+            return
+        custom, default = [], []
+        for key, value in defaultSettings.iteritems():
+            if settings.contains(key):
+                custom.append(key)
+            else: # qsettings doesn't contain the key, add it
+                settings.setValue(key, QByteArray.fromBase64(value))
+                default.append(key)
+        logmsg = "Loaded settings."
+        if len(default) > 0:
+            logmsg += " Defaults for {0}.".format(", ".join(default))
+        if len(custom) > 0:
+            logmsg += " Previous ones for {0}.".format(", ".join(custom))
+        logging.info(logmsg)
         self.restoreGeometry(settings.value('geometry').toByteArray())
         self.restoreState(settings.value('windowState').toByteArray())
         return settings
+
 
 # TODO: tests?
 

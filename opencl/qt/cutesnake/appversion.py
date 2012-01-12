@@ -28,17 +28,28 @@ from PyQt4.QtCore import QCoreApplication as coreApp
 from utils import VersionBase
 
 class AppVersion(VersionBase):
-    @classmethod
-    def setApplicationMetaData(cls):
+    """
+    Set QCoreApplication properties based on version meta data.
+    """
+    def __init__(self, *args, **kwargs):
+        VersionBase.__init__(self, *args, **kwargs)
+        self._setApplicationMetaData()
+
+    def settingsKey(self):
+        """
+        Version dependent settings key.
+        """
+        return "{0}_{1}".format(self.name(), self.number())
+
+    def _setApplicationMetaData(self):
         for func, data in (
-                (coreApp.setApplicationName, cls.name()),
-                (coreApp.setApplicationVersion, cls.number()),
-                (coreApp.setOrganizationName, cls.organizationName()),
-                (coreApp.setOrganizationDomain, cls.organizationDomain())
+                (coreApp.setApplicationName, self.name()),
+                (coreApp.setApplicationVersion, self.number()),
+                (coreApp.setOrganizationName, self.organizationName()),
+                (coreApp.setOrganizationDomain, self.organizationDomain())
                 ):
-            if type(data) is not str:
-                continue
-            func(data)
+            if type(data) is str:
+                func(data)
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
 

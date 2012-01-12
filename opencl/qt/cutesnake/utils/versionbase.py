@@ -25,42 +25,58 @@
 # Ingo Bressler (cutesnake@ingobressler.net)
 
 class VersionBase(object):
+    """
+    Stores version meta data.
+    """
     _name = None
     _number = None
     _organizationName = None
     _organizationDomain = None
     _defaultSettings = None
 
-    @classmethod
-    def name(cls):
-        return cls._name
+    def __init__(self, programName = None,
+                       versionNumber = None,
+                       organizationName = None,
+                       organizationDomain = None,
+                       defaultSettings = None):
+        assert type(programName) is str
+        assert len(programName) > 0
+        self._name = programName
+        assert type(versionNumber) is str
+        assert len(versionNumber) > 0
+        self._number = versionNumber
+        if organizationName is not None:
+            assert type(organizationName) is str
+            assert len(organizationName) > 0
+            self._organizationName = organizationName
+        if organizationDomain is not None:
+            assert type(organizationDomain) is str
+            assert len(organizationDomain) > 0
+            self._organizationDomain = organizationDomain
+        if defaultSettings is not None:
+            assert type(defaultSettings) is dict
+            assert len(defaultSettings) > 0
+            self._defaultSettings = defaultSettings
 
-    @classmethod
-    def number(cls):
+    def name(self):
+        return self._name
+
+    def number(self):
         # pywin32 has a problem with version nr like "20111110"
-        return cls._number
+        return self._number
 
-    @classmethod
-    def organizationName(cls):
-        return cls._organizationName
+    def organizationName(self):
+        return self._organizationName
 
-    @classmethod
-    def organizationDomain(cls):
-        return cls._organizationDomain
+    def organizationDomain(self):
+        return self._organizationDomain
 
-    @classmethod
-    def defaultSettings(cls):
-        return cls._defaultSettings
-
-    @classmethod
-    def isDefined(cls):
-        return (type(cls.name()) is str and
-                type(cls.number()) is str and
-                type(cls.organizationName()) is str)
+    def defaultSettings(self):
+        return self._defaultSettings
 
     @classmethod
     def isValid(cls, other):
-        return (issubclass(other, cls) and other.isDefined())
+        return issubclass(type(other), cls)
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
 
