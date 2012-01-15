@@ -185,6 +185,156 @@ for $r>R_1$
 \end{description}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section{Fuzzy Sphere}
+\label{sect:FuzzySphere} ~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth,height=0.5\textwidth]{../images/form_factor/FuzzySphere/FuzzySphereProfile.png}
+\end{center}
+\caption{radial profile of a fuzzy sphere model}
+\label{profile:fuzzysphere}
+\end{figure}
+
+This model is to calculate the scattering from spherical particles
+with a "fuzzy" interface \cite{Stieger2004}. The fuzzy interface
+is obtained by convoluting the radial profile of a hard sphere
+with a Gaussian function.
+\begin{align}
+\eta_\text{FuzzySph}\left(\abs{\mathbf{r}}\right)
+        &= \left(\eta_\text{HS}\star\eta_\text{Gauss}\right)(\mathbf{r}) \nonumber \\
+        &= \int_{\mathbb{R}^3}\eta_\text{HS}(\boldsymbol{\tau}) \eta_\text{Gauss}(\mathbf{r}-\boldsymbol{\tau}) d\boldsymbol{\tau}
+\end{align}
+with
+\begin{subequations}
+\begin{align}
+\eta_\text{HS}(\mathbf{r}) &=
+\begin{cases}
+\left(\eta_\text{sph}-\eta_\text{sol}\right) & \mbox{for~} \abs{\mathbf{r}}\leq R \\
+0 & \mbox{for~} \abs{\mathbf{r}}>R
+\end{cases} \\
+\eta_\text{Gauss}(r) &= \frac{1}{2 \sqrt{2} \pi^{3/2}
+\abs{\sigma}^3} \exp\left[ -\frac{\abs{\mathbf{r}}^2}{2
+\abs{\sigma}^2}\right]
+\end{align}
+\end{subequations}
+The convolution has to be done in $\mathbb{R}^3$. As the hard
+sphere and Gaussian functions are radial symmetric also the
+profile of the fuzzy sphere only depends on $\abs{\mathbf{r}}$. By
+defining the interface via a convolution the form factor can be
+easily calculated because of the convolution theorem the Fourier
+transform of a convolution is the pointwise product of the Fourier
+transforms, i.e.
+\begin{equation}
+\begin{split}
+F(Q) &= \mathcal{F}\left[\eta_\text{FuzzySph}(r) \right] \\
+&=
+  \mathcal{F}\left[\left(\eta_\text{HS}\star\eta_\text{Gauss}\right)(r)\right]
+= \mathcal{F}\left[\eta_\text{HS}(r)\right] \mathcal{F}\left[\eta_\text{Gauss}(r)\right] \\
+%&= \int_0^{\infty} \eta_\text{FuzzySph}(r)\; 4\pi r^2\frac{\sin\left(Qr\right)}{Qr} \; dr \\
+&=
+   \int_0^{\infty} \eta_\text{HS}(r)\; 4\pi r^2\frac{\sin\left(Qr\right)}{Qr} \; dr \int_0^{\infty} \eta_\text{Gauss}(r)\; 4\pi r^2\frac{\sin\left(Qr\right)}{Qr} \; dr \\
+&= \left(\eta_\text{sph}-\eta_\text{sol}\right) 4\pi R^3%8\sqrt{2}\pi^{5/2} R^3
+   \frac{\sin\left(QR\right)-QR\cos\left(QR\right)}{\left(QR\right)^3} \quad e^{\left[-\frac{1}{2}\sigma^2Q^2\right]}
+\end{split}
+\end{equation}
+
+Instead of calculating the convolution integral one also can get
+the radial profile of the fuzzy interface by the inverse Fourier
+transformation of the scattering amplitude
+\begin{align}
+\eta_\text{FuzzySph}(r) &= \int_0^{\infty}
+\frac{1}{\left(2\pi\right)^3} F(Q) 4\pi Q^2 dQ
+\end{align}
+\begin{multline}
+\eta_\text{FuzzySph}(r) = \left(\eta_\text{sph}-\eta_\text{sol}\right) \\
+\left( \frac{
+    \left(
+          e^{-\frac{\left(r + R\right)^2}{2 \sigma^2}}
+        - e^{-\frac{\left(r - R\right)^2}{2 \sigma^2}}
+    \right) \sigma}{\sqrt{2 \pi} r}
+ + \frac{1}{2} \text{erf}\left[\frac{r + R}{\sqrt{2} \abs{\sigma}}\right]
+ - \frac{1}{2} \text{erf}\left[\frac{r - R}{\sqrt{2} \abs{\sigma}}\right]
+\right)
+\end{multline}
+
+Finally the scattering intensity is given by
+\begin{multline}
+I_\text{FuzzySph}(Q) = F^2(Q) = \\
+\left[ \left(\eta_\text{sph}-\eta_\text{sol}\right) 4\pi R^3
+   \frac{\sin\left(QR\right)-QR\cos\left(QR\right)}{\left(QR\right)^3} \quad e^{\left[-\frac{1}{2}\sigma^2Q^2\right]}
+\right]^2
+\end{multline}
+
+The intensity $I_\text{FuzzySph}(Q)$ and also the scattering
+length profile $\eta_\text{FuzzySph}(r)$ are normalized so that
+\begin{align*}
+ \lim_{Q \to \infty} I_\text{FuzzySph}(Q) &= \left( \frac{4}{3}\pi R^3\right)^2 \\
+ \int_0^{\infty} 4\pi r^2 \; \eta_\text{FuzzySph}(r) \; \mathrm{d}r &=\frac{4}{3}\pi R^3
+\end{align*}
+
+\begin{align}
+R &=\text{radius of the fuzzy sphere} \nonumber\\
+\sigma &=\text{thickness of the fuzzy shell} \nonumber\\
+\eta_\text{sph}   & : \text{scattering length density of sphere} \nonumber \\
+\eta_\text{sol}   & : \text{scattering length density of the solvent} \nonumber \\
+%I_\text{fluct}    & : \text{forward scattering of the internal fluctuation contribution} \nonumber \\
+%\xi               & : \text{correlation length of the fluctuations} \nonumber
+\end{align}
+
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{FuzzySphere}:}\\
+\begin{description}
+\item[\texttt{R}] radius of the fuzzy sphere  $R$
+\item[\texttt{sigma}] thickness of the fuzzy shell $\sigma$
+\item[\texttt{eta\_sph}] scattering length density of sphere
+$\eta_\text{sph}$ \item[\texttt{eta\_sol}] scattering length
+density of solvent $\eta_\text{sol}$
+%\item[\texttt{I\_fluct}] forward scattering of the internal fluctuation contribution $I_\text{fluct}$
+%\item[\texttt{xi}] correlation length of the fluctuations $\xi$
+\end{description}
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item This form factor is only defined for positive radii $R>0$.
+\item For $\sigma = 0$ the limiting case of a simple hard sphere
+form factor is used. \item In addition, scattering contributions
+arising from fluctuations of the microgel network are often
+included in this model expression as a Lorentzian function
+\begin{align}
+I_\text{fluct}(Q) &= \frac{I_\text{fluct}(0)}{1+\xi^2Q^2}
+\end{align}
+so that
+\begin{align}
+I(Q) &= I_\text{FuzzySph}(Q)+I_\text{fluct}(Q)
+\end{align}
+where $I_\text{fluct}(0)$ is the $Q=0$ limiting intensity and
+$\xi$ represents the correlation length of the fluctuations, which
+can be considered to be related to the blob or mesh size. It
+should be noted that the Lorentzian describes the ensemble average
+correlations in the polymer network.
+
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth,height=0.5\textwidth]{../images/form_factor/FuzzySphere/FuzzySphereIQ.png}
+\end{center}
+\caption{Scattering intensity of a fuzzy sphere. The scattering
+intensity has been calculated for a core radius $R=10$, a
+scattering length density of the FuzzySphere of
+$\eta_\text{Sph}=1$, a scattering length density of the solvent
+$\eta_\text{sol}=1$, and several widths of the "fuzzy" shell}
+\label{fig:I_FuzzySphere}
+\end{figure}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Ferrofluids} \hspace{1pt}
