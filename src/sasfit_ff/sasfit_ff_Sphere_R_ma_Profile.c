@@ -34,7 +34,7 @@ scalar sasfit_ff_Sphere_R_ma_Profile_ave_core(scalar x, sasfit_param * param)
 
         SASFIT_ASSERT_PTR(param);
 
-	Q 	= param->p[MAXPAR-1];
+		Q 	= param->p[MAXPAR-1];
         alpha 	= param->p[6];
 
         u = Q*x;

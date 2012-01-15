@@ -52,6 +52,16 @@
  */
 
 /** 
+ * \defgroup ff_plugins_spheres_shells Spheres & Shells
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for sheres and shperical shells with many different radial profiles.
+ *
+ * \modname{ff_plugins_spheres_shells}
+ */
+ 
+ 
+/** 
  * \defgroup ff_plugins_stroboscopic_superparamagnet stroboscopic measured superparamagnets
  * \ingroup ff_plugins
  *
