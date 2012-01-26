@@ -1,4 +1,5 @@
 0.93.?, 2011-??-??
+- small bug fix in the peak function "Gamma (Area)" for checking validity of parameter
 - bug fix of the resolution parameter handling in case it will be read in from a data file
 - included under peak function the Mawell distribution and the generalized Maxwell distribution
 - batch fitting
@@ -11,7 +12,7 @@
 - bug fix of ferrofluid plugin
 - added radial averaged form factor in ferrofluid plugin
 - extended the spline plugin to be used also as form factors. 
-  In case somebody wants to fit a spine function to e.g. a TEM size distribution, 
+  In case somebody wants to fit a spline function to e.g. a TEM size distribution, 
   this function need to be available as a form factor and not only as a size distribution.
 - added configuration file 'config.ini' as replacement for deprecated sasfit_init_public.tcl
   added switch for disabling 'about' popup at start time via config file

@@ -29,7 +29,7 @@
 
 #define AMPL	param->p[0]
 #define CENTER	param->p[1]
-#define WIDTH	param->p[2]
+#define WIDTH	fabs(param->p[2])
 #define SHAPE	param->p[3]
 #define BCKGR	param->p[4]
 
@@ -39,7 +39,7 @@ scalar sasfit_peak_GammaAmplitude(scalar x, sasfit_param * param)
 	
 	SASFIT_ASSERT_PTR( param );
 
-	SASFIT_CHECK_COND1((WIDTH <= 0.0), param, "width(%lg) <= 0",WIDTH);
+	SASFIT_CHECK_COND1((WIDTH == 0.0), param, "width(%lg) == 0",WIDTH);
 	SASFIT_CHECK_COND1((SHAPE <= 1.0), param, "shape(%lg) <= 1",SHAPE);
 	
 	a0 = AMPL;
