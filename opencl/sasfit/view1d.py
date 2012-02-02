@@ -30,7 +30,7 @@ class View1D(PlotViewBase):
 
     def setData(self, datalist):
         for data in datalist:
-            item = self.plot(data)
+            item = self.plot(x = data[:, 0], y = data[:, 1])
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
 

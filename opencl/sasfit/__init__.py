@@ -139,17 +139,18 @@ def calc(context):
 
     # copy src data from file raw data, slices throw error
     # 'TypeError: expected a single-segment buffer object'
-    data = np.array(ScatteringData1D("testdata.txt").data()[:,0], dtype='float32')
-    print data, data.nbytes, data.shape, data.dtype
-    srcbuf = cl.Buffer(context, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=data)
-    destbuf = cl.Buffer(context, mf.WRITE_ONLY, data.nbytes)
+    data = ScatteringData1D("testdata.txt").data()
+    
+    qvalues = np.array(data[:, 0], dtype='float32')
+    srcbuf = cl.Buffer(context, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=qvalues)
+    destbuf = cl.Buffer(context, mf.WRITE_ONLY, qvalues.nbytes)
 
     # TODO: PI?, gsl_pow_3?
 
     kernel = cl.Program(context, """
         __kernel void sphere(__global const float *in, __global float *out)
         {
-          float R = 10.0, ETA = 1e-3;
+          float R = 10.0, ETA = 1e-1;
           int gid = get_global_id(0);
           out[gid] = ETA * 4.0 * 3.14 * 
                      (sin(in[gid]*R) - in[gid]*R*cos(in[gid]*R))
@@ -157,14 +158,16 @@ def calc(context):
         }
         """).build()
 
-    kernel.sphere(queue, data.shape, None, srcbuf, destbuf)
+    kernel.sphere(queue, qvalues.shape, None, srcbuf, destbuf)
 
-    result = np.zeros_like(data)
-    event = cl.enqueue_read_buffer(queue, destbuf, result)
+    intModel = np.zeros_like(qvalues)
+    event = cl.enqueue_read_buffer(queue, destbuf, intModel)
     event.wait()
 
-    print result
-    print data.shape, result.shape
+    print intModel
+    print qvalues.shape, intModel.shape
+    result = data.copy()
+    result[:, 1] = intModel
     return (data, result)
 
 context = None
