@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# mainwindow.py
+# view1d.py
 # 
 # Copyright (c) 2010-2012 BAM
 # Federal Institute for Materials Research and Testing
@@ -24,20 +24,13 @@
 # Author(s) of this file:
 # Ingo Bressler (sasfit@ingobressler.net)
 
-from ui_mainwindow import Ui_MainWindow
-from cutesnake import MainWindowBase
-from cutesnake import AppVersion
-import version
-from view1d import View1D
+from cutesnake import PlotViewBase
 
-class MainWindow(MainWindowBase, Ui_MainWindow):
-    def __init__(self, parent = None):
-        MainWindowBase.__init__(self, version.version, parent)
-        self.setupUi(self)
-        self.setCentralWidget(View1D())
+class View1D(PlotViewBase):
 
     def setData(self, datalist):
-        self.centralWidget().setData(datalist)
+        for data in datalist:
+            item = self.plot(data)
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
 

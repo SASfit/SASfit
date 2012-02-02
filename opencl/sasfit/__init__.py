@@ -31,9 +31,7 @@ import sys
 import inspect
 import logging
 import time
-
-sys.path.append("/home/ingo/code/masschrom2d/repo/")
-from utils import DataFile
+from cutesnake import DataFile
 
 def getattributes(obj):
     return [(member, getattr(obj, member)) for member in dir(obj) if
@@ -151,7 +149,7 @@ def calc(context):
     kernel = cl.Program(context, """
         __kernel void sphere(__global const float *in, __global float *out)
         {
-          float R = 10.0, ETA = 1.0;
+          float R = 10.0, ETA = 1e-3;
           int gid = get_global_id(0);
           out[gid] = ETA * 4.0 * 3.14 * 
                      (sin(in[gid]*R) - in[gid]*R*cos(in[gid]*R))
@@ -166,11 +164,10 @@ def calc(context):
     event.wait()
 
     print result
-    #for value in result:
-    #    print value
-
     print data.shape, result.shape
+    return (data, result)
 
+context = None
 try:
     context = cl.Context([selected_device.handle()])
 except cl.RuntimeError, e:
@@ -179,8 +176,6 @@ except cl.RuntimeError, e:
           "for example a web browser?"
           .format(str(selected_device)))
     print(e)
-else:
-    calc(context)
 
 from PyQt4.QtGui import QApplication
 from mainwindow import MainWindow
@@ -191,6 +186,8 @@ def eventloop(argv = None):
     app = QApplication(argv)
     w = MainWindow()
     w.show()
+    if context is not None:
+        w.setData(calc(context))
     return app.exec_()
 
 def main(argv = None):
