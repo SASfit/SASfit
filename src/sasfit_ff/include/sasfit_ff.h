@@ -492,6 +492,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_worm_w_gauss_chains(scalar q, sasfit_param * p
 sasfit_ff_DLLEXP scalar sasfit_ff_background(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_guinier(scalar q, sasfit_param * param);
 
+sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_homogeneousPlanar(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_homogeneousCyl(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_ellCylSh(scalar q, sasfit_param * param);
 

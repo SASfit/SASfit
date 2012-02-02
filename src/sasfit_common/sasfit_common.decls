@@ -242,6 +242,9 @@ declare 74 generic {
 	void sasfit_eps_set_comp(scalar value)
 }
 
+declare 79 generic {
+	scalar sasfit_sd_LogNorm(scalar value, sasfit_param * param)
+}
 declare 80 generic {
 	int sasfit_miev0(real * xx, complex * crefin, logical * perfct, real * mimcut, logical * anyang, integer * numang, real * xmu, integer * nmom, integer * ipolzn, integer * momdim, logical * prnt, real * qext, real * qsca, real * gqsc, real * pmom, complex * sforw, complex * sback, complex * s1, complex * s2, complex * tforw, complex * tback, real * spike)
 }

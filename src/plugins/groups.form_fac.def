@@ -60,7 +60,51 @@
  * \modname{ff_plugins_spheres_shells}
  */
  
+/** 
+ * \defgroup ff_plugins_anisotropic anisotropic obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of very anisotropic shapes like local planar and local cylindrical objects.
+ *
+ * \modname{ff_plugins_anisotropic}
+ */
  
+/** 
+ * \defgroup ff_plugins_localplanar local planar obj.
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains form factors for different of local planar obj.
+ *
+ * \modname{ff_plugins_localplanar}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_localcylindrical local cylindrical obj. 
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains form factors for different of local cylindrical obj.
+ *
+ * \modname{ff_plugins_localcylindrical}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_pcslocalplanar Pcs(Q) for planar obj.
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains cross section factors for different of of local planar obj.
+ *
+ * \modname{ff_plugins_pcslocalplanar}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_pcslocalcylindrical Pcs(Q) for cylindrical obj. 
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains cross section factors for different of local cylindrical obj.
+ *
+ * \modname{ff_plugins_pcslocalcylindrical}
+ */
+  
 /** 
  * \defgroup ff_plugins_stroboscopic_superparamagnet stroboscopic measured superparamagnets
  * \ingroup ff_plugins
@@ -80,11 +124,4 @@
  */
 
 
-/** 
- * \defgroup ff_plugins_planar local planar obj. 
- * \ingroup ff_plugins
- *
- * This group contains form factors for different of locan planar obj.
- *
- * \modname{ff_plugins_planar}
- */
+

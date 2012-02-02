@@ -1160,6 +1160,10 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_peak_WeibullArea;
 	} else
+	if ( strcmp(ff->typestr, "Pcs:homogeneous") == 0 )
+	{
+		ff->fct = sasfit_ff_Pcs_homogeneousPlanar;
+	} else
 	if ( strcmp(ff->typestr, "Pcs:homogeneousCyl") == 0 )
 	{
 		ff->fct = sasfit_ff_Pcs_homogeneousCyl;

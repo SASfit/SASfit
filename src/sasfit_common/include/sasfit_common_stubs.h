@@ -153,7 +153,7 @@ typedef struct
 	void *reserved76;
 	void *reserved77;
 	void *reserved78;
-	void *reserved79;
+	scalar (*sasfit_sd_LogNorm) (scalar x, sasfit_param * param); /* 79 */
 	int (*sasfit_miev0) (real * xx, complex * crefin, logical * perfct, real * mimcut, logical * anyang, integer * numang, real * xmu, integer * nmom, integer * ipolzn, integer * momdim, logical * prnt, real * qext, real * qsca, real * gqsc, real * pmom, complex * sforw, complex * sback, complex * s1, complex * s2, complex * tforw, complex * tback, real * spike); /* 80 */
 	int (*sasfit_dmilay) (real * rcore, real * rshell, real * wvno, complex * rindsh, complex * rindco, real * mu, integer * numang, real * qext, real * qsca, real * qbs, real * gqsc, real * m1, real * m2, real * s21, real * d21, integer * maxang); /* 81 */
 	doublereal (*sasfit_th36) (real * x, sasfit_param * param, char * thnam, char * parnam, integer * npar, integer * ini, ftnlen thnam_len, ftnlen parnam_len); /* 82 */
@@ -445,7 +445,10 @@ typedef struct
 /* Slot 76 is reserved */
 /* Slot 77 is reserved */
 /* Slot 78 is reserved */
-/* Slot 79 is reserved */
+#ifndef sasfit_sd_LogNorm
+#define sasfit_sd_LogNorm \
+	(sasfit_common_stubs_ptr->sasfit_sd_LogNorm) /* 79 */
+#endif
 #ifndef sasfit_miev0
 #define sasfit_miev0 \
 	(sasfit_common_stubs_ptr->sasfit_miev0) /* 80 */
