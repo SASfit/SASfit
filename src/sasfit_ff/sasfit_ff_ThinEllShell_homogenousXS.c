@@ -85,8 +85,11 @@ scalar sasfit_thinEll_P_core(scalar alpha, sasfit_param * param)
 scalar sasfit_thinEll_P(scalar x, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param);
-
-	return sasfit_integrate(0.0, M_PI/2.0, sasfit_thinEll_P_core, param);
+	if (EPSILON == 1) {
+		return sasfit_thinEll_P_core(M_PI/2.0,param);
+	} else {
+		return sasfit_integrate(0.0, M_PI/2.0, sasfit_thinEll_P_core, param);
+	}
 }
 
 scalar sasfit_ff_ThinEllShell_core(scalar r, sasfit_param * param)
@@ -98,11 +101,8 @@ scalar sasfit_ff_ThinEllShell_core(scalar r, sasfit_param * param)
 
 	R = r;
 
-	if (EPSILON != 1.0) {
-		P = sasfit_thinEll_P(Q, param);
-	} else {
-		P = sasfit_thinEll_P_core(0.0,param);
-	}
+	P = sasfit_thinEll_P(Q, param);
+
 	sasfit_init_param( &subParam );
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_R;

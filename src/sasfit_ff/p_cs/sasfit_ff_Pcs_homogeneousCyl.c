@@ -1,5 +1,5 @@
 /*
- * src/sasfit_ff/sasfit_ff_Pcs_ellCylSh.c
+ * src/sasfit_ff/sasfit_ff_Pcs_homogeneousCyl.c
  *
  * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
  *

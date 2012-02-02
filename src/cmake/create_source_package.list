@@ -434,6 +434,8 @@ src/sasfit_sq/sasfit_sq_SquareWell2.c
 src/sasfit_sq/sasfit_sq_StickyHardSphere.c
 src/sasfit_sq/sasfit_sq_StickyHardSphere2.c
 src/sasfit_sq/sasfit_sq_TD.c
+src/sasfit_sq/sasfit_sq_ThinCylindricalShell.c
+src/sasfit_sq/sasfit_sq_ThinDiscs.c
 src/sasfit_sq/sasfit_sq_ThinSphericalShell.c
 src/sasfit_sq/sasfit_sq_ThinSquareWell.c
 src/sasfit_sq/p_prime/sasfit_sq_Pprime_rod.c
@@ -682,6 +684,7 @@ src/sasfit_ff/sasfit_ff_worm_w_gauss_chains.c
 src/sasfit_ff/sasfit_planar_gausschains.c
 src/sasfit_ff/p_cs/sasfit_ff_Pcs_ellCylSh.c
 src/sasfit_ff/p_cs/sasfit_ff_Pcs_homogeneousCyl.c
+src/sasfit_ff/p_cs/sasfit_ff_Pcs_homogeneousPlanar.c
 src/sasfit_ff/superparamagnetic_ff_psi/include/calc_alpha.h
 src/sasfit_ff/superparamagnetic_ff_psi/include/calc_bt.h
 src/sasfit_ff/superparamagnetic_ff_psi/include/calc_sections.h

@@ -239,6 +239,14 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	{
 		sq->fct = sasfit_sq_RandomDistributionModel;
 	} else
+	if ( strcmp(sq->typestr, "P'(Q):ThinDisc") == 0 )
+	{
+		sq->fct = sasfit_sq_ThinDiscs;
+	} else
+	if ( strcmp(sq->typestr, "P'(Q):ThinCylindricalShell") == 0 )
+	{
+		sq->fct = sasfit_sq_ThinCylindricalShell;
+	} else
 	if ( strcmp(sq->typestr, "P'(Q):ThinSphericalShell") == 0 )
 	{
 		sq->fct = sasfit_sq_ThinSphericalShell;

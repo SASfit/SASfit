@@ -118,6 +118,121 @@ normalized differently. This has to be checked before the parameter
 $N$ in the size distribution is interpreted in terms of number
 density of scatterers.
 
+\section{Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale}
+\label{sec:contrast-concentration-I(0)}
+
+A frequently asked question is if the scattering intensity is consistent
+with the concentration of material in the sample. Especially people working with micellar solution,
+star polymers, but also proteins, etc. want to cross-check the absolute intensity with the known concentration.
+In the dilute case the differential cross-section is simply $N$ times the cross-section of an individual scatterer
+\begin{align}
+\frac{d\sigma}{d\Omega}(Q) &= \frac{N}{V_\text{tot}} P(Q)
+\label{eq:xsabsolut1}
+\end{align}
+$N$ is number of particles/molecules/proteins in the illuminated volume,
+$V_\text{tot}$ the illuminated sample volume,
+$n=N/V_\text{tot}$ the particle number density,
+and $P(Q)$ the scattering cross-section of a single particle.
+$P(Q)$ has the dimension cm$^{2}$, $N/V_\text{tot}$ the dimension cm$^{-3}$,
+and $\frac{d\sigma}{d\Omega}(Q)$ the dimension cm$^{-1}$. Eq.\ \ref{eq:xsabsolut1}
+can also be expressed in terms of concentration $c$ in units of $\mathrm{g}/\mathrm{cm}^2$
+\begin{align}
+c &= n\; m_\text{mol} = n\; M_r u = n\frac{M_rM_u}{N_A} =
+\frac{N}{V_\text{tot}}\frac{M_r M_u}{N_A}
+\end{align}
+so that
+\begin{align}
+\frac{d\sigma}{d\Omega}(Q) &= c\frac{N_A}{M_r M_u} P(Q)
+\label{eq:xsabsolut1}
+\end{align}
+$M_r$ is the relative molar mass of the particle
+\footnote{
+Definition of relative atomic mass and relative molecular mass can be found on the url-address
+http://physics.nist.gov/Pubs/SP811/sec08.html
+\begin{description}
+\item[Relative atomic mass (formerly atomic weight)] ratio of the average mass per atom of an element to 1/12 of the mass of the atom of the nuclide $^{12}$C.
+\item[Relative molecular mass (formerly molecular weight)] ratio of the average mass per molecule or specified entity of a substance to 1/12 of the mass of an atom of the nuclide $^{12}$C.
+\end{description}
+}
+ (Molecular weight (M.W.) and formula weight (F.W.) are older terms) which is a
+dimensionless quantity (i.e., a pure number, without units). To get
+units in g/mol the relative molar mass needs to be multiplied by the
+molar mass constant $M_u$.
+The value of the molar mass constant $M_u$ is defined to be 1 g/mol in SI
+units. The molar mass constant is important in writing
+dimensionally correct equations. It is common to see phrases such
+as "\emph{The molar mass of an element is the atomic weight in
+grams per mole.}" However molecular or atomic weight are
+dimensionless quantities, and cannot take the units of grams per
+mole. Formally, the operation is the multiplication by a constant
+which has the value 1 g/mol, that is the molar mass
+constant\footnote{Definition of unified atomic mass unit: $1 \mathrm{u} = m_{\mathrm{u}} = m\left({}^{12}\mathrm{C}\right) / 12 = 1M_u/N_A=1\left(\mathrm{g}/\mathrm{mol}\right) / \left(6.02214129\times 10^{23} \mathrm{mol}^{-1}\right)=1.660538921\times 10^-{24}\mathrm{g}$}.
+The molecule mass $m_\text{m}$ in units of g is $m_\text{m}=M_r M_u/N_A$.
+
+Now we need to look on the forward scattering $P(Q\mbox{$=$}0)$ of a single particle/protein/polymer chain.
+For a simple particle like a sphere, the forward scattering is given by
+\begin{align}
+P(Q\mbox{$=$}0) &= \left(\eta_\mathrm{sol}-\eta_\mathrm{sp}\right)^2 V_\mathrm{sp}^2
+\end{align}
+where $\left(\eta_\mathrm{sol}-\eta_\mathrm{sp}\right)$ is the scattering contrast between
+spherical particle and solvent and $V_\mathrm{sp}$ the volume of a single sphere. In case of a spherical
+particle the boundary between particle and solvent is well defined and therefore also the volume of the particle
+as it has a sharp interface. The scattering contrast of a spherical particle
+can also be written in terms of the overall scattering length of the sphere $b_\mathrm{sp}$,
+i.e. the sum of the scattering length of all atoms forming the sphere,
+the volume of the sphere and the scattering length density of the solvent.
+The volume of the sphere can be calculated from its mass $m_\mathrm{sp}$ or
+relative molar mass $M_{r,\mathrm{sp}}$
+and its density $\rho_\mathrm{sp}$.
+\begin{align}
+\left(\eta_\mathrm{sol}-\eta_\mathrm{sp}\right)
+&= \left(\eta_\mathrm{sol}-\frac{b_\mathrm{sp}}{V_\mathrm{sp}}\right)
+ = \left(\eta_\mathrm{sol}-\frac{b_\mathrm{sp} \rho_\mathrm{sp}}{m_\mathrm{sp}}\right)
+ = \left(\eta_\mathrm{sol}-\frac{b_\mathrm{sp} \rho_\mathrm{sp} N_A}{M_{r,\mathrm{sp}}M_u}\right)
+\end{align}
+But what about the forward scattering of a gaussian polymer coil? A polymer does not has a sharp boundary
+to the solvent. Polymer and solvent can penetrate each other. To determine the polymer volume one would need
+a detailed model for the polymer molecule and its interaction with solvent molecules.
+As a first approximation the volume of a polymer molecule can be obtained by
+$V_\mathrm{polym}=\frac{\rho_\mathrm{polym}}{m_\mathrm{polym}}$.
+For a polymer coil with a relative molar mass $M_{r,\mathrm{polym}}$ the forward scattering in a solvent is given by
+\begin{align}
+P(Q\mbox{$=$}0)
+&= \left(\frac{M_{r,\mathrm{polym}}M_u}{\rho_\mathrm{polym} N_A}\right)^2
+\left(\eta_\mathrm{sol}-\frac{b_\mathrm{polym} \rho_\mathrm{polym} N_A}{M_{r,\mathrm{polym}}M_u}\right)^2
+\end{align}
+The  volume of a polymer molecule
+\[
+V_\mathrm{polym} = \frac{M_{r,\mathrm{polym}}M_u}{\rho_\mathrm{polym} N_A}
+\]
+is the volume occupied by single polymer chain in the solvent or in other word the amount
+of solvent volume displaced by one polymer chain.
+For the forward scattering it does not matter, if the coil is collapsed or swollen.
+As long as the scattering length density of the solvent inside the swollen polymer coil is the
+same than in the bulk and the molecular volume of the polymer chain does not change with
+the solvent quality the forward scattering does not depend on the conformation of the polymer.
+Sometimes the relative molar mass of a polymer is given in degree of polymerization $p$
+and relative molar mass of the monomer $M_{r,\mathrm{m}}$.
+In this case and assuming that the mass densities of polymer and monomer are the same
+the forward scattering is given by
+\begin{align}
+P(Q\mbox{$=$}0)
+&= \left(\frac{p\; M_{r,\mathrm{m}}M_u}{\rho_\mathrm{m} N_A}\right)^2 \left(\eta_\mathrm{sol}-\frac{b_\mathrm{m} \rho_\mathrm{m} N_A}{M_{r,\mathrm{m}}M_u}\right)^2 \nonumber \\
+&= \left(\frac{p\; M_{r,\mathrm{m}}M_u}{\rho_\mathrm{m} N_A}\right)^2 \left(\eta_\mathrm{sol}-\frac{b_\mathrm{m} \rho_\mathrm{m} N_A}{M_{r,\mathrm{m}}M_u}\right)^2
+\end{align}
+Let us now come back to the measured differential cross-section $\frac{d\sigma}{d\Omega}(Q)$. For
+$Q=0$ we get
+\begin{align}
+\frac{d\sigma}{d\Omega}(Q\mbox{$=$}0) &= \frac{N}{V_\text{tot}} P(Q\mbox{$=$}0) = c\frac{N_A}{M_{r,\mathrm{Gauss}} M_u} P(Q\mbox{$=$}0) \\
+&= c\; \frac{N_A}{p\; M_{r,\mathrm{m}} M_u} \left(\frac{p\; M_{r,\mathrm{m}}M_u}{\rho_\mathrm{m} N_A}\right)^2 \left(\eta_\mathrm{sol}-\frac{b_\mathrm{m} \rho_\mathrm{m} N_A}{M_{r,\mathrm{m}}M_u}\right)^2 \\
+&= c\; \frac{p\; M_{r,\mathrm{m}} M_u}{N_A \rho_\mathrm{m}^2} \left(\eta_\mathrm{sol}-\frac{b_\mathrm{m} \rho_\mathrm{m} N_A}{M_{r,\mathrm{m}}M_u}\right)^2
+\end{align}
+The last equation says, that the forward scattering of a solution of dilute non-interacting polymer molecules
+consisting of $p$ monomer units depends linearly on the number of monomer units $p$ in the polymer.
+Even though the scattering of a single polymer molecule depends quadratically on on the number of monomer units.
+The reason is simply that the larger the degree of polymerization the lower the number density of molecules in the solution
+as we assume a constant concentration, i.e. $c\propto pn$ and therefore $\frac{d\sigma}{d\Omega}(Q\mbox{$=$}0) \propto p^2n$.
+
 \section{Moments of scattering curves and size distribution}
 \label{sec:SASmoments}
 

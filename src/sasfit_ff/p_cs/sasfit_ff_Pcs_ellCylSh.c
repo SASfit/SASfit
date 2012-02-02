@@ -81,7 +81,11 @@ scalar sasfit_ff_Pcs_ellCylSh(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((EPSILON <= 0.0),param, "epsilon(%lg) <= 0", EPSILON);
 	
 	Q = q;
-	res = 2.0/M_PI*sasfit_integrate(0.0,M_PI/2.0,&sasfit_ff_Pcs_ellCylSh_core,param);
+	if (EPSILON != 1) {
+		res = 2.0/M_PI*sasfit_integrate(0.0,M_PI/2.0,&sasfit_ff_Pcs_ellCylSh_core,param);
+	} else {
+		res = sasfit_ff_Pcs_ellCylSh_core(M_PI/2.0,param);
+	}
 	return res;
 }
 

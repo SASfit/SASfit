@@ -29,17 +29,6 @@
 #include <gsl/gsl_sf.h>
 #include "include/sasfit_ff_utils.h"
 
-/*
-float Disc(Tcl_Interp *interp,
-			float Q,
-			  float R,
-			  float eta,
-			  bool  *error)
-*/
-/**
- * form factor of a spherical disc with radius R and scattering length desity
- * eta
- */
 scalar sasfit_ff_Disc(scalar q, sasfit_param * param)
 {
 	scalar R, eta;

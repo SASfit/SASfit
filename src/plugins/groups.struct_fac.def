@@ -51,3 +51,29 @@
  * \modname{sq_plugins}
  */
 
+/** 
+ * \defgroup sq_plugins_anisotropic anisotropic obj.
+ * \ingroup sq_plugins
+ *
+ * This group contains shape factors of very anisotropic opjects like local planar and local cylindrical objects.
+ *
+ * \modname{sq_plugins_anisotropic}
+ */
+ 
+ /** 
+ * \defgroup sq_plugins_pprimelocalplanar P'(Q): local planar obj.
+ * \ingroup sq_plugins_anisotropic
+ *
+ * This group contains shape factors P'(Q) for different of local planar obj.
+ *
+ * \modname{sq_plugins_pprimelocalplanar}
+ */
+ 
+ /** 
+ * \defgroup sq_plugins_pprimelocalcylindrical P'(Q): local cylindrical obj.
+ * \ingroup sq_plugins_anisotropic
+ *
+ * This group contains shape factors P'(Q) for different of local cylindrical obj.
+ *
+ * \modname{sq_plugins_pprimelocalcylindrical}
+ */

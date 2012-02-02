@@ -123,6 +123,8 @@ set(SOURCE_sasfit_sq
 	sasfit_sq_StickyHardSphere2.c
 	sasfit_sq_StickyHardSphere.c
 	sasfit_sq_TD.c
+	sasfit_sq_ThinDiscs.c
+	sasfit_sq_ThinCylindricalShell.c
 	sasfit_sq_ThinSphericalShell.c
 	sasfit_sq_ThinSquareWell.c
 	p_prime/sasfit_sq_Pprime_rod.c
@@ -273,6 +275,7 @@ set(SOURCE_sasfit_ff
 
 	p_cs/sasfit_ff_Pcs_ellCylSh.c
 	p_cs/sasfit_ff_Pcs_homogeneousCyl.c
+	p_cs/sasfit_ff_Pcs_homogeneousPlanar.c
 
 	superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq.c
 	superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq_l2x_pol_albr.c

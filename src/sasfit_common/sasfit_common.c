@@ -26,6 +26,8 @@
 
 #include "include/sasfit_common.h"
 #include "include/sasfit_utils_f2c.h"
+#include "sasfit_sd.h"
+
 
 sasfit_eps_t		sasfit_eps;
 
@@ -118,7 +120,7 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	NULL, /* 76 */
 	NULL, /* 77 */
 	NULL, /* 78 */
-	NULL, /* 79 */
+	sasfit_sd_LogNorm, /* 79 */
 	sasfit_miev0, /* 80 */
 	sasfit_dmilay, /* 81 */
 	sasfit_th36, /* 82 */

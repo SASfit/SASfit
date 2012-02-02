@@ -29,14 +29,7 @@
 #include <gsl/gsl_sf.h>
 #include "include/sasfit_ff_utils.h"
 
-/*
-float homogenousXS(Tcl_Interp *interp,
-			float q,
-				float L,
-			float D,
-				float eta,
-				bool  *error)
- */
+
 scalar sasfit_ff_homogenousXS(scalar q, sasfit_param * param)
 {
 	scalar u, Pprime, R;
@@ -51,14 +44,14 @@ scalar sasfit_ff_homogenousXS(scalar q, sasfit_param * param)
 
 	if (q == 0.0) 
 	{
-		Pprime = (M_PI*R*R) * (M_PI*R*R);
+		Pprime = gsl_pow_2(M_PI*R*R);
 	} 
 	else if (D == 0.0) 
 	{
 		Pprime = 0.0;
 	} else {
-		Pprime = (M_PI*R*R)*(M_PI*R*R)*2.0/(q*q*R*R)*(1.0-gsl_sf_bessel_J1(D*q)/(q*R));
+		Pprime = gsl_pow_2(M_PI*R*R)*2.0/gsl_pow_2(q*R)*(1.0-gsl_sf_bessel_J1(D*q)/(q*R));
 	}
 	if (u  == 0.0) return 0;
-	return L*L*eta*eta*sin(u)*sin(u)/(u*u)*Pprime;
+	return gsl_pow_2(L*eta*sin(u)/u)*Pprime;
 }
