@@ -3756,88 +3756,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
                                    set actualPar(SQ,s9,label) ""
                                    set actualPar(SQ,s10,label) ""
                                 }
-	   "P'(Q):Rod"          { set actualPar(SQ,s1,label) "L ="
-				  set actualPar(SQ,s2,label) ""
-				  set actualPar(SQ,s3,label) "sigma ="
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"P'(Q):Worm(PS1)" \
-                                { set actualPar(SQ,s1,label) "lb ="
-				  set actualPar(SQ,s2,label) "L ="
-				  set actualPar(SQ,s3,label) "exvol ="
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"P'(Q):Worm(PS1)" \
-                                { set actualPar(SQ,s1,label) "lb ="
-				  set actualPar(SQ,s2,label) "L ="
-				  set actualPar(SQ,s3,label) ""
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"P'(Q):Worm(PS3)" \
-                                { set actualPar(SQ,s1,label) "lb ="
-				  set actualPar(SQ,s2,label) "L ="
-				  set actualPar(SQ,s3,label) "exvol ="
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"P'(Q):WormLikeChain_withEXV" \
-                                { set actualPar(SQ,s1,label) "lb ="
-				  set actualPar(SQ,s2,label) "L ="
-				  set actualPar(SQ,s3,label) ""
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"P'(Q):WormLikeChain_withoutEXV" \
-                                { set actualPar(SQ,s1,label) "lb ="
-				  set actualPar(SQ,s2,label) "L ="
-				  set actualPar(SQ,s3,label) ""
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"P'(Q):KholodenkoWorm"  { set actualPar(SQ,s1,label) "lb ="
-				  set actualPar(SQ,s2,label) "L ="
-				  set actualPar(SQ,s3,label) ""
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
 	   default              { ap_set_param_labels actualPar SQ }
 	}
 	switch -exact $actualPar(SD,typestr) {
@@ -4773,14 +4691,7 @@ proc analyticalGlobalSDCmd {simorfit
 	{lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
 	{anisotropic "anisotropic obj." {{planar "P'(Q):local planar geometry" {{{P'(Q):ThinDisc}} {{P'(Q):ThinSphericalShell}} \
 								{{P'(Q):ThinEllipsoidalShell}} {{P'(Q):ThinHollowCylinder}}}} \
-					{cylindrical "P'(Q):local cylindrical geometry" { \
-                                                                {{P'(Q):Rod}} \
-                                                                {{P'(Q):Worm(PS1)}} \
-                                                                {{P'(Q):Worm(PS2)}} \
-                                                                {{P'(Q):Worm(PS3)}} \
-                                                                {{P'(Q):WormLikeChain_withEXV}} \
-								{{P'(Q):WormLikeChain_withoutEXV}} \
-                                                                {{P'(Q):KholodenkoWorm}} }}}}
+					}}
 	{fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
 				 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
 	{peaks "Peaks" {VoigtPeak PearsonVIIAmplitude}} \

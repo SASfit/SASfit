@@ -70,12 +70,5 @@ sasfit_sq_DLLEXP scalar sasfit_sq_ThinCylindricalShell(scalar x, sasfit_param * 
 sasfit_sq_DLLEXP scalar sasfit_sq_ThinSphericalShell(scalar x, sasfit_param * param);
 sasfit_sq_DLLEXP scalar sasfit_sq_ThinSquareWell(scalar x, sasfit_param * param);
 sasfit_sq_DLLEXP scalar sasfit_sq_None(scalar x, sasfit_param * param);
-sasfit_sq_DLLEXP scalar sasfit_sq_Pprime_rod(scalar x, sasfit_param * param);
-sasfit_sq_DLLEXP scalar sasfit_sq_Pprime_KholodenkoWorm(scalar x, sasfit_param * param);
-sasfit_sq_DLLEXP scalar sasfit_sq_Pprime_WormPS1(scalar x, sasfit_param * param);
-sasfit_sq_DLLEXP scalar sasfit_sq_Pprime_WormPS2(scalar x, sasfit_param * param);
-sasfit_sq_DLLEXP scalar sasfit_sq_Pprime_WormPS3(scalar x, sasfit_param * param);
-sasfit_sq_DLLEXP scalar sasfit_sq_Pprime_WormLikeChainEXV(scalar x, sasfit_param * param);
-sasfit_sq_DLLEXP scalar sasfit_sq_Pprime_WormLikeChainGaussian(scalar x, sasfit_param * param);
 
 #endif

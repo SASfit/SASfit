@@ -53,7 +53,9 @@ scalar sasfit_ff_francois(scalar q, sasfit_param * param)
 	if (EXVOL <= 0) {
 		subParam.p[0] = b;
 		subParam.p[1] = L;
-		Plocal  = sasfit_sq_Pprime_WormPS2(q, &subParam)/L/L;
+//		Plocal  = sasfit_sq_Pprime_WormPS2(q, &subParam)/L/L;
+		exit(999);
+				Plocal  = sasfit_ff_KholodenkoWorm(q, &subParam)/L/L;
 	} else {
 		subParam.p[0] = 1.0;
 		subParam.p[1] = L;

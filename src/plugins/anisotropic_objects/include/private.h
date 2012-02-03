@@ -37,7 +37,21 @@
 // #define P0 param->p[0]
 //
 
+
+#define LB		param->p[0]
+#define B		param->p[0]
+#define L		param->p[1]
+#define EXVOL	param->p[2]
+
+#define CLB		param->p[MAXPAR-1]
 scalar find_LogNorm_int_range(scalar, scalar, scalar, scalar *, scalar *, sasfit_param *);
+scalar fRg2(scalar, scalar);
+scalar falpha2(scalar, scalar);
+scalar IDebye(scalar, scalar);
+scalar S_SB(scalar, scalar, sasfit_param *);
+scalar S_EXV(scalar, scalar, sasfit_param *);
+scalar fcorr (scalar, scalar, sasfit_param *);
+scalar IRod(scalar, scalar);
 
 #endif // end of file
 
