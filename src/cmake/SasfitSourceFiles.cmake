@@ -127,9 +127,6 @@ set(SOURCE_sasfit_sq
 	sasfit_sq_ThinCylindricalShell.c
 	sasfit_sq_ThinSphericalShell.c
 	sasfit_sq_ThinSquareWell.c
-	p_prime/sasfit_sq_Pprime_rod.c
-	p_prime/sasfit_sq_Pprime_KholodenkoWorm.c
-	p_prime/sasfit_sq_Pprime_WormLikeChain.c
 )
 
 set(SOURCE_sasfit_peaks

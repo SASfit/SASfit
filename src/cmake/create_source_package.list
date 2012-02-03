@@ -438,9 +438,6 @@ src/sasfit_sq/sasfit_sq_ThinCylindricalShell.c
 src/sasfit_sq/sasfit_sq_ThinDiscs.c
 src/sasfit_sq/sasfit_sq_ThinSphericalShell.c
 src/sasfit_sq/sasfit_sq_ThinSquareWell.c
-src/sasfit_sq/p_prime/sasfit_sq_Pprime_rod.c
-src/sasfit_sq/p_prime/sasfit_sq_Pprime_KholodenkoWorm.c
-src/sasfit_sq/p_prime/sasfit_sq_Pprime_WormLikeChain.c
 src/sasfit_peaks/CMakeLists.txt
 src/sasfit_peaks/include/sasfit_peaks.h
 src/sasfit_peaks/include/sasfit_peaks_shared_exports.h

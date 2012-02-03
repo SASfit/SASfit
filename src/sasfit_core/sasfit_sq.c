@@ -251,34 +251,6 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	{
 		sq->fct = sasfit_sq_ThinSphericalShell;
 	} else
-	if ( strcmp(sq->typestr, "P'(Q):Rod") == 0 )
-	{
-		sq->fct = sasfit_sq_Pprime_rod;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):Worm(PS1)") == 0 )
-	{
-		sq->fct = sasfit_sq_Pprime_WormPS1;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):Worm(PS2)") == 0 )
-	{
-		sq->fct = sasfit_sq_Pprime_WormPS2;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):Worm(PS3)") == 0 )
-	{
-		sq->fct = sasfit_sq_Pprime_WormPS3;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):KholodenkoWorm") == 0 )
-	{
-		sq->fct = sasfit_sq_Pprime_KholodenkoWorm;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):WormLikeChain_withoutEXV") == 0 )
-	{
-		sq->fct = sasfit_sq_Pprime_WormLikeChainGaussian;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):WormLikeChain_withEXV") == 0 )
-	{
-		sq->fct = sasfit_sq_Pprime_WormLikeChainEXV;
-	} else
 	{
 		// unknown structure factor
 		sasfit_param_set_err(&sq->params, "Unknown structure factor !");

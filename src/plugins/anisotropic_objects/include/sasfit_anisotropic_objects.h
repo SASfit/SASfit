@@ -757,7 +757,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___rod_v(scalar q, sasfit
 /* ################ start sq_p__q___worm_ps1_ ################ */
 /** 
  * \defgroup sq_p__q___worm_ps1_ P'(Q): Worm(PS1)
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_pprimelocalcylindrical
  *
  * \brief \<some brief description of P'(Q): Worm(PS1) function\>
  *
@@ -802,7 +802,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1__v(scalar q, 
 /* ################ start sq_p__q___worm_ps2_ ################ */
 /** 
  * \defgroup sq_p__q___worm_ps2_ P'(Q): Worm(PS2)
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_pprimelocalcylindrical
  *
  * \brief \<some brief description of P'(Q): Worm(PS2) function\>
  *
@@ -844,7 +844,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2__v(scalar q, 
 /* ################ start sq_p__q___worm_ps3_ ################ */
 /** 
  * \defgroup sq_p__q___worm_ps3_ P'(Q): Worm(PS3)
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_pprimelocalcylindrical
  *
  * \brief \<some brief description of P'(Q): Worm(PS3) function\>
  *
@@ -885,90 +885,6 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__f(scalar q, 
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___worm_ps3_ ################ */
-
-/* ################ start sq_p__q___wormlikechain_withexv ################ */
-/** 
- * \defgroup sq_p__q___wormlikechain_withexv P'(Q): WormLikeChain_withEXV
- * \ingroup sq_plugins
- *
- * \brief \<some brief description of P'(Q): WormLikeChain_withEXV function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b lb</td>
- *       <td>Kuhn length</td>
- *      </tr><tr>
- *       <td>\b L</td>
- *       <td>contour length</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup sq_p__q___wormlikechain_withexv
- *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
- */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___wormlikechain_withexv(scalar q, sasfit_param * p);
-
-/**
- * \ingroup sq_p__q___wormlikechain_withexv
- *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
- */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___wormlikechain_withexv_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup sq_p__q___wormlikechain_withexv
- *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
- */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___wormlikechain_withexv_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop sq_p__q___wormlikechain_withexv ################ */
-
-/* ################ start sq_p__q___wormlikechain_withoutexv ################ */
-/** 
- * \defgroup sq_p__q___wormlikechain_withoutexv P'(Q): WormLikeChain_withoutEXV
- * \ingroup sq_plugins
- *
- * \brief \<some brief description of P'(Q): WormLikeChain_withoutEXV function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b lb</td>
- *       <td>Kuhn length</td>
- *      </tr><tr>
- *       <td>\b L</td>
- *       <td>comtour length</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup sq_p__q___wormlikechain_withoutexv
- *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
- */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___wormlikechain_withoutexv(scalar q, sasfit_param * p);
-
-/**
- * \ingroup sq_p__q___wormlikechain_withoutexv
- *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
- */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___wormlikechain_withoutexv_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup sq_p__q___wormlikechain_withoutexv
- *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
- */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___wormlikechain_withoutexv_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop sq_p__q___wormlikechain_withoutexv ################ */
 
 /* ################ start sq_p__q___kholodenko_worm ################ */
 /** 

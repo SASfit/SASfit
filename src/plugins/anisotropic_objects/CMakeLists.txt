@@ -28,8 +28,6 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_p__q___worm_ps1_.c
 	sasfit_sq_p__q___worm_ps2_.c
 	sasfit_sq_p__q___worm_ps3_.c
-	sasfit_sq_p__q___wormlikechain_withexv.c
-	sasfit_sq_p__q___wormlikechain_withoutexv.c
 	sasfit_sq_p__q___kholodenko_worm.c
 	sasfit_ff_pcs_homogeneouscyl.c
 	sasfit_ff_pcs_ellcylsh.c
