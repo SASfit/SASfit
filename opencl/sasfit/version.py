@@ -24,9 +24,9 @@
 # Author(s) of this file:
 # Ingo Bressler (sasfit@ingobressler.net)
 
-from cutesnake import AppVersion
+from cutesnake import QAppVersion
 
-version = AppVersion(
+version = QAppVersion(
     programName = "SASfit",
     versionNumber = "2.0.0",
     organizationName = "BAM"

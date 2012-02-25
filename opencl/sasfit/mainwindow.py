@@ -24,16 +24,13 @@
 # Author(s) of this file:
 # Ingo Bressler (sasfit@ingobressler.net)
 
-from ui_mainwindow import Ui_MainWindow
-from cutesnake import MainWindowBase
-from cutesnake import AppVersion
+from cutesnake import MainWindow as MainWindowBase
 import version
 from view1d import View1D
 
-class MainWindow(MainWindowBase, Ui_MainWindow):
+class MainWindow(MainWindowBase):
     def __init__(self, parent = None):
         MainWindowBase.__init__(self, version.version, parent)
-        self.setupUi(self)
         self.setCentralWidget(View1D())
 
     def setData(self, datalist):
