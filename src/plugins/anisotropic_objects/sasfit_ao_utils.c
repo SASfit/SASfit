@@ -148,3 +148,143 @@ scalar IRod(scalar q, scalar H)
 {
 	return 2.0*gsl_sf_Si(q*H)/(q*H)-gsl_pow_2(sin(q*H/2.)/(q*H/2.));
 }
+
+
+
+
+scalar thinF1(scalar q, scalar r, scalar epsilon, scalar alpha)
+{
+    scalar u, Rtmp;
+
+	Rtmp = r*sqrt(pow(sin(alpha),2.)+pow(epsilon*cos(alpha),2.));
+	       
+	u = q * Rtmp;
+
+    if (u == 0.0) {
+		return 1.0;
+	} else {
+        return sin(u)/u;
+	}
+}
+
+scalar thinEll_P_core(scalar alpha, sasfit_param * param)
+{
+	scalar S, ae, lEPSILON, lR,lQ;
+
+	lEPSILON = param->p[1];
+	lQ		 = param->p[MAXPAR-1];
+	lR		 = param->p[MAXPAR-2];
+
+	SASFIT_ASSERT_PTR(param);
+
+	if (lEPSILON < 1.) 
+	{
+		ae = acos(lEPSILON);
+		S = 2.*M_PI*lR*lR*(1.+lEPSILON*gsl_atanh(sin(ae))/sin(ae));
+	} 
+	else if (lEPSILON > 1.) 
+	{
+		ae = acos(1./lEPSILON);
+		S = 2.*M_PI*lR*lR*(1.+lEPSILON*ae/tan(ae));
+	} else 
+	{
+		S = 4.*M_PI*lR*lR;
+	}
+	return  pow(S * thinF1(lQ, lR, lEPSILON, alpha),2.0)*sin(alpha);
+}
+
+scalar thinEll_P(scalar x, sasfit_param * param)
+{
+	scalar lEPSILON;
+	lEPSILON = param->p[1];
+
+	if (x==0) return 0.0;
+	param->p[MAXPAR-2]=x;
+
+	SASFIT_ASSERT_PTR(param);
+	if (lEPSILON == 1) {
+		return thinEll_P_core(M_PI/2.0,param);
+	} else {
+		return sasfit_integrate(0.0, M_PI/2.0, &thinEll_P_core, param);
+	}
+}
+
+scalar ThinEllShell_R_core(scalar x, sasfit_param * param)
+{
+	scalar P, LNdistr, lR,lQ, lSIGMA_R, lEPSILON;
+	sasfit_param subParam;
+
+	if (x==0) return 0.0;
+
+	lR = param->p[0];
+	lEPSILON = param->p[1];
+	lSIGMA_R = param->p[2];
+	lQ = param->p[MAXPAR-1];
+
+	SASFIT_ASSERT_PTR(param);
+
+	P = thinEll_P(x, param);
+
+	if (lSIGMA_R != 0) {
+		sasfit_init_param( &subParam );
+		subParam.p[0] = 1.0;
+		subParam.p[1] = lSIGMA_R;
+		subParam.p[2] = 1.0;
+		subParam.p[3] = lR;
+		LNdistr = sasfit_sd_LogNorm(x, &subParam);
+		SASFIT_CHECK_SUB_ERR(param, subParam);
+	} else {
+		LNdistr = 1;
+	}
+
+	return LNdistr*P;
+}
+
+
+scalar r0(scalar epsilon, scalar s0)
+{
+	scalar r0, ae;
+	if (epsilon < 1.) 
+	{
+		ae = acos(epsilon);
+		r0 = sqrt(s0/(1.+epsilon*gsl_atanh(sin(ae))/sin(ae)) / (2.*M_PI));
+	} 
+	else if (epsilon > 1.) 
+	{
+		ae = acos(1./epsilon);
+		r0 = sqrt(s0/(1.+epsilon*ae/tan(ae)) / (2.*M_PI));
+	} else 
+	{
+		r0 = sqrt(s0 / 4./M_PI);
+	}
+	return r0;
+}
+
+scalar ThinEllShell_S_core(scalar x, sasfit_param * param)
+{
+	scalar P, LNdistr, lS, lQ, lSIGMA_S, lEPSILON;
+	sasfit_param subParam;
+
+	lS = param->p[0];
+	lEPSILON = param->p[1];
+	lSIGMA_S = param->p[2];
+	lQ = param->p[MAXPAR-1];
+
+	SASFIT_ASSERT_PTR(param);
+
+	param->p[MAXPAR-2] = r0(lEPSILON, lS);
+
+	P = thinEll_P(lQ, param);
+
+	sasfit_init_param( &subParam );
+	subParam.p[0] = 1.0;
+	subParam.p[1] = lSIGMA_S;
+	subParam.p[2] = 1.0;
+	subParam.p[3] = lS;
+
+	LNdistr = sasfit_sd_LogNorm(x, &subParam);
+	SASFIT_CHECK_SUB_ERR(param, subParam);
+
+	return LNdistr*P;
+}
+

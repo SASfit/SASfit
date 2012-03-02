@@ -52,6 +52,8 @@ scalar S_SB(scalar, scalar, sasfit_param *);
 scalar S_EXV(scalar, scalar, sasfit_param *);
 scalar fcorr (scalar, scalar, sasfit_param *);
 scalar IRod(scalar, scalar);
+scalar ThinEllShell_R_core(scalar, sasfit_param *);
+scalar ThinEllShell_S_core(scalar, sasfit_param *);
 
 #endif // end of file
 
