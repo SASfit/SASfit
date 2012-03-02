@@ -198,7 +198,7 @@ scalar sasfit_ThinEllShell(scalar q, sasfit_param * param)
 				Rend = R_n;
 				Rstart = 2.0*R_0-R_n;
 			}
-			Pprime 	= sasfit_integrate(Rstart, Rend, sasfit_ff_ThinEllShell_core, param);
+			Pprime 	= sasfit_integrate(Rstart, Rend, &sasfit_ff_ThinEllShell_core, param);
 		}
 
 		Q_old		= Q;

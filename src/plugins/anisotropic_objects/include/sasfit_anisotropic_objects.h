@@ -366,6 +366,50 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_f(scala
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_cylsh_sd_bilayergauss ################ */
 
+/* ################ start ff_pcs_homogeneousplate ################ */
+/** 
+ * \defgroup ff_pcs_homogeneousplate Pcs:homogeneousPlate
+ * \ingroup ff_plugins_pcslocalplanar
+ *
+ * \brief \<some brief description of Pcs:homogeneousPlate function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b t</td>
+ *       <td>most probable thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma_t</td>
+ *       <td>width of thickness distribution (LogNorm)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_pcs_homogeneousplate
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_pcs_homogeneousplate
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_pcs_homogeneousplate
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_pcs_homogeneousplate ################ */
+
+
 /* ################ start ff_pcs_plate_chains_rw_ ################ */
 /** 
  * \defgroup ff_pcs_plate_chains_rw_ Pcs:Plate+Chains(RW)
@@ -619,7 +663,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_v
 /* ################ start sq_p__q___thin_ellipsoidal_shell ################ */
 /** 
  * \defgroup sq_p__q___thin_ellipsoidal_shell P'(Q): Thin Ellipsoidal Shell
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_pprimelocalplanar
  *
  * \brief \<some brief description of P'(Q): Thin Ellipsoidal Shell function\>
  *
@@ -642,21 +686,21 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_v
 /**
  * \ingroup sq_p__q___thin_ellipsoidal_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_anisotropic_objects.h, sq_plugins_pprimelocalplanar
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_ellipsoidal_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_anisotropic_objects.h, sq_plugins_pprimelocalplanar
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_ellipsoidal_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_anisotropic_objects.h, sq_plugins_pprimelocalplanar
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___thin_ellipsoidal_shell ################ */
@@ -944,7 +988,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
  *       <td>\b r</td>
  *       <td>most probable radius</td>
  *      </tr><tr>
- *       <td>\b sigma_t</td>
+ *       <td>\b sigma_r</td>
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr></table>
  */
@@ -970,6 +1014,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_f(scalar q
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_homogeneouscyl ################ */
+
 
 /* ################ start ff_pcs_ellcylsh ################ */
 /** 

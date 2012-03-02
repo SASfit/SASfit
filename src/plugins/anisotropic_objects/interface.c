@@ -7,13 +7,14 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(21)
+SASFIT_PLUGIN_EXP_BEGIN(22)
 SASFIT_PLUGIN_EXP_ADD( ff_disc_sd_homoxs )
 SASFIT_PLUGIN_EXP_ADD( ff_ellsh_sd_homoxs )
 SASFIT_PLUGIN_EXP_ADD( ff_cylsh_sd_homoxs )
 SASFIT_PLUGIN_EXP_ADD( ff_disc_sd_bilayergauss )
 SASFIT_PLUGIN_EXP_ADD( ff_ellsh_sd_bilayergauss )
 SASFIT_PLUGIN_EXP_ADD( ff_cylsh_sd_bilayergauss )
+SASFIT_PLUGIN_EXP_ADD( ff_pcs_homogeneousplate )
 SASFIT_PLUGIN_EXP_ADD( ff_pcs_plate_chains_rw_ )
 SASFIT_PLUGIN_EXP_ADD( ff_pcs_layeredcentrosymmetricxs )
 SASFIT_PLUGIN_EXP_ADD( ff_pcs_blayergaus )
