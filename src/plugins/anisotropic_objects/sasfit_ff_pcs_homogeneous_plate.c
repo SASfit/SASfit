@@ -9,6 +9,13 @@
 // define shortcuts for local parameters/variables
 #define T	param->p[0]
 #define SIGMA_T	param->p[1]
+#define DUMMY1	param->p[2]
+#define DUMMY2	param->p[3]
+#define DUMMY3	param->p[4]
+#define DUMMY4	param->p[5]
+#define ETA_L	param->p[6]
+#define ETA_SOL	param->p[7]
+
 #define Q	param->p[MAXPAR-1]
 
 scalar homoXS_core(scalar x, sasfit_param *param) 
@@ -86,7 +93,7 @@ scalar sasfit_ff_pcs_homogeneousplate(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((SIGMA_T < 0.0), param, "sigma_t(%lg) < 0",SIGMA_T); // modify condition to your needs
 
 	// insert your code here
-	return homogeneousXS(q,param);
+	return homogeneousXS(q,param)*gsl_pow_2(ETA_L-ETA_SOL);
 }
 
 scalar sasfit_ff_pcs_homogeneousplate_f(scalar q, sasfit_param * param)

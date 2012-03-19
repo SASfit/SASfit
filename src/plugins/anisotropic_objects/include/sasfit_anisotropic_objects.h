@@ -384,6 +384,24 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scala
  *      </tr><tr>
  *       <td>\b sigma_t</td>
  *       <td>width of thickness distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_l</td>
+ *       <td>scattering length density of layer/td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
  *      </tr></table>
  */
 
@@ -1032,11 +1050,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q
  *       <td>\b R</td>
  *       <td>core radius</td>
  *      </tr><tr>
+ *       <td>\b sigma_R</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
  *       <td>\b epsilon</td>
  *       <td>eccentricity of elliptical cross-section</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
  *       <td>scattering length density of core</td>
@@ -1044,7 +1074,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q
  *       <td>\b eta_shell</td>
  *       <td>scattering length density of shell</td>
  *      </tr><tr>
- *       <td>\b sta_solv</td>
+ *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
  *      </tr></table>
  */
@@ -1071,6 +1101,344 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_f(scalar q, sasf
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_ellcylsh ################ */
 
+/* ################ start ff_ellcylsh_sd_rod ################ */
+/** 
+ * \defgroup ff_ellcylsh_sd_rod EllCylSh+SD+Rod
+ * \ingroup ff_plugins_localcylindrical
+ *
+ * \brief \<some brief description of EllCylSh+SD+Rod function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b sigma_R</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b epsilon</td>
+ *       <td>eccentricity of elliptical cross-section</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>length of Rod</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b sigma_L</td>
+ *       <td>width of length distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellcylsh_sd_rod
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_rod
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_rod
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellcylsh_sd_rod ################ */
+
+
+/* ################ start ff_ellcylsh_sd_worm_ps1 ################ */
+/** 
+ * \defgroup ff_ellcylsh_sd_worm_ps1 EllCylSh+SD+Worm(PS1)
+ * \ingroup ff_plugins_localcylindrical
+ *
+ * \brief \<some brief description of EllCylSh+SD+Worm(PS1) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b sigma_R</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b epsilon</td>
+ *       <td>eccentricity of elliptical cross-section</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length of worm</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter (0: without excluded volume, 1: with excluded volume)</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps1
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps1
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps1
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellcylsh_sd_worm_ps1 ################ */
+
+/* ################ start ff_ellcylsh_sd_worm_ps2 ################ */
+/** 
+ * \defgroup ff_ellcylsh_sd_worm_ps2 EllCylSh+SD+Worm(PS2)
+ * \ingroup ff_plugins_localcylindrical
+ *
+ * \brief \<some brief description of EllCylSh+SD+Worm(PS2) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b sigma_R</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b epsilon</td>
+ *       <td>eccentricity of elliptical cross-section</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length of worm</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps2
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps2
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps2
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellcylsh_sd_worm_ps2 ################ */
+
+
+/* ################ start ff_ellcylsh_sd_worm_ps3 ################ */
+/** 
+ * \defgroup ff_ellcylsh_sd_worm_ps3 EllCylSh+SD+Worm(PS3)
+ * \ingroup ff_plugins_localcylindrical
+ *
+ * \brief \<some brief description of EllCylSh+SD+Worm(PS2) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b sigma_R</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b epsilon</td>
+ *       <td>eccentricity of elliptical cross-section</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length of worm</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps3
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps3
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_ps3
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellcylsh_sd_worm_ps3 ################ */
+
+
+
+/* ################ start ff_ellcylsh_sd_worm_kholodenko ################ */
+/** 
+ * \defgroup ff_ellcylsh_sd_worm_kholodenko EllCylSh+SD+Worm(Kholodenko)
+ * \ingroup ff_plugins_localcylindrical
+ *
+ * \brief \<some brief description of EllCylSh+SD+Worm(Kholodenko) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b sigma_R</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b epsilon</td>
+ *       <td>eccentricity of elliptical cross-section</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length of worm</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_kholodenko
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_kholodenko
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellcylsh_sd_worm_kholodenko
+ *
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellcylsh_sd_worm_kholodenko ################ */
 
 #endif // this file
 

@@ -7,7 +7,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(22)
+SASFIT_PLUGIN_EXP_BEGIN(27)
 SASFIT_PLUGIN_EXP_ADD( ff_disc_sd_homoxs )
 SASFIT_PLUGIN_EXP_ADD( ff_ellsh_sd_homoxs )
 SASFIT_PLUGIN_EXP_ADD( ff_cylsh_sd_homoxs )
@@ -28,6 +28,11 @@ SASFIT_PLUGIN_EXP_ADD( sq_p__q___worm_ps1_ )
 SASFIT_PLUGIN_EXP_ADD( sq_p__q___worm_ps2_ )
 SASFIT_PLUGIN_EXP_ADD( sq_p__q___worm_ps3_ )
 SASFIT_PLUGIN_EXP_ADD( sq_p__q___kholodenko_worm )
+SASFIT_PLUGIN_EXP_ADD( ff_ellcylsh_sd_rod )
+SASFIT_PLUGIN_EXP_ADD( ff_ellcylsh_sd_worm_ps1 )
+SASFIT_PLUGIN_EXP_ADD( ff_ellcylsh_sd_worm_ps2 )
+SASFIT_PLUGIN_EXP_ADD( ff_ellcylsh_sd_worm_ps3 )
+SASFIT_PLUGIN_EXP_ADD( ff_ellcylsh_sd_worm_kholodenko )
 SASFIT_PLUGIN_EXP_ADD( ff_pcs_homogeneouscyl )
 SASFIT_PLUGIN_EXP_ADD( ff_pcs_ellcylsh )
 
