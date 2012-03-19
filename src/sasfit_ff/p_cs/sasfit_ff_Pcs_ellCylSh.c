@@ -32,9 +32,12 @@
 #define R		param->p[0]
 #define EPSILON	param->p[1]
 #define T		param->p[2]
-#define ETA_C	param->p[3]
-#define ETA_SH	param->p[4]
-#define ETA_SOL	param->p[5]
+#define DUMMY1	param->p[3]
+#define DUMMY2	param->p[4]
+#define DUMMY3	param->p[5]
+#define ETA_C	param->p[6]
+#define ETA_SH	param->p[7]
+#define ETA_SOL	param->p[8]
 
 #define Q		param->p[MAXPAR-1]
 

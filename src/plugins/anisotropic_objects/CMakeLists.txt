@@ -32,6 +32,11 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_p__q___kholodenko_worm.c
 	sasfit_ff_pcs_homogeneouscyl.c
 	sasfit_ff_pcs_ellcylsh.c
+	sasfit_ff_ellcylsh_sd_rod.c
+	sasfit_ff_ellcylsh_sd_worm_ps1.c
+	sasfit_ff_ellcylsh_sd_worm_ps2.c
+	sasfit_ff_ellcylsh_sd_worm_ps3.c
+	sasfit_ff_ellcylsh_sd_worm_kholodenko.c
 	sasfit_ao_utils.c
 	interface.c
 )
