@@ -61,6 +61,9 @@ scalar sasfit_ff_flat_cyl(scalar q, sasfit_param * param)
 	sigma = L*q;
 	mu = 2.0*R*q;
 	V = M_PI*R*R*L;
+	
+	if (R==0 && L==0) return 0;
+	if (q==0) return V*V*eta*eta;
 
 	G1sig = 2.0/sigma * gsl_sf_bessel_J1(sigma);
 	G1mu  = 2.0/mu    * gsl_sf_bessel_J1(mu);

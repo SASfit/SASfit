@@ -20,7 +20,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_pcs_plate_chains_rw_.c
 	sasfit_ff_pcs_layeredcentrosymmetricxs.c
 	sasfit_ff_pcs_blayergaus.c
-	sasfit_ff_pcs_twoinfinetlythinlayer.c
+	sasfit_ff_pcs_twoinfinitelythinlayers.c
 	sasfit_sq_p__q___thin_disc.c
 	sasfit_sq_p__q___thin_spherical_shell.c
 	sasfit_sq_p__q___thin_ellipsoidal_shell.c
