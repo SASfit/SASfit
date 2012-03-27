@@ -4,40 +4,283 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\clearpage
-\section{local planar obj.} ~\\
+\section{Very anisotropic particles (local planar \& local cylindrical objects)}
+
+For very anisotropic random orientated particles the form factor
+can be factorize according to Porod \cite{Porod1948} in a cross
+section term $P_\text{cs}(Q)$ for the shorter dimension and a
+shape factor $P'(Q)$ for the long dimension.
+\begin{align}
+I(Q) &=P'(Q) P_{cs}(Q).
+\end{align}
+In this plugin the form factors of two types of anisotropic
+particles are collected, those with a local cylindrical and with a
+local planar geometry. In case of local planar objects the cross
+section term $P_\text{cs}(Q)$ can be homogeneous, a
+centro-symmetric bilayer, a gaussian bilayer, etc. . This cross
+section factor can than be combined with the overall shape factor
+$P'(Q)$ of for examples a thin spherical shell of elliptical
+shell, a then cylindrical shell or a thin disc. As the total form
+factor is the product of the cross-section form factor and a shape
+form factor one can either programm all combination of
+cross-section and shape factors into individual form factor
+functions or one can programm the cross-section factors as form
+factor and the shape factor as a structure factors. Using the
+monodisperse approximation yields than the same result.
+
+In this plugin the product of the cross-section and shape term
+have been implemented as form factor under "\texttt{by
+plugin|anisotropic obj.|local planar obj.}" and "\texttt{by
+plugin|anisotropic obj.|local cylindrical obj.}". The
+cross-section terms alone are also implemented as form factors
+under "\texttt{by plugin|anisotropic obj.|Pcs(Q) for planar obj.}"
+and "\texttt{by plugin|anisotropic obj.|Pcs(Q) for cylindrical
+obj.}". The shape factors are also available as structure factors
+under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+obj.}" and "\texttt{by plugin|anisotropic obj.|P'(Q): local
+cylindrical obj.}".
+
+The cross-section form factors can be easily calculated if the
+scattering length density contrast profile
+$\Delta\eta_\textrm{cs}(r)$ is known. For structures with a local
+planar geometry and a symmetric cross-section the form factor is
+given by
+\begin{align}
+P_\textrm{cs}^\textrm{planar} (Q) = \left[2\int_0^\infty
+\Delta\eta_\textrm{cs}(r) \cos(Qr) \, \textrm{d}r\right]^2
+\label{Pcs:planar}
+\end{align}
+In case of local cylindrical particles with a centro-symmetric
+scattering length density distribution the form factor is given by
+\begin{align}
+P_\textrm{cs}^\textrm{cylindrical} (Q) = \left[2\pi\int_0^\infty
+\Delta\eta_\textrm{cs}(r) \textrm{J}_0(Qr)r \,
+\textrm{d}r\right]^2 \label{Pcs:cylindrical}
+\end{align}
+
+\clearpage
+\subsection{Pcs(Q) for planar obj.} ~\\
+\label{plugin:Pcs4planar}
+
+The cross-section form factors with local planar geometry are valid
+when the cross-section dimension is much smaller the radius of curvature
+of the locally planar structure.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.838\textwidth,height=0.456\textwidth]{../images/form_factor/anisotropic/localplanar.png}
+\end{center}
+\caption{for local planar particles the cross section dimension is much smaller then the
+radius of curvature of the particle}
+\label{fig:localplanar}
+\end{figure}
+
+Several cross-section profiles for local planar objects have been implemented,
+like a homogeneous cross-section,
+cross-section with two infinitely thin plates,
+layered centro-symmetric cross-section,
+bilayer with a Gaussian scattering length density profile,
+layer with Gaussian chains attached to the surface.
+These form factors are supposed to be combined with a shape factor for
+local planar objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+obj.}".
+
+\clearpage
+
+\subsubsection{Pcs(Q) for a homogeneous cross-section}
+\label{plugin:Pcs:homogeneousXS} ~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.802\textwidth,height=0.265\textwidth]{../images/form_factor/anisotropic/Pcs_homogeneousXS_txt.png}
+\end{center}
+\caption{Plane with a homogeneous cross-section of thickness $t$.}
+\label{fig:homogeneousXS}
+\end{figure}
+
+This cross-section form factor describes the scattering of a layer with homogeneous
+scattering length density $\eta_L$ in a matrix of a scattering length density $\eta_{solv}$.
+The thickness can have a distribution described by a log-normal distribution according to eq.\ \ref{eq:LogNormal}.
+
+\begin{align}
+P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t)
+    \left[ \left(\eta_L-\eta_\textrm{solv}\right) x \frac{\sin(Qx/2)}{Qx/2} \right]^2\textrm{d}x
+\end{align}
+
+\noindent
+\textbf{Input parameters for \texttt{Pcs:homogeneousPlate}:}
+\begin{description}
+    \item[\texttt{t}] most probable layer thickness $t$
+    \item[\texttt{sigm\_t}] width $\sigma_t$ of thickness distribution (LogNorm)
+    \item[\texttt{dummy}] unused disabled parameter
+    \item[\texttt{dummy}] unused disabled parameter
+    \item[\texttt{dummy}] unused disabled parameter
+    \item[\texttt{dummy}] unused disabled parameter
+    \item[\texttt{eta\_l}] scattering length density of layer $\eta_L$
+    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_{solv}$
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local planar objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+obj.}".
+\item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/localplanarIQ.png}
+\end{center}
+\caption{Scattering curve for the form factor "\texttt{Pcs:homogeneousPlate}" only (insert) and
+in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}".}
+\label{fig_IQ:homogeneousXS}
+\end{figure}
+
+\clearpage
+\subsubsection{Pcs(Q) for two infinitely thin parallel layers} ~\\
+\label{plugin:Pcs:TwoInfinitelyThinLayers}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.328\textwidth]{../images/form_factor/anisotropic/planar2thin_txt.png}
+\end{center}
+\caption{Two infinitely thin parallel layers separated by a distance $t$.}
+\label{fig:Pcs:TwoInfinitelyThinLayers}
+\end{figure}
+
+This cross-section form factor describes the scattering of two infinitely thin parallel layers.
+The separation distance can have a distribution described by a log-normal distribution according
+to eq.\ \ref{eq:LogNormal}.
+
+\begin{align}
+P_\text{cs}(Q,\sigma_{T},T) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{T},1,T) \cos^2(Qx/2) \, \textrm{d}x
+\end{align}
+
+\noindent
+\textbf{Input parameters for \texttt{Pcs:TwoInfinitelyThinLayers}:}
+\begin{description}
+    \item[\texttt{t}] most probable layer separation $t$
+    \item[\texttt{sigm\_t}] width $\sigma_t$ of separation distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local planar objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+obj.}".
+\item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/planar2thinIQ.png}
+\end{center}
+\caption{Scattering curve for the form factor "\texttt{Pcs:TwoInfinitelyThinLayers}" only (insert) and
+in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}".}
+\label{fig_IQ:Pcs:TwoInfinitelyThinLayers}
+\end{figure}
+
+
+\clearpage
+\subsubsection{Pcs(Q) for a layered centro symmetric cross-section structure} ~\\
+\label{plugin:Pcs:LayeredCentroSymmetricCrossSectionStructure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.361\textwidth]{../images/form_factor/anisotropic/planar2centrosymm_txt.png}
+\end{center}
+\caption{Two layered centro symmetric structure with a core thickness of $L_\textrm{c}$ and an outer layer thickness
+$L_{L_\textrm{sh}}$. The corresponding scattering length densities of the core, the shell layer and the solvent are
+$L_{L_\textrm{c}}$, $L_{L_\textrm{sh}}$, and $L_{L_\textrm{solv}}$.}
+\label{fig:Pcs:TwoInfinitelyThinLayers}
+\end{figure}
+
+This cross-section form factor describes the scattering of a layered centro symmetric cross-section structure.
+Both the core thickness as well as the shell thickness can have a distribution described by a log-normal distribution as defined in eq.\ \ref{eq:LogNormal}.
+
+\begin{multline}
+P_\text{cs}(Q,\sigma_{L_\textrm{c}},L_\textrm{c},\sigma_{L_\textrm{sh}},L_\textrm{sh},\eta_{L_\textrm{c}},\eta_{L_\textrm{sh}},\eta_\textrm{sol}) = \\
+\int_0^\infty \textrm{LogNorm}(v,1,\sigma_{L_\textrm{c}},1,L_\textrm{c})
+\int_0^\infty \textrm{LogNorm}(u,1,\sigma_{L_\textrm{sh}},1,L_\textrm{sh}) \\
+     \Bigg[ \frac{(\eta_{L_\textrm{sh}}-\eta_\textrm{solv})(v+2u) \sin\left(Q\frac{v+2u}{2}\right)}{Q\frac{v+2u}{2}}
+          -\frac{(\eta_{L_\textrm{sh}}-\eta_{L_\textrm{c}})  v   \sin\left(Q \frac{v}{2}\right)}{Q \frac{v}{2}}
+    \Bigg]^2 \,
+\textrm{d}u \, \textrm{d}v
+\end{multline}
+
+\noindent
+\textbf{Input parameters for \texttt{Pcs:LayeredCentroSymmetricXS}:}
+\begin{description}
+    \item[\texttt{L\_c}] most probable layer separation $L_\textrm{c}$
+    \item[\texttt{sigm\_Lc}] width $\sigma_{L_\textrm{c}}$ of core thickness distribution (LogNorm)
+    \item[\texttt{L\_sh}] most probable shell thickness $L_\textrm{sh}$
+    \item[\texttt{sigm\_Lsh}] width $\sigma_{L_\textrm{c}}$ of shell thickness distribution (LogNorm)
+    \item[\texttt{dummy}] unused disabled parameter
+    \item[\texttt{dummy}] unused disabled parameter
+    \item[\texttt{eta\_Lc}] scattering length density of core layer $\eta_{L_\textrm{c}}$
+    \item[\texttt{eta\_Lsh}] scattering length density of shell layer $\eta_{L_\textrm{sh}}$
+    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_{solv}$
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local planar objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+obj.}".
+\item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/Pcs_planar2centrosymmIQ.png}
+\end{center}
+\caption{Scattering curve for the form factor "\texttt{Pcs:LayeredCentroSymmetricXS}" only (insert) and
+in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}".}
+\label{fig:Pcs_planar2centrosymmIQ}
+\end{figure}
+
+\clearpage
+
+\subsubsection{Pcs(Q) for  particles with Gaussian chains attached to the
+surface} ~\\
+\label{plugin:Pcs:GaussianChains}
+
+\vspace{5mm}
+
+\subsubsection{Pcs(Q) for a bilayer with density profile} ~\\
+\label{plugin:Pcs:GaussianProfile}
+
+
+\clearpage
+\subsection{Pcs(Q) for cylindrical obj.} ~\\
+\label{plugin:Pcs4cylindrical}
+
+The cross-section form factors with cylindrical geometry are valid
+when the cross-section dimension is much smaller the segment length
+or Kuhn length of the local cylindrical structure.
+
+\subsection{P'(Q) for local planar obj.} ~\\
+\label{plugin:Pprime4planar}
+
+
+\subsection{P'(Q) for local cylindrical obj.} ~\\
+\label{plugin:Pprime4cylindrical}
+
+\subsection{local planar  obj.} ~\\
 \label{plugin:LocalPlanar)}
-In subsection
-\ref{subsect:DiblockCopolymerMicelles} the form factor of micelles
-is described which consist of diblock copolymers. The formalism
-for the form factor can be easily extended to shapes with local
-planar or local cylindrical geometry
-\cite{PedersenJApplCryst2000,Neugebauer1943} for which the the
-form factor can be factorized in cross-section $P_{cs}(Q)$ term
-and an overall shape term $P'(Q)$ (see also
-~\ref{sect:RodLikeMicelles} and ~\ref{sect:WormLikeMicelles}
-\begin{align}
-I(Q) &=P'(Q) P_{cs}(Q).
-\end{align}
 
-\subsection{Unilamellear vesicles: \texttt{ULV+Chains(RW)}}
-\label{plugin:ULV+Chains(RW)}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\clearpage
-\section{local cylindrical obj.} ~\\
-\label{plugin:LocalCylindrical)} In subsection
-\ref{subsect:DiblockCopolymerMicelles} the form factor of micelles
-is described which consist of diblock copolymers. The formalism
-for the form factor can be easily extended to shapes with local
-planar or local cylindrical geometry
-\cite{PedersenJApplCryst2000,Neugebauer1943} for which the the
-form factor can be factorized in cross-section $P_{cs}(Q)$ term
-and an overall shape term $P'(Q)$ (see also
-~\ref{sect:RodLikeMicelles} and ~\ref{sect:WormLikeMicelles}
-\begin{align}
-I(Q) &=P'(Q) P_{cs}(Q).
-\end{align}
+\subsection{local cylindrical obj.} ~\\
+\label{plugin:LocalCylindrical)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -217,10 +460,10 @@ for $r>R_1$
 \label{profile:fuzzysphere}
 \end{figure}
 
-This model is to calculate the scattering from spherical particles
-with a "fuzzy" interface \cite{Stieger2004}. The fuzzy interface
-is obtained by convoluting the radial profile of a hard sphere
-with a Gaussian function.
+This model can be used to calculate the scattering from spherical
+particles with a "fuzzy" interface \cite{Stieger2004}. The fuzzy
+interface is obtained by convoluting the radial profile of a hard
+sphere with a Gaussian function.
 \begin{align}
 \eta_\text{FuzzySph}\left(\abs{\mathbf{r}}\right)
         &= \left(\eta_\text{HS}\star\eta_\text{Gauss}\right)(\mathbf{r}) \nonumber \\
@@ -243,9 +486,9 @@ The convolution has to be done in $\mathbb{R}^3$. As the hard
 sphere and Gaussian functions are radial symmetric also the
 profile of the fuzzy sphere only depends on $\abs{\mathbf{r}}$. By
 defining the interface via a convolution the form factor can be
-easily calculated because of the convolution theorem the Fourier
-transform of a convolution is the pointwise product of the Fourier
-transforms, i.e.
+easily calculated because the Fourier transform of a convolution
+is the pointwise product of the Fourier transforms according to
+the convolution theorem, i.e.
 \begin{equation}
 \begin{split}
 F(Q) &= \mathcal{F}\left[\eta_\text{FuzzySph}(r) \right] \\

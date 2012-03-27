@@ -61,6 +61,9 @@ scalar sasfit_ff_long_cyl(scalar q, sasfit_param * param)
 	sigma = 2.0*R*q;
 	V = M_PI*R*R*L;
 
+	if (R==0 && L==0) return 0;
+	if (q==0) return V*V*eta*eta;
+
 	pi_mu = gsl_sf_Si(mu)+cos(mu)/mu+sin(mu)/mu/mu;
 	G1 = 2.0/(0.5*sigma) *  gsl_sf_bessel_J1(0.5*sigma);
 	G2 = 8.0/sigma/sigma * gsl_sf_bessel_Jn(2,sigma);

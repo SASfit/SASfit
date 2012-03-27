@@ -41,7 +41,7 @@
  * \defgroup ff_disc_sd_homoxs Disc+SD+homoXS
  * \ingroup ff_plugins_localplanar
  *
- * \brief \<some brief description of Disc+SD+homoXS function\>
+ * \brief form factor of a disc with a size distribution and a homogeneous cross-section
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -102,7 +102,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_v(scalar q, sa
  * \defgroup ff_ellsh_sd_homoxs EllSh+SD+homoXS
  * \ingroup ff_plugins_localplanar
  *
- * \brief \<some brief description of EllSh+SD+homoXS function\>
+ * \brief form factor of a thin ellipsoidal shell with a size distribution and a homogeneous cross section function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -160,10 +160,10 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs_v(scalar q, s
 
 /* ################ start ff_cylsh_sd_homoxs ################ */
 /** 
- * \defgroup ff_cylsh_sd_homoxs CylSh+SD+homoXS
+ * \defgroup ff_cylsh_sd_homoxs CylSh+SD+homoXS (closed)
  * \ingroup ff_plugins_localplanar
  *
- * \brief \<some brief description of CylSh+SD+homoXS function\>
+ * \brief form factor of a thin hollow cylinder with closed end and a size distribution and a homogeneous cross-section
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -371,7 +371,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scala
  * \defgroup ff_pcs_homogeneousplate Pcs:homogeneousPlate
  * \ingroup ff_plugins_pcslocalplanar
  *
- * \brief \<some brief description of Pcs:homogeneousPlate function\>
+ * \brief cross section form factor of a homogeneous plane
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -397,7 +397,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scala
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b eta_l</td>
+ *       <td>\b eta_L</td>
  *       <td>scattering length density of layer/td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
@@ -473,7 +473,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__v(scalar
  * \defgroup ff_pcs_layeredcentrosymmetricxs Pcs:LayeredCentroSymmetricXS
  * \ingroup ff_plugins_pcslocalplanar
  *
- * \brief \<some brief description of Pcs:LayeredCentroSymmetricXS function\>
+ * \brief cros section form factor with two infinitesimal thin centrosymmetric layers with a LogNorm layer distance distribution 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -481,8 +481,32 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__v(scalar
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b t</td>
- *       <td>t</td>
+ *       <td>\b Lc</td>
+ *       <td>most probable thickness of core</td>
+ *      </tr><tr>
+ *       <td>\b sigma_Lc</td>
+ *       <td>width of core thickness distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b Lsh</td>
+ *       <td>most probable thickshell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma_Lsh</td>
+ *       <td>width of shell thickness distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_Lc</td>
+ *       <td>scattering length density of core layer/td>
+ *      </tr><tr>
+ *       <td>\b eta_Lsh</td>
+ *       <td>scattering length density of shell layer</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
  *      </tr></table>
  */
 
@@ -548,12 +572,12 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_blayergaus_f(scalar q, sa
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_blayergaus_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_blayergaus ################ */
 
-/* ################ start ff_pcs_twoinfinetlythinlayer ################ */
+/* ################ start ff_pcs_twoinfinitelythinlayers ################ */
 /** 
- * \defgroup ff_pcs_twoinfinetlythinlayer Pcs:TwoInfinetlyThinLayer
+ * \defgroup ff_pcs_twoinfinitelythinlayers Pcs:TwoInfinitelyThinLayers
  * \ingroup ff_plugins_pcslocalplanar
  *
- * \brief \<some brief description of Pcs:TwoInfinetlyThinLayer function\>
+ * \brief cross-section form factor of  two infinitely thin parallel layers
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -562,31 +586,34 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_blayergaus_v(scalar q, sa
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b t</td>
- *       <td>t</td>
+ *       <td>layer distance</td>
+ *      </tr><tr>
+ *       <td>\b sigma_t</td>
+ *       <td>width of distance distribution (LogNorm)</td>
  *      </tr></table>
  */
 
 /**
- * \ingroup ff_pcs_twoinfinetlythinlayer
+ * \ingroup ff_pcs_twoinfinitelythinlayers
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinetlythinlayer(scalar q, sasfit_param * p);
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_pcs_twoinfinetlythinlayer
+ * \ingroup ff_pcs_twoinfinitelythinlayers
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinetlythinlayer_f(scalar q, sasfit_param * p);
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_pcs_twoinfinetlythinlayer
+ * \ingroup ff_pcs_twoinfinitelythinlayers
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinetlythinlayer_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_pcs_twoinfinetlythinlayer ################ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_pcs_twoinfinitelythinlayers ################ */
 
 /* ################ start sq_p__q___thin_disc ################ */
 /** 
@@ -725,10 +752,10 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell
 
 /* ################ start sq_p__q___thin_hollow_cylinder ################ */
 /** 
- * \defgroup sq_p__q___thin_hollow_cylinder P'(Q): Thin Hollow Cylinder
- * \ingroup sq_plugins
+ * \defgroup sq_p__q___thin_hollow_cylinder P'(Q): Thin Hollow Cylinder (closed)
+ * \ingroup sq_plugins_pprimelocalplanar
  *
- * \brief \<some brief description of P'(Q): Thin Hollow Cylinder function\>
+ * \brief form factor P'(Q) of a infinitely thin cylindrical shell with closed ends
  *
  * <more detailed documentation, see 'doxygen' docs>
  *

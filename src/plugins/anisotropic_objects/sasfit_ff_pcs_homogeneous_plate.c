@@ -29,9 +29,9 @@ scalar homoXS_core(scalar x, sasfit_param *param)
 	u = Q*x*0.5;
 	if (u  == 0.0) 
 	{
-		Pcs = gsl_pow_2(x);
+		Pcs = gsl_pow_2((ETA_L-ETA_SOL)*x);
 	} else {
-		Pcs = gsl_pow_2(x*sin(u)/u);
+		Pcs = gsl_pow_2((ETA_L-ETA_SOL)*x*sin(u)/u);
 	}
 
 	sasfit_init_param( &subParam );
@@ -49,38 +49,24 @@ scalar homoXS_core(scalar x, sasfit_param *param)
 
 scalar homogeneousXS(scalar q, sasfit_param * param)
 {
-	scalar u;
-	scalar tstart = 0.0, tend = 0.0; // was uninitialized, see line 125
-	static scalar Q_old = -1.;
-	static scalar T0_old = -1.;
-	static scalar sigma_T_old = -1.;
-	static scalar Pcs = 1.;
+	scalar Pcs, u;
+	scalar tstart = 0.0, tend = 0.0; 
 
 	SASFIT_ASSERT_PTR(param);
 
 	Q = q;
 
-	if ((Q != Q_old) || (T != T0_old) || (SIGMA_T != sigma_T_old)) 
-	{
-		if (SIGMA_T == 0.0) 
-		{
-			u = q*T*0.5;
-			if (u  == 0.0) 
-			{
-				Pcs = gsl_pow_2(T);
-			} else {
-				Pcs = gsl_pow_2(T*sin(u)/u);
-			}
-		} else 
-		{
-			find_LogNorm_int_range(2,T,SIGMA_T,&tstart,&tend,param);
-			Pcs 	= sasfit_integrate(tstart, tend, &homoXS_core, param);
+	if (SIGMA_T == 0.0) {
+		u = q*T*0.5;
+		if (u  == 0.0) {
+			Pcs = gsl_pow_2(T);
+		} else {
+			Pcs = gsl_pow_2(T*sin(u)/u);
 		}
-		Q_old	= Q;
-		T0_old	= T;
-		sigma_T_old = SIGMA_T;
+	} else {
+		find_LogNorm_int_range(2,T,SIGMA_T,&tstart,&tend,param);
+		Pcs 	= sasfit_integrate(tstart, tend, &homoXS_core, param);
 	}
-
 	return Pcs;
 }
 

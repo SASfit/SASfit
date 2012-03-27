@@ -29,17 +29,6 @@
 #include <gsl/gsl_sf.h>
 #include "include/sasfit_ff_utils.h"
 
-/*
-float BiLayerGauss(Tcl_Interp *interp,
-			float q,
-				float sigma_out,
-			float b_out,
-				float sigma_core,
-			float b_core,
-			float t,
-			float D,
-				bool  *error)
- */
 
 scalar sasfit_ff_BiLayerGauss(scalar q, sasfit_param * param)
 {
