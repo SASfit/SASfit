@@ -391,12 +391,6 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scala
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
- *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
- *      </tr><tr>
  *       <td>\b eta_L</td>
  *       <td>scattering length density of layer/td>
  *      </tr><tr>
@@ -493,12 +487,6 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__v(scalar
  *       <td>\b sigma_Lsh</td>
  *       <td>width of shell thickness distribution (LogNorm)</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
- *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
- *      </tr><tr>
  *       <td>\b eta_Lc</td>
  *       <td>scattering length density of core layer/td>
  *      </tr><tr>
@@ -537,7 +525,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_
  * \defgroup ff_pcs_blayergaus Pcs:BlayerGaus
  * \ingroup ff_plugins_pcslocalplanar
  *
- * \brief \<some brief description of Pcs:BlayerGaus function\>
+ * \brief cross-section form factor Pcs(Q) for a bilayer with a Gaussian electron density profile
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -545,8 +533,20 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b t</td>
- *       <td>t</td>
+ *       <td>\b sigma_core</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density contrast of the central Gaussian profile </td>
+ *      </tr><tr>
+ *       <td>\b sigma_out</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b eta_out</td>
+ *       <td>scattering length density contrast of the two outer Gaussian profiles</td>
+ *      </tr><tr>
+ *       <td>\b D</td>
+ *       <td>distance between the centers of the outer Gaussian profiles</td>
  *      </tr></table>
  */
 
@@ -1020,7 +1020,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
 /* ################ start ff_pcs_homogeneouscyl ################ */
 /** 
  * \defgroup ff_pcs_homogeneouscyl Pcs:homogeneousCyl
- * \ingroup ff_plugins_pcslocalplanar
+ * \ingroup ff_plugins_pcslocalcylindrical
  *
  * \brief \<some brief description of Pcs:homogeneousCyl function\>
  *
@@ -1041,21 +1041,21 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
 /**
  * \ingroup ff_pcs_homogeneouscyl
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_homogeneouscyl
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_homogeneouscyl
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
  */
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_homogeneouscyl ################ */

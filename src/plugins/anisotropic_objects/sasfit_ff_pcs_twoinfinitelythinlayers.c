@@ -21,7 +21,7 @@ scalar thincentrosymmetriclayers_core(scalar x, sasfit_param *param)
 	SASFIT_ASSERT_PTR(param);
 
 
-	Pcs = gsl_pow_2(cos(Q*x));
+	Pcs = gsl_pow_2(cos(Q*x/2));
 
 	sasfit_init_param( &subParam );
 	subParam.p[0] = 1.0;
@@ -50,7 +50,7 @@ scalar thincentrosymmetriclayers(scalar q, sasfit_param * param)
 
 	if ((Q != Q_old) || (T != T0_old) || (SIGMA_T != sigma_T_old)) {
 		if (SIGMA_T == 0.0) {
-			Pcs = gsl_pow_2(cos(q*T));
+			Pcs = gsl_pow_2(cos(q*T/2));
 		} else {
 			find_LogNorm_int_range(2,T,SIGMA_T,&tstart,&tend,param);
 			Pcs 	= sasfit_integrate(tstart, tend, &thincentrosymmetriclayers_core, param);

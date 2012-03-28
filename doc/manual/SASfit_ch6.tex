@@ -114,8 +114,6 @@ P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t)
     \item[\texttt{sigm\_t}] width $\sigma_t$ of thickness distribution (LogNorm)
     \item[\texttt{dummy}] unused disabled parameter
     \item[\texttt{dummy}] unused disabled parameter
-    \item[\texttt{dummy}] unused disabled parameter
-    \item[\texttt{dummy}] unused disabled parameter
     \item[\texttt{eta\_l}] scattering length density of layer $\eta_L$
     \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_{solv}$
 \end{description}
@@ -222,8 +220,6 @@ P_\text{cs}(Q,\sigma_{L_\textrm{c}},L_\textrm{c},\sigma_{L_\textrm{sh}},L_\textr
     \item[\texttt{sigm\_Lc}] width $\sigma_{L_\textrm{c}}$ of core thickness distribution (LogNorm)
     \item[\texttt{L\_sh}] most probable shell thickness $L_\textrm{sh}$
     \item[\texttt{sigm\_Lsh}] width $\sigma_{L_\textrm{c}}$ of shell thickness distribution (LogNorm)
-    \item[\texttt{dummy}] unused disabled parameter
-    \item[\texttt{dummy}] unused disabled parameter
     \item[\texttt{eta\_Lc}] scattering length density of core layer $\eta_{L_\textrm{c}}$
     \item[\texttt{eta\_Lsh}] scattering length density of shell layer $\eta_{L_\textrm{sh}}$
     \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_{solv}$
@@ -251,14 +247,87 @@ in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}".}
 
 \clearpage
 
+\subsubsection{Pcs(Q) for a bilayer with a Gaussian electron density profile \cite{Pabst2000,Pabst2003}} ~\\
+\label{plugin:Pcs:GaussianProfile}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/BiLayerGauss_Profile.png}
+\end{center}
+\caption{
+The plot shows a model for the Gaussian description of the bilayer electron density profile according to
+eq.\ \ref{eq:BiLayerGaussianProfile}.
+The origin of the profile is set to the bilayer centre. The model encountering a single Gaussian for the head
+group at $\pm D/2$. $\eta_\textrm{out}$ is the amplitude of the headgroup Gaussian and $\eta_\textrm{core}$ that of
+the hydrocarbon chains with respect to the average electron density of water. The FWHM of the Gaussian profiles are
+$2\sqrt{2\ln 2}\sigma_\textrm{out}$ and $2\sqrt{2\ln 2}\sigma_\textrm{core}$.}
+\label{fig:bilayerprofile}
+\end{figure}
+
+This model for a bilayer is using a real-space representation of the electron density profile
+using a Gaussian description \cite{Pabst2000,Pabst2003}. In comparison to other models it
+is simpler and requiring the adjustment of only four parameters. The electron density profile
+(Fig.\ \ref{fig:bilayerprofile}) is described by
+\begin{align}
+\begin{split}
+\eta(r) &=  \eta_\textrm{out} \left[ \exp\left(-\frac{\left(r-\frac{D}{2}\right)^2}{2\sigma_\textrm{out}^2}\right) +
+   \exp\left(-\frac{\left(r+\frac{D}{2}\right)^2}{2\sigma_\textrm{out}^2}\right) \right] \\
+          &+ \eta_\textrm{core} \exp\left(-\frac{r^2}{2\sigma_\textrm{core}^2}\right)
+          \label{eq:BiLayerGaussianProfile}
+\end{split}
+\end{align}
+The scattering intensity of this cross section profile of a planar object can be calculated by eq.\ \ref{Pcs:planar}
+and computes as
+\begin{align}
+   F_\text{out}\left(Q,D,\sigma_\textrm{out},\eta_\textrm{out}\right)  &= \sqrt{2\pi}\sigma_\textrm{out}  \eta_\textrm{out}  \exp\left(-\frac{1}{2}\left(Q\sigma_\textrm{out} \right)^2\right) \cos\left(Q\frac{D}{2}\right) \\
+   F_\text{core}\left(Q,\sigma_\textrm{core},\eta_\textrm{core}\right) &= \sqrt{2\pi}\sigma_\textrm{core} \eta_\textrm{core} \exp\left(-\frac{1}{2}\left(Q\sigma_\textrm{core}\right)^2\right)
+\end{align}
+so that
+\begin{align}
+  P_\text{cs}\left(Q\right)   &=\left[F_\text{core}\left(Q,\sigma_\textrm{core}, \eta_\textrm{core}\right)
+                                   +2 F_\text{out} \left(Q,D,\sigma_\textrm{out},\eta_\textrm{out} \right)\right]^2
+  \label{eq:PcsBilayer}
+\end{align}
+
+\noindent
+\textbf{Input parameters for \texttt{Pcs:LayeredCentroSymmetricXS}:}
+\begin{description}
+    \item[\texttt{sigma\_core}] width $\sigma_\mathrm{out}$ of the central Gaussian profile
+    \item[\texttt{eta\_core}] scattering length density contrast of the central Gaussian profile
+    \item[\texttt{sigma\_out}] width $\sigma_\mathrm{out}$ of the two outer Gaussian profiles
+    \item[\texttt{eta\_out}] scattering length density contrast of the two outer Gaussian profiles
+    \item[\texttt{D}] distance between the centers of the outer Gaussian profiles
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local planar objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+obj.}".
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Thin Disc}"
+as the shape factor $P'(Q)$.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/BiLayerGauss_IQa.png}}
+\hfill
+\subfigure[Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsBilayer}.
+The parameters for the profile are the same than in Fig.\ \ref{fig:BiLayerGaussianProfileIQ}a]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/BiLayerGauss_IQb.png}}
+\end{center}
+\caption{Scattering curve for the cross-section form factor "\texttt{Pcs:BilayerGaussian}". For some of the curves a distance distribution of
+the heads groups are assumed being Gaussian (see eq.\ \ref{eq:GaussDistribution}), i.e. calculating
+$\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(Q,D\right)\, \mathrm{d}D$.}
+\label{fig:BiLayerGaussianProfileIQ}
+\end{figure}
+
+\clearpage
 \subsubsection{Pcs(Q) for  particles with Gaussian chains attached to the
 surface} ~\\
 \label{plugin:Pcs:GaussianChains}
-
-\vspace{5mm}
-
-\subsubsection{Pcs(Q) for a bilayer with density profile} ~\\
-\label{plugin:Pcs:GaussianProfile}
 
 
 \clearpage
