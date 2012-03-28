@@ -11,10 +11,8 @@
 #define SIGMA_T	param->p[1]
 #define DUMMY1	param->p[2]
 #define DUMMY2	param->p[3]
-#define DUMMY3	param->p[4]
-#define DUMMY4	param->p[5]
-#define ETA_L	param->p[6]
-#define ETA_SOL	param->p[7]
+#define ETA_L	param->p[4]
+#define ETA_SOL	param->p[5]
 
 #define Q	param->p[MAXPAR-1]
 

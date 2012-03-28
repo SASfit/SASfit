@@ -11,11 +11,9 @@
 #define SIGMA_LC	fabs(param->p[1])
 #define LSH	param->p[2]
 #define SIGMA_LSH	fabs(param->p[3])
-#define DUMMY1	param->p[4]
-#define DUMMY2	param->p[5]
-#define ETA_C	param->p[6]
-#define ETA_SH	param->p[7]
-#define ETA_SOL	param->p[8]
+#define ETA_C	param->p[4]
+#define ETA_SH	param->p[5]
+#define ETA_SOL	param->p[6]
 
 #define SH	param->p[MAXPAR-3]
 #define LL	param->p[MAXPAR-2]
