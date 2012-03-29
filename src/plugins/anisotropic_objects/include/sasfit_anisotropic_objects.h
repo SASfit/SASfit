@@ -427,7 +427,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_v(scalar
  * \defgroup ff_pcs_plate_chains_rw_ Pcs:Plate+Chains(RW)
  * \ingroup ff_plugins_pcslocalplanar
  *
- * \brief \<some brief description of Pcs:Plate+Chains(RW) function\>
+ * \brief cross-section form factor Pcs:Plate+Chains(RW) of a planar layer with Gaussian chains attached
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -435,8 +435,32 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_v(scalar
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b t</td>
- *       <td>t</td>
+ *       <td>\b L_core</td>
+ *       <td>"L_core: thickness of the core of the planar layer</td>
+ *      </tr><tr>
+ *       <td>\b n_agg</td>
+ *       <td>nagg: specific aggregation number\nnumber of chains per surface area</td>
+ *      </tr><tr>
+ *       <td>\b V_brush</td>
+ *       <td>V_brush: molecular volume of single chain in corona\n in \[nm^3\] for Q in nm^-1 or in \[A^3\] for Q in A^-1</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>eta_core: scattering length density of the core</td>
+ *      </tr><tr>
+ *       <td>\b eta_brush</td>
+ *       <td>eta_brush: scattering length density of a Gaussian chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>"eta_sol: scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b xsolv_core</td>
+ *       <td>xsolv_core: amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b Rg</td>
+ *       <td>Rg: gyration radius of polymer chains in the corona</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg</td>
  *      </tr></table>
  */
 
@@ -520,9 +544,9 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_layeredcentrosymmetricxs ################ */
 
-/* ################ start ff_pcs_blayergaus ################ */
+/* ################ start ff_pcs_bilayergaus ################ */
 /** 
- * \defgroup ff_pcs_blayergaus Pcs:BlayerGaus
+ * \defgroup ff_pcs_bilayergaus Pcs:BilayerGaus
  * \ingroup ff_plugins_pcslocalplanar
  *
  * \brief cross-section form factor Pcs(Q) for a bilayer with a Gaussian electron density profile
@@ -551,26 +575,26 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_
  */
 
 /**
- * \ingroup ff_pcs_blayergaus
+ * \ingroup ff_pcs_bilayergaus
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_blayergaus(scalar q, sasfit_param * p);
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergaus(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_pcs_blayergaus
+ * \ingroup ff_pcs_bilayergaus
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_blayergaus_f(scalar q, sasfit_param * p);
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergaus_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_pcs_blayergaus
+ * \ingroup ff_pcs_bilayergaus
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_blayergaus_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_pcs_blayergaus ################ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergaus_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_pcs_bilayergaus ################ */
 
 /* ################ start ff_pcs_twoinfinitelythinlayers ################ */
 /** 
