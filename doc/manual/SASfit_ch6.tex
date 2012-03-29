@@ -325,10 +325,55 @@ $\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(
 \end{figure}
 
 \clearpage
-\subsubsection{Pcs(Q) for  particles with Gaussian chains attached to the
-surface} ~\\
+\subsubsection{Pcs(Q) for local planar objects with Gaussian chains attached to the  surface} ~\\
 \label{plugin:Pcs:GaussianChains}
 
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.962\textwidth,height=0.282\textwidth]{../images/form_factor/anisotropic/Plate+Chains(RW).png}
+\end{center}
+\caption{Sketch of a lipid bilayer with PEG molecules attached to them, which would be an example for local planar
+and objects with homogeneous core and Gaussian chains attached to the surface.}
+\label{fig:Plate+Chains(RW)}
+\end{figure}
+
+\noindent
+\textbf{Input parameters for \texttt{Pcs:Plate+Chains(RW)}:}
+\begin{description}
+    \item[\texttt{L\_core}] thickness of the core of the planar layer $L_\textrm{core}$
+    \item[\texttt{n\_agg}] specific aggregation number $n_\textrm{agg}$ in units of number of chains per surface area
+    \item[\texttt{V\_brush}]  molecular volume of single chain in corona $V_\textrm{brush}$ in nm$^3$ for $Q$ in nm$^{-1}$
+                              or in \AA$^3$ for $Q$ in \AA$^{-1}$
+    \item[\texttt{eta\_core}] scattering length density of the core $\eta_\textrm{core}$
+    \item[\texttt{eta\_brush}] scattering length density of a Gaussian chain in corona $\eta_\textrm{brush}$
+    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\textrm{solv}$
+    \item[\texttt{xsolv\_core}] amount of solvent in core $X_\textrm{xsolc,core}$
+    \item[\texttt{Rg}] gyration radius $R_G$ of polymer chains in the corona
+    \item[\texttt{d}] Value $d$ should be around 1.
+                      Non-penetration of the chains into the core is mimicked by $d\simeq 1$ for $L_\textrm{core} \gg R_G$
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local planar objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+obj.}".
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsBilayer}.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/Pcs_Plate_Chains_RW_IQa.png}}
+\hfill
+\subfigure[Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}"
+as the shape factor $P'(Q)$. The parameters for the profile are the same than in Fig.\ \ref{fig:Pcs_Plate_Chains_RW_IQ}a]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/Pcs_Plate_Chains_RW_IQb.png}}
+\end{center}
+\caption{Scattering curves for the cross-section form factor "\texttt{Pcs:Plate+Chains(RW)}".}
+\label{fig:Pcs_Plate_Chains_RW_IQ}
+\end{figure}
 
 \clearpage
 \subsection{Pcs(Q) for cylindrical obj.} ~\\

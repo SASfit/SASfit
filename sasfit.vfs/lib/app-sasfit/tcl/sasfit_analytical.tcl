@@ -10574,12 +10574,12 @@ switch -exact $type {
                  1 {return "L_core: thickness of the disc core\n"}
                  2 {return "nagg: specific aggregation number\nnumber of chains per surface area"}
                  3 {return "V_brush: molecular volume of single chain in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of the block unit in the spherical core\n"}
+                 4 {return "eta_core: scattering length density of the core\n"}
                  5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
                  6 {return "eta_sol: scattering length density of solvent\n"}
                  7 {return "xsolv_core: amount of solvent in core\n"}
 		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
+                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg"}
                 10 {return "D: disc diameter\n"}
               }
            }
@@ -10594,7 +10594,7 @@ switch -exact $type {
                  6 {return "eta_sol: scattering length density of solvent\n"}
                  7 {return "xsolv_core: amount of solvent in core\n"}
 		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
+                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg"}
                 10 {return "D: disc diameter\n"}
               }
            }
@@ -10609,7 +10609,7 @@ switch -exact $type {
                  6 {return "eta_sol: scattering length density of solvent\n"}
                  7 {return "xsolv_core: amount of solvent in core\n"}
 		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
+                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg"}
                 10 {return "D: disc diameter\n"}
               }
            }
