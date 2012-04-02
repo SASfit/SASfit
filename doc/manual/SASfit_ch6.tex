@@ -324,56 +324,89 @@ $\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(
 \label{fig:BiLayerGaussianProfileIQ}
 \end{figure}
 
-\clearpage
-\subsubsection{Pcs(Q) for local planar objects with Gaussian chains attached to the  surface} ~\\
-\label{plugin:Pcs:GaussianChains}
 
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.962\textwidth,height=0.282\textwidth]{../images/form_factor/anisotropic/Plate+Chains(RW).png}
-\end{center}
-\caption{Sketch of a lipid bilayer with PEG molecules attached to them, which would be an example for local planar
-and objects with homogeneous core and Gaussian chains attached to the surface.}
-\label{fig:Plate+Chains(RW)}
-\end{figure}
-
-\noindent
-\textbf{Input parameters for \texttt{Pcs:Plate+Chains(RW)}:}
-\begin{description}
-    \item[\texttt{L\_core}] thickness of the core of the planar layer $L_\textrm{core}$
-    \item[\texttt{n\_agg}] specific aggregation number $n_\textrm{agg}$ in units of number of chains per surface area
-    \item[\texttt{V\_brush}]  molecular volume of single chain in corona $V_\textrm{brush}$ in nm$^3$ for $Q$ in nm$^{-1}$
-                              or in \AA$^3$ for $Q$ in \AA$^{-1}$
-    \item[\texttt{eta\_core}] scattering length density of the core $\eta_\textrm{core}$
-    \item[\texttt{eta\_brush}] scattering length density of a Gaussian chain in corona $\eta_\textrm{brush}$
-    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\textrm{solv}$
-    \item[\texttt{xsolv\_core}] amount of solvent in core $X_\textrm{xsolc,core}$
-    \item[\texttt{Rg}] gyration radius $R_G$ of polymer chains in the corona
-    \item[\texttt{d}] Value $d$ should be around 1.
-                      Non-penetration of the chains into the core is mimicked by $d\simeq 1$ for $L_\textrm{core} \gg R_G$
-\end{description}
-
-\noindent
-\textbf{Note}
-\begin{itemize}
-  \item This form factor is supposed to be combined with a shape factor for
-local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
-\end{itemize}
-
-\begin{figure}[htb]
-\begin{center}
-\subfigure[Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsBilayer}.]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/Pcs_Plate_Chains_RW_IQa.png}}
-\hfill
-\subfigure[Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}"
-as the shape factor $P'(Q)$. The parameters for the profile are the same than in Fig.\ \ref{fig:Pcs_Plate_Chains_RW_IQ}a]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/Pcs_Plate_Chains_RW_IQb.png}}
-\end{center}
-\caption{Scattering curves for the cross-section form factor "\texttt{Pcs:Plate+Chains(RW)}".}
-\label{fig:Pcs_Plate_Chains_RW_IQ}
-\end{figure}
+%
+%\clearpage
+%\subsubsection{Pcs(Q) for local planar objects with Gaussian chains attached to the  surface} ~\\
+%\label{plugin:Pcs:GaussianChains}
+%
+%\begin{figure}[htb]
+%\begin{center}
+%\includegraphics[width=0.962\textwidth,height=0.282\textwidth]{../images/form_factor/anisotropic/Plate+Chains(RW).png}
+%\end{center}
+%\caption{Sketch of a lipid bilayer with PEG molecules attached to them, which would be an example for local planar
+%and objects with homogeneous core and Gaussian chains attached to the surface.}
+%\label{fig:Plate+Chains(RW)}
+%\end{figure}
+%
+%This cross-section form factor belongs to a whole class of form factors developed from
+%Pedersen, Gerstenberg, and Svaneborg
+%\cite{PedersenJApplCryst2000,PedersenGerstenberg96,SvaneborgPedersen2002,Richter1997}
+%for self assembled block copolymers forming micelles of different shapes.
+%They have assumed that one unit is forming the core of the
+%micelles and the other the corona. The core is assumed to have a
+%homogeneous scattering length density, but may contain some amount
+%of solvent whereas the soluble blocks form a diffuse corona surrounding the core.
+%
+%The cross-section form factor of a micelle contains four different terms \cite{Pedersen2002}
+%\begin{align}
+%\begin{split}
+%P_\text{cs}(Q)
+% &=  \Bigg( r_\textrm{core}^2\,\left(\frac{\sin(QL/2)}{QL/2}\right)^2 + r_\textrm{brush} N_\text{agg} P_\text{brush}(Q)  \\
+% & + N_\text{agg}(N_\text{agg}-1)r_\text{brush}^2\,S_\textrm{bb}(Q) + 2N_\text{agg} r_\text{core}r_\text{brush}\,S_\text{bc}(Q)\Bigg)
+%\end{split}
+%\end{align}
+%where $N_\text{agg}$ is the total aggregation number of polymers on the surface, and
+%$r_\text{brush}=V_\text{brush}(\eta_\text{brush}-\eta_\text{solv})$
+%the excess scattering length of a single polymer chain in the corona
+%and $r_\text{core}=V_\text{core}(\eta_\text{core}-\eta_\text{solv})$
+%the total  excess scattering length of the core, respectively.
+%$V_\text{brush}$ is the volume of a a single polymer chain in the corona
+%and $V_\text{core}$ the total volume of the core. $\eta_\text{brush}$ and $\eta_\text{core}$ are the corresponding
+%scattering length densities and $\eta_\text{solv}$ is the scattering length
+%density of the surrounding solvent.
+%
+%The functions $P_\text{core}(Q)$, $P_\text{brush}(Q)$,
+%$S_\text{bc}(Q)$, and $S_\text{bb}(Q)$ are all 1 for $q=0$.
+%They are defined as
+%
+%\noindent
+%\textbf{Input parameters for \texttt{Pcs:Plate+Chains(RW)}:}
+%\begin{description}
+%    \item[\texttt{L\_core}] thickness of the core of the planar layer $L_\textrm{core}$
+%    \item[\texttt{n\_agg}] specific aggregation number $n_\textrm{agg}$ in units of number of chains per surface area
+%    \item[\texttt{V\_brush}]  molecular volume of single chain in corona $V_\textrm{brush}$ in nm$^3$ for $Q$ in nm$^{-1}$
+%                              or in \AA$^3$ for $Q$ in \AA$^{-1}$
+%    \item[\texttt{eta\_core}] scattering length density of the core $\eta_\textrm{core}$
+%    \item[\texttt{eta\_brush}] scattering length density of a Gaussian chain in corona $\eta_\textrm{brush}$
+%    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\textrm{solv}$
+%    \item[\texttt{xsolv\_core}] amount of solvent in core $X_\textrm{xsolc,core}$
+%    \item[\texttt{Rg}] gyration radius $R_G$ of polymer chains in the corona
+%    \item[\texttt{d}] Value $d$ should be around 1.
+%                      Non-penetration of the chains into the core is mimicked by $d\simeq 1$ for $L_\textrm{core} \gg R_G$
+%\end{description}
+%
+%\noindent
+%\textbf{Note}
+%\begin{itemize}
+%  \item This form factor is supposed to be combined with a shape factor for
+%local planar objects which are implemented as structure  plugins
+%under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+%obj.}".
+%\end{itemize}
+%
+%\begin{figure}[htb]
+%\begin{center}
+%\subfigure[Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsBilayer}.]{
+%\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/Pcs_Plate_Chains_RW_IQa.png}}
+%\hfill
+%\subfigure[Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}"
+%as the shape factor $P'(Q)$. The parameters for the profile are the same than in Fig.\ \ref{fig:Pcs_Plate_Chains_RW_IQ}a]{
+%\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/Pcs_Plate_Chains_RW_IQb.png}}
+%\end{center}
+%\caption{Scattering curves for the cross-section form factor "\texttt{Pcs:Plate+Chains(RW)}".}
+%\label{fig:Pcs_Plate_Chains_RW_IQ}
+%\end{figure}
 
 \clearpage
 \subsection{Pcs(Q) for cylindrical obj.} ~\\
@@ -383,6 +416,22 @@ The cross-section form factors with cylindrical geometry are valid
 when the cross-section dimension is much smaller the segment length
 or Kuhn length of the local cylindrical structure.
 
+\clearpage
+\subsubsection{Pcs(Q) for homogeneous cross-section of a cylinder} ~\\
+\label{plugin:Pcs:homogeneousXS_cyl}
+
+\begin{align}
+P_\textrm{cs}(Q) = \left( \frac{2 \mathrm{J}_1(QR)}{QR} \right)^2
+\end{align}
+
+\subsubsection{Pcs(Q) for cross-section of a cylindrical shell with elliptical cross section} ~\\
+\label{plugin:Pcs:CylEllSh}
+
+\begin{align}
+P_\textrm{cs}(Q) = \int_0^{\pi/2} \left( \frac{2 \mathrm{J}_1(Qr(R,\epsilon,\phi))}{Qr(R,\epsilon,\phi)} \right)^2 \, \mathrm{d}\phi
+\end{align}
+where $r(R,\epsilon,\phi)=R\sqrt{\sin^2\phi+\epsilon^2\cos^2\phi}$
+\clearpage
 \subsection{P'(Q) for local planar obj.} ~\\
 \label{plugin:Pprime4planar}
 
@@ -586,12 +635,12 @@ sphere with a Gaussian function.
 with
 \begin{subequations}
 \begin{align}
-\eta_\text{HS}(\mathbf{r}) &=
+\eta_\text{HS}\left(\abs{\mathbf{r}}\right) &=
 \begin{cases}
 \left(\eta_\text{sph}-\eta_\text{sol}\right) & \mbox{for~} \abs{\mathbf{r}}\leq R \\
 0 & \mbox{for~} \abs{\mathbf{r}}>R
 \end{cases} \\
-\eta_\text{Gauss}(r) &= \frac{1}{2 \sqrt{2} \pi^{3/2}
+\eta_\text{Gauss}\left(\abs{\mathbf{r}}\right) &= \frac{1}{2 \sqrt{2} \pi^{3/2}
 \abs{\sigma}^3} \exp\left[ -\frac{\abs{\mathbf{r}}^2}{2
 \abs{\sigma}^2}\right]
 \end{align}
@@ -622,7 +671,7 @@ the radial profile of the fuzzy interface by the inverse Fourier
 transformation of the scattering amplitude
 \begin{align}
 \eta_\text{FuzzySph}(r) &= \int_0^{\infty}
-\frac{1}{\left(2\pi\right)^3} F(Q) 4\pi Q^2 dQ
+\frac{1}{\left(2\pi\right)^3} F(Q) 4\pi Q^2 \frac{\sin\left(Qr\right)}{Qr} \mathrm{d}Q
 \end{align}
 \begin{multline}
 \eta_\text{FuzzySph}(r) = \left(\eta_\text{sph}-\eta_\text{sol}\right) \\
@@ -709,6 +758,81 @@ $\eta_\text{sol}=1$, and several widths of the "fuzzy" shell}
 \label{fig:I_FuzzySphere}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section{CoreShellMicrogel}
+\label{sect:CoreShellMicrogel} ~\\
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[radial profile of a sphere with a parabolic interface]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/CoreShellMicrogel1.png}}
+\hfill
+\subfigure[radial profile of a spherical shell with parabolic interfaces]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/CoreShellMicrogel2.png}}
+\end{center}
+\caption{.....}
+\label{fig:profile:CoreShellMicrogel}
+\end{figure}
+
+
+This model can be used to calculate the scattering from spherical
+particles with a parabolic "fuzzy" interface \cite{Berndt2005,Berndt2006,Berndt2006a}.
+The radial profile is given by
+\begin{align}
+\rho(r,R,\sigma) &=
+\begin{cases}
+1 & \mbox{for } r\leq R-\sigma \\
+1-\frac{1}{2}\frac{\left((r-R)+\sigma\right)^2}{\sigma^2} & \mbox{for } R-\sigma < r \leq R \\
+\frac{1}{2}\frac{\left((R-r)+\sigma\right)^2}{\sigma^2} & \mbox{for } R< r\leq R+\sigma \\
+0 & \mbox{for } r > \leq R+\sigma
+\end{cases}
+\label{eq:CoreShellMicrogelProfile}
+\end{align}
+where $R=W+\sigma$. For such a radial profile the Fourier-transformation can be calculated analytically as
+\begin{multline}
+F(Q,R,\sigma) = \mathcal{F}[\rho(r,R,\sigma)] = \\
+4 \pi \Bigg(
+        \left(\frac{R}{\sigma^2}+\frac{1}{\sigma}\right) \frac{\cos (q(R+\sigma))}{q^4}
+    +   \left(\frac{R}{\sigma^2}-\frac{1}{\sigma}\right) \frac{\cos (q(R-\sigma))}{q^4} \\
+    -   3 \frac{\sin(q(R+\sigma))}{q^5 \sigma^2}
+    -   3 \frac{\sin(q(R-\sigma))}{q^5 \sigma^2}
+    -   6  \frac{\sin(qR)}{q^5 \sigma^2}
+    -   2 R \frac{\cos(qR)}{q^4 \sigma^2}
+\Bigg)
+\end{multline}
+The radial scattering length density profile of a fuzzy core
+shell like in Fig.\ \ref{fig:profile:CoreShellMicrogel}b can be obtained by
+\begin{multline}
+\eta_{core,sh}(r,W_\textrm{core},\sigma_\textrm{core},D,\sigma_\textrm{sh,in},W_\textrm{sh},\sigma_\textrm{sh,out}) =
+    \eta_\textrm{sol}
++ (\eta_\textrm{shell}-\eta_\textrm{sol}) \rho(r,R_\textrm{out},\sigma_\textrm{out}) \\
++ (\eta_\textrm{shell}-\eta_\textrm{sol}) \rho(r,R_\textrm{sh,in},\sigma_\textrm{sh,in})
++ (\eta_\textrm{core} -\eta_\textrm{sol}) \rho(r,R_\textrm{core},\sigma_\textrm{core})
+\end{multline}
+with
+\begin{subequations}
+\begin{align}
+    R_\textrm{core} &= W_\textrm{core}+\sigma_\textrm{core} \\
+    R_\textrm{sh,in}&= R_\textrm{core}+D \\
+    R_\textrm{out}  &= R_\textrm{sh,in}+\sigma_\textrm{sh,in}+W_\textrm{sh}+\sigma_\textrm{sh,out}
+\end{align}
+\end{subequations}
+In the same way also the scattering amplitude $F_{core,sh}(Q)$ and the scattering intensity
+$I_{core,sh}(Q)=\abs{F_{core,sh}(Q)}^2$ can be calculated
+\begin{subequations}
+\begin{multline}
+F_\textrm{core,sh}(r,W_\textrm{core},\sigma_\textrm{core},D,\sigma_\textrm{sh,in},W_\textrm{sh},\sigma_\textrm{sh,out}) =
+  (\eta_\textrm{shell}-\eta_\textrm{sol}) F(r,R_\textrm{out},\sigma_\textrm{out}) \\
++ (\eta_\textrm{shell}-\eta_\textrm{sol}) F(r,R_\textrm{sh,in},\sigma_\textrm{sh,in})
++ (\eta_\textrm{core} -\eta_\textrm{sol}) F(r,R_\textrm{core},\sigma_\textrm{core})
+\end{multline}
+\begin{align}
+I_\textrm{core,sh}(r,W_\textrm{core},\sigma_\textrm{core},D,\sigma_\textrm{sh,in},W_\textrm{sh},\sigma_\textrm{sh,out}) &=
+\abs{F_\textrm{core,sh}(r,\cdots)}^2
+\end{align}
+\end{subequations}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage

@@ -1,5 +1,8 @@
 0.93.4, 2011-??-??
+- adding plugin with a series of form factor for strongly anisotropic structures with local planar and local cylindrical shapes
 - adding a new plugin form factor for a "fuzzy sphere"
+- adding a second form factor of a spherical shell structure with a fuzzy interface called 
+  CoreShellMicrogel
 - new section in the manual about absolute scale, molecular weight, etc.
 - for the form factors "flat cylinder" "long cylinder", 
   and "Porod cylinder" the limiting case q==0 is now treated properly
