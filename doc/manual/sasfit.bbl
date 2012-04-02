@@ -34,6 +34,29 @@ H.~Benoit.
   distribution of the light scattered by gaussian coils.
 \newblock {\em J. Polym. Sci.}, 11:507--510, 1953.
 
+\bibitem{Berndt2006}
+Ingo Berndt, Jan~Skov Pedersen, Peter Lindner, and Walter Richtering.
+\newblock Influence of shell thickness and cross-link density on the structure
+  of temperature-sensitive
+  poly-n-isopropylacrylamide−poly-n-isopropylmethacrylamide core−shell
+  microgels investigated by small-angle neutron scattering.
+\newblock {\em Langmuir}, 22(1):459--468, 2006.
+\newblock PMID: 16378460.
+
+\bibitem{Berndt2005}
+Ingo Berndt, Jan~Skov Pedersen, and Walter Richtering.
+\newblock Structure of multiresponsive “intelligent�? core−shell
+  microgels.
+\newblock {\em Journal of the American Chemical Society}, 127(26):9372--9373,
+  2005.
+\newblock PMID: 15984856.
+
+\bibitem{Berndt2006a}
+Ingo Berndt, Jan~Skov Pedersen, and Walter Richtering.
+\newblock Temperature-sensitive core–shell microgel particles with dense
+  shell.
+\newblock {\em Angewandte Chemie}, 118(11):1769--1773, 2006.
+
 \bibitem{Blaurock1982}
 A.~E. Blaurock.
 \newblock Evidence of bilayer structure and of membrane interactions from x-ray
@@ -371,11 +394,6 @@ Georg Pabst, Michael Rappolt, Heinz Amenitsch, and Peter Laggner.
   hydration: Full \textit{q} -range fitting with high quality x-ray data.
 \newblock {\em Phys. Rev. E}, 62:4000--4009, Sep 2000.
 
-\bibitem{PedersenGerstenberg96}
-J.~S. Pedersen and M.~C. Gerstenberg.
-\newblock Scattering form factor of block copolymer micelles.
-\newblock {\em Macromolecules}, 29(4):1363--1365, 1996.
-
 \bibitem{Pedersen1990}
 J.~S. Pedersen, D.~Posselt, and K.~Mortensen.
 \newblock Analytical treatment of the resolution function for small-angle
@@ -394,11 +412,17 @@ Jan~Skov Pedersen.
   Scattering Data from Colloids and Polymer Systems, pages 391--420.
 \newblock Elsevier Science, 2002.
 
+\bibitem{PedersenGerstenberg96}
+Jan~Skov Pedersen and Michael~C. Gerstenberg.
+\newblock Scattering form factor of block copolymer micelles.
+\newblock {\em Macromolecules}, 29(4):1363--1365, 1996.
+
 \bibitem{PedersenJApplCryst2000}
 J.S. Pedersen.
 \newblock Form factors of block copolymer micelles with spherical, ellipsoidal
   and cylindrical cores.
-\newblock {\em J. Appl. Cryst.}, 33:637--640, 2000.
+\newblock {\em Journal of Applied Crystallography}, 33(3 Part 1):637--640, Jun
+  2000.
 
 \bibitem{Pedersen1994}
 .S. Pedersen.
@@ -426,7 +450,8 @@ G.~Porod.
 
 \bibitem{scatt188}
 C.~V. Raman.
-\newblock {\em Phil. Mag.}, 47:941, 1924.
+\newblock Lxi. on the mean distance between neighbouring molecules in a fluid.
+\newblock {\em Phil. Mag.}, 47:671--679, 1924.
 
 \bibitem{Regnaut1989}
 C.~Regnaut and J.~C. Ravey.
@@ -504,10 +529,10 @@ Markus Stieger, Jan~Skov Pedersen, Peter Lindner, and Walter Richtering.
 \newblock PMID: 15301516.
 
 \bibitem{SvaneborgPedersen2002}
-C.~Svaneborg and J.S. Pedersen.
+Carsten Svaneborg and Jan~Skov Pedersen.
 \newblock Form factors of block copolymer micelles with excluded-volume
   interactions of the corona chains determined by monte carlo simulations.
-\newblock {\em Macromolecules}, 35:1028--1037, 2002.
+\newblock {\em Macromolecules}, 35(3):1028--1037, 2002.
 
 \bibitem{TeubnerStrey87}
 M.~Teubner and R.~Strey.

@@ -7,9 +7,11 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(2)
+SASFIT_PLUGIN_EXP_BEGIN(4)
 SASFIT_PLUGIN_EXP_ADD( ff_fuzzysphere )
 SASFIT_PLUGIN_EXP_ADD( ff_radial_profile_of_fuzzysphere )
+SASFIT_PLUGIN_EXP_ADD( ff_coreshellmicrogel )
+SASFIT_PLUGIN_EXP_ADD( ff_radial_profile_of_coreshellmicrogel )
 
 SASFIT_PLUGIN_EXP_END
 
