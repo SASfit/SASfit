@@ -14,6 +14,12 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_radial_profile_of_fuzzysphere.c
 	sasfit_ff_coreshellmicrogel.c
 	sasfit_ff_radial_profile_of_coreshellmicrogel.c
+	sasfit_ff_ExpShell.c
+	sasfit_ff_radial_profile_of_ExpShell.c
+	sasfit_ff_LinShell.c
+	sasfit_ff_radial_profile_of_LinShell.c
+	sasfit_ff_LinShell2.c
+	sasfit_ff_radial_profile_of_LinShell2.c
 	interface.c
 )
 

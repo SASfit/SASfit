@@ -87,7 +87,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_fuzzysphere_v(scalar q, sasfit_param 
 
 /* ################ start ff_radial_profile_of_fuzzysphere ################ */
 /** 
- * \defgroup ff_radial_profile_of_fuzzysphere Radial Profile of FuzzySphere
+ * \defgroup ff_radial_profile_of_fuzzysphere radial profile of FuzzySphere
  * \ingroup ff_plugins_spheres_shells
  *
  * \brief \<some brief description of Radial Profile from a spherical particles with a "fuzzy" interface\>
@@ -134,21 +134,6 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere_f(scala
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_radial_profile_of_fuzzysphere ################ */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ################ start ff_coreshellmicrogel ################ */
 /** 
  * \defgroup ff_coreshellmicrogel CoreShellMicrogel
@@ -168,14 +153,14 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere_v(scala
  *       <td>\b sigma_core</td>
  *       <td>interface half width of the core</td>
  *      </tr><tr>
- *       <td>\b W_shell</td>
+ *       <td>\b W_sh</td>
  *       <td>width of center parts of shell  with homogeneous scattering length density</td>
  *      </tr><tr>
  *       <td>\b sigma_sh,in</td>
  *       <td>half width of the inner interface of shell</td>
  *      </tr><tr>
  *       <td>\b D</td>
- *       <td>scattering length density of sphere</td>
+ *       <td>distance between interface of core and in interface of shell</td>
  *      </tr><tr>
  *       <td>\b sigma_out</td>
  *       <td>half width of the outer surface profile</td>
@@ -215,7 +200,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_coreshellmicrogel_v(scalar q, sasfit_
 
 /* ################ start ff_radial_profile_of_coreshellmicrogel ################ */
 /** 
- * \defgroup ff_radial_profile_of_coreshellmicrogel Radial Profile of CoreShellMicrogel
+ * \defgroup ff_radial_profile_of_coreshellmicrogel radial profile of CoreShellMicrogel
  * \ingroup ff_plugins_spheres_shells
  *
  * \brief \<some brief description of Radial Profile from a spherical particles with a "fuzzy" interface\>
@@ -239,7 +224,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_coreshellmicrogel_v(scalar q, sasfit_
  *       <td>half width of the inner interface of shell</td>
  *      </tr><tr>
  *       <td>\b D</td>
- *       <td>scattering length density of sphere</td>
+ *       <td>distance between interface of core and in interface of shell</td>
  *      </tr><tr>
  *       <td>\b sigma_out</td>
  *       <td>half width of the outer surface profile</td>
@@ -280,3 +265,362 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_coreshellmicrogel_v
 
 #endif // this file
 
+
+
+/* ################ start ff_expshell ################ */
+/** 
+ * \defgroup ff_expshell ExpShell
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * \brief ExpShell is a core shell form factor with an expotential dependent contrast profile of the shell
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b dR</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>scattering length density of non-swollen shell</td>
+ *      </tr><tr>
+ *       <td>\b x_in_solv</td>
+ *       <td>amount of solvent at a distance r=R_core from the center</td>
+ *      </tr><tr>
+ *       <td>\b x_out_solv</td>
+ *       <td>amount of solvent at a distance r=R_core+dR from the center</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>factor for exponentail decay of scattering length density in shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_expshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_expshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_expshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_expshell ################ */
+
+
+/* ################ start ff_radial_profile_of_expshell ################ */
+/** 
+ * \defgroup ff_radial_profile_of_expshell radial profile of ExpShell
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * \brief radial profile of the from factor ExpShell, which is a core shell form factor with an expotential dependent contrast profile of the shell
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b dR</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>scattering length density of non-swollen shell</td>
+ *      </tr><tr>
+ *       <td>\b x_in_solv</td>
+ *       <td>amount of solvent at a distance r=R_core from the center</td>
+ *      </tr><tr>
+ *       <td>\b x_out_solv</td>
+ *       <td>amount of solvent at a distance r=R_core+dR from the center</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>factor for exponentail decay of scattering length density in shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_radial_profile_of_expshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_radial_profile_of_expshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_radial_profile_of_expshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_radial_profile_of_expshell ################ */
+
+
+/* ################ start ff_linshell ################ */
+/** 
+ * \defgroup ff_linshell LinShell
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * \brief LinShell is a core shell form factor with a linear dependent contrast profile of the shell
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b dR</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>scattering length density of non-swollen shell</td>
+ *      </tr><tr>
+ *       <td>\b x_in_solv</td>
+ *       <td>amount of solvent at a distance r=R_core from the center</td>
+ *      </tr><tr>
+ *       <td>\b x_out_solv</td>
+ *       <td>amount of solvent at a distance r=R_core+dR from the center</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_linshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_linshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_linshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_linshell ################ */
+
+
+/* ################ start ff_radial_profile_of_linshell ################ */
+/** 
+ * \defgroup ff_radial_profile_of_linshell radial profile of LinShell
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * \brief radial profile of LinShell which is a core shell form factor with a linear dependent contrast profile of the shell
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b dR</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>scattering length density of non-swollen shell</td>
+ *      </tr><tr>
+ *       <td>\b x_in_solv</td>
+ *       <td>amount of solvent at a distance r=R_core from the center</td>
+ *      </tr><tr>
+ *       <td>\b x_out_solv</td>
+ *       <td>amount of solvent at a distance r=R_core+dR from the center</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_radial_profile_of_linshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_radial_profile_of_linshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_radial_profile_of_linshell
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_radial_profile_of_linshell ################ */
+
+
+/* ################ start ff_linshell2 ################ */
+/** 
+ * \defgroup ff_linshell2 LinShell2
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * \brief LinShell2 is a core shell form factor with a linear dependent contrast profile of the shell
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_tot</td>
+ *       <td>overall radius</td>
+ *      </tr><tr>
+ *       <td>\b dR</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>scattering length density of non-swollen shell</td>
+ *      </tr><tr>
+ *       <td>\b x_in_solv</td>
+ *       <td>amount of solvent at a distance r=R_core from the center</td>
+ *      </tr><tr>
+ *       <td>\b x_out_solv</td>
+ *       <td>amount of solvent at a distance r=R_core+dR from the center</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_linshell2
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_linshell2
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_linshell2
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_linshell2 ################ */
+
+/* ################ start ff_radial_profile_of_linshell2 ################ */
+/** 
+ * \defgroup ff_radial_profile_of_linshell2 radial profile of LinShell2
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * \brief radial radial profile of LinShell2 which is a core shell form factor with a linear dependent contrast profile of the shell
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_tot</td>
+ *       <td>overall radius</td>
+ *      </tr><tr>
+ *       <td>\b dR</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>scattering length density of non-swollen shell</td>
+ *      </tr><tr>
+ *       <td>\b x_in_solv</td>
+ *       <td>amount of solvent at a distance r=R_core from the center</td>
+ *      </tr><tr>
+ *       <td>\b x_out_solv</td>
+ *       <td>amount of solvent at a distance r=R_core+dR from the center</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_radial_profile_of_linshell2
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_radial_profile_of_linshell2
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_radial_profile_of_linshell2
+ *
+ * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ */
+sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_radial_profile_of_linshell2 ################ */
