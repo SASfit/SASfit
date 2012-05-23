@@ -167,19 +167,31 @@ macro(sasfit_cmake_plugin)
 	set(PRJ_SOURCE ${SOURCE_${PRJ_NAME}})
 	set(LIBRARY_OUTPUT_PATH ${SRC_DIR}/lib)
 
+	add_library(${PRJ_NAME} MODULE ${PRJ_SOURCE})
+
 	find_package(sasfit_common REQUIRED)
-	find_package(GSL REQUIRED)
 	find_package(f2c REQUIRED)
 	include_directories(
 		${sasfit_common_INCLUDE_DIRS}
-		${GSL_INCLUDE_DIRS}
 		${f2c_INCLUDE_DIRS}
 	)
+	foreach(LIB_EXT ${LIBS_EXT})
+		find_package(${LIB_EXT} REQUIRED)
+		if(${LIB_EXT}_INCLUDE_DIR)
+			include_directories(${${LIB_EXT}_INCLUDE_DIR})
+		endif(${LIB_EXT}_INCLUDE_DIR)
+		if(${LIB_EXT}_INCLUDE_DIRS)
+			include_directories(${${LIB_EXT}_INCLUDE_DIRS})
+		endif(${LIB_EXT}_INCLUDE_DIRS)
+		# add library to link list
+		if(${LIB_EXT}_STATIC_LIBRARIES)
+			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_STATIC_LIBRARIES})
+		else(${LIB_EXT}_STATIC_LIBRARIES)
+			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_LIBRARIES})
+		endif(${LIB_EXT}_STATIC_LIBRARIES)
+	endforeach(LIB_EXT)
 
-	add_library(${PRJ_NAME} MODULE ${PRJ_SOURCE})
-
-	# adjust the linked libs according to find_package() statements above
-	target_link_libraries(${PRJ_NAME} ${GSL_STATIC_LIBRARIES})
+	# set some compiler switches
 	set_target_properties(${PRJ_NAME} PROPERTIES COMPILE_DEFINITIONS MAKE_SASFIT_PLUGIN)
 	set(COMPILE_FLAGS)
 	if(UNIX)
