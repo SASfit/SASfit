@@ -658,7 +658,7 @@ project(\${PRJ_NAME} C)
 set(LIB_IS_PLUGIN true)
 
 set(SRC_DIR \${\${PRJ_NAME}_SOURCE_DIR})
-set(CMAKE_MODULE_PATH \${SRC_DIR}/\${REL_CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH \"\${CMAKE_MODULE_PATH};\${SRC_DIR}/\${MODULE_PATH}\")
 
 include(SasfitCmakeUtils)
 sasfit_cmake_plugin()"
