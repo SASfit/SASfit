@@ -645,9 +645,8 @@ set(SOURCE_\${PRJ_NAME}
 $func_files\tinterface.c
 )
 
-# path to 'Find*.cmake' files in sasfit package, 
-# relative to the location of this file
-set(REL_CMAKE_MODULE_PATH ../../cmake)
+# add plugin path for finding 'Find*.cmake' files for new <LIBS_EXT>
+set(REL_CMAKE_MODULE_PATH .)
 
 #                                                       #
 ### no adjustments required below this line (usually) ###
