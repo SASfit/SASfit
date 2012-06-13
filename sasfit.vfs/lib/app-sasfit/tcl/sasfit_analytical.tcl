@@ -3091,17 +3091,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "Simon1"             { set actualPar(FF,l1,label) "Nagg ="
-                          set actualPar(FF,l2,label) "Rg ="
-                          set actualPar(FF,l3,label) "d ="
-                          set actualPar(FF,l4,label) "rho_solv =" 
-                          set actualPar(FF,l5,label) "rho_core ="
-                          set actualPar(FF,l6,label) "b_A_h ="
-                          set actualPar(FF,l7,label) "V_A_h ="
-                          set actualPar(FF,l8,label) "b_A_l ="
-                          set actualPar(FF,l9,label) "V_A_l"
-                          set actualPar(FF,l10,label) "rho_B"
-                        }
    "DoubleShell_withSD" { set actualPar(FF,l1,label) "R ="
                           set actualPar(FF,l2,label) "s ="
                           set actualPar(FF,l3,label) "eta_c ="
@@ -6554,17 +6543,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l8,label) "c2 ="
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Simon1"             { set actualAnalytPar(FF,l1,label) "Nagg ="
-				  set actualAnalytPar(FF,l2,label) "Rg ="
-				  set actualAnalytPar(FF,l3,label) "d ="
-				  set actualAnalytPar(FF,l4,label) "rho_solv =" 
-				  set actualAnalytPar(FF,l5,label) "rho_core ="
-				  set actualAnalytPar(FF,l6,label) "b_A_h ="
-				  set actualAnalytPar(FF,l7,label) "V_A_h ="
-				  set actualAnalytPar(FF,l8,label) "b_A_l ="
-				  set actualAnalytPar(FF,l9,label) "V_A_l"
-				  set actualAnalytPar(FF,l10,label) "rho_B"
 				}
 	   "DoubleShell_withSD" { set actualAnalytPar(FF,l1,label) "R ="
 				  set actualAnalytPar(FF,l2,label) "s ="
@@ -12457,7 +12435,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 			{CopolymerMicelleEll Monodisperse} \ 
 			{CopolymerMicelleCyl Monodisperse} \
 			Andrea1 \
-			Simon1 \
 			{A(B) Monodisperse} \ 
 			{B(B) Monodisperse} \
 			{P39 Monodisperse} \

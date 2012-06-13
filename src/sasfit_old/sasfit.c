@@ -70,6 +70,53 @@
 #define n_percent 0.1
 #define Nint 20
 
+typedef enum {
+	LogNorm,
+	BiLogNorm,
+	WEIBULL,
+	GAUSSIAN,
+	SchultzZimm,
+	Maxwell,
+	GEX,
+	GEV,
+	Uniform,
+	Triangular,
+	fractalSD,
+	Beta,
+	gammaSD,
+	Delta
+} SizeDistr;
+
+int select_str(char *str)
+{
+	SizeDistr sd;
+	if ((strcmp(str,"LogNorm")==0)         || 
+		(strcmp(str,"d LogNorm / d a1")==0) || 
+		(strcmp(str,"d LogNorm / d a2")==0) ||
+		(strcmp(str,"d LogNorm / d a3")==0) ||
+		(strcmp(str,"d LogNorm / d a4")==0) 
+		) 
+	{
+			return LogNorm;
+	} else if ((strcmp(str,"BiLogNorm")==0)         || 
+		(strcmp(str,"d BiLogNorm / d a1")==0) || 
+		(strcmp(str,"d BiLogNorm / d a2")==0) ||
+		(strcmp(str,"d BiLogNorm / d a3")==0) ||
+		(strcmp(str,"d BiLogNorm / d a4")==0) 
+		) 
+	{
+			return BiLogNorm;
+	} else if ((strcmp(str,"Schultz-Zimm")==0)         || 
+		(strcmp(str,"d Schultz-Zimm / d a1")==0) || 
+		(strcmp(str,"d Schultz-Zimm / d a2")==0) ||
+		(strcmp(str,"d Schultz-Zimm / d a3")==0) ||
+		(strcmp(str,"d Schultz-Zimm / d a4")==0) 
+		) 
+	{
+			return BiLogNorm;
+	}
+}
+
 void which_len(Tcl_Interp *interp,
 	       scalar len,
                scalar l[],
@@ -104,6 +151,7 @@ void find_integration_range(Tcl_Interp *interp,
                             int   *n_intervals,
                             float *a,
                             const char  *SD_typestr,
+							int moment,
                             bool  *error)
 {
 	double R_n, R_50,R_0,R_max, tmp;
@@ -129,9 +177,9 @@ void find_integration_range(Tcl_Interp *interp,
 
 	if ( (strcmp(SD_typestr,"LogNorm")          == 0) ) {
 	   a4 = fabs(a4);
-	   R_0  = a4*exp(-a2*a2*(a3-6.0));
-	   R_n  = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
-	   R_50 = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/50.0)));
+	   R_0  = a4*exp(-a2*a2*(a3-moment));
+	   R_n  = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
+	   R_50 = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/50.0)));
 //sasfit_out("find_integration_range, a0: %lg, a1: %lg, a2: %lg, a3: %lg, a4: %lg\n",a[0],a[1],a[2],a[3],a[4]);
 //sasfit_out("find_integration_range, R_0: %lg, R_n: %lg, R_50: %lg\n",R_0,R_n,R_50);
 	   if (SASFIT_EQUAL(R_50, 0.0)) {
@@ -169,9 +217,9 @@ void find_integration_range(Tcl_Interp *interp,
 	     (strcmp(SD_typestr,"d BiLogNorm / d a3") == 0) ||
 	     (strcmp(SD_typestr,"d BiLogNorm / d a4") == 0)   ) {
 	   a4 = fabs(a4);
-	   R_0  = a4*exp(-a2*a2*(a3-6.0));
-	   R_n  = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
-	   R_50 = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/50.0)));
+	   R_0  = a4*exp(-a2*a2*(a3-moment));
+	   R_n  = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
+	   R_50 = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/50.0)));
 	   if (SASFIT_EQUAL(R_50, 0.0)) {
 		  sasfit_err("#find_integration_range: can't guess good integration interval: >%s(%lg,%lg,%lg,%lg)<\n",SD_typestr,a1,a2,a3,a4);
 	      sasfit_out("find_integration_range: ");
@@ -209,9 +257,9 @@ void find_integration_range(Tcl_Interp *interp,
 	   R2start = *Rstart;
 	   R2end = *Rend;
 
-	   R_0  = a4*exp(-a2*a2*(a3-6.0));
-	   R_n  = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
-	   R_50 = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/50.0)));
+	   R_0  = a4*exp(-a2*a2*(a3-moment));
+	   R_n  = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
+	   R_50 = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/50.0)));
 	   if (SASFIT_EQUAL(R_50, 0.0)) {
 		  sasfit_err("#find_integration_range: can't guess good integration interval: >%s(%lg,%lg,%lg,%lg)<\n",SD_typestr,a1,a2,a3,a4);
 	      sasfit_out("find_integration_range: ");
@@ -258,8 +306,8 @@ void find_integration_range(Tcl_Interp *interp,
 	   n = 1;
 	   tmp = 0.0;
 	   if (a3 > 0.0)  tmp=a3;
-	   while ( (pow((n*R_n+tmp),6.0) * sasfit_sd_Maxwell(n*R_n+tmp, &subParam) ) >
-		   (pow(R_max,6.0) * n_percent / 100.0
+	   while ( (pow((n*R_n+tmp),moment) * sasfit_sd_Maxwell(n*R_n+tmp, &subParam) ) >
+		   (pow(R_max,moment) * n_percent / 100.0
 				   * sasfit_sd_Maxwell(R_max, &subParam)) ) {
 	      n++;
 	   }
@@ -272,7 +320,7 @@ void find_integration_range(Tcl_Interp *interp,
 		    (strcmp(SD_typestr,"d Schultz-Zimm / d a2") == 0) ||
 		    (strcmp(SD_typestr,"d Schultz-Zimm / d a3") == 0)   ) {
 	   if (a3 > 1.0) {
-	      R_n = (a3+5.0)/a3 * a2;
+	      R_n = (a3-1+moment)/a3 * a2;
 	      R_max =  R_n;
 	   } else {
 	      R_n = a2;
@@ -280,8 +328,8 @@ void find_integration_range(Tcl_Interp *interp,
 	   }
 	   R_n = R_max;
 	   n = 1;
-	   while ((pow(n*R_n,6.0)*sasfit_sd_Schultz_Zimm(n*R_n, &subParam)) >
-		  (n_percent / 100.0 * pow(R_max,6.0)
+	   while ((pow(n*R_n,moment)*sasfit_sd_Schultz_Zimm(n*R_n, &subParam)) >
+		  (n_percent / 100.0 * pow(R_max,moment)
 				     * sasfit_sd_Schultz_Zimm(R_max, &subParam)) ) {
 	      n++;
 	   }
@@ -299,13 +347,13 @@ void find_integration_range(Tcl_Interp *interp,
 		    (strcmp(SD_typestr,"d Weibull / d a2") == 0) ||
 		    (strcmp(SD_typestr,"d Weibull / d a3") == 0)   ) {
 	   if (a3 > 0.0) {
-	      R_max = fabs(a2*pow((a3+5.0)/a3,1.0/a3));
+	      R_max = fabs(a2*pow((a3-1+moment)/a3,1.0/a3));
 	      R_n = R_max;
 	      n = 1;
 	      tmp = 0.0;
 	      if (a4 > 0.0) tmp = a4;
-	      while ( (pow(n*R_n+tmp,6) * sasfit_sd_Weibull(n*R_n+tmp, &subParam)) >
-		      (pow(R_max+a4,6)  * n_percent / 100.0
+	      while ( (pow(n*R_n+tmp,moment) * sasfit_sd_Weibull(n*R_n+tmp, &subParam)) >
+		      (pow(R_max+a4,moment)  * n_percent / 100.0
 				      * sasfit_sd_Weibull(R_max+a4, &subParam)) ) {
 		 n++;
 	      }
@@ -334,8 +382,8 @@ void find_integration_range(Tcl_Interp *interp,
 	   n = 1;
 	   tmp = 1.0;
 	   if (a3 > 0.0)  tmp=R_max;
-	   while ( (pow(n*R_n+tmp,6.0) * sasfit_sd_GaussDistribution(n*R_n+tmp, &subParam) ) >
-		   (pow(R_max,6.0)     * n_percent / 100.0
+	   while ( (pow(n*R_n+tmp,moment) * sasfit_sd_GaussDistribution(n*R_n+tmp, &subParam) ) >
+		   (pow(R_max,moment)     * n_percent / 100.0
 				       * sasfit_sd_GaussDistribution(R_max, &subParam)) ) {
 	      n++;
 	   }
@@ -350,7 +398,7 @@ void find_integration_range(Tcl_Interp *interp,
 		    (strcmp(SD_typestr,"d GEX / d a3") == 0) ||
 		    (strcmp(SD_typestr,"d GEX / d a4") == 0) ||
 		    (strcmp(SD_typestr,"d GEX / d a5") == 0)   ) {
-	   R_max = exp((log(a2)*a3+log((1+a4+6)/a3))/a3)+a5;
+	   R_max = exp((log(a2)*a3+log((1+a4+moment)/a3))/a3)+a5;
 	   R_n = R_max;
 	   n = 1;
 	   tmp = 1.0;
@@ -362,8 +410,8 @@ void find_integration_range(Tcl_Interp *interp,
 		   n = 10;
 		   *n_intervals = Nint * n;
 	   } else {
-			while ( ((pow(n*R_n+tmp,6.0) * sasfit_sd_GEX(n*R_n+tmp, &subParam) ) >
-					 (pow(R_max,6.0)     * n_percent / 100.0
+			while ( ((pow(n*R_n+tmp,moment) * sasfit_sd_GEX(n*R_n+tmp, &subParam) ) >
+					 (pow(R_max,moment)     * n_percent / 100.0
 							     * sasfit_sd_GEX(R_max, &subParam)) ) && (n < Nint-1)) {
 				  n++;
 			}
@@ -389,8 +437,8 @@ void find_integration_range(Tcl_Interp *interp,
 	   n = 1;
 	   tmp = 1.0;
 	   if (R_max > 0.0)  tmp=R_max;
-	   while ( ((pow(n*R_n+tmp,6.0) * sasfit_sd_GEV(n*R_n+tmp, &subParam) ) >
-		    (pow(R_max,6.0)     * n_percent / 100.0
+	   while ( ((pow(n*R_n+tmp,moment) * sasfit_sd_GEV(n*R_n+tmp, &subParam) ) >
+		    (pow(R_max,moment)     * n_percent / 100.0
 					* sasfit_sd_GEV(R_max, &subParam)) ) && (n < Nint-1)) {
 	      n++;
 	   }
@@ -440,13 +488,13 @@ void find_integration_range(Tcl_Interp *interp,
 		    (strcmp(SD_typestr,"d gammaSD / d a2") == 0) ||
 		    (strcmp(SD_typestr,"d gammaSD / d a3") == 0)   ) {
 	//     R_max = theta*(k+5.) ;
-	   R_max = a3*a3/a2*(a2/a3*a2/a3+5.);
+	   R_max = a3*a3/a2*(a2/a3*a2/a3-1+moment);
 	   R_n = fabs(R_max);
 	   n = 1;
 	   tmp = 1.0;
 	   if (R_max > 0.0)  tmp=R_max;
-	   while ( ((pow(n*R_n+tmp,6.0) * sasfit_sd_gammaSD(n*R_n+tmp, &subParam) ) >
-		 (pow(R_max,6.0)     * n_percent / 100.0
+	   while ( ((pow(n*R_n+tmp,moment) * sasfit_sd_gammaSD(n*R_n+tmp, &subParam) ) >
+		 (pow(R_max,moment)     * n_percent / 100.0
 					 * sasfit_sd_gammaSD(R_max, &subParam)) ) && (n < Nint-1)) {
 				n++;
 			}
@@ -484,9 +532,9 @@ void find_integration_range(Tcl_Interp *interp,
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_lognorm_fp")       == 0) ) {
 			   a4 = fabs(a4);
-			   R_0  = a4*exp(-a2*a2*(a3-6.0));
-			   R_n  = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
-			   R_50 = a4*exp(-a2*a2*(a3-6.0)+sqrt(2.0*a2*a2*log(100.0/50.0)));
+			   R_0  = a4*exp(-a2*a2*(a3-moment));
+			   R_n  = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
+			   R_50 = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/50.0)));
 			   if (SASFIT_EQUAL(R_50, 0.0)) {
 				  sasfit_err("#find_integration_range: can't guess good integration interval: >%s(%lg,%lg,%lg,%lg)<\n",SD_typestr,a1,a2,a3,a4);
 			      sasfit_out("find_integration_range: ");
@@ -623,6 +671,7 @@ float CalcNth_V_Moment(Tcl_Interp *interp,
     float  Rstart,Rend,dR;
     int    n_intervals;
     float  V_moments, Vim1, Vi;
+	sasfit_param param;
 
     if( SD == 0 )
     {
@@ -639,7 +688,7 @@ float CalcNth_V_Moment(Tcl_Interp *interp,
     NRint = 0.;
 
     find_integration_range(interp,&Rstart, &Rend, &n_intervals,
-                          a,SD->typestr,error);
+                          a,SD->typestr,6,error);
     if ((*error == FALSE) && (n_intervals > 1) ) {
         dR = (Rend - Rstart) / n_intervals;
         V_moments = 0.0;
@@ -740,7 +789,7 @@ float integral_IQ_int_core( Tcl_Interp *interp,
                 bool  *error)
 /*############################################################################*/
 {
-	float res,res2,restot,Vav;
+	float res,res2,restot,Vav, Vx;
 	char FF_typestr[132];
 	char strtmp[256];
 
@@ -1012,6 +1061,35 @@ float integral_IQ_int_core( Tcl_Interp *interp,
 			   if (sasfit_eps_get_sq_or_iq() < 0) return restot/res;
 			   return restot;
 			  }
+	case 5  : {res = SASFITqrombIQdR(interp,dF_dpar,l,s,Q,a,
+		                    SD,FF,SQ,
+							distr,Rstart,Rend,error);
+			   if (*error == TRUE) {
+			       sasfit_err("You lost, something went wrong\n");
+			       return res;
+			   }
+
+			   Vav = CalcNth_V_Moment(interp,a,l,SD,FF,distr,1,error);
+//			   Vx  = Calculate_Vx_Moment(interp,a,l,SD,FF,distr,1,error);
+			   if (*error == TRUE) {
+				   sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+				   return res;
+			   }
+
+			   strcpy(strtmp,"<F> ");
+               strcat(strtmp,FF_typestr);
+	       FF->compute_f = TRUE;
+               res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
+	       FF->compute_f = FALSE;
+			   if (*error == TRUE) {
+			       sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+			       return res;
+			   } else {
+				   restot = res + res2/a[0];
+			   }
+			   if (sasfit_eps_get_sq_or_iq() < 0) return restot/res;
+			   return restot;
+			  }
     default : {
 	           *error = TRUE;
 			   sasfit_err("This way of including a structure factor is \nNOT YET IMPLEMENTED\n");
@@ -1067,7 +1145,7 @@ int dF_dpar[3] = {0,0,0};
    }
 
    find_integration_range(interp,&Rstart,&Rend,&nintervals,
-                          t_a,AP->SD.typestr,error);
+                          t_a,AP->SD.typestr,6,error);
    if (*error == TRUE) {
 	   return;
    }
@@ -1512,7 +1590,7 @@ int dF_dpar[3];
    }
 
    find_integration_range(interp,&Rstart,&Rend,&nintervals,
-                          t_a,AP->SD.typestr,error);
+                          t_a,AP->SD.typestr,6,error);
    if (*error == TRUE) {
 	   return;
    }
@@ -3052,7 +3130,7 @@ int Sasfit_nrCmd(clientData, interp, argc, argv)
 	tmp_n_intervals = 1;
 	n_intervals_total = 500;
 	for (i=0;i<max_SD;i++) {
-		find_integration_range(interp,&tmp_Rstart, &tmp_Rend, &tmp_n_intervals,AP[i].SD_a,AP[i].SD.typestr,&error);
+		find_integration_range(interp,&tmp_Rstart, &tmp_Rend, &tmp_n_intervals,AP[i].SD_a,AP[i].SD.typestr,6,&error);
 		if ((error == FALSE) && (tmp_n_intervals > 1) )
 		{
 			dR = (Rend - Rstart) / n_intervals;

@@ -258,7 +258,7 @@ in combination with a structure factor "\texttt{P'(Q): Thin Spherical Shell}".}
 The plot shows a model for the Gaussian description of the bilayer electron density profile according to
 eq.\ \ref{eq:BiLayerGaussianProfile}.
 The origin of the profile is set to the bilayer centre. The model encountering a single Gaussian for the head
-group at $\pm D/2$. $\eta_\textrm{out}$ is the amplitude of the headgroup Gaussian and $\eta_\textrm{core}$ that of
+group at $\pm t/2$. $\eta_\textrm{out}$ is the amplitude of the headgroup Gaussian and $\eta_\textrm{core}$ that of
 the hydrocarbon chains with respect to the average electron density of water. The FWHM of the Gaussian profiles are
 $2\sqrt{2\ln 2}\sigma_\textrm{out}$ and $2\sqrt{2\ln 2}\sigma_\textrm{core}$.}
 \label{fig:bilayerprofile}
@@ -270,8 +270,8 @@ is simpler and requiring the adjustment of only four parameters. The electron de
 (Fig.\ \ref{fig:bilayerprofile}) is described by
 \begin{align}
 \begin{split}
-\eta(r) &=  \eta_\textrm{out} \left[ \exp\left(-\frac{\left(r-\frac{D}{2}\right)^2}{2\sigma_\textrm{out}^2}\right) +
-   \exp\left(-\frac{\left(r+\frac{D}{2}\right)^2}{2\sigma_\textrm{out}^2}\right) \right] \\
+\eta(r) &=  \eta_\textrm{out} \left[ \exp\left(-\frac{\left(r-\frac{t}{2}\right)^2}{2\sigma_\textrm{out}^2}\right) +
+   \exp\left(-\frac{\left(r+\frac{t}{2}\right)^2}{2\sigma_\textrm{out}^2}\right) \right] \\
           &+ \eta_\textrm{core} \exp\left(-\frac{r^2}{2\sigma_\textrm{core}^2}\right)
           \label{eq:BiLayerGaussianProfile}
 \end{split}
@@ -279,7 +279,7 @@ is simpler and requiring the adjustment of only four parameters. The electron de
 The scattering intensity of this cross section profile of a planar object can be calculated by eq.\ \ref{Pcs:planar}
 and computes as
 \begin{align}
-   F_\text{out}\left(Q,D,\sigma_\textrm{out},\eta_\textrm{out}\right)  &= \sqrt{2\pi}\sigma_\textrm{out}  \eta_\textrm{out}  \exp\left(-\frac{1}{2}\left(Q\sigma_\textrm{out} \right)^2\right) \cos\left(Q\frac{D}{2}\right) \\
+   F_\text{out}\left(Q,D,\sigma_\textrm{out},\eta_\textrm{out}\right)  &= \sqrt{2\pi}\sigma_\textrm{out}  \eta_\textrm{out}  \exp\left(-\frac{1}{2}\left(Q\sigma_\textrm{out} \right)^2\right) \cos\left(Q\frac{t}{2}\right) \\
    F_\text{core}\left(Q,\sigma_\textrm{core},\eta_\textrm{core}\right) &= \sqrt{2\pi}\sigma_\textrm{core} \eta_\textrm{core} \exp\left(-\frac{1}{2}\left(Q\sigma_\textrm{core}\right)^2\right)
 \end{align}
 so that
@@ -290,13 +290,13 @@ so that
 \end{align}
 
 \noindent
-\textbf{Input parameters for \texttt{Pcs:LayeredCentroSymmetricXS}:}
+\textbf{Input parameters for \texttt{Pcs:BilayerGauss}:}
 \begin{description}
     \item[\texttt{sigma\_core}] width $\sigma_\mathrm{out}$ of the central Gaussian profile
     \item[\texttt{eta\_core}] scattering length density contrast of the central Gaussian profile
     \item[\texttt{sigma\_out}] width $\sigma_\mathrm{out}$ of the two outer Gaussian profiles
     \item[\texttt{eta\_out}] scattering length density contrast of the two outer Gaussian profiles
-    \item[\texttt{D}] distance between the centers of the outer Gaussian profiles
+    \item[\texttt{t}] distance between the centers of the outer Gaussian profiles
 \end{description}
 
 \noindent

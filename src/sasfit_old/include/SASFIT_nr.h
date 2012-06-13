@@ -110,70 +110,15 @@ struct sasfit_gsl_multifit_CData {
 	float SASFITtrapzdSA_IQSQijdRi(Tcl_Interp *, int *,float *, float, float, float *,float,float *,sasfit_function* ,sasfit_function* ,sasfit_function* ,int,float,float,int,bool *);
 	float SASFITqrombSA_IQSQijdRi(Tcl_Interp *, int *,float *, float, float, float *,float,float *,sasfit_function* ,sasfit_function* ,sasfit_function* ,int,float,float,bool *);
 
-//	float SASFITqrombEllipsoidalCoreShell(Tcl_Interp *,  float, float, float, float, float, float, float, float, float, bool  *);
-//	float SASFITtrapzdEllipsoidalCoreShell(Tcl_Interp *, float, float, float, float, float, float, float, float, float, int, bool  *);
-
-//	float SASFITqrombFEllipsoidalCoreShell(Tcl_Interp *,  float, float, float, float, float, float, float, float, float, bool  *);
-//	float SASFITtrapzdFEllipsoidalCoreShell(Tcl_Interp *, float, float, float, float, float, float, float, float, float, int, bool  *);
-
-//	float SASFITtrapzdEllipsoid1(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-//	float SASFITtrapzdEllipsoid1_dV(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-//	float SASFITtrapzdEllipsoid1_dR(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-
-//	float SASFITtrapzdEllipsoid2(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-//	float SASFITtrapzdEllipsoid2_dnu(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-//	float SASFITtrapzdEllipsoid2_dR(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-
-//	float SASFITtrapzdCylinder(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-//	float SASFITtrapzdCylinder_dL(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-//	float SASFITtrapzdCylinder_dR(Tcl_Interp *, float, float, float, float, float, int, bool  *);
-	
-//	float SASFITtrapzdShearedCylinderTheta(Tcl_Interp *,float,float,float,float,float,float,int,bool *);
-//	float I_shearedCyl_core(Tcl_Interp *,float,float,float,float,float,float,float,bool *);
-//	float SASFITqrombShearedCylinderTheta(Tcl_Interp *,float,float,float,float,float,float,bool *);
-//	float I_shearedCylinderTheta(Tcl_Interp *,float,float,float,float,float,float,bool *);
-//	float SASFITtrapzdShearedCylinderPhi(Tcl_Interp *,float,float,float,float,float,int,bool *);
-//	float SASFITqrombShearedCylinderPhi(Tcl_Interp *,float,float,float,float,float,bool *);
-
-//	float SASFITtrapzdShearedCylinderGaussTheta(Tcl_Interp *,float,float,float,float,float,float,int,bool *);
-//	float I_shearedCylGauss_core(Tcl_Interp *,float,float,float,float,float,float,float,bool *);
-//	float SASFITqrombShearedCylinderGaussTheta(Tcl_Interp *,float,float,float,float,float,float,bool *);
-//	float I_shearedCylinderGaussTheta(Tcl_Interp *,float,float,float,float,float,float,bool *);
-//	float SASFITtrapzdShearedCylinderGaussPhi(Tcl_Interp *,float,float,float,float,float,int,bool *);
-//	float SASFITqrombShearedCylinderGaussPhi(Tcl_Interp *,float,float,float,float,float,bool *);
-
 	float SASFITtrapzdIQ(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, int, bool *);
 	float SASFITtrapzdIQglobal(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
 	float SASFITtrapzdIQ_gsl_global(Tcl_Interp	*, float, float, float, float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
     
-//	float SASFITtrapzdStackDiscs(Tcl_Interp *,float,float,float,float,float,float,float,float,float,float,float, int, bool *);
-
 	void SASFITpolint(Tcl_Interp *, float *, float *, int, float, float *, float *, bool *);
 
 	float SASFITqrombIQ(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, bool *);
 	float SASFITqrombIQglobal(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, bool *);
 	float SASFITqrombIQ_gsl_global(Tcl_Interp	*, float, float, float, float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, bool *);
-
-
-//	float SASFITqrombStackDiscs(Tcl_Interp *,float,float,float,float,float,float,float,float,float,float,float,bool *);
-
-//	float SASFITqrombCylinder(Tcl_Interp *, float, float, float, float, float, bool *);
-//	float SASFITqrombCylinder_dL(Tcl_Interp *, float, float, float, float, float, bool *);
-//	float SASFITqrombCylinder_dR(Tcl_Interp *, float, float, float, float, float, bool *);
-
-//	float SASFITqrombEllipsoid1(Tcl_Interp *, float, float, float, float, float, bool *);
-//	float SASFITqrombEllipsoid1_dV(Tcl_Interp *, float, float, float, float, float, bool *);
-//	float SASFITqrombEllipsoid1_dR(Tcl_Interp *, float, float, float, float, float, bool *);
-
-//	float SASFITqrombEllipsoid2(Tcl_Interp *, float, float, float, float, float, bool *);
-//	float SASFITqrombEllipsoid2_dnu(Tcl_Interp *, float, float, float, float, float, bool *);
-//	float SASFITqrombEllipsoid2_dR(Tcl_Interp *, float, float, float, float, float, bool *);
-
-//	float SASFITqrombTorusR(Tcl_Interp *,float,float,float,float,float,float,float,float,bool*);
-//	float SASFITtrapzdTorusR(Tcl_Interp *,float,float,float,float,float,float,float,float,int,bool *);
-
-//	float SASFITtrapzdTorusTheta(Tcl_Interp *,float,float,float,float,float,float,float,float,float,float,int,bool *);
-//	float SASFITqrombTorusTheta(Tcl_Interp *,float,float,float,float,float,float,float,float,bool *);
 
 	void SASFITcovsrt(Tcl_Interp *, float **, int, int *, int, bool *);
 	void SASFITgaussj(Tcl_Interp *, float **, int, float **, int, bool *);
