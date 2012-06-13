@@ -452,7 +452,6 @@ sasfit_ff_DLLEXP scalar sasfit_ff_Rod_R_ma_Profile_v(scalar q, sasfit_param * pa
 sasfit_ff_DLLEXP scalar sasfit_ff_Rod_RWbrush(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_shearedCylinder(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Shellcompr(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_SphellWithGaussChainsSimon1(scalar x, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_Exp1(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_Exp2(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_Exp(scalar q, sasfit_param * param);

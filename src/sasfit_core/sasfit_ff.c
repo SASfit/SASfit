@@ -660,10 +660,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_CoPolymerMicelleSphericalProfile;
 	} else
-	if ( strcmp(ff->typestr, "Simon1") == 0 )
-	{
-		ff->fct = sasfit_ff_SphellWithGaussChainsSimon1;
-	} else
 	if ( strcmp(ff->typestr, "SPHERE+Chains(SAW)") == 0 )
 	{
 		ff->fct = sasfit_ff_Sphere_SAWbrush;

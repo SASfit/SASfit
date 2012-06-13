@@ -186,14 +186,18 @@ following expression:
  &\int_0^\infty N_i(x;\B{l}_i) F_i^2(Q;\B{a}_i,x) dx \\
 + & \frac{1}{n_i}\int_0^\infty\int_0^\infty
 N_i(x;\B{l}_i) N_i(x';\B{l}_i) F_i(Q;\B{a}_i,x) F_i(Q;\B{a}_i,x') \nonumber \\
-\times & \frac{V_i(\B{a}_i,x)+V_i(\B{a}_i,x')}{2V_{i,av}}
-\left[S_i(Q;\B{s}_i,R_i(\B{a}_i,x),R_i(\B{a}_i,x'))-1\right]
-\;dx dx' \nonumber
+\times & \frac{\overline{V}_i(\B{a}_i,x,x')}{V_{i,av}}
+\left[S_i(Q;\B{s}_i,R_i(\B{a}_i,x),R_i(\B{a}_i,x'))-1\right] \;dx
+dx' \nonumber
 \end{align}
 %\end{subequations}
 where $V_{i,av}$ is given by
 \BE
 V_{i,av} = \frac{\int_0^\infty N_i(x;\B{l}_i) V_i(\B{a}_i,x) dx}{\int_0^\infty N_i(x;\B{l}_i) dx}
+\EE
+and $V_i(\B{a}_i,x,x')$ by
+\BE
+\overline{V}_i(\B{a}_i,x,x') = \frac{4}{3}\pi \left(\frac{1}{2}\left(\oldsqrt[3]{\frac{3}{4\pi}V_i(\B{a}_i,x)}+\oldsqrt[3]{\frac{3}{4\pi}V_i(\B{a}_i,x')}\right)\right)^3
 \EE
 and the monodisperse structure factor is evaluated for the radius
 $(R_i(\B{a}_i,x)+R_i(\B{a}_i,x'))/2$. $n_i$ and $R_i(\B{a}_i,x)$ have the same
@@ -202,6 +206,40 @@ definition as those in eq.\ \ref{eq:ni} and \ref{eq:Ri}.
 Note that the expression is not linear in the size distribution
 and that it involves double integrations, which makes least-square
 fitting with this expression relatively slow.
+
+\subsection{van der Waals one-fluid approximation}
+\label{sec:SQvdW1}
+~\\
+This approximation is similar to the scaling approximation introduced by Gazzillo
+et al. \cite{Gazzillo1999}. The exact formular is given by
+%\begin{subequations}
+\begin{align}
+\frac{d\sigma_i}{d\Omega}(Q) =
+ &\int_0^\infty N_i(x;\B{l}_i) F_i^2(Q;\B{a}_i,x) dx \\
++ & \frac{1}{n_i}\int_0^\infty\int_0^\infty
+N_i(x;\B{l}_i) N_i(x';\B{l}_i) F_i(Q;\B{a}_i,x) F_i(Q;\B{a}_i,x') \nonumber \\
+\times & \frac{\overline{V}_i(\B{a}_i,x,x')}{V_{i,x}}
+\left[S_i(Q;\B{s}_i,R_i(\B{a}_i,x),R_i(\B{a}_i,x'))-1\right] \;dx
+dx' \nonumber
+\end{align}
+%\end{subequations}
+where $V_{i,x}$ is given by
+\BE
+V_{i,av} = \frac{\int_0^\infty N_i(x;\B{l}_i) V_i(\B{a}_i,x) dx}{\int_0^\infty N_i(x;\B{l}_i) dx}
+\EE
+and $V_i(\B{a}_i,x,x')$ by
+\BE
+\overline{V}_i(\B{a}_i,x,x') = \frac{4}{3}\pi \left(\frac{1}{2}\left(\oldsqrt[3]{\frac{3}{4\pi}V_i(\B{a}_i,x)}+\oldsqrt[3]{\frac{3}{4\pi}V_i(\B{a}_i,x')}\right)\right)^3
+\EE
+and the monodisperse structure factor is evaluated for the radius
+$(R_i(\B{a}_i,x)+R_i(\B{a}_i,x'))/2$. $n_i$ and $R_i(\B{a}_i,x)$ have the same
+definition as those in eq.\ \ref{eq:ni} and \ref{eq:Ri}.
+
+Note that the expression is not linear in the size distribution
+and that it involves double integrations, which makes least-square
+fitting with this expression relatively slow.
+
+
 
 \begin{figure}[htb]
 \begin{center}
@@ -1011,7 +1049,7 @@ counterions are also assumed to be monovalent.
 \underline{Input Parameters for model \texttt{Hayter Penfold RMSA}:}\\
 \begin{description}
 \item[\texttt{RHS}] hard sphere radius $R_{HS}$ of particles in [nm].
-\item[\texttt{Z}] charge of particle in units of the charge of an electron $e=�1.602 176 53 \times 10^{�19} \mathrm{C}$
+\item[\texttt{Z}] charge of particle in units of the charge of an electron $e=?1.602 176 53 \times 10^{?19} \mathrm{C}$
 \item[\texttt{eta}] volume fraction $\eta$ of particles
 \item[\texttt{T}] sample temperature $T$ in Kelvin
 \item[\texttt{salt}] monovalent salt concentration in [M]
