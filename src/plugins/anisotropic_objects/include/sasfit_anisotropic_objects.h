@@ -1046,7 +1046,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
  * \defgroup ff_pcs_homogeneouscyl Pcs:homogeneousCyl
  * \ingroup ff_plugins_pcslocalcylindrical
  *
- * \brief \<some brief description of Pcs:homogeneousCyl function\>
+ * \brief cross section form factor of a homegeneous cylinder
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1054,11 +1054,30 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b r</td>
+ *       <td>\b R</td>
  *       <td>most probable radius</td>
  *      </tr><tr>
- *       <td>\b sigma_r</td>
+ *       <td>\b sigma_R</td>
  *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>scatterinmg length density of solvent</td>
  *      </tr></table>
  */
 
@@ -1177,11 +1196,11 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasf
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
- *       <td>\b L</td>
- *       <td>length of Rod</td>
- *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>length of Rod</td>
  *      </tr><tr>
  *       <td>\b sigma_L</td>
  *       <td>width of length distribution (LogNorm)</td>

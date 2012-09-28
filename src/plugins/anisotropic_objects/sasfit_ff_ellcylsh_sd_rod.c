@@ -11,8 +11,8 @@
 #define SIGMA_R0	fabs(param->p[1])
 #define EPSILON	param->p[2]
 #define T	param->p[3]
-#define LL	param->p[4]
-#define DUMMY1	param->p[5]
+#define DUMMY1	param->p[4]
+#define LL	param->p[5]
 #define SIGMA_L	fabs(param->p[6])
 #define ETA_CORE	param->p[7]
 #define ETA_SHELL	param->p[8]

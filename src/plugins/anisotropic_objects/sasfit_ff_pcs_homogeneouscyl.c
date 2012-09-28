@@ -23,9 +23,9 @@ scalar homo_cyl_Ampl_core(scalar x, sasfit_param *param)
 	scalar A,u;
 	u = Q*x;
 	if (u==0) {
-		A = M_PI*R*R*(ETA_CORE-ETA_SOL)*2;
+		A = M_PI*x*x*(ETA_CORE-ETA_SOL)*2;
 	} else {
-		A = M_PI*R*R*(ETA_CORE-ETA_SOL)*2*gsl_sf_bessel_J1(u)/u;
+		A = M_PI*x*x*(ETA_CORE-ETA_SOL)*2*gsl_sf_bessel_J1(u)/u;
 	}
 	return A;
 }
@@ -94,7 +94,7 @@ scalar sasfit_ff_pcs_homogeneouscyl(scalar q, sasfit_param * param)
 		Pcs=homo_cyl_I_core(R,param);
 	} else {
 		find_LogNorm_int_range(2,R,SIGMA_R,&Rstart,&Rend,param);
-		Pcs 	= sasfit_integrate(Rstart, Rend, &homo_cyl_I_core, param);
+		Pcs 	= sasfit_integrate(Rstart, Rend, &I_homoXS_core, param);
 	}
 	return Pcs;
 }
@@ -112,7 +112,7 @@ scalar sasfit_ff_pcs_homogeneouscyl_f(scalar q, sasfit_param * param)
 		Pcs=homo_cyl_Ampl_core(R,param);
 	} else {
 		find_LogNorm_int_range(2,R,SIGMA_R,&Rstart,&Rend,param);
-		Pcs 	= sasfit_integrate(Rstart, Rend, &homo_cyl_Ampl_core, param);
+		Pcs 	= sasfit_integrate(Rstart, Rend, &Ampl_homoXS_core, param);
 	}
 	return Pcs;
 }
