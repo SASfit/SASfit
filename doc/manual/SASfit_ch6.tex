@@ -413,17 +413,67 @@ $\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(
 \label{plugin:Pcs4cylindrical}
 
 The cross-section form factors with cylindrical geometry are valid
-when the cross-section dimension is much smaller the segment length
+when the cross-section dimension is much smaller than the segment length
 or Kuhn length of the local cylindrical structure.
+
+\begin{figure}[htb]
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=0.85\textwidth]{../images/form_factor/anisotropic/SketchdiffXSWorm.png}\\
+  \caption{Sketch of wormlike structures which represent local cylindrical structures. The cross-section $2R_\text{cs}$
+  is much smaller than the Kuhn length $l_p$, which is a typical length scale where a freely jointed chain can randomly orient
+  in any direction without the influence of any forces, independent of the directions taken by other segments.
+  For the cross-section term several profiles have been implemented, like homogeneous round profile or elliptical shell profile}\label{fig:WormSketchdiffXS}
+\end{figure}
+
 
 \clearpage
 \subsubsection{Pcs(Q) for homogeneous cross-section of a cylinder} ~\\
 \label{plugin:Pcs:homogeneousXS_cyl}
 
+
+This cross-section form factor describes the scattering of circular and homogeneous cross section.
+The cross-section radius $R$ can have a distribution described by a log-normal distribution according
+to eq.\ \ref{eq:LogNormal}.
+
 \begin{align}
-P_\textrm{cs}(Q) = \left( \frac{2 \mathrm{J}_1(QR)}{QR} \right)^2
+P_\text{cs}(Q,\sigma_{R},R) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{R},1,R) \left( \left(\eta_\textrm{core}-\eta_\textrm{solv}\right) \pi x^2 \frac{2 \mathrm{J}_1(Qx)}{Qx} \right)^2 \, \textrm{d}x
 \end{align}
 
+\noindent
+\textbf{Input parameters for \texttt{Pcs:homogeneousCyl}:}
+\begin{description}
+    \item[\texttt{t}] most probable radius $R$
+    \item[\texttt{sigm\_R}] width $\sigma_R$ of radius distribution (LogNorm)
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_core}] scattering length density of the core $\eta_\textrm{core}$
+    \item[\texttt{eta\_solv}] scattering length density of the solvent $\eta_\textrm{solv}$
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local cylindrical objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local cylindrical obj.}".
+\item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/CylindricalHomogeneousXSIQ.png}
+\end{center}
+\caption{Scattering curve for the form factor "\texttt{Pcs:homogeneousCyl}" only (insert) and
+in combination with a structure factor "\texttt{P'(Q): Thin Rod}".}
+\label{fig_IQ:Pcs:CylindricalHomogeneousXSIQ}
+\end{figure}
+
+\clearpage
 \subsubsection{Pcs(Q) for cross-section of a cylindrical shell with elliptical cross section} ~\\
 \label{plugin:Pcs:CylEllSh}
 
