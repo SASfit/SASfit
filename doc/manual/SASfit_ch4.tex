@@ -130,18 +130,70 @@ $k=1/\sigma^2 > 0$} \label{NogNormal}
 \end{figure}
 
 \begin{equation}
-\text{SZ}(R,N,R_a,k) =  \frac{N}{R_a}
-\left(\frac{R}{R_a}\right)^{k-1}
-\frac{k^k\exp(-kR/R_a)}{\Gamma(k)}
+\textrm{SZ}(x,N,x_a,k) =  \frac{N}{x_a}
+\left(\frac{x}{x_a}\right)^{k-1}
+\frac{k^k\exp(-kx/x_a)}{\Gamma(k)}
 \end{equation}
 ~\\
-$\text{SZ}(R,N,R_a,k)$ is normalized so that $\int_0^\infty\!
-\text{SZ}(R,N,R_a,k)\,dR = N$. The parameter $k$ of the size
-distribution is related to the variance $\sigma$ by
-$k={1}/{\sigma^2}$. $R_a$ is the scaling parameter and defines the
-maximum of the size distribution for large values of $k$.
+$\text{SZ}(x,N,x_a,k)$ is normalized so that $\int_0^\infty\!
+\text{SZ}(x,N,x_a,k)\,dx = N$. The mode, mean, variance and
+$n^\textrm{th}$-moment of the distribution are given by
+\begin{subequations}
+\begin{align}
+x_\textrm{mode} &= x_a (1-\frac{1}{k})\\
+x_\textrm{mean} &= x_a \\
+\sigma^2 &= \frac{x_a^2}{k} \\
+\left\langle x^n \right\rangle &=
+x_a^n  \frac{k}{ (k-1)^{n+1}}  \frac{\Gamma \left(k+n\right)}{\Gamma (k)}
+\label{eq:SZstatparam}
+\end{align}
+\end{subequations}
+
+The $\text{SZ}(x,N,x_a,k)$
+distribution function is used in polymer chemistry to describe the
+number distribution of molecules with molecular weight $x$.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Schulz-Zimm (Flory) distribution}
+
+%\begin{figure}[htb]
+%\begin{center}
+%\includegraphics[width=0.876\textwidth,height=0.658\textwidth]{SZ.png}
+%\end{center}
+%\caption{The $\textrm{SZF}(x,N,x_a,k)$ distribution function.
+%Valid parameter ranges: $x \in [0,\infty)$, $x_a \in (0,\infty)$,
+%$k=1/\sigma^2 > 0$} \label{SZF}
+%\end{figure}
+
+\begin{equation}
+\textrm{SZF}(x,N,x_a,k) =  \frac{N x^k
+\left(\frac{k}{x_a}\right)^{k+1} e^{-\frac{kx}{x_a}}}{\Gamma
+(k+1)}
+\end{equation}
+~\\
+$\textrm{SZF}(x,N,x_a,k)$ is normalized so that $\int_0^\infty\!
+\textrm{SZF}(x,N,x_a,k)\,dx = N$.
+The mode, mean, variance and
+$n^\textrm{th}$-moment of the distribution are given by
+\begin{subequations}
+\begin{align}
+x_\textrm{mode} &= x_a\\
+x_\textrm{mean} &= x_a \frac{1+k}{k}\\
+\sigma^2 &= x_a^2\frac{1+k}{k^2} \\
+\left\langle x^n \right\rangle &=
+\left(\frac{x_a}{k}\right)^n  \frac{\Gamma \left(k+n+1\right)}{\Gamma \left(k+1\right)}
+\label{eq:SZFstatparam}
+\end{align}
+\end{subequations}
+
+The $\textrm{SZF}(x,N,x_a,k)$ distribution function is used in
+polymer chemistry to describe the mass distribution. The number
+distribution $\textrm{SZ}(x,N,x_a,k)$ is related to the mass
+distribution by $\frac{x}{x_a}\textrm{SZ}(x,N,x_a,k)
+=\textrm{SZF}(x,N,x_a,k)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \clearpage
 \section{Gamma distribution}
