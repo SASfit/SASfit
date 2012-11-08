@@ -5,7 +5,7 @@ double atan2();
 double r_atn2(x,y) real *x, *y;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

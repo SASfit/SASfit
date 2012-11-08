@@ -160,6 +160,27 @@ file are ignored as they do not fulfill the condition that they have
 3 columns containing only valid numbers.
 \end{description}
 
+\subsection{Error bar} \hspace{1pt}\\
+
+\noindent
+In case no error bar is supplied \SASfit will try to guess one.
+To do this an polynomial $y_p(Q)$ of degree $p$
+\begin{align}
+y_p(Q) &= \sum_{k=0}^p c_k Q^k
+\end{align}
+is fitted to the data point $i$ and its $n^\textrm{th}$ neighbors,
+i.e. is fitted to $2n+1$ points from $I_{i-n}(Q_{i-n})$ to $I_{i+n}(Q_{i+n})$.
+After the fit $\chi_i^2$ is calculated
+\begin{align}
+\chi_i^2&=\sum_{j=i-n}^{i+n} \left(I_j(Q_j)-y_P(Q_j)\right)^2
+\end{align}
+The error bar $\Delta I_i$ for $Q_i$ is than defined as
+\begin{align}
+\Delta I_i &= \sqrt{\frac{\chi_i^2}{2n-p}}
+\end{align}
+\SASfit is using two nearest neighbors $n=2$ and fitting a polynomial of \
+degree $p=2$ to it to guess an error bar.
+
 \vspace{1cm}
 
 \subsection{Export Format} \hspace{1pt}\\

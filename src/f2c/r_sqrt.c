@@ -5,7 +5,7 @@ double sqrt();
 double r_sqrt(x) real *x;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

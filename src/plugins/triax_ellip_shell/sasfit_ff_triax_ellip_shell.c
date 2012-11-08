@@ -110,28 +110,29 @@ scalar sasfit_ff_triax_ellip_shell_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_triax_ellip_shell_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_triax_ellip_shell_v(scalar x, sasfit_param * param, int dist)
 {
+	scalar V;
 	SASFIT_ASSERT_PTR(param);
 
 	switch ( dist )
 	{
 		case 0:
-			q = (q + T) * (B + T) * (C + T);
+			V = (x + T) * (B + T) * (C + T);
 			break;
 		case 1:
-			q = (A + T) * (q + T) * (C + T);
+			V = (A + T) * (x + T) * (C + T);
 			break;
 		case 2:
-			q = (A + T) * (B + T) * (q + T);
+			V = (A + T) * (B + T) * (x + T);
 			break;
 		case 3:
-			q = (A + q) * (B + q) * (C + q);
+			V = (A + x) * (B + x) * (C + x);
 			break;
 		default:
-			q = (A + T) * (B + T) * (C + T);
+			V = (A + T) * (B + T) * (C + T);
 			break;
 	}
-	return 4.0/3.0 * M_PI * q;
+	return 4.0/3.0 * M_PI * x;
 }
 

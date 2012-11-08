@@ -5,7 +5,7 @@ double log(), exp(), cos(), sin(), atan2(), f__cabs();
 VOID pow_zz(r,a,b) doublecomplex *r, *a, *b;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

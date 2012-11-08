@@ -6,7 +6,7 @@ extern double sin(), cos(), sinh(), cosh();
 VOID c_sin(r, z) complex *r, *z;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

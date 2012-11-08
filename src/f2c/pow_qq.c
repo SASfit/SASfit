@@ -10,8 +10,7 @@ longint pow_qq(longint *ap, longint *bp)
 #endif
 {
 	longint pow, x, n;
-//J	unsigned long long u;	/* system-dependent */
-	ulongint u;	/* system-dependent */
+	unsigned long long u;	/* system-dependent */
 
 	x = *ap;
 	n = *bp;

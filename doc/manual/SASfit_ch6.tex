@@ -442,15 +442,15 @@ P_\text{cs}(Q,\sigma_{R},R) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{R},1,R)
 \noindent
 \textbf{Input parameters for \texttt{Pcs:homogeneousCyl}:}
 \begin{description}
-    \item[\texttt{t}] most probable radius $R$
+    \item[\texttt{R}] most probable radius $R$
     \item[\texttt{sigm\_R}] width $\sigma_R$ of radius distribution (LogNorm)
     \item[\texttt{dummy}] not used
     \item[\texttt{dummy}] not used
     \item[\texttt{dummy}] not used
     \item[\texttt{dummy}] not used
     \item[\texttt{dummy}] not used
-    \item[\texttt{dummy}] not used
     \item[\texttt{eta\_core}] scattering length density of the core $\eta_\textrm{core}$
+    \item[\texttt{dummy}] not used
     \item[\texttt{eta\_solv}] scattering length density of the solvent $\eta_\textrm{solv}$
 \end{description}
 
@@ -477,14 +477,56 @@ in combination with a structure factor "\texttt{P'(Q): Thin Rod}".}
 \subsubsection{Pcs(Q) for cross-section of a cylindrical shell with elliptical cross section} ~\\
 \label{plugin:Pcs:CylEllSh}
 
-\begin{align}
-P_\textrm{cs}(Q) = \int_0^{\pi/2} \left( \frac{2 \mathrm{J}_1(Qr(R,\epsilon,\phi))}{Qr(R,\epsilon,\phi)} \right)^2 \, \mathrm{d}\phi
-\end{align}
-where $r(R,\epsilon,\phi)=R\sqrt{\sin^2\phi+\epsilon^2\cos^2\phi}$
+\noindent
+This cross-section form factor describes the scattering of an elliptical core-shell cross-section.
+The cross-section radius $R$ can have a distribution with a width of $sigma$ as
+described by a log-normal distribution according to eq.\ \ref{eq:LogNormal}.
+
+\begin{equation}
+\begin{split}
+    P_\textrm{cs}(Q) = & \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{R},1,R)  \quad \times\\
+        & \int_0^{\pi/2}
+\Big[\left( \eta_\textrm{shell}-\eta_\textrm{solv}\right)F_\textrm{cs,ell}(Q,R+t,\epsilon,\phi) \\
+& \quad + \left(\eta_\textrm{core}-\eta_\textrm{shell}\right)F_\textrm{cs,ell}(Q,R,\epsilon,\phi)
+\Big]^2 \, \mathrm{d}\phi
+\end{split}
+\end{equation}
+with
+\begin{subeqnarray}
+F_\textrm{cs,ell}\left(Q,R,\epsilon,\Delta\eta\phi\right) &=&  \frac{2 \mathrm{J}_1(Qr(R,\epsilon,\phi))}{Qr(R,\epsilon,\phi)}   \\
+r(R,\epsilon,\phi) &=& R\sqrt{\sin^2\phi+\epsilon^2\cos^2\phi}
+\end{subeqnarray}
+
+
+
+\noindent
+\textbf{Input parameters for \texttt{Pcs:homogeneousCyl}:}
+\begin{description}
+    \item[\texttt{R}] most probable radius $R$
+    \item[\texttt{sigm\_R}] width $\sigma_R$ of radius distribution (LogNorm)
+    \item[\texttt{epsilon}] eccentricity $\epsilon$ of ellipyical cross-section
+    \item[\texttt{t}] shell thickness $t$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_core}] scattering length density of the core $\eta_\textrm{core}$
+    \item[\texttt{eta\_shell}] scattering length density of the shell $\eta_\textrm{shell}$
+    \item[\texttt{eta\_solv}] scattering length density of the solvent $\eta_\textrm{solv}$
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local cylindrical objects which are implemented as structure  plugins
+under "\texttt{by plugin|anisotropic obj.|P'Q): local cylindrical obj.}".
+\item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\end{itemize}
+
 \clearpage
 \subsection{P'(Q) for local planar obj.} ~\\
 \label{plugin:Pprime4planar}
-
 
 \subsection{P'(Q) for local cylindrical obj.} ~\\
 \label{plugin:Pprime4cylindrical}

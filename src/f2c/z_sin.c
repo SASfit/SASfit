@@ -5,7 +5,7 @@ double sin(), cos(), sinh(), cosh();
 VOID z_sin(r, z) doublecomplex *r, *z;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

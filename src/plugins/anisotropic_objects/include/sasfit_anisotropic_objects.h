@@ -1072,9 +1072,14 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
  *       <td>\b eta_core</td>
  *       <td>scattering length density of core</td>
  *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b eta_sol</td>
  *       <td>scatterinmg length density of solvent</td>

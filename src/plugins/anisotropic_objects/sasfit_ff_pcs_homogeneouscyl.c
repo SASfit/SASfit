@@ -13,8 +13,10 @@
 #define DUMMY2	param->p[3]
 #define DUMMY3	param->p[4]
 #define DUMMY4	param->p[5]
-#define ETA_CORE	param->p[6]
-#define ETA_SOL		param->p[7]
+#define DUMMY5	param->p[6]
+#define ETA_CORE	param->p[7]
+#define DUMMY6	param->p[8]
+#define ETA_SOL		param->p[9]
 
 #define Q	param->p[MAXPAR-1]
 
