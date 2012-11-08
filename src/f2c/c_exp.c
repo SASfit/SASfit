@@ -2,17 +2,15 @@
 
 #ifdef KR_headers
 extern double exp(), cos(), sin();
-/*
+
  VOID c_exp(r, z) complex *r, *z;
- */
 #else
 #undef abs
-
-#include "f2c_math.h"
-
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 void c_exp(complex *r, complex *z)
 #endif
 {

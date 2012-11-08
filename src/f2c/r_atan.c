@@ -5,7 +5,7 @@ double atan();
 double r_atan(x) real *x;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

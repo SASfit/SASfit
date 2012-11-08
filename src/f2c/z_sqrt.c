@@ -5,7 +5,7 @@ double sqrt(), f__cabs();
 VOID z_sqrt(r, z) doublecomplex *r, *z;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

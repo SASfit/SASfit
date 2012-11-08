@@ -6,7 +6,7 @@ double log(), f__cabs(), atan2();
 #else
 #define ANSI(x) x
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

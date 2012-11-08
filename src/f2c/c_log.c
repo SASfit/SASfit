@@ -5,7 +5,7 @@ extern double log(), f__cabs(), atan2();
 VOID c_log(r, z) complex *r, *z;
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -12,7 +12,7 @@ double r_mod(x,y) real *x, *y;
 double drem(double, double);
 #else
 #undef abs
-#include "f2c_math.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
