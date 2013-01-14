@@ -218,13 +218,14 @@ macro(sasfit_update_version)
 
 	set(DETERMINED_FROM_DOCS FALSE)
 	if(NOT DEFINED SASFIT_VERSION)
+                set(SASFIT_VERSION "custom")
 		find_package(Mercurial)
-		if(MERCURIAL_FOUND)
+                if(MERCURIAL_FOUND AND IS_DIRECTORY "${SASFIT_ROOT_DIR}/.hg")
 			mercurial_hg_info(${SASFIT_ROOT_DIR} sasfit)
 			set(SASFIT_VERSION 
 				"${sasfit_HG_DATE}-${sasfit_HG_BRANCH}-${sasfit_HG_CHANGESET}")
 			message(STATUS "Current source version is '${SASFIT_VERSION}'")
-		endif(MERCURIAL_FOUND)
+                endif(MERCURIAL_FOUND AND IS_DIRECTORY "${SASFIT_ROOT_DIR}/.hg")
 
 # old SVN
 #		# try to get the revision number of the working copy (current dir)
