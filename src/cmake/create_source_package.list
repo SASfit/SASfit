@@ -13,6 +13,7 @@ src/CMakeLists.txt
 src/cmake/CPackConfig.cmake
 src/cmake/SasfitCmakeUtils.cmake
 src/cmake/SasfitSourceFiles.cmake
+src/cmake/FindMercurial.cmake
 src/cmake/FindTCL.cmake
 src/cmake/FindGSL.cmake
 src/cmake/Findf2c.cmake
