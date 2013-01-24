@@ -4,6 +4,14 @@ if [ "x$TCLSH" = "x" ]; then
     TCLSH=tclsh
 fi
 
+SYSTEM_NAME=$(uname -s)
+SYSTEM_ARCH=$(uname -m)
+if [ "$SYSTEM_NAME" == "Darwin" ]; then
+	export CFLAGS="-arch $SYSTEM_ARCH -L/usr/X11/lib -I/usr/X11/include"
+	export LDFLAGS=$CFLAGS
+	export CPPFLAGS=$CFLAGS
+fi;
+
 if [ "x$TCLVERSION" = "x" ]; then
     TCLPATTERN='*.*'
 else
