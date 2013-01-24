@@ -77,7 +77,7 @@ typedef struct TkWindowEvent {
  * Array of event masks corresponding to each X event:
  */
 
-static unsigned long eventMasks[TK_LASTEVENT] = {
+static unsigned long realEventMasks[MappingNotify+1] = {
     0,
     0,
     KeyPressMask,			/* KeyPress */
@@ -115,7 +115,10 @@ static unsigned long eventMasks[TK_LASTEVENT] = {
     0,					/* SelectionNotify */
     ColormapChangeMask,			/* ColormapNotify */
     0,					/* ClientMessage */
-    0,					/* Mapping Notify */
+    0					/* Mapping Notify */
+};
+
+static unsigned long virtualEventMasks[TK_LASTEVENT-VirtualEvent] = {
     VirtualEventMask,			/* VirtualEvents */
     ActivateMask,			/* ActivateNotify */
     ActivateMask,			/* DeactivateNotify */
@@ -749,7 +752,13 @@ Tk_HandleEvent(eventPtr)
      */
 
     handlerWindow = eventPtr->xany.window;
-    mask = eventMasks[eventPtr->xany.type];
+
+    if (eventPtr->xany.type <= MappingNotify) {
+        mask = realEventMasks[eventPtr->xany.type];
+    } else if (eventPtr->xany.type >= VirtualEvent && eventPtr->xany.type < TK_LASTEVENT) {
+        mask = virtualEventMasks[eventPtr->xany.type - VirtualEvent];
+    }
+
     if (mask == StructureNotifyMask) {
 	if (eventPtr->xmap.event != eventPtr->xmap.window) {
 	    mask = SubstructureNotifyMask;
