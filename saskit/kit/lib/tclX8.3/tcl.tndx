@@ -1,0 +1,22 @@
+TclX-ArrayProcedures 1 822 for_array_keys
+TclX-GenCompat 823 572 assign_fields cexpand
+TclX-ServerCompat 1395 2060 server_open server_connect server_send server_info server_cntl
+TclX-ClockCompat 3455 607 fmtclock convertclock getclock
+TclX-FileCompat 4062 2627 mkdir rmdir unlink frename
+TclX-CopyFileCompat 6689 3053 copyfile
+TclX-convertlib 9742 2908 convert_lib
+TclX-developer_utils 12650 943 saveprocs edprocs
+TclX-events 13593 265 mainloop
+TclX-forfile 13858 620 for_file
+TclX-globrecur 14478 860 recursive_glob
+TclX-forrecur 15338 1504 for_recursive_glob
+TclX-help 16842 10099 help helpcd helppwd apropos
+TclX-profrep 26941 3941 profrep
+TclX-directory_stack 30882 1074 pushd popd dirs
+TclX-set_functions 31956 1539 union intersect intersect3 lrmdups
+TclX-showproc 33495 685 showproc
+TclX-stringfile_functions 34180 569 read_file write_file
+TclX-libraries 34749 604 searchpath auto_load_file
+TclX-lib-list 35353 1103 auto_packages auto_commands
+TclX-fmath 36456 1181 acos asin atan ceil cos cosh exp fabs floor log log10 sin sinh sqrt tan tanh fmod pow atan2 abs double int round
+TclX-buildhelp 37637 9623 buildhelp
