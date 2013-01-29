@@ -874,7 +874,9 @@ proc main::_link {components {ar ""}} {
     }  else  {
 	set DAR -DDQKIT_NOBUILDAR=1
     }
-    out::oexec [concat [list [conf::x gcc]] [conf::c_if debug [list -g] [list]] [list -c] $I $D [list -DBUILD_tcl=1 -DSTATIC_BUILD=1 $DAR] \
+    puts [array names ::env]
+    parray ::env
+    out::oexec [concat [list [conf::x gcc]] $::env(CFLAGS) [conf::c_if debug [list -g] [list]] [list -c] $I $D [list -DBUILD_tcl=1 -DSTATIC_BUILD=1 $DAR] \
 	[file join $dir kitInit.c] [file join $dir pwb.c] [file join $dir rechan.c] [file join $dir zlib.c] [list $appinit]]
     set oappinit [file join $dir [file tail [string range $appinit 0 end-2]].o]
     if {$ar!=""} {
@@ -915,7 +917,7 @@ proc main::_link {components {ar ""}} {
 puts "L: $L"
 	#out::oexec [concat [list [conf::x g++]] [conf::x -static] [conf::c_if debug [list -g] [list]] [list -o $target \
 #	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
-	out::oexec [concat [list [conf::x g++]] [conf::c_if debug [list -g] [list]] [list -o $target \
+	out::oexec [concat [list [conf::x g++]] $::env(LDFLAGS) [conf::c_if debug [list -g] [list]] [list -o $target \
 	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
     }
     cd $::conf::topdir
