@@ -876,7 +876,15 @@ proc main::_link {components {ar ""}} {
     }
     puts [array names ::env]
     parray ::env
-    out::oexec [concat [list [conf::x gcc]] $::env(CFLAGS) [conf::c_if debug [list -g] [list]] [list -c] $I $D [list -DBUILD_tcl=1 -DSTATIC_BUILD=1 $DAR] \
+    set CFLAGS ""
+    set LDFLAGS ""
+    if {[info exists ::env(CFLAGS)]} {
+        set CFLAGS $::env(CFLAGS)
+    }
+    if {[info exists ::env(LDFLAGS)]} {
+        set LDFLAGS $::env(LDFLAGS)
+    }
+    out::oexec [concat [list [conf::x gcc]] $CFLAGS [conf::c_if debug [list -g] [list]] [list -c] $I $D [list -DBUILD_tcl=1 -DSTATIC_BUILD=1 $DAR] \
 	[file join $dir kitInit.c] [file join $dir pwb.c] [file join $dir rechan.c] [file join $dir zlib.c] [list $appinit]]
     set oappinit [file join $dir [file tail [string range $appinit 0 end-2]].o]
     if {$ar!=""} {
@@ -911,13 +919,12 @@ proc main::_link {components {ar ""}} {
 	close $fh
 	file copy -force $oappinit $ar.o
     }  else  {
-#	set L [concat [lrange $L 0 end-4] [list -Wl,--export-dynamic -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/blt -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/dqkit -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/itcl -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/mk -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/res -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/tcl -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/tk -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/vfs -L/usr/src/tclkit_test/dqkit-20060505/build/ingoboxx-mobile-debug-nonthreaded/zlib -ltcl8.4 -ldl -lieee -lm]]
 	regsub -all -- {itcl33d.a} $L {itcl33.a} L
 	regsub -all -- {libitcl3.3g.a} $L {libitcl3.3.a} L
 puts "L: $L"
 	#out::oexec [concat [list [conf::x g++]] [conf::x -static] [conf::c_if debug [list -g] [list]] [list -o $target \
 #	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
-	out::oexec [concat [list [conf::x g++]] $::env(LDFLAGS) [conf::c_if debug [list -g] [list]] [list -o $target \
+	out::oexec [concat [list [conf::x g++]] $LDFLAGS [conf::c_if debug [list -g] [list]] [list -o $target \
 	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
     }
     cd $::conf::topdir

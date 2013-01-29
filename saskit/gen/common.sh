@@ -69,7 +69,7 @@ fi
 
 TCLPATTERN=8.4*
 # nonthreaded
-$TCLSH gen/buildkit build -tcl=$TCLPATTERN -tk=$TCLPATTERN -blt -compression=none -binary=all -resfile=current || exit 1
+#$TCLSH gen/buildkit build -tcl=$TCLPATTERN -tk=$TCLPATTERN -blt -compression=none -binary=all -resfile=current || exit 1
 #$TCLSH gen/buildkit linkfinal -tcl=$TCLPATTERN -tk=$TCLPATTERN -tile -sqlite -sqlite3 -tbcload -tls $TCLX $EXPECT -compression=$UPX -binary=gui $TX -resfile=current || exit 1
 #$TCLSH gen/buildkit compile res -resfile=current || exit 1
 #$TCLSH gen/buildkit linkfinal -tcl=$TCLPATTERN -itcl -sqlite -sqlite3 -tclcompiler -tbcload -tls $TCLX $EXPECT -tdom $TCLUDP $PGTCL -compression=$UPX -binary=console -resfile=current || exit 1
@@ -78,4 +78,15 @@ $TCLSH gen/buildkit build -tcl=$TCLPATTERN -tk=$TCLPATTERN -blt -compression=non
 # threaded debug
 #$TCLSH gen/buildkit compile res -thread -debug -resfile=current || exit 1
 #$TCLSH gen/buildkit build -debug -tcl=$TCLPATTERN -itcl -thread -sqlite -sqlite3 -tbcload -tls $TCLX $EXPECT -tk=$TCLPATTERN -tile -itk -iwidgets -blt -tktable -tdom -tktreectrl $TCLUDP $PGTCL -compression=$UPX -binary=all -resfile=current || exit 1
+
+FNAME="$(ls -1 ./bin/*/dqkit*)"
+EXT="${FNAME##*.}"
+# remove .bin extension, keep all others (cmake compat.)
+if [ "$EXT" != "bin" ];
+then
+        EXT=".$EXT"
+else
+        EXT=""
+fi;
+echo cp "$FNAME" "./saskit_${SYSTEM_NAME}_${SYSTEM_ARCH}$EXT"
 
