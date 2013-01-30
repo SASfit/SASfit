@@ -88,5 +88,5 @@ then
 else
         EXT=""
 fi;
-echo cp "$FNAME" "./saskit_${SYSTEM_NAME}_${SYSTEM_ARCH}$EXT"
+cp "$FNAME" "./saskit_${SYSTEM_NAME}_${SYSTEM_ARCH}$EXT"
 
