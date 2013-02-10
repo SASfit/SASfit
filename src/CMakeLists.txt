@@ -14,9 +14,9 @@ set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
 include(SasfitCmakeUtils)
 include(SasfitSourceFiles)
 
-message(STATUS "System Name: ${CMAKE_SYSTEM_NAME}")
+message(STATUS "System Name: '${CMAKE_SYSTEM_NAME}' '${CMAKE_SYSTEM}'")
 #message("## system apple: ${CMAKE_HOST_APPLE}")
-message(STATUS "System Processor: ${CMAKE_SYSTEM_PROCESSOR}")
+message(STATUS "System Processor: '${CMAKE_SYSTEM_PROCESSOR}'")
 #message("## exe extensi: '${CMAKE_EXECUTABLE_SUFFIX}'")
 #message("## install Prefix: '${CMAKE_INSTALL_PREFIX}'")
 #message("## generator: '${CMAKE_GENERATOR}'")
@@ -67,6 +67,13 @@ endif(MSVC80)
 
 if(CMAKE_HOST_APPLE)
 	add_definitions(-DMACOSX)
+	set(CMAKE_OSX_ARCHITECTURES ${CMAKE_SYSTEM_PROCESSOR})
+	if(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
+		# assuming os is recent enough to understand x64
+		# GSL build environment does not support multiple "-arch" 
+		set(CMAKE_OSX_ARCHITECTURES x86_64)
+	endif(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
+	message(STATUS "Bulding on MacOS for: ${CMAKE_OSX_ARCHITECTURES}")
 endif(CMAKE_HOST_APPLE)
 
 
@@ -236,14 +243,18 @@ if(CREATE_BINARY)
 	endif(DEBUG)
 #	set(SASFIT_VERSION "${SASFIT_VERSION}${DEBUG_SUFFIX}")
 
-	set(SASFIT_PCKG_DIR_POSTFIX ${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}${LIBSTDC_VER}${DEBUG_SUFFIX})
+	set(SASFIT_PCKG_DIR_POSTFIX ${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR})
+	if(CMAKE_HOST_APPLE)
+		set(SASFIT_PCKG_DIR_POSTFIX ${CMAKE_SYSTEM_NAME}_${CMAKE_OSX_ARCHITECTURES})
+	endif(CMAKE_HOST_APPLE)
+	set(SASFIT_PCKG_DIR_POSTFIX ${SASFIT_PCKG_DIR_POSTFIX}${LIBSTDC_VER}${DEBUG_SUFFIX})
 	set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
 
 	sasfit_file_list(${SASFIT_BIN_FILE_LIST} ${SASFIT_EXEC_FILENAME})
 
 	# set the saskit filename, chose the debug version if required
 	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
-#	message("## saskit file: '${SASKIT_FILENAME}'")
+        message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
 	# write the list of filenames to a temporary file (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
 	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")

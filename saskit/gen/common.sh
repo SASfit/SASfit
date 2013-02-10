@@ -7,9 +7,12 @@ fi
 SYSTEM_NAME=$(uname -s)
 SYSTEM_ARCH=$(uname -m)
 if [ "$SYSTEM_NAME" == "Darwin" ]; then
+	SYSTEM_ARCH="x86_64"
 	export CFLAGS="-arch $SYSTEM_ARCH -L/usr/X11/lib -L/usr/X11R6/lib -I/usr/X11/include"
-	export LDFLAGS=$CFLAGS
-	export CPPFLAGS=$CFLAGS
+fi;
+if [ -n "$CFLAGS" ]; then
+	export LDFLAGS="$LDFLAGS $CFLAGS"
+	export CPPFLAGS="$CPPFLAGS $CFLAGS"
 fi;
 
 if [ "x$TCLVERSION" = "x" ]; then
