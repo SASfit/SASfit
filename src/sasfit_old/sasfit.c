@@ -3337,6 +3337,8 @@ if (TCL_ERROR == get_AP(interp,argv,
 
 for (j=0;j<max_SD;j++){
    AP[j].fit = TRUE;
+   // FIXME: Substitution doesn't work if upper limit stays at +1e200 and
+   // lower limit is supposed to be 0 -> asin: [-1.57; 1.57], fixed in gui
    for (i=0;i<MAXPAR;i++) {
 	  if (AP[j].FF_limits[i] && AP[j].FF_active[i] && AP[j].fitSDFF) {
          if (AP[j].FF_l[i] < AP[j].FF_min[i]) AP[j].FF_l[i] = AP[j].FF_min[i];
