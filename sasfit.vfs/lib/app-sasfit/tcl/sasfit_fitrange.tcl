@@ -105,6 +105,7 @@ for {set i 1} {$i <= $::tmpactualAnalytPar($type,param_count) } {incr i} {
 	      -relief sunken -width 17 -highlightthickness 0
         bind $w.$p$i.min <FocusOut> "verifyValue ::tmpactualAnalytPar $w $type $p$i minimum"
         bind $w.$p$i.min <Tab> "focus $w.$p$i.max\nbreak"
+        bind $w.$p$i.min <Shift-Tab> "focusWin $w.$p[expr $i-1].limits\nbreak"
 	entry $w.$p$i.max -textvariable ::tmpactualAnalytPar($type,$p$i,max) \
 	      -relief sunken -width 17 -highlightthickness 0
         bind $w.$p$i.max <FocusOut> "verifyValue ::tmpactualAnalytPar $w $type $p$i maximum"
@@ -114,6 +115,7 @@ for {set i 1} {$i <= $::tmpactualAnalytPar($type,param_count) } {incr i} {
 	      $::radio_check_button_prop -highlightthickness 0 \
 	      -command { cb_cmd ::tmpactualAnalytPar $type $p $i }"
         bind $w.$p$i.limits <Tab> "focusWin $w.$p[expr $i+1].min\nbreak"
+        bind $w.$p$i.limits <Shift-Tab> "focus $w.$p$i.max\nbreak"
         cb_cmd ::tmpactualAnalytPar $type $p $i
 	pack $w.$p$i.limits $w.$p$i.max $w.$p$i.min $w.$p$i.label \
 	     -side right -in $w.$p$i -padx 1m -pady 1m 
@@ -141,6 +143,7 @@ $w.headerFrame.text configure -wraplength [winfo width $w] -text [headerText]
 }
 
 proc focusWin { window } {
+        # changes focus only if the window exists
         if { ! [winfo exists $window] } {
                 return
         }
