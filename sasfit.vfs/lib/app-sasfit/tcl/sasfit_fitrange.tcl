@@ -140,6 +140,7 @@ pack $w.buttons.help -in $w.buttons -padx 1m -pady 1 -side right
 # set informative header text
 update
 $w.headerFrame.text configure -wraplength [winfo width $w] -text [headerText]
+bind $w <Return> "$w.buttons.ok invoke"
 }
 
 proc focusWin { window } {
