@@ -12150,7 +12150,7 @@ pack $wsd.wrl.whichsd -side left -padx 1m -pady 1m -in $wsd.wrl
 
 button $wsd.wrl.rangebutton -text "Parameter Range..." \
 -highlightthickness 0 -padx 1m -pady 1m\
--command SDFitRangeCmd
+-command { fitRangeCmd SD }
 setTooltip $wsd.wrl.rangebutton "define range interval\nfor fitting parameter"
 pack $wsd.wrl.rangebutton -side right -fill x -padx 1m -pady 1m -in $wsd.wrl
 
@@ -12450,7 +12450,7 @@ $wff.wrl.whichff configure -highlightthickness 0
 pack $wff.wrl.whichff -side left -padx 1m -pady 1m -in $wff.wrl
 button $wff.wrl.rangebutton -text "Parameter Range..." \
 -highlightthickness 0  -padx 1m -pady 1m \
--command FFFitRangeCmd
+-command { fitRangeCmd FF }
 setTooltip $wff.wrl.rangebutton "define range interval\nfor fitting parameter"
 pack $wff.wrl.rangebutton -side right -fill x -padx 1m -pady 1m -in $wff.wrl
 
@@ -12505,7 +12505,7 @@ $wsq.wrl.whichsq configure -highlightthickness 0
 pack $wsq.wrl.whichsq -side left -padx 1m -pady 1m -in $wsq.wrl
 button $wsq.wrl.rangebutton -text "Parameter Range..." \
        -highlightthickness 0 -padx 1m -pady 1m\
-       -command SQFitRangeCmd
+       -command { fitRangeCmd SQ }
 setTooltip $wsq.wrl.rangebutton "define range interval\nfor fitting parameter"
 pack $wsq.wrl.rangebutton -side right -fill x -padx 1m -pady 1m -in $wsq.wrl
 

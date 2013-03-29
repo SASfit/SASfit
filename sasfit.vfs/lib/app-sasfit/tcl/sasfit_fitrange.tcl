@@ -46,244 +46,175 @@ proc set_limitsCmd {} {
 	}
 }
 
-#------------------------------------------------------------------------------
 # menu for defining fit range of the fit parameter of the size distribution
-#
-proc SDFitRangeCmd {} {
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   global sasfit
-   global AnalytPar
-   global tmpAnalytPar
-   global actualAnalytPar
-   global tmpactualAnalytPar
 
-cp_arr actualAnalytPar tmpactualAnalytPar
-if {[winfo exists .analytical.sdfitrange]} {destroy .analytical.sdfitrange}
-toplevel .analytical.sdfitrange
-set w .analytical.sdfitrange
+proc fitRangeCmd { type } {
+cp_arr ::actualAnalytPar ::tmpactualAnalytPar
+set lowerType [string tolower $type]
+set w .analytical.${lowerType}fitrange
+if {[winfo exists $w]} {destroy $w}
+toplevel $w
 wm geometry $w
-wm title $w "fit range of size distribution parameters"
+set detailText ""
+set p ""
+switch $type {
+        SD {
+                set p "a"
+                set detailText "size distribution"
+        }
+        FF {
+                set p "l"
+                set detailText "form factor"
+        }
+        SQ {
+                set p "s"
+                set detailText "structure factor"
+        }
+        default {
+                tk_messageBox -parent $w -icon error \
+                    -message "fitRangeCmd() called with wrong type '$type'!"\
+                    -title "Runtime Error"
+                return
+        }
+}
+wm title $w [format "fit range of %s parameters" $detailText]
+bind $w <Escape> "destroy $w"
 #
 # label of columns
 #
 frame $w.layer
+frame $w.headerFrame
 frame $w.tl
 pack $w.layer -fill y -expand 1 -padx 2m -pady 2m
+pack $w.headerFrame -in $w.layer -fill x -expand 1
 pack $w.tl -in $w.layer -fill x -expand 1
 label $w.tl.text1 -text "minimum" -width 17
 label $w.tl.text2 -text "maximum" -width 17
 label $w.tl.text3 -text "on/off"
+label $w.headerFrame.text -justify left
+pack $w.headerFrame.text -side left -in $w.headerFrame
 pack $w.tl.text3 $w.tl.text2 $w.tl.text1 -side right -fill x -in $w.tl
-#
+
 # entry fields for fit 
-#
-for {set i 1} {$i <= $::tmpactualAnalytPar(SD,param_count) } {incr i} {
-	frame $w.a$i
-	pack $w.a$i -in $w.layer -fill x -expand 1
-	label $w.a$i.label -textvariable tmpactualAnalytPar(SD,a$i,label)
-	entry $w.a$i.min -textvariable tmpactualAnalytPar(SD,a$i,min) \
+
+for {set i 1} {$i <= $::tmpactualAnalytPar($type,param_count) } {incr i} {
+	frame $w.$p$i
+	pack $w.$p$i -in $w.layer -fill x -expand 1
+	label $w.$p$i.label -textvariable ::tmpactualAnalytPar($type,$p$i,label)
+	entry $w.$p$i.min -textvariable ::tmpactualAnalytPar($type,$p$i,min) \
 	      -relief sunken -width 17 -highlightthickness 0
-	entry $w.a$i.max -textvariable tmpactualAnalytPar(SD,a$i,max) \
+        bind $w.$p$i.min <FocusOut> "verifyValue ::tmpactualAnalytPar $w $type $p$i minimum"
+        bind $w.$p$i.min <Tab> "focus $w.$p$i.max\nbreak"
+	entry $w.$p$i.max -textvariable ::tmpactualAnalytPar($type,$p$i,max) \
 	      -relief sunken -width 17 -highlightthickness 0
-	eval checkbutton $w.a$i.limits "-variable tmpactualAnalytPar(SD,a$i,limits) \
+        bind $w.$p$i.max <FocusOut> "verifyValue ::tmpactualAnalytPar $w $type $p$i maximum"
+        bind $w.$p$i.max <Tab> "focus $w.$p$i.limits\nbreak"
+        bind $w.$p$i.max <Shift-Tab> "focus $w.$p$i.min\nbreak"
+	eval checkbutton $w.$p$i.limits "-variable ::tmpactualAnalytPar($type,$p$i,limits) \
 	      $::radio_check_button_prop -highlightthickness 0 \
-	      -command { cb_cmd tmpactualAnalytPar SD a $i }"
-	if {$tmpactualAnalytPar(SD,a$i,limits) == 0} {
-	   .analytical.sdfitrange.a$i.min configure -state disabled
-	   .analytical.sdfitrange.a$i.min configure -foreground #a3a3a3
-	   .analytical.sdfitrange.a$i.max configure -state disabled
-	   .analytical.sdfitrange.a$i.max configure -foreground #a3a3a3
-	} else {
-	   .analytical.sdfitrange.a$i.min configure -state normal
-	   .analytical.sdfitrange.a$i.min configure -foreground Black
-	   .analytical.sdfitrange.a$i.max configure -state normal
-	   .analytical.sdfitrange.a$i.max configure -foreground Black
-	}
-	pack $w.a$i.limits $w.a$i.max $w.a$i.min $w.a$i.label \
-	     -side right -in $w.a$i -padx 1m -pady 1m 
+	      -command { cb_cmd ::tmpactualAnalytPar $type $p $i }"
+        bind $w.$p$i.limits <Tab> "focusWin $w.$p[expr $i+1].min\nbreak"
+        cb_cmd ::tmpactualAnalytPar $type $p $i
+	pack $w.$p$i.limits $w.$p$i.max $w.$p$i.min $w.$p$i.label \
+	     -side right -in $w.$p$i -padx 1m -pady 1m 
 }
 
-#
 # buttons OK, Apply and Cancel
-#
+
 frame $w.buttons -relief groove -borderwidth 1
 pack $w.buttons -fill x
 button $w.buttons.ok -text "OK" -highlightthickness 0 \
-   -command {
-	for {set i 1} {$i <= $::tmpactualAnalytPar(SD,param_count) } {incr i} {
-		set actualAnalytPar(SD,a$i,limits) $tmpactualAnalytPar(SD,a$i,limits)
-		set actualAnalytPar(SD,a$i,min)    $tmpactualAnalytPar(SD,a$i,min)
-		set actualAnalytPar(SD,a$i,max)    $tmpactualAnalytPar(SD,a$i,max)
-	}
-	destroy .analytical.sdfitrange
-   }
+   -command "setLimits ::actualAnalytPar ::tmpactualAnalytPar $type $p true"
 button $w.buttons.apply -text "Apply" -highlightthickness 0 \
-   -command {
-	for {set i 1} {$i <= $::tmpactualAnalytPar(SD,param_count) } {incr i} {
-		set actualAnalytPar(SD,a$i,limits) $tmpactualAnalytPar(SD,a$i,limits)
-		set actualAnalytPar(SD,a$i,min)    $tmpactualAnalytPar(SD,a$i,min)
-		set actualAnalytPar(SD,a$i,max)    $tmpactualAnalytPar(SD,a$i,max)
-	}
-   }
+   -command "setLimits ::actualAnalytPar ::tmpactualAnalytPar $type $p false"
 button $w.buttons.cancel -text "Cancel" -highlightthickness 0 \
-       -command { destroy .analytical.sdfitrange }
+       -command "destroy $w"
 button $w.buttons.help -text "Help" -highlightthickness 0 \
        -command { }
 pack $w.buttons.ok $w.buttons.apply $w.buttons.cancel \
      -in $w.buttons -padx 2m -pady 2m -side left
 pack $w.buttons.help -in $w.buttons -padx 1m -pady 1 -side right
+
+# set informative header text
+update
+$w.headerFrame.text configure -wraplength [winfo width $w] -text [headerText]
 }
 
-#------------------------------------------------------------------------------
-# menu for defining fit range of the fit parameter of the form factor
-#
-proc FFFitRangeCmd {} {
-#^^^^^^^^^^^^^^^^^^^^^^
-   global sasfit
-   global AnalytPar
-   global tmpAnalytPar
-   global actualAnalytPar
-   global tmpactualAnalytPar
-
-cp_arr actualAnalytPar tmpactualAnalytPar
-if {[winfo exists .analytical.fffitrange]} {destroy .analytical.fffitrange}
-toplevel .analytical.fffitrange
-set w .analytical.fffitrange
-wm geometry $w
-wm title $w "fit range of form factor parameters"
-#
-# label of columns
-#
-frame $w.layer
-frame $w.tl
-pack $w.layer -fill y -expand 1 -padx 2m -pady 2m
-pack $w.tl -in $w.layer -fill x -expand 1
-label $w.tl.text1 -text "minimum" -width 17
-label $w.tl.text2 -text "maximum" -width 17
-label $w.tl.text3 -text "on/off"
-pack $w.tl.text3 $w.tl.text2 $w.tl.text1 -side right -fill x -in $w.tl
-#
-# entry fields for fit
-#
-for {set i 1} {$i <= $::tmpactualAnalytPar(FF,param_count) } {incr i} {
-	frame $w.l$i
-	pack $w.l$i -in $w.layer -fill x -expand 1
-	label $w.l$i.label -textvariable tmpactualAnalytPar(FF,l$i,label)
-	entry $w.l$i.min -textvariable tmpactualAnalytPar(FF,l$i,min) \
-	      -relief sunken -width 17 -highlightthickness 0
-	entry $w.l$i.max -textvariable tmpactualAnalytPar(FF,l$i,max) \
-	      -relief sunken -width 17 -highlightthickness 0
-	eval checkbutton $w.l$i.limits "-variable tmpactualAnalytPar(FF,l$i,limits) \
-	      $::radio_check_button_prop -highlightthickness 0  \
-	      -command { cb_cmd tmpactualAnalytPar FF l $i }"
-	$w.l$i.limits invoke
-	$w.l$i.limits invoke
-	pack $w.l$i.limits $w.l$i.max $w.l$i.min $w.l$i.label \
-	     -side right -in $w.l$i -padx 1m -pady 1m
+proc focusWin { window } {
+        if { ! [winfo exists $window] } {
+                return
+        }
+        focus $window
 }
 
-#
-# buttons OK, Apply and Cancel
-#
-frame $w.buttons -relief groove -borderwidth 1
-pack $w.buttons -fill x
-button $w.buttons.ok -text "OK" -highlightthickness 0 \
-   -command {
-	for {set i 1} {$i <= $::tmpactualAnalytPar(FF,param_count) } {incr i} {
-		set actualAnalytPar(FF,l$i,limits) $tmpactualAnalytPar(FF,l$i,limits)
-		set actualAnalytPar(FF,l$i,min)    $tmpactualAnalytPar(FF,l$i,min)
-		set actualAnalytPar(FF,l$i,max)    $tmpactualAnalytPar(FF,l$i,max)
-	}
-	destroy .analytical.fffitrange
-   }
-button $w.buttons.apply -text "Apply" -highlightthickness 0 \
-   -command {
-	for {set i 1} {$i <= $::tmpactualAnalytPar(FF,param_count) } {incr i} {
-		set actualAnalytPar(FF,l$i,limits) $tmpactualAnalytPar(FF,l$i,limits)
-		set actualAnalytPar(FF,l$i,min)    $tmpactualAnalytPar(FF,l$i,min)
-		set actualAnalytPar(FF,l$i,max)    $tmpactualAnalytPar(FF,l$i,max)
-	}
-   }
-button $w.buttons.cancel -text "Cancel" -highlightthickness 0 \
-       -command { destroy .analytical.fffitrange }
-pack $w.buttons.ok $w.buttons.apply $w.buttons.cancel \
-     -in $w.buttons -padx 2m -pady 2m -side left
+proc headerText { } {
+        return [join [list \
+                "Please set the range limits to physical reasonable values! " \
+                "The range (max-min) should be much smaller than 1e16. " \
+                "\nThe Parameter range is implemented by projecting into " \
+                "\[0, 1\] which gets numerically unstable for ranges near " \
+                "inversed machine precision EPS ~1e-16."]]
 }
 
-#------------------------------------------------------------------------------
-# menu for defining fit range of the fit parameter of the form factor
-#
-proc SQFitRangeCmd {} {
-#^^^^^^^^^^^^^^^^^^^^^^
-   global sasfit
-   global AnalytPar
-   global tmpAnalytPar
-   global actualAnalytPar
-   global tmpactualAnalytPar
-
-cp_arr actualAnalytPar tmpactualAnalytPar
-if {[winfo exists .analytical.sqfitrange]} {destroy .analytical.sqfitrange}
-toplevel .analytical.sqfitrange
-set w .analytical.sqfitrange
-wm geometry $w
-wm title $w "fit range of structure factor parameters"
-#
-# label of columns
-#
-frame $w.layer
-frame $w.tl
-pack $w.layer -fill y -expand 1 -padx 2m -pady 2m
-pack $w.tl -in $w.layer -fill x -expand 1
-label $w.tl.text1 -text "minimum" -width 17
-label $w.tl.text2 -text "maximum" -width 17
-label $w.tl.text3 -text "on/off"
-pack $w.tl.text3 $w.tl.text2 $w.tl.text1 -side right -fill x -in $w.tl
-#
-# entry fields for fit
-#
-for {set i 1} {$i <= $::tmpactualAnalytPar(SQ,param_count) } {incr i} {
-	frame $w.s$i
-	pack $w.s$i -in $w.layer -fill x -expand 1
-	label $w.s$i.label -textvariable tmpactualAnalytPar(SQ,s$i,label)
-	entry $w.s$i.min -textvariable tmpactualAnalytPar(SQ,s$i,min) \
-	      -relief sunken -width 17 -highlightthickness 0
-	entry $w.s$i.max -textvariable tmpactualAnalytPar(SQ,s$i,max) \
-	      -relief sunken -width 17 -highlightthickness 0
-	eval checkbutton $w.s$i.limits "-variable tmpactualAnalytPar(SQ,s$i,limits) \
-	      $::radio_check_button_prop -highlightthickness 0  \
-	      -command { cb_cmd tmpactualAnalytPar SQ s $i }"
-	$w.s$i.limits invoke
-	$w.s$i.limits invoke
-	pack $w.s$i.limits $w.s$i.max $w.s$i.min $w.s$i.label \
-	     -side right -in $w.s$i -padx 1m -pady 1m
+proc setLimits { actap tmpap type p closeWindow } {
+	upvar $actap aap
+	upvar $tmpap tap
+        set lt [string tolower $type]
+        set window .analytical.${lt}fitrange
+	for {set i 1} {$i <= $tap($type,param_count) } {incr i} {
+                if { ! [verifyRange $tmpap $window $type $p$i] } {
+                        return
+                }
+		set aap($type,$p$i,limits) $tap($type,$p$i,limits)
+		set aap($type,$p$i,min)    $tap($type,$p$i,min)
+		set aap($type,$p$i,max)    $tap($type,$p$i,max)
+	}
+        set closeWindow [string tolower $closeWindow]
+        if { $closeWindow == "true" } {
+        	destroy $window
+        }
 }
 
-#
-# buttons OK, Apply and Cancel
-#
-frame $w.buttons -relief groove -borderwidth 1
-pack $w.buttons -fill x
-button $w.buttons.ok -text "OK" -highlightthickness 0 \
-   -command {
-	for {set i 1} {$i <= $::tmpactualAnalytPar(SQ,param_count) } {incr i} {
-		set actualAnalytPar(SQ,s$i,limits) $tmpactualAnalytPar(SQ,s$i,limits)
-		set actualAnalytPar(SQ,s$i,min)    $tmpactualAnalytPar(SQ,s$i,min)
-		set actualAnalytPar(SQ,s$i,max)    $tmpactualAnalytPar(SQ,s$i,max)
-	}
-	destroy .analytical.sqfitrange
-   }
-button $w.buttons.apply -text "Apply" -highlightthickness 0 \
-   -command {
-	for {set i 1} {$i <= $::tmpactualAnalytPar(SQ,param_count) } {incr i} {
-		set actualAnalytPar(SQ,s$i,limits) $tmpactualAnalytPar(SQ,s$i,limits)
-		set actualAnalytPar(SQ,s$i,min)    $tmpactualAnalytPar(SQ,s$i,min)
-		set actualAnalytPar(SQ,s$i,max)    $tmpactualAnalytPar(SQ,s$i,max)
-	}
-   }
-button $w.buttons.cancel -text "Cancel" -highlightthickness 0 \
-       -command { destroy .analytical.sqfitrange }
-pack $w.buttons.ok $w.buttons.apply $w.buttons.cancel \
-     -in $w.buttons -padx 2m -pady 2m -side left
+proc rangeError { w msg } {
+        tk_messageBox -parent $w -icon error \
+                -message $msg -title "Range Limit Error"
+}
+
+proc verifyValue { tmpap window type par which } {
+        upvar $tmpap tap
+        set wh [string range $which 0 2]
+        set value $tap($type,$par,$wh)
+        set name [string trimright $tap($type,$par,label) "= "]
+        if { ! [string is double -strict $value] } {
+                rangeError $window [join [list \
+                        "Please enter a decimal number for the " \
+                        "<$which> of <$name>!"]]
+                focus $window.$par.$wh
+                return 0
+        }
+        return 1
+}
+
+proc verifyRange { tmpap window type par } {
+        upvar $tmpap tap
+        if { "[winfo class [focus]]" == "Entry" } {
+                if { ! ([verifyValue $tmpap $window $type $par minimum] &&
+                        [verifyValue $tmpap $window $type $par maximum]) } {
+                        return 0
+                }
+        }
+        set minValue $tap($type,$par,min)
+        set maxValue $tap($type,$par,max)
+        set width [expr $maxValue - $minValue]
+        puts "range verify: $minValue $maxValue $width"
+        if { $tap($type,$par,limits) == 1 && [expr $width > 1e16] } {
+                set name [string trimright $tap($type,$par,label) "= "]
+                rangeError $window [format \
+                        "Parameter <%s> range %g:\n%s"\
+                        $name $width [headerText]]
+                return 0
+        }
+        return 1
 }
 
 proc cb_cmd { tmpap type p i } {
@@ -300,4 +231,13 @@ proc cb_cmd { tmpap type p i } {
 	     .analytical.${lt}fitrange.$p$i.max configure -state normal
 	     .analytical.${lt}fitrange.$p$i.max configure -foreground Black
 	}
+}
+
+proc verifyFloat { tmpap idx newValue } {
+	upvar $tmpap ap
+        if { ! [string is double $newValue] } {
+                puts "string not float '$newValue'"
+                return false
+        }
+        return true
 }
