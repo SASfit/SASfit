@@ -31,7 +31,10 @@ for name in $(find . -name "CMakeCache.txt";
               find . -name "Makefile";
               find . -name "CMakeFiles";);do
 
-	if echo $name | grep -qF '.hg'; then
+	if echo "$name" | grep -qF '.hg'; then
+		continue;
+	fi;
+	if echo "$name" | grep -qF 'saskit'; then
 		continue;
 	fi;
 	
