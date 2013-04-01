@@ -13051,6 +13051,14 @@ proc analytical_widgets_bottom { w simulate isGlobal
 		button $w.adj.calc -text "Apply" -highlightthickness 0 \
 			-padx 1m -pady 1m
 		bind $w <KeyPress-Return> "$w.adj.calc invoke"
+                bind $w <Prior> "$w.whichSD.next invoke"
+                bind $w <Next> "$w.whichSD.previous invoke"
+                bind $w <Insert> "$w.whichSD.add invoke"
+                bind $w <Delete> "$w.whichSD.delete invoke"
+	        bind $w <Home> {$::nomenu activate 0
+	                        $::nomenu invoke 0}
+                bind $w <End> {$::nomenu activate last
+	                        $::nomenu invoke last}
 		setTooltip $w.adj.calc "calculate theoretical curve"
 		button $w.adj.step -text "Step" -highlightthickness 0  \
 			-padx 1m -pady 1m
@@ -13071,6 +13079,14 @@ proc analytical_widgets_bottom { w simulate isGlobal
 		button $w.adj.calc -text "Simulate" -highlightthickness 0 \
 			-padx 1m -pady 1m
 		bind $w <KeyPress-Return> "$w.adj.calc invoke"
+                bind $w <Prior> "$w.whichSD.next invoke"
+                bind $w <Next> "$w.whichSD.previous invoke"
+                bind $w <Insert> "$w.whichSD.add invoke"
+                bind $w <Delete> "$w.whichSD.delete invoke"
+                bind $w <Home> {$::nomenu activate 0
+	                        $::nomenu invoke 0}
+                bind $w <End> {$::nomenu activate last
+	                        $::nomenu invoke last}
 		setTooltip $w.adj.calc "calculate theoretical curve"
 		label $w.adj.qmintxt -text Qmin: -width 5
 	        if {$isGlobal} {
