@@ -1,4 +1,5 @@
 0.93.4, 2011-??-??
+- added key bindings <Home>, <End>, <PgUp>, <PgDn>, <Insert>, <Delete> for going to first/last/next/previous entry or to add and remove an entry  
 - adding plugin with a series of form factor for strongly anisotropic structures 
   with local planar and local cylindrical shapes
 - adding a new plugin form factor for spheres with fuzzy interfaces. The existing form factors 
