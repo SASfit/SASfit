@@ -1,4 +1,5 @@
 0.93.4, 2011-??-??
+- Renamed HMI format into BerSANS format and got it working. Also removed all masked data points (negative errors).
 - added key bindings <Home>, <End>, <PgUp>, <PgDn>, <Insert>, <Delete> for going to first/last/next/previous entry or to add and remove an entry  
 - adding plugin with a series of form factor for strongly anisotropic structures 
   with local planar and local cylindrical shapes

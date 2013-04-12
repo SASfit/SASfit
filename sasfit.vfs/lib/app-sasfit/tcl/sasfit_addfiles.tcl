@@ -301,7 +301,7 @@ frame .openfile.layout2
 frame .openfile.layout3
 
 set format [tk_optionMenu .openfile.layout1.format tmpsasfit(actualdatatype) \
-                           Ascii HMI]
+                           Ascii BerSANS]
 .openfile.layout1.format configure -highlightthickness 0
 label .openfile.layout1.label -text "File Format:" -highlightthickness 0
 pack .openfile.layout1.label .openfile.layout1.format -side left -fill x
@@ -784,7 +784,7 @@ set w .addfile.lay1
 frame .addfile.layout3
 
 set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) \
-                           Ascii HMI]
+                           Ascii BerSANS]
 $w.layout1.format configure -highlightthickness 0
 label $w.layout1.label -text "File Format:" \
       -width 12 -highlightthickness 0
