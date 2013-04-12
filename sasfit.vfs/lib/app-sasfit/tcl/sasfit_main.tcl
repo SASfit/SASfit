@@ -272,8 +272,21 @@ set sasfit(res)       {}
 set sasfit(res,file)  {}
 set sasfit(res,calc)  {}
 set sasfit(graph)  "123" 
-set sasfit(datatypes) { { Ascii  ".*"      } \
-                        { All    "*"         } }
+switch $::tcl_platform(platform) {
+      windows {
+	  set sasfit(datatypes) { { Ascii  ".*"      } \
+		                  { BerSANS ".*"     } \
+		                  { All    "*"       } }
+      }
+      unix {
+	  set sasfit(datatypes) { { Ascii  ".*"         } \
+		                  { BerSANS ".\[0-9\]*" } \
+                                  { All    "*"          } }
+      }
+   }
+#set sasfit(datatypes) { { Ascii  ".*"      } \
+#                        { BerSANS ".*" } \
+#                        { All    "*"         } }
 set sasfit(actualdatatype) Ascii
 #set sasfit(filename)       [list "$sasfit(datadir)/test.dat"]
 set sasfit(filename)       {}
@@ -848,7 +861,7 @@ proc ReadFileCmd {sasfitarray args} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # Read small angle scattering data file. Supported formats are
-# ASCII, HMI
+# ASCII, BerSANS
 #
 upvar $sasfitarray ssasfit
 global ASCIIData
@@ -873,7 +886,7 @@ if { [file isfile $ssasfit(filename) ] } {
 		set ssasfit(res,file)   $ASCIIData(res)
              }
 	    }
-      HMI   {
+      BerSANS   {
              read_HMI $ssasfit(filename) HMIData
              set Q_IQ_E [HMIgetItem HMIData Counts SANSDIso y]
              set npoints [llength [lindex $Q_IQ_E 0]]
@@ -908,7 +921,6 @@ if {[llength $args] == 0} {
 
    }
 }
-
 }
 return $error
 }
@@ -1068,18 +1080,18 @@ set Name $tmpName
 if {[file exists [lindex $Name 0]]} {
 	set sasfit(datadir) "[file dirname [lindex $Name 0]]"
 }
-foreach t $sasfit(datatypes) {
-   if {  [string compare [lindex $t 0] All] != 0 } {
-      if { [string compare -nocase [lindex $t 1] [file extension $Name] ] } {
-         set Type [lindex $t 0]
-         set sasfit(actualdatatype) $Type
-         return
-      }
-   } else { 
-      set Type Ascii
-      set sasfit(actualdatatype) $Type
-   }
-}
+#foreach t $sasfit(datatypes) {
+#   if {  [string compare [lindex $t 0] All] != 0 } {
+#      if { [string compare -nocase [lindex $t 1] [file extension $Name] ] } {
+#         set Type [lindex $t 0]
+#         set sasfit(actualdatatype) $Type
+#         return
+#      }
+#   } else { 
+#      set Type [lindex $t 0]
+#      set sasfit(actualdatatype) $Type
+#   }
+#}
 set sasfit(actualdatatype) $Type
 }
 
@@ -1325,7 +1337,7 @@ proc ReadOptionsCmd {} {
 	global sasfit
 	switch $sasfit(actualdatatype) {
 		Ascii {AsciiOptionsCmd}
-		HMI   {HMIOptionsCmd}
+		BerSANS {HMIOptionsCmd}
 	}
 }
 
@@ -1348,7 +1360,7 @@ proc NewCmd {} {
 	frame .openfile.layout2
 	frame .openfile.layout3
 
-	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii HMI]
+	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii BerSANS]
 
 	.openfile.layout1.format configure -highlightthickness 0
 	label .openfile.layout1.label -text "File Format:" -highlightthickness 0
@@ -1427,6 +1439,7 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set tmparr(res) [lrange $res $firsti $lasti]
    set tmparr(res,file) [lrange $resfile $firsti $lasti]
    set tmparr(res,calc) [lrange $rescalc $firsti $lasti]
+puts "Hallo [llength $tmparr(Q)]"
    dr data_redu $j tmparr [llength $tmparr(Q)] \
       $tmparr(Q) $tmparr(I) $tmparr(DI) $tmparr(res) $tmparr(res,file) $tmparr(res,calc)
 
@@ -1745,7 +1758,7 @@ proc MergeCmd {} {
 	pack  .addfile.lay2 -fill both -expand yes
 	frame .addfile.layout3
 
-	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii HMI]
+	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii BerSANS]
 
 	$w.layout1.format configure -highlightthickness 0
 	label $w.layout1.label -text "File Format:" \
@@ -1763,7 +1776,7 @@ proc MergeCmd {} {
 		  set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
                   if {[string equal "$tmpval" "no"]
 		  } {
-                     lappend tmpsasfit(file,Q)        $ASCIIData(Q)
+                     lappend tmpsasfit(file,Q)        $tmpsasfit(Q)
                      lappend tmpsasfit(file,I)        $tmpsasfit(I)
                      lappend tmpsasfit(file,DI)       $tmpsasfit(DI)
                      lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
@@ -1775,7 +1788,7 @@ proc MergeCmd {} {
 						     $resolution(l2)      \
 						     $resolution(d)       \
 						     $resolution(Dd)      \
-						     $ASCIIData(Q)       \
+						     $tmpsasfit(Q)       \
 						 ]
                      lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
 
@@ -2794,7 +2807,7 @@ proc sasfit_menubar_build { p } {
       $p.file.menu add command -label "Single Data Set..." \
                                  -underline 1 \
                                  -command MergeCmd
-#      setTooltip $p.file.menu -index "Open..." "Reads a data file\n(ASCII,HMI)"
+#      setTooltip $p.file.menu -index "Open..." "Reads a data file\n(ASCII,BerSANS)"
 
          $p.file.menu add command -label "Multiple Data Sets..." \
                                     -underline 0 \

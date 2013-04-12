@@ -1673,10 +1673,13 @@ if {![string compare $BlockName Counts] && \
 # lines which cannot be converted are ignored (no error message)
 #
       if {$e_ok && $x_ok && $y_ok} {
-         lappend Q          $x
-         lappend Intensity  $y
-         lappend Error      $e
-         lappend Resolution $res
+# lines with non-positive error bars are ignored
+	  if {$e > 0} {
+	      lappend Q          $x
+	      lappend Intensity  $y
+	      lappend Error      $e
+	      lappend Resolution $res
+	  }
       }
    }
    set ScattData {}
