@@ -64,6 +64,7 @@ struct sasfit_gsl_multifit_CData {
 
 
 	void float_to_string(char *, float);
+	void int_to_string(char *, int);
 	float **matrix(int, int, int, int);
 	float **convert_matrix(float *, int, int, int, int);
 	double **dmatrix(int, int, int, int);
@@ -75,7 +76,7 @@ struct sasfit_gsl_multifit_CData {
 	void free_submatrix(float **, int, int, int, int);
 	void free_convert_matrix(float **, int, int, int, int);
 
-	void fit(Tcl_Interp *, float *, float *, int, float *, int, float *, 
+	void fit(Tcl_Interp *, float *, float *, int, float *, int, float *,
 	         float *, float *, float *, float *, float *, bool *);
 	float gammq(Tcl_Interp *, float, float, bool *);
 	void gcf(Tcl_Interp *, float *, float, float, float *, bool *);
@@ -113,7 +114,7 @@ struct sasfit_gsl_multifit_CData {
 	float SASFITtrapzdIQ(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, int, bool *);
 	float SASFITtrapzdIQglobal(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
 	float SASFITtrapzdIQ_gsl_global(Tcl_Interp	*, float, float, float, float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
-    
+
 	void SASFITpolint(Tcl_Interp *, float *, float *, int, float, float *, float *, bool *);
 
 	float SASFITqrombIQ(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, bool *);
@@ -123,26 +124,26 @@ struct sasfit_gsl_multifit_CData {
 	void SASFITcovsrt(Tcl_Interp *, float **, int, int *, int, bool *);
 	void SASFITgaussj(Tcl_Interp *, float **, int, float **, int, bool *);
 
-	void SASFITmrqcof(Tcl_Interp *, float *, float *, float *, float *, float *, float *, int, 
-		float *, int *, int, int, sasfit_analytpar *, int, int, 
-		float **, float *, float *, 
+	void SASFITmrqcof(Tcl_Interp *, float *, float *, float *, float *, float *, float *, int,
+		float *, int *, int, int, sasfit_analytpar *, int, int,
+		float **, float *, float *,
 		void (*)(), bool *);
 
-	void SASFITmrqcofGlobal(Tcl_Interp *, float **, float **, float **, float **, float **, float **, int *, 
-		float *, int *, int, int, sasfit_analytpar *, sasfit_commonpar *, int, int, 
-		float **, float *, float *, 
+	void SASFITmrqcofGlobal(Tcl_Interp *, float **, float **, float **, float **, float **, float **, int *,
+		float *, int *, int, int, sasfit_analytpar *, sasfit_commonpar *, int, int,
+		float **, float *, float *,
 		void (*)(), bool *);
 
-	void SASFIT2mrqcof(Tcl_Interp *, float *, float *, float *, int, 
+	void SASFIT2mrqcof(Tcl_Interp *, float *, float *, float *, int,
 		float *, int, int *, int, float **, float *, float *, void (*)(), bool *);
-	void SASFIT2mrqmin(Tcl_Interp *, float *, float *, float *, int, 
-		float *, int, int *, int, float **, float **, float *, 
+	void SASFIT2mrqmin(Tcl_Interp *, float *, float *, float *, int,
+		float *, int, int *, int, float **, float **, float *,
 		void (*)(), float *, bool *);
 	void SASFITmrqminGlobal(Tcl_Interp *, float **, float **, float **, float **, float **, float **,
-		int *, int, sasfit_analytpar *, sasfit_commonpar *, int, struct sasfit_CData *, 
+		int *, int, sasfit_analytpar *, sasfit_commonpar *, int, struct sasfit_CData *,
 		float *, void (*)(), float *, bool *);
 	void SASFITmrqmin(Tcl_Interp *, float *, float *, float *, float *, float *, float *,
-		int, int, sasfit_analytpar *, int, struct sasfit_CData *, 
+		int, int, sasfit_analytpar *, int, struct sasfit_CData *,
 		float *, void (*)(), float *, bool *);
 	bool FFtypestr_equal(Tcl_Interp *, char *, char *);
 

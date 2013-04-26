@@ -11975,28 +11975,75 @@ pack $w.dataset
 
 if {[string equal $::sasfit(simorfit) "fit"]
 } {
+	frame $w.dataset.chisq
+	pack $w.dataset.chisq -fill x -anchor w
+	frame $w.dataset.r
+	pack $w.dataset.r -fill x -anchor w 
 	set wds $w.dataset
-	label $wds.chisqrlabel_l -text "chisqr:" -anchor e
+	if {![info exists ::AnalytPar(chisq)]} { 
+		set ::AnalytPar(chisq) -1.0 }
+	label $wds.chisqrlabel_l -text "chisqr:" -anchor e -width 12
 	label $wds.chisqrlabel_v \
 	-textvariable ::AnalytPar(chisq) \
 	-width 12 -anchor w
 
-	if {![info exists ::AnalytPar(chisqr_rel)]} { 
-		set ::AnalytPar(chisqr_rel) -1.0 }
-	label $wds.chisqr_rel_lbl -text "R value:" -anchor e
-	label $wds.chisqr_rel_val -width 12 -anchor w \
-		-textvariable ::AnalytPar(chisqr_rel)
+	if {![info exists ::AnalytPar(reducedchisq)]} { 
+		set ::AnalytPar(reducedchisq) -1.0 }
+	label $wds.rchisqrlabel_l -text "red. chisqr:" -anchor e -width 12
+	label $wds.rchisqrlabel_v \
+	-textvariable ::AnalytPar(reducedchisq) \
+	-width 12 -anchor w
 
-	if {![info exists ::AnalytPar(chisqr_relerr)]} { 
-		set ::AnalytPar(chisqr_relerr) -1.0 }
-	label $wds.chisqr_relerr_lbl -text "R value (incl. error, EXP.):" -anchor e
-	label $wds.chisqr_relerr_val -width 12 -anchor w \
-		-textvariable ::AnalytPar(chisqr_relerr)
+	if {![info exists ::AnalytPar(ndata)]} { 
+		set ::AnalytPar(ndata) -1.0 }
+	label $wds.ndatalabel_l -text "data points:" -anchor e -width 12
+	label $wds.ndatalabel_v \
+	-textvariable ::AnalytPar(ndata) \
+	-width 12 -anchor w
 
+	if {![info exists ::AnalytPar(mfit)]} { 
+		set ::AnalytPar(mfit) -1.0 }
+	label $wds.mfitlabel_l -text "fit parameters:" -anchor e -width 12
+	label $wds.mfitlabel_v \
+	-textvariable ::AnalytPar(mfit) \
+	-width 12 -anchor w
+	
+	if {![info exists ::AnalytPar(R)]} { 
+		set ::AnalytPar(R) -1.0 }
+	label $wds.rvalue_lbl -text "R value:" -anchor e -width 12
+	label $wds.rvalue_val -width 12 -anchor w \
+		-textvariable ::AnalytPar(R)
+
+	if {![info exists ::AnalytPar(wR)]} { 
+		set ::AnalytPar(wR) -1.0 }
+	label $wds.wrvalue_lbl -text "w. R value:" -anchor e -width 12
+	label $wds.wrvalue_val -width 12 -anchor w \
+		-textvariable ::AnalytPar(wR)
+
+	if {![info exists ::AnalytPar(Q)]} { 
+		set ::AnalytPar(Q) -1.0 }
+	label $wds.qvalue_lbl -text "Q factor:" -anchor e -width 12
+	label $wds.qvalue_val -width 12 -anchor w \
+		-textvariable ::AnalytPar(Q)
+
+	if {![info exists ::AnalytPar(varianceOFfit)]} { 
+		set ::AnalytPar(varianceOFfit) -1.0 }
+	label $wds.svalue_lbl -text "variance of fit:" -anchor e -width 12
+	label $wds.svalue_val -width 12 -anchor w \
+		-textvariable ::AnalytPar(varianceOFfit)
+		
 	pack $wds.chisqrlabel_l $wds.chisqrlabel_v \
-		$wds.chisqr_rel_lbl $wds.chisqr_rel_val \
-		$wds.chisqr_relerr_lbl $wds.chisqr_relerr_val \
-		-fill x -anchor w -padx 1m -pady 1 -side left
+		$wds.rchisqrlabel_l $wds.rchisqrlabel_v \
+		$wds.ndatalabel_l $wds.ndatalabel_v \
+		$wds.mfitlabel_l $wds.mfitlabel_v \
+		-fill x -anchor w -padx 1m -pady 1 -side left \
+		-in $wds.chisq
+	pack 	$wds.rvalue_lbl $wds.rvalue_val \
+		$wds.wrvalue_lbl $wds.wrvalue_val \
+		$wds.qvalue_lbl $wds.qvalue_val \
+		$wds.svalue_lbl $wds.svalue_val \
+		-fill x -anchor w -padx 1m -pady 1 -side left \
+		-in $wds.r
 }
 
 #
@@ -12673,6 +12720,7 @@ if {[winfo exists $w.adj.step]} {
 		    }
                     set ::stepfit(itst) 0
                     set ::stepfit(k)    0
+                    set ::stepfit(chisq) $::AnalytPar(chisq)
                     set ::stepfit(ochisq) $::stepfit(chisq)
                  } elseif {$alambda == 0} {
                     set alambda -1
@@ -12680,6 +12728,8 @@ if {[winfo exists $w.adj.step]} {
                     set IthIres [sasfit_iqfit ::AnalytPar  \
                                     [list $Q $I $DI] ::stepfit \
                             ]
+                    
+                    set ::stepfit(chisq) $::AnalytPar(chisq)
                     set ::stepfit(itst) 0
                     set ::stepfit(k)    0
                     set ::stepfit(ochisq) $::stepfit(chisq)
@@ -12698,6 +12748,7 @@ if {[winfo exists $w.adj.step]} {
                                        ::stepfit \
                                ]
 		    }
+                    set ::stepfit(chisq) $::AnalytPar(chisq)
                     if {$::stepfit(chisq) > $::stepfit(ochisq)} {
                        set ::stepfit(itst) 0
                     } elseif {[expr abs($::stepfit(chisq)- \
@@ -12721,6 +12772,7 @@ if {[winfo exists $w.adj.step]} {
                                        ::stepfit \
                                ]
 		    }
+                    set ::stepfit(chisq) $::AnalytPar(chisq)
                  }
                  set alambda $::AnalytPar(alambda)
                  puts "alambda = $alambda,  chisq = $::stepfit(chisq)"

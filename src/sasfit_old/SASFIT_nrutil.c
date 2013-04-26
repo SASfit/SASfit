@@ -58,6 +58,17 @@ char *sBuffer;
 	return;
 }
 
+void int_to_string(sBuffer,value)
+int value;
+char *sBuffer;
+{
+	char *stopBuffer;
+	sprintf(sBuffer,"%ld",value);
+	value = strtol(sBuffer,&stopBuffer,10);
+	sprintf(sBuffer,"%ld",value);
+	return;
+}
+
 
 void nrerror(error_text)
 char error_text[];
@@ -121,7 +132,7 @@ nrl = 0; ncl=0;
 		if (!m[i]) nrerror("allocation failure 2 in matrix()");
 		m[i] -= ncl;
 	}
-        for (i=nrl;i<=nrh;i++) 
+        for (i=nrl;i<=nrh;i++)
             for (k=ncl;k<=nch;k++) m[i][k] = 0.0;
 	return m;
 }
@@ -206,7 +217,7 @@ int nl,nh;
 void free_matrix(m,nrl,nrh,ncl,nch)
 float **m;
 int nrl,nrh,ncl,nch;
-{ 
+{
 	int i;
 nrl=0;ncl=0;
 	for(i=nrh;i>=nrl;i--) Tcl_Free((char*) (m[i]+ncl));
@@ -275,7 +286,7 @@ void SASFIT_gsl_vector_x2GlobalAP_GCP(gsl_vector *x,
                      void *params)
 {
     int i,j,k,index;
-    
+
     for (j=0;j<=((struct Gparam *) params) -> mfit-1;j++) {
        i = (int)floor(((struct Gparam *) params) -> lista[j]/(3*MAXPAR));
        k = ((struct Gparam *) params) -> lista[j]-(int)floor(((struct Gparam *) params) -> lista[j]/(3*MAXPAR))*(3*MAXPAR);
@@ -292,13 +303,13 @@ void SASFIT_gsl_vector_x2GlobalAP_GCP(gsl_vector *x,
 		   ((struct Gparam *) params) -> GCP.P_common[index-1] = gsl_vector_get(x,j);
 	   } else {
           if ((int)floor(k/MAXPAR) == 0) {
-		     ((struct Gparam *) params) -> GlobalAP[i].SD_a[k-(int)floor(k/MAXPAR)*MAXPAR] 
+		     ((struct Gparam *) params) -> GlobalAP[i].SD_a[k-(int)floor(k/MAXPAR)*MAXPAR]
 			     = gsl_vector_get(x,j);
 		  } else if ((int)floor(k/MAXPAR) == 1) {
-		     ((struct Gparam *) params) -> GlobalAP[i].FF_l[k-(int)floor(k/MAXPAR)*MAXPAR] 
+		     ((struct Gparam *) params) -> GlobalAP[i].FF_l[k-(int)floor(k/MAXPAR)*MAXPAR]
 			     = gsl_vector_get(x,j);
 		  } else {
-		     ((struct Gparam *) params) -> GlobalAP[i].SQ_s[k-(int)floor(k/MAXPAR)*MAXPAR] 
+		     ((struct Gparam *) params) -> GlobalAP[i].SQ_s[k-(int)floor(k/MAXPAR)*MAXPAR]
 			     = gsl_vector_get(x,j);
 		  }
 	   }

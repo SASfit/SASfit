@@ -98,7 +98,7 @@ proc NewFitDataCmd {l_Q l_IthIres sub l_NR args} {
 	set DI   [lindex $IthIres 4]
 
 	if {[string equal $::sasfit(simorfit) "fit"]} {
-		updateChisqr $Q $Ith
+#		updateChisqr $Q $Ith
 	}
 
 	clearGraph_el IQGraph
@@ -169,6 +169,7 @@ proc NewGlobalFitDataCmd {sasfitarray args} {
 upvar $sasfitarray ssasfit
 global SDGraph GlobalFitIQGraph ResIQGraph
 global addsasfit
+
 
    clearGraph_el SDGraph
    clearGraph_el ResIQGraph

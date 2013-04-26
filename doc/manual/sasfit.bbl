@@ -57,6 +57,12 @@ Ingo Berndt, Jan~Skov Pedersen, and Walter Richtering.
   shell.
 \newblock {\em Angewandte Chemie}, 118(11):1769--1773, 2006.
 
+\bibitem{Bevington2003}
+Philip Bevington and D.~Keith Robinson.
+\newblock {\em Data Reduction and Error Analysis for the Physical Sciences}.
+\newblock McGraw-Hill, 3rd edition, 23 July 2002.
+\newblock ISBN-10: 0072472278, ISBN-13: 978-0072472271.
+
 \bibitem{Blaurock1982}
 A.~E. Blaurock.
 \newblock Evidence of bilayer structure and of membrane interactions from x-ray
@@ -213,6 +219,11 @@ A.~Guinier.
 A.~Guinier and G.~Fournet.
 \newblock {\em Small-Angle Scattering of X-Rays}.
 \newblock John Wiley \& Sons, Inc., 1955.
+
+\bibitem{Hamilton1965}
+W.~C. Hamilton.
+\newblock {Significance tests on the crystallographic {\it R} factor}.
+\newblock {\em Acta Crystallographica}, 18(3):502--510, Mar 1965.
 
 \bibitem{Hammouda}
 B.~Hammouda.
@@ -378,6 +389,12 @@ F.~M\"uller, M.~Delsanti, L.~Auvray, J.~Yang, Y.J. Chen, J.W. Mays, B.~Demé,
   packing and polyelectrolyte correlations.
 \newblock {\em Eur. Phys. J. E}, 3:45--53, 2000.
 
+\bibitem{Rfactor}
+Online~Dictionary of~crystallography.
+\newblock R factor.
+\newblock
+  \href{http://reference.iucr.org/dictionary/R_factor}{http://reference.iucr.org/dictionary/R\_factor}.
+
 \bibitem{Olivero1977}
 J.~J. Olivero and R.~L. Longbothum.
 \newblock Empirical fits to the voigt line width: A brief review.
@@ -447,6 +464,12 @@ G.~Porod.
 \newblock {Die Abh{\"a}ngigkeit der R{\"o}ntgenkleinwinkelstreuung von Form und
   Gr{\"o}sse der Kolloiden Teilchen in verd{\"u}nnten Systemen, IV}.
 \newblock {\em Acta Physica Austriaca}, 2:255--292, 1948.
+
+\bibitem{Press2007}
+William~H. Press, Saul~A. Teukolsky, William~T. Vetterling, and Brian~P.
+  Flannery.
+\newblock {\em Numerical Recipes. The Art of Scientific Computing}.
+\newblock Cambridge University Press, 3rd edition, 2007.
 
 \bibitem{scatt188}
 C.~V. Raman.

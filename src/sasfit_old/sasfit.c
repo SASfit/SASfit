@@ -52,6 +52,7 @@
 #include <tcl.h>
 
 #include <gsl/gsl_vector.h>
+#include <gsl/gsl_sf.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_multifit.h>
 #include <gsl/gsl_errno.h>
@@ -90,28 +91,28 @@ typedef enum {
 int select_str(char *str)
 {
 	SizeDistr sd;
-	if ((strcmp(str,"LogNorm")==0)         || 
-		(strcmp(str,"d LogNorm / d a1")==0) || 
+	if ((strcmp(str,"LogNorm")==0)         ||
+		(strcmp(str,"d LogNorm / d a1")==0) ||
 		(strcmp(str,"d LogNorm / d a2")==0) ||
 		(strcmp(str,"d LogNorm / d a3")==0) ||
-		(strcmp(str,"d LogNorm / d a4")==0) 
-		) 
+		(strcmp(str,"d LogNorm / d a4")==0)
+		)
 	{
 			return LogNorm;
-	} else if ((strcmp(str,"BiLogNorm")==0)         || 
-		(strcmp(str,"d BiLogNorm / d a1")==0) || 
+	} else if ((strcmp(str,"BiLogNorm")==0)         ||
+		(strcmp(str,"d BiLogNorm / d a1")==0) ||
 		(strcmp(str,"d BiLogNorm / d a2")==0) ||
 		(strcmp(str,"d BiLogNorm / d a3")==0) ||
-		(strcmp(str,"d BiLogNorm / d a4")==0) 
-		) 
+		(strcmp(str,"d BiLogNorm / d a4")==0)
+		)
 	{
 			return BiLogNorm;
-	} else if ((strcmp(str,"Schultz-Zimm")==0)         || 
-		(strcmp(str,"d Schultz-Zimm / d a1")==0) || 
+	} else if ((strcmp(str,"Schultz-Zimm")==0)         ||
+		(strcmp(str,"d Schultz-Zimm / d a1")==0) ||
 		(strcmp(str,"d Schultz-Zimm / d a2")==0) ||
 		(strcmp(str,"d Schultz-Zimm / d a3")==0) ||
-		(strcmp(str,"d Schultz-Zimm / d a4")==0) 
-		) 
+		(strcmp(str,"d Schultz-Zimm / d a4")==0)
+		)
 	{
 			return BiLogNorm;
 	}
@@ -2347,7 +2348,8 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	sasfit_analytpar *AP;
 	int    i, j;
 	int    max_SD;
-	float  alambda,chisqr;
+	float  alambda,chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+	float  varianceOFfit, avgsigma;
 	char   sBuffer[256];
 	Tcl_DString DsBuffer;
 	float  *h, *Ih, *DIh, *Ith, *res, *Ihsubstract;
@@ -2361,7 +2363,19 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	//Det2DPar.calc2D = FALSE;
 	sasfit_param_override_init();
 
-	chisqr = 0.0;
+	chisq = 0.0;
+	reducedchisq = 0.0;
+    ndata = 0.0;
+    mfit = 0.0;
+    QQ = 0.0;
+    R = 0.0;
+    wR = 0.0;
+    diffR = 0.0;
+    wdiffR = 0.0;
+    obsR = 0.0;
+    wobsR = 0.0;
+    varianceOFfit = 0.0;
+    avgsigma = 0.0;
 
 	if (argc != 3) {
 		sasfit_err("wrong # args: shoud be sasfit_iq ?analyt_par? ?xyer_data?\n");
@@ -2390,8 +2404,14 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	for (i=0;i<ndata;i++) {
 		IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
 		if (DIh[i] !=0) {
-			chisqr = chisqr+pow((Ih[i]-Ith[i])/DIh[i],2.0);
+			chisq = chisq+pow((Ih[i]-Ith[i])/DIh[i],2.0);
+            wobsR = wobsR + Ih[i]*Ih[i]/(DIh[i]*DIh[i]);
+            avgsigma = avgsigma+1.0/gsl_pow_2(DIh[i]);
 		}
+	    diffR = diffR + fabs((Ith[i]-Ih[i]));
+	    obsR = obsR + fabs(Ih[i]);
+	    wdiffR=chisq;
+
 		if (error==TRUE) {
 			free_dvector(Ith,0,ndata-1);
 			free_dvector(Ihsubstract,0,ndata-1);
@@ -2407,8 +2427,50 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 		Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 	}
 
-	float_to_string(sBuffer,chisqr/ndata);
-	Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
+//	float_to_string(sBuffer,chisq/ndata);
+//	Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
+
+
+int_to_string(sBuffer,mfit);
+Tcl_SetVar2(interp,argv[1],"mfit", sBuffer,0);
+int_to_string(sBuffer,ndata);
+Tcl_SetVar2(interp,argv[1],"ndata", sBuffer,0);
+float_to_string(sBuffer,chisq);
+Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
+
+if ((ndata-mfit) > 0) {
+	reducedchisq = chisq/(ndata-mfit);
+}
+if ((avgsigma) > 0) {
+	varianceOFfit = reducedchisq/(avgsigma/ndata);
+}
+float_to_string(sBuffer,reducedchisq);
+Tcl_SetVar2(interp,argv[1],"reducedchisq", sBuffer,0);
+float_to_string(sBuffer,varianceOFfit);
+Tcl_SetVar2(interp,argv[1],"varianceOFfit", sBuffer,0);
+
+if (obsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,diffR/obsR);
+    }
+Tcl_SetVar2(interp,argv[1],"R", sBuffer,0);
+
+if (wobsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,sqrt(wdiffR/wobsR));
+    }
+Tcl_SetVar2(interp,argv[1],"wR", sBuffer,0);
+
+QQ=gsl_sf_gamma_inc_Q((ndata-mfit)/2.,chisq/2.);
+float_to_string(sBuffer,QQ);
+Tcl_SetVar2(interp,argv[1],"Q", sBuffer,0);
+
+int_to_string(sBuffer,mfit);
+Tcl_SetVar2(interp,argv[1],"mfit", sBuffer,0);
+int_to_string(sBuffer,ndata);
+Tcl_SetVar2(interp,argv[1],"ndata", sBuffer,0);
 
 	Tcl_DStringEndSublist(&DsBuffer);
 
@@ -2494,7 +2556,8 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
     sasfit_commonpar GCP;
     int    i, j, k;
     int    max_SD;
-    float  alambda, chisqr;
+    float  alambda, chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+    float  avgsigma,varianceOFfit;
     Tcl_DString DsBuffer;
     float  **h, **Ih, **DIh, **Ith, **res, **Isub;
     int    *lista;
@@ -2508,6 +2571,20 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
 	//Det2DPar.calc2D = FALSE;
 	sasfit_param_override_init();
 
+	chisq = 0.0;
+	reducedchisq = 0.0;
+    totndata = 0.0;
+    mfit = 0.0;
+    QQ = 0.0;
+    R = 0.0;
+    wR = 0.0;
+    diffR = 0.0;
+    wdiffR = 0.0;
+    obsR = 0.0;
+    wobsR = 0.0;
+    avgsigma = 0.0;
+    varianceOFfit = 0.0;
+
     if (argc != 4) {
        sasfit_err("wrong # args: shoud be sasfit_global_iq ?analyt_par? ?xyer_data? ?hide?\n");
        return TCL_ERROR;
@@ -2519,8 +2596,6 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
        return TCL_ERROR;
     }
 
-totndata = 0;
-chisqr = 0;
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GAP,&GCP,max_SD);
 dydpar = dvector(0,ma-1);
 Isub = (double **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(double*));
@@ -2544,7 +2619,12 @@ for (j=0;j<GCP.nmultset;j++) {
 		   sasfit_err("Sasfit_global_iqCmd: zero error bar\n");
 		   return TCL_ERROR;
 	   }
-	   chisqr = chisqr + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
+	   chisq = chisq + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
+	   diffR = diffR + fabs((Ith[j][i]-Ih[j][i]));
+	   obsR = obsR + fabs(Ih[j][i]);
+	   wdiffR=wdiffR + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
+	   wobsR=wobsR + Ih[j][i]*Ih[j][i]/(DIh[j][i]*DIh[j][i]);
+	   avgsigma = avgsigma + 1.0/(DIh[j][i]*DIh[j][i]);
 	   totndata++;
 	   if (error==TRUE) {
 	      for (k=0;k<GCP.nmultset;k++) {
@@ -2621,12 +2701,42 @@ for (j=0;j<GCP.nmultset;j++) {
 }
 Tcl_DStringEndSublist(&DsBuffer);
 
-if ((totndata-mfit) !=0) {
-	chisqr = chisqr/(totndata-mfit);
-}
 
-float_to_string(sBuffer,chisqr);
+
+float_to_string(sBuffer,chisq);
 Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
+if ((totndata-mfit) !=0) {
+	reducedchisq = chisq/(totndata-mfit);
+}
+float_to_string(sBuffer,reducedchisq);
+Tcl_SetVar2(interp,argv[1],"reducedchisq", sBuffer,0);
+
+if (obsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,diffR/obsR);
+    }
+Tcl_SetVar2(interp,argv[1],"R", sBuffer,0);
+
+if (wobsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,sqrt(wdiffR/wobsR));
+    }
+Tcl_SetVar2(interp,argv[1],"wR", sBuffer,0);
+
+QQ=gsl_sf_gamma_inc_Q((totndata-mfit)/2.,chisq/2.);
+float_to_string(sBuffer,QQ);
+Tcl_SetVar2(interp,argv[1],"Q", sBuffer,0);
+
+if (avgsigma > 0) varianceOFfit = reducedchisq*totndata/avgsigma;
+float_to_string(sBuffer,varianceOFfit);
+Tcl_SetVar2(interp,argv[1],"varianceOFfit", sBuffer,0);
+
+int_to_string(sBuffer,mfit);
+Tcl_SetVar2(interp,argv[1],"mfit", sBuffer,0);
+int_to_string(sBuffer,totndata);
+Tcl_SetVar2(interp,argv[1],"ndata", sBuffer,0);
 
 Tcl_DStringResult(interp,&DsBuffer);
 Tcl_DStringFree(&DsBuffer);
@@ -2695,7 +2805,8 @@ int    mfit,*ndata,*hide, totndata;
 bool   error;
 int    error_type;
 float  *a;
-float  chisq;
+float  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+float  avgsigma,varianceOFfit;
 float  alambda;
 Tcl_DString DsBuffer;
 
@@ -2712,6 +2823,7 @@ if (TCL_ERROR == get_GlobalAP(interp,argv,
                         &h,&Ih,&DIh,&res,&Ith,&ndata,&hide)) {
    return TCL_ERROR;
 }
+
 
 sasfit_out("nmultset: %d\n",GCP.nmultset);
 
@@ -2838,8 +2950,20 @@ if (error == TRUE) {
 
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GlobalAP,&GCP,max_SD);
 
-totndata = 0;
 chisq = 0.0;
+reducedchisq = 0.0;
+totndata = 0.0;
+mfit = 0.0;
+QQ = 0.0;
+R = 0.0;
+wR = 0.0;
+diffR = 0.0;
+wdiffR = 0.0;
+obsR = 0.0;
+wobsR = 0.0;
+avgsigma = 0.0;
+varianceOFfit = 0.0;
+
 Tcl_DStringInit(&DsBuffer);
 
 Tcl_DStringStartSublist(&DsBuffer);
@@ -2853,6 +2977,11 @@ for (m=0;m<GCP.nmultset;m++) {
 	     return TCL_ERROR;
 	  }
 	  chisq = chisq + pow((Ith[m][i]-Ih[m][i])/DIh[m][i],2.0);
+      diffR = diffR + fabs((Ith[m][i]-Ih[m][i]));
+      obsR = obsR + fabs(Ih[m][i]);
+	  wdiffR=wdiffR + (Ith[m][i]-Ih[m][i])*(Ith[m][i]-Ih[m][i])/(DIh[m][i]*DIh[m][i]);
+	  wobsR=wobsR + Ih[m][i]*Ih[m][i]/(DIh[m][i]*DIh[m][i]);
+	  avgsigma = avgsigma/(DIh[m][i]*DIh[m][i]);
       totndata++;
    }
    Tcl_DStringEndSublist(&DsBuffer);
@@ -2913,13 +3042,36 @@ Tcl_DStringEndSublist(&DsBuffer);
 Tcl_DStringResult(interp,&DsBuffer);
 Tcl_DStringFree(&DsBuffer);
 
+float_to_string(sBuffer,chisq);
+Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
 if ((totndata-mfit) !=0) {
-	chisq = chisq/(totndata-mfit);
+	reducedchisq = chisq/(totndata-mfit);
 }
+float_to_string(sBuffer,reducedchisq);
+Tcl_SetVar2(interp,argv[1],"reducedchisq", sBuffer,0);
+
+if (obsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,diffR/obsR);
+    }
+Tcl_SetVar2(interp,argv[1],"R", sBuffer,0);
+
+if (wobsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,sqrt(wdiffR/wobsR));
+    }
+Tcl_SetVar2(interp,argv[1],"wR", sBuffer,0);
+
+QQ=gsl_sf_gamma_inc_Q((totndata-mfit)/2.0,chisq/2.0);
+float_to_string(sBuffer,QQ);
+Tcl_SetVar2(interp,argv[1],"Q", sBuffer,0);
+if (avgsigma > 0) varianceOFfit=reducedchisq*totndata/avgsigma;
+float_to_string(sBuffer,varianceOFfit);
+Tcl_SetVar2(interp,argv[1],"varianceOFfit", sBuffer,0);
 
 save_GlobalAP(interp,argv[1],GlobalAP,&GCP,max_SD,alambda);
-float_to_string(sBuffer,chisq);
-Tcl_SetVar2(interp,argv[4],"chisq", sBuffer,0);
 for (k=0;k<GCP.nmultset;k++) {
    free_dvector(Ith[k],0,ndata[k]-1);
    free_dvector(Isub[k],0,ndata[k]-1);
@@ -3317,9 +3469,13 @@ int    mfit,ndata;
 bool   error;
 int    error_type;
 float  *a;
-float  chisq;
+float  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+float  avgsigma,varianceOFfit;
 float  alambda;
 Tcl_DString DsBuffer;
+
+ndata = 0.0;
+mfit = 0.0;
 
 error = FALSE;
 //Det2DPar.calc2D = FALSE;
@@ -3437,6 +3593,7 @@ if (error == TRUE) {
 
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,AP,NULL,max_SD);
 
+
 Tcl_DStringInit(&DsBuffer);
 
 Tcl_DStringStartSublist(&DsBuffer);
@@ -3461,6 +3618,17 @@ for (i=0;i<ndata;i++) {
 }
 Tcl_DStringEndSublist(&DsBuffer);
 
+	chisq = 0.0;
+	reducedchisq = 0.0;
+    QQ = 0.0;
+    R = 0.0;
+    wR = 0.0;
+    diffR = 0.0;
+    wdiffR = 0.0;
+    obsR = 0.0;
+    wobsR = 0.0;
+    avgsigma = 0.0;
+    varianceOFfit = 0.0;
 
 Tcl_DStringStartSublist(&DsBuffer);
 for (i=0;i<ndata;i++) {
@@ -3476,6 +3644,12 @@ for (i=0;i<ndata;i++) {
    }
    float_to_string(sBuffer,(Ih[i]-Ith[i])/DIh[i]);
    Tcl_DStringAppendElement(&DsBuffer,sBuffer);
+   chisq = chisq+pow((Ih[i]-Ith[i])/DIh[i],2.0);
+   wobsR = wobsR + Ih[i]*Ih[i]/(DIh[i]*DIh[i]);
+   avgsigma = avgsigma + 1.0/(DIh[i]*DIh[i]);
+   diffR = diffR + fabs((Ith[i]-Ih[i]));
+   obsR = obsR + fabs(Ih[i]);
+   wdiffR=chisq;
 }
 Tcl_DStringEndSublist(&DsBuffer);
 
@@ -3490,8 +3664,48 @@ Tcl_DStringResult(interp,&DsBuffer);
 
 
 save_AP(interp,argv[1],AP,max_SD,alambda);
-float_to_string(sBuffer,SASFIT_CData->chisq/(ndata-mfit));
-Tcl_SetVar2(interp,argv[3],"chisq", sBuffer,0);
+
+//float_to_string(sBuffer,SASFIT_CData->chisq/(ndata-mfit));
+//Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
+
+
+if (alambda !=0) {
+int_to_string(sBuffer,mfit);
+Tcl_SetVar2(interp,argv[1],"mfit", sBuffer,0);
+int_to_string(sBuffer,ndata);
+Tcl_SetVar2(interp,argv[1],"ndata", sBuffer,0);
+float_to_string(sBuffer,chisq);
+Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
+
+if ((ndata-mfit) !=0) {
+	reducedchisq = chisq/(ndata-mfit);
+}
+float_to_string(sBuffer,reducedchisq);
+Tcl_SetVar2(interp,argv[1],"reducedchisq", sBuffer,0);
+
+if (obsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,diffR/obsR);
+    }
+Tcl_SetVar2(interp,argv[1],"R", sBuffer,0);
+
+if (wobsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,sqrt(wdiffR/wobsR));
+    }
+Tcl_SetVar2(interp,argv[1],"wR", sBuffer,0);
+
+QQ=gsl_sf_gamma_inc_Q((ndata-mfit)/2.,chisq/2.);
+float_to_string(sBuffer,QQ);
+Tcl_SetVar2(interp,argv[1],"Q", sBuffer,0);
+if (avgsigma>0) varianceOFfit=reducedchisq*ndata/avgsigma;
+float_to_string(sBuffer,varianceOFfit);
+Tcl_SetVar2(interp,argv[1],"varianceOFfit", sBuffer,0);
+
+}
+
 free_dvector(Ith,0,ndata-1);
 free_dvector(h,0,ndata-1);
 free_dvector(res,0,ndata-1);
