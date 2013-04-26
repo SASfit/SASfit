@@ -278,6 +278,11 @@ proc create_GlobalAnalytPar {AnalytPar
 	set Par(GraphName)  AnalytPar
 
 	set Par(chisq) 0
+	set Par(reducedchisq) 0
+	set Par(Q) 0
+	set Par(R) 0
+	set Par(wR) 0
+        set Par(varianceOFfit) 0
 	set Par(common_i) 0
 	set Par(common_names) {NONE NEW}
 
@@ -678,7 +683,13 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 
 	if {($index < 1) && ($index > $Par(max_SD))} { return 0 }
 
-	set actualPar(chisq)        $Par(chisq)
+	set actualPar(chisq)         $Par(chisq)
+	set actualPar(reducedchisq)  $Par(reducedchisq)
+	set actualPar(Q)             $Par(Q)
+	set actualPar(R)             $Par(R)
+	set actualPar(wR)            $Par(wR)
+        set actualPar(varianceOFfit) $Par(varianceOFfit)
+
 	set actualPar(common_i)     $Par(common_i)
 	set actualPar(common_names) $Par(common_names)
 	for {set i 1} {$i <= $actualPar(common_i)} {incr i} {
@@ -4239,6 +4250,71 @@ proc analyticalGlobalSDCmd {simorfit
 
 
 #
+# frame for chisq and other goodness-of-fit parameters
+#
+        frame $w.goodnessoffit
+        pack $w.goodnessoffit -anchor w
+	set wg $w.goodnessoffit
+
+	label  $wg.chisq_l -text "chisq:" -anchor e
+	label  $wg.chisq_v \
+	      -textvariable ::GlobalAnalytPar(chisq) \
+	      -width 16 -anchor w
+	grid configure $wg.chisq_l -column 0 -row 0 -sticky w
+	grid configure $wg.chisq_v -column 1 -row 0 -sticky e
+	
+	label  $wg.redchisq_l -text "red. chisq:" -anchor e
+	label  $wg.redchisq_v \
+	      -textvariable ::GlobalAnalytPar(reducedchisq) \
+	      -width 16 -anchor w
+	grid configure $wg.redchisq_l -column 2 -row 0 -sticky w
+	grid configure $wg.redchisq_v -column 3 -row 0 -sticky e
+	
+	label  $wg.ndata_l -text "data points:" -anchor e
+	label  $wg.ndata_v \
+	      -textvariable ::GlobalAnalytPar(ndata) \
+	      -width 16 -anchor w
+	grid configure $wg.ndata_l -column 4 -row 0 -sticky w
+	grid configure $wg.ndata_v -column 5 -row 0 -sticky e
+	
+	label  $wg.mfit_l -text "fit parameters:" -anchor e
+	label  $wg.mfit_v \
+	      -textvariable ::GlobalAnalytPar(mfit) \
+	      -width 16 -anchor w
+	grid configure $wg.mfit_l -column 6 -row 0 -sticky w
+	grid configure $wg.mfit_v -column 7 -row 0 -sticky e
+
+	label  $wg.r_l -text "R value:" -anchor e
+	label  $wg.r_v \
+	      -textvariable ::GlobalAnalytPar(R) \
+	      -width 16 -anchor w
+	grid configure $wg.r_l -column 0 -row 1 -sticky w
+	grid configure $wg.r_v -column 1 -row 1 -sticky e
+	
+	label  $wg.wr_l -text "w. R:" -anchor e
+	label  $wg.wr_v \
+	      -textvariable ::GlobalAnalytPar(wR) \
+	      -width 16 -anchor w
+	grid configure $wg.wr_l -column 2 -row 1 -sticky w
+	grid configure $wg.wr_v -column 3 -row 1 -sticky e
+	
+	label  $wg.q_l -text "Q:" -anchor e
+	label  $wg.q_v \
+	      -textvariable ::GlobalAnalytPar(Q) \
+	      -width 16 -anchor w
+	grid configure $wg.q_l -column 4 -row 1 -sticky w
+	grid configure $wg.q_v -column 5 -row 1 -sticky e
+		
+	label  $wg.s_l -text "varianve of fit:" -anchor e
+	label  $wg.s_v \
+	      -textvariable ::GlobalAnalytPar(varianceOFfit) \
+	      -width 16 -anchor w
+	grid configure $wg.s_l -column 6 -row 1 -sticky w
+	grid configure $wg.s_v -column 7 -row 1 -sticky e
+	
+
+
+#
 # frames for selecting data set
 #
 	set ::actualGlobalAnalytPar(datasetlabel) {} 
@@ -4249,7 +4325,7 @@ proc analyticalGlobalSDCmd {simorfit
 	set ::actualGlobalAnalytPar(datalabel) [lindex $::addsasfit(Nth,filelabel) [expr $::actualGlobalAnalytPar(dataset)-1]]
 
 	frame $w.dataset
-	pack $w.dataset 
+	pack $w.dataset -anchor w
 
 	if {[string compare $::addsasfit(simorfit) fit] != 0
 	} {
@@ -4266,7 +4342,7 @@ proc analyticalGlobalSDCmd {simorfit
 	set wds $w.dataset
 
 	SpinBox $wds.datasetNo \
-		 -width 4  \
+		 -width 5  \
 		 -highlightthickness 0 \
 		 -labelwidth 12 \
 		 -textvariable ::actualGlobalAnalytPar(dataset) \
@@ -4285,13 +4361,9 @@ proc analyticalGlobalSDCmd {simorfit
 	label $wds.datasetlabel_l -text "data set label:" -anchor e
 	label $wds.datasetlabel_v -relief sunken \
 	      -textvariable ::actualGlobalAnalytPar(datalabel) \
-	      -width 32 -anchor w
+	      -width 50 -anchor w
 
-	label  $wds.chisqrlabel_l -text "chisqr:" -anchor e
-	label  $wds.chisqrlabel_v \
-	      -textvariable ::GlobalAnalytPar(chisq) \
-	      -width 12 -anchor w
-	pack $wds.datasetlabel_l $wds.datasetlabel_v $wds.chisqrlabel_l $wds.chisqrlabel_v \
+	pack $wds.datasetlabel_l $wds.datasetlabel_v \
 		-fill x -anchor w -padx 1m -pady 1 -side left
 #
 # frames of entry fields
@@ -4945,9 +5017,11 @@ proc analyticalGlobalSDCmd {simorfit
 #                    set ::addsasfit(Nth,Qth) $Q
 			    set ::stepfit(itst) 0
 			    set ::stepfit(k)    0
+			    set ::stepfit(chisq) $::GlobalAnalytPar(chisq)
 			    set ::stepfit(ochisq) $::stepfit(chisq)
 			 } elseif {$::stepfit(itst) < 2} {
 			    incr ::stepfit(k)
+			    set ::stepfit(chisq) $::GlobalAnalytPar(chisq)
 			    set ::stepfit(ochisq) $::stepfit(chisq)
 			    set ::stepfit(oalambda) $::GlobalAnalytPar(alambda)
 			    if {[string compare $::GlobalAnalytPar(resolution) yes] == 0} {
@@ -4967,6 +5041,7 @@ proc analyticalGlobalSDCmd {simorfit
 			    set ::addsasfit(Nth,DIh)     [lindex $IthIres 3]
 			    set ::addsasfit(Nth,sub,res) [lindex $IthIres 4]
 			    set ::addsasfit(Nth,Qth)     $Q
+			    set ::stepfit(chisq) $::GlobalAnalytPar(chisq)
 			    if {$::stepfit(chisq) > $::stepfit(ochisq)} {
 			       set ::stepfit(itst) 0
 			    } elseif {[expr abs($::stepfit(chisq)- \
