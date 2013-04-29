@@ -11971,7 +11971,7 @@ pack $w.whichSD.previous $w.whichSD.next $w.whichSD.add $w.whichSD.delete \
 pack $w.whichSD.fitcalc -side right -in $w.whichSD -padx 1m -pady 1m
 
 frame $w.dataset
-pack $w.dataset
+pack $w.dataset -fill x
 
 if {[string equal $::sasfit(simorfit) "fit"]
 } {
@@ -12044,6 +12044,8 @@ if {[string equal $::sasfit(simorfit) "fit"]
 		$wds.svalue_lbl $wds.svalue_val \
 		-fill x -anchor w -padx 1m -pady 1 -side left \
 		-in $wds.r
+#	label $wds.empty -text " "
+#	pack $wds.empty
 }
 
 #

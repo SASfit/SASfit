@@ -4253,7 +4253,7 @@ proc analyticalGlobalSDCmd {simorfit
 # frame for chisq and other goodness-of-fit parameters
 #
         frame $w.goodnessoffit
-        pack $w.goodnessoffit -anchor w
+        pack $w.goodnessoffit -anchor w -fill x 
 	set wg $w.goodnessoffit
 
 	label  $wg.chisq_l -text "chisq:" -anchor e
@@ -4305,13 +4305,15 @@ proc analyticalGlobalSDCmd {simorfit
 	grid configure $wg.q_l -column 4 -row 1 -sticky w
 	grid configure $wg.q_v -column 5 -row 1 -sticky e
 		
-	label  $wg.s_l -text "varianve of fit:" -anchor e
+	label  $wg.s_l -text "variance of fit:" -anchor e
 	label  $wg.s_v \
 	      -textvariable ::GlobalAnalytPar(varianceOFfit) \
 	      -width 16 -anchor w
 	grid configure $wg.s_l -column 6 -row 1 -sticky w
 	grid configure $wg.s_v -column 7 -row 1 -sticky e
-	
+
+#	label $wg.empty -text " "
+#	grid configure $wg.empty -column 1 -row 2 -sticky e
 
 
 #

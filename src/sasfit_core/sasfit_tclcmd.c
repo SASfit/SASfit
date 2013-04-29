@@ -26,27 +26,27 @@
 
 #include "include/sasfit_core.h"
 
-int sasfit_get_maxpar_cmd(ClientData clientData, 
-				Tcl_Interp *interp, 
-				int objc, 
+int sasfit_get_maxpar_cmd(ClientData clientData,
+				Tcl_Interp *interp,
+				int objc,
 				Tcl_Obj *CONST objv[])
 {
 	Tcl_SetObjResult(interp, Tcl_NewIntObj(sasfit_get_maxpar()));
 	return TCL_OK;
 }
 
-int sasfit_get_lib_prefix_cmd(ClientData clientData, 
-				Tcl_Interp *interp, 
-				int objc, 
+int sasfit_get_lib_prefix_cmd(ClientData clientData,
+				Tcl_Interp *interp,
+				int objc,
 				Tcl_Obj *CONST objv[])
 {
 	Tcl_SetObjResult(interp, Tcl_NewStringObj(sasfit_get_lib_prefix(), -1));
 	return TCL_OK;
 }
 
-int sasfit_get_lib_suffix_cmd(ClientData clientData, 
-				Tcl_Interp *interp, 
-				int objc, 
+int sasfit_get_lib_suffix_cmd(ClientData clientData,
+				Tcl_Interp *interp,
+				int objc,
 				Tcl_Obj *CONST objv[])
 {
 	Tcl_SetObjResult(interp, Tcl_NewStringObj(sasfit_get_lib_suffix(), -1));
@@ -61,7 +61,7 @@ int sasfit_covar_usage()
 
 int sasfit_covar_array_index(int model_count, int contrib, int model, int param)
 {
-	if (model_count < 0 || contrib < 0 || model < 0 || param < 0) 
+	if (model_count < 0 || contrib < 0 || model < 0 || param < 0)
 		return -1;
 	return contrib*model_count*MAXPAR + model*MAXPAR + param;
 }
@@ -69,7 +69,7 @@ int sasfit_covar_array_index(int model_count, int contrib, int model, int param)
 // Take model relative parameter indices from a hierarchical list.
 // Transform them to covar matrix absolute column/row indices.
 // Store them in a hierarchical list.
-Tcl_Obj * sasfit_covar_abs_idx(Tcl_Interp * interp, 
+Tcl_Obj * sasfit_covar_abs_idx(Tcl_Interp * interp,
                                Tcl_Obj *CONST active,
                                int modelcount)
 {
@@ -129,8 +129,8 @@ Tcl_Obj * sasfit_covar_abs_idx(Tcl_Interp * interp,
 	return NULL;
 }
 
-Tcl_Obj * sasfit_covar_get_data(Tcl_Interp * interp, 
-                                Tcl_Obj * arrIdx, 
+Tcl_Obj * sasfit_covar_get_data(Tcl_Interp * interp,
+                                Tcl_Obj * arrIdx,
                                 scalar ** covar,
                                 int covarsize)
 {
@@ -161,7 +161,13 @@ Tcl_Obj * sasfit_covar_get_data(Tcl_Interp * interp,
 			err = Tcl_GetIntFromObj(interp, index, &px);
 			if (err || px >= covarsize || py >= covarsize) continue;
 			// add a new value
-			val = sqrt(fabs(covar[px][py]));
+			if (px == py) {
+			    val = sqrt(fabs(covar[px][py]));
+			} else {
+			    val = -9999;
+			    if ((sqrt(fabs(covar[py][py]))*sqrt(fabs(covar[px][px]))) != 0)
+                        val = covar[px][py]/(sqrt(fabs(covar[px][px]))*sqrt(fabs(covar[py][py])));
+			}
 			err = Tcl_ListObjAppendElement(interp, row, Tcl_NewDoubleObj(val));
 		}
 		if (err) continue;
@@ -173,8 +179,8 @@ Tcl_Obj * sasfit_covar_get_data(Tcl_Interp * interp,
 
 // active parameter means: a paramter which was fitted
 int sasfit_covar_cmd(sasfit_cdata * sf_data,
-                     Tcl_Interp   * interp, 
-                     int            objc, 
+                     Tcl_Interp   * interp,
+                     int            objc,
                      Tcl_Obj *CONST objv[])
 {
 	const int model_count = 3; // FF, SD, SQ
@@ -184,7 +190,7 @@ int sasfit_covar_cmd(sasfit_cdata * sf_data,
 
 	if (!sf_data || !interp || !objv || !sf_data->covar) return TCL_ERROR;
 	if (sf_data->ma == 0) return TCL_OK; // no elements yet
-	
+
 	// return model and contribution count
 	if (objc == 1) {
 		Tcl_Obj * val[2] = { Tcl_NewIntObj(model_count),
