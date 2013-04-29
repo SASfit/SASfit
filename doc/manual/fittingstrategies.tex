@@ -35,11 +35,15 @@ divided by the degree of freedom can be computed by
 I(q_i)}\right)^2 = \frac{\chi^2}{N-m}
 \end{equation}
 where $N$ is the number of data points and $m$ the number of fit parameters.
-$\nu=N-m$ is called the "number of degree of freedom".
+$\nu=N-m$ is called the "number of degree of freedom". The reduced chi-square
+is closely related to the variance of the fit $s^2$ by
+\begin{equation}
+s^2=\chi_\nu^2 \left( \frac{1}{N}\sum_{i=1}^N \frac{1}{\left(\Delta I_i^\text{exp}\right)^2}\right)^{-1}
+\end{equation}
 
 In the theory of hypothesis testing $\chi^2$ can be used to test
 for goodness of a fit. The probability that a random set of $N$ data points
-would yield a value of $\chi^2$ is equal or greater than the measured
+would yield a value of $\chi^2$ equal or greater than the measured
 one is given by
 \begin{equation}
 \displaystyle Q_\text{factor} =
@@ -57,7 +61,7 @@ close to one the fit seems to be too good to be true.
 \subsection{R-factor}
 ~\\
 The crystallographers have introduced another parameter for the goodness of a fit.
-They introduced the $R$ factor \cite{Rfactor,Hamilton1965} as a measure of model quality which is defines as
+They use the $R$ factor \cite{Rfactor,Hamilton1965} as a measure of model quality which is defines as
 \begin{equation}\label{eqRfactor}
     \displaystyle  = \frac{\displaystyle\sum_{i=1}^N
 \abs{I_\text{exp}(q_i) -
@@ -69,7 +73,7 @@ agreement of calculated and observed intensities) to infinity.  $R$
 factors greater than 0.5 indicate in crystallography very poor
 agreement between observed and calculated intensities. Models
 refining to $R < 0.05$ are often considered to be good. However, the
-$R$ factor must always be treated with caution, as an indicator of
+$R$ factor must always be treated with caution, only as an indicator of
 precision and not accuracy. In Crystallography partially incorrect
 structures have been reported with $R$ values below $0.1$; many
 imprecise but essentially correct structures have been reported with
