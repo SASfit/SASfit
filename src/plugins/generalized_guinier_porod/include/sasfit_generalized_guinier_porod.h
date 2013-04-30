@@ -39,7 +39,7 @@
 /* ################ start ff_generalized_guinier_prod_law ################ */
 /**
  * \defgroup ff_generalized_guinier_prod_law Generalized-Guinier-Prod-Law
- * \ingroup ff_plugins
+ * \ingroup ff_non-particular
  *
  * \brief \<some brief description of Generalized-Guinier-Prod-Law function\>
  *
@@ -72,21 +72,21 @@
 /**
  * \ingroup ff_generalized_guinier_prod_law
  *
- * \sa sasfit_generalized_guinier_porod.h, ff_plugins
+ * \sa sasfit_generalized_guinier_porod.h, ff_non-particular
  */
 sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_prod_law(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_generalized_guinier_prod_law
  *
- * \sa sasfit_generalized_guinier_porod.h, ff_plugins
+ * \sa sasfit_generalized_guinier_porod.h, ff_non-particular
  */
 sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_prod_law_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_generalized_guinier_prod_law
  *
- * \sa sasfit_generalized_guinier_porod.h, ff_plugins
+ * \sa sasfit_generalized_guinier_porod.h, ff_non-particular
  */
 sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_prod_law_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_generalized_guinier_prod_law ################ */

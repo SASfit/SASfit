@@ -10,13 +10,13 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_generalized_guinier_prod_law.c
+	sasfit_ff_generalized_guinier_porod_law.c
 	interface.c
 )
 
 # path to 'Find*.cmake' files in sasfit package, 
 # relative to the location of this file
-set(REL_CMAKE_MODULE_PATH ../..)
+set(REL_CMAKE_MODULE_PATH ../../cmake)
 
 #                                                       #
 ### no adjustments required below this line (usually) ###

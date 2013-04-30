@@ -280,7 +280,7 @@ switch $::tcl_platform(platform) {
       }
       unix {
 	  set sasfit(datatypes) { { Ascii  ".*"         } \
-		                  { BerSANS ".\[0-9\]*" } \
+		                  { BerSANS ".\\[0-9\\]*" } \
                                   { All    "*"          } }
       }
    }
