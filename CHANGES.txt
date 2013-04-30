@@ -1,19 +1,23 @@
-0.93.4, 2011-??-??
-- new plugin for "generalized Guinier law"
-- Renamed HMI format into BerSANS format and got it working. Also removed all masked data points (negative errors).
-- added key bindings <Home>, <End>, <PgUp>, <PgDn>, <Insert>, <Delete> for going to first/last/next/previous entry or to add and remove an entry  
+0.93.4, 2013-04-30
+- in the menu for confidence intervall the non-diagonal elements of 
+  correlation matrix are shown together with the confidence interval for the fitted parameters as diagonal elements.
+- added some additional parameters into the fit menu useful to evaluate the goodness of a fit
+- new plugin for "Parallelepiped_abc" of dimension a*b*c to be found under [by plugins|anisotropic obj]
+- new plugin for "generalized Guinier law" to be found under [by plugins|non-particular structures]
+- Renamed HMI format into BerSANS format and did some debugging. Now also all masked data points (negative errors) are ignored.
+- added key bindings <Home>, <End>, <PgUp>, <PgDn>, <Insert>, <Delete> for going to first|last|next|previous entry or to add and remove an entry  
 - adding plugin with a series of form factor for strongly anisotropic structures 
   with local planar and local cylindrical shapes
 - adding a new plugin form factor for spheres with fuzzy interfaces. The existing form factors 
-  ExpShell, LinShell and LinShell2 have been moved to this plugin. New profiles are FuzzySphere 
-  and CoreShellMicrogel. Also the related functions for calculating the corresponding radial profiles 
-  have been added.
+  ExpShell, LinShell and LinShell2 have been moved to this plugin. 
+- New profiles are FuzzySphere and CoreShellMicrogel. 
+  Also the related functions for calculating the corresponding radial profiles have been added.
 - new section in the manual about absolute scale, molecular weight, etc.
 - for the form factors "flat cylinder" "long cylinder", 
   and "Porod cylinder" the limiting case q==0 is now treated properly
 - small bug fix in the peak function "Gamma (Area)" for checking validity of parameter
 - bug fix of the resolution parameter handling in case it will be read in from a data file
-- included under peak function the Mawell distribution and the generalized Maxwell distribution
+- included under peak function the Maxwell distribution and the generalized Maxwell distribution
 - batch fitting
 
 0.93.3, 2011-05-04

@@ -1,6 +1,37 @@
 \appendix{History}
 \begin{description}
-    \item[2011-05-4] \SASfit 0.93.3
+    \item[2013-04-30] \SASfit 0.93.4
+    \begin{itemize}
+      \item In the menu for confidence interval the non-diagonal elements of
+            correlation matrix are shown together with the confidence interval
+            for the fitted parameters as diagonal elements.
+      \item added some additional parameters into the fit menu useful to
+            evaluate the goodness of a fit
+      \item new plugin for \texttt{Parallelepiped\_abc} of dimension a*b*c to be
+            found under \texttt{[by plugins|anisotropic obj]}
+      \item new plugin for \texttt{generalized Guinier law} to be found under
+            \texttt{[by plugins|non-particular structures]}
+      \item Renamed \texttt{HMI} format into \texttt{BerSANS} format and did some debugging.
+            Now also all masked data points (negative errors) are ignored.
+      \item added key bindings \texttt{Home}, \texttt{End}, \texttt{PgUp}, \texttt{PgDn}, \texttt{Insert},
+            \texttt{Delete} for going to first-last-next-previous entry or to add and remove an entry
+      \item adding plugin with a series of form factor for strongly anisotropic structures
+            with local planar and local cylindrical shapes
+      \item adding a new plugin form factor for spheres with fuzzy interfaces. The existing form factors
+            \texttt{ExpShell}, \texttt{LinShell} and \texttt{LinShell2} have been moved to this plugin.
+      \item New plugin of \texttt{FuzzySphere} and \texttt{CoreShellMicrogel}.
+            Also the related functions for calculating the corresponding radial profiles have been added.
+      \item new section in the manual about absolute scale, molecular weight, etc.
+      \item for the form factors \texttt{flat cylinder} \texttt{long cylinder}, and \texttt{Porod cylinder}
+            the limiting case $q \equiv 0$ is now treated properly
+      \item small bug fix in the peak function \texttt{Gamma (Area)} for checking
+            validity of parameter
+      \item bug fix of the resolution parameter handling in case it will be read in from a data file
+      \item included under peak function the \texttt{Maxwell} distribution and the
+            \texttt{generalized Maxwell} distribution
+      \item batch fitting
+    \end{itemize}
+    \item[2011-05-04] \SASfit 0.93.3
         \begin{itemize}
         \item  bug fix in the model \texttt{Stacked Discs}. The structure factor describing the
             stacking order contained a bug.

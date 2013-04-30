@@ -13,6 +13,7 @@ src/CMakeLists.txt
 src/cmake/CPackConfig.cmake
 src/cmake/SasfitCmakeUtils.cmake
 src/cmake/SasfitSourceFiles.cmake
+src/cmake/Findsasfit.cmake
 src/cmake/FindMercurial.cmake
 src/cmake/FindTCL.cmake
 src/cmake/FindGSL.cmake
@@ -1761,7 +1762,7 @@ sasfit.vfs/lib/app-sasfit/tcl/x_as/Rn.dat
 sasfit.vfs/lib/app-sasfit/plugins/dont_group_def_edit_here.txt
 sasfit.vfs/lib/app-sasfit/COPYING.txt
 sasfit.vfs/main.tcl
-saskit/saskit-20090604.tar.gz
+saskit/saskit_src_30-04-2013.zip
 saskit/saskit_Linux_x86_64
 saskit/saskit_Linux_x86_64_debug
 saskit/saskit_Linux_i686
@@ -1771,6 +1772,8 @@ saskit/saskit_Linux_i686_stdc++5_debug
 saskit/saskit_Windows_x86.exe
 saskit/saskit_Windows_x86_debug.exe
 saskit/saskit_Darwin_powerpc
+saskit/saskit_Darwin_x86_64
+saskit/saskit_Darwin64
 saskit/saskit_Darwin_i386
 saskit/saskit_Darwin_i386_debug
 saskit/sdx.kit
@@ -1887,3 +1890,13 @@ src/plugins/fuzzysphere/sasfit_ff_LinShell.c
 src/plugins/fuzzysphere/sasfit_ff_radial_profile_of_LinShell.c
 src/plugins/fuzzysphere/sasfit_ff_LinShell2.c
 src/plugins/fuzzysphere/sasfit_ff_radial_profile_of_LinShell2.c
+src/plugins/parallel_epiped/include/sasfit_parallel_epiped.h
+src/plugins/parallel_epiped/include/private.h
+src/plugins/parallel_epiped/CMakeLists.txt
+src/plugins/parallel_epiped/interface.c
+src/plugins/parallel_epiped/sasfit_ff_parallelepiped_abc.c
+src/plugins/generalized_guinier_porod/include/sasfit_generalized_guinier_porod.h
+src/plugins/generalized_guinier_porod/include/private.h
+src/plugins/generalized_guinier_porod/CMakeLists.txt
+src/plugins/generalized_guinier_porod/interface.c
+src/plugins/generalized_guinier_porod/sasfit_ff_generalized_guinier_porod_law.c
