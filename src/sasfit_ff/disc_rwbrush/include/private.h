@@ -33,7 +33,7 @@
 #include "../../include/sasfit_ff_utils.h"
 
 /*
-float P_DISC_RWbrush(Tcl_Interp *interp, 
+float P_DISC_RWbrush(Tcl_Interp *interp,
 			float q,
 			float Lc,		// core thickness of the layer
 			float nagg,		 // aggregation number of chains per surface area
@@ -111,10 +111,9 @@ typedef enum
 	subParam.p[3] = V[NAGG]; \
 	subParam.p[4] = rc; \
 	subParam.p[5] = rs; \
+	subParam.p[6] = pprime;\
 \
-	pcs = sasfit_planar_gauss_chains(V[Q], &subParam); \
-\
-	return pcs * pprime
+	return sasfit_planar_gauss_chains(V[Q], &subParam);
 
 #endif
 

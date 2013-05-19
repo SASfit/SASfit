@@ -29,18 +29,7 @@
 #include <gsl/gsl_sf.h>
 #include "include/sasfit_ff_utils.h"
 
-/*
-float VeryLongCylinderWithGaussChains(Tcl_Interp *interp,
-                   float q,
-                   float R,
-                   float Rg,
-                   float d,
-                   float Nagg,
-           float H,
-           float r_core,
-                   float r_chains,
-           bool  *error)
-*/
+
 scalar sasfit_ff_very_long_cyl_w_gauss_chains(scalar q, sasfit_param * param)
 {
 	scalar Pp, Pcs, Fc, w, Scc, Ssc, J1x_x;
@@ -60,19 +49,19 @@ scalar sasfit_ff_very_long_cyl_w_gauss_chains(scalar q, sasfit_param * param)
 	Fc = sasfit_gauss_fc(q, Rg);
 
 	Scc = w*w*pow(gsl_sf_bessel_J0(q*(R+d*Rg)),2.);
-	if (q*R == 0) 
+	if (q*R == 0)
 	{
 		J1x_x = 0.5;
-	} else 
+	} else
 	{
 		J1x_x = gsl_sf_bessel_J1(q*R)/(q*R);
 	}
 	Ssc = w*2.*J1x_x*gsl_sf_bessel_J0(q*(R+d*Rg));
 
 	Pcs = pow(r_core*2.*J1x_x,2.)
-		+ pow(r_chains,2.0)*Nagg*Fc
 		+ Nagg*(Nagg-1.)*pow(r_chains,2.0)*Scc*((Nagg < 1) ?  0 : 1)
 		+ 2.*Nagg*r_chains*r_core*Ssc;
-
-	return Pp*Pcs;
+//  sasfit_out("Cyl_Fc:%lf \n",pow(r_chains,2.0)*Nagg*Fc);
+	return Pp*Pcs
+		+ pow(r_chains,2.0)*Nagg*Fc;
 }

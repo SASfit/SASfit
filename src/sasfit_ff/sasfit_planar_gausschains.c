@@ -45,11 +45,11 @@ float planar_GaussChains(Tcl_Interp *interp,
  */
 scalar sasfit_planar_gauss_chains(scalar q, sasfit_param * param)
 {
-	scalar Fs, Fc, Fcs, Scc, Ssc, I, w, L, Rg, d, Nagg, rc, rs;
+	scalar Fs, Fc, Fcs, Scc, Ssc, I, w, L, Rg, d, Nagg, rc, rs,Pprime;
 
 	SASFIT_ASSERT_PTR(param);
 
-	sasfit_get_param(param, 6, &L, &Rg, &d, &Nagg, &rc, &rs);
+	sasfit_get_param(param, 6, &L, &Rg, &d, &Nagg, &rc, &rs,&Pprime);
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((L < 0.0), param, "L(%lg) < 0",L);
@@ -57,7 +57,7 @@ scalar sasfit_planar_gauss_chains(scalar q, sasfit_param * param)
 
 	Fc = sasfit_gauss_fc(q, Rg);
 	w = sasfit_rwbrush_w(q, Rg);
-	if (q * L/2. == 0) 
+	if (q * L/2. == 0)
 	{
 		Fs = 1.0;
 	} else {
@@ -67,10 +67,10 @@ scalar sasfit_planar_gauss_chains(scalar q, sasfit_param * param)
 	Scc = pow(w*cos(q*((L/2.+d*Rg))),2.);
 	Ssc = w * Fs *cos(q*((L/2.+d*Rg)));
 
-	I =   Nagg*Nagg*rs*rs*Fcs
-		+ Nagg*rc*rc*Fc
-		+ Nagg*(Nagg-1.)*((Nagg < 1.) ?  0 : 1)*rc*rc*Scc
-		+ 2.*Nagg*Nagg*rs*rc*Ssc;
+	I =   Pprime*Nagg*Nagg*rs*rs*Fcs
+		+        Nagg*rc*rc*Fc
+		+ Pprime*Nagg*(Nagg-1.)*((Nagg < 1.) ?  0 : 1)*rc*rc*Scc
+		+ Pprime*2.*Nagg*Nagg*rs*rc*Ssc;
 	return I;
 }
 
