@@ -28,6 +28,7 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
+#include <gsl/gsl_sf.h>
 #include "include/sasfit_ff_utils.h"
 
 #define intabseps 0.0
@@ -84,7 +85,7 @@ scalar sasfit_ff_KholodenkoWorm(scalar q, sasfit_param * param)
 		fxs = 1.0;
 	} else 
 	{
-		fxs = pow((2.0*sasfit_bessj1(u)/u),2.0);
+		fxs = pow((2.0*gsl_sf_bessel_J1(u)/u),2.0);
 	}
 
 	Q = q;
