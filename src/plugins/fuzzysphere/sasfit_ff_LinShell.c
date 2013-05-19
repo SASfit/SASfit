@@ -30,11 +30,11 @@ scalar sasfit_ff_linshell_f(scalar q, sasfit_param * param)
 
 	eta_sh_in  = (1.0- x_in_solvent)*eta_shell +  x_in_solvent*eta_solvent-eta_solvent;
 	eta_sh_out = (1.0-x_out_solvent)*eta_shell + x_out_solvent*eta_solvent-eta_solvent;
-		
+
 	A = q*R1;
 	shlin = 4.0*M_PI*(eta_core-eta_solvent)*(sin(A)-A*cos(A))/pow(q,3.0);
 
-	if (DR > 0) 
+	if (DR > 0)
 	{
 		m = (eta_sh_out-eta_sh_in)/DR;
 		b = -m*R1+eta_sh_in;

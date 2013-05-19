@@ -39,7 +39,7 @@ scalar sasfit_peak_generalizedMaxwellArea(scalar x, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((width == 0), param, "width(%lg) == 0",width);
 	SASFIT_CHECK_COND1(((1+m)/n <= 0), param, "(1+m)/n (%lg) <= 0",(1+m)/n);
-	
+
 	mode=pow(2.0*m/n,1.0/n)*fabs(width)+offset;
 
     c = pow(2,(1.0+m)/n)*pow(fabs(width),1+m)*gsl_sf_gamma((1+m)/n)/fabs(n);

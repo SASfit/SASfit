@@ -59,19 +59,19 @@ scalar sasfit_ff_worm_w_gauss_chains(scalar q, sasfit_param * param)
 		Fc = sasfit_gauss_fc(q, Rg);
 	}
 	Scc = w*w*pow(gsl_sf_bessel_J0(q*(R+d*Rg)),2.);
-	if (q*R == 0) 
+	if (q*R == 0)
 	{
 		J1x_x =0.5;
-	} else 
+	} else
 	{
 		J1x_x = gsl_sf_bessel_J1(q*R)/(q*R);
 	}
 	Ssc = w*2.*J1x_x*gsl_sf_bessel_J0(q*(R+d*Rg));
 
 	Pcs = pow(r_core*2.*J1x_x,2.)
-		+ pow(r_chains,2.0)*Nagg*Fc
 		+ Nagg*(Nagg-1.)*pow(r_chains,2.0)*Scc*((Nagg < 1) ?  0 : 1)
 		+ 2.*Nagg*r_chains*r_core*Ssc;
 
-	return Pp*Pcs;
+	return Pp*Pcs
+		+ pow(r_chains,2.0)*Nagg*Fc;
 }

@@ -54,14 +54,14 @@ scalar sasfit_log1p (const scalar x)
 	return log(y) - ((y-1)-x)/y ;  /* cancels errors with IEEE arithmetic */
 }
 
-#ifdef _MSC_VER 
+#ifdef _MSC_VER
 double log1p (double x)
 {
 	volatile scalar y;
 	y = 1 + x;
 	return log(y) - ((y-1)-x)/y ;  /* cancels errors with IEEE arithmetic */
 }
-#endif 
+#endif
 
 void sincosfg(scalar x, scalar * f, scalar *g)
 {
@@ -145,7 +145,7 @@ scalar sasfit_bessj1(scalar x)
 	scalar ax,z;
 	scalar xx,y,ans,ans1,ans2;
 
-	if ((ax=fabs(x)) < 8.0) 
+	if ((ax=fabs(x)) < 8.0)
 	{
 		y=x*x;
 		ans1=x*(72362614232.0+y*(-7895059235.0+y*(242396853.1
@@ -206,14 +206,16 @@ scalar sasfit_sphere_fc(scalar Q, scalar R)
 
 scalar sasfit_gauss_fc(scalar Q, scalar R)
 {
-	scalar u  = Q*Q * R*R;
+	scalar u,res;
+	u = Q*Q * R*R;
 
 	if (u == 0.0)
 	{
-		return 1.0;
+		res = 1.0;
+	} else {
+        res = 2 * (exp(-u) - 1 + u) / (u*u);
 	}
-
-	return 2 * (exp(-u) - 1 + u) / (u*u);
+	return res;
 }
 
 scalar sasfit_g(scalar fp, scalar A)
