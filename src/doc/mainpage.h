@@ -1,5 +1,4 @@
-/**
- * \mainpage \sf Developer Documentation
+/*! \mainpage \sf Developer Documentation
  *
  * \image html sasfit_screenshot_w640.png "A program for fitting elementary structural models to small angle scattering data"
  * \image latex sasfit_screenshot.eps "A program for fitting elementary structural models to small angle scattering data" width=15cm
@@ -21,11 +20,24 @@
  * scattering facility at PSI ( http://kur.web.psi.ch ). The
  * numerical routines have been written in C whereas the menu interface
  * has been written in Tcl/Tk and the plotting routine with the
- * extension BLT. 
+ * extension BLT.
  *
  * The latest stable \b \sf version can be downloaded
- * from http://sourceforge.net/project/sasfit
+ * from http://sourceforge.net/projects/sasfit
  *
  * For User and Model Documentation, please see
  * http://sasfit.sourceforge.net
+ *
+ * For adding custom code to \b \sf see:
+ * - \subpage howto_build
+ * - \subpage howto_create_plugin
+ * - \subpage coding_conv
+ *
+ * The usage of \b \sf routines in external programs is documented in:
+ * - \subpage howto_use_old
+ * - \subpage shared_libs
+ * - \subpage howto_use_plugin
+ *
+ * \see \ref howto_doc
+
  */
