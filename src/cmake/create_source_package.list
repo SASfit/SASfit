@@ -1900,3 +1900,9 @@ src/plugins/generalized_guinier_porod/include/private.h
 src/plugins/generalized_guinier_porod/CMakeLists.txt
 src/plugins/generalized_guinier_porod/interface.c
 src/plugins/generalized_guinier_porod/sasfit_ff_generalized_guinier_porod_law.c
+src/plugins/magnetic_correlation/include/sasfit_magnetic_correlation.h
+src/plugins/magnetic_correlation/include/private.h
+src/plugins/magnetic_correlation/CMakeLists.txt
+src/plugins/magnetic_correlation/interface.c
+src/plugins/magnetic_correlation/sasfit_ff_c_r__for_spin_misalignment.c
+src/plugins/magnetic_correlation/sasfit_ff_i_q__for_spin_misalignment.c

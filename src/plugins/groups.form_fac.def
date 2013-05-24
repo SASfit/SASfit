@@ -124,13 +124,23 @@
  */
 
 /** 
- * \defgroup ff_plugins_ferrofluid ferrofluid form factors 
+ * \defgroup ff_magnetic_objects magnetic objects 
  * \ingroup ff_plugins
+ *
+ * This group contains form factors for magnetic objects.
+ *
+ * \modname{ff_magnetic_objects}
+ */
+
+/** 
+ * \defgroup ff_plugins_ferrofluid ferrofluid form factors 
+ * \ingroup ff_magnetic_objects
  *
  * This group contains form factors for different ferrofluid particles.
  *
  * \modname{ff_plugins_ferrofluid}
  */
+
 
 
 
