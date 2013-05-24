@@ -1,3 +1,6 @@
+0.93.5, 2013-??-??
+- implementation of the form factor and correlation function for spin misalignment (J. Appl. Cryst. (2013). 46, 788-790) 
+- bug fix for the scattering contribution of the individual chains in the form factors WORM*, ROD*, and DISC*
 0.93.4, 2013-04-30
 - in the menu for confidence intervall the non-diagonal elements of 
   correlation matrix are shown together with the confidence interval for the fitted parameters as diagonal elements.
