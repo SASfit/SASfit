@@ -1254,6 +1254,89 @@ $\phi_\text{in}=0$,  $\phi_\text{out}=1$, and $\Delta R =10$.}
 \label{fig:ExpShellExample}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Magnetic spin misalignment} \hspace{1pt}
+\label{sec:spinmisalignment}
+
+In \cite{Michels2013} the autocorrelation function $C(r)$ of the
+spin misalignment has been published. The approach assumes the
+material to be close to magnetic saturation and considers uniform
+values for the exchange interaction and the saturation
+magnetization, i.e. it's a micro magnetic theory of single phase
+magnets. The correlation function is defined by
+\begin{align}
+C(r) & = \frac{K R^4}{H_i^2} \int_0^\infty
+\frac{j_0(qr)j_1^2(qR)}{\left(1+l_H^2q^2\right)^2} d\text{q}
+\end{align}
+where $j_1$ and $j_2$ are the spherical Bessel
+functions\footnote{the spherical Bessel functions $j_n$ and $y_n$,
+and are related to the ordinary Bessel functions $J_n$ and $Y_n$ by:
+ $j_{n}(x) = \sqrt{\frac{\pi}{2x}} J_{n+\frac{1}{2}}(x)$ and $
+ y_{n}(x) = \sqrt{\frac{\pi}{2x}} Y_{n+\frac{1}{2}}(x) = (-1)^{n+1}
+ \sqrt{\frac{\pi}{2x}}J_{-n-\frac{1}{2}}(x)$.
+ The first two spherical Bessel function are computed by
+ $j_0(x)=\frac{\sin(x)} {x}$ and
+ $j_1(x)=\frac{\sin(x)} {x^2}- \frac{\cos(x)} {x}$} and $K=8H_P^2/V$.
+ $H_i$ is the internal magnetic field, $l_H=\sqrt{2A/(\mu_0 M_s H_i)}$
+ the exchange length of the magnetic field, $H_P$ the mean magnetic
+ anisotropy field, $A$ the exchange-stiffness constant, and $\mu_0$
+ the permeability of free space. The internal magnetic field
+ $H_i=H_0-NM_s$ is the sum of the external applied magnetic field
+ $H_0$ and the demagnetisation field $-NM_s$ ($N$: demagnetisation
+ factor). $V$ is the sample volume and $M_s$ the saturation
+ magnetisation.
+
+It is assumed in this model that the magnetic anisotropy field,
+which perturbs the magnetization from the homogeneously magnetized
+state, is uniform (constant) within a spherical volume; the
+parameter $R$ represents the corresponding ‘anisotropy-field’
+radius, and it is emphasized that $R$ is not necessarily identical
+to the crystallite size.
+
+The correlation is related to the scattering intensity by
+\begin{align}
+C(r) &= \frac{1}{2\pi^2} \int_0^\infty I(q) q^2
+\frac{\sin(qr)}{qr}d\text{q}
+ \frac{1}{2\pi^2} \int_0^\infty I(q) q^2 j_0(qr) d\text{q}
+\end{align}
+Therefore the intensity can be easily seen that $I(q)$ can be
+computed as
+\begin{align}
+I(q) & = \frac{K R^6}{H_i^2}
+\frac{2\pi^2}{\left(qR\right)^2}\frac{j_1^2(qR)}{\left(1+l_H^2q^2\right)^2}
+\end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for the models \texttt{C(r) for spin
+misalignment} and} \newline \underline{\texttt{I(q) for spin misalignment}:}\\
+\begin{description}
+\item[\texttt{K}] $K=8H^2_P/V$
+\item[\texttt{H\_i}] internal magnetic field $H_i$
+\item[\texttt{l\_H}] exchange length of magnetic field $l_H$
+\item[\texttt{R}] anisotropy field radius $R$
+\end{description}
+
+\noindent\underline{Note:}
+none
+
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[The scattering curves for the correlation functions on to
+right]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/magnetic/IQ4spinmisalignment.png}}
+\hfill \subfigure[correlation functions for the scattering curves to
+the left]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/magnetic/correlation4spinmisalignment.png}}
+\end{center}
+\caption{Scattering curves and corresponding correlation functions.
+In one case the radius of the anisotropy field is assumed to have a
+lognormal size distribution.} \label{fig:MagSpinMisAlignment}
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage

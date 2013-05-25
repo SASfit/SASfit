@@ -10,7 +10,7 @@
 #define K	param->p[0]
 #define HI	param->p[1]
 #define L_H	param->p[2]
-#define R   param->p[3]
+#define R   fabs(param->p[3])
 #define Q   param->p[MAXPAR-2]
 #define lR  param->p[MAXPAR-1]
 
@@ -35,6 +35,7 @@ scalar sasfit_ff_i_q__for_spin_misalignment(scalar q, sasfit_param * param)
 //	SASFIT_CHECK_COND1((L_H < 0.0), param, "l_H(%lg) < 0",L_H); // modify condition to your needs
 
 	// insert your code here
+	if (R==0) return 0;
 	if (R>0) {
 	    if (fabs(q*R)< 1e-3) {
 	        return K*gsl_pow_6(R)/gsl_pow_2(HI)*
