@@ -10,7 +10,7 @@
 #define K	param->p[0]
 #define HI	param->p[1]
 #define L_H	param->p[2]
-#define R   param->p[3]
+#define R   fabs(param->p[3])
 #define lR  param->p[MAXPAR-1]
 
 scalar Cr_kernel(scalar q, sasfit_param * param) {
@@ -31,10 +31,10 @@ scalar sasfit_ff_c_r__for_spin_misalignment(scalar r, sasfit_param * param)
 	// insert your code here
 	lR = r;
 	lh = L_H;
-
-if (R>0) {
-	euler = exp(1);
-	if (fabs(r)<=1e-5) {
+if (R==0) return 0;
+//if (R>0) {
+euler = M_E;
+if (fabs(r)<=1e-5) {
 //	   Cr = exp(-2/lh*R)*pow(R,-4)*(exp(2/lh
 //*R)*(4*M_PI*pow(R,3)-9*lh*M_PI*pow(R,2)+15*pow(lh,3)*M_PI)-6*M_PI
 //*pow(R,3)-21*lh*M_PI*pow(R,2)-30*pow(lh,2)*M_PI*R-15*pow(lh,3)*M_PI)/24.0;
@@ -75,9 +75,10 @@ else if (2*R == r) {Cr = exp(-2/lh*r)*pow(r,-5)*(exp(r/lh)
 /2.0;} else {Cr = 0;}
 
 return K*gsl_pow_4(R)/gsl_pow_2(HI)*Cr;
-} else {
-	return sasfit_integrate(0.0,GSL_POSINF,&Cr_kernel, param);
-}
+//} else {
+//
+//	return sasfit_integrate(0.0,GSL_POSINF,&Cr_kernel, param);
+//}
 }
 
 scalar sasfit_ff_c_r__for_spin_misalignment_f(scalar q, sasfit_param * param)

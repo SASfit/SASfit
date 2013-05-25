@@ -30,7 +30,7 @@ printval(var):=
 block([val],
 val: var=ev(fullratsimp(var)),
 
-val: subst(["^"='pow,%e=euler,%pi=M_PI],val),
+val: subst(["^"='pow,%e=M_E,%pi=M_PI],val),
 
 load(f90),
 f90(val));
