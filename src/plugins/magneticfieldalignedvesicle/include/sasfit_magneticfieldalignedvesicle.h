@@ -20,7 +20,7 @@
 
 // adjust the project name below
 // *_EXPORTS is set by cmake if build as shared library
-#if defined(sasfit_magneticfieldalignedvesicle_EXPORTS) 
+#if defined(sasfit_magneticfieldalignedvesicle_EXPORTS)
 	#ifdef sasfit_magneticfieldalignedvesicle_DLLEXP
 	#undef sasfit_magneticfieldalignedvesicle_DLLEXP
 	#endif
@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_magneticfieldalignedvesicle_p2psi ################ */
-/** 
+/**
  * \defgroup ff_magneticfieldalignedvesicle_p2psi MagneticFieldAlignedVesicleP2Psi
- * \ingroup ff_plugins
+ * \ingroup ff_devel
  *
  * \brief \<some brief description of MagneticFieldAlignedVesicleP2Psi function\>
  *
@@ -71,7 +71,7 @@
  *       <td>scattering length density of capped sides</td>
  *      </tr><tr>
  *       <td>\b sigma</td>
- *       <td>width of lognormal size distribution\n</td> 
+ *       <td>width of lognormal size distribution\n</td>
  *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>direction of the scattering vector in units of deg\n</td>
@@ -84,29 +84,29 @@
 /**
  * \ingroup ff_magneticfieldalignedvesicle_p2psi
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, form_fac
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_p2psi(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_magneticfieldalignedvesicle_p2psi
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, form_fac
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_p2psi_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_magneticfieldalignedvesicle_p2psi
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, form_fac
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_p2psi_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_magneticfieldalignedvesicle_p2psi ################ */
 
 /* ################ start ff_magneticfieldalignedvesicle_psi ################ */
-/** 
+/**
  * \defgroup ff_magneticfieldalignedvesicle_psi MagneticFieldAlignedVesiclePsi
- * \ingroup ff_plugins
+ * \ingroup ff_devel
  *
  * \brief \<some brief description of MagneticFieldAlignedVesiclePsi function\>
  *
@@ -138,7 +138,7 @@ sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedv
  *       <td>scattering length density of capped sides</td>
  *      </tr><tr>
  *       <td>\b eta_sol</td>
- *       <td>scattering length density of solvent</td> 
+ *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>direction of the scattering vector in units of deg</td>
@@ -148,30 +148,30 @@ sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedv
 /**
  * \ingroup ff_magneticfieldalignedvesicle_psi
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, example_group
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_psi(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_magneticfieldalignedvesicle_psi
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, example_group
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_psi_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_magneticfieldalignedvesicle_psi
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, example_group
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_psi_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_magneticfieldalignedvesicle_psi ################ */
 
 
 
-/** 
+/**
  * \defgroup ff_magneticfieldalignedvesicle_psi_new MagneticFieldAlignedVesiclePsiNew
- * \ingroup ff_plugins
+ * \ingroup ff_devel
  *
  * \brief \<some brief description of MagneticFieldAlignedVesiclePsiNew function\>
  *
@@ -209,7 +209,7 @@ sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedv
  *       <td>scattering length density of capped sides</td>
  *      </tr><tr>
  *       <td>\b eta_sol</td>
- *       <td>scattering length density of solvent</td> 
+ *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>direction of the scattering vector in units of deg</td>
@@ -225,24 +225,24 @@ sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedv
 /**
  * \ingroup ff_magneticfieldalignedvesicle_psi_new
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, example_group
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_psi_new(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_magneticfieldalignedvesicle_psi_new
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, example_group
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_psi_new_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_magneticfieldalignedvesicle_psi_new
  *
- * \sa sasfit_magneticfieldalignedvesicle.h, example_group
+ * \sa sasfit_magneticfieldalignedvesicle.h, ff_devel
  */
 sasfit_magneticfieldalignedvesicle_DLLEXP scalar sasfit_ff_magneticfieldalignedvesicle_psi_new_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_magneticfieldalignedvesicle_psi_new ################ */
 
-#endif 
+#endif
 

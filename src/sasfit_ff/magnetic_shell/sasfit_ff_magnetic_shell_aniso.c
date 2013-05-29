@@ -33,7 +33,7 @@ scalar sasfit_ff_magnetic_shell_aniso(scalar q, sasfit_param * param)
 
 	MAGNETIC_SHELL_KNUC_KMAG;
 
-	res = (1.0-V[POL])/2.0 * (kmag*kmag+2.0*knuc*kmag) + (1.0+V[POL])/2.0 * (kmag*kmag-2.0*knuc*kmag);
+	res = (1.0-POL)/2.0 * (kmag*kmag+2.0*knuc*kmag) + (1.0+POL)/2.0 * (kmag*kmag-2.0*knuc*kmag);
 
 	return res;
 }

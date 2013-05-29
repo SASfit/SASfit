@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_TRIAX_ELLIP_SHELL_H
@@ -20,7 +20,7 @@
 
 // adjust the project name below
 // *_EXPORTS is set by cmake if build as shared library
-#if defined(sasfit_triax_ellip_shell_EXPORTS) 
+#if defined(sasfit_triax_ellip_shell_EXPORTS)
 	#ifdef sasfit_triax_ellip_shell_DLLEXP
 	#undef sasfit_triax_ellip_shell_DLLEXP
 	#endif
@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_triax_ellip_shell ################ */
-/** 
+/**
  * \defgroup ff_triax_ellip_shell triax ellip shell
- * \ingroup ff_plugins
+ * \ingroup ff_user1
  *
  * \brief \<some brief description of triax ellip shell function\>
  *
@@ -75,29 +75,29 @@
 /**
  * \ingroup ff_triax_ellip_shell
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_triax_ellip_shell ################ */
 
 /* ################ start ff_triax_ellip_shell_syl ################ */
-/** 
+/**
  * \defgroup ff_triax_ellip_shell_syl triax ellip shell (sylvain)
- * \ingroup ff_plugins
+ * \ingroup ff_user1
  *
  * \brief \<some brief description of triax ellip shell function\>
  *
@@ -139,29 +139,29 @@ sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_v(scalar q, s
 /**
  * \ingroup ff_triax_ellip_shell_syl
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_syl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell_syl
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_syl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell_syl
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_syl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_triax_ellip_shell ################ */
 
 /* ################ start ff_triax_ellip_shell_sq_baba_ahmed_1 ################ */
-/** 
+/**
  * \defgroup ff_triax_ellip_shell_sq_baba_ahmed_1 triax ellip shell (incl SQ:BabaAhmed)(1)
- * \ingroup ff_plugins
+ * \ingroup ff_user1
  *
  * \brief \<some brief description of triax ellip shell function\>
  *
@@ -221,15 +221,15 @@ sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_syl_v(scalar 
 /**
  * \ingroup ff_triax_ellip_shell_sq_baba_ahmed_1
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
-sasfit_triax_ellip_shell_DLLEXP scalar 
+sasfit_triax_ellip_shell_DLLEXP scalar
 sasfit_ff_triax_ellip_shell_sq_baba_ahmed_1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell_sq_baba_ahmed_1
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar
 sasfit_ff_triax_ellip_shell_sq_baba_ahmed_1_f(scalar q, sasfit_param * p);
@@ -237,17 +237,17 @@ sasfit_ff_triax_ellip_shell_sq_baba_ahmed_1_f(scalar q, sasfit_param * p);
 /**
  * \ingroup ff_triax_ellip_shell_sq_baba_ahmed_1
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
-sasfit_triax_ellip_shell_DLLEXP scalar 
+sasfit_triax_ellip_shell_DLLEXP scalar
 sasfit_ff_triax_ellip_shell_sq_baba_ahmed_1_v(scalar q, sasfit_param * p, int dist);
 
 /* ################ stop ff_triax_ellip_shell_sq_baba_ahmed_1 ################ */
 
 /* ################ start ff_triax_ellip_shell_sq_baba_ahmed_2 ################ */
-/** 
+/**
  * \defgroup ff_triax_ellip_shell_sq_baba_ahmed_2 triax ellip shell (incl SQ:BabaAhmed)(2)
- * \ingroup ff_plugins
+ * \ingroup ff_user1
  *
  * \brief \<some brief description of triax ellip shell function\>
  *
@@ -307,15 +307,15 @@ sasfit_ff_triax_ellip_shell_sq_baba_ahmed_1_v(scalar q, sasfit_param * p, int di
 /**
  * \ingroup ff_triax_ellip_shell_sq_baba_ahmed_2
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
-sasfit_triax_ellip_shell_DLLEXP scalar 
+sasfit_triax_ellip_shell_DLLEXP scalar
 sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell_sq_baba_ahmed_2
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
 sasfit_triax_ellip_shell_DLLEXP scalar
 sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2_f(scalar q, sasfit_param * p);
@@ -323,9 +323,9 @@ sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2_f(scalar q, sasfit_param * p);
 /**
  * \ingroup ff_triax_ellip_shell_sq_baba_ahmed_2
  *
- * \sa sasfit_triax_ellip_shell.h, ff_plugins
+ * \sa sasfit_triax_ellip_shell.h, ff_user1
  */
-sasfit_triax_ellip_shell_DLLEXP scalar 
+sasfit_triax_ellip_shell_DLLEXP scalar
 sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2_v(scalar q, sasfit_param * p, int dist);
 
 /* ################ stop ff_triax_ellip_shell_sq_baba_ahmed_2 ################ */

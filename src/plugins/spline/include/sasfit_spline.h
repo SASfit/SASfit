@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_akima8 ################ */
-/** 
+/**
  * \defgroup ff_akima8 Akima8 (FF)
- * \ingroup ff_plugins
+ * \ingroup ff_user2
  *
  * \brief \<some brief description of Akima8 function\>
  *
@@ -84,29 +84,29 @@
 /**
  * \ingroup ff_akima8
  *
- * \sa sasfit_splines.h, ff_plugins
+ * \sa sasfit_splines.h, ff_user2
  */
 sasfit_spline_DLLEXP scalar sasfit_ff_akima8(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_akima8
  *
- * \sa sasfit_splines.h, ff_plugins
+ * \sa sasfit_splines.h, ff_user2
  */
 sasfit_spline_DLLEXP scalar sasfit_ff_akima8_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_akima8
  *
- * \sa sasfit_splines.h, ff_plugins
+ * \sa sasfit_splines.h, ff_user2
  */
 sasfit_spline_DLLEXP scalar sasfit_ff_akima8_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_akima8 ################ */
 
 /* ################ start ff_cspline8 ################ */
-/** 
+/**
  * \defgroup ff_cspline8 CSpline8 (FF)
- * \ingroup ff_plugins
+ * \ingroup ff_user2
  *
  * \brief \<some brief description of CSpline8 function\>
  *
@@ -151,27 +151,27 @@ sasfit_spline_DLLEXP scalar sasfit_ff_akima8_v(scalar q, sasfit_param * p, int d
 /**
  * \ingroup ff_cspline8
  *
- * \sa sasfit_splines.h, example_group
+ * \sa sasfit_splines.h, ff_user2
  */
 sasfit_spline_DLLEXP scalar sasfit_ff_cspline8(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_cspline8
  *
- * \sa sasfit_splines.h, example_group
+ * \sa sasfit_splines.h, ff_user2
  */
 sasfit_spline_DLLEXP scalar sasfit_ff_cspline8_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_cspline8
  *
- * \sa sasfit_splines.h, example_group
+ * \sa sasfit_splines.h, ff_user2
  */
 sasfit_spline_DLLEXP scalar sasfit_ff_cspline8_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_cspline8 ################ */
 
 /* ################ start sd_cspline4 ################ */
-/** 
+/**
  * \defgroup sd_akima8 Akima8 (SD)
  * \ingroup sd_plugins
  *
@@ -237,7 +237,7 @@ sasfit_spline_DLLEXP scalar sasfit_sd_akima8_v(scalar x, sasfit_param * p, int d
 /* ################ stop sd_akima8 ################ */
 
 /* ################ start sd_cspline8 ################ */
-/** 
+/**
  * \defgroup sd_cspline8 CSpline8 (SD)
  * \ingroup sd_plugins
  *
