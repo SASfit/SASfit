@@ -36,7 +36,7 @@ scalar sasfit_ff_i_q__for_spin_misalignment(scalar q, sasfit_param * param)
 
 	// insert your code here
 	if (R==0) return 0;
-	if (R>0) {
+//	if (R>0) {
 	    if (fabs(q*R)< 1e-3) {
 	        return K*gsl_pow_6(R)/gsl_pow_2(HI)*
                 (2*M_PI*M_PI)*
@@ -49,12 +49,12 @@ scalar sasfit_ff_i_q__for_spin_misalignment(scalar q, sasfit_param * param)
                 gsl_pow_2(gsl_sf_bessel_j1(q*fabs(R)))
                 /gsl_pow_2(1.0+gsl_pow_2(L_H*q));
 	    }
-	} else {
-        Q = q;
+//	} else {
+//       Q = q;
         // GSL_POSINF
-        R = fabs(R);
-        return sasfit_integrate(0,GSL_POSINF,&Iq_kernel, param);
-	}
+//        R = fabs(R);
+//        return sasfit_integrate(0,GSL_POSINF,&Iq_kernel, param);
+//	}
 }
 
 scalar sasfit_ff_i_q__for_spin_misalignment_f(scalar q, sasfit_param * param)

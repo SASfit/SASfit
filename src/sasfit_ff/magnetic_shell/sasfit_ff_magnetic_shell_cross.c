@@ -29,21 +29,25 @@
 
 scalar sasfit_ff_magnetic_shell_cross(scalar q, sasfit_param * param)
 {
+
+    PSI=M_PI_2;
 	MAGNETIC_SHELL_HEADER;
 
-	subParam.p[0] = V[R] + V[D_R];
-	subParam.p[1] = V[R];
-	subParam.p[2] = V[NUC_SH] - V[NUC_MATRIX];
-	subParam.p[3] = V[NUC_C]  - V[NUC_MATRIX];
-	knuc = sasfit_ff_Ksh(V[Q], &subParam );
+	subParam.p[0] = R + D_R;
+	subParam.p[1] = R;
+	subParam.p[2] = NUC_SH - NUC_MATRIX;
+	subParam.p[3] = NUC_C  - NUC_MATRIX;
+	knuc = sasfit_ff_Ksh(Q, &subParam );
+	SASFIT_CHECK_SUB_ERR(param, subParam);
+	subParam.p[2] = MAG_SH - MAG_MATRIX;
+	subParam.p[3] = MAG_C  - MAG_MATRIX;
+	kmag = sasfit_ff_Ksh(Q, &subParam );
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
-	subParam.p[2] = V[MAG_SH] - V[MAG_MATRIX];
-	subParam.p[3] = V[MAG_C]  - V[MAG_MATRIX];
-	kmag = sasfit_ff_Ksh(V[Q], &subParam );
-	SASFIT_CHECK_SUB_ERR(param, subParam);
 
-	res = V[POL]*4.0*knuc*kmag*sin2;
+    PSI2D = sasfit_param_override_get_psi ( PSI/180.0*M_PI );
+    sin2 = pow(sin(PSI2D),2.0);
+	res = POL*4.0*knuc*kmag*sin2;
 
 	return res;
 }

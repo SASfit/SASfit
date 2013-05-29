@@ -39,7 +39,7 @@
 /* ################ start ff_sphere_with_3_shells ################ */
 /**
  * \defgroup ff_sphere_with_3_shells sphere with 3 shells
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_spheres_shells
  *
  * \brief \<some brief description of sphere with 3 shells function\>
  *
@@ -81,21 +81,21 @@
 /**
  * \ingroup ff_sphere_with_3_shells
  *
- * \sa sasfit_sphere_with_3_shells.h, ff_plugins
+ * \sa sasfit_sphere_with_3_shells.h, ff_plugins_spheres_shells
  */
 sasfit_sphere_with_3_shells_DLLEXP scalar sasfit_ff_sphere_with_3_shells(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_sphere_with_3_shells
  *
- * \sa sasfit_sphere_with_3_shells.h, ff_plugins
+ * \sa sasfit_sphere_with_3_shells.h, ff_plugins_spheres_shells
  */
 sasfit_sphere_with_3_shells_DLLEXP scalar sasfit_ff_sphere_with_3_shells_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_sphere_with_3_shells
  *
- * \sa sasfit_sphere_with_3_shells.h, ff_plugins
+ * \sa sasfit_sphere_with_3_shells.h, ff_plugins_spheres_shells
  */
 sasfit_sphere_with_3_shells_DLLEXP scalar sasfit_ff_sphere_with_3_shells_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_sphere_with_3_shells ################ */

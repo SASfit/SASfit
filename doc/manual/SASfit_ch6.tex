@@ -1343,6 +1343,86 @@ lognormal size distribution.} \label{fig:MagSpinMisAlignment}
 \section{Ferrofluids} \hspace{1pt}
 \label{sec:ferrofluid}
 
+"Ferrofluids" and "Magnetic Liquids" are two
+common expressions for suspensions in which nanometer sized particles
+are dispersed in a carrier liquid. Figure \ref{fig:ferrofluidparticle} gives a
+schematic illustration. The particle material can be ferri- or
+ferromagnetic, and is often coated with a stabilizing dispersing
+agent (surfactant). The particle size is smaller than the size of
+magnetic domains of the corresponding bulk material. This means that
+every particle is single-domain ferri- or ferromagnetic.
+Additionally we assume in this model, that the metallic core has
+a shell structure to be able to model a thin oxidation layer with a
+reduced magnetisation on the surface.The
+surfactant molecules consist of a head and a polar tail. The head
+can coalesce with the magnetic particle, and the tail protrudes into
+the carrier liquid and can dissolve in it. This polar tails
+protruding into the liquid lead to repulsion between the colloids.
+Different substances like organic acids or polymers usually serve as
+surfactants. The carrier liquid is selected to meet the requirements
+for a particular applications: It can be hydrocarbon, ester, water
+or others. As a result of the small size of the particles they are
+very mobile due to Brownian motion. In zero field the magnetic moment
+is random oriented. Applying a magnetic field the
+orrientation distribution of the magnetic moments of the ferrofluid
+particles follow a Langevin statistic.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../images/form_factor/ferrofluid/ferrfluidparticle.png}
+\end{center}
+\caption{Sketch of a ferrofluid particle stabilised with surfactant
+molecules on its surface. The magnetic core can have a shell with
+lower magnetisation. The direction of the shell magnetisation is
+assumed to be parallel or antiparallel to the core magnetisation,
+depending on the signs of the magnetic scattering length densities.}
+\label{fig:ferrofluidparticle}
+\end{figure}
+
+The relevant parameters to describe the ferrofluid particle in this model are:
+\begin{itemize}
+\item Radius of the $R_\text{core}$ in reciprocal units of scattering vector $q$.
+\item Thickness of the metallic shell $t_\text{shell}$ in reciprocal units of scattering vector $q$.
+\item Specific aggregation number of stabilizing surfactant molecules per surface area in units of cm$^{-2}$.
+\item Molecular volume $V_\text{brush}$ of a single surfactant molecule in units of cm$^3$.
+The scattering length density calculator of \SASfit might be useful to supply this value.
+\item Nuclear scattering length density $\eta_\text{core}$ of the solid ferromagnetic core.
+\item Nuclear scattering length density $\eta_\text{sh}$ of an optional demagnetised shell of the
+solid ferromagnetic core.
+\item Nuclear scattering length density of the solvent $\eta_\text{solv}$.
+\item Magnetisation of the metallic core $M_\text{core}$.
+      The magnetic scattering length density is calculated via eq.\ \ref{eq:magnetic_SLD}.
+\item Magnetisation of the metallic shell $M_\text{sh}$.
+      Also here the magnetic scattering length density of the shell is calculated via eq.\ \ref{eq:magnetic_SLD}.
+\item Temperature $T$ in Kelvin.
+\item External applied magnetic field $B$ in Tesla.
+\item Lagrange parameter $\alpha$ for describing superparamagnetic properties is calculated by ratio
+of the potential energy of the total magnetic moment of the superparamagnetic particle in the applied magnetic
+field to the thermal energy via eq.\ \ref{eq:alpha}
+\item As align magnetic structures scatter anisotropically the angle $\psi$ between scattering vector
+and the applied magnetic field needs to be supplied.
+\item using polarised neutrons the incident polarisation $p$ needs to be known. $p$ can have values $p \in [-1,1]$.
+\item in case of full polarisation analysis also the transmission of the analyser needs to be known
+\end{itemize}
+
+The magnetic scattering length density $\eta_\text{mag}$ in units of 1/m$^2$
+is calculated from the magnetisation $M$ given in units of A/m by
+\begin{align}
+\eta_\text{mag} &= D_M \mu_0 M \label{eq:magnetic_SLD} \\
+D_M & = 2.3161 \frac{1}{\text{Vs}} \\
+\mu_0 &= 4\pi \times 10^{-7} \text{H}\text{m}^{-1} = 4\pi \times 10^{-7} \frac{\text{Vs}}{\text{Am}}
+\end{align}
+To get the magnetic scattering length density in cm$^{-2}$ an additional multiplication factor
+of $10^{-4}$ has to be applied.
+
+\begin{align}
+\alpha &= \mu_\text{FF}B/(k_B T) \label{eq:alpha} \\
+\mu_\text{FF} &= \frac{4}{3}\pi
+\left[ R_\text{core}^3  M_\text{core} +
+\left\{\left(R_\text{core}+t_\text{shell}\right)^3-R_\text{core}^3\right\} M_\text{shell}
+\right] \\
+k_\text{B} &= 1.3806488 \times 10^{-23} \text{m}^2 \text{kg} \text{ s}^{-2}
+\end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{LogNorm\_fp} \hspace{1pt}

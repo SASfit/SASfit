@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_MAGNETIC_CORRELATION_H
@@ -39,9 +39,9 @@
 /* ################ start ff_c_r__for_spin_misalignment ################ */
 /**
  * \defgroup ff_c_r__for_spin_misalignment C(r) for spin misalignment
- * \ingroup ff_magnetic_objects
+ * \ingroup ff_magnetic_spinmisalignment
  *
- * \brief \<some brief description of C(r) for spin misalignment function\>
+ * \brief C(r) for spin misalignment function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -59,28 +59,28 @@
  *       <td>l_H = sqrt[2A/(mu_0*Ms*Hi)] exchange length of magnetic field</td>
  *      </tr><tr>
  *       <td>\b R </td>
- *       <td>‘anisotropy-field’ radius</td>
+ *       <td>"anisotropy-field" radius</td>
  *      </tr></table>
  */
 
 /**
  * \ingroup ff_c_r__for_spin_misalignment
  *
- * \sa sasfit_magnetic_correlation.h, ff_magnetic_objects
+ * \sa sasfit_magnetic_correlation.h, ff_magnetic_spinmisalignment
  */
 sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_c_r__for_spin_misalignment(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_c_r__for_spin_misalignment
  *
- * \sa sasfit_magnetic_correlation.h, ff_magnetic_objects
+ * \sa sasfit_magnetic_correlation.h, ff_magnetic_spinmisalignment
  */
 sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_c_r__for_spin_misalignment_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_c_r__for_spin_misalignment
  *
- * \sa sasfit_magnetic_correlation.h, ff_magnetic_objects
+ * \sa sasfit_magnetic_correlation.h, ff_magnetic_spinmisalignment
  */
 sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_c_r__for_spin_misalignment_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_c_r__for_spin_misalignment ################ */
@@ -88,9 +88,9 @@ sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_c_r__for_spin_misalignment_v
 /* ################ start ff_i_q__for_spin_misalignment ################ */
 /**
  * \defgroup ff_i_q__for_spin_misalignment I(q) for spin misalignment
- * \ingroup ff_magnetic_objects
+ * \ingroup ff_magnetic_spinmisalignment
  *
- * \brief \<some brief description of I(q) for spin misalignment function\>
+ * \brief I(q) for spin misalignment function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -115,21 +115,21 @@ sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_c_r__for_spin_misalignment_v
 /**
  * \ingroup ff_i_q__for_spin_misalignment
  *
- * \sa sasfit_magnetic_correlation.h, ff_magnetic_objects
+ * \sa sasfit_magnetic_correlation.h, ff_magnetic_spinmisalignment
  */
 sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_i_q__for_spin_misalignment(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_i_q__for_spin_misalignment
  *
- * \sa sasfit_magnetic_correlation.h, ff_magnetic_objects
+ * \sa sasfit_magnetic_correlation.h, ff_magnetic_spinmisalignment
  */
 sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_i_q__for_spin_misalignment_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_i_q__for_spin_misalignment
  *
- * \sa sasfit_magnetic_correlation.h, ff_magnetic_objects
+ * \sa sasfit_magnetic_correlation.h, ff_magnetic_spinmisalignment
  */
 sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_i_q__for_spin_misalignment_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_i_q__for_spin_misalignment ################ */

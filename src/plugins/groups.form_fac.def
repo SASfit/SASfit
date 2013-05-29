@@ -1,7 +1,7 @@
 /*
  * plugins/groups.form_fac.def
  *
- * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ * Copyright (c) 2008-2013, Paul Scherrer Institute (PSI)
  *
  * This file is part of SASfit.
  *
@@ -112,15 +112,42 @@
  * This group contains cross section factors for different of local cylindrical obj.
  *
  * \modname{ff_plugins_pcslocalcylindrical}
- */
-  
+ */ 
+
 /** 
- * \defgroup ff_plugins_stroboscopic_superparamagnet stroboscopic measured superparamagnets
+ * \defgroup ff_polymer_micelles polymers & micelles 
  * \ingroup ff_plugins
  *
- * This group contains form factors for stroboscopic measured superparamagnetic particles.
+ * This group contains form factors for polymers & micelles.
  *
- * \modname{ff_plugins_stroboscopic_superparamagnet}
+ * \modname{ff_polymer_micelles}
+ */
+
+/** 
+ * \defgroup ff_polymer_chains polymer chains 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer chains.
+ *
+ * \modname{ff_polymer_chains}
+ */
+
+/** 
+ * \defgroup ff_polymer_stars polymer stars 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer stars.
+ *
+ * \modname{ff_polymer_stars}
+ */
+
+/** 
+ * \defgroup ff_polymer_rings polymer rings 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer rings.
+ *
+ * \modname{ff_polymer_rings}
  */
 
 /** 
@@ -133,6 +160,24 @@
  */
 
 /** 
+ * \defgroup ff_plugins_stroboscopic_superparamagnet stroboscopically measured superparamagnets
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors for stroboscopically measured superparamagnetic particles.
+ *
+ * \modname{ff_plugins_stroboscopic_superparamagnet}
+ */
+ 
+/** 
+ * \defgroup ff_magnetic_spinmisalignment magn. spin misalignment 
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors and correlation function of magnetic spin misalignment.
+ *
+ * \modname{ff_magnetic_spinmisalignment}
+ */
+
+/** 
  * \defgroup ff_plugins_ferrofluid ferrofluid form factors 
  * \ingroup ff_magnetic_objects
  *
@@ -141,6 +186,29 @@
  * \modname{ff_plugins_ferrofluid}
  */
 
+/** 
+ * \defgroup ff_user1 user plugins 1 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (1).
+ *
+ * \modname{ff_user1}
+ */
 
+/** 
+ * \defgroup ff_user2 user plugins 2 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (2).
+ *
+ * \modname{ff_user2}
+ */
 
-
+/** 
+ * \defgroup ff_devel devel plugins 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors under development.
+ *
+ * \modname{ff_devel}
+ */

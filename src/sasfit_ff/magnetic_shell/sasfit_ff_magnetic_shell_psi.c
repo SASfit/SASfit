@@ -33,8 +33,8 @@ scalar sasfit_ff_magnetic_shell_psi(scalar q, sasfit_param * param)
 
 	MAGNETIC_SHELL_KNUC_KMAG;
 
-	res = 	  (1.0-V[POL])/2.0 * (knuc*knuc+2.0*knuc*kmag*sin2+kmag*kmag*sin2)
-		+ (1.0+V[POL])/2.0 * (knuc*knuc-2.0*knuc*kmag*sin2+kmag*kmag*sin2);
+	res = 	  (1.0-POL)/2.0 * (knuc*knuc+2.0*knuc*kmag*sin2+kmag*kmag*sin2)
+		+ (1.0+POL)/2.0 * (knuc*knuc-2.0*knuc*kmag*sin2+kmag*kmag*sin2);
 
 	return res;
 }

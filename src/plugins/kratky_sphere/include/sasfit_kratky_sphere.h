@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_KRATKY_SPHERE_H
@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_kratkysphere ################ */
-/** 
+/**
  * \defgroup ff_kratkysphere KratkySphere
- * \ingroup ff_plugins
+ * \ingroup ff_devel
  *
  * \brief \<some brief description of KratkySphere function\>
  *
@@ -75,21 +75,21 @@
 /**
  * \ingroup ff_kratkysphere
  *
- * \sa sasfit_kratky_sphere.h, ff_plugins
+ * \sa sasfit_kratky_sphere.h, ff_devel
  */
 sasfit_kratky_sphere_DLLEXP scalar sasfit_ff_kratkysphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_kratkysphere
  *
- * \sa sasfit_kratky_sphere.h, ff_plugins
+ * \sa sasfit_kratky_sphere.h, ff_devel
  */
 sasfit_kratky_sphere_DLLEXP scalar sasfit_ff_kratkysphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_kratkysphere
  *
- * \sa sasfit_kratky_sphere.h, ff_plugins
+ * \sa sasfit_kratky_sphere.h, ff_devel
  */
 sasfit_kratky_sphere_DLLEXP scalar sasfit_ff_kratkysphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_kratkysphere ################ */
