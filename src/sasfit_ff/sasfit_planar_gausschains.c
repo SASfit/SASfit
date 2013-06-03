@@ -49,7 +49,7 @@ scalar sasfit_planar_gauss_chains(scalar q, sasfit_param * param)
 
 	SASFIT_ASSERT_PTR(param);
 
-	sasfit_get_param(param, 6, &L, &Rg, &d, &Nagg, &rc, &rs,&Pprime);
+	sasfit_get_param(param, 7, &L, &Rg, &d, &Nagg, &rc, &rs,&Pprime);
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((L < 0.0), param, "L(%lg) < 0",L);
