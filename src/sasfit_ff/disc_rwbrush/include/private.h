@@ -68,7 +68,24 @@ typedef enum
         Q
 } variable_names;
 
-#define V       param->p
+
+#define PARAM0      param->p[0]
+#define PARAM1      param->p[1]
+#define V_BRUSH     param->p[2]
+#define ETA_CORE    param->p[3]
+#define ETA_BRUSH   param->p[4]
+#define ETA_SOLV    param->p[5]
+#define XSOLV_CORE  param->p[6]
+#define RG          param->p[7]
+#define D           param->p[8]
+#define DIA         param->p[9]
+#define NAGG        param->p[MAXPAR-6]
+#define N_AGG       param->p[MAXPAR-5]
+#define V_CORE      param->p[MAXPAR-4]
+#define R           param->p[MAXPAR-3]
+#define	LC          param->p[MAXPAR-2]
+#define Q           param->p[MAXPAR-1]
+#define V param->p
 
 #define DISC_RWBRUSH_HEADER \
 \
@@ -77,43 +94,43 @@ typedef enum
 \
 	SASFIT_ASSERT_PTR(param); \
 \
-	V[Q] = q; \
+	Q = q; \
 \
-	SASFIT_CHECK_COND1((V[Q] < 0.0), param, "q(%lg) < 0",V[Q]); \
-	SASFIT_CHECK_COND1((V[V_BRUSH] < 0.0), param, "V_brush(%lg) < 0",V[V_BRUSH]); \
-	SASFIT_CHECK_COND1((V[RG] < 0.0), param, "Rg(%lg) < 0",V[RG]); \
-	SASFIT_CHECK_COND1((V[DIA] < 0.0), param, "D(%lg) < 0",V[DIA]); \
-	SASFIT_CHECK_COND( SASFIT_EQUAL(V[XSOLV_CORE], 1.0), param, "xsolv_core == 1"); \
+	SASFIT_CHECK_COND1((Q < 0.0), param, "q(%lg) < 0",Q); \
+	SASFIT_CHECK_COND1((V_BRUSH < 0.0), param, "V_brush(%lg) < 0",V_BRUSH); \
+	SASFIT_CHECK_COND1((RG < 0.0), param, "Rg(%lg) < 0",RG); \
+	SASFIT_CHECK_COND1((DIA < 0.0), param, "D(%lg) < 0",DIA); \
+	SASFIT_CHECK_COND( SASFIT_EQUAL(XSOLV_CORE, 1.0), param, "xsolv_core == 1"); \
 \
-	V[R] = 0.5*V[DIA]; \
+	R = 0.5*DIA; \
 \
-	if ((V[Q] == 0.0) && (V[DIA] != 0)) \
+	if ((Q == 0.0) && (DIA != 0)) \
 	{ \
 		pprime = 1.0; \
-	} else if (V[DIA] == 0.0) \
+	} else if (DIA == 0.0) \
 	{ \
 		pprime = 0.0; \
 	} else { \
-		pprime = 2.0/(V[Q]*V[Q] * V[R]*V[R]) * (1.0-gsl_sf_bessel_J1( V[DIA]*V[Q] ) / (V[Q] * V[R])); \
+		pprime = 2.0/(Q*Q * R*R) * (1.0-gsl_sf_bessel_J1( DIA*Q ) / (Q*R)); \
 	}
 
 #define DISC_RWBRUSH_BODY \
 \
-	V[NAGG] = 1.0*M_PI*V[DIA]*V[DIA]/4.0 * V[N_AGG]; \
+	NAGG = (2.0*M_PI*DIA*DIA/4.0 + 0.0*2.0*M_PI*R*LC) * N_AGG; \
 \
-	rs = V[V_CORE] * (V[ETA_CORE] - V[ETA_SOLV]); \
-	rc = V[V_BRUSH] * (V[ETA_BRUSH] - V[ETA_SOLV]); \
+	rs = V_CORE * (ETA_CORE - ETA_SOLV); \
+	rc = V_BRUSH * (ETA_BRUSH - ETA_SOLV); \
 \
 	sasfit_init_param( &subParam ); \
-	subParam.p[0] = V[LC]; \
-	subParam.p[1] = V[RG]; \
-	subParam.p[2] = V[D]; \
-	subParam.p[3] = V[NAGG]; \
+	subParam.p[0] = LC; \
+	subParam.p[1] = RG; \
+	subParam.p[2] = D; \
+	subParam.p[3] = NAGG; \
 	subParam.p[4] = rc; \
 	subParam.p[5] = rs; \
 	subParam.p[6] = pprime;\
 \
-	return sasfit_planar_gauss_chains(V[Q], &subParam);
+	return sasfit_planar_gauss_chains(Q, &subParam);
 
 #endif
 

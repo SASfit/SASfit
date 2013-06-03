@@ -31,11 +31,11 @@ scalar sasfit_ff_disc_rwbrush_nagg(scalar q, sasfit_param * param)
 {
 	DISC_RWBRUSH_HEADER;
 
-	V[N_AGG]	= V[PARAM0];
-	V[V_CORE]	= V[PARAM1];
-	SASFIT_CHECK_COND1((V[V_CORE] < 0.0), param, "V_core(%lg) < 0",V[V_CORE]);
+	N_AGG	= PARAM0;
+	V_CORE	= PARAM1;
+	SASFIT_CHECK_COND1((V_CORE < 0.0), param, "V_core(%lg) < 0",V_CORE);
 
-	V[LC] = V[N_AGG] * V[V_CORE]/(1.0-V[XSOLV_CORE]);
+	LC = N_AGG * V_CORE/(1.0-XSOLV_CORE);
 
 	DISC_RWBRUSH_BODY;
 }

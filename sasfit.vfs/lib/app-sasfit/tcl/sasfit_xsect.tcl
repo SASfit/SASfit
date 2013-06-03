@@ -391,6 +391,22 @@ if {[catch {set Data(compound,Z) [expr $ChemSumForm]}]} {
 }
 
 #
+# calculate total charge Z/82.5 of the molecule
+#
+set ChemSumForm $saveChemSumForm
+foreach name $Data(Symbol) A $Data(A) Z  $Data(Z) {
+    set Symb [format %s%s $name \\($A\\)]
+    while {[regsub  [format "%s%s%s" {(.*)} $Symb {(.*)}] $ChemSumForm \\1+pow($Z/82.5,2.37)\\2 res]} {
+       set ChemSumForm $res
+   }
+}
+
+set Data(ChemSumFormula,Zrel) $res
+if {[catch {set Data(compound,Zrel) [expr $ChemSumForm]}]} {
+   return 1
+}
+
+#
 # calculate total atomic weight A of the molecule
 #
 set ChemSumForm $saveChemSumForm
@@ -607,17 +623,17 @@ if {![catch {set vm [expr $Data(compound,A)/($Na*$Data(density))]}]} {
    return 1
 }
 
-set Data(compound,SLD,Cr) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-pow($Data(compound,Z)/82.5,2.37)+$Data(compound,CrKafp,5989eV))*$re/$vm] [expr $Data(compound,CrKafpp,5989eV)*$re/$vm]]
+set Data(compound,SLD,Cr) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-$Data(compound,Zrel)+$Data(compound,CrKafp,5989eV))*$re/$vm] [expr $Data(compound,CrKafpp,5989eV)*$re/$vm]]
 
-set Data(compound,SLD,Fe) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-pow($Data(compound,Z)/82.5,2.37)+$Data(compound,FeKafp,7112eV))*$re/$vm] [expr $Data(compound,FeKafpp,7112eV)*$re/$vm]]
+set Data(compound,SLD,Fe) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-$Data(compound,Zrel)+$Data(compound,FeKafp,7112eV))*$re/$vm] [expr $Data(compound,FeKafpp,7112eV)*$re/$vm]]
 
-set Data(compound,SLD,Cu) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-pow($Data(compound,Z)/82.5,2.37)+$Data(compound,CuKafp,8979eV))*$re/$vm] [expr $Data(compound,CuKafpp,8979eV)*$re/$vm]]
+set Data(compound,SLD,Cu) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-$Data(compound,Zrel)+$Data(compound,CuKafp,8979eV))*$re/$vm] [expr $Data(compound,CuKafpp,8979eV)*$re/$vm]]
 
-set Data(compound,SLD,Mo) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-pow($Data(compound,Z)/82.5,2.37)+$Data(compound,MoKafp,20000eV))*$re/$vm] [expr $Data(compound,MoKafpp,20000eV)*$re/$vm]]
+set Data(compound,SLD,Mo) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-$Data(compound,Zrel)+$Data(compound,MoKafp,20000eV))*$re/$vm] [expr $Data(compound,MoKafpp,20000eV)*$re/$vm]]
 
-set Data(compound,SLD,Ag) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-pow($Data(compound,Z)/82.5,2.37)+$Data(compound,AgKafp,25514eV))*$re/$vm] [expr $Data(compound,AgKafpp,25514eV)*$re/$vm]]
+set Data(compound,SLD,Ag) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-$Data(compound,Zrel)+$Data(compound,AgKafp,25514eV))*$re/$vm] [expr $Data(compound,AgKafpp,25514eV)*$re/$vm]]
 
-set Data(compound,SLD,E) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-pow($Data(compound,Z)/82.5,2.37)+$Data(compound,fpE))*$re/$vm] [expr $Data(compound,fppE)*$re/$vm]]
+set Data(compound,SLD,E) [format "%1.3E + i %1.3E" [expr ($Data(compound,Z)-$Data(compound,Zrel)+$Data(compound,fpE))*$re/$vm] [expr $Data(compound,fppE)*$re/$vm]]
 
 return 0
 }

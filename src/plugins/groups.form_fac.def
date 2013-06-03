@@ -151,6 +151,33 @@
  */
 
 /** 
+ * \defgroup ff_spherical_micelles spherical&ellipsoidal micelles 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles of spherical or ellipsoidal  geometry.
+ *
+ * \modname{ff_spherical_micelles}
+ */
+
+/** 
+ * \defgroup ff_local_cyl_micelles cylindrical&rod-like micelles 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles with local cylindrical geometry.
+ *
+ * \modname{ff_local_cyl_micelles}
+ */
+
+/** 
+ * \defgroup ff_local_planar_micelles local planar micelles (sheets, ULV) 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles with local planar geometry.
+ *
+ * \modname{ff_local_planar_micelles}
+ */
+
+/** 
  * \defgroup ff_magnetic_objects magnetic objects 
  * \ingroup ff_plugins
  *
