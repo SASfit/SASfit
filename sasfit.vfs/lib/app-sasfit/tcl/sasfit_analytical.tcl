@@ -8381,7 +8381,7 @@ switch -exact $type {
                  5 {return "eta_shell: scattering length density of shell\n"}
                  6 {return "eta_solv: scattering length density of solvent\n"}
                  7 {return "psi: direction of Q\[deg\]\n"}
-                 8 {return "theta: orientation of cylinder axis towards vertical axis in plane of the detector \[deg\]\n"}
+                 8 {return "theta: orientation of cylinder axis towards horizontal axis in plane of the detector \[deg\]\n"}
                  9 {return "phi: rotation of cylinder axis out of the detector plane \[deg\]\n"}
                 10 {return "\n"}
               }
@@ -12147,7 +12147,7 @@ button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
 		  set yll $i
 		  set xur [expr $j+1]
 		  set yur [expr $i+1]
-		  set ctIndx [lindex [lindex $Det2DRes $j] $i]
+		  set ctIndx [lindex [lindex $Det2DRes $i] $j]
 		  $s plot filled-rectangle $xll $yll $xur $yur  \
 		      [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
 	       }

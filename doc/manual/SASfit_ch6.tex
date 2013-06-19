@@ -1343,29 +1343,29 @@ lognormal size distribution.} \label{fig:MagSpinMisAlignment}
 \section{Ferrofluids} \hspace{1pt}
 \label{sec:ferrofluid}
 
-"Ferrofluids" and "Magnetic Liquids" are two
-common expressions for suspensions in which nanometer sized particles
-are dispersed in a carrier liquid. Figure \ref{fig:ferrofluidparticle} gives a
+"Ferrofluids" and "Magnetic Liquids" are two common expressions for
+suspensions in which nanometer sized particles are dispersed in a
+carrier liquid. Figure \ref{fig:ferrofluidparticle} gives a
 schematic illustration. The particle material can be ferri- or
 ferromagnetic, and is often coated with a stabilizing dispersing
 agent (surfactant). The particle size is smaller than the size of
 magnetic domains of the corresponding bulk material. This means that
 every particle is single-domain ferri- or ferromagnetic.
-Additionally we assume in this model, that the metallic core has
-a shell structure to be able to model a thin oxidation layer with a
-reduced magnetisation on the surface.The
-surfactant molecules consist of a head and a polar tail. The head
-can coalesce with the magnetic particle, and the tail protrudes into
-the carrier liquid and can dissolve in it. This polar tails
-protruding into the liquid lead to repulsion between the colloids.
-Different substances like organic acids or polymers usually serve as
-surfactants. The carrier liquid is selected to meet the requirements
-for a particular applications: It can be hydrocarbon, ester, water
-or others. As a result of the small size of the particles they are
-very mobile due to Brownian motion. In zero field the magnetic moment
-is random oriented. Applying a magnetic field the
-orrientation distribution of the magnetic moments of the ferrofluid
-particles follow a Langevin statistic.
+Additionally we assume in this model, that the metallic core has a
+shell structure to be able to model a thin oxidation layer with a
+reduced magnetisation on the surface.The surfactant molecules
+consist of a head and a polar tail. The head can coalesce with the
+magnetic particle, and the tail protrudes into the carrier liquid
+and can dissolve in it. This polar tails protruding into the liquid
+lead to repulsion between the colloids. Different substances like
+organic acids or polymers usually serve as surfactants. The carrier
+liquid is selected to meet the requirements for a particular
+applications: It can be hydrocarbon, ester, water or others. As a
+result of the small size of the particles they are very mobile due
+to Brownian motion. In zero field the magnetic moment is random
+oriented. Applying a magnetic field the orientation distribution of
+the magnetic moments of the ferrofluid particles follow a Langevin
+statistic.
 
 \begin{figure}[htb]
 \begin{center}
@@ -1379,13 +1379,22 @@ depending on the signs of the magnetic scattering length densities.}
 \label{fig:ferrofluidparticle}
 \end{figure}
 
-The relevant parameters to describe the ferrofluid particle in this model are:
+In the present implementation of scattering function of
+superparamagnetic particles geometrical parameters are calculated
+like magnetic scattering length densities are calculated from the
+magnetization of the shell and the core, whereas the nuclear
+scattering length densities are an explicit input parameter. In such
+a case one has to be careful using the right units.
+
+The relevant parameters to describe the ferrofluid particle in this
+model are:
 \begin{itemize}
 \item Radius of the $R_\text{core}$ in reciprocal units of scattering vector $q$.
 \item Thickness of the metallic shell $t_\text{shell}$ in reciprocal units of scattering vector $q$.
 \item Specific aggregation number of stabilizing surfactant molecules per surface area in units of cm$^{-2}$.
-\item Molecular volume $V_\text{brush}$ of a single surfactant molecule in units of cm$^3$.
-The scattering length density calculator of \SASfit might be useful to supply this value.
+\item Molecular volume $V_\text{brush}$ of a single surfactant molecule in units of nm$^3$.
+The scattering length density calculator of \SASfit might be useful
+to supply this value.
 \item Nuclear scattering length density $\eta_\text{core}$ of the solid ferromagnetic core.
 \item Nuclear scattering length density $\eta_\text{sh}$ of an optional demagnetised shell of the
 solid ferromagnetic core.
@@ -1395,7 +1404,7 @@ solid ferromagnetic core.
 \item Magnetisation of the metallic shell $M_\text{sh}$.
       Also here the magnetic scattering length density of the shell is calculated via eq.\ \ref{eq:magnetic_SLD}.
 \item Temperature $T$ in Kelvin.
-\item External applied magnetic field $B$ in Tesla.
+\item External applied magnetic field $B$ in Tesla or milliTesla depending of the units of $q$.
 \item Lagrange parameter $\alpha$ for describing superparamagnetic properties is calculated by ratio
 of the potential energy of the total magnetic moment of the superparamagnetic particle in the applied magnetic
 field to the thermal energy via eq.\ \ref{eq:alpha}
@@ -1405,24 +1414,210 @@ and the applied magnetic field needs to be supplied.
 \item in case of full polarisation analysis also the transmission of the analyser needs to be known
 \end{itemize}
 
-The magnetic scattering length density $\eta_\text{mag}$ in units of 1/m$^2$
-is calculated from the magnetisation $M$ given in units of A/m by
+The magnetic scattering length density $\eta_\text{mag}$ in units of
+cm$^{-2}$ is calculated from the magnetisation $M$ given in units of
+A/m by
 \begin{align}
-\eta_\text{mag} &= D_M \mu_0 M \label{eq:magnetic_SLD} \\
+\eta_\text{mag} &= D_M \mu_0 M \label{eq:magnetic_SLD} \times 10^{-4}\\
 D_M & = 2.3161 \frac{1}{\text{Vs}} \\
 \mu_0 &= 4\pi \times 10^{-7} \text{H}\text{m}^{-1} = 4\pi \times 10^{-7} \frac{\text{Vs}}{\text{Am}}
 \end{align}
-To get the magnetic scattering length density in cm$^{-2}$ an additional multiplication factor
-of $10^{-4}$ has to be applied.
+To get the magnetic scattering length density in cm$^{-2}$ a
+multiplication factor of $10^{-4}$ has to be applied. By choosing
+the unit cm$^{-2}$ for the magnetic scattering length density we
+have to use the corresponding units for the nuclear scattering
+length densities.
 
+The other unit which has to be chosen with care is the molecular
+volume $V_\text{brush}$ of a single surfactant molecule. From the
+specific aggregation and the molecular volume the excess scattering
+of the surfactant shell is calculated. In case that the $q$-values
+are given in units of nm$^{-1}$ the molecular volume has to be in
+units of  nm$^3$ and in case of \AA$^{-1}$ for the q-values one also
+need to use \AA$^{3}$ units for the molecular volume.
+
+The next parameter, where we need to use proper units is the
+Langevin parameter $\alpha$, describing the ratio between potential
+energy of the magnetic moment of the particle to the thermal energy:
 \begin{align}
 \alpha &= \mu_\text{FF}B/(k_B T) \label{eq:alpha} \\
 \mu_\text{FF} &= \frac{4}{3}\pi
 \left[ R_\text{core}^3  M_\text{core} +
 \left\{\left(R_\text{core}+t_\text{shell}\right)^3-R_\text{core}^3\right\} M_\text{shell}
-\right] \\
-k_\text{B} &= 1.3806488 \times 10^{-23} \text{m}^2 \text{kg} \text{ s}^{-2}
+\right] \times \frac{10^{-27}\text{m}^3}{\text{nm}^3}\label{eq:mu_FF}\\
+k_\text{B} &= 1.3806488 \times 10^{-23} \text{m}^2 \text{kg} \text{
+s}^{-2} \text{K}^{-1}
 \end{align}
+The magnetic moment of a particle $\mu_\text{FF}$ as given in eq.\
+\ref{eq:mu_FF} is calculated from the magnetisation of the core and
+the shell and their corresponding dimensions. The magnetisation has
+units of A/m whereas the radius and shell thickness have reciprocal
+dimensions of $q$. A magnetic moment is measured in ampere–square
+meters (Am$^2$) or in joules per tesla (JT$^{-1}$) which is
+equivalent: $1 \mathrm{Am}^2 = 1 \mathrm{JT}^{-1}$. In case that $q$
+values are given in \AA$^{-1}$ the applied magnetic field should be
+given in units of mT instead of T.
+
+The implemented form factor for ferrofluids is done for neutrons
+with or without incident polarisation as well as with polarisation
+analysis. In case of full polarisation analysis the measured
+intensity $I_m(\mathbf{Q})$ would depend on the incident
+polarisation, efficientcy of the spin-flipper and in case of an
+opaque spin filter from its transmission values for the two spin
+states according to eq.\ \ref{eq:Im(Q)_POLARIS}. However here we
+just have implemented the intensities for a given incident
+polarisation without polarisation analysis (SANSPOL) and the
+intensities for POLARIS data are assumed to be corrected so that the
+resulting intensities correspond to perfect incident polarisation
+and perfect polarisation analysis. For calculating the scattering
+cross-section for the 4 scattering processes involved the
+differential cross-sections in the decoupling approach are given by
+\begin{align} \label{eq:dsigma_dOmega_ijSQ}
+\frac{\mathrm{d}\sigma_{{\pm\pm}\atop{\pm\mp}}}{\mathrm{d}\Omega}(\BM{Q})
+&= N\left\{ \left\langle
+\abs{F_{{\pm\pm}\atop{\pm\mp}}(\BM{Q})}^2\right\rangle +
+\abs{\left\langle F_{{\pm\pm}\atop{\pm\mp}}(\BM{Q})\right\rangle}^2
+(S(\BM{Q})-1) \right\}
+\end{align}
+The averages $\langle\rangle$ needs to be performed over the
+orientation distribution of the superparamagnetic moments of the
+ferrofluids and later on also about their size distribution. The
+averaging over the orientation distribution of the magnetic moments
+can be done analytically in terms of order parameters according to
+\cite{Wiedenmann2011,Wagner2005,Kohlbrecher1997}.
+
+The spin dependent scattering amplitudes
+$F_{{\pm\pm}\atop{\pm\mp}}(\BM{Q})$ can be calculated from the
+nuclear and magnetic amplitudes
+\begin{align}
+F_{\pm\pm}(\BM{Q}) & = F_N(\BM{Q}) \mp F_{M_\perp x}(\BM{Q}) \\
+F_{\pm\mp}(\BM{Q}) & = -\left(F_{M_\perp y}(\BM{Q}) \pm \imath
+F_{M_\perp z}(\BM{Q})\right)
+\end{align}
+The nuclear scattering amplitude is proportional to the nuclear
+excess scattering $\beta_N=F_N(Q=0)$ and the nuclear form factor
+$f_N(\BM{Q})$
+\begin{align}
+F_N(\BM{Q}) &= \beta_N f_N(\BM{Q})
+\end{align}
+The magnetic scattering amplitude $\BM{F}_{M_\perp}(\BM{Q})$ can be
+described as a vector, with
+\begin{align}
+\BM{F}_{M_\perp}(\BM{Q}) =  \BM{\hat{\mu}}_\perp D_M \mu_\text{FF}
+f_M(\BM{Q})=\BM{\hat{\mu}}_\perp F_M(\BM{Q})
+\end{align}
+where $f_M(Q)$ is the magnetic form factor, $\BM{\mu}_\text{FF}$ the
+magnetic moment of the particle, $D_M=\frac{\gamma e}{2\pi\hbar}$,
+and $\BM{\hat{\mu}}_\perp$ the Halpern-Johnson vector defined as
+\begin{align}
+\BM{\hat{\mu}}_\perp &=
+\frac{\BM{Q}}{Q}\times\left(\frac{\BM{\mu}_\text{FF}}{\mu_\text{FF}}\times\frac{\BM{Q}}{Q}\right)
+\end{align}
+It is assumed here that the neutron spin polarization is parallel or
+antiparallel to the axes $\BM{e}_x$ which is the direction
+perpendicular to the incoming neutron beam.
+
+In the following we derive the average over the squared scattering
+amplitude and the averaged scattering amplitude for
+superparamagnetic particles. The description of the nuclear
+scattering amplitude is based on the form factor described in
+\cite{PedersenGerstenberg96,PedersenJApplCryst2000} for block
+copolymer micelles from Pedersen et al.
+
+The different versions of form factor implemented in the plugin
+differ on one side on the model for describing the scattering of the
+molecules on the surface and on the other side how the data are
+pre-treated. At the moment three different model for the polymer
+chains on the surface are implemented, namely that the chains are
+noninteracting and follow random walk behaviour \texttt{(Chain,RW)},
+secondly they are interacting due to the high grafting density and a
+model for self avoiding walk \texttt{(Chain,SAW)} is applied,
+thirdly a parabolic scattering length density profile for the outer
+shell is used \texttt{(Chain,parabolic)}. For each models a version
+for a sector cut in the direction $\psi$ (\texttt{psi}), a radial
+averaged intensity \texttt{(rad.~avg.)}, the anisotropic scattering
+contribution, which follows a $\sin^2$-law (\texttt{magnetic}), the
+angle dependent difference signal between two spin states
+(\texttt{cross-term}), as well as the radial averaged cross term
+(\texttt{cross-term (rad.~avg.)}) has bee implemented. Finally we
+end up with the following possible combinations:
+\begin{align}
+\left.
+  \begin{array}{l}
+    \texttt{FF+(Chain,RW)} \\
+    \texttt{FF+(Chain,SAW)} \\
+    \texttt{FF+(Chain,parabolic)}
+  \end{array}
+\right\} &-  \left\{
+  \begin{array}{l}
+    \texttt{psi} \\
+    \texttt{(rad.~avg.)} \\
+    \texttt{magnetic} \\
+    \texttt{cross-term} \\
+    \texttt{cross-term (rad.~avg.)} \\
+    \texttt{(++)} \\
+    \texttt{(--)} \\
+    \texttt{(+-)} \\
+    \texttt{(-+)}
+  \end{array}
+\right.
+\end{align}
+
+\subsection{Langevin statistics for averages of the form factor and averages of the squared form factor}
+~\\
+
+ It is assumed here that the neutron spin polarization is
+parallel or antiparallel to the axes $\BM{e}_x$ which is the
+direction perpendicular to the incoming neutron beam. If only the
+Halpern-Johnson vector $\BM{\hat{\mu}}_\perp$ depends on the
+orientation distribution $f(\theta)$ of the magnetic moments
+$\BM{\mu}$ of the particles but not the form factor $f_M(\BM{Q})$,
+which is valid for spherical symmetric particles or anisotropic
+shaped particles where the particle shape is not correlated to the
+direction of the magnetic moment, the averages in
+\ref{eq:plugin:I_ijSQ} can be written in terms of the order
+parameters $S_1$ and $S_2$
+\begin{subequations}
+\label{eq:plugin:F_ijSQ}
+\begin{align}
+\begin{split}
+\left\langle F_{\pm\pm}(\BM{Q})\right\rangle &=  F_N(\BM{Q})
++F_M(\BM{Q})S_1\sin^2\psi
+\end{split} \\[3mm]
+\left\langle F_{\pm\mp}(\BM{Q})\right\rangle &= F_M(\BM{Q})S_1\sin\psi\cos\psi  \\[3mm]
+\begin{split}
+\left\langle \abs{F_{\pm\pm}(\BM{Q})}^2\right\rangle &= \abs{F_N(\BM{Q})}^2+\abs{F_M(\BM{Q})}^2 \left[S_2 \sin^4\psi+ \frac{1-S_2}{3} \sin^2\psi\right] \\
+                                       & \mp \left[F_M(\BM{Q})F^*_N(\BM{Q})+F^*_M(\BM{Q})F_N(\BM{Q})\right]S_1\sin^2\psi
+\end{split} \\[3mm]
+\begin{split}
+\left\langle \abs{F_{\pm\mp}(\BM{Q})}^2\right\rangle
+&=\abs{F_M(\BM{Q})}^2
+\left[2\;\frac{1-S_2}{3}-S_2\sin^4\psi+\frac{4S_2-1}{3}\sin^2\psi\right]
+\end{split}
+\end{align}
+\end{subequations}
+The spin-flip and spin-nonflip cross-section
+$\frac{\mathrm{d}\sigma_{{\pm\pm}\atop{\pm\mp}}}{\mathrm{d}\Omega}(\BM{Q})$
+can be obtained by combining \ref{eq:dsigma_dOmega_ijSQ} and
+\ref{eq:plugin:F_ijSQ}. The cross-sections without polarization
+analysis $I_\pm(\BM{Q})$ and for unpolarized neutrons
+$I_{unp}(\BM{Q})$ are given by
+\begin{subequations} \label{eq:plugin:I_iSQ_I_unpSQ}
+\begin{align}
+\begin{split}
+    I_{\pm}(\BM{Q}) &= I_{\pm\pm}(\BM{Q})+I_{\pm\mp}(\BM{Q}) \\[2mm]
+                    &= \Bigl[\abs{F_N(\BM{Q})}^2 + \abs{F_M(\BM{Q})}^2S_1^2\sin^2\psi \\
+                    & \quad  \mp \left[F_M(\BM{Q})F^*_N(\BM{Q})+F^*_M(\BM{Q})F_N(\BM{Q})\right]S_1\sin^2\psi\Bigr] S(\BM{Q}) \\
+                    & \quad \abs{F_M(\BM{Q})}^2\left(\frac{2}{3}\left(1-S_2\right)+\left(S_2-S_1^2\right)\sin^2\psi \right)
+\end{split} \\[3mm]
+\begin{split}
+    I_{unp}(\BM{Q}) &= \frac{1}{2}\left(I_{+}(\BM{Q})+I_{-}(\BM{Q})\right)\\[2mm]
+                    &=  \left(\abs{F_N(\BM{Q})}^2 + \abs{F_M(\BM{Q})}^2S_1^2\sin^2\psi\right) S(\BM{Q}) \\
+                    & \quad + \abs{F_M(\BM{Q})}^2\left(\frac{2}{3}\left(1-S_2\right)+\left(S_2-S_1^2\right)\sin^2\psi\right)
+\end{split}
+\end{align}
+\end{subequations}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{LogNorm\_fp} \hspace{1pt}

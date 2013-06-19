@@ -315,6 +315,13 @@ A.~L. Kholodenko.
   arbitrary flexibility using the dirac propagator.
 \newblock {\em Macromolecules}, 26:4179--4183, 1993.
 
+\bibitem{Kohlbrecher1997}
+J.~Kohlbrecher, A.~Wiedenmann, and H.~Wollenberger.
+\newblock Magnetic coupling between the different phases in nanocrystalline
+  fe-si-b studied by small angle neutron scattering.
+\newblock {\em Zeitschrift für Physik B Condensed Matter}, 104(1):1--4, August
+  1997.
+
 \bibitem{Kotlarchyk1983}
 M.~Kotlarchyk and S.-H. Chen.
 \newblock Analysis of small angle neutron scattering spectra from polydisperse
@@ -596,10 +603,23 @@ A.~Vrij.
   scattering at finite angles.
 \newblock {\em J. Chem. Phys.}, 71(8):3267--3270, 1979.
 
+\bibitem{Wagner2005}
+W.~Wagner and J.~Kohlbrecher.
+\newblock {\em Modern Techniques For Characterising Magnetic Materials:},
+  chapter Small-angle neutron scattering, pages 65--104.
+\newblock Kluwer Academic Publishers, 2005.
+
 \bibitem{Walter1985}
 G.~Walter, R.~Kranold, T.~Gerber, J.~Baldrian, and M.~Steinhart.
 \newblock {Particle size distribution from small-angle X-ray scattering data}.
 \newblock {\em Journal of Applied Crystallography}, 18(4):205--213, Aug 1985.
+
+\bibitem{Wiedenmann2011}
+A.~Wiedenmann, R.~G\"ahler, C.~D. Dewhurst, U.~Keiderling, S.~Pr\'evost, and
+  J.~Kohlbrecher.
+\newblock Relaxation mechanisms in magnetic colloids studied by stroboscopic
+  spin-polarized small-angle neutron scattering.
+\newblock {\em Phys. Rev. B}, 84:214303, Dec 2011.
 
 \bibitem{Wijmans93}
 C.~M. Wijmans and E.~B. Zhulina.
