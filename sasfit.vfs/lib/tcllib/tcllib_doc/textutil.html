@@ -1,0 +1,486 @@
+<html><head>
+<title>textutil - Text and string utilities, macro processing </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/textutil/textutil.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: textutil.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ textutil.n
+   -->
+
+<body>
+<h1> textutil(n) 0.7 textutil &quot;Text and string utilities, macro processing&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> textutil - Procedures to manipulate texts and strings.
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>textutil ?0.7?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::textutil::adjust</b> <i class='arg'>string args</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::textutil::adjust::readPatterns</b> <i class='arg'>filename</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::textutil::adjust::listPredefined</b> </a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::textutil::adjust::getPredefined</b> <i class='arg'>filename</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::textutil::indent</b> <i class='arg'>string</i> <i class='arg'>prefix</i> ?<i class='arg'>skip</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::textutil::undent</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::textutil::splitn</b> <i class='arg'>string</i> ?<i class='arg'>len</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::textutil::splitx</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::textutil::tabify</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::textutil::tabify2</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::textutil::trim</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::textutil::trimleft</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::textutil::trimright</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::textutil::trimPrefix</b> <i class='arg'>string</i> <i class='arg'>prefix</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>::textutil::trimEmptyHeading</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>::textutil::untabify</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#17"><b class='cmd'>::textutil::untabify2</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#18"><b class='cmd'>::textutil::strRepeat</b> <i class='arg'>text num</i></a></td></tr>
+<tr valign=top ><td ><a href="#19"><b class='cmd'>::textutil::blank</b> <i class='arg'>num</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><b class='cmd'>::textutil::chop</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><b class='cmd'>::textutil::tail</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#22"><b class='cmd'>::textutil::cap</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#23"><b class='cmd'>::textutil::uncap</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#24"><b class='cmd'>::textutil::longestCommonPrefixList</b> <i class='arg'>list</i></a></td></tr>
+<tr valign=top ><td ><a href="#25"><b class='cmd'>::textutil::longestCommonPrefix</b> ?<i class='arg'>string</i>...?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>textutil</strong> package provides commands that manipulate
+strings or texts (a.k.a. long strings or string with embedded newlines
+or paragraphs).
+
+<p>
+
+The complete set of procedures is described below.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::textutil::adjust</b> <i class='arg'>string args</i></a><dd>
+
+
+Do a justification on the <i class='arg'>string</i> according to <i class='arg'>args</i>.  The
+string is taken as one big paragraph, ignoring any newlines.  Then the
+line is formatted according to the options used, and the command
+return a new string with enough lines to contain all the printable
+chars in the input string. A line is a set of chars between the
+beginning of the string and a newline, or between 2 newlines, or
+between a newline and the end of the string. If the input string is
+small enough, the returned string won't contain any newlines.
+
+<br><br>
+
+Together with <b class='cmd'>::textutil::indent</b> it is possible to create
+properly wrapped paragraphs with arbitrary indentations.
+
+<br><br>
+
+By default, any occurrence of spaces characters or tabulation are
+replaced by a single space so each word in a line is separated from
+the next one by exactly one space char, and this forms a <em>real</em>
+line. Each <em>real</em> line is placed in a <em>logical</em> line, which
+have exactly a given length (see <strong>-length</strong> option below). The
+<em>real</em> line may have a lesser length. Again by default, any
+trailing spaces are ignored before returning the string (see
+
+<strong>-full</strong> option below). The following options may be used after the
+<i class='arg'>string</i> parameter, and change the way the command place a
+
+<em>real</em> line in a <em>logical</em> line.
+
+
+<br><br>
+<dl>
+
+<dt>-full <i class='arg'>boolean</i><dd>
+
+If set to <strong>false</strong>, any trailing space chars are deleted before
+returning the string. If set to <strong>true</strong>, any trailing space
+chars are left in the string. Default to <strong>false</strong>.
+
+<br><br>
+<dt><strong>-hyphenate</strong> <i class='arg'>boolean</i><dd>
+
+if set to <strong>false</strong>, no hyphenation will be done. If set to
+<strong>true</strong>, the last word of a line is tried to be hyphenated.
+Defaults to <strong>false</strong>. Note: hyphenation patterns must be loaded
+prior, using the command <b class='cmd'>::textutil::adjust::readPatterns</b>.
+
+
+<br><br>
+<dt><strong>-justify</strong> <strong>center|left|plain|right</strong><dd>
+
+Set the justification of the returned string to <strong>center</strong>,
+
+<strong>left</strong>, <strong>plain</strong> or <strong>right</strong>. By default, it is set to
+<strong>left</strong>.  The justification means that any line in the returned
+string but the last one is build according to the value. If the
+justification is set to <strong>plain</strong> and the number of printable
+chars in the last line is less than 90% of the length of a line (see
+<strong>-length</strong>), then this line is justified with the <strong>left</strong>
+value, avoiding the expansion of this line when it is too small. The
+meaning of each value is:
+
+<br><br>
+<dl>
+
+<dt><strong>center</strong><dd>
+
+The real line is centered in the logical line. If needed, a set of
+space characters are added at the beginning (half of the needed set)
+and at the end (half of the needed set) of the line if required (see
+the option <strong>-full</strong>).
+
+<br><br>
+<dt><strong>left</strong><dd>
+
+The real line is set on the left of the logical line. It means that
+there are no space chars at the beginning of this line. If required,
+all needed space chars are added at the end of the line (see the
+option <strong>-full</strong>).
+
+<br><br>
+<dt><strong>plain</strong><dd>
+
+The real line is exactly set in the logical line. It means that there
+are no leading or trailing space chars. All the needed space chars are
+added in the <em>real</em> line, between 2 (or more) words.
+
+<br><br>
+<dt><strong>right</strong><dd>
+
+The real line is set on the right of the logical line. It means that
+there are no space chars at the end of this line, and there may be
+some space chars at the beginning, despite of the <strong>-full</strong> option.
+
+</dl>
+
+<dt><strong>-length</strong> <i class='arg'>integer</i><dd>
+
+Set the length of the <em>logical</em> line in the string to
+<i class='arg'>integer</i>.  <i class='arg'>integer</i> must be a positive integer
+value. Defaults to <strong>72</strong>.
+
+
+<br><br>
+<dt><strong>-strictlength</strong> <i class='arg'>boolean</i><dd>
+
+If set to <strong>false</strong>, a line can exceed the specified
+
+<strong>-length</strong> if a single word is longer than <strong>-length</strong>. If
+set to <strong>true</strong>, words that are longer than <strong>-length</strong> are
+split so that no line exceeds the specified <strong>-length</strong>. Defaults
+to <strong>false</strong>.
+
+</dl>
+
+
+<dt><a name="2"><b class='cmd'>::textutil::adjust::readPatterns</b> <i class='arg'>filename</i></a><dd>
+
+
+Loads the internal storage for hyphenation patterns with the contents
+of the file <i class='arg'>filename</i>. This has to be done prior to calling
+command <b class='cmd'>::textutil::adjust</b> with
+
+&quot;<strong>-hyphenate</strong> <strong>true</strong>&quot;, or the hyphenation process will
+not work correctly.
+
+<br><br>
+
+The package comes with a number of predefined pattern files, and the
+command <b class='cmd'>::textutil::adjust::listPredefined</b> can be used to find
+out their names.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::textutil::adjust::listPredefined</b> </a><dd>
+
+
+This command returns a list containing the names of the hyphenation
+files coming with this package.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::textutil::adjust::getPredefined</b> <i class='arg'>filename</i></a><dd>
+
+
+Use this command to query the package for the full path name of the
+hyphenation file <i class='arg'>filename</i> coming with the package. Only the
+filenames found in the list returned by
+
+<b class='cmd'>::textutil::adjust::listPredefined</b> are legal arguments for this
+command.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::textutil::indent</b> <i class='arg'>string</i> <i class='arg'>prefix</i> ?<i class='arg'>skip</i>?</a><dd>
+
+
+Each line in the <i class='arg'>string</i> indented by adding the string
+<i class='arg'>prefix</i> at its beginning. The modified string is returned
+as the result of the command.
+
+<br><br>
+
+If <i class='arg'>skip</i> is specified the first <i class='arg'>skip</i> lines are left
+untouched. The default for <i class='arg'>skip</i> is <strong>0</strong>, causing the
+modification of all lines. Negative values for <i class='arg'>skip</i> are treated
+like <strong>0</strong>. In other words, <i class='arg'>skip</i> &gt; <strong>0</strong> creates a
+hanging indentation.
+
+<br><br>
+
+Together with <b class='cmd'>::textutil::adjust</b> it is possible to create
+properly wrapped paragraphs with arbitrary indentations.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::textutil::undent</b> <i class='arg'>string</i></a><dd>
+
+
+The command computes the common prefix for all
+lines in <i class='arg'>string</i> consisting solely out of whitespace,
+removes this from each line and returns the modified string.
+
+<br><br>
+
+Lines containing only whitespace are always reduced to completely
+empty lines. They and empty lines are also ignored when computing the
+prefix to remove.
+
+<br><br>
+
+Together with <b class='cmd'>::textutil::adjust</b> it is possible to create
+properly wrapped paragraphs with arbitrary indentations.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::textutil::splitn</b> <i class='arg'>string</i> ?<i class='arg'>len</i>?</a><dd>
+
+
+This command splits the given <i class='arg'>string</i> into chunks of <i class='arg'>len</i>
+characters and returns a list containing these chunks. The argument
+<i class='arg'>len</i> defaults to <strong>1</strong> if none is specified. A negative
+length is not allowed and will cause the command to throw an
+error. Providing an empty string as input is allowed, the command will
+then return an empty list. If the length of the <i class='arg'>string</i> is not an
+entire multiple of the chunk length, then the last chunk in the
+generated list will be shorter than <i class='arg'>len</i>.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::textutil::splitx</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a><dd>
+
+
+Split the <i class='arg'>string</i> and return a list. The string is split
+according to the regular expression <i class='arg'>regexp</i> instead of a simple
+list of chars. Note that if you add parenthesis into the <i class='arg'>regexp</i>,
+the parentheses part of separator would be added into list as
+additional element. If the <i class='arg'>string</i> is empty the result is the
+empty list, like for <b class='cmd'>split</b>. If <i class='arg'>regexp</i> is empty the
+
+<i class='arg'>string</i> is split at every character, like <b class='cmd'>split</b> does.
+
+The regular expression <i class='arg'>regexp</i> defaults to &quot;[\\t \\r\\n]+&quot;.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::textutil::tabify</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a><dd>
+
+
+Tabify the <i class='arg'>string</i> by replacing any substring of <i class='arg'>num</i> space
+chars by a tabulation and return the result as a new string. <i class='arg'>num</i>
+defaults to 8.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::textutil::tabify2</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a><dd>
+
+
+Similar to <b class='cmd'>::textutil::tabify</b> this command tabifies the
+
+<i class='arg'>string</i> and returns the result as a new string. A different
+algorithm is used however. Instead of replacing any substring of
+
+<i class='arg'>num</i> spaces this command works more like an editor. <i class='arg'>num</i>
+defaults to 8.
+
+<br><br>
+
+Each line of the text in <i class='arg'>string</i> is treated as if there are
+tabstops every <i class='arg'>num</i> columns. Only sequences of space characters
+containing more than one space character and found immediately before
+a tabstop are replaced with tabs.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::textutil::trim</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a><dd>
+
+
+Remove in <i class='arg'>string</i> any leading and trailing substring according to
+the regular expression <i class='arg'>regexp</i> and return the result as a new
+string.  This apply on any <em>line</em> in the string, that is any
+substring between 2 newline chars, or between the beginning of the
+string and a newline, or between a newline and the end of the string,
+or, if the string contain no newline, between the beginning and the
+end of the string.
+
+The regular expression <i class='arg'>regexp</i> defaults to &quot;[ \\t]+&quot;.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::textutil::trimleft</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a><dd>
+
+
+Remove in <i class='arg'>string</i> any leading substring according to the regular
+expression <i class='arg'>regexp</i> and return the result as a new string. This
+apply on any <em>line</em> in the string, that is any substring between
+2 newline chars, or between the beginning of the string and a newline,
+or between a newline and the end of the string, or, if the string
+contain no newline, between the beginning and the end of the string.
+
+The regular expression <i class='arg'>regexp</i> defaults to &quot;[ \\t]+&quot;.
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::textutil::trimright</b> <i class='arg'>string</i> ?<i class='arg'>regexp</i>?</a><dd>
+
+
+Remove in <i class='arg'>string</i> any trailing substring according to the regular
+expression <i class='arg'>regexp</i> and return the result as a new string. This
+apply on any <em>line</em> in the string, that is any substring between
+2 newline chars, or between the beginning of the string and a newline,
+or between a newline and the end of the string, or, if the string
+contain no newline, between the beginning and the end of the string.
+
+The regular expression <i class='arg'>regexp</i> defaults to &quot;[ \\t]+&quot;.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::textutil::trimPrefix</b> <i class='arg'>string</i> <i class='arg'>prefix</i></a><dd>
+
+
+Removes the <i class='arg'>prefix</i> from the beginning of <i class='arg'>string</i> and
+returns the result. The <i class='arg'>string</i> is left unchanged if it doesn't
+have <i class='arg'>prefix</i> at its beginning.
+
+
+<br><br>
+<dt><a name="15"><b class='cmd'>::textutil::trimEmptyHeading</b> <i class='arg'>string</i></a><dd>
+
+
+Looks for empty lines (including lines consisting of only whitespace)
+at the beginning of the <i class='arg'>string</i> and removes it. The modified
+string is returned as the result of the command.
+
+
+<br><br>
+<dt><a name="16"><b class='cmd'>::textutil::untabify</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a><dd>
+
+
+Untabify the <i class='arg'>string</i> by replacing any tabulation char by a
+substring of <i class='arg'>num</i> space chars and return the result as a new
+string. <i class='arg'>num</i> defaults to 8.
+
+
+<br><br>
+<dt><a name="17"><b class='cmd'>::textutil::untabify2</b> <i class='arg'>string</i> ?<i class='arg'>num</i>?</a><dd>
+
+
+Untabify the <i class='arg'>string</i> by replacing any tabulation char by a
+substring of at most <i class='arg'>num</i> space chars and return the result as a
+new string. Unlike <b class='cmd'>textutil::untabify</b> each tab is not replaced
+by a fixed number of space characters.  The command overlays each line
+in the <i class='arg'>string</i> with tabstops every <i class='arg'>num</i> columns instead and
+replaces tabs with just enough space characters to reach the next
+tabstop. This is the complement of the actions taken by
+
+<b class='cmd'>::textutil::tabify2</b>. <i class='arg'>num</i> defaults to 8.
+
+<br><br>
+
+There is one asymmetry though: A tab can be replaced with a single
+space, but not the other way around.
+
+
+<br><br>
+<dt><a name="18"><b class='cmd'>::textutil::strRepeat</b> <i class='arg'>text num</i></a><dd>
+
+
+The implementation depends on the core executing the package. Used
+<b class='cmd'>string repeat</b> if it is present, or a fast tcl implementation
+if it is not. Returns a string containing the <i class='arg'>text</i> repeated
+
+<i class='arg'>num</i> times. The repetitions are joined without characters between
+them. A value of <i class='arg'>num</i> &lt;= 0 causes the command to return an empty
+string.
+
+
+<br><br>
+<dt><a name="19"><b class='cmd'>::textutil::blank</b> <i class='arg'>num</i></a><dd>
+
+
+A convenience command. Returns a string of <i class='arg'>num</i> spaces.
+
+<br><br>
+<dt><a name="20"><b class='cmd'>::textutil::chop</b> <i class='arg'>string</i></a><dd>
+
+
+A convenience command. Removes the last character of <i class='arg'>string</i> and
+returns the shortened string.
+
+<br><br>
+<dt><a name="21"><b class='cmd'>::textutil::tail</b> <i class='arg'>string</i></a><dd>
+
+
+A convenience command. Removes the first character of <i class='arg'>string</i> and
+returns the shortened string.
+
+<br><br>
+<dt><a name="22"><b class='cmd'>::textutil::cap</b> <i class='arg'>string</i></a><dd>
+
+
+Capitalizes the first character of <i class='arg'>string</i> and returns the modified string.
+
+<br><br>
+<dt><a name="23"><b class='cmd'>::textutil::uncap</b> <i class='arg'>string</i></a><dd>
+
+
+The complementary operation to <b class='cmd'>::textutil::cap</b>. Forces the first
+character of <i class='arg'>string</i> to lower case and returns the modified
+string.
+
+
+<br><br>
+<dt><a name="24"><b class='cmd'>::textutil::longestCommonPrefixList</b> <i class='arg'>list</i></a><dd>
+
+<dt><a name="25"><b class='cmd'>::textutil::longestCommonPrefix</b> ?<i class='arg'>string</i>...?</a><dd>
+
+
+Computes the longest common prefix for either the <i class='arg'>string</i>s given
+to the command, or the strings specified in the single <i class='arg'>list</i>, and
+returns it as the result of the command.
+
+<br><br>
+
+If no strings were specified the result is the empty string.  If only
+one string was specified, the string itself is returned, as it is its
+own longest common prefix.
+
+</dl>
+
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+regexp(n), split(n), string(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+TeX, formatting, hyphenation, indenting, paragraph, regular expression, string, trimming
+</body></html>

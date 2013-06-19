@@ -1,0 +1,79 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>soundex - Soundex </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/soundex/soundex.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; ????, Algorithm: Donald E. Knuth   -- Copyright &copy; 2003, Documentation: Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;   -- Copyright &copy; 1998, Tcl port: Evan Rempel &lt;erempel@uvic.ca&gt;
+   -->
+<! -- CVS: $Id: soundex.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ soundex.n
+   -->
+
+<body>
+<h1> soundex(n) 1.0 soundex &quot;Soundex&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> soundex - Soundex
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>soundex ?1.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::soundex::knuth</b> <i class='arg'>string</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides soundex algorithms which allow the
+comparison of words based on their phonetic likeness.
+
+<p>
+
+Currently only an algorithm by Knuth is provided, which
+is tuned to english names and words.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::soundex::knuth</b> <i class='arg'>string</i></a><dd>
+
+
+Computes the soundex code of the input <i class='arg'>string</i> using
+Knuth's algorithm and returns it as the result of the
+command.
+
+</dl>
+
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::soundex::knuth Knuth
+    K530
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+knuth, soundex, text comparison, text likeness
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; ????, Algorithm: Donald E. Knuth<br>
+Copyright &copy; 2003, Documentation: Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+Copyright &copy; 1998, Tcl port: Evan Rempel &lt;erempel@uvic.ca&gt;<br>
+</body></html>

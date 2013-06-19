@@ -1,0 +1,52 @@
+\documentclass[12pt,intlimits,fleqn,reqno,twoside]{report}
+\usepackage[dvips]{graphicx}
+\usepackage{emlines}
+\usepackage{amssymb}
+\usepackage{subfigure}
+%\usepackage{subeqn}
+\usepackage{subeqnar}
+\usepackage{typearea}
+\usepackage{cd}
+%\usepackage[color]{showkeys}
+%\numberwithin{equation}{section} \numberwithin{figure}{section}
+\graphicspath{{./}}
+\begin{document}
+\input{latex_commands}
+
+\setcounter{page}{0} \thispagestyle{empty}
+
+\title{A short Introduction to small angle scattering}
+\author{Joachim Kohlbrecher
+\\joachim.kohlbrecher@psi.ch
+\\Paul Scherrer Institute
+\\Laboratory for Neutron Scattering (LNS)
+\\CH-5232 Villigen PSI}
+%\email{joachim.kohlbrecher@psi.ch}
+%\address{Paul Scherrer Institute\\
+%Laboratory for Neutron Scattering (LNS)\\
+%CH-5232 Villigen PSI}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+... Abstract is missing ...
+\end{abstract}
+
+
+\newpage \tableofcontents
+
+\newpage
+
+
+\input{basics}
+\input{DatenRed}
+
+\bibliography{LITERATU,jourfull,neutron,neutrons}
+
+%\bibliography{jourfull}
+%\bibliography{neutron}
+%\bibliography{neutrons}
+\bibliographystyle{aplain}
+
+\end{document}

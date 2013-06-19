@@ -1,0 +1,76 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+taylor(spherical_bessel_j(0,x),x,0,7);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(R>0 and lh>0 and r>0 and q>0)$C2RLr: integrate(spherical_bessel_j(0,q*r)*(1-0*(q*r)^2/6+(q*r)^4/120-0*(q*r)^6/5040)*spherical_bessel_j(1,q*R)^2/(1+lh^2*q^2)^2,q,0,inf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(R>0 and lh>0 and r>=0 and q>0)$C2RGr :integrate((spherical_bessel_j(0,q*r)*spherical_bessel_j(1,q*R)^2/(1+lh^2*q^2)^2),q,0,inf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(r>0 and 2*R < r and R>0 and lh>0 and r>=0 and q>0)$C2RLr :integrate((spherical_bessel_j(0,q*r)*spherical_bessel_j(1,q*R)^2/(1+lh^2*q^2)^2),q,0,inf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(r>0)$assume(R>0)$assume(lh>0)$assume(r>=0)$assume(q>0)$ C2REr :integrate((spherical_bessel_j(0,q*r)*spherical_bessel_j(1,q*r/2)^2/(1+lh^2*q^2)^2),q,0,inf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(R>0)$assume(lh>0)$assume(q>0)$ Cr0 :limit(integrate((spherical_bessel_j(0,q*r)*spherical_bessel_j(1,q*R)^2/(1+lh^2*q^2)^2),q,0,inf),r,0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+printval(var):=
+block([val],
+val: var=ev(fullratsimp(var)),
+
+val: subst(["^"='pow,%e=M_E,%pi=M_PI],val),
+
+load(f90),
+f90(val));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+printval('Cr0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+printval('C2RGr);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+printval('C2RLr);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+spherical_bessel_j(1,q*R);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+printval('C2REr);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+integrate(sin(q*r)/(q*r)*4*%pi*r^2*integrate((spherical_bessel_j(0,q*r)*spherical_bessel_j(1,q*R)^2/(1+lh^2*q^2)^2),q,0,inf),r,0,inf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+taylor(sin(x)/x,x,0,7);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+limit(1/(q*R)^2*spherical_bessel_j(1,q*R)^2/(1+lh^2*q^2)^2,q,0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+taylor(1/(x)^2*spherical_bessel_j(1,x)^2,x,0,6);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

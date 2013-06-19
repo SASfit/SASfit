@@ -1,0 +1,316 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>fileutil - file utilities </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/fileutil/fileutil.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: fileutil.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ fileutil.n
+   -->
+
+<body>
+<h1> fileutil(n) 1.8 fileutil &quot;file utilities&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> fileutil - Procedures implementing some file utilities
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8</b><br>
+package require <b>fileutil ?1.8?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::fileutil::cat</b> <i class='arg'>files</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::fileutil::fileType</b> <i class='arg'>filename</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::fileutil::find</b> ?<i class='arg'>basedir</i> ?<i class='arg'>filtercmd</i>??</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::fileutil::findByPattern</b> <i class='arg'>basedir</i> ?<strong>-regexp</strong>|<strong>-glob</strong>? ?<strong>--</strong>? <i class='arg'>patterns</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::fileutil::foreachLine</b> <i class='arg'>var filename cmd</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::fileutil::grep</b> <i class='arg'>pattern</i> ?<i class='arg'>files</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::fileutil::install</b> ?<strong>-m</strong> <i class='arg'>mode</i>? <i class='arg'>source</i> <i class='arg'>destination</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::fileutil::stripN</b> <i class='arg'>path</i> <i class='arg'>n</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::fileutil::stripPwd</b> <i class='arg'>path</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::fileutil::stripPath</b> <i class='arg'>prefix</i> <i class='arg'>path</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::fileutil::jail</b> <i class='arg'>jail</i> <i class='arg'>path</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::fileutil::touch</b> ?<strong>-a</strong>? ?<strong>-c</strong>? ?<strong>-m</strong>? ?<strong>-r</strong> <i class='arg'>ref_file</i>? ?<strong>-t</strong> <i class='arg'>time</i>? <i class='arg'>filename</i> ?<i class='arg'>...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::fileutil::tempdir</b> </a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::fileutil::tempfile</b> ?<i class='arg'>prefix</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides implementations of standard unix utilities.
+
+<dl>
+
+
+<dt><a name="1"><b class='cmd'>::fileutil::cat</b> <i class='arg'>files</i></a><dd>
+
+
+A tcl implementation of the UNIX <strong>cat</strong> command.  Returns the
+contents of the specified file(s). The arguments are files to read.
+If there are problems reading any of the files, an error will occur,
+and no data will be returned.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::fileutil::fileType</b> <i class='arg'>filename</i></a><dd>
+
+
+An implementation of the UNIX <strong>file</strong> command, which uses
+various heuristics to guess the type of a file.  Returns a list
+specifying as much type information as can be determined about the
+file, from most general (eg, &quot;binary&quot; or &quot;text&quot;) to most specific (eg,
+&quot;gif&quot;).  For example, the return value for a GIF file would be &quot;binary
+graphic gif&quot;.  The command will detect the following types of files:
+directory, empty, binary, text, script (with interpreter), executable
+elf, executable dos, executable ne, executable pe, graphic gif,
+graphic jpeg, graphic png, graphic tiff, graphic bitmap, html,
+xml (with doctype if available), message pgp, binary pdf, text ps,
+text eps, binary gravity_wave_data_frame, compressed bzip,
+compressed gzip, compressed zip, compressed tar, audio wave,
+audio mpeg, and link.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::fileutil::find</b> ?<i class='arg'>basedir</i> ?<i class='arg'>filtercmd</i>??</a><dd>
+
+
+An implementation of the unix command <strong>find</strong>. Adapted from the
+Tcler's Wiki. Takes at most two arguments, the path to the directory
+to start searching from and a command to use to evaluate interest in
+each file. The path defaults to &quot;<strong>.</strong>&quot;, i.e. the current
+directory. The command defaults to the empty string, which means that
+all files are of interest. The command takes care <em>not</em> to
+loose itself in infinite loops upon encountering circular link
+structures.  The result of the command is a list containing the paths
+to the interesting files.
+
+<br><br>
+
+The <i class='arg'>filtercmd</i>, if specified, is interpreted as a command prefix
+and one argument is added to it, the name of the file or directory
+find is currently looking at. Note that this name is <em>not</em> fully
+qualified. It has to be joined it with the result of <b class='cmd'>pwd</b> to get
+an absolute filename.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::fileutil::findByPattern</b> <i class='arg'>basedir</i> ?<strong>-regexp</strong>|<strong>-glob</strong>? ?<strong>--</strong>? <i class='arg'>patterns</i></a><dd>
+
+
+This command is based upon the <strong>TclX</strong> command
+
+<b class='cmd'>recursive_glob</b>, except that it doesn't allow recursion over more
+than one directory at a time. It uses <b class='cmd'>::fileutil::find</b>
+internally and is thus able to and does follow symbolic links,
+something the <strong>TclX</strong> command does not do. First argument is
+the directory to start the search in, second argument is a list of
+<i class='arg'>patterns</i>. The command returns a list of all files reachable
+through <i class='arg'>basedir</i> whose names match at least one of the
+patterns. The options before the pattern-list determine the style of
+matching, either regexp or glob. glob-style matching is the default if
+no options are given. Usage of the option <strong>--</strong> stops option
+processing. This allows the use of a leading '-' in the patterns.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::fileutil::foreachLine</b> <i class='arg'>var filename cmd</i></a><dd>
+
+
+The command reads the file <i class='arg'>filename</i> and executes the script
+
+<i class='arg'>cmd</i> for every line in the file. During the execution of the
+script the variable <i class='arg'>var</i> is set to the contents of the current
+line. The return value of this command is the result of the last
+invocation of the script <i class='arg'>cmd</i> or the empty string if the file was
+empty.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::fileutil::grep</b> <i class='arg'>pattern</i> ?<i class='arg'>files</i>?</a><dd>
+
+
+Implementation of <strong>grep</strong>. Adapted from the Tcler's Wiki. The
+first argument defines the <i class='arg'>pattern</i> to search for. This is
+followed by a list of <i class='arg'>files</i> to search through. The list is
+optional and <strong>stdin</strong> will be used if it is missing. The result
+of the procedures is a list containing the matches. Each match is a
+single element of the list and contains filename, number and contents
+of the matching line, separated by a colons.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::fileutil::install</b> ?<strong>-m</strong> <i class='arg'>mode</i>? <i class='arg'>source</i> <i class='arg'>destination</i></a><dd>
+
+
+The <b class='cmd'>install</b> command is similar in functionality to the <strong>install</strong>
+command found on many unix systems, or the shell script
+distributed with many source distributions (unix/install-sh in the Tcl
+sources, for example).  It copies <i class='arg'>source</i>, which can be either a
+file or directory to <i class='arg'>destination</i>, which should be a directory,
+unless <i class='arg'>source</i> is also a single file.  The ?-m? option lets
+the user specify a unix-style mode (either octal or symbolic - see
+<b class='cmd'>file attributes</b>.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::fileutil::stripN</b> <i class='arg'>path</i> <i class='arg'>n</i></a><dd>
+
+
+Removes the first <i class='arg'>n</i> elements from the specified <i class='arg'>path</i> and
+returns the modified path. If <i class='arg'>n</i> is greater than the number of
+components in <i class='arg'>path</i> an empty string is returned. The number of
+components in a given path may be determined by performing
+<b class='cmd'>llength</b> on the list returned by <b class='cmd'>file split</b>.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::fileutil::stripPwd</b> <i class='arg'>path</i></a><dd>
+
+
+If, and only if the <i class='arg'>path</i> is inside of the directory returned by
+[<b class='cmd'>pwd</b>] (or the current working directory itself) it is made
+relative to that directory. In other words, the current working
+directory is stripped from the <i class='arg'>path</i>.  The possibly modified path
+is returned as the result of the command. If the current working
+directory itself was specified for <i class='arg'>path</i> the result is the string
+&quot;<strong>.</strong>&quot;.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::fileutil::stripPath</b> <i class='arg'>prefix</i> <i class='arg'>path</i></a><dd>
+
+
+If, and only of the <i class='arg'>path</i> is inside of the directory
+
+&quot;<strong>prefix</strong>&quot; (or the prefix directory itself) it is made relative to
+that directory. In other words, the prefix directory is stripped from
+the <i class='arg'>path</i>. The possibly modified path is returned as the result
+of the command.
+
+If the prefix directory itself was specified for <i class='arg'>path</i> the result
+is the string &quot;<strong>.</strong>&quot;.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::fileutil::jail</b> <i class='arg'>jail</i> <i class='arg'>path</i></a><dd>
+
+
+This command ensures that the <i class='arg'>path</i> is not escaping the directory
+<i class='arg'>jail</i>. It always returns an absolute path derived from <i class='arg'>path</i>
+which is within <i class='arg'>jail</i>.
+
+<br><br>
+
+If <i class='arg'>path</i> is an absolute path and already within <i class='arg'>jail</i> it is
+returned unmodified.
+
+<br><br>
+
+An absolute path outside of <i class='arg'>jail</i> is stripped of its root element
+and then put into the <i class='arg'>jail</i> by prefixing it with it. The same
+happens if <i class='arg'>path</i> is relative, except that nothing is stripped of
+it. Before adding the <i class='arg'>jail</i> prefix the <i class='arg'>path</i> is lexically
+normalized to prevent the caller from using <strong>..</strong> segments in
+<i class='arg'>path</i> to escape the jail.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::fileutil::touch</b> ?<strong>-a</strong>? ?<strong>-c</strong>? ?<strong>-m</strong>? ?<strong>-r</strong> <i class='arg'>ref_file</i>? ?<strong>-t</strong> <i class='arg'>time</i>? <i class='arg'>filename</i> ?<i class='arg'>...</i>?</a><dd>
+
+
+Implementation of <strong>touch</strong>. Alter the atime and mtime of the
+specified files. If <strong>-c</strong>, do not create files if they do not
+already exist. If <strong>-r</strong>, use the atime and mtime from
+
+<i class='arg'>ref_file</i>. If <strong>-t</strong>, use the integer clock value
+
+<i class='arg'>time</i>. It is illegal to specify both <strong>-r</strong> and
+
+<strong>-t</strong>. If <strong>-a</strong>, only change the atime. If <strong>-m</strong>,
+only change the mtime.
+
+<br><br>
+<em>This command is not available for Tcl versions less than 8.3.</em>
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::fileutil::tempdir</b> </a><dd>
+
+
+The command returns the path of a directory where the caller can
+place temporary files, such as &quot;<strong>/tmp</strong>&quot; on Unix systems. The
+algorithm we use to find the correct directory is as follows:
+
+<br><br>
+<ol>
+
+<li>
+The directory named in the TMPDIR environment variable.
+
+<br><br>
+<li>
+The directory named in the TEMP environment variable.
+
+<br><br>
+<li>
+The directory named in the TMP environment variable.
+
+<br><br>
+<li>
+A platform specific location:
+
+<br><br>
+<dl>
+<dt>Windows<dd>
+
+&quot;<strong>C:\TEMP</strong>&quot;, &quot;<strong>C:\TMP</strong>&quot;, &quot;<strong>\TEMP</strong>&quot;,
+and &quot;<strong>\TMP</strong>&quot; are tried in that order.
+
+<br><br>
+<dt>(classic) Macintosh<dd>
+
+The TRASH_FOLDER environment variable is used.  This is most likely
+not correct.
+
+<br><br>
+<dt>Unix<dd>
+
+The directories &quot;<strong>/tmp</strong>&quot;, &quot;<strong>/var/tmp</strong>&quot;, and &quot;<strong>/usr/tmp</strong>&quot; are
+tried in that order.
+
+</dl>
+</ol>
+<br><br>
+
+The algorithm utilized is that used in the Python standard library.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::fileutil::tempfile</b> ?<i class='arg'>prefix</i>?</a><dd>
+
+
+The command generates a temporary file name suitable for writing to,
+and the associated file.  The file name will be unique, and the file
+will be writable and contained in the appropriate system specific temp
+directory. The name of the file will be returned as the result of the
+command.
+
+<br><br>
+
+The code was taken from <a href="http://wiki.tcl.tk/772">http://wiki.tcl.tk/772</a>, attributed to
+Igor Volobouev and anon.
+
+
+
+</dl>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+file utilities, grep, temp file, touch, type
+</body></html>

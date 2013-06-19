@@ -1,0 +1,237 @@
+\clearpage
+\section{Magnetic Scattering}
+\label{sect:MagScatt}
+
+In the case of magnetic moments in the sample, the neutron undergoes
+a magnetic interaction in addition to the nuclear interaction. The
+corresponding interaction potential is given by
+$$
+V(\BM{r}) = -\BM{\mu}_N \cdot \BM{B}(\BM{r})
+\quad \text{with} \quad \BM{\mu}_N=\gamma\frac{e \hbar}{2m_N
+c}\BM{\sigma}
+$$
+where  $\BM{\mu}_N=\gamma\frac{e \hbar}{2m_N c}\BM{\sigma}$ is the
+magnetic dipole moment of the neutron, \BM{\sigma} the Pauli spin
+operator, $\gamma = -1.913$ the gyromagnetic ratio and
+$\BM{B}(\BM{r})$ the magnetic field induced by an atom at the
+position of the neutron. The latter has two components, one
+induced by the magnetic dipole moment  $\BM{\mu}_S$ of the
+electrons, denoted $\BM{B}_S(\BM{r})$, and one by their orbital
+moment $\BM{\mu}_L$, denoted $\BM{B}_L(\BM{r})$. The (weak)
+magnetic interaction $V(\BM{r}) =
+-\BM{\mu}_N\cdot(\BM{B}_S(\BM{r})+\BM{B}_L(\BM{r}))$
+ can as well be
+treated in first Born approximation, resulting in the magnetic
+scattering amplitude, in analogy to the nuclear scattering
+amplitude, given by the Fourier transform of the magnetic
+interaction potential $\mathcal {F}[V(\BM{r})]$: \BE b_M
+=-\frac{m_N}{2\pi\hbar^2}\, \BM{\mu}_N \cdot \int d^3r \,
+e^{\imath\BM{Qr}}\, (\BM{B}_S(\BM{r})+\BM{B}_L(\BM{r})). \EE An
+additional static magnetic field $\BM{H}(\BM{r})$ at the point of
+local magnetization $\BM{H}(\BM{r})$ (stemming from
+$\BM{B}_S(\BM{r})+\BM{B}_L(\BM{r})$) induces a total local magnetic
+induction of
+$$\BM{B}(\BM{r})=\mu_0(\BM{H}(\BM{r})+\BM{M}(\BM{r}))$$
+and the Fourier transform of   yields \BE \BM{B}(\BM{Q}) = \mu_0\,
+\frac{\BM{Q}\times [\BM{M}(\BM{Q})\times\BM{Q}]}{Q^2}
+             = \mu_0\, \BM{M}_{\bot}(\BM{Q})
+             = \mu_0\, \BM{M}(\BM{Q}) \sin(\angle(\BM{Q,M}))
+\EE where $\BM{M}(\BM{Q}) = \int d^3r \exp(\imath\BM{Q}\cdot\BM{r})
+\BM{M}(\BM{r})$ , with  $\BM{M}(\BM{r})$ given in units of A/m.
+$\BM{M}_{\bot}(\BM{Q}) = \BM{Q}\times [\BM{M}(\BM{Q})\times\BM{Q}] /
+Q^2$ is the magnetization component perpendicular to the scattering
+vector $Q$. The magnetic scattering length then is \BE b_M = D_M\,
+\mu_0\, \mbox{\boldmath$\sigma$}\cdot \BM{M}_{\bot}(\BM{Q}) \mbox{~
+with ~} D_M = \frac{m_N}{2\pi\hbar^2}\, \mu_N = 2.3161 \times
+10^{14} \, \frac{1}{\mbox{Vs}}. \EE For the differential scattering
+cross section one finally obtains \BE
+\frac{d\sigma_M}{d\Omega}(\BM{Q}) = \frac{D_M^2}{N}\abs{\mu_0
+\BM{M}_{\bot}(\BM{Q})}^2 \EE In the presence of a preferred
+direction, for example induced by an external magnetic field, the
+magnetic scattering depends on the spin state   of the neutrons. Let
+the z-axis be the preferred direction, and let ($+$) and ($-$)
+denote the neutron spin polarizations parallel and antiparallel to
+the z-axis, then the scattering is described by four scattering
+processes: two processes where the incident states ($+$) and ($-$)
+remain unchanged ($++$ and $--$), the so-called 'non-spin-flip'
+processes, and two processes where the spin is flipped ($+-$ and
+$-+$), the 'spin-flip' processes. Keeping in mind that the nuclear
+scattering does not flip the neutron spin, the four related
+scattering lengths are
+
+\begin{align}
+b_{\pm\pm} &= b_N \mp D_M\, \mu_0\, M_{\bot x} \\
+b_{\pm\mp} &= - D_M\, \mu_0\, (M_{\bot z} \pm \imath \, M_{\bot
+y}).
+\end{align}
+Hereby $b_N$ is the nuclear scattering length. For an unpolarized
+neutron beam (which may be taken as composed of 50\% ($+$) and
+50\% ($-$) polarization) the square of the modulus of the
+scattering length is
+ \BE (b_{++}^2+b_{--}^2+b_{+-}^2+b_{-+}^2)/2 = b_N^2+D_M^2
+\mu_0^2 M_{\bot}^2. \EE The differential cross section of the
+unpolarized neutron beam can therefore be described by the sum of
+the nuclear and the magnetic cross section, without any cross
+terms.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{Magnetic Saturation}
+
+\subsubsection{MagneticShellAniso}
+\label{sect:MagShellAniso}
+~\\
+
+\begin{align}
+ K(Q,R,\Delta\eta) & = \frac{4}{3}\pi R^3 \Delta\eta \, 3 \frac{\sin QR - QR \cos
+ QR}{(QR)^3} \\
+   K_\text{sh}(Q&,R,\Delta R,\Delta\eta_\text{sh},\Delta\eta_\text{c}) = K(Q,R+\Delta R,\Delta\eta_\text{sh})-K(Q,R,\Delta\eta_\text{c})\\
+   K_\text{NUC}(Q) &=
+   K_\text{sh}(Q,R,\Delta R,\eta_{\text{sh NUC}}-\eta_{\text{m NUC}}, \eta_{\text{c NUC}}-\eta_{\text{m NUC}})\\
+   K_\text{MAG}(Q) &=
+   K_\text{sh}(Q,R,\Delta R,\eta_{\text{sh MAG}}-\eta_{\text{m MAG}}, \eta_{\text{c MAG}}-\eta_{\text{m MAG}})\\
+   I(Q) &=
+     \frac{1-p}{2}
+     \left(K^2_\text{MAG}(Q)+2K_\text{NUC}(Q)K_\text{MAG}(Q)\right)
+     \nonumber \\
+   &+ \frac{1+p}{2} \left(K^2_\text{MAG}(Q)-2K_\text{NUC}(Q)K_\text{MAG}(Q)\right)\\
+    &= K^2_\text{MAG}(Q) - 2p K_\text{NUC}(Q)K_\text{MAG}(Q)
+\end{align}
+\begin{align}
+p            &: \text{neutron polarization, } p\in[-1:1] \nonumber \\
+R            &: \text{radius of particle core} \nonumber \\
+\Delta R     &: \text{thickness of particle shell} \nonumber \\
+\eta_{\text{sh NUC}} &: \text{nuclear scattering length density of particle shell} \nonumber \\
+\eta_{\text{m NUC}}  &: \text{nuclear scattering length density of matrix} \nonumber \\
+\eta_{\text{c NUC}}  &: \text{nuclear scattering length density of particle core} \nonumber \\
+\eta_{\text{sh MAG}} &: \text{magnetic scattering length density of particle shell} \nonumber \\
+\eta_{\text{m MAG}}  &: \text{magnetic scattering length density of matrix} \nonumber \\
+\eta_{\text{c MAG}}  &: \text{magnetic scattering length density
+of particle core} \nonumber
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsubsection{MagneticShellCrossTerm}
+\label{sect:MagShellCrossTerm}
+~\\
+
+\begin{align}
+ K(Q,R,\Delta\eta) & = \frac{4}{3}\pi R^3 \Delta\eta \, 3 \frac{\sin QR - QR \cos
+ QR}{(QR)^3} \\
+   K_\text{sh}(Q&,R,\Delta R,\Delta\eta_\text{sh},\Delta\eta_\text{c}) = K(Q,R+\Delta R,\Delta\eta_\text{sh})-K(Q,R,\Delta\eta_\text{c})\\
+   K_\text{NUC}(Q) &=
+   K_\text{sh}(Q,R,\Delta R,\eta_{\text{sh NUC}}-\eta_{\text{m NUC}}, \eta_{\text{c NUC}}-\eta_{\text{m NUC}})\\
+   K_\text{MAG}(Q) &=
+   K_\text{sh}(Q,R,\Delta R,\eta_{\text{sh MAG}}-\eta_{\text{m MAG}}, \eta_{\text{c MAG}}-\eta_{\text{m MAG}})\\
+   I(Q) &=4p K_\text{NUC}(Q)K_\text{MAG}(Q)
+\end{align}
+\begin{align}
+p            &: \text{neutron polarization, } p\in[-1:1] \nonumber \\
+R            &: \text{radius of particle core} \nonumber \\
+\Delta R     &: \text{thickness of particle shell} \nonumber \\
+\eta_{\text{sh NUC}} &: \text{nuclear scattering length density of particle shell} \nonumber \\
+\eta_{\text{m NUC}}  &: \text{nuclear scattering length density of matrix} \nonumber \\
+\eta_{\text{c NUC}}  &: \text{nuclear scattering length density of particle core} \nonumber \\
+\eta_{\text{sh MAG}} &: \text{magnetic scattering length density of particle shell} \nonumber \\
+\eta_{\text{m MAG}}  &: \text{magnetic scattering length density of matrix} \nonumber \\
+\eta_{\text{c MAG}}  &: \text{magnetic scattering length density
+of particle core} \nonumber
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsubsection{MagneticShellPsi}
+\label{sect:MagShellPsi}
+~\\
+
+\begin{align}
+ K(Q,R,\Delta\eta) & = \frac{4}{3}\pi R^3 \Delta\eta \, 3 \frac{\sin QR - QR \cos
+ QR}{(QR)^3} \\
+   K_\text{sh}(Q&,R,\Delta R,\Delta\eta_\text{sh},\Delta\eta_\text{c}) = K(Q,R+\Delta R,\Delta\eta_\text{sh})-K(Q,R,\Delta\eta_\text{c})\\
+   K_\text{NUC}(Q) &=
+   K_\text{sh}(Q,R,\Delta R,\eta_{\text{sh NUC}}-\eta_{\text{m NUC}}, \eta_{\text{c NUC}}-\eta_{\text{m NUC}})\\
+   K_\text{MAG}(Q) &=
+   K_\text{sh}(Q,R,\Delta R,\eta_{\text{sh MAG}}-\eta_{\text{m MAG}}, \eta_{\text{c MAG}}-\eta_{\text{m MAG}})\\
+   I(Q) &= K^2_\text{NUC}(Q)+\left(K^2_\text{MAG}(Q) - 2p
+    K_\text{NUC}(Q)K_\text{MAG}(Q)\right) \sin^2\Psi
+\end{align}
+\begin{align}
+p            &: \text{neutron polarization, } p\in[-1:1] \nonumber \\
+R            &: \text{radius of particle core} \nonumber \\
+\Psi         &: \text{angle between $\BM{Q}$ and $\BM{H}$} \nonumber \\
+\Delta R     &: \text{thickness of particle shell} \nonumber \\
+\eta_{\text{sh NUC}} &: \text{nuclear scattering length density of particle shell} \nonumber \\
+\eta_{\text{m NUC}}  &: \text{nuclear scattering length density of matrix} \nonumber \\
+\eta_{\text{c NUC}}  &: \text{nuclear scattering length density of particle core} \nonumber \\
+\eta_{\text{sh MAG}} &: \text{magnetic scattering length density of particle shell} \nonumber \\
+\eta_{\text{m MAG}}  &: \text{magnetic scattering length density of matrix} \nonumber \\
+\eta_{\text{c MAG}}  &: \text{magnetic scattering length density
+of particle core} \nonumber
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{Superparamagnetic Particles (like ferrofluids)}~\\
+
+\begin{align}
+\frac{I_{\pm\pm}(\BM{Q})}{N} &= \abs{F_N(\BM{Q}) \mp \tilde
+F_M(\BM{Q}) \left[ L(\alpha)-\gamma\right]\,\sin^2\epsilon}^2
+\label{eq:ISQ_ppmm}\\
+&+ \abs{\tilde F_M(\BM{Q})}^2\, \left( \frac{L(\alpha)}{\alpha}\,
+\sin^2\epsilon - \mathcal{L}(\alpha)
+\, \sin^4\epsilon \right) \nonumber \\
+\nonumber \\
+\frac{I_{\mp\pm}(\BM{Q})}{N} &= \left( \sin^2\epsilon -
+\sin^4\epsilon \right) \left[L(\alpha)-\gamma\right]^2
+\abs{\tilde F_M(\BM{Q})}^2 %S(\BM{Q})
+\label{eq:ISQ_pmmp}\\
+&+ \abs{\tilde F_M(\BM{Q})}^2  \left( \left(
+\sin^4\epsilon-\sin^2\epsilon \right) \mathcal{L}(\alpha) +
+(2-\sin^2\epsilon)\, \frac{L(\alpha)}{\alpha}\right) \nonumber \\
+\nonumber \\
+I_{\rm unp}(\BM{Q}) &=  \frac{1}{2}
+\left(I_{++}(\BM{Q})+I_{+-}(\BM{Q})+I_{--}(\BM{Q})+I_{-+}(\BM{Q})
+\right)
+\nonumber \\
+&= N\, \left(\abs{\tilde F_M(\BM{Q})}^2 \left[
+L(\alpha)-\gamma\right]^2\,\sin^2\epsilon
+   + \abs{F_N(\BM{Q})}^2 \right)
+\label{eq:ISQ_unp} \\
+&+ N \, \abs{\tilde F_M(\BM{Q})}^2\, \left( 2\,
+\frac{L(\alpha)}{\alpha} - \mathcal{L}(\alpha)\,
+\sin^2\epsilon\right) \nonumber \label{eq:ISQ}
+\end{align}
+Hereby $L(\alpha) = \coth \alpha - \frac{1}{\alpha}$ is the
+classical Langevin function with \\
+$\alpha = \mu_0(H+M_{\rm
+eff})M_s^{cr} V_P/kT$. \\
+Furthermore the following functions are defined as:\\
+$\mathcal{L}(\alpha)=L^2(\alpha)-1+3\,\frac{L(\alpha)}{\alpha}$, \\
+$F_N(\BM{Q})=\Delta\eta\, V_N\, f_N(\BM{Q})$,\\
+$\tilde F_M(\BM{Q}) = D_M\, M_s^{cr}\, V_M\,f_M(\BM{Q})$ and \\
+$\gamma = M_s^{am}/M_s^{cr}$. \\
+$\epsilon$ describes the angle between $\BM{Q}$ and the applied
+magnetic field $\BM{B}$. If the magnetic field lies in the plane of
+the detector, i.e. perpendicular to the incoming beam direction,
+$\epsilon$ is in practice identical to $\Psi$ so that $\cos \epsilon
+= \sin\delta\, \cos\Psi \simeq \cos \Psi$ for $\delta \simeq \pi/2$
+($\BM{Q}$ in plane of detector for SANS, only for large scattering
+angle this will change).
+
+
+\subsubsection{SuperparamagneticFFpsi}
+\label{sect:superparFFpsi}
+
+\subsubsection{SuperparamagneticFFAniso}
+\label{sect:superparFFAniso}
+
+\subsubsection{SuperparamagneticFFIso}
+\label{sect:superparFFIso}
+
+\subsubsection{SuperparamagneticFFCrossTerm}
+\label{sect:superparFFCrossTerm}

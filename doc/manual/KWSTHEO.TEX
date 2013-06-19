@@ -1,0 +1,1051 @@
+\chapter{Streutheorie}
+
+\section{Wirkungsquerschnitte}
+\label{crosssection}
+ 
+In einem Streuexperiment ist man an einer detaillierten Analyse des
+Streubildes als Funktion der Eigenschaften des einfallenden Strahles
+interessiert. In Abb. \ref{scatt2} ist ein einfaches Streuexperiment 
+dargestellt. Monochromator und Kollimator legen Richtung und Energie
+des einfallenden Strahlung fest. Die Strahlung wechselwirkt
+mit der Probe und erf„hrt dabei einen Impulsbertrag $\hbar \bf Q$. Durch
+diesen Prozeá kann die gestreute Strahlung neben einer Richtungs„nderung
+auch eine Energie„nderung erfahren. Das Resultat wird mit Hilfe der
+Gr”áe eines Wirkungsquerschnittes beschrieben.
+
+\begin{figure}[htb]
+\begin{center}
+\input{scatt2.pic}
+\end{center}
+\caption{Schematische Darstellung eines Streuprozesses}
+\label{scatt2}
+\end{figure}
+
+Ein Detektor mit einer Nachweiswahrscheinlichkeit $\epsilon$ miát
+hierzu die Zahl der gestreuten Neutronen bzw. Photonen in einer vorgegebenen
+Streurichtung ${\bf k}_0+\bf Q$. Der Abstand zwischen Detektor und Probe soll
+groá sein im Vergleich zur Detektorfl„che, so daá der vom
+Detektorelement eingeschlossene Raumwinkel $\Delta\Omega$ klein ist.
+
+Besitzt der einfallende Strahl einen gleichm„áigen Fluá
+$\Phi_0$ ($[\Phi_0] =$ Neutronen- (Photonen-) zahl / cm$^2$ sec) und sind diesem Strahl
+$N$ identische Teilchen ausgesetzt, so ist die Z„hlrate $C$ des
+Detektors proportional zu allen diesen Gr”áen, wobei die
+Proportionalit„tskonstante als differentieller Wirkungsquerschnitt 
+$$
+\frac{d\sigma}{d\Omega} = \frac{C}{\Phi_0\, \epsilon\, N\, \Delta\Omega}
+$$
+bezeichnet wird. Im Falle von inelastischer Streuung ist die Z„hlrate
+in einem bestimmten Intervall $\Delta E$ bertragener Energie auáerdem
+proportional zu $\Delta E$. Die entsprechende
+Proportionalit„tskonstante ist der partielle (oder doppelt)
+differentielle Wirkungsquerschnitt
+$$
+\frac{d^2\sigma}{d\Omega\, dE} = \frac{C}{\Phi_0\, \epsilon\, N\, \Delta\Omega
+\,\Delta E } 
+= \rm \frac{\mbox{\parbox[b]{10.8cm}{\footnotesize Anzahl
+der Neutronen (Photonen), die pro Sekunde in den Raumwinkel $d\Omega$ in 
+Richtung $\phi,\theta$ mit einer Energie zwischen $E$ und $E+dE$ gestreut
+werden}} }{N \Phi_0\, d\Omega\, dE}
+$$
+Der totale Wirkungsquerschnitt ist definiert als
+$$
+\sigma_t = (\mbox{Gesamtzahl gestreuter Neutronen (Photonen) pro sec})/\Phi_0 .
+$$
+Die drei Wirkungsquerschnitte sind miteinander verknpft durch die
+Beziehungen
+$$
+\sigma_t = \int d\Omega\, \frac{d\sigma}{d\Omega} \qquad \mbox{und}
+\qquad \frac{d\sigma}{d\Omega} = \int_0^{\infty}dE\,
+                                  \frac{d^2\sigma}{d\Omega\, dE}
+.
+$$
+
+
+\subsection{Streuung von Neutronen an Atomen}
+
+Die Streuung von Neutronen l„át sich durch zwei 
+Wechselwirkungskr„fte
+zwischen Neutronen und Materie erkl„ren. Zum Einen durch die starken,
+spinabh„ngigen Kernkr„fte zwischen Atomkern und Neutron (Reichweite 
+$\sim 10^{-15}$m) und
+zum Anderen durch die Dipol-Dipol-Wechselwirkung zwischen dem magnetischen
+Moment des Neutrons und dem eines ungepaarten Elektrons, bzw. dem eines
+Atomkerns. Beiden Wechselwirkungen ist gemeinsam, daá ihr
+Wechselwirkungspotential $V(\B{r})$ fr $r \rightarrow \infty$ schneller als
+1/$r$ abnimmt.  Fr diese Potentialart liefert die quantenmechanische
+Streutheorie \cite{hittmair}, als asymptotische N„herung der
+Schr”dingergleichung die Wellenfunktion
+\BE \displaystyle \CD
+\psi_{\B{k}_0}(\B{r}) \cd\rightarrow{}{r\rightarrow\infty} 
+\displaystyle \frac{1}{(2\pi)^{3/2}}
+\left[e^{\imath\B{k}_0\B{r}} + f(\theta,\phi)\frac{e^{\imath k_0 r}}{r}\right]
+\endCD
+\quad .
+\EE
+Fr niederenergetische Teilchen und ein kurzreichweitiges Potential 
+liefert die Partialwellenmethode fr die Streuamplitude
+$f(\theta,\phi) = -b$, wobei die sogenannte Streul„nge $b$
+experimentell bestimmbar ist. šber einen anderen Ansatz, der Bornschen
+N„herung, erh„lt man eine Iterationsformel fr $f(\theta,\phi)$. Sie liefert als
+ersten Term einer Reihe
+\BE \displaystyle
+f^{(0)}(\theta,\phi)  
+= - \frac{m_N}{2 \pi \hbar^2} \int d\B{r}\, e^{\imath\B{Qr}} V(\B{r})
+\quad ,
+\EE
+mit $\B{Q} = \B{k-k}_0$. Vergleicht man nun dieses Ergebnis mit dem der
+Partialwellenmethode ($f(\theta,\phi)=-b$), erkennt man, daá das Ersatzpotential
+$V(\B{r}) = \frac{2\pi\hbar^2}{m_N} b \delta(\B{r})$ (Fermis Pseudopotential) 
+den gleichen
+Effekt wie das reale Potential hervorruft. Fr eine Ansammlung von $N$ Atomen,
+z.B. ein Kristall, ist dann in kinematischer N„herung 
+das Gesamtpotential die Summe der Einzelpotentiale
+\BE \displaystyle
+V(\B{r}) = \frac{2 \pi \hbar^2}{m_N} \sum_{j=1}^{N} b_j \delta(\B{r-r}_j)
+\quad , \label{fermipot}
+\EE
+mit $\B{r}_j$ als Ort des Atomkerns $j$ mit Streul„nge $b_j$ und $N$ der
+Anzahl von streuenden Atomkernen. Die Streul„nge $b_j$ ist abh„ngig vom Element,
+bzw. dem Isotop, welches das Streuzentrum ist, von den Spineinstellungen der 
+Neutronen und des Atomkerns und von m”glichen ungepaarten Elektronen in 
+nicht vollbesetzten Elektronenhllen. Fr die kinematische N„herung wird
+angenommen, daá die einfallende Intensit„t an jedem Streuzentrum
+gleich ist, d.h. die gestreute Strahlung schw„cht die einfallende nicht ab. 
+Auáerdem wird angenommen, daá Einfachstreuung vorliegt.
+
+
+In statischer N„herung, d.h. bei einem Streuprozeá, bei dem der Streuer
+unver„ndert bleibt und somit ein rein elastischer Streuvorgang
+stattfindet, kann der differentielle Wirkungsquerschnitt ausgedrckt
+werden durch die Streuamplitude $f^{(0)}$
+\BE
+\frac{d\sigma}{d\Omega}(\B{Q}) = \frac{1}{N}\, \abs{f^{(0)}(\theta,\phi)}^2 = 
+\frac{1}{N}\, \left( \frac{m_N}{2\pi\hbar^2}\right)^2 \, \abs{\int
+d\B{r}\, e^{\imath\B{Qr}}\, V(\B{r})}^2
+\label{scatteringfunction}
+\EE
+Die Verwendung des Fermi-Pseudopotentials (Gl. \ref{fermipot}) liefert
+dann den Ausdruck
+\BE
+\frac{d\sigma}{d\Omega}(\B{Q}) = \frac{1}{N} \, \abs{\sum_{j=1}^N\, b_j\,
+e^{\imath\B{Qr}_j}}^2 = \frac{1}{N}\, \sum_{i,j} b_i\, b_j\, e^{\imath\B{Qr}_i}
+\, e^{-\imath\B{Qr}_j} \qquad . \label{scatteq1}
+\EE
+
+Man denke sich nun neue Systeme von Streuern, die sich von dem in
+Gl. \ref{scatteq1} nur dadurch unterscheiden, daá lediglich Streul„ngen
+der Kerne vertauscht werden. Hierbei sollen sowohl die Positionen der
+Streuer als auch die relative H„ufigkeit der Streul„ngen $b_i$
+erhalten bleiben. Bei einer groáen Anzahl von Streuzentren ist nun
+der Mittelwert ber die Wirkungsquerschnitte  aller denkbaren
+Streusysteme identisch zu dem Wirkungsquerschnitt in \ref{scatteq1} und 
+l„át sich schreiben als
+\BE
+\frac{d\sigma}{d\Omega}(\B{Q}) = \frac{1}{N}\, 
+                          \sum_{i,j} \overline{b_i\, b_j}\, 
+                          e^{\imath\B{Qr}_i} \, e^{-\imath\B{Qr}_j} 
+\qquad . \label{scatteq2}
+\EE
+Tritt die Streul„nge $b_i$ mit der relativen H„ufigkeit $x_i$ auf,
+wobei $\sum_i x_i = 1$ gelten soll, so lassen sich die Mittelwerte 
+$\overline{b}$ und $\overline{b^2}$ schreiben als
+$$
+\overline{b} = \sum_i x_i\, b_i \mbox{~~~ und ~~~}  \overline{b^2} = \sum_i
+x_i b_i^2 \quad .
+$$
+Unter der Vorraussetzung, daá keine Korrellationen zwischen den
+Streul„ngen der einzelnen Atomkerne bestehen, gilt dann
+$$
+\overline{b_i\, b_j} = \overline{b}^2 \mbox{~fr~} i \neq j
+\qquad \mbox{~und~} \qquad 
+\overline{b_i\, b_j} = \overline{b^2} \mbox{~fr~} i = j
+$$
+Hieraus folgt fr den differentiellen Wirkungsquerschnitt
+$$
+\frac{d\sigma}{d\Omega}(\B{Q}) = \frac{1}{N} \left( \overline{b^2} +
+\overline{b}^2 \sum_{i,j \atop i\neq j} e^{\imath\B{Qr}_i} \, 
+                                        e^{-\imath\B{Qr}_j} \right)
+= \underbrace{\frac{1}{N}\left( \overline{b^2}-\overline{b}^2\right) 
+             }_{\frac{d\sigma_{\rm inc}}{d\Omega}} + 
+  \underbrace{\frac{1}{N}\, \overline{b}^2 \, \abs{\sum_i e^{\imath\B{Qr}_i}}^2
+             }_{\frac{d\sigma_{\rm coh}}{d\Omega}}
+$$
+
+\subsubsection{Kernstreuung}
+
+Das einfachste denkbare Vielteilchenstreusystem besteht aus nur einem
+Isotop mit Kernspin $I$. Da der Spin des Neutrons $s = \pm 1/2$ ist,
+sind zwei Orientierungen m”glich: parallele Spins von Neutron und Kern, 
+d.h. ein Gesamtspin von $J_{(+)}=I+1/2$ oder
+aber antiparallele Spins, d.h. $J_{(-)}=I-1/2$.  Die entsprechenden
+Streul„ngen werden mit $b_{(+)}$ und $b_{(-)}$ bezeichnet.\footnote{Bei 
+koh„renter
+Streuung bleibt der Spin des Neutrons erhalten im Gegensatz zu inkoh„renter
+Streuung, die z. T.  mit einem Spin-Flip einhergeht. Dieses kann z.\ B.\
+ausgenutzt werden, um das Verh„ltnis von koh„renter zu inkoh„renter Streuung zu
+„ndern. }
+
+Die Zahl der m”glichen Zust„nde mit Gesamtspin  $J_{(\pm)}$ sind
+$2J_{(+)}+1 = 2I+2$, bzw. $2J_{(-)}+1 = 2I$.
+Im Falle von unpolarisierten Neutronen und/oder zuf„llig orientierten
+Kernspins haben parallele und antiparallele Spineinstellungen gleiche
+Wahrscheinlichkeit. Die H„ufigkeit $x_{(\pm)}$ der Streul„ngen $b_{(\pm)}$ 
+ist somit proportional zur Anzahl der entsprechenden Zust„nde
+$$
+x_{(+)} = \frac{2J_{(+)}+1}{\left(2J_{(+)}+1\right) + \left(2J_{(-)}+1\right)} 
+= \frac{I+1}{2I+1} \mbox{~, bzw.~} x_{(-)} = \frac{I}{2I+1} \quad .
+$$
+Fr die mittlere Streul„nge $\overline{b}$ ergibt sich somit
+$$
+\overline{b} = \sum_{i=(+),(-)} x_i\, b_i = \frac{1}{2I+1}\left[ (I+1)\, b_{(+)}
++ I\, b_{(-)} \right] \quad .
+$$
+Bei einem Gemisch verschiedener Elemente und Isotope vom Typ $l$ mit
+Kernspin $I_l$, die mit der H„ufigkeit $x_l$ (mit $\sum_l x_l = 1$) 
+auftreten, lassen sich die Mittelungen schreiben als
+\BEA
+\overline{b} &=& \sum_l \frac{x_l}{2I_l+1} \left[ (I_l+1)\, b_{l(+)}
++ I_l\, b_{l(-)} \right]  \\
+\overline{b^2} &=& \sum_l \frac{x_l}{2I_l+1} \left[ (I_l+1)\, 
+\left(b_{l(+)}\right)^2
++ I_l\, \left(b_{l(-)}\right)^2 \right] \quad .
+\EEA
+
+\subsubsection{Magnetische Streuung}
+
+In magnetischen Materialien ist der Beitrag der Wechselwirkung zwischen 
+Neutron und atomaren magnetischen Dipolmomenten zur Streuamplitude von
+gleicher Gr”áenordnung wie der Kernstreubeitrag.
+Die magnetische Streuung beruht auf der Wechselwirkung des
+magnetischen Momentes $\BM{\mu}_N$ des Neutrons mit dem magnetischen
+Moment des streuenden Atoms $\BM{\mu}_A$. Das magnetische
+Wechselwirkungspotential $V(\B{r})$ ist gegeben durch
+$$ V(\B{r}) = -\BM{\mu}_N \cdot \B{B}(\B{r}), $$
+wobei $\BM{\mu}_N=\gamma\frac{e \hbar}{2m_N c}\BM{\sigma}$ das
+magnetische Dipolmoment des Neutrons, \BM{\sigma} der Paulische
+Spinoperator, $\gamma = -1.913$ das gyromagnetische Verh„ltnis und 
+$\B{B}(\B{r})$ das vom Atom am Ort des Neutrons erzeugte Magnetfeld
+ist. Ein Atom erzeugt ein Magnetfeld zum Einen aufgrund des magnetischen
+Dipolmomentes $\BM{\mu}_S$ seiner Elektronen
+$$ 
+\B{B}_S(\B{r}) = \BM{\nabla} \times \B{A} \U{~mit~} \B{A} =
+\frac{\mu_0}{4\pi}\, \frac{\BM{\mu}_S \times\B{r}}{r^3}
+$$
+und zum Anderen aufgrund des Bahndrehimpulses $\B{l} = -\B{p}\times\B{r}$
+der Elektronen
+$$
+\B{B}_L(\B{r}) = -\frac{\mu_0}{4\pi}\, \frac{2\mu_B}{\hbar}\,
+\frac{\B{p}\times\B{r}}{r^3}.
+$$
+Die magnetische Wechselwirkung 
+$V(\B{r}) = -\BM{\mu}_N\cdot(\B{B}_S(\B{r})+\B{B}_L(\B{r}))$
+ist eine schwache langreichweitige Wechselwirkung und kann in
+Bornscher N„herung behandelt werden. Die der Kernstreuamplitude
+entsprechende magnetische Streuamplitude $b_M$ ist gegeben durch die
+Fouriertransformation des magnetischen Wechselwirkungspotentials
+${\cal F}[V(\B{r})]$
+\BE
+b_M = -\frac{m_N}{2\pi\hbar^2}\, \BM{\mu}_N \cdot \int d^3r \,
+e^{\imath\B{Qr}}\, (\B{B}_S(\B{r})+\B{B}_L(\B{r})).
+\EE
+Die Fouriertransformierte des Magnetfeldes steht im Falle eines
+statischen Magnetfeldes mit der Fouriertransformierten der
+lokalen Magnetisierung $\B{M}(\B{Q}) = {\cal F}[\B{M}(\B{r})]$ in
+Verbindung ber \cite{Squires}
+\BE
+\B{B}(\B{Q}) = \mu_0\, \frac{\B{Q}\times [\B{M}(\B{Q})\times\B{Q}]}{Q^2}
+             = \mu_0\, \B{M}_{\bot}(\B{Q}),
+\EE
+wobei $\B{M}_{\bot}(\B{Q})$ die zu $\B{Q}$ senkrechte Komponente von
+$\B{M}(\B{Q})$ ist und $\mu_0 = 4\pi\, 10^{-7}$ Vs/Am die magnetische
+Feldkonstante. Fr die magnetische Streuamplitude $b_M$ findet man
+also
+\BE
+b_M = D_M\, \mu_0\, \mbox{\boldmath$\sigma$}\cdot \B{M}_{\bot}(\B{Q})
+\mbox{~ mit ~} D_M = \frac{m_N}{2\pi\hbar^2}\, \mu_N = 2.3161 \times
+10^{14} \, \frac{1}{\mbox{Vs}}.
+\EE
+Bei der Streuung an magnetischen Strukturen sind immer zwei
+Wechselwirkungen zu bercksichtigen: die Kernstreuung, die durch
+Fluktuationen in der Teilchenzahldichte verursacht wird und die magnetische
+Streuung, die durch Fluktuationen in der Amplitude und/oder Orientierung der
+lokalen Magnetisierung verursachr wird. Im Falle einer Vorzugsachse, z.\ B.\ die
+Richtung eines angelegten Magnetfeldes $\B{H}$, h„ngt die magnetische
+Streuung vom Spinzustand {\boldmath $\sigma$} des Neutrons ab. Kennzeichnet
+$\B{e}_x$ die Richtung der Vorzugsachse und ($+$) und ($-$) die
+Neutronenspinpolarisation antiparallel und parallel zu $\B{e}_x$, dann
+die Streuung durch vier Streuprozesse beschrieben
+werden, zwei Spin erhaltene ($++$,$--$) und zwei Spin umkehrende
+($+-$,$-+$) Prozesse. Moon, Riste and Koehler \cite{Moon} haben
+gezeigt, daá fr koh„rente Streuung die vier entsprechenden
+Streuamplituden gegeben sind durch
+\BEA
+b_{\pm\pm} &=& b_N \mp D_M\, \mu_0\, M_{\bot x} \\
+b_{\pm\mp} &=& - D_M\, \mu_0\, (M_{\bot z} \pm \imath \, M_{\bot y}).
+\EEA
+Hierbei beschreibt $b_N$ die Kernstreuamplitude.
+Im Falle unpolarisierter Neutronen ergibt sich fr den
+differenziellen Wirkungsquerschnitt
+\BE
+\frac{d\sigma_{\rm unp}}{d\Omega}(\B{Q}) = 
+         \frac{d\sigma_{\rm nuc}}{d\Omega}(\B{Q}) 
+       + \frac{d\sigma_{\rm mag}}{d\Omega}(\B{Q}) ,
+\EE
+denn $(b_{++}^2+b_{--}^2+b_{+-}^2+b_{-+}^2)/2 = b_N^2+D_M^2
+\mu_0^2 M_{\bot}^2$. Fr unpolarisierte Neutronen hat der Interferenzbeitrag 
+lediglich Einfluá auf den Polarisationsgrad der gestreuten Neutronen, nicht aber
+auf die Streuintensit„t.
+
+\subsection{Streuung von R”ntgenstrahlung an Atomen}
+
+Die Streuung von R”ntgenstrahlung an Materie wird praktisch nur von
+der Wechselwirkung der einfallenden Strahlung mit den Elektronen
+bestimmt. Der Beitrag der Kernstreuung ist vernachl„ssigbar klein, da
+die Kernmasse um mehr als den Faktor $10^3$ gr”áer als die
+Elektronenmasse ist und die Energie der Kernstreuung um mehr als
+$10^6$ kleiner als die Energie der Elektronenstreuung.
+
+Die Frequenz $\nu_0 = c/\lambda$ der einfallenden R”ntgenstrahlung ist
+in der Regel groá gegen die Resonanzfrequenz der Elektronen. In diesem
+Fall k”nnen die Elektronen als frei angesehen werden und die
+speziellen Eigenschaften der Bindung sind ohne Bedeutung. Es liegt der
+Fall der Thomson-Streuung vor. J. J. Thomson entwickelte ein einfaches
+klassisches Modell fr diese Streuart. Unter dem Einfluá der
+elektrischen Feldst„rke der R”ntgenstrahlung beginnen die Elektronen
+zu oszillieren. Fr eine einfallende ebene monochromatische Welle mit
+einem elektrischen Feld $\B{E} = \B{E}_0 e^{\imath (\B{k}_0\B{r} -
+\omega t)}$ erh„lt man fr die Amplitude $E_s$, der an einem freien
+Elektron gestreuten Welle 
+$$
+E_s = -E_0 \frac{e^2}{m_e c^2} \frac{1}{r} \sin \psi . 
+$$
+Hierbei sind $e$ und $m_e$ Ladung und Masse des Elektrons, $c$ die
+Lichtgeschwindigkeit, $r$ der Abstand zwischen Probe und Detektor und
+$\psi$ der Winkel zwischen der Richtung, in der das Elektron von der
+einfallenden Welle beschleunigt wird und der Richtung der gestreuten
+Welle. Entsprechend zur Neutronenstreul„nge wird fr ein Elektron die
+R”ntgenstreul„nge (Fernfeld eines Hertzschen Dipols)
+$$b_{\rm x-ray} = \frac{e^2}{m_e c^2} \sin\psi = r_0 \sin\psi $$
+definiert, wobei $r_0 = e^2 / (m_e c^2) = 2.82 \times 10^{-13}$ cm der
+klassische Elektronenradius ist. Fr Kleinwinkelstreuung ist $\psi
+\sim \pi/2$ und der winkelabh„ngige Polarisationsfaktor ist ungef„hr 1.
+
+Um die Streuamplitude eines Atoms mit $Z$ Elektronen zu berechnen,
+mssen die Streuamplituden der einzelnen, an den verschiedenen
+Elektronen gestreuten Wellen, phasenrichtig aufsummiert werden. Hierzu
+fhrt man eine Elektronendichteverteilung $\rho_e(\B{r})$ ein, welche die
+zeitgemittelte Aufenthaltswahrscheinlichkeit des Elektrons im Atom
+beschreibt. Die Streuamplitude des Atoms ist dann
+$$ f_a(\B{Q}) = r_0\, %\underbrace{L(Q)}_{{\rm Polarisationsfaktor}\sim 1}
+\int d\B{r} \, \rho_e(\B{r})\, e^{\imath \B{Qr}} .$$
+Die Ladungsverteilung im Atom kann in guter N„herung durch eine 
+radialsymmetrische Funktion beschrieben werden, so daá gilt
+\BE 
+f_a(Q) = r_0 \int_0^{\infty} \frac{\sin Qr}{Qr} \, \rho_e(r)
+\, 4\pi r^2\, dr  \stackrel{Q\rightarrow 0}{=} r_0 
+\int_0^{\infty} 
+\rho_e(r) \, 4\pi r^2\, dr  = r_0 Z .
+\label{diffx}
+\EE
+Fr die Kleinwinkelstreuung ist die Streul„nge eines Atoms also $f_a
+= r_0 Z$ oder in Einheiten von \glqq electon units (e.u.)\grqq\,
+$f=f_a/r_0=Z$.
+
+\subsubsection{Anomale Streuung von R”ntgenstrahlung}
+
+Die Beziehung $f=Z$ fr die atomare Streul„nge ist nur gltig, solange
+die Energie der einfallenden Strahlung viel gr”áer als die Energie der
+K-, L-, usw. Schalen sind. Liegt eine Absorptionskante des Atoms nahe
+der Energie der einfallenden Strahlung, muá die Streul„nge um einen
+Dispersionsterm korrigiert werden. Generell h„ngt die Streul„nge eines
+Atoms von der Energie der R”ntgenphotonen ab und ist komplexwertig
+\BE
+f(E) = Z + f'(E) + \imath f''(E) .
+\EE
+Die Korrekturen $f'$ und $f''$ „ndern die Streul„nge $f$ nahe einer
+Absorptionskante typischerweise bis zu 25\%. Fig. \ref{fpfppsketch} zeigt
+\begin{figure}[htb]
+\input{fprime.scr}
+\caption{Schematische Darstellung des Verlaufes von $Z_{\rm Fe}+
+f'_{\rm Fe}(E)$ und $f''_{\rm Fe}(E)$ nahe einer Eisen-Absorptionskante
+($Z_{\rm Fe}=26$)}
+\label{fpfppsketch}
+\end{figure}
+schematisch den Verlauf von $f'$ und $f''$ nahe einer solchen Kante.
+Die beiden Dispersionsterme sind ber die Kramer-Kronig-Relation
+miteinander verknpft
+\BE
+f'(E) = \frac{2}{\pi}\, \int_0^{\infty} dE'\, 
+        \frac{E'\, f''(E')}{E'^2-E^2}.
+\label{KramerKronig}
+\EE
+In der Regel wird der imagin„re Anteil $f''$ experimentell ber den
+Massenabsorptionskoeffizienten $\mu_m(E)=\frac{2N_A}{A}\, \lambda\,
+r_0\, f''(E)$ bestimmt ($N_a$ Avogadrokonstante, $A$ Atomasse des
+Resonanzatoms), um daraus dann ber Gleichung \ref{KramerKronig} den 
+reellwertigen Streul„ngenbeitrag $f'(E)$ zu bestimmen.
+
+\section{Kleinwinkelstreuung}
+
+Mit Hilfe der Kleinwinkelstreuung sind die zu untersuchenden
+strukturellen Einheiten nicht mehr einzelne Atome, sondern Strukturen,
+die sich ber mehrere Atomlagen erstrecken k”nnen. Bei dieser
+Untersuchungsmethode wird die einfallende Strahlung nur in Vorw„rtsrichtung
+gestreut, wobei die Strahldivergenz in der Gr”áenordnung von
+$\lambda/L \ll 1$ liegt. Bei einer Wellenl„nge von $\lambda = 1$ nm
+und einer charakteristischen linearen Abmessung $L = V^{1/3}$ der
+Streustruktur von ca. 10 nm liegt die Strahldivergenz bei $\lambda/L
+= 0.1 \mbox{rad} \simeq 6.3^{\circ}$. 
+
+Im Prinzip lassen sich durch Kleinwinkelstreuexperimente sowohl
+Informationen ber Gr”áe und Form der streuenden Strukturen als auch
+ber deren relativen Anordnung gewinnen. Im folgenden soll ein šberblick ber
+die theoretischen Grundlagen der Analyse von Kleinwinkelstreudaten
+gegeben werden.
+
+
+In Abschnitt \ref{crosssection} ist die Streuung an einer Ansammlung
+von Atomen diskutiert worden. Hierbei waren die Interferenzeffekte
+zwischen den von den einzelnen Atomen gestreuten Wellen wichtig fr
+die Gr”áe des differentiellen Wirkungsquerschnittes (Gl. \ref{scatteq1}
+,\ref{diffx})
+$$
+\frac{d\sigma}{d\Omega}(\B{Q}) = \frac{1}{N} \, \abs{\sum_{j=1}^N\, b_j\,
+e^{\imath\B{Qr}_j}}^2 \qquad \U{bzw.} \qquad
+\frac{d\sigma}{d\Omega}(\B{Q}) = \frac{1}{N} \abs{\sum_{j=1}^{N}
+f_{a,j}(\B{Q})\, e^{\imath\B{Qr}}}^2  .
+$$
+Im Falle der Kleinwinkelstreuung wird in der Regel nicht auf atomare
+Dimension aufgel”st. Aus diesem Grunde darf die Summation ber die
+einzelnen Atome ersetzt werden durch eine Integration ber das
+beleuchtete Probenvolumen $V$:
+\BE
+\frac{d\sigma}{d\Omega}(\B{Q}) = \frac{1}{N}\, \abs{\int_V d\B{r}\,
+\rho(\B{r})\, e^{\imath \B{Qr}}}^2 = \frac{1}{N}\, I(\B{Q}) \quad ,
+\label{scatteq3}
+\EE
+wobei $\rho(\B{r})$ die lokale Streul„ngendichte ist, und $F(\B{Q})$
+die Streuamplitude. Der
+differentielle Wirkungsquerschnitt ist also im mathematischen Sinne
+das Betragsquadrat der Fouriertransformierten der Streul„ngendichte.
+%Die Streul„ngendichte $\rho(\B{r})$ ist proportional zum lokal
+%gemittelten Streupotential $\bar V(\B{r})$, weshalb Gleichung
+%\ref{scatteq3} bis auf eine Konstante mit Gleichung \ref{scatteringfunction}
+%bereinstimmt. 
+Die Streuintensit„t $I(\B{Q}) = \abs{z}^2 = z\, z^*$ kann
+geschrieben werden als
+$$
+I(\B{Q}) = \int \!\!\! \int d\B{r}_1\, d\B{r}_2\, \rho(\B{r}_1) \, \rho^*(\B{r}_2)
+\, e^{\imath\B{Q(r_{\rm 1}-r_{\rm 2})}} \quad .
+$$
+Durch Anwendung der Substitution $\B{r} = \B{r}_1 - \B{r}_2$ erh„lt man
+\BE
+I(\B{Q}) = \int d\B{r} \, e^{\imath\B{Qr}} \underbrace{\int d\B{r}_1\, 
+\rho(\B{r}_1)
+\, \rho^*(\B{r}_1-\B{r})}_{\Gamma(\B{r}) =  \rho(\B{r}) \scorr \rho(\B{r}) } = 
+\int d\B{r}\, \Gamma(\B{r})\, e^{\imath\B{Qr}} \quad .
+\label{Gamma}
+\EE
+$\Gamma(\B{r})$ ist die Autokorrelation\footnote{Gew”hnlich wird die
+Autokorrelation definiert als $\rho (\B{r}) \scorr \rho (\B{r}) = \int\,
+d\B{r}_1\, \rho (\B{r}_1)\, \rho^{*}(\B{r}_1+\B{r})$, so daá eigentlich
+$\Gamma (\B{r}) = \rho (-\B{r}) \scorr \rho (-\B{r})$ ist. Im Falle
+einer reelen Streul„ngendichte ist Gl. \ref{Gamma} das
+Faltungsintegral $\Gamma (\B{r}) = \rho (\B{r}) * \rho (\B{r}) = \int\,
+d\B{r}_1\, \rho (\B{r}_1)\, \rho (\B{r}_1-\B{r})$}
+der Streul„ngendichte und wird als Patterson-Funktion\footnote{Hier ist
+die Patterson-Funktion definiert als Autokorrelation der
+Streul„ngendichte $\rho(\B{r})$. Anstatt wie in Gleichung \ref{Gamma}
+den Wirkungsquerschnitt ber eine Streul„ngendichte zu definieren,
+wird in der Neutronenstreuung der differentielle Wirkungsquerschnitt
+h„ufig auch definiert als ${d\sigma_{\rm coh}(\B{Q})}/{d\Omega} =
+({\sigma_{\rm coh}}/{4 \pi\,N})\, \int d\B{r}\,  \rho(\B{r}) \scorr
+\rho(\B{r}) \,\exp(\imath\B{Q}\B{r})$, 
+wobei $\sigma_{\rm coh} = 4 \pi\, \overline{b}^2$
+der koh„rente Wirkungsquerschnitt und  $\rho(\B{r})$ die 
+Teilchenzahldichte ist. Die Patterson-Funktion ist dann
+die Autokorrelation der Teilchenzahldichte. Sie ist
+unabh„ngig von den Streul„ngen und einzig durch die geometrische
+Anordnung der Streuzentren definiert.  Die Fouriertransformierte der
+Patterson-Funktion wird deshalb auch als Strukturfaktor $S(\B{Q})$ bezeichnet 
+und steht im Falle der statischen N„herung mit dem differentiellem 
+Wirkungsquerschnitt ber die Gleichung $d\sigma_{\rm coh}(\B{Q})/d\Omega = 
+(\sigma_{\rm coh}/4\pi N)\, S(\B{Q})$ in Verbindung.} bezeichnet.
+
+\subsection{Autokorrelationsfunktionen $\Gamma(\B{r})$ und $\gamma(\B{r})$}
+
+Im folgenden soll von zwei vereinfachenden Annahmen ausgegangen
+werden. Zum einen soll das Streusystem statistisch isotrop sein.
+Hierbei kann die Isotropie ihre Ursache sowohl in der Form des
+Streupartikels haben als auch eine Folge der zeitlichen nderung der
+Orientierung des Partikels sein. Dieses bedeutet, daá $\Gamma(\B{r})$
+nur vom Betrag $r$ abh„ngt und $e^{\imath\B{Qr}}$ ber alle Richtungen
+von $\B{r}$ gemittelt werden muá. 
+
+\subsubsection{Isotropes Mittel}
+Ist $\alpha$ der Winkel zwischen $\B{Q}$ und $\B{r}$ und sind alle
+Orientierungen $\alpha$ gleich wahrscheinlich, dann ist die
+Wahrscheinlichkeit $p_{\alpha}\, d\alpha$, daá $\B{Q}$ und $\B{r}$ den
+Winkel $\alpha$ einschlieáen
+$$
+p_{\alpha}\, d\alpha = \frac{2\, \pi\, R\, \sin\alpha}{4\, \pi\,R^2}\,
+R\, d\alpha = \frac{\sin\alpha}{2} \, d\alpha
+$$
+Die Mittelung von $e^{\imath\B{Qr}}$ ber alle Richtungen $\B{r}$ ergibt
+\BEA \nonumber
+\overline{e^{\imath\B{Qr}}}^{~\B{r}} 
+&=&\int_0^{\pi}\, d\alpha\,\frac{\sin\alpha}{2}\, e^{\imath Qr\cos\alpha}
+\\ \nonumber
+&=& \underbrace{\int_0^{\pi}\, d\alpha\, \frac{\sin\alpha}{2}\,
+\cos(Q\,r\,\cos\alpha)}_{\rm symmetrisch~zu~\alpha=\pi/2} + \imath
+\underbrace{\int_0^{\pi}\, d\alpha\, \frac{\sin\alpha}{2}\,
+\sin(Q\, r\, \cos\alpha)}_{{\rm antisymmetrisch~zu~}\alpha=\pi/2~\Rightarrow~
+= 0}
+\\ 
+&=& 2 \int_0^{\frac{\pi}{2}}\, d\alpha\, \frac{\sin\alpha}{2}\,
+\cos(Q\, r\, \cos\alpha)
+= \frac{1}{Qr}\, \int_0^{Qr}\, du\, \cos u = \frac{\sin Qr}{Qr}
+\label{equalorientations}
+\EEA
+und vereinfacht Gleichung \ref{Gamma} damit zu 
+\BE
+I(Q) = \int dr\, 4\pi\, r^2\, \Gamma(r) \frac{\sin Qr}{Qr} \quad .
+\EE
+Als zweite Vereinfachung soll angenommen werden, daá keine
+langreichweitige Ordnung besteht. Dieses hat zur Folge, daá die
+Autokorrelation $\Gamma(r)$
+fr groáe $r$ gegen einen konstanten Wert $\bar\Gamma = \bar \rho^2 V$ 
+konvergiert. $\bar \rho$ ist die mittlere Streul„ngendichte und durch 
+\BE
+\int \, d\B{r}\, \left( \rho(\B{r}) - \bar\rho \right) = \int\,
+d\B{r}\, \eta(\B{r}) = 0
+\label{barrho}
+\EE
+definiert.
+Die Strukturinformation ist also nur in einem endlichen Bereich, in
+dem $\Gamma(\B{r})$ von dessen Mittelwert $\bar \Gamma$ abweicht, enthalten. 
+Dieses ist darauf zurckzufhren, daá nur eine Abweichung $\eta(\B{r})$ 
+der Streul„ngendichte $\rho(\B{r})$ von dessen Mittelwert $\bar \rho$ 
+einen Streubeitrag fr
+$Q\not= 0$ liefert. Ein konstanter Wert $\bar \rho$ liefert nur einen
+Streubeitrag fr $Q=0$ und ist experimentell nicht zug„nglich\footnote{Im
+Falle der Strukturmodellierung in Kap. \ref{rmcchap} ist das
+Simulationsvolumen so klein, daá dieser Beitrag bercksichtigt werden
+muá (s. auch Gl. \ref{simeq})}.
+Aus diesem Grunde wird die mittlere Streul„ngendichte von vornherein
+abgezogen und nur die Abweichung $\eta(\B{r}) = \rho(\B{r}) - \bar\rho$
+betrachtet. Die Autokorrelationsfunktion ist dann definiert als
+\BEA
+ \gamma(r) &=& 
+ \frac{1}{V}\,\overline{\eta(\B{r}) \corr \eta(\B{r})}^{~\B{r}}
+=\frac{1}{V}\,\overline{(\rho(\B{r})-\bar\rho)\corr  
+                        (\rho(\B{r})-\bar\rho)}^{~\B{r}}
+\\[2mm]
+\Rightarrow \quad
+I(Q) &=& V \int_0^{\infty} dr \, 4\pi\, r^2\, \gamma(r) \,\frac{\sin Qr}{Qr} .
+\label{IQofgamma}
+\EEA
+$V\gamma (\B{r})$ unterscheidet sich von $\Gamma(\B{r})$ wegen der
+Definition von $\bar \rho$ (Gl. \ref{barrho}) lediglich um den
+konstanten Term $\bar\rho^2\,V$, d.h. $V\,\gamma(\B{r}) = 
+\Gamma(\B{r})-\bar\rho^2\,V$, denn
+\begin{eqnarray*}
+\Gamma(\B{r}) &=& 
+\int\, d\B{r}_1\, \rho(\B{r}_1)\, \rho^{*}(\B{r}_1-\B{r}) =
+\int\, d\B{r}_1\, (\bar\rho + \eta(\B{r}_1))(\bar\rho + \eta(\B{r}_1-\B{r}))^{*}
+\\ &=&
+\bar\rho^2 V +  
+\underbrace{\int\, d\B{r}_1\, (\bar\rho\,  \eta(\B{r}_1)+ 
+\bar\rho^{*}\, \eta^{*}(\B{r}_1-\B{r}))}_{=~
+0 {\rm ~ wegen~Def.~von~\eta(\B{r})~in~Gl.~\ref{barrho}}}
++ \int\, d\B{r}_1\, \eta(\B{r}_1) \, \eta^{*}(\B{r}_1-\B{r}) \\
+&=& 
+\bar\rho^2 V + \gamma(\B{r})\, V
+.
+\end{eqnarray*}
+
+\subsubsection{Grenzf„lle $r=0$ und $r=\infty$}
+
+Fr die Autokorrelation $\gamma(\B{r})$ sind die Grenzf„lle $r=0$ und
+$r\rightarrow\infty$ gegeben durch $\gamma(0) = \overline{\eta^2}$
+und $\gamma(r\rightarrow\infty)=0$. Der Grenzfall $r\rightarrow\infty$
+ist Null, da $\eta(\B{r})$ gerade die Abweichung vom Mittelwert der
+Streul„ngendichte $\bar\rho$ ist. Da keine langreichweitige
+Korrelationen existieren sollen ist $\eta(\B{r}) \corr \eta(\B{r}) 
+\stackrel{r\rightarrow\infty}{=} \bar \eta^2=0$.
+
+\subsubsection{Streuinvariante}
+
+$\gamma(r)$ kann ber die inverse Fouriertransformation aus der
+Streuintensit„t $I(Q)$ (Gl. \ref{IQofgamma}) berechnet werden durch
+\BE
+V \, \gamma(r) = \frac{1}{2\pi^2} \, \int_0^{\infty} dQ\, Q^2\, I(Q)\,
+\frac{\sin Qr}{Qr} \quad .
+\label{gamma}
+\EE
+Ein wichtiger Spezialfall ist $r=0$. Hierfr vereinfacht sich 
+Gleichung \ref{gamma} zu
+\BE
+V\, \gamma(0) = V\,\int\,d\B{r}\, \eta^2(\B{r}) 
+              = V\, \overline{\eta^2} 
+              =  \frac{1}{2\pi^2} \int_0^{\infty} dQ\, Q^2 \,I(Q) 
+              = \frac{\tilde Q}{2\pi^2} \quad .
+\label{gamma0}
+\EE
+Die Integration der Intensit„t $I(Q)$ im reziproken Raum steht also in
+direkter Verbindung mit der mittleren quadratischen Abweichung der
+Streul„ngendichte $\overline{\eta^2}$, ist aber unabh„ngig von der Form des
+Streuers. Werden zum Beispiel die Streupartikel deformiert, kann sich
+zwar das Streubild drastisch „ndern, das Integral $\tilde Q$ aus
+Gleichung \ref{gamma0} hingegen bleibt gegenber einer solchen Deformation 
+invariant.
+
+\subsection{Volumenanteile}
+Die mittlere quadratische Abweichung der Streul„ngendichte steht im
+Falle des Zweiphasenmodelles im engen Zusammenhang mit dem
+Streukontrast $\Delta\eta$ und dem Volumenanteil $f_p$ der einen, bzw.
+$(1-f_p)$ der anderen Phase. Die mittlere quadratische Abweichung der
+Streul„ngendichte ist definiert als
+\BE
+\overline{\eta^2} = \eta_1^2 \, f_p + \eta_2^2\, (1-f_p) ,
+\label{eta2bar}
+\EE
+wobei $\eta_1$ und $\eta_2$ die Streul„ngenabweichung der beiden
+Phasen vom Mittelwert $\bar\rho$ und der Streul„ngenkontrast
+$\Delta\eta = \eta_1+\eta_2$ ist. Der Streul„ngenmittelwert $\bar\rho$
+ist definiert als
+\BEA
+\bar\rho = (\bar\rho-\eta_1)f_p + (\bar\rho+\eta_2)(1-f_p)
+&\Leftrightarrow& f_p\, (\eta_1+\eta_2) = f_p\, \Delta\eta=\eta_2 \\
+\nonumber
+&{\rm bzw.}& (1-f_p)\, \Delta\eta = \eta_1
+\nonumber
+\EEA
+Durch Einsetzen von $\eta_1$ und $\eta_2$ in Gleichung \ref{eta2bar} erh„lt man
+\BE
+\overline{\eta^2}=\Delta\eta^2 \, f_p (1-f_p).
+\EE
+Das zweite Moment der Streuintensit„t, die sogenannte Streuinvariante 
+$\tilde{Q}$ kann somit mit den Volumenanteilen der beiden Phasen $f_p$ und
+$(1-f_p)$ ber
+\BE
+\tilde{Q} = \int dQ \,Q^2\, I(Q) = 2\pi^2\,V\,\Delta\eta^2\,f_p(1-f_p)
+\label{Invariante}
+\EE
+in Zusammenhang gebracht werden. Aufgrund des Babinetschen Prinzipes
+k”nnen in einem Streuexperiment die  Volumenanteile nicht eindeutig
+den Phasen zugeordnet werden. Ein Modellsystem mit vertauschten Phasen
+bes„áe die gleiche Streuinvariante. Eine eindeutige Zuordnung der
+beiden L”sungen der quadratischen Gleichung \ref{Invariante} fr die
+Volumenanteile kann nur erfolgen, wenn z.\ B.\ der Fall vorliegt, daá der
+Volumenanteil der einen Phase sehr viel kleiner als der Volumenanteil der 
+anderen sein muá (verdnnte Systeme) oder aber wenn zeitaufgel”ste Messungen
+w„hrend der Phasenbildung durchgefhrt werden und bekannt ist, welche der
+beiden Phasen auf Kosten der anderen w„chst.
+
+
+\subsection{Interpartikel Interferenzen}
+
+Das Quadrat der Fouriertransformierten der Streul„ngendichte einer
+Probe mit beleuchteten Volumen $V$ ist gleich der Streuintensit„t
+$I(\B{Q})$
+$$
+I(\B{Q}) = \abs{\int_V\, d\B{r}\, \rho(\B{r})\, e^{\imath
+\B{Qr}}}^2 \quad .
+$$
+Besteht das Probenvolumen aus N Teilchen, eingebettet in einer
+amorphen Matrix mit konstanter Streul„ngendichte $\rho_M$, ist $\B{R}_i$
+der Streul„ngenschwerpunkt von Teilchen $i$ und $\rho_{P,i} = \Delta\eta_i +
+\rho_M$ die konstante Streul„ngendichte innerhalb des Teilchens, kann
+die Streuintensit„t geschrieben werden als
+\BEA
+I(\B{Q}) &=& \abs{\sum_{i=1}^N\, F_i(\B{Q})\, e^{\imath\B{Q\,R}_i}}^2 
+\label{masterIQ}\\ 
+\U{~mit~} F_i(\B{Q}) &=& \int\limits_{V_i(\B{R}_i)}\, d\B{r}\, \Delta\eta_i\,
+e^{\imath\B{Q}(\B{r-R}_i)} = \Delta\eta_i\, \int\limits_{V_i(\B{0})}\, d\B{r} \,
+e^{\imath\B{Qr}} = \Delta\eta_i\, V_i \, A_i(\B{Q}). \nonumber
+\EEA
+Hierbei sind $V_i(\B{R}_i)$ das Integrationsvolumen des Streuers $i$ 
+am Ort $\B{R}_i$ und $V_i(\B{0})$ das Integrationsvolumen des in den
+Koordinatenursprung verschobenen Streuers $i$. $\Delta\eta_i$ und $V_i$
+sind dessen Streukontrast und Volumen.
+Das Betragsquadrat in Gleichung \ref{masterIQ} l„át sich umformen zu
+\BEA \nonumber
+I(\B{Q}) &=& \sum_{i=1}^N\sum_{j=1}^N\, F_i(\B{Q})\, F_j^{*}(\B{Q})\, 
+e^{\imath \B{Q}(\B{R}_i-\B{R}_j)} \\
+&=& \sum_{i=1}^N \abs{F_i(\B{Q})}^2 +  \\
+&& \nonumber
+\underbrace{ 2\, \sum_{i=1}^N\sum_{j>i}^N\left[
+\Re\left( F_i(\B{Q})\, F_j^{*}(\B{Q}) \right) \,
+\cos\B{Q}(\B{R}_i-\B{R}_j) - 
+\Im\left( F_i(\B{Q})\, F_j^{*}(\B{Q}) \right) \,
+\sin\B{Q}(\B{R}_i-\B{R}_j) \right]}_{\U{$\Psi(\B{Q})$}}
+\label{DefPsi}
+\EEA
+Der erste Term, fr den $i=j$ ist, verschwindet der Phasenfaktor und
+beschreibt die Summe der Streuintensit„ten einzelner isolierter
+Teilchen. Die Doppelsumme im zweiten Term $\Psi(\B{Q})$ beschreibt den
+Interferenzeffekt der Streuamplituden zwischen den Teilchen und ist
+abh„ngig von deren relativen Anordnung $\B{R}_{ij} = \B{R}_i-\B{R}_j$.
+Die Streuamplitude $F_i(\B{Q})$ ist unter anderem abh„ngig vom
+Streukontrast $\Delta\eta_i$ und vom normierten Formfaktor 
+$F_i(\B{Q}) / \Delta\eta_i V_i = A_i(\B{Q})$, 
+wobei $A_i(\B{Q})$ eine reellwertige Funktion und
+$A(Q=0)=1$ ist. Streuintensit„ten $i_0(Q) = \overline{\abs{A(Q)}^2}$
+einfacher K”rper sind in Anhang \ref{ch:scattint} tabelliert. Ist $\Delta\eta_i$
+komplexwertig, d.\ h.\ der Streuer besitzt einen Absorptionskontrast 
+$\Delta\eta_i''$, l„át sich der Streukontrast schreiben als $\Delta\eta_i =
+\Delta\eta_i' + \imath\Delta\eta_i''$ und fr den Interferenzterm
+erh„lt man
+\BEA 
+\Psi(\B{Q}) &=& 2 \sum_{i=1}^N\sum_{j>i}^N\, A_i(\B{Q})\, A_j(\B{Q})\,
+V_i\, V_j\, \\
+&& \nonumber
+\times \qquad\left[ 
+(\Delta\eta_i'\, \Delta\eta_j'  + \Delta\eta_i''\,\Delta\eta_j'') 
+\, \cos\B{Q}\B{R}_{ij} -
+(\Delta\eta_i'\, \Delta\eta_j'' - \Delta\eta_i''\,\Delta\eta_j' ) 
+\, \sin\B{Q}\B{R}_{ij}
+\right]
+\EEA
+Besitzen alle Teilchen den gleichen Streukontrast
+$\Delta\eta=\Delta\eta_i=\Delta\eta_j$ erh„lt man fr die
+Streuintensit„t (Gl. \ref{masterIQ}) den Ausdruck
+\BEA \nonumber 
+I(\B{Q}) &=& 
+\sum_{i=1}^N\,V_i^2\, (\Delta\eta'^2+\Delta\eta''^2)\, \abs{A_i(\B{Q})}^2 \\
+&& + 2 \sum_{i=1}^N\sum_{j>i}^N\, A_i(\B{Q})\, A_j(\B{Q})\, V_i\, V_j\,
+(\Delta\eta'^2 + \Delta\eta''^2) \, \cos\B{Q}\B{R}_{ij}
+\EEA
+Fr den Fall identischer Streukontraste 
+treten also keine Interferenzen zwischen den Streuamplituden von Wellen auf,
+die an reellwertigen Kontrasten und Absorptionskontrasten gestreut werden.
+
+
+\subsubsection{Isotrop angeordnetes System von Teilchen}
+
+Im folgenden soll als vereinfachende Annahme von einem isotrop angeordneten
+System von Teilchen ausgegangen werden. Ein solches System von Streuern
+wird hier wie folgt definiert:
+Ist $\B{R}_i$ die Position eines beliebigen Teilchens $i$ und
+$\B{R}_{ij} = (\B{R}_i-\B{R}_j)$ der Verbindungsvektor zwischen den
+Positionen von Teilchen $i$ und $j$, dann wird ein System von Teilchen
+als isotrop angeordnet bezeichnet, wenn alle Vektoren $\B{R}_{ij}$ von
+gleicher L„nge mit gleicher Wahrscheinlichkeit jede beliebige Richtung
+einnehmen k”nnen. Unter dieser vereinfachenden Voraussetzung kann der
+Interferenzterm $\Psi(\B{Q})$ in Gleichung \ref{DefPsi} ber alle
+Richtung von $\B{R}_{ij}$ gemittelt werden. Die Mittelung von
+$\overline{\sin\B{QR}_{ij}}^{~\B{R}_{ij}}$ ergibt 0 und die von 
+$\overline{\cos\B{QR}_{ij}}^{~\B{R}_{ij}} =  \frac{\sin QR_{ij}}{QR_{ij}}$
+(Gl. \ref{equalorientations}). Fr den Interferenzterm erh„lt man den 
+Ausdruck
+\BE
+\Psi(\B{Q}) =
+2 \sum_{i=1}^N\sum_{j>i}^N\, A_i(\B{Q})\, A_j(\B{Q})\,
+V_i\, V_j\, 
+(\Delta\eta_i'\, \Delta\eta_j'  + \Delta\eta_i''\,\Delta\eta_j'') 
+\, \frac{\sin QR_{ij}}{QR_{ij}} .
+\EE
+Im Falle eines isotrop angeordneten System von Teichen treten also
+ebenfalls keine Interferenzen zwischen den Streuamplituden von Wellen
+auf, die an reellwertigen Kontrasten und Absorptionskontrasten gestreut werden,
+wie auch schon bei Systemen von Teilchen mit identischen
+Streukontrasten.
+
+\subsubsection{Formel von Prins und Zernicke}
+
+Der Ausdruck fr $\Psi(\B{Q})$ l„át sich weiter vereinfachen, wenn ein 
+Streusystem aus identischen Teilchen besteht und die Bedingungen erfllt, daá 
+alle Teilchen mit gleicher Wahrscheinlichkeit jede beliebige Orientierung
+einnehmen k”nnen und auáerdem die relative Position von zwei Teilchen in
+keiner Weise die Wahrscheinlichkeit ihrer 
+Orientierung beeinfluát. Der zweite Teil der Voraussetzung ist fr
+radialsymmetrische Streuer grunds„tzlich erfllt. Im Falle von z.B.
+einem System von dichtgepackten Ellipsoiden mit den Halbachsen $R$,
+$R$ und $\nu R$ mit $\nu>1$, sind Abst„nde $2R$ zwischen den Zentren
+von Ellipsoiden denkbar. Fr diese Anordnung sind jedoch nicht mehr
+beliebige Orientierungen der Ellipsoiden m”glich, d.h.  der relative
+Abstand hat Einfluá auf m”gliche Orientierungen der Teilchen. Der allgemeine
+Fall ohne die hier gemachten Einschr„nkungen  wird von Gunier und
+Fournet in \cite{FournetBuch} diskutiert. Fr den Fall von nur leicht
+anisotropen und nicht zu dicht gepackten Systemen von
+Streuern sollten die hier gemachten Annahmen zumindest in erster
+N„herung gute Ergebnisse liefern. Die hier eingefhrten Voraussetzungen
+erlauben es, die Mittelwertbildung ber die Teilchenorientierung von
+der Mittelwertbildung ber die Teilchenpositionen zu separieren. Als
+Resultat der Mittelung erh„lt man fr die Streuintensit„t 
+\BE 
+\overline{I(Q)} = N \overline{\abs{F(Q)}^2} + 2\, \abs{\overline{F(Q)}}^2\,
+\sum_{i=1}^N\sum_{j>i}^N\, \frac{\sin QR_{ij}}{QR_{ij}}
+\label{Mittel}
+\EE
+Anzumerken sei hier, daá der Mittelwert des Quadrates der Streuamplitude 
+$\overline{\abs{F(Q)}^2}$ und das Quadrat des Mittelwertes der Streuamplitude 
+$\abs{\overline{F(Q)}}^2$ nur fr radialsymmetrische monodisperse Streuer gleich
+sind. Im Anschluá an diesem Abschnitt und im Kapitel \ref{chap:superpar} ber 
+Superparamagnetismus werden F„lle diskutiert, bei dem diese beiden Mittelwerte 
+sich unterscheiden.
+
+Die Wahrscheinlichkeit ein Teilchen am Ort $\B{R}_i$ vorzufinden ist
+im Mittel $\frac{N}{V}\, d\B{R}_i$ und die Wahrscheinlichkeit gleichzeitig ein
+Teilchen am Ort $\B{R}_j$ vorzufinden $\frac{N}{V}\, d\B{R}_i\, \frac{N}{V}\,
+d\B{R}_j$. Eine Abweichung hiervon wird durch $P(R_{ij})$
+bercksichtigt, so daá sich die Doppelsumme in Gleichung \ref{Mittel}
+schreiben l„át als
+$$
+\sum_{i=1}^N\sum_{j>i}^N\, \frac{\sin QR_{ij}}{QR_{ij}} = \int_V \!\!
+\int_V\, \frac{\sin Q R_{ij}}{Q R_{ij}}\, P(R_{ij}) \, \frac{N}{V}\, 
+\frac{N}{V}\, d\B{R}_i\, d\B{R}_j
+$$
+Fr isotrope Medien ist die Funktion $P(R)$ unabh„ngig von den Indizes $i$ 
+und $j$ und nur eine Funktion vom Abstand R. $P(R)$ hat die
+Eigenschaft fr groáe Abst„nde gegen 1 zu konvergieren.
+Durch die Substitution $P(R) = 1-(1-P(R))$ erh„lt man fr den
+Interferenzterm
+\BE
+\Psi(Q) = \abs{\overline{F(Q)}}^2\, \left[ 
+\int_V\!\! \int_V\, \frac{\sin QR_{ij}}{QR_{ij}} \, \frac{N^2}{V^2}
+d\B{R}_i\, d\B{R}_j - \int_V\!\!\int_V \frac{\sin QR_{ij}}{QR_{ij}} 
+\frac{N^2}{V^2}\, (1-P(R_{ij})) \, d\B{R}_i\, d\B{R}_j
+\right]
+\EE
+Der erste Term kann interpretiert werden als die Streuung eines
+Teilchens mit Volumen $V$ und mittleren Streukontrast
+$\overline{F(Q)}\frac{N}{V}$. Da das beleuchtete Probenvolumen $V$
+vergleichsweise groá ist, wird dieser Beitrag praktisch Null fr alle
+experimentell zug„nglichen Streuwinkel. Im Falle der
+Strukturmodellierung in Kapitel \ref{rmcchap} ist das
+Simulationsvolumen allerdings teilweise so klein, daá dieser Beitrag
+mitbercksichtigt werden muá.
+
+Da fr isotrope Medien die Integration ber $d\B{R}_i$ unabh„ngig
+von der Integration ber $d\B{R}_j$ ist und $(1-P(R))$ schnell gegen
+Null konvergiert kann die erste Integration im zweiten Term unter 
+Vernachl„ssigung von Randeffekten geschrieben werden als
+$$
+\int_0^{\infty} dR\, \frac{\sin QR}{QR}\, (1-P(R))\, \frac{N^2}{V^2}\,
+4\, \pi\,R^2.
+$$
+Die zweite Integration liefert lediglich einen zus„tzlichen
+Multiplikationsfaktor $V$. Man erh„lt schlieálich fr die
+Streuintensit„t den Ausdruck
+\BE
+\overline{I(Q)} = N\, \left\{ 
+\overline{\abs{F(Q)}^2} - \abs{\overline{F(Q)}}^2\, 
+\underbrace{\frac{N}{V}\, \int dR\, 4\pi\, R^2\, (1-P(R)) \, 
+            \frac{\sin QR}{QR}}_{\Upsilon(Q)} \right\}
+\label{eq:generalPrinsZernicke}
+\EE
+Fr radialsymmetrische identische Streuer sind das Quadrat der
+Mittelung des Formfaktors $\abs{\overline{F(Q)}}^2$ und die Mittelung 
+des Quadrates des Formfaktors $\overline{\abs{F(Q)}^2}$ gleich, womit man
+schlieálich den Ausdruck von Prins und Zernicke \cite{ZernickePrins} 
+und Debye und Mencke \cite{DebyeMenke} erh„lt
+\BE
+\overline{I(Q)} = N\, F^2(Q)\, 
+\underbrace{\left\{ 1 - \frac{N}{V}\, \int\, dR\, 4\pi\,R^2\, (1-P(R))\, 
+                        \frac{\sin QR}{QR} \right\}.
+           }_{S(Q) = 1 - \Upsilon(Q)}
+\label{eq:originalPrinsZernicke}
+\EE
+Das Problem bei der Anwendung von Gleichung \ref{eq:generalPrinsZernicke},
+bzw. \ref{eq:originalPrinsZernicke} besteht in der Bestimmung von $P(R)$.
+$P(R)$ ist von der geometrischen Anordnung der Streuer abh„ngig. Fr
+flssige Emulsionen l„át sich die geometrische Anordnung mit
+thermodynamischen Gr”áen wie Konzentration, Temperatur und 
+Wechselwirkungspotential der Teilchen in Verbindung bringen. In 
+dieser Arbeit werden zwar ausschlieálich Ausscheidungen in amorpher 
+Matrix untersucht, dessen Positionen fixiert sind, dennoch lassen sich 
+eine Reihe von šberlegungen fr Streuer in flssiger Matrix auch auf 
+Ausscheidungen in fester Matrix bertragen. In einer Theorie
+von Raman \cite{Raman} wird die geometrische Anordnung mit dem
+Wechselwirkungspotential in einfacher Weise in Verbindung gebracht.
+Nach dieser Theorie wird sie als Summe von Zweik”rperwechselwirkungen 
+beschrieben und liefert als L”sung fr $P(r)$ den Zusammenhang 
+$P(r) = \exp (-\phi(r)/kT)$. Bei h”heren Konzentration mssen jedoch
+auch Mehrk”rperwechselwirkungen bercksichtigt werden. In einer
+allgemeineren Theorie von Born und Green \cite{BornGreen} werden
+Dreik”rperwechselwirkungen zumindest in erster N„herung
+mitbercksichtigt und liefert fr die Streuintensit„t den Ausdruck
+\BEA
+I(Q) &=& N\, \left\{ \overline{\abs{F(Q)}^2} + \abs{\overline{F(Q)}}^2
+          \, \frac{\chi(Q)}{\frac{V}{N}\, (2\pi)^{-3/2} - \chi(Q)} \right\}\\
+\mbox{mit~} \chi(Q) &=& \sqrt{\frac{2}{\pi}} \int_0^\infty dr\,
+\left[ e^{-\phi(r)/kT} - 1\right]\, r^2\, \frac{\sin Qr}{Qr} \nonumber
+.
+\EEA
+Fr das einfache harte-Kugel-Modell mit einem Wechselwirkungspotentuial 
+$\phi(r) = \left\{ { ~0 \mbox{\scriptsize ~fr~} r > 2 R \atop 
+                     \infty \mbox{\scriptsize ~fr~} r \leq 2 R}
+           \right. $
+kann die Streuintensit„t analytisch berechnet werden. Nach der Theorie
+von Raman erh„lt Debye fr die Streuintensit„t von Kugeln mit Radius
+$R$ und Volumen $V_P$ den Ausdruck 
+$$
+I(Q) = N\, \Phi^2(QR)\,
+       \left\{ 1 - 8\, N\, \frac{V_P}{V}\, \Phi(2QR) \right\},
+$$
+wobei $\Phi(x)$ die
+Kugelstreufunktion aus Anhang \ref{ch:scattint} ist. Nach der Theorie
+von Born und Green erh„lt man den Ausdruck 
+$$
+I(Q) = N\, \Phi^2(QR)\,
+       \left\{ 1 + 8\, N\, \frac{V_P}{V}\, \Phi(2QR) \right\}^{-1}.
+$$ 
+Fr beide Theorien gilt jedoch, daá sie nur auf monodisperse Systeme von 
+Streuern angewandt werden k”nnen. In der Regel besitzen jedoch in der
+Praxis fast alle Streusysteme eine mehr oder minder ausgepr„gte 
+Gr”áenverteilung und h„ufig auch eine Formvielfalt. Fr diese Systeme l„át 
+sich nicht mehr ein Wechselwirkungspotential in geschlossener Form angeben. 
+Man máte fr jedes Paar von Teilchentypen ein separates Potential bestimmen
+\cite{AshcroftLenker}, was eine analytische Behandlung sehr erschwert. 
+Im Kapitel \ref{rmcchap} wird mit Computersimulationen untersucht welchen 
+Einfluá diese Parameter auf Interpartikelinterferenzen besitzen.
+
+
+\subsubsection{Isolierte Teilchen}
+
+Ein System von isolierten Teilchen liegt vor, wenn  die Position eines
+Teilchens unabh„ngig von den Positionen der brigen ist. Fr diesen
+Fall ist das Wechselwirkungspotential $\phi(r)$ identisch 0 und somit
+auch $\chi(Q)$. Hierduch vereinfacht sich der Ausdruck fr die
+Streuintensit„t zu
+\BE
+               I(Q) = N\, \overline{\abs{F(Q)}^2} 
+\mbox{~bzw., ~} I(\B{Q}) = \sum_{i=1}^{N} \abs{F_i(\B{Q})}^2 .
+\EE 
+Die Gesamtstreuintensit„t ist die Summe der von den einzelnen
+Teilchen gestreuten Intensit„ten. Ein System nicht wechselwirkender
+Teilchen kann durch Verdnnung des Streusystems erzielt werden.
+Dadurch wird der mittlere Abstand der Teilchen vergr”áert und das
+Wechselwirkungspotential beeinfluát nicht mehr die relative Anordnung
+der Streuer.
+
+\subsubsection{Polydisperses System von isolierten Teilchen}
+
+Die Streufunktion eines polydispersen Systems isolierter Teilchen wird
+bestimmt durch Form und Gr”áe der Teilchen. Mit einem Streuexperiment
+k”nnen jedoch nicht beide Gr”áen gleichzeitig bestimmt werden. Bei
+einer Datenanalyse wird entweder Form oder Gr”áenverteilung als
+bekannt vorausgesetzt und die jeweils unbekannte Gr”áe bestimmt.
+H„ufig wird jedoch die Form als bekannt vorausgestzt und die Gr”áenverteilung 
+versucht man aus der Streukurve zu gewinnen \cite{Glatter, Vonk}. Die
+Streuintensit„t eines Systems isolierter Teilchen verschiedener Formen
+und Gr”áenverteilung ist gegeben durch
+\BE
+I(\B{Q}) = \sum_{\mu=1}^M \int N_{\mu}(R) \,
+           \overline{\abs{F_{\mu}(Q,R)}^2} \, dR ,
+\EE
+wobei $N_{\mu}(R)$ die Gr”áenverteilung des Teilchentypes
+$\mu$ ist und $F_{\mu}(Q,R)$ dessen Formfaktor. Formfaktoren einfacher
+K”rper sind in Anhang \ref{ch:scattint} tabelliert und h„ufig
+verwendete Gr”áenverteilungen in Anhang \ref{ch:distrib}.
+
+\subsection{Einfluá von $N(R)$ und $F(Q,R)$ auf Interpartikelinterferenzen}
+
+\subsection{Streugesetze und strukturelle Parameter}
+In diesem Abschnitt sollen eine Reihe ntzlicher Streugesetze
+angegeben werden, die eine einfache Analyse experimenteller Daten und
+eine schnelle Bestimmung struktureller Parameter erlauben.
+
+\subsubsection{Porod-Volumen}
+
+Aus dem Verh„ltnis der Streuintensit„t in Vorw„rtsrichtung $I(Q=0)=N\,
+V_P^2\, \Delta\eta^2$ und der Streuinvarianten $\tilde Q =
+2\pi^2\Delta\eta^2\, V\, f_p(1-f_p)$ kann das Teilchenvolumen $V_P$
+bestimmt werden ($V$ ist das beleuchtete Probenvolumen).
+$f_p\, V = N\, V_P$ entsprich dem Gesamtvolumen aller Streuer, womit
+sich das Teilchenvolumen $V_P$ berechnen l„át durch
+\BE
+\frac{V_P}{1-f_p} \, \, \stackrel{f_p \ll 1}{\sim} \,\,  V_P 
+        = 2\pi^2\, \frac{I(Q=0)}{\tilde Q} .
+\EE
+Die Messung der Streukurve in relativen Einheiten reicht also aus, um das
+Volumen eines homogenen Streuers zu bestimmen. Fehlerquellen bei
+dieser Art der Teilchengr”áenbestimmung liegen in der Extrapolation zum
+Nullstreuwinkel und in der Extrapolation zu groáen Streuwinkel
+($Q^{-4}$-Extrapolation). Auáerdem muá fr hohe Volumenanteile $f_p$
+das Teilchenvolumen um einen eventuell unbekannten Vorfaktor
+$1/(1-f_p)$ korrigiert werden.
+
+\subsubsection{Schwerpunktradius und Gunierapproximation}
+
+Die Streuintensit„t bei kleinen Streuwinkeln kann durch eine
+Reihenentwicklung angen„hert werden, indem $\frac{\sin Qr}{Qr}$ 
+in Gleichiung \ref{IQofgamma} durch eine McLaurin Reihe ersetzt wird
+\BE
+I(Q) = V\, \int 4\pi\, r^2\, \gamma(r)\, 
+       \left[1-\frac{Q^2r^2}{3!} + \frac{Q^4r^4}{5!} - \dots \right] \, dr ,
+\EE
+d.\ h.\ $I(Q)$ wird nach Momenten  $\overline{r^n}$ von $\gamma(r)$
+entwickelt. Der erste Term entspricht der Streuintensit„t bei $Q=0$.
+Fr den zweiten Term haben Gunier und Fournet \cite{Gunier} gezeigt,
+daá dieser mit dem Streul„ngenschwerpunkt in Verbindung steht ber
+\BE
+V\,\int 4\pi\, r^2\, \frac{Q^2r^2}{3!}\, \gamma(r)\, dr = I(0)\,
+         \frac{Q^2R_G^2}{3} 
+     \quad \Rightarrow \quad
+   I(Q) = I(0) \, \left( 1-\frac{Q^2R_G^2}{3} \right) 
+\EE
+mit $R_G^2 = \int \eta(r)\, r^2\, dr/\int \eta(r)\, dr$.
+Bis zu Termen von $Q^4$ ist die Reihenentwicklung am Anfang der
+Streukurve identisch mit der Reihenentwicklung einer Exponentialfunktion 
+und ergibt die bekannte Gunierapproximation
+\BE
+I(Q) = I(0)\, e^{-Q^2R_G^2/3} .
+\label{eq:Gunier}
+\EE
+Das Gunier Gesetz ist fr alle Formen von Streuern gltig, die ungef„hr
+isodiametrisch sind. Fr sehr flache oder stark gestreckte Streuk”rper
+muá das Guniergesetz korrigiert werden
+(\cite{Svergun,Gunier}). Fr eine Kugel mit Radius $R$ ist der
+Schwerpunktsradius $R_G=\sqrt{3/5}\, R$.
+
+\subsubsection{Korrelationsl„nge}
+
+Eine weitere charakteristische Gr”áe, die aus der Streukurve
+$I(Q)$ erh„ltlich ist, ist die Korrelationsl„nge $l_c$. Sie ist
+definiert als mittlere Breite der Korrelationfunktion $\gamma(r)$:
+\BE
+l_c = \frac{2}{\gamma(0)}\, \int \gamma(r) \, dr .
+\EE
+Zusammen mit der Definition der Streuinvarianten $\tilde Q$ in Gl.\
+\ref{Invariante} und dem Zusammenhang von $I(Q)$ und $\gamma(r)$ in
+Gl.\ \ref{gamma} findet man nach kurzer Rechnung (Vertauschung der
+Integrationen)
+\BE
+l_c = \pi\, \frac{\int Q\, I(Q)\, dQ}{\int Q^2\, I(Q)\, dQ}
+\EE
+Fr eine Kugel mit Radius $R$ gilt $l_c = \frac{3}{2}\, R$.
+
+\subsubsection{Porod-Gesetz und spezifische Oberfl„che}
+
+Das Porod Gesetz beschreibt das Streuverhalten bei groáen $Q$-Werten.
+Da die Streuintensit„t $I(Q)$ und die Korrelationsfunktion
+$\gamma(r)$ ber die Fouriertransformation miteinander verbunden sind,
+wird $I(Q)$ fr groáe  $Q$-Werte haupts„chlich von $\gamma(r)$ bei
+kleinen $r$ bestimmt. Fr kleine $r$  kann $\gamma(r)$ in eine
+Taylorreihe entwickelt werden und man erh„lt nach Gunier und Fournet
+\cite{Gunier}
+\BE
+\frac{\gamma(r)}{\gamma(0)} = 1 - \frac{1}{4} \, \frac{S}{V} + \dots
+\label{eq:gamma:Taylor} 
+\EE
+wobei $S$ die Gesamtoberfl„che aller Streuer im beleuchtete Probenvolumen 
+$V$ ist. Gleichung \ref{eq:gamma:Taylor} zusammen mit Gleichung 
+\ref{IQofgamma} ergeben dann fr Groáe $Q$-Werte das Porod-Gesetz
+\BE
+I(Q) \sim \Delta\eta^2\, \frac{2\pi\, S}{Q^4} .
+\label{eq:Porodlaw}
+\EE
+Eine Normierung der Streuintensit„t auf $\tilde Q$ liefert dann einen
+Ausdruck fr die spezifische Oberfl„che $S/V$
+\BE
+\lim_{Q\rightarrow \infty} \, \pi\,\frac{I(Q)}{\tilde Q}\, Q^4\, f_p\,
+(1-f_p) = \frac{S}{V} .
+\label{eq:spez:surface}
+\EE
+Das Porod Gesetz l„át sich auf alle Systeme anwenden, bei denen die
+Phasen scharfe Grenzfl„chen besitzen.
+
