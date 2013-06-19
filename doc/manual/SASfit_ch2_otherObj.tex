@@ -70,8 +70,12 @@ After switching on the spin flipper, which works with an efficiency of $\epsilon
 ($\epsilon=0$: flipper off, $\epsilon\lessapprox 1$ : flipper on), one gets
 \begin{align}
 \begin{split}
-n_+(P_{pol},\epsilon) &= \epsilon \; \frac{1-P_{pol}}{2}+(1-\epsilon) \; \frac{1+P_{pol}}{2} \quad \text{ and } \\
-n_-(P_{pol},\epsilon) &= \epsilon \; \frac{1+P_{pol}}{2}+(1-\epsilon) \; \frac{1-P_{pol}}{2}
+n_+(P_{pol},\epsilon) &= \epsilon \;
+\frac{1-P_{pol}}{2}+(1-\epsilon) \; \frac{1+P_{pol}}{2} \nonumber \\
+&= \frac{1-\epsilon P_{pol}}{2}\quad \text{ and } \\
+n_-(P_{pol},\epsilon) &= \epsilon \;
+\frac{1+P_{pol}}{2}+(1-\epsilon) \; \frac{1-P_{pol}}{2} \nonumber \\
+&= \frac{1+\epsilon P_{pol}}{2}
 \end{split}
 \end{align}
 The efficiency of the analyzer to filter spin up
@@ -84,6 +88,7 @@ $I_\text{m}(\BM{Q})$ is given by
 \begin{split}
 I_\text{m}(\BM{Q}) = & \hspace{\breiteb} n_+(P_{pol},\epsilon) T_+(t) I_{++}(\BM{Q}) + n_+(P_{pol},\epsilon) T_-(t) I_{+-}(\BM{Q}) \\[3mm]
            &+                  n_-(P_{pol},\epsilon) T_-(t) I_{--}(\BM{Q}) + n_-(P_{pol},\epsilon) T_+(t) I_{-+}(\BM{Q})
+\label{eq:Im(Q)_POLARIS}
 \end{split}
 \end{align}
 
