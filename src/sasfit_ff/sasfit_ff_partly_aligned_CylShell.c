@@ -47,7 +47,7 @@
 
 scalar sasfit_ff_partly_aligned_CylShell_THETA(scalar x, sasfit_param * param)
 {
-	scalar res,p,P_l[7];
+	scalar res,p,P_l[7],u,norm;
 	int l;
 	sasfit_param subparam;
 
@@ -58,6 +58,7 @@ scalar sasfit_ff_partly_aligned_CylShell_THETA(scalar x, sasfit_param * param)
 	subparam.p[7] = THETA*180./M_PI;
 	subparam.p[8] = PHI*180./M_PI;
 
+// size distribution simulated up to the 6th even order parameter
 	P_l[0]=1.0;
 	P_l[1]=0.0;
 	P_l[2]=P2;
@@ -67,23 +68,27 @@ scalar sasfit_ff_partly_aligned_CylShell_THETA(scalar x, sasfit_param * param)
 	P_l[6]=P6;
 
 	p=0.0;
-	for (l=0;l<=6;l++) {
-		p = p+(2.*l+1.)/2.*gsl_sf_legendre_Pl(l,cos(THETA))*P_l[l]; 
-	}
 /*
+	for (l=0;l<=6;l++) {
+		p = p+(2.*l+1.)/2.*gsl_sf_legendre_Pl(l,cos(THETA))*P_l[l];
+	}
+*/
+// /*
+
+// Maier-Saupe orientation distribution
 	if (P2 < 0) {
 		u = sqrt(-P2);
 		norm = sqrt(M_PI)*gsl_sf_erf(u)/u;
-	} 
+	}
 	else if (P2 == 0.0) {
 		norm = 2;
-	} 
+	}
 	else {
 		u = sqrt(P2);
 		norm = 2.0*exp(P2)*gsl_sf_dawson(u)/u; // maple: `assuming`([convert(int(exp(P2*cos(THETA)^2)*sin(THETA), theta = 0 .. Pi), dawson)], [kappa > 0])
 	}
     p = exp(P2*gsl_pow_2(cos(THETA)))/norm;
-*/
+// */
 	res = sin(THETA)*p*sasfit_ff_alignedCylShell(Q,&subparam);
 
 	return res;
@@ -114,7 +119,7 @@ scalar sasfit_ff_partly_aligned_CylShell(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((R < 0.0),      param, "R(%lg) < 0", R);
 	SASFIT_CHECK_COND1((DR < 0.0),     param, "DR(%lg) < 0", DR);
 	SASFIT_CHECK_COND1((L < 0.0),      param, "L(%lg) < 0", L);
-	
+
 	res = sasfit_integrate(0.0,2.0*M_PI,&sasfit_ff_partly_aligned_CylShell_intPHI,param);
 	return res;
 }
