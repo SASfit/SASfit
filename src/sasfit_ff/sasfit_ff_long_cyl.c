@@ -43,7 +43,7 @@ float I_long_Cylinder(Tcl_Interp *interp,
  */
 scalar sasfit_ff_long_cyl(scalar q, sasfit_param * param)
 {
-	scalar mu, sigma, pi_mu, G1, G2, I_sp, Sum, V;
+	scalar mu, sigma, pi_mu, G1, G2, I_sp, Sum, V, omega;
 	scalar R, L, eta;
 
 	SASFIT_ASSERT_PTR(param);
@@ -61,16 +61,18 @@ scalar sasfit_ff_long_cyl(scalar q, sasfit_param * param)
 	sigma = 2.0*R*q;
 	V = M_PI*R*R*L;
 
-	if (R==0 && L==0) return 0;
+	if (R==0 || L==0) return 0;
 	if (q==0) return V*V*eta*eta;
 
 	pi_mu = gsl_sf_Si(mu)+cos(mu)/mu+sin(mu)/mu/mu;
 	G1 = 2.0/(0.5*sigma) *  gsl_sf_bessel_J1(0.5*sigma);
 	G2 = 8.0/sigma/sigma * gsl_sf_bessel_Jn(2,sigma);
-	I_sp = 3.0 * (sin(sigma*0.5)-0.5*sigma*cos(0.5*sigma)) / pow(sigma/2.0,3);
-	I_sp = I_sp*I_sp;
+//	I_sp = 3.0 * (sin(sigma*0.5)-0.5*sigma*cos(0.5*sigma)) / pow(sigma/2.0,3);
+//	I_sp = I_sp*I_sp;
+	omega = 8/gsl_pow_2(sigma)*(3*gsl_sf_bessel_Jn(2,sigma)+gsl_sf_bessel_J0(sigma)-1);
 
-	Sum = 2.0/mu * (pi_mu*G1*G1 - 1.0/mu*(2.0*G2-I_sp) - sin(mu)/mu/mu);
+//	Sum = 2.0/mu * (pi_mu*G1*G1 - 1.0/mu*(2.0*G2-I_sp) - sin(mu)/mu/mu);
+	Sum = 2.0/mu * (pi_mu*G1*G1 - omega/mu - sin(mu)/mu/mu);
 
 	return eta*eta *V*V* Sum;
 }
