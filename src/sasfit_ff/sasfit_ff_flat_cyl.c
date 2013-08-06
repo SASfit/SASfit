@@ -61,12 +61,15 @@ scalar sasfit_ff_flat_cyl(scalar q, sasfit_param * param)
 	sigma = L*q;
 	mu = 2.0*R*q;
 	V = M_PI*R*R*L;
-	
+
 	if (R==0 && L==0) return 0;
 	if (q==0) return V*V*eta*eta;
 
 	G1sig = 2.0/sigma * gsl_sf_bessel_J1(sigma);
 	G1mu  = 2.0/mu    * gsl_sf_bessel_J1(mu);
+
+// Expand[Integrate[2*BesselJ[1, x]/x, {x, 0, t}, Assumptions -> t > 0]]
+// 2 t BesselJ[0, t] -  2 BesselJ[1, t] + \[Pi] t BesselJ[1, t] StruveH[0, t] - \[Pi] t BesselJ[0, t] StruveH[1, t]
 
 	I1mu  = 2.0*mu*gsl_sf_bessel_J0(mu)-2.0*gsl_sf_bessel_J1(mu)
 	       - M_PI*mu*(  gsl_sf_bessel_J0(mu)*sasfit_struve_h1(&mu)

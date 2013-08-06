@@ -1,6 +1,8 @@
 0.93.6, 2013-??-??
 - manual has been extended for the ferrofluid plugin scattering functions
 - orientation of the 2D simulation was rotated by 90deg.
+- correction of the manual for the Porod's approximation for cylinders.
+- minor bug fix for Porod's approximation for long cylynders.
 
 0.93.5, 2013-06-09
 - implementation of the form factor and correlation function for spin misalignment 

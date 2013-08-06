@@ -1408,7 +1408,7 @@ solid ferromagnetic core.
 \item Lagrange parameter $\alpha$ for describing superparamagnetic properties is calculated by ratio
 of the potential energy of the total magnetic moment of the superparamagnetic particle in the applied magnetic
 field to the thermal energy via eq.\ \ref{eq:alpha}
-\item As align magnetic structures scatter anisotropically the angle $\psi$ between scattering vector
+\item As aligned magnetic structures scatter anisotropically the angle $\psi$ between scattering vector
 and the applied magnetic field needs to be supplied.
 \item using polarised neutrons the incident polarisation $p$ needs to be known. $p$ can have values $p \in [-1,1]$.
 \item in case of full polarisation analysis also the transmission of the analyser needs to be known
@@ -1462,7 +1462,7 @@ The implemented form factor for ferrofluids is done for neutrons
 with or without incident polarisation as well as with polarisation
 analysis. In case of full polarisation analysis the measured
 intensity $I_m(\mathbf{Q})$ would depend on the incident
-polarisation, efficientcy of the spin-flipper and in case of an
+polarisation, efficiency of the spin-flipper and in case of an
 opaque spin filter from its transmission values for the two spin
 states according to eq.\ \ref{eq:Im(Q)_POLARIS}. However here we
 just have implemented the intensities for a given incident
@@ -1539,8 +1539,10 @@ averaged intensity \texttt{(rad.~avg.)}, the anisotropic scattering
 contribution, which follows a $\sin^2$-law (\texttt{magnetic}), the
 angle dependent difference signal between two spin states
 (\texttt{cross-term}), as well as the radial averaged cross term
-(\texttt{cross-term (rad.~avg.)}) has bee implemented. Finally we
-end up with the following possible combinations:
+(\texttt{cross-term (rad.~avg.)}) has bee implemented. Also the for
+individual angle dependent cross-sections with full polarisation
+analysis are available. Finally we end up with the following
+possible combinations:
 \begin{align}
 \left.
   \begin{array}{l}
@@ -1575,7 +1577,7 @@ $\BM{\mu}$ of the particles but not the form factor $f_M(\BM{Q})$,
 which is valid for spherical symmetric particles or anisotropic
 shaped particles where the particle shape is not correlated to the
 direction of the magnetic moment, the averages in
-\ref{eq:plugin:I_ijSQ} can be written in terms of the order
+\ref{eq:dsigma_dOmega_ijSQ} can be written in terms of the order
 parameters $S_1$ and $S_2$
 \begin{subequations}
 \label{eq:plugin:F_ijSQ}
@@ -1596,6 +1598,62 @@ parameters $S_1$ and $S_2$
 \end{split}
 \end{align}
 \end{subequations}
+
+The above equations for the spin dependent scattering intensities of
+magnetic particles with an orientation distribution
+$f\left(\theta,\phi\right)$ of its magnetic moment can be calculated
+in terms of order parameters $S_l$ if one assumes that the particle
+are spherical symmetric or the orientation of the magnetic moment of
+a particle is not correlated to the particle orientation.
+Furthermore one has to assume that an external magnetic field is
+applied perpendicular to the incident neutron beam and that all
+orientations $\phi$ for a given angle $\theta$, which is defined as
+the angle between the magnetisation vector of the particle and the
+direction of the external field $\BM{B}$ have the same probability,
+i.e. the orientation distribution only depends on $\theta$ so that
+$f\left(\theta,\phi\right)=f\left(\theta\right)$. The orientation
+probability distribution function can be expanded in terms of a
+complete set of orthogonal functions. Expanding it in terms of
+Legendre polynomials $P_l(\cos\theta)$ gives
+\begin{align}
+f(\theta) &= \sum_l c_l P_l(\cos\theta) = \sum_l \frac{2l+1}{2} S_l
+P_l(\cos\theta)
+\end{align}
+The expansion coefficients can be calculated by
+\begin{align}
+\begin{split}
+c_l &= \frac{2l+1}{2} \int_0^\pi f(\theta)\, P_l(\cos\theta) \sin\theta \;\mathrm{d}\theta\\
+\mbox{or} \\
+S_l &= \int_0^\pi f(\theta) \, P_l(\cos\theta)
+\sin\theta\;\mathrm{d}\theta
+\end{split}
+\end{align}
+The first three Legendre polynomials are defined by
+\begin{subequations}
+\begin{align}
+P_0(\cos\theta) &= 1\\
+P_1(\cos\theta) &= \cos\theta\ \\
+P_2(\cos\theta) &= \frac{1}{2}\left(3\cos^2\theta-1\right)
+\end{align}
+\end{subequations}
+For superparamagnetic particle the orientation probability
+distribution is given by
+\begin{align}
+f(\theta) = \frac{\alpha}{4\pi\sinh\alpha} \exp(\alpha\cos\theta)
+\end{align}
+with $\alpha=BM_pV_p/(k_BT)$ being the Langevin parameter. For this
+orientation probability distribution the first order parameters can
+be calculates as
+\begin{subequations}
+\label{eq:S_l_Boltzmann}
+\begin{align}
+S_0 & = 1 \\
+S_1 & = L(\alpha) = \coth\alpha - \frac{1}{\alpha} \\
+S_2 & = 1-3\frac{L(\alpha)}{\alpha}
+\end{align}
+\end{subequations}
+
+
 The spin-flip and spin-nonflip cross-section
 $\frac{\mathrm{d}\sigma_{{\pm\pm}\atop{\pm\mp}}}{\mathrm{d}\Omega}(\BM{Q})$
 can be obtained by combining \ref{eq:dsigma_dOmega_ijSQ} and
@@ -1617,6 +1675,42 @@ $I_{unp}(\BM{Q})$ are given by
 \end{split}
 \end{align}
 \end{subequations}
+
+
+In the case of a Boltzmann orientation distribution
+$f(\theta)=\exp\left(\frac{\BM{B\mu}}{k_BT}\right)=\exp\left(\frac{B\mu\cos\theta}{k_BT}\right)$
+the order parameter $S_l$ already have been given in eq.\
+\ref{eq:S_l_Boltzmann} and the spin dependent intensities can be
+written as
+\begin{subequations}
+\begin{align}
+\frac{I_{\pm\pm}(\BM{Q})}{N} &= \abs{F_M(\BM{Q})
+L(\alpha)\,\sin^2\psi
+     \pm F_N(\BM{Q})}^2 S(\BM{Q}) \\
+&+ \abs{F_M(\BM{Q})}^2\, \left( \frac{L(\alpha)}{\alpha}\,
+\sin^2\psi - \left( L^2(\alpha)-1+3\,\frac{L(\alpha)}{\alpha}\right)
+\, \sin^4\psi \right) \nonumber \\
+\nonumber \\
+\frac{I_{\mp\pm}(\BM{Q})}{N} &= \left( \sin^2\psi - \sin^4\psi
+\right) L^2(\alpha)
+\abs{F_M(\BM{Q})}^2 S(\BM{Q}) \\
+&+ \abs{F_M(\BM{Q})}^2  \left( \left( \sin^4\psi-\sin^2\psi \right)
+\left( L^2(\alpha)-1+3\, \frac{L(\alpha)}{\alpha}\right) +
+(2-\sin^2\psi)\, \frac{L(\alpha)}{\alpha}\right) \nonumber
+\end{align}
+\end{subequations}
+$\psi$ is the angle between $\BM{Q}$ and the horizontal axis in the
+plane of the detector. $L(\alpha)=\coth(\alpha)-\frac{1}{\alpha}$ is
+the Langevin function. In the case of a static field the
+superparamagnetic particle are thermodynamic equilibrium and
+$\alpha$ is given by
+\begin{align}
+\alpha&=\frac{BM_PV_P}{k_B T},
+\end{align}
+with $M_P$ being the particle magnetization, $V_P$ the particle
+volume, $T$ the temperature in Kelvin and $k_B$ the Boltzmann
+constant.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
