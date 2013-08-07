@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_saturated_ff__chain__rw____psi(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_rw_psi_mp(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -20,10 +20,10 @@ scalar sasfit_ff_saturated_ff__chain__rw____psi(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((fabs(POL) > 1.0), param, "|pol|(%lg) > 1",POL); // modify condition to your needs
 
 	// insert your code here
-	
+
 	RW_SAW = 1.0;
 	RADAVG = 0.0;
-	
+
 	R_CORE = 0.0;
 	if ((R_TOT-T_SHELL) > 0) {
 		R_CORE=R_TOT-T_SHELL;
@@ -39,7 +39,7 @@ scalar sasfit_ff_saturated_ff__chain__rw____psi(scalar q, sasfit_param * param)
 
 }
 
-scalar sasfit_ff_saturated_ff__chain__rw____psi_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_rw_psi_mp_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -47,7 +47,7 @@ scalar sasfit_ff_saturated_ff__chain__rw____psi_f(scalar q, sasfit_param * param
 	return 0.0;
 }
 
-scalar sasfit_ff_saturated_ff__chain__rw____psi_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_saturated_ff_chain_rw_psi_mp_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
