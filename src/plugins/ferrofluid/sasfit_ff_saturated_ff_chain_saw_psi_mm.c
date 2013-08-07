@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_saturated_ff__chain__saw____radial(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_saw_psi_mm(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -25,8 +25,8 @@ scalar sasfit_ff_saturated_ff__chain__saw____radial(scalar q, sasfit_param * par
 	// insert your code here
 
 	RW_SAW = 0.0;
-	RADAVG = 1.0;
-	
+	RADAVG = 0.0;
+
 	R_CORE = 0.0;
 	if ((R_TOT-T_SHELL) > 0) {
 		R_CORE=R_TOT-T_SHELL;
@@ -41,7 +41,7 @@ scalar sasfit_ff_saturated_ff__chain__saw____radial(scalar q, sasfit_param * par
 		+	(1.0-POL)/2.0*(FFmicelle_mm(q,param)+FFmicelle_mp(q,param));
 }
 
-scalar sasfit_ff_saturated_ff__chain__saw____radial_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_saw_psi_mm_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -49,7 +49,7 @@ scalar sasfit_ff_saturated_ff__chain__saw____radial_f(scalar q, sasfit_param * p
 	return 0.0;
 }
 
-scalar sasfit_ff_saturated_ff__chain__saw____radial_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_saturated_ff_chain_saw_psi_mm_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

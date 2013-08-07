@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_saturated_ff__chain__saw____cross_term(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_saw_cross_term_radial(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -22,11 +22,11 @@ scalar sasfit_ff_saturated_ff__chain__saw____cross_term(scalar q, sasfit_param *
 	SASFIT_CHECK_COND1((SIGMA_BRUSH_GAUSSIAN < 0.0), param, "sigma_brush_Gaussian(%lg) < 0",SIGMA_BRUSH_GAUSSIAN); // modify condition to your needs
 	SASFIT_CHECK_COND1((L_B <= 0.0), param, "L_b(%lg) <= 0",L_B); // modify condition to your needs
 
-	// insert your code here	
+	// insert your code here
 
 	RW_SAW = 0.0;
-	RADAVG = 0.0;
-	
+	RADAVG = 1.0;
+
 	R_CORE = 0.0;
 	if ((R_TOT-T_SHELL) > 0) {
 		R_CORE=R_TOT-T_SHELL;
@@ -40,7 +40,7 @@ scalar sasfit_ff_saturated_ff__chain__saw____cross_term(scalar q, sasfit_param *
 	return POL*(FFmicelle_pp(q,param)-FFmicelle_mm(q,param));
 }
 
-scalar sasfit_ff_saturated_ff__chain__saw____cross_term_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_saw_cross_term_radial_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -48,7 +48,7 @@ scalar sasfit_ff_saturated_ff__chain__saw____cross_term_f(scalar q, sasfit_param
 	return 0.0;
 }
 
-scalar sasfit_ff_saturated_ff__chain__saw____cross_term_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_saturated_ff_chain_saw_cross_term_radial_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

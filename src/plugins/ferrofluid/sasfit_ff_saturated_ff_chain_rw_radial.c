@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_saturated_ff__chain__rw____cross_term(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_rw_radial(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -19,10 +19,10 @@ scalar sasfit_ff_saturated_ff__chain__rw____cross_term(scalar q, sasfit_param * 
 	SASFIT_CHECK_COND1((RG < 0.0), param, "Rg(%lg) < 0",RG); // modify condition to your needs
 	SASFIT_CHECK_COND1((fabs(POL) > 1.0), param, "|pol|(%lg) > 1",POL); // modify condition to your needs
 
-	// insert your code here	
+	// insert your code here
 
 	RW_SAW = 1.0;
-	RADAVG = 0.0;
+	RADAVG = 1.0;
 
 	R_CORE = 0.0;
 	if ((R_TOT-T_SHELL) > 0) {
@@ -34,10 +34,12 @@ scalar sasfit_ff_saturated_ff__chain__rw____cross_term(scalar q, sasfit_param * 
 	}
 
 	PSI = sasfit_param_override_get_psi(PSIDEG*M_PI/180.);
-	return POL*(FFmicelle_pp(q,param)-FFmicelle_mm(q,param));
+	return	(1.0+POL)/2.0*(FFmicelle_pp(q,param)+FFmicelle_pm(q,param))
+		+	(1.0-POL)/2.0*(FFmicelle_mm(q,param)+FFmicelle_mp(q,param));
+
 }
 
-scalar sasfit_ff_saturated_ff__chain__rw____cross_term_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_saturated_ff_chain_rw_radial_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -45,7 +47,7 @@ scalar sasfit_ff_saturated_ff__chain__rw____cross_term_f(scalar q, sasfit_param 
 	return 0.0;
 }
 
-scalar sasfit_ff_saturated_ff__chain__rw____cross_term_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_saturated_ff_chain_rw_radial_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
