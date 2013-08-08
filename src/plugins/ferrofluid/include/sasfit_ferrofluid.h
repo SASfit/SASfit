@@ -36,12 +36,12 @@
 // - brief description
 // - description of parameters in HTML table-style
 
-/* ################ start ff_saturated_ff_chain_rw_radial ################ */
+/* ################ start ff_ff_chain_rw_radial ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_radial saturated FF+(Chain, RW) - (rad. avg.)
+ * \defgroup ff_ff_chain_rw_radial FF+(Chain, RW) - (rad. avg.)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, RW) - (rad. avg.) function\>
+ * \brief brief description of FF+(Chain, RW) - (rad. avg.) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -97,33 +97,33 @@
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_radial
+ * \ingroup ff_ff_chain_rw_radial
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_radial(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_radial(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_radial
+ * \ingroup ff_ff_chain_rw_radial
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_radial_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_radial_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_radial
+ * \ingroup ff_ff_chain_rw_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_radial_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_radial ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_radial_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_radial ################ */
 
-/* ################ start ff_saturated_ff_chain_rw_psi ################ */
+/* ################ start ff_ff_chain_rw_psi ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_psi saturated FF+(Chain, RW) - psi
+ * \defgroup ff_ff_chain_rw_psi FF+(Chain, RW) - psi
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, RW) - psi function\>
+ * \brief brief description of FF+(Chain, RW) - psi function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -179,33 +179,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_radial_v(scalar 
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi
+ * \ingroup ff_ff_chain_rw_psi
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi
+ * \ingroup ff_ff_chain_rw_psi
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi
+ * \ingroup ff_ff_chain_rw_psi
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_psi ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_psi ################ */
 
-/* ################ start ff_saturated_ff_chain_rw_psi_pp ################ */
+/* ################ start ff_ff_chain_rw_psi_pp ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_psi_pp saturated FF+(Chain, RW) - psi (++)
+ * \defgroup ff_ff_chain_rw_psi_pp FF+(Chain, RW) - psi (++)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, RW) - psi (++) function
+ * \brief some brief description of FF+(Chain, RW) - psi (++) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -261,33 +261,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_v(scalar q, 
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_pp
+ * \ingroup ff_ff_chain_rw_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pp(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pp(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_pp
+ * \ingroup ff_ff_chain_rw_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pp_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pp_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_pp
+ * \ingroup ff_ff_chain_rw_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pp_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_psi_pp ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pp_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_psi_pp ################ */
 
-/* ################ start ff_saturated_ff_chain_rw_psi_mm ################ */
+/* ################ start ff_ff_chain_rw_psi_mm ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_psi_mm saturated FF+(Chain, RW) - psi (--)
+ * \defgroup ff_ff_chain_rw_psi_mm FF+(Chain, RW) - psi (--)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, RW) - psi (--) function
+ * \brief some brief description of FF+(Chain, RW) - psi (--) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -343,33 +343,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pp_v(scalar 
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_mm
+ * \ingroup ff_ff_chain_rw_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mm(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_mm(scalar q, sasfit_param * p);
 
 /**`
- * \ingroup ff_saturated_ff_chain_rw_psi_mm
+ * \ingroup ff_ff_chain_rw_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mm_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_mm_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_mm
+ * \ingroup ff_ff_chain_rw_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mm_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_psi_mm ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_mm_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_psi_mm ################ */
 
-/* ################ start ff_saturated_ff_chain_rw_psi_pm ################ */
+/* ################ start ff_ff_chain_rw_psi_pm ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_psi_pm saturated FF+(Chain, RW) - psi (+-)
+ * \defgroup ff_ff_chain_rw_psi_pm FF+(Chain, RW) - psi (+-)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, RW) - psi (+-) function
+ * \brief some brief description of FF+(Chain, RW) - psi (+-) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -425,33 +425,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mm_v(scalar 
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_pm
+ * \ingroup ff_ff_chain_rw_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pm(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pm(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_pm
+ * \ingroup ff_ff_chain_rw_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pm_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pm_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_pm
+ * \ingroup ff_ff_chain_rw_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pm_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_psi_pm ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pm_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_psi_pm ################ */
 
-/* ################ start ff_saturated_ff_chain_rw_psi_mp ################ */
+/* ################ start ff_ff_chain_rw_psi_mp ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_psi_mp saturated FF+(Chain, RW) - psi (-+)
+ * \defgroup ff_ff_chain_rw_psi_mp FF+(Chain, RW) - psi (-+)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, RW) - psi (-+) function
+ * \brief some brief description of FF+(Chain, RW) - psi (-+) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -507,33 +507,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_pm_v(scalar 
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_mp
+ * \ingroup ff_ff_chain_rw_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mp(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_mp(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_mp
+ * \ingroup ff_ff_chain_rw_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mp_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_mp_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_psi_mp
+ * \ingroup ff_ff_chain_rw_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mp_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_psi_mp ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_mp_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_psi_mp ################ */
 
-/* ################ start ff_saturated_ff_chain_rw_magnetic ################ */
+/* ################ start ff_ff_chain_rw_magnetic ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_magnetic saturated FF+(Chain, RW) - magnetic
+ * \defgroup ff_ff_chain_rw_magnetic FF+(Chain, RW) - magnetic
  * \ingroup  ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, RW) - magnetic function\>
+ * \brief brief description of FF+(Chain, RW) - magnetic function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -589,33 +589,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_psi_mp_v(scalar 
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_magnetic
+ * \ingroup ff_ff_chain_rw_magnetic
  *
  * \sa sasfit_ferrofluid.h,  ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_magnetic(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_magnetic(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_magnetic
+ * \ingroup ff_ff_chain_rw_magnetic
  *
  * \sa sasfit_ferrofluid.h,  ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_magnetic_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_magnetic_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_magnetic
+ * \ingroup ff_ff_chain_rw_magnetic
  *
  * \sa sasfit_ferrofluid.h,  ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_magnetic_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_magnetic ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_magnetic_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_magnetic ################ */
 
-/* ################ start ff_saturated_ff_chain_rw_cross_term_radial ################ */
+/* ################ start ff_ff_chain_rw_cross_term_radial ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_cross_term_radial saturated FF+(Chain, RW) - cross-term (rad. avg.)
+ * \defgroup ff_ff_chain_rw_cross_term_radial FF+(Chain, RW) - cross-term (rad. avg.)
  * \ingroup  ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, RW) - cross-term (rad. avg.) function\>
+ * \brief brief description of FF+(Chain, RW) - cross-term (rad. avg.) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -671,34 +671,34 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_magnetic_v(scala
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_cross_term_radial
+ * \ingroup ff_ff_chain_rw_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h,  ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term_radial(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term_radial(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_cross_term
+ * \ingroup ff_ff_chain_rw_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term_radial_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term_radial_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_cross_term_radial
+ * \ingroup ff_ff_chain_rw_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term_radial_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_cross_term_radial ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term_radial_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_cross_term_radial ################ */
 
 
-/* ################ start ff_saturated_ff_chain_rw_cross_term ################ */
+/* ################ start ff_ff_chain_rw_cross_term ################ */
 /**
- * \defgroup ff_saturated_ff_chain_rw_cross_term saturated FF+(Chain, RW) - cross-term
+ * \defgroup ff_ff_chain_rw_cross_term FF+(Chain, RW) - cross-term
  * \ingroup  ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, RW) - cross-term function\>
+ * \brief brief description of FF+(Chain, RW) - cross-term function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -754,33 +754,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term_radia
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_cross_term
+ * \ingroup ff_ff_chain_rw_cross_term
  *
  * \sa sasfit_ferrofluid.h,  ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_cross_term
+ * \ingroup ff_ff_chain_rw_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_rw_cross_term
+ * \ingroup ff_ff_chain_rw_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_rw_cross_term ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_cross_term ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_psi ################ */
+/* ################ start ff_ff_chain_saw_psi ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_psi saturated FF+(Chain, SAW) - psi
+ * \defgroup ff_ff_chain_saw_psi FF+(Chain, SAW) - psi
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, SAW) - psi function\>
+ * \brief brief description of FF+(Chain, SAW) - psi function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -845,33 +845,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_rw_cross_term_v(sca
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi
+ * \ingroup ff_ff_chain_saw_psi
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi
+ * \ingroup ff_ff_chain_saw_psi
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi
+ * \ingroup ff_ff_chain_saw_psi
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_psi ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_psi ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_psi_pp ################ */
+/* ################ start ff_ff_chain_saw_psi_pp ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_psi_pp saturated FF+(Chain, SAW) - psi (++)
+ * \defgroup ff_ff_chain_saw_psi_pp FF+(Chain, SAW) - psi (++)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, SAW) - psi (++) function
+ * \brief some brief description of FF+(Chain, SAW) - psi (++) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -936,33 +936,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_v(scalar q,
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_pp
+ * \ingroup ff_ff_chain_saw_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pp(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pp(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_pp
+ * \ingroup ff_ff_chain_saw_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pp_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pp_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_pp
+ * \ingroup ff_ff_chain_saw_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pp_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_psi_pp ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pp_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_psi_pp ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_psi_mm ################ */
+/* ################ start ff_ff_chain_saw_psi_mm ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_psi_mm saturated FF+(Chain, SAW) - psi (--)
+ * \defgroup ff_ff_chain_saw_psi_mm FF+(Chain, SAW) - psi (--)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, SAW) - psi (--) function
+ * \brief some brief description of FF+(Chain, SAW) - psi (--) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1027,33 +1027,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pp_v(scalar
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_mm
+ * \ingroup ff_ff_chain_saw_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_mm(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_mm(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_mm
+ * \ingroup ff_ff_chain_saw_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_mm_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_mm_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_mm
+ * \ingroup ff_ff_chain_saw_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_mm_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_psi_mm ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_mm_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_psi_mm ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_psi_pm ################ */
+/* ################ start ff_ff_chain_saw_psi_pm ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_psi_pm saturated FF+(Chain, SAW) - psi (+-)
+ * \defgroup ff_ff_chain_saw_psi_pm FF+(Chain, SAW) - psi (+-)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, SAW) - psi (+-) function
+ * \brief some brief description of FF+(Chain, SAW) - psi (+-) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1118,33 +1118,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_mm_v(scalar
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_pm
+ * \ingroup ff_ff_chain_saw_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pm(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_pm
+ * \ingroup ff_ff_chain_saw_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pm_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_pm
+ * \ingroup ff_ff_chain_saw_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_psi_pm ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pm_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_psi_pm ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_psi_mp ################ */
+/* ################ start ff_ff_chain_saw_psi_mp ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_psi_mp saturated FF+(Chain, SAW) - psi (-+)
+ * \defgroup ff_ff_chain_saw_psi_mp FF+(Chain, SAW) - psi (-+)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, SAW) - psi (-+) function
+ * \brief some brief description of FF+(Chain, SAW) - psi (-+) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1209,124 +1209,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm_v(scalar
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_mp
+ * \ingroup ff_ff_chain_saw_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_mp(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_mp(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_mp
+ * \ingroup ff_ff_chain_saw_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_mp_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_mp_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_psi_mp
+ * \ingroup ff_ff_chain_saw_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_mp_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_psi_mp ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_mp_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_psi_mp ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_psi_pm ################ */
+/* ################ start ff_ff_chain_saw_radial ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_psi_pm saturated FF+(Chain, SAW) - psi (+-)
+ * \defgroup ff_ff_chain_saw_radial FF+(Chain, SAW) - (rad. avg.)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, SAW) - psi (+-) function
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- * \note Default (Size) Distribution: \ref delta
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b R_core</td>
- *       <td>core radius</td>
- *      </tr><tr>
- *       <td>\b t_shell</td>
- *       <td>thickness of the solid shell of the core</td>
- *      </tr><tr>
- *       <td>\b nagg</td>
- *       <td>specific aggegation number \n number of chains per surface area</td>
- *      </tr><tr>
- *       <td>\b Vbrush</td>
- *       <td>molecular volume of a single polymer chain</td>
- *      </tr><tr>
- *       <td>\b eta_core</td>
- *       <td>nuclear scattering lenth density of core</td>
- *      </tr><tr>
- *       <td>\b eta_sh</td>
- *       <td>nuclear scattering lenth density of solid shell of the core</td>
- *      </tr><tr>
- *       <td>\b eta_brush</td>
- *       <td>scattering length density of polymer in corona</td>
- *      </tr><tr>
- *       <td>\b eta_solv</td>
- *       <td>scattering length density of solvent</td>
- *      </tr><tr>
- *       <td>\b eta_mag_core</td>
- *       <td>magnetic scattering length density of core</td>
- *      </tr><tr>
- *       <td>\b eta_mag_shell</td>
- *       <td>magnetic scattering length density of solid shell of the core</td>
- *      </tr><tr>
- *       <td>\b R_av</td>
- *       <td>average particle radius, for which alpha is given below</td>
- *      </tr><tr>
- *       <td>\b alpha</td>
- *       <td>potential energy of magnetic moment in applied magnetic field divided by thermal energy</td>
- *      </tr><tr>
- *       <td>\b Rg</td>
- *       <td>radius of gyration of unpertubated polymer chain in corona</td>
- *      </tr><tr>
- *       <td>\b psi</td>
- *       <td>angle between scattering and magnetization vector</td>
- *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
- *      </tr><tr>
- *       <td>\b t_brush_const</td>
- *       <td>box width of box with Gaussian tail</td>
- *      </tr><tr>
- *       <td>\b sigma_brush_Gaussian</td>
- *       <td>Gaussian width of box with Gaussian tail </td>
- *      </tr><tr>
- *       <td>\b L_b</td>
- *       <td>radius of gyration of unpertubated polymer chain in corona</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup ff_saturated_ff_chain_saw_psi_pm
- *
- * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
- */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_saturated_ff_chain_saw_psi_pm
- *
- * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
- */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_saturated_ff_chain_saw_psi_pm
- *
- * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
- */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_psi_pm ################ */
-
-/* ################ start ff_saturated_ff_chain_saw_radial ################ */
-/**
- * \defgroup ff_saturated_ff_chain_saw_radial saturated FF+(Chain, SAW) - (rad. avg.)
- * \ingroup ff_plugins_ferrofluid
- *
- * \brief \<some brief description of saturated FF+(Chain, SAW) - (rad. avg.) function\>
+ * \brief brief description of FF+(Chain, SAW) - (rad. avg.) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1391,34 +1300,34 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_psi_pm_v(scalar
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_radial
+ * \ingroup ff_ff_chain_saw_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_radial(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_radial(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_radial
+ * \ingroup ff_ff_chain_saw_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_radial_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_radial_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_radial
+ * \ingroup ff_ff_chain_saw_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_radial_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_radial ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_radial_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_radial ################ */
 
 
-/* ################ start ff_saturated_ff_chain_saw_magnetic ################ */
+/* ################ start ff_ff_chain_saw_magnetic ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_magnetic saturated FF+(Chain, SAW) - magnetic
+ * \defgroup ff_ff_chain_saw_magnetic FF+(Chain, SAW) - magnetic
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, SAW) - magnetic function\>
+ * \brief brief description of FF+(Chain, SAW) - magnetic function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1483,33 +1392,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_radial_v(scalar
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_magnetic
+ * \ingroup ff_ff_chain_saw_magnetic
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_magnetic(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_magnetic(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_magnetic
+ * \ingroup ff_ff_chain_saw_magnetic
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_magnetic_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_magnetic_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_magnetic
+ * \ingroup ff_ff_chain_saw_magnetic
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_magnetic_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_magnetic ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_magnetic_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_magnetic ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_cross_term ################ */
+/* ################ start ff_ff_chain_saw_cross_term ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_cross_term saturated FF+(Chain, SAW) - cross-term
+ * \defgroup ff_ff_chain_saw_cross_term FF+(Chain, SAW) - cross-term
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, SAW) - cross-term function\>
+ * \brief brief description of FF+(Chain, SAW) - cross-term function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1574,33 +1483,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_magnetic_v(scal
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_cross_term
+ * \ingroup ff_ff_chain_saw_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_cross_term
+ * \ingroup ff_ff_chain_saw_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_cross_term
+ * \ingroup ff_ff_chain_saw_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_cross_term ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_cross_term ################ */
 
-/* ################ start ff_saturated_ff_chain_saw_cross_term_radial ################ */
+/* ################ start ff_ff_chain_saw_cross_term_radial ################ */
 /**
- * \defgroup ff_saturated_ff_chain_saw_cross_term_radial saturated FF+(Chain, SAW) - cross-term (rad. avg.)
+ * \defgroup ff_ff_chain_saw_cross_term_radial FF+(Chain, SAW) - cross-term (rad. avg.)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, SAW) - cross-term (rad. avg.) function\>
+ * \brief brief description of FF+(Chain, SAW) - cross-term (rad. avg.) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1665,33 +1574,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term_v(sc
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_cross_term_radial
+ * \ingroup ff_ff_chain_saw_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term_radial(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term_radial(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_cross_term_radial
+ * \ingroup ff_ff_chain_saw_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term_radial_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term_radial_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_saw_cross_term_radial
+ * \ingroup ff_ff_chain_saw_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term_radial_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_saw_cross_term_radial ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term_radial_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_cross_term_radial ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_psi ################ */
+/* ################ start ff_ff_chain_parabolic_psi ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_psi saturated FF+(Chain, parabolic) - psi
+ * \defgroup ff_ff_chain_parabolic_psi FF+(Chain, parabolic) - psi
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, parabolic) - psi function\>
+ * \brief brief description of FF+(Chain, parabolic) - psi function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1756,33 +1665,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_saw_cross_term_radi
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi
+ * \ingroup ff_ff_chain_parabolic_psi
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi
+ * \ingroup ff_ff_chain_parabolic_psi
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi
+ * \ingroup ff_ff_chain_parabolic_psi
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_psi ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_psi ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_psi_pp ################ */
+/* ################ start ff_ff_chain_parabolic_psi_pp ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_psi_pp saturated FF+(Chain, parabolic) - psi (++)
+ * \defgroup ff_ff_chain_parabolic_psi_pp FF+(Chain, parabolic) - psi (++)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, parabolic) - psi (++) function
+ * \brief some brief description of FF+(Chain, parabolic) - psi (++) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1847,33 +1756,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_v(sca
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_pp
+ * \ingroup ff_ff_chain_parabolic_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pp(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pp(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_pp
+ * \ingroup ff_ff_chain_parabolic_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pp_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pp_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_pp
+ * \ingroup ff_ff_chain_parabolic_psi_pp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pp_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_psi_pp ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pp_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_psi_pp ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_psi_mm ################ */
+/* ################ start ff_ff_chain_parabolic_psi_mm ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_psi_pp saturated FF+(Chain, parabolic) - psi (--)
+ * \defgroup ff_ff_chain_parabolic_psi_mm FF+(Chain, parabolic) - psi (--)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, parabolic) - psi (--) function
+ * \brief some brief description of FF+(Chain, parabolic) - psi (--) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1938,33 +1847,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pp_v(
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_mm
+ * \ingroup ff_ff_chain_parabolic_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mm(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_mm(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_mm
+ * \ingroup ff_ff_chain_parabolic_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mm_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_mm_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_mm
+ * \ingroup ff_ff_chain_parabolic_psi_mm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mm_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_psi_mm ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_mm_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_psi_mm ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_psi_pm ################ */
+/* ################ start ff_ff_chain_parabolic_psi_pm ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_psi_pm saturated FF+(Chain, parabolic) - psi (+-)
+ * \defgroup ff_ff_chain_parabolic_psi_pm FF+(Chain, parabolic) - psi (+-)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, parabolic) - psi (+-) function
+ * \brief some brief description of FF+(Chain, parabolic) - psi (+-) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2029,33 +1938,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mm_v(
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_pm
+ * \ingroup ff_ff_chain_parabolic_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pm(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pm(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_pm
+ * \ingroup ff_ff_chain_parabolic_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pm_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pm_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_pm
+ * \ingroup ff_ff_chain_parabolic_psi_pm
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pm_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_psi_pm ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pm_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_psi_pm ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_psi_mp ################ */
+/* ################ start ff_ff_chain_parabolic_psi_mp ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_psi_mp saturated FF+(Chain, parabolic) - psi (-+)
+ * \defgroup ff_ff_chain_parabolic_psi_mp FF+(Chain, parabolic) - psi (-+)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief some brief description of saturated FF+(Chain, parabolic) - psi (-+) function
+ * \brief some brief description of FF+(Chain, parabolic) - psi (-+) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2120,33 +2029,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_pm_v(
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_mp
+ * \ingroup ff_ff_chain_parabolic_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mp(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_mp(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_mp
+ * \ingroup ff_ff_chain_parabolic_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mp_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_mp_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_psi_mp
+ * \ingroup ff_ff_chain_parabolic_psi_mp
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mp_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_psi_mp ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_mp_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_psi_mp ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_radial ################ */
+/* ################ start ff_ff_chain_parabolic_radial ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_radial saturated FF+(Chain, parabolic) - radial
+ * \defgroup ff_ff_chain_parabolic_radial FF+(Chain, parabolic) - radial
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, parabolic) - radial function\>
+ * \brief brief description of FF+(Chain, parabolic) - radial function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2211,34 +2120,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_psi_mp_v(
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_radial
+ * \ingroup ff_ff_chain_parabolic_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_radial(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_radial(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_radial
+ * \ingroup ff_ff_chain_parabolic_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_radial_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_radial_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_radial
+ * \ingroup ff_ff_chain_parabolic_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_radial_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_radial ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_radial_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_radial ################ */
 
-
-/* ################ start ff_saturated_ff_chain_parabolic_magnetic ################ */
+/* ################ start ff_ff_chain_parabolic_magnetic ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_magnetic saturated FF+(Chain, parabolic) - magnetic
+ * \defgroup ff_ff_chain_parabolic_magnetic FF+(Chain, parabolic) - magnetic
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, parabolic) - magnetic function\>
+ * \brief brief description of FF+(Chain, parabolic) - magnetic function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2303,33 +2211,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_radial_v(
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_magnetic
+ * \ingroup ff_ff_chain_parabolic_magnetic
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_magnetic(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_magnetic(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_magnetic
+ * \ingroup ff_ff_chain_parabolic_magnetic
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_magnetic_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_magnetic_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_magnetic
+ * \ingroup ff_ff_chain_parabolic_magnetic
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_magnetic_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_magnetic ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_magnetic_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_magnetic ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_cross_term ################ */
+/* ################ start ff_ff_chain_parabolic_cross_term ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_cross_term saturated FF+(Chain, parabolic) - cross-term
+ * \defgroup ff_ff_chain_parabolic_cross_term FF+(Chain, parabolic) - cross-term
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, parabolic) - cross-term function\>
+ * \brief brief description of FF+(Chain, parabolic) - cross-term function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2394,33 +2302,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_magnetic_
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_cross_term
+ * \ingroup ff_ff_chain_parabolic_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_cross_term(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_cross_term(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_cross_term
+ * \ingroup ff_ff_chain_parabolic_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_cross_term_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_cross_term_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_cross_term
+ * \ingroup ff_ff_chain_parabolic_cross_term
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_cross_term_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_cross_term ################ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_cross_term_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_cross_term ################ */
 
-/* ################ start ff_saturated_ff_chain_parabolic_cross_term_radial ################ */
+/* ################ start ff_ff_chain_parabolic_cross_term_radial ################ */
 /**
- * \defgroup ff_saturated_ff_chain_parabolic_cross_term_radial saturated FF+(Chain, parabolic) - cross-term (rad. avg.)
+ * \defgroup ff_ff_chain_parabolic_cross_term_radial FF+(Chain, parabolic) - cross-term (rad. avg.)
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of saturated FF+(Chain, parabolic) - cross-term (rad. avg.) function\>
+ * \brief brief description of FF+(Chain, parabolic) - cross-term (rad. avg.) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2485,35 +2393,33 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_cross_ter
  */
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_cross_term_radial
+ * \ingroup ff_ff_chain_parabolic_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_cross_term_radial(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_cross_term_radial(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_cross_term_radial
+ * \ingroup ff_ff_chain_parabolic_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_cross_term_radial_f(scalar q, sasfit_param * p);
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_cross_term_radial_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_saturated_ff_chain_parabolic_cross_term_radial
+ * \ingroup ff_ff_chain_parabolic_cross_term_radial
  *
  * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
  */
-sasfit_ferrofluid_DLLEXP scalar sasfit_ff_saturated_ff_chain_parabolic_cross_term_radial_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_saturated_ff_chain_parabolic_cross_term_radial ################ */
-
-
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_cross_term_radial_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_cross_term_radial ################ */
 
 /* ################ start ff_chain_parabolic_profile ################ */
 /**
  * \defgroup ff_chain_parabolic_profile  FF+(Chain, parabolic) - radial profile
  * \ingroup ff_plugins_ferrofluid
  *
- * \brief \<some brief description of FF+(Chain, parabolic) - radial profile function\>
+ * \brief brief description of FF+(Chain, parabolic) - radial profile function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
