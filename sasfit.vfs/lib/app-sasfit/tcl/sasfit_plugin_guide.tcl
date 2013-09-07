@@ -209,7 +209,7 @@ proc func_menu { pframe idx } {
 	pack $f.type.err.lbl $f.type.err.ddl
 
 	label $f.type.gui.lbl -text "Select GUI group: \n(double-click for subgroups)"
-	listbox $f.type.gui.box -height 6
+	listbox $f.type.gui.box -height 12
 	$f.type.gui.box insert end $::name_back_entry
 	$f.type.gui.box insert end "form_fac"
 	$f.type.gui.box insert end "size_distrib"

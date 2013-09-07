@@ -254,9 +254,6 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_v(scalar q, sasfit_par
  *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
- *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
  *      </tr></table>
  */
 
@@ -336,9 +333,6 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pp_v(scalar q, sasfit_
  *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
- *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
  *      </tr></table>
  */
 
@@ -418,9 +412,6 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_mm_v(scalar q, sasfit_
  *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
- *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
  *      </tr></table>
  */
 
@@ -500,9 +491,6 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_pm_v(scalar q, sasfit_
  *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
- *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
  *      </tr></table>
  */
 
@@ -921,8 +909,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_v(scalar q, sasfit_pa
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b t_brush_const</td>
  *       <td>box width of box with Gaussian tail</td>
@@ -1012,8 +1000,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pp_v(scalar q, sasfit
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b t_brush_const</td>
  *       <td>box width of box with Gaussian tail</td>
@@ -1103,8 +1091,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_mm_v(scalar q, sasfit
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b t_brush_const</td>
  *       <td>box width of box with Gaussian tail</td>
@@ -1194,8 +1182,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_pm_v(scalar q, sasfit
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b t_brush_const</td>
  *       <td>box width of box with Gaussian tail</td>
@@ -1741,8 +1729,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_v(scalar q, sas
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b p</td>
  *       <td>dimensionless persistence length </td>
@@ -1832,8 +1820,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pp_v(scalar q, 
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b p</td>
  *       <td>dimensionless persistence length </td>
@@ -1923,8 +1911,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_mm_v(scalar q, 
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b p</td>
  *       <td>dimensionless persistence length </td>
@@ -2014,8 +2002,8 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_pm_v(scalar q, 
  *       <td>\b psi</td>
  *       <td>angle between scattering and magnetization vector</td>
  *      </tr><tr>
- *       <td>\b pol</td>
- *       <td>incident neutron polarisation</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b p</td>
  *       <td>dimensionless persistence length </td>

@@ -72,11 +72,11 @@ int sasfit_2d_set(Tcl_Interp * interp, const char * argv[])
 	}
 	str = Tcl_GetVar2(interp, argv[3], "scale", 0);
 	if (str) {
-		if (strcmp(str, "sqrt(y)") == 0) 
+		if (strcmp(str, "sqrt(y)") == 0)
 			sasfit_2d_param.scale = SQRT;
-		else if (strcmp(str, "arcsinh(y)") == 0) 
+		else if (strcmp(str, "arcsinh(y)") == 0)
 			sasfit_2d_param.scale = ARCSINH;
-		else // if (strcmp(str, "log(y)") == 0) 
+		else // if (strcmp(str, "log(y)") == 0)
 			sasfit_2d_param.scale = LOG;
 	}
 //	strcpy(Det2DPar.ct,Tcl_GetVar2(interp,argv[3],"ct",0));
@@ -90,9 +90,9 @@ void IQ(Tcl_Interp *interp, double Q, double Qres, double *par, double *Ifit,
 	double *Isubstract, double *dydpar, int max_SD, sasfit_analytpar *AP,
 	int error_type, int Nthdataset, bool *error);
 
-int Sasfit_2DiqCmd(ClientData    clientData, 
-                   Tcl_Interp *  interp, 
-                   int           argc, 
+int Sasfit_2DiqCmd(ClientData    clientData,
+                   Tcl_Interp *  interp,
+                   int           argc,
                    const char ** argv)
 {
 	sasfit_analytpar * AP;
@@ -113,7 +113,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 	// Det2DPar.calc2D = TRUE;
 	sasfit_param_override_init();
 
-	if (argc != 4) 
+	if (argc != 4)
 	{
 		sasfit_err("wrong # args: shoud be sasfit_2Diq ?analyt_par? "
 			"?xyer_data? ?Detector2DParameter?\n");
@@ -124,8 +124,8 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 		return TCL_ERROR;
 	}
 
-	if (TCL_ERROR == get_AP(interp, argv, &AP, &max_SD, &alambda, 
-		                &error_type,&h,&Ih,&DIh,&res,&ndata)) 
+	if (TCL_ERROR == get_AP(interp, argv, &AP, &max_SD, &alambda,
+		                &error_type,&h,&Ih,&DIh,&res,&ndata))
 	{
 		return TCL_ERROR;
 	}
@@ -183,17 +183,17 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 					Imax=DetIth[i][j];
 				}
 			}
-			if (sasfit_2d_param.mode == MANUAL) 
+			if (sasfit_2d_param.mode == MANUAL)
 			{
-				if (DetIth[i][j] > sasfit_2d_param.max) 
+				if (DetIth[i][j] > sasfit_2d_param.max)
 					DetIth[i][j] = sasfit_2d_param.max;
-				if (DetIth[i][j] < sasfit_2d_param.min) 
-					DetIth[i][j] = sasfit_2d_param.min; 
+				if (DetIth[i][j] < sasfit_2d_param.min)
+					DetIth[i][j] = sasfit_2d_param.min;
 			}
 		}
 	}
 
-	if (sasfit_2d_param.mode == AUTO) 
+	if (sasfit_2d_param.mode == AUTO)
 	{
 		sprintf(sBuffer,"%e",Imin);
 		//  sasfit_err(sBuffer);
