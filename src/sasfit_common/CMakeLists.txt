@@ -6,6 +6,7 @@ set(PRJ_NAME sasfit_common)
 # required external libs which are installed on the system
 set(LIBS_EXT
 	GSL
+	FFTW
 )
 
 # required internal (sasfit_) libs

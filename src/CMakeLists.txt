@@ -127,6 +127,7 @@ add_definitions(
 
 find_package(GSL REQUIRED)
 find_package(TCL REQUIRED)
+find_package(FFTW REQUIRED)
 
 add_definitions(
 	-DUSE_TCL_STUBS
@@ -153,6 +154,7 @@ include_directories(
 	${SF_INC_DIRS}
 	${TCL_INCLUDE_DIRS}
 	${GSL_INCLUDE_DIRS}
+	${FFTW_INCLUDE_DIRS}
 )
 
 add_library(sasfit SHARED
@@ -162,6 +164,7 @@ add_library(sasfit SHARED
 target_link_libraries(sasfit
 	${TCL_STUB_LIBRARY}
 	${GSL_STATIC_LIBRARIES}
+	$(FFTW_LIBRARIES)
 )
 
 # configure build flags, assumes gcc-style flags on all platforms

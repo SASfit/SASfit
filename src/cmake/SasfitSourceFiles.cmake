@@ -53,6 +53,7 @@ set(SOURCE_sasfit_common
 	sasfit_eps.c
 	sasfit_plugin_func.c
 	sasfit_common.c
+	sasfit_oz_solver.c
 	f2c_utils/sasfit_dmilay.c
 	f2c_utils/sasfit_struve_h0h1.c
 	f2c_utils/sasfit_robertus_utils.c

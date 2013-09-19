@@ -219,6 +219,7 @@ source $sasfit(tcl)/sasfit_xsect.tcl
 source $::sasfit(tcl)/sasfit_plugin.tcl
 source $::sasfit(tcl)/sasfit_plugin_guide.tcl
 source $::sasfit(tcl)/sasfit_batch.tcl
+source $::sasfit(tcl)/sasfit_OZ_solver.tcl
 
 sasfit_load_plugins $::sasfit(plugins)
 
@@ -260,6 +261,28 @@ set FitPrecision(iter_4_MC)       1000
 set FitPrecision(int)             no
 
 global FitPrecision
+
+set OZ(closure) PY
+set OZ(potential) "HardSphere"    
+set OZ(p0) 1.0
+set OZ(p1) 1.1
+set OZ(p2) 1.2
+set OZ(p3) 1.3
+set OZ(p4) 1.4
+set OZ(p5) 1.5
+set OZ(phi) 0.3
+set OZ(T) 300
+set OZ(1024) 1024
+set OZ(mult) 4
+set OZ(mix) 1
+set OZ(maxit) 500
+set OZ(dr/dsigma) 0.005
+set OZ(releps) 1e-12
+set OZ(gridlength) [expr int($OZ(1024)*$OZ(mult))]
+set OZ(plottedgraphs) 0
+set OZ(symbol_i) 0
+set OZ(color_i) 0
+global OZ
 
 set sasfit(sim,Qmin) 1e-2
 set sasfit(sim,Qmax) 1
@@ -571,6 +594,11 @@ set SDGraph(x,type)     x
 set SDGraph(y,type)     "y*pow(x,3)"
 set SDGraph(x,title) "D / nm"
 set SDGraph(y,title) "N(D)"
+
+CreateGraphPar ozSQGraph
+CreateGraphPar ozgrGraph
+CreateGraphPar ozcrGraph
+CreateGraphPar ozbetaUrGraph
 
 CreateGraphPar CollectIQGraph
 
@@ -2956,8 +2984,8 @@ proc sasfit_menubar_build { p } {
 		}
       $p.tools.menu add command -label "create new plugin" \
 	      -command "sasfit_plugin_guide $p" -underline 0
-#      $p.tools.menu add command -label "show SASfit console" \
-#	      -command {tkcon show; tkcon title "SASfit console"}
+      $p.tools.menu add command -label "Ornstein Zernike solver" \
+	      -command {sasfit_OZ_solver}
 
    sasfit_menubar_build_help $p.help
 
@@ -3088,9 +3116,9 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.iq.popup add command -label "Export Data..." \
     -command { export_blt_graph IQGraph }
-bind .obW.tab.iq.draw <ButtonPress-3> {tk_popup .obW.tab.iq.popup %X %Y }
+bind .obW.tab.iq.draw <Double-ButtonPress-3> {tk_popup .obW.tab.iq.popup %X %Y }
 bind .obW.tab.iq.draw <Double-ButtonPress-1> {tk_popup .obW.tab.iq.popup %X %Y }
-
+Blt_ZoomStack $IQGraph(w)
 
 
 
@@ -3137,7 +3165,7 @@ menu $Detector2DIQGraph(w).popup -tearoff 0
 $Detector2DIQGraph(w).popup add command -label "copy to clipboard" -un 0 -command {
      window_to_clipboard $Detector2DIQGraph(cw)
      }
-bind $Detector2DIQGraph(w) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(w).popup %X %Y }
+bind $Detector2DIQGraph(w) <Double-ButtonPress-3> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 bind $Detector2DIQGraph(w) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 
    set Detector2DIQGraph(nPix) 64
@@ -3218,9 +3246,9 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.globaliq.popup add command -label "Export Data..." \
     -command { export_blt_graph GlobalFitIQGraph }
-bind .obW.tab.globaliq.draw <ButtonPress-3> {tk_popup .obW.tab.globaliq.popup %X %Y }
+bind .obW.tab.globaliq.draw <Double-ButtonPress-3> {tk_popup .obW.tab.globaliq.popup %X %Y }
 bind .obW.tab.globaliq.draw <Double-ButtonPress-1> {tk_popup .obW.tab.globaliq.popup %X %Y }
-
+Blt_ZoomStack $GlobalFitIQGraph(w)
 
 
 
@@ -3286,9 +3314,11 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.residual.popup add command -label "Export Data..." \
     -command { export_blt_graph ResIQGraph }
-bind .obW.tab.residual.draw <ButtonPress-3> {tk_popup .obW.tab.residual.popup %X %Y }
+bind .obW.tab.residual.draw <Double-ButtonPress-3> {tk_popup .obW.tab.residual.popup %X %Y }
 bind .obW.tab.residual.draw <Double-ButtonPress-1> \
      {tk_popup .obW.tab.residual.popup %X %Y }
+Blt_ZoomStack $ResIQGraph(w)
+
 
 #
 #  create size distribution plot "SDGraph"
@@ -3354,10 +3384,11 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.sizedistr.popup add command -label "Export Data..." \
     -command { export_blt_graph SDGraph }
-bind .obW.tab.sizedistr.draw <ButtonPress-3> \
+bind .obW.tab.sizedistr.draw <Double-ButtonPress-3> \
      {tk_popup .obW.tab.sizedistr.popup %X %Y }
 bind .obW.tab.sizedistr.draw <Double-ButtonPress-1> \
      {tk_popup .obW.tab.sizedistr.popup %X %Y }
+Blt_ZoomStack $SDGraph(w)
 
 #
 #  create info page about moments of analytical size distributions
