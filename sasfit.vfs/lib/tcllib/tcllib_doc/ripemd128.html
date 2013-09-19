@@ -1,0 +1,242 @@
+<html><head>
+<title>ripemd128 - RIPEMD Message-Digest Algorithm </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/ripemd/ripemd128.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: ripemd128.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ ripemd128.n
+   -->
+
+<body>
+<h1> ripemd128(n) 1.0.3 ripemd &quot;RIPEMD Message-Digest Algorithm&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> ripemd128 - RIPEMD-128 Message-Digest Algorithm
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#programming_interface">PROGRAMMING INTERFACE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>ripemd128 ?1.0.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::ripemd::ripemd128</b> ?<i class='arg'>-hex</i>? [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::ripemd::hmac128</b> ?<i class='arg'>-hex</i>? <i class='arg'>-key key</i> [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::ripemd::RIPEMD128Init</b> </a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::ripemd::RIPEMD128Update</b> <i class='arg'>token</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::ripemd::RIPEMD128Final</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::ripemd::RIPEHMAC128Init</b> <i class='arg'>key</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::ripemd::RIPEHMAC128Update</b> <i class='arg'>token</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::ripemd::RIPEHMAC128Final</b> <i class='arg'>token</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package is an implementation in Tcl of the RIPEMD-128 message-digest
+algorithm (1). This algorithm takes an arbitrary quantity of data and
+generates a 128-bit message digest from the input. The RIPEMD-128 
+algorithm is based upon the MD4 algorithm (2, 4) but has been
+cryptographically strengthened against weaknesses that have been found
+in MD4 (4). RIPEMD-128 has been designed to be a drop-in replacement
+for MD4 and MD5 (5). If security is the major consideration, then
+RIPEMD-160 or SHA1 should be considered.
+
+<p>
+
+This package will use <strong>Trf</strong> to
+accelerate the digest computation if available. In
+the absence of an accelerator package the pure-Tcl implementation will
+be used.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::ripemd::ripemd128</b> ?<i class='arg'>-hex</i>? [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a><dd>
+
+
+Calculate the RIPEMD-128 digest of the data given in string. This is
+returned as a binary string by default. Giving the <i class='arg'>-hex</i> option
+will return a hexadecimal encoded version of the digest.
+
+<br><br>
+
+The data to be hashed can be specified either as a string argument to
+the ripemd128 command, or as a filename or a pre-opened channel. If the 
+<i class='arg'>-filename</i> argument is given then the file is opened, the data read
+and hashed and the file is closed. If the <i class='arg'>-channel</i> argument is
+given then data is read from the channel until the end of file. The
+channel is not closed.
+
+<br><br>
+
+Only one of <i class='arg'>-file</i>, <i class='arg'>-channel</i> or <i class='arg'>string</i> should be given.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::ripemd::hmac128</b> ?<i class='arg'>-hex</i>? <i class='arg'>-key key</i> [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a><dd>
+
+
+Calculate an Hashed Message Authentication digest (HMAC) using the
+RIPEMD-128 digest algorithm. HMACs are described in RFC 2104 (6) and
+provide a RIPEMD-128 digest that includes a key. All options other
+than <i class='arg'>-key</i> are as for the <b class='cmd'>::ripemd::ripemd128</b> command.
+
+</dl>
+
+<h2><a name="programming_interface">PROGRAMMING INTERFACE</a></h2>
+<p>
+
+For the programmer, hash functions can be viewed as a bucket into which
+one pours data. When you have finished, you extract a value that is
+uniquely derived from the data that was poured into the bucket. The 
+programming interface to the hash operates on a token (equivalent to the
+bucket). You call <b class='cmd'>RIPEMD128Init</b> to obtain a token and then call 
+<b class='cmd'>RIPEMD128Update</b> as many times as required to add data to the hash. To
+release any resources and obtain the hash value, you then call 
+<b class='cmd'>RIPEMD128Final</b>. An equivalent set of functions gives you a keyed
+digest (HMAC).
+
+<p>
+
+If you have <strong>critcl</strong> and have built the <strong>tcllibc</strong>
+package then the implementation of the hashing function will be
+performed by compiled code. Alternatively if both the Trf and Memchan
+extensions are available then these will be used. Finally the package
+will revert to a pure-Tcl implementation.  The programming interface
+remains the same, however.
+
+<dl>
+
+<dt><a name="3"><b class='cmd'>::ripemd::RIPEMD128Init</b> </a><dd>
+
+
+Begins a new RIPEMD-128 hash. Returns a token ID that must be used for the
+remaining functions.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::ripemd::RIPEMD128Update</b> <i class='arg'>token</i> <i class='arg'>data</i></a><dd>
+
+
+Add data to the hash identified by token. Calling 
+<em>RIPEMD128Update $token &quot;abcd&quot;</em> is equivalent to calling
+<em>RIPEMD128Update $token &quot;ab&quot;</em> followed by 
+<em>RIPEMD128Update $token &quot;cb&quot;</em>. See <a href="#examples">EXAMPLES</a>.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::ripemd::RIPEMD128Final</b> <i class='arg'>token</i></a><dd>
+
+
+Returns the hash value and releases any resources held by this
+token. Once this command completes the token will be invalid. The
+result is a binary string of 16 bytes representing the 128 bit
+RIPEMD-128 digest value.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::ripemd::RIPEHMAC128Init</b> <i class='arg'>key</i></a><dd>
+
+
+This is equivalent to the <b class='cmd'>::ripemd::RIPEMD128Init</b> command
+except that it requires the key that will be included in the HMAC.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::ripemd::RIPEHMAC128Update</b> <i class='arg'>token</i> <i class='arg'>data</i></a><dd>
+
+<dt><a name="8"><b class='cmd'>::ripemd::RIPEHMAC128Final</b> <i class='arg'>token</i></a><dd>
+
+
+These commands are identical to the RIPEMD128 equivalent commands.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% ripemd::ripemd128 -hex &quot;Tcl does RIPEMD-128&quot;
+3cab177bae65205d81e7978f63556c63
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% ripemd::hmac128 -hex -key Sekret &quot;Tcl does RIPEMD-128&quot;
+b359dc5971a05beea0be7b106b30e389
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [ripemd::RIPEMD128Init]
+::ripemd::1
+% ripemd::RIPEMD128Update $tok &quot;Tcl &quot;
+% ripemd::RIPEMD128Update $tok &quot;does &quot;
+% ripemd::RIPEMD128Update $tok &quot;RIPEMD-128&quot;
+% ripemd::Hex [ripemd::RIPEMD128Final $tok]
+3cab177bae65205d81e7978f63556c63
+</pre></td></tr></table></p>
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+
+<li>
+        H. Dobbertin, A. Bosselaers, B. Preneel, 
+        &quot;RIPEMD-160, a strengthened version of RIPEMD&quot;
+        <a href="http://www.esat.kuleuven.ac.be/~cosicart/pdf/AB-9601/AB-9601.pdf">http://www.esat.kuleuven.ac.be/~cosicart/pdf/AB-9601/AB-9601.pdf</a>
+
+<br><br>
+<li>
+       Rivest, R., &quot;The MD4 Message Digest Algorithm&quot;, RFC 1320, MIT,
+       April 1992. (<a href="http://www.rfc-editor.org/rfc/rfc1320.txt">http://www.rfc-editor.org/rfc/rfc1320.txt</a>)
+
+<br><br>
+<li>
+       Rivest, R., &quot;The MD4 message digest algorithm&quot;, in A.J.  Menezes
+       and S.A. Vanstone, editors, Advances in Cryptology - CRYPTO '90
+       Proceedings, pages 303-311, Springer-Verlag, 1991.
+
+<br><br>
+<li>
+        Dobbertin, H., &quot;Cryptanalysis of MD4&quot;, Journal of Cryptology
+        vol 11 (4), pp. 253-271 (1998)
+
+<br><br>
+<li>
+       Rivest, R., &quot;The MD5 Message-Digest Algorithm&quot;, RFC 1321, MIT and
+       RSA Data Security, Inc, April 1992.
+	(<a href="http://www.rfc-editor.org/rfc/rfc1321.txt">http://www.rfc-editor.org/rfc/rfc1321.txt</a>)
+
+<br><br>
+<li>
+      Krawczyk, H., Bellare, M. and Canetti, R. &quot;HMAC: Keyed-Hashing for 
+      Message Authentication&quot;, RFC 2104, February 1997.
+	(<a href="http://www.rfc-editor.org/rfc/rfc2104.txt">http://www.rfc-editor.org/rfc/rfc2104.txt</a>)
+
+</ol>
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+md4, md5, ripemd160, sha1
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+RIPEMD, hashing, md4, message-digest, rfc 1320, rfc 1321, rfc 2104, security
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>

@@ -1,0 +1,135 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::peg::interp - Grammar operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_peg/peg_interp.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: peg_interp.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ grammar::peg::interp.n
+   -->
+
+<body>
+<h1> grammar::peg::interp(n) 0.1 grammar_peg &quot;Grammar operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::peg::interp - Interpreter for parsing expression grammars
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#the_interpreter_api">THE INTERPRETER API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>grammar::mengine ?0.1?</b><br>
+package require <b>grammar::peg::interp ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::grammar::peg::interp::setup</b> <i class='arg'>peg</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::grammar::peg::interp::parse</b> <i class='arg'>nextcmd</i> <i class='arg'>errorvar</i> <i class='arg'>astvar</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+
+
+
+<p>
+
+This package provides commands for the controlled matching of a
+character stream via a parsing expression grammar and the creation
+of an abstract syntax tree for the stream and partials.
+
+<p>
+
+It is built on top of the virtual machine provided by the package
+<strong>grammar::mengine</strong> and directly interprets the parsing
+expression grammar given to it.
+
+In other words, the grammar is <em>not</em> pre-compiled but used as is.
+
+<p>
+
+The grammar to be interpreted is taken from a container object
+following the interface specified by the package
+<strong>grammar::peg::container</strong>. Only the relevant parts
+are copied into the state of this package.
+
+<p>
+
+It should be noted that the package provides exactly one instance
+of the interpreter, and interpreting a second grammar requires
+the user to either abort or complete a running interpretation, or
+to put them into different Tcl interpreters.
+
+<p>
+
+Also of note is that the implementation assumes a pull-type
+handling of the input. In other words, the interpreter pulls
+characters from the input stream as it needs them. For usage
+in a push environment, i.e. where the environment pushes new
+characters as they come we have to put the engine into its
+own thread.
+
+
+<h2><a name="the_interpreter_api">THE INTERPRETER API</a></h2>
+<p>
+
+The package exports the following API
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::grammar::peg::interp::setup</b> <i class='arg'>peg</i></a><dd>
+
+
+This command (re)initializes the interpreter. It returns the
+empty string. This command has to be invoked first, before any
+matching run.
+
+<br><br>
+
+Its argument <i class='arg'>peg</i> is the handle of an object containing the
+parsing expression grammar to interpret. This grammar has to be
+valid, or an error will be thrown.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::grammar::peg::interp::parse</b> <i class='arg'>nextcmd</i> <i class='arg'>errorvar</i> <i class='arg'>astvar</i></a><dd>
+
+
+This command interprets the loaded grammar and tries to
+match it against the stream of characters represented by
+the command prefix <i class='arg'>nextcmd</i>. Its result is a boolean
+value indicating whether the matching process was successful
+(<strong>true</strong>), or not (<strong>false</strong>). In case of a match failure
+error information will be stored into the variable referenced by
+<i class='arg'>errorvar</i>. The variable referenced by <i class='arg'>astvar</i> will
+always contain the generated abstract syntax tree, however in the
+case of an error it will be only partial and possibly malformed.
+
+<br><br>
+
+The abstract syntax tree is represented by a nested list, as
+described in section <b>ABSTRACT SYNTAX TREE</b> of
+package <strong>grammar::mengine</strong>.
+
+</dl>
+<p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+LL(k), TDPL, context-free languages, expression, grammar, matching, parsing, parsing expression, parsing expression grammar, push down automaton, recursive descent, state, top-down parsing languages, transducer, virtual machine
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

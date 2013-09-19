@@ -1,0 +1,100 @@
+<html><head>
+<title>base64 - Text encoding &amp; decoding binary data </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/base64/base64.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2000, Eric Melski   -- Copyright &copy; 2001, Miguel Sofer
+   -->
+<! -- CVS: $Id: base64.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ base64.n
+   -->
+
+<body>
+<h1> base64(n) 2.3.2 base64 &quot;Text encoding &amp; decoding binary data&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> base64 - base64-encode/decode binary data
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8</b><br>
+package require <b>base64 ?2.3.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::base64::encode</b> ?-maxlen <i class='arg'>maxlen</i>? ?-wrapchar <i class='arg'>wrapchar</i>? <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::base64::decode</b> <i class='arg'>string</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides procedures to encode binary data into base64 and back.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::base64::encode</b> ?-maxlen <i class='arg'>maxlen</i>? ?-wrapchar <i class='arg'>wrapchar</i>? <i class='arg'>string</i></a><dd>
+
+
+Base64 encodes the given binary <i class='arg'>string</i> and returns the encoded
+result. Inserts the character <i class='arg'>wrapchar</i> every <i class='arg'>maxlen</i>
+characters of output. <i class='arg'>wrapchar</i> defaults to newline. <i class='arg'>maxlen</i>
+defaults to <strong>60</strong>.
+
+<br><br>
+
+<em>Note well</em>: If your string is not simple ascii you should fix
+the string encoding before doing base64 encoding. See the examples.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::base64::decode</b> <i class='arg'>string</i></a><dd>
+
+
+Base64 decodes the given <i class='arg'>string</i> and returns the binary data.
+The decoder ignores whitespace in the string.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% base64::encode &quot;Hello, world&quot;
+SGVsbG8sIHdvcmxk
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% base64::encode [string repeat xyz 20]
+eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6
+eHl6eHl6eHl6
+% base64::encode -wrapchar &quot;&quot; [string repeat xyz 20]
+eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6eHl6
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+# NOTE: base64 encodes BINARY strings.
+% set chemical [encoding convertto utf-8 &quot;C\u2088H\u2081\u2080N\u2084O\u2082&quot;]
+% set encoded [base64::encode $chemical]
+Q+KCiEjigoHigoBO4oKET+KCgg==
+% set caffeine [encoding convertfrom utf-8 [base64::decode $encoded]]
+</pre></td></tr></table></p>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+base64, encoding
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2000, Eric Melski<br>
+Copyright &copy; 2001, Miguel Sofer<br>
+</body></html>

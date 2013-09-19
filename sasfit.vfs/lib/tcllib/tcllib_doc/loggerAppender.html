@@ -1,0 +1,99 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<! -- $Id: loggerAppender.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $
+   -->
+<html><head>
+<title>logger::utils - Object Oriented logging facility </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/log/loggerAppender.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Aamer Akhter &lt;aakhter@cisco.com&gt;
+   -->
+<! -- CVS: $Id: loggerAppender.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ logger::utils.n
+   -->
+
+<body>
+<h1> logger::utils(n) 1.2 log &quot;Object Oriented logging facility&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> logger::utils - Collection of predefined appenders for logger
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>logger::appender ?1.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::logger::appender::console</b> <strong>-level</strong> <i class='arg'>level</i> <strong>-service</strong> <i class='arg'>service</i> ?<i class='arg'>options</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::logger::appender::colorConsole</b> <strong>-level</strong> <i class='arg'>level</i> <strong>-service</strong> <i class='arg'>service</i> ?<i class='arg'>options</i>...?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+This package provides a predefined set of logger templates.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::logger::appender::console</b> <strong>-level</strong> <i class='arg'>level</i> <strong>-service</strong> <i class='arg'>service</i> ?<i class='arg'>options</i>...?</a><dd>
+
+
+<dl>
+
+<dt><strong>-level</strong> level<dd>
+
+Name of the level to fill in as &quot;priority&quot; in the log procedure.
+
+<br><br>
+<dt><strong>-service</strong> service<dd>
+
+Name of the service to fill in as &quot;category&quot; in the log procedure.
+
+<br><br>
+<dt><strong>-appenderArgs</strong> appenderArgs<dd>
+
+Any additional arguments for the log procedure in list form
+
+<br><br>
+<dt><strong>-conversionPattern</strong> conversionPattern<dd>
+
+The log pattern to use (see <b class='cmd'>logger::utils::createLogProc</b> for the
+allowed substitutions).
+
+<br><br>
+<dt><strong>-procName</strong> procName<dd>
+
+Explicitly set the name of the created procedure.
+
+<br><br>
+<dt><strong>-procNameVar</strong> procNameVar<dd>
+
+Name of the variable to set in the calling context. This variable will
+contain the name of the procedure.
+
+</dl>
+
+
+<dt><a name="2"><b class='cmd'>::logger::appender::colorConsole</b> <strong>-level</strong> <i class='arg'>level</i> <strong>-service</strong> <i class='arg'>service</i> ?<i class='arg'>options</i>...?</a><dd>
+
+
+See <b class='cmd'>::logger::appender::colorConsole</b> for a description of the
+applicable options.
+
+
+</dl>
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+appender, logger
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Aamer Akhter &lt;aakhter@cisco.com&gt;<br>
+</body></html>

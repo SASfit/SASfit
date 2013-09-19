@@ -1,0 +1,123 @@
+
+\chapter{Basic Analysis of Dynamic Light Scattering Data}
+\label{basicDLS}
+In a typical dynamic light scattering (DLS) or photo correlation scattering (PCS)
+experiment, the autocorrelation function $G^{(2)}(\tau)$ of the intensity scattered
+by dispersed particles is determined as a function of the delay $\tau$. $G^{(2)}(\tau)$
+is related to the modulus of the normalized field autocorrelation function $g_1(\tau)$
+by a Siegert relationship
+\begin{align}
+G^{(2)}(\tau) & = A g^2_1(\tau)  + B.
+\end{align}
+Here $B$ is a background term often designated as the baseline and $A$ can be considered
+as another instrumental factor. The time dependence of $g_1(\tau)$ is related to the
+dynamics of the dispersed particles. For particles in Brownian motion, the time decay of
+$g_1(\tau)$ is determined by the diffusion coefficient of the dispersed particles. In particular,
+for monodisperse samples $g_1(\tau)$ is an exponentially decaying function:
+\begin{align}
+g_1(\tau) & = \exp(-\Gamma\tau) \label{g1}\\
+\text{ or } & \nonumber \\
+G^{(2)}(\tau)  & = A \exp(-2\Gamma\tau) + B
+\label{G2}
+\end{align}
+where the decay rate $\Gamma$ is linked to the particles' diffusion coefficient $D$
+by $\Gamma=D Q^2$, where $Q$ is the modulus of the scattering vector
+\begin{align}
+Q = \frac{4\pi m_1}{\lambda_0} \sin(\theta/2)
+\end{align}
+$m_1$ is the refraction index of the solution, $\lambda_0$ the wavelength in vacuo
+of the incident light and $\theta$ the scattering angle. At the end the Stokes-Einstein
+expression for the diffusion coefficient is used to get an average particle radius
+$R_\text{DLS}$
+\begin{align}
+D = \frac{kT}{6\pi\eta R_\text{DLS}}
+\label{DiffRDLS}
+\end{align}
+where $k$ is Boltzmann's constant, $T$ the absolute temperature, $\eta$ the viscosity
+of the dispersion medium and $R_\text{DLS}$ the particle radius (only valid for noninteracting
+particles).
+
+\newpage
+\section{Cumulant Analysis}
+The formulas in eq.\ \ref{g1} to \ref{DiffRDLS} are valid for monodisperse
+dispersions only. For polydisperse dispersions the cumulants method of Koppel (1972) is widely used,
+which assumes a multi-exponential behaviour so that $g_1(\tau)$ and $G^{(2)}(\tau)$
+can be written in a series expansion as:
+\begin{align}
+ g_1(\tau)  &= \exp\left(-\Gamma_1 \tau + \frac{\Gamma_2 \tau^2}{2} - \frac{\Gamma_3 \tau^3}{6} + \cdots \right)\\
+ G^{(2)}(\tau) &=  A \exp\left(- 2\Gamma_1 \tau + \Gamma_2 \tau^2 - \frac{\Gamma_3 \tau^3}{3} + \cdots \right) + B
+\label{G2Cumulant}
+\end{align}
+\texttt{SASfit} assumes for the cumulant fit-routine that the function $G^{(2)}(\tau)$ is supplied. As normally no error
+bar is available from the correlator a robust least square procedure is implemented.
+
+\vspace{5mm}
+\noindent REFERENCE:\\
+Dennis E. Koppel, Analysis of Macromolecular Polydispersity in
+Intensity Correlation Spectroscopy: The Method of Cumulants, The
+Journal of Chemical Physics, Vol.1, No. 11 (1972), 4815- 4820
+
+\newpage
+\section{Double Decay Cumulant Analysis}
+\begin{align}
+G^{(2)}(\tau) &=  A \left[p \, e^{- 2\Gamma_{a,1}\, \tau + \Gamma_{a,2}\, \tau^2}
+                     +(1-p) \, e^{- 2\Gamma_{b,1}\, \tau + \Gamma_{b,2}\, \tau^2}\right] + B
+\label{G2DoubleCumulantDecay}
+\end{align}
+
+\newpage
+\section{Fit of Double Stretched Exponentials}
+\begin{align}
+G^{(2)}(t) = A \left\{p \, \exp\left(\left[\frac{t}{\tau_1}\right]^{\gamma_1}\right)
++ (1-p) \, \exp\left(\left[\frac{t}{\tau_2}\right]^{\gamma_2}\right)
+\right\} + B \label{G2DoubleExpDecay}
+\end{align}
+
+
+\newpage
+\subsection{The least squares minimiser and the robust least squares
+procedure}
+The function to be minimised is
+$$
+\chi^2 = \sum_i \left( \frac{r_i}{\Delta I_i} \right)^2
+$$
+where the residual is defined as
+$$
+r_i = I_i - I_{i,th}.
+$$
+Here $I_i$  is the intensity correlation function $G^{(2)}(t_i)$
+at time $t_i$ with already subtracted baseline as received from a correlator, $I_{i,th}$ is the value
+of the cumulant fit according to eq.\ \ref{G2Cumulant} or a double exponential decay according to
+eq.\ \ref{G2DoubleExpDecay}. Normally no error values
+$\Delta I_i$ are supplied from the correlator so that all data points are weighted
+the same. A robust fitting with bisquare weights is implemented which uses an
+iteratively reweighted least squares algorithm, and follows the procedure:
+\begin{enumerate}
+\item Fit the model by an unweighted least
+squares (that is,  $\chi$).
+\item Standardize the residuals via $u_i=r_i/(Ks)$. Here $K$
+is a tuning constant equal to 4.685, and $s$ is the robust variance
+given by $MAD/0.6745$, where $MAD$ is the median absolute deviation of
+the residuals
+$$
+MAD = \sum_{i=1}^N \frac{1}{N}\abs{I_{i,th}-I_i}
+$$
+\item Compute the robust weights $w_i$ as a function of the standardized residuals $u_i$.
+The bisquare weights are given by
+$$
+w_i =
+\begin{cases}
+\left(1-u_i^2 \right)^2 & \abs{u_i} < 1 \\
+0                       & \abs{u_i} \geq 1
+\end{cases}
+$$
+\item  Re-do the fit using the weighted minimiser:
+$$
+\chi^2 = \sum_i w_i \left( \frac{r_i}{\Delta I_i} \right)^2
+$$
+\item The fit converges when the MAD changes by no more than the fraction set by
+{\verb"residual_tolerance"} (which has been chosen to be $10^{-8}$). Otherwise, perform the next iteration of the
+fitting procedure by returning to the first step.
+\end{enumerate}
+
+
