@@ -21,11 +21,12 @@
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 
 proc StartOZsolver {} {
-global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph
+global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
 puts "Start OZ Solver"
-set ozsolvername "$sasfit(basedir)/plugins/OZ/sasfit_oz.exe"
 set workdir "$sasfit(basedir)/plugins/OZ"
-set inputOZ [open  "$sasfit(basedir)/plugins/OZ/oz.in" "w"]
+set ozsolvername "$workdir/sasfit_oz.exe"
+set inputFN $workdir/oz.in
+set inputOZ [open  "$workdir/oz.in" "w"]
 puts  $inputOZ  "[expr  int($OZ(1024)*$OZ(mult))] \t// grid length"
 puts  $inputOZ  "$OZ(maxit) \t// maximum number of iterations"
 puts  $inputOZ  "$OZ(releps) \t// relative iteration precision"
@@ -39,7 +40,7 @@ puts  $inputOZ  "$OZ(phi) \t// volume fraction phi from which the particle numbe
 close $inputOZ
 puts "exec $ozsolvername  C:/user/OZ/sasfit_oz/oz.in"
 cd $workdir
-catch {eval exec "$ozsolvername $sasfit(basedir)/plugins/OZ/oz.in"} msg
+catch {eval exec "$ozsolvername $inputFN $workdir"} msg
 puts $msg
 
 if {$OZ(color_i) >= [llength $ozSQGraph(colorselection)]} {
@@ -57,8 +58,9 @@ incr OZ(symbol_i)
 puts "$color_n $symbol_n"
 create_ASCIIData SQdata
 set SQdata(InputFormat) xy
-read_Ascii "$sasfit(basedir)/plugins/OZ/S(Q).dat" SQdata
+read_Ascii "$workdir/S(Q).dat" SQdata
 #clearGraph_el ozSQGraph
+set ozSQGraph(x,type) arcsinh(x)
 Put_Graph_el ozSQGraph $SQdata(Q) $SQdata(I) $SQdata(DI) $SQdata(res)
 set ozSQGraph(e,linehide)  [lreplace $ozSQGraph(e,linehide)  $count_n  $count_n 1]
 set ozSQGraph(e,dashcolor) [lreplace $ozSQGraph(e,dashcolor) $count_n  $count_n $color_n]
@@ -69,8 +71,9 @@ RefreshGraph ozSQGraph
 
 create_ASCIIData crdata
 set crdata(InputFormat) xy
-read_Ascii "$sasfit(basedir)/plugins/OZ/c(r).dat" crdata
+read_Ascii "$workdir/c(r).dat" crdata
 #clearGraph_el ozcrGraph 
+set ozcrGraph(x,type) arcsinh(x)
 Put_Graph_el ozcrGraph $crdata(Q) $crdata(I) $SQdata(DI) $crdata(res)
 set ozcrGraph(e,linehide)  [lreplace $ozcrGraph(e,linehide)  $count_n  $count_n 1]
 set ozcrGraph(e,dashcolor) [lreplace $ozcrGraph(e,dashcolor) $count_n  $count_n $color_n]
@@ -81,8 +84,9 @@ RefreshGraph ozcrGraph
 
 create_ASCIIData grdata
 set grdata(InputFormat) xy
-read_Ascii "$sasfit(basedir)/plugins/OZ/g(r).dat" grdata
+read_Ascii "$workdir/g(r).dat" grdata
 #clearGraph_el ozgrGraph 
+set ozgrGraph(x,type) arcsinh(x)
 Put_Graph_el ozgrGraph $grdata(Q) $grdata(I) $grdata(DI) $grdata(res)
 set ozgrGraph(e,linehide)  [lreplace $ozgrGraph(e,linehide)  $count_n  $count_n 1]
 set ozgrGraph(e,dashcolor) [lreplace $ozgrGraph(e,dashcolor) $count_n  $count_n $color_n]
@@ -93,8 +97,9 @@ RefreshGraph ozgrGraph
 
 create_ASCIIData ubetadata
 set ubetadata(InputFormat) xy
-read_Ascii "$sasfit(basedir)/plugins/OZ/betaU(r).dat" ubetadata
+read_Ascii "$workdir/betaU(r).dat" ubetadata
 #clearGraph_el ozbetaUrGraph 
+set ozbetaUrGraph(x,type) arcsinh(x)
 Put_Graph_el ozbetaUrGraph $ubetadata(Q) $ubetadata(I) $ubetadata(DI) $ubetadata(res)
 set ozbetaUrGraph(e,linehide)  [lreplace $ozbetaUrGraph(e,linehide)  $count_n  $count_n 1]
 set ozbetaUrGraph(e,dashcolor) [lreplace $ozbetaUrGraph(e,dashcolor) $count_n  $count_n $color_n]
