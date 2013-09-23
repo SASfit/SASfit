@@ -164,7 +164,7 @@ add_library(sasfit SHARED
 target_link_libraries(sasfit
 	${TCL_STUB_LIBRARY}
 	${GSL_STATIC_LIBRARIES}
-	$(FFTW_LIBRARIES)
+	$(FFTW_STATIC_LIBRARIES)
 )
 
 # configure build flags, assumes gcc-style flags on all platforms

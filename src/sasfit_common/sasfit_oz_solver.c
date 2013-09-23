@@ -1,4 +1,3 @@
-/*
 #include "sasfit_oz_solver.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -230,17 +229,3 @@ double RY_sc(double alpha, void *params)
    return chicp-chivir;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
