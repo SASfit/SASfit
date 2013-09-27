@@ -122,6 +122,92 @@ proc ClearOZsolver {} {
     set OZ(plottedgraphs) 0
 }
 
+proc oz_input_names {} {
+	global OZ
+	switch $OZ(potential) {
+		HardSphere {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) ""
+			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		StickyHardSphere {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) tau
+			set OZ(p2,name) delta
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		SoftSphere {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		LennardJones {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		Depletion {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) "diam. (small)"
+			set OZ(p2,name) "phi (small)"
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		IonicMicrogel {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) Z
+			set OZ(p2,name) ed
+			set OZ(p3,name) kpi
+			set OZ(p4,name) epsilon
+			set OZ(p5,name) ""
+			}
+		PenetrableSphere {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		DLVO {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) kappa
+			set OZ(p2,name) Z
+			set OZ(p3,name) LB
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		"GGCM-n" {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) n
+			set OZ(p3,name) alpha
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+		default {
+			set OZ(p0,name) ""
+			set OZ(p1,name) ""
+			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			}
+	}
+}
+
 proc sasfit_OZ_solver {} {
     global sasfit ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph OZ
     set w .oztop
@@ -151,9 +237,9 @@ proc sasfit_OZ_solver {} {
     set w .oztop.interface
     label $w.param.cltext -text "closure relation:"
     label $w.param.pottext -text "potential:"
-    grid $w.param.cltext \
+    grid $w.param.cltext  -sticky e\
 	    -column 0 -row 0
-    grid $w.param.pottext \
+    grid $w.param.pottext  -sticky e\
 	    -column 0 -row 1
     ComboBox $w.param.clvalue \
 	    -values {PY HNC RY Verlet MS BPGG} \
@@ -161,28 +247,31 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.clvalue\
 	    -column 1 -row 0
     ComboBox $w.param.potvalue \
-	    -values {"HardSphere" "StickyHardSphere" "SoftSphere" "StarPolymer" "LennardJones" "Depletion" "IonicMicrogel"  } \
-	    -textvariable OZ(potential)
+	    -values {"HardSphere" "StickyHardSphere" "SoftSphere" "StarPolymer" \
+	    		"LennardJones" "Depletion" "IonicMicrogel"  \
+	    		"PenetrableSphere" "DLVO" "GGCM-n"} \
+	    -textvariable OZ(potential) \
+	    -modifycmd {oz_input_names}
     grid  $w.param.potvalue\
 	    -column 1 -row 1
 
-    label $w.param.v0text -text "p(1):"
-    label $w.param.v1text -text "p(2):"
-    label $w.param.v2text -text "p(3):"
-    label $w.param.v3text -text "p(4):"
-    label $w.param.v4text -text "p(5):"
-    label $w.param.v5text -text "p(6):"    
-    grid  $w.param.v0text\
+    label $w.param.v0text -anchor e -justify right -textvariable OZ(p0,name)
+    label $w.param.v1text -anchor e -justify right -textvariable OZ(p1,name)
+    label $w.param.v2text -anchor e -justify right -textvariable OZ(p2,name)
+    label $w.param.v3text -anchor e -justify right -textvariable OZ(p3,name)
+    label $w.param.v4text -anchor e -justify right -textvariable OZ(p4,name)
+    label $w.param.v5text -anchor e -justify right -textvariable OZ(p5,name)
+    grid  $w.param.v0text -sticky e\
 	    -column 0 -row 2  
-    grid  $w.param.v1text\
+    grid  $w.param.v1text -sticky e\
 	    -column 0 -row 3  
-    grid  $w.param.v2text\
+    grid  $w.param.v2text -sticky e\
 	    -column 0 -row 4  
-    grid  $w.param.v3text\
+    grid  $w.param.v3text -sticky e\
 	    -column 0 -row 5  
-    grid  $w.param.v4text\
+    grid  $w.param.v4text -sticky e\
 	    -column 0 -row 6  
-    grid  $w.param.v5text\
+    grid  $w.param.v5text -sticky e\
 	    -column 0 -row 7
 
     entry $w.param.v0value -textvariable OZ(p0)
@@ -208,9 +297,9 @@ proc sasfit_OZ_solver {} {
     entry $w.param.phivalue -textvariable OZ(phi)
     label $w.param.ttext -text "temperature \[K\]:"  
     entry $w.param.tvalue -textvariable OZ(T)
-    grid  $w.param.phitext\
+    grid  $w.param.phitext -sticky e\
 	    -column 0 -row 8
-    grid  $w.param.ttext\
+    grid  $w.param.ttext -sticky e\
 	    -column 0 -row 9
     grid  $w.param.phivalue\
 	    -column 1 -row 8
@@ -227,25 +316,25 @@ proc sasfit_OZ_solver {} {
     entry $w.param.relepsvalue -textvariable OZ(releps) 
     label $w.param.drdsigmatext -text "rel. grid step width:" 
     entry $w.param.drdsigmavalue -textvariable OZ(dr/dsigma)
-    grid  $w.param.gridtext\
+    grid  $w.param.gridtext -sticky e\
 	    -column 0 -row 10
-    grid  $w.param.mixtext\
+    grid  $w.param.mixtext -sticky e\
 	    -column 0 -row 11
-    grid  $w.param.ittext\
+    grid  $w.param.ittext -sticky e\
 	    -column 0 -row 12
-    grid  $w.param.relepstext\
+    grid  $w.param.relepstext -sticky e\
 	    -column 0 -row 13
-    grid  $w.param.drdsigmatext\
+    grid  $w.param.drdsigmatext -sticky e\
 	    -column 0 -row 14
-    grid  $w.param.gridvalue\
+    grid  $w.param.gridvalue \
 	    -column 1 -row 10
-    grid  $w.param.mixvalue\
+    grid  $w.param.mixvalue \
 	    -column 1 -row 11
-    grid  $w.param.itvalue\
+    grid  $w.param.itvalue \
 	    -column 1 -row 12
-    grid  $w.param.relepsvalue\
+    grid  $w.param.relepsvalue \
 	    -column 1 -row 13
-    grid  $w.param.drdsigmavalue\
+    grid  $w.param.drdsigmavalue \
 	    -column 1 -row 14
 #
 #  create "ozSQGraph"
