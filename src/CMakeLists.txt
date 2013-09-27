@@ -137,7 +137,7 @@ add_definitions(
 # get a list of all source files and prepare include dirs
 set(SRC_FILES "")
 set(SF_INC_DIRS "")
-foreach(SF_MODULE f2c sasfit_common sasfit_sd sasfit_sq sasfit_peaks sasfit_ff sasfit_core sasfit_old)
+foreach(SF_MODULE f2c sasfit_common sasfit_sd sasfit_sq sasfit_peaks sasfit_ff sasfit_core sasfit_old sasfit_oz)
 	if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
 		foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
 			list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")

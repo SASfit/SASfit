@@ -6,7 +6,13 @@
 #include "OZ_solver.h"
 #include "OZ_potentials.h"
 
-//Depletion potential:
+// Lennard Jones Potential:
+// http://en.wikipedia.org/wiki/Lennard-Jones_potential
+// Lennard-Jones, J. E. (1924),
+// "On the Determination of Molecular Fields",
+// Proc. R. Soc. Lond. A 106 (738): 463–477,
+// doi:10.1098/rspa.1924.0082
+
 #define sigma p[0] //Diameter of spheres in nm
 #define epsilon p[1] //  is the strength of the interaction in units of kb*T
 
