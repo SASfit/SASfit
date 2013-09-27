@@ -32,7 +32,7 @@ PROJECT_NAME           = SASfit
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 2013-09-24-ozsolver-cd1ed455795e
+PROJECT_NUMBER         = 2013-09-27-ozsolver-858ee798c7b4
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description 
 # for a project that appears at the top of each page and should give viewer 
