@@ -10,3 +10,7 @@ OZ_func_one_t U_Sticky_Hard_Sphere;
 OZ_func_one_t U_Soft_Sphere;
 OZ_func_one_t U_Hard_Sphere;
 OZ_func_one_t U_Lennard_Jones;
+OZ_func_one_t U_DLVO;
+OZ_func_one_t U_PSM;
+OZ_func_one_t U_GGCM_n;
+

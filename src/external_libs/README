@@ -1,7 +1,7 @@
 gsl:
 
-tar xvzf gsl-1.9.tar.gz
-cd gsl-1.9
+tar xvzf gsl-1.16.tar.gz
+cd gsl-1.16
 configure --disable-shared \
 [ --prefix=/where/to/install ] [CFLAGS=-fexceptions]
 make

@@ -3,15 +3,15 @@
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
  *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   21.9.2013
+ *   27.9.2013
  *
  */
 
-#include "OZ_solver.h"
+#include "include/sasfit_oz.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "OZ_potentials.h"
+#include "include/sasfit_oz_potentials.h"
 #include "fftw3.h"
 
 #define MAXPAR 16
@@ -103,6 +103,11 @@ int assign_pot(char *token, struct OZdata *OZD) {
     PotentialNames[9] = "IM";
     PotentialNames[10] = "Depletion";
     PotentialNames[11] = "D";
+    PotentialNames[12] = "LennardJones";
+    PotentialNames[13] = "LJ";
+    PotentialNames[13] = "DLVO";
+    PotentialNames[14] = "PSM";
+    PotentialNames[15] = "GGCM-n";
 
     i=0;
     eq=-1;
@@ -147,6 +152,21 @@ int assign_pot(char *token, struct OZdata *OZD) {
             break;
         case 11 :
             OZD->potential=&U_Depletion;
+            break;
+        case 12 :
+            OZD->potential=&U_Lennard_Jones;
+            break;
+        case 13 :
+            OZD->potential=&U_Lennard_Jones;
+            break;
+        case 14 :
+            OZD->potential=&U_DLVO;
+            break;
+        case 15 :
+            OZD->potential=&U_PSM;
+            break;
+        case 16 :
+            OZD->potential=&U_GGCM_n;
             break;
         default :
             OZD->potential=&U_Hard_Sphere;
