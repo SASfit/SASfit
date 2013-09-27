@@ -26,12 +26,14 @@ src/Findsasfit-sd.cmake
 src/Findsasfit-peaks.cmake 
 src/Findsasfit-sq.cmake 
 src/Findsasfit-ff.cmake 
+src/Findsasfit-oz.cmake 
 src/f2c 
 src/sasfit-common 
 src/sasfit-sd 
 src/sasfit-sq 
 src/sasfit-peaks 
 src/sasfit-ff
+src/sasfit-oz
 src/sasfit-core"
 
 if [ ! -f $LIST_FILE ];then

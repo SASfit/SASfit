@@ -363,6 +363,18 @@ set(SOURCE_sasfit_ff
 	sasfit_Pthirtynine.c
 )
 
+set(SOURCE_sasfit_oz
+	sasfit_oz_potential_hard_sphere.c
+	sasfit_oz_potential_sticky_hard_sphere.c
+	sasfit_oz_potential_soft_sphere.c
+	sasfit_oz_potential_lennard_jones.c
+	sasfit_oz_potential_ionic_microgel.c
+	sasfit_oz_potential_depletion.c
+	sasfit_oz_potential_PSM.c
+	sasfit_oz_potential_GGCM-n.c
+	sasfit_oz_potential_DLVO.c
+)
+
 set(SOURCE_sasfit_old
 # former sasfit main
 	bessi0.c
