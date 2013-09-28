@@ -370,9 +370,9 @@ set(SOURCE_sasfit_oz
 	sasfit_oz_potential_lennard_jones.c
 	sasfit_oz_potential_ionic_microgel.c
 	sasfit_oz_potential_depletion.c
-	sasfit_oz_potential_PSM.c
-	sasfit_oz_potential_GGCM-n.c
-	sasfit_oz_potential_DLVO.c
+	sasfit_oz_potential_psm.c
+	sasfit_oz_potential_ggcm-n.c
+	sasfit_oz_potential_dlvo.c
 )
 
 set(SOURCE_sasfit_old
