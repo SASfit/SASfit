@@ -3,8 +3,7 @@
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
  */
-#include "OZ_solver.h"
-#include "OZ_potentials.h"
+#include <sasfit_oz.h>
 
 //Depletion potential:
 #define sigma p[0] //Diameter of spheres in nm

@@ -66,6 +66,7 @@
 #include <sasfit_plugin.h>
 #include <sasfit_core.h>
 #include <sasfit_plugin_backend.h>
+#include <sasfit_oz.h>
 
 #define NRES 30
 #define n_percent 0.1
@@ -2303,6 +2304,8 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateObjCommand(interp, "sasfit_get_lib_suffix", (Tcl_ObjCmdProc*) sasfit_get_lib_suffix_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_load_plugin", (Tcl_ObjCmdProc*) sasfit_load_plugin_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_covar", (Tcl_ObjCmdProc*) sasfit_covar_cmd, (void *)SASFIT_CData, NULL);
+        // sasfit_oz commands
+	Tcl_CreateObjCommand(interp, "sasfit_oz_calc", (Tcl_ObjCmdProc*) sasfit_oz_calc_cmd, NULL, NULL);
 
 	// DLS
 	Tcl_CreateCommand(interp, "dls_CumulantFit", (Tcl_CmdProc*) DLS_CumulantFitCmd, NULL, NULL);

@@ -3,8 +3,7 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  *   Modified 17.09.2013
  */
-#include "OZ_solver.h"
-#include "OZ_potentials.h"
+#include <sasfit_oz.h>
 
 // Lennard Jones Potential:
 // http://en.wikipedia.org/wiki/Lennard-Jones_potential

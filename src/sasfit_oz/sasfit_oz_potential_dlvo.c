@@ -3,8 +3,7 @@
  *   Joachim Kohlbrecher(joachim.kohlbrecher@psi.ch)
  *   Modified 27.09.2013
  */
-#include "OZ_solver.h"
-#include "OZ_potentials.h"
+#include <sasfit_oz.h>
 
 // Derjaguin–Landau–Verwey–Overbeek (DLVO) potential.:
 // Condensed Matter Physics, 2005, Vol 8, No.1(41), pp 135-148

@@ -3,8 +3,7 @@
  *   Joachim Kohlbrecher(joachim.kohlbrecher@psi.ch)
  *   Modified 27.09.2013
  */
-#include "OZ_solver.h"
-#include "OZ_potentials.h"
+#include <sasfit_oz.h>
 
 // penetrable spherical model:
 // C.N. Likos, M. Watzlawek, H. Loewen, Phys. Rev. E 58 (1998) 3135.

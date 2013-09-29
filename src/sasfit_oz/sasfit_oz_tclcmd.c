@@ -4,21 +4,22 @@
  *   Modified 13.09.2013
  *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  *   27.9.2013
- *
+ *   Tcl Wrapper by Ingo Bressler (ingo.bressler@bam.de)
+ *   29.09.2013
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "include/sasfit_oz.h"
+#include <sasfit_oz.h>
 
-#define MAXPAR 16
+#define OZMAXPAR 16
 
 typedef char * string;
 
 //typedef double  OZ_pot (double, double *);
 
-int assign_closure(char *token, struct OZdata *OZD) {
+int assign_closure(char *token, sasfit_oz_data *OZD) {
     string ClosureNames[12];
     int i,eq;
     ClosureNames[0] = "Percus-Yevick";
@@ -86,7 +87,7 @@ int assign_closure(char *token, struct OZdata *OZD) {
     return 1;
 }
 
-int assign_pot(char *token, struct OZdata *OZD) {
+int assign_pot(char *token, sasfit_oz_data *OZD) {
     string PotentialNames[12];
     int i,eq;
     PotentialNames[0] = "HardSphere";
@@ -173,7 +174,7 @@ int assign_pot(char *token, struct OZdata *OZD) {
     return 1;
 }
 
-int read_input(char *FN, struct OZdata *OZD) {
+int read_input(char *FN, sasfit_oz_data *OZD) {
    FILE *Fid;
    int i,sstatus;
    double dtmp;
@@ -295,7 +296,7 @@ int read_input(char *FN, struct OZdata *OZD) {
         } else {
             i = 0;
             sstatus =1;
-            while (token !=NULL && i < MAXPAR && sstatus > 0) {
+            while (token !=NULL && i < OZMAXPAR && sstatus > 0) {
                 sstatus = sscanf(token,"%lf",&dtmp);
                 fprintf(stderr,"pPot[%d]: %g.\n",i,dtmp);fflush(stdout);fflush(stderr);
                 if (sstatus > 0) {
@@ -307,7 +308,7 @@ int read_input(char *FN, struct OZdata *OZD) {
         }
    } else {
         OZD->pPot[0]=1.0;
-        for (i=1;i<MAXPAR;i++) OZD->pPot[i]=0.0;
+        for (i=1;i<OZMAXPAR;i++) OZD->pPot[i]=0.0;
         fprintf(stderr,"set Ppot[0]=1\n");
    }
    OZD->dr=OZD->dr_dsigma*OZD->pPot[0];
@@ -363,8 +364,9 @@ void print_about(int argc, char *argv[]){
     fprintf(stderr,"0.3 	 // volume fraction phi from which the particle number density rho is calculated as rho=6*phi/(pi*pPot[0]^3)\n\n");fflush(stderr);
 }
 int main(int argc, char *argv[])
-{  struct OZdata OZD;
-   double pPot[MAXPAR];
+{
+   sasfit_oz_data OZD;
+   double pPot[OZMAXPAR];
    char sBuffer[1024];
    int i,status;
    FILE *SQid, *CRid, *GRid, *URid;
@@ -437,3 +439,13 @@ int main(int argc, char *argv[])
    OZ_free(&OZD);
    return 0;
 }
+
+int sasfit_oz_calc_cmd(ClientData clientData,
+                Tcl_Interp *interp,
+                int objc,
+                Tcl_Obj *CONST objv[])
+{
+        Tcl_SetObjResult(interp, Tcl_NewIntObj(sasfit_get_maxpar()));
+        return TCL_OK;
+}
+
