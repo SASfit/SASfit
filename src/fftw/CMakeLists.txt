@@ -46,6 +46,10 @@ if(WIN32)
     #    --enable-portable-binary
     )
 endif()
+if(UNIX AND ${CMAKE_SIZEOF_VOID_P} EQUAL 8) # check for 64bit Linux
+    # required for static builds on 64bit
+    list(APPEND CONFIG_ARGS --with-pic)
+endif()
 
 message(STATUS "with options: '${CONFIG_ARGS}'")
 execute_process(COMMAND sh configure ${CONFIG_ARGS}
