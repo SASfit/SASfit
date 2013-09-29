@@ -6,10 +6,9 @@
  *   21.9.2013
  *
  */
-#include "OZ_solver.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "fftw3.h"
+#include <sasfit_oz.h>
 
 #define NP  OZd->Npoints
 #define EN  OZd->En
@@ -44,7 +43,7 @@
 
 // Initialization of memory needed for computation
 
-void OZ_init(struct OZdata *OZd) {
+void OZ_init(sasfit_oz_data *OZd) {
    double *tp;
    int i;
    OZd->beta=1/(kb*T);
@@ -92,7 +91,7 @@ double extrapolate (double x1,double x2, double x3, double y1, double y2,double 
 }
 
 //Calling OZ_solver and generating output
-void OZ_calculation (struct OZdata *OZd) {
+void OZ_calculation (sasfit_oz_data *OZd) {
   if (CLOSURE==RY || CLOSURE==BPGG) {
         printf("Root finding\n");
         root_finding(OZd);
@@ -105,7 +104,7 @@ void OZ_calculation (struct OZdata *OZd) {
 
 // Iterative solution of Ornstein-Zernike equation
 
-void OZ_solver (struct OZdata *OZd)
+void OZ_solver (sasfit_oz_data *OZd)
 {
     double  e, ro, dk, Sm, Norm, Normold,V;
     int i,j;
@@ -201,7 +200,7 @@ OZd->dq=dk;
 
 //Routine for calculation derivative from pair potential
 
-void OZ_pot_der(struct OZdata *OZd)
+void OZ_pot_der(sasfit_oz_data *OZd)
 {  int n;
 
     if (U(r[0],T,PARAM)==GSL_POSINF && U(r[1],T,PARAM)==GSL_POSINF) {
@@ -238,14 +237,14 @@ void OZ_pot_der(struct OZdata *OZd)
 //Routine for calculation the difference between compressibilities determined by virial and compressibility routes
 
 double compressibility_calc(double scp, void *params)
-{    struct  OZdata *OZd;
+{    sasfit_oz_data *OZd;
      int i;
      double iphi;
      double S0, chicp, chivir,r1,r2,r3,P2,P3, sum2,sum3;
      sum2=0;
      sum3=0;
 
-   OZd = (struct  OZdata *) params;
+   OZd = (sasfit_oz_data *) params;
    if (CLOSURE==RY) ALPHA=scp;
    if (CLOSURE==BPGG)  sBPGG=scp;
 
@@ -307,7 +306,7 @@ double compressibility_calc(double scp, void *params)
 
 //Routine to minimize the difference between two compressibilities
 
-   void root_finding (struct OZdata *OZd)
+   void root_finding (sasfit_oz_data *OZd)
    {   int signchange,i;
        double refnew, refold, alpha_left, alpha_right, scp_inter;
        refold=0;
@@ -400,7 +399,7 @@ double compressibility_calc(double scp, void *params)
    }
 
 //Release of memory used for computation
-void OZ_free (struct OZdata *OZd) {
+void OZ_free (sasfit_oz_data *OZd) {
     free(r);
     free(k);
     free(EN);

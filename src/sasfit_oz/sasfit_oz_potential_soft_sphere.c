@@ -5,8 +5,8 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  *   16.09.2013
  */
-#include "OZ_solver.h"
-#include "OZ_potentials.h"
+#include <sasfit_oz.h>
+
 //Soft sphere potential:
 #define sigma p[0] // Diameter of spheres in nm
 #define EPSILON p[1] // Hertz potential strength - unitless

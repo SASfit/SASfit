@@ -52,42 +52,51 @@ Output variables:
 #define HugePosValue GSL_POSINF
 #define HugeNegValue GSL_NEGINF
 #define kb GSL_CONST_MKSA_BOLTZMANN
+#include <fftw3.h>
 
-#include "fftw3.h"
+#include "sasfit_oz_tclcmd.h"
+#include "sasfit_oz_potentials.h"
+
+typedef enum {
+        PY,
+        HNC,
+        RY,
+        Verlet,
+        MS,
+        BPGG
+} sasfit_oz_closure;
+
+typedef struct {
+        double *r, *k, *En, *G, *g, *c, *cf, *cfold, *cfnew, *Gf, *f, *S, *ud;
+        double dr, dq, dr_dsigma;
+        double Sq0, gr0, cr0;
+        double T;
+        int    it;
+        double beta;
+        int    Npoints;
+        double mixcoeff;
+        int    maxsteps;
+        double relerror;
+        double alpha;
+        double sBPGG;
+        double phi;
+        double *pPot;
+        double *ubeta;
+        sasfit_oz_closure cl;
+        OZ_func_one_t * potential;
+        double *in, *out;
+        fftw_plan pl;
+} sasfit_oz_data;
+
+void OZ_init (sasfit_oz_data *);
+void OZ_calculation (sasfit_oz_data *);
+void OZ_solver (sasfit_oz_data *);
+void OZ_init (sasfit_oz_data *);
+void OZ_free (sasfit_oz_data *);
+double extrapolate (double x1, double x2, double x3, double y1, double y2, double y3);
+void OZ_pot_der (sasfit_oz_data *);
+double compressibility_calc (double alpha, void * params);
+void root_finding (sasfit_oz_data *);
 
 
-enum closure {PY, HNC, RY, Verlet, MS, BPGG};
-typedef double  OZ_func_one_t (double, double, double *);
-
-struct OZdata { double *r, *k, *En, *G, *g, *c, *cf,*cfold,*cfnew, *Gf,*f,*S,*ud;
-                double dr, dq, dr_dsigma;
-                double Sq0, gr0, cr0;
-                double T;
-                int it;
-                double beta;
-                int Npoints;
-                double mixcoeff;
-                int maxsteps;
-                double relerror;
-                double alpha;
-                double sBPGG;
-                double phi;
-                double *pPot;
-                double *ubeta;
-                enum closure cl;
-                double (*potential)();
-                double *in, *out;
-                fftw_plan pl;
-              };
-void OZ_init(struct OZdata *);
-void OZ_calculation (struct OZdata *);
-void OZ_solver (struct OZdata *);
-void OZ_init (struct OZdata *);
-void OZ_free (struct OZdata *);
-double extrapolate(double x1,double x2, double x3, double y1, double y2,double y3);
-void OZ_pot_der(struct OZdata *);
-double compressibility_calc(double alpha,  void *params);
-void root_finding(struct OZdata *);
-
-
- //Modified 13.09.2013
+//Modified 13.09.2013
