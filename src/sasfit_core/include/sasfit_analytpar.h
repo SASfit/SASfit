@@ -180,6 +180,10 @@ int get_AP(Tcl_Interp       *interp,
  */
 int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[]);
 
+Tcl_Obj * sasfit_tcl_get_obj(Tcl_Interp * interp,
+                             const char * name1,
+                             const char * name2);
+
 /**
  * Gets a single value of type \e int from Tcl environment.
  * \param interp Current Tcl interpreter.
