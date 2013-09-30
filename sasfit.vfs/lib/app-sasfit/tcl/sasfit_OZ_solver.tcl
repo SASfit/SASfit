@@ -21,94 +21,63 @@
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 
 proc StartOZsolver {} {
-global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
-puts "Start OZ Solver"
-set workdir "$sasfit(basedir)/plugins/OZ"
-set ozsolvername "$workdir/sasfit_oz.exe"
-set inputFN $workdir/oz.in
-set inputOZ [open  "$workdir/oz.in" "w"]
-puts  $inputOZ  "[expr  int($OZ(1024)*$OZ(mult))] \t// grid length"
-puts  $inputOZ  "$OZ(maxit) \t// maximum number of iterations"
-puts  $inputOZ  "$OZ(releps) \t// relative iteration precision"
-puts  $inputOZ  "$OZ(dr/dsigma) \t// relative grid width in fraction of the diameter pPot\[0\]"
-puts  $inputOZ  "$OZ(mix) \t// mixing coefficient"
-puts  $inputOZ  "$OZ(closure) \t// Percus-Yevick, PY, hypernetted-chain, HNC, Rogers-Young, RY, Verlet, V, Martynov-Sarkisov, MS, Ballone-Pastore-Galli-Gazzillo, BPGG"
-puts  $inputOZ  "$OZ(potential) \t// Potential : HardSphere, HS, StickyHardSphere, SHS, SoftSphere, LennardJones, LJ, IonicMicrogel, IM, Depletion, D"
-puts  $inputOZ  "$OZ(p0) $OZ(p1) $OZ(p2) $OZ(p3) $OZ(p4) $OZ(p5) \t// input parameter for potential pPot\[\]"
-puts  $inputOZ  "$OZ(T) \t// temperature in K"
-puts  $inputOZ  "$OZ(phi) \t// volume fraction phi from which the particle number density rho is calculated as rho=6*phi/(pi*pPot\[0\]^3)"
-close $inputOZ
-puts "exec $ozsolvername  C:/user/OZ/sasfit_oz/oz.in"
-cd $workdir
-catch {eval exec "$ozsolvername $inputFN $workdir"} msg
-puts $msg
+        global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
+        puts "Start OZ Solver"
+        sasfit_oz_calc OZ
 
-if {$OZ(color_i) >= [llength $ozSQGraph(colorselection)]} {
-    set OZ(color_i) 0
-    incr OZ(symbol_i)
-    if {$OZ(symbol_i) >= [llength $OZSQGraph(symbolselection)]} {set $OZ(symbol_i) 0}
-}
-set color_n  [lindex $ozSQGraph(colorselection)  $OZ(color_i)]
-set symbol_n [lindex $ozSQGraph(symbolselection) $OZ(symbol_i)]
-set count_n  $OZ(plottedgraphs)
+        if {$OZ(color_i) >= [llength $ozSQGraph(colorselection)]} {
+            set OZ(color_i) 0
+            incr OZ(symbol_i)
+            if {$OZ(symbol_i) >= [llength $OZSQGraph(symbolselection)]} {set $OZ(symbol_i) 0}
+        }
+        set color_n  [lindex $ozSQGraph(colorselection)  $OZ(color_i)]
+        set symbol_n [lindex $ozSQGraph(symbolselection) $OZ(symbol_i)]
+        set count_n  $OZ(plottedgraphs)
 
-incr OZ(color_i)
-incr OZ(symbol_i)
+        incr OZ(color_i)
+        incr OZ(symbol_i)
 
-puts "$color_n $symbol_n"
-create_ASCIIData SQdata
-set SQdata(InputFormat) xy
-read_Ascii "$workdir/S(Q).dat" SQdata
-#clearGraph_el ozSQGraph
-set ozSQGraph(x,type) arcsinh(x)
-Put_Graph_el ozSQGraph $SQdata(Q) $SQdata(I) $SQdata(DI) $SQdata(res)
-set ozSQGraph(e,linehide)  [lreplace $ozSQGraph(e,linehide)  $count_n  $count_n 1]
-set ozSQGraph(e,dashcolor) [lreplace $ozSQGraph(e,dashcolor) $count_n  $count_n $color_n]
-set ozSQGraph(e,fill)      [lreplace $ozSQGraph(e,fill)      $count_n  $count_n $color_n]
-set ozSQGraph(e,outline)   [lreplace $ozSQGraph(e,outline)   $count_n  $count_n $color_n]
-set ozSQGraph(e,symbol)    [lreplace $ozSQGraph(e,symbol)    $count_n  $count_n $symbol_n]
-RefreshGraph ozSQGraph
+        #clearGraph_el ozSQGraph
+        set ozSQGraph(x,type) arcsinh(x)
+        Put_Graph_el ozSQGraph $OZ(res,s,x) $OZ(res,s,y)
+        set ozSQGraph(e,linehide)  [lreplace $ozSQGraph(e,linehide)  $count_n  $count_n 1]
+        set ozSQGraph(e,dashcolor) [lreplace $ozSQGraph(e,dashcolor) $count_n  $count_n $color_n]
+        set ozSQGraph(e,fill)      [lreplace $ozSQGraph(e,fill)      $count_n  $count_n $color_n]
+        set ozSQGraph(e,outline)   [lreplace $ozSQGraph(e,outline)   $count_n  $count_n $color_n]
+        set ozSQGraph(e,symbol)    [lreplace $ozSQGraph(e,symbol)    $count_n  $count_n $symbol_n]
+        RefreshGraph ozSQGraph
 
-create_ASCIIData crdata
-set crdata(InputFormat) xy
-read_Ascii "$workdir/c(r).dat" crdata
-#clearGraph_el ozcrGraph 
-set ozcrGraph(x,type) arcsinh(x)
-Put_Graph_el ozcrGraph $crdata(Q) $crdata(I) $SQdata(DI) $crdata(res)
-set ozcrGraph(e,linehide)  [lreplace $ozcrGraph(e,linehide)  $count_n  $count_n 1]
-set ozcrGraph(e,dashcolor) [lreplace $ozcrGraph(e,dashcolor) $count_n  $count_n $color_n]
-set ozcrGraph(e,fill)      [lreplace $ozcrGraph(e,fill)      $count_n  $count_n $color_n]
-set ozcrGraph(e,outline)   [lreplace $ozcrGraph(e,outline)   $count_n  $count_n $color_n]
-set ozcrGraph(e,symbol)    [lreplace $ozcrGraph(e,symbol)    $count_n  $count_n $symbol_n]
-RefreshGraph ozcrGraph
+        #clearGraph_el ozcrGraph 
+        set ozcrGraph(x,type) arcsinh(x)
+        Put_Graph_el ozcrGraph $OZ(res,c,x) $OZ(res,c,y)
+        set ozcrGraph(e,linehide)  [lreplace $ozcrGraph(e,linehide)  $count_n  $count_n 1]
+        set ozcrGraph(e,dashcolor) [lreplace $ozcrGraph(e,dashcolor) $count_n  $count_n $color_n]
+        set ozcrGraph(e,fill)      [lreplace $ozcrGraph(e,fill)      $count_n  $count_n $color_n]
+        set ozcrGraph(e,outline)   [lreplace $ozcrGraph(e,outline)   $count_n  $count_n $color_n]
+        set ozcrGraph(e,symbol)    [lreplace $ozcrGraph(e,symbol)    $count_n  $count_n $symbol_n]
+        RefreshGraph ozcrGraph
 
-create_ASCIIData grdata
-set grdata(InputFormat) xy
-read_Ascii "$workdir/g(r).dat" grdata
-#clearGraph_el ozgrGraph 
-set ozgrGraph(x,type) arcsinh(x)
-Put_Graph_el ozgrGraph $grdata(Q) $grdata(I) $grdata(DI) $grdata(res)
-set ozgrGraph(e,linehide)  [lreplace $ozgrGraph(e,linehide)  $count_n  $count_n 1]
-set ozgrGraph(e,dashcolor) [lreplace $ozgrGraph(e,dashcolor) $count_n  $count_n $color_n]
-set ozgrGraph(e,fill)      [lreplace $ozgrGraph(e,fill)      $count_n  $count_n $color_n]
-set ozgrGraph(e,outline)   [lreplace $ozgrGraph(e,outline)   $count_n  $count_n $color_n]
-set ozgrGraph(e,symbol)    [lreplace $ozgrGraph(e,symbol)    $count_n  $count_n $symbol_n]
-RefreshGraph ozgrGraph
+        #clearGraph_el ozgrGraph 
+        set ozgrGraph(x,type) arcsinh(x)
+        Put_Graph_el ozgrGraph $OZ(res,g,x) $OZ(res,g,y)
+        set ozgrGraph(e,linehide)  [lreplace $ozgrGraph(e,linehide)  $count_n  $count_n 1]
+        set ozgrGraph(e,dashcolor) [lreplace $ozgrGraph(e,dashcolor) $count_n  $count_n $color_n]
+        set ozgrGraph(e,fill)      [lreplace $ozgrGraph(e,fill)      $count_n  $count_n $color_n]
+        set ozgrGraph(e,outline)   [lreplace $ozgrGraph(e,outline)   $count_n  $count_n $color_n]
+        set ozgrGraph(e,symbol)    [lreplace $ozgrGraph(e,symbol)    $count_n  $count_n $symbol_n]
+        RefreshGraph ozgrGraph
 
-create_ASCIIData ubetadata
-set ubetadata(InputFormat) xy
-read_Ascii "$workdir/betaU(r).dat" ubetadata
-#clearGraph_el ozbetaUrGraph 
-set ozbetaUrGraph(x,type) arcsinh(x)
-Put_Graph_el ozbetaUrGraph $ubetadata(Q) $ubetadata(I) $ubetadata(DI) $ubetadata(res)
-set ozbetaUrGraph(e,linehide)  [lreplace $ozbetaUrGraph(e,linehide)  $count_n  $count_n 1]
-set ozbetaUrGraph(e,dashcolor) [lreplace $ozbetaUrGraph(e,dashcolor) $count_n  $count_n $color_n]
-set ozbetaUrGraph(e,fill)      [lreplace $ozbetaUrGraph(e,fill)      $count_n  $count_n $color_n]
-set ozbetaUrGraph(e,outline)   [lreplace $ozbetaUrGraph(e,outline)   $count_n  $count_n $color_n]
-set ozbetaUrGraph(e,symbol)    [lreplace $ozbetaUrGraph(e,symbol)    $count_n  $count_n $symbol_n]
-RefreshGraph ozbetaUrGraph
+        #clearGraph_el ozbetaUrGraph 
+        set ozbetaUrGraph(x,type) arcsinh(x)
+        Put_Graph_el ozbetaUrGraph $OZ(res,u,x) $OZ(res,u,y)
+        set ozbetaUrGraph(e,linehide)  [lreplace $ozbetaUrGraph(e,linehide)  $count_n  $count_n 1]
+        set ozbetaUrGraph(e,dashcolor) [lreplace $ozbetaUrGraph(e,dashcolor) $count_n  $count_n $color_n]
+        set ozbetaUrGraph(e,fill)      [lreplace $ozbetaUrGraph(e,fill)      $count_n  $count_n $color_n]
+        set ozbetaUrGraph(e,outline)   [lreplace $ozbetaUrGraph(e,outline)   $count_n  $count_n $color_n]
+        set ozbetaUrGraph(e,symbol)    [lreplace $ozbetaUrGraph(e,symbol)    $count_n  $count_n $symbol_n]
+        RefreshGraph ozbetaUrGraph
 
-incr  OZ(plottedgraphs)
+        incr  OZ(plottedgraphs)
 }
 
 proc ClearOZsolver {} {
@@ -348,7 +317,7 @@ proc sasfit_OZ_solver {} {
     set ozSQGraph(x,type)     x
     set ozSQGraph(y,type)     y
     set ozSQGraph(x,title) "Q / nm^-1"
-    set ozSQGraph(y,title) "S(Q))"
+    set ozSQGraph(y,title) "S(Q)"
     pack $ozSQGraph(w) -in .oztop.tab.sq
     pack configure $ozSQGraph(w) -fill both -expand yes
 
