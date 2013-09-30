@@ -178,7 +178,7 @@ target_link_libraries(sasfit
 
 # configure build flags, assumes gcc-style flags on all platforms
 #sasfit_build_props_unix(sasfit "-save-temps")
-set(COMPILE_FLAGS)
+set(COMPILE_FLAGS -std=gnu99)
 if(UNIX)
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall")
 endif(UNIX)
