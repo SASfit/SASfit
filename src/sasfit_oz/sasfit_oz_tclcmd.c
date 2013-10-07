@@ -91,7 +91,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
-    const char * PotentialNames[12];
+    const char * PotentialNames[16];
     int i,eq;
     if (!token || !OZD) return 0;
     PotentialNames[0] = "HardSphere";
@@ -114,7 +114,7 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
 
     i=0;
     eq=-1;
-    while (i<12 && eq != 0) {
+    while (i<16 && eq != 0) {
         eq = strcmp(token,PotentialNames[i]);
         i++;
     }
@@ -185,12 +185,16 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 int objc,
                 Tcl_Obj *CONST objv[])
 {
+    int i=0;
+    char paramName[4];
+    double tmp;
+    double pPot[OZMAXPAR];
+        // init target data structure
+        sasfit_oz_data ozd;
+
         if ( objc < 2 ) return TCL_OK;
         Tcl_Obj * oz_obj = objv[1];
         const char * ozname = Tcl_GetStringFromObj(oz_obj, 0);
-        // init target data structure
-        sasfit_oz_data ozd;
-        double pPot[OZMAXPAR];
         ozd.pPot = pPot;
 
         // get input parameters from Tcl Interpreter
@@ -221,25 +225,26 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         if (!GET_TCL(double, &ozd.mixcoeff, "mix")) {
                 ozd.mixcoeff = 1;
         }
-        PUTS("The mixing coefficient alpha for weighting new and old c(r) "
-             "will be set to %f. "
-             "c_next(r) = alpha*c_new(r)+(1-alpha)c_old(r)\n", ozd.mixcoeff);
+        PUTS("The mixing coefficient alpha for weighting new and old c(r)\n",
+             "will be set to %f.\n",
+             "c_next(r) = alpha*c_new(r)+(1-alpha)c_old(r)\n",ozd.mixcoeff);
 
         assign_closure(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "closure"), 0),
                        &ozd);
         assign_pot(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "potential"), 0),
                    &ozd);
 
-        char paramName[4];
-        for (int i = 0; i < OZMAXPAR; i++)
-        {
-                sprintf(paramName, "p%d", i);
-                if (!GET_TCL(double, &ozd.pPot[i], paramName)) {
-                        if (i == 0) ozd.pPot[i] = 1.0;
-                        else        ozd.pPot[i] = 0.0;
+        for (i = 0; i < OZMAXPAR; i++) {
+            sprintf(paramName, "p%d", i);
+            if (!GET_TCL(double, &ozd.pPot[i], paramName)) {
+                if (i == 0) {
+                    ozd.pPot[i] = 1.0;
+                } else {
+                    ozd.pPot[i] = 0.0;
                 }
-                ozd.mixcoeff = 1;
-                PUTS("param %d: %f\n", i, ozd.pPot[i]);
+            }
+ //             ozd.mixcoeff = 1;
+            PUTS("param %d: %f\n", i, ozd.pPot[i]);
         }
         ozd.dr = ozd.dr_dsigma * ozd.pPot[0];
 

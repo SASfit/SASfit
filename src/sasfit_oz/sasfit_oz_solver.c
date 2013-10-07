@@ -109,8 +109,8 @@ void OZ_solver (sasfit_oz_data *OZd)
     double  e, ro, dk, Sm, Norm, Normold,V;
     int i,j;
     Normold=1;
-    ro=6*PHI/(Pi*pow(PARAM[0],3));
-    dk = Pi/((NP+1)*dr);
+    ro=6*PHI/(M_PI*pow(PARAM[0],3));
+    dk = M_PI/((NP+1.0)*dr);
     r[0]=dr;
     k[0]=dk;
 

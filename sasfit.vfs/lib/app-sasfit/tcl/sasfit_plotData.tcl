@@ -182,7 +182,36 @@ proc Put_Graph_el {GraphPar xdata args } {
 			lappend resdata 0.0
 		}
 	}
+#
+# check if all entries are numbers
+#
 
+	set tx {}
+	set ty {}
+	set tdy {}
+	set tr {}
+	foreach x $xdata y $ydata dy $dydata r $resdata {
+	    if {[catch {expr $x}]==0 &&
+                [catch {expr $y}]==0 &&
+                [catch {expr $dy}]==0 &&
+                [catch {expr $r}]==0 
+	       } {
+		   lappend tx $x
+		   lappend ty $y
+		   lappend tdy $dy
+		   lappend tr $r
+	       } else {
+# puts "$x $y"
+	       }
+	}
+	set xdata $tx
+	set ydata $ty
+	set dydata $tdy
+	set resdata $tr
+
+#
+# multiplying with prefactor
+#
 	set Par(x,factor) [expr abs($Par(x,factor))]
 	set Par(y,factor) [expr abs($Par(y,factor))]
 	if {$Par(y,factor) != 1.0} {

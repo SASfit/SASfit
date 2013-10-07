@@ -282,6 +282,22 @@ set OZ(gridlength) [expr int($OZ(1024)*$OZ(mult))]
 set OZ(plottedgraphs) 0
 set OZ(symbol_i) 0
 set OZ(color_i) 0
+set OZ(p0,name) diameter
+set OZ(p1,name) ""
+set OZ(p2,name) ""
+set OZ(p3,name) ""
+set OZ(p4,name) ""
+set OZ(p5,name) ""
+set OZ(p6,name) ""
+set OZ(p7,name) ""
+set OZ(p8,name) ""
+set OZ(p9,name) ""
+set OZ(p10,name) ""
+set OZ(p11,name) ""
+set OZ(p12,name) ""
+set OZ(p13,name) ""
+set OZ(p14,name) ""
+set OZ(p15,name) ""
 global OZ
 
 set sasfit(sim,Qmin) 1e-2
