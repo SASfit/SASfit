@@ -1,0 +1,143 @@
+<html><head>
+<title>math - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/math.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: math.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ math.n
+   -->
+
+<body>
+<h1> math(n) 1.2.3 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math - Tcl Math Library
+<! -- -*- tcl -*- doctools manpage
+   -->
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>math ?1.2.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::cov</b> <i class='arg'>value</i> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::integrate</b> <i class='arg'>list of xy value pairs</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::fibonacci</b> <i class='arg'>n</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::max</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::mean</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::min</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::product</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::random</b> ?<i class='arg'>value1</i>? ?<i class='arg'>value2</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::sigma</b> <i class='arg'>value</i> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::stats</b> <i class='arg'>value</i> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::math::sum</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>math</strong> package provides utility math functions.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::cov</b> <i class='arg'>value</i> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the coefficient of variation expressed as percent of two or
+more numeric values.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::math::integrate</b> <i class='arg'>list of xy value pairs</i></a><dd>
+
+
+Return the area under a &quot;curve&quot; defined by a set of x,y pairs and the
+error bound as a list.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::math::fibonacci</b> <i class='arg'>n</i></a><dd>
+
+
+Return the <i class='arg'>n</i>'th Fibonacci number.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::math::max</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the maximum of one or more numeric values.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::math::mean</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the mean, or &quot;average&quot; of one or more numeric values.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::math::min</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the minimum of one or more numeric values.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::math::product</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the product of one or more numeric values.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::math::random</b> ?<i class='arg'>value1</i>? ?<i class='arg'>value2</i>?</a><dd>
+
+
+Return a random number.  If no arguments are given, the number is a
+floating point value between 0 and 1.  If one argument is given, the
+number is an integer value between 0 and <i class='arg'>value1</i>.  If two
+arguments are given, the number is an integer value between
+
+<i class='arg'>value1</i> and <i class='arg'>value2</i>.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::math::sigma</b> <i class='arg'>value</i> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the population standard deviation of two or more numeric
+values.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::math::stats</b> <i class='arg'>value</i> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the mean, standard deviation, and coefficient of variation (as
+percent) as a list.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::math::sum</b> <i class='arg'>value</i> ?<i class='arg'>value ...</i>?</a><dd>
+
+
+Return the sum of one or more numeric values.
+
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+math, statistics
+</body></html>

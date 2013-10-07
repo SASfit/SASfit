@@ -1,0 +1,505 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>doctools::toc - Documentation tools </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/doctools/doctoc.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2003-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: doctoc.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ doctools::toc.n
+   -->
+
+<body>
+<h1> doctools::toc(n) 0.2.1 doctools &quot;Documentation tools&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> doctools::toc - Create and manipulate doctoc converter objects
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#public_api">PUBLIC API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#package_commands">PACKAGE COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#object_command">OBJECT COMMAND</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#object_methods">OBJECT METHODS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#object_configuration">OBJECT CONFIGURATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#format_mapping">FORMAT MAPPING</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#predefined_engines">PREDEFINED ENGINES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>doctools::toc ?0.2.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::doctools::toc::new</b> <i class='arg'>objectName</i> ?<strong>-option</strong> <i class='arg'>value</i> ...?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::doctools::toc::help</b> </a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::doctools::toc::search</b> <i class='arg'>path</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>objectName</b> <strong>method</strong> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>objectName</i> <strong>configure</strong></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>objectName</i> <strong>configure</strong> <i class='arg'>option</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>objectName</i> <strong>configure</strong> <strong>-option</strong> <i class='arg'>value</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>objectName</i> <strong>cget</strong> <strong>-option</strong></a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>objectName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>objectName</i> <strong>format</strong> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>objectName</i> <strong>map</strong> <i class='arg'>symbolic</i> <i class='arg'>actual</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>objectName</i> <strong>parameters</strong></a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>objectName</i> <strong>search</strong> <i class='arg'>path</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>objectName</i> <strong>setparam</strong> <i class='arg'>name</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>objectName</i> <strong>warnings</strong></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides objects for the conversion of text written in
+the <em>doctoc</em> format into any output format X, assuming that a
+formatting engine for X is available.
+
+<p>
+
+This document has two companions.
+
+The first, <em>doctoc_fmt</em>, is the formal specification of the
+<em>doctoc</em> format; the other, <em>doctoc_api</em>, is the formal
+specification of the interface between the objects provided here and
+the formatting engines they require.
+
+
+<h2><a name="public_api">PUBLIC API</a></h2>
+<p>
+<h3><a name="package_commands">PACKAGE COMMANDS</a></h3>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::doctools::toc::new</b> <i class='arg'>objectName</i> ?<strong>-option</strong> <i class='arg'>value</i> ...?</a><dd>
+
+
+This command creates a new doctoc object with an associated Tcl
+command whose name is <i class='arg'>objectName</i>. This <em>object</em> command is
+explained in full detail in the sections <a href="#object_command">OBJECT COMMAND</a>
+and <a href="#object_methods">OBJECT METHODS</a>. The object command will be created
+under the current namespace if the <i class='arg'>objectName</i> is not fully
+qualified, and in the specified namespace otherwise.
+
+<br><br>
+
+The options and their values coming after the name of the object are
+used to set the initial configuration of the object.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::doctools::toc::help</b> </a><dd>
+
+
+This is a convenience command for applications wishing to provide
+their user with a short description of the available formatting
+commands and their meanings. It returns a string containing a standard
+help text.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::doctools::toc::search</b> <i class='arg'>path</i></a><dd>
+
+
+Whenever an object created by this the package has to map the name of
+a format to the file containing the code for its formatting engine it
+will search for the file in a number of directories stored in a
+list. See section <a href="#format_mapping">FORMAT MAPPING</a> for more explanations.
+
+<br><br>
+
+This list not only contains three default directories which are
+declared by the package itself, but is also extensible user of the
+package.
+
+This command is the means to do so. When given a <i class='arg'>path</i> to an
+existing and readable directory it will prepend that directory to the
+list of directories to search. This means that the <i class='arg'>path</i> added
+last is later searched through first.
+
+<br><br>
+
+An error will be thrown if the <i class='arg'>path</i> either does not exist, is
+not a directory, or is not readable.
+
+</dl>
+
+
+<h3><a name="object_command">OBJECT COMMAND</a></h3>
+<p>
+
+All commands created by <b class='cmd'>::doctools::toc::new</b> have the following
+general form and may be used to invoke various operations on their
+doctoc converter object.
+
+<dl>
+
+<dt><a name="4"><b class='cmd'>objectName</b> <strong>method</strong> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+The method <strong>method</strong> and its <i class='arg'>arg</i>'uments determine the exact
+behavior of the command. See section <a href="#object_methods">OBJECT METHODS</a> for
+the detailed specifications.
+
+</dl>
+
+
+<h3><a name="object_methods">OBJECT METHODS</a></h3>
+<p>
+
+<dl>
+
+<dt><a name="5"><i class='arg'>objectName</i> <strong>configure</strong></a><dd>
+
+
+The method returns a list of all known options and their current
+values when called without any arguments.
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>objectName</i> <strong>configure</strong> <i class='arg'>option</i></a><dd>
+
+
+The method behaves like the method <strong>cget</strong> when called with a
+single argument and returns the value of the option specified by said
+argument.
+
+
+<br><br>
+<dt><a name="7"><i class='arg'>objectName</i> <strong>configure</strong> <strong>-option</strong> <i class='arg'>value</i>...</a><dd>
+
+
+The method reconfigures the specified <strong>option</strong>s of the object,
+setting them to the associated <i class='arg'>value</i>s, when called with an even
+number of arguments, at least two.
+
+<br><br>
+
+The legal options are described in the section
+<a href="#object_configuration">OBJECT CONFIGURATION</a>.
+
+
+<br><br>
+<dt><a name="8"><i class='arg'>objectName</i> <strong>cget</strong> <strong>-option</strong></a><dd>
+
+
+This method expects a legal configuration option as argument and will
+return the current value of that option for the object the method was
+invoked for.
+
+<br><br>
+
+The legal configuration options are described in section
+<a href="#object_configuration">OBJECT CONFIGURATION</a>.
+
+
+<br><br>
+<dt><a name="9"><i class='arg'>objectName</i> <strong>destroy</strong></a><dd>
+
+
+This method destroys the object it is invoked for.
+
+
+<br><br>
+<dt><a name="10"><i class='arg'>objectName</i> <strong>format</strong> <i class='arg'>text</i></a><dd>
+
+
+This method runs the <i class='arg'>text</i> through the configured formatting
+engine and returns the generated string as its result. An error will
+be thrown if no <strong>-format</strong> was configured for the object.
+
+<br><br>
+
+The method assumes that the <i class='arg'>text</i> is in <em>doctoc</em> format as
+specified in the companion document <em>doctoc_fmt</em>. Errors will be
+thrown otherwise.
+
+
+<br><br>
+<dt><a name="11"><i class='arg'>objectName</i> <strong>map</strong> <i class='arg'>symbolic</i> <i class='arg'>actual</i></a><dd>
+
+
+This methods add one entry to the per-object mapping from
+<i class='arg'>symbolic</i> filenames to the <i class='arg'>actual</i> uris.
+
+The object just stores this mapping and makes it available to the
+configured formatting engine through the command <b class='cmd'>dt_fmap</b>.
+
+This command is described in more detail in the companion document
+<em>doctoc_api</em> which specifies the API between the object and
+toc formatting engines.
+
+
+<br><br>
+<dt><a name="12"><i class='arg'>objectName</i> <strong>parameters</strong></a><dd>
+
+
+This method returns a list containing the names of all engine
+parameters provided by the configured formatting engine. It will
+return an empty list if the object is not yet configured for a
+specific format.
+
+
+<br><br>
+<dt><a name="13"><i class='arg'>objectName</i> <strong>search</strong> <i class='arg'>path</i></a><dd>
+
+
+This method extends the per-object list of paths searched for toc
+formatting engines. See also the command <b class='cmd'>::doctools::toc::search</b>
+on how to extend the per-package list of paths. Note that the path
+entered last will be searched first.
+
+For more details see section <a href="#format_mapping">FORMAT MAPPING</a>.
+
+
+<br><br>
+<dt><a name="14"><i class='arg'>objectName</i> <strong>setparam</strong> <i class='arg'>name</i> <i class='arg'>value</i></a><dd>
+
+
+This method sets the <i class='arg'>name</i>d engine parameter to the specified
+<i class='arg'>value</i>.
+
+It will throw an error if the object is either not yet configured for
+a specific format, or if the formatting engine for the configured
+format does not provide a parameter with the given <i class='arg'>name</i>.
+
+The list of parameters provided by the configured formatting engine
+can be retrieved through the method <strong>parameters</strong>.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>objectName</i> <strong>warnings</strong></a><dd>
+
+
+This method returns a list containing all the warnings which were
+generated by the configured formatting engine during the last
+invocation of the method <strong>format</strong>.
+
+</dl>
+
+
+<h3><a name="object_configuration">OBJECT CONFIGURATION</a></h3>
+<p>
+
+All doctoc objects understand the following configuration options:
+
+<dl>
+
+<dt><strong>-file</strong> <i class='arg'>file</i><dd>
+
+The argument of this option is stored in the object and made available
+to the configured formatting engine through the command <b class='cmd'>dt_file</b>.
+
+This command is described in more detail in the companion document
+<em>doctoc_api</em> which specifies the API between the object and
+formatting engines.
+
+<br><br>
+
+The default value of this option is the empty string.
+
+<br><br>
+
+The configured formatting engine should interpret the value as the
+name of the file containing the document which is currently processed.
+
+
+<br><br>
+<dt><strong>-format</strong> <i class='arg'>text</i><dd>
+
+The argument of this option specifies the format to generate and by
+implication the formatting engine to use when converting text via the
+method <strong>format</strong>. Its default value is the empty string. The
+method <strong>format</strong> cannot be used if this option is not set to a
+valid value at least once.
+
+<br><br>
+
+The package will immediately try to map the given name to a file
+containing the code for a formatting engine generating that format. An
+error will be thrown if this mapping fails. In that case a previously
+configured format is left untouched.
+
+<br><br>
+
+The section <a href="#format_mapping">FORMAT MAPPING</a> explains in detail how the
+package and object will look for engine implementations.
+
+</dl>
+
+
+<h3><a name="format_mapping">FORMAT MAPPING</a></h3>
+<p>
+
+The package and object will perform the following algorithm when
+trying to map a format name <em>foo</em> to a file containing an
+implementation of a formatting engine for <em>foo</em>:
+
+<ol>
+<li>
+
+If <em>foo</em> is the name of an existing file then this file is
+directly taken as the implementation.
+
+<br><br>
+<li>
+
+If not, the list of per-object search paths is searched. For each
+directory in the list the package checks if that directory contains a
+file &quot;<strong>toc.<em>foo</em></strong>&quot;. If yes, then that file is taken as the
+implementation.
+
+<br><br>
+
+Note that this list of paths is initially empty and can be extended
+through the object method <strong>search</strong>.
+
+<br><br>
+<li>
+
+If not, the list of package paths is searched.
+
+For each directory in the list the package checks if that directory
+contains a file &quot;<strong>toc.<em>foo</em></strong>&quot;. If yes, then that file is taken
+as the implementation.
+
+<br><br>
+
+This list of paths can be extended
+through the command <b class='cmd'>::doctools::toc::search</b>.
+
+It contains initially one path, the subdirectory &quot;<strong>mpformats</strong>&quot; of
+the directory the package itself is located in. In other words, if the
+package implementation &quot;<strong>doctoc.tcl</strong>&quot; is installed in the directory
+&quot;<strong>/usr/local/lib/tcllib/doctools</strong>&quot; then it will by default search
+the directory &quot;<strong>/usr/local/lib/tcllib/doctools/mpformats</strong>&quot; for
+format implementations.
+
+<br><br>
+<li>
+
+The mapping fails.
+
+</ol>
+
+
+<h2><a name="predefined_engines">PREDEFINED ENGINES</a></h2>
+<p>
+
+The package provides predefined formatting engines for the following
+formats. Some of the formatting engines support engine
+parameters. These will be explicitly highlighted.
+
+<dl>
+<dt>html<dd>
+
+This engine generates HTML markup, for processing by web browsers and
+the like. This engine supports three parameters:
+
+<br><br>
+<dl>
+<dt>footer<dd>
+
+The value for this parameter has to be valid selfcontained HTML markup
+for the body section of a HTML document. The default value is the
+empty string. The value is inserted into the generated output just
+before the <strong>&lt;/body&gt;</strong> tag, closing the body of the generated
+HTML.
+
+<br><br>
+
+This can be used to insert boilerplate footer markup into the
+generated document.
+
+<br><br>
+<dt>header<dd>
+
+The value for this parameter has to be valid selfcontained HTML markup
+for the body section of a HTML document. The default value is the
+empty string. The value is inserted into the generated output just
+after the <strong>&lt;body&gt;</strong> tag, starting the body of the generated HTML.
+
+<br><br>
+
+This can be used to insert boilerplate header markup into the
+generated document.
+
+
+<br><br>
+<dt>meta<dd>
+
+The value for this parameter has to be valid selfcontained HTML markup
+for the header section of a HTML document. The default value is the
+empty string. The value is inserted into the generated output just
+after the <strong>&lt;head&gt;</strong> tag, starting the header section of the
+generated HTML.
+
+<br><br>
+
+This can be used to insert boilerplate meta data markup into the
+generated document, like references to a stylesheet, standard meta
+keywords, etc.
+
+</dl>
+<br><br>
+
+<dt>latex<dd>
+
+This engine generates output suitable for the <strong>latex</strong> text
+processor coming out of the TeX world.
+
+<br><br>
+<dt>list<dd>
+
+This engine retrieves version, section and title of the manpage from
+the document. As such it can be used to generate a directory listing
+for a set of manpages.
+
+<br><br>
+<dt>nroff<dd>
+
+This engine generates nroff output, for processing by <strong>nroff</strong>,
+or <strong>groff</strong>. The result will be standard man pages as they are
+known in the unix world.
+
+<br><br>
+<dt>null<dd>
+
+This engine generates no outout at all. This can be used if one just
+wants to validate some input.
+
+<br><br>
+<dt>tmml<dd>
+
+This engine generates TMML markup as specified by Joe English. The Tcl
+Manpage Markup Language is a derivate of XML.
+
+<br><br>
+<dt>wiki<dd>
+
+This engine generates Wiki markup as understood by Jean Claude
+Wippler's <strong>wikit</strong> application.
+
+</dl>
+
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+doctoc_api, doctoc_fmt, doctools
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+HTML, TMML, conversion, doctoc, documentation, latex, manpage, markup, nroff, table of contents, toc, wiki
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2003-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

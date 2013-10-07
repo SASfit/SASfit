@@ -1,0 +1,23 @@
+h2. There are different kinds of packages
+
+p. **releases**
+
+This directory contains builds of more stable release versions. They are 
+supposed to be feature complete at that time. Experimental features were 
+removed. They appear 2-3 times per year.
+
+p. **snapshots**
+
+This directory contains builds of the current development version. It may 
+contain new experimental features being tested and more bugs eventually. New
+versions appear in intervals of several months, usually distributed for 
+testing of new features.
+
+h2. About
+
+SASfit is a curve fitting program for small-angle scattering curves, mostly
+from SAXS and SANS experiments in analytical or biological chemistry. It
+features more than 200 particle models and is capable of fitting several data
+sets simutaneously. For more information please see "the
+manual":http://sasfit.sourceforge.net
+

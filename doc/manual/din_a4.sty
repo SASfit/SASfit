@@ -1,0 +1,12 @@
+% DIN_A4.TEX/STY: set pagesize to DIN A4
+%
+\ifx\textheight\undefined% then we are in NOT latex: assume plain etc.
+\message{ DIN A4 for Plain and AmS TeX}%
+\hsize 16cm
+\vsize 24.6cm
+\else
+\message{ DIN A4 for LaTeX}%
+\textheight 23cm \textwidth 16cm
+\oddsidemargin 0pt \evensidemargin 0pt
+\fi
+% -eof-

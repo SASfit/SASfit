@@ -1,0 +1,173 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>profiler - Tcl Profiler </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/profiler/profiler.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: profiler.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ profiler.n
+   -->
+
+<body>
+<h1> profiler(n) 0.2.3 profiler &quot;Tcl Profiler&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> profiler - Tcl source code profiler
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.3</b><br>
+package require <b>profiler ?0.2.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::profiler::init</b> </a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::profiler::dump</b> <i class='arg'>pattern</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::profiler::print</b> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::profiler::reset</b> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::profiler::suspend</b> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::profiler::resume</b> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::profiler::sortFunctions</b> <i class='arg'>key</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>profiler</strong> package provides a simple Tcl source code
+profiler.  It is a function-level profiler; that is, it collects only
+function-level information, not the more detailed line-level
+information.  It operates by redefining the Tcl <b class='cmd'>proc</b> command.
+Profiling is initiated via the <b class='cmd'>::profiler::init</b> command.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+
+<dt><a name="1"><b class='cmd'>::profiler::init</b> </a><dd>
+
+
+Initiate profiling.  All procedures created after this command is
+called will be profiled.  To profile an entire application, this
+command must be called before any other commands.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::profiler::dump</b> <i class='arg'>pattern</i></a><dd>
+
+
+Dump profiling information for the all functions matching
+
+<i class='arg'>pattern</i>.  If no pattern is specified, information for all
+functions will be returned.  The result is a list of key/value pairs
+that maps function names to information about that function.  The
+information about each function is in turn a list of key/value pairs.
+The keys used and their values are:
+
+<br><br>
+<dl>
+
+<dt><strong>totalCalls</strong><dd>
+
+The total number of times <i class='arg'>functionName</i> was called.
+
+<br><br>
+<dt><strong>callerDist</strong><dd>
+
+A list of key/value pairs mapping each calling function that called
+<i class='arg'>functionName</i> to the number of times it called
+
+<i class='arg'>functionName</i>.
+
+<br><br>
+<dt><strong>compileTime</strong><dd>
+
+The runtime, in clock clicks, of <i class='arg'>functionName</i> the first time
+that it was called.
+
+<br><br>
+<dt><strong>totalRuntime</strong><dd>
+
+The sum of the runtimes of all calls of <i class='arg'>functionName</i>.
+
+<br><br>
+<dt><strong>averageRuntime</strong><dd>
+
+Average runtime of <i class='arg'>functionName</i>.
+
+<br><br>
+<dt><strong>descendantTime</strong><dd>
+
+Sum of the time spent in descendants of <i class='arg'>functionName</i>.
+
+<br><br>
+<dt><strong>averageDescendantTime</strong><dd>
+
+Average time spent in descendants of <i class='arg'>functionName</i>. 
+
+</dl>
+
+
+<dt><a name="3"><b class='cmd'>::profiler::print</b> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+Print profiling information for all functions matching <i class='arg'>pattern</i>.
+If no pattern is specified, information about all functions will be
+displayed.  The return result is a human readable display of the
+profiling information.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::profiler::reset</b> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+Reset profiling information for all functions matching <i class='arg'>pattern</i>.
+If no pattern is specified, information will be reset for all
+functions.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::profiler::suspend</b> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+Suspend profiling for all functions matching <i class='arg'>pattern</i>.  If no
+pattern is specified, profiling will be suspended for all
+functions. It stops gathering profiling information after this command
+is issued. However, it does not erase any profiling information that
+has been gathered previously.  Use resume command to re-enable
+profiling.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::profiler::resume</b> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+Resume profiling for all functions matching <i class='arg'>pattern</i>.  If no
+pattern is specified, profiling will be resumed for all functions.
+This command should be invoked after suspending the profiler in the
+code.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::profiler::sortFunctions</b> <i class='arg'>key</i></a><dd>
+
+
+Return a list of functions sorted by a particular profiling statistic.
+Supported values for <i class='arg'>key</i> are: <strong>calls</strong>,
+
+<strong>exclusiveTime</strong>, <strong>compileTime</strong>, <strong>nonCompileTime</strong>,
+<strong>totalRuntime</strong>, <strong>avgExclusiveTime</strong>, and
+
+<strong>avgRuntime</strong>.  The return result is a list of lists, where each
+sublist consists of a function name and the value of <i class='arg'>key</i> for
+that function.
+
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+performance, profile, speed
+</body></html>

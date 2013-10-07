@@ -1,0 +1,171 @@
+<! -- -*- tk -*- pie manpage
+   -->
+<html><head>
+<title>pie - tkpiechart pie class </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/tkpiechart/pie.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 1995-2004 Jean-Luc Fontaine &lt;jfontain@free.fr&gt;
+   -->
+<! -- CVS: $Id: pie.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ pie.n
+   -->
+
+<body>
+<h1> pie(n) 6.6 tkpiechart &quot;tkpiechart pie class&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> pie - 2D or 3D pie chart object in a canvas
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">OVERVIEW</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#member_procedures">MEMBER PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tags">TAGS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sizes">SIZES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#limitations">LIMITATIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>stooop 4.1</b><br>
+package require <b>switched 2.2</b><br>
+package require <b>tkpiechart 6.6</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>stooop::new</b> <strong>pie</strong> <i class='arg'>canvas</i> <i class='arg'>x</i> <i class='arg'>y</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>switched::configure</b> <i class='arg'>pieObject</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>switched::cget</b> <i class='arg'>pieObject</i> <i class='arg'>option</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>stooop::delete</b> <i class='arg'>pieObject</i></a></td></tr>
+<tr valign=top ><td ><a href="#5">pie::newSlice <i class='arg'>pieObject</i> ?labelText?</a></td></tr>
+<tr valign=top ><td ><a href="#6">pie::deleteSlice <i class='arg'>pieObject</i> <i class='arg'>sliceObject</i></a></td></tr>
+<tr valign=top ><td ><a href="#7">pie::sizeSlice <i class='arg'>pieObject</i> <i class='arg'>sliceObject</i> <i class='arg'>unitShare</i> ?displayedValue?</a></td></tr>
+<tr valign=top ><td ><a href="#8">pie::labelSlice <i class='arg'>pieObject</i> <i class='arg'>sliceObject</i> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#9">pie::selectedSlices <i class='arg'>pieObject</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+A pie object is used to visualize a set of values, usually as shares of a total. Each value is represented by a colored slice, which may have a 2 dimensional or 3 dimensional look. Each slice is associated with a label displaying the data name, and a numerical field showing the percentage taken by the slice. The labels are placed by the chosen labeler object (<strong>-labeler</strong> option). Each label color matches its related slice.
+<p>A pie chart is made of Tk canvas items, found in <strong>pieBoxLabeler</strong>, <strong>piePeripheralLabeler</strong> and <strong>canvasLabel</strong> objects, that compose the pie object. The pie constructor creates the pie itself and its background slice within the parent canvas. Once the pie object exists, slices can be created and resized. At the time the pie is created, the parent Tk <strong>canvas</strong> widget must exist.
+<p>Slice colors are automatically generated, using a default color list for all pies, unless another list is used (using the <strong>-colors</strong> option). When a 3D look is used, the slice edge is darker than its top while using the same color tone.
+<dl>
+<dt><a name="1"><b class='cmd'>stooop::new</b> <strong>pie</strong> <i class='arg'>canvas</i> <i class='arg'>x</i> <i class='arg'>y</i> ?options?</a><dd>
+
+Creates a pie object in the specified Tk canvas. The upper left corner of the pie is placed at the specified coordinates in the canvas. The pie object identifier is returned (referred to as <em>pieObject</em> in this document).
+<br><br>
+<dt><a name="2"><b class='cmd'>switched::configure</b> <i class='arg'>pieObject</i> ?options?</a><dd>
+
+Configures a pie object or returns all the options with their current values if no options are passed as parameters.
+<br><br>
+<dt><a name="3"><b class='cmd'>switched::cget</b> <i class='arg'>pieObject</i> <i class='arg'>option</i></a><dd>
+
+Returns an option value for the specified pie object.
+<br><br>
+<dt><a name="4"><b class='cmd'>stooop::delete</b> <i class='arg'>pieObject</i></a><dd>
+
+Deletes the specified pie object.
+</dl>
+
+<h2><a name="overview">OVERVIEW</a></h2>
+<p>
+The pie class is part of the tkpiechart extension that allows the programmer to create and dynamically update 2D or 3D pie charts in a Tcl/Tk application. The tkpiechart package is written in Tcl only, using object oriented techniques thanks to the stooop package, included in tcllib.
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+<dl>
+<dt><strong>-autoupdate</strong> boolean<dd>
+Boolean value specifying whether all the slices and their labels are redrawn when a slice size is changed. On by default. Turn it off and invoke <strong>pie::update</strong> if you change many slices at once and want to improve performance.
+<br><br>
+<dt><strong>-background</strong> color<dd>
+Slices may or may not fill up the 100% of the pie. The unoccupied part of the pie is a slice that takes 100% of the pie. It is by default transparent with a black border. The color of this background slice may be set by the user using color names as in the <strong>-background</strong> standard option (see the Tk <strong>options</strong> manual page for more details). When the pie has a 3D look, the background of a slice edge is darker than the top and uses the same color tone.
+<br><br>
+<dt><strong>-colors</strong> list<dd>
+Specifies a list of colors for slices. In this case, the slice colors will successively be drawn from the list in the list order, cycling through if there are more slices than colors in the list. Colors are specified in the same format as the <strong>-background</strong> option.
+<br><br>
+<dt><strong>-height</strong> value<dd>
+Specifies the total height for the pie, including the room taken by the labeler labels. The pie slices are resized when labels are added or deleted (when adding or deleting slices) so that the total height remains constant. This value may be specified in any of the forms described in the <strong>canvas</strong> <em>COORDINATES</em> manual section.
+<br><br>
+<dt><strong>-labeler</strong> object<dd>
+Specifies a placer object for the slice labels, so that, for example, slice values may be placed next to them. If not specified, the <em>pieBoxLabeler</em> (see corresponding manual) is used, the other option being the <em>piePeripheralLabeler</em> class. Each labeler has a specific behavior which may be set via its options. The labeler object is automatically deleted when the pie object is itself deleted. The labeler cannot be changed once the pie is created.
+<br><br>
+<dt><strong>-selectable</strong> boolean<dd>
+Boolean value specifying whether slices are selectable or not. Acceptable values are those defined by the Tcl language itself for boolean values. If selectable, slices can be selected with the first mouse button, by clicking on either the slice or its label. Selection can be extended by using the classical <em>control</em> or <em>shift</em> clicks. The list of currently selected slices can be retrieved at any time using the <strong>selectedSlices</strong> pie class member procedure.
+<br><br>
+<dt><strong>-title</strong> text<dd>
+Title text to be placed above the pie.
+<br><br>
+<dt><strong>-titlefont</strong> value<dd>
+Font for the title text.
+<br><br>
+<dt><strong>-titleoffset</strong> value<dd>
+Distance between the bottom of the title text and the top of the pie slices. This value may be specified in any of the forms described in the sizes section below.
+<br><br>
+<dt><strong>-thickness</strong> value<dd>
+The thickness is set to 0 by default, giving the pie a simple 2D shape, much faster to display. A positive thickness value will give the pie a 3D look with matched darker colors for the slices edges. These values may be specified in any of the forms described in the <em>SIZES</em> section below.
+<br><br>
+<dt><strong>-width</strong> value<dd>
+Specifies the total width for the pie, including the room taken by the labeler labels. The pie slices are resized when labels are added or deleted (when adding or deleting slices) so that the total width remains constant. This value may be specified in any of the forms described in the <strong>canvas</strong> <em>COORDINATES</em> manual section.
+</dl>
+
+<h2><a name="member_procedures">MEMBER PROCEDURES</a></h2>
+<p>
+<dl>
+<dt><a name="5">pie::newSlice <i class='arg'>pieObject</i> ?labelText?</a><dd>
+
+Creates a slice. A unique object identifier is returned (referred to as <em>sliceObject</em> in this document). The slice color is automatically allocated and the slice label placed using the specified labeler (using the <strong>-labeler</strong> option). The slice itself is placed after (clockwise) the existing slices. The slice object identifier will be used for sizing and resizing the slice.
+<br><br>If the label text is not specified, it will be set to <em>&quot;slice n&quot;</em>, <em>n</em> being the number of the slice in the order of creation (first slice is number 1).
+<br><br>
+<dt><a name="6">pie::deleteSlice <i class='arg'>pieObject</i> <i class='arg'>sliceObject</i></a><dd>
+
+Deletes a slice. The following slices (clockwise) if any are then moved to compensate for the empty space left by the deleted slice.
+<br><br>
+<dt><a name="7">pie::sizeSlice <i class='arg'>pieObject</i> <i class='arg'>sliceObject</i> <i class='arg'>unitShare</i> ?displayedValue?</a><dd>
+
+Sizes or resizes a slice. The slice is then automatically recalculated so it occupies the proper share of the whole pie. The <i class='arg'>unitShare</i> parameter is a floating point number expressed in share (between 0 and 1) of the whole pie. The following slices (clockwise) are moved to accommodate the new slice size. The slice size value next to the slice label is also updated with the new share value or <i class='arg'>displayedValue</i> if specified.
+<br><br>
+<dt><a name="8">pie::labelSlice <i class='arg'>pieObject</i> <i class='arg'>sliceObject</i> <i class='arg'>string</i></a><dd>
+
+Updates a slice label. Can be invoked at any time.
+<br><br>
+<dt><a name="9">pie::selectedSlices <i class='arg'>pieObject</i></a><dd>
+
+Returns a list of currently selected slice objects.
+</dl>
+
+<h2><a name="tags">TAGS</a></h2>
+<p>
+The whole pie, the pie graphics (all slices), and each slice have the following specific tags:
+<ul>
+  <li><strong>pie(pieObject)</strong>
+  <li><strong>pieSlices(pieObject)</strong>
+  <li><strong>slice(sliceObject)</strong>
+</ul>
+For example, the whole pie can be moved using the <strong>canvas</strong> <b class='cmd'>move</b> command on the pie tag, or bindings on slices can be set using the slice tags (see the <strong>canvas</strong> manual page <em>ITEM IDS AND TAGS</em> section for more information).
+
+<h2><a name="sizes">SIZES</a></h2>
+<p>
+All sizes related to pies are stored as floating point numbers. The coordinates and sizes are specified in screen units, which are floating point numbers optionally followed by one of several letters as specified in the <strong>canvas</strong> <em>COORDINATES</em> manual section.
+
+<h2><a name="limitations">LIMITATIONS</a></h2>
+<p>
+If the number of slices is too big, identical colors will be used for some of the slices. You may set your own colors in this case.
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+canvasLabel, pieBoxLabeler, piePeripheralLabeler
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+canvas, labeler, pie, slice
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 1995-2004 Jean-Luc Fontaine &lt;jfontain@free.fr&gt;<br>
+</body></html>

@@ -1,0 +1,36 @@
+Version 0.7.0.3
+
+Just unpack the archive (for pkunzip, use the -d option) to your
+favorite place to put extensions. This should usually be under your TCL
+directory's LIB. In Tcl 8.0 and newer, this directory will be
+automatically searched; for earlier versions you will want to add this
+directory to your TCLLIBDIR environment variable, or to your auto_path.
+
+If you have put these extensions in the same directory as other 
+extensions, remember to rerun 
+	pkg_mkIndex . *.dll
+
+If you have put them in a directory by themselves, the supplied
+pkgIndex.tcl file will suffice.
+
+It responds to the load command:
+  load printer.dll
+
+It also responds to the package indexing commands.
+
+If you are using packages (strongly recommended), you do not need to use
+the load command. Simply include
+   package require printer
+in a wish script, and the printer extension will be automatically loaded.
+
+This package was built using Microsoft VC++ 6.0 and Borland C++ version 4.53. 
+It will (possibly) not work  with other compilers. The makefile
+provided is also for  use with the same compiler used to build that DLL. 
+It will assuredly require modifications for any  other compiler, and 
+possibly for your development environment.
+
+That's why source code is provided.
+
+Michael I Schwartz
+mschwart@nyx.net
+http://www.nyx.net/~mschwart

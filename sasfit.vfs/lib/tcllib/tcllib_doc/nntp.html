@@ -1,0 +1,458 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>nntp - Tcl NNTP Client Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/nntp/nntp.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: nntp.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ nntp.n
+   -->
+
+<body>
+<h1> nntp(n) 1.5.1 nntp &quot;Tcl NNTP Client Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> nntp - Tcl client for the NNTP protocol
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>nntp ?0.2.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::nntp::nntp</b> ?<i class='arg'>host</i>? ?<i class='arg'>port</i>? ?<i class='arg'>nntpName</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><i class='arg'>nntpName</i> <strong>method</strong> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>nntpName</i> <strong>article</strong> ?<i class='arg'>msgid</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>nntpName</i> <strong>authinfo</strong> ?<i class='arg'>user</i>? ?<i class='arg'>pass</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>nntpName</i> <strong>body</strong> ?<i class='arg'>msgid</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>nntpName</i> <strong>configure</strong></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>nntpName</i> <strong>configure</strong> <i class='arg'>option</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>nntpName</i> <strong>configure</strong> <i class='arg'>option</i> <i class='arg'>value</i> ...</a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>nntpName</i> <strong>cget</strong> <i class='arg'>option</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>nntpName</i> <strong>date</strong></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>nntpName</i> <strong>group</strong> ?<i class='arg'>group</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>nntpName</i> <strong>head</strong> ?<i class='arg'>msgid</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>nntpName</i> <strong>help</strong></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>nntpName</i> <strong>last</strong></a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>nntpName</i> <strong>list</strong></a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>nntpName</i> <strong>listgroup</strong> ?<i class='arg'>group</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>nntpName</i> <strong>mode_reader</strong></a></td></tr>
+<tr valign=top ><td ><a href="#18"><i class='arg'>nntpName</i> <strong>newgroups</strong> <i class='arg'>since</i></a></td></tr>
+<tr valign=top ><td ><a href="#19"><i class='arg'>nntpName</i> <strong>newnews</strong></a></td></tr>
+<tr valign=top ><td ><a href="#20"><i class='arg'>nntpName</i> <strong>newnews</strong> <i class='arg'>since</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><i class='arg'>nntpName</i> <strong>newnews</strong> <i class='arg'>group</i> ?<i class='arg'>since</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#22"><i class='arg'>nntpName</i> <strong>next</strong></a></td></tr>
+<tr valign=top ><td ><a href="#23"><i class='arg'>nntpName</i> <strong>post</strong> <i class='arg'>article</i></a></td></tr>
+<tr valign=top ><td ><a href="#24"><i class='arg'>nntpName</i> <strong>slave</strong></a></td></tr>
+<tr valign=top ><td ><a href="#25"><i class='arg'>nntpName</i> <strong>stat</strong> ?<i class='arg'>msgid</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#26"><i class='arg'>nntpName</i> <strong>quit</strong></a></td></tr>
+<tr valign=top ><td ><a href="#27"><i class='arg'>nntpName</i> <strong>xgtitle</strong> ?<i class='arg'>group_pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#28"><i class='arg'>nntpName</i> <strong>xhdr</strong> <i class='arg'>field</i> ?<i class='arg'>range</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#29"><i class='arg'>nntpName</i> <strong>xover</strong> ?<i class='arg'>range</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#30"><i class='arg'>nntpName</i> <strong>xpat</strong> <i class='arg'>field</i> <i class='arg'>range</i> ?<i class='arg'>pattern_list</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The package <strong>nntp</strong> provides a simple Tcl-only client library
+for the NNTP protocol.  It works by opening the standard NNTP socket
+on the server, and then providing a Tcl API to access the NNTP
+protocol commands.  All server errors are returned as Tcl errors
+(thrown) which must be caught with the Tcl <b class='cmd'>catch</b> command.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::nntp::nntp</b> ?<i class='arg'>host</i>? ?<i class='arg'>port</i>? ?<i class='arg'>nntpName</i>?</a><dd>
+
+
+The command opens a socket connection to the specified NNTP server and
+creates a new nntp object with an associated global Tcl command whose
+name is <i class='arg'>nntpName</i>. This command may be used to access the various
+NNTP protocol commands for the new connection. The default <i class='arg'>port</i>
+number is &quot;119&quot; and the default <i class='arg'>host</i> is &quot;news&quot;. These defaults
+can be overridden with the environment variables <strong>NNTPPORT</strong> and
+<strong>NNTPHOST</strong> respectively.
+
+<br><br>
+
+Some of the commands supported by this package are not part of the
+nntp rfc 977 (<a href="http://www.rfc-editor.org/rfc/rfc977.txt">http://www.rfc-editor.org/rfc/rfc977.txt</a>) and will
+not be available (or implemented) on all nntp servers.
+
+<br><br>
+
+The access command <i class='arg'>nntpName</i> has the following general form:
+
+<br><br>
+<dl>
+
+<dt><a name="2"><i class='arg'>nntpName</i> <strong>method</strong> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command.
+
+</dl>
+
+<dt><a name="3"><i class='arg'>nntpName</i> <strong>article</strong> ?<i class='arg'>msgid</i>?</a><dd>
+
+
+Query the server for article <i class='arg'>msgid</i> from the current group.  The article
+is returned as a valid tcl list which contains the headers, followed by
+a blank line, and then followed by the body of the article. Each element
+in the list is one line of the article.
+
+<br><br>
+<dt><a name="4"><i class='arg'>nntpName</i> <strong>authinfo</strong> ?<i class='arg'>user</i>? ?<i class='arg'>pass</i>?</a><dd>
+
+
+Send authentication information (username and password) to the server.
+
+<br><br>
+<dt><a name="5"><i class='arg'>nntpName</i> <strong>body</strong> ?<i class='arg'>msgid</i>?</a><dd>
+
+
+Query the server for the body of the article <i class='arg'>msgid</i> from the current
+group.  The body of the article is returned as a valid tcl list. Each element
+in the list is one line of the body of the article.
+
+<br><br>
+<dt><a name="6"><i class='arg'>nntpName</i> <strong>configure</strong></a><dd>
+
+<dt><a name="7"><i class='arg'>nntpName</i> <strong>configure</strong> <i class='arg'>option</i></a><dd>
+
+<dt><a name="8"><i class='arg'>nntpName</i> <strong>configure</strong> <i class='arg'>option</i> <i class='arg'>value</i> ...</a><dd>
+
+<dt><a name="9"><i class='arg'>nntpName</i> <strong>cget</strong> <i class='arg'>option</i></a><dd>
+
+
+Query and configure options of the nntp connection object. Currently
+only one option is supported, <strong>-binary</strong>. When set articles are
+retrieved as binary data instead of text. The only methods affected by
+this are <strong>article</strong> and <strong>body</strong>.
+
+<br><br>
+
+One application of this option would be the download of articles
+containing yEnc encoded images. Although encoded the data is still
+mostly binary and retrieving it as text will corrupt the information.
+
+<br><br>
+
+See package <strong>yencode</strong> for both encoder and decoder of such data.
+
+
+<br><br>
+<dt><a name="10"><i class='arg'>nntpName</i> <strong>date</strong></a><dd>
+
+
+Query the server for the servers current date.  The date is returned in the
+format <em>YYYYMMDDHHMMSS</em>.
+
+<br><br>
+<dt><a name="11"><i class='arg'>nntpName</i> <strong>group</strong> ?<i class='arg'>group</i>?</a><dd>
+
+
+Optionally set the current group, and retrieve information about the
+currently selected group.  Returns the estimated number of articles in
+the group followed by the number of the first article in the group, followed
+by the last article in the group, followed by the name of the group.
+
+<br><br>
+<dt><a name="12"><i class='arg'>nntpName</i> <strong>head</strong> ?<i class='arg'>msgid</i>?</a><dd>
+
+
+Query the server for the headers of the article <i class='arg'>msgid</i> from the current
+group.  The headers of the article are returned as a valid tcl list. Each element
+in the list is one line of the headers of the article.
+
+<br><br>
+<dt><a name="13"><i class='arg'>nntpName</i> <strong>help</strong></a><dd>
+
+
+Retrieves a list of the commands that are supported by the news server that
+is currently attached to.
+
+<br><br>
+<dt><a name="14"><i class='arg'>nntpName</i> <strong>last</strong></a><dd>
+
+
+Sets the current article pointer to point to the previous message (if there is
+one) and returns the msgid of that message.
+
+<br><br>
+<dt><a name="15"><i class='arg'>nntpName</i> <strong>list</strong></a><dd>
+
+
+Returns a tcl list of valid newsgroups and associated information.  Each
+newsgroup is returned as an element in the tcl list with the following format:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+      group last first p
+</pre></td></tr></table></p>
+where &lt;group&gt; is the name of the newsgroup, &lt;last&gt; is the number of
+the last known article currently in that newsgroup, &lt;first&gt; is the
+number of the first article currently in the newsgroup, and &lt;p&gt; is
+either 'y' or 'n' indicating whether posting to this newsgroup is
+allowed ('y') or prohibited ('n').
+<br><br>
+The &lt;first&gt; and &lt;last&gt; fields will always be numeric.  They may have
+leading zeros.  If the &lt;last&gt; field evaluates to less than the
+&lt;first&gt; field, there are no articles currently on file in the
+newsgroup.
+
+<br><br>
+<dt><a name="16"><i class='arg'>nntpName</i> <strong>listgroup</strong> ?<i class='arg'>group</i>?</a><dd>
+
+
+Query the server for a list of all the messages (message numbers) in the
+group specified by the argument <i class='arg'>group</i> or by the current group if
+the <i class='arg'>group</i> argument was not passed.
+
+<br><br>
+<dt><a name="17"><i class='arg'>nntpName</i> <strong>mode_reader</strong></a><dd>
+
+
+Query the server for its nntp 'MODE READER' response string.
+
+<br><br>
+<dt><a name="18"><i class='arg'>nntpName</i> <strong>newgroups</strong> <i class='arg'>since</i></a><dd>
+
+
+Query the server for a list of all the new newsgroups created since the time
+specified by the argument <i class='arg'>since</i>.  The argument <i class='arg'>since</i> can be any
+time string that is understood by <b class='cmd'>clock scan</b>. The tcl list of newsgroups
+is returned in a similar form to the list of groups returned by the
+<b class='cmd'>nntpName list</b> command.  Each element of the list has the form:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+      group last first p
+</pre></td></tr></table></p>
+where &lt;group&gt; is the name of the newsgroup, &lt;last&gt; is the number of
+the last known article currently in that newsgroup, &lt;first&gt; is the
+number of the first article currently in the newsgroup, and &lt;p&gt; is
+either 'y' or 'n' indicating whether posting to this newsgroup is
+allowed ('y') or prohibited ('n').
+
+<br><br>
+<dt><a name="19"><i class='arg'>nntpName</i> <strong>newnews</strong></a><dd>
+
+
+Query the server for a list of new articles posted to the current group in the
+last day.
+
+<br><br>
+<dt><a name="20"><i class='arg'>nntpName</i> <strong>newnews</strong> <i class='arg'>since</i></a><dd>
+
+
+Query the server for a list of new articles posted to the current group since
+the time specified by the argument <i class='arg'>since</i>.  The argument <i class='arg'>since</i> can
+be any time string that is understood by <b class='cmd'>clock scan</b>.
+
+<br><br>
+<dt><a name="21"><i class='arg'>nntpName</i> <strong>newnews</strong> <i class='arg'>group</i> ?<i class='arg'>since</i>?</a><dd>
+
+
+Query the server for a list of new articles posted to the group specified by
+the argument <i class='arg'>group</i> since the time specified by the argument <i class='arg'>since</i>
+(or in the past day if no <i class='arg'>since</i> argument is passed.  The argument
+<i class='arg'>since</i> can be any time string that is understood by <b class='cmd'>clock scan</b>.
+
+<br><br>
+<dt><a name="22"><i class='arg'>nntpName</i> <strong>next</strong></a><dd>
+
+
+Sets the current article pointer to point to the next message (if there is
+one) and returns the msgid of that message.
+
+<br><br>
+<dt><a name="23"><i class='arg'>nntpName</i> <strong>post</strong> <i class='arg'>article</i></a><dd>
+
+
+Posts an article of the form specified in
+RFC 1036 (<a href="http://www.rfc-editor.org/rfc/rfc1036.txt">http://www.rfc-editor.org/rfc/rfc1036.txt</a>, successor
+to RFC 850) to the current news group.
+
+<br><br>
+<dt><a name="24"><i class='arg'>nntpName</i> <strong>slave</strong></a><dd>
+
+
+Identifies a connection as being made from a slave nntp server. This might
+be used to indicate that the connection is serving multiple people and should
+be given priority.  Actual use is entirely implementation dependent and may
+vary from server to server.
+
+<br><br>
+<dt><a name="25"><i class='arg'>nntpName</i> <strong>stat</strong> ?<i class='arg'>msgid</i>?</a><dd>
+
+
+The stat command is similar to the article command except that no
+text is returned.  When selecting by message number within a group,
+the stat command serves to set the current article pointer without
+sending text. The returned acknowledgment response will contain the
+message-id, which may be of some value.  Using the stat command to
+select by message-id is valid but of questionable value, since a
+selection by message-id does NOT alter the &quot;current article pointer&quot;
+
+<br><br>
+<dt><a name="26"><i class='arg'>nntpName</i> <strong>quit</strong></a><dd>
+
+
+Gracefully close the connection after sending a NNTP QUIT command down
+the socket.
+
+<br><br>
+<dt><a name="27"><i class='arg'>nntpName</i> <strong>xgtitle</strong> ?<i class='arg'>group_pattern</i>?</a><dd>
+
+
+Returns a tcl list where each element is of the form:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+newsgroup description
+</pre></td></tr></table></p>
+If a <i class='arg'>group_pattern</i> is specified then only newsgroups that match
+the pattern will have their name and description returned.
+
+<br><br>
+<dt><a name="28"><i class='arg'>nntpName</i> <strong>xhdr</strong> <i class='arg'>field</i> ?<i class='arg'>range</i>?</a><dd>
+
+
+Returns the specified header field value for the current message or for a
+list of messages from the current group.  <i class='arg'>field</i> is the title of a
+field in the header such as from, subject, date, etc.  If <i class='arg'>range</i> is
+not specified or is &quot;&quot; then the current message is queried.  The command
+returns a list of elements where each element has the form of:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    msgid value
+</pre></td></tr></table></p>
+Where msgid is the number of the message and value is the value set for the
+queried field.  The <i class='arg'>range</i> argument can be in any of the following forms:
+
+<br><br>
+<dl>
+
+<dt><strong>&quot;&quot;</strong><dd>
+
+The current message is queried.
+
+<br><br>
+<dt><i class='arg'>msgid1</i>-<i class='arg'>msgid2</i><dd>
+
+All messages between <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>
+(including <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>) are queried.
+
+<br><br>
+<dt><i class='arg'>msgid1</i> <i class='arg'>msgid2</i><dd>
+
+All messages between <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>
+(including <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>) are queried.
+
+</dl>
+
+
+<dt><a name="29"><i class='arg'>nntpName</i> <strong>xover</strong> ?<i class='arg'>range</i>?</a><dd>
+
+
+Returns header information for the current message or for a range of messages
+from the current group.  The information is returned in a tcl list
+where each element is of the form:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    msgid subject from date idstring bodysize headersize xref
+</pre></td></tr></table></p>
+If <i class='arg'>range</i> is not specified or is &quot;&quot; then the current message is queried.
+The <i class='arg'>range</i> argument can be in any of the following forms:
+
+<br><br>
+<dl>
+
+
+<dt><strong>&quot;&quot;</strong><dd>
+
+The current message is queried.
+
+<br><br>
+<dt><i class='arg'>msgid1</i>-<i class='arg'>msgid2</i><dd>
+
+All messages between <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>
+(including <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>) are queried.
+
+<br><br>
+<dt><i class='arg'>msgid1</i> <i class='arg'>msgid2</i><dd>
+
+All messages between <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>
+(including <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>) are queried.
+
+</dl>
+
+
+<dt><a name="30"><i class='arg'>nntpName</i> <strong>xpat</strong> <i class='arg'>field</i> <i class='arg'>range</i> ?<i class='arg'>pattern_list</i>?</a><dd>
+
+
+Returns the specified header field value for a specified message or for a
+list of messages from the current group where the messages match the
+pattern(s) given in the pattern_list.  <i class='arg'>field</i> is the title of a
+field in the header such as from, subject, date, etc.  The information is
+returned in a tcl list where each element is of the form:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    msgid value
+</pre></td></tr></table></p>
+Where msgid is the number of the message and value is the value set for the
+queried field.  The <i class='arg'>range</i> argument can be in any of the following forms:
+
+<br><br>
+<dl>
+
+<dt><i class='arg'>msgid</i><dd>
+
+The message specified by <i class='arg'>msgid</i> is queried.
+
+<br><br>
+<dt><i class='arg'>msgid1</i>-<i class='arg'>msgid2</i><dd>
+
+All messages between <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>
+(including <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>) are queried.
+
+<br><br>
+<dt><i class='arg'>msgid1</i> <i class='arg'>msgid2</i><dd>
+
+All messages between <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>
+(including <i class='arg'>msgid1</i> and <i class='arg'>msgid2</i>) are queried.
+
+</dl>
+</dl>
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+A bigger example for posting a single article.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require nntp 
+    set n [nntp::nntp NNTP_SERVER] 
+    $n post &quot;From: USER@DOMAIN.EXT (USER_FULL) 
+    Path: COMPUTERNAME!USERNAME 
+    Newsgroups: alt.test 
+    Subject: Tcl test post -ignore 
+    Message-ID: &lt;[pid][clock seconds] 
+    @COMPUTERNAME&gt; 
+    Date: [clock format [clock seconds] -format &quot;%a, %d % 
+    b %y %H:%M:%S GMT&quot; -gmt true] 
+    
+    Test message body&quot; 
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+news, nntp, nntpclient, rfc 1036, rfc 977
+</body></html>

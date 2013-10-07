@@ -1,0 +1,2 @@
+Bots can log their data here. It is used by interwiki.py and some bots will
+log here if used with the -log parameter.

@@ -1,0 +1,105 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>swaplist - A dialog which allows a user to move options between two lists </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/swaplist/swaplist.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: swaplist.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ swaplist.n
+   -->
+
+<body>
+<h1> swaplist(n) 0.1 swaplist &quot;A dialog which allows a user to move options between two lists&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> swaplist - A dialog which allows a user to move options between two lists
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>Tk 8.4</b><br>
+package require <b>swaplist ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::swaplist::swaplist</b> <i class='arg'>pathName</i> <i class='arg'>variable</i> <i class='arg'>completeList</i> <i class='arg'>selectedList</i> ?options?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides a dialog which consists of 2 listboxes, along with buttons to move items
+between them and reorder the right list.
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::swaplist::swaplist</b> <i class='arg'>pathName</i> <i class='arg'>variable</i> <i class='arg'>completeList</i> <i class='arg'>selectedList</i> ?options?</a><dd>
+
+
+Creates a dialog which presents the user with a pair of listboxes. Items are selected by using the buttons to move
+them to the right list. The contents of the right list are put in the <i class='arg'>variable</i> upon closure of the dialog.
+The command returns a boolean indicating if the user pressed OK or not. If -geometry is not specified, the
+dialog is centered in its parent toplevel unless its parent is . in which case the dialog is centered in the screen.
+
+<br><br>
+
+Options:
+
+<! --    --     The list below is the simplest for describing options.   --    --     A more complex is to use 'tkoption' instead of 'opt',   --     and 'tkoption_def' instead of 'opt_def'.   --    --     I (AK) refrained from doing so as I do not know the   --     names and classes used for the options in the option   --     database.   -- 
+   -->
+
+<br><br>
+<dl>
+
+<dt><strong>-embed</strong><dd> if this flag is supplied, the procedure will create a swaplist widget named <i class='arg'>pathName</i>, with the <i class='arg'>variable</i> set as the
+listvariable for the right side listbox. This flag will also cause the -title and -geometry flags to be ignored.
+
+<br><br>
+<dt><strong>-reorder</strong><dd> boolean specifying if buttons allowing the user to change the order of the right listbox should appear or not. defaults to true
+<br><br>
+<dt><strong>-title</strong><dd> sets the title of the dialog window. defaults to &quot;Configuration&quot;
+<br><br>
+<dt><strong>-llabel</strong><dd> sets the heading above the left list. defaults to &quot;Available:&quot;
+<br><br>
+<dt><strong>-rlabel</strong><dd> sets the heading above the right list. defaults to &quot;Selected:&quot;
+<br><br>
+<dt><strong>-lbuttontext</strong><dd> sets the text on the &quot;move left&quot; button. defaults to &quot;&lt;&lt;&quot;
+<br><br>
+<dt><strong>-rbuttontext</strong><dd> sets the text on the &quot;move right&quot; button. defaults to &quot;&gt;&gt;&quot;
+<br><br>
+<dt><strong>-ubuttontext</strong><dd> sets the text on the &quot;move up&quot; button. defaults to &quot;Move Up&quot;
+<br><br>
+<dt><strong>-dbuttontext</strong><dd> sets the text on the &quot;move down&quot; button. defaults to &quot;Move Down&quot;
+<br><br>
+<dt><strong>-geometry</strong><dd> sets the geometry of the dialog window. screen. 
+
+</dl>
+
+</dl>
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+package require swaplist
+namespace import swaplist::*
+
+if {[swaplist .slist opts &quot;1 2 3 4 5 6 7 8 9&quot; &quot;1 3 5&quot;]} {
+    puts &quot;user chose numbers: $ops&quot;
+}
+
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+dialog, disjointlistbox, listbox
+</body></html>
+
