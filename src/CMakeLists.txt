@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 2.6.2)
 
+if(CMAKE_HOST_APPLE)
+        set(CMAKE_C_COMPILER /usr/bin/gcc)
+        set(CMAKE_CXX_COMPILER /usr/bin/g++)
+endif()
+
 #
 # get our current location and set the distribution directory name
 #
