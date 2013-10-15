@@ -24,8 +24,8 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
-#ifndef SASFIT_FUNCTION_H 
-#define SASFIT_FUNCTION_H 
+#ifndef SASFIT_FUNCTION_H
+#define SASFIT_FUNCTION_H
 
 #include <stdarg.h>
 #include "sasfit_common_shared_exports.h"
@@ -45,13 +45,13 @@
 
 /**
  * \def EMPTY
- * Dummy parameter variable. 
+ * Dummy parameter variable.
  * \sa sasfit_get_param
  */
 #define EMPTY	(scalar*)0
 
 /**
- * Used to select the appropriate flavor of a form factor which does 
+ * Used to select the appropriate flavor of a form factor which does
  * internal calculations.
  */
 typedef enum
@@ -119,7 +119,7 @@ typedef enum
 /**
  * Describes the type of function.
  */
-typedef enum 
+typedef enum
 {
 	SDfct = 0,
 	SQfct = 1,
@@ -131,12 +131,14 @@ typedef enum
  */
 typedef struct
 {
-	scalar             p[MAXPAR];      //!< Parameter of a function. 
+	scalar             p[MAXPAR];      //!< Parameter of a function.
 	sasfit_kernel_type kernelSelector; //!< Selects the kernel function to use, when used with gsl functions.
 	sasfit_kernel_type kernelSubSelector; //!< ??
 	char               errStr[STRLEN]; //!< An error message.
 	int                errLen;         //!< Length of the error message.
 	bool               errStatus;      //!< True, if an error occured. False otherwise.
+	double             *xarr;            //!< hack for OZ solver
+	double             *yarr;            //!< hack for OZ solver
 } sasfit_param;
 
 /**
@@ -257,7 +259,7 @@ sasfit_common_DLLEXP void sasfit_get_param(sasfit_param * param, int num, ...);
 sasfit_common_DLLEXP void sasfit_print_param(sasfit_param * param);
 
 /**
- * Copies function parameters from an arbitrary data array to a given 
+ * Copies function parameters from an arbitrary data array to a given
  * sasfit_param structure.
  * WARNING: Ensure that array a has em{at least} MAXPAR entries !
  * \param param Pointer to a sasfit_param.

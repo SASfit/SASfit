@@ -270,6 +270,35 @@ set OZ(p2) 1.2
 set OZ(p3) 1.3
 set OZ(p4) 1.4
 set OZ(p5) 1.5
+set OZ(p6) 1.
+set OZ(p7) 1.
+set OZ(p8) 1.
+set OZ(p9) 1.
+set OZ(p10) 1.
+set OZ(p11) 1.
+set OZ(p12) 1.
+set OZ(p13) 1.
+set OZ(p14) 1.
+set OZ(p15) 1.
+
+set OZ(result,closure) {}
+set OZ(result,potential) {}
+set OZ(result,p) {}
+set OZ(result,phi) {}
+set OZ(result,T) {}
+set OZ(result,1024) {}
+set OZ(result,mult) {}
+set OZ(result,mix) {}
+set OZ(result,dr/dsigma) {}
+set OZ(result,releps) {}
+set OZ(result,gridlength) {}
+set OZ(result,q) {}
+set OZ(result,Sq) {}
+set OZ(result,r) {}
+set OZ(result,cr) {}
+set OZ(result,gr) {}
+set OZ(result,Ur) {}
+
 set OZ(phi) 0.3
 set OZ(T) 300
 set OZ(1024) 1024

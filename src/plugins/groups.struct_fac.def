@@ -52,6 +52,15 @@
  */
 
 /** 
+ * \defgroup sq_plugins_oz_solver SQ calculated by OZ solver 
+ * \ingroup sq_plugins
+ *
+ * This group contains structure factors calculated by the OZ solver
+ *
+ * \modname{sq_plugins_oz_solver}
+ */
+
+/** 
  * \defgroup sq_plugins_anisotropic anisotropic obj.
  * \ingroup sq_plugins
  *
