@@ -37,5 +37,11 @@ sasfit_oz_calc_cmd(ClientData     clientData,
                 int            objc,
                 Tcl_Obj *CONST objv[]);
 
+sasfit_oz_DLLEXP int
+sasfit_oz_assign_data_sq_cmd(ClientData     clientData,
+                Tcl_Interp *   interp,
+                int            objc,
+                Tcl_Obj *CONST objv[]);
+
 #endif
 

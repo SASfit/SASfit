@@ -2306,7 +2306,7 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateObjCommand(interp, "sasfit_covar", (Tcl_ObjCmdProc*) sasfit_covar_cmd, (void *)SASFIT_CData, NULL);
         // sasfit_oz commands
 	Tcl_CreateObjCommand(interp, "sasfit_oz_calc", (Tcl_ObjCmdProc*) sasfit_oz_calc_cmd, NULL, NULL);
-
+	Tcl_CreateObjCommand(interp, "sasfit_oz_assign_data_sq", (Tcl_ObjCmdProc*) sasfit_oz_assign_data_sq_cmd, NULL, NULL);
 	// DLS
 	Tcl_CreateCommand(interp, "dls_CumulantFit", (Tcl_CmdProc*) DLS_CumulantFitCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "dls_ExponentialFit", (Tcl_CmdProc*) DLS_ExponentialFitCmd, NULL, NULL);

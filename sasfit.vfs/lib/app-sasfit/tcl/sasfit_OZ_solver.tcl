@@ -20,6 +20,28 @@
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 
+proc put_OZ_res {} {
+	global OZ
+	lappend OZ(result,closure) 	$OZ(closure)
+	lappend OZ(result,potential) 	$OZ(potential)
+	lappend OZ(result,p) 		{$OZ(p0) $OZ(p1) $OZ(p2) $OZ(p3) $OZ(p4) $OZ(p5) $OZ(p6) $OZ(p7) $OZ(p8) $OZ(p9) $OZ(p10) $OZ(p11) $OZ(p12) $OZ(p13) $OZ(p14) $OZ(p15)}
+	lappend OZ(result,phi)		$OZ(phi)
+	lappend OZ(result,T) 		$OZ(T)
+    	lappend OZ(result,1024)		$OZ(1024)
+    	lappend OZ(result,mult) 	$OZ(mult)
+    	lappend OZ(result,mix) 		$OZ(mix)
+    	lappend OZ(result,dr/dsigma) 	$OZ(dr/dsigma)
+    	lappend OZ(result,releps)  	$OZ(releps)
+    	lappend OZ(result,gridlength)  	$OZ(gridlength)
+    	lappend OZ(result,q)  		$OZ(res,s,x)
+    	lappend OZ(result,Sq)  		$OZ(res,s,y)
+    	lappend OZ(result,r)  		$OZ(res,c,x)
+    	lappend OZ(result,cr)  		$OZ(res,c,y)
+    	lappend OZ(result,gr)  		$OZ(res,c,y)
+    	lappend OZ(result,Ur)  		$OZ(res,u,y)
+}
+
+
 proc StartOZsolver {} {
         global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
         puts "Start OZ Solver"
@@ -28,14 +50,13 @@ proc StartOZsolver {} {
         if {$OZ(color_i) >= [llength $ozSQGraph(colorselection)]} {
             set OZ(color_i) 0
             incr OZ(symbol_i)
-            if {$OZ(symbol_i) >= [llength $OZSQGraph(symbolselection)]} {set $OZ(symbol_i) 0}
+            if {$OZ(symbol_i) >= [llength $ozSQGraph(symbolselection)]} {set $OZ(symbol_i) 0}
         }
         set color_n  [lindex $ozSQGraph(colorselection)  $OZ(color_i)]
         set symbol_n [lindex $ozSQGraph(symbolselection) $OZ(symbol_i)]
         set count_n  $OZ(plottedgraphs)
 
         incr OZ(color_i)
-        incr OZ(symbol_i)
 
         #clearGraph_el ozSQGraph
         set ozSQGraph(x,type) arcsinh(x)
@@ -78,6 +99,7 @@ proc StartOZsolver {} {
         RefreshGraph ozbetaUrGraph
 
         incr  OZ(plottedgraphs)
+        put_OZ_res
 }
 
 proc ClearOZsolver {} {
@@ -89,6 +111,24 @@ proc ClearOZsolver {} {
     set OZ(color_i) 0
     set OZ(symbol_i) 0
     set OZ(plottedgraphs) 0
+    
+    set OZ(result,closure) {}
+    set OZ(result,potential) {}
+    set OZ(result,p) {}
+    set OZ(result,phi) {}
+    set OZ(result,T) {}
+    set OZ(result,1024) {}
+    set OZ(result,mult) {}
+    set OZ(result,mix) {}
+    set OZ(result,dr/dsigma) {}
+    set OZ(result,releps) {}
+    set OZ(result,gridlength) {}
+    set OZ(result,q) {}
+    set OZ(result,Sq) {}
+    set OZ(result,r) {}
+    set OZ(result,cr) {}
+    set OZ(result,gr) {}
+    set OZ(result,Ur) {}
 }
 
 proc oz_input_names {} {
@@ -192,16 +232,29 @@ proc sasfit_OZ_solver {} {
 #
 #  creating tabset
 #
-    blt::tabset .oztop.tab -relief sunken -borderwidth 2
+    blt::tabset .oztop.tab -relief sunken -borderwidth 2 
     frame $w.interface 
     frame $w.interface.param   
-    frame $w.interface.action 
-    pack .oztop.tab $w.interface -fill both -expand yes -side right
-    pack  $w.interface.param  $w.interface.action  -fill both -expand yes
+    frame $w.interface.action   
+    frame $w.interface.assigning 
+    pack .oztop.tab  -fill both  -expand yes -side right
+    pack $w.interface -side left
+    pack  $w.interface.param $w.interface.action $w.interface.assigning -fill y
     
     button  $w.interface.action.calc -text calculate -command {StartOZsolver}
     button  $w.interface.action.clear -text clear -command {ClearOZsolver}
-    pack $w.interface.action.calc $w.interface.action.clear -side left -fill x -expand yes
+    ComboBox $w.interface.assigning.sqplugin \
+	    -values {"SQ oz 1" "SQ oz 2" "SQ oz 3" "SQ oz 4" "SQ oz 5" "SQ oz 6"} \
+            -text "SQ oz 1"
+    ComboBox $w.interface.assigning.assign
+    button   $w.interface.assigning.doassign -text assign
+    label    $w.interface.assigning.to -text to
+
+    pack $w.interface.action.calc $w.interface.action.clear -side left  -padx 2mm -pady 4mm
+    pack $w.interface.assigning.doassign \
+	 $w.interface.assigning.assign \
+	 $w.interface.assigning.to \
+         $w.interface.assigning.sqplugin  -side left
  
     set w .oztop.interface
     label $w.param.cltext -text "closure relation:"
@@ -224,24 +277,28 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.potvalue\
 	    -column 1 -row 1
 
+    label $w.param.empty1 -text "input parameters for U(r):" -anchor w -justify left -font "Arial 10 bold underline"
     label $w.param.v0text -anchor e -justify right -textvariable OZ(p0,name)
     label $w.param.v1text -anchor e -justify right -textvariable OZ(p1,name)
     label $w.param.v2text -anchor e -justify right -textvariable OZ(p2,name)
     label $w.param.v3text -anchor e -justify right -textvariable OZ(p3,name)
     label $w.param.v4text -anchor e -justify right -textvariable OZ(p4,name)
     label $w.param.v5text -anchor e -justify right -textvariable OZ(p5,name)
+    
+    grid  $w.param.empty1 \
+	    -column 0 -row 2 -columnspan 2 -sticky w
     grid  $w.param.v0text -sticky e\
-	    -column 0 -row 2  
-    grid  $w.param.v1text -sticky e\
 	    -column 0 -row 3  
-    grid  $w.param.v2text -sticky e\
+    grid  $w.param.v1text -sticky e\
 	    -column 0 -row 4  
-    grid  $w.param.v3text -sticky e\
+    grid  $w.param.v2text -sticky e\
 	    -column 0 -row 5  
-    grid  $w.param.v4text -sticky e\
+    grid  $w.param.v3text -sticky e\
 	    -column 0 -row 6  
+    grid  $w.param.v4text -sticky e\
+	    -column 0 -row 7  
     grid  $w.param.v5text -sticky e\
-	    -column 0 -row 7
+	    -column 0 -row 8
 
     entry $w.param.v0value -textvariable OZ(p0)
     entry $w.param.v1value -textvariable OZ(p1)
@@ -250,31 +307,36 @@ proc sasfit_OZ_solver {} {
     entry $w.param.v4value -textvariable OZ(p4)
     entry $w.param.v5value -textvariable OZ(p5)  
     grid  $w.param.v0value\
-	    -column 1 -row 2  
-    grid  $w.param.v1value\
 	    -column 1 -row 3  
-    grid  $w.param.v2value\
+    grid  $w.param.v1value\
 	    -column 1 -row 4  
-    grid  $w.param.v3value\
+    grid  $w.param.v2value\
 	    -column 1 -row 5  
-    grid  $w.param.v4value\
+    grid  $w.param.v3value\
 	    -column 1 -row 6  
+    grid  $w.param.v4value\
+	    -column 1 -row 7  
     grid  $w.param.v5value\
-	    -column 1 -row 7
+	    -column 1 -row 8
 
+    label $w.param.empty2 -text "parameters for OZ solver:" -font "Arial 10 bold underline"
     label $w.param.phitext -text "volume fraction:"  
     entry $w.param.phivalue -textvariable OZ(phi)
     label $w.param.ttext -text "temperature \[K\]:"  
     entry $w.param.tvalue -textvariable OZ(T)
+    
+    grid  $w.param.empty2 -sticky w\
+	    -column 0 -row 9 -columnspan 2
     grid  $w.param.phitext -sticky e\
-	    -column 0 -row 8
+	    -column 0 -row 10
     grid  $w.param.ttext -sticky e\
-	    -column 0 -row 9
+	    -column 0 -row 11
     grid  $w.param.phivalue\
-	    -column 1 -row 8
+	    -column 1 -row 10
     grid  $w.param.tvalue\
-	    -column 1 -row 9
+	    -column 1 -row 11
 
+    label $w.param.empty3 -text " "
     label $w.param.gridtext -text "gridsize (n x 1024), n:"  
     entry $w.param.gridvalue -textvariable OZ(mult)
     label $w.param.mixtext -text "mixing parameter:"  
@@ -285,26 +347,40 @@ proc sasfit_OZ_solver {} {
     entry $w.param.relepsvalue -textvariable OZ(releps) 
     label $w.param.drdsigmatext -text "rel. grid step width:" 
     entry $w.param.drdsigmavalue -textvariable OZ(dr/dsigma)
-    grid  $w.param.gridtext -sticky e\
-	    -column 0 -row 10
-    grid  $w.param.mixtext -sticky e\
+    
+    grid $w.param.empty3 \
 	    -column 0 -row 11
-    grid  $w.param.ittext -sticky e\
+    grid  $w.param.gridtext -sticky e\
 	    -column 0 -row 12
-    grid  $w.param.relepstext -sticky e\
+    grid  $w.param.mixtext -sticky e\
 	    -column 0 -row 13
-    grid  $w.param.drdsigmatext -sticky e\
+    grid  $w.param.ittext -sticky e\
 	    -column 0 -row 14
+    grid  $w.param.relepstext -sticky e\
+	    -column 0 -row 15
+    grid  $w.param.drdsigmatext -sticky e\
+	    -column 0 -row 16
     grid  $w.param.gridvalue \
-	    -column 1 -row 10
-    grid  $w.param.mixvalue \
-	    -column 1 -row 11
-    grid  $w.param.itvalue \
 	    -column 1 -row 12
-    grid  $w.param.relepsvalue \
+    grid  $w.param.mixvalue \
 	    -column 1 -row 13
-    grid  $w.param.drdsigmavalue \
+    grid  $w.param.itvalue \
 	    -column 1 -row 14
+    grid  $w.param.relepsvalue \
+	    -column 1 -row 15
+    grid  $w.param.drdsigmavalue \
+	    -column 1 -row 16
+
+    label $w.param.empty4 -text " "
+    label $w.param.labeltext -text "label:"  
+    entry $w.param.labelvalue -textvariable OZ(label)
+    grid $w.param.empty4 \
+	    -column 0 -row 17
+    grid  $w.param.labeltext -sticky e\
+	    -column 0 -row 18
+    grid  $w.param.labelvalue \
+	    -column 1 -row 18
+
 #
 #  create "ozSQGraph"
 #

@@ -18,8 +18,8 @@
 #define GF  OZd->Gf
 #define G  OZd->G
 #define g  OZd->g
-#define IN  OZd->in
-#define OUT OZd->out
+#define OZIN  OZd->in
+#define OZOUT OZd->out
 #define U   (*OZd->potential)
 #define dU_dR OZd->ud
 #define UBETA OZd->ubeta
@@ -75,8 +75,8 @@ void OZ_init(sasfit_oz_data *OZd) {
    UBETA=tp;
    tp=(double*)malloc((NP)*sizeof(double));
    dU_dR=tp;
-   IN=(double*)fftw_malloc(sizeof(double)*NP);
-   OUT=(double*)fftw_malloc(sizeof(double)*NP);
+   OZIN=(double*)fftw_malloc(sizeof(double)*NP);
+   OZOUT=(double*)fftw_malloc(sizeof(double)*NP);
    for (i=0; i < NP; i++) {
         G[i]=0;
    }
@@ -166,23 +166,23 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
             c[i]=-1.-G[i]+EN[i]*exp(pow(1+sBPGG*G[i],1./sBPGG)-1.);
             g[i]=EN[i]*exp(pow(1.+sBPGG*G[i],1./sBPGG)-1.);
         }
-        IN[i]=(i+1)*c[i];
+        OZIN[i]=(i+1)*c[i];
     }
-    OZd->pl=fftw_plan_r2r_1d(NP, IN, OUT, FFTW_RODFT00, FFTW_ESTIMATE);
+    OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute(OZd->pl);
 
     for (j=0; j < NP; j++) {
-        CFNEW[j]=4.*Pi*dr*dr*OUT[j]/(2*dk*(j+1));
+        CFNEW[j]=4.*Pi*dr*dr*OZOUT[j]/(2*dk*(j+1));
         cf[j]=MIXCOEFF*CFNEW[j]+(1-MIXCOEFF)*CFOLD[j];
         CFOLD[j]=cf[j];
         GF[j]=ro*cf[j]*cf[j]/(1-ro*cf[j]);
-        IN[j]=GF[j]*(j+1);
+        OZIN[j]=GF[j]*(j+1);
     }
-    OZd->pl=fftw_plan_r2r_1d(NP, IN, OUT, FFTW_RODFT00, FFTW_ESTIMATE);
+    OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute(OZd->pl);
     Sm=0;
     for (j=0; j < NP; j++) {
-        G[j]=4.*Pi*dk*dk*OUT[j]/(2*dr*pow(2*Pi,3)*(j+1));
+        G[j]=4.*Pi*dk*dk*OZOUT[j]/(2*dr*pow(2*Pi,3)*(j+1));
         S[j]=1./(1.-ro*cf[j]);
         Sm=pow(1./(1.-ro*cf[j]),2)+Sm;
         }
@@ -416,8 +416,8 @@ void OZ_free (sasfit_oz_data *OZd) {
     free(S);
 
     fftw_destroy_plan(OZd->pl);
-    fftw_free(IN);
-    fftw_free(OUT);
+    fftw_free(OZIN);
+    fftw_free(OZOUT);
 }
 
 

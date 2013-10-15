@@ -12,6 +12,15 @@
 #include <sasfit_oz.h>
 #include <sasfit_analytpar.h>
 
+
+#include "../sasfit_old/include/sasfit.h"
+#include "../sasfit_old/include/SASFIT_nr.h"
+#include "../sasfit_old/include/SASFIT_x_tcl.h"
+#include "../sasfit_old/include/SASFIT_resolution.h"
+#include <sasfit_common.h>
+#include <sasfit_plugin.h>
+#include <sasfit_plugin_backend.h>
+
 #define OZMAXPAR 16
 #define PUTS(format, ...) sasfit_out(format, __VA_ARGS__)
 
@@ -302,5 +311,89 @@ int sasfit_oz_calc_cmd(ClientData clientData,
 
         OZ_free(&ozd);
         return TCL_OK;
+}
+
+int sasfit_oz_assign_data_sq_cmd(ClientData clientData,
+                Tcl_Interp *interp,
+                int objc,
+                Tcl_Obj *CONST objv[])
+{
+
+        sasfit_oz_data ozd;
+        int i;
+        Tcl_Obj * oz_obj;
+        Tcl_Obj **oz_objvPtr_q, **oz_objvPtr_Sq;
+        const char * sqname;
+        int lq, lSq;
+        double tmp;
+        double *q, *Sq;
+        int funcid;
+        sasfit_param param;
+        const sasfit_plugin_func_t *func_descr=NULL;
+        const sasfit_plugin_func_t *curr_func=NULL;
+
+        if (objc < 2) {
+                PUTS("usage: sasfit_oz_assign_data <sqfunc> <{q*sigma}> <{S(q*sigma)}>",0);
+                return TCL_ERROR;
+        }
+        if (objc < 4) {
+                PUTS("usage: sasfit_oz_assign_data <sqfunc> <{q*sigma}> <{S(q*sigma)}>",0);
+                return TCL_ERROR;
+        }
+
+        oz_obj = objv[1];
+        sqname = Tcl_GetStringFromObj(oz_obj, 0);
+
+        Tcl_ListObjGetElements(interp,objv[2],&lq,&oz_objvPtr_q);
+        Tcl_ListObjGetElements(interp,objv[3],&lSq,&oz_objvPtr_Sq);
+        if (lq != lSq) {
+                PUTS("<q*sigma> and <S(q*sigma)> need to have the same length",0);
+                return TCL_ERROR;
+        }
+        q = (double *)malloc(sizeof(double)*lq);
+        Sq = (double *)malloc(sizeof(double)*lq);
+        for (i=0; i<lq; i++) {
+            if (Tcl_GetDoubleFromObj(interp,oz_objvPtr_q[i],&q[i])!=TCL_OK) {
+                PUTS("could not read element %d of the list q",i);
+                free(q);
+                free(Sq);
+                return TCL_ERROR;
+            }
+            PUTS("element q(%d):%f\n",i,q[i]);
+        }
+
+        for (i=0; i<lq; i++) {
+            if (Tcl_GetDoubleFromObj(interp,oz_objvPtr_Sq[i],&Sq[i])!=TCL_OK) {
+                PUTS("could not read element %d of the list Sq",i);
+                free(q);
+                free(Sq);
+                return TCL_ERROR;
+            }
+            PUTS("element S(q(%d)):%f\n",i,Sq[i]);
+        }
+
+        sasfit_plugin_func_t * cur_func = NULL;
+        i=0;
+        do {
+            curr_func = sasfit_plugin_db_get_by_id(i);
+            i++;
+            if (curr_func !=NULL) {
+                    sasfit_out("%d: >%s<\n",i-1,curr_func->name);
+                    if (strcmp(sqname,curr_func->name)==0) i = -(i-1);
+            }
+        } while (curr_func != NULL && i>0);
+
+        if (curr_func != NULL ) {
+			sasfit_init_param( &param );
+			param.xarr=q;
+			param.yarr=Sq;
+            tmp=curr_func->func_v(1,&param,lq);
+        } else {
+            return TCL_ERROR;
+            free(q);
+            free(Sq);
+        }
+        free(q);
+        free(Sq);
 }
 
