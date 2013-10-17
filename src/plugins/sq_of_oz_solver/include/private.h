@@ -15,24 +15,24 @@
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_spline.h>
 
-gsl_interp_accel *acc_spline1;
-gsl_interp_accel *acc_spline2;
-gsl_interp_accel *acc_spline3;
-gsl_interp_accel *acc_spline4;
-gsl_interp_accel *acc_spline5;
-gsl_interp_accel *acc_spline6;
-gsl_spline * sq1akima_T;
-gsl_spline * sq1cspline_T;
-gsl_spline * sq2akima_T;
-gsl_spline * sq2cspline_T;
-gsl_spline * sq3akima_T;
-gsl_spline * sq3cspline_T;
-gsl_spline * sq4akima_T;
-gsl_spline * sq4cspline_T;
-gsl_spline * sq5akima_T;
-gsl_spline * sq5cspline_T;
-gsl_spline * sq6akima_T;
-gsl_spline * sq6cspline_T;
+static gsl_interp_accel *acc_spline1;
+static gsl_interp_accel *acc_spline2;
+static gsl_interp_accel *acc_spline3;
+static gsl_interp_accel *acc_spline4;
+static gsl_interp_accel *acc_spline5;
+static gsl_interp_accel *acc_spline6;
+static gsl_spline * sq1akima_T;
+static gsl_spline * sq1cspline_T;
+static gsl_spline * sq2akima_T;
+static gsl_spline * sq2cspline_T;
+static gsl_spline * sq3akima_T;
+static gsl_spline * sq3cspline_T;
+static gsl_spline * sq4akima_T;
+static gsl_spline * sq4cspline_T;
+static gsl_spline * sq5akima_T;
+static gsl_spline * sq5cspline_T;
+static gsl_spline * sq6akima_T;
+static gsl_spline * sq6cspline_T;
 
 // mandatory, no adjustments necessary
 #include <sasfit_common.h>
