@@ -326,7 +326,7 @@ int sasfit_oz_assign_data_sq_cmd(ClientData clientData,
         const char * sqname;
         int lq, lSq;
         double tmp;
-        double *q, *Sq;
+        static double *q=NULL, *Sq=NULL;
         int funcid;
         sasfit_param param;
         const sasfit_plugin_func_t *func_descr=NULL;
@@ -350,26 +350,24 @@ int sasfit_oz_assign_data_sq_cmd(ClientData clientData,
                 PUTS("<q*sigma> and <S(q*sigma)> need to have the same length",0);
                 return TCL_ERROR;
         }
+        if (q==NULL) free(q);
+        if (Sq==NULL) free(Sq);
         q = (double *)malloc(sizeof(double)*lq);
         Sq = (double *)malloc(sizeof(double)*lq);
         for (i=0; i<lq; i++) {
             if (Tcl_GetDoubleFromObj(interp,oz_objvPtr_q[i],&q[i])!=TCL_OK) {
                 PUTS("could not read element %d of the list q",i);
-                free(q);
-                free(Sq);
                 return TCL_ERROR;
             }
-            PUTS("element q(%d):%f\n",i,q[i]);
+ //           PUTS("element q(%d):%f\n",i,q[i]);
         }
 
         for (i=0; i<lq; i++) {
             if (Tcl_GetDoubleFromObj(interp,oz_objvPtr_Sq[i],&Sq[i])!=TCL_OK) {
                 PUTS("could not read element %d of the list Sq",i);
-                free(q);
-                free(Sq);
                 return TCL_ERROR;
             }
-            PUTS("element S(q(%d)):%f\n",i,Sq[i]);
+ //           PUTS("element S(q(%d)):%f\n",i,Sq[i]);
         }
 
         sasfit_plugin_func_t * cur_func = NULL;
@@ -378,10 +376,12 @@ int sasfit_oz_assign_data_sq_cmd(ClientData clientData,
             curr_func = sasfit_plugin_db_get_by_id(i);
             i++;
             if (curr_func !=NULL) {
-                    sasfit_out("%d: >%s<\n",i-1,curr_func->name);
+ //                   sasfit_out("%d: >%s<\n",i-1,curr_func->name);
                     if (strcmp(sqname,curr_func->name)==0) i = -(i-1);
             }
         } while (curr_func != NULL && i>0);
+
+        PUTS("%d: >%s<:>%s<\n",-i,sqname,curr_func->name);
 
         if (curr_func != NULL ) {
 			sasfit_init_param( &param );
@@ -390,10 +390,7 @@ int sasfit_oz_assign_data_sq_cmd(ClientData clientData,
             tmp=curr_func->func_v(1,&param,lq);
         } else {
             return TCL_ERROR;
-            free(q);
-            free(Sq);
         }
-        free(q);
-        free(Sq);
+        return TCL_OK;
 }
 
