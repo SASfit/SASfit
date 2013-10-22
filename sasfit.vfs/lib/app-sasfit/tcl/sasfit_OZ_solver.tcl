@@ -37,9 +37,40 @@ proc put_OZ_res {} {
     	lappend OZ(result,Sq)  		$OZ(res,s,y)
     	lappend OZ(result,r)  		$OZ(res,c,x)
     	lappend OZ(result,cr)  		$OZ(res,c,y)
-    	lappend OZ(result,gr)  		$OZ(res,c,y)
+    	lappend OZ(result,gr)  		$OZ(res,g,y)
+    	lappend OZ(result,u,x)          $OZ(res,u,x)
     	lappend OZ(result,Ur)  		$OZ(res,u,y)
     	lappend OZ(result,label)	$OZ(label)
+    	.oztop.interface.assigning.assign configure -values $OZ(result,label)
+    	.oztop.interface.assigning.assign setvalue last
+}
+
+proc pop_OZ_res {} {
+	global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph
+	set OZ(result,closure) 		[lrange $OZ(result,closure) 	0 [expr [llength $OZ(result,closure)]	-2]]
+	set OZ(result,potential) 	[lrange $OZ(result,potential) 	0 [expr [llength $OZ(result,potential)]	-2]]
+	set OZ(result,p) 		[lrange $OZ(result,p) 		0 [expr [llength $OZ(result,p)]		-2]]
+	set OZ(result,phi)		[lrange $OZ(result,phi) 	0 [expr [llength $OZ(result,phi)]	-2]]
+	set OZ(result,T) 		[lrange $OZ(result,T) 		0 [expr [llength $OZ(result,T)]		-2]]
+    	set OZ(result,1024)		[lrange $OZ(result,1024) 	0 [expr [llength $OZ(result,1024)]	-2]]
+    	set OZ(result,mult) 		[lrange $OZ(result,mult) 	0 [expr [llength $OZ(result,mult)]	-2]]
+    	set OZ(result,mix) 		[lrange $OZ(result,mix) 	0 [expr [llength $OZ(result,mix)]	-2]]
+    	set OZ(result,dr/dsigma) 	[lrange $OZ(result,dr/dsigma) 	0 [expr [llength $OZ(result,dr/dsigma)]	-2]]
+    	set OZ(result,releps)  		[lrange $OZ(result,releps)	0 [expr [llength $OZ(result,releps)]	-2]]
+    	set OZ(result,gridlength)  	[lrange $OZ(result,gridlength) 	0 [expr [llength $OZ(result,gridlength)] -2]]
+    	set OZ(result,q)  		[lrange $OZ(result,q) 		0 [expr [llength $OZ(result,q)]		-2]]
+    	set OZ(result,Sq)  		[lrange $OZ(result,Sq) 		0 [expr [llength $OZ(result,Sq)]	-2]]
+    	set OZ(result,r)  		[lrange $OZ(result,r) 		0 [expr [llength $OZ(result,r)]		-2]]
+    	set OZ(result,cr)  		[lrange $OZ(result,cr) 		0 [expr [llength $OZ(result,cr)]	-2]]
+    	set OZ(result,gr)  		[lrange $OZ(result,gr) 		0 [expr [llength $OZ(result,gr)]	-2]]
+    	set OZ(result,u,x)          	[lrange $OZ(result,u,x) 	0 [expr [llength $OZ(result,u,x)]	-2]]
+    	set OZ(result,Ur)  		[lrange $OZ(result,Ur) 		0 [expr [llength $OZ(result,Ur)]	-2]]
+    	set OZ(result,label)		[lrange $OZ(result,label) 	0 [expr [llength $OZ(result,label)]	-2]]
+    	Pop_Graph_el ozSQGraph
+    	Pop_Graph_el ozgrGraph
+    	Pop_Graph_el ozcrGraph
+    	Pop_Graph_el ozbetaUrGraph
+    	incr OZ(plottedgraphs) -1
     	.oztop.interface.assigning.assign configure -values $OZ(result,label)
     	.oztop.interface.assigning.assign setvalue last
 }
@@ -47,9 +78,11 @@ proc put_OZ_res {} {
 
 proc StartOZsolver {} {
         global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
-        puts "Start OZ Solver"
+        sasfit_timer_start "Start OZ Solver"
         sasfit_oz_calc OZ
-
+	sasfit_timer_stop "OZ solver" "calculation finished" "."
+	
+	sasfit_timer_start "Start plotting OZ Solver results"
         if {$OZ(color_i) >= [llength $ozSQGraph(colorselection)]} {
             set OZ(color_i) 0
             incr OZ(symbol_i)
@@ -64,6 +97,7 @@ proc StartOZsolver {} {
         #clearGraph_el ozSQGraph
         set ozSQGraph(x,type) arcsinh(x)
         Put_Graph_el ozSQGraph $OZ(res,s,x) $OZ(res,s,y)
+
         set ozSQGraph(e,linehide)   [lreplace $ozSQGraph(e,linehide)   $count_n  $count_n 1]
         set ozSQGraph(e,dashcolor)  [lreplace $ozSQGraph(e,dashcolor)  $count_n  $count_n $color_n]
         set ozSQGraph(e,fill)       [lreplace $ozSQGraph(e,fill)       $count_n  $count_n $color_n]
@@ -107,6 +141,92 @@ proc StartOZsolver {} {
 
         incr  OZ(plottedgraphs)
         put_OZ_res
+        sasfit_timer_stop "Plotting OZ solver results" "plotting finished" "."
+}
+
+
+proc ReplotOZsolver {} {
+   global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
+   set OZ(color_i) 0
+   set OZ(symbol_i) 0
+   set OZ(plottedgraphs) 0
+   set OZ(progressbar) 1
+	
+   for {set i 0} {$i < [llength $OZ(result,q)]} {incr i} {
+	sasfit_timer_start "Start replotting OZ Solver result $i"
+	set OZ(res,s,x) [lindex $OZ(result,q)  $i]
+	set OZ(res,s,y) [lindex $OZ(result,Sq) $i]
+	set OZ(res,c,x) [lindex $OZ(result,r)  $i]
+	set OZ(res,c,y) [lindex $OZ(result,cr) $i]
+	set OZ(res,g,x) [lindex $OZ(result,r)  $i]
+	set OZ(res,g,y) [lindex $OZ(result,gr) $i]
+	set OZ(res,u,x) [lindex $OZ(result,u,x) $i]
+	set OZ(res,u,y) [lindex $OZ(result,Ur) $i]
+	set OZ(label)   [lindex $OZ(result,label) $i]
+        if {$OZ(color_i) >= [llength $ozSQGraph(colorselection)]} {
+            set OZ(color_i) 0
+            incr OZ(symbol_i)
+            if {$OZ(symbol_i) >= [llength $ozSQGraph(symbolselection)]} {set $OZ(symbol_i) 0}
+        }
+        set color_n  [lindex $ozSQGraph(colorselection)  $OZ(color_i)]
+        set symbol_n [lindex $ozSQGraph(symbolselection) $OZ(symbol_i)]
+        set count_n  $OZ(plottedgraphs)
+
+        incr OZ(color_i)
+
+        #clearGraph_el ozSQGraph
+        set ozSQGraph(x,type) arcsinh(x)
+        Put_Graph_el ozSQGraph $OZ(res,s,x) $OZ(res,s,y)
+        set ozSQGraph(e,linehide)   [lreplace $ozSQGraph(e,linehide)   $count_n  $count_n 1]
+        set ozSQGraph(e,dashcolor)  [lreplace $ozSQGraph(e,dashcolor)  $count_n  $count_n $color_n]
+        set ozSQGraph(e,fill)       [lreplace $ozSQGraph(e,fill)       $count_n  $count_n $color_n]
+        set ozSQGraph(e,outline)    [lreplace $ozSQGraph(e,outline)    $count_n  $count_n $color_n]
+        set ozSQGraph(e,symbol)     [lreplace $ozSQGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        set ozSQGraph(l,legendtext) [lreplace $ozSQGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+        RefreshGraph ozSQGraph
+        incr OZ(progressbar) 
+
+        #clearGraph_el ozcrGraph 
+        set ozcrGraph(x,type) arcsinh(x)
+        Put_Graph_el ozcrGraph $OZ(res,c,x) $OZ(res,c,y)
+        set ozcrGraph(e,linehide)   [lreplace $ozcrGraph(e,linehide)   $count_n  $count_n 1]
+        set ozcrGraph(e,dashcolor)  [lreplace $ozcrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+        set ozcrGraph(e,fill)       [lreplace $ozcrGraph(e,fill)       $count_n  $count_n $color_n]
+        set ozcrGraph(e,outline)    [lreplace $ozcrGraph(e,outline)    $count_n  $count_n $color_n]
+        set ozcrGraph(l,legendtext) [lreplace $ozcrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+        set ozcrGraph(e,symbol)     [lreplace $ozcrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozcrGraph
+        incr OZ(progressbar) 
+
+        #clearGraph_el ozgrGraph 
+        set ozgrGraph(x,type) arcsinh(x)
+        Put_Graph_el ozgrGraph $OZ(res,g,x) $OZ(res,g,y)
+        set ozgrGraph(e,linehide)   [lreplace $ozgrGraph(e,linehide)   $count_n  $count_n 1]
+        set ozgrGraph(e,dashcolor)  [lreplace $ozgrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+        set ozgrGraph(e,fill)       [lreplace $ozgrGraph(e,fill)       $count_n  $count_n $color_n]
+        set ozgrGraph(e,outline)    [lreplace $ozgrGraph(e,outline)    $count_n  $count_n $color_n]
+        set ozgrGraph(l,legendtext) [lreplace $ozgrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+        set ozgrGraph(e,symbol)     [lreplace $ozgrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozgrGraph
+        incr OZ(progressbar) 
+	
+        #clearGraph_el ozbetaUrGraph 
+        set ozbetaUrGraph(x,type) arcsinh(x)
+        Put_Graph_el ozbetaUrGraph $OZ(res,u,x) $OZ(res,u,y)
+        set ozbetaUrGraph(e,linehide)   [lreplace $ozbetaUrGraph(e,linehide)   $count_n  $count_n 1]
+        set ozbetaUrGraph(e,dashcolor)  [lreplace $ozbetaUrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+        set ozbetaUrGraph(e,fill)       [lreplace $ozbetaUrGraph(e,fill)       $count_n  $count_n $color_n]
+        set ozbetaUrGraph(e,outline)    [lreplace $ozbetaUrGraph(e,outline)    $count_n  $count_n $color_n]
+        set ozbetaUrGraph(l,legendtext) [lreplace $ozbetaUrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+        set ozbetaUrGraph(e,symbol)     [lreplace $ozbetaUrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozbetaUrGraph
+        incr OZ(progressbar) 
+
+        sasfit_timer_stop "Relotting $i-th OZ solver result" "plotting finished" "."
+        incr OZ(progressbar) 
+        incr OZ(plottedgraphs)
+    }
+    set OZ(progressbar) 0
 }
 
 proc ClearOZsolver {} {
@@ -135,6 +255,7 @@ proc ClearOZsolver {} {
     set OZ(result,r) {}
     set OZ(result,cr) {}
     set OZ(result,gr) {}
+    set OZ(result,u,x) {}
     set OZ(result,Ur) {}
     set OZ(result,label) {}
     .oztop.interface.assigning.assign configure -text ""
@@ -280,12 +401,24 @@ proc sasfit_OZ_solver {} {
     frame $w.interface.param   
     frame $w.interface.action   
     frame $w.interface.assigning 
+    frame $w.interface.progressbar
+    
+    set OZ(progressbar) 0
+    
+    label $w.interface.progressbar.label -text "progress:"
+    ProgressBar $w.interface.progressbar.value \
+    		-maximum 100 -width 50m\
+    		-type infinite -variable OZ(progressbar)
+    pack $w.interface.progressbar.label $w.interface.progressbar.value \
+    		-fill both  -expand yes -side left -pady 2m
+    
     pack .oztop.tab  -fill both  -expand yes -side right
     pack $w.interface -side left
-    pack  $w.interface.param $w.interface.action $w.interface.assigning -fill y
+    pack  $w.interface.param $w.interface.action $w.interface.assigning $w.interface.progressbar -fill y
     
     button  $w.interface.action.calc -text calculate -command {StartOZsolver}
     button  $w.interface.action.clear -text clear -command {ClearOZsolver}
+    button  $w.interface.action.del -text "del last" -command {pop_OZ_res}
     ComboBox $w.interface.assigning.sqplugin \
 	    -values $OZ(plugin_fct_names) \
             -text "SQ oz 1" -editable 0 -width 8
@@ -301,12 +434,19 @@ proc sasfit_OZ_solver {} {
     		set plugin_fct [.oztop.interface.assigning.sqplugin getvalue]
     		set q  [lindex $OZ(result,q)  $plugin_fct]
 		set Sq [lindex $OZ(result,Sq) $plugin_fct]
-
-    		sasfit_oz_assign_data [lindex $OZ(plugin_C_names) $plugin_fct] $q $Sq
+		set p  [lindex $OZ(result,p)  $plugin_fct]
+		set sigma [lindex $p 0]
+		set qsigma {}
+		foreach Q $q {
+			set QSIGMA [expr $Q*$sigma]
+			lappend qsigma $QSIGMA
+		}
+    		sasfit_oz_assign_data [lindex $OZ(plugin_C_names) $plugin_fct] $qsigma $Sq
     	}
     label    $w.interface.assigning.to -text to
 
-    pack $w.interface.action.calc $w.interface.action.clear -side left  -padx 2mm -pady 4mm
+    pack $w.interface.action.calc $w.interface.action.clear $w.interface.action.del \
+    	-side left  -padx 2mm -pady 4mm
     pack $w.interface.assigning.doassign \
 	 $w.interface.assigning.assign \
 	 $w.interface.assigning.to \
@@ -692,9 +832,9 @@ proc sasfit_OZ_solver {} {
    
     Blt_ZoomStack $ozbetaUrGraph(w)
 
-    ClearOZsolver
-#    RefreshGraph ozSQGraph
-#    RefreshGraph ozgrGraph
-#    RefreshGraph ozcrGraph
-#    RefreshGraph ozbetaUrGraph
+    ReplotOZsolver
+    RefreshGraph ozSQGraph
+    RefreshGraph ozgrGraph
+    RefreshGraph ozcrGraph
+    RefreshGraph ozbetaUrGraph
 }

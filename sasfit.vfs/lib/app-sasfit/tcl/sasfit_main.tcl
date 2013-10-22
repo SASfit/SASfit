@@ -302,6 +302,7 @@ set OZ(result,Sq) {}
 set OZ(result,r) {}
 set OZ(result,cr) {}
 set OZ(result,gr) {}
+set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}
 
@@ -2125,6 +2126,7 @@ proc LoadCmd { loadProj } {
    global distr
    global nomenu
    global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
+   global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph
    global adjustvalue
    global FitPrecision
    
@@ -2260,6 +2262,7 @@ proc SaveCmd {} {
    global distr
    global nomenu
    global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
+   global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph
    global adjustvalue
    global FitPrecision
 
@@ -2316,6 +2319,11 @@ proc SaveCmd {} {
 	      puts_arr $fid StructParData
 	      puts_arr $fid G2ParData
 	      puts_arr $fid FitPrecision
+	      puts_arr $fid OZ 
+	      puts_arr $fid ozSQGraph 
+	      puts_arr $fid ozgrGraph 
+	      puts_arr $fid ozcrGraph 
+	      puts_arr $fid ozbetaUrGraph
 	      close $fid
 	   }
 	   set ::sasfit(lastProjectFile) $filename

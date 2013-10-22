@@ -1,4 +1,4 @@
-\chapter{Structure factors}
+\chapter{Analytical Solutions for Structure factors}
 \label{sec:structurefactor}
 The different types of structure factors can be selected in the
 different submenus. Below one finds how they are ordered. The
@@ -1171,3 +1171,86 @@ S_{\text{Voigt}}(Q,Q_m,A,\sigma,\gamma,c_0) = A \,\,
 V(Q-Q_m\vert\sigma,\gamma)+c_0
 \end{align}
 \end{subequations}
+
+
+\chapter{Numerical solution of the Ornstein Zernike equations}
+
+In \SASfit an algorithm to numerically calculate structure factors
+$S(q)$, radial distribution functions $g(r)$ and direct correlation
+functions $c(r)$ of a systems with known pair interaction potential
+$U(r)$ has been implemented. The central part of this package is
+iterative solution of Ornstein-Zernike equation
+\cite{Naegele2004,Henderson2000,Hansen2013}:
+\begin{align}\label{eq:oz_h12}
+    h(\mathbf{r}_{12})&=c(\mathbf{r}_{12})+ \int c(\mathbf{r}_{13}) \rho(\mathbf{r}_3) h(\mathbf{r}_{32})
+    d\mathbf{r}_3 + \cdots
+\end{align}
+where $h(\mathbf{r}_{12})$ is the total correlation function,
+$c(\mathbf{r}_{12})$ the direct correlation function (direct effect
+of particle 1 on particle 2), $c(\mathbf{r}_{13})$ the indirect
+correlation function (direct effect of particle 1 on particle 3
+which influences particle 3), and $\rho$ the particle number
+density. If the fluid is uniform and isotropic, the Ornstein–Zernike
+relation becomes
+\begin{align}\label{eq:ozh(r)}
+    h(r)&=c(r)+ \rho \int c(\abs{\mathbf{r}-\mathbf{r}'})  h(r')
+    d\mathbf{r}'
+\end{align}
+The basic idea of this equation is that total correlation between
+positions of two particles is a combination of their direct and
+indirect (through neighboring particles) interactions. In order so
+solve the Ornstein Zernike a closure relation is required:
+\begin{align}\label{eq:ozclosure}
+c(r)&= \exp\left[ -\beta U(r) +\Gamma(r)+B(r)\right] - \Gamma(r)-1 \\
+\mbox{or } h(r)+1&=g(r)= \exp\left[ -\beta U(r)
++\Gamma(r)+B(r)\right]
+\end{align}
+where $U(r)$ is the pair interaction potential, $\beta=1/(k_B T)$
+the inverse temperature, $\Gamma(r)=h(r)-c(r)$ the indirect (chain)
+correlation function, and $B(r)$ the bridge function. The closure is
+not complete as long the bridge function is known. Even though the
+bridge function is exactly defined the function is an unknown
+function of interparticle distance and only approximations can be
+given.
+
+\section{Classical Closures}
+\subsection{Hypernetted-chain(HNC) approximation}
+~\\
+The simplest assumption for completing the closure relation
+\ref{eq:ozclosure} is by setting the bridge function to zero
+\begin{align} \label{eq:ozBHNC}
+B_\text{HNC}(r) &\equiv 0 \\
+g(r)&=\exp\left[ -\beta U(r) +h(r)-c(r)\right]
+\end{align}
+The HNC equation is a special case insofar as it corresponds to a
+well-defined free-energy functional, and differentiation of that
+free energy with respect to volume can be shown to give the same
+result as the virial equation. The energy and virial routes to the
+equation of state are therefore equivalent.
+
+\subsection{Percus-Yevick (PY) approximation}
+~\\
+\begin{align} \label{eq:ozBHNC}
+B_\text{PY}(r) &=\Gamma(r)-\ln\left[\Gamma(r)-1\right] \\
+g(r)&= \exp\left[ -\beta U(r)\right]\left(1 +h(r)-c(r)\right)
+\end{align}
+The PY equation proves to be more successful than the HNC
+approximation when the potential is strongly repulsive and short
+ranged. The PY equation is of particular interest in the theory of
+simple liquids because it is soluble analytically in the important
+case of the hard-sphere fluid.
+
+\subsection{Roger-Young closure}
+
+\section{Phenomenological Closures}
+\subsection{Verlet approximation}
+
+\begin{align} \label{eq:ozBHNC}
+B_\text{Verlet}(r) &=\frac{-\Gamma^2(r)}{2\left(1+\frac{4}{5}\Gamma(r)\right)} \\
+g(r)&= \exp\left[ -\beta U(r)\right]\left(1 +h(r)-c(r)\right)
+\end{align}
+
+\subsection{Martynov-Sarkisov}
+
+\subsection{Ballone, Pastore,
+Galli, and Gazzillo (BPGG) approximations}
