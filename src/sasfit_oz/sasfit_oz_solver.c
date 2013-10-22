@@ -139,33 +139,34 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
     for (i=0; i < NP; i++){
         if (CLOSURE==PY) {
             c[i]=(1.+G[i])*(EN[i]-1.);
-            g[i]=EN[i]*(1+G[i]);
+//            g[i]=EN[i]*(1+G[i]);
         }
         if (CLOSURE==HNC) {
             c[i]=-1-G[i]+EN[i]*exp(G[i]);
-            g[i]=EN[i]*exp(G[i]);
+//            g[i]= c[i]+G[i]+1;
         }
         if (CLOSURE==RY)   {
             if (ALPHA == 0) {
                 c[i]=(1.+G[i])*(EN[i]-1.);
-                g[i]=EN[i]*(1+G[i]);
+//                g[i]= c[i]+G[i]+1;
             } else {
                 c[i]=EN[i]*(1+((exp(Fswitch[i]*G[i])-1)/Fswitch[i]))-G[i]-1;
-                g[i]= c[i]+G[i]+1;
+//                g[i]= c[i]+G[i]+1;
             }
         }
         if (CLOSURE==Verlet) {
-            c[i]=-1.-G[i]+EN[i]*exp(G[i]+(gsl_pow_2(G[i])/(2.*(1.+0.8*G[i]))));
-            g[i]=EN[i]*exp(G[i]+(gsl_pow_2(G[i])/(2.*(1.+0.8*G[i]))));
+            c[i]=-1.-G[i]+EN[i]*exp(G[i]-(gsl_pow_2(G[i])/(2.*(1.+0.8*G[i]))));
+//            g[i]=EN[i]*exp(G[i]-(gsl_pow_2(G[i])/(2.*(1.+0.8*G[i]))));
         }
         if (CLOSURE==MS) {
             c[i]=-1.-G[i]+EN[i]*exp(sqrt(1.+2.*G[i])-1.);
-            g[i]=EN[i]*exp(sqrt(1.+2.*G[i])-1.);
+//            g[i]=EN[i]*exp(sqrt(1.+2.*G[i])-1.);
         }
         if (CLOSURE==BPGG) {
             c[i]=-1.-G[i]+EN[i]*exp(pow(1+sBPGG*G[i],1./sBPGG)-1.);
-            g[i]=EN[i]*exp(pow(1.+sBPGG*G[i],1./sBPGG)-1.);
+//            g[i]=EN[i]*exp(pow(1.+sBPGG*G[i],1./sBPGG)-1.);
         }
+        g[i]= c[i]+G[i]+1;
         OZIN[i]=(i+1)*c[i];
     }
     OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);

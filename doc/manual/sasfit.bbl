@@ -237,6 +237,11 @@ H.~J.~M. Hanley, C.~D. Muzny, D.~L. Ho, and C.~J. Glinka.
   dispersion.
 \newblock {\em Langmuir}, 19(14):5575--5580, 2003.
 
+\bibitem{Hansen2013}
+Jean-Pierre Hansen and Ian~R. McDonald.
+\newblock {\em Theory of Simple Liquids with Applications to Soft Matter}.
+\newblock Academic Press, fourth edition, 2013.
+
 \bibitem{Hansen1982}
 J.P. Hansen and J.B. Hayter.
 \newblock A rescaled msa structure factor for dilute charged colloidal
@@ -253,6 +258,12 @@ J.~B. Hayter and J.~Penfold.
 J.B. Hayter and J.~Penfold.
 \newblock An analytic structure factor for macroion solutions.
 \newblock {\em Molecular Physics}, 42:109--118, 1981.
+
+\bibitem{Henderson2000}
+Douglas Henderson, Stefan Soko{\l}owski, and Malgorza{\l}a Bor\'{o}wko.
+\newblock {\em Computational Methods in Surface And Colloidal Science}, chapter
+  Integral Equations in the Theory of Simple Fluids, pages 135--166.
+\newblock Marcel Dekker, Inc., 2000.
 
 \bibitem{hittmair}
 O.~Hittmair.
@@ -275,7 +286,7 @@ Rex~P. Hjelm, Claudio~D. Schteingart, Alan~F. Hofmann, and P.~Thiyagarajan.
 Rex~P. Hjelm, P.~Thiyagarajan, and Hayat Alkan-Onyuksel.
 \newblock Organization of phosphatidylcholine and bile salt in rodlike mixed
   micelles.
-\newblock {\em J. Phys. Chem}, 96:8653--8661, 1992,.
+\newblock {\em J. Phys. Chem}, 96:8653--8661, 1992.
 
 \bibitem{Hosemann1962}
 R.~Hosemann and S.N. Bagchi.
@@ -401,6 +412,12 @@ F.~M\"uller, M.~Delsanti, L.~Auvray, J.~Yang, Y.J. Chen, J.W. Mays, B.~Demé,
 \newblock Ordering of urchin-like charged copolymer micelles: Electrostatic,
   packing and polyelectrolyte correlations.
 \newblock {\em Eur. Phys. J. E}, 3:45--53, 2000.
+
+\bibitem{Naegele2004}
+Gerhard Nägele.
+\newblock {\em The Physics of Colloidal Soft Matter}.
+\newblock Number~14 in Lecture Notes. Institute of Fundamental Technological
+  Research - Polish Academy of Sciences, Warsaw, 2004.
 
 \bibitem{Rfactor}
 Online~Dictionary of~crystallography.
