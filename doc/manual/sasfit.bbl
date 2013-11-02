@@ -75,6 +75,13 @@ C.F. Bohren and D.R. Huffman.
 \newblock {\em Absorption and Scattering of Light by Small Particles}.
 \newblock Wiley, New York, 1983.
 
+\bibitem{Bomont2008}
+Jean-Marc Bomont.
+\newblock {\em Recent Advances in the Field of Integral Equation Theories:
+  Bridge Functions and Applications to Classical Fluids}, chapter Chapter 1,
+  pages 1--84.
+\newblock John Wiley \& Sons, Inc., 2008.
+
 \bibitem{scatt142}
 M.~Born and H.~S. Green.
 \newblock A general kinetic theory of liquids {I. The} molecular distribution
@@ -92,6 +99,12 @@ W.~Burchard, E.~Michel, and V.~Trappe.
 \newblock Conformational properties of multiply twisted ring systems and
   daisy-like structures.
 \newblock {\em Macromolecules}, 29(18):5934--5939, 1996.
+
+\bibitem{Caccamo1996}
+C.~Caccamo.
+\newblock Integral equation theory description of phase equilibria in classical
+  fluids.
+\newblock {\em Physics Reports}, 274(1–2):1 -- 105, 1996.
 
 \bibitem{Caille1972}
 A.~Caille.
@@ -178,6 +191,19 @@ Peter Fratzl.
 \newblock Statistical model of the habit and arrangement of mineral crystals in
   the collagen of bone.
 \newblock {\em Journal of Statistical Physics}, 77(1-2):125--143, 1994.
+
+\bibitem{FFTW97}
+Matteo Frigo and Steven~G. Johnson.
+\newblock The fastest {Fourier} transform in the west.
+\newblock Technical Report MIT-LCS-TR-728, Massachusetts Institute of
+  Technology, September 1997.
+
+\bibitem{FFTW05}
+Matteo Frigo and Steven~G. Johnson.
+\newblock The design and implementation of {FFTW3}.
+\newblock {\em Proceedings of the IEEE}, 93(2):216--231, 2005.
+\newblock Special issue on ``Program Generation, Optimization, and Platform
+  Adaptation''.
 
 \bibitem{Fruhwirth2004}
 Thomas Fr{\"{u}}hwirth, Gerhard Fritz, Norbert Freiberger, and Otto Glatter.

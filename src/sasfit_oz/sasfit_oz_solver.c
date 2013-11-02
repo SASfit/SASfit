@@ -17,7 +17,9 @@
 #define k   OZd->k
 #define GF  OZd->Gf
 #define G  OZd->G
+#define G0  OZd->G0
 #define g  OZd->g
+#define g0  OZd->g0
 #define OZIN  OZd->in
 #define OZOUT OZd->out
 #define U   (*OZd->potential)
@@ -46,7 +48,7 @@
 void OZ_init(sasfit_oz_data *OZd) {
    double *tp;
    int i;
-   OZd->beta=1/(kb*T);
+   OZd->beta=1.0/(kb*T);
    tp=(double*)malloc((NP)*sizeof(double));
    r=tp;
    tp=(double*)malloc((NP)*sizeof(double));
@@ -56,7 +58,11 @@ void OZ_init(sasfit_oz_data *OZd) {
    tp=(double*)malloc((NP)*sizeof(double));
    G=tp;
    tp=(double*)malloc((NP)*sizeof(double));
+   G0=tp;
+   tp=(double*)malloc((NP)*sizeof(double));
    g=tp;
+   tp=(double*)malloc((NP)*sizeof(double));
+   g0=tp;
    tp=(double*)malloc((NP)*sizeof(double));
    c=tp;
    tp=(double*)malloc((NP)*sizeof(double));
@@ -93,10 +99,10 @@ double extrapolate (double x1,double x2, double x3, double y1, double y2,double 
 //Calling OZ_solver and generating output
 void OZ_calculation (sasfit_oz_data *OZd) {
   if (CLOSURE==RY || CLOSURE==BPGG) {
-        printf("Root finding\n");
+        sasfit_out("Root finding\n");
         root_finding(OZd);
   } else {
-        printf("Root finding not required\n");
+        sasfit_out("Root finding not required\n");
   }
   OZ_solver(OZd);
   OZ_pot_der(OZd);
@@ -106,8 +112,9 @@ void OZ_calculation (sasfit_oz_data *OZd) {
 
 void OZ_solver (sasfit_oz_data *OZd)
 {
-    double  e, ro, dk, Sm, Norm, Normold,V;
+    double  e, ro, dk, Sm, Norm, Normold,V, Gstar;
     int i,j;
+    OZ_func_one_t * tmp_potential;
     Normold=1;
     ro=6*PHI/(M_PI*pow(PARAM[0],3));
     dk = M_PI/((NP+1.0)*dr);
@@ -118,9 +125,25 @@ void OZ_solver (sasfit_oz_data *OZd)
         r[i]=(r[i-1]+dr);
         k[i]=(k[i-1]+dk);
     }
+    OZd->it=0;
+    e=2*RELERROR;
+
+    if (CLOSURE==RHNC) {
+        tmp_potential =OZd->potential;
+        OZd->potential=OZd->reference_pot;
+        CLOSURE=PY;
+        sasfit_out("Solving reference system (HS) with PY-closure first ...");
+        OZ_solver(OZd);
+        sasfit_out(" done\n");
+        CLOSURE = RHNC;
+        OZd->potential=tmp_potential;
+        for (i=0; i < NP; i++){
+            g0[i]=g[i];
+            G0[i]=G[i];
+        }
+    }
 
     for (i=0; i < NP; i++) {
- //       G[i]=0;
         Fswitch[i]=1-exp(-ALPHA*r[i]);
         V = U(r[i],T,PARAM);
         UBETA[i]=V*OZd->beta;
@@ -130,9 +153,6 @@ void OZ_solver (sasfit_oz_data *OZd)
             EN[i]=exp(-V/(kb*T));
         }
     }
-
-    OZd->it=0;
-    e=2*RELERROR;
 
 while (OZd->it < MAXSTEPS && e > RELERROR ) {
     OZd->it++;
@@ -145,9 +165,24 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
             c[i]=-1-G[i]+EN[i]*exp(G[i]);
 //            g[i]= c[i]+G[i]+1;
         }
+        if (CLOSURE==RHNC) {
+            c[i]=g0[i]*exp((G[i]-G0[i])-OZd->beta*OZd->pertubation_pot(r[i],T,PARAM))-G[i]-1;
+//            g[i]= c[i]+G[i]+1;
+        }
         if (CLOSURE==RY)   {
             if (ALPHA == 0) {
                 c[i]=(1.+G[i])*(EN[i]-1.);
+//                g[i]= c[i]+G[i]+1;
+            } else {
+                c[i]=EN[i]*(1+((exp(Fswitch[i]*G[i])-1)/Fswitch[i]))-G[i]-1;
+//                g[i]= c[i]+G[i]+1;
+            }
+        }
+
+        if (CLOSURE==HMSA)   {
+            Gstar = G[i]-OZd->beta*OZd->longrange_pot(r[i],T,PARAM)
+            if (ALPHA == 0) {
+                c[i]=(1.+Gstar)*(EN[i]-1.);
 //                g[i]= c[i]+G[i]+1;
             } else {
                 c[i]=EN[i]*(1+((exp(Fswitch[i]*G[i])-1)/Fswitch[i]))-G[i]-1;
@@ -166,26 +201,46 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
             c[i]=-1.-G[i]+EN[i]*exp(pow(1+sBPGG*G[i],1./sBPGG)-1.);
 //            g[i]=EN[i]*exp(pow(1.+sBPGG*G[i],1./sBPGG)-1.);
         }
-        g[i]= c[i]+G[i]+1;
+        if (CLOSURE==SMSA) {
+            c[i]=exp(-OZd->beta*OZd->shortrange_pot(r[i],T,PARAM))
+                 -OZd->beta*OZd->longrange_pot(r[i],T,PARAM);
+        }
+
+        if (CLOSURE==MSA || CLOSURE==mMSA) {
+            V=U(r[i],T,PARAM);
+            if (V==GSL_POSINF) {
+                g[i] = 0.0;
+                c[i] = -(G[i]+1.0);
+            } else {
+                if (CLOSURE==MSA) {
+                    c[i] = -V/(kb*T);
+                } else if (CLOSURE==mMSA) {
+                    c[i] = EN[i]-1.0;
+                }
+                g[i]= c[i]+G[i]+1.0;
+            }
+        } else {
+            g[i]= c[i]+G[i]+1.0;
+        }
         OZIN[i]=(i+1)*c[i];
     }
     OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute(OZd->pl);
 
     for (j=0; j < NP; j++) {
-        CFNEW[j]=4.*Pi*dr*dr*OZOUT[j]/(2*dk*(j+1));
+        CFNEW[j]=4.*M_PI*dr*dr*OZOUT[j]/(2.0*dk*(j+1));
         cf[j]=MIXCOEFF*CFNEW[j]+(1-MIXCOEFF)*CFOLD[j];
         CFOLD[j]=cf[j];
-        GF[j]=ro*cf[j]*cf[j]/(1-ro*cf[j]);
-        OZIN[j]=GF[j]*(j+1);
+        GF[j]=ro*cf[j]*cf[j]/(1.0-ro*cf[j]);
+        OZIN[j]=GF[j]*(j+1.0);
     }
     OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute(OZd->pl);
     Sm=0;
     for (j=0; j < NP; j++) {
-        G[j]=4.*Pi*dk*dk*OZOUT[j]/(2*dr*pow(2*Pi,3)*(j+1));
+        G[j]=4.*M_PI*dk*dk*OZOUT[j]/(2.0*dr*gsl_pow_3(2.0*M_PI)*(j+1));
         S[j]=1./(1.-ro*cf[j]);
-        Sm=pow(1./(1.-ro*cf[j]),2)+Sm;
+        Sm=gsl_pow_2(1./(1.-ro*cf[j]))+Sm;
         }
     Norm= sqrt(Sm);
     e = fabs((Norm-Normold)/Normold);
@@ -405,7 +460,9 @@ void OZ_free (sasfit_oz_data *OZd) {
     free(k);
     free(EN);
     free(G);
+    free(G0);
     free(g);
+    free(g0);
     free(dU_dR);
     free(UBETA);
     free(c);

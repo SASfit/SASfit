@@ -24,10 +24,11 @@
 #define OZMAXPAR 16
 #define PUTS(format, ...) sasfit_out(format, __VA_ARGS__)
 
+#define OZMAXCLOSURES 20
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
 {
-    const char * ClosureNames[12];
+    const char * ClosureNames[OZMAXCLOSURES];
     int i,eq;
     if (!token || !OZD) return 0;
 
@@ -43,10 +44,17 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[9] = "MS";
     ClosureNames[10] = "Ballone-Pastore-Galli-Gazzillo";
     ClosureNames[11] = "BPGG";
-
+    ClosureNames[12] = "Mean-Spherical Approximation";
+    ClosureNames[13] = "MSA";
+    ClosureNames[14] = "modified Mean-Spherical Approximation";
+    ClosureNames[15] = "mMSA";
+    ClosureNames[16] = "Reference HNC";
+    ClosureNames[17] = "RHNC";
+    ClosureNames[18] = "Soft-Core MSA";
+    ClosureNames[19] = "SMSA";
     i=0;
     eq=-1;
-    while (i<12 && eq != 0) {
+    while (i<OZMAXCLOSURES && eq != 0) {
         eq = strcmp(token,ClosureNames[i]);
         i++;
     }
@@ -88,6 +96,24 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
             break;
         case 11 :
             OZD->cl=BPGG;
+            break;
+        case 12 :
+            OZD->cl=MSA;
+            break;
+        case 13 :
+            OZD->cl=MSA;
+            break;
+        case 14 :
+            OZD->cl=mMSA;
+            break;
+        case 15 :
+            OZD->cl=mMSA;
+            break;
+        case 16 :
+            OZD->cl=RHNC;
+            break;
+        case 17 :
+            OZD->cl=RHNC;
             break;
         default :
             OZD->cl=PY;
@@ -131,57 +157,165 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
     switch (i-1) {
         case 0 :
             OZD->potential=&U_Hard_Sphere;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 1 :
             OZD->potential=&U_Hard_Sphere;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 2 :
             OZD->potential=&U_Sticky_Hard_Sphere;
+            OZD->reference_pot=&U_Ref_Sticky_Hard_Sphere;
+            OZD->pertubation_pot=U_Pert_Sticky_Hard_Sphere;
+            OZD->repulsive_pot=U_R_Sticky_Hard_Sphere;
+            OZD->attractive_pot=U_A_Sticky_Hard_Sphere;
+            OZD->shortrange_pot=U_SR_Sticky_Hard_Sphere;
+            OZD->longrange_pot=U_LR_Sticky_Hard_Sphere;
             break;
         case 3 :
             OZD->potential=&U_Sticky_Hard_Sphere;
+            OZD->reference_pot=&U_Ref_Sticky_Hard_Sphere;
+            OZD->pertubation_pot=U_Pert_Sticky_Hard_Sphere;
+            OZD->repulsive_pot=U_R_Sticky_Hard_Sphere;
+            OZD->attractive_pot=U_A_Sticky_Hard_Sphere;
+            OZD->shortrange_pot=U_SR_Sticky_Hard_Sphere;
+            OZD->longrange_pot=U_LR_Sticky_Hard_Sphere;
             break;
         case 4 :
             OZD->potential=&U_Soft_Sphere;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 5 :
             OZD->potential=&U_Soft_Sphere;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 6 :
             OZD->potential=&U_Lennard_Jones;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 7 :
             OZD->potential=&U_Lennard_Jones;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 8 :
             OZD->potential=&U_Ionic_Microgel;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 9 :
             OZD->potential=&U_Ionic_Microgel;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 10 :
             OZD->potential=&U_Depletion;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 11 :
             OZD->potential=&U_Depletion;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 12 :
             OZD->potential=&U_Lennard_Jones;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 13 :
             OZD->potential=&U_Lennard_Jones;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=&U_SR_Lennard_Jones;
+            OZD->longrange_pot=&U_LR_Lennard_Jones;
             break;
         case 14 :
             OZD->potential=&U_DLVO;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 15 :
             OZD->potential=&U_PSM;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         case 16 :
             OZD->potential=&U_GGCM_n;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
         default :
             OZD->potential=&U_Hard_Sphere;
+            OZD->reference_pot=NULL;
+            OZD->pertubation_pot=NULL;
+            OZD->repulsive_pot=NULL;
+            OZD->attractive_pot=NULL;
+            OZD->shortrange_pot=NULL;
+            OZD->longrange_pot=NULL;
             break;
     }
     return 1;
@@ -194,11 +328,12 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 int objc,
                 Tcl_Obj *CONST objv[])
 {
-    int i=0;
+    int i;
     char paramName[4];
     double tmp;
     double pPot[OZMAXPAR];
         // init target data structure
+        i=0;
         sasfit_oz_data ozd;
 
         if ( objc < 2 ) return TCL_OK;

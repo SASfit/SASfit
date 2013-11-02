@@ -1,6 +1,7 @@
 /*
  * Author(s) of this file:
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 /**
 This package uses pair potential as an input to calculate such characteristics as:
@@ -16,6 +17,8 @@ The following closure relations are included:
 4)Verlet;
 5)MS-Martynov-Sarkisov;
 6)BPGG-Ballone,Pastore,Galli and Gazzillo;
+7) Mean Spherical Approximation (MSA)
+8) modified Mean Spherical Approximation (mMSA)
 
 Structure OZdata is a principal element of this package which encapsulates input and output variables.
 Input variables that describe physical system itself:
@@ -60,14 +63,18 @@ Output variables:
 typedef enum {
         PY,
         HNC,
+        RHNC,
         RY,
         Verlet,
         MS,
-        BPGG
+        BPGG,
+        MSA,
+        mMSA,
+        SMSA
 } sasfit_oz_closure;
 
 typedef struct {
-        double *r, *k, *En, *G, *g, *c, *cf, *cfold, *cfnew, *Gf, *f, *S, *ud;
+        double *r, *k, *En, *G, *G0, *g, *g0, *c, *cf, *cfold, *cfnew, *Gf, *f, *S, *ud;
         double dr, dq, dr_dsigma;
         double Sq0, gr0, cr0;
         double T;
@@ -84,6 +91,12 @@ typedef struct {
         double *ubeta;
         sasfit_oz_closure cl;
         OZ_func_one_t * potential;
+        OZ_func_one_t * reference_pot;
+        OZ_func_one_t * pertubation_pot;
+        OZ_func_one_t * repulsive_pot;
+        OZ_func_one_t * attractive_pot;
+        OZ_func_one_t * shortrange_pot;
+        OZ_func_one_t * longrange_pot;
         double *in, *out;
         fftw_plan pl;
 } sasfit_oz_data;
@@ -99,4 +112,4 @@ double compressibility_calc (double alpha, void * params);
 void root_finding (sasfit_oz_data *);
 
 
-//Modified 13.09.2013
+//Modified 23.10.2013
