@@ -16,9 +16,36 @@
 #define epsilon p[1] //  is the strength of the interaction in units of kb*T
 
 double U_Lennard_Jones(double r, double T, double *p) {
+    double tmp;
     if (r == 0) {
         return GSL_POSINF;
     } else {
-        return 4*kb*T*epsilon*(pow(sigma/r,12)-pow(sigma/r,6));
+        tmp = gsl_pow_6(sigma/r);
+        if (gsl_finite(gsl_pow_2(tmp))) {
+            return 4*kb*T*epsilon*(gsl_pow_2(tmp)-tmp);
+        } else {
+            return GSL_POSINF;
+        }
+    }
+}
+
+
+double U_SR_Lennard_Jones(double r, double T, double *p) {
+    double rm;
+    rm = pow(2.0,1.0/6.0)*p[0];
+    if (r <= rm) {
+        return U_Lennard_Jones(r,T,p)-U_Lennard_Jones(rm,T,p);
+    } else {
+        return 0;
+    }
+}
+
+double U_LR_Lennard_Jones(double r, double T, double *p) {
+    double rm;
+    rm = pow(2.0,1.0/6.0)*p[0];
+    if (r <= rm) {
+        return U_Lennard_Jones(rm,T,p);
+    } else {
+        return U_Lennard_Jones(r,T,p);
     }
 }

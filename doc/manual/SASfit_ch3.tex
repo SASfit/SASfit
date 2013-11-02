@@ -1172,46 +1172,190 @@ V(Q-Q_m\vert\sigma,\gamma)+c_0
 \end{align}
 \end{subequations}
 
+\chapter{Numerical solutions of the Ornstein Zernike equations}
 
-\chapter{Numerical solution of the Ornstein Zernike equations}
-
-In \SASfit an algorithm to numerically calculate structure factors
-$S(q)$, radial distribution functions $g(r)$ and direct correlation
-functions $c(r)$ of a systems with known pair interaction potential
-$U(r)$ has been implemented. The central part of this package is
-iterative solution of Ornstein-Zernike equation
-\cite{Naegele2004,Henderson2000,Hansen2013}:
+ During an internship project in summer 2013 Evgeniy
+Ponomarev has implemented the core routine for solving the Ornstein
+Zernike equations. This algorithm numerically calculates structure
+factors $S(q)$, radial distribution functions $g(r)$ and direct
+correlation functions $c(r)$ of a systems with known pair
+interaction potential $U(r)$.
+\section{Background}
+The central part of this package is iterative solution of
+Ornstein-Zernike equation
+\cite{Naegele2004,Henderson2000,Hansen2013,Bomont2008,Caccamo1996}:
 \begin{align}\label{eq:oz_h12}
     h(\mathbf{r}_{12})&=c(\mathbf{r}_{12})+ \int c(\mathbf{r}_{13}) \rho(\mathbf{r}_3) h(\mathbf{r}_{32})
     d\mathbf{r}_3 + \cdots
 \end{align}
 where $h(\mathbf{r}_{12})$ is the total correlation function,
 $c(\mathbf{r}_{12})$ the direct correlation function (direct effect
-of particle 1 on particle 2), $c(\mathbf{r}_{13})$ the indirect
-correlation function (direct effect of particle 1 on particle 3
-which influences particle 3), and $\rho$ the particle number
-density. If the fluid is uniform and isotropic, the Ornstein–Zernike
-relation becomes
+of particle 1 on particle 2), $c(\mathbf{r}_{13})$ the in direct
+correlation function describing the effect of particle 1 on particle
+3 which influences particle 2, and $\rho$ the particle number
+density of the colloids, molecules, or atoms that form the liquid.
+If the fluid is uniform and isotropic, the Ornstein–Zernike relation
+becomes
 \begin{align}\label{eq:ozh(r)}
     h(r)&=c(r)+ \rho \int c(\abs{\mathbf{r}-\mathbf{r}'})  h(r')
-    d\mathbf{r}'
+    d\mathbf{r}' \\
+    &= c(r) + \gamma(r) \label{eq:ozgamma(r)}
 \end{align}
 The basic idea of this equation is that total correlation between
 positions of two particles is a combination of their direct and
-indirect (through neighboring particles) interactions. In order so
-solve the Ornstein Zernike a closure relation is required:
+indirect (through neighboring particles) interactions. The first
+contribution to $h(r)$ is the direct correlation function $c(r)$
+that represents the correlation between a particle of a pair with
+its closest neighbor separated by a distance $r$. The second
+contribution is the indirect correlation function $\gamma(r)$, which
+represents the correlation between the selected particle of the pair
+with the rest of the fluid constituents.
+
+ $g(r)$ is known as the radial or pair distribution  function, which measures the
+probability that given a particle at the origin, another particle of
+the fluid can be found at a distance $r$ from it. When the distance
+separating a pair of particles tends to infinity, the correlations
+vanish and $g(r)$ tends to 1. This means that the total correlation
+function defined as $h(r)=g(r)-1$ tends to 0. The Fourier transform
+$\mathscr{F} \{\}$ of $g(r)$ and $h(r)$ are directly related to the
+structure factor $S(q)$ that is experimentally measurable by x-ray
+or neutron scattering
+\begin{align}
+S(q)&=1+\rho \int
+\left[g(r)-1\right]\exp\left(-\imath\mathbf{q}\cdot
+\mathbf{r}\right) d\mathbf{r}
+\end{align}
+and
+\begin{align}
+S(q) &= 1+ \rho  \tilde{h}(q)
+\end{align}
+where $\tilde{h}(q)=\mathscr{F} \left\{h(r)\right\}$  is the Fourier
+transform of the total correlation function $h(r)$, so that
+\begin{align}
+\tilde{h}(q) &= \int h(r) \exp\left(-\imath\mathbf{q}\cdot
+\mathbf{r}\right) d\mathbf{r}
+\end{align}
+Via inverse Fourier transform $\mathscr{F}^{-1} \{\}$ of the
+structure factor the pair correlation function is obtained
+\begin{align}
+\rho \left[ g(r)-1\right] &=\mathscr{F}^{-1} \left\{S(q)-1\right\} =
+\frac{1}{(2\pi)^3} \int \left( S(q)-1
+\right)\exp\left(\imath\mathbf{q}\cdot \mathbf{r}\right) d\mathbf{q}
+\end{align}
+As for $g(r)$ also the direct correlation function $c(r)$ can be, in
+principle, derived from experiment as
+\begin{align}
+\rho c(r) &= \frac{1}{(2\pi)^3} \int \left(1-\frac{1}{S(q)}\right)
+\exp\left(\imath\mathbf{q}\cdot \mathbf{r}\right) d\mathbf{q}
+\end{align}
+or
+\begin{align}
+S(q) &= \frac{1}{1+\rho \tilde{c}(q)} \label{eq:ozSq}
+\end{align}
+
+By Fourier transformation of eq.\ \ref{eq:ozh(r)}, one obtains
+\begin{align}
+\tilde{h}(q) &= \frac{\tilde{c}(q)}{1-\rho\tilde{c}(q)}
+\label{eq:ozhq}
+\end{align}
+where $\tilde{c}(q)=\mathscr{F}\left\{c(r)\right\}$ is the Fourier
+Transform of $c(r)$. In order to determine the two correlation
+functions $h(r)$ and $c(r)$ for a given pair potential $U(r)$, eq.\
+\ref{eq:ozh(r)} must be supplemented by an auxiliary closure
+relation. Furthermore the Fourier transform of eq.\
+\ref{eq:ozgamma(r)} in combination eq.\ \ref{eq:ozhq} allows to
+write the Fourier transform of the indirect correlation function as
+\begin{align}
+\mathscr{F} \left\{\gamma(r)\right\} &= \tilde{\gamma}(q)  =
+\tilde{h}(q) - \tilde{c}(q) =
+\frac{\rho\tilde{c}^2(q)}{1-\rho\tilde{c}(q)} \label{eq:ozg(q)}
+\end{align}
+
+
+ The closure is not complete as long the bridge function is
+unknown. Even though the bridge function is exactly defined the
+function is an unknown function of interparticle distance and only
+approximations can be given. The direct correlation function can be
+written in terms of the indirect correlation function, the
+inetraction potential and the bridge function as
 \begin{align}\label{eq:ozclosure}
-c(r)&= \exp\left[ -\beta U(r) +\Gamma(r)+B(r)\right] - \Gamma(r)-1 \\
-\mbox{or } h(r)+1&=g(r)= \exp\left[ -\beta U(r)
-+\Gamma(r)+B(r)\right]
+c(r)&= \exp\left[ -\beta U(r) +\gamma(r)+B(r)\right] - \gamma(r)-1 \\
+    &= g(r)- \gamma(r)-1 \nonumber \\
+\mbox{and } h(r)+1=g(r)&= \exp\left[ -\beta U(r)
++\gamma(r)+B(r)\right] \label{eq:ozg(r)}
 \end{align}
 where $U(r)$ is the pair interaction potential, $\beta=1/(k_B T)$
-the inverse temperature, $\Gamma(r)=h(r)-c(r)$ the indirect (chain)
-correlation function, and $B(r)$ the bridge function. The closure is
-not complete as long the bridge function is known. Even though the
-bridge function is exactly defined the function is an unknown
-function of interparticle distance and only approximations can be
-given.
+the inverse temperature, with $k_B$ being Boltzmann’s constant, $T$
+is the absolute temperature, $\gamma(r)$ being the indirect
+correlation function and $\rho$ is the number density of the
+molecules or atoms that form the liquid. $B(r)$ is the bridge
+function. The analytic expression of $B(r)$ is, in general, unknown.
+Unfortunately, the bridge function has to be approximated in
+practice. Though a number of theoretical and simulation procedures
+have been derived in recent years in order to get an approximate
+estimate of $B(r)$ for different fluid models, the exact bridge
+function is not known for any system.
+
+The numerical iterative procedure to solve the Ornstein Zernike
+equation \ref{eq:ozh(r)} together with the closure equation
+\ref{eq:ozclosure} is the following:
+\begin{enumerate}
+\item Guess a starting value for $\gamma(r)$, e.q. set $\gamma(r)\equiv 0$
+\item Calculate a bridge function. Many different theories how to calculate
+the bridge function have been published. A few of them are described
+in the next section. The bridge function is often expressed in terms
+of the known potential $U(r)$ and the indirect correlation function
+$\gamma(r)$, which needs to be determined.
+\item Calculate the direct correlation function according to eq.\
+\ref{eq:ozclosure}.
+\item Calculate the Fourier transform $\tilde{c}(q)$ of the direct correlation
+function.
+\item Use eq.\ \ref{eq:ozg(q)} to get $\tilde{\gamma}(q)$.
+\item Calculate the inverse Fourier transform of $\tilde{\gamma}(q)$
+to get the new guess for $\gamma(r)$.
+\item Compare the new gess of the indirect correlation function with the one used in step 1.
+If the difference between the new and old one has significantly
+change go back to the first step by using the new $\gamma(r)$ as a
+starting value and repeat the loop until convergence.
+\item When the iteration loop has converged calculate $S(q)$ and
+$g(r)$ according to eq.\ \ref{eq:ozSq} and eq.\ \ref{eq:ozg(r)}.
+\end{enumerate}
+
+\section{Numerical implementation of the iterative algorithm in SASfit}
+In the above algorithm to iteratively solve the Ornstein Zernike
+equation two Fourier transforms have to be performed:
+\begin{align}
+c(r) & \xrightarrow{\mathscr{F}\{\}} \tilde{c}(q)  \mbox{ step 4} \\
+\tilde{\gamma}(q) & \xrightarrow{\mathscr{F}^{-1}\{\}} \gamma(r) \mbox{ step 6}
+\end{align}
+A we assume that the system is isotropic, i.e. $c(r)$ and $\gamma(r)$ are only functions
+of the modulus of $\abs{\mathbf{r}}=r$ the Fourier transforms can be written as
+\begin{align}
+\tilde{c}(q) &= \int c(r) \exp\left(- \imath\mathbf{q}\cdot \mathbf{r} \right) d\mathbf{r}
+              = \int_0^\infty 4\pi r^2 c(r)              \frac{\sin(qr)}{qr}  dr \\
+\gamma(r)    &= \frac{1}{(2\pi)^3}
+                \int \tilde{\gamma}(q) \exp\left(\imath\mathbf{q}\cdot \mathbf{r}\right) d\mathbf{q}
+              = \frac{1}{(2\pi)^3}
+                \int_0^\infty 4\pi q^2 \tilde{\gamma}(q) \frac{\sin(qr)}{qr}  dq
+\end{align}
+To calculate these transforms numerically on a discrete grid of points
+one has to substitute the integration by a summation. Herby $\int_0^\infty dr$ is replaced by
+$\sum_{j=0}^{N_p-1} \Delta r$, $r_j=(j+1)\Delta r$, $q_j=(j+1)\Delta q$, and $\int_0^\infty dq$ is replaced by
+$\sum_{j=0}^{N_p-1} \Delta q$. The step width $\Delta r$ in real space has to be defined by the user as well
+as the number of grid points $N_p$. The step width in reciprocal space is than obtained by
+$\Delta q=\frac{\pi}{(N_p+1)\Delta r}$.
+It is important to mention that values of first elements of $r_{i=0}$ and $k_{i=0}$ arrays equal $\Delta r$
+and $\Delta q$, respectively ($r_0=\Delta r, q_0=\Delta q$).
+\begin{align}
+\tilde{c}_i &=                   \frac{4\pi \Delta r^2}{(i+1)\Delta q} \sum_{j=0}^{N_p-1}              c_j (j+1) \sin\left(\frac{\pi(j+1)(i+1)}{N_p+1}\right) \\
+\gamma_i    &= \frac{1}{(2\pi)^3}\frac{4\pi \Delta q^2}{(i+1)\Delta r} \sum_{j=0}^{N_p-1} \tilde{\gamma}_j (j+1) \sin\left(\frac{\pi(j+1)(i+1)}{N_p+1}\right)
+\end{align}
+For calculating the Fourier transformation the library FFTW for fast fourier transformation \cite{FFTW05,FFTW97} has been used.
+The library supplies a discrete sin transformation (type-I DST) named \verb"FFTW_RODFT00" which doing the transformation
+\begin{align}
+Y_k &= 2 \sum_{j=0}^{N_p-1} X_j \sin\left(\frac{\pi(j + 1)(k + 1)}{N_p + 1}\right)
+\end{align}
+The unnormalized inverse of \verb"FFTW_RODFT00" is \verb"FFTW_RODFT00" itself.
 
 \section{Classical Closures}
 \subsection{Hypernetted-chain(HNC) approximation}
@@ -1220,7 +1364,7 @@ The simplest assumption for completing the closure relation
 \ref{eq:ozclosure} is by setting the bridge function to zero
 \begin{align} \label{eq:ozBHNC}
 B_\text{HNC}(r) &\equiv 0 \\
-g(r)&=\exp\left[ -\beta U(r) +h(r)-c(r)\right]
+g(r)&=\exp\left[ -\beta U(r) +\gamma(r)\right]
 \end{align}
 The HNC equation is a special case insofar as it corresponds to a
 well-defined free-energy functional, and differentiation of that
@@ -1231,8 +1375,8 @@ equation of state are therefore equivalent.
 \subsection{Percus-Yevick (PY) approximation}
 ~\\
 \begin{align} \label{eq:ozBHNC}
-B_\text{PY}(r) &=\Gamma(r)-\ln\left[\Gamma(r)-1\right] \\
-g(r)&= \exp\left[ -\beta U(r)\right]\left(1 +h(r)-c(r)\right)
+B_\text{PY}(r) &=\gamma(r)-\ln\left[\gamma(r)-1\right] \\
+g(r)&= \exp\left[ -\beta U(r)\right]\left(1 +\gamma(r)\right)
 \end{align}
 The PY equation proves to be more successful than the HNC
 approximation when the potential is strongly repulsive and short
@@ -1240,17 +1384,80 @@ ranged. The PY equation is of particular interest in the theory of
 simple liquids because it is soluble analytically in the important
 case of the hard-sphere fluid.
 
-\subsection{Roger-Young closure}
+\subsection{Mean Spherical Approximation (MSA)}
+\begin{alignat}{2}
+g(r) &=  0 &\mbox{ for } \beta U(r) = +\infty \\
+c(r) &= -\beta U(r) &\mbox{ for } \beta U(r) \neq +\infty
+\end{alignat}
 
-\section{Phenomenological Closures}
-\subsection{Verlet approximation}
+\section{Verlet-type Closures}
 
+\subsection{Verlet Approximation}
 \begin{align} \label{eq:ozBHNC}
-B_\text{Verlet}(r) &=\frac{-\Gamma^2(r)}{2\left(1+\frac{4}{5}\Gamma(r)\right)} \\
-g(r)&= \exp\left[ -\beta U(r)\right]\left(1 +h(r)-c(r)\right)
+B_\text{Verlet}(r)
+&=\frac{-\gamma^2(r)}{2\left(1+\frac{4}{5}\gamma(r)\right)}
 \end{align}
 
-\subsection{Martynov-Sarkisov}
+\subsection{Choudhury-Gosh (CG) Approximation}
+\begin{align}
+B_\text{CG}(r) &=
+\frac{-\gamma^{*2}}{2\left(1+\alpha\gamma^*(r)\right)}
+\end{align}
 
-\subsection{Ballone, Pastore,
-Galli, and Gazzillo (BPGG) approximations}
+\subsection{Duh-Haymet (DH) Approximation}
+\begin{align}
+B_\text{DH}(r) &=
+\frac{-\gamma^{*2}(r)}{2\left[1+\frac{5\gamma^*(r)+11}{7\gamma^*(r)+9}\gamma^*(r)\right]}
+\end{align}
+
+\section{Martynov-Sarkisov-type Closures}
+
+\subsection{Martynov-Sarkisov (MS) Approximation}
+\begin{align}
+B_\text{MS}(r) &= \left[1+2\gamma(r)\right]^{1/2}-1-\gamma(r)
+\end{align}
+
+\subsection{Ballone, Pastore, Galli, and Gazzillo (BPGG) approximations}
+\begin{align}
+B_\text{BPGG}(r) &= \left[1+s\gamma(r)\right]^{1/s}-1-\gamma(r)
+\end{align}
+
+\subsection{Vompe-Martynov (VM) Approximation}
+\begin{align}
+B_\text{VM}(r) &= \sqrt{1+2\gamma^*(r)}-1-\gamma^*(r)
+\end{align}
+
+\subsection{Chapentier-Jakse' semiempirical extention of the VM Approximation (CJ-VM)}
+\begin{align}
+B_\text{CJ-VM}(r) &= \frac{1}{2\alpha}\left[\sqrt{1+4\alpha
+\gamma^*(r)}-1-2\alpha\gamma^*(r) \right]
+\end{align}
+
+\subsection{Bomont, Bretonnet (BB) Approximation}
+\begin{align}
+B_\text{BB}(r) &=
+\sqrt{1+2\gamma^*(r)+f*\gamma^{*2}(r)}-1-\gamma^*(r)
+\end{align}
+
+\section{Phenomenological Closures}
+
+\subsection{Reference HNC Approximation}
+
+
+\section{Mixed Closure' theories }
+\subsection{Roger-Young (RY) closure}
+\begin{align}
+B_\text{RY}(r) &= \ln
+\left[1+\frac{\exp\left[f(r)\gamma(r)\right]-1}{f(r)}\right]-\gamma(r)
+\end{align}
+
+\subsection{"Soft core" MSA (SMSA) Approximation}
+\begin{align}
+B_\text{SMSA}(r) &= \ln \left[1+\gamma^*(r)\right]-\gamma^*(r)
+\end{align}
+
+\subsection{HNC-SMSA (HMSA) Approximation}
+\begin{align}
+B_\text{HMSA}(r) &= \ln
+\left[1+\frac{\exp\left[f(r)\gamma^*(r)\right]-1}{f(r)}\right]-\gamma^*(r)
+\end{align}

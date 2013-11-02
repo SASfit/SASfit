@@ -460,7 +460,7 @@ proc sasfit_OZ_solver {} {
     grid $w.param.pottext  -sticky e\
 	    -column 0 -row 1
     ComboBox $w.param.clvalue \
-	    -values {PY HNC RY Verlet MS BPGG} \
+	    -values {PY HNC RHNC MSA mMSA SMSA RY Verlet MS BPGG} \
 	    -textvariable OZ(closure)
     grid  $w.param.clvalue\
 	    -column 1 -row 0

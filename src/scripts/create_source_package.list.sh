@@ -21,6 +21,7 @@ src/doc/mainpage.h
 src/CopySharedLibs.cmake 
 src/FindGSL.cmake 
 src/FindF2C.cmake 
+src/FindFFTW.cmake 
 src/Findsasfit-common.cmake 
 src/Findsasfit-sd.cmake 
 src/Findsasfit-peaks.cmake 
