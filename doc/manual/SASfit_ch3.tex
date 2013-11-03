@@ -1313,12 +1313,25 @@ function.
 \item Use eq.\ \ref{eq:ozg(q)} to get $\tilde{\gamma}(q)$.
 \item Calculate the inverse Fourier transform of $\tilde{\gamma}(q)$
 to get the new guess for $\gamma(r)$.
-\item Compare the new gess of the indirect correlation function with the one used in step 1.
-If the difference between the new and old one has significantly
-change go back to the first step by using the new $\gamma(r)$ as a
+\item Compare the new gess of the indirect correlation function with the one used in step 1,
+i.e. compare $\gamma_\text{new}(r)$ and $\gamma_\text{old}(r)$ at each grid point.
+If $\Norm{\gamma_\text{new}(r)-\gamma_\text{old}(r)}/\Norm{\gamma_\text{new}(r)} < \epsilon_\text{rel}$
+the solution has been found otherwise go back to the first step by using the new $\gamma_\text{new}(r)$ as a
 starting value and repeat the loop until convergence.
 \item When the iteration loop has converged calculate $S(q)$ and
 $g(r)$ according to eq.\ \ref{eq:ozSq} and eq.\ \ref{eq:ozg(r)}.
+\end{enumerate}
+In actual practice, it turns out that this simple iteration doesn’t converge very rapidly and
+can have oscillations. One can improve the convergence rate in several ways:
+\begin{enumerate}
+\item Introduction of  Broyles mixing; specifically, before repeating the iteration, let
+$\gamma_\text{old}(r) = \alpha \gamma_\text{new}(r) + (1 -\alpha)\gamma_\text{old}(r)$
+where the mixing parameter $\alpha \in [0;1]$. A typiclal staring value would be 0.5.
+\item One can slowly change one of the physical parameters, e.g., density or temperature. For
+example, if one want a high density solution, one can first obtain a low density one, and
+use it as the initial guess for the high density one. Clearly, this may have been done in several
+stages. As long the number of grid points is not changed \SASfit uses as starting values the result
+of the previous calculation as initialisation values.
 \end{enumerate}
 
 \section{Numerical implementation of the iterative algorithm in SASfit}
@@ -1350,12 +1363,25 @@ and $\Delta q$, respectively ($r_0=\Delta r, q_0=\Delta q$).
 \tilde{c}_i &=                   \frac{4\pi \Delta r^2}{(i+1)\Delta q} \sum_{j=0}^{N_p-1}              c_j (j+1) \sin\left(\frac{\pi(j+1)(i+1)}{N_p+1}\right) \\
 \gamma_i    &= \frac{1}{(2\pi)^3}\frac{4\pi \Delta q^2}{(i+1)\Delta r} \sum_{j=0}^{N_p-1} \tilde{\gamma}_j (j+1) \sin\left(\frac{\pi(j+1)(i+1)}{N_p+1}\right)
 \end{align}
-For calculating the Fourier transformation the library FFTW for fast fourier transformation \cite{FFTW05,FFTW97} has been used.
-The library supplies a discrete sin transformation (type-I DST) named \verb"FFTW_RODFT00" which doing the transformation
+For calculating the Fourier transformation the library \texttt{FFTW} for fast fourier transformation
+\cite{FFTW05,FFTW97} has been used. The library supplies a discrete sin transformation (type-I DST)
+named \verb"FFTW_RODFT00" which doing the transformation
 \begin{align}
 Y_k &= 2 \sum_{j=0}^{N_p-1} X_j \sin\left(\frac{\pi(j + 1)(k + 1)}{N_p + 1}\right)
 \end{align}
 The unnormalized inverse of \verb"FFTW_RODFT00" is \verb"FFTW_RODFT00" itself.
+The same routine can be used for both transformations.
+
+\section{Thermodynamic Parameters and Consistency Tests}
+The excess internal energy per particle is given by
+\begin{align}
+\frac{E_\text{ex}}{N} &= 2\pi\rho \int g(r) U(r) r^2 \;dr
+\end{align}
+and the virial pressure can be written as
+\begin{align}
+\frac{\beta P}{\rho} &= 1=\frac{2}{3} \beta\pi\rho\int g(r) r^3 \frac{dU(r)}{dr} dr
+\end{align}
+where $\rho= N/V$ is the average number density of particles in the system.
 
 \section{Classical Closures}
 \subsection{Hypernetted-chain(HNC) approximation}

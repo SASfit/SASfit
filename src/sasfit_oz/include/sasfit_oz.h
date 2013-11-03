@@ -70,10 +70,12 @@ typedef enum {
         BPGG,
         MSA,
         mMSA,
-        SMSA
+        SMSA,
+        HMSA
 } sasfit_oz_closure;
 
 typedef struct {
+        Tcl_Interp *interp;
         double *r, *k, *En, *G, *G0, *g, *g0, *c, *cf, *cfold, *cfnew, *Gf, *f, *S, *ud;
         double dr, dq, dr_dsigma;
         double Sq0, gr0, cr0;

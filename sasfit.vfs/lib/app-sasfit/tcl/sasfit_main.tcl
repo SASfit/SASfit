@@ -8,7 +8,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-#
+#`
 # SASfit is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -3023,9 +3023,11 @@ proc sasfit_menubar_build { p } {
        $p.fit.menu.multiple add command \
 	       -label  "simulate..." \
 	       -underline 0 \
-	       -command {analyticalGlobalSDCmd simulate
-#                         tk_messageBox -message "simulate option for global fitting is still under development"
-                        }
+	       -command {analyticalGlobalSDCmd simulate}
+       
+      $p.fit.menu add command -label "Ornstein Zernike solver" \
+	      -command {sasfit_OZ_solver} \
+	       -underline 0 
    menubutton $p.tools -text Tools -underline 0 \
               -menu $p.tools.menu
       menu $p.tools.menu
@@ -3043,8 +3045,6 @@ proc sasfit_menubar_build { p } {
 		}
       $p.tools.menu add command -label "create new plugin" \
 	      -command "sasfit_plugin_guide $p" -underline 0
-      $p.tools.menu add command -label "Ornstein Zernike solver" \
-	      -command {sasfit_OZ_solver}
 
    sasfit_menubar_build_help $p.help
 

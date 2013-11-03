@@ -180,7 +180,7 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
         }
 
         if (CLOSURE==HMSA)   {
-            Gstar = G[i]-OZd->beta*OZd->longrange_pot(r[i],T,PARAM)
+            Gstar = G[i]-OZd->beta*OZd->longrange_pot(r[i],T,PARAM);
             if (ALPHA == 0) {
                 c[i]=(1.+Gstar)*(EN[i]-1.);
 //                g[i]= c[i]+G[i]+1;
@@ -243,9 +243,15 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
         Sm=gsl_pow_2(1./(1.-ro*cf[j]))+Sm;
         }
     Norm= sqrt(Sm);
-    e = fabs((Norm-Normold)/Normold);
+    e = fabs((Norm-Normold)/Norm);
     Normold=Norm;
+    if ((OZd->it % 100) ==0) {
+        Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
+        Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
+    }
 }
+Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
+Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
 
 
 OZd->Sq0=extrapolate(k[0],k[1],k[2],S[0],S[1],S[2]);
@@ -367,19 +373,19 @@ double compressibility_calc(double scp, void *params)
        double refnew, refold, alpha_left, alpha_right, scp_inter;
        refold=0;
        signchange = 0;
-       printf("\nSearching for the interval where sign changes: \n");
-       printf ("%s   |  %s \n","self-consistency parameter" , "(chicomp-chivir)/beta");
-       printf ("-----------------------------|---------------------------\n");
+       sasfit_out("\nSearching for the interval where sign changes: \n");
+       sasfit_out("%s   |  %s \n","self-consistency parameter" , "(chicomp-chivir)/beta");
+       sasfit_out("-----------------------------|---------------------------\n");
 
        i = 0;
        while (signchange==0 && i<=18) {
         if (CLOSURE==RY){
             refnew=compressibility_calc(100/pow(10,i), OZd);
-            printf ("            %15g  |   %15g \n", 100/pow(10,i) , refnew/OZd->beta);
+            sasfit_out("            %15g  |   %15g \n", 100/pow(10,i) , refnew/OZd->beta);
         }
         if (CLOSURE==BPGG) {
             refnew=compressibility_calc(2.3-0.1*i, OZd);
-            printf ("              %10f  |   %.10g \n", 2.3-0.1*i, refnew/OZd->beta);
+            sasfit_out("              %10f  |   %.10g \n", 2.3-0.1*i, refnew/OZd->beta);
         }
 
         if ((refnew<0 && refold>0) || (refnew>0 && refold<0))
@@ -423,10 +429,10 @@ double compressibility_calc(double scp, void *params)
   Tt = gsl_root_fsolver_brent;
   s = gsl_root_fsolver_alloc (Tt);
   gsl_root_fsolver_set (s, &F, x_lo, x_hi);
-  printf ("using %s method\n",
+  sasfit_out("using %s method\n",
           gsl_root_fsolver_name (s));
 
-  printf ("%5s [%9s, %9s] %9s %9s\n",
+  sasfit_out("%5s [%9s, %9s] %9s %9s\n",
           "iter", "lower", "upper", "root",
            "err(est)");
   do {
@@ -437,18 +443,18 @@ double compressibility_calc(double scp, void *params)
         x_hi = gsl_root_fsolver_x_upper (s);
         status = gsl_root_test_interval (x_lo, x_hi, 0, 1e-5);
         if (status == GSL_SUCCESS) {
-            printf ("Converged:\n");
+            sasfit_out("Converged:\n");
         }
-        printf ("%5d [%.7f, %.7f] %.7f %.7f\n",
+        sasfit_out("%5d [%.7f, %.7f] %.7f %.7f\n",
               iter, x_lo, x_hi,  root,  x_hi - x_lo);
   } while (status == GSL_CONTINUE && iter < max_iter);
    if (CLOSURE==RY) {
         ALPHA=root;
-        printf("Alpha parameter after optimization: %g \n", ALPHA);
+        sasfit_out("Alpha parameter after optimization: %g \n", ALPHA);
    }
    if (CLOSURE==BPGG) {
         sBPGG=root;
-        printf("S parameter after optimization: %g \n", sBPGG);
+        sasfit_out("S parameter after optimization: %g \n", sBPGG);
    }
    gsl_root_fsolver_free (s);
  }
