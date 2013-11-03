@@ -24,7 +24,7 @@
 #define OZMAXPAR 16
 #define PUTS(format, ...) sasfit_out(format, __VA_ARGS__)
 
-#define OZMAXCLOSURES 20
+#define OZMAXCLOSURES 22
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
 {
@@ -52,6 +52,8 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[17] = "RHNC";
     ClosureNames[18] = "Soft-Core MSA";
     ClosureNames[19] = "SMSA";
+    ClosureNames[20] = "HNC–SMSA";
+    ClosureNames[21] = "HMSA";
     i=0;
     eq=-1;
     while (i<OZMAXCLOSURES && eq != 0) {
@@ -336,6 +338,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         i=0;
         sasfit_oz_data ozd;
 
+        ozd.interp = interp;
         if ( objc < 2 ) return TCL_OK;
         Tcl_Obj * oz_obj = objv[1];
         const char * ozname = Tcl_GetStringFromObj(oz_obj, 0);

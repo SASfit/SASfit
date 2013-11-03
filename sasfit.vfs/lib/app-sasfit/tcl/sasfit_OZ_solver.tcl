@@ -142,6 +142,7 @@ proc StartOZsolver {} {
         incr  OZ(plottedgraphs)
         put_OZ_res
         sasfit_timer_stop "Plotting OZ solver results" "plotting finished" "."
+        set OZ(progressbar) 0
 }
 
 
