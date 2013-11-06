@@ -44,15 +44,15 @@ scalar sasfit_ff_BiLayerGauss(scalar q, sasfit_param * param)
 
 	R = 0.5*D;
 
-	if (q == 0.0) 
+	if (q == 0.0)
 	{
 		Pprime=1.;
-	} 
-	else if (D == 0.0) 
+	}
+	else if (D == 0.0)
 	{
         	Pprime = 0.0;
-	} 
-	else 
+	}
+	else
 	{
 		Pprime = (M_PI*R*R)*(M_PI*R*R)*2.0/(q*q*R*R)*(1.0-gsl_sf_bessel_J1(D*q)/(q*R));
 	}
@@ -60,11 +60,11 @@ scalar sasfit_ff_BiLayerGauss(scalar q, sasfit_param * param)
 	M = 2.0*sqrt(2.*M_PI)*sigma_out *b_out+sqrt(2.*M_PI)*sigma_core*b_core;
 
 
-	if (M == 0.0) 
-	{
-		M = 1.0;
-                sasfit_param_set_err(param, DBGINFO("BiLayerGauss is divergent"));
-	}
+//	if (M == 0.0)
+//	{
+//		M = 1.0;
+//               sasfit_param_set_err(param, DBGINFO("BiLayerGauss is divergent"));
+//	}
 
 
 	Fout  = sqrt(2.*M_PI)*sigma_out *b_out  *exp(-0.5*u_out) *cos(q*0.5*t);

@@ -334,9 +334,9 @@ int sasfit_oz_calc_cmd(ClientData clientData,
     char paramName[4];
     double tmp;
     double pPot[OZMAXPAR];
+    sasfit_oz_data ozd;
         // init target data structure
         i=0;
-        sasfit_oz_data ozd;
 
         ozd.interp = interp;
         if ( objc < 2 ) return TCL_OK;
@@ -417,6 +417,14 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         Tcl_Obj * cy = Tcl_NewListObj(0, 0);
         Tcl_Obj * ux = Tcl_NewListObj(0, 0);
         Tcl_Obj * uy = Tcl_NewListObj(0, 0);
+        Tcl_Obj * bx = Tcl_NewListObj(0, 0);
+        Tcl_Obj * by = Tcl_NewListObj(0, 0);
+        Tcl_Obj * yx = Tcl_NewListObj(0, 0);
+        Tcl_Obj * yy = Tcl_NewListObj(0, 0);
+        Tcl_Obj * fx = Tcl_NewListObj(0, 0);
+        Tcl_Obj * fy = Tcl_NewListObj(0, 0);
+        Tcl_Obj * gammax = Tcl_NewListObj(0, 0);
+        Tcl_Obj * gammay = Tcl_NewListObj(0, 0);
 
         #define APPEND(obj, xval, yval) \
                 Tcl_ListObjAppendElement(interp, obj ## x, Tcl_NewDoubleObj(xval)); \
@@ -430,6 +438,10 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 APPEND(g, ozd.r[i], ozd.g[i]);
                 APPEND(c, ozd.r[i], ozd.c[i]);
                 APPEND(u, ozd.r[i], ozd.ubeta[i]);
+                APPEND(b, ozd.r[i], ozd.Br[i]);
+                APPEND(y, ozd.r[i], ozd.yr[i]);
+                APPEND(gamma, ozd.r[i], ozd.G[i]);
+                APPEND(f, ozd.r[i], ozd.fr[i]);
         }
 
         #define SET(first, second, obj) \
@@ -446,6 +458,14 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         SET(ozname, "res,c,y", cy);
         SET(ozname, "res,u,x", ux);
         SET(ozname, "res,u,y", uy);
+        SET(ozname, "res,B,x", bx);
+        SET(ozname, "res,B,y", by);
+        SET(ozname, "res,y,x", yx);
+        SET(ozname, "res,y,y", yy);
+        SET(ozname, "res,f,x", fx);
+        SET(ozname, "res,f,y", fy);
+        SET(ozname, "res,gamma,x", gammax);
+        SET(ozname, "res,gamma,y", gammay);
 
         OZ_free(&ozd);
         return TCL_OK;

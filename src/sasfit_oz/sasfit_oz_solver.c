@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sasfit_oz.h>
+#include <bool.h>
 
 #define NP  OZd->Npoints
 #define EN  OZd->En
@@ -26,6 +27,9 @@
 #define dU_dR OZd->ud
 #define UBETA OZd->ubeta
 #define PARAM OZd->pPot
+#define BRIDGE OZd->Br
+#define CAVITY OZd->yr
+#define MAYER OZd->fr
 #define dr  OZd->dr
 #define c  OZd->c
 #define CFOLD OZd->cfold
@@ -80,6 +84,12 @@ void OZ_init(sasfit_oz_data *OZd) {
    tp=(double*)malloc((NP)*sizeof(double));
    UBETA=tp;
    tp=(double*)malloc((NP)*sizeof(double));
+   BRIDGE=tp;
+   tp=(double*)malloc((NP)*sizeof(double));
+   CAVITY=tp;
+   tp=(double*)malloc((NP)*sizeof(double));
+   MAYER=tp;
+   tp=(double*)malloc((NP)*sizeof(double));
    dU_dR=tp;
    OZIN=(double*)fftw_malloc(sizeof(double)*NP);
    OZOUT=(double*)fftw_malloc(sizeof(double)*NP);
@@ -114,6 +124,7 @@ void OZ_solver (sasfit_oz_data *OZd)
 {
     double  e, ro, dk, Sm, Norm, Normold,V, Gstar;
     int i,j;
+    bool doneB;
     OZ_func_one_t * tmp_potential;
     Normold=1;
     ro=6*PHI/(M_PI*pow(PARAM[0],3));
@@ -152,16 +163,24 @@ void OZ_solver (sasfit_oz_data *OZd)
         } else {
             EN[i]=exp(-V/(kb*T));
         }
+        MAYER[i] = EN[i]-1.;
+        BRIDGE[i] = 0.0;
+        CAVITY[i] = 0.0;
     }
 
 while (OZd->it < MAXSTEPS && e > RELERROR ) {
+    doneB = FALSE;
     OZd->it++;
     for (i=0; i < NP; i++){
         if (CLOSURE==PY) {
+            BRIDGE[i] = log(1.0+G[i])-G[i];
+            doneB=TRUE;
             c[i]=(1.+G[i])*(EN[i]-1.);
 //            g[i]=EN[i]*(1+G[i]);
         }
         if (CLOSURE==HNC) {
+            BRIDGE[i] = 0.0;
+            doneB=TRUE;
             c[i]=-1-G[i]+EN[i]*exp(G[i]);
 //            g[i]= c[i]+G[i]+1;
         }
@@ -171,10 +190,14 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
         }
         if (CLOSURE==RY)   {
             if (ALPHA == 0) {
+                BRIDGE[i] = log(1.0+G[i])-G[i];
+                doneB=TRUE;
                 c[i]=(1.+G[i])*(EN[i]-1.);
 //                g[i]= c[i]+G[i]+1;
             } else {
-                c[i]=EN[i]*(1+((exp(Fswitch[i]*G[i])-1)/Fswitch[i]))-G[i]-1;
+                BRIDGE[i] = -G[i]+log(1.0+((exp(Fswitch[i]*G[i])-1)/Fswitch[i]));
+                doneB=TRUE;
+                c[i]=EN[i]*(1+(exp(Fswitch[i]*G[i])-1)/Fswitch[i])-G[i]-1;
 //                g[i]= c[i]+G[i]+1;
             }
         }
@@ -182,28 +205,40 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
         if (CLOSURE==HMSA)   {
             Gstar = G[i]-OZd->beta*OZd->longrange_pot(r[i],T,PARAM);
             if (ALPHA == 0) {
+                BRIDGE[i] = log(1.0+Gstar)-Gstar;
+                doneB=TRUE;
                 c[i]=(1.+Gstar)*(EN[i]-1.);
 //                g[i]= c[i]+G[i]+1;
             } else {
-                c[i]=EN[i]*(1+((exp(Fswitch[i]*G[i])-1)/Fswitch[i]))-G[i]-1;
+                BRIDGE[i] = -Gstar+log(1.0+((exp(Fswitch[i]*Gstar)-1)/Fswitch[i]));
+                doneB=TRUE;
+                c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
 //                g[i]= c[i]+G[i]+1;
             }
         }
         if (CLOSURE==Verlet) {
-            c[i]=-1.-G[i]+EN[i]*exp(G[i]-(gsl_pow_2(G[i])/(2.*(1.+0.8*G[i]))));
+            BRIDGE[i] = -(gsl_pow_2(G[i])/(2.*(1.+4.0/5.0*G[i])));
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
 //            g[i]=EN[i]*exp(G[i]-(gsl_pow_2(G[i])/(2.*(1.+0.8*G[i]))));
         }
         if (CLOSURE==MS) {
-            c[i]=-1.-G[i]+EN[i]*exp(sqrt(1.+2.*G[i])-1.);
+            BRIDGE[i] = sqrt(1.+2.*G[i])-G[i]-1.;
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
 //            g[i]=EN[i]*exp(sqrt(1.+2.*G[i])-1.);
         }
         if (CLOSURE==BPGG) {
-            c[i]=-1.-G[i]+EN[i]*exp(pow(1+sBPGG*G[i],1./sBPGG)-1.);
+            BRIDGE[i] = pow(1.+sBPGG*G[i],1./sBPGG)-G[i]-1.;
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
 //            g[i]=EN[i]*exp(pow(1.+sBPGG*G[i],1./sBPGG)-1.);
         }
         if (CLOSURE==SMSA) {
-            c[i]=exp(-OZd->beta*OZd->shortrange_pot(r[i],T,PARAM))
-                 -OZd->beta*OZd->longrange_pot(r[i],T,PARAM);
+            Gstar = G[i]-OZd->beta*OZd->longrange_pot(r[i],T,PARAM);
+            BRIDGE[i] = -Gstar+log(1+Gstar);
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
         }
 
         if (CLOSURE==MSA || CLOSURE==mMSA) {
@@ -241,7 +276,15 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
         G[j]=4.*M_PI*dk*dk*OZOUT[j]/(2.0*dr*gsl_pow_3(2.0*M_PI)*(j+1));
         S[j]=1./(1.-ro*cf[j]);
         Sm=gsl_pow_2(1./(1.-ro*cf[j]))+Sm;
+        if (!doneB) {
+            if (g[j] > 0 && EN[j] != 0) {
+                BRIDGE[j]=log(g[j])+UBETA[j]-G[j];
+            } else {
+                BRIDGE[j] = 0.0;
+            }
         }
+        CAVITY[j] = exp(BRIDGE[j]+G[j]);
+    }
     Norm= sqrt(Sm);
     e = fabs((Norm-Normold)/Norm);
     Normold=Norm;
@@ -313,13 +356,13 @@ double compressibility_calc(double scp, void *params)
    iphi = PHI;
    OZ_solver(OZd);
    S0=OZd->Sq0;
-   r1=6*PHI/(Pi*pow(PARAM[0],3));
+   r1=6*PHI/(M_PI*pow(PARAM[0],3));
    chicp=S0*OZd->beta/r1;
 
    OZ_pot_der(OZd);
 
    PHI=iphi-iphi*0.01;
-   r2=6*PHI/(Pi*pow(PARAM[0],3));
+   r2=6*PHI/(M_PI*pow(PARAM[0],3));
    OZ_solver(OZd);
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
@@ -335,13 +378,13 @@ double compressibility_calc(double scp, void *params)
                 sum2=sum2+gsl_pow_3(r[i])*(g[i+1]-g[i])/OZd->beta/dr;
             }
        } else {
-            sum2=sum2+(dU_dR[i])*g[i]*pow(r[i+1],3);
+            sum2=sum2+(dU_dR[i])*g[i]*gsl_pow_3(r[i+1]);
        }
    }
-   P2=(r2/OZd->beta)*(1-(2*Pi*OZd->beta*r2/3)*dr*sum2);
+   P2=(r2/OZd->beta)*(1.-(2.*M_PI*OZd->beta*r2/3.)*dr*sum2);
 
    PHI=iphi+iphi*0.01;
-   r3=6*PHI/(Pi*pow(PARAM[0],3));
+   r3=6*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
@@ -357,10 +400,10 @@ double compressibility_calc(double scp, void *params)
                 sum3=sum3+gsl_pow_3(r[i])*(g[i+1]-g[i])/OZd->beta/dr;
             }
        } else {
-            sum3=sum3+(dU_dR[i])*g[i]*pow(r[i+1],3);
+            sum3=sum3+(dU_dR[i])*g[i]*gsl_pow_3(r[i+1]);
        }
    }
-   P3=(r3/OZd->beta)*(1-(2*Pi*OZd->beta*r3/3)*dr*sum3);
+   P3=(r3/OZd->beta)*(1-(2*M_PI*OZd->beta*r3/3)*dr*sum3);
    chivir=(r3-r2)/((P3-P2)*r1);
    PHI=iphi;
    return chicp-chivir;
@@ -407,7 +450,7 @@ double compressibility_calc(double scp, void *params)
 
                 refold=refnew;
 
-               if (i==18) {printf ("No change of sign in %d steps \n", i);
+               if (i==18) {sasfit_out("No change of sign in %d steps \n", i);
                            if (CLOSURE==RY) ALPHA=scp_inter;
                            if (CLOSURE==BPGG)sBPGG=scp_inter;
                           }
@@ -478,6 +521,9 @@ void OZ_free (sasfit_oz_data *OZd) {
     free(GF);
     free(Fswitch);
     free(S);
+    free(BRIDGE);
+    free(CAVITY);
+    free(MAYER);
 
     fftw_destroy_plan(OZd->pl);
     fftw_free(OZIN);

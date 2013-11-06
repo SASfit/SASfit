@@ -37,16 +37,20 @@ proc put_OZ_res {} {
     	lappend OZ(result,Sq)  		$OZ(res,s,y)
     	lappend OZ(result,r)  		$OZ(res,c,x)
     	lappend OZ(result,cr)  		$OZ(res,c,y)
+    	lappend OZ(result,gammar) 	$OZ(res,gamma,y)
     	lappend OZ(result,gr)  		$OZ(res,g,y)
     	lappend OZ(result,u,x)          $OZ(res,u,x)
     	lappend OZ(result,Ur)  		$OZ(res,u,y)
+    	lappend OZ(result,Br)  		$OZ(res,B,y)
+    	lappend OZ(result,yr)  		$OZ(res,y,y)
+    	lappend OZ(result,fr)  		$OZ(res,f,y)
     	lappend OZ(result,label)	$OZ(label)
     	.oztop.interface.assigning.assign configure -values $OZ(result,label)
     	.oztop.interface.assigning.assign setvalue last
 }
 
 proc pop_OZ_res {} {
-	global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph
+	global OZ ozSQGraph ozgrGraph ozcrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
 	set OZ(result,closure) 		[lrange $OZ(result,closure) 	0 [expr [llength $OZ(result,closure)]	-2]]
 	set OZ(result,potential) 	[lrange $OZ(result,potential) 	0 [expr [llength $OZ(result,potential)]	-2]]
 	set OZ(result,p) 		[lrange $OZ(result,p) 		0 [expr [llength $OZ(result,p)]		-2]]
@@ -63,13 +67,21 @@ proc pop_OZ_res {} {
     	set OZ(result,r)  		[lrange $OZ(result,r) 		0 [expr [llength $OZ(result,r)]		-2]]
     	set OZ(result,cr)  		[lrange $OZ(result,cr) 		0 [expr [llength $OZ(result,cr)]	-2]]
     	set OZ(result,gr)  		[lrange $OZ(result,gr) 		0 [expr [llength $OZ(result,gr)]	-2]]
+    	set OZ(result,gammar)  		[lrange $OZ(result,gammar) 	0 [expr [llength $OZ(result,gammar)]	-2]]
     	set OZ(result,u,x)          	[lrange $OZ(result,u,x) 	0 [expr [llength $OZ(result,u,x)]	-2]]
     	set OZ(result,Ur)  		[lrange $OZ(result,Ur) 		0 [expr [llength $OZ(result,Ur)]	-2]]
+    	set OZ(result,Br)  		[lrange $OZ(result,Br) 		0 [expr [llength $OZ(result,Br)]	-2]]
+    	set OZ(result,yr)  		[lrange $OZ(result,yr) 		0 [expr [llength $OZ(result,yr)]	-2]]
+    	set OZ(result,fr)  		[lrange $OZ(result,fr) 		0 [expr [llength $OZ(result,fr)]	-2]]
     	set OZ(result,label)		[lrange $OZ(result,label) 	0 [expr [llength $OZ(result,label)]	-2]]
     	Pop_Graph_el ozSQGraph
     	Pop_Graph_el ozgrGraph
     	Pop_Graph_el ozcrGraph
+    	Pop_Graph_el ozgammarGraph
     	Pop_Graph_el ozbetaUrGraph
+    	Pop_Graph_el ozBrGraph
+    	Pop_Graph_el ozyrGraph
+    	Pop_Graph_el ozfrGraph
     	incr OZ(plottedgraphs) -1
     	.oztop.interface.assigning.assign configure -values $OZ(result,label)
     	.oztop.interface.assigning.assign setvalue last
@@ -77,7 +89,7 @@ proc pop_OZ_res {} {
 
 
 proc StartOZsolver {} {
-        global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
+        global OZ ozSQGraph ozgrGraph ozcrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph sasfit
         sasfit_timer_start "Start OZ Solver"
         sasfit_oz_calc OZ
 	sasfit_timer_stop "OZ solver" "calculation finished" "."
@@ -116,6 +128,17 @@ proc StartOZsolver {} {
         set ozcrGraph(l,legendtext) [lreplace $ozcrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
         set ozcrGraph(e,symbol)     [lreplace $ozcrGraph(e,symbol)     $count_n  $count_n $symbol_n]
         RefreshGraph ozcrGraph
+        
+        #clearGraph_el ozgammarGraph 
+	set ozgammarGraph(x,type) arcsinh(x)
+	Put_Graph_el ozgammarGraph $OZ(res,gamma,x) $OZ(res,gamma,y)
+	set ozgammarGraph(e,linehide)   [lreplace $ozgammarGraph(e,linehide)   $count_n  $count_n 1]
+	set ozgammarGraph(e,dashcolor)  [lreplace $ozgammarGraph(e,dashcolor)  $count_n  $count_n $color_n]
+	set ozgammarGraph(e,fill)       [lreplace $ozgammarGraph(e,fill)       $count_n  $count_n $color_n]
+	set ozgammarGraph(e,outline)    [lreplace $ozgammarGraph(e,outline)    $count_n  $count_n $color_n]
+	set ozgammarGraph(l,legendtext) [lreplace $ozgammarGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+	set ozgammarGraph(e,symbol)     [lreplace $ozgammarGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozgammarGraph
 
         #clearGraph_el ozgrGraph 
         set ozgrGraph(x,type) arcsinh(x)
@@ -138,7 +161,40 @@ proc StartOZsolver {} {
         set ozbetaUrGraph(l,legendtext) [lreplace $ozbetaUrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
         set ozbetaUrGraph(e,symbol)     [lreplace $ozbetaUrGraph(e,symbol)     $count_n  $count_n $symbol_n]
         RefreshGraph ozbetaUrGraph
-
+        
+        #clearGraph_el ozBrGraph 
+	set ozBrGraph(x,type) arcsinh(x)
+	Put_Graph_el ozBrGraph $OZ(res,B,x) $OZ(res,B,y)
+	set ozBrGraph(e,linehide)   [lreplace $ozBrGraph(e,linehide)   $count_n  $count_n 1]
+	set ozBrGraph(e,dashcolor)  [lreplace $ozBrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+	set ozBrGraph(e,fill)       [lreplace $ozBrGraph(e,fill)       $count_n  $count_n $color_n]
+	set ozBrGraph(e,outline)    [lreplace $ozBrGraph(e,outline)    $count_n  $count_n $color_n]
+	set ozBrGraph(l,legendtext) [lreplace $ozBrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+	set ozBrGraph(e,symbol)     [lreplace $ozBrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozBrGraph
+        
+        #clearGraph_el ozyrGraph 
+	set ozyrGraph(x,type) arcsinh(x)
+	Put_Graph_el ozyrGraph $OZ(res,y,x) $OZ(res,y,y)
+	set ozyrGraph(e,linehide)   [lreplace $ozyrGraph(e,linehide)   $count_n  $count_n 1]
+	set ozyrGraph(e,dashcolor)  [lreplace $ozyrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+	set ozyrGraph(e,fill)       [lreplace $ozyrGraph(e,fill)       $count_n  $count_n $color_n]
+	set ozyrGraph(e,outline)    [lreplace $ozyrGraph(e,outline)    $count_n  $count_n $color_n]
+	set ozyrGraph(l,legendtext) [lreplace $ozyrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+	set ozyrGraph(e,symbol)     [lreplace $ozyrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozyrGraph
+        
+        #clearGraph_el ozfrGraph 
+	set ozfrGraph(x,type) arcsinh(x)
+	Put_Graph_el ozfrGraph $OZ(res,f,x) $OZ(res,f,y)
+	set ozfrGraph(e,linehide)   [lreplace $ozfrGraph(e,linehide)   $count_n  $count_n 1]
+	set ozfrGraph(e,dashcolor)  [lreplace $ozfrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+	set ozfrGraph(e,fill)       [lreplace $ozfrGraph(e,fill)       $count_n  $count_n $color_n]
+	set ozfrGraph(e,outline)    [lreplace $ozfrGraph(e,outline)    $count_n  $count_n $color_n]
+	set ozfrGraph(l,legendtext) [lreplace $ozfrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+	set ozfrGraph(e,symbol)     [lreplace $ozfrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozfrGraph
+        
         incr  OZ(plottedgraphs)
         put_OZ_res
         sasfit_timer_stop "Plotting OZ solver results" "plotting finished" "."
@@ -147,7 +203,7 @@ proc StartOZsolver {} {
 
 
 proc ReplotOZsolver {} {
-   global OZ ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph sasfit
+   global OZ ozSQGraph ozgrGraph ozcrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph sasfit
    set OZ(color_i) 0
    set OZ(symbol_i) 0
    set OZ(plottedgraphs) 0
@@ -159,10 +215,19 @@ proc ReplotOZsolver {} {
 	set OZ(res,s,y) [lindex $OZ(result,Sq) $i]
 	set OZ(res,c,x) [lindex $OZ(result,r)  $i]
 	set OZ(res,c,y) [lindex $OZ(result,cr) $i]
+	set OZ(res,c,x) [lindex $OZ(result,r)  $i]
+	set OZ(res,gamma,y) [lindex $OZ(result,gammar) $i]
 	set OZ(res,g,x) [lindex $OZ(result,r)  $i]
 	set OZ(res,g,y) [lindex $OZ(result,gr) $i]
 	set OZ(res,u,x) [lindex $OZ(result,u,x) $i]
 	set OZ(res,u,y) [lindex $OZ(result,Ur) $i]
+	set OZ(res,B,x) [lindex $OZ(result,u,x) $i]
+	set OZ(res,B,y) [lindex $OZ(result,Br) $i]
+	set OZ(res,y,x) [lindex $OZ(result,u,x) $i]
+	set OZ(res,y,y) [lindex $OZ(result,yr) $i]
+	set OZ(res,f,x) [lindex $OZ(result,u,x) $i]
+	set OZ(res,f,y) [lindex $OZ(result,fr) $i]
+	
 	set OZ(label)   [lindex $OZ(result,label) $i]
         if {$OZ(color_i) >= [llength $ozSQGraph(colorselection)]} {
             set OZ(color_i) 0
@@ -199,6 +264,18 @@ proc ReplotOZsolver {} {
         RefreshGraph ozcrGraph
         incr OZ(progressbar) 
 
+        #clearGraph_el ozgammarGraph 
+        set ozgammarGraph(x,type) arcsinh(x)
+        Put_Graph_el ozgammarGraph $OZ(res,gamma,x) $OZ(res,gamma,y)
+        set ozgammarGraph(e,linehide)   [lreplace $ozgammarGraph(e,linehide)   $count_n  $count_n 1]
+        set ozgammarGraph(e,dashcolor)  [lreplace $ozgammarGraph(e,dashcolor)  $count_n  $count_n $color_n]
+        set ozgammarGraph(e,fill)       [lreplace $ozgammarGraph(e,fill)       $count_n  $count_n $color_n]
+        set ozgammarGraph(e,outline)    [lreplace $ozgammarGraph(e,outline)    $count_n  $count_n $color_n]
+        set ozgammarGraph(l,legendtext) [lreplace $ozgammarGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+        set ozgammarGraph(e,symbol)     [lreplace $ozgammarGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozgammarGraph
+        incr OZ(progressbar) 
+        
         #clearGraph_el ozgrGraph 
         set ozgrGraph(x,type) arcsinh(x)
         Put_Graph_el ozgrGraph $OZ(res,g,x) $OZ(res,g,y)
@@ -223,6 +300,42 @@ proc ReplotOZsolver {} {
         RefreshGraph ozbetaUrGraph
         incr OZ(progressbar) 
 
+	#clearGraph_el ozBrGraph 
+	set ozBrGraph(x,type) arcsinh(x)
+	Put_Graph_el ozBrGraph $OZ(res,B,x) $OZ(res,B,y)
+	set ozBrGraph(e,linehide)   [lreplace $ozBrGraph(e,linehide)   $count_n  $count_n 1]
+	set ozBrGraph(e,dashcolor)  [lreplace $ozBrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+	set ozBrGraph(e,fill)       [lreplace $ozBrGraph(e,fill)       $count_n  $count_n $color_n]
+	set ozBrGraph(e,outline)    [lreplace $ozBrGraph(e,outline)    $count_n  $count_n $color_n]
+	set ozBrGraph(l,legendtext) [lreplace $ozBrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+	set ozBrGraph(e,symbol)     [lreplace $ozBrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozBrGraph
+        incr OZ(progressbar) 
+        
+        #clearGraph_el ozyrGraph 
+	set ozyrGraph(x,type) arcsinh(x)
+	Put_Graph_el ozyrGraph $OZ(res,y,x) $OZ(res,y,y)
+	set ozyrGraph(e,linehide)   [lreplace $ozyrGraph(e,linehide)   $count_n  $count_n 1]
+	set ozyrGraph(e,dashcolor)  [lreplace $ozyrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+	set ozyrGraph(e,fill)       [lreplace $ozyrGraph(e,fill)       $count_n  $count_n $color_n]
+	set ozyrGraph(e,outline)    [lreplace $ozyrGraph(e,outline)    $count_n  $count_n $color_n]
+	set ozyrGraph(l,legendtext) [lreplace $ozyrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+	set ozyrGraph(e,symbol)     [lreplace $ozyrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozyrGraph
+        incr OZ(progressbar) 
+        
+        #clearGraph_el ozfrGraph 
+	set ozfrGraph(x,type) arcsinh(x)
+	Put_Graph_el ozfrGraph $OZ(res,f,x) $OZ(res,f,y)
+	set ozfrGraph(e,linehide)   [lreplace $ozfrGraph(e,linehide)   $count_n  $count_n 1]
+	set ozfrGraph(e,dashcolor)  [lreplace $ozfrGraph(e,dashcolor)  $count_n  $count_n $color_n]
+	set ozfrGraph(e,fill)       [lreplace $ozfrGraph(e,fill)       $count_n  $count_n $color_n]
+	set ozfrGraph(e,outline)    [lreplace $ozfrGraph(e,outline)    $count_n  $count_n $color_n]
+	set ozfrGraph(l,legendtext) [lreplace $ozfrGraph(l,legendtext) $count_n  $count_n $OZ(label)]
+	set ozfrGraph(e,symbol)     [lreplace $ozfrGraph(e,symbol)     $count_n  $count_n $symbol_n]
+        RefreshGraph ozfrGraph
+        incr OZ(progressbar) 
+        
         sasfit_timer_stop "Relotting $i-th OZ solver result" "plotting finished" "."
         incr OZ(progressbar) 
         incr OZ(plottedgraphs)
@@ -231,11 +344,15 @@ proc ReplotOZsolver {} {
 }
 
 proc ClearOZsolver {} {
-    global ozSQGraph ozcrGraph ozgrGraph ozbetaUrGraph OZ
+    global ozSQGraph ozcrGraph ozgrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph OZ
     clearGraph_el ozSQGraph
     clearGraph_el ozcrGraph 
+    clearGraph_el ozgammarGraph 
     clearGraph_el ozgrGraph 
     clearGraph_el ozbetaUrGraph 
+    clearGraph_el ozBrGraph 
+    clearGraph_el ozfrGraph 
+    clearGraph_el ozyrGraph 
     set OZ(color_i) 0
     set OZ(symbol_i) 0
     set OZ(plottedgraphs) 0
@@ -255,9 +372,13 @@ proc ClearOZsolver {} {
     set OZ(result,Sq) {}
     set OZ(result,r) {}
     set OZ(result,cr) {}
+    set OZ(result,gammar) {}
     set OZ(result,gr) {}
     set OZ(result,u,x) {}
     set OZ(result,Ur) {}
+    set OZ(result,Br) {}
+    set OZ(result,yr) {}
+    set OZ(result,fr) {}
     set OZ(result,label) {}
     .oztop.interface.assigning.assign configure -text ""
     .oztop.interface.assigning.assign configure -values $OZ(result,label)
@@ -383,14 +504,16 @@ proc update_ozmenu {} {
 }
 
 proc sasfit_OZ_solver {} {
-    global sasfit ozSQGraph ozgrGraph ozcrGraph ozbetaUrGraph OZ
+    global sasfit ozSQGraph ozgrGraph ozcrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph OZ
     set w .oztop
     if {[winfo exists $w]} {destroy $w}
     toplevel .oztop
     wm geometry $w
     wm title .oztop "Ornstein Zernike solver"
     raise $w
-
+    bind $w <KeyPress-Return> StartOZsolver
+    bind $w <Alt-c> ClearOZsolver
+    bind $w <Alt-d> pop_OZ_res
 #------------------------------------------------------------------------------
 #                               Create OZ tabs
 
@@ -474,7 +597,7 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.potvalue\
 	    -column 1 -row 1
 
-    label $w.param.empty1 -text "input parameters for U(r):" -anchor w -justify left -font "Arial 10 bold underline"
+    label $w.param.empty1 -text "input parameters for u(r):" -anchor w -justify left -font "Arial 10 bold underline"
     label $w.param.v0text -anchor e -justify right -textvariable OZ(p0,name)
     label $w.param.v1text -anchor e -justify right -textvariable OZ(p1,name)
     label $w.param.v2text -anchor e -justify right -textvariable OZ(p2,name)
@@ -596,7 +719,7 @@ proc sasfit_OZ_solver {} {
     pack configure $ozSQGraph(w) -fill both -expand yes
 
    .oztop.tab insert 0 ozSQGraph
-   .oztop.tab tab configure ozSQGraph -text "structure factor\nS(Q)"
+   .oztop.tab tab configure ozSQGraph -text "structure\nfactor\nS(Q)"
    .oztop.tab tab configure ozSQGraph -fill both -padx 0.1i -pady 0.1i \
             -window .oztop.tab.sq -windowheight $sasfit(height) -windowwidth $sasfit(width) 
             
@@ -660,7 +783,7 @@ proc sasfit_OZ_solver {} {
     pack configure $ozgrGraph(w) -fill both -expand yes
 
    .oztop.tab insert 1 ozgrGraph
-   .oztop.tab tab configure ozgrGraph -text "radial distribution\nfunction g(r)"
+   .oztop.tab tab configure ozgrGraph -text "radial\ndistribution\nfunction g(r)"
    .oztop.tab tab configure ozgrGraph -fill both -padx 0.1i -pady 0.1i \
             -window .oztop.tab.gr -windowheight $sasfit(height) -windowwidth $sasfit(width)
             
@@ -724,7 +847,7 @@ proc sasfit_OZ_solver {} {
     pack configure $ozcrGraph(w) -fill both -expand yes
 
    .oztop.tab insert 2 ozcrGraph
-   .oztop.tab tab configure ozcrGraph -text "direct correlation\nfunction c(r)"
+   .oztop.tab tab configure ozcrGraph -text "direct\ncorrelation\nfunction c(r)"
    .oztop.tab tab configure ozcrGraph -fill both -padx 0.1i -pady 0.1i \
             -window .oztop.tab.cr -windowheight $sasfit(height) -windowwidth $sasfit(width)
             
@@ -770,6 +893,70 @@ proc sasfit_OZ_solver {} {
     Blt_ZoomStack $ozcrGraph(w)
 
 #
+#  create "ozgammarGraph"
+#
+
+    frame .oztop.tab.gammar -relief groove -borderwidth 2 
+    set ozgammarGraph(w) .oztop.tab.gammar.draw
+    set ozgammarGraph(e,element) 0
+    CreateGraph ozgammarGraph
+    set ozgammarGraph(x,logscale) 0
+    set ozgammarGraph(y,logscale) 0
+    set ozgammarGraph(x,type)     x
+    set ozgammarGraph(y,type)     y
+    set ozgammarGraph(x,title) "r / nm"
+    set ozgammarGraph(y,title) "gamma(r)"
+    set ozgammarGraph(l,hide)  no
+    pack $ozgammarGraph(w) -in .oztop.tab.gammar
+    pack configure $ozgammarGraph(w) -fill both -expand yes
+
+   .oztop.tab insert 3 ozgammarGraph
+   .oztop.tab tab configure ozgammarGraph -text "indirect\ncorrelation\nfunct. gamma(r)"
+   .oztop.tab tab configure ozgammarGraph -fill both -padx 0.1i -pady 0.1i \
+            -window .oztop.tab.gammar -windowheight $sasfit(height) -windowwidth $sasfit(width)
+            
+##
+## creating ozgammar popup menu
+##
+    menu .oztop.tab.gammar.popup -tearoff 0
+    .oztop.tab.gammar.popup add command -label "copy to clipboard (wmf)" -un 0 -command {
+	window_to_clipboard .oztop.tab.gammar
+    }
+    .oztop.tab.gammar.popup add command -label "copy to clipboard (ascii)" -un 0 -command {
+     	global ozgammarGraph
+     	export_clipboard_data ozgammarGraph
+    }
+    .oztop.tab.gammar.popup add cascade -label "Graph" -un 0 -menu .oztop.tab.cr.popup.graph
+    set m3 [menu .oztop.tab.gammar.popup.graph -tearoff 1]
+    $m3 add command -label "autoscale" \
+    	-command { 
+    	   global ozgammarGraph
+    	   set ozgammarGraph(x,min) ""
+    	   set ozgammarGraph(x,max) ""
+    	   set ozgammarGraph(y,min) ""
+    	   set ozgammarGraph(y,max) ""
+    	   RefreshGraph ozgammarGraph
+    	}
+    $m3 add command -label "x-axis..." -command {
+                                          global ozcrGraph
+                                          set_xaxis_layout ozgammarGraph
+                                       }
+    $m3 add command -label "y-axis..." -command {
+                                          set_yaxis_layout ozgammarGraph
+                                       }
+    $m3 add command -label "graph layout..." -command {
+                                               set_graph_layout ozgammarGraph
+                                             }
+    $m3 add command -label "plot layout..." -command {
+                                               set_plot_layout ozgammarGraph
+                                            }
+    .oztop.tab.gammar.popup add command -label "Export Data..." \
+    	-command { export_blt_graph ozgammarGraph }
+    bind .oztop.tab.gammar.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.gammar.popup %X %Y }
+    bind .oztop.tab.gammar.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.gammar.popup %X %Y }
+    Blt_ZoomStack $ozgammarGraph(w)
+
+#
 #  create "ozbetaUrGraph"
 #
 
@@ -787,12 +974,12 @@ proc sasfit_OZ_solver {} {
     pack $ozbetaUrGraph(w) -in .oztop.tab.betaUr
     pack configure $ozbetaUrGraph(w) -fill both -expand yes
 
-   .oztop.tab insert 3 ozbetaUrGraph
-   .oztop.tab tab configure ozbetaUrGraph -text "interaction potential\nU(r)/(kB*T)"
+   .oztop.tab insert 4 ozbetaUrGraph
+   .oztop.tab tab configure ozbetaUrGraph -text "interaction\npotential\nU(r)/(kB*T)"
    .oztop.tab tab configure ozbetaUrGraph -fill both -padx 0.1i -pady 0.1i \
             -window .oztop.tab.betaUr -windowheight $sasfit(height) -windowwidth $sasfit(width) 
  ##
- ## creating ozgr popup menu
+ ## creating ozbetaUr popup menu
  ##
      menu .oztop.tab.betaUr.popup -tearoff 0
      .oztop.tab.betaUr.popup add command -label "copy to clipboard (wmf)" -un 0 -command {
@@ -833,9 +1020,208 @@ proc sasfit_OZ_solver {} {
    
     Blt_ZoomStack $ozbetaUrGraph(w)
 
+#
+#  create "ozfrGraph"
+#
+
+    frame .oztop.tab.fr -relief groove -borderwidth 2 
+    set ozfrGraph(w) .oztop.tab.fr.draw
+    set ozfrGraph(e,element) 0
+    CreateGraph ozfrGraph
+    set ozfrGraph(x,logscale) 0
+    set ozfrGraph(y,logscale) 0
+    set ozfrGraph(x,type)     x
+    set ozfrGraph(y,type)     y
+    set ozfrGraph(x,title) "r / nm"
+    set ozfrGraph(y,title) "y(r)"
+    set ozfrGraph(l,hide)  no
+    pack $ozfrGraph(w) -in .oztop.tab.fr
+    pack configure $ozfrGraph(w) -fill both -expand yes
+
+   .oztop.tab insert 5 ozfrGraph
+   .oztop.tab tab configure ozfrGraph -text "Mayer-f\nfunction\nf(r)"
+   .oztop.tab tab configure ozfrGraph -fill both -padx 0.1i -pady 0.1i \
+            -window .oztop.tab.fr -windowheight $sasfit(height) -windowwidth $sasfit(width) 
+ ##
+ ## creating ozfr popup menu
+ ##
+     menu .oztop.tab.fr.popup -tearoff 0
+     .oztop.tab.fr.popup add command -label "copy to clipboard (wmf)" -un 0 -command {
+ 	window_to_clipboard .oztop.tab.fr
+     }
+     .oztop.tab.fr.popup add command -label "copy to clipboard (ascii)" -un 0 -command {
+      	global ozfrGraph
+      	export_clipboard_data ozfrGraph
+     }
+     .oztop.tab.fr.popup add cascade -label "Graph" -un 0 -menu .oztop.tab.fr.popup.graph
+     set m3 [menu .oztop.tab.fr.popup.graph -tearoff 1]
+     $m3 add command -label "autoscale" \
+     	-command {
+     	   global ozfrGraph
+     	   set ozfrGraph(x,min) ""
+     	   set ozfrGraph(x,max) ""
+     	   set ozfrGraph(y,min) ""
+     	   set ozfrGraph(y,max) ""
+     	   RefreshGraph ozfrGraph
+     	}
+     $m3 add command -label "x-axis..." -command {
+                                           global ozfrGraph
+                                           set_xaxis_layout ozfrGraph
+                                        }
+     $m3 add command -label "y-axis..." -command {
+                                           set_yaxis_layout ozfrGraph
+                                        }
+     $m3 add command -label "graph layout..." -command {
+                                                set_graph_layout ozfrGraph
+                                              }
+     $m3 add command -label "plot layout..." -command {
+                                                set_plot_layout ozfrGraph
+                                             }
+     .oztop.tab.fr.popup add command -label "Export Data..." \
+     	-command { export_blt_graph ozfrGraph }
+     bind .oztop.tab.fr.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.fr.popup %X %Y }
+     bind .oztop.tab.fr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.fr.popup %X %Y }
+   
+    Blt_ZoomStack $ozfrGraph(w)
+
+
+#
+#  create "ozBrGraph"
+#
+
+    frame .oztop.tab.br -relief groove -borderwidth 2 
+    set ozBrGraph(w) .oztop.tab.br.draw
+    set ozBrGraph(e,element) 0
+    CreateGraph ozBrGraph
+    set ozBrGraph(x,logscale) 0
+    set ozBrGraph(y,logscale) 0
+    set ozBrGraph(x,type)     x
+    set ozBrGraph(y,type)     y
+    set ozBrGraph(x,title) "r / nm"
+    set ozBrGraph(y,title) "B(r)"
+    set ozBrGraph(l,hide)  no
+    pack $ozBrGraph(w) -in .oztop.tab.br
+    pack configure $ozBrGraph(w) -fill both -expand yes
+
+   .oztop.tab insert 6 ozBrGraph
+   .oztop.tab tab configure ozBrGraph -text "bridge\nfunction\nB(r)"
+   .oztop.tab tab configure ozBrGraph -fill both -padx 0.1i -pady 0.1i \
+            -window .oztop.tab.br -windowheight $sasfit(height) -windowwidth $sasfit(width) 
+ ##
+ ## creating ozBr popup menu
+ ##
+     menu .oztop.tab.br.popup -tearoff 0
+     .oztop.tab.br.popup add command -label "copy to clipboard (wmf)" -un 0 -command {
+ 	window_to_clipboard .oztop.tab.br
+     }
+     .oztop.tab.br.popup add command -label "copy to clipboard (ascii)" -un 0 -command {
+      	global ozBrGraph
+      	export_clipboard_data ozBrGraph
+     }
+     .oztop.tab.br.popup add cascade -label "Graph" -un 0 -menu .oztop.tab.br.popup.graph
+     set m3 [menu .oztop.tab.br.popup.graph -tearoff 1]
+     $m3 add command -label "autoscale" \
+     	-command {
+     	   global ozBrGraph
+     	   set ozBrGraph(x,min) ""
+     	   set ozBrGraph(x,max) ""
+     	   set ozBrGraph(y,min) ""
+     	   set ozBrGraph(y,max) ""
+     	   RefreshGraph ozBrGraph
+     	}
+     $m3 add command -label "x-axis..." -command {
+                                           global ozBrGraph
+                                           set_xaxis_layout ozBrGraph
+                                        }
+     $m3 add command -label "y-axis..." -command {
+                                           set_yaxis_layout ozBrGraph
+                                        }
+     $m3 add command -label "graph layout..." -command {
+                                                set_graph_layout ozBrGraph
+                                              }
+     $m3 add command -label "plot layout..." -command {
+                                                set_plot_layout ozBrGraph
+                                             }
+     .oztop.tab.br.popup add command -label "Export Data..." \
+     	-command { export_blt_graph ozBrGraph }
+     bind .oztop.tab.br.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.br.popup %X %Y }
+     bind .oztop.tab.br.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.br.popup %X %Y }
+   
+    Blt_ZoomStack $ozBrGraph(w)
+
+#
+#  create "ozyrGraph"
+#
+
+    frame .oztop.tab.yr -relief groove -borderwidth 2 
+    set ozyrGraph(w) .oztop.tab.yr.draw
+    set ozyrGraph(e,element) 0
+    CreateGraph ozyrGraph
+    set ozyrGraph(x,logscale) 0
+    set ozyrGraph(y,logscale) 0
+    set ozyrGraph(x,type)     x
+    set ozyrGraph(y,type)     y
+    set ozyrGraph(x,title) "r / nm"
+    set ozyrGraph(y,title) "y(r)"
+    set ozyrGraph(l,hide)  no
+    pack $ozyrGraph(w) -in .oztop.tab.yr
+    pack configure $ozyrGraph(w) -fill both -expand yes
+
+   .oztop.tab insert 7 ozyrGraph
+   .oztop.tab tab configure ozyrGraph -text "cavity\nfunction\ny(r)"
+   .oztop.tab tab configure ozyrGraph -fill both -padx 0.1i -pady 0.1i \
+            -window .oztop.tab.yr -windowheight $sasfit(height) -windowwidth $sasfit(width) 
+ ##
+ ## creating ozyr popup menu
+ ##
+     menu .oztop.tab.yr.popup -tearoff 0
+     .oztop.tab.yr.popup add command -label "copy to clipboard (wmf)" -un 0 -command {
+ 	window_to_clipboard .oztop.tab.yr
+     }
+     .oztop.tab.yr.popup add command -label "copy to clipboard (ascii)" -un 0 -command {
+      	global ozyrGraph
+      	export_clipboard_data ozyrGraph
+     }
+     .oztop.tab.yr.popup add cascade -label "Graph" -un 0 -menu .oztop.tab.yr.popup.graph
+     set m3 [menu .oztop.tab.yr.popup.graph -tearoff 1]
+     $m3 add command -label "autoscale" \
+     	-command {
+     	   global ozyrGraph
+     	   set ozyrGraph(x,min) ""
+     	   set ozyrGraph(x,max) ""
+     	   set ozyrGraph(y,min) ""
+     	   set ozyrGraph(y,max) ""
+     	   RefreshGraph ozyrGraph
+     	}
+     $m3 add command -label "x-axis..." -command {
+                                           global ozyrGraph
+                                           set_xaxis_layout ozyrGraph
+                                        }
+     $m3 add command -label "y-axis..." -command {
+                                           set_yaxis_layout ozyrGraph
+                                        }
+     $m3 add command -label "graph layout..." -command {
+                                                set_graph_layout ozyrGraph
+                                              }
+     $m3 add command -label "plot layout..." -command {
+                                                set_plot_layout ozyrGraph
+                                             }
+     .oztop.tab.yr.popup add command -label "Export Data..." \
+     	-command { export_blt_graph ozyrGraph }
+     bind .oztop.tab.yr.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.yr.popup %X %Y }
+     bind .oztop.tab.yr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.yr.popup %X %Y }
+   
+    Blt_ZoomStack $ozyrGraph(w)
+
+
+
     ReplotOZsolver
     RefreshGraph ozSQGraph
     RefreshGraph ozgrGraph
     RefreshGraph ozcrGraph
+    RefreshGraph ozgammarGraph
     RefreshGraph ozbetaUrGraph
+    RefreshGraph ozBrGraph
+    RefreshGraph ozyrGraph
+    RefreshGraph ozfrGraph
 }

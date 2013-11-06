@@ -1260,7 +1260,7 @@ By Fourier transformation of eq.\ \ref{eq:ozh(r)}, one obtains
 \end{align}
 where $\tilde{c}(q)=\mathscr{F}\left\{c(r)\right\}$ is the Fourier
 Transform of $c(r)$. In order to determine the two correlation
-functions $h(r)$ and $c(r)$ for a given pair potential $U(r)$, eq.\
+functions $h(r)$ and $c(r)$ for a given pair potential $u(r)$, eq.\
 \ref{eq:ozh(r)} must be supplemented by an auxiliary closure
 relation. Furthermore the Fourier transform of eq.\
 \ref{eq:ozgamma(r)} in combination eq.\ \ref{eq:ozhq} allows to
@@ -1279,12 +1279,12 @@ approximations can be given. The direct correlation function can be
 written in terms of the indirect correlation function, the
 inetraction potential and the bridge function as
 \begin{align}\label{eq:ozclosure}
-c(r)&= \exp\left[ -\beta U(r) +\gamma(r)+B(r)\right] - \gamma(r)-1 \\
+c(r)&= \exp\left[ -\beta u(r) +\gamma(r)+B(r)\right] - \gamma(r)-1 \\
     &= g(r)- \gamma(r)-1 \nonumber \\
-\mbox{and } h(r)+1=g(r)&= \exp\left[ -\beta U(r)
+\mbox{and } h(r)+1=g(r)&= \exp\left[ -\beta u(r)
 +\gamma(r)+B(r)\right] \label{eq:ozg(r)}
 \end{align}
-where $U(r)$ is the pair interaction potential, $\beta=1/(k_B T)$
+where $u(r)$ is the pair interaction potential, $\beta=1/(k_B T)$
 the inverse temperature, with $k_B$ being Boltzmann’s constant, $T$
 is the absolute temperature, $\gamma(r)$ being the indirect
 correlation function and $\rho$ is the number density of the
@@ -1296,15 +1296,19 @@ have been derived in recent years in order to get an approximate
 estimate of $B(r)$ for different fluid models, the exact bridge
 function is not known for any system.
 
-The numerical iterative procedure to solve the Ornstein Zernike
+\section{Numerical implementation of the iterative algorithm in SASfit}
+
+The easiest algorithm for solving the Ornstein Zernike (OZ)
 equation \ref{eq:ozh(r)} together with the closure equation
-\ref{eq:ozclosure} is the following:
+\ref{eq:ozclosure} is is direct iteratiion using fast Fourier transformation (see e.g. \cite{Homeier1995}).
+The solution of the OZ equations is treated as a fixed point problem for the unknown function $\gamma(r)$.
+In SASfit the following iterative scheme is used:
 \begin{enumerate}
 \item Guess a starting value for $\gamma(r)$, e.q. set $\gamma(r)\equiv 0$
 \item Calculate a bridge function. Many different theories how to calculate
 the bridge function have been published. A few of them are described
 in the next section. The bridge function is often expressed in terms
-of the known potential $U(r)$ and the indirect correlation function
+of the known potential $u(r)$ and the indirect correlation function
 $\gamma(r)$, which needs to be determined.
 \item Calculate the direct correlation function according to eq.\
 \ref{eq:ozclosure}.
@@ -1334,12 +1338,11 @@ stages. As long the number of grid points is not changed \SASfit uses as startin
 of the previous calculation as initialisation values.
 \end{enumerate}
 
-\section{Numerical implementation of the iterative algorithm in SASfit}
 In the above algorithm to iteratively solve the Ornstein Zernike
 equation two Fourier transforms have to be performed:
 \begin{align}
-c(r) & \xrightarrow{\mathscr{F}\{\}} \tilde{c}(q)  \mbox{ step 4} \\
-\tilde{\gamma}(q) & \xrightarrow{\mathscr{F}^{-1}\{\}} \gamma(r) \mbox{ step 6}
+c(r) & \xrightarrow{\mathscr{F}\{\}} \tilde{c}(q)  \quad \mbox{(in step 4)} \\
+\tilde{\gamma}(q) & \xrightarrow{\mathscr{F}^{-1}\{\}} \gamma(r) \quad \mbox{(in step 6)}
 \end{align}
 A we assume that the system is isotropic, i.e. $c(r)$ and $\gamma(r)$ are only functions
 of the modulus of $\abs{\mathbf{r}}=r$ the Fourier transforms can be written as
@@ -1373,15 +1376,29 @@ The unnormalized inverse of \verb"FFTW_RODFT00" is \verb"FFTW_RODFT00" itself.
 The same routine can be used for both transformations.
 
 \section{Thermodynamic Parameters and Consistency Tests}
-The excess internal energy per particle is given by
+The internal energy $U$ is
 \begin{align}
-\frac{E_\text{ex}}{N} &= 2\pi\rho \int g(r) U(r) r^2 \;dr
+U &= U_\text{id} + U_\text{ex}
+\end{align}
+where $U_\text{id}=\frac{3}{2} N k_B T$ is the internal energy of an ideal gas and
+the excess internal energy per particle is given by
+\begin{align}
+\frac{U_\text{ex}}{N} &= 2\pi\rho \int g(r) u(r) r^2 \;dr
 \end{align}
 and the virial pressure can be written as
 \begin{align}
-\frac{\beta P}{\rho} &= 1=\frac{2}{3} \beta\pi\rho\int g(r) r^3 \frac{dU(r)}{dr} dr
+\frac{\beta P}{\rho} &= 1+\frac{2}{3} \beta\pi\rho\int g(r) r^3 \frac{du(r)}{dr} \; dr
 \end{align}
 where $\rho= N/V$ is the average number density of particles in the system.
+This equation can also be written in terms of the $e(r) = \exp(-\beta u(r))$ and the cavity
+function $y(r) = (h(r)+1)/e(r) = g(r)\exp(\beta u(r))$ using
+\begin{align}
+g(r) \frac{du(r)}{dr} &= y(r) e(r) \left(-\frac{1}{\beta e(r)}\frac{d e(r)}{dr}\right) = \frac{y(r)}{\beta}\frac{d e(r)}{dr}
+\end{align}
+so that
+\begin{align}
+\frac{\beta P}{\rho} &= 1+\frac{2}{3} \pi\rho\int r^3 \frac{de(r)}{dr} y(r) \; dr
+\end{align}
 
 \section{Classical Closures}
 \subsection{Hypernetted-chain(HNC) approximation}
@@ -1390,7 +1407,7 @@ The simplest assumption for completing the closure relation
 \ref{eq:ozclosure} is by setting the bridge function to zero
 \begin{align} \label{eq:ozBHNC}
 B_\text{HNC}(r) &\equiv 0 \\
-g(r)&=\exp\left[ -\beta U(r) +\gamma(r)\right]
+g(r)&=\exp\left[ -\beta u(r) +\gamma(r)\right]
 \end{align}
 The HNC equation is a special case insofar as it corresponds to a
 well-defined free-energy functional, and differentiation of that
@@ -1402,7 +1419,7 @@ equation of state are therefore equivalent.
 ~\\
 \begin{align} \label{eq:ozBHNC}
 B_\text{PY}(r) &=\gamma(r)-\ln\left[\gamma(r)-1\right] \\
-g(r)&= \exp\left[ -\beta U(r)\right]\left(1 +\gamma(r)\right)
+g(r)&= \exp\left[ -\beta u(r)\right]\left(1 +\gamma(r)\right)
 \end{align}
 The PY equation proves to be more successful than the HNC
 approximation when the potential is strongly repulsive and short
@@ -1412,8 +1429,8 @@ case of the hard-sphere fluid.
 
 \subsection{Mean Spherical Approximation (MSA)}
 \begin{alignat}{2}
-g(r) &=  0 &\mbox{ for } \beta U(r) = +\infty \\
-c(r) &= -\beta U(r) &\mbox{ for } \beta U(r) \neq +\infty
+g(r) &=  0 &\mbox{ for } \beta u(r) = +\infty \\
+c(r) &= -\beta u(r) &\mbox{ for } \beta u(r) \neq +\infty
 \end{alignat}
 
 \section{Verlet-type Closures}
@@ -1487,3 +1504,17 @@ B_\text{SMSA}(r) &= \ln \left[1+\gamma^*(r)\right]-\gamma^*(r)
 B_\text{HMSA}(r) &= \ln
 \left[1+\frac{\exp\left[f(r)\gamma^*(r)\right]-1}{f(r)}\right]-\gamma^*(r)
 \end{align}
+
+
+\section{Interaction Potentials}
+
+\subsection{Hard Sphere Potential}
+\subsection{Sticky Hard Sphere Potential}
+\subsection{Soft Sphere Potential}
+\subsection{Penetrable Sphere}
+\subsection{Star Polymer Potential}
+\subsection{Lennard Jones Potential}
+\subsection{Depletion Potential - Asakura-Oasawa Potential}
+\subsection{Ionic Microgel Potential}
+\subsection{DLVO Potential}
+\subsection{Generalized Gaussian Core Model Potential - GGCM-n Potential}
