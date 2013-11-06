@@ -314,6 +314,12 @@ Rex~P. Hjelm, P.~Thiyagarajan, and Hayat Alkan-Onyuksel.
   micelles.
 \newblock {\em J. Phys. Chem}, 96:8653--8661, 1992.
 
+\bibitem{Homeier1995}
+Herbert~H.H Homeier, Sebastian Rast, and Hartmut Krienke.
+\newblock Iterative solution of the ornstein-zernike equation with various
+  closures using vector extrapolation.
+\newblock {\em Computer Physics Communications}, 92(2–3):188 -- 202, 1995.
+
 \bibitem{Hosemann1962}
 R.~Hosemann and S.N. Bagchi.
 \newblock {\em Direct Analysis of Diffraction by Matter}.
@@ -388,7 +394,7 @@ M.Y. Lin, H.M. Lindsay, D.A. Weitz, R.C. Ball, R.~Klein, and P.~Meakin.
 \bibitem{Liu2001}
 Yuyan Liu, Jieli Lin, Guangming Huang, Yuanqing Guo, and Chuanxi Duan.
 \newblock Simple empirical analytical approximation to the voigt profile.
-\newblock {\em J. Opt. Soc. Am. B}, (5):666--672, 2001.
+\newblock {\em J. Opt. Soc. Am. B}, 18(5):666--672, 2001.
 
 \bibitem{Lyatskaya2000}
 Yulia Lyatskaya, Yufeng Liu, Stephanie Tristram-Nagle, John Katsaras, and

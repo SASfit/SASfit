@@ -13,8 +13,8 @@
 double U_Depletion(double r, double T, double *p) {
     double  ro2, rt;
     rt=sigma2/sigma1;
-    ro2= 6*PHI2/(Pi*pow(sigma2,3));
+    ro2= 6*PHI2/(M_PI*pow(sigma2,3));
     if (r<sigma1) return GSL_POSINF;
-    else if (r>=sigma1&&r<sigma1+sigma2) return (-kb*T*ro2*Pi*pow(sigma1,3)*pow(1+rt,3)/6)*(1-(3*r/(2*(1+rt)*sigma1))+(pow(r,3)/(2*pow(1+rt,3)*pow(sigma1,3))));
+    else if (r>=sigma1&&r<sigma1+sigma2) return (-kb*T*ro2*M_PI*gsl_pow_3(sigma1)*gsl_pow_3(1.+rt)/6.)*(1.-(3.*r/(2.*(1.+rt)*sigma1))+(gsl_pow_3(r)/(2*gsl_pow_3(1+rt)*gsl_pow_3(sigma1))));
     else  return 0;
 }

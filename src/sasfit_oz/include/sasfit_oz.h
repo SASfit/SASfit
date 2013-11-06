@@ -50,10 +50,7 @@ Output variables:
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_const_mksa.h>
-#define Pi  M_PI
-#define PiCube 8*gsl_pow_3(Pi)
-#define HugePosValue GSL_POSINF
-#define HugeNegValue GSL_NEGINF
+#define PiCube 8*gsl_pow_3(M_PI)
 #define kb GSL_CONST_MKSA_BOLTZMANN
 #include <fftw3.h>
 
@@ -76,7 +73,11 @@ typedef enum {
 
 typedef struct {
         Tcl_Interp *interp;
-        double *r, *k, *En, *G, *G0, *g, *g0, *c, *cf, *cfold, *cfnew, *Gf, *f, *S, *ud;
+        double *r, *k, *En, *G,
+               *G0, *g, *g0, *c,
+               *cf, *cfold, *cfnew,
+               *Gf,*f, *S,  *ud,
+               *Br, *yr, *fr;
         double dr, dq, dr_dsigma;
         double Sq0, gr0, cr0;
         double T;
