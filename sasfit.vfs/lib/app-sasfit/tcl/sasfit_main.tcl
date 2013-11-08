@@ -310,8 +310,8 @@ set OZ(phi) 0.3
 set OZ(T) 300
 set OZ(1024) 1024
 set OZ(mult) 4
-set OZ(mix) 1
-set OZ(maxit) 500
+set OZ(mix) 0.5
+set OZ(maxit) 1500
 set OZ(dr/dsigma) 0.005
 set OZ(releps) 1e-12
 set OZ(gridlength) [expr int($OZ(1024)*$OZ(mult))]

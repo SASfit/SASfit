@@ -36,7 +36,7 @@ double U_SR_Lennard_Jones(double r, double T, double *p) {
     if (r <= rm) {
         return U_Lennard_Jones(r,T,p)-U_Lennard_Jones(rm,T,p);
     } else {
-        return 0;
+        return 0.0;
     }
 }
 

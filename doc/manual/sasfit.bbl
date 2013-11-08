@@ -5,6 +5,11 @@ N.~W. Ashcroft and L.~Lenker.
 \newblock Structure and resistivity of liquid metals.
 \newblock {\em Physical Review}, 145(1):83--90, May 1966.
 
+\bibitem{Ballone1986}
+P.~Ballone, G.~Pastore, G.~Galli, and D.~Gazzillo.
+\newblock Additive and non-additive hard sphere mixtures.
+\newblock {\em Molecular Physics}, 59(2):275--290, 1986.
+
 \bibitem{Barboy1974}
 B.~Barboy.
 \newblock On a representation of the equation of state of fluids in terms of
@@ -112,6 +117,12 @@ A.~Caille.
 \newblock {\em Comptes Rendus des Seances de l'Academie des Sciences, Serie B:
   Sciences Physiques}, 274:891--893, 1972.
 
+\bibitem{Choudhury2002}
+Niharendu Choudhury and Swapan~K. Ghosh.
+\newblock Integral equation theory of lennard-jones fluids: A modified verlet
+  bridge function approach.
+\newblock {\em The Journal of Chemical Physics}, 116(19):8517--8522, 2002.
+
 \bibitem{Damaschun1969}
 G.~Damaschun, H.-V. Porschel, and G.~Sommer.
 \newblock {Bestimmung der Gestalt gel\"oster Makromolek\"ule aus
@@ -168,6 +179,12 @@ P.~Debye and A.M. Bueche.
 W.~D. Dozier, J.~S. Huang, and L.~J. Fetters.
 \newblock Colloidal nature of star polymer dilute and semidilute solutions.
 \newblock {\em Macromolecules}, 24(10):2810--2814, 1991.
+
+\bibitem{Duh1995}
+Der-Ming Duh and A.~D.~J. Haymet.
+\newblock Integral equation theory for uncharged liquids: The lennard-jones
+  fluid and the bridge function.
+\newblock {\em The Journal of Chemical Physics}, 103(7):2625--2633, 1995.
 
 \bibitem{book:Feigin:Svergun}
 L.~A. Feigin and D.~I. Svergun.
@@ -663,6 +680,12 @@ G.~Walter, R.~Kranold, T.~Gerber, J.~Baldrian, and M.~Steinhart.
 \newblock {Particle size distribution from small-angle X-ray scattering data}.
 \newblock {\em Journal of Applied Crystallography}, 18(4):205--213, Aug 1985.
 
+\bibitem{Weeks1971}
+John~D. Weeks, David Chandler, and Hans~C. Andersen.
+\newblock Role of repulsive forces in determining the equilibrium structure of
+  simple liquids.
+\newblock {\em The Journal of Chemical Physics}, 54(12):5237--5247, 1971.
+
 \bibitem{Wiedenmann2011}
 A.~Wiedenmann, R.~G\"ahler, C.~D. Dewhurst, U.~Keiderling, S.~Pr\'evost, and
   J.~Kohlbrecher.
@@ -692,6 +715,12 @@ W.~Wiscombe.
 W.~Wiscombe.
 \newblock Improved mie scattering algorithms.
 \newblock {\em Appl. Opt.}, 19:1505--1509, 1980.
+
+\bibitem{Zerah1986}
+Gilles Zerah and Jean-Pierre Hansen.
+\newblock Self-consistent integral equations for fluid pair distribution
+  functions: Another attempt.
+\newblock {\em The Journal of Chemical Physics}, 84(4):2336--2343, 1986.
 
 \bibitem{scatt163}
 F.~Zernike and J.~A. Prins.

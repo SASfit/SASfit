@@ -8,17 +8,12 @@ This package uses pair potential as an input to calculate such characteristics a
  -structure factor S(q);
  -radial distribution function g(r)
  -direct correlation function c(r);
-Calculations are done by iterative solution of Ornstein-Zernike equation with a chosen closure relation.
+ -indirect correlation function gamma(r)
+ -bridge function b(r)
+ -Mayer-f function f(r)
+ -cavity function y(r)
 
-The following closure relations are included:
-1)PY-Percus-Yevick, typically is used for short-range potentials and hard-spheres potential;
-2)HNC-hypernetted-chain — for long-range potentials e.g. Coulomb,Yukawa potentials;
-3)RY-Rogers-Young. This closure interpolates between PY and HNC for systems where short- and long-range interactions are combined;
-4)Verlet;
-5)MS-Martynov-Sarkisov;
-6)BPGG-Ballone,Pastore,Galli and Gazzillo;
-7) Mean Spherical Approximation (MSA)
-8) modified Mean Spherical Approximation (mMSA)
+Calculations are done by iterative solution of Ornstein-Zernike equation with a chosen closure relation.
 
 Structure OZdata is a principal element of this package which encapsulates input and output variables.
 Input variables that describe physical system itself:
@@ -40,7 +35,11 @@ Input variables that determine technical aspects of computation:
 Output variables:
 - OZD.Sq - structure factor S(q);
 - OZD.gr - radial distribution function g(r);
-- OZD.cr -direct correlation function c(r);
+- OZD.cr - direct correlation function c(r);
+- OZD.Br - bridge function b(r)
+- OZD.yr - cavity function y(r)
+- OZD.fr - Mayer-f function f(r)
+- OZD.G  - indirect correlation function gamma(r)
 **/
 
 
@@ -58,17 +57,22 @@ Output variables:
 #include "sasfit_oz_potentials.h"
 
 typedef enum {
-        PY,
-        HNC,
-        RHNC,
-        RY,
-        Verlet,
-        MS,
-        BPGG,
-        MSA,
-        mMSA,
-        SMSA,
-        HMSA
+        PY,     // Percus-Yevik
+        HNC,    // Hypernetted Chain
+        RHNC,   // Refernce Hypernetted Chain
+        RY,     // Roger-Young
+        Verlet, // Verlet
+        BPGG,   // Ballone, Pastore, Galli, and Gazzillo Approximations.
+        MSA,    // Mean Spherical Approximation
+        mMSA,   // modified Mean Spherical Approximation
+        SMSA,   // "Soft core" MSA (SMSA) Approximation
+        HMSA,   // HNC-SMSA Approximation from Zerah and Hansen
+        VM,     // Vompe-Martynov Approximation.
+        CG,     // Choudhury-Gosh
+        DH,     // Duh-Haymet Approximation
+        MS,     // Martynov-Sarkisov Approximation
+        CJVM,   // Chapentier-Jakse' semiempirical extention of the VM Approximation
+        BB      // Bomont-Bretonnet Approximation
 } sasfit_oz_closure;
 
 typedef struct {
