@@ -36,4 +36,5 @@ OZ_func_one_t U_LR_Lennard_Jones;
 OZ_func_one_t U_GGCM_n;
 OZ_func_one_t U_PSM;
 OZ_func_one_t U_DLVO;
+OZ_func_one_t U_ZERO;
 
