@@ -12,6 +12,6 @@
 #define epsilon p[1] //energy parameter in units of kB*T
 
 double U_PSM(double r, double T, double *p) {
-    if (r<sigma) return kb*T*epsilon;
+    if (r<=sigma) return kb*T*epsilon;
     else  return 0;
 }
