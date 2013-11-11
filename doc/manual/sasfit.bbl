@@ -80,12 +80,23 @@ C.F. Bohren and D.R. Huffman.
 \newblock {\em Absorption and Scattering of Light by Small Particles}.
 \newblock Wiley, New York, 1983.
 
+\bibitem{Bomont2003}
+J.~M. Bomont and J.~L. Bretonnet.
+\newblock A self-consistent integral equation: Bridge function and
+  thermodynamic properties for the lennard-jones fluid.
+\newblock {\em The Journal of Chemical Physics}, 119(4):2188--2191, 2003.
+
 \bibitem{Bomont2008}
 Jean-Marc Bomont.
 \newblock {\em Recent Advances in the Field of Integral Equation Theories:
   Bridge Functions and Applications to Classical Fluids}, chapter Chapter 1,
   pages 1--84.
 \newblock John Wiley \& Sons, Inc., 2008.
+
+\bibitem{Bomont2004}
+Jean-Marc Bomont and Jean-Louis Bretonnet.
+\newblock A consistent integral equation theory for hard spheres.
+\newblock {\em The Journal of Chemical Physics}, 121(3):1548--1552, 2004.
 
 \bibitem{scatt142}
 M.~Born and H.~S. Green.
@@ -116,6 +127,12 @@ A.~Caille.
 \newblock X-ray scattering in smectic a.
 \newblock {\em Comptes Rendus des Seances de l'Academie des Sciences, Serie B:
   Sciences Physiques}, 274:891--893, 1972.
+
+\bibitem{Chihara1973}
+Junzo Chihara.
+\newblock Integral euqations for fluids with long-range and short-range
+  potentials: Application to a charged particle system.
+\newblock {\em Progress of Theoretical Physics}, 50(2):409--423, 1973.
 
 \bibitem{Choudhury2002}
 Niharendu Choudhury and Swapan~K. Ghosh.
@@ -353,6 +370,13 @@ T.~Ida, M.~Ando, and H.~Toraya.
 \newblock Extended pseudo-voigt function for approximating the voigt profile.
 \newblock {\em Journal of Applied Crystallography}, 33(6):1311--1316, Dec 2000.
 
+\bibitem{Jones1924}
+J.~E. Jones.
+\newblock On the determination of molecular fields. ii. from the equation of
+  state of a gas.
+\newblock {\em Proceedings of the Royal Society of London. Series A},
+  106(738):463--477, 1924.
+
 \bibitem{Kawaguchi2001}
 Takeshi Kawaguchi.
 \newblock Radii of gyration and scattering functions of a torus and its
@@ -419,6 +443,22 @@ Yulia Lyatskaya, Yufeng Liu, Stephanie Tristram-Nagle, John Katsaras, and
 \newblock Method for obtaining structure and interactions from oriented lipid
   bilayers.
 \newblock {\em Phys. Rev. E}, 63(1):011907, Dec 2000.
+
+\bibitem{Madden1980}
+William~G. Madden and Stuart~A. Rice.
+\newblock The mean spherical approximation and effective pair potentials in
+  liquids.
+\newblock {\em The Journal of Chemical Physics}, 72(7):4208--4215, 1980.
+
+\bibitem{Marquest1989}
+C.~Marquest and T.A. Witten.
+\newblock Simple cubic structure in copolymer mesophases.
+\newblock {\em J. Phys. France}, 50(10):1267--1277, 1989.
+
+\bibitem{Martynov1983}
+G.A. Martynov and G.N. Sarkisov.
+\newblock Exact equations and the theory of liquids. v.
+\newblock {\em Molecular Physics}, 49(6):1495--1504, 1983.
 
 \bibitem{Menon1991}
 S.V.G. Menon, V.K. Kelkar, and C.~Monohar.
@@ -574,6 +614,12 @@ C.~Robertus, W.H. Philipse, J.G.H. Joosten, and Y.K. Levine.
   microemulsions.
 \newblock {\em J. Chem. Phys.}, 90(8):4482--4490, 1989.
 
+\bibitem{Rogers1984}
+Forrest~J. Rogers and David~A. Young.
+\newblock New, thermodynamically consistent, integral equation for simple
+  fluids.
+\newblock {\em Phys. Rev. A}, 30:999--1007, Aug 1984.
+
 \bibitem{Roux1988}
 D.~Roux and C.R. Safinya.
 \newblock A synchrotron x-ray study of competing undulation and electrostatic
@@ -657,6 +703,28 @@ H.C. van~de Hulst.
 \newblock {\em Light Scattering by Small Particles}.
 \newblock Wiley, New York, 1957.
 
+\bibitem{Verlet1980}
+Loup Verlet.
+\newblock Integral equations for classical fluids.
+\newblock {\em Molecular Physics}, 41(1):183--190, 1980.
+
+\bibitem{Verlet1981}
+Loup Verlet.
+\newblock Integral equations for classical fluids.
+\newblock {\em Molecular Physics}, 42(6):1291--1302, 1981.
+
+\bibitem{Viererblova2010}
+Linda Viererblova, Jiri Kolafa, Stanislav Labik, and Anatol Malijevsky.
+\newblock Virial coefficients and equation of state of the penetrable sphere
+  model.
+\newblock {\em Phys. Chem. Chem. Phys.}, 12:254--262, 2010.
+
+\bibitem{Vompe1994}
+A.~G. Vompe and G.~A. Martynov.
+\newblock The bridge function expansion and the self-consistency problem of the
+  ornstein-zernike equation solution.
+\newblock {\em The Journal of Chemical Physics}, 100(7):5249--5258, 1994.
+
 \bibitem{scatt121}
 C.~G. Vonk.
 \newblock On two methods for determination of particle size distribution
@@ -685,6 +753,12 @@ John~D. Weeks, David Chandler, and Hans~C. Andersen.
 \newblock Role of repulsive forces in determining the equilibrium structure of
   simple liquids.
 \newblock {\em The Journal of Chemical Physics}, 54(12):5237--5247, 1971.
+
+\bibitem{Wertheim1963}
+M.~S. Wertheim.
+\newblock Exact solution of the percus-yevick integral equation for hard
+  spheres.
+\newblock {\em Phys. Rev. Lett.}, 10:321--323, Apr 1963.
 
 \bibitem{Wiedenmann2011}
 A.~Wiedenmann, R.~G\"ahler, C.~D. Dewhurst, U.~Keiderling, S.~Pr\'evost, and

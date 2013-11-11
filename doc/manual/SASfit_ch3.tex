@@ -1296,13 +1296,13 @@ have been derived in recent years in order to get an approximate
 estimate of $B(r)$ for different fluid models, the exact bridge
 function is not known for any system.
 
-\section{Numerical implementation of the iterative algorithm in SASfit}
+\section{Numerical implementation of the iterative algorithm in \SASfit}
 
 The easiest algorithm for solving the Ornstein Zernike (OZ)
 equation \ref{eq:ozh(r)} together with the closure equation
-\ref{eq:ozclosure} is is direct iteratiion using fast Fourier transformation (see e.g. \cite{Homeier1995}).
+\ref{eq:ozclosure} is is direct iteration using fast Fourier transformation (see e.g. \cite{Homeier1995}).
 The solution of the OZ equations is treated as a fixed point problem for the unknown function $\gamma(r)$.
-In SASfit the following iterative scheme is used:
+In \SASfit the following iterative scheme is used:
 \begin{enumerate}
 \item Guess a starting value for $\gamma(r)$, e.q. set $\gamma(r)\equiv 0$
 \item Calculate a bridge function. Many different theories how to calculate
@@ -1317,7 +1317,7 @@ function.
 \item Use eq.\ \ref{eq:ozg(q)} to get $\tilde{\gamma}(q)$.
 \item Calculate the inverse Fourier transform of $\tilde{\gamma}(q)$
 to get the new guess for $\gamma(r)$.
-\item Compare the new gess of the indirect correlation function with the one used in step 1,
+\item Compare the new guess of the indirect correlation function with the one used in step 1,
 i.e. compare $\gamma_\text{new}(r)$ and $\gamma_\text{old}(r)$ at each grid point.
 If $\Norm{\gamma_\text{new}(r)-\gamma_\text{old}(r)}/\Norm{\gamma_\text{new}(r)} < \epsilon_\text{rel}$
 the solution has been found otherwise go back to the first step by using the new $\gamma_\text{new}(r)$ as a
@@ -1330,7 +1330,7 @@ can have oscillations. One can improve the convergence rate in several ways:
 \begin{enumerate}
 \item Introduction of  Broyles mixing; specifically, before repeating the iteration, let
 $\gamma_\text{old}(r) = \alpha \gamma_\text{new}(r) + (1 -\alpha)\gamma_\text{old}(r)$
-where the mixing parameter $\alpha \in [0;1]$. A typiclal staring value would be 0.5.
+where the mixing parameter $\alpha \in [0;1]$. A typical staring value would be 0.5.
 \item One can slowly change one of the physical parameters, e.g., density or temperature. For
 example, if one want a high density solution, one can first obtain a low density one, and
 use it as the initial guess for the high density one. Clearly, this may have been done in several
@@ -1338,7 +1338,7 @@ stages. As long the number of grid points is not changed \SASfit uses as startin
 of the previous calculation as initialisation values.
 \end{enumerate}
 
-In the above algorithm to iteratively solve the Ornstein Zernike
+In the above algorithm to iteratively solve the Ornstein-Zernike
 equation two Fourier transforms have to be performed:
 \begin{align}
 c(r) & \xrightarrow{\mathscr{F}\{\}} \tilde{c}(q)  \quad \mbox{(in step 4)} \\
@@ -1409,11 +1409,17 @@ to the integral with
 
 %\end{align}
 
-\section{Classical Closures}
+\section{Closures}
+The closures implemented in \SASfit have been taken from the overview papers from Bomont \cite{Bomont2008}
+and Caccamo \cite{Caccamo1996} and the references they give.
+
+~\\
 \subsection{Hypernetted-chain(HNC) approximation}
 ~\\
-The simplest assumption for completing the closure relation
-\ref{eq:ozclosure} is by setting the bridge function to zero
+
+The HNC is one of the earliest and most applied integral equation theory of fluids \cite{Hansen2013}
+It simply assumes for completing the closure relation
+\ref{eq:ozclosure} a negligible bridge function \cite{Caccamo1996,Bomont2008,Hansen2013}.
 \begin{align} \label{eq:ozBHNC}
 B_\text{HNC}(r) &\equiv 0 \\
 g(r)&=\exp\left[ -\beta u(r) +\gamma(r)\right]
@@ -1423,9 +1429,17 @@ well-defined free-energy functional, and differentiation of that
 free energy with respect to volume can be shown to give the same
 result as the virial equation. The energy and virial routes to the
 equation of state are therefore equivalent.
+The HNC closure is often used for long range repulsive potentials.
+For short range repulsive potentials the PY approximation yields
+somehow better results.
 
+~\\
 \subsection{Percus-Yevick (PY) approximation}
 ~\\
+This approximation has been successfully been used to find an analytical solution for
+the OZ equations for a Hard Sphere potential as well as a Sticky Hard Sphere potential.
+Also analytical solution for both Hard Sphere \cite{Percus1958,Wertheim1963} and
+Sticky Hard Sphere  \cite{Baxter1968} with a size distribution has been found
 \begin{align} \label{eq:ozBHNC}
 B_\text{PY}(r) &=\gamma(r)-\ln\left[\gamma(r)-1\right] \\
 g(r)&= \exp\left[ -\beta u(r)\right]\left(1 +\gamma(r)\right)
@@ -1436,91 +1450,199 @@ ranged. The PY equation is of particular interest in the theory of
 simple liquids because it is soluble analytically in the important
 case of the hard-sphere fluid.
 
+~\\
 \subsection{Mean Spherical Approximation (MSA)}
+~\\
+
+This approximation has originally been proposed by Lebowitz and Percus \cite{Lebowitz1966}.
+It has been mainly successfully applied to spherical potentials interacting through an infinitely
+repulsive potential at short range. It uses the ansatz
 \begin{alignat}{2}
 g(r) &=  0 &\mbox{ for } \beta u(r) = +\infty \\
 c(r) &= -\beta u(r) &\mbox{ for } \beta u(r) \neq +\infty
 \end{alignat}
+Analytical solutions have been obtained for charged hard spheres and hard core Yukawa potentials \cite{Caccamo1996}.
 
-\section{Verlet-type Closures}
-
+~\\
 \subsection{Verlet Approximation}
+~\\
+A semi-henomenological equation for the radial distribution function was proposed by Verlet
+\cite{Verlet1980,Verlet1981} for the case of hard spheres with the following bridge function
 \begin{align} \label{eq:ozBHNC}
 B_\text{Verlet}(r)
 &=\frac{-\gamma^2(r)}{2\left(1+\frac{4}{5}\gamma(r)\right)}
 \end{align}
+The approximation yield very good results for both thermodynamic as well as structural properties.
+This closure has been extended and refined by others and are listed below.
 
+~\\
 \subsection{Choudhury-Gosh (CG) Approximation}
+~\\
+
+Choudhury and Gosh \cite{Choudhury2002} proposed a bridge function based on the closure of Verlet
+which reads as
 \begin{align}
 B_\text{CG}(r) &=
 \frac{-\gamma^{*2}}{2\left(1+\alpha\gamma^*(r)\right)}
 \end{align}
 with $\alpha=1.0175-0.275\rho\sigma^3$ and $\gamma^*(r)=\gamma(r)-\beta u_\text{A}(r)$.
-\subsection{Duh-Haymet (DH) Approximation \cite{Duh1995,Weeks1971}}
+
+~\\
+\subsection{Duh-Haymet (DH) Approximation }
+~\\
+
+Duh-Haymet \cite{Duh1995} introduced a closure for the Lennard-Jones potential,
+where they partitioned the potential slightly differently than Weeks et al.\ \cite{Weeks1971}.
+As the perturbation potential they used
+\begin{align}
+u^\text{LR,DH}_\text{pert}(r) &= -4k_\text{B}T\epsilon\left(\frac{r}{\sigma}\right)^6
+\times \exp \left( -\frac{k_\text{B}T\epsilon}{\rho^*} \left(\frac{r}{\sigma}\right)^6 \right)
+\end{align}
+with the reduced density taken as $\rho^*=\rho\sigma^3$. Their bridge function reads
 \begin{align}
 B_\text{DH}(r) &=
 \frac{-\gamma^{*2}(r)}{2\left[1+\frac{5\gamma^*(r)+11}{7\gamma^*(r)+9}\gamma^*(r)\right]}
 \end{align}
+with $\gamma^*(r) = \gamma(r) - \beta u_\text{A}(r)$ or in case of the Lennard-Jones potential
+$\gamma^*(r) = \gamma(r) - \beta u^\text{LR,DH}_\text{pert}(r)$
 
-\section{Martynov-Sarkisov-type Closures}
-
+~\\
 \subsection{Martynov-Sarkisov (MS) Approximation}
+~\\
+
+An approximation proposed by Martynov and Sarkisov \cite{Martynov1983} sets the bridge function as.
 \begin{align}
 B_\text{MS}(r) &= \left[1+2\gamma(r)\right]^{1/2}-1-\gamma(r)
 \end{align}
+This approximation has been originally applied to hard spheres without an additional adjustable parameter.
+Compared to PY or HNC this closure reduces considerably the thermodynamic inconsistency.
 
-\subsection{Ballone, Pastore, Galli, and Gazzillo (BPGG) approximations \cite{Ballone1986}}
+~\\
+\subsection{Ballone, Pastore, Galli, and Gazzillo (BPGG) approximations }
+~\\
+Ballone, Pastore, Galli, and Gazillo  \cite{Ballone1986}
+improved the MS approximation by assuming a bridge function of the form
 \begin{align}
 B_\text{BPGG}(r) &= \left[1+s\gamma(r)\right]^{1/s}-1-\gamma(r)
 \end{align}
+For $s=1$ the HNC is recovered and for $s=2$ the MS closure. $s$ is used here to
+obtain a thermodynamic consistency condition.
 
+~\\
 \subsection{Vompe-Martynov (VM) Approximation}
+~\\
+
+The MS bridge function \cite{Martynov1983} has been refined by Vompe and Martynov \cite{Vompe1994}.
+Their extended bridge function reads
 \begin{align}
 B_\text{VM}(r) &= \sqrt{1+2\gamma^*(r)}-1-\gamma^*(r)
 \end{align}
+with $\gamma^*(r) = \gamma(r) - \beta u_\text{LR}(r)$
 
-\subsection{Chapentier-Jakse' semiempirical extention of the VM Approximation (CJ-VM) \cite{Choudhury2002,Weeks1971}}
+~\\
+\subsection{Bomont-Bretonnet (BB) Approximation}
+~\\
+
+Bomont and Bretonet \cite{Bomont2003,Bomont2004} have suggested an
+extension of the MS approximation with the bridge function
+\begin{align}
+B_\text{BB}(r) &=
+\sqrt{1+2\gamma^*(r)+f\gamma^{*2}(r)}-1-\gamma^*(r)
+\end{align}
+The adjustable parameter $f$ interpolates between the HNC for $f=1$ and the
+VM for $f=0$.
+
+~\\
+\subsection{Chapentier-Jakse' semiempirical extention of the VM Approximation (CJ-VM)}
+~\\
+A similar semiempirical approach has been suggested by Chapentier and Jakse
+\cite{Choudhury2002}
 \begin{align}
 B_\text{CJ-VM}(r) &= \frac{1}{2\alpha}\left[\sqrt{1+4\alpha
 \gamma^*(r)}-1-2\alpha\gamma^*(r) \right]
 \end{align}
+Also here $\alpha$ can be chosen so that thermodynamic consistency is obtained.
 
-\subsection{Bomont, Bretonnet (BB) Approximation}
-\begin{align}
-B_\text{BB}(r) &=
-\sqrt{1+2\gamma^*(r)+f*\gamma^{*2}(r)}-1-\gamma^*(r)
-\end{align}
+%~\\
+%\subsection{Reference HNC Approximation}
+%~\\
 
-\section{Phenomenological Closures}
-
-\subsection{Reference HNC Approximation}
-
-
-\section{Mixed Closure' theories }
-\subsection{Roger-Young (RY) closure}
-\begin{align}
-B_\text{RY}(r) &= \ln
-\left[1+\frac{\exp\left[f(r)\gamma(r)\right]-1}{f(r)}\right]-\gamma(r)
-\end{align}
-
+~\\
 \subsection{"Soft core" MSA (SMSA) Approximation}
+~\\
+
+This closure has been motivated because the Percus-Yevick (PY) approximation is not accurate for attractive
+potentials. The SMSA \cite{Madden1980,Chihara1973} is a generalisation of the MSA closure. This has been
+done by incorporating the division scheme as of Weeks et al.\ \cite{Weeks1971} by dividing the potential
+in a entirely repulsive part and a attractive part $u(r) = u_\text{R}(r)+u_\text{A}(r)$. The SMSA bridge function reads as
 \begin{align}
 B_\text{SMSA}(r) &= \ln \left[1+\gamma^*(r)\right]-\gamma^*(r)
 \end{align}
+with $\gamma^*(r)=\gamma(r)-\beta u_\text{A}(r)$.
+Normally  $u_\text{R}(r)$ describes a short range repulsive interaction like hard sphere interaction or as in the
+division scheme from Weeks et al.\ the potential up to the minimum $r_m$. For $r>r_m$ or $r > \sigma^\text{HS}$ the
+closure reduces to the MSA approximation $c(r)=-\beta u(r)$. In a case of a purely repulsive interaction, one has
+$r_m\rightarrow \infty$ and $u_\text{A}(r) \equiv 0$. In this case the closure reduces to the PY closure.
+The SMSA interpolates between PY and MSA \cite{Bomont2008}.
 
-\subsection{HNC-SMSA (HMSA) Approximation \cite{Zerah1986}}
+~\\
+\subsection{Roger-Young (RY) closure}
+~\\
+
+Roger and Young have introduced a closure to interpolate continuously between HNC and PY
+theory \cite{Rogers1984}
+\begin{align}
+B_\text{RY}(r) &= \ln
+\left[1+\frac{\exp\left[f(r,\alpha)\gamma(r)\right]-1}{f(r,\alpha)}\right]-\gamma(r)
+\end{align}
+where $f(r,\alpha)$ is a "switching function", which they defined as
+\begin{align}
+f(r,\alpha) &= 1- \exp(-\alpha r)
+\end{align}
+For $\alpha \rightarrow \infty$ the switching function becomes $f(r,\alpha)=1$ and the
+closure becomes the HNC closure.
+For $\alpha \rightarrow 0$ the switching function becomes $f(r,\alpha)=0$ and the
+closure converges to the PY closure. The parameter $\alpha$ is varied until the
+virial-compressibility consistency condition is satisfied.
+
+~\\
+\subsection{HNC-SMSA (HMSA) Approximation}
+~\\
+
+The HNC\hbox{-}SMSA (HMSA) closure from Zerah and Hansen  \cite{Zerah1986} has been proposed
+for the Lennard-Jones fluid. It interpolates between HNC and SMSA. The HMSA has
+strong theoretical basis since it can be derived from Percus’ functional expansion
+formalism and its bridge function expresses as a functional of the remormalised
+indirect correlation function $\gamma^*(r)=\gamma(r)-\beta u_{R}(r)$ so that
 \begin{align}
 B_\text{HMSA}(r) &= \ln
-\left[1+\frac{\exp\left[f(r)\gamma^*(r)\right]-1}{f(r)}\right]-\gamma^*(r)
+\left[1+\frac{\exp\left[f(r,\alpha)\gamma^*(r)\right]-1}{f(r,\alpha)}\right]-\gamma^*(r)
 \end{align}
-
+where $f(r,\alpha)$ is the switching function defined as
+\begin{align}
+f(r,\alpha) &= 1-\exp(-\alpha r)
+\end{align}
+The parameter $\alpha$ is varied in a self-consistent manner until virial and
+compressibility routes for the pressure coincide.
+The HMSA closure reduces to HNC for $f(r,\alpha) \xrightarrow{\alpha\rightarrow\infty} 1$ and to SMSA when
+and to SMSA when $f(r,\alpha) \xrightarrow{\alpha\rightarrow 0} 0$.
 
 \section{Interaction Potentials}
+
 The different closures of the previous section require partly that the interaction potential $u(r,\ldots)$
-is splitted in a reference $u_\text{ref}(r,\ldots)$ and perturbation $u_\text{pert}(r,\sigma,\ldots)$ ,
+is partitioned in a reference $u_\text{ref}(r,\ldots)$ and perturbation $u_\text{pert}(r,\sigma,\ldots)$ ,
 or a short range $u_\text{SR}(r,\sigma,\ldots)$
 and long range $u_\text{LR}(r,\sigma,\ldots)$, or an attractive $u_\text{A}(r,\sigma,\ldots)$ and
 repulsive $u_\text{R}(r,\sigma,\ldots)$ potential part.
+One famous partition has been introduced by Weeks-Chandler-Andersen (WCA) \cite{Weeks1971}.
+The partitioned the potential $u(r)=u_\text{R}(r)+u_\text{A}(r)$ in a repulsive part $u_\text{R}(r)$
+with an additional condition that $u_\text{R}(r)  \xrightarrow{r\rightarrow\infty}0 $,
+and an attractive part $u_\text{A}(r)$.
+In some other closures the partition is done in a reference and perturbation $u(r)=u_\text{ref}(r)+u_\text{pert}(r)$
+or a short range and long range part $u(r)=u_\text{SR}(r)+u_\text{LR}(r)$.
+The definitions together with the different ways partitioning are defined below for
+each potential.
+
 \subsection{Hard Sphere Potential}
 \begin{align}
 u^\text{HS}(r,\sigma) &=
@@ -1545,9 +1667,25 @@ u^\text{HS}_\text{pert}(r,\sigma) &= u^\text{HS}_\text{LR}(r,\sigma) = u^\text{H
 \subsection{Sticky Hard Sphere Potential}
 \subsection{Soft Sphere Potential}
 \subsection{Penetrable Sphere}
+~\\
+The penetrable sphere model became popular after 1989 due to Marquest and
+Witten \cite{Marquest1989} who suggested it as a prototype for the interaction between micelles in a solvent.
+The potential is defined as \cite{Marquest1989,Viererblova2010}
+\begin{align}
+u^\text{PSM}(r,\sigma,\epsilon) &=
+\begin{cases}
+k_\text{B} T \epsilon   & \mbox{if } r \leq \sigma \\
+0                       & \mbox{if } r >    \sigma
+\end{cases}
+\end{align}
+
 \subsection{Star Polymer Potential}
 
 \subsection{Lennard-Jones Potential}
+
+\noindent ~\\ The Lennard-Jones potential is a mathematically simple model that approximates the interaction
+between a pair of neutral atoms or molecules.
+A form of the potential was first proposed in 1924 by John Lennard-Jones \cite{Jones1924}.
 \begin{align}
 u^\text{LJ}(r,\sigma,\ldots) &= 4 k_\text{B}T \epsilon \left[ \left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^{6}\right]
 \end{align}
