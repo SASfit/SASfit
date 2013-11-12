@@ -1182,8 +1182,9 @@ correlation functions $c(r)$ of a systems with known pair
 interaction potential $U(r)$.
 \section{Background}
 The central part of this package is iterative solution of
-Ornstein-Zernike equation
-\cite{Naegele2004,Henderson2000,Hansen2013,Bomont2008,Caccamo1996}:
+Ornstein-Zernike equation \cite{Ornstein1914}. The theoretical background can be found
+in great detail in \cite{Naegele2004,Henderson2000,Hansen2013,Bomont2008,Caccamo1996}.
+The Ornstein-Zernike equation reads
 \begin{align}\label{eq:oz_h12}
     h(\mathbf{r}_{12})&=c(\mathbf{r}_{12})+ \int c(\mathbf{r}_{13}) \rho(\mathbf{r}_3) h(\mathbf{r}_{32})
     d\mathbf{r}_3 + \cdots
@@ -1556,7 +1557,7 @@ VM for $f=0$.
 \subsection{Chapentier-Jakse' semiempirical extention of the VM Approximation (CJ-VM)}
 ~\\
 A similar semiempirical approach has been suggested by Chapentier and Jakse
-\cite{Choudhury2002}
+\cite{Charpentier2001}
 \begin{align}
 B_\text{CJ-VM}(r) &= \frac{1}{2\alpha}\left[\sqrt{1+4\alpha
 \gamma^*(r)}-1-2\alpha\gamma^*(r) \right]

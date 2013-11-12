@@ -128,6 +128,12 @@ A.~Caille.
 \newblock {\em Comptes Rendus des Seances de l'Academie des Sciences, Serie B:
   Sciences Physiques}, 274:891--893, 1972.
 
+\bibitem{Charpentier2001}
+I.~Charpentier and N.~Jakse.
+\newblock Exact numerical derivatives of the pair-correlation function of
+  simple liquids using the tangent linear method.
+\newblock {\em The Journal of Chemical Physics}, 114(5):2284--2292, 2001.
+
 \bibitem{Chihara1973}
 Junzo Chihara.
 \newblock Integral euqations for fluids with long-range and short-range
@@ -417,6 +423,12 @@ O.~Kratky and G.~Porod.
 \newblock Diffuse small-angle scattering of x-rays in colloid systems.
 \newblock {\em Journal of Colloid Science}, 4(1):35 -- 70, 1949.
 
+\bibitem{Lebowitz1966}
+J.~L. Lebowitz and J.~K. Percus.
+\newblock Mean spherical model for lattice gases with extended hard cores and
+  continuum fluids.
+\newblock {\em Phys. Rev.}, 144:251--258, Apr 1966.
+
 \bibitem{Lin1989}
 M.Y. Lin, H.M. Lindsay, D.A. Weitz, R.C. Ball, R.~Klein, and P.~Meakin.
 \newblock Universality of fractal aggregates as probed by light scattering.
@@ -518,6 +530,13 @@ Online~Dictionary of~crystallography.
 J.~J. Olivero and R.~L. Longbothum.
 \newblock Empirical fits to the voigt line width: A brief review.
 \newblock {\em J. Quant. Spectrosc. Radiat. Transfer}, 17(233-236):12–98, 1977.
+
+\bibitem{Ornstein1914}
+L.S. Ornstein and F.~Zernike.
+\newblock Accidental deviations of density and opalescence at the critical
+  point of a single substance.
+\newblock {\em Koninklijke Nederlandsche Akademie van Wetenschappen
+  Proceedings}, 17:793--806, 1914.
 
 \bibitem{Pabst2003}
 G.~Pabst, R.~Koschuch, B.~Pozo-Navas, M.~Rappolt, K.~Lohner, and P.~Laggner.

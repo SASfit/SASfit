@@ -14,9 +14,9 @@
 #define sigma p[0]   // Diameter of spheres in nm
 #define epsilon p[1] // energy parameter in units of kB*T
 #define NEXP	p[2] // exponent n
-#define ALPHA   p[3] // scaling parameter alpha in th eexponetial
+#define AALPHA  p[3] // scaling parameter alpha in th eexponetial
 
 double U_GGCM_n(double r, double T, double *p) {
-    if (r<sigma) return kb*T*epsilon*exp(-ALPHA*pow(r/sigma,NEXP));
+    if (r<sigma) return kb*T*epsilon*exp(-AALPHA*pow(r/sigma,NEXP));
     else  return 0;
 }

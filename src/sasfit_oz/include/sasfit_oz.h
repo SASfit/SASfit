@@ -92,7 +92,6 @@ typedef struct {
         int    maxsteps;
         double relerror;
         double alpha;
-        double sBPGG;
         double phi;
         double *pPot;
         double *ubeta;

@@ -36,7 +36,9 @@
 #define CFNEW OZd->cfnew
 #define cf OZd->cf
 #define ALPHA OZd->alpha
-#define sBPGG OZd->sBPGG
+#define sBPGG OZd->alpha
+#define aCJVM OZd->alpha
+#define fBB OZd->alpha
 #define PHI OZd->phi
 #define CLOSURE OZd->cl
 #define Fswitch OZd->f
@@ -89,7 +91,7 @@ double extrapolate (double x1,double x2, double x3, double y1, double y2,double 
 
 //Calling OZ_solver and generating output
 void OZ_calculation (sasfit_oz_data *OZd) {
-  if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA) {
+  if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA || CLOSURE==CJVM || CLOSURE==BB) {
         sasfit_out("Root finding\n");
         root_finding(OZd);
   } else {
@@ -103,7 +105,7 @@ void OZ_calculation (sasfit_oz_data *OZd) {
 
 void OZ_solver (sasfit_oz_data *OZd)
 {
-    double  e, ro, dk, Sm, Norm, Normold,V, Gstar;
+    double  err, ro, dk, Sm, Norm, Normold,V, Gstar;
     int i,j;
     bool doneB;
     OZ_func_one_t * tmp_potential;
@@ -117,8 +119,6 @@ void OZ_solver (sasfit_oz_data *OZd)
         r[i]=(r[i-1]+dr);
         k[i]=(k[i-1]+dk);
     }
-    OZd->it=0;
-    e=2*RELERROR;
 
     if (CLOSURE==RHNC) {
         tmp_potential =OZd->potential;
@@ -147,26 +147,30 @@ void OZ_solver (sasfit_oz_data *OZd)
         MAYER[i] = EN[i]-1.;
         BRIDGE[i] = 0.0;
         CAVITY[i] = 0.0;
+        G[i]=0.0;
     }
 
-while (OZd->it < MAXSTEPS && e > RELERROR ) {
+OZd->it=0;
+err=2*RELERROR;
+while (OZd->it < MAXSTEPS && err > RELERROR ) {
     doneB = FALSE;
     OZd->it++;
     for (i=0; i < NP; i++){
-        if (CLOSURE==PY) {
+        switch (CLOSURE) {
+        case PY:
             BRIDGE[i] = log(1.0+G[i])-G[i];
             doneB=TRUE;
             c[i]=(1.+G[i])*(EN[i]-1.);
-        }
-        if (CLOSURE==HNC) {
+            break;
+        case HNC:
             BRIDGE[i] = 0.0;
             doneB=TRUE;
             c[i]=-1-G[i]+EN[i]*exp(G[i]);
-        }
-        if (CLOSURE==RHNC) {
+            break;
+        case RHNC:
             c[i]=g0[i]*exp((G[i]-G0[i])-OZd->beta*OZd->pertubation_pot(r[i],T,PARAM))-G[i]-1;
-        }
-        if (CLOSURE==RY)   {
+            break;
+        case RY:
             if (ALPHA == 0) {
                 BRIDGE[i] = log(1.0+G[i])-G[i];
                 doneB=TRUE;
@@ -176,9 +180,8 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
                 doneB=TRUE;
                 c[i]=EN[i]*(1+(exp(Fswitch[i]*G[i])-1)/Fswitch[i])-G[i]-1;
             }
-        }
-
-        if (CLOSURE==HMSA)   {
+            break;
+        case HMSA:
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
             if (ALPHA == 0) {
                 BRIDGE[i] = log(1.0+Gstar)-Gstar;
@@ -189,40 +192,59 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
             }
-        }
-        if (CLOSURE==Verlet) {
+            break;
+        case Verlet:
             BRIDGE[i] = -(gsl_pow_2(G[i])/(2.*(1.+4.0/5.0*G[i])));
             doneB=TRUE;
             c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
-        }
-        if (CLOSURE==CG) {
+            break;
+        case CG:
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
             if (Gstar > 0) {
-                BRIDGE[i] = -0.5*gsl_pow_2(Gstar)/(1+(1.0175-0.275*6*PHI/M_PI)*Gstar);
+                BRIDGE[i] = -0.5*gsl_pow_2(Gstar)/(1.0+(1.0175-0.275*6*PHI/M_PI)*Gstar);
             } else {
                 BRIDGE[i] = -0.5*gsl_pow_2(Gstar);
             }
             doneB=TRUE;
-            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
-        }
-        if (CLOSURE==MS) {
-            BRIDGE[i] = sqrt(1.+2.*G[i])-G[i]-1.;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case MS:
+            BRIDGE[i] = sqrt(1.+2.*G[i])-G[i]-1.0;
             doneB=TRUE;
-            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
-        }
-        if (CLOSURE==BPGG) {
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case BPGG:
             BRIDGE[i] = pow(1.+sBPGG*G[i],1./sBPGG)-G[i]-1.;
             doneB=TRUE;
-            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
-        }
-        if (CLOSURE==SMSA) {
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case VM:
+            Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
+            BRIDGE[i] = sqrt(1.+2.*Gstar)-Gstar-1.0;
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case CJVM:
+//            aCJVM = PARAM[2];
+            Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
+            BRIDGE[i] = 0.5/aCJVM*(sqrt(fabs(1.0+4.0*aCJVM*Gstar))-1.0-2.0*aCJVM*Gstar);
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case BB:
+            Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
+            BRIDGE[i] = sqrt(1.+2.*Gstar+fBB*Gstar*Gstar)-1.0-Gstar;
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case SMSA:
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
             BRIDGE[i] = log(1.0+Gstar)-Gstar;
             doneB=TRUE;
-            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
-        }
-
-        if (CLOSURE==MSA || CLOSURE==mMSA) {
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case MSA:
+        case mMSA:
             if (EN[i]==0.0) {
                 c[i] = -(G[i]+1.0);
             } else {
@@ -232,8 +254,12 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
                     c[i] = MAYER[i];
                 }
             }
+            break;
         }
         g[i]= c[i]+G[i]+1.0;
+
+        if (g[i]!=g[i]) sasfit_out("i: %d g(r)=%g\n",i, g[i]);
+
         OZIN[i]=(i+1)*c[i];
     }
     OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
@@ -263,11 +289,17 @@ while (OZd->it < MAXSTEPS && e > RELERROR ) {
         CAVITY[j] = exp(BRIDGE[j]+G[j]);
     }
     Norm= sqrt(Sm);
-    e = fabs((Norm-Normold)/Norm);
+    err = fabs((Norm-Normold)/Norm);
     Normold=Norm;
     if ((OZd->it*4096 % (100*OZd->Npoints) )==0) {
         Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
+    }
+    if (Norm != Norm) {
+        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+        for (j=0; j < NP; j++) {
+            G[j]=0.0;
+        }
     }
 }
 Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
@@ -322,25 +354,23 @@ double compressibility_calc(double scp, void *params)
 {    sasfit_oz_data *OZd;
      int i;
      double iphi;
-     double S0, chicp, chivir,r1,r2,r3,P2,P3, sum2,sum3;
-     sum2=0;
-     sum3=0;
+     double S0, chicp, chivir,Delta_chi, r1,r2,r3,P2,P3, sum2,sum3;
+     sum2=0.0;
+     sum3=0.0;
 
    OZd = (sasfit_oz_data *) params;
-   if (CLOSURE==RY) ALPHA=scp;
-   if (CLOSURE==HMSA) ALPHA=scp;
-   if (CLOSURE==BPGG)  sBPGG=scp;
+   ALPHA=scp;
 
    iphi = PHI;
    OZ_solver(OZd);
    S0=OZd->Sq0;
-   r1=6*PHI/(M_PI*pow(PARAM[0],3));
+   r1=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    chicp=S0*OZd->beta/r1;
 
    OZ_pot_der(OZd);
 
    PHI=iphi-iphi*0.01;
-   r2=6*PHI/(M_PI*pow(PARAM[0],3));
+   r2=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
@@ -362,7 +392,7 @@ double compressibility_calc(double scp, void *params)
    P2=(r2/OZd->beta)*(1.-(2.*M_PI*OZd->beta*r2/3.)*dr*sum2);
 
    PHI=iphi+iphi*0.01;
-   r3=6*PHI/(M_PI*gsl_pow_3(PARAM[0]));
+   r3=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
@@ -381,16 +411,23 @@ double compressibility_calc(double scp, void *params)
             sum3=sum3+(dU_dR[i])*g[i]*gsl_pow_3(r[i+1]);
        }
    }
-   P3=(r3/OZd->beta)*(1-(2*M_PI*OZd->beta*r3/3)*dr*sum3);
+   P3=(r3/OZd->beta)*(1.0-(2.0*M_PI*OZd->beta*r3/3.0)*dr*sum3);
    chivir=(r3-r2)/((P3-P2)*r1);
    PHI=iphi;
-   return chicp-chivir;
+   Delta_chi = chicp-chivir;
+   if (Delta_chi != Delta_chi) {
+        sasfit_out("detected NAN for compressibility, alpha value: %g\n",ALPHA);
+        for (i=0; i < NP; i++) {
+            G[i]=0.0;
+        }
+    }
+   return Delta_chi;
 }
 
 //Routine to minimize the difference between two compressibilities
 
 void root_finding (sasfit_oz_data *OZd) {
-    int signchange,i;
+    int signchange,i,j;
     double refnew, refold, alpha_left, alpha_right, scp_inter;
     refold=0;
     signchange = 0;
@@ -404,19 +441,18 @@ void root_finding (sasfit_oz_data *OZd) {
             refnew=compressibility_calc(100/pow(2,i), OZd);
             sasfit_out("            %15g  |   %15g \n", 100/pow(2,i) , refnew/OZd->beta);
         }
-        if (CLOSURE==BPGG) {
-            refnew=compressibility_calc(5.7-0.2*i, OZd);
-            sasfit_out("              %10f  |   %.10g \n", 5.7-0.2*i, refnew/OZd->beta);
+        if (CLOSURE==BPGG || CLOSURE==CJVM || CLOSURE==BB) {
+            refnew=compressibility_calc(5.601-0.2*i, OZd);
+            sasfit_out("              %10f  |   %.10g \n", 5.601-0.2*i, refnew/OZd->beta);
         }
-
 
         if (CLOSURE==RY || CLOSURE==HMSA){
             alpha_left  = 100/pow(2,i);
             alpha_right = 100/pow(2,i-1);
         }
-        if (CLOSURE==BPGG) {
-            alpha_left  = 5.7-0.2*i;
-            alpha_right = 5.7-0.2*(i-1);
+        if (CLOSURE==BPGG || CLOSURE==CJVM || CLOSURE==BB) {
+            alpha_left  = 5.601-0.2*i;
+            alpha_right = 5.601-0.2*(i-1);
         }
         if ((refnew*refold<0)) {
             signchange=1;
@@ -424,19 +460,23 @@ void root_finding (sasfit_oz_data *OZd) {
             if (abs(refnew) < abs(refold)) {
                 if (    CLOSURE==RY
                     ||  CLOSURE==HMSA)   scp_inter=100/pow(2,i);
-                if (    CLOSURE==BPGG)   scp_inter=5.7-0.2*i;
+
+                if (    CLOSURE==BPGG
+                    ||  CLOSURE==CJVM
+                    ||  CLOSURE==BB)   scp_inter=5.601-0.2*i;
             } else {
                 if (    CLOSURE==RY
                     ||  CLOSURE==HMSA)   scp_inter=100/pow(2,i-1);
-                if (    CLOSURE==BPGG)   scp_inter=5.7-0.2*(i-1);
+
+                if (    CLOSURE==BPGG
+                    ||  CLOSURE==CJVM
+                    ||  CLOSURE==BB)   scp_inter=5.601-0.2*(i-1);
             }
             refold=refnew;
             if (i==28) {
                 sasfit_out("No change of sign in %d steps \n", i);
                 sasfit_out("choosen self-consistency parameter:%f\n",scp_inter);
-                if (    CLOSURE==RY
-                    ||  CLOSURE==HMSA)   ALPHA=scp_inter;
-                if (    CLOSURE==BPGG)   sBPGG=scp_inter;
+                OZd->alpha=scp_inter;
             }
         }
         i++;
@@ -476,14 +516,8 @@ void root_finding (sasfit_oz_data *OZd) {
             sasfit_out("%5d [%.7f, %.7f] %.7f %.7f\n",
                 iter, x_lo, x_hi,  root,  x_hi - x_lo);
         } while (status == GSL_CONTINUE && iter < max_iter);
-        if (CLOSURE==RY || CLOSURE==HMSA) {
-            ALPHA=root;
-            sasfit_out("Alpha parameter after optimization: %g \n", ALPHA);
-        }
-        if (CLOSURE==BPGG) {
-            sBPGG=root;
-            sasfit_out("S parameter after optimization: %g \n", sBPGG);
-        }
+        OZd->alpha = root;
+        sasfit_out("consistency parameter after optimization: %g \n", root);
         gsl_root_fsolver_free (s);
     }
 }
