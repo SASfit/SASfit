@@ -26,7 +26,7 @@
 double U_ZERO(double d, double temp, double *p) {
 return 0.0;
 }
-#define OZMAXCLOSURES 24
+#define OZMAXCLOSURES 30
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
 {
@@ -58,6 +58,12 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[21] = "HMSA";
     ClosureNames[22] = "Choudhury-Gosh";
     ClosureNames[23] = "CG";
+    ClosureNames[24] = "Chapentier-Jakse";
+    ClosureNames[25] = "CJVM";
+    ClosureNames[26] = "Bomont-Brettomnet";
+    ClosureNames[27] = "BB";
+    ClosureNames[28] = "Vompe-Martynov";
+    ClosureNames[29] = "VM";
     i=0;
     eq=-1;
     while (i<OZMAXCLOSURES && eq != 0) {
@@ -114,6 +120,18 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
         case 22 :
         case 23 :
             OZD->cl=CG;
+            break;
+        case 24 :
+        case 25 :
+            OZD->cl=CJVM;
+            break;
+        case 26 :
+        case 27 :
+            OZD->cl=BB;
+            break;
+        case 28 :
+        case 29 :
+            OZD->cl=VM;
             break;
         default :
             OZD->cl=PY;
