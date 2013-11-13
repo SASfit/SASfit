@@ -144,7 +144,8 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
-    const char * PotentialNames[16];
+    #define MAXPOTENTIALS 17
+    const char * PotentialNames[MAXPOTENTIALS];
     int i,eq;
     if (!token || !OZD) return 0;
     PotentialNames[0] = "HardSphere";
@@ -167,7 +168,7 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
 
     i=0;
     eq=-1;
-    while (i<16 && eq != 0) {
+    while (i<MAXPOTENTIALS && eq != 0) {
         eq = strcmp(token,PotentialNames[i]);
         i++;
     }

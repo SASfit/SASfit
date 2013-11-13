@@ -3,7 +3,7 @@
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
  *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   21.9.2013
+ *   12.11.2013
  *
  */
 #include <stdio.h>
@@ -82,7 +82,6 @@ void OZ_init(sasfit_oz_data *OZd) {
  }
 
 //Extrapolation routine
-
 double extrapolate (double x1,double x2, double x3, double y1, double y2,double y3)
 {  double Ex;
    Ex=-(-pow(x2,2)*x3*y1+x2*pow(x3,2)*y1+pow(x1,2)*x3*y2-x1*pow(x3,2)*y2-pow(x1,2)*x2*y3+x1*pow(x2,2)*y3)/((x1-x2)*(x1-x3)*(x2-x3));
@@ -102,15 +101,14 @@ void OZ_calculation (sasfit_oz_data *OZd) {
 }
 
 // Iterative solution of Ornstein-Zernike equation
-
-void OZ_solver (sasfit_oz_data *OZd)
-{
+void OZ_solver (sasfit_oz_data *OZd) {
     double  err, ro, dk, Sm, Norm, Normold,V, Gstar;
     int i,j;
+    double powarg, logarg;
     bool doneB;
     OZ_func_one_t * tmp_potential;
     Normold=1;
-    ro=6*PHI/(M_PI*pow(PARAM[0],3));
+    ro=6*PHI/(M_PI*gsl_pow_3(PARAM[0]));
     dk = M_PI/((NP+1.0)*dr);
     r[0]=dr;
     k[0]=dk;
@@ -147,7 +145,7 @@ void OZ_solver (sasfit_oz_data *OZd)
         MAYER[i] = EN[i]-1.;
         BRIDGE[i] = 0.0;
         CAVITY[i] = 0.0;
-        G[i]=0.0;
+ //       G[i]=0.0;
     }
 
 OZd->it=0;
@@ -186,17 +184,28 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
             if (ALPHA == 0) {
                 BRIDGE[i] = log(1.0+Gstar)-Gstar;
                 doneB=TRUE;
-                c[i]=(1.+Gstar)*(EN[i]-1.);
+                c[i]=(1.0+Gstar)*(EN[i]-1.0);
             } else {
                 BRIDGE[i] = -Gstar+log(1.0+((exp(Fswitch[i]*Gstar)-1)/Fswitch[i]));
                 doneB=TRUE;
-                c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
+                c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             }
             break;
         case Verlet:
-            BRIDGE[i] = -(gsl_pow_2(G[i])/(2.*(1.+4.0/5.0*G[i])));
+            BRIDGE[i] = -(gsl_pow_2(G[i])/(2.0*(1.+4.0/5.0*G[i])));
             doneB=TRUE;
-            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            break;
+        case DH:
+            if (OZd->potential == &U_Lennard_Jones) {
+                Gstar = G[i]-PARAM[1]*gsl_pow_6(r[i]/PARAM[0])
+                            *exp(-PARAM[1]/OZd->beta*gsl_pow_6(r[i]/PARAM[0])/(PHI*M_PI/6.0));
+            } else {
+                Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
+            }
+            BRIDGE[i] = -gsl_pow_2(Gstar)/(2.0*(1.0+(5.0*Gstar+11.0)/(7.0*Gstar+9.0)*Gstar));
+            doneB=TRUE;
+            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             break;
         case CG:
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
@@ -209,31 +218,38 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
             c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             break;
         case MS:
-            BRIDGE[i] = sqrt(1.+2.*G[i])-G[i]-1.0;
+            powarg = 1.0+2.0*G[i];
+            BRIDGE[i] = GSL_SIGN(powarg)*sqrt(fabs(powarg))-G[i]-1.0;
             doneB=TRUE;
             c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             break;
         case BPGG:
-            BRIDGE[i] = pow(1.+sBPGG*G[i],1./sBPGG)-G[i]-1.;
+            powarg = 1.0+sBPGG*G[i];
+            BRIDGE[i] = GSL_SIGN(powarg)*pow(fabs(powarg),1.0/sBPGG)-G[i]-1.0;
             doneB=TRUE;
             c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             break;
         case VM:
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
-            BRIDGE[i] = sqrt(1.+2.*Gstar)-Gstar-1.0;
+            powarg = 1.0+2.0*Gstar;
+            BRIDGE[i] = GSL_SIGN(powarg)*sqrt(fabs(powarg))-Gstar-1.0;
+//            BRIDGE[i] = sqrt(1.0+2.0*Gstar)-Gstar-1.0;
             doneB=TRUE;
             c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             break;
         case CJVM:
-//            aCJVM = PARAM[2];
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
-            BRIDGE[i] = 0.5/aCJVM*(sqrt(fabs(1.0+4.0*aCJVM*Gstar))-1.0-2.0*aCJVM*Gstar);
+            powarg = (1.0+4.0*aCJVM*Gstar);
+            BRIDGE[i] = 1.0/(2*aCJVM)*(GSL_SIGN(powarg)*sqrt(fabs(powarg))-1.0-2.0*aCJVM*Gstar);
+//            BRIDGE[i] = 1.0/(2*aCJVM)*(sqrt((1.0+4.0*aCJVM*Gstar))-1.0-2.0*aCJVM*Gstar);
             doneB=TRUE;
             c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             break;
         case BB:
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
-            BRIDGE[i] = sqrt(1.+2.*Gstar+fBB*Gstar*Gstar)-1.0-Gstar;
+            powarg = 1.0+2.0*Gstar+fBB*Gstar*Gstar;
+            BRIDGE[i] = GSL_SIGN(powarg)*sqrt(fabs(powarg))-Gstar-1.0;
+//           BRIDGE[i] = sqrt(1.0+2.0*Gstar+fBB*Gstar*Gstar)-1.0-Gstar;
             doneB=TRUE;
             c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
             break;
@@ -241,7 +257,7 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
             Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
             BRIDGE[i] = log(1.0+Gstar)-Gstar;
             doneB=TRUE;
-            c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+            c[i]=EN[i]*exp(OZd->beta*OZd->attractive_pot(r[i],T,PARAM))*(Gstar+1.0)-G[i]-1.0;
             break;
         case MSA:
         case mMSA:
@@ -256,17 +272,24 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
             }
             break;
         }
+        if (G[i]!=G[i]) {
+            sasfit_out("i: %d gamma(r)=%g\n",i, G[i]);
+            G[i]=0.0;
+        }
+
         g[i]= c[i]+G[i]+1.0;
 
-        if (g[i]!=g[i]) sasfit_out("i: %d g(r)=%g\n",i, g[i]);
-
+        if (g[i]!=g[i]) {
+            sasfit_out("i: %d g(r)=%g\n",i, g[i]);
+            g[i]=0.0;
+        }
         OZIN[i]=(i+1)*c[i];
     }
     OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute(OZd->pl);
 
     for (j=0; j < NP; j++) {
-        CFNEW[j]=4.*M_PI*dr*dr*OZOUT[j]/(2.0*dk*(j+1));
+        CFNEW[j]=4.0*M_PI*dr*dr*OZOUT[j]/(2.0*dk*(j+1.0));
         cf[j]=MIXCOEFF*CFNEW[j]+(1-MIXCOEFF)*CFOLD[j];
         CFOLD[j]=cf[j];
         GF[j]=ro*cf[j]*cf[j]/(1.0-ro*cf[j]);
@@ -439,38 +462,38 @@ void root_finding (sasfit_oz_data *OZd) {
     while (signchange==0 && i<=28) {
         if (CLOSURE==RY || CLOSURE==HMSA){
             refnew=compressibility_calc(100/pow(2,i), OZd);
-            sasfit_out("            %15g  |   %15g \n", 100/pow(2,i) , refnew/OZd->beta);
-        }
-        if (CLOSURE==BPGG || CLOSURE==CJVM || CLOSURE==BB) {
-            refnew=compressibility_calc(5.601-0.2*i, OZd);
-            sasfit_out("              %10f  |   %.10g \n", 5.601-0.2*i, refnew/OZd->beta);
-        }
-
-        if (CLOSURE==RY || CLOSURE==HMSA){
             alpha_left  = 100/pow(2,i);
             alpha_right = 100/pow(2,i-1);
         }
-        if (CLOSURE==BPGG || CLOSURE==CJVM || CLOSURE==BB) {
+        if (CLOSURE==BPGG || CLOSURE==BB) {
+            refnew=compressibility_calc(5.601-0.2*i, OZd);
             alpha_left  = 5.601-0.2*i;
             alpha_right = 5.601-0.2*(i-1);
         }
+        if (CLOSURE==CJVM) {
+            refnew=compressibility_calc(0.001+0.05*i, OZd);
+            alpha_right  = 0.001+0.05*i;
+            alpha_left = 0.001+0.05*(i-1);
+        }
+        sasfit_out("          %15g  |   %15g \n", alpha_left , refnew/OZd->beta);
+
         if ((refnew*refold<0)) {
             signchange=1;
         } else {
             if (abs(refnew) < abs(refold)) {
                 if (    CLOSURE==RY
-                    ||  CLOSURE==HMSA)   scp_inter=100/pow(2,i);
+                    ||  CLOSURE==HMSA)   scp_inter=alpha_left;
 
                 if (    CLOSURE==BPGG
                     ||  CLOSURE==CJVM
-                    ||  CLOSURE==BB)   scp_inter=5.601-0.2*i;
+                    ||  CLOSURE==BB)     scp_inter=alpha_left;
             } else {
                 if (    CLOSURE==RY
-                    ||  CLOSURE==HMSA)   scp_inter=100/pow(2,i-1);
+                    ||  CLOSURE==HMSA)   scp_inter=alpha_right;
 
                 if (    CLOSURE==BPGG
                     ||  CLOSURE==CJVM
-                    ||  CLOSURE==BB)   scp_inter=5.601-0.2*(i-1);
+                    ||  CLOSURE==BB)     scp_inter=alpha_right;
             }
             refold=refnew;
             if (i==28) {
@@ -480,6 +503,8 @@ void root_finding (sasfit_oz_data *OZd) {
             }
         }
         i++;
+        Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
+        Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
     }
     if (signchange==1) {
         int status;
@@ -500,7 +525,7 @@ void root_finding (sasfit_oz_data *OZd) {
         gsl_root_fsolver_set (s, &F, x_lo, x_hi);
 
         sasfit_out("using %s method\n",gsl_root_fsolver_name (s));
-        sasfit_out("%5s [%9s, %9s] %9s %9s\n","iter", "lower", "upper", "root","err(est)");
+        sasfit_out(" iter |  lower      upper  |    root    err(est)\n");
         iter = 0;
         max_iter = 100;
         do {
@@ -509,12 +534,14 @@ void root_finding (sasfit_oz_data *OZd) {
             root = gsl_root_fsolver_root (s);
             x_lo = gsl_root_fsolver_x_lower (s);
             x_hi = gsl_root_fsolver_x_upper (s);
-            status = gsl_root_test_interval (x_lo, x_hi, 0, 1e-7);
+            status = gsl_root_test_interval (x_lo, x_hi, 0, 1e-5);
             if (status == GSL_SUCCESS) {
                 sasfit_out("Converged:\n");
             }
-            sasfit_out("%5d [%.7f, %.7f] %.7f %.7f\n",
-                iter, x_lo, x_hi,  root,  x_hi - x_lo);
+            sasfit_out("%5d |%.7f, %.7f| %.7f %.7f\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
+
+            Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
+            Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
         } while (status == GSL_CONTINUE && iter < max_iter);
         OZd->alpha = root;
         sasfit_out("consistency parameter after optimization: %g \n", root);
