@@ -79,6 +79,7 @@ void OZ_init(sasfit_oz_data *OZd) {
    for (i=0; i < NP; i++) {
         G[i]=0;
    }
+   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
  }
 
 //Extrapolation routine
@@ -110,6 +111,7 @@ void OZ_solver (sasfit_oz_data *OZd) {
     Normold=1;
     ro=6*PHI/(M_PI*gsl_pow_3(PARAM[0]));
     dk = M_PI/((NP+1.0)*dr);
+
     r[0]=dr;
     k[0]=dk;
 
@@ -150,6 +152,7 @@ void OZ_solver (sasfit_oz_data *OZd) {
 
 OZd->it=0;
 err=2*RELERROR;
+
 while (OZd->it < MAXSTEPS && err > RELERROR ) {
     doneB = FALSE;
     OZd->it++;
@@ -198,8 +201,8 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
             break;
         case DH:
             if (OZd->potential == &U_Lennard_Jones) {
-                Gstar = G[i]-PARAM[1]*gsl_pow_6(r[i]/PARAM[0])
-                            *exp(-PARAM[1]/OZd->beta*gsl_pow_6(r[i]/PARAM[0])/(PHI*M_PI/6.0));
+                Gstar = G[i]+PARAM[1]*gsl_pow_6(PARAM[0]/r[i])
+                            *exp(-PARAM[1]/OZd->beta*gsl_pow_6(PARAM[0]/r[i])/(PHI*M_PI/6.0));
             } else {
                 Gstar = G[i]-OZd->beta*OZd->attractive_pot(r[i],T,PARAM);
             }
@@ -285,8 +288,8 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
         }
         OZIN[i]=(i+1)*c[i];
     }
-    OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
-    fftw_execute(OZd->pl);
+ //   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
+    fftw_execute_r2r(OZd->pl,OZIN,OZOUT);
 
     for (j=0; j < NP; j++) {
         CFNEW[j]=4.0*M_PI*dr*dr*OZOUT[j]/(2.0*dk*(j+1.0));
@@ -295,8 +298,8 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
         GF[j]=ro*cf[j]*cf[j]/(1.0-ro*cf[j]);
         OZIN[j]=GF[j]*(j+1.0);
     }
-    OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
-    fftw_execute(OZd->pl);
+//    OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
+    fftw_execute_r2r(OZd->pl,OZIN,OZOUT);
     Sm=0;
     for (j=0; j < NP; j++) {
         G[j]=4.*M_PI*dk*dk*OZOUT[j]/(2.0*dr*gsl_pow_3(2.0*M_PI)*(j+1.0));
@@ -465,7 +468,7 @@ void root_finding (sasfit_oz_data *OZd) {
             alpha_left  = 100/pow(2,i);
             alpha_right = 100/pow(2,i-1);
         }
-        if (CLOSURE==BPGG || CLOSURE==BB) {
+        if (CLOSURE==BPGG) {
             refnew=compressibility_calc(5.601-0.2*i, OZd);
             alpha_left  = 5.601-0.2*i;
             alpha_right = 5.601-0.2*(i-1);
@@ -474,6 +477,11 @@ void root_finding (sasfit_oz_data *OZd) {
             refnew=compressibility_calc(0.001+0.05*i, OZd);
             alpha_right  = 0.001+0.05*i;
             alpha_left = 0.001+0.05*(i-1);
+        }
+        if (CLOSURE==BB) {
+            refnew=compressibility_calc(-0.5+0.1*i, OZd);
+            alpha_right  = -0.5+0.1*i;
+            alpha_left = -0.5+0.1*(i-1);
         }
         sasfit_out("          %15g  |   %15g \n", alpha_left , refnew/OZd->beta);
 
@@ -575,6 +583,7 @@ void OZ_free (sasfit_oz_data *OZd) {
     fftw_free(OZIN);
     fftw_free(OZOUT);
 }
+
 
 
 

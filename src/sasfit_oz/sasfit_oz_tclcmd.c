@@ -26,7 +26,7 @@
 double U_ZERO(double d, double temp, double *p) {
 return 0.0;
 }
-#define OZMAXCLOSURES 30
+#define OZMAXCLOSURES 32
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
 {
@@ -64,6 +64,8 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[27] = "BB";
     ClosureNames[28] = "Vompe-Martynov";
     ClosureNames[29] = "VM";
+    ClosureNames[30] = "Duh-Haymet";
+    ClosureNames[31] = "DH";
     i=0;
     eq=-1;
     while (i<OZMAXCLOSURES && eq != 0) {
@@ -132,6 +134,10 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
         case 28 :
         case 29 :
             OZD->cl=VM;
+            break;
+        case 30 :
+        case 31 :
+            OZD->cl=DH;
             break;
         default :
             OZD->cl=PY;
