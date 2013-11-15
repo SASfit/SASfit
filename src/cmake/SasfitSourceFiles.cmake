@@ -373,6 +373,8 @@ set(SOURCE_sasfit_oz
 	sasfit_oz_potential_psm.c
 	sasfit_oz_potential_ggcm-n.c
 	sasfit_oz_potential_dlvo.c
+	sasfit_oz_potential_star_Likos.c
+	sasfit_oz_potential_HS_3Yukawa.c
 	sasfit_oz_tclcmd.c
 )
 

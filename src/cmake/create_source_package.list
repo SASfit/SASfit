@@ -778,6 +778,8 @@ src/sasfit_oz/sasfit_oz_potential_lennard_jones.c
 src/sasfit_oz/sasfit_oz_potential_psm.c
 src/sasfit_oz/sasfit_oz_potential_soft_sphere.c
 src/sasfit_oz/sasfit_oz_potential_sticky_hard_sphere.c
+src/sasfit_oz/sasfit_oz_potential_star_Likos.c
+src/sasfit_oz/sasfit_oz_potential_HS_3Yukawa.c
 src/sasfit_oz/sasfit_oz_solver.c
 src/sasfit_oz/sasfit_oz_tclcmd.c
 src/sasfit_oz/include/sasfit_oz.h

@@ -36,7 +36,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 
     ClosureNames[0] = "Percus-Yevick";
     ClosureNames[1] = "PY";
-    ClosureNames[2] = "hypernetted-chain";
+    ClosureNames[2] = "Hypernetted-Chain";
     ClosureNames[3] = "HNC";
     ClosureNames[4] = "Rogers-Young";
     ClosureNames[5] = "RY";
@@ -150,7 +150,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
-    #define MAXPOTENTIALS 17
+    #define MAXPOTENTIALS 18
     const char * PotentialNames[MAXPOTENTIALS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -171,6 +171,7 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
     PotentialNames[14] = "DLVO";
     PotentialNames[15] = "PSM";
     PotentialNames[16] = "GGCM-n";
+    PotentialNames[17] = "StarPolymer";
 
     i=0;
     eq=-1;
@@ -267,6 +268,15 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->repulsive_pot=&U_ZERO;
             OZD->attractive_pot=&U_ZERO;
             OZD->shortrange_pot=&U_ZERO;
+            OZD->longrange_pot=&U_ZERO;
+            break;
+        case 17 :
+            OZD->potential=&U_Star1;
+            OZD->reference_pot=&U_Star1;
+            OZD->pertubation_pot=&U_ZERO;
+            OZD->repulsive_pot=&U_Star1;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_Star1;
             OZD->longrange_pot=&U_ZERO;
             break;
         default :

@@ -37,4 +37,7 @@ OZ_func_one_t U_GGCM_n;
 OZ_func_one_t U_PSM;
 OZ_func_one_t U_DLVO;
 OZ_func_one_t U_ZERO;
+OZ_func_one_t U_Star1;
+OZ_func_one_t U_Star2;
+OZ_func_one_t U_HS_3Yukawa;
 
