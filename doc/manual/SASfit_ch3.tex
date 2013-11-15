@@ -1665,8 +1665,73 @@ and
 u^\text{HS}_\text{pert}(r,\sigma) &= u^\text{HS}_\text{LR}(r,\sigma) = u^\text{HS}_\text{A}(r,\sigma) \equiv 0
 \end{align}
 
-\subsection{Sticky Hard Sphere Potential}
+
+\subsection{Sticky Hard Sphere Potential (SHS)}
+~\\
+
+The original model of ``adhesive'' or ``sticky'' hard
+spheres potential was proposed by Baxter in 1968 \cite{Baxter1968}.
+This potential adds to a hard sphere interparticle repulsion an infinitely
+strong attraction when molecular surfaces come to contact.
+The adhesive surface contribution was defined by a particular
+limiting case of a square well tail, in which the well depth goes to
+infinity as the width goes to zero, in such a way that the contribution
+to the second osmotic virial coefficient $B_2$ remains finite but not
+zero (Baxter's ``sticky limit''). More explicitly, in the one-component case,
+the square well potential reads as
+\begin{align}
+u^\text{SHS}(r) &=
+\begin{cases}
+\infty,   & 0 < r <    \sigma \\
+\epsilon, & \sigma \leq r \leq \sigma+\Delta \\
+0,        & r > \sigma+\Delta
+\end{cases}
+\end{align}
+with
+\begin{align}
+\epsilon &= k_\text{B} T \ln\left( \frac{12\tau\Delta}{\sigma+\Delta} \right)
+\end{align}
+The hight of the square well $\epsilon$ is positive for $\tau>(\sigma+\Delta)/(12\Delta)$.
+Therefore the splitting in attractive and repulsive potential is done as
+\begin{align}
+u^\text{SHS}_\text{A}(r) &=
+\begin{cases}
+\epsilon & \tau < \frac{\sigma+\Delta}{12\Delta} \wedge r \leq \sigma+\Delta \\
+0        & \mbox{otherwise}
+\end{cases}
+\\
+u^\text{SHS}_\text{R}(r) &=
+\begin{cases}
+\infty & r < \sigma \\
+\epsilon  & \tau > \frac{\sigma+\Delta}{12\Delta} \wedge \sigma \leq r \leq \sigma+\Delta \\
+0         & \tau < \frac{\sigma+\Delta}{12\Delta} \wedge \sigma \leq r \leq \sigma+\Delta \\
+0         & \mbox{otherwise}
+\end{cases}
+\end{align}
+The partitioning in reference and perturbation is done by
+\begin{align}
+u^\text{SHS}_\text{ref}(r) &=
+\begin{cases}
+\infty & r < \sigma \\
+0        & \mbox{otherwise}
+\end{cases}
+\\
+u^\text{SHS}_\text{pert}(r) &=
+\begin{cases}
+\epsilon  & r <= \sigma +\Delta\\
+0         & \mbox{otherwise}
+\end{cases}
+\end{align}
+A partitioning in long range and short range is not done. The long range potential
+is set to be always $u^\text{SHS}_\text{LR}(r) \equiv 0$, so that
+$u^\text{SHS}_\text{SR}(r)= u^\text{SHS}(r)$.
+
+~\\
 \subsection{Soft Sphere Potential}
+~\\
+
+\subsection{Fermi Potential}
+
 \subsection{Penetrable Sphere}
 ~\\
 The penetrable sphere model became popular after 1989 due to Marquest and
@@ -1714,3 +1779,30 @@ The LJ potential is not splitted in a reference and perturbation part, i.e. the 
 \subsection{Ionic Microgel Potential}
 \subsection{DLVO Potential}
 \subsection{Generalized Gaussian Core Model Potential - GGCM-n Potential}
+
+
+\section{GUI interface for the Ornstein Zernike solver}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.913\textwidth,height=0.5\textwidth]{../images/OZsolver/mainGUIozSolver.png}
+\end{center}
+\caption{Main GUI for solving the Ornstein Zernike equation. }
+\label{fig:mainGUIozSolver}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.708\textwidth,height=0.5\textwidth]{../images/OZsolver/startOZsolver.png}
+\end{center}
+\caption{Starting the menu for OZ-solver. }
+\label{fig:startOZsolver}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.708\textwidth,height=0.5\textwidth]{../images/OZsolver/OZsolverResults4fitting.png}
+\end{center}
+\caption{Access to the solutions of the OZ-solver.}
+\label{fig:OZsolverResults4fitting}
+\end{figure}

@@ -21,15 +21,23 @@
 					 // kappa^2=4 pi LB sum(rho_alpha Z_alpha^2,alpha)
 #define Z		p[2] // effective or dressed surface charge number of a colloidal particle
 #define LB 		p[3] // Bjerrum length LB = e^2/(epsilon kB T), for water at RT LB=0.71
+#define A       p[4] // effective Hamaker constant
 
 double U_DLVO(double r, double T, double *p) {
-	double a;
-	a = 0.5*sigma;
+	double a,Uel,UvdW;
+
     if (r<=sigma) {
 		return GSL_POSINF;
 	} else {
-		return kb*T*LB*gsl_pow_2(Z)*
+        a = 0.5*sigma;
+		Uel =   kb*T*LB*gsl_pow_2(Z)*
     			gsl_pow_2(exp(kappa*a)/(1.0+kappa*a))*
     			exp(-kappa*r)/r;
+        UvdW = -kb*T*A/6.0 * (
+                  2.0*a*a/(r*r-4*a*a)
+                + 2.0*gsl_pow_2(a/r)
+                + log(1.0-4.0*gsl_pow_2(a/r))
+                );
+        return Uel+UvdW;
 	}
 }

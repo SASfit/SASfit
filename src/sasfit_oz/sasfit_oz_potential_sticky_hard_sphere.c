@@ -16,8 +16,7 @@
     double energy;
     if (d<SIGMA) {
         return GSL_POSINF;
-    } else if (d>=SIGMA&&d<SIGMA+fabs(DELTA)) {
- //       printf("%lf war hier\n",d);
+    } else if (d>=SIGMA&&d<=SIGMA+fabs(DELTA)) {
         energy = kb*temp*log(12.0*TAU*fabs(DELTA)/(SIGMA+fabs(DELTA)));
         return energy;
     } else {
@@ -30,8 +29,7 @@
     double energy;
     if (d<SIGMA) {
         return GSL_POSINF;
-    } else if (d>=SIGMA&&d<SIGMA+fabs(DELTA)) {
- //       printf("%lf war hier\n",d);
+    } else if (d>=SIGMA&&d<=SIGMA+fabs(DELTA)) {
         energy = kb*temp*log(12.0*TAU*fabs(DELTA)/(SIGMA+fabs(DELTA)));
         return energy;
     } else {
@@ -48,40 +46,25 @@ double U_R_Sticky_Hard_Sphere(double d, double temp, double *p) {
     energy = kb*temp*log(12.0*TAU*fabs(DELTA)/(SIGMA+fabs(DELTA)));
     if (d<SIGMA) {
         return GSL_POSINF;
-    } else if (d>=SIGMA&&d<SIGMA+fabs(DELTA)) {
+    } else if (d>=SIGMA&&d<=SIGMA+fabs(DELTA)) {
         if (energy >= 0) {
             return energy;
         } else {
             return 0;
         }
     } else {
-        if (energy >= 0) {
-            return 0;
-        } else {
-            return energy;
-        }
-
+        return 0.0;
     }
 }
 
 double U_A_Sticky_Hard_Sphere(double d, double temp, double *p) {
     double energy;
     energy = kb*temp*log(12.0*TAU*fabs(DELTA)/(SIGMA+fabs(DELTA)));
-    if (d<SIGMA) {
-        return GSL_POSINF;
-    } else if (d>=SIGMA&&d<SIGMA+fabs(DELTA)) {
-        if (energy >= 0) {
-            return energy;
-        } else {
-            return 0;
-        }
+    if (energy >= 0.0) return 0.0;
+    if (d<=SIGMA+fabs(DELTA)) {
+        return energy;
     } else {
-        if (energy >= 0) {
-            return 0;
-        } else {
-            return energy;
-        }
-
+        return 0.0;
     }
 }
 
@@ -90,7 +73,7 @@ double U_Ref_Sticky_Hard_Sphere(double d, double temp, double *p) {
     if (d<SIGMA) {
         return GSL_POSINF;
     } else {
-        return 0;
+        return 0.0;
     }
 }
 
@@ -98,11 +81,9 @@ double U_Ref_Sticky_Hard_Sphere(double d, double temp, double *p) {
 double U_Pert_Sticky_Hard_Sphere(double d, double temp, double *p) {
     double energy;
     energy = kb*temp*log(12.0*TAU*fabs(DELTA)/(SIGMA+fabs(DELTA)));
-    if (d<SIGMA) {
-        return 0;
-    } else if (d>=SIGMA&&d<SIGMA+fabs(DELTA)) {
+    if (d<=SIGMA+fabs(DELTA)) {
         return energy;
     } else {
-        return 0;
+        return 0.0;
     }
 }
