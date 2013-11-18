@@ -1,7 +1,7 @@
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   15.11.2013
+ *   18.11.2013
  */
 #include <sasfit_oz.h>
 
@@ -14,16 +14,15 @@
 #define K3      p[5] // depth of third Yukawa contribution
 #define LAMBDA3 p[6] // depth of third Yukawa contribution
 
-// valid for f >= 10
- double U_HS_3Yukawa(double r, double T, double *p) {
+double U_HS_3Yukawa(double r, double T, double *p) {
     double Y1, Y2, Y3;
     if (r<sigma) {
-            return GSL_POSINF;
+        return GSL_POSINF;
     } else {
-        Y1 = -K1*sigma/r*exp(-LAMBDA1*(r/sigma-1.0));
-        Y2 = -K2*sigma/r*exp(-LAMBDA2*(r/sigma-1.0));
-        Y3 = -K3*sigma/r*exp(-LAMBDA3*(r/sigma-1.0));
-        return kb*T*(Y1+Y2+Y3);
+        Y1 = -K1*exp(-LAMBDA1*(r-sigma));
+        Y2 = -K2*exp(-LAMBDA2*(r-sigma));
+        Y3 = -K3*exp(-LAMBDA3*(r-sigma));
+        return kb*T*sigma/r*(Y1+Y2+Y3);
     }
 }
 

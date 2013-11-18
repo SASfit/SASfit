@@ -2,10 +2,10 @@
  * Author(s) of this file:
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
- *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   27.9.2013
  *   Tcl Wrapper by Ingo Bressler (ingo.bressler@bam.de)
  *   29.09.2013
+ *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   18.11.2013
  */
 
 #include <string.h>
@@ -150,7 +150,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
-    #define MAXPOTENTIALS 18
+    #define MAXPOTENTIALS 24
     const char * PotentialNames[MAXPOTENTIALS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -171,7 +171,14 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
     PotentialNames[14] = "DLVO";
     PotentialNames[15] = "PSM";
     PotentialNames[16] = "GGCM-n";
-    PotentialNames[17] = "StarPolymer";
+    PotentialNames[17] = "StarPolymer (f>10)";
+    PotentialNames[18] = "StarPolymer (f<10)";
+    PotentialNames[19] = "HS 3Yukawa";
+    PotentialNames[20] = "SquareWell";
+    PotentialNames[21] = "SW";
+    PotentialNames[22] = "Fermi";
+    PotentialNames[23] = "FDM";
+
 
     i=0;
     eq=-1;
@@ -277,6 +284,44 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->repulsive_pot=&U_Star1;
             OZD->attractive_pot=&U_ZERO;
             OZD->shortrange_pot=&U_Star1;
+            OZD->longrange_pot=&U_ZERO;
+            break;
+        case 18 :
+            OZD->potential=&U_Star2;
+            OZD->reference_pot=&U_Star2;
+            OZD->pertubation_pot=&U_ZERO;
+            OZD->repulsive_pot=&U_Star2;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_Star2;
+            OZD->longrange_pot=&U_ZERO;
+            break;
+        case 19 :
+            OZD->potential=&U_HS_3Yukawa;
+            OZD->reference_pot=&U_HS_3Yukawa;
+            OZD->pertubation_pot=&U_ZERO;
+            OZD->repulsive_pot=&U_HS_3Yukawa;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_HS_3Yukawa;
+            OZD->longrange_pot=&U_ZERO;
+            break;
+        case 20 :
+        case 21 :
+            OZD->potential=&U_Square_Well_Sphere;
+            OZD->reference_pot=&U_Ref_Square_Well_Sphere;
+            OZD->pertubation_pot=&U_Pert_Square_Well_Sphere;
+            OZD->repulsive_pot=&U_R_Square_Well_Sphere;
+            OZD->attractive_pot=&U_A_Square_Well_Sphere;
+            OZD->shortrange_pot=&U_SR_Square_Well_Sphere;
+            OZD->longrange_pot=&U_LR_Square_Well_Sphere;
+            break;
+        case 22 :
+        case 23 :
+            OZD->potential=&U_FDM;
+            OZD->reference_pot=&U_FDM;
+            OZD->pertubation_pot=&U_ZERO;
+            OZD->repulsive_pot=&U_FDM;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_FDM;
             OZD->longrange_pot=&U_ZERO;
             break;
         default :

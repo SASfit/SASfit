@@ -406,10 +406,28 @@ proc oz_input_names {} {
 			set OZ(p5,name) ""
 			set OZ(p6,name) ""
 			}
+		SquareWell {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) delta
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
 		SoftSphere {
 			set OZ(p0,name) diameter
 			set OZ(p1,name) epsilon
 			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		Fermi {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) xi
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
@@ -627,9 +645,10 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.clvalue\
 	    -column 1 -row 0
     ComboBox $w.param.potvalue \
-	    -values {"HardSphere" "StickyHardSphere" "SoftSphere" "StarPolymer (f>10)" "StarPolymer (f>10)" "HS 3Yukawa"\
+	    -values {"HardSphere" "StickyHardSphere" "SquareWell" "SoftSphere" \
+	    		"StarPolymer (f>10)" "StarPolymer (f>10)" "HS 3Yukawa"\
 	    		"LennardJones" "Depletion" "IonicMicrogel"  \
-	    		"PenetrableSphere" "DLVO" "GGCM-n"} \
+	    		"PenetrableSphere" "Fermi" "DLVO" "GGCM-n"} \
 	    -textvariable OZ(potential) \
 	    -modifycmd {oz_input_names}
     grid  $w.param.potvalue\
@@ -696,9 +715,9 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.ttext -sticky e\
 	    -column 0 -row 12
     grid  $w.param.phivalue\
-	    -column 1 -row 13
+	    -column 1 -row 11
     grid  $w.param.tvalue\
-	    -column 1 -row 14
+	    -column 1 -row 12
 
     label $w.param.empty3 -text " "
     label $w.param.gridtext -text "gridsize (n x 1024), n:"  
@@ -725,25 +744,25 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.drdsigmatext -sticky e\
 	    -column 0 -row 18
     grid  $w.param.gridvalue \
-	    -column 1 -row 13
-    grid  $w.param.mixvalue \
 	    -column 1 -row 14
-    grid  $w.param.itvalue \
+    grid  $w.param.mixvalue \
 	    -column 1 -row 15
-    grid  $w.param.relepsvalue \
+    grid  $w.param.itvalue \
 	    -column 1 -row 16
-    grid  $w.param.drdsigmavalue \
+    grid  $w.param.relepsvalue \
 	    -column 1 -row 17
+    grid  $w.param.drdsigmavalue \
+	    -column 1 -row 18
 
     label $w.param.empty4 -text " "
     label $w.param.labeltext -text "label:"  
     entry $w.param.labelvalue -textvariable OZ(label)
     grid $w.param.empty4 \
-	    -column 0 -row 18
-    grid  $w.param.labeltext -sticky e\
 	    -column 0 -row 19
+    grid  $w.param.labeltext -sticky e\
+	    -column 0 -row 20
     grid  $w.param.labelvalue \
-	    -column 1 -row 19
+	    -column 1 -row 20
 
 #
 #  create "ozSQGraph"
