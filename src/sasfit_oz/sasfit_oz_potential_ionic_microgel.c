@@ -12,16 +12,10 @@
 #define ED p[2] // dielectric constant of the solvent - unitless
 #define KPi p[3] // inverse Debye screening length - unitless
 #define EPSILON p[4] // Hertz potential strength - unitless
-double U_Ionic_Microgel(double r, double T, double *p) {
+
+double U_Ionic_Microgel(double r, double T, double *p) {s
     double el, kp, phiind, p1,p2,p3,p4,p5,p6;
-    phiind=0;
-    p1=0;
-    p2=0;
-    p3=0;
-    p4=0;
-    p5=0;
-    p6=0;
-    el=4.8*pow(10,-10);//charge of electron in statcoulombs
+    el= 4.80320425e-10;//charge of electron in statcoulombs http://en.wikipedia.org/wiki/Elementary_charge
     kp=KPi/sigma;
     if (r <= sigma ) {
         p1=(1-exp(-kp*r)+0.5*pow(kp,2)*pow(r,2)+(pow(kp,4)*pow(r,4)/24))*(1-(4/(pow(kp,2)*pow(sigma,2))));
