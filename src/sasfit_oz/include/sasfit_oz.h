@@ -64,6 +64,7 @@ typedef enum {
         Verlet, // Verlet
         BPGG,   // Ballone, Pastore, Galli, and Gazzillo Approximations.
         MSA,    // Mean Spherical Approximation
+        RMSA,   // rescaled Mean Spherical Approximation
         mMSA,   // modified Mean Spherical Approximation
         SMSA,   // "Soft core" MSA (SMSA) Approximation
         HMSA,   // HNC-SMSA Approximation from Zerah and Hansen

@@ -1,5 +1,11 @@
 \begin{thebibliography}{100}
 
+\bibitem{Alexander1984}
+S.~Alexander, P.~M. Chaikin, P.~Grant, G.~J. Morales, P.~Pincus, and D.~Hone.
+\newblock Charge renormalization, osmotic pressure, and bulk modulus of
+  colloidal crystals: Theory.
+\newblock {\em The Journal of Chemical Physics}, 80(11):5776--5781, 1984.
+
 \bibitem{scatt97}
 N.~W. Ashcroft and L.~Lenker.
 \newblock Structure and resistivity of liquid metals.
@@ -209,6 +215,13 @@ Der-Ming Duh and A.~D.~J. Haymet.
   fluid and the bridge function.
 \newblock {\em The Journal of Chemical Physics}, 103(7):2625--2633, 1995.
 
+\bibitem{Dzubiella2001}
+J.~Dzubiella, A.~Jusufi, C.~N. Likos, C.~von Ferber, H.~L\"owen, J.~Stellbrink,
+  J.~Allgaier, D.~Richter, A.~B. Schofield, P.~A. Smith, W.~C.~K. Poon, and
+  P.~N. Pusey.
+\newblock Phase separation in star-polymer\char21{}colloid mixtures.
+\newblock {\em Phys. Rev. E}, 64:010401, Jun 2001.
+
 \bibitem{book:Feigin:Svergun}
 L.~A. Feigin and D.~I. Svergun.
 \newblock {\em Structure Analysis by Small-Angle X-ray and Neutron Scattering}.
@@ -383,6 +396,11 @@ J.~E. Jones.
 \newblock {\em Proceedings of the Royal Society of London. Series A},
   106(738):463--477, 1924.
 
+\bibitem{Jusufi2001}
+A~Jusufi, J~Dzubiella, C~N Likos, C~von Ferber, and H~LÃ¶wen.
+\newblock Effective interactions between star polymers and colloidal particles.
+\newblock {\em Journal of Physics: Condensed Matter}, 13(28):6177, 2001.
+
 \bibitem{Kawaguchi2001}
 Takeshi Kawaguchi.
 \newblock Radii of gyration and scattering functions of a torus and its
@@ -429,6 +447,23 @@ J.~L. Lebowitz and J.~K. Percus.
   continuum fluids.
 \newblock {\em Phys. Rev.}, 144:251--258, Apr 1966.
 
+\bibitem{Likos1998}
+C.~N. Likos, H.~L\"owen, M.~Watzlawek, B.~Abbas, O.~Jucknischke, J.~Allgaier,
+  and D.~Richter.
+\newblock Star polymers viewed as ultrasoft colloidal particles.
+\newblock {\em Phys. Rev. Lett.}, 80:4450--4453, May 1998.
+
+\bibitem{Likos2001}
+Christos~N. Likos.
+\newblock Effective interactions in soft condensed matter physics.
+\newblock {\em Physics Reports}, 348(4â€“5):267 -- 439, 2001.
+
+\bibitem{Likos2011}
+Christos~N. Likos.
+\newblock {\em Structure and Thermodynamics of Ionic Microgels}, chapter~7,
+  pages 163--193.
+\newblock Wiley-VCH Verlag GmbH \& Co. KGaA, 2011.
+
 \bibitem{Lin1989}
 M.Y. Lin, H.M. Lindsay, D.A. Weitz, R.C. Ball, R.~Klein, and P.~Meakin.
 \newblock Universality of fractal aggregates as probed by light scattering.
@@ -448,6 +483,11 @@ M.Y. Lin, H.M. Lindsay, D.A. Weitz, R.C. Ball, R.~Klein, and P.~Meakin.
 Yuyan Liu, Jieli Lin, Guangming Huang, Yuanqing Guo, and Chuanxi Duan.
 \newblock Simple empirical analytical approximation to the voigt profile.
 \newblock {\em J. Opt. Soc. Am. B}, 18(5):666--672, 2001.
+
+\bibitem{Louis2000}
+A.~A. Louis, P.~G. Bolhuis, and J.~P. Hansen.
+\newblock Mean-field fluid behavior of the gaussian core model.
+\newblock {\em Phys. Rev. E}, 62:7961--7972, Dec 2000.
 
 \bibitem{Lyatskaya2000}
 Yulia Lyatskaya, Yufeng Liu, Stephanie Tristram-Nagle, John Katsaras, and
@@ -495,6 +535,12 @@ G.~Mie.
   Metall\"osungen}.
 \newblock {\em Annalen der Physik}, 25:377--455, 1908.
 
+\bibitem{Mladek2005}
+B.M. Mladek, M.J. Fernaud, G.~Kahl, and M.~Neumann.
+\newblock On the thermodynamic properties of the generalized gaussian core
+  model.
+\newblock {\em Condensed Matter Physics}, 8:135--148, 2005.
+
 \bibitem{Moller1995}
 J.~M{\"{o}}ller, R.~Kranold, J.~Schmelzer, and U.~Lembke.
 \newblock {Small-Angle X-ray Scattering Size Parameters and Higher Moments of
@@ -513,6 +559,11 @@ F.~M\"uller, M.~Delsanti, L.~Auvray, J.~Yang, Y.J. Chen, J.W. Mays, B.~Demé,
 \newblock Ordering of urchin-like charged copolymer micelles: Electrostatic,
   packing and polyelectrolyte correlations.
 \newblock {\em Eur. Phys. J. E}, 3:45--53, 2000.
+
+\bibitem{Naegele1996}
+Gerhard Nägele.
+\newblock On the dynamics and structure of charge-stabilized suspensions.
+\newblock {\em Physics Reports}, 272(5-6):215 -- 372, 1996.
 
 \bibitem{Naegele2004}
 Gerhard Nägele.
@@ -710,6 +761,12 @@ M.~Teubner and R.~Strey.
 O.~Toon and T.~Ackerman.
 \newblock Algorithms for the calculation of scattering by stratified spheres.
 \newblock {\em Applied Optics}, 20(20):3657, 1981.
+
+\bibitem{Ulander2001}
+Johan Ulander, Hans Greberg, and Roland Kjellander.
+\newblock Primary and secondary effective charges for electrical double layer
+  systems with asymmetric electrolytes.
+\newblock {\em The Journal of Chemical Physics}, 115(15):7144--7160, 2001.
 
 \bibitem{scatt151}
 P.~van Beurten and A.~Vrij.
