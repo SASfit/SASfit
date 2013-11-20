@@ -639,14 +639,14 @@ proc sasfit_OZ_solver {} {
     grid $w.param.pottext  -sticky e\
 	    -column 0 -row 1
     ComboBox $w.param.clvalue \
-	    -values {"Percus\-Yevick" "Hypernetted\-Chain" "Reference HNC" MSA mMSA SMSA HMSA \
+	    -values {"Percus\-Yevick" "Hypernetted\-Chain" "Reference HNC" MSA RMSA mMSA SMSA HMSA \
 	             "Rogers\-Young" Verlet MS DH "Vompe\-Martynov" BB BPGG CJVM "Choudhury\-Gosh"} \
 	    -textvariable OZ(closure)
     grid  $w.param.clvalue\
 	    -column 1 -row 0
     ComboBox $w.param.potvalue \
 	    -values {"HardSphere" "StickyHardSphere" "SquareWell" "SoftSphere" \
-	    		"StarPolymer (f>10)" "StarPolymer (f>10)" "HS 3Yukawa"\
+	    		"StarPolymer (f>10)" "StarPolymer (f<10)" "HS 3Yukawa"\
 	    		"LennardJones" "Depletion" "IonicMicrogel"  \
 	    		"PenetrableSphere" "Fermi" "DLVO" "GGCM-n"} \
 	    -textvariable OZ(potential) \

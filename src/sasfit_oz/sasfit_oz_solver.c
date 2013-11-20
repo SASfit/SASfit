@@ -3,7 +3,7 @@
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
  *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   12.11.2013
+ *   19.11.2013
  *
  */
 #include <stdio.h>
@@ -91,9 +91,26 @@ double extrapolate (double x1,double x2, double x3, double y1, double y2,double 
 
 //Calling OZ_solver and generating output
 void OZ_calculation (sasfit_oz_data *OZd) {
+int igneg;
   if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA || CLOSURE==CJVM || CLOSURE==BB) {
         sasfit_out("Root finding\n");
         root_finding(OZd);
+  } else if (CLOSURE==RMSA) {
+        CLOSURE=MSA;
+        sasfit_out("Solving with MSA-closure first ...");
+        OZ_solver(OZd);
+        sasfit_out(" done\n");
+        CLOSURE = RMSA;
+        igneg = 0;
+// finding contact point sigma+
+        while (EN[igneg] == 0.0 && igneg < NP) {
+            igneg++;
+        }
+// check if where g(sigma+) >= 0 than nothing has to be done and RMSA=MSA which has been solved already above
+        if (g[igneg] >= 0 || igneg == NP) {
+            sasfit_out("g(sigma+)>=0 or g(r) > 0 for all r, i.e. no rescaling necessary\n");
+            return;
+        }
   } else {
         sasfit_out("Root finding not required\n");
   }
@@ -139,15 +156,22 @@ void OZ_solver (sasfit_oz_data *OZd) {
         Fswitch[i]=1-exp(-ALPHA*r[i]);
         V = U(r[i],T,PARAM);
         UBETA[i]=V*OZd->beta;
-        if (V == GSL_POSINF) {
-            EN[i]=0.0;
+        if (CLOSURE==RMSA) {
+            if (r[i]<PARAM[0] || V==GSL_POSINF) {
+                EN[i]=0.0;
+            } else {
+                EN[i]=exp(-UBETA[i]);
+            }
         } else {
-            EN[i]=exp(-UBETA[i]);
+            if (V == GSL_POSINF) {
+                EN[i]=0.0;
+            } else {
+                EN[i]=exp(-UBETA[i]);
+            }
         }
         MAYER[i] = EN[i]-1.;
         BRIDGE[i] = 0.0;
         CAVITY[i] = 0.0;
- //       G[i]=0.0;
     }
 
 OZd->it=0;
@@ -264,10 +288,11 @@ while (OZd->it < MAXSTEPS && err > RELERROR ) {
             break;
         case MSA:
         case mMSA:
+        case RMSA:
             if (EN[i]==0.0) {
                 c[i] = -(G[i]+1.0);
             } else {
-                if (CLOSURE==MSA) {
+                if (CLOSURE==MSA || CLOSURE==RMSA) {
                     c[i] = -UBETA[i];
                 } else if (CLOSURE==mMSA) {
                     c[i] = MAYER[i];
@@ -449,7 +474,112 @@ double compressibility_calc(double scp, void *params)
     }
    return Delta_chi;
 }
+//Routine to minimize the difference between two compressibilities
 
+void rescaleMSA (sasfit_oz_data *OZd) {
+    int signchange,i,j;
+    double refnew, refold, alpha_left, alpha_right, scp_inter;
+    refold=0;
+    signchange = 0;
+    sasfit_out("\nrescale sigma so that g(sigma'+) becomes >=0: \n");
+    sasfit_out("      sigma+     |      sigma'      |      g(sigma+)      \n");
+    sasfit_out("-----------------|------------------|---------------------\n");
+
+    i = 0;
+    while (signchange==0 && i<=28) {
+        if (CLOSURE==RY || CLOSURE==HMSA){
+            refnew=compressibility_calc(100/pow(2,i), OZd);
+            alpha_left  = 100/pow(2,i);
+            alpha_right = 100/pow(2,i-1);
+        }
+        if (CLOSURE==BPGG) {
+            refnew=compressibility_calc(5.601-0.2*i, OZd);
+            alpha_left  = 5.601-0.2*i;
+            alpha_right = 5.601-0.2*(i-1);
+        }
+        if (CLOSURE==CJVM) {
+            refnew=compressibility_calc(0.001+0.05*i, OZd);
+            alpha_right  = 0.001+0.05*i;
+            alpha_left = 0.001+0.05*(i-1);
+        }
+        if (CLOSURE==BB) {
+            refnew=compressibility_calc(-0.5+0.1*i, OZd);
+            alpha_right  = -0.5+0.1*i;
+            alpha_left = -0.5+0.1*(i-1);
+        }
+        sasfit_out("          %15g  |   %15g \n", alpha_left , refnew/OZd->beta);
+
+        if ((refnew*refold<0)) {
+            signchange=1;
+        } else {
+            if (abs(refnew) < abs(refold)) {
+                if (    CLOSURE==RY
+                    ||  CLOSURE==HMSA)   scp_inter=alpha_left;
+
+                if (    CLOSURE==BPGG
+                    ||  CLOSURE==CJVM
+                    ||  CLOSURE==BB)     scp_inter=alpha_left;
+            } else {
+                if (    CLOSURE==RY
+                    ||  CLOSURE==HMSA)   scp_inter=alpha_right;
+
+                if (    CLOSURE==BPGG
+                    ||  CLOSURE==CJVM
+                    ||  CLOSURE==BB)     scp_inter=alpha_right;
+            }
+            refold=refnew;
+            if (i==28) {
+                sasfit_out("No change of sign in %d steps \n", i);
+                sasfit_out("choosen self-consistency parameter:%f\n",scp_inter);
+                OZd->alpha=scp_inter;
+            }
+        }
+        i++;
+        Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
+        Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
+    }
+    if (signchange==1) {
+        int status;
+        int iter;
+        int max_iter;
+        const gsl_root_fsolver_type *Tt;
+        gsl_root_fsolver *s;
+        double root = 0.0;
+        double x_lo = alpha_left;
+        double x_hi = alpha_right;
+        gsl_function F;
+
+        F.function = compressibility_calc;
+        F.params = OZd;
+
+        Tt = gsl_root_fsolver_brent;
+        s = gsl_root_fsolver_alloc (Tt);
+        gsl_root_fsolver_set (s, &F, x_lo, x_hi);
+
+        sasfit_out("using %s method\n",gsl_root_fsolver_name (s));
+        sasfit_out(" iter |  lower      upper  |    root    err(est)\n");
+        iter = 0;
+        max_iter = 100;
+        do {
+            iter++;
+            status = gsl_root_fsolver_iterate (s);
+            root = gsl_root_fsolver_root (s);
+            x_lo = gsl_root_fsolver_x_lower (s);
+            x_hi = gsl_root_fsolver_x_upper (s);
+            status = gsl_root_test_interval (x_lo, x_hi, 0, 1e-5);
+            if (status == GSL_SUCCESS) {
+                sasfit_out("Converged:\n");
+            }
+            sasfit_out("%5d |%.7f, %.7f| %.7f %.7f\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
+
+            Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
+            Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
+        } while (status == GSL_CONTINUE && iter < max_iter);
+        OZd->alpha = root;
+        sasfit_out("consistency parameter after optimization: %g \n", root);
+        gsl_root_fsolver_free (s);
+    }
+}
 //Routine to minimize the difference between two compressibilities
 
 void root_finding (sasfit_oz_data *OZd) {

@@ -1,15 +1,12 @@
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher(joachim.kohlbrecher@psi.ch)
- *   Modified 27.09.2013
+ *   Modified 19.11.2013
  */
 #include <sasfit_oz.h>
 
 // Derjaguin–Landau–Verwey–Overbeek (DLVO) potential.:
-// Condensed Matter Physics, 2005, Vol 8, No.1(41), pp 135-148
-// DOI:10.5488/CMP.8.1.135
-// Phys. Rev. E 62, 7961–7972 (2000)
-// DOI: 10.1103/PhysRevE.62.7961
+
 //
 // G. Nägele,
 // The Physics of Colloid Soft Matter: Lecture Notes 14,
@@ -30,9 +27,9 @@ double U_DLVO(double r, double T, double *p) {
 		return GSL_POSINF;
 	} else {
         a = 0.5*sigma;
-		Uel =   kb*T*LB*gsl_pow_2(Z)*
-    			gsl_pow_2(exp(kappa*a)/(1.0+kappa*a))*
-    			exp(-kappa*r)/r;
+		Uel =   kb*T*LB*gsl_pow_2(Z)/
+                gsl_pow_2(1.0+kappa*a)*
+    			exp(-kappa*(r-sigma))/r;
         UvdW = -kb*T*A/6.0 * (
                   2.0*a*a/(r*r-4*a*a)
                 + 2.0*gsl_pow_2(a/r)

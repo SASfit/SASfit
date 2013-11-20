@@ -1183,7 +1183,7 @@ interaction potential $U(r)$.
 \section{Background}
 The central part of this package is iterative solution of
 Ornstein-Zernike equation \cite{Ornstein1914}. The theoretical background can be found
-in great detail in \cite{Naegele2004,Henderson2000,Hansen2013,Bomont2008,Caccamo1996}.
+in great detail in \cite{Naegele2004,Henderson2000,Hansen2013,Bomont2008,Caccamo1996,Likos2001}.
 The Ornstein-Zernike equation reads
 \begin{align}\label{eq:oz_h12}
     h(\mathbf{r}_{12})&=c(\mathbf{r}_{12})+ \int c(\mathbf{r}_{13}) \rho(\mathbf{r}_3) h(\mathbf{r}_{32})
@@ -1465,6 +1465,11 @@ c(r) &= -\beta u(r) &\mbox{ for } \beta u(r) \neq +\infty
 Analytical solutions have been obtained for charged hard spheres and hard core Yukawa potentials \cite{Caccamo1996}.
 
 ~\\
+\subsection{Rescaled Mean Spherical Approximation (RMSA)}
+~\\
+\cite{Hansen1982}
+
+~\\
 \subsection{Verlet Approximation}
 ~\\
 A semi-henomenological equation for the radial distribution function was proposed by Verlet
@@ -1630,6 +1635,7 @@ and to SMSA when $f(r,\alpha) \xrightarrow{\alpha\rightarrow 0} 0$.
 
 \section{Interaction Potentials}
 
+Many of the interaction potentials described below are discussed in \cite{Likos2001}.
 The different closures of the previous section require partly that the interaction potential $u(r,\ldots)$
 is partitioned in a reference $u_\text{ref}(r,\ldots)$ and perturbation $u_\text{pert}(r,\sigma,\ldots)$ ,
 or a short range $u_\text{SR}(r,\sigma,\ldots)$
@@ -1729,10 +1735,18 @@ $u^\text{SHS}_\text{SR}(r)= u^\text{SHS}(r)$.
 ~\\
 \subsection{Soft Sphere Potential}
 ~\\
+The soft sphere potential is define as
+\begin{align}
+u^\text{SSM}(r,\sigma,\epsilon) &=
+\begin{cases}
+k_\text{B} T \epsilon \left(1-\frac{r}{\sigma}\right)^2   & \mbox{if } r \leq \sigma \\
+0                       & \mbox{if } r >    \sigma
+\end{cases}
+\end{align}
+.
 
-\subsection{Fermi Potential}
-
-\subsection{Penetrable Sphere}
+~\\
+\subsection{Penetrable Sphere Model}
 ~\\
 The penetrable sphere model became popular after 1989 due to Marquest and
 Witten \cite{Marquest1989} who suggested it as a prototype for the interaction between micelles in a solvent.
@@ -1740,16 +1754,62 @@ The potential is defined as \cite{Marquest1989,Viererblova2010}
 \begin{align}
 u^\text{PSM}(r,\sigma,\epsilon) &=
 \begin{cases}
-k_\text{B} T \epsilon   & \mbox{if } r \leq \sigma \\
-0                       & \mbox{if } r >    \sigma
+k_\text{B} T \epsilon   & \mbox{for } r \leq \sigma \\
+0                       & \mbox{for } r >    \sigma
 \end{cases}
 \end{align}
+.
+
+\subsection{Generalized Gaussian Core Model Potential - GGCM-n Potential}
+~\\
+\cite{Mladek2005,Louis2000}.
+\begin{align}
+U^\text{GGCM-n}(r)&=
+k_\text{B} T \epsilon \exp\left(-\alpha\left(r/sigma\right)^n\right)
+\end{align}
+
+\subsection{Fermi Distribution Model}
+~\\
+\begin{align}
+u^\text{FDM}(r,\sigma,\epsilon,\xi) &=
+k_\text{B} T \epsilon
+\frac{1+\exp\left(-\sigma/\xi\right)}{1+\exp\left(\left(r-\sigma\right)/\xi\right)}
+\end{align}
+For $\xi = 0$ the Fermi Potential goes over into the Penetrable Sphere Model.
 
 \subsection{Star Polymer Potential}
+~\\
+\cite{Likos1998,Likos2001}
+\begin{align}
+u^\text{star1}(r,\sigma,f) &=
+k_\text{B} T \frac{5}{8} f^{3/2}
+\begin{cases}
+\left(\frac{1}{1+\sqrt{f}}-\ln\left(\frac{r}{\sigma}\right) \right)
+          & \mbox{for } r \leq \sigma \\
+\frac{1}{1+\sqrt{f}} \frac{\sigma}{r}
+\exp\left(-\frac{\sqrt{f} (r-\sigma)}{2\sigma}\right)
+          & \mbox{for } r >    \sigma
+\end{cases}
+\end{align}
+\cite{Jusufi2001,Dzubiella2001,Likos2001}
+\begin{align}
+u^\text{star2}(r,\sigma,f) &=
+k_\text{B} T \frac{5}{8} f^{3/2}
+\begin{cases}
+\left(\frac{1}{2\tau^2\sigma^2}-\ln\left(\frac{r}{\sigma}\right) \right)
+          & \mbox{for } r \leq \sigma \\
+\frac{1}{2\tau^2\sigma^2}
+\exp\left(-\tau^2(r^2-\sigma^2)\right)
+          & \mbox{for } r >    \sigma
+\end{cases} \\
+\mbox{with } \tau &= \left(\frac{1.12}{3\sigma}-\frac{1.03}{3\sigma}\right)f+\frac{1.03}{\sigma}
+\end{align}
+
 
 \subsection{Lennard-Jones Potential}
+~\\
 
-\noindent ~\\ The Lennard-Jones potential is a mathematically simple model that approximates the interaction
+The Lennard-Jones potential is a mathematically simple model that approximates the interaction
 between a pair of neutral atoms or molecules.
 A form of the potential was first proposed in 1924 by John Lennard-Jones \cite{Jones1924}.
 \begin{align}
@@ -1773,13 +1833,66 @@ u^\text{LJ}(r_m)          & \mbox{if } r <    rm \\
 u^\text{LJ}_\text{LR}(r)  & \mbox{if } r \geq rm
 \end{cases}
 \end{align}
-The LJ potential is not splitted in a reference and perturbation part, i.e. the perturbation part is set to 0.
+The LJ potential is not splitted in a reference and perturbation part, i.e. the reference part is set to 0.
 
 \subsection{Depletion Potential - Asakura-Oasawa Potential}
-\subsection{Ionic Microgel Potential}
-\subsection{DLVO Potential}
-\subsection{Generalized Gaussian Core Model Potential - GGCM-n Potential}
+~\\
+See \cite{Oversteegen2004,Lekkerkerker2011}
 
+\subsection{Ionic Microgel Potential}
+~\\
+See \cite{Likos2011}
+
+\subsection{DLVO Potential}
+~\\
+For the past half century or so, the stability of charged
+colloidal systems has generally been described in terms of the
+DLVO (Derjaguin-Landau-Verwey-Overbeek) potential between
+two colloidal particles. The DLVO potential is composed
+of a long-range screened Coulomb repulsion part $u^\text{el}(r)$
+and a short-range van der Waals attraction part $u^\text{vdW}(r)$
+\cite{Naegele1996}.
+\begin{align}
+u^\text{DLVO}(r) &=
+\begin{cases}
+\infty                          & \mbox{if } r \leq \sigma \\
+u^\text{vdW}(r)+u^\text{el}(r)  & \mbox{if } r >    \sigma
+\end{cases}
+\end{align}
+with
+\begin{align}
+u^\text{vdW}(r) &= -k_\text{B} T \frac{A_\text{H}}{12} \left(
+                  \frac{\sigma^2}{\left(r^2-\sigma^2\right)}
+                + \left(\frac{\sigma}{r}\right)^2
+                + 2\ln\left(1-\left(\frac{\sigma}{r}\right)^2\right)
+                \right) \\
+u^\text{el}(r)  &= k_\text{B} T L_B Z_\text{eff}^2
+                \frac{1}{\left(1+\kappa\sigma/2\right)^2}
+                \frac{\exp\left(-\kappa (r-\sigma)\right)}{r}
+\end{align}
+$A_\text{H}$ is the Hamaker constant. $L_B=\frac{e^2}{4\pi \epsilon_r \epsilon_0 k_\text{B} T }$
+is the so-called Bjerrum length\footnote{In Gaussian units, $4\pi\varepsilon_0 = 1$ and the Bjerrum
+length has the simpler form $L_B = \frac{e^2}{\varepsilon_r k_B T}$.}. The vacuum permittivity is
+$\epsilon_0= 8.854 187 817 \times 10^{-12} \left[\frac{\text{F}}{\text{m}}\right]$ and the elementary
+electric charge $e=1.602176565(35)\times 10^{-19}$coulombs\footnote{The Gaussian units uses
+the statcoulomb (statC) instead. The conversion between C and statC is different in different contexts.
+In case of electric charges $1\text{C} = 2997924580 \text{ statC} \approx 3.00\times 10^9 \text{ statC}$.}.
+For water at 278 K with a relativ permittivity of $\epsilon_r=78.7$ the Bjerrum length is $L_B=0.713$nm.
+The effective macroion valency is denoted $Z_\text{eff}$, and $\kappa^{-1}$ is the Debye-H\"uckel screening length
+due to all macroions. This length characterize the typical distance at which the charge at the origin is screened
+by the other charges. It is given by $\kappa^{2}= 4\pi L_B \sum_{i=1}^N n_i Z_i$, where $n_i$ is the number density
+of ion $i$, $Z_i$ is the charge number of that ion, and the sum is taken over all ions in the
+solution. A discussion about effective parameters can be found in \cite{Alexander1984,Ulander2001}.
+
+\subsection{Hard Core Yukawa Potential}
+\begin{align}
+u^\text{HC3Y}(r,\ldots) &=
+\begin{cases}
+\infty                                                                            & \mbox{for } r<   \sigma \\
+k_\text{B} T \epsilon
+\displaystyle \sum_{i=1}^{N=3} -K_i\exp\left(-\lambda_i(r-\sigma)\right)& \mbox{for } r >= \sigma
+\end{cases}
+\end{align}
 
 \section{GUI interface for the Ornstein Zernike solver}
 
