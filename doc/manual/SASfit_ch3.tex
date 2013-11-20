@@ -1764,10 +1764,12 @@ k_\text{B} T \epsilon   & \mbox{for } r \leq \sigma \\
 ~\\
 \cite{Mladek2005,Louis2000}.
 \begin{align}
-U^\text{GGCM-n}(r)&=
-k_\text{B} T \epsilon \exp\left(-\alpha\left(r/sigma\right)^n\right)
+u^\text{GGCM-n}(r)&=
+k_\text{B} T \epsilon \exp\left(-\alpha\left(\frac{r}{\sigma}\right)^n\right)
 \end{align}
+.
 
+~\\
 \subsection{Fermi Distribution Model}
 ~\\
 \begin{align}
@@ -1777,8 +1779,10 @@ k_\text{B} T \epsilon
 \end{align}
 For $\xi = 0$ the Fermi Potential goes over into the Penetrable Sphere Model.
 
+~\\
 \subsection{Star Polymer Potential}
 ~\\
+
 \cite{Likos1998,Likos2001}
 \begin{align}
 u^\text{star1}(r,\sigma,f) &=
@@ -1837,11 +1841,51 @@ The LJ potential is not splitted in a reference and perturbation part, i.e. the 
 
 \subsection{Depletion Potential - Asakura-Oasawa Potential}
 ~\\
-See \cite{Oversteegen2004,Lekkerkerker2011}
+According \cite{Oversteegen2004,Lekkerkerker2011}
 
 \subsection{Ionic Microgel Potential}
 ~\\
-See \cite{Likos2011}
+
+According to \cite{Likos2011} the effective potential in ionic microgels can be partitioned in a contribution
+$\Phi_{r \leq \sigma}(r)$ for the overlap region $r \leq \sigma$ and one $\Phi_{r > \sigma}(r)$ for $r>\sigma$.
+\begin{align}
+u^\text{im}(r) &=
+\begin{cases}
+\Phi_{r\leq\sigma}(r)   & \mbox{for } r \leq \sigma \\
+\Phi_{r>\sigma}(r)      & \mbox{for } r > \sigma
+\end{cases}
+\end{align}
+For the overlapping particle it has the form
+\begin{align}
+\Phi_{r\leq\sigma}(r) &= \frac{2Z^2e^2}{\epsilon\sigma}
+                         \left[\frac{6}{5}-2\left(\frac{r}{\sigma}\right)^2
+                                          +\frac{3}{2}\left(\frac{r}{\sigma}\right)^3
+                                          -\frac{1}{5}\left(\frac{r}{\sigma}\right)^5
+                         \right]
+                        - \frac{72 Z^2e^2}{\epsilon\kappa^4\sigma^4r}\Phi_\text{ind}(r)
+\end{align}
+where $\Phi_\text{ind}(r)$ is given by the expression
+\begin{align}
+\begin{split}
+  \Phi_\text{ind}(r) =&  \left(1-\text{e}^{-\kappa r}+\frac{1}{2}\kappa^2r^2+\frac{1}{24}\kappa^4r^4\right)
+                        \left(1-\frac{4}{\kappa^2\sigma^2}\right)
+                       +\frac{4}{\kappa\sigma}\text{e}^{-\kappa\sigma}\sinh\left(\kappa r\right)\\
+                     & +\left[\text{e}^{-\kappa\sigma}\sinh\left(\kappa\sigma\right)
+                                    +\kappa^2\sigma r
+                                    +\frac{1}{6}\kappa^4\left(\sigma^3 r + r^3 \sigma \right)
+                        \right] \left(1+\frac{4}{\kappa^2\sigma^2}\right)\\
+                     & -\frac{4r}{\sigma} \left(1+\frac{1}{2}\kappa^2\sigma^2+\frac{1}{30}\kappa^4\sigma^4\right)
+                       -\frac{8r^3}{3\sigma^3}\left(\frac{\kappa^2\sigma^2}{4}+\frac{\kappa^4\sigma^4}{12}\right)
+                       -\frac{1}{180}\frac{\kappa^4}{\sigma^2} r^6
+\end{split}
+\end{align}
+For the nonoverlapping distances the effective potential becomes
+\begin{align}
+\Phi_{r>\sigma}(r) &= \frac{144Z^2e^2}{\epsilon\kappa^4\sigma^4}
+                      \left[\cosh\left(\kappa\sigma/2\right)-\frac{2\sinh\left(\kappa\sigma/2\right)}{\kappa\sigma}\right]^2
+                      \frac{\text{e}^{-\kappa r}}{r}
+\end{align}
+
 
 \subsection{DLVO Potential}
 ~\\
