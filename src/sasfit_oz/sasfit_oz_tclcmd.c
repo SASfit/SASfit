@@ -156,7 +156,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
-    #define MAXPOTENTIALS 24
+    #define MAXPOTENTIALS 26
     const char * PotentialNames[MAXPOTENTIALS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -170,20 +170,22 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
     PotentialNames[7] = "LJ";
     PotentialNames[8] = "IonicMicrogel";
     PotentialNames[9] = "IM";
-    PotentialNames[10] = "Depletion";
-    PotentialNames[11] = "D";
-    PotentialNames[12] = "LennardJones";
-    PotentialNames[13] = "LJ";
-    PotentialNames[14] = "DLVO";
-    PotentialNames[15] = "PSM";
-    PotentialNames[16] = "GGCM-n";
-    PotentialNames[17] = "StarPolymer (f>10)";
-    PotentialNames[18] = "StarPolymer (f<10)";
-    PotentialNames[19] = "HS 3Yukawa";
-    PotentialNames[20] = "SquareWell";
-    PotentialNames[21] = "SW";
-    PotentialNames[22] = "Fermi";
-    PotentialNames[23] = "FDM";
+    PotentialNames[10] = "DepletionOfSpheresBySpheres";
+    PotentialNames[11] = "Depl-Sph-Sph";
+    PotentialNames[12] = "DepletionOfSpheresByDiscs";
+    PotentialNames[13] = "Depl-Sph-Discs";
+    PotentialNames[14] = "DepletionOfSpheresByRods";
+    PotentialNames[15] = "Depl-Sph-Rods";
+    PotentialNames[16] = "DLVO";
+    PotentialNames[17] = "PSM";
+    PotentialNames[18] = "GGCM-n";
+    PotentialNames[19] = "StarPolymer (f>10)";
+    PotentialNames[20] = "StarPolymer (f<10)";
+    PotentialNames[21] = "HS 3Yukawa";
+    PotentialNames[22] = "SquareWell";
+    PotentialNames[23] = "SW";
+    PotentialNames[24] = "Fermi";
+    PotentialNames[25] = "FDM";
 
 
     i=0;
@@ -246,7 +248,7 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             break;
         case 10 :
         case 11 :
-            OZD->potential=&U_Depletion;
+            OZD->potential=&U_DepletionOfSpheresBySpheres;
             OZD->reference_pot=&U_ZERO;
             OZD->pertubation_pot=&U_ZERO;
             OZD->repulsive_pot=&U_ZERO;
@@ -256,17 +258,17 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             break;
         case 12 :
         case 13 :
-            OZD->potential=&U_Lennard_Jones;
-            OZD->reference_pot=&U_Lennard_Jones;
+            OZD->potential=&U_DepletionOfSpheresByDiscs;
+            OZD->reference_pot=&U_ZERO;
             OZD->pertubation_pot=&U_ZERO;
-            OZD->repulsive_pot=&U_SR_Lennard_Jones;
-            OZD->attractive_pot=&U_LR_Lennard_Jones;
-            OZD->shortrange_pot=&U_SR_Lennard_Jones;
-            OZD->longrange_pot=&U_LR_Lennard_Jones;
+            OZD->repulsive_pot=&U_ZERO;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_ZERO;
+            OZD->longrange_pot=&U_ZERO;
             break;
         case 14 :
         case 15 :
-            OZD->potential=&U_PSM;
+            OZD->potential=&U_DepletionOfSpheresByRods;
             OZD->reference_pot=&U_ZERO;
             OZD->pertubation_pot=&U_ZERO;
             OZD->repulsive_pot=&U_ZERO;
@@ -275,7 +277,7 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->longrange_pot=&U_ZERO;
             break;
         case 16 :
-            OZD->potential=&U_GGCM_n;
+            OZD->potential=&U_DLVO;
             OZD->reference_pot=&U_ZERO;
             OZD->pertubation_pot=&U_ZERO;
             OZD->repulsive_pot=&U_ZERO;
@@ -284,6 +286,24 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->longrange_pot=&U_ZERO;
             break;
         case 17 :
+            OZD->potential=&U_PSM;
+            OZD->reference_pot=&U_ZERO;
+            OZD->pertubation_pot=&U_ZERO;
+            OZD->repulsive_pot=&U_ZERO;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_ZERO;
+            OZD->longrange_pot=&U_ZERO;
+            break;
+        case 18 :
+            OZD->potential=&U_GGCM_n;
+            OZD->reference_pot=&U_ZERO;
+            OZD->pertubation_pot=&U_ZERO;
+            OZD->repulsive_pot=&U_ZERO;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_ZERO;
+            OZD->longrange_pot=&U_ZERO;
+            break;
+        case 19 :
             OZD->potential=&U_Star1;
             OZD->reference_pot=&U_Star1;
             OZD->pertubation_pot=&U_ZERO;
@@ -292,7 +312,7 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->shortrange_pot=&U_Star1;
             OZD->longrange_pot=&U_ZERO;
             break;
-        case 18 :
+        case 20 :
             OZD->potential=&U_Star2;
             OZD->reference_pot=&U_Star2;
             OZD->pertubation_pot=&U_ZERO;
@@ -301,7 +321,7 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->shortrange_pot=&U_Star2;
             OZD->longrange_pot=&U_ZERO;
             break;
-        case 19 :
+        case 21 :
             OZD->potential=&U_HS_3Yukawa;
             OZD->reference_pot=&U_HS_3Yukawa;
             OZD->pertubation_pot=&U_ZERO;
@@ -310,8 +330,8 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->shortrange_pot=&U_HS_3Yukawa;
             OZD->longrange_pot=&U_ZERO;
             break;
-        case 20 :
-        case 21 :
+        case 22 :
+        case 23 :
             OZD->potential=&U_Square_Well_Sphere;
             OZD->reference_pot=&U_Ref_Square_Well_Sphere;
             OZD->pertubation_pot=&U_Pert_Square_Well_Sphere;
@@ -320,8 +340,8 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->shortrange_pot=&U_SR_Square_Well_Sphere;
             OZD->longrange_pot=&U_LR_Square_Well_Sphere;
             break;
-        case 22 :
-        case 23 :
+        case 24 :
+        case 25 :
             OZD->potential=&U_FDM;
             OZD->reference_pot=&U_FDM;
             OZD->pertubation_pot=&U_ZERO;
