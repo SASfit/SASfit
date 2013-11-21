@@ -442,10 +442,28 @@ proc oz_input_names {} {
 			set OZ(p5,name) ""
 			set OZ(p6,name) ""
 			}
-		Depletion {
-			set OZ(p0,name) diameter
+		"Depl-Sph-Sph" {
+			set OZ(p0,name) "diam. (large)"
 			set OZ(p1,name) "diam. (small)"
-			set OZ(p2,name) "phi (small)"
+			set OZ(p2,name) "n (numb. dens.)"
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		"Depl-Sph-Discs" {
+			set OZ(p0,name) "diam. (sphere)"
+			set OZ(p1,name) "diam. (disc)"
+			set OZ(p2,name) "n (numb. dens.)"
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		"Depl-Sph-Rods" {
+			set OZ(p0,name) "diam. (sphere)"
+			set OZ(p1,name) "length (rods)"
+			set OZ(p2,name) "n (numb. dens.)"
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
@@ -647,7 +665,8 @@ proc sasfit_OZ_solver {} {
     ComboBox $w.param.potvalue \
 	    -values {"HardSphere" "StickyHardSphere" "SquareWell" "SoftSphere" \
 	    		"StarPolymer (f>10)" "StarPolymer (f<10)" "HS 3Yukawa"\
-	    		"LennardJones" "Depletion" "IonicMicrogel"  \
+	    		"LennardJones" "Depl-Sph-Sph" "Depl-Sph-Discs" "Depl-Sph-Rods" \
+	    		"IonicMicrogel"  \
 	    		"PenetrableSphere" "Fermi" "DLVO" "GGCM-n"} \
 	    -textvariable OZ(potential) \
 	    -modifycmd {oz_input_names}

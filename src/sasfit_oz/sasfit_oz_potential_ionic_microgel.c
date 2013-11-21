@@ -13,7 +13,7 @@
 #define KPi p[3] // inverse Debye screening length - unitless
 #define EPSILON p[4] // Hertz potential strength - unitless
 
-double U_Ionic_Microgel(double r, double T, double *p) {s
+double U_Ionic_Microgel(double r, double T, double *p) {
     double el, kp, phiind, p1,p2,p3,p4,p5,p6;
     el= 4.80320425e-10;//charge of electron in statcoulombs http://en.wikipedia.org/wiki/Elementary_charge
     kp=KPi/sigma;
