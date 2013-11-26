@@ -418,7 +418,7 @@ proc oz_input_names {} {
 		SoftSphere {
 			set OZ(p0,name) diameter
 			set OZ(p1,name) epsilon
-			set OZ(p2,name) ""
+			set OZ(p2,name) "stiffness n"
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""

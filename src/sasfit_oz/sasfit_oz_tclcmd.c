@@ -148,6 +148,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
         default :
             OZD->cl=PY;
             sasfit_err("Closure not found: %s\n", token);
+            return 0;
             break;
     }
     return 1;
@@ -194,7 +195,13 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
         eq = strcmp(token,PotentialNames[i]);
         i++;
     }
-    PUTS("%s %d\n",token,i-1);
+    if (i== MAXPOTENTIALS) {
+        PUTS("the potential >%s< is unknown\n",token,i-1);
+        return 0;
+    } else {
+        PUTS("potential name:%s, index:%d\n",token,i-1);
+    }
+
     switch (i-1) {
         case 0 :
         case 1 :
@@ -370,7 +377,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 int objc,
                 Tcl_Obj *CONST objv[])
 {
-    int i;
+    int i,status;
     char paramName[4];
     double tmp;
     double pPot[OZMAXPAR];
@@ -416,10 +423,19 @@ int sasfit_oz_calc_cmd(ClientData clientData,
              "will be set to %f.\n",
              "c_next(r) = alpha*c_new(r)+(1-alpha)c_old(r)\n",ozd.mixcoeff);
 
-        assign_closure(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "closure"), 0),
+        status = assign_closure(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "closure"), 0),
                        &ozd);
-        assign_pot(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "potential"), 0),
+        if (status == 0) {
+                sasfit_err("Unknown closure\n");
+                return TCL_ERROR;
+        }
+
+        status = assign_pot(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "potential"), 0),
                    &ozd);
+        if (status == 0) {
+                sasfit_err("Unknown Potential\n");
+                return TCL_ERROR;
+        }
 
         for (i = 0; i < OZMAXPAR; i++) {
             sprintf(paramName, "p%d", i);
