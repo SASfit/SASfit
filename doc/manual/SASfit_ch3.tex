@@ -1650,7 +1650,14 @@ or a short range and long range part $u(r)=u_\text{SR}(r)+u_\text{LR}(r)$.
 The definitions together with the different ways partitioning are defined below for
 each potential.
 
+\vphantom{.}~\\
 \subsection{Hard Sphere Potential}
+~\\
+
+Hard spheres are the simplest model which are defined simply as impenetrable spheres that cannot overlap
+in space. They mimic the extremely strong repulsion that atoms and spherical molecules
+experience at very close distances.
+Hard spheres of diameter $\sigma$ are particles with the following pairwise interaction potential:
 \begin{align}
 u^\text{HS}(r,\sigma) &=
 \begin{cases}
@@ -1671,7 +1678,7 @@ and
 u^\text{HS}_\text{pert}(r,\sigma) &= u^\text{HS}_\text{LR}(r,\sigma) = u^\text{HS}_\text{A}(r,\sigma) \equiv 0
 \end{align}
 
-
+ \vphantom{.}~\\
 \subsection{Sticky Hard Sphere Potential (SHS)}
 ~\\
 
@@ -1732,23 +1739,40 @@ A partitioning in long range and short range is not done. The long range potenti
 is set to be always $u^\text{SHS}_\text{LR}(r) \equiv 0$, so that
 $u^\text{SHS}_\text{SR}(r)= u^\text{SHS}(r)$.
 
-~\\
+ \vphantom{.}~\\
 \subsection{Soft Sphere Potential}
 ~\\
+
 The soft sphere potential is define as
 \begin{align}
-u^\text{SSM}(r,\sigma,\epsilon) &=
-\begin{cases}
-k_\text{B} T \epsilon \left(1-\frac{r}{\sigma}\right)^2   & \mbox{if } r \leq \sigma \\
-0                       & \mbox{if } r >    \sigma
-\end{cases}
+u^\text{SSP}(r,\sigma,\epsilon) &=
+k_\text{B} T \epsilon \left(\frac{\sigma}{r}\right)^n
 \end{align}
-.
+$\sigma$ is the nominal particle diameter, $\epsilon$ establishes the
+energy scale, and $n$ controls the stiffness of the potential (the
+softness is $1/n$). Indeed for microgel particles this potential
+form has been used to interpret experimentally measured
+physical properties. $n\rightarrow\infty$ is the hard sphere limit, and this
+and intermediate $n$ values (particularly $n=12$) have been
+studied many times in the literature. For $n\leq 3$
+this potential does not lead to a thermodynamically stable
+system as the volume integral of the potential diverges.
 
-~\\
+
+%\begin{align}
+%u^\text{SSM}(r,\sigma,\epsilon) &=
+%\begin{cases}
+%k_\text{B} T \epsilon \left(1-\frac{r}{\sigma}\right)^2   & \mbox{if } r \leq \sigma \\
+%0                       & \mbox{if } r >    \sigma
+%\end{cases}
+%\end{align}
+
+
+ \vphantom{.}~\\
 \subsection{Penetrable Sphere Model}
 ~\\
-The penetrable sphere model became popular after 1989 due to Marquest and
+
+The penetrable sphere model was used by Marquest and
 Witten \cite{Marquest1989} who suggested it as a prototype for the interaction between micelles in a solvent.
 The potential is defined as \cite{Marquest1989,Viererblova2010}
 \begin{align}
@@ -1758,18 +1782,24 @@ k_\text{B} T \epsilon   & \mbox{for } r \leq \sigma \\
 0                       & \mbox{for } r >    \sigma
 \end{cases}
 \end{align}
-.
 
+ \vphantom{.}~\\
 \subsection{Generalized Gaussian Core Model Potential - GGCM-n Potential}
 ~\\
-\cite{Mladek2005,Louis2000}.
+
+The effective interaction between the centers of mass of two polymer chains
+in an athermal solvent can be described in very good approximation
+by an interaction of a Gaussian form
+$u^\text{GCM}(r)= k_\text{B} T \epsilon \exp\left(-\left(r/\sigma\right)^2\right)$.
+A generalisation of this form has been discussed in \cite{Mladek2005,Louis2000} and
+has the form
 \begin{align}
 u^\text{GGCM-n}(r)&=
 k_\text{B} T \epsilon \exp\left(-\alpha\left(\frac{r}{\sigma}\right)^n\right)
 \end{align}
-.
 
-~\\
+
+ \vphantom{.}~\\
 \subsection{Fermi Distribution Model}
 ~\\
 \begin{align}
@@ -1779,12 +1809,17 @@ k_\text{B} T \epsilon
 \end{align}
 For $\xi = 0$ the Fermi Potential goes over into the Penetrable Sphere Model.
 
-~\\
+ \vphantom{.}~\\
 \subsection{Star Polymer Potential}
 ~\\
 
-\cite{Likos1998,Likos2001}
-\begin{align}
+Star polymers with tunable number $f$ and size of arms, and thus interactions,
+represent ideal model systems for exploring the regime of soft material behaviour that
+interpolates between hard spheres and polymeric coils.
+Likos et al.\ \cite{Likos1998,Likos2001} have proposed an effective potential that describes
+the interaction between two stars. The potential is given by
+\begin{align}\
+\label{eq:star1_potential}
 u^\text{star1}(r,\sigma,f) &=
 k_\text{B} T \frac{5}{8} f^{3/2}
 \begin{cases}
@@ -1795,7 +1830,21 @@ k_\text{B} T \frac{5}{8} f^{3/2}
           & \mbox{for } r >    \sigma
 \end{cases}
 \end{align}
-\cite{Jusufi2001,Dzubiella2001,Likos2001}
+where $\sigma$ is the effective corona diameter
+(e.g., $\sigma \propto f^{1/5} N_a^{3/5}$ for good
+solvents, $N_a$ being the arm degree of polymerization and $f$ the functionality of the star).
+In equation \ref{eq:star1_potential} above, $\sigma/2$ is a length scale that extends from the
+star center to the middle of the outermost Daoud–Cotton
+blob \cite{Likos2006}. Extensive comparisons with simulations have
+set this scale to $\sigma \cong 1.32R_g$, where $R_g$ is the star radius of
+gyration. The effective potential shows a soft, logarithmic
+divergence at close approaches, followed by a crossover to a
+Yukawa form as the center-to-center separation $r$ grows. The
+potential becomes harder with increasing $f$, tending eventually to a hard-sphere
+interaction formally obtained in the limit $f\rightarrow\infty$.
+
+The effective potential valid for $f\leq 10$ has the form
+\cite{Jusufi2001,Dzubiella2001,Likos2001}:
 \begin{align}
 u^\text{star2}(r,\sigma,f) &=
 k_\text{B} T \frac{5}{8} f^{3/2}
@@ -1808,8 +1857,10 @@ k_\text{B} T \frac{5}{8} f^{3/2}
 \end{cases} \\
 \mbox{with } \tau &= \left(\frac{1.12}{3\sigma}-\frac{1.03}{3\sigma}\right)f+\frac{1.03}{\sigma}
 \end{align}
+$\tau$ is a free parameter of the order and is obtained by fitting to computer
+simulation results \cite{Dzubiella2001}.
 
-
+ \vphantom{.}~\\
 \subsection{Lennard-Jones Potential}
 ~\\
 
@@ -1839,19 +1890,60 @@ u^\text{LJ}_\text{LR}(r)  & \mbox{if } r \geq rm
 \end{align}
 The LJ potential is not splitted in a reference and perturbation part, i.e. the reference part is set to 0.
 
+ \vphantom{.}~\\
 \subsection{Depletion Potential}
 ~\\
-The pair interaction potential of spheres by a depleting agent is implemented depending on the shape of the depleting
-agent \cite{Oversteegen2004,Lekkerkerker2011}, if they are spherical, disc-like or rod-like.
 
-.~\\
+The pair interaction potential of spheres by a depleting agent is implemented depending on the shape of the depleting
+agent. Analytical expressions have been developed for
+spherical, disc-like or rod-like shapes \cite{Oversteegen2004,Lekkerkerker2011}.
+The potential between two large spheres and spherical depleting agents of diameter $l$
+is given by
+\begin{align}
+u^\text{depl}_\text{sph}(r) &= -k_\text{B} T (N_\text{I}+N_\text{II}-N_\text{III}) \\
+N_\text{I} &= n_d \frac{2}{3}\left(\frac{l}{2}-\frac{r-\sigma}{2}\right)^2
+                \left(\frac{3\sigma}{2}+l+\frac{r-\sigma}{2}\right)\\
+N_\text{II} &= N_\text{III} = 0
+\end{align}
+The potential between two large spheres and infinitesimal thin discs of diameter $D$
+as a depleting agents is given by
+\begin{align}
+u^\text{depl}_\text{discs}(r) &= -k_\text{B} T (N_\text{I}+N_\text{II}-N_\text{III}) \\
+N_\text{I} &= n_d \frac{\pi}{6}\sigma D^2 \left(1-\frac{r-\sigma}{D}\right)^2
+                \left(\frac{3}{2}+\frac{D}{\sigma}+\frac{1}{2}\frac{r-\sigma}{\sigma}\right)\\
+\begin{split}
+N_\text{II} - N_\text{III} &= \frac{\pi}{6} n_d D^2\sigma
+                              \left\{ -\frac{3}{2}\left(1-\frac{r-\sigma}{D}\right)^2
+                                      -\frac{3}{4}\pi\frac{r-\sigma}{D} \right. \\
+                           & \qquad \qquad + \frac{3}{2}\frac{r-\sigma}{D} \arcsin \frac{r-\sigma}{D}  \\
+                           & \qquad \qquad + \left.
+                              \left(1+\frac{1}{2}\left(\frac{r-\sigma}{D}\right)^2\right)
+                                   \sqrt{1-\left(\frac{r-\sigma}{D}\right)^2}
+                              \right\}
+\end{split}
+\end{align}
+Another depletion potential of two hard spheres of diameter $\sigma$ surrounded
+by infinitely thin hard rods of length $L$ is given by
+\begin{align}
+u^\text{depl}_\text{rods}(r) &= -k_\text{B} T (N_\text{I}+N_\text{II}-N_\text{III}) \\
+N_\text{I} &= n_d \frac{\pi}{12}\sigma L^2 \left(1-\frac{r-\sigma}{L}\right)^2
+                \left(3+2\frac{L}{\sigma}+\frac{r-\sigma}{\sigma}\right)\\
+\begin{split}
+N_\text{II} - N_\text{III} &= \frac{\pi}{12} n_d L^2\sigma
+                              \left\{ -2
+                                      -\left(\frac{r-\sigma}{D}\right)^3
+                                      +3\frac{r-\sigma}{D}\right\}
+\end{split}
+\end{align}
+
+ \vphantom{.}~\\
 \subsection{Ionic Microgel Potential}
 ~\\
 
 According to \cite{Likos2011} the effective potential in ionic microgels can be partitioned in a contribution
 $\Phi_{r \leq \sigma}(r)$ for the overlap region $r \leq \sigma$ and one $\Phi_{r > \sigma}(r)$ for $r>\sigma$.
 \begin{align}
-u^\text{im}(r) &=
+u^\text{im}(r) &= k_\text{B} T
 \begin{cases}
 \Phi_{r\leq\sigma}(r)   & \mbox{for } r \leq \sigma \\
 \Phi_{r>\sigma}(r)      & \mbox{for } r > \sigma
@@ -1859,7 +1951,7 @@ u^\text{im}(r) &=
 \end{align}
 For the overlapping particle it has the form
 \begin{align}
-\Phi_{r\leq\sigma}(r) &= \frac{2Z^2e^2}{\epsilon\sigma}
+\Phi_{r\leq\sigma}(r) &= \frac{2Z^2\text{e}^2}{\epsilon\sigma}
                          \left[\frac{6}{5}-2\left(\frac{r}{\sigma}\right)^2
                                           +\frac{3}{2}\left(\frac{r}{\sigma}\right)^3
                                           -\frac{1}{5}\left(\frac{r}{\sigma}\right)^5
@@ -1870,14 +1962,14 @@ where $\Phi_\text{ind}(r)$ is given by the expression
 \begin{align}
 \begin{split}
   \Phi_\text{ind}(r) =&  \left(1-\text{e}^{-\kappa r}+\frac{1}{2}\kappa^2r^2+\frac{1}{24}\kappa^4r^4\right)
-                        \left(1-\frac{4}{\kappa^2\sigma^2}\right)
-                       +\frac{4}{\kappa\sigma}\text{e}^{-\kappa\sigma}\sinh\left(\kappa r\right)\\
+                        \left(1-\frac{4}{\kappa^2\sigma^2}\right) \\
+                     & +\frac{4}{\kappa\sigma}\text{e}^{-\kappa\sigma}\sinh\left(\kappa r\right)\\
                      & +\left[\text{e}^{-\kappa\sigma}\sinh\left(\kappa\sigma\right)
                                     +\kappa^2\sigma r
                                     +\frac{1}{6}\kappa^4\left(\sigma^3 r + r^3 \sigma \right)
                         \right] \left(1+\frac{4}{\kappa^2\sigma^2}\right)\\
-                     & -\frac{4r}{\sigma} \left(1+\frac{1}{2}\kappa^2\sigma^2+\frac{1}{30}\kappa^4\sigma^4\right)
-                       -\frac{8r^3}{3\sigma^3}\left(\frac{\kappa^2\sigma^2}{4}+\frac{\kappa^4\sigma^4}{12}\right)
+                     & -\frac{4r}{\sigma} \left(1+\frac{1}{2}\kappa^2\sigma^2+\frac{1}{30}\kappa^4\sigma^4\right) \\
+                     & -\frac{8r^3}{3\sigma^3}\left(\frac{\kappa^2\sigma^2}{4}+\frac{\kappa^4\sigma^4}{12}\right)
                        -\frac{1}{180}\frac{\kappa^4}{\sigma^2} r^6
 \end{split}
 \end{align}
@@ -1888,9 +1980,10 @@ For the nonoverlapping distances the effective potential becomes
                       \frac{\text{e}^{-\kappa r}}{r}
 \end{align}
 
-
+ \vphantom{.}~\\
 \subsection{DLVO Potential}
 ~\\
+
 For the past half century or so, the stability of charged
 colloidal systems has generally been described in terms of the
 DLVO (Derjaguin-Landau-Verwey-Overbeek) potential between
@@ -1920,7 +2013,7 @@ $A_\text{H}$ is the Hamaker constant. $L_B=\frac{e^2}{4\pi \epsilon_r \epsilon_0
 is the so-called Bjerrum length\footnote{In Gaussian units, $4\pi\varepsilon_0 = 1$ and the Bjerrum
 length has the simpler form $L_B = \frac{e^2}{\varepsilon_r k_B T}$.}. The vacuum permittivity is
 $\epsilon_0= 8.854 187 817 \times 10^{-12} \left[\frac{\text{F}}{\text{m}}\right]$ and the elementary
-electric charge $e=1.602176565(35)\times 10^{-19}$coulombs\footnote{The Gaussian units uses
+electric charge $e=1.602176565(35)\times 10^{-19}$coulombs\footnote{The Gaussian units use
 the statcoulomb (statC) instead. The conversion between C and statC is different in different contexts.
 In case of electric charges $1\text{C} = 2997924580 \text{ statC} \approx 3.00\times 10^9 \text{ statC}$.}.
 For water at 278 K with a relativ permittivity of $\epsilon_r=78.7$ the Bjerrum length is $L_B=0.713$nm.
@@ -1930,15 +2023,23 @@ by the other charges. It is given by $\kappa^{2}= 4\pi L_B \sum_{i=1}^N n_i Z_i$
 of ion $i$, $Z_i$ is the charge number of that ion, and the sum is taken over all ions in the
 solution. A discussion about effective parameters can be found in \cite{Alexander1984,Ulander2001}.
 
+ \vphantom{.}~\\
 \subsection{Hard Core Yukawa Potential}
+~\\
+
+This potential is useful for systems with complicated potentials. Next to the hard core repulsion three
+Yukawa contributions are allowed. The potential reads
 \begin{align}
 u^\text{HC3Y}(r,\ldots) &=
 \begin{cases}
-\infty                                                                            & \mbox{for } r<   \sigma \\
-k_\text{B} T \epsilon
+\infty                                                                  & \mbox{for } r<   \sigma \\
+k_\text{B} T
 \displaystyle \sum_{i=1}^{N=3} -K_i\exp\left(-\lambda_i(r-\sigma)\right)& \mbox{for } r >= \sigma
 \end{cases}
 \end{align}
+The sign of $K_i$ defines, if the potential is
+repulsive ($K_i>0$) or attractive ($K_i<0$) and the modulus the of $\abs{K_i}$ the strength of the interaction.
+$\lambda_i$ defines the range of the interaction and should be a positive number.
 
 \section{GUI interface for the Ornstein Zernike solver}
 
