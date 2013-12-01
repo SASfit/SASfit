@@ -22,5 +22,5 @@ within the 'gen/buildkit' file.
 The modifications applied are of minor nature, just to build it smoothly with
 the desired configuration. Fixed some linker issues.
 
-2008-11-26, Ingo Bressler, ingo@wollsau.de
+2008-11-26, Ingo Bressler, dev@ingobressler.net
 
