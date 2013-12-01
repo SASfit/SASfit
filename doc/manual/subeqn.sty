@@ -1,0 +1,81 @@
+%%
+%% This is file `subeqn.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% subeqn.dtx  (with options: `package')
+%% 
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 1994-1999 Johannes Braams.  All rights reserved.
+%% 
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN
+%% archives in directory macros/latex/base/lppl.txt; either
+%% version 1 of the License, or any later version.
+%% 
+%%   This file is distributed in the hope that it will be useful,
+%%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+%% 
+%%   For error reports concerning UNCHANGED versions of this file no more
+%%   than one year old, send a bug report, using latex-bugs.tex to me at
+%%   the address jlbraams@cistron.nl.
+%% 
+%%   Please do not request updates from me directly.  Primary
+%%   distribution is through the CTAN archives.
+%% 
+%% 
+%% 
+%% 
+%% File: `subeqn.dtx'
+%% Copyright (C) 1999 Donald Arsenau <asnd@reg.triumf.ca>,
+%%                    Johannes Braams <J.L.Braams@research.ptt.nl>
+%%
+%% This program can be redistributed and/or modified under the terms
+%% of the LaTeX Project Public License Distributed from CTAN
+%% archives in directory macros/latex/base/lppl.txt; either
+%% version 1 of the License, or any later version.
+%%
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\NeedsTeXFormat{LaTeX2e}[1998/06/01]
+\ProvidesPackage{subeqn}
+              [1999/03/03 v2.0a subnumbering of equations]
+\newenvironment{subequations}{%
+  \refstepcounter{equation}%
+  \mathchardef\c@mainequation\c@equation
+  \protected@edef\themainequation{\theequation}%
+  \let\theequation\thesubequation
+  \global\c@equation\z@
+  }{%
+  \global\c@equation\c@mainequation
+  \global\@ignoretrue
+  }
+\newcommand{\thesubequation}{\themainequation\alph{equation}}
+\newenvironment{subeqnarray}{%
+  \subequations
+  \@ifnextchar\label{\@lab@subeqnarray}{\eqnarray}
+  }{%
+  \endeqnarray\endsubequations
+  }
+\newcommand*{\@lab@subeqnarray}[2]{#1{#2}\eqnarray}
+\endinput
+%%
+%% End of file `subeqn.sty'.

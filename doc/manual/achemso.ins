@@ -1,0 +1,52 @@
+%%
+%% This is file `achemso.ins',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% achemso.dtx  (with options: `install')
+%%  ----------------------------------------------------------------
+%%  The achemso package - LaTeX and BibTeX support for American
+%%  Chemical Society publications
+%%  Maintained by Joseph Wright
+%%  E-mail: joseph.wright@morningstar2.co.uk
+%%  Released under the LaTeX Project Public License v1.3 or later
+%%  See http://www.latex-project.org/lppl.txt
+%%  ----------------------------------------------------------------
+%% 
+\input docstrip.tex
+\keepsilent
+\askforoverwritefalse
+\preamble
+ ----------------------------------------------------------------
+ The achemso package - LaTeX and BibTeX support for American
+ Chemical Society publications
+ Maintained by Joseph Wright
+ E-mail: joseph.wright@morningstar2.co.uk
+ Released under the LaTeX Project Public License v1.3 or later
+ See http://www.latex-project.org/lppl.txt
+ ----------------------------------------------------------------
+
+\endpreamble
+\Msg{Generating achemso files:}
+\usedir{tex/latex/contib/achemso}
+\generate{\file{\jobname.ins}{\from{\jobname.dtx}{install}}
+          \file{\jobname.sty}{\from{\jobname.dtx}{package}}
+          \file{jawltxdoc.sty}{\from{\jobname.dtx}{jawltxdoc}}
+}
+\declarepostamble\bibtexable
+\endpostamble
+\usedir{bibtex/bst/achemso}
+\generate{\usepostamble\bibtexable
+          \file{achemso.bst}{\from{achemso.dtx}{bib}}
+          \file{achemnat.bst}{\from{achemso.dtx}{bib,nat}}
+          \file{achemsol.bst}{\from{achemso.dtx}{bib,list}}
+          \file{achemlnt.bst}{\from{achemso.dtx}{bib,list,nat}}
+}
+\generate{\usepostamble\empty\usepreamble\empty
+          \file{achemso.bib}{\from{achemso.dtx}{database}}
+}
+\endbatchfile
+\endinput
+%%
+%% End of file `achemso.ins'.

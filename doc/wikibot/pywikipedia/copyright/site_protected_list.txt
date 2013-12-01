@@ -1,0 +1,7 @@
+britannica.com # On-line encyclopedia (publisher: Encyclopædia Britannica)
+encarta.msn.com # On-line encyclopedia (publisher: Microsoft)
+pbmstoria.it # On-line encycloedia (publisher: Bruno Mondadori)
+sapere.it # On-line encyclopedia (publisher: De Agostini)
+treccani.it # On-line encyclopedia (publisher: Istituto della Enciclopedia italiana)
+
+cronologia.it # Amateur site (author: Franco Gonzato)

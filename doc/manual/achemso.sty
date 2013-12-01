@@ -1,0 +1,96 @@
+%%
+%% This is file `achemso.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% achemso.dtx  (with options: `package')
+%%  ----------------------------------------------------------------
+%%  The achemso package - LaTeX and BibTeX support for American
+%%  Chemical Society publications
+%%  Maintained by Joseph Wright
+%%  E-mail: joseph.wright@morningstar2.co.uk
+%%  Released under the LaTeX Project Public License v1.3 or later
+%%  See http://www.latex-project.org/lppl.txt
+%%  ----------------------------------------------------------------
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{achemso}
+  [2007/10/16 v2.2d LaTeX and BibTeX support for American
+     Chemical Society publications]
+\newif \ifACS@sctnnmbr \ACS@sctnnmbrfalse
+\newif \ifACS@list     \ACS@listfalse
+\newif \ifACS@note     \ACS@notefalse
+\newif \ifACS@super    \ACS@supertrue
+\newif \ifACS@natbib   \ACS@natbibfalse
+\DeclareOption{note}{\ExecuteOptions{notes}}
+\DeclareOption{notes}{\ACS@notetrue}
+\DeclareOption{number}{\ACS@sctnnmbrtrue}
+\DeclareOption{super}{\ACS@supertrue}
+\DeclareOption{list}{\ACS@listtrue}
+\DeclareOption{notsuper}{\ACS@superfalse}
+\DeclareOption{natbib}{\ACS@natbibtrue}
+\DeclareOption*{\OptionNotUsed}
+\ProcessOptions
+\ifACS@natbib
+  \ifACS@super
+    \RequirePackage[numbers,sort&compress,super]{natbib}
+  \else
+    \RequirePackage[numbers,sort&compress,round]{natbib}
+    \newcommand*{\citenumfont}{\textit}
+  \fi
+\else
+  \ifACS@super
+    \RequirePackage[nospace]{overcite}
+  \else
+    \RequirePackage{cite}
+    \renewcommand\citeleft{(}
+    \renewcommand\citeright{)}
+    \renewcommand\citeform[1]{\emph{#1}}
+  \fi
+\fi
+\@ifpackageloaded{babel}
+  {\ACS@notefalse\PackageWarning{achemso}%
+    {babel package loaded - note option disabled}}
+  {\relax}
+\def\ACS@biberror{\PackageError{achemso}%
+  {No bibliography name command defined}\@eha}
+\@ifundefined{refname}{%
+  \@ifundefined{bibname}{%
+    \ACS@biberror
+  }{%
+    \ifACS@note
+      \renewcommand*{\bibname}{References and Notes}
+    \else
+      \renewcommand*{\bibname}{References}
+    \fi
+  }
+}{%
+  \ifACS@note
+    \renewcommand*{\refname}{References and Notes}
+  \fi
+}
+\ifACS@sctnnmbr
+  \RequirePackage[numbib]{tocbibind}
+\fi
+\ifACS@list
+  \ifACS@natbib
+    \bibliographystyle{achemlnt}
+  \else
+    \bibliographystyle{achemsol}
+  \fi
+  \RequirePackage[notcite]{showkeys}
+\else
+  \ifACS@natbib
+    \bibliographystyle{achemnat}
+  \else
+    \bibliographystyle{achemso}
+  \fi
+\fi
+\def\@biblabel#1{#1.}
+\def\ACS@bibwarning{\PackageWarning{achemso}%
+  {Additional bibliographystyle command ignored}}
+\def\bibliographystyle{\ACS@bibwarning\@gobble}
+\endinput
+%%
+%% End of file `achemso.sty'.

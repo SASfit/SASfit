@@ -1,0 +1,434 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>dtplite - Documentation toolbox </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/apps/dtplite.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: dtplite.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ dtplite.n
+   -->
+
+<body>
+<h1> dtplite(n) 1.0  &quot;Documentation toolbox&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> dtplite - Lightweight DocTools Markup Processor
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#use_cases">USE CASES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#command_line">COMMAND LINE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#formats">FORMATS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#directory_structures">DIRECTORY STRUCTURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+<table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>dtplite</b> <strong>-o</strong> <i class='arg'>output</i> ?options? <i class='arg'>format</i> <i class='arg'>inputfile</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>dtplite</b> <strong>-o</strong> <i class='arg'>output</i> ?options? <i class='arg'>format</i> <i class='arg'>inputdirectory</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>dtplite</b> <strong>-merge</strong> <strong>-o</strong> <i class='arg'>output</i> ?options? <i class='arg'>format</i> <i class='arg'>inputdirectory</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The application described by this document, <strong>dtplite</strong>, is the
+successor to the extremely simple <strong>mpexpand</strong>. Influenced in its
+functionality by the <strong>dtp</strong> doctools processor it is much more
+powerful than <strong>mpexpand</strong>, yet still as easy to use; definitely
+easier than <strong>dtp</strong> with its myriad of subcommands and options.
+
+<p>
+
+<strong>dtplite</strong> is based upon the package <strong>doctools</strong>, like
+the other two processors .
+
+
+<h3><a name="use_cases">USE CASES</a></h3>
+<p>
+
+<strong>dtplite</strong> was written with the following three use cases in
+mind.
+
+<p>
+<ol>
+<li>
+Validation of a single document, i.e. checking that it was written in
+valid doctools format. This mode can also be used to get a preliminary
+version of the formatted output for a single document, for display in
+a browser, nroff, etc., allowing proofreading of the formatting.
+
+<br><br>
+<li>
+Generation of the formatted documentation for a single package,
+i.e. all the manpages, plus a table of contents and an index of
+keywords.
+
+<br><br>
+<li>
+An extension of the previous mode of operation, a method for the easy
+generation of one documentation tree for several packages. Especially
+unified table of contents and keyword index.
+
+</ol>
+
+<p>
+
+Beyond the above we also want to make use of the customization
+features provided by the HTML formatter. It is not the only format the
+application should be able to generate, but we anticipiate it to be
+the most commonly used, and it is one of the few which do provide
+customization hooks.
+
+<p>
+
+We allow the caller to specify a header string, footer string, a
+stylesheet, and data for a bar of navigation links at the top of the
+generated document.
+
+While all can be set as long as the formatting engine provides an
+appropriate engine parameter (See section <a href="#options">OPTIONS</a>) the last
+two have internal processing which make them specific to HTML.
+
+<h3><a name="command_line">COMMAND LINE</a></h3>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>dtplite</b> <strong>-o</strong> <i class='arg'>output</i> ?options? <i class='arg'>format</i> <i class='arg'>inputfile</i></a><dd>
+
+
+This is the form for use case [1]. The <i class='arg'>options</i> will be
+explained later, in section <a href="#options">OPTIONS</a>.
+
+<br><br>
+<dl>
+
+<dt>path <i class='arg'>output</i> (in)<dd>
+
+This argument specifies where to write the generated document. It can
+be the path to a file or directory, or <strong>-</strong>.
+
+The last value causes the application to write the generated
+documented to <strong>stdout</strong>.
+
+<br><br>
+
+If the <i class='arg'>output</i> does not exist then [file dirname $output]
+has to exist and must be a writable directory.
+
+The generated document will be written to a file in that directory,
+and the name of that file will be derived from the <i class='arg'>inputfile</i>,
+the <i class='arg'>format</i>, and the value given to option <strong>-ext</strong> (if
+present).
+
+
+<br><br>
+<dt>(path|handle) <i class='arg'>format</i> (in)<dd>
+
+This argument specifies the formatting engine to use when processing
+the input, and thus the format of the generated document. See section
+<a href="#formats">FORMATS</a> for the possibilities recognized by the application.
+
+
+<br><br>
+<dt>path <i class='arg'>inputfile</i> (in)<dd>
+
+This argument specifies the path to the file to process. It has to
+exist, must be readable, and written in <em>doctools</em> format.
+
+</dl>
+<br><br>
+
+
+<dt><a name="2"><b class='cmd'>dtplite</b> <strong>-o</strong> <i class='arg'>output</i> ?options? <i class='arg'>format</i> <i class='arg'>inputdirectory</i></a><dd>
+
+
+This is the form for use case [2]. It differs from the form for
+use case [1] by having the input documents specified through a
+directory instead of a file. The other arguments are identical, except
+for <i class='arg'>output</i>, which now has to be the path to an existing and
+writable directory.
+
+<br><br>
+
+The input documents are all files in <i class='arg'>inputdirectory</i> or any of
+its subdirectories which were recognized by <b class='cmd'>fileutil::fileType</b>
+as containing text in <em>doctools</em> format.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>dtplite</b> <strong>-merge</strong> <strong>-o</strong> <i class='arg'>output</i> ?options? <i class='arg'>format</i> <i class='arg'>inputdirectory</i></a><dd>
+
+
+This is the form for use case [3]. The only difference to the
+form for use case [2] is the additional option <strong>-merge</strong>.
+
+<br><br>
+
+Each such call will merge the generated documents coming from
+processing the input documents under <i class='arg'>inputdirectory</i> or any of
+its subdirectories to the files under <i class='arg'>output</i>. In this manner it
+is possible to incrementally build the unified documentation for any
+number of packages. Note that it is necessary to run through all the
+packages twice to get fully correct cross-references (for formats
+supporting them).
+
+</dl>
+
+<h3><a name="options">OPTIONS</a></h3>
+<p>
+
+This section describes all the options available to the user of the
+application, with
+
+the exception of the options <strong>-o</strong> and <strong>-merge</strong>. These
+two were described already, in section <a href="#command_line">COMMAND LINE</a>.
+
+<p>
+<dl>
+<dt><strong>-ext</strong> string<dd>
+
+If the name of an output file has to be derived from the name of an
+input file it will use the name of the <i class='arg'>format</i> as the extension
+by default. This option here will override this however, forcing it to
+use <i class='arg'>string</i> as the file extension. This option is ignored if the
+name of the output file is fully specified through option <strong>-o</strong>.
+
+<br><br>
+
+When used multiple times only the last definition is relevant.
+
+
+<br><br>
+<dt><strong>-header</strong> file<dd>
+
+This option can be used if and only if the selected <i class='arg'>format</i>
+provides an engine parameter named &quot;header&quot;. It takes the contents of
+the specified file and assign them to that parameter, for whatever use
+by the engine. The HTML engine will insert the text just after the tag
+<strong>&lt;body&gt;</strong>.
+
+If navigation buttons are present (see option <strong>-nav</strong> below),
+then the HTML generated for them is appended to the header data
+originating here before the final assignment to the parameter.
+
+<br><br>
+
+When used multiple times only the last definition is relevant.
+
+
+<br><br>
+<dt><strong>-footer</strong> file<dd>
+
+Like <strong>-header</strong>, except that: Any navigation buttons are ignored,
+the corresponding required engine parameter is named &quot;footer&quot;, and the
+data is inserted just before the tag <strong>&lt;/body&gt;</strong>.
+
+<br><br>
+
+When used multiple times only the last definition is relevant.
+
+
+<br><br>
+<dt><strong>-style</strong> file<dd>
+
+This option can be used if and only if the selected <i class='arg'>format</i>
+provides an engine parameter named &quot;meta&quot;. When specified it will
+generate a piece of HTML code declaring the <i class='arg'>file</i> as the
+stylesheet for the generated document and assign that to the
+parameter. The HTML engine will insert this inot the document, just
+after the tag <strong>&lt;head&gt;</strong>.
+
+<br><br>
+
+When processing an input directory the stylesheet file is copied into
+the output directory and the generated HTML will refer to the copy, to
+make the result more self-contained. When processing an input file we
+have no location to copy the stylesheet to and so just reference it as
+specified.
+
+<br><br>
+
+When used multiple times only the last definition is relevant.
+
+
+<br><br>
+<dt><strong>-nav</strong> label url<dd>
+
+Use this option to specify a navigation button with <i class='arg'>label</i> to
+display and the <i class='arg'>url</i> to link to. This option can be used if and
+only if the selected <i class='arg'>format</i> provides an engine parameter named
+&quot;header&quot;. The HTML generated for this is appended to whatever data we
+got from option <strong>-header</strong> before it is inserted into the
+generated documents.
+
+<br><br>
+
+When used multiple times all definitions are collected and a
+navigation bar is created, with the first definition shown at the left
+edge and the last definition to the right.
+
+</dl>
+
+
+<h3><a name="formats">FORMATS</a></h3>
+<p>
+
+At first the <i class='arg'>format</i> argument will be treated as a path to a tcl
+file containing the code for the requested formatting engine. The
+argument will be treated as the name of one of the predefined formats
+listed below if and only if the path does not exist.
+
+<p>
+
+<em>Note a limitation</em>: If treating the format as path to the tcl
+script implementing the engine was sucessful, then this script has to
+implement not only the engine API for doctools, i.e.
+
+<em>doctools_api</em>, but for <em>doctoc_api</em> and <em>docidx_api</em>
+as well. Otherwise the generation of a table of contents and of a
+keyword index will fail.
+
+<p>
+
+List of predefined formats, i.e. as provided by the
+package <strong>doctools</strong>:
+
+<p>
+<dl>
+
+<dt><strong>nroff</strong><dd>
+
+The processor generates *roff output, the standard format for unix
+manpages.
+
+<br><br>
+<dt><strong>html</strong><dd>
+
+The processor generates HTML output, for usage in and display by web
+browsers. This engine is currently the only one providing the various
+engine parameters required for the additional customaization of the
+output.
+
+<br><br>
+<dt><strong>tmml</strong><dd>
+
+The processor generates TMML output, the Tcl Manpage Markup Language,
+a derivative of XML.
+
+<br><br>
+<dt><strong>latex</strong><dd>
+
+The processor generates LaTeX output.
+
+<br><br>
+<dt><strong>wiki</strong><dd>
+
+The processor generates Wiki markup as understood by <strong>wikit</strong>.
+
+<br><br>
+<dt><strong>list</strong><dd>
+
+The processor extracts the information provided by <b class='cmd'>manpage_begin</b>.
+
+This format is used internally to extract the meta data from which
+both table of contents and keyword index are derived from.
+
+<br><br>
+<dt><strong>null</strong><dd>
+
+The processor does not generate any output.
+
+</dl>
+
+
+<h3><a name="directory_structures">DIRECTORY STRUCTURES</a></h3>
+<p>
+
+In this section we describe the directory structures generated by the
+application under <i class='arg'>output</i> when processing all documents in an
+<i class='arg'>inputdirectory</i>. In other words, this is only relevant to the use
+cases [2] and [3].
+
+<dl>
+
+<dt>[2]<dd>
+
+The following directory structure is created when processing a single
+set of input documents.  The file extension used is for output in
+HTML, but that is not relevant to the structure and was just used to
+have proper file names.
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    output/
+        toc.html
+        index.html
+        files/
+            path/to/FOO.html
+</pre></td></tr></table></p>
+
+The last line in the example shows the document
+generated for a file FOO located at
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    inputdirectory/path/to/FOO
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt>[3]<dd>
+
+When merging many packages into a unified set of documents the
+generated directory structure is a bit deeper:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    output
+        .toc
+        .idx
+        .xrf
+        toc.html
+        index.html
+        FOO1/
+            ...
+        FOO2/
+            toc.html
+            files/
+                path/to/BAR.html
+</pre></td></tr></table></p>
+
+Each of the directories FOO1, ... contains the documents generated for
+the package FOO1, ... and follows the structure shown for use case
+[2]. The only exception is that there is no per-package index.
+
+<br><br>
+
+The files &quot;<strong>.toc</strong>&quot;, &quot;<strong>.idx</strong>&quot;, and &quot;<strong>.xrf</strong>&quot; contain the
+internal status of the whole output and will be read and updated by
+the next invokation. Their contents will not be documented. Remove
+these files when all packages wanted for the output have been
+processed, i.e. when the output is complete.
+
+</dl>
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+docidx_api, docidx_fmt, doctoc_api, doctoc_fmt, doctools_api, doctools_fmt
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+HTML, TMML, conversion, doctools, manpage, markup, nroff
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

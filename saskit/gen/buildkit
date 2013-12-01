@@ -1,0 +1,1463 @@
+#!/bin/sh
+# \
+exec tclsh "$0" $*
+
+# vim:syntax=tcl
+
+cd [file join [file dirname [info script]] ..]
+
+# output {{{
+namespace eval out {}
+
+set out::mode console
+
+proc out::init {component} {
+    variable fh
+    set fh [open [file join $::conf::outdir $component] w]
+    fconfigure $fh -encoding binary
+}
+
+proc out::fini {} {
+    variable fh
+    close $fh
+}
+
+proc out::oexec {cmd} {
+    variable fh
+    puts $fh $cmd
+    printcommand $cmd
+    eval [concat [list exec >@$fh 2>@$fh] $cmd]
+}
+
+proc out::allparts {list} {
+    variable allparts
+    variable partstep
+    variable startstamp
+    set startstamp [clock seconds]
+
+    set partstep 0
+    set allparts $list
+
+    if {$partstep==[llength $allparts]} {
+	printdone 0
+    }  else  {
+	initsteps $allparts
+	printstep [lindex $allparts $partstep] [expr {$partstep+1}] [llength $allparts]
+    }
+}
+
+proc out::nextstep {} {
+    variable allparts
+    variable partstep
+    variable startstamp
+
+    incr partstep
+
+    if {$partstep==[llength $allparts]} {
+	printdone [expr {[clock seconds]-$startstamp}]
+    }  else  {
+	printstep [lindex $allparts $partstep] [expr {$partstep+1}] [llength $allparts]
+    }
+}
+# }}}
+# output::console {{{
+if {$out::mode=="console"} {
+    proc out::initsteps {steps} {
+	puts "Beginning compilation steps: [join $steps {, }]."
+    }
+    proc out::printstep {name idx total} {
+	puts "\n\[[format %2d/%2d $idx $total]\] $name"
+    }
+    proc out::printdone {seconds} {
+	puts "\nCompilation complete in [format {%03d:%02d} [expr {$seconds/60}] [expr {$seconds%60}]]"
+    }
+    proc out::printcommand {cmd} {
+	puts "    [string replace $cmd 57 end ...]"
+    }
+    proc out::printcomment {str} {
+	puts "    [string replace $str 72 end ...]"
+    }
+    proc out::printerror {str} {
+	puts stderr "        [string replace $str 68 end ...]"
+    }
+}
+# }}}
+# utils {{{
+namespace eval utils {}
+
+set utils::defaultOmitDirs {CVS _*}
+set utils::defaultOmitFiles {core .*.swp .*.swo}
+
+proc utils::hostname {} {
+    if {$::conf::opt(hostname) != ""} {
+	return $::conf::opt(hostname)
+    }  elseif {[info exists ::env(FORCEHOSTNAME)]} {
+	return $::env(FORCEHOSTNAME)
+    }  else  {
+	return [info hostname]
+    }
+}
+
+proc utils::untargz {file destdir} {
+    out::printcommand "unpack $file to $destdir"
+    catch {file mkdir $destdir}
+    set pwd [pwd]
+    cd $destdir
+    out::oexec [concat [list [conf::x tar] -xzf [utils::wdrelative $file]]]
+    cd $pwd
+}
+proc utils::wipedir {dirname} {
+    out::printcommand "wipedir $dirname"
+    file delete -force $dirname
+}
+
+proc utils::dupfile {from to} {
+    set mod [file mtime $from]
+    if {![file exists $to] || $mod != [file mtime $to]} {
+	file copy -force $from $to
+	catch {file mtime $to $mod}
+    }
+}
+
+proc utils::sync {from to {omitfiles ""} {omitdirs ""}} {
+    foreach path [glob -nocomplain [file join $from *]] {
+	set tail [file tail $path]
+	set dest [file join $to $tail]
+	set copy true
+
+	if {[file isdir $path]} {
+	    foreach omit $omitdirs {
+		if {[string match $omit $tail]} {
+		    set copy false
+		    break
+		}
+	    }
+	    if {$copy} {
+		file mkdir $dest
+		sync $path $dest
+	    }
+	} else {
+	    foreach omit $omitfiles {
+		if {[string match $omit $tail]} {
+		    set copy false
+		    break
+		}
+	    }
+	    if {$copy} {
+		dupfile $path $dest
+	    }
+	}
+    }
+}
+
+proc utils::withfile {filename var cmd} {
+    upvar $var v
+    set fh [open $filename r]
+    fconfigure $fh -translation {auto lf} -encoding binary
+    set v [read $fh]
+    close $fh
+    uplevel 1 $cmd
+    set fh [open $filename w]
+    fconfigure $fh -translation {auto lf} -encoding binary
+    puts -nonewline $fh $v
+    close $fh
+}
+
+proc utils::platformdir {} {
+    switch -- $::tcl_platform(platform) {
+	windows {
+	    return win
+	}
+	mac {
+	    return mac
+	}
+    }
+    return unix
+}
+
+proc utils::mkunique {list args} {
+    set rc [list]
+    foreach e $list {
+	set match 0
+	foreach a $args {
+	    if {[string match $a $e]} {set match 1; break}
+	}
+	if {$match} {
+	    if {![info exists done($e)]} {
+		set done($e) 1
+		lappend rc $e
+	    }
+	}  else  {
+	    lappend rc $e
+	}
+    }
+    return $rc
+}
+
+proc utils::optsort {list args} {
+    array set el {}
+    foreach e $list {
+	set idx 1; set rev 0
+	set eidx 0; set erev 0
+	foreach a $args {
+	    if {$a=="-"} {set rev 1; continue}
+	    if {[string match $a $e]} {
+		set eidx $idx
+		set erev $rev
+		if {![info exists el($eidx)]} {
+		    set el($eidx) [list]
+		}
+	    }
+	    set rev 0
+	    incr idx
+	}
+	if {$erev} {
+	    set el($eidx) [linsert $el($eidx) 0 $e]
+	}  else  {
+	    lappend el($eidx) $e
+	}
+    }
+    set rc [list]
+    foreach i [lsort -integer [array names el]] {
+	set rc [concat $rc $el($i)]
+    }
+    return $rc
+}
+
+proc utils::mkrelative {from to} {
+    set fromidx 0
+    set rc ""
+    while {[set pfrom [file dirname $from]]!=$from} {
+	set toidx 0
+	set tto $to
+	set ttt ""
+	while {[set pto [file dirname $tto]]!=$tto} {
+	    if {$tto==$from} {
+		set rc ""
+		for {set i 0} {$i<$fromidx} {incr i} {
+		    set rc [file join $rc ..]
+		}
+		set rc [file join $rc $ttt]
+		return $rc
+	    }
+	    incr toidx
+	    set ttt [file join [file tail $tto] $ttt]
+	    set tto $pto
+	}
+	incr fromidx
+	set from $pfrom
+    }
+    return $to
+}
+
+proc utils::wdrelative {to} {
+    set rc [mkrelative [pwd] $to]
+    if {$rc==""} {return "."}
+    return $rc
+}
+
+proc utils::normalize {path} {
+    set path [file join [pwd] $path]
+    catch {set path [file normalize $path]}
+    return $path
+}
+proc utils::armerge {fromfiles tofile} {
+    set tofile [normalize $tofile]
+    set tmpdir [file join [file dirname $tofile] tmp[string tolower [utils::hostname]][pid]]
+    if {[file exists $tmpdir]} {file delete -force $tmpdir}
+
+    file mkdir $tmpdir
+    set cnt 0
+    set from [list]; foreach f $fromfiles {
+	set arname ar[format %03d [incr cnt]]
+	set ardir [file join $tmpdir $arname]
+	set ff [normalize $f]
+	lappend from $ff $ardir $arname
+	set files [list]
+	set rc [eval exec [auto_execok ar] [list t $f]]
+	foreach f [split $rc \r\n] {
+	    set f [string trim $f]
+	    set ffile ${arname}_$f
+	    if {$f!=""} {lappend files $f $ffile}
+	}
+	set filelist($ff) $files 
+    }
+    set wd [pwd]
+    set allfiles [list]
+    foreach {f ardir arname} $from {
+	file mkdir $ardir
+	cd $ardir
+	eval exec [auto_execok ar] [list x $f]
+	foreach {file ffile} $filelist($f) {
+	    file rename [file join $ardir $file] [file join $ardir $ffile]
+	    lappend allfiles [file join $arname $ffile]
+	}
+    }
+    cd $tmpdir
+    if {[file exists $tofile]} {
+	file delete $tofile
+    }
+    set len [llength $allfiles]
+    # number of files per execution (to avoid too many arguments at once)
+    set arcount 100
+    cd $tmpdir
+    for {set i 0} {$i<$len} {incr i $arcount} {
+	set files [lrange $allfiles $i [expr {$i+$arcount}]]
+	eval exec [auto_execok ar] [list cr $tofile] $files
+    }
+
+    cd $wd
+
+    if {[file exists $tmpdir]} {file delete -force $tmpdir}
+}
+
+
+# }}}
+# conf {{{
+namespace eval conf {}
+
+array set conf::destdirsuffix {
+    thread      {-threaded  -nonthreaded}
+    debug       {-debug     ""}
+}
+
+proc conf::init {ar} {
+    variable host
+    variable hostname
+    variable topdir
+    variable kitdir
+    variable buildtopdir
+    variable srctopdir
+    variable opt
+    variable noarchdir
+    variable installdir
+    variable outdir
+    variable bindir
+    variable ardir
+    variable dldir
+    variable directories
+    variable X
+    variable destdirsuffix
+
+    catch {unset opt}
+    catch {unset build}
+
+    getopts $ar
+
+    set suffix ""
+    foreach n [lsort [array names destdirsuffix]] {
+	append suffix [lindex $destdirsuffix($n) [expr {$opt($n)?0:1}]]
+    }
+
+    array set opt {}
+    foreach {n v} [array get ::part::part *,options] {
+	foreach {n v} $v {
+	    if {$n == "hostname"} {puts "$n [info exists opt($n)]"}
+	    if {![info exists opt($n)]} {
+		set opt($n) $v
+	    }
+	}
+    }
+
+    set directories [list]
+    set hostname [string tolower [utils::hostname]]
+    set host [lindex [split $hostname .] 0]
+    set hostsuffix $host$suffix
+    
+    set topdir [pwd]
+    set buildtopdir [file join $topdir build $hostsuffix]
+    set srctopdir [file join $topdir src]
+    set noarchdir [file join $topdir noarch]
+    set installdir [file join $topdir install $hostsuffix]
+    set outdir [file join $topdir out $host]
+    set bindir [file join $topdir bin $hostsuffix]
+    set ardir [file join $topdir ar $hostsuffix]
+    set dldir [file join $topdir dl]
+    set kitdir [file join $topdir kit]
+
+    lappend directories [file join $topdir build]
+    lappend directories [file join $topdir noarch]
+    lappend directories [file join $topdir install]
+    lappend directories [file join $topdir out]
+    lappend directories [file join $topdir bin]
+    lappend directories [file join $topdir ar]
+    lappend directories $buildtopdir $installdir $outdir $bindir $ardir
+
+    set opt(fullname) 1
+    switch -glob -- $::tcl_platform(os) {
+	BSD/OS	    { array set X {make gmake -static ""} }
+	Darwin	    { array set X {-static ""} }
+	FreeBSD     { array set X {make gmake} ;# needed for tclvfs }
+	HP-UX	    { array set X {gcc cc g++ aCC -static ""} }
+	NetBSD	    { array set X {. ""} }
+	OSF1	    { array set X {gcc cc g++ cxx -static ""} }
+	SunOS	    { array set X {g++ gcc -static "" strip ""}; set env(CC) gcc }
+	Windows*    { array set X {. "" sh bash lib "" .bin .exe} }
+	default	    { array set X {} }
+    }
+}
+
+proc conf::loadconf {name {inarray "::conf"} {outarray "::conf"}} {
+    set vars {}
+    
+    if {$inarray!=""} {
+	upvar $inarray inar
+	foreach x {AR DBGX LDFLAGS LIBS LIB_RUNTIME_DIR VERSION} {
+	    if {[info exists inar($x)]} {
+		set $x $inar($x)
+		lappend vars $x
+	    }  else  {
+		set $x ""
+	    }
+	}
+	foreach n [array names inar] {
+	    set $n $inar($n)
+	    lappend vars $n
+	}
+    }
+
+    set fd [open $name]
+    while {[gets $fd line] >= 0} {
+	# cygwin shell workaround
+	if {$::tcl_platform(platform)=="windows"} {
+	    regsub -all -nocase "/cygdrive/(.)" $line "\\1:" line
+	}
+	if {[regexp {^(\w+)=$} $line - name]} {
+	    set value ""
+	} elseif {[regexp {^(\w+)='(.*)'$} $line - name value]} {
+	    set value [string map [list \\ \\\\] $value]
+	} elseif {[regexp {^(\w+)="(.*)"$} $line - name value]} {
+	} elseif {![regexp {^(\w+)=(.*)$} $line - name value]} {
+	    continue
+	}
+	set $name [subst $value]
+	lappend vars $name
+    }
+    if {$outarray!=""} {
+	upvar $outarray out
+	foreach n [set vars [lsort -unique $vars]] {
+	    set out($n) [set $n]
+	}
+    }
+    close $fd
+    return $vars
+}
+
+proc conf::x {name} {
+    variable X
+    if {[info exists X($name)]} {
+	return $X($name)
+    }
+    return $name
+}
+
+proc conf::setbuildoptions {args} {
+    variable build
+    foreach {n v} $args {
+        if {[string match *.* $v]} {
+    	    set build($n) $v
+        }
+    }
+}
+
+proc conf::setoptions {args} {
+    variable opt
+    foreach {n v} $args {
+	if {[info exists opt($n)]} {
+	    set opt($n) $v
+	}  else  {
+	    error "Unknown option $n"
+	}
+    }
+}
+
+proc conf::make {args} {
+    out::oexec [concat [list [x make]] $args]
+}
+
+proc conf::_dirname {r} {return $r}
+
+proc conf::dirconfigure {autoconf relative srcdir dstdir args} {
+    variable noarchdir
+    variable installdir
+    if {$relative} {
+	set dirname ::utils::wdrelative
+    }  else  {
+	set dirname ::conf::_dirname
+    }
+    if {[file exists [file join $srcdir configure.in]]&&$autoconf&&($::tcl_platform(platform)=="windows")} {
+	set owd [pwd]
+	if {$::conf::opt(autoconf)} {
+	    cd $srcdir
+	    file copy -force configure configure.old
+	    out::oexec {sh autoconf}
+	    cd $owd
+	}
+        file mtime [file join $srcdir configure] [clock seconds]
+	if {[catch {
+	    out::oexec [concat [list [conf::x sh] [utils::wdrelative [file join $srcdir configure]] \
+		--prefix=[$dirname $installdir] --exec-prefix=[$dirname $installdir]] $args]
+	} rc]} {
+	    if {$::conf::opt(autoconf)} {
+		cd $srcdir
+		file delete configure
+		file rename configure.old configure
+		cd $owd
+		return -code error -errorinfo $::errorInfo -errorcode $::errorCode $rc
+	    }
+	}
+	if {$::conf::opt(autoconf)} {
+	    cd $srcdir
+	    file delete configure
+	    file rename configure.old configure
+	    cd $owd
+	}
+    }  else  {
+	out::oexec [concat [list [conf::x sh] [utils::wdrelative [file join $srcdir configure]] \
+	    --prefix=[$dirname $installdir] --exec-prefix=[$dirname $installdir]] $args]
+    }
+}
+
+proc conf::norelmainconfigure {srcdir args} {
+    eval [concat [list dirconfigure 1 0 $srcdir [pwd]] $args]
+}
+
+proc conf::norelnoacmainconfigure {srcdir args} {
+    eval [concat [list dirconfigure 0 0 $srcdir [pwd]] $args]
+}
+
+proc conf::norelplatformconfigure {srcdir args} {
+    eval [concat [list dirconfigure 1 0 [file join $srcdir [utils::platformdir]] [pwd]] $args]
+}
+
+proc conf::norelnoacplatformconfigure {srcdir args} {
+    eval [concat [list dirconfigure 0 0 [file join $srcdir [utils::platformdir]] [pwd]] $args]
+}
+
+
+proc conf::mainconfigure {srcdir args} {
+    eval [concat [list dirconfigure 1 1 $srcdir [pwd]] $args]
+}
+
+proc conf::noacmainconfigure {srcdir args} {
+    eval [concat [list dirconfigure 0 1 $srcdir [pwd]] $args]
+}
+
+proc conf::platformconfigure {srcdir args} {
+    eval [concat [list dirconfigure 1 1 [file join $srcdir [utils::platformdir]] [pwd]] $args]
+}
+
+proc conf::noacplatformconfigure {srcdir args} {
+    eval [concat [list dirconfigure 0 1 [file join $srcdir [utils::platformdir]] [pwd]] $args]
+}
+
+proc conf::c_if {o en dis} {
+    variable opt
+    if {($opt($o) != "0") && ($opt($o) != "no") && ($opt($o) != "false")} {
+	return $en
+    }  else  {
+	return $dis
+    }
+}
+proc conf::c_disen {o {name ""}} {
+    variable opt
+    if {$name==""} {set name $o}
+    if {$opt($o)} {
+	return "--enable-$name"
+    }  else  {
+	return "--disable-$name"
+    }
+}
+proc conf::c_norelwith {component {name ""}} {
+    if {$name==""} {set name $component}
+    return "--with-$name=[part::destdir $component]"
+}
+
+proc conf::c_with {component {name ""}} {
+    if {$name==""} {set name $component}
+    return "--with-$name=[utils::wdrelative [part::destdir $component]]"
+}
+
+proc conf::libname {prefix version {dots end} {useg 1}} {
+    if {$useg} {
+        set g [c_if debug [conf::gsuffix] ""]
+    }  else  {
+        set g ""
+    }
+    return "[conf::x lib]${prefix}[part::dotversion $version $dots]${g}.a"
+}
+proc conf::gsuffix {} {
+    set rc g
+    if {$::tcl_platform(platform)=="windows"} {
+	set rc d
+    }
+    return $rc
+}
+# }}}
+# getopts {{{
+proc conf::getopts {ar {core 1}} {
+    upvar build build opt opt
+    foreach {n v} [array get ::part::part *,options] {
+	foreach {n v} $v {
+	    set opt($n) $v
+	}
+    }
+    foreach n $::part::part(parts) {
+	if {$core} {
+	    set build($n) $::part::part($n,core)
+	}  else  {
+	    set build($n) 0
+	}
+    }
+    foreach a $ar {
+	if {[regexp -- "^-(.*?)=(.*)\$" $a - n v]} {
+	}  elseif {[string range $a 0 7]=="-enable-"} {
+	    set n [string range $a 8 end]
+	    set v 1
+	}  elseif {[string range $a 0 8]=="-disable-"} {
+	    set n [string range $a 9 end]
+	    set v 0
+	}  elseif {[string range $a 0 2]=="-no"} {
+	    set n [string range $a 3 end]
+	    set v 0
+	}  elseif {[string range $a 0 0]=="-"} {
+	    set n [string range $a 1 end]
+	    set v 1
+	}
+        foreach n [split $n ,] {
+	    if {[info exists build($n)]} {
+	        set build($n) $v
+	    }
+	    if {[info exists opt($n)]} {
+	        set opt($n) $v
+            }
+	}
+    }
+#parray opt
+#parray build
+#exit
+}
+# }}}
+# parts {{{
+namespace eval part {}
+proc part::create {name args} {
+    variable part
+    set c(depend) {}
+    set c(buildproc) {}
+    set c(definesproc) {}
+    set c(libraryproc) {}
+    set c(externproc) {}
+    set c(initproc) {}
+    set c(component) $name
+    set c(options) {}
+    set c(core) 0
+    set c(config) ""
+    set c(appinit) ""
+    set c(kitpatterns) ""
+
+    foreach {n v} $args {
+	if {[string index $n 0]!="-"} {error "Invalid $n option"}
+	set n [string range $n 1 end]
+
+	switch -- $n {
+	    buildcommand - librarycommand - initcommand - externcommand - definescommand {
+		set m [string range $n 0 end-7]
+		set cmd ::part::_${m}_$name
+		proc $cmd {} $v
+		set n ${m}proc; set v $cmd
+	    }
+	}
+	
+	if {[info exists c($n)]} {
+	    set c($n) $v
+	}  else  {
+	    error "Invalid -$n option: should be one of -[join [lsort [array names c]] {, -}]"
+	}
+    }
+    lappend part(parts) $name
+    foreach {n v} [array get c] {
+	set part($name,$n) $v
+    }
+}
+proc part::destdir {component} {
+    set dir [file join $::conf::buildtopdir $component]
+    return $dir
+}
+proc part::srcdir {component} {
+    set cv 0
+    set rc $component
+    set complen [string length $component]
+    set verpat "*"
+
+    if {[info exists ::conf::build($component)] && [string match *.* $::conf::build($component)]} {
+        set verpat $::conf::build($component)
+    }
+    foreach c [glob -directory $::conf::srctopdir ${component} ${component}-$verpat] {
+	set ct [file tail $c]
+	if {[string range $ct 0 $complen]=="${component}-"} {
+	    set ver [string range $ct [expr {$complen+1}] end]
+	}  else  {
+	    set ver 0
+	}
+	if {[package vcompare $ver $cv]>=0} {
+	    set cv $ver
+	    set rc $ct
+	}
+    }
+    return [file join $::conf::srctopdir $rc]
+}
+proc part::srcversion {dirname {last end}} {
+    set ct [file tail $dirname]
+    set rc ""
+    if {[set i [string first - $ct]]>=0} {
+	set rc [string range $ct [expr {$i+1}] end]
+    }
+    return [join [lrange [split $rc .] 0 $last] .]
+}
+
+proc part::configfile {component} {
+    variable part
+    if {$part($component,config)==""} {
+	return ""
+    }  else  {
+	return [lindex [glob -directory [part::destdir $component] $part($component,config) */$part($component,config)] 0]
+    }
+}
+
+proc part::dotversion {version {last end}} {
+    return [join [lrange [split $version .] 0 $last] [conf::x .]]
+}
+
+proc part::initcode {component} {
+    variable part
+    return [uplevel 1 $part($component,initproc)]
+}
+proc part::externcode {component} {
+    variable part
+    return [uplevel 1 $part($component,externproc)]
+}
+proc part::librarylist {component} {
+    variable part
+    return [uplevel 1 $part($component,libraryproc)]
+}
+proc part::defineslist {component} {
+    variable part
+    return [uplevel 1 $part($component,definesproc)]
+}
+proc part::appinit {component} {
+    variable part
+    return $part($component,appinit)
+}
+# }}}
+# parts sourcing {{{
+foreach file [glob -nocomplain -directory [file join [file dirname [info script]] .. parts] *.tcl] {
+    uplevel #0 [list source $file]
+}
+# }}}
+# other options {{{
+set ::part::part(_global,options) {hostname "" autoconf 1}
+set ::part::part(_finalize,options) {binary "" compression best kitfile "" defaultkit 0}
+# }}}
+# main helper procs {{{
+namespace eval main {}
+
+proc main::ladd {var ar} {
+    upvar $var v
+    set v [concat $v $ar]
+}
+proc main::_build_order {c} {
+    upvar buildorder buildorder
+    set dep $::part::part($c,depend)
+    foreach d $dep {
+	if {[lsearch -exact $buildorder $d]<0} {
+	    _build_order $d
+	}
+    }
+    if {[lsearch -exact $buildorder $c]<0} {
+	lappend buildorder $c
+    }
+    return $buildorder
+}
+proc main::_compile {component} {
+    set part::part(current) $component
+    set dir [part::destdir $component]
+    out::init $component
+    if {![file exists $dir]} {
+	file mkdir $dir
+    }
+    cd $dir
+    eval $::part::part($component,buildproc)
+    cd $::conf::topdir
+    out::fini
+}
+
+proc main::_link {components {ar ""}} {
+    out::init dqkit
+    set dir [part::destdir dqkit]
+    if {![file exists $dir]} {
+	file mkdir $dir
+    }
+    cd $dir
+
+    set binsuffix [conf::x .bin]
+    foreach co $components {
+	if {[set file [part::configfile $co]]!=""} {
+	    conf::loadconf $file c c
+	}
+    }
+    set L [list]
+    set D [list]
+    set externcode ""
+    set initcode ""
+    set appinit ""
+    foreach co $components {
+	ladd D [part::defineslist $co]
+	ladd L [part::librarylist $co]
+	append externcode [part::externcode $co]
+	append initcode [part::initcode $co]
+	if {[set ai [subst [part::appinit $co]]]!=""} {
+	    set appinit [file join $::conf::topdir $ai]
+	}
+    }
+    
+    set target [file join $dir dqkit$binsuffix]
+
+    utils::sync [part::srcdir dqkit] $dir $::utils::defaultOmitFiles $::utils::defaultOmitDirs
+    utils::withfile [file join $dir kitInit.c] fc {
+	set fc [string map [list %DQKIT_EXTERN_CODE% $externcode %DQKIT_INIT_CODE% $initcode] $fc]
+    }
+
+    # core initialization
+    set I [list -I. -I[part::srcdir tcl]/generic -I[part::srcdir tcl]/[utils::platformdir] -I[part::srcdir mk]/include -I[part::srcdir zlib] -I${::conf::installdir}/include]
+    lappend L [part::destdir zlib]/libz.a
+
+    lappend D -DTCL_LOCAL_APPINIT=TclKit_AppInit
+    if {$::conf::opt(debug)} {
+	lappend D -DKIT_DEBUG -DDEBUG
+    }  else  {
+	lappend D -DNDEBUG
+    }
+    if {$::conf::opt(kitfile)!=""} {
+	lappend D -DKIT_USECUSTOMFILE "-DKIT_CUSTOMFILE=\"$::conf::opt(kitfile)\""
+    }
+
+    set L [utils::optsort [utils::mkunique $L -L* -l*] * - *.a -L* -l*]
+
+    if {[utils::platformdir] == "win"} {
+	set fh [open [part::srcdir tcl]/win/tclWinReg.c r]
+	set fc [read $fh]
+	close $fh
+	if {[regexp -line "Tcl_PkgProvide.*?\"registry\",\\s+\"(.*?)\"" $fc "" ver]} {
+	    lappend D "-DDQKIT_REGISTRY_VERSION=\"$ver\""
+        }  else  {
+	    lappend D "-DDQKIT_REGISTRY_VERSION=\"1.1.3\""
+        }
+	set fh [open [part::srcdir tcl]/win/tclWinDde.c r]
+	set fc [read $fh]
+	close $fh
+	if {[regexp -line "#define\\s+TCL_DDE_VERSION\\s+\"(.*?)\"" $fc "" ver]} {
+	    lappend D "-DDQKIT_DDE_VERSION=\"$ver\""
+        }  else  {
+	    lappend D "-DDQKIT_DDE_VERSION=\"1.2.3\""
+        }
+    }
+
+    if {$::tcl_platform(os) == "SunOS"} {
+        lappend L -Wl,-Bstatic -lstdc++ -Wl,-Bdynamic
+    }
+    if {$::tcl_platform(os) == "Linux" && $::tcl_platform(machine) == "x86_64"} {
+#        lappend L -lxcb -lXau -lXdmcp -lxcb-xlib -lpthread
+    }
+
+    if {$ar!=""} {
+	set DAR -DDQKIT_BUILDAR=1
+    }  else  {
+	set DAR -DDQKIT_NOBUILDAR=1
+    }
+    puts [array names ::env]
+    parray ::env
+    set CFLAGS ""
+    set LDFLAGS ""
+    if {[info exists ::env(CFLAGS)]} {
+        set CFLAGS $::env(CFLAGS)
+    }
+    if {[info exists ::env(LDFLAGS)]} {
+        set LDFLAGS $::env(LDFLAGS)
+    }
+    out::oexec [concat [list [conf::x gcc]] $CFLAGS [conf::c_if debug [list -g] [list]] [list -c] $I $D [list -DBUILD_tcl=1 -DSTATIC_BUILD=1 $DAR] \
+	[file join $dir kitInit.c] [file join $dir pwb.c] [file join $dir rechan.c] [file join $dir zlib.c] [list $appinit]]
+    set oappinit [file join $dir [file tail [string range $appinit 0 end-2]].o]
+    if {$ar!=""} {
+	set arfile [file join $dir dqkit.a]
+	set arfiles [list [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o]]
+	set optlist [list]
+	set mergear [list]
+	foreach opt $L {
+	    if {([string index $opt 0]!="-")&&([regexp "\\.a\$" $opt])} {
+		lappend mergear $opt
+	    }  elseif {([string index $opt 0]!="-")&&([regexp "\\.o\$" $opt])} {
+		lappend arfiles $opt
+	    }  else  {
+		lappend optlist $opt
+	    }
+	}
+	
+	set mergear [concat [list $arfile] $mergear]
+	out::oexec [concat [list [conf::x ar] cr $arfile] $arfiles]
+	utils::armerge $mergear $ar.a
+
+	set fh [open $ar.opt w]
+	puts $fh $optlist
+	close $fh
+	set fh [open $ar.sh w]
+	puts $fh "DQKIT_COMPILER='[conf::x g++]'"
+	puts $fh "DQKIT_OPTIONS='[conf::x -static] [join $optlist { }]'"
+	puts $fh "DQKIT_DYNOPTIONS='[join $optlist { }]'"
+	puts $fh "DQKIT_ARCHIVE=\"[utils::normalize $ar.a]\""
+	puts $fh "DQKIT_APPINIT=\"[utils::normalize $ar.o]\""
+	puts $fh "\nexport DQKIT_COMPILER DQKIT_OPTIONS DQKIT_AR"
+	close $fh
+	file copy -force $oappinit $ar.o
+    }  else  {
+	regsub -all -- {itcl33d.a} $L {itcl33.a} L
+	regsub -all -- {libitcl3.3g.a} $L {libitcl3.3.a} L
+puts "L: $L"
+	#out::oexec [concat [list [conf::x g++]] [conf::x -static] [conf::c_if debug [list -g] [list]] [list -o $target \
+#	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
+	out::oexec [concat [list [conf::x g++]] $LDFLAGS [conf::c_if debug [list -g] [list]] [list -o $target \
+	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
+    }
+    cd $::conf::topdir
+    out::fini
+}
+
+proc main::_qfinalize {components} {
+    set binsuffix [conf::x .bin]
+    set sbin [file join [part::destdir dqkit] dqkit$binsuffix]
+    set debug [conf::c_if debug 1 0]
+    if {$::conf::opt(binary)==""} {
+	set dbin [file join $::conf::bindir dqkit$params$binsuffix]
+    }  else  {
+	set dbin [file join $::conf::bindir dqkit-${::conf::opt(binary)}$binsuffix]
+    }
+    if {$debug} {
+	file delete $dbin.kit
+	vfs::mk4::Mount $dbin.kit $dbin.kit
+	set ddir $dbin.kit
+    }  else  {
+	file copy -force $sbin $dbin
+	vfs::mk4::Mount $dbin $dbin
+	set ddir $dbin
+    }
+    set globs [list *.* bin]
+    file mkdir [file join $ddir lib]
+    foreach n $components {
+	set dir [part::srcdir $n]
+	set ver [part::srcversion $dir]
+	set ver0 [part::srcversion $dir 0]
+	set ver1 [part::srcversion $dir 1]
+	set ver2 [part::srcversion $dir 2]
+	set ver3 [part::srcversion $dir 3]
+	set p [list]; foreach e $::part::part($n,kitpatterns) {
+	    lappend p [string map [list @VER@ $ver @VER0@ $ver0 @VER1@ $ver1 @VER2@ $ver2 @VER3@ $ver3] $e]
+	}
+	set globs [concat $globs $p]
+    }
+    set sdir $::conf::kitdir
+    foreach fullname [eval [concat [list glob -directory $sdir] $globs]] {
+	set name [utils::mkrelative $sdir $fullname]
+	set destname [file join $ddir $name]
+	switch -- [file type $fullname] {
+	    file {
+		utils::dupfile $fullname $destname
+	    }
+	    directory {
+		catch {file mkdir $destname}
+		utils::sync $fullname $destname $::utils::defaultOmitFiles $::utils::defaultOmitDirs
+	    }
+	}
+    }
+    vfs::unmount $ddir
+}
+proc main::_suffix {components} {
+    if {$::conf::opt(fullname)} {
+	foreach c [lsort -dictionary $components] {
+	    if {$::part::part($c,core)} {continue}
+	    append params "-$c"
+	}
+	foreach n [lsort -dictionary [array names ::conf::opt]] {
+	    #
+	    set co $::conf::opt($n)
+	    if {$n=="fullname"} {continue}
+	    if {($co!="")&&($co!=0)} {
+		if {[lsearch -exact $::part::part(parts) $n]<0} {
+		    if {$co=="1"} {
+		        append params "_$n"
+		    }  else  {
+		        regsub -all "(?!\[\[:alnum:\]\])." $co "" cor
+		        append params "_${n}_${cor}"
+		    }
+		}
+	    }
+	}
+    }
+    if {$::conf::opt(binary)!=""} {
+	set params -${::conf::opt(binary)}
+    }
+    return $params
+}
+proc main::_finalize {components {kit ""}} {
+    out::init finalize
+
+    set params ""
+    if {$::conf::opt(fullname)} {
+	foreach c [lsort -dictionary $components] {
+	    if {$::part::part($c,core)} {continue}
+	    append params "-$c"
+	}
+	foreach n [lsort -dictionary [array names ::conf::opt]] {
+	    #
+	    set co $::conf::opt($n)
+	    if {$n=="fullname"} {continue}
+	    if {($co!="")&&($co!=0)} {
+		if {[lsearch -exact $::part::part(parts) $n]<0} {
+		    if {$co=="1"} {
+		        append params "_$n"
+		    }  else  {
+		        regsub -all "(?!\[\[:alnum:\]\])." $co "" cor
+		        append params "_${n}_${cor}"
+		    }
+		}
+	    }
+	}
+    }
+
+    set binsuffix [conf::x .bin]
+    set sbin [file join [part::destdir dqkit] dqkit$binsuffix]
+    if {$::conf::opt(binary)==""} {
+	set dbin [file join $::conf::bindir dqkit$params$binsuffix]
+    }  else  {
+	set params -${::conf::opt(binary)}
+	set dbin [file join $::conf::bindir dqkit-${::conf::opt(binary)}$binsuffix]
+    }
+    if {[conf::c_if defaultkit 1 0]} {
+	if {$kit == ""} {
+	    file copy -force $sbin $dbin
+	    set fh1 [open $dbin[conf::c_if debug .kit ""] [conf::c_if debug w a]]
+	}  else  {
+	    set fh1 [open $kit w]
+	}
+	fconfigure $fh1 -translation binary
+
+	set fh2 [open [file join $::conf::kitdir default] r]
+	fconfigure $fh2 -translation binary
+
+	puts -nonewline $fh1 [read $fh2]
+	close $fh1
+	close $fh2
+
+    }  else  {
+	set tbin [file join $::conf::bindir tmpkit$binsuffix]
+
+	if {$kit==""} {
+	    file copy -force $sbin $dbin
+	}
+	file copy -force $sbin $tbin
+
+	set fh1 [open $tbin[conf::c_if debug .kit ""] a]
+	fconfigure $fh1 -translation binary
+
+	set fh2 [open [file join $::conf::kitdir default] r]
+	fconfigure $fh2 -translation binary
+
+	puts -nonewline $fh1 [read $fh2]
+	close $fh1
+	close $fh2
+
+	set script [file join $::conf::topdir [file tail [file dirname [info script]]] [file tail [info script]]]
+        set ::env(FORCEHOSTNAME) [utils::hostname]
+	out::oexec [list $tbin $script finalize2 $components $dbin [conf::c_if debug 1 0] $::conf::opt(compression) $kit [array get ::conf::build]]
+	file delete $tbin
+	if {[conf::c_if debug 1 0]} {
+	    file delete $tbin.kit
+	}
+    }
+    out::fini
+    return $params
+}
+
+#      elseif {$debug} 
+#	set ddir $dbin.kit
+
+proc main::finalize2 {ar} {
+    out::init finalize2
+    set components [lindex $ar 0]
+    set dbin [lindex $ar 1]
+    set debug [lindex $ar 2]
+    set c [lindex $ar 3]
+    set kitname [lindex $ar 4]
+    array set ::conf::build [lindex $ar 5]
+    set scmd [conf::x strip]
+    set sdir $::conf::kitdir
+
+    if {$kitname!=""} {
+	file delete -force $kitname
+	set ddir $kitname
+    }  else  {
+        if {$scmd != ""} {
+            out::oexec [list $scmd $dbin]
+        }
+	if {$c=="best"} {
+	    set c "--best"
+	}  elseif  {$c!=""}  {
+	    set c "-$c"
+	}
+	if {$c=="-none"} {
+	    set c ""
+	}
+	if {$c!=""} {
+	    out::oexec [list upx $c $dbin]
+	}
+	set ddir $dbin
+    }
+    vfs::mk4::Mount $ddir $ddir
+
+    # copying
+    set globs [list *.* bin]
+    file mkdir [file join $ddir lib]
+    foreach n $components {
+	set dir [part::srcdir $n]
+	set ver [part::srcversion $dir]
+	set ver0 [part::srcversion $dir 0]
+	set ver1 [part::srcversion $dir 1]
+	set ver2 [part::srcversion $dir 2]
+	set ver3 [part::srcversion $dir 3]
+	set p [list]; foreach e $::part::part($n,kitpatterns) {
+	    lappend p [string map [list @VER@ $ver @VER0@ $ver0 @VER1@ $ver1 @VER2@ $ver2 @VER3@ $ver3] $e]
+	}
+	set globs [concat $globs $p]
+    }
+
+    # handle Tcl 8.5
+    set tclsrcdir [part::srcdir tcl]
+    set tclversion [part::srcversion $tclsrcdir 1]
+    
+    if {[package vcompare $tclversion 8.5] >= 0} {
+        set tclversionMajor [lindex [split $tclversion .] 0]
+        set tclversionMinor [lindex [split $tclversion .] 1]
+
+        for {set i 0} {$i <= $tclversionMinor} {incr i} {
+            set libname "lib/tcl${tclversionMajor}/${tclversionMajor}.${i}"
+            lappend globs $libname
+            puts "Adding $libname to copy path"
+        }
+        
+    }
+    puts "Copy list:\n  [join $globs "\n  "]"
+    foreach fullname [eval [concat [list glob -directory $sdir] $globs]] {
+	set name [utils::mkrelative $sdir $fullname]
+	set destname [file join $ddir $name]
+	puts "Copying $fullname as $destname"
+	switch -- [file type $fullname] {
+	    file {
+		utils::dupfile $fullname $destname
+	    }
+	    directory {
+		catch {file mkdir $destname}
+		utils::sync $fullname $destname $::utils::defaultOmitFiles $::utils::defaultOmitDirs
+	    }
+	}
+    }
+    vfs::unmount $ddir
+    out::fini
+}
+
+# }}}
+# main commands {{{
+proc main::build {ar} {
+    conf::getopts $ar 1
+    set buildorder [list]
+    foreach {n v} [array get build] {
+	if {($v == 1) || [string match *.* $v]} {
+	    _build_order $n
+	}
+    }
+    out::allparts [concat [list options setupdirs unpack] $buildorder link finalize]
+    
+    eval [concat [list conf::setoptions] [array get opt]]
+    eval [concat [list conf::setbuildoptions] [array get build]]
+    out::nextstep
+
+    setupdirs
+    out::nextstep
+
+    _unpack
+    out::nextstep
+
+    foreach n $buildorder {
+	_compile $n
+	out::nextstep
+    }
+    _link $buildorder
+    out::nextstep
+
+    _finalize $buildorder
+    out::nextstep
+}
+
+proc main::compile {ar} {
+    conf::getopts [lrange $ar 1 end] 0
+    set buildorder [split [lindex $ar 0] ,]
+    out::allparts [concat [list options setupdirs] $buildorder]
+    
+    eval [concat [list conf::setoptions] [array get opt]]
+    eval [concat [list conf::setbuildoptions] [array get build]]
+    out::nextstep
+
+    setupdirs
+    out::nextstep
+
+    foreach n $buildorder {
+	_compile $n
+	out::nextstep
+    }
+}
+
+proc main::setupdirs {{cmd ""}} {
+    foreach dir $::conf::directories {
+	if {![file exists $dir]} {
+	    file mkdir $dir
+	}
+    }
+}
+
+proc main::link {ar} {
+    conf::getopts $ar 1
+    set buildorder [list]
+    foreach {n v} [array get build] {
+        if {($v == 1) || [string match *.* $v]} {
+	    _build_order $n
+	}
+    }
+    out::allparts [concat [list options setupdirs link]]
+    
+    eval [concat [list conf::setoptions] [array get opt]]
+    eval [concat [list conf::setbuildoptions] [array get build]]
+    out::nextstep
+
+    setupdirs
+    out::nextstep
+
+    _link $buildorder
+    out::nextstep
+}
+
+proc main::linkfinal {ar} {
+    conf::getopts $ar 1
+    set buildorder [list]
+    foreach {n v} [array get build] {
+	if {($v == 1) || [string match *.* $v]} {
+	    _build_order $n
+	}
+    }
+    out::allparts [concat [list options setupdirs link finalize]]
+    
+    eval [concat [list conf::setoptions] [array get opt]]
+    eval [concat [list conf::setbuildoptions] [array get build]]
+    out::nextstep
+
+    setupdirs
+    out::nextstep
+
+    _link $buildorder
+    out::nextstep
+
+    _finalize $buildorder
+    out::nextstep
+}
+
+proc main::buildar {ar} {
+    conf::getopts $ar 1
+    set buildorder [list]
+    foreach {n v} [array get build] {
+	if {($v == 1) || [string match *.* $v]} {
+	    _build_order $n
+	}
+    }
+    out::allparts [concat [list options setupdirs archive kit]]
+    
+    eval [concat [list conf::setoptions] [array get opt]]
+    eval [concat [list conf::setbuildoptions] [array get build]]
+    out::nextstep
+
+    setupdirs
+    out::nextstep
+
+    set suffix [_suffix $buildorder]
+
+    _link $buildorder [file join $conf::ardir dqkit$suffix]
+    out::nextstep
+
+    _finalize $buildorder [file join $conf::ardir dqkit$suffix.kit]
+    out::nextstep
+}
+
+proc main::finalize {ar} {
+    conf::getopts $ar 1
+    set buildorder [list]
+    foreach {n v} [array get build] {
+	if {($v == 1) || [string match *.* $v]} {
+	    _build_order $n
+	}
+    }
+    out::allparts [concat [list options setupdirs finalize]]
+    
+    eval [concat [list conf::setoptions] [array get opt]]
+    eval [concat [list conf::setbuildoptions] [array get build]]
+    out::nextstep
+
+    setupdirs
+    out::nextstep
+
+    _finalize $buildorder
+    out::nextstep
+}
+
+proc main::qfinalize {ar} {
+    conf::getopts $ar 1
+    set buildorder [list]
+    foreach {n v} [array get build] {
+        if {($v == 1) || [string match *.* $v]} {
+	    _build_order $n
+	}
+    }
+    out::allparts [concat [list options setupdirs qfinalize]]
+    
+    eval [concat [list conf::setoptions] [array get opt]]
+    eval [concat [list conf::setbuildoptions] [array get build]]
+    out::nextstep
+
+    setupdirs
+    out::nextstep
+
+    _qfinalize $buildorder
+    out::nextstep
+}
+
+proc main::mrproper {dummy} {
+    foreach dir {bin build out noarch install} {
+	utils::wipedir [file join $::conf::topdir $dir]
+    }
+}
+
+proc main::cleanup {dummy} {
+    set h $::conf::host
+    foreach h [list $h \
+	$h-debug-threaded $h-debug-nonthreaded \
+	$h-threaded $h-nonthreaded] {
+    	foreach dir [list build/$h out/$h install/$h] {
+	    utils::wipedir [file join $::conf::topdir $dir]
+	}
+    }
+}
+
+proc main::cleanupall {dummy} {
+    set h $::conf::host
+    foreach h [list $h \
+	$h-debug-threaded $h-debug-nonthreaded \
+	$h-threaded $h-nonthreaded] {
+	foreach dir [list bin/$h build/$h out/$h install/$h ar/$h] {
+	    utils::wipedir [file join $::conf::topdir $dir]
+	}
+    }
+    utils::wipedir [file join $::conf::topdir noarch]
+}
+
+proc main::defaultkit {filename} {
+    if {$filename == ""} {
+	set dummy 1
+	set filename $conf::topdir/kit/default.tmp
+	set kitfilename $conf::topdir/kit/default
+    }  else  {
+	set filename [lindex $filename 0]
+	set dummy 0
+    }
+
+    out::init defaultkit
+    if {$dummy} {
+	out::printcomment "Initializing VFS in dummy file"
+    }  else  {
+	out::printcomment "Initializing VFS in custom file"
+    }
+    out::printcomment "  \"$filename\""
+
+
+    if {[catch {package require mk4vfs}] && [catch {package require mk4vfs}]} {
+	out::printerror "This command requires a Tcl interpreter with TclVfs and mk4vfs."
+    }
+    
+    file delete -force $filename
+    vfs::mk4::Mount $filename $filename
+    file mkdir $filename
+
+    out::printcomment "Synchronizing / directory"
+    utils::sync $conf::kitdir $filename {default} {*}
+
+    out::printcomment "Synchronizing /bin directory"
+    file mkdir $filename/bin
+    utils::sync $conf::kitdir/bin $filename/bin {} $::utils::defaultOmitDirs
+
+    file mkdir $filename/lib
+    foreach dirname [glob -nocomplain -directory $conf::kitdir/lib -type d tcl8 tcl8.* tk8.* vfs] {
+	set dirname [file tail $dirname]
+	out::printcomment "Synchronizing /lib/$dirname directory"
+	file mkdir $filename/lib/$dirname
+	utils::sync $conf::kitdir/lib/$dirname $filename/lib/$dirname $::utils::defaultOmitFiles $::utils::defaultOmitDirs
+    }
+
+    vfs::unmount $filename
+
+    if {$dummy} {
+	out::printcomment "Copying dummy file as original file"
+
+	file copy -force $filename $kitfilename
+	file delete $filename
+    }
+}
+
+proc main::_unpack {} {
+    out::init unpack
+    foreach file [glob -nocomplain -directory [file join $::conf::dldir] *.tar.gz] {
+	set ddir [file join $::conf::srctopdir [file rootname [file rootname [file tail $file]]]]
+	if {![file exists $ddir]} {
+	    utils::untargz $file $::conf::srctopdir
+	}
+    }
+    out::fini
+}
+
+proc main::unpack {dummy} {
+    out::allparts [concat [list setupdirs unpack]]
+    setupdirs
+    out::nextstep
+
+    _unpack    
+    out::nextstep
+}
+# }}}
+# main evaluation {{{
+conf::init [lrange $argv 1 end]
+
+proc main::test {ar} {
+    puts [utils::optsort [utils::mkunique $ar -L* -l*] * - -A* -L* -l*]
+}
+
+if {[llength $argv]>0} {
+    main::[lindex $argv 0] [lrange $argv 1 end]
+    exit 0
+}  else  {
+    main::build {}
+    exit 0
+}
+# }}}
+

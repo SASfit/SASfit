@@ -1,0 +1,3 @@
+edit the group definitions in <sasfit-root>/src/plugins/
+they will be copied here by CMakeLists.txt in that directory
+when 'cmake .' is run in <sasfit-root>/src
