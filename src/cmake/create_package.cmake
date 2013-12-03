@@ -56,15 +56,20 @@ message("=> ${SASFIT_PCKG_DIR}")
 file(READ ${SASFIT_LIST_FILE} SASFIT_FILE_LIST)
 
 # copy each file from the list to its destination
-foreach(FILENAME ${SASFIT_FILE_LIST}) 
-	set(SRC_FILENAME ${SASFIT_ROOT_DIR}/${FILENAME})
+foreach(REL_FILENAME ${SASFIT_FILE_LIST})
+        set(SRC_FILENAME "${REL_FILENAME}")
+        if(NOT EXISTS "${SRC_FILENAME}")
+                set(SRC_FILENAME ${SASFIT_ROOT_DIR}/${REL_FILENAME})
+        else() # exists, is absolute path
+                get_filename_component(REL_FILENAME "${SRC_FILENAME}" NAME)
+        endif()
 #	message("processing file: '${SRC_FILENAME}' '${SASFIT_PCKG_DIR}/${FILENAME}'")
 	if(EXISTS ${SRC_FILENAME})
-		configure_file(${SRC_FILENAME} ${SASFIT_PCKG_DIR}/${FILENAME} COPYONLY)
-	else(EXISTS ${SRC_FILENAME})
+                configure_file(${SRC_FILENAME} ${SASFIT_PCKG_DIR}/${REL_FILENAME} COPYONLY)
+	else()
 		message("Could not copy file: ${SRC_FILENAME}")
-	endif(EXISTS ${SRC_FILENAME})
-endforeach(FILENAME)
+	endif()
+endforeach()
 
 # build zip/tar archive
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake

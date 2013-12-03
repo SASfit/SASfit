@@ -1,12 +1,6 @@
 #!/bin/bash
-
-#for dir in $(find . -name "Makefile" -printf "%h\n");do
-#    CURRENT_DIR=$(pwd);
-#    cd "$dir";
-#    make clean;
-#    rm Makefile;
-#    cd "$CURRENT_DIR";
-#done;
+# Removes sasfit intermediate build results which are not removed
+# by 'make clean' usually.
 
 IFS=$'\n';
 for name in $(find . -name "CMakeCache.txt";

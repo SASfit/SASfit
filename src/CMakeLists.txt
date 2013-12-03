@@ -130,15 +130,33 @@ add_definitions(
 ### library definition ###
  ########################
 
-find_package(GSL REQUIRED)
-find_package(TCL REQUIRED)
+# GSL
+find_package(GSL QUIET REQUIRED)
+message("gsl found; '${GSL_FOUND}'")
+if(NOT GSL_FOUND)
+        message("subdir gsl")
+        add_subdirectory(gsl)
+        find_package(GSL REQUIRED)
+endif()
+message(STATUS "GSL INCLUDES:  ${GSL_INCLUDE_DIRS}")
+message(STATUS "GSL LIBRARIES: ${GSL_LIBRARIES}")
+
+# TCL
+find_package(TCL QUIET REQUIRED)
+if(NOT TCL_FOUND)
+        message("subdir tcl")
+        add_subdirectory(tcl)
+        find_package(TCL REQUIRED)
+endif()
+message(STATUS "TCL INCLUDES:  ${TCL_INCLUDE_DIRS}")
+message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
 
 # FFTW
-set(FFTW_DIR ${CURRENT_DIR}/fftw)
 find_package(FFTW QUIET REQUIRED)
 if(NOT FFTW_FOUND)
-    add_subdirectory(fftw)
-    find_package(FFTW QUIET REQUIRED)
+        message("subdir fftw")
+        add_subdirectory(fftw)
+        find_package(FFTW REQUIRED)
 endif()
 message(STATUS "FFTW INCLUDES:  ${FFTW_INCLUDE_DIRS}")
 message(STATUS "FFTW LIBRARIES: ${FFTW_LIBRARIES}")
@@ -176,7 +194,7 @@ add_library(sasfit SHARED
 )
 
 target_link_libraries(sasfit
-	${TCL_STUB_LIBRARY}
+        ${TCL_LIBRARIES}
 	${GSL_STATIC_LIBRARIES}
 	${FFTW_LIBRARIES}
 )
@@ -265,6 +283,7 @@ if(CREATE_BINARY)
 	if(CMAKE_HOST_APPLE)
 		set(SASFIT_PCKG_DIR_POSTFIX ${CMAKE_SYSTEM_NAME}_${CMAKE_OSX_ARCHITECTURES})
 	endif(CMAKE_HOST_APPLE)
+        string(TOLOWER "${SASFIT_PCKG_DIR_POSTFIX}" SASFIT_PCKG_DIR_POSTFIX)
 	set(SASFIT_PCKG_DIR_POSTFIX ${SASFIT_PCKG_DIR_POSTFIX}${LIBSTDC_VER}${DEBUG_SUFFIX})
 	set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
 
@@ -272,8 +291,10 @@ if(CREATE_BINARY)
 
 	# set the saskit filename, chose the debug version if required
 	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
+        build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
         message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
-	# write the list of filenames to a temporary file (workaround for shell command length restrictions)
+	# write the list of filenames to a temporary file
+        # (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
 	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
 

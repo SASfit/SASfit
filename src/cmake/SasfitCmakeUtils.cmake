@@ -58,7 +58,6 @@ macro(sasfit_assert_dir)
 	endif(${ARGC} GREATER 0)
 endmacro(sasfit_assert_dir)
 
-
 # copy shared libs to a target dir (where sasfit tcl routines will find them)
 macro(sasfit_copy_shared_libs SHARED_TARGET REL_TARGET_DIR)
 	sasfit_copy_libs(${REL_TARGET_DIR} "${CMAKE_SHARED_LIBRARY_PREFIX}" ${SHARED_TARGET} "${CMAKE_SHARED_LIBRARY_SUFFIX}")
@@ -275,3 +274,168 @@ macro(sasfit_update_version)
 
 endmacro(sasfit_update_version)
 
+# check for target architecture
+set(SYSTEM_IS_64 FALSE)
+if(CMAKE_SIZEOF_VOID_P)
+    if(${CMAKE_SIZEOF_VOID_P} EQUAL 8) # check for 64bit platform
+        set(SYSTEM_IS_64 TRUE)
+    endif()
+endif()
+
+set(PLATFORM "${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}")
+string(TOLOWER ${PLATFORM} PLATFORM)
+
+# retrieves the path to the already extracted source package
+# sets result variables in parent scope:
+# SOURCE_DIR: absolute path to source package directory
+# BASE_NAME:  name of the current dir,
+#             usually the base name of the package to build
+function(get_package_dir CURRENT_DIR)
+    if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
+        return()
+    endif()
+    message("get_package_dir: '${CURRENT_DIR}'")
+    get_filename_component(BASE_NAME ${CURRENT_DIR} NAME)
+    set(BASE_NAME ${BASE_NAME} PARENT_SCOPE)
+    message("base name: '${BASE_NAME}'")
+    unset(SOURCE_DIR)
+    find_configure(${CURRENT_DIR}/${PLATFORM})
+    message("SOURCE_DIR: '${SOURCE_DIR}' '${SUFFIX_DIR}' '${PLATFORM}'")
+    message("found source dir: '${SOURCE_DIR}'")
+    set(SOURCE_DIR ${SOURCE_DIR} PARENT_SCOPE)
+endfunction()
+
+function(find_configure PCKG_PATH)
+    message("find_configure '${PCKG_PATH}'")
+    # determine directory for PCKG_PATH containing *
+    file(GLOB GLOB_RESULT "${PCKG_PATH}")
+    foreach(RESULT ${GLOB_RESULT})
+        if(EXISTS "${RESULT}" AND IS_DIRECTORY "${RESULT}")
+            set(PCKG_PATH ${RESULT})
+            break()
+        endif()
+    endforeach()
+    # unset suffix result
+    unset(SUFFIX_DIR)
+    set(SUFFIX_DIR PARENT_SCOPE)
+    # list of sub directories containing the configure script eventually
+    set(candidates .)
+    if(WIN32)
+        list(APPEND candidates win)
+    elseif(UNIX)
+        list(APPEND candidates unix)
+    endif()
+    foreach(candidate ${candidates})
+        # try sth for the TCL case
+        message("GLOB: '${PCKG_PATH}/${candidate}/configure'")
+        file(GLOB CONFIG_FILE "${PCKG_PATH}/${candidate}/configure")
+        message("CONFIG_FILE1 '${CONFIG_FILE}'")
+        if(CONFIG_FILE)
+            get_filename_component(CONFIG_FILE ${CONFIG_FILE} PATH ABSOLUTE)
+            message("CONFIG_FILE2 '${CONFIG_FILE}'")
+            if(EXISTS "${CONFIG_FILE}")
+                set(SUFFIX_DIR ${candidate} PARENT_SCOPE)
+                get_filename_component(SOURCE_DIR ${CONFIG_FILE} PATH ABSOLUTE)
+                set(SOURCE_DIR ${SOURCE_DIR} PARENT_SCOPE)
+                break()
+            endif()
+        endif()
+    endforeach()
+endfunction()
+
+# looks for existing source dirs and extracts the package
+function(build_from_source CURRENT_DIR CONFIGURE_OPTIONS)
+    if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
+        return()
+    endif()
+    
+    # look for existing source dir
+    get_package_dir(${CURRENT_DIR})
+
+    # remove any existing source tree first
+    if(IS_DIRECTORY ${SOURCE_DIR})
+        message(STATUS "Removing existing source tree first: '${SOURCE_DIR}'")
+        file(REMOVE_RECURSE ${SOURCE_DIR})
+    endif()
+
+    # extract source tree, assuming *.tar.gz archive file
+    file(GLOB PCKG_FILE ${CURRENT_DIR}/${BASE_NAME}*.tar.gz)
+    if(NOT EXISTS ${PCKG_FILE})
+        return() # break up if no package was found, nothing to do
+    endif()
+    get_filename_component(PCKG_FILE ${PCKG_FILE} NAME)
+    message(STATUS "Extracting package: '${PCKG_FILE}'")
+
+    # actual tar command for extraction
+    execute_process(COMMAND tar zxvf ${PCKG_FILE}
+                    WORKING_DIRECTORY ${CURRENT_DIR})
+    # rename source dir to platform name
+    find_configure(${CURRENT_DIR}/${BASE_NAME}*)
+    if(NOT EXISTS "${SOURCE_DIR}")
+        message(STATUS "${BASE_NAME} source dir not found! Giving up.")
+        return()
+    endif()
+    message("SOURCE_DIR: '${SOURCE_DIR}' '${SUFFIX_DIR}' '${PLATFORM}'")
+    set(TARGET ${CURRENT_DIR}/${PLATFORM})
+    message("rename 'RENAME ${SOURCE_DIR} ${TARGET}'")
+    if(EXISTS ${TARGET})
+        file(REMOVE_RECURSE ${TARGET})
+    endif()
+    file(RENAME ${SOURCE_DIR} ${TARGET})
+
+    # look again for the source directory, should be ready now
+    get_package_dir(${CURRENT_DIR})
+    # set general package install location
+    set(CONFIGURE_OPTIONS
+        --prefix=${SOURCE_DIR}
+    )
+
+    # get configure options from var args of this function
+    foreach(ARGIDX RANGE 1 ${ARGC})
+        list(APPEND CONFIGURE_OPTIONS ${ARGV${ARGIDX}})
+    endforeach()
+
+    set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
+    # run configure script
+    message(STATUS "Running ${BASE_NAME} configure with options: '${CONFIGURE_OPTIONS}'")
+    execute_process(COMMAND sh configure ${CONFIGURE_OPTIONS}
+                    WORKING_DIRECTORY ${WORK_DIR})
+
+    # run make, i.e. build the library and install it in this local path
+    message(STATUS "Building ${BASE_NAME} ...")
+    execute_process(COMMAND make all
+                    WORKING_DIRECTORY ${WORK_DIR})
+    execute_process(COMMAND make install
+                    WORKING_DIRECTORY ${WORK_DIR})
+
+endfunction()
+
+function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
+    message("build_saskit '${SASFIT_ROOT_DIR}' '${SASKIT_FILENAME}'")
+    set(SASKIT_PATH ${SASFIT_ROOT_DIR}/saskit)
+    set(SASKIT_FILE ${SASKIT_PATH}/${SASKIT_FILENAME})
+    if(WIN32)
+        # some required dependencies on windows platforms
+        foreach(LIB_NAME gcc_s_dw2-1 stdc++-6)
+            unset(DEP_LIB CACHE)
+            find_library(DEP_LIB "${LIB_NAME}")
+            list(APPEND SASFIT_BIN_FILE_LIST "${DEP_LIB}")
+        endforeach()
+        set(SASFIT_BIN_FILE_LIST ${SASFIT_BIN_FILE_LIST} PARENT_SCOPE)
+    endif()
+    if(EXISTS "${SASKIT_FILE}")
+        return() # nothing to do if saskit file exists already
+    endif()
+    message(STATUS "Saskit file '${SASKIT_FILE}' does not exist. "
+                   "Attempting to build it.")
+    execute_process(COMMAND sh gen/common.sh
+                    WORKING_DIRECTORY ${SASKIT_PATH})
+    site_name(HOSTNAME)
+    file(GLOB DQKIT_FILE ${SASKIT_PATH}/bin/${HOSTNAME}*/dqkit*)
+    message("dqfile: '${DQKIT_FILE}'")
+    if(EXISTS "${DQKIT_FILE}")
+        configure_file("${DQKIT_FILE}" "${SASKIT_FILE}" COPYONLY)
+    endif()
+endfunction()
+
+# vim: set ts=4 sw=4 sts=4 tw=0:

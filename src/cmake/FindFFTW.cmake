@@ -29,7 +29,7 @@
 # Author(s) of this file:
 #   Felix Woelk 07/2004
 #   Jan Woetzel (www.mip.informatik.uni-kiel.de)
-#   Ingo Bressler (ingo.bressler@bam.de) 2008-2013
+#   Ingo Bressler (dev@ingobressler.net) 2008-2013
 #
 # Try to find FFTW library
 #
@@ -44,19 +44,33 @@
 # FFTW_LINK_DIRECTORIES = link directories, useful for rpath on Unix
 # FFTW_EXE_LINKER_FLAGS = rpath on Unix
 
+message("find FFTW")
+get_package_dir(${SASFIT_ROOT_DIR}/src/fftw)
+
 # file include dir of custom build library
-file(GLOB_RECURSE FFTW_HEADER ${CURRENT_DIR}/fftw/*/include/fftw3.h)
-get_filename_component(FFTW_INCLUDE_DIRS ${FFTW_HEADER} PATH ABSOLUTE)
+FIND_PATH(FFTW_INCLUDE_DIRS
+        NAMES fftw3.h
+        PATHS ${SOURCE_DIR}
+        PATH_SUFFIXES include
+        NO_DEFAULT_PATH
+        DOC "FFTW header include dir"
+)
 
 # get library dirs
-file(GLOB_RECURSE FFTW_LIB ${CURRENT_DIR}/fftw/*/lib/libfftw3.a)
-if(FFTW_LIB)
-    list(GET FFTW_LIB 0 FFTW_LIB)
-    get_filename_component(FFTW_LIBRARIES ${FFTW_LIB} ABSOLUTE)
+FIND_FILE(FFTW_STATIC_LIB
+        NAMES libfftw3.a
+        PATHS ${SOURCE_DIR}
+        PATH_SUFFIXES lib
+        NO_DEFAULT_PATH
+        DOC "FFTW static library"
+)
+
+if(FFTW_STATIC_LIB)
+        set(FFTW_LIBRARIES ${FFTW_STATIC_LIB})
 endif()
 
 set(FFTW_FOUND FALSE)
-if(IS_DIRECTORY ${FFTW_INCLUDE_DIRS} AND EXISTS ${FFTW_LIBRARIES})
+if(IS_DIRECTORY ${FFTW_INCLUDE_DIRS} AND FFTW_LIBRARIES)
     set(FFTW_FOUND TRUE)
 endif()
 
