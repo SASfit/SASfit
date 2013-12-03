@@ -9,7 +9,13 @@ src/scripts/*.tmp
 src/cmake/*.tmp
 src/*.tar.*
 src/sasfit*.zip
-src/fftw/fftw-*
+src/fftw/windows_*
+src/fftw/linux_*
+src/gsl/windows_*
+src/gsl/linux_*
+src/tcl/windows_*
+src/tcl/linux_*
+src/bckp_*
 sasfit.vfs/lib/app-sasfit/plugins/groups.*
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
 sasfit.vfs/lib/Sasfit/sasfit.so

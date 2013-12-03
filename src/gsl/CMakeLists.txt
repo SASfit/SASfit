@@ -1,9 +1,9 @@
-# src/fftw/CMakeLists.txt
+# src/gsl/CMakeLists.txt
 #
 # Author(s) of this file:
-#   Ingo Bressler (dev@ingobressler.net)
+#   Ingo Bressler (ingo.bressler@bam.de)
 
-# extracts and builds the included FFTW package
+# extracts and builds the included GSL package
 
 cmake_minimum_required(VERSION 2.6.2)
 
@@ -11,17 +11,7 @@ cmake_minimum_required(VERSION 2.6.2)
 set(CONFIGURE_OPTIONS
     --enable-static
     --disable-shared
-    --enable-threads
-    --enable-sse2
 )
-if(WIN32)
-    list(APPEND CONFIGURE_OPTIONS
-        --with-our-malloc16
-        --with-windows-f77-mangling
-        --with-combined-threads
-    #    --enable-portable-binary
-    )
-endif()
 
 # required for static builds on 64bit Linux
 if(UNIX AND SYSTEM_IS_64)
