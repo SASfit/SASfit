@@ -874,8 +874,8 @@ proc main::_link {components {ar ""}} {
     }  else  {
 	set DAR -DDQKIT_NOBUILDAR=1
     }
-    puts [array names ::env]
-    parray ::env
+#    puts [array names ::env]
+#    parray ::env
     set CFLAGS ""
     set LDFLAGS ""
     if {[info exists ::env(CFLAGS)]} {

@@ -28,3 +28,7 @@ doc/wikibot/pywikipedia/login-data/*.data
 data/workdata
 *.swp
 *.cmake.*
+saskit/install
+saskit/build
+saskit/out
+saskit/bin
