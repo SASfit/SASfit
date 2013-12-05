@@ -1308,7 +1308,7 @@ Tcl_DdeObjCmd(
 	    }
 
 	    objc -= (async + 3);
-	    ((Tcl_Obj **) objv) += (async + 3);
+            objv  = &(objv[async + 3]);
 
             /*
 	     * See if the target interpreter is local.  If so, execute

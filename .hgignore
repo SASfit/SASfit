@@ -9,7 +9,16 @@ src/scripts/*.tmp
 src/cmake/*.tmp
 src/*.tar.*
 src/sasfit*.zip
-src/fftw/fftw-*
+src/fftw/windows_*
+src/fftw/linux_*
+src/fftw/darwin_*
+src/gsl/windows_*
+src/gsl/linux_*
+src/gsl/darwin_*
+src/tcl/windows_*
+src/tcl/linux_*
+src/tcl/darwin_*
+src/bckp_*
 sasfit.vfs/lib/app-sasfit/plugins/groups.*
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
 sasfit.vfs/lib/Sasfit/sasfit.so
@@ -20,6 +29,7 @@ sasfit.vfs/lib/Sasfit/sasfit.dll
 sasfit.exe
 b
 w
+m
 sasfit
 */.svn
 *.pyc
@@ -28,3 +38,7 @@ doc/wikibot/pywikipedia/login-data/*.data
 data/workdata
 *.swp
 *.cmake.*
+saskit/install
+saskit/build
+saskit/out
+saskit/bin
