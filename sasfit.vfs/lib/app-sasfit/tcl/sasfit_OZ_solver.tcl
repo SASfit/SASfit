@@ -395,6 +395,7 @@ proc oz_input_names {} {
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 		StickyHardSphere {
 			set OZ(p0,name) diameter
@@ -403,14 +404,34 @@ proc oz_input_names {} {
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		SquareWell {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) delta
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 		SoftSphere {
 			set OZ(p0,name) diameter
 			set OZ(p1,name) epsilon
-			set OZ(p2,name) ""
+			set OZ(p2,name) "stiffness n"
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		Fermi {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon
+			set OZ(p2,name) xi
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 		LennardJones {
 			set OZ(p0,name) diameter
@@ -419,14 +440,34 @@ proc oz_input_names {} {
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
-		Depletion {
-			set OZ(p0,name) diameter
+		"Depl-Sph-Sph" {
+			set OZ(p0,name) "diam. (large)"
 			set OZ(p1,name) "diam. (small)"
-			set OZ(p2,name) "phi (small)"
+			set OZ(p2,name) "n (numb. dens.)"
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		"Depl-Sph-Discs" {
+			set OZ(p0,name) "diam. (sphere)"
+			set OZ(p1,name) "diam. (disc)"
+			set OZ(p2,name) "n (numb. dens.)"
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		"Depl-Sph-Rods" {
+			set OZ(p0,name) "diam. (sphere)"
+			set OZ(p1,name) "length (rods)"
+			set OZ(p2,name) "n (numb. dens.)"
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 		IonicMicrogel {
 			set OZ(p0,name) diameter
@@ -435,6 +476,7 @@ proc oz_input_names {} {
 			set OZ(p3,name) kpi
 			set OZ(p4,name) epsilon
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 		PenetrableSphere {
 			set OZ(p0,name) diameter
@@ -443,6 +485,7 @@ proc oz_input_names {} {
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 		DLVO {
 			set OZ(p0,name) diameter
@@ -451,6 +494,7 @@ proc oz_input_names {} {
 			set OZ(p3,name) LB
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 		"GGCM-n" {
 			set OZ(p0,name) diameter
@@ -459,6 +503,34 @@ proc oz_input_names {} {
 			set OZ(p3,name) alpha
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		"StarPolymer (f>10)" {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) functionality
+			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		"StarPolymer (f<10)" {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) functionality
+			set OZ(p2,name) ""
+			set OZ(p3,name) ""
+			set OZ(p4,name) ""
+			set OZ(p5,name) ""
+			set OZ(p6,name) ""
+			}
+		"HS 3Yukawa" {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) K1
+			set OZ(p2,name) lambda1
+			set OZ(p3,name) K2
+			set OZ(p4,name) lambda2
+			set OZ(p5,name) K3
+			set OZ(p6,name) lambda3
 			}
 		default {
 			set OZ(p0,name) ""
@@ -467,6 +539,7 @@ proc oz_input_names {} {
 			set OZ(p3,name) ""
 			set OZ(p4,name) ""
 			set OZ(p5,name) ""
+			set OZ(p6,name) ""
 			}
 	}
 }
@@ -584,14 +657,17 @@ proc sasfit_OZ_solver {} {
     grid $w.param.pottext  -sticky e\
 	    -column 0 -row 1
     ComboBox $w.param.clvalue \
-	    -values {PY HNC RHNC MSA mMSA SMSA RY Verlet MS BPGG} \
+	    -values {"Percus\-Yevick" "Hypernetted\-Chain" "Reference HNC" MSA RMSA mMSA SMSA HMSA \
+	             "Rogers\-Young" Verlet MS DH "Vompe\-Martynov" BB BPGG CJVM "Choudhury\-Gosh"} \
 	    -textvariable OZ(closure)
     grid  $w.param.clvalue\
 	    -column 1 -row 0
     ComboBox $w.param.potvalue \
-	    -values {"HardSphere" "StickyHardSphere" "SoftSphere" "StarPolymer" \
-	    		"LennardJones" "Depletion" "IonicMicrogel"  \
-	    		"PenetrableSphere" "DLVO" "GGCM-n"} \
+	    -values {"HardSphere" "StickyHardSphere" "SquareWell" "SoftSphere" \
+	    		"StarPolymer (f>10)" "StarPolymer (f<10)" "HS 3Yukawa"\
+	    		"LennardJones" "Depl-Sph-Sph" "Depl-Sph-Discs" "Depl-Sph-Rods" \
+	    		"IonicMicrogel"  \
+	    		"PenetrableSphere" "Fermi" "DLVO" "GGCM-n"} \
 	    -textvariable OZ(potential) \
 	    -modifycmd {oz_input_names}
     grid  $w.param.potvalue\
@@ -604,6 +680,7 @@ proc sasfit_OZ_solver {} {
     label $w.param.v3text -anchor e -justify right -textvariable OZ(p3,name)
     label $w.param.v4text -anchor e -justify right -textvariable OZ(p4,name)
     label $w.param.v5text -anchor e -justify right -textvariable OZ(p5,name)
+    label $w.param.v6text -anchor e -justify right -textvariable OZ(p6,name)
     
     grid  $w.param.empty1 \
 	    -column 0 -row 2 -columnspan 2 -sticky w
@@ -619,13 +696,16 @@ proc sasfit_OZ_solver {} {
 	    -column 0 -row 7  
     grid  $w.param.v5text -sticky e\
 	    -column 0 -row 8
+    grid  $w.param.v6text -sticky e\
+	    -column 0 -row 9
 
     entry $w.param.v0value -textvariable OZ(p0)
     entry $w.param.v1value -textvariable OZ(p1)
     entry $w.param.v2value -textvariable OZ(p2)
     entry $w.param.v3value -textvariable OZ(p3)
     entry $w.param.v4value -textvariable OZ(p4)
-    entry $w.param.v5value -textvariable OZ(p5)  
+    entry $w.param.v5value -textvariable OZ(p5)
+    entry $w.param.v6value -textvariable OZ(p6)  
     grid  $w.param.v0value\
 	    -column 1 -row 3  
     grid  $w.param.v1value\
@@ -638,6 +718,8 @@ proc sasfit_OZ_solver {} {
 	    -column 1 -row 7  
     grid  $w.param.v5value\
 	    -column 1 -row 8
+    grid  $w.param.v6value\
+	    -column 1 -row 9
 
     label $w.param.empty2 -text "parameters for OZ solver:" -font "Arial 10 bold underline"
     label $w.param.phitext -text "volume fraction:"  
@@ -646,15 +728,15 @@ proc sasfit_OZ_solver {} {
     entry $w.param.tvalue -textvariable OZ(T)
     
     grid  $w.param.empty2 -sticky w\
-	    -column 0 -row 9 -columnspan 2
+	    -column 0 -row 10 -columnspan 2
     grid  $w.param.phitext -sticky e\
-	    -column 0 -row 10
-    grid  $w.param.ttext -sticky e\
 	    -column 0 -row 11
+    grid  $w.param.ttext -sticky e\
+	    -column 0 -row 12
     grid  $w.param.phivalue\
-	    -column 1 -row 10
-    grid  $w.param.tvalue\
 	    -column 1 -row 11
+    grid  $w.param.tvalue\
+	    -column 1 -row 12
 
     label $w.param.empty3 -text " "
     label $w.param.gridtext -text "gridsize (n x 1024), n:"  
@@ -669,37 +751,37 @@ proc sasfit_OZ_solver {} {
     entry $w.param.drdsigmavalue -textvariable OZ(dr/dsigma)
     
     grid $w.param.empty3 \
-	    -column 0 -row 11
-    grid  $w.param.gridtext -sticky e\
-	    -column 0 -row 12
-    grid  $w.param.mixtext -sticky e\
 	    -column 0 -row 13
-    grid  $w.param.ittext -sticky e\
+    grid  $w.param.gridtext -sticky e\
 	    -column 0 -row 14
-    grid  $w.param.relepstext -sticky e\
+    grid  $w.param.mixtext -sticky e\
 	    -column 0 -row 15
-    grid  $w.param.drdsigmatext -sticky e\
+    grid  $w.param.ittext -sticky e\
 	    -column 0 -row 16
+    grid  $w.param.relepstext -sticky e\
+	    -column 0 -row 17
+    grid  $w.param.drdsigmatext -sticky e\
+	    -column 0 -row 18
     grid  $w.param.gridvalue \
-	    -column 1 -row 12
-    grid  $w.param.mixvalue \
-	    -column 1 -row 13
-    grid  $w.param.itvalue \
 	    -column 1 -row 14
-    grid  $w.param.relepsvalue \
+    grid  $w.param.mixvalue \
 	    -column 1 -row 15
-    grid  $w.param.drdsigmavalue \
+    grid  $w.param.itvalue \
 	    -column 1 -row 16
+    grid  $w.param.relepsvalue \
+	    -column 1 -row 17
+    grid  $w.param.drdsigmavalue \
+	    -column 1 -row 18
 
     label $w.param.empty4 -text " "
     label $w.param.labeltext -text "label:"  
     entry $w.param.labelvalue -textvariable OZ(label)
     grid $w.param.empty4 \
-	    -column 0 -row 17
+	    -column 0 -row 19
     grid  $w.param.labeltext -sticky e\
-	    -column 0 -row 18
+	    -column 0 -row 20
     grid  $w.param.labelvalue \
-	    -column 1 -row 18
+	    -column 1 -row 20
 
 #
 #  create "ozSQGraph"

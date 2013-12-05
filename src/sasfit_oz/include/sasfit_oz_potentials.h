@@ -16,7 +16,6 @@
 typedef double OZ_func_one_t (double, double, double *);
 
 OZ_func_one_t U_Ionic_Microgel;
-OZ_func_one_t U_Depletion;
 OZ_func_one_t U_Sticky_Hard_Sphere;
 OZ_func_one_t U_SR_Sticky_Hard_Sphere;
 OZ_func_one_t U_LR_Sticky_Hard_Sphere;
@@ -24,6 +23,13 @@ OZ_func_one_t U_R_Sticky_Hard_Sphere;
 OZ_func_one_t U_A_Sticky_Hard_Sphere;
 OZ_func_one_t U_Ref_Sticky_Hard_Sphere;
 OZ_func_one_t U_Pert_Sticky_Hard_Sphere;
+OZ_func_one_t U_Square_Well_Sphere;
+OZ_func_one_t U_SR_Square_Well_Sphere;
+OZ_func_one_t U_LR_Square_Well_Sphere;
+OZ_func_one_t U_R_Square_Well_Sphere;
+OZ_func_one_t U_A_Square_Well_Sphere;
+OZ_func_one_t U_Ref_Square_Well_Sphere;
+OZ_func_one_t U_Pert_Square_Well_Sphere;
 OZ_func_one_t U_Soft_Sphere;
 OZ_func_one_t U_Hard_Sphere;
 OZ_func_one_t U_SR_Hard_Sphere;
@@ -36,4 +42,13 @@ OZ_func_one_t U_LR_Lennard_Jones;
 OZ_func_one_t U_GGCM_n;
 OZ_func_one_t U_PSM;
 OZ_func_one_t U_DLVO;
+OZ_func_one_t U_ZERO;
+OZ_func_one_t U_Star1;
+OZ_func_one_t U_Star2;
+OZ_func_one_t U_HS_3Yukawa;
+OZ_func_one_t U_FDM;
+OZ_func_one_t U_Depletion;
+OZ_func_one_t U_DepletionOfSpheresBySpheres;
+OZ_func_one_t U_DepletionOfSpheresByDiscs;
+OZ_func_one_t U_DepletionOfSpheresByRods;
 
