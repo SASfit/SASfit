@@ -447,6 +447,12 @@ J.~L. Lebowitz and J.~K. Percus.
   continuum fluids.
 \newblock {\em Phys. Rev.}, 144:251--258, Apr 1966.
 
+\bibitem{Lee1995}
+Lloyd~L. Lee.
+\newblock An accurate integral equation theory for hard spheres: Role of the
+  zero-separation theorems in the closure relation.
+\newblock {\em The Journal of Chemical Physics}, 103(21):9388--9396, 1995.
+
 \bibitem{Lekkerkerker2011}
 Henk~N.W. Lekkerkerker and Remco Tuinier.
 \newblock {\em Colloids and the Depletion Interaction}, volume 833 of {\em
@@ -490,6 +496,12 @@ Yuyan Liu, Jieli Lin, Guangming Huang, Yuanqing Guo, and Chuanxi Duan.
 \newblock Simple empirical analytical approximation to the voigt profile.
 \newblock {\em J. Opt. Soc. Am. B}, 18(5):666--672, 2001.
 
+\bibitem{Lomba1996}
+E.~Lomba and L.L. Lee.
+\newblock Consistency conditions for the integral equations of liquid
+  structures.
+\newblock {\em International Journal of Thermophysics}, 17(3):663--672, 1996.
+
 \bibitem{Louis2000}
 A.~A. Louis, P.~G. Bolhuis, and J.~P. Hansen.
 \newblock Mean-field fluid behavior of the gaussian core model.
@@ -512,6 +524,12 @@ William~G. Madden and Stuart~A. Rice.
 C.~Marquest and T.A. Witten.
 \newblock Simple cubic structure in copolymer mesophases.
 \newblock {\em J. Phys. France}, 50(10):1267--1277, 1989.
+
+\bibitem{Martynov1993}
+G.~A. Martynov and A.~G. Vompe.
+\newblock Differential condition of thermodynamic consistency as a closure for
+  the ornstein-zernike equation.
+\newblock {\em Phys. Rev. E}, 47:1012--1017, Feb 1993.
 
 \bibitem{Martynov1983}
 G.A. Martynov and G.N. Sarkisov.
@@ -735,6 +753,12 @@ B.~Sj{\"{o}}berg.
   and glycyl-{\sc l}-histidylglycine in water solution. A method for analysing
   polydispersed systems}.
 \newblock {\em Journal of Applied Crystallography}, 7(2):192--199, Apr 1974.
+
+\bibitem{Smith1977}
+William~R. Smith, Douglas Henderson, and Yoshio Tago.
+\newblock Mean spherical approximation and optimized cluster theory for the
+  squar-well fluid.
+\newblock {\em The Journal of Chemical Physics}, 67(11):5308--5316, 1977.
 
 \bibitem{Sorensen1992}
 C.~M. S{\o}rensen, J.~Cai, and N.~Lu.
