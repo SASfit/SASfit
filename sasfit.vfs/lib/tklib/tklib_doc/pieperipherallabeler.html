@@ -1,0 +1,95 @@
+<! -- -*- tk -*- piePeripheralLabeler manpage
+   -->
+<html><head>
+<title>piePeripheralLabeler - piePeripheralLabeler class </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/tkpiechart/pieperipherallabeler.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 1995-2004 Jean-Luc Fontaine &lt;jfontain@free.fr&gt;
+   -->
+<! -- CVS: $Id: pieperipherallabeler.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ piePeripheralLabeler.n
+   -->
+
+<body>
+<h1> piePeripheralLabeler(n) 6.6 tkpiechart &quot;piePeripheralLabeler class&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> piePeripheralLabeler - tkpiechart pie peripheral style labeler class
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tags">TAGS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+<table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>stooop::new</b> <strong>piePeripheralLabeler</strong> <i class='arg'>canvas</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>switched::configure</b> <i class='arg'>piePeripheralLabelerObject</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>switched::cget</b> <i class='arg'>piePeripheralLabelerObject</i> <i class='arg'>option</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+The pie peripheral style labeler object is used as a slice label placer for a <strong>pie</strong> object and is passed to the pie constructor via its <strong>-labeler</strong> option (see the <strong>pie</strong> class manual).
+<p>The slice description text labels are arranged in 2 columns below the pie graphics, whereas the slice values are placed next to the slice and actually follow the slice as the pie is updated. Each description label text is placed to the right of a rectangle, the background color of which matches its corresponding slice. Each description label is actually a canvasLabel object.
+<p>There is no need to delete a <strong>piePeripheralLabeler</strong> object as it is automatically handled by the pie class.
+<dl>
+<dt><a name="1"><b class='cmd'>stooop::new</b> <strong>piePeripheralLabeler</strong> <i class='arg'>canvas</i> ?options?</a><dd>
+
+Creates a piePeripheralLabeler object in the specified Tk canvas. The piePeripheralLabeler object identifier is returned (refered to as <em>piePeripheralLabelerObject</em> in this document).
+<br><br>
+<dt><a name="2"><b class='cmd'>switched::configure</b> <i class='arg'>piePeripheralLabelerObject</i> ?options?</a><dd>
+
+Configures a piePeripheralLabeler object or returns all the options with their current values if no options are passed as parameters.
+<br><br>
+<dt><a name="3"><b class='cmd'>switched::cget</b> <i class='arg'>piePeripheralLabelerObject</i> <i class='arg'>option</i></a><dd>
+
+Returns an option value for the specified piePeripheralLabeler object.
+</dl>
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+<dl>
+<dt><strong>-font</strong> value<dd>
+Specifies a font for the slice labels. If not specified, the default font is system dependent.
+<br><br>
+<dt><strong>-justify</strong> value<dd>
+Specifies how to justify labels within their own column. Must be one of <em>left</em>, <em>center</em> or <em>right</em>. Defaults to <em>left</em>. For example, if justification is <em>right</em>, all column labels right edges are aligned.
+<br><br>
+<dt><strong>-offset</strong> value<dd>
+Specifies the distance between the pie graphics and the closest slice label. This value may be specified in any of the forms described in the <strong>canvas</strong> <em>COORDINATES</em> manual section.
+<br><br>
+<dt><strong>-smallfont</strong><dd>
+Specifies a font for the slice values. It is usually a small font in order to avoid values overlapping when 2 slices are very close to each other. If not specified, the description label font (<strong>-font</strong> option) is used.
+<br><br>
+<dt><strong>-widestvaluetext</strong><dd>
+Specifies a string of maximum width for slice values (placed around the pie next to the slices), so that enough room is allocated for these value labels when the pie width and height are set. It defaults to 00.0. For example, it could be set to &quot;00.00 %&quot;.
+
+</dl>
+
+<h2><a name="tags">TAGS</a></h2>
+<p>
+The labeler has the following specific tag (see the <strong>canvas</strong> manual page <em>ITEM IDS AND TAGS</em> section for more information):
+<ul>
+  <li>piePeripheralLabeler(piePeripheralLabelerObject)
+</ul>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+canvasLabel, pie, pieBoxLabeler
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+canvas, labeler, pie, slice
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 1995-2004 Jean-Luc Fontaine &lt;jfontain@free.fr&gt;<br>
+</body></html>
+

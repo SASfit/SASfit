@@ -1,0 +1,7 @@
+p. **snapshots**
+
+This directory contains builds of the current development version. It may 
+contain new experimental features being tested and more bugs eventually. New
+versions appear in intervals of several months, usually distributed for 
+testing of new features.
+

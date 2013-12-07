@@ -1,0 +1,177 @@
+<html><head>
+<title>cksum - Cyclic Redundancy Checks </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/crc/cksum.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002, Pat Thoyts
+   -->
+<! -- CVS: $Id: cksum.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ cksum.n
+   -->
+
+<body>
+<h1> cksum(n) 1.1.0 crc &quot;Cyclic Redundancy Checks&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> cksum - Calculate a cksum(1) compatible checksum
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#programming_interface">PROGRAMMING INTERFACE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>cksum ?1.1.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::crc::cksum</b> ?<i class='arg'>-format format</i>? ?<i class='arg'>-chunksize size</i>? [ <i class='arg'>-channel chan</i> | <i class='arg'>-filename file</i> | <i class='arg'>string</i> ]</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::crc::CksumInit</b> </a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::crc::CksumUpdate</b> <i class='arg'>token</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::crc::CksumFinal</b> <i class='arg'>token</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides a Tcl implementation of the cksum(1) algorithm
+based upon information provided at in the GNU implementation of this
+program as part of the GNU Textutils 2.0 package.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::crc::cksum</b> ?<i class='arg'>-format format</i>? ?<i class='arg'>-chunksize size</i>? [ <i class='arg'>-channel chan</i> | <i class='arg'>-filename file</i> | <i class='arg'>string</i> ]</a><dd>
+
+
+The command takes string data or a channel or file name and returns a
+checksum value calculated using the <strong>cksum(1)</strong> algorithm. The
+result is formatted using the <i class='arg'>format</i>(n) specifier provided or as
+an unsigned integer (%u) by default.
+
+</dl>
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+
+<dl>
+
+<dt>-channel <i class='arg'>name</i><dd>
+
+Return a checksum for the data read from a channel. The command will
+read data from the channel until the <b class='cmd'>eof</b> is true. If you need
+to be able to process events during this calculation see the
+<a href="#programming_interface">PROGRAMMING INTERFACE</a> section
+
+<br><br>
+<dt>-filename <i class='arg'>name</i><dd>
+
+This is a convenience option that opens the specified file, sets the
+encoding to binary and then acts as if the <i class='arg'>-channel</i> option had
+been used. The file is closed on completion.
+
+<br><br>
+<dt>-format <i class='arg'>string</i><dd>
+
+Return the checksum using an alternative format template.
+
+</dl>
+
+<h2><a name="programming_interface">PROGRAMMING INTERFACE</a></h2>
+<p>
+
+The cksum package implements the checksum using a context variable to
+which additional data can be added at any time. This is expecially
+useful in an event based environment such as a Tk application or a web
+server package. Data to be checksummed may be handled incrementally
+during a <b class='cmd'>fileevent</b> handler in discrete chunks. This can improve
+the interactive nature of a GUI application and can help to avoid
+excessive memory consumption.
+
+<dl>
+
+<dt><a name="2"><b class='cmd'>::crc::CksumInit</b> </a><dd>
+
+
+Begins a new cksum context. Returns a token ID that must be used for the
+remaining functions. An optional seed may be specified if required.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::crc::CksumUpdate</b> <i class='arg'>token</i> <i class='arg'>data</i></a><dd>
+
+
+Add data to the checksum identified by token. Calling 
+<em>CksumUpdate $token &quot;abcd&quot;</em> is equivalent to calling
+<em>CksumUpdate $token &quot;ab&quot;</em> followed by 
+<em>CksumUpdate $token &quot;cb&quot;</em>. See <a href="#examples">EXAMPLES</a>.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::crc::CksumFinal</b> <i class='arg'>token</i></a><dd>
+
+
+Returns the checksum value and releases any resources held by this
+token. Once this command completes the token will be invalid. The
+result is a 32 bit integer value.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::cksum &quot;Hello, World!&quot;
+2609532967
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::cksum -format 0x%X &quot;Hello, World!&quot;
+0x9B8A5027
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::cksum -file cksum.tcl
+1828321145
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [crc::CksumInit]
+% crc::CksumUpdate $tok &quot;Hello, &quot;
+% crc::CksumUpdate $tok &quot;World!&quot;
+% crc::CksumFinal $tok
+2609532967
+</pre></td></tr></table></p>
+
+
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+crc32(n), sum(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+checksum, cksum, crc, crc32, cyclic redundancy check, data integrity, security
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002, Pat Thoyts<br>
+</body></html>
+

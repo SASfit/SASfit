@@ -1,0 +1,257 @@
+This is a package to build robots for MediaWiki wikis like Wikipedia. Some
+example robots are included.
+
+=======================================================================
+PLEASE DO NOT PLAY WITH THIS PACKAGE. These programs can actually
+modify the live wiki on the net, and proper wiki-etiquette should
+be followed before running it on any wiki.
+=======================================================================
+
+To get started on proper usage of the bot framework, please refer to:
+
+    http://meta.wikimedia.org/wiki/Using_the_python_wikipediabot
+
+The contents of the package are:
+
+===  Library routines ===
+
+LICENSE                : a reference to the MIT license
+wikipedia.py           : The wikipedia library
+wiktionary.py          : The wiktionary library
+config.py              : Configuration module containing all defaults. Do not
+                         change these! See below how to change values.
+titletranslate.py      : rules and tricks to auto-translate wikipage titles
+date.py                : Date formats in various languages
+family.py              : Abstract superclass for wiki families. Subclassed by
+                         the classes in the 'families' subdirectory.
+catlib.py              : Library routines written especially to handle
+                         category pages and recurse over category contents.
+gui.py                 : Some GUI elements for solve_disambiguation.py
+mediawiki_messages.py  : Access to the various translations of the MediaWiki
+                         software interface.
+pagegenerators.py      : Generator pages.
+userlib.py             : Library to work with users, their pages and talk pages.
+BeautifulSoup.py       : is a Python HTML/XML parser designed for quick
+                         turnaround projects like screen-scraping. See
+                         more:
+                         http://www.crummy.com/software/BeautifulSoup
+
+=== Utilities ===
+
+basic.py               : Is a template from which simple bots can be made.
+checkusage.py          : Provides a way for users of the Wikimedia toolserver
+                         to check the use of images from Commons on
+                         other Wikimedia wikis.
+extract_wikilinks.py   : Two bots to get all linked-to wiki pages from an
+                         HTML-file. They differ in their output:
+                         extract_names gives bare names (can be used for
+                         solve_disambiguation.py, table2wiki.py or
+                         windows-chars.py), extract_wikilinks gives them in
+                         interwiki-link format (can be used for
+                         interwiki.py)
+followlive.py          : Periodically grab the list of new articles and analyze
+                         them. If the article is too short, a menu will let you
+                         easily add a template.
+get.py                 : Script to get a page and write its contents to standard
+                         output.
+login.py               : Log in to an account on your "home" wiki. or check the
+                         login status
+splitwarning.py        : split an interwiki.log file into warning files for each
+                         separate language. suggestion: Zip the created
+                         files up, put them somewhere on the internet, and
+                         send an announcement of the location on the robot
+                         mailinglist.
+testfamily.py          : Check whether you are logged in all known languages
+                         in a family.
+xmltest.py             : Read an XML file (e.g. the sax_parse_bug.txt sometimes
+                         created by interwiki.py), and if it contains an error,
+                         show a stacktrace with the location of the error.
+editarticle.py         : Edit an article with your favourite editor. Run
+                         the script with the "--help" option to get
+                         detailed infortion on possiblities.
+sqldump.py             : Extract information from local cur SQL dump
+                         files, like the ones at http://download.wikimedia.org
+rcsort.py              : A tool to see the recentchanges ordered by user instead
+                         of by date.
+threadpool.py          :
+xmlreader.py           :
+watchlist.py           : Allows access to the bot account's watchlist.
+wikicomserver.py       : This library allows the use of the pywikipediabot
+                         directly from COM-aware applications.
+
+=== Robots ===
+
+capitalize_redirects.py: Script to create a redirect of capitalize articles.
+casechecker.py         : Script to enumerate all pages in the wikipedia and
+                         find all titles with mixed Latin and Cyrillic
+                         alphabets.
+category.py            : add a category link to all pages mentioned on a page,
+                         change or remove category tags
+category_redirect.py   : Maintain category redirects and replace links to
+                         redirected categories.
+catall.py              : Add or change categories on a number of pages.
+catmove.pl             : Need Perl programming language for this; takes a list
+                         of category moves or removes to make and uses
+                         category.py.
+clean_sandbox.py       : This bot makes the cleaned of the page of tests.
+commons_link.py        : This robot include commons template to linking Commons
+                         and your wiki project.
+copyright.py           : This robot check copyright text in Google, Yahoo! and
+                         Live Search.
+cosmetic_changes.py    : Can do slight modifications to a wiki page source code
+                         such that the code looks cleaner.
+delete.py              : This script can be used to delete pages en masse.
+disambredir.py         : Changing redirect names in disambiguation pages.
+featured.py            : A robot to check feature articles.
+fixes.py               : This is not a bot, perform one of the predefined
+                         replacements tasks, used for "replace.py
+                         -fix:replacement".
+image.py               : This script can be used to change one image to another
+                         or remove an image entirely.
+imagetransfer.py       : Given a wiki page, check the interwiki links for
+                         images, and let the user choose among them for
+                         images to upload.
+inline_images.py       : This bot looks for images that are linked inline
+                         (i.e., they are hosted from an external server and
+                         hotlinked).
+interwiki.py           : A robot to check interwiki links on all pages (or
+                         a range of pages) of a wiki.
+interwiki_graph.py     : Possible create graph with interwiki.py.
+imageharvest.py        : Bot for getting multiple images from an external site.
+isbn.py                : Bot to convert all ISBN-10 codes to the ISBN-13
+                         format.
+makecat.py             : Given an existing or new category, find pages for that
+                         category.
+movepages.py           : Bot page moves to another title.
+nowcommons.py          : This bot can delete images with NowCommons template.
+pagefromfile.py        : This bot takes its input from a file that contains a
+                         number of pages to be put on the wiki.
+piper.py               : Pipes article text through external program(s) on
+                         STDIN and collects its STDOUT which is used as the
+                         new article text if it differs from the original.
+redirect.py            : Fix double redirects and broken redirects. Note:
+                         solve_disambiguation also has functions which treat
+                         redirects.
+refcheck.py            : This script checks references to see if they are
+                         properly formatted.
+replace.py             : Search articles for a text and replace it by another
+                         text. Both text are set in two configurable
+                         text files. The bot can either work on a set of given
+                         pages or crawl an SQL dump.
+saveHTML.py            : Downloads the HTML-pages of articles and images.
+selflink.py            : This bot goes over multiple pages of the home wiki,
+                         searches for selflinks, and allows removing them.
+solve_disambiguation.py: Interactive robot doing disambiguation.
+speedy_delete.py       : This bot load a list of pages from the category of
+                         candidates for speedy deletion and give the
+                         user an interactive prompt to decide whether
+                         each should be deleted or not.
+spellcheck.py          : This bot spellchecks wiki pages.
+standardize_interwiki.py:A robot that downloads a page, and reformats the
+                         interwiki links in a standard way (i.e. move all
+                         of them to the bottom or the top, with the same
+                         separator, in the right order).
+standardize_notes.py   : Converts external links and notes/references to
+                       : Footnote3 ref/note format.  Rewrites References.
+table2wiki.py          : Semi-automatic converting HTML-tables to wiki-tables.
+templatecount.py       : Display the list of pages transcluding a given list
+                         of templates.
+template.py            : change one template (that is {{...}}) into another.
+touch.py               : Bot goes over all pages of the home wiki, and edits
+                         them without changing.
+unlink.py              : This bot unlinks a page on every page that links to it.
+unusedfiles.py         : Bot appends some text to all unused images and other
+                         text to the respective uploaders.
+upload.py              : upload an image to a wiki.
+us-states.py           : A robot to add redirects to cities for US state
+                         abbreviations.
+warnfile.py            : A robot that parses a warning file created by
+                         interwiki.py on another language wiki, and
+                         implements the suggested changes without verifying
+                         them.
+weblinkchecker.py      : Check if external links are still working.
+welcome.py             : Script to welcome new users.
+
+=== Directories ===
+
+archive                : Contains old bots. Maybe they not run no more
+category               :
+copyright              : Contains information retrieved by copyright.py
+deadlinks              : Contains information retrieved by weblinkchecker.py
+disambiguations        : If you run solve_disambiguation.py with the -primary
+                         argument, the bot will save information here
+families               : Contains wiki-specific information like URLs,
+                         languages, encodings etc.
+featured               : Stored featured article in cache file.
+interwiki_dumps        : If the interwiki bot is interrupted, it will store
+                         a dump file here. This file will be read when using
+                         the interwiki bot with -restore or -continue.
+interwiki_graphs       : Contains graphs for interwiki_graph.py
+logs                   : Contains logfiles.
+mediawiki-messages     : Information retrieved by mediawiki_messages.py will
+                         be stored here.
+maintenance            : contains maintenance scripts for the developing team
+login-data             : login.py stores your cookies here (Your password won't
+                         be stored as plaintext).
+pywikibot              : Contains some libraries and control files
+simplejson             : A simple, fast, extensible JSON encoder and decoder
+                         used by query.py.
+spelling               : Contains dictionaries for spellcheck.py.
+test                   : Some test stuff for the developing team
+userinterfaces         : Contains Tkinter, WxPython, terminal and
+                         transliteration interfaces user choose in
+                         user-config.py
+watchlists             : Information retrieved by watchlist.py will be stored
+                         here.
+wiktionary             : Contains script to used for Wiktionary project.
+
+=== Unit tests ===
+
+wiktionarytest.py      : Unit tests for wiktionary.py
+
+External software can be used with PyWikipediaBot:
+  * Win32com library for use with wikicomserver.py
+  * Pydot, Pyparsing and Graphviz for use with interwiki_graph.py
+  * JSON for use with query.py
+  * PyGoogle to access Google Web API and PySearch to access Yahoo! Search
+    Web Services for use with copyright.py and pagegenerators.py
+  * MySQLdb to access MySQL database for use with pagegenerators.py
+
+PyWikipediaBot makes use of some modules that are part of python, but that
+are not installed by default on some Linux distributions:
+  * python-xml (required to parse XML via SaX2)
+  * python-celementtree (recommended if you use XML dumps)
+  * python-tkinter (optional, used by some experimental GUI stuff)
+
+More precise information, and a list of the options that are available for
+the various programs, can be retrieved by running the bot with the -help
+parameter, e.g.
+
+    python interwiki.py -help
+
+You need to have at least python version 2.4 or newer installed on your
+computer to be able to run any of the code in this package, but not 3.x,
+because pywikipediabot is still not updated to it! Support for older versions
+of python is not planned. (http://www.python.org/download/)
+
+
+You do not need to "install" this package to be able to make use of
+it. You can actually just run it from the directory where you unpacked
+it or where you have your copy of the SVN sources.
+
+Before you run any of the programs, you need to create a file named
+user-config.py in your current directory. It needs at least two lines:
+The first line should set your real name; this will be used to identify you
+when the robot is making changes, in case you are not logged in. The
+second line sets the code of your home language. The file should look like:
+
+===========
+username='My name'
+mylang='xx'
+===========
+
+There are other variables that can be set in the configuration file, please
+check config.py for ideas.
+
+After that, you are advised to create a username + password for the bot, and
+run login.py. Anonymous editing is not possible.

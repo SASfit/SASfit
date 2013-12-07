@@ -1,0 +1,141 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>math::combinatorics - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/combinatorics.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: combinatorics.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ math::combinatorics.n
+   -->
+
+<body>
+<h1> math::combinatorics(n) 1.2.3 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::combinatorics - Combinatorial functions in the Tcl Math Library
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>math ?1.2.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::ln_Gamma</b> <i class='arg'>z</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::factorial</b> <i class='arg'>x</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::choose</b> <i class='arg'>n k</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::Beta</b> <i class='arg'>z w</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>math</strong> package contains implementations of several
+functions useful in combinatorial problems.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::ln_Gamma</b> <i class='arg'>z</i></a><dd>
+
+
+Returns the natural logarithm of the Gamma function for the argument
+<i class='arg'>z</i>.
+
+<br><br>
+
+The Gamma function is defined as the improper integral from zero to
+positive infinity of
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+  t**(x-1)*exp(-t) dt
+</pre></td></tr></table></p>
+
+<br><br>
+
+The approximation used in the Tcl Math Library is from Lanczos,
+<em>ISIAM J. Numerical Analysis, series B,</em> volume 1, p. 86.
+For &quot;<strong>x</strong> &gt; 1&quot;, the absolute error of the result is claimed to be
+smaller than 5.5*10**-10 -- that is, the resulting value of Gamma when
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+  exp( ln_Gamma( x) ) 
+</pre></td></tr></table></p>
+
+is computed is expected to be precise to better than nine significant
+figures.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::math::factorial</b> <i class='arg'>x</i></a><dd>
+
+
+Returns the factorial of the argument <i class='arg'>x</i>.
+
+<br><br>
+
+For integer <i class='arg'>x</i>, 0 &lt;= <i class='arg'>x</i> &lt;= 12, an exact integer result is
+returned.
+
+<br><br>
+
+For integer <i class='arg'>x</i>, 13 &lt;= <i class='arg'>x</i> &lt;= 21, an exact floating-point
+result is returned on machines with IEEE floating point.
+
+<br><br>
+
+For integer <i class='arg'>x</i>, 22 &lt;= <i class='arg'>x</i> &lt;= 170, the result is exact to 1
+ULP.
+
+<br><br>
+
+For real <i class='arg'>x</i>, <i class='arg'>x</i> &gt;= 0, the result is approximated by
+computing <em>Gamma(x+1)</em> using the <b class='cmd'>::math::ln_Gamma</b>
+function, and the result is expected to be precise to better than nine
+significant figures.
+
+<br><br>
+
+It is an error to present <i class='arg'>x</i> &lt;= -1 or <i class='arg'>x</i> &gt; 170, or a value
+of <i class='arg'>x</i> that is not numeric.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::math::choose</b> <i class='arg'>n k</i></a><dd>
+
+
+Returns the binomial coefficient <em>C(n, k)</em>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   C(n,k) = n! / k! (n-k)!
+</pre></td></tr></table></p>
+
+If both parameters are integers and the result fits in 32 bits, the
+result is rounded to an integer.
+
+<br><br>
+
+Integer results are exact up to at least <i class='arg'>n</i> = 34.  Floating point
+results are precise to better than nine significant figures.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::math::Beta</b> <i class='arg'>z w</i></a><dd>
+
+
+Returns the Beta function of the parameters <i class='arg'>z</i> and <i class='arg'>w</i>.
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   Beta(z,w) = Beta(w,z) = Gamma(z) * Gamma(w) / Gamma(z+w)
+</pre></td></tr></table></p>
+
+Results are returned as a floating point number precise to better than
+nine significant digits provided that <i class='arg'>w</i> and <i class='arg'>z</i> are both at
+least 1.
+
+</dl>
+
+</body></html>

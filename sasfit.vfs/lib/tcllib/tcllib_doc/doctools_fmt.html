@@ -1,0 +1,793 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>doctools_fmt - Documentation tools </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/doctools/doctools_fmt.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: doctools_fmt.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ doctools_fmt.n
+   -->
+
+<body>
+<h1> doctools_fmt(n) 1.0 doctools &quot;Documentation tools&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> doctools_fmt - Specification of a simple Tcl Markup Language for Manpages
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#format_specification">FORMAT SPECIFICATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">OVERVIEW</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#grammar">GRAMMAR</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+<table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>comment</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>include</b> <i class='arg'>filename</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>vset</b> <i class='arg'>varname</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>vset</b> <i class='arg'>varname</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>lb</b> </a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>rb</b> </a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>manpage_begin</b> <i class='arg'>command</i> <i class='arg'>section</i> <i class='arg'>version</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>manpage_end</b> </a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>moddesc</b> <i class='arg'>desc</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>titledesc</b> <i class='arg'>desc</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>copyright</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>description</b> </a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>require</b> <i class='arg'>pkg</i> ?<i class='arg'>version</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>section</b> <i class='arg'>name</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>subsection</b> <i class='arg'>name</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>para</b> </a></td></tr>
+<tr valign=top ><td ><a href="#17"><b class='cmd'>see_also</b> <i class='arg'>args</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><b class='cmd'>keywords</b> <i class='arg'>args</i></a></td></tr>
+<tr valign=top ><td ><a href="#19"><b class='cmd'>arg</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><b class='cmd'>cmd</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><b class='cmd'>opt</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#22"><b class='cmd'>emph</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#23"><b class='cmd'>strong</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#24"><b class='cmd'>sectref</b> <i class='arg'>text</i> ?<i class='arg'>label</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#25"><b class='cmd'>syscmd</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#26"><b class='cmd'>method</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#27"><b class='cmd'>namespace</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#28"><b class='cmd'>option</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#29"><b class='cmd'>widget</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#30"><b class='cmd'>fun</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#31"><b class='cmd'>type</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#32"><b class='cmd'>package</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#33"><b class='cmd'>class</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#34"><b class='cmd'>var</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#35"><b class='cmd'>file</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#36"><b class='cmd'>uri</b> <i class='arg'>text</i> ?<i class='arg'>text</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#37"><b class='cmd'>term</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#38"><b class='cmd'>const</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#39"><b class='cmd'>nl</b> </a></td></tr>
+<tr valign=top ><td ><a href="#40"><b class='cmd'>example_begin</b> </a></td></tr>
+<tr valign=top ><td ><a href="#41"><b class='cmd'>example_end</b> </a></td></tr>
+<tr valign=top ><td ><a href="#42"><b class='cmd'>example</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#43"><b class='cmd'>list_begin</b> <i class='arg'>what</i></a></td></tr>
+<tr valign=top ><td ><a href="#44"><b class='cmd'>list_end</b> </a></td></tr>
+<tr valign=top ><td ><a href="#45"><b class='cmd'>bullet</b> </a></td></tr>
+<tr valign=top ><td ><a href="#46"><b class='cmd'>enum</b> </a></td></tr>
+<tr valign=top ><td ><a href="#47"><b class='cmd'>lst_item</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#48"><b class='cmd'>call</b> <i class='arg'>args</i></a></td></tr>
+<tr valign=top ><td ><a href="#49"><b class='cmd'>arg_def</b> <i class='arg'>type</i> <i class='arg'>name</i> ?<i class='arg'>mode</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#50"><b class='cmd'>opt_def</b> <i class='arg'>name</i> ?<i class='arg'>arg</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#51"><b class='cmd'>cmd_def</b> <i class='arg'>command</i></a></td></tr>
+<tr valign=top ><td ><a href="#52"><b class='cmd'>tkoption_def</b> <i class='arg'>name</i> <i class='arg'>dbname</i> <i class='arg'>dbclass</i></a></td></tr>
+<tr valign=top ><td ><a href="#53"><b class='cmd'>usage</b> <i class='arg'>args</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This document specifies version 1 of a text format for man pages. The
+name of this format is <em>doctools</em> and it provides all the
+necessary commands to write a manpage.
+
+It is complemented by both the <em>doctoc</em> format for writing tables
+of contents and the <em>docidx</em> format for writing keyword indices.
+
+The formal specifications for these two formats can be found in the
+companion documents <em>doctoc_fmt</em> and <em>docidx_fmt</em>.
+
+A third companion document describes the package <strong>doctools</strong>,
+which provides commands for the processing of text in <em>doctools</em>
+format.
+
+<p>
+
+Like for the formats <em>doctoc</em> and <em>docidx</em> a generic
+framework for the conversion of <em>doctools</em> to any number of
+different output formats is provided.
+
+This framework is provided by the package <strong>doctools</strong>.
+
+<p>
+
+Anyone who wishes to write a toc formatting engine which plugs into
+this framework has to read the document <em>doctools_api</em>. This is the
+formal specification of the API between the framework and its engines.
+
+
+<h2><a name="format_specification">FORMAT SPECIFICATION</a></h2>
+<p>
+
+<h3><a name="overview">OVERVIEW</a></h3>
+<p>
+
+<em>doctools</em> is similar to LaTeX. Input written in this format
+consists primarily of text, with markup commands embedded into it. The
+format used to mark commands is different from LaTeX however. All text
+between matching pairs of [ and ] is a command, possibly with
+arguments. Note that both brackets have to be on the same line for a
+command to be recognized.
+
+<p>
+
+In contrast to both <em>doctoc</em> and <em>docidx</em> this format does
+allow arbitrary text between markup commands. Only some places are
+restricted to only white space.
+
+
+<h3><a name="grammar">GRAMMAR</a></h3>
+<p>
+
+The overall syntax of a manpage is best captured in a formal
+context-free grammar. Our notation for the grammar is EBNF. Strings
+will stand for markup commands, however their arguments (if they have
+any) are not part of the grammar. Our grammar contains lexical
+elements as well.
+
+<p>
+
+First we specify the whitespace and other text at the lexical level,
+which also includes comments.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    COMMENT  ::= &quot;comment&quot;
+    WHITE    ::= { '\n' | '\t' | ' ' | '\r' | COMMENT }
+    TEXT     ::= { All characters except '[' }
+</pre></td></tr></table></p>
+<p>
+
+
+Then we define rules for all the keywords. Here we introduce our
+knowledge that some commands allow only whitespace after them.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    BEGIN      ::= &quot;manpage_begin&quot; WHITE
+    END        ::= &quot;manpage_end&quot;	
+    TITLE      ::= &quot;titledesc&quot;     WHITE
+    MODULE     ::= &quot;moddesc&quot;       WHITE
+    REQUIRE    ::= &quot;require&quot;       WHITE
+    COPYRIGHT  ::= &quot;copyright&quot;     WHITE
+    DESC       ::= &quot;description&quot;
+
+    SECTION    ::= &quot;section&quot;
+    SUBSEC     ::= &quot;subsection&quot;
+    PARA       ::= &quot;para&quot;
+    NL         ::= &quot;nl&quot;
+    SEE_ALSO   ::= &quot;see_also&quot;
+    KEYWORDS   ::= &quot;keywords&quot;
+
+    ARG        ::= &quot;arg&quot;
+    CMD        ::= &quot;cmd&quot;
+    OPT        ::= &quot;opt&quot;
+    EMPH       ::= &quot;emph&quot;
+    STRONG     ::= &quot;strong&quot;
+    SECTREF    ::= &quot;sectref&quot;
+    USAGE      ::= &quot;usage&quot;
+    SYSCMD     ::= &quot;syscmd&quot;
+    METHOD     ::= &quot;method&quot;
+    NAMESPACE  ::= &quot;namespace&quot;
+    OPTION     ::= &quot;option&quot;
+    WIDGET     ::= &quot;widget&quot;
+    FUN        ::= &quot;fun&quot;
+    TYPE       ::= &quot;type&quot;
+    PACKAGE    ::= &quot;package&quot;
+    CLASS      ::= &quot;class&quot;
+    VAR        ::= &quot;var&quot;
+    FILE       ::= &quot;file&quot;
+    URI        ::= &quot;uri&quot;
+    TERM       ::= &quot;term&quot;
+    CONST      ::= &quot;const&quot;
+    LB         ::= &quot;lb&quot;
+    RB         ::= &quot;rb&quot;
+    EX_BEGIN   ::= &quot;example_begin&quot;
+    EX_END     ::= &quot;example_end&quot;
+    EXAMPLE    ::= &quot;example&quot;
+
+    LIST_BEGIN ::= &quot;list_begin&quot; WHITE
+    LIST_END   ::= &quot;list_end&quot;
+    LIST_ITEM  ::= &quot;lst_item&quot;
+    BULLET     ::= &quot;bullet&quot;
+    ENUM       ::= &quot;enum&quot;
+    CALL       ::= &quot;call&quot;
+    ARGDEF     ::= &quot;arg_def&quot;
+    OPTDEF     ::= &quot;opt_def&quot;
+    CMDDEF     ::= &quot;cmd_def&quot;
+    TKODEF     ::= &quot;tkoption_def&quot;
+
+    INCLUDE    ::= &quot;include&quot;
+    VSET       ::= &quot;vset&quot;
+    DEFUN      ::= { INCLUDE | VSET }
+</pre></td></tr></table></p>
+
+At last we can specify the whole manpage. Here we introduce our
+knowledge that inclusion of other files may happen essentially
+everywhere, like the definition of document variables and comments.
+The content of any included file has to fit into the including file
+according to the location in the grammar the inclusion is at.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    MANPAGE      ::= DEFUN BEGIN HEADER DESC BODY END
+
+    HEADER       ::= { TITLE | MODULE | COPYRIGHT } { REQUIRE }
+    BODY         ::= REGULAR_TEXT { SECTION SECBODY }
+    SECBODY      ::= REGULAR_TEXT { SUBSEC SUBSECBODY }
+    SUBSECBODY   ::= REGULAR_TEXT
+
+    REGULAR_TEXT ::= TEXT_CHUNK { PARA TEXT_CHUNK }
+    TEXT_CHUNK   ::= { TEXT | DEFUN | XREF | MARKUP | COMMENT | A_LIST | AN_EXAMPLE }
+
+    A_LIST       ::= LIST_BEGIN { ( LIST_ITEM | CALL ) LIST_TEXT } LIST_END
+                   | LIST_BEGIN { BULLET LIST_TEXT } LIST_END
+                   | LIST_BEGIN { ENUM   LIST_TEXT } LIST_END
+                   | LIST_BEGIN { ARGDEF LIST_TEXT } LIST_END
+                   | LIST_BEGIN { OPTDEF LIST_TEXT } LIST_END
+                   | LIST_BEGIN { CMDDEF LIST_TEXT } LIST_END
+                   | LIST_BEGIN { TKODEF LIST_TEXT } LIST_END
+
+    LIST_TEXT    ::= TEXT_CHUNK { NL TEXT_CHUNK }
+
+    AN_EXAMPLE   ::= EXAMPLE | EX_BEGIN EXAMPLE_TEXT EX_END
+    EXAMPLE_TEXT ::= { TEXT | DEFUN | MARKUP }
+
+    MARKUP       ::= { BRACKETS | SEMANTIC }
+
+    XREF         ::= SEE_ALSO | KEYWORDS
+    BRACKETS     ::= LB | RB
+    SEMANTIC     ::= ARG | EMPH | CLASS | STRONG | OPTION
+                   | CMD | TYPE | CONST | METHOD | SECTREF
+                   | OPT | TERM | FUN   | SYSCMD | PACKAGE
+                   | VAR | FILE | USAGE | WIDGET | NAMESPACE
+                   | URI
+</pre></td></tr></table></p>
+
+
+<h3><a name="commands">COMMANDS</a></h3>
+<p>
+
+Here we specify the commands used in the grammar. Some commands
+specified here were not used in the grammar at all. The usage of these
+commands is confined to the arguments of other commands.
+
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>comment</b> <i class='arg'>text</i></a><dd>
+
+
+The command declares that the argument <i class='arg'>text</i> is a comment.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>include</b> <i class='arg'>filename</i></a><dd>
+
+
+This command loads the contents of the file <i class='arg'>filename</i> for
+processing at its own place.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>vset</b> <i class='arg'>varname</i> <i class='arg'>value</i></a><dd>
+
+
+This form of the command sets the document variable <i class='arg'>varname</i> to
+the specified <i class='arg'>value</i>. It does not generate output.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>vset</b> <i class='arg'>varname</i></a><dd>
+
+
+This form of the command returns the value associated with the
+document variable <i class='arg'>varname</i>. 
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>lb</b> </a><dd>
+
+
+This command adds a left bracket to the output. <em>Note</em> that the
+bracket commands are necessary as plain brackets are used to begin and
+end the formatting commands.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>rb</b> </a><dd>
+
+
+This command adds a right bracket to the output. <em>Note</em> that the
+bracket commands are necessary as plain brackets are used to begin and
+end the formatting commands.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>manpage_begin</b> <i class='arg'>command</i> <i class='arg'>section</i> <i class='arg'>version</i></a><dd>
+
+
+This is the command to start a manpage. The arguments are the name of
+the <i class='arg'>command</i> described by the manpage, the <i class='arg'>section</i> of the
+manpages this manpage resides in, and the <i class='arg'>version</i> of the module
+containing the command.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>manpage_end</b> </a><dd>
+
+
+This is the command to close a manpage.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>moddesc</b> <i class='arg'>desc</i></a><dd>
+
+
+This command is optional. When used it will register its argument
+<i class='arg'>desc</i> as a short description of the module the manpage resides
+in.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>titledesc</b> <i class='arg'>desc</i></a><dd>
+
+
+This command is optional. When used it will register its argument
+<i class='arg'>desc</i> as the title of the manpage. When not used the information
+from <b class='cmd'>moddesc</b> will be used for the title as well.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>copyright</b> <i class='arg'>text</i></a><dd>
+
+
+This command is optional. When used its argument <i class='arg'>text</i> will
+declare a copyright assignment for the manpage. When invoked more than
+once the assignments are accumulated.
+
+<br><br>
+
+A doctools processor application (like <strong>dtplite</strong>) is allowed to
+provide such information too, but a formatting engine has to give the
+accumulated arguments of this command precedence over the data coming
+from the application.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>description</b> </a><dd>
+
+
+This is the command to separate the header part of the manpage from
+the main body.
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>require</b> <i class='arg'>pkg</i> ?<i class='arg'>version</i>?</a><dd>
+
+
+This is the command to list the packages which are required by an
+application or other library to import the described package and its
+prerequisites.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>section</b> <i class='arg'>name</i></a><dd>
+
+
+This is the command to partition the body of the manpage into named
+sections. Note that the command <b class='cmd'>description</b> at the beginning of
+the manpage body implicitly starts a section named &quot;DESCRIPTION&quot;. A
+section command implicitly closes the last <b class='cmd'>para</b>graph coming
+before it and also implicitly opens the first paragraph of the new
+section.
+
+<br><br>
+<dt><a name="15"><b class='cmd'>subsection</b> <i class='arg'>name</i></a><dd>
+
+
+This is the command to partition the body of a <em>section</em> into
+named sub-sections. A subsection command implicitly closes the last
+<b class='cmd'>para</b>graph coming before it and also implicitly opens the first
+paragraph of the new section.
+
+
+<br><br>
+<dt><a name="16"><b class='cmd'>para</b> </a><dd>
+
+
+This is the command to partition the text in a section or sub-section
+into paragraphs. Each invokation closes the paragraph coming before it
+and opens a new paragraph for the text coming after.
+
+
+<br><br>
+<dt><a name="17"><b class='cmd'>see_also</b> <i class='arg'>args</i></a><dd>
+
+
+This is the command to define direct cross-references to other
+documents. Each argument is a label identifying the referenced
+document. If this command is used multiple times all the arguments
+accumulate.
+
+
+<br><br>
+<dt><a name="18"><b class='cmd'>keywords</b> <i class='arg'>args</i></a><dd>
+
+
+This is the command to define the keywords applying to this
+document. Each argument is a single keyword. If this command is used
+multiple times all the arguments accumulate.
+
+
+<br><br>
+<dt><a name="19"><b class='cmd'>arg</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a command
+argument.
+
+
+<br><br>
+<dt><a name="20"><b class='cmd'>cmd</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a command.
+
+
+<br><br>
+<dt><a name="21"><b class='cmd'>opt</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is something optional. Most
+often used in conjunction with <b class='cmd'>arg</b> to denote optional command
+arguments. Example:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    [arg foo]
+        A regular argument.
+
+    [opt [arg foo]]
+        An optional argument.
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="22"><b class='cmd'>emph</b> <i class='arg'>text</i></a><dd>
+
+
+Emphasize the <i class='arg'>text</i>.
+
+
+<br><br>
+<dt><a name="23"><b class='cmd'>strong</b> <i class='arg'>text</i></a><dd>
+
+
+Emphasize the <i class='arg'>text</i>. Same as <b class='cmd'>emph</b>. Usage of this command is
+discouraged. The command is deprecated and present only for backward
+compatibility.
+
+
+<br><br>
+<dt><a name="24"><b class='cmd'>sectref</b> <i class='arg'>text</i> ?<i class='arg'>label</i>?</a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a section
+somewhere else in the document, and the current location should refer
+to it.
+
+Without an explicit <i class='arg'>label</i> for the reference within the text the
+section title <i class='arg'>text</i> is used.
+
+
+<br><br>
+<dt><a name="25"><b class='cmd'>syscmd</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a system command.
+
+
+<br><br>
+<dt><a name="26"><b class='cmd'>method</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of an object method.
+
+
+<br><br>
+<dt><a name="27"><b class='cmd'>namespace</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a namespace.
+
+
+<br><br>
+<dt><a name="28"><b class='cmd'>option</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of an option.
+
+
+<br><br>
+<dt><a name="29"><b class='cmd'>widget</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a widget.
+
+
+<br><br>
+<dt><a name="30"><b class='cmd'>fun</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a function.
+
+
+<br><br>
+<dt><a name="31"><b class='cmd'>type</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a data type.
+
+
+<br><br>
+<dt><a name="32"><b class='cmd'>package</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a package.
+
+
+<br><br>
+<dt><a name="33"><b class='cmd'>class</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a class.
+
+
+<br><br>
+<dt><a name="34"><b class='cmd'>var</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is the name of a variable.
+
+
+<br><br>
+<dt><a name="35"><b class='cmd'>file</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is a file .
+
+
+<br><br>
+<dt><a name="36"><b class='cmd'>uri</b> <i class='arg'>text</i> ?<i class='arg'>text</i>?</a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is an uri. The second argument,
+if it is present, is the human-readable description of the uri. In
+other words, the label for the link. Without a labeling text the uri
+is used as its own label.
+
+
+<br><br>
+<dt><a name="37"><b class='cmd'>term</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> contains some unspecific
+terminology.
+
+
+<br><br>
+<dt><a name="38"><b class='cmd'>const</b> <i class='arg'>text</i></a><dd>
+
+
+Declares that the argument <i class='arg'>text</i> is a constant value.
+
+
+<br><br>
+<dt><a name="39"><b class='cmd'>nl</b> </a><dd>
+
+
+This command signals vertical space to separate blocks of text.
+
+<! --    --     FUTURE: This is the same as para, but restricted to use inside of   --     list elements. Whereas para's are restricted to usage outside list   --     elements. Given that both do the same this separation is stupid.   --     Doctools V2 will have only one command, 'para', useable everywhere.   --     The formatting engine has to switch outputs, if truly necessary.   -- 
+   -->
+
+
+<br><br>
+<dt><a name="40"><b class='cmd'>example_begin</b> </a><dd>
+ 
+
+This command begins an example block. Subsequent text belongs to the
+example. Line breaks, spaces, and tabs have to be preserved literally.
+
+
+<br><br>
+<dt><a name="41"><b class='cmd'>example_end</b> </a><dd>
+ 
+
+This command closes the example block.
+
+
+<br><br>
+<dt><a name="42"><b class='cmd'>example</b> <i class='arg'>text</i></a><dd>
+ 
+
+This command wraps its argument <i class='arg'>text</i> into an example. In other
+words, it is a simpler form of markup for the creation of an
+example. It should be used if the example text does not need need
+special markup.
+
+
+<br><br>
+<dt><a name="43"><b class='cmd'>list_begin</b> <i class='arg'>what</i></a><dd>
+
+
+This command starts new list. The value of the argument <i class='arg'>what</i>
+determines what type of list is opened. This also defines what command
+has to be used to start an item in the new list. The allowed types
+(and their associated item commands) are:
+
+<br><br>
+<dl>
+<dt><em>bullet</em><dd>
+<b class='cmd'>bullet</b>
+
+<dt><em>enum</em><dd>
+<b class='cmd'>enum</b>
+
+<dt><em>definitions</em><dd>
+<b class='cmd'>lst_item</b> and <b class='cmd'>call</b>
+
+<br><br>
+<dt><em>arg</em><dd>
+<b class='cmd'>arg_def</b>
+
+<dt><em>cmd</em><dd>
+<b class='cmd'>cmd_def</b>
+
+<dt><em>opt</em><dd>
+<b class='cmd'>opt_def</b>
+
+<dt><em>tkoption</em><dd>
+<b class='cmd'>tkoption_def</b>
+
+</dl>
+<br><br>
+
+
+<dt><a name="44"><b class='cmd'>list_end</b> </a><dd>
+
+
+This command ends the list opened by the last <b class='cmd'>list_begin</b>.
+
+
+<br><br>
+<dt><a name="45"><b class='cmd'>bullet</b> </a><dd>
+
+
+This command starts a new list item in a bulletted list. The previous
+item is automatically closed.
+
+
+<br><br>
+<dt><a name="46"><b class='cmd'>enum</b> </a><dd>
+
+
+This command starts a new list item in an enumerated list. The
+previous item is automatically closed.
+
+
+<br><br>
+<dt><a name="47"><b class='cmd'>lst_item</b> <i class='arg'>text</i></a><dd>
+
+
+This command starts a new list item in a definition list. The argument
+is the term to be defined. The previous item is automatically closed.
+
+
+<br><br>
+<dt><a name="48"><b class='cmd'>call</b> <i class='arg'>args</i></a><dd>
+
+
+This command starts a new list item in a definition list, but the term
+defined by it is a command and its arguments. The previous item is
+automatically closed. The first argument is the name of the described
+command, and everything after that are descriptions of the command
+arguments.
+
+
+<br><br>
+<dt><a name="49"><b class='cmd'>arg_def</b> <i class='arg'>type</i> <i class='arg'>name</i> ?<i class='arg'>mode</i>?</a><dd>
+
+
+This command starts a new list item in an argument list. The previous
+item is automatically closed. Specifies the data-<i class='arg'>type</i> of the
+described argument, its <i class='arg'>name</i> and its i/o-<i class='arg'>mode</i>. The latter
+is optional.
+
+
+<br><br>
+<dt><a name="50"><b class='cmd'>opt_def</b> <i class='arg'>name</i> ?<i class='arg'>arg</i>?</a><dd>
+
+
+This command starts a new list item in an option list. The previous
+item is automatically closed. Specifies the <i class='arg'>name</i> of the option
+and its arguments (<i class='arg'>arg</i>). The latter is a list, and can be left
+out.
+
+
+<br><br>
+<dt><a name="51"><b class='cmd'>cmd_def</b> <i class='arg'>command</i></a><dd>
+
+
+This command starts a new list item in a command list.  The previous
+item is automatically closed. Specifies the name of the <i class='arg'>command</i>.
+
+
+<br><br>
+<dt><a name="52"><b class='cmd'>tkoption_def</b> <i class='arg'>name</i> <i class='arg'>dbname</i> <i class='arg'>dbclass</i></a><dd>
+
+
+This command starts a new list item in a widget option list. The
+previous item is automatically closed.
+
+Specifies the <i class='arg'>name</i> of the option, i.e. the name used in scripts,
+the name used by the option database (<i class='arg'>dbname</i>), and the class
+(type) of the option (<i class='arg'>dbclass</i>).
+
+
+<br><br>
+<dt><a name="53"><b class='cmd'>usage</b> <i class='arg'>args</i></a><dd>
+
+
+This command is like <b class='cmd'>call</b>, except that a formatting engine must
+not generate output at the location of the command. In other words,
+this command is <em>silent</em>. The data it defines may appear in a
+different section of the output, for example a table of contents, or
+synopsis, depending on the formatting engine and its output format.
+
+</dl>
+
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+The sources of this manpage can serve as an example for all of the
+markup described by it. Almost every possible construct is used here.
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+docidx_fmt, doctoc_fmt, doctools, doctools_api
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+HTML, LaTeX, TMML, generic markup, manpage, markup, nroff
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>
+

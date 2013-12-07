@@ -1,0 +1,377 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>SASL - Simple Authentication and Security Layer (SASL) </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/sasl/sasl.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: sasl.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ SASL.n
+   -->
+
+<body>
+<h1> SASL(n) 1.0.0 sasl &quot;Simple Authentication and Security Layer (SASL)&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> SASL - Implementation of SASL mechanisms for Tcl
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#callback_procedure">CALLBACK PROCEDURE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#mechanisms">MECHANISMS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>SASL ?1.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::SASL::new</b> <i class='arg'>option value ?...?</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::SASL::configure</b> <i class='arg'>option value</i> ?<i class='arg'>...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::SASL::step</b> <i class='arg'>context</i> <i class='arg'>challenge</i> ?<i class='arg'>...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::SASL::response</b> <i class='arg'>context</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::SASL::reset</b> <i class='arg'>context</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::SASL::cleanup</b> <i class='arg'>context</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::SASL::mechanisms</b> </a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::SASL::register</b> <i class='arg'>mechanism</i> <i class='arg'>preference</i> <i class='arg'>clientproc</i> ?<i class='arg'>serverproc</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The Simple Authentication and Security Layer (SASL) is a framework
+for providing authentication and authorization to comunications
+protocols. The SASL framework is structured to permit negotiation
+among a number of authentication mechanisms. SASL may be used in
+SMTP, IMAP and HTTP authentication. It is also in use in XMPP, LDAP
+and BEEP. See <a href="#mechanisms">MECHANISMS</a> for the set of available SASL
+mechanisms provided with tcllib.
+
+<p>
+
+The SASL framework operates using a simple multi-step challenge
+response mechanism. All the mechanisms work the same way although the
+number of steps may vary. In this implementation a callback procedure
+must be provided from which the SASL framework will obtain users
+details. See <a href="#callback_procedure">CALLBACK PROCEDURE</a> for details of this
+procedure.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::SASL::new</b> <i class='arg'>option value ?...?</i></a><dd>
+
+
+Contruct a new SASL context. See <a href="#options">OPTIONS</a> for details of the
+possible options to this command. A context token is required for most
+of the SASL procedures.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::SASL::configure</b> <i class='arg'>option value</i> ?<i class='arg'>...</i>?</a><dd>
+
+
+Modify and inspect the SASL context option. See <a href="#options">OPTIONS</a> for
+further details.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::SASL::step</b> <i class='arg'>context</i> <i class='arg'>challenge</i> ?<i class='arg'>...</i>?</a><dd>
+
+
+This is the core procedure for useing the SASL framework. The 
+<b class='cmd'>step</b> procedure should be called until it returns 0. Each step takes a
+server challenge string and the response is calculated and stored in
+the context. Each mechanism may require one or more steps. For some
+steps there may be no server challenge required in which case an empty
+string should be provided for this parameter.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::SASL::response</b> <i class='arg'>context</i></a><dd>
+
+
+Returns the next response string that should be sent to the server.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::SASL::reset</b> <i class='arg'>context</i></a><dd>
+
+
+Re-initialize the SASL context. Discards any internal state and
+permits the token to be reused.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::SASL::cleanup</b> <i class='arg'>context</i></a><dd>
+
+
+Release all resources associated with the SASL context. The context
+token may not be used again after this procedure has been called.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::SASL::mechanisms</b> </a><dd>
+
+
+Returns a list of all the available SASL mechanisms. The list is
+sorted by the mechanism preference value (see <b class='cmd'>register</b>) with the
+preferred mechanisms and the head of the list.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::SASL::register</b> <i class='arg'>mechanism</i> <i class='arg'>preference</i> <i class='arg'>clientproc</i> ?<i class='arg'>serverproc</i>?</a><dd>
+
+
+New mechanisms can be added to the package by registering the
+mechanism name and the implementing procedures. The server procedure
+is optional. The preference value is an integer that is used to order
+the list returned by the <b class='cmd'>mechanisms</b> command. Higher values
+indicate a preferred mechanism.
+
+</dl>
+
+
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+
+<dl>
+
+<dt><strong>-callback</strong><dd>
+
+Specify a command to be evaluated when the SASL mechanism requires
+information about the user. The command is called with the current
+SASL context and a name specifying the information desired. See
+<a href="#examples">EXAMPLES</a>.
+
+<br><br>
+<dt><strong>-mechanism</strong><dd>
+
+Set the SASL mechanism to be used. See <b class='cmd'>mechanisms</b> for a list of
+supported authentication mechanisms.
+
+<br><br>
+<dt><strong>-service</strong><dd>
+
+Set the service type for this context. Some mechanisms may make use of
+this parameter (eg DIGEST-MD5, GSSAPI and Kerberos). If not set it
+defaults to an empty string. If the <strong>-type</strong> is set to 'server'
+then this option should be set to a valid service identity. Some
+examples of valid service names are smtp, ldap, beep and xmpp.
+
+<br><br>
+<dt><strong>-server</strong><dd>
+
+This option is used to set the server name used in SASL challenges
+when operating as a SASL server.
+
+<br><br>
+<dt><strong>-type</strong><dd>
+
+The context type may be one of 'client' or 'server'. The default is to
+operate as a client application and respond to server
+challenges. Mechanisms may be written to support server-side SASL and
+setting this option will cause each <b class='cmd'>step</b> to issue the next
+challenge. A new context must be created for each incoming client
+connection when in server mode.
+
+</dl>
+
+
+
+<h2><a name="callback_procedure">CALLBACK PROCEDURE</a></h2>
+<p>
+
+When the SASL framework requires any user details it will call the
+procedure provided when the context was created with an argument that
+specfies the item of information required.
+<p>
+In all cases a single response string should be returned.
+
+<dl>
+
+<dt>login<dd>
+
+The callback procedure should return the users authorization identity.
+Return an empty string unless this is to be different to the authentication
+identity. Read [1] for a discussion about the specific meaning of
+authorization and authentication identities within SASL.
+
+<br><br>
+<dt>username<dd>
+
+The callback procedure should return the users authentication identity.
+Read [1] for a discussion about the specific meaning of
+authorization and authentication identities within SASL.
+
+<br><br>
+<dt>password<dd>
+
+The callback procedure should return the password that matches the
+authentication identity as used within the current realm.
+
+<br><br>
+<dt>realm<dd>
+
+Some SASL mechanisms use realms to partition authentication identities.
+The realm string is protocol dependent and is often the current DNS
+domain or in NTLM the Windows domain name.
+
+<br><br>
+<dt>hostname<dd>
+
+Returns the client host name - typically [info host].
+
+</dl>
+
+
+
+<h2><a name="mechanisms">MECHANISMS</a></h2>
+<p>
+
+<dl>
+
+<dt>ANONYMOUS<dd>
+
+As used in FTP this mechanism only passes an email address for
+authentication. The ANONYMOUS mechanism is specified in [2].
+
+<br><br>
+<dt>PLAIN<dd>
+
+This is the simplest mechanism. The users authentication details are
+transmitted in plain text. This mechanism should not be provided
+unless an encrypted link is in use - typically after SSL or TLS has
+been negotiated.
+
+<br><br>
+<dt>LOGIN<dd>
+
+The LOGIN [1] mechanism transmits the users details with base64
+encoding. This is no more secure than PLAIN and likewise should not be
+used without a secure link.
+
+<br><br>
+<dt>CRAM-MD5<dd>
+
+This mechanism avoids sending the users password over the network in
+plain text by hashing the password with a server provided random value
+(known as a nonce). A disadvantage of this mechanism is that the
+server must maintain a database of plaintext passwords for
+comparison. CRAM-MD5 was defined in [4].
+
+<br><br>
+<dt>DIGEST-MD5<dd>
+
+This mechanism improves upon the CRAM-MD5 mechanism by avoiding the
+need for the server to store plaintext passwords. With digest
+authentication the server needs to store the MD5 digest of the users
+password which helps to make the system more secure. As in CRAM-MD5
+the password is hashed with a server nonce and other data before being
+transmitted across the network. Specified in [3].
+
+<br><br>
+<dt>NTLM<dd>
+
+This is a proprietary protocol developed by Microsoft [5] and is
+in common use for authenticating users in a Windows network
+environment. NTLM uses DES encryption and MD4 digests of the users
+password to authenticate a connection. Certain weaknesses have been
+found in NTLM and thus there are a number of versions of the protocol.
+
+</dl>
+
+
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+See the examples subdirectory for more complete samples using SASL
+with network protocols. The following should give an idea how the SASL
+commands are to be used. In reality this should be event
+driven. Each time the <b class='cmd'>step</b> command is called, the last server
+response should be provided as the command argument so that the SASL
+mechanism can take approriate action.
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+proc Callback {context command args} {
+    switch -exact -- $command {
+        login    { return &quot;&quot; }
+        username { return $::tcl_platform(user) }
+        password { return &quot;SecRet&quot; }
+        realm    { return &quot;&quot; }
+        hostname { return [info host] }
+        default  { return -code error unxpected }
+    }
+}
+
+proc Demo {{mech PLAIN}} {
+    set ctx [SASL::new -mechanism $mech -callback Callback]
+    set challenge &quot;&quot;
+    while {1} {
+        set more_steps [SASL::step $ctx challenge]
+        puts &quot;Send '[SASL::response $ctx]'&quot;
+        puts &quot;Read server response into challenge var&quot;
+        if {!$more_steps} {break}
+    }
+    SASL::cleanup $ctx
+}
+</pre></td></tr></table></p>
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+
+<li>
+    Myers, J. &quot;Simple Authentication and Security Layer (SASL)&quot;,
+    RFC 2222, October 1997.
+    (<a href="http://www.ietf.org/rfc/rfc2222.txt">http://www.ietf.org/rfc/rfc2222.txt</a>)
+
+<br><br>
+<li>
+    Newman, C. &quot;Anonymous SASL Mechanism&quot;,
+    RFC 2245, November 1997.
+    (<a href="http://www.ietf.org/rfc/rfc2245.txt">http://www.ietf.org/rfc/rfc2245.txt</a>)
+
+<br><br>
+<li>
+    Leach, P., Newman, C. &quot;Using Digest Authentication as a SASL
+    Mechanism&quot;, RFC 2831, May 2000,
+    (<a href="http://www.ietf.org/rfc/rfc2831.txt">http://www.ietf.org/rfc/rfc2831.txt</a>)
+
+<br><br>
+<li>
+    Klensin, J., Catoe, R. and Krumviede, P.,
+    &quot;IMAP/POP AUTHorize Extension for Simple Challenge/Response&quot;
+    RFC 2195, September 1997.
+    (<a href="http://www.ietf.org/rfc/rfc2195.txt">http://www.ietf.org/rfc/rfc2195.txt</a>)
+
+<br><br>
+<li>
+    No official specification is available. However,
+    <a href="http://davenport.sourceforge.net/ntlm.html">http://davenport.sourceforge.net/ntlm.html</a> provides a good
+    description.
+
+</ol>
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+SASL, authentication
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>
+

@@ -1,0 +1,44 @@
+\clearpage
+\section{Resolution Function \cite{Pedersen1990}}
+%\begin{subequations}
+\begin{align}
+    \langle k\rangle      & = 2 \pi/\lambda \\
+    \langle \theta\rangle  &= \arcsin(\langle Q_{av}/(2 \langle k\rangle )) \\
+    a_1        &= \frac{r_1}{L+l/\cos^2(2\langle \theta\rangle )} \\
+    a_2        &= r_2 \cos^2(2 \langle \theta\rangle )/l \\
+    \Delta\beta_1 &=
+       \begin{cases}
+          a_1 \geq a_2: & \displaystyle \frac{2 r_1}{L} - \frac{r_2^2}{2 r_1}
+          \frac{\cos^4(2\langle \theta\rangle )}{l^2L}
+                          \left(L+\frac{l}{\cos^2(2\langle \theta\rangle )}\right)^2\\
+                          ~
+                          \\
+          a_1 < a_2: & \displaystyle 2 r_2\left(\frac{1}{L} + \frac{\cos^2(2\langle \theta\rangle )}{l}\right)
+                 - \frac{r_1^2}{2r_2}  \frac{l}{L} \\
+                 & \displaystyle \times
+                 \frac{1}{\cos^2(2\langle \theta\rangle ) \left(L+\frac{l}{\cos^2(2\langle \theta\rangle )}\right)}
+       \end{cases}
+\end{align}
+%\end{subequations}
+%\begin{subequations}
+\begin{align}
+    \sigma_W  &= \langle Q\rangle \frac{\Delta\lambda}{\lambda}\frac{1}{2\sqrt{2\ln(2)}} \\
+    \sigma_{C1} &= \langle k\rangle\cos(\langle \theta\rangle)\frac{\Delta\beta_1}{2\sqrt{2\ln(2)}}  \\
+    \sigma_{D1} &= \langle k\rangle\cos(\langle \theta\rangle)\cos^2(2\langle \theta\rangle) \frac{D}{l \,2\sqrt{2\ln(2)}} \\
+    \sigma_{av} &= \langle k\rangle\cos(\langle \theta\rangle)\cos^2(2\langle \theta\rangle) \frac{\Delta D}{l \,2\sqrt{2\ln(2)}} \\
+    \sigma &= \sqrt{\sigma^2_W+\sigma^2_{C1}+\sigma^2_{D1}+\sigma^2_{av}}
+\end{align}
+%\end{subequations}
+\begin{equation}
+R_{av}\left(Q,\langle Q\rangle\right) = \frac{Q}{\sigma^2}
+ \exp\left( -\frac{1}{2}\left(Q^2+\langle Q\rangle^2\right)/\sigma^2\right)
+ I_0(Q\langle Q\rangle/\sigma^2)
+\end{equation}
+
+\begin{equation}
+I(\langle Q\rangle) = \int_0^\infty R_{av}\left(Q,\langle
+Q\rangle\right) \frac{d\sigma}{d\Omega}(Q) \, dQ
+\end{equation}
+\begin{equation}
+\frac{d\sigma}{d\Omega}(Q) = \int_0^\infty N(R) F^2(Q,R) \, dR
+\end{equation}

@@ -1,0 +1,119 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>history - Provides a history for Entry widgets </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/history/tklib_history.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: tklib_history.html,v 1.1 2006/05/02 08:24:45 kohlbrecher Exp $ history.n
+   -->
+
+<body>
+<h1> history(n) 0.1 history &quot;Provides a history for Entry widgets&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> history - Provides a history for Entry widgets
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>Tk 8.4</b><br>
+package require <b>history ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::history::init</b> <i class='arg'>pathName</i> ?length?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::history::remove</b> <i class='arg'>pathName</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::history::add</b> <i class='arg'>pathName</i> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::history::get</b> <i class='arg'>pathName</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::history::clear</b> <i class='arg'>pathName</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::history::configure</b> <i class='arg'>pathName</i> <i class='arg'>option</i> ?value?</a></td></tr>
+<tr valign=top ><td ><a href="#7">bell </a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides a convenient history mechanism for Entry widgets.
+The history may be accessed with the up and down arrow keys.
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::history::init</b> <i class='arg'>pathName</i> ?length?</a><dd>
+
+
+Arranges to remember the history of the named Entry widget. An optional length
+determines the number of history entries to keep. This may be changed later
+with <b class='cmd'>::history::configure</b>. History entries must be added with the
+<b class='cmd'>::history::add</b> command before they can be seen.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::history::remove</b> <i class='arg'>pathName</i></a><dd>
+
+
+Forgets all history entries for the Entry <i class='arg'>pathName</i> and removes the history
+bindings.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::history::add</b> <i class='arg'>pathName</i> <i class='arg'>text</i></a><dd>
+
+
+This command is used to add history entries to an Entry that has previously had
+<b class='cmd'>::history::init</b> called on it. This command should be called from your Entry
+handler with the contents of the entry (or whatever you wish to add to the history).
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::history::get</b> <i class='arg'>pathName</i></a><dd>
+
+
+This command returns a list containing the history entries for the Entry <i class='arg'>pathName</i>
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::history::clear</b> <i class='arg'>pathName</i></a><dd>
+
+
+This command clears the history list for the named Entry.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::history::configure</b> <i class='arg'>pathName</i> <i class='arg'>option</i> ?value?</a><dd>
+
+
+This command queries or sets configuration options. Currently the options recognized
+are <i class='arg'>length</i> and <i class='arg'>alert</i>. Setting the length determines the number of history entries to keep for
+the named Entry. Alert specifies the command to run when the user reaches the end of the history, it defaults to <br><br>
+<dt><a name="7">bell </a><dd>
+. Although configure requires a <i class='arg'>pathName</i> argument, the setting for alert is global and the path is ignored.
+
+</dl>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+entry .e
+bind .e &lt;Return&gt; [list ProcessEntry %W]
+::history::init .e
+pack .e
+
+proc ProcessEntry {w} {
+    set text [$w get]
+    if {$text == &quot;&quot;} { return }
+    ::history::add $w $text
+    puts $text
+    $w delete 0 end
+}
+
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+entry, history
+</body></html>
+
