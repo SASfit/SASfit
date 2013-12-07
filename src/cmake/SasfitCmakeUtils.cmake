@@ -428,6 +428,9 @@ function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
     endif()
     message(STATUS "Saskit file '${SASKIT_FILE}' does not exist. "
                    "Attempting to build it.")
+    if(EXISTS "${TCL_SH}")
+        set(ENV{TCLSH} "${TCL_SH}")
+    endif()
     execute_process(COMMAND sh gen/common.sh
                     WORKING_DIRECTORY ${SASKIT_PATH})
     site_name(HOSTNAME)
