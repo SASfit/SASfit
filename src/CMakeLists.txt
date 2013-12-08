@@ -150,6 +150,7 @@ if(NOT TCL_FOUND)
 endif()
 message(STATUS "TCL INCLUDES:  ${TCL_INCLUDE_DIRS}")
 message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
+message(STATUS "TCL SH: ${TCL_SH}")
 
 # FFTW
 find_package(FFTW QUIET REQUIRED)
