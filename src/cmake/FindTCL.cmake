@@ -38,7 +38,7 @@ FIND_FILE(TCL_STATIC_STUBS_LIB
 )
 
 find_program(TCL_SH
-    NAMES tclsh tclsh84 tclsh84s
+    NAMES tclsh tclsh84 tclsh84s tclsh8.4
     PATHS ${SOURCE_DIR}
     PATH_SUFFIXES bin
     NO_DEFAULT_PATH
