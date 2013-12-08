@@ -1251,9 +1251,8 @@ principle, derived from experiment as
 \end{align}
 or
 \begin{align}
-S(q) &= \frac{1}{1+\rho \tilde{c}(q)} \label{eq:ozSq}
+S(q) &= \frac{1}{1-\rho \tilde{c}(q)} \label{eq:ozSq}
 \end{align}
-
 By Fourier transformation of eq.\ \ref{eq:ozh(r)}, one obtains
 \begin{align}
 \tilde{h}(q) &= \frac{\tilde{c}(q)}{1-\rho\tilde{c}(q)}
@@ -1345,7 +1344,7 @@ equation two Fourier transforms have to be performed:
 c(r) & \xrightarrow{\mathscr{F}\{\}} \tilde{c}(q)  \quad \mbox{(in step 4)} \\
 \tilde{\gamma}(q) & \xrightarrow{\mathscr{F}^{-1}\{\}} \gamma(r) \quad \mbox{(in step 6)}
 \end{align}
-A we assume that the system is isotropic, i.e. $c(r)$ and $\gamma(r)$ are only functions
+As we assume that the system is isotropic, i.e. $c(r)$ and $\gamma(r)$ are only functions
 of the modulus of $\abs{\mathbf{r}}=r$ the Fourier transforms can be written as
 \begin{align}
 \tilde{c}(q) &= \int c(r) \exp\left(- \imath\mathbf{q}\cdot \mathbf{r} \right) d\mathbf{r}
@@ -1369,7 +1368,7 @@ and $\Delta q$, respectively ($r_0=\Delta r, q_0=\Delta q$).
 \end{align}
 For calculating the Fourier transformation the library \texttt{FFTW} for fast fourier transformation
 \cite{FFTW05,FFTW97} has been used. The library supplies a discrete sin transformation (type-I DST)
-named \verb"FFTW_RODFT00" which doing the transformation
+named \verb"FFTW_RODFT00" which is doing the transformation
 \begin{align}
 Y_k &= 2 \sum_{j=0}^{N_p-1} X_j \sin\left(\frac{\pi(j + 1)(k + 1)}{N_p + 1}\right)
 \end{align}
@@ -1377,42 +1376,132 @@ The unnormalized inverse of \verb"FFTW_RODFT00" is \verb"FFTW_RODFT00" itself.
 The same routine can be used for both transformations.
 
 \section{Thermodynamic Parameters and Consistency Tests}
+
+Thermodynamic consistencies have been an important tool finding a good bridge function.
+The Ornstein-Zenike equations in combination with a closure relation enable us to calculate
+the direct $c(r)$ and total $h(r)$ correlation function  as well as the the pair distribution function $g(r)$.
+From these functions thermodynamic properties via different routes can be calculated.
+
+The thermodynamic routes are:
+\begin{description}
+\item[compressibility route]
+\begin{align} \label{eq:compressibility}
+\left(\frac{\beta \partial P}{\partial\rho}\right)_T &= \left(\rho
+k_\mathrm{B} T \kappa_T\right)^{-1} \quad \Leftrightarrow \quad
+\kappa_T = \frac{1}{\rho} \left(\frac{\partial
+P}{\partial\rho}\right)^{-1}_T
+\end{align}
+The compressibility can also be related to the static structure factor in the long-wavelength limit:
+\begin{align} \label{eq:compressibilitySQ}
+\begin{split}
+\kappa_T &= \frac{\beta}{\rho} \left[1+\rho \displaystyle \int 4\pi r^2 h(r\rho,T) \mathrm{d}r\right] \\
+         &= \frac{\beta}{\rho} \left[1+\rho \displaystyle \int 4\pi r^2 \left[g(r;\rho,T)-1\right] \mathrm{d}r\right] \\
+         &= \frac{\beta}{\rho} \left[ 1-\rho\int 4\pi r^2 c(r) \mathrm{d}r\right]^{-1} \\
+         &= \frac{\beta}{\rho} S(q=0,\rho,T)
+\end{split}
+\end{align}
+\item[energy route] ~\vphantom{.} \\
 The internal energy $U$ is
 \begin{align}
 U &= U_\text{id} + U_\text{ex}
 \end{align}
 where $U_\text{id}=\frac{3}{2} N k_B T$ is the internal energy of an ideal gas and
 the excess internal energy per particle is given by
-\begin{align}
+\begin{align} \label{eq:internal_energy}
 \frac{U_\text{ex}}{N} &= 2\pi\rho \int g(r) u(r) r^2 \;dr
 \end{align}
-and the virial pressure can be written as
+%and
+%\begin{align}
+%\rho \frac{\partial^2}{\partial\rho^2}\left(\rho \frac{U_\text{ex}}{N}\right) &=
+%\frac{\partial^2}{\partial\beta\partial\rho}\left(\rho P_\text{ex}\right)
+%\end{align}
+%where $P_\text{ex}$ is the excess (over the ideal gas) pressure.
+The excess internal energy $U_\text{ex}$ is related to the excess Helmholtz free energy
+$F_\text{ex}$ by
 \begin{align}
+U_\text{ex} &= \left(\frac{\partial \beta F_\text{ex}}{\partial \beta}\right)_V
+\end{align}
+The excess pressure $P_\text{ex}$ ($P=P_\text{id}+P_\text{ex}$ and $P_\text{id}=\rho/\beta$) is than obtained as
+\begin{align}
+P_\text{ex} &= - \frac{\partial F_\text{ex}}{\partial V}
+\end{align}
+where $\beta F_\text{ex} = \int_0^\beta U(\beta',\rho) \mathrm{d}\beta'$.
+\item [virial route] ~\vphantom{.} \\
+The pressure or virial equation is given as
+\begin{align} \label{eq:pressure_virial1}
 \frac{\beta P}{\rho} &= 1+\frac{2}{3} \beta\pi\rho\int g(r) r^3 \frac{du(r)}{dr} \; dr
 \end{align}
-where $\rho= N/V$ is the average number density of particles in the system.
-This equation can also be written in terms of the $e(r) = \exp(-\beta u(r))$ and the cavity
-function $y(r) = (h(r)+1)/e(r) = g(r)\exp(\beta u(r))$ using
+where $\rho= N/V$ is the average number density of particles in the system. As for discontinuous
+potentials also $g(r)$ becomes discontinuous it might be an advantage to rewrite
+this equation in terms of $\mathrm{e}(r) = \exp(-\beta u(r))$ and the cavity
+function $y(r) = (h(r)+1)/\mathrm{e}(r) = g(r)\exp(\beta u(r))$ where the cavity function
+is always a continuous function by using
 \begin{align}
-g(r) \frac{du(r)}{dr} &= y(r) e(r) \left(-\frac{1}{\beta e(r)}\frac{d e(r)}{dr}\right) = \frac{y(r)}{\beta}\frac{d e(r)}{dr}
+g(r) \frac{du(r)}{dr} &= y(r) \mathrm{e}(r)
+             \left(-\frac{1}{\beta \mathrm{e}(r)}\frac{d \mathrm{e}(r)}{dr}\right)
+                       = \frac{y(r)}{\beta}\frac{d \mathrm{e}(r)}{dr}
 \end{align}
 so that
-\begin{align}
-\frac{\beta P}{\rho} &= 1+\frac{2}{3} \pi\rho\int r^3 \frac{de(r)}{dr} y(r) \; dr
+\begin{align} \label{eq:pressure_virial2}
+\frac{\beta P}{\rho} &= 1+\frac{2}{3} \pi\rho\int r^3 \frac{d\mathrm{e}(r)}{dr} y(r) \; dr
 \end{align}
 In case of potentials with a hard core or a step in the potential also $g(r)$ as well as $u(r)$ are discontinuous.
 The cavity function is a continuous function and helps to solve the integral.
 For discontinuous potentials the integration has to be done in parts and the
-discontinuity needs to be handled separately. It can be shown, that at a
-discontinuity of the potential let say at $r=\sigma$ the discontinuity contributes
+discontinuity needs to be handled separately. It can be shown \cite{Smith1977}, that at a
+discontinuity of the potential, let say at $r=\sigma$, the discontinuity contributes
 to the integral with
-%\begin{align}
+\begin{align}
+& \frac{2\pi}{3}\rho\sigma^3\left(g(\sigma^+)-g(\sigma^-)\right)/\beta
+\end{align}
+\end{description}
+To determine mixing parameters in various closures one often compare
+the pressures calculated via the three different routes leading to
+two consistency equations.
 
-%\end{align}
+\begin{description}
+\item[$P_v-\kappa_T$ consistency] \vphantom{.}~\\
+Via the virial route the pressure can be calculated by eq.\
+\ref{eq:pressure_virial1} or \ref{eq:pressure_virial2}. It's partial
+derivative according to the number density yield the isothermal
+compressibility (eq.\ \ref{eq:compressibility}), which is known from the structure factor
+in the long-wavelength limit at $q=0$ according to eq.\  \ref{eq:compressibilitySQ}.
+This consistency condition can be written as an integral which has to be become zero \cite{Martynov1993,Vompe1994}
+\begin{align}
+I(\rho,T)&=0=\int\left[c(r)-\frac{r}{6}\frac{\mathrm{d}\left(\beta u(r)\right)}{\mathrm{d}r}\left(2g(r)+\rho\frac{\partial g(r)}{\partial\rho}\right)\right] r^2 \mathrm{d}r
+\end{align}
+\item[$dU-dP$ consistency]  \vphantom{.}~\\
+The Helmholtz free energy $F$ obeys the Gibbs-Helmholtz relation
+\begin{align}
+d(\beta F) &= U d\beta - (\beta P) dV
+\end{align}
+In order for $F$ to be an exact differential, the cross partial
+derivatives should be equal
+\begin{align}
+\left(\frac{\partial U}{\partial V}\right)_T &= \left( \frac{\partial (\beta P)}{\partial \beta} \right)_V = T^2 \frac{\partial}{\partial T} \left( \frac{P}{T} \right)_V
+\end{align}
+The internal energy $U$ can be calculated via the energy route by eq.\
+\ref{eq:internal_energy} and the pressure $P$ again via the virial route by
+eq.\ \ref{eq:pressure_virial1} or \ref{eq:pressure_virial2}.
+Also this consistency condition can be written in integral form as
+\begin{align}
+J(\rho,T)&=0=\int\left[u(r)\left(g(r)+\rho\frac{\partial g(r)}{\partial \rho}\right)+\frac{r}{3}\frac{\mathrm{d} u(r)}{\mathrm{d}r}\left(g(r)-T\frac{\partial g(r)}{\partial T}\right)\right] r^2 \mathrm{d}r
+\end{align}
+\end{description}
+In practise  the calculation of the integrals $I(\rho,T)$ and $J(\rho,T)$ involves the numerical partial derivation of the
+pair distribution function $g(r)$ with respect to the particle number density $\rho$ and the temperature $T$, which can
+be approximated by
+\begin{align}
+\frac{\partial g(r,\rho,T)}{\partial \rho} &\simeq \frac{g(r,\rho+\Delta\rho,T)-g(r,\rho-\Delta\rho,T)}{2\Delta\rho} \\
+\frac{\partial g(r,\rho,T)}{\partial T}    &\simeq \frac{g(r,\rho,T+\Delta T)-g(r,\rho,T-\Delta T)}{2\Delta T}
+\end{align}
+The integral equations therefore needs to be solved for five divverent thermodynamic states, namely at $(\rho,T)$,
+$(\rho+\Delta\rho,T)$, $(\rho-\Delta\rho,T)$, $(\rho,T+\Delta T)$, and $(\rho,T-\Delta T)$.
 
 \section{Closures}
+
 The closures implemented in \SASfit have been taken from the overview papers from Bomont \cite{Bomont2008}
-and Caccamo \cite{Caccamo1996} and the references they give.
+and Caccamo \cite{Caccamo1996} and the references in there.
 
 ~\\
 \subsection{Hypernetted-chain(HNC) approximation}
@@ -1437,10 +1526,12 @@ somehow better results.
 ~\\
 \subsection{Percus-Yevick (PY) approximation}
 ~\\
+
 This approximation has been successfully been used to find an analytical solution for
 the OZ equations for a Hard Sphere potential as well as a Sticky Hard Sphere potential.
 Also analytical solution for both Hard Sphere \cite{Percus1958,Wertheim1963} and
-Sticky Hard Sphere  \cite{Baxter1968} with a size distribution has been found
+Sticky Hard Sphere  \cite{Baxter1968} with a size distribution has been found.
+The bridge function of this approximation reads as
 \begin{align} \label{eq:ozBHNC}
 B_\text{PY}(r) &=\gamma(r)-\ln\left[\gamma(r)-1\right] \\
 g(r)&= \exp\left[ -\beta u(r)\right]\left(1 +\gamma(r)\right)
@@ -1472,7 +1563,8 @@ Analytical solutions have been obtained for charged hard spheres and hard core Y
 ~\\
 \subsection{Verlet Approximation}
 ~\\
-A semi-henomenological equation for the radial distribution function was proposed by Verlet
+
+A semi-phenomenological equation for the radial distribution function was proposed by Verlet
 \cite{Verlet1980,Verlet1981} for the case of hard spheres with the following bridge function
 \begin{align} \label{eq:ozBHNC}
 B_\text{Verlet}(r)
@@ -1512,20 +1604,33 @@ B_\text{DH}(r) &=
 with $\gamma^*(r) = \gamma(r) - \beta u_\text{A}(r)$ or in case of the Lennard-Jones potential
 $\gamma^*(r) = \gamma(r) - \beta u^\text{LR,DH}_\text{pert}(r)$
 
+\vphantom{.}~\\
+\subsection{Zero separation theorem based closure (ZSEP)}
 ~\\
+
+The closure based on the zero separation theorem (ZSEP) has been introduced by
+Lloyd L. Lee \cite{Lee1995,Lomba1996}. The closure is basing on the one from Verlet \cite{Verlet1980}
+and has the form
+\begin{align}
+B_\text{ZSEP}(r) &= - \frac{\zeta \gamma^*(r)^2}{2}\left[ 1- \frac{\alpha\phi\gamma^*(r)}{1+\alpha\gamma^*(r)}\right]
+\end{align}
+
+
+\vphantom{.}~\\
 \subsection{Martynov-Sarkisov (MS) Approximation}
 ~\\
 
-An approximation proposed by Martynov and Sarkisov \cite{Martynov1983} sets the bridge function as.
+An approximation proposed by Martynov and Sarkisov \cite{Martynov1983} sets the bridge function as
 \begin{align}
 B_\text{MS}(r) &= \left[1+2\gamma(r)\right]^{1/2}-1-\gamma(r)
 \end{align}
 This approximation has been originally applied to hard spheres without an additional adjustable parameter.
 Compared to PY or HNC this closure reduces considerably the thermodynamic inconsistency.
 
-~\\
+\vphantom{.}~\\
 \subsection{Ballone, Pastore, Galli, and Gazzillo (BPGG) approximations }
 ~\\
+
 Ballone, Pastore, Galli, and Gazillo  \cite{Ballone1986}
 improved the MS approximation by assuming a bridge function of the form
 \begin{align}
@@ -1534,7 +1639,7 @@ B_\text{BPGG}(r) &= \left[1+s\gamma(r)\right]^{1/s}-1-\gamma(r)
 For $s=1$ the HNC is recovered and for $s=2$ the MS closure. $s$ is used here to
 obtain a thermodynamic consistency condition.
 
-~\\
+\vphantom{.}~\\
 \subsection{Vompe-Martynov (VM) Approximation}
 ~\\
 
@@ -1545,7 +1650,7 @@ B_\text{VM}(r) &= \sqrt{1+2\gamma^*(r)}-1-\gamma^*(r)
 \end{align}
 with $\gamma^*(r) = \gamma(r) - \beta u_\text{LR}(r)$
 
-~\\
+\vphantom{.}~\\
 \subsection{Bomont-Bretonnet (BB) Approximation}
 ~\\
 
@@ -1558,9 +1663,10 @@ B_\text{BB}(r) &=
 The adjustable parameter $f$ interpolates between the HNC for $f=1$ and the
 VM for $f=0$.
 
-~\\
+\vphantom{.}~\\
 \subsection{Chapentier-Jakse' semiempirical extention of the VM Approximation (CJ-VM)}
 ~\\
+
 A similar semiempirical approach has been suggested by Chapentier and Jakse
 \cite{Charpentier2001}
 \begin{align}
