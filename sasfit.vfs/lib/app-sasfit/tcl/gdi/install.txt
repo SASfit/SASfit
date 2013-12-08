@@ -1,0 +1,44 @@
+Version 0.9.5.1
+
+NOTE: VERSIONS OF TCL PRIOR TO 8.0.3 REQUIRE CW3220.DLL 
+TO BE IN YOUR WINDOWS SYSTEM DIRECTORY. CW3220.DLL IS A FREELY 
+DISTRIBUTABLE VERSION OF THE BORLAND RUNTIME LIBRARY.
+ 
+NOTE: VERSION 8.0.3 AND ALL FUTURE VERSIONS OF THIS EXTENSION ARE BUILT 
+WITH Microsoft VISUAL C++, AND DO NOT REQUIRE CW3220.DLL.
+
+EITHER COMPILER WILL CONTINUE TO BE CAPABLE OF BUILDING THE EXTENSION
+SO LONG AS THIS IS VIABLE.
+
+Just unpack the archive (for pkunzip, use the -d option) to your
+favorite place to put extensions. This should usually be under your TCL
+directory's LIB. In Tcl 8.0 and newer, this directory will be
+automatically searched.
+
+If you have put this extension in the same directory as other 
+extensions, remember to rerun 
+	pkg_mkIndex . *.dll
+from inside of Tclsh or Wish.
+
+If you have put these files in a directory by themselves, the supplied
+pkgindex.tcl file will suffice.
+
+It responds to the load command:
+  load gdi.dll
+
+It also responds to the package indexing commands.
+
+If you are using packages (strongly recommended), you do not need to use
+the load command. Simply include
+   package require gdi
+in a wish script, and the GDI extension will be automatically loaded.
+
+This package does its thing as best I (and the contributing authors) 
+know how. This does not mean it necessarily meets your need, or is 
+robust enough for your application.
+
+That's why source code is provided.
+
+Michael I Schwartz
+mschwart@nyx.net
+http://www.nyx.net/~mschwart

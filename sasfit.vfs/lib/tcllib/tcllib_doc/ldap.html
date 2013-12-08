@@ -1,0 +1,339 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>ldap - LDAP client </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/ldap/ldap.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;   -- Copyright &copy; 2004 Jochen Loewer &lt;loewerj@web.de&gt;
+   -->
+<! -- CVS: $Id: ldap.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ ldap.n
+   -->
+
+<body>
+<h1> ldap(n) 1.2 ldap &quot;LDAP client&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> ldap - LDAP client
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>ldap ?1.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::ldap::connect</b> <i class='arg'>host</i> ?<i class='arg'>port</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::ldap::secure_connect</b> <i class='arg'>host</i> ?<i class='arg'>port</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::ldap::disconnect</b> <i class='arg'>handle</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::ldap::bind</b> <i class='arg'>handle</i> ?<i class='arg'>name</i>? ?<i class='arg'>password</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::ldap::unbind</b> <i class='arg'>handle</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::ldap::search</b> <i class='arg'>handle</i> <i class='arg'>baseObject</i> <i class='arg'>filterString</i> <i class='arg'>attributes</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::ldap::modify</b> <i class='arg'>handle</i> <i class='arg'>dn</i> <i class='arg'>attrValToReplace</i> ?<i class='arg'>attrToDelete</i>? ?<i class='arg'>attrValToAdd</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::ldap::add</b> <i class='arg'>handle</i> <i class='arg'>dn</i> <i class='arg'>attrValueTuples</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::ldap::delete</b> <i class='arg'>handle</i> <i class='arg'>dn</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::ldap::modifyDN</b> <i class='arg'>handle</i> <i class='arg'>dn</i> <i class='arg'>newrdn</i> ?<i class='arg'>deleteOld</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>ldap</strong> package provides a simple Tcl-only client library
+for the LDAPv3 protocol as specified in
+
+RFC 2251 (<a href="http://www.rfc-editor.org/rfc/rfc2251.txt">http://www.rfc-editor.org/rfc/rfc2251.txt</a>).
+
+It works by opening the standard (or secure) LDAP socket on the
+server, and then providing a Tcl API to access the LDAP protocol
+commands.  All server errors are returned as Tcl errors (thrown) which
+must be caught with the Tcl <b class='cmd'>catch</b> command.
+
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::ldap::connect</b> <i class='arg'>host</i> ?<i class='arg'>port</i>?</a><dd>
+
+
+Opens a LDAPv3 connection to the specified <i class='arg'>host</i>, at the given
+<i class='arg'>port</i>, and returns a token for the connection. This token is the
+<i class='arg'>handle</i> argument for all other commands. If no <i class='arg'>port</i> is
+specified it will default to <strong>389</strong>.
+
+<br><br>
+
+The command blocks until the connection has been established, or
+establishment definitely failed.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::ldap::secure_connect</b> <i class='arg'>host</i> ?<i class='arg'>port</i>?</a><dd>
+
+
+Like <b class='cmd'>::ldap::connect</b>, except that the created connection is
+secured by SSL. The port defaults to <strong>636</strong>.  This command
+depends on the availability of the package <strong>TLS</strong>, which is a
+SSL binding for Tcl. If <strong>TLS</strong> is not available, then this
+command will fail.
+
+<br><br>
+
+The command blocks until the connection has been established, or
+establishment definitely failed.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::ldap::disconnect</b> <i class='arg'>handle</i></a><dd>
+
+
+Closes the ldap connection refered to by the token
+<i class='arg'>handle</i>. Returns the empty string as its result.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::ldap::bind</b> <i class='arg'>handle</i> ?<i class='arg'>name</i>? ?<i class='arg'>password</i>?</a><dd>
+
+
+This command authenticates the ldap connection refered to by the token
+in <i class='arg'>handle</i>, with a user name and associated password. It blocks
+until a response from the ldap server arrives. Its result is the empty
+string.
+
+Both <i class='arg'>name</i> and <i class='arg'>passwd</i> default to the empty string if they
+are not specified.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::ldap::unbind</b> <i class='arg'>handle</i></a><dd>
+
+
+This command asks the ldap server to release the last bind done for
+the connection refered to by the token in <i class='arg'>handle</i>.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::ldap::search</b> <i class='arg'>handle</i> <i class='arg'>baseObject</i> <i class='arg'>filterString</i> <i class='arg'>attributes</i></a><dd>
+
+
+This command performs a LDAP search below the <i class='arg'>baseObject</i> tree
+using a complex LDAP search expression <i class='arg'>filterString</i> and returns
+the specified <i class='arg'>attributes</i> of all matching objects (DNs). If the
+list of <i class='arg'>attributes</i> was empty all attributes are returned. The
+command blocks until it has received all results.
+
+<br><br>
+An example of a search expression is
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    set filterString &quot;|(cn=Linus*)(sn=Torvalds*)&quot;
+</pre></td></tr></table></p>
+<br><br>
+
+The return value of the command is a list of nested dictionaries. The
+first level keys are object identifiers (DNs), second levels keys are
+attribute names. In other words, it is in the form
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    {dn1 {attr1 val1 attr2 val2 ...}} {dn2 {a1 v1 ...}} ...
+</pre></td></tr></table></p>
+<br><br>
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::ldap::modify</b> <i class='arg'>handle</i> <i class='arg'>dn</i> <i class='arg'>attrValToReplace</i> ?<i class='arg'>attrToDelete</i>? ?<i class='arg'>attrValToAdd</i>?</a><dd>
+
+
+This command modifies the object <i class='arg'>dn</i> on the ldap server we are
+connected to via <i class='arg'>handle</i>. It replaces attributes with new values,
+deletes attributes, and adds new attributes with new values.
+
+All arguments are dictionaries mapping attribute names to values. The
+optional arguments default to the empty dictionary, which means that
+no attributes will be deleted nor added.
+
+<br><br>
+<dl>
+<dt>dictionary <i class='arg'>attrValToReplace</i> (in)<dd>
+
+No attributes will be changed if this argument is empty. The
+dictionary contains the new attributes and their values. They
+<em>replace all</em> attributes known to the object.
+
+<br><br>
+<dt>dictionary <i class='arg'>attrToDelete</i> (in)<dd>
+
+No attributes will be deleted if this argument is empty. The
+dictionary values are restrictions on the deletion. An attribute
+listed here will be deleted if and only if its current value at the
+server matches the value specified in the dictionary, or if the value
+in the dictionary is the empty string.
+
+<br><br>
+<dt>dictionary <i class='arg'>attrValToAdd</i> (in)<dd>
+
+No attributes will be added if this argument is empty. The dictionary
+values are the values for the new attributes.
+
+</dl>
+<br><br>
+
+The command blocks until all modifications have completed. Its result
+is the empty string.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::ldap::add</b> <i class='arg'>handle</i> <i class='arg'>dn</i> <i class='arg'>attrValueTuples</i></a><dd>
+
+
+This command creates a new object using the specified <i class='arg'>dn</i>. The
+attributes of the new object are set to the values in the dictionary
+<i class='arg'>attrValueTuples</i> (which is keyed by the attribute names).
+
+The command blocks until the operation has completed. Its result
+is the empty string.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::ldap::delete</b> <i class='arg'>handle</i> <i class='arg'>dn</i></a><dd>
+
+
+This command removes the object specified by <i class='arg'>dn</i>, and all its
+attributes from the server.
+
+The command blocks until the operation has completed. Its result
+is the empty string.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::ldap::modifyDN</b> <i class='arg'>handle</i> <i class='arg'>dn</i> <i class='arg'>newrdn</i> ?<i class='arg'>deleteOld</i>?</a><dd>
+
+
+This command moves or copies the object specified by <i class='arg'>dn</i>
+to a new location in the tree of object. This location is
+specified by <i class='arg'>newrdn</i>, a <em>relative</em> designation.
+
+The optional argument <i class='arg'>deleteOld</i> default to to <strong>true</strong>,
+i.e. a move operation. If <i class='arg'>deleteOld</i> is not set, then the
+operation will create a copy of <i class='arg'>dn</i> in the new location.
+
+The command blocks until the operation has completed. Its result
+is the empty string.
+
+
+</dl>
+<p>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+<p>
+
+A small example, extracted from the test application coming with this
+code.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require ldap
+
+    # Connect, bind, add a new object, modify it in various ways
+
+    set handle [ldap::connect localhost 9009]
+
+    set dn &quot;cn=Manager, o=University of Michigan, c=US&quot;
+    set pw secret
+
+    ldap::bind $handle $dn $pw
+
+    set dn &quot;cn=Test User,ou=People,o=University of Michigan,c=US&quot;
+
+    ldap::add $handle $dn {
+	objectClass OpenLDAPperson
+	cn          &quot;Test User&quot;
+	mail        &quot;test.user@google.com&quot;
+	uid         &quot;testuid&quot;
+	sn          User
+    }
+
+    # Replace all attributes
+    ldap::modify $handle $dn [list drink icetea uid JOLO]
+
+    # Add some more
+    ldap::modify $handle $dn {} {} [list drink water  drink orangeJuice pager &quot;+1 313 555 7671&quot;]
+
+    # Delete
+    ldap::modify $handle $dn {} [list drink water  pager &quot;&quot;]
+
+    # Move
+    ldap::modifyDN $handle $dn &quot;cn=Tester&quot;
+
+    # Kill the test object, and shut the connection down.
+    set dn &quot;cn=Tester,ou=People,o=University of Michigan,c=US&quot;
+    ldap::delete $handle $dn
+ 
+    ldap::unbind     $handle
+    ldap::disconnect $handle
+</pre></td></tr></table></p>
+<p>
+
+And a another example, a simple query, and processing the
+results.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require ldap
+    set handle [ldap::connect ldap.acme.com 389]
+    ldap::bind $handle
+    set results [ldap::search $handle &quot;o=acme,dc=com&quot; &quot;(uid=jdoe)&quot; {}]
+    foreach result $results {
+	foreach {object attributes} $result break
+
+	# The processing here is similar to what 'parray' does.
+	# I.e. finding the longest attribute name and then
+	# generating properly aligned output listing all attributes
+	# and their values.
+
+	set width 0
+	set sortedAttribs {}
+	foreach {type values} $attributes {
+	    if {[string length $type] &gt; $width} {
+		set width [string length $type] 
+	    }
+	    lappend sortedAttribs [list $type $values]
+	}     
+
+	puts &quot;object='$object'&quot;
+
+	foreach sortedAttrib  $sortedAttribs {
+	    foreach {type values} $sortedAttrib break
+	    foreach value $values {
+		regsub -all &quot;\[\x01-\x1f\]&quot; $value ? value
+		puts [format &quot;  %-${width}s %s&quot; $type $value]
+	    }
+	}
+	puts &quot;&quot;
+    }
+    ldap::unbind $handle
+    ldap::disconnect $handle
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+asn, ber, directory access, internet, ldap, ldap client, protocol, rfc 2251, x.680, x.690
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+Copyright &copy; 2004 Jochen Loewer &lt;loewerj@web.de&gt;<br>
+</body></html>

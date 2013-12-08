@@ -1,0 +1,90 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>fileutil::magic::file - file utilities </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/fumagic/filetypes.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: filetypes.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ fileutil::magic::file.n
+   -->
+
+<body>
+<h1> fileutil::magic::file(n) 1.7 fumagic &quot;file utilities&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> fileutil::magic::file - Procedures implementing file-type recognition
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>fileutil::magic::file ?1.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::fileutil::magic::file</b> <i class='arg'>filename</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides a command for the recognition of file types in
+pure Tcl.
+
+<p>
+
+The core part of the recognizer was generated from a &quot;magic(5)&quot; file
+containing the checks to perform to recognize files, and associated
+file-types.
+
+<p>
+
+<em>Beware!</em> This recognizer is large, about 276 Kilobyte of
+generated Tcl code.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::fileutil::magic::file</b> <i class='arg'>filename</i></a><dd>
+
+
+This command is similar to the command <b class='cmd'>fileutil::fileType</b>.
+
+<br><br>
+
+The output of the command for the specified file is a string
+describing the type of the file.
+
+<br><br>
+
+This list will be empty if the type of the file is not recognized.
+
+</dl>
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+<li>
+<a href="ftp://ftp.astron.com/pub/file/">File(1) sources</a>
+
+This site contains the current sources for the file command, including
+the magic definitions used by it. The latter were used by us to
+generate this recognizer.
+
+</ol>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+file(1), fileutil, magic(5)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+file recognition, file type, file utilities, type
+</body></html>

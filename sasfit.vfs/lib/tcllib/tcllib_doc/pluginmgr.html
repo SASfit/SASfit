@@ -1,0 +1,551 @@
+<! -- -*- tcl -*- paths manpage
+   -->
+<html><head>
+<title>plugin - Plugin management </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/pluginmgr/pluginmgr.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: pluginmgr.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ plugin.n
+   -->
+
+<body>
+<h1> plugin(n) 1.1 pluginmgr &quot;Plugin management&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> plugin - Manage a plugin
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#public_api">PUBLIC API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#package_commands">PACKAGE COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#object_command">OBJECT COMMAND</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#object_methods">OBJECT METHODS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#object_configuration">OBJECT CONFIGURATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>pluginmgr ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::pluginmgr</b> <i class='arg'>objectName</i> ?<i class='arg'>option value</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::pluginmgr::paths</b> <i class='arg'>objectName</i> <i class='arg'>name</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>objectName</b> <strong>method</strong> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>objectName</i> <strong>clone</strong></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>objectName</i> <strong>configure</strong></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>objectName</i> <strong>configure</strong> <i class='arg'>option</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>objectName</i> <strong>configure</strong> <strong>-option</strong> <i class='arg'>value</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>objectName</i> <strong>cget</strong> <strong>-option</strong></a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>objectName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>objectName</i> <strong>do</strong> <i class='arg'>arg</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>objectName</i> <strong>interpreter</strong></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>objectName</i> <strong>plugin</strong></a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>objectName</i> <strong>load</strong> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>objectName</i> <strong>unload</strong></a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>objectName</i> <strong>list</strong></a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>objectName</i> <strong>path</strong> <i class='arg'>path</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>objectName</i> <strong>paths</strong></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides commands and objects for the generic management
+of plugins which can be loaded into an application.
+
+<p>
+
+To avoid the implementation of yet another system to locate Tcl code
+the system provides by this package is built on top of the regular
+package management system. Each plugin is considered as a package and
+a simple invokation of <b class='cmd'>package require</b> is enough to locate and
+load it, if it exists. The only time we will need additional paths is
+when a plugin manager is part of a wrapped application and has to be
+able to search for plugins existing outside of that application. For
+this situation the package provides a command to create a general set
+of such paths based on names for the plugin manager and/or application
+in question.
+
+<p>
+
+The main contribution of this package is a generic framework which
+allows the easy declaration of
+
+<ol>
+<li>
+How to translate a plugin name to the name of the package implementing
+it, and vice versa.
+
+<br><br>
+<li>
+The list of commands a plugin has to provide as API, and also of more
+complex checks as code.
+
+<br><br>
+<li>
+The list of commands expected by the plugin from the environment.
+
+</ol>
+
+This then allows the easy generation of plugin managers customized to
+particular types of plugins for an application.
+
+<p>
+
+It should be noted that all plugin code is considered untrusted and
+will always be executed within a safe interpreter. The interpreter is
+enabled enough to allow plugins the loading of all additional packages
+they may need.
+
+<h2><a name="public_api">PUBLIC API</a></h2>
+<p>
+<h3><a name="package_commands">PACKAGE COMMANDS</a></h3>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::pluginmgr</b> <i class='arg'>objectName</i> ?<i class='arg'>option value</i>...?</a><dd>
+
+
+This command creates a new plugin manager object with an associated
+Tcl command whose name is <i class='arg'>objectName</i>. This <em>object</em> command
+is explained in full detail in the sections <a href="#object_command">OBJECT COMMAND</a>
+and <a href="#object_methods">OBJECT METHODS</a>. The object command will be created
+under the current namespace if the <i class='arg'>objectName</i> is not fully
+qualified, and in the specified namespace otherwise.
+
+<br><br>
+
+The options and their values coming after the name of the object are
+used to set the initial configuration of the mamager object,
+specifying the applicable plugins and their API.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::pluginmgr::paths</b> <i class='arg'>objectName</i> <i class='arg'>name</i>...</a><dd>
+
+
+This utility command adds a set of paths to the specified object,
+based on the given <i class='arg'>name</i>s.
+
+It will search for:
+
+<br><br>
+<ol>
+
+<li>
+
+The environment variable <strong><i class='arg'>name</i>_PLUGINS</strong>. Its contents will
+be interpreted as a list of package paths. The entries have to be
+separated by either <strong>:</strong> (unix) or <strong>;</strong> (windows).
+
+<br><br>
+
+The name will be converted to upper-case letters.
+
+<br><br>
+<li>
+
+The registry entry &quot;HKEY_LOCAL_MACHINE\SOFTWARE\<i class='arg'>name</i>\PLUGINS&quot;.
+Its contents will be interpreted as a list of package paths. The
+entries have to be separated by <strong>;</strong>. This item is considered
+only when on Windows (tm).
+
+<br><br>
+
+The casing of letters is not changed.
+
+<br><br>
+<li>
+
+The registry entry &quot;HKEY_CURRENT_USER\SOFTWARE\<i class='arg'>name</i>\PLUGINS&quot;.
+Its contents will be interpreted as a list of package paths. The
+entries have to be separated by <strong>;</strong>. This item is considered
+only when on Windows (tm).
+
+<br><br>
+
+The casing of letters is not changed.
+
+<br><br>
+<li>
+
+The directory &quot;<strong>~/.<i class='arg'>name</i>/plugin</strong>&quot;.
+
+<br><br>
+
+The casing of letters is not changed.
+
+</ol>
+<br><br>
+
+and add all the paths found that way to the list of package paths
+maintained by the object.
+
+<br><br>
+
+If <i class='arg'>name</i> is namespaced each item in the list will be repeated per
+prefix of <i class='arg'>name</i>, with conversion of :-sequences into the proper
+separator (underscore for environment variables, backslash for
+registry entries, and / for directories).
+
+<br><br>
+Examples:
+<br><br>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::pluginmgr::paths ::obj docidx
+
+    =&gt; env  DOCIDX_PLUGINS
+       reg  HKEY_LOCAL_MACHINE\SOFTWARE\docidx\PLUGINS
+       reg  HKEY_CURRENT_USER\SOFTWARE\docidx\PLUGINS
+       path ~/.docidx/plugins
+
+    ::pluginmgr::paths ::obj doctools::idx
+
+    =&gt; env  DOCTOOLS_PLUGINS
+       env  DOCTOOLS_IDX_PLUGINS
+       reg  HKEY_LOCAL_MACHINE\SOFTWARE\doctools\PLUGINS
+       reg  HKEY_LOCAL_MACHINE\SOFTWARE\doctools\idx\PLUGINS
+       reg  HKEY_CURRENT_USER\SOFTWARE\doctools\PLUGINS
+       reg  HKEY_CURRENT_USER\SOFTWARE\doctools\idx\PLUGINS
+       path ~/.doctools/plugins
+       path ~/.doctools/idx/plugins
+</pre></td></tr></table></p>
+
+</dl>
+
+
+<h3><a name="object_command">OBJECT COMMAND</a></h3>
+<p>
+
+All commands created by the command <b class='cmd'>::pluginmgr</b> (See section
+<a href="#package_commands">PACKAGE COMMANDS</a>) have the following general form and may
+be used to invoke various operations on their plugin manager object.
+
+<dl>
+
+<dt><a name="3"><b class='cmd'>objectName</b> <strong>method</strong> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+The method <strong>method</strong> and its <i class='arg'>arg</i>'uments determine the exact
+behavior of the command. See section <a href="#object_methods">OBJECT METHODS</a> for
+the detailed specifications.
+
+</dl>
+
+
+<h3><a name="object_methods">OBJECT METHODS</a></h3>
+<p>
+
+<dl>
+
+<dt><a name="4"><i class='arg'>objectName</i> <strong>clone</strong></a><dd>
+
+
+This method creates a new plugin management object and returns the
+associated object command. The generated object is a clone of the
+object the method was invoked on. I.e. the new object will have the
+same configuration as the current object. With regard to state, if the
+current object has a plugin loaded then this plugin and all associated
+state is moved to the generated clone and the current object is reset
+into the base state (no plugin loaded). In this manner a configured
+plugin manager is also a factory for loaded plugins.
+
+
+<br><br>
+<dt><a name="5"><i class='arg'>objectName</i> <strong>configure</strong></a><dd>
+
+
+The method returns a list of all known options and their current
+values when called without any arguments.
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>objectName</i> <strong>configure</strong> <i class='arg'>option</i></a><dd>
+
+
+The method behaves like the method <strong>cget</strong> when called with a
+single argument and returns the value of the option specified by said
+argument.
+
+
+<br><br>
+<dt><a name="7"><i class='arg'>objectName</i> <strong>configure</strong> <strong>-option</strong> <i class='arg'>value</i>...</a><dd>
+
+
+The method reconfigures the specified <strong>option</strong>s of the object,
+setting them to the associated <i class='arg'>value</i>s, when called with an even
+number of arguments, at least two.
+
+<br><br>
+
+The legal options are described in the section
+<a href="#object_configuration">OBJECT CONFIGURATION</a>.
+
+
+<br><br>
+<dt><a name="8"><i class='arg'>objectName</i> <strong>cget</strong> <strong>-option</strong></a><dd>
+
+
+This method expects a legal configuration option as argument and will
+return the current value of that option for the object the method was
+invoked for.
+
+<br><br>
+
+The legal configuration options are described in section
+<a href="#object_configuration">OBJECT CONFIGURATION</a>.
+
+
+<br><br>
+<dt><a name="9"><i class='arg'>objectName</i> <strong>destroy</strong></a><dd>
+
+
+This method destroys the object it is invoked for.
+
+
+<br><br>
+<dt><a name="10"><i class='arg'>objectName</i> <strong>do</strong> <i class='arg'>arg</i>...</a><dd>
+
+
+This method interprets its list of arguments as the words of a command
+and invokes this command in the execution context of the plugin.
+
+The result of the invoked command is made the result of the method.
+
+The call will fail with an error if no valid plugin has been loaded
+into the manager object.
+
+
+<br><br>
+<dt><a name="11"><i class='arg'>objectName</i> <strong>interpreter</strong></a><dd>
+
+
+This method returns the handle of the safe interpreter the current
+plugin is loaded into. An empty string as return value signals that
+the manager currently has no valid plugin loaded.
+
+
+<br><br>
+<dt><a name="12"><i class='arg'>objectName</i> <strong>plugin</strong></a><dd>
+
+
+This method returns the name of the plugin currently loaded. An empty
+string as return value signals that the manager currently has no valid
+plugin loaded.
+
+
+<br><br>
+<dt><a name="13"><i class='arg'>objectName</i> <strong>load</strong> <i class='arg'>string</i></a><dd>
+
+
+This method loads, validates, and initializes a named plugin into the
+manager object.
+
+<br><br>
+The algorithm to locate and load the plugin employed is:
+
+<br><br>
+<ol>
+<li>
+
+If the <i class='arg'>string</i> contains the path to an existing file then this
+file is taken as the implementation of the plugin.
+
+<br><br>
+<li>
+Otherwise the plugin name is translated into a package name via the value
+of the option <strong>-pattern</strong> and then loaded through the
+regular package management.
+
+<br><br>
+<li>
+The load fails.
+
+</ol>
+<br><br>
+
+The algorithm to validate and initialize the loaded code is:
+
+<br><br>
+<ol>
+<li>
+If the option <strong>-api</strong> is non-empty introspection commands are
+used to ascertain that the plugin provides the listed commands.
+
+<br><br>
+<li>
+If the option <strong>-check</strong> is non-empty the specified command
+prefix is called.
+
+<br><br>
+<li>
+If either of the above fails the candidate plugin is unloaded again
+
+<br><br>
+<li>
+Otherwise all the commands specified via the option
+<strong>-cmds</strong> are installed in the plugin.
+
+</ol>
+<br><br>
+
+A previously loaded plugin is discarded, but only if the new plugin
+was found and sucessfully validated and initialized. Note that there
+will be no intereference between old and new plugin as both will be
+put into separate safe interpreters.
+
+
+<br><br>
+<dt><a name="14"><i class='arg'>objectName</i> <strong>unload</strong></a><dd>
+
+
+This method unloads the currently loaded plugin. It returns the empty
+string. The call will be silently ignored if no plugin is loaded at
+all.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>objectName</i> <strong>list</strong></a><dd>
+
+
+This method uses the contents of the option <strong>-pattern</strong> to find
+all packages which can be plugins under the purview of this manager
+object. It translates their names into plugin names and returns a list
+containing them.
+
+
+<br><br>
+<dt><a name="16"><i class='arg'>objectName</i> <strong>path</strong> <i class='arg'>path</i></a><dd>
+
+
+This methods adds the specified <i class='arg'>path</i> to the list of additional
+package paths to look at when searching for a plugin. It returns the
+empty string. Duplicate paths are ignored, i.e. each path is added
+only once. Paths are made absolute, but are not normalized.
+
+
+<br><br>
+<dt><a name="17"><i class='arg'>objectName</i> <strong>paths</strong></a><dd>
+
+
+This method returns a list containing all additional paths which have
+been added to the plugin manager object since its creation.
+
+</dl>
+
+
+<h3><a name="object_configuration">OBJECT CONFIGURATION</a></h3>
+<p>
+
+All plugin manager objects understand the following configuration options:
+
+<dl>
+
+<dt><strong>-pattern</strong> <i class='arg'>string</i><dd>
+
+The value of this option is a glob pattern which has to contain
+exactly one '*'-operator. All packages whose names match this pattern
+are the plugins recognized by the manager object. And vice versa, the
+replacement of the '*'-operator with a plugin name will yield the name
+of the package implementing that plugin.
+
+<br><br>
+
+This option has no default, except if option <strong>-name</strong> was set.
+It has to be set before attempting to load a plugin, either directly,
+or through option <strong>-name</strong>.
+
+
+<br><br>
+<dt><strong>-api</strong> <i class='arg'>list</i><dd>
+
+The value of this option is a list of command names, and any plugin
+loaded has to provide these commands. Names which are not fully
+qualified are considered to be rooted in the global namespace.
+
+If empty no expectations are made on the plugin. The default value is
+the empty list.
+
+
+<br><br>
+<dt><strong>-check</strong> <i class='arg'>cmdprefix</i><dd>
+
+The value of this option is interpreted as a command prefix.
+
+Its purpose is to perform complex checks on a loaded plugin package to
+validate it, which go beyond a simple list of provided commands.
+
+<br><br>
+
+It is called with the manager object command as the only argument and
+has to return a boolean value. A value of <strong>true</strong> will be
+interpreted to mean that the candidate plugin passed the test.
+
+The call will happen if and only if the candidate plugin already
+passed the basic API check specified through the option <strong>-api</strong>.
+
+<br><br>
+
+The default value is the empty list, which causes the manager object
+to suppress the call and to assume the candidate plugin passes.
+
+
+<br><br>
+<dt><strong>-cmds</strong> <i class='arg'>dict</i><dd>
+
+The value of this option is a dictionary.  It specifies the commands
+which will be made available to the plugin (as keys), and the trusted
+commands in the environment which implement them (as values).
+
+The trusted commands will be executed in the interpreter specified by
+the option <strong>-cmdip</strong>.
+
+The default value is the empty dictionary.
+
+
+<br><br>
+<dt><strong>-cmdip</strong> <i class='arg'>ipspec</i><dd>
+
+The value of this option is the path of the interpreter where the
+trusted commands given to the plugin will be executed in.
+
+The default is the empty string, referring to the current interpreter.
+
+
+<br><br>
+<dt><strong>-setup</strong> <i class='arg'>cmdprefix</i><dd>
+
+The value of this option is interpreted as a command prefix.
+
+<br><br>
+
+It is called whenever a new safe interpreter for a plugin has been
+created, but before a plugin is loaded. It is provided with the
+manager object command and the interpreter handle as its only
+arguments. Any return value will be ignored.
+
+<br><br>
+
+Its purpose is give a user of the plugin management the ability to
+define commands, packages, etc. a chosen plugin may need while being
+loaded.
+
+</dl>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+plugin management, plugin search
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

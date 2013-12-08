@@ -1,0 +1,68 @@
+/*
+ * plugins/groups.general.def
+ *
+ * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ */
+
+/*
+ * In this file are group definitions of general SASfit source code groups
+ *
+ * For reference on the syntax, see the doxygen documentation:
+ * http://www.stack.nl/~dimitri/doxygen/grouping.html
+ */
+
+/**
+ * \defgroup model_functions Model functions
+ *
+ * All functions describing physical models used for scattering data fitting 
+ * and analysis.
+ */
+
+/**
+ * \defgroup sasfit_core SASfit core
+ *
+ * Implementations of TCL commands and related function depending on TCL.
+ */
+
+/**
+ * \defgroup sasfit_core_int Internal
+ * \ingroup sasfit_core
+ *
+ * Internal helper functions for the sasfit_core module.
+ */
+
+/**
+ * \defgroup sasfit_common SASfit common
+ *
+ * Utility functions of general interest. All functions in this module are 
+ * available within plugins.
+ * \sa sasfit_common_stubs_t
+ */
+
+/**
+ * \defgroup sasfit_common_int Internal
+ * \ingroup sasfit_common
+ *
+ * Internal helper functions for the sasfit_common module.
+ */
+

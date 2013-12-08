@@ -1,0 +1,373 @@
+<! -- # RCS: @(#) $Id: ctext.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $
+   -->
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>ctext - Ctext a text widget with highlighting support </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/ctext/ctext.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; George Peter Staplin &lt;GeorgePS@XMission.com&gt;
+   -->
+<! -- CVS: $Id: ctext.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ ctext.n
+   -->
+
+<body>
+<h1> ctext(n) 3.1 ctext &quot;Ctext a text widget with highlighting support&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> ctext - Ctext a text widget with highlighting support
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#highlighting">HIGHLIGHTING</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#widget_commands">WIDGET COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#widget_options">WIDGET OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#thanks">THANKS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tk</b><br>
+package require <b>ctext ?3.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>ctext</b> <i class='arg'>pathName</i> ?<i class='arg'>options</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::ctext::addHighlightClass</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>keywordlist</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::ctext::addHighlightClassWithOnlyCharStart</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>char</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::ctext::addHighlightClassForSpecialChars</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>charstring</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::ctext::addHighlightClassForRegexp</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>pattern</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::ctext::clearHighlightClasses</b> <i class='arg'>pathName</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::ctext::getHighlightClasses</b> <i class='arg'>pathName</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::ctext::deleteHighlightClass</b> <i class='arg'>pathName</i> <i class='arg'>class</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::ctext::enableComments</b> <i class='arg'>enable</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::ctext::disableComments</b> <i class='arg'>enable</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>pathName</i> <strong>highlight</strong> <i class='arg'>startIndex</i> <i class='arg'>endIndex</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>pathName</i> <strong>fastdelete</strong> <i class='arg'>index1</i> ?<i class='arg'>index2</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>pathName</i> <strong>fastinsert</strong></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>pathName</i> <strong>copy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>pathName</i> <strong>cut</strong></a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>pathName</i> <strong>paste</strong></a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>pathName</i> <strong>append</strong></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>ctext</strong> package provides the ctext widget which
+is an enhanced text widget with support for configurable syntax
+highlighting and some extra commands.
+
+<p>
+
+Ctext overloads the text widget and provides
+new commands, named <strong>highlight</strong>, <strong>copy</strong>, <strong>paste</strong>,<strong>cut</strong>,
+<strong>append</strong>, and <strong>edit</strong>.  It also provides several
+commands that allow you to define classes.
+Each class corresponds to a tag in the widget.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+<dt><a name="1"><b class='cmd'>ctext</b> <i class='arg'>pathName</i> ?<i class='arg'>options</i>?</a><dd>
+
+
+Creates and configures a ctext widget.
+
+</dl>
+
+<h2><a name="highlighting">HIGHLIGHTING</a></h2>
+<p>
+
+Highlighting is controlled with text widget tags, that are called highlight classes. 
+The <i class='arg'>class</i> is a tag name and can be configured like any text widget tag.
+Four types of highlight classes are supported. All highlight classes are automatically used
+by the <strong>highlight</strong> method of the widget. 
+
+<dl>
+
+<dt><a name="2"><b class='cmd'>::ctext::addHighlightClass</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>keywordlist</i></a><dd>
+
+
+Add a highlighting class <i class='arg'>class</i> to the ctext widget <i class='arg'>pathName</i>.
+The highligthing will be done with the color <i class='arg'>color</i>. All words in the <i class='arg'>keywordlist</i> will be
+highlighted.
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+	# highlight some tcl keywords
+	::ctext::addHighlightClass .t tclkeywords red [list set info interp uplevel upvar]]
+ </pre></td></tr></table></p>
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::ctext::addHighlightClassWithOnlyCharStart</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>char</i></a><dd>
+
+
+Add a highlighting class <i class='arg'>class</i> to the ctext widget <i class='arg'>pathName</i>.
+The highligthing will be done with the color <i class='arg'>color</i>. All words starting with <i class='arg'>char</i> will be
+highlighted.
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+	::ctext::addHighlightClassWithOnlyCharStart .t vars blue \$
+ </pre></td></tr></table></p>
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::ctext::addHighlightClassForSpecialChars</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>charstring</i></a><dd>
+
+
+Add a highlighting class <i class='arg'>class</i> to the ctext widget <i class='arg'>pathName</i>.
+The highligthing will be done with the color <i class='arg'>color</i>. All chars in <i class='arg'>charstring</i> will be
+highlighted.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::ctext::addHighlightClassForRegexp</b> <i class='arg'>pathName</i> <i class='arg'>class</i> <i class='arg'>color</i> <i class='arg'>pattern</i></a><dd>
+
+
+Add a highlighting class <i class='arg'>class</i> to the ctext widget <i class='arg'>pathName</i>.
+The highligthing will be done with the color <i class='arg'>color</i>. All text parts matching the regexp <i class='arg'>pattern</i>
+will be highligthed.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::ctext::clearHighlightClasses</b> <i class='arg'>pathName</i></a><dd>
+
+
+Remove all highlight classes from the widget <i class='arg'>pathName</i>.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::ctext::getHighlightClasses</b> <i class='arg'>pathName</i></a><dd>
+
+
+List all highlight classes for the widget <i class='arg'>pathName</i>.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::ctext::deleteHighlightClass</b> <i class='arg'>pathName</i> <i class='arg'>class</i></a><dd>
+
+
+Delete the highlight class <i class='arg'>class</i> from the widget <i class='arg'>pathName</i>
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::ctext::enableComments</b> <i class='arg'>enable</i></a><dd>
+
+
+Enable C comment highlighting. The <i class='arg'>class</i> for c-style comments is <strong>_cComment</strong>.
+The C comment highlighting is disabled by default.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::ctext::disableComments</b> <i class='arg'>enable</i></a><dd>
+
+
+Disable C comment highlighting. 
+
+</dl>
+
+<h2><a name="widget_commands">WIDGET COMMANDS</a></h2>
+<p>
+
+Each ctext widget created with the above command supports the following
+commands and options in addition to the standard text widget commands and
+options.
+
+<dl>
+
+<dt><a name="11"><i class='arg'>pathName</i> <strong>highlight</strong> <i class='arg'>startIndex</i> <i class='arg'>endIndex</i></a><dd>
+
+
+Highlight the text between <i class='arg'>startIndex</i> and <i class='arg'>endIndex</i>.
+
+<br><br>
+<dt><a name="12"><i class='arg'>pathName</i> <strong>fastdelete</strong> <i class='arg'>index1</i> ?<i class='arg'>index2</i>?</a><dd>
+
+
+Delete text range without updating the highlighting. Arguments
+are identical to the <i class='arg'>pathName</i> <strong>delete</strong> command inherited from
+the standard text widget.
+
+<br><br>
+<dt><a name="13"><i class='arg'>pathName</i> <strong>fastinsert</strong></a><dd>
+
+
+Insert text without updating the highlighting. Arguments
+are identical to the <i class='arg'>pathName</i> <strong>insert</strong> command inherited from
+the standard text widget.
+
+<br><br>
+<dt><a name="14"><i class='arg'>pathName</i> <strong>copy</strong></a><dd>
+
+
+Call <b class='cmd'>tk_textCopy</b> for the ctext instance.
+
+<br><br>
+<dt><a name="15"><i class='arg'>pathName</i> <strong>cut</strong></a><dd>
+
+
+Call <b class='cmd'>tk_textCut</b> for the ctext instance.
+
+<br><br>
+<dt><a name="16"><i class='arg'>pathName</i> <strong>paste</strong></a><dd>
+
+
+Call <b class='cmd'>tk_textPaste</b> for the ctext instance.
+
+<br><br>
+<dt><a name="17"><i class='arg'>pathName</i> <strong>append</strong></a><dd>
+
+
+Append the current selection to the clipboard.
+
+</dl>
+
+
+<h2><a name="widget_options">WIDGET OPTIONS</a></h2>
+<p>
+
+<dl>
+
+<dt>Command-Line Switch:	<strong>-linemap</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Creates a line number list on the left of the widget
+
+<br><br>
+<dt>Command-Line Switch:	<strong>-linemapfg</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Changes the foreground of the linemap.
+The default is the same color as the main text 
+widget.
+
+<br><br>
+<dt>Command-Line Switch:	<strong>-linemapbg</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Changes the background of the linemap.
+The default is the same color as the main text 
+widget.
+
+<br><br>
+<dt>Command-Line Switch:	<strong>-linemap_select_fg</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Changes the selected 
+line foreground.  The default is black.
+
+<br><br>
+<dt>Command-Line Switch:	<strong>-linemap_select_bg</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Changes the selected line 
+background.  The default is yellow.
+	
+<br><br>
+<dt>Command-Line Switch:	<strong>-linemap_mark_command</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Calls a procedure or command 
+with the <i class='arg'>pathName</i> of the ctext window, the <i class='arg'>type</i> which is 
+either <strong>marked</strong> or <strong>unmarked</strong>, and finally the line 
+number selected.  
+
+The proc prototype is: 
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+proc linemark_cmd {win type line}.  
+</pre></td></tr></table></p>
+
+See also 
+ctext_test_interactive.tcl
+
+<br><br>
+<dt>Command-Line Switch:	<strong>-highlight</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Takes a boolean value which defines
+whether or not to highlight text which is inserted 
+or deleted.  The default is 1.
+
+<br><br>
+<dt>Command-Line Switch:	<strong>-linemap_markable</strong><br>
+Database Name:	<strong></strong><br>
+Database Class:	<strong></strong><br>
+<dd>
+
+Takes a boolean value which
+specifies whether or not lines in the linemap
+are markable with the mouse.  The default is 1.
+
+</dl>
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+	package require Tk
+	package require ctext 
+	
+	proc main {} {
+	pack [frame .f] -fill both -expand 1
+	pack [scrollbar .f.s -command {.f.t yview}] -side right -fill y
+
+	pack [ctext .f.t -bg black -fg white -insertbackground yellow  -yscrollcommand {.f.s set}] -fill both -expand 1
+
+	ctext::addHighlightClass .f.t widgets purple [list ctext button label text frame toplevel  scrollbar checkbutton canvas listbox menu menubar menubutton  radiobutton scale entry message tk_chooseDir tk_getSaveFile  tk_getOpenFile tk_chooseColor tk_optionMenu]
+
+	ctext::addHighlightClass .f.t flags orange [list -text -command -yscrollcommand  -xscrollcommand -background -foreground -fg -bg  -highlightbackground -y -x -highlightcolor -relief -width  -height -wrap -font -fill -side -outline -style -insertwidth  -textvariable -activebackground -activeforeground -insertbackground  -anchor -orient -troughcolor -nonewline -expand -type -message  -title -offset -in -after -yscroll -xscroll -forward -regexp -count  -exact -padx -ipadx -filetypes -all -from -to -label -value -variable  -regexp -backwards -forwards -bd -pady -ipady -state -row -column  -cursor -highlightcolors -linemap -menu -tearoff -displayof -cursor  -underline -tags -tag]
+
+	ctext::addHighlightClass .f.t stackControl red {proc uplevel namespace while for foreach if else}
+	ctext::addHighlightClassWithOnlyCharStart .f.t vars mediumspringgreen &quot;\$&quot;
+	ctext::addHighlightClass .f.t variable_funcs gold {set global variable unset}
+	ctext::addHighlightClassForSpecialChars .f.t brackets green {[]{}}
+	ctext::addHighlightClassForRegexp .f.t paths lightblue {\.[a-zA-Z0-9\_\-]+}
+	ctext::addHighlightClassForRegexp .f.t comments khaki {#[^\n\r]*}
+	.f.t fastinsert end [info body main]
+	
+	pack [frame .f1] -fill x
+
+	.f.t highlight 1.0 end
+	
+	pack [button .f1.exit -text Exit -command exit] -side left
+
+	pack [entry .e] -side bottom -fill x
+	.e insert end &quot;ctext::deleteHighlightClass .f.t &quot;
+	bind .e &lt;Return&gt; {eval [.e get]}
+	}
+	main
+	
+</pre></td></tr></table></p>
+
+Further examples are in the source package for ctext.
+
+<h2><a name="thanks">THANKS</a></h2>
+<p>
+Kevin Kenny, Neil Madden, Jeffrey Hobbs, Richard Suchenwirth, 
+Johan Bengtsson, Mac Cody, G&uuml;nther, Andreas Sievers, and Michael Schlenker.
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+re_syntax, text
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+syntax highlighting, text, widget
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; George Peter Staplin &lt;GeorgePS@XMission.com&gt;<br>
+</body></html>

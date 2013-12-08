@@ -1,0 +1,301 @@
+﻿== Preamble ==
+This delinker bot was originally made such that images that were stored on a
+global image repository (Wikimedia Commons) were delinked from local dependent 
+wikis when they were deleted from the global repository.
+
+The first script was written and run by 
+[[:commons:User:Orgullomoore|Orgullomoore]]. It was later maintained by
+[[:commons:User:Siebrand|Siebrand]]. This version is the result of a total 
+rewrite by [[:commons:User:Bryan|Bryan]] and is currently run by Siebrand. 
+I want to thank them both for their contributions; without them this would have
+been impossible, or at least very hard.
+
+== Introduction ==
+The delinker bot is both a delinker and a replacer bot. On its own it is only
+able to delink images, but with the help of replacer.py, it can also replace 
+images. It has both a global and local mode. In global mode, it will read the
+deletion log from the shared image repository, and delink on that and local
+wikis. In local mode, it will read a local deletion log and also delink locally
+only.
+
+Do not run the bot on Commons without consulting Siebrand or Bryan. Running
+multiple instances will not only mess everything up, but also causes the 
+CommonsTicker to work no longer work correctly. Thank you.
+
+Non Wikimedia wikis are currently unsupported. This is due to a flaw in 
+CheckUsage. (To be precise: it won't work for wikis that don't have 
+/w/api.php on that location.)
+
+== Program flow ==
+=== Delinker ===
+The bot reads the deletion log in a specified interval. The images that would
+be eligible for delink, are passed to the CheckUsages threads. They will
+check where to delink images from. For global delink, direct access to the 
+databases is required. Local delink will do without. This information is then
+passed to the Delinker instances who will do the actual delinking.
+
+=== Replacer ===
+A seperate script is run, which reads commands that sysops can give by
+adding a command in the form of {{replace image|oldimg|newimg|reason=reason}}.
+It optionally will also clean up this list. The replacements are then saved to
+a database. The delinker.py script will read out this, and pass the images to
+the CheckUsages instances, from which onwards the process is the same as above.
+
+Both bots allow the use of on-wiki summary templates. Refer to 
+[[m:User:CommonsDelinker]] for information on the syntax.
+
+=== Plugins ===
+CommonsDelinker has a basic plugin framework. More information can be found
+in plugins.txt.
+
+== Requirements ==
+* A recent SVN checkout of the pywikipedia framework
+* Python 2.4 or higher
+* A MySQL database and the MySQLdb api for Python, version 1.2.1_p or higher
+** In the future, probably also sqlite3 will be supported.
+
+== Configuration ==
+The delinker bot is dependent on a great number of configuration variables.
+To run it, change them according to your needs and save them in user-config.py.
+See below for an example configuration file.
+
+=== Pywikipedia variables ===
+Set the variables ''mylang'' and ''family'' to the appropriate language and
+family. Also setup the usernames[][] variables.
+
+=== Delinker variables ===
+Due to historical reasons, the configuration variable is called ''CommonsDelinker''.
+First setup the dictionary ''CommonsDelinker'', by adding to the config:
+CommonsDelinker = {}
+
+=== General settings ===
+* ''timeout = 60'': A general timeout, used for fetching the log and other 
+  timeouts. Set to 60 for medium sized wikis, such as English Wikipedia,
+  and 60-120 for smaller wikis such as German Wikipedia. Note that during 
+  the timeout no more than 500 deletions may occur.
+* ''checkusage_instances = 3'', ''delinker_instances = 5'',
+  ''logger_instances = 2'': number of threads to spawn. The default values
+  are appropriate for most wikis.
+* ''delink_namespaces = range(1000)'': Tuple or list of namespaces to delink 
+  from. Set to ''range(1000)[::2]'' to disable delinking from talk pages.
+* ''local_settings = User:CommonsDelinker/'': Prefix for on-wiki settings.
+  Currently supported: ''summary-I18n'' for the delink summary and
+  ''replace-I18n'' for the replace summary.
+* ''default_settings = {\
+	"summary-I18n": "The file [[:Image:$1]] has been removed, as it \
+		has been deleted by [[User:$2]]: ''$3''.",
+	"replace-I18n": "The file [[:Image:$1]] has been replaced by \
+		[[:Image:$2]] by administrator [[User:$3]]: ''$4''."''
+  }: Default settings, in case no on-wiki settings are found. For the meaning
+  of the variables, please refer to [[m:User:CommonsDelinker]].
+* ''global = False'': Set global or local delink. DO NOT RUN THIS BOT
+  GLOBALLY WITHOUT CONSULTING BRYAN AND SIEBRAND. Thank you.
+* ''no_sysop = True'': Disable delinking as sysop.
+* ''enable_logging = True'': Enable logging actions to database.
+* ''plugins'' = []: Enabled plugins. See plugins.txt for more information.
+
+=== Delinker settings ===
+Those variables only need to be set if the delinker is enabled.
+* ''delink_wait = 600'': The time to wait after deletion before the image is 
+  delinked.
+* ''exclude_string = "no-delink"'': If this string is included in the deletion
+  summary, the file is not delinked.
+* ''summary_cache = 3600'': Time before on-wiki settings are updated.
+
+=== Replacer settings ===
+Those variables only need to be set if the replacer is enabled.
+* ''replace_template = "replace image"'': The template for to command 
+  replacement.
+* ''command_page = "User:CommonsDelinker/commands"'': The page were sysops can
+  give the bot commands.
+* ''clean_list = False'': Auto clean the list. Only use this if the bot 
+  actually has edit permissions to the list.
+* ''disallowed_replacements = [(r'\.png$', r'\.svg$')]'': List of regular expressions
+  of refused replacements.
+  
+==== Reporting replacements ====
+The replacer can insert a report on replaced images.
+* ''replacer_report_replacements = False'': Set to True to enable reporting.
+* ''replacer_report_template = universally replaced'': The template to insert. The 
+  template will be called with the following parameters: ''new_image, user, comment,
+  not_ok''.
+
+=== SQL settings ===
+You do not need to set these if you have logging disabled.
+* ''sql_engine = "mysql"'': Database engine to use. Currently supported: 
+  MySQL. Support for sqlite3 is planned. The Global delinker requires MySQL.
+* ''sql_config = {\
+	'host': 'localhost',
+	'user': "",
+	'passwd': "",
+  }'': The configuration variables to be passed to the connect method of 
+  the database engine. Please refer to your database api manual for a full
+  overview of the options.
+* ''sql_layout = "new"'': Set to "legacy" for the old table layout.
+* ''log_table = "database_name.delinker_table"'': The database.table to log to.
+* ''replacer_table = "database_name.replacer_table"'': The database.table for the 
+  replacer. Only required if the replacer is activated.
+  
+=== Edit and debugging settings ===
+* ''edit = True'': Actually edit to the wiki.
+* ''enable_delinker = True'': Enable the delinker.
+* ''enable_replacer = True'': Enable the replacer.
+* ''single_process_replacer = False'': Start the replacer-reader and the 
+  replacer in one process. This is currently not yet supported.
+
+==== SQL table layout ====
+<code lang="sql">
+CREATE TABLE delinker (
+	timestamp CHAR(14),
+	image VARBINARY(255),
+	site_lang VARBINARY(31),
+	site_family VARBINARY(255),
+	page_namespace INT,
+	page_title VARBINARY(255),
+	status ENUM('ok', 'skipped', 'failed'),
+	new_image VARBINARY(255)
+);
+
+CREATE TABLE replacer (
+	id INT NOT NULL AUTO_INCREMENT, 
+	timestamp VARBINARY(14), 
+	old_image VARBINARY(255),
+	new_image VARBINARY(255),
+	status ENUM('pending', 'ok', 'refused', 
+		'done', 'reported'),
+	user VARBINARY(255),
+	comment VARBINARY(255),
+	
+	PRIMARY KEY(id),
+	INDEX (timestamp, old_image, new_image)
+	INDEX (status)
+);
+</code>
+
+However, if you use CommonsDelinker with CommonsTicker, you will need to have
+a different table layout:
+<code lang="sql">
+CREATE TABLE delinker (
+	timestamp CHAR(14),
+	img VARBINARY(255),
+	wiki VARBINARY(255),
+	page_title VARBINARY(255),
+	namespace INT,
+	status ENUM('ok', 'skipped', 'failed'),
+	newimg VARBINARY(255)
+);
+</code>
+   
+== Licensing ==
+The file ''delinker.py'' is copyrighted © 2006 - 2007 Orgullomoore, 
+© 2007 Siebrand Mazeland, © 2007 Bryan Tong Minh. The file ''replacer.py''
+is copyrighted © 2007 Bryan Tong Minh. This documentation is
+© 2007 Bryan Tong Minh. Those files are licensed under the terms of the 
+MIT license below:
+	
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+ 
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ 
+The most recent version of this documentation can be found in the 
+pywikipedia SVN, on <http://svn.wikimedia.org/svnroot/pywikipedia/
+trunk/pywikipedia/> and browsable on <http://svn.wikimedia.org/viewvc/
+pywikipedia/>. Copies maybe found on meta <http://meta.wikimedia.org/
+wiki/CommonsDelinker/For_operators> and BotWiki <http://botwiki.sno.cc/
+wiki/Python:CommonsDelinker/For_operators>.
+  
+== Example configuration file ==
+
+# Defining a new configuration variable for delinker.py and replace.py
+CommonsDelinker = {}
+
+## General settings
+mylang = 'commons'
+family = 'commons'
+
+# General timeout, used for fetching the deletion log and other timeouts.
+CommonsDelinker['timeout'] = 30
+# Number of threads to spawn. checkusage_instances + logger_instances may never
+# exceed the number of allowed MySQL connections.
+CommonsDelinker['checkusage_instances'] = 3
+CommonsDelinker['delinker_instances'] = 5
+# Keep this at least at 2 to have a fall back in case one logger dies.
+CommonsDelinker['logger_instances'] = 2
+# Tuple or list of namespaces to delink from
+CommonsDelinker['delink_namespaces'] = range(1000)
+# Set this to true if you are running CommonsDelinker
+CommonsDelinker['global'] = False
+# Force not to login as sysop
+CommonsDelinker['no_sysop'] = True
+# Prefix for localized settings.
+CommonsDelinker['local_settings'] = 'User:CommonsDelinker/'
+CommonsDelinker['default_settings'] = {\
+	'summary-I18n': "The file [[:Image:$1]] has been removed, as it has been deleted by [[User:$2]]: ''$3''.",
+	'replace-I18n': "The file [[:Image:$1]] has been replaced by [[:Image:$2]] by administrator [[User:$3]]: ''$4''."
+}
+
+## Delinker settings
+# Gives admins the chance to manually delink the image. Default: 10 minutes.
+CommonsDelinker['delink_wait'] = 600
+# Images with this exclusion string in the deletion comment will not be delinked.
+CommonsDelinker['exclude_string'] = 'no-delink'
+# Time before a new summary is fetched.
+CommonsDelinker['summary_cache'] = 3600
+
+## Replacer settings
+# Default delink and replace summary.
+CommonsDelinker['replace_template'] = 'replace image'
+CommonsDelinker['command_page'] = 'User:CommonsDelinker/commands'
+# Auto clean the list. Only use this if the bot actually 
+# has edit permissions to the list.
+CommonsDelinker['clean_list'] = False
+CommonsDelinker['disallowed_replacements'] = [(r'\.png$', r'\.svg$')]
+
+CommonsDelinker['replacer_report_replacements'] = False
+CommonsDelinker['replacer_report_template'] = 'universally replaced'
+
+
+## SQL connection information.
+# Database engine to use. Currently supported: MySQL, sqlite3.
+# Global delinker requires MySQL.
+CommonsDelinker['sql_engine'] = 'mysql'
+CommonsDelinker['sql_config'] = {\
+	'host': 'localhost',
+	'user': '',
+	'passwd': '',
+}
+# database.table to use for logging and replacing.
+CommonsDelinker['log_table'] = 'database.delinker'
+CommonsDelinker['replacer_table'] = 'database.replacer'
+
+## Edit and debug settings
+# Enable the monitor.
+CommonsDelinker['monitor'] = False
+# Save the changes to a diff.
+CommonsDelinker['save_diff'] = False
+# Save the changes to the wiki.
+CommonsDelinker['edit'] = True
+# Enable the delinker.
+CommonsDelinker['enable_delinker'] = True
+# Enable the replacer.
+CommonsDelinker['enable_replacer'] = True
+# Start the replacer-reader and the replacer in one process.
+CommonsDelinker['single_process_replacer'] = False
+
