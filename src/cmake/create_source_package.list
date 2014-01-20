@@ -354,6 +354,7 @@ src/f2c/sasfit_wofz.c
 src/fftw/CMakeLists.txt
 src/fftw/fftw-3.3.3.tar.gz
 src/gsl/gsl-1.16.tar.gz
+src/tcl/tcl-8.4.13.tar.gz
 src/sasfit_common/CMakeLists.txt
 src/sasfit_common/include/bool.h
 src/sasfit_common/include/sasfit_common.h
