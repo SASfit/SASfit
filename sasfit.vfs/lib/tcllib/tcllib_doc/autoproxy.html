@@ -1,0 +1,212 @@
+<html><head>
+<title>autoproxy - HTTP protocol helper modules </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/http/autoproxy.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: autoproxy.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ autoproxy.n
+   -->
+
+<body>
+<h1> autoproxy(n) 1.2.1 http &quot;HTTP protocol helper modules&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> autoproxy - Automatic HTTP proxy usage and authentication
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#basic_authentication">Basic Authentication</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bugs">BUGS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>http ?2.0?</b><br>
+package require <b>autoproxy ?1.2.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::autoproxy::init</b> </a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::autoproxy::cget</b> <i class='arg'>-optionname</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::autoproxy::configure</b> ?-option <i class='arg'>value</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package attempts to automate the use of HTTP proxy servers in Tcl
+HTTP client code. It tries to initialize the web access settings from
+system standard locations and can be configured to negotiate
+authentication with the proxy if required.
+
+<p>
+
+On Unix the standard for identifying the local HTTP proxy server
+seems to be to use the environment variable http_proxy or ftp_proxy and
+no_proxy to list those domains to be excluded from proxying.
+On Windows we can retrieve the Internet Settings values from the registry
+to obtain pretty much the same information.
+With this information we can setup a suitable filter procedure for the 
+Tcl http package and arrange for automatic use of the proxy.
+
+<p>
+
+There seem to be a number of ways that the http_proxy environment
+variable may be set up. Either a plain host:port or more commonly a
+URL and sometimes the URL may contain authentication parameters or
+these may be requested from the user or provided via http_proxy_user
+and http_proxy_pass. This package attempts to deal with all these
+schemes. It will do it's best to get the required parameters from the
+environment or registry and if it fails can be reconfigured.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::autoproxy::init</b> </a><dd>
+
+
+Initialize the autoproxy package from system resources. Under unix
+this means we look for environment variables. Under windows we look
+for the same environment variables but also look at the registry
+settings used by Internet Explorer.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::autoproxy::cget</b> <i class='arg'>-optionname</i></a><dd>
+
+
+Retrieve individual package configuration options. See <a href="#options">OPTIONS</a>.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::autoproxy::configure</b> ?-option <i class='arg'>value</i>?</a><dd>
+
+
+Configure the autoproxy package. Calling <b class='cmd'>configure</b> with no
+options will return a list of all option names and values. 
+See <a href="#options">OPTIONS</a>.
+
+</dl>
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+
+<dl>
+
+<dt><strong>host</strong> hostname<dd>
+<dt><strong>proxy_host</strong> hostname<dd>
+Set the proxy hostname. This is normally set up by <b class='cmd'>init</b> but may
+be configured here as well.
+
+<br><br>
+<dt><strong>port</strong> number<dd>
+<dt><strong>proxy_port</strong> number<dd>
+Set the proxy port number. This is normally set up by <b class='cmd'>init</b>.
+e.g. <b class='cmd'>configure</b> <strong>-port</strong> <i class='arg'>3128</i>
+
+<br><br>
+<dt><strong>no_proxy</strong> list<dd>
+You may manipulate the <strong>no_proxy</strong> list that was setup by 
+<b class='cmd'>init</b>. The value of this option is a tcl list of
+strings that are matched against the http request host using the tcl
+<b class='cmd'>string match</b> command. Therefore glob patterns are permitted.
+For instance, <b class='cmd'>configure</b> <strong>-no_proxy</strong> <i class='arg'>*.localdomain</i>
+
+<br><br>
+<dt><strong>authProc</strong> procedure<dd>
+This option may be used to set an application defined procedure to be
+called when <b class='cmd'>configure</b> <strong>-basic</strong> is called with either no or
+insufficient authentication details. This can be used to present a
+dialog to the user to request the additional information.
+
+<br><br>
+<dt><strong>-basic</strong><dd>
+Following options are for configuring the Basic authentication
+scheme parameters. See <a href="#basic_authentication">Basic Authentication</a>.
+
+</dl>
+
+<h2><a name="basic_authentication">Basic Authentication</a></h2>
+<p>
+
+Basic is the simplest and most commonly use HTTP proxy authentication
+scheme. It is described in (1 section 11) and also in (2). It offers
+no privacy whatsoever and its use should be discouraged in favour of
+more secure alternatives like Digest. To perform Basic authentication
+the client base64 encodes the username and plaintext password
+separated by a colon. This encoded text is prefixed with the word
+&quot;Basic&quot; and a space.
+
+<p>
+
+The following options exists for this scheme:
+<dl>
+<dt><strong>-username</strong> name<dd>
+The username required to authenticate with the configured proxy.
+<br><br>
+<dt><strong>-password</strong> password<dd>
+The password required for the username specified.
+<br><br>
+<dt><strong>-realm</strong> realm<dd>
+This option is not used.
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+package require autoproxy
+autoproxy::init
+autoproxy::configure -basic -username ME -password SEKRET
+set tok [http::geturl http://wiki.tcl.tk/]
+http::data $tok
+</pre></td></tr></table></p>
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+
+<li>
+      Berners-Lee, T., Fielding R. and Frystyk, H.
+      &quot;Hypertext Transfer Protocol -- HTTP/1.0&quot;,
+      RFC 1945, May 1996,
+      (<a href="http://www.rfc-editor.org/rfc/rfc1945.txt">http://www.rfc-editor.org/rfc/rfc1945.txt</a>)
+
+<br><br>
+<li>
+      Franks, J. et al.
+      &quot;HTTP Authentication: Basic and Digest Access Authentication&quot;,
+      RFC 2617, June 1999
+      (<a href="http://www.rfc-editor.org/rfc/rfc2617.txt">http://www.rfc-editor.org/rfc/rfc2617.txt</a>)
+
+</ol>
+
+<h2><a name="bugs">BUGS</a></h2>
+<p>
+
+At this time only Basic authentication (1) (2) is supported. It is
+planned to add support for Digest (2) and NTLM in the future.
+
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+http(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+authentication, http, proxy
+</body></html>

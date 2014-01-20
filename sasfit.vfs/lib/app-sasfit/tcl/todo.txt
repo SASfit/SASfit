@@ -1,0 +1,16 @@
+---	error estimate of structural parameters
+
+---	remainding the option of the graphs during recalculation of the curves
+	or after loading a new data set
+
+---	after using Tcl_DStringInit one should free the allocated memory with 
+	Tcl_DStringFree. However the use in routine sasfit_nrCmd leads to a
+	run time error.
+
+--- 	global fit menu isnot working correctly yet:
+		opening the first time the menu leaves the prefactor and global parameter entries empty
+		selecting a parameter to be fitted causes always an error message
+		generating new global parameter does not work
+		selecting a global parameter P1, etc does not work.
+
+--- 	a project file (*.sas) stored with the new version can not be reloaded into sasfit

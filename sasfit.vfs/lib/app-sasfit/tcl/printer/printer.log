@@ -1,0 +1,205 @@
+
+  	michael: 1.61
+  Recovery from disk failure
+revision 1.61	
+  Removed all warnings from standard compilation under Tcl 8.4.7
+  Rewrote printer send functionality to use WritePrinter
+  Relies on DEVNAMES wDeviceOffset for printer name rather than DEVMODE.
+    This prevents truncation of printer names longer than 32 characters.
+    Added a printername member to the context structure
+  Removed a few unneeded parameters, clarified a few snippets of code
+revision 1.60
+  More error checking, especially that due to Steve Bold (stevebold@hotmail.com)
+  providing his changes to prevent long printer names from overwhelming the
+  printer structure, and avoiding a free memory error when there
+  is no default printer.
+revision 1.59
+  Updated version number for incremental release
+revision 1.58
+  Postscript check and change suggested by Doug Jackson, douglas.h.jackson@intel.com
+  Fix to attribute update for paper size provided by Jon Hilbert
+revision 1.57
+  Removed unnecessary initialization which may cause the toplevel to lose focus.
+  Made flags more consistent.
+revision 1.56
+  Cleaned up matching on exact printer names per jhilbert's bug report
+  Cleaned up error reporting and caught some new error conditions
+  Prepared for release, with much thanks to  jhilbert <jhilbert@hilbertsoft.com>
+  for this set of fixes.
+revision 1.55
+  Updated version number for release
+revision 1.54
+  Added some additional checks by Jon Hilbert
+  Also added paper handling and changing code by Jon Hilbert
+revision 1.53
+  Performed a check before doing a page setup dialog for the default
+  printer. This dialog was bringing up an error message if there was
+  no default printer.
+  This fix was suggested by : "Charles E. Matthews" <cmatt@attglobal.net>
+revision 1.52
+  Moved log external to source
+revision 1.51
+  Fixed size of fn array. Thanks to Charles Matthews for the report!
+revision 1.50
+  Updated version number for release
+revision 1.49
+  Added logic to get the state of the All/Selection/Page numbers radio button
+  and report it in the "pring flag" attribute
+revision 1.48
+  Checking for some newer printers with !No passthroughs.
+  Also, ensuring favorites are used in all enum printers
+revision 1.47
+  Added correction for metric locales in the page setup dialog, as provided
+  by Michael Thomsen <miksen@ideogramic.com>
+revision 1.46
+  Reporting both PRINTDLG and DEVMODE copies--the one from
+  DEVMODE represents how many will be output, while the one
+  from PRINTDLG represents how many the printing _program_ is
+  expected to spool
+revision 1.45
+  Added "minimum page" and "maximum page" watches to set the bounds for the
+  page selection.
+revision 1.44
+  Fixed reported error by Markus Meng <meng.engineering@bluewin.ch>:
+  copies was reported from the PRINTDLG structure, when it should be
+reported from the DEVMODE structure. The difference is apparent on
+  printers that handle multiple (non-collated) copies on their own.
+  Also, ceased to report first page/last page if these are not set.
+revision 1.43
+  Ensured port, driver, printer name initialized (Jim Garrison, <garrison@qualcomm.com>)
+  Used UTF translations for printer name and location (Andrei Sobchuck <andreis@itware.com.ua>
+  Updated version to 0.9.6.4
+revision 1.42
+  Updated version to 0.9.6.3
+  Corrected error reported by Mads Linden <mads@electronicfarm.com>, noting
+  that a printer opened with "printer open" does not set the defaults in
+  the "printer dialog select". That now occurs.
+revision 1.41
+  Documentation cleanup
+revision 1.40
+  Removed warnings before release
+revision 1.39
+  Update version to 0.9.6.2
+  Added 'printer option' command and the "autoclose" concept
+  Fixed the papersize calculation to account for default metric drivers
+  Added comment blocks above most interesting functions
+  Carried the allocation of printer_values structures to completion
+  including cases where the ClientData argument must be reset.
+  Added the beginnings of print cancellation dialog support.
+revision 1.38
+  Removed unused code sections
+revision 1.37
+  Removed unused functions
+revision 1.36
+  Added capability to open several printers, and manage them all
+  Made page_setup and printer open -name work, along with attribute changes
+  for open printers.
+revision 1.35
+  Changed DEVMODE structure in printer_values to be allocated.
+  This seems to have cleared up a problem with losing esoteric settings.
+revision 1.34
+  Used ReplaceDC to complete effect of PageSetupDlg
+  Began adding specific hDC hooks for all relevant calls
+  Differentiated safe and unsafe printer initialization
+  Track individual managed hdcs so that all can be closed, irrespective
+  of presence of HDC extension, or order of extension unloading
+  Moved more complex functionality to functions
+  Drove main print command from a table instead of a switch
+  Changed version number to 0.9.6.1
+  Added 'verbose' option to printer list usage message
+  More properly supported both postscript and nonpostscript printers
+  with the POSTSCRIPT_PASSTHROUGH escape
+  Added parameters to a few calls to better capture the whole manipulation
+revision 1.33
+  To avoid order dependencies on order of unloading, which can cause
+  problems when exiting under Windows 95 and Windows 98,
+  a separate container of HDCs is built and maintained.
+  When the printer extension is unloaded, only this container is
+  consulted.
+revision 1.32
+  Added use of HDC package
+  Better synchronized devmode structures
+revision 1.31
+  Added ability to delete printer attributes
+  Added a few more error checks and fixed some error messages
+revision 1.30
+  Added support for named contexts, rather than just numbered ones.
+  Also, added a parameter to support postscript printing better.
+  Checked for appropriate contexts in centralized DC routine.
+  Continued support for context addresses
+  This should now work seamlessly with gdi and wmf
+  Uses the HDC extension
+revision 1.29
+  Changed to invoke the EPSPRINTING escape only when postscript printing is desired.
+revision 1.28
+  Added stubs support
+revision 1.27
+  Removed the code to override printer selection with defaults.
+  Now this is only used for the default printer selection, since
+  otherwise user-selected options in properties are overridden!
+revision 1.26
+  Added code to get default values from printer before used.
+  Called this function whenever printer has changed.
+  Also, added a function to delete attributes.
+  Bumped version to 0.9.3.2
+revision 1.25
+  Changed processing for DEVNAMES; previous implementation was incorrect.
+  Tested thoroughly with Tcl release 8.1, NT 4.0 SP 5.
+  Updated command descriptions.
+revision 1.24
+  Updated to handle additional error conditions
+revision 1.23
+  Added ability to get and set attributes in the printer attr command.
+  These include arbitrary attributes of the user's selection.
+  Currently no way to UNSET the attributes.
+revision 1.22
+  Added a test so if DM_PAPERSIZE is selected, the size is changed for landscape when necessary. Windows does not check this.
+revision 1.21
+  Moved all attributes to a Tcl hash table, and reorganized the code so
+  it would be easy to add sets and gets for individual attributes.
+revision 1.20
+  Added DEVMODE, DEVNAMES to printer_values structure, and updated them
+  with all printer open/printer dialog select/printer close calls.
+  Added the hash table to the printer_values structure, but no use is made
+  of this yet.
+  Tested on Win98, Win95, and WinNT with good results.
+revision 1.19
+  Added guards around GlobalLock, which can fail under Win95 oddly.
+revision 1.18
+  Removed remainder of version-dependent code and replaced with runtime
+  check for windows version
+revision 1.17
+  Removed all dependencies on WIN32S #define. Instead, use a runtime
+  check. This way, only one version of the extension need exist.
+  Also, fixed enumprinter to be useful under win95.
+  Also, added network printers for win95 and winnt.
+  Fixed a memory leak in printer list
+revision 1.16
+  Added notifier loop calls to allow Tcl/Tk to repaint and do other idle tasks while the dialog is up.
+revision 1.15
+  Added fixes for ISO standard paper size conversion per bug report
+  by Andreas Sievers <Andreas.Sievers@t-mobil.de>.
+  Changed call to get parent HWND in hopes of getting the proper window
+  to cause refresh when a standard dialog is up (it didn't work). Still
+  need to find the right wrapper window.
+  Added handling for -name argument to printer job.
+revision 1.14
+  *** empty log message ***
+revision 1.13
+  Cleaned up the open routine and the send routine to handle
+  coordination of the page setup dialog and the select dialog
+revision 1.12
+  Added a character-width routine to aid in text output
+revision 1.11
+  Add -hDC flag to printer send
+  Add "job" logic so a job can be started when needed
+revision 1.10
+  Moved allocation logic to the right place, added an option to the print
+  dialogs, and made code acceptable for 4.1, 4.2, and 8.0 Tcl.
+revision 1.9
+  Cleaned up global resources better
+  Allowed flags in printer selection dialog
+  Added more attributes to printer attr--it will need the match soon!
+revision 1.8
+  Recovery from disk failure
+  =============================================================================

@@ -1,0 +1,268 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>math::rationalfunctions - Math </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/rational_funcs.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: rational_funcs.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ math::rationalfunctions.n
+   -->
+
+<body>
+<h1> math::rationalfunctions(n) 1.0.1 math &quot;Math&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::rationalfunctions - Polynomial functions
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#procedures">PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#remarks_on_the_implementation">REMARKS ON THE IMPLEMENTATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl ?8.4?</b><br>
+package require <b>math::rationalfunctions ?1.0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::rationalfunctions::rationalFunction</b> <i class='arg'>num</i> <i class='arg'>den</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::rationalfunctions::ratioCmd</b> <i class='arg'>num</i> <i class='arg'>den</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::rationalfunctions::evalRatio</b> <i class='arg'>rational</i> <i class='arg'>x</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::rationalfunctions::addRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::rationalfunctions::subRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::rationalfunctions::multRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::rationalfunctions::divRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::rationalfunctions::derivPolyn</b> <i class='arg'>ratio</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::rationalfunctions::coeffsNumerator</b> <i class='arg'>ratio</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::rationalfunctions::coeffsDenominator</b> <i class='arg'>ratio</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+This package deals with rational functions of one variable:
+
+<ul>
+<li>
+the basic arithmetic operations are extended to rational functions
+<br><br>
+<li>
+computing the derivatives of these functions
+<br><br>
+<li>
+evaluation through a general procedure or via specific procedures)
+</ul>
+
+<h2><a name="procedures">PROCEDURES</a></h2>
+<p>
+
+The package defines the following public procedures:
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::rationalfunctions::rationalFunction</b> <i class='arg'>num</i> <i class='arg'>den</i></a><dd>
+
+
+Return an (encoded) list that defines the rational function. A
+rational function
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+             1 + x^3
+   f(x) = ------------
+          1 + 2x + x^2
+</pre></td></tr></table></p>
+can be defined via:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   set f [::math::rationalfunctions::rationalFunction [list 1 0 0 1]  [list 1 2 1]]
+</pre></td></tr></table></p>
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>num</i><dd> Coefficients of the numerator of the rational
+function (in ascending order)
+<br><br>
+<br><br>
+<dt>list <i class='arg'>den</i><dd> Coefficients of the denominator of the rational
+function (in ascending order)
+</dl>
+
+<br><br>
+
+<dt><a name="2"><b class='cmd'>::math::rationalfunctions::ratioCmd</b> <i class='arg'>num</i> <i class='arg'>den</i></a><dd>
+
+
+Create a new procedure that evaluates the rational function. The name of the
+function is automatically generated. Useful if you need to evaluate
+the function many times, as the procedure consists of a single
+[expr] command.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>num</i><dd> Coefficients of the numerator of the rational
+function (in ascending order)
+<br><br>
+<br><br>
+<dt>list <i class='arg'>den</i><dd> Coefficients of the denominator of the rational
+function (in ascending order)
+</dl>
+
+<br><br>
+
+<dt><a name="3"><b class='cmd'>::math::rationalfunctions::evalRatio</b> <i class='arg'>rational</i> <i class='arg'>x</i></a><dd>
+
+
+Evaluate the rational function at x.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>rational</i><dd> The rational function's definition (as returned
+by the rationalFunction command).
+order)
+
+<br><br>
+<dt>float <i class='arg'>x</i><dd> The coordinate at which to evaluate the function
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="4"><b class='cmd'>::math::rationalfunctions::addRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a><dd>
+
+
+Return a new rational function which is the sum of the two others.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>ratio1</i><dd> The first rational function operand
+
+<br><br>
+<dt>list <i class='arg'>ratio2</i><dd> The second rational function operand
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="5"><b class='cmd'>::math::rationalfunctions::subRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a><dd>
+
+
+Return a new rational function which is the difference of the two
+others.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>ratio1</i><dd> The first rational function operand
+
+<br><br>
+<dt>list <i class='arg'>ratio2</i><dd> The second rational function operand
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="6"><b class='cmd'>::math::rationalfunctions::multRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a><dd>
+
+
+Return a new rational function which is the product of the two others.
+If one of the arguments is a scalar value, the other rational function is
+simply scaled.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>ratio1</i><dd> The first rational function operand or a scalar
+
+<br><br>
+<dt>list <i class='arg'>ratio2</i><dd> The second rational function operand or a scalar
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="7"><b class='cmd'>::math::rationalfunctions::divRatio</b> <i class='arg'>ratio1</i> <i class='arg'>ratio2</i></a><dd>
+
+
+Divide the first rational function by the second rational function and
+return the result. The remainder is dropped
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>ratio1</i><dd> The first rational function operand
+
+<br><br>
+<dt>list <i class='arg'>ratio2</i><dd> The second rational function operand
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="8"><b class='cmd'>::math::rationalfunctions::derivPolyn</b> <i class='arg'>ratio</i></a><dd>
+
+
+Differentiate the rational function and return the result.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>ratio</i><dd> The rational function to be differentiated
+
+</dl>
+
+<br><br>
+
+
+<dt><a name="9"><b class='cmd'>::math::rationalfunctions::coeffsNumerator</b> <i class='arg'>ratio</i></a><dd>
+
+
+Return the coefficients of the numerator of the rational function.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>ratio</i><dd> The rational function to be examined
+</dl>
+
+<br><br>
+
+
+<dt><a name="10"><b class='cmd'>::math::rationalfunctions::coeffsDenominator</b> <i class='arg'>ratio</i></a><dd>
+
+
+Return the coefficients of the denominator of the rational
+function.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>ratio</i><dd> The rational function to be examined
+</dl>
+
+<br><br>
+
+</dl>
+
+
+<h2><a name="remarks_on_the_implementation">REMARKS ON THE IMPLEMENTATION</a></h2>
+<p>
+
+The implementation of the rational functions relies on the
+math::polynomials package. For further remarks see the documentation on
+that package.
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+math, rational functions
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;<br>
+</body></html>
+

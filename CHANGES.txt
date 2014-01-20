@@ -1,0 +1,216 @@
+0.93.6, 2013-??-??
+- manual has been extended for the ferrofluid plugin scattering functions
+- orientation of the 2D simulation was rotated by 90deg.
+- correction of the manual for the Porod's approximation for cylinders.
+- minor bug fix for Porod's approximation for long cylynders.
+
+0.93.5, 2013-06-09
+- implementation of the form factor and correlation function for spin misalignment 
+- bug fix for the scattering contribution of the individual chains in the form factors WORM*, ROD*, and DISC*
+- bug fix in the form factor MagneticShellCrossTerm
+- added some subfolders for form factor plugins
+- bug fix in the calculation of the scattering length density SLD(E) of x-rays
+
+0.93.4, 2013-04-30
+- in the menu for confidence intervall the non-diagonal elements of 
+  correlation matrix are shown together with the confidence interval for the fitted parameters as diagonal elements.
+- added some additional parameters into the fit menu useful to evaluate the goodness of a fit
+- new plugin for "Parallelepiped_abc" of dimension a*b*c to be found under [by plugins|anisotropic obj]
+- new plugin for "generalized Guinier law" to be found under [by plugins|non-particular structures]
+- Renamed HMI format into BerSANS format and did some debugging. Now also all masked data points (negative errors) are ignored.
+- added key bindings <Home>, <End>, <PgUp>, <PgDn>, <Insert>, <Delete> for going to first|last|next|previous entry or to add and remove an entry  
+- adding plugin with a series of form factor for strongly anisotropic structures 
+  with local planar and local cylindrical shapes
+- adding a new plugin form factor for spheres with fuzzy interfaces. The existing form factors 
+  ExpShell, LinShell and LinShell2 have been moved to this plugin. 
+- New profiles are FuzzySphere and CoreShellMicrogel. 
+  Also the related functions for calculating the corresponding radial profiles have been added.
+- new section in the manual about absolute scale, molecular weight, etc.
+- for the form factors "flat cylinder" "long cylinder", 
+  and "Porod cylinder" the limiting case q==0 is now treated properly
+- small bug fix in the peak function "Gamma (Area)" for checking validity of parameter
+- bug fix of the resolution parameter handling in case it will be read in from a data file
+- included under peak function the Maxwell distribution and the generalized Maxwell distribution
+- batch fitting
+
+0.93.3, 2011-05-04
+- bug fix in the model "Stacked Discs". The structure factor describing the stacking order contained a bug.
+- extended plugin for stroboscopic measurements, especially for TISANE
+- plotting: ignore negative y values on log() and sqrt() scales
+- included Pcs_homogeneousCyl form factor
+- bug fix of ferrofluid plugin
+- added radial averaged form factor in ferrofluid plugin
+- extended the spline plugin to be used also as form factors. 
+  In case somebody wants to fit a spline function to e.g. a TEM size distribution, 
+  this function need to be available as a form factor and not only as a size distribution.
+- added configuration file 'config.ini' as replacement for deprecated sasfit_init_public.tcl
+  added switch for disabling 'about' popup at start time via config file
+- added checkbox (ascii options) for ignoring zero(0) intensity at the beginning of data
+- removed , as data column separator
+- added substitution of , => . for data columns (german decimal format to english format)
+- added interface function for covariance matrix output
+- covar matrix visualisation with parameter highlighting
+- added a chapter about particle number densities, volume fraction and absolute intensities in the manual.
+- LogNorm_fp size distribution is now plugin function. The new plugin is not backwards compatible.
+  The manual explains a bit the difficulties in describing the size distribution in terms of a volume fraction. 
+- added scrollbars for fit parameter window
+
+0.93.2, 2010-07-06
+
+- bug fix of ferrofluid plugin
+  - added radial averaged form factor
+  - included radial averaged form factors also for SAW model
+- Extended the spline plugin to be used also as form factors. In case somebody
+  wants to fit a spline function to a size distribution, this function needs to
+  be available as a form factor and not only as a size distribution.
+- forwarding intermediate linear Guinier approximation results to the plot
+  window (green curve)
+  - display of linear Guinier approximation results in ISP text output window
+  - residuum window updated with linear Guinier approximation residuum
+  - by default disabled, see checkbox in ISP window
+- fixed SLDCalculator in source package (missing data files)
+- added KNOWN_BUGS.txt (not complete)
+- optical (layout) GUI improvements:
+  - removed thick margin around text boxes for ISP/analyt results
+  - added resizeable file list in ISP window
+  - added resizeable 'merge files' list when loading data files
+- added menu->tools->toggle console to show the console, 
+  it is hidden by default now
+- added 'OPTIM' parameter to src/CMakeLists.txt for optimized binary generation on
+  the underlying hardware, use: 'cmake <path> -DOPTIM=TRUE'
+- added configuration file 'config.ini' as (working) replacement for deprecated
+  sasfit_init_public.tcl
+  - added switch for disabling 'about' popup at start time via config file
+  - added switch to set the default data directory
+- added checkbox (ascii options) for ignoring zero(0) intensity at the
+  beginning of data
+
+0.93.1, 2010-05-13
+
+- obsolete print menu entries removed
+- fix of textual output bug (constant value 0)
+
+0.93.0, 2010-05-05
+
+- copy&paste-able text output, as well as csv export (semicolon separated) for 
+  - integral structural parameters (ISP) data
+  - parameters of contributions
+  - moments of size distribution
+- improved/rewritten file selection GUI for ISP series fitting
+- new and improved plugins, i.e. form factors:
+  - Kratky Sphere
+  - JuelichCoreShell (rewritten)
+  - Langevin
+  - Pcs_homogeneousCyl
+- data is always plotted first, below the calculated lines
+  - error bars are drawn behind data points
+  - fixed wrong plotting of very large error bars
+  - for log-plotting on the y-axis, negative data is ignored 
+    (not plotted, was abs() before)
+- fix to prevent the user from loading a SASfit project file as data
+- fix in Form-Factor 'Background' (improved numerical stability)
+- bug fix for saving parameter files on windows
+  - fix for saving *.par filenames with spaces
+- bug fix in gui when selecting form factor "TwoAttachedSpheres"
+- bug fix for "Singular Matrix" error 
+  (may still occur because of other reasons)
+- documentation update
+
+0.92.3, 2010-01-02
+
+- implemented three different versions for worm like chains as described 
+  in Macromolecules 1996, 29, 7602-7612. They have been implemented as  
+  structure factors [anistropic obj|P'(Q):local cylindrical geometry], 
+  so that it can be combined with different cross-section
+  form factors of local cylindrical objects 
+  [anisotropic obj.|Pcs(Q) for cylindrical obj.].
+- new form factor plugin for a sphere with 3 shells
+- new structure factor for a regular cluster up to maximal 5 particle 
+  (tetrahedron like)
+- correction of menue entry order for magnetic shell and 
+  superparamagnetic shell
+- new plugin for ferrofluid particles with a scheme similar to 
+  the one from J.S. Pedersen for Gaussian Chains attached to a spherical particle
+- bug fix in mMemberedTwistedRing
+- two more default plot: Guinier (rods) and Guinier (sheets)
+- bug fix in loglogistic peak
+- implementation of asymptotic limits for fractals, which require a 
+  numerical integration. The integration often fails for large q-values 
+  for which an asymptotic solution is available or has been constructed.
+- reprogrammed "SquareWell1" structure factor for a squared well potential
+- replaced sasfit_qromb function by sasfit_integrate function in the 
+  form factor for the torus. The sasfit_qromb routine did not work for some 
+  unknown reason. This needs to be checked.
+- new structure factor for a thin square well potential
+- bug fix in BeaucageExpPowLaw2
+- Bug fix for setting plot option "Holtzer" in multiple data set tab
+- public initialization file for setting the default working directory 
+  by the user to any path
+
+0.92.2, 2009-10-08
+
+- data reduction without data loss, after loading a project file 
+  the data reduction can be reversed
+- info message about a guessed error bar is displayed only once 
+  when the ascii options are changed (not for every file)
+- added tooltip for complete filenames in merge window
+- color for selected fit region stays at dark grey after loading an old project file
+- removed unused help buttons in file open dialogs
+- fixed error loop when adding new data to previously loaded project file
+- fix for a homedir being e.g. 'U:\' at startup on Windows
+- minor correction in the routine to guess the error bar (normalization)
+  when only two column are supplied
+- fix of rare error "form factor param out of range: -1"
+
+0.92.1, 2009-09-13
+- fix for GUI problem with two plugin form factors (contribution updates)
+  'If there are two plugin model functions with a different number of
+  parameters, you can't switch/cycle trough the contributions anymore
+  (Next, Previous).'
+- fix for saving a parameter file (file creation was disabled by accident 
+  in previous version)
+
+0.92.0, 2009-09-08
+
+- data reduction when loading a data file
+  -> only a subset of data points can be loaded
+     based on the overall point count or distance between points
+- default directory for file selection is the current users home directory now
+- documentation update
+  - fixed doxygen documentation and latex issues
+- Holtzer and Debye-Bueche plot style added
+- fixed bessel function evaluation for large values for resolution calculation
+- fix for data file selection when error pops up and retry after input format correction
+- fixed names of resolution parameter labels
+- fixed error when loading default data file with sasfit installed in
+  directory with spaces (again)
+- fixed bug with loading a 'new ..' data set when there were already some loaded
+  -> data structure maintenance issue
+- unified window titles
+
+0.91.1, 2009-07-08
+
+- fixed behaviour of 'add' button for multiple data file selection
+- fixed multiple data file selection for filenames with spaces
+- fixed behaviour of 'new' button in merge dialog for single fitting
+
+0.91.0, 2009-07-01
+
+Since the previous version of SASfit (0.90.1, January 2009) there were a lot of changes to primarily improve the quality and portability of the code. Here is only a short summary of the larger changes done (as of July 1st, 2009):
+
+- added detailed documentation on setup and installation of SASfit, as
+   well as plugin development (how to add own model functions)
+- fixed some bugs in plugin framework
+   - added automatic determination of available plugins at build time
+   - enabled static building for plugins
+- increasing maximum number of model parameter in GUI
+- verified build compatibility for MacOS
+- Extended and improved Scattering Length Density (SLD) Calculator.
+  Now the scattering length density for x-ray energies between 1keV and 24.9 keV can be calculated.
+- a few new form factor have been included 
+    - generalized Gaussian coil
+    - generalized Gaussian coil 1
+    - generalized Gaussian coil 2
+    - ellCylShell1
+    - ellCylShell2
+

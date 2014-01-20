@@ -1,0 +1,211 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<! -- $Id: struct_set.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $
+   -->
+<html><head>
+<title>struct::set - Tcl Data Structures </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/struct/struct_set.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: struct_set.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ struct::set.n
+   -->
+
+<body>
+<h1> struct::set(n) 2.1 struct &quot;Tcl Data Structures&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> struct::set - Procedures for manipulating sets
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.0</b><br>
+package require <b>struct::set ?2.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::struct::set</b> <strong>empty</strong> <i class='arg'>set</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::struct::set</b> <strong>size</strong> <i class='arg'>set</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::struct::set</b> <strong>contains</strong> <i class='arg'>set</i> <i class='arg'>item</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::struct::set</b> <strong>union</strong> ?<i class='arg'>set1</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::struct::set</b> <strong>intersect</strong> ?<i class='arg'>set1</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::struct::set</b> <strong>difference</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::struct::set</b> <strong>symdiff</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::struct::set</b> <strong>intersect3</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::struct::set</b> <strong>equal</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::struct::set</b> <strong>include</strong> <i class='arg'>svar</i> <i class='arg'>item</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::struct::set</b> <strong>exclude</strong> <i class='arg'>svar</i> <i class='arg'>item</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::struct::set</b> <strong>add</strong> <i class='arg'>svar</i> <i class='arg'>set</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::struct::set</b> <strong>subtract</strong> <i class='arg'>svar</i> <i class='arg'>set</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::struct::set</b> <strong>subsetof</strong> <i class='arg'>A</i> <i class='arg'>B</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+<p>
+
+The <b class='cmd'>::struct::set</b> namespace contains several useful commands for
+processing finite sets.
+
+<p>
+
+It exports only a single command, <b class='cmd'>struct::set</b>. All
+functionality provided here can be reached through a subcommand of
+this command.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+<dl>
+
+<dt><a name="1"><b class='cmd'>::struct::set</b> <strong>empty</strong> <i class='arg'>set</i></a><dd>
+
+
+Returns a boolean value indicating if the <i class='arg'>set</i> is
+empty (<strong>true</strong>), or not (<strong>false</strong>).
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::struct::set</b> <strong>size</strong> <i class='arg'>set</i></a><dd>
+
+
+Returns an integer number greater than or equal to zero. This is the
+number of elements in the <i class='arg'>set</i>. In other words, its cardinality.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::struct::set</b> <strong>contains</strong> <i class='arg'>set</i> <i class='arg'>item</i></a><dd>
+
+
+Returns a boolean value indicating if the <i class='arg'>set</i> contains the
+element <i class='arg'>item</i> (<strong>true</strong>), or not (<strong>false</strong>).
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::struct::set</b> <strong>union</strong> ?<i class='arg'>set1</i>...?</a><dd>
+
+
+Computes the set containing the union of <i class='arg'>set1</i>, <i class='arg'>set2</i>,
+etc., i.e. &quot;<i class='arg'>set1</i> + <i class='arg'>set2</i> + ...&quot;, and returns this set
+as the result of the command.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::struct::set</b> <strong>intersect</strong> ?<i class='arg'>set1</i>...?</a><dd>
+
+
+Computes the set containing the intersection of <i class='arg'>set1</i>,
+<i class='arg'>set2</i>, etc., i.e. &quot;<i class='arg'>set1</i> * <i class='arg'>set2</i> * ...&quot;, and
+returns this set as the result of the command.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::struct::set</b> <strong>difference</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a><dd>
+
+
+Computes the set containing the difference of <i class='arg'>set1</i> and
+<i class='arg'>set2</i>, i.e. (&quot;<i class='arg'>set1</i> - <i class='arg'>set2</i>&quot;) and returns this
+set as the result of the command.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::struct::set</b> <strong>symdiff</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a><dd>
+
+
+Computes the set containing the symmetric difference of <i class='arg'>set1</i> and
+<i class='arg'>set2</i>, i.e. (&quot;(<i class='arg'>set1</i> - <i class='arg'>set2</i>) + (<i class='arg'>set2</i> - <i class='arg'>set1</i>)&quot;)
+and returns this set as the result of the command.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::struct::set</b> <strong>intersect3</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a><dd>
+
+
+This command is a combination of the methods <strong>intersect</strong> and
+<strong>difference</strong>.
+
+It returns a three-element list containing &quot;<i class='arg'>set1</i>*<i class='arg'>set2</i>&quot;,
+&quot;<i class='arg'>set1</i>-<i class='arg'>set2</i>&quot;, and &quot;<i class='arg'>set2</i>-<i class='arg'>set1</i>&quot;, in this
+order. In other words, the intersection of the two parameter sets, and
+their differences.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::struct::set</b> <strong>equal</strong> <i class='arg'>set1</i> <i class='arg'>set2</i></a><dd>
+
+
+Returns a boolean value indicating if the two sets are equal
+(<strong>true</strong>) or not (<strong>false</strong>).
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::struct::set</b> <strong>include</strong> <i class='arg'>svar</i> <i class='arg'>item</i></a><dd>
+
+
+The element <i class='arg'>item</i> is added to the set specified by the variable
+name in <i class='arg'>svar</i>. The return value of the command is empty. This is
+the equivalent of <b class='cmd'>lappend</b> for sets.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::struct::set</b> <strong>exclude</strong> <i class='arg'>svar</i> <i class='arg'>item</i></a><dd>
+
+
+The element <i class='arg'>item</i> is removed from the set specified by the
+variable name in <i class='arg'>svar</i>. The return value of the command is
+empty. This is a near-equivalent of <b class='cmd'>lreplace</b> for sets.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::struct::set</b> <strong>add</strong> <i class='arg'>svar</i> <i class='arg'>set</i></a><dd>
+
+
+All the element of <i class='arg'>set</i> are added to the set specified by the
+variable name in <i class='arg'>svar</i>. The return value of the command is
+empty. This is like the method <strong>include</strong>, but for the addition
+of a whole set.
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::struct::set</b> <strong>subtract</strong> <i class='arg'>svar</i> <i class='arg'>set</i></a><dd>
+
+
+All the element of <i class='arg'>set</i> are removed from the set specified by the
+variable name in <i class='arg'>svar</i>. The return value of the command is
+empty. This is like the method <strong>exclude</strong>, but for the removal
+of a whole set.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::struct::set</b> <strong>subsetof</strong> <i class='arg'>A</i> <i class='arg'>B</i></a><dd>
+
+
+Returns a boolean value indicating if the set <i class='arg'>A</i> is a true
+subset of or equal to the set <i class='arg'>B</i> (<strong>true</strong>), or not
+(<strong>false</strong>).
+
+</dl>
+
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+cardinality, difference, emptiness, exclusion, inclusion, intersection, membership, set, symmetric difference, union
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

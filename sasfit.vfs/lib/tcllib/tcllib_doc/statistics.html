@@ -1,0 +1,997 @@
+<html><head>
+<title>math::statistics - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/statistics.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: statistics.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ math::statistics.n
+   -->
+
+<body>
+<h1> math::statistics(n) 0.2 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::statistics - Basic statistical functions and procedures
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#general_procedures">GENERAL PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#statistical_distributions">STATISTICAL DISTRIBUTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#data_manipulation">DATA MANIPULATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#plot_procedures">PLOT PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#things_to_do">THINGS TO DO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8</b><br>
+package require <b>math::statistics 0.2</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::statistics::mean</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::statistics::min</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::statistics::max</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::statistics::number</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::statistics::stdev</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::statistics::var</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::statistics::median</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::statistics::basic-stats</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::statistics::histogram</b> <i class='arg'>limits</i> <i class='arg'>values</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::statistics::corr</b> <i class='arg'>data1</i> <i class='arg'>data2</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::math::statistics::interval-mean-stdev</b> <i class='arg'>data</i> <i class='arg'>confidence</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::math::statistics::t-test-mean</b> <i class='arg'>data</i> <i class='arg'>est_mean</i> <i class='arg'>est_stdev</i> <i class='arg'>confidence</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::math::statistics::quantiles</b> <i class='arg'>data</i> <i class='arg'>confidence</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::math::statistics::quantiles</b> <i class='arg'>limits</i> <i class='arg'>counts</i> <i class='arg'>confidence</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>::math::statistics::autocorr</b> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>::math::statistics::crosscorr</b> <i class='arg'>data1</i> <i class='arg'>data2</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><b class='cmd'>::math::statistics::mean-histogram-limits</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>number</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><b class='cmd'>::math::statistics::minmax-histogram-limits</b> <i class='arg'>min</i> <i class='arg'>max</i> <i class='arg'>number</i></a></td></tr>
+<tr valign=top ><td ><a href="#19"><b class='cmd'>::math::statistics::linear-model</b> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>intercept</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><b class='cmd'>::math::statistics::linear-residuals</b> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>intercept</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><b class='cmd'>::math::statistics::test-2x2</b> <i class='arg'>n11</i> <i class='arg'>n21</i> <i class='arg'>n12</i> <i class='arg'>n22</i></a></td></tr>
+<tr valign=top ><td ><a href="#22"><b class='cmd'>::math::statistics::print-2x2</b> <i class='arg'>n11</i> <i class='arg'>n21</i> <i class='arg'>n12</i> <i class='arg'>n22</i></a></td></tr>
+<tr valign=top ><td ><a href="#23"><b class='cmd'>::math::statistics::control-xbar</b> <i class='arg'>data</i> ?nsamples?</a></td></tr>
+<tr valign=top ><td ><a href="#24"><b class='cmd'>::math::statistics::control-Rchart</b> <i class='arg'>data</i> ?nsamples?</a></td></tr>
+<tr valign=top ><td ><a href="#25"><b class='cmd'>::math::statistics::test-xbar</b> <i class='arg'>control</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#26"><b class='cmd'>::math::statistics::test-Rchart</b> <i class='arg'>control</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#27"><b class='cmd'>::math::statistics::pdf-normal</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#28"><b class='cmd'>::math::statistics::pdf-exponential</b> <i class='arg'>mean</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#29"><b class='cmd'>::math::statistics::pdf-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#30"><b class='cmd'>::math::statistics::cdf-normal</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#31"><b class='cmd'>::math::statistics::cdf-exponential</b> <i class='arg'>mean</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#32"><b class='cmd'>::math::statistics::cdf-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#33"><b class='cmd'>::math::statistics::cdf-students-t</b> <i class='arg'>degrees</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#34"><b class='cmd'>::math::statistics::random-normal</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>number</i></a></td></tr>
+<tr valign=top ><td ><a href="#35"><b class='cmd'>::math::statistics::random-exponential</b> <i class='arg'>mean</i> <i class='arg'>number</i></a></td></tr>
+<tr valign=top ><td ><a href="#36"><b class='cmd'>::math::statistics::random-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#37"><b class='cmd'>::math::statistics::histogram-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>limits</i> <i class='arg'>number</i></a></td></tr>
+<tr valign=top ><td ><a href="#38"><b class='cmd'>::math::statistics::filter</b> <i class='arg'>varname</i> <i class='arg'>data</i> <i class='arg'>expression</i></a></td></tr>
+<tr valign=top ><td ><a href="#39"><b class='cmd'>::math::statistics::map</b> <i class='arg'>varname</i> <i class='arg'>data</i> <i class='arg'>expression</i></a></td></tr>
+<tr valign=top ><td ><a href="#40"><b class='cmd'>::math::statistics::samplescount</b> <i class='arg'>varname</i> <i class='arg'>list</i> <i class='arg'>expression</i></a></td></tr>
+<tr valign=top ><td ><a href="#41"><b class='cmd'>::math::statistics::subdivide</b> </a></td></tr>
+<tr valign=top ><td ><a href="#42"><b class='cmd'>::math::statistics::plot-scale</b> <i class='arg'>canvas</i> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>ymin</i> <i class='arg'>ymax</i></a></td></tr>
+<tr valign=top ><td ><a href="#43"><b class='cmd'>::math::statistics::plot-xydata</b> <i class='arg'>canvas</i> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>tag</i></a></td></tr>
+<tr valign=top ><td ><a href="#44"><b class='cmd'>::math::statistics::plot-xyline</b> <i class='arg'>canvas</i> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>tag</i></a></td></tr>
+<tr valign=top ><td ><a href="#45"><b class='cmd'>::math::statistics::plot-tdata</b> <i class='arg'>canvas</i> <i class='arg'>tdata</i> <i class='arg'>tag</i></a></td></tr>
+<tr valign=top ><td ><a href="#46"><b class='cmd'>::math::statistics::plot-tline</b> <i class='arg'>canvas</i> <i class='arg'>tdata</i> <i class='arg'>tag</i></a></td></tr>
+<tr valign=top ><td ><a href="#47"><b class='cmd'>::math::statistics::plot-histogram</b> <i class='arg'>canvas</i> <i class='arg'>counts</i> <i class='arg'>limits</i> <i class='arg'>tag</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>math::statistics</strong> package contains functions and procedures for
+basic statistical data analysis, such as:
+
+<ul>
+<li>
+Descriptive statistical parameters (mean, minimum, maximum, standard
+deviation)
+
+<br><br>
+<li>
+Estimates of the distribution in the form of histograms and quantiles
+
+<br><br>
+<li>
+Basic testing of hypotheses
+
+<br><br>
+<li>
+Probability and cumulative density functions
+
+</ul>
+It is meant to help in developing data analysis applications or doing
+ad hoc data analysis, it is not in itself a full application, nor is it
+intended to rival with full (non-)commercial statistical packages.
+
+<p>
+The purpose of this document is to describe the implemented procedures
+and provide some examples of their usage. As there is ample literature
+on the algorithms involved, we refer to relevant text books for more
+explanations.
+
+The package contains a fairly large number of public procedures. They
+can be distinguished in three sets: general procedures, procedures
+that deal with specific statistical distributions, list procedures to
+select or transform data and simple plotting procedures (these require
+Tk).
+
+<em>Note:</em> The data that need to be analyzed are always contained in a
+simple list. Missing values are represented as empty list elements.
+
+<h2><a name="general_procedures">GENERAL PROCEDURES</a></h2>
+<p>
+The general statistical procedures are:
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::statistics::mean</b> <i class='arg'>data</i></a><dd>
+
+Determine the <em>mean</em> value of the given list of data.
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::math::statistics::min</b> <i class='arg'>data</i></a><dd>
+
+Determine the <em>minimum</em> value of the given list of data.
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::math::statistics::max</b> <i class='arg'>data</i></a><dd>
+
+Determine the <em>maximum</em> value of the given list of data.
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::math::statistics::number</b> <i class='arg'>data</i></a><dd>
+
+Determine the <em>number</em> of non-missing data in the given list
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::math::statistics::stdev</b> <i class='arg'>data</i></a><dd>
+
+Determine the <em>standard deviation</em> of the data in the given list
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::math::statistics::var</b> <i class='arg'>data</i></a><dd>
+
+Determine the <em>variance</em> of the data in the given list
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::math::statistics::median</b> <i class='arg'>data</i></a><dd>
+
+Determine the <em>median</em> of the data in the given list
+(Note that this requires sorting the data, which may be a
+costly operation)
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::math::statistics::basic-stats</b> <i class='arg'>data</i></a><dd>
+
+Determine a list of all the descriptive parameters: mean, minimum,
+maximum, number of data, standard deviation and variance.
+<br><br>
+(This routine is called whenever either or all of the basic statistical
+parameters are required. Hence all calculations are done and the
+relevant values are returned.)
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::math::statistics::histogram</b> <i class='arg'>limits</i> <i class='arg'>values</i></a><dd>
+
+Determine histogram information for the given list of data. Returns a
+list consisting of the number of values that fall into each interval.
+(The first interval consists of all values lower than the first limit,
+the last interval consists of all values greater than the last limit.
+There is one more interval than there are limits.)
+<br><br>
+<i class='arg'>limits</i> - List of upper limits (in ascending order) for the
+intervals of the histogram.
+<br><br>
+<i class='arg'>values</i> - List of data
+<br><br>
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::math::statistics::corr</b> <i class='arg'>data1</i> <i class='arg'>data2</i></a><dd>
+
+Determine the correlation coefficient between two sets of data.
+<br><br>
+<i class='arg'>data1</i> - First list of data
+<br><br>
+<i class='arg'>data2</i> - Second list of data
+<br><br>
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::math::statistics::interval-mean-stdev</b> <i class='arg'>data</i> <i class='arg'>confidence</i></a><dd>
+
+Return the interval containing the mean value and one
+containing the standard deviation with a certain
+level of confidence (assuming a normal distribution)
+<br><br>
+<i class='arg'>data</i> - List of raw data values (small sample)
+<br><br>
+<i class='arg'>confidence</i> - Confidence level (0.95 or 0.99 for instance)
+<br><br>
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::math::statistics::t-test-mean</b> <i class='arg'>data</i> <i class='arg'>est_mean</i> <i class='arg'>est_stdev</i> <i class='arg'>confidence</i></a><dd>
+
+Test whether the mean value of a sample is in accordance with the
+estimated normal distribution with a certain level of confidence.
+Returns 1 if the test succeeds or 0 if the mean is unlikely to fit
+the given distribution.
+<br><br>
+<i class='arg'>data</i> - List of raw data values (small sample)
+<br><br>
+<i class='arg'>est_mean</i> - Estimated mean of the distribution
+<br><br>
+<i class='arg'>est_stdev</i> - Estimated stdev of the distribution
+<br><br>
+<i class='arg'>confidence</i> - Confidence level (0.95 or 0.99 for instance)
+<br><br>
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::math::statistics::quantiles</b> <i class='arg'>data</i> <i class='arg'>confidence</i></a><dd>
+
+Return the quantiles for a given set of data
+<br><br>
+<i class='arg'>data</i> - List of raw data values
+<br><br>
+<i class='arg'>confidence</i> - Confidence level (0.95 or 0.99 for instance)
+<br><br>
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::math::statistics::quantiles</b> <i class='arg'>limits</i> <i class='arg'>counts</i> <i class='arg'>confidence</i></a><dd>
+
+Return the quantiles based on histogram information (alternative to the
+call with two arguments)
+<br><br>
+<i class='arg'>limits</i> - List of upper limits from histogram
+<br><br>
+<i class='arg'>counts</i> - List of counts for for each interval in histogram
+<br><br>
+<i class='arg'>confidence</i> -  Confidence level (0.95 or 0.99 for instance)
+<br><br>
+
+<br><br>
+<dt><a name="15"><b class='cmd'>::math::statistics::autocorr</b> <i class='arg'>data</i></a><dd>
+
+Return the autocorrelation function as a list of values (assuming
+equidistance between samples, about 1/2 of the number of raw data)
+<br><br>
+The correlation is determined in such a way that the first value is
+always 1 and all others are equal to or smaller than 1. The number of
+values involved will diminish as the &quot;time&quot; (the index in the list of
+returned values) increases
+<br><br>
+<i class='arg'>data</i> - Raw data for which the autocorrelation must be determined
+<br><br>
+
+<br><br>
+<dt><a name="16"><b class='cmd'>::math::statistics::crosscorr</b> <i class='arg'>data1</i> <i class='arg'>data2</i></a><dd>
+
+Return the cross-correlation function as a list of values (assuming
+equidistance between samples, about 1/2 of the number of raw data)
+<br><br>
+The correlation is determined in such a way that the values can never
+exceed 1 in magnitude. The number of values involved will diminish
+as the &quot;time&quot; (the index in the list of returned values) increases.
+<br><br>
+<i class='arg'>data1</i> - First list of data
+<br><br>
+<i class='arg'>data2</i> - Second list of data
+<br><br>
+
+<br><br>
+<dt><a name="17"><b class='cmd'>::math::statistics::mean-histogram-limits</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>number</i></a><dd>
+
+Determine reasonable limits based on mean and standard deviation
+for a histogram
+<br><br>
+Convenience function - the result is suitable for the histogram function.
+<br><br>
+<i class='arg'>mean</i> - Mean of the data
+<br><br>
+<i class='arg'>stdev</i> - Standard deviation
+<br><br>
+<i class='arg'>number</i> - Number of limits to generate (defaults to 8)
+<br><br>
+
+<br><br>
+<dt><a name="18"><b class='cmd'>::math::statistics::minmax-histogram-limits</b> <i class='arg'>min</i> <i class='arg'>max</i> <i class='arg'>number</i></a><dd>
+
+Determine reasonable limits based on a minimum and maximum for a histogram
+<br><br>
+Convenience function - the result is suitable for the histogram function.
+<br><br>
+<i class='arg'>min</i> - Expected minimum
+<br><br>
+<i class='arg'>max</i> - Expected maximum
+<br><br>
+<i class='arg'>number</i> - Number of limits to generate (defaults to 8)
+<br><br>
+
+<br><br>
+<dt><a name="19"><b class='cmd'>::math::statistics::linear-model</b> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>intercept</i></a><dd>
+
+Determine the coefficients for a linear regression between
+two series of data (the model: Y = A + B*X). Returns a list of
+parameters describing the fit
+<br><br>
+<i class='arg'>xdata</i> - List of independent data
+<br><br>
+<i class='arg'>ydata</i> - List of dependent data to be fitted
+<br><br>
+<i class='arg'>intercept</i> - (Optional) compute the intercept (1, default) or fit
+to a line through the origin (0)
+<br><br>
+The result consists of the following list:
+<br><br>
+<ul>
+<li>
+(Estimate of) Intercept A
+<br><br>
+<li>
+(Estimate of) Slope B
+<br><br>
+<li>
+Standard deviation of Y relative to fit
+<br><br>
+<li>
+Correlation coefficient R2
+<br><br>
+<li>
+Number of degrees of freedom df
+<br><br>
+<li>
+Standard error of the intercept A
+<br><br>
+<li>
+Significance level of A
+<br><br>
+<li>
+Standard error of the slope B
+<br><br>
+<li>
+Significance level of B
+</ul>
+
+<dt><a name="20"><b class='cmd'>::math::statistics::linear-residuals</b> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>intercept</i></a><dd>
+
+Determine the difference between actual data and predicted from
+the linear model.
+<br><br>
+Returns a list of the differences between the actual data and the
+predicted values.
+<br><br>
+<i class='arg'>xdata</i> - List of independent data
+<br><br>
+<i class='arg'>ydata</i> - List of dependent data to be fitted
+<br><br>
+<i class='arg'>intercept</i> - (Optional) compute the intercept (1, default) or fit
+to a line through the origin (0)
+
+<br><br>
+<dt><a name="21"><b class='cmd'>::math::statistics::test-2x2</b> <i class='arg'>n11</i> <i class='arg'>n21</i> <i class='arg'>n12</i> <i class='arg'>n22</i></a><dd>
+
+Determine if two set of samples, each from a binomial distribution,
+differ significantly or not (implying a different parameter).
+<br><br>
+Returns the &quot;chi-square&quot; value, which can be used to the determine the
+significance.
+<br><br>
+<i class='arg'>n11</i> - Number of outcomes with the first value from the first sample.
+<br><br>
+<i class='arg'>n21</i> - Number of outcomes with the first value from the second sample.
+<br><br>
+<i class='arg'>n12</i> - Number of outcomes with the second value from the first sample.
+<br><br>
+<i class='arg'>n22</i> - Number of outcomes with the second value from the second sample.
+<br><br>
+
+<br><br>
+<dt><a name="22"><b class='cmd'>::math::statistics::print-2x2</b> <i class='arg'>n11</i> <i class='arg'>n21</i> <i class='arg'>n12</i> <i class='arg'>n22</i></a><dd>
+
+Determine if two set of samples, each from a binomial distribution,
+differ significantly or not (implying a different parameter).
+<br><br>
+Returns a short report, useful in an interactive session.
+<br><br>
+<i class='arg'>n11</i> - Number of outcomes with the first value from the first sample.
+<br><br>
+<i class='arg'>n21</i> - Number of outcomes with the first value from the second sample.
+<br><br>
+<i class='arg'>n12</i> - Number of outcomes with the second value from the first sample.
+<br><br>
+<i class='arg'>n22</i> - Number of outcomes with the second value from the second sample.
+<br><br>
+
+<br><br>
+<dt><a name="23"><b class='cmd'>::math::statistics::control-xbar</b> <i class='arg'>data</i> ?nsamples?</a><dd>
+
+Determine the control limits for an xbar chart. The number of data
+in each subsample defaults to 4. At least 20 subsamples are required.
+<br><br>
+Returns the mean, the lower limit, the upper limit and the number of
+data per subsample.
+<br><br>
+<i class='arg'>data</i> - List of observed data
+<br><br>
+<i class='arg'>nsamples</i> - Number of data per subsample
+<br><br>
+
+<br><br>
+<dt><a name="24"><b class='cmd'>::math::statistics::control-Rchart</b> <i class='arg'>data</i> ?nsamples?</a><dd>
+
+Determine the control limits for an R chart. The number of data
+in each subsample defaults to 4. At least 20 subsamples are required.
+<br><br>
+Returns the mean range, the lower limit, the upper limit and the number
+of data per subsample.
+<br><br>
+<i class='arg'>data</i> - List of observed data
+<br><br>
+<i class='arg'>nsamples</i> - Number of data per subsample
+<br><br>
+
+<br><br>
+<dt><a name="25"><b class='cmd'>::math::statistics::test-xbar</b> <i class='arg'>control</i> <i class='arg'>data</i></a><dd>
+
+Determine if the data exceed the control limits for the xbar chart.
+<br><br>
+Returns a list of subsamples (their indices) that indeed violate the
+limits.
+<br><br>
+<i class='arg'>control</i> - Control limits as returned by the &quot;control-xbar&quot; procedure
+<br><br>
+<i class='arg'>data</i> - List of observed data
+<br><br>
+
+<br><br>
+<dt><a name="26"><b class='cmd'>::math::statistics::test-Rchart</b> <i class='arg'>control</i> <i class='arg'>data</i></a><dd>
+
+Determine if the data exceed the control limits for the R chart.
+<br><br>
+Returns a list of subsamples (their indices) that indeed violate the
+limits.
+<br><br>
+<i class='arg'>control</i> - Control limits as returned by the &quot;control-Rchart&quot; procedure
+<br><br>
+<i class='arg'>data</i> - List of observed data
+<br><br>
+
+</dl>
+
+<h2><a name="statistical_distributions">STATISTICAL DISTRIBUTIONS</a></h2>
+<p>
+In the literature a large number of probability distributions can be
+found. The statistics package supports:
+<ul>
+<li>
+The normal or Gaussian distribution
+<br><br>
+<li>
+The uniform distribution - equal probability for all data within a given
+interval
+<br><br>
+<li>
+The exponential distribution - useful as a model for certain
+extreme-value distributions.
+<br><br>
+<li>
+PM - binomial, Poisson, chi-squared, student's T, F.
+</ul>
+
+In principle for each distribution one has procedures for:
+<ul>
+<li>
+The probability density (pdf-*)
+<br><br>
+<li>
+The cumulative density (cdf-*)
+<br><br>
+<li>
+Quantiles for the given distribution (quantiles-*)
+<br><br>
+<li>
+Histograms for the given distribution (histogram-*)
+<br><br>
+<li>
+List of random values with the given distribution (random-*)
+</ul>
+
+The following procedures have been implemented:
+<dl>
+
+<dt><a name="27"><b class='cmd'>::math::statistics::pdf-normal</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>value</i></a><dd>
+
+Return the probability of a given value for a normal distribution with
+given mean and standard deviation.
+<br><br>
+<i class='arg'>mean</i> - Mean value of the distribution
+<br><br>
+<i class='arg'>stdev</i> - Standard deviation of the distribution
+<br><br>
+<i class='arg'>value</i> - Value for which the probability is required
+<br><br>
+
+<br><br>
+<dt><a name="28"><b class='cmd'>::math::statistics::pdf-exponential</b> <i class='arg'>mean</i> <i class='arg'>value</i></a><dd>
+
+Return the probability of a given value for an exponential
+distribution with given mean.
+<br><br>
+<i class='arg'>mean</i> - Mean value of the distribution
+<br><br>
+<i class='arg'>value</i> - Value for which the probability is required
+<br><br>
+
+<br><br>
+<dt><a name="29"><b class='cmd'>::math::statistics::pdf-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>value</i></a><dd>
+
+Return the probability of a given value for a uniform
+distribution with given extremes.
+<br><br>
+<i class='arg'>xmin</i> - Minimum value of the distribution
+<br><br>
+<i class='arg'>xmin</i> - Maximum value of the distribution
+<br><br>
+<i class='arg'>value</i> - Value for which the probability is required
+<br><br>
+
+<br><br>
+<dt><a name="30"><b class='cmd'>::math::statistics::cdf-normal</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>value</i></a><dd>
+
+Return the cumulative probability of a given value for a normal
+distribution with given mean and standard deviation, that is the
+probability for values up to the given one.
+<br><br>
+<i class='arg'>mean</i> - Mean value of the distribution
+<br><br>
+<i class='arg'>stdev</i> - Standard deviation of the distribution
+<br><br>
+<i class='arg'>value</i> - Value for which the probability is required
+<br><br>
+
+<br><br>
+<dt><a name="31"><b class='cmd'>::math::statistics::cdf-exponential</b> <i class='arg'>mean</i> <i class='arg'>value</i></a><dd>
+
+Return the cumulative probability of a given value for an exponential
+distribution with given mean.
+<br><br>
+<i class='arg'>mean</i> - Mean value of the distribution
+<br><br>
+<i class='arg'>value</i> - Value for which the probability is required
+<br><br>
+
+<br><br>
+<dt><a name="32"><b class='cmd'>::math::statistics::cdf-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>value</i></a><dd>
+
+Return the cumulative probability of a given value for a uniform
+distribution with given extremes.
+<br><br>
+<i class='arg'>xmin</i> - Minimum value of the distribution
+<br><br>
+<i class='arg'>xmin</i> - Maximum value of the distribution
+<br><br>
+<i class='arg'>value</i> - Value for which the probability is required
+<br><br>
+
+<br><br>
+<dt><a name="33"><b class='cmd'>::math::statistics::cdf-students-t</b> <i class='arg'>degrees</i> <i class='arg'>value</i></a><dd>
+
+Return the cumulative probability of a given value for a Student's t
+distribution with given number of degrees.
+<br><br>
+<i class='arg'>degrees</i> - Number of degrees of freedom
+<br><br>
+<i class='arg'>value</i> - Value for which the probability is required
+<br><br>
+
+<br><br>
+<dt><a name="34"><b class='cmd'>::math::statistics::random-normal</b> <i class='arg'>mean</i> <i class='arg'>stdev</i> <i class='arg'>number</i></a><dd>
+
+Return a list of &quot;number&quot; random values satisfying a normal
+distribution with given mean and standard deviation.
+<br><br>
+<i class='arg'>mean</i> - Mean value of the distribution
+<br><br>
+<i class='arg'>stdev</i> - Standard deviation of the distribution
+<br><br>
+<i class='arg'>number</i> - Number of values to be returned
+<br><br>
+
+<br><br>
+<dt><a name="35"><b class='cmd'>::math::statistics::random-exponential</b> <i class='arg'>mean</i> <i class='arg'>number</i></a><dd>
+
+Return a list of &quot;number&quot; random values satisfying an exponential
+distribution with given mean.
+<br><br>
+<i class='arg'>mean</i> - Mean value of the distribution
+<br><br>
+<i class='arg'>number</i> - Number of values to be returned
+<br><br>
+
+<br><br>
+<dt><a name="36"><b class='cmd'>::math::statistics::random-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>value</i></a><dd>
+
+Return a list of &quot;number&quot; random values satisfying a uniform
+distribution with given extremes.
+<br><br>
+<i class='arg'>xmin</i> - Minimum value of the distribution
+<br><br>
+<i class='arg'>xmin</i> - Maximum value of the distribution
+<br><br>
+<i class='arg'>number</i> - Number of values to be returned
+<br><br>
+
+<br><br>
+<dt><a name="37"><b class='cmd'>::math::statistics::histogram-uniform</b> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>limits</i> <i class='arg'>number</i></a><dd>
+
+Return the expected histogram for a uniform distribution.
+<br><br>
+<i class='arg'>xmin</i> - Minimum value of the distribution
+<br><br>
+<i class='arg'>xmax</i> - Maximum value of the distribution
+<br><br>
+<i class='arg'>limits</i> - Upper limits for the buckets in the histogram
+<br><br>
+<i class='arg'>number</i> - Total number of &quot;observations&quot; in the histogram
+<br><br>
+
+
+</dl>
+TO DO: more function descriptions to be added
+
+<h2><a name="data_manipulation">DATA MANIPULATION</a></h2>
+<p>
+The data manipulation procedures act on lists or lists of lists:
+
+<dl>
+
+<dt><a name="38"><b class='cmd'>::math::statistics::filter</b> <i class='arg'>varname</i> <i class='arg'>data</i> <i class='arg'>expression</i></a><dd>
+
+Return a list consisting of the data for which the logical
+expression is true (this command works analogously to the command <b class='cmd'>foreach</b>).
+<br><br>
+<i class='arg'>varname</i> - Name of the variable used in the expression
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+<i class='arg'>expression</i> - Logical expression using the variable name
+<br><br>
+
+<br><br>
+<dt><a name="39"><b class='cmd'>::math::statistics::map</b> <i class='arg'>varname</i> <i class='arg'>data</i> <i class='arg'>expression</i></a><dd>
+
+Return a list consisting of the data that are transformed via the
+expression.
+<br><br>
+<i class='arg'>varname</i> - Name of the variable used in the expression
+<br><br>
+<i class='arg'>data</i> - List of data
+<br><br>
+<i class='arg'>expression</i> - Expression to be used to transform (map) the data
+<br><br>
+
+<br><br>
+<dt><a name="40"><b class='cmd'>::math::statistics::samplescount</b> <i class='arg'>varname</i> <i class='arg'>list</i> <i class='arg'>expression</i></a><dd>
+
+Return a list consisting of the <em>counts</em> of all data in the
+sublists of the &quot;list&quot; argument for which the expression is true.
+<br><br>
+<i class='arg'>varname</i> - Name of the variable used in the expression
+<br><br>
+<i class='arg'>data</i> - List of sublists, each containing the data
+<br><br>
+<i class='arg'>expression</i> - Logical expression to test the data (defaults to
+&quot;true&quot;).
+<br><br>
+
+<br><br>
+<dt><a name="41"><b class='cmd'>::math::statistics::subdivide</b> </a><dd>
+
+Routine <em>PM</em> - not implemented yet
+
+</dl>
+
+<h2><a name="plot_procedures">PLOT PROCEDURES</a></h2>
+<p>
+The following simple plotting procedures are available:
+<dl>
+
+<dt><a name="42"><b class='cmd'>::math::statistics::plot-scale</b> <i class='arg'>canvas</i> <i class='arg'>xmin</i> <i class='arg'>xmax</i> <i class='arg'>ymin</i> <i class='arg'>ymax</i></a><dd>
+
+Set the scale for a plot in the given canvas. All plot routines expect
+this function to be called first. There is no automatic scaling
+provided.
+<br><br>
+<i class='arg'>canvas</i> - Canvas widget to use
+<br><br>
+<i class='arg'>xmin</i> - Minimum x value
+<br><br>
+<i class='arg'>xmax</i> - Maximum x value
+<br><br>
+<i class='arg'>ymin</i> - Minimum y value
+<br><br>
+<i class='arg'>ymax</i> - Maximum y value
+<br><br>
+
+<br><br>
+<dt><a name="43"><b class='cmd'>::math::statistics::plot-xydata</b> <i class='arg'>canvas</i> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>tag</i></a><dd>
+
+Create a simple XY plot in the given canvas - the data are
+shown as a collection of dots. The tag can be used to manipulate the
+appearance.
+<br><br>
+<i class='arg'>canvas</i> - Canvas widget to use
+<br><br>
+<i class='arg'>xdata</i> - Series of independent data
+<br><br>
+<i class='arg'>ydata</i> - Series of dependent data
+<br><br>
+<i class='arg'>tag</i> - Tag to give to the plotted data (defaults to xyplot)
+<br><br>
+
+<br><br>
+<dt><a name="44"><b class='cmd'>::math::statistics::plot-xyline</b> <i class='arg'>canvas</i> <i class='arg'>xdata</i> <i class='arg'>ydata</i> <i class='arg'>tag</i></a><dd>
+
+Create a simple XY plot in the given canvas - the data are
+shown as a line through the data points. The tag can be used to
+manipulate the appearance.
+<br><br>
+<i class='arg'>canvas</i> - Canvas widget to use
+<br><br>
+<i class='arg'>xdata</i> - Series of independent data
+<br><br>
+<i class='arg'>ydata</i> - Series of dependent data
+<br><br>
+<i class='arg'>tag</i> - Tag to give to the plotted data (defaults to xyplot)
+<br><br>
+
+<br><br>
+<dt><a name="45"><b class='cmd'>::math::statistics::plot-tdata</b> <i class='arg'>canvas</i> <i class='arg'>tdata</i> <i class='arg'>tag</i></a><dd>
+
+Create a simple XY plot in the given canvas - the data are
+shown as a collection of dots. The horizontal coordinate is equal to the
+index. The tag can be used to manipulate the appearance.
+This type of presentation is suitable for autocorrelation functions for
+instance or for inspecting the time-dependent behaviour.
+<br><br>
+<i class='arg'>canvas</i> - Canvas widget to use
+<br><br>
+<i class='arg'>tdata</i> - Series of dependent data
+<br><br>
+<i class='arg'>tag</i> - Tag to give to the plotted data (defaults to xyplot)
+<br><br>
+
+<br><br>
+<dt><a name="46"><b class='cmd'>::math::statistics::plot-tline</b> <i class='arg'>canvas</i> <i class='arg'>tdata</i> <i class='arg'>tag</i></a><dd>
+
+Create a simple XY plot in the given canvas - the data are
+shown as a line. See plot-tdata for an explanation.
+<br><br>
+<i class='arg'>canvas</i> - Canvas widget to use
+<br><br>
+<i class='arg'>tdata</i> - Series of dependent data
+<br><br>
+<i class='arg'>tag</i> - Tag to give to the plotted data (defaults to xyplot)
+<br><br>
+
+<br><br>
+<dt><a name="47"><b class='cmd'>::math::statistics::plot-histogram</b> <i class='arg'>canvas</i> <i class='arg'>counts</i> <i class='arg'>limits</i> <i class='arg'>tag</i></a><dd>
+
+Create a simple histogram in the given canvas
+<br><br>
+<i class='arg'>canvas</i> - Canvas widget to use
+<br><br>
+<i class='arg'>counts</i> - Series of bucket counts
+<br><br>
+<i class='arg'>limits</i> - Series of upper limits for the buckets
+<br><br>
+<i class='arg'>tag</i> - Tag to give to the plotted data (defaults to xyplot)
+<br><br>
+
+</dl>
+
+<h2><a name="things_to_do">THINGS TO DO</a></h2>
+<p>
+The following procedures are yet to be implemented:
+<ul>
+<li>
+F-test-stdev
+<br><br>
+<li>
+interval-mean-stdev
+<br><br>
+<li>
+histogram-normal
+<br><br>
+<li>
+histogram-exponential
+<br><br>
+<li>
+test-histogram
+<br><br>
+<li>
+test-corr
+<br><br>
+<li>
+quantiles-*
+<br><br>
+<li>
+fourier-coeffs
+<br><br>
+<li>
+fourier-residuals
+<br><br>
+<li>
+onepar-function-fit
+<br><br>
+<li>
+onepar-function-residuals
+<br><br>
+<li>
+plot-linear-model
+<br><br>
+<li>
+subdivide
+</ul>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+The code below is a small example of how you can examine a set of
+data:
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+
+# Simple example:
+# - Generate data (as a cheap way of getting some)
+# - Perform statistical analysis to describe the data
+#
+package require math::statistics
+
+#
+# Two auxiliary procs
+#
+proc pause {time} {
+   set wait 0
+   after [expr {$time*1000}] {set ::wait 1}
+   vwait wait
+}
+
+proc print-histogram {counts limits} {
+   foreach count $counts limit $limits {
+      if { $limit != {} } {
+         puts [format &quot;&lt;%12.4g\t%d&quot; $limit $count]
+         set prev_limit $limit
+      } else {
+         puts [format &quot;&gt;%12.4g\t%d&quot; $prev_limit $count]
+      }
+   }
+}
+
+#
+# Our source of arbitrary data
+#
+proc generateData { data1 data2 } {
+   upvar 1 $data1 _data1
+   upvar 1 $data2 _data2
+
+   set d1 0.0
+   set d2 0.0
+   for { set i 0 } { $i &lt; 100 } { incr i } {
+      set d1 [expr {10.0-2.0*cos(2.0*3.1415926*$i/24.0)+3.5*rand()}]
+      set d2 [expr {0.7*$d2+0.3*$d1+0.7*rand()}]
+      lappend _data1 $d1
+      lappend _data2 $d2
+   }
+   return {}
+}
+
+#
+# The analysis session
+#
+package require Tk
+console show
+canvas .plot1
+canvas .plot2
+pack   .plot1 .plot2 -fill both -side top
+
+generateData data1 data2
+
+puts &quot;Basic statistics:&quot;
+set b1 [::math::statistics::basic-stats $data1]
+set b2 [::math::statistics::basic-stats $data2]
+foreach label {mean min max number stdev var} v1 $b1 v2 $b2 {
+   puts &quot;$label\t$v1\t$v2&quot;
+}
+puts &quot;Plot the data as function of \&quot;time\&quot; and against each other&quot;
+::math::statistics::plot-scale .plot1  0 100  0 20
+::math::statistics::plot-scale .plot2  0 20   0 20
+::math::statistics::plot-tline .plot1 $data1
+::math::statistics::plot-tline .plot1 $data2
+::math::statistics::plot-xydata .plot2 $data1 $data2
+
+puts &quot;Correlation coefficient:&quot;
+puts [::math::statistics::corr $data1 $data2]
+
+pause 2
+puts &quot;Plot histograms&quot;
+.plot2 delete all
+::math::statistics::plot-scale .plot2  0 20 0 100
+set limits         [::math::statistics::minmax-histogram-limits 7 16]
+set histogram_data [::math::statistics::histogram $limits $data1]
+::math::statistics::plot-histogram .plot2 $histogram_data $limits
+
+puts &quot;First series:&quot;
+print-histogram $histogram_data $limits
+
+pause 2
+set limits         [::math::statistics::minmax-histogram-limits 0 15 10]
+set histogram_data [::math::statistics::histogram $limits $data2]
+::math::statistics::plot-histogram .plot2 $histogram_data $limits d2
+.plot2 itemconfigure d2 -fill red
+
+puts &quot;Second series:&quot;
+print-histogram $histogram_data $limits
+
+puts &quot;Autocorrelation function:&quot;
+set  autoc [::math::statistics::autocorr $data1]
+puts [::math::statistics::map $autoc {[format &quot;%.2f&quot; $x]}]
+puts &quot;Cross-correlation function:&quot;
+set  crossc [::math::statistics::crosscorr $data1 $data2]
+puts [::math::statistics::map $crossc {[format &quot;%.2f&quot; $x]}]
+
+::math::statistics::plot-scale .plot1  0 100 -1  4
+::math::statistics::plot-tline .plot1  $autoc &quot;autoc&quot;
+::math::statistics::plot-tline .plot1  $crossc &quot;crossc&quot;
+.plot1 itemconfigure autoc  -fill green
+.plot1 itemconfigure crossc -fill yellow
+
+puts &quot;Quantiles: 0.1, 0.2, 0.5, 0.8, 0.9&quot;
+puts &quot;First:  [::math::statistics::quantiles $data1 {0.1 0.2 0.5 0.8 0.9}]&quot;
+puts &quot;Second: [::math::statistics::quantiles $data2 {0.1 0.2 0.5 0.8 0.9}]&quot;
+
+</pre></td></tr></table></p>
+If you run this example, then the following should be clear:
+<ul>
+<li>
+There is a strong correlation between two time series, as displayed by
+the raw data and especially by the correlation functions.
+<br><br>
+<li>
+Both time series show a significant periodic component
+<br><br>
+<li>
+The histograms are not very useful in identifying the nature of the time
+series - they do not show the periodic nature.
+</ul>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+data analysis, mathematics, statistics
+</body></html>

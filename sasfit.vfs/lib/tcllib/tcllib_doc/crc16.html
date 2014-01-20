@@ -1,0 +1,155 @@
+<html><head>
+<title>crc16 - Cyclic Redundancy Checks </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/crc/crc16.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002, Pat Thoyts
+   -->
+<! -- CVS: $Id: crc16.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ crc16.n
+   -->
+
+<body>
+<h1> crc16(n) 1.1.1 crc &quot;Cyclic Redundancy Checks&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> crc16 - Perform a 16bit Cyclic Redundancy Check
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>crc16 ?1.1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::crc::crc16</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::crc::crc16</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? -filename <i class='arg'>file</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::crc::crc-ccitt</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::crc::crc-ccitt</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? -filename <i class='arg'>file</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides a Tcl-only implementation of the CRC
+algorithms based upon information provided at
+http://www.microconsultants.com/tips/crc/crc.txt
+
+There are a number of permutations available for calculating CRC
+checksums and this package can handle all of them. Defaults are set up
+for the most common cases.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::crc::crc16</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? <i class='arg'>message</i></a><dd>
+
+<dt><a name="2"><b class='cmd'>::crc::crc16</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? -filename <i class='arg'>file</i></a><dd>
+
+<dt><a name="3"><b class='cmd'>::crc::crc-ccitt</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? <i class='arg'>message</i></a><dd>
+
+<dt><a name="4"><b class='cmd'>::crc::crc-ccitt</b> ?-format <i class='arg'>format</i>? ?-seed <i class='arg'>value</i>? ?-implementation <i class='arg'>procname</i>? -filename <i class='arg'>file</i></a><dd>
+
+
+The command takes string data or a file name and returns a checksum
+value calculated using the CRC algorithm. The command used sets up the
+CRC polynomial, initial value and bit ordering for the desired
+standard checksum calculation. The result is formatted
+using the <i class='arg'>format</i>(n) specifier provided or as an unsigned integer
+(%u) by default.
+
+</dl>
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+
+<dl>
+
+<dt>-filename <i class='arg'>name</i><dd>
+
+Return a checksum for the file contents instead of for parameter data.
+
+<br><br>
+<dt>-format <i class='arg'>string</i><dd>
+
+Return the checksum using an alternative format template.
+
+<br><br>
+<dt>-seed <i class='arg'>value</i><dd>
+
+Select an alternative seed value for the CRC calculation. The default
+is 0 for the CRC16 calculation and 0xFFFF for the CCITT version.
+This can be useful for calculating the CRC for data
+structures without first converting the whole structure into a
+string. The CRC of the previous member can be used as the seed for
+calculating the CRC of the next member. It is also used for
+accumulating a checksum from fragments of a large message (or file)
+
+<br><br>
+<dt>-implementation <i class='arg'>procname</i><dd>
+
+This hook is provided to allow users to provide their own
+implementation (perhaps a C compiled extension). The
+procedure specfied is called with two parameters. The first is the
+data to be checksummed and the second is the seed value. An
+integer is expected as the result.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::crc16 &quot;Hello, World!&quot;
+64077
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::crc-ccitt &quot;Hello, World!&quot;
+26586
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::crc16 -format 0x%X &quot;Hello, World!&quot;
+0xFA4D
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::crc16 -file crc16.tcl
+51675
+</pre></td></tr></table></p>
+
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+cksum(n), crc32(n), sum(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+checksum, cksum, crc, crc16, crc32, cyclic redundancy check, data integrity, security
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002, Pat Thoyts<br>
+</body></html>
+

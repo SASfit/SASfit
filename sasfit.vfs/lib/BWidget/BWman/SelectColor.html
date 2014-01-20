@@ -1,0 +1,152 @@
+<HTML>
+<HEAD><TITLE>SelectColor</TITLE></HEAD>
+<BODY BGCOLOR=white>
+<DL><DT><I><A HREF="#descr">NAME</A></I></DT>
+<DD><B>SelectColor</B>
+ - Color selection widget
+</DD></DL>
+<DL>
+<DT><I>CREATION</I></DT>
+<DD><A HREF="#descr"><B>SelectColor</B></A> <I>pathName</I> ?<I>option value...</I>?</DD>
+</DL>
+<DL>
+<DT><I><A HREF="#wso">WIDGET-SPECIFIC OPTIONS</A></I></DT>
+<DD><TABLE CELLSPACING=0 CELLSPACING=0 BORDER=0>
+<TR>
+<TD>&nbsp;&nbsp;<A HREF="#-color">-color</A></TR>
+<TD>&nbsp;&nbsp;<A HREF="#-command">-command</A></TR>
+</TR>
+<TR>
+<TD>&nbsp;&nbsp;<A HREF="#-height">-height</A></TR>
+<TD>&nbsp;&nbsp;<A HREF="#-parent">-parent</A></TR>
+</TR>
+<TR>
+<TD>&nbsp;&nbsp;<A HREF="#-title">-title</A></TR>
+<TD>&nbsp;&nbsp;<A HREF="#-type">-type</A></TR>
+</TR>
+<TR>
+<TD>&nbsp;&nbsp;<A HREF="#-variable">-variable</A></TR>
+<TD>&nbsp;&nbsp;<A HREF="#-width">-width</A></TR>
+</TR>
+</TABLE></DD>
+</DL>
+<DL>
+<DT><I><A HREF="#wc">WIDGET COMMAND</A></I></DT>
+<DD><I>pathName</I> <A HREF="#cget"><B>cget</B></A>
+ <I>option</I>
+</DD>
+<DD><I>pathName</I> <A HREF="#configure"><B>configure</B></A>
+ ?<I>option</I>? ?<I>value</I> <I>option</I> <I>value</I> ...?
+</DD>
+<DD>SelectColor::<A HREF="#setcolor"><B>setcolor</B></A>
+ <I>index</I>
+ <I>color</I>
+</DD>
+</DL>
+<BR><HR WIDTH="100%"><BR>
+<B><A NAME="descr"></A>DESCRIPTION</B><BR>
+<P>
+
+SelectColor provides a simple way to select color. It can be displayed
+as a dialog box or as a menubutton.
+
+</P>
+<BR><HR WIDTH="50%"><BR>
+<B><A NAME="wso">WIDGET-SPECIFIC OPTIONS</A></B><BR>
+<DL><DT><A NAME="-color"><B>-color</B></A></DT>
+<DD>
+
+Specifies the color value of the widget.
+
+</DD>
+</DL>
+<DL><DT><A NAME="-command"><B>-command</B></A></DT>
+<DD>
+
+When <B>type</B> is <I>menubutton</I>,
+specifies a command to call when user select a color.
+
+</DD>
+</DL>
+<DL><DT><A NAME="-height"><B>-height</B></A></DT>
+<DD>
+
+When <B>type</B> is <I>menubutton</I>, specifies the desired height for the button.
+
+</DD>
+</DL>
+<DL><DT><A NAME="-parent"><B>-parent</B></A></DT>
+<DD>
+
+Parent of the Dialog. Dialog is centered in its parent. If empty, it is centered in
+root window.
+</DD>
+</DL>
+<DL><DT><A NAME="-title"><B>-title</B></A></DT>
+<DD>
+
+Title of the Dialog toplevel.
+
+</DD>
+</DL>
+<DL><DT><A NAME="-type"><B>-type (read-only)</B></A></DT>
+<DD>
+
+Specifies the type of the SelectColor widget. Must be <B>dialog</B> or <B>menubutton</B>.
+<BR>If <B>type</B> option is <I>dialog</I>, SelectColor::<B>create</B> directly creates the 
+dialog, displays it and return an empty string if cancel button is pressed or if dialog is
+destroyed, and the selected color if ok button is pressed. In all cases, dialog is destroyed.
+<BR>If <B>type</B> option is <I>menubutton</I>, SelectColor::<B>create</B> returns the
+pathname of the widget created. It is composed of a button from which user can access a menu
+displaying predefined colors.
+
+</DD>
+</DL>
+<DL><DT><A NAME="-variable"><B>-variable</B></A></DT>
+<DD>
+
+Specifies a variable to link to the color value of the widget.
+
+</DD>
+</DL>
+<DL><DT><A NAME="-width"><B>-width</B></A></DT>
+<DD>
+
+When <B>type</B> is <I>menubutton</I>, specifies the desired width for the button.
+
+</DD>
+</DL>
+<HR WIDTH="50%"><BR>
+<B><A NAME="wc">WIDGET COMMAND</A></B><BR>
+<DL><DT><A NAME="cget"><I>pathName</I> <B>cget</B></A>
+ <I>option</I>
+</DT><DD>
+
+Returns the current value of the configuration option given by <I>option</I>.
+<I>Option</I> may have any of the values accepted by the creation command.
+</DD></DL>
+<DL><DT><A NAME="configure"><I>pathName</I> <B>configure</B></A>
+ ?<I>option</I>? ?<I>value</I> <I>option</I> <I>value</I> ...?
+</DT><DD>
+
+Query or modify the configuration options of the widget. If no <I>option</I> is specified,
+returns a list describing all of the available options for <I>pathName</I>.
+If <I>option</I> is specified with no <I>value</I>, then the command returns a list
+describing the one named <I>option</I> (this list will be identical to the corresponding
+sublist of the value returned if no <I>option</I> is specified). If one or
+more <I>option-value</I> pairs are specified, then the command modifies the given widget
+option(s) to have the given value(s); in this case the command returns an empty string.
+<I>Option</I> may have any of the values accepted by the creation command.
+Read-only options are not be modified.
+
+</DD></DL>
+<DL><DT><A NAME="setcolor">SelectColor::<B>setcolor</B></A>
+ <I>index</I>
+ <I>color</I>
+</DT><DD>
+
+Set the value of user predefined color at index <I>index</I> to <I>color</I>.
+<I>index</I> must be between 1 and 5.
+
+</DD></DL>
+</BODY></HTML>

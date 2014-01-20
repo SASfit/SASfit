@@ -1,0 +1,7 @@
+/** 
+ * \defgroup example_group Example group for demo
+ * \ingroup ff_plugins
+ *
+ *  This group of form factors contains all objects of some other shape.
+ */
+

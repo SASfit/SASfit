@@ -1,0 +1,114 @@
+\documentclass[12pt,intlimits,fleqn,reqno,twoside,english,a4wide]{amsbook}
+\usepackage{graphicx}
+\usepackage{emlines}
+%\usepackage[nosub]{achemso}
+%\usepackage{cd}
+\usepackage{colortbl}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{subfigure}
+\usepackage{subeqnarray}
+\usepackage{typearea}
+\usepackage[pdftex]{hyperref}
+%\usepackage[T1]{fontenc}
+%\usepackage{titlesec}
+
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{5}
+
+%\DeclareGraphicsRule{.png}{bmp}{}{}
+\typearea{12}
+\newcommand{\SASfit}{{\tt SASfit }}
+
+\numberwithin{equation}{chapter}
+\numberwithin{figure}{chapter}
+\numberwithin{section}{chapter}
+\graphicspath{{./}}
+\author[J. Kohlbrecher]{Joachim Kohlbrecher}
+\address{\newline
+\centerline{Paul Scherrer Institute}\newline
+\centerline{Laboratory for Neutron Scattering (LNS)}\newline
+\centerline{CH-5232 Villigen PSI} \newline
+\centerline{joachim.kohlbrecher@psi.ch} \newline
+\newline
+\centerline{\today}}
+
+%\email{}
+
+\begin{document}
+\sloppy
+\input{latex_commands}
+\setcounter{page}{0}
+\thispagestyle{empty}
+~\\
+\begin{center}
+{\Large User guide for the {\tt SASfit} software package} \\[1cm]
+
+A program for fitting elementary structural models\\
+to small angle scattering data
+\\[0.5cm]
+\today
+~\\[1.5cm]
+\includegraphics[width=0.9\textwidth,height=0.6\textwidth]{SASfit.png}
+\end{center}
+
+
+\title[SASfit]{{\tt SASfit}: A program for fitting simple
+ structural models to small angle scattering data}
+
+\date{\today}
+
+\begin{abstract}
+{\tt SASfit} has been written for analyzing and plotting small angle
+scattering data. It can calculate integral structural parameters
+like radius of gyration, scattering invariant, Porod constant.
+Furthermore it can fit size distributions together with several form
+factors including different structure factors. Additionally an
+algorithm has been implemented, which allows to simultaneously fit
+several scattering curves with a common set of (global) parameters.
+This last option is especially important in contrast variation
+experiments or measurements with polarised neutrons. The global fit
+helps to determine fit parameters unambiguously which by analyzing a
+single curve would be otherwise strongly correlated. The program has
+been written to fulfill the needs at the small angle neutron
+scattering facility at PSI (\url{http://kur.web.psi.ch}). The
+numerical routines have been written in C whereas the menu interface
+has been written in tcl/tk and the plotting routine with the
+extension blt. The newest {\tt SASfit} version can be downloaded
+from \url{http://kur.web.psi.ch/sans1/SANSSoft/sasfit.html}.
+\end{abstract}
+\maketitle
+
+\clearpage \tableofcontents
+\input{intro.tex}
+\input{fittingstrategies.tex}
+\input{IO_formats.tex}
+\input{SASfit_SLDcalculator.tex}
+\clearpage
+\input{SASfit_ch1.tex}
+\clearpage
+\input{SASfit_ch2.tex}
+\clearpage
+\input{SASfit_ch3.tex}
+\clearpage
+\input{SASfit_ch4.tex}
+\clearpage
+\input{SASfit_ch5.tex}
+\clearpage
+\input{SASfit_ch6.tex}
+\clearpage
+\input{SASfit_absInt.tex}
+\clearpage
+\input{SASfit_DLS.tex}
+\clearpage
+\input{basics.tex}
+\input{DatenRed.tex}
+\clearpage
+\input{SASfit_history.tex}
+
+
+
+\bibliography{sasfit}
+\bibliographystyle{plain}
+
+\end{document}

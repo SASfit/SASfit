@@ -1,0 +1,143 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>inifile - Parsing of Windows INI files </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/inifile/ini.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: ini.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ inifile.n
+   -->
+
+<body>
+<h1> inifile(n) 0.1.1 inifile &quot;Parsing of Windows INI files&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> inifile - Parsing of Windows INI files
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>inifile ?0.1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::ini::open</b> <i class='arg'>file</i> ?<i class='arg'>mode</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::ini::close</b> <i class='arg'>ini</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::ini::commit</b> <i class='arg'>ini</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::ini::revert</b> <i class='arg'>ini</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::ini::filename</b> <i class='arg'>ini</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::ini::sections</b> <i class='arg'>ini</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::ini::keys</b> <i class='arg'>ini</i> <i class='arg'>section</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::ini::get</b> <i class='arg'>ini</i> <i class='arg'>section</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::ini::exists</b> <i class='arg'>ini</i> <i class='arg'>section</i> ?<i class='arg'>key</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::ini::value</b> <i class='arg'>ini</i> <i class='arg'>section</i> <i class='arg'>key</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::ini::set</b> <i class='arg'>ini</i> <i class='arg'>section</i> <i class='arg'>key</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::ini::delete</b> <i class='arg'>ini</i> <i class='arg'>section</i> ?<i class='arg'>key</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::ini::comment</b> <i class='arg'>ini</i> <i class='arg'>section</i> ?<i class='arg'>key</i>? ?<i class='arg'>text</i>...?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides an interface for easy manipulation of Windows INI files.
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::ini::open</b> <i class='arg'>file</i> ?<i class='arg'>mode</i>?</a><dd>
+
+
+Opens an INI file and returns a handle that is used by other commands.
+Mode has the same types as the <strong>open</strong> command. The default mode is <strong>r+</strong>.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::ini::close</b> <i class='arg'>ini</i></a><dd>
+
+
+Close the specified handle. If any changes were made and not written by
+<strong>commit</strong> they are lost.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::ini::commit</b> <i class='arg'>ini</i></a><dd>
+
+
+Writes the file and all changes to disk. The sections are written in
+arbitrary order. The keys in a section are written in alphabetical
+order.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::ini::revert</b> <i class='arg'>ini</i></a><dd>
+
+
+Rolls all changes made to the inifile object back to the last
+committed state.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::ini::filename</b> <i class='arg'>ini</i></a><dd>
+
+
+Returns the name of the file the <i class='arg'>ini</i> object is associated with.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::ini::sections</b> <i class='arg'>ini</i></a><dd>
+
+
+Returns a list of all the names of the existing sections in the file handle
+specified.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::ini::keys</b> <i class='arg'>ini</i> <i class='arg'>section</i></a><dd>
+
+
+Returns a list of all they key names in the section and file specified.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::ini::get</b> <i class='arg'>ini</i> <i class='arg'>section</i></a><dd>
+
+
+Returns a list of key value pairs that exist in the section and file specified.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::ini::exists</b> <i class='arg'>ini</i> <i class='arg'>section</i> ?<i class='arg'>key</i>?</a><dd>
+
+
+Returns a boolean value indicating the existance of the specified section as a
+whole or the specified key within that section.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::ini::value</b> <i class='arg'>ini</i> <i class='arg'>section</i> <i class='arg'>key</i></a><dd>
+
+
+Returns the value of the named key from the specified section.
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::ini::set</b> <i class='arg'>ini</i> <i class='arg'>section</i> <i class='arg'>key</i> <i class='arg'>value</i></a><dd>
+
+
+Sets the value of the key in the specified section. If the section does not
+exist then a new one is created.
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::ini::delete</b> <i class='arg'>ini</i> <i class='arg'>section</i> ?<i class='arg'>key</i>?</a><dd>
+
+
+Removes the key or the entire section and all its keys.
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::ini::comment</b> <i class='arg'>ini</i> <i class='arg'>section</i> ?<i class='arg'>key</i>? ?<i class='arg'>text</i>...?</a><dd>
+
+
+Reads and modifies comments for sections and keys.
+
+
+</dl>
+
+</body></html>
