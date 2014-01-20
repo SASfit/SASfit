@@ -1,0 +1,37 @@
+#
+#
+# You can place here part of URLs that are to reject by
+# exclusion system. Please note, there is an online and
+# active version of this file, automaticaly loaded by
+# copyright.py.
+#
+# You could also consider to report SPAM to:
+#
+#    http://www.google.com/contact/spamreport.html
+#    http://add.yahoo.com/fast/help/us/ysearch/cgi_reportsearchspam
+#
+# Please inform about mirrors and forks of Wikipedia to:
+#
+#    http://en.wikipedia.org/wiki/Wikipedia:Mirrors_and_forks
+#
+# or equivalent page in others Wikipedia according to language
+# used by the clone.
+#
+
+#
+# This let ignore URLs that containing 'wikipedia', 'wikibooks',
+# 'wikiquote'...
+
+wikipedia
+wikibooks
+wikiquote
+wikisource
+wikimedia
+wikinews
+wiktionary
+wikiversity
+
+#
+# Uncomment here if you want to exclude URL containing '.ebay.'
+#.ebay.
+	  	 

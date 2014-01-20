@@ -1,0 +1,16 @@
+The achemso package - LaTeX and BibTeX support for American 
+Chemical Society publications
+
+----------------------------------------------------------------
+Maintained by Joseph A. Wright
+E-mail: joseph.wright@morningstar2.co.uk
+Originally developed by Mats Dahlgren
+ (c) 1996-98 by Mats Dahlgren
+ (c) 2007 Joseph Wright
+Released under the LaTeX Project Public license v1.3 or later
+----------------------------------------------------------------
+
+The achemso package provides a BibTeX style in accordance with
+the requirements of the journals of the American Chemical Society,
+along with a supporting LaTeX package file. Also provided is a
+BibTeX style file to be used for bibliography database listings.

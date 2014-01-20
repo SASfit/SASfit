@@ -1,0 +1,145 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::fa::dacceptor - Finite automaton operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_fa/dacceptor.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: dacceptor.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ grammar::fa::dacceptor.n
+   -->
+
+<body>
+<h1> grammar::fa::dacceptor(n) 0.1.1 grammar_fa &quot;Finite automaton operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::fa::dacceptor - Create and use deterministic acceptors
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#acceptor_methods">ACCEPTOR METHODS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>snit</b><br>
+package require <b>struct::set</b><br>
+package require <b>grammar::fa::dacceptor ?0.1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::grammar::fa::dacceptor</b> <i class='arg'>daName</i> <i class='arg'>fa</i> ?<strong>-any</strong> <i class='arg'>any</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>daName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>daName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>daName</i> <strong>accept?</strong> <i class='arg'>symbols</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+
+<p>
+
+This package provides a class for acceptors constructed from
+deterministic <em>finite automatons</em> (DFA). Acceptors are objects
+which can be given a string of symbols and tell if the DFA they are
+constructed from would <em>accept</em> that string.
+
+For the actual creation of the DFAs the acceptors are based on we have
+the packages <strong>grammar::fa</strong> and <strong>grammar::fa::op</strong>.
+
+<p>
+
+<h2><a name="api">API</a></h2>
+<p>
+
+The package exports the API described here.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::grammar::fa::dacceptor</b> <i class='arg'>daName</i> <i class='arg'>fa</i> ?<strong>-any</strong> <i class='arg'>any</i>?</a><dd>
+
+
+Creates a new deterministic acceptor with an associated global Tcl command
+whose name is <i class='arg'>daName</i>. This command may be used to invoke various
+operations on the acceptor. It has the following general form:
+
+<br><br>
+<dl>
+
+<dt><a name="2"><b class='cmd'>daName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command. See section <a href="#acceptor_methods">ACCEPTOR METHODS</a> for more explanations.
+
+<br><br>
+
+The acceptor will be based on the deterministic finite automaton
+stored in the object <i class='arg'>fa</i>. It will keep a copy of the relevant
+data of the FA in its own storage, in a form easy to use for its
+purposes. This also means that changes made to the <i class='arg'>fa</i> after the
+construction of the acceptor <em>will not</em> influence the acceptor.
+
+<br><br>
+
+If <i class='arg'>any</i> has been specified, then the acceptor will convert all
+symbols in the input which are unknown to the base FA to that symbol
+before proceeding with the processing.
+
+</dl>
+</dl>
+
+<h2><a name="acceptor_methods">ACCEPTOR METHODS</a></h2>
+<p>
+<p>
+
+All acceptors provide the following methods for their manipulation:
+
+<dl>
+
+
+<dt><a name="3"><i class='arg'>daName</i> <strong>destroy</strong></a><dd>
+
+
+Destroys the automaton, including its storage space and associated
+command.
+
+
+<br><br>
+<dt><a name="4"><i class='arg'>daName</i> <strong>accept?</strong> <i class='arg'>symbols</i></a><dd>
+
+
+Takes the list of <i class='arg'>symbols</i> and checks if the FA the acceptor is
+based on would accept it. The result is a boolean value. <strong>True</strong>
+is returned if the symbols are accepted, and <strong>False</strong>
+otherwise. Note that bogus symbols in the input are either translated
+to the <i class='arg'>any</i> symbol (if specified), or cause the acceptance test
+to simply fail. No errors will be thrown. The method will process only
+just that prefix of the input which is enough to fully determine
+(non-)acceptance.
+
+</dl>
+
+<p>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+<p>
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+acceptance, acceptor, automaton, finite automaton, grammar, parsing, regular expression, regular grammar, regular languages, state, transducer
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

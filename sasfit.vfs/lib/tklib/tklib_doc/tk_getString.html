@@ -1,0 +1,79 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>getstring - A dialog which prompts for a string input </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/getstring/tk_getString.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: tk_getString.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ getstring.n
+   -->
+
+<body>
+<h1> getstring(n) 0.1 getstring &quot;A dialog which prompts for a string input&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> getstring - A string dialog
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>getstring ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::getstring::tk_getString</b> <i class='arg'>pathName</i> <i class='arg'>variable</i> <i class='arg'>text</i> ?options?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides a dialog which consists of an Entry, OK, and
+Cancel buttons.
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::getstring::tk_getString</b> <i class='arg'>pathName</i> <i class='arg'>variable</i> <i class='arg'>text</i> ?options?</a><dd>
+
+
+Creates a dialog which prompts the user with <i class='arg'>text</i> to input a text string.
+The contents of the entry are put in the <i class='arg'>variable</i> upon closure of the
+dialog. The command returns a boolean indicating if the user pressed OK or
+not. If -geometry is not specified, the dialog is centered in its parent
+toplevel unless its parent is . in which case the dialog is centered in the
+screen. 
+
+Options:
+-title
+-allowempty a boolean argument indicating if the dialog should accept an empty entry
+-entryoptions simply passes its arguments through to the entry widget. This is valuble for performing extra validation
+using the Entry widget validation hooks.
+-geometry specifies the geometry of the window
+
+</dl>
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+package require getstring
+namespace import getstring::*
+
+if {[tk_getString .gs text &quot;Feed me a string please:&quot;]} {
+    puts &quot;user entered: $text&quot;
+}
+
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+dialog, entry, string
+</body></html>
+

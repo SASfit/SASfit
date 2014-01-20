@@ -1,0 +1,53 @@
+CommonsDelinker supports a plugin system, which allows modifying the delink and
+replace parameters on a case by case basis.
+
+Plugins should be registered in the configuration file. CommonsDelinker expects
+the configuration value CommonsDelinker['plugins'] to be an iterable object.
+The items of this iterable should be module.object strings of the plugin. The
+plugin is expected to reside as module.py in commonsdelinker/plugins. The
+object should exist and should be a callable object or type with an attribute
+'hook' being a string indicating the hook name.
+
+Some parameters are modyfiable by the plugin. Those include the mutable objects
+and some immutable object wrapped in an ImmutableByReference object. The value
+of such an object can be get/set by the get and set method. Modyfiable
+parameters are preceded by an ampersand & in this documentation.
+
+A hook that gives False as return value will terminate the hook chain and for
+most hooks also terminate the caller.
+
+== List of hooks and their parameters ==
+
+before_delink(image, usage, timestamp, admin, reason, replacement)
+  Called once per image. Returing False will cancel delinking this image.
+
+simple_replace(page, summary, image, &replacement, match, groups)
+gallery_replace(page, summary, image, &replacement, match, groups)
+complex_replace(page, summary, image, &replacement, match, groups)
+  Called each time an occerence is to be replaced. Returning False will not
+  replace this occerence.
+
+before_save(page, text, &new_text, &summary)
+  Called before the page is saved. Returning False will not save the page.
+
+after_delink(image, usage, timestamp, admin, reason, replacement)
+  Called once per image after delink.
+
+== Example ==
+# Saves a diff for every delink.
+import difflib
+
+class Diff(object):
+	hook = 'before_save'
+	def __init__(self, CommonsDelinker):
+		self.CommonsDelinker = CommonsDelinker
+	def __call__(self, page, text, new_text, summary):
+		diff = difflib.context_diff(
+			text.encode('utf-8').splitlines(True),
+			new_text.get().encode('utf-8').splitlines(True))
+
+		f = open((u'diff/%s-%s-%s.txt' % (page.urlname().replace('/', '-'),
+			page.site().dbName(), page.editTime())).encode('utf-8', 'ignore'), 'w')
+
+		f.writelines(diff)
+		f.close()

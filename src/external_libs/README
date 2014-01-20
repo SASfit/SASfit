@@ -1,0 +1,31 @@
+gsl:
+
+tar xvzf gsl-1.16.tar.gz
+cd gsl-1.16
+configure --disable-shared \
+[ --prefix=/where/to/install ] [CFLAGS=-fexceptions]
+make
+make install
+
+
+FFTW (see http://www.fftw.org/install/windows.html):
+./configure
+make
+make install
+
+under MSYS:
+./configure --with-our-malloc16 --with-windows-f77-mangling --enable-shared --disable-static --enable-threads --with-combined-threads --enable-portable-binary --enable-sse2
+make
+make install
+
+There are a few options to our configure script that we especially recommend on Windows:
+
+--disable-alloca: as of this writing (14 July 2009), the alloca function seems to be broken under the 64-bit MinGW compilers, so when compiling for Win64 you should pass --disable-alloca to tell FFTW not to use that function
+--with-our-malloc16: this is required in order to allocate properly aligned memory (for SSE) with gcc
+--with-windows-f77-mangling: this will include Fortran wrappers for some common Windows Fortran compilers (GNU, Intel, and Digital).
+--enable-shared --disable-static: this will create DLLs instead of static libraries (since MinGW's static-library format seems to be different from Microsoft's).
+--enable-threads --with-combined-threads: this will include multi-threading support. The second option puts the multi-threading functions into the main FFTW DLL rather than into a separate DLL (the default under Unix); this is required because MinGW can't create DLLs that depend on one another.
+--enable-portable-binary: required if you want to create DLLs that will work on any Intel processor.
+One of the following two to exploit SSE/SSE2 (the DLL is still portable because it checks at runtime to make sure SSE/SSE2 is available):
+    --enable-sse2: if you are creating a double-precision library, you should use our SSE2 support
+    --enable-float --enable-sse: if you are creating a single-precision library, you should use our SSE support 

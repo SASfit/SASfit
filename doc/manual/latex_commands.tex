@@ -1,0 +1,94 @@
+% nuetzliche Abkuerzungen
+\newcommand{\BAL}{\begin{align}}
+\newcommand{\EAL}{\end{align}}
+\newcommand{\BE}{\begin{equation}}
+\newcommand{\EE}{\end{equation}}
+\newcommand{\BD}{\begin{displaymath}}
+\newcommand{\ED}{\end{displaymath}}
+\newcommand{\BEA}{\begin{eqnarray}}
+\newcommand{\EEA}{\end{eqnarray}}
+\newcommand{\BDA}{\begin{eqnarray*}}
+\newcommand{\EDA}{\end{eqnarray*}}
+\newcommand{\T}[1]{{\tt#1}}
+\newcommand{\B}[1]{{\b#1}}
+\newcommand{\M}[1]{{\underline{\bf#1}}}
+\renewcommand{\S}[1]{{\sl#1\/}}
+\newcommand{\U}[1]{\,\mbox{#1}}
+\newcommand{\V}[1]{{\vec{#1}}}
+\newcommand{\DS}{\displaystyle}
+\newcommand{\BM}[1]{\mbox{\boldmath$#1$}}
+\newcommand{\pic}[3]{\begin{figure}[htb]
+                     \begin{center} \input #1 \caption{#2} \label{#3}
+                                         \end{center}\end{figure}}
+\newcommand{\pcx}[6]{\begin{figure}[#4]
+                      \begin{center}\unitlength=1mm
+                                          \begin{picture}(#2,#3)\put(0,#3){\special{em: graph #1}}
+                                          \end{picture}
+                                          \caption{#5}\label{#6}
+                                          \end{center}\end{figure}}
+
+% New definition of square root:
+% it renames \sqrt as \oldsqrt
+\let\oldsqrt\sqrt
+% it defines the new \sqrt in terms of the old one
+\def\sqrt{\mathpalette\DHLhksqrt}
+\def\DHLhksqrt#1#2{\setbox0=\hbox{$#1\oldsqrt{#2\,}$}\dimen0=\ht0\advance\dimen0-0.2\ht0\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}{\box0\lower0.5pt\box2}}
+
+% it defines the new \sqrt3 in terms of the old one
+\def\sqrtthree{\mathpalette\DHLhksqrtthree}
+\def\DHLhksqrtthree#1#2{\setbox0=\hbox{$#1\oldsqrt[3]{#2\,}$}\dimen0=\ht0\advance\dimen0-0.2\ht0\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}{\box0\lower0.5pt\box2}}
+
+% BLACKBOARD BOLD
+\def\idty{{\leavevmode{\rm 1\ifmmode\mkern -5.4mu\else\kern -.3em\fi I}}}
+\def\Ibb #1{ {\rm I\ifmmode\mkern -3.6mu\else\kern -.2em\fi#1}}
+\def\Ird{{\hbox{\kern2pt\vbox{\hrule height0pt depth.4pt width5.7pt \hbox{\kern-1pt\sevensy\char"36\kern2pt\char"36} \vskip-.2pt \hrule height.4pt depth0pt width6pt}}}}
+\def\Irs{{\hbox{\kern2pt\vbox{\hrule height0pt depth.34pt width5pt \hbox{\kern-1pt\fivesy\char"36\kern1.6pt\char"36} \vskip -.1pt \hrule height .34 pt depth 0pt width 5.1 pt}}}}
+\def\Ir{{\mathchoice{\Ird}{\Ird}{\Irs}{\Irs} }}
+\def\ibb #1{\leavevmode\hbox{\kern.3em\vrule height 1.5ex depth -.1ex width .2pt\kern-.3em\rm#1}}
+\def\Nl{{\Ibb N}} \def\Cl {{\ibb C}} \def\Rl {{\Ibb R}} \def\Ql {{\ibb Q}}
+\def\SS{{\leavevmode\hbox{\kern.3em \vrule  height 1.5ex depth -.8ex width .6pt\kern .05em \vrule  height .7ex depth   0 ex width .6pt\kern-.35em \rm S}}}
+
+% THEOREMS  : allow items in proclaim
+\def\lessblank{\parskip=5pt \abovedisplayskip=2pt \belowdisplayskip=2pt }
+\outer\def\iproclaim #1. {\vskip0pt plus50pt \par\noindent {\bf #1.\ }\begingroup \interlinepenalty=250\lessblank\sl}
+\def\eproclaim{\par\endgroup\vskip0pt plus100pt\noindent}
+% Use as "\proof:"
+\def\proof#1{\par\noindent {\bf Proof #1}\ \begingroup\lessblank\parindent=0pt}
+\def\QED {\hfill\endgroup\break \line{\hfill{\vrule height 1.8ex width 1.8ex }\quad} \vskip 0pt plus100pt}
+\def\ETC {{\hbox{$ \clubsuit {\rm To\ be\ completed}\clubsuit$} }}
+\def\CHK {{\hbox{$ \spadesuit {\rm To\ be\ checked}\spadesuit$} }}
+
+
+% OPERATORS
+\def\Aut{{\rm Aut}}
+\def\Bar{\overline}
+\def\abs #1{{\left\vert#1\right\vert}}
+\def\bra #1>{\langle #1\rangle}
+\def\bracks #1{\lbrack #1\rbrack}
+\def\dim {\mathop{\rm dim}\nolimits}
+\def\dom{\mathop{\rm dom}\nolimits}
+\def\id{\mathop{\rm id}\nolimits}
+\def\ket #1 {\mid#1\rangle}
+\def\ketbra #1#2{{\vert#1\rangle\langle#2\vert}}
+\def\norm #1{\Vert #1\Vert}
+\def\Norm #1{\left\Vert #1\right\Vert}
+\def\set #1{\left\lbrace#1\right\rbrace}
+\def\stt{\,\vrule\ }
+\def\Set#1#2{#1\lbrace#2#1\rbrace}  % \Set\Big#1 to force size of \set
+\def\th {\hbox{${}^{{\rm th}}$}\ }  % also in text
+\def\tr {\mathop{\rm tr}\nolimits}
+\def\trace{\mathop{\rm Tr}\nolimits}
+\def\undbar#1{$\underline{\hbox{#1}}$}
+\def\Order{{\bf O}}
+\def\order{{\bf o}}
+\def\rstr{\hbox{$\vert\mkern-4.8mu\hbox{\rm\`{}}\mkern-3mu$}}
+
+% LETTERS
+%\def\jkphi{\phi}
+%\def\phi{\varphi}
+%\def\epsilon{\varepsilon}
+
+\def\rlapa#1{\hbox to -2.2pt{$#1$\hss}}
+\def\rlapb#1{\hbox to 1.7pt{\scriptsize$#1$\hss}}
+\def\corr{\mbox{\small$\,\:{\rlapa{\star}\bigcirc}\,$}}
+\def\scorr{\mbox{\footnotesize$\,{\rlapb{\bigcirc}\star}\,\:$}}

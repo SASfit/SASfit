@@ -1,0 +1,86 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>tooltip - Tooltip management </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/tooltip/tooltip.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: tooltip.html,v 1.1 2006/05/02 08:24:45 kohlbrecher Exp $ tooltip.n
+   -->
+
+<body>
+<h1> tooltip(n) 1.1 tooltip &quot;Tooltip management&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> tooltip - Tooltip management
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>tooltip ?1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::tooltip::tooltip</b> <i class='arg'>command</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#2">clear ?pattern?</a></td></tr>
+<tr valign=top ><td ><a href="#3">delay ?millisecs?</a></td></tr>
+<tr valign=top ><td ><a href="#4">disable </a></td></tr>
+<tr valign=top ><td ><a href="#5">enable </a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::tooltip::tooltip</b> <i class='arg'>pathName</i> ?options? ?message?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides tooltips, a small text message that is
+displayed when the mouse hovers over a widget.
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::tooltip::tooltip</b> <i class='arg'>command</i> ?options?</a><dd>
+
+commands:
+<br><br>
+<dt><a name="2">clear ?pattern?</a><dd>
+
+<dt><a name="3">delay ?millisecs?</a><dd>
+
+<dt><a name="4">disable </a><dd>
+
+<dt><a name="5">enable </a><dd>
+
+
+<dt><a name="6"><b class='cmd'>::tooltip::tooltip</b> <i class='arg'>pathName</i> ?options? ?message?</a><dd>
+
+This command arranges for widget <i class='arg'>pathName</i> to display a tooltip with
+message ?message?
+<br><br>
+<dl>
+<dt><strong>-index</strong><dd>
+<dt><strong>-item</strong><dd>
+</dl>
+
+</dl>
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+package require tooltip
+pack [label .l -text &quot;label&quot;]
+tooltip::tooltip .l &quot;This is a label widget&quot;
+</pre></td></tr></table></p>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+balloon, help, hover, tooltip
+</body></html>
