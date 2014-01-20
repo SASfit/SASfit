@@ -268,8 +268,8 @@ set OZ(plugin_C_names) {"sq_sq_oz_1" 	"sq_sq_oz_2" 	"sq_sq_oz_3" \
 			"sq_sq_oz_4" 	"sq_sq_oz_5" 	"sq_sq_oz_6"}
 set OZ(closure) HNC
 set OZ(potential) "HardSphere"
-tkcon show
-set ::tkcon_visible 1
+tkcon hide
+set ::tkcon_visible 0
 
 set OZ(label) unknown
 set OZ(p0) 1.0
