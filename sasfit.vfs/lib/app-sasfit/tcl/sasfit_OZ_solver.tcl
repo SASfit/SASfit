@@ -492,7 +492,7 @@ proc oz_input_names {} {
 			set OZ(p1,name) kappa
 			set OZ(p2,name) Z
 			set OZ(p3,name) LB
-			set OZ(p4,name) ""
+			set OZ(p4,name) A
 			set OZ(p5,name) ""
 			set OZ(p6,name) ""
 			}
