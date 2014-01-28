@@ -157,7 +157,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
-    #define MAXPOTENTIALS 26
+    #define MAXPOTENTIALS 28
     const char * PotentialNames[MAXPOTENTIALS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -187,6 +187,8 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
     PotentialNames[23] = "SW";
     PotentialNames[24] = "Fermi";
     PotentialNames[25] = "FDM";
+    PotentialNames[26] = "PenetrableSphere";
+    PotentialNames[27] = "PSM";
 
 
     i=0;
@@ -355,6 +357,16 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->repulsive_pot=&U_FDM;
             OZD->attractive_pot=&U_ZERO;
             OZD->shortrange_pot=&U_FDM;
+            OZD->longrange_pot=&U_ZERO;
+            break;
+        case 26 :
+        case 27 :
+            OZD->potential=&U_PSM;
+            OZD->reference_pot=&U_PSM;
+            OZD->pertubation_pot=&U_ZERO;
+            OZD->repulsive_pot=&U_PSM;
+            OZD->attractive_pot=&U_ZERO;
+            OZD->shortrange_pot=&U_PSM;
             OZD->longrange_pot=&U_ZERO;
             break;
         default :
