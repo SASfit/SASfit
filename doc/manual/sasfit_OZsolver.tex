@@ -559,7 +559,7 @@ or a short range and long range part $u(r)=u_\text{SR}(r)+u_\text{LR}(r)$.
 The definitions together with the different ways partitioning are defined below for
 each potential.
 
-\vphantom{.}~\\
+\newpage
 \subsection{Hard Sphere Potential}
 ~\\
 
@@ -587,7 +587,15 @@ and
 u^\text{HS}_\text{pert}(r,\sigma) &= u^\text{HS}_\text{LR}(r,\sigma) = u^\text{HS}_\text{A}(r,\sigma) \equiv 0
 \end{align}
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[Hard Sphere potential $u^\text{HS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUHS.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{HS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfHS.png}}
+  \caption{potential $u^\text{HS}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{HS}(r,\sigma)/k_BT)-1$}
+\end{figure}
+
+ \newpage
 \subsection{Sticky Hard Sphere Potential (SHS)}
 ~\\
 
@@ -648,7 +656,16 @@ A partitioning in long range and short range is not done. The long range potenti
 is set to be always $u^\text{SHS}_\text{LR}(r) \equiv 0$, so that
 $u^\text{SHS}_\text{SR}(r)= u^\text{SHS}(r)$.
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[Sticky Hard Sphere potential $u^\text{SHS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUSHS.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{SHS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfSHS.png}}
+  \caption{potential $u^\text{SHS}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{SHS}(r,\sigma)/k_BT)-1$}
+\end{figure}
+
+% \vphantom{.}~\\
+\clearpage
 \subsection{Soft Sphere Potential}
 ~\\
 
@@ -676,8 +693,16 @@ system as the volume integral of the potential diverges.
 %\end{cases}
 %\end{align}
 
+\begin{figure}[htb]
+\centering
+  \subfigure[Soft Sphere Potential $u^\text{SSP}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUSoftSphere.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{SSP}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfSoftSphere.png}}
+  \caption{potential $u^\text{SSP}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{SSP}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
 
- \vphantom{.}~\\
+% \vphantom{.}~\\
+\newpage
 \subsection{Penetrable Sphere Model}
 ~\\
 
@@ -692,7 +717,16 @@ k_\text{B} T \epsilon   & \mbox{for } r \leq \sigma \\
 \end{cases}
 \end{align}
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[Potential of the Penetrable Sphere Model (PSM) $u^\text{PSM}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUPenetrableSphere.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{PSM}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfPenetrableSphere.png}}
+  \caption{potential $u^\text{PSM}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{PSM}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
+% \vphantom{.}~\\
+\newpage
 \subsection{Generalized Gaussian Core Model Potential - GGCM-n Potential}
 ~\\
 
@@ -707,8 +741,17 @@ u^\text{GGCM-n}(r)&=
 k_\text{B} T \epsilon \exp\left(-\alpha\left(\frac{r}{\sigma}\right)^n\right)
 \end{align}
 
+\begin{figure}[htb]
+\centering
+  \subfigure[Potential of the Generalises Gaussian Code Model (GGCM-n) $u^\text{GGCM-n}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUGGCM-n.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{GGCM-n}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfGGCM-n.png}}
+  \caption{potential $u^\text{GGCM-n}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{GGCM-n}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
 
- \vphantom{.}~\\
+
+% \vphantom{.}~\\
+\newpage
 \subsection{Fermi Distribution Model}
 ~\\
 \begin{align}
@@ -718,7 +761,15 @@ k_\text{B} T \epsilon
 \end{align}
 For $\xi = 0$ the Fermi Potential goes over into the Penetrable Sphere Model.
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[Fermi potential $u^\text{Fermi}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUFermi.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{Fermi}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfFermi.png}}
+  \caption{potential $u^\text{Fermi}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{Fermi}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
+\newpage
 \subsection{Star Polymer Potential}
 ~\\
 
@@ -752,6 +803,14 @@ Yukawa form as the center-to-center separation $r$ grows. The
 potential becomes harder with increasing $f$, tending eventually to a hard-sphere
 interaction formally obtained in the limit $f\rightarrow\infty$.
 
+\begin{figure}[htb]
+\centering
+  \subfigure[Star potential $u^\text{star1}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUStarfGT10.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{star1}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfStarfGT10.png}}
+  \caption{potential $u^\text{star1}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{star1}(r,\sigma,f)/k_BT)-1$}
+\end{figure}
+
 The effective potential valid for $f\leq 10$ has the form
 \cite{Jusufi2001,Dzubiella2001,Likos2001}:
 \begin{align}
@@ -769,7 +828,16 @@ k_\text{B} T \frac{5}{8} f^{3/2}
 $\tau$ is a free parameter of the order and is obtained by fitting to computer
 simulation results \cite{Dzubiella2001}.
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[Star potential for $u^\text{star2}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUStarfLT10.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{star2}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfStarfLT10.png}}
+  \caption{potential $u^\text{star2}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{star2}(r,\sigma,f)/k_BT)-1$}
+\end{figure}
+
+% \vphantom{.}~\\
+\newpage
 \subsection{Lennard-Jones Potential}
 ~\\
 
@@ -799,7 +867,16 @@ u^\text{LJ}_\text{LR}(r)  & \mbox{if } r \geq rm
 \end{align}
 The LJ potential is not splitted in a reference and perturbation part, i.e. the reference part is set to 0.
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[Lennard-Jones potential $u^\text{LJ}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potULennardJones.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{LJ}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfLennardJones.png}}
+  \caption{potential $u^\text{LJ}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{LJ}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
+% \vphantom{.}~\\
+\newpage
 \subsection{Depletion Potential}
 ~\\
 
@@ -814,6 +891,15 @@ N_\text{I} &= n_d \frac{2}{3}\left(\frac{l}{2}-\frac{r-\sigma}{2}\right)^2
                 \left(\frac{3\sigma}{2}+l+\frac{r-\sigma}{2}\right)\\
 N_\text{II} &= N_\text{III} = 0
 \end{align}
+
+\begin{figure}[htb]
+\centering
+  \subfigure[potential between two large spheres and spherical depleting agents $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Sph.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Sph.png}}
+  \caption{potential $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{sph}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
 The potential between two large spheres and infinitesimal thin discs of diameter $D$
 as a depleting agents is given by
 \begin{align}
@@ -831,6 +917,15 @@ N_\text{II} - N_\text{III} &= \frac{\pi}{6} n_d D^2\sigma
                               \right\}
 \end{split}
 \end{align}
+
+\begin{figure}[htb]
+\centering
+  \subfigure[potential between two large spheres and disclike depleting agents $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Discs.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Discs.png}}
+  \caption{potential $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{discs}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
 Another depletion potential of two hard spheres of diameter $\sigma$ surrounded
 by infinitely thin hard rods of length $L$ is given by
 \begin{align}
@@ -845,7 +940,16 @@ N_\text{II} - N_\text{III} &= \frac{\pi}{12} n_d L^2\sigma
 \end{split}
 \end{align}
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[potential between two large spheres and rodlike depleting agents $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Rods.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Rods.png}}
+  \caption{potential $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{rods}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
+% \vphantom{.}~\\
+\newpage
 \subsection{Ionic Microgel Potential}
 ~\\
 
@@ -889,7 +993,8 @@ For the nonoverlapping distances the effective potential becomes
                       \frac{\text{e}^{-\kappa r}}{r}
 \end{align}
 
- \vphantom{.}~\\
+% \vphantom{.}~\\
+\newpage
 \subsection{DLVO Potential}
 ~\\
 
@@ -932,7 +1037,16 @@ by the other charges. It is given by $\kappa^{2}= 4\pi L_B \sum_{i=1}^N n_i Z_i$
 of ion $i$, $Z_i$ is the charge number of that ion, and the sum is taken over all ions in the
 solution. A discussion about effective parameters can be found in \cite{Alexander1984,Ulander2001}.
 
- \vphantom{.}~\\
+\begin{figure}[htb]
+\centering
+  \subfigure[DLVO potential (Derjaguin and Landau, Verwey and Overbeek) $u^\text{DLVO}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfDLVO.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{DLVO}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUDLVO_a.png}}
+  \caption{potential $u^\text{DLVO}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{DLVO}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
+% \vphantom{.}~\\
+\newpage
 \subsection{Hard Core Yukawa Potential}
 ~\\
 
@@ -943,11 +1057,22 @@ u^\text{HC3Y}(r,\ldots) &=
 \begin{cases}
 \infty                                                                  & \mbox{for } r<   \sigma \\
 k_\text{B} T
-\displaystyle \sum_{i=1}^{N=3} -K_i\exp\left(-\lambda_i(r-\sigma)\right)& \mbox{for } r >= \sigma
+\displaystyle \sum_{i=1}^{N=3} K_i\exp\left(-\lambda_i(r-\sigma)\right)& \mbox{for } r >= \sigma
 \end{cases}
 \end{align}
 The sign of $K_i$ defines, if the potential is
 repulsive ($K_i>0$) or attractive ($K_i<0$) and the modulus of $\abs{K_i}$ defines the strength of the interaction. $\lambda_i$ defines the range of the interaction and should be always a positive number.
+
+\begin{figure}[htb]
+\centering
+  \subfigure[Hard Core Yukawa potential with three linear combinations of Yukawa tails $u^\text{HC3Y}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUHC3Yukawa.png}}
+  \quad
+  \subfigure[Mayer-f function of $u^\text{HC3Y}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfHC3Yukawa.png}}
+  \caption{potential $u^\text{HC3Y}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{HC3Y}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
+
+% \vphantom{.}~\\
+\newpage
 
 \section{GUI interface for the Ornstein Zernike solver}
 
