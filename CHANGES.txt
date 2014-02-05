@@ -1,7 +1,7 @@
-0.94.1
-- missing parameter label for Hamaker constant in DLVO potential
+0.94.1 2013-02-05
+- added missing parameter label for Hamaker constant in DLVO potential
 - Penetrable Sphere Model was not properly assigned.
-- added all available plugins into the distributon binaries
+- added all available plugins into the distribution binaries
 
 0.94.0, 2013-01-20
 - A new interface for solving the Ornstein Zernike equation for different 
