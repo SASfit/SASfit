@@ -20,7 +20,7 @@ section term $P_\text{cs}(Q)$ can be homogeneous, a
 centro-symmetric bilayer, a gaussian bilayer, etc. . This cross
 section factor can than be combined with the overall shape factor
 $P'(Q)$ of for examples a thin spherical shell of elliptical
-shell, a then cylindrical shell or a thin disc. As the total form
+shell, a thin cylindrical shell or a thin disc. As the total form
 factor is the product of the cross-section form factor and a shape
 form factor one can either programm all combination of
 cross-section and shape factors into individual form factor
@@ -29,16 +29,16 @@ factor and the shape factor as a structure factors. Using the
 monodisperse approximation yields than the same result.
 
 In this plugin the product of the cross-section and shape term
-have been implemented as form factor under "\texttt{by
-plugin|anisotropic obj.|local planar obj.}" and "\texttt{by
-plugin|anisotropic obj.|local cylindrical obj.}". The
+have been implemented as form factor under "\texttt{[by
+plugin|anisotropic obj.|local planar obj.]}" and "\texttt{[by
+plugin|anisotropic obj.|local cylindrical obj.]}". The
 cross-section terms alone are also implemented as form factors
-under "\texttt{by plugin|anisotropic obj.|Pcs(Q) for planar obj.}"
-and "\texttt{by plugin|anisotropic obj.|Pcs(Q) for cylindrical
-obj.}". The shape factors are also available as structure factors
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}" and "\texttt{by plugin|anisotropic obj.|P'(Q): local
-cylindrical obj.}".
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q) for planar obj.]}"
+and "\texttt{[by plugin|anisotropic obj.|Pcs(Q) for cylindrical
+obj.]}". The shape factors are also available as structure factors
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}" and "\texttt{[by plugin|anisotropic obj.|P'(Q): local
+cylindrical obj.]}".
 
 The cross-section form factors can be easily calculated if the
 scattering length density contrast profile
@@ -82,8 +82,8 @@ bilayer with a Gaussian scattering length density profile,
 layer with Gaussian chains attached to the surface.
 These form factors are supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 
 \clearpage
 
@@ -99,7 +99,7 @@ obj.}".
 \end{figure}
 
 This cross-section form factor describes the scattering of a layer with homogeneous
-scattering length density $\eta_L$ in a matrix of a scattering length density $\eta_{solv}$.
+scattering length density $\eta_L$ in a matrix of a scattering length density $\eta_\textrm{solv}$.
 The thickness can have a distribution described by a log-normal distribution according to eq.\ \ref{eq:LogNormal}.
 
 \begin{align}
@@ -115,7 +115,7 @@ P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t)
     \item[\texttt{dummy}] unused disabled parameter
     \item[\texttt{dummy}] unused disabled parameter
     \item[\texttt{eta\_l}] scattering length density of layer $\eta_L$
-    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_{solv}$
+    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\textrm{solv}$
 \end{description}
 
 \noindent
@@ -123,8 +123,8 @@ P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t)
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -170,8 +170,8 @@ P_\text{cs}(Q,\sigma_{T},T) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{T},1,T)
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt[{by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -230,8 +230,8 @@ P_\text{cs}(Q,\sigma_{L_\textrm{c}},L_\textrm{c},\sigma_{L_\textrm{sh}},L_\textr
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -304,8 +304,8 @@ so that
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \end{itemize}
 
 \begin{figure}[htb]
@@ -391,7 +391,7 @@ $\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(
 %\begin{itemize}
 %  \item This form factor is supposed to be combined with a shape factor for
 %local planar objects which are implemented as structure  plugins
-%under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+%under "\texttt{by plugin|anisotropic obj.|P'(Q): local planar
 %obj.}".
 %\end{itemize}
 %
@@ -459,7 +459,7 @@ P_\text{cs}(Q,\sigma_{R},R) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{R},1,R)
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local cylindrical objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local cylindrical obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local cylindrical obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -519,8 +519,8 @@ r(R,\epsilon,\phi) &=& R\sqrt{\sin^2\phi+\epsilon^2\cos^2\phi}
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local cylindrical objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local cylindrical obj.}".
-\item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local cylindrical obj.]}".
+\item As the form factor already has the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
 
@@ -528,8 +528,234 @@ the \texttt{Delta}-distribution.
 \subsection{P'(Q) for local planar obj.} ~\\
 \label{plugin:Pprime4planar}
 
+
+
+\clearpage
+\subsubsection{P'(Q): thin discs} ~\\
+\label{plugin:Pprime4Discs}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.686\textwidth,height=0.27\textwidth]{../images/form_factor/anisotropic/ThinDisc.png}
+\end{center}
+\caption{Sketch of a thin disc with a radius $R$. The thickness of the disc is assumed to be much smaller than its radius.}
+\label{fig:ThinDisc}
+\end{figure}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Disc}:}
+\begin{description}
+    \item[\texttt{R}] most probable radius $R$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sima}] width $\sigma$ of radius distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinDisc.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Disc}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinDisc}
+\end{figure}
+
+\clearpage
+\subsubsection{P'(Q): thin spherical shell} ~\\
+\label{plugin:Pprime4spShell}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.43\textwidth,height=0.463\textwidth]{../images/form_factor/anisotropic/Sphere_thin.png}
+\end{center}
+\caption{Sketch of a thin spherical shell with a radius $R$. The thickness of the shell is assumed to be much smaller than the radius of the sphere.}
+\label{fig:ThinSphericalShell}
+\end{figure}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Spherical Shell}:}
+\begin{description}
+    \item[\texttt{R}] most probable radius $R$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sima}] width $\sigma$ of radius distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinSphShell.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Spherical Shell}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinSphShell}
+\end{figure}
+
+
+\clearpage
+\subsubsection{P'(Q): thin ellipsoidal shell} ~\\
+\label{plugin:Pprime4ellShell}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.596\textwidth,height=0.449\textwidth]{../images/form_factor/anisotropic/Ellipsoid_hollow.png}
+\end{center}
+\caption{Sketch of a thin ellipsoidal shell with a radius $R$ and eccentricity $\epsilon$. The thickness of the shell is assumed to be much smaller than the two radii of the elliptical shell.}
+\label{fig:ThinEllipsoidalShell}
+\end{figure}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Ellipsoidal Shell}:}
+\begin{description}
+    \item[\texttt{R}] most probable radius $R$
+    \item[\texttt{epsilon}] eccentricity $\epsilon$
+    \item[\texttt{sima\_R}] width $\sigma_R$ of radius distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinEllShell.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Ellipsoidal Shell}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinEllShell}
+\end{figure}
+
+\clearpage
+\subsubsection{P'(Q): thin hollow cylinder} ~\\
+\label{plugin:Pprime4hollowcylinder}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.3922\textwidth,height=0.4318\textwidth]{../images/form_factor/anisotropic/ThinHollowCylinder.png}
+\end{center}
+\caption{Sketch of a thin hollow cylinder of height $H$ and radius $R$. The thickness of the wall is assumed to be much smaller than the outer dimensions of the cylinder.}
+\label{fig:ThinHollowCylinder}
+\end{figure}
+
+\begin{align}
+\begin{split}
+\Xi(Q,R,H,\alpha) & = 2\pi R
+\left[ R \frac{J_1\left(Q R \sin\alpha\right)}{Q R \sin\alpha} \right. \\
+& \left. \quad \quad + H J_0\left( \frac{QH}{2} \cos\alpha\right)\frac{\sin\left(\frac{QH}{2} \cos\alpha\right)}{\frac{QH}{2} \cos\alpha} \right]
+\end{split} \\
+P_\text{thc}(Q,R,H) &= \int_0^{\pi/2} \Xi^2(Q,R,H,\alpha) \sin\alpha \mathrm{d}\alpha \\
+\begin{split}
+I_{thc}(Q,R,H) &= \int_0^\infty \int_0^\infty 
+\mathrm{LogNorm}(r,1,\sigma_R,1,R,1) \\
+& \qquad \qquad  \mathrm{LogNorm}(h,1,\sigma_H,1,H,1) P_\text{thc}(Q,r,h)
+\, \mathrm{d}h \, \mathrm{d}r
+\end{split}
+\end{align}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Hollow Cylinder}:}
+\begin{description}
+    \item[\texttt{R}] most probable cylinder radius $R$
+    \item[\texttt{H}] most probable cylinder height $H$
+    \item[\texttt{sima\_R}] width $\sigma_R$ of radius distribution (LogNorm)
+    \item[\texttt{sima\_H}] width $\sigma_H$ of height distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinHollowCylinder.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Hollow Cylinder}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinHollowCylinder}
+\end{figure}
+
+
+\clearpage
 \subsection{P'(Q) for local cylindrical obj.} ~\\
 \label{plugin:Pprime4cylindrical}
+
+
+\clearpage
+\subsubsection{P'(Q): rods} ~\\
+\label{plugin:Pprime4rods}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): Kholodenko's worm} ~\\
+\label{plugin:Pprime4kohlodenko}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): wormlike PS1} ~\\
+\label{plugin:Pprime4wormPS1}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): wormlike PS2} ~\\
+\label{plugin:Pprime4wormPS2}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): wormlike PS3} ~\\
+\label{plugin:Pprime4wormPS3}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
 
 \subsection{local planar  obj.} ~\\
 \label{plugin:LocalPlanar)}

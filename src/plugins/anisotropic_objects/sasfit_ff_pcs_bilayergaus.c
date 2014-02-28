@@ -21,7 +21,7 @@ scalar sasfit_ff_pcs_bilayergaus(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 
 	// insert your code here
-	
+
 	return gsl_pow_2(sasfit_ff_pcs_bilayergaus_f(q,param));
 }
 
@@ -38,12 +38,12 @@ scalar sasfit_ff_pcs_bilayergaus_f(scalar q, sasfit_param * param)
 
 	R = 0.5*D;
 
-	M = 2.0*sqrt(2.*M_PI)*SIGMA_OUT *B_OUT+sqrt(2.*M_PI)*SIGMA_CORE*B_CORE;
-
-	if (M == 0.0) {
-		M = 1.0;
-        sasfit_param_set_err(param, DBGINFO("BiLayerGauss is divergent"));
-	}
+//	M = 2.0*sqrt(2.*M_PI)*SIGMA_OUT *B_OUT+sqrt(2.*M_PI)*SIGMA_CORE*B_CORE;
+//
+//	if (M == 0.0) {
+//		M = 1.0;
+//        sasfit_param_set_err(param, DBGINFO("BiLayerGauss is divergent"));
+//	}
 
 
 	Fout  = sqrt(2.*M_PI)*SIGMA_OUT *B_OUT  *exp(-0.5*u_out) *cos(q*R);
