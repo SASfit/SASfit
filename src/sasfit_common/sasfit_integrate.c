@@ -144,7 +144,10 @@ scalar sasfit_integrate_ctm(scalar int_start,
 
 	if (err) 
 	{
-                sasfit_param_set_err(param, DBGINFO("Could not properly perform integration of %x: %s\n"), intKern_fct, gsl_strerror(err));
+                sasfit_param_set_err(param,
+                    DBGINFO("Could not properly perform integration of %x "
+                            "over [%f, %f]: %s\n"), intKern_fct,
+                    int_start, int_end, gsl_strerror(err));
                 return SASFIT_RETURNVAL_ON_ERROR;
 	}
 
