@@ -135,7 +135,7 @@ if (EXVOL < 1) {
 	}
 } else {
 	Rg2_0 = fRg2(L,B)*falpha2(L,B);
-	xi = q*B*pow(M_PI*B/(1.103*fabs(L),3./2.) * pow(Rg2_0/(B*B),1.282);
+	xi = q*B*pow(M_PI*B/(1.103*fabs(L),3./2.)) * pow(Rg2_0/(B*B),1.282);
 	if (gsl_pow_5(xi) < 0.01) {
 		chi = 0;
 	} else {
