@@ -34,7 +34,7 @@ scalar sasfit_ff_Sphere_R_ma_Profile_ave_core(scalar x, sasfit_param * param)
 
         SASFIT_ASSERT_PTR(param);
 
-		Q 	= param->p[MAXPAR-1];
+	Q 	= param->p[MAXPAR-1];
         alpha 	= param->p[6];
 
         u = Q*x;
@@ -84,9 +84,10 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 		case SPHERE_RMA_NAGG:
 		case SPHERE_RMA_NAGG_SMOOTH:
 			Nagg	= param->p[0];
-
-			Vc	= param->p[1]-fabs(Vsh);
-			Vsh = fabs(Vsh);
+			Vsh     = fabs(Vsh);
+                        // what if Vc < Vsh? volume must not be < 0
+			Vc	= GSL_MAX(0., param->p[1] - Vsh);
+//			Vc	= param->p[1] - Vsh;
 //			Vc	= param->p[1];
 
 			SASFIT_CHECK_COND1((Nagg < 0.0), param, "Nagg(%lg) < 0",Nagg);
