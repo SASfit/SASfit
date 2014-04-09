@@ -1526,7 +1526,7 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set tmparr(res) [lrange $res $firsti $lasti]
    set tmparr(res,file) [lrange $resfile $firsti $lasti]
    set tmparr(res,calc) [lrange $rescalc $firsti $lasti]
-
+puts "Hallo [llength $tmparr(Q)]"
    dr data_redu $j tmparr [llength $tmparr(Q)] \
       $tmparr(Q) $tmparr(I) $tmparr(DI) $tmparr(res) $tmparr(res,file) $tmparr(res,calc)
 
@@ -2071,7 +2071,8 @@ proc destroy_ascii_options {} {
 	}
 }
 
-proc merge_cmd_apply { sasfit_arr isGlobal} {
+proc merge_cmd_apply { sasfit_arr isGlobal
+} {
 	upvar $sasfit_arr localsasfit
 	global ASCIIData IQGraph GlobalFitIQGraph
 	global fn hide fskip lskip divisor widname
@@ -3185,7 +3186,7 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.iq.popup add command -label "Export Data..." \
     -command { export_blt_graph IQGraph }
-bind .obW.tab.iq.draw <Double-ButtonPress-3> {tk_popup .obW.tab.iq.popup %X %Y }
+bind .obW.tab.iq.draw <ButtonPress-3> {tk_popup .obW.tab.iq.popup %X %Y }
 bind .obW.tab.iq.draw <Double-ButtonPress-1> {tk_popup .obW.tab.iq.popup %X %Y }
 Blt_ZoomStack $IQGraph(w)
 
@@ -3234,7 +3235,7 @@ menu $Detector2DIQGraph(w).popup -tearoff 0
 $Detector2DIQGraph(w).popup add command -label "copy to clipboard" -un 0 -command {
      window_to_clipboard $Detector2DIQGraph(cw)
      }
-bind $Detector2DIQGraph(w) <Double-ButtonPress-3> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
+bind $Detector2DIQGraph(w) <ButtonPress-3> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 bind $Detector2DIQGraph(w) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 
    set Detector2DIQGraph(nPix) 64
@@ -3315,7 +3316,7 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.globaliq.popup add command -label "Export Data..." \
     -command { export_blt_graph GlobalFitIQGraph }
-bind .obW.tab.globaliq.draw <Double-ButtonPress-3> {tk_popup .obW.tab.globaliq.popup %X %Y }
+bind .obW.tab.globaliq.draw <ButtonPress-3> {tk_popup .obW.tab.globaliq.popup %X %Y }
 bind .obW.tab.globaliq.draw <Double-ButtonPress-1> {tk_popup .obW.tab.globaliq.popup %X %Y }
 Blt_ZoomStack $GlobalFitIQGraph(w)
 
@@ -3383,7 +3384,7 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.residual.popup add command -label "Export Data..." \
     -command { export_blt_graph ResIQGraph }
-bind .obW.tab.residual.draw <Double-ButtonPress-3> {tk_popup .obW.tab.residual.popup %X %Y }
+bind .obW.tab.residual.draw <ButtonPress-3> {tk_popup .obW.tab.residual.popup %X %Y }
 bind .obW.tab.residual.draw <Double-ButtonPress-1> \
      {tk_popup .obW.tab.residual.popup %X %Y }
 Blt_ZoomStack $ResIQGraph(w)
@@ -3453,7 +3454,7 @@ $m3 add command -label "plot layout..." -command {
                                         }
 .obW.tab.sizedistr.popup add command -label "Export Data..." \
     -command { export_blt_graph SDGraph }
-bind .obW.tab.sizedistr.draw <Double-ButtonPress-3> \
+bind .obW.tab.sizedistr.draw <ButtonPress-3> \
      {tk_popup .obW.tab.sizedistr.popup %X %Y }
 bind .obW.tab.sizedistr.draw <Double-ButtonPress-1> \
      {tk_popup .obW.tab.sizedistr.popup %X %Y }
