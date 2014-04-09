@@ -27,8 +27,8 @@ message(STATUS "System Processor: '${CMAKE_SYSTEM_PROCESSOR}'")
 #message("## generator: '${CMAKE_GENERATOR}'")
 
 # updates the version number in some files
-set(SASFIT_VERSION "0.94.0")
-#sasfit_update_version()
+set(SASFIT_VERSION "0.94.1")
+sasfit_update_version()
 # this can be set on the command line too:
 #cmake . -DCREATE_SOURCE=TRUE
 
@@ -170,7 +170,7 @@ add_definitions(
 # get a list of all source files and prepare include dirs
 set(SRC_FILES "")
 set(SF_INC_DIRS "")
-foreach(SF_MODULE f2c sasfit_common sasfit_sd sasfit_sq sasfit_peaks sasfit_ff sasfit_core sasfit_old sasfit_oz)
+foreach(SF_MODULE f2c sasfit_common sasfit_sd sasfit_sq sasfit_peaks sasfit_ff sasfit_core sasfit_old sasfit_oz sasfit_gmres)
 	if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
 		foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
 			list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")

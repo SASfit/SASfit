@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   oachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -32,9 +32,9 @@ scalar sasfit_ff_ellsh_sd_homoxs(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
 
 	// insert your code here
-		
+
 	Pcs = sasfit_ff_pcs_homogeneousplate(q,param);
-	
+
 	sasfit_init_param( &subParam );
 	subParam.p[0] = R0;
 	subParam.p[1] = EPSILON;

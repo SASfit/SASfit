@@ -34,7 +34,7 @@ scalar sasfit_ff_Sphere_R_ma_Profile_ave_core(scalar x, sasfit_param * param)
 
         SASFIT_ASSERT_PTR(param);
 
-		Q 	= param->p[MAXPAR-1];
+	Q 	= param->p[MAXPAR-1];
         alpha 	= param->p[6];
 
         u = Q*x;
@@ -84,11 +84,12 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 		case SPHERE_RMA_NAGG:
 		case SPHERE_RMA_NAGG_SMOOTH:
 			Nagg	= param->p[0];
-
-			Vc	= param->p[1]-fabs(Vsh);
-			Vsh = fabs(Vsh);
-//			Vc	= param->p[1];
-
+			Vsh     = fabs(Vsh);
+//			Vc	= param->p[1] - Vsh; // this was wrong Vc should be param->p[1]
+			Vc	= fabs(param->p[1]);
+			// I am using here the abs-value to avoid eventually negative value during a fit,
+			// which can happen if the scattering curve is weakly dependent on this parameter or
+			// if this function is not the right choice to describe the scattering curve
 			SASFIT_CHECK_COND1((Nagg < 0.0), param, "Nagg(%lg) < 0",Nagg);
 			V = Nagg*Vc;
 			Rc = pow(V*3./4./M_PI,1./3.);
@@ -111,10 +112,10 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 		b_sh = Vsh	* (rho_sh - rho_solv);
 	}
 
-	if ((t == 0.0) || (b_sh == 0.0)) 
+	if ((t == 0.0) || (b_sh == 0.0))
 	{
 		Fsh = Psh = 0.0;
-	} else 
+	} else
 	{
 		SASFIT_CHECK_COND(((alpha == 3) && (Rc == 0)), param, "alpha==3 and Rc==0");
 
@@ -122,10 +123,10 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 		Rm = Rc+t;
 		//Fsh = SPHERE_R_ma_ave(interp,q,Rc,Rc+t,alpha,error);
 		res1 = sasfit_integrate(Rc, Rc+t, sasfit_ff_Sphere_R_ma_Profile_ave_core, param);
-		if (alpha == 3.0) 
+		if (alpha == 3.0)
 		{
 			res2 = 4.*M_PI*(log(Rm/Rc));
-		} else 
+		} else
 		{
 			res2 = 4./(3.-alpha)*M_PI*(pow(Rm,3.-alpha)-pow(Rc,3.-alpha));
 		}
@@ -162,7 +163,7 @@ scalar sasfit_ff_Sphere_R_ma_Profile_v(scalar q, sasfit_param * param, int distr
 		     if ( distr == 0 ) q =           q + param->p[7];
 		else if ( distr == 7 ) q = param->p[0] + q;
 		else                   q = param->p[0] + param->p[7];
-		
+
 		return sasfit_ff_sphere_v(q, param, 0);
 	}
 }

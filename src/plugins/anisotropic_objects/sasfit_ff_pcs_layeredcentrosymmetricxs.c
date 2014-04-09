@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -20,13 +20,13 @@
 #define Q	param->p[MAXPAR-1]
 
 
-scalar layeredcentrosymmetric_FF(sasfit_param *param) 
+scalar layeredcentrosymmetric_FF(sasfit_param *param)
 {
 	scalar Fc, Fsh, Pcs, LNdistr, u, v;
 	sasfit_param subParam;
 
 	SASFIT_ASSERT_PTR(param);
-		
+
 	u = LL*Q/2.0;
 	v = (LL+2*SH)*Q/2.0;
 
@@ -35,7 +35,7 @@ scalar layeredcentrosymmetric_FF(sasfit_param *param)
 	} else {
 		Fc = (ETA_C-ETA_SOL)*(LL+2.0*SH)*sin(v)/v;
 	}
-		
+
 	if (u == 0) {
 		Fsh = (ETA_C-ETA_SH)*LL;
 	} else {
@@ -47,7 +47,7 @@ scalar layeredcentrosymmetric_FF(sasfit_param *param)
 	return Pcs;
 
 }
-scalar layeredcentrosymmetric_core(scalar x, sasfit_param *param) 
+scalar layeredcentrosymmetric_core(scalar x, sasfit_param *param)
 {
 	scalar Fc, Fsh, Pcs, LNdistr, u, v;
 	sasfit_param subParam;
@@ -56,7 +56,7 @@ scalar layeredcentrosymmetric_core(scalar x, sasfit_param *param)
 
 	SH = x;
 
-	
+
 	Pcs = layeredcentrosymmetric_FF(param);
 
 	sasfit_init_param( &subParam );
@@ -74,7 +74,7 @@ scalar layeredcentrosymmetric_core(scalar x, sasfit_param *param)
 
 scalar layeredcentrosymmetric_SH(scalar x, sasfit_param * param)
 {
-	scalar SHstart = 0.0, SHend = 0.0; 
+	scalar SHstart = 0.0, SHend = 0.0;
 	scalar Pcs;
 
 	scalar LNdistr;
@@ -86,7 +86,7 @@ scalar layeredcentrosymmetric_SH(scalar x, sasfit_param * param)
 		LL=LC;
 		LNdistr = 1;
 	} else {
-		LL = x;	
+		LL = x;
 		sasfit_init_param( &subParam );
 		subParam.p[0] = 1.0;
 		subParam.p[1] = SIGMA_LC;

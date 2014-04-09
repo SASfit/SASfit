@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -16,9 +16,9 @@
 scalar ThinSphericalShell_core(scalar x, sasfit_param * param)
 {
 	scalar P, LNdistr;
-	
+
 	sasfit_param subParam;
-	
+
 	SASFIT_ASSERT_PTR(param);
 	sasfit_init_param( &subParam );
 

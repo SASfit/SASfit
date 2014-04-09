@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -11,13 +11,13 @@
 scalar sasfit_sq_p__q___worm_ps1_(scalar q, sasfit_param * param)
 {
 
-// J. S. Pedersen and P. Schurtenberger, 
-// Scattering Functions of Semiflexible Polymers with and without Excluded Volume Effects, 
+// J. S. Pedersen and P. Schurtenberger,
+// Scattering Functions of Semiflexible Polymers with and without Excluded Volume Effects,
 // Macromolecules 1996, 29, 7602-7612
 // DOI: 10.1021/ma9607630
 // here method 1 of the above paper is implemented
 
-	
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -34,10 +34,10 @@ scalar sasfit_sq_p__q___worm_ps1_(scalar q, sasfit_param * param)
 	double na1[6][3] = {
 	{ 0.0,		 0.0,		 0.0	}, // a1[0][*]
 	{ 0.0,		 0.0,		 0.0	}, // a1[1][*]
-//	{ 0.3054,	 0.2316,	-22.779	}, // a1[2][*]
-	{ 0.3054,	 0.2316,	-22.25	}, // a1[2][*]
-//	{ 0.05777,	 2.6531,	 23.2457}, // a1[3][*]
-	{ 0.05777,	 2.6531,	 23.25}, // a1[3][*]
+	{ 0.3054,	 0.2316,	-22.779	}, // a1[2][*]
+//	{ 0.3054,	 0.2316,	-22.25	}, // a1[2][*]
+	{ 0.05777,	 2.6531,	 23.2457}, // a1[3][*]
+//	{ 0.05777,	 2.6531,	 23.25}, // a1[3][*]
 	{-0.00604,	 0.3706,	 8.1092	}, // a1[4][*]
 	{-0.03902,	-1.0081,	-3.3603	}  // a1[5][*]
 };
@@ -127,16 +127,16 @@ if (q_mem*B > 10.) {
 
 if (EXVOL < 1) {
 	Rg2_0 = fRg2(L,B);
-	xi = q*M_PI/(2.0*L)*Rg2_0;
-	if (1.0/gsl_pow_5(xi) > 100) {
+	xi = q*M_PI/(2.0*fabs(L))*Rg2_0;
+	if (gsl_pow_5(xi) < 0.01) {
 		chi = 0.0;
 	} else {
 		chi = exp(-1.0/gsl_pow_5(xi));
 	}
 } else {
 	Rg2_0 = fRg2(L,B)*falpha2(L,B);
-	xi = q*B*pow(M_PI*B/(1.103*L),3./2.) * pow(Rg2_0/(B*B),1.282);
-	if (1.0/gsl_pow_5(xi) > 100) {
+	xi = q*B*pow(M_PI*B/(1.103*fabs(L)),3./2.) * pow(Rg2_0/(B*B),1.282);
+	if (gsl_pow_5(xi) < 0.01) {
 		chi = 0;
 	} else {
 		chi = exp(-1.0/gsl_pow_5(xi));
@@ -167,7 +167,7 @@ for (i=2;i<=5;i++) {
 			        + a1[i][j]*pow(nb,-j)*AEXP1;
 		} else {
 			AA[i] =   AA[i]
-			        + a1[i][j]*pow(nb,-j)*AEXP1 
+			        + a1[i][j]*pow(nb,-j)*AEXP1
 				    + a2[i][j]*pow(nb,j)*AEXP2;
 		}
 	}
@@ -184,7 +184,7 @@ for (i=0;i<=2;i++) {
 			        + b1[i][j]*pow(nb,-j);
 		} else {
 			BB[i] =   BB[i]
-			        + b1[i][j]*pow(nb,-j) 
+			        + b1[i][j]*pow(nb,-j)
 				    + b2[i][j]*pow(nb,j)*AEXP2;
 		}
 	}
@@ -209,8 +209,8 @@ if (EXVOL < 1) {
 }
 Srod = IRod(q,L);
 
-// The large argument expansion for q*B>10 has been done as in lsqres.for. However, this expansion 
-// is not described in the original publication. 
+// The large argument expansion for q*B>10 has been done as in lsqres.for. However, this expansion
+// is not described in the original publication.
 // Without this expansion S(q) does not properly converges to the proper potential behaviour.
 if (q_mem*B<=10) {
 	Swc = ((1.0-chi)*Schain + chi*Srod)*WGAMMA;
