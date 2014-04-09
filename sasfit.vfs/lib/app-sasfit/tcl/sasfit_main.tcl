@@ -3515,38 +3515,6 @@ bind $IQGraph(w) <Motion> \
                      -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
          }
         }
-bind $IQGraph(w) <Control-ButtonPress-1> \
-        {
-         set IQGraph(x,min) ""
-         set IQGraph(x,max) ""
-         set IQGraph(y,min) ""
-         set IQGraph(y,max) ""
-         set xcoord [expr [winfo pointerx $IQGraph(w)] \
-                         -[winfo rootx $IQGraph(w)]]
-         set ycoord [expr [winfo pointery $IQGraph(w)] \
-                         -[winfo rooty $IQGraph(w)]]
-         if { $IQGraph(e,element) > 0 } {
-            set xycoord [$IQGraph(w) invtransform $xcoord $ycoord]
-            set IQGraph(x,min) [lindex $xycoord 0]
-            set IQGraph(y,min) [lindex $xycoord 1]
-         }
-         bind $IQGraph(w) <ButtonRelease-1> \
-              {
-               set xcoord [expr [winfo pointerx $IQGraph(w)] \
-                               -[winfo rootx $IQGraph(w)]]
-               set ycoord [expr [winfo pointery $IQGraph(w)] \
-                               -[winfo rooty $IQGraph(w)]]
-               if { $IQGraph(e,element) > 0 } {
-                  set xycoord [$IQGraph(w) invtransform $xcoord $ycoord]
-                  set IQGraph(x,max) [lindex $xycoord 0]
-                  set IQGraph(y,max) [lindex $xycoord 1]
-                  RefreshGraph IQGraph
-                  .xycoordinates configure \
-                     -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
-               }
-               bind $IQGraph(w) <ButtonRelease-1> ""
-              }
-        }
 bind $IQGraph(w) <Shift-ButtonPress-1> \
         {
          global IQGraph 
@@ -3648,38 +3616,6 @@ bind $GlobalFitIQGraph(w) <Motion> \
             .xycoordinates configure \
                      -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
          }
-        }
-bind $GlobalFitIQGraph(w) <Control-ButtonPress-1> \
-        {
-         set GlobalFitIQGraph(x,min) ""
-         set GlobalFitIQGraph(x,max) ""
-         set GlobalFitIQGraph(y,min) ""
-         set GlobalFitIQGraph(y,max) ""
-         set xcoord [expr [winfo pointerx $GlobalFitIQGraph(w)] \
-                         -[winfo rootx $GlobalFitIQGraph(w)]]
-         set ycoord [expr [winfo pointery $GlobalFitIQGraph(w)] \
-                         -[winfo rooty $GlobalFitIQGraph(w)]]
-         if { $GlobalFitIQGraph(e,element) > 0 } {
-            set xycoord [$GlobalFitIQGraph(w) invtransform $xcoord $ycoord]
-            set GlobalFitIQGraph(x,min) [lindex $xycoord 0]
-            set GlobalFitIQGraph(y,min) [lindex $xycoord 1]
-         }
-         bind $GlobalFitIQGraph(w) <ButtonRelease-1> \
-              {
-               set xcoord [expr [winfo pointerx $GlobalFitIQGraph(w)] \
-                               -[winfo rootx $GlobalFitIQGraph(w)]]
-               set ycoord [expr [winfo pointery $GlobalFitIQGraph(w)] \
-                               -[winfo rooty $GlobalFitIQGraph(w)]]
-               if { $GlobalFitIQGraph(e,element) > 0 } {
-                  set xycoord [$GlobalFitIQGraph(w) invtransform $xcoord $ycoord]
-                  set GlobalFitIQGraph(x,max) [lindex $xycoord 0]
-                  set GlobalFitIQGraph(y,max) [lindex $xycoord 1]
-                  RefreshGraph GlobalFitIQGraph
-                  .xycoordinates configure \
-                     -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
-               }
-               bind $GlobalFitIQGraph(w) <ButtonRelease-1> ""
-              }
         }
 bind $GlobalFitIQGraph(w) <Shift-ButtonPress-1> \
         {
@@ -3783,38 +3719,6 @@ bind $ResIQGraph(w) <Motion> \
                      -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
          }
         }
-bind $ResIQGraph(w) <Control-ButtonPress-1> \
-        {
-         set ResIQGraph(x,min) ""
-         set ResIQGraph(x,max) ""
-         set ResIQGraph(y,min) ""
-         set ResIQGraph(y,max) ""
-         set xcoord [expr [winfo pointerx $ResIQGraph(w)] \
-                         -[winfo rootx $ResIQGraph(w)]]
-         set ycoord [expr [winfo pointery $ResIQGraph(w)] \
-                         -[winfo rooty $ResIQGraph(w)]]
-         if { $ResIQGraph(e,element) > 0 } {
-            set xycoord [$ResIQGraph(w) invtransform $xcoord $ycoord]
-            set ResIQGraph(x,min) [lindex $xycoord 0]
-            set ResIQGraph(y,min) [lindex $xycoord 1]
-         }
-         bind $ResIQGraph(w) <ButtonRelease-1> \
-              {
-               set xcoord [expr [winfo pointerx $ResIQGraph(w)] \
-                               -[winfo rootx $ResIQGraph(w)]]
-               set ycoord [expr [winfo pointery $ResIQGraph(w)] \
-                               -[winfo rooty $ResIQGraph(w)]]
-               if { $ResIQGraph(e,element) > 0 } {
-                  set xycoord [$ResIQGraph(w) invtransform $xcoord $ycoord]
-                  set ResIQGraph(x,max) [lindex $xycoord 0]
-                  set ResIQGraph(y,max) [lindex $xycoord 1]
-                  RefreshGraph ResIQGraph
-                  .xycoordinates configure \
-                     -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
-               }
-               bind $ResIQGraph(w) <ButtonRelease-1> ""
-              }
-        }
 
 .obW.tab bind SDGraph <Enter> \
         {.quickmessage configure -text \
@@ -3835,42 +3739,6 @@ bind $SDGraph(w) <Motion> \
             .xycoordinates configure \
                      -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
          }
-        }
-bind $SDGraph(w) <Control-ButtonPress-1> \
-        {
-         set SDGraph(x,min) ""
-         set SDGraph(x,max) ""
-         set SDGraph(y,min) ""
-         set SDGraph(y,max) ""
-         set xcoord [expr [winfo pointerx $SDGraph(w)] \
-                         -[winfo rootx $SDGraph(w)]]
-         set ycoord [expr [winfo pointery $SDGraph(w)] \
-                         -[winfo rooty $SDGraph(w)]]
-         set SDGraph(c,x) $xcoord
-         set SDGraph(c,y) $ycoord
-         
-         $SDGraph(w) crosshairs configure -position @$SDGraph(c,x),$SDGraph(c,y)
-         if { $SDGraph(e,element) > 0 } {
-            set xycoord [$SDGraph(w) invtransform $xcoord $ycoord]
-            set SDGraph(x,min) [lindex $xycoord 0]
-            set SDGraph(y,min) [lindex $xycoord 1]
-         }
-         bind $SDGraph(w) <ButtonRelease-1> \
-              {
-               set xcoord [expr [winfo pointerx $SDGraph(w)] \
-                               -[winfo rootx $SDGraph(w)]]
-               set ycoord [expr [winfo pointery $SDGraph(w)] \
-                               -[winfo rooty $SDGraph(w)]]
-               if { $SDGraph(e,element) > 0 } {
-                  set xycoord [$SDGraph(w) invtransform $xcoord $ycoord]
-                  set SDGraph(x,max) [lindex $xycoord 0]
-                  set SDGraph(y,max) [lindex $xycoord 1]
-                  RefreshGraph SDGraph
-                  .xycoordinates configure \
-                     -text "([fp [lindex $xycoord 0]],[fp [lindex $xycoord 1]])"
-               }
-               bind $SDGraph(w) <ButtonRelease-1> ""
-              }
         }
 
 .obW.tab bind StructParData <Enter> \
