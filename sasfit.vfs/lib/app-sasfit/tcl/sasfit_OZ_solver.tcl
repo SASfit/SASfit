@@ -843,7 +843,7 @@ proc sasfit_OZ_solver {} {
                                             }
     .oztop.tab.sq.popup add command -label "Export Data..." \
     	-command { export_blt_graph ozSQGraph }
-    bind .oztop.tab.sq.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.sq.popup %X %Y }
+    bind .oztop.tab.sq.draw <ButtonPress-3> {tk_popup .oztop.tab.sq.popup %X %Y }
     bind .oztop.tab.sq.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.sq.popup %X %Y }
     Blt_ZoomStack $ozSQGraph(w)
 #
@@ -906,7 +906,7 @@ proc sasfit_OZ_solver {} {
                                             }
     .oztop.tab.gr.popup add command -label "Export Data..." \
     	-command { export_blt_graph ozgrGraph }
-    bind .oztop.tab.gr.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.gr.popup %X %Y }
+    bind .oztop.tab.gr.draw <ButtonPress-3> {tk_popup .oztop.tab.gr.popup %X %Y }
     bind .oztop.tab.gr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.gr.popup %X %Y }
     Blt_ZoomStack $ozgrGraph(w)
 
@@ -970,7 +970,7 @@ proc sasfit_OZ_solver {} {
                                             }
     .oztop.tab.cr.popup add command -label "Export Data..." \
     	-command { export_blt_graph ozcrGraph }
-    bind .oztop.tab.cr.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.cr.popup %X %Y }
+    bind .oztop.tab.cr.draw <ButtonPress-3> {tk_popup .oztop.tab.cr.popup %X %Y }
     bind .oztop.tab.cr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.cr.popup %X %Y }
     Blt_ZoomStack $ozcrGraph(w)
 
@@ -1034,7 +1034,7 @@ proc sasfit_OZ_solver {} {
                                             }
     .oztop.tab.gammar.popup add command -label "Export Data..." \
     	-command { export_blt_graph ozgammarGraph }
-    bind .oztop.tab.gammar.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.gammar.popup %X %Y }
+    bind .oztop.tab.gammar.draw <ButtonPress-3> {tk_popup .oztop.tab.gammar.popup %X %Y }
     bind .oztop.tab.gammar.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.gammar.popup %X %Y }
     Blt_ZoomStack $ozgammarGraph(w)
 
@@ -1097,7 +1097,7 @@ proc sasfit_OZ_solver {} {
                                              }
      .oztop.tab.betaUr.popup add command -label "Export Data..." \
      	-command { export_blt_graph ozbetaUrGraph }
-     bind .oztop.tab.betaUr.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.betaUr.popup %X %Y }
+     bind .oztop.tab.betaUr.draw <ButtonPress-3> {tk_popup .oztop.tab.betaUr.popup %X %Y }
      bind .oztop.tab.betaUr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.betaUr.popup %X %Y }
    
     Blt_ZoomStack $ozbetaUrGraph(w)
@@ -1161,7 +1161,7 @@ proc sasfit_OZ_solver {} {
                                              }
      .oztop.tab.fr.popup add command -label "Export Data..." \
      	-command { export_blt_graph ozfrGraph }
-     bind .oztop.tab.fr.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.fr.popup %X %Y }
+     bind .oztop.tab.fr.draw <ButtonPress-3> {tk_popup .oztop.tab.fr.popup %X %Y }
      bind .oztop.tab.fr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.fr.popup %X %Y }
    
     Blt_ZoomStack $ozfrGraph(w)
@@ -1226,7 +1226,7 @@ proc sasfit_OZ_solver {} {
                                              }
      .oztop.tab.br.popup add command -label "Export Data..." \
      	-command { export_blt_graph ozBrGraph }
-     bind .oztop.tab.br.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.br.popup %X %Y }
+     bind .oztop.tab.br.draw <ButtonPress-3> {tk_popup .oztop.tab.br.popup %X %Y }
      bind .oztop.tab.br.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.br.popup %X %Y }
    
     Blt_ZoomStack $ozBrGraph(w)
@@ -1290,7 +1290,7 @@ proc sasfit_OZ_solver {} {
                                              }
      .oztop.tab.yr.popup add command -label "Export Data..." \
      	-command { export_blt_graph ozyrGraph }
-     bind .oztop.tab.yr.draw <Double-ButtonPress-3> {tk_popup .oztop.tab.yr.popup %X %Y }
+     bind .oztop.tab.yr.draw <ButtonPress-3> {tk_popup .oztop.tab.yr.popup %X %Y }
      bind .oztop.tab.yr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.yr.popup %X %Y }
    
     Blt_ZoomStack $ozyrGraph(w)
