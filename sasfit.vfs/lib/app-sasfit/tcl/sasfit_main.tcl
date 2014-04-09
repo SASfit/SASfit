@@ -1526,7 +1526,7 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set tmparr(res) [lrange $res $firsti $lasti]
    set tmparr(res,file) [lrange $resfile $firsti $lasti]
    set tmparr(res,calc) [lrange $rescalc $firsti $lasti]
-puts "Hallo [llength $tmparr(Q)]"
+
    dr data_redu $j tmparr [llength $tmparr(Q)] \
       $tmparr(Q) $tmparr(I) $tmparr(DI) $tmparr(res) $tmparr(res,file) $tmparr(res,calc)
 
@@ -2071,8 +2071,7 @@ proc destroy_ascii_options {} {
 	}
 }
 
-proc merge_cmd_apply { sasfit_arr isGlobal
-} {
+proc merge_cmd_apply { sasfit_arr isGlobal} {
 	upvar $sasfit_arr localsasfit
 	global ASCIIData IQGraph GlobalFitIQGraph
 	global fn hide fskip lskip divisor widname

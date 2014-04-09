@@ -1497,7 +1497,7 @@ proc read_Ascii {filename ASCIIData args} {
 		lappend Data(Q)   [expr $x*$Data(xscale)]
 		lappend Data(I)   $y
 		lappend Data(DI)  $e
-		lappend Data(res) $res
+		lappend Data(res) [expr $res*$Data(xscale)]
 		incr Data(npoints)
 	     } else {
 		lappend Data(Comment) $line
@@ -1863,7 +1863,7 @@ foreach line $ClipboardSplit {
         lappend Data(Q)   [expr $x*$Data(xscale)]
         lappend Data(I)   $y
         lappend Data(DI)  $e
-        lappend Data(res) $res
+        lappend Data(res) [expr $res*$Data(xscale)]
         incr Data(npoints)
      } else {
         lappend Data(Comment) $line
@@ -1987,7 +1987,7 @@ foreach line $ClipboardSplit {
 	}
         lappend Data(I)   $yav
         lappend Data(DI)  $eav
-        lappend Data(res) $res
+        lappend Data(res) [expr $res*$Data(xscale)]
         incr Data(npoints)
 	set Data(error) 1
      } else {

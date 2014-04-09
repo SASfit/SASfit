@@ -12659,13 +12659,9 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
 		     }
 		 }
 
-#                 puts "theoretical scattering curves caluclated"
-#                 puts $IthIres
                  set NR  [sasfit_nr ::AnalytPar \
                                     [list $Q $I $DI] \
                          ]
-#                 puts "size distribution caluclated, plot it ..."
-#                 puts $NR
                  NewFitDataCmd Q IthIres $sub NR
               } else { tk_messageBox -icon error -title ERROR \
                          -message "NO error values of data points are avaliable or assumed" 
