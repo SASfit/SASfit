@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -24,11 +24,11 @@ scalar sasfit_sq_Pprime_KholodenkoWorm_core(scalar x, sasfit_param * param)
 
         if (x == 0.0) return 1.0;
 
-        if (Q == 3.0/LB) 
+        if (Q == 3.0/LB)
 	{
                 fy = x/sinh(x);
-        } 
-	else  if (Q < 3.0/LB) 
+        }
+	else  if (Q < 3.0/LB)
 	{
                 E = sqrt(1.0-pow(Q*LB/3.0, 2.0));
                 fy = sinh(E*x)/(E*sinh(x));

@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -35,7 +35,7 @@ scalar sasfit_ff_cylsh_sd_homoxs(scalar q, sasfit_param * param)
 
 	// insert your code here
 	Pcs = sasfit_ff_pcs_homogeneousplate(q,param);
-	
+
 	sasfit_init_param( &subParam );
 	subParam.p[0] = R;
 	subParam.p[1] = H;
