@@ -20,7 +20,7 @@ section term $P_\text{cs}(Q)$ can be homogeneous, a
 centro-symmetric bilayer, a gaussian bilayer, etc. . This cross
 section factor can than be combined with the overall shape factor
 $P'(Q)$ of for examples a thin spherical shell of elliptical
-shell, a then cylindrical shell or a thin disc. As the total form
+shell, a thin cylindrical shell or a thin disc. As the total form
 factor is the product of the cross-section form factor and a shape
 form factor one can either programm all combination of
 cross-section and shape factors into individual form factor
@@ -29,16 +29,16 @@ factor and the shape factor as a structure factors. Using the
 monodisperse approximation yields than the same result.
 
 In this plugin the product of the cross-section and shape term
-have been implemented as form factor under "\texttt{by
-plugin|anisotropic obj.|local planar obj.}" and "\texttt{by
-plugin|anisotropic obj.|local cylindrical obj.}". The
+have been implemented as form factor under "\texttt{[by
+plugin|anisotropic obj.|local planar obj.]}" and "\texttt{[by
+plugin|anisotropic obj.|local cylindrical obj.]}". The
 cross-section terms alone are also implemented as form factors
-under "\texttt{by plugin|anisotropic obj.|Pcs(Q) for planar obj.}"
-and "\texttt{by plugin|anisotropic obj.|Pcs(Q) for cylindrical
-obj.}". The shape factors are also available as structure factors
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}" and "\texttt{by plugin|anisotropic obj.|P'(Q): local
-cylindrical obj.}".
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q) for planar obj.]}"
+and "\texttt{[by plugin|anisotropic obj.|Pcs(Q) for cylindrical
+obj.]}". The shape factors are also available as structure factors
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}" and "\texttt{[by plugin|anisotropic obj.|P'(Q): local
+cylindrical obj.]}".
 
 The cross-section form factors can be easily calculated if the
 scattering length density contrast profile
@@ -82,8 +82,8 @@ bilayer with a Gaussian scattering length density profile,
 layer with Gaussian chains attached to the surface.
 These form factors are supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 
 \clearpage
 
@@ -99,7 +99,7 @@ obj.}".
 \end{figure}
 
 This cross-section form factor describes the scattering of a layer with homogeneous
-scattering length density $\eta_L$ in a matrix of a scattering length density $\eta_{solv}$.
+scattering length density $\eta_L$ in a matrix of a scattering length density $\eta_\textrm{solv}$.
 The thickness can have a distribution described by a log-normal distribution according to eq.\ \ref{eq:LogNormal}.
 
 \begin{align}
@@ -115,7 +115,7 @@ P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t)
     \item[\texttt{dummy}] unused disabled parameter
     \item[\texttt{dummy}] unused disabled parameter
     \item[\texttt{eta\_l}] scattering length density of layer $\eta_L$
-    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_{solv}$
+    \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\textrm{solv}$
 \end{description}
 
 \noindent
@@ -123,8 +123,8 @@ P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t)
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -170,8 +170,8 @@ P_\text{cs}(Q,\sigma_{T},T) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{T},1,T)
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt[{by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -230,8 +230,8 @@ P_\text{cs}(Q,\sigma_{L_\textrm{c}},L_\textrm{c},\sigma_{L_\textrm{sh}},L_\textr
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -304,8 +304,8 @@ so that
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local planar objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
-obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local planar
+obj.]}".
 \end{itemize}
 
 \begin{figure}[htb]
@@ -391,7 +391,7 @@ $\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(
 %\begin{itemize}
 %  \item This form factor is supposed to be combined with a shape factor for
 %local planar objects which are implemented as structure  plugins
-%under "\texttt{by plugin|anisotropic obj.|P'Q): local planar
+%under "\texttt{by plugin|anisotropic obj.|P'(Q): local planar
 %obj.}".
 %\end{itemize}
 %
@@ -459,7 +459,7 @@ P_\text{cs}(Q,\sigma_{R},R) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{R},1,R)
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local cylindrical objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local cylindrical obj.}".
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local cylindrical obj.]}".
 \item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
@@ -519,8 +519,8 @@ r(R,\epsilon,\phi) &=& R\sqrt{\sin^2\phi+\epsilon^2\cos^2\phi}
 \begin{itemize}
   \item This form factor is supposed to be combined with a shape factor for
 local cylindrical objects which are implemented as structure  plugins
-under "\texttt{by plugin|anisotropic obj.|P'Q): local cylindrical obj.}".
-\item As the form factor already have the width distribution included one normally uses in \SASfit as a size distribution
+under "\texttt{[by plugin|anisotropic obj.|P'(Q): local cylindrical obj.]}".
+\item As the form factor already has the width distribution included one normally uses in \SASfit as a size distribution
 the \texttt{Delta}-distribution.
 \end{itemize}
 
@@ -528,8 +528,461 @@ the \texttt{Delta}-distribution.
 \subsection{P'(Q) for local planar obj.} ~\\
 \label{plugin:Pprime4planar}
 
+
+
+\clearpage
+\subsubsection{P'(Q): thin discs} ~\\
+\label{plugin:Pprime4Discs}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.686\textwidth,height=0.27\textwidth]{../images/form_factor/anisotropic/ThinDisc.png}
+\end{center}
+\caption{Sketch of a thin disc with a radius $R$. The thickness of the disc is assumed to be much smaller than its radius.}
+\label{fig:ThinDisc}
+\end{figure}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Disc}:}
+\begin{description}
+    \item[\texttt{R}] most probable radius $R$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sima}] width $\sigma$ of radius distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinDisc.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Disc}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinDisc}
+\end{figure}
+
+\clearpage
+\subsubsection{P'(Q): thin spherical shell} ~\\
+\label{plugin:Pprime4spShell}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.43\textwidth,height=0.463\textwidth]{../images/form_factor/anisotropic/Sphere_thin.png}
+\end{center}
+\caption{Sketch of a thin spherical shell with a radius $R$. The thickness of the shell is assumed to be much smaller than the radius of the sphere.}
+\label{fig:ThinSphericalShell}
+\end{figure}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Spherical Shell}:}
+\begin{description}
+    \item[\texttt{R}] most probable radius $R$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sima}] width $\sigma$ of radius distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinSphShell.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Spherical Shell}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinSphShell}
+\end{figure}
+
+
+\clearpage
+\subsubsection{P'(Q): thin ellipsoidal shell} ~\\
+\label{plugin:Pprime4ellShell}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.596\textwidth,height=0.449\textwidth]{../images/form_factor/anisotropic/Ellipsoid_hollow.png}
+\end{center}
+\caption{Sketch of a thin ellipsoidal shell with a radius $R$ and eccentricity $\epsilon$. The thickness of the shell is assumed to be much smaller than the two radii of the elliptical shell.}
+\label{fig:ThinEllipsoidalShell}
+\end{figure}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Ellipsoidal Shell}:}
+\begin{description}
+    \item[\texttt{R}] most probable radius $R$
+    \item[\texttt{epsilon}] eccentricity $\epsilon$
+    \item[\texttt{sima\_R}] width $\sigma_R$ of radius distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinEllShell.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Ellipsoidal Shell}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinEllShell}
+\end{figure}
+
+\clearpage
+\subsubsection{P'(Q): thin hollow cylinder} ~\\
+\label{plugin:Pprime4hollowcylinder}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.3922\textwidth,height=0.4318\textwidth]{../images/form_factor/anisotropic/ThinHollowCylinder.png}
+\end{center}
+\caption{Sketch of a thin hollow cylinder of height $H$ and radius $R$. The thickness of the wall is assumed to be much smaller than the outer dimensions of the cylinder.}
+\label{fig:ThinHollowCylinder}
+\end{figure}
+
+\begin{align}
+\begin{split}
+\Xi(Q,R,H,\alpha) & = 2\pi R
+\left[ R \frac{J_1\left(Q R \sin\alpha\right)}{Q R \sin\alpha} \right. \\
+& \left. \quad \quad + H J_0\left( \frac{QH}{2} \cos\alpha\right)\frac{\sin\left(\frac{QH}{2} \cos\alpha\right)}{\frac{QH}{2} \cos\alpha} \right]
+\end{split} \\
+P_\text{thc}(Q,R,H) &= \int_0^{\pi/2} \Xi^2(Q,R,H,\alpha) \sin\alpha \mathrm{d}\alpha \\
+\begin{split}
+I_{thc}(Q,R,H) &= \int_0^\infty \int_0^\infty
+\mathrm{LogNorm}(r,1,\sigma_R,1,R,1) \\
+& \qquad \qquad  \mathrm{LogNorm}(h,1,\sigma_H,1,H,1) P_\text{thc}(Q,r,h)
+\, \mathrm{d}h \, \mathrm{d}r
+\end{split}
+\end{align}
+
+\noindent
+\textbf{Input parameters for \texttt{P'(Q): Thin Hollow Cylinder}:}
+\begin{description}
+    \item[\texttt{R}] most probable cylinder radius $R$
+    \item[\texttt{H}] most probable cylinder height $H$
+    \item[\texttt{sima\_R}] width $\sigma_R$ of radius distribution (LogNorm)
+    \item[\texttt{sima\_H}] width $\sigma_H$ of height distribution (LogNorm)
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor of local planar objects which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local planar obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeThinHollowCylinder.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Thin Hollow Cylinder}" in combination with a constant background of 1".}
+\label{fig_IQ:PprimeThinHollowCylinder}
+\end{figure}
+
+
+\clearpage
 \subsection{P'(Q) for local cylindrical obj.} ~\\
 \label{plugin:Pprime4cylindrical}
+
+
+\clearpage
+\subsubsection{P'(Q): rods} ~\\
+\label{plugin:Pprime4rods}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.926\textwidth,height=0.24\textwidth]{../images/form_factor/anisotropic/ThinRod.png}
+\end{center}
+\caption{Sketch of a thin Rod of Length $L$. The diameter of the rod is assumed to be much smaller than its length.}
+\label{fig:ThinRod}
+\end{figure}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): Kholodenko's worm} ~\\
+\label{plugin:Pprime4kohlodenko}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.617\textwidth,height=0.762\textwidth]{SemiflexiblePolymerTxt.png}
+\end{center}
+\caption{}
+\label{fig:KholodenkoWorm}
+\end{figure}
+
+By using the analogy between Dirac’s fermions
+and semi-flexible polymers
+Kholodenko \cite{kholodenko93} could give a simple expression for the
+scattering behaviour of wormlike structures. The form factor $P_0(Q)$ resulting
+from Kholodenko’s approach is designed to reproduce
+correctly the rigid-rod limit and the random-coil limit.
+Defining $x = 3L/l_b$ ($L$: contour length, $l_b$: Kuhn length), it is given by
+\begin{align}
+P_0(Q,L,l) &= \frac{2}{x} \left[I_{(1)} -\frac{1}{x}I_{(2)}\right]
+\label{eq:KholodenkoPprime}
+\end{align}
+where
+\begin{align}
+I_{(n)}(x) &= \int_0^x  f(z) \, z^{n-1} \, dz
+\end{align}
+together with
+\begin{align}
+f(z)) &=
+\begin{cases} \displaystyle
+\frac{1}{E}\frac{\sinh(Ez)}{\sinh(z)} & \text{for} \quad \displaystyle Q \leq \frac{3}{l}\\ \\
+\displaystyle
+\frac{1}{F}\frac{\sin(Fz)}{\sinh(z)} & \text{for} \quad \displaystyle Q > \frac{3}{l}
+\end{cases}
+\end{align}
+and
+\begin{align}
+E = \sqrt{1-\left(\frac{lQ}{3}\right)^2} \quad \text{and} \quad F = \sqrt{\left(\frac{lQ}{3}\right)^2-1}
+\end{align}
+
+\begin{align}
+P(Q,L,l_b,R) = P_0(Q,L,l_b)\, P_{cs}(Q,R)
+\end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{P'(Q) Kholodenko Worm}:}\\
+\begin{description}
+\item[\texttt{lb}] Kuhn length\footnote{The Kuhn length $l_b$ is related to the length $a$ of
+    locally stiff segment simply via $l_b=2a$} $l$ of semi-flexible worm-like structure
+\item[\texttt{L}] contour length $L$ of semi-flexible worm-like structure
+\end{description}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\item The equivalent solution of J.S. Pedersen \cite{Pedersen96Macrom} would be the expressions of wormlike structures without excluded volume effects.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): wormlike PS1} ~\\
+\label{plugin:Pprime4wormPS1}
+
+For worm-like micelles J.S. Pedersen \cite{Pedersen96Macrom} has developed three models
+for worm-like micelles, from which one is basing on a method developed by Yoshizaki et al.\ \cite{Yoshizaki1980}.
+
+\paragraph*{\textbf{Without Excluded Volume Effects.}}
+This first of the three solutions given by J.S. Pedersen \cite{Pedersen96Macrom} for
+worm-like micelles starts from the expression for the scattering function as follows:
+\begin{align}
+\label{eq:SWC}
+\begin{split}
+S_\text{WC}(Q,L,l_B) &= L^2 \left[  \left(1-\chi(Q,L,l_B)\right)
+            S_\text{chain}(Q,L,l_B) \right. \\
+&  \left. \qquad  \qquad  +\chi(Q,L,l_B) S_\text{rod}(Q,L)    \right] \Gamma(Q,L,l_B)
+\end{split}
+\end{align}
+where $S_\text{chain}(Q,L,l_B)$ is the scattering function of a flexible
+chain without excluded volume effects and $S_\text{rod}(Q,L)$ is
+the scattering function of a rod. Furthermore, $\chi(Q,L,l_b)$
+is a crossover function, and the function $\Gamma(q,L,b)$ corrects
+the crossover region.
+The function $S_\text{chain}(Q,L,l_B)$ is given by the Debye function:
+\begin{align}
+\label{eq:SDebye}
+S_\text{chain}(Q,L,l_B) &= S_\text{Debye}(Q,L,l_B) = 2\left[\exp(-u)+u-1\right]/u^2
+\end{align}
+with $u=\left\langle R_g^2\right\rangle_0 Q^2 $, where $\left\langle R_g^2\right\rangle_0$
+is the ensemble average of the square of the radius of gyration and given by
+\begin{align}
+\left\langle R_g^2\right\rangle_0 &= \frac{Ll_B}{6}\left[1
+        -\frac{3}{2n_B}
+        +\frac{3}{2n_B^2}
+        -\frac{3}{4n_B^3}
+        \left[1-\exp(-2n_B)\right]\right]
+\end{align}
+where $n_B=L/l_B$ b is the number of statistical segments of the chain.
+The function $S\text{rod}(Q,L)$ in \ref{eq:SWC} is the scattering function
+of an infinitely thin rod
+\begin{align}
+S_\text{rod}(Q,L) &= 2 \text{Si}(Q,L)/(QL)-4\sin^2(QL/2)/(QL)^2
+\end{align}
+where
+\begin{align}
+\text{Si}(Q,L) &= \int_0^x t^{-1} \sin t \; \mathrm{d}t
+\end{align}
+Furthermore we have
+\begin{align}
+\chi(Q,L,l_B) &= \exp\left(-\xi^{-5}\right)
+\end{align}
+The parameter $\xi$ is given by
+\begin{align}
+\xi &= Q\frac{\pi}{2L} \left\langle R_g^2\right\rangle_0
+\end{align}
+The function $\Gamma(Q,L,l_B)$ is given by
+\begin{align}
+\Gamma(Q,L,l_B) &= 1+(1-\chi)\sum_{i=2}^5A_i\xi^i + \chi\sum_{i=0}^2B_i\xi^{-i}
+\end{align}
+where
+\begin{align}
+\begin{split}
+A_i &= \sum_{j=0}^2a_1(i,j) \left(\frac{L}{l_B}\right)^{-j} \exp(-10 l_B/L) \\
+& \qquad \qquad + \sum_{j=1}^2a_2(i,j) \left(\frac{L}{l_B}\right)^{j} \exp(-2 L/l_B)
+\end{split}
+\end{align}
+and
+\begin{align}
+\begin{split}
+B_i & = \sum_{j=0}^2b_1(i,j) \left(\frac{L}{l_B}\right)^{-j} \\
+    & \qquad \qquad + \sum_{j=1}^2b_2(i,j) \left(\frac{L}{l_B}\right)^{j} \exp(-2 L/l_B)
+\end{split}
+\end{align}
+The values of $a_1(i,j), a_2(i,j), b_1(i,j)$, and $b_2(i,j)$ are listed in table \ref{table:numValWMPS1noexv}
+\begin{table}
+  \caption{Values for the parameters in the numerical expressions for the scattering function for worm-like chains \textbf{without} excluded volume effects \cite{Pedersen96Macrom}}
+  \label{table:numValWMPS1noexv}
+  \centering
+  \begin{tabular}{l c|l c|l c|l c}
+     \hline
+     % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+               &          &           &          & $b_1(0,0)$ & -0.0162  &            &          \\
+               &          &           &          & $b_1(1,0)$ &  0.09046 &            &          \\
+     $a1(2,0)$ &  0.3054  &           &          & $b_1(2,0)$ &  0.1213  &            &          \\
+     $a1(3,0)$ &  0.05777 &           &          &            &          &            &          \\
+     $a1(4,0)$ & -0.00604 &           &          &            &          &            &          \\
+     $a1(5,0)$ & -0.03902 &           &          &            &          &            &          \\
+               &          &           &          & $b_1(0,1)$ & -0.3565  & $b_2(0,1)$ & -0.3946  \\
+               &          &           &          & $b_1(1,1)$ &  0.1909  & $b_2(1,1)$ & -0.2231  \\                
+     $a1(2,1)$ &  0.2316  & $a2(2,1)$ & -0.4963  & $b_1(2,1)$ &  0.15634 & $b_2(2,1)$ & -0.2546  \\
+     $a1(3,1)$ &  0.26531 & $a2(3,1)$ &  0.03688 &            &          &            &          \\
+     $a1(4,1)$ &  0.3706  & $a2(4,1)$ &  0.30570 &            &          &            &          \\
+     $a1(5,1)$ & -1.0081  & $a2(5,1)$ &  0.39013 &            &          &            &          \\
+               &          &           &          & $b_1(0,2)$ & -0.3078	 & $b_2(0,2)$ &  1.1361  \\ 
+               &          &           &          & $b_1(1,2)$ &  0.05176 & $b_2(1,2)$ & -0.01615 \\ 
+     $a1(2,2)$ & -22.779  & $a2(2,2)$ & -0.4678  & $b_1(2,2)$ &  0.01568 & $b_2(2,2)$ & -0.07606 \\
+     $a1(3,2)$ &  23.2457 & $a2(3,2)$ &  0.3365  &            &          &            &          \\
+     $a1(4,2)$ &  8.1092  & $a2(4,2)$ &  0.4290  &            &          &            &          \\
+     $a1(5,2)$ & -3.3603  & $a1(5,2)$ &  0.3737  &            &          &            &          \\
+     \hline
+   \end{tabular}
+\end{table}
+
+\paragraph*{\textbf{With Excluded Volume Effects.}}
+To include excluded volume effects in eq.\ \ref{eq:SWC} the function for a flexible chain $S_\text{chain}(Q,L,l_B)$ needs to be replaced by one with excluded volume effects included
+\begin{align}
+\label{eq:exvSWC}
+\begin{split}
+S_\text{WC}(Q,L,l_B) &= L^2 \left[  \left(1-\chi(Q,L,l_B)\right)
+            S_\text{exv}(Q,L,l_B) \right. \\
+&  \left. \qquad  \qquad  +\chi(Q,L,l_B) S_\text{rod}(Q,L)    \right] \Gamma(Q,L,l_B)
+\end{split}
+\end{align}
+The scattering of a chain with excluded volume effects if given by
+\begin{multline}
+S_\text{exv}(Q,L,l_B) = w(Q,R_g) S_\text{Debye}(Q,L,l_B) + \\
+ \left[1-w(q R_g)\right[\left[C_1\left(QR_g\right)^{-1/\nu} 
+                                           + C_2\left(QR_g\right)^{-2/\nu}
+                                           + C_3\left(QR_g\right)^{-3/\nu}\right]
+\end{multline}
+where $S_\text{Debye}(Q,L,l_B)$ is given by eq.\ \ref{eq:SDebye} and 
+\begin{align}
+R_g^2&=\alpha(L/l_B)^2 \langle R_g^2\rangle^2
+\label{eq:RgexvWC}
+\end{align}
+with $\alpha(L/l_B)$ being an expansion factor following the expression:
+\begin{align}
+\alpha(x)^2 &= \left[ 1+(x/3.12)^2+(x/8.67)^3 \right]^{\epsilon/3}
+\end{align}
+and $\epsilon=0.170$. The function $w(x)$ is another empirical cross-over function chosen as:
+\begin{align}
+w(x) &= \left[ 1+\tanh\left(\frac{x-C_4}{C_5}\right)/C_5 \right]/2
+\end{align}
+The parameters $C_i$ have been given in \cite{Pedersen96Macrom} as 
+$C_1=1.220$, $C_2=0.4288$, $C_3=-1.651$, $C_4=1.523$, and $C_5=0.1477$.
+
+Furthermore the parameter $\xi$ in the cross-over function $\chi(Q,L,l_B)$ needs to be chosen as 
+\begin{align}
+\xi&=Ql_B\left(\frac{\pi l_B}{1.103 L}\right)^{3/2}\left[\frac{R_g^2}{l_B^2}\right]^{1.282}
+\end{align}
+with $R_g^2$ defined in eq.\ \ref{eq:RgexvWC}. Last, but not least the values of $a_1(i,j), a_2(i,j), b_1(i,j)$, and $b_2(i,j)$ need to be taken from table \ref{table:numValWMPS1withexv}.
+\begin{table}
+  \caption{Values for the parameters in the numerical expressions for the scattering function for worm-like chains \textbf{with} excluded volume effects \cite{Pedersen96Macrom}}
+  \label{table:numValWMPS1withexv}
+  \centering
+  \begin{tabular}{l c|l c|l c|l c}
+     \hline
+     % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+               &          &           &          & $b_1(0,0)$ & -0.0699  &            &          \\
+               &          &           &          & $b_1(1,0)$ & -0.0900  &            &          \\
+     $a1(2,0)$ & -0.1222  &           &          & $b_1(2,0)$ &  0.2677  &            &          \\
+     $a1(3,0)$ &  0.3051  &           &          &            &          &            &          \\
+     $a1(4,0)$ & -0.0711  &           &          &            &          &            &          \\
+     $a1(5,0)$ &  0.0584  &           &          &            &          &            &          \\
+               &          &           &          & $b_1(0,1)$ &  0.1342  & $b_2(0,1)$ & -0.5171  \\
+               &          &           &          & $b_1(1,1)$ &  0.0138  & $b_2(1,1)$ & -0.2028  \\
+     $a1(2,1)$ &  1.761   & $a2(2,1)$ &  0.1212  & $b_1(2,1)$ &  0.1898  & $b_2(2,1)$ & -0.3112  \\
+     $a1(3,1)$ &  2.252   & $a2(3,1)$ & -0.4169  &            &          &            &          \\
+     $a1(4,1)$ & -1.291   & $a2(4,1)$ &  0.1988  &            &          &            &          \\
+     $a1(5,1)$ &  0.6994  & $a2(5,1)$ &  0.3435  &            &          &            &          \\
+               &          &           &          & $b_1(0,2)$ & -0.2020	 & $b_2(0,2)$ &  0.6950  \\
+               &          &           &          & $b_1(1,2)$ & -0.0114  & $b_2(1,2)$ & -0.3238  \\
+     $a1(2,2)$ & -26.04   & $a2(2,2)$ &  0.0170  & $b_1(2,2)$ &  0.0123  & $b_2(2,2)$ & -0.5403  \\
+     $a1(3,2)$ &  20.00   & $a2(3,2)$ & -0.4731  &            &          &            &          \\
+     $a1(4,2)$ &  4.382   & $a2(4,2)$ &  0.1869  &            &          &            &          \\
+     $a1(5,2)$ &  1.594   & $a1(5,2)$ &  0.3350  &            &          &            &          \\
+     \hline
+   \end{tabular}
+\end{table}
+
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): wormlike PS2} ~\\
+\label{plugin:Pprime4wormPS2}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
+
+\clearpage
+\subsubsection{P'(Q): wormlike PS3} ~\\
+\label{plugin:Pprime4wormPS3}
+
+\noindent
+\textbf{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
+\item The structure factor already has a log-normal width distribution for one parameter included.
+\end{itemize}
 
 \subsection{local planar  obj.} ~\\
 \label{plugin:LocalPlanar)}

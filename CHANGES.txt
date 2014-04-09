@@ -1,8 +1,17 @@
-0.93.6, 2013-??-??
+0.94.1 2013-02-05
+- added missing parameter label for Hamaker constant in DLVO potential
+- Penetrable Sphere Model was not properly assigned.
+- added all available plugins into the distribution binaries
+
+0.94.0, 2013-01-20
+- A new interface for solving the Ornstein Zernike equation for different 
+  closure relations and potentials (OZ-solver) has been added. The solutions 
+  of the OZ-solver can be used as a structure factor as a spline function without
+  the possibility to fit a parameter of the potential at the moment.
 - manual has been extended for the ferrofluid plugin scattering functions
 - orientation of the 2D simulation was rotated by 90deg.
-- correction of the manual for the Porod's approximation for cylinders.
-- minor bug fix for Porod's approximation for long cylynders.
+- correction of the manual for Porod's approximation of cylinders.
+- minor bug fix for Porod's approximation of long cylinders.
 
 0.93.5, 2013-06-09
 - implementation of the form factor and correlation function for spin misalignment 

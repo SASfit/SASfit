@@ -119,6 +119,10 @@ int igneg;
 }
 
 // Iterative solution of Ornstein-Zernike equation
+void OZ_solver_init (sasfit_oz_data *OZd) {
+}
+
+// Iterative solution of Ornstein-Zernike equation
 void OZ_solver (sasfit_oz_data *OZd) {
     double  err, ro, dk, Sm, Norm, Normold,V, Gstar;
     int i,j;

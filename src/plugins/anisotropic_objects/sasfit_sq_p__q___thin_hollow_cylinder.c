@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -29,18 +29,18 @@ scalar XI_CylShell(scalar x, sasfit_param * param)
 
 	if ((R+H) == 0) return 0;
 
-	if (xR == 0) 
+	if (xR == 0)
 	{
 		XIres = R/(R+H) * cos(xH);
-	} else 
+	} else
 	{
 		XIres = R/(R+H) * 2.*gsl_sf_bessel_J1(xR)/xR * cos(xH);
 	}
 
-	if (xH == 0) 
+	if (xH == 0)
 	{
 		XIres = XIres + H/(R+H) * gsl_sf_bessel_J0(xR);
-	} else 
+	} else
 	{
 		XIres = XIres + H/(R+H) * gsl_sf_bessel_J0(xR)*sin(xH)/xH;
 	}
@@ -78,7 +78,7 @@ scalar ThinCylShell_H_core(scalar xH, sasfit_param * param)
 	P = thinCyl_P(Q,param);
 
 	sasfit_init_param( &subParam );
-	
+
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_H;
 	subParam.p[2] = 1.0;
@@ -102,15 +102,15 @@ scalar ThinCylShell_H(scalar q,sasfit_param * param)
 
 	SASFIT_ASSERT_PTR(param);
 
-	if ((q != Q_old) || (R != R_old) || (SIGMA_H != sigma_H_old) || (H !=H_old)) 
+	if ((q != Q_old) || (R != R_old) || (SIGMA_H != sigma_H_old) || (H !=H_old))
 	{
 //		Pprime = thinCyl_P(Q, param);
 //		goto out;
-		if (SIGMA_H == 0.0) 
+		if (SIGMA_H == 0.0)
 		{
 			H = H0;
 			Pprime = thinCyl_P(Q, param);
-		} else 
+		} else
 		{
 			find_LogNorm_int_range(2,H0,SIGMA_H,&Lstart,&Lend,param);
 			Pprime 	= sasfit_integrate(Lstart, Lend, &ThinCylShell_H_core, param);
@@ -136,12 +136,11 @@ scalar ThinCylShell_core(scalar xR, sasfit_param * param)
 	P = ThinCylShell_H(Q,param);
 
 	sasfit_init_param( &subParam );
-	
+
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_R;
 	subParam.p[2] = 1.0;
 	subParam.p[3] = R0;
-	subParam.p[3] = 1.0;
 
 	LNdistr = sasfit_sd_LogNorm(xR, &subParam);
 	SASFIT_CHECK_SUB_ERR(param, subParam);
@@ -163,14 +162,14 @@ scalar ThinCylShell(scalar q, sasfit_param * param)
 
 	Q = q;
 
-	if ((q != Q_old) || (R0 != R0_old) || (SIGMA_R != sigma_R_old) || (H !=H_old) ) 
+	if ((q != Q_old) || (R0 != R0_old) || (SIGMA_R != sigma_R_old) || (H !=H_old) )
 	{
-		if (SIGMA_R == 0.0) 
+		if (SIGMA_R == 0.0)
 		{
 			R = R0;
 			H = H0;
 			Pprime = ThinCylShell_H(Q,param);;
-		} else 
+		} else
 		{
 			find_LogNorm_int_range(2,R0,SIGMA_R,&xstart,&xend,param);
 			Pprime 	= sasfit_integrate(xstart, xend, ThinCylShell_core, param);

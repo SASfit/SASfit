@@ -49,12 +49,12 @@ scalar sasfit_ff_KholodenkoWorm_core(scalar x, sasfit_param * param)
         E = 1.0;
         F = 1.0;
 
-		if (x == 0.0) {
-			return 1.0;
-		}
-		if (Q == 3.0/(B)) {
+        if (x == 0.0) {
+                return 1.0;
+        }
+        if (Q == 3.0/(B)) {
                 fy = x/sinh(x);
-		} else  if (Q < 3.0/B) {
+        } else  if (Q < 3.0/B) {
                 E = sqrt(1.0-pow(Q*B/3.0, 2.0));
                 fy = sinh(E*x)/(E*sinh(x));
         } else {
@@ -94,5 +94,5 @@ scalar sasfit_ff_KholodenkoWorm(scalar q, sasfit_param * param)
 
 	res = sasfit_integrate_ctm(0.0, 3.0*NP, sasfit_ff_KholodenkoWorm_core, param, 10000, intabseps, intreleps);
 
-	return res*fxs;
+	return fxs * res;
 }
