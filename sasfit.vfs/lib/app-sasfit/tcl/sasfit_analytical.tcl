@@ -8616,7 +8616,7 @@ switch -exact $type {
                  0 {return "F^2(Q,Rg,I0) = eta^2*8*pi/xi/(a^2-2bq^2+q^4)\nwith k=2pi/d, a=k^2+1/xi^2, b=k^2-1/xi^2"}
                  1 {return "xi: correlation length\n"}
                  2 {return "d: characteristic domain size (the periodicity)\n"}
-                 3 {return "eta2: mean average contrast squared\n"}
+                 3 {return "eta: mean average contrast\n"}
                  4 {return "\n"}
                  5 {return "\n"}
                  6 {return "\n"}
