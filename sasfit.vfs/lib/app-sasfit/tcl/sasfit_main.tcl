@@ -3087,6 +3087,14 @@ proc sasfitmenu {} {
           StructParData GlobalFitIQGraph Detector2DIQGraph
    global AnalytPar GlobalAnalytPar
    global FitPrecision
+   global zoomMod
+
+   # Blt_ZoomStack modifier, see
+   # saskit/kit/lib/blt2.4/graph.tcl, line 85
+   set zoomMod "Control-"
+   proc zoomstack { graph } {
+       Blt_ZoomStack $graph
+   }
 
    frame .top -relief raised -bd 2 
    pack .top -fill x -side top
@@ -3188,7 +3196,7 @@ $m3 add command -label "plot layout..." -command {
     -command { export_blt_graph IQGraph }
 bind .obW.tab.iq.draw <ButtonPress-3> {tk_popup .obW.tab.iq.popup %X %Y }
 bind .obW.tab.iq.draw <Double-ButtonPress-1> {tk_popup .obW.tab.iq.popup %X %Y }
-Blt_ZoomStack $IQGraph(w)
+zoomstack $IQGraph(w)
 
 
 
@@ -3318,7 +3326,7 @@ $m3 add command -label "plot layout..." -command {
     -command { export_blt_graph GlobalFitIQGraph }
 bind .obW.tab.globaliq.draw <ButtonPress-3> {tk_popup .obW.tab.globaliq.popup %X %Y }
 bind .obW.tab.globaliq.draw <Double-ButtonPress-1> {tk_popup .obW.tab.globaliq.popup %X %Y }
-Blt_ZoomStack $GlobalFitIQGraph(w)
+zoomstack $GlobalFitIQGraph(w)
 
 
 
@@ -3387,7 +3395,7 @@ $m3 add command -label "plot layout..." -command {
 bind .obW.tab.residual.draw <ButtonPress-3> {tk_popup .obW.tab.residual.popup %X %Y }
 bind .obW.tab.residual.draw <Double-ButtonPress-1> \
      {tk_popup .obW.tab.residual.popup %X %Y }
-Blt_ZoomStack $ResIQGraph(w)
+zoomstack $ResIQGraph(w)
 
 
 #
@@ -3458,7 +3466,7 @@ bind .obW.tab.sizedistr.draw <ButtonPress-3> \
      {tk_popup .obW.tab.sizedistr.popup %X %Y }
 bind .obW.tab.sizedistr.draw <Double-ButtonPress-1> \
      {tk_popup .obW.tab.sizedistr.popup %X %Y }
-Blt_ZoomStack $SDGraph(w)
+zoomstack $SDGraph(w)
 
 #
 #  create info page about moments of analytical size distributions
