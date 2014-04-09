@@ -13,8 +13,11 @@ proc Blt_ResetCrosshairs { graph state } {
     blt::Crosshairs $graph "Any-Motion" $state
 }
 
-proc Blt_ZoomStack { graph } {
-    blt::ZoomStack $graph
+proc Blt_ZoomStack { graph {start "ButtonPress-1"}
+                           {release "ButtonRelease-1"}
+                           {reset "Button-2"}
+} {
+    blt::ZoomStack $graph $start $release $reset
 }
 
 proc Blt_PrintKey { graph } {
@@ -82,7 +85,7 @@ proc blt::InitStack { graph } {
     set zoomInfo($graph,corner) A
 }
 
-proc blt::ZoomStack { graph {start "ButtonPress-1"} {reset "ButtonPress-3"} } {
+proc blt::ZoomStack { graph start release reset } {
     global zoomInfo zoomMod
     
     blt::InitStack $graph
@@ -93,7 +96,8 @@ proc blt::ZoomStack { graph {start "ButtonPress-1"} {reset "ButtonPress-3"} } {
 	set modifier ""
     }
     bind zoom-$graph <${modifier}${start}> { blt::SetZoomPoint %W %x %y }
-    bind zoom-$graph <${modifier}${reset}> { 
+    bind zoom-$graph <${modifier}${release}> { blt::SetZoomPoint %W %x %y }
+    bind zoom-$graph <${reset}> { 
 	if { [%W inside %x %y] } { 
 	    blt::ResetZoom %W 
 	}
