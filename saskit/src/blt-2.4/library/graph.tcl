@@ -15,7 +15,7 @@ proc Blt_ResetCrosshairs { graph state } {
 
 proc Blt_ZoomStack { graph {start "ButtonPress-1"}
                            {release "ButtonRelease-1"}
-                           {reset "Button-3"}
+                           {reset "Button-2"}
 } {
     blt::ZoomStack $graph $start $release $reset
 }

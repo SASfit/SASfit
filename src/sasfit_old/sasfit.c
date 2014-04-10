@@ -1539,7 +1539,7 @@ void IQ(Tcl_Interp *interp,
 		IQ_t(interp,Q,par,Ifit,Isubstract,dydpar,max_SD,tmpAP,error_type,error);
 	} else {
         if (Q-3.0*Qres<=0.0) {
-			Qmin = 1.0e-8;
+			Qmin = 1.0e-6;
 		} else {
 			Qmin = Q-3.0*Qres;
 		}
