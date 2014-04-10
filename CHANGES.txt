@@ -1,3 +1,9 @@
+0.94.2
+- resolution parameter from file was not scaled during the change of units for Q
+- bug fix in calculation of xi for sq for wormlike structures  (PS1 model)
+- wrong label for contrast in Teubner-Strey model
+- bug fix in SPHERE+R^-a_Nagg form factor in assignement of core volume
+
 0.94.1 2013-02-05
 - added missing parameter label for Hamaker constant in DLVO potential
 - Penetrable Sphere Model was not properly assigned.
