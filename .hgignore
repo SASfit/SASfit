@@ -37,8 +37,12 @@ sasfit
 doc/wikibot/pywikipedia/login-data/*.data
 data/workdata
 *.swp
-*.cmake.*
 saskit/install
 saskit/build
 saskit/out
 saskit/bin
+saskit/src/itcl-3.3/tclconfig/tclconfig
+saskit/src/tcl-8.4.13/lib/Mk4tcl/Mk4tcl.so
+saskit/src/tcl-8.4.13/lib/Mk4tcl/pkgIndex.tcl
+saskit/saskit_*
+
