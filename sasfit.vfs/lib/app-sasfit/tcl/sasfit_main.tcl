@@ -309,15 +309,16 @@ set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}
 
+set OZ(algorithm) "Picard iteration"
 set OZ(phi) 0.3
 set OZ(T) 300
-set OZ(1024) 1024
-set OZ(mult) 4
+set OZ(mindimOZ) 128
+set OZ(mult) 10
 set OZ(mix) 0.5
 set OZ(maxit) 1500
-set OZ(dr/dsigma) 0.005
+set OZ(dr/dsigma) 0.02
 set OZ(releps) 1e-12
-set OZ(gridlength) [expr int($OZ(1024)*$OZ(mult))]
+set OZ(gridlength) [expr int($OZ(mindimOZ)*$OZ(mult))]
 set OZ(plottedgraphs) 0
 set OZ(symbol_i) 0
 set OZ(color_i) 0

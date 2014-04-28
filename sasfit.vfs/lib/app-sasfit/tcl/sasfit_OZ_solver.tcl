@@ -27,7 +27,7 @@ proc put_OZ_res {} {
 	lappend OZ(result,p) 		[list $OZ(p0) $OZ(p1) $OZ(p2) $OZ(p3) $OZ(p4) $OZ(p5) $OZ(p6) $OZ(p7) $OZ(p8) $OZ(p9) $OZ(p10) $OZ(p11) $OZ(p12) $OZ(p13) $OZ(p14) $OZ(p15)]
 	lappend OZ(result,phi)		$OZ(phi)
 	lappend OZ(result,T) 		$OZ(T)
-    	lappend OZ(result,1024)		$OZ(1024)
+    	lappend OZ(result,mindimOZ)	$OZ(mindimOZ)
     	lappend OZ(result,mult) 	$OZ(mult)
     	lappend OZ(result,mix) 		$OZ(mix)
     	lappend OZ(result,dr/dsigma) 	$OZ(dr/dsigma)
@@ -56,7 +56,7 @@ proc pop_OZ_res {} {
 	set OZ(result,p) 		[lrange $OZ(result,p) 		0 [expr [llength $OZ(result,p)]		-2]]
 	set OZ(result,phi)		[lrange $OZ(result,phi) 	0 [expr [llength $OZ(result,phi)]	-2]]
 	set OZ(result,T) 		[lrange $OZ(result,T) 		0 [expr [llength $OZ(result,T)]		-2]]
-    	set OZ(result,1024)		[lrange $OZ(result,1024) 	0 [expr [llength $OZ(result,1024)]	-2]]
+    	set OZ(result,mindimOZ)		[lrange $OZ(result,mindimOZ) 	0 [expr [llength $OZ(result,mindimOZ)]	-2]]
     	set OZ(result,mult) 		[lrange $OZ(result,mult) 	0 [expr [llength $OZ(result,mult)]	-2]]
     	set OZ(result,mix) 		[lrange $OZ(result,mix) 	0 [expr [llength $OZ(result,mix)]	-2]]
     	set OZ(result,dr/dsigma) 	[lrange $OZ(result,dr/dsigma) 	0 [expr [llength $OZ(result,dr/dsigma)]	-2]]
@@ -362,7 +362,7 @@ proc ClearOZsolver {} {
     set OZ(result,p) {}
     set OZ(result,phi) {}
     set OZ(result,T) {}
-    set OZ(result,1024) {}
+    set OZ(result,mindimOZ) {}
     set OZ(result,mult) {}
     set OZ(result,mix) {}
     set OZ(result,dr/dsigma) {}
@@ -558,7 +558,7 @@ proc update_ozmenu {} {
        }
        set OZ(phi)	[lindex $OZ(result,phi) $idx]
        set OZ(T)	[lindex $OZ(result,T) $idx]
-       set OZ(1024)	[lindex $OZ(result,1024) $idx]
+       set OZ(mindimOZ)	[lindex $OZ(result,mindimOZ) $idx]
        set OZ(mult)	[lindex $OZ(result,mult) $idx]
        set OZ(mix)	[lindex $OZ(result,mix) $idx]
        set OZ(dr/dsigma) [lindex $OZ(result,dr/dsigma) $idx]
@@ -722,6 +722,17 @@ proc sasfit_OZ_solver {} {
 	    -column 1 -row 9
 
     label $w.param.empty2 -text "parameters for OZ solver:" -font "Arial 10 bold underline"
+    label $w.param.algorithmtext -text "algorithm:"  
+    ComboBox $w.param.algorithmvalue \
+    		-values {"Picard iteration" "Mann iteration" \
+    		         "Ishikawa iteration" "Noor iteration" \
+    		         "SP iteration" "S iteration"	\
+    		         "CR iteration" "Picard-S iteration" \
+    		         "PMH iteration" "Mann II iteration" \
+    		         "dNewton" "Hybrid" \
+	    		 "Hybrids (int. sc.)" "Broyden" \
+	    		 "GMRES"} \
+	    -textvariable OZ(algorithm) -width 19
     label $w.param.phitext -text "volume fraction:"  
     entry $w.param.phivalue -textvariable OZ(phi)
     label $w.param.ttext -text "temperature \[K\]:"  
@@ -729,17 +740,21 @@ proc sasfit_OZ_solver {} {
     
     grid  $w.param.empty2 -sticky w\
 	    -column 0 -row 10 -columnspan 2
-    grid  $w.param.phitext -sticky e\
+    grid  $w.param.algorithmtext -sticky e\
 	    -column 0 -row 11
-    grid  $w.param.ttext -sticky e\
+    grid  $w.param.phitext -sticky e\
 	    -column 0 -row 12
-    grid  $w.param.phivalue\
+    grid  $w.param.ttext -sticky e\
+	    -column 0 -row 13
+    grid  $w.param.algorithmvalue\
 	    -column 1 -row 11
-    grid  $w.param.tvalue\
+    grid  $w.param.phivalue\
 	    -column 1 -row 12
+    grid  $w.param.tvalue\
+	    -column 1 -row 13
 
     label $w.param.empty3 -text " "
-    label $w.param.gridtext -text "gridsize (n x 1024), n:"  
+    label $w.param.gridtext -text "gridsize (n x 128), n:"  
     entry $w.param.gridvalue -textvariable OZ(mult)
     label $w.param.mixtext -text "mixing parameter:"  
     entry $w.param.mixvalue -textvariable OZ(mix)
@@ -751,37 +766,37 @@ proc sasfit_OZ_solver {} {
     entry $w.param.drdsigmavalue -textvariable OZ(dr/dsigma)
     
     grid $w.param.empty3 \
-	    -column 0 -row 13
-    grid  $w.param.gridtext -sticky e\
 	    -column 0 -row 14
-    grid  $w.param.mixtext -sticky e\
+    grid  $w.param.gridtext -sticky e\
 	    -column 0 -row 15
-    grid  $w.param.ittext -sticky e\
+    grid  $w.param.mixtext -sticky e\
 	    -column 0 -row 16
-    grid  $w.param.relepstext -sticky e\
+    grid  $w.param.ittext -sticky e\
 	    -column 0 -row 17
-    grid  $w.param.drdsigmatext -sticky e\
+    grid  $w.param.relepstext -sticky e\
 	    -column 0 -row 18
+    grid  $w.param.drdsigmatext -sticky e\
+	    -column 0 -row 19
     grid  $w.param.gridvalue \
-	    -column 1 -row 14
-    grid  $w.param.mixvalue \
 	    -column 1 -row 15
-    grid  $w.param.itvalue \
+    grid  $w.param.mixvalue \
 	    -column 1 -row 16
-    grid  $w.param.relepsvalue \
+    grid  $w.param.itvalue \
 	    -column 1 -row 17
-    grid  $w.param.drdsigmavalue \
+    grid  $w.param.relepsvalue \
 	    -column 1 -row 18
+    grid  $w.param.drdsigmavalue \
+	    -column 1 -row 19
 
     label $w.param.empty4 -text " "
     label $w.param.labeltext -text "label:"  
     entry $w.param.labelvalue -textvariable OZ(label)
     grid $w.param.empty4 \
-	    -column 0 -row 19
-    grid  $w.param.labeltext -sticky e\
 	    -column 0 -row 20
+    grid  $w.param.labeltext -sticky e\
+	    -column 0 -row 21
     grid  $w.param.labelvalue \
-	    -column 1 -row 20
+	    -column 1 -row 21
 
 #
 #  create "ozSQGraph"
