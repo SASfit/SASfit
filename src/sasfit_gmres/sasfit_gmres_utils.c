@@ -82,8 +82,58 @@ void feval(void *ozfunct, scalar *x, scalar *xnew, int n) {
     cparr(x,xnew,n);
 }
 
+void gmres(scalar *f0,
+           void *ozfunct,
+           scalar *x,
+           sasfit_oz_data *OZd,
+           scalar *gmparms,
+           scalar *step,
+           scalar *errstep,
+           int *total_iters) {
+//% GMRES linear equation solver for use in Newton-GMRES solver
+//%
+//% C. T. Kelley, April 1, 2003
+//%
+//% This code comes with no guarantee or warranty of any kind.
+//%
+//% function [x, error, total_iters] = dgmres(f0, f, xc, params, xinit)
+//%
+//%
+//% Input:  f0 = function at current point
+//%         f = nonlinear function
+//%              the format for f is  function fx = f(x)
+//%              Note that for Newton-GMRES we incorporate any
+//%              preconditioning into the function routine.
+//%         xc = current point
+//%         params = two dimensional vector to control iteration
+//%              params(1) = relative residual reduction factor
+//%              params(2) = max number of iterations
+//%            params(3) (Optional) = reorthogonalization method
+//%                   1 -- Brown/Hindmarsh condition (default)
+//%                   2 -- Never reorthogonalize (not recommended)
+//%                   3 -- Always reorthogonalize (not cheap!)
+//%
+//%         xinit = initial iterate. xinit = 0 is the default. This
+//%              is a reasonable choice unless restarted GMRES
+//%              will be used as the linear solver.
+//%
+//% Output: x = solution
+//%         error = vector of residual norms for the history of
+//%                 the iteration
+//%         total_iters = number of iterations
+//%
+//% Requires givapp.m, dirder.m
+
+//%
+//% initialization
+//%
+
+}
+
 void dkrylov(scalar *f0,
-             void *ozfunct,scalar *x,
+             void *ozfunct,
+             scalar *x,
+             sasfit_oz_data *OZd,
              scalar *params,
              int lmeth,
              scalar *step,
@@ -130,11 +180,58 @@ void dkrylov(scalar *f0,
 //%
 //%
 
-    int lmaxit, restart_limit=2.0;
+    int lmaxit, restart_limit=20.0;
+    int kinn;
+    double gmparms[3];
 
     lmaxit = params[1];
     restart_limit=params[2];
     if(lmeth ==1) restart_limit=0;
+    gmparms[0] = params[0];
+    gmparms[1] = params[1];
+    gmparms[2] = params[3];
+//%
+//% linear iterative methods
+//%
+    switch (lmeth) {
+        case 1:
+        case 2:
+            // if lmeth == 1 || lmeth == 2  % GMRES or GMRES(m)
+//%
+//% compute the step using a GMRES routine especially designed
+//% for this purpose
+//%
+//            [step, errstep, total_iters] = dgmres(f0, f, x, gmparms);
+            kinn = 0;
+//%
+//%   restart at most restart_limit times
+//%
+            while (    (*total_iters == lmaxit)
+                    && (errstep[*total_iters] > gmparms[0]*norm(f0,OZd->Npoints))
+                    && (kinn < restart_limit) ) {
+                kinn = kinn+1;
+//                [step, errstep, total_iters] = dgmres(f0, f, x, gmparms,step);
+            }
+            *total_iters = *total_iters+kinn*lmaxit;
+            *f_evals = *total_iters+kinn;
+            break;
+//%
+//% Bi-CGSTAB
+//%
+        case 3:
+//            [step, errstep, total_iters] = dcgstab(f0, f, x, gmparms);
+//            f_evals = 2*total_iters;
+            break;
+//%
+//% TFQMR
+//%
+        case 4:
+//            [step, errstep, total_iters] = dtfqmr(f0, f, x, gmparms);
+//            f_evals = 2*total_iters;
+            break;
+    default :
+            sasfit_err("lmeth error in fdkrylov\n");
+    }
 }
 
 void nsoli(scalar *x,
@@ -270,7 +367,7 @@ void nsoli(scalar *x,
         itc = itc+1;
 ////   [step, errstep, inner_it_count,inner_f_evals] = ...
 ////        dkrylov(f0, f, x, gmparms, lmeth);
-        dkrylov(f0, ozfunct, x, gmparms, lmeth, step, errstep, &inner_it_count, &inner_f_evals);
+        dkrylov(f0, ozfunct, x, OZd, gmparms, lmeth, step, errstep, &inner_it_count, &inner_f_evals);
 //
 //   The line search starts here.
 //

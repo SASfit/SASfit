@@ -155,6 +155,93 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 }
 
 int
+assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
+{
+#define MAXROOTALGORITHMS 15
+    const char * RootAlgorithms[MAXROOTALGORITHMS];
+    int i,eq;
+    if (!token || !OZD) return 0;
+    RootAlgorithms[0] = "Picard iteration";
+    RootAlgorithms[1] = "Mann iteration";
+    RootAlgorithms[2] = "Ishikawa iteration";
+    RootAlgorithms[3] = "Noor iteration";
+    RootAlgorithms[4] = "S iteration";
+    RootAlgorithms[5] = "SP iteration";
+    RootAlgorithms[6] = "CR iteration";
+    RootAlgorithms[7] = "Picard-S iteration";
+    RootAlgorithms[8] = "PMH iteration";
+    RootAlgorithms[9] = "Mann II iteration";
+    RootAlgorithms[10] = "dNewton";
+    RootAlgorithms[11] = "Hybrid";
+    RootAlgorithms[12] = "Hybrids (int. sc.)";
+    RootAlgorithms[13] = "Broyden";
+    RootAlgorithms[14] = "GMRES";
+
+    i=0;
+    eq=-1;
+    while (i<MAXROOTALGORITHMS && eq != 0) {
+        eq = strcmp(token,RootAlgorithms[i]);
+        i++;
+    }
+    PUTS("%s %d\n",token,i-1);
+
+    switch (i-1) {
+        case 0 :
+            OZD->root_algorithm=Picard_iteration;
+            break;
+        case 1 :
+            OZD->root_algorithm=Mann_iteration;
+            break;
+        case 2 :
+            OZD->root_algorithm=Ishikawa_iteration;
+            break;
+        case 3 :
+            OZD->root_algorithm=Noor_iteration;
+            break;
+        case 4 :
+            OZD->root_algorithm=S_iteration;
+            break;
+        case 5 :
+            OZD->root_algorithm=SP_iteration;
+            break;
+        case 6 :
+            OZD->root_algorithm=CR_iteration;
+            break;
+        case 7 :
+            OZD->root_algorithm=PicardS_iteration;
+            break;
+        case 8 :
+            OZD->root_algorithm=PMH_iteration;
+            break;
+        case 9 :
+            OZD->root_algorithm=MannII_iteration;
+            break;
+        case 10 :
+            OZD->root_algorithm=dNewton;
+            break;
+        case 11 :
+            OZD->root_algorithm=Hybrid;
+            break;
+        case 12 :
+            OZD->root_algorithm=Hybrids;
+            break;
+        case 13 :
+            OZD->root_algorithm=Broyden;
+            break;
+        case 14 :
+            OZD->root_algorithm=GMRES;
+            break;
+        default :
+            OZD->root_algorithm=PMH_iteration;
+            sasfit_out("Root finding Algorithm not found: %s. Using PMH iteration instead.\n", token);
+            sasfit_err("Root finding Algorithm not found: %s. Using PMH iteration instead.\n", token);
+            break;
+    }
+    if (i<=MAXROOTALGORITHMS) return 1;
+    return 0;
+}
+
+int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
     #define MAXPOTENTIALS 28
@@ -407,7 +494,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
 
         ozd.Npoints = 4096;
         int grid, factor;
-        if (GET_TCL(int, &factor, "1024") && GET_TCL(int, &grid, "mult"))
+        if (GET_TCL(int, &factor, "mindimOZ") && GET_TCL(int, &grid, "mult"))
         {
                 ozd.Npoints = factor * grid;
         }
@@ -446,6 +533,13 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                    &ozd);
         if (status == 0) {
                 sasfit_err("Unknown Potential\n");
+                return TCL_ERROR;
+        }
+
+        status = assign_root_Algorithm(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "algorithm"), 0),
+                   &ozd);
+        if (status == 0) {
+                sasfit_err("Unknown Root finding Algorithm\n");
                 return TCL_ERROR;
         }
 

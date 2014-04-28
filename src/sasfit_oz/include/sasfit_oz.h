@@ -47,6 +47,7 @@ Output variables:
 #include <math.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
+#include <gsl/gsl_vector.h>
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_const_mksa.h>
 #define PiCube 8*gsl_pow_3(M_PI)
@@ -76,6 +77,49 @@ typedef enum {
         BB      // Bomont-Bretonnet Approximation
 } sasfit_oz_closure;
 
+typedef enum {
+        dNewton,  // uses  gsl_multiroot_fsolver_dnewtonThe discrete Newton algorithm is the simplest method of solving a multidimensional system. It uses the Newton iteration
+                  //
+                  //  x -> x - J^{-1} f(x)
+                  //
+                  //  where the Jacobian matrix J is approximated by taking finite
+                  //  differences of the function f. The approximation scheme used
+                  //  by this implementation is,
+                  //
+                  //  J_{ij} = (f_i(x + \delta_j) - f_i(x)) /  \delta_j
+                  //
+                  // where \delta_j is a step of size \sqrt\epsilon |x_j| with
+                  // \epsilon being the machine precision
+                  // (\epsilon \approx 2.22 \times 10^-16).
+                  // The order of convergence of Newton’s algorithm is quadratic,
+                  // but the finite differences require n^2 function evaluations
+                  // on each iteration. The algorithm may become unstable if the
+                  // finite differences are not a good approximation to the true
+                  // derivatives.
+                  //
+        Hybrid,   //
+        Hybrids,  // uses gsl_multiroot_fsolver_hybrids
+                  //      This is a version of the Hybrid algorithm which
+                  //      replaces calls to the Jacobian function by its finite
+                  //      difference approximation. The finite difference
+                  //      approximation is computed using gsl_multiroots_fdjac
+                  //      with a relative step size of GSL_SQRT_DBL_EPSILON.
+                  //      Note that this step size will not be suitable for all
+                  //      problems.
+        Broyden,  //
+        GMRES,
+        Picard_iteration,   // Picard method
+        Mann_iteration,
+        Ishikawa_iteration,
+        Noor_iteration,
+        S_iteration,
+        SP_iteration,
+        CR_iteration,
+        PicardS_iteration,
+        PMH_iteration,
+        MannII_iteration
+} sasfit_oz_root_algorithms;
+
 typedef struct {
         Tcl_Interp *interp;
         double *r, *k, *En, *G,
@@ -83,6 +127,7 @@ typedef struct {
                *cf, *cfold, *cfnew,
                *Gf,*f, *S,  *ud,
                *Br, *yr, *fr;
+        gsl_vector *gamma_r;
         double dr, dq, dr_dsigma;
         double Sq0, gr0, cr0;
         double T;
@@ -97,6 +142,7 @@ typedef struct {
         double *pPot;
         double *ubeta;
         sasfit_oz_closure cl;
+        sasfit_oz_root_algorithms root_algorithm;
         OZ_func_one_t * potential;
         OZ_func_one_t * reference_pot;
         OZ_func_one_t * pertubation_pot;
@@ -113,6 +159,7 @@ void OZ_calculation (sasfit_oz_data *);
 void OZ_solver (sasfit_oz_data *);
 void OZ_init (sasfit_oz_data *);
 void OZ_free (sasfit_oz_data *);
+double OZ_step(sasfit_oz_data *);
 double extrapolate (double x1, double x2, double x3, double y1, double y2, double y3);
 void OZ_pot_der (sasfit_oz_data *);
 double compressibility_calc (double alpha, void * params);
