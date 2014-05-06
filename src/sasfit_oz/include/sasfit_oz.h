@@ -97,7 +97,7 @@ typedef enum {
                   // finite differences are not a good approximation to the true
                   // derivatives.
                   //
-        Hybrid,   //
+        Hybrid,   // This is a finite difference version of the Hybrid algorithm without internal scaling.
         Hybrids,  // uses gsl_multiroot_fsolver_hybrids
                   //      This is a version of the Hybrid algorithm which
                   //      replaces calls to the Jacobian function by its finite
@@ -106,18 +106,35 @@ typedef enum {
                   //      with a relative step size of GSL_SQRT_DBL_EPSILON.
                   //      Note that this step size will not be suitable for all
                   //      problems.
-        Broyden,  //
+                  //
+        Broyden,  //      The Broyden algorithm is a version of the discrete Newton algorithm which
+                  //      attempts to avoids the expensive update of the Jacobian matrix on each iteration.
+                  //      The changes to the Jacobian are also approximated, using a rank-1 update,
+                  //
+                  //        J^{-1} \to J^{-1} - (J^{-1} df - dx) dx^T J^{-1} / dx^T J^{-1} df
+                  //
+                  //      where the vectors dx and df are the changes in x and f. On the first
+                  //      iteration the inverse Jacobian is estimated using finite differences,
+                  //      as in the discrete Newton algorithm.
+                  //      This approximation gives a fast update but is unreliable if the changes
+                  //      are not small, and the estimate of the inverse Jacobian becomes worse
+                  //      as time passes. The algorithm has a tendency to become unstable unless
+                  //      it starts close to the root. The Jacobian is refreshed if this instability
+                  //      is detected (consult the source for details).
         GMRES,
-        Picard_iteration,   // Picard method
-        Mann_iteration,
-        Ishikawa_iteration,
-        Noor_iteration,
-        S_iteration,
-        SP_iteration,
-        CR_iteration,
-        PicardS_iteration,
-        PMH_iteration,
-        MannII_iteration
+        Picard_iteration,   // fixed point iteration of the form: x_n+1 = OZ(xn)
+        Mann_iteration,     //
+        Ishikawa_iteration, //
+        Noor_iteration,     //
+        S_iteration,        //
+        SP_iteration,       //
+        CR_iteration,       //
+        PicardS_iteration,  //
+        PMH_iteration,      //
+        MannII_iteration,   //
+        Krasnoselskij_iteration, //
+        Sstar_iteration,    //
+        Steffensen_iteration
 } sasfit_oz_root_algorithms;
 
 typedef struct {

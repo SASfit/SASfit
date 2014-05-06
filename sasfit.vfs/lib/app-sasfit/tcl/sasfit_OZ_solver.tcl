@@ -729,6 +729,9 @@ proc sasfit_OZ_solver {} {
     		         "SP iteration" "S iteration"	\
     		         "CR iteration" "Picard-S iteration" \
     		         "PMH iteration" "Mann II iteration" \
+    		         "Krasnoselskij iteration" \
+    		         "S* iteration" \
+    		         "Steffensen iteration" \
     		         "dNewton" "Hybrid" \
 	    		 "Hybrids (int. sc.)" "Broyden" \
 	    		 "GMRES"} \
