@@ -157,7 +157,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
 {
-#define MAXROOTALGORITHMS 15
+#define MAXROOTALGORITHMS 18
     const char * RootAlgorithms[MAXROOTALGORITHMS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -171,11 +171,14 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
     RootAlgorithms[7] = "Picard-S iteration";
     RootAlgorithms[8] = "PMH iteration";
     RootAlgorithms[9] = "Mann II iteration";
-    RootAlgorithms[10] = "dNewton";
-    RootAlgorithms[11] = "Hybrid";
-    RootAlgorithms[12] = "Hybrids (int. sc.)";
-    RootAlgorithms[13] = "Broyden";
-    RootAlgorithms[14] = "GMRES";
+    RootAlgorithms[10] = "Krasnoselskij iteration";
+    RootAlgorithms[11] = "S* iteration";
+    RootAlgorithms[12] = "Steffensen iteration";
+    RootAlgorithms[MAXROOTALGORITHMS-1] = "dNewton";
+    RootAlgorithms[MAXROOTALGORITHMS-2] = "Hybrid";
+    RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
+    RootAlgorithms[MAXROOTALGORITHMS-4] = "Broyden";
+    RootAlgorithms[MAXROOTALGORITHMS-5] = "GMRES";
 
     i=0;
     eq=-1;
@@ -217,18 +220,27 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             OZD->root_algorithm=MannII_iteration;
             break;
         case 10 :
-            OZD->root_algorithm=dNewton;
+            OZD->root_algorithm=Krasnoselskij_iteration;
             break;
         case 11 :
-            OZD->root_algorithm=Hybrid;
+            OZD->root_algorithm=Sstar_iteration;
             break;
         case 12 :
+            OZD->root_algorithm=Steffensen_iteration;
+            break;
+        case MAXROOTALGORITHMS-1 :
+            OZD->root_algorithm=dNewton;
+            break;
+        case MAXROOTALGORITHMS-2 :
+            OZD->root_algorithm=Hybrid;
+            break;
+        case MAXROOTALGORITHMS-3 :
             OZD->root_algorithm=Hybrids;
             break;
-        case 13 :
+        case MAXROOTALGORITHMS-4 :
             OZD->root_algorithm=Broyden;
             break;
-        case 14 :
+        case MAXROOTALGORITHMS-5 :
             OZD->root_algorithm=GMRES;
             break;
         default :
