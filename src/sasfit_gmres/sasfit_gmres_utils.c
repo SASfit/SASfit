@@ -11,13 +11,12 @@
 #include <gsl/gsl_linalg.h>
 
 
-#define MAXIT  parms->maxit
-#define LMAXIT parms->lmaxit
-#define LMETH  parms->lmeth
-#define MAXIT  parms->maxit
-#define ETAMAX parms->etamax
-#define RESTARTLIMIT parms->restart_limit
-#define N parms->n
+#define MAXIT  parms[0]
+#define LMAXIT parms[1]
+#define ETAMAX parms[2]
+#define LMETH  parms[3]
+#define RESTARTLIMIT parms[4]
+#define N OZd->Npoints
 
 scalar norm(scalar *f0, int n) {
     int i;
@@ -36,8 +35,12 @@ void cparr(scalar *xfrom, scalar *xto, int n) {
     }
 }
 
-void feval(void *ozfunct, scalar *x, scalar *xnew, int n) {
-    cparr(x,xnew,n);
+void feval(void *ozfunct, sasfit_oz_data *OZd, scalar *x, scalar *fx) {
+    int i;
+    cparr(x,OZd->G,OZd->Npoints);
+    OZ_step(OZd);
+    for (i=0;i<OZd->Npoints;i++) fx[i] = x[i]-OZd->G[i];
+    return;
 }
 
 
@@ -72,7 +75,7 @@ scalar parab3p(double lambdac, double lambdam, double ff0, double ffc, double ff
         return lambdap;
 	}
 	c1 = gsl_pow_2(lambdac)*(ffm-ff0)
-	    -gsl_pow_2(lambdam)-(ffc-ff0);
+	    -gsl_pow_2(lambdam)*(ffc-ff0);
     lambdap = -0.5*c1/c2;
     if (lambdap < sigma0*lambdac) lambdap=sigma0*lambdac;
     if (lambdap > sigma1*lambdac) lambdap=sigma1*lambdac;
@@ -160,13 +163,30 @@ void dirder(scalar *x, scalar *w, void *ozfunct, sasfit_oz_data *OZd, scalar *f0
     f1 = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
     for (i=0;i<n;i++) del[i] = x[i]+epsnew*w[i];
 
-    feval(ozfunct,del,f1,n);
+    feval(ozfunct,OZd,del,f1);
 //
     for (i=0;i<n;i++) z[i] = (f1[i] - f0[i])/epsnew;
 //%
 //%
     free(del);
     free(f1);
+}
+int copy_gsl_vector_to_array(const gsl_vector *src, double *target, int dimtarget) {
+    int i;
+    if (src->size != dimtarget) return GSL_FAILURE;
+    for (i=0;i<dimtarget;i++) target[i] = gsl_vector_get(src,i);
+    return GSL_SUCCESS;
+}
+
+
+int copy_array_to_gsl_vector(double *src, gsl_vector *target, int dimsrc) {
+    int i,errno;
+    errno=0;
+    if (dimsrc != target->size) return GSL_FAILURE;
+    for (i=0;i<dimsrc;i++)  {
+            gsl_vector_set(target,i,src[i]);
+    }
+    return GSL_SUCCESS;
 }
 
 // Solving the matrix equation Ax=b according to x;
@@ -176,14 +196,17 @@ gsl_matrix *A;
 gsl_vector_view x;
 gsl_permutation * p;
 int s,i,j;
-b = gsl_vector_view_array (b_data, k);
-x = gsl_vector_view_array (x_data, k);
+
+b=gsl_vector_view_array(b_data,k);
+x=gsl_vector_view_array(x_data,k);
+gsl_set_error_handler_off ();
 A = gsl_matrix_alloc(k, k);
 for (i=0;i<k;i++) {
     for (j=0;j<k;j++) {
         gsl_matrix_set(A,i,j,A_data[i][j]);
     }
 }
+
 p = gsl_permutation_alloc (k);
 gsl_linalg_LU_decomp (A, p, &s);
 gsl_linalg_LU_solve (A, p, &b.vector, &x.vector);
@@ -192,15 +215,16 @@ gsl_matrix_free(A);
 return;
 }
 
-void gmres(scalar *f0,
+void dgmres(scalar *f0,
            void *ozfunct,
            scalar *xc,
            sasfit_oz_data *OZd,
            scalar *params,
            scalar *xinit,
+           bool init,
            scalar *x,
-           scalar *error,
-           int *total_iters) {
+           int *total_iters,
+           scalar *lasterror) {
 //% GMRES linear equation solver for use in Newton-GMRES solver
 //%
 //% C. T. Kelley, April 1, 2003
@@ -240,7 +264,7 @@ void gmres(scalar *f0,
 //%
 
 scalar errtol,kmax,reorth,*b, *r, *th, **h, **v,*c, *s, *g, *y;
-scalar rr,tmpx, normav, normav2,hr,nu;
+scalar rr,tmpx, normav, rho, normav2,hr,nu;
 int i,j,k,n;
 
 errtol = params[0];
@@ -256,9 +280,11 @@ for(i=0;i<n;i++) {
     x[i]=xinit[i];
 }
 
-dirder(xc,x,ozfunct, OZd, f0, r);
-
-for(i=0;i<n;i++) r[i]=r[i]-f0[i];
+if (init) {
+    for(i=0;i<n;i++) x[i]=xinit[i];
+    dirder(xc,x,ozfunct, OZd, f0, r);
+    for(i=0;i<n;i++) r[i]=-r[i]-f0[i];
+}
 
 c = (scalar *)calloc((kmax+1),sizeof(scalar));
 s = (scalar *)calloc((kmax+1),sizeof(scalar));
@@ -276,7 +302,7 @@ for (i=0;i<kmax+1;i++) v[i]=(scalar*) calloc(n,sizeof(scalar));
 rr= norm(r,n);
 g[0] = rr;
 errtol=errtol*norm(b,n);
-total_iters = 0;
+*total_iters = 0;
 if (rr < errtol) {
     goto gmresout;
 }
@@ -290,6 +316,8 @@ k=0;
 //%
 while((rr > errtol) && (k < kmax)) {
     k = k+1;
+
+
 //%
 //%   Call directional derivative function.
 //%
@@ -310,7 +338,7 @@ while((rr > errtol) && (k < kmax)) {
 //%   Reorthogonalize?
 //%
     if  ((reorth == 1 && normav + .001*normav2 == normav) || (reorth ==  3)) {
-        for (j = 1-1;j<=k-1;j++) {
+        for (j = 1;j<=k;j++) {
             hr = 0;
             for (i=0;i<n;i++) hr=hr+v[j-1][i]*v[k+1-1][i];
             h[j-1][k-1] = h[j-1][k-1]+hr;
@@ -336,7 +364,7 @@ while((rr > errtol) && (k < kmax)) {
 //%
 //%   Don't divide by zero if solution has  been found.
 //%
-    nu = sqrt(gsl_pow_2(h[k-1][k+1-1])+gsl_pow_2(h[k+1-1][k-1]));
+    nu = sqrt(gsl_pow_2(h[k-1][k-1])+gsl_pow_2(h[k+1-1][k-1]));
     if (nu != 0) {
         c[k-1] = h[k-1][k-1]/nu;
 //%        c(k) = conj(h(k,k)/nu);
@@ -349,7 +377,7 @@ while((rr > errtol) && (k < kmax)) {
 //%   Update the residual norm.
 //%
     rr = fabs(g[k+1-1]);
-//%    error = [error,rho];
+    *lasterror = rr;
 //%
 //%   end of the main while loop
 //%
@@ -358,12 +386,11 @@ while((rr > errtol) && (k < kmax)) {
 //% At this point either k > kmax or rho < errtol.
 //% It's time to compute x and leave.
 //%
-
+*total_iters = k;
 // Solve  h*y = x
 //y = h(1:k,1:k)\g(1:k);
 AxEQb(h,g,k,y);
 *total_iters = k;
-
 for (i=0;i<n;i++) {
     tmpx=0;
     for (j=0;j<k;j++) {
@@ -453,6 +480,7 @@ void dkrylov(scalar *f0,
 //%
 //% linear iterative methods
 //%
+sasfit_out("lmeth %d\n",lmeth);
     switch (lmeth) {
         case 1:
         case 2:
@@ -462,14 +490,19 @@ void dkrylov(scalar *f0,
 //% for this purpose
 //%
 //            [step, errstep, total_iters] = dgmres(f0, f, x, gmparms);
+sasfit_out("try to initialize dgmres\n");
+            dgmres(f0,ozfunct,x,OZd,gmparms,step,TRUE,step,total_iters,errstep);
+            sasfit_out("did it\n");
             kinn = 0;
 //%
 //%   restart at most restart_limit times
 //%
             while (    (*total_iters == lmaxit)
-                    && (errstep[*total_iters] > gmparms[0]*norm(f0,OZd->Npoints))
+                    && (*errstep > gmparms[0]*norm(f0,OZd->Npoints))
                     && (kinn < restart_limit) ) {
                 kinn = kinn+1;
+                dgmres(f0,ozfunct,x,OZd,gmparms,step,FALSE,step,total_iters,errstep);
+                sasfit_out("total iter (gmres calls) %d\n",*total_iters);
 //                [step, errstep, total_iters] = dgmres(f0, f, x, gmparms,step);
             }
             *total_iters = *total_iters+kinn*lmaxit;
@@ -498,7 +531,7 @@ void nsoli(scalar *x,
            void *ozfunct,
            sasfit_oz_data *OZd,
            scalar *tol,
-           nsolip *parms,
+           scalar *parms,
            scalar *sol,
            int *ierr) {
 //% NSOLI  Newton-Krylov solver, globally convergent
@@ -600,12 +633,10 @@ void nsoli(scalar *x,
     gmparms[1]=LMAXIT;
     gmparms[2]=RESTARTLIMIT;
     gmparms[3]=1;
+    rtol = tol[1];
+    atol = tol[0];
     fnrm = 1.0;
 
-    it_histx = (scalar **) malloc (MAXIT*sizeof(scalar));
-    for (i=0;i<MAXIT;i++) {
-        it_histx[i] = (scalar *) malloc(3 * sizeof(scalar));
-    }
     xold  = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
     xt = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
     ft = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
@@ -614,20 +645,20 @@ void nsoli(scalar *x,
     errstep = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
 
     itc = 0;
-    feval(ozfunct,x,f0,OZd->Npoints);
+    feval(ozfunct,OZd,x,f0);
 //    f0 = OZd->G;
     fnrm = norm(f0,OZd->Npoints);
-    it_histx[itc][0] = fnrm;
-    it_histx[itc][1] = 0;
-    it_histx[itc][2] = 0;
+    sasfit_out("initial feval gived fnrm=%g\n",fnrm);
     stop_tol = atol + rtol*fnrm;
-    while(fnrm > stop_tol && itc < MAXIT) {
+    while(fnrm > stop_tol && itc < MAXIT && itc < 3) {
         rat = fnrm/fnrmo;
         fnrmo = fnrm;
         itc = itc+1;
+        sasfit_out("start nsoli iteration no. %d\n",itc);
+        sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
 ////   [step, errstep, inner_it_count,inner_f_evals] = ...
 ////        dkrylov(f0, f, x, gmparms, lmeth);
-        dkrylov(f0, ozfunct, x, OZd, gmparms, lmeth, step, errstep, &inner_it_count, &inner_f_evals);
+        dkrylov(f0, ozfunct, x, OZd, gmparms, lmeth, step, &errstep[0], &inner_it_count, &inner_f_evals);
 //
 //   The line search starts here.
 //
@@ -640,7 +671,7 @@ void nsoli(scalar *x,
             ////    xt = x + lambda*step;
             xt[i] = x[i]+lambda*step[i];
         }
-        feval(ozfunct,xt,ft,OZd->Npoints);
+        feval(ozfunct,OZd,xt,ft);
 
         nft = norm(ft,OZd->Npoints);
         nf0 = norm(f0,OZd->Npoints);
@@ -669,14 +700,14 @@ void nsoli(scalar *x,
 //
 // Keep the books on the function norms.
 //
-        feval(ozfunct,xt,ft,OZd->Npoints);
+        feval(ozfunct,OZd,xt,ft);
         nft = norm(ft,OZd->Npoints);
         ffm = ffc;
         ffc = nft*nft;
         iarm = iarm+1;
 
         if (iarm > maxarm) {
-            fprintf(stderr,"Armijo failure, too many reductions ");
+            sasfit_out("Armijo failure, too many reductions ");
             *ierr = 2;
 //            disp(outstat)
 ////            it_hist = it_histx(1:itc+1,:);
@@ -716,11 +747,6 @@ void nsoli(scalar *x,
         gmparms[0] = max(gmparms[0],.5*stop_tol/fnrm);
     }
     }
-
-    for (i=0;i<MAXIT;i++) {
-        free(it_histx[i]);
-    }
-    free(it_histx);
     free(xold);
     free(xt);
     free(ft);

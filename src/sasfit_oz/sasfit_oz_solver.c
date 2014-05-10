@@ -88,6 +88,7 @@ int OZ_f(gsl_vector * x, void *OZd, gsl_vector * fres) {
 #define G  OZd->G
 #define G0  OZd->G0
 #define g  OZd->g
+#define HR  OZd->h
 #define GAMMA_R  OZd->gamma_r
 #define g0  OZd->g0
 #define OZIN  OZd->in
@@ -128,6 +129,7 @@ void OZ_init(sasfit_oz_data *OZd) {
    k      = (double*)malloc((NP)*sizeof(double));
    EN     = (double*)malloc((NP)*sizeof(double));
    G      = (double*)malloc((NP)*sizeof(double));
+   HR     = (double*)malloc((NP)*sizeof(double));
    G0     = (double*)malloc((NP)*sizeof(double));
    g      = (double*)malloc((NP)*sizeof(double));
    g0     = (double*)malloc((NP)*sizeof(double));
@@ -243,7 +245,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     double err, errold, Norm, Normold;
     double alpha, beta, gama;
     double *xn, *yn, *zn, *Tx, *Ty, *Tz;
-    int j,n,iloop;
+    double nsoliparam[5], tol[2];
+    int j,n,iloop,ierr;
     Normold=1;
     err=2*RELERROR;
     switch (algorithm) {
@@ -918,6 +921,22 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 free(Ty);
                 break;
+        case GMRES:
+                xn = (double*)malloc((NP)*sizeof(double));
+                Tx = (double*)malloc((NP)*sizeof(double));
+                cp_array_to_array(G,xn,NP);
+                nsoliparam[0]=240;
+                nsoliparam[1]=480;
+                nsoliparam[2]=-0.1;
+                nsoliparam[3]=1;
+                nsoliparam[4]=20;
+                tol[0]=RELERROR;
+                tol[1]=RELERROR;
+                nsoli(xn,&OZ_step,OZd,tol,nsoliparam,Tx,&ierr);
+                cp_array_to_array(Tx,G,NP);
+                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                free(xn);
+                free(Tx);
     }
 }
 
@@ -1184,6 +1203,7 @@ double OZ_step(sasfit_oz_data *OZd) {
         G[j]=4.*M_PI*dk*dk*OZOUT[j]/(2.0*dr*gsl_pow_3(2.0*M_PI)*(j+1.0));
         residualG = residualG+fabs(G[i]-tmpr);
         S[j]=1./(1.-ro*cf[j]);
+        HR[j]=c[j]+G[j];
         Sm=gsl_pow_2(S[j])+Sm;
         if (!doneB) {
             if (g[j] > 0 && EN[j] != 0) {
@@ -1301,6 +1321,9 @@ void OZ_solver (sasfit_oz_data *OZd) {
                 break;
         case Hybrids:
                 OZ_solver_by_gsl_multroot(OZd,Hybrids);
+                break;
+        case GMRES:
+                OZ_solver_by_iteration(OZd,GMRES);
                 break;
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");
@@ -1649,6 +1672,7 @@ void OZ_free (sasfit_oz_data *OZd) {
     free(G);
     free(G0);
     free(g);
+    free(HR);
     free(g0);
     free(dU_dR);
     free(UBETA);

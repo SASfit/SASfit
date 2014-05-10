@@ -140,7 +140,7 @@ typedef enum {
 typedef struct {
         Tcl_Interp *interp;
         double *r, *k, *En, *G,
-               *G0, *g, *g0, *c,
+               *G0, *g, *g0, *c, *h,
                *cf, *cfold, *cfnew,
                *Gf,*f, *S,  *ud,
                *Br, *yr, *fr;
@@ -182,5 +182,5 @@ void OZ_pot_der (sasfit_oz_data *);
 double compressibility_calc (double alpha, void * params);
 void root_finding (sasfit_oz_data *);
 
-
-//Modified 23.10.2013
+void nsoli(scalar *,void *,sasfit_oz_data *,scalar *,scalar *,scalar *,int *);
+//Modified 7.5.2014
