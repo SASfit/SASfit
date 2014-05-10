@@ -34,7 +34,7 @@ package require tkcon
 tkcon show
 tkcon title "SASfit console"
 tkcon buffer 8192
-tkcon hide
+# tkcon hide
 
 # package tcllib
 package require struct::matrix

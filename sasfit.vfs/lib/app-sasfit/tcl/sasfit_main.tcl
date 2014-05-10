@@ -294,7 +294,6 @@ set OZ(result,potential) {}
 set OZ(result,p) {}
 set OZ(result,phi) {}
 set OZ(result,T) {}
-set OZ(result,1024) {}
 set OZ(result,mult) {}
 set OZ(result,mix) {}
 set OZ(result,dr/dsigma) {}
@@ -310,6 +309,7 @@ set OZ(result,Ur) {}
 set OZ(result,label) {}
 
 set OZ(algorithm) "Picard iteration"
+set OZ(algorithm) "GMRES"
 set OZ(phi) 0.3
 set OZ(T) 300
 set OZ(mindimOZ) 128
@@ -654,6 +654,7 @@ set SDGraph(y,title) "N(D)"
 CreateGraphPar ozSQGraph
 CreateGraphPar ozgrGraph
 CreateGraphPar ozcrGraph
+CreateGraphPar ozhrGraph
 CreateGraphPar ozgammarGraph
 CreateGraphPar ozbetaUrGraph
 CreateGraphPar ozBrGraph
@@ -2134,7 +2135,7 @@ proc LoadCmd { loadProj } {
    global distr
    global nomenu
    global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
-   global OZ ozSQGraph ozgrGraph ozcrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
+   global OZ ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
    global adjustvalue
    global FitPrecision
    
@@ -2270,7 +2271,7 @@ proc SaveCmd {} {
    global distr
    global nomenu
    global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
-   global OZ ozSQGraph ozgrGraph ozcrGraph ozcrGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
+   global OZ ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
    global adjustvalue
    global FitPrecision
 
@@ -2331,6 +2332,7 @@ proc SaveCmd {} {
 	      puts_arr $fid ozSQGraph 
 	      puts_arr $fid ozgrGraph 
 	      puts_arr $fid ozcrGraph 
+	      puts_arr $fid ozhrGraph 
 	      puts_arr $fid ozgammarGraph 
 	      puts_arr $fid ozbetaUrGraph
 	      puts_arr $fid ozBrGraph 
