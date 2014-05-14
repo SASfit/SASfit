@@ -1,0 +1,81 @@
+/*
+ * src/sasfit_ff/sasfit_ff_dumbbell_shell.c
+ *
+ * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ */
+
+#include <gsl/gsl_math.h>
+#include "include/sasfit_ff_utils.h"
+
+
+/*
+float dumbbell_shell(Tcl_Interp *interp,
+			 float Q, 
+			 float R, 
+			 float DR,
+		  float L,
+			 float eta1, 
+			 float eta2, 
+			 bool  *error)
+*/
+/**
+ * form factor of a dumbbell consisting of two spherical shell with radius R
+ * of the core and DR as the shell thickness. L is the distance between the
+ * shells so that 2*(R+DR)+L is the center to center distance between shells.
+ * The scattering length density in shell of is eta2 and scattering the
+ * scattering length density in core eta1
+ */
+scalar sasfit_ff_dumbbell_shell(scalar q, sasfit_param * param)
+{
+	scalar A, R12, ftmp, Kval1, Kval2;
+	scalar R, DR, L, eta1, eta2;
+	sasfit_param subParam;
+
+	SASFIT_ASSERT_PTR(param);
+
+	sasfit_get_param(param, 5, &R, &DR, &L, &eta1, &eta2);
+
+	sasfit_init_param( &subParam );
+	subParam.p[0] = R + DR;
+	subParam.p[3] = eta2;
+	Kval1 = sasfit_ff_sphere_f(q, &subParam);
+	SASFIT_CHECK_SUB_ERR(param, subParam);
+
+	subParam.p[0] = R;
+	subParam.p[3] = eta2 - eta1;
+	Kval2 = sasfit_ff_sphere_f(q, &subParam);
+	SASFIT_CHECK_SUB_ERR(param, subParam);
+
+	R12 = 2.0*(R+DR)+L;
+	//A = K(interp,q,(R+DR),eta2,error) - K(interp,q,R,eta2-eta1,error);
+	A = Kval1 - Kval2;
+
+	if (R12 == 0) 
+	{
+		ftmp = 2.0;
+	} else {
+		ftmp = (1.0+sin(q*R12)/(q*R12));
+	}
+	return A*A*2.0*ftmp;
+}

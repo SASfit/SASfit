@@ -1,0 +1,238 @@
+<! -- -*- tcl -*-
+   -->
+<html><head>
+<title>pop3d::dbox - Tcl POP3 Server Package </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/pop3d/pop3d_dbox.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: pop3d_dbox.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ pop3d::dbox.n
+   -->
+
+<body>
+<h1> pop3d::dbox(n) 1.0.2 pop3d &quot;Tcl POP3 Server Package&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> pop3d::dbox - Simple mailbox database for pop3d
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.3</b><br>
+package require <b>pop3d::dbox ?1.0.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::pop3d::dbox::new</b> ?<i class='arg'>dbName</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>dbName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>dbName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>dbName</i> <strong>base</strong> <i class='arg'>base</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>dbName</i> <strong>add</strong> <i class='arg'>mbox</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>dbName</i> <strong>remove</strong> <i class='arg'>mbox</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>dbName</i> <strong>move</strong> <i class='arg'>old new</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>dbName</i> <strong>list</strong></a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>dbName</i> <strong>exists</strong> <i class='arg'>mbox</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>dbName</i> <strong>locked</strong> <i class='arg'>mbox</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>dbName</i> <strong>lock</strong> <i class='arg'>mbox</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>dbName</i> <strong>unlock</strong> <i class='arg'>mbox</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>dbName</i> <strong>stat</strong> <i class='arg'>mbox</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>dbName</i> <strong>size</strong> <i class='arg'>mbox</i> ?<i class='arg'>msgId</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>dbName</i> <strong>dele</strong> <i class='arg'>mbox msgList</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>storageCmd</i> <strong>get</strong> <i class='arg'>mbox</i> <i class='arg'>msgId</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The package <strong>pop3d::dbox</strong> provides simple/basic mailbox
+management facilities. Each mailbox object manages a single base
+directory whose subdirectories represent the managed mailboxes. Mails
+in a mailbox are represented by files in a mailbox directory, where
+each of these files contains a single mail, both headers and body, in
+RFC 822 (<a href="http://www.rfc-editor.org/rfc/rfc822.txt">http://www.rfc-editor.org/rfc/rfc822.txt</a>) conformant
+format.
+
+<p>
+
+Any mailbox object following the interface described below can be used
+in conjunction with the pop3 server core provided by the package
+<strong>pop3d</strong>. It is especially possible to directly use the objects
+created by this package in the storage callback of pop3 servers
+following the same interface as servers created by the package
+<strong>pop3d</strong>.
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::pop3d::dbox::new</b> ?<i class='arg'>dbName</i>?</a><dd>
+
+
+This command creates a new database object with an associated global
+Tcl command whose name is <i class='arg'>dbName</i>.
+
+</dl>
+
+The command <b class='cmd'>dbName</b> may be used to invoke various operations on
+the database.  It has the following general form:
+
+<dl>
+<dt><a name="2"><b class='cmd'>dbName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command.
+
+</dl>
+
+<p>
+
+The following commands are possible for database objects:
+
+<dl>
+
+<dt><a name="3"><i class='arg'>dbName</i> <strong>destroy</strong></a><dd>
+
+
+Destroys the mailbox database and all transient data. The directory
+associated with the object is not destroyed.
+
+<br><br>
+<dt><a name="4"><i class='arg'>dbName</i> <strong>base</strong> <i class='arg'>base</i></a><dd>
+
+
+Defines the base directory containing the mailboxes to manage. If this
+method is not called none of the following methods will work.
+
+<br><br>
+<dt><a name="5"><i class='arg'>dbName</i> <strong>add</strong> <i class='arg'>mbox</i></a><dd>
+
+
+Adds a mailbox of name <i class='arg'>mbox</i> to the database. The name must be a
+valid path component.
+
+<br><br>
+<dt><a name="6"><i class='arg'>dbName</i> <strong>remove</strong> <i class='arg'>mbox</i></a><dd>
+
+
+Removes the mailbox specified through <i class='arg'>mbox</i>, and the mails
+contained therein, from the database. This method will fail if the
+specified mailbox is locked.
+
+<br><br>
+<dt><a name="7"><i class='arg'>dbName</i> <strong>move</strong> <i class='arg'>old new</i></a><dd>
+
+
+Changes the name of the mailbox <i class='arg'>old</i> to <i class='arg'>new</i>.
+
+<br><br>
+<dt><a name="8"><i class='arg'>dbName</i> <strong>list</strong></a><dd>
+
+
+Returns a list containing the names of all mailboxes in the directory
+associated with the database.
+
+<br><br>
+<dt><a name="9"><i class='arg'>dbName</i> <strong>exists</strong> <i class='arg'>mbox</i></a><dd>
+
+
+Returns true if the mailbox with name <i class='arg'>mbox</i> exists in the
+database, or false if not.
+
+<br><br>
+<dt><a name="10"><i class='arg'>dbName</i> <strong>locked</strong> <i class='arg'>mbox</i></a><dd>
+
+
+Checks if the mailbox specified through <i class='arg'>mbox</i> is currently locked.
+
+<br><br>
+<dt><a name="11"><i class='arg'>dbName</i> <strong>lock</strong> <i class='arg'>mbox</i></a><dd>
+
+
+This method locks the specified mailbox for use by a single connection
+to the server. This is necessary to prevent havoc if several
+connections to the same mailbox are open. The complementary method is
+<strong>unlock</strong>. The command will return true if the lock could be set
+successfully or false if not.
+
+<br><br>
+<dt><a name="12"><i class='arg'>dbName</i> <strong>unlock</strong> <i class='arg'>mbox</i></a><dd>
+
+
+This is the complementary method to <strong>lock</strong>, it revokes the lock
+on the specified mailbox.
+
+<br><br>
+<dt><a name="13"><i class='arg'>dbName</i> <strong>stat</strong> <i class='arg'>mbox</i></a><dd>
+
+
+Determines the number of messages in the specified mailbox and returns
+this number. This method fails if the mailbox <i class='arg'>mbox</i> is not
+locked.
+
+<br><br>
+<dt><a name="14"><i class='arg'>dbName</i> <strong>size</strong> <i class='arg'>mbox</i> ?<i class='arg'>msgId</i>?</a><dd>
+
+
+Determines the size of the message specified through its id in
+
+<i class='arg'>msgId</i>, in bytes, and returns this number. The command will
+return the size of the whole maildrop if no message id was specified.
+
+If specified the <i class='arg'>msgId</i> has to be in the range &quot;1 ... [<i class='arg'>dbName</i> <strong>stat</strong>]&quot;
+
+or this call will fail. If <strong>stat</strong> was not called before this
+call, <strong>size</strong> will assume that there are zero messages in the
+mailbox.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>dbName</i> <strong>dele</strong> <i class='arg'>mbox msgList</i></a><dd>
+
+
+Deletes the messages whose numeric ids are contained in the
+<i class='arg'>msgList</i> from the mailbox specified via <i class='arg'>mbox</i>.
+
+The <i class='arg'>msgList</i> must not be empty or this call will fail.
+
+The numeric ids in <i class='arg'>msgList</i> have to be in the range &quot;1 ...
+[<i class='arg'>dbName</i> <strong>stat</strong>]&quot; or this
+call will fail. If <strong>stat</strong> was not called
+before this call, <strong>dele</strong> will assume
+that there are zero messages in the mailbox.
+
+
+<br><br>
+<dt><a name="16"><i class='arg'>storageCmd</i> <strong>get</strong> <i class='arg'>mbox</i> <i class='arg'>msgId</i></a><dd>
+
+
+Returns a handle for the specified message. This handle is a mime
+token following the interface described in the documentation of
+package <strong>mime</strong>. The token is <em>read-only</em>. In other
+words, the caller is allowed to do anything with the token except to
+modify it.
+
+The <i class='arg'>msgId</i> has to be in the range &quot;1 ...
+[<i class='arg'>dbName</i> <strong>stat</strong>]&quot; or this
+call will fail. If <strong>stat</strong> was not called
+before this call, <strong>get</strong> will assume
+that there are zero messages in the mailbox.
+
+
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+internet, network, pop3, protocol, rfc 822
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

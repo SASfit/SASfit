@@ -1,0 +1,177 @@
+
+Windows Meta File extension
+
+Tcl Extension for Windows
+RCS Version $Revision: 1.9 $
+RCS Last Change Date: $Date: 2003/08/03 16:53:35 $
+
+This extension is intended to be an alternate source of
+contexts for the GDI package.
+Unlike the printer contexts provided by the printer package,
+metafile contexts can be used to either write importable files
+or to copy data to the clipboard.
+
+This extension was suggested and originally written by
+Gerlinger Leopold <leopold.gerlinger@siemens.at> for the GDI
+package and put into the wmf package by Michael Schwartz
+to fit better into the intended design paradigm.
+Michael Thomsen <miksen@ideogramic.com> noted problems with the
+enhanced metafile approach, and kindly offered to fund their repair.
+Thanks also to Alain Zuur for suggesting the wmf read function, and 
+challenging wmf to display other application's emf files.
+
+{LICENSE}
+
+THE AUTHORS HEREBY GRANT PERMISSION TO USE, COPY, MODIFY, DISTRIBUTE,
+AND LICENSE THIS SOFTWARE AND ITS DOCUMENTATION FOR ANY PURPOSE, PROVIDED
+THAT EXISTING COPYRIGHT NOTICES ARE RETAINED IN ALL COPIES AND THAT THIS
+NOTICE IS INCLUDED VERBATIM IN ANY DISTRIBUTIONS. 
+
+NO WRITTEN AGREEMENT, LICENSE, OR ROYALTY FEE IS REQUIRED FOR ANY OF THE
+AUTHORIZED USES.
+
+MODIFICATIONS TO THIS SOFTWARE MAY BE COPYRIGHTED BY THEIR AUTHORS
+AND NEED NOT FOLLOW THE LICENSING TERMS DESCRIBED HERE, PROVIDED THAT
+THE NEW TERMS ARE CLEARLY INDICATED ON THE FIRST PAGE OF EACH FILE WHERE
+THEY APPLY.
+
+IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL,  OR CONSEQUENTIAL DAMAGES ARISING OUT OF
+THE USE OF THIS SOFTWARE, ITS DOCUMENTATION,  OR ANY DERIVATIVES
+THEREOF, EVEN IF THE AUTHORS HAVE BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE AUTHORS AND DISTRIBUTORS SPECIFICALLY DISCLAIM ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO,  THE IMPLIED WARRANTIES OF
+MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. 
+THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, AND THE AUTHORS AND
+DISTRIBUTORS HAVE NO OBLIGATION  TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+{SYNOPSIS}
+
+This file contains commands to extend Tcl for Windows.
+The commands are:
+
+wmf
+ wmf open
+ wmf close
+ wmf delete
+ wmf copy
+ wmf info
+ wmf paste
+ wmf read
+
+The wmf open command returns an hDC which can be used by the GDI extension
+to draw upon.
+
+Details of each command follow
+
+wmf open [-file filename] [-width width -height height] 
+                    [-app app] [-title title] [-hDC hdc] [-init emffile]
+ DESCRIPTION:
+  Returns an hDC if successful
+  Opens a memory metafile if no file is specified
+  -file  Opens the named "emf" file. Note that this (re)initializes it.
+         Use the "wmf read" function or the -init parameter to read in contents of
+         an already extant metafile.
+  -width and -height specify the size for pasting in hundredths of millimeters.
+  If not specified, the metafile will calculate its own dimensions. This is normally accurate,
+  but on occassion unexpected cropping occurs
+  -app and -title store the name of the application and title of the metafile
+  while in memory. These are not stored in the file.
+  If an HDC is provided, it will be used as the reference DC for creation.
+  Otherwise, the screen DC will be used. 
+  Note that the reference HDC and size are used to calculate the size and position
+  used in pasting the metafile into another application. In particular, if the 
+  drawing is to be done as to a printer, use a printer HDC as the reference.
+  -init will populate the EMF with the contents of an existing enhanced metafile
+  (no additional options are available at this time).
+ LIMITATIONS:
+  None known
+
+wmf close hDC
+ DESCRIPTION:
+  Closes the metafile and returns an emf context that can be used
+  for copying and saving.
+  The DC can no longer be used after this call.
+
+wmf copy emf [-file filename] [-type metafile|enhanced|both]
+ DESCRIPTION:
+  Copies the contents of the enhanced metafile to the clipboard or provided file
+  The copy is done in EMF format, so the clipboard may render the picture without
+  relying on the Tcl program running anymore.
+  The -type argument is for clipboard copies only, and can put old-style metafiles,
+  enhanced metafiles, or both on the clipboard. By default, both types are pasted.
+  If the author wishes to ensure that only "pictures" are available, use the
+  -type metafile switch; if resizable enhanced metafiles only are needed, and
+  only current applications are in use, -type enhanced will be best.
+  The default setting is fine for most uses, but will give different results
+  when selecting options on the "Paste Special" menu.
+
+wmf info emf [-verbose|-canvas]
+ DESCRIPTION:
+  Returns a list of pairs representing the info about the metafile
+  -verbose adds details about each metafile record and its arguments
+  -canvas  prints details about each metafile record with a canvas representation
+           in a format conducive to rendering on a canvas
+ LIMITATIONS
+  Not every metafile command can be well-represented as a canvas command.
+  Also, not every representable command has been implemented at this time.
+  The large case statement that does this translation can easily add any
+  missing portions (use the -verbose switch to get the parameter encoding if needed).
+
+wmf play emf hdc [-bounds "x0 y0 x1 y1"]
+ DESCRIPTION:
+  Copies the enhanced metafile into the given bounds on the provided HDC.
+  If no bounds are provided, a rectangle of size 2000x2000 at the origin is assumed.
+
+wmf read file
+ DESCRIPTION
+  Reads an operating system EMF file and creates an emf context that can be used
+  for copying and saving.
+
+wmf delete emf
+ DESCRIPTION:
+  Deletes the enhanced metafile and frees its resources.
+  The emf handle can no longer be used after this call
+
+wmf paste [-type type] [-list] [-file f]
+ DESCRIPTION:
+  Pastes the contents of the clipboard and returns them to the user
+  The return value is a pair, with the first element being the type--either
+  text, enhanced metafile, image, or unicode text , and the second being
+  the value--either an image name, metafile handle, or text content.
+  However, if the -type argument is provided, the first member of the pair
+  is not included.
+  -list  return the accessible types on the clipboard, from among the list
+         text, enhanced metafile, image, metafile, unicode text
+  -type  return the clipboard item in the requested format, from among the list
+         text, enhanced metafile, image, metafile, unicode text
+         Note that this is the type decoded from the clipboard--and not
+         necessarily the type returned. For instance, when pasting from a
+         metafile on the clipboard, and enhanced metafile is returned.
+         Without -type, the command will return the first available format 
+         from the list text, enhanced metafile, image, metafile, unicode text
+  Images are produced by writing a PPM file and then reading it back. If the
+  -file argument is given, the file is named and retained after the command finishes.
+ LIMITATION:
+  First, this overlaps with the Tcl Builtin clipboard command for text. Text is
+  only provided in this package for convenience. Frankly, if the TIP process wants
+  to move the entire clipboard paste function out of this package, I won't mind a bit.
+  Second, there is a problem with pasting enhanced metafiles from many MS Office
+  applications. There appears to be a trick to the protocol to getting the
+  translation and lock on the global memory. It is worked around here by returning
+  the metafile representation instead. Strangely, if one persists long enough,
+  the enhanced metafile will eventually be produced, locked, and returned.
+  Third, due to the intertwining of the Tk_Photo functions and the Tk extension,
+  the image format is available only when Tk is loaded.
+  Finally, the image portion has only been tested with 256 and 24-bit color images.
+  32-bit images and lower resolution color may not work.
+
+In order to do this right, the wmf extension needs to know
+which contexts are its own. And it needs to know which are
+device contexts and which are emf contexts.
+[ Similarly, the printer extension should be able to which  
+contexts are its own as well.]
+This is be done with hash tables, as in the gd extension.

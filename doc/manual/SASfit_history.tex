@@ -1,0 +1,311 @@
+\appendix{History}
+\begin{description}
+    \item[2014-02-05] \SASfit 0.94.1
+    \begin{itemize}
+      \item added missing parameter label for Hamaker constant in DLVO potential
+      \item Penetrable Sphere Model was not properly assigned.
+      \item added all available plugins into the distribution binaries
+    \end{itemize}
+    \item[2014-01-20] \SASfit 0.94.0
+    \begin{itemize}
+      \item A new interface for solving the Ornstein Zernike equation for different
+            closure relations and potentials (OZ-solver) has been added. The solutions
+            of the OZ-solver can be used as a structure factor as a spline function without the possibility to fit a parameter of the potential at the moment.
+      \item manual has been extended for the ferrofluid plugin scattering functions
+      \item orientation of the 2D simulation was rotated by 90deg.
+      \item correction of the manual for Porod's approximation of cylinders.
+      \item minor bug fix for Porod's approximation of long cylinders.
+    \end{itemize}
+    \item[2013-06-09] \SASfit 0.93.5
+    \begin{itemize}
+      \item implementation of a plugin for a form factor and correlation function for spin misalignment
+      \item  bug fix for the scattering contribution of the individual chains in the form factors \texttt{WORM*}, \texttt{ROD*}, and \texttt{DISC*}
+      \item  bug fix in the form factor \texttt{MagneticShellCrossTerm}
+      \item added some subfolders for form factor plugins
+      \item bug fix in the calculation of the scattering length density SLD(E) of x-rays
+    \end{itemize}
+    \item[2013-04-30] \SASfit 0.93.4
+    \begin{itemize}
+      \item In the menu for confidence interval the non-diagonal elements of
+            correlation matrix are shown together with the confidence interval
+            for the fitted parameters as diagonal elements.
+      \item added some additional parameters into the fit menu useful to
+            evaluate the goodness of a fit
+      \item new plugin for \texttt{Parallelepiped\_abc} of dimension a*b*c to be
+            found under \texttt{[by plugins|anisotropic obj]}
+      \item new plugin for \texttt{generalized Guinier law} to be found under
+            \texttt{[by plugins|non-particular structures]}
+      \item Renamed \texttt{HMI} format into \texttt{BerSANS} format and did some debugging.
+            Now also all masked data points (negative errors) are ignored.
+      \item added key bindings \texttt{Home}, \texttt{End}, \texttt{PgUp}, \texttt{PgDn}, \texttt{Insert},
+            \texttt{Delete} for going to first-last-next-previous entry or to add and remove an entry
+      \item adding plugin with a series of form factor for strongly anisotropic structures
+            with local planar and local cylindrical shapes
+      \item adding a new plugin form factor for spheres with fuzzy interfaces. The existing form factors
+            \texttt{ExpShell}, \texttt{LinShell} and \texttt{LinShell2} have been moved to this plugin.
+      \item New plugin of \texttt{FuzzySphere} and \texttt{CoreShellMicrogel}.
+            Also the related functions for calculating the corresponding radial profiles have been added.
+      \item new section in the manual about absolute scale, molecular weight, etc.
+      \item for the form factors \texttt{flat cylinder} \texttt{long cylinder}, and \texttt{Porod cylinder}
+            the limiting case $q \equiv 0$ is now treated properly
+      \item small bug fix in the peak function \texttt{Gamma (Area)} for checking
+            validity of parameter
+      \item bug fix of the resolution parameter handling in case it will be read in from a data file
+      \item included under peak function the \texttt{Maxwell} distribution and the
+            \texttt{generalized Maxwell} distribution
+      \item batch fitting
+    \end{itemize}
+    \item[2011-05-04] \SASfit 0.93.3
+        \begin{itemize}
+        \item  bug fix in the model \texttt{Stacked Discs}. The structure factor describing the
+            stacking order contained a bug.
+        \item extended plugin for stroboscopic measurements, especially for \texttt{TISANE}
+        \item plotting: ignore negative y values on log() and sqrt() scales
+        \item included \texttt{Pcs\_homogeneousCyl} form factor
+        \item bug fix of \texttt{ferrofluid plugin}
+        \item added radial averaged form factor in \texttt{ferrofluid plugin}
+        \item extended the spline plugin to be used also as form factors.
+            In case somebody wants to fit a spline function to e.g. a TEM size distribution,
+            this function need to be available as a form factor and not only as a size
+            distribution.
+        \item added configuration file \texttt{config.ini} as replacement for
+            deprecated \texttt{sasfit\_init\_public.tcl}
+        \item added switch for disabling \texttt{About} popup at start time via config file
+        \item added checkbox (ascii options) for ignoring zero(0) intensity at the beginning
+                of data
+        \item removed , as data column separator
+        \item added substitution of $, \Rightarrow .$   for data columns
+                (german decimal format to english format)
+        \item added interface function for covariance matrix output
+        \item covar matrix visualisation with parameter highlighting
+        \item added a chapter about particle number densities, volume fraction
+            and absolute intensities in the manual.
+        \item \texttt{LogNorm\_fp} size distribution is now plugin function.
+            The new plugin is not backwards compatible.
+            The manual explains a bit the difficulties in describing the size distribution
+            in terms of a volume fraction.
+        \item added scrollbars for fit parameter window
+        \end{itemize}
+    \item[2010-07-08] \SASfit 0.93.2
+        \begin{itemize}
+        \item bug fix in ferrofluid plugin
+        \item added radial averaged form factor. Included radial averaged form factors also for SAW model
+        \item Extended the spline plugin to be used also as form factors. In case somebody wants to fit a spline function to a size distribution, this function needs to be available as a form factor and not only as a size distribution.
+        \item forwarding intermediate linear Guinier approximation results to the plot window (green curve)
+        \item display of linear Guinier approximation results in \texttt{ISP} text output window
+        \item residuum window updated with linear Guinier approximation residuum
+        \item by default disabled, see checkbox in \texttt{ISP} window
+        \item fixed \texttt{SLDCalculator} in source package (missing data files)
+        \item added \texttt{KNOWN\_BUGS.txt} (not complete)
+        \item optical (layout) GUI improvements:
+            \begin{itemize}
+            \item removed thick margin around text boxes for ISP/analyt results
+            \item added resizeable file list in \texttt{ISP} window
+            \item added resizeable 'merge files' list when loading data files
+            \end{itemize}
+        \item added menu->tools->toggle console to show the console, it is hidden by default now
+        \item added \texttt{OPTIM} parameter to \texttt{src/CMakeLists.txt} for optimized binary generation on the underlying hardware, use: '\texttt{cmake -DOPTIM=TRUE}'
+        \item added configuration file \texttt{config.ini} as (working) replacement for deprecated \texttt{sasfit\_init\_public.tcl}
+        \item added switch for disabling 'about' popup at start time via config file
+        \item added switch to set the default data directory
+        \item added checkbox (ascii options) for ignoring zero(0) intensity at the beginning of data
+        \end{itemize}
+    \item[2010-05-13] SASfit 0.93.1 \\
+    removed obsolete print menu entries and fix of textual output bug
+    \item[2010-05-05] \SASfit 0.93.0
+        \begin{itemize}
+            \item copy\&paste-able text output, as well as \texttt{csv} export (semicolon separated) for
+            \begin{itemize}
+                \item integral structural parameters (ISP) data
+                \item parameters of contributions
+                \item moments of size distribution
+            \end{itemize}
+            \item  improved/rewritten file selection GUI for ISP series fitting
+            \item  new and improved plugins: \texttt{Kratky Sphere}, \texttt{JuelichCoreShell} (rewritten), \texttt{Langevin}
+            \item data is always plotted first, below the calculated lines
+            \item error bars are drawn behind data points
+            \item fixed wrong plotting of very large error bars
+            \item for log-plotting on the y-axis, negative data is ignored (not plotted, was abs() before)
+            \item fix to prevent the user from loading a \SASfit project file as data
+            \item fix in Form-Factor \texttt{Background} (improved numerical stability)
+            \item bug fix for saving parameter files on windows
+            \item bug fix in gui when selecting form factor \texttt{TwoAttachedSpheres}
+            \item bug fix for "Singular Matrix" error
+        \end{itemize}
+    \item[2010-01-02] \SASfit 0.92.3
+        \begin{itemize}
+        \item implemented three different versions for worm like chains as
+              described in Macromolecules 1996, 29, 7602-7612. They have
+              been implemented as structure factors
+              \texttt{[anistropic obj|P'(Q):local cylindrical geometry]},
+              so that it can be combined with different cross-section
+              form factors of local cylindrical objects
+              \texttt{[anisotropic obj.|Pcs(Q) for cylindrical obj.]}.
+        \item new form factor plugin for a sphere with 3 shells
+        \item new structure factor for a regular cluster up to maximal 5 particle
+              (tetrahedron like)
+        \item correction of menue entry order for magnetic shell and
+              superparamagnetic shell
+        \item new plugin for ferrofluid particles with a scheme similar to
+              the one of J.S. Pedersen for Gaussian Chains attached to a spherical particle
+        \item bug fix in \texttt{mMemberedTwistedRing}
+        \item two more default plot: \texttt{Guinier (rods)} and \texttt{Guinier (sheets)}
+        \item bug fix in \texttt{loglogistic} peak
+        \item implementation of asymptotic limits for fractals, which require a
+              numerical integration. The integration often fails for large q-values
+              for which an asymptotic solution is available or has been constructed.
+        \item reprogrammed \texttt{SquareWell1} structure factor for a squared well potential
+        \item replaced \texttt{sasfit\_qromb} function by \texttt{sasfit\_integrate} function in the
+              form factor for the torus. The \texttt{sasfit\_qromb} routine did not work for some
+              unknown reason. This needs to be checked.
+        \item new structure factor for a thin square well potential
+        \item bug fix in \texttt{BeaucageExpPowLaw2}
+        \item Bug fix for setting plot option
+              \texttt{Holtzer} in multiple data set tab
+        \item public initialization file \texttt{sasfit\_init\_public.tcl} for setting
+              the default working directory by the user to any path
+        \end{itemize}
+    \item[2009-10-08] \SASfit 0.92.2
+        \begin{itemize}
+          \item data reduction without data loss, after loading a project file the data reduction can be reversed
+          \item info message about a guessed error bar is displayed only once when the ascii options are changed
+                (not for every file)
+          \item added tooltip for complete filenames in merge window
+          \item color for selected fit region stays at dark grey after loading an old project file
+          \item removed unused help buttons in file open dialogs
+          \item fixed error loop when adding new data to previously loaded project file
+          \item fix for a homedir being e.g. 'U:\' at startup on Windows
+          \item minor correction in the routine to guess the error bar (normalization) when only two column are supplied
+          \item fix of rare error "form factor param out of range: -1"
+        \end{itemize}
+    \item[13th of September] \SASfit 0.92.1
+        \begin{itemize}
+          \item fix for GUI problem with two plugin form factors (contribution updates).
+                If there are two plugin model functions with a different number of parameters,
+                you can't switch/cycle trough the contributions anymore (Next, Previous).
+          \item fix for saving a parameter file (file creation was disabled by accident in previous version)
+        \end{itemize}
+        \item[8.7.2009] \SASfit 0.91.1: Since the previous version of
+                    \SASfit (0.90.1, January 2009) there were a lot of changes to
+                    primarily improve the quality and portability of the code. Here is
+                    only a short summary of the larger changes done:
+        \begin{itemize}
+            \item added detailed documentation on setup and installation of \SASfit,
+                  as well as plugin development (how to add own model functions)
+            \item fixed some bugs in plugin framework
+            \item added automatic determination of available plugins at build time
+            \item enabled static building for plugins
+            \item increasing maximum number of model parameter in GUI
+            \item verified build compatibility for MacOS
+            \item Extended and improved Scattering Length Density (SLD) Calculator.
+                  Now the scattering length density for x-ray energies between 1keV
+                  and 24.9 keV can be calculated.
+            \item a few new form factor have been included:
+                        \texttt{generalized Gaussian coil},
+                        \texttt{generalized Gaussian coil 1},
+                        \texttt{generalized Gaussian coil 2},
+                        \texttt{ellCylShell1},
+                        \texttt{ellCylShell2}
+        \end{itemize}
+    \item[12.01.2009]{\tt SASfit} 0.90.1 : bug-fix in plugin-GUI
+    \item[5.01.2009] {\tt SASfit} 0.90:
+    new release including full source code and binaries for
+    windows and linux. Since the previous version of v (0.87, March 2008)
+    there were a lot of changes to primarily improve the quality
+    and portability of the code. Here only a short summary of the 'big'
+    changes done (as of Dec. 17th, 2008):
+    \begin{enumerate}
+        \item Structured the source code into the modules \texttt{sasfit\_common}, \texttt{sasfit\_sd}, \texttt{sasfit\_sq},
+                \texttt{sasfit\_ff}, \texttt{sasfit\_core}.
+        \item Switched to {\tt CMake} build environment for platform independence. Build and tested {\tt SASfit} on
+                Linux and Windows, 32bit as well as 64bit.
+        \item Replaced intensive string comparisons for model function selection in each iteration step by more reasonable
+                selection of functions pointers at initialization time and direct call of the according function at iteration time.
+        \item Fixed a lot of bugs and typos in the GUI (but there are still some)
+        \item Added flexible plugin system for external model functions. This way, all model functions can be provided
+                as plugins and though move out of the core algorithms. Also enables easy customization. In the future
+                the modules \texttt{sasfit\_sd}, \texttt{sasfit\_sq}, \texttt{sasfit\_ff} and \texttt{sasfit\_peaks}
+                will be converted to external plugins.
+        \item Added \texttt{sasfit\_peaks}, a new class of model functions containing peaks.
+        \item Added capability to ship {\tt SASfit} as standalone executable, allows running on system without the
+                need of external libraries (e.g. Tcl, BLT, ...)
+    \end{enumerate}
+    \item[4.03.2008] ({\tt SASfit} version 0.87) The last
+    modification in the menu navigation still had bugs. Hopefully
+    they are removed in this version.
+    \item[28.02.2008] ({\tt SASfit} version 0.86)
+    The menu navigation has been debugged and optimized.
+    Corrected a bug in calculating the polydispersity index (PDI)
+    in DLS cumulant analysis (PDI=Gamma2/Gamma1$\hat{~}$2)
+    \item[25.01.2008] ({\tt SASfit} version 0.85)
+    A bug for the form factors  \texttt{ROD+R$\hat{~}$-a*} has
+    been corrected. The implementation of the scaling
+    approximation, partial structure factors and local monodisperse
+    approach has been improved.
+    \item[9.01.2008] ({\tt SASfit} version 0.84) Form factor for
+    worm-like micelles (\texttt{WORM+Chains(RW), WORM+Chains(RW)\_Rc,
+    WORM+Chains(RW)\_Nagg}) and for cluster aggregates
+    (\texttt{Mass Fractal (Exp(-x) Cut-Off), Fisher-Burford,
+    MassFractExp,MassFractGauss, Mass Fractal (Exp(-x$\hat{~}$a) Cut-Off), DLCAggregation,
+    RLCAggregation, MassFractOverlappingSph} have been implemented. Furthermore a simple scheme for importing data
+    from the clipboard has been implemented, which e.g. allows to copy/paste
+    data from spread-sheets directly into {\tt SASfit}.
+    Corrected a bug for the form factors  \texttt{ROD+R$\hat{~}$-a*}
+    \item[4.10.2007] ({SPHERE+Chains(RW), SPHERE+Chains(RW)\_Rc, SPHERE+Chains(RW)\_Nagg\tt SASfit} version 0.80)
+    Next to the correction of some bugs a simulation option for
+    multiple data sets has been implemented. Furthermore an option has been implemented to subtract a
+    theoretical scattering contribution from the experimental data set, like e.g. a constant background signal.
+    The format of the project files have up to now never been tested for compatibility. An attempt has
+    been started to change this for the future versions.
+    \item[20.8.2007] A couple of form factors for spherical, elliptical, cylindrical and very long rod-like
+    micelles consisting of a homogeneous core and which are either grafted with Gaussian chains \texttt{*(RW)*},
+    or grafted with semi-flexible self-avoiding and interacting chains \texttt{*(SAW)*} or
+    a corona with a power-law decaying profile $r^{-\alpha}$ \texttt{*(R$\hat{~}$-a)*}
+    have been implemented:
+    \texttt{
+    SPHERE+Chains(RW), SPHERE+Chains(RW)\_Rc, SPHERE+Chains(RW)\_Nagg,
+    SPHERE+Chains(SAW), SPHERE+Chains(SAW)\_Rc, SPHERE+Chains(SAW)\_Nagg,
+    SPHERE+R$\hat{~}$-a, SPHERE+R$\hat{~}$-a\_Rc, SPHERE+R$\hat{~}$-a\_Nagg,
+    ELL+Chains(RW), ELL+Chains(RW)\_Rc, ELL+Chains(RW)\_Nagg,
+    CYL+Chains(RW), CYL+Chains(RW)\_Rc, CYL+Chains(RW)\_Nagg,
+    ROD+Chains(RW), ROD+Chains(RW)\_Rc, ROD+Chains(RW)\_nagg,
+    ROD+R$\hat{~}$-a, ROD+R$\hat{~}$-a\_Rc, ROD+R$\hat{~}$-a\_nagg
+    }
+    \item[30.6.2007] Rudimental copy algorithm to copy plots or parameters into window-clipboard. Everything
+    is copied in wmf-format and the option only works fine for information in non-scrolled widgets.
+    Copy-option can be activated with right mouse button or double click of left mouse button.
+    A triaxial ellipsoidal (\texttt{triaxEllShell}) shell with semiaxis \texttt{a}, \texttt{b}, \texttt{c}
+    and shell thickness \texttt{t} is available.
+    \item[4.6.2007] Implementation of form factors for cylindrical shells with circular cross-section and capped ends
+    (\texttt{CylShell2}) and without capped ends (\texttt{CylShell1}) together with an approximation for very long
+    cylindrical shells (\texttt{LongCylShell})
+    \item[27.3.2007] Implementation of form factors for bi-continuous systems (\texttt{TeubnerStrey} and \texttt{DAB})
+    \item[23.2.2007] Implementation of the structure factor for a system of charged, spheroidal objects in a
+    dielectric medium according to the RMSA model of Hayter and Penfold
+    \item[11.11.2006]  Implementation of a semiflexible polymer according to Kholodenko,
+    some form factors with plane geometry, which are intended to be used with lamellar structure factors
+    (\texttt{homogenousXS}, \texttt{TwoInfinitelyThinPlates},
+     \texttt{LayeredCentroSymmetricXS}, \texttt{BiLayerGauss}), a sphere with Gaussian chains attached
+    \texttt{SphereWithGaussChains} and a slightly different parametrised form factor named
+    \texttt{BlockCopolymerMicelle}.
+    An additional option for reading ASCII data files is now available,
+    which allows to convert values for the scattering vector from
+    nm$^{-1}$ into \AA$^{-1}$ and vice versa. \sloppy
+    \item[23.10.2006] Implementation of a polydsiperse star \texttt{PolydisperseStar} and
+    of flexible ring polymers \texttt{FlexibleRingPolymer} and \texttt{mMemberedTwistedRing}.
+    \item[22.10.2006] Implementation of the form factor of a flexible polymer with Gaussian statistics
+    (in different parameterisations \verb"Gauss", \verb"Gauss2", \verb"Gauss3") for a polydisperse flexible
+    polymer with Gaussian statistics (\verb"GaussPoly") and a flexible ring of polymer with Gaussian statistics
+    (\verb"FlexiblePolymerRing")
+    \item[12.10.2006] Under the menu option \verb"Calc/DLS..." next to a cumulant fit also
+      a double stretched exponential decay can be selected to fit dynamic light scattering data.
+    \item[5.10.2006] Implementation of a spherical shell with a diffuse
+      (expontential) scattering length density profile inside the shell
+      caused by solvent penetration into the shell
+    \item[13.9.2006] Implementation of a form factor for spheres
+      with gaussian chains attached.
+    \item[19.7.2006] First release (current version: 0.71)
+      at the moment only a windows version is available. The
+      installation files for tcl/tk and blt are included in the
+      distribution file.
+\end{description}

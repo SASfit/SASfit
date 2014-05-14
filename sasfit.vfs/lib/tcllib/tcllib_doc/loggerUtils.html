@@ -1,0 +1,193 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<! -- $Id: loggerUtils.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $
+   -->
+<html><head>
+<title>logger::utils - Object Oriented logging facility </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/log/loggerUtils.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 Aamer Akhter &lt;aakhter@cisco.com&gt;
+   -->
+<! -- CVS: $Id: loggerUtils.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ logger::utils.n
+   -->
+
+<body>
+<h1> logger::utils(n) 1.2 log &quot;Object Oriented logging facility&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> logger::utils - Utilities for logger
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>logger::utils ?1.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::logger::utils::createFormatCmd</b> <i class='arg'>formatString</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::logger::utils::createLogProc</b> <strong>-procName</strong> <i class='arg'>procName</i> ?<i class='arg'>options</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::logger::utils::applyAppender</b> <strong>-appender</strong> <i class='arg'>appenderType</i> ?<i class='arg'>options</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::logger::utils::autoApplyAppender</b> <i class='arg'>command</i> <i class='arg'>command-string</i> <i class='arg'>log</i> <i class='arg'>op</i> <i class='arg'>args</i>...</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+This package adds template based <em>appenders</em>.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::logger::utils::createFormatCmd</b> <i class='arg'>formatString</i></a><dd>
+
+
+This command translates <i class='arg'>formatString</i> into an expandable command
+string.
+
+The following strings are the known substitutions (from log4perl)
+allowed to occur in the <i class='arg'>formatString</i>:
+
+<br><br>
+<dl>
+<dt>%c<dd> Category of the logging event
+<br><br>
+<dt>%C<dd> Fully qualified name of logging event
+<br><br>
+<dt>%d<dd> Current date in yyyy/MM/dd hh:mm:ss
+<br><br>
+<dt>%H<dd> Hostname
+<br><br>
+<dt>%m<dd> Message to be logged
+<br><br>
+<dt>%M<dd> Method where logging event was issued
+<br><br>
+<dt>%p<dd> Priority of logging event
+<br><br>
+<dt>%P<dd> Pid of current process
+</dl>
+
+
+<dt><a name="2"><b class='cmd'>::logger::utils::createLogProc</b> <strong>-procName</strong> <i class='arg'>procName</i> ?<i class='arg'>options</i>...?</a><dd>
+
+
+This command ...
+
+<br><br>
+<dl>
+
+<dt><strong>-procName</strong> procName<dd>
+
+The name of the procedure to create.
+
+<br><br>
+<dt><strong>-conversionPattern</strong> pattern<dd>
+
+See <b class='cmd'>::logger::utils::createFormatCmd</b> for the substitutions
+allowed in the <i class='arg'>pattern</i>.
+
+<br><br>
+<dt><strong>-category</strong> category<dd>
+
+The category (service).
+
+<br><br>
+<dt><strong>-priority</strong> priority<dd>
+
+The priority (level).
+
+</dl>
+
+
+<dt><a name="3"><b class='cmd'>::logger::utils::applyAppender</b> <strong>-appender</strong> <i class='arg'>appenderType</i> ?<i class='arg'>options</i>...?</a><dd>
+
+
+This command will create an appender for the specified logger
+services. If no service is specified then the appender will be added
+as the default appender for the specified levels. If no levels are
+specified, then all levels are assumed.
+
+<br><br>
+
+<br><br>
+<dl>
+
+<dt><strong>-service</strong> loggerservices<dd>
+<dt><strong>-serviceCmd</strong> loggerserviceCmds<dd>
+
+Name of the logger instance to modify. <strong>-serviceCmd</strong> takes as
+input the return of <b class='cmd'>logger::init</b>.
+
+<br><br>
+<dt><strong>-appender</strong> appenderType<dd>
+
+Type of the appender to use.
+One of <strong>console</strong>, <strong>colorConsole</strong>.
+
+<br><br>
+<dt><strong>-conversionPattern</strong> pattern<dd>
+
+See <b class='cmd'>::logger::utils::createFormatCmd</b> for the
+format of the pattern. If this option is not provided
+the default pattern
+
+	<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>[%d] [%c] [%M] [%p] %m</pre></td></tr></table></p>
+
+is used.
+
+<br><br>
+<dt><strong>-levels</strong> levelList<dd>
+
+The list of levels to apply this appender to. If not specified all
+levels are assumed.
+
+</dl>
+<br><br>
+
+Example of usage:
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   % set log [logger::init testLog]
+   ::logger::tree::testLog
+   % logger::utils::applyAppender -appender console -serviceCmd $log
+   % ${log}::error &quot;this is an error&quot;
+   [2005/08/22 10:14:13] [testLog] [global] [error] this is an error
+</pre></td></tr></table></p>
+
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::logger::utils::autoApplyAppender</b> <i class='arg'>command</i> <i class='arg'>command-string</i> <i class='arg'>log</i> <i class='arg'>op</i> <i class='arg'>args</i>...</a><dd>
+
+
+This command is designed to be added via <b class='cmd'>trace leave</b> to calls
+of <b class='cmd'>logger::init</b>. It will look at preconfigured state (via
+<b class='cmd'>::logger::utils::applyAppender</b>) to autocreate appenders for
+newly created logger instances.
+
+It will return its argument <i class='arg'>log</i>.
+
+<br><br>
+Example of usage:
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+  logger::applyAppender -appender console
+  set log [logger::init applyAppender-3]
+  ${log}::error &quot;this is an error&quot;
+</pre></td></tr></table></p>
+
+</dl>
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+appender, logger
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 Aamer Akhter &lt;aakhter@cisco.com&gt;<br>
+</body></html>

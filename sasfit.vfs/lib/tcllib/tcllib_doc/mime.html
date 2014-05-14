@@ -1,0 +1,515 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>mime - Mime </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/mime/mime.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 1999-2000 Marshall T. Rose
+   -->
+<! -- CVS: $Id: mime.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ mime.n
+   -->
+
+<body>
+<h1> mime(n) 1.4.1 mime &quot;Mime&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> mime - Manipulation of MIME body parts
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#known_bugs">KNOWN BUGS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl</b><br>
+package require <b>mime ?1.4.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::mime::initialize</b> ?<strong>-canonical</strong> <i class='arg'>type/subtype</i> ?<strong>-param</strong> {<i class='arg'>key value</i>}...? ?<strong>-encoding</strong> <i class='arg'>value</i>? ?<strong>-header</strong> {<i class='arg'>key value</i>}...?? (<strong>-file</strong> <i class='arg'>name</i> | <strong>-string</strong> <i class='arg'>value</i> | <strong>-part</strong> {<i class='arg'>token1</i> ... <i class='arg'>tokenN</i>})</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::mime::finalize</b> <i class='arg'>token</i> ?<strong>-subordinates</strong> <strong>all</strong> | <strong>dynamic</strong> | <strong>none</strong>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::mime::getproperty</b> <i class='arg'>token</i> ?<i class='arg'>property</i> | <strong>-names</strong>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::mime::getheader</b> <i class='arg'>token</i> ?<i class='arg'>key</i> | <strong>-names</strong>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::mime::setheader</b> <i class='arg'>token</i> <i class='arg'>key value</i> ?<strong>-mode</strong> <strong>write</strong> | <strong>append</strong> | <strong>delete</strong>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::mime::getbody</b> <i class='arg'>token</i> ?<strong>-decode</strong>? ?<strong>-command</strong> <i class='arg'>callback</i> ?<strong>-blocksize</strong> <i class='arg'>octets</i>??</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::mime::copymessage</b> <i class='arg'>token</i> <i class='arg'>channel</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::mime::buildmessage</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::mime::parseaddress</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::mime::parsedatetime</b> (<i class='arg'>string</i> | <strong>-now</strong>) <i class='arg'>property</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::mime::mapencoding</b> <i class='arg'>encoding_name</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::mime::reversemapencoding</b> <i class='arg'>charset_type</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>mime</strong> library package provides the commands to create and
+manipulate MIME body parts.
+
+<dl>
+
+
+<dt><a name="1"><b class='cmd'>::mime::initialize</b> ?<strong>-canonical</strong> <i class='arg'>type/subtype</i> ?<strong>-param</strong> {<i class='arg'>key value</i>}...? ?<strong>-encoding</strong> <i class='arg'>value</i>? ?<strong>-header</strong> {<i class='arg'>key value</i>}...?? (<strong>-file</strong> <i class='arg'>name</i> | <strong>-string</strong> <i class='arg'>value</i> | <strong>-part</strong> {<i class='arg'>token1</i> ... <i class='arg'>tokenN</i>})</a><dd>
+
+
+This command creates a MIME part and returns a token representing it.
+
+<br><br>
+<ul>
+
+<li>
+
+If the <strong>-canonical</strong> option is present, then the body is in
+canonical (raw) form and is found by consulting either the
+
+<strong>-file</strong>, <strong>-string</strong>, or <strong>-part</strong> option.
+
+<br><br>
+
+In addition, both the <strong>-param</strong> and <strong>-header</strong> options may
+occur zero or more times to specify <strong>Content-Type</strong> parameters
+(e.g., <strong>charset</strong>) and header keyword/values (e.g.,
+
+<strong>Content-Disposition</strong>), respectively.
+
+<br><br>
+
+Also, <strong>-encoding</strong>, if present, specifies the
+
+<strong>Content-Transfer-Encoding</strong> when copying the body.
+
+<br><br>
+<li>
+
+If the <strong>-canonical</strong> option is not present, then the MIME part
+contained in either the <strong>-file</strong> or the <strong>-string</strong> option
+is parsed, dynamically generating subordinates as appropriate.
+
+</ul>
+
+
+<dt><a name="2"><b class='cmd'>::mime::finalize</b> <i class='arg'>token</i> ?<strong>-subordinates</strong> <strong>all</strong> | <strong>dynamic</strong> | <strong>none</strong>?</a><dd>
+
+
+This command destroys the MIME part represented by <i class='arg'>token</i>. It
+returns an empty string.
+
+<br><br>
+
+If the <strong>-subordinates</strong> option is present, it specifies which
+subordinates should also be destroyed. The default value is
+
+<strong>dynamic</strong>, destroying all subordinates which were created by
+<b class='cmd'>::mime::initialize</b> together with the containing body part.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::mime::getproperty</b> <i class='arg'>token</i> ?<i class='arg'>property</i> | <strong>-names</strong>?</a><dd>
+
+
+This command returns a string or a list of strings containing the
+properties of a MIME part. If the command is invoked with the name of
+a specific property, then the corresponding value is returned;
+instead, if <strong>-names</strong> is specified, a list of all properties is
+returned; otherwise, a serialized array of properties and values is
+returned.
+
+<br><br>
+The possible properties are:
+
+<br><br>
+<dl>
+
+
+<dt><strong>content</strong><dd>
+
+The type/subtype describing the content
+
+<br><br>
+<dt><strong>encoding</strong><dd>
+
+The &quot;Content-Transfer-Encoding&quot;
+
+<br><br>
+<dt><strong>params</strong><dd>
+
+A list of &quot;Content-Type&quot; parameters
+
+<br><br>
+<dt><strong>parts</strong><dd>
+
+A list of tokens for the part's subordinates.  This property is
+present only if the MIME part has subordinates.
+
+<br><br>
+<dt><strong>size</strong><dd>
+
+The approximate size of the content (unencoded)
+
+</dl>
+
+
+<dt><a name="4"><b class='cmd'>::mime::getheader</b> <i class='arg'>token</i> ?<i class='arg'>key</i> | <strong>-names</strong>?</a><dd>
+
+
+This command returns the header of a MIME part, as a list of strings.
+
+<br><br>
+
+A header consists of zero or more key/value pairs. Each value is a
+list containing one or more strings.
+
+<br><br>
+
+If this command is invoked with the name of a specific <i class='arg'>key</i>, then
+a list containing the corresponding value(s) is returned; instead, if
+-names is specified, a list of all keys is returned; otherwise, a
+serialized array of keys and values is returned. Note that when a key
+is specified (e.g., &quot;Subject&quot;), the list returned usually contains
+exactly one string; however, some keys (e.g., &quot;Received&quot;) often occur
+more than once in the header, accordingly the list returned usually
+contains more than one string.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::mime::setheader</b> <i class='arg'>token</i> <i class='arg'>key value</i> ?<strong>-mode</strong> <strong>write</strong> | <strong>append</strong> | <strong>delete</strong>?</a><dd>
+
+
+This command writes, appends to, or deletes the <i class='arg'>value</i> associated
+with a <i class='arg'>key</i> in the header. It returns a list of strings
+containing the previous value associated with the key.
+
+<br><br>
+
+The value for <strong>-mode</strong> is one of:
+
+<br><br>
+<dl>
+
+
+<dt><strong>write</strong><dd>
+
+The <i class='arg'>key</i>/<i class='arg'>value</i> is either created or overwritten (the default).
+
+<br><br>
+<dt><strong>append</strong><dd>
+
+A new <i class='arg'>value</i> is appended for the <i class='arg'>key</i> (creating it as necessary).
+
+<br><br>
+<dt><strong>delete</strong><dd>
+
+All values associated with the key are removed (the <i class='arg'>value</i>
+parameter is ignored).
+
+</dl>
+
+
+<dt><a name="6"><b class='cmd'>::mime::getbody</b> <i class='arg'>token</i> ?<strong>-decode</strong>? ?<strong>-command</strong> <i class='arg'>callback</i> ?<strong>-blocksize</strong> <i class='arg'>octets</i>??</a><dd>
+
+
+This command returns a string containing the body of the leaf MIME
+part represented by <i class='arg'>token</i> in canonical form.
+
+<br><br>
+
+If the <strong>-command</strong> option is present, then it is repeatedly
+invoked with a fragment of the body as this:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+  uplevel #0 $callback [list &quot;data&quot; $fragment]
+</pre></td></tr></table></p>
+
+<br><br>
+
+(The <strong>-blocksize</strong> option, if present, specifies the maximum
+size of each fragment passed to the callback.)
+
+<br><br>
+
+When the end of the body is reached, the callback is invoked as:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    uplevel #0 $callback &quot;end&quot;
+</pre></td></tr></table></p>
+
+<br><br>
+
+Alternatively, if an error occurs, the callback is invoked as:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    uplevel #0 $callback [list &quot;error&quot; reason]
+</pre></td></tr></table></p>
+
+<br><br>
+
+Regardless, the return value of the final invocation of the callback
+is propagated upwards by <b class='cmd'>::mime::getbody</b>.
+
+<br><br>
+
+If the <strong>-command</strong> option is absent, then the return value of
+<b class='cmd'>::mime::getbody</b> is a string containing the MIME part's entire
+body.
+
+<br><br>
+
+If the option <strong>-decode</strong> is absent the return value computed
+above is returned as is. This means that it will be in the charset
+specified for the token and not the usual utf-8.
+
+If the option <strong>-decode</strong> is present however the command will use
+the charset information associated with the token to convert the
+string from its encoding into utf-8 before returning it.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::mime::copymessage</b> <i class='arg'>token</i> <i class='arg'>channel</i></a><dd>
+
+
+This command copies the MIME represented by <i class='arg'>token</i> part to the
+specified <i class='arg'>channel</i>. The command operates synchronously, and uses
+fileevent to allow asynchronous operations to proceed
+independently. It returns an empty string.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::mime::buildmessage</b> <i class='arg'>token</i></a><dd>
+
+
+This command returns the MIME part represented by <i class='arg'>token</i> as a
+string.  It is similar to <b class='cmd'>::mime::copymessage</b>, only it returns
+the data as a return string instead of writing to a channel.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::mime::parseaddress</b> <i class='arg'>string</i></a><dd>
+
+
+This command takes a string containing one or more 822-style address
+specifications and returns a list of serialized arrays, one element
+for each address specified in the argument. If the string contains
+more than one address they will be separated by commas.
+
+<br><br>
+
+Each serialized array contains the properties below. Note that one or
+more of these properties may be empty.
+
+<br><br>
+<dl>
+
+
+<dt><strong>address</strong><dd>
+
+local@domain
+
+<br><br>
+<dt><strong>comment</strong><dd>
+
+822-style comment
+
+<br><br>
+<dt><strong>domain</strong><dd>
+
+the domain part (rhs)
+
+<br><br>
+<dt><strong>error</strong><dd>
+
+non-empty on a parse error
+
+<br><br>
+<dt><strong>group</strong><dd>
+
+this address begins a group
+
+<br><br>
+<dt><strong>friendly</strong><dd>
+
+user-friendly rendering
+
+<br><br>
+<dt><strong>local</strong><dd>
+
+the local part (lhs)
+
+<br><br>
+<dt><strong>memberP</strong><dd>
+
+this address belongs to a group
+
+<br><br>
+<dt><strong>phrase</strong><dd>
+
+the phrase part
+
+<br><br>
+<dt><strong>proper</strong><dd>
+
+822-style address specification
+
+<br><br>
+<dt><strong>route</strong><dd>
+
+822-style route specification (obsolete)
+
+</dl>
+
+
+<dt><a name="10"><b class='cmd'>::mime::parsedatetime</b> (<i class='arg'>string</i> | <strong>-now</strong>) <i class='arg'>property</i></a><dd>
+
+
+This command takes a string containing an 822-style date-time
+specification and returns the specified property as a serialized
+array.
+
+<br><br>
+
+The list of properties and their ranges are:
+
+<br><br>
+<dl>
+
+
+<dt><strong>hour</strong><dd>
+
+0 .. 23
+
+<br><br>
+<dt><strong>lmonth</strong><dd>
+
+January, February, ..., December
+
+<br><br>
+<dt><strong>lweekday</strong><dd>
+
+Sunday, Monday, ... Saturday
+
+<br><br>
+<dt><strong>mday</strong><dd>
+
+1 .. 31
+
+<br><br>
+<dt><strong>min</strong><dd>
+
+0 .. 59
+
+<br><br>
+<dt><strong>mon</strong><dd>
+
+1 .. 12
+
+<br><br>
+<dt><strong>month</strong><dd>
+
+Jan, Feb, ..., Dec
+
+<br><br>
+<dt><strong>proper</strong><dd>
+
+822-style date-time specification
+
+<br><br>
+<dt><strong>rclock</strong><dd>
+
+elapsed seconds between then and now
+
+<br><br>
+<dt><strong>sec</strong><dd>
+
+0 .. 59
+
+<br><br>
+<dt><strong>wday</strong><dd>
+
+0 .. 6 (Sun .. Mon)
+
+<br><br>
+<dt><strong>weekday</strong><dd>
+
+Sun, Mon, ..., Sat
+
+<br><br>
+<dt><strong>yday</strong><dd>
+
+1 .. 366
+
+<br><br>
+<dt><strong>year</strong><dd>
+
+1900 ...
+
+<br><br>
+<dt><strong>zone</strong><dd>
+
+-720 .. 720 (minutes east of GMT)
+
+</dl>
+
+
+<dt><a name="11"><b class='cmd'>::mime::mapencoding</b> <i class='arg'>encoding_name</i></a><dd>
+
+
+This commansd maps tcl encodings onto the proper names for their MIME
+charset type.  This is only done for encodings whose charset types
+were known.  The remaining encodings return &quot;&quot; for now.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::mime::reversemapencoding</b> <i class='arg'>charset_type</i></a><dd>
+
+
+This command maps MIME charset types onto tcl encoding names.  Those
+that are unknown return &quot;&quot;.
+
+
+</dl>
+
+
+<h2><a name="known_bugs">KNOWN BUGS</a></h2>
+<p>
+
+<dl>
+<dt>SourceForge Tcllib Bug #447037<dd>
+
+This problem affects only people which are using Tcl and Mime on a
+64-bit system. The currently recommended fix for this problem is to
+upgrade to Tcl version 8.4. This version has extended 64 bit support
+and the bug does not appear anymore.
+
+<br><br>
+
+The problem could have been generally solved by requiring the use of
+Tcl 8.4 for this package. We decided against this solution as it would
+force a large number of unaffected users to upgrade their Tcl
+interpreter for no reason.
+
+<br><br>
+
+See <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=447037&amp;group_id=12883&amp;atid=112883">http://sourceforge.net/tracker/?func=detail&amp;aid=447037&amp;group_id=12883&amp;atid=112883</a>
+for additional information.
+
+</dl>
+
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+ftp, http, pop3, smtp
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+email, internet, mail, mime, net, rfc 821, rfc 822, smtp
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 1999-2000 Marshall T. Rose<br>
+</body></html>

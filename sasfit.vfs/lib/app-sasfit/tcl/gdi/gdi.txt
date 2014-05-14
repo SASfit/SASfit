@@ -1,0 +1,228 @@
+
+ Tcl Extension for Windows
+ RCS Version $Revision: 1.6 $
+ RCS Last Change Date: $Date: 2006/01/02 06:44:21 $
+ Original Author: Michael I. Schwartz, mschwart@nyx.net
+ 
+ {LICENSE}
+ 
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR WITH PERMISSION TO USE, COPY, MODIFY, AND
+ DISTRIBUTE IT FOR ANY PURPOSE WITH THE FOLLOWING CONDITIONS:
+ 1) IN SOURCE FORM, THIS HEADER MUST BE PRESERVED AND THESE CONDITIONS PROPOGATED
+ 2) IN BINARY FORM, THE ORIGINAL AUTHOR MUST BE ACKNOWLEDGED IN DOCUMENTATION AND
+    CREDITS SCREEN (IF ANY)
+ 3) FOR ANY COMMERCIAL SALE, THE AUTHOR MUST BE NOTIFIED OF THE USE OF THIS CODE
+    IN A PARTICULAR PRODUCT; THE ORIGINAL AUTHOR MAY CITE 
+    THE COMMERCIAL SELLER AS A BENEFICIARY OF THE CODE.
+ 
+ 
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT,
+ INDIRECT, SPECIAL, INCIDENTAL,  OR CONSEQUENTIAL DAMAGES ARISING OUT OF
+ THE USE OF THIS SOFTWARE, ITS DOCUMENTATION,  OR ANY DERIVATIVES
+ THEREOF, EVEN IF THE AUTHORS HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+ 
+ THE AUTHORS AND DISTRIBUTORS SPECIFICALLY DISCLAIM ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO,  THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. 
+ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, AND THE AUTHORS AND
+ DISTRIBUTORS HAVE NO OBLIGATION  TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+ FUNCTIONS MARKED WITH MICROSOFT COPYRIGHT WERE LARGELY BASED ON THE
+ WINCAP32 EXAMPLE PROVIDED WITH MSVC++ 5.0.
+
+ {SYNOPSIS}
+ 
+ This file contains commands to extend TK for Windows 3.11, Windows 95,
+ and Windows NT 4.0 features
+ 
+ The commands are:
+ 
+ gdi
+ 
+ The details of each command's options follow:
+ 
+ {GDI}
+ 
+ The GDI command is a small, experimental extension for allowing direct 
+ access to a subset of Windows drawing routines. The subset selected has
+ the nature that it maps to postscript nicely in case of Unix 
+ implementation.
+ 
+ Several models for preparing such an extension are available.
+ X windows provides a drawing model, Windows provides a drawing model,
+ and Tk canvases provide a drawing model.
+ 
+ The original purpose of the extension was to test the printer extension.
+ 
+ As these ideas have matured, it seems more useful to have a Tk model 
+ rather than a postscript model of printing. The first "real" revision of 
+ this package is likely to support many of the canvas techniques.
+ 
+ The initial canvas emulation code has gone in. I am still looking to see 
+ if there is an easy way to grab a copy of, or modify, the existing 
+ canvas code so that many other special cases will be taken care of.
+ 
+ GENERAL LIMITATION:
+ 
+ While the extension has been provided for Tcl7.5 and Tcl7.6, the 
+ font command options will be unlikely to work correctly for these
+ versions, and no great effort is likely to go into doing so.
+ If anyone wishes to correct this and send the fix to the author, though,
+ I will be happy to incorporate it.
+ -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+ 
+ gdi arc hdc x1 y1 x2 y2 -extent degrees -fill color -outline color 
+ 	                -outlinestipple bitmap -start degrees -stipple bitmap 
+ 		        -style [pieslice|chord|arc] -width linewid
+  DESCRIPTION:
+    Draws an arc just like on a canvas
+  LIMITATIONS:
+    -outlinestipple, and -stipple have no effect.
+ 
+ gdi bitmap hdc x y -anchor [center|n|e|s|w] -background color 
+ 		   -bitmap bitmap -foreground color
+   Not implemented yet
+ 
+ gdi copybits hdc [-window w|-screen] [-client] [-source "a b c d"]
+                  [-destination "a b c d"] -scale number -calc
+  DESCRIPTION:
+     Copies a window, client area of a window, or the entire screen to 
+     the destination hdc.
+  ARGUMENTS:
+     hdc    Handle to destination device context (e.g., printer)
+     window The window to copy. This can be in one of two forms
+            Numeric: This will be taken to represent an HWND
+            Tk window: This will be taken as a Tk path in the given interpreter.
+            If not provided, the current application main window is used.
+     screen This will copy the entire screen. This is not the default.
+            If -window and -screen are both used, an error results
+     client This will modify -window to include only the client area of the window.
+            It has no effect if -screen is specified.
+     source The list of up to four components represent:
+            a   x coordinate within the selected window to start copy at
+            b   y coordinate within the selected window to start copy at
+            c   x extent to copy (limited to width of window)
+            d   y extent to copy (limited to height of window)
+        If -source is used, at least a and b must be provided.
+        If -source is not present, the entire window is copied.
+        If c is not provided, copy stops at the right of the window
+        If d is not provided, copy stops at the bottom of the window
+     destination  The list of up to four components represent:
+            a   x coordinate within the destination HDC for upper left corner
+            b   y coordinate within the destination HDC for upper left corner
+            c   x extent for the copied image
+            d   y extent for the copied image
+        If -destination is provided, at least a and b must be provided.
+        If -destination is not provided, the image goes to the upper left of the
+        destination HDC.
+        If c is not provided, the image is not stretched (see -scale)
+        If d is not provided, the image is stretched vertically the same as horizonatally
+     scale  The argument to -scale is a floating point number representing the
+          scale factor to apply in converting the source to the destination.
+          That is, 2.0 means to double the size on the destination, and 0.5 means
+          shrink it to 50% of the number of pixels at the destination.
+     calc If -calc is specified, the return value is prepared, but the 
+          text is not drawn
+   LIMITATIONS:
+    For some postscript printers this can be excruciatingly slow.
+    Some printers probably do not support BitBlt, and thus will
+    not support this function.
+    This function does not consider "banding" for the printer
+ 
+ gdi characters hdc [-font fontspec] [-array arrayname]
+   DESCRIPTION:
+     Creates an array of character widths in device coordinates
+     for the currently selected or the specified font.
+     Saves the result in the array GdiCharWidths, indexed by the
+     character (including non-printable characters). If a different
+     global array is desired, use the -array specifier.
+   LIMITATIONS:
+     Assumes 256 characters per font.
+
+ gdi configure hdc [-background bgcolor]
+  DESCRIPTION:
+   Set/get configuration options of the HDC in general
+   Similar to the configuration of a canvas.
+  LIMITATIONS:
+   Limited to getting/changing the background color, which affects text only.
+
+ gdi image hdc x y -anchor [center|n|e|s|w] -image name
+  DESCRIPTION:
+   Draws an image, just like on a canvas
+  LIMITATIONS:
+   Not implemented yet
+ 
+ gdi line hdc x1 y1 ... xn yn -arrow [first|last|both|none] -arrowshape {d1 d2 d3} 
+ 		     	     -capstyle [butt|projecting|round] -fill color 
+ 		     	     -joinstyle [bevel|miter|round] -smooth [true|false|bezier] 
+ 		     	     -splinesteps number -stipple bitmap -width linewid
+  DESCRIPTION:
+    Draws a line just like on a canvas
+  LIMITATIONS:
+    -capstyle, -joinstyle, and -stipple ignored
+ 
+ gdi map hdc [-logical x[y]] [-physical x[y]] [-offset {x y}] [-default] [-mode mode]
+   DESCRIPTION:
+     Changes the mapping mode for the device context 
+     Uses ISOTROPIC mode if only x is provided for physical and logical,
+     uses ANISOTROPIC mode if both are provided.
+     Also a linear offset is provided, and the ability to select an 
+     enumerated or numeric mode. The enumerated names are the same as the
+     Windows interface names (e.g., MM_HIENGLISH).
+     Return value is a set of pairs describing the current transformation.
+   LIMITATIONS:
+     Windows only allows translations and scaling. Rotation is not supported.
+ 
+ gdi oval hdc x1 y1 x2 y2 -fill color -outline color -stipple bitmap -width linewid
+  DESCRIPTION:
+    Draws an oval just like on a canvas
+  LIMITATIONS:
+    -stipple is not implemented
+
+ gdi photo [-destination "x y [w h]"] -photo name
+
+  DESCRIPTION:
+    Places a photo on the output at 0 0 (or the given coordinate) at its
+    natural size (or stretched to width w and height h, if provided).
+  LIMITATIONS:
+    Does not detect a badly named photo
+    
+
+ gdi polygon hdc x1 y1 ... xn yn -fill color -outline color -smooth [true|false|bezier] 
+ 				-splinesteps number -stipple bitmap -width linewid
+  DESCRIPTION:
+    Draws a polygon just like on a canvas
+  LIMITATIONS:
+    -stipple is not implemented
+ 
+ gdi rectangle hdc x1 y1 x2 y2 -fill color -outline color 
+ 		              -stipple bitmap -width linewid
+  DESCRIPTION:
+    Draws a rectangle just like on a canvas
+  LIMITATIONS:
+    -stipple is not implemented
+ 
+ gdi text hdc x y -anchor [center|n|e|s|w] -fill color -font fontname 
+ 		 -justify [left|right|center] -stipple bitmap -text string -width linelen
+              -single -backfill -unicode
+  DESCRIPTION:
+    Draws text just like on a canvas
+    -single is a new feature that ignores newlines and prints as a single line
+    tabs are expanded.
+    -backfill is a new feature that fills the text background with the background
+    color. The default is to make the text background transparent.
+    -unicode converts the string to unicode before drawing it (using DrawTextW).
+    This is normally a good thing to do when the fonts you are using for output are Unicode fonts.
+  RETURNS:
+    Height of the output text block
+  LIMITATIONS:
+    The -font flag is honored in a very limited way -- "fontname size style ..."
+    mechanism ([3] in the current reference manual).
+ 
+ gdi version
+  DESCRIPTION:
+    Returns the current version number of the extension
+  LIMITATIONS:
+    None

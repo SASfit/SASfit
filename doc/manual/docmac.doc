@@ -1,0 +1,778 @@
+% This is DOCMAC.DOC, Release 1 of 12 Aug 1991.
+%---------------------------------------------------------
+% This macro package is based on PROGDOC.DOC, which is
+% (c) 1988 by J.Schrod. Put into the public domain.
+% It is enhanced by incorporating some macros from WEBMAC.TEX to deal with
+% header lines and a table of contents and offers some additional typesetting
+% capabilities. The enhancements and changes are done by
+% Hans-Hermann Bode (HHBODE@DOSUNI1.BITNET).
+
+%
+% Macro package for the documentation of programs (and TeX macros)
+% english version
+%
+
+% Version of the basic PROGDOC.DOC:
+% first version (for ftp/Bitnet)                                   (88-12-05)
+%
+% Release history of DOCMAC.DOC:
+%
+% Rel.	Date		Author	Comment
+% 1	12 Aug 1991	H2B	First change file to PROGDOC.DOC.
+%
+
+
+
+% documented with itself...
+\input docmac
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% local macros
+%
+
+\font\mc=cmr9           % for names like ASCII
+
+\def\title{DOCMAC}
+
+
+\def\topofcontents{\null\vfill
+  \centerline{\titlefont\title}
+  \bigskip
+  \centerline{Joachim Schrod}
+  \medskip
+  \centerline{Hans-Hermann Bode}
+  \vfill}
+
+\def\botofcontents{\vfill
+  The macro package and the documentation was written initially by J.~Schrod
+  under the name \.{progdoc}. H.-H.~Bode enhanced the package with some stuff
+  from \.{webmac} and completed the documentation with material from the
+  ``\.{WEB} User Manual''; this makes up the chapter on
+  ``Formatting''---besides some minor changes in the remainder.
+  \par}
+
+\def\WEB{{\tt WEB\/}}
+\def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em\TeX}}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+\chap Introduction.
+
+\WEB{} systems allow the documentation of programs by supporting the
+separation in program fragments which can be collected and rearranged
+afterwards.  This allows {\it top-down\/} programming as well as the
+{\it bottom-up\/} design of programs.  Each program fragment can be
+documented, usually with \TeX{}.  A disadvantadge is that \WEB{}
+actually exists only for a few programming languages (Pascal, C,
+Modula-2).  Besides, building up \WEB{} systems for ``exotic''
+programming languages like \TeX{} is very difficult.
+
+This macro package was built to allow good documentation for programs
+in languages for which \WEB{} doesn't exist.  It separates a program
+text in sections that can be documented.  All sections, collected
+sequentially, will result in the complete program.  In every section
+begin and end of the program part are marked with |\beginprog| and
+|\endprog|, this program part will be formatted as it is input
+(``verbatim'').
+
+The separation of the sections is done in this version (which is based
+on Plain~\TeX{}) by the macros |\chap| and |\sect|.  But this can be
+changed easily, e.g.\ for preparing the documentation with \LaTeX{}.
+Then the last section group of this macro package must be omitted and
+the rest must be realized as a style option.
+
+In the documentation part of a section text pieces, e.g.\ names of
+variables, can be inserted verbatim to demonstrate the connection to
+the program text.  These parts are included in vertical bars
+(`{\tt\vbar}') while the vertical bar itself can be obtained by
+|\origvert|.
+
+This macro package does not offer the creation of an index because it is not
+known which syntactical tokens the language has that should be mentioned in
+an index.  If you want a table of contents, just say |\contentspage| at the
+end of your document (you need not put a |\bye| after that, |\contentspage|
+does this for you).  Some remarks about future enhancements which should be
+done urgently are set in slanted type.
+
+
+\sect We have to realize three parts:  (1)~the formatting of rather
+small verbatim texts in a line, (2)~the formatting of larger parts of
+program and (3)~the document structuring elements for the separation
+of the sections.  Before we start we declare some shorthands for
+category codes.
+
+By declaring the at sign~(`|@|') as well as the underscore~`(|_|)' as
+letters we can use them in our macros.
+{\tolerance=10000
+(I agree with D.~Knuth that |\identifier_several_words_long| is much
+better readable than |\IdentifierSeveralWordsLong| and both are better
+than |\pr@@@s|.)
+With the at sign we can use the ``private'' Plain macros and with the
+underscore we can make our own macros more readable.  But as we have
+to restore these category codes at the end of this macro file we store
+their former values in the control sequences |\atcode| and |\uscode|.
+This method is better than the usage of a group because not all macros
+have to be defined global this way.
+\par}
+
+\beginprog
+\chardef\escape=0
+\chardef\letter=11
+\chardef\other=12
+%\chardef\active=13              % is defined in Plain already
+
+\chardef\atcode=\catcode`\@
+\chardef\uscode=\catcode`\_
+
+\catcode`\@=\letter
+\catcode`\_=\letter
+\endprog
+
+
+
+
+\chap Local Verbatim Formatting.
+
+The main point of every verbatim formatting is the switching of the
+character codes of all characters that have a special \TeX{} meaning.
+This can be done with the control sequence |\dospecials| that applies
+the control sequence |\do| to all special characters.  Additionally,
+every line is regarded as a paragraph without indentation.  Between
+two paragraphs, i.e.\ between two lines, no extra space is set.
+Finally all blanks and tabular characters shall be obeyed and the
+inter word space after sentence terminators shall not be enlarged.
+The activation of the tabular characters with |\obeytabs| is
+equivalent to |\obeyspaces| in {\tt plain.tex\/}.
+
+Verbatim texts are set in monospace, we use (like in \WEB{}) the
+character set with the extended {\mc ASCII}.  For \LaTeX{} we would
+have to add here |\ttex| to all size modifications like |\xpt|,
+|\xiipt|, etc.
+
+\beginprog
+\font\tentex=cmtex10            % typewriter extended ASCII 10pt
+\let\ttex=\tentex               % only for PLAIN with base size 10pt
+
+\def\setup_verbatim{%
+   \def\do##1{\catcode`##1\other}\dospecials
+   \parskip\z@skip \parindent\z@
+   \obeylines \obeyspaces \obeytabs \frenchspacing
+   \ttex
+   }
+
+\let\tab=\space
+\begingroup
+   \catcode`\^^I=\active%       % Attention: no tabs!
+   \gdef\obeytabs{\catcode`\^^I=\active\def^^I{\tab}}
+   \global\let^^I=\tab%         % if an active tab appears in a \write
+\endgroup
+\endprog
+
+\sect After having saved the old meaning of `{\tt\vbar}' in
+|\origvert| and after declaring |\vbar| as a synonym for the character
+that has the code of a vertical bar in the actual font, the vertical
+bar can be made active.  Then we call |\setup_verbatim|.  But the
+newline characters shall not be processed, they shall be regarded like
+blank space.  This can be reached by defining |\par| as |\space|.
+
+The next vertical bar in the input closes the group which becomes an
+(unbreakable) |\hbox| then.  The old meanings of the special
+characters and of the vertical bar are restored and \TeX{} is in
+normal (horizontal) mode again.
+
+\beginprog
+\let\origvert=|
+\chardef\vbar=`\|
+
+\catcode`\|=\active
+
+\def|{%
+   \leavevmode
+   \hbox\bgroup
+      \let\par\space \setup_verbatim
+      \let|\egroup
+   }
+\endprog
+
+
+
+
+\chap  Program Fragments in Verbatim.
+
+We need macros to format the program fragments without any
+linebreaking.  Such a text area shall start with the macro
+|\beginprog| and end with |\endprog|.  The macro |\endprog| must stand
+at the very beginning of a line and must be followed by white space
+(blank, tab or newline character).  After |\beginprog| as well as
+after |\endprog| the rest of the line is ignored.
+
+Two demands must be regarded:  There should be no length restrictions
+for the processed text, and the tabular characters should be expanded
+so that this macro works on PC's and on VAXes, too.
+
+
+\sect The implementation method is quite simple:  We read the next
+line, test, wether the end is reached (by comparing with |\endprog|)
+and otherwise set the character actually read.  Every character is
+inspected and tabular characters are expanded.
+
+Wether a line is set or wether the end of the processed area is
+reached is indicated by the switch |\if@print|.  At the beginning of
+the |\beginprog| macro most settings are done with |\setup_verbatim|
+(the vertical bar must be handled separately) and the rest of the line
+is ignored.  As everything is done within a group, the end of the
+verbatim text can be processed by simply closing this group.
+
+For the user it looks as if |\endprog| terminates the processing, but
+it just serves for the identification of the end, the true processing
+is done with the internal macro |\end_verbatim|.
+
+\beginprog
+\newif\if@print
+
+\def\beginprog{%
+   \endgraf
+   \bigbreak
+   \begingroup
+      \setup_verbatim \catcode`\|\other
+      \@printtrue
+      \ignore_rest_line
+   }
+\let\end_verbatim=\endgroup             % internal command !
+\endprog
+
+
+\sect The first line is ignored, all the other lines are identified
+with |\set_next_line| and processed with |\do_set|.  This separation
+in identification and processing allows that the line end character is
+active in the definition only for a short time.
+
+When a line is to be formatted, we first check with |\check_print|
+wether it contains |\endprog|, otherwise it is printed with
+|\print_char|.  The printing must be done for every character
+individually because we want to check for tabular characters; the
+exact algorithm is described below.  Here we just have to note that
+|\print_char| is used with two parameters of which the second one is
+finished with the token |\end_line|.  The first parameter is the first
+character of the line, the second parameter is the rest of the line.
+If the line is empty, the argument of |\do_set| is empty, too; so the
+activation of |\print_char| must be finished with two |\end_line|.
+Then the first |\end_line| is the first argument for |\print_char| and
+the second argument is empty.  But if the line did contain something,
+the second |\end_line| is evaluated, for this case it is defined as
+|\relax|.
+
+At last we call |\set_next_line| again to format the next line.  If
+the end is reached, i.e.\ if a line with |\endprog| was found,
+|\set_next_line| is redefined as |\relax|.  This can be done because
+the original meaning is restored while closing the group with
+|\end_verbatim|.
+
+\beginprog
+\begingroup
+   \obeylines%          % ^^M is active! ==> every line must end with %
+   \gdef\ignore_rest_line#1^^M{\set_next_line}%
+   \gdef\set_next_line#1^^M{\do_set{#1}}%
+\endgroup
+
+\def\do_set#1{%
+   \endgraf
+   \check_print{#1}%
+   \if@print  \indent \print_char#1\end_line\end_line
+   \else  \let\set_next_line\end_verbatim
+   \fi
+   \set_next_line
+   }
+\let\end_line=\relax
+\endprog
+
+
+\sect Before we look at the problem of formatting a line, we declare
+|\check_print| that checks the end of the verbatim mode.  We have to
+do two things:  we must split everything in front of the first blank
+or tabular character and compare for identity with |\endprog|.  The
+splitting is easy because the line which is our first argument
+contains blanks and tabulators as active characters.  First we call
+|\cut_at_tab| that demands a tabular character as separator for its
+two pramenters so that everything in the line in front of the first
+tabulator is part of the first parameter.  If there is no tabular
+character in the line, we append one so that the second parameter is
+empty.  The same trick is used to separate the part in front of the
+first blank character from the resulting first part.
+
+The check is done with |\do_check|.  We use a separate macro here so
+that we can indent it (in the following definition blanks are active!)
+
+\beginprog
+\begingroup
+\obeyspaces\obeytabs
+\gdef\check_print#1{\cut_at_tab#1^^I\end_line}
+\gdef\cut_at_tab#1^^I#2\end_line{\check_first_part#1 \end_line}% blank !
+\gdef\check_first_part#1 #2\end_line{\do_check{#1}}
+\endgroup
+\endprog
+
+
+\sect |\do_check| compares the line with a sample line that is
+available in |\@endverbatim|.  During the definition of
+|\@endverbatim| it must be cared for that the escape character `|\|'
+is a printable character:  A comparison with |\ifx| demands identical
+category codes.  As a temporary escape character we use the vertical
+bar.
+
+\beginprog
+\def\do_check#1{%
+   \def\@line{#1}%
+   \ifx \@line\@endverbatim  \@printfalse
+   \fi
+   }
+
+{\catcode`\|=\escape  \catcode`\\=\other % | is temporary escape char
+   |gdef|@endverbatim{\endprog}          % sample line
+}                                        % here \endgroup can't be used
+\endprog
+
+
+\sect Now we can set a line:  we start with the first character,
+followed by the rest of the line.  Each character is counted in
+|\char_count|.  At the beginning of a line |\char_count| is~1, this
+is reset at the end of the line.
+
+\goodbreak
+
+\beginprog
+\newcount\char_count  \char_count\@ne
+
+\def\print_char#1#2\end_line{%
+   \print_first_char{#1}%
+   \print_rest_of_line{#2}%
+   }
+\endprog
+
+
+\sect For each character that is set |\char_count| is incremented.
+If a character is a tabulator, we set with |\print_tab| the fitting
+amount of blank characters, otherwise the character itself.  We must
+compare the character that is stored in |\@char| with a macro of which
+the ``first-level'' expansion is an active tabulator.  For this case
+we declare |\@tab|.
+
+\beginprog
+{\obeytabs\gdef\@tab{^^I}}
+
+\def\print_first_char#1{%
+   \def\@char{#1}%
+   \advance \char_count\@ne
+   \ifx \@char\@tab  \print_tab
+   \else  \@char
+   \fi
+   }
+\endprog
+
+
+\sect If we want to fill the line with blank spaces up to the next
+column with a number that can be divided by~8, we must be able to
+compute the column number modulo~8, but \TeX{} has no modulo operator.
+So we define the macro |\mod_viii| that computes its argument modulo~8
+and returns the result in the counter |\count_mod_viii|.  For the
+computation we need the temporary counter |\count@|.
+
+\beginprog
+\newcount\count_mod_viii
+\def\mod_viii#1{%
+   \count@ #1\relax  \count_mod_viii\count@
+   \divide \count@ 8\relax
+   \multiply \count@ 8\relax
+   \advance \count_mod_viii -\count@
+   }
+\endprog
+
+
+\sect Now we can declare |\print_tab|.  We must remember that
+|\char_count| was incremented already, if we set only one blank
+character the counter keeps untouched.
+
+\beginprog
+\def\print_tab{%
+   \loop  \space \mod_viii\char_count
+      \ifnum \count_mod_viii>\z@
+         \advance \char_count\@ne
+   \repeat
+   }
+\endprog
+
+
+\sect If the rest of the line is empty, we are ready.  |\char_count|
+is reset to~1 for the next line.
+
+Inside the |\else| part of |\ifx| |\print_char| should not be used
+directly because this costs too much storage of \TeX{}.  Instead we
+set a control sequence |\next| that is processed afterwards, depending
+on the result of the comparison.  If there is still something to set,
+we use |\print_char| again, otherwise a syntactically similar macro
+that expands to |\relax|.
+
+\beginprog
+\def\print_rest_of_line#1{%
+   \def\@line{#1}%
+   \ifx \@line\empty  \char_count\@ne
+        \def\next##1\end_line{\relax}%
+   \else  \let\next\print_char
+   \fi
+   \next#1\end_line
+   }
+\endprog
+
+
+
+
+\chap Document Structuring.
+
+The layout of the document shall be like in \WEB{}.  This can be done
+easily in Plain.  If \LaTeX{} shall be used for the document
+preparation, this part of the macro must be eliminated.  It will also
+be better to include the program parts \LaTeX-like as an environment
+between |\begin{prog}| and |\end{prog}| and to define control
+sequences |\makebaractive| and |\makebarother| for the switch of the
+special meaning of the vertical bar (`{\tt \origvert\/}') (for the
+{\tt tabular\/} environment!)
+
+All sections are enumerated, the number of the next section is stored
+in the counter |\sectno|.  We differenciate between main sections
+which start a group of sections and between normal sections within a
+group.
+
+\beginprog
+\newcount\sectno  \sectno=\@ne
+\endprog
+
+
+\sect The main sections are started with the macro |\chap| that has
+one parameter, the title of the section group.  This parameter must be
+terminated by a dot.  We start a new page, typeset the title in bold
+face and separate it from the section text with a |\medskip|.  This
+text, the documentation part of the section, is formatted without
+paragraph indentation.
+
+The deletion of the paragraph indentation is done with |\everypar|.
+We do not care if |\everypar| is used for something else and delete it
+after usage.
+
+The section number is marked to appear {\it via\/} |\topmark| in the
+headline, the title goes as a running head into the headline too. The
+section number is displayed on the terminal as a progress report, and title,
+section and page number are recorded in the contents file.
+
+\begingroup \sl
+The dealing with |\everypar| should not be so cruel.
+\endgroup
+
+\beginprog
+\def\chap#1.{%
+   \mark{\number\sectno}
+   \endgraf
+   \vfill\eject
+   \def\rhead{\uppercase{\ignorespaces#1}} % define running headline
+   \message{*\number\sectno} % progress report
+   \let\Z=\let % now you can \send the control sequence \Z
+   \edef\next{\write\cont{\Z{#1}{\number\sectno}{\the\pageno}}}\next % to contents file
+   \noindent {\bf \number\sectno.\quad #1.}%
+   \advance \sectno\@ne
+   \endgraf
+   \medskip  \nobreak
+   \everypar{%
+      \setbox0\lastbox
+      \global\everypar{}%
+      }%
+   }
+\endprog
+
+
+\sect Normal sections are started with |\sect|.  This macro has no
+parameter.  Between two paragraphs we set 2~pica space (if possible)
+and prefer the page breaking.  Between the section number and the text
+one quad of space is set.
+
+\begingroup \sl
+The page break manipulation could be more sophisticated.
+\endgroup
+
+\beginprog
+\def\sect{%
+   \mark{\number\sectno}
+   \endgraf
+   \vskip 2pc plus 1pc minus 6dd  \goodbreak
+   \noindent {\bf \number\sectno.}\advance \sectno\@ne
+   \quad \ignorespaces
+   }
+\endprog
+
+
+\chap Formatting.
+The macros in this chapter are extracted from \.{WEBMAC.TEX}, while most of
+the documentation is taken from Appendix~G of the ``\.{WEB} User Manual''.
+The macros in \.{docmac} make it possible to produce a variety of formats,
+and the purpose of this appendix is to explain some of the possibilities.
+Displayed examples, that are included in the documentation, come out centered
+to distinguish them from program text, which is flushleft.
+
+\def\lpile{\def\cr{\hfill\endline}\matrix} % I [D E Knuth] only use \lpile by itself
+
+\sect We begin the formatting part with some declarations that should make
+look the output a little better for documenting programs.
+
+\beginprog
+\parskip 0pt % no stretch between paragraphs
+\parindent 1em % for paragraphs and for the first line of Pascal text
+\endprog
+
+\sect Three fonts have been declared in addition to the standard fonts of
+\.{PLAIN} format: You can say `\.{\{\\sc stuff\}}' to get {\sc stuff}
+in small caps; and you can select the largish fonts \.{\\titlefont}
+and \.{\\ttitlefont} in the title of your document, where \.{\\ttitlefont}
+is a typewriter style of type.
+
+\beginprog
+\font\eightrm=cmr8
+\font\sc=cmcsc10 % this IS a caps-and-small-caps font!
+\let\mainfont=\tenrm
+\font\titlefont=cmr7 scaled\magstep4 % title on the contents page
+\font\ttitlefont=cmtt10 scaled\magstep2 % typewriter type in title
+%\font\tentex=cmtex10 % TeX extended character set (used in strings)
+		      % already defined above
+\fontdimen7\tentex=0pt % no extra space after punctuation
+\endprog
+
+\sect You can say `\.{\\\\\{identifier\}}' to set \\{identifier} in
+italics.
+
+To get typewriter-like type, as when referring to `\.{WEB}', you
+can use the `\.{\\.}' macro (e.g., `\.{\\.\{WEB\}}'). In the argument to
+this macro you should insert an additional backslash before the symbols
+listed below, i.e.,
+before backslashes and dollar signs and the like.
+A `\.{\\\ }' here will result in the visible space symbol; to get an
+invisible space following a control sequence you can say `\.{\{\ \}}'.
+
+\beginprog
+\def\\#1{\hbox{\it#1\/\kern.05em}} % italic type for identifiers
+\def\|#1{\hbox{$#1$}} % one-letter identifiers look a bit better this way
+\def\&#1{\hbox{\bf#1\/}} % boldface type for reserved words
+\def\.#1{\hbox{\tentex % typewriter type for strings
+  \let\\=\BS % backslash in a string
+  \let\'=\RQ % right quote in a string
+  \let\`=\LQ % left quote in a string
+  \let\{=\LB % left brace in a string
+  \let\}=\RB % right brace in a string
+  \let\~=\TL % tilde in a string
+  \let\ =\SP % space in a string
+  \let\_=\UL % underline in a string
+  \let\&=\AM % ampersand in a string
+  #1}}
+\def\#{\hbox{\tt\char`\#}} % parameter sign
+\def\${\hbox{\tt\char`\$}} % dollar sign
+\def\%{\hbox{\tt\char`\%}} % percent sign
+\def\^{\ifmmode\mathchar"222 \else\char`^ \fi} % pointer or hat
+% circumflex accents can be obtained from \^^D instead of \^
+\def\AT!{@} % at sign for control text
+
+\chardef\AM=`\& % ampersand character in a string
+\chardef\BS=`\\ % backslash in a string
+\chardef\LB=`\{ % left brace in a string
+\def\LQ{{\tt\char'22}} % left quote in a string
+\chardef\RB=`\} % right brace in a string
+\def\RQ{{\tt\char'23}} % right quote in a string
+\def\SP{{\tt\char`\ }} % (visible) space in a string
+\chardef\TL=`\~ % tilde in a string
+\chardef\UL=`\_ % underline character in a string
+\endprog
+
+\sect The three control sequences \.{\\pagewidth}, \.{\\pageheight},
+and \.{\\fullpageheight} can be redefined in the limbo section at the
+beginning of your source file, to change the dimensions of each page.
+The standard settings
+$$\lpile{\.{\\pagewidth=6.5in}\cr
+  \.{\\pageheight=8.7in}\cr
+  \.{\\fullpageheight=9in}\cr}$$
+were used to prepare the present report; \.{\\fullpageheight} is
+\.{\\pageheight} plus room for the additional heading and page numbers at
+the top of each page. If you change any of these quantities, you should
+call the macro \.{\\setpage} immediately after making the change.
+
+The \.{\\pageshift} macro defines an amount by which right-hand
+pages (i.e., odd-numbered pages) are shifted right with respect to
+left-hand (even-numbered) ones. By adjusting this amount you may be
+able to get two-sided output in which the page numbers line up on
+opposite sides of each sheet.
+
+\beginprog
+\newdimen\pagewidth \pagewidth=6.5in % the width of each page
+\newdimen\pageheight \pageheight=8.7in % the height of each page
+\newdimen\fullpageheight \fullpageheight=9in % page height including headlines
+\newdimen\pageshift \pageshift=0in % shift righthand pages wrt lefthand ones
+\def\magnify#1{\mag=#1\pagewidth=6.5truein\pageheight=8.7truein
+  \fullpageheight=9truein\setpage}
+\def\setpage{\hsize\pagewidth\vsize\pageheight} % use after changing page size
+\endprog
+
+\sect The \.{\\title} macro will appear at the top of each page
+in small caps. For example, this document was produced after saying
+`\.{\\def\\title\{DOCMAC\}}'.
+
+\beginprog
+\def\lheader{\mainfont\the\pageno\eightrm\qquad\rhead\hfill\title\qquad
+  \tensy x\mainfont\topmark} % top line on left-hand pages
+\def\rheader{\tensy x\mainfont\topmark\eightrm\qquad\title\hfill\rhead
+  \qquad\mainfont\the\pageno} % top line on right-hand pages
+\def\page{\box255 }
+\def\normaloutput#1#2#3{\ifodd\pageno\hoffset=\pageshift\fi
+  \shipout\vbox{
+    \vbox to\fullpageheight{
+      \iftitle\global\titlefalse
+      \else\hbox to\pagewidth{\vbox to10pt{}\ifodd\pageno #3\else#2\fi}\fi
+      \vfill#1}} % parameter #1 is the page itself
+  \global\advance\pageno by1}
+
+\def\rhead{\.{DOCMAC} OUTPUT} % this running head is reset by starred sections
+\def\title{} % an optional title can be set by the user
+\endprog
+
+\sect The first page usually is assigned page number 1.
+To start on page 16, with contents
+on page 15, say this: `\.{\\def\\contentspagenumber\{15\}}
+\.{\\pageno=\\contentspagenumber} \.{\\advance\\pageno by 1}'.
+
+\beginprog
+\def\contentspagenumber{0} % default page number for table of contents
+\endprog
+
+\sect The macro \.{\\iftitle} will suppress the header line if it is
+defined by `\.{\\titletrue}'. The normal value is \.{\\titlefalse}
+except for the table of contents; thus, the contents
+page is usually unnumbered.
+
+Two macros are provided to give flexibility to the table of
+contents: \.{\\topofcontents} is invoked just before the contents
+info is read, and \.{\\botofcontents} is invoked just after.
+For example, you can define:
+$$\lpile{\.{\\def\\topofcontents\{\\null\\vfill}\cr
+  \.{ { }\\titlefalse \% include headline on the contents page}\cr
+  \.{ { }\\def\\rheader\{\\mainfont Appendix D\\hfil 15\}}\cr
+  \.{ { }\\centerline\{\\titlefont The \{\\ttitlefont WEAVE\}{ }processor\}}\cr
+  \.{ { }\\vskip 15pt \\centerline\{(Version 4)\}{ }\\vfill\}}\cr}$$
+Redefining \.{\\rheader}, which is the headline for right-hand pages,
+suffices in this case to put the desired information at the top of the
+contents page.
+
+\beginprog
+\newif\iftitle
+
+\def\topofcontents{\centerline{\titlefont\title}
+  \vfill} % this material will start the table of contents page
+\def\botofcontents{\vfill} % this material will end the table of contents page
+\endprog
+
+\sect Data for the table of contents is written to a file that
+is read when |\contentspage| is called; there's one line of data
+for every starred module. For example, when this document was being created, a
+file \.{DOCMAC.TOC} containing
+$$\lpile{\.{\\Z \{{ }Introduction\}\{1\}\{1\}}\cr
+  \.{\\Z \{{ }Local Verbatim Formatting\}\{3\}\{2\}}\cr}$$
+and similar lines was created. The \.{\\topofcontents} macro could
+redefine \.{\\Z} so that the information appears in another format.
+
+\beginprog
+\def\contentsfile{\jobname.toc} % file that gets table of contents info
+\def\readcontents{\expandafter\input \contentsfile}
+
+\newwrite\cont
+\output{\setbox0=\page % the first page is garbage
+  \openout\cont=\contentsfile
+  \global\output{\normaloutput\page\lheader\rheader}}
+\setpage
+\vbox to \vsize{} % the first \topmark won't be null
+
+\def\con{%
+  \write\cont{} % ensure that the contents file isn't empty
+  \closeout\cont % the contents information has been fully gathered
+  \par\vfill\eject % finish the preceding page
+   \rightskip 0pt \hyphenpenalty 50 \tolerance 200
+  \setpage
+  \output{\normaloutput\page\lheader\rheader}
+  \titletrue % prepare to output the table of contents
+  \pageno=\contentspagenumber \def\rhead{TABLE OF CONTENTS}
+  \message{Table of contents:}
+  \topofcontents
+  \line{\hfil Section\hbox to3em{\hss Page}}
+  \def\Z##1##2##3{\line{\ignorespaces##1
+    \leaders\hbox to .5em{.\hfil}\hfil\ ##2\hbox to3em{\hss##3}}}
+  \readcontents\relax % read the contents info
+  \botofcontents \end} % print the contents page(s) and terminate
+\let\contentspage=\con
+\endprog
+
+\sect Sometimes it is necessary or desirable to divide the output of
+\.{docmac} into subfiles that can be processed separately. For example,
+the listing of \TeX\ runs to more than 500 pages, and that is enough to
+exceed the capacity of many printing devices and/or their software.
+When an extremely large job isn't cut into smaller pieces, the entire
+process might be spoiled by a single error of some sort, making it
+necessary to start everything over.
+
+Here's a safe way to break a docmac'ed file into three parts:
+Say the pieces are $\alpha$,
+$\beta$, and $\gamma$, where each piece begins with a starred module.
+All macros should be defined in the opening limbo section of $\alpha$,
+and copies of this \TeX\ code should be placed at the
+beginning of $\beta$ and of $\gamma$. In order to process the parts
+separately, we need to take care of two things: The starting page
+numbers of $\beta$ and $\gamma$ need to be set up properly, and
+the table of contents data from all three runs needs to be
+accumulated.
+
+The \.{docmac} macros include two control sequences \.{\\contentsfile} and
+\.{\\readcontents} that facilitate the necessary processing.  We include
+`\.{\\def\\contentsfile\{CONT1\}}' in the limbo section of~$\alpha$, we
+include `\.{\\def\\contentsfile\{CONT2\}}' in the limbo section of~$\beta$,
+and we include `\.{\\def\\contentsfile\{CONT3\}}' in the limbo section
+of~$\gamma$; this causes \TeX\ to write the contents data for
+$\alpha$,~$\beta$, and~$\gamma$ into \.{CONT1.TEX}, \.{CONT2.TEX}, and
+\.{CONT3.TEX}. Now in~$\gamma$ we say $$\.{\\def\\readcontents\{\\input CONT1
+\\input CONT2 \\input CONT3\}};$$ this brings in the data from all three
+pieces, in the proper order.
+
+However, we still need to solve the page-numbering problem. One way to
+do it is to include the following in the limbo material for $\beta$:
+$$\lpile{\.{\\message\{Please type the last page number of part 1: \}}\cr
+  \.{\\read -1 to \\temp \\pageno=\\temp \\advance\\pageno by 1}\cr}$$
+Then you simply provide the necessary data when \TeX\ requests
+it; a similar construction is used at the beginning of $\gamma$.
+
+This method can, of course, be used to divide a docmac'ed file into
+any number of pieces.
+
+\sect The counter \.{\\sectno} is set to the number of the
+module being typeset.
+
+\sect We are finished and just have to restore the category codes.
+
+\beginprog
+\catcode`\@=\atcode
+\catcode`\_=\uscode
+
+\endinput
+\endprog
+
+
+
+
+
+\contentspage
+

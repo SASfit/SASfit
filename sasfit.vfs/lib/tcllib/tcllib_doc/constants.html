@@ -1,0 +1,152 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>math::constants - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/constants.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: constants.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ math::constants.n
+   -->
+
+<body>
+<h1> math::constants(n) 1.0.1 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::constants - Mathematical and numerical constants
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#procedures">PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl ?8.3?</b><br>
+package require <b>math::constants ?1.0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::constants::constants</b> <i class='arg'>args</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::constants::print-constants</b> <i class='arg'>args</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+This package defines some common mathematical and numerical constants.
+By using the package you get consistent values for numbers like pi and
+ln(10).
+
+<p>
+It defines two commands:
+
+<ul>
+<li>
+One for importing the constants
+
+<br><br>
+<li>
+One for reporting which constants are defined and what values they
+actually have.
+
+</ul>
+
+<p>
+The motivation for this package is that quite often, with
+(mathematical) computations, you need a good approximation to, say,
+the ratio of degrees to radians. You can, of course, define this
+like:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    variable radtodeg [expr {180.0/(4.0*atan(1.0))}]
+</pre></td></tr></table></p>
+and use the variable radtodeg whenever you need the conversion.
+
+<p>
+This has two drawbacks:
+
+<ul>
+<li>
+You need to remember the proper formula or value and that is
+error-prone.
+
+<br><br>
+<li>
+Especially with the use of mathematical functions like <em>atan</em>
+you assume that they have been accurately implemented. This is seldom or
+never the case and for each platform you can get subtle differences.
+
+</ul>
+
+Here is the way you can do it with the <em>math::constants</em> package:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require math::constants
+    ::math::constants::constants radtodeg degtorad
+</pre></td></tr></table></p>
+which creates two variables, radtodeg and (its reciprocal) degtorad
+in the calling namespace.
+
+<p>
+Constants that have been defined (their values are mostly taken
+from mathematical tables with more precision than usually can be
+handled) include:
+
+<ul>
+<li>
+basic constants like pi, e, gamma (Euler's constant)
+
+<br><br>
+<li>
+derived values like ln(10) and sqrt(2)
+
+<br><br>
+<li>
+purely numerical values such as 1/3 that are included for convenience
+and for the fact that certain seemingly trivial computations like:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    set value [expr {3.0*$onethird}]
+</pre></td></tr></table></p>
+give <em>exactly</em> the value you expect (if IEEE arithmetic is
+available).
+
+</ul>
+
+<h2><a name="procedures">PROCEDURES</a></h2>
+<p>
+
+The package defines the following public procedures:
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::constants::constants</b> <i class='arg'>args</i></a><dd>
+
+
+Import the constants whose names are given as arguments
+
+<br><br>
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::math::constants::print-constants</b> <i class='arg'>args</i></a><dd>
+
+
+Print the constants whose names are given as arguments on the screen
+(name, value and description) or, if no arguments are given, print all
+defined constants. This is mainly a convenience procedure.
+
+</dl>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+constants, degrees, e, math, pi, radians
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;<br>
+</body></html>
+
