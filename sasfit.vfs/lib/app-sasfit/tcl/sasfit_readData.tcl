@@ -2027,7 +2027,7 @@ for {set i 0} {$i < $Graph(e,element)} {incr i} {
   set tmax [llength $dydata($i)]
   if {$tmax > $max} { set max $tmax }
 }
-set columnwidth 12
+set columnwidth 16
 # see http://www.tcl.tk/man/tcl8.4/TclCmd/format.htm#M19
 set precision [expr $columnwidth - 9]
 set floatfield "% ${columnwidth}.${precision}E"
