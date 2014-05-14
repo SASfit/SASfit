@@ -266,14 +266,16 @@ set OZ(plugin_fct_names) {"SQ oz 1" 	"SQ oz 2" 	"SQ oz 3" \
 			  "SQ oz 4" 	"SQ oz 5" 	"SQ oz 6"}
 set OZ(plugin_C_names) {"sq_sq_oz_1" 	"sq_sq_oz_2" 	"sq_sq_oz_3" \
 			"sq_sq_oz_4" 	"sq_sq_oz_5" 	"sq_sq_oz_6"}
-set OZ(closure) HNC
+set OZ(closure) Percus-Yevick
 set OZ(potential) "HardSphere"
-tkcon hide
-set ::tkcon_visible 0
+set OZ(closure) "Hypernetted-Chain"
+set OZ(potential) "LennardJones"
+tkcon show
+set ::tkcon_visible 1
 
 set OZ(label) unknown
 set OZ(p0) 1.0
-set OZ(p1) 0.3
+set OZ(p1) 0.1
 set OZ(p2) 1.2
 set OZ(p3) 1.3
 set OZ(p4) 1.4
@@ -308,15 +310,15 @@ set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}
 
-set OZ(algorithm) "Picard iteration"
+#set OZ(algorithm) "CR iteration"
 set OZ(algorithm) "GMRES"
-set OZ(phi) 0.3
+set OZ(phi) 0.41887902047863909846168578443727
 set OZ(T) 300
 set OZ(mindimOZ) 128
-set OZ(mult) 10
+set OZ(mult) 4
 set OZ(mix) 0.5
-set OZ(maxit) 1500
-set OZ(dr/dsigma) 0.02
+set OZ(maxit) 10000
+set OZ(dr/dsigma) 0.0703125
 set OZ(releps) 1e-12
 set OZ(gridlength) [expr int($OZ(mindimOZ)*$OZ(mult))]
 set OZ(plottedgraphs) 0

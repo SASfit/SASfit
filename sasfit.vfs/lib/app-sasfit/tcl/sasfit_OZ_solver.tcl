@@ -764,7 +764,7 @@ proc sasfit_OZ_solver {} {
     		         "Steffensen iteration" \
     		         "dNewton" "Hybrid" \
 	    		 "Hybrids (int. sc.)" "Broyden" \
-	    		 "GMRES"} \
+	    		 "GMRES" "Bi-CGSTAB" "TFQMR"} \
 	    -textvariable OZ(algorithm) -width 19
     label $w.param.phitext -text "volume fraction:"  
     entry $w.param.phivalue -textvariable OZ(phi)

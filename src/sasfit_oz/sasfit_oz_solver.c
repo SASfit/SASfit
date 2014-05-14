@@ -148,8 +148,8 @@ void OZ_init(sasfit_oz_data *OZd) {
    OZIN   = (double*)fftw_malloc(sizeof(double)*NP);
    OZOUT  = (double*)fftw_malloc(sizeof(double)*NP);
 
-   GAMMA_R  = gsl_vector_calloc(NP);
-
+ //  GAMMA_R  = gsl_vector_view_array(G,NP);
+   GAMMA_R  = gsl_vector_alloc(NP);
    for (i=0; i < NP; i++) {
         G[i]=0;
    }
@@ -937,6 +937,41 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 free(xn);
                 free(Tx);
+                break;
+        case BiCGSTAB:
+                xn = (double*)malloc((NP)*sizeof(double));
+                Tx = (double*)malloc((NP)*sizeof(double));
+                cp_array_to_array(G,xn,NP);
+                nsoliparam[0]=240;
+                nsoliparam[1]=480;
+                nsoliparam[2]=-0.1;
+                nsoliparam[3]=3;
+                nsoliparam[4]=20;
+                tol[0]=RELERROR;
+                tol[1]=RELERROR;
+                nsoli(xn,&OZ_step,OZd,tol,nsoliparam,Tx,&ierr);
+                cp_array_to_array(Tx,G,NP);
+                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                free(xn);
+                free(Tx);
+                break;
+        case TFQMR:
+                xn = (double*)malloc((NP)*sizeof(double));
+                Tx = (double*)malloc((NP)*sizeof(double));
+                cp_array_to_array(G,xn,NP);
+                nsoliparam[0]=20;
+                nsoliparam[1]=40;
+                nsoliparam[2]=-0.1;
+                nsoliparam[3]=4;
+                nsoliparam[4]=20;
+                tol[0]=RELERROR;
+                tol[1]=RELERROR;
+                nsoli(xn,&OZ_step,OZd,tol,nsoliparam,Tx,&ierr);
+                cp_array_to_array(Tx,G,NP);
+                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                free(xn);
+                free(Tx);
+                break;
     }
 }
 
@@ -1324,6 +1359,9 @@ void OZ_solver (sasfit_oz_data *OZd) {
                 break;
         case GMRES:
                 OZ_solver_by_iteration(OZd,GMRES);
+                break;
+        case TFQMR:
+                OZ_solver_by_iteration(OZd,TFQMR);
                 break;
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");
