@@ -121,7 +121,9 @@ typedef enum {
                   //      as time passes. The algorithm has a tendency to become unstable unless
                   //      it starts close to the root. The Jacobian is refreshed if this instability
                   //      is detected (consult the source for details).
-        GMRES,
+        NGMRES,
+        NBiCGSTAB,
+        NTFQMR,
         Picard_iteration,   // fixed point iteration of the form: x_n+1 = OZ(xn)
         Mann_iteration,     //
         Ishikawa_iteration, //
@@ -137,39 +139,6 @@ typedef enum {
         Steffensen_iteration
 } sasfit_oz_root_algorithms;
 
-typedef struct {
-        Tcl_Interp *interp;
-        double *r, *k, *En, *G,
-               *G0, *g, *g0, *c, *h,
-               *cf, *cfold, *cfnew,
-               *Gf,*f, *S,  *ud,
-               *Br, *yr, *fr;
-        gsl_vector *gamma_r;
-        double dr, dq, dr_dsigma;
-        double Sq0, gr0, cr0;
-        double T;
-        int    it;
-        double beta;
-        int    Npoints;
-        double mixcoeff;
-        int    maxsteps;
-        double relerror;
-        double alpha;
-        double phi;
-        double *pPot;
-        double *ubeta;
-        sasfit_oz_closure cl;
-        sasfit_oz_root_algorithms root_algorithm;
-        OZ_func_one_t * potential;
-        OZ_func_one_t * reference_pot;
-        OZ_func_one_t * pertubation_pot;
-        OZ_func_one_t * repulsive_pot;
-        OZ_func_one_t * attractive_pot;
-        OZ_func_one_t * shortrange_pot;
-        OZ_func_one_t * longrange_pot;
-        double *in, *out;
-        fftw_plan pl;
-} sasfit_oz_data;
 
 void OZ_init (sasfit_oz_data *);
 void OZ_calculation (sasfit_oz_data *);

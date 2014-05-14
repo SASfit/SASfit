@@ -8,6 +8,7 @@
 #include <sasfit_oz.h>
 #include <sasfit_gmres.h>
 #include <bool.h>
+#include <math.h>
 #include <gsl/gsl_linalg.h>
 
 
@@ -17,6 +18,7 @@
 #define LMETH  parms[3]
 #define RESTARTLIMIT parms[4]
 #define N OZd->Npoints
+
 
 scalar norm(scalar *f0, int n) {
     int i;
@@ -88,6 +90,9 @@ void givapp(scalar *c, scalar *s, scalar *vin, int k, int dim, scalar *vrot) {
 // dim+1: length of array
     int i;
     scalar w1,w2;
+    scalar *tvin;
+    tvin = (scalar *) malloc(dim*sizeof(scalar));
+    for (i=0;i<dim;i++) tvin[i]=vin[i];
 //function vrot = givapp(c,s,vin,k)
 //%#codegen
 //%  Apply a sequence of k Givens rotations, used within gmres codes.
@@ -98,13 +103,15 @@ void givapp(scalar *c, scalar *s, scalar *vin, int k, int dim, scalar *vrot) {
 //%
 //%  function vrot = givapp(c, s, vin, k)
 //%
-    cparr(vin,vrot,dim);
+    cparr(vin,tvin,dim);
+    cparr(tvin,vrot,dim);
     for (i = 0;i<k;i++) {
         w1 = c[i]*vrot[i]-s[i]*vrot[i+1];
         w2 = s[i]*vrot[i]+c[i]*vrot[i+1];
         vrot[i] = w1;
         vrot[i+1] = w2;
     }
+    free(tvin);
 //%
 //%
 
@@ -133,7 +140,7 @@ void dirder(scalar *x, scalar *w, void *ozfunct, sasfit_oz_data *OZd, scalar *f0
 //% Use a hardwired difference increment.
 //%
     scalar xs,epsnew;
-    scalar *del, *f1;
+    scalar *del, *f1,normw;
     int i,n;
     n = OZd->Npoints;
     epsnew = 1e-7;
@@ -150,11 +157,12 @@ void dirder(scalar *x, scalar *w, void *ozfunct, sasfit_oz_data *OZd, scalar *f0
 //% Now scale the difference increment.
 //%
     xs=0;
-    for (i=0;i<n;i++) xs=xs+x[i]*w[i]/norm(w,n);
+    normw=norm(w,n);
+    for (i=0;i<n;i++) xs=xs+x[i]*w[i]/normw;
     if (xs!=0) {
         epsnew=epsnew*max(fabs(xs),1.e0)*GSL_SIGN(xs);
     }
-    epsnew=epsnew/norm(w,n);
+    epsnew=epsnew/normw;
 //%
 //% del and f1 could share the same space if storage
 //% is more important than clarity.
@@ -213,6 +221,185 @@ gsl_linalg_LU_solve (A, p, &b.vector, &x.vector);
 gsl_permutation_free (p);
 gsl_matrix_free(A);
 return;
+}
+
+void dtfqmr(scalar *f0,
+           void *ozfunct,
+           scalar *xc,
+           sasfit_oz_data *OZd,
+           scalar *params,
+           scalar *xinit,
+           bool init,
+           scalar *x,
+           int *total_iters,
+           scalar *lasterror) {
+/*
+%#codegen
+% Forward difference TFQMR solver for use in nsoli
+%
+% C. T. Kelley, April 1, 2003
+%
+% This code comes with no guarantee or warranty of any kind.
+%
+% function [x, error, total_iters]
+%                    = dtfqmr(f0, f, xc, params, xinit)
+%
+%
+%
+% Input:  f0 = function at current point
+%         f = nonlinear function
+%              the format for f is  function fx = f(x)
+%              Note that for Newton-GMRES we incorporate any
+%              preconditioning into the function routine.
+%         xc = current point
+%         params = two dimensional vector to control iteration
+%              params(1) = relative residual reduction factor
+%              params(2) = max number of iterations
+%
+%         xinit = initial iterate. xinit = 0 is the default. This
+%              is a reasonable choice unless restarts are needed.
+%
+%
+% Output: x = solution
+%         error = vector of residual norms for the history of
+%                 the iteration
+%         total_iters = number of iterations
+%
+% Requires: dirder.m
+%
+*/
+
+//%
+//% initialization
+//%
+
+scalar errtol,kmax,reorth,*b, *r, **u, **y, *w, *d, *v;
+scalar rr, rho,rhon, theta, eta, tau,sigma,alpha,c,beta;
+int i,j,k,n,m;
+
+errtol = params[0];
+kmax = params[1];
+reorth = params[2];
+n=OZd->Npoints;
+b = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
+r = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
+w = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
+d = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
+v = (scalar *)malloc((OZd->Npoints)*sizeof(scalar));
+u = (scalar **)malloc((2)*sizeof(scalar*));
+y = (scalar **)malloc((2)*sizeof(scalar*));
+u[0] = (scalar *)calloc((OZd->Npoints),sizeof(scalar));
+u[1] = (scalar *)calloc((OZd->Npoints),sizeof(scalar));
+y[0] = (scalar *)calloc((OZd->Npoints),sizeof(scalar));
+y[1] = (scalar *)calloc((OZd->Npoints),sizeof(scalar));
+
+for(i=0;i<n;i++) {
+    b[i]=-f0[i];
+    x[i]=0.0;
+    r[i]=b[i];
+}
+
+errtol = params[0]*norm(b,n);
+kmax = params[1];
+
+
+if (init == TRUE) {
+    for(i=0;i<n;i++) x[i]=xinit[i];
+    dirder(xc,x,ozfunct, OZd, f0, r);
+    for(i=0;i<n;i++) {
+        r[i]=-r[i]-f0[i];
+        sasfit_out("r[%d]=%g\n",i,r[i]);
+    }
+}
+//%
+
+w = r;
+for (i=0;i<n;i++) {
+    y[0][i] = r[i];
+    w[i] = r[i];
+}
+k = 0;
+
+dirder(xc, y[0],ozfunct,OZd,f0,v);
+for (i=0;i<n;i++) u[0][i] = v[i];
+theta = 0;
+eta = 0;
+tau = norm(r,n);
+*lasterror = tau;
+rho = tau*tau;
+//%
+//% TFQMR iteration
+//%
+while( k < kmax) {
+    k = k+1;
+    sigma=0;
+    for (i=0;i<n;i++) sigma=sigma+r[i]*v[i];
+//%
+    if (sigma == 0) {
+        sasfit_out("TFQMR breakdown, sigma = 0\n");
+    }
+//%
+    alpha = rho/sigma;
+//%
+//%
+//%
+    for (j = 0;j<2;j++) {
+//%
+//%   Compute y2 and u2 only if you have to
+//%
+        if (j == 1) {
+            for (i=0;i<n;i++) y[1][i] = y[0][i]-alpha*v[i];
+            dirder(xc, y[1],ozfunct,OZd,f0,u[1]);
+        }
+        m = 2*k-2+j;
+        for (i=0;i<n;i++) {
+            w[i] = w[i]-alpha*u[j][i];
+            d[i] = y[j][i]+(theta*theta*eta/alpha)*d[i];
+        }
+        theta = norm(w,n)/tau;
+        c = 1.0/sqrt(1.0+theta*theta);
+        tau = tau*theta*c;
+        eta = c*c*alpha;
+        for (i=0;i<n;i++) x[i] = x[i]+eta*d[i];
+//%
+//%   Try to terminate the iteration at each pass through the loop
+//%
+        if (tau*sqrt(m+1) <=  errtol) {
+//%           error = [error, tau];
+            *total_iters = k;
+            goto dtfqmr_exit;
+        }
+    }
+//%
+//%
+//%
+    if (rho == 0) {
+        sasfit_out("TFQMR breakdown, rho = 0\n");
+    }
+//%
+    for (i=0;i<n;i++) rhon = r[i]*w[i];
+    beta = rhon/rho;
+    rho = rhon;
+    for (i=0;i<n;i++) y[0][i] = w[i] + beta*y[1][i];
+    dirder(xc, y[0],ozfunct, OZd,f0,u[0]);
+    for (i=0;i<n;i++) v[i] = u[0][i]+beta*(u[1][i]+beta*v[i]);
+    *lasterror = tau;
+    *total_iters = k;
+}
+dtfqmr_exit:
+
+    free(b);
+    free(r);
+    free(w);
+    free(d);
+    free(v);
+    free(u[0]);
+    free(u[1]);
+    free(y[0]);
+    free(y[1]);
+    free(u);
+    free(y);
+    return;
 }
 
 void dgmres(scalar *f0,
@@ -277,13 +464,15 @@ for(i=0;i<n;i++) {
     b[i]=-f0[i];
     x[i]=0.0;
     r[i]=b[i];
-    x[i]=xinit[i];
 }
 
-if (init) {
+if (init == TRUE) {
     for(i=0;i<n;i++) x[i]=xinit[i];
     dirder(xc,x,ozfunct, OZd, f0, r);
-    for(i=0;i<n;i++) r[i]=-r[i]-f0[i];
+    for(i=0;i<n;i++) {
+        r[i]=-r[i]-f0[i];
+        sasfit_out("r[%d]=%g\n",i,r[i]);
+    }
 }
 
 c = (scalar *)calloc((kmax+1),sizeof(scalar));
@@ -337,7 +526,9 @@ while((rr > errtol) && (k < kmax)) {
 //%
 //%   Reorthogonalize?
 //%
-    if  ((reorth == 1 && normav + .001*normav2 == normav) || (reorth ==  3)) {
+    if  (   ((reorth == 1) &&
+            ((normav + .001*normav2) == normav))
+        ||  (reorth ==  3)) {
         for (j = 1;j<=k;j++) {
             hr = 0;
             for (i=0;i<n;i++) hr=hr+v[j-1][i]*v[k+1-1][i];
@@ -386,7 +577,7 @@ while((rr > errtol) && (k < kmax)) {
 //% At this point either k > kmax or rho < errtol.
 //% It's time to compute x and leave.
 //%
-*total_iters = k;
+
 // Solve  h*y = x
 //y = h(1:k,1:k)\g(1:k);
 AxEQb(h,g,k,y);
@@ -468,7 +659,7 @@ void dkrylov(scalar *f0,
 //%
 
     int lmaxit, restart_limit=20.0;
-    int kinn;
+    int kinn,i;
     double gmparms[3];
 
     lmaxit = params[1];
@@ -490,10 +681,12 @@ sasfit_out("lmeth %d\n",lmeth);
 //% for this purpose
 //%
 //            [step, errstep, total_iters] = dgmres(f0, f, x, gmparms);
-sasfit_out("try to initialize dgmres\n");
-            dgmres(f0,ozfunct,x,OZd,gmparms,step,TRUE,step,total_iters,errstep);
+sasfit_out("try to initialize dgmres with gmparms=%g %g %g\n",gmparms[0],gmparms[1],gmparms[2]);
+
+            dgmres(f0,ozfunct,x,OZd,gmparms,step,FALSE,step,total_iters,errstep);
             sasfit_out("did it\n");
             kinn = 0;
+            for (i=0;i<OZd->Npoints;i++) sasfit_out("step(%d)=%g\n",i,step[i]);
 //%
 //%   restart at most restart_limit times
 //%
@@ -501,7 +694,7 @@ sasfit_out("try to initialize dgmres\n");
                     && (*errstep > gmparms[0]*norm(f0,OZd->Npoints))
                     && (kinn < restart_limit) ) {
                 kinn = kinn+1;
-                dgmres(f0,ozfunct,x,OZd,gmparms,step,FALSE,step,total_iters,errstep);
+                dgmres(f0,ozfunct,x,OZd,gmparms,step,TRUE,step,total_iters,errstep);
                 sasfit_out("total iter (gmres calls) %d\n",*total_iters);
 //                [step, errstep, total_iters] = dgmres(f0, f, x, gmparms,step);
             }
@@ -513,14 +706,15 @@ sasfit_out("try to initialize dgmres\n");
 //%
         case 3:
 //            [step, errstep, total_iters] = dcgstab(f0, f, x, gmparms);
-//            f_evals = 2*total_iters;
+            *f_evals = 2*(*total_iters);
             break;
 //%
 //% TFQMR
 //%
         case 4:
 //            [step, errstep, total_iters] = dtfqmr(f0, f, x, gmparms);
-//            f_evals = 2*total_iters;
+            dtfqmr(f0,ozfunct,x,OZd,gmparms,step,FALSE,step,total_iters,errstep);
+            *f_evals = 2*(*total_iters);
             break;
     default :
             sasfit_err("lmeth error in fdkrylov\n");
@@ -649,8 +843,8 @@ void nsoli(scalar *x,
 //    f0 = OZd->G;
     fnrm = norm(f0,OZd->Npoints);
     sasfit_out("initial feval gived fnrm=%g\n",fnrm);
-    stop_tol = atol + rtol*fnrm;
-    while(fnrm > stop_tol && itc < MAXIT && itc < 3) {
+    stop_tol = atol + rtol*fnrm*0;
+    while(fnrm > stop_tol && itc < MAXIT && itc < 10) {
         rat = fnrm/fnrmo;
         fnrmo = fnrm;
         itc = itc+1;
@@ -683,69 +877,69 @@ void nsoli(scalar *x,
 //
 //   Apply the three point parabolic model.
 //
-        if (iarm == 0) {
-            lambda = sigma1*lambda;
-        } else {
-            lambda = parab3p(lamc, lamm, ff0, ffc, ffm);
-        }
+            if (iarm == 0) {
+                lambda = sigma1*lambda;
+            } else {
+                lambda = parab3p(lamc, lamm, ff0, ffc, ffm);
+            }
 //
 // Update x; keep the books on lambda.
 //
-        for (i=0;i<OZd->Npoints;i++) {
+            for (i=0;i<OZd->Npoints;i++) xt[i] = x[i]+lambda*step[i];
             ////    xt = x + lambda*step;
-            xt[i] = x[i]+lambda*step[i];
-        }
-        lamm = lamc;
-        lamc = lambda;
+            lamm = lamc;
+            lamc = lambda;
 //
 // Keep the books on the function norms.
 //
-        feval(ozfunct,OZd,xt,ft);
-        nft = norm(ft,OZd->Npoints);
-        ffm = ffc;
-        ffc = nft*nft;
-        iarm = iarm+1;
+            feval(ozfunct,OZd,xt,ft);
+            nft = norm(ft,OZd->Npoints);
+            ffm = ffc;
+            ffc = nft*nft;
+            iarm = iarm+1;
 
-        if (iarm > maxarm) {
-            sasfit_out("Armijo failure, too many reductions ");
-            *ierr = 2;
+            if (iarm > maxarm) {
+                sasfit_out("iarm(%d) > maxarm(%d)\n",iarm,maxarm);
+                sasfit_out("Armijo failure, too many reductions ");
+                *ierr = 2;
 //            disp(outstat)
 ////            it_hist = it_histx(1:itc+1,:);
 //        if nargout == 4, x_hist = [x_hist,x]; end
-            cparr(xold,sol,OZd->Npoints);
-            return;
-        }
-
+                cparr(xold,sol,OZd->Npoints);
+                return;
+            }
         }
         cparr(xt,x,OZd->Npoints);
-        f0 = ft;
+        cparr(ft,f0,OZd->Npoints);
 //
 //   End of line search.
 //
 //    if nargout == 4, x_hist = [x_hist,x]; end
         fnrm = norm(f0,OZd->Npoints);
-        it_histx[itc+1][0] = fnrm;
+
+sasfit_out("dbg:fnrm=%g\n",fnrm);
 //
 //   How many function evaluations did this iteration require?
 //
-        it_histx[itc+1][1] = it_histx[itc][1]+inner_f_evals+iarm+1;
+/*        it_histx[itc+1][1] = it_histx[itc][1]+inner_f_evals+iarm+1;
         if (itc == 1) it_histx[itc+1][1] = it_histx[itc+1][2]+1;
         it_histx[itc+1][2] = iarm;
+*/
 //
         rat = fnrm/fnrmo;
 //
 //   Adjust eta as per Eisenstat-Walker.
 //
 
-    if (ETAMAX > 0) {
-        etaold = gmparms[0];
-        etanew = gamma*rat*rat;
-        if (gamma*etaold*etaold > .1) {
-            etanew = max(etanew,gamma*etaold*etaold);
+        if (ETAMAX > 0) {
+            etaold = gmparms[0];
+            etanew = gamma*rat*rat;
+            if (gamma*etaold*etaold > .1) {
+                etanew = max(etanew,gamma*etaold*etaold);
+            }
+            gmparms[0] = min(etanew,ETAMAX);
+            gmparms[0] = max(gmparms[0],.5*stop_tol/fnrm);
         }
-        gmparms[0] = min(etanew,ETAMAX);
-        gmparms[0] = max(gmparms[0],.5*stop_tol/fnrm);
-    }
     }
     free(xold);
     free(xt);

@@ -157,7 +157,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
 {
-#define MAXROOTALGORITHMS 18
+#define MAXROOTALGORITHMS 20
     const char * RootAlgorithms[MAXROOTALGORITHMS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -179,6 +179,8 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
     RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
     RootAlgorithms[MAXROOTALGORITHMS-4] = "Broyden";
     RootAlgorithms[MAXROOTALGORITHMS-5] = "GMRES";
+    RootAlgorithms[MAXROOTALGORITHMS-6] = "Bi-CGSTAB";
+    RootAlgorithms[MAXROOTALGORITHMS-7] = "TFQMR";
 
     i=0;
     eq=-1;
@@ -242,6 +244,12 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             break;
         case MAXROOTALGORITHMS-5 :
             OZD->root_algorithm=GMRES;
+            break;
+        case MAXROOTALGORITHMS-6 :
+            OZD->root_algorithm=BiCGSTAB;
+            break;
+        case MAXROOTALGORITHMS-7 :
+            OZD->root_algorithm=TFQMR;
             break;
         default :
             OZD->root_algorithm=PMH_iteration;
