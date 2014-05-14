@@ -2027,24 +2027,27 @@ for {set i 0} {$i < $Graph(e,element)} {incr i} {
   set tmax [llength $dydata($i)]
   if {$tmax > $max} { set max $tmax }
 }
-set fieldwidth 12
+set columnwidth 12
+# see http://www.tcl.tk/man/tcl8.4/TclCmd/format.htm#M19
+set precision [expr $columnwidth - 9]
+set floatfield "% ${columnwidth}.${precision}E"
+set emptyfield [format "%${columnwidth}s" ""]
+# output looks like this (columnwidth == 14):
+#    7.81611E+00  7.47467E-132  -1.00000E+00   0.00000E+00
+
 for {set k 0} {$k < $max} {incr k} {
-   set line ""
+   set row [list]
    for {set i 0} {$i < $Graph(e,element)} {incr i} {
       if {[llength [lindex $xdata($i) $k]] != 0 } {
-         append line [format "%${fieldwidth}g" [lindex $xdata($i) $k]]
-         append line [format "%${fieldwidth}g" [lindex $ydata($i) $k]]
-         append line [format "%${fieldwidth}g" [lindex $dydata($i) $k]]
-#         set dy  [lindex $dydata($i) $k]
-#         if {$dy > 0} {
-#            append line [format "%${fieldwidth}g " $dy]
-#         } else {
-#            append line [format "%${fieldwidth}g " -1]
-#         }
-         append line [format "%${fieldwidth}g" [lindex $resdata($i) $k]]
-      } else { append line [format "%[expr 4*($fieldwidth+1)]s" ""] }
+         lappend row [format $floatfield [lindex $xdata($i) $k]]
+         lappend row [format $floatfield [lindex $ydata($i) $k]]
+         lappend row [format $floatfield [lindex $dydata($i) $k]]
+         lappend row [format $floatfield [lindex $resdata($i) $k]]
+      } else {
+         for {set c 0} {$c < 4} {incr c} { lappend row $emptyfield }
+      }
    }
-   puts $f $line
+   puts $f [join $row ""]
 }
 close  $f
 }
