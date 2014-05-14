@@ -5,7 +5,7 @@
  *   Tcl Wrapper by Ingo Bressler (ingo.bressler@bam.de)
  *   29.09.2013
  *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   18.11.2013
+ *   18.05.2014
  */
 
 #include <string.h>
@@ -157,7 +157,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
 {
-#define MAXROOTALGORITHMS 18
+#define MAXROOTALGORITHMS 20
     const char * RootAlgorithms[MAXROOTALGORITHMS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -179,6 +179,8 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
     RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
     RootAlgorithms[MAXROOTALGORITHMS-4] = "Broyden";
     RootAlgorithms[MAXROOTALGORITHMS-5] = "GMRES";
+    RootAlgorithms[MAXROOTALGORITHMS-6] = "Bi-CGSTAB";
+    RootAlgorithms[MAXROOTALGORITHMS-7] = "TFQMR";
 
     i=0;
     eq=-1;
@@ -242,6 +244,12 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             break;
         case MAXROOTALGORITHMS-5 :
             OZD->root_algorithm=GMRES;
+            break;
+        case MAXROOTALGORITHMS-6 :
+            OZD->root_algorithm=BiCGSTAB;
+            break;
+        case MAXROOTALGORITHMS-7 :
+            OZD->root_algorithm=TFQMR;
             break;
         default :
             OZD->root_algorithm=PMH_iteration;
@@ -565,8 +573,8 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 }
             }
  //             ozd.mixcoeff = 1;
-            PUTS("param %d: %f\n", i, ozd.pPot[i]);
         }
+        for (i = 0; i < 6; i++) PUTS("param %d: %f\n", i, ozd.pPot[i]);
         ozd.dr = ozd.dr_dsigma * ozd.pPot[0];
 
         if (!GET_TCL(double, &ozd.T, "T")) {
@@ -589,6 +597,8 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         Tcl_Obj * gy = Tcl_NewListObj(0, 0);
         Tcl_Obj * cx = Tcl_NewListObj(0, 0);
         Tcl_Obj * cy = Tcl_NewListObj(0, 0);
+        Tcl_Obj * hx = Tcl_NewListObj(0, 0);
+        Tcl_Obj * hy = Tcl_NewListObj(0, 0);
         Tcl_Obj * ux = Tcl_NewListObj(0, 0);
         Tcl_Obj * uy = Tcl_NewListObj(0, 0);
         Tcl_Obj * bx = Tcl_NewListObj(0, 0);
@@ -611,6 +621,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 APPEND(s, ozd.k[i], ozd.S[i]);
                 APPEND(g, ozd.r[i], ozd.g[i]);
                 APPEND(c, ozd.r[i], ozd.c[i]);
+                APPEND(h, ozd.r[i], ozd.h[i]);
                 APPEND(u, ozd.r[i], ozd.ubeta[i]);
                 APPEND(b, ozd.r[i], ozd.Br[i]);
                 APPEND(y, ozd.r[i], ozd.yr[i]);
@@ -630,6 +641,8 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         SET(ozname, "res,g,y", gy);
         SET(ozname, "res,c,x", cx);
         SET(ozname, "res,c,y", cy);
+        SET(ozname, "res,h,x", hx);
+        SET(ozname, "res,h,y", hy);
         SET(ozname, "res,u,x", ux);
         SET(ozname, "res,u,y", uy);
         SET(ozname, "res,B,x", bx);

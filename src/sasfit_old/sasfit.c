@@ -115,7 +115,7 @@ int select_str(char *str)
 		(strcmp(str,"d Schultz-Zimm / d a4")==0)
 		)
 	{
-			return BiLogNorm;
+			return SchultzZimm;
 	}
 }
 
@@ -177,7 +177,11 @@ void find_integration_range(Tcl_Interp *interp,
 	subParam.p[3] = a[3];
 	subParam.p[4] = a[4];
 
-	if ( (strcmp(SD_typestr,"LogNorm")          == 0) ) {
+	if ( (strcmp(SD_typestr,"LogNorm")          == 0) ||
+	     (strcmp(SD_typestr,"d LogNorm / d a1") == 0) ||
+	     (strcmp(SD_typestr,"d LogNorm / d a2") == 0) ||
+	     (strcmp(SD_typestr,"d LogNorm / d a3") == 0) ||
+	     (strcmp(SD_typestr,"d LogNorm / d a4") == 0)   ) {
 	   a4 = fabs(a4);
 	   R_0  = a4*exp(-a2*a2*(a3-moment));
 	   R_n  = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
