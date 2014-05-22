@@ -12,6 +12,8 @@
 #define epsilon p[1]    //energy parameter in units of kB*T
 #define xi      p[2]    //"smoothing parameter", for xi=0 the PSM is recovered
 
+#define kb GSL_CONST_MKSA_BOLTZMANN
+
 double U_FDM(double r, double T, double *p) {
     if (xi == 0.0) {
         return U_PSM(r,T,p);

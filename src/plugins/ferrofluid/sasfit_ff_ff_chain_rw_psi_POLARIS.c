@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_ff_chain_rw_psi_mp(scalar q, sasfit_param * param)
+scalar sasfit_ff_ff_chain_rw_psi_POLARIS(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -34,11 +34,11 @@ scalar sasfit_ff_ff_chain_rw_psi_mp(scalar q, sasfit_param * param)
 	}
 
 	PSI = sasfit_param_override_get_psi(PSIDEG*M_PI/180.);
-	return	FFmicelle_mp(q,param);
-
+	return	(1.0+POL)/2.0*(TPLUS *FFmicelle_pp(q,param)+TMINUS*FFmicelle_pm(q,param))
+		+	(1.0-POL)/2.0*(TMINUS*FFmicelle_mm(q,param)+TPLUS *FFmicelle_mp(q,param));
 }
 
-scalar sasfit_ff_ff_chain_rw_psi_mp_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_ff_chain_rw_psi_POLARIS_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -46,7 +46,7 @@ scalar sasfit_ff_ff_chain_rw_psi_mp_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_ff_chain_rw_psi_mp_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_ff_chain_rw_psi_POLARIS_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

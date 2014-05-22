@@ -14,6 +14,7 @@
 
 #define sigma p[0] //Diameter of spheres in nm
 #define epsilon p[1] //  is the strength of the interaction in units of kb*T
+#define kb GSL_CONST_MKSA_BOLTZMANN
 
 double U_Lennard_Jones(double r, double T, double *p) {
     double tmp;

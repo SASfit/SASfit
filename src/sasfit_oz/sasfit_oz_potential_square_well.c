@@ -11,6 +11,7 @@
 #define SIGMA p[0] // Diameter of spheres in nm
 #define EPSILON   p[1] // hight of square well
 #define DELTA p[2] // width of the square well
+#define kb GSL_CONST_MKSA_BOLTZMANN
 
  double U_Square_Well_Sphere(double d, double temp, double *p) {
     if (d<SIGMA) {

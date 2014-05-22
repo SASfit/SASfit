@@ -11,6 +11,9 @@
 #define sigma p[0] // Diameter of spheres in nm
 #define f p[1] // number of arm (functionality)
 // valid for f >= 10
+
+#define kb GSL_CONST_MKSA_BOLTZMANN
+
  double U_Star1(double r, double T, double *p) {
     double Ustar;
     if (r<=sigma) {

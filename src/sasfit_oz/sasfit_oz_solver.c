@@ -18,6 +18,10 @@
 #include <gsl/gsl_cblas.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_errno.h>
+#include "itlin.h"
+
+#define kb GSL_CONST_MKSA_BOLTZMANN
+
 
 int cp_gsl_vector_to_array(const gsl_vector *src, double *target, int dimtarget) {
     int i;
@@ -921,7 +925,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 free(Ty);
                 break;
-        case GMRES:
+        case NGMRES:
                 xn = (double*)malloc((NP)*sizeof(double));
                 Tx = (double*)malloc((NP)*sizeof(double));
                 cp_array_to_array(G,xn,NP);
@@ -938,7 +942,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(xn);
                 free(Tx);
                 break;
-        case BiCGSTAB:
+        case NBiCGSTAB:
                 xn = (double*)malloc((NP)*sizeof(double));
                 Tx = (double*)malloc((NP)*sizeof(double));
                 cp_array_to_array(G,xn,NP);
@@ -955,7 +959,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(xn);
                 free(Tx);
                 break;
-        case TFQMR:
+        case NTFQMR:
                 xn = (double*)malloc((NP)*sizeof(double));
                 Tx = (double*)malloc((NP)*sizeof(double));
                 cp_array_to_array(G,xn,NP);
@@ -1357,11 +1361,11 @@ void OZ_solver (sasfit_oz_data *OZd) {
         case Hybrids:
                 OZ_solver_by_gsl_multroot(OZd,Hybrids);
                 break;
-        case GMRES:
-                OZ_solver_by_iteration(OZd,GMRES);
+        case NGMRES:
+                OZ_solver_by_iteration(OZd,NGMRES);
                 break;
-        case TFQMR:
-                OZ_solver_by_iteration(OZd,TFQMR);
+        case NTFQMR:
+                OZ_solver_by_iteration(OZd,NTFQMR);
                 break;
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");
