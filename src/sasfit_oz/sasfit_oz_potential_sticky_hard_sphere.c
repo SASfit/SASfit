@@ -3,7 +3,7 @@
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   26.10.2013
+ *   14.11.2013-21.05.2014
  */
 #include <sasfit_oz.h>
 
@@ -11,6 +11,8 @@
 #define SIGMA p[0] // Diameter of spheres in nm
 #define TAU   p[1] // stickiness parameter
 #define DELTA p[2] // width of the square well
+
+#define kb GSL_CONST_MKSA_BOLTZMANN
 
  double U_Sticky_Hard_Sphere(double d, double temp, double *p) {
     double energy;

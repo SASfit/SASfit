@@ -10,6 +10,7 @@
 
 #define sigma p[0]   //Diameter of spheres in nm
 #define epsilon p[1] //energy parameter in units of kB*T
+#define kb GSL_CONST_MKSA_BOLTZMANN
 
 double U_PSM(double r, double T, double *p) {
     if (r<=sigma) return kb*T*epsilon;

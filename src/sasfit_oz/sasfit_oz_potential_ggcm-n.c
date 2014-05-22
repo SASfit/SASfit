@@ -16,6 +16,8 @@
 #define NEXP	p[2] // exponent n
 #define AALPHA  p[3] // scaling parameter alpha in th eexponetial
 
+#define kb GSL_CONST_MKSA_BOLTZMANN
+
 double U_GGCM_n(double r, double T, double *p) {
     return kb*T*epsilon*exp(-AALPHA*pow(r/sigma,NEXP));
 }

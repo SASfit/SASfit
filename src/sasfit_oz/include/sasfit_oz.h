@@ -39,19 +39,19 @@ Output variables:
 - OZD.Br - bridge function b(r)
 - OZD.yr - cavity function y(r)
 - OZD.fr - Mayer-f function f(r)
+- OZD.hr - total correlation function h(r)
 - OZD.G  - indirect correlation function gamma(r)
 **/
 
 
 #include <stdio.h>
-#include <math.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_const_mksa.h>
 #define PiCube 8*gsl_pow_3(M_PI)
-#define kb GSL_CONST_MKSA_BOLTZMANN
+
 #include <fftw3.h>
 
 #include "sasfit_oz_tclcmd.h"
@@ -139,6 +139,39 @@ typedef enum {
         Steffensen_iteration
 } sasfit_oz_root_algorithms;
 
+typedef struct {
+        Tcl_Interp *interp;
+        double *r, *k, *En, *G,
+               *G0, *g, *g0, *c, *h,
+               *cf, *cfold, *cfnew,
+               *Gf,*f, *S,  *ud,
+               *Br, *yr, *fr;
+        gsl_vector *gamma_r;
+        double dr, dq, dr_dsigma;
+        double Sq0, gr0, cr0;
+        double T;
+        int    it;
+        double beta;
+        int    Npoints;
+        double mixcoeff;
+        int    maxsteps;
+        double relerror;
+        double alpha;
+        double phi;
+        double *pPot;
+        double *ubeta;
+        sasfit_oz_closure cl;
+        sasfit_oz_root_algorithms root_algorithm;
+        OZ_func_one_t * potential;
+        OZ_func_one_t * reference_pot;
+        OZ_func_one_t * pertubation_pot;
+        OZ_func_one_t * repulsive_pot;
+        OZ_func_one_t * attractive_pot;
+        OZ_func_one_t * shortrange_pot;
+        OZ_func_one_t * longrange_pot;
+        double *in, *out;
+        fftw_plan pl;
+} sasfit_oz_data;
 
 void OZ_init (sasfit_oz_data *);
 void OZ_calculation (sasfit_oz_data *);

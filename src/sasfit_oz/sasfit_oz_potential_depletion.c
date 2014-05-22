@@ -17,6 +17,8 @@
 #define sigma2 p[1] //Diameter of smaller particles in nm
 #define PHI2 p[2] // Volume fraction of smaller particles
 
+#define kb GSL_CONST_MKSA_BOLTZMANN
+
 double U_Depletion(double r, double T, double *p) {
     double  ro2, rt;
     rt=sigma2/sigma1;

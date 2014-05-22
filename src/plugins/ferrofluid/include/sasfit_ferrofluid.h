@@ -118,6 +118,103 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_radial_f(scalar q, sasfit_
 sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_radial_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ff_chain_rw_radial ################ */
 
+/* ################ start ff_ff_chain_rw_psi_POLARIS ################ */
+/**
+ * \defgroup ff_ff_chain_rw_psi_POLARIS FF+(Chain, RW) - psi (POLARIS)
+ * \ingroup ff_plugins_ferrofluid
+ *
+ * \brief brief description of FF+(Chain, RW) - psi (POLARIS) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b t_shell</td>
+ *       <td>thickness of the solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b nagg</td>
+ *       <td>specific aggegation number \n number of chains per surface area</td>
+ *      </tr><tr>
+ *       <td>\b Vbrush</td>
+ *       <td>molecular volume of a single polymer chain</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>nuclear scattering lenth density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>nuclear scattering lenth density of solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b eta_brush</td>
+ *       <td>scattering length density of polymer in corona</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b eta_mag_core</td>
+ *       <td>magnetic scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_mag_shell</td>
+ *       <td>magnetic scattering length density of solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b R_av</td>
+ *       <td>average particle radius, for which alpha is given below</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>potential energy of magnetic moment in applied magnetic field divided by thermal energy</td>
+ *      </tr><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration of polymer chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>angle between scattering and magnetization vector</td>
+ *      </tr><tr>
+ *       <td>\b pol</td>
+ *       <td>incident neutron polarisation</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b TPLUS</td>
+ *       <td>analyser transmission for positive polarised neutrons</td>
+ *      </tr><tr>
+ *       <td>\b TMINUS</td>
+ *       <td>analyser transmission for positive polarised neutrons</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ff_chain_rw_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_POLARIS(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ff_chain_rw_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_POLARIS_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ff_chain_rw_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_psi_POLARIS_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_rw_psi_POLARIS ################ */
+
 /* ################ start ff_ff_chain_rw_psi ################ */
 /**
  * \defgroup ff_ff_chain_rw_psi FF+(Chain, RW) - psi
@@ -762,6 +859,104 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term_f(scalar q, sas
  */
 sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_cross_term_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ff_chain_rw_cross_term ################ */
+
+/* ################ start ff_ff_chain_saw_psi_POLARIS ################ */
+/**
+ * \defgroup ff_ff_chain_saw_psi_POLARIS FF+(Chain, SAW) - psi (POLARIS)
+ * \ingroup ff_plugins_ferrofluid
+ *
+ * \brief brief description of FF+(Chain, SAW) - psi (POLARIS) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b t_shell</td>
+ *       <td>thickness of the solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b nagg</td>
+ *       <td>specific aggegation number \n number of chains per surface area</td>
+ *      </tr><tr>
+ *       <td>\b Vbrush</td>
+ *       <td>molecular volume of a single polymer chain</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>nuclear scattering lenth density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>nuclear scattering lenth density of solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b eta_brush</td>
+ *       <td>scattering length density of polymer in corona</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b eta_mag_core</td>
+ *       <td>magnetic scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_mag_shell</td>
+ *       <td>magnetic scattering length density of solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b R_av</td>
+ *       <td>average particle radius, for which alpha is given below</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>potential energy of magnetic moment in applied magnetic field divided by thermal energy</td>
+ *      </tr><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration of unpertubated polymer chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>angle between scattering and magnetization vector</td>
+ *      </tr><tr>
+ *       <td>\b pol</td>
+ *       <td>incident neutron polarisation</td>
+ *      </tr><tr>
+ *       <td>\b t_brush_const</td>
+ *       <td>box width of box with Gaussian tail</td>
+ *      </tr><tr>
+ *       <td>\b sigma_brush_Gaussian</td>
+ *       <td>Gaussian width of box with Gaussian tail </td>
+ *      </tr><tr>
+ *       <td>\b L_b</td>
+ *       <td>radius of gyration of unpertubated polymer chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b TPLUS</td>
+ *       <td>analyser transmission for positive polarised neutrons</td>
+ *      </tr><tr>
+ *       <td>\b TMINUS</td>
+ *       <td>analyser transmission for positive polarised neutrons</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ff_chain_saw_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_POLARIS(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ff_chain_saw_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_POLARIS_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ff_chain_saw_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_psi_POLARIS_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_saw_psi_POLARIS ################ */
+
 
 /* ################ start ff_ff_chain_saw_psi ################ */
 /**
@@ -1582,6 +1777,103 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term_radial_f(scala
  */
 sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_saw_cross_term_radial_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ff_chain_saw_cross_term_radial ################ */
+
+/* ################ start ff_ff_chain_parabolic_psi_POLARIS ################ */
+/**
+ * \defgroup ff_ff_chain_parabolic_psi_POLARIS FF+(Chain, parabolic) - psi (POLARIS)
+ * \ingroup ff_plugins_ferrofluid
+ *
+ * \brief brief description of FF+(Chain, parabolic) - psi (POLARIS) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b t_shell</td>
+ *       <td>thickness of the solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b nagg</td>
+ *       <td>specific aggegation number \n number of chains per surface area</td>
+ *      </tr><tr>
+ *       <td>\b Vbrush</td>
+ *       <td>molecular volume of a single polymer chain</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>nuclear scattering lenth density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>nuclear scattering lenth density of solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b eta_brush</td>
+ *       <td>scattering length density of polymer in corona</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b eta_mag_core</td>
+ *       <td>magnetic scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_mag_shell</td>
+ *       <td>magnetic scattering length density of solid shell of the core</td>
+ *      </tr><tr>
+ *       <td>\b R_av</td>
+ *       <td>average particle radius, for which alpha is given below</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>potential energy of magnetic moment in applied magnetic field divided by thermal energy</td>
+ *      </tr><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration of unpertubated polymer chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>angle between scattering and magnetization vector</td>
+ *      </tr><tr>
+ *       <td>\b pol</td>
+ *       <td>incident neutron polarisation</td>
+ *      </tr><tr>
+ *       <td>\b p</td>
+ *       <td>dimensionless persistence length </td>
+ *      </tr><tr>
+ *       <td>\b a</td>
+ *       <td>monomer size</td>
+ *      </tr><tr>
+ *       <td>\b tau</td>
+ *       <td>solvent quality parameter tau=1-Theta/T</td>
+ *      </tr><tr>
+ *       <td>\b TPLUS</td>
+ *       <td>analyser transmission for positive polarised neutrons</td>
+ *      </tr><tr>
+ *       <td>\b TMINUS</td>
+ *       <td>analyser transmission for positive polarised neutrons</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ff_chain_parabolic_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_POLARIS(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ff_chain_parabolic_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_POLARIS_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ff_chain_parabolic_psi_POLARIS
+ *
+ * \sa sasfit_ferrofluid.h, ff_plugins_ferrofluid
+ */
+sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_parabolic_psi_POLARIS_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ff_chain_parabolic_psi_POLARIS ################ */
 
 /* ################ start ff_ff_chain_parabolic_psi ################ */
 /**

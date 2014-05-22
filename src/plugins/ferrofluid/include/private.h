@@ -73,6 +73,9 @@ scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param);
 #define SIGMA_BRUSH_GAUSSIAN	param->p[16]
 #define L_B						param->p[17]
 
+#define TPLUS					param->p[18]
+#define TMINUS	    			param->p[19]
+
 #define PSI						param->p[MAXPAR-1]
 #define NAGG					param->p[MAXPAR-2]
 #define RW_SAW					param->p[MAXPAR-3]

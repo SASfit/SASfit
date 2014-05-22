@@ -20,6 +20,8 @@
 #define LB 		p[3] // Bjerrum length LB = e^2/(epsilon kB T), for water at RT LB=0.71
 #define A       p[4] // effective Hamaker constant
 
+#define kb GSL_CONST_MKSA_BOLTZMANN
+
 double U_DLVO(double r, double T, double *p) {
 	double a,Uel,UvdW;
 

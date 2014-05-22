@@ -14,6 +14,8 @@
 #define K3      p[5] // depth of third Yukawa contribution
 #define LAMBDA3 p[6] // depth of third Yukawa contribution
 
+#define kb GSL_CONST_MKSA_BOLTZMANN
+
 double U_HS_3Yukawa(double r, double T, double *p) {
     double Y1, Y2, Y3;
     if (r<sigma) {

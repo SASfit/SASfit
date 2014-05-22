@@ -1864,6 +1864,7 @@ src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_radial.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_magnetic.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_cross_term_radial.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_cross_term.c
+src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_psi_POLARIS.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_psi_pp.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_psi_mm.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_parabolic_psi_pm.c
@@ -1873,6 +1874,7 @@ src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_radial.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_magnetic.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_cross_term.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_cross_term_radial.c
+src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_psi_POLARIS.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_psi_pp.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_psi_mm.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_rw_psi_pm.c
@@ -1882,6 +1884,7 @@ src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_cross_term_radial.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_magnetic.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_psi.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_radial.c
+src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_psi_POLARIS.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_psi_pp.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_psi_mm.c
 src/plugins/ferrofluid/sasfit_ff_ff_chain_saw_psi_pm.c

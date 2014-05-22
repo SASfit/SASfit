@@ -37,8 +37,7 @@ scalar sasfit_ff_ff_chain_saw_psi_mp(scalar q, sasfit_param * param)
 	}
 
 	PSI = sasfit_param_override_get_psi(PSIDEG*M_PI/180.);
-	return	(1.0+POL)/2.0*(FFmicelle_pp(q,param)+FFmicelle_pm(q,param))
-		+	(1.0-POL)/2.0*(FFmicelle_mm(q,param)+FFmicelle_mp(q,param));
+	return	FFmicelle_mp(q,param);
 }
 
 scalar sasfit_ff_ff_chain_saw_psi_mp_f(scalar q, sasfit_param * param)

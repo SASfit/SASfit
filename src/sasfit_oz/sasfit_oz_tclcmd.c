@@ -243,13 +243,13 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             OZD->root_algorithm=Broyden;
             break;
         case MAXROOTALGORITHMS-5 :
-            OZD->root_algorithm=GMRES;
+            OZD->root_algorithm=NGMRES;
             break;
         case MAXROOTALGORITHMS-6 :
-            OZD->root_algorithm=BiCGSTAB;
+            OZD->root_algorithm=NBiCGSTAB;
             break;
         case MAXROOTALGORITHMS-7 :
-            OZD->root_algorithm=TFQMR;
+            OZD->root_algorithm=NTFQMR;
             break;
         default :
             OZD->root_algorithm=PMH_iteration;

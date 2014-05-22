@@ -15,6 +15,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_ff_chain_rw_magnetic.c
 	sasfit_ff_ff_chain_rw_cross_term.c
 	sasfit_ff_ff_chain_rw_cross_term_radial.c
+	sasfit_ff_ff_chain_rw_psi_POLARIS.c
 	sasfit_ff_ff_chain_rw_psi_pp.c
 	sasfit_ff_ff_chain_rw_psi_mm.c
 	sasfit_ff_ff_chain_rw_psi_pm.c
@@ -24,6 +25,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_ff_chain_saw_magnetic.c
 	sasfit_ff_ff_chain_saw_cross_term.c
 	sasfit_ff_ff_chain_saw_cross_term_radial.c
+	sasfit_ff_ff_chain_saw_psi_POLARIS.c
 	sasfit_ff_ff_chain_saw_psi_pp.c
 	sasfit_ff_ff_chain_saw_psi_mm.c
 	sasfit_ff_ff_chain_saw_psi_pm.c
@@ -33,6 +35,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_ff_chain_parabolic_magnetic.c
 	sasfit_ff_ff_chain_parabolic_cross_term.c
 	sasfit_ff_ff_chain_parabolic_cross_term_radial.c
+	sasfit_ff_ff_chain_parabolic_psi_POLARIS.c
 	sasfit_ff_ff_chain_parabolic_psi_pp.c
 	sasfit_ff_ff_chain_parabolic_psi_mm.c
 	sasfit_ff_ff_chain_parabolic_psi_pm.c

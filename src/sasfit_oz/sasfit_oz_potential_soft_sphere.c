@@ -11,6 +11,7 @@
 #define SIGMA   p[0]    // Diameter of spheres in nm
 #define EPSILON p[1]    // energy scale parameter
 #define NN      p[2]    // stiffness parameter
+#define kb GSL_CONST_MKSA_BOLTZMANN
 
  double U_Soft_Sphere(double r, double T, double *p) {
     return kb*T*EPSILON*pow(SIGMA/r,NN);
