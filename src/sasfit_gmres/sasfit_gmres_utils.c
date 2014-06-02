@@ -10,7 +10,7 @@
 #include <bool.h>
 #include <math.h>
 #include <gsl/gsl_linalg.h>
-
+#include "itlin.h"
 
 #define MAXIT  parms[0]
 #define LMAXIT parms[1]
@@ -18,7 +18,6 @@
 #define LMETH  parms[3]
 #define RESTARTLIMIT parms[4]
 #define N OZd->Npoints
-
 
 scalar norm(scalar *f0, int n) {
     int i;

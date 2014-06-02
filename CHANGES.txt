@@ -1,10 +1,15 @@
-0.94.2
+0.94.2 2014-06-02
+- new binding for zoom option, which works better for a mouse with one button
+  (plot zoom by ctrl+left-mouse btn)
+- removed <delete> key binding for scattering contributions
 - Added several iteration schemes for finding the fixpoint of the OZ equation.
+- Added a tab for the total correlation function h(r)
 - Added also some root finding algorithms for solving OZ equation. 
 - resolution parameter from file was not scaled during the change of units for Q
 - bug fix in calculation of xi for sq for wormlike structures  (PS1 model)
 - wrong label for contrast in Teubner-Strey model
 - bug fix in SPHERE+R^-a_Nagg form factor in assignement of core volume
+- data export format set to scientific notation in the form x.yyyE?zz only
 
 0.94.1 2014-02-05
 - added missing parameter label for Hamaker constant in DLVO potential

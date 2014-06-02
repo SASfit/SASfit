@@ -761,11 +761,12 @@ proc sasfit_OZ_solver {} {
     		         "PMH iteration" "Mann II iteration" \
     		         "Krasnoselskij iteration" \
     		         "S* iteration" \
-    		         "Steffensen iteration" \
-    		         "dNewton" "Hybrid" \
-	    		 "Hybrids (int. sc.)" "Broyden" \
-	    		 "GMRES" "Bi-CGSTAB" "TFQMR"} \
+			 "dNewton" "Hybrid" \
+	    		 "Hybrids (int. sc.)" "Broyden" 
+			} \
 	    -textvariable OZ(algorithm) -width 19
+#    		         "Steffensen iteration" \
+#	    		 "GMRES" "Bi-CGSTAB" "TFQMR"
     label $w.param.phitext -text "volume fraction:"  
     entry $w.param.phivalue -textvariable OZ(phi)
     label $w.param.ttext -text "temperature \[K\]:"  
