@@ -124,22 +124,22 @@ function is not known for any system.
 
 \section{Numerical implementation of the iterative algorithm in \SASfit}
 
-The easiest algorithm for solving the Ornstein Zernike (OZ) equation \ref{eq:ozh(r)} together with the closure equation \ref{eq:ozclosure} is is direct iteration using fast Fourier transformation (see e.g. \cite{Homeier1995}). The solution of the OZ equations is treated as a fixed point problem for the unknown function $\gamma(r)$. In \SASfit the Picard's iteration scheme is implemented:
+The easiest algorithm for solving the Ornstein Zernike (OZ) equation \ref{eq:ozh(r)} together with the closure equation \ref{eq:ozclosure} is is direct iteration using fast Fourier transformation (see e.g. \cite{Homeier1995}). The solution of the OZ equations can be treated either as a fixed point problem for the unknown function $\gamma(r)$, so that $T^\mathrm{OZ}_f(\gamma)=\gamma$ or as a multidimensional root finding problem $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. In \SASfit the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ is implemented as:
 \begin{enumerate}
-\item Guess a starting value for $\gamma(r)$, e.q. set $\gamma(r)\equiv 0$
+\item using a starting value for $\gamma(r)$, e.q. set $\gamma(r)\equiv 0$
 \item Calculate a bridge function. Many different theories how to calculate the bridge function have been published. A few of them are described in the next section. The bridge function is often expressed in terms of the known potential $u(r)$ and the indirect correlation function $\gamma(r)$, which needs to be determined.
 \item Calculate the direct correlation function according to eq.\ \ref{eq:ozclosure}.
 \item Calculate the Fourier transform $\tilde{c}(q)$ of the direct correlation function.
 \item Use eq.\ \ref{eq:ozg(q)} to get $\tilde{\gamma}(q)$.
 \item Calculate the inverse Fourier transform of $\tilde{\gamma}(q)$ to get the new guess for $\gamma(r)$.
-\item Compare the new guess of the indirect correlation function with the one used in step 1, i.e. compare $\gamma_\text{new}(r)$ and $\gamma_\text{old}(r)$ at each grid point. If $\Norm{\gamma_\text{new}(r)-\gamma_\text{old}(r)}/\Norm{\gamma_\text{new}(r)} < \epsilon_\text{rel}$ the solution has been found otherwise go back to the first step by using the new $\gamma_\text{new}(r)$ as a starting value and repeat the loop until convergence. \item When the iteration loop has converged calculate $S(q)$ and $g(r)$ according to eq.\ \ref{eq:ozSq} and eq.\ \ref{eq:ozg(r)}.
+%\item Compare the new guess of the indirect correlation function with the one used in step 1, i.e. compare $\gamma_\text{new}(r)$ %and $\gamma_\text{old}(r)$ at each grid point. If $\Norm{\gamma_\text{new}(r)-\gamma_\text{old}(r)}/\Norm{\gamma_\text{new}(r)} < %\epsilon_\text{rel}$ the solution has been found otherwise go back to the first step by using the new $\gamma_\text{new}(r)$ as a %starting value and repeat the loop until convergence. \item When the iteration loop has converged calculate $S(q)$ and $g(r)$ %according to eq.\ \ref{eq:ozSq} and eq.\ \ref{eq:ozg(r)}.
 \end{enumerate}
-In actual practice, it turns out that this simple iteration doesn’t converge very rapidly and can have oscillations. One can improve the convergence rate in several ways:
-\begin{enumerate}
-\item Introduction of  Broyles mixing; specifically, before repeating the iteration, let $\gamma_\text{old}(r) = \alpha \gamma_\text{new}(r) + (1 -\alpha)\gamma_\text{old}(r)$
-where the mixing parameter $\alpha \in [0;1]$. A typical staring value would be 0.5.
-\item One can slowly change one of the physical parameters, e.g., density or temperature. For example, if one want a high density solution, one can first obtain a low density one, and use it as the initial guess for the high density one. Clearly, this may have been done in several stages. As long the number of grid points is not changed \SASfit uses as starting values the result of the previous calculation as initialisation values.
-\end{enumerate}
+%In actual practice, it turns out that this simple iteration doesn’t converge very rapidly and can have oscillations. One can improve %the convergence rate in several ways:
+%\begin{enumerate}
+%\item Introduction of  Broyles mixing; specifically, before repeating the iteration, let $\gamma_\text{old}(r) = \alpha %\gamma_\text{new}(r) + (1 -\alpha)\gamma_\text{old}(r)$
+%where the mixing parameter $\alpha \in [0;1]$. A typical staring value would be 0.5.
+%\item One can slowly change one of the physical parameters, e.g., density or temperature. For example, if one want a high density %solution, one can first obtain a low density one, and use it as the initial guess for the high density one. Clearly, this may have %been done in several stages. As long the number of grid points is not changed \SASfit uses as starting values the result of the %previous calculation as initialisation values.
+%\end{enumerate}
 
 In the above algorithm to iteratively solve the Ornstein-Zernike
 equation two Fourier transforms have to be performed:
@@ -177,6 +177,87 @@ Y_k &= 2 \sum_{j=0}^{N_p-1} X_j \sin\left(\frac{\pi(j + 1)(k + 1)}{N_p + 1}\righ
 \end{align}
 The unnormalized inverse of \verb"FFTW_RODFT00" is \verb"FFTW_RODFT00" itself.
 The same routine can be used for both transformations.
+
+For the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ several iteration schemes are implemented. Tests have shown, that one can not easily make a prediction which one converges fastest or in case of e.g.\ very high volume or strong attraction converges at all. The following iteration schemes are implemented:
+\begin{description}
+\item[Picard iteration] 
+\begin{align}
+\gamma_{n+1} &= \mathrm{OZ}_f(\gamma_{n})
+\end{align}
+\item[Krasnoselskij iteration] 
+\begin{align}
+\gamma_{n+1} = (1-\alpha)\gamma_{n}+\alpha T^\mathrm{OZ}_f(\gamma_{n})
+\end{align}
+with $\alpha \in (0,1]$ beeing a constant independent of $n$
+\item[Mann iteration] 
+\begin{align}
+\gamma_{n+1} = (1-\alpha_n)\gamma_{n}+\alpha_n T^\mathrm{OZ}_f(\gamma_{n})
+\end{align} 
+with $\alpha_n \in (0,1]$
+\item[PMH iteration] 
+\begin{align}
+y_n      &= (1-\beta_n) \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
+\gamma_n &= T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\beta_n \in (0,1]$
+\item[Mann II iteration:]
+\begin{align}
+y_n      &= (1-\beta_n) \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
+\gamma_n &= (1-\alpha_n) y_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n \in (0,1]$
+\item[S iteration:]
+\begin{align}
+y_n      &= (1-\beta_n) \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
+\gamma_n &= (1-\alpha_n) T^\mathrm{OZ}_f(\gamma_{n}) + \alpha_n T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n \in (0,1]$
+\item[Ishikawa iteration:]
+\begin{align}
+y_n      &= (1-\beta_n)  \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
+\gamma_n &= (1-\alpha_n) \gamma_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n \in (0,1]$
+\item[SP iteration:]
+\begin{align}
+z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
+y_n      &= (1-\beta_n)  z_n + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
+\gamma_n &= (1-\alpha_n) y_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n,\xi_n \in (0,1]$
+\item[Noor iteration:]
+\begin{align}
+z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
+y_n      &= (1-\beta_n)  x_n + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
+\gamma_n &= (1-\alpha_n) x_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n,\xi_n \in (0,1]$
+\item[CR iteration:]
+\begin{align}
+z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
+y_n      &= (1-\beta_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
+\gamma_n &= (1-\alpha_n) y_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n,\xi_n \in (0,1]$
+\item[Picard-S iteration:]
+\begin{align}
+z_n      &= (1-\beta_n)    x_n + \beta_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
+y_n      &= (1-\alpha_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \alpha_n  T^\mathrm{OZ}_f(z_{n}) \\
+\gamma_n &= T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n \in (0,1]$
+\item[S$^*$ iteration:]
+\begin{align}
+z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
+y_n      &= (1-\beta_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
+\gamma_n &= (1-\alpha_n) T^\mathrm{OZ}_f(\gamma_{n}) + \alpha_n T^\mathrm{OZ}_f(y_{n})
+\end{align}
+with $\alpha_n,\beta_n,\xi_n \in (0,1]$
+\end{description}
+$\alpha_n$, $\beta_n$, and $\xi_n$ are series of constants between $(0;1]$. 
+
+Instead of solving the OZ-fixed point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ one can also use multi-dimensional root-finding algorithms for solving $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. The root finding algorithms supplied are those available in the gnu scientific library gsl for functions without derivatives namely the Hybrid algorithm which replaces calls to the Jacobian function by its finite difference approximation (\texttt{Hybrid}), a finite difference version of the Hybrid algorithm without internal scaling (\texttt{Hybrids (int. sc.)}), the discrete Newton algorithm (\texttt{dNewton}), and the Broyden algorithm (\texttt{Broyden}).
+
 
 \section{Thermodynamic Parameters and Consistency Tests}
 

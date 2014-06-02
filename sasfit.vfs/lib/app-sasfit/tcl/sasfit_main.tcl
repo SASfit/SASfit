@@ -270,8 +270,10 @@ set OZ(closure) Percus-Yevick
 set OZ(potential) "HardSphere"
 set OZ(closure) "Hypernetted-Chain"
 set OZ(potential) "LennardJones"
-tkcon show
-set ::tkcon_visible 1
+#tkcon show
+#set ::tkcon_visible 1
+tkcon hide
+set ::tkcon_visible 0
 
 set OZ(label) unknown
 set OZ(p0) 1.0
@@ -310,9 +312,10 @@ set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}
 
-#set OZ(algorithm) "CR iteration"
-set OZ(algorithm) "GMRES"
-set OZ(phi) 0.41887902047863909846168578443727
+set OZ(algorithm) "CR iteration"
+#set OZ(algorithm) "GMRES"
+#set OZ(phi) 0.41887902047863909846168578443727
+set OZ(phi) 0.3
 set OZ(T) 300
 set OZ(mindimOZ) 128
 set OZ(mult) 4

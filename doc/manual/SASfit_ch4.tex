@@ -102,18 +102,25 @@ c_\text{LN} &= \sqrt{2\pi}\,\sigma \,\mu^{1-p}
 \end{align}
 \end{subequations}
 where $\sigma$ is the width parameter, $p$ a shape parameter, $\mu$ is the location parameter.
-$c_\text{LN}$ is choosen so that $\int_0^\infty\! \text{LogNorm}(X,\mu,\sigma,p)\,dX = N$
+$c_\text{LN}$ is chosen so that $\int_0^\infty\! \text{LogNorm}(X,\mu,\sigma,p)\,dX = N$
 The mode of the distribution $X_\text{mode}$ and the variance
 $\text{Var}(X)$ are defined as
 \begin{align}
 X_\text{mode} &= \mu e^{-p \sigma^2} \\
+X_\text{mean} &= \mu e^{-\frac{1}{2}\sigma^2 \left(2p-3\right)} \\
+X_\text{median} &= \mu e^{-\sigma^2 \left(p-1\right)} \\
 \text{Var}(X) &= \mu ^2 \left(e^{\sigma^2}-1\right) e^{(3-2 p) \sigma^2}
 \end{align}
 and the $m^\text{th}$ moment $\langle X^m\rangle$ of the \texttt{LogNorm} distribution as
 \begin{align}
-\langle X^m\rangle = \frac{\int X^m\, \textrm{LogNorm}(X)\, dX}{\int \textrm{LogNorm}(X)\, dX} =
+\langle X^m\rangle &= \frac{\int X^m\, \textrm{LogNorm}(X)\, dX}{\int \textrm{LogNorm}(X)\, dX} =
 \mu^m \, e^{\frac{1}{2} \sigma^2 m (2 - 2 p + m)}.
 \label{eq:nMoment:LogNormal}
+\end{align}
+The comulative distribution function is given by
+\begin{align}
+F_\textrm{LogNorm} &=
+1/2 \textrm{erf}\left[\frac{(p-1) \sigma^2 + \ln(x/\mu)}{\sqrt{2} \sigma}\right]
 \end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
