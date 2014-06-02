@@ -10,7 +10,7 @@
 #include <bool.h>
 #include <math.h>
 #include <gsl/gsl_linalg.h>
-#include "itlin.h"
+// #include "itlin.h"
 
 #define MAXIT  parms[0]
 #define LMAXIT parms[1]
