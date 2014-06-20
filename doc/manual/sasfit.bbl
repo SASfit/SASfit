@@ -1,5 +1,11 @@
 \begin{thebibliography}{100}
 
+\bibitem{Agarwal2007}
+R.~P. Agarwal, Donal O'Regan, and D.~R. Sahu.
+\newblock Iterative construction of fixed points of nearly asymptotically
+  nonexpansive mappings.
+\newblock {\em Journal of Nonlinear and Covnex Analysis}, 8(1):61--79, 2007.
+
 \bibitem{Alexander1984}
 S.~Alexander, P.~M. Chaikin, P.~Grant, G.~J. Morales, P.~Pincus, and D.~Hone.
 \newblock Charge renormalization, osmotic pressure, and bulk modulus of
@@ -152,6 +158,13 @@ Niharendu Choudhury and Swapan~K. Ghosh.
   bridge function approach.
 \newblock {\em The Journal of Chemical Physics}, 116(19):8517--8522, 2002.
 
+\bibitem{Chugh2012}
+R.~Chugh, V.~Kumar, and S.~Kumar.
+\newblock Strong convergence of a new three step iterative scheme in banach
+  spaces.
+\newblock {\em American Journal of Computational Mathematics}, 2(4):345--357,
+  2012.
+
 \bibitem{Damaschun1969}
 G.~Damaschun, H.-V. Porschel, and G.~Sommer.
 \newblock {Bestimmung der Gestalt gel\"oster Makromolek\"ule aus
@@ -299,6 +312,12 @@ A.~Guinier and G.~Fournet.
 \newblock {\em Small-Angle Scattering of X-Rays}.
 \newblock John Wiley \& Sons, Inc., 1955.
 
+\bibitem{Gursoy2014}
+F.~{G{\"u}rsoy} and V.~{Karakaya}.
+\newblock {A Picard-S hybrid type iteration method for solving a differential
+  equation with retarded argument}.
+\newblock {\em ArXiv e-prints}, March 2014.
+
 \bibitem{Hamilton1965}
 W.~C. Hamilton.
 \newblock {Significance tests on the crystallographic {\it R} factor}.
@@ -389,6 +408,11 @@ T.~Ida, M.~Ando, and H.~Toraya.
 \newblock Extended pseudo-voigt function for approximating the voigt profile.
 \newblock {\em Journal of Applied Crystallography}, 33(6):1311--1316, Dec 2000.
 
+\bibitem{Ishikawa1974}
+Shiro Ishikawa.
+\newblock Fixed points by a new iteration method.
+\newblock {\em Proc. Amer. Math. Soc.}, 44:147--150, 1974.
+
 \bibitem{Jones1924}
 J.~E. Jones.
 \newblock On the determination of molecular fields. ii. from the equation of
@@ -400,6 +424,18 @@ J.~E. Jones.
 A~Jusufi, J~Dzubiella, C~N Likos, C~von Ferber, and H~LÃ¶wen.
 \newblock Effective interactions between star polymers and colloidal particles.
 \newblock {\em Journal of Physics: Condensed Matter}, 13(28):6177, 2001.
+
+\bibitem{Karahan2013a}
+Ibrahim Karahan and Murat Ozdemir.
+\newblock Fixed point problems of the picard-mann hybrid iterative process for
+  continuous functions on an arbitrary interval.
+\newblock {\em Fixed Point Theory and Applications}, 2013(1):244, 2013.
+
+\bibitem{Karahan2013}
+Ibrahim Karahan and Murat Ozdemir.
+\newblock A general iterative method for approximation of fixed points and
+  their applications.
+\newblock {\em Advances in Fixed Point Theory}, 3(3):510--526, 2013.
 
 \bibitem{Kawaguchi2001}
 Takeshi Kawaguchi.
@@ -416,6 +452,11 @@ H{\aa}kon Kaya.
 H{\aa}kon Kaya and Nicolas-Rapha{\"{e}}l de~Souza.
 \newblock {Scattering from capped cylinders. Addendum}.
 \newblock {\em Journal of Applied Crystallography}, 37(3):508--509, Jun 2004.
+
+\bibitem{Khan2013}
+Safeer Khan.
+\newblock A picard-mann hybrid iterative process.
+\newblock {\em Fixed Point Theory and Applications}, 2013(1):69, 2013.
 
 \bibitem{kholodenko93}
 A.~L. Kholodenko.
@@ -435,6 +476,11 @@ M.~Kotlarchyk and S.-H. Chen.
 \newblock Analysis of small angle neutron scattering spectra from polydisperse
   interacting colooids.
 \newblock {\em J. Chem. Phys}, 79(5):2461--2489, 1983.
+
+\bibitem{Krasnoselskij1955}
+M.~A. Krasnoselskij.
+\newblock Two remarks on the method of successive approximations, (russian).
+\newblock {\em Uspehi Mat. Nauk. 10}, 63(1):123--127, 1955.
 
 \bibitem{Kratky194935}
 O.~Kratky and G.~Porod.
@@ -520,6 +566,11 @@ William~G. Madden and Stuart~A. Rice.
   liquids.
 \newblock {\em The Journal of Chemical Physics}, 72(7):4208--4215, 1980.
 
+\bibitem{Mann1953}
+W.~Robert Mann.
+\newblock Mean value methods in iteration.
+\newblock {\em Proc. Amer. Math. Soc.}, 4:506--510, 1953.
+
 \bibitem{Marquest1989}
 C.~Marquest and T.A. Witten.
 \newblock Simple cubic structure in copolymer mesophases.
@@ -594,6 +645,12 @@ Gerhard Nägele.
 \newblock {\em The Physics of Colloidal Soft Matter}.
 \newblock Number~14 in Lecture Notes. Institute of Fundamental Technological
   Research - Polish Academy of Sciences, Warsaw, 2004.
+
+\bibitem{Noor2000}
+Muhammad~Aslam Noor.
+\newblock New approximation schemes for general variational inequalities.
+\newblock {\em Journal of Mathematical Analysis and Applications}, 251(1):217
+  -- 229, 2000.
 
 \bibitem{Rfactor}
 Online~Dictionary of~crystallography.
@@ -679,6 +736,20 @@ Horia~I. Petrache, Nikolai Gouliaev, Stephanie Tristram-Nagle, Ruitian Zhang,
   Robert~M. Suter, and John~F. Nagle.
 \newblock Interbilayer interactions from high-resolution x-ray scattering.
 \newblock {\em Phys. Rev. E}, 57(6):7014--7024, Jun 1998.
+
+\bibitem{Phuengrattana2011}
+Withun Phuengrattana and Suthep Suantai.
+\newblock On the rate of convergence of mann, ishikawa, noor and sp-iterations
+  for continuous functions on an arbitrary interval.
+\newblock {\em Journal of Computational and Applied Mathematics}, 235(9):3006
+  -- 3014, 2011.
+
+\bibitem{Picard1890}
+Emile Picard.
+\newblock Mémoire sur la théorie des équations aux dérivées partielles et la
+  méthode des approximations successives.
+\newblock {\em Journal de mathématiques pures et appliquées}, 6(4):145--210,
+  1890.
 
 \bibitem{Porod1948}
 G.~Porod.

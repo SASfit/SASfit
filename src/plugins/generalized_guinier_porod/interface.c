@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifdef MAKE_SASFIT_PLUGIN
@@ -8,7 +8,7 @@
 
 // functions to mark for export
 SASFIT_PLUGIN_EXP_BEGIN(1)
-SASFIT_PLUGIN_EXP_ADD( ff_generalized_guinier_prod_law )
+SASFIT_PLUGIN_EXP_ADD( ff_generalized_guinier_porod_law )
 
 SASFIT_PLUGIN_EXP_END
 

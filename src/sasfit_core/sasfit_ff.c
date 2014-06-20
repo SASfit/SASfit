@@ -51,17 +51,17 @@ scalar sasfit_ff(scalar q, scalar * a, sasfit_function * ff, int * dparam, int *
 		if(err) *err = TCL_ERROR;
 		return 0.0;
 	}
-   
+
 	if (dparam) dpar = dparam[FFfct];
 //	printf("FF: %g %g %g %g %d",ff->params.p[0],ff->params.p[1],ff->params.p[2],ff->params.p[3],dpar);
 
 	res = sasfit_part_diff_fct(q, ff, dpar);
 //	printf(", res: %lg\n", res);
 
-	if ( ff->params.errStatus != TCL_OK ) 
+	if ( ff->params.errStatus != TCL_OK )
 	{
 		sasfit_err("#form factor: can not calculate \n"
-		           "value of %s diff %d\n%s\n",ff->typestr, 
+		           "value of %s diff %d\n%s\n",ff->typestr,
 		           dpar, ff->params.errStr);
 		if(err) *err = TCL_ERROR;
 		return 0.0;
@@ -88,7 +88,7 @@ scalar sasfit_volume(scalar x, scalar * l, sasfit_function * ff, int distr, int 
 
 	res = (ff->fct_v)(x, &(ff->params), distr);
 
-	if ( ff->params.errStatus != TCL_OK ) 
+	if ( ff->params.errStatus != TCL_OK )
 	{
 		sasfit_err("#volume function: Could not calculate >%s<\n",ff->typestr);
 		if(err) *err = TCL_ERROR;
@@ -106,7 +106,7 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	SASFIT_ASSERT_VAL(ap, FALSE);
 
 	// assuming we get an already initialized (valid) sasfit_function
-	// (initialized during init of according AP, earlier, 
+	// (initialized during init of according AP, earlier,
 	// see SASFIT_x_tcl.c and sasfit_init_fct() in sasfit_common)
 	ff = &(ap->FF);	// get size distrib function pointer
 
@@ -452,11 +452,11 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_dozier_star_2;
 	} else
-	if ( strcmp(ff->typestr, "BeacaugeExpPowLaw2") == 0 )
+	if ( strcmp(ff->typestr, "BeaucageExpPowLaw2") == 0 )
 	{
 		ff->fct = sasfit_ff_UnifiedExponetialPowerLaw2;
 	} else
-	if ( strcmp(ff->typestr, "BeacaugeExpPowLaw") == 0 )
+	if ( strcmp(ff->typestr, "BeaucageExpPowLaw") == 0 )
 	{
 		ff->fct = sasfit_ff_UnifiedExponetialPowerLaw;
 	} else

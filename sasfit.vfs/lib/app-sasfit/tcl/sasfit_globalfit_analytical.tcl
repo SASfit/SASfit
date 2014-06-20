@@ -1677,7 +1677,7 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	  "BeacaugeExpPowLaw2"  { set actualPar(FF,l1,label) "G ="
+	  "BeaucageExpPowLaw2"  { set actualPar(FF,l1,label) "G ="
 				  set actualPar(FF,l2,label) "B ="
 				  set actualPar(FF,l3,label) "R_i ="
 				  set actualPar(FF,l4,label) "R_i+1 ="
@@ -1688,7 +1688,7 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	   "BeacaugeExpPowLaw"  { set actualPar(FF,l1,label) "G ="
+	   "BeaucageExpPowLaw"  { set actualPar(FF,l1,label) "G ="
 				  set actualPar(FF,l2,label) "B ="
 				  set actualPar(FF,l3,label) "Gs ="
 				  set actualPar(FF,l4,label) "Bs ="
@@ -3891,7 +3891,7 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 			    set actualPar(SD,a9,label) ""
 			    set actualPar(SD,a10,label) ""
 			  }
-	   "Schultz-Zimm" { set actualPar(SD,a1,label) "N ="
+	   "Schulz-Zimm" { set actualPar(SD,a1,label) "N ="
 			    set actualPar(SD,a2,label) "Ra ="
 			    set actualPar(SD,a3,label) "sig ="
 			    set actualPar(SD,a4,label) ""
@@ -4393,7 +4393,7 @@ proc analyticalGlobalSDCmd {simorfit
 	set selected_sd -1
 	foreach old_sd_type {Monodisperse "A_div_B" Delta LogNorm BiLogNorm GEX GEV \
 				gammaSD Triangular fractalSD Uniform Beta Gaussian \
-				Maxwell Schultz-Zimm Weibull} {
+				Maxwell Schulz-Zimm Weibull} {
 
 		dropdownl_add $sdmenu ::actualGlobalAnalytPar ::tmpGlobalAnalytPar update_datasets_multi \
 			$root_btn_sd SD $old_sd_type $old_sd_type
@@ -4557,8 +4557,8 @@ proc analyticalGlobalSDCmd {simorfit
                                {TeubnerStrey Monodisperse} \
 			       {DAB Monodisperse} \ 
                                {Spinodal Monodisperse} \
-			       {BeacaugeExpPowLaw Monodisperse} \ 
-                               {BeacaugeExpPowLaw2 Monodisperse} \
+			       {BeaucageExpPowLaw Monodisperse} \ 
+                               {BeaucageExpPowLaw2 Monodisperse} \
 			       {Guinier Monodisperse} \
 		               }} \
 	    {cyl "cylindrical obj." { \
@@ -5373,7 +5373,7 @@ proc analyticalGlobalSDCmd {simorfit
 		$w.adj.calc configure -command {
 		      set ::fitparamguiupdate no
 		      sasfit_timer_start "\nStart simulation"
-		      set ::addsasfit(filename) unkown
+		      set ::addsasfit(filename) unknown
 		      set Q {}
 		      set I {}
 		      set DI {}

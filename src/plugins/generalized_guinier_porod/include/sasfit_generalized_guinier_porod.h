@@ -36,12 +36,12 @@
 // - brief description
 // - description of parameters in HTML table-style
 
-/* ################ start ff_generalized_guinier_prod_law ################ */
+/* ################ start ff_generalized_guinier_porod_law ################ */
 /**
- * \defgroup ff_generalized_guinier_prod_law Generalized-Guinier-Prod-Law
+ * \defgroup ff_generalized_guinier_porod_law Generalized-Guinier-Porod-Law
  * \ingroup ff_non-particular
  *
- * \brief \<some brief description of Generalized-Guinier-Prod-Law function\>
+ * \brief \<some brief description of Generalized-Guinier-Porod-Law function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -70,26 +70,26 @@
  */
 
 /**
- * \ingroup ff_generalized_guinier_prod_law
+ * \ingroup ff_generalized_guinier_porod_law
  *
  * \sa sasfit_generalized_guinier_porod.h, ff_non-particular
  */
-sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_prod_law(scalar q, sasfit_param * p);
+sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_porod_law(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_generalized_guinier_prod_law
+ * \ingroup ff_generalized_guinier_porod_law
  *
  * \sa sasfit_generalized_guinier_porod.h, ff_non-particular
  */
-sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_prod_law_f(scalar q, sasfit_param * p);
+sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_porod_law_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_generalized_guinier_prod_law
+ * \ingroup ff_generalized_guinier_porod_law
  *
  * \sa sasfit_generalized_guinier_porod.h, ff_non-particular
  */
-sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_prod_law_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_generalized_guinier_prod_law ################ */
+sasfit_generalized_guinier_porod_DLLEXP scalar sasfit_ff_generalized_guinier_porod_law_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_generalized_guinier_porod_law ################ */
 
 
 #endif // this file

@@ -29,7 +29,7 @@
 #include "include/sasfit_sd_utils.h"
 
 /*
-float Schultz_Zimm(Tcl_Interp *interp,
+float Schulz_Zimm(Tcl_Interp *interp,
 				   float N,
                    float Ra,
                    float sigma,
@@ -37,9 +37,9 @@ float Schultz_Zimm(Tcl_Interp *interp,
                    bool  *error)
 		   */
 /**
- * Calculates a Schultz-Zimm distribution function.
+ * Calculates a Schulz-Zimm distribution function.
  */
-scalar sasfit_sd_Schultz_Zimm(scalar x, sasfit_param * param)
+scalar sasfit_sd_Schulz_Zimm(scalar x, sasfit_param * param)
 {
 	scalar N, Ra, sigma, c, k,SZ;
 
@@ -48,21 +48,21 @@ scalar sasfit_sd_Schultz_Zimm(scalar x, sasfit_param * param)
 	sasfit_get_param(param, 3, &N, &Ra, &sigma);
 
 	SASFIT_CHECK_COND((sigma == 0.0), param, "sigma == 0");
-        
+
 	k = 1.0/sigma/sigma;
 
 	SASFIT_CHECK_COND1((k <= 0.0), param, "k(%lg) <= 0",k);
 	SASFIT_CHECK_COND1((x < 0.0), param, "x(%lg) < 0",x);
 
-        if ((x == 0.0) && (k > 1)) 
+        if ((x == 0.0) && (k > 1))
 	{
            return 0.0;
         }
-        if (Ra == 0.0) 
+        if (Ra == 0.0)
 	{
            return 0.0;
         }
-        if ((x == 0.0) && (k == 1)) 
+        if ((x == 0.0) && (k == 1))
 	{
            return N/Ra;
         }

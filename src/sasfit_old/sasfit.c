@@ -109,10 +109,10 @@ int select_str(char *str)
 	{
 			return BiLogNorm;
 	} else if ((strcmp(str,"Schultz-Zimm")==0)         ||
-		(strcmp(str,"d Schultz-Zimm / d a1")==0) ||
-		(strcmp(str,"d Schultz-Zimm / d a2")==0) ||
-		(strcmp(str,"d Schultz-Zimm / d a3")==0) ||
-		(strcmp(str,"d Schultz-Zimm / d a4")==0)
+		(strcmp(str,"d Schulz-Zimm / d a1")==0) ||
+		(strcmp(str,"d Schulz-Zimm / d a2")==0) ||
+		(strcmp(str,"d Schulz-Zimm / d a3")==0) ||
+		(strcmp(str,"d Schulz-Zimm / d a4")==0)
 		)
 	{
 			return SchultzZimm;
@@ -321,10 +321,10 @@ void find_integration_range(Tcl_Interp *interp,
 	   *Rstart = tmp;
 	   *Rend   = R_n+tmp;
 	   *n_intervals = Nint * n;
-	} else if ( (strcmp(SD_typestr,"Schultz-Zimm")          == 0) ||
-		    (strcmp(SD_typestr,"d Schultz-Zimm / d a1") == 0) ||
-		    (strcmp(SD_typestr,"d Schultz-Zimm / d a2") == 0) ||
-		    (strcmp(SD_typestr,"d Schultz-Zimm / d a3") == 0)   ) {
+	} else if ( (strcmp(SD_typestr,"Schulz-Zimm")          == 0) ||
+		    (strcmp(SD_typestr,"d Schulz-Zimm / d a1") == 0) ||
+		    (strcmp(SD_typestr,"d Schulz-Zimm / d a2") == 0) ||
+		    (strcmp(SD_typestr,"d Schulz-Zimm / d a3") == 0)   ) {
 	   if (a3 > 1.0) {
 	      R_n = (a3-1+moment)/a3 * a2;
 	      R_max =  R_n;
@@ -334,9 +334,9 @@ void find_integration_range(Tcl_Interp *interp,
 	   }
 	   R_n = R_max;
 	   n = 1;
-	   while ((pow(n*R_n,moment)*sasfit_sd_Schultz_Zimm(n*R_n, &subParam)) >
+	   while ((pow(n*R_n,moment)*sasfit_sd_Schulz_Zimm(n*R_n, &subParam)) >
 		  (n_percent / 100.0 * pow(R_max,moment)
-				     * sasfit_sd_Schultz_Zimm(R_max, &subParam)) ) {
+				     * sasfit_sd_Schulz_Zimm(R_max, &subParam)) ) {
 	      n++;
 	   }
 	   R_n = n*R_n;
