@@ -27,9 +27,9 @@ scalar sinc(scalar x)
 scalar Psi_P_kernel(scalar y, sasfit_param * param)
 {
 	ALPHA = y;
-	return 2./M_PI * gsl_pow_2(sinc(Q*A*sin(ALPHA)*cos(BETA)) *
-				               sinc(Q*B*sin(ALPHA)*sin(BETA)) *
-							   sinc(Q*C*cos(ALPHA))) * sin(ALPHA);
+	return 2./M_PI * gsl_pow_2(sinc(Q*A/2.0*sin(ALPHA)*cos(BETA)) *
+				               sinc(Q*B/2.0*sin(ALPHA)*sin(BETA)) *
+							   sinc(Q*C/2.0*cos(ALPHA))) * sin(ALPHA);
 }
 
 scalar Psi_kernel(scalar x, sasfit_param * param)

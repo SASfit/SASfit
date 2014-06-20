@@ -1,3 +1,9 @@
+0.94.3 2014-xx-xx
+- bug fix in the plugin for parallel epiped
+- spelling errors in the menue interface
+- 
+- 
+
 0.94.2 2014-06-02
 - new binding for zoom option, which works better for a mouse with one button
   (plot zoom by ctrl+left-mouse btn)

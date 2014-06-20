@@ -113,9 +113,9 @@ int sasfit_sd_init(sasfit_analytpar * ap)
 	{
 		sd->fct = sasfit_sd_Maxwell;
 	} else
-	if ( strcmp(sd->typestr,"Schultz-Zimm") == 0 )
+	if ( strcmp(sd->typestr,"Schulz-Zimm") == 0 )
 	{
-		sd->fct = sasfit_sd_Schultz_Zimm;
+		sd->fct = sasfit_sd_Schulz_Zimm;
 	} else
 	if ( strcmp(sd->typestr,"Weibull") == 0 )
 	{

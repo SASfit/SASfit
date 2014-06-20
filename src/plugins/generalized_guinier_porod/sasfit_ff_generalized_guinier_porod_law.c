@@ -14,7 +14,7 @@
 #define RG1	param->p[4]
 #define M	param->p[5]
 
-scalar sasfit_ff_generalized_guinier_prod_law(scalar q, sasfit_param * param)
+scalar sasfit_ff_generalized_guinier_porod_law(scalar q, sasfit_param * param)
 {
 	scalar Q1, Q2, G1,D;
 
@@ -45,7 +45,7 @@ scalar sasfit_ff_generalized_guinier_prod_law(scalar q, sasfit_param * param)
 	}
 }
 
-scalar sasfit_ff_generalized_guinier_prod_law_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_generalized_guinier_porod_law_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -53,7 +53,7 @@ scalar sasfit_ff_generalized_guinier_prod_law_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_generalized_guinier_prod_law_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_generalized_guinier_porod_law_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

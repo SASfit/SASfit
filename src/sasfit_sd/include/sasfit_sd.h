@@ -50,7 +50,7 @@ sasfit_sd_DLLEXP scalar sasfit_sd_LogNorm_fp(scalar x, sasfit_param * param);
 sasfit_sd_DLLEXP scalar sasfit_sd_BiLogNorm(scalar x, sasfit_param * param);
 sasfit_sd_DLLEXP scalar sasfit_sd_GaussDistribution(scalar x, sasfit_param * param);
 sasfit_sd_DLLEXP scalar sasfit_sd_Maxwell(scalar x, sasfit_param * param);
-sasfit_sd_DLLEXP scalar sasfit_sd_Schultz_Zimm(scalar x, sasfit_param * param);
+sasfit_sd_DLLEXP scalar sasfit_sd_Schulz_Zimm(scalar x, sasfit_param * param);
 sasfit_sd_DLLEXP scalar sasfit_sd_Weibull(scalar x, sasfit_param * param);
 
 /**
@@ -59,9 +59,9 @@ sasfit_sd_DLLEXP scalar sasfit_sd_Weibull(scalar x, sasfit_param * param);
  *
  * \brief calculates a Uniform distribution function
  *
- * The continuous uniform distribution is a family of probability distributions 
- * such that for each member of the family, all intervals of the same length on 
- * the distribution's support are equally probable. The support is defined by the 
+ * The continuous uniform distribution is a family of probability distributions
+ * such that for each member of the family, all intervals of the same length on
+ * the distribution's support are equally probable. The support is defined by the
  * two parameters, \f$A\f$ and \f$B\f$, which are its minimum and maximum values.
  * \f[
  *		n(x) =  \Bigg\{

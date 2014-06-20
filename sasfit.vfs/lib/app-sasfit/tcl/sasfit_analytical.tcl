@@ -1397,7 +1397,7 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "BeacaugeExpPowLaw2"  { set actualPar(FF,l1,label) "G ="
+   "BeaucageExpPowLaw2"  { set actualPar(FF,l1,label) "G ="
                           set actualPar(FF,l2,label) "B ="
                           set actualPar(FF,l3,label) "R_i ="
                           set actualPar(FF,l4,label) "R_i+1 ="
@@ -1408,7 +1408,7 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "BeacaugeExpPowLaw" { set actualPar(FF,l1,label) "G ="
+   "BeaucageExpPowLaw" { set actualPar(FF,l1,label) "G ="
                           set actualPar(FF,l2,label) "B ="
                           set actualPar(FF,l3,label) "Gs ="
                           set actualPar(FF,l4,label) "Bs ="
@@ -3259,7 +3259,7 @@ switch -exact $actualPar(SD,typestr) {
                     set actualPar(SD,a9,label) ""
                     set actualPar(SD,a10,label) "" 
                   }
-   "Schultz-Zimm" { set actualPar(SD,a1,label) "N ="
+   "Schulz-Zimm" { set actualPar(SD,a1,label) "N ="
                     set actualPar(SD,a2,label) "Xa ="
                     set actualPar(SD,a3,label) "sig ="
                     set actualPar(SD,a4,label) "" 
@@ -3859,7 +3859,7 @@ proc set_actualAP_labels {type AactualAnalytPar
 			    set actualAnalytPar(SD,a9,label) ""
 			    set actualAnalytPar(SD,a10,label) ""
 			  }
-	   "Schultz-Zimm" { set actualAnalytPar(SD,a1,label) "N ="
+	   "Schulz-Zimm" { set actualAnalytPar(SD,a1,label) "N ="
 			    set actualAnalytPar(SD,a2,label) "Ra ="
 			    set actualAnalytPar(SD,a3,label) "sig ="
 			    set actualAnalytPar(SD,a4,label) "" 
@@ -4832,7 +4832,7 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
-	   "BeacaugeExpPowLaw2" { set actualAnalytPar(FF,l1,label) "G ="
+	   "BeaucageExpPowLaw2" { set actualAnalytPar(FF,l1,label) "G ="
 				  set actualAnalytPar(FF,l2,label) "B ="
 				  set actualAnalytPar(FF,l3,label) "R_i ="
 				  set actualAnalytPar(FF,l4,label) "R_i+1 ="
@@ -4843,7 +4843,7 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
-	  "BeacaugeExpPowLaw"   { set actualAnalytPar(FF,l1,label) "G ="
+	  "BeaucageExpPowLaw"   { set actualAnalytPar(FF,l1,label) "G ="
 				  set actualAnalytPar(FF,l2,label) "B ="
 				  set actualAnalytPar(FF,l3,label) "Gs ="
 				  set actualAnalytPar(FF,l4,label) "Bs ="
@@ -7276,7 +7276,7 @@ switch -exact $type {
            Beta { return "Beta(x) = Beta distribution \nwith int(Iniform(x),x=0,infinity) = N)" }
            Gaussian { return "Gaussian(x) = N/c exp(-(x-x0)^2/(2s^2)) \nwith int(Gauss(x),x=0,infinity) = N)"}
            Maxwell { return "Maxwell(x) = N/c sqrt(2/Pi) s^3 (x-x0)^2 exp(-(x-x0)^2/(2s^2)) for x>x0\notherwise 0 with int(Maxwell(x),x=0,infinity) = N)"}
-           Schultz-Zimm { return "Schultz-Zimm(x) = N (x/Ra)^(k-1)/Ra k^k/Gamma(k) exp(-k*x/Ra)\nwith k=1/sig^2 and int(Schultz-Zimm(x),x=0,infinity) = N)"}
+           Schulz-Zimm { return "Schulz-Zimm(x) = N (x/Ra)^(k-1)/Ra k^k/Gamma(k) exp(-k*x/Ra)\nwith k=1/sig^2 and int(Schulz-Zimm(x),x=0,infinity) = N)"}
            Weibull { return "Weibull(x) = N l/a*((x-mu)/a)^(l-1)*exp(-((x-mu)/a)^l)\nwith int(Weibull(x),x=0,infinity) = N)"}
            Monodisperse {return "delta(x)\n"}
            "A_div_B"    {return "A/B delta(x)\n"}
@@ -8956,9 +8956,9 @@ switch -exact $type {
                 10 {return "\n"}
               }
            }
-           BeacaugeExpPowLaw2 { 
+           BeaucageExpPowLaw2 { 
               switch $num {
-                 0 {return "\nUnified Exponential Power Law according to Beacauge"}
+                 0 {return "\nUnified Exponential Power Law according to Beaucage"}
                  1 {return "G: Guinier prefactor\n"}
                  2 {return "B: prefactor specific to the type of power-law\n"}
                  3 {return "Rg_i: size of large structure\n"}
@@ -8971,9 +8971,9 @@ switch -exact $type {
                 10 {return "\n"}
               }
            }
-           BeacaugeExpPowLaw { 
+           BeaucageExpPowLaw { 
               switch $num {
-                 0 {return "\nUnified Exponential Power Law according to Beacauge"}
+                 0 {return "\nUnified Exponential Power Law according to Beaucage"}
                  1 {return "G: Guinier prefactor\n"}
                  2 {return "B: prefactor specific to the type of power-law\n"}
                  3 {return "Gs: Guinier prefactor\n"}
@@ -10416,7 +10416,7 @@ switch -exact $type {
                  0 {return "Robertus2 = StickyHardSphere Model for polydisperse spherical shell\n"}
                  1 {return "Rmean: mean particle size\n"}
                  2 {return "dR: shell thickness\n"}
-                 3 {return "sigma: width of Schultz distribution\n"}
+                 3 {return "sigma: width of Schulz distribution\n"}
                  4 {return "tau: stickiness parameter\n"}
                  5 {return "xfp2: relative volume fraction of the larger particle fraction with R = 2*Rmean\n"}
                  6 {return "fp: volume fraction\n"}
@@ -10431,7 +10431,7 @@ switch -exact $type {
                  0 {return "Robertus1 = StickyHardSphere Model for polydisperse spherical shell\nThe stickiness parameter tau=btau(1+2/pi atan(atau(ri-Rmean))) can be size dependent"}
                  1 {return "Rmean: mean particle size\n"}
                  2 {return "dR: shell thickness\n"}
-                 3 {return "sigma: width of Schultz distribution\n"}
+                 3 {return "sigma: width of Schulz distribution\n"}
                  4 {return "btau: stickiness parameter\ntau=btau*(1+2/pi*atan(atau*(ri-rm)))"}
                  5 {return "atau: if tau is independent of radius set atau=0\ntau=btau*(1+2/pi*atan(atau*(ri-Rmean)))"}
                  6 {return "fp: volume fraction\n"}
@@ -12141,12 +12141,12 @@ button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
 		[list 0.0 $Detector2DIQGraph(nPix)] \
 		[list 0.0 $Detector2DIQGraph(nPix)] noaxes] 
 	    set Detector2DIQGraph(s) $s
-	    for {set j 0} {$j < $Detector2DIQGraph(nPix)} {incr j} {
-	       for {set i 0} {$i < $Detector2DIQGraph(nPix)} {incr i} {
-		  set xll $j
-		  set yll $i
-		  set xur [expr $j+1]
-		  set yur [expr $i+1]
+	    for {set i 0} {$i < $Detector2DIQGraph(nPix)} {incr i} {
+	       for {set j 0} {$j < $Detector2DIQGraph(nPix)} {incr j} {
+		  set xll $i
+		  set yll $j
+		  set xur [expr $i+1]
+		  set yur [expr $j+1]
 		  set ctIndx [lindex [lindex $Det2DRes $i] $j]
 		  $s plot filled-rectangle $xll $yll $xur $yur  \
 		      [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
@@ -12178,7 +12178,7 @@ set menui 0
 set selected_sd -1
 foreach old_sd_type {Monodisperse "A_div_B" Delta LogNorm BiLogNorm GEX GEV \
 		gammaSD Triangular fractalSD Uniform Beta Gaussian \
-		Maxwell Schultz-Zimm Weibull
+		Maxwell Schulz-Zimm Weibull
 } {
 	dropdownl_add $sdmenu ::actualAnalytPar ::tmpAnalytPar update_datasets_single \
 		$root_btn_sd SD $old_sd_type $old_sd_type
@@ -12340,8 +12340,8 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
     {TeubnerStrey Monodisperse} \
     {DAB Monodisperse} \ 
     {Spinodal Monodisperse} \
-    {BeacaugeExpPowLaw Monodisperse} \ 
-    {BeacaugeExpPowLaw2 Monodisperse} \
+    {BeaucageExpPowLaw Monodisperse} \ 
+    {BeaucageExpPowLaw2 Monodisperse} \
     {Guinier Monodisperse} \
   }} \
 {cyl "cylindrical obj." { \

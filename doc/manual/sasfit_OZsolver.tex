@@ -180,73 +180,73 @@ The same routine can be used for both transformations.
 
 For the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ several iteration schemes are implemented. Tests have shown, that one can not easily make a prediction which one converges fastest or in case of e.g.\ very high volume or strong attraction converges at all. The following iteration schemes are implemented:
 \begin{description}
-\item[Picard iteration] 
+\item[Picard iteration \cite{Picard1890}]
 \begin{align}
-\gamma_{n+1} &= \mathrm{OZ}_f(\gamma_{n})
+\gamma_{n+1} &= T^\mathrm{OZ}_f(\gamma_{n})
 \end{align}
-\item[Krasnoselskij iteration] 
+\item[Krasnoselskij iteration \cite{Krasnoselskij1955}]
 \begin{align}
 \gamma_{n+1} = (1-\alpha)\gamma_{n}+\alpha T^\mathrm{OZ}_f(\gamma_{n})
 \end{align}
 with $\alpha \in (0,1]$ beeing a constant independent of $n$
-\item[Mann iteration] 
+\item[Mann iteration \cite{Mann1953}]
 \begin{align}
 \gamma_{n+1} = (1-\alpha_n)\gamma_{n}+\alpha_n T^\mathrm{OZ}_f(\gamma_{n})
-\end{align} 
+\end{align}
 with $\alpha_n \in (0,1]$
-\item[PMH iteration] 
+\item[Picard-Mann hybrid iteration (PMH) \cite{Khan2013}]
 \begin{align}
 y_n      &= (1-\beta_n) \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
 \gamma_n &= T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\beta_n \in (0,1]$
-\item[Mann II iteration:]
+\item[Mann II iteration \cite{Karahan2013a}]
 \begin{align}
 y_n      &= (1-\beta_n) \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
 \gamma_n &= (1-\alpha_n) y_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\alpha_n,\beta_n \in (0,1]$
-\item[S iteration:]
+\item[S iteration \cite{Karahan2013,Agarwal2007}]
 \begin{align}
 y_n      &= (1-\beta_n) \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
 \gamma_n &= (1-\alpha_n) T^\mathrm{OZ}_f(\gamma_{n}) + \alpha_n T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\alpha_n,\beta_n \in (0,1]$
-\item[Ishikawa iteration:]
+\item[Ishikawa iteration \cite{Ishikawa1974}]
 \begin{align}
 y_n      &= (1-\beta_n)  \gamma_n + \beta_n T^\mathrm{OZ}_f(\gamma_{n}) \\
 \gamma_n &= (1-\alpha_n) \gamma_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\alpha_n,\beta_n \in (0,1]$
-\item[SP iteration:]
+\item[SP iteration \cite{Phuengrattana2011}]
 \begin{align}
 z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
 y_n      &= (1-\beta_n)  z_n + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
 \gamma_n &= (1-\alpha_n) y_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\alpha_n,\beta_n,\xi_n \in (0,1]$
-\item[Noor iteration:]
+\item[Noor iteration \cite{Noor2000}]
 \begin{align}
 z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
 y_n      &= (1-\beta_n)  x_n + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
 \gamma_n &= (1-\alpha_n) x_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\alpha_n,\beta_n,\xi_n \in (0,1]$
-\item[CR iteration:]
+\item[CR iteration \cite{Chugh2012}]
 \begin{align}
 z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
 y_n      &= (1-\beta_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
 \gamma_n &= (1-\alpha_n) y_n + \alpha_n T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\alpha_n,\beta_n,\xi_n \in (0,1]$
-\item[Picard-S iteration:]
+\item[Picard-S iteration \cite{Gursoy2014}]
 \begin{align}
 z_n      &= (1-\beta_n)    x_n + \beta_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
 y_n      &= (1-\alpha_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \alpha_n  T^\mathrm{OZ}_f(z_{n}) \\
 \gamma_n &= T^\mathrm{OZ}_f(y_{n})
 \end{align}
 with $\alpha_n,\beta_n \in (0,1]$
-\item[S$^*$ iteration:]
+\item[S$^*$ iteration \cite{Karahan2013}]
 \begin{align}
 z_n      &= (1-\xi_n)    x_n + \xi_n    T^\mathrm{OZ}_f(\gamma_{n}) \\
 y_n      &= (1-\beta_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \beta_n  T^\mathrm{OZ}_f(z_{n}) \\
@@ -254,7 +254,7 @@ y_n      &= (1-\beta_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \beta_n  T^\mathrm{OZ}_f(
 \end{align}
 with $\alpha_n,\beta_n,\xi_n \in (0,1]$
 \end{description}
-$\alpha_n$, $\beta_n$, and $\xi_n$ are series of constants between $(0;1]$. 
+$\alpha_n$, $\beta_n$, and $\xi_n$ are series of constants between $(0;1]$.
 
 Instead of solving the OZ-fixed point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ one can also use multi-dimensional root-finding algorithms for solving $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. The root finding algorithms supplied are those available in the gnu scientific library gsl for functions without derivatives namely the Hybrid algorithm which replaces calls to the Jacobian function by its finite difference approximation (\texttt{Hybrid}), a finite difference version of the Hybrid algorithm without internal scaling (\texttt{Hybrids (int. sc.)}), the discrete Newton algorithm (\texttt{dNewton}), and the Broyden algorithm (\texttt{Broyden}).
 

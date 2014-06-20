@@ -67,7 +67,7 @@
  *       <td>third length parameter</td>
  *      </tr><tr>
  *       <td>\b shape</td>
- *       <td>spahe parameter (1: sphere (dR), 2: cylinder (dR), 3: cylinder (dL), 4: sph. shell (dR), 5: sph. shell (dDR)</td>
+ *       <td>shape parameter (1: sphere (dR), 2: cylinder (dR), 3: cylinder (dL), 4: sph. shell (dR), 5: sph. shell (dDR)</td>
  *      </tr></table>
  */
 
