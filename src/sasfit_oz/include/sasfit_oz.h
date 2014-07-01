@@ -43,6 +43,8 @@ Output variables:
 - OZD.G  - indirect correlation function gamma(r)
 **/
 
+#ifndef SASFIT_OZ
+#define SASFIT_OZ
 
 #include <stdio.h>
 #include <gsl/gsl_errno.h>
@@ -124,6 +126,7 @@ typedef enum {
         NGMRES,
         NBiCGSTAB,
         NTFQMR,
+        NewtonLibGMRES,
         Picard_iteration,   // fixed point iteration of the form: x_n+1 = OZ(xn)
         Mann_iteration,     //
         Ishikawa_iteration, //
@@ -171,6 +174,9 @@ typedef struct {
         OZ_func_one_t * longrange_pot;
         double *in, *out;
         fftw_plan pl;
+        int interrupt;
+        int PrintProgress;
+        Tcl_Obj *oz_obj;
 } sasfit_oz_data;
 
 void OZ_init (sasfit_oz_data *);
@@ -186,3 +192,5 @@ void root_finding (sasfit_oz_data *);
 
 void nsoli(scalar *,void *,sasfit_oz_data *,scalar *,scalar *,scalar *,int *);
 //Modified 7.5.2014
+
+#endif // SASFIT_OZ
