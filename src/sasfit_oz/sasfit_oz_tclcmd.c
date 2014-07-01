@@ -5,7 +5,7 @@
  *   Tcl Wrapper by Ingo Bressler (ingo.bressler@bam.de)
  *   29.09.2013
  *   modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   18.05.2014
+ *   02.07.2014
  */
 
 #include <string.h>
@@ -157,7 +157,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
 {
-#define MAXROOTALGORITHMS 20
+#define MAXROOTALGORITHMS 21
     const char * RootAlgorithms[MAXROOTALGORITHMS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -181,6 +181,7 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
     RootAlgorithms[MAXROOTALGORITHMS-5] = "GMRES";
     RootAlgorithms[MAXROOTALGORITHMS-6] = "Bi-CGSTAB";
     RootAlgorithms[MAXROOTALGORITHMS-7] = "TFQMR";
+    RootAlgorithms[MAXROOTALGORITHMS-8] = "NewtonLibGMRES";
 
     i=0;
     eq=-1;
@@ -250,6 +251,10 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             break;
         case MAXROOTALGORITHMS-7 :
             OZD->root_algorithm=NTFQMR;
+            break;
+        case MAXROOTALGORITHMS-8 :
+            OZD->root_algorithm=NewtonLibGMRES;
+            sasfit_out("NewtonLibGMRES\n");
             break;
         default :
             OZD->root_algorithm=PMH_iteration;
@@ -505,8 +510,10 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         i=0;
 
         ozd.interp = interp;
+        ozd.interrupt = 0;
         if ( objc < 2 ) return TCL_OK;
         Tcl_Obj * oz_obj = objv[1];
+        ozd.oz_obj = objv[1];
         const char * ozname = Tcl_GetStringFromObj(oz_obj, 0);
         ozd.pPot = pPot;
 

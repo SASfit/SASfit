@@ -378,8 +378,8 @@ set(SOURCE_sasfit_oz
 	sasfit_oz_potential_FermiDistributionModel.c
 	sasfit_oz_potential_square_well.c
 	sasfit_oz_tclcmd.c
-#	gmres.c
-#	utils.c
+	gmres.c
+	utils.c
 )
 set(SOURCE_sasfit_gmres
 	sasfit_gmres_utils.c

@@ -315,6 +315,7 @@ set OZ(result,label) {}
 set OZ(algorithm) "CR iteration"
 #set OZ(algorithm) "GMRES"
 #set OZ(phi) 0.41887902047863909846168578443727
+set OZ(interrupt) 0
 set OZ(phi) 0.3
 set OZ(T) 300
 set OZ(mindimOZ) 128

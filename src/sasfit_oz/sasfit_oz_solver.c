@@ -3,13 +3,15 @@
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
  *   extended and last modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   2.05.2014
+ *   12.06.2014
  *
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <sasfit_oz.h>
 #include <bool.h>
+#include "../sasfit_old/include/sasfit.h"
+#include "../sasfit_old/include/SASFIT_x_tcl.h"
 
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_multiroots.h>
@@ -18,10 +20,24 @@
 #include <gsl/gsl_cblas.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_errno.h>
-// #include "itlin.h"
+#include "itlin.h"
 
 #define kb GSL_CONST_MKSA_BOLTZMANN
+#define GET_TCL(val_type, target, src_name) (sasfit_tcl_get_ ## val_type(interp, target, ozname, src_name) == TCL_OK)
 
+void check_interrupt(sasfit_oz_data *OZd) {
+    int interupt_signal;
+    Tcl_Interp *interp;
+    char * ozname = Tcl_GetStringFromObj(OZd->oz_obj, 0);
+
+    interp = OZd->interp;
+    if (!GET_TCL(int, &OZd->interrupt, "interrupt")) {
+                OZd->interrupt = 1;
+    }
+    if (OZd->interrupt == 1) {
+            sasfit_out("interrupting OZ solver (%d)\n",OZd->interrupt);
+    }
+}
 
 int cp_gsl_vector_to_array(const gsl_vector *src, double *target, int dimtarget) {
     int i;
@@ -50,6 +66,14 @@ int cp_array_diff_array_to_gsl_vector(double *src1, double *src2,  gsl_vector *t
     return GSL_SUCCESS;
 }
 
+int cp_array_diff_array_to_array(double *src1, double *src2,  double *target, int dimsrc) {
+    int i,errno;
+    errno=0;
+    for (i=0;i<dimsrc;i++)  {
+            target[i]=src1[i]-src2[i];
+    }
+    return GSL_SUCCESS;
+}
 
 int cp_array_to_gsl_vector(double *src, gsl_vector *target, int dimsrc) {
     int i,errno;
@@ -78,6 +102,28 @@ int OZ_f(gsl_vector * x, void *OZd, gsl_vector * fres) {
 //    sasfit_out("OZ_f just has been called\n");
     cp_array_diff_to_gsl_vector(OZdata->G,x,fres,OZdata->Npoints);
     return GSL_SUCCESS;
+}
+
+double OZ_fp(double * x, void *OZd, double * fres) {
+    double Norm;
+    int i;
+    sasfit_oz_data *OZdata;
+    OZdata = (sasfit_oz_data *) OZd;
+    cp_array_to_array(x,OZdata->G,OZdata->Npoints);
+    Norm = OZ_step(OZdata);
+//    sasfit_out("OZ_f just has been called\n");
+    for (i=0;i<OZdata->Npoints;i++) fres[i]=(OZdata->G[i]-x[i]);
+    return Norm;
+}
+
+void matvec(int n, double *y, double *z, struct ITLIN_OPT *opt)
+{
+    int i,Norm;
+    cp_array_to_array(y,opt->OZd->G,n);
+    Norm = OZ_step(opt->OZd);
+    for (i=0;i<n;i++) z[i] = (opt->OZd->G[i] - y[i]);
+    if ((opt->OZd->it % 50)==0 && opt->OZd->PrintProgress == 1) sasfit_out("matvec calls=%d\n",opt->OZd->it);
+
 }
 
 #define MINDIMOZ 128
@@ -168,7 +214,7 @@ double extrapolate (double x1,double x2, double x3, double y1, double y2,double 
 }
 
 
-int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *y, double *x, double *res) {
+int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *x, double *y, double *res) {
     int i, j;
     int n;
     int kk;
@@ -179,12 +225,13 @@ int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *y, double *x
     gsl_matrix *DDF;
     gsl_matrix *DDFinv;
     gsl_permutation *perm;
-    gsl_vector *F_xn, *xn;
+    gsl_vector *F_yn, *xn, *yn;
 
     DDF = gsl_matrix_calloc(NP,NP);
     DDFinv = gsl_matrix_calloc(NP,NP);
-    F_xn = gsl_vector_calloc(NP);
+    F_yn = gsl_vector_calloc(NP);
     xn = gsl_vector_calloc(NP);
+    yn = gsl_vector_calloc(NP);
 
     u = (double*)malloc((NP)*sizeof(double));
     v = (double*)malloc((NP)*sizeof(double));
@@ -193,51 +240,62 @@ int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *y, double *x
 
     gsl_set_error_handler_off ();
     for (n=0;n<NP;n++) {
-        for (kk=0; kk<=n; kk++) {
-            u[kk] = y[kk];
-            v[kk] = x[kk];
-        }
-        v[n] = x[n];
-        for (kk=n+1; kk<NP; kk++) {
+        for (kk=0; kk<n; kk++) {
             u[kk] = x[kk];
             v[kk] = y[kk];
         }
-        cp_array_to_array(u,G,NP);
-        Norm=OZ_step(OZd);
-        cp_array_to_array(G,Fu,NP);
-        cp_array_to_array(v,G,NP);
-        Norm=OZ_step(OZd);
-        cp_array_to_array(G,Fv,NP);
+        if (n > 0) v[n-1] = y[n-1];
+        for (kk=n; kk<NP; kk++) {
+            u[kk] = y[kk];
+            v[kk] = x[kk];
+        }
+        Norm=OZ_fp(u,OZd,Fu);
+        Norm=OZ_fp(v,OZd,Fv);
 //      DDF = [I - L(Fxn,xn)]
 //      DDFinv = DDF^-1
+/*
         if ((y[n]-x[n])!=0) {
             for (l=0;l<NP;l++) {
                 gsl_matrix_set(DDF,l,n,-(Fu[l]-Fv[l])/(y[n]-x[n]));
             }
             gsl_matrix_set(DDF,n,n,1-(Fu[n]-Fv[n])/(y[n]-x[n]));
         } else {
-            sasfit_out("poblems in calculating difided difference operator due to division by 0\n");
+            sasfit_out("problems in calculating divided difference operator due to division by 0\n");
             for (l=0;l<NP;l++) {
                 gsl_matrix_set(DDF,l,n,-0);
             }
                 gsl_matrix_set(DDF,n,n,1-0);
         }
+*/
+        if ((u[n]-v[n])!=0) {
+            for (l=0;l<NP;l++) {
+                gsl_matrix_set(DDF,l,n,(Fu[l]-Fv[l])/(u[n]-v[n]));
+            }
+        } else {
+            sasfit_out("problems in calculating divided difference operator due to division by 0\n");
+            for (l=0;l<NP;l++) {
+                gsl_matrix_set(DDF,l,n,0);
+            }
+        }
+
     }
     perm=gsl_permutation_alloc(NP);
     gsl_linalg_LU_decomp(DDF, perm, &ms);
     gsl_linalg_LU_invert(DDF, perm, DDFinv);
 
-    cp_array_to_gsl_vector(x,xn,NP);
-    cp_array_diff_array_to_gsl_vector(y,x,F_xn,NP);
+    Norm=OZ_fp(y,OZd,res);
+    cp_array_to_gsl_vector(y,yn,NP);
+    cp_array_to_gsl_vector(res,F_yn,NP);
 
-    gsl_blas_dgemv(CblasNoTrans,1,DDFinv,F_xn,1,xn);
-    cp_gsl_vector_to_array(xn,res,NP);
+    gsl_blas_dgemv(CblasNoTrans,-1.0,DDFinv,F_yn,1.0,yn);
+    cp_gsl_vector_to_array(yn,res,NP);
 
     gsl_matrix_free(DDF);
     gsl_matrix_free(DDFinv);
     gsl_permutation_free(perm);
-    gsl_vector_free(F_xn);
+    gsl_vector_free(F_yn);
     gsl_vector_free(xn);
+    gsl_vector_free(yn);
     free(u);
     free(v);
     free(Fu);
@@ -250,18 +308,26 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     double alpha, beta, gama;
     double *xn, *yn, *zn, *Tx, *Ty, *Tz;
     double nsoliparam[5], tol[2];
-    int j,n,iloop,ierr;
+    int i,j,n,iloop,ierr;
+    struct ITLIN_OPT   *opt;
+    struct ITLIN_INFO *info;
+    int  rcode;
+    double *x, *xsol, *bb, *w, *res;
+    double xh, resnorm, xdnorm;
+    TERM_CHECK termcheck = CheckOnRestart;
+
     Normold=1;
     err=2*RELERROR;
     switch (algorithm) {
         case Picard_iteration:
                 n = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     n++;
                     Norm = OZ_step(OZd);
                     err = fabs((Norm-Normold)/Norm);
                     Normold=Norm;
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g\n",n,OZd->it,err);
                     if (Norm != Norm) {
                         sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
@@ -274,12 +340,13 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
         case Krasnoselskij_iteration:
                 xn = (double*)malloc((NP)*sizeof(double));
                 n=0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     cp_array_to_array(G,xn,NP);
                     n++;
                     Norm = OZ_step(OZd);
                     err = fabs((Norm-Normold)/Norm);
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g\n",n,OZd->it,err);
                     Normold=Norm;
                     alpha=fabs(MIXCOEFF);
@@ -300,7 +367,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 Tx = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
                     n++;
@@ -323,7 +391,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
                         beta=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     Normold=Norm;
                     for (j=0; j < NP; j++) {
@@ -346,7 +414,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 Ty = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
                     n++;
@@ -370,7 +439,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
                         beta=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     for (j=0; j < NP; j++) {
                             yn[j]=(1-beta)*xn[j]+beta*Tx[j];
@@ -397,7 +466,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 Ty = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
                     n++;
@@ -421,7 +491,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
                         beta=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     for (j=0; j < NP; j++) {
                             yn[j]=(1-beta)*xn[j]+beta*Tx[j];
@@ -453,7 +523,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
@@ -475,7 +546,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
                         beta=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
                     for (j=0; j < NP; j++) {
@@ -504,7 +575,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 xn = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
@@ -526,7 +598,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
                         beta=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     for (j=0; j < NP; j++) {
                             G[j]=(1.0-beta)*xn[j]+beta*G[j];
@@ -557,7 +629,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     n++;
                     errold=err;
                     cp_array_to_array(G,xn,NP);
@@ -581,7 +654,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         beta=alpha;
                         gama=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
                     for (j=0; j < NP; j++) {
@@ -627,7 +700,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
@@ -651,7 +725,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         beta=alpha;
                         gama=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
                     for (j=0; j < NP; j++) {
@@ -697,7 +771,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
@@ -722,7 +797,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         beta=alpha;
                         gama=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
                     for (j=0; j < NP; j++) {
@@ -766,7 +841,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     n++;
                     errold=err;
                     cp_array_to_array(G,xn,NP);
@@ -790,7 +866,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         beta=alpha;
                         gama=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
                     for (j=0; j < NP; j++) {
@@ -830,7 +906,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 zn = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop=0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
                     n++;
                     errold=err;
                     cp_array_to_array(G,xn,NP);
@@ -853,7 +930,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                         beta=alpha;
                         gama=alpha;
                     }
-                    if ((n % 10)==0)
+                    if ((n % 10)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
                     for (j=0; j < NP; j++) {
@@ -896,20 +973,32 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 yn = (double*)malloc((NP)*sizeof(double));
                 zn = (double*)malloc((NP)*sizeof(double));
                 iloop = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR ) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                    check_interrupt(OZd);
+                    if (MIXCOEFF > 0) {
+                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                    } else {
+                        if (err < errold) {
+                            iloop++;
+                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                        } else {
+                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                        }
+                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
+                    }
+
                     iloop++;
                     cp_array_to_array(G,xn,NP);
                     Norm = OZ_step(OZd);
                     cp_array_to_array(G,Tx,NP);
-                    Norm = OZ_step(OZd);
+                    for (i=0;i<NP;i++) yn[i] = (1-alpha)*xn[i]+alpha*G[i];
                     err = fabs((Norm-Normold)/Norm);
-                    cp_array_to_array(G,Ty,NP);
 
                     sasfit_out("loop: %d , error=%g\nnext step divided difference routine\n",iloop,err);
-                    OZ_first_order_divided_difference(OZd,Ty,Tx,xn);
+                    OZ_first_order_divided_difference(OZd,xn,yn,Tx);
                     sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
 
-                    cp_array_to_array(xn,G,NP);
+                    cp_array_to_array(Tx,G,NP);
 
                     Normold=Norm;
                     if (Norm != Norm) {
@@ -975,6 +1064,53 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 free(xn);
                 free(Tx);
+                break;
+        case NewtonLibGMRES:
+                bb     = (double*) malloc( NP*sizeof(double) );
+                x      = (double*) malloc( NP*sizeof(double) );
+                xsol   = (double*) malloc( NP*sizeof(double) );
+                w      = (double*) malloc( NP*sizeof(double) );
+                res    = (double*) malloc( NP*sizeof(double) );
+                for (i=0;i<NP;i++) bb[i]=0.0;
+                opt   = malloc(sizeof(struct ITLIN_OPT));
+                info   = malloc(sizeof(struct ITLIN_INFO));
+                opt->tol = RELERROR;
+                opt->i_max = 10;
+                opt->termcheck = CheckOnRestart;
+                opt->maxiter = MAXSTEPS;
+                opt->errorlevel = None;
+                opt->monitorlevel = None;
+                opt->datalevel = None;
+                opt->errorfile = stdout;
+                opt->monitorfile = stdout;
+                opt->datafile = stdout;
+                opt->iterfile = stdout;
+                opt->resfile  = stdout;
+                opt->miscfile = stdout;
+
+                opt->OZd=OZd;
+//                cp_array_to_array(G,x,NP);
+//                matvec(NP,x,bb,opt);
+
+                gmres(NP,x,&matvec,NULL,NULL,bb,opt,info);
+                sasfit_out("\n Return code:                  %6i\n",info->rcode);
+                sasfit_out(" Iterations:                   %6i\n",info->iter);
+                sasfit_out(" Matvec calls:                 %6i\n",info->nomatvec);
+                sasfit_out(" Right Precon calls:           %6i\n",info->noprecr);
+                sasfit_out(" Left Precon calls:            %6i\n",info->noprecl);
+                sasfit_out(" Estimated residual reduction: %e\n",info->precision);
+
+                sasfit_out("info->precision:%lg\n",info->precision);
+                sasfit_out("info->nomatvec:%d\n",info->nomatvec);
+                sasfit_out("info->rcode:%d\n",info->rcode);
+
+                free(bb);
+                free(x);
+                free(xsol);
+                free(w);
+                free(res);
+                free(opt);
+                free(info);
                 break;
     }
 }
@@ -1367,11 +1503,16 @@ void OZ_solver (sasfit_oz_data *OZd) {
         case NTFQMR:
                 OZ_solver_by_iteration(OZd,NTFQMR);
                 break;
+        case NewtonLibGMRES:
+                OZ_solver_by_iteration(OZd,NewtonLibGMRES);
+                break;
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");
     }
 
-    sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
+    if (OZd->PrintProgress == 1) {
+            sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
+    }
     Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
     Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
 
@@ -1593,7 +1734,8 @@ void rescaleMSA (sasfit_oz_data *OZd) {
 
             Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
             Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
-        } while (status == GSL_CONTINUE && iter < max_iter);
+            check_interrupt(OZd);
+        } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0);
         OZd->alpha = root;
         sasfit_out("consistency parameter after optimization: %g \n", root);
         gsl_root_fsolver_free (s);
@@ -1699,7 +1841,8 @@ void root_finding (sasfit_oz_data *OZd) {
 
             Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
             Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
-        } while (status == GSL_CONTINUE && iter < max_iter);
+            check_interrupt(OZd);
+        } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0);
         OZd->alpha = root;
         sasfit_out("consistency parameter after optimization: %g \n", root);
         gsl_root_fsolver_free (s);

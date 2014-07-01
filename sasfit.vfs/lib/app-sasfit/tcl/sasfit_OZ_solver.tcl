@@ -25,6 +25,7 @@ proc put_OZ_res {} {
 	lappend OZ(result,closure) 	$OZ(closure)
 	lappend OZ(result,potential) 	$OZ(potential)
 	lappend OZ(result,p) 		[list $OZ(p0) $OZ(p1) $OZ(p2) $OZ(p3) $OZ(p4) $OZ(p5) $OZ(p6) $OZ(p7) $OZ(p8) $OZ(p9) $OZ(p10) $OZ(p11) $OZ(p12) $OZ(p13) $OZ(p14) $OZ(p15)]
+	lappend OZ(result,algorithm)	$OZ(algorithm)
 	lappend OZ(result,phi)		$OZ(phi)
 	lappend OZ(result,T) 		$OZ(T)
     	lappend OZ(result,mindimOZ)	$OZ(mindimOZ)
@@ -37,9 +38,9 @@ proc put_OZ_res {} {
     	lappend OZ(result,Sq)  		$OZ(res,s,y)
     	lappend OZ(result,r)  		$OZ(res,c,x)
     	lappend OZ(result,cr)  		$OZ(res,c,y)
-    	lappend OZ(result,gammar) 	$OZ(res,gamma,y)
-    	lappend OZ(result,hr)  		$OZ(res,h,y)
     	lappend OZ(result,gr)  		$OZ(res,g,y)
+    	lappend OZ(result,hr)  		$OZ(res,h,y)
+    	lappend OZ(result,gammar) 	$OZ(res,gamma,y)
     	lappend OZ(result,u,x)          $OZ(res,u,x)
     	lappend OZ(result,Ur)  		$OZ(res,u,y)
     	lappend OZ(result,Br)  		$OZ(res,B,y)
@@ -51,10 +52,11 @@ proc put_OZ_res {} {
 }
 
 proc pop_OZ_res {} {
-	global OZ ozSQGraph ozgrGraph ozcrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
+	global OZ ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
 	set OZ(result,closure) 		[lrange $OZ(result,closure) 	0 [expr [llength $OZ(result,closure)]	-2]]
 	set OZ(result,potential) 	[lrange $OZ(result,potential) 	0 [expr [llength $OZ(result,potential)]	-2]]
 	set OZ(result,p) 		[lrange $OZ(result,p) 		0 [expr [llength $OZ(result,p)]		-2]]
+	set OZ(result,algorithm)		[lrange $OZ(result,algorithm) 	0 [expr [llength $OZ(result,algorithm)]	-2]]
 	set OZ(result,phi)		[lrange $OZ(result,phi) 	0 [expr [llength $OZ(result,phi)]	-2]]
 	set OZ(result,T) 		[lrange $OZ(result,T) 		0 [expr [llength $OZ(result,T)]		-2]]
     	set OZ(result,mindimOZ)		[lrange $OZ(result,mindimOZ) 	0 [expr [llength $OZ(result,mindimOZ)]	-2]]
@@ -90,10 +92,15 @@ proc pop_OZ_res {} {
     	.oztop.interface.assigning.assign setvalue last
 }
 
+proc InterruptOZsolver {} {
+        global OZ ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph sasfit
+	set OZ(interrupt) 1
+}
 
 proc StartOZsolver {} {
         global OZ ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph sasfit
         sasfit_timer_start "Start OZ Solver"
+        set OZ(interrupt) 0
         sasfit_oz_calc OZ
 	sasfit_timer_stop "OZ solver" "calculation finished" "."
 	
@@ -389,6 +396,7 @@ proc ClearOZsolver {} {
     set OZ(result,closure) {}
     set OZ(result,potential) {}
     set OZ(result,p) {}
+    set OZ(result,algorithm) {}
     set OZ(result,phi) {}
     set OZ(result,T) {}
     set OZ(result,mindimOZ) {}
@@ -585,7 +593,8 @@ proc update_ozmenu {} {
        set OZ(p)	 [lindex $OZ(result,p) $idx]
        for {set i 0} {$i < 16} {incr i} {
            set OZ(p$i) [lindex $OZ(p) $i]
-       }
+       }      
+       set OZ(algorithm) [lindex $OZ(result,algorithm) $idx]
        set OZ(phi)	[lindex $OZ(result,phi) $idx]
        set OZ(T)	[lindex $OZ(result,T) $idx]
        set OZ(mindimOZ)	[lindex $OZ(result,mindimOZ) $idx]
@@ -644,6 +653,7 @@ proc sasfit_OZ_solver {} {
     pack  $w.interface.param $w.interface.action $w.interface.assigning $w.interface.progressbar -fill y
     
     button  $w.interface.action.calc -text calculate -command {StartOZsolver}
+    button  $w.interface.action.interrupt -text interrupt -bg red -command {InterruptOZsolver}
     button  $w.interface.action.clear -text clear -command {ClearOZsolver}
     button  $w.interface.action.del -text "del last" -command {pop_OZ_res}
     ComboBox $w.interface.assigning.sqplugin \
@@ -672,7 +682,7 @@ proc sasfit_OZ_solver {} {
     	}
     label    $w.interface.assigning.to -text to
 
-    pack $w.interface.action.calc $w.interface.action.clear $w.interface.action.del \
+    pack $w.interface.action.interrupt $w.interface.action.calc $w.interface.action.clear $w.interface.action.del \
     	-side left  -padx 2mm -pady 4mm
     pack $w.interface.assigning.doassign \
 	 $w.interface.assigning.assign \
@@ -761,6 +771,7 @@ proc sasfit_OZ_solver {} {
     		         "PMH iteration" "Mann II iteration" \
     		         "Krasnoselskij iteration" \
     		         "S* iteration" \
+    		         "NewtonLibGMRES" \
 			 "dNewton" "Hybrid" \
 	    		 "Hybrids (int. sc.)" "Broyden" 
 			} \
@@ -1409,7 +1420,7 @@ proc sasfit_OZ_solver {} {
     Blt_ZoomStack $ozyrGraph(w)
 
 
-
+    oz_input_names
     ReplotOZsolver
     RefreshGraph ozSQGraph
     RefreshGraph ozgrGraph
