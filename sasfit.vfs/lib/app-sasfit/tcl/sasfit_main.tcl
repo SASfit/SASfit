@@ -268,8 +268,8 @@ set OZ(plugin_C_names) {"sq_sq_oz_1" 	"sq_sq_oz_2" 	"sq_sq_oz_3" \
 			"sq_sq_oz_4" 	"sq_sq_oz_5" 	"sq_sq_oz_6"}
 set OZ(closure) Percus-Yevick
 set OZ(potential) "HardSphere"
-set OZ(closure) "Hypernetted-Chain"
-set OZ(potential) "LennardJones"
+#set OZ(closure) "Hypernetted-Chain"
+#set OZ(potential) "LennardJones"
 #tkcon show
 #set ::tkcon_visible 1
 tkcon hide
@@ -316,6 +316,7 @@ set OZ(algorithm) "CR iteration"
 #set OZ(algorithm) "GMRES"
 #set OZ(phi) 0.41887902047863909846168578443727
 set OZ(interrupt) 0
+set OZ(PrintProgress) 0
 set OZ(phi) 0.3
 set OZ(T) 300
 set OZ(mindimOZ) 128
@@ -323,6 +324,7 @@ set OZ(mult) 4
 set OZ(mix) 0.5
 set OZ(maxit) 10000
 set OZ(dr/dsigma) 0.0703125
+set OZ(dr/dsigma) 0.07
 set OZ(releps) 1e-12
 set OZ(gridlength) [expr int($OZ(mindimOZ)*$OZ(mult))]
 set OZ(plottedgraphs) 0

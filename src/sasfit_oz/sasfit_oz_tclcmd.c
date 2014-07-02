@@ -511,6 +511,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
 
         ozd.interp = interp;
         ozd.interrupt = 0;
+
         if ( objc < 2 ) return TCL_OK;
         Tcl_Obj * oz_obj = objv[1];
         ozd.oz_obj = objv[1];
@@ -521,6 +522,11 @@ int sasfit_oz_calc_cmd(ClientData clientData,
 
         ozd.Npoints = 4096;
         int grid, factor;
+
+        if (!GET_TCL(int, &ozd.PrintProgress, "PrintProgress")) {
+                ozd.PrintProgress = 0;
+        }
+
         if (GET_TCL(int, &factor, "mindimOZ") && GET_TCL(int, &grid, "mult"))
         {
                 ozd.Npoints = factor * grid;

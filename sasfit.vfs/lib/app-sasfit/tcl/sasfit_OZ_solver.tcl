@@ -641,7 +641,7 @@ proc sasfit_OZ_solver {} {
     
     set OZ(progressbar) 0
     
-    label $w.interface.progressbar.label -text "progress:"
+    checkbutton $w.interface.progressbar.label -variable OZ(PrintProgress) -text "progress:"
     ProgressBar $w.interface.progressbar.value \
     		-maximum 100 -width 50m\
     		-type infinite -variable OZ(progressbar)

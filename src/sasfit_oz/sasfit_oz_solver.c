@@ -20,7 +20,9 @@
 #include <gsl/gsl_cblas.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_errno.h>
-#include "itlin.h"
+
+// #include "itlin.h"
+#define ITLIN_OPT void
 
 #define kb GSL_CONST_MKSA_BOLTZMANN
 #define GET_TCL(val_type, target, src_name) (sasfit_tcl_get_ ## val_type(interp, target, ozname, src_name) == TCL_OK)
@@ -31,6 +33,10 @@ void check_interrupt(sasfit_oz_data *OZd) {
     char * ozname = Tcl_GetStringFromObj(OZd->oz_obj, 0);
 
     interp = OZd->interp;
+    if (!GET_TCL(int, &OZd->PrintProgress, "PrintProgress")) {
+                OZd->PrintProgress = 0;
+    }
+
     if (!GET_TCL(int, &OZd->interrupt, "interrupt")) {
                 OZd->interrupt = 1;
     }
@@ -116,14 +122,16 @@ double OZ_fp(double * x, void *OZd, double * fres) {
     return Norm;
 }
 
-void matvec(int n, double *y, double *z, struct ITLIN_OPT *opt)
+//void matvec(int n, double *y, double *z, struct ITLIN_OPT *opt)
+void matvec(int n, double *y, double *z, void *opt)
 {
+/*
     int i,Norm;
     cp_array_to_array(y,opt->OZd->G,n);
     Norm = OZ_step(opt->OZd);
     for (i=0;i<n;i++) z[i] = (opt->OZd->G[i] - y[i]);
     if ((opt->OZd->it % 50)==0 && opt->OZd->PrintProgress == 1) sasfit_out("matvec calls=%d\n",opt->OZd->it);
-
+*/
 }
 
 #define MINDIMOZ 128
@@ -309,12 +317,12 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     double *xn, *yn, *zn, *Tx, *Ty, *Tz;
     double nsoliparam[5], tol[2];
     int i,j,n,iloop,ierr;
-    struct ITLIN_OPT   *opt;
-    struct ITLIN_INFO *info;
+//    struct ITLIN_OPT   *opt;
+//    struct ITLIN_INFO *info;
     int  rcode;
     double *x, *xsol, *bb, *w, *res;
     double xh, resnorm, xdnorm;
-    TERM_CHECK termcheck = CheckOnRestart;
+ //   TERM_CHECK termcheck = CheckOnRestart;
 
     Normold=1;
     err=2*RELERROR;
@@ -1065,6 +1073,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(xn);
                 free(Tx);
                 break;
+/*
         case NewtonLibGMRES:
                 bb     = (double*) malloc( NP*sizeof(double) );
                 x      = (double*) malloc( NP*sizeof(double) );
@@ -1112,6 +1121,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(opt);
                 free(info);
                 break;
+*/
     }
 }
 
