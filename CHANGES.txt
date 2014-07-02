@@ -1,8 +1,7 @@
-0.94.3 2014-xx-xx
+0.94.3 2014-07-02
 - bug fix in the plugin for parallel epiped
 - spelling errors in the menue interface
-- 
-- 
+- in case of slow convergence the OZ solver can be interupted now
 
 0.94.2 2014-06-02
 - new binding for zoom option, which works better for a mouse with one button
