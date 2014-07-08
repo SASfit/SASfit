@@ -72,6 +72,8 @@
 #define n_percent 0.1
 #define Nint 20
 
+
+
 typedef enum {
 	LogNorm,
 	BiLogNorm,
@@ -88,6 +90,20 @@ typedef enum {
 	gammaSD,
 	Delta
 } SizeDistr;
+
+
+int check_interrupt4calc(Tcl_Interp *interp, bool *error) {
+    int interupt_signal;
+    char *sBuffer;
+
+    sBuffer = Tcl_GetVar(interp,"::SASfitinterrupt",TCL_GLOBAL_ONLY);
+    sscanf(sBuffer,"%d",&interupt_signal);
+    if (interupt_signal == 1) {
+            *error = TRUE;
+            sasfit_err("interrupting calculation (%d)\n",interupt_signal);
+    }
+    return interupt_signal;
+}
 
 int select_str(char *str)
 {
@@ -2363,7 +2379,7 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	int    *lista;
 	int    ma, mfit,ndata;
 	bool   error;
-	int    error_type;
+	int    error_type, rcode, interrupt;
 	float  *a, *dydpar;
 
 	error = FALSE;
@@ -2418,7 +2434,10 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	    diffR = diffR + fabs((Ith[i]-Ih[i]));
 	    obsR = obsR + fabs(Ih[i]);
 	    wdiffR=chisq;
-
+	    sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i+1.0)/(1.0*ndata)*100.0);
+	    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+        interrupt = check_interrupt4calc(interp,&error);
 		if (error==TRUE) {
 			free_dvector(Ith,0,ndata-1);
 			free_dvector(Ihsubstract,0,ndata-1);
@@ -2567,10 +2586,10 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
     float  avgsigma,varianceOFfit;
     Tcl_DString DsBuffer;
     float  **h, **Ih, **DIh, **Ith, **res, **Isub;
-    int    *lista;
+    int    *lista, npoints, ipoint;
     int    ma, mfit,*ndata,*hide, totndata;
     bool   error;
-    int    error_type;
+    int    error_type, interrupt;
     float  *a, *dydpar;
 	char   sBuffer[132];
 
@@ -2618,22 +2637,32 @@ for (i=0;i<max_SD;i++) {
 Tcl_DStringInit(&DsBuffer);
 
 Tcl_DStringStartSublist(&DsBuffer);
+for (j=0;j<GCP.nmultset;j++) npoints = npoints+ndata[j];
+
+ipoint=0;
+
 for (j=0;j<GCP.nmultset;j++) {
 	Tcl_DStringStartSublist(&DsBuffer);
 	for (i=0;i<ndata[j];i++) {
        IQ_Global(interp,h[j][i],res[j][i],a,&Ith[j][i],&Isub[j][i],dydpar,max_SD,GAP,&GCP,error_type,j+1,&error);
 	   if (DIh[j][i] == 0) {
 		   sasfit_err("Sasfit_global_iqCmd: zero error bar\n");
-		   return TCL_ERROR;
-	   }
-	   chisq = chisq + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
-	   diffR = diffR + fabs((Ith[j][i]-Ih[j][i]));
-	   obsR = obsR + fabs(Ih[j][i]);
-	   wdiffR=wdiffR + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
-	   wobsR=wobsR + Ih[j][i]*Ih[j][i]/(DIh[j][i]*DIh[j][i]);
-	   avgsigma = avgsigma + 1.0/(DIh[j][i]*DIh[j][i]);
-	   totndata++;
-	   if (error==TRUE) {
+		   error = TRUE;
+	   } else {
+            chisq = chisq + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
+            diffR = diffR + fabs((Ith[j][i]-Ih[j][i]));
+            obsR = obsR + fabs(Ih[j][i]);
+            wdiffR=wdiffR + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
+            wobsR=wobsR + Ih[j][i]*Ih[j][i]/(DIh[j][i]*DIh[j][i]);
+            avgsigma = avgsigma + 1.0/(DIh[j][i]*DIh[j][i]);
+            totndata++;
+       }
+	   ipoint++;
+       sprintf(sBuffer,"set ::SASfitprogressbar %lf",(ipoint+1.0)/(1.0*npoints)*100.0);
+       Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+       Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+       interrupt = check_interrupt4calc(interp,&error);
+	   if (error==TRUE ) {
 	      for (k=0;k<GCP.nmultset;k++) {
              free_dvector(Ith[k],0,ndata[k]-1);
              free_dvector(Isub[k],0,ndata[k]-1);

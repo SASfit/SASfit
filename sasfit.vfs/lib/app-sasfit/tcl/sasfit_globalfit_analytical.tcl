@@ -4849,6 +4849,8 @@ proc analyticalGlobalSDCmd {simorfit
 
 	if {!$simulate && [winfo exists $w.adj.calc]} {
 		$w.adj.calc configure -command { 
+	   	      set ::SASfitprogressbar 0
+	      	      set ::SASfitinterrupt 0
                       set ::fitparamguiupdate no
 		      sasfit_timer_start "\nStart apply"
 
@@ -4936,6 +4938,8 @@ proc analyticalGlobalSDCmd {simorfit
 	if {[winfo exists $w.adj.step]} {
 		$w.adj.step configure -command {
                       set ::fitparamguiupdate no
+                      set ::SASfitprogressbar 0
+	       	      set ::SASfitinterrupt 0
 		      RefreshactualGlobalParCommonPs
 		      if {([string length $::addsasfit(lower,Q)] > 0) && \
 			  ([string length $::addsasfit(upper,Q)] > 0) } {
@@ -5098,6 +5102,8 @@ proc analyticalGlobalSDCmd {simorfit
 	if {[winfo exists $w.adj.run]} {
 		$w.adj.run configure -command {
 			set ::fitparamguiupdate no
+	                set ::SASfitprogressbar 0
+	                set ::SASfitinterrupt 0
 		      if { $::sasfit(update_menu_during_fit) } {
 			  $::nomenu activate [expr $::actualGlobalAnalytPar(actual_SD)-1]
 			  $::nomenu invoke [expr $::actualGlobalAnalytPar(actual_SD)-1]
@@ -5372,6 +5378,8 @@ proc analyticalGlobalSDCmd {simorfit
 	if {$simulate && [winfo exists $w.adj.calc]} {
 		$w.adj.calc configure -command {
 		      set ::fitparamguiupdate no
+	      	      set ::SASfitprogressbar 0
+		      set ::SASfitinterrupt 0
 		      sasfit_timer_start "\nStart simulation"
 		      set ::addsasfit(filename) unknown
 		      set Q {}
