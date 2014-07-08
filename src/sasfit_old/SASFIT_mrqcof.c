@@ -41,6 +41,7 @@
 #include <tcl.h>
 #include "include/SASFIT_nr.h"
 
+int check_interrupt4calc(Tcl_Interp *,bool *error);
 
 void SASFITmrqcofGlobal(interp,x,y,res,sig,yfit,ysubstr,ndata,a,lista,ma,mfit,GlobalAP,GCP,max_SD,
 		error_type,alpha,beta,chisq,funcs,error)
@@ -52,7 +53,9 @@ sasfit_analytpar *GlobalAP;
 sasfit_commonpar *GCP;
 void (*funcs)();
 {
-	int k,j,i,m;
+	int k,j,i,m,ipoint,npoints;
+	int interrupt;
+	char sBuffer[256];
 	float ymod,ysub,yexp,dy,wt,sigma,sig2i,*dyda;
 
 	dyda=dvector(0,ma-1);
@@ -65,6 +68,10 @@ void (*funcs)();
 
 	(*chisq)=0.0;
 
+npoints = 0;
+for (m=0;m<(*GCP).nmultset;m++) npoints = npoints+ndata[m];
+ipoint=0;
+
 for (m=0;m<(*GCP).nmultset;m++) {
 	for (i=0;i<ndata[m];i++) {
         switch (error_type) {
@@ -72,7 +79,7 @@ for (m=0;m<(*GCP).nmultset;m++) {
            case 1 :  { yexp = log(y[m][i]);  break; }
            case 2 :  { yexp = sqrt(y[m][i]); break; }
            case 3 :  { yexp = y[m][i];       break; }
-           default : { 
+           default : {
                        *error = TRUE;
 	                   sasfit_err("SASFITmrqcofGlobal: unknown error type\n");
 		               free_dvector(dyda,0,ma-1);
@@ -80,7 +87,12 @@ for (m=0;m<(*GCP).nmultset;m++) {
 					 }
         }
 		(*funcs)(interp,x[m][i],res[m][i],a,&ymod,&ysub,dyda,max_SD,GlobalAP,GCP,error_type,m+1,error);
-		if (*error == TRUE) {
+		ipoint++;
+		sprintf(sBuffer,"set ::SASfitprogressbar %lf",(ipoint+1.0)/(1.0*npoints)*100.0);
+	    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+        interrupt == check_interrupt4calc(interp,error);
+		if (*error == TRUE ) {
 			free_dvector(dyda,0,ma-1);
 			return;
         }
@@ -89,7 +101,7 @@ for (m=0;m<(*GCP).nmultset;m++) {
            case 1 :  { yfit[m][i] = log(ymod);	ysubstr[m][i]=log(ysub);	sigma = 1.0;		break; }
            case 2 :  { yfit[m][i] = sqrt(ymod); ysubstr[m][i]=sqrt(ysub);	sigma = 1.0;		break; }
 		   case 3 :  { yfit[m][i] = ymod;		ysubstr[m][i]=ysub;			sigma = 1.0;		break; }
-           default : { 
+           default : {
                        *error = TRUE;
 	                   sasfit_err("SASFITmrqcofGlobal: unknown error type\n");
 		               free_dvector(dyda,0,ma-1);
@@ -106,7 +118,7 @@ for (m=0;m<(*GCP).nmultset;m++) {
 //				sasfit_err("%lf",wt*dyda[lista[k]]);
 			}
 			beta[j] += dy*wt;
-		} 
+		}
 		(*chisq) += dy*dy*sig2i;
 	}
 // for (j=0;j<=mfit-1;j++) {
@@ -142,8 +154,9 @@ bool  *error;
 sasfit_analytpar *AP;
 void (*funcs)();
 {
-	int k,j,i;
+	int k,j,i,interrupt;
 	float ymod,ysub,yexp,dy,wt,sigma,sig2i,*dyda;
+    char sBuffer[256];
 
 	dyda=dvector(0,ma-1);
 	for (j=0;j<=mfit-1;j++) {
@@ -158,7 +171,7 @@ void (*funcs)();
                   case 1 :  { yexp = log(y[i]); break; }
                   case 2 :  { yexp = sqrt(y[i]); break; }
 				  case 3 :  { yexp = y[i]; break; }
-                  default : { 
+                  default : {
                              *error = TRUE;
 	                         sasfit_err("SASFITmrqcof: unknown error type\n");
 			                 free_dvector(dyda,0,ma-1);
@@ -166,7 +179,11 @@ void (*funcs)();
 							}
                 }
 		(*funcs)(interp,x[i],res[i],a,&ymod,&ysub,dyda,max_SD,AP,error_type,0,error);
-		if (*error == TRUE) {
+		sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i+1.0)/(1.0*ndata)*100.0);
+	    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+        interrupt = check_interrupt4calc(interp,error);
+		if (*error == TRUE ) {
 			free_dvector(dyda,0,ma-1);
 			return;
 		}
@@ -175,7 +192,7 @@ void (*funcs)();
                   case 1 :  { yfit[i] = log(ymod);	ysubstr[i] = log(ysub);		sigma = 1.0;	break; }
                   case 2 :  { yfit[i] = sqrt(ymod); ysubstr[i] = sqrt(ysub);	sigma = 1.0;	break; }
                   case 3 :  { yfit[i] = ymod;		ysubstr[i] = ysub;			sigma = 1.0;	break; }
-                  default : { 
+                  default : {
                              *error = TRUE;
 	                         sasfit_err("SASFITmrqcof: unknown error type\n");
 				 free_dvector(dyda,0,ma-1);
@@ -190,7 +207,7 @@ void (*funcs)();
 				alpha[j][k] += wt*dyda[lista[k]];
 			}
 			beta[j] += dy*wt;
-		} 
+		}
 		(*chisq) += dy*dy*sig2i;
 	}
 	for (j=1;j<=mfit-1;j++){

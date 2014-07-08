@@ -12614,7 +12614,9 @@ pack $w.fitpar -fill both -expand 1
 #
 
 if {!$simulate && [winfo exists $w.adj.calc]} {
-	$w.adj.calc configure -command { 
+	$w.adj.calc configure -command {
+	      set ::SASfitprogressbar 0
+	      set ::SASfitinterrupt 0
               set ::fitparamguiupdate yes
               set sub no
 
@@ -12677,6 +12679,8 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
 if {[winfo exists $w.adj.step]} {
 	$w.adj.step configure -command { 
               set ::fitparamguiupdate no
+	      set ::SASfitprogressbar 0
+	      set ::SASfitinterrupt 0
               set sub no
               if {([string length $::sasfit(lower,Q)] > 0) && \
                   ([string length $::sasfit(upper,Q)] > 0) } {
@@ -12803,6 +12807,8 @@ if {[winfo exists $w.adj.step]} {
 
 if {[winfo exists $w.adj.run]} {
 	$w.adj.run configure -command {
+	      set ::SASfitprogressbar 0
+	      set ::SASfitinterrupt 0
               set ::fitparamguiupdate no
               $::nomenu activate [expr $::actualAnalytPar(actual_SD)-1]
               $::nomenu invoke [expr $::actualAnalytPar(actual_SD)-1]
@@ -13025,6 +13031,8 @@ if {[winfo exists $w.adj.run]} {
 
 if {$simulate && [winfo exists $w.adj.calc]} {
 	$w.adj.calc configure -command {
+	      set ::SASfitprogressbar 0
+	      set ::SASfitinterrupt 0
 	      sasfit_timer_start "\nStart simulation"
 
               set Q {}
@@ -13089,7 +13097,8 @@ if {$simulate && [winfo exists $w.adj.calc]} {
 proc analytical_widgets_bottom { w simulate isGlobal
 } {
 	frame $w.adj -relief groove -borderwidth 1
-	pack $w.adj -fill both -side bottom
+	frame $w.progress 
+	pack $w.progress $w.adj -fill both -side bottom
 
 	# online help in the 'status-bar'
 	message [quick_message_window] -text "" \
@@ -13164,6 +13173,20 @@ proc analytical_widgets_bottom { w simulate isGlobal
                         $::nomenu invoke 0}
         bind $w <End> {$::nomenu activate last
                         $::nomenu invoke last}
+                        
+        button $w.progress.interrupt -text " INTERRUPT " \
+        	-bg red -fg white -font  {Helvetica -12 bold} \
+        	-command {
+        		global ::SASfitinterrupt
+        		set ::SASfitinterrupt 1
+        	}
+        ProgressBar $w.progress.value \
+	    		-maximum 100\
+    		-type normal -variable ::SASfitprogressbar 
+    	pack $w.progress.interrupt -padx 3 -pady 5 -side left 
+        pack $w.progress.value -padx 3 -pady 5 -side right -fill x -expand yes
+        set ::SASfitprogressbar 0
+        set ::SASfitinterrupt 0
 }
 
 proc analytical_scroll_binds { w } {

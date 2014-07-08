@@ -39,6 +39,9 @@ set ::radio_check_button_prop "-indicatoron true"
 set ::check_button_color_dis "#a3a3a3"
 set ::check_button_color_en  "White"
 set ::fitparamguiupdate yes
+set ::SASfitprogressbar 0
+set ::SASfitinterrupt 0
+
 if {[string equal $::tcl_platform(os) Linux]} {
 	set ::check_button_color_en  "#b03060"
 }

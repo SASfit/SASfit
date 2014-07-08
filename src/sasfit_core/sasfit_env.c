@@ -22,6 +22,7 @@
 /*
  * Author(s) of this file:
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ *    Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/sasfit_core.h"

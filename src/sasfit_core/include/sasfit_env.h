@@ -22,6 +22,7 @@
 /*
  * Author(s) of this file:
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ *    Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_ENV_H
@@ -34,6 +35,7 @@ typedef struct
 {
 	/// TCL-Interpreter which initialized the SASfit library.
 	Tcl_Interp * interp;
+	int interrupt;
 } sasfit_env_t;
 
 /**
@@ -47,6 +49,18 @@ Tcl_Interp * sasfit_env_get_interp(void);
  * \param interp Pointer to the current TCL-Interpreter.
  */
 void sasfit_env_set_interp(Tcl_Interp * interp);
+
+/**
+ * Returns the SASFIT_CONTINUE=1 for continue and SASFIT_INTERRUPT=2 for interrupt signal
+ * \returns Pointer to the current TCL-Interpreter.
+ */
+// Tcl_Interp * sasfit_env_get_interp(void);
+
+/**
+ * Set the current TCL-Interpreter of SASfit.
+ * \param interp Pointer to the current TCL-Interpreter.
+ */
+// void sasfit_env_set_interp(Tcl_Interp * interp);
 
 #endif
 
