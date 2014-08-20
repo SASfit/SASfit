@@ -442,7 +442,8 @@ proc clear_sasfit_file_config { sasfit_arr prefix
 	clear_sasfit_config $sasfit_arr $prefix {name divisor firstskip \
 		lastskip hide Q I DI res "res,calc" "res,file" widname r1 r2 lambda Dlambda l1 \
 		l2 Dd d dr_by_count dr_percent \
-		dr_loglogdist dr_mindist}
+		dr_loglogdist dr_mindist \
+		dr_by_errorbar dr_multerror dr_max_Dq_q}
 }
 
 proc dr_default {fieldname} {
@@ -451,13 +452,16 @@ proc dr_default {fieldname} {
 		dr_percent    {return 1.0}
 		dr_loglogdist {return 1}
 		dr_mindist    {return 0.02}
+		dr_by_errorbar {return 1}
+		dr_multerror    {return 1.0}
+		dr_max_Dq_q	{return 0.1}
 		default       {return}
 	}
 }
 
 proc dr_default_op {cmd sasfit_arr prefix} {
 	upvar $sasfit_arr sf
-	foreach {name} {by_count percent loglogdist mindist
+	foreach {name} {by_count percent loglogdist mindist by_errorbar multerror max_Dq_q
 	} {
 		set redu_name [format "%s%s" "dr_" $name]
 		set fieldname [format "%s%s" $prefix $redu_name]
@@ -470,7 +474,7 @@ proc dr_set_arr {sasfit_arr prefix index data_redu_arr
 	upvar $sasfit_arr sf
 	upvar $data_redu_arr data_redu
 
-	foreach {name} {by_count percent loglogdist mindist
+	foreach {name} {by_count percent loglogdist mindist by_errorbar multerror max_Dq_q
 	} {
 		set redu_name [format "%s%s" "dr_" $name]
 		set fieldname [format "%s%s" $prefix $redu_name]
@@ -493,7 +497,7 @@ proc arr_append_dr { sasfit_arr prefix index
 	} {
 		lappend sf($prefix$suffix) [lindex [array get $varname $index] 1]
 	}
-	foreach {name} {by_count percent loglogdist mindist} {
+	foreach {name} {by_count percent loglogdist mindist by_errorbar multerror max_Dq_q} {
 		set redu_name [format "%s%s" "dr_" $name]
 		set fieldname [format "%s%s" $prefix $redu_name]
 		if {[info exists ::data_redu($index,$name)]
@@ -866,28 +870,54 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 	set percentage     1.0
 	set loglogdist     1
 	set mindist        0.0
+	set by_errorbar    1
+	set multERR        1
+	set max_Dq_q       0.1
 	if {[info exists red($index,by_count)] &&
 	    [info exists red($index,percent)] &&
 	    [info exists red($index,loglogdist)] &&
-	    [info exists red($index,mindist)]
+	    [info exists red($index,mindist)] &&
+	    [info exists red($index,by_errorbar)] &&
+	    [info exists red($index,multerror)]&&
+	    [info exists red($index,max_Dq_q)]
 	} {
-		if {[string is boolean -strict $red($index,by_count)]} {
+		if {[string is integer -strict $red($index,by_count)]} {
 			set decim_by_count $red($index,by_count)
+#			puts "decim_by_count=$decim_by_count"
 		}
 		if {[string is double -strict $red($index,percent)]} {
 			set percentage     $red($index,percent)
+#			puts "percentage=$percentage"
 		}
 		if {[string is boolean -strict $red($index,loglogdist)]} {
 			set loglogdist     $red($index,loglogdist)
+#			puts "loglogdist=$loglogdist"
 		}
 		if {[string is double -strict $red($index,by_count)]} {
 			set mindist        $red($index,mindist)
+#			puts "mindist=$mindist"
+		}
+		if {[string is integer -strict $red($index,by_errorbar)]} {
+			set by_errorbar $red($index,by_errorbar)
+#			puts "by_errorbar=$by_errorbar"
+		}
+		if {[string is double -strict $red($index,multerror)]} {
+			set multERR     $red($index,multerror)
+#			puts "multERR=$multERR"
+		}
+		if {[string is double -strict $red($index,max_Dq_q)]} {
+			set max_Dq_q     $red($index,max_Dq_q)
+#			puts "max_Dq_q=$max_Dq_q"
 		}
 	}
 
 	if {$mindist < 0.0} {set mindist 0.0}
 	if {$percentage > 1.0} {set percentage 1.0}
 	if {$percentage <= 0.0} {set percentage 0.01}
+	if {$multERR <=0} {set multERR 0.01}
+	if {$max_Dq_q <=0} {set max_Dq_q 0.01}
+	if {$max_Dq_q > 1.0} {set max_Dq_q 1.0}
+	
 	set num [expr $num_data * $percentage]
 	set increment [expr $num_data/$num]
 	set tmp_q {}
@@ -896,50 +926,240 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 	set tmp_res {}
         set tmp_resfile {}
         set tmp_rescalc {}
+        
+	set avg_q       {}
+	set avg_i       {}
+	set avg_di      {}
+	set avg_res     {}
+	set avg_resfile {}
+	set avg_rescalc {}
+
+        set iavg 0
 	set i 0.0
 	set idx 0
 	set xval 0.0
 	set xval_old 0.0
 	set yval 0.0
 	set yval_old 0.0
+	set eval 0.0
+	set eval_old 0.0
+	set rval 0.0
+	set rval_old 0.0
+	set rcalcval 0.0
+	set rcalcval_old 0.0
+	set rfileval 0.0
+	set rfileval_old 0.0
+	
 	set dist -1.0
+	set DQ -1.0
 	set xstatus 0
 	set ystatus 0
 	set overall_min_dist 10.0
 	while {$idx < $num_data} {
+	
 		set xval [lindex $list_q $idx]
 		set yval [lindex $list_i $idx]
-		if {$idx > 0} {
-			if {$loglogdist} {
-				set xstatus [catch {set xdiff [expr log10(abs($xval/$xval_old))]}]
-				set ystatus [catch {set ydiff [expr log10(abs($yval/$yval_old))]}]
-			} else {
-				set xdiff [expr $xval-$xval_old]
-				set ydiff [expr $yval-$yval_old]
-			}
-			if {$xstatus || $ystatus} {
-				set dist [expr $mindist+9999.9999]
-			} else {
-				set dist [expr sqrt($xdiff*$xdiff + $ydiff*$ydiff)]
-			}
+		set eval [lindex $list_di $idx]
+		set rval [lindex $list_res $idx]
+		set rcalcval [lindex $list_rescalc $idx]
+		set rfileval [lindex $list_resfile $idx]
+		switch $decim_by_count {
+			0   {	if {$idx > 0 } {
+					if {$loglogdist} {
+						set xstatus [catch {set xdiff [expr log10(abs($xval/$xval_old))]}]
+						set ystatus [catch {set ydiff [expr log10(abs($yval/$yval_old))]}]
+					} else {
+						set xdiff [expr $xval-$xval_old]
+						set ydiff [expr $yval-$yval_old]
+					} 
+					if {$xstatus || $ystatus} {
+						set dist [expr $mindist+9999.9999]
+					} else 	{
+						set dist [expr sqrt($xdiff*$xdiff + $ydiff*$ydiff)]
+					}
+			       	}
+			     	if {$dist < 0.0 || $dist > $mindist} {
+					lappend tmp_q       $xval
+					lappend tmp_i       $yval
+					lappend tmp_di      $eval
+					lappend tmp_res     $rval
+					lappend tmp_resfile $rfileval
+					lappend tmp_rescalc $rcalcval
+					set xval_old $xval
+					set yval_old $yval
+					set eval_old $eval
+					set rval_old $rval
+					set rcalcval_old $rcalcval
+					set rfileval_old $rfileval
+					if {$dist > 0.0 && $overall_min_dist > $dist} {set overall_min_dist $dist}
+			     	}
+			     	incr idx
+			    }
+			1   {  	
+			 	lappend tmp_q       $xval
+				lappend tmp_i       $yval
+				lappend tmp_di      $eval
+				lappend tmp_res     $rval
+				lappend tmp_resfile $rfileval
+				lappend tmp_rescalc $rcalcval
+				set xval_old     $xval
+				set yval_old     $yval
+				set eval_old     $eval
+				set rval_old     $rval
+				set rcalcval_old $rcalcval
+				set rfileval_old $rfileval
+				set i [expr $i+$increment]
+		       		set idx [expr int(round($i))]
+			    }
+			2   {  	if {$idx > 0} {
+				   set dist [expr abs($yval-$yval_old)-$multERR*(abs($eval)+abs($eval_old))] 
+				   set DQ   [expr abs($xval-$xval_old)-0.5*abs($xval+$xval_old)*$max_Dq_q]
+				   if {($dist < 0 && $DQ < 0)} {
+#			       	      puts "neighbouring data points are within the error band. llength(avg_q):[llength $avg_q]"
+			 	      if {([llength $avg_q] == 0)} {
+			 	         set xval_old     $xval
+					 set yval_old     $yval
+					 set eval_old     $eval
+					 set rval_old     $rval
+			 	         set rcalcval_old $rcalcval
+			 	         set rfileval_old $rfileval
+			 	         set dist 0.0
+			 	         set DQ 0.0
+			 	      }
+			       	      lappend avg_q       $xval
+			 	      lappend avg_i       $yval
+			 	      lappend avg_di      $eval
+			 	      lappend avg_res     $rval
+			 	      lappend avg_resfile $rfileval
+			 	      lappend avg_rescalc $rcalcval
+			       	   } 
+			       	   if {([llength $avg_q] < 2) && ($dist > 0 || $DQ > 0 || [expr $num_data-$idx] == 1)} {
+#			       	      puts "NO averaging needed $avg_q, dist:$dist, DQ:$DQ"
+			       	      set avg_q       [list $xval]
+			 	      set avg_i       [list $yval]
+			 	      set avg_di      [list $eval]
+			 	      set avg_res     [list $rval]
+			 	      set avg_resfile [list $rfileval]
+			 	      set avg_rescalc [list $rcalcval]
+			 	      lappend tmp_q       $xval_old
+			 	      lappend tmp_i       $yval_old
+			 	      lappend tmp_di      $eval_old
+			 	      lappend tmp_res     $rval_old
+			 	      lappend tmp_resfile $rfileval_old
+			 	      lappend tmp_rescalc $rcalcval_old
+			 	      if {([expr $num_data-$idx] == 1)} {
+			 	         lappend tmp_q       $xval
+			 	         lappend tmp_i       $yval
+			 	         lappend tmp_di      $eval
+			 	         lappend tmp_res     $rval
+			 	         lappend tmp_resfile $rfileval
+			 	         lappend tmp_rescalc $rcalcval
+			 	      }
+			 	      set xval_old     $xval
+			 	      set yval_old     $yval
+			 	      set eval_old     $eval
+			 	      set rval_old     $rval
+			 	      set rcalcval_old $rcalcval
+			 	      set rfileval_old $rfileval
+				      set dist 0.0
+			 	      set DQ 0.0
+			 	   } 
+			 	   if {([llength $avg_q] >= 2) && ($dist > 0 || $DQ > 0 || ([expr $num_data-$idx] == 1 ))} {
+#			 	   puts "NEED to average $avg_q, dist:$dist, DQ:$DQ, idx:$idx, num_data:$num_data "
+			 	      set e_NotZero 0
+			 	      set yav 0
+			 	      set eav 0
+			 	      set qav 0
+			 	      foreach tq $avg_q ti $avg_i te $avg_di {
+					 if {$te > 0} {
+					    set wi [expr 1./($te*$te)]
+					    set yav [expr $yav+$ti*$wi]
+				            set qav [expr $qav+$tq*$wi]
+					    set eav [expr $eav+$wi]        
+			 	            set e_NotZero 1
+					 } else {
+					    set wi [expr 1.0]
+					    set yav [expr $yav+$ti*$wi]
+					    set qav [expr $qav+$tq*$wi]
+					    set eav [expr $eav+$wi]        
+			 	            set e_NotZero 0
+					 }
+				      }
+				      set yav [expr $yav/$eav]
+				      set qav [expr $qav/$eav]
+				      if {$e_NotZero == 1 } {
+				         set eav [expr sqrt(1./$eav)]
+				      } else {
+				         set eav 0.0
+				      }
+			 	      set q_stats [::math::statistics::basic-stats $avg_q]
+			 	      set mean_q  [lindex $q_stats 0]
+			 	      set min_q   [lindex $q_stats 1]
+			 	      set max_q   [lindex $q_stats 2]
+			 	      set n_q     [lindex $q_stats 3]
+			 	      set stdev_q [lindex $q_stats 4]
+			 	      set var_q   [lindex $q_stats 5]
+			 	      set rav [expr ($max_q-$min_q)/(2.0*sqrt(2.0*log(2.0))*$mean_q)]
+			 	      set rfav [expr sqrt($rav + [::math::statistics::max $avg_resfile])]
+			 	      set rcav [expr sqrt($rav + [::math::statistics::max $avg_rescalc])]
+			 	      set rav  [expr sqrt($rav + [::math::statistics::max $avg_res])]
+			 	      lappend tmp_q  $mean_q
+			 	      #lappend tmp_q       $qav
+			 	      lappend tmp_i       $yav
+			 	      lappend tmp_di      $eav
+			 	      lappend tmp_res     $rav
+			 	      lappend tmp_resfile $rfav
+			 	      lappend tmp_rescalc $rcav
+			 	      if {([expr $num_data-$idx] == 1)} {
+			 	         lappend tmp_q       $xval
+			 	         lappend tmp_i       $yval
+			 	         lappend tmp_di      $eval
+			 	         lappend tmp_res     $rval
+			 	         lappend tmp_resfile $rfileval
+			 	         lappend tmp_rescalc $rcalcval
+			 	      }
+			 	      set avg_q       [list $xval]
+				      set avg_i       [list $yval]
+				      set avg_di      [list $eval]
+				      set avg_res     [list $rval]
+				      set avg_resfile [list $rfileval]
+				      set avg_rescalc [list $rcalcval]
+				      set xval_old     $xval
+				      set yval_old     $yval
+				      set eval_old     $eval
+				      set rval_old     $rval
+				      set rcalcval_old $rcalcval
+			 	      set rfileval_old $rfileval
+			 	   } 
+#			 	   if {([llength $avg_q] >= 2)} {
+#			 	      puts "no averaging needed, should never arrive at this point"
+#			 	      lappend tmp_q       $xval
+#			 	      lappend tmp_i       $yval
+#			 	      lappend tmp_di      $eval
+#			 	      lappend tmp_res     $rval
+#			 	      lappend tmp_resfile $rfileval
+#			 	      lappend tmp_rescalc $rcalcval
+#			 	   }
+				} else {
+				   set avg_q       [list [lindex $list_q       $idx]]
+				   set avg_i       [list [lindex $list_i       $idx]]
+				   set avg_di      [list [lindex $list_di      $idx]]
+				   set avg_res     [list [lindex $list_res     $idx]]
+				   set avg_resfile [list [lindex $list_resfile $idx]]
+				   set avg_rescalc [list [lindex $list_rescalc $idx]]
+				   
+			 	   set xval_old $xval
+			 	   set yval_old $yval
+			 	   set eval_old $eval
+			 	   set rval_old $rval
+			 	   set rcalcval_old $rcalcval
+			 	   set rfileval_old $rfileval
+				}
+				incr idx
+		    	    }
+		    	    if ($idx == num_data)
 		}
-		if {$decim_by_count || $dist < 0.0 || $dist > $mindist} {
-			lappend tmp_q $xval
-			lappend tmp_i $yval
-			lappend tmp_di [lindex $list_di $idx]
-			lappend tmp_res [lindex $list_res $idx]
-			lappend tmp_resfile [lindex $list_resfile $idx]
-			lappend tmp_rescalc [lindex $list_rescalc $idx]
-			set xval_old $xval
-			set yval_old $yval
-			if {$dist > 0.0 && $overall_min_dist > $dist} {set overall_min_dist $dist}
-		}
-		if {$decim_by_count} {
-			set i [expr $i+$increment]
-			set idx [expr int(round($i))]
-		} else {
-			incr idx
-		}
+#	puts "idx=$idx, llength(q)=[llength $tmp_q] llength(avg_q)=[llength $avg_q]"
 	}; # end while
 	set sasfit_arr(Q)        $tmp_q
 	set sasfit_arr(I)        $tmp_i
@@ -948,7 +1168,8 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 	set sasfit_arr(res,file) $tmp_resfile
 	set sasfit_arr(res,calc) $tmp_rescalc
 	set sasfit_arr(npoints) [llength $tmp_q]
-	puts "Loaded [llength $tmp_q] of $num_data data points, min distance: $overall_min_dist."
+	puts "Loaded [llength $tmp_q] of $num_data data points."
+	if {$decim_by_count == 1} {puts "min distance: $overall_min_dist."}
 }
 
 #------------------------------------------------------------------------------
@@ -1331,6 +1552,10 @@ proc data_redu_menu { w index } {
 	frame $w.lay11 -relief solid -borderwidth 1
 	label $w.lay11.lbl -text "thinning out data points:"
 	frame $w.lay11.mode
+	radiobutton $w.lay11.mode.errorbar \
+		-text "averaging by comparing intensity change and error bar" \
+		-variable ::data_redu($index,by_count) \
+		-value 2 -command "data_redu_menu_by_errorbar $w $index"
 	radiobutton $w.lay11.mode.count \
 		-text "by counting" \
 		-variable ::data_redu($index,by_count) \
@@ -1344,12 +1569,46 @@ proc data_redu_menu { w index } {
 
 	pack $w.lay11.lbl -anchor nw
 	pack $w.lay11.mode
-	pack $w.lay11.mode.count $w.lay11.mode.dist $w.lay11.mode.op -anchor w
-	if {$::data_redu($index,by_count)} {
-	    $w.lay11.mode.count invoke
-	} else {
-	    $w.lay11.mode.dist invoke
+	pack $w.lay11.mode.errorbar $w.lay11.mode.count $w.lay11.mode.dist $w.lay11.mode.op -anchor w
+	switch $::data_redu($index,by_count) {
+	    2 		{$w.lay11.mode.errorbar invoke}
+	    1 		{$w.lay11.mode.count invoke}
+	    0 		{$w.lay11.mode.dist invoke}
+	    default 	{$w.lay11.mode.count invoke}
 	}
+}
+
+proc data_redu_menu_by_errorbar {w index} {
+	set w $::data_redu($index,widgetpath)
+	foreach child [winfo children $w.lay11.mode.op] { destroy $child }
+	label $w.lay11.mode.op.lbl1 -text "min point distance in units of error bar: "
+	spinbox $w.lay11.mode.op.ntr1 \
+		-textvariable ::data_redu($index,multerror) \
+		-format %1.4f -width 7 \
+		-from 0.0 -to 100 -increment 1 \
+		-validate key \
+		-validatecommand \
+	{
+		set p %P
+		if {[string is double -strict $p]
+		} { return 1 } else { return 0 }
+	}
+	label $w.lay11.mode.op.lbl2 -text "maximal allowed Delta_Q/Q for averaging: "
+	spinbox $w.lay11.mode.op.ntr2 \
+		-textvariable ::data_redu($index,max_Dq_q) \
+		-format %1.4f -width 7 \
+		-from 0.0 -to 1.0 -increment 0.05 \
+		-validate key \
+		-validatecommand \
+	{
+		set p %P
+		if {[string is double -strict $p]
+		} { return 1 } else { return 0 }
+	}
+	grid $w.lay11.mode.op.lbl1 -column 0 -row 0 -sticky w
+	grid $w.lay11.mode.op.ntr1 -column 1 -row 0
+	grid $w.lay11.mode.op.lbl2 -column 0 -row 1 -sticky w
+	grid $w.lay11.mode.op.ntr2 -column 1 -row 1
 }
 
 proc data_redu_menu_by_dist {w index} {
@@ -1539,7 +1798,7 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set tmparr(res) [lrange $res $firsti $lasti]
    set tmparr(res,file) [lrange $resfile $firsti $lasti]
    set tmparr(res,calc) [lrange $rescalc $firsti $lasti]
-puts "Hallo [llength $tmparr(Q)]"
+
    dr data_redu $j tmparr [llength $tmparr(Q)] \
       $tmparr(Q) $tmparr(I) $tmparr(DI) $tmparr(res) $tmparr(res,file) $tmparr(res,calc)
 
@@ -1630,7 +1889,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	set sf(delwid)         no
 	
 	clear_sasfit_config tmpsasfit "file," {name divisor firstskip lastskip hide \
-		dr_by_count dr_percent dr_loglogdist dr_mindist}
+		dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_errorbar dr_multerror dr_max_Dq_q}
 	
 	for {set i 0} {$i < $tmpsasfit(file,n)} {incr i} {
 	   set tmpwidname [lindex $tmpsasfit(file,widname) $i]
@@ -1657,7 +1916,7 @@ proc rmMergeFileCmd {delwidcnt} {
 		sasfit_arr_op lappend sf tmpsasfit "file," "file," $listIndex \
 			{name hide firstskip lastskip divisor widname \
 			Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd \
-			dr_by_count dr_percent dr_loglogdist dr_mindist}
+			dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_error dr_multerror dr_max_Dq_q}
 	        lset sf(file,widname) $newIndex [lreplace [lindex $sf(file,widname) end] 1 1 [expr $newIndex+1]]
 		incr newIndex
 	    }
@@ -1665,7 +1924,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	}
 	sasfit_arr_op set tmpsasfit sf "file," "file," -1 {name hide firstskip lastskip divisor \
 		widname Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd n \
-		dr_by_count dr_percent dr_loglogdist dr_mindist}
+		dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_error dr_multerror dr_max_Dq_q}
 	
 	set tmpsasfit(file,widcnt) $newIndex
 	# rebuild GUI
@@ -2095,7 +2354,7 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 	} else {         set IQGraph(x,title) $titleText }
 
 	clear_sasfit_config localsasfit "file," {name divisor firstskip lastskip \
-		hide dr_by_count dr_percent dr_loglogdist dr_mindist}
+		hide dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_errorbar dr_multerror dr_max_Dq_q}
 
 	set n_no_hide 0
 	for {set i 0} {$i < $localsasfit(file,n)} {incr i} {
@@ -2236,7 +2495,7 @@ proc LoadCmd { loadProj } {
       clearGraph_el ResIQGraph
       clearGraph_el SDGraph
       if {$sasfit(file,n) >= 1} {
-         Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI)
+         Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
       }
       RefreshGraph IQGraph
       NewGlobalFitDataCmd addsasfit 

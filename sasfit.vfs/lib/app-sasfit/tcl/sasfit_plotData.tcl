@@ -717,6 +717,10 @@ proc RefreshGraph {Graph} {
 	$w(w) configure -plotpadx        $w(margin,plotpadx)
 	$w(w) configure -plotpady        $w(margin,plotpady)
 
+	foreach etag [$w(w) marker names] {
+		$w(w) marker delete $etag
+	}
+		
 	for {set i 0} {$i < $w(e,element)} {incr i} {
 		set graphname [lindex $w(e,elementname) $i]
 
@@ -772,10 +776,6 @@ proc RefreshGraph {Graph} {
 		set resdata   [lindex $w(e,resdata) $i]
 		set error     [lindex $w(e,error)   $i]
 		set errtags   [lindex $w(e,errtags) $i]
-
-		foreach etag [$w(w) marker names] {
-			$w(w) marker delete $etag
-		}
 
 		# ignore negative values on certain scales
 		if {[llength $ydata] && [llength $xdata] &&
@@ -920,7 +920,7 @@ proc RefreshGraph {Graph} {
 						      -fill [lindex $w(e,errfill) $i]
 						$w(w) marker configure $etag \
 						      -outline [lindex $w(e,erroutline) $i]
-						$w(w) marker configure $etag -under 1
+						$w(w) marker configure $etag -under 0
 					}
 				}
 			};# changing of error tags coordinates
