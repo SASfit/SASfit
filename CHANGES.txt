@@ -3,10 +3,10 @@
   after each q-value. Before the whole scattering curve needed to be calculated.
 - progress bar has been added to the GUI
 - bug fix in plotting error bars of multiple data sets. 
-- another method for thinning oversampled data sets. The new methods is performing an 
-  averaging of data points depending on a user-defined maximum q-smearing by averaging and 
+- implementation of another method for thinning out oversampled data sets. The new methods is performing an 
+  averaging of data points depending on a user-defined maximum allowed q-smearing and 
   a user-defined maximum distance in intensity in units of the error bar of the data points, i.e. an averaging is 
-  only performed, if the intensities look similar with n-times the intensity uncertainty
+  only performed, if the intensities look similar with n-times the intensity error bars.
 
 0.94.3 2014-07-02
 - bug fix in the plugin for parallel epiped

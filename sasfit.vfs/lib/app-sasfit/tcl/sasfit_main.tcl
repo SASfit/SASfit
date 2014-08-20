@@ -1033,7 +1033,7 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 			 	      lappend avg_resfile $rfileval
 			 	      lappend avg_rescalc $rcalcval
 			       	   } 
-			       	   if {([llength $avg_q] < 2) && ($dist > 0 || $DQ > 0 || [expr $num_data-$idx] == 1)} {
+			       	   if {([llength $avg_q] < 2) && ($dist > 0 || $DQ > 0)} {
 #			       	      puts "NO averaging needed $avg_q, dist:$dist, DQ:$DQ"
 			       	      set avg_q       [list $xval]
 			 	      set avg_i       [list $yval]
@@ -1064,7 +1064,7 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 				      set dist 0.0
 			 	      set DQ 0.0
 			 	   } 
-			 	   if {([llength $avg_q] >= 2) && ($dist > 0 || $DQ > 0 || ([expr $num_data-$idx] == 1 ))} {
+			 	   if {([llength $avg_q] >= 2) && ($dist > 0 || $DQ > 0)} {
 #			 	   puts "NEED to average $avg_q, dist:$dist, DQ:$DQ, idx:$idx, num_data:$num_data "
 			 	      set e_NotZero 0
 			 	      set yav 0
@@ -1585,7 +1585,7 @@ proc data_redu_menu_by_errorbar {w index} {
 	spinbox $w.lay11.mode.op.ntr1 \
 		-textvariable ::data_redu($index,multerror) \
 		-format %1.4f -width 7 \
-		-from 0.0 -to 100 -increment 1 \
+		-from 0.0 -to 10000 -increment 0.5 \
 		-validate key \
 		-validatecommand \
 	{
