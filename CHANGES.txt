@@ -1,6 +1,12 @@
 0.94.4 2014-XX-XX
--
--
+- a new interrupt button can stop now the intensity evaluation of fitting procedure 
+  after each q-value. Before the whole scattering curve needed to be calculated.
+- progress bar has been added to the GUI
+- bug fix in plotting error bars of multiple data sets. 
+- another method for thinning oversampled data sets. The new methods is performing an 
+  averaging of data points depending on a user-defined maximum q-smearing by averaging and 
+  a user-defined maximum distance in intensity in units of the error bar of the data points, i.e. an averaging is 
+  only performed, if the intensities look similar with n-times the intensity uncertainty
 
 0.94.3 2014-07-02
 - bug fix in the plugin for parallel epiped

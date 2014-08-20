@@ -58,4 +58,5 @@ if { $argc > 0 } {
 
 # final sasfit application
 package require app-sasfit
+package require math::statistics
 

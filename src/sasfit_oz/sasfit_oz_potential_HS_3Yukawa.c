@@ -1,7 +1,7 @@
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   18.11.2013
+ *   8.08.2014
  */
 #include <sasfit_oz.h>
 
@@ -21,9 +21,9 @@ double U_HS_3Yukawa(double r, double T, double *p) {
     if (r<sigma) {
         return GSL_POSINF;
     } else {
-        Y1 = K1*exp(-LAMBDA1*(r-sigma));
-        Y2 = K2*exp(-LAMBDA2*(r-sigma));
-        Y3 = K3*exp(-LAMBDA3*(r-sigma));
+        Y1 = K1*exp(-LAMBDA1*(r-sigma)/sigma);
+        Y2 = K2*exp(-LAMBDA2*(r-sigma)/sigma);
+        Y3 = K3*exp(-LAMBDA3*(r-sigma)/sigma);
         return kb*T*sigma/r*(Y1+Y2+Y3);
     }
 }
