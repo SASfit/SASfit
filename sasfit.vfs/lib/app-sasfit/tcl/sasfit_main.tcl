@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_main.tcl
 #
-# Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2014, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #
@@ -164,8 +164,8 @@ label $w.frame.right.prog.info.l2 -text $sasfit(version) -font {Helvetica 10}
 pack $w.frame.right.prog.info.l1 $w.frame.right.prog.info.l2
 
 label $w.frame.right.address.line1 -text \
-"Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
-Laboratory for Neutron Scattering
+"Copyright (c) 2008-2014, Paul Scherrer Institute (PSI)
+Laboratory for Neutron Scattering and Imaging
 CH-5232 Villigen PSI, Switzerland"
 entry $w.frame.right.address.url
 $w.frame.right.address.url insert end "http://kur.web.psi.ch/sans1/SANSSoft/sasfit.html"
@@ -439,7 +439,7 @@ proc clear_sasfit_file_config { sasfit_arr prefix
 } {
 	upvar $sasfit_arr sf
 	set sf(${prefix}widcnt) 0
-	clear_sasfit_config $sasfit_arr $prefix {name divisor firstskip \
+	clear_sasfit_config sf $prefix {name divisor firstskip \
 		lastskip hide Q I DI res "res,calc" "res,file" widname r1 r2 lambda Dlambda l1 \
 		l2 Dd d dr_by_count dr_percent \
 		dr_loglogdist dr_mindist \
@@ -544,7 +544,7 @@ proc zero_sasfit {argsasfit} {
 	set sasfit(Nth,file,n)         {}
 	set sasfit(Nth,filelabel)      {}
 	set sasfit(Nth,hide)           {}
-	clear_sasfit_file_config sasfit "Nth,file"
+	clear_sasfit_file_config sasfit "Nth,file,"
 
 	set sasfit(Nth,I)              {}
 	set sasfit(Nth,Q)              {}
@@ -2103,7 +2103,7 @@ proc MergeCmd {} {
 	wm geometry .addfile
 	wm title .addfile "Merge Files"
 	raise .addfile
-	grab  .addfile
+	#grab  .addfile
 	focus .addfile
 
 	cp_arr sasfit tmpsasfit
@@ -2140,7 +2140,7 @@ proc MergeCmd {} {
                      lappend tmpsasfit(file,DI)       $tmpsasfit(DI)
                      lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
                      set tmpsasfit(res,calc) [sasfit_res $resolution(lambda)  \
-			                             $resolution(Dlambda) \
+							 $resolution(Dlambda) \
 						     $resolution(r1)      \
 						     $resolution(l1)      \
 						     $resolution(r2)      \
@@ -2152,9 +2152,9 @@ proc MergeCmd {} {
                      lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
 
 		     if {$tmpAnalytPar(geometrical/datafile)} {
-			 lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
+				lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
 		     } else {
-			 lappend tmpsasfit(file,res) $tmpsasfit(res,file)
+				lappend tmpsasfit(file,res) $tmpsasfit(res,file)
 		     }
                      incr tmpsasfit(file,n)
                      MergeFileCmd tmpsasfit
@@ -2296,8 +2296,10 @@ proc MergeCmd {} {
 		catch {destroy .addfile}
 	}
 	button .addfile.layout3.new -text "New..." -highlightthickness 0 -command \
-	{
-		set sasfit(file,n) 0
+	{	global sasfit tmpsasfit
+	    zero_sasfit tmpsasfit
+		zero_sasfit sasfit
+		#set ::show_new_file_dialog 1
 		MergeCmd
 	}
         checkbutton .addfile.layout3.dores -text "use resolution" \

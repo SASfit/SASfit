@@ -578,7 +578,7 @@ wm geometry .addfile
 wm title .addfile "Merge Files"
 raise .addfile
 focus .addfile
-grab  .addfile
+#grab  .addfile
 
 set datatype $tmpsasfit(actualdatatype)
 frame .addfile.lay0 -relief ridge -borderwidth 2
