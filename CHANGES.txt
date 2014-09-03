@@ -1,4 +1,4 @@
-0.94.4 2014-XX-XX
+0.94.4 2014-09-03
 - a new interrupt button can stop now the intensity evaluation of fitting procedure 
   after each q-value. Before the whole scattering curve needed to be calculated.
 - progress bar has been added to the GUI

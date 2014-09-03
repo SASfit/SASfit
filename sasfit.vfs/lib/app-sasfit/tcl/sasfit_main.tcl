@@ -1553,7 +1553,7 @@ proc data_redu_menu { w index } {
 	label $w.lay11.lbl -text "thinning out data points:"
 	frame $w.lay11.mode
 	radiobutton $w.lay11.mode.errorbar \
-		-text "averaging by comparing intensity change and error bar" \
+		-text "averaging neighbouring data points depending on error bar and q difference" \
 		-variable ::data_redu($index,by_count) \
 		-value 2 -command "data_redu_menu_by_errorbar $w $index"
 	radiobutton $w.lay11.mode.count \
