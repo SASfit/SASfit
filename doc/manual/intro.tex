@@ -224,7 +224,37 @@ window. One can switch over from one data file to another by
 clicking previous or next. Add and remove buttons are used to add or
 remove another file. The addition of curves for different $Q$ scales
 is performed similar to as mentioned in the Input single data set
-introduction.
+
+
+\section{Reducing the number of data points}
+
+\SASfit is calculating the intensity for each data point. To make the minimization faster it can be useful to reduce the number of data points. A reduction of data points make sense if they are oversampled, i.e. within the distance of neighbouring q-values the intensity is only changing little. \SASfit supplies two algorithms for reducing the number of data points and one algorithm which is averaging data points.
+After reading a data file a new entry is generated in the GUI, see e.\ g.\  \ref{fig:QTmergeMultipleDS2}(c). The filename button activates the GUI (see fig.\ \ref{fig:DataReductionOption}) for choosing an algorithm to reduce optionally the number of data points. Three procedures are supplied at the moment:
+\begin{enumerate}
+\item averaging neighbouring data points depending on error bar and q difference
+\item skipping equally data points to reduce their numbers to a certain percentage
+\item skipping nearby data points
+\end{enumerate}
+ By using the first option an averaging of data points $I_k(q_k) \ldots I_l(q_l)$ is done as long as they fulfill the conditions that
+\begin{align}
+\forall n \in (k,l] : \abs{I_k-I_n} < D_\mathrm{min} (\Delta I_k + \Delta I_n)
+\quad \bigwedge \quad \abs{q_k-q_n}/\overline{q} <  \Delta q_{max}
+\end{align}
+where $D_\mathrm{min} $ and $\Delta q_{max}$ are user supplied values. 
+The averaging of data points therefore depends on a user-defined maximum allowed $q$-smearing $\Delta q_{max}$ and  a user-defined maximum distance in intensity in units of the error bar ($D_\mathrm{min} $), so that an averaging is only performed, if the intensities look similar with $D_\mathrm{min}$-times the intensity error bars and are not to far away from each other on the q-axes.
+The second option simply skips data points equally to reduce the amount data. The parameter "percentage/100 to load" defines the amount of data to be kept. A value of 1 means all data are kept and a value of 0.5 means every second data point will be kept. In the thor option one can define a distance in the $q:I(q)$-plot or $\log q: \log I(q)$ plot. The next data point, which will be plotted must have either in the linear or logarithmic plot a distance exceeding a user defined value.
+ 
+\begin{figure}[htb]
+\centering
+  \subfigure[Averaging data points depending on the error bar and resulting resolution.]{\label{fig:DataReductionOptionAVG1}
+             \includegraphics[width=0.3\textwidth]{../images/GUI/DataReductionOptionAVG1.png}}
+  \subfigure[skipping data points to reduce the number of points to a certain amount.]{\label{fig:DataReductionOptionSKIP1}
+             \includegraphics[width=0.3\textwidth]{../images/GUI/DataReductionOptionAVG1.png}}
+  \subfigure[reducing the number of data points by defining a minimum distance between them to be plotted.]{\label{fig:DataReductionOptionSKIP2}
+             \includegraphics[width=0.3\textwidth]{../images/GUI/DataReductionOptionSKIP2.png}}
+\caption{GUI for input values of the two algorithms for reducing the number of data points and for one algorithm which is averaging data points.}
+\label{fig:DataReductionOption}
+\end{figure}
 
 \section{Simulating scattering curves}
 
