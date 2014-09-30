@@ -168,7 +168,7 @@ To do this an polynomial $y_p(Q)$ of degree $p$
 \begin{align}
 y_p(Q) &= \sum_{k=0}^p c_k Q^k
 \end{align}
-is fitted to the data point $i$ and its $n^\textrm{th}$ neighbors,
+is fitted to the data point $i$ and its $n^\textrm{th}$ neighbors to the left and right,
 i.e. is fitted to $2n+1$ points from $I_{i-n}(Q_{i-n})$ to $I_{i+n}(Q_{i+n})$.
 After the fit $\chi_i^2$ is calculated
 \begin{align}
@@ -180,6 +180,20 @@ The error bar $\Delta I_i$ for $Q_i$ is than defined as
 \end{align}
 \SASfit is using two nearest neighbors $n=2$ and fitting a polynomial of \
 degree $p=2$ to it to guess an error bar.
+This procedure gives reasonable error bars as long as the data are oversampled and do not show sharp features within the data points $i-n$ and $i+n$. A diffraction peak or a minimum in a form factor like for monodisperse particle might not reasonable well described by the polynomial and consequently the resulting error bar will get large. Furthermore systematic errors in the absolute intensity like an overall scaling factor will not be recognized. The procedure to guess the error bar is basing on the assumption that the scattering curve behaves locally approximately like a polynomial function of degree $p=2$.
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[simulated model data set with supplied error bars]{\label{fig:ModelDataWithError}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/ModelDataWithError.png}}
+\subfigure[Ration between supplied error bar and the error bar guessed bz \SASfit]{\label{fig:ErrorGUI}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/RatioErrSuppGuess.png}}
+\end{center}
+\begin{center}
+\subfigure[simulated model data set with supplied error bars]{\label{fig:ModelDataWithError2}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/ModelDataWithError.png}}
+\subfigure[Ration between supplied error bar and the error bar guessed bz \SASfit]{\label{fig:ErrorGUI2}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/RatioErrSuppGuess.png}}
+\end{center}
+\caption{Comparison of a simulated model data set with supplied error bar and an error bar guessed by \SASfit.}
+\label{fig:ErrBar}
+\end{figure}
 
 \vspace{1cm}
 

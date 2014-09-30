@@ -2059,7 +2059,7 @@ close  $f
 # n+1 column = y-values of curve n
 # n+2 column = dy-values of curve n
 # n+3 column = res-value of curve n
-proc export_csv_data {filename bltGraph} {
+proc export_csv_data {outpipe bltGraph {outtype file}} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $bltGraph Graph
 for {set i 0} {$i < $Graph(e,element)} {incr i} {
@@ -2068,7 +2068,6 @@ for {set i 0} {$i < $Graph(e,element)} {incr i} {
    set dydata($i)  [lindex $Graph(e,error)   $i]
    set resdata($i) [lindex $Graph(e,resdata) $i]
 }
-set f [open $filename w]
 set max 0
 for {set i 0} {$i < $Graph(e,element)} {incr i} {
   set tmax [llength $xdata($i)]
@@ -2078,24 +2077,31 @@ for {set i 0} {$i < $Graph(e,element)} {incr i} {
   set tmax [llength $dydata($i)]
   if {$tmax > $max} { set max $tmax }
 }
+set txt ""
 for {set k 0} {$k < $max} {incr k} {
-   set line ""
    for {set i 0} {$i < $Graph(e,element)} {incr i} {
       if {[llength [lindex $xdata($i) $k]] != 0 } {
-         append line [format "%g;" [lindex $xdata($i) $k]]
-         append line [format "%g;" [lindex $ydata($i) $k]]
+         append txt [format "%g;" [lindex $xdata($i) $k]]
+         append txt [format "%g;" [lindex $ydata($i) $k]]
          set dy  [lindex $dydata($i) $k]
          if {$dy > 0} {
-            append line [format "%g;" $dy]
+            append txt [format "%g;" $dy]
          } else {
-            append line [format "%g;" -1]
+            append txt [format "%g;" -1]
          }
-         append line [format "%g;" [lindex $resdata($i) $k]]
-      } else { append line ";;;;" }
+         append txt [format "%g;" [lindex $resdata($i) $k]]
+      } else { append txt ";;;;" }
    }
-   puts $f $line
+   append txt "\n"
 }
-close  $f
+if {[string compare $outtype file] == 0 } {
+	set f [open $outpipe w]
+	puts $f $txt
+	close  $f
+} else {
+	upvar $outpipe outtxt
+	set outtxt $txt
+}
 }
 
 #------------------------------------------------------------------------------
