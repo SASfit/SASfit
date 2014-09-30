@@ -861,17 +861,23 @@ proc popupCalculateCmd { configarr
     bind $wls.fileBox <Double-ButtonPress-1> "showFilePopup $wls.fileBox %X %Y %x %y"
 
     button $wls.storeFNLabel -text "select output file:" -command "getOutFile $configarr"
-    grid   $wls.storeFNLabel -row [expr $arr(firstRow)+4] -column 0 -columnspan 2 -sticky e
+    grid   $wls.storeFNLabel -row [expr $arr(firstRow)+4] -column 0 -sticky e
     label  $wls.storeFNEntry -textvariable [format "%s(series_outfile)" $configarr]
-    grid   $wls.storeFNEntry -row [expr $arr(firstRow)+4] -column 2 -columnspan $arr(numCols) -sticky w
+    grid   $wls.storeFNEntry -row [expr $arr(firstRow)+4] -column 1 -columnspan $arr(numCols) -sticky w
 
     button $wls.loadnext -text "load next file" -command "seriesLoadNext $configarr"
     button $wls.storeISP -text "save fit result" -command "seriesSaveResult $configarr"
     button $wls.doall -text "Do all" -command "seriesDoAll $configarr"
     button $wls.resetISP -text "reset data file" -command "seriesResetResult $configarr"
-
-    grid $wls.loadnext - $wls.storeISP - $wls.resetISP - $wls.doall - \
-        -row [expr $arr(firstRow)+5] -sticky e
+    button $wls.interrupt -text "INTERRUPT" -command "seriesInterrupt $configarr" -bg red
+	
+    grid  $wls.loadnext -row [expr $arr(firstRow)+5] -column 0 -sticky e
+	grid  $wls.storeISP -row [expr $arr(firstRow)+5] -column 1 -sticky e
+	grid  $wls.resetISP -row [expr $arr(firstRow)+5] -column 2 -sticky e
+	grid  $wls.doall -row [expr $arr(firstRow)+5] -column 3 -sticky e
+	grid  $wls.interrupt -row [expr $arr(firstRow)+5] -column 4 -sticky e
+#	grid  $wls.storeISP - $wls.resetISP - $wls.doall - $wls.interrupt \
+#        -row [expr $arr(firstRow)+5] -sticky e
     grid columnconfigure $wls {0 1 2 3 4 5} -weight 1
 
     update

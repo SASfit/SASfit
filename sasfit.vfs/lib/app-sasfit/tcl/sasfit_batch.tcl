@@ -58,6 +58,7 @@ proc menuBatch {} {
 }
 
 proc saveBatchResult { configarr } {
+	global IQGraph SDGraph
 	upvar "::AnalytPar" ap
 	upvar $configarr ca
 
@@ -88,6 +89,25 @@ proc saveBatchResult { configarr } {
 	set textdata [join $result "\n"]
 	set fh [open "$fname" w+]
 	puts $fh $textdata
+	puts $fh ""
+	puts $fh "quality of fit:"
+	puts $fh ""
+	puts $fh "chisq;red.chisq.;data points;fit parameters"
+	puts $fh "$ap(chisq);$ap(reducedchisq);$ap(ndata);$ap(mfit)"
+	puts $fh "R value;w.R value;Q factor;variance of fit"
+	puts $fh "$ap(R);$ap(wR);$ap(Q);$ap(varianceOFfit)"
+	puts $fh ""
+	puts $fh "scattering intensity:"
+	puts $fh ""
+	puts $fh "Q;I(Q);Delta I(Q);resolution;..."
+	export_csv_data outtxt IQGraph txt
+	puts $fh $outtxt
+    puts $fh ""
+	puts $fh "size distributions:"
+	puts $fh ""
+	puts $fh "R;N(R);not used;not used;..."
+	export_csv_data outtxt SDGraph txt
+	puts $fh $outtxt
 	close $fh
 }
 
