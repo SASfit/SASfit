@@ -1070,22 +1070,26 @@ proc RefreshStructParFit {} {
 		}
 	}
 	clearGraph_el IQGraph  
-	Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI)
+	
 	Put_Graph_el IQGraph [lindex $Porod 0] [lindex $Porod 1]
 	Put_Graph_el IQGraph [lindex $I0extrapol 0] [lindex $I0extrapol 1]
+	Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI)
+	
+	set IQGraph(e,symbol) [lreplace $IQGraph(e,symbol) 0 0 none]
 	set IQGraph(e,symbol) [lreplace $IQGraph(e,symbol) 1 1 none]
-	set IQGraph(e,symbol) [lreplace $IQGraph(e,symbol) 2 2 none]
+	set IQGraph(e,linehide) [lreplace $IQGraph(e,linehide) 0 0 1]
 	set IQGraph(e,linehide) [lreplace $IQGraph(e,linehide) 1 1 1]
-	set IQGraph(e,linehide) [lreplace $IQGraph(e,linehide) 2 2 1]
-	set IQGraph(e,dashcolor) [lreplace $IQGraph(e,dashcolor) 1 1 magenta]
-	set IQGraph(e,dashcolor) [lreplace $IQGraph(e,dashcolor) 2 2 red]
+	set IQGraph(e,linehide) [lreplace $IQGraph(e,linehide) 2 2 0]
+	
+	set IQGraph(e,dashcolor) [lreplace $IQGraph(e,dashcolor) 0 0 magenta]
+	set IQGraph(e,dashcolor) [lreplace $IQGraph(e,dashcolor) 1 1 red]
 
-	set IQGraph(e,linehide) [lreplace $IQGraph(e,linehide) 0 0 0]
-	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) 0 0 \
-				    [file tail $sasfit(filename)]]
-	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) 1 1 Porod Fit]
+
 	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) 2 2 \
-				       $StructParData(I0typestr) Fit]
+				    [file tail $sasfit(filename)]]
+	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) 0 0 Porod Fit]
+	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) 1 1 \
+				       "$StructParData(I0typestr) Fit"]
 
 	# show intermediate linear approx if requested and available
 	if {[llength [array names StructParData guinier_lin*]] &&
