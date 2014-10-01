@@ -654,10 +654,10 @@ proc RefreshGraph {Graph} {
 
 	if {([string compare $xtrans "log10(x)"] != 0) } {
 	    if {$w(x,factor) != 1} {
-		set xscale "* $w(x,factor)"
-		regsub -all "x" $xtrans   "($w(x,title) $xscale)" xtrans
+			set xscale "* $w(x,factor)"
+			regsub -all "x" $xtrans   "($w(x,title) $xscale)" xtrans
 	    } else {
-		regsub -all "x" $xtrans   "$w(x,title)" xtrans
+			regsub -all "x" $xtrans   "$w(x,title)" xtrans
 	    }
 	} else { set xtrans $w(x,title) }
 
@@ -845,7 +845,7 @@ proc RefreshGraph {Graph} {
 
 		$w(w) element configure $graphname -xdata  $xxdata
 		$w(w) element configure $graphname -ydata  $yydata
-
+		
 		#
 		# transformation of error data into dylow and dyhi values
 		#
@@ -858,10 +858,13 @@ proc RefreshGraph {Graph} {
 		}
 		set dylow {}
 		set dyhi  {}
+		set dxlow {}
+		set dxhi  {}
+
 		if { [llength $error] > 0 && $thereIsError } {
 			foreach y $ydata e $error {
-				lappend dylow [expr $y - abs($e)]
-				lappend dyhi  [expr $y + abs($e)]
+				lappend dylow [expr $y - 0.5*abs($e)]
+				lappend dyhi  [expr $y + 0.5*abs($e)]
 			}
 			#
 			# real transformation of dylow and dyhi
@@ -900,32 +903,80 @@ proc RefreshGraph {Graph} {
 				}
 			} else { set dyyhi $dyhi }
 
-			#
-			# changing of error tags coordinates
-			#
-			if {[llength $errtags] == [llength $xdata] 
-			} {
-				foreach etag $errtags x $xxdata dyl $dyylow dyh $dyyhi e $error {
-					if { $e > 0 } {
-						$w(w) marker create line -name $etag
-						$w(w) marker configure $etag \
-						      -coords [list $x $dyl $x $dyh]
-						$w(w) marker configure $etag \
-						      -hide [lindex $w(e,errorhide) $i]
-						$w(w) marker configure $etag \
-						      -dashes [lindex $w(e,errdash) $i]
-						$w(w) marker configure $etag \
-						      -linewidth [lindex $w(e,errlinewidth) $i]
-						$w(w) marker configure $etag \
-						      -fill [lindex $w(e,errfill) $i]
-						$w(w) marker configure $etag \
-						      -outline [lindex $w(e,erroutline) $i]
-						$w(w) marker configure $etag -under 0
-					}
-				}
-			};# changing of error tags coordinates
+			if {[lindex $w(e,errorhide) $i]} {
+				$w(w) element configure $graphname -ylow {}
+				$w(w) element configure $graphname -yhigh {}
+			} else {
+				$w(w) element configure $graphname -ylow $dyylow
+				$w(w) element configure $graphname -yhigh $dyyhi
+				$w(w) element configure $graphname -errorbarcolor [lindex $w(e,erroutline) $i]
+				$w(w) element configure $graphname -errorbarwidth [lindex $w(e,errlinewidth) $i]
+			}
 		};# if { [llength $error] > 0 }
+	
+		set thereIsResdata 0
+		foreach resd $resdata {  
+			if {$resd > 0.0} { 
+				set thereIsResdata 1
+				break 
+			}
+		}
+	
+		if { [llength $resdata] > 0 && $thereIsResdata } {
+			foreach x $xdata r $resdata {
+				lappend dxlow [expr $x - 0.5*abs($r)]
+				lappend dxhi  [expr $x + 0.5*abs($r)]
+			}
+			#
+			# real transformation of dxlow and dxhi
+			#
+			set limit_low [lindex [$w(w) xaxis limits] 0]
+			if { ([string compare $xtrans "\$x"] != 0) && 
+			     ([string compare $xtrans "log10(\$x)"] != 0) 
+			} {
+				set dxxlow {}
+				foreach x $dxlow y $ydata {
+					# avoid sqrt(negative) or log(negative)
+					if {[catch {set val [expr $xtrans]}]} {
+						set val $limit_low
+					# avoid outside of plot area coords
+					} elseif { $val < $limit_low } {
+						set val $limit_low
+					}
+					lappend dxxlow $val
+				}
+			} else { set dxxlow $dxlow }
+
+			# avoid coords outside of plot area
+			set dxxlow_tmp {}
+			foreach xval $dxxlow {
+				if {$xval < $limit_low} { set xval $limit_low }
+				lappend dxxlow_tmp $xval
+			}
+			set dxxlow $dxxlow_tmp
+
+			if { ([string compare $xtrans "\$x"] != 0) &&
+			     ([string compare $xtrans "log10(\$x)"] != 0)
+			} {
+				set dxxhi {}
+				foreach x $dxhi y $ydata {
+					lappend dxxhi [expr $xtrans]
+				}
+			} else { set dxxhi $dxhi }
+
+			if {[lindex $w(e,errorhide) $i]} {
+				$w(w) element configure $graphname -xlow {}
+				$w(w) element configure $graphname -xhigh {}
+			} else {
+				$w(w) element configure $graphname -xlow $dxxlow
+				$w(w) element configure $graphname -xhigh $dxxhi
+				$w(w) element configure $graphname -errorbarcolor [lindex $w(e,erroutline) $i]
+				$w(w) element configure $graphname -errorbarwidth [lindex $w(e,errlinewidth) $i]
+			}
+		};# if { [llength $error] > 0 }
+	
 	}
+
 	if {[string compare $w(fitrange) yes] == 0} {
 		Make_Square_el w $w(lower,x) $w(upper,x)
 	}
