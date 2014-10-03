@@ -934,7 +934,7 @@ proc seriesInterrupt { configarr
 } {
     upvar $configarr arr
 	set arr(Interrupt) 1
-	$arr(wls_wid).doall configure -text "continune: Do all"
+	$arr(wls_wid).doall configure -text "continue: Do all"
 }
 
 proc seriesSaveResult { configarr
@@ -954,8 +954,10 @@ proc seriesDoAll { configarr
     upvar $configarr arr
     set arr(loadnextfail) 0
 	set arr(Interrupt) 0
+	set ::SASfitinterrupt 0
     while { ($arr(loadnextfail) == 0) && \
 	        ($arr(Interrupt) == 0) && \
+			($::SASfitinterrupt == 0) && \
             ($arr(series_runnr) < [llength $arr(series_files)])
     } {
         $arr(wls_wid).loadnext invoke
@@ -966,6 +968,9 @@ proc seriesDoAll { configarr
     }
 	if {($arr(series_runnr) == [llength $arr(series_files)])} {
 		$arr(wls_wid).doall configure -text "finished: Do all"
+	}
+	if {$::SASfitinterrupt == 1} {
+		$arr(wls_wid).doall configure -text "continue: Do all"
 	}
 }
 
