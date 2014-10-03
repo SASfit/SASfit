@@ -107,12 +107,21 @@ proc Pop_Graph_el {GraphPar} {
 	set Par(e.errstipples)  [lrange $Par(e,errstipples)  0 $last_el]
 	set Par(e,errfill)      [lrange $Par(e,errfill)      0 $last_el]
 	set Par(e,erroutline)   [lrange $Par(e,erroutline)   0 $last_el]
+	set Par(e,errtags)      [lrange $Par(e,errtags)      0 $last_el]
+	
 	set Par(e,xdata)        [lrange $Par(e,xdata)        0 $last_el]
 	set Par(e,ydata)        [lrange $Par(e,ydata)        0 $last_el]
 	set Par(e,resdata)      [lrange $Par(e,resdata)      0 $last_el]
 	set Par(e,error)        [lrange $Par(e,error)        0 $last_el]
-	set Par(e,errtags)      [lrange $Par(e,errtags)      0 $last_el]
 
+	set Par(e,reshide)      [lrange $Par(e,reshide)      0 $last_el]
+	set Par(e,reslinewidth) [lrange $Par(e,reslinewidth) 0 $last_el]
+	set Par(e,resdash)      [lrange $Par(e,resdash)      0 $last_el]
+	set Par(e.resstipples)  [lrange $Par(e,resstipples)  0 $last_el]
+	set Par(e,resfill)      [lrange $Par(e,resfill)      0 $last_el]
+	set Par(e,resoutline)   [lrange $Par(e,resoutline)   0 $last_el]
+	set Par(e,restags)      [lrange $Par(e,restags)      0 $last_el]
+	
 	set Par(l,legendtext)   [lrange $Par(l,legendtext)   0 $last_el]
 	return 1
 }
@@ -298,6 +307,15 @@ proc Put_Graph_el {GraphPar xdata args } {
 		set Par(e,erroutline)   {}
 		set Par(e,errdash)      {}
 		set Par(e,errstipples)  {}
+		
+		set Par(e,reshide)      {}
+		set Par(e,reslinewidth) {}
+		set Par(e,resfill)      {}
+		set Par(e,resoutline)   {}
+		set Par(e,resdash)      {}
+		set Par(e,resstipples)  {}	
+		set Par(e,restags)      {}
+		
 		set Par(e,xdata)        {}
 		set Par(e,ydata)        {}
 		set Par(e,resdata)      {}
@@ -341,7 +359,13 @@ proc Put_Graph_el {GraphPar xdata args } {
 	lappend Par(e,errfill)      [lindex $tmpGP(e,errfill)      0]
 	lappend Par(e,erroutline)   [lindex $tmpGP(e,erroutline)   0]
 
-
+	lappend Par(e,reshide)      [lindex $tmpGP(e,reshide)      0]
+	lappend Par(e,reslinewidth) [lindex $tmpGP(e,reslinewidth) 0]
+	lappend Par(e,resdash)      [lindex $tmpGP(e,resdash)      0]
+	lappend Par(e,resstipples)  [lindex $tmpGP(e,resstipples)  0]
+	lappend Par(e,resfill)      [lindex $tmpGP(e,resfill)      0]
+	lappend Par(e,resoutline)   [lindex $tmpGP(e,resoutline)   0]
+	
 	$Par(w) element configure graph$Par(e,element) \
 	        -color [lindex $tmpGP(e,dashcolor) 0]
 	$Par(w) element configure graph$Par(e,element) \
@@ -532,6 +556,7 @@ proc CreateGraphPar {GraphPar} {
 	set Par(e,ydata)        {{}}
 	set Par(e,resdata)      {{}}
 	set Par(e,error)        {{}}
+	
 	set Par(e,errorhide)    {no}
 	set Par(e,errlinewidth) {1}
 	set Par(e,errdash)      {0}
@@ -539,6 +564,15 @@ proc CreateGraphPar {GraphPar} {
 	set Par(e,errfill)      {Black}
 	set Par(e,erroutline)   {blue}
 	set Par(e,errtags)      {{}}
+	
+	
+	set Par(e,reshide)      {no}
+	set Par(e,reslinewidth) {1}
+	set Par(e,resdash)      {0}
+	set Par(e,resstipples)  {hline1}
+	set Par(e,resfill)      {Black}
+	set Par(e,resoutline)   {blue}
+	set Par(e,restags)      {{}}
 
 	set Par(l,legendtext)  {"unknown"}
 	set Par(l,hide)        yes
@@ -964,7 +998,7 @@ proc RefreshGraph {Graph} {
 				}
 			} else { set dxxhi $dxhi }
 
-			if {[lindex $w(e,errorhide) $i]} {
+			if {[lindex $w(e,reshide) $i]} {
 				$w(w) element configure $graphname -xlow {}
 				$w(w) element configure $graphname -xhigh {}
 			} else {

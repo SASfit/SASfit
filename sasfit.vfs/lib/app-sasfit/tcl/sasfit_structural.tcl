@@ -930,6 +930,13 @@ proc seriesLoadNext { configarr
     incr arr(series_runnr)
 }
 
+proc seriesInterrupt { configarr
+} {
+    upvar $configarr arr
+	set arr(Interrupt) 1
+	$arr(wls_wid).doall configure -text "continune: Do all"
+}
+
 proc seriesSaveResult { configarr
 } {
     upvar $configarr arr
@@ -946,8 +953,10 @@ proc seriesDoAll { configarr
 } {
     upvar $configarr arr
     set arr(loadnextfail) 0
+	set arr(Interrupt) 0
     while { ($arr(loadnextfail) == 0) && \
-        ($arr(series_runnr) < [llength $arr(series_files)])
+	        ($arr(Interrupt) == 0) && \
+            ($arr(series_runnr) < [llength $arr(series_files)])
     } {
         $arr(wls_wid).loadnext invoke
         if {$arr(loadnextfail) == 0} {
@@ -955,6 +964,9 @@ proc seriesDoAll { configarr
         }
         update
     }
+	if {($arr(series_runnr) == [llength $arr(series_files)])} {
+		$arr(wls_wid).doall configure -text "finished: Do all"
+	}
 }
 
 proc seriesResetResult { configarr
@@ -963,6 +975,7 @@ proc seriesResetResult { configarr
     set fid [open $arr(series_outfile) w]
     close $fid
     updateFileSelection $configarr 0
+	$arr(wls_wid).doall configure -text "Do all"
 }
 
     seriesBuildWidgets $configarr $widgetpath
