@@ -928,6 +928,13 @@ set tmpPar(e,errdash)      [lindex [lrange $Par(e,errdash) $i $i] 0]
 set tmpPar(e,errstipples)  [lrange $Par(e,errstipples)  $i $i]
 set tmpPar(e,errfill)      [lrange $Par(e,errfill)      $i $i]
 set tmpPar(e,erroutline)   [lrange $Par(e,erroutline)   $i $i]
+
+set tmpPar(e,reshide)      [lrange $Par(e,reshide)      $i $i]
+set tmpPar(e,reslinewidth) [lrange $Par(e,reslinewidth) $i $i]
+set tmpPar(e,resdash)      [lindex [lrange $Par(e,resdash) $i $i] 0]
+set tmpPar(e,resstipples)  [lrange $Par(e,resstipples)  $i $i]
+set tmpPar(e,resfill)      [lrange $Par(e,resfill)      $i $i]
+set tmpPar(e,resoutline)   [lrange $Par(e,resoutline)   $i $i]
 }
 
 #------------------------------------------------------------------------------
@@ -989,6 +996,19 @@ set Par(e,errfill)      [lreplace $Par(e,errfill)      $i $i \
                                   $tmpPar(e,errfill)]
 set Par(e,erroutline)   [lreplace $Par(e,erroutline)   $i $i \
                                   $tmpPar(e,erroutline)]
+								  
+set Par(e,reshide)      [lreplace $Par(e,reshide)    $i $i \
+                                  $tmpPar(e,reshide)]
+set Par(e,reslinewidth) [lreplace $Par(e,reslinewidth) $i $i \
+                                  $tmpPar(e,reslinewidth)]
+set Par(e,resdash)      [lreplace $Par(e,resdash)      $i $i \
+                                  $tmpPar(e,resdash)]
+set Par(e,resstipples)  [lreplace $Par(e,resstipples)      $i $i \
+                                  $tmpPar(e,resstipples)]
+set Par(e,resfill)      [lreplace $Par(e,resfill)      $i $i \
+                                  $tmpPar(e,resfill)]
+set Par(e,resoutline)   [lreplace $Par(e,resoutline)   $i $i \
+                                  $tmpPar(e,resoutline)]
 }
 
 #------------------------------------------------------------------------------
@@ -1060,8 +1080,8 @@ pack  $wl.legend_lay.entry -side left -fill x -expand yes
 
 set sym_f    [$wn insert 1 1  -text symbol   -state normal ]
 set line_f   [$wn insert 2 2  -text line     -state normal ]
-set err_f    [$wn insert 3 3  -text error    -state normal ]
-
+set err_f    [$wn insert 3 3  -text "y-error"    -state normal ]
+set res_f    [$wn insert 4 4  -text "x-error"    -state normal ]
 #
 # defining symbol shape and size parameters
 #
@@ -1184,12 +1204,6 @@ entry $wl.width.entry -textvariable tmpPar(e,errlinewidth) -width 4 \
       -highlightthickness 0 
 pack  $wl.width.label $wl.width.entry -side left
 
-#frame $wl.fillcolor
-#grid  $wl.fillcolor -row 2 -column 0 -sticky w -padx 3
-#label $wl.fillcolor.label -text "fill color:" -width 14 -ancho w
-#SelectColor $wl.fillcolor.color -type menubutton -variable tmpPar(e,errfill) 
-#pack $wl.fillcolor.label $wl.fillcolor.color -side left
-
 frame $wl.outlinecolor
 grid  $wl.outlinecolor -row 1 -column 0 -sticky w -padx 3
 label $wl.outlinecolor.label -text "color:" -width 11 -ancho w
@@ -1208,18 +1222,8 @@ ComboBox $wl.errshape.cb \
          -textvariable tmpPar(e,errdash) \
          -text "Shape:" -labelanchor w \
          -values $tmpPar(dashpattern) 
-pack $wl.errshape.cb  -fill x -anchor w -padx 1m -pady 1m 
+#pack $wl.errshape.cb  -fill x -anchor w -padx 1m -pady 1m 
 
-#frame $wl.stipples
-#grid  $wl.stipples -row 2 -column 1 -sticky w -padx 3
-#ComboBox $wl.stipples.cb \
-#         -width 12  -editable no  \
-#         -highlightthickness 0 \
-#         -labelwidth 7 \
-#         -textvariable tmpPar(e,errstipples) \
-#         -text "smooth:" -labelanchor w \
-#         -values $tmpPar(stipples)
-#pack  $wl.stipples.cb  -fill x -anchor w -padx 1m -pady 1m 
 
 frame $wl.errhide
 grid  $wl.errhide -row 1 -column 1 -sticky w -padx 3
@@ -1228,6 +1232,46 @@ checkbutton $wl.errhide.onoff \
       -variable tmpPar(e,errorhide) \
       -onvalue yes -offvalue no -ancho w
 pack  $wl.errhide.label $wl.errhide.onoff -side left
+
+#
+# defining line width and color parameters of error lines
+#
+set wl $res_f
+frame $wl.width
+grid  $wl.width -row 0 -column 0 -sticky w -padx 3
+label $wl.width.label -text "line width:" -width 11 -anchor w
+entry $wl.width.entry -textvariable tmpPar(e,errlinewidth) -width 4 \
+      -highlightthickness 0 
+pack  $wl.width.label $wl.width.entry -side left
+
+frame $wl.outlinecolor
+grid  $wl.outlinecolor -row 1 -column 0 -sticky w -padx 3
+label $wl.outlinecolor.label -text "color:" -width 11 -ancho w
+SelectColor $wl.outlinecolor.color -type menubutton -variable tmpPar(e,erroutline) 
+pack $wl.outlinecolor.label $wl.outlinecolor.color -side left
+
+#
+# defining line shape and hide parameters
+#
+frame $wl.resshape
+grid $wl.resshape -row 0 -column 1 -sticky w -padx 3
+ComboBox $wl.resshape.cb \
+         -width 7  \
+         -highlightthickness 0 \
+         -labelwidth 7 \
+         -textvariable tmpPar(e,resdash) \
+         -text "Shape:" -labelanchor w \
+         -values $tmpPar(dashpattern) 
+#pack $wl.resshape.cb  -fill x -anchor w -padx 1m -pady 1m 
+
+
+frame $wl.reshide
+grid  $wl.reshide -row 1 -column 1 -sticky w -padx 3
+label $wl.reshide.label -text "hide:" -width 7 -ancho w
+checkbutton $wl.reshide.onoff \
+      -variable tmpPar(e,reshide) \
+      -onvalue yes -offvalue no -ancho w
+pack  $wl.reshide.label $wl.reshide.onoff -side left
 
 
 for {set i 1} {$i < 4} {incr i} {
