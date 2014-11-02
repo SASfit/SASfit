@@ -48,7 +48,7 @@ one is given by
 \displaystyle Q_\text{factor} =
 Q\left(\frac{N-m}{2},\frac{\chi^2}{2}\right) =
 \frac{\Gamma\left(\frac{N-m}{2},\frac{\chi^2}{2}\right)}{\Gamma\left(\frac{N-m}{2}\right)}
-\text{ with } \Gamma\left( a,x\right) =  \int_x^\infty t^{s-1}e^{-t}
+\text{ with } \Gamma\left(a,x\right) =  \int_x^\infty t^{a-1}e^{-t}
 dt
 \end{equation}
 For a fitting function being a good approximation to the data the experimental
@@ -141,7 +141,7 @@ A_{kl} &= \sum_{i=1}^{N} \frac{1}{\left(\Delta I_i^\mathrm{th}\right)^2} \frac{\
 \end{align}
 The inversion of this matrix yield the covariance matrix
 \begin{align}
-\mathbf{C} &= \mathbf{A}^-1
+        \mathbf{C} &= \mathbf{A}^{-1}
 \end{align}
 The standard deviations $\Delta a_i$ of the best-fit parameters are given by the square root of the corresponding diagonal elements of the covariance matrix
 \begin{align}
