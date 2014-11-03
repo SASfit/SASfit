@@ -13189,29 +13189,29 @@ proc analytical_widgets_bottom { w simulate isGlobal
         set ::SASfitinterrupt 0
 }
 
-proc analytical_scroll_binds { w } {
-	bind $w <Button-4> { analytical_scroll_cmd %W -10 }
-	bind $w <Button-5> { analytical_scroll_cmd %W  10 }
+proc analytical_scroll_binds { w
+} {
+	bind $w <Button-4> { ::analytical_scroll_cmd %W -10 }
+	bind $w <Button-5> { ::analytical_scroll_cmd %W  10 }
 	bind $w <MouseWheel> {
 		set parent [winfo containing -displayof %W \
 			[expr [winfo rootx %W] + %x] \
 		       	[expr [winfo rooty %W] + %y] ]
-		analytical_scroll_cmd $parent [expr %D/-10]
+		::analytical_scroll_cmd $parent [expr %D/-10]
 	}
 }
 
-proc analytical_scroll_cmd { w units } {
+proc analytical_scroll_cmd { w units
+} {
 	set parent $w
-	while {[winfo exists $parent] && 
-		"[string range $parent end-3 end]" != ".lay"
+	while {[winfo exists "$parent"] &&
+		"[winfo class $parent]" != "Canvas"
 	} {
 		set parent [winfo parent $parent]
 	}
-	if {![string length $parent]} { return }
-	if {[winfo exists $parent]} { set parent [winfo parent $parent] }
-	if {![string length $parent]} { return }
-	if {[winfo exists $parent] && "[winfo class $parent]" == "Canvas"} {
-		$parent yview scroll $units units
+	if {[winfo exists "$parent"] && "[winfo class $parent]" == "Canvas"} {
+		# fails on NoteBook analytical.fitpar.notebook
+		catch {$parent yview scroll $units units}
 	}
 }
 
