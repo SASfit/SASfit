@@ -29,12 +29,12 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	set ::fiterror(ap) $analytpar
 	set ::fiterror(color_bg_normal) "#d9d9d9"
 	set ::fiterror(color_bg_active_column) "light blue"
-	set ::fiterror(color_bg_active_row) "misty rose"
+	set ::fiterror(color_bg_active_row) "light green"
 	upvar $analytpar ap
 
 	# set&init some settings
-	set ::fiterror(color_contrib_bg0) gray88
-	set ::fiterror(color_contrib_bg1) gray95
+	set ::fiterror(color_contrib_bg_current) gray95
+	set ::fiterror(color_contrib_bg_other) gray88
 	proc covar_make_font { bold } {
 		set basefontname "tkconfixed"
 		set family [font actual $basefontname -family]
@@ -107,8 +107,8 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	pack $wn
 
 	set SD_f [$wn insert 1 1  -text "size distribution"   -state normal ]
-	set FF_f [$wn insert 2 2  -text "form factor"         -state normal ]
-	set SQ_f [$wn insert 3 3  -text "structure factor"    -state normal ]
+	set FF_f [$wn insert 2 2  -text "form factor"		 -state normal ]
+	set SQ_f [$wn insert 3 3  -text "structure factor"	-state normal ]
 
 	frame $w.layerl
 	frame $w.layerm
@@ -145,12 +145,12 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 			pack $w.$p$i -in $w.layer$layer -fill x -side top
 			label $w.$p$i.label -textvariable [format "%s%s" $tmpactualap ($type,$p$i,label)]
 			label $w.$p$i.var -textvariable [format "%s%s" $tmpactualap ($type,$p$i,var)] \
-			      -relief sunken -anchor w -width 17 -highlightthickness 0
+				  -relief sunken -anchor w -width 17 -highlightthickness 0
 			label $w.$p$i.pm -text "+-" -width 2 -highlightthickness 0
 			label $w.$p$i.err -textvariable [format "%s%s" $tmpactualap ($type,$p$i,err)] \
-			      -relief sunken -anchor w -width 17 -highlightthickness 0 
+				  -relief sunken -anchor w -width 17 -highlightthickness 0 
 			pack $w.$p$i.err $w.$p$i.pm $w.$p$i.var $w.$p$i.label \
-			     -side right -in $w.$p$i -padx 1m -pady 1m
+				 -side right -in $w.$p$i -padx 1m -pady 1m
 		}
 	}
 
@@ -204,7 +204,6 @@ proc fiterror_active_list {} {
 			}
 		}
 	}
-#	puts stderr "TCL activeList: '$activeList'"
 	return [list $activeList $alist]
 }
 
@@ -228,7 +227,6 @@ proc fiterror_build_covar {} {
 		destroy $child
 	}
 
-	set contrib_current [$::nomenu index active]
 	set lst [fiterror_active_list]
 	set activeList [lindex $lst 0]
 	set alist [lindex $lst 1]
@@ -257,14 +255,13 @@ proc fiterror_build_covar {} {
 			# draw each data cell in a row
 			if {$idx < [llength $row]} {
 				# determine column/contrib color
-				set bgcolor $::fiterror(color_contrib_bg1)
-				if {$contrib_current == $contrib} {
-					set bgcolor $::fiterror(color_contrib_bg0)
-				}
 				set val [lindex $row end-$idx]
-				lappend widgets [label $w.$name \
-					-background $bgcolor -font $::fiterror(font) \
-					-text [show_covar_f $val]]
+				set is_diag_elem [expr ($idx + 1) == [llength $row]]
+				set bgcolor [covar_background_color \
+								$w $name $contrib $is_diag_elem $val]
+				lappend widgets [label $w.$name -justify center -width 9 \
+									-background $bgcolor -font $::fiterror(font) \
+									-text [covar_format_val $val $is_diag_elem]]
 			} else { ;# placeholder for empty columns
 				lappend widgets "x"
 			}
@@ -273,9 +270,68 @@ proc fiterror_build_covar {} {
 		eval "grid $widgets"
 	}
 }
-proc show_covar_f { val } {
+
+proc covar_contrib_is_current { contrib } {
+	if {![string is integer -strict $contrib]} { return false }
+	return [expr [$::nomenu index active] == $contrib]
+}
+
+# determine matrix element background color based on currently selected
+# contribution and diagonal position
+proc covar_background_color { w lname contrib is_diag_elem val
+} {
+	# return unchanged background color for other widgets than labels
+	if {[winfo exists $w.$lname] && \
+		![string equal [winfo class $w.$lname] "Label"]
+	} {
+		return [$w.$lname cget -background]
+	}
+	# get default background color based on current contribution
+	set bgcolor $::fiterror(color_contrib_bg_other)
+	if {[covar_contrib_is_current $contrib]} {
+		set bgcolor $::fiterror(color_contrib_bg_current)
+	}
+	# get element value from label if not passed as argument
+	if {![string is double -strict $val] && [winfo exists $w.$lname]} {
+		set val [$w.$lname cget -text]
+	}
+	# set element color based on its value in range [0,1]
+	if { !$is_diag_elem && [expr abs($val) <= 1]
+	} {
+		set bgcolor [color_shade $w $bgcolor 0 $val]
+	}
+	return $bgcolor
+}
+
+proc color_shade { w color channel amount
+} {
+    # get rgb values
+    set rgb [winfo rgb [winfo parent $w] $color]
+    # convert rgb values to range [0,255] (8 bit each)
+    set hexcolor {}
+    foreach c {0 1 2} {
+        lset rgb $c [expr [lindex $rgb $c] * 255 / 65535]
+        if {$c != $channel} {
+            # shade the color according to element value
+            lset rgb $c [expr int((1 - abs($amount)) * [lindex $rgb $c])]
+        }
+        # convert color to hex notation
+        lappend hexcolor [format "%02X" [lindex $rgb $c]]
+    }
+    set color [format "\#%s" [join $hexcolor ""]]
+    return $color
+}
+
+proc covar_format_val { val is_diag_elem
+} {
 	set res " "
-	catch {set res [format "%1.2e" $val] }
+	if { $is_diag_elem } {
+		catch {set res [format "% 2.2e" $val] }
+	} elseif { [expr abs($val) > 1] } {
+		set res "n/a"
+	} else {
+		catch {set res [format "% 2.3f" $val] }
+	}
 	return $res
 }
 
@@ -287,7 +343,6 @@ proc active_lists_equal { list1_var list2_var } {
 }
 
 proc fiterror_update {} {
-#	puts stderr "fiterror_update"
 
 	if {![info exists ::fiterror(aap)] || 
 		![info exists ::fiterror(taap)] || 
@@ -320,9 +375,6 @@ proc fiterror_update {} {
 	} else {
 		fiterror_update_covar $w
 	}
-
-	# colorize previously selected cells, eventually
-#	covar_reset_color_history $w
 }
 
 proc getfitap { name pattern } {
@@ -361,13 +413,13 @@ proc fiterror_update_widgets { w } {
 			}
 		}
 	}
-	# restore selected parameter at the respective contribution
+	# restore selected parameter coloring for the selected contribution
+	# -> _parameter_, not the covar element!
 	foreach color {column row} {
 		if {[info exists ::fiterror(selected_param_$color)]} {
 			set param $::fiterror(selected_param_$color)
-			set contrib_current [$::nomenu index active]
 			set bgcolor $::fiterror(color_bg_normal)
-			if {$contrib_current == [lindex $param 0]} {
+			if {[covar_contrib_is_current [lindex $param 0]]} {
 				set bgcolor $::fiterror(color_bg_active_$color)
 			}
 			foreach child [winfo children [lindex $param end]] {
@@ -377,41 +429,48 @@ proc fiterror_update_widgets { w } {
 	}
 }
 
-proc fiterror_update_covar { wname } {
-
+proc fiterror_update_covar { wname
+} {
 	set w $wname.data
-	set bg0 $::fiterror(color_contrib_bg0)
-	set bg1 $::fiterror(color_contrib_bg1)
-	set contrib_current [$::nomenu index active]
 
-	# change background for the currently selected contribution
+	# change background according to currently selected contribution
 	foreach child [winfo children $w] {
 		set name [winfo name $child]
-		$child configure -background [get_covar_background $name]
+		$child configure -background [get_covar_background $w $name]
 	}
+	# change background according to selected row&column
 	foreach color {column row} {
 		if {![info exists ::fiterror(selected_covar_$color)]} { continue }
 		set bgcolor $::fiterror(color_bg_active_$color)
+		set channel [argmax [winfo rgb $w $bgcolor]]
 		foreach lbl $::fiterror(selected_covar_$color) {
 			if {![winfo exists $w.$lbl]} { continue }
+			# shade the color which was set previously (above)
+			set bgcolor [color_shade $w [$w.$lbl cget -background] $channel 0.1]
 			$w.$lbl configure -background $bgcolor
 		}
 	}
 }
 
-# returns the background color for the specified contribution
-proc get_covar_background { wname } {
-#	set bg $::fiterror(color_bg_normal)
-	set bg black
-	# extract contrib number
-	set idx [expr [string first "-" $wname] - 1]
+# returns the background color of a diagonal cell according to the currently
+# selected contribution,
+# otherwise it returns the current unchanged background color otherwise
+proc get_covar_background { w lname
+} {
+	set idx [string first "_" $lname]
+	set xname [string range $lname 0 [expr $idx-1]]
+	set yname [string range $lname [expr $idx+1] end]
+
+	# do we have a diagonal cell? do nothing
+	set is_diag_elem [string equal "$xname" "$yname"]
+
+	# extract contrib number, emulate split()
+	set idx [expr [string first "-" $lname] - 1]
 	if {$idx < 0} { return $bg }
-	set contrib [string range $wname 0 $idx]
-	if {![string is integer $contrib]} { return $bg }
-	if {[$::nomenu index active] == $contrib} { ;# current contrib ?
-		return $::fiterror(color_contrib_bg0)
-	}
-	return $::fiterror(color_contrib_bg1)
+	set contrib [string range $lname 0 $idx]
+
+	set bgcolor [covar_background_color $w $lname $contrib $is_diag_elem ""]
+	return $bgcolor
 }
 
 proc get_model_id { str } {
@@ -428,7 +487,6 @@ proc deselect_param { color } {
 	# check if we are at the valid contribution
 	if {[llength $selected] < 2} { return }
 	set contrib [lindex $selected 1 0]
-	set contrib_current [$::nomenu index active]
 
 	set lbl ""
 	if {[llength $selected] == 2 &&
@@ -472,9 +530,8 @@ proc highlight_param { widget color param
 		}
 	}
 	# check if we are at the correct contribution
-	set contrib [lindex $param 0]
-	set contrib_current [$::nomenu index active]
-	if {$contrib == $contrib_current} {
+	if {[covar_contrib_is_current [lindex $param 0]]
+	} {
 		deselect_param $color
 		set bgcolor $::fiterror(color_bg_active_$color)
 		# set the new background
@@ -487,32 +544,37 @@ proc highlight_param { widget color param
 	highlight_covar $color $param
 }
 
-proc deselect_covar { w color } {
-	if {[info exists ::fiterror(selected_covar_$color)]} {
-		foreach lbl $::fiterror(selected_covar_$color) {
-			if {![winfo exists $w.$lbl]} { continue }
+proc deselect_covar { w color
+} {
+	if {![info exists ::fiterror(selected_covar_$color)]} { return }
+	foreach lbl $::fiterror(selected_covar_$color) {
+		if {![winfo exists $w.$lbl]} { continue }
+		set bgcolor [get_covar_background $w $lbl] ;# unselected color
+		set recolor 1
+		if {[llength $::fiterror($lbl)] == 1} { ;# no double selection
+			array unset ::fiterror $lbl
+		} elseif {[llength $::fiterror($lbl)] > 1} {
+			# if the (shaded) color it should have now, was backuped
+			# we must not restore anything
 			set thiscolor $::fiterror(color_bg_active_$color)
-			set bgcolor [get_covar_background $lbl]
-			set recolor 1
-			if {[llength $::fiterror($lbl)] == 1} { ;# no double selection
-				array unset ::fiterror $lbl
-			} elseif {[llength $::fiterror($lbl)] > 1} {
-				# if the color it should have now, was backuped
-				# we must not restore anything
-				set idx [lsearch $::fiterror($lbl) $thiscolor]
-				if {$idx >= 0} { ;# was backuped, delete that entry
-					set recolor 0
-					set ::fiterror($lbl) [lreplace $::fiterror($lbl) $idx $idx]
-				} else {
-					set bgcolor [lindex $::fiterror($lbl) end]
-					set ::fiterror($lbl) [lreplace $::fiterror($lbl) end end]
-				}
+			set channel [argmax [winfo rgb $w $thiscolor]]
+			set thiscolor [color_shade $w $bgcolor $channel 0.1]
+			set idx [lsearch $::fiterror($lbl) $thiscolor]
+			if {$idx >= 0} { ;# was backuped, delete that entry
+				set recolor 0
+				set ::fiterror($lbl) [lreplace $::fiterror($lbl) $idx $idx]
+			} else {
+				# not found, chose the last one and remove it (pop the stack)
+				set bgcolor [lindex $::fiterror($lbl) end]
+				set ::fiterror($lbl) [lreplace $::fiterror($lbl) end end]
 			}
-			if {$recolor} { $w.$lbl configure -background $bgcolor }
-			$w.$lbl configure -relief flat
 		}
-		array unset ::fiterror selected_covar_$color
+		if {$recolor} {
+			$w.$lbl configure -background $bgcolor
+		}
+		$w.$lbl configure -relief flat
 	}
+	array unset ::fiterror selected_covar_$color
 }
 # decides if highlighted column/row have to be swapped to get the overlapping
 # field in the upper right half
@@ -565,35 +627,37 @@ proc highlight_covar { color pcur } {
 		covar_colorize_cell $w $lbl $color
 	}
 }
-proc covar_colorize_cell { w lbl color } {
+
+# returns the index of the largest element in a list
+proc argmax { lst } {
+	set imax 0
+	for {set i 0} {$i < [llength $lst]} {incr i} {
+		if {[lindex $lst $i] > [lindex $lst $imax]} {
+			set imax $i
+		}
+	}
+	return $imax
+}
+
+proc covar_colorize_cell { w lbl color
+} {
 	covar_color_push $w $lbl $color
 	set bgcolor $::fiterror(color_bg_active_$color)
+	set channel [argmax [winfo rgb $w $bgcolor]]
+	set bgcolor [color_shade $w [get_covar_background $w $lbl] $channel 0.1]
 	$w.$lbl configure -background $bgcolor
 	if {[llength $::fiterror($lbl)] > 1} {
+		# an element selected multiple times is probably at intersection of
+		# row and column, show it raised
 		$w.$lbl configure -relief raised
 	}
 }
+
+# stores previous color and row or column assignment of a covar elemnt
 proc covar_color_push { w lbl color } {
 	if {![winfo exists $w.$lbl]} { return }
 	lappend ::fiterror($lbl) [$w.$lbl cget -background]
 	lappend ::fiterror(selected_covar_$color) $lbl
-}
-
-proc covar_reset_color_history { w } {
-#	set none_selected 1
-	foreach color {column row} {
-		if {[info exists ::fiterror(covar_active_labels_$color)]} {
-			set lst $::fiterror(covar_active_labels_$color)
-			set ::fiterror(covar_active_labels_$color) {}
-			foreach lbl $lst {
-				set ::fiterror($lbl) {}
-				covar_colorize_cell $w $lbl $color
-#				set none_selected 0
-			}
-		}
-	}
-	fiterror_deselect_param
-#	if {$none_selected == 1} { covar_select_first_active }
 }
 
 # default selection of the first active parameter
