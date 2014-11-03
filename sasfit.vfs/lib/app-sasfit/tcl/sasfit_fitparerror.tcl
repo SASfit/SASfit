@@ -72,13 +72,15 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	# label of columns
 	frame $w.chisq
 	pack $w.chisq
-	label $w.chisq.disclaimer -text "Errors are related to the found local minimum.\nThese errors are not related to the experimental data!"
-	label $w.chisq.txt -text "chisquare = "
-	label $w.chisq.chi2 -textvariable ::stepfit(chisq)
+	label $w.chisq.disclaimer -wraplength 400 -justify left -text [join {\
+        "Confidence values are given for the current local optimum under the "\
+        "assumption that:\n"\
+        "- the provided measurement errors are independent\n"\
+        "- the provided measurement errors are normally distributed\n"\
+        "- the parameters are not correlated"} ""]
 	pack $w.chisq.disclaimer
-	pack $w.chisq.txt $w.chisq.chi2 -side left
 	# get the default background color
-	set ::fiterror(color_bg_normal) [$w.chisq.chi2 cget -background]
+	set ::fiterror(color_bg_normal) [$w.chisq.disclaimer cget -background]
 
 	frame $w.modeltype
 	pack $w.modeltype -fill x -side top -padx 10 -pady 10 
@@ -100,15 +102,18 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	frame $w.data
 	pack $w.data
 
-	label $w.helptext -text "Click on a parameter to highlight its column (left: column, right: row)"
+	label $w.helptext -text [join {\
+        "For correlated parameters check the matrix above.\n"
+        "> Click on a parameter to highlight its column or row <\n"
+        "(left button: column, right button: row)"} ""]
 	pack $w.helptext
 
 	set wn [NoteBook $w.layer]
 	pack $wn
 
-	set SD_f [$wn insert 1 1  -text "size distribution"   -state normal ]
-	set FF_f [$wn insert 2 2  -text "form factor"		 -state normal ]
-	set SQ_f [$wn insert 3 3  -text "structure factor"	-state normal ]
+	set SD_f [$wn insert 1 1  -text "size distribution" -state normal ]
+	set FF_f [$wn insert 2 2  -text "form factor"       -state normal ]
+	set SQ_f [$wn insert 3 3  -text "structure factor"  -state normal ]
 
 	frame $w.layerl
 	frame $w.layerm
