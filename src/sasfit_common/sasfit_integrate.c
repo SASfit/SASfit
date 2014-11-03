@@ -132,7 +132,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
         	err = gsl_integration_qagi(&F, epsabs, epsrel, limit, sasfit_int_mem(), &res, &errabs);
 	} 
 	else if ( gsl_finite(int_start) && gsl_finite(int_end) ) // adaptive integration with singularities 
-	                                                         // on well defined intervall (a,b)
+	                                                         // on well defined interval (a,b)
 	{
         	err = gsl_integration_qags(&F, int_start, int_end, epsabs, epsrel, limit, sasfit_int_mem(), &res, &errabs);
 	} else {
