@@ -48,7 +48,7 @@ scalar sasfit_peak_ExponentiallyModifiedGaussianMode(sasfit_param * param)
 
 	Atmp=param->p[0];
 	param->p[0]=1.0;
-// searching for intervall
+// searching for interval
 
 	xr = center;
 	a0 = sasfit_peak_ExponentiallyModifiedGaussianArea(center,param);

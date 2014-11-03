@@ -65,7 +65,7 @@ scalar sasfit_peak_GiddingsMode(sasfit_param * param)
 
 	a_tmp=param->p[0];
 	param->p[0]=1.0;
-// searching for intervall
+// searching for interval
 
 	xr = center;
 	a0 = sasfit_peak_GiddingsArea(center,param);

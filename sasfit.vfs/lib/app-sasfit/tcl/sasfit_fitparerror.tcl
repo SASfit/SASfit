@@ -60,7 +60,7 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	toplevel .analytical.fiterror
 	set w .analytical.fiterror
 	wm geometry $w
-	wm title $w "confidence intervall of fit parameters ..."
+	wm title $w "confidence interval of fit parameters ..."
 
 	set taglist [bindtags .analytical.fiterror]
 	lappend taglist WindowCloseTag

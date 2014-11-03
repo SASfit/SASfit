@@ -11646,7 +11646,7 @@ proc analytical_menu_bar { simorfit analytPar tmpAnalytPar actualAnalytPar \
 			-command { MergeCmd }
 	}
 	$w.menu.options.menu add command \
-		-label "show confidence intervall of fit parameters ..." \
+		-label "show confidence interval of fit parameters ..." \
 		-command "FitErrorCmd $analytPar $actualAnalytPar $tmpactualAnalytPar"
 	$w.menu.options.menu add checkbutton \
 		-label "update menu during fit ?" \
