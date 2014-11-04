@@ -28,8 +28,10 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	set ::fiterror(taap) $tmpactualap
 	set ::fiterror(ap) $analytpar
 	set ::fiterror(color_bg_normal) "#d9d9d9"
-	set ::fiterror(color_bg_active_column) "light blue"
-	set ::fiterror(color_bg_active_row) "light green"
+	set ::fiterror(color_bg_active_0) "light green"
+	set ::fiterror(color_bg_active_1) "light blue"
+	# threshold of correlation coefficient
+	set ::fiterror(correlation_threshold) 0.5
 	upvar $analytpar ap
 
 	# set&init some settings
@@ -59,6 +61,7 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	if {[winfo exists .analytical.fiterror]} {destroy .analytical.fiterror}
 	toplevel .analytical.fiterror
 	set w .analytical.fiterror
+	set ::fiterror(widget) $w
 	wm geometry $w
 	wm title $w "confidence interval of fit parameters ..."
 
@@ -73,46 +76,46 @@ proc FitErrorCmd { analytpar actualap tmpactualap } {
 	frame $w.chisq
 	pack $w.chisq
 	label $w.chisq.disclaimer -wraplength 400 -justify left -text [join {\
-        "Confidence values are given for the current local optimum under the "\
-        "assumption that:\n"\
-        "- the provided measurement errors are independent\n"\
-        "- the provided measurement errors are normally distributed\n"\
-        "- the parameters are not correlated"} ""]
+		"Confidence values are given for the current local optimum under the "\
+		"assumption that:\n"\
+		"- the provided measurement errors are independent\n"\
+		"- the provided measurement errors are normally distributed\n"\
+		"- the parameters are not correlated"} ""]
 	pack $w.chisq.disclaimer
 	# get the default background color
 	set ::fiterror(color_bg_normal) [$w.chisq.disclaimer cget -background]
 
-	frame $w.modeltype
-	pack $w.modeltype -fill x -side top -padx 10 -pady 10 
-	button $w.modeltype.sd -text "parameter distribution" \
-		-highlightthickness 0 -command { 
-#			highlight_modeltype sd
-		}
-	button $w.modeltype.ff -text "form factor" \
-		-highlightthickness 0 -command { 
-#			highlight_modeltype ff
-		}
-	button $w.modeltype.sq -text "structure factor" \
-		-highlightthickness 0 -command { 
-#			highlight_modeltype sq
-		}
-#	pack $w.modeltype.sd $w.modeltype.ff $w.modeltype.sq \
-#		-in $w.modeltype -side left
-
 	frame $w.data
 	pack $w.data
 
+	frame $w.correlated -relief sunken
+	pack $w.correlated
+
+	label $w.correlated.helptext -text \
+		"Detected correlated parameter pairs:"
+	pack $w.correlated.helptext
+	canvas $w.correlated.canvas -highlightthickness 0 -height 70 \
+								-yscrollcommand "$w.correlated.scrollbar set"
+	scrollbar $w.correlated.scrollbar -command "$w.correlated.canvas yview"
+	pack $w.correlated.canvas -side left -fill both -in $w.correlated
+	pack $w.correlated.scrollbar -side left -fill y -in $w.correlated
+	set corr_frm $w.correlated.canvas.frame
+	pack [frame $corr_frm] -in $w.correlated.canvas
+	$w.correlated.canvas create window 0 0 -anchor nw -window $corr_frm
+	bind $corr_frm <Configure> "scrollform_resize $w.correlated.canvas"
+	set ::fiterror(correlated_frame) $corr_frm
+	::analytical_scroll_binds [winfo toplevel $corr_frm]
+
 	label $w.helptext -text [join {\
-        "For correlated parameters check the matrix above.\n"
-        "> Click on a parameter to highlight its column or row <\n"
-        "(left button: column, right button: row)"} ""]
+		"Click on a parameter below to highlight its column or row:\n"
+		"(left button: column, right button: row)"} ""]
 	pack $w.helptext
 
 	set wn [NoteBook $w.layer]
 	pack $wn
 
 	set SD_f [$wn insert 1 1  -text "size distribution" -state normal ]
-	set FF_f [$wn insert 2 2  -text "form factor"       -state normal ]
+	set FF_f [$wn insert 2 2  -text "form factor"	   -state normal ]
 	set SQ_f [$wn insert 3 3  -text "structure factor"  -state normal ]
 
 	frame $w.layerl
@@ -176,8 +179,10 @@ proc dismissCmd { } {
 	array unset ::fiterror
 }
 
-proc fiterror_active_list {} {
-
+# returns lists of all active/fitted parameters in triples:
+# (contribution, model, parameter)
+proc fiterror_active_list {
+} {
 	set contrib_count [getfitap ap "max_SD"]
 	set activeList {}
 	for {set contrib 0} {$contrib < $contrib_count} {incr contrib} {
@@ -226,11 +231,11 @@ proc fiterror_build_covar {} {
 
 	# build the matrix view
 
+	foreach child [winfo children $::fiterror(correlated_frame)] {
+		destroy $child }
 	set w $w.data
 	# clear the frame first
-	foreach child [winfo children $w] {
-		destroy $child
-	}
+	foreach child [winfo children $w] { destroy $child }
 
 	set lst [fiterror_active_list]
 	set activeList [lindex $lst 0]
@@ -267,6 +272,7 @@ proc fiterror_build_covar {} {
 				lappend widgets [label $w.$name -justify center -width 9 \
 									-background $bgcolor -font $::fiterror(font) \
 									-text [covar_format_val $val $is_diag_elem]]
+				covar_add_correlated_param $w $xcoord $ycoord $val
 			} else { ;# placeholder for empty columns
 				lappend widgets "x"
 			}
@@ -274,6 +280,41 @@ proc fiterror_build_covar {} {
 		}
 		eval "grid $widgets"
 	}
+}
+
+proc covar_add_correlated_param { w xcoord ycoord val
+} {
+	if {[expr abs($val) < $::fiterror(correlation_threshold)]} { return }
+	if {$xcoord == $ycoord} { return } ;# ignore diagonal elements
+	set c0 [lindex $xcoord 0]
+	set c1 [lindex $ycoord 0]
+	set type0 ""; set type1 ""
+	set p0 ""; set p1 ""
+	foreach i {0 1 2} type {SD FF SQ} p {a l s} {
+		if {$i == [lindex $xcoord 1]} { set type0 $type; set p0 $p }
+		if {$i == [lindex $ycoord 1]} { set type1 $type; set p1 $p }
+	}
+	set model0 [lindex [getfitap ap $type0,typestr] $c0]
+	set model1 [lindex [getfitap ap $type1,typestr] $c1]
+	set p0 [fiterror_param_prefix $xcoord]
+	set p1 [fiterror_param_prefix $ycoord]
+	set param0 [getfitap taap $type0,$p0,label]
+	set param0 [string trimright $param0 " ="]
+	set param1 [getfitap taap $type1,$p1,label]
+	set param1 [string trimright $param1 " ="]
+	puts stderr "$c0 $model0 $param0"
+	puts stderr "$c1 $model1 $param1"
+	set w $::fiterror(correlated_frame)
+
+	set idx [llength [winfo children $w]]
+	button $w.lbl$idx -wraplength 400 -justify left -text [join [list \
+		"· $param0 of $model0 in contribution $c0 with\n" \
+		"· $param1 of $model1 in contribution $c1"] ""] \
+		-command "deselect_param 0
+				  deselect_param 1
+				  highlight_param 0 {$xcoord}
+				  highlight_param 1 {$ycoord}"
+	pack $w.lbl$idx -fill x -in $w
 }
 
 proc covar_contrib_is_current { contrib } {
@@ -310,21 +351,21 @@ proc covar_background_color { w lname contrib is_diag_elem val
 
 proc color_shade { w color channel amount
 } {
-    # get rgb values
-    set rgb [winfo rgb [winfo parent $w] $color]
-    # convert rgb values to range [0,255] (8 bit each)
-    set hexcolor {}
-    foreach c {0 1 2} {
-        lset rgb $c [expr [lindex $rgb $c] * 255 / 65535]
-        if {$c != $channel} {
-            # shade the color according to element value
-            lset rgb $c [expr int((1 - abs($amount)) * [lindex $rgb $c])]
-        }
-        # convert color to hex notation
-        lappend hexcolor [format "%02X" [lindex $rgb $c]]
-    }
-    set color [format "\#%s" [join $hexcolor ""]]
-    return $color
+	# get rgb values
+	set rgb [winfo rgb [winfo parent $w] $color]
+	# convert rgb values to range [0,255] (8 bit each)
+	set hexcolor {}
+	foreach c {0 1 2} {
+		lset rgb $c [expr [lindex $rgb $c] * 255 / 65535]
+		if {$c != $channel} {
+			# shade the color according to element value
+			lset rgb $c [expr int((1 - abs($amount)) * [lindex $rgb $c])]
+		}
+		# convert color to hex notation
+		lappend hexcolor [format "%02X" [lindex $rgb $c]]
+	}
+	set color [format "\#%s" [join $hexcolor ""]]
+	return $color
 }
 
 proc covar_format_val { val is_diag_elem
@@ -347,15 +388,13 @@ proc active_lists_equal { list1_var list2_var } {
 	return [string equal [join [join $lst1] " "] [join [join $lst2] " "]]
 }
 
-proc fiterror_update {} {
-
+proc fiterror_update {
+} {
 	if {![info exists ::fiterror(aap)] || 
 		![info exists ::fiterror(taap)] || 
 		![info exists ::fiterror(ap)]} { return }
 
 	set w .analytical.fiterror
-
-	fiterror_update_widgets $w	
 
 	set rebuild 0
 	# see if errors changed
@@ -380,34 +419,32 @@ proc fiterror_update {} {
 	} else {
 		fiterror_update_covar $w
 	}
+	fiterror_update_widgets $w
 }
 
 proc getfitap { name pattern } {
 	return [lindex [array get $::fiterror($name) $pattern] 1]
 }
 
-proc fiterror_update_widgets { w } {
-
+proc fiterror_update_widgets { w
+} {
 	cp_arr $::fiterror(aap) $::fiterror(taap)
 
 #	set ::fiterror(first_active_param) {}
 	set contrib_current [$::nomenu index active]
-	foreach p {a s l} type {SD SQ FF} {
+	foreach p {a l s} type {SD FF SQ} {
 		set param_count [getfitap taap "$type,param_count"]
 		set model [get_model_id $type]
-		for {set i 1} {$i <= $param_count} {incr i} {
-			set active [getfitap taap "$type,$p$i,active"]
+		for {set i 0} {$i < $param_count} {incr i} {
 			set param [list $contrib_current $model $i]
-			# remember the first active parameter for default selection
-#			if {[llength $::fiterror(first_active_param)] == 0} {
-#				set ::fiterror(first_active_param) [list $w.$p$i $type $i]
-#			}
-			foreach widget [list $w.$p$i.err $w.$p$i.label $w.$p$i.var] {
+			set prefix [fiterror_param_prefix $param]
+			set active [getfitap taap "$type,$prefix,active"]
+			foreach widget [list $w.$prefix.err $w.$prefix.label $w.$prefix.var] {
 				if {$active} {
 					$widget configure -state normal
-					bind $widget <ButtonPress-1> "highlight_param $w.$p$i column {$param}"
-					bind $widget <ButtonPress-2> "highlight_param $w.$p$i row {$param}"
-					bind $widget <ButtonPress-3> "highlight_param $w.$p$i row {$param}"
+					bind $widget <ButtonPress-1> "highlight_param 0 {$param}"
+					bind $widget <ButtonPress-2> "highlight_param 1 {$param}"
+					bind $widget <ButtonPress-3> "highlight_param 1 {$param}"
 				} else {
 					$widget configure -state disabled
 					bind $widget <ButtonPress-1> {}
@@ -418,24 +455,29 @@ proc fiterror_update_widgets { w } {
 			}
 		}
 	}
-	# restore selected parameter coloring for the selected contribution
-	# -> _parameter_, not the covar element!
-	foreach color {column row} {
-		if {[info exists ::fiterror(selected_param_$color)]} {
-			set param $::fiterror(selected_param_$color)
-			set bgcolor $::fiterror(color_bg_normal)
-			if {[covar_contrib_is_current [lindex $param 0]]} {
-				set bgcolor $::fiterror(color_bg_active_$color)
-			}
-			foreach child [winfo children [lindex $param end]] {
-				$child configure -background $bgcolor
-			}
-		}
+	set selection [list]
+	# unselect all parameters incl. covar matrix
+	foreach {pattern param} [array get ::fiterror selected_param_*] {
+		set kind [string range $pattern end end]
+		deselect_param $kind
+		lappend selection $kind
+		lappend selection $param
+	}
+	# change matrix background according to current contribution
+	set w $::fiterror(widget).data
+	foreach child [winfo children $w] {
+		set name [winfo name $child]
+		$child configure -background [get_covar_background $w $name]
+	}
+	# apply previous parameter selection
+	foreach {kind param} $selection {
+		highlight_param $kind $param
 	}
 }
 
 proc fiterror_update_covar { wname
 } {
+	return
 	set w $wname.data
 
 	# change background according to currently selected contribution
@@ -486,8 +528,25 @@ proc get_model_id { str } {
 }
 
 # reset previously selected parameter widgets
-proc deselect_param { color } {
-	set selected [array get ::fiterror selected_param_*]
+proc deselect_param { kind
+} {
+	if {![info exists ::fiterror(selected_param_$kind)]} { return }
+	set param $::fiterror(selected_param_$kind)
+	# unmark widgets only if at the current contrib
+	puts stderr "deselect_param '$param'"
+	set w $::fiterror(widget).[fiterror_param_prefix $param]
+	if {[winfo exists $w]} {
+		foreach child [winfo children $w] {
+			$child configure -background $::fiterror(color_bg_normal)
+		}
+		$w configure -background $::fiterror(color_bg_normal)
+	}
+	deselect_covar $kind
+	# mark the current kind unselected
+	array unset ::fiterror selected_param_$kind
+	return
+
+	set selected [array get ::fiterror selected_param]
 
 	# check if we are at the valid contribution
 	if {[llength $selected] < 2} { return }
@@ -495,7 +554,7 @@ proc deselect_param { color } {
 
 	set lbl ""
 	if {[llength $selected] == 2 &&
-		[lindex $selected 0] == "selected_param_$color"
+		[lindex $selected 0] == "selected_param"
 	} {
 		set bgcolor $::fiterror(color_bg_normal)
 		set lbl [lindex $selected 1 end]
@@ -512,7 +571,7 @@ proc deselect_param { color } {
 			}
 		} else { ;# normal case
 			set bgcolor $::fiterror(color_bg_normal)
-			set lbl [lindex $::fiterror(selected_param_$color) end]
+			set lbl [lindex $::fiterror(selected_param) end]
 		}
 	}
 	if {[winfo exists $lbl]} {
@@ -520,38 +579,94 @@ proc deselect_param { color } {
 			$child configure -background $bgcolor
 		}
 	}
-	array unset ::fiterror selected_param_$color
+	array unset ::fiterror selected_param
 }
 
-proc highlight_param { widget color param 
+proc fiterror_param_prefix { param
 } {
+	foreach i {0 1 2} type {SD FF SQ} p {a l s} {
+		if {$i == [lindex $param 1]} { return "$p[expr [lindex $param 2]+1]" }
+	}
+}
+
+proc highlight_param { kind param
+} {
+	set widget $::fiterror(widget).[fiterror_param_prefix $param]
+	puts stderr "highlight_param '$kind' '$param' $widget"
+	if {[info exists ::fiterror(selected_param_$kind)]} {
+		set param_prev $::fiterror(selected_param_$kind)
+	}
+	deselect_param $kind
+	# reselect other parameter if any, fixes overlaps
+	set kind_other [fiterror_invert_kind $kind]
+	if {[info exists ::fiterror(selected_param_$kind_other)]} {
+		set param_other $::fiterror(selected_param_$kind_other)
+		deselect_param $kind_other
+		highlight_param $kind_other $param_other
+	}
+	# prev. selection was identical, remove selection at all
+	if {[info exists param_prev] &&
+		[lrange $param 0 2] == [lrange $param_prev 0 2]} { return }
+	# set the new background if we are at the correct contribution
+	if {[covar_contrib_is_current [lindex $param 0]]} {
+		foreach w [winfo children $widget] {
+			$w configure -background $::fiterror(color_bg_active_$kind)
+		}
+		$widget configure -background $::fiterror(color_bg_active_$kind)
+	}
+	set ::fiterror(selected_param_$kind) $param
+	highlight_covar $kind $param ""
+	return
+
 	set otherc [covar_color_invert $color]
-	if {[info exists ::fiterror(selected_param_$otherc)]} {
-		set pprev $::fiterror(selected_param_$otherc)
+	if {[info exists ::fiterror(selected_param)]} {
+		set pprev $::fiterror(selected_param)
 		if {[covar_needs_swapping $color $param $pprev]
 		} {
-			highlight_param [lindex $pprev end] $color [lrange $pprev 0 2]
+			# highlights the previous parameter on row instead of column
+			# or vice versa
+			highlight_param [lindex $pprev end] [lrange $pprev 0 2]
 			set color $otherc
 		}
 	}
+	deselect_param $color
+	set bgcolor $::fiterror(color_bg_active_$color)
 	# check if we are at the correct contribution
-	if {[covar_contrib_is_current [lindex $param 0]]
-	} {
-		deselect_param $color
-		set bgcolor $::fiterror(color_bg_active_$color)
+	if {[covar_contrib_is_current [lindex $param 0]]} {
 		# set the new background
 		foreach w [winfo children $widget] {
 			$w configure -background $bgcolor
 		}
-		lappend param $bgcolor $widget
-		set ::fiterror(selected_param_$color) $param
 	}
-	highlight_covar $color $param
+	lappend param $bgcolor $widget
+	set ::fiterror(selected_param) $param
+	highlight_covar $kind $param ""
 }
 
-proc deselect_covar { w color
+proc deselect_covar { kind
 } {
-	if {![info exists ::fiterror(selected_covar_$color)]} { return }
+	if {![info exists ::fiterror(selected_covar_$kind)]} { return }
+	set w $::fiterror(widget).data
+	set kind_other [fiterror_invert_kind $kind]
+	foreach lbl $::fiterror(selected_covar_$kind) {
+		if {![winfo exists $w.$lbl]} { continue }
+		if {[info exists ::fiterror(${lbl}_$kind)]} {
+			# get the stored previous color, see covar_color_push()
+			set bgcolor $::fiterror(${lbl}_$kind)
+			$w.$lbl configure -background $bgcolor
+			# purge any previous pushed color
+			array unset ::fiterror "${lbl}_$kind"
+			# fix the intersecting element of the other selection
+			if {[info exists ::fiterror(${lbl}_${kind_other})]} {
+				covar_colorize_cell $w $lbl $kind_other
+			}
+		}
+		$w.$lbl configure -relief flat
+	}
+	array unset ::fiterror selected_covar_$kind
+	return
+
+	if {![info exists ::fiterror(selected_covar_$kind)]} { return }
 	foreach lbl $::fiterror(selected_covar_$color) {
 		if {![winfo exists $w.$lbl]} { continue }
 		set bgcolor [get_covar_background $w $lbl] ;# unselected color
@@ -585,8 +700,11 @@ proc deselect_covar { w color
 # field in the upper right half
 proc covar_needs_swapping { color pcur pprev
 } {
+	puts stderr "covar_needs_swapping $color '$pcur' '$pprev'"
+	if {$pcur == [lrange $pprev 0 2]} { return 0 } ;# same element
 	set pcur_name [covar_get_param_label_name $pcur]
 	set pprev_name [covar_get_param_label_name $pprev]
+	puts stderr "'$pcur_name' '$pprev_name'"
 	if {![llength $pcur_name]} { return 0 }
 	if {![llength $pprev_name]} { return 0 }
 	if {"$color" == "row"} {
@@ -609,10 +727,42 @@ proc covar_get_param_label_name { param_index_list } {
 	lappend p1 [expr [lindex $param_index_list 2]-1]
 	return [join $p1 "-"]
 }
+
+proc fiterror_invert_kind { kind } {
+	if {"$kind" == "0"} { return 1
+	}
+	return 0
+}
+
 # type: SD|FF|SQ, p: numerical parameter index, starts with 1
-proc highlight_covar { color pcur } {
-	if {![info exists ::fiterror(activelist)]} { return }
-	set w .analytical.fiterror.data
+proc highlight_covar { kind param orient
+} {
+	puts stderr "highlight_covar '$kind' '$param' '$orient'"
+	if {![info exists ::fiterror(activelist)]} {
+		puts stderr "highlight_covar NO ::fiterror(activelist)"
+		return }
+	if {[info exists ::fiterror(selected_covar_$kind)]} { ;# already selected
+		deselect_covar $kind
+	}
+	set w $::fiterror(widget).data
+	set orient [covar_swap_orientation $kind $param $orient]
+	set pname "[join $param "-"]"
+	if {[string equal $orient row]} {
+		set prefix ""
+		set suffix "_${pname}"
+	} else { ;# orient == column
+		set prefix "${pname}_"
+		set suffix ""
+	}
+	# highlight the complete row/column 
+	foreach p $::fiterror(activelist) {
+		set pname [join $p "-"]
+		set lbl "$prefix${pname}$suffix"
+		if {![winfo exists $w.$lbl]} { continue }
+		covar_colorize_cell $w $lbl $kind
+	}
+	return
+	set w $::fiterror(widget).data
 
 	deselect_covar $w $color
 
@@ -633,6 +783,49 @@ proc highlight_covar { color pcur } {
 	}
 }
 
+proc covar_swap_orientation { kind param orient
+} {
+	if {![string length $orient]} { set orient row } ;# orient default
+	set kind_other [fiterror_invert_kind $kind]
+	if {![info exists ::fiterror(selected_param_$kind_other)] ||
+		![info exists ::fiterror(selected_covar_$kind_other)]
+	} { return $orient }
+
+	set param_other $::fiterror(selected_param_$kind_other)
+	set pname_other [join $param_other "-"]
+	puts stderr "highlight_covar param_other: '$param_other' '$pname_other'"
+	puts stderr "highlight_covar covar$kind_other: '$::fiterror(selected_covar_$kind_other)'"
+	set orient_other column
+	# find orientation of existing selection: row or column?
+	foreach lname $::fiterror(selected_covar_$kind_other) {
+		if {[string equal "$lname" "${pname_other}_$pname_other"]} {
+			continue ;# ignore diagonal elements
+		}
+		if {[string first $pname_other $lname]} {
+			# other parameter is last element: in a row
+			set orient_other row
+		}
+	}
+	puts stderr "highlight_covar $param_other orient_other: '$orient_other'"
+	if {[string compare "$param" "$param_other"] > 0} {
+		set orient column
+	}
+	puts stderr "highlight_covar $param orient: '$orient'"
+	if {[string equal $orient $orient_other]} {
+		# swap the other orientation
+		puts stderr "swap the other orientation"
+		deselect_covar $kind_other
+		# swap other orientation
+		if {[string equal $orient_other row]} {
+			set orient_other column
+		} else {
+			set orient_other row
+		}
+		highlight_covar $kind_other $param_other $orient_other
+	}
+	return $orient
+}
+
 # returns the index of the largest element in a list
 proc argmax { lst } {
 	set imax 0
@@ -644,14 +837,15 @@ proc argmax { lst } {
 	return $imax
 }
 
-proc covar_colorize_cell { w lbl color
+proc covar_colorize_cell { w lbl kind
 } {
-	covar_color_push $w $lbl $color
-	set bgcolor $::fiterror(color_bg_active_$color)
+	covar_color_push $w $lbl $kind
+	set bgcolor $::fiterror(color_bg_active_$kind)
 	set channel [argmax [winfo rgb $w $bgcolor]]
 	set bgcolor [color_shade $w [get_covar_background $w $lbl] $channel 0.1]
 	$w.$lbl configure -background $bgcolor
-	if {[llength $::fiterror($lbl)] > 1} {
+	if {[info exists ::fiterror(${lbl}_0)] &&
+		[info exists ::fiterror(${lbl}_1)]} {
 		# an element selected multiple times is probably at intersection of
 		# row and column, show it raised
 		$w.$lbl configure -relief raised
@@ -659,18 +853,16 @@ proc covar_colorize_cell { w lbl color
 }
 
 # stores previous color and row or column assignment of a covar elemnt
-proc covar_color_push { w lbl color } {
+proc covar_color_push { w lbl kind
+} {
 	if {![winfo exists $w.$lbl]} { return }
-	lappend ::fiterror($lbl) [$w.$lbl cget -background]
-	lappend ::fiterror(selected_covar_$color) $lbl
-}
-
-# default selection of the first active parameter
-proc covar_select_first_active {} {
-	set fap $::fiterror(first_active_param)
-	if {[llength $fap] == 3} { 
-		highlight_param column [lindex $fap 0] [lindex $fap 1] [lindex $fap 2]
+	set kind_other [fiterror_invert_kind $kind]
+	if {[info exists ::fiterror(${lbl}_$kind_other)]} {
+		set ::fiterror(${lbl}_$kind) $::fiterror(${lbl}_$kind_other)
+	} else {
+		set ::fiterror(${lbl}_$kind) [$w.$lbl cget -background]
 	}
+	lappend ::fiterror(selected_covar_$kind) $lbl
 }
 
 # vim: set ts=4 sw=4 tw=0: 
