@@ -339,7 +339,9 @@ proc covar_background_color { w lname contrib is_diag_elem val
 		set val [$w.$lname cget -text]
 	}
 	# set element color based on its value in range [0,1]
-	if { !$is_diag_elem && [expr abs($val) <= 1]
+	if {!$is_diag_elem && \
+        [string is double -strict $val] && \
+        [expr abs($val) <= 1]
 	} {
 		set bgcolor [color_shade $w $bgcolor 0 $val]
 	}
