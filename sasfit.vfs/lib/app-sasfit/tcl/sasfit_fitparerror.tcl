@@ -305,8 +305,8 @@ proc covar_add_correlated_param { w xcoord ycoord val
 
 	set idx [llength [winfo children $w]]
 	button $w.lbl$idx -wraplength 400 -justify left -text [join [list \
-		"· $param0 of $model0 in contribution $c0 with\n" \
-		"· $param1 of $model1 in contribution $c1"] ""] \
+		"- $param0 of $model0 in contribution $c0 with\n" \
+		"- $param1 of $model1 in contribution $c1"] ""] \
 		-command "deselect_param 0
 				  deselect_param 1
 				  highlight_param 0 {$xcoord}
