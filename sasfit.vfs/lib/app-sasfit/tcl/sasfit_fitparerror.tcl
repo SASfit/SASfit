@@ -689,7 +689,7 @@ proc covar_colorize_cell { w lbl kind
 	covar_color_push $w $lbl $kind
 	set bgcolor $::fiterror(color_bg_active_$kind)
 	set channel [argmax [winfo rgb $w $bgcolor]]
-	set bgcolor [color_shade $w [get_covar_background $w $lbl] $channel 0.1]
+	set bgcolor [color_shade $w [get_covar_background $w $lbl] $channel 0.25]
 	$w.$lbl configure -background $bgcolor
 	if {[info exists ::fiterror(${lbl}_0)] &&
 		[info exists ::fiterror(${lbl}_1)]} {
