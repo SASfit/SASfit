@@ -243,6 +243,7 @@ proc fiterror_build_covar {} {
 	set ::fiterror(activelist) $alist
 	set rows [sasfit_covar $activeList]
 	set width [llength $alist] ;# num of fitted parameters
+	set correlated_btns [list]
 
 	foreach row $rows ycoord $alist {
 		set yname [join $ycoord "-"]
@@ -271,7 +272,19 @@ proc fiterror_build_covar {} {
 				lappend widgets [label $w.$name -justify center -width 9 \
 									-background $bgcolor -font $::fiterror(font) \
 									-text [covar_format_val $val $is_diag_elem]]
-				covar_add_correlated_param $w $xcoord $ycoord $val
+				# create button to emphasize correlated parameter pair
+				set val [expr abs($val)]
+				if {[expr $val > $::fiterror(correlation_threshold)]} {
+					# add the button widget and the corr.coeff. to a list
+					# for sorting and packing later on
+					set btn [list]
+					lappend btn [covar_add_correlated_param $w $xcoord $ycoord \
+									[color_shade $w white 0 $val]] ;# red base color
+					lappend btn $val
+					if {[winfo exists [lindex $btn 0]]} {
+						lappend correlated_btns $btn
+					}
+				}
 			} else { ;# placeholder for empty columns
 				lappend widgets "x"
 			}
@@ -279,11 +292,17 @@ proc fiterror_build_covar {} {
 		}
 		eval "grid $widgets"
 	}
+	# finally, pack buttons of correlated parameter pairs
+	# sorted by their corr.coeff.
+	set correlated_btns [lsort -real -decreasing -index end $correlated_btns]
+	foreach btn $correlated_btns {
+		pack [lindex $btn 0] -fill x -in $::fiterror(correlated_frame)
+	}
 }
 
-proc covar_add_correlated_param { w xcoord ycoord val
+# creates a button for a given parameter pair, returns the full widget path
+proc covar_add_correlated_param { w xcoord ycoord bgcolor
 } {
-	if {[expr abs($val) < $::fiterror(correlation_threshold)]} { return }
 	if {$xcoord == $ycoord} { return } ;# ignore diagonal elements
 	set c0 [lindex $xcoord 0]
 	set c1 [lindex $ycoord 0]
@@ -304,14 +323,15 @@ proc covar_add_correlated_param { w xcoord ycoord val
 	set w $::fiterror(correlated_frame)
 
 	set idx [llength [winfo children $w]]
-	button $w.lbl$idx -wraplength 400 -justify left -text [join [list \
+	button $w.lbl$idx -wraplength 400 -justify left -background "$bgcolor" \
+		-text [join [list \
 		"- $param0 of $model0 in contribution $c0 with\n" \
 		"- $param1 of $model1 in contribution $c1"] ""] \
 		-command "deselect_param 0
 				  deselect_param 1
 				  highlight_param 0 {$xcoord}
 				  highlight_param 1 {$ycoord}"
-	pack $w.lbl$idx -fill x -in $w
+	return $w.lbl$idx
 }
 
 proc covar_contrib_is_current { contrib } {
@@ -340,8 +360,8 @@ proc covar_background_color { w lname contrib is_diag_elem val
 	}
 	# set element color based on its value in range [0,1]
 	if {!$is_diag_elem && \
-        [string is double -strict $val] && \
-        [expr abs($val) <= 1]
+		[string is double -strict $val] && \
+		[expr abs($val) <= 1]
 	} {
 		set bgcolor [color_shade $w $bgcolor 0 $val]
 	}
