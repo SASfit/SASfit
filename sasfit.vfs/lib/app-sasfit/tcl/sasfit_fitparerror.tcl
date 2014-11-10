@@ -269,9 +269,16 @@ proc fiterror_build_covar {} {
 				set is_diag_elem [expr ($idx + 1) == [llength $row]]
 				set bgcolor [covar_background_color \
 								$w $name $contrib $is_diag_elem $val]
-				lappend widgets [label $w.$name -justify center -width 9 \
-									-background $bgcolor -font $::fiterror(font) \
-									-text [covar_format_val $val $is_diag_elem]]
+				lappend widgets [button $w.$name -justify center -width 9 \
+							-relief flat -overrelief raised \
+							-padx 0 -pady 0 -activebackground $bgcolor \
+							-background $bgcolor -font $::fiterror(font) \
+							-text [covar_format_val $val $is_diag_elem] \
+							-command "deselect_param 0
+								  deselect_param 1
+								  highlight_param 0 {$xcoord}
+								  highlight_param 1 {$ycoord}"
+							]
 				# create button to emphasize correlated parameter pair
 				set val [expr abs($val)]
 				if {[expr $val > $::fiterror(correlation_threshold)]} {
