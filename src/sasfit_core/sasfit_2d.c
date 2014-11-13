@@ -39,6 +39,8 @@ void sasfit_2d_init (void)
 	sasfit_2d_param.max = 0.0;
 	sasfit_2d_param.scale = LOG;
 	sasfit_2d_param.mode = AUTO;
+	sasfit_2d_param.geom = PINHOLE;
+	sasfit_2d_param.qwidth = 0.0;
 	sasfit_param_override_init();
 }
 
@@ -64,6 +66,10 @@ int sasfit_2d_set(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET(double, argv[3], "min",    sasfit_2d_param.min);
 	// read max
 	SF_TCL_GET(double, argv[3], "max",    sasfit_2d_param.max);
+	// read qwidth
+	SF_TCL_GET(double, argv[3], "Qwidth",    sasfit_2d_param.qwidth);
+	// read qminbs
+	SF_TCL_GET(double, argv[3], "QminBS",    sasfit_2d_param.qminbs);
 
 	str = Tcl_GetVar2(interp, argv[3], "auto", 0);
 	if (str) {
@@ -76,8 +82,17 @@ int sasfit_2d_set(Tcl_Interp * interp, const char * argv[])
 			sasfit_2d_param.scale = SQRT;
 		else if (strcmp(str, "arcsinh(y)") == 0)
 			sasfit_2d_param.scale = ARCSINH;
-		else // if (strcmp(str, "log(y)") == 0)
+		else if (strcmp(str, "log(y)") == 0)
 			sasfit_2d_param.scale = LOG;
+        else sasfit_2d_param.scale = LIN;
+	}
+    str = Tcl_GetVar2(interp, argv[3], "resolution", 0);
+	if (str) {
+		if (strcmp(str, "slit") == 0)
+			sasfit_2d_param.geom = SLIT;
+		else if (strcmp(str, "pinhole") == 0)
+			sasfit_2d_param.geom  = PINHOLE;
+		else sasfit_2d_param.geom = GEOMETRYUNKNOWN;
 	}
 //	strcpy(Det2DPar.ct,Tcl_GetVar2(interp,argv[3],"ct",0));
 
@@ -96,10 +111,10 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                    const char ** argv)
 {
 	sasfit_analytpar * AP;
-	int                i, j, max_SD;
-	scalar             alambda;
+	int                i, j, k,l, nres, nsigma, max_SD;
+	scalar             alambda, wres, tmp;
 	char               sBuffer[256];
-	scalar             Bx, By, rx, ry, r, Q, Theta, TwoTheta;
+	scalar             Bx, By, rx, ry, r, Q, DQx,DQy,Qx, Qy, Theta, TwoTheta;
 	Tcl_DString        DsBuffer;
 	scalar             * h, * Ih, * DIh, * res;
 	scalar             **Deth, **DetIth, Detres, Detsubstract;
@@ -149,12 +164,15 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 	Deth   = dmatrix(0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
 	DetIth = dmatrix(0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
 
+    Bx = 0.5*(sasfit_2d_param.num_pix-1.);
+    By = 0.5*(sasfit_2d_param.num_pix-1.);
+
 	for (i=0; i < sasfit_2d_param.num_pix; i++) {
-		for (j=0; j < sasfit_2d_param.num_pix;j++) {
-			Bx = 0.5*(sasfit_2d_param.num_pix-1.);
-			By = 0.5*(sasfit_2d_param.num_pix-1.);
-			rx = (i-Bx)*sasfit_2d_param.pixelsize*1e-3;
-			ry = (j-By)*sasfit_2d_param.pixelsize*1e-3;
+        rx = (i-Bx)*sasfit_2d_param.pixelsize*1e-3;
+
+        for (j=0; j < sasfit_2d_param.num_pix;j++) {
+            ry = (j-By)*sasfit_2d_param.pixelsize*1e-3;
+
 			// Det2DPar.Psi = atan(ry/rx);
 			sasfit_param_override_set_psi( atan(ry/rx) );
 			r = sqrt(rx*rx+ry*ry);
@@ -163,71 +181,115 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 			Q=4.0*M_PI*sin(Theta)/sasfit_2d_param.lambda;
 			Deth[i][j] = Q;
 			Detres=-1.;
-			IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
-				dydpar,max_SD,AP,error_type,0,&error);
-			if (error==TRUE) {
-				free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
-				free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
-				free_dvector(dydpar,0,ma-1);
-				Tcl_Free((char *) AP);
-				return TCL_ERROR;
-			}
-			if (i==0 && j==0) {
+
+            switch (sasfit_2d_param.geom) {
+               case PINHOLE : {
+                    if (sasfit_2d_param.qwidth == 0) {
+                        IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
+                            dydpar,max_SD,AP,error_type,0,&error);
+                        if (error==TRUE) {
+                            free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                            free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                            free_dvector(dydpar,0,ma-1);
+                            Tcl_Free((char *) AP);
+                            return TCL_ERROR;
+                        }
+                    } else {
+                        nsigma = 2;
+                        nres = 10;
+                        tmp = 0.0;
+                        for (k=-nres;k<=nres,k++;) {
+                            for (l=-nres;l<=nres;l++) {
+                                Qx = Q*cos(atan(ry/rx));
+                                Qy = Q*sin(atan(ry/rx));
+                                DQx = k*nsigma*sasfit_2d_param.qwidth/nres;
+                                DQy = l*nsigma*sasfit_2d_param.qwidth/nres;
+                                wres=1./(2.*M_PI*gsl_pow_2(sasfit_2d_param.qwidth))
+                                     *exp(-(DQx*DQx+DQy*DQy)*0.5/gsl_pow_2(sasfit_2d_param.qwidth));
+
+                                sasfit_param_override_set_psi( atan((Qy+DQy)/(Qx+DQx)) );
+                                Deth[i][j] = sqrt(gsl_pow_2(Qy+DQy)+gsl_pow_2(Qx+DQx));
+                                IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
+                                    dydpar,max_SD,AP,error_type,0,&error);
+                                if (error==TRUE) {
+                                    free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                                    free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                                    free_dvector(dydpar,0,ma-1);
+                                    Tcl_Free((char *) AP);
+                                    return TCL_ERROR;
+                                }
+                                tmp = tmp+wres*DetIth[i][j];
+                            }
+                        }
+                        DetIth[i][j] = tmp*gsl_pow_2(nsigma*sasfit_2d_param.qwidth/nres);
+                        Deth[i][j] = Q;
+                    }
+                    break ;
+                    } // end case PINHOLE
+                case SLIT : {
+                    break;
+                    } // end case SLIT
+                default: {
+                    IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
+                        dydpar,max_SD,AP,error_type,0,&error);
+                    if (error==TRUE) {
+                        free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                        free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                        free_dvector(dydpar,0,ma-1);
+                        Tcl_Free((char *) AP);
+                        return TCL_ERROR;
+                    }
+                }
+            } // end switch
+            if (i==0 && j==0) {
 				Imin = DetIth[i][j];
 				Imax = DetIth[i][j];
 			} else {
-				if (DetIth[i][j] < Imin) {
+				if ((DetIth[i][j] < Imin) && (sasfit_2d_param.qminbs<Deth[i][j])) {
 					Imin=DetIth[i][j];
 				}
-				if (DetIth[i][j] > Imax) {
+				if ((DetIth[i][j] > Imax) && (sasfit_2d_param.qminbs<Deth[i][j])) {
 					Imax=DetIth[i][j];
 				}
 			}
-			if (sasfit_2d_param.mode == MANUAL)
-			{
-				if (DetIth[i][j] > sasfit_2d_param.max)
-					DetIth[i][j] = sasfit_2d_param.max;
-				if (DetIth[i][j] < sasfit_2d_param.min)
-					DetIth[i][j] = sasfit_2d_param.min;
-			}
-		}
-	}
+        }  // end for-j-loop
+	} // end for-i-loop
 
-	if (sasfit_2d_param.mode == AUTO)
-	{
-		sprintf(sBuffer,"%e",Imin);
+    if (sasfit_2d_param.mode == AUTO) {
+        sprintf(sBuffer,"%e",Imin);
 		//  sasfit_err(sBuffer);
-		Tcl_SetVar2(interp,"Detector2DIQGraph","min",sBuffer,0);
-		sprintf(sBuffer,"%e",Imax);
+        Tcl_SetVar2(interp,"Detector2DIQGraph","min",sBuffer,0);
+        sprintf(sBuffer,"%e",Imax);
 		//  sasfit_err(sBuffer);
-		Tcl_SetVar2(interp,"Detector2DIQGraph","max",sBuffer,0);
-	} else {
-		Imin = sasfit_2d_param.min;
-		Imax = sasfit_2d_param.max;
-	}
+        Tcl_SetVar2(interp,"Detector2DIQGraph","max",sBuffer,0);
+    } else {
+        Imin = sasfit_2d_param.min;
+        Imax = sasfit_2d_param.max;
+    }
 
-
-	Tcl_DStringInit(&DsBuffer);
+    Tcl_DStringInit(&DsBuffer);
 
 	for (i=0;i<sasfit_2d_param.num_pix;i++) {
 		Tcl_DStringStartSublist(&DsBuffer);
 		for (j=0;j<sasfit_2d_param.num_pix;j++) {
-			if (sasfit_2d_param.mode == AUTO) {
-				DetIth[i][j] = (DetIth[i][j]-Imin)/(Imax-Imin);
-			} else {
-				DetIth[i][j] = (DetIth[i][j]-Imin)/(Imax-Imin);
-			}
+            if (sasfit_2d_param.qminbs < Deth[i][j]) {
+                DetIth[i][j] = (DetIth[i][j]-Imin)/(Imax-Imin);
+            } else {
+                DetIth[i][j] = 0.0;
+            }
+
 			if (sasfit_2d_param.scale == SQRT) {
 				DetIth[i][j] = sqrt(fabs(DetIth[i][j]))*255.;
 			}
 			else if (sasfit_2d_param.scale == ARCSINH) {
 				DetIth[i][j] = log(DetIth[i][j]+hypot(DetIth[i][j],1))*255./log(1+hypot(1,1));
 			}
-			else { // if (sasfit_2d_param.scale == LOG)
+			else if (sasfit_2d_param.scale == LOG) {
 				DetIth[i][j]=log(fabs(DetIth[i][j])+0.001);
 				DetIth[i][j]=(DetIth[i][j]-log(0.001))/(1.-log(0.001))*255;
-			}
-			sprintf(sBuffer,"%d",(int) DetIth[i][j]);
+			} else
+                DetIth[i][j] = fabs(DetIth[i][j])*255.;
+			sprintf(sBuffer,"%d",lround(DetIth[i][j]));
 			Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 		}
 		Tcl_DStringEndSublist(&DsBuffer);
