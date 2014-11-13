@@ -1,0 +1,184 @@
+
+  	michael: 1.62
+  Recovery from disk failure
+revision 1.62	
+  Added -unicode option to support Unicode print output.
+revision 1.61
+  Eliminated warnings under Tcl 8.4.7 (may have added them in other versions)
+revision 1.60
+  Removed unused variable
+revision 1.59
+  Added first implementation of dash option
+revision 1.58
+  Jasper Taylor <jasper.taylor@ed.ac.uk> provided reasonable implementation
+  of the smooth options.
+revision 1.57
+  Updated version for release
+  Made arc angle adjust properly for eccentricity of the bounding ellipse
+  to match canvas semantics
+revision 1.56
+  Removed two compilation warnings by adding a cast
+  Changed the Arc code to support drawing the arcs in the correct direction
+  under Win95, WinNT, and Win2k.
+  Thanks to Nigel Dodd <nigel.dodd@avellino.com>
+revision 1.55
+  Moved log to an auxiliiary file
+revision 1.54
+  Updated version for release
+  Thanks to Charles E. Matthews for reporting the bounds array problem
+revision 1.53
+  Added a semblance of a "smoothing" function for lines
+  Fixed the array bounds in hdc.
+revision 1.52
+  Moved GetLastError to prevent error being masked.
+revision 1.51
+  Updated documentation
+revision 1.50
+  Added option to text command to fill the text with the background
+  color (-backfill).
+  Added configure command to allow setting of the background color.
+  Currently the background color is used ONLY by the text command
+  (i.e., the background of the printable rectangle is not affected.
+  The reason for the limitation is to avoid having to hold GDI
+  commands until closeout time or rerunning the metafile).
+revision 1.49
+  Modified the Rectangle and Ellipse calls to make behavior match the canvas
+  a little better. Thanks to Michael Thomsen at Ideogramic for the report
+  of these anomalise.
+revision 1.48
+  Fixed parsing of logical and physical extents, and tested for these properly
+  in the argument parser.
+revision 1.47
+  Remove two more warnings
+revision 1.46
+  Fixed default return value from GdiWordToWeight
+revision 1.45
+  Eliminate warnings before release
+revision 1.44
+  Added more font modifier parsing logic, as suggested by Michael Thomsen,
+  <miksen@ideogramic.com>.
+revision 1.43
+  Removed compiler warnings
+  Changed use of formatting flags in text formatting
+  Changed 2D shape fills to default to no fill
+  Added -single flag to text -- not sure if this is useful, yet.
+  Some working items in place for inclusion of "macro" routines
+  for canvas and text printing.
+revision 1.42
+  Changed STRETCHBLT to STRETCHDIB to reflect actual usage
+revision 1.41
+  Added gdi photo command as initially contributed by Lukas Rosenthaler <lukas.rosenthaler@balcab.ch>
+  Added casts for numerical type changes to reduce warnings.
+revision 1.40
+  Removed use of Windows-specific platform declarations
+revision 1.39
+  For Tcl 8.1 and newer, added Utf to External conversion so character
+rendering will work properly.
+revision 1.38
+  Updated version number for release.
+  Allowed both numeric and named contexts.
+  Enabled extension to work with or without HDC extension.
+revision 1.37
+  Updated error message for release
+revision 1.36
+  Added hdc package, with the result that graphics contexts can be
+  named rather than just being a number.
+  Also added the GetObjectType check to ensure that DCs are appropriate
+  for the operation.
+  Both the wmf and printer extensions can provide contexts for this
+  package.
+revision 1.35
+  Added -calc switch to copybits to return sizes without actually printing.
+  Fixed a bug with the -scale switch in copybits, as reported and
+  corrected by Pascal Bouvier
+revision 1.34
+  Added support for gdi line command -arrow and -arrowshape
+  Updated minor version in preparation for release.
+revision 1.33
+  Added stubs support
+revision 1.32
+  Update GdiArc code to draw in proper Y direction.
+  Bug reported by Tony Strachan, a.j.strachan@swansea.ac.uk
+revision 1.31
+  Changed atoi() calls to atol() for arguments representing coordinates
+  on the drawables.
+revision 1.30
+  Updated ISOMETRIC mode to work properly
+revision 1.29
+  Align all mapping modes to proper scaling for pixels and points.
+  This should make the font mechanism work a lot like that of Tk
+  (without requiring Tk).
+revision 1.28
+  Moved test in copybits to after context is set.
+revision 1.27
+  Added missing semicolon
+revision 1.26
+  Add code to recover from a failure of the GetCharWidth32 function,
+  which has been reported by Andreas Sievers <Andreas.Sievers@t-mobil.de>
+  to occur under Windows 95
+revision 1.25
+  Added better reporting for changes in the mapping mode.
+revision 1.24
+  Removed deprecated functions
+  Modified description and comments in preparation for release
+revision 1.23
+  Consolidated comments, headers, and usage into the file
+revision 1.22
+  Moved in special handling for top-level windows (to get frame) and
+  added return value from copybits to reflect size at destination.
+revision 1.21
+  Changed assignments to remove all code warnings.
+revision 1.20
+  Added comments to improve readability.
+  Changed some local variables to float to support better scanning
+  of user input.
+revision 1.19
+  First attempt to incorporate work suggested by Arndt Roger Scheider
+  (roger@prs.de) and Heiko Schock (heiko@prs.de).
+  Added command "copybits" to go via DIBitmaps from the screen to the printer.
+  This should be more general a solution that the previous BitBlt.
+  Also, added long-awaited options to the command to copy a particular
+  window in the Tk heirarchy (instead of just the main application window),
+  to take just a part of a window, and to place the bits at a desired location
+  in the destination window.
+revision 1.18
+  *** empty log message ***
+revision 1.17
+  Added mapping mode command to allow transformations of the coordinate
+  space for printing.
+  Landscape and portrait mode are a characteristic of the printer driver,
+  and thus can't be set through this interface (at least under Windows).
+revision 1.16
+  Fixed a typo for a usage message
+revision 1.15
+  Added character width function
+revision 1.14
+  Updated to handle system colors properly
+revision 1.13
+  Changed algorithm for # colors to handle "short" cases better.
+revision 1.12
+  Added brushes to the commands that take them.
+  These are limited brushes--just solid colors
+revision 1.11
+  Added color to text items
+revision 1.10
+  Added line color handling for all geometric shapes
+revision 1.9
+  Added initial color information
+revision 1.8
+  Added Pen to allow width setting (no color or style yet)
+revision 1.7
+  Updated documentation, added fallback for older versions of Tcl
+  However, earlier versions do not make it easy to get the HWND;
+  it will need to be emulated or copied from Tcl8
+revision 1.6
+  Updated to include new "canvas-like" functionality, but without yet
+removing the old "postscript operator-like" functionality.
+  Implemented GdiArc command except for fills, stipples, and colors.
+  Did not yet reuse canvas code, which is heavy on the storage maintenance
+  and interaction (e.g., tags) functionality.
+revision 1.5
+  Removed test code
+revision 1.4
+  Recovery from disk failure
+  =============================================================================

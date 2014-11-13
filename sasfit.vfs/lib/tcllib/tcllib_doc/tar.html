@@ -1,0 +1,115 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>tar - Tar file handling </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/tar/tar.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: tar.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ tar.n
+   -->
+
+<body>
+<h1> tar(n) 0.1 tar &quot;Tar file handling&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> tar - Tar file creation, extraction &amp; manipulation
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>tar ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::tar::contents</b> <i class='arg'>tarball</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::tar::stat</b> <i class='arg'>tarball</i> ?file?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::tar::untar</b> <i class='arg'>tarball</i> <i class='arg'>args</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::tar::get</b> <i class='arg'>tarball</i> <i class='arg'>fileName</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::tar::create</b> <i class='arg'>tarball</i> <i class='arg'>files</i> <i class='arg'>args</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::tar::add</b> <i class='arg'>tarball</i> <i class='arg'>files</i> <i class='arg'>args</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::tar::contents</b> <i class='arg'>tarball</i></a><dd>
+
+
+Returns a list of the files contained in <i class='arg'>tarball</i>.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::tar::stat</b> <i class='arg'>tarball</i> ?file?</a><dd>
+
+
+Returns a nested dict containing information on the named ?file? in <i class='arg'>tarball</i>,
+or all files. the top level are pairs of filename and info. The info is a dict in the form
+mode uid gid size mtime type linkname uname gname devmajor devminor
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% ::tar::stat tarball.tar
+foo.jpg {mode 0644 uid 1000 gid 0 size 7580 mtime 811903867 type file linkname {} uname user gname wheel devmajor 0 devminor 0}
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::tar::untar</b> <i class='arg'>tarball</i> <i class='arg'>args</i></a><dd>
+
+
+Extracts <i class='arg'>tarball</i>
+
+<br><br>
+<dl>
+<dt><strong>-dir</strong> dirName<dd>
+<dt><strong>-file</strong> fileName<dd>
+<dt><strong>-glob</strong> pattern<dd>
+<dt><strong>-nooverwrite</strong><dd>
+<dt><strong>-nomtime</strong><dd>
+<dt><strong>-noperms</strong><dd>
+</dl>
+<br><br>
+
+<dt><a name="4"><b class='cmd'>::tar::get</b> <i class='arg'>tarball</i> <i class='arg'>fileName</i></a><dd>
+
+
+Returns the contents of <i class='arg'>fileName</i> from the <i class='arg'>tarball</i>
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::tar::create</b> <i class='arg'>tarball</i> <i class='arg'>files</i> <i class='arg'>args</i></a><dd>
+
+
+Creates a new tar file containing the <i class='arg'>files</i>
+
+<br><br>
+<dl>
+<dt><strong>-dereference</strong><dd>
+</dl>
+<br><br>
+
+<dt><a name="6"><b class='cmd'>::tar::add</b> <i class='arg'>tarball</i> <i class='arg'>files</i> <i class='arg'>args</i></a><dd>
+
+
+Appends <i class='arg'>files</i> to the end of the existing <i class='arg'>tarball</i>
+
+<br><br>
+<dl>
+<dt><strong>-dereference</strong><dd>
+</dl>
+<br><br>
+
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+archive, tape archive, tar
+</body></html>

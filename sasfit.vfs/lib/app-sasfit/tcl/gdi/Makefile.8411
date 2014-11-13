@@ -1,0 +1,306 @@
+# Visual C++ 2.x and 4.0 makefile
+#
+# Based on Sun tcl makefile organization.
+#
+# Project directories
+#
+# ROOT    = top of source tree
+#
+# TMPDIR  = location where .obj files should be stored during build
+#
+# TOOLS32 = location of VC++ 32-bit development tools. Note that the
+#	    VC++ 2.0 header files are broken, so you need to use the
+#	    ones that come with the developer network CD's, or later
+#	    versions of VC++.
+#
+# TOOLS16 = location of VC++ 1.5 16-bit tools, needed to build thunking
+#	    library.  This information is optional; if the 16-bit compiler
+#	    is not available, then the 16-bit code will not be built.  
+#	    Tcl will still run without the 16-bit code, but...
+#		A. Under Windows 3.X you will any calls to the exec command
+#	           will return an error.
+#		B. A 16-bit program to test the behavior of the exec
+#		   command under NT and 95 will not be built.
+
+TARGET          = gdi
+
+NAMEPREFIX = tcl
+DOTVERSION = 8.4
+VERSION = 84
+SUBVERSION = 11
+TDN     = $(VERSION)$(SUBVERSION)
+# Author's convention
+TCLDIR  = c:\tcl$(VERSION)$(SUBVERSION)
+TCLVER  = $(VERSION)
+# The next line will need to change for older versions of Tcl (pre-8.0)
+TKVER   = $(VERSION)
+LIBPRE  = 
+
+!IF "$(VERSION)" == "80" && "$(SUBVERSION)" == "3"
+LIBPRE=VC
+!ENDIF
+
+ROOT		= ..
+TOOLS32		= 
+TOOLS32_rc	= 
+TOOLS16		= 
+
+# Set this to the appropriate value of /MACHINE: for your platform
+MACHINE	= IX86
+
+# Set NODEBUG to 0 to compile with symbols
+NODEBUG = 1
+
+# uncomment one of the following lines to compile with TCL_MEM_DEBUG, 
+# TCL_MEM_DEBUG, or TCL_COMPILE_DEBUG
+#DEBUGDEFINES	= -DTCL_MEM_DEBUG
+#DEBUGDEFINES	= -DTCL_MEM_DEBUG -DTCL_COMPILE_DEBUG
+#DEBUGDEFINES	= -DTCL_MEM_DEBUG -DTCL_COMPILE_STATS
+#DEBUGDEFINES	= -DTCL_MEM_DEBUG -DTCL_COMPILE_DEBUG -DTCL_COMPILE_STATS
+
+######################################################################
+# Do not modify below this line
+######################################################################
+
+BINROOT		= .
+!IF "$(NODEBUG)" == "1"
+TMPDIRNAME	= $(TDN)
+DBGX		=
+!ELSE
+TMPDIRNAME	= Debug
+DBGX		= d
+!ENDIF
+TMPDIR		= $(BINROOT)\$(TMPDIRNAME)
+OUTDIRNAME	= $(TMPDIRNAME)
+OUTDIR		= $(TMPDIR)
+DISTDIR		= c:\chinook\newprod\distrib\packages\$(TDN)\$(TARGET)
+INSTDIR		= $(TCLDIR)\lib\$(TARGET)
+
+TCLLIB		= $(OUTDIR)\$(NAMEPREFIX)$(VERSION)$(DBGX).lib
+TCLDLLNAME	= $(NAMEPREFIX)$(VERSION)$(DBGX).dll
+TCLDLL		= $(OUTDIR)\$(TCLDLLNAME)
+TCLPLUGINLIB	= $(OUTDIR)\$(NAMEPREFIX)$(VERSION)p$(DBGX).lib
+TCLPLUGINDLLNAME= $(NAMEPREFIX)$(VERSION)p$(DBGX).dll
+TCLPLUGINDLL	= $(OUTDIR)\$(TCLPLUGINDLLNAME)
+TCL16DLL	= $(OUTDIR)\$(NAMEPREFIX)16$(VERSION)$(DBGX).dll
+TCLSH		= $(OUTDIR)\$(NAMEPREFIX)sh$(VERSION)$(DBGX).exe
+TCLSHP		= $(OUTDIR)\$(NAMEPREFIX)shp$(VERSION)$(DBGX).exe
+TCLPIPEDLLNAME	= $(NAMEPREFIX)pip$(VERSION)$(DBGX).dll
+TCLPIPEDLL	= $(OUTDIR)\$(TCLPIPEDLLNAME)
+TCLREGDLLNAME	= $(NAMEPREFIX)reg$(VERSION)$(DBGX).dll
+TCLREGDLL	= $(OUTDIR)\$(TCLREGDLLNAME)
+TCLTEST		= $(OUTDIR)\$(NAMEPREFIX)test.exe
+DUMPEXTS	= $(TMPDIR)\dumpexts.exe
+CAT16		= $(TMPDIR)\cat16.exe
+CAT32		= $(TMPDIR)\cat32.exe
+
+ZIP	= c:\winzip\wzzip -P
+
+cc32		= cl.exe
+link32		= link.exe
+rc32		= rc.exe
+include32	= 
+
+cc16		= $(TOOLS16)\bin\cl.exe
+link16		= $(TOOLS16)\bin\link.exe
+rc16		= $(TOOLS16)\bin\rc.exe
+include16	= -I$(TOOLS16)\include
+
+WINDIR          = $(ROOT)\win
+GENERICDIR	= $(ROOT)\generic
+
+TCL_INCLUDES	= -I$(WINDIR) -I$(GENERICDIR)
+TCL_DEFINES	= -D__WIN32__ $(DEBUGDEFINES) -DUSE_TCL_STUBS -DUSE_TK_STUBS
+
+TCL_CFLAGS	= $(cdebug) $(cflags) $(cvarsdll) $(include32) \
+			$(TCL_INCLUDES) $(TCL_DEFINES)
+CON_CFLAGS	= $(cdebug) $(cflags) $(cvars) $(include32) -DCONSOLE
+DOS_CFLAGS	= $(cdebug) $(cflags) $(include16) -AL 
+DLL16_CFLAGS	= $(cdebug) $(cflags) $(include16) -ALw
+
+######################################################################
+# Link flags
+######################################################################
+
+!IF "$(NODEBUG)" == "1"
+ldebug = /RELEASE
+!ELSE
+ldebug = -debug:full -debugtype:cv
+!ENDIF
+
+# declarations common to all linker options
+lcommon = /NODEFAULTLIB /RELEASE /NOLOGO
+
+# declarations for use on Intel i386, i486, and Pentium systems
+!IF "$(MACHINE)" == "IX86"
+DLLENTRY = @12
+lflags   = $(lcommon) /MACHINE:$(MACHINE)
+!ELSE
+lflags   = $(lcommon) /MACHINE:$(MACHINE)
+!ENDIF
+
+conlflags = $(lflags) -subsystem:console -entry:mainCRTStartup
+guilflags = $(lflags) -subsystem:windows -entry:WinMainCRTStartup
+dlllflags = $(lflags) -entry:_DllMainCRTStartup$(DLLENTRY) -dll
+
+!IF "$(MACHINE)" == "PPC"
+libc = libc.lib
+libcdll = crtdll.lib
+!ELSE
+libc = libc.lib oldnames.lib
+libcdll = libcmt.lib oldnames.lib
+!ENDIF
+
+baselibs   = kernel32.lib $(optlibs) advapi32.lib user32.lib
+!IF $(VERSION) >= 8
+winlibs    = $(baselibs) gdi32.lib comdlg32.lib winspool.lib $(TCLDIR)\lib\tclstub$(VERSION)$(LIBPRE).lib $(TCLDIR)\lib\tkstub$(TKVER)$(LIBPRE).lib
+!ELSE
+!IF $(VERSION) == 8 && $(SUBVERSION) >= 1
+winlibs    = $(baselibs) gdi32.lib comdlg32.lib winspool.lib $(TCLDIR)\lib\tclstub$(VERSION)$(LIBPRE).lib $(TCLDIR)\lib\tkstub$(TKVER)$(LIBPRE).lib
+!ELSE
+winlibs    = $(baselibs) gdi32.lib comdlg32.lib winspool.lib $(TCLDIR)\lib\tclstub$(VERSION)$(LIBPRE).lib $(TCLDIR)\lib\tkstub$(TKVER)$(LIBPRE).lib
+!ENDIF
+!ENDIF
+
+guilibs	   = $(libc) $(winlibs)
+conlibs	   = $(libc) $(baselibs)
+guilibsdll = $(libcdll) $(winlibs)
+conlibsdll = $(libcdll) $(baselibs)
+
+######################################################################
+# Compile flags
+######################################################################
+
+!IF "$(NODEBUG)" == "1"
+!IF "$(MACHINE)" == "ALPHA"
+# MSVC on Alpha doesn't understand -Ot
+cdebug = -O2i -Gs -GD
+!ELSE
+cdebug = -Oti -Gs -GD
+!ENDIF
+!ELSE
+cdebug = -Z7 -Od -WX
+!ENDIF
+
+# declarations common to all compiler options
+!IF $(VERSION) >= 8
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ELSE
+!IF $(VERSION) == 8 && $(SUBVERSION) >= 1
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ELSE
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ENDIF
+!ENDIF
+!IF $(VERSION) >= 8
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ELSE
+!IF $(VERSION) == 8 && $(SUBVERSION) >= 1
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ELSE
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ENDIF
+!ENDIF
+!IF $(VERSION) >= 8
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ELSE
+!IF $(VERSION) == 8 && $(SUBVERSION) >= 1
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ELSE
+ccommon = -c -W3 -nologo -Fp$(TMPDIR)\ -Dtry=__try -Dexcept=__except
+!ENDIF
+!ENDIF
+
+!IF "$(MACHINE)" == "IX86"
+cflags = $(ccommon) -D_X86_=1
+!ELSE
+!IF "$(MACHINE)" == "MIPS"
+cflags = $(ccommon) -D_MIPS_=1
+!ELSE
+!IF "$(MACHINE)" == "PPC"
+cflags = $(ccommon) -D_PPC_=1
+!ELSE
+!IF "$(MACHINE)" == "ALPHA"
+cflags = $(ccommon) -D_ALPHA_=1
+!ENDIF
+!ENDIF
+!ENDIF
+!ENDIF
+
+cvars      = -DWIN32 -D_WIN32
+cvarsmt    = $(cvars) -D_MT
+cvarsdll   = $(cvarsmt) -D_DLL
+
+!IF "$(NODEBUG)" == "1"
+cvarsdll   = $(cvars) -MT
+!ELSE
+cvarsdll   = $(cvars) -MTd
+!ENDIF
+
+######################################################################
+# Project specific targets
+######################################################################
+
+release:    setup dlls
+dlls:	    setup $(OUTDIR)\$(TARGET).dll 
+all:	    setup release
+zip:	    release $(TARGET)$(TDN).zip
+
+setup:
+	@mkd $(TMPDIR)
+	@mkd $(OUTDIR)
+
+$(OUTDIR)\$(TARGET).dll: $(TMPDIR)\gdi.obj
+	set lib=%lib%;$(TCLDIR)\lib
+	$(link32) $(ldebug) $(dlllflags) -out:$@ $(TMPDIR)\gdi.obj $(guilibsdll)
+
+$(TMPDIR)\gdi.obj: gdi.c
+	set include=$(INCLUDE);$(TCLDIR)\include$(DOTVERSION)
+	$(cc32) -DDLL_BUILD -DBUILD_gdi $(TCL_CFLAGS) $(EXTFLAGS) -Fo$(TMPDIR)\ $?
+
+clean:
+        -@del $(OUTDIR)\*.exp 
+	-@del $(OUTDIR)\*.lib 
+	-@del $(OUTDIR)\*.dll 
+	-@del $(OUTDIR)\*.exe
+	-@del $(OUTDIR)\*.pdb
+	-@del $(TMPDIR)\*.pch
+        -@del $(TMPDIR)\*.obj
+        -@del $(TMPDIR)\*.res
+        -@del $(TMPDIR)\*.def
+        -@del $(TMPDIR)\*.exe
+	-@rmd $(OUTDIR)
+	-@rmd $(TMPDIR)
+
+$(TARGET).txt: gdi.c
+	..\makedoc $(TARGET)
+
+$(TARGET).log: gdi.c
+	..\makelog $(TARGET)
+
+# New: Zip
+# Note: The HDC extension is automatically included in the ZIP file!
+$(TARGET)$(TDN).zip: Makefile.$(TDN) INSTALL.TXT $(TARGET).txt $(TARGET).log gdi.c $(TDN)/$(TARGET).dll testgdi2.tcl testgdi6.tcl testgdi8.tcl testtext.tcl testeuro.tcl
+	copy $(OUTDIR)\*.dll .
+	if exist $(TARGET)$(TDN).zip del $(TARGET)$(TDN).zip
+	cd ..
+	$(ZIP) $(TARGET)/$(TARGET)$(TDN).zip $(TARGET)/Makefile.$(TDN)
+	$(ZIP) $(TARGET)/$(TARGET)$(TDN).zip $(TARGET)/gdi.c $(TARGET)/$(TARGET).dll
+	$(ZIP) $(TARGET)/$(TARGET)$(TDN).zip $(TARGET)/INSTALL.TXT $(TARGET)/$(TARGET).txt $(TARGET)/$(TARGET).log
+	$(ZIP) $(TARGET)/$(TARGET)$(TDN).zip $(TARGET)/pkgIndex.tcl $(TARGET)/testgdi2.tcl $(TARGET)/testgdi6.tcl $(TARGET)/testgdi8.tcl 
+	$(ZIP) $(TARGET)/$(TARGET)$(TDN).zip $(TARGET)/testtext.tcl $(TARGET)/testeuro.tcl
+	copy hdc\$(TDN)\hdc.dll hdc\hdc.dll
+	$(ZIP) $(TARGET)/$(TARGET)$(TDN).zip hdc/pkgIndex.tcl hdc/hdc.dll
+	cd $(TARGET)
+	del ..\hdc\hdc.dll
+	del *.dll
+
+# New: install
+install:
+	-@mkd $(DISTDIR)
+	copy $(OUTDIR)\$(TARGET).dll $(DISTDIR)/v
+	-@doindex2 $(DISTDIR) $(TCLDIR)\bin\wish$(VERSION) $(TARGET).dll
+	-@mkd $(TCLDIR)\lib\$(TARGET)
+	copy $(OUTDIR)\$(TARGET).dll $(INSTDIR) /v
+	-@doindex2 $(TCLDIR)\lib\$(TARGET) $(TCLDIR)\bin\wish$(VERSION) $(TARGET).dll
+	copy $(INSTDIR)\pkgIndex.tcl ,
