@@ -1,3 +1,7 @@
+0.94.6 XXXX-XX-XX
+- covar elements highlighted according to correlation coefficient, 
+  also correlated params are shown
+
 0.94.5 2014-10-03
 - storing intensity and size distribution in batch processing routine
 - changed the width of the error bar, assuming that the supplied error is FWHM

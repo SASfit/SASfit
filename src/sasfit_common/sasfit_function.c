@@ -41,7 +41,7 @@ void sasfit_init_fct(sasfit_function * f)
 	f->F_identifier = -1;
 	f->V_identifier = -1;
 	f->compute_f = FALSE;
-	
+
 	// initialize error message and typestr
 	for(i=0; i < STRLEN ;i++)
 	{
@@ -89,7 +89,7 @@ void sasfit_get_param(sasfit_param * param, int num, ...)
 	}
 
 	va_start(argp, num);
-	
+
 	for (i=0; i < num ;i++)
 	{
 		ptr = va_arg(argp, scalar*);
@@ -97,7 +97,7 @@ void sasfit_get_param(sasfit_param * param, int num, ...)
 		{
 			*ptr = param->p[i];
 		}
-	} 
+	}
 
 	va_end(argp);
 }
@@ -127,14 +127,14 @@ void sasfit_print_param(sasfit_param * param)
 
 int sasfit_valid_fct(sasfit_function * f)
 {
-	if ( 		       f != 0 && 
-			  f->fct != 0 && 
-		      f->typestr != 0 && 
+	if ( 		       f != 0 &&
+			  f->fct != 0 &&
+		      f->typestr != 0 &&
 		f->params.errStr != 0 )
 	{
 		return 1;
 	}
-	sasfit_err("f: %x, f->fct: %x, f->typestr: %x, f->params.errStr: %x\n", 
+	sasfit_err("f: %x, f->fct: %x, f->typestr: %x, f->params.errStr: %x\n",
 			  f,	 f->fct,     f->typestr,     f->params.errStr);
 	return 0;
 }
@@ -169,7 +169,7 @@ scalar sasfit_part_diff_fct(scalar x, sasfit_function * f, int dparam)
 			param_pos =  h;
 			param_neg = -h;
 /*
-			sasfit_param_set_err(&f->params, "%g %g %g %g %d\n", 
+			sasfit_param_set_err(&f->params, "%g %g %g %g %d\n",
 							f->params.p[0],
 							f->params.p[1],
 							f->params.p[2],
@@ -211,8 +211,25 @@ sasfit_param_override_t	sasfit_param_override_psi;
 
 void sasfit_param_override_init (void)
 {
-	sasfit_param_override_psi.override = FALSE;
-	sasfit_param_override_psi.value    = 0.0;
+	sasfit_param_override_psi.override  = FALSE;
+	sasfit_param_override_psi.value     = 0.0;
+	sasfit_param_override_psi.override2 = FALSE;
+	sasfit_param_override_psi.value2    = 0.0;
+
+}
+
+void sasfit_param_override_set_psi2 (scalar new_value)
+{
+	sasfit_param_override_psi.override2 = TRUE;
+	sasfit_param_override_psi.value2    = new_value;
+}
+
+scalar sasfit_param_override_get_psi2 (scalar default_val)
+{
+	if (sasfit_param_override_psi.override2)
+		return sasfit_param_override_psi.value2;
+	else
+		return default_val;
 }
 
 void sasfit_param_override_set_psi (scalar new_value)
