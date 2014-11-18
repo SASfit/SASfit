@@ -213,7 +213,6 @@ proc fiterror_active_list {
 			}
 		}
 	}
-	set ::fiterror(contrib_count) $contrib_count
 	return [list $activeList $alist]
 }
 
@@ -282,13 +281,12 @@ proc fiterror_build_covar {} {
 							]
 				# create button to emphasize correlated parameter pair
 				set val [expr abs($val)]
-				if {[expr $val > $::fiterror(correlation_threshold)] && \
-					$xcoord != $ycoord
-				} {
+				if {[expr $val > $::fiterror(correlation_threshold)]} {
 					# add the button widget and the corr.coeff. to a list
 					# for sorting and packing later on
 					set btn [list]
-					lappend btn [covar_add_correlated_param $w $xcoord $ycoord $val]
+					lappend btn [covar_add_correlated_param $w $xcoord $ycoord \
+									[color_shade $w white 0 $val]] ;# red base color
 					lappend btn $val
 					if {[winfo exists [lindex $btn 0]]} {
 						lappend correlated_btns $btn
@@ -310,7 +308,7 @@ proc fiterror_build_covar {} {
 }
 
 # creates a button for a given parameter pair, returns the full widget path
-proc covar_add_correlated_param { w xcoord ycoord corrcoeff
+proc covar_add_correlated_param { w xcoord ycoord bgcolor
 } {
 	if {$xcoord == $ycoord} { return } ;# ignore diagonal elements
 	set c0 [lindex $xcoord 0]
@@ -332,9 +330,7 @@ proc covar_add_correlated_param { w xcoord ycoord corrcoeff
 	set w $::fiterror(correlated_frame)
 
 	set idx [llength [winfo children $w]]
-	set bgcolor [color_shade $w white 0 $corrcoeff] ;# red base color
-	button $w.lbl$idx -wraplength 400 -justify left \
-		-background "$bgcolor" -activebackground "$bgcolor" \
+	button $w.lbl$idx -wraplength 400 -justify left -background "$bgcolor" \
 		-text [join [list \
 		"- $param0 of $model0 in contribution $c0 with\n" \
 		"- $param1 of $model1 in contribution $c1"] ""] \
@@ -356,7 +352,7 @@ proc covar_background_color { w lname contrib is_diag_elem val
 } {
 	# return unchanged background color for other widgets than labels
 	if {[winfo exists $w.$lname] && \
-		[string equal [winfo class $w.$lname] "Frame"]
+		![string equal [winfo class $w.$lname] "Label"]
 	} {
 		return [$w.$lname cget -background]
 	}
@@ -370,7 +366,10 @@ proc covar_background_color { w lname contrib is_diag_elem val
 		set val [$w.$lname cget -text]
 	}
 	# set element color based on its value in range [0,1]
-	if {!$is_diag_elem} {
+	if {!$is_diag_elem && \
+		[string is double -strict $val] && \
+		[expr abs($val) <= 1]
+	} {
 		set bgcolor [color_shade $w $bgcolor 0 $val]
 	}
 	return $bgcolor
@@ -378,8 +377,6 @@ proc covar_background_color { w lname contrib is_diag_elem val
 
 proc color_shade { w color channel amount
 } {
-	if {![string is double -strict $amount]} { return $color }
-	set amount [expr min(abs($amount), 1.0)] ;# clamp to [0,1]
 	# get rgb values
 	set rgb [winfo rgb [winfo parent $w] $color]
 	# convert rgb values to range [0,255] (8 bit each)
@@ -388,7 +385,7 @@ proc color_shade { w color channel amount
 		lset rgb $c [expr [lindex $rgb $c] * 255 / 65535]
 		if {$c != $channel} {
 			# shade the color according to element value
-			lset rgb $c [expr int((1 - $amount) * [lindex $rgb $c])]
+			lset rgb $c [expr int((1 - abs($amount)) * [lindex $rgb $c])]
 		}
 		# convert color to hex notation
 		lappend hexcolor [format "%02X" [lindex $rgb $c]]
@@ -435,7 +432,7 @@ proc fiterror_update {
 	}
 	set ::fiterror(alambda) $alambda
 	# see if list of fitted params changed
-	if {!$rebuild && [info exists ::fiterror(activelist)]} {
+	if {! $rebuild && [info exists ::fiterror(activelist)]} {
 		set lst [fiterror_active_list]
 		set alist [lindex $lst 1]
 		if {![active_lists_equal alist ::fiterror(activelist)]} {
@@ -443,18 +440,10 @@ proc fiterror_update {
 		}
 	}
 
-	# num of contribs in analyt. fit, compare with #contribs in backend
-	set contrib_count [expr [$::nomenu index end] + 1]
-	if {[expr $::fiterror(contrib_count) != $contrib_count]} {
-		# rebuild required but activelist from backend still unchanged
-		.analytical.adj.calc invoke ;# press Apply button programmatically
-		set rebuild 1
-	}
-
 	if {$rebuild} {
 		fiterror_build_covar
 	}
-	fiterror_update_widgets $::fiterror(widget)
+	fiterror_update_widgets $w
 }
 
 proc getfitap { name pattern } {
@@ -610,7 +599,6 @@ proc deselect_covar { kind
 		$w.$lbl configure -relief flat
 	}
 	array unset ::fiterror selected_covar_$kind
-	array unset ::fiterror selected_covar_orient_$kind
 }
 
 proc fiterror_invert_kind { kind } {
@@ -643,7 +631,6 @@ proc highlight_covar { kind param orient
 		if {![winfo exists $w.$lbl]} { continue }
 		covar_colorize_cell $w $lbl $kind
 	}
-	set ::fiterror(selected_covar_orient_$kind) $orient
 }
 
 # decides if highlighted column/row have to be swapped to get the overlapping
@@ -657,10 +644,21 @@ proc covar_swap_orientation { kind param orient
 	} { return $orient }
 
 	set param_other $::fiterror(selected_param_$kind_other)
-	if {[string compare "$param" "$param_other"] > 0} {
-		set orient column ;# desired orientation
+	set pname_other [join $param_other "-"]
+	set orient_other column
+	# find orientation of existing selection: row or column?
+	foreach lname $::fiterror(selected_covar_$kind_other) {
+		if {[string equal "$lname" "${pname_other}_$pname_other"]} {
+			continue ;# ignore diagonal elements
+		}
+		if {[string first $pname_other $lname]} {
+			# other parameter is last element: in a row
+			set orient_other row
+		}
 	}
-	set orient_other $::fiterror(selected_covar_orient_$kind_other)
+	if {[string compare "$param" "$param_other"] > 0} {
+		set orient column
+	}
 	if {[string equal $orient $orient_other]} {
 		# swap the other orientation
 		deselect_covar $kind_other
