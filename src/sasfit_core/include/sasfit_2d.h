@@ -31,7 +31,7 @@
 /** Scale types for 2D calculation. */
 typedef enum
 {
-	LOG, SQRT, ARCSINH, LIN
+	LOG, SQRT, ARCSINH
 } sasfit_2d_scale_t;
 
 /** Operation modes of 2D calculation. */
@@ -40,13 +40,7 @@ typedef enum
 	AUTO, MANUAL
 } sasfit_2d_mode_t;
 
-/** Operation modes of 2D calculation. */
-typedef enum
-{
-	PINHOLE, SLIT, GEOMETRYUNKNOWN
-} sasfit_2d_geom_t;
-
-typedef struct
+typedef struct 
 {
 //	bool              calc2d;
 	int               num_pix;
@@ -58,9 +52,6 @@ typedef struct
 	scalar            max;
 	sasfit_2d_scale_t scale;
 	sasfit_2d_mode_t  mode;
-	sasfit_2d_geom_t  geom;
-	scalar            qwidth;
-	scalar            qminbs;
 //        char ct[STRLEN];
 } sasfit_2d_param_t;
 
@@ -79,9 +70,9 @@ int sasfit_2d_set(Tcl_Interp * interp, const char * argv[]);
  * This function implements the Tcl "sasfit_2Diq" command.
  * \returns A standard Tcl result.
  */
-int Sasfit_2DiqCmd(ClientData    clientData,
-                   Tcl_Interp *  interp,
-                   int           argc,
+int Sasfit_2DiqCmd(ClientData    clientData, 
+                   Tcl_Interp *  interp, 
+                   int           argc, 
                    const char ** argv);
 
 #endif // SASFIT_2D_H

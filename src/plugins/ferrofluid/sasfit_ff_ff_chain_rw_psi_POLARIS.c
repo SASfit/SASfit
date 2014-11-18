@@ -43,21 +43,7 @@ scalar sasfit_ff_ff_chain_rw_psi_POLARIS_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-    RW_SAW = 1.0;
-	RADAVG = 0.0;
-
-	R_CORE = 0.0;
-	if ((R_TOT-T_SHELL) > 0) {
-		R_CORE=R_TOT-T_SHELL;
-		T_SH = T_SHELL;
-	} else {
-		R_CORE = 0.0;
-		T_SH = R_TOT;
-	}
-
-	PSI = sasfit_param_override_get_psi(PSIDEG*M_PI/180.);
-	return	(1.0+POL)/2.0*(TPLUS *Amicelle_pp(q,param)+TMINUS*Amicelle_pm(q,param))
-		+	(1.0-POL)/2.0*(TMINUS*Amicelle_mm(q,param)+TPLUS *Amicelle_mp(q,param));
+	return 0.0;
 }
 
 scalar sasfit_ff_ff_chain_rw_psi_POLARIS_v(scalar q, sasfit_param * param, int dist)

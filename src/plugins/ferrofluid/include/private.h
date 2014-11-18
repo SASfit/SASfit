@@ -37,13 +37,6 @@ scalar FFmicelle_mm(scalar q, sasfit_param * param);
 scalar FFmicelle_mp(scalar q, sasfit_param * param);
 scalar FFmicelle_pm(scalar q, sasfit_param * param);
 scalar FFmicelle(scalar q, scalar bs1, scalar bs2, scalar bc, sasfit_param * param);
-
-scalar Amicelle_pp(scalar q, sasfit_param * param);
-scalar Amicelle_mm(scalar q, sasfit_param * param);
-scalar Amicelle_mp(scalar q, sasfit_param * param);
-scalar Amicelle_pm(scalar q, sasfit_param * param);
-scalar Amicelle(scalar q, scalar bs1, scalar bs2, scalar bc, sasfit_param * param);
-
 scalar V(scalar x);
 scalar Vg(scalar x, scalar sigma);
 scalar FFphi(scalar x);
