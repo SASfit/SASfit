@@ -1615,9 +1615,9 @@ while {![eof $f]} {
 # Supported items are:
 #    1.) ItemName = SANSDIso 
 #         for block name "Counts":
-#           Varying number of lines of 4 real numbers each, separated by comma.
+#           Varying number of lines of 3 real numbers each, separated by comma.
 #           Each line contains a data points with Q [nm^-1], Intensity(Q) 
-#           [cm^-1*sr^-1], and Error(Q) [cm^-1*sr^-1] and the q-resolution in [nm^-1].
+#           [cm^-1*sr^-1], and Error(Q) [cm^-1*sr^-1].
 #           The return value is a list of 3 elements, each containing
 #           a list of Q, Intensity(Q) and Error(Q) values
 #         for block name "Error"
@@ -1641,7 +1641,7 @@ if {![string compare $BlockName [array names Data $BlockName]]==0} {
 #
 
 #
-# check for one dimensional scattering data Q IQ DIQ DQ
+# check for one dimensional scattering data Q IQ DIQ 
 # columns can be separated by " ", "\t" or/and ","
 #
 if {![string compare $BlockName Counts] && \
@@ -1669,7 +1669,6 @@ if {![string compare $BlockName Counts] && \
       set x_ok [scan [lindex $splitline 0] "%f" x ]
       set y_ok [scan [lindex $splitline 1] "%f" y ]
       set e_ok [scan [lindex $splitline 2] "%f" e ]
-      set r_ok [scan [lindex $splitline 3] "%f" res ]
 #
 # lines which cannot be converted are ignored (no error message)
 #

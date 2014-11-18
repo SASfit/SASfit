@@ -27,7 +27,7 @@ message(STATUS "System Processor: '${CMAKE_SYSTEM_PROCESSOR}'")
 #message("## generator: '${CMAKE_GENERATOR}'")
 
 # updates the version number in some files
-set(SASFIT_VERSION "0.94.6")
+set(SASFIT_VERSION "0.94.5")
 sasfit_update_version()
 # this can be set on the command line too:
 #cmake . -DCREATE_SOURCE=TRUE

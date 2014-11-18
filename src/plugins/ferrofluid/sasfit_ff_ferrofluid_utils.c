@@ -9,8 +9,15 @@
 
 // define shortcuts for local parameters/variables
 
-double Arg(double x, double y)
+double Arg(double x, double y) 
 {
+/*
+	if (x>0 || y!=0) {
+		return 2*atan(y/(sqrt(x*x+y*y)+x));
+	} else {
+		return M_PI;
+	}
+*/
 	if (x > 0) {
 		return atan(y/x);
 	} else if (x<0 && y>=0) {
@@ -27,23 +34,23 @@ double IntPhi(double x, sasfit_param * param)
 	if (TAU < 0.0) {
 		ZMAX = sqrt((2*x+3*gsl_pow_2(TAU))/(2*C));
 		retval = -(ZMAX*(2*(36*pow(R_TOT,2)*TAU*pow(x,1.5) - 8*R_TOT*
-            (4*TAU*TAU*TAU*sqrt(x) - 3*TAU*pow(x,1.5) + 2*sqrt(2)*TAU*TAU*sqrt(x*(2*TAU*TAU + x)) +
-              sqrt(2)*x*sqrt(x*(2*TAU*TAU + x)))*ZMAX + TAU*sqrt(x)*(-6*TAU*TAU + 11*x)*pow(ZMAX,2)) +
+            (4*TAU*TAU*TAU*sqrt(x) - 3*TAU*pow(x,1.5) + 2*sqrt(2)*TAU*TAU*sqrt(x*(2*TAU*TAU + x)) + 
+              sqrt(2)*x*sqrt(x*(2*TAU*TAU + x)))*ZMAX + TAU*sqrt(x)*(-6*TAU*TAU + 11*x)*pow(ZMAX,2)) + 
         3*sqrt(2)*(2*TAU*TAU + x)*(4*pow(R_TOT,2)*x + (2*TAU*TAU + x)*pow(ZMAX,2))*
          Arg((-(sqrt(2)*TAU)),-sqrt(x)) ))/(24.*pow(x,1.5))-I/K;
 	} else if (TAU > 0.0){
 		ZMAX = sqrt(x/C);
 		retval = -(ZMAX*(2*(12*gsl_pow_2(R_TOT)*TAU*pow(x,1.5) - 8*R_TOT*
-            (-4*gsl_pow_3(TAU)*sqrt(x) - 3*TAU*pow(x,1.5) +
-			2*sqrt(2)*gsl_pow_2(TAU)*sqrt(x*(2*gsl_pow_2(TAU) + x)) +
-              sqrt(2)*x*sqrt(x*(2*gsl_pow_2(TAU) + x)))*ZMAX +
-			  TAU*sqrt(x)*(6*gsl_pow_2(TAU) + 5*x)*gsl_pow_2(ZMAX)) +
-        3*sqrt(2)*(2*gsl_pow_2(TAU) + x)*(4*gsl_pow_2(R_TOT)*x
+            (-4*gsl_pow_3(TAU)*sqrt(x) - 3*TAU*pow(x,1.5) + 
+			2*sqrt(2)*gsl_pow_2(TAU)*sqrt(x*(2*gsl_pow_2(TAU) + x)) + 
+              sqrt(2)*x*sqrt(x*(2*gsl_pow_2(TAU) + x)))*ZMAX + 
+			  TAU*sqrt(x)*(6*gsl_pow_2(TAU) + 5*x)*gsl_pow_2(ZMAX)) + 
+        3*sqrt(2)*(2*gsl_pow_2(TAU) + x)*(4*gsl_pow_2(R_TOT)*x 
 		+ (2*gsl_pow_2(TAU) + x)*gsl_pow_2(ZMAX))*
          Arg((sqrt(2)*TAU),-sqrt(x)) ))/(24.*pow(x,1.5)) - I/K;
 	} else {
 		ZMAX = sqrt(x/C);
-		retval = (sqrt(x)*ZMAX*(32*R_TOT*ZMAX + 3*M_PI*(4*gsl_pow_2(R_TOT)
+		retval = (sqrt(x)*ZMAX*(32*R_TOT*ZMAX + 3*M_PI*(4*gsl_pow_2(R_TOT) 
 			+ gsl_pow_2(ZMAX))))/(24.*sqrt(2))-I/K;
 	}
 	return retval;
@@ -54,9 +61,9 @@ double IntPhi(double x, sasfit_param * param)
 	}
 }
 
-void myhandler (const char * reason,
-              const char * file,
-              int line,
+void myhandler (const char * reason, 
+              const char * file, 
+              int line, 
               int gsl_errno)
 {
 	sasfit_out("reason: %s\nfile:%s(line:%d)\ngsl_errno:%d\n",reason,file,line,gsl_errno);
@@ -95,7 +102,7 @@ scalar find_LAMBDA(sasfit_param * param)
 	iter = 0;
 	max_iter = 1000;
 
-	gsl_set_error_handler_off();
+	gsl_set_error_handler_off(); 
 	gsl_set_error_handler (&myhandler);
 	status = gsl_root_fsolver_set (s, &F, x_lo, x_hi);
 	if (status != GSL_SUCCESS) {
@@ -114,12 +121,12 @@ scalar find_LAMBDA(sasfit_param * param)
 		status = gsl_root_test_interval (x_lo, x_hi, eps, eps);
 
 	} while (status == GSL_CONTINUE && iter < max_iter);
-
+    
 	SASFIT_CHECK_COND2((iter >=max_iter), param, "exceeded maximum iteration for getting Langrange parameter: iter(%d) >= max_iter(%d)",iter,max_iter);
 	SASFIT_CHECK_COND2(fabs(root -sx_lo)<=eps, param, "root(%f) at lower limit(%f)",root,sx_lo);
 	SASFIT_CHECK_COND2(fabs(root -sx_hi)<=eps, param, "root(%f) at upper limit(%f)",root,sx_hi);
     gsl_root_fsolver_free (s);
-
+     
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 	return root;
@@ -143,18 +150,18 @@ scalar phi(scalar r, sasfit_param * param)
 
 scalar phi_kernel(scalar x, sasfit_param *param)
 {
-	if (fabs(Q*x)<=1.e-5) {
-		return 4*M_PI*gsl_pow_2(x) * phi(x,param) * (1.-gsl_pow_2(Q*x)/6.+gsl_pow_4(Q*x)/120.);
+	if (Q==0) {
+		return 4*M_PI*gsl_pow_2(x) * phi(x,param);
 	} else {
 		return 4*M_PI*gsl_pow_2(x) * sin(Q*x)/(Q*x) * phi(x,param);
 	}
 }
 scalar FFDebye(scalar x)
 {
-	if (x<=1.0e-5) {
-		return 1.0-x/3.+gsl_pow_2(x)/12.-gsl_pow_3(x)/60.+gsl_pow_4(x)/360.-gsl_pow_5(x)/2520.;
+	if (x==0.0) {
+		return 1.0;
 	} else {
-		return 2.0*(x-1.0+exp(-x))/(x*x);
+		return 2.0*(x-1.0+exp(-x))/(x*x); 
 	}
 }
 
@@ -167,7 +174,7 @@ scalar S1a(sasfit_param *param)
 		xi = ALPHA*V(R_CORE)/V(R_AV);
 	}
 
-	if ( fabs(xi) < 1.0e-5 ) return 1./3.*xi-1./45.*gsl_pow_3(xi)+2./945.*gsl_pow_5(xi);
+	if ( fabs(xi) < 1.0e-5 ) return 1./3.*xi-1./45.*gsl_pow_3(xi);
 	return 1.0/tanh(xi) - 1./xi;
 
 }
@@ -180,7 +187,7 @@ scalar S2a(sasfit_param *param)
 	} else {
 		xi = ALPHA*V(R_CORE)/V(R_AV);
 	}
-	if ( fabs(xi) < 1.0e-5 ) return gsl_pow_2(xi)/15.-2./315.*gsl_pow_4(xi); // 1.0-3*(1./3.-1./45.*gsl_pow_2(xi));
+	if ( fabs(xi) < 1.0e-5 ) return 1.0-3*(1./3.-1./45.*gsl_pow_2(xi));
 	return 1.-3.*S1a(param)/xi;
 
 }
@@ -200,12 +207,12 @@ scalar ecorr(scalar n)
 	return 1.-1.5/n+1.5/(n*n)-0.75/(n*n*n)*(1.-exp(-2.*n));
 }
 
-scalar nu(scalar X)
+scalar nu(scalar X) 
 {
 	if (fabs(X)<1e-3) return 1.4*pow(fabs(X),1.04);
 //	return 1.4*pow(X,1.04);
 	return 1./8.*(9.*X-2.+2*log(1.+X)/X)
-		  *exp(1./4.*(1./X+(1.-1./(X*X))*log(1.+X)));
+		  *exp(1./4.*(1./X+(1.-1./(X*X))*log(1.+X))); 
 }
 scalar sigma(scalar Rg, scalar Rc, scalar Nagg)
 {
@@ -216,7 +223,7 @@ scalar FFRPA(scalar q, scalar Rg, scalar Rc, scalar n, scalar Nagg)
 	return FFDaniels(q*q*Rg*Rg/ecorr(n),n)/(1.+nu(sigma(Rg,Rc,Nagg))*FFDebye(q*q*Rg*Rg));
 }
 
-scalar V(scalar R)
+scalar V(scalar R) 
 {
 	return 4./3.*M_PI*gsl_pow_3(R);
 }
@@ -230,12 +237,12 @@ scalar Sg(scalar q, scalar r, scalar s)
 {
 	if ((q*r*(4.*r*s+sqrt(2.*M_PI)*(r*r+s*s)))  == 0.0) return 1;
 	return (  2.*r*s*sin(q*r)
-			+ sqrt(2.*M_PI)*exp(-0.5*gsl_pow_2(q*s))*(q*r*s*s*cos(q*r)+r*r*sin(q*r))
+			+ sqrt(2.*M_PI)*exp(-0.5*gsl_pow_2(q*s))*(q*r*s*s*cos(q*r)+r*r*sin(q*r)) 
 			+ 2.*sqrt(2.0)*gsl_sf_dawson(q*s/sqrt(2.0))*(r*r*cos(q*r)-q*r*s*s*sin(q*r))
 			) / (q*r*(4.*r*s+sqrt(2.*M_PI)*(r*r+s*s)));
 }
 
-scalar FFphi(scalar x)
+scalar FFphi(scalar x) 
 {
 	if (x == 0.0) {
 		return 1.0;
@@ -275,18 +282,18 @@ scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param)
 			}
 	case 2: {
 				if (TAU == 0.0) {
-					Fnorm = (sqrt(LAMBDA)*M_PI*ZMAX*(32*R_TOT*ZMAX +
+					Fnorm = (sqrt(LAMBDA)*M_PI*ZMAX*(32*R_TOT*ZMAX + 
 								3*M_PI*(4*gsl_pow_2(R_TOT) + gsl_pow_2(ZMAX))))/(6.*sqrt(2));
 				} else {
 					Fnorm = (M_PI*ZMAX*(-16*(-(sqrt(2)*R_TOT*
-							(2*gsl_pow_2(TAU)*sqrt(LAMBDA*(LAMBDA + 2*gsl_pow_2(TAU))) +
-							sqrt(gsl_pow_3(LAMBDA)*(LAMBDA + 2*gsl_pow_2(TAU))))*ZMAX) +
+							(2*gsl_pow_2(TAU)*sqrt(LAMBDA*(LAMBDA + 2*gsl_pow_2(TAU))) + 
+							sqrt(gsl_pow_3(LAMBDA)*(LAMBDA + 2*gsl_pow_2(TAU))))*ZMAX) + 
 							pow(LAMBDA,1.5)*TAU*
-							(3*gsl_pow_2(R_TOT) + 3*R_TOT*ZMAX + gsl_pow_2(ZMAX))) +
-							2*sqrt(LAMBDA)*(-2*gsl_pow_2(TAU)*ZMAX*(16*R_TOT + 3*ZMAX) +
-							3*LAMBDA*(4*gsl_pow_2(R_TOT) + gsl_pow_2(ZMAX)))*fabs(TAU) +
+							(3*gsl_pow_2(R_TOT) + 3*R_TOT*ZMAX + gsl_pow_2(ZMAX))) + 
+							2*sqrt(LAMBDA)*(-2*gsl_pow_2(TAU)*ZMAX*(16*R_TOT + 3*ZMAX) + 
+							3*LAMBDA*(4*gsl_pow_2(R_TOT) + gsl_pow_2(ZMAX)))*fabs(TAU) + 
 							3*sqrt(2)*(LAMBDA + 2*gsl_pow_2(TAU))*
-							(4*LAMBDA*gsl_pow_2(R_TOT) +
+							(4*LAMBDA*gsl_pow_2(R_TOT) + 
 							(LAMBDA + 2*gsl_pow_2(TAU))*gsl_pow_2(ZMAX))*
 							asin(sqrt(LAMBDA/(LAMBDA + 2*gsl_pow_2(TAU))))))/
 							(6.*pow(LAMBDA,1.5));
@@ -404,88 +411,3 @@ scalar FFmicelle_mp(scalar q, sasfit_param * param)
 	return FFmicelle_pm(q,param);
 }
 
-
-scalar Amicelle(scalar q, scalar bs1, scalar bs2, scalar bc, sasfit_param * param)
-{
-	scalar ffacor;
-	ffacor = FFAcor(q,SIGMA_BRUSH_GAUSSIAN,R_CORE+T_SH,R_CORE+T_SH+T_BRUSH_CONST,param);
-	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
-	if (RW_SAW == 0.0) {
-		return	  ((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-				+  NAGG*(bc*ffacor);
-	} else {
-		return	  ((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-				+ NAGG*(bc*ffacor);
-	}
-}
-
-scalar Amicelle_mm(scalar q, sasfit_param * param)
-{
-	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4;
-	if (RADAVG == 1.0) {
-		sin2 = 1./2.;
-		sin4 = 3./8.;
-	} else {
-		sin2 = gsl_pow_2(sin(PSI));
-		sin4 = gsl_pow_2(sin2);
-	}
-	S1=S1a(param);
-	S2=S2a(param);
-	bs1 = (ETA_CORE-ETA_SOLV);
-	bs2 = (ETA_SHELL-ETA_SOLV);
-	bm1 = ETA_MAG_CORE;
-	bm2 = ETA_MAG_SHELL;
-	bc = (ETA_BRUSH-ETA_SOLV)*VBRUSH;
-	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
-	return	  Amicelle(q,bs1,bs2,bc,param)
-			+ ((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-                    *(S1*sin2);
-}
-
-scalar Amicelle_pp(scalar q, sasfit_param * param)
-{
-	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4;
-	if (RADAVG == 1.0) {
-		sin2 = 1./2.;
-		sin4 = 3./8.;
-	} else {
-		sin2 = gsl_pow_2(sin(PSI));
-		sin4 = gsl_pow_2(sin2);
-	}
-	S1=S1a(param);
-	S2=S2a(param);
-	bs1 = (ETA_CORE-ETA_SOLV);
-	bs2 = (ETA_SHELL-ETA_SOLV);
-	bm1 = ETA_MAG_CORE;
-	bm2 = ETA_MAG_SHELL;
-	bc = (ETA_BRUSH-ETA_SOLV)*VBRUSH;
-	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
-	return	  Amicelle(q,bs1,bs2,bc,param)
-			+ ((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-			        *(S1*sin2);
-}
-
-scalar Amicelle_pm(scalar q, sasfit_param * param)
-{
-	scalar bm1, bm2, S1, S2,sin2,sin4,sincos;
-	if (RADAVG == 1.0) {
-		sin2 = 1./2.;
-		sin4 = 3./8.;
-		sincos=0;
-	} else {
-		sin2 = gsl_pow_2(sin(PSI));
-		sin4 = gsl_pow_2(sin2);
-		sincos = sin(PSI)*cos(PSI);
-	}
-	S1=S1a(param);
-	S2=S2a(param);
-	bm1 = ETA_MAG_CORE;
-	bm2 = ETA_MAG_SHELL;
-	return ((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-				*	(  S1*sincos);
-}
-
-scalar Amicelle_mp(scalar q, sasfit_param * param)
-{
-	return Amicelle_pm(q,param);
-}

@@ -12060,58 +12060,40 @@ set wsq      [lindex $lst 3]
 set wsqhow   [lindex $lst 4]
 set wdet2D_a [lindex $lst 5]
 set wdet2D_b [lindex $lst 6]
-set wdet2D_c [lindex $lst 7]
 
 #
 # input fields for parameters of calculating 2D detector intensity data
 #
-label $wdet2D_a.l_ct     -text "color table:"
+
 label $wdet2D_a.l_pix    -text "number of pixel:"
 label $wdet2D_a.l_pixres -text "pixel size \[mm\]:"
 label $wdet2D_a.l_SD     -text "detector distance \[m\]:"
-label $wdet2D_a.l_lam    -text "wavelength \[nm\]:"
-label $wdet2D_a.l_res    -text "scattering geometry:"
-label $wdet2D_a.l_qwidth -text "resolution width of q:"
-label $wdet2D_a.l_bs     -text "beam stop (qmin):"
+label $wdet2D_a.l_lam    -text "wavelength \[nm\]"
 
 grid $wdet2D_a.l_pix    -row 0 -column 0 -sticky e
 grid $wdet2D_a.l_pixres -row 1 -column 0 -sticky e
 grid $wdet2D_a.l_SD     -row 2 -column 0 -sticky e
 grid $wdet2D_a.l_lam    -row 3 -column 0 -sticky e
-grid $wdet2D_a.l_res    -row 4 -column 0 -sticky e
-grid $wdet2D_a.l_qwidth -row 5 -column 0 -sticky e
-grid $wdet2D_a.l_bs     -row 6 -column 0 -sticky e
 
-entry    $wdet2D_a.e_SD     -textvariable Detector2DIQGraph(SD) -width 8
-entry    $wdet2D_a.e_pixres -textvariable Detector2DIQGraph(pixres) -width 8
+entry    $wdet2D_a.e_SD     -textvariable Detector2DIQGraph(SD) -width 4
+entry    $wdet2D_a.e_pixres -textvariable Detector2DIQGraph(pixres) -width 4
 ComboBox $wdet2D_a.e_pix    -values "8 16 32 64 128 256 512" \
 		    -textvariable Detector2DIQGraph(nPix) \
-		    -width 8
+		    -width 4
 entry    $wdet2D_a.e_lam    -textvariable Detector2DIQGraph(lambda) \
-		    -width 8
-ComboBox $wdet2D_a.e_res    -values "pinhole slit" \
-		    -textvariable Detector2DIQGraph(resolution) \
-		    -width 8
-entry    $wdet2D_a.e_qwidth    -textvariable Detector2DIQGraph(Qwidth) \
-		    -width 8
-entry    $wdet2D_a.e_bs    -textvariable Detector2DIQGraph(QminBS) \
-		    -width 8
-			
+		    -width 4
 
 grid $wdet2D_a.e_pix    -row 0 -column 1 -sticky w
 grid $wdet2D_a.e_pixres -row 1 -column 1 -sticky w
 grid $wdet2D_a.e_SD     -row 2 -column 1 -sticky w
 grid $wdet2D_a.e_lam    -row 3 -column 1 -sticky w
-grid $wdet2D_a.e_res    -row 4 -column 1 -sticky w
-grid $wdet2D_a.e_qwidth -row 5 -column 1 -sticky w
-grid $wdet2D_a.e_bs     -row 6 -column 1 -sticky w
 
 
 ComboBox $wdet2D_b.c_scale -textvariable Detector2DIQGraph(scale) \
 		   -values "y log(y) arcsinh(y) sqrt(y)" \
-		   -width 9 \
-           -label scale: 
-grid $wdet2D_b.c_scale -row 0 -column 1 -sticky e
+		   -width 9
+#                           -label scale: 
+grid $wdet2D_b.c_scale -row 1 -column 0 -sticky e
 
 radiobutton    $wdet2D_b.r_manual -text manual -value manual -variable Detector2DIQGraph(auto)
 radiobutton    $wdet2D_b.r_auto   -text auto   -value auto   -variable Detector2DIQGraph(auto)
@@ -12126,15 +12108,14 @@ LabelEntry     $wdet2D_b.e_max    \
 
 ComboBox $wdet2D_b.c_ct -textvariable Detector2DIQGraph(ct) \
 		-width 5 \
-		-values "jet rainbow bw" \
-        -label "color table:"
+		-values "jet rainbow bw"
+#                        -label "color table:"\
 
-
-grid $wdet2D_b.c_ct     -row 0 -column 0 -sticky e
 grid $wdet2D_b.r_manual -row 2 -column 0 -sticky w
 grid $wdet2D_b.r_auto   -row 3 -column 0 -sticky w
 grid $wdet2D_b.e_min    -row 2 -column 1 -sticky e
 grid $wdet2D_b.e_max    -row 3 -column 1 -sticky e
+grid $wdet2D_b.c_ct     -row 0 -column 0 -sticky e
 
 #puts $wdet2D_b.do
 button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
@@ -12181,8 +12162,6 @@ bind $Detector2DIQGraph(cw) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(
 
 	  }
 grid   $wdet2D_b.do    -row 4 -column 0 -columnspan 4 -sticky ew
-
-
 
 #
 # input fields for parameters of size distributions
@@ -13311,15 +13290,11 @@ proc create_analytical_parameter_frame { w isGlobal } {
 		set wdet2D_a $w.fitpar.det2D.lay_a
 		frame $wdet2D_a
 		pack $wdet2D_a -in $w.fitpar.det2D -fill y -expand 1 -side left
-		set wdet2D_c $w.fitpar.det2D.lay_c
-		frame $wdet2D_c
-		pack $wdet2D_c -in $w.fitpar.det2D -fill y -expand 1 -side right
 		set wdet2D_b $w.fitpar.det2D.lay_b
 		frame $wdet2D_b
 		pack $wdet2D_b -in $w.fitpar.det2D -fill y -expand 1 -side right
 		lappend wlist $wdet2D_a
 		lappend wlist $wdet2D_b
-		lappend wlist $wdet2D_c
 	}
 	return $wlist
 }

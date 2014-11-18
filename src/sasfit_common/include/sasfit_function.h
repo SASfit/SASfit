@@ -150,8 +150,6 @@ typedef struct
 {
 	int    override; //!< Flag to enable overriding.
 	scalar value;    //!< New value.
-    int    override2; //!< Flag to enable overriding.
-	scalar value2;    //!< New value.
 } sasfit_param_override_t;
 
 /**
@@ -201,20 +199,6 @@ typedef struct
 
 /** Initialize all parameter override data structures. */
 sasfit_common_DLLEXP void sasfit_param_override_init (void);
-
-/**
- * Sets the new angle \f$ \psi_2 \f$ of an anisotropic model function.
- * Enables override of previous parameter value.
- * \param new_value New angle \f$ \psi_2 \f$.
- */
-sasfit_common_DLLEXP void sasfit_param_override_set_psi2 (scalar new_value);
-
-/**
- * Overrides the angle \f$ \psi_2 \f$ of an anisotropic model function, if
- * enabled.
- * \param default_val Default parameter value.
- * \returns Desired angle value.
- */
 
 /**
  * Sets the new angle \f$ \psi \f$ of an anisotropic model function.
