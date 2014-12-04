@@ -364,23 +364,23 @@ set sasfit(res,calc)  {}
 set sasfit(graph)  "123" 
 switch $::tcl_platform(platform) {
       windows {
-	  set sasfit(datatypes) { { Ascii  ".*"      } \
-		                  { BerSANS ".*"     } \
+		set sasfit(datatypes) { { Ascii  ".*"      } \
+		                  { BerSANS "D???????.???" } \
 		                  { All    "*"       } }
       }
       unix {
-	  set sasfit(datatypes) { { Ascii  ".*"         } \
-		                  { BerSANS ".\\[0-9\\]*" } \
-                                  { All    "*"          } }
-      }
-   }
+		set sasfit(datatypes) { { Ascii  ".*"         } \
+		                  { BerSANS ".\\[0-9\\]\\[0-9\\]\\[0-9\\]" } \
+                          { All    "*"          } }
+     }
+}
 #set sasfit(datatypes) { { Ascii  ".*"      } \
 #                        { BerSANS ".*" } \
 #                        { All    "*"         } }
 set sasfit(actualdatatype) Ascii
 #set sasfit(filename)       [list "$sasfit(datadir)/test.dat"]
 set sasfit(filename)       {}
-set sasfit(filelabel)      $sasfit(filename)
+set sasfit(filelabel)      {}
 
 set sasfit(scale_types_x) {"x" "pow(x,2)" "pow(x,3)" "pow(x,4)" "log10(x)" "log(x)" \
                            "sqrt(x)" "1/x" "1/sqrt(x)" "arcsinh(x)" }
@@ -654,6 +654,9 @@ set Detector2DIQGraph(auto)    auto
 set Detector2DIQGraph(min)     0
 set Detector2DIQGraph(max)     1
 set Detector2DIQGraph(scale)   log(y)
+set Detector2DIQGraph(resolution) pinhole
+set Detector2DIQGraph(Qwidth)  0.0
+set Detector2DIQGraph(QminBS)  0.0
 
 set ResIQGraph(x,logscale) 0
 set ResIQGraph(y,logscale) 0
@@ -1200,29 +1203,29 @@ if {[sfFileIsProject $ssasfit(filename)]} { return yes }
 if { [file isfile $ssasfit(filename) ] } {
    switch $ssasfit(actualdatatype) {
       Ascii {
-             read_Ascii $ssasfit(filename) ASCIIData
-	     if {$ASCIIData(npoints) > 0} {
-		dr ::data_redu 0 ssasfit $ASCIIData(npoints) $ASCIIData(Q) $ASCIIData(I) $ASCIIData(DI) $ASCIIData(res) $ASCIIData(res) $ASCIIData(res)
+            read_Ascii $ssasfit(filename) ASCIIData
+			if {$ASCIIData(npoints) > 0} {
+				dr ::data_redu 0 ssasfit $ASCIIData(npoints) $ASCIIData(Q) $ASCIIData(I) $ASCIIData(DI) $ASCIIData(res) $ASCIIData(res) $ASCIIData(res)
                 set error no
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  $ASCIIData(error)
                 set ssasfit(res_enable) $ASCIIData(res_available)
-		set ssasfit(res,file)   $ASCIIData(res)
-             }
+				set ssasfit(res,file)   $ASCIIData(res)
+            }
 	    }
       BerSANS   {
-             read_HMI $ssasfit(filename) HMIData
-             set Q_IQ_E [HMIgetItem HMIData Counts SANSDIso y]
-             set npoints [llength [lindex $Q_IQ_E 0]]
-	     if {$npoints > 0} {
-                set ssasfit(res,file) [lindex $Q_IQ_E 3] 
-		dr ::data_redu 0 ssasfit $npoints [lindex $Q_IQ_E 0] [lindex $Q_IQ_E 1] [lindex $Q_IQ_E 2] [lindex $Q_IQ_E 3] [lindex $Q_IQ_E 3] [lindex $Q_IQ_E 3]
-		set error no
+            read_HMI $ssasfit(filename) HMIData
+            set Q_IQ_E_DQ [HMIgetItem HMIData Counts SANSDIso y]
+            set npoints [llength [lindex $Q_IQ_E_DQ 0]]
+			if {$npoints > 0} {
+		        dr ::data_redu 0 ssasfit $npoints [lindex $Q_IQ_E_DQ 0] [lindex $Q_IQ_E_DQ 1] [lindex $Q_IQ_E_DQ 2]  [lindex $Q_IQ_E_DQ 3] [lindex $Q_IQ_E_DQ 3] [lindex $Q_IQ_E_DQ 3]
+				set error no
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  1
-                set ssasfit(res_enable) 0
-	     }
-            }
+                set ssasfit(res_enable) 1
+                set ssasfit(res,file) [lindex $Q_IQ_E_DQ 3] 
+			}
+		}
 	}
 
 if {[llength $args] == 0} {
@@ -2129,56 +2132,55 @@ proc MergeCmd {} {
 	button $w.layout1.option -text "Options..." -command ReadOptionsCmd \
 	       -highlightthickness 0 -pady 1m
 	button $w.layout1.read -text "Read file" -command \
-	{
-               global tmpsasfit ASCIIData
-               set tmpfnlist $tmpsasfit(filename)
-               set errornessFiles {}
-               foreach fin $tmpfnlist {
-		  if {![file exists $fin]} { continue }
-                  set tmpsasfit(filename) $fin
-		  set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
-                  if {[string equal "$tmpval" "no"]
-		  } {
-                     lappend tmpsasfit(file,Q)        $tmpsasfit(Q)
-                     lappend tmpsasfit(file,I)        $tmpsasfit(I)
-                     lappend tmpsasfit(file,DI)       $tmpsasfit(DI)
-                     lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
-                     set tmpsasfit(res,calc) [sasfit_res $resolution(lambda)  \
-							 $resolution(Dlambda) \
-						     $resolution(r1)      \
-						     $resolution(l1)      \
-						     $resolution(r2)      \
-						     $resolution(l2)      \
-						     $resolution(d)       \
-						     $resolution(Dd)      \
-						     $tmpsasfit(Q)       \
-						 ]
-                     lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
+			{
+				global tmpsasfit ASCIIData
+				set tmpfnlist $tmpsasfit(filename)
+				set errornessFiles {}
+				foreach fin $tmpfnlist {
+					if {![file exists $fin]} { continue }
+						set tmpsasfit(filename) $fin
+						set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
+						if {[string equal "$tmpval" "no"] } {
+							lappend tmpsasfit(file,Q)        $tmpsasfit(Q)
+							lappend tmpsasfit(file,I)        $tmpsasfit(I)
+							lappend tmpsasfit(file,DI)       $tmpsasfit(DI)
+							lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
+							set tmpsasfit(res,calc) [sasfit_res $resolution(lambda)  \
+								$resolution(Dlambda) \
+								$resolution(r1)      \
+								$resolution(l1)      \
+								$resolution(r2)      \
+								$resolution(l2)      \
+								$resolution(d)       \
+								$resolution(Dd)      \
+								$tmpsasfit(Q)       \
+								]
+							lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
 
-		     if {$tmpAnalytPar(geometrical/datafile)} {
-				lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
-		     } else {
-				lappend tmpsasfit(file,res) $tmpsasfit(res,file)
-		     }
-                     incr tmpsasfit(file,n)
-                     MergeFileCmd tmpsasfit
-	          } else {
-                     lappend errornessFiles  $tmpsasfit(filename)
-	          }
-	       }
-               if {[llength $errornessFiles] > 0} {
-		   set msgtxt ""
-                   set indx 1
-                   foreach fin  $errornessFiles {
-		       set msgtxt "$msgtxt\n$indx\. $fin"
-		       incr indx
-		   }
-                   tk_messageBox -icon error \
+							if {$tmpAnalytPar(geometrical/datafile)} {
+								lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
+							} else {
+								lappend tmpsasfit(file,res) $tmpsasfit(res,file)
+							}
+							incr tmpsasfit(file,n)
+							MergeFileCmd tmpsasfit
+						} else {
+							lappend errornessFiles  $tmpsasfit(filename)
+						}
+				}
+				if {[llength $errornessFiles] > 0} {
+					set msgtxt ""
+					set indx 1
+					foreach fin  $errornessFiles {
+						set msgtxt "$msgtxt\n$indx\. $fin"
+						incr indx
+					}
+					tk_messageBox -icon error \
                         -message "Could not read data files:\n$msgtxt\n\nPlease review the input format options !"
-	           if {[winfo exists .addfile]} {destroy .addfile}
-		   MergeCmd
-	       }
-	} -highlightthickness 0 -pady 1m
+					if {[winfo exists .addfile]} {destroy .addfile}
+					MergeCmd
+				}
+			} -highlightthickness 0 -pady 1m
 	pack $w.layout1.label $w.layout1.format -side left -fill x
 	pack $w.layout1.option -side left  -fill x -padx 3m
 	pack $w.layout1.read   -side right -fill x -padx 2m
