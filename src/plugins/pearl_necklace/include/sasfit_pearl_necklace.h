@@ -52,7 +52,7 @@
  *       <td>\b R</td>
  *       <td>radius of pearl particle</td>
  *      </tr><tr>
- *       <td>\b A</td>
+ *       <td>\b l</td>
  *       <td>length of rod</td>
  *      </tr><tr>
  *       <td>\b nu</td>
