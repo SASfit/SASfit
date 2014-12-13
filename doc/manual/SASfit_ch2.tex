@@ -1,0 +1,338 @@
+%\chapter{Analytical Size Distribution, Form Factors, and Structure factors}
+%\label{SDFFSQ}
+
+\chapter{Form Factors}
+\label{formfactor}
+
+ The different types of form factors are
+selected in the different submenus. Below one finds how they are
+ordered. The definitions of the individual form factors are
+defined below. Under the submenu \texttt{other functions} all form
+factors under development and those functions, which are not at
+all form factors but which have been implemented for some other
+purposes are listed.
+\begin{itemize}
+\item Background
+\item auxiliary and transition functions
+\begin{itemize}
+%  \item \texttt{Background}
+%  \item \texttt{Sigmoid}
+%  \item \texttt{Gaussian Cumulative}
+%  \item \texttt{Lorentzian Cumulative}
+%  \item \texttt{Logistic Dose Response}
+%  \item \texttt{Log-Normal Cumulative}
+%  \item \texttt{Extreme Value Cumulative}
+%  \item \texttt{Pulse Cumulative}
+  \item \texttt{p(r) -> 4 pi r\^{}2 sin(qr)/(qr)}
+  \item \texttt{gamma(r) -> 4 pi sin(qr)/(qr)}
+\end{itemize}
+\item Spheres \& Shells (\ref{sect:Spheres_Shells})
+\begin{itemize}
+\item \texttt{Sphere} (\ref{sect:sphere})
+\item \texttt{Spherical Shell i} (\ref{sect:spherical_shell_i})
+\item \texttt{Spherical Shell ii} (\ref{sect:spherical_shell_ii})
+\item \texttt{Spherical Shell iii} (\ref{sect:spherical_shell_iii})
+\item \texttt{MultiLamellarVesicle} (\ref{sect:MultiLamellarVesicle})
+\item \texttt{RNDMultiLamellarVesicle}
+\item \texttt{RNDMultiLamellarVesicle2}
+\item \texttt{BiLayeredVesicle} (\ref{sect:BilayeredVesicle})
+\item \texttt{LinShell} (\ref{sect:LinShell})
+\item \texttt{LinShell2} (\ref{sect:LinShell2})
+\item \texttt{ExpShell} (\ref{sect:ExpShell})
+\end{itemize}
+\item ellipsoidal obj. (\ref{sect:EllipsoidalObjects})
+\begin{itemize}
+\item \texttt{Ellipsoid i} \ref{sect:Ellipsoid_i}
+\item \texttt{Ellipsoid ii} \ref{sect:Ellipsoid_ii}
+\item \texttt{EllipsoidalCoreShell} \ref{sect:EllipsoidalCoreShell}
+\item \texttt{triaxEllShell1} \ref{sect:triaxEllShell1}
+\end{itemize}
+\item polymers \& micelles (\ref{sect:Polymers_Micelles})
+\begin{itemize}
+\item polymer chains
+\begin{itemize}
+\item \texttt{Gauss} (\ref{sect:GaussCoil})
+\item \texttt{Gauss2} (\ref{sect:GaussCoil})
+\item \texttt{Gauss3} (\ref{sect:GaussCoil})
+\item \texttt{GaussPoly} (\ref{sect:GaussCoil})
+\item \texttt{generalized Gaussian coil} (\ref{sect:generalized_gaussian_coil})
+\item \texttt{generalized Gaussian coil 2} (\ref{sect:generalized_gaussian_coil2})
+\item \texttt{generalized Gaussian coil 3} (\ref{sect:generalized_gaussian_coil3})
+\end{itemize}
+\item polymer stars
+\begin{itemize}
+\item \texttt{BenoitStar} (\ref{sect:Benoit})
+\item \texttt{PolydisperseStar} (\ref{sect:PolydisperseStar})
+\item \texttt{Dozier} (\ref{sect:DozierStar1})
+\item \texttt{Dozier2} (\ref{sect:DozierStar2})
+\end{itemize}
+\item polymer rings
+\begin{itemize}
+\item \texttt{FlexibleRingPolymer} (\ref{sect:FlexibleRingPolymer})
+\item \texttt{$m$MemberedTwistedRing} (\ref{sect:mMemberedTwistedRing})
+\item \texttt{DaisyLikeRing} (\ref{sect:DaisyLikeRing})
+\end{itemize}
+\item spherical \& ellipsoidal micelles
+\begin{itemize}
+\item \texttt{SPHERE+Chains(RW)\_Nagg} (\ref{sect:SphericalMicelles})
+\item \texttt{SPHERE+Chains(RW)\_Rc} (\ref{sect:SphericalMicelles})
+\item \texttt{SPHERE+Chains(RW)} (\ref{sect:SphericalMicelles})
+\item \texttt{SPHERE+Chains(SAW)\_Nagg}
+\item \texttt{SPHERE+Chains(SAW)\_Rc}
+\item \texttt{SPHERE+Chains(SAW)}
+\item \texttt{SPHERE+R\^{}-a\_Nagg} (\ref{sect:SPHERE+R_ma})
+\item \texttt{SPHERE+R\^{}-a\_Rc} (\ref{sect:SPHERE+R_ma})
+\item \texttt{SPHERE+R\^{}-a} (\ref{sect:SPHERE+R_ma})
+\item \texttt{SPHERE\_smooth\_interface+R\^{}-a\_Nagg}
+\item \texttt{SPHERE\_smooth\_interface+R\^{}-a\_Rc}
+\item \texttt{ELL+Chains(RW)\_Nagg} (\ref{sect:ELLMicelles})
+\item \texttt{ELL+Chains(RW)\_Rc} (\ref{sect:ELLMicelles})
+\item \texttt{ELL+Chains(RW)} (\ref{sect:ELLMicelles})
+\item \texttt{SphereWithGaussChains}
+\item \texttt{BlockCopolymerMicelle}
+\end{itemize}
+\item cylindrical \& rod-like micelles
+\begin{itemize}
+\item \texttt{CYL+Chains(RW)\_Nagg} (\ref{sect:CylMicelles})
+\item \texttt{CYL+Chains(RW)\_Rc} (\ref{sect:CylMicelles})
+\item \texttt{CYL+Chains(RW)} (\ref{sect:CylMicelles})
+\item \texttt{WORM+Chains(RW)\_nagg} (\ref{sect:WormLikeMicelles})
+\item \texttt{WORM+Chains(RW)\_Rc} (\ref{sect:WormLikeMicelles})
+\item \texttt{WORM+Chains(RW)}(\ref{sect:WormLikeMicelles})
+\item \texttt{ROD+Chains(RW)\_nagg} (\ref{sect:RodLikeMicelles})
+\item \texttt{ROD+Chains(RW)\_Rc} (\ref{sect:RodLikeMicelles})
+\item \texttt{ROD+Chains(RW)} (\ref{sect:RodLikeMicelles})
+\item \texttt{ROD+R\^{}-a\_nagg} (\ref{sect:ROD+R_ma})
+\item \texttt{ROD+R\^{}-a\_Rc} (\ref{sect:ROD+R_ma})
+\item \texttt{ROD+R\^{}-a} (\ref{sect:ROD+R_ma})
+\item \texttt{ROD+Exp\_nagg}
+\item \texttt{ROD+Exp\_Rc}
+\item \texttt{ROD+Exp}
+\end{itemize}
+\item local planar micelles (sheets, ULV)
+\begin{itemize}
+\item \texttt{DISC+Chains(RW)\_nagg}
+\item \texttt{DISC+Chains(RW)\_Lc}
+\item \texttt{DISC+Chains(RW)}
+\item \texttt{SphULV+Chains(RW)\_nagg}
+\item \texttt{SphULV+Chains(RW)\_tc}
+\item \texttt{SphULV+Chains(RW)}
+\item \texttt{EllULV+Chains(RW)\_nagg}
+\item \texttt{EllULV+Chains(RW)\_tc}
+\item \texttt{EllULV+Chains(RW)}
+\item \texttt{CylULV+Chains(RW)\_nagg}
+\item \texttt{CylULV+Chains(RW)\_tc}
+\item \texttt{CylULV+Chains(RW)}
+\end{itemize}
+\item wormlike structures
+\begin{itemize}
+\item \texttt{WormLikeChainEXV} (\ref{sect:WormLikeChain})
+\item \texttt{KholodenkoWorm} (\ref{sect:KholodenkoWorm})
+\end{itemize}
+\end{itemize}
+\item cluster obj. (\ref{sect:ClusteredObjects})
+\begin{itemize}
+\item \texttt{Fisher-Burford} (\ref{sect:MassFractal})
+\item \texttt{MassFractExp}(\ref{sect:MassFractal})
+\item \texttt{MassFractGauss} (\ref{sect:MassFractal})
+\item \texttt{Aggregate (Exp(-x\^{}a) Cut-Off)} (\ref{sect:MassFractal})
+\item \texttt{Aggregate (OverlapSph Cut-Off)} (\ref{sect:MassFractal})
+\item \texttt{DLCAggregation} (\ref{sect:MassFractal})
+\item \texttt{RLCAggregation} (\ref{sect:MassFractal})
+\item \texttt{MassFractOverlappingSph} (\ref{sect:MassFractal})
+\item \texttt{StackDiscs} (\ref{sect:StackedDiscs})
+\item \texttt{DumbbellShell} (\ref{sect:DumbbellShell})
+\item \texttt{two\_attached\_spheres}
+\item \texttt{DoubleShellChain} (\ref{sect:DoubleShellChain})
+\item \texttt{TetrahedronDoubleShell} (\ref{sect:TetrahedronDoubleShell})
+\end{itemize}
+\item non-particular structures
+\begin{itemize}
+\item \texttt{OrnsteinZernike} (\ref{sect:Zernike})
+\item \texttt{BroadPeak} (\ref{sect:BroadPeak})
+\item \texttt{TeubnerStrey} (\ref{sect:TeubnerStrey})
+\item \texttt{DAB} (\ref{sect:DAB})
+\item \texttt{Spinodal} (\ref{sect:Spinodal})
+\item \texttt{BeaucageExpPowLaw} (\ref{sect:Beaucage})
+\item \texttt{BeaucageExpPowLaw2} (\ref{sect:Beaucage})
+\item \texttt{Guinier} \ref{sec:generalizedGuinier}
+\end{itemize}
+\item cylindrical obj. (\ref{sect:CylindricalObjects})
+\begin{itemize}
+\item \texttt{Disc} (\ref{sect:Disc})
+\item Rod (\ref{sect:Rod})
+\item \texttt{EllCylShell}
+\item \texttt{PorodCylinder} (\ref{sect:PorodCylinder})
+\item \texttt{LongCylinder} (\ref{sect:LongCylinder})
+\item \texttt{FlatCylinder} (\ref{sect:flatCylinder})
+\item \texttt{Cylinder} (\ref{sect:Cylinder})
+\item \texttt{LongCylShell} (\ref{sect:randomCylindricalShell})
+\item \texttt{CylShell1} (\ref{sect:randomCylindricalShell})
+\item \texttt{CylShell2} (\ref{sect:randomCylindricalShell})
+\item \texttt{ellCylShell1} (\ref{sect:random_ellCylinderShell})
+\item \texttt{ellCylShell2} (\ref{sect:random_ellCylinderShell})
+\item \texttt{alignedCylShell}
+\item \texttt{partly aligned CylShell}
+\item \texttt{Torus} (\ref{sect:Torus})
+\end{itemize}
+\begin{itemize}
+  \item anisotropic obj.
+  \begin{itemize}
+    \item Pcs(Q) for planar obj.
+    \begin{itemize}
+      \item \texttt{Pcs:homogenousXS} (\ref{sect:homogeneousXS})
+      \item \texttt{Pcs:TwoInfinitelyThinPlates} (\ref{sect:TwoInfinitelyThinPlates})
+      \item \texttt{Pcs:LayeredCentroSymmetricXS}(\ref{sect:LayeredCentroSymmetricXS})
+      \item \texttt{Pcs:BiLayerGauss} (\ref{sect:BiLayerGauss})
+      \item \texttt{Pcs:Plate+Chains(RW)}
+    \end{itemize}
+    \item Pcs(Q) for cylindrical obj.
+    \begin{itemize}
+      \item \texttt{Pcs:homogeneousXS}
+      \item \texttt{Pcs:CylindricalShell}
+      \item \texttt{Pcs:Rod+Chains(RW)}
+      \item \texttt{Pcs:ellCylSh}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\item plane obj.
+\begin{itemize}
+  \item \texttt{homogenousXS} (\ref{sect:homogeneousXS})
+  \item \texttt{SphSh+SD+homoXS}
+  \item \texttt{EllSh+SD+homoXS}
+  \item \texttt{EllSh+SD+homoXS(S)}
+  \item \texttt{CylSh+SD+homoXS}
+  \item \texttt{Disc+homoXS}
+  \item \texttt{TwoInfinitelyThinPlates} (\ref{sect:TwoInfinitelyThinPlates})
+  \item \texttt{LayeredCentroSymmetricXS} (\ref{sect:LayeredCentroSymmetricXS})
+  \item \texttt{BiLayerGauss} (\ref{sect:BiLayerGauss})
+\end{itemize}
+\item sheared objects
+\begin{itemize}
+  \item \texttt{ShearedCylinder} (\ref{sect:ShearedCylinderHayterPenfold})
+  \item \texttt{ShearedCylGauss} (\ref{sect:ShearedCylinderGaussian})
+\end{itemize}
+\item magnetic objects (\ref{sect:MagScatt})
+\begin{itemize}
+  \item \texttt{MagneticShellPsi} (\ref{sect:MagShellPsi})
+  \item \texttt{MagneticShellAniso} (\ref{sect:MagShellAniso})
+  \item \texttt{MagneticShellCrossTerm} (\ref{sect:MagShellCrossTerm})
+  \item \texttt{SuperparamagneticFFpsi} (\ref{sect:superparFFpsi})
+  \item \texttt{SuperparamagneticFFAniso} (\ref{sect:superparFFAniso})
+  \item \texttt{SuperparamagneticFFIso} (\ref{sect:superparFFIso})
+  \item \texttt{SuperparamagneticFFCrossTerm} (\ref{sect:superparFFCrossTerm})
+\end{itemize}
+\item Mie FF for SLS (\ref{sect:LorenzMieSLS})
+\begin{itemize}
+  \item \texttt{MieSphere} (\ref{sect:MieSphere})
+  \item \texttt{MieShell} (\ref{sect:MieShell})
+\end{itemize}
+\item Peaks (\ref{ch:peaks})
+\begin{itemize}
+  \item Amplitude Functions
+  \begin{itemize}
+    \item \texttt{Beta (Amplitude)} (\ref{sec:BetaAmplitude})
+    \item \texttt{Chi-squared (Amplitude)} (\ref{sec:ChiSquaredAmplitude})
+    \item \texttt{Erfc (Amplitude)} (\ref{sec:ErfcPeakAmplitude}
+    \item \texttt{Error (Amplitude)} (\ref{sec:ErrorPeakAmplitude})
+    \item \texttt{exponentially modified Gaussian (Amplitude)} (\ref{sec:ExponentiallyModifiedGaussianAmplitude})
+    \item \texttt{Extreme Value (Amplitude)} (\ref{sec:ExtremeValueAmplitude})
+    \item \texttt{F-variance (Amplitude)} (\ref{sec:FVarianceAmplitude})
+    \item \texttt{Gamma (Amplitude)} (\ref{sec:GammaDistrAmplitude})
+    \item \texttt{Gaussian (Amplitude)} (\ref{sec:GaussianNormalAmplitude})
+    \item \texttt{Gaussian-Lorentzian cross product (Amplitude)} (\ref{sec:GaussianLorentzianCrossProductAmplitude})
+    \item \texttt{Gaussian-Lorentzian sum (Amplitude)} (\ref{sec:GaussianLorentzianSumAmplitude})
+    \item \texttt{generalized Gaussian 1 (Amplitude)} (\ref{sec:generalizedGaussian1Amplitude})
+    \item \texttt{generalized Gaussian 2 (Amplitude)} (\ref{sec:generalizedGaussian2Amplitude})
+    \item \texttt{Giddings (Amplitude)} (\ref{sec:GiddingsAmplitude})
+    \item \texttt{Inverted Gamma (Amplitude)} (\ref{sec:InvertedGammaAmplitude})
+    \item \texttt{Kumaraswamy (Amplitude)} (\ref{sec:KumaraswamyAmplitude})
+    \item \texttt{Laplace (Amplitude)} (\ref{sec:LaplaceAmplitude})
+    \item \texttt{Logistic (Amplitude)} (\ref{sec:LogisticAmplitude})
+    \item \texttt{LogLogistic (Amplitude)} (\ref{sec:LogLogisticAmplitude})
+    \item \texttt{LogNormal, 4 parameters (Amplitude)} (\ref{sec:LogNormal4ParameterArea})
+    \item \texttt{LogNormal (Amplitude)} (\ref{sec:LogNormalAmplitude})
+    \item \texttt{Lorentzian (Amplitude)} (\ref{sec:LorentzianAmplitude})
+    \item \texttt{Pearson IV (Amplitude)} (\ref{sec:PearsonIVAmplitude})
+    \item \texttt{Pearson VII (Amplitude)} (\ref{sec:PearsonVIIAmplitude})
+    \item \texttt{pulse (Amplitude)}  (\ref{sec:PulseAmplitude})
+    \item \texttt{pulse with 2nd width (Amplitude)}  (\ref{sec:pulsewith2ndwidthAmplitude})
+    \item \texttt{pulse with power term (Amplitude)}  (\ref{sec:pulsewithpowertermAmplitude})
+    \item \texttt{Student-t (Amplitude)} (\ref{sec:Student-tAmplitude})
+    \item \texttt{Voigt (Amplitude)} (\ref{sec:VoigtAmplitude})
+    \item \texttt{Weibull (Amplitude)} (\ref{sec:WeibullAmplitude})
+  \end{itemize}
+  \item Area Functions
+  \begin{itemize}
+    \item \texttt{Beta (Area)} (\ref{sec:BetaArea})
+    \item \texttt{Chi-squared (Area)} (\ref{sec:ChiSquaredArea})
+    \item \texttt{Erfc (Area)} (\ref{sec:ErfcPeakArea}
+    \item \texttt{Error (Area)} (\ref{sec:ErrorPeakArea})
+    \item \texttt{exponentially modified Gaussian (Area)} (\ref{sec:ExponentiallyModifiedGaussianArea})
+    \item \texttt{Extreme Value (Area)} (\ref{sec:ExtremeValueArea})
+    \item \texttt{F-variance (Area)} (\ref{sec:FVarianceArea})
+    \item \texttt{Gamma (Area)} (\ref{sec:GammaDistrArea})
+    \item \texttt{Gaussian (Area)} (\ref{sec:GaussianNormalArea})
+    \item \texttt{Gaussian-Lorentzian cross product (Area)} (\ref{sec:GaussianLorentzianCrossProductArea})
+    \item \texttt{Gaussian-Lorentzian sum (Area)} (\ref{sec:GaussianLorentzianSumArea})
+    \item \texttt{generalized Gaussian 1 (Area)} (\ref{sec:generalizedGaussian1Area})
+    \item \texttt{generalized Gaussian 2 (Area)} (\ref{sec:generalizedGaussian2Area})
+    \item \texttt{Giddings (Area)} (\ref{sec:GiddingsArea})
+    \item \texttt{Haarhoff - Van der Linde (Area)} (\ref{sec:HaarhoffVanderLindeArea})
+    \item \texttt{Half Gaussian Modified Gaussian (Area)} (\ref{sec:HalfGaussianModifiedGaussianArea})
+    \item \texttt{Inverted Gamma (Area)} (\ref{sec:InvertedGammaArea})
+    \item \texttt{Kumaraswamy (Area)} (\ref{sec:KumaraswamyArea})
+    \item \texttt{Laplace (Area)} (\ref{sec:LaplaceArea})
+    \item \texttt{Logistic (Area)} (\ref{sec:LogisticArea})
+    \item \texttt{LogNormal, 4 parameters (Area)} (\ref{sec:LogNormal4ParameterArea})
+    \item \texttt{LogNormal (Area)} (\ref{sec:LogNormalArea})
+    \item \texttt{Lorentzian (Area)} (\ref{sec:LorentzianArea})
+    \item \texttt{Pearson IV (Area)} (\ref{sec:PearsonIVArea})
+    \item \texttt{Pearson VII (Area)} (\ref{sec:PearsonVIIArea})
+    \item \texttt{pulse (Area)}  (\ref{sec:PulseArea})
+    \item \texttt{pulse with 2nd width (Area)}  (\ref{sec:pulsewith2ndwidthArea})
+    \item \texttt{pulse with power term (Area)}  (\ref{sec:pulsewithpowertermArea})
+    \item \texttt{Student-t (Area)} (\ref{sec:Student-tArea})
+    \item \texttt{Voigt (Area)} (\ref{sec:VoigtArea})
+    \item \texttt{Weibull (Area)} (\ref{sec:WeibullArea})
+  \end{itemize}
+\end{itemize}
+\item other functions
+\begin{itemize}
+\item Langevin
+\item DoubleShell\_withSD
+\item SuperparStroboPsi
+\item SuperparStroboPsi2
+\item SuperparStroboPsiSQ
+\item SuperparStroboPsiBt1
+\item SuperparStroboPsiLx
+\item SuperparStroboPsiL2x
+\item DLS\_Sphere\_RDG
+\item Robertus1
+\item J\"{u}lichMicelle
+\end{itemize}
+\end{itemize}
+
+
+\clearpage
+\input{SASfit_ch2_Spheres_Shells.tex}
+\clearpage
+\input{SASfit_ch2_EllipsoidalObj.tex}
+\clearpage
+\input{SASfit_ch2_polymers_micelles.tex}
+\clearpage
+\input{SASfit_ch2_nonparticular.tex}
+\clearpage
+\input{SASfit_ch2_cluster.tex}
+\clearpage
+\input{SASfit_ch2_cylindricalObj.tex}
+\clearpage
+\input{SASfit_ch2_planar.tex}
+\clearpage
+\input{SASfit_ch2_ShearedObj.tex}
+\clearpage
+\input{SASfit_ch2_magneticObj.tex}
+\clearpage
+\input{SASfit_ch2_MieSLS.tex}
+\clearpage
+\input{SASfit_ch2_otherObj.tex}

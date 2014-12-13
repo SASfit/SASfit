@@ -1,0 +1,226 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>bibtex - bibtex </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/bibtex/bibtex.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2005 for documentation, Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: bibtex.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ bibtex.n
+   -->
+
+<body>
+<h1> bibtex(n) 0.5 bibtex &quot;bibtex&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> bibtex - Parse bibtex files
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>bibtex ?0.5?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::bibtex::parse</b> ?<i class='arg'>options</i>? ?<i class='arg'>text</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::bibtex::parse</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::bibtex::parse</b> ?<strong>-command</strong> <i class='arg'>cmd</i>? <strong>-channel</strong> <i class='arg'>chan</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::bibtex::parse</b> ?<strong>-recordcommand</strong>   <i class='arg'>recordcmd</i>? ?<strong>-preamblecommand</strong> <i class='arg'>preamblecmd</i>? ?<strong>-stringcommand</strong>   <i class='arg'>stringcmd</i>? ?<strong>-commentcommand</strong>  <i class='arg'>commentcmd</i>? ?<strong>-progresscommand</strong> <i class='arg'>progresscmd</i>? (<i class='arg'>text</i> | <strong>-channel</strong> <i class='arg'>chan</i>)</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::bibtex::wait</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::bibtex::destroy</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::bibtex::addStrings</b> <i class='arg'>token</i> <i class='arg'>stringdict</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides commands for the parsing of bibliographies in
+BibTeX format.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::bibtex::parse</b> ?<i class='arg'>options</i>? ?<i class='arg'>text</i>?</a><dd>
+
+
+This is the general form of the command for parsing a
+bibliography. Depending on the options used to invoke it it will
+either return a token for the parser, or the parsed entries of the
+input bibliography. Instead of performing an immediate parse returning
+a predefined format the command can also enter an event-based parsing
+style where all relevant entries in the input are reported through
+callback commands, in the style of SAX.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::bibtex::parse</b> <i class='arg'>text</i></a><dd>
+
+
+In this form the command will assume that the specified <i class='arg'>text</i> is
+a bibliography in BibTeX format, parse it, and then return a list
+containing one element per record found in the bibliography. Note that
+comments, string definitions, preambles, etc. will not show up in the
+result.  Each element will be a list containing record type,
+bibliography key and record data, in this order. The record data will
+be a dictionary, its keys the keys of the record, with the associated
+values.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::bibtex::parse</b> ?<strong>-command</strong> <i class='arg'>cmd</i>? <strong>-channel</strong> <i class='arg'>chan</i></a><dd>
+
+
+In this form the command will reads the bibliography from the
+specified Tcl channel <i class='arg'>chan</i> and then returns the same data
+structure as described above.
+
+<br><br>
+
+If however the option <strong>-command</strong> is specified the result will be a
+handle for the parser instead and all processing will be incremental
+and happen in the background. When the input has been exhausted the
+callback <i class='arg'>cmd</i> will be invoked with the result of the parse. The
+exact definition for the callback is
+
+<br><br>
+
+<br><br>
+<dl>
+<dt><b class='cmd'>cmd</b> <i class='arg'>token</i> <i class='arg'>parseresult</i><dd>
+
+The parse result will have the structure explained above, for the
+simpler forms of the parser.
+
+</dl>
+<br><br>
+
+<em>Note</em> that the parser will <em>not</em> close the channel after it
+has exhausted it. This is still the responsibility of the user of the
+parser.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::bibtex::parse</b> ?<strong>-recordcommand</strong>   <i class='arg'>recordcmd</i>? ?<strong>-preamblecommand</strong> <i class='arg'>preamblecmd</i>? ?<strong>-stringcommand</strong>   <i class='arg'>stringcmd</i>? ?<strong>-commentcommand</strong>  <i class='arg'>commentcmd</i>? ?<strong>-progresscommand</strong> <i class='arg'>progresscmd</i>? (<i class='arg'>text</i> | <strong>-channel</strong> <i class='arg'>chan</i>)</a><dd>
+
+
+This is the most low-level form for the parser. The returned result
+will be a handle for the parser. During processing it will invoke the
+invoke the specified callback commands for each type of data found in
+the bibliography.
+
+<br><br>
+
+The processing will be incremental and happen in the background if,
+and only if a Tcl channel <i class='arg'>chan</i> is specified. For a <i class='arg'>text</i>
+the processing will happen immediately and all callbacks will be
+invoked before the command itself returns.
+
+<br><br>
+
+The callbacks, i.e. <i class='arg'>*cmd</i>, are all command prefixes and will be
+invoked with additional arguments appended to them. The meaning of the
+arguments depends on the callback and is explained below. The first
+argument will however always be the handle of the parser invoking the
+callback.
+
+<br><br>
+<dl>
+
+<dt><b class='cmd'>recordcmd</b> <i class='arg'>token</i> <i class='arg'>type</i> <i class='arg'>key</i> <i class='arg'>recorddict</i><dd>
+
+This callback is invoked whenever the parser detects a bibliography
+record in the input. Its arguments are the record type, the
+bibliography key for the record, and a dictionary containing the keys
+and values describing the record. Any string macros known to the
+parser have already been expanded.
+
+
+<br><br>
+<dt><b class='cmd'>preamblecmd</b> <i class='arg'>token</i> <i class='arg'>preambletext</i><dd>
+
+This callback is invoked whenever the parser detects an @preamble
+block in the input. The only additional argument is the text found in
+the preamble block. By default such entries are ignored.
+
+
+<br><br>
+<dt><b class='cmd'>stringcmd</b> <i class='arg'>token</i> <i class='arg'>stringdict</i><dd>
+
+This callback is invoked whenever the parser detects an @string-based
+macro definition in the input. The argument is a dictionary with the
+macro names as keys and their replacement strings as values. By
+default such definitions are added to the parser state for use in
+future bibliography records.
+
+
+<br><br>
+<dt><b class='cmd'>commentcmd</b> <i class='arg'>token</i> <i class='arg'>commenttext</i><dd>
+
+This callback is invoked whenever the parser detects a comment in the
+input. The only additional argument is the comment text. By default
+such entries are ignored.
+
+
+<br><br>
+<dt><b class='cmd'>progresscmd</b> <i class='arg'>token</i> <i class='arg'>percent</i><dd>
+
+This callback is invoked during processing to tell the user about the
+progress which has been made. Its argument is the percentage of data
+processed, as integer number between <strong>0</strong> and <strong>100</strong>.
+
+In the case of incremental processing the perecentage will always be
+<strong>-1</strong> as the total number of entries is not known beforehand.
+
+</dl>
+<br><br>
+
+
+<dt><a name="5"><b class='cmd'>::bibtex::wait</b> <i class='arg'>token</i></a><dd>
+
+
+This command waits for the parser represented by the <i class='arg'>token</i> to
+complete and then returns. The returned result is the empty string.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::bibtex::destroy</b> <i class='arg'>token</i></a><dd>
+
+
+This command cleans up all internal state associated with the parser
+represented by the handle <i class='arg'>token</i>, effectively destroying it. This
+command can be called from within the parser callbacks to terminate
+processing.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::bibtex::addStrings</b> <i class='arg'>token</i> <i class='arg'>stringdict</i></a><dd>
+
+
+This command adds the macro definitions stored in the
+dictionary <i class='arg'>stringdict</i> to the parser represented
+by the handle <i class='arg'>token</i>.
+
+<br><br>
+
+The dictionary keys are the macro names and the values their
+replacement strings. This command has the correct signature for use as
+a <strong>-stringcommand</strong> callback in an invokation of the command
+<b class='cmd'>::bibtex::parse</b>.
+
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+bibliography, bibtex, parsing, text processing
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2005 for documentation, Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

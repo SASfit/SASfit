@@ -1,0 +1,145 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>rc4 - RC4 Stream Cipher </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/rc4/rc4.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2003, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: rc4.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ rc4.n
+   -->
+
+<body>
+<h1> rc4(n) 1.0.1 rc4 &quot;RC4 Stream Cipher&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> rc4 - Impementation of the RC4 stream cipher
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#programming_interface">PROGRAMMING INTERFACE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>rc4 ?1.0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::rc4::rc4</b> ?<i class='arg'>-hex</i>? <i class='arg'>-key keyvalue</i> ?<i class='arg'>-out channel</i>? [ <i class='arg'>-in channel</i> | <i class='arg'>-infile filename</i> | <i class='arg'>string</i> ]</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::rc4::RC4Init</b> <i class='arg'>keydata</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::rc4::RC4</b> <i class='arg'>Key</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::rc4::RC4Final</b> <i class='arg'>Key</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package is an implementation in Tcl of the RC4 stream cipher 
+developed by Ron Rivest of RSA Data Security Inc. The cipher was a
+trade secret of RSA but was reverse-engineered and published to the
+internet in 1994. It is used in a number of network protocols for
+securing communications. To evade trademark restrictions this cipher
+is sometimes known as ARCFOUR.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::rc4::rc4</b> ?<i class='arg'>-hex</i>? <i class='arg'>-key keyvalue</i> ?<i class='arg'>-out channel</i>? [ <i class='arg'>-in channel</i> | <i class='arg'>-infile filename</i> | <i class='arg'>string</i> ]</a><dd>
+
+
+Perform the RC4 algorithm on either the data provided by the argument
+or on the data read from the <i class='arg'>-in</i> channel. If an <i class='arg'>-out</i>
+channel is given then the result will be written to this channel.
+Giving the <i class='arg'>-hex</i> option will return a hexadecimal encoded
+version of the result if not using an <i class='arg'>-out</i> channel.
+
+<br><br>
+
+The data to be processes can be specified either as a string argument to
+the rc4 command, or as a filename or a pre-opened channel. If the 
+<i class='arg'>-infile</i> argument is given then the file is opened, the data read
+and processed and the file is closed. If the <i class='arg'>-in</i> argument is
+given then data is read from the channel until the end of file. The
+channel is not closed. If the <i class='arg'>-out</i> argument is given then the
+processing result is written to this channel.
+
+<br><br>
+
+Only one of <i class='arg'>-infile</i>, <i class='arg'>-in</i> or <i class='arg'>string</i> should be given.
+
+</dl>
+
+<h2><a name="programming_interface">PROGRAMMING INTERFACE</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="2"><b class='cmd'>::rc4::RC4Init</b> <i class='arg'>keydata</i></a><dd>
+
+
+Initialize a new RC4 key. The <i class='arg'>keydata</i> is any amount of binary
+data and is used to initialize the cipher internal state. 
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::rc4::RC4</b> <i class='arg'>Key</i> <i class='arg'>data</i></a><dd>
+
+
+Encrypt or decrypt the input data using the key obtained by calling
+<b class='cmd'>RC4Init</b>.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::rc4::RC4Final</b> <i class='arg'>Key</i></a><dd>
+
+
+This should be called to clean up resources associated with 
+<i class='arg'>Key</i>. Once this function has been called the key is destroyed.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set keydata [binary format H* 0123456789abcdef]
+% rc4::rc4 -hex -key $keydata HelloWorld
+3cf1ae8b7f1c670b612f
+% rc4::rc4 -hex -key $keydata [binary format H* 3cf1ae8b7f1c670b612f]
+HelloWorld
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+ set Key [rc4::RC4Init &quot;key data&quot;]
+ append ciphertext [rc4::RC4 $Key $plaintext]
+ append ciphertext [rc4::RC4 $Key $additional_plaintext]
+ rc4::RC4Final $Key
+</pre></td></tr></table></p>
+
+
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+aes(n), blowfish(n), des(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+arcfour,, data integrity, encryption, rc4, security, stream cipher
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2003, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>

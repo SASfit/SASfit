@@ -1,0 +1,440 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>bee - BitTorrent </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/bee/bee.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: bee.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ bee.n
+   -->
+
+<body>
+<h1> bee(n) 0.1 bee &quot;BitTorrent&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> bee - BitTorrent Serialization Format Encoder/Decoder
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#public_api">PUBLIC API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#encoder">ENCODER</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#decoder">DECODER</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#format_definition">FORMAT DEFINITION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>bee ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::bee::encodeString</b> <i class='arg'>string</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::bee::encodeNumber</b> <i class='arg'>integer</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::bee::encodeListArgs</b> <i class='arg'>value</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::bee::encodeList</b> <i class='arg'>list</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::bee::encodeDictArgs</b> <i class='arg'>key</i> <i class='arg'>value</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::bee::encodeDict</b> <i class='arg'>dict</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::bee::decode</b> <i class='arg'>string</i> ?<i class='arg'>endvar</i>? ?<i class='arg'>start</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::bee::decodeIndices</b> <i class='arg'>string</i> ?<i class='arg'>endvar</i>? ?<i class='arg'>start</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::bee::decodeChannel</b> <i class='arg'>chan</i> <strong>-command</strong> <i class='arg'>cmdprefix</i> ?<strong>-exact</strong>? ?<strong>-prefix</strong> <i class='arg'>data</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>cmdprefix</b> <strong>eof</strong> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>cmdprefix</b> <strong>error</strong> <i class='arg'>token</i> <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>cmdprefix</b> <strong>value</strong> <i class='arg'>token</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::bee::decodeCancel</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::bee::decodePush</b> <i class='arg'>token</i> <i class='arg'>string</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <strong>bee</strong> package provides de- and encoder commands for data
+in bencoding (speak 'bee'), the serialization format for data and
+messages used by the BitTorrent application.
+
+<p>
+
+<h2><a name="public_api">PUBLIC API</a></h2>
+<p>
+
+<h3><a name="encoder">ENCODER</a></h3>
+<p>
+
+The package provides one encoder command for each of the basic forms,
+and two commands per container, one taking a proper tcl data structure
+to encode in the container, the other taking the same information as
+several arguments.
+
+<p>
+<dl>
+
+<dt><a name="1"><b class='cmd'>::bee::encodeString</b> <i class='arg'>string</i></a><dd>
+
+
+Returns the bee-encoding of the <i class='arg'>string</i>.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::bee::encodeNumber</b> <i class='arg'>integer</i></a><dd>
+
+
+Returns the bee-encoding of the <i class='arg'>integer</i> number.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::bee::encodeListArgs</b> <i class='arg'>value</i>...</a><dd>
+
+
+Takes zero or more bee-encoded values and returns the bee-encoding of
+their list.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::bee::encodeList</b> <i class='arg'>list</i></a><dd>
+
+
+Takes a list of bee-encoded values and returns the bee-encoding of the
+list.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::bee::encodeDictArgs</b> <i class='arg'>key</i> <i class='arg'>value</i>...</a><dd>
+
+
+Takes zero or more pairs of keys and values and returns the
+bee-encoding of the dictionary they form. The values are expected to
+be already bee-encoded, but the keys must not be. Their encoding will
+be done by the command itself.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::bee::encodeDict</b> <i class='arg'>dict</i></a><dd>
+
+
+Takes a dictionary list of string keys and bee-encoded values and
+returns the bee-encoding of the list. Note that the keys in the input
+must not be bee-encoded already. This will be done by the command
+itself. 
+
+</dl>
+<p>
+
+
+<h3><a name="decoder">DECODER</a></h3>
+<p>
+
+The package provides two main decoder commands, one for decoding a
+string expected to contain a complete data structure, the other for
+the incremental decoding of bee-values arriving on a channel. The
+latter command is asynchronous and provides the completed decoded
+values to the user through a command callback.
+
+
+<p>
+<dl>
+
+<dt><a name="7"><b class='cmd'>::bee::decode</b> <i class='arg'>string</i> ?<i class='arg'>endvar</i>? ?<i class='arg'>start</i>?</a><dd>
+
+
+Takes the bee-encoding in the string and returns one decoded value. In
+the case of this being a container all contained values are decoded
+recursively as well and the result is a properly nested tcl list
+and/or dictionary.
+
+<br><br>
+
+If the optional <i class='arg'>endvar</i> is set then it is the name of a variable
+to store the index of the first character <em>after</em> the decoded
+value into. In other words, if the string contains more than one value
+then <i class='arg'>endvar</i> can be used to obtain the position of the bee-value
+after the bee-value currently decoded. together with <i class='arg'>start</i>, see
+below, it is possible to iterate over the string to extract all
+contained values.
+
+<br><br>
+
+The optional <i class='arg'>start</i> index defaults to <strong>0</strong>, i.e. the
+beginning of the string. It is the index of the first character of the
+bee-encoded value to extract.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::bee::decodeIndices</b> <i class='arg'>string</i> ?<i class='arg'>endvar</i>? ?<i class='arg'>start</i>?</a><dd>
+
+
+Takes the same arguments as <b class='cmd'>::bee::decode</b> and returns the same
+information in <i class='arg'>endvar</i>. The result however is different. Instead
+of the tcl value contained in the <i class='arg'>string</i> it returns a list
+describing the value with respect to type and location (indices for
+the first and last character of the bee-value). In case of a container
+the structure also contains the same information for all the embedded
+values.
+
+<br><br>
+
+Formally the results for the various types of bee-values are:
+
+<br><br>
+<dl>
+<dt>string<dd>
+
+A list containing three elements:
+
+<br><br>
+<ul>
+<li>
+The constant string <strong>string</strong>, denoting the type of the value.
+
+<br><br>
+<li>
+An integer number greater than or equal to zero. This is the index of
+the first character of the bee-value in the input <i class='arg'>string</i>.
+
+<br><br>
+<li>
+An integer number greater than or equal to zero. This is the index of
+the last character of the bee-value in the input <i class='arg'>string</i>.
+
+</ul>
+<br><br>
+
+<em>Note</em> that this information is present in the results for all
+four types of bee-values, with only the first element changing
+according to the type of the value.
+
+<br><br>
+<dt>integer<dd>
+
+The result is like for strings, except that the type element contains
+the constant string <strong>integer</strong>.
+
+<br><br>
+<dt>list<dd>
+
+The result is like before, with two exceptions: One, the type element
+contains the constant string <strong>list</strong>. And two, the result
+actually contains four elements. The last element is new, and contains
+the index data as described here for all elements of the bee-list.
+
+<br><br>
+<dt>dictionary<dd>
+
+The result is like for strings, except that the type element contains
+the constant string <strong>dict</strong>. A fourth element is present as well,
+with a slightly different structure than for lists. The element is a
+dictionary mapping from the strings keys of the bee-dictionary to a
+list containing two elements. The first of them is the index
+information for the key, and the second element is the index
+information for the value the key maps to. This structure is the only
+which contains not only index data, but actual values from the
+bee-string. While the index information of the keys is unique enough,
+i.e. serviceable as keys, they are not easy to navigate when trying to
+find particular element. Using the actual keys makes this much easier.
+
+</dl>
+<br><br>
+
+
+<dt><a name="9"><b class='cmd'>::bee::decodeChannel</b> <i class='arg'>chan</i> <strong>-command</strong> <i class='arg'>cmdprefix</i> ?<strong>-exact</strong>? ?<strong>-prefix</strong> <i class='arg'>data</i>?</a><dd>
+
+
+The command creates a decoder for a series of bee-values arriving on
+the channel <i class='arg'>chan</i> and returns its handle. This handle can be used
+to remove the decoder again.
+
+Setting up another bee decoder on <i class='arg'>chan</i> while a bee decoder is
+still active will fail with an error message.
+
+<br><br>
+<br><br>
+<dl>
+<dt><strong>-command</strong><dd>
+
+The command prefix <i class='arg'>cmdprefix</i> specified by the <em>required</em>
+option <strong>-command</strong> is used to report extracted values and
+exceptional situations (error, and EOF on the channel).
+
+The callback will be executed at the global level of the interpreter,
+with two or three arguments. The exact call signatures are
+
+<br><br>
+<br><br>
+<dl>
+<dt><a name="10"><b class='cmd'>cmdprefix</b> <strong>eof</strong> <i class='arg'>token</i></a><dd>
+
+
+The decoder has reached eof on the channel <i class='arg'>chan</i>. No further
+invocations of the callback will be made after this. The channel has
+already been closed at the time of the call, and the <i class='arg'>token</i> is
+not valid anymore as well.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>cmdprefix</b> <strong>error</strong> <i class='arg'>token</i> <i class='arg'>message</i></a><dd>
+
+
+The decoder encountered an error, which is not eof. For example a
+malformed bee-value. The <i class='arg'>message</i> provides details about the
+error. The decoder token is in the same state as for eof,
+i.e. invalid. The channel however is kept open.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>cmdprefix</b> <strong>value</strong> <i class='arg'>token</i> <i class='arg'>value</i></a><dd>
+
+
+The decoder received and successfully decoded a bee-value.
+
+The format of the equivalent tcl <i class='arg'>value</i> is the same as returned
+by <b class='cmd'>::bee::decode</b>. The channel is still open and the decoder
+token is valid. This means that the callback is able to remove the
+decoder.
+
+</dl>
+<br><br>
+
+<dt><strong>-exact</strong><dd>
+
+By default the decoder assumes that the remainder of the data in the
+channel consists only of bee-values, and reads as much as possible per
+event, without regard for boundaries between bee-values. This means
+that if the the input contains non-bee data after a series of
+bee-value the beginning of that data may be lost because it was
+already read by the decoder, but not processed.
+
+<br><br>
+
+The <strong>-exact</strong> was made for this situation. When specified the
+decoder will take care to not read any characters behind the currently
+processed bee-value, so that any non-bee data is kept in the channel
+for further processing after removal of the decoder.
+
+<br><br>
+
+<br><br>
+<dt><strong>-prefix</strong><dd>
+
+If this option is specified its value is assumed to be the beginning
+of the bee-value and used to initialize the internal decoder
+buffer. This feature is required if the creator of the decoder used
+data from the channel to determine if it should create the decoder or
+not. Without the option this data would be lost to the decoding.
+
+</dl>
+<br><br>
+
+<dt><a name="13"><b class='cmd'>::bee::decodeCancel</b> <i class='arg'>token</i></a><dd>
+
+
+This command cancels the decoder set up by <b class='cmd'>::bee::decodeChannel</b>
+and represented by the handle <i class='arg'>token</i>.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::bee::decodePush</b> <i class='arg'>token</i> <i class='arg'>string</i></a><dd>
+
+
+This command appends the <i class='arg'>string</i> to the internal decoder
+buffer. It is the runtime equivalent of the option <strong>-prefix</strong> of
+<b class='cmd'>::bee::decodeChannel</b>. Use it to push data back into the decoder
+when the <strong>value</strong> callback used data from the channel to
+determine if it should decode another bee-value or not.
+
+</dl>
+<p>
+
+<h2><a name="format_definition">FORMAT DEFINITION</a></h2>
+<p>
+
+Data in the bee serialization format is constructed from two basic
+forms, and two container forms. The basic forms are strings and
+integer numbers, and the containers are lists and dictionaries.
+
+<p>
+<dl>
+<dt>String <i class='arg'>S</i><dd>
+
+A string <i class='arg'>S</i> of length <i class='arg'>L</i> is encoded by the string
+
+&quot;<i class='arg'>L</i><strong>:</strong><i class='arg'>S</i>&quot;, where the length is written out in textual
+form.
+
+<br><br>
+<dt>Integer <i class='arg'>N</i><dd>
+
+An integer number <i class='arg'>N</i> is encoded by the string
+
+&quot;<strong>i</strong><i class='arg'>N</i><strong>e</strong>&quot;.
+
+<br><br>
+<dt>List <i class='arg'>v1</i> ... <i class='arg'>vn</i><dd>
+
+A list of the values <i class='arg'>v1</i> to <i class='arg'>vn</i> is encoded by the string
+
+&quot;<strong>l</strong><i class='arg'>BV1</i>...<i class='arg'>BVn</i><strong>e</strong>&quot;
+
+where &quot;BV<strong>i</strong>&quot; is the bee-encoding of the value &quot;v<strong>i</strong>&quot;.
+
+<br><br>
+<dt>Dict <i class='arg'>k1</i> -&gt; <i class='arg'>v1</i> ...<dd>
+
+A dictionary mapping the string key <i class='arg'>k</i><strong>i</strong> to the value
+
+<i class='arg'>v</i><strong>i</strong>, for <strong>i</strong> in <strong>1</strong> ... <strong>n</strong>
+is encoded by the string
+
+&quot;<strong>d</strong><i class='arg'>BK</i><strong>i</strong><i class='arg'>BV</i><strong>i</strong>...<strong>e</strong>&quot;
+
+for i in <strong>1</strong> ... <strong>n</strong>, where &quot;BK<strong>i</strong>&quot; is the bee-encoding
+of the key string &quot;k<strong>i</strong>&quot;.  and &quot;BV<strong>i</strong>&quot; is the bee-encoding of
+the value &quot;v<strong>i</strong>&quot;.
+
+<br><br>
+
+<em>Note</em>: The bee-encoding does not retain the order of the keys in
+the input, but stores in a sorted order. The sorting is done for the
+&quot;raw strings&quot;.
+
+</dl>
+<p>
+
+Note that the type of each encoded item can be determined immediately
+from the first character of its representation:
+
+<p>
+<dl>
+<dt>i<dd>
+Integer.
+<br><br>
+<dt>l<dd>
+List.
+<br><br>
+<dt>d<dd>
+Dictionary.
+<br><br>
+<dt>[0-9]<dd>
+String.
+</dl>
+<p>
+
+By wrapping an integer number into <strong>i</strong>...<strong>e</strong> the format
+makes sure that they are different from strings, which all begin with
+a digit.
+
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+BitTorrent, bee, bittorrent, serialization, torrent
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

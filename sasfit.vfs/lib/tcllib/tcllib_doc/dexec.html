@@ -1,0 +1,233 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::fa::dexec - Finite automaton operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_fa/dexec.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: dexec.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ grammar::fa::dexec.n
+   -->
+
+<body>
+<h1> grammar::fa::dexec(n) 0.1.1 grammar_fa &quot;Finite automaton operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::fa::dexec - Execute deterministic finite automatons
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#executor_methods">EXECUTOR METHODS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#executor_callback">EXECUTOR CALLBACK</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>snit</b><br>
+package require <b>grammar::fa::dexec ?0.1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::grammar::fa::dexec</b> <i class='arg'>daName</i> <i class='arg'>fa</i> ?<strong>-any</strong> <i class='arg'>any</i>? ?<strong>-command</strong> <i class='arg'>cmdprefix</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>daName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>daName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>daName</i> <strong>put</strong> <i class='arg'>symbol</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>daName</i> <strong>reset</strong></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>cmdprefix</i> <strong>error</strong> <i class='arg'>code</i> <i class='arg'>message</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>cmdprefix</i> <strong>final</strong> <i class='arg'>stateid</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>cmdprefix</i> <strong>reset</strong></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+
+<p>
+
+This package provides a class for executors constructed from
+deterministic <em>finite automatons</em> (DFA). Executors are objects
+which are given a string of symbols in a piecemal fashion, perform
+state transitions and report back when they enter a final state, or
+find an error in the input.
+
+For the actual creation of the DFAs the executors are based on we have
+the packages <strong>grammar::fa</strong> and <strong>grammar::fa::op</strong>.
+
+<p>
+
+The objects follow a push model. Symbols are pushed into the executor,
+and when something important happens, i.e. and error occurs, or a
+final state is entered this will be reported via the callback
+specified via the option <strong>-command</strong>. Note that conversion of
+this into a pull model where the environment retrieves messages from
+the object and the object uses a callback to ask for more symbols is
+a trivial thing.
+
+
+<p>
+
+<em>Side note</em>:
+
+The acceptor objects provided by <strong>grammar::fa::dacceptor</strong>
+could have been implemented on top of the executors provided here, but
+were not, to get a bit more performance (we avoid a number of method
+calls and the time required for their dispatch).
+
+<p>
+
+<h2><a name="api">API</a></h2>
+<p>
+
+The package exports the API described here.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::grammar::fa::dexec</b> <i class='arg'>daName</i> <i class='arg'>fa</i> ?<strong>-any</strong> <i class='arg'>any</i>? ?<strong>-command</strong> <i class='arg'>cmdprefix</i>?</a><dd>
+
+
+Creates a new deterministic executor with an associated global Tcl
+command whose name is <i class='arg'>daName</i>. This command may be used to invoke
+various operations on the executor. It has the following general form:
+
+<br><br>
+<dl>
+
+<dt><a name="2"><b class='cmd'>daName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command. See section <a href="#executor_methods">EXECUTOR METHODS</a> for more
+explanations.
+
+<br><br>
+
+The executor will be based on the deterministic finite automaton
+stored in the object <i class='arg'>fa</i>. It will keep a copy of the relevant
+data of the FA in its own storage, in a form easy to use for its
+purposes. This also means that changes made to the <i class='arg'>fa</i> after the
+construction of the executor <em>will not</em> influence the executor.
+
+<br><br>
+
+If <i class='arg'>any</i> has been specified, then the executor will convert all
+symbols in the input which are unknown to the base FA to that symbol
+before proceeding with the processing.
+
+</dl>
+</dl>
+
+<h2><a name="executor_methods">EXECUTOR METHODS</a></h2>
+<p>
+<p>
+
+All executors provide the following methods for their manipulation:
+
+<dl>
+
+
+<dt><a name="3"><i class='arg'>daName</i> <strong>destroy</strong></a><dd>
+
+
+Destroys the automaton, including its storage space and associated
+command.
+
+
+<br><br>
+<dt><a name="4"><i class='arg'>daName</i> <strong>put</strong> <i class='arg'>symbol</i></a><dd>
+
+
+Takes the current state of the executor and the <i class='arg'>symbol</i> and
+performs the appropriate state transition. Reports any errors
+encountered via the command callback, as well as entering a final
+state of the underlying FA.
+
+<br><br>
+
+When an error is reported all further invokations of <strong>put</strong> will
+do nothing, until the error condition has been cleared via an
+invokation of method <strong>reset</strong>.
+
+
+<br><br>
+<dt><a name="5"><i class='arg'>daName</i> <strong>reset</strong></a><dd>
+
+
+Unconditionally sets the executor into the start state of the
+underlying FA. This also clears any error condition  <strong>put</strong> may
+have encountered.
+
+</dl>
+
+
+<h2><a name="executor_callback">EXECUTOR CALLBACK</a></h2>
+<p>
+
+The callback command <i class='arg'>cmdprefix</i> given to an executor via the
+option <strong>-command</strong> will be executed by the object at the global
+level, using the syntax described below. Note that <i class='arg'>cmdprefix</i> is
+not simply the name of a command, but a full command prefix. In other
+words it may contain additional fixed argument words beyond the
+command word.
+
+<dl>
+
+<dt><a name="6"><i class='arg'>cmdprefix</i> <strong>error</strong> <i class='arg'>code</i> <i class='arg'>message</i></a><dd>
+
+
+The executor has encountered an error, and <i class='arg'>message</i> contains a
+human-readable text explaining the nature of the problem.
+
+The <i class='arg'>code</i> on the other hand is a fixed machine-readable text.
+The following error codes can be generated by executor objects.
+
+<br><br>
+<dl>
+<dt><strong>BADSYM</strong><dd>
+
+An unknown symbol was found in the input. This can happen if and only
+if no <strong>-any</strong> symbol was specified.
+
+<br><br>
+<dt><strong>BADTRANS</strong><dd>
+
+The underlying FA has no transition for the current combination of
+input symbol and state. In other words, the executor was not able to
+compute a new state for this combination.
+
+</dl>
+
+<dt><a name="7"><i class='arg'>cmdprefix</i> <strong>final</strong> <i class='arg'>stateid</i></a><dd>
+
+
+The executor has entered the final state <i class='arg'>stateid</i>.
+
+<br><br>
+<dt><a name="8"><i class='arg'>cmdprefix</i> <strong>reset</strong></a><dd>
+
+
+The executor was reset.
+
+</dl>
+
+
+<p>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+<p>
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+automaton, execution, finite automaton, grammar, parsing, regular expression, regular grammar, regular languages, running, state, transducer
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

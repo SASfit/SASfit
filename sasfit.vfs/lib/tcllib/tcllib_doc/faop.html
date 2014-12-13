@@ -1,0 +1,511 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>grammar::fa::op - Finite automaton operations and usage </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/grammar_fa/faop.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: faop.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ grammar::fa::op.n
+   -->
+
+<body>
+<h1> grammar::fa::op(n) 0.1.1 grammar_fa &quot;Finite automaton operations and usage&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> grammar::fa::op - Operations on finite automatons
+
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>snit</b><br>
+package require <b>struct::list</b><br>
+package require <b>struct::set</b><br>
+package require <b>grammar::fa::op ?0.1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::grammar::fa::op::reverse</b> <i class='arg'>fa</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::grammar::fa::op::complete</b> <i class='arg'>fa</i> ?<i class='arg'>sink</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::grammar::fa::op::remove_eps</b> <i class='arg'>fa</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::grammar::fa::op::trim</b> <i class='arg'>fa</i> ?<i class='arg'>what</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::grammar::fa::op::determinize</b> <i class='arg'>fa</i> ?<i class='arg'>mapvar</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::grammar::fa::op::minimize</b> <i class='arg'>fa</i> ?<i class='arg'>mapvar</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::grammar::fa::op::complement</b> <i class='arg'>fa</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::grammar::fa::op::kleene</b> <i class='arg'>fa</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::grammar::fa::op::optional</b> <i class='arg'>fa</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::grammar::fa::op::union</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::grammar::fa::op::intersect</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::grammar::fa::op::difference</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::grammar::fa::op::concatenate</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::grammar::fa::op::fromRegex</b> <i class='arg'>fa</i> <i class='arg'>regex</i> ?<i class='arg'>over</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+
+
+<p>
+
+This package provides a number of complex operations on finite
+automatons (Short: FA),
+
+as provided by the package <strong>grammar::fa</strong>.
+
+The package does not provide the ability to create and/or manipulate
+such FAs, nor the ability to execute a FA for a stream of symbols.
+
+Use the packages <strong>grammar::fa</strong>
+and <strong>grammar::fa::interpreter</strong> for that.
+
+Another package related to this is <strong>grammar::fa::compiler</strong>
+which turns a FA into an executor class which has the definition of
+the FA hardwired into it.
+
+<p>
+
+For more information about what a finite automaton is see section
+<em>FINITE AUTOMATONS</em> in package <strong>grammar::fa</strong>.
+
+<h2><a name="api">API</a></h2>
+<p>
+
+The package exports the API described here.  All commands modify their
+first argument. I.e. whatever FA they compute is stored back into
+it. Some of the operations will construct an automaton whose states
+are all new, but related to the states in the source
+automaton(s). These operations take variable names as optional
+arguments where they will store mappings which describe the
+relationship(s).
+
+The operations can be loosely partitioned into structural and language
+operations. The latter are defined in terms of the language the
+automaton(s) accept, whereas the former are defined in terms of the
+structural properties of the involved automaton(s). Some operations
+are both.
+
+<em>Structure operations</em>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::grammar::fa::op::reverse</b> <i class='arg'>fa</i></a><dd>
+
+
+Reverses the <i class='arg'>fa</i>. This is done by reversing the direction of all
+transitions and swapping the sets of <em>start</em> and <em>final</em>
+states. The language of <i class='arg'>fa</i> changes unpredictably.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::grammar::fa::op::complete</b> <i class='arg'>fa</i> ?<i class='arg'>sink</i>?</a><dd>
+
+
+Completes the <i class='arg'>fa</i> <em>complete</em>, but nothing is done if the
+<i class='arg'>fa</i> is already <em>complete</em>. This implies that only the first
+in a series of multiple consecutive complete operations on <i class='arg'>fa</i>
+will perform anything. The remainder will be null operations.
+
+<br><br>
+
+The language of <i class='arg'>fa</i> is unchanged by this operation.
+
+<br><br>
+
+This is done by adding a single new state, the <em>sink</em>, and
+transitions from all other states to that sink for all symbols they
+have no transitions for. The sink itself is made complete by adding
+loop transitions for all symbols.
+
+<br><br>
+
+Note: When a FA has epsilon-transitions transitions over a symbol for
+a state S can be indirect, i.e. not attached directly to S, but to a
+state in the epsilon-closure of S. The symbols for such indirect
+transitions count when computing completeness of a state. In other
+words, these indirectly reached symbols are <em>not</em> missing.
+
+<br><br>
+
+The argument <i class='arg'>sink</i> provides the name for the new state and most
+not be present in the <i class='arg'>fa</i> if specified. If the name is not
+specified the command will name the state &quot;sink<strong>n</strong>&quot;, where <strong>n</strong>
+is set so that there are no collisions with existing states.
+
+<br><br>
+
+Note that the sink state is <em>not useful</em> by definition.  In
+other words, while the FA becomes complete, it is also
+<em>not useful</em> in the strict sense as it has a state from which
+no final state can be reached.
+
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::grammar::fa::op::remove_eps</b> <i class='arg'>fa</i></a><dd>
+
+
+Removes all epsilon-transitions from the <i class='arg'>fa</i> in such a manner the
+the language of <i class='arg'>fa</i> is unchanged. However nothing is done if the
+<i class='arg'>fa</i> is already <em>epsilon-free</em>.
+
+This implies that only the first in a series of multiple consecutive
+complete operations on <i class='arg'>fa</i> will perform anything. The remainder
+will be null operations.
+
+<br><br>
+
+<em>Note:</em> This operation may cause states to become unreachable or
+not useful. These states are not removed by this operation.
+
+Use <b class='cmd'>::grammar::fa::op::trim</b> for that instead.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::grammar::fa::op::trim</b> <i class='arg'>fa</i> ?<i class='arg'>what</i>?</a><dd>
+
+
+Removes unwanted baggage from <i class='arg'>fa</i>.
+
+The legal values for <i class='arg'>what</i> are listed below. The command defaults
+to <strong>!reachable|!useful</strong> if no specific argument was given.
+
+<br><br>
+<dl>
+<dt><strong>!reachable</strong><dd>
+Removes all states which are not reachable from a start state.
+
+<br><br>
+<dt><strong>!useful</strong><dd>
+Removes all states which are unable to reach a final state.
+
+<br><br>
+<dt><strong>!reachable&amp;!useful</strong><dd>
+<dt><strong>!(reachable|useful)</strong><dd>
+Removes all states which are not reachable from a start state and are
+unable to reach a final state.
+
+<br><br>
+<dt><strong>!reachable|!useful</strong><dd>
+<dt><strong>!(reachable&amp;useful)</strong><dd>
+Removes all states which are not reachable from a start state or are
+unable to reach a final state.
+
+</dl>
+<br><br>
+
+
+<dt><a name="5"><b class='cmd'>::grammar::fa::op::determinize</b> <i class='arg'>fa</i> ?<i class='arg'>mapvar</i>?</a><dd>
+
+
+Makes the <i class='arg'>fa</i> deterministic without changing the language
+accepted by the <i class='arg'>fa</i>. However nothing is done if the <i class='arg'>fa</i> is
+already <em>deterministic</em>. This implies that only the first in a
+series of multiple consecutive complete operations on <i class='arg'>fa</i> will
+perform anything. The remainder will be null operations.
+
+<br><br>
+
+The command will store a dictionary describing the relationship
+between the new states of the resulting dfa and the states of the
+input nfa in <i class='arg'>mapvar</i>, if it has been specified. Keys of the
+dictionary are the handles for the states of the resulting dfa, values
+are sets of states from the input nfa.
+
+<br><br>
+
+<em>Note</em>: An empty dictionary signals that the command was able to
+make the <i class='arg'>fa</i> deterministic without performing a full subset
+construction, just by removing states and shuffling transitions around
+(As part of making the FA epsilon-free).
+
+<br><br>
+
+<em>Note</em>: The algorithm fails to make the FA deterministic in the
+technical sense if the FA has no start state(s), because determinism
+requires the FA to have exactly one start states.
+
+In that situation we make a best effort; and the missing start state
+will be the only condition preventing the generated result from being
+<em>deterministic</em>.
+
+It should also be noted that in this case the possibilities for
+trimming states from the FA are also severely reduced as we cannot
+declare states unreachable.
+
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::grammar::fa::op::minimize</b> <i class='arg'>fa</i> ?<i class='arg'>mapvar</i>?</a><dd>
+
+
+Creates a FA which accepts the same language as <i class='arg'>fa</i>, but has a
+minimal number of states. Uses Brzozowski's method to accomplish this.
+
+<br><br>
+
+The command will store a dictionary describing the relationship
+between the new states of the resulting minimal fa and the states of
+the input fa in <i class='arg'>mapvar</i>, if it has been specified. Keys of the
+dictionary are the handles for the states of the resulting minimal fa,
+values are sets of states from the input fa.
+
+<br><br>
+
+<em>Note</em>: An empty dictionary signals that the command was able to
+minimize the <i class='arg'>fa</i> without having to compute new states. This
+should happen if and only if the input FA was already minimal.
+
+<br><br>
+
+<em>Note</em>: If the algorithm has no start or final states to work
+with then the result might be technically minimal, but have a very
+unexpected structure.
+
+It should also be noted that in this case the possibilities for
+trimming states from the FA are also severely reduced as we cannot
+declare states unreachable.
+
+</dl>
+
+
+<em>Language operations</em>
+
+All operations in this section require that all input FAs have at
+least one start and at least one final state. Otherwise the language of
+the FAs will not be defined, making the operation senseless (as it
+operates on the languages of the FAs in a defined manner).
+
+
+<dl>
+
+<dt><a name="7"><b class='cmd'>::grammar::fa::op::complement</b> <i class='arg'>fa</i></a><dd>
+
+
+Complements <i class='arg'>fa</i>. This is possible if and only if <i class='arg'>fa</i> is
+<em>complete</em> and <em>deterministic</em>. The resulting FA accepts the
+complementary language of <i class='arg'>fa</i>. In other words, all inputs not
+accepted by the input are accepted by the result, and vice versa.
+
+<br><br>
+
+The result will have all states and transitions of the input, and
+different final states.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::grammar::fa::op::kleene</b> <i class='arg'>fa</i></a><dd>
+
+
+Applies Kleene's closure to <i class='arg'>fa</i>.
+
+The resulting FA accepts all strings <strong>S</strong> for which we can find a
+natural number <strong>n</strong> (0 inclusive) and strings <strong>A1</strong> ... <strong>An</strong>
+in the language of <i class='arg'>fa</i> such that <strong>S</strong> is the concatenation of
+<strong>A1</strong> ... <strong>An</strong>.
+
+In other words, the language of the result is the infinite union over
+finite length concatenations over the language of <i class='arg'>fa</i>.
+
+<br><br>
+
+The result will have all states and transitions of the input, and new
+start and final states.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::grammar::fa::op::optional</b> <i class='arg'>fa</i></a><dd>
+
+
+Makes the <i class='arg'>fa</i> optional. In other words it computes the FA which
+accepts the language of <i class='arg'>fa</i> and the empty the word (epsilon) as
+well.
+
+<br><br>
+
+The result will have all states and transitions of the input, and new
+start and final states.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::grammar::fa::op::union</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a><dd>
+
+
+Combines the FAs <i class='arg'>fa</i> and <i class='arg'>fb</i> such that the resulting FA
+accepts the union of the languages of the two FAs.
+
+<br><br>
+
+The result will have all states and transitions of the two input FAs,
+and new start and final states. All states of <i class='arg'>fb</i> which exist in
+<i class='arg'>fa</i> as well will be renamed, and the <i class='arg'>mapvar</i> will contain a
+mapping from the old states of <i class='arg'>fb</i> to the new ones, if present.
+
+<br><br>
+
+It should be noted that the result will be non-deterministic, even if
+the inputs are deterministic.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::grammar::fa::op::intersect</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a><dd>
+
+
+Combines the FAs <i class='arg'>fa</i> and <i class='arg'>fb</i> such that the resulting FA
+accepts the intersection of the languages of the two FAs. In other
+words, the result will accept a word if and only if the word is
+accepted by both <i class='arg'>fa</i> and <i class='arg'>fb</i>. The result will be useful, but
+not necessarily deterministic or minimal.
+
+<br><br>
+
+The command will store a dictionary describing the relationship
+between the new states of the resulting fa and the pairs of states of
+the input FAs in <i class='arg'>mapvar</i>, if it has been specified. Keys of the
+dictionary are the handles for the states of the resulting fa, values
+are pairs of states from the input FAs. Pairs are represented by
+lists. The first element in each pair will be a state in <i class='arg'>fa</i>, the
+second element will be drawn from <i class='arg'>fb</i>.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::grammar::fa::op::difference</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a><dd>
+
+
+Combines the FAs <i class='arg'>fa</i> and <i class='arg'>fb</i> such that the resulting FA
+accepts the difference of the languages of the two FAs. In other
+words, the result will accept a word if and only if the word is
+accepted by <i class='arg'>fa</i>, but not by <i class='arg'>fb</i>. This can also be expressed
+as the intersection of <i class='arg'>fa</i> with the complement of <i class='arg'>fb</i>. The
+result will be useful, but not necessarily deterministic or minimal.
+
+<br><br>
+
+The command will store a dictionary describing the relationship
+between the new states of the resulting fa and the pairs of states of
+the input FAs in <i class='arg'>mapvar</i>, if it has been specified. Keys of the
+dictionary are the handles for the states of the resulting fa, values
+are pairs of states from the input FAs. Pairs are represented by
+lists. The first element in each pair will be a state in <i class='arg'>fa</i>, the
+second element will be drawn from <i class='arg'>fb</i>.
+
+
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::grammar::fa::op::concatenate</b> <i class='arg'>fa</i> <i class='arg'>fb</i> ?<i class='arg'>mapvar</i>?</a><dd>
+
+
+Combines the FAs <i class='arg'>fa</i> and <i class='arg'>fb</i> such that the resulting FA
+accepts the cross-product of the languages of the two FAs. I.e. a word
+W will be accepted by the result if there are two words A and B
+accepted by <i class='arg'>fa</i>, and <i class='arg'>fb</i> resp. and W is the concatenation of
+A and B.
+
+<br><br>
+
+The result FA will be non-deterministic.
+
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::grammar::fa::op::fromRegex</b> <i class='arg'>fa</i> <i class='arg'>regex</i> ?<i class='arg'>over</i>?</a><dd>
+
+
+Generates a non-deterministic FA which accepts the same language as
+the regular expression <i class='arg'>regex</i>. If the <i class='arg'>over</i> is specified it
+is treated as the set of symbols the regular expression and the
+automaton are defined over. The command will compute the set from the
+&quot;S&quot; constructors in <i class='arg'>regex</i> when <i class='arg'>over</i> was not
+specified. This set is important if and only if the complement
+operator &quot;!&quot; is used in <i class='arg'>regex</i> as the complementary language of
+an FA is quite different for different sets of symbols.
+
+<br><br>
+
+The regular expression is represented by a nested list, which forms
+a syntax tree. The following structures are legal:
+
+<br><br>
+<dl>
+
+<dt>{S x}<dd>
+
+Atomic regular expression. Everything else is constructed from
+these. Accepts the <strong>S</strong>ymbol &quot;x&quot;.
+
+<br><br>
+<dt>{. A1 A2 ...}<dd>
+
+Concatenation operator. Accepts the concatenation of the regular
+expressions <strong>A1</strong>, <strong>A2</strong>, etc.
+
+<br><br>
+<dt>{| A1 A2 ...}<dd>
+
+Choice operator, also called &quot;Alternative&quot;. Accepts all input accepted
+by at least one of the regular expressions <strong>A1</strong>, <strong>A2</strong>, etc. In
+other words, the union of <strong>A1</strong>, <strong>A2</strong>.
+
+<br><br>
+<dt>{&amp; A1 A2 ...}<dd>
+
+Intersection operator, logical and. Accepts all input accepted which
+is accepted by all of the regular expressions <strong>A1</strong>, <strong>A2</strong>,
+etc. In other words, the intersection of <strong>A1</strong>, <strong>A2</strong>.
+
+<br><br>
+<dt>{? A}<dd>
+
+Optionality operator. Accepts the empty word and anything from the
+regular expression <strong>A</strong>.
+
+<br><br>
+<dt>{* A}<dd>
+
+Kleene closure. Accepts the empty word and any finite concatenation of
+words accepted by the regular expression <strong>A</strong>.
+
+<br><br>
+<dt>{+ A}<dd>
+
+Positive Kleene closure. Accepts any finite concatenation of words
+accepted by the regular expression <strong>A</strong>, but not the empty word.
+
+<br><br>
+<dt>{! A}<dd>
+
+Complement operator. Accepts any word not accepted by the regular
+expression <strong>A</strong>. Note that the complement depends on the set of
+symbol the result should run over. See the discussion of the argument
+<i class='arg'>over</i> before.
+
+
+</dl>
+</dl>
+
+<p>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+<p>
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+automaton, finite automaton, grammar, parsing, regular expression, regular grammar, regular languages, state, transducer
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

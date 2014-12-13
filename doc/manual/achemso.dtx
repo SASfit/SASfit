@@ -1,0 +1,2284 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 1996-98 by
+%    Mats Dahlgren
+% Copyright (C) 2007 by
+%    Joseph Wright <joseph.wright@morningstar2.co.uk>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either
+% version 1.3 of this license or (at your option) any later
+% version. The latest version of this license is in
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of
+% LaTeX version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status ``maintained.''
+%
+% The current maintainer of this work is Joseph Wright.
+%
+% This work consists of the source file achemso.dtx
+%                 and the derived files achemso.ins,
+%                                       achemso.sty,
+%                                       achemso.bib,
+%                                       achemso.pdf,
+%                                       achemso.bst,
+%                                       achemsol.bst,
+%                                       achemsnat.bst and
+%                                       achemlnt.bst,
+% Unpacking:
+%    (a) If achemso.ins is present:
+%           tex achemso.ins
+%    (b) Without achemso.ins:
+%           tex achemso.dtx
+%    (c) If you use LaTeX to generate files:
+%           latex \let\install=y\input{achemso.dtx}
+%
+% Documentation:
+%    (a) Without write18 enabled:
+%          pdflatex achemso.dtx
+%          bibtex8 --wolfgang achemso.aux
+%          makeindex -s gind.ist achemso.idx
+%          makeindex -s gglo.ist -o achemso.gls  achemso.glo
+%          pdflatex achemso.dtx
+%          makeindex -s gind.ist achemso.idx
+%          makeindex -s gglo.ist -o achemso.gls  achemso.glo
+%          pdflatex achemso.dtx
+%    (b) With write18 enabled:
+%          pdflatex achemso.dtx
+%          bibtex8 --wolfgang achemso.aux
+%          pdflatex achemso.dtx
+%          pdflatex achemso.dtx
+%
+% Installation:
+%     Copy achemso.sty and the achmes*.bst files to a location
+%     searched by TeX, and if required by your TeX installation,
+%     run the appropriate command to build a hash of files
+%     (texhash, mpm --update-db, etc.)
+%
+% Note:
+%     The jawltxdoc.sty file is not needed for installation,
+%     only for building the documentation.  It may be deleted.
+%
+%<*ignore>
+% This is all taken verbatim from Heiko Oberdiek's packages
+\begingroup
+  \def\x{LaTeX2e}%
+\expandafter\endgroup
+\ifcase 0\ifx\install y1\fi\expandafter
+         \ifx\csname processbatchFile\endcsname\relax\else1\fi
+         \ifx\fmtname\x\else 1\fi\relax
+\else\csname fi\endcsname
+%</ignore>
+%<*install>
+\input docstrip.tex
+\keepsilent
+\askforoverwritefalse
+\preamble
+ ----------------------------------------------------------------
+ The achemso package - LaTeX and BibTeX support for American
+ Chemical Society publications
+ Maintained by Joseph Wright
+ E-mail: joseph.wright@morningstar2.co.uk
+ Released under the LaTeX Project Public License v1.3 or later
+ See http://www.latex-project.org/lppl.txt
+ ----------------------------------------------------------------
+
+\endpreamble
+\Msg{Generating achemso files:}
+\usedir{tex/latex/contib/achemso}
+\generate{\file{\jobname.ins}{\from{\jobname.dtx}{install}}
+          \file{\jobname.sty}{\from{\jobname.dtx}{package}}
+          \file{jawltxdoc.sty}{\from{\jobname.dtx}{jawltxdoc}}
+}
+\declarepostamble\bibtexable
+\endpostamble
+\usedir{bibtex/bst/achemso}
+\generate{\usepostamble\bibtexable
+          \file{achemso.bst}{\from{achemso.dtx}{bib}}
+          \file{achemnat.bst}{\from{achemso.dtx}{bib,nat}}
+          \file{achemsol.bst}{\from{achemso.dtx}{bib,list}}
+          \file{achemlnt.bst}{\from{achemso.dtx}{bib,list,nat}}
+}
+\generate{\usepostamble\empty\usepreamble\empty
+          \file{achemso.bib}{\from{achemso.dtx}{database}}
+}
+\endbatchfile
+%</install>
+%<*ignore>
+\fi
+% Will Robertson's trick
+\immediate\write18{makeindex -s gind.ist -o \jobname.ind  \jobname.idx}
+\immediate\write18{makeindex -s gglo.ist -o \jobname.gls  \jobname.glo}
+%</ignore>
+%<*driver>
+\PassOptionsToClass{a4paper}{article}
+\documentclass{ltxdoc}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+%\OnlyDescription
+% The various formatting commands used in this file are collected
+% together in |jawltxdoc|.
+\usepackage{jawltxdoc}
+\begin{document}
+  \DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{105}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%\GetFileInfo{\jobname.sty}
+%
+%\changes{v1.0}{1998/06/01}{Initial release of package by Mats
+%   Dahlgren}
+%\changes{v2.0}{2007/01/17}{Re-write of package by Joseph Wright}
+%\changes{v2.0}{2007/01/17}{Several improvements to BibTeX style
+%  files}
+%\changes{v2.0}{2007/01/17}{License changed to LPPL}
+%\changes{v2.1}{2007/02/15}{Updated documentation to reflect 3rd
+%  edition of ACS Style Guide}
+%\changes{v2.1}{2007/02/15}{BibTeX style improved to reflect 3rd
+%  edition of ACS Style Guide}
+%\changes{v2.2}{2007/06/05}{Added \texttt{natbib} support}
+%\changes{v2.2a}{2007/07/08}{Fixed separation of editor names}
+%\changes{v2.2a}{2007/07/08}{Bug fixes to \texttt{natbib} and list
+% support}
+%\changes{v2.2a}{2007/07/08}{\texttt{title} field included in output
+% for \texttt{incollection} records}
+%\changes{v2.2b}{2007/07/09}{Bug fix to name formatting}
+%\changes{v2.2d}{2007/10/16}{Added \textsc{url} field to
+%  \texttt{misc} output}
+%\changes{v2.2d}{2007/10/16}{Package design improved}
+%
+%\DoNotIndex{\@biblabel,\@eha,\@gobble,\@ifpackageloaded,\@ifundefined}
+%\DoNotIndex{\bibliographystyle,\bibname,\citeform,\citeleft}
+%\DoNotIndex{\citenumfont,\citeright,\DeclareOption,\def,\else,\emph}
+%\DoNotIndex{\fi,\ifx,\NeedsTeXFormat,\newcommand,\newif}
+%\DoNotIndex{\OptionNotUsed,\PackageError,\PackageWarning}
+%\DoNotIndex{\ProcessOptions,\ProvidesPackage,\refname,\relax}
+%\DoNotIndex{\renewcommand,\RequirePackage,\textit,}
+%
+% \title{\texttt{achemso} --- LaTeX and BibTeX support for American
+%   Chemical Society publications%
+%   \thanks{This file describes version \fileversion, last revised
+%           \filedate.}}
+% \author{Joseph Wright%
+%   \thanks{E-mail: joseph.wright@morningstar2.co.uk}}
+% \date{Released \filedate}
+%
+%\maketitle
+%
+%\begin{abstract}
+% The |achemso| package provides a BibTeX style in accordance with
+% the requirements of the journals of the American Chemical Society,
+% along with a supporting LaTeX package file. Also provided is a
+% BibTeX style file to be used for bibliography database listings.
+%\end{abstract}
+%
+% \section{Introduction}
+%
+% Synthetic chemists do not, in the main, use LaTeX for the
+% preparation of journal articles. Some journals, mainly in the
+% physical chemistry area, do accept LaTeX submissions.  Given the
+% clear advantages of LaTeX over other methods, it would be
+% nice to be able to use LaTeX for preparing reports. Thus the need
+% for BibTeX styles for chemistry is real. The package |achemso|
+% provides for a BibTeX style and other support for articles and
+% reports in the style of the American Chemical Society (ACS).
+%
+% As describe in \emph{The ACS Style Guide} \cite{Coghill2006},
+% almost all ACS publications use the same style for the formatting
+% of references.  The reproduction of this style is the aim of the
+% BibTeX style file provided here.  However, the ACS use different
+% citation styles in different publications.  The |achemso| package
+% provides support for the two numerical systems: superscript
+% and italic in-text citations.  The majority of ACS journals use
+% the superscript method (Table \ref{tbl:journals-super}), with a
+% smaller number using the italic system (Table
+% \ref{tbl:journals-inline}). The journal \emph{Biochemistry} does
+% not use the standard ACS style for references, and so is not
+% covered by the |achemso| package.
+% \begin{table}
+%   \centering
+%   \small
+%   \begin{tabular}{>{\itshape}l>{\itshape}l}
+%     \toprule
+%     \upshape{Journal Title} & \upshape{\emph{CASSI} Abbreviation} \\
+%     \midrule
+%     Accounts of Chemical Research & Acc.~Chem.~Res. \\
+%     Analytical Chemistry & Anal.~Chem. \\
+%     Biomacromolecules & Biomacromolecules \\
+%     Chemical Reviews & Chem.~Rev. \\
+%     Chemistry of Materials & Chem.~Mater. \\
+%     Crystal Growth \& Design & Cryst.~Growth Des. \\
+%     Energy \& Fuels & Energy Fuels \\
+%     Industrial \& Engineering Chemistry Research & Ind.~Eng.~Chem.~Res. \\
+%     Inorganic Chemistry & Inorg.Chem. \\
+%     Journal of the American Chemical Society & J.~Am.~Chem.~Soc. \\
+%     Journal of Chemical and Engineering Data & J.~Chem.~Eng.~Data \\
+%     Journal of Chemical Theory and Computation & J.~Chem.~Theory Comput. \\
+%     Journal of Chemical Information and Modeling & J.~Chem.~Inf.~Model. \\
+%     Journal of Combinatorial Chemistry & J.~Comb.~Chem. \\
+%     Journal of Medicinal Chemistry & J.~Med.~Chem. \\
+%     Journal of Natural Products & J.~Nat.~Prod. \\
+%     The Journal of Organic Chemistry & J.~Org.~Chem. \\
+%     The Journal of Physical Chemistry A & J.~Phys.~Chem.~A \\
+%     The Journal of Physical Chemistry B & J.~Phys.~Chem.~B \\
+%     The Journal of Physical Chemistry C & J.~Phys.~Chem.~C \\
+%     Journal of Proteome Research & J.~Proteome Res. \\
+%     Langmuir & Langmuir \\
+%     Macromolecules & Macromolecules \\
+%     Molecular Pharmaceutics & Mol.~Pharm. \\
+%     Nano Letters & Nano Lett. \\
+%     Organic Letters & Org.~Lett. \\
+%     Organic Process Research \& Design & Org.~Process Res.~Dev. \\
+%     Organometallics & Organometallics \\
+%     \bottomrule
+%   \end{tabular}
+%   \caption{Journals using the ACS reference style with superscript citations}
+%   \label{tbl:journals-super}
+% \end{table}
+% \begin{table}
+%   \small
+%   \centering
+%   \begin{tabular}{>{\itshape}l>{\itshape}l}
+%     \toprule
+%     \upshape{Journal Title} & \upshape{\emph{CASSI} Abbreviation} \\
+%     \midrule
+%     ACS Chemical Biology & ACS Chem.~Biol. \\
+%     Bioconjugate Chemistry & Bioconjugate Chem. \\
+%     Biotechnology Progress & Biotechnol.~Prog. \\
+%     Chemical Research in Toxicology & Chem.~Res.~Toxicol. \\
+%     Environmental Science and Technology & Envirn.~Sci.~Technol. \\
+%     Journal of Agricultural and Food Chemistry & J.~Agric.~Food Chem. \\
+%     \bottomrule
+%   \end{tabular}
+%   \caption{Journals using the ACS reference style with in-text citations}
+%   \label{tbl:journals-inline}
+% \end{table}
+%
+% This package consists of two BibTeX files (|achemso.bst|
+% and |achemsol.bst|) along with a small LaTeX file |achemso.sty|.
+% The naming of the package is slightly unusual, but follows from
+% the need to pick a unique name.  To quote the documentation to the
+% first version:
+% \begin{quote}
+%   there is already a LaTeX 2.09 and
+%   BibTeX style package called |acsarticle| and
+%   |acs.bst|, which are not ``ACS'' as in `American Chemical
+%   Society' (rather, this package is
+%   formatting the output according to the instructions of
+%   \emph{Advances in Control Systems}).  Hence, \emph{this}
+%   new package had to be given another name.  The name of choice
+%   was then |achemso|, which is made from the words
+%   ``\emph{A}merican \emph{Chem}ical \emph{So}ciety.''
+% \end{quote}
+%
+% \subsection{Change of maintainer}
+%
+% This package was initially released by Mats Dahlgren.  He no
+% longer has time to devote to LaTeX development.  With his permission,
+% the package has therefore been taken over by Joseph
+% Wright, the maintainer of the the |rsc| package.  The majority of
+% the package has been rebuilt and the BibTeX style file has been
+% totally overhauled.  Any mistakes are entirely the fault of the
+% new maintainer!
+%
+% \section{The BibTeX style files}
+%
+% The BibTeX style files implement the bibliographic style specified
+% by the ACS in \emph{The ACS Style Guide} \cite{Coghill2006},
+% on the ACS website \cite{ACS2007}, and in current ACS publications.
+% Some of this information can be contradictory, and \emph{The ACS
+% Style Guide} sometimes gives more than one option as a model.
+% In order to resolve cases where several possibilities are available
+% current editions of the \emph{Journal of the American Chemical
+% Society} have been consulted; the current consensus there has been
+% taken as the correct approach.  In addition to the problem
+% of picking the correct style, some of the BibTeX record types are
+% difficult to match to standard references in ACS journals.  The
+% ``best guess'' has been taken with these.
+%
+% \subsection{Additional record types}
+%
+% In general, the database record types supported here follow those
+% in the standard BibTeX style files.  Four additional record types
+% are provided:
+% \begin{description}
+%   \item[|patent|] A patent: formatting is similar to other record
+%       types.  The data entry for this record type follows the
+%       pattern used in |rsc.bst|: |journal| is used to hold
+%       the patent type (\emph{e.g.}~``U.S.~Patent''), with the
+%       patent number given in |pages|. Whilst this format is
+%       non-standard, it is relatively easy to use and implement!
+%   \item[|submitted|] Articles submitted to journals but not
+%       yet accepted: appends ``submitted'' in a suitable fashion
+%       to the entry.
+%   \item[|inpress|] Articles in press: appends ``in press'' or,
+%       if available, the DOI number assigned to the article.
+%   \item[|remark|] A note with no other information to be
+%       included.  Output consists purely of the |note| field.
+% \end{description}
+%
+% \subsection{BibTeX database entry requirements}
+%
+% The requirements for entries in the BibTeX database are slightly
+% different using |achemso.bst| to the standard style files. This
+% is mainly because some fields are not cited in
+% ACS bibliographies.  In particular, journal articles do not
+% require a title (the |title| field is ignored).  Articles
+% in books and ``collections'' only need the title of the book.
+% If a chapter title is given for an |incollection| record, it will
+% be printed, but not in the case of an |inbook| record.
+%
+% \subsection{References to software}
+%
+% Referencing software is always a little difficult.  The style files
+% provided here follow the normal LaTeX convention of using the
+% |manual| record type to cite software.  The only requirement is a
+% |title|, but fields such as |organization| may be used for more
+% detail.  The |edition| field is used to format the software version
+% correctly: this will automatically be prefixed with ``version'' by
+% the style file.
+%
+% \subsection{The \texttt{annotate} field}
+%
+% The standard BibTeX styles use the |note| field for notes to be
+% added to the citation.  However, it is common to want personal
+% notes about references.  This is catered for using the |annotate|
+% field.  The style |achemso| ignores the |annotate| field, whilst
+% the |achemsol| style appends the |annotate| information to the
+% bibliographic output.  Thus |achemsol| is intended for use in
+% database maintenance, whilst |achemso| is for production
+% bibliographies.
+%
+% \DescribeMacro{\refin}
+% For use in the |annotate| field the macro \cmd{\refin}
+% is defined in |achemso.bst| and |achemsol.bst|.
+% The command takes a single argument \marg{text}, and
+% gives the output \textbf{Referenced in: text}.
+% This command takes one argument (normally text) which is
+% preceded by the text ``\textbf{Referenced in:} \meta{text}''.
+% The \cmd{\refin} command is intended for tracking citations
+% ``backward'' through the database.  For example, this could be
+% used to link citations in a database to the writer's own papers.
+%
+% \subsection{Predefined journal abbreviations}
+%
+% A number of journal abbreviations are defined in the |.bst| files.
+% The abbreviations cover a number ACS journals, several other
+% physical chemistry publications and other journals listed as
+% highly cited by \emph{Chem.\ Abs.}\ The interested user should
+% consult the |.bst| files for full details.
+%
+% \subsection{\texttt{natbib} support}
+%
+% As of version 2.2, a |natbib| compatible style file, |achemnat| is
+% provided.  The style file provides the appropriate option,
+% |natbib|, to load this BibTeX file along with |natbib|, setting up
+% the appropriate options.
+%
+% \section{The LaTeX Package}
+%
+% The current version of |achemso.sty| is a complete
+% re-implementation of the functionality of the original file,
+% designed to ensure greater compatibility with other packages. The
+% only change for the user is that the bibliography section does
+% \emph{not} start a new page when using the |article| document
+% class. However, the package now supports all of the standard
+% classes, and so the |report| class may be used to ensure a new
+% page is started.
+%
+% \DescribeMacro{\bibliographystyle}
+% Loading the |achemso| package adds the appropriate
+% \cmd{\bibliographystyle} command to the LaTeX source.  As a result,
+% subsequent \cmd{\bibliographystyle} statements will be ignored:
+% a suitable warning is given.  The format of citations is altered
+% (using the |cite| or |natbib| package as appropriate), and the
+% package ensures that the bibliography will be named ``References''
+%  in all standard document types.\footnote{This only works if the
+% \texttt{babel} package is \emph{not} loaded.  Users wanting a
+% system which works with \texttt{babel} should look at the
+% \texttt{chemstyle package}. }
+%
+%  The |achemso| package has five options:
+% \begin{description}
+%   \item[|note|] If the bibliography contains notes as well
+%       as citations, then the section heading should be
+%       ``References and Notes''.  This is altered by the
+%       |note| package option.
+%   \item[|number|] This option numbers the bibliography
+%       section (using the |tocbibind| package), and causes it to
+%       be entered in the Table of Contents.
+%   \item[|list|] This option is intended for creating a listing
+%       of the entire BibTeX database.  The BibTeX style is
+%       changed to |achemsol|, which will output the additional
+%       database field |annotate|, intended for personal notes
+%       about a particular database entry.  It also adds the
+%       BibTeX key for each citation as a marginal note to the
+%       output, using the |showkeys| package.
+%    \item[|notsuper|] Switches from superscript citations
+%       (\emph{e.g.}~Author \emph{et al.}$^3$) to
+%        in-text ones in italics (\emph{e.g.}~Author
+%        \emph{et al.}~(\emph{3})). There is a |super|
+%        option for completeness, which simply gives the default
+%        behaviour.
+%     \item[|natbib|] Uses |natbib| rather than |cite| for citation
+%        formatting; this also loads the |achemnat| style in place
+%        of |achemso|.
+% \end{description}
+%
+% \StopEventually{\bibliography{achemso}}
+%
+% \section{The Package Code}
+%
+%  The package code is not very complicated.  For the
+%  interested reader(s), it is presented here.
+%
+% The usual setup code is executed.
+%    \begin{macrocode}
+%<*package>
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{achemso}
+  [2007/10/16 v2.2d LaTeX and BibTeX support for American
+     Chemical Society publications]
+%    \end{macrocode}
+% \begin{macro}{\ACS@sctnnmbr}
+% \begin{macro}{\ACS@lst}
+% \begin{macro}{\ACS@note}
+% \changes{v2.0}{2007/01/17}{Boolean values made internal to package}
+% \begin{macro}{\ACS@super}
+% \changes{v2.1}{2007/02/15}{New Boolean for citation control}
+% \begin{macro}{\ACS@natbib}
+% \changes{v2.2a}{2007/07/08}{New Boolean for |natbib| support}
+% Boolean values are used to handle the options.
+%    \begin{macrocode}
+\newif \ifACS@sctnnmbr \ACS@sctnnmbrfalse
+\newif \ifACS@list     \ACS@listfalse
+\newif \ifACS@note     \ACS@notefalse
+\newif \ifACS@super    \ACS@supertrue
+\newif \ifACS@natbib   \ACS@natbibfalse
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% The options are processed.
+%\changes{v2.2d}{2007/10/16}{Added \texttt{notes} option}
+%    \begin{macrocode}
+\DeclareOption{note}{\ExecuteOptions{notes}}
+\DeclareOption{notes}{\ACS@notetrue}
+\DeclareOption{number}{\ACS@sctnnmbrtrue}
+\DeclareOption{super}{\ACS@supertrue}
+\DeclareOption{list}{\ACS@listtrue}
+\DeclareOption{notsuper}{\ACS@superfalse}
+\DeclareOption{natbib}{\ACS@natbibtrue}
+\DeclareOption*{\OptionNotUsed}
+\ProcessOptions
+%    \end{macrocode}
+% \changes{v2.1}{2007/02/15}{|cite| package is loaded with different
+% options depending on citation style requested}
+% \changes{v2.2a}{2007/07/08}{|natbib| support added}
+% The |cite| package is loaded to sort and compress references
+% correctly. Depending upon the package option given, citations are
+% either superscript or italic and in parentheses.
+%    \begin{macrocode}
+\ifACS@natbib
+  \ifACS@super
+    \RequirePackage[numbers,sort&compress,super]{natbib}
+  \else
+%    \end{macrocode}
+% For in-line citations with |natbib|, we have to do a
+% bit of work to get things to look right.  |natbib| uses
+% \cmd{\citenumfont} to format the numbers, but it is not defined
+% by default, so we have to use \cmd{\newcommand}.
+%    \begin{macrocode}
+    \RequirePackage[numbers,sort&compress,round]{natbib}
+    \newcommand*{\citenumfont}{\textit}
+  \fi
+\else
+  \ifACS@super
+%    \end{macrocode}
+%\changes{v2.2c}{2007/08/22}{Use the \texttt{overcite} alias for
+%  \texttt{cite} as ACS have very old LaTeX system}
+%    \begin{macrocode}
+    \RequirePackage[nospace]{overcite}
+  \else
+%    \end{macrocode}
+% Again in-line citations need some format changes.  In the case of
+% |cite|, everything is defined initially.  Thus we can use
+% \cmd{\renewcommand} for everything.
+%    \begin{macrocode}
+    \RequirePackage{cite}
+    \renewcommand\citeleft{(}
+    \renewcommand\citeright{)}
+    \renewcommand\citeform[1]{\emph{#1}}
+  \fi
+\fi
+%    \end{macrocode}
+% If the |babel| package is loaded, the |note| option does not
+% work.  So it is disabled here with a suitable warning.
+%    \begin{macrocode}
+\@ifpackageloaded{babel}
+  {\ACS@notefalse\PackageWarning{achemso}%
+    {babel package loaded - note option disabled}}
+  {\relax}
+%    \end{macrocode}
+% \begin{macro}{\ACS@biberror}
+% The function \cmd{\ACS@biberror} is defined here to provide an
+% easy way of generating a warning if there is no name for a
+% bibliography section.  This will only happen with non-standard
+% class files.
+%     \begin{macrocode}
+\def\ACS@biberror{\PackageError{achemso}%
+  {No bibliography name command defined}\@eha}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\refname}
+% \begin{macro}{\bibname}
+% The |note| option renames the references section to
+% ``References and Notes''.  This applies for all standard
+% document classes.
+% The term ``Bibliography'' is not used in chemistry, the value of
+% \cmd{\bibname} is redefined here in all cases where it exists.
+%     \begin{macrocode}
+\@ifundefined{refname}{%
+  \@ifundefined{bibname}{%
+    \ACS@biberror
+  }{%
+    \ifACS@note
+      \renewcommand*{\bibname}{References and Notes}
+    \else
+      \renewcommand*{\bibname}{References}
+    \fi
+  }
+}{%
+  \ifACS@note
+    \renewcommand*{\refname}{References and Notes}
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% If the |number| option is set, the |tocbibind| package is
+% used to number the bibliography.
+% \changes{v2.0}{2007/01/17}{Switched to using \texttt{tocbibind}
+% to produce number bibliography}
+%    \begin{macrocode}
+\ifACS@sctnnmbr
+  \RequirePackage[numbib]{tocbibind}
+\fi
+%    \end{macrocode}
+% \begin{macro}{\bibliographystyle}
+% Depending on the package option, the bibliography style
+% will either be |achemso| or |achemsol|.  The later is intended
+% for listing the entire database.  The |list| option of the
+% package selects this, and for listing also generates boxed
+% labels for each reference.  The |showkeys| package provides
+% this functionality.  If |natbib| is asked for, then the appropriate
+% style files are used in place of the standard ones.
+% \changes{v2.0}{2007/01/17}{Replaced custom code with
+% \texttt{showkeys} package}
+%    \begin{macrocode}
+\ifACS@list
+  \ifACS@natbib
+    \bibliographystyle{achemlnt}
+  \else
+    \bibliographystyle{achemsol}
+  \fi
+  \RequirePackage[notcite]{showkeys}
+\else
+  \ifACS@natbib
+    \bibliographystyle{achemnat}
+  \else
+    \bibliographystyle{achemso}
+  \fi
+\fi
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\@biblabel}
+% In order to re-format the bibliography labels, the easiest
+% method is to redefine the \cmd{\@biblabel} macro from the LaTeX
+% kernel.
+%    \begin{macrocode}
+\def\@biblabel#1{#1.}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\ACS@bibwarning}
+% \begin{macro}{\bibliographystyle}
+% To ensure that additional \cmd{\bibliographystyle} commands in the
+% source are killed off.  The \cmd{\ACS@bibwarning} provides a clean
+% method of generating the warning message.
+% \changes{v2.0}{2007-01-17}{Command ignored in document body}
+%    \begin{macrocode}
+\def\ACS@bibwarning{\PackageWarning{achemso}%
+  {Additional bibliographystyle command ignored}}
+\def\bibliographystyle{\ACS@bibwarning\@gobble}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% The package is complete.
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+% \PrintChanges
+% \PrintIndex
+% \Finale
+% \iffalse
+%<*bib>
+ENTRY
+  { address
+%<list>    annotate
+    author
+    booktitle
+    chapter
+    doi
+    edition
+    editor
+    howpublished
+    institution
+    journal
+%<nat>    key
+    note
+    number
+    organization
+    pages
+    publisher
+    school
+    series
+    title
+    type
+    url
+    volume
+    year
+  }
+  {}
+  {
+  label
+%<nat>    extra.label
+%<nat>    short.list
+  }
+
+INTEGERS { output.state before.all mid.sentence after.sentence }
+INTEGERS { after.block after.item author.or.editor }
+INTEGERS { separate.by.semicolon }
+
+FUNCTION {init.state.consts}
+{ #0 'before.all :=
+  #1 'mid.sentence :=
+  #2 'after.sentence :=
+  #3 'after.block :=
+  #4 'after.item :=
+}
+
+FUNCTION {add.comma}
+{ ", " * }
+
+FUNCTION {add.semicolon}
+{ "; " * }
+
+%    \end{macrocode}
+% For authors/editors we need to be able to add either a semi-colon
+% or a comma.  This is done using a switching function, defined here.
+%    \begin{macrocode}
+
+FUNCTION {add.comma.or.semicolon}
+{ #1 separate.by.semicolon =
+    'add.semicolon
+    'add.comma
+  if$
+}
+
+FUNCTION {add.colon}
+{ ": " * }
+
+STRINGS { s t }
+
+FUNCTION {output.nonnull}
+{ 's :=
+  output.state mid.sentence =
+    { add.comma write$ }
+    { output.state after.block =
+      { add.semicolon write$
+        newline$
+        "\newblock " write$
+      }
+      { output.state before.all =
+          'write$
+          { output.state after.item =
+            { " " * write$ }
+            { add.period$ " " * write$ }
+          if$
+          }
+        if$
+        }
+      if$
+      mid.sentence 'output.state :=
+    }
+  if$
+  s
+}
+
+FUNCTION {output}
+{ duplicate$ empty$
+    'pop$
+    'output.nonnull
+  if$
+}
+
+FUNCTION {output.check}
+{ 't :=
+  duplicate$ empty$
+    { pop$ "Empty " t * " in " * cite$ * warning$ }
+    'output.nonnull
+  if$
+}
+
+%    \end{macrocode}
+% For the standard file types, |output.bibitem| can come here.
+% The same is not true for styles supporting |natbib|, and so
+% |output.bibitem| occurs later for those styles.
+% \iffalse
+%<*!nat>
+% \fi
+%    \begin{macrocode}
+FUNCTION {output.bibitem}
+{ newline$
+  "\bibitem{" write$
+  cite$ write$
+  "}" write$
+  newline$
+  ""
+  before.all 'output.state :=
+}
+
+%    \end{macrocode}
+% \iffalse
+%</!nat>
+% \fi
+%    \begin{macrocode}
+FUNCTION {new.block}
+{ output.state before.all =
+    'skip$
+    { after.block 'output.state := }
+  if$
+}
+
+FUNCTION {new.sentence}
+{ output.state after.block =
+    'skip$
+    { output.state before.all =
+        'skip$
+        { after.sentence 'output.state := }
+      if$
+    }
+  if$
+}
+%<*list>
+
+FUNCTION {add.note}
+{ annotate empty$
+    'skip$
+    { new.block
+      "{\footnotesize " annotate * "}" * output }
+  if$
+}
+%</list>
+
+FUNCTION {fin.entry}
+%<list>{ add.note
+%<list>  add.period$
+%<!list>{ add.period$
+  write$
+  newline$
+}
+FUNCTION {not}
+{   { #0 }
+    { #1 }
+  if$
+}
+
+FUNCTION {and}
+{   'skip$
+    { pop$ #0 }
+  if$
+}
+
+FUNCTION {or}
+{   { pop$ #1 }
+    'skip$
+  if$
+}
+
+FUNCTION {field.or.null}
+{ duplicate$ empty$
+    { pop$ "" }
+    'skip$
+  if$
+}
+
+FUNCTION {emphasize}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "\emph{" swap$ * "}" * }
+  if$
+}
+
+FUNCTION {boldface}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "\textbf{" swap$ * "}" * }
+  if$
+}
+
+FUNCTION {paren}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "(" swap$ * ")" * }
+  if$
+}
+
+FUNCTION {bbl.and}
+{ "and" }
+
+FUNCTION {bbl.chapter}
+{ "Chapter" }
+
+FUNCTION {bbl.editor}
+{ "Ed." }
+
+FUNCTION {bbl.editors}
+{ "Eds." }
+
+FUNCTION {bbl.edition}
+{ "ed." }
+
+FUNCTION {bbl.etal}
+{ "et~al." }
+
+FUNCTION {bbl.in}
+{ "In" }
+
+FUNCTION {bbl.inpress}
+{ "in press" }
+
+FUNCTION {bbl.msc}
+{ "M.Sc.\ thesis" }
+
+FUNCTION {bbl.page}
+{ "p" }
+
+FUNCTION {bbl.pages}
+{ "pp" }
+
+FUNCTION {bbl.phd}
+{ "Ph.D.\ thesis" }
+
+FUNCTION {bbl.submitted}
+{ "submitted for publication" }
+
+FUNCTION {bbl.techreport}
+{ "Technical Report" }
+
+FUNCTION {bbl.version}
+{ "version" }
+
+FUNCTION {bbl.volume}
+{ "Vol." }
+
+FUNCTION {bbl.first}
+{ "1st" }
+
+FUNCTION {bbl.second}
+{ "2nd" }
+
+FUNCTION {bbl.third}
+{ "3rd" }
+
+FUNCTION {bbl.fourth}
+{ "4th" }
+
+FUNCTION {bbl.fifth}
+{ "5th" }
+
+FUNCTION {bbl.st}
+{ "st" }
+
+FUNCTION {bbl.nd}
+{ "nd" }
+
+FUNCTION {bbl.rd}
+{ "rd" }
+
+FUNCTION {bbl.th}
+{ "th" }
+
+FUNCTION {eng.ord}
+{ duplicate$ "1" swap$ *
+  #-2 #1 substring$ "1" =
+     { bbl.th * }
+     { duplicate$ #-1 #1 substring$
+       duplicate$ "1" =
+         { pop$ bbl.st * }
+         { duplicate$ "2" =
+             { pop$ bbl.nd * }
+             { "3" =
+                 { bbl.rd * }
+                 { bbl.th * }
+               if$
+             }
+           if$
+          }
+       if$
+     }
+   if$
+}
+
+FUNCTION{is.a.digit}
+{ duplicate$ "" =
+    {pop$ #0}
+    {chr.to.int$ #48 - duplicate$
+     #0 < swap$ #9 > or not}
+  if$
+}
+
+FUNCTION{is.a.number}
+{
+  { duplicate$ #1 #1 substring$ is.a.digit }
+    {#2 global.max$ substring$}
+  while$
+  "" =
+}
+
+FUNCTION {extract.num}
+{ duplicate$ 't :=
+  "" 's :=
+  { t empty$ not }
+  { t #1 #1 substring$
+    t #2 global.max$ substring$ 't :=
+    duplicate$ is.a.number
+      { s swap$ * 's := }
+      { pop$ "" 't := }
+    if$
+  }
+  while$
+  s empty$
+    'skip$
+    { pop$ s }
+  if$
+}
+
+FUNCTION {bibinfo.check}
+{ swap$
+  duplicate$ missing$
+    { pop$ pop$
+      ""
+    }
+    { duplicate$ empty$
+        {
+          swap$ pop$
+        }
+        { swap$
+          pop$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {convert.edition}
+{ extract.num "l" change.case$ 's :=
+  s "first" = s "1" = or
+    { bbl.first 't := }
+    { s "second" = s "2" = or
+        { bbl.second 't := }
+        { s "third" = s "3" = or
+            { bbl.third 't := }
+            { s "fourth" = s "4" = or
+                { bbl.fourth 't := }
+                { s "fifth" = s "5" = or
+                    { bbl.fifth 't := }
+                    { s #1 #1 substring$ is.a.number
+                        { s eng.ord 't := }
+                        { edition 't := }
+                      if$
+                    }
+                  if$
+                }
+              if$
+            }
+          if$
+        }
+      if$
+    }
+  if$
+  t
+}
+
+FUNCTION {tie.or.space.connect}
+{ duplicate$ text.length$ #3 <
+    { "~" }
+    { " " }
+  if$
+  swap$ * *
+}
+
+FUNCTION {space.connect}
+{ " " swap$ * * }
+
+INTEGERS { nameptr namesleft numnames }
+
+FUNCTION {format.names}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+  numnames #15 >
+    { s #1 "{vv~}{ll,}{~f.}{,~jj}" format.name$ 't :=
+      t bbl.etal space.connect
+    }
+    {
+       { namesleft #0 > }
+       { s nameptr "{vv~}{ll,}{~f.}{,~jj}" format.name$ 't :=
+           nameptr #1 >
+             { namesleft #1 >
+               { add.comma.or.semicolon t * }
+               { numnames #2 >
+                 { "" * }
+                 'skip$
+               if$
+               t "others," =
+                 { bbl.etal space.connect }
+                 { add.comma.or.semicolon t * }
+               if$
+               }
+             if$
+             }
+           't
+         if$
+         nameptr #1 + 'nameptr :=
+         namesleft #1 - 'namesleft :=
+         }
+     while$
+  }
+  if$
+}
+
+FUNCTION {format.authors}
+{ author empty$
+    { "" }
+    { #1 'author.or.editor :=
+      #1 'separate.by.semicolon :=
+      author format.names
+    }
+  if$
+}
+
+FUNCTION {format.editors}
+{ editor empty$
+    { "" }
+    { #2 'author.or.editor :=
+      #0 'separate.by.semicolon :=
+      editor format.names
+      add.comma
+      editor num.names$ #1 >
+        { bbl.editors }
+        { bbl.editor }
+      if$
+      *
+    }
+  if$
+}
+
+FUNCTION {n.separate.multi}
+{ 't :=
+  ""
+  #0 'numnames :=
+  t text.length$ #4 > t is.a.number and
+    {
+      { t empty$ not }
+      { t #-1 #1 substring$ is.a.number
+          { numnames #1 + 'numnames := }
+          { #0 'numnames := }
+        if$
+        t #-1 #1 substring$ swap$ *
+        t #-2 global.max$ substring$ 't :=
+        numnames #4 =
+          { duplicate$ #1 #1 substring$ swap$
+            #2 global.max$ substring$
+            "," swap$ * *
+            #1 'numnames :=
+          }
+          'skip$
+        if$
+      }
+      while$
+    }
+    { t swap$ * }
+  if$
+}
+
+FUNCTION {format.bvolume}
+{ volume empty$
+    { "" }
+    { bbl.volume volume tie.or.space.connect }
+  if$
+}
+
+FUNCTION {format.title.noemph}
+{ 't :=
+  t empty$
+    { "" }
+    { t }
+  if$
+}
+
+FUNCTION {format.title}
+{ 't :=
+  t empty$
+    { "" }
+    { t emphasize }
+  if$
+}
+
+FUNCTION {format.number.series}
+{ volume empty$
+    { number empty$
+       { series field.or.null }
+       { series empty$
+         { "There is a number but no series in " cite$ * warning$ }
+         { series number space.connect }
+       if$
+       }
+      if$
+    }
+    { "" }
+  if$
+}
+
+FUNCTION {format.url}
+{ url empty$
+    { "" }
+    { new.sentence "\url{" url * "}" * }
+  if$
+}
+
+% The specialised |output.bibitem| needed for |natbib| support now
+% follows, along with the various support macros it needs.
+% \iffalse
+%<*nat>
+% \fi
+%    \begin{macrocode}
+FUNCTION {format.full.names}
+{'s :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+                { "," * }
+                'skip$
+              if$
+              t "others" =
+                { bbl.etal * }
+                { bbl.and space.connect t space.connect }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {author.editor.full}
+{ author empty$
+    { editor empty$
+        { "" }
+        { editor format.full.names }
+      if$
+    }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {author.full}
+{ author empty$
+    { "" }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {editor.full}
+{ editor empty$
+    { "" }
+    { editor format.full.names }
+  if$
+}
+
+FUNCTION {make.full.names}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.full
+    { type$ "proceedings" =
+        'editor.full
+        'author.full
+      if$
+    }
+  if$
+}
+
+FUNCTION {output.bibitem} { newline$
+  "\bibitem[" write$
+  label write$
+  ")" make.full.names duplicate$ short.list =
+     { pop$ }
+     { * }
+   if$
+  "]{" * write$
+  cite$ write$
+  "}" write$
+  newline$
+  ""
+  before.all 'output.state :=
+}
+
+%    \end{macrocode}
+% \iffalse
+%</nat>
+% \fi
+%    \begin{macrocode}
+FUNCTION {n.dashify}
+{ 't :=
+  ""
+    { t empty$ not }
+    { t #1 #1 substring$ "-" =
+    { t #1 #2 substring$ "--" = not
+        { "--" *
+          t #2 global.max$ substring$ 't :=
+        }
+        {   { t #1 #1 substring$ "-" = }
+        { "-" *
+          t #2 global.max$ substring$ 't :=
+        }
+          while$
+        }
+      if$
+    }
+    { t #1 #1 substring$ *
+      t #2 global.max$ substring$ 't :=
+    }
+      if$
+    }
+  while$
+}
+
+FUNCTION {format.date}
+{ year empty$
+    { "" }
+    { year boldface }
+  if$
+}
+
+FUNCTION {format.bdate}
+{ year empty$
+    { "There's no year in " cite$ * warning$ }
+    'year
+  if$
+}
+
+FUNCTION {either.or.check}
+{ empty$
+    'pop$
+    { "Can't use both " swap$ * " fields in " * cite$ * warning$ }
+  if$
+}
+
+FUNCTION {format.edition}
+{ edition duplicate$ empty$
+    'skip$
+    { convert.edition
+      bbl.edition bibinfo.check
+      " " * bbl.edition *
+    }
+  if$
+}
+
+INTEGERS { multiresult }
+
+FUNCTION {multi.page.check}
+{ 't :=
+  #0 'multiresult :=
+    { multiresult not
+      t empty$ not
+      and
+    }
+    { t #1 #1 substring$
+      duplicate$ "-" =
+      swap$ duplicate$ "," =
+      swap$ "+" =
+      or or
+        { #1 'multiresult := }
+        { t #2 global.max$ substring$ 't := }
+      if$
+    }
+  while$
+  multiresult
+}
+
+FUNCTION {format.pages}
+{ pages empty$
+    { "" }
+    { pages multi.page.check
+      { bbl.pages pages n.dashify tie.or.space.connect }
+      { bbl.page pages tie.or.space.connect }
+    if$
+    }
+  if$
+}
+
+
+FUNCTION {format.pages.required}
+{ pages empty$
+    { ""
+      "There are no page numbers for " cite$ * warning$
+      output
+    }
+    { pages multi.page.check
+      { bbl.pages pages n.dashify tie.or.space.connect }
+      { bbl.page pages tie.or.space.connect }
+    if$
+    }
+  if$
+}
+
+FUNCTION {format.pages.nopp}
+{ pages empty$
+    { ""
+      "There are no page numbers for " cite$ * warning$
+      output
+    }
+    { pages multi.page.check
+      { pages n.dashify space.connect }
+      { pages space.connect }
+    if$
+    }
+  if$
+}
+
+FUNCTION {format.pages.patent}
+{ pages empty$
+    { "There is no patent number for " cite$ * warning$ }
+    { pages multi.page.check
+      { pages n.dashify }
+      { pages n.separate.multi }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.vol.pages}
+{ volume emphasize field.or.null
+  duplicate$ empty$
+    { pop$ format.pages.required }
+    { add.comma pages n.dashify * }
+  if$
+}
+
+FUNCTION {format.chapter.pages}
+{ chapter empty$
+    'format.pages
+    { type empty$
+    { bbl.chapter }
+    { type "l" change.case$ }
+      if$
+      chapter tie.or.space.connect
+      pages empty$
+    'skip$
+    { add.comma format.pages * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.title.in}
+{ 's :=
+  s empty$
+    { "" }
+    { editor empty$
+      { bbl.in s format.title space.connect }
+      { bbl.in s format.title space.connect
+        add.semicolon format.editors *
+      }
+    if$
+    }
+  if$
+}
+
+FUNCTION {format.pub.address}
+{ publisher empty$
+    { "" }
+    { address empty$
+        { publisher }
+        { publisher add.colon address *}
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.school.address}
+{ school empty$
+    { "" }
+    { address empty$
+        { school }
+        { school add.colon address *}
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.organization.address}
+{ organization empty$
+    { "" }
+    { address empty$
+        { organization }
+        { organization add.colon address *}
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.version}
+{ edition empty$
+    { "" }
+    { bbl.version edition tie.or.space.connect }
+  if$
+}
+
+FUNCTION {empty.misc.check}
+{ author empty$ title empty$ howpublished empty$
+  year empty$ note empty$ url empty$
+  and and and and and
+    { "all relevant fields are empty in " cite$ * warning$ }
+    'skip$
+  if$
+}
+
+FUNCTION {empty.doi.note}
+{ doi empty$ note empty$ and
+    { "Need either a note or DOI for " cite$ * warning$ }
+    'skip$
+  if$
+}
+
+FUNCTION {format.thesis.type}
+{ type empty$
+    'skip$
+    { pop$
+      type emphasize
+    }
+  if$
+}
+
+FUNCTION {article}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  journal emphasize "journal" output.check
+  after.item 'output.state :=
+  format.date "year" output.check
+  volume empty$
+    { ""
+      format.pages.nopp output
+    }
+    { format.vol.pages output }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {book}
+{ output.bibitem
+  author empty$
+    { booktitle empty$
+        { title format.title "title" output.check }
+        { booktitle format.title "booktitle" output.check }
+      if$
+      format.edition output
+      new.block
+      editor empty$
+        { "Need either an author or editor for " cite$ * warning$ }
+        { "" format.editors * "editor" output.check }
+      if$
+    }
+    { format.authors output
+      after.item 'output.state :=
+      "author and editor" editor either.or.check
+      booktitle empty$
+        { title format.title "title" output.check }
+        { booktitle format.title "booktitle" output.check }
+      if$
+      format.edition output
+    }
+  if$
+  new.block
+  format.number.series output
+  new.block
+  format.pub.address "publisher" output.check
+  format.bdate "year" output.check
+  new.block
+  format.bvolume output
+  pages empty$
+    'skip$
+    { format.pages output }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {booklet}
+{ output.bibitem
+  format.authors output
+  after.item 'output.state :=
+  title format.title "title" output.check
+  howpublished output
+  address output
+  format.date output
+  note output
+  fin.entry
+}
+
+FUNCTION {inbook}
+{ output.bibitem
+  author empty$
+    { title format.title "title" output.check
+      format.edition output
+      new.block
+      editor empty$
+      { "Need at least an author or an editor for " cite$ * warning$ }
+      { "" format.editors * "editor" output.check }
+    if$
+    }
+    { format.authors output
+      after.item 'output.state :=
+      title format.title.in "title" output.check
+      format.edition output
+    }
+  if$
+  new.block
+  format.number.series output
+  new.block
+  format.pub.address "publisher" output.check
+  format.bdate "year" output.check
+  new.block
+  format.bvolume output
+  format.chapter.pages "chapter and pages" output.check
+  note output
+  fin.entry
+}
+
+FUNCTION {incollection}
+{ output.bibitem
+  author empty$
+    { booktitle format.title "booktitle" output.check
+      format.edition output
+      new.block
+      editor empty$
+        { "Need at least an author or an editor for " cite$ * warning$ }
+        { "" format.editors * "editor" output.check }
+      if$
+    }
+    { format.authors output
+      after.item 'output.state :=
+      title empty$
+        'skip$
+        { title format.title.noemph output }
+      if$
+      after.sentence 'output.state :=
+      booktitle format.title.in "booktitle" output.check
+      format.edition output
+    }
+  if$
+  new.block
+  format.number.series output
+  new.block
+  format.pub.address "publisher" output.check
+  format.bdate "year" output.check
+  new.block
+  format.bvolume output
+  format.chapter.pages "chapter and pages" output.check
+  note output
+  fin.entry
+}
+
+FUNCTION {inpress}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  journal emphasize "journal" output.check
+  doi empty$
+    {  bbl.inpress output }
+    {  after.item 'output.state :=
+       format.date output
+       "DOI:" doi tie.or.space.connect output
+    }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {inproceedings}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  title empty$
+    'skip$
+    { title format.title.noemph output
+      after.sentence 'output.state :=
+    }
+  if$
+  booktitle format.title output
+  address output
+  format.bdate "year" output.check
+  pages empty$
+    'skip$
+    { new.block
+      format.pages output }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {manual}
+{ output.bibitem
+  format.authors output
+  after.item 'output.state :=
+  title format.title "title" output.check
+  format.version output
+  new.block
+  format.organization.address output
+  format.bdate output
+  note output
+  fin.entry
+}
+
+FUNCTION {mastersthesis}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  bbl.msc format.thesis.type output
+  format.school.address "school" output.check
+  format.bdate "year" output.check
+  note output
+  fin.entry
+}
+
+FUNCTION {misc}
+{ output.bibitem
+  format.authors output
+  after.item 'output.state :=
+  title empty$
+    'skip$
+    { title format.title output }
+  if$
+  howpublished output
+  year output
+  format.url output
+  note output
+  fin.entry
+  empty.misc.check
+}
+
+FUNCTION {patent}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  journal "journal" output.check
+  after.item 'output.state :=
+  format.pages.patent "pages" output.check
+  format.bdate "year" output.check
+  note output
+  fin.entry
+}
+
+FUNCTION {phdthesis}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  bbl.phd format.thesis.type output
+  format.school.address "school" output.check
+  format.bdate "year" output.check
+  note output
+  fin.entry
+}
+
+FUNCTION {proceedings}
+{ output.bibitem
+  title format.title.noemph "title" output.check
+  address output
+  format.bdate "year" output.check
+  pages empty$
+    'skip$
+    { new.block
+      format.pages output }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {remark}
+{ output.bibitem
+  note "note" output.check
+  fin.entry
+}
+
+FUNCTION {submitted}
+{ output.bibitem
+  format.authors "author" output.check
+  bbl.submitted output
+  fin.entry
+}
+
+FUNCTION {techreport}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  title format.title "title" output.check
+  new.block
+  type empty$
+    'bbl.techreport
+    'type
+  if$
+  number empty$
+    'skip$
+    { number tie.or.space.connect }
+  if$
+  output
+  format.pub.address output
+  format.bdate "year" output.check
+  pages empty$
+    'skip$
+    { new.block
+      format.pages output }
+  if$
+  note output
+  fin.entry
+}
+
+FUNCTION {unpublished}
+{ output.bibitem
+  format.authors "author" output.check
+  after.item 'output.state :=
+  journal empty$
+    'skip$
+    { journal emphasize "journal" output.check }
+  if$
+  doi empty$
+    {  note output }
+    {  after.item 'output.state :=
+       format.date output
+       "DOI:" doi tie.or.space.connect output
+    }
+  if$
+  fin.entry
+  empty.doi.note
+}
+
+FUNCTION {conference} {inproceedings}
+
+FUNCTION {other} {patent}
+
+FUNCTION {default.type} {misc}
+
+MACRO {jan} {"Jan."}
+MACRO {feb} {"Feb."}
+MACRO {mar} {"Mar."}
+MACRO {apr} {"Apr."}
+MACRO {may} {"May"}
+MACRO {jun} {"June"}
+MACRO {jul} {"July"}
+MACRO {aug} {"Aug."}
+MACRO {sep} {"Sept."}
+MACRO {oct} {"Oct."}
+MACRO {nov} {"Nov."}
+MACRO {dec} {"Dec."}
+
+MACRO {acchemr} {"Acc.\ Chem.\ Res."}
+MACRO {aacsa} {"Adv.\ {ACS} Abstr."}
+MACRO {anchem} {"Anal.\ Chem."}
+MACRO {bioch} {"Biochemistry"}
+MACRO {bicoc} {"Bioconj.\ Chem."}  % ***
+MACRO {bitech} {"Biotechnol.\ Progr."}  % ***
+MACRO {chemeng} {"Chem.\ Eng.\ News"}
+MACRO {chs} {"Chem.\ Health Safety"} % ***
+MACRO {crt} {"Chem.\ Res.\ Toxicol."} % ***
+MACRO {chemrev} {"Chem.\ Rev."} % ***
+MACRO {cmat} {"Chem.\ Mater."} % ***
+MACRO {chemtech} {"{CHEMTECH}"} % ***
+MACRO {enfu} {"Energy Fuels"} % ***
+MACRO {envst} {"Environ.\ Sci.\ Technol."}
+MACRO {iecf} {"Ind.\ Eng.\ Chem.\ Fundam."}
+MACRO {iecpdd} {"Ind.\ Eng.\ Chem.\ Proc.\ Des.\ Dev."}
+MACRO {iecprd} {"Ind.\ Eng.\ Chem.\ Prod.\ Res.\ Dev."}
+MACRO {iecr} {"Ind.\ Eng.\ Chem.\ Res."} % ***
+MACRO {inor} {"Inorg.\ Chem."}
+MACRO {jafc} {"J.~Agric.\ Food Chem."}
+MACRO {jacs} {"J.~Am.\ Chem.\ Soc."}
+MACRO {jced} {"J.~Chem.\ Eng.\ Data"}
+MACRO {jcics} {"J.~Chem.\ Inf.\ Comput.\ Sci."}
+MACRO {jmc} {"J.~Med.\ Chem."}
+MACRO {joc} {"J.~Org.\ Chem."}
+MACRO {jps} {"J.~Pharm.\ Sci."}
+MACRO {jpcrd} {"J.~Phys.\ Chem.\ Ref.\ Data"} % ***
+MACRO {jpc} {"J.~Phys.\ Chem."}
+MACRO {jpca} {"J.~Phys.\ Chem.~A"}
+MACRO {jpcb} {"J.~Phys.\ Chem.~B"}
+MACRO {lang} {"Langmuir"}
+MACRO {macro} {"Macromolecules"}
+MACRO {orgmet} {"Organometallics"}
+MACRO {orglett} {"Org.\ Lett."}
+
+MACRO {jft} {"J.~Chem.\ Soc., Faraday Trans."}
+MACRO {jft1} {"J.~Chem.\ Soc., Faraday Trans.\ 1"}
+MACRO {jft2} {"J.~Chem.\ Soc., Faraday Trans.\ 2"}
+MACRO {tfs} {"Trans.\ Faraday Soc."}
+MACRO {jcis} {"J.~Colloid Interface Sci."}
+MACRO {acis} {"Adv.~Colloid Interface Sci."}
+MACRO {cs} {"Colloids Surf."}
+MACRO {csa} {"Colloids Surf.\ A"}
+MACRO {csb} {"Colloids Surf.\ B"}
+MACRO {pcps} {"Progr.\ Colloid Polym.\ Sci."}
+MACRO {jmr} {"J.~Magn.\ Reson."}
+MACRO {jmra} {"J.~Magn.\ Reson.\ A"}
+MACRO {jmrb} {"J.~Magn.\ Reson.\ B"}
+MACRO {sci} {"Science"}
+MACRO {nat} {"Nature"}
+MACRO {jcch} {"J.~Comput.\ Chem."}
+MACRO {cca} {"Croat.\ Chem.\ Acta"}
+MACRO {angew} {"Angew.\ Chem., Int.\ Ed."}
+MACRO {chemeurj} {"Chem.---Eur.\ J."}
+
+MACRO {poly} {"Polymer"}
+MACRO {ajp} {"Am.\ J.\ Phys."}
+MACRO {rsi} {"Rev.\ Sci.\ Instrum."}
+MACRO {jcp} {"J.~Chem.\ Phys."}
+MACRO {cpl} {"Chem.\ Phys.\ Lett."}
+MACRO {molph} {"Mol.\ Phys."}
+MACRO {pac} {"Pure Appl.\ Chem."}
+MACRO {jbc} {"J.~Biol.\ Chem."}
+MACRO {tl} {"Tetrahedron Lett."}
+MACRO {psisoe} {"Proc.\ SPIE-Int.\ Soc.\ Opt.\ Eng."}
+MACRO {prb} {"Phys.\ Rev.\ B:\ Condens.\ Matter Mater. Phys."}
+MACRO {jap} {"J.~Appl.\ Phys."}
+MACRO {pnac} {"Proc.\ Natl.\ Acad.\ Sci.\ U.S.A."}
+MACRO {bba} {"Biochim.\ Biophys.\ Acta"}
+MACRO {nar} {"Nucleic.\ Acid Res."}
+
+READ
+
+%    \end{macrocode}
+% The nature of the initialise code depends on whether we need to
+% support |natbib|.  First the simple case is handled.
+% \iffalse
+%<*!nat>
+% \fi
+%    \begin{macrocode}
+STRINGS { longest.label }
+
+INTEGERS { number.label longest.label.width }
+
+FUNCTION {initialize.longest.label}
+{ "" 'longest.label :=
+  #1 'number.label :=
+  #0 'longest.label.width :=
+}
+
+FUNCTION {longest.label.pass}
+{ number.label int.to.str$ 'label :=
+  number.label #1 + 'number.label :=
+  label width$ longest.label.width >
+    { label 'longest.label :=
+      label width$ 'longest.label.width :=
+    }
+    'skip$
+  if$
+}
+
+EXECUTE {initialize.longest.label}
+
+ITERATE {longest.label.pass}
+
+%    \end{macrocode}
+% \iffalse
+%</!nat>
+% \fi
+% Now the |natbib| system is sorted out, basically by copying from
+% |plainnat.bst|.
+% \iffalse
+%<*nat>
+% \fi
+%    \begin{macrocode}
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
+
+FUNCTION {format.lab.names}
+{ 's :=
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    { pop$ bbl.etal space.connect }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            { bbl.etal space.connect }
+            { bbl.and space.connect s #2 "{vv~}{ll}" format.name$ space.connect }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {author.key.label}
+{ author empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            'key
+          if$
+        }
+        { editor format.lab.names }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.key.organization.label}
+{ author empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {editor.key.organization.label}
+{ editor empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { editor format.lab.names }
+  if$
+}
+
+FUNCTION {calc.short.authors}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.organization.label
+        { type$ "manual" =
+            'author.key.organization.label
+            'author.key.label
+          if$
+        }
+      if$
+    }
+  if$
+  'short.list :=
+}
+
+FUNCTION {calc.label}
+{ calc.short.authors
+  short.list
+  "("
+  *
+  year duplicate$ empty$
+  short.list key field.or.null = or
+     { pop$ "" }
+     'skip$
+  if$
+  *
+  'label :=
+}
+
+ITERATE {calc.label}
+
+STRINGS { longest.label last.label next.extra }
+
+INTEGERS { longest.label.width last.extra.num number.label }
+
+FUNCTION {initialize.longest.label}
+{ "" 'longest.label :=
+  #0 int.to.chr$ 'last.label :=
+  "" 'next.extra :=
+  #0 'longest.label.width :=
+  #0 'last.extra.num :=
+  #0 'number.label :=
+}
+
+FUNCTION {forward.pass}
+{ last.label label =
+    { last.extra.num #1 + 'last.extra.num :=
+      last.extra.num int.to.chr$ 'extra.label :=
+    }
+    { "a" chr.to.int$ 'last.extra.num :=
+      "" 'extra.label :=
+      label 'last.label :=
+    }
+  if$
+  number.label #1 + 'number.label :=
+}
+
+EXECUTE {initialize.longest.label}
+
+ITERATE {forward.pass}
+
+%    \end{macrocode}
+% \iffalse
+%</nat>
+% \fi
+
+FUNCTION {begin.bib}
+{ preamble$ empty$
+    'skip$
+    { preamble$ write$ newline$ }
+  if$
+  "\providecommand{\url}[1]{\texttt{#1}}"
+  write$ newline$
+  "\providecommand{\refin}[1]{\\ \textbf{Referenced in:} #1}"
+  write$ newline$
+%<nat>  "\providecommand{\natexlab}[1]{#1}"
+%<nat>  write$ newline$
+%<!nat>  "\begin{thebibliography}{"  longest.label  * "}" *
+%<nat>  "\begin{thebibliography}{" number.label int.to.str$ * "}" *
+  write$ newline$
+}
+
+EXECUTE {begin.bib}
+
+EXECUTE {init.state.consts}
+
+ITERATE {call.type$}
+
+FUNCTION {end.bib}
+{ newline$
+  "\end{thebibliography}" write$ newline$
+}
+
+EXECUTE {end.bib}
+%</bib>
+%<*database>
+@BOOK{Coghill2006,
+  title = {{T}he {ACS} {S}tyle {G}uide},
+  publisher = {{O}xford {U}niversity {P}ress, {I}nc. and
+               {T}he {A}merican {C}hemical {S}ociety},
+  year = {2006},
+  editor = {Coghill, Anne M. and Garson, Lorrin R.},
+  address = {{N}ew {Y}ork},
+  edition = {3},
+  subtitle = {{E}ffective {C}ommunication of {S}cientific {I}nformation},
+}
+
+@MISC{ACS2007,
+  url = {http://pubs.acs.org/books/references.shtml},
+}
+%</database>
+%<*jawltxdoc>
+% The following is convenient method for collecting together package
+% loading, formatting commands and new macros used to format |dtx|
+% files written by the current author.  It is based on the similar
+% files provided by Will Robertson in his packages and Heiko Oberdiek
+% as a stand-alone package.  Notice that it is not intended for other
+% users: there is no error checking!  However, it is covered by the
+% LPPL in the same way as the rest of this package.
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jawltxdoc}
+  [2007/10/14 v1.0b]
+% First of all, a number of support packages are loaded.
+\usepackage[T1]{fontenc}
+\usepackage[english,UKenglish]{babel}
+\usepackage[scaled=0.95]{helvet}
+\usepackage[version=3]{mhchem}
+\usepackage[final]{microtype}
+\usepackage[osf]{mathpazo}
+\usepackage{booktabs,array,url,graphicx,courier,unitsdef}
+\usepackage{upgreek,ifpdf,listings}
+% If using PDFLaTeX, the source will be attached to the PDF. This
+% is basically the system used by Heiko Oberdiek, but with a check
+% that PDF mode is enabled.
+\ifpdf
+  \usepackage{embedfile}
+  \embedfile[%
+    stringmethod=escape,%
+    mimetype=plain/text,%
+    desc={LaTeX docstrip source archive for package `\jobname'}%
+    ]{\jobname.dtx}
+\fi
+\usepackage{\jobname}
+\usepackage[numbered]{hypdoc}
+%
+% To typeset examples, a new environment is needed.  The code below
+% is based on that in used by |listings|, but is modified to get
+% better formatting for this context.  The formatting of the output
+% is basically that in Will Robertson's |dtx-style| file.
+\newlength\LaTeXwidth
+\newlength\LaTeXoutdent
+\newlength\LaTeXgap
+\setlength\LaTeXgap{1em}
+\setlength\LaTeXoutdent{-0.15\textwidth}
+\def\typesetexampleandcode{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin\LaTeXoutdent
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \setlength\LaTeXoutdent{-0.15\textwidth}
+    \begin{minipage}[c]{\textwidth-\LaTeXwidth-\LaTeXoutdent-\LaTeXgap}
+      \lst@sampleInput
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+  \end{list}
+}
+\def\typesetcodeandexample{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin{0pt}
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+    \lst@sampleInput
+  \end{list}
+}
+\def\typesetfloatexample{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin{0pt}
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \lst@sampleInput
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+  \end{list}
+}
+\def\typesetcodeonly{%
+  \begin{list}{}{%
+    \setlength\itemindent{0pt}
+    \setlength\leftmargin{0pt}
+    \setlength\rightmargin{0pt}
+  }
+  \item
+    \begin{minipage}[c]{\LaTeXwidth}%
+      \hbox to\linewidth{\box\lst@samplebox\hss}%
+    \end{minipage}%
+  \end{list}
+}
+\edef\LaTeXexamplefile{\jobname.tmp}
+\lst@RequireAspects{writefile}
+\newbox\lst@samplebox
+\lstnewenvironment{LaTeXexample}[1][\typesetexampleandcode]{%
+  \let\typesetexample#1
+  \global\let\lst@intname\@empty
+  \setbox\lst@samplebox=\hbox\bgroup
+  \setkeys{lst}{language=[LaTeX]{TeX},tabsize=4,gobble=2,%
+    breakindent=0pt,basicstyle=\small\ttfamily,basewidth=0.51em,%
+    keywordstyle=\color{blue},%
+% Notice that new keywords should be added here. The list is simply
+% macro names needed to typeset documentation of the package
+% author.
+    morekeywords={bibnote,citenote,bibnotetext,bibnotemark,%
+      thebibnote,bibnotename,includegraphics,schemeref,%
+      floatcontentsleft,floatcontentsright,floatcontentscentre,%
+      schemerefmarker,compound,schemerefformat,color,%
+      startchemical,stopchemical,chemical,setupchemical,bottext,%
+      listofschemes}}
+  \lst@BeginAlsoWriteFile{\LaTeXexamplefile}
+}{%
+  \lst@EndWriteFile\egroup
+  \setlength\LaTeXwidth{\wd\lst@samplebox}
+  \typesetexample%
+}
+\def\lst@sampleInput{%
+  \MakePercentComment\catcode`\^^M=10\relax
+  \small%
+  {\setkeys{lst}{SelectCharTable=\lst@ReplaceInput{\^\^I}%
+    {\lst@ProcessTabulator}}%
+    \leavevmode \input{\LaTeXexamplefile}}%
+  \MakePercentIgnore%
+}
+\hyphenation{PDF-LaTeX}
+%</jawltxdoc>
+%\fi

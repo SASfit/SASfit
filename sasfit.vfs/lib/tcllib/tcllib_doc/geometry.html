@@ -1,0 +1,459 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>math::geometry - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/geometry.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 by Ideogramic ApS and other parties
+   -->
+<! -- CVS: $Id: geometry.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ math::geometry.n
+   -->
+
+<body>
+<h1> math::geometry(n) 1.0.3 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::geometry - Geometrical computations
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#procedures">PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl ?8.3?</b><br>
+package require <b>math::geometry ?1.0.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::geometry::angle</b> <i class='arg'>line</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::geometry::calculateDistanceToLine</b> <i class='arg'>P</i> <i class='arg'>line</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::geometry::calculateDistanceToLineSegment</b> <i class='arg'>P</i> <i class='arg'>linesegment</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::geometry::calculateDistanceToPolyline</b> <i class='arg'>P</i> <i class='arg'>polyline</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::geometry::findClosestPointOnLine</b> <i class='arg'>P</i> <i class='arg'>line</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::geometry::findClosestPointOnLineSegment</b> <i class='arg'>P</i> <i class='arg'>linesegment</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::geometry::findClosestPointOnPolyline</b> <i class='arg'>P</i> <i class='arg'>polyline</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::geometry::lengthOfPolyline</b> <i class='arg'>polyline</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::geometry::movePointInDirection</b> <i class='arg'>P</i> <i class='arg'>direction</i> <i class='arg'>dist</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::geometry::lineSegmentsIntersect</b> <i class='arg'>linesegment1</i> <i class='arg'>linesegment2</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::math::geometry::findLineSegmentIntersection</b> <i class='arg'>linesegment1</i> <i class='arg'>linesegment2</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::math::geometry::findLineIntersection</b> <i class='arg'>line1</i> <i class='arg'>line2</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::math::geometry::polylinesIntersect</b> <i class='arg'>polyline1</i> <i class='arg'>polyline2</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::math::geometry::polylinesBoundingIntersect</b> <i class='arg'>polyline1</i> <i class='arg'>polyline2</i> <i class='arg'>granularity</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>::math::geometry::intervalsOverlap</b> <i class='arg'>y1</i> <i class='arg'>y2</i> <i class='arg'>y3</i> <i class='arg'>y4</i> <i class='arg'>strict</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>::math::geometry::rectanglesOverlap</b> <i class='arg'>P1</i> <i class='arg'>P2</i> <i class='arg'>Q1</i> <i class='arg'>Q2</i> <i class='arg'>strict</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><b class='cmd'>::math::geometry::bbox</b> <i class='arg'>polyline</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><b class='cmd'>::math::geometry::pointInsidePolygon</b> <i class='arg'>P</i> <i class='arg'>polyline</i></a></td></tr>
+<tr valign=top ><td ><a href="#19"><b class='cmd'>::math::geometry::rectangleInsidePolygon</b> <i class='arg'>P1</i> <i class='arg'>P2</i> <i class='arg'>polyline</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><b class='cmd'>::math::geometry::areaPolygon</b> <i class='arg'>polygon</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+The <strong>math::geometry</strong> package is a collection of functions for
+computations and manipulations on two-dimensional geometrical objects,
+such as points, lines and polygons.
+
+<p>
+The geometrical objects are implemented as plain lists of coordinates.
+For instance a line is defined by a list of four numbers, the x- and
+y-coordinate of a first point and the x- and y-coordinates of a second
+point on the line.
+
+<p>
+The various types of object are recognised by the number of coordinate
+pairs and the context in which they are used: a list of four elements
+can be regarded as an infinite line, a finite line segment but also
+as a polyline of one segment and a point set of two points.
+
+<p>
+Currently the following types of objects are distinguished:
+<ul>
+<li>
+<em>point</em> - a list of two coordinates representing the x- and
+y-coordinates respectively.
+
+<br><br>
+<li>
+<em>line</em> - a list of four coordinates, interpreted as the x- and
+y-coordinates of two distinct points on the line.
+
+<br><br>
+<li>
+<em>line segment</em> - a list of four coordinates, interpreted as the
+x- and y-coordinates of the first and the last points on the line
+segment.
+
+<br><br>
+<li>
+<em>polyline</em> - a list of an even number of coordinates,
+interpreted as the x- and y-coordinates of an ordered set of points.
+
+<br><br>
+<li>
+<em>polygon</em> - like a polyline, but the implicit assumption is that
+the polyline is closed (if the first and last points do not coincide,
+the missing segment is automatically added).
+
+<br><br>
+<li>
+<em>point set</em> - again a list of an even number of coordinates, but
+the points are regarded without any ordering.
+
+</ul>
+
+
+<h2><a name="procedures">PROCEDURES</a></h2>
+<p>
+
+The package defines the following public procedures:
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::geometry::angle</b> <i class='arg'>line</i></a><dd>
+
+
+Calculate the angle from the positive x-axis to a given line
+(in two dimensions only).
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>line</i><dd> Coordinates of the line
+</dl>
+
+<br><br>
+
+<dt><a name="2"><b class='cmd'>::math::geometry::calculateDistanceToLine</b> <i class='arg'>P</i> <i class='arg'>line</i></a><dd>
+
+
+Calculate the distance of point P to the (infinite) line and return the
+result
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> List of two numbers, the coordinates of the point
+
+<br><br>
+<dt>list <i class='arg'>line</i><dd> List of four numbers, the coordinates of two points
+on the line
+</dl>
+
+<br><br>
+
+<dt><a name="3"><b class='cmd'>::math::geometry::calculateDistanceToLineSegment</b> <i class='arg'>P</i> <i class='arg'>linesegment</i></a><dd>
+
+
+Calculate the distance of point P to the (finite) line segment and
+return the result.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> List of two numbers, the coordinates of the point
+
+<br><br>
+<dt>list <i class='arg'>linesegment</i><dd> List of four numbers, the coordinates of the
+first and last points of the line segment
+</dl>
+
+<br><br>
+
+<br><br>
+
+<dt><a name="4"><b class='cmd'>::math::geometry::calculateDistanceToPolyline</b> <i class='arg'>P</i> <i class='arg'>polyline</i></a><dd>
+
+
+Calculate the distance of point P to the polyline and
+return the result.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> List of two numbers, the coordinates of the point
+
+<br><br>
+<dt>list <i class='arg'>polyline</i><dd> List of numbers, the coordinates of the
+vertices of the polyline
+</dl>
+
+<br><br>
+
+<dt><a name="5"><b class='cmd'>::math::geometry::findClosestPointOnLine</b> <i class='arg'>P</i> <i class='arg'>line</i></a><dd>
+
+
+Return the point on a line which is closest to a given point.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> List of two numbers, the coordinates of the point
+
+<br><br>
+<dt>list <i class='arg'>line</i><dd> List of four numbers, the coordinates of two points
+on the line
+</dl>
+
+<br><br>
+
+<dt><a name="6"><b class='cmd'>::math::geometry::findClosestPointOnLineSegment</b> <i class='arg'>P</i> <i class='arg'>linesegment</i></a><dd>
+
+
+Return the point on a <em>line segment</em> which is closest to a given
+point.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> List of two numbers, the coordinates of the point
+
+<br><br>
+<dt>list <i class='arg'>linesegment</i><dd> List of four numbers, the first and last
+points on the line segment
+</dl>
+
+<br><br>
+
+<dt><a name="7"><b class='cmd'>::math::geometry::findClosestPointOnPolyline</b> <i class='arg'>P</i> <i class='arg'>polyline</i></a><dd>
+
+
+Return the point on a <em>polyline</em> which is closest to a given
+point.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> List of two numbers, the coordinates of the point
+
+<br><br>
+<dt>list <i class='arg'>polyline</i><dd> List of numbers, the vertices of the polyline
+</dl>
+
+<br><br>
+
+<dt><a name="8"><b class='cmd'>::math::geometry::lengthOfPolyline</b> <i class='arg'>polyline</i></a><dd>
+
+
+Return the length of the <em>polyline</em> (note: it not regarded as a
+polygon)
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyline</i><dd> List of numbers, the vertices of the polyline
+</dl>
+
+<br><br>
+
+<dt><a name="9"><b class='cmd'>::math::geometry::movePointInDirection</b> <i class='arg'>P</i> <i class='arg'>direction</i> <i class='arg'>dist</i></a><dd>
+
+
+Move a point over a given distance in a given direction and return the
+new coordinates (in two dimensions only).
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> Coordinates of the point to be moved
+<br><br>
+<dt>double <i class='arg'>direction</i><dd> Direction (in degrees; 0 is to the right, 90
+upwards)
+<br><br>
+<dt>list <i class='arg'>dist</i><dd> Distance over which to move the point
+</dl>
+
+<br><br>
+
+<dt><a name="10"><b class='cmd'>::math::geometry::lineSegmentsIntersect</b> <i class='arg'>linesegment1</i> <i class='arg'>linesegment2</i></a><dd>
+
+
+Check if two line segments intersect or coincide. Returns 1 if that is
+the case, 0 otherwise (in two dimensions only).
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>linesegment1</i><dd> First line segment
+<br><br>
+<dt>list <i class='arg'>linesegment2</i><dd> Second line segment
+</dl>
+
+<br><br>
+
+<dt><a name="11"><b class='cmd'>::math::geometry::findLineSegmentIntersection</b> <i class='arg'>linesegment1</i> <i class='arg'>linesegment2</i></a><dd>
+
+
+Find the intersection point of two line segments. Return the coordinates
+or the keywords &quot;coincident&quot; or &quot;none&quot; if the line segments coincide or
+have no points in common (in two dimensions only).
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>linesegment1</i><dd> First line segment
+<br><br>
+<dt>list <i class='arg'>linesegment2</i><dd> Second line segment
+</dl>
+
+<br><br>
+
+<dt><a name="12"><b class='cmd'>::math::geometry::findLineIntersection</b> <i class='arg'>line1</i> <i class='arg'>line2</i></a><dd>
+
+
+Find the intersection point of two (infinite) lines. Return the coordinates
+or the keywords &quot;coincident&quot; or &quot;none&quot; if the lines coincide or
+have no points in common (in two dimensions only).
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>line1</i><dd> First line
+<br><br>
+<dt>list <i class='arg'>line2</i><dd> Second line
+</dl>
+
+<br><br>
+
+<dt><a name="13"><b class='cmd'>::math::geometry::polylinesIntersect</b> <i class='arg'>polyline1</i> <i class='arg'>polyline2</i></a><dd>
+
+
+Check if two polylines intersect or not (in two dimensions only).
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyline1</i><dd> First polyline
+<br><br>
+<dt>list <i class='arg'>polyline2</i><dd> Second polyline
+</dl>
+
+<br><br>
+
+<dt><a name="14"><b class='cmd'>::math::geometry::polylinesBoundingIntersect</b> <i class='arg'>polyline1</i> <i class='arg'>polyline2</i> <i class='arg'>granularity</i></a><dd>
+
+
+Check whether two polylines intersect, but reduce
+the correctness of the result to the given granularity.
+Use this for faster, but weaker, intersection checking.
+<br><br>
+How it works:
+<br><br>
+Each polyline is split into a number of smaller polylines,
+consisting of granularity points each. If a pair of those smaller
+lines' bounding boxes intersect, then this procedure returns 1,
+otherwise it returns 0.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyline1</i><dd> First polyline
+<br><br>
+<dt>list <i class='arg'>polyline2</i><dd> Second polyline
+<br><br>
+<dt>int <i class='arg'>granularity</i><dd> Number of points in each part (&lt;=1 means check
+every edge)
+
+</dl>
+
+<br><br>
+
+<dt><a name="15"><b class='cmd'>::math::geometry::intervalsOverlap</b> <i class='arg'>y1</i> <i class='arg'>y2</i> <i class='arg'>y3</i> <i class='arg'>y4</i> <i class='arg'>strict</i></a><dd>
+
+
+Check if two intervals overlap.
+
+<br><br>
+<dl>
+<dt>double <i class='arg'>y1,y2</i><dd> Begin and end of first interval
+<br><br>
+<dt>double <i class='arg'>y3,y4</i><dd> Begin and end of second interval
+<br><br>
+<dt>logical <i class='arg'>strict</i><dd> Check for strict or non-strict overlap
+</dl>
+
+<br><br>
+
+<dt><a name="16"><b class='cmd'>::math::geometry::rectanglesOverlap</b> <i class='arg'>P1</i> <i class='arg'>P2</i> <i class='arg'>Q1</i> <i class='arg'>Q2</i> <i class='arg'>strict</i></a><dd>
+
+
+Check if two rectangles overlap.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P1</i><dd> upper-left corner of the first rectangle
+<br><br>
+<dt>list <i class='arg'>P2</i><dd> lower-right corner of the first rectangle
+<br><br>
+<dt>list <i class='arg'>Q1</i><dd> upper-left corner of the second rectangle
+<br><br>
+<dt>list <i class='arg'>Q2</i><dd> lower-right corner of the second rectangle
+<br><br>
+<dt>list <i class='arg'>strict</i><dd> choosing strict or non-strict interpretation
+</dl>
+
+<br><br>
+
+<dt><a name="17"><b class='cmd'>::math::geometry::bbox</b> <i class='arg'>polyline</i></a><dd>
+
+
+Calculate the bounding box of a polyline. Returns a list of four
+coordinates: the upper-left and the lower-right corner of the box.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polyline</i><dd> The polyline to be examined
+</dl>
+
+<br><br>
+
+<dt><a name="18"><b class='cmd'>::math::geometry::pointInsidePolygon</b> <i class='arg'>P</i> <i class='arg'>polyline</i></a><dd>
+
+
+Determine if a point is completely inside a polygon. If the point
+touches the polygon, then the point is not completely inside the
+polygon.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P</i><dd> Coordinates of the point
+<br><br>
+<dt>list <i class='arg'>polyline</i><dd> The polyline to be examined
+</dl>
+
+<br><br>
+
+<dt><a name="19"><b class='cmd'>::math::geometry::rectangleInsidePolygon</b> <i class='arg'>P1</i> <i class='arg'>P2</i> <i class='arg'>polyline</i></a><dd>
+
+
+Determine if a rectangle is completely inside a polygon. If polygon
+touches the rectangle, then the rectangle is not complete inside the
+polygon.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>P1</i><dd> Upper-left corner of the rectangle
+<br><br>
+<dt>list <i class='arg'>P2</i><dd> Lower-right corner of the rectangle
+<br><br>
+<br><br>
+<dt>list <i class='arg'>polygon</i><dd> The polygon in question
+</dl>
+
+<br><br>
+
+<dt><a name="20"><b class='cmd'>::math::geometry::areaPolygon</b> <i class='arg'>polygon</i></a><dd>
+
+
+Calculate the area of a polygon.
+
+<br><br>
+<dl>
+<dt>list <i class='arg'>polygon</i><dd> The polygon in question
+</dl>
+
+</dl>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+angle, distance, line, math, plane geometry, point
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 by Ideogramic ApS and other parties<br>
+</body></html>
+

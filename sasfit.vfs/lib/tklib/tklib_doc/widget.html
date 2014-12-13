@@ -1,0 +1,98 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>widget - Megawidget package </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/widget/widget.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: widget.html,v 1.1 2006/05/02 08:24:45 kohlbrecher Exp $ widget.n
+   -->
+
+<body>
+<h1> widget(n) 3.0 widget &quot;Megawidget package&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> widget - Megawidget package
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#widgets">WIDGETS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>Tk 8.4</b><br>
+package require <b>widget ?3.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>widget::validate</b> <i class='arg'>as</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>widget::dialog</b> <i class='arg'>pathname</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>widget::panelframe</b> <i class='arg'>pathname</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>widget::ruler</b> <i class='arg'>pathname</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>widget::screenruler</b> <i class='arg'>pathname</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>widget::superframe</b> <i class='arg'>pathname</i> ?options?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides megawidgets based on the snit oo system (snidgets).
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>widget::validate</b> <i class='arg'>as</i> ?options?</a><dd>
+
+commands:
+
+</dl>
+
+<h2><a name="widgets">WIDGETS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="2"><b class='cmd'>widget::dialog</b> <i class='arg'>pathname</i> ?options?</a><dd>
+
+options:
+
+<br><br>
+<dt><a name="3"><b class='cmd'>widget::panelframe</b> <i class='arg'>pathname</i> ?options?</a><dd>
+
+options:
+
+<br><br>
+<dt><a name="4"><b class='cmd'>widget::ruler</b> <i class='arg'>pathname</i> ?options?</a><dd>
+
+options:
+
+<br><br>
+<dt><a name="5"><b class='cmd'>widget::screenruler</b> <i class='arg'>pathname</i> ?options?</a><dd>
+
+options:
+
+<br><br>
+<dt><a name="6"><b class='cmd'>widget::superframe</b> <i class='arg'>pathname</i> ?options?</a><dd>
+
+options:
+
+</dl>
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+package require widget::superframe ; # or widget::all
+pack [widget::superframe .f -type separator -text &quot;SuperFrame:&quot;]
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+megawidget, snit, widget
+</body></html>
