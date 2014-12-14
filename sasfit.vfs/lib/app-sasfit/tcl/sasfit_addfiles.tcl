@@ -793,44 +793,57 @@ button $w.layout1.option -text "Options..." -command ReadOptionsCmd \
        -highlightthickness 0 -pady 1m
 button $w.layout1.read -text "Read File" \
        -command {
-               global tmpsasfit
-               set tmpfnlist $tmpsasfit(filename)
-               set errornessFiles {}
-               foreach fin $tmpfnlist {
-                  set tmpsasfit(filename) $fin
-		  set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
-	          if {[string equal "$tmpval" "no"]
-		  } {
-                     lappend tmpsasfit(file,Q)   $tmpsasfit(Q)
-                     lappend tmpsasfit(file,I)   $tmpsasfit(I)
-                     lappend tmpsasfit(file,DI)  $tmpsasfit(DI)
-                     lappend tmpsasfit(file,res) $tmpsasfit(res)
-                     lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
-                     lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
-                     incr tmpsasfit(file,n)
-                     MergeFileCmd tmpsasfit
-	          } else {
-                     lappend errornessFiles  $tmpsasfit(filename)
-	          }
-	       }
-               if {[llength $errornessFiles] > 0} {
-		   set msgtxt ""
-                   set indx 1
-                   foreach fin  $errornessFiles {
-		       set msgtxt "$msgtxt\n$indx\. $fin"
-		       incr indx
-		   }
-                   tk_messageBox -icon error \
+				global tmpsasfit
+				set tmpfnlist $tmpsasfit(filename)
+				set errornessFiles {}
+				foreach fin $tmpfnlist {
+					set tmpsasfit(filename) $fin
+					set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
+					if {[string equal "$tmpval" "no"]} {
+						lappend tmpsasfit(file,Q)   $tmpsasfit(Q)
+						lappend tmpsasfit(file,I)   $tmpsasfit(I)
+						lappend tmpsasfit(file,DI)  $tmpsasfit(DI)
+						lappend tmpsasfit(file,res) $tmpsasfit(res)
+						set tmpsasfit(res,calc) [sasfit_res $resolution(lambda)  \
+													$resolution(Dlambda) \
+													$resolution(r1)      \
+													$resolution(l1)      \
+													$resolution(r2)      \
+													$resolution(l2)      \
+													$resolution(d)       \
+													$resolution(Dd)      \
+													$tmpsasfit(Q)       \
+												]
+						lappend tmpsasfit(file,res,file) $tmpsasfit(res,file)
+						lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
+						if {$tmpAnalytPar(geometrical/datafile)} {
+							lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
+						} else {
+							lappend tmpsasfit(file,res) $tmpsasfit(res,file)
+						}
+						incr tmpsasfit(file,n)
+						MergeFileCmd tmpsasfit
+					} else {
+						lappend errornessFiles  $tmpsasfit(filename)
+					}
+				}
+				if {[llength $errornessFiles] > 0} {
+					set msgtxt ""
+					set indx 1
+					foreach fin  $errornessFiles {
+						set msgtxt "$msgtxt\n$indx\. $fin"
+						incr indx
+					}
+					tk_messageBox -icon error \
                         -message "Could not read data files:\n$msgtxt\n\nPlease review the input format options !"
-		   if {[winfo exists .addfile]} {destroy .addfile}
-		   if {$tmpsasfit(file,n) == 0
-		   } {
-			   set addsasfit(filename) $tmpfnlist
-			   set ::show_new_file_dialog 1 
-		   }
-		   AddCmd
-	       }
-       } \
+					if {[winfo exists .addfile]} {destroy .addfile}
+					if {$tmpsasfit(file,n) == 0} {
+						set addsasfit(filename) $tmpfnlist
+						set ::show_new_file_dialog 1 
+					}
+					AddCmd
+				}
+			} \
        -highlightthickness 0 -pady 1m
 pack $w.layout1.label $w.layout1.format \
      -side left -fill x
