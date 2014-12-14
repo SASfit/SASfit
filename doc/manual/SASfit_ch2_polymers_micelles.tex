@@ -78,7 +78,9 @@ Going to the continuous limit $(N \gg 1)$, one obtains:
 P(q) &= 2\int_0^1 \mathrm{d}x \; (1-x)e^{-\frac{q^2b^2}{6}N^{2\nu}x^{2\nu}} \\
 &= \frac{U^{\frac{1}{2 \nu}} \Gamma\left(\frac{1}{2 \nu}\right)-
 \Gamma\left(\frac{1}{\nu}\right)-U^{\frac{1}{2\nu}}
-\Gamma\left(\frac{1}{2 \nu},U\right)+\Gamma\left(\frac{1}{\nu},U\right)}{\nu U^{1/\nu}}
+\Gamma\left(\frac{1}{2 \nu},U\right)+\Gamma\left(\frac{1}{\nu},U\right)}{\nu U^{1/\nu}} \\
+&= \frac{1}{\nu U^{\frac{1}{2 \nu}}} \; \gamma\left(\frac{1}{2 \nu},U\right)-
+   \frac{1}{\nu U^{\frac{1}{\nu}}}   \; \gamma\left(\frac{1}{  \nu},U\right)
 \label{eq:generalizedGauss}
 \end{align}
 \end{subequations}
@@ -86,8 +88,8 @@ with the modified variable
 \begin{align}
 U&=\frac{q^2b^2N^{2\nu}}{6} = \left(2\nu+1\right)\left(2\nu+2\right)\frac{q^2R_G^2}{6}
 \end{align}
-and the unnormalized incomplete Gamma Function $\Gamma(a,x) = \int_x^\infty \mathrm{d}t \; t^{a-1} \exp(-t)$
-for $a$ real and $x \geq 0$ and the Gamma function $\Gamma(a)=\Gamma(a,0)=\int_0^\infty \mathrm{d}t\;  t^{a-1} \exp(-t)$.
+and the upper incomplete Gamma Function $\Gamma(a,x) = \int_x^\infty \mathrm{d}t \; t^{a-1} \exp(-t)$ and lower incomplete Gamma Function $\gamma(a,x) = \int_0^x \mathrm{d}t \; t^{a-1} \exp(-t)$
+for $a$ real and $x \geq 0$ and the Gamma function $\Gamma(a)=\Gamma(a,0)=\gamma(a,\infty)= \Gamma(a,x)+\gamma(a,x)=\int_0^\infty \mathrm{d}t\;  t^{a-1} \exp(-t)$.
 Polymer chains follow Gaussian statistics in polymer solutions: they are swollen in good
 solvents $\nu=3/5$, are thermally relaxed in "theta"-solvents $\nu=1/2$ and partially precipitate in poor solvents $\nu=1/3$.
 The familiar Debye function is recovered when $\nu = 1/2$. The asymptotic limit at large $q$-values of the generalized
@@ -103,7 +105,7 @@ the forward scattering. In case of the the Debye-formula also the polydisperse \
 \subsubsection{Gauss \cite{Debye1947}}
 \label{sect:Gauss}
 ~\\
-Flexible polymer chains which are not selfavoiding
+Flexible polymer chains which are not self-avoiding
 and obey Gaussian statistics. Debye (1947) has calculated the form factor of such
 chains:
 \begin{align}
@@ -210,22 +212,23 @@ U &= \frac{M_w}{M_n} -1 \nonumber
 \end{figure}
 
 \textcolor[rgb]{1.00,1.00,1.00}{Gauss}\\
-\subsubsection{generalalized Gaussian coil \cite{Hammouda}}
+\subsubsection{generalalized Gaussian coil \cite{Hammouda,Hammouda2012}}
 \label{sect:generalized_gaussian_coil}
 ~\\
 The scattering function for the generalized Gaussian coil is according to eq.\ \ref{eq:generalizedGauss}
 \begin{align}
-I_\text{gGc}(q) &= I_0\frac{U^{\frac{1}{2 \nu}} \Gamma\left(\frac{1}{2 \nu}\right)-
-\Gamma\left(\frac{1}{\nu}\right)-U^{\frac{1}{2\nu}}
-\Gamma\left(\frac{1}{2 \nu},U\right)+\Gamma\left(\frac{1}{\nu},U\right)}{\nu U^{1/\nu}}
+I_\text{gGc}(q) &= I_0
+\left(
+\frac{1}{\nu U^{\frac{1}{2 \nu}}} \; \gamma\left(\frac{1}{2 \nu},U\right)-
+\frac{1}{\nu U^{\frac{1}{  \nu}}} \; \gamma\left(\frac{1}{  \nu},U\right)
+\right)
 \label{eq:generalizedGauss1}
 \end{align}
 with the modified variable
 \begin{align}
 U&= \left(2\nu+1\right)\left(2\nu+2\right)\frac{q^2R_G^2}{6}
 \end{align}
-and the unnormalized incomplete Gamma Function $\Gamma(a,x) = \int_x^\infty \mathrm{d}t \; t^{a-1} \exp(-t)$
-and the Gamma function $\Gamma(a)=\Gamma(a,0)=\int_0^\infty \mathrm{d}t\;  t^{a-1} \exp(-t)$.
+and the lower incomplete Gamma Function $\gamma(a,x) = \int_0^x \mathrm{d}t \; t^{a-1} \exp(-t)$.
 $\nu$ is the excluded volume parameter from the Flory mean field theory and typical values for them are
 \begin{description}
 \item[$\nu=1/3$] partially precipitate in poor solvents
@@ -243,16 +246,18 @@ $\nu$ is the excluded volume parameter from the Flory mean field theory and typi
 \vspace{5mm}
 
 
-\subsubsection{generalized Gaussian coil 2 \cite{Hammouda}}
+\subsubsection{generalized Gaussian coil 2 \cite{Hammouda,Hammouda2012}}
 \label{sect:generalized_gaussian_coil2}
 ~\\
 The scattering function for the generalized Gaussian coil is according to eq.\ \ref{eq:generalizedGauss}
 and differs only by the parametrization for the forward scattering
 $I_0=(b_p-V\eta_\text{s})^2$ from the formula in eq.\ \ref{eq:generalizedGauss1}
 \begin{align}
-I_\text{gGc2}(q) &= \left(b_p-V\eta_\text{s}\right)^2\frac{U^{\frac{1}{2 \nu}} \Gamma\left(\frac{1}{2 \nu}\right)-
-\Gamma\left(\frac{1}{\nu}\right)-U^{\frac{1}{2\nu}}
-\Gamma\left(\frac{1}{2 \nu},U\right)+\Gamma\left(\frac{1}{\nu},U\right)}{\nu U^{1/\nu}}
+I_\text{gGc2}(q) &= \left(b_p-V\eta_\text{s}\right)^2
+\left(
+\frac{1}{\nu U^{\frac{1}{2 \nu}}} \; \gamma\left(\frac{1}{2 \nu},U\right)-
+\frac{1}{\nu U^{\frac{1}{  \nu}}} \; \gamma\left(\frac{1}{  \nu},U\right)
+\right)
 \label{eq:generalizedGauss2}
 \end{align}
 with the modified variable
@@ -270,16 +275,18 @@ U&= \left(2\nu+1\right)\left(2\nu+2\right)\frac{q^2R_G^2}{6}
 \end{description}
 \vspace{5mm}
 
-\subsubsection{generalized Gaussian coil 3 \cite{Hammouda}}
+\subsubsection{generalized Gaussian coil 3 \cite{Hammouda,Hammouda2012}}
 \label{sect:generalized_gaussian_coil3}
 ~\\
 The scattering function for the generalized Gaussian coil is according to eq.\ \ref{eq:generalizedGauss}
 and differs only by the parametrization for the forward scattering
 $I_0=(b_p-\frac{M_w}{N_a\rho_p}\eta_\text{s})^2$ from the formula in eq.\ \ref{eq:generalizedGauss1}
 \begin{align}
-I_\text{gGc3}(q) &= \left(b_p-\frac{M_w}{N_a\rho_p}\eta_\text{s}\right)^2\frac{U^{\frac{1}{2 \nu}} \Gamma\left(\frac{1}{2 \nu}\right)-
-\Gamma\left(\frac{1}{\nu}\right)-U^{\frac{1}{2\nu}}
-\Gamma\left(\frac{1}{2 \nu},U\right)+\Gamma\left(\frac{1}{\nu},U\right)}{\nu U^{1/\nu}}
+I_\text{gGc3}(q) &= \left(b_p-\frac{M_w}{N_a\rho_p}\eta_\text{s}\right)^2
+\left(
+\frac{1}{\nu U^{\frac{1}{2 \nu}}} \; \gamma\left(\frac{1}{2 \nu},U\right)-
+\frac{1}{\nu U^{\frac{1}{  \nu}}} \; \gamma\left(\frac{1}{  \nu},U\right)
+\right)
 \label{eq:generalizedGauss3}
 \end{align}
 with the modified variable

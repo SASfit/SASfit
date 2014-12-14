@@ -369,11 +369,11 @@ switch $::tcl_platform(platform) {
 		                  { All    "*"       } }
       }
       unix {
-		set sasfit(datatypes) { { Ascii  ".*"         } \
-		                  { BerSANS ".\\[0-9\\]\\[0-9\\]\\[0-9\\]" } \
-                          { All    "*"          } }
-     }
-}
+	  set sasfit(datatypes) { { Ascii  ".*"         } \
+		                  { BerSANS ".\\[0-9\\]*" } \
+                                  { All    "*"          } }
+      }
+   }
 #set sasfit(datatypes) { { Ascii  ".*"      } \
 #                        { BerSANS ".*" } \
 #                        { All    "*"         } }
@@ -1223,7 +1223,7 @@ if { [file isfile $ssasfit(filename) ] } {
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  1
                 set ssasfit(res_enable) 1
-                set ssasfit(res,file) [lindex $Q_IQ_E_DQ 3] 
+#                set ssasfit(res,file) [lindex $Q_IQ_E_DQ 3] 
 			}
 		}
 	}
