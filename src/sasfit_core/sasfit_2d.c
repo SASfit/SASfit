@@ -114,7 +114,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 	int                i, j, k,l, nres, nsigma, max_SD;
 	scalar             alambda, wres, tmp;
 	char               sBuffer[256];
-	scalar             Bx, By, rx, ry, r, Q, DQx,DQy,Qx, Qy, Theta, TwoTheta;
+	scalar             Bx, By, rx, ry, r, Q, Qmod, DQx,DQy,DQz, Qx, Qy, Qz, Theta, TwoTheta, psi, ThetaTmp;
 	Tcl_DString        DsBuffer;
 	scalar             * h, * Ih, * DIh, * res;
 	scalar             **Deth, **DetIth, Detres, Detsubstract;
@@ -196,19 +196,31 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                         }
                     } else {
                         nsigma = 2;
-                        nres = 10;
+                        if (sasfit_2d_param.qwidth == 0) {
+                             nres = 0;
+                        } else {
+                             nres = 10;
+                        }
                         tmp = 0.0;
                         for (k=-nres;k<=nres,k++;) {
                             for (l=-nres;l<=nres;l++) {
-                                Qx = Q*cos(atan(ry/rx));
-                                Qy = Q*sin(atan(ry/rx));
+                                Qx = Q*cos(atan(ry/rx))*cos(Theta);
+                                Qy = Q*sin(atan(ry/rx))*cos(Theta);
                                 DQx = k*nsigma*sasfit_2d_param.qwidth/nres;
                                 DQy = l*nsigma*sasfit_2d_param.qwidth/nres;
+                                ThetaTmp = asin(sqrt(2-sqrt(4*M_PI*M_PI-sasfit_2d_param.lambda*sasfit_2d_param.lambda*(gsl_pow_2(Qx+DQx)+gsl_pow_2(Qy+DQy)))/M_PI)/2.);
+                                Qz = Q-sqrt(Q*Q-(gsl_pow_2(Qx+DQx)+gsl_pow_2(Qx+DQx)));
+                                DQz = Qz-Q*sin(Theta);
                                 wres=1./(2.*M_PI*gsl_pow_2(sasfit_2d_param.qwidth))
-                                     *exp(-(DQx*DQx+DQy*DQy)*0.5/gsl_pow_2(sasfit_2d_param.qwidth));
+                                     *exp(-(DQx*DQx+DQy*DQy+DQz*DQz)*0.5/gsl_pow_2(sasfit_2d_param.qwidth));
 
-                                sasfit_param_override_set_psi( atan((Qy+DQy)/(Qx+DQx)) );
-                                Deth[i][j] = sqrt(gsl_pow_2(Qy+DQy)+gsl_pow_2(Qx+DQx));
+                                psi = atan((Qy+DQy)/(Qx+DQx));
+                                sasfit_param_override_set_psi( psi );
+                                sasfit_param_override_set_2theta( 2*ThetaTmp );
+                                sasfit_param_override_set_lambda( sasfit_2d_param.lambda );
+
+                                Qmod = sqrt(gsl_pow_2(Qy+DQy)+gsl_pow_2(Qx+DQx)+Qz*Qz);
+                                Deth[i][j] = Qmod;
                                 IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
                                     dydpar,max_SD,AP,error_type,0,&error);
                                 if (error==TRUE) {

@@ -32,7 +32,7 @@
 sasfit_eps_t		sasfit_eps;
 
 // initialise global storage of output channel information
-sasfit_msg_chan_t	sasfit_msg_chans[] =	{ 
+sasfit_msg_chan_t	sasfit_msg_chans[] =	{
 						{ 1, NULL }, // ERROR_MSG
 						{ 1, NULL }  // INFO_MSG
 						};
@@ -60,9 +60,9 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_print_param, /* 16 */
 	sasfit_copy_param, /* 17 */
 	sasfit_param_override_get_psi, /* 18 */
-	NULL, /* 19 */
-	NULL, /* 20 */
-	NULL, /* 21 */
+	sasfit_param_override_get_psi2, /* 19 */
+	sasfit_param_override_get_2theta, /* 20 */
+	sasfit_param_override_get_lambda, /* 21 */
 	sasfit_init_vector, /* 22 */
 	sasfit_free_vector, /* 23 */
 	sasfit_timer_create, /* 24 */

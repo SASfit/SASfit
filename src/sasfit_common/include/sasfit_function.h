@@ -150,8 +150,9 @@ typedef struct
 {
 	int    override; //!< Flag to enable overriding.
 	scalar value;    //!< New value.
-    int    override2; //!< Flag to enable overriding.
-	scalar value2;    //!< New value.
+	scalar value2;   //!< New value.
+	scalar value3;   //!< New value.
+	scalar value4;    //!< New value.
 } sasfit_param_override_t;
 
 /**
@@ -203,6 +204,37 @@ typedef struct
 sasfit_common_DLLEXP void sasfit_param_override_init (void);
 
 /**
+ * Sets the new wavelength \f$ \lambda\f$ of an anisotropic model function.
+ * Enables override of previous parameter value.
+ * \param new_value New wavelength \f$ \lambda \f$.
+ */
+sasfit_common_DLLEXP void sasfit_param_override_set_lambda (scalar new_value);
+
+/**
+ * Overrides the wavelength \f$ \lambda \f$ of an anisotropic model function, if
+ * enabled.
+ * \param default_val Default parameter value.
+ * \returns Desired wavelength.
+ */
+
+sasfit_common_DLLEXP scalar sasfit_param_override_get_lambda (scalar default_val);
+/**
+ * Sets the new angle \f$ 2\theta\f$ of an anisotropic model function.
+ * Enables override of previous parameter value.
+ * \param new_value New angle \f$ 2\theta \f$.
+ */
+sasfit_common_DLLEXP void sasfit_param_override_set_2theta (scalar new_value);
+
+/**
+ * Overrides the angle \f$ 2\theta \f$ of an anisotropic model function, if
+ * enabled.
+ * \param default_val Default parameter value.
+ * \returns Desired angle value.
+ */
+
+sasfit_common_DLLEXP scalar sasfit_param_override_get_2theta (scalar default_val);
+
+/**
  * Sets the new angle \f$ \psi_2 \f$ of an anisotropic model function.
  * Enables override of previous parameter value.
  * \param new_value New angle \f$ \psi_2 \f$.
@@ -216,6 +248,7 @@ sasfit_common_DLLEXP void sasfit_param_override_set_psi2 (scalar new_value);
  * \returns Desired angle value.
  */
 
+sasfit_common_DLLEXP scalar sasfit_param_override_get_psi2 (scalar default_val);
 /**
  * Sets the new angle \f$ \psi \f$ of an anisotropic model function.
  * Enables override of previous parameter value.

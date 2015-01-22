@@ -213,20 +213,19 @@ void sasfit_param_override_init (void)
 {
 	sasfit_param_override_psi.override  = FALSE;
 	sasfit_param_override_psi.value     = 0.0;
-	sasfit_param_override_psi.override2 = FALSE;
 	sasfit_param_override_psi.value2    = 0.0;
 
 }
 
 void sasfit_param_override_set_psi2 (scalar new_value)
 {
-	sasfit_param_override_psi.override2 = TRUE;
+	sasfit_param_override_psi.override = TRUE;
 	sasfit_param_override_psi.value2    = new_value;
 }
 
 scalar sasfit_param_override_get_psi2 (scalar default_val)
 {
-	if (sasfit_param_override_psi.override2)
+	if (sasfit_param_override_psi.override)
 		return sasfit_param_override_psi.value2;
 	else
 		return default_val;
@@ -246,3 +245,31 @@ scalar sasfit_param_override_get_psi (scalar default_val)
 		return default_val;
 }
 
+void sasfit_param_override_set_2theta (scalar new_value)
+{
+	sasfit_param_override_psi.override = TRUE;
+	sasfit_param_override_psi.value3    = new_value;
+}
+
+scalar sasfit_param_override_get_2theta (scalar default_val)
+{
+	if (sasfit_param_override_psi.override)
+		return sasfit_param_override_psi.value3;
+	else
+		return default_val;
+}
+
+
+void sasfit_param_override_set_lambda (scalar new_value)
+{
+	sasfit_param_override_psi.override = TRUE;
+	sasfit_param_override_psi.value4    = new_value;
+}
+
+scalar sasfit_param_override_get_lambda (scalar default_val)
+{
+	if (sasfit_param_override_psi.override)
+		return sasfit_param_override_psi.value4;
+	else
+		return default_val;
+}
