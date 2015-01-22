@@ -61,6 +61,124 @@
  */
 
 /** 
+ * \defgroup sq_plugins_ordered_mesoscopic ordered obj.
+ * \ingroup sq_plugins
+ *
+ * This group contains shape factors of ordered mesoscopic and nano opjects like 3D crystalls, 2D crystals or lamellar structures.
+ *
+ * \modname{sq_plugins_ordered_mesoscopic}
+ */
+
+ /** 
+ * \defgroup sq_plugins_SC SC
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with SC structure.
+ *
+ * \modname{sq_plugins_SC}
+ */
+ 
+ /** 
+ * \defgroup sq_plugins_BCC BCC
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with BCC structure.
+ *
+ * \modname{sq_plugins_BCC}
+ */
+
+ /** 
+ * \defgroup sq_plugins_FCC FCC
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with FCC structure.
+ *
+ * \modname{sq_plugins_FCC}
+ */
+ 
+ /** 
+ * \defgroup sq_plugins_HCP HCP
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with HCP structure.
+ *
+ * \modname{sq_plugins_HCP}
+ */
+
+ /** 
+ * \defgroup sq_plugins_BCT BCT
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with BCT structure.
+ *
+ * \modname{sq_plugins_BCT}
+ */
+
+ /** 
+ * \defgroup sq_plugins_HEX HEX
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with HEX structure.
+ *
+ * \modname{sq_plugins_HEX}
+ */
+
+ /** 
+ * \defgroup sq_plugins_SQ SQ
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with SQ structure.
+ *
+ * \modname{sq_plugins_SQ}
+ */
+
+ /** 
+ * \defgroup sq_plugins_CREC CREC
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with CREC structure.
+ *
+ * \modname{sq_plugins_CREC}
+ */
+
+ /** 
+ * \defgroup sq_plugins_LAM LAM
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with lamellar (LAM) structure.
+ *
+ * \modname{sq_plugins_LAM}
+ */
+
+ /** 
+ * \defgroup sq_plugins_la3d la3d
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with la3d structure.
+ *
+ * \modname{sq_plugins_la3d}
+ */
+
+ /** 
+ * \defgroup sq_plugins_lm3m lm3m
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with lm3m structure.
+ *
+ * \modname{sq_plugins_lm3m}
+ */
+
+ /** 
+ * \defgroup sq_plugins_Pn3m Pn3m
+ * \ingroup sq_plugins_ordered_mesoscopic
+ *
+ * This group contains shape factors of ordered mesoscopic with Pn3m structure.
+ *
+ * \modname{sq_plugins_Pn3m}
+ */
+ 
+ 
+/** 
  * \defgroup sq_plugins_anisotropic anisotropic obj.
  * \ingroup sq_plugins
  *

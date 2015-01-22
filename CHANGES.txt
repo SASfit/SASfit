@@ -1,3 +1,8 @@
+0.94.7 2015-xx-xx
+- plugin for ordered mesoscopic and nano structures. 
+  The plugin is supplying a part of the structure factors available
+  in the software package "scatter" from S. Förster.
+  
 0.94.6 2014-12-14
 - improved analysis of confidence intervals of fit parameters:
   - clickable correlation coefficients in the matrix highlight associated
