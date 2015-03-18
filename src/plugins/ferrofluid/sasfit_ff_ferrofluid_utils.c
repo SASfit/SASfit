@@ -9,6 +9,19 @@
 
 // define shortcuts for local parameters/variables
 
+
+scalar sinc(scalar x)
+{
+	if (fabs(x) <= 1e-4) {
+		return 1.0-gsl_pow_2(x)/6.0
+		          +gsl_pow_4(x)/120.0
+		          -gsl_pow_6(x)/5040.0
+		          +gsl_pow_8(x)/362880;
+	} else {
+		return sin(x)/x;
+	}
+}
+
 double Arg(double x, double y)
 {
 	if (x > 0) {
@@ -146,7 +159,7 @@ scalar phi_kernel(scalar x, sasfit_param *param)
 	if (fabs(Q*x)<=1.e-5) {
 		return 4*M_PI*gsl_pow_2(x) * phi(x,param) * (1.-gsl_pow_2(Q*x)/6.+gsl_pow_4(Q*x)/120.);
 	} else {
-		return 4*M_PI*gsl_pow_2(x) * sin(Q*x)/(Q*x) * phi(x,param);
+		return 4*M_PI*gsl_pow_2(x) * sinc(Q*x) * phi(x,param);
 	}
 }
 scalar FFDebye(scalar x)
@@ -164,7 +177,7 @@ scalar S1a(sasfit_param *param)
 	if (ALPHA == 0.0 || R_AV == 0) {
 		xi=0;
 	} else {
-		xi = ALPHA*V(R_CORE)/V(R_AV);
+		xi = ALPHA*V(R_CORE,param)/V(R_AV,param);
 	}
 
 	if ( fabs(xi) < 1.0e-5 ) return 1./3.*xi-1./45.*gsl_pow_3(xi)+2./945.*gsl_pow_5(xi);
@@ -178,7 +191,7 @@ scalar S2a(sasfit_param *param)
 	if (ALPHA == 0.0 || R_AV == 0) {
 		xi=0;
 	} else {
-		xi = ALPHA*V(R_CORE)/V(R_AV);
+		xi = ALPHA*V(R_CORE,param)/V(R_AV,param);
 	}
 	if ( fabs(xi) < 1.0e-5 ) return gsl_pow_2(xi)/15.-2./315.*gsl_pow_4(xi); // 1.0-3*(1./3.-1./45.*gsl_pow_2(xi));
 	return 1.-3.*S1a(param)/xi;
@@ -216,9 +229,13 @@ scalar FFRPA(scalar q, scalar Rg, scalar Rc, scalar n, scalar Nagg)
 	return FFDaniels(q*q*Rg*Rg/ecorr(n),n)/(1.+nu(sigma(Rg,Rc,Nagg))*FFDebye(q*q*Rg*Rg));
 }
 
-scalar V(scalar R)
+scalar V(scalar R, sasfit_param *param)
 {
-	return 4./3.*M_PI*gsl_pow_3(R);
+    if (lround(PEP) == 0) {
+        return 4./3.*M_PI*gsl_pow_3(R);
+    } else {
+        return gsl_pow_3(2*R);
+    }
 }
 
 scalar Vg(scalar R, scalar s)
@@ -235,13 +252,35 @@ scalar Sg(scalar q, scalar r, scalar s)
 			) / (q*r*(4.*r*s+sqrt(2.*M_PI)*(r*r+s*s)));
 }
 
-scalar FFphi(scalar x)
+scalar FFphi(scalar x, sasfit_param *param)
 {
-	if (x == 0.0) {
-		return 1.0;
-	} else {
-		return 3.0*(sin(x)-x*cos(x))/gsl_pow_3(x);
-	}
+    int parallelepiped,i;
+    scalar da,gam,dpsi,sum,siga;
+
+    parallelepiped = lround(PEP);
+    switch (parallelepiped) {
+	case 0: if (x == 0.0) {
+                return 1.0;
+            } else {
+                return 3.0*(sin(x)-x*cos(x))/gsl_pow_3(x);
+            }
+            break;
+    case 1: sum=0;
+            da = YAWPEP-PSI;
+            return   sinc(Q*R_CORE*sin(da))
+                    *sinc(Q*R_CORE*cos(da));
+            break;
+    case 2: sum=0;
+            da = YAWPEP-PSI;
+            gam = acos(cos(PSI)*cos(da)+sin(PSI)*sin(da)*cos(DTHETA));
+            return sinc(Q*R_CORE*sin(da)*sin(gam))
+                        *sinc(Q*R_CORE*cos(da)*sin(gam))
+                        *sinc(Q*R_CORE*sin(da)*cos(gam))
+                        * exp(-0.5*gsl_pow_2(dpsi/siga))/(siga*sqrt(2.0*M_PI))
+                        *siga/3.0;
+            return sum;
+            break;
+    }
 }
 
 scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param)
@@ -254,23 +293,18 @@ scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param)
 
 	switch (rw_saw) {
 	case 0: {
-				if (((Vg(Rch,s)+V(Rch)-V(Rco)) == 0) || (q==0)) {
+				if (((Vg(Rch,s)+V(Rch,param)-V(Rco,param)) == 0) || (q==0)) {
 					return 1.0;
 				} else {
-					return (Vg(Rch,s)*Sg(q,Rch,s)+V(Rch)*FFphi(q*Rch)-V(Rco)*FFphi(q*Rco))
-						  /(Vg(Rch,s)+V(Rch)-V(Rco));
+					return (Vg(Rch,s)*Sg(q,Rch,s)+V(Rch,param)*FFphi(q*Rch,param)-V(Rco,param)*FFphi(q*Rco,param))
+						  /(Vg(Rch,s)+V(Rch,param)-V(Rco,param));
 				}
 				break;
 			}
 	case 1: {
 				w = sasfit_rwbrush_w(q, RG);
 				d=1;
-				if (q * (R_CORE + d * RG) == 0)	{
-					sinc_x = 1.0;
-				} else {
-					sinc_x = sin(q * (R_CORE + d * RG)) / (q * (R_CORE + d * RG));
-				}
-				return w*sinc_x;
+				return w*sinc(q * (R_CORE + d * RG)) ;
 				break ;
 			}
 	case 2: {
@@ -309,25 +343,25 @@ scalar FFmicelle(scalar q, scalar bs1, scalar bs2, scalar bc, sasfit_param * par
 	ffacor = FFAcor(q,SIGMA_BRUSH_GAUSSIAN,R_CORE+T_SH,R_CORE+T_SH+T_BRUSH_CONST,param);
 	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
 	if (RW_SAW == 0.0) {
-		return	  gsl_pow_2((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+		return	  gsl_pow_2((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
 				+ (NAGG < 1.0?0:(NAGG-1.0))
 				* NAGG*gsl_pow_2(bc*ffacor)
 				+ 2.0*NAGG*bc*ffacor
-				      *((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+				      *((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
 				+ NAGG*bc*bc*FFRPA(q,RG,R_CORE+T_SH,L_B,NAGG);
 	} else {
-		return	  gsl_pow_2((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+		return	  gsl_pow_2((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
 				+ (NAGG < 1.0?0:(NAGG-1.0))
 				* NAGG*gsl_pow_2(bc*ffacor)
 				+ 2.0*NAGG*bc*ffacor
-				      *((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+				      *((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
 				+ NAGG*bc*bc*FFDebye(q*q*RG*RG);
 	}
 }
 
 scalar FFmicelle_mm(scalar q, sasfit_param * param)
 {
-	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4;
+	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4, FM,FN;
 	if (RADAVG == 1.0) {
 		sin2 = 1./2.;
 		sin4 = 3./8.;
@@ -343,17 +377,19 @@ scalar FFmicelle_mm(scalar q, sasfit_param * param)
 	bm2 = ETA_MAG_SHELL;
 	bc = (ETA_BRUSH-ETA_SOLV)*VBRUSH;
 	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
+	FM = (bm1-bm2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bm2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param);
+	FN = ((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
+			           +bc*NAGG*FFAcor(q,SIGMA_BRUSH_GAUSSIAN,R_CORE+T_SH,R_CORE+T_SH+T_BRUSH_CONST,param);
+
 	return	  FFmicelle(q,bs1,bs2,bc,param)
-			+ gsl_pow_2((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))*(S2*sin4+(1.0-S2)/3.0*sin2)
-			+ 2.0*((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-					*(((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-			           +bc*NAGG*FFAcor(q,SIGMA_BRUSH_GAUSSIAN,R_CORE+T_SH,R_CORE+T_SH+T_BRUSH_CONST,param)
-					 )*S1*sin2;
+			+ gsl_pow_2(FM)
+                    *(S2*sin4+(1.0-S2)/3.0*sin2)
+			+ 2.0*FM*FN*S1*sin2;
 }
 
 scalar FFmicelle_pp(scalar q, sasfit_param * param)
 {
-	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4;
+	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4, FM,FN;
 	if (RADAVG == 1.0) {
 		sin2 = 1./2.;
 		sin4 = 3./8.;
@@ -369,18 +405,19 @@ scalar FFmicelle_pp(scalar q, sasfit_param * param)
 	bm2 = ETA_MAG_SHELL;
 	bc = (ETA_BRUSH-ETA_SOLV)*VBRUSH;
 	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
+	FM = (bm1-bm2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bm2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param);
+	FN = ((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
+			           +bc*NAGG*FFAcor(q,SIGMA_BRUSH_GAUSSIAN,R_CORE+T_SH,R_CORE+T_SH+T_BRUSH_CONST,param);
+
 	return	  FFmicelle(q,bs1,bs2,bc,param)
-			+ gsl_pow_2((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+			+ gsl_pow_2(FM)
 			        *(S2*sin4+(1.0-S2)/3.0*sin2)
-			- 2.0*((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-					*(((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-			           +bc*NAGG*FFAcor(q,SIGMA_BRUSH_GAUSSIAN,R_CORE+T_SH,R_CORE+T_SH+T_BRUSH_CONST,param)
-					 )*S1*sin2;
+			- 2.0*FM*FN*S1*sin2;
 }
 
 scalar FFmicelle_pm(scalar q, sasfit_param * param)
 {
-	scalar bm1, bm2, S1, S2,sin2,sin4;
+	scalar bm1, bm2, S1, S2,sin2,sin4, FM;
 	if (RADAVG == 1.0) {
 		sin2 = 1./2.;
 		sin4 = 3./8.;
@@ -392,7 +429,8 @@ scalar FFmicelle_pm(scalar q, sasfit_param * param)
 	S2=S2a(param);
 	bm1 = ETA_MAG_CORE;
 	bm2 = ETA_MAG_SHELL;
-	return gsl_pow_2((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+	FM = (bm1-bm2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bm2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param);
+	return gsl_pow_2(FM)
 				*	(  2.0/3.0*(1.0-S2)
                       - S2*sin4
 					  +(4.0*S2-1.0)/3.0*sin2
@@ -411,17 +449,17 @@ scalar Amicelle(scalar q, scalar bs1, scalar bs2, scalar bc, sasfit_param * para
 	ffacor = FFAcor(q,SIGMA_BRUSH_GAUSSIAN,R_CORE+T_SH,R_CORE+T_SH+T_BRUSH_CONST,param);
 	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
 	if (RW_SAW == 0.0) {
-		return	  ((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+		return	  ((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
 				+  NAGG*(bc*ffacor);
 	} else {
-		return	  ((bs1-bs2)*V(R_CORE)*FFphi(q*R_CORE)+bs2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
+		return	  ((bs1-bs2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bs2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param))
 				+ NAGG*(bc*ffacor);
 	}
 }
 
 scalar Amicelle_mm(scalar q, sasfit_param * param)
 {
-	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4;
+	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4,FM;
 	if (RADAVG == 1.0) {
 		sin2 = 1./2.;
 		sin4 = 3./8.;
@@ -437,14 +475,14 @@ scalar Amicelle_mm(scalar q, sasfit_param * param)
 	bm2 = ETA_MAG_SHELL;
 	bc = (ETA_BRUSH-ETA_SOLV)*VBRUSH;
 	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
+	FM = (bm1-bm2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bm2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param);
 	return	  Amicelle(q,bs1,bs2,bc,param)
-			+ ((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-                    *(S1*sin2);
+			+ FM*(S1*sin2);
 }
 
 scalar Amicelle_pp(scalar q, sasfit_param * param)
 {
-	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4;
+	scalar bc, bs1,bs2, bm1, bm2, S1, S2,sin2,sin4,FM;
 	if (RADAVG == 1.0) {
 		sin2 = 1./2.;
 		sin4 = 3./8.;
@@ -460,14 +498,14 @@ scalar Amicelle_pp(scalar q, sasfit_param * param)
 	bm2 = ETA_MAG_SHELL;
 	bc = (ETA_BRUSH-ETA_SOLV)*VBRUSH;
 	NAGG = SNAGG*4.*M_PI*gsl_pow_2(R_CORE+T_SH);
+	FM = (bm1-bm2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bm2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param);
 	return	  Amicelle(q,bs1,bs2,bc,param)
-			+ ((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-			        *(S1*sin2);
+			- FM*(S1*sin2);
 }
 
 scalar Amicelle_pm(scalar q, sasfit_param * param)
 {
-	scalar bm1, bm2, S1, S2,sin2,sin4,sincos;
+	scalar bm1, bm2, S1, S2,sin2,sin4,sincos,FM;
 	if (RADAVG == 1.0) {
 		sin2 = 1./2.;
 		sin4 = 3./8.;
@@ -481,8 +519,8 @@ scalar Amicelle_pm(scalar q, sasfit_param * param)
 	S2=S2a(param);
 	bm1 = ETA_MAG_CORE;
 	bm2 = ETA_MAG_SHELL;
-	return ((bm1-bm2)*V(R_CORE)*FFphi(q*R_CORE)+bm2*V(R_CORE+T_SH)*FFphi(q*(R_CORE+T_SH)))
-				*	(  S1*sincos);
+	FM = (bm1-bm2)*V(R_CORE,param)*FFphi(q*R_CORE,param)+bm2*V(R_CORE+T_SH,param)*FFphi(q*(R_CORE+T_SH),param);
+	return FM*S1*sincos;
 }
 
 scalar Amicelle_mp(scalar q, sasfit_param * param)

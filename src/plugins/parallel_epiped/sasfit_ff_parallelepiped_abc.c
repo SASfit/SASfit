@@ -17,8 +17,11 @@
 
 scalar sinc(scalar x)
 {
-	if (x == 0) {
-		return 1.0;
+	if (fabs(x) <= 1e-4) {
+		return 1.0-gsl_pow_2(x)/6.0
+		          +gsl_pow_4(x)/120.0
+		          -gsl_pow_6(x)/5040.0
+		          +gsl_pow_8(x)/362880;
 	} else {
 		return sin(x)/x;
 	}

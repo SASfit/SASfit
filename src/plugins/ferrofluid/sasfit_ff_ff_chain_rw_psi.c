@@ -23,6 +23,7 @@ scalar sasfit_ff_ff_chain_rw_psi(scalar q, sasfit_param * param)
 
 	RW_SAW = 1.0;
 	RADAVG = 0.0;
+	PEP    = 0.0;
 
 	R_CORE = 0.0;
 	if ((R_TOT-T_SHELL) > 0) {
@@ -52,6 +53,6 @@ scalar sasfit_ff_ff_chain_rw_psi_v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return V(R_CORE+T_SH+2.*sqrt(5./3.)*RG);
+	return V(R_CORE+T_SH+2.*sqrt(5./3.)*RG,param);
 }
 

@@ -23,8 +23,8 @@ scalar sasfit_ff_ff_chain_parabolic_radial(scalar q, sasfit_param * param)
 	// insert your code here
 
 	RW_SAW = 2.0;
-
 	RADAVG = 1.0;
+	PEP    = 0.0;
 
 	if ((R_TOT-T_SHELL) > 0) {
 		R_CORE=R_TOT-T_SHELL;
@@ -67,6 +67,6 @@ scalar sasfit_ff_ff_chain_parabolic_radial_v(scalar q, sasfit_param * param, int
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return V(R_CORE+T_SH+2.*sqrt(5./3.)*RG);
+	return V(R_CORE+T_SH+2.*sqrt(5./3.)*RG,param);
 }
 

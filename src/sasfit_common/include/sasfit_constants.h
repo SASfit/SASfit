@@ -24,8 +24,8 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
-#ifndef SASFIT_CONSTANTS_H 
-#define SASFIT_CONSTANTS_H 
+#ifndef SASFIT_CONSTANTS_H
+#define SASFIT_CONSTANTS_H
 
 /**
  * \file sasfit_constants.h
@@ -53,7 +53,7 @@
 /**
  * \ingroup sasfit_constants
  * A common return value for math functions.
- * Used at error in model functions. 
+ * Used at error in model functions.
  * May be overwritten locally.
  */
 #define SASFIT_RETURNVAL_ON_ERROR 0.0

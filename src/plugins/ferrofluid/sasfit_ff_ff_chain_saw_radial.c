@@ -26,6 +26,7 @@ scalar sasfit_ff_ff_chain_saw_radial(scalar q, sasfit_param * param)
 
 	RW_SAW = 0.0;
 	RADAVG = 1.0;
+	PEP    = 0.0;
 
 	R_CORE = 0.0;
 	if ((R_TOT-T_SHELL) > 0) {

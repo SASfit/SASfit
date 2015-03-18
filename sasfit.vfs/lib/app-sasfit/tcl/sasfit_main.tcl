@@ -2548,7 +2548,7 @@ proc SaveCmd {} {
    global G2ParData
    global distr
    global nomenu
-   global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData
+   global IQGraph GlobalFitIQGraph ResIQGraph SDGraph StructParData Detector2DIQGraph
    global OZ ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph
    global adjustvalue
    global FitPrecision
@@ -2616,6 +2616,7 @@ proc SaveCmd {} {
 	      puts_arr $fid ozBrGraph 
 	      puts_arr $fid ozyrGraph 
 	      puts_arr $fid ozfrGraph 
+		  puts_arr $fid Detector2DIQGraph
 	      close $fid
 	   }
 	   set ::sasfit(lastProjectFile) $filename

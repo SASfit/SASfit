@@ -35,7 +35,7 @@
 scalar sasfit_ff_Cylinder_core(scalar q, sasfit_param * param)
 {
 	scalar Q, R, L;
-	
+
 	SASFIT_ASSERT_PTR(param);
 
 	sasfit_get_param(param, 2, &R, &L);
@@ -44,27 +44,26 @@ scalar sasfit_ff_Cylinder_core(scalar q, sasfit_param * param)
 	if ((R == 0.0) || (L == 0.0))
 	{
 		return 0.0;
-	} 
-	else if (Q == 0.0) 
+	}
+	else if (Q == 0.0)
 	{
-		return pow(M_PI*R*R*L, 2.0);
-	} 
-	else if (q == 0) 
+		return gsl_pow_2(M_PI*R*R*L);
+	}
+	else if (q == 0)
 	{
 		// return 4.0*pow(bessj1(Q*R)*L*PI*R/Q,2.0);
-		return 4.0 * pow(gsl_sf_bessel_J1(Q*R) * L * M_PI * R/Q ,2.0);
-	} 
-	else if (q == 1.0) 
+		return 4.0 * gsl_pow_2(gsl_sf_bessel_J1(Q*R) * L * M_PI * R/Q);
+	}
+	else if (q == 1.0)
 	{
-		return 4.0 * pow( sin(0.5*Q*L) * M_PI * R * R/Q ,2.0);
-	} 
-	else 
+		return 4.0 * gsl_pow_2( sin(0.5*Q*L) * M_PI * R * R/Q);
+	}
+	else
 	{
-		return 16.0 * pow(M_PI*R*R*L,2.0) 
-			    * pow( gsl_sf_bessel_J1(Q*R*sqrt(1.0-q*q)) 
-				   * sin(Q*L*q/2.0) 
-				   / (Q*Q*R*sqrt(1.0-q*q)*L*q) 
-			      ,2.0);
+		return 16.0 * gsl_pow_2(M_PI*R*R*L)
+			    * gsl_pow_2( gsl_sf_bessel_J1(Q*R*sqrt(1.0-q*q))
+				   * sin(Q*L*q/2.0)
+				   / (Q*Q*R*sqrt(1.0-q*q)*L*q) );
 	}
 }
 

@@ -27,6 +27,8 @@
 #include <string.h>
 #include "include/sasfit_core.h"
 
+int check_interrupt4calc(Tcl_Interp *, bool *);
+
 sasfit_2d_param_t	sasfit_2d_param;
 
 void sasfit_2d_init (void)
@@ -114,14 +116,14 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 	int                i, j, k,l, nres, nsigma, max_SD;
 	scalar             alambda, wres, tmp;
 	char               sBuffer[256];
-	scalar             Bx, By, rx, ry, r, Q, Qmod, DQx,DQy,DQz, Qx, Qy, Qz, Theta, TwoTheta, psi, ThetaTmp;
+	scalar             Bx, By, rx, ry, r, Q, Qmod, Drx,Dry, Dr, Theta, TwoTheta, psi, ThetaTmp;
 	Tcl_DString        DsBuffer;
 	scalar             * h, * Ih, * DIh, * res;
 	scalar             **Deth, **DetIth, Detres, Detsubstract;
 	scalar             Imin = 0.0, Imax = 0.0; // was uninitialized, see line 198 ff
 	int                * lista, ma, mfit,ndata;
 	bool               error;
-	int                error_type;
+	int                error_type, interrupt;
 	scalar             * a, * dydpar;
 
 	error = FALSE;
@@ -167,6 +169,21 @@ int Sasfit_2DiqCmd(ClientData    clientData,
     Bx = 0.5*(sasfit_2d_param.num_pix-1.);
     By = 0.5*(sasfit_2d_param.num_pix-1.);
 
+    Dr = 2*tan(2*atan(sasfit_2d_param.qwidth*sasfit_2d_param.lambda/(4*M_PI)))*sasfit_2d_param.dist;
+    sasfit_out("Dr=%lf\n",Dr*1000);
+
+    Detres=-1.;
+
+    nsigma = sasfit_eps_get_robertus_p();
+    if (nsigma > 5) nsigma =5;
+    if (sasfit_2d_param.qwidth == 0) {
+        nres = 0;
+    } else {
+        nres = sasfit_eps_get_iter_4_mc();
+        if (nres > 30) nres =30;
+    }
+
+
 	for (i=0; i < sasfit_2d_param.num_pix; i++) {
         rx = (i-Bx)*sasfit_2d_param.pixelsize*1e-3;
 
@@ -174,20 +191,31 @@ int Sasfit_2DiqCmd(ClientData    clientData,
             ry = (j-By)*sasfit_2d_param.pixelsize*1e-3;
 
 			// Det2DPar.Psi = atan(ry/rx);
-			sasfit_param_override_set_psi( atan(ry/rx) );
+			if (rx == 0) {
+                if (ry > 0) {
+                    sasfit_param_override_set_psi(M_PI_2);
+                } else {
+                    sasfit_param_override_set_psi(-M_PI_2);
+                }
+			} else {
+                sasfit_param_override_set_psi( atan(ry/rx) );
+			}
 			r = sqrt(rx*rx+ry*ry);
 			TwoTheta = atan(r/sasfit_2d_param.dist);
 			Theta = 0.5*TwoTheta;
 			Q=4.0*M_PI*sin(Theta)/sasfit_2d_param.lambda;
 			Deth[i][j] = Q;
-			Detres=-1.;
 
             switch (sasfit_2d_param.geom) {
                case PINHOLE : {
                     if (sasfit_2d_param.qwidth == 0) {
                         IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
                             dydpar,max_SD,AP,error_type,0,&error);
-                        if (error==TRUE) {
+                        sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
+                        Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+                        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+                        interrupt = check_interrupt4calc(interp,&error);
+                        if ( error==TRUE) {
                             free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
                             free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
                             free_dvector(dydpar,0,ma-1);
@@ -195,34 +223,36 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                             return TCL_ERROR;
                         }
                     } else {
-                        nsigma = 2;
-                        if (sasfit_2d_param.qwidth == 0) {
-                             nres = 0;
-                        } else {
-                             nres = 10;
-                        }
                         tmp = 0.0;
-                        for (k=-nres;k<=nres,k++;) {
+                        for (k=-nres;k<=nres;k++) {
                             for (l=-nres;l<=nres;l++) {
-                                Qx = Q*cos(atan(ry/rx))*cos(Theta);
-                                Qy = Q*sin(atan(ry/rx))*cos(Theta);
-                                DQx = k*nsigma*sasfit_2d_param.qwidth/nres;
-                                DQy = l*nsigma*sasfit_2d_param.qwidth/nres;
-                                ThetaTmp = asin(sqrt(2-sqrt(4*M_PI*M_PI-sasfit_2d_param.lambda*sasfit_2d_param.lambda*(gsl_pow_2(Qx+DQx)+gsl_pow_2(Qy+DQy)))/M_PI)/2.);
-                                Qz = Q-sqrt(Q*Q-(gsl_pow_2(Qx+DQx)+gsl_pow_2(Qx+DQx)));
-                                DQz = Qz-Q*sin(Theta);
-                                wres=1./(2.*M_PI*gsl_pow_2(sasfit_2d_param.qwidth))
-                                     *exp(-(DQx*DQx+DQy*DQy+DQz*DQz)*0.5/gsl_pow_2(sasfit_2d_param.qwidth));
+                                Drx = k*nsigma*Dr/nres;
+                                Dry = l*nsigma*Dr/nres;
+                                ry = (j-By)*sasfit_2d_param.pixelsize*1e-3;
+                                rx = (i-Bx)*sasfit_2d_param.pixelsize*1e-3;
+                                // Det2DPar.Psi = atan(ry/rx);
+                                if (rx+Drx == 0) {
+                                    if (ry+Dry > 0) {
+                                        sasfit_param_override_set_psi(M_PI_2);
+                                    } else {
+                                        sasfit_param_override_set_psi(-M_PI_2);
+                                    }
+                                } else {
+                                    sasfit_param_override_set_psi( atan((ry+Dry)/(rx+Drx)) );
+                                }
+                                r = sqrt(gsl_pow_2(rx+Drx)+gsl_pow_2(ry+Dry));
+                                TwoTheta = atan(r/sasfit_2d_param.dist);
+                                Theta = 0.5*TwoTheta;
+                                Q=4.0*M_PI*sin(Theta)/sasfit_2d_param.lambda;
 
-                                psi = atan((Qy+DQy)/(Qx+DQx));
-                                sasfit_param_override_set_psi( psi );
-                                sasfit_param_override_set_2theta( 2*ThetaTmp );
                                 sasfit_param_override_set_lambda( sasfit_2d_param.lambda );
 
-                                Qmod = sqrt(gsl_pow_2(Qy+DQy)+gsl_pow_2(Qx+DQx)+Qz*Qz);
-                                Deth[i][j] = Qmod;
-                                IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
+                                IQ(interp,Q,Detres,a,&DetIth[i][j],&Detsubstract,
                                     dydpar,max_SD,AP,error_type,0,&error);
+                                sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
+                                Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+                                Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+                                interrupt = check_interrupt4calc(interp,&error);
                                 if (error==TRUE) {
                                     free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
                                     free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
@@ -230,11 +260,12 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                                     Tcl_Free((char *) AP);
                                     return TCL_ERROR;
                                 }
+                                wres=1./(2.*M_PI*gsl_pow_2(Dr))
+                                     *exp(-(Drx*Drx+Dry*Dry)*0.5/gsl_pow_2(Dr));
                                 tmp = tmp+wres*DetIth[i][j];
                             }
                         }
-                        DetIth[i][j] = tmp*gsl_pow_2(nsigma*sasfit_2d_param.qwidth/nres);
-                        Deth[i][j] = Q;
+                        DetIth[i][j] = tmp*gsl_pow_2(nsigma*Dr/nres);
                     }
                     break ;
                     } // end case PINHOLE

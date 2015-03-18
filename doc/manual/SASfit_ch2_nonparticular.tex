@@ -2,12 +2,13 @@
 \subsection{TeubnerStrey}
 \label{sect:TeubnerStrey}~\\
 
-The Teubner and Strey \cite{TeubnerStrey87,StreyKlineKaler1994}
+The Teubner and Strey \cite{TeubnerStrey87,StreyKlineKaler1994,Sottmann1997}
 phenomenological model often accurately describes scattering from
 bi-continuous micro-emulsions. The scattered intensity for this
 model is
 \begin{align}
 I(q) = \frac{8\pi\langle\eta^2\rangle/\xi}{a^2-2bq^2+q^4}
+\label{eq:TeubnerStrey}
 \end{align}
 where $a^2=(k^2+1/\xi^2)^2$ is a positive quantity, and
 $b=k^2-1/\xi^2$ can be a positive or negative depending on the
@@ -20,19 +21,87 @@ length, $\xi$ , corresponds to a characteristic length for
 positional correlation. $k$ is defined as $2\pi/d$. The
 corresponding isotropic real space correlation function,
 $\gamma(r)$, that incorporates alternating regions of the two phases
-in the bi-continuous system (e.g. water and oil), is given by
+in the bi-continuous system\footnote{
+In case of a correlation function $\gamma(r)=\exp\left(-\frac{r}{\xi} \right)$ 
+the correlation length is $\l_c=2\xi$ and the expression of the scattering intensity is given by the form factor of 
+Debye-Anderson-Brumberger in section \ref{sect:DAB} by $I(q)=I_0/(1+(q\xi)^2)^2$} 
+(e.g. water and oil), is given by
 \begin{align}
 \gamma(r) = \frac{\sin(kr)}{kr} \exp\left(-\frac{r}{\xi} \right)
 \end{align}
+The Fourier transformation of this function 
+$\langle\eta^2\rangle \int_0^\infty 4\pi r^2 \frac{\sin qr}{qr}\gamma(r)\mathrm{d}r$ 
+leads to the scattering intensity in eq.\ \ref{eq:TeubnerStrey}.
+The correlation length defined by eq.\ \ref{eq:lc1}
+\begin{align}
+l_c &= \frac{2}{\gamma(0)}\, \int \gamma(r) \, dr
+\end{align} 
+leads to 
+\begin{align}
+l_c &= \frac{d}{\pi} \arctan\left(\frac{2 \pi  \xi }{d}\right)
+\label{eq:lcTS}
+\end{align}
+For large $q$-values the intensity decays as 
+\begin{align}
+I(q)\xrightarrow[]{q\rightarrow\infty} \frac{8\pi\langle\eta^2\rangle}{\xi} q^{-4}
+\label{eq:TSc4}
+\end{align}
+The scattering invariant is given by (see also eq.\ \ref{Invariante})
+\begin{align}
+\widetilde{Q} &= \int_0^\infty I(q)\; q^2 \;\mathrm{d}q = 2\pi^2 \langle\eta^2\rangle
+\end{align}
+In case of a two phase model with sharp interphases, which have a contrast of $\Delta\rho$
+one can write $\langle\eta^2\rangle=\Delta\rho^2 f_p(1-f_p)$ (see also eq.\ \ref{eq:eta2bar}).
+Next to the invariant also the first moment of the scattering curve is given analytically.
+\begin{align}
+      \int_0^\infty I(q)\; q \;\mathrm{d}q &= 
+       d \langle\eta^2\rangle \left(\frac{\pi}{2} -\arctan\left(\frac{d}{4 \pi  \xi }-\frac{\pi  \xi }{d}\right)\right)
+\end{align}
+Therefore also a correlation length $l_c$ (eq.\ \ref{eq:lc1} and \ref{eq:lc2}) can be determined via
+\begin{align}
+l_c &= \pi\frac{\int_0^\infty I(q)\; q \;\mathrm{d}q}{\int_0^\infty I(q)\; q^2 \;\mathrm{d}q}
+     = d \left(\frac{1}{4} -\frac{1}{2\pi}\arctan\left(\frac{d}{4 \pi  \xi }-\frac{\pi  \xi }{d}\right)\right)
+\end{align}
+By using the identity $\frac{\pi}{4}-\frac{1}{2}\arctan\left(\frac{1}{4x}-x\right) = \arctan(2x)$ we get
+$l_c = \frac{d}{\pi} \arctan\left(\frac{2 \pi  \xi }{d}\right)$ which is consistent with eq.\ \ref{eq:lcTS}.
 
-\vspace{5mm}
+At $q_\text{max}=\sqrt{b}$ the intensity is given by
+$I(q_\text{max})=\frac{d^2\langle\eta^2\rangle \xi}{2\pi}$
+and for $q=0$ one gets $I(0)=\frac{8\pi d^4\langle\eta^2\rangle\xi^3}{(d^2+4\pi^2\xi^2)^2}$
+In the limit of large values of $d$ the form factor converges to the one from 
+Debye-Anderson-Brumberger in section \ref{sect:DAB} which is $I(q)=I_0/(1+(q\xi)^2)^2$
 
-\underline{Input Parameters for model \texttt{TeubnerStrey}:}\\
+Sometimes one finds the following parametrization
+\begin{align}
+I(q) &= \frac{I_0}{1+c_1 q^2 + c_2 q^4}
+\end{align}
+As the intensity needs to be a positive number the conditions $c_2>0$ and $c_1>-2\sqrt{c_2}$ have to hold. 
+In this case the parameters are related to the above one via
+\begin{align}
+I_0 &= \frac{8 \pi  d^4 \langle\eta^2\rangle \xi^3}{\left(d^2+4 \pi^2 \xi^2\right)^2} \\
+c_1 &=  \frac{2 d^2 \xi^2 \left(d^2-4 \pi^2 \xi^2\right)}{\left(d^2+4 \pi^2 \xi^2\right)^2} \\
+c_2 &= \frac{d^4 \xi^4}{\left(d^2+4 \pi^2 \xi^2\right)^2}
+\end{align}
+or
+\begin{align}
+\xi^2 &= 4\frac{c_2}{c_1+2 \sqrt{c_2}} \\
+\langle\eta^2\rangle &= \frac{I_0 \xi/2}{4 \pi  c_2} \\
+d^2 &= \frac{16 \pi ^2 c_2}{2 \sqrt{c_2}-c_1}
+\end{align}
+
+
+\underline{Input Parameters for model \texttt{TeubnerStrey,Sottmann1997}:}\\
 \begin{description}
-\item[\texttt{xi}] correlation length $\xi$
+\item[\texttt{xi}] characteristic length for positional correlation $\xi$
 \item[\texttt{d}] characteristic domain size $d$
-\item[\texttt{eta}] scattering length density contrast $\eta$
+\item[\texttt{eta}] $\langle\eta^2\rangle$ is the mean square scattering length
+                    density fluctuation. In case of a two phase system with sharp
+                    interphases $\langle\eta^2\rangle=\phi(1-\phi)\Delta\rho^2$ where
+                    $\Delta\rho$ is the scattering contrast. In \cite{Strey1991} a
+                    discussion about a smooth interface can be found.
 \end{description}
+
+\vspace{5mm} 
 
 \underline{Note:}
 \begin{itemize}

@@ -28,36 +28,28 @@
 #include <gsl/gsl_math.h>
 #include "include/sasfit_sq_utils.h"
 
-/*
-float S_RandomDistributionModel(Tcl_Interp *interp,
-				 float Q,
-				float Rca,
-				 float R,
-				float fp,
-				 float epsilon,
-				bool  *error)
-*/
+/**
+ *   this structure factor has been removed from the menu interface of SASfit
+ *   there are much better theoretically justified models
+**/
 
 /**
  * Random Distribution Model
  */
 scalar sasfit_sq_RandomDistributionModel(scalar q, sasfit_param * param)
 {
-	scalar Vca,Vp,Phi;
-	scalar Rca, R, fp, epsilon;
+	scalar Phi,x;
+	scalar R, fp, epsilon;
 
 	SASFIT_ASSERT_PTR( param );
 
-	sasfit_get_param(param, 4, &Rca, &R, &fp, &epsilon);
+	sasfit_get_param(param, 3, &R, &fp, &epsilon);
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R <= 0.0), param, "R(%lg) <= 0",R);
-	SASFIT_CHECK_COND1((Rca <= 0.0), param, "Rca(%lg) <= 0",Rca);
 	SASFIT_CHECK_COND1((fp <= 0.0), param, "fp(%lg) <= 0",fp);
 
-	q = 2.0*q*Rca;
-	Vca = 4.0/3.0*M_PI*pow(Rca,3.0);
-	Vp  = 4.0/3.0*M_PI*pow(R,3.0)/fp;
+	x = 2.0*q*R;
 	Phi = 3.0*(sin(q)-q*cos(q))/pow(q,3.0);
-	return 1.0/(1.0+(8.0*Vca/Vp)*epsilon*Phi);
+	return 1.0/(1.0+8.0*fp*epsilon*Phi);
 }

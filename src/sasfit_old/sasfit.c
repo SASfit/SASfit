@@ -2637,6 +2637,8 @@ for (i=0;i<max_SD;i++) {
 Tcl_DStringInit(&DsBuffer);
 
 Tcl_DStringStartSublist(&DsBuffer);
+
+npoints=0;
 for (j=0;j<GCP.nmultset;j++) npoints = npoints+ndata[j];
 
 ipoint=0;
@@ -2658,7 +2660,7 @@ for (j=0;j<GCP.nmultset;j++) {
             totndata++;
        }
 	   ipoint++;
-       sprintf(sBuffer,"set ::SASfitprogressbar %lf",(ipoint+1.0)/(1.0*npoints)*100.0);
+       sprintf(sBuffer,"set ::SASfitprogressbar %lf",100.0*ipoint/(1.0*npoints));
        Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
        interrupt = check_interrupt4calc(interp,&error);

@@ -44,9 +44,9 @@ scalar Amicelle_mp(scalar q, sasfit_param * param);
 scalar Amicelle_pm(scalar q, sasfit_param * param);
 scalar Amicelle(scalar q, scalar bs1, scalar bs2, scalar bc, sasfit_param * param);
 
-scalar V(scalar x);
+scalar V(scalar x, sasfit_param * param);
 scalar Vg(scalar x, scalar sigma);
-scalar FFphi(scalar x);
+scalar FFphi(scalar x, sasfit_param * param);
 scalar phi(scalar x, sasfit_param * param);
 scalar find_LAMBDA(sasfit_param * param);
 scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param);
@@ -71,6 +71,10 @@ scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param);
 #define RG						param->p[12]
 #define PSIDEG					param->p[13]
 #define POL						param->p[14]
+
+#define PEP                     param->p[15]
+#define YAWPEP                  param->p[16]
+#define SIGYAW                  param->p[17]
 
 #define P						param->p[15]
 #define A						param->p[16]
@@ -99,5 +103,7 @@ scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param);
 #define N						VBRUSH/gsl_pow_3(A)
 
 #define Q						param->p[MAXPAR-13]
+#define DTHETA                  param->p[MAXPAR-14]
+
 #endif // end of file
 

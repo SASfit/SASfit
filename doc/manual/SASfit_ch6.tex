@@ -869,13 +869,13 @@ The values of $a_1(i,j), a_2(i,j), b_1(i,j)$, and $b_2(i,j)$ are listed in table
      $a1(4,0)$ & -0.00604 &           &          &            &          &            &          \\
      $a1(5,0)$ & -0.03902 &           &          &            &          &            &          \\
                &          &           &          & $b_1(0,1)$ & -0.3565  & $b_2(0,1)$ & -0.3946  \\
-               &          &           &          & $b_1(1,1)$ &  0.1909  & $b_2(1,1)$ & -0.2231  \\                
+               &          &           &          & $b_1(1,1)$ &  0.1909  & $b_2(1,1)$ & -0.2231  \\
      $a1(2,1)$ &  0.2316  & $a2(2,1)$ & -0.4963  & $b_1(2,1)$ &  0.15634 & $b_2(2,1)$ & -0.2546  \\
      $a1(3,1)$ &  0.26531 & $a2(3,1)$ &  0.03688 &            &          &            &          \\
      $a1(4,1)$ &  0.3706  & $a2(4,1)$ &  0.30570 &            &          &            &          \\
      $a1(5,1)$ & -1.0081  & $a2(5,1)$ &  0.39013 &            &          &            &          \\
-               &          &           &          & $b_1(0,2)$ & -0.3078	 & $b_2(0,2)$ &  1.1361  \\ 
-               &          &           &          & $b_1(1,2)$ &  0.05176 & $b_2(1,2)$ & -0.01615 \\ 
+               &          &           &          & $b_1(0,2)$ & -0.3078	 & $b_2(0,2)$ &  1.1361  \\
+               &          &           &          & $b_1(1,2)$ &  0.05176 & $b_2(1,2)$ & -0.01615 \\
      $a1(2,2)$ & -22.779  & $a2(2,2)$ & -0.4678  & $b_1(2,2)$ &  0.01568 & $b_2(2,2)$ & -0.07606 \\
      $a1(3,2)$ &  23.2457 & $a2(3,2)$ &  0.3365  &            &          &            &          \\
      $a1(4,2)$ &  8.1092  & $a2(4,2)$ &  0.4290  &            &          &            &          \\
@@ -897,11 +897,11 @@ S_\text{WC}(Q,L,l_B) &= L^2 \left[  \left(1-\chi(Q,L,l_B)\right)
 The scattering of a chain with excluded volume effects if given by
 \begin{multline}
 S_\text{exv}(Q,L,l_B) = w(Q,R_g) S_\text{Debye}(Q,L,l_B) + \\
- \left[1-w(q R_g)\right[\left[C_1\left(QR_g\right)^{-1/\nu} 
+ \left[1-w(q R_g)\right[\left[C_1\left(QR_g\right)^{-1/\nu}
                                            + C_2\left(QR_g\right)^{-2/\nu}
                                            + C_3\left(QR_g\right)^{-3/\nu}\right]
 \end{multline}
-where $S_\text{Debye}(Q,L,l_B)$ is given by eq.\ \ref{eq:SDebye} and 
+where $S_\text{Debye}(Q,L,l_B)$ is given by eq.\ \ref{eq:SDebye} and
 \begin{align}
 R_g^2&=\alpha(L/l_B)^2 \langle R_g^2\rangle^2
 \label{eq:RgexvWC}
@@ -914,10 +914,10 @@ and $\epsilon=0.170$. The function $w(x)$ is another empirical cross-over functi
 \begin{align}
 w(x) &= \left[ 1+\tanh\left(\frac{x-C_4}{C_5}\right)/C_5 \right]/2
 \end{align}
-The parameters $C_i$ have been given in \cite{Pedersen96Macrom} as 
+The parameters $C_i$ have been given in \cite{Pedersen96Macrom} as
 $C_1=1.220$, $C_2=0.4288$, $C_3=-1.651$, $C_4=1.523$, and $C_5=0.1477$.
 
-Furthermore the parameter $\xi$ in the cross-over function $\chi(Q,L,l_B)$ needs to be chosen as 
+Furthermore the parameter $\xi$ in the cross-over function $\chi(Q,L,l_B)$ needs to be chosen as
 \begin{align}
 \xi&=Ql_B\left(\frac{\pi l_B}{1.103 L}\right)^{3/2}\left[\frac{R_g^2}{l_B^2}\right]^{1.282}
 \end{align}
@@ -2037,7 +2037,7 @@ parameters $S_1$ and $S_2$
 \begin{align}
 \begin{split}
 \left\langle F_{\pm\pm}(\BM{Q})\right\rangle &=  F_N(\BM{Q})
-+F_M(\BM{Q})S_1\sin^2\psi
+\mp F_M(\BM{Q})S_1\sin^2\psi
 \end{split} \\[3mm]
 \left\langle F_{\pm\mp}(\BM{Q})\right\rangle &= F_M(\BM{Q})S_1\sin\psi\cos\psi  \\[3mm]
 \begin{split}

@@ -28,6 +28,11 @@
 #include <gsl/gsl_math.h>
 #include "include/sasfit_sq_utils.h"
 
+/**
+ *   this structure factor has been removed from the menu interface of SASfit
+ *   there are much better theoretically justified models
+**/
+
 /*
  * correlation hole structure factor
  * @param eta hole volume fraction
