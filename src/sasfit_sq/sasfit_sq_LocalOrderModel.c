@@ -28,14 +28,10 @@
 #include <gsl/gsl_math.h>
 #include "include/sasfit_sq_utils.h"
 
-/*
-float S_LocalOrderModel(Tcl_Interp *interp,
-			 float q,
-			 float D,
-			 float alpha,
-			 float z,
-			bool  *error)
-*/
+/**
+ *   this structure factor has been removed from the menu interface of SASfit
+ *   there are much better theoretically justified models
+**/
 
 /**
  * Random Distribution Model
@@ -56,7 +52,7 @@ scalar sasfit_sq_LocalOrderModel(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((z <= 0.0), param, "z(%lg) <= 0",z);
 
 	tmp = alpha*q*D;
-	Phi = 3.0*(sin(tmp)-tmp*cos(tmp))/pow(tmp,3.0);
+	if (tmp==0) Phi=0; else Phi = 3.0*(sin(tmp)-tmp*cos(tmp))/pow(tmp,3.0);
 
-	return 1.0+4.0*sin(q*D)/(q*D)-z*Phi;
+    if (q*D==0) return 1.0+4.0-z*Phi; else return 1.0+4.0*sin(q*D)/(q*D)-z*Phi;
 }

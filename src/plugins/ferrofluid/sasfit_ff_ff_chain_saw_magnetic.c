@@ -28,6 +28,7 @@ scalar sasfit_ff_ff_chain_saw_magnetic(scalar q, sasfit_param * param)
 
 	RW_SAW = 0.0;
 	RADAVG = 0.0;
+	PEP    = 0.0;
 
 	R_CORE = 0.0;
 	if ((R_TOT-T_SHELL) > 0) {
@@ -67,6 +68,6 @@ scalar sasfit_ff_ff_chain_saw_magnetic_v(scalar q, sasfit_param * param, int dis
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return V(R_CORE+T_SH)+Vg(R_CORE+T_SH,SIGMA_BRUSH_GAUSSIAN);
+	return V(R_CORE+T_SH,param)+Vg(R_CORE+T_SH,SIGMA_BRUSH_GAUSSIAN);
 }
 

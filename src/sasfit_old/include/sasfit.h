@@ -112,7 +112,7 @@ struct extrapolPar {
 
 float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
 /*
- * if particle_type[i][0] == 0  &&  particle_type[i][1] == 0 
+ * if particle_type[i][0] == 0  &&  particle_type[i][1] == 0
  * then the next 7 parameters are defined as
  *                par[i][0] = c4
  *                par[i][1] = D
@@ -123,7 +123,7 @@ float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
  *                par[i][6] = not used
  *                par[i][7] = not used
  *
- * for the i-th size distribution is a LogNorm distribution, i.e. 
+ * for the i-th size distribution is a LogNorm distribution, i.e.
  * particle_type[i][1] == 1, then the next 7 parameter are defined as
  *                par[i][0] = N
  *                par[i][1] = s
@@ -141,7 +141,7 @@ float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
  *         chi^2 = sum(ln^2(y_i) - ln^2(f(x_i)),i=1,n_points)
  *      error_type == 3
  *         chi^2 = sum(abs(y_i) - abs(f(x_i)),i=1,n_points)
- */ 
+ */
 
 /* float ParActive[(MAX_SIZE_DISTRIBUTIONS+1)][7];
 float Q[MAX_DATA_POINTS], IQ[MAX_DATA_POINTS], IQerror[MAX_DATA_POINTS];
@@ -171,5 +171,4 @@ float F_EllipsoidalCoreShell_core(Tcl_Interp *,float,float,float,float,float,flo
 void  IQ_t(Tcl_Interp *, float, float*, float *, float *, float *, int, sasfit_analytpar *, int, bool *);
 void  IQ_t_global(Tcl_Interp *, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *,int, bool *);
 void  IQ_t_gsl_global(Tcl_Interp *, float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *,int, bool *);
-
 #endif

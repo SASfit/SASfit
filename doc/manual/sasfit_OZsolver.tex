@@ -89,7 +89,7 @@ Transform of $c(r)$. In order to determine the two correlation
 functions $h(r)$ and $c(r)$ for a given pair potential $u(r)$, eq.\
 \ref{eq:ozh(r)} must be supplemented by an auxiliary closure
 relation. Furthermore the Fourier transform of eq.\
-\ref{eq:ozgamma(r)} in combination eq.\ \ref{eq:ozhq} allows to
+\ref{eq:ozgamma(r)} in combination with eq.\ \ref{eq:ozhq} allows to
 write the Fourier transform of the indirect correlation function as
 \begin{align}
 \mathscr{F} \left\{\gamma(r)\right\} &= \tilde{\gamma}(q)  =
@@ -124,7 +124,7 @@ function is not known for any system.
 
 \section{Numerical implementation of the iterative algorithm in \SASfit}
 
-The easiest algorithm for solving the Ornstein Zernike (OZ) equation \ref{eq:ozh(r)} together with the closure equation \ref{eq:ozclosure} is is direct iteration using fast Fourier transformation (see e.g. \cite{Homeier1995}). The solution of the OZ equations can be treated either as a fixed point problem for the unknown function $\gamma(r)$, so that $T^\mathrm{OZ}_f(\gamma)=\gamma$ or as a multidimensional root finding problem $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. In \SASfit the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ is implemented as:
+The easiest algorithm for solving the Ornstein Zernike (OZ) equation \ref{eq:ozh(r)} together with the closure equation \ref{eq:ozclosure} is direct iteration using fast Fourier transformation (see e.g. \cite{Homeier1995}). The solution of the OZ equations can be treated either as a fixed point problem for the unknown function $\gamma(r)$, so that $T^\mathrm{OZ}_f(\gamma)=\gamma$ or as a multidimensional root finding problem $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. In \SASfit the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ is implemented as:
 \begin{enumerate}
 \item using a starting value for $\gamma(r)$, e.q. set $\gamma(r)\equiv 0$
 \item Calculate a bridge function. Many different theories how to calculate the bridge function have been published. A few of them are described in the next section. The bridge function is often expressed in terms of the known potential $u(r)$ and the indirect correlation function $\gamma(r)$, which needs to be determined.
@@ -163,7 +163,7 @@ $\sum_{j=0}^{N_p-1} \Delta r$, $r_j=(j+1)\Delta r$, $q_j=(j+1)\Delta q$, and $\i
 $\sum_{j=0}^{N_p-1} \Delta q$. The step width $\Delta r$ in real space has to be defined by the user as well
 as the number of grid points $N_p$. The step width in reciprocal space is than obtained by
 $\Delta q=\frac{\pi}{(N_p+1)\Delta r}$.
-It is important to mention that values of first elements of $r_{i=0}$ and $k_{i=0}$ arrays equal $\Delta r$
+It is important to mention that the values of the first elements of the arrays $r_{i}$ and $k_{i}$ equals $\Delta r$
 and $\Delta q$, respectively ($r_0=\Delta r, q_0=\Delta q$).
 \begin{align}
 \tilde{c}_i &=                   \frac{4\pi \Delta r^2}{(i+1)\Delta q} \sum_{j=0}^{N_p-1}              c_j (j+1) \sin\left(\frac{\pi(j+1)(i+1)}{N_p+1}\right) \\
@@ -620,7 +620,7 @@ f(r,\alpha) &= 1-\exp(-\alpha r)
 \end{align}
 The parameter $\alpha$ is varied in a self-consistent manner until virial and
 compressibility routes for the pressure coincide.
-The HMSA closure reduces to HNC for $f(r,\alpha) \xrightarrow{\alpha\rightarrow\infty} 1$ and to SMSA when
+The HMSA closure reduces to HNC for $f(r,\alpha) \xrightarrow{\alpha\rightarrow\infty} 1$ 
 and to SMSA when $f(r,\alpha) \xrightarrow{\alpha\rightarrow 0} 0$.
 
 \section{Interaction Potentials}
@@ -632,12 +632,12 @@ or a short range $u_\text{SR}(r,\sigma,\ldots)$
 and long range $u_\text{LR}(r,\sigma,\ldots)$, or an attractive $u_\text{A}(r,\sigma,\ldots)$ and
 repulsive $u_\text{R}(r,\sigma,\ldots)$ potential part.
 One famous partition has been introduced by Weeks-Chandler-Andersen (WCA) \cite{Weeks1971}.
-The partitioned the potential $u(r)=u_\text{R}(r)+u_\text{A}(r)$ in a repulsive part $u_\text{R}(r)$
+They partitioned the potential $u(r)=u_\text{R}(r)+u_\text{A}(r)$ in a repulsive part $u_\text{R}(r)$
 with an additional condition that $u_\text{R}(r)  \xrightarrow{r\rightarrow\infty}0 $,
 and an attractive part $u_\text{A}(r)$.
 In some other closures the partition is done in a reference and perturbation $u(r)=u_\text{ref}(r)+u_\text{pert}(r)$
 or a short range and long range part $u(r)=u_\text{SR}(r)+u_\text{LR}(r)$.
-The definitions together with the different ways partitioning are defined below for
+The definitions together with the different ways of partitioning the potentials are defined below for
 each potential.
 
 \newpage
@@ -1181,3 +1181,6 @@ repulsive ($K_i>0$) or attractive ($K_i<0$) and the modulus of $\abs{K_i}$ defin
 \caption{Access to the solutions of the OZ-solver.}
 \label{fig:OZsolverResults4fitting}
 \end{figure}
+
+
+The OZ-solver in \SASfit does not allow at the moment an optimization of the parameters of the pair interaction potential in the fitting routine to fit the corresponding structure factor for single or multiple data sets. The main reason for that is, that in the implemented Levenberg-Marquardt-algorithmus the partial derivatives have to be calculated for every q-value. To do this with the implemented routine for the OZ-solver would be too time consuming at the moment. Nevertheless, \SASfit allows to have access up to 6 pre-calculated solutions of the OZ equations. These solutions can be stored as splines under the names "\texttt{SQ oz 1}", "\texttt{SQ oz 2}"  to "\texttt{SQ oz 6}" in the menu interface of the OZ-solver. These splines functions are made available in the menu for calculating structure factors under the names \texttt{[by plugins¦SQ calculated by OZ solver¦SQ oz 1]} $\ldots$ \texttt{[by plugins¦SQ calculated by OZ solver¦SQ oz 6]}. The extrapolation to $Q=0$ is done by the OZ-solver by a quadratic extrapolation to zero of the first three $S(Q)$. For $Q>Q_\textrm{max}$ it is assumed that $S(Q>Q_\textrm{max})\equiv 1$. As at the moment all implemented potentials scale with a size parameter (diameter $D$), i.e. that the structure factor for different diameters $D=2R$ scales as $S(QD)=S(Q2R)$ for all $D$. Therefore only the radius is an input values for the structure factors "\texttt{SQ oz 1}"-"\texttt{SQ oz 6}" and can be fitted. 

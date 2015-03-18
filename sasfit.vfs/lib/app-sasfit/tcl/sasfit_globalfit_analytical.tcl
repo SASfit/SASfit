@@ -3618,18 +3618,18 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s8,label) ""
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
-				}
-	    "Correlation Hole"  { set actualPar(SQ,s1,label) "h ="
-				  set actualPar(SQ,s2,label) "eta ="
-				  set actualPar(SQ,s3,label) ""
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
+				} #
+#	    "Correlation Hole"  { set actualPar(SQ,s1,label) "h ="
+#				  set actualPar(SQ,s2,label) "eta ="
+#				  set actualPar(SQ,s3,label) ""
+#				  set actualPar(SQ,s4,label) ""
+#				  set actualPar(SQ,s5,label) ""
+#				  set actualPar(SQ,s6,label) ""
+#				  set actualPar(SQ,s7,label) ""
+#				  set actualPar(SQ,s8,label) ""
+#				  set actualPar(SQ,s9,label) ""
+#				  set actualPar(SQ,s10,label) ""
+#				}
 	  "Critical Scattering" { set actualPar(SQ,s1,label) "kappa ="
 				  set actualPar(SQ,s2,label) "zeta ="
 				  set actualPar(SQ,s3,label) ""
@@ -3641,7 +3641,8 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
 				}
-	  "Macro Ion (HP)"      { set actualPar(SQ,s1,label) {T \[°C\] =}
+	  "Macro Ion (HP)" \
+				{ set actualPar(SQ,s1,label) {T \[°C\] =}
 				  set actualPar(SQ,s2,label) "Z_eff ="
 				  set actualPar(SQ,s3,label) "RHS ="
 				  set actualPar(SQ,s4,label) "ION ="
@@ -3652,7 +3653,8 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
 				}
-	  "Hayter Penfold RMSA" { set actualPar(SQ,s1,label) {RHS \[nm\] =}
+	  "Hayter Penfold RMSA" \
+				{ set actualPar(SQ,s1,label) {RHS \[nm\] =}
 				  set actualPar(SQ,s2,label) "Z ="
 				  set actualPar(SQ,s3,label) "eta ="
 				  set actualPar(SQ,s4,label) {T \[K\] =}
@@ -3687,29 +3689,8 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
 				}
-	  "LocalOrder"          { set actualPar(SQ,s1,label) "D ="
-				  set actualPar(SQ,s2,label) "alpha ="
-				  set actualPar(SQ,s3,label) "z ="
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	  "RandomDistribution"  { set actualPar(SQ,s1,label) "Rca ="
-				  set actualPar(SQ,s2,label) "R ="
-				  set actualPar(SQ,s3,label) "fp ="
-				  set actualPar(SQ,s4,label) "epsilon ="
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-           "P'(Q):ThinDisc"     { set actualPar(SQ,s1,label) "R ="
+           "P'(Q):ThinDisc"    \
+								{ set actualPar(SQ,s1,label) "R ="
                                   set actualPar(SQ,s2,label) ""
                                   set actualPar(SQ,s3,label) "sigma ="
                                   set actualPar(SQ,s4,label) ""
@@ -4757,8 +4738,8 @@ proc analyticalGlobalSDCmd {simorfit
 	{fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
 				 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
 	{peaks "Peaks" {VoigtPeak PearsonVIIAmplitude}} \
-	{other "other" {Cylinder(PRISM) RPA {{Correlation Hole}} {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
-			BabaAhmed BabaAhmed2 LocalOrder RandomDistribution}} \
+	{other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
+			BabaAhmed BabaAhmed2}} \
 	}]
 
 	set selected_plug [dropdownl_add_entries $sqmenu ::actualGlobalAnalytPar ::tmpGlobalAnalytPar update_datasets_multi [winfo parent $sqmenu] [winfo parent $sqmenu] [get_old_func_name "struct_fac"] [get_children_idx_by_name "struct_fac"]]

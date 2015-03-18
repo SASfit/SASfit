@@ -437,12 +437,12 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->Omega = 4*M_PI;
                 ospparam->fphimax = M_PI/6.0;
                 MM[0][0]=ospparam->ad;  MM[0][1]=0.0;           MM[0][2]=0.0;
-                MM[1][0]=0.0;           MM[1][1]=ospparam->bd;  MM[1][2]=0.0;
-                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->cd;
+                MM[1][0]=0.0;           MM[1][1]=ospparam->ad;  MM[1][2]=0.0;
+                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->ad;
 
-                MN[0][0]=1/ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
-                MN[1][0]=0.0;           MN[1][1]=1/ospparam->bd;MN[1][2]=0.0;
-                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1/ospparam->cd;
+                MN[0][0]=1./ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
+                MN[1][0]=0.0;           MN[1][1]=1./ospparam->ad;MN[1][2]=0.0;
+                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1./ospparam->ad;
                 break;
               }
 // BCC Body-centered cubic

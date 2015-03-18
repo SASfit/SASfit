@@ -176,14 +176,14 @@ sasfit_ferrofluid_DLLEXP scalar sasfit_ff_ff_chain_rw_radial_v(scalar q, sasfit_
  *       <td>\b pol</td>
  *       <td>incident neutron polarisation</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b pep</td>
+ *       <td>pep=0: spherical, otherwise cubic particles</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b yaw (deg)</td>
+ *       <td>orientation</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b sigma</td>
+ *       <td>orientation distribution</td>
  *      </tr><tr>
  *       <td>\b TPLUS</td>
  *       <td>analyser transmission for positive polarised neutrons</td>

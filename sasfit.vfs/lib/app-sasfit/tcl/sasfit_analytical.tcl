@@ -3588,28 +3588,28 @@ switch $actualPar(SQ,typestr) {
                           set actualPar(SQ,s9,label) ""
                           set actualPar(SQ,s10,label) ""
                         }
-  "LocalOrder"          { set actualPar(SQ,s1,label) "D ="
-                          set actualPar(SQ,s2,label) "alpha ="
-                          set actualPar(SQ,s3,label) "z ="
-                          set actualPar(SQ,s4,label) ""
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-  "RandomDistribution"  { set actualPar(SQ,s1,label) "Rca ="
-                          set actualPar(SQ,s2,label) "R ="
-                          set actualPar(SQ,s3,label) "fp ="
-                          set actualPar(SQ,s4,label) "epsilon ="
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
+#  "LocalOrder"          { set actualPar(SQ,s1,label) "D ="
+#                         set actualPar(SQ,s2,label) "alpha ="
+#                          set actualPar(SQ,s3,label) "z ="
+#                          set actualPar(SQ,s4,label) ""
+#                          set actualPar(SQ,s5,label) ""
+#                          set actualPar(SQ,s6,label) ""
+#                          set actualPar(SQ,s7,label) ""
+#                          set actualPar(SQ,s8,label) ""
+#                          set actualPar(SQ,s9,label) ""
+#                          set actualPar(SQ,s10,label) ""
+#                        }
+#  "RandomDistribution"  { set actualPar(SQ,s1,label) "R ="
+#                          set actualPar(SQ,s2,label) "fp ="
+#                          set actualPar(SQ,s3,label) "epsilon ="
+#                          set actualPar(SQ,s4,label) ""
+#                          set actualPar(SQ,s5,label) ""
+#                          set actualPar(SQ,s6,label) ""
+#                          set actualPar(SQ,s7,label) ""
+#                          set actualPar(SQ,s8,label) ""
+#                          set actualPar(SQ,s9,label) ""
+#                          set actualPar(SQ,s10,label) ""
+#                        }
    "P'(Q):ThinDisc"     { set actualPar(SQ,s1,label) "R ="
                           set actualPar(SQ,s2,label) ""
                           set actualPar(SQ,s3,label) ""
@@ -6866,28 +6866,28 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(SQ,s9,label) ""
 				  set actualAnalytPar(SQ,s10,label) ""
 				}
-	  "LocalOrder"          { set actualAnalytPar(SQ,s1,label) "D ="
-				  set actualAnalytPar(SQ,s2,label) "alpha ="
-				  set actualAnalytPar(SQ,s3,label) "z ="
-				  set actualAnalytPar(SQ,s4,label) ""
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	  "RandomDistribution"  { set actualAnalytPar(SQ,s1,label) "Rca ="
-				  set actualAnalytPar(SQ,s2,label) "R ="
-				  set actualAnalytPar(SQ,s3,label) "fp ="
-				  set actualAnalytPar(SQ,s4,label) "epsilon ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
+#	  "LocalOrder"          { set actualAnalytPar(SQ,s1,label) "D ="
+#				  set actualAnalytPar(SQ,s2,label) "alpha ="
+#				  set actualAnalytPar(SQ,s3,label) "z ="
+#				  set actualAnalytPar(SQ,s4,label) ""
+#				  set actualAnalytPar(SQ,s5,label) ""
+#				  set actualAnalytPar(SQ,s6,label) ""
+#				  set actualAnalytPar(SQ,s7,label) ""
+#				  set actualAnalytPar(SQ,s8,label) ""
+#				  set actualAnalytPar(SQ,s9,label) ""
+#				  set actualAnalytPar(SQ,s10,label) ""
+#				}
+#	  "RandomDistribution"  { set actualAnalytPar(SQ,s1,label) "R ="
+#				  set actualAnalytPar(SQ,s2,label) "fp ="
+#				  set actualAnalytPar(SQ,s3,label) "epsilon ="
+#				  set actualAnalytPar(SQ,s4,label) ""
+#				  set actualAnalytPar(SQ,s5,label) ""
+#				  set actualAnalytPar(SQ,s6,label) ""
+#				  set actualAnalytPar(SQ,s7,label) ""
+#				  set actualAnalytPar(SQ,s8,label) ""
+#				  set actualAnalytPar(SQ,s9,label) ""
+#				  set actualAnalytPar(SQ,s10,label) ""
+#				}
            "P'(Q):ThinDisc"     { set actualAnalytPar(SQ,s1,label) "R ="
                                   set actualAnalytPar(SQ,s2,label) ""
                                   set actualAnalytPar(SQ,s3,label) "sigma ="
@@ -7675,36 +7675,36 @@ switch -exact $type {
                 10 {return "\n"}
                }
            }
-           "LocalOrder" {
-               switch $num {
-                 0 {return "\n"}
-                 1 {return "D: \n"}
-                 2 {return "alpha: ???\n"}
-                 3 {return "z: \n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "RandomDistribution" {
-               switch $num {
-                 0 {return "\n"}
-                 1 {return "Rca: \n"}
-                 2 {return "R: ???\n"}
-                 3 {return "fp: \n"}
-                 4 {return "epsilon: \n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
+ #          "LocalOrder" {
+ #              switch $num {
+ #                0 {return "\n"}
+ #                1 {return "D: \n"}
+ #                2 {return "alpha: ???\n"}
+ #                3 {return "z: \n"}
+ #                4 {return "\n"}
+ #                5 {return "\n"}
+ #                6 {return "\n"}
+ #                7 {return "\n"}
+ #                8 {return "\n"}
+ #                9 {return "\n"}
+ #               10 {return "\n"}
+ #             }
+ #           }
+ #          "RandomDistribution" {
+ #              switch $num {
+ #                0 {return "\n"}
+ #                1 {return "R: radius\n"}
+ #                2 {return "fp: volume fraction\n"}
+ #                3 {return "fp: \n"}
+ #                4 {return "epsilon: ~1\n"}
+ #                5 {return "\n"}
+ #                6 {return "\n"}
+ #                7 {return "\n"}
+ #                8 {return "\n"}
+ #                9 {return "\n"}
+ #               10 {return "\n"}
+ #              }
+ #          }
            "P'(Q):ThinDisc" {
                switch $num {
                  0 {return "\n"}
@@ -12141,8 +12141,13 @@ button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
 -command {     
 	    save_AP ::tmpAnalytPar ::actualAnalytPar 
 	    cp_arr ::tmpAnalytPar ::AnalytPar
+		set ::SASfitprogressbar 0
+		set ::SASfitinterrupt 0
+		sasfit_timer_start "\nStart simulation 2d"
 	    set Det2DRes [sasfit_2Diq ::AnalytPar {{1 1} {1 1} {1 1}} Detector2DIQGraph]
 #                    puts $Det2DRes
+		sasfit_timer_stop "Simulation 2D" "finished" ""
+		sasfit_timer_start "\nStart plotting 2d"
 	    destroy $Detector2DIQGraph(cw) 
 
 	    if {$::sasfit(width) < $::sasfit(height)} {
@@ -12172,13 +12177,14 @@ button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
 	       }
 	    }
 
+
 menu $Detector2DIQGraph(cw).popup -tearoff 0
 $Detector2DIQGraph(cw).popup add command -label "copy to clipboard" -un 0 -command {
 window_to_clipboard $Detector2DIQGraph(cw)
 }
 bind $Detector2DIQGraph(cw) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(cw).popup %X %Y }
 bind $Detector2DIQGraph(cw) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(cw).popup %X %Y }
-
+sasfit_timer_stop "Plotting 2D" "finished" ""
 	  }
 grid   $wdet2D_b.do    -row 4 -column 0 -columnspan 4 -sticky ew
 
@@ -12561,8 +12567,8 @@ None \
 			 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
 {peaks "Peaks" {GaussianAmplitude LorentzianAmplitude VoigtPeak PearsonVIIAmplitude}
 		} \
-{other "other" {Cylinder(PRISM) RPA {{Correlation Hole}} {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
-		BabaAhmed BabaAhmed2 LocalOrder RandomDistribution}} \
+{other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
+		BabaAhmed BabaAhmed2}} \
 }]
 
 set selected_plug [dropdownl_add_entries $sqmenu ::actualAnalytPar ::tmpAnalytPar update_datasets_single [winfo parent $sqmenu] [winfo parent $sdmenu] [get_old_func_name "struct_fac"] [get_children_idx_by_name "struct_fac"]]
