@@ -67,6 +67,7 @@
 #include <sasfit_core.h>
 #include <sasfit_plugin_backend.h>
 #include <sasfit_oz.h>
+#include <omp.h>
 
 #define NRES 30
 #define n_percent 0.1
@@ -2381,6 +2382,7 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	bool   error;
 	int    error_type, rcode, interrupt;
 	float  *a, *dydpar;
+	int th_id, nthreads;
 
 	error = FALSE;
 	//Det2DPar.calc2D = FALSE;
@@ -2415,6 +2417,9 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 			AP[i].FF_active[j] = 0;
 		}
 	}
+	nthreads = 1;
+//	nthreads = omp_get_num_threads();
+	sasfit_out("%d threads are available\n",nthreads);
 	sasfit_ap2paramlist(&lista,&ma,&mfit,&a,AP,NULL,max_SD);
 
 	Ith = dvector(0,ndata-1);
@@ -2434,6 +2439,17 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	    diffR = diffR + fabs((Ith[i]-Ih[i]));
 	    obsR = obsR + fabs(Ih[i]);
 	    wdiffR=chisq;
+		if (error==TRUE) {
+			free_dvector(Ith,0,ndata-1);
+			free_dvector(Ihsubstract,0,ndata-1);
+			free_dvector(h,0,ndata-1);
+			free_dvector(res,0,ndata-1);
+			free_dvector(Ih,0,ndata-1);
+			free_dvector(DIh,0,ndata-1);
+			free_dvector(dydpar,0,ma-1);
+			Tcl_Free((char *) AP);
+			return TCL_ERROR;
+		}
 	    sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i+1.0)/(1.0*ndata)*100.0);
 	    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
@@ -2660,6 +2676,26 @@ for (j=0;j<GCP.nmultset;j++) {
             totndata++;
        }
 	   ipoint++;
+	   if (error==TRUE ) {
+	      for (k=0;k<GCP.nmultset;k++) {
+             free_dvector(Ith[k],0,ndata[k]-1);
+             free_dvector(Isub[k],0,ndata[k]-1);
+             free_dvector(h[k],0,ndata[k]-1);
+             free_dvector(res[k],0,ndata[k]-1);
+             free_dvector(Ih[k],0,ndata[k]-1);
+             free_dvector(DIh[k],0,ndata[k]-1);
+		  }
+          Tcl_Free((char *) GAP);
+		  free_dvector(dydpar,0,ma-1);
+		Tcl_Free((char *) Isub);
+		Tcl_Free((char *) h);
+		Tcl_Free((char *) Ih);
+		Tcl_Free((char *) Ith);
+		Tcl_Free((char *) DIh);
+		Tcl_Free((char *) res);
+		  free_ivector(ndata,0,GCP.nmultset-1); // see below
+          return TCL_ERROR;
+	   }
        sprintf(sBuffer,"set ::SASfitprogressbar %lf",100.0*ipoint/(1.0*npoints));
        Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);

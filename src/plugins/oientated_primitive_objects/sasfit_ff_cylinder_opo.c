@@ -29,9 +29,7 @@ scalar sasfit_ff_cylinder_opo(scalar q, sasfit_param * param)
 	opod.c = C;
     opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_setRotationMatrix(&opod);
-    opo_RotateAxis(&opod);
-    opo_setDetDinv(&opod);
+    opo_init(&opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
@@ -59,9 +57,7 @@ scalar sasfit_ff_cylinder_opo_f(scalar q, sasfit_param * param)
 	opod.c = C;
     opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_setRotationMatrix(&opod);
-    opo_RotateAxis(&opod);
-    opo_setDetDinv(&opod);
+    opo_init(&opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 

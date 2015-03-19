@@ -51,9 +51,9 @@
 #define EC_Z	param->p[11]
 #define ETA_P	param->p[12]
 #define ETA_M	param->p[13]
-#define ALPHA   param->p[14]
-#define BETA    param->p[15]
-#define GAMMA   param->p[16]
+#define ALPHA   param->p[14]*M_PI/180.
+#define BETA    param->p[15]*M_PI/180.
+#define GAMMA   param->p[16]*M_PI/180.
 #define PSI_DEG param->p[17]
 
 #endif // end of file

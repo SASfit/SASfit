@@ -211,6 +211,13 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                     if (sasfit_2d_param.qwidth == 0) {
                         IQ(interp,Deth[i][j],Detres,a,&DetIth[i][j],&Detsubstract,
                             dydpar,max_SD,AP,error_type,0,&error);
+                        if ( error==TRUE) {
+                            free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                            free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                            free_dvector(dydpar,0,ma-1);
+                            Tcl_Free((char *) AP);
+                            return TCL_ERROR;
+                        }
                         sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
                         Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
                         Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
@@ -249,6 +256,13 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 
                                 IQ(interp,Q,Detres,a,&DetIth[i][j],&Detsubstract,
                                     dydpar,max_SD,AP,error_type,0,&error);
+                                if (error==TRUE) {
+                                    free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                                    free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
+                                    free_dvector(dydpar,0,ma-1);
+                                    Tcl_Free((char *) AP);
+                                    return TCL_ERROR;
+                                }
                                 sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
                                 Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
                                 Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
