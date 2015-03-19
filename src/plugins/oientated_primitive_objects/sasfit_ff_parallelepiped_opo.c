@@ -22,18 +22,16 @@ scalar sasfit_ff_parallelepiped_opo(scalar q, sasfit_param * param)
 
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
 	opod.a = A;
 	opod.b = B;
 	opod.c = C;
     opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_setRotationMatrix(&opod);
-    opo_RotateAxis(&opod);
-    opo_setDetDinv(&opod);
+    opo_init(&opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
@@ -51,18 +49,16 @@ scalar sasfit_ff_parallelepiped_opo_f(scalar q, sasfit_param * param)
     scalar psi;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
 	opod.a = A;
 	opod.b = B;
 	opod.c = C;
     opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_setRotationMatrix(&opod);
-    opo_RotateAxis(&opod);
-    opo_setDetDinv(&opod);
+    opo_init(&opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 

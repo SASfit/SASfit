@@ -222,7 +222,7 @@ void opo_setRotationMatrix(opo_data *opod) {
 int opo_set_e(double *e, double ex, double ey, double ez) {
     scalar emod;
     emod = sqrt(ex*ex+ey*ey+ez*ez);
-    if (emod == 0) return 0;
+    if (fabs(emod) <= sasfit_eps_get_comp()) return 0;
     e[0]=ex/emod;
     e[1]=ey/emod;
     e[2]=ez/emod;
@@ -296,6 +296,13 @@ void opo_RotateAxis(opo_data *opod) {
     opo_RotateVector(&opod->Rotation,opod->ea,opod->Rot_ea);
     opo_RotateVector(&opod->Rotation,opod->eb,opod->Rot_eb);
     opo_RotateVector(&opod->Rotation,opod->ec,opod->Rot_ec);
+}
+
+void opo_init (opo_data *opod) {
+    opo_setRotationMatrix(opod);
+    opo_RotateAxis(opod);
+    opo_setDinv(opod);
+    opo_setDetDinv(opod);
 }
 
 scalar opo_sinc(scalar x)

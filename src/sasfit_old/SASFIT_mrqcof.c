@@ -88,10 +88,14 @@ for (m=0;m<(*GCP).nmultset;m++) {
         }
 		(*funcs)(interp,x[m][i],res[m][i],a,&ymod,&ysub,dyda,max_SD,GlobalAP,GCP,error_type,m+1,error);
 		ipoint++;
+		if (*error == TRUE ) {
+			free_dvector(dyda,0,ma-1);
+			return;
+        }
 		sprintf(sBuffer,"set ::SASfitprogressbar %lf",(ipoint+1.0)/(1.0*npoints)*100.0);
 	    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
-        interrupt == check_interrupt4calc(interp,error);
+        interrupt = check_interrupt4calc(interp,error);
 		if (*error == TRUE ) {
 			free_dvector(dyda,0,ma-1);
 			return;
@@ -179,6 +183,10 @@ void (*funcs)();
 							}
                 }
 		(*funcs)(interp,x[i],res[i],a,&ymod,&ysub,dyda,max_SD,AP,error_type,0,error);
+		if (*error == TRUE ) {
+			free_dvector(dyda,0,ma-1);
+			return;
+		}
 		sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i+1.0)/(1.0*ndata)*100.0);
 	    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
