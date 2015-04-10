@@ -1,0 +1,241 @@
+/*
+ * plugins/groups.form_fac.def
+ *
+ * Copyright (c) 2008-2013, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ */
+
+/*
+ * In this file are all group definitions including their documentation listed.
+ *
+ * For reference on the syntax, see the doxygen documentation:
+ * http://www.stack.nl/~dimitri/doxygen/grouping.html
+ */
+
+// first level group mounted in the GUI
+/**
+ * \defgroup form_fac Form Factors
+ * \ingroup model_functions
+ *
+ * A form factor describes the shape and inner structure of a particle.
+ *
+ * \toplvldescr{form factor,sasfit_ff,form_fac}
+ */
+
+/** 
+ * \defgroup ff_plugins by plugins
+ * \ingroup form_fac
+ *
+ * This group contains form factors from plugins.
+ *
+ * \modname{ff_plugins}
+ */
+
+/** 
+ * \defgroup ff_plugins_spheres_shells Spheres & Shells
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for sheres and shperical shells with many different radial profiles.
+ *
+ * \modname{ff_plugins_spheres_shells}
+ */
+
+ /** 
+ * \defgroup ff_non-particular non-particular structures 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of non-particular structures.
+ *
+ * \modname{ff_non-particular}
+ */
+
+/** 
+ * \defgroup ff_plugins_anisotropic anisotropic obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of very anisotropic shapes like local planar and local cylindrical objects.
+ *
+ * \modname{ff_plugins_anisotropic}
+ */
+
+/** 
+ * \defgroup ff_plugins_localplanar local planar obj.
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains form factors for different of local planar obj.
+ *
+ * \modname{ff_plugins_localplanar}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_localcylindrical local cylindrical obj. 
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains form factors for different of local cylindrical obj.
+ *
+ * \modname{ff_plugins_localcylindrical}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_pcslocalplanar Pcs(Q) for planar obj.
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains cross section factors for different of of local planar obj.
+ *
+ * \modname{ff_plugins_pcslocalplanar}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_pcslocalcylindrical Pcs(Q) for cylindrical obj. 
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains cross section factors for different of local cylindrical obj.
+ *
+ * \modname{ff_plugins_pcslocalcylindrical}
+ */ 
+
+/** 
+ * \defgroup ff_polymer_micelles polymers & micelles 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for polymers & micelles.
+ *
+ * \modname{ff_polymer_micelles}
+ */
+
+/** 
+ * \defgroup ff_polymer_chains polymer chains 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer chains.
+ *
+ * \modname{ff_polymer_chains}
+ */
+
+/** 
+ * \defgroup ff_polymer_stars polymer stars 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer stars.
+ *
+ * \modname{ff_polymer_stars}
+ */
+
+/** 
+ * \defgroup ff_polymer_rings polymer rings 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer rings.
+ *
+ * \modname{ff_polymer_rings}
+ */
+
+/** 
+ * \defgroup ff_spherical_micelles spherical&ellipsoidal micelles 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles of spherical or ellipsoidal  geometry.
+ *
+ * \modname{ff_spherical_micelles}
+ */
+
+/** 
+ * \defgroup ff_local_cyl_micelles cylindrical&rod-like micelles 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles with local cylindrical geometry.
+ *
+ * \modname{ff_local_cyl_micelles}
+ */
+
+/** 
+ * \defgroup ff_local_planar_micelles local planar micelles (sheets, ULV) 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles with local planar geometry.
+ *
+ * \modname{ff_local_planar_micelles}
+ */
+
+/** 
+ * \defgroup ff_magnetic_objects magnetic objects 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for magnetic objects.
+ *
+ * \modname{ff_magnetic_objects}
+ */
+
+/** 
+ * \defgroup ff_plugins_stroboscopic_superparamagnet stroboscopically measured superparamagnets
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors for stroboscopically measured superparamagnetic particles.
+ *
+ * \modname{ff_plugins_stroboscopic_superparamagnet}
+ */
+ 
+/** 
+ * \defgroup ff_magnetic_spinmisalignment magn. spin misalignment 
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors and correlation function of magnetic spin misalignment.
+ *
+ * \modname{ff_magnetic_spinmisalignment}
+ */
+
+/** 
+ * \defgroup ff_plugins_ferrofluid ferrofluid form factors 
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors for different ferrofluid particles.
+ *
+ * \modname{ff_plugins_ferrofluid}
+ */
+
+/** 
+ * \defgroup ff_user1 user plugins 1 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (1).
+ *
+ * \modname{ff_user1}
+ */
+
+/** 
+ * \defgroup ff_user2 user plugins 2 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (2).
+ *
+ * \modname{ff_user2}
+ */
+
+/** 
+ * \defgroup ff_devel devel plugins 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors under development.
+ *
+ * \modname{ff_devel}
+ */

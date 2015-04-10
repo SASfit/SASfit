@@ -1,0 +1,142 @@
+<html><head>
+<title>sum - Cyclic Redundancy Checks </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/crc/sum.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: sum.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ sum.n
+   -->
+
+<body>
+<h1> sum(n) 1.1.0 crc &quot;Cyclic Redundancy Checks&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> sum - Calculate a sum(1) compatible checksum
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>sum ?1.1.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::crc::sum</b> ?<i class='arg'>-bsd</i> | <i class='arg'>-sysv</i>? ?<i class='arg'>-format fmt</i>? ?<i class='arg'>-chunksize size</i>? [ <i class='arg'>-filename file</i> | <i class='arg'>-channel chan</i> | <i class='arg'>string</i> ]</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides a Tcl-only implementation of the sum(1) command
+which calculates a 16 bit checksum value from the input data.  The BSD
+sum algorithm is used by default but the SysV algorithm is also
+available.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::crc::sum</b> ?<i class='arg'>-bsd</i> | <i class='arg'>-sysv</i>? ?<i class='arg'>-format fmt</i>? ?<i class='arg'>-chunksize size</i>? [ <i class='arg'>-filename file</i> | <i class='arg'>-channel chan</i> | <i class='arg'>string</i> ]</a><dd>
+
+
+The command takes string data or a file name or a channel and returns
+a checksum value calculated using the <strong>sum(1)</strong> algorithm. The
+result is formatted using the <i class='arg'>format</i>(n) specifier provided or as
+an unsigned integer (%u) by default.
+
+</dl>
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+
+<dl>
+
+<dt>-sysv<dd>
+
+The SysV algorithm is fairly naive. The byte values are summed and any
+overflow is discarded. The lowest 16 bits are returned as the
+checksum.  Input with the same content but different ordering will
+give the same result.
+
+<br><br>
+<dt>-bsd<dd>
+
+This algorithm is similar to the SysV version but includes a bit rotation
+step which provides a dependency on the order of the data values.
+
+<br><br>
+<dt>-filename <i class='arg'>name</i><dd>
+
+Return a checksum for the file contents instead of for parameter data.
+
+<br><br>
+<dt>-channel <i class='arg'>chan</i><dd>
+
+Return a checksum for the contents of the specified channel. The
+channel must be open for reading and should be configured for binary
+translation. The channel will no be closed on completion.
+
+<br><br>
+<dt>-chunksize <i class='arg'>size</i><dd>
+
+Set the block size used when reading data from either files or
+channels. This value defaults to 4096.
+
+<br><br>
+<dt>-format <i class='arg'>string</i><dd>
+
+Return the checksum using an alternative format template.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::sum &quot;Hello, World!&quot;
+37287
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::sum -format 0x%X &quot;Hello, World!&quot;
+0x91A7
+</pre></td></tr></table></p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% crc::sum -file sum.tcl
+13392
+</pre></td></tr></table></p>
+
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+cksum(n), crc32(n), sum(1)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+checksum, cksum, crc, crc32, cyclic redundancy check, data integrity, security, sum
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>
+

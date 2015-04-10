@@ -1,0 +1,1 @@
+If the interwiki bot is interrupted, it will store a dump file here. This file will be read when using the interwiki bot with -restore or -continue.

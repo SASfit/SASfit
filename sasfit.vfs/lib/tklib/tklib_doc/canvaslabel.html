@@ -1,0 +1,140 @@
+<! -- -*- tk -*- canvasLabel manpage
+   -->
+<html><head>
+<title>canvasLabel - canvasLabel class </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/tkpiechart/canvaslabel.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 1995-2004 Jean-Luc Fontaine &lt;jfontain@free.fr&gt;
+   -->
+<! -- CVS: $Id: canvaslabel.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ canvasLabel.n
+   -->
+
+<body>
+<h1> canvasLabel(n) 6.6 tkpiechart &quot;canvasLabel class&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> canvasLabel - tkpiechart canvas label class
+
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#options">OPTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tags">TAGS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>stooop 4.1</b><br>
+package require <b>switched 2.2</b><br>
+package require <b>tkpiechart 6.6</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>stooop::new</b> <strong>canvasLabel</strong> <i class='arg'>canvas</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>switched::configure</b> <i class='arg'>canvasLabelObject</i> ?options?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>switched::cget</b> <i class='arg'>canvasLabelObject</i> <i class='arg'>option</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>stooop::delete</b> <i class='arg'>canvasLabelObject</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+The canvasLabel class brings some Tk label widget functionality to the canvas text item, such as a background and a border.
+<p>The canvasLabel is built with a bullet rectangle on the left side of the text. The relief changes according to the select state, with a traditionally sunken relief when selected.
+<p>The label has a specific tag, which can be used to retrieve the coordinates of the object or move it, thanks to the canvas facilities.
+<dl>
+<dt><a name="1"><b class='cmd'>stooop::new</b> <strong>canvasLabel</strong> <i class='arg'>canvas</i> ?options?</a><dd>
+
+Creates a canvasLabel object in the specified Tk canvas. The canvasLabel object identifier is returned (referred to as <em>canvasLabelObject</em> in this document).
+<br><br>
+<dt><a name="2"><b class='cmd'>switched::configure</b> <i class='arg'>canvasLabelObject</i> ?options?</a><dd>
+
+Configures a canvasLabel object or returns all the options with their current values if no options are passed as parameters.
+<br><br>
+<dt><a name="3"><b class='cmd'>switched::cget</b> <i class='arg'>canvasLabelObject</i> <i class='arg'>option</i></a><dd>
+
+Returns an option value for the specified canvasLabel object.
+<br><br>
+<dt><a name="4"><b class='cmd'>stooop::delete</b> <i class='arg'>canvasLabelObject</i></a><dd>
+
+Deletes the specified canvasLabel object.
+</dl>
+
+<h2><a name="options">OPTIONS</a></h2>
+<p>
+<dl>
+<dt><strong>-anchor</strong> value<dd>
+Specifies the anchor position of the rectangle and the text, relative to the positioning point. The behavior is similar to the <strong>-anchor</strong> option of the <strong>canvas</strong> <em>text</em> item, except that the rectangle is taken into account. The default is <em>center</em>.
+<br><br>
+<dt><strong>-background</strong> color<dd>
+Specifies the background color of the bullet rectangle, as in the <strong>-fill</strong> option of the <strong>canvas</strong> <em>rectangle</em> item. The default is transparent (empty string).
+<br><br>
+<dt><strong>-bordercolor</strong> color<dd>
+Specifies the border color of the rectangle, as in the <strong>-outline</strong> option of the <strong>canvas</strong> <em>rectangle</em> item. The default is black.
+<br><br>
+<dt><strong>-borderwidth</strong> value<dd>
+Specifies the border width of the rectangle, as in the <strong>-width</strong> option of the <strong>canvas</strong> <em>rectangle</em> item. By default, the width is 1 pixel, which is the minimum width.
+<br><br>
+<dt><strong>-bulletwidth</strong> value<dd>
+Specifies the width of the rectangle placed to the left of the text. Defaults to <em>10</em>.
+<br><br>
+<dt><strong>-font</strong> value<dd>
+Specifies the font of the text, as in the <strong>-font</strong> option of the <strong>canvas</strong> <em>text</em> item. The default is system dependent.
+<br><br>
+<dt><strong>-foreground</strong> color<dd>
+Specifies the color of the text, as in the <strong>-fill</strong> option of the <strong>canvas</strong> <em>text</em> item. The default is black.
+<br><br>
+<dt><strong>-justify</strong> value<dd>
+Specifies how to justify the text, as in the <strong>-justify</strong> option of the <strong>canvas</strong> <em>text</em> item. The default is <em>left</em>.
+<br><br>
+<dt><strong>-minimumwidth</strong> value<dd>
+The total label width will not go below the specified value, but may be larger if the label text requires it.
+<br><br>
+<dt><strong>-padding</strong> value<dd>
+Specifies how much space to leave between the text and the closest rectangle edge. Units are identical to those specified in the <strong>canvas</strong> <em>COORDINATES</em> manual section.
+<br><br>
+<dt><strong>-scale</strong> list<dd>
+List of 2 floating point numbers used to set the scaling factor in the x and y axis. Scaling is applied immediately and defaults to 1.
+<br><br>
+<dt><strong>-select</strong> boolean<dd>
+Sets the label state.
+<br><br>
+<dt><strong>-selectrelief</strong> value<dd>
+Either <em>flat</em>, <em>raised</em> or <em>sunken</em>. Specifies the 3D effect desired for the text area when the label is selected.
+<br><br>
+<dt><strong>-stipple</strong> bitmap<dd>
+Specifies the stipple pattern filling the rectangle, as in the <strong>-stipple</strong> option of the <strong>canvas</strong> <em>rectangle</em> item. There is no bitmap by default.
+<br><br>
+<dt><strong>-text</strong> text<dd>
+Specifies the string to be displayed in the text area, as in the <strong>-text</strong> option of the <strong>canvas</strong> <em>text</em> item. The default is an empty string.
+<br><br>
+<dt><strong>-textbackground</strong> color<dd>
+Specifies the color of the text area background.
+<br><br>
+<dt><strong>-width</strong> value<dd>
+Specifies a maximum line length for the text, as in the <strong>-width</strong> option of the <strong>canvas</strong> <em>text</em> item. The default is <em>0</em>.
+</dl>
+
+<h2><a name="tags">TAGS</a></h2>
+<p>
+The labeler has the following specific tag (see the <strong>canvas</strong> manual page <em>ITEM IDS AND TAGS</em> section for more information):
+<ul>
+  <li>canvasLabel(canvasLabelObject)
+</ul>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+pie, pieBoxLabeler, piePeripheralLabeler
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+canvas, labeler, pie, slice
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 1995-2004 Jean-Luc Fontaine &lt;jfontain@free.fr&gt;<br>
+</body></html>
