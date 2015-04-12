@@ -165,6 +165,11 @@ macro(sasfit_cmake_plugin)
 
 	set(PRJ_SOURCE ${SOURCE_${PRJ_NAME}})
 	set(LIBRARY_OUTPUT_PATH ${SRC_DIR}/lib)
+    if(NOT EXISTS ${LIBRARY_OUTPUT_PATH})
+        # if the output dir does not exist the linker throws errors difficult to
+        # interpret: "ar" reporting on missing lib which it's supposed to build
+        file(MAKE_DIRECTORY "${LIBRARY_OUTPUT_PATH}")
+    endif()
 
 	add_library(${PRJ_NAME} MODULE ${PRJ_SOURCE})
 
