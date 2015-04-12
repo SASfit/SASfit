@@ -174,12 +174,12 @@ if(NOT OPENMP_FOUND)
 endif()
 
 if(OPENMP_FOUND)
-message(STATUS "Enabling OpenMP support")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+        message(STATUS "Enabling OpenMP support")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 else()
-message(STATUS "Disabling OpenMP support")
+        message(STATUS "Disabling OpenMP support")
 endif()
 
 # get a list of all source files and prepare include dirs
@@ -232,8 +232,6 @@ else(DEBUG)
 	# general purpose binary
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer -fforce-addr")
 endif(DEBUG)
-
-
 
 set_target_properties(sasfit PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
 
