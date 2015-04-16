@@ -401,8 +401,8 @@ TK_LIBRARY='$(prefix)/lib/tk$(VERSION)'
 PRIVATE_INCLUDE_DIR='$(includedir)'
 HTML_DIR='$(DISTDIR)/html'
 TK_PKG_DIR='tk$(VERSION)$(TK_DBGX)'
-TK_RSRC_FILE='tk$(VERSION).rsrc'
-WISH_RSRC_FILE='wish$(VERSION).rsrc'
+TK_RSRC_FILE="tk$(VERSION).rsrc"
+WISH_RSRC_FILE="wish$(VERSION).rsrc"
 
 # Note:  in the following variable, it's important to use the absolute
 # path name of the Tcl directory rather than "..":  this is because
@@ -493,16 +493,16 @@ fi
 if test $tk_aqua = yes; then
     tk_config_files="${tk_config_files} [Wish-Info.plist:../macosx/Wish-Info.plist.in]"
     EXTRA_WISH_LIBS='-sectcreate __TEXT __info_plist Wish-Info.plist'
-    LIB_RSRC_FILE='${TK_RSRC_FILE}'
-    APP_RSRC_FILE='${WISH_RSRC_FILE}'
+    LIB_RSRC_FILE="${TK_RSRC_FILE}"
+    APP_RSRC_FILE="${WISH_RSRC_FILE}"
     REZ=/Developer/Tools/Rez
     REZ_FLAGS='-d "SystemSevenOrLater=1" -useDF -ro'
     if test "$SHARED_BUILD" = 0; then
         EXTRA_INSTALL_BINARIES='@echo "Installing $(TK_RSRC_FILE) to $(LIB_INSTALL_DIR)" && $(INSTALL_DATA) $(TK_RSRC_FILE) $(LIB_INSTALL_DIR)'
-	TK_BUILD_LIB_SPEC="$TK_BUILD_LIB_SPEC -sectcreate __TEXT __tk_rsrc `pwd`/\${TK_RSRC_FILE}"
-	TK_LIB_SPEC="$TK_LIB_SPEC -sectcreate __TEXT __tk_rsrc ${libdir}/\${TK_RSRC_FILE}"        
+	TK_BUILD_LIB_SPEC="$TK_BUILD_LIB_SPEC -sectcreate __TEXT __tk_rsrc `pwd`/${TK_RSRC_FILE}"
+	TK_LIB_SPEC="$TK_LIB_SPEC -sectcreate __TEXT __tk_rsrc ${libdir}/${TK_RSRC_FILE}"
     elif test "$FRAMEWORK_BUILD" = "0"; then
-        TK_SHLIB_LD_EXTRAS="$TK_SHLIB_LD_EXTRAS -sectcreate __TEXT __tk_rsrc \${TK_RSRC_FILE}"
+        TK_SHLIB_LD_EXTRAS="$TK_SHLIB_LD_EXTRAS -sectcreate __TEXT __tk_rsrc ${TK_RSRC_FILE}"
     fi
 fi
 

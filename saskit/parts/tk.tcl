@@ -14,6 +14,10 @@ part::create tk \
         if {([utils::platformdir] == "unix") && ([package vcompare $tclversion 8.5] >= 0)} {
             lappend cmd [conf::c_if xft --enable-xft --disable-xft]
         }
+        if { $::tcl_platform(os) == "Darwin" } {
+            lappend cmd "--enable-aqua"
+            lappend cmd "--without-x"
+        }
         eval $cmd
         conf::make binaries
         conf::make install

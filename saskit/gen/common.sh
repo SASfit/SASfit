@@ -9,7 +9,9 @@ SYSTEM_ARCH="$(uname -m)";
 
 if [ "$SYSTEM_NAME" = "Darwin" ]; then
 	SYSTEM_ARCH="x86_64"
-	export CFLAGS="-arch $SYSTEM_ARCH -L/usr/X11/lib -L/usr/X11R6/lib -I/usr/X11/include"
+#        export CFLAGS="-arch $SYSTEM_ARCH -L/usr/X11/lib -L/usr/X11R6/lib -I/usr/X11/include"
+	export CFLAGS="-arch i386"
+	export CXXFLAGS="-arch i386"
 fi;
 if [ -n "$CFLAGS" ]; then
 	export LDFLAGS="$LDFLAGS $CFLAGS"

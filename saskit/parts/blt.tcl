@@ -38,7 +38,7 @@ part::create blt \
             lappend rc -lwinspool -lgdi32 -lcomdlg32 -limm32 -lcomctl32 -lshell32 -lm
             lappend rc $isnano
         }  else  {
-            lappend rc -lX11
+#            lappend rc -lX11
         }
         return $rc
     } \
