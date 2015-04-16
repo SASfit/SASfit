@@ -27,7 +27,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # Author(s) of this file:
-#   Joachim Kohlbrecherr (joachim.kohlbrecher@psi.ch	)
+#   Joachim Kohlbrecherr (joachim.kohlbrecher@psi.ch)
 
 # Find the sasfit_oz includes and library
 #
