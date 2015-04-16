@@ -233,7 +233,10 @@ else(DEBUG)
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer -fforce-addr")
 endif(DEBUG)
 
-set_target_properties(sasfit PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
+set_target_properties(sasfit PROPERTIES
+	COMPILE_FLAGS "${COMPILE_FLAGS}"
+	MACOSX_RPATH FALSE # cmake 3 compatibility
+)
 
 sasfit_copy_shared_libs(sasfit "sasfit.vfs/lib/Sasfit")
 
@@ -309,6 +312,7 @@ if(CREATE_BINARY)
 	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
         build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
         message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
+        get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
 	# write the list of filenames to a temporary file
         # (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)

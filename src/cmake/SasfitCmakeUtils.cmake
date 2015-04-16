@@ -41,6 +41,8 @@ if(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} VERSION_
 endif(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} VERSION_GREATER 2.6.2)
 cmake_policy(SET CMP0012 NEW)
 
+include(GetPrerequisites)
+
 # adds given files to binary distribution file list
 # needs to be a function, because we operate on a cmake cache variable
 function(sasfit_file_list)
@@ -419,15 +421,6 @@ function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
     message(STATUS "build_saskit '${SASFIT_ROOT_DIR}' '${SASKIT_FILENAME}'")
     set(SASKIT_PATH ${SASFIT_ROOT_DIR}/saskit)
     set(SASKIT_FILE ${SASKIT_PATH}/${SASKIT_FILENAME})
-    if(WIN32)
-        # some required dependencies on windows platforms
-        foreach(LIB_NAME gcc_s_dw2-1 stdc++-6)
-            unset(DEP_LIB CACHE)
-            find_library(DEP_LIB "${LIB_NAME}")
-            list(APPEND SASFIT_BIN_FILE_LIST "${DEP_LIB}")
-        endforeach()
-        set(SASFIT_BIN_FILE_LIST ${SASFIT_BIN_FILE_LIST} PARENT_SCOPE)
-    endif()
     if(EXISTS "${SASKIT_FILE}")
         return() # nothing to do if saskit file exists already
     endif()
@@ -450,6 +443,41 @@ function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
         message(STATUS "dq file built previously not found!")
         message(STATUS "glob pattern: '${GLOB_PATTERN}'")
     endif()
+endfunction()
+
+function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
+    set(SASKIT_FILE ${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME})
+    if(NOT EXISTS "${SASKIT_FILE}")
+        return()
+    endif()
+    # init with linux settings
+    set(EXCLUDE_SYSTEM FALSE)
+    set(RECURSIVE FALSE)
+    if(WIN32)
+        set(EXCLUDE_SYSTEM TRUE)
+    elseif(UNIX AND APPLE) # osx
+        # get libx11 only and its dependencies
+        set(EXCLUDE_SYSTEM TRUE)
+        set(RECURSIVE TRUE)
+    endif()
+    message(STATUS "get_saskit_dependencies of '${SASKIT_FILE}'")
+    get_prerequisites(${SASKIT_FILE} PREREQ ${EXCLUDE_SYSTEM} ${RECURSIVE} "" "")
+    message("PREREQ: '${PREREQ}'")
+    foreach(FN ${PREREQ})
+        if(NOT EXISTS "${FN}")
+            find_library(ABSFN "${FN}")
+            message("found: '${ABSFN}'")
+        else()
+            set(ABSFN "${FN}")
+        endif()
+        message("ABSFN: '${ABSFN}'")
+        if(EXISTS "${ABSFN}")
+            list(APPEND SASFIT_BIN_FILE_LIST "${ABSFN}")
+            message("appended: '${ABSFN}'")
+        endif()
+        unset(ABSFN CACHE)
+    endforeach()
+    set(SASFIT_BIN_FILE_LIST ${SASFIT_BIN_FILE_LIST} PARENT_SCOPE)
 endfunction()
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
