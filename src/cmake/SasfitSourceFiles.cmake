@@ -33,7 +33,7 @@
 # A Cmake module to provide utility functions often used 
 # in sasfit cmake scripts
 #
-# This module expects to live in <sasfit-dir>/src
+# This module expects to live in <sasfit-dir>/src/cmake
 
 cmake_minimum_required(VERSION 2.6.2)
 if(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} VERSION_GREATER 2.6.2)

@@ -174,12 +174,12 @@ if(NOT OPENMP_FOUND)
 endif()
 
 if(OPENMP_FOUND)
-message(STATUS "Enabling OpenMP support")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+        message(STATUS "Enabling OpenMP support")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 else()
-message(STATUS "Disabling OpenMP support")
+        message(STATUS "Disabling OpenMP support")
 endif()
 
 # get a list of all source files and prepare include dirs
@@ -233,9 +233,10 @@ else(DEBUG)
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer -fforce-addr")
 endif(DEBUG)
 
-
-
-set_target_properties(sasfit PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
+set_target_properties(sasfit PROPERTIES
+	COMPILE_FLAGS "${COMPILE_FLAGS}"
+	MACOSX_RPATH FALSE # cmake 3 compatibility
+)
 
 sasfit_copy_shared_libs(sasfit "sasfit.vfs/lib/Sasfit")
 
@@ -311,6 +312,7 @@ if(CREATE_BINARY)
 	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
         build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
         message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
+        get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
 	# write the list of filenames to a temporary file
         # (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
