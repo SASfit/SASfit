@@ -30,14 +30,14 @@
 #define AMPL	param->p[0]
 #define XMIN	param->p[1]
 #define XMAX	param->p[2]
-#define ALPHA	param->p[3]
-#define BETA	param->p[4]
+#define BALPHA	param->p[3]
+#define BBETA	param->p[4]
 #define BCKGR	param->p[5]
 
 scalar sasfit_peak_BetaHelp(scalar x, sasfit_param * param)
 {
 	scalar z, xmin, xmax;
-	
+
 	if (XMIN>XMAX) {
 		xmin = XMAX;
 		xmax = XMIN;
@@ -45,13 +45,13 @@ scalar sasfit_peak_BetaHelp(scalar x, sasfit_param * param)
 		xmin = XMIN;
 		xmax = XMAX;
 	}
-	
+
 	if (x<=xmin) return 0.0;
 	if (x>=xmax) return 0.0;
 
 	z = (x-xmin)/(xmax-xmin);
 
-	return pow(z,ALPHA-1.0)*pow(1.0-z,BETA-1.0);
+	return pow(z,BALPHA-1.0)*pow(1.0-z,BBETA-1.0);
 }
 
 scalar sasfit_peak_BetaMode(sasfit_param * param)
@@ -64,19 +64,19 @@ scalar sasfit_peak_BetaMode(sasfit_param * param)
 		xmin = XMIN;
 		xmax = XMAX;
 	}
-	return 	(ALPHA-1.0)/(ALPHA+BETA-2.)*(xmax-xmin)+xmin;
+	return 	(BALPHA-1.0)/(BALPHA+BBETA-2.)*(xmax-xmin)+xmin;
 }
 
 scalar sasfit_peak_BetaAmplitude(scalar x, sasfit_param * param)
 {
 	scalar mode, a0;
-	
+
 	SASFIT_ASSERT_PTR( param );
 
 	SASFIT_CHECK_COND2((XMIN == XMAX), param, "xmin(%lg) == xmax(%lg)",XMIN,XMAX);
-	SASFIT_CHECK_COND1((ALPHA <= 1.0), param, "alpha(%lg) <= 1",ALPHA);
-	SASFIT_CHECK_COND1((BETA  <= 1.0), param, "beta(%lg) <= 1",BETA);
-	
+	SASFIT_CHECK_COND1((BALPHA <= 1.0), param, "alpha(%lg) <= 1",BALPHA);
+	SASFIT_CHECK_COND1((BBETA  <= 1.0), param, "beta(%lg) <= 1",BBETA);
+
 	mode = sasfit_peak_BetaMode(param);
 	a0 = AMPL/sasfit_peak_BetaHelp(mode,param);
 	return BCKGR+a0*sasfit_peak_BetaHelp(x,param);

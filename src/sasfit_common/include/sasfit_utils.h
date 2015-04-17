@@ -25,8 +25,8 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
-#ifndef SASFIT_UTILS_H 
-#define SASFIT_UTILS_H 
+#ifndef SASFIT_UTILS_H
+#define SASFIT_UTILS_H
 
 #include "sasfit_common_shared_exports.h"
 #include <gsl/gsl_integration.h>
@@ -43,7 +43,7 @@
  */
 /*@{*/
 
-/** 
+/**
  * \def intabseps
  * Absolute error for integration by \ref sasfit_integrate.
  * Left over from old sasfit code.
@@ -53,21 +53,28 @@
 #endif
 #define intabseps 0.0
 
-/** 
+/**
  * \def sasfit_integrate
  * Shortcut for integration routine \ref sasfit_integrate_ctm.
- * Assumes 1000 intervals for integration, an absolute error of 0 
- * (\ref intabseps) and a relative error as reported by 
+ * Assumes 1000 intervals for integration, an absolute error of 0
+ * (\ref intabseps) and a relative error as reported by
  * \ref sasfit_eps_get_aniso.
  */
 #define sasfit_integrate(a,b,fct,p) sasfit_integrate_ctm(a, b, fct, p, 1000, intabseps, sasfit_eps_get_aniso())
 
-/** 
- * \def SASFIT_MAX_WS
+/**
+ * \def SASFIT_MAX_WS_PER_THREAD
+ * Maximum number of simultaneously integration workspaces per thread.
+ * Equals the maximum depth of nesting of integrations.
+ */
+#define SASFIT_MAX_WS_PER_THREAD 10
+
+/**
+ * \def SASFIT_MAX_THREAD
  * Maximum number of simultaneously integration workspaces.
  * Equals the maximum depth of nesting of integrations.
  */
-#define SASFIT_MAX_WS 10
+#define SASFIT_MAX_THREAD 100
 
 /**
  * Contains GSL integration workspace information.
@@ -83,8 +90,8 @@ typedef struct
  */
 typedef struct
 {
-	int last;	//!< Last workspace currently occupied by an integration routine.
-	sasfit_int_workspace_t ws[SASFIT_MAX_WS]; //!< Set of integration workspaces available.
+	int last[SASFIT_MAX_THREAD];	//!< Last workspace currently occupied by an integration routine.
+	sasfit_int_workspace_t ws[SASFIT_MAX_THREAD][SASFIT_MAX_WS_PER_THREAD]; //!< Set of integration workspaces available.
 } sasfit_int_ws_all_t;
 
 
@@ -123,34 +130,34 @@ sasfit_common_DLLEXP const char * sasfit_get_lib_suffix(void);
  * Occupies an integration workspace with a capacity of at least \e size intervals.
  * \param size Number of intervals.
  */
-sasfit_common_DLLEXP void sasfit_int_occupy(int size);
+sasfit_common_DLLEXP void sasfit_int_occupy(int size, int thid);
 
 /**
  * Releases an integration workspace no be used by the next integration routine.
  */
-sasfit_common_DLLEXP void sasfit_int_release(void);
+sasfit_common_DLLEXP void sasfit_int_release(int thid);
 
 /**
  * Returns a pointer to the GSL integration workspace.
  */
-sasfit_common_DLLEXP gsl_integration_workspace * sasfit_int_mem(void);
+sasfit_common_DLLEXP gsl_integration_workspace * sasfit_int_mem(int thid);
 
 /**
  * Frees all GSL integration workspace.
  * \param idx Index of the integration workspace to free.
  * \sa \ref SASFIT_MAX_WS
  */
-sasfit_common_DLLEXP void sasfit_int_free(int idx);
+sasfit_common_DLLEXP void sasfit_int_free(int idx, int thid);
 
 /**
  * Frees all GSL integration workspaces used by SASfit.
  * \note Currently not in use.
  */
-sasfit_common_DLLEXP void sasfit_int_ws_all_free(void);
+sasfit_common_DLLEXP void sasfit_int_ws_all_free(int thid);
 
 /**
  * Performs numerical integration.
- * Use this (or \ref sasfit_integrate) to do numerical integration in your 
+ * Use this (or \ref sasfit_integrate) to do numerical integration in your
  * model function.
  * \param int_start Start of the integration interval. Use \e GSL_NEGINF to
  * specify an infinite interval. An appropriate integration routine is
@@ -168,6 +175,8 @@ sasfit_common_DLLEXP void sasfit_int_ws_all_free(void);
  */
 sasfit_common_DLLEXP scalar sasfit_integrate_ctm(scalar int_start, scalar int_end, sasfit_func_one_t intKern_fct, sasfit_param * param, int limit, scalar epsabs, scalar epsrel);
 
+
+sasfit_common_DLLEXP void sasfit_int_ws_init(void);
 /*@}*/
 #endif // MAKE_SASFIT_PLUGIN
 #endif // file

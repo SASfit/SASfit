@@ -95,7 +95,7 @@ int sasfit_plugin_db_add(const sasfit_plugin_func_t * source)
 			new_size = sasfit_plugin_db.size*2; // double the size
 		}
 		// try to allocate more memory
-		ptr = realloc(sasfit_plugin_db.ptr, 
+		ptr = realloc(sasfit_plugin_db.ptr,
 				sizeof(sasfit_plugin_func_t) * new_size);
 		// allocation failed ?
 		if ( ! ptr ) return -1;
@@ -105,7 +105,7 @@ int sasfit_plugin_db_add(const sasfit_plugin_func_t * source)
 	}
 
 	// quick check of validity and non-empty name
-	if ( ! source->func || 
+	if ( ! source->func ||
 	       source->len <= 0 ||
 	     ! source->name ||
 	     (source->name)[0] == '\0') return -1;

@@ -41,14 +41,14 @@ sasfit_msg_chan_t	sasfit_msg_chans[] =	{
 /* !BEGIN!: Do not edit below this line, see sasfit_common.decls for modifications. */
 
 sasfit_common_stubs_t sasfit_common_stubs = {
-	NULL, /* 0 */
+	sasfit_integrate_ctm, /* 0 */
 	NULL, /* 1 */
 	NULL, /* 2 */
 	NULL, /* 3 */
 	sasfit_set_msg_handler, /* 4 */
 	sasfit_msg, /* 5 */
 	sasfit_param_set_err, /* 6 */
-	sasfit_integrate_ctm, /* 7 */
+	NULL, /* 7 */
 	sasfit_get_lib_prefix, /* 8 */
 	sasfit_get_lib_suffix, /* 9 */
 	sasfit_get_maxpar, /* 10 */
@@ -135,6 +135,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_robertus_calc, /* 91 */
 	sasfit_robertus_subint, /* 92 */
 	sasfit_3f2, /* 93 */
+	sasfit_2f1, /* 94 */
+	sasfit_pfq, /* 95 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

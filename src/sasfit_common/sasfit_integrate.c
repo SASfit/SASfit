@@ -27,93 +27,104 @@
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
 #include "include/sasfit_common.h"
+#include "omp.h"
 
-sasfit_int_workspace_t	sasfit_int_workspace = {0, NULL};
-sasfit_int_ws_all_t	sasfit_int_ws_all = { -1 };
+//sasfit_int_workspace_t	sasfit_int_workspace;
+// = {0, NULL};
+sasfit_int_ws_all_t	sasfit_int_ws_all;
+// = { -1 };
+
 
 // not used yet
-void sasfit_int_ws_all_free(void)
+void sasfit_int_ws_all_free(int thid)
 {
 	int i=0;
-	for(i=SASFIT_MAX_WS-1; i >= 0 ;i--)
+	for(i=SASFIT_MAX_WS_PER_THREAD-1; i >= 0 ;i--)
 	{
-		sasfit_int_free(i);
-		sasfit_int_release();
+		sasfit_int_free(i, thid);
+		sasfit_int_release(thid);
 	}
 }
+void sasfit_int_ws_init(void) {
+    int i,j;
+    for (i=0;i<SASFIT_MAX_THREAD;i++) {
+        for (j=0;j<SASFIT_MAX_WS_PER_THREAD;j++) {
+            sasfit_int_ws_all.last[omp_get_thread_num()] = -1;
+        }
+    }
+}
 
-void sasfit_int_free(int idx)
+void sasfit_int_free(int idx, int thid)
 {
-	if ( idx >= SASFIT_MAX_WS || idx < 0 ) 
+	if ( idx >= SASFIT_MAX_WS_PER_THREAD || idx < 0 )
 	{
 		sasfit_err("Invalid number of integration workspaces !\n");
 		return;
 	}
-	if ( sasfit_int_ws_all.ws[idx].ptr != NULL )
+	if ( sasfit_int_ws_all.ws[omp_get_thread_num()][idx].ptr != NULL )
 	{
-		gsl_integration_workspace_free(sasfit_int_ws_all.ws[idx].ptr);
+		gsl_integration_workspace_free(sasfit_int_ws_all.ws[omp_get_thread_num()][idx].ptr);
 	}
-	sasfit_int_ws_all.ws[idx].ptr = NULL;
-	sasfit_int_ws_all.ws[idx].size = 0;
+	sasfit_int_ws_all.ws[thid][idx].ptr = NULL;
+	sasfit_int_ws_all.ws[thid][idx].size = 0;
 }
 
-void sasfit_int_occupy(int size)
-{
-	int occ = sasfit_int_ws_all.last+1;
-
+void sasfit_int_occupy(int size, int thid)
+{	int occ;
+	occ = sasfit_int_ws_all.last[thid]+1;
 	if ( size <= 0 ) return;
-	if ( occ >= SASFIT_MAX_WS || occ < 0 ) 
+	if ( occ >= SASFIT_MAX_WS_PER_THREAD || occ < 0 )
 	{
 		sasfit_err("Can't occupy more integration workspace !\n");
 		return;
 	}
 	// enlarge the gsl workspace if required
-	if ( size > sasfit_int_ws_all.ws[occ].size )
+	if ( size > sasfit_int_ws_all.ws[thid][occ].size )
 	{
-		sasfit_int_free(occ);
-		sasfit_int_ws_all.ws[occ].ptr = gsl_integration_workspace_alloc(size);
-		sasfit_int_ws_all.ws[occ].size = size;
+		sasfit_int_free(occ,thid);
+		sasfit_int_ws_all.ws[thid][occ].ptr = gsl_integration_workspace_alloc(size);
+		sasfit_int_ws_all.ws[thid][occ].size = size;
 	}
-	sasfit_int_ws_all.last = occ; // finally occupy it
+	sasfit_int_ws_all.last[thid] = occ; // finally occupy it
 //sasfit_out("occupied: %d\n",sasfit_int_ws_all.last);
 }
 
-void sasfit_int_release(void)
+void sasfit_int_release(int thid)
 {
-	sasfit_int_ws_all.last--;
+	sasfit_int_ws_all.last[thid]--;
 //sasfit_out("released: %d\n",sasfit_int_ws_all.last);
 }
 
-gsl_integration_workspace * sasfit_int_mem(void)
+gsl_integration_workspace * sasfit_int_mem(int thid)
 {
-	if ( sasfit_int_ws_all.last >= SASFIT_MAX_WS || 
-	     sasfit_int_ws_all.last < 0 ) return NULL;
-	return sasfit_int_ws_all.ws[sasfit_int_ws_all.last].ptr;
+	if ( sasfit_int_ws_all.last[thid] >= SASFIT_MAX_WS_PER_THREAD ||
+	     sasfit_int_ws_all.last[thid] < 0 ) return NULL;
+	return sasfit_int_ws_all.ws[thid][sasfit_int_ws_all.last[thid]].ptr;
 }
 
 scalar sasfit_integrate_ctm(scalar int_start,
 			scalar int_end,
-			sasfit_func_one_t intKern_fct, 
+			sasfit_func_one_t intKern_fct,
 			sasfit_param * param,
 			int limit,
 			scalar epsabs,
 			scalar epsrel)
 {
 	scalar res, errabs;
-	int err;
+	int err, thid;
 	gsl_function F;
 
 	SASFIT_ASSERT_PTR(param);
 	SASFIT_ASSERT_PTR(intKern_fct);
 
-	if ( gsl_finite(int_start) && gsl_finite(int_end) && 
+	if ( gsl_finite(int_start) && gsl_finite(int_end) &&
 	     (int_end - int_start) == 0.0 )
 	// nothing to integrate, test for an eps instead of 0 ? (which?)
 	{
 		return 0.0;
 	}
-
-	sasfit_int_occupy(limit);
+    thid = omp_get_thread_num();
+	sasfit_int_occupy(limit,thid);
 	F.params = param;
 	F.function = (double (*) (double, void*)) intKern_fct;
 
@@ -121,28 +132,28 @@ scalar sasfit_integrate_ctm(scalar int_start,
 
 	if ( gsl_isinf(int_start) && gsl_finite(int_end) ) 	// adaptive integration on infinite intervals (-\infty,b)
 	{
-        	err = gsl_integration_qagil(&F, int_end, epsabs, epsrel, limit, sasfit_int_mem(), &res, &errabs);
+        	err = gsl_integration_qagil(&F, int_end, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
 	}
 	else if ( gsl_finite(int_start) && gsl_isinf(int_end) )	// adaptive integration on infinite intervals (a,+\infty)
 	{
-        	err = gsl_integration_qagiu(&F, int_start, epsabs, epsrel, limit, sasfit_int_mem(), &res, &errabs);
+        	err = gsl_integration_qagiu(&F, int_start, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
 	}
 	else if ( gsl_isinf(int_start) && gsl_isinf(int_end) ) 	// adaptive integration on infinite intervals (-\infty,+\infty)
 	{
-        	err = gsl_integration_qagi(&F, epsabs, epsrel, limit, sasfit_int_mem(), &res, &errabs);
-	} 
-	else if ( gsl_finite(int_start) && gsl_finite(int_end) ) // adaptive integration with singularities 
+        	err = gsl_integration_qagi(&F, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+	}
+	else if ( gsl_finite(int_start) && gsl_finite(int_end) ) // adaptive integration with singularities
 	                                                         // on well defined interval (a,b)
 	{
-        	err = gsl_integration_qags(&F, int_start, int_end, epsabs, epsrel, limit, sasfit_int_mem(), &res, &errabs);
+        	err = gsl_integration_qags(&F, int_start, int_end, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
 	} else {
 		sasfit_err("Erroneous specification of integration intervals!\n");
 		err = 1; // error
 	}
 
-	sasfit_int_release();
+	sasfit_int_release(thid);
 
-	if (err) 
+	if (err)
 	{
                 sasfit_param_set_err(param,
                     DBGINFO("Could not properly perform integration of %x "

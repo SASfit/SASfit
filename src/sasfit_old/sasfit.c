@@ -169,7 +169,7 @@ void find_integration_range(Tcl_Interp *interp,
                             float *Rend,
                             int   *n_intervals,
                             float *a,
-                            const char  *SD_typestr,
+                            char  *SD_typestr,
 							int moment,
                             bool  *error)
 {
@@ -179,7 +179,9 @@ void find_integration_range(Tcl_Interp *interp,
 	double a1,a2,a3,a4,a5;
 	int funcid;
 	sasfit_param subParam;
-	const sasfit_plugin_func_t * func_descr = NULL;
+	const sasfit_plugin_func_t * func_descr;
+
+    func_descr = NULL;
 
 	a1=a[0];
 	a2=a[1];
@@ -545,7 +547,19 @@ void find_integration_range(Tcl_Interp *interp,
 		} else {
 			func_descr = sasfit_plugin_db_get_by_id(funcid);
 			SASFIT_ASSERT_VOID(func_descr);
-			if ( (strcmp(func_descr->name,"sd_akima8")      == 0) ) {
+			if (strcmp(func_descr->name,"sd_fractal_series1")      == 0) {
+                *Rstart = a[1];
+                *Rend = a[3];
+                *n_intervals = Nint;
+			} else if (strcmp(func_descr->name,"sd_fractal_series2")      == 0) {
+                *Rstart = a[1];
+                *Rend = a[5];
+                *n_intervals = Nint;
+			} else if (strcmp(func_descr->name,"sd_fractal_series3")      == 0) {
+                *Rstart = a[1];
+                *Rend = a[7];
+                *n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_akima8")      == 0) ) {
 				*Rstart = a1;
 				*Rend   = a2;
 				*n_intervals = Nint;
@@ -2417,9 +2431,7 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 			AP[i].FF_active[j] = 0;
 		}
 	}
-	nthreads = 1;
-//	nthreads = omp_get_num_threads();
-	sasfit_out("%d threads are available\n",nthreads);
+
 	sasfit_ap2paramlist(&lista,&ma,&mfit,&a,AP,NULL,max_SD);
 
 	Ith = dvector(0,ndata-1);
@@ -2429,8 +2441,23 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	Tcl_DStringInit(&DsBuffer);
 
 	Tcl_DStringStartSublist(&DsBuffer);
+
+     sasfit_out("max num threads %d\n",omp_get_num_procs());
+     omp_set_num_threads((omp_get_num_procs()>1)?omp_get_num_procs()-1:1);
+     omp_set_num_threads(1);
+
+    sasfit_int_ws_init();
+{
+    #pragma omp  parallel for
 	for (i=0;i<ndata;i++) {
-		IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
+        IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
+        #pragma omp atom
+        sasfit_out("nthreads: %d, i:%d\n",omp_get_num_threads(),i);
+	}
+}
+
+    for (i=0;i<ndata;i++) {
+//		IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
 		if (DIh[i] !=0) {
 			chisq = chisq+pow((Ih[i]-Ith[i])/DIh[i],2.0);
             wobsR = wobsR + Ih[i]*Ih[i]/(DIh[i]*DIh[i]);

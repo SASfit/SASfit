@@ -44,7 +44,7 @@
 // Alternative would be a completely dynamic array containing the
 // sasfit_common function pointers and search for required functions in it at
 // runtime during initialization.
-// Disadvantages of that approach are: 
+// Disadvantages of that approach are:
 // -> complicated usage by the plugin developer, functions required in a plugin
 // have to be requested by putting all their names into a plugin-local array
 // which is used by the init function to determine the according pointers.
@@ -65,7 +65,7 @@ typedef int sasfit_func_zspow_t(real * xla, real * f, integer * n, real * par);
 
 /**
  * \ingroup sasfit_stubs
- * Contains pointer to all functions in sasfit_common available for usage in 
+ * Contains pointer to all functions in sasfit_common available for usage in
  * plugins.
  * Each plugin gets a pointer to this structure at initialization time.
  */
@@ -169,6 +169,9 @@ typedef struct
 	int (*sasfit_robertus_subint) (sasfit_param * param, doublereal * q, doublereal * ai, doublereal * aint0); /* 92 */
 	double (*sasfit_3f2) (double a1, double a2, double a3, double b1, double b2, double x, sasfit_param * param); /* 93 */
 	double (*sasfit_2f1) (double a1, double a2, double b1, double x, sasfit_param * param); /* 94 */
+	double (*sasfit_pfq) (double *p_r, double *p_i,  double *q_r, double *q_i, int ip, int iq,
+                          double z_r, double z_i, int ln_pFq, int ix,
+                          double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param);/* 95 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -507,7 +510,11 @@ typedef struct
 #endif
 #ifndef sasfit_2f1
 #define sasfit_2f1 \
-	(sasfit_common_stubs_ptr->sasfit_2f1) /* 93 */
+	(sasfit_common_stubs_ptr->sasfit_2f1) /* 94 */
+#endif
+#ifndef sasfit_pfq
+#define sasfit_pfq \
+	(sasfit_common_stubs_ptr->sasfit_pfq) /* 94 */
 #endif
 
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
