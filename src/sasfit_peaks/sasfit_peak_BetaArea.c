@@ -31,8 +31,8 @@
 #define AREA	param->p[0]
 #define XMIN	param->p[1]
 #define XMAX	param->p[2]
-#define ALPHA	param->p[3]
-#define BETA	param->p[4]
+#define BALPHA	param->p[3]
+#define BBETA	param->p[4]
 #define BCKGR	param->p[5]
 
 
@@ -40,9 +40,9 @@ scalar sasfit_peak_BetaArea(scalar x, sasfit_param * param)
 {
 	scalar z, xmin, xmax;
 	SASFIT_CHECK_COND2((XMIN == XMAX), param, "xmin(%lg) == xmax(%lg)",XMIN,XMAX);
-	SASFIT_CHECK_COND1((ALPHA <= 0.0), param, "alpha(%lg) <= 0",ALPHA);
-	SASFIT_CHECK_COND1((BETA  <= 0.0), param, "beta(%lg) <= 0",BETA);
-	
+	SASFIT_CHECK_COND1((BALPHA <= 0.0), param, "alpha(%lg) <= 0",BALPHA);
+	SASFIT_CHECK_COND1((BBETA  <= 0.0), param, "beta(%lg) <= 0",BBETA);
+
 	if (XMIN>XMAX) {
 		xmin = XMAX;
 		xmax = XMIN;
@@ -50,12 +50,12 @@ scalar sasfit_peak_BetaArea(scalar x, sasfit_param * param)
 		xmin = XMIN;
 		xmax = XMAX;
 	}
-	
+
 	if (x<=xmin) return BCKGR;
 	if (x>=xmax) return BCKGR;
 
 	z = (x-xmin)/(xmax-xmin);
 
-	return BCKGR+AREA*pow(z,ALPHA-1.0)*pow(1.0-z,BETA-1.0)/gsl_sf_beta(ALPHA,BETA)/(xmax-xmin);
+	return BCKGR+AREA*pow(z,BALPHA-1.0)*pow(1.0-z,BBETA-1.0)/gsl_sf_beta(BALPHA,BBETA)/(xmax-xmin);
 }
 

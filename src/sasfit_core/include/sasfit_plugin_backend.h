@@ -61,7 +61,7 @@ typedef struct
 	sasfit_plugin_api_get_ver_t *	get_ver_func;
 	/// Function for proper plugin initialization.
 	sasfit_plugin_api_do_init_t *	do_init_func;
-	/// Names of the above functions in the plugin 
+	/// Names of the above functions in the plugin
 	/// (typically \e get_ver and \e do_init ).
 	const char *	names[SASFIT_PLUGIN_API_NUM];
 } sasfit_plugin_api_t;
@@ -82,11 +82,11 @@ void sasfit_plugin_api_reset(sasfit_plugin_api_t * plugin_api);
 void sasfit_plugin_api_set(sasfit_plugin_api_t * plugin_api, int idx, void * func_ptr);
 
 /**
- * Checks a sasfit plugin API record for completeness after loading all API 
+ * Checks a sasfit plugin API record for completeness after loading all API
  * functions from a plugin.
- * \param plugin_api Contains pointer to the API functions of the currently 
+ * \param plugin_api Contains pointer to the API functions of the currently
  *                   loaded plugin.
- * \returns True, if all plugin API function were loaded successfully and the 
+ * \returns True, if all plugin API function were loaded successfully and the
  *          plugin system version match with that in the plugin.
  */
 int sasfit_plugin_api_is_valid(sasfit_plugin_api_t * plugin_api);
@@ -107,7 +107,7 @@ void sasfit_plugin_api_print(sasfit_plugin_api_t * plugin_api);
  */
 typedef struct
 {
-	/// Maximum number of function structures 
+	/// Maximum number of function structures
 	/// (always smaller than \e last )
 	int			size;
 	/// Index of the last element.
@@ -126,7 +126,7 @@ int sasfit_plugin_db_is_valid(void);
  * Retrieves a single model function record from the database by its identifier.
  * Constant execution time complexity.
  * \param id Identifier of the model function to retrieve.
- * \returns Pointer to the information record of the requested model 
+ * \returns Pointer to the information record of the requested model
  * function. NULL, if the supplied ID is invalid or another error occured.
  */
 const sasfit_plugin_func_t * sasfit_plugin_db_get_by_id(int id);
@@ -136,7 +136,7 @@ const sasfit_plugin_func_t * sasfit_plugin_db_get_by_id(int id);
  * Linear execution time complexity (over all functions in the DB).
  * \param name (Base)Name of the model function to retrieve.
  * \param len  Length of the basename (without trailing zero characters).
- * \returns Pointer to the information record of the requested model 
+ * \returns Pointer to the information record of the requested model
  * function. NULL, if the supplied name was not found or another error occured.
  */
 const sasfit_plugin_func_t * sasfit_plugin_db_get_by_name(const char * name, int len);
@@ -160,12 +160,12 @@ void sasfit_plugin_db_delete(void);
 
 /**
  * Adds all model functions of a plugin to the database.
- * After adding a model function to the database successfully, its basename 
+ * After adding a model function to the database successfully, its basename
  * and unique identifier is appended to the list object \e list.
  * \param interp Tcl Interpreter we were initially called by.
- * \param plugin_api A record, containing a pointer to API functions of the 
+ * \param plugin_api A record, containing a pointer to API functions of the
  *                   plugin to load.
- * \param list Tcl object containing pairs of model function basename and 
+ * \param list Tcl object containing pairs of model function basename and
  *             unique identifier within the database.
  * \param func_count Number of functions to add.
  * \returns TCL_ERROR on serious error, TCL_OK otherwise.
@@ -191,7 +191,7 @@ sasfit_plugin_search_t sasfit_plugin_search;
 
 /**
  * Loads a single plugin.
- * When done a list of model function basenames and identifiers is written to 
+ * When done a list of model function basenames and identifiers is written to
  * the Tcl Interpreters result (so it can be accessed in tcl code).
  * \param interp Tcl Interpreter we were called by initially.
  * \param filename_obj Tcl object containing the filename of the plugin to load.

@@ -13,7 +13,7 @@
 #include "SASFIT_nr.h"
 #include "sasfit_sq.h"
 #include "sasfit_ff.h"
-#include <gsl/gsl_sf_hyperg.h>
+#include <gsl/gsl_sf.h>
 
 #include "bool.h"
 #include "tcl.h"
@@ -121,7 +121,7 @@ static doublereal c_b65 = 10.;
 /*     *                                                              * */
 /*     **************************************************************** */
 
-/* Double Complex */ VOID pfq_( ret_val, a, b, ip, iq, z__, lnpfq, ix, 
+/* Double Complex */ VOID pfq_( ret_val, a, b, ip, iq, z__, lnpfq, ix,
 	nsigfig, ierr, errstr, errstr_len)
 doublecomplex * ret_val;
 doublecomplex *a, *b;
@@ -181,7 +181,7 @@ S\002,\002 NOT CONVERGE\002)";
 	ici__1.iciunit = errstr;
 	ici__1.icifmt = 0;
 	s_wsli(&ici__1);
-	do_lio(&c__9, &c__1, " ERROR IN INPUT ARGUMENTS: LNPFQ /= 0 OR 1", 
+	do_lio(&c__9, &c__1, " ERROR IN INPUT ARGUMENTS: LNPFQ /= 0 OR 1",
 		42L);
 	e_wsli();
 	*ierr = 1;
@@ -205,7 +205,7 @@ S\002,\002 NOT CONVERGE\002)";
 	return ;
     }
 
-/* For the 2F1 function with |z| > 1, use Abramowitz and Stegun, 15.3.7. 
+/* For the 2F1 function with |z| > 1, use Abramowitz and Stegun, 15.3.7.
 */
 
     if (*ip == 2 && *iq == 1 && z_abs(z__) > consts_1.one) {
@@ -284,28 +284,28 @@ S\002,\002 NOT CONVERGE\002)";
 	     ret_val->r = (float)999.99,  ret_val->i = (float)0.;
 	    return ;
 	}
-	z__5.r = gam1.r * gam2.r - gam1.i * gam2.i, z__5.i = gam1.r * gam2.i 
+	z__5.r = gam1.r * gam2.r - gam1.i * gam2.i, z__5.i = gam1.r * gam2.i
 		+ gam1.i * gam2.r;
 	z__7.r = -z__->r, z__7.i = -z__->i;
 	z__8.r = -a[1].r, z__8.i = -a[1].i;
 	pow_zz(&z__6, &z__7, &z__8);
-	z__4.r = z__5.r * z__6.r - z__5.i * z__6.i, z__4.i = z__5.r * z__6.i 
+	z__4.r = z__5.r * z__6.r - z__5.i * z__6.i, z__4.i = z__5.r * z__6.i
 		+ z__5.i * z__6.r;
-	z__3.r = z__4.r * hyper1.r - z__4.i * hyper1.i, z__3.i = z__4.r * 
+	z__3.r = z__4.r * hyper1.r - z__4.i * hyper1.i, z__3.i = z__4.r *
 		hyper1.i + z__4.i * hyper1.r;
-	z__9.r = gam3.r * gam4.r - gam3.i * gam4.i, z__9.i = gam3.r * gam4.i 
+	z__9.r = gam3.r * gam4.r - gam3.i * gam4.i, z__9.i = gam3.r * gam4.i
 		+ gam3.i * gam4.r;
 	z_div(&z__2, &z__3, &z__9);
-	z__13.r = gam1.r * gam5.r - gam1.i * gam5.i, z__13.i = gam1.r * 
+	z__13.r = gam1.r * gam5.r - gam1.i * gam5.i, z__13.i = gam1.r *
 		gam5.i + gam1.i * gam5.r;
 	z__15.r = -z__->r, z__15.i = -z__->i;
 	z__16.r = -a[2].r, z__16.i = -a[2].i;
 	pow_zz(&z__14, &z__15, &z__16);
-	z__12.r = z__13.r * z__14.r - z__13.i * z__14.i, z__12.i = z__13.r * 
+	z__12.r = z__13.r * z__14.r - z__13.i * z__14.i, z__12.i = z__13.r *
 		z__14.i + z__13.i * z__14.r;
 	z__11.r = z__12.r * hyper2.r - z__12.i * hyper2.i, z__11.i = z__12.r *
 		 hyper2.i + z__12.i * hyper2.r;
-	z__17.r = gam6.r * gam7.r - gam6.i * gam7.i, z__17.i = gam6.r * 
+	z__17.r = gam6.r * gam7.r - gam6.i * gam7.i, z__17.i = gam6.r *
 		gam7.i + gam6.i * gam7.r;
 	z_div(&z__10, &z__11, &z__17);
 	z__1.r = z__2.r + z__10.r, z__1.i = z__2.i + z__10.i;
@@ -317,7 +317,7 @@ S\002,\002 NOT CONVERGE\002)";
 	    goto L30;
 	}
 
-/*     Check to see if the Gamma function arguments are o.k.; if not, 
+/*     Check to see if the Gamma function arguments are o.k.; if not,
 */
 /*     then the series will have to be used. */
 
@@ -458,24 +458,24 @@ R A POLE */
 	     ret_val->r = (float)999.99,  ret_val->i = (float)0.;
 	    return ;
 	}
-	z__4.r = gam1.r * gam2.r - gam1.i * gam2.i, z__4.i = gam1.r * gam2.i 
+	z__4.r = gam1.r * gam2.r - gam1.i * gam2.i, z__4.i = gam1.r * gam2.i
 		+ gam1.i * gam2.r;
-	z__3.r = z__4.r * hyper1.r - z__4.i * hyper1.i, z__3.i = z__4.r * 
+	z__3.r = z__4.r * hyper1.r - z__4.i * hyper1.i, z__3.i = z__4.r *
 		hyper1.i + z__4.i * hyper1.r;
-	z__5.r = gam3.r * gam4.r - gam3.i * gam4.i, z__5.i = gam3.r * gam4.i 
+	z__5.r = gam3.r * gam4.r - gam3.i * gam4.i, z__5.i = gam3.r * gam4.i
 		+ gam3.i * gam4.r;
 	z_div(&z__2, &z__3, &z__5);
 	z__11.r = consts_1.one - z__->r, z__11.i = -z__->i;
 	z__13.r = b[1].r - a[1].r, z__13.i = b[1].i - a[1].i;
 	z__12.r = z__13.r - a[2].r, z__12.i = z__13.i - a[2].i;
 	pow_zz(&z__10, &z__11, &z__12);
-	z__9.r = z__10.r * gam1.r - z__10.i * gam1.i, z__9.i = z__10.r * 
+	z__9.r = z__10.r * gam1.r - z__10.i * gam1.i, z__9.i = z__10.r *
 		gam1.i + z__10.i * gam1.r;
-	z__8.r = z__9.r * gam5.r - z__9.i * gam5.i, z__8.i = z__9.r * gam5.i 
+	z__8.r = z__9.r * gam5.r - z__9.i * gam5.i, z__8.i = z__9.r * gam5.i
 		+ z__9.i * gam5.r;
-	z__7.r = z__8.r * hyper2.r - z__8.i * hyper2.i, z__7.i = z__8.r * 
+	z__7.r = z__8.r * hyper2.r - z__8.i * hyper2.i, z__7.i = z__8.r *
 		hyper2.i + z__8.i * hyper2.r;
-	z__14.r = gam6.r * gam7.r - gam6.i * gam7.i, z__14.i = gam6.r * 
+	z__14.r = gam6.r * gam7.r - gam6.i * gam7.i, z__14.i = gam6.r *
 		gam7.i + gam6.i * gam7.r;
 	z_div(&z__6, &z__7, &z__14);
 	z__1.r = z__2.r + z__6.r, z__1.i = z__2.i + z__6.i;
@@ -538,7 +538,7 @@ L10:
 /*     *                      IPREMAX.                                * */
 /*     *                                                              * */
 /*     **************************************************************** */
-/* Double Complex */ VOID hyper_( ret_val, a, b, ip, iq, z__, lnpfq, ix, 
+/* Double Complex */ VOID hyper_( ret_val, a, b, ip, iq, z__, lnpfq, ix,
 	nsigfig, ierr, errstr, errstr_len)
 doublecomplex * ret_val;
 doublecomplex *a, *b;
@@ -577,7 +577,7 @@ S\002)";
 
     /* Builtin functions */
     double d_lg10(), pow_di(), d_int(), d_nint(), d_imag();
-    integer s_wsfe(), do_fio(), e_wsfe(), s_wsle(), do_lio(), e_wsle(), 
+    integer s_wsfe(), do_fio(), e_wsfe(), s_wsle(), do_lio(), e_wsle(),
 	    i_dnnt(), s_wsfi(), e_wsfi();
     /* Subroutine */ int s_stop();
     void z_log();
@@ -610,7 +610,7 @@ S\002)";
     extern /* Subroutine */ int arydiv_();
     static integer icount;
     extern /* Subroutine */ int armult_();
-    static doublereal ar2[10], cr2[10], qi1[25002], qi2[25002], wk1[25002], 
+    static doublereal ar2[10], cr2[10], qi1[25002], qi2[25002], wk1[25002],
 	    qr1[25002], qr2[25002], wk2[25002], wk3[25002], wk4[25002], wk5[
 	    25002], wk6[25002], mx1, mx2, xr2, xi2;
     static integer ii10, ir10;
@@ -690,7 +690,7 @@ S\002)";
 	    do_fio(&c__1, (char *)&i1, (ftnlen)sizeof(integer));
 	    e_wsfe();
 	}
-	if (d_imag(&a[i1]) != consts_1.zero && ai[i1 - 1] == consts_1.zero && 
+	if (d_imag(&a[i1]) != consts_1.zero && ai[i1 - 1] == consts_1.zero &&
 		ai2[i1 - 1] == consts_1.zero) {
 	    io___40.ciunit = io_1.nout;
 	    s_wsfe(&io___40);
@@ -709,7 +709,7 @@ S\002)";
 	    do_fio(&c__1, (char *)&i1, (ftnlen)sizeof(integer));
 	    e_wsfe();
 	}
-	if (d_imag(&b[i1]) != consts_1.zero && ci[i1 - 1] == consts_1.zero && 
+	if (d_imag(&b[i1]) != consts_1.zero && ci[i1 - 1] == consts_1.zero &&
 		ci2[i1 - 1] == consts_1.zero) {
 	    io___42.ciunit = io_1.nout;
 	    s_wsfe(&io___42);
@@ -718,7 +718,7 @@ S\002)";
 	}
 /* L40: */
     }
-    if (z__->r != consts_1.zero && xr == consts_1.zero && xr2 == 
+    if (z__->r != consts_1.zero && xr == consts_1.zero && xr2 ==
 	    consts_1.zero) {
 	io___43.ciunit = io_1.nout;
 	s_wsle(&io___43);
@@ -729,7 +729,7 @@ S\002)";
 	z__1.r = consts_1.zero, z__1.i = d__1;
 	z__->r = z__1.r, z__->i = z__1.i;
     }
-    if (d_imag(z__) != consts_1.zero && xi == consts_1.zero && xi2 == 
+    if (d_imag(z__) != consts_1.zero && xi == consts_1.zero && xi2 ==
 	    consts_1.zero) {
 	io___44.ciunit = io_1.nout;
 	s_wsle(&io___44);
@@ -750,7 +750,7 @@ S\002)";
     icount = -1;
     i__1 = *ip;
     for (i1 = 1; i1 <= i__1; ++i1) {
-	if (ar2[i1 - 1] == consts_1.zero && ar[i1 - 1] == consts_1.zero && 
+	if (ar2[i1 - 1] == consts_1.zero && ar[i1 - 1] == consts_1.zero &&
 		ai2[i1 - 1] == consts_1.zero && ai[i1 - 1] == consts_1.zero) {
 	    z__1.r = consts_1.one, z__1.i = consts_1.zero;
 	     ret_val->r = z__1.r,  ret_val->i = z__1.i;
@@ -763,7 +763,7 @@ S\002)";
 	    i__3 = i1;
 	    d__2 = a[i__3].r;
 	    i__4 = -nmach;
-	    if ((d__1 = a[i__2].r - (doublereal) i_dnnt(&d__2), abs(d__1)) < 
+	    if ((d__1 = a[i__2].r - (doublereal) i_dnnt(&d__2), abs(d__1)) <
 		    pow_di(&consts_1.ten, &i__4)) {
 		if (icount != -1) {
 /* Computing MIN */
@@ -810,8 +810,8 @@ S\002)";
 	    i__4 = -nmach;
 	    i__5 = i1;
 	    d__3 = b[i__5].r;
-	    if ((d__1 = b[i__2].r - (doublereal) i_dnnt(&d__2), abs(d__1)) < 
-		    pow_di(&consts_1.ten, &i__4) && (icount >= -i_dnnt(&d__3) 
+	    if ((d__1 = b[i__2].r - (doublereal) i_dnnt(&d__2), abs(d__1)) <
+		    pow_di(&consts_1.ten, &i__4) && (icount >= -i_dnnt(&d__3)
 		    || icount == -1)) {
 		ici__1.icierr = 0;
 		ici__1.icirnum = 1;
@@ -880,7 +880,7 @@ S\002)";
     lmax = (integer) (d_lg10(&d__1) * expon);
     l = lmax;
 
-/*     Now, estimate the exponent of where the pFq series will terminate. 
+/*     Now, estimate the exponent of where the pFq series will terminate.
 */
 
     z__1.r = consts_1.one, z__1.i = consts_1.zero;
@@ -891,7 +891,7 @@ S\002)";
 	i__2 = i1 - 1;
 	i__3 = i1 - 1;
 	z__3.r = ar[i__2], z__3.i = ai[i__3];
-	z__2.r = temp1.r * z__3.r - temp1.i * z__3.i, z__2.i = temp1.r * 
+	z__2.r = temp1.r * z__3.r - temp1.i * z__3.i, z__2.i = temp1.r *
 		z__3.i + temp1.i * z__3.r;
 	z__1.r = z__2.r / sigfig, z__1.i = z__2.i / sigfig;
 	temp1.r = z__1.r, temp1.i = z__1.i;
@@ -909,7 +909,7 @@ S\002)";
 /* L100: */
     }
     z__2.r = xr, z__2.i = xi;
-    z__1.r = temp1.r * z__2.r - temp1.i * z__2.i, z__1.i = temp1.r * z__2.i + 
+    z__1.r = temp1.r * z__2.r - temp1.i * z__2.i, z__1.i = temp1.r * z__2.i +
 	    temp1.i * z__2.r;
     temp1.r = z__1.r, temp1.i = z__1.i;
 
@@ -1039,7 +1039,7 @@ L130:
 	    }
 	}
     } else {
-	arydiv_(sumr, sumi, denomr, denomi, &temp, &l, lnpfq, &rmax, &ibit, 
+	arydiv_(sumr, sumi, denomr, denomi, &temp, &l, lnpfq, &rmax, &ibit,
 		ierr, errstr, errstr_len);
 	if (*ierr == 0) {
 	     ret_val->r = 9.9999e11,  ret_val->i = 9.9999e11;
@@ -1097,13 +1097,13 @@ ies. */
 
 /*     TAKE THE CURRENT SUM AND MULTIPLY BY THE DENOMINATOR OF THE NEX
 T */
-/*     TERM, FOR BOTH THE MOST SIGNIFICANT HALF (CR,CI) AND THE LEAST 
+/*     TERM, FOR BOTH THE MOST SIGNIFICANT HALF (CR,CI) AND THE LEAST
 */
 /*     SIGNIFICANT HALF (CR2,CI2). */
 
 	cmpmul_(sumr, sumi, &cr[i1 - 1], &ci[i1 - 1], qr1, qi1, wk1, wk2, wk3,
 		 wk4, wk5, wk6, &l, &rmax);
-	cmpmul_(sumr, sumi, &cr2[i1 - 1], &ci2[i1 - 1], qr2, qi2, wk1, wk2, 
+	cmpmul_(sumr, sumi, &cr2[i1 - 1], &ci2[i1 - 1], qr2, qi2, wk1, wk2,
 		wk3, wk4, wk5, wk6, &l, &rmax);
 	qr2[l + 2] += -1;
 	qi2[l + 2] += -1;
@@ -1119,7 +1119,7 @@ T */
     armult_(sumr, &cnt, sumr, wk6, &l, &rmax);
     armult_(sumi, &cnt, sumi, wk6, &l, &rmax);
 
-/*     MULTIPLY BY THE SCALING FACTOR, SIGFIG, TO KEEP THE SCALE CORRECT. 
+/*     MULTIPLY BY THE SCALING FACTOR, SIGFIG, TO KEEP THE SCALE CORRECT.
 */
 
     i__1 = *ip - *iq;
@@ -1133,9 +1133,9 @@ T */
 
 /*     UPDATE THE DENOMINATOR. */
 
-	cmpmul_(denomr, denomi, &cr[i1 - 1], &ci[i1 - 1], qr1, qi1, wk1, wk2, 
+	cmpmul_(denomr, denomi, &cr[i1 - 1], &ci[i1 - 1], qr1, qi1, wk1, wk2,
 		wk3, wk4, wk5, wk6, &l, &rmax);
-	cmpmul_(denomr, denomi, &cr2[i1 - 1], &ci2[i1 - 1], qr2, qi2, wk1, 
+	cmpmul_(denomr, denomi, &cr2[i1 - 1], &ci2[i1 - 1], qr2, qi2, wk1,
 		wk2, wk3, wk4, wk5, wk6, &l, &rmax);
 	qr2[l + 2] += -1;
 	qi2[l + 2] += -1;
@@ -1148,7 +1148,7 @@ T */
     armult_(denomr, &cnt, denomr, wk6, &l, &rmax);
     armult_(denomi, &cnt, denomi, wk6, &l, &rmax);
 
-/*     MULTIPLY BY THE SCALING FACTOR, SIGFIG, TO KEEP THE SCALE CORRECT. 
+/*     MULTIPLY BY THE SCALING FACTOR, SIGFIG, TO KEEP THE SCALE CORRECT.
 */
 
     i__1 = *ip - *iq;
@@ -1165,7 +1165,7 @@ T */
     for (i1 = 1; i1 <= i__1; ++i1) {
 	cmpmul_(numr, numi, &ar[i1 - 1], &ai[i1 - 1], qr1, qi1, wk1, wk2, wk3,
 		 wk4, wk5, wk6, &l, &rmax);
-	cmpmul_(numr, numi, &ar2[i1 - 1], &ai2[i1 - 1], qr2, qi2, wk1, wk2, 
+	cmpmul_(numr, numi, &ar2[i1 - 1], &ai2[i1 - 1], qr2, qi2, wk1, wk2,
 		wk3, wk4, wk5, wk6, &l, &rmax);
 	qr2[l + 2] += -1;
 	qi2[l + 2] += -1;
@@ -1175,7 +1175,7 @@ T */
 
 /*     FINISH THE NEW NUMERATOR TERM BY MULTIPLYING BY THE Z ARGUMENT. */
 
-    cmpmul_(numr, numi, &xr, &xi, qr1, qi1, wk1, wk2, wk3, wk4, wk5, wk6, &l, 
+    cmpmul_(numr, numi, &xr, &xi, qr1, qi1, wk1, wk2, wk3, wk4, wk5, wk6, &l,
 	    &rmax);
     cmpmul_(numr, numi, &xr2, &xi2, qr2, qi2, wk1, wk2, wk3, wk4, wk5, wk6, &
 	    l, &rmax);
@@ -1183,7 +1183,7 @@ T */
     qi2[l + 2] += -1;
     cmpadd_(qr1, qi1, qr2, qi2, numr, numi, wk1, &l, &rmax);
 
-/*     MULTIPLY BY THE SCALING FACTOR, SIGFIG, TO KEEP THE SCALE CORRECT. 
+/*     MULTIPLY BY THE SCALING FACTOR, SIGFIG, TO KEEP THE SCALE CORRECT.
 */
 
     i__1 = *iq - *ip;
@@ -1194,7 +1194,7 @@ T */
     }
 
 /*     FINALLY, ADD THE NEW NUMERATOR TERM WITH THE CURRENT RUNNING */
-/*     SUM OF THE NUMERATOR AND STORE THE NEW RUNNING SUM IN SUMR, SUMI. 
+/*     SUM OF THE NUMERATOR AND STORE THE NEW RUNNING SUM IN SUMR, SUMI.
 */
 
     cmpadd_(sumr, sumi, numr, numi, sumr, sumi, wk1, &l, &rmax);
@@ -1722,7 +1722,7 @@ doublereal *rmax;
 /*     *  Subprograms called: ARMULT, ARSUB, ARADD                    * */
 /*     *                                                              * */
 /*     **************************************************************** */
-/* Subroutine */ int cmpmul_(ar, ai, br, bi, cr, ci, wk1, wk2, cr2, d1, d2, 
+/* Subroutine */ int cmpmul_(ar, ai, br, bi, cr, ci, wk1, wk2, cr2, d1, d2,
 	wk6, l, rmax)
 doublereal *ar, *ai, *br, *bi, *cr, *ci, *wk1, *wk2, *cr2, *d1, *d2, *wk6;
 integer *l;
@@ -1775,7 +1775,7 @@ doublereal *rmax;
 /*     *  Subprograms called: CONV21, CONV12, EADD, ECPDIV, EMULT.    * */
 /*     *                                                              * */
 /*     **************************************************************** */
-/* Subroutine */ int arydiv_(ar, ai, br, bi, c__, l, lnpfq, rmax, ibit, ierr, 
+/* Subroutine */ int arydiv_(ar, ai, br, bi, c__, l, lnpfq, rmax, ibit, ierr,
 	errstr, errstr_len)
 doublereal *ar, *ai, *br, *bi;
 doublecomplex *c__;
@@ -1801,7 +1801,7 @@ ftnlen errstr_len;
     extern /* Subroutine */ int conv12_(), conv21_();
     static doublereal e1, e2, e3;
     extern /* Subroutine */ int emult_();
-    static doublereal n1, n2, n3, x1, x2, ae[4]	/* was [2][2] */, be[4]	/* 
+    static doublereal n1, n2, n3, x1, x2, ae[4]	/* was [2][2] */, be[4]	/*
 	    was [2][2] */, ce[4]	/* was [2][2] */;
     extern /* Subroutine */ int ecpdiv_();
     static doublereal tenmax;
@@ -2224,7 +2224,7 @@ doublereal *a, *b, *c__;
 doublereal *a, *b, *c__;
 {
     extern /* Subroutine */ int ediv_();
-    static doublereal b2[4]	/* was [2][2] */, c2[4]	/* was [2][2] */, e1, 
+    static doublereal b2[4]	/* was [2][2] */, c2[4]	/* was [2][2] */, e1,
 	    e2, e3;
     extern /* Subroutine */ int emult_();
     static doublereal n1, n2, n3;
@@ -2342,7 +2342,7 @@ ftnlen errstr_len;
     ici__1.iciunit = errstr;
     ici__1.icifmt = 0;
     s_wsli(&ici__1);
-    do_lio(&c__9, &c__1, "ERROR IN IPREMAX: DID NOT FIND MAXIMUM EXPONENT", 
+    do_lio(&c__9, &c__1, "ERROR IN IPREMAX: DID NOT FIND MAXIMUM EXPONENT",
 	    47L);
     e_wsli();
     ret_val = 999;
@@ -2369,7 +2369,7 @@ doublecomplex *z__;
     /* System generated locals */
     doublereal d__1;
     doublecomplex z__1, z__2, z__3, z__4, z__5, z__6, z__7, z__8, z__9, z__10,
-	     z__11, z__12, z__13, z__14, z__15, z__16, z__17, z__18, z__19, 
+	     z__11, z__12, z__13, z__14, z__15, z__16, z__17, z__18, z__19,
 	    z__20, z__21;
 
     /* Builtin functions */
@@ -2380,7 +2380,7 @@ doublecomplex *z__;
     static doublereal pi;
 
 
-    if ((z__->r == consts_1.one && d_imag(z__) == consts_1.zero) || z_abs(z__) 
+    if ((z__->r == consts_1.one && d_imag(z__) == consts_1.zero) || z_abs(z__)
 	    == consts_1.zero) {
 	z__1.r = consts_1.zero, z__1.i = consts_1.zero;
 	 ret_val->r = z__1.r,  ret_val->i = z__1.i;
@@ -2390,7 +2390,7 @@ doublecomplex *z__;
     d__1 = consts_1.half * log(consts_1.two * pi);
     z__5.r = z__->r + consts_1.half, z__5.i = z__->i;
     z_log(&z__6, z__);
-    z__4.r = z__5.r * z__6.r - z__5.i * z__6.i, z__4.i = z__5.r * z__6.i + 
+    z__4.r = z__5.r * z__6.r - z__5.i * z__6.i, z__4.i = z__5.r * z__6.i +
 	    z__5.i * z__6.r;
     z__3.r = d__1 + z__4.r, z__3.i = z__4.i;
     z__2.r = z__3.r - z__->r, z__2.i = z__3.i - z__->i;
@@ -2399,19 +2399,19 @@ doublecomplex *z__;
     z_div(&z__8, &z__9, &z__10);
     z__14.r = consts_1.one, z__14.i = 0.;
     z__16.r = z__->r * 30., z__16.i = z__->i * 30.;
-    z__15.r = z__16.r * z__->r - z__16.i * z__->i, z__15.i = z__16.r * z__->i 
+    z__15.r = z__16.r * z__->r - z__16.i * z__->i, z__15.i = z__16.r * z__->i
 	    + z__16.i * z__->r;
     z_div(&z__13, &z__14, &z__15);
     z__19.r = consts_1.two, z__19.i = 0.;
     z__21.r = z__->r * 7., z__21.i = z__->i * 7.;
-    z__20.r = z__21.r * z__->r - z__21.i * z__->i, z__20.i = z__21.r * z__->i 
+    z__20.r = z__21.r * z__->r - z__21.i * z__->i, z__20.i = z__21.r * z__->i
 	    + z__21.i * z__->r;
     z_div(&z__18, &z__19, &z__20);
     z__17.r = consts_1.one - z__18.r, z__17.i = -z__18.i;
-    z__12.r = z__13.r * z__17.r - z__13.i * z__17.i, z__12.i = z__13.r * 
+    z__12.r = z__13.r * z__17.r - z__13.i * z__17.i, z__12.i = z__13.r *
 	    z__17.i + z__13.i * z__17.r;
     z__11.r = consts_1.one - z__12.r, z__11.i = -z__12.i;
-    z__7.r = z__8.r * z__11.r - z__8.i * z__11.i, z__7.i = z__8.r * z__11.i + 
+    z__7.r = z__8.r * z__11.r - z__8.i * z__11.i, z__7.i = z__8.r * z__11.i +
 	    z__8.i * z__11.r;
     z__1.r = z__2.r + z__7.r, z__1.i = z__2.i + z__7.i;
      ret_val->r = z__1.r,  ret_val->i = z__1.i;
@@ -2432,7 +2432,7 @@ doublecomplex *z__;
 /*     *  Subprograms called: none.                                   * */
 /*     *                                                              * */
 /*     **************************************************************** */
-/* Double Complex */ VOID cgamma_( ret_val, arg, lnpfq, ierr, errstr, 
+/* Double Complex */ VOID cgamma_( ret_val, arg, lnpfq, ierr, errstr,
 	errstr_len)
 doublecomplex * ret_val;
 doublecomplex *arg;
@@ -2470,7 +2470,7 @@ ftnlen errstr_len;
     /* Local variables */
     static doublereal diff, argi, argr, resi, dnum, resr, twoi;
     static integer i__;
-    static doublereal clngi, zfaci, clngr, obasq, argui, zfacr, argum, ovlfi, 
+    static doublereal clngi, zfaci, clngr, obasq, argui, zfacr, argum, ovlfi,
 	    argur, termi, ovlfr, termr, argui2, argur2, facneg, pi;
     static logical negarg;
     static doublereal ovlfac, obasqi, precis, obasqr, tenmax;
@@ -2483,9 +2483,9 @@ ftnlen errstr_len;
 /* ----------------------------------------------------------------------*
  */
 /*     * */
-/*    THESE ARE THE BERNOULLI NUMBERS B02, B04, ..., B14, EXPRESSED AS   
+/*    THESE ARE THE BERNOULLI NUMBERS B02, B04, ..., B14, EXPRESSED AS
 **/
-/*    RATIONAL NUMBERS. FROM ABRAMOWITZ AND STEGUN, P. 810.              
+/*    RATIONAL NUMBERS. FROM ABRAMOWITZ AND STEGUN, P. 810.
 **/
 
 
@@ -2498,9 +2498,9 @@ ftnlen errstr_len;
     argr = arg->r;
     argi = d_imag(arg);
 
-/*     ON THE FIRST ENTRY TO THIS ROUTINE, SET UP THE CONSTANTS REQUIRED 
+/*     ON THE FIRST ENTRY TO THIS ROUTINE, SET UP THE CONSTANTS REQUIRED
 */
-/*     FOR THE REFLECTION FORMULA (CF. ABRAMOWITZ AND STEGUN 6.1.17) AND 
+/*     FOR THE REFLECTION FORMULA (CF. ABRAMOWITZ AND STEGUN 6.1.17) AND
 */
 /*     STIRLING'S APPROXIMATION (CF. ABRAMOWITZ AND STEGUN 6.1.40). */
 
@@ -2582,7 +2582,7 @@ LE */
 
 /*     OTHERWISE USE THE REFLECTION FORMULA (ABRAMOWITZ AND ST
 EGUN 6.1.17) */
-/*     TO ENSURE THAT THE ARGUMENT IS SUITABLE FOR STIRLING'S 
+/*     TO ENSURE THAT THE ARGUMENT IS SUITABLE FOR STIRLING'S
 */
 /*     FORMULA */
 
@@ -2669,7 +2669,7 @@ L60:
 	argur2 = argur * argur;
 	termr = consts_1.half * log(argur2 + argui2);
 	termi = atan2(argui, argur);
-	clngr = (argur - consts_1.half) * termr - argui * termi - argur + 
+	clngr = (argur - consts_1.half) * termr - argui * termi - argur +
 		hlntpi;
 	clngi = (argur - consts_1.half) * termi + argui * termr - argui;
 /* Computing 2nd power */
@@ -2841,15 +2841,121 @@ double Hypergeom1F2(double a1, double b1, double b2, double x)
 }
 
 
-double sasfit_2f1(double a1, double a2,  
-                  double b1, double x, 
+double sasfit_2f1(double a, double b,
+                  double c, double x,
                   sasfit_param * param)
 {
-	return gsl_sf_hyperg_2F1(a1,a2,b1,x);
+/*
+	doublereal Res2F1;
+	doublecomplex A[2], B[1], z, ret_val;
+	integer ln_pFq, ix, nsigfig, ip, iq,errorstr_len=256;
+	bool error;
+	char errorstr[256];
+	double err;
+
+ 	ln_pFq = 0;
+	ix = 700;
+	nsigfig = 20;
+	ip = 2;
+	iq = 1;
+
+	A[0].i = 0;
+	A[0].r = a;
+
+	A[1].i = 0;
+	A[1].r = b;
+
+	B[0].i = 0;
+	B[0].r = c;
+
+	z.i=0;
+	z.r=x;
+
+	pfq_( &ret_val, &A, &B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig, &error, errorstr,&errorstr_len);
+    if (error == TRUE) sasfit_err("%s\ncall of 2F1(%lf,%lf,%lf,%lf) failed\n",errorstr,a,b,c,x);
+	Res2F1 = ret_val.r;
+	return Res2F1;
+	return exp(Res2F1);
+*/
+
+    // Forrey, R. C.
+    // Computing the Hypergeometric Function
+    // Journal of Computational Physics,
+    // 1997, 137, 79 - 100
+    // http://dx.doi.org/10.1006/jcph.1997.5794
+    double coeff1, coeff2, w;
+    gsl_sf_result  c1,c2,c3,c4,arg;
+    if (x<-1) {
+        // I. w = 1/(1-z)
+        w = 1./(1.-x);
+        gsl_sf_lngamma_complex_e(c,0,  &c1,&arg);
+        gsl_sf_lngamma_complex_e(b-a,0,&c2,&arg);
+        gsl_sf_lngamma_complex_e(b,0,  &c3,&arg);
+        gsl_sf_lngamma_complex_e(c-a,0,&c4,&arg);
+        coeff1=pow(w,a)*exp(c1.val+c2.val-c3.val-c4.val);
+        coeff1=pow(w,a)*gsl_sf_gamma(c)*gsl_sf_gamma(b-a)
+                      /(gsl_sf_gamma(b)*gsl_sf_gamma(c-a));
+
+        gsl_sf_lngamma_complex_e(c,0,  &c1,&arg);
+        gsl_sf_lngamma_complex_e(a-b,0,&c2,&arg);
+        gsl_sf_lngamma_complex_e(a,0,  &c3,&arg);
+        gsl_sf_lngamma_complex_e(c-b,0,&c4,&arg);
+        coeff2=pow(w,a)*exp(c1.val+c2.val-c3.val-c4.val);
+
+        coeff2=pow(w,b)*gsl_sf_gamma(c)*gsl_sf_gamma(a-b)
+                      /(gsl_sf_gamma(a)*gsl_sf_gamma(c-b));
+        return   coeff1*gsl_sf_hyperg_2F1(a,c-b,a-b+1,w)
+                +coeff2*gsl_sf_hyperg_2F1(b,c-a,b-a+1,w);
+    } else if (-1<=x && x < 0) {
+        // II. w=z/(z-1)
+        w=x/(x-1.);
+        return pow(1-w,a)*gsl_sf_hyperg_2F1(a,c-b,c,w);
+    } else if (0<=x && x <=0.5) {
+        // III. w = z
+        return gsl_sf_hyperg_2F1(a,b,c,x);
+    } else if (0.5<x && x<=1) {
+        // IV. w=1-z
+        w = 1.-x;
+        coeff1 =  gsl_sf_gamma(c)  *gsl_sf_gamma(c-a-b)
+                /(gsl_sf_gamma(c-a)*gsl_sf_gamma(c-b));
+        coeff2 =  gsl_sf_gamma(c)*gsl_sf_gamma(a+b-c)
+                /(gsl_sf_gamma(a)*gsl_sf_gamma(b))
+                * pow(w,c-a-b);
+        return   coeff1*gsl_sf_hyperg_2F1(a,b,a+b-c+1,w)
+                +coeff2*gsl_sf_hyperg_2F1(c-a,c-b,c-a-b+1,w);
+    } else if (1<x && x <=2) {
+        // V. w = 1-1/z
+        w = 1.-1./x;
+        coeff1 =  gsl_sf_gamma(c)  *gsl_sf_gamma(c-a-b)
+                /(gsl_sf_gamma(c-a)*gsl_sf_gamma(c-b))
+                * pow(x,-a);
+        coeff2 =  gsl_sf_gamma(c)*gsl_sf_gamma(a+b-c)
+                /(gsl_sf_gamma(a)*gsl_sf_gamma(b))
+                * pow(1-x,c-a-b)*pow(x,a-c);
+        return   coeff1*gsl_sf_hyperg_2F1(a,a-c+1,a+b-c+1,w)
+                +coeff2*gsl_sf_hyperg_2F1(c-a,1-a,c-a-b+1,w);
+    } else {
+        // VI. w = 1/z
+        w = 1./x;
+        coeff1 =  gsl_sf_gamma(c)*gsl_sf_gamma(b-a)
+                /(gsl_sf_gamma(b)*gsl_sf_gamma(c-a))
+                *pow(fabs(w),a);
+        coeff2 =  gsl_sf_gamma(c)*gsl_sf_gamma(a-b)
+                /(gsl_sf_gamma(a)*gsl_sf_gamma(c-b))
+                * pow(fabs(w),b);
+        // The real part is given by:
+        return   cos(M_PI*a)* gsl_sf_hyperg_2F1(a,a-c+1,a-b+1,w)
+                +cos(M_PI*b)* gsl_sf_hyperg_2F1(b-c+1,b,b-a+1,w);
+
+        // The imaginary part is given by:
+//        return   sin(M_PI*a)* gsl_sf_hyperg_2F1(a,a-c+1,a-b+1,w)
+//                +sin(M_PI*b)* gsl_sf_hyperg_2F1(b-c+1,b,b-a+1,w);
+    }
+
 }
 
-double sasfit_3f2(double a1, double a2, double a3, 
-                  double b1, double b2, double x, 
+double sasfit_3f2(double a1, double a2, double a3,
+                  double b1, double b2, double x,
                   sasfit_param * param)
 {
 
@@ -2880,12 +2986,34 @@ double sasfit_3f2(double a1, double a2, double a3,
 	z.r = x;
 
 	// I assume ierr is just a flag here ?
-	pfq_( &ret_val, &A, &B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig, 
+	pfq_( &ret_val, &A, &B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
 		param->errStatus, param->errStr, &errstr_len);
 	// is errstr_len written written with the final str length afterwards ?
 	// param->errLen = errstr_len;
 
 	Res3F2 = ret_val.r;
 	return exp(Res3F2);
+}
+
+double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, int ip, int iq,
+                  double z_r, double z_i, int ln_pFq, int ix, double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param)
+{
+	doublecomplex P[100], Q[100], z, ret_val;
+	integer errstr_len = STRLEN;
+	int i;
+    for (i=0; i<ip; i++) {
+        P[i].r = p_r[i];
+        P[i].i = p_i[i];
+    }
+    for (i=0; i<iq; i++) {
+        Q[i].r = q_r[i];
+        Q[i].i = q_i[i];
+    }
+  	z.i = z_i;
+	z.r = z_r;
+	pfq_( &ret_val, &P, &Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
+		param->errStatus, param->errStr, &errstr_len);
+    *pFq_r = ret_val.r;
+    *pFq_i = ret_val.i;
 }
 #define float double

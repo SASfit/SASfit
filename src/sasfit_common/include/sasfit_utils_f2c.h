@@ -83,7 +83,7 @@ struct {
 #define fu_1 fu_
 
 struct {
-	doublereal r1[400]  /* was [20][20] */, 
+	doublereal r1[400]  /* was [20][20] */,
 		   r2[400]     /* was [20][20] */,
 		   rr[400]     /* was [20][20] */;
 } ri_;
@@ -110,12 +110,12 @@ struct {
 // hide direct functions from plugins
 #ifndef MAKE_SASFIT_PLUGIN
 
-int sasfit_miev0(real *xx, complex *crefin, logical *perfct, real *mimcut, logical *anyang, 
-		integer *numang, real *xmu, integer *nmom, integer *ipolzn, integer *momdim, 
-		logical *prnt, real *qext, real *qsca, real *gqsc, real *pmom, complex *sforw, 
+int sasfit_miev0(real *xx, complex *crefin, logical *perfct, real *mimcut, logical *anyang,
+		integer *numang, real *xmu, integer *nmom, integer *ipolzn, integer *momdim,
+		logical *prnt, real *qext, real *qsca, real *gqsc, real *pmom, complex *sforw,
 		complex *sback, complex *s1, complex *s2, complex *tforw, complex *tback, real *spike);
-int sasfit_dmilay(real *rcore, real *rshell, real *wvno, complex *rindsh, complex *rindco, real *mu, 
-		integer *numang, real *qext, real *qsca, real *qbs, real *gqsc, real *m1, real *m2, 
+int sasfit_dmilay(real *rcore, real *rshell, real *wvno, complex *rindsh, complex *rindco, real *mu,
+		integer *numang, real *qext, real *qsca, real *qbs, real *gqsc, real *m1, real *m2,
 		real *s21, real *d21, integer *maxang);
 doublereal sasfit_th36(real * x, sasfit_param * param, char * thnam, char * parnam, integer * npar, integer * ini, ftnlen thnam_len, ftnlen parnam_len);
 
@@ -134,6 +134,14 @@ int sasfit_robertus_deal(doublereal * rm, doublereal * sig, doublereal * phi, lo
 int sasfit_robertus_calc(sasfit_param * param, doublereal * rm, doublereal * sig, doublereal * phi);
 int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai, doublereal * aint0);
 double sasfit_3f2(double a1, double a2, double a3, double b1, double b2, double x, sasfit_param * param);
+double sasfit_2f1(double a1, double a2, double b1, double x, sasfit_param * param);
+double sasfit_pfq(double *p_r, double *p_i,
+                  double *q_r, double *q_i,
+                  int ip, int iq,
+                  double z_r, double z_i, int ln_pFq, int ix,
+                  double *pFq_r, double *pFq_i,
+                  int nsigfig, sasfit_param * param);
+
 #endif // MAKE_SASFIT_PLUGIN
 
 #endif

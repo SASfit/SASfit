@@ -1,9 +1,9 @@
 # src/sasfit_common/sasfit_common.decls
-# 
+#
 # Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
-# 
+#
 # SASfit is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -23,8 +23,8 @@
 
 
 # This file contains the declarations for all supported public
-# functions that are exported by the sasfit_common library via 
-# the stubs table. 
+# functions that are exported by the sasfit_common library via
+# the stubs table.
 # This file is used to generate the sasfit_common_stubs.h
 # and sasfit_common.c files. Use src/scripts/genStubs.tcl for this purpose:
 # cd <sasfit-dir>
@@ -49,7 +49,7 @@ declare 6 generic {
 	void sasfit_param_set_err(sasfit_param * param, const char * format, ...)
 }
 declare 7 generic {
-	scalar sasfit_integrate_ctm(scalar int_start, scalar int_end, sasfit_func_one_t intKern_fct, 
+	scalar sasfit_integrate_ctm(scalar int_start, scalar int_end, sasfit_func_one_t intKern_fct,
 		sasfit_param * param, int limit, scalar epsabs, scalar epsrel)
 }
 declare 8 generic {
@@ -286,4 +286,12 @@ declare 92 generic {
 }
 declare 93 generic {
 	double sasfit_3f2(double a1, double a2, double a3, double b1, double b2, double x, sasfit_param * param)
+}
+declare 94 generic {
+	double sasfit_2f1(double a1, double a2, double b1, double x, sasfit_param * param)
+}
+declare 95 generic {
+	double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, int ip, int iq,
+                  double z_r, double z_i, int ln_pFq, int ix,
+                  double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param)
 }
