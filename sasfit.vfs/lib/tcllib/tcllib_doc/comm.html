@@ -1,0 +1,1061 @@
+<html><head>
+<title>comm - Remote communication </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/comm/comm.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 1995-1998 The Open Group. All Rights Reserved.   -- Copyright &copy; 2003-2004 ActiveState Corporation.
+   -->
+<! -- CVS: $Id: comm.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ comm.n
+   -->
+
+<body>
+<h1> comm(n) 4.3 comm &quot;Remote communication&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> comm - A remote communication facility for Tcl (7.6, 8.0, and later)
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eval_semantics">EVAL SEMANTICS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#multiple_channels">MULTIPLE CHANNELS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#channel_configuration">CHANNEL CONFIGURATION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#id/port_assignments">ID/PORT ASSIGNMENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#remote_interpreters">REMOTE INTERPRETERS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#closing_connections">CLOSING CONNECTIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#callbacks">CALLBACKS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#unsupported">UNSUPPORTED</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#security">SECURITY</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#blocking_semantics">BLOCKING SEMANTICS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#compatibility">COMPATIBILITY</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#author">AUTHOR</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#license">LICENSE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#bugs">BUGS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#on_using_old_versions_of_tcl">ON USING OLD VERSIONS OF TCL</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#related_work">RELATED WORK</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>comm ?4.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::comm::comm send</b> ?-async? ?-command <i class='arg'>callback</i>? <i class='arg'>id</i> <i class='arg'>cmd</i> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::comm::comm self</b> </a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::comm::comm interps</b> </a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::comm::comm connect</b> ?<i class='arg'>id</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::comm::comm new</b> <i class='arg'>chan</i> ?<i class='arg'>name value ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::comm::comm channels</b> </a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::comm::comm config</b> </a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::comm::comm config</b> <i class='arg'>name</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::comm::comm config</b> ?<i class='arg'>name</i> <i class='arg'>value</i> <i class='arg'>...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::comm::comm shutdown</b> <i class='arg'>id</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::comm::comm abort</b> </a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::comm::comm destroy</b> </a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::comm::comm hook</b> <i class='arg'>event</i> ?<strong>+</strong>? ?<i class='arg'>script</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::comm::comm remoteid</b> </a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>::comm::comm_send</b> </a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+<p>
+
+The <strong>comm</strong> command provides an inter-interpreter remote
+execution facility much like Tk's <b class='cmd'>send(n)</b>, except that it uses
+sockets rather than the X server for the communication path.  As a
+result, <strong>comm</strong> works with multiple interpreters, works on
+Windows and Macintosh systems, and provides control over the remote
+execution path.
+
+<p>
+
+These commands work just like <b class='cmd'>send</b> and <b class='cmd'>winfo interps</b> :
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::comm::comm send ?-async? id cmd ?arg arg ...?
+    ::comm::comm interps
+</pre></td></tr></table></p>
+<p>
+
+This is all that is really needed to know in order to use
+<strong>comm</strong>
+
+<h3><a name="commands">COMMANDS</a></h3>
+<p>
+
+The package initializes <b class='cmd'>::comm::comm</b> as the default <em>chan</em>.
+
+<p>
+<strong>comm</strong> names communication endpoints with an <em>id</em> unique
+to each machine.  Before sending commands, the <em>id</em> of another
+interpreter is needed.  Unlike Tk's send, <strong>comm</strong> doesn't
+implicitly know the <em>id</em>'s of all the interpreters on the system.
+
+The following four methods make up the basic <strong>comm</strong> interface.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::comm::comm send</b> ?-async? ?-command <i class='arg'>callback</i>? <i class='arg'>id</i> <i class='arg'>cmd</i> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+This invokes the given command in the interpreter named by <i class='arg'>id</i>.  The
+command waits for the result and remote errors are returned unless the
+<strong>-async</strong> or <strong>-command</strong> option is given.  If <strong>-async</strong>
+is given, send returns immediately and there is no further notification of
+result.  If <strong>-command</strong> is used, <em>callback</em> specifies a command
+to invoke when the result is received.  These options are mutually
+exclusive.  The callback will receive arguments in the form
+<em>-option value</em>, suitable for <b class='cmd'>array set</b>.
+
+The options are: <em>-id</em>, the comm id of the interpreter that received
+the command; <em>-serial</em>, a unique serial for each command sent to a
+particular comm interpreter; <em>-chan</em>, the comm channel name;
+<em>-code</em>, the result code of the command; <em>-errorcode</em>, the
+errorcode, if any, of the command; <em>-errorinfo</em>, the errorinfo, if
+any, of the command; and <em>-result</em>, the return value of the command.
+If connection is lost before a reply is received, the callback will be
+invoked with a connection lost message with -code equal to -1.  When
+<strong>-command</strong> is used, the command returns the unique serial for the
+command.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::comm::comm self</b> </a><dd>
+
+
+Returns the <em>id</em> for this channel.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::comm::comm interps</b> </a><dd>
+
+
+Returns a list of all the remote <em>id</em>'s to which this channel is
+connected.  <strong>comm</strong> learns a new remote <em>id</em> when a command
+is first issued it, or when a remote <em>id</em> first issues a command
+to this comm channel.  <b class='cmd'>::comm::comm ids</b> is an alias for this
+method.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::comm::comm connect</b> ?<i class='arg'>id</i>?</a><dd>
+
+
+Whereas <b class='cmd'>::comm::comm send</b> will automatically connect to the
+given <i class='arg'>id</i>, this forces a connection to a remote <em>id</em> without
+sending a command.  After this, the remote <em>id</em> will appear in
+<b class='cmd'>::comm::comm interps</b>.
+
+</dl>
+
+<h3><a name="eval_semantics">EVAL SEMANTICS</a></h3>
+<p>
+<p>
+
+The evaluation semantics of <b class='cmd'>::comm::comm send</b> are intended to
+match Tk's <b class='cmd'>send</b> <em>exactly</em>. This means that <strong>comm</strong>
+evaluates arguments on the remote side.
+
+<p>
+
+If you find that <b class='cmd'>::comm::comm send</b> doesn't work for a
+particular command, try the same thing with Tk's send and see if the
+result is different.  If there is a problem, please report it.  For
+instance, there was had one report that this command produced an
+error.  Note that the equivalent <b class='cmd'>send</b> command also produces the
+same error.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::comm::comm send id llength {a b c}
+    wrong # args: should be &quot;llength list&quot;
+    % send name llength {a b c}
+    wrong # args: should be &quot;llength list&quot;
+</pre></td></tr></table></p>
+<p>
+
+The <b class='cmd'>eval</b> hook (described below) can be used to change from
+<b class='cmd'>send</b>'s double eval semantics to single eval semantics.
+
+<h3><a name="multiple_channels">MULTIPLE CHANNELS</a></h3>
+<p>
+<p>
+
+More than one <b class='cmd'>comm</b> channel (or <em>listener</em>) can be created
+in each Tcl interpreter.  This allows flexibility to create full and
+restricted channels.  For instance, <em>hook</em> scripts are specific
+to the channel they are defined against.
+
+<dl>
+
+<dt><a name="5"><b class='cmd'>::comm::comm new</b> <i class='arg'>chan</i> ?<i class='arg'>name value ...</i>?</a><dd>
+
+
+This creates a new channel and Tcl command with the given channel
+name.  This new command controls the new channel and takes all the
+same arguments as <b class='cmd'>::comm::comm</b>.  Any remaining arguments are
+passed to the <b class='cmd'>config</b> method.  The fully qualified channel
+name is returned.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::comm::comm channels</b> </a><dd>
+
+
+This lists all the channels allocated in this Tcl interpreter.
+
+</dl>
+<p>
+
+The default configuration parameters for a new channel are:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    &quot;-port 0 -local 1 -listen 0 -silent 0&quot;
+</pre></td></tr></table></p>
+<p>
+
+The default channel <b class='cmd'>::comm::comm</b> is created with:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    &quot;::comm::comm new ::comm::comm -port 0 -local 1 -listen 1 -silent 0&quot;
+</pre></td></tr></table></p>
+
+<h3><a name="channel_configuration">CHANNEL CONFIGURATION</a></h3>
+<p>
+<p>
+
+The <b class='cmd'>config</b> method acts similar to <b class='cmd'>fconfigure</b> in that it
+sets or queries configuration variables associated with a channel.
+
+<dl>
+<dt><a name="7"><b class='cmd'>::comm::comm config</b> </a><dd>
+
+<dt><a name="8"><b class='cmd'>::comm::comm config</b> <i class='arg'>name</i></a><dd>
+
+<dt><a name="9"><b class='cmd'>::comm::comm config</b> ?<i class='arg'>name</i> <i class='arg'>value</i> <i class='arg'>...</i>?</a><dd>
+
+
+When given no arguments, <b class='cmd'>config</b> returns a list of all variables
+and their value With one argument, <b class='cmd'>config</b> returns the value of
+just that argument.  With an even number of arguments, the given
+variables are set to the given values.
+
+</dl>
+
+<p>
+
+These configuration variables can be changed (descriptions of them are
+elsewhere in this manual page):
+
+<dl>
+<dt><strong>-listen</strong> ?<i class='arg'>0|1</i>?<dd>
+<dt><strong>-local</strong>  ?<i class='arg'>0|1</i>?<dd>
+<dt><strong>-port</strong>   ?<i class='arg'>port</i>?<dd>
+<dt><strong>-silent</strong> ?<i class='arg'>0|1</i>?<dd>
+</dl>
+
+<p>
+These configuration variables are read only:
+
+<dl>
+<dt><strong>-chan</strong>    <i class='arg'>chan</i><dd>
+<dt><strong>-serial</strong>  <i class='arg'>n</i><dd>
+<dt><strong>-socket</strong>  sock<i class='arg'>In</i><dd>
+</dl>
+
+<p>
+
+When <b class='cmd'>config</b> changes the parameters of an existing channel, it
+closes and reopens the listening socket.  An automatically assigned
+channel <em>id</em> will change when this happens.  Recycling the socket
+is done by invoking <b class='cmd'>::comm::comm abort</b>, which causes all
+active sends to terminate.
+
+<h3><a name="id/port_assignments">ID/PORT ASSIGNMENTS</a></h3>
+<p>
+<p>
+
+<strong>comm</strong> uses a TCP port for endpoint <em>id</em>.  The
+
+<strong>interps</strong> (or <strong>ids</strong>) method merely lists all the TCP ports
+to which the channel is connected.  By default, each channel's
+
+<em>id</em> is randomly assigned by the operating system (but usually
+starts at a low value around 1024 and increases each time a new socket
+is opened).  This behavior is accomplished by giving the
+
+<strong>-port</strong> config option a value of 0.  Alternately, a specific
+TCP port number may be provided for a given channel.  As a special
+case, comm contains code to allocate a a high-numbered TCP port
+(&gt;10000) by using <strong>-port {}</strong>.  Note that a channel won't be
+created and initialized unless the specific port can be allocated.
+
+<p>
+
+As a special case, if the channel is configured with
+
+<strong>-listen 0</strong>, then it will not create a listening socket and
+will use an id of <strong>0</strong> for itself.  Such a channel is only good
+for outgoing connections (although once a connection is established,
+it can carry send traffic in both directions).
+
+
+As another special case, if the channel is configured with
+
+<strong>-silent 0</strong>, then the listening side will ignore connection
+attempts where the protocol negotiation phase failed, instead of
+throwing an error.
+
+<h3><a name="remote_interpreters">REMOTE INTERPRETERS</a></h3>
+<p>
+<p>
+
+By default, each channel is restricted to accepting connections from
+the local system.  This can be overridden by using the
+
+<strong>-local 0</strong> configuration option For such channels, the
+
+<em>id</em> parameter takes the form <em>{ id host }</em>.
+
+<p>
+
+<em>WARNING</em>: The <em>host</em> must always be specified in the same
+form (e.g., as either a fully qualified domain name, plain hostname or
+an IP address).
+
+<h3><a name="closing_connections">CLOSING CONNECTIONS</a></h3>
+<p>
+<p>
+
+These methods give control over closing connections:
+
+<dl>
+
+<dt><a name="10"><b class='cmd'>::comm::comm shutdown</b> <i class='arg'>id</i></a><dd>
+
+
+This closes the connection to <i class='arg'>id</i>, aborting all outstanding
+commands in progress.  Note that nothing prevents the connection from
+being immediately reopened by another incoming or outgoing command.
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::comm::comm abort</b> </a><dd>
+
+
+This invokes shutdown on all open connections in this comm channel.
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::comm::comm destroy</b> </a><dd>
+
+
+This aborts all connections and then destroys the this comm channel
+itself, including closing the listening socket.  Special code allows
+the default <b class='cmd'>::comm::comm</b> channel to be closed such that the
+
+<b class='cmd'>::comm::comm</b> command it is not destroyed.  Doing so closes the
+listening socket, preventing both incoming and outgoing commands on
+the channel.  This sequence reinitializes the default channel:
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    &quot;::comm::comm destroy; ::comm::comm new ::comm::comm&quot;
+</pre></td></tr></table></p>
+
+</dl>
+
+<p>
+
+When a remote connection is lost (because the remote exited or called
+<b class='cmd'>shutdown</b>), <strong>comm</strong> can invoke an application callback.
+This can be used to cleanup or restart an ancillary process, for
+instance.  See the <em>lost</em> callback below.
+
+<h3><a name="callbacks">CALLBACKS</a></h3>
+<p>
+<p>
+This is a mechanism for setting hooks for particular events:
+
+<dl>
+
+<dt><a name="13"><b class='cmd'>::comm::comm hook</b> <i class='arg'>event</i> ?<strong>+</strong>? ?<i class='arg'>script</i>?</a><dd>
+
+
+This uses a syntax similar to Tk's <b class='cmd'>bind</b> command.  Prefixing
+
+<i class='arg'>script</i> with a <strong>+</strong> causes the new script to be appended.
+Without this, a new <i class='arg'>script</i> replaces any existing script.  When
+invoked without a script, no change is made.  In all cases, the new
+hook script is returned by the command.
+
+<br><br>
+
+When an <i class='arg'>event</i> occurs, the <i class='arg'>script</i> associated with it is
+evaluated with the listed variables in scope and available.  The
+return code (<em>not</em> the return value) of the script is commonly
+used decide how to further process after the hook.
+
+<br><br>
+Common variables include:
+
+<br><br>
+<dl>
+
+<dt><strong>chan</strong><dd>
+the name of the comm channel (and command)
+
+<br><br>
+<dt><strong>id</strong><dd>
+the id of the remote in question
+
+<br><br>
+<dt><strong>fid</strong><dd>
+the file id for the socket of the connection
+
+</dl>
+</dl>
+
+<p>
+These are the defined <em>events</em>:
+
+<dl>
+
+<dt><strong>connecting</strong><dd>
+
+Variables:
+<strong>chan</strong>, <strong>id</strong>, <strong>host</strong>, and <strong>port</strong>.
+<br><br>
+
+This hook is invoked before making a connection to the remote named in
+<i class='arg'>id</i>.  An error return (via <b class='cmd'>error</b>) will abort the connection
+attempt with the error.  Example:
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::comm::comm hook connecting {
+        if {[string match {*[02468]} $id]} {
+            error &quot;Can't connect to even ids&quot; 
+        }
+    }
+    % ::comm::comm send 10000 puts ok
+    Connect to remote failed: Can't connect to even ids
+    %
+</pre></td></tr></table></p>
+
+<br><br>
+<dt><strong>connected</strong><dd>
+
+Variables:
+<strong>chan</strong>, <strong>fid</strong>, <strong>id</strong>, <strong>host</strong>, and <strong>port</strong>.
+<br><br>
+
+This hook is invoked immediately after making a remote connection to
+<i class='arg'>id</i>, allowing arbitrary authentication over the socket named by
+<i class='arg'>fid</i>.  An error return (via <b class='cmd'>error</b> ) will close the
+connection with the error.  <i class='arg'>host</i> and <i class='arg'>port</i> are merely
+extracted from the <i class='arg'>id</i>; changing any of these will have no effect
+on the connection, however.  It is also possible to substitute and
+replace <i class='arg'>fid</i>.
+
+<br><br>
+<dt><strong>incoming</strong><dd>
+
+Variables:
+<strong>chan</strong>, <strong>fid</strong>, <strong>addr</strong>, and <strong>remport</strong>.
+<br><br>
+
+Hook invoked when receiving an incoming connection, allowing arbitrary
+authentication over socket named by <i class='arg'>fid</i>.  An error return (via
+<b class='cmd'>error</b>) will close the connection with the error.  Note that the
+peer is named by <i class='arg'>remport</i> and <i class='arg'>addr</i> but that the remote
+<em>id</em> is still unknown.  Example:
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::comm::comm hook incoming {
+        if {[string match 127.0.0.1 $addr]} {
+            error &quot;I don't talk to myself&quot;
+        }
+    }
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><strong>eval</strong><dd>
+
+Variables:
+<strong>chan</strong>, <strong>id</strong>, <strong>cmd</strong>, and <strong>buffer</strong>.
+<br><br>
+
+This hook is invoked after collecting a complete script from a remote
+but <em>before</em> evaluating it.  This allows complete control over
+the processing of incoming commands.  <i class='arg'>cmd</i> contains either
+<strong>send</strong> or <strong>async</strong>.  <i class='arg'>buffer</i> holds the script to
+evaluate.  At the time the hook is called, <i class='arg'>$chan remoteid</i> is
+identical in value to <i class='arg'>id</i>.
+
+<br><br>
+
+By changing <i class='arg'>buffer</i>, the hook can change the script to be
+evaluated.  The hook can short circuit evaluation and cause a value to
+be immediately returned by using <b class='cmd'>return</b> <i class='arg'>result</i> (or, from
+within a procedure, <b class='cmd'>return -code return</b> <i class='arg'>result</i>).  An
+error return (via <b class='cmd'>error</b>) will return an error result, as is if
+the script caused the error.  Any other return will evaluate the
+script in <i class='arg'>buffer</i> as normal.  For compatibility with 3.2,
+
+<b class='cmd'>break</b> and <b class='cmd'>return -code break</b> <i class='arg'>result</i> is supported,
+acting similarly to <b class='cmd'>return {}</b> and <b class='cmd'>return -code return</b>
+<i class='arg'>result</i>.
+
+<br><br>
+
+Examples:
+
+<br><br>
+<ol>
+
+<li>
+augmenting a command
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::comm::comm send [::comm::comm self] pid
+    5013
+    % ::comm::comm hook eval {puts &quot;going to execute $buffer&quot;}
+    % ::comm::comm send [::comm::comm self] pid
+    going to execute pid
+    5013
+</pre></td></tr></table></p>
+
+<br><br>
+<li>
+short circuiting a command
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::comm::comm hook eval {puts &quot;would have executed $buffer&quot;; return 0}
+    % ::comm::comm send [::comm::comm self] pid
+    would have executed pid
+    0
+</pre></td></tr></table></p>
+
+<br><br>
+<li>
+Replacing double eval semantics
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::comm::comm send [::comm::comm self] llength {a b c}
+    wrong # args: should be &quot;llength list&quot;
+    % ::comm::comm hook eval {return [uplevel #0 $buffer]}
+    return [uplevel #0 $buffer]
+    % ::comm::comm send [::comm::comm self] llength {a b c}
+    3
+</pre></td></tr></table></p>
+
+<br><br>
+<li>
+Using a slave interpreter
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % interp create foo
+    % ::comm::comm hook eval {return [foo eval $buffer]}
+    % ::comm::comm send [::comm::comm self] set myvar 123
+    123
+    % set myvar
+    can't read &quot;myvar&quot;: no such variable
+    % foo eval set myvar
+    123
+</pre></td></tr></table></p>
+
+<br><br>
+<li>
+Using a slave interpreter (double eval)
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::comm::comm hook eval {return [eval foo eval $buffer]}
+</pre></td></tr></table></p>
+
+<br><br>
+<li>
+Subverting the script to execute
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    % ::comm::comm hook eval {
+        switch -- $buffer {
+            a {return A-OK}
+            b {return B-OK}
+            default {error &quot;$buffer is a no-no&quot;}
+        }
+    }
+    % ::comm::comm send [::comm::comm self] pid
+    pid is a no-no
+    % ::comm::comm send [::comm::comm self] a
+    A-OK
+</pre></td></tr></table></p>
+
+</ol>
+
+
+<dt><strong>reply</strong><dd>
+
+Variables:
+<strong>chan</strong>, <strong>id</strong>, <strong>buffer</strong>, <strong>ret</strong>, and <strong>return()</strong>.
+<br><br>
+
+This hook is invoked after collecting a complete reply script from a
+remote but <em>before</em> evaluating it.  This allows complete
+control over the processing of replies to sent commands.  The reply
+<i class='arg'>buffer</i> is in one of the following forms
+
+<br><br>
+<ul>
+<li>
+return result
+<br><br>
+<li>
+return -code code result
+<br><br>
+<li>
+return -code code -errorinfo info -errorcode ecode msg
+</ul>
+<br><br>
+
+For safety reasons, this is decomposed.  The return result is in
+<i class='arg'>ret</i>, and the return switches are in the return array:
+
+<br><br>
+<ul>
+<li>
+<em>return(-code)</em>
+<li>
+<em>return(-errorinfo)</em>
+<li>
+<em>return(-errordcode)</em>
+</ul>
+<br><br>
+
+Any of these may be the empty string.  Modifying these four variables
+can change the return value, whereas modifying <i class='arg'>buffer</i> has no
+effect.
+
+
+<br><br>
+<dt><strong>callback</strong><dd>
+
+Variables:
+<strong>chan</strong>, <strong>id</strong>, <strong>buffer</strong>, <strong>ret</strong>, and <strong>return()</strong>.
+<br><br>
+
+Similar to <em>reply</em>, but used for callbacks.
+
+<br><br>
+<dt><strong>lost</strong><dd>
+
+Variables:
+<strong>chan</strong>, <strong>id</strong>, and <strong>reason</strong>.
+<br><br>
+
+This hook is invoked when the connection to <strong>id</strong> is lost.  Return
+value (or thrown error) is ignored.  <i class='arg'>reason</i> is an explanatory
+string indicating why the connection was lost.  Example:
+
+<br><br>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::comm::comm hook lost {
+        global myvar
+        if {$myvar(id) == $id} {
+            myfunc
+            return
+        }
+    }
+</pre></td></tr></table></p>
+
+</dl>
+
+<h3><a name="unsupported">UNSUPPORTED</a></h3>
+<p>
+<p>
+These interfaces may change or go away in subsequence releases.
+
+<dl>
+<dt><a name="14"><b class='cmd'>::comm::comm remoteid</b> </a><dd>
+
+
+Returns the <i class='arg'>id</i> of the sender of the last remote command
+executed on this channel.  If used by a proc being invoked remotely,
+it must be called before any events are processed.  Otherwise, another
+command may get invoked and change the value.
+
+<br><br>
+<dt><a name="15"><b class='cmd'>::comm::comm_send</b> </a><dd>
+
+
+Invoking this procedure will substitute the Tk <b class='cmd'>send</b> and
+<b class='cmd'>winfo interps</b> commands with these equivalents that use
+<b class='cmd'>::comm::comm</b>.
+
+<br><br>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    proc send {args} {
+        eval ::comm::comm send $args
+    }
+    rename winfo tk_winfo
+    proc winfo {cmd args} {
+        if {![string match in* $cmd]} {
+            return [eval [list tk_winfo $cmd] $args]
+        }
+        return [::comm::comm interps]
+    }
+</pre></td></tr></table></p>
+
+</dl>
+
+<h3><a name="security">SECURITY</a></h3>
+<p>
+<p>
+Something here soon.
+
+<h3><a name="blocking_semantics">BLOCKING SEMANTICS</a></h3>
+<p>
+
+<p>
+
+There is one outstanding difference between <strong>comm</strong> and
+
+<b class='cmd'>send</b>.  When blocking in a synchronous remote command, <b class='cmd'>send</b>
+uses an internal C hook (Tk_RestrictEvents) to the event loop to look
+ahead for send-related events and only process those without
+processing any other events.  In contrast, <strong>comm</strong> uses the
+
+<b class='cmd'>vwait</b> command as a semaphore to indicate the return message has
+arrived.  The difference is that a synchronous <b class='cmd'>send</b> will block
+the application and prevent all events (including window related ones)
+from being processed, while a synchronous <b class='cmd'>::comm::comm send</b>
+will block the application but still allow other events to get
+processed.  In particular, <b class='cmd'>after idle</b> handlers will fire
+immediately when comm blocks.
+
+<p>
+
+What can be done about this?  First, note that this behavior will come
+from any code using <b class='cmd'>vwait</b> to block and wait for an event to
+occur.  At the cost of multiple channel support, <strong>comm</strong> could
+be changed to do blocking I/O on the socket, giving send-like blocking
+semantics.  However, multiple channel support is a very useful feature
+of comm that it is deemed too important to lose.  The remaining
+approaches involve a new loadable module written in C (which is
+somewhat against the philosophy of <b class='cmd'>comm</b>) One way would be to
+create a modified version of the <b class='cmd'>vwait</b> command that allow the
+event flags passed to Tcl_DoOneEvent to be specified.  For <b class='cmd'>comm</b>,
+just the TCL_FILE_EVENTS would be processed.  Another way would be to
+implement a mechanism like Tk_RestrictEvents, but apply it to the Tcl
+event loop (since <strong>comm</strong> doesn't require Tk).  One of these
+approaches will be available in a future <strong>comm</strong> release as an
+optional component.
+
+<h3><a name="compatibility">COMPATIBILITY</a></h3>
+<p>
+<p>
+
+<strong>comm</strong> exports itself as a package.  The package version number
+is in the form <em>major . minor</em>, where the major version will
+only change when a non-compatible change happens to the API or
+protocol.  Minor bug fixes and changes will only affect the minor
+version.  To load <strong>comm</strong> this command is usually used:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require comm 3
+</pre></td></tr></table></p>
+
+<p>
+Note that requiring no version (or a specific version) can also be done.
+
+<p>
+The revision history of <strong>comm</strong> includes these releases:
+
+<dl>
+
+<dt>4.3<dd>
+
+Bugfixes, and introduces -silent to allow the user to force the
+server/listening side to silently ignore connection attempts where the
+protocol negotiation failed.
+
+<br><br>
+<dt>4.2<dd>
+
+Bugfixes, and most important, switched to utf-8 as default encoding
+for full i18n without any problems.
+
+<br><br>
+<dt>4.1<dd>
+
+Rewrite of internal code to remove old pseudo-object model.  Addition
+of send -command asynchronous callback option.
+
+<br><br>
+<dt>4.0<dd>
+
+Per request by John LoVerso. Improved handling of error for async
+invoked commands.
+
+<br><br>
+<dt>3.7<dd>
+
+Moved into tcllib and placed in a proper namespace.
+
+<br><br>
+<dt>3.6<dd>
+
+A bug in the looking up of the remoteid for a executed command could
+be triggered when the connection was closed while several asynchronous
+sends were queued to be executed.
+
+<br><br>
+<dt>3.5<dd>
+
+Internal change to how reply messages from a <b class='cmd'>send</b> are handled.
+Reply messages are now decoded into the <i class='arg'>value</i> to pass to
+
+<b class='cmd'>return</b>; a new return statement is then cons'd up to with this
+value.  Previously, the return code was passed in from the remote as a
+command to evaluate.  Since the wire protocol has not changed, this is
+still the case.  Instead, the reply handling code decodes the
+
+<strong>reply</strong> message.
+
+<br><br>
+<dt>3.4<dd>
+
+Added more source commentary, as well as documenting config variables
+in this man page.  Fixed bug were loss of connection would give error
+about a variable named <strong>pending</strong> rather than the message about
+the lost connection.  <b class='cmd'>comm ids</b> is now an alias for
+
+<b class='cmd'>comm interps</b> (previously, it an alias for <b class='cmd'>comm chans</b>).
+Since the method invocation change of 3.0, break and other exceptional
+conditions were not being returned correctly from <b class='cmd'>comm send</b>.
+This has been fixed by removing the extra level of indirection into
+the internal procedure <b class='cmd'>commSend</b>.  Also added propagation of
+the <i class='arg'>errorCode</i> variable.  This means that these commands return
+exactly as they would with <b class='cmd'>send</b>:
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    comm send id break
+    catch {comm send id break}
+    comm send id expr 1 / 0
+</pre></td></tr></table></p>
+<br><br>
+
+Added a new hook for reply messages.  Reworked method invocation to
+avoid the use of comm:* procedures; this also cut the invocation time
+down by 40%.  Documented <b class='cmd'>comm config</b> (as this manual page
+still listed the defunct <b class='cmd'>comm init</b>!)
+
+
+<br><br>
+<dt>3.3<dd>
+
+Some minor bugs were corrected and the documentation was cleaned up.
+Added some examples for hooks.  The return semantics of the <b class='cmd'>eval</b>
+hook were changed.
+
+<br><br>
+<dt>3.2<dd>
+
+A new wire protocol, version 3, was added.  This is backwards
+compatible with version 2 but adds an exchange of supported protocol
+versions to allow protocol negotiation in the future.  Several bugs
+with the hook implementation were fixed.  A new section of the man
+page on blocking semantics was added.
+
+<br><br>
+<dt>3.1<dd>
+
+All the documented hooks were implemented.  <b class='cmd'>commLostHook</b> was
+removed.  A bug in <b class='cmd'>comm new</b> was fixed.
+
+<br><br>
+<dt>3.0<dd>
+
+This is a new version of <strong>comm</strong> with several major changes.
+There is a new way of creating the methods available under the
+
+<b class='cmd'>comm</b> command.  The <b class='cmd'>comm init</b> method has been retired
+and is replaced by <b class='cmd'>comm configure</b> which allows access to many
+of the well-defined internal variables.  This also generalizes the
+options available to <b class='cmd'>comm new</b>.  Finally, there is now a
+protocol version exchanged when a connection is established.  This
+will allow for future on-wire protocol changes.  Currently, the
+protocol version is set to 2.
+
+<br><br>
+<dt>2.3<dd>
+
+<b class='cmd'>comm ids</b> was renamed to <b class='cmd'>comm channels</b>.  General
+support for <b class='cmd'>comm hook</b> was fully implemented, but only the
+<em>lost</em> hook exists, and it was changed to follow the general
+hook API.  <b class='cmd'>commLostHook</b> was unsupported (replaced by
+
+<b class='cmd'>comm hook lost</b>) and <b class='cmd'>commLost</b> was removed.
+
+<br><br>
+<dt>2.2<dd>
+
+The <em>died</em> hook was renamed <em>lost</em>, to be accessed by
+<b class='cmd'>commLostHook</b> and an early implementation of
+<b class='cmd'>comm lost hook</b>.  As such, <b class='cmd'>commDied</b> is now
+<b class='cmd'>commLost</b>.
+
+<br><br>
+<dt>2.1<dd>
+Unsupported method <b class='cmd'>comm remoteid</b> was added.
+
+<br><br>
+<dt>2.0<dd>
+<strong>comm</strong> has been rewritten from scratch (but is fully compatible
+with Comm 1.0, without the requirement to use obTcl).
+
+</dl>
+
+<h2><a name="author">AUTHOR</a></h2>
+<p>
+
+John LoVerso, John@LoVerso.Southborough.MA.US
+
+<p>
+
+<em>http://www.opengroup.org/~loverso/tcl-tk/#comm</em>
+
+
+<h2><a name="license">LICENSE</a></h2>
+<p>
+
+Please see the file <em>comm.LICENSE</em> that accompanied this source,
+or
+<a href="http://www.opengroup.org/www/dist_client/caubweb/COPYRIGHT.free.html">http://www.opengroup.org/www/dist_client/caubweb/COPYRIGHT.free.html</a>.
+
+<p>
+
+This license for <strong>comm</strong>, new as of version 3.2, allows it to be
+used for free, without any licensing fee or royalty.
+
+
+<h2><a name="bugs">BUGS</a></h2>
+<p>
+<ul>
+<li>
+
+If there is a failure initializing a channel created with
+<b class='cmd'>::comm::comm new</b>, then the channel should be destroyed.
+Currently, it is left in an inconsistent state.
+
+<br><br>
+<li>
+
+There should be a way to force a channel to quiesce when changing the
+configuration.
+
+</ul>
+
+<p>
+The following items can be implemented with the existing hooks and are
+listed here as a reminder to provide a sample hook in a future
+version.
+
+<ul>
+<li>
+
+Allow easier use of a slave interp for actual command execution
+(especially when operating in &quot;not local&quot; mode).
+
+<br><br>
+<li>
+
+Add host list (xhost-like) or &quot;magic cookie&quot; (xauth-like)
+authentication to initial handshake.
+
+</ul>
+
+<p>
+The following are outstanding todo items.
+
+<ul>
+<li>
+
+Add an interp discovery and name-&gt;port mapping.  This is likely to be
+in a separate, optional nameserver.  (See also the related work,
+below.)
+
+<br><br>
+<li>
+
+Fix the <em>{id host}</em> form so as not to be dependent upon
+canonical hostnames.  This requires fixes to Tcl to resolve hostnames!
+
+</ul>
+
+<p>
+This man page is bigger than the source file.
+
+
+<h2><a name="on_using_old_versions_of_tcl">ON USING OLD VERSIONS OF TCL</a></h2>
+<p>
+
+<p>
+Tcl7.5 under Windows contains a bug that causes the interpreter to
+hang when EOF is reached on non-blocking sockets.  This can be
+triggered with a command such as this:
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    &quot;comm send $other exit&quot;
+</pre></td></tr></table></p>
+
+<p>
+Always make sure the channel is quiescent before closing/exiting or
+use at least Tcl7.6 under Windows.
+
+<p>
+Tcl7.6 on the Mac contains several bugs.  It is recommended you use
+at least Tcl7.6p2.
+
+<p>
+Tcl8.0 on UNIX contains a socket bug that can crash Tcl.  It is recommended
+you use Tcl8.0p1 (or Tcl7.6p2).
+
+
+<h2><a name="related_work">RELATED WORK</a></h2>
+<p>
+<p>
+Tcl-DP provides an RPC-based remote execution interface, but is a
+compiled Tcl extension.  See
+<a href="http://www.cs.cornell.edu/Info/Projects/zeno/Projects/Tcl-DP.html">http://www.cs.cornell.edu/Info/Projects/zeno/Projects/Tcl-DP.html</a>.
+
+<p>
+Michael Doyle &lt;miked@eolas.com&gt; has code that implements the Tcl-DP
+RPC interface using standard Tcl sockets, much like <strong>comm</strong>.
+
+<p>
+Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt; uses
+<strong>comm</strong> and has built a simple nameserver as part of his Pool
+library.  See <a href="http://www.purl.org/net/akupries/soft/pool/index.htm">http://www.purl.org/net/akupries/soft/pool/index.htm</a>.
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+send(n)
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 1995-1998 The Open Group. All Rights Reserved.<br>
+Copyright &copy; 2003-2004 ActiveState Corporation.<br>
+</body></html>
+

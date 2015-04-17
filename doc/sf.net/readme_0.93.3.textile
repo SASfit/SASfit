@@ -1,0 +1,20 @@
+h4. 0.93.3, 2011-05-04
+
+* bug fix in the model "Stacked Discs". The structure factor describing the stacking order contained a bug.
+* extended plugin for stroboscopic measurements, especially for TISANE
+* plotting: ignore negative y values on log() and sqrt() scales
+* included Pcs_homogeneousCyl form factor
+* bug fix of ferrofluid plugin
+* added radial averaged form factor in ferrofluid plugin
+* extended the spline plugin to be used also as form factors. In case somebody wants to fit a spine function to e.g. a TEM size distribution, this function need to be available as a form factor and not only as a size distribution.
+* added configuration file 'config.ini' as replacement for deprecated sasfit_init_public.tcl
+* added switch for disabling 'about' popup at start time via config file
+* added checkbox (ascii options) for ignoring zero(0) intensity at the beginning of data
+* removed , as data column separator
+* added substitution of , => . for data columns (german decimal format to english format)
+* added interface function for covariance matrix output
+* covar matrix visualisation with parameter highlighting
+* manual: added a chapter about particle number densities, volume fraction and absolute intensities in the manual.
+* LogNorm_fp size distribution is now plugin function. The new plugin is not backwards compatible. The manual explains a bit the difficulties in describing the size distribution in terms of a volume fraction. 
+* added scrollbars for fit parameter window
+

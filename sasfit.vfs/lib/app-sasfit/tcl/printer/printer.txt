@@ -1,0 +1,219 @@
+=
+
+Tcl Extension for Windows
+RCS Version $Revision: 1.17 $
+RCS Last Change Date: $Date: 2004/12/28 19:21:59 $
+Original Author: Michael I. Schwartz, mschwart@nyx.net
+Incorporates code and ideas from:
+ Mark Roseman: Dialogs, Mac code, breakout of open, job, and page commands
+ Andreas Sievers (Andreas.Sievers@t-mobil.de): Fixes for ISO paper calculations
+ Steve Bold (stevebold@hotmail.com): Fixes for long printer names and unusual error conditions
+
+{LICENSE}
+
+THE AUTHORS HEREBY GRANT PERMISSION TO USE, COPY, MODIFY, DISTRIBUTE,
+AND LICENSE THIS SOFTWARE AND ITS DOCUMENTATION FOR ANY PURPOSE, PROVIDED
+THAT EXISTING COPYRIGHT NOTICES ARE RETAINED IN ALL COPIES AND THAT THIS
+NOTICE IS INCLUDED VERBATIM IN ANY DISTRIBUTIONS. 
+
+NO WRITTEN AGREEMENT, LICENSE, OR ROYALTY FEE IS REQUIRED FOR ANY OF THE
+AUTHORIZED USES.
+
+MODIFICATIONS TO THIS SOFTWARE MAY BE COPYRIGHTED BY THEIR AUTHORS
+AND NEED NOT FOLLOW THE LICENSING TERMS DESCRIBED HERE, PROVIDED THAT
+THE NEW TERMS ARE CLEARLY INDICATED ON THE FIRST PAGE OF EACH FILE WHERE
+THEY APPLY.
+
+IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT,
+INDIRECT, SPECIAL, INCIDENTAL,  OR CONSEQUENTIAL DAMAGES ARISING OUT OF
+THE USE OF THIS SOFTWARE, ITS DOCUMENTATION,  OR ANY DERIVATIVES
+THEREOF, EVEN IF THE AUTHORS HAVE BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE AUTHORS AND DISTRIBUTORS SPECIFICALLY DISCLAIM ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO,  THE IMPLIED WARRANTIES OF
+MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. 
+THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, AND THE AUTHORS AND
+DISTRIBUTORS HAVE NO OBLIGATION  TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+{SYNOPSIS}
+
+This file contains commands to extend TK for Windows 3.11, Windows 95,
+Windows 98, Windows NT 4.0, and Windows 2000 features
+
+The commands are:
+
+printer
+ printer attr [-hDC hdc] [-get|-set|-delete]
+ printer close [-hDC hdc]
+ printer dialog [-hDC hdc] [select|page_setup] [-flags flagsnum]
+ printer job [-hDC hdc] [start|end]
+ printer list [-match matchstring] [-verbose]
+ printer open [-name printername] [-default]
+ printer option [option value] ...
+ printer page [-hDC hdc] [start|end]
+ printer send [-postscript|-nopostscript] [-binary|-ascii]
+              [-hDC hdc] [-printer pname] [-file|-data] file_or_data ...
+ printer version
+
+The details of each command's options follow:
+
+{PRINTER}
+
+ 
+ printer attr [ -hDC hdc ]
+        [[-get key-list] | [-set list_of_key_value_pairs] | [-delete key-list]]
+  DESCRIPTION:
+   Returns a set of attribute/value pairs in dictionary order
+   -hDC   Allows any HDC to be the target of the request.
+   -get   The list of provided attributes is "string matched" against
+          available attributes, and only these attribute/value pairs are 
+          returned.
+          The return value is the set of key/value pairs requested.
+   -set   For each list of pairs in the list provided to -set, the first member
+          is the key and the second is the value. If the key exists, the value
+          is replaced; if the key does not exist, the key/value pair is added.
+          The return value is the set of key/value pairs modified.
+   -delete The list of keys is deleted from the attribute table. The return 
+           value is the number of keys actually deleted.
+   If none of get, set, or delete are specified, the request is treated like a
+   request to get all printer attributes.
+  LIMITATIONS:
+   Sorting is case-sensitive. Initial lower case attributes are suggested.
+   Setting page orientation using the printer attr command does NOT change
+   the page dimensions, page margins, page minimum margins, nor printer 
+   resolution.
+   The printer dialog command uses the device dialog, which has 
+   built-in code to do this. A convenience function is called for.
+ 
+ printer close [ -hDC hdc ]
+  DESCRIPTION:
+   Returns nothing if successful
+   Printer is closed and DC is released, concluding any jobs pending
+   -hDC    Allows any HDC to be the target of the command
+  LIMITATIONS:
+   None known
+ 
+ printer dialog [select|page_setup] [-flags flagnum]
+  DESCRIPTION:
+   This is the primary routine used to select a printer.
+   Invokes a platform specific printer selection, printer setup,  or 
+   printer page setup dialog with any provided flags (platform specific)
+   The select dialog returns a platform specific long integer handle to 
+   the selected printer and a 1 or 0 to indicate whether the user exited
+   with an OK or a Cancel
+   The page_setup dialog returns a 1 or 0 to indicate whether the user
+   exited with an OK or a Cancel
+   Values remain accessible through the attributes
+   The dialog is set up with values from the attribute pairing and previous use
+   of the dialogs.
+   Note that the page selection is disabled unless the attributes "minimum page"
+   and "maximum page" are set by the user. Flags can be set to enable and disable
+   features of the printer. Some common flags are listed below. They are added
+   together to combine effects:
+       Print selection radio button selected               1
+       Page number radio button selected                   2
+       Disable selection radio button                      4
+       Disable page selection radio button                 8
+       Activate collation checkbox                      0x10
+       Activate print to file checkbox                  0x20
+       Disable print to file checkbox                0x80000
+       Hide print to file checkbox                  0x100000
+       Remove the network button                    0x200000
+  LIMITATIONS:
+    This version does not choose PageDlgEx when available
+ 
+ printer job [-hdc HDC] [start|end]
+  DESCRIPTION:
+   printer job returns information about the pending job, if any.
+   printer job start initiates a new document spooled for printing
+   printer job end   lets the spooler process the job
+  LIMITATIONS:
+ 
+ printer list [-match matchstring] [-verbose]
+  DESCRIPTION:
+    Returns a list of all locally-known printers
+    The matchstring uses the "string match" style syntax, most similar to "shell-style"
+    -match   Restricts the list of printers to those matching the matchstring
+    -verbose Provides additional data about the printer
+  LIMITATIONS:
+ 
+ printer open [-name printername | -default ] [ -attr list-of-key-value-pairs ]
+  DESCRIPTION:
+   Returns handle (hDC) to default printer--either a long hexadecimal integer,
+   or a token name if the hdc extension is present.
+   Under Win95 and higher, a printer can be requested by name, and a set of
+   attributes can be provided to modify the HDC
+  EXAMPLE:
+   set hdc [ printer open -name "Apple Laserwriter II NTX" \
+             -attr [ list [ list "page orientation" landscape ] ] ]
+  LIMITATIONS:
+   Device-driver specific attributes cannot be affected this way
+   (e.g., print-to-file)
+
+ printer option [ list of option_name value ] ...
+  DESCRIPTION:
+   Gets or sets options to the printer package.
+   With no arguments, prints all option names and values
+   If option name/value pairs are provided, sets the recognized options with
+   the values
+   The options supported are:
+    autoclose  true  If true (1), closes the previous printer HDC when opening a
+               false new one. This is how Windows is supposed to operate. If set
+                     to false, the user should be sure to use the -hDC argument
+                     with the attr and close functions, as many printers may be
+                     open at once
+  LIMITATIONS:
+   It is not clear how many options there may be--in which case this command
+   may be of very limited use.
+
+ printer page [ -hDC hdc ] [start|end]
+  DESCRIPTION:
+   Start or end a page
+  LIMITATIONS:
+
+printer send [-postscript|-nopostscript] [-binary|-ascii]
+                     [-printer pname] [-file|-data] file_or_data ...
+ DESCRIPTION:
+   Used to send a file to the printer in "raw" format
+   Note that this function does not use the device context, but relies on the printer name.
+ OPTIONS
+   -postscript
+      Input file is postscript, and requires an initmatrix/restore wrapper
+      If the device driver CTM is not reasonable, this corrects the problem.
+      This is not the default
+   -nopostscript
+      Input file is a binary file (no special character handling).
+      This is the default.
+   -binary
+      Input file is opened in binary mode. This is the default
+   -ascii
+      Input file is opened in "auto" mode for newline and special character handling
+   -printer pname
+      Set the output printer to pname (in "windows" format)
+      If the printer selection dialog has been invoked, the printer
+      selected by the dialog is the default.
+      If not, and there is a previously used printer, use it.
+      If not, the current default printer is the default.
+   -file
+      The arguments following are filenames to send to the printer
+      This is the default.
+   -data
+      The arguments following are data to be sent to the printer.
+      In general, only one argument should follow this option.
+      Using this argument requires a *preceding* -datalen argument
+   -datalen
+      In the case of using -data, this provides the length of the data.
+      Using the string length is not reliable, as the data may be binary.
+      Perhaps using Tcl_Obj will provide a better interface in the future.
+
+ LIMITATIONS:
+   The -nopostscript option opens the input file in binary mode.
+   No whitespace is output between arguments following the -data option. This
+   means normally you will want to send only one argument with -data.
+
+printer version
+ DESCRIPTION:
+   Returns the version of this package
+

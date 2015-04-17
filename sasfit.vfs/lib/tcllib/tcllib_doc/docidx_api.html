@@ -1,0 +1,399 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>docidx_api - Documentation tools </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/doctools/docidx_api.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2003-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: docidx_api.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ docidx_api.n
+   -->
+
+<body>
+<h1> docidx_api(n) 1.0 doctools &quot;Documentation tools&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> docidx_api - Specification of the Interface to Index Formatting Engines
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#exported_commands">EXPORTED COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#imported_environment">IMPORTED ENVIRONMENT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+<table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>idx_numpasses</b> </a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>idx_initialize</b> </a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>idx_setup</b> <i class='arg'>n</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>idx_postprocess</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>idx_shutdown</b> </a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>idx_listvariables</b> </a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>idx_varset</b> <i class='arg'>varname</i> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>fmt_plain_text</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>fmt_comment</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>fmt_index_begin</b> <i class='arg'>text</i> <i class='arg'>title</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>fmt_index_end</b> </a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>fmt_key</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>fmt_manpage</b> <i class='arg'>file</i> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>fmt_url</b> <i class='arg'>url</i> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>dt_format</b> </a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>dt_fmap</b> <i class='arg'>symfname</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><b class='cmd'>dt_source</b> <i class='arg'>file</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><b class='cmd'>ex_cappend</b> </a></td></tr>
+<tr valign=top ><td ><a href="#19"><b class='cmd'>ex_cget</b> </a></td></tr>
+<tr valign=top ><td ><a href="#20"><b class='cmd'>ex_cis</b> </a></td></tr>
+<tr valign=top ><td ><a href="#21"><b class='cmd'>ex_cname</b> </a></td></tr>
+<tr valign=top ><td ><a href="#22"><b class='cmd'>ex_cpop</b> </a></td></tr>
+<tr valign=top ><td ><a href="#23"><b class='cmd'>ex_cpush</b> </a></td></tr>
+<tr valign=top ><td ><a href="#24"><b class='cmd'>ex_cset</b> </a></td></tr>
+<tr valign=top ><td ><a href="#25"><b class='cmd'>ex_lb</b> </a></td></tr>
+<tr valign=top ><td ><a href="#26"><b class='cmd'>ex_rb</b> </a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This document specifies version 1 of the interface an index formatting
+engine has to comply with to be usable by the package
+<strong>doctools::idx</strong>.
+
+The specification of the <em>docidx</em> format all index formatting
+engines have to process can be found in the companion document
+<em>docidx_fmt</em>.
+
+<h2><a name="api">API</a></h2>
+<p>
+
+<h3><a name="exported_commands">EXPORTED COMMANDS</a></h3>
+<p>
+
+Each index formatting engine has to provide a number of commands
+through which objects created by the package <strong>doctools::idx</strong>
+will upon the functionality of the engine. These commands are
+described here.
+
+<dl>
+<dt><em>Management commands</em><dd>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>idx_numpasses</b> </a><dd>
+
+
+This command is called by a docidx object immediately after it has
+loaded the engine. No other command of the engine will be called
+before it. It has to return the number of passes this engine requires
+to fully process the input document. This value has to be an integer
+number greater or equal to one.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>idx_initialize</b> </a><dd>
+
+
+This command is called at the beginning of every conversion run, as
+the first command of that run. Note that a run is not a pass, but may
+consist of multiple passes. See <b class='cmd'>idx_numpasses</b>. The command has
+to initialize the general state of the index formatting engine, beyond
+the initialization done during the load.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>idx_setup</b> <i class='arg'>n</i></a><dd>
+
+
+This command is called at the beginning of each pass over the input in
+a run. Its argument is the number of the pass which has begun. Passes
+are counted from <strong>1</strong> upward. The command has to set up the
+internal state of the index formatting engine for this particular
+pass.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>idx_postprocess</b> <i class='arg'>text</i></a><dd>
+
+
+This command is called immediately after the last pass in a run. Its
+argument is the result of the conversion generated by that pass. It is
+provided to allow the engine to perform any global last-ditch
+modifications of the generated document. The text returned by this
+command will be the final result of the conversion.
+
+<br><br>
+
+An engine for a format which requires no postprocessing can simply
+return the argument without change.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>idx_shutdown</b> </a><dd>
+
+
+This command is called at the end of every conversion run. It is the
+last command called in a run. It has to clean up of all the
+run-specific state in the index formatting engine. After the call the
+engine has to be in a state which allows the initiation of another run
+without fear that information from the last run is leaked into this
+new run.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>idx_listvariables</b> </a><dd>
+
+
+This command is called by a docidx object after it has loaded the
+engine (after <b class='cmd'>idx_numpasses</b>). It has to return a list containing
+the names of the engine parameters provided by the engine. This list
+can be empty.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>idx_varset</b> <i class='arg'>varname</i> <i class='arg'>text</i></a><dd>
+
+
+This command is called whenever the docidx object wishes to set an
+engine parameter to a particular value. The parameter to change is
+specified by <i class='arg'>varname</i>, the value to set in <i class='arg'>text</i>.
+
+<br><br>
+
+The command has to throw an error if an unknown <i class='arg'>varname</i> is
+used. Only the names returned by <b class='cmd'>idx_listvariables</b> are
+considered known.
+
+<br><br>
+
+The values of all engine parameters have to persist between passes and
+runs.
+
+</dl>
+<br><br>
+
+<dt><em>Formatting commands</em><dd>
+
+The commands listed in this section are responsible for the conversion
+of the input into the wanted output.
+
+Their names are the names of the associated markup command, with
+prefix <strong>fmt_</strong> added to them.
+
+Not all markup commands have associated formatting commands. The two
+exceptions are <b class='cmd'>vset</b> and <b class='cmd'>include</b>. These markup commands are
+processed by the docidx object itself.
+
+<br><br>
+
+A detailed documentation of the markup commands can be found in the
+companion document <em>docidx_fmt</em>. It is the formal specification
+of the <em>docidx</em> format.
+
+<br><br>
+
+<em>Note</em>: The formatting commands can expect that they are only
+called in an order allowed by the format specification.
+
+
+<br><br>
+<dl>
+
+<dt><a name="8"><b class='cmd'>fmt_plain_text</b> <i class='arg'>text</i></a><dd>
+
+
+This command has no associated markup command. It is called for any
+plain text encountered by the processor in the input. It has to
+perform any special processing required for plain text. The text
+returned as its result is added to the output. If no special
+processing is required it has to simply return its argument without
+change.
+
+
+<br><br>
+<dt><a name="9"><b class='cmd'>fmt_comment</b> <i class='arg'>text</i></a><dd>
+
+
+This command has to format the <i class='arg'>text</i> as a comment and return the
+formatted string. It has to return the empty string if the output
+format has no way of formatting comments.
+
+
+<br><br>
+<dt><a name="10"><b class='cmd'>fmt_index_begin</b> <i class='arg'>text</i> <i class='arg'>title</i></a><dd>
+
+
+This command has to format the label <i class='arg'>text</i> and the associated
+<i class='arg'>title</i> string as the start of the generated index and return
+the formatted string.
+
+
+<br><br>
+<dt><a name="11"><b class='cmd'>fmt_index_end</b> </a><dd>
+
+
+This command has to generate the end of the generated index and return
+the formatted string.
+
+
+<br><br>
+<dt><a name="12"><b class='cmd'>fmt_key</b> <i class='arg'>text</i></a><dd>
+
+
+This commands has to format the keyword <i class='arg'>text</i> at the beginning of
+a list of documents and other entities which belong to it and return
+the formatted string.
+
+
+<br><br>
+<dt><a name="13"><b class='cmd'>fmt_manpage</b> <i class='arg'>file</i> <i class='arg'>text</i></a><dd>
+
+
+This command has to format a document reference and return the
+formatted string.
+
+The document referenced by the entry is specified through its symbolic
+name <i class='arg'>file</i>, whereas the label to use for the link is provided by
+<i class='arg'>text</i>.
+
+Use the command <b class='cmd'>dt_fmap</b> to convert the symbolic name to the
+actual link.
+
+It is described in section <a href="#imported_environment">IMPORTED ENVIRONMENT</a>.
+
+
+<br><br>
+<dt><a name="14"><b class='cmd'>fmt_url</b> <i class='arg'>url</i> <i class='arg'>text</i></a><dd>
+
+
+This is the second command to describe an index element. It has to
+format an url reference and return the formatted string. The label to
+use is provided by <i class='arg'>text</i>, like for <b class='cmd'>fmt_manpage</b>. The place
+to link to is however not given through a symbolic name, but the exact
+uri to use in the output.
+
+</dl>
+</dl>
+
+<p>
+
+
+<h3><a name="imported_environment">IMPORTED ENVIRONMENT</a></h3>
+<p>
+
+The implementation of an index formatting engine can make the
+following assumptions about the environment it is executed in:
+
+<ol>
+<li>
+
+That it has full access to its own safe interpreter. In other words,
+the engine cannot damage the other parts of the processor, nor can it
+damage the filesystem.
+
+<br><br>
+<li>
+
+That the following commands are provided by the docidx object
+controlling the engine:
+
+<br><br>
+<dl>
+<dt>Doctools commands<dd>
+
+<dl>
+
+<dt><a name="15"><b class='cmd'>dt_format</b> </a><dd>
+
+
+This command returns the name of the format currently executing.
+
+
+<br><br>
+<dt><a name="16"><b class='cmd'>dt_fmap</b> <i class='arg'>symfname</i></a><dd>
+
+
+This command returns the actual name to use in the output in place of
+the symbolic filename <i class='arg'>symfname</i>. It will return the unchanged
+input if no mapping was found for <i class='arg'>symfname</i>.
+
+
+<br><br>
+<dt><a name="17"><b class='cmd'>dt_source</b> <i class='arg'>file</i></a><dd>
+
+
+This command allows the index formatting engine to load additional tcl
+code.
+
+Only files which are either in the same directory as the file
+containing the engine, or below it, can be loaded. Trying to load a
+file outside of this directory causes an error.
+
+</dl>
+<br><br>
+
+
+<dt>Expander commands<dd>
+
+All of the commands below are methods of the expander object (without
+the prefix <strong>ex_</strong>) handling the current input. This gives the
+engine limited access to the state of the expander.
+
+Their arguments and results are described in the documentation for the
+package <strong>expander</strong>.
+
+<br><br>
+<dl>
+<dt><a name="18"><b class='cmd'>ex_cappend</b> </a><dd>
+
+<dt><a name="19"><b class='cmd'>ex_cget</b> </a><dd>
+
+<dt><a name="20"><b class='cmd'>ex_cis</b> </a><dd>
+
+<dt><a name="21"><b class='cmd'>ex_cname</b> </a><dd>
+
+<dt><a name="22"><b class='cmd'>ex_cpop</b> </a><dd>
+
+<dt><a name="23"><b class='cmd'>ex_cpush</b> </a><dd>
+
+<dt><a name="24"><b class='cmd'>ex_cset</b> </a><dd>
+
+<dt><a name="25"><b class='cmd'>ex_lb</b> </a><dd>
+
+<dt><a name="26"><b class='cmd'>ex_rb</b> </a><dd>
+
+</dl>
+<br><br>
+
+
+<dt>Other commands<dd>
+
+The file &quot;<strong>_idx_common.tcl</strong>&quot; contains default implementations of
+<b class='cmd'>fmt_plaint_text</b> and all the <strong>idx_</strong> commands listed in
+section <a href="#exported_commands">EXPORTED COMMANDS</a>.
+
+It resides in the subdirectory &quot;<strong>mpformats</strong>&quot; containing all the
+predefined formats. This means that all external formats (i.e. not
+provided by the package <strong>doctools::idx</strong>) cannot use it
+immediately, but have to have a copy at their location.
+
+</dl>
+</ol>
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+docidx, docidx_fmt
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+HTML, LaTeX, TMML, generic markup, index, keyword index, keywords, markup, nroff
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2003-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

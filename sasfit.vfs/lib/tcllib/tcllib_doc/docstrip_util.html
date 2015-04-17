@@ -1,0 +1,193 @@
+<html><head>
+<title>docstrip_util - Literate programming tool </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/docstrip/docstrip_util.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2003-2005 Lars Hellstr&ouml;m &lt;Lars dot Hellstrom at residenset dot net&gt;
+   -->
+<! -- CVS: $Id: docstrip_util.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ docstrip_util.n
+   -->
+
+<body>
+<h1> docstrip_util(n) 1.2 docstrip &quot;Literate programming tool&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> docstrip_util - Docstrip-related utilities
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">Commands</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>docstrip::util ?1.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>docstrip::util::ddt2man</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>docstrip::util::guards</b> <i class='arg'>subcmd</i> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>docstrip::util::thefile</b> <i class='arg'>filename</i> ?<i class='arg'>option</i> <i class='arg'>value</i> ...?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>docstrip::util</strong> package is meant for collecting various
+utility procedures that may be useful for developers who make use of
+the <strong>docstrip</strong> package in some projects. It is separate from
+the main package to avoid overhead for end-users.
+
+
+<h2><a name="commands">Commands</a></h2>
+<p>
+
+<dl>
+<dt><a name="1"><b class='cmd'>docstrip::util::ddt2man</b> <i class='arg'>text</i></a><dd>
+
+  The <b class='cmd'>ddt2man</b> command reformats <i class='arg'>text</i> from the general
+  <strong>docstrip</strong> format to <strong>doctools</strong> &quot;<strong>.man</strong>&quot; format
+  (Tcl Markup Language for Manpages). The different line types are
+  treated as follows:
+  <br><br>
+<dl>
+  <dt>comment and metacomment lines<dd>
+    The '%' and '%%' prefixes are removed, the rest of the text is
+    kept as it is.
+  <br><br>
+<dt>empty lines<dd>
+    These are kept as they are. (Effectively this means that they will
+    count as comment lines after a comment line and as code lines
+    after a code line.)
+  <br><br>
+<dt>code lines<dd>
+    <b class='cmd'>example_begin</b> and <b class='cmd'>example_end</b> commands are placed
+    at the beginning and end of every block of consecutive code
+    lines. Brackets in a code line are converted to <b class='cmd'>lb</b> and
+    <b class='cmd'>rb</b> commands.
+  <br><br>
+<dt>verbatim guards<dd>
+    These are processed as usual, so they do not show up in the
+    result but every line in a verbatim block is treated as a code
+    line.
+  <br><br>
+<dt>other guards<dd>
+    These are treated as code lines, except that the actual guard is
+    <b class='cmd'>emph</b>asised.
+  </dl>
+
+  At the time of writing, no project has employed <strong>doctools</strong>
+  markup in master source files, so experience of what works well is
+  not available. A source file could however look as follows
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   % [manpage_begin gcd n 1.0]
+   % [moddesc {Greatest Common Divisor}]
+   % [require gcd [opt 1.0]]
+   % [description]
+   %
+   % [list_begin definitions]
+   % [call [cmd gcd] [arg a] [arg b]]
+   %   The [cmd gcd] procedure takes two arguments [arg a] and [arg b] which
+   %   must be integers and returns their greatest common divisor.
+   proc gcd {a b} {
+   %   The first step is to take the absolute values of the arguments.
+   %   This relieves us of having to worry about how signs will be treated
+   %   by the remainder operation.
+      set a [expr {abs($a)}]
+      set b [expr {abs($b)}]
+   %   The next line does all of Euclid's algorithm! We can make do
+   %   without a temporary variable, since $a is substituted before the
+   %   [lb]set a $b[rb] and thus continues to hold a reference to the
+   %   &quot;old&quot; value of [var a].
+      while {$b&gt;0} { set b [expr { $a % [set a $b] }] }
+   %   In Tcl 8.3 we might want to use [cmd set] instead of [cmd return]
+   %   to get the slight advantage of byte-compilation.
+   %&lt;tcl83&gt;  set a
+   %&lt;!tcl83&gt;   return $a
+   }
+   % [list_end]
+   %
+   % [manpage_end]
+</pre></td></tr></table></p>
+  If the above text is (suitably unindented and) fed through
+  <b class='cmd'>docstrip::util::ddt2man</b> then the result will be a syntactically
+  correct <strong>doctools</strong> manpage, even though its purpose is a
+  bit different.
+  <br><br>
+
+  It is suggested that master source code files with <strong>doctools</strong>
+  markup are given the suffix &quot;<strong>.ddt</strong>&quot;, hence the &quot;ddt&quot; in
+  <b class='cmd'>ddt2man</b>.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>docstrip::util::guards</b> <i class='arg'>subcmd</i> <i class='arg'>text</i></a><dd>
+
+  The <b class='cmd'>guards</b> command returns information (mostly of a
+  statistical nature) about the ordinary docstrip guards that occur
+  in the <i class='arg'>text</i>. The <i class='arg'>subcmd</i> selects what is returned.
+
+  <br><br>
+<dl>
+  <dt>counts<dd>
+    List the guard expression terminals with counts. The format of
+    the return value is a dictionary which maps the terminal name to
+    the number of occurencies of it in the file.
+  <br><br>
+<dt>exprcount<dd>
+    List the guard expressions with counts. The format of the return
+    value is a dictionary which maps the expression to the number of
+    occurencies of it in the file.
+  <br><br>
+<dt>exprerr<dd>
+    List the syntactically incorrect guard expressions (e.g.
+    parentheses do not match, or a terminal is missing). The return
+    value is a list, with the elements in no particular order.
+  <br><br>
+<dt>expressions<dd>
+    List the guard expressions. The return value is a list, with the
+    elements in no particular order.
+  <br><br>
+<dt>exprmods<dd>
+    List the guard expressions with modifiers. The format of the return
+    value is a dictionary where each index is a guard expression and
+    each entry is a string with one character for every guard line that
+    has this expression. The characters in the entry specify what
+    modifier was used in that line: +, -, *, /, or (for guard without
+    modifier:) space. This is the most primitive form of the
+    information gathered by <b class='cmd'>guards</b>.
+  <br><br>
+<dt>names<dd>
+    List the guard expression terminals. The return value is a list,
+    with the elements in no particular order.
+  <br><br>
+<dt>rotten<dd>
+    List the malformed guard lines (this does not include lines where
+    only the expression is malformed, though). The format of the return
+    value is a dictionary which maps line numbers to their contents.
+  </dl>
+<dt><a name="3"><b class='cmd'>docstrip::util::thefile</b> <i class='arg'>filename</i> ?<i class='arg'>option</i> <i class='arg'>value</i> ...?</a><dd>
+
+  The <b class='cmd'>thefile</b> command opens the file <i class='arg'>filename</i>, reads it to
+  end, closes it, and returns the contents. The option-value pairs are
+  passed on to <b class='cmd'>fconfigure</b> to configure the open file channel
+  before anything is read from it.
+</dl>
+
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+docstrip, doctools, doctools_fmt
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+.ddt, docstrip, doctools, documentation, literate programming, source
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2003-2005 Lars Hellstr&ouml;m &lt;Lars dot Hellstrom at residenset dot net&gt;<br>
+</body></html>

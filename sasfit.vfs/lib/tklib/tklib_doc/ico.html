@@ -1,0 +1,235 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>ico - Windows ICO handling </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/ico/ico.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: ico.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ ico.n
+   -->
+
+<body>
+<h1> ico(n) 0.3 ico &quot;Windows ICO handling&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> ico - Reading and writing windows icons
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#limitations">LIMITATIONS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>ico ?0.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::ico::getIconList</b> <i class='arg'>file</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::ico::getIcon</b> <i class='arg'>file</i> <i class='arg'>index</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::ico::writeIcon</b> <i class='arg'>file</i> <i class='arg'>index</i> <i class='arg'>depth</i> <i class='arg'>data</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::ico::copyIcon</b> <i class='arg'>file</i> <i class='arg'>index</i> <i class='arg'>file2</i> <i class='arg'>index2</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::ico::EXEtoICO</b> <i class='arg'>file</i> <i class='arg'>file2</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::ico::clearCache</b> ?file?</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::ico::transparentColor</b> <i class='arg'>image</i> <i class='arg'>color</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::ico::Show</b> <i class='arg'>file</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides functions for reading and writing Windows icons
+from ICO, EXE, DLL, ICL, and BMP files.
+
+
+<h2><a name="api">API</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::ico::getIconList</b> <i class='arg'>file</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a><dd>
+
+
+Returns a list of icons found in <i class='arg'>file</i> where each element has the
+format {width height depth}. Recognizes the following <i class='arg'>option</i>s.
+
+<br><br>
+<dl>
+<dt><strong>-type</strong> fileFormat<dd>
+</dl>
+<br><br>
+
+
+<dt><a name="2"><b class='cmd'>::ico::getIcon</b> <i class='arg'>file</i> <i class='arg'>index</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a><dd>
+
+
+Extracts the icon at <i class='arg'>index</i> from <i class='arg'>file</i>.
+
+The default <strong>-format</strong> is <strong>image</strong> which will return the
+name of a Tk image containing the icon. Optionally <strong>-name</strong> may
+be used to specify the name of the Tk image that is created. If
+<strong>-format</strong> is <strong>colors</strong> then a list of color names in the
+#RRGGBB format is returned. Each list element is a horizontal
+row. Each horizontal row contains a list of colors for all the pixels
+in that row from left to right.
+
+Recognizes the following <i class='arg'>option</i>s.
+
+<br><br>
+<dl>
+<dt><strong>-type</strong> fileFormat<dd>
+<dt><strong>-format</strong> value<dd>
+<dt><strong>-name</strong> value<dd>
+</dl>
+<br><br>
+
+
+<dt><a name="3"><b class='cmd'>::ico::writeIcon</b> <i class='arg'>file</i> <i class='arg'>index</i> <i class='arg'>depth</i> <i class='arg'>data</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a><dd>
+
+
+<dl>
+<dt>fileName <i class='arg'>file</i> (in)<dd>
+<dt>integer <i class='arg'>index</i> (in)<dd>
+
+This is the 0-based index of the icon to write. When writing to an
+EXE, DLL, or ICL file you may only overwrite existing icons with an
+icon of the same dimensions and color depth.
+
+When writing to an ICO, <i class='arg'>index</i> may be one greater than the last
+icon. This will append a new icon to the file.
+
+When writing to an ICO, <i class='arg'>index</i> will accept <strong>end</strong>. This will
+also cause the new icon to be appended to the file.
+
+When writing the other types <strong>end</strong> will refer to the last
+existing icon.
+
+
+<br><br>
+<dt>integer <i class='arg'>depth</i> (in)<dd>
+
+This argument must have a value of <strong>1</strong>, <strong>4</strong>, <strong>8</strong>,
+<strong>24</strong>, or <strong>32</strong>. If <i class='arg'>data</i> has more colors than the
+color depth allows an error will be generated.
+
+
+<br><br>
+<dt>options <i class='arg'>data</i> (in)<dd>
+
+This argument is either a list of colors in the format returned by
+<b class='cmd'>::ico::getIcon -format colors</b> or the name of a Tk image.
+
+
+</dl>
+<br><br>
+
+Recognizes the following <i class='arg'>option</i>s.
+
+<br><br>
+<dl>
+<dt><strong>-type</strong> fileFormat<dd>
+</dl>
+<br><br>
+
+
+<dt><a name="4"><b class='cmd'>::ico::copyIcon</b> <i class='arg'>file</i> <i class='arg'>index</i> <i class='arg'>file2</i> <i class='arg'>index2</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a><dd>
+
+
+Copies the icon at <i class='arg'>index</i> in <i class='arg'>file</i> to <i class='arg'>index2</i> in <i class='arg'>file2</i>.
+
+<br><br>
+<dl>
+<dt><strong>-fromtype</strong> fileFormat<dd>
+<dt><strong>-totype</strong> fileFormat<dd>
+</dl>
+<br><br>
+
+
+<dt><a name="5"><b class='cmd'>::ico::EXEtoICO</b> <i class='arg'>file</i> <i class='arg'>file2</i></a><dd>
+
+
+Extracts all icons from the executable <i class='arg'>file</i> to the ICO file <i class='arg'>file2</i>.
+
+<br><br>
+<dl>
+<dt><strong>-type</strong> fileFormat<dd>
+</dl>
+<br><br>
+
+
+<dt><a name="6"><b class='cmd'>::ico::clearCache</b> ?file?</a><dd>
+
+
+The <b class='cmd'>::ico::getIconList</b> command caches icon offsets inside EXE, DLL, and
+ICL files in order to speed up extraction.  This command clears that
+cache for the specific ?file? or all files.
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::ico::transparentColor</b> <i class='arg'>image</i> <i class='arg'>color</i></a><dd>
+
+
+If <i class='arg'>image</i> is a single word it is assumed to be the name of a Tk image.
+All pixels matching <i class='arg'>color</i> in the <i class='arg'>image</i> will be set transparent.
+Alternatively, <i class='arg'>image</i> may be a color list in which case a modified list
+is returned.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::ico::Show</b> <i class='arg'>file</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a><dd>
+
+
+Application level command which displays a window showing all the
+icons in <i class='arg'>file</i> with information about them.
+
+<br><br>
+<dl>
+<dt><strong>-type</strong> fileFormat<dd>
+<dt><strong>-parent</strong> pathName<dd>
+</dl>
+</dl>
+
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    button .explore -image [::ico::getIcon explorer.exe 0 -name explore]
+    set i [lsearch [::ico::getIconList tclkit.exe] {32 32 8}]]
+    set colorlist [::ico::getIcon tclkit.exe $i -format colors -type EXE]
+</pre></td></tr></table></p>
+
+<h2><a name="limitations">LIMITATIONS</a></h2>
+<p>
+
+Icons may not be added or removed from file types other than ICO. Icons in these files
+may only be replaced with icons of the same dimensions and color depth.
+<p>
+
+Icons of 8bpp or lower must include black in the pallete, this means if your icon does
+not have black in it, you will need to leave a color free so that it may be included by
+writeIcon.
+<p>
+
+There is currently no way to read alpha channel information from 32bpp icons.
+<p>
+
+Tk images do not have an alpha channel so the only way to write a true 32bpp icon is from
+a color list. writing a 32bpp icon from a Tkimage is identical to writing a 24bpp icon.
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    button .explore -image [::ico::getIcon explorer.exe 0 -name explore]
+    set i [lsearch [::ico::getIconList tclkit.exe] {32 32 8}]]
+    set colorlist [::ico::getIcon tclkit.exe $i -format colors -type EXE]
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+dll, entry, exe, ico, icon
+</body></html>
+

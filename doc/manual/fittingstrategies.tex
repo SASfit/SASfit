@@ -1,0 +1,187 @@
+
+\clearpage
+\section{Criteria for goodness-of-fit}
+All criteria shown below for testing the goodness of a fit should be
+considered with caution \cite{Bevington2003,Press2007}.
+When you get data on a SAS instrument the
+the measured intensities are measured with some statistical uncertainties.
+Normally one assumes Poisson statistics to determine the uncertainty
+in the counting statistics. The data reduction software should than perform a
+proper error propagation analysis for all succeeding data treatment operations.
+However, by this procedure only statistical uncertainties are taken into account.
+All systematic uncertainties are than hopefully covered during the data treatment,
+as for example background correction, transmission correction etc \ref{ch:SASdatacorrection}.
+~\\
+\subsection{chi square test}
+~\\
+The method of least squares is built on the hypothesis that the
+optimum description of a set of data is one which minimizes the
+weighted sum of squares of deviations, between the data,
+$I_\text{exp}(q_i)$ , and the fitting function $I_\text{th}(q_i)$:
+\begin{equation}
+\chi^2 = \displaystyle\sum_{i=1}^N
+\left(\frac{I_\text{exp}(q_i)-I_\text{th}(q_i)}{\Delta
+I(q_i)}\right)^2
+\label{eq:chi2}
+\end{equation}
+As a rule of thumb for chi-square fitting is the statement that a
+“good fit” is achieved when the reduced chi-square equals one. The
+reduced chi-square value, which equals the residual sum of square
+divided by the degree of freedom can be computed by
+\begin{equation}
+\chi^2_\nu = \displaystyle \frac{1}{N-m} \sum_{i=1}^N
+\left(\frac{I_\text{exp}(q_i)-I_\text{th}(q_i)}{\Delta
+I(q_i)}\right)^2 = \frac{\chi^2}{N-m}
+\end{equation}
+where $N$ is the number of data points and $m$ the number of fit parameters.
+$\nu=N-m$ is called the "number of degree of freedom". The reduced chi-square
+is closely related to the variance of the fit $s^2$ by
+\begin{equation}
+s^2=\chi_\nu^2 \left( \frac{1}{N}\sum_{i=1}^N \frac{1}{\left(\Delta I_i^\text{exp}\right)^2}\right)^{-1}
+\end{equation}
+
+In the theory of hypothesis testing $\chi^2$ can be used to test
+for goodness of a fit. The probability that a random set of $N$ data points
+would yield a value of $\chi^2$ equal or greater than the measured
+one is given by
+\begin{equation}
+\displaystyle Q_\text{factor} =
+Q\left(\frac{N-m}{2},\frac{\chi^2}{2}\right) =
+\frac{\Gamma\left(\frac{N-m}{2},\frac{\chi^2}{2}\right)}{\Gamma\left(\frac{N-m}{2}\right)}
+\text{ with } \Gamma\left(a,x\right) =  \int_x^\infty t^{a-1}e^{-t}
+dt
+\end{equation}
+For a fitting function being a good approximation to the data the experimental
+value of $\chi^2_\nu$ should be close to one and the probability
+$Q_\text{factor}$ somewhere between 0.01 and 0.5. For probability values
+close to one the fit seems to be too good to be true.
+
+\vspace{5mm}
+
+The interpretation of the parameter $Q_\text{factor}$ can be summarized as:
+
+\vspace{5mm}
+
+\underline{\bf goodness-of-fit parameter: $Q_\text{factor}$}
+\begin{description}
+ \item[$Q_\text{factor}>0.99$] too good
+ \item[$Q_\text{factor}>0.1$] believable
+ \item[$Q_\text{factor}>0.001$] may be acceptable
+ \item[$Q_\text{factor}<0.001$] questionable
+\end{description}
+
+\vspace{5mm}
+
+The $Q_\text{factor}$-parameter is calculated after each calculation of the scattering curve together with $\chi^2_\nu$ and $s^2$. They are displayed and updated in the red marked area of the screen shot shown in fig.\ \ref{fig:GoodnessParGUI}.
+
+~\\
+\subsection{R-factor}
+~\\
+The crystallographers have introduced another parameter for the goodness of a fit.
+They use the $R$ factor \cite{Rfactor,Hamilton1965} as a measure of model quality which is defines as
+\begin{equation}\label{eqRfactor}
+  R  \displaystyle  = \frac{\displaystyle\sum_{i=1}^N
+\abs{\abs{I_\text{exp}(q_i)} -
+\abs{I_\text{th}(q_i)}}}{\displaystyle\sum_{i=1}^N
+\abs{I_\text{exp}(q_i)}}
+\end{equation}
+Theoretical values of $R$ range from zero (perfect
+agreement of calculated and observed intensities) to infinity.  $R$
+factors greater than 0.5 indicate in crystallography very poor
+agreement between observed and calculated intensities. Models
+refining to $R < 0.05$ are often considered to be good. However, the
+$R$ factor must always be treated with caution, only as an indicator of
+precision and not accuracy. In Crystallography partially incorrect
+structures have been reported with $R$ values below $0.1$; many
+imprecise but essentially correct structures have been reported with
+higher $R$ values.
+
+In practice, weighted $R$ factors $R_\text{w}$ are more often used
+to track least-squares refinement, since the functions minimized are
+weighted according to estimates of the precision of the measured
+quantity. The weighted residuals are defined as:
+\begin{equation} \displaystyle R_{w} =
+\sqrt{\frac{\displaystyle\sum_{i=1}^N \left(\frac{\abs{I_\text{exp}(q_i)}
+- \abs{I_\text{th}(q_i)}}{\Delta
+I(q_i)}\right)^2}{\displaystyle\sum_{i=1}^N
+\frac{I_\text{exp}^2(q_i)}{\Delta I^2(q_i)}}}
+\end{equation}
+
+
+The interpretation of the parameters $R$ and $R_w$ can be summarized as:
+
+\vspace{5mm}
+
+\underline{\bf goodness-of-fit parameters: $R,R_w$}
+\begin{description}
+\item[$R,R_w>0.3$] questionable
+\item[$0.1 > R,R_w >0.3$] may be acceptable
+\item[$R,R_w<0.1$] believable
+\end{description}
+
+\vspace{5mm}
+
+The parameters $R$ and $R_w$ are calculated like the $Q_\text{factor}$-parameter after each calculation of the scattering curve. They are displayed and updated together with other goodness-of-fit parameters in the red marked area of the screen shot shown in fig.\ \ref{fig:GoodnessParGUI}. The goodness-of-fit parameters are not minimized. The parameter which is minimized is the $\chi^2$-value, defined in eq.\ \ref{eq:chi2}. The other goodness-of-fit parameters are than calculated after each fitting step or after evaluating the theoretical scattering curve via the "Apply"-button.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.712\textwidth,height=0.571\textwidth]{../images/related_pages/goodnessOFfitPAR.png}
+\end{center}
+\caption{The parameters $Q, R,R_w$, describing the goodness of the fit, are displayed in the marked area of the GUI}
+\label{fig:GoodnessParGUI}
+\end{figure}
+
+%~\\
+\subsection{Confidence interval of the fitting parameter}
+~\\
+
+The confidence intervals of the fitting parameters are calculated at the minimum of the $\chi^2$. At the minimum first the partial derivatives according to the fit parameters $a_i$ are calculated to get the matrix elements $A_{kl}$ via
+\begin{align}
+A_{kl} &= \sum_{i=1}^{N} \frac{1}{\left(\Delta I_i^\mathrm{th}\right)^2} \frac{\partial I_i^\mathrm{th}(q_i,\mathbf{a})}{\partial a_k} \frac{\partial I_i^\mathrm{th}(q_i,\mathbf{a})}{\partial a_l}
+\end{align}
+The inversion of this matrix yield the covariance matrix
+\begin{align}
+        \mathbf{C} &= \mathbf{A}^{-1}
+\end{align}
+The standard deviations $\Delta a_i$ of the best-fit parameters are given by the square root of the corresponding diagonal elements of the covariance matrix
+\begin{align}
+\Delta a_i &= \sqrt{C_{ii}}
+\end{align}
+The correlation coefficient of the fit parameters $a_k$ and $a_l$ are given by
+\begin{align}
+r_{kl} &= \frac{C_{kl}}{\sqrt{C_{kk}C_{ll}}} = \frac{C_{kl}}{\Delta a_k \Delta a_l}
+\end{align}
+Both the non-diagonal elements of the correlation matrix $r_{k>l}$ and the confidence intervals of the fitting parameters $\Delta a_k$ are calculated when the fit converges and displayed in a GUI (fig.\ \ref{fig:FitErrors}(b)) which can be opened via a menu button as shown in fig.\ \ref{fig:FitErrors}(a).
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[menu button showing the GUI for the confidence intervals and correlation matrix]{\label{fig:ErrorButton}\includegraphics[width=0.47\textwidth]{../images/related_pages/menueConfidenceIntervall.png}}
+\subfigure[GUI displaying the fitting parameters including confidence intervals and correlation matrix]{\label{fig:ErrorGUI}\includegraphics[width=0.47\textwidth]{../images/related_pages/ConfidenceIntervallANDCorrelationMatrix.png}}
+\end{center}
+\caption{The confidence intervals are calculated at the end of the minimization procedure.}
+\label{fig:FitErrors}
+\end{figure}
+
+The routine can give nonphysical confidence intervals if
+\begin{itemize}
+\item no proper error bar for the experimental data are supplied
+\item a wrong physical model for describing the data is used
+\item the physical model has strongly correlated parameters
+\begin{subequations}
+\begin{align}
+r_{kl} &\approx 0, a_k \mbox{ and } a_l \mbox{ are uncorrelated parameters} \\
+r_{kl} &\approx \pm 1, a_k \mbox{ and } a_l \mbox{ are strongly correlated parameters}
+\end{align}
+\end{subequations}
+\end{itemize}
+
+The given value for the confidence interval of the fit parameters should not be used in the cases
+\begin{itemize}
+\item where the error is not normal distributed
+\item where the data is given without error bar
+\item where parameters are strongly correlated
+\end{itemize}
+
+
+\clearpage
+\section{Fitting strategies}

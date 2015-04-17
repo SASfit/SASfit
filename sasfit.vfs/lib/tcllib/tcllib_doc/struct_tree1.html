@@ -1,0 +1,408 @@
+<! -- -*- tcl -*-
+   -->
+<html><head>
+<title>struct::tree v1 - Tcl Data Structures </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/struct/struct_tree1.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: struct_tree1.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ struct::tree v1.n
+   -->
+
+<body>
+<h1> struct::tree v1(n) 1.2.2 struct &quot;Tcl Data Structures&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> struct::tree v1 - Create and manipulate tree objects
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>struct::tree ?1.2.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>treeName</b> <strong>option</strong> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><i class='arg'>treeName</i> <strong>append</strong> <i class='arg'>node</i> ?-key <i class='arg'>key</i>? <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>treeName</i> <strong>children</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>treeName</i> <strong>cut</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>treeName</i> <strong>delete</strong> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>treeName</i> <strong>depth</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>treeName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>treeName</i> <strong>exists</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>treeName</i> <strong>get</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>treeName</i> <strong>getall</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>treeName</i> <strong>keys</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>treeName</i> <strong>keyexists</strong> <i class='arg'>node</i> ?-key <i class='arg'>key</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>treeName</i> <strong>index</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>treeName</i> <strong>insert</strong> <i class='arg'>parent</i> <i class='arg'>index</i> ?<i class='arg'>child</i> ?<i class='arg'>child</i> ...??</a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>treeName</i> <strong>isleaf</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>treeName</i> <strong>lappend</strong> <i class='arg'>node</i> ?-key <i class='arg'>key</i>? <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>treeName</i> <strong>move</strong> <i class='arg'>parent</i> <i class='arg'>index</i> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a></td></tr>
+<tr valign=top ><td ><a href="#18"><i class='arg'>treeName</i> <strong>next</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#19"><i class='arg'>treeName</i> <strong>numchildren</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><i class='arg'>treeName</i> <strong>parent</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><i class='arg'>treeName</i> <strong>previous</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#22"><i class='arg'>treeName</i> <strong>set</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>? ?<i class='arg'>value</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#23"><i class='arg'>treeName</i> <strong>size</strong> ?<i class='arg'>node</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#24"><i class='arg'>treeName</i> <strong>splice</strong> <i class='arg'>parent</i> <i class='arg'>from</i> ?<i class='arg'>to</i>? ?<i class='arg'>child</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#25"><i class='arg'>treeName</i> <strong>swap</strong> <i class='arg'>node1</i> <i class='arg'>node2</i></a></td></tr>
+<tr valign=top ><td ><a href="#26"><i class='arg'>treeName</i> <strong>unset</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#27"><i class='arg'>treeName</i> <strong>walk</strong> <i class='arg'>node</i> ?<strong>-order</strong> <i class='arg'>order</i>? ?<strong>-type</strong> <i class='arg'>type</i>? <strong>-command</strong> <i class='arg'>cmd</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <b class='cmd'>::struct::tree</b> command creates a new tree object with an
+associated global Tcl command whose name is <i class='arg'>treeName</i>. This
+command may be used to invoke various operations on the tree. It has
+the following general form:
+
+<dl>
+<dt><a name="1"><b class='cmd'>treeName</b> <strong>option</strong> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command.
+
+</dl>
+
+<p>
+
+A tree is a collection of elements, called nodes, one of which is
+distinguished as a root, along with a relation (&quot;parenthood&quot;) that
+places a hierarchical structure on the nodes. (Data Structures and
+Algorithms; Aho, Hopcroft and Ullman; Addison-Wesley, 1987).  In
+addition to maintaining the node relationships, this tree
+implementation allows any number of keyed values to be associated with
+each node.
+
+<p>
+
+The following commands are possible for tree objects:
+
+<dl>
+
+<dt><a name="2"><i class='arg'>treeName</i> <strong>append</strong> <i class='arg'>node</i> ?-key <i class='arg'>key</i>? <i class='arg'>value</i></a><dd>
+
+
+Appends a <i class='arg'>value</i> to one of the keyed values associated with an
+node. If no <i class='arg'>key</i> is specified, the key <strong>data</strong> is assumed.
+
+
+<br><br>
+<dt><a name="3"><i class='arg'>treeName</i> <strong>children</strong> <i class='arg'>node</i></a><dd>
+
+
+Return a list of the children of <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="4"><i class='arg'>treeName</i> <strong>cut</strong> <i class='arg'>node</i></a><dd>
+
+
+Removes the node specified by <i class='arg'>node</i> from the tree, but not its
+children.  The children of <i class='arg'>node</i> are made children of the parent
+of the <i class='arg'>node</i>, at the index at which <i class='arg'>node</i> was located.
+
+
+<br><br>
+<dt><a name="5"><i class='arg'>treeName</i> <strong>delete</strong> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a><dd>
+
+
+Remove the specified nodes from the tree.  All of the nodes' children
+will be removed as well to prevent orphaned nodes.
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>treeName</i> <strong>depth</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the number of steps from node <i class='arg'>node</i> to the root node.
+
+
+<br><br>
+<dt><a name="7"><i class='arg'>treeName</i> <strong>destroy</strong></a><dd>
+
+
+Destroy the tree, including its storage space and associated command.
+
+
+<br><br>
+<dt><a name="8"><i class='arg'>treeName</i> <strong>exists</strong> <i class='arg'>node</i></a><dd>
+
+
+Remove true if the specified node exists in the tree.
+
+
+<br><br>
+<dt><a name="9"><i class='arg'>treeName</i> <strong>get</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>?</a><dd>
+
+
+Return the value associated with the key <i class='arg'>key</i> for the node
+
+<i class='arg'>node</i>. If no key is specified, the key <strong>data</strong> is assumed.
+
+<br><br>
+<dt><a name="10"><i class='arg'>treeName</i> <strong>getall</strong> <i class='arg'>node</i></a><dd>
+
+
+Returns a serialized list of key/value pairs (suitable for use with
+[<b class='cmd'>array set</b>]) for the <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="11"><i class='arg'>treeName</i> <strong>keys</strong> <i class='arg'>node</i></a><dd>
+
+
+Returns a list of keys for the <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="12"><i class='arg'>treeName</i> <strong>keyexists</strong> <i class='arg'>node</i> ?-key <i class='arg'>key</i>?</a><dd>
+
+
+Return true if the specified <i class='arg'>key</i> exists for the <i class='arg'>node</i>. If
+no <i class='arg'>key</i> is specified, the key <strong>data</strong> is assumed.
+
+
+<br><br>
+<dt><a name="13"><i class='arg'>treeName</i> <strong>index</strong> <i class='arg'>node</i></a><dd>
+
+
+Returns the index of <i class='arg'>node</i> in its parent's list of children.  For
+example, if a node has <em>nodeFoo</em>, <em>nodeBar</em>, and
+
+<em>nodeBaz</em> as children, in that order, the index of
+
+<em>nodeBar</em> is 1.
+
+
+<br><br>
+<dt><a name="14"><i class='arg'>treeName</i> <strong>insert</strong> <i class='arg'>parent</i> <i class='arg'>index</i> ?<i class='arg'>child</i> ?<i class='arg'>child</i> ...??</a><dd>
+
+
+Insert one or more nodes into the tree as children of the node
+
+<i class='arg'>parent</i>. The nodes will be added in the order they are given. If
+<i class='arg'>parent</i> is <strong>root</strong>, it refers to the root of the tree. The
+new nodes will be added to the <i class='arg'>parent</i> node's child list at the
+index given by <i class='arg'>index</i>. The <i class='arg'>index</i> can be <strong>end</strong> in
+which case the new nodes will be added after the current last child.
+
+<br><br>
+
+If any of the specified children already exist in <i class='arg'>treeName</i>,
+those nodes will be moved from their original location to the new
+location indicated by this command.
+
+<br><br>
+
+If no <i class='arg'>child</i> is specified, a single node will be added, and a
+name will be generated for the new node. The generated name is of the
+form <em>node</em><strong>x</strong>, where <strong>x</strong> is a number. If names are
+specified they must neither contain whitespace nor colons (&quot;:&quot;).
+
+<br><br>
+
+The return result from this command is a list of nodes added.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>treeName</i> <strong>isleaf</strong> <i class='arg'>node</i></a><dd>
+
+
+Returns true if <i class='arg'>node</i> is a leaf of the tree (if <i class='arg'>node</i> has no
+children), false otherwise.
+
+
+<br><br>
+<dt><a name="16"><i class='arg'>treeName</i> <strong>lappend</strong> <i class='arg'>node</i> ?-key <i class='arg'>key</i>? <i class='arg'>value</i></a><dd>
+
+
+Appends a <i class='arg'>value</i> (as a list) to one of the keyed values
+associated with an <i class='arg'>node</i>. If no <i class='arg'>key</i> is specified, the key
+<strong>data</strong> is assumed.
+
+
+<br><br>
+<dt><a name="17"><i class='arg'>treeName</i> <strong>move</strong> <i class='arg'>parent</i> <i class='arg'>index</i> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a><dd>
+
+
+Make the specified nodes children of <i class='arg'>parent</i>, inserting them into
+the parent's child list at the index given by <i class='arg'>index</i>. Note that
+the command will take all nodes out of the tree before inserting them
+under the new parent, and that it determines the position to place
+them into after the removal, before the re-insertion. This behaviour
+is important when it comes to moving one or more nodes to a different
+index without changing their parent node.
+
+<br><br>
+<dt><a name="18"><i class='arg'>treeName</i> <strong>next</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the right sibling of <i class='arg'>node</i>, or the empty string if
+
+<i class='arg'>node</i> was the last child of its parent.
+
+
+<br><br>
+<dt><a name="19"><i class='arg'>treeName</i> <strong>numchildren</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the number of immediate children of <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="20"><i class='arg'>treeName</i> <strong>parent</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the parent of <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="21"><i class='arg'>treeName</i> <strong>previous</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the left sibling of <i class='arg'>node</i>, or the empty string if
+
+<i class='arg'>node</i> was the first child of its parent.
+
+
+<br><br>
+<dt><a name="22"><i class='arg'>treeName</i> <strong>set</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>? ?<i class='arg'>value</i>?</a><dd>
+
+
+Set or get one of the keyed values associated with a node. If no key
+is specified, the key <strong>data</strong> is assumed.  Each node that is
+added to a tree has the value &quot;&quot; assigned to the key <strong>data</strong>
+automatically.  A node may have any number of keyed values associated
+with it.  If <i class='arg'>value</i> is not specified, this command returns the
+current value assigned to the key; if <i class='arg'>value</i> is specified, this
+command assigns that value to the key.
+
+
+<br><br>
+<dt><a name="23"><i class='arg'>treeName</i> <strong>size</strong> ?<i class='arg'>node</i>?</a><dd>
+
+
+
+Return a count of the number of descendants of the node <i class='arg'>node</i>; if
+no node is specified, <strong>root</strong> is assumed.
+
+
+<br><br>
+<dt><a name="24"><i class='arg'>treeName</i> <strong>splice</strong> <i class='arg'>parent</i> <i class='arg'>from</i> ?<i class='arg'>to</i>? ?<i class='arg'>child</i>?</a><dd>
+
+
+Insert a node named <i class='arg'>child</i> into the tree as a child of the node
+<i class='arg'>parent</i>. If <i class='arg'>parent</i> is <strong>root</strong>, it refers to the root
+of the tree. The new node will be added to the parent node's child
+list at the index given by <i class='arg'>from</i>.  The children of <i class='arg'>parent</i>
+which are in the range of the indices <i class='arg'>from</i> and <i class='arg'>to</i> are made
+children of <i class='arg'>child</i>.  If the value of <i class='arg'>to</i> is not specified it
+defaults to <strong>end</strong>.  If no name is given for <i class='arg'>child</i>, a name
+will be generated for the new node.  The generated name is of the form
+<em>node</em><strong>x</strong>, where <strong>x</strong> is a number.  The return result
+from this command is the name of the new node.
+
+
+<br><br>
+<dt><a name="25"><i class='arg'>treeName</i> <strong>swap</strong> <i class='arg'>node1</i> <i class='arg'>node2</i></a><dd>
+
+
+Swap the position of <i class='arg'>node1</i> and <i class='arg'>node2</i> in the tree.
+
+
+<br><br>
+<dt><a name="26"><i class='arg'>treeName</i> <strong>unset</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>?</a><dd>
+
+
+Remove a keyed value from the node <i class='arg'>node</i>.  If no key is
+specified, the key <strong>data</strong> is assumed.
+
+
+<br><br>
+<dt><a name="27"><i class='arg'>treeName</i> <strong>walk</strong> <i class='arg'>node</i> ?<strong>-order</strong> <i class='arg'>order</i>? ?<strong>-type</strong> <i class='arg'>type</i>? <strong>-command</strong> <i class='arg'>cmd</i></a><dd>
+
+
+Perform a breadth-first or depth-first walk of the tree starting at
+the node <i class='arg'>node</i>.  The type of walk, breadth-first or depth-first,
+is determined by the value of <i class='arg'>type</i>; <strong>bfs</strong> indicates
+breadth-first, <strong>dfs</strong> indicates depth-first.  Depth-first is the
+default. The order of the walk, pre-, post-, both- or in-order is
+determined by the value of <i class='arg'>order</i>; <strong>pre</strong> indicates
+pre-order, <strong>post</strong> indicates post-order, <strong>both</strong> indicates
+both-order and <strong>in</strong> indicates in-order. Pre-order is the
+default.
+
+<br><br>
+
+Pre-order walking means that a parent node is visited before any of
+its children.  For example, a breadth-first search starting from the
+root will visit the root, followed by all of the root's children,
+followed by all of the root's grandchildren. Post-order walking means
+that a parent node is visited after any of its children. Both-order
+walking means that a parent node is visited before <em>and</em> after
+any of its children. In-order walking means that a parent node is
+visited after its first child and before the second. This is a
+generalization of in-order walking for binary trees and will do the
+right thing if a binary is walked. The combination of a breadth-first
+walk with in-order is illegal.
+
+<br><br>
+
+As the walk progresses, the command <i class='arg'>cmd</i> will be evaluated at
+each node.  Percent substitution will be performed on <i class='arg'>cmd</i> before
+evaluation, just as in a <b class='cmd'>bind</b> script.  The following
+substitutions are recognized:
+
+<br><br>
+<dl>
+
+<dt><strong>%%</strong><dd>
+
+Insert the literal % character.
+
+<br><br>
+<dt><strong>%t</strong><dd>
+
+Name of the tree object.
+
+<br><br>
+<dt><strong>%n</strong><dd>
+
+Name of the current node.
+
+<br><br>
+<dt><strong>%a</strong><dd>
+
+Name of the action occurring; one of <strong>enter</strong>, <strong>leave</strong>,
+or <strong>visit</strong>.  <strong>enter</strong> actions occur during pre-order
+walks; <strong>leave</strong> actions occur during post-order walks;
+
+<strong>visit</strong> actions occur during in-order walks.  In a both-order
+walk, the command will be evaluated twice for each node; the action is
+<strong>enter</strong> for the first evaluation, and <strong>leave</strong> for the
+second.
+
+</dl>
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+tree
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

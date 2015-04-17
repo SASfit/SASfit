@@ -1,0 +1,137 @@
+<! -- -*- tcl -*-
+   -->
+<html><head>
+<title>struct::skiplist - Tcl Data Structures </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/struct/skiplist.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2000 Keith Vetter
+   -->
+<! -- CVS: $Id: skiplist.html,v 1.1 2006/05/02 12:32:19 kohlbrecher Exp $ struct::skiplist.n
+   -->
+
+<body>
+<h1> struct::skiplist(n) 1.3 struct &quot;Tcl Data Structures&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> struct::skiplist - Create and manipulate skiplists
+
+<! --    --     This software is licensed under a BSD license as described in tcl/tk   --     license.txt file but with the copyright held by Keith Vetter.   -- 
+   -->
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>struct::skiplist ?1.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>skiplistName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><i class='arg'>skiplistName</i> <strong>delete</strong> <i class='arg'>node</i> ?<i class='arg'>node</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>skiplistName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>skiplistName</i> <strong>insert</strong> <i class='arg'>key value</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>skiplistName</i> <strong>search</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>skiplistName</i> <strong>size</strong></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>skiplistName</i> <strong>walk</strong> <i class='arg'>cmd</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The <b class='cmd'>::struct::skiplist</b> command creates a new skiplist object
+with an associated global Tcl command whose name is
+<i class='arg'>skiplistName</i>. This command may be used to invoke various
+operations on the skiplist. It has the following general form:
+
+<dl>
+<dt><a name="1"><b class='cmd'>skiplistName</b> <i class='arg'>option</i> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command.
+
+</dl>
+
+<p>
+
+Skip lists are an alternative data structure to binary trees. They can
+be used to maintain ordered lists over any sequence of insertions and
+deletions. Skip lists use randomness to achieve probabilistic
+balancing, and as a result the algorithms for insertion and deletion
+in skip lists are much simpler and faster than those for binary trees.
+
+<p>
+
+To read more about skip lists see Pugh, William.
+<em>Skip lists: a probabilistic alternative to balanced trees</em>
+In: Communications of the ACM, June 1990, 33(6) 668-676.
+
+<p>
+
+Currently, the key can be either a number or a string, and comparisons
+are performed with the built in greater than operator.
+
+The following commands are possible for skiplist objects:
+
+<dl>
+<dt><a name="2"><i class='arg'>skiplistName</i> <strong>delete</strong> <i class='arg'>node</i> ?<i class='arg'>node</i>...?</a><dd>
+
+
+Remove the specified nodes from the skiplist.
+
+
+<br><br>
+<dt><a name="3"><i class='arg'>skiplistName</i> <strong>destroy</strong></a><dd>
+
+
+Destroy the skiplist, including its storage space and associated command.
+
+
+<br><br>
+<dt><a name="4"><i class='arg'>skiplistName</i> <strong>insert</strong> <i class='arg'>key value</i></a><dd>
+
+
+Insert a node with the given <i class='arg'>key</i> and <i class='arg'>value</i> into the
+skiplist. If a node with that key already exists, then the that node's
+value is updated and its node level is returned. Otherwise a new node
+is created and 0 is returned.
+
+
+<br><br>
+<dt><a name="5"><i class='arg'>skiplistName</i> <strong>search</strong> <i class='arg'>node</i> ?<strong>-key</strong> <i class='arg'>key</i>?</a><dd>
+
+
+Search for a given key in a skiplist. If not found then 0 is returned.
+If found, then a two element list of 1 followed by the node's value is retuned.
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>skiplistName</i> <strong>size</strong></a><dd>
+
+
+Return a count of the number of nodes in the skiplist.
+
+<br><br>
+<dt><a name="7"><i class='arg'>skiplistName</i> <strong>walk</strong> <i class='arg'>cmd</i></a><dd>
+
+
+Walk the skiplist from the first node to the last. At each node, the
+command <i class='arg'>cmd</i> will be evaluated with the key and value of the
+current node appended.
+
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+skiplist
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2000 Keith Vetter<br>
+</body></html>
