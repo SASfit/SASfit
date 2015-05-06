@@ -462,18 +462,35 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
     endif()
     message(STATUS "get_saskit_dependencies of '${SASKIT_FILE}'")
     get_prerequisites(${SASKIT_FILE} PREREQ ${EXCLUDE_SYSTEM} ${RECURSIVE} "" "")
-    message("PREREQ: '${PREREQ}'")
+    if(UNIX AND NOT APPLE) # linux
+        # avoid modifying LD_LIBRARY_PATH,
+        # using dyn.lib.loader in sasfit.sh instead
+        list(APPEND PREREQ
+            "/lib/*-linux-gnu/ld-[0-9].[0-9][0-9].so"
+            "/lib/*-linux-gnu/libpthread.so.[0-9]"
+            "/usr/lib/*-linux-gnu/libXrender.so.[0-9]"
+            "/usr/lib/*-linux-gnu/libXfixes.so.[0-9]"
+            )
+    endif()
+#    message(STATUS "dependent libs: '${PREREQ}'")
+    message(STATUS "dependent libs:")
     foreach(FN ${PREREQ})
+        unset(ABSFN)
         if(NOT EXISTS "${FN}")
             find_library(ABSFN "${FN}")
-            message("found: '${ABSFN}'")
+#            message("found: '${ABSFN}'")
+            if(NOT ABSFN)
+#                message("not found")
+                file(GLOB ABSFN "${FN}")
+            endif()
         else()
             set(ABSFN "${FN}")
         endif()
-        message("ABSFN: '${ABSFN}'")
         if(EXISTS "${ABSFN}")
             list(APPEND SASFIT_BIN_FILE_LIST "${ABSFN}")
-            message("appended: '${ABSFN}'")
+            message(STATUS "    ${ABSFN}")
+        else()
+            message(WARNING "Dependency not found: '${FN}'")
         endif()
         unset(ABSFN CACHE)
     endforeach()

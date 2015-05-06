@@ -7,5 +7,6 @@ OS=$($UNAME -s)
 if [ "$OS" == "Darwin" ]; then
   DYLD_LIBRARY_PATH="$PATH:$DYLD_LIBRARY_PATH" "$PATH"/sasfit
 else
-  LD_LIBRARY_PATH="$PATH:$LD_LIBRARY_PATH" "$PATH"/sasfit
+  LIBPATH="$PATH/lib"
+  "$LIBPATH"/ld-[0-9].[0-9][0-9].so --library-path "$LIBPATH" "$PATH"/sasfit
 fi;
