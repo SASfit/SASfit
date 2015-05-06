@@ -1053,9 +1053,11 @@ proc RefreshStructParFit {} {
 	set StructParData(typestr) Guinier
 	set StructParData(aname)   {I0 RG2 "" ""}
 	set StructParData(active)  {yes yes no no}
-	set StructParData(a) [list $StructParData(I0) \
-			      [expr $StructParData(RG)*$StructParData(RG)]   \
-			      "-1.0" "-1.0"]
+	set rg2 $StructParData(RG)
+	if {![isnan $rg2]} {
+		set rg2 [expr $StructParData(RG)*$StructParData(RG)]
+	}
+	set StructParData(a) [list $StructParData(I0) $rg2 "-1.0" "-1.0"]
 	array unset StructParData guinier_lin*
 	clearGraph_el ResIQGraph
 	switch $StructParData(I0typestr) {
