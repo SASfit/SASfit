@@ -57,11 +57,16 @@ file(READ ${SASFIT_LIST_FILE} SASFIT_FILE_LIST)
 
 # copy each file from the list to its destination
 foreach(REL_FILENAME ${SASFIT_FILE_LIST})
+#	message("'${REL_FILENAME}'")
         set(SRC_FILENAME "${REL_FILENAME}")
         if(NOT EXISTS "${SRC_FILENAME}")
                 set(SRC_FILENAME ${SASFIT_ROOT_DIR}/${REL_FILENAME})
         else() # exists, is absolute path
                 get_filename_component(REL_FILENAME "${SRC_FILENAME}" NAME)
+		# check for system lib, place in sub dir 'lib'
+		if("${SRC_FILENAME}" MATCHES "/lib/")
+			set(REL_FILENAME "lib/${REL_FILENAME}")
+		endif()
         endif()
 #	message("processing file: '${SRC_FILENAME}' '${SASFIT_PCKG_DIR}/${FILENAME}'")
 	if(EXISTS ${SRC_FILENAME})
