@@ -4,7 +4,7 @@
 - removed some old structure factors, 
   which were rarely used and theoretically not up to date 
 - plugin for ordered mesoscopic and nano structures. 
-  The plugin is supplying a part of the structure factors available
+  The plugin is providing a part of the structure factors available
   in the software package "scatter" from S. Förster.
   
 0.94.6 2014-12-14
