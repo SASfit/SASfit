@@ -2986,7 +2986,7 @@ double sasfit_3f2(double a1, double a2, double a3,
 	z.r = x;
 
 	// I assume ierr is just a flag here ?
-	pfq_( &ret_val, &A, &B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
+	pfq_( &ret_val, A, B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
 		param->errStatus, param->errStr, &errstr_len);
 	// is errstr_len written written with the final str length afterwards ?
 	// param->errLen = errstr_len;
@@ -2998,9 +2998,13 @@ double sasfit_3f2(double a1, double a2, double a3,
 double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, int ip, int iq,
                   double z_r, double z_i, int ln_pFq, int ix, double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param)
 {
-	doublecomplex P[100], Q[100], z, ret_val;
+	doublecomplex *P, *Q, z, ret_val;
 	integer errstr_len = STRLEN;
 	int i;
+
+	P = malloc(ip * sizeof(doublecomplex));
+	Q = malloc(iq * sizeof(doublecomplex));
+
     for (i=0; i<ip; i++) {
         P[i].r = p_r[i];
         P[i].i = p_i[i];
@@ -3011,9 +3015,11 @@ double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, int ip, i
     }
   	z.i = z_i;
 	z.r = z_r;
-	pfq_( &ret_val, &P, &Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
-		param->errStatus, param->errStr, &errstr_len);
+	pfq_( &ret_val, P, Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
+		&param->errStatus, param->errStr, &errstr_len);
     *pFq_r = ret_val.r;
     *pFq_i = ret_val.i;
+    free(P);
+    free(Q);
 }
 #define float double
