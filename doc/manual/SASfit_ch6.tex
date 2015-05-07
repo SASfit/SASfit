@@ -2164,6 +2164,168 @@ with $M_P$ being the particle magnetization, $V_P$ the particle
 volume, $T$ the temperature in Kelvin and $k_B$ the Boltzmann
 constant.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{fractal size distribution of particles} \hspace{1pt}
+\label{sec:ff_fractal_series}
+
+Scattering curves of samples having a fractal structure show on a log–log scale a linear behaviour.
+One way to define the fractal dimension of an object is to look how the mass $m$ of an object scales
+with its size $x$. For an object with a fractal dimension of $f_D$ the mass scales $m$
+with $m \propto x^{f_D}$. A similar behaviour also can be found if the sample contains
+particles with a size distribution $n(x)$ proportional to $\propto x^{-(1+f_D)}$.
+\begin{align}
+n(x,N,f_D,x_\mathrm{min},x_\mathrm{max}) &=
+\begin{cases}
+x < x_\mathrm{min} & 0 \\
+x_\mathrm{min}\leq x \leq x_\mathrm{max} & N \frac{x^{-(1+f_D)}}{\left(x_\mathrm{min}^{-f_D}-x_\mathrm{max}^{-f_D}\right)/f_D} \\
+x > x_\mathrm{max}  & 0
+\end{cases}
+\end{align}
+The integral over size distribution $\int n(x,N,f_D,x_\mathrm{min},x_\mathrm{max}) \mathrm{d}x$ is normalized to $N$.
+In case the distribution follows such a potential law over a large enough size range a slope of
+$Q^{-(6-f_D)}$ in the scattering curve will be observed similar to the scattering behaviour
+of a surface fractal. Deviations of it can occur if the size range $[x_\mathrm{min},x_\mathrm{max}]$
+of such a size distribution is to narrow. The integration of a spherical form factor
+$
+I(Q) = \int_{\xi_\mathrm{min}}^{\xi_\mathrm{max}} N\frac{r^{-(1+f_D)}}{\left(R_\mathrm{min}^{-f_D}-R_\mathrm{max}^{-f_D}\right)/f_D} \left(\frac{4}{3}\pi r^3 \frac{\sin Qr - Qr \cos Qr}{(Qr)^3}\right)^2 \mathrm{d}r
+$
+has not been found yet. However, using the Debye-Anderson-Brumberger (DAB) model from \ref{sect:DAB}
+instead of the form factor for spheres allows to express the integral in terms of hypergeometric functions:
+\begin{flalign}
+I_{f_D}(Q;N,f_D,\xi_\mathrm{min},\xi_\mathrm{max}) &= \int_0^\infty n(\xi,N,f_D,\xi_\mathrm{min},\xi_\mathrm{max})  \xi^6 I_\text{DAB}(Q,\xi) \mathrm{d}\xi\\
+&= \int_{\xi_\mathrm{min}}^{\xi_\mathrm{max}} N\frac{\xi^{-(1+f_D)}}{\left(\xi_\mathrm{min}^{-f_D}-\xi_\mathrm{max}^{-f_D}\right)/f_D}   \frac{\xi^6}{\left(1+\xi^2Q^2\right)^2}
+ \mathrm{d}\xi \\
+&= N\frac{({f_D}-4){f_D}}{\left({f_D}-2\right) 2 Q^4
+   \left(\xi_\mathrm{max}^{{f_D}}-\xi_\mathrm{min}^{{f_D}}\right)}
+    \Bigg[  \nonumber \\
+\begin{split}
+    \xi_\mathrm{max}^2 \xi_\mathrm{min}^{{f_D}} \,
+   _2F_1\left(1,\frac{{f_D}-2}{2};\frac{{f_D}}{2};-\frac{1}{Q^2 \xi_\mathrm{max}^2}\right) \\
+    -\xi_\mathrm{min}^2 \xi_\mathrm{max}^{{f_D}} \,
+   _2F_1\left(1,\frac{{f_D}-2}{2};\frac{{f_D}}{2};-\frac{1}{Q^2
+   \xi_\mathrm{min}^2}\right)\Bigg]
+\end{split} \\
+&+
+   N\frac{
+   {f_D} Q^2 \left(\frac{\xi_\mathrm{min}^4
+   \xi_\mathrm{max}^{{f_D}}}{Q^2 \xi_\mathrm{min}^2+1}-\frac{\xi_\mathrm{max}^4
+   \xi_\mathrm{min}^{{f_D}}}{Q^2 \xi_\mathrm{max}^2+1}\right)}{2 Q^4
+   \left(\xi_\mathrm{max}^{{f_D}}-\xi_\mathrm{min}^{{f_D}}\right)} \nonumber
+\end{flalign}
+The DAB Model follows a Guinier law at small $Q$-values and the Porod law $(Q^{-4})$ at large $Q$ values like a sphere. The term $\xi^6$ is added to account for the fact, that intensities scale with the squared volume of a particle. The correlation length $\xi$ in the DAB model is related to the radius of gyration $R_G$ or the radius of a sphere $R$  via $\xi^2=\sqrt{\frac{1}{6}}R_G^2=\frac{1}{10} R^2$.\footnote{
+The Taylor series of the DAB model at small Q-values gives $I_\text{DAB}(Q\rightarrow 0,\xi) \sim 1-2\xi^2Q^2+3\xi^4Q^4$ whereas the Taylor series of a form factor in terms of the Guinier radius $R_G$ or the Guinier law at small Q-values is $I(Q\rightarrow 0)\sim I_0\exp\left(-R_G^2Q^2/3\right)\sim I_0 \left(1-R_G^2Q^2/3\right)$
+}
+This plugin has three variants of the above fractal size distribution implemented, namely a series of 1 to 3 of such distribution. The distributions are continuously continued when the fractal dimension is changing at a certain correlation length.
+For the form factor \texttt{fractal series 1} only one potential law with a fractal dimension $f_{D,1}$ is assumed. For the other cases we just assume a summation of $k$ such distribution.
+\begin{align}
+N(x) &= \sum_{i=1}^k n(x,N_i,f_{D,i},x_\mathrm{i},x_\mathrm{i+1})
+\end{align}
+We assume, that $N$ is the overall number density of particles and normalize the size distribution accordingly
+\begin{align}
+\int N(x) \mathrm{d}x &= N
+\end{align}
+To have a continuous sized distribution we also need to fulfill the conditions
+\begin{align}
+n(x_\mathrm{i+1},N_i,f_{D,i},x_\mathrm{i},x_\mathrm{i+1}) &= n(x_\mathrm{i+1},N_{i+1},f_{D,i+1},x_\mathrm{i+1},x_\mathrm{i+2}) \forall i =1,2
+\end{align}
+These conditions define the parameters $N_i$ Therefore we get
+\begin{enumerate}
+\item For \texttt{fractal series 1} we assume a single potential law, i.e. $k=1$ and therefore only have $N_1=N$
+\item For \texttt{fractal series 2} we assume two potential laws. The first one ranges from $x_\mathrm{min}$ to $x_{1,2}$ and the second one from $x_{1,2}$ to $x_\mathrm{max}$. Therefore $N_1$ and $N_2$ are calculated by
+\begin{align}
+    N_1 &= N \frac{f_{D,2} x_\mathrm{max}^{f_{D,2}}
+   \left(x_{1,2}^{f_{D,1}}-x_\mathrm{min}^{f_{D,1}}\right)}{f_{D,2}
+   x_{1,2}^{f_{D,1}} x_\mathrm{max}^{f_{D,2}}-x_\mathrm{min}^{f_{D,1}} \left(f_{D,1}
+   x_{1,2}^{f_{D,2}}+(f_{D,2}-f_{D,1}) x_\mathrm{max}^{f_{D,2}}\right)}\\
+    N_2 &= N \frac{f_{D,1} x_\mathrm{min}^{f_{D,1}}
+   \left(x_{1,2}^{f_{D,2}}-x_\mathrm{max}^{f_{D,2}}\right)}{x_\mathrm{min}^{f_{D,1}}
+   \left(f_{D,1} x_{1,2}^{f_{D,2}}+(f_{D,2}-f_{D,1})
+   x_\mathrm{max}^{f_{D,2}}\right)-f_{D,2} x_{1,2}^{f_{D,1}} x_\mathrm{max}^{f_{D,2}}}
+\end{align}
+\item For \texttt{fractal series 3} we assume three potential laws. The first one ranges from $x_\mathrm{min}$ to $x_{1,2}$, the second one from $x_{1,2}$ to $x_{2,3}$ and the third from $x_{2,3}$ to $x_\mathrm{max}$. Therefore $N_1$, $N_2$ and $N_3$ are calculated by
+\begin{align}
+\begin{split}
+    N_1 &= N \left(f_{D,2} f_{D,3}x_{2,3}^{f_{D,2}} x_\mathrm{max}^{f_{D,3}}
+   \left(x_{1,2}^{f_{D,1}}-x_\mathrm{min}^{f_{D,1}}\right)\right) \\
+   &/  \left\{ f_{D,2} f_{D,3}
+  x_{1,2}^{f_{D,1}}x_{2,3}^{f_{D,2}}
+   x_\mathrm{max}^{f_{D,3}} -x_\mathrm{min}^{f_{D,1}} \left(f_{D,1} f_{D,2}
+  x_{1,2}^{f_{D,2}}x_{2,3}^{f_{D,3}} \right. \right.\\
+  & \left. \left.+x_\mathrm{max}^{f_{D,3}} \left(f_{D,3}
+   (f_{D,2}-f_{D,1})x_{2,3}^{f_{D,2}}-f_{D,1} (f_{D,2}-f_{D,3})
+  x_{1,2}^{f_{D,2}}\right)\right)\right\}
+\end{split}\\
+\begin{split}
+    N_2 &= N \left( f_{D,1} f_{D,3} x_\mathrm{min}^{f_{D,1}} x_\mathrm{max}^{f_{D,3}}
+   \left(x_{1,2}^{f_{D,2}}-x_{2,3}^{f_{D,2}}\right)\right) \\
+   & / \left\{ x_\mathrm{min}^{f_{D,1}}
+   \left(f_{D,1} f_{D,2}x_{1,2}^{f_{D,2}}
+  x_{2,3}^{f_{D,3}}+x_\mathrm{max}^{f_{D,3}} \left(f_{D,3} (f_{D,2}-f_{D,1})
+  x_{2,3}^{f_{D,2}} \right.\right.\right.\\
+  &\left.\left.\left.-f_{D,1} (f_{D,2}-f_{D,3})
+  x_{1,2}^{f_{D,2}}\right)\right)-f_{D,2} f_{D,3}x_{1,2}^{f_{D,1}}
+  x_{2,3}^{f_{D,2}} x_\mathrm{max}^{f_{D,3}}\right\}
+\end{split}\\
+\begin{split}
+   N_3 &= N \left(f_{D,1} f_{D,2} x_\mathrm{min}^{f_{D,1}}x_{1,2}^{f_{D,2}}
+   \left(x_{2,3}^{f_{D,3}}-x_\mathrm{max}^{f_{D,3}}\right)\right) \\
+  & / \left\{x_\mathrm{min}^{f_{D,1}}
+   \left(f_{D,1} f_{D,2}x_{1,2}^{f_{D,2}}
+  x_{2,3}^{f_{D,3}}+x_\mathrm{max}^{f_{D,3}} \left(f_{D,3} (f_{D,2}-f_{D,1})
+  x_{2,3}^{f_{D,2}} \right.\right.\right.\\
+  &\left.\left.\left. -f_{D,1} (f_{D,2}-f_{D,3})
+  x_{1,2}^{f_{D,2}}\right)\right)-f_{D,2} f_{D,3}x_{1,2}^{f_{D,1}}
+  x_{2,3}^{f_{D,2}} x_\mathrm{max}^{f_{D,3}}\right\}
+\end{split}
+\end{align}
+\end{enumerate}
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for the models \texttt{fractal series1}:}\\
+\begin{description}
+\item[\texttt{N}] scaling factor, total number density of particles $N$
+\item[\texttt{xi\_min}] minimum correlation length for DAB $\xi_\mathrm{min}$
+\item[\texttt{fD1}] first fractal dimension $f_{D,1}$
+\item[\texttt{xi\_max}] maximum correlation length for DAB $\xi_\mathrm{max}$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input Parameters for the models \texttt{fractal series2}:}\\
+\begin{description}
+\item[\texttt{N}] scaling factor, total number density of particles $N$
+\item[\texttt{xi\_min}] minimum correlation length for DAB $\xi_\mathrm{min}$
+\item[\texttt{fD1}] first fractal dimension $f_{D,1}$
+\item[\texttt{xi\_12}] correlation length of DAB model where fractal dimension changes $\xi_{1,2}$
+\item[\texttt{fD2}] second fractal dimension $f_{D,2}$
+\item[\texttt{xi\_max}] maximum correlation length for DAB $\xi_\mathrm{max}$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input Parameters for the models \texttt{fractal series1}:}\\
+\begin{description}
+\item[\texttt{N}] scaling factor, total number density of particles $N$
+\item[\texttt{xi\_min}] minimum correlation length for DAB $\xi_\mathrm{min}$
+\item[\texttt{fD1}] first fractal dimension $f_{D,1}$
+\item[\texttt{xi\_12}] correlation length of DAB model where fractal dimension changes $\xi_{1,2}$
+\item[\texttt{fD2}] second fractal dimension $f_{D,2}$
+\item[\texttt{xi\_23}] correlation length of DAB model where fractal dimension changes $\xi_{2,3}$
+\item[\texttt{fD3}] third fractal dimension $f_{D,3}$
+\item[\texttt{xi\_max}] maximum correlation length for DAB $\xi_\mathrm{max}$
+\end{description}
+\noindent\underline{Note:}
+The fractal dimensions need to be larger than 0 as well as $\xi_\mathrm{min}$. For the numerical evaluation it is required that $0>\xi_\mathrm{min}>\xi_{1,2}>\xi_{2,3}>\xi_\mathrm{max}$.
+
+\begin{figure}[htb]
+\centering
+  \subfigure[scattering curves of a fractal size distribution of particles where the scattering of the individual particle is described by the DAB form factor]{\includegraphics[width=0.47\textwidth]{../images/form_factor/fractal_series/fractalseries3IQ.png}}
+  \quad
+  \subfigure[fractal size distribution, the size distribution is zero for $x<x_\mathrm{min}$ and $x>x_\mathrm{max}$]{\includegraphics[width=0.47\textwidth]{../images/form_factor/fractal_series/fractalseries3Nx.png}}
+  \label{fig:fractalseries}
+  \caption{Scattering curve and corresponding size distribution for the plugin "\texttt{fractal series 3}".}
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
