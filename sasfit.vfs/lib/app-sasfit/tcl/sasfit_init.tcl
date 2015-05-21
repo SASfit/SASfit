@@ -46,12 +46,13 @@ proc _launchBrowser url {
         HP-UX -
         Linux  -
         SunOS {
-          foreach executable {firefox mozilla netscape iexplorer opera lynx
-                       w3m links epiphany galeon konqueror mosaic amaya
-                       browsex elinks} {
+          foreach executable {firefox mozilla netscape
+                       chromium-browser chrome google-chrome
+                       iexplorer opera lynx w3m links epiphany galeon konqueror
+                       mosaic amaya browsex elinks} {
             set executable [auto_execok $executable]
             if [string length $executable] {
-    # Do you want to mess with -remote?  How about other browsers?
+              # Do you want to mess with -remote? How about other browsers?
               set command [list $executable $url &]
               break
             }
@@ -69,7 +70,7 @@ proc _launchBrowser url {
         }
       } else {
         tk_messageBox -icon error -message \
-          "Please tell CL that ($tcl_platform(os), $tcl_platform(platform)) is not yet ready for browsing."
+          "Please tell CL that ($::tcl_platform(os), $::tcl_platform(platform)) is not yet ready for browsing."
       }
 }
 
