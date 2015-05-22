@@ -29,15 +29,15 @@ scalar sinc(scalar x)
 
 scalar Psi_P_kernel(scalar y, sasfit_param * param)
 {
-	ALPHA = y;
-	return 2./M_PI * gsl_pow_2(sinc(Q*A/2.0*sin(ALPHA)*cos(BETA)) *
-				               sinc(Q*B/2.0*sin(ALPHA)*sin(BETA)) *
-							   sinc(Q*C/2.0*cos(ALPHA))) * sin(ALPHA);
+	param->p[MAXPAR-2] = y;
+	return 2./M_PI * gsl_pow_2(sinc(Q*A/2.0*sin(param->p[MAXPAR-2])*cos(param->p[MAXPAR-3])) *
+				               sinc(Q*B/2.0*sin(param->p[MAXPAR-2])*sin(param->p[MAXPAR-3])) *
+							   sinc(Q*C/2.0*cos(param->p[MAXPAR-2]))) * sin(param->p[MAXPAR-2]);
 }
 
 scalar Psi_kernel(scalar x, sasfit_param * param)
 {
-	BETA = x;
+	param->p[MAXPAR-3] = x;
 	return sasfit_integrate(0.0,M_PI/2.0,&Psi_P_kernel,param);
 }
 

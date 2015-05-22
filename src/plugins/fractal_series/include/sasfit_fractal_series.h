@@ -36,10 +36,58 @@
 // - brief description
 // - description of parameters in HTML table-style
 
+/* ################ start ff_fractal_series1 ################ */
+/**
+ * \defgroup ff_fractal_series1 fractal series1
+ * \ingroup ff_fractals
+ *
+ * \brief \<some brief description of fractal series1 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td>number density</td>
+ *      </tr><tr>
+ *       <td>\b Rg_min</td>
+ *       <td>minimum radius of gyration</td>
+ *      </tr><tr>
+ *       <td>\b fd1</td>
+ *       <td>fractal dimension</td>
+ *      </tr><tr>
+ *       <td>\b Rg_max</td>
+ *       <td>maximum radius of gyration</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_fractal_series1
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fractal_series1
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fractal_series1
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_fractal_series1 ################ */
+
 /* ################ start sd_fractal_series1 ################ */
 /**
  * \defgroup sd_fractal_series1 size distr.: fractal series1
- * \ingroup ff_plugins
+ * \ingroup ff_fractals
  *
  * \brief \<some brief description of fractal series1 function\>
  *
@@ -65,29 +113,83 @@
 /**
  * \ingroup sd_fractal_series1
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series1
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series1_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series1
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series1_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_fractal_series1 ################ */
 
+/* ################ start ff_fractal_series2 ################ */
+/**
+ * \defgroup ff_fractal_series2 fractal series2
+ * \ingroup ff_fractals
+ *
+ * \brief \<some brief description of fractal series2 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td>number density</td>
+ *      </tr><tr>
+ *       <td>\b xmin</td>
+ *       <td>minimum size</td>
+ *      </tr><tr>
+ *       <td>\b fd1</td>
+ *       <td>first fractal dimension</td>
+ *      </tr><tr>
+ *       <td>\b x12</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b fd2</td>
+ *       <td>second fractal dimension</td>
+ *      </tr><tr>
+ *       <td>\b xmax</td>
+ *       <td>maximum size</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_fractal_series2
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fractal_series2
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fractal_series2
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_fractal_series2 ################ */
+
 /* ################ start sd_fractal_series2 ################ */
 /**
  * \defgroup sd_fractal_series2 size distr.: fractal series2
- * \ingroup ff_plugins
+ * \ingroup ff_fractals
  *
  * \brief \<some brief description of fractal series2 function\>
  *
@@ -119,29 +221,89 @@ sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series1_v(scalar q, sasfit
 /**
  * \ingroup sd_fractal_series2
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series2
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series2_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series2
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_fractal_series2 ################ */
 
+/* ################ start ff_fractal_series3 ################ */
+/**
+ * \defgroup ff_fractal_series3 fractal series3
+ * \ingroup ff_fractals
+ *
+ * \brief \<some brief description of fractal series3 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td>number density</td>
+ *      </tr><tr>
+ *       <td>\b xmin</td>
+ *       <td>minimum size</td>
+ *      </tr><tr>
+ *       <td>\b fd1</td>
+ *       <td>first fractal dimension</td>
+ *      </tr><tr>
+ *       <td>\b x12</td>
+ *       <td>first intermediate size where fractal dimension changes</td>
+ *      </tr><tr>
+ *       <td>\b fd2</td>
+ *       <td>second fractal dimension</td>
+ *      </tr><tr>
+ *       <td>\b x23</td>
+ *       <td>second intermediat size  where fractal dimension changes</td>
+ *      </tr><tr>
+ *       <td>\b fd3</td>
+ *       <td>third fractal dimension</td>
+ *      </tr><tr>
+ *       <td>\b xmax</td>
+ *       <td>maximum size</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_fractal_series3
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fractal_series3
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fractal_series3
+ *
+ * \sa sasfit_fractal_series.h, ff_fractals
+ */
+sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_fractal_series3 ################ */
+
 /* ################ start sd_fractal_series3 ################ */
 /**
  * \defgroup sd_fractal_series3 size distr.: fractal series3
- * \ingroup ff_plugins
+ * \ingroup ff_fractals
  *
  * \brief \<some brief description of fractal series3 function\>
  *
@@ -186,181 +348,17 @@ sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series3(scalar q, sasfit_p
 /**
  * \ingroup sd_fractal_series3
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series3_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series3
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, ff_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series3_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_fractal_series3 ################ */
-
-
-/* ################ start ff_fractal_series1 ################ */
-/**
- * \defgroup ff_fractal_series1 fractal series1
- * \ingroup ff_plugins
- *
- * \brief \<some brief description of fractal series1 function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b N</td>
- *       <td>number density</td>
- *      </tr><tr>
- *       <td>\b Rg_min</td>
- *       <td>minimum radius of gyration</td>
- *      </tr><tr>
- *       <td>\b fd1</td>
- *       <td>fractal dimension</td>
- *      </tr><tr>
- *       <td>\b Rg_max</td>
- *       <td>maximum radius of gyration</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup ff_fractal_series1
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_fractal_series1
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_fractal_series1
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_fractal_series1 ################ */
-
-/* ################ start ff_fractal_series2 ################ */
-/**
- * \defgroup ff_fractal_series2 fractal series2
- * \ingroup ff_plugins
- *
- * \brief \<some brief description of fractal series2 function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b N</td>
- *       <td>number density</td>
- *      </tr><tr>
- *       <td>\b xmin</td>
- *       <td>minimum size</td>
- *      </tr><tr>
- *       <td>\b fd1</td>
- *       <td>first fractal dimension</td>
- *      </tr><tr>
- *       <td>\b x12</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b fd2</td>
- *       <td>second fractal dimension</td>
- *      </tr><tr>
- *       <td>\b xmax</td>
- *       <td>maximum size</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup ff_fractal_series2
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_fractal_series2
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_fractal_series2
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_fractal_series2 ################ */
-
-/* ################ start ff_fractal_series3 ################ */
-/**
- * \defgroup ff_fractal_series3 fractal series3
- * \ingroup ff_plugins
- *
- * \brief \<some brief description of fractal series3 function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b N</td>
- *       <td>number density</td>
- *      </tr><tr>
- *       <td>\b xmin</td>
- *       <td>minimum size</td>
- *      </tr><tr>
- *       <td>\b fd1</td>
- *       <td>first fractal dimension</td>
- *      </tr><tr>
- *       <td>\b x12</td>
- *       <td>first intermediate size where fractal dimension changes</td>
- *      </tr><tr>
- *       <td>\b fd2</td>
- *       <td>second fractal dimension</td>
- *      </tr><tr>
- *       <td>\b x23</td>
- *       <td>second intermediat size  where fractal dimension changes</td>
- *      </tr><tr>
- *       <td>\b fd3</td>
- *       <td>third fractal dimension</td>
- *      </tr><tr>
- *       <td>\b xmax</td>
- *       <td>maximum size</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup ff_fractal_series3
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_fractal_series3
- *
- * \sa sasfit_fractal_series.h, ff_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_fractal_series3
- *
- * \sa sasfit_fractal_series.h, sd_plugins
- */
-sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_fractal_series3 ################ */
-/* ################ stop ff_fractal_series3 ################ */
 
 #endif // this file
 
