@@ -1,0 +1,137 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>mpexpand - Documentation toolbox </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/doctools/mpexpand.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;   -- Copyright &copy; 2003 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: mpexpand.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ mpexpand.n
+   -->
+
+<body>
+<h1> mpexpand(n) 1.0 doctools &quot;Documentation toolbox&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> mpexpand - Markup processor
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#notes">NOTES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+<table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>mpexpand</b> ?-module <i class='arg'>module</i>? <i class='arg'>format</i> <i class='arg'>infile</i>|- <i class='arg'>outfile</i>|-</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>mpexpand.all</b> ?<i class='arg'>-verbose</i>? ?<i class='arg'>module</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This manpage describes a processor / converter for manpages in the
+doctools format as specified in <b class='cmd'>doctools_fmt</b>. The processor
+is based upon the package <strong>doctools</strong>.
+
+<dl>
+<dt><a name="1"><b class='cmd'>mpexpand</b> ?-module <i class='arg'>module</i>? <i class='arg'>format</i> <i class='arg'>infile</i>|- <i class='arg'>outfile</i>|-</a><dd>
+
+
+The processor takes three arguments, namely the code describing which
+formatting to generate as the output, the file to read the markup
+from, and the file to write the generated output into. If the
+<i class='arg'>infile</i> is &quot;<strong>-</strong>&quot; the processor will read from
+<strong>stdin</strong>. If <i class='arg'>outfile</i> is &quot;<strong>-</strong>&quot; the processor will
+write to <strong>stdout</strong>.
+
+<br><br>
+
+If the option <i class='arg'>-module</i> is present its value overrides the internal
+definition of the module name.
+
+<br><br>
+
+The currently known output formats are
+
+<br><br>
+<dl>
+
+<dt><strong>nroff</strong><dd>
+
+The processor generates *roff output, the standard format for unix
+manpages.
+
+<br><br>
+<dt><strong>html</strong><dd>
+
+The processor generates HTML output, for usage in and display by web
+browsers.
+
+<br><br>
+<dt><strong>tmml</strong><dd>
+
+The processor generates TMML output, the Tcl Manpage Markup Language,
+a derivative of XML.
+
+<br><br>
+<dt><strong>latex</strong><dd>
+
+The processor generates LaTeX output.
+
+<br><br>
+<dt><strong>wiki</strong><dd>
+
+The processor generates Wiki markup as understood by <strong>wikit</strong>.
+
+<br><br>
+<dt><strong>list</strong><dd>
+
+The processor extracts the information provided by <b class='cmd'>manpage_begin</b>.
+
+<br><br>
+<dt><strong>null</strong><dd>
+
+The processor does not generate any output.
+
+</dl>
+
+<dt><a name="2"><b class='cmd'>mpexpand.all</b> ?<i class='arg'>-verbose</i>? ?<i class='arg'>module</i>?</a><dd>
+
+
+This command uses <strong>mpexpand</strong> to generate all possible output
+formats for all manpages in the current directory. The manpages are
+recognized through the extension &quot;<strong>.man</strong>&quot;. If <i class='arg'>-verbose</i> is
+specified the command will list its actions before executing them.
+
+<br><br>
+
+The <i class='arg'>module</i> information is passed to <b class='cmd'>mpexpand</b>.
+
+</dl>
+
+<h2><a name="notes">NOTES</a></h2>
+<p>
+<p>
+
+Possible future formats are plain text, pdf and postscript.
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+expander(n), format(n), formatter(n)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+HTML, TMML, conversion, manpage, markup, nroff
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+Copyright &copy; 2003 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

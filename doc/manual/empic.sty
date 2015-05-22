@@ -1,0 +1,21 @@
+\newcommand{\insertplot}[3]%
+{ \begin{center}
+%    \vspace{3mm}
+    \unitlength1mm
+    \begin{picture}(#2,#3)
+       \put(0,#3){\special{em: graph #1}}
+    \end{picture}
+%    \vspace{3mm}
+  \end{center}  
+}
+
+\newcommand{\insertplotsubfig}[3]%  zum Arbeiten mit \subfigure[]{}
+{ %\begin{center}
+    \unitlength1mm
+    \begin{picture}(#2,#3)
+       \put(0,#3){\special{em: graph #1}}
+    \end{picture}
+  %\end{center}  
+}
+
+

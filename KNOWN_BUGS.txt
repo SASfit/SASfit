@@ -1,0 +1,12 @@
+A list of known bugs:
+(Not exclusive and caused by >15 years evolutionary code structure. An attempt to fix
+them without rewrite requires unreasonably large amounts of time and energy.
+Instead, a rewrite/redesign is the way to go in the near future.)
+
+- moments of analytical size distribution do not work for multi-fit
+  (shows incorrect/bogus values)
+- parameter ranges for fitting do not work for multi-fit
+- If SASfit is started from a directory with non-ascii characters (e.g. é) it
+  will not run and give a 'file open failed' error. 
+  This is confirmed and tested on Windows XP&7.
+

@@ -1,0 +1,110 @@
+% typearea.sty -- by Frank Neukam  (06 Jun 1992)
+
+\newif\if@hincl
+\def\headincludeon{\@hincltrue}
+\def\headincludeoff{\@hinclfalse}
+\@hinclfalse
+\newdimen\ta@pw
+\newdimen\ta@ph
+\newdimen\ta@bcor
+\newcount\ta@div
+\newdimen\ta@hblk
+\newdimen\ta@vblk
+\newdimen\ta@temp
+\ta@pw 210mm
+\ta@ph 297mm
+\def\typearea{\@ifnextchar [{\@typearea}{\@typearea[0mm]}}
+\def\@typearea[#1]#2{
+ \normalsize
+ \ta@bcor #1
+ \ta@div=#2
+ \ta@hblk \ta@pw
+ \advance \ta@hblk by -\ta@bcor
+ \divide\ta@hblk by \ta@div
+ \oddsidemargin -1in
+ \evensidemargin -1in
+ \if@twoside
+  \advance\oddsidemargin by \ta@hblk
+  \advance\oddsidemargin by \ta@bcor
+  \advance\evensidemargin by 2\ta@hblk
+ \else
+  \advance\oddsidemargin by 1.5\ta@hblk
+  \advance\oddsidemargin by \ta@bcor
+  \evensidemargin\oddsidemargin
+ \fi
+ \textwidth \ta@pw
+ \advance\textwidth by -\ta@bcor
+ \advance\textwidth by -3\ta@hblk
+ \headheight 15pt
+ \headsep 1.5\baselineskip
+ \ta@vblk \ta@ph
+ \divide\ta@vblk by \ta@div
+ \ta@temp \ta@ph
+ \advance\ta@temp by -3\ta@vblk
+ \if@hincl
+  \advance\ta@temp by -\headheight
+  \advance\ta@temp by -\headsep
+ \fi
+ \textheight \topskip
+ \@whiledim\textheight<\ta@temp
+  \do{\advance\textheight by \baselineskip}
+ \topmargin \ta@vblk
+ \advance\topmargin by -1in
+ \if@hincl \else
+  \advance\topmargin by -\headheight
+  \advance\topmargin by -\headsep
+ \fi
+ \footskip 3.5\baselineskip
+ \if@twoside
+  \marginparwidth 1.5\ta@hblk
+ \else
+  \marginparwidth \ta@hblk
+ \fi
+ \marginparsep 1cc
+ \marginparpush 0.45\baselineskip}
+\def\areaset{\@ifnextchar [{\@areaset}{\@areaset[0mm]}}
+\def\@areaset[#1]#2#3{
+ \normalsize
+ \ta@bcor #1
+ \textwidth #2
+ \textheight #3
+ \ta@hblk \ta@pw
+ \advance\ta@hblk by -\ta@bcor
+ \advance\ta@hblk by -\textwidth
+ \divide\ta@hblk by 3
+ \oddsidemargin -1in
+ \evensidemargin -1in
+ \if@twoside
+  \advance\oddsidemargin by \ta@hblk
+  \advance\oddsidemargin by \ta@bcor
+  \advance\evensidemargin by 2\ta@hblk
+ \else
+  \advance\oddsidemargin by 1.5\ta@hblk
+  \advance\oddsidemargin by \ta@bcor
+  \evensidemargin\oddsidemargin
+ \fi
+ \headheight 15pt
+ \headsep 1.5\baselineskip
+ \ta@vblk \ta@ph
+ \advance\ta@vblk by -\textheight
+ \divide\ta@vblk by 3
+ \if@hincl
+  \advance\textheight by -\headheight
+  \advance\textheight by -\headsep
+ \fi
+ \topmargin \ta@vblk
+ \advance\topmargin by -1in
+ \if@hincl \else
+  \advance\topmargin by -\headheight
+  \advance\topmargin by -\headsep
+ \fi
+ \footskip 3.5\baselineskip
+ \if@twoside
+  \marginparwidth 1.5\ta@hblk
+ \else
+  \marginparwidth \ta@hblk
+ \fi
+ \marginparsep 1cc
+ \marginparpush 0.45\baselineskip}
+\ifcase \@ptsize\relax \typearea{8} \or \typearea{10} \or \typearea{12} \fi
+

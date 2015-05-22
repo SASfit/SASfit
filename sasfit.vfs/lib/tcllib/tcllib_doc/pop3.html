@@ -1,0 +1,245 @@
+<html><head>
+<title>pop3 - Tcl POP3 Client Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/pop3/pop3.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: pop3.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ pop3.n
+   -->
+
+<body>
+<h1> pop3(n) 1.6.3 pop3 &quot;Tcl POP3 Client Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> pop3 - Tcl client for POP3 email protocol
+<! -- -*- tcl -*- doctools manpage
+   -->
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>pop3 ?1.6.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::pop3::open</b> ?<strong>-msex</strong> 0|1? ?<strong>-retr-mode</strong> retr|list|slow? <i class='arg'>host username password</i> ?<i class='arg'>port</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::pop3::config</b> <i class='arg'>chan</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::pop3::status</b> <i class='arg'>chan</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::pop3::last</b> <i class='arg'>chan</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::pop3::retrieve</b> <i class='arg'>chan startIndex</i> ?<i class='arg'>endIndex</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::pop3::delete</b> <i class='arg'>chan startIndex</i> ?<i class='arg'>endIndex</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::pop3::list</b> <i class='arg'>chan</i> ?<i class='arg'>msg</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::pop3::top</b> <i class='arg'>chan</i> <i class='arg'>msg</i> <i class='arg'>n</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::pop3::uidl</b> <i class='arg'>chan</i> ?<i class='arg'>msg</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::pop3::close</b> <i class='arg'>chan</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>pop3</strong> package provides a simple Tcl-only client library
+for the POP3 email protocol as specified in
+RFC 1939 (<a href="http://www.rfc-editor.org/rfc/rfc1939.txt">http://www.rfc-editor.org/rfc/rfc1939.txt</a>). It works
+by opening the standard POP3 socket on the server, transmitting the
+username and password, then providing a Tcl API to access the POP3
+protocol commands.  All server errors are returned as Tcl errors
+(thrown) which must be caught with the Tcl <b class='cmd'>catch</b> command.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::pop3::open</b> ?<strong>-msex</strong> 0|1? ?<strong>-retr-mode</strong> retr|list|slow? <i class='arg'>host username password</i> ?<i class='arg'>port</i>?</a><dd>
+
+
+Open a socket connection to the server specified by <i class='arg'>host</i>,
+transmit the <i class='arg'>username</i> and <i class='arg'>password</i> as login information to
+the server.  The default port number is 110, which can be overridden
+using the optional <i class='arg'>port</i> argument.  The return value is a channel
+used by all of the other ::pop3 functions.
+
+<br><br>
+
+The command recognizes the options <strong>-msex</strong> and
+
+<strong>-retr-mode</strong>. The first of them can be used to notify the
+package of the fact that the server to talk to is an MS Exchange
+server (which has some oddities we have to work around). The default
+is 0.
+
+<br><br>
+
+The retrieval mode determines how exactly messages are read from the
+server. The allowed values are <strong>retr</strong>, <strong>list</strong> and
+<strong>slow</strong>. The default is <strong>retr</strong>. See
+
+<b class='cmd'>::pop3::retrieve</b> for more information.
+
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::pop3::config</b> <i class='arg'>chan</i></a><dd>
+
+
+Returns the configuration of the pop3 connection identified by the
+channel handle <i class='arg'>chan</i> as a serialized array.
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::pop3::status</b> <i class='arg'>chan</i></a><dd>
+
+
+Query the server for the status of the mail spool.  The status is
+returned as a list containing two elements, the first is the number of
+email messages on the server and the second is the size (in octets, 8
+byte blocks) of the entire mail spool.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::pop3::last</b> <i class='arg'>chan</i></a><dd>
+
+
+Query the server for the last email message read from the spool.  This
+value includes all messages read from all clients connecting to the
+login account.  This command may not be supported by the email server,
+in which case the server may return 0 or an error.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::pop3::retrieve</b> <i class='arg'>chan startIndex</i> ?<i class='arg'>endIndex</i>?</a><dd>
+
+
+Retrieve a range of messages from the server.  If the <i class='arg'>endIndex</i>
+is not specified, only one message will be retrieved.  The return
+value is a list containing each message as a separate element.  See
+the <i class='arg'>startIndex</i> and <i class='arg'>endIndex</i> descriptions below.
+
+<br><br>
+
+The retrieval mode determines how exactly messages are read from the
+server. The mode <strong>retr</strong> assumes that the RETR command delivers
+the size of the message as part of the command status and uses this to
+read the message efficiently. In mode <strong>list</strong> RETR does not
+deliver the size, but the LIST command does and we use this to
+retrieve the message size before the actual retrieval, which can then
+be done efficiently. In the last mode, <strong>slow</strong>, the system is
+unable to obtain the size of the message to retrieve in any manner and
+falls back to reading the message from the server line by line.
+
+<br><br>
+
+It should also be noted that the system checks upon the configured
+mode and falls back to the slower modes if the above assumptions are
+not true.
+
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::pop3::delete</b> <i class='arg'>chan startIndex</i> ?<i class='arg'>endIndex</i>?</a><dd>
+
+
+Delete a range of messages from the server.  If the <i class='arg'>endIndex</i> is
+not specified, only one message will be deleted.  Note, the indices
+are not reordered on the server, so if you delete message 1, then the
+first message in the queue is message 2 (message index 1 is no longer
+valid).  See the <i class='arg'>startIndex</i> and <i class='arg'>endIndex</i> descriptions
+below.
+
+<br><br>
+<dl>
+
+<dt><i class='arg'>startIndex</i><dd>
+
+The <i class='arg'>startIndex</i> may be an index of a specific message starting
+with the index 1, or it have any of the following values:
+
+<br><br>
+<dl>
+
+<dt><strong>start</strong><dd>
+
+This is a logical value for the first message in the spool, equivalent
+to the value 1.
+
+<br><br>
+<dt><strong>next</strong><dd>
+
+The message immediately following the last message read, see
+<b class='cmd'>::pop3::last</b>. 
+
+<br><br>
+<dt><strong>end</strong><dd>
+
+The most recent message in the spool (the end of the spool).  This is
+useful to retrieve only the most recent message.
+
+</dl>
+
+<dt><i class='arg'>endIndex</i><dd>
+
+The <i class='arg'>endIndex</i> is an optional parameter and defaults to the value
+&quot;-1&quot;, which indicates to only retrieve the one message specified by
+
+<i class='arg'>startIndex</i>.  If specified, it may be an index of a specific
+message starting with the index &quot;1&quot;, or it may have any of the
+following values:
+
+<br><br>
+<dl>
+
+<dt><strong>last</strong><dd>
+
+The message is the last message read by a POP3 client, see
+<b class='cmd'>::pop3::last</b>.
+
+<br><br>
+<dt><strong>end</strong><dd>
+
+The most recent message in the spool (the end of the spool).
+
+</dl>
+</dl>
+
+<dt><a name="7"><b class='cmd'>::pop3::list</b> <i class='arg'>chan</i> ?<i class='arg'>msg</i>?</a><dd>
+
+
+Returns the scan listing of the mailbox. If parameter <i class='arg'>msg</i> is
+given, then the listing only for that message is returned.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::pop3::top</b> <i class='arg'>chan</i> <i class='arg'>msg</i> <i class='arg'>n</i></a><dd>
+
+
+
+Optional POP3 command, not all servers may support this.
+
+<b class='cmd'>::pop3::top</b> retrieves headers of a message, specified by
+parameter <i class='arg'>msg</i>, and number of <i class='arg'>n</i> lines from the message
+body.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::pop3::uidl</b> <i class='arg'>chan</i> ?<i class='arg'>msg</i>?</a><dd>
+
+
+Optional POP3 command, not all servers may support this. 
+
+<b class='cmd'>::pop3::uidl</b> returns the uid listing of the mailbox. If the
+parameter <i class='arg'>msg</i> is specified, then the listing only for that
+message is returned.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::pop3::close</b> <i class='arg'>chan</i></a><dd>
+
+
+Gracefully close the connect after sending a POP3 QUIT command down
+the socket.
+
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+email, mail, pop, pop3, rfc 1939
+</body></html>
