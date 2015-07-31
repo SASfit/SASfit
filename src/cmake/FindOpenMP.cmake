@@ -127,7 +127,7 @@ if(CMAKE_C_COMPILER_LOADED)
     unset(OpenMP_C_FLAG_CANDIDATES)
   else()
     _OPENMP_FLAG_CANDIDATES("C")
-    include(${CMAKE_CURRENT_LIST_DIR}/CheckCSourceCompiles.cmake)
+    include(CheckCSourceCompiles)
   endif()
 
   foreach(FLAG IN LISTS OpenMP_C_FLAG_CANDIDATES)
@@ -160,7 +160,7 @@ if(CMAKE_CXX_COMPILER_LOADED)
     unset(OpenMP_CXX_FLAG_CANDIDATES)
   else()
     _OPENMP_FLAG_CANDIDATES("CXX")
-    include(${CMAKE_CURRENT_LIST_DIR}/CheckCXXSourceCompiles.cmake)
+    include(CheckCXXSourceCompiles)
 
     # use the same source for CXX as C for now
     set(OpenMP_CXX_TEST_SOURCE ${OpenMP_C_TEST_SOURCE})
@@ -197,7 +197,7 @@ if(CMAKE_Fortran_COMPILER_LOADED)
     unset(OpenMP_Fortran_FLAG_CANDIDATES)
   else()
     _OPENMP_FLAG_CANDIDATES("Fortran")
-    include(${CMAKE_CURRENT_LIST_DIR}/CheckFortranSourceCompiles.cmake)
+    include(CheckFortranSourceCompiles)
   endif()
 
   foreach(FLAG IN LISTS OpenMP_Fortran_FLAG_CANDIDATES)
@@ -226,7 +226,7 @@ endif()
 set(CMAKE_REQUIRED_QUIET ${CMAKE_REQUIRED_QUIET_SAVE})
 
 if(_OPENMP_REQUIRED_VARS)
-  include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+  include(FindPackageHandleStandardArgs)
 
   find_package_handle_standard_args(OpenMP
                                     REQUIRED_VARS ${_OPENMP_REQUIRED_VARS})
