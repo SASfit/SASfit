@@ -1,0 +1,11 @@
+#!/bin/bash
+# Simple bash script to Unify identation in our python files:
+# * converts tabs into 4 spaces
+# * removes trailing whitespaces
+# (c) 2009 Nicolas Dumazet
+# License: WTFPL Version 2
+for file in $(grep -Rl [[:cntrl:]] . | grep -v ".svn" | grep "\.py$")
+do 
+    sed -i 's/\t/    /g' $file
+    sed -i 's/ $//g' $file
+done

@@ -1,0 +1,984 @@
+<! -- -*- tcl -*-
+   -->
+<html><head>
+<title>struct::tree - Tcl Data Structures </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/struct/struct_tree.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: struct_tree.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ struct::tree.n
+   -->
+
+<body>
+<h1> struct::tree(n) 2.1 struct &quot;Tcl Data Structures&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> struct::tree - Create and manipulate tree objects
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tree_class_api">Tree CLASS API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tree_object_api">Tree OBJECT API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#changes_for_2.0">Changes for 2.0</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>struct::tree ?2.1?</b><br>
+package require <b>struct::list ?1.5?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::struct::tree</b> ?<i class='arg'>treeName</i>? ?<strong>=</strong>|<strong>:=</strong>|<strong>as</strong>|<strong>deserialize</strong> <i class='arg'>source</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>treeName</b> <strong>option</strong> ?<i class='arg'>arg arg ...</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::struct::tree::prune</b> </a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>treeName</i> <strong>=</strong> <i class='arg'>sourcetree</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>treeName</i> <strong>--&gt;</strong> <i class='arg'>desttree</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>treeName</i> <strong>ancestors</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>treeName</i> <strong>append</strong> <i class='arg'>node</i> <i class='arg'>key</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i> <strong>-nodes</strong> <i class='arg'>list</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i> <strong>-glob</strong> <i class='arg'>globpattern</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i> <strong>-regexp</strong> <i class='arg'>repattern</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><i class='arg'>treeName</i> <strong>children</strong> ?<strong>-all</strong>? <i class='arg'>node</i> ?<strong>filter</strong> <i class='arg'>cmdprefix</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#13"><i class='arg'>treeName</i> <strong>cut</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><i class='arg'>treeName</i> <strong>delete</strong> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a></td></tr>
+<tr valign=top ><td ><a href="#15"><i class='arg'>treeName</i> <strong>depth</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><i class='arg'>treeName</i> <strong>descendants</strong> <i class='arg'>node</i> ?<strong>filter</strong> <i class='arg'>cmdprefix</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#17"><i class='arg'>treeName</i> <strong>deserialize</strong> <i class='arg'>serialization</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><i class='arg'>treeName</i> <strong>destroy</strong></a></td></tr>
+<tr valign=top ><td ><a href="#19"><i class='arg'>treeName</i> <strong>exists</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><i class='arg'>treeName</i> <strong>get</strong> <i class='arg'>node</i> <i class='arg'>key</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><i class='arg'>treeName</i> <strong>getall</strong> <i class='arg'>node</i> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#22"><i class='arg'>treeName</i> <strong>keys</strong> <i class='arg'>node</i> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#23"><i class='arg'>treeName</i> <strong>keyexists</strong> <i class='arg'>node</i> <i class='arg'>key</i></a></td></tr>
+<tr valign=top ><td ><a href="#24"><i class='arg'>treeName</i> <strong>index</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#25"><i class='arg'>treeName</i> <strong>insert</strong> <i class='arg'>parent</i> <i class='arg'>index</i> ?<i class='arg'>child</i> ?<i class='arg'>child</i> ...??</a></td></tr>
+<tr valign=top ><td ><a href="#26"><i class='arg'>treeName</i> <strong>isleaf</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#27"><i class='arg'>treeName</i> <strong>lappend</strong> <i class='arg'>node</i> <i class='arg'>key</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#28"><i class='arg'>treeName</i> <strong>leaves</strong></a></td></tr>
+<tr valign=top ><td ><a href="#29"><i class='arg'>treeName</i> <strong>move</strong> <i class='arg'>parent</i> <i class='arg'>index</i> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a></td></tr>
+<tr valign=top ><td ><a href="#30"><i class='arg'>treeName</i> <strong>next</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#31"><i class='arg'>treeName</i> <strong>numchildren</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#32"><i class='arg'>treeName</i> <strong>nodes</strong></a></td></tr>
+<tr valign=top ><td ><a href="#33"><i class='arg'>treeName</i> <strong>parent</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#34"><i class='arg'>treeName</i> <strong>previous</strong> <i class='arg'>node</i></a></td></tr>
+<tr valign=top ><td ><a href="#35"><i class='arg'>treeName</i> <strong>rename</strong> <i class='arg'>node</i> <i class='arg'>newname</i></a></td></tr>
+<tr valign=top ><td ><a href="#36"><i class='arg'>treeName</i> <strong>rootname</strong></a></td></tr>
+<tr valign=top ><td ><a href="#37"><i class='arg'>treeName</i> <strong>serialize</strong> ?<i class='arg'>node</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#38"><i class='arg'>treeName</i> <strong>set</strong> <i class='arg'>node</i> <i class='arg'>key</i> ?<i class='arg'>value</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#39"><i class='arg'>treeName</i> <strong>size</strong> ?<i class='arg'>node</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#40"><i class='arg'>treeName</i> <strong>splice</strong> <i class='arg'>parent</i> <i class='arg'>from</i> ?<i class='arg'>to</i>? ?<i class='arg'>child</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#41"><i class='arg'>treeName</i> <strong>swap</strong> <i class='arg'>node1</i> <i class='arg'>node2</i></a></td></tr>
+<tr valign=top ><td ><a href="#42"><i class='arg'>treeName</i> <strong>unset</strong> <i class='arg'>node</i> <i class='arg'>key</i></a></td></tr>
+<tr valign=top ><td ><a href="#43"><i class='arg'>treeName</i> <strong>walk</strong> <i class='arg'>node</i> ?<strong>-order</strong> <i class='arg'>order</i>? ?<strong>-type</strong> <i class='arg'>type</i>? <i class='arg'>loopvar</i> <i class='arg'>script</i></a></td></tr>
+<tr valign=top ><td ><a href="#44"><i class='arg'>treeName</i> <strong>walkproc</strong> <i class='arg'>node</i> ?<strong>-order</strong> <i class='arg'>order</i>? ?<strong>-type</strong> <i class='arg'>type</i>? <i class='arg'>cmdprefix</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+
+A tree is a collection of elements, called nodes, one of which is
+distinguished as a root, along with a relation (&quot;parenthood&quot;) that
+places a hierarchical structure on the nodes. (Data Structures and
+Algorithms; Aho, Hopcroft and Ullman; Addison-Wesley, 1987).  In
+addition to maintaining the node relationships, this tree
+implementation allows any number of keyed values to be associated with
+each node.
+
+<p>
+
+<em>Note:</em> The major version of the package <strong>struct</strong> has
+been changed to version 2.0, due to backward incompatible changes in
+the API of this module. Please read the section
+
+<a href="#changes_for_2.0">Changes for 2.0</a> for a full list of all changes,
+incompatible and otherwise.
+
+<p>
+
+<h2><a name="api">API</a></h2>
+<p>
+<h3><a name="tree_class_api">Tree CLASS API</a></h3>
+<p>
+
+The main commands of the package are:
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::struct::tree</b> ?<i class='arg'>treeName</i>? ?<strong>=</strong>|<strong>:=</strong>|<strong>as</strong>|<strong>deserialize</strong> <i class='arg'>source</i>?</a><dd>
+
+
+The command creates a new tree object with an associated global Tcl
+command whose name is <i class='arg'>treeName</i>. This command may be used to
+invoke various operations on the tree.
+
+It has the following general form:
+
+<br><br>
+<dl>
+<dt><a name="2"><b class='cmd'>treeName</b> <strong>option</strong> ?<i class='arg'>arg arg ...</i>?</a><dd>
+
+
+<i class='arg'>Option</i> and the <i class='arg'>arg</i>s determine the exact behavior of the
+command.
+
+</dl>
+<br><br>
+
+If <i class='arg'>treeName</i> is not specified a unique name will be generated by
+the package itself. If a <i class='arg'>source</i> is specified the new tree will
+be initialized to it. For the operators <strong>=</strong>, <strong>:=</strong>, and
+<strong>as</strong> <i class='arg'>source</i> is interpreted as the name of another tree
+object, and the assignment operator <strong>=</strong> will be executed. For
+<strong>deserialize</strong> the <i class='arg'>source</i> is a serialized tree object and
+<strong>deserialize</strong> will be executed.
+
+<br><br>
+
+In other words
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::struct::tree mytree = b
+</pre></td></tr></table></p>
+<br><br>
+is equivalent to
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::struct::tree mytree
+    mytree = b
+</pre></td></tr></table></p>
+<br><br>
+and 
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::struct::tree mytree deserialize $b
+</pre></td></tr></table></p>
+<br><br>
+is equivalent to
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    ::struct::tree mytree
+    mytree deserialize $b
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::struct::tree::prune</b> </a><dd>
+
+
+This command is provided outside of the tree methods, as it is not a
+tree method per se. It however interacts tightly with the method
+<strong>walk</strong>. When used in the walk script it causes the traversal to
+ignore the children of the node we are currently at.
+
+This command cannot be used with the traversal modes which look at
+children before their parent, i.e. <strong>post</strong> and <strong>in</strong>. The
+only applicable orders of traversal are <strong>pre</strong> and
+<strong>both</strong>. An error is thrown if the command and chosen order of
+traversal do not fit.
+
+</dl>
+<p>
+
+<h3><a name="tree_object_api">Tree OBJECT API</a></h3>
+<p>
+
+Two general observations beforehand:
+
+<ol>
+<li>
+
+The root node of the tree can be used in most places where a node is
+asked for. The default name of the rootnode is &quot;root&quot;, but this can be
+changed with the method <strong>rename</strong> (see below). Whatever the
+current name for the root node of the tree is, it can be retrieved by
+calling the method <strong>rootname</strong>.
+
+<br><br>
+<li>
+
+The method <strong>insert</strong> is the only way to create new nodes, and
+they are automatically added to a parent. A tree object cannot have
+nodes without a parent, save the root node.
+
+</ol>
+<p>
+
+And now the methods supported by tree objects created by this package:
+
+<dl>
+
+<dt><a name="4"><i class='arg'>treeName</i> <strong>=</strong> <i class='arg'>sourcetree</i></a><dd>
+
+
+This is the assignment operator for tree objects. It copies the tree
+contained in the tree object <i class='arg'>sourcetree</i> over the tree data in
+<i class='arg'>treeName</i>. The old contents of <i class='arg'>treeName</i> are deleted by this
+operation.
+
+<br><br>
+
+This operation is in effect equivalent to
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    <i class='arg'>treeName</i> <strong>deserialize</strong> [<i class='arg'>sourcetree</i> <strong>serialize</strong>]
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="5"><i class='arg'>treeName</i> <strong>--&gt;</strong> <i class='arg'>desttree</i></a><dd>
+
+
+This is the reverse assignment operator for tree objects. It copies the tree
+contained in the tree object <i class='arg'>treeName</i> over the tree data in the object
+<i class='arg'>desttree</i>. The old contents of <i class='arg'>desttree</i> are deleted by this
+operation.
+
+<br><br>
+
+This operation is in effect equivalent to
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    <i class='arg'>desttree</i> <strong>deserialize</strong> [<i class='arg'>treeName</i> <strong>serialize</strong>]
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="6"><i class='arg'>treeName</i> <strong>ancestors</strong> <i class='arg'>node</i></a><dd>
+
+
+This method extends the method <strong>parent</strong> and returns a list
+containing all ancestor nodes to the specified <i class='arg'>node</i>. The
+immediate ancestor, in other words, parent node, is the first element
+in that list, its parent the second element, and so on until the root
+node is reached, making it the last element of the returned list.
+
+
+<br><br>
+<dt><a name="7"><i class='arg'>treeName</i> <strong>append</strong> <i class='arg'>node</i> <i class='arg'>key</i> <i class='arg'>value</i></a><dd>
+
+
+Appends a <i class='arg'>value</i> to one of the keyed values associated with an
+node. Returns the new value given to the attribute <i class='arg'>key</i>.
+
+
+<br><br>
+<dt><a name="8"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i></a><dd>
+
+<dt><a name="9"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i> <strong>-nodes</strong> <i class='arg'>list</i></a><dd>
+
+<dt><a name="10"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i> <strong>-glob</strong> <i class='arg'>globpattern</i></a><dd>
+
+<dt><a name="11"><i class='arg'>treeName</i> <strong>attr</strong> <i class='arg'>key</i> <strong>-regexp</strong> <i class='arg'>repattern</i></a><dd>
+
+
+This method retrieves the value of the attribute named <i class='arg'>key</i>, for
+all nodes in the tree (matching the restriction specified via one of
+the possible options) and having the specified attribute.
+
+<br><br>
+
+The result is a dictionary mapping from node names to the value of
+attribute <i class='arg'>key</i> at that node.
+
+Nodes not having the attribute <i class='arg'>key</i>, or not passing a
+specified restriction, are not listed in the result.
+
+<br><br>
+
+The possible restrictions are:
+
+<br><br>
+<dl>
+<dt><strong>-nodes</strong><dd>
+
+The value is a list of nodes. Only the nodes mentioned in this list
+are searched for the attribute.
+
+<br><br>
+<dt><strong>-glob</strong><dd>
+
+The value is a glob pattern. Only the nodes in the tree whose names
+match this pattern are searched for the attribute.
+
+<br><br>
+<dt><strong>-regexp</strong><dd>
+
+The value is a regular expression. Only the nodes in the tree whose
+names match this pattern are searched for the attribute.
+
+</dl>
+<br><br>
+
+<dt><a name="12"><i class='arg'>treeName</i> <strong>children</strong> ?<strong>-all</strong>? <i class='arg'>node</i> ?<strong>filter</strong> <i class='arg'>cmdprefix</i>?</a><dd>
+
+
+Return a list of the children of <i class='arg'>node</i>.
+
+If the option <strong>-all</strong> is specified, then not only the direct
+children, but their children, and so on are returned in the result.
+
+If a filter command is specified only those nodes are listed in the
+final result which pass the test. The command in <i class='arg'>cmdprefix</i> is
+called with two arguments, the name of the tree object, and the name
+of the node in question. It is executed in the context of the caller
+and has to return a boolean value. Nodes for which the command returns
+<strong>false</strong> are removed from the result list before it is returned
+to the caller.
+
+<br><br>
+Some examples:
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    mytree insert root end 0 ; mytree set 0 volume 30
+    mytree insert root end 1
+    mytree insert root end 2
+    mytree insert 0    end 3
+    mytree insert 0    end 4
+    mytree insert 4    end 5 ; mytree set 5 volume 50
+    mytree insert 4    end 6
+
+    proc vol {t n} {
+	$t keyexists $n volume
+    }
+    proc vgt40 {t n} {
+	if {![$t keyexists $n volume]} {return 0}
+	expr {[$t get $n volume] &gt; 40}
+    }
+
+    tclsh&gt; lsort [mytree children -all root filter vol]
+    0 5
+
+    tclsh&gt; lsort [mytree children -all root filter vgt40]
+    5
+
+    tclsh&gt; lsort [mytree children root filter vol]
+    0
+
+    tclsh&gt; puts ([lsort [mytree children root filter vgt40]])
+    ()
+</pre></td></tr></table></p>
+
+
+<br><br>
+<dt><a name="13"><i class='arg'>treeName</i> <strong>cut</strong> <i class='arg'>node</i></a><dd>
+
+
+Removes the node specified by <i class='arg'>node</i> from the tree, but not its
+children.  The children of <i class='arg'>node</i> are made children of the parent
+of the <i class='arg'>node</i>, at the index at which <i class='arg'>node</i> was located.
+
+
+<br><br>
+<dt><a name="14"><i class='arg'>treeName</i> <strong>delete</strong> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a><dd>
+
+
+Remove the specified nodes from the tree.  All of the nodes' children
+will be removed as well to prevent orphaned nodes.
+
+
+<br><br>
+<dt><a name="15"><i class='arg'>treeName</i> <strong>depth</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the number of steps from node <i class='arg'>node</i> to the root node.
+
+
+<br><br>
+<dt><a name="16"><i class='arg'>treeName</i> <strong>descendants</strong> <i class='arg'>node</i> ?<strong>filter</strong> <i class='arg'>cmdprefix</i>?</a><dd>
+
+
+This method extends the method <strong>children</strong> and returns a list
+containing all nodes descending from <i class='arg'>node</i>, and passing the
+filter, if such was specified.
+
+<br><br>
+
+This is actually the same as
+&quot;<i class='arg'>treeName</i> <strong>children</strong> <strong>-all</strong>&quot;.
+<strong>descendants</strong> should be prefered, and &quot;children -all&quot;
+will be deprecated sometime in the future.
+
+
+<br><br>
+<dt><a name="17"><i class='arg'>treeName</i> <strong>deserialize</strong> <i class='arg'>serialization</i></a><dd>
+
+
+This is the complement to <strong>serialize</strong>. It replaces tree data in
+<i class='arg'>treeName</i> with the tree described by the <i class='arg'>serialization</i>
+value. The old contents of <i class='arg'>treeName</i> are deleted by this
+operation.
+
+
+<br><br>
+<dt><a name="18"><i class='arg'>treeName</i> <strong>destroy</strong></a><dd>
+
+
+Destroy the tree, including its storage space and associated command.
+
+
+<br><br>
+<dt><a name="19"><i class='arg'>treeName</i> <strong>exists</strong> <i class='arg'>node</i></a><dd>
+
+
+Remove true if the specified node exists in the tree.
+
+
+<br><br>
+<dt><a name="20"><i class='arg'>treeName</i> <strong>get</strong> <i class='arg'>node</i> <i class='arg'>key</i></a><dd>
+
+
+Returns the value associated with the key <i class='arg'>key</i> for the node
+<i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="21"><i class='arg'>treeName</i> <strong>getall</strong> <i class='arg'>node</i> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+Returns a dictionary (suitable for use with [<b class='cmd'>array set</b>])
+containing the attribute data for the <i class='arg'>node</i>.
+
+If the glob <i class='arg'>pattern</i> is specified only the attributes whose names
+match the pattern will be part of the dictionary.
+
+
+<br><br>
+<dt><a name="22"><i class='arg'>treeName</i> <strong>keys</strong> <i class='arg'>node</i> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+Returns a list of keys for the <i class='arg'>node</i>.
+
+If the <i class='arg'>pattern</i> is specified only the attributes whose names
+match the pattern will be part of the returned list. The pattern is a
+<b class='cmd'>glob</b> pattern.
+
+
+<br><br>
+<dt><a name="23"><i class='arg'>treeName</i> <strong>keyexists</strong> <i class='arg'>node</i> <i class='arg'>key</i></a><dd>
+
+
+Return true if the specified <i class='arg'>key</i> exists for the <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="24"><i class='arg'>treeName</i> <strong>index</strong> <i class='arg'>node</i></a><dd>
+
+
+Returns the index of <i class='arg'>node</i> in its parent's list of children.  For
+example, if a node has <em>nodeFoo</em>, <em>nodeBar</em>, and
+
+<em>nodeBaz</em> as children, in that order, the index of
+
+<em>nodeBar</em> is 1.
+
+
+<br><br>
+<dt><a name="25"><i class='arg'>treeName</i> <strong>insert</strong> <i class='arg'>parent</i> <i class='arg'>index</i> ?<i class='arg'>child</i> ?<i class='arg'>child</i> ...??</a><dd>
+
+
+Insert one or more nodes into the tree as children of the node
+
+<i class='arg'>parent</i>. The nodes will be added in the order they are given. If
+<i class='arg'>parent</i> is <strong>root</strong>, it refers to the root of the tree. The
+new nodes will be added to the <i class='arg'>parent</i> node's child list at the
+index given by <i class='arg'>index</i>. The <i class='arg'>index</i> can be <strong>end</strong> in
+which case the new nodes will be added after the current last child.
+Indices of the form &quot;end-<strong>n</strong>&quot; are accepted as well.
+
+<br><br>
+
+If any of the specified children already exist in <i class='arg'>treeName</i>,
+those nodes will be moved from their original location to the new
+location indicated by this command.
+
+<br><br>
+
+If no <i class='arg'>child</i> is specified, a single node will be added, and a
+name will be generated for the new node. The generated name is of the
+form <em>node</em><strong>x</strong>, where <strong>x</strong> is a number. If names are
+specified they must neither contain whitespace nor colons (&quot;:&quot;).
+
+<br><br>
+
+The return result from this command is a list of nodes added.
+
+
+<br><br>
+<dt><a name="26"><i class='arg'>treeName</i> <strong>isleaf</strong> <i class='arg'>node</i></a><dd>
+
+
+Returns true if <i class='arg'>node</i> is a leaf of the tree (if <i class='arg'>node</i> has no
+children), false otherwise.
+
+
+<br><br>
+<dt><a name="27"><i class='arg'>treeName</i> <strong>lappend</strong> <i class='arg'>node</i> <i class='arg'>key</i> <i class='arg'>value</i></a><dd>
+
+
+Appends a <i class='arg'>value</i> (as a list) to one of the keyed values
+associated with an <i class='arg'>node</i>. Returns the new value given to the
+attribute <i class='arg'>key</i>.
+
+
+<br><br>
+<dt><a name="28"><i class='arg'>treeName</i> <strong>leaves</strong></a><dd>
+
+
+Return a list containing all leaf nodes known to the tree.
+
+
+<br><br>
+<dt><a name="29"><i class='arg'>treeName</i> <strong>move</strong> <i class='arg'>parent</i> <i class='arg'>index</i> <i class='arg'>node</i> ?<i class='arg'>node</i> ...?</a><dd>
+
+
+Make the specified nodes children of <i class='arg'>parent</i>, inserting them into
+the parent's child list at the index given by <i class='arg'>index</i>. Note that
+the command will take all nodes out of the tree before inserting them
+under the new parent, and that it determines the position to place
+them into after the removal, before the re-insertion. This behaviour
+is important when it comes to moving one or more nodes to a different
+index without changing their parent node.
+
+
+<br><br>
+<dt><a name="30"><i class='arg'>treeName</i> <strong>next</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the right sibling of <i class='arg'>node</i>, or the empty string if
+
+<i class='arg'>node</i> was the last child of its parent.
+
+
+<br><br>
+<dt><a name="31"><i class='arg'>treeName</i> <strong>numchildren</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the number of immediate children of <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="32"><i class='arg'>treeName</i> <strong>nodes</strong></a><dd>
+
+
+Return a list containing all nodes known to the tree.
+
+
+<br><br>
+<dt><a name="33"><i class='arg'>treeName</i> <strong>parent</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the parent of <i class='arg'>node</i>.
+
+
+<br><br>
+<dt><a name="34"><i class='arg'>treeName</i> <strong>previous</strong> <i class='arg'>node</i></a><dd>
+
+
+Return the left sibling of <i class='arg'>node</i>, or the empty string if
+
+<i class='arg'>node</i> was the first child of its parent.
+
+
+<br><br>
+<dt><a name="35"><i class='arg'>treeName</i> <strong>rename</strong> <i class='arg'>node</i> <i class='arg'>newname</i></a><dd>
+
+
+Renames the node <i class='arg'>node</i> to <i class='arg'>newname</i>. An error is thrown if
+either the node does not exist, or a node with name <i class='arg'>newname</i> does
+exist. The result of the command is the new name of the node.
+
+
+<br><br>
+<dt><a name="36"><i class='arg'>treeName</i> <strong>rootname</strong></a><dd>
+
+
+Returns the name of the root node of the tree.
+
+
+<br><br>
+<dt><a name="37"><i class='arg'>treeName</i> <strong>serialize</strong> ?<i class='arg'>node</i>?</a><dd>
+
+
+This method serializes the sub-tree starting at <i class='arg'>node</i>. In other
+words it returns a tcl <em>value</em> completely describing the tree
+starting at <i class='arg'>node</i>.
+
+This allows, for example, the transfer of tree objects (or parts
+thereof) over arbitrary channels, persistence, etc.
+
+This method is also the basis for both the copy constructor and
+the assignment operator.
+
+<br><br>
+
+The result of this method has to be semantically identical over all
+implementations of the tree interface. This is what will enable us to
+copy tree data between different implementations of the same
+interface.
+
+<br><br>
+
+The result is a list containing containing a multiple of three
+elements. It is like a serialized array except that there are two
+values following each key. They are the names of the nodes in the
+serialized tree. The two values are a reference to the parent node and
+the attribute data, in this order.
+
+<br><br>
+
+The reference to the parent node is the empty string for the root node
+of the tree. For all other nodes it is the index of the parent node in
+the list. This means that they are integers, greater than or equal to
+zero, less than the length of the list, and multiples of three.
+
+The order of the nodes in the list is important insofar as it is used
+to reconstruct the lists of children for each node. The children of a
+node have to be listed in the serialization in the same order as they
+are listed in their parent in the tree.
+
+<br><br>
+
+The attribute data of a node is a dictionary, i.e. a list of even
+length containing a serialized array. For a node without attribute
+data the dictionary is the empty list.
+
+<br><br>
+
+<em>Note:</em> While the current implementation returns the root node as
+the first element of the list, followed by its children and their
+children in a depth-first traversal this is not necessarily true for
+other implementations.
+
+The only information a reader of the serialized data can rely on for
+the structure of the tree is that the root node is signaled by the
+empty string for the parent reference, that all other nodes refer to
+their parent through the index in the list, and that children occur in
+the same order as in their parent.
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+ A possible serialization for the tree structure
+
+             +- d
+       +- a -+
+ root -+- b  +- e
+       +- c
+ is
+
+ {root {} {} a 0 {} d 3 {} e 3 {} b 0 {} c 0 {}}
+
+ The above assumes that none of the nodes have attributes.
+</pre></td></tr></table></p>
+
+
+
+<br><br>
+<dt><a name="38"><i class='arg'>treeName</i> <strong>set</strong> <i class='arg'>node</i> <i class='arg'>key</i> ?<i class='arg'>value</i>?</a><dd>
+
+
+Set or get one of the keyed values associated with a node. A node may
+have any number of keyed values associated with it.  If <i class='arg'>value</i> is
+not specified, this command returns the current value assigned to the
+key; if <i class='arg'>value</i> is specified, this command assigns that value to
+the key, and returns it.
+
+
+<br><br>
+<dt><a name="39"><i class='arg'>treeName</i> <strong>size</strong> ?<i class='arg'>node</i>?</a><dd>
+
+
+
+Return a count of the number of descendants of the node <i class='arg'>node</i>; if
+no node is specified, <strong>root</strong> is assumed.
+
+
+<br><br>
+<dt><a name="40"><i class='arg'>treeName</i> <strong>splice</strong> <i class='arg'>parent</i> <i class='arg'>from</i> ?<i class='arg'>to</i>? ?<i class='arg'>child</i>?</a><dd>
+
+
+Insert a node named <i class='arg'>child</i> into the tree as a child of the node
+<i class='arg'>parent</i>. If <i class='arg'>parent</i> is <strong>root</strong>, it refers to the root
+of the tree. The new node will be added to the parent node's child
+list at the index given by <i class='arg'>from</i>.  The children of <i class='arg'>parent</i>
+which are in the range of the indices <i class='arg'>from</i> and <i class='arg'>to</i> are made
+children of <i class='arg'>child</i>.  If the value of <i class='arg'>to</i> is not specified it
+defaults to <strong>end</strong>.  If no name is given for <i class='arg'>child</i>, a name
+will be generated for the new node.  The generated name is of the form
+<em>node</em><strong>x</strong>, where <strong>x</strong> is a number.  The return result
+from this command is the name of the new node.
+
+<br><br>
+
+The arguments <i class='arg'>from</i> and <i class='arg'>to</i> are regular list indices, i.e.
+the form &quot;end-<strong>n</strong>&quot; is accepted as well.
+
+
+<br><br>
+<dt><a name="41"><i class='arg'>treeName</i> <strong>swap</strong> <i class='arg'>node1</i> <i class='arg'>node2</i></a><dd>
+
+
+Swap the position of <i class='arg'>node1</i> and <i class='arg'>node2</i> in the tree.
+
+
+<br><br>
+<dt><a name="42"><i class='arg'>treeName</i> <strong>unset</strong> <i class='arg'>node</i> <i class='arg'>key</i></a><dd>
+
+
+Remove a keyed value from the node <i class='arg'>node</i>. The method will do
+nothing if the <i class='arg'>key</i> does not exist.
+
+
+<br><br>
+<dt><a name="43"><i class='arg'>treeName</i> <strong>walk</strong> <i class='arg'>node</i> ?<strong>-order</strong> <i class='arg'>order</i>? ?<strong>-type</strong> <i class='arg'>type</i>? <i class='arg'>loopvar</i> <i class='arg'>script</i></a><dd>
+
+
+Perform a breadth-first or depth-first walk of the tree starting at
+the node <i class='arg'>node</i>.  The type of walk, breadth-first or depth-first,
+is determined by the value of <i class='arg'>type</i>; <strong>bfs</strong> indicates
+breadth-first, <strong>dfs</strong> indicates depth-first.  Depth-first is the
+default. The order of the walk, pre-, post-, both- or in-order is
+determined by the value of <i class='arg'>order</i>; <strong>pre</strong> indicates
+pre-order, <strong>post</strong> indicates post-order, <strong>both</strong> indicates
+both-order and <strong>in</strong> indicates in-order. Pre-order is the
+default.
+
+<br><br>
+
+Pre-order walking means that a parent node is visited before any of
+its children.  For example, a breadth-first search starting from the
+root will visit the root, followed by all of the root's children,
+followed by all of the root's grandchildren. Post-order walking means
+that a parent node is visited after any of its children. Both-order
+walking means that a parent node is visited before <em>and</em> after
+any of its children. In-order walking means that a parent node is
+visited after its first child and before the second. This is a
+generalization of in-order walking for binary trees and will do the
+right thing if a binary tree is walked. The combination of a breadth-first
+walk with in-order is illegal.
+
+<br><br>
+
+As the walk progresses, the <i class='arg'>script</i> will be evaluated at each
+node. The evaluation takes place in the context of the caller of the
+method.
+
+Regarding loop variables, these are listed in <i class='arg'>loopvar</i>. If one
+only one variable is specified it will be set to the id of the
+node. When two variables are specified, i.e. <i class='arg'>loopvar</i> is a true
+list, then the first variable will be set to the action performed at
+the node, and the other to the id of the node itself.
+
+All loop variables are created in the context of the caller.
+
+<br><br>
+
+There are three possible actions: <strong>enter</strong>, <strong>leave</strong>,
+or <strong>visit</strong>.  <strong>enter</strong> actions occur during pre-order
+walks; <strong>leave</strong> actions occur during post-order walks;
+
+<strong>visit</strong> actions occur during in-order walks.  In a both-order
+walk, the command will be evaluated twice for each node; the action is
+<strong>enter</strong> for the first evaluation, and <strong>leave</strong> for the
+second.
+
+<br><br>
+
+<em>Note</em>: The <strong>enter</strong> action for a node is always performed
+before the walker will look at the children of that node. This means
+that changes made by the <i class='arg'>script</i> to the children of the node
+will immediately influence the walker and the steps it will take.
+
+<br><br>
+
+Any other manipulation, for example of nodes higher in the tree (i.e
+already visited), or upon leaving will have undefined results. They
+may succeed, error out, silently compute the wrong result, or anything
+in between.
+
+<br><br>
+
+At last a small table showing the relationship between the various
+options and the possible actions.
+
+<br><br>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+ order       type    actions         notes
+ -----       ----    -----           -----
+ pre         dfs     enter           parent before children
+ post        dfs     leave           parent after children
+ in          dfs     visit           parent between first and second child.
+ both        dfs     enter, leave    parent before and after children
+ -----       ----    -----           -----
+ pre         bfs     enter           parent before children
+ post        bfs     leave           parent after children
+ in          bfs             -- illegal --
+ both        bfs     enter, leave    parent before and after children
+ -----       ----    -----           -----
+</pre></td></tr></table></p>
+
+<br><br>
+
+Note the command <b class='cmd'>::struct::tree::prune</b>. This command can be used
+in the walk script to force the command to ignore the children of the
+node we are currently at. It will throw an error if the order of
+traversal is either <strong>post</strong> or <strong>in</strong> as these modes visit
+the children before their parent, making pruning non-sensical.
+
+
+<br><br>
+<dt><a name="44"><i class='arg'>treeName</i> <strong>walkproc</strong> <i class='arg'>node</i> ?<strong>-order</strong> <i class='arg'>order</i>? ?<strong>-type</strong> <i class='arg'>type</i>? <i class='arg'>cmdprefix</i></a><dd>
+
+
+This method is like method <strong>walk</strong> in all essentials, except the
+interface to the user code. This method invokes a command prefix with
+three additional arguments (tree, node, and action), instead of
+evaluating a script and passing the node via a loop variable.
+
+
+</dl>
+
+<h3><a name="changes_for_2.0">Changes for 2.0</a></h3>
+<p>
+
+The following noteworthy changes have occurred:
+
+<ol>
+<li>
+
+The API for accessing attributes and their values has been
+simplified.
+
+<br><br>
+
+All functionality regarding the default attribute &quot;data&quot; has been
+removed. This default attribute does not exist anymore. All accesses
+to attributes have to specify the name of the attribute in
+question. This backward <em>incompatible</em> change allowed us to
+simplify the signature of all methods handling attributes.
+
+<br><br>
+
+Especially the flag <strong>-key</strong> is not required anymore, even more,
+its use is now forbidden. Please read the documentation for the
+methods <strong>set</strong>, <strong>get</strong>, <strong>getall</strong>, <strong>unset</strong>,
+<strong>append</strong>, <strong>lappend</strong>, <strong>keyexists</strong>
+
+and <strong>keys</strong> for a description of the new API's.
+
+<br><br>
+<li>
+
+The methods <strong>keys</strong> and <strong>getall</strong> now take an optional
+pattern argument and will return only attribute data for keys matching
+this pattern.
+
+<br><br>
+<li>
+
+Nodes can now be renamed. See the documentation for the method
+<strong>rename</strong>.
+
+<br><br>
+<li>
+
+The structure has been extended with API's for the serialization and
+deserialization of tree objects, and a number of operations based on
+them (tree assignment, copy construction).
+
+<br><br>
+
+Please read the documentation for the methods <strong>serialize</strong>,
+<strong>deserialize</strong>, <strong>=</strong>, and <strong>--&gt;</strong>, and the
+documentation on the construction of tree objects.
+
+<br><br>
+
+Beyond the copying of whole tree objects these new API's also enable
+the transfer of tree objects over arbitrary channels and for easy
+persistence.
+
+
+<br><br>
+<li>
+
+The walker API has been streamlined and made more similar to the
+command <b class='cmd'>foreach</b>. In detail:
+
+<br><br>
+<ul>
+
+<li>
+
+The superfluous option <strong>-command</strong> has been removed.
+
+<br><br>
+<li>
+
+Ditto for the place holders. Instead of the placeholders two loop
+variables have to be specified to contain node and action infromation.
+
+<br><br>
+<li>
+
+The old command argument has been documented as a script now, which it
+was in the past too.
+
+<br><br>
+<li>
+
+The fact that <strong>enter</strong> actions are called before the walker looks
+at the children of a node has been documented now. In other words it
+is now officially allowed to manipulate the list of children for a
+node under <em>these</em> circumstances. It has been made clear that changes under any other circumstances will have undefined results, from silently computing the wrong result to erroring out.
+
+</ul>
+
+<li>
+
+A new method, <strong>attr</strong>, was added allowing the query and
+retrieval of attribute data without regard to the node relationship.
+
+<br><br>
+<li>
+
+The method <strong>children</strong> has been extended with the ability to
+select from the children of the node based on an arbitrary filtering
+criterium. Another extension is the ability to look not only at the
+immediate children of the node, but the whole tree below it.
+
+
+</ol>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+The following example demonstrates the creation of new nodes:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    mytree insert root end 0   ; # Create node 0, as child of the root
+    mytree insert root end 1 2 ; # Ditto nodes 1 &amp; 2
+    mytree insert 0    end 3   ; # Now create node 3 as child of node 0
+    mytree insert 0    end     ; # Create another child of 0, with a
+    #                              generated name. The name is returned
+    #                              as the result of the command.
+</pre></td></tr></table></p>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+breadth-first, depth-first, in-order, node, post-order, pre-order, serialization, tree
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002-2004 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

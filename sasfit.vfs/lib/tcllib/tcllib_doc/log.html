@@ -1,0 +1,379 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>log - Logging facility </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/log/log.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2001-2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: log.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ log.n
+   -->
+
+<body>
+<h1> log(n) 1.2 log &quot;Logging facility&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> log - Procedures to log messages of libraries and applications.
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#api">API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#levels">LEVELS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8</b><br>
+package require <b>log ?1.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::log::levels</b> </a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::log::lv2longform</b> <i class='arg'>level</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::log::lv2color</b> <i class='arg'>level</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::log::lv2priority</b> <i class='arg'>level</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::log::lv2cmd</b> <i class='arg'>level</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::log::lv2channel</b> <i class='arg'>level</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::log::lvCompare</b> <i class='arg'>level1</i> <i class='arg'>level2</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::log::lvSuppress</b> <i class='arg'>level</i> {<i class='arg'>suppress</i> 1}</a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::log::lvSuppressLE</b> <i class='arg'>level</i> {<i class='arg'>suppress</i> 1}</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::log::lvIsSuppressed</b> <i class='arg'>level</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::log::lvCmd</b> <i class='arg'>level</i> <i class='arg'>cmd</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::log::lvCmdForall</b> <i class='arg'>cmd</i></a></td></tr>
+<tr valign=top ><td ><a href="#13"><b class='cmd'>::log::lvChannel</b> <i class='arg'>level</i> <i class='arg'>chan</i></a></td></tr>
+<tr valign=top ><td ><a href="#14"><b class='cmd'>::log::lvChannelForall</b> <i class='arg'>chan</i></a></td></tr>
+<tr valign=top ><td ><a href="#15"><b class='cmd'>::log::lvColor</b> <i class='arg'>level</i> <i class='arg'>color</i></a></td></tr>
+<tr valign=top ><td ><a href="#16"><b class='cmd'>::log::lvColorForall</b> <i class='arg'>color</i></a></td></tr>
+<tr valign=top ><td ><a href="#17"><b class='cmd'>::log::log</b> <i class='arg'>level</i> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#18"><b class='cmd'>::log::logarray</b> <i class='arg'>level</i> <i class='arg'>arrayvar</i> ?<i class='arg'>pattern</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#19"><b class='cmd'>::log::loghex</b> <i class='arg'>level</i> <i class='arg'>text</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#20"><b class='cmd'>::log::logMsg</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#21"><b class='cmd'>::log::logError</b> <i class='arg'>text</i></a></td></tr>
+<tr valign=top ><td ><a href="#22"><b class='cmd'>::log::Puts</b> <i class='arg'>level</i> <i class='arg'>text</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+<p>
+
+The <strong>log</strong> package provides commands that allow libraries and
+applications to selectively log information about their internal
+operation and state.
+
+<p>
+
+To use the package just execute
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require log
+    log::log notice &quot;Some message&quot;
+</pre></td></tr></table></p>
+<p>
+
+As can be seen above, each message given to the log facility is
+associated with a <em>level</em> determining the importance of the
+message. The user can then select which levels to log, what commands
+to use for the logging of each level and the channel to write the
+message to. In the following example the logging of all message with
+level <strong>debug</strong> is deactivated.
+
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require log
+    log::lvSuppress debug
+    log::log debug &quot;Unseen message&quot; ; # No output
+</pre></td></tr></table></p>
+<p>
+
+By default all messages associated with an error-level
+
+(<strong>emergency</strong>, <strong>alert</strong>, <strong>critical</strong>, and
+
+<strong>error</strong>) are written to <strong>stderr</strong>. Messages with any
+other level are written to <strong>stdout</strong>. In the following example
+the log module is reconfigured to write <strong>debug</strong> messages to
+<strong>stderr</strong> too.
+
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require log
+    log::lvChannel debug stderr
+    log::log debug &quot;Written to stderr&quot;
+</pre></td></tr></table></p>
+
+<p>
+
+Each message level is also associated with a command to use when
+logging a message with that level. The behaviour above for example
+relies on the fact that all message levels use by default the standard
+command <b class='cmd'>::log::Puts</b> to log any message. In the following example
+all messages of level <strong>notice</strong> are given to the non-standard
+command <b class='cmd'>toText</b> for logging. This disables the channel setting
+for such messages, assuming that <b class='cmd'>toText</b> does not use it by
+itself.
+
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    package require log
+    log::lvCmd notice toText
+    log::log notice &quot;Handled by \&quot;toText\&quot;&quot;
+</pre></td></tr></table></p>
+
+<p>
+
+Another database maintained by this facility is a map from message
+levels to colors. The information in this database has <em>no</em>
+influence on the behaviour of the module. It is merely provided as a
+convenience and in anticipation of the usage of this facility in
+<strong>tk</strong>-based application which may want to colorize message
+logs.
+
+<h2><a name="api">API</a></h2>
+<p>
+
+<p>
+
+The following commands are available:
+
+<dl>
+
+
+<dt><a name="1"><b class='cmd'>::log::levels</b> </a><dd>
+
+
+Returns the names of all known levels, in alphabetical order.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::log::lv2longform</b> <i class='arg'>level</i></a><dd>
+
+
+Converts any unique abbreviation of a level name to the full level
+name.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::log::lv2color</b> <i class='arg'>level</i></a><dd>
+
+
+Converts any level name including unique abbreviations to the
+corresponding color.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::log::lv2priority</b> <i class='arg'>level</i></a><dd>
+
+
+Converts any level name including unique abbreviations to the
+corresponding priority.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::log::lv2cmd</b> <i class='arg'>level</i></a><dd>
+
+
+Converts any level name including unique abbreviations to the command
+prefix used to write messages with that level.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::log::lv2channel</b> <i class='arg'>level</i></a><dd>
+
+
+Converts any level name including unique abbreviations to the channel
+used by <b class='cmd'>::log::Puts</b> to write messages with that level.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::log::lvCompare</b> <i class='arg'>level1</i> <i class='arg'>level2</i></a><dd>
+
+
+Compares two levels (including unique abbreviations) with respect to
+their priority. This command can be used by the -command option of
+lsort. The result is one of -1, 0 or 1 or an error. A result of -1
+signals that level1 is of less priority than level2. 0 signals that
+both levels have the same priority. 1 signals that level1 has higher
+priority than level2.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::log::lvSuppress</b> <i class='arg'>level</i> {<i class='arg'>suppress</i> 1}</a><dd>
+]
+
+(Un)suppresses the output of messages having the specified
+level. Unique abbreviations for the level are allowed here too.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::log::lvSuppressLE</b> <i class='arg'>level</i> {<i class='arg'>suppress</i> 1}</a><dd>
+]
+
+(Un)suppresses the output of messages having the specified level or
+one of lesser priority. Unique abbreviations for the level are allowed
+here too.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::log::lvIsSuppressed</b> <i class='arg'>level</i></a><dd>
+
+
+Asks the package whether the specified level is currently
+suppressed. Unique abbreviations of level names are allowed.
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::log::lvCmd</b> <i class='arg'>level</i> <i class='arg'>cmd</i></a><dd>
+
+
+Defines for the specified level with which command to write the
+messages having this level. Unique abbreviations of level names are
+allowed. The command is actually a command prefix and this facility
+will append 2 arguments before calling it, the level of the message
+and the message itself, in this order.
+
+<br><br>
+<dt><a name="12"><b class='cmd'>::log::lvCmdForall</b> <i class='arg'>cmd</i></a><dd>
+
+
+Defines for all known levels with which command to write the messages
+having this level. The command is actually a command prefix and this
+facility will append 2 arguments before calling it, the level of the
+message and the message itself, in this order.
+
+<br><br>
+<dt><a name="13"><b class='cmd'>::log::lvChannel</b> <i class='arg'>level</i> <i class='arg'>chan</i></a><dd>
+
+
+Defines for the specified level into which channel <b class='cmd'>::log::Puts</b>
+(the standard command) shall write the messages having this
+level. Unique abbreviations of level names are allowed. The command is
+actually a command prefix and this facility will append 2 arguments
+before calling it, the level of the message and the message itself, in
+this order.
+
+<br><br>
+<dt><a name="14"><b class='cmd'>::log::lvChannelForall</b> <i class='arg'>chan</i></a><dd>
+
+
+Defines for all known levels with which which channel
+<b class='cmd'>::log::Puts</b> (the standard command) shall write the messages
+having this level. The command is actually a command prefix and this
+facility will append 2 arguments before calling it, the level of the
+message and the message itself, in this order.
+
+<br><br>
+<dt><a name="15"><b class='cmd'>::log::lvColor</b> <i class='arg'>level</i> <i class='arg'>color</i></a><dd>
+
+
+Defines for the specified level the color to return for it in a call
+to <b class='cmd'>::log::lv2color</b>. Unique abbreviations of level names are
+allowed.
+
+<br><br>
+<dt><a name="16"><b class='cmd'>::log::lvColorForall</b> <i class='arg'>color</i></a><dd>
+
+
+Defines for all known levels the color to return for it in a call to
+<b class='cmd'>::log::lv2color</b>. Unique abbreviations of level names are
+allowed.
+
+<br><br>
+<dt><a name="17"><b class='cmd'>::log::log</b> <i class='arg'>level</i> <i class='arg'>text</i></a><dd>
+
+
+Log a message according to the specifications for commands, channels
+and suppression. In other words: The command will do nothing if the
+specified level is suppressed. If it is not suppressed the actual
+logging is delegated to the specified command. If there is no command
+specified for the level the message won't be logged. The standard
+command <b class='cmd'>::log::Puts</b> will write the message to the channel
+specified for the given level. If no channel is specified for the
+level the message won't be logged. Unique abbreviations of level names
+are allowed. Errors in the actual logging command are <em>not</em>
+caught, but propagated to the caller, as they may indicate
+misconfigurations of the log facility or errors in the callers code
+itself.
+
+
+<br><br>
+<dt><a name="18"><b class='cmd'>::log::logarray</b> <i class='arg'>level</i> <i class='arg'>arrayvar</i> ?<i class='arg'>pattern</i>?</a><dd>
+
+
+Like <b class='cmd'>::log::log</b>, but logs the contents of the specified array
+variable <i class='arg'>arrayvar</i>, possibly restricted to entries matching the
+<i class='arg'>pattern</i>. The pattern defaults to <strong>*</strong> (i.e. all entries) if
+none was specified.
+
+
+<br><br>
+<dt><a name="19"><b class='cmd'>::log::loghex</b> <i class='arg'>level</i> <i class='arg'>text</i> <i class='arg'>data</i></a><dd>
+
+
+Like <b class='cmd'>::log::log</b>, but assumes that <i class='arg'>data</i> contains binary
+data. It converts this into a mixed hex/ascii representation before
+writing them to the log.
+
+
+<br><br>
+<dt><a name="20"><b class='cmd'>::log::logMsg</b> <i class='arg'>text</i></a><dd>
+
+
+Convenience wrapper around <b class='cmd'>::log::log</b>.
+Equivalent to <b class='cmd'>::log::log info text</b>.
+
+<br><br>
+<dt><a name="21"><b class='cmd'>::log::logError</b> <i class='arg'>text</i></a><dd>
+
+
+Convenience wrapper around <b class='cmd'>::log::log</b>.
+Equivalent to <b class='cmd'>::log::log error text</b>.
+
+<br><br>
+<dt><a name="22"><b class='cmd'>::log::Puts</b> <i class='arg'>level</i> <i class='arg'>text</i></a><dd>
+
+
+The standard log command, it writes messages and their levels to
+user-specified channels. Assumes that the suppression checks were done
+by the caller. Expects full level names, abbreviations are
+<em>not allowed</em>.
+
+</dl>
+
+<h2><a name="levels">LEVELS</a></h2>
+<p>
+
+The package currently defines the following log levels, the level of
+highest importance listed first.
+
+<ul>
+<li>
+emergency
+<br><br>
+<li>
+alert
+<br><br>
+<li>
+critical
+<br><br>
+<li>
+error
+<br><br>
+<li>
+warning
+<br><br>
+<li>
+notice
+<br><br>
+<li>
+info
+<br><br>
+<li>
+debug
+</ul>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+log, log level, message, message level
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2001-2002 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

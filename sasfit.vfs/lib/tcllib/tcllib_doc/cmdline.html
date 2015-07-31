@@ -1,0 +1,191 @@
+<html><head>
+<title>cmdline - Command line and option processing </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/cmdline/cmdline.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: cmdline.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ cmdline.n
+   -->
+
+<body>
+<h1> cmdline(n) 1.2.4 cmdline &quot;Command line and option processing&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> cmdline - Procedures to process command lines and options.
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>cmdline ?1.2.4?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::cmdline::getopt</b> <i class='arg'>argvVar</i> <i class='arg'>optstring</i> <i class='arg'>optVar</i> <i class='arg'>valVar</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::cmdline::getKnownOpt</b> <i class='arg'>argvVar</i> <i class='arg'>optstring</i> <i class='arg'>optVar</i> <i class='arg'>valVar</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::cmdline::getoptions</b> <i class='arg'>arglistVar</i> <i class='arg'>optlist</i> ?<i class='arg'>usage</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::cmdline::getKnownOptions</b> <i class='arg'>arglistVar</i> <i class='arg'>optlist</i> ?<i class='arg'>usage</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::cmdline::usage</b> <i class='arg'>optlist</i> ?<i class='arg'>usage</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::cmdline::getfiles</b> <i class='arg'>patterns</i> <i class='arg'>quiet</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::cmdline::getArgv0</b> </a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides commands to parse command lines and options.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::cmdline::getopt</b> <i class='arg'>argvVar</i> <i class='arg'>optstring</i> <i class='arg'>optVar</i> <i class='arg'>valVar</i></a><dd>
+
+
+This command works in a fashion like the standard C based <b class='cmd'>getopt</b>
+function.  Given an option string and a pointer to an array or args
+this command will process the first argument and return info on how to
+proceed. The command returns 1 if an option was found, 0 if no more
+options were found, and -1 if an error occurred.
+
+<br><br>
+
+<i class='arg'>argvVar</i> contains the name of the list of arguments to
+process. If options are found the list is modified and the processed
+arguments are removed from the start of the list.
+
+<br><br>
+
+<i class='arg'>optstring</i> contains a list of command options that the
+application will accept.  If the option ends in &quot;.arg&quot; the command
+will use the next argument as an argument to the option.  Otherwise
+the option is a boolean that is set to 1 if present.
+
+<br><br>
+
+<i class='arg'>optVar</i> refers to the variable the command will store the found
+option into (without the leading '-' and without the .arg extension).
+
+<br><br>
+
+<i class='arg'>valVar</i> refers to the variable to store either the value for the
+specified option into upon success or an error message in the case of
+failure. The stored value comes from the command line for .arg
+options, otherwise the value is 1.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::cmdline::getKnownOpt</b> <i class='arg'>argvVar</i> <i class='arg'>optstring</i> <i class='arg'>optVar</i> <i class='arg'>valVar</i></a><dd>
+
+
+Like <b class='cmd'>::cmdline::getopt</b>, but ignores any unknown options in the
+input.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::cmdline::getoptions</b> <i class='arg'>arglistVar</i> <i class='arg'>optlist</i> ?<i class='arg'>usage</i>?</a><dd>
+
+
+Processes the set of command line options found in the list variable
+named by <i class='arg'>arglistVar</i> and fills in defaults for those not
+specified.  This also generates an error message that lists the
+allowed flags if an incorrect flag is specified. The optional
+<i class='arg'>usage</i>-argument contains a string to include in front of the
+generated message. If not present it defaults to &quot;options:&quot;.
+
+<br><br>
+
+<i class='arg'>optlist</i> contains a list of lists where each element specifies an
+option in the form: <i class='arg'>flag</i> <i class='arg'>default</i> <i class='arg'>comment</i>.
+
+<br><br>
+
+If <i class='arg'>flag</i> ends in &quot;.arg&quot; then the value is taken from the command
+line. Otherwise it is a boolean and appears in the result if present
+on the command line. If <i class='arg'>flag</i> ends in &quot;.secret&quot;, it will not be
+displayed in the usage.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::cmdline::getKnownOptions</b> <i class='arg'>arglistVar</i> <i class='arg'>optlist</i> ?<i class='arg'>usage</i>?</a><dd>
+
+
+Like <b class='cmd'>::cmdline::getoptions</b>, but ignores any unknown options in the
+input.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::cmdline::usage</b> <i class='arg'>optlist</i> ?<i class='arg'>usage</i>?</a><dd>
+
+
+Generates and returns an error message that lists the allowed
+flags. <i class='arg'>optlist</i> is defined as for
+<b class='cmd'>::cmdline::getoptions</b>. The optional <i class='arg'>usage</i>-argument
+contains a string to include in front of the generated message. If not
+present it defaults to &quot;options:&quot;.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::cmdline::getfiles</b> <i class='arg'>patterns</i> <i class='arg'>quiet</i></a><dd>
+
+
+Given a list of file <i class='arg'>patterns</i> this command computes the set of
+valid files.  On windows, file globbing is performed on each argument.
+On Unix, only file existence is tested.  If a file argument produces
+no valid files, a warning is optionally generated (set <i class='arg'>quiet</i> to
+true).
+
+<br><br>
+
+This code also uses the full path for each file.  If not given it
+prepends the current working directory to the filename. This ensures
+that these files will never conflict with files in a wrapped zip
+file. The last sentence refers to the pro-tools.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::cmdline::getArgv0</b> </a><dd>
+
+
+This command returns the &quot;sanitized&quot; version of <i class='arg'>argv0</i>.  It will
+strip off the leading path and removes the extension &quot;.bin&quot;. The
+latter is used by the pro-apps because they must be wrapped by a shell
+script.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+        set options {
+            {a          &quot;set the atime only&quot;}
+            {m          &quot;set the mtime only&quot;}
+            {c          &quot;do not create non-existent files&quot;}
+            {r.arg  &quot;&quot;  &quot;use time from ref_file&quot;}
+            {t.arg  -1  &quot;use specified time&quot;}
+        }
+        set usage &quot;: MyCommandName \[options] filename ...\noptions:&quot;
+        array set params [::cmdline::getoptions argv $options $usage]
+
+        if {  $params(a) } { set set_atime &quot;true&quot; }
+        set has_t [expr {$params(t) != -1}]
+        set has_r [expr {[string length $params(r)] &gt; 0}]
+        if {$has_t &amp;&amp; $has_r} {
+            return -code error &quot;Cannot specify both -r and -t&quot;
+        } elseif {$has_t} {
+	    ...
+        }
+</pre></td></tr></table></p>
+
+<p>
+
+This example, taken (and slightly modified) from the package
+<strong>fileutil</strong>, shows how to use cmdline.  First, a list of
+options is created, then the 'args' list is passed to cmdline for
+processing.  Subsequently, different options are checked to see if
+they have been passed to the script, and what their value is.
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+argument processing, argv, argv0, cmdline processing
+</body></html>
+

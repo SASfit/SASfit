@@ -1,0 +1,182 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<! --  $Id: multiplexer.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ 
+   -->
+<html><head>
+<title>multiplexer - One-to-many communication with sockets. </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/multiplexer/multiplexer.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: multiplexer.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ multiplexer.n
+   -->
+
+<body>
+<h1> multiplexer(n) 0.2 multiplexer &quot;One-to-many communication with sockets.&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> multiplexer - One-to-many communication with sockets.
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>logger</b><br>
+package require <b>multiplexer ?0.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::multiplexer::create</b> </a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>${multiplexer_instance}::Init</b> <i class='arg'>port</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>${multiplexer_instance}::Config</b> <i class='arg'>key</i> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>${multiplexer_instance}::AddFilter</b> <i class='arg'>cmdprefix</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>cmdprefix</b> <i class='arg'>data</i> <i class='arg'>chan</i> <i class='arg'>clientaddress</i> <i class='arg'>clientport</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>${multiplexer_instance}::AddAccessFilter</b> <i class='arg'>cmdprefix</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>cmdprefix</b> <i class='arg'>chan</i> <i class='arg'>clientaddress</i> <i class='arg'>clientport</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>${multiplexer_instance}::AddExitFilter</b> <i class='arg'>cmdprefix</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>cmdprefix</b> <i class='arg'>chan</i> <i class='arg'>clientaddress</i> <i class='arg'>clientport</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>multiplexer</strong> package provides a generic system for one-to-many
+communication utilizing sockets.  For example, think of a chat system
+where one user sends a message which is then broadcast to all the
+other connected users.
+
+<p>
+
+It is possible to have different multiplexers running concurrently.
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::multiplexer::create</b> </a><dd>
+
+
+The <b class='cmd'>create</b> command creates a new multiplexer 'instance'.  For
+example:
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>set mp [::multiplexer::create]</pre></td></tr></table></p>
+
+This instance can then be manipulated like so: <p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>${mp}::Init 35100</pre></td></tr></table></p>
+
+<br><br>
+<dt><a name="2"><b class='cmd'>${multiplexer_instance}::Init</b> <i class='arg'>port</i></a><dd>
+
+
+This starts the multiplexer listening on the specified port.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>${multiplexer_instance}::Config</b> <i class='arg'>key</i> <i class='arg'>value</i></a><dd>
+
+
+Use <b class='cmd'>Config</b> to configure the multiplexer instance.  Configuration
+options currently include:
+
+<br><br>
+<dl>
+
+<dt><strong>sendtoorigin</strong><dd>
+
+A boolean flag. If <strong>true</strong>, the sender will receive a copy of the
+sent message.  Defaults to <strong>false</strong>.
+
+<br><br>
+<dt><strong>debuglevel</strong><dd>
+
+Sets the debug level to use for the multiplexer instance, according to
+those specified by the <strong>logger</strong> package (debug, info, notice,
+warn, error, critical).
+
+</dl>
+
+<dt><a name="4"><b class='cmd'>${multiplexer_instance}::AddFilter</b> <i class='arg'>cmdprefix</i></a><dd>
+
+
+Command to add a filter for data that passes through the multiplexer
+instance. 
+
+The registered <i class='arg'>cmdprefix</i> is called when data arrives at a
+multiplexer instance. If there is more than one filter command
+registered at the instance they will be called in the order of
+registristation, and each filter will get the result of the preceding
+filter as its argument. The first filter gets the incoming data as its
+argument. The result returned by the last filter is the data which
+will be broadcast to all clients of the multiplexer instance.
+
+The command prefix is called as
+
+<br><br>
+<dl>
+<dt><a name="5"><b class='cmd'>cmdprefix</b> <i class='arg'>data</i> <i class='arg'>chan</i> <i class='arg'>clientaddress</i> <i class='arg'>clientport</i></a><dd>
+
+
+Takes the incoming <i class='arg'>data</i>, modifies it, and returns that as its
+result. The last three arguments contain information about the client
+which sent the data to filter: The channel connecting us to the
+client, its ip-address, and its ip-port.
+
+</dl>
+
+
+<dt><a name="6"><b class='cmd'>${multiplexer_instance}::AddAccessFilter</b> <i class='arg'>cmdprefix</i></a><dd>
+
+
+Command to add an access filter.
+
+The registered <i class='arg'>cmdprefix</i> is called when a new client socket
+tries to connect to the multixer instance. If there is more than one
+access filter command registered at the instance they will be called
+in the order of registristation. If any of the called commands returns
+<strong>-1</strong> the access to the multiplexer instance is denied and the
+client channel is closed immediately. Any other result grants the
+client access to the multiplexer instance.
+
+The command prefix is called as
+
+<br><br>
+<dl>
+<dt><a name="7"><b class='cmd'>cmdprefix</b> <i class='arg'>chan</i> <i class='arg'>clientaddress</i> <i class='arg'>clientport</i></a><dd>
+
+
+The arguments contain information about the client which tries to
+connected to the instance: The channel connecting us to the client,
+its ip-address, and its ip-port.
+
+</dl>
+
+
+<dt><a name="8"><b class='cmd'>${multiplexer_instance}::AddExitFilter</b> <i class='arg'>cmdprefix</i></a><dd>
+
+
+Adds filter to be run when client socket generates an EOF condition.
+
+The registered <i class='arg'>cmdprefix</i> is called when a client socket of the
+multixer signals EOF. If there is more than one exit filter command
+registered at the instance they will be called in the order of
+registristation. Errors thrown by an exit filter are ignored, but
+logged. Any result returned by an exit filter is ignored.
+
+The command prefix is called as
+
+<br><br>
+<dl>
+<dt><a name="9"><b class='cmd'>cmdprefix</b> <i class='arg'>chan</i> <i class='arg'>clientaddress</i> <i class='arg'>clientport</i></a><dd>
+
+
+The arguments contain information about the client which signaled the
+EOF: The channel connecting us to the client, its ip-address, and its
+ip-port.
+
+</dl>
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+chat, multiplexer
+</body></html>

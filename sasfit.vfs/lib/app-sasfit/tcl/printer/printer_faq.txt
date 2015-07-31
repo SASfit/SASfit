@@ -1,0 +1,81 @@
+
+Tcl Extension for Windows
+RCS Version $Revision: 1.2 $
+RCS Last Change Date: $Date: 2002/10/08 17:51:39 $
+Original Author: Michael I. Schwartz, mschwart@nyx.net
+Contributing Author: (Mac Version and specifications) Mark Roseman, roseman@cpsc.ucalgary.ca
+Contributing Author:  Andreas Sievers (Andreas.Sievers@t-mobil.de)
+
+This file contains the answers to the most frequently asked questions 
+about the printer extension.
+
+1) Why doesn't the extension simply replace the hDC in the Tk rendering 
+code?
+   Actually, this is the hardest question to answer. Clearly, it would 
+   be better, cleaner, and less code to write to do this. This technique 
+   has the possibility of working on both NT and the Macintosh, though 
+   it could not be applied to Unix without an X server whose display is 
+   a printer page.
+
+   Arguing against this approach are:
+   1) Many scripts used for system management or background processing 
+   wish to print, but have no Tk component. Having an extension 
+   independent of Tk allows these programs to run. In fact, this was a 
+   requirement of my initial scripts using this extension.
+
+   2) John Ousterhout and other members of his team have expressed the 
+   desire to replace the Tk canvas with a better abstraction. When that 
+   happens, it is likely to have a much better printer integration than 
+   the current version. However, until that is established firmly, a 
+   printer extension independent of the canvas implementation is 
+   desirable.
+
+   3) Technically, if you look through the Tk code, you will find that 
+   it does not support a "flat" model hDC (there are many "windows" to 
+   manage over the context), and thus it does not lend itself as easily to 
+   that approach as one might initially think.
+
+2) Why are the hDCs represented as hex? Why don't you make them named 
+objects?
+   This is in the plan for the printer extension--note that GDI and 
+   printer have to share the same understanding of a printer context, so 
+   both extensions will change simultaneously when this happens.
+   Even at that time, hexidecimal hDCs will be supported (though 
+   possibly in a slightly different fashion), as this is a 
+   format allowing C or C++ main programs to pass printer contexts to 
+   the Tcl interpreter.
+
+3) Why are printer and GDI extensions separate? Shouldn't they be one 
+extension?
+   Printer and GDI represent two different abstractions. The first 
+   establishes and manages connections to the printer. The second 
+   renders graphics onto a graphics device context.
+
+   It so happens that in windows there is a nice connection in that the 
+   printer connection is a graphics device context, but this will 
+   certainly not be true in the same way for other operating systems. 
+   Printer is "complete" in the sense that prepared data can be sent 
+   directly to the printer, without requiring GDI; GDI is complete in 
+   the sense that it will work even if the context is not a printer context.
+
+   The grand plan is to have a GDI extension that generates Postscript under Unix, 
+   and a printer extension that supports Unix printer management.
+
+4) How do I ...
+  a) Set and get the first and last page from the user?
+     The script should have something like the following:
+	package require printer
+0.9.6.7
+	### Other parts of the script...
+	printer attr ;# This gets attributes of the default printer, for example
+### A list of printer attributes is output....
+        printer attr -set [ list [ list "first page" 2 ] [ list "last page" 7 ] ]
+{{first page} 2} {{last page} 7}
+	# At this point, printer dialog select will now bring up the 
+	# dialog with the page selection portion enabled.
+  b) Disable portions of the print dialog
+     This is done by passing appropriate format flags to the dialogs. 
+     See the documentation on printer dialog for full details, but for 
+     example
+	printer dialog select -flags 0x80000 will remove the print to 
+	file checkbox from the dialog

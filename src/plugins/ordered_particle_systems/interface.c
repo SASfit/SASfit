@@ -1,0 +1,34 @@
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ */
+
+#ifdef MAKE_SASFIT_PLUGIN
+#include "include/private.h"
+
+// functions to mark for export
+SASFIT_PLUGIN_EXP_BEGIN(9)
+SASFIT_PLUGIN_EXP_ADD( sq_sc_iso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_sc_aniso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_sc_aniso_gaussian )
+SASFIT_PLUGIN_EXP_ADD( sq_bcc_iso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_fcc_iso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_hcp_iso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_sq_iso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_hex_iso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_lam_iso_lorentzian )
+
+SASFIT_PLUGIN_EXP_END
+
+// import functions from other plugins
+SASFIT_PLUGIN_IMP_NONE
+
+SASFIT_PLUGIN_INTERFACE
+
+void do_at_init(void)
+{
+	// insert custom init code here (optional)
+}
+
+#endif
+

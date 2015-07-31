@@ -1,0 +1,111 @@
+<html><head>
+<title>md5crypt - MD5-based password encryption </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/md5crypt/md5crypt.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2003, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: md5crypt.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ md5crypt.n
+   -->
+
+<body>
+<h1> md5crypt(n) 1.0.0 md5crypt &quot;MD5-based password encryption&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> md5crypt - MD5-based password encryption
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#salt">SALT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>md5 2.0</b><br>
+package require <b>md5crypt ?1.0.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::md5crypt::md5crypt</b> <i class='arg'>password</i> <i class='arg'>salt</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::md5crypt::aprcrypt</b> <i class='arg'>password</i> <i class='arg'>salt</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package provides an implementation of the MD5-crypt password
+encryption algorithm as pioneered by FreeBSD and currently in use as a
+replacement for the unix crypt(3) function in many modern
+systems. An implementation of the closely related Apache MD5-crypt is
+also available.
+
+The output of these commands are compatible with the BSD and OpenSSL
+implementation of md5crypt and the Apache 2 htpasswd program.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::md5crypt::md5crypt</b> <i class='arg'>password</i> <i class='arg'>salt</i></a><dd>
+
+
+Generate a BSD compatible md5-encoded password hash from the plaintext
+password and a random salt (see SALT).
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::md5crypt::aprcrypt</b> <i class='arg'>password</i> <i class='arg'>salt</i></a><dd>
+
+
+Generate an Apache compatible md5-encoded password hash from the plaintext
+password and a random salt (see SALT).
+
+</dl>
+
+<h2><a name="salt">SALT</a></h2>
+<p>
+
+The salt passed to either of the encryption schemes implemented here
+is checked to see if it begins with the encryption scheme magic string
+(either &quot;$1$&quot; for MD5-crypt or &quot;$apr1$&quot; for Apache crypt). If so, this
+is removed. The remaining characters up to the next $ and up to a
+maximum of 8 characters are then used as the salt. The salt text
+should probably be restricted the set of ASCII alphanumeric characters
+plus &quot;./&quot; (dot and forward-slash) - this is to preserve maximum
+compatability with the unix password file format.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% md5crypt::md5crypt password 01234567
+$1$01234567$b5lh2mHyD2PdJjFfALlEz1
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% md5crypt::aprcrypt password 01234567
+$apr1$01234567$IXBaQywhAhc0d75ZbaSDp/
+</pre></td></tr></table></p>
+
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+md5
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+hashing, md5, md5crypt, message-digest, security
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2003, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>
