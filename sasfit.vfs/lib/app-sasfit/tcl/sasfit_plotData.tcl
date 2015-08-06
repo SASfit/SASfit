@@ -233,7 +233,10 @@ proc Put_Graph_el {GraphPar xdata args } {
 		    set factor $Par(y,factor)
 		}
 		lappend tmpdata  [expr $y*$factor]
-		lappend tmpddata [expr $e*$factor]
+                if {$e != -1.0} {
+                    # don't scale the uncertainty placeholder value
+		    lappend tmpddata [expr $e*$factor]
+                }
 	    }
 	    set ydata  $tmpdata
 	    set dydata $tmpddata
