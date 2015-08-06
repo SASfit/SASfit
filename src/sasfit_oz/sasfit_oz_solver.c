@@ -1888,13 +1888,3 @@ void OZ_free (sasfit_oz_data *OZd) {
     fftw_free(OZOUT);
 }
 
-
-
-
-
-
-
-
-
-
-
