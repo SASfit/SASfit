@@ -788,7 +788,9 @@ under "\texttt{[by plugin|anisotropic obj.|Pcs(Q): local cylindrical obj.]}".
 For worm-like micelles J.S. Pedersen \cite{Pedersen96Macrom} has developed three models
 for worm-like micelles, from which one is basing on a method developed by Yoshizaki et al.\ \cite{Yoshizaki1980}.
 
-\paragraph*{\textbf{Without Excluded Volume Effects.}}
+~\\
+\paragraph*{\textbf{Without Excluded Volume Effects.}}~\\
+
 This first of the three solutions given by J.S. Pedersen \cite{Pedersen96Macrom} for
 worm-like micelles starts from the expression for the scattering function as follows:
 \begin{align}
@@ -884,7 +886,9 @@ The values of $a_1(i,j), a_2(i,j), b_1(i,j)$, and $b_2(i,j)$ are listed in table
    \end{tabular}
 \end{table}
 
-\paragraph*{\textbf{With Excluded Volume Effects.}}
+~\\
+\paragraph*{\textbf{With Excluded Volume Effects.}}~\\
+
 To include excluded volume effects in eq.\ \ref{eq:SWC} the function for a flexible chain $S_\text{chain}(Q,L,l_B)$ needs to be replaced by one with excluded volume effects included
 \begin{align}
 \label{eq:exvSWC}
@@ -894,7 +898,7 @@ S_\text{WC}(Q,L,l_B) &= L^2 \left[  \left(1-\chi(Q,L,l_B)\right)
 &  \left. \qquad  \qquad  +\chi(Q,L,l_B) S_\text{rod}(Q,L)    \right] \Gamma(Q,L,l_B)
 \end{split}
 \end{align}
-The scattering of a chain with excluded volume effects if given by
+The scattering of a chain with excluded volume effects is given by
 \begin{multline}
 S_\text{exv}(Q,L,l_B) = w(Q,R_g) S_\text{Debye}(Q,L,l_B) + \\
  \left[1-w(q R_g)\right[\left[C_1\left(QR_g\right)^{-1/\nu}
@@ -1259,9 +1263,9 @@ I_\text{FuzzySph}(Q) = F^2(Q) = \\
 \end{multline}
 
 The intensity $I_\text{FuzzySph}(Q)$ and also the scattering
-length profile $\eta_\text{FuzzySph}(r)$ are normalized so that
+length density profile $\eta_\text{FuzzySph}(r)$ are normalized so that
 \begin{align*}
- \lim_{Q \to \infty} I_\text{FuzzySph}(Q) &= \left( \frac{4}{3}\pi R^3\right)^2 \\
+ \lim_{Q \to 0} I_\text{FuzzySph}(Q) &= \left( \left(\eta_\text{sph}-\eta_\text{sol}\right) \frac{4}{3}\pi R^3\right)^2 \\
  \int_0^{\infty} 4\pi r^2 \; \eta_\text{FuzzySph}(r) \; \mathrm{d}r &=\frac{4}{3}\pi R^3
 \end{align*}
 

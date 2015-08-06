@@ -46,7 +46,7 @@ proc put_OZ_res {} {
     	lappend OZ(result,Br)  		$OZ(res,B,y)
     	lappend OZ(result,yr)  		$OZ(res,y,y)
     	lappend OZ(result,fr)  		$OZ(res,f,y)
-    	lappend OZ(result,label)	$OZ(label)
+    	lappend OZ(result,label)	"[llength $OZ(result,closure)]: $OZ(label)"
     	.oztop.interface.assigning.assign configure -values $OZ(result,label)
     	.oztop.interface.assigning.assign setvalue last
 }
@@ -418,6 +418,7 @@ proc ClearOZsolver {} {
     set OZ(result,yr) {}
     set OZ(result,fr) {}
     set OZ(result,label) {}
+	set OZ(label) unknown
     .oztop.interface.assigning.assign configure -text ""
     .oztop.interface.assigning.assign configure -values $OZ(result,label)
     .oztop.interface.assigning.assign setvalue last
@@ -669,15 +670,20 @@ proc sasfit_OZ_solver {} {
     	-command {
     		set w .oztop.interface.assigning.assign
     		set plugin_fct [.oztop.interface.assigning.sqplugin getvalue]
-    		set q  [lindex $OZ(result,q)  $plugin_fct]
-		set Sq [lindex $OZ(result,Sq) $plugin_fct]
-		set p  [lindex $OZ(result,p)  $plugin_fct]
-		set sigma [lindex $p 0]
-		set qsigma {}
-		foreach Q $q {
-			set QSIGMA [expr $Q*$sigma]
-			lappend qsigma $QSIGMA
-		}
+			set data_set [.oztop.interface.assigning.assign getvalue]
+			if {[expr $data_set+1] > [llength $OZ(result,q)] || $data_set < 0} {
+				tk_messageBox -icon error -message "no structure factor curves are available\nstart the OZ solver first!"
+				return
+			}
+    		set q  [lindex $OZ(result,q)  $data_set]
+			set Sq [lindex $OZ(result,Sq) $data_set]
+			set p  [lindex $OZ(result,p)  $data_set]
+			set sigma [lindex $p 0]
+			set qsigma {}
+			foreach Q $q {
+				set QSIGMA [expr $Q*$sigma]
+				lappend qsigma $QSIGMA
+			}
     		sasfit_oz_assign_data [lindex $OZ(plugin_C_names) $plugin_fct] $qsigma $Sq
     	}
     label    $w.interface.assigning.to -text to
