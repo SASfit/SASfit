@@ -1,5 +1,5 @@
 0.94.7 2015-xx-xx
-- bug fix: since version 0.94.4 the new interupt option suppressed 
+- bug fix: since version 0.94.4 the new interrupt option suppressed 
   a proper error reporting to the GUI for undefined input values
 - removed some old structure factors, 
   which were rarely used and theoretically not up to date 

@@ -61,6 +61,24 @@
  */
 
  /** 
+ * \defgroup ff_clusters clusters 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of clusters.
+ *
+ * \modname{ff_clusters}
+ */
+
+ /** 
+ * \defgroup ff_fractals fractals 
+ * \ingroup ff_clusters
+ *
+ * This group contains form factors for fractal.
+ *
+ * \modname{ff_fractals}
+ */
+ 
+ /** 
  * \defgroup ff_non-particular non-particular structures 
  * \ingroup ff_plugins
  *
@@ -68,7 +86,7 @@
  *
  * \modname{ff_non-particular}
  */
-
+ 
 /** 
  * \defgroup ff_plugins_anisotropic anisotropic obj.
  * \ingroup ff_plugins

@@ -751,18 +751,17 @@ new parameters over local Guinier and power-law fits.
 \hspace{1pt}\\
 \underline{Input Parameters for model \texttt{Beaucage2}:}\\
 \begin{description}
-\item[\texttt{G\_i}] $G_i$ is the Guinier pre-factor
-\item[\texttt{B\_i}] $B_i$ is a pre-factor specific to the type of power-law scattering:
+\item[\texttt{G}] Guinier pre-factor $G_i$
+\item[\texttt{B}] pre-factor $B_i$, specific to the type of power-law scattering:
 $B_i$ is defined according to the regime in which the exponent $P_i$ falls.
-\item[\texttt{Rg\_i}] large-scale structure $R_{g,i}$
-\item[\texttt{Rg\_i+1}] size $R_{g,i+1}$ of smaller subunits
-\item[\texttt{k\_i}] This is an empirical constant that has a value of 1 for steep power-law decays,
+\item[\texttt{R\_i}] large-scale structure $R_{g,i}$
+\item[\texttt{R\_i+1}] size $R_{g,i+1}$ of smaller subunits
+\item[\texttt{k}] This is an empirical constant that has a value of 1 for steep power-law decays,
 $P > 3$. For weak power-law decays, $k$ deviates slightly from 1
-\item[\texttt{k\_i+1}] This is an empirical constant that has a value of 1 for steep power-law decays,
-$P_s > 3$. For weak power-law decays, $k_s$ deviates slightly from 1
-\item[\texttt{P\_i}] scaling exponent of the power law assigned to the larger structure $R_{g,i}$
-\item[\texttt{P\_i+1}] scaling exponent of the power law assigned to the smaller structure $R_{g,i+1}$
+\item[\texttt{P}] scaling exponent of the power law assigned to the larger structure $R_{g,i}$
 \end{description}
+\noindent\underline{Note:}
+For calculating a summation over $n$ interrelated structural levels one has to use global fitting. For \texttt{R\_i} and \texttt{R\_i+1} one has to define global parameters, let say P1 and P2 in the first scattering contribution. In the second scattering contribution one has to use for \texttt{R\_i} the same global parameter P2 as for \texttt{R\_i+1} in the previous scattering contribution. The global parameters for \texttt{R\_i} in one scattering contribution and the global parameter for \texttt{R\_i+1} in the previous scattering contribution have to be the same. By this an arbitrary number of interrelated structural levels can be calculated.
 
 \begin{figure}[htb]
 \begin{center}

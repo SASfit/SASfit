@@ -315,7 +315,7 @@ set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}
 
-set OZ(algorithm) "CR iteration"
+set OZ(algorithm) "S iteration"
 #set OZ(algorithm) "GMRES"
 #set OZ(phi) 0.41887902047863909846168578443727
 set OZ(interrupt) 0
