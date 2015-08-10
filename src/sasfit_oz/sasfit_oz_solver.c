@@ -1073,6 +1073,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(xn);
                 free(Tx);
                 break;
+        case AndersenAcc:
+                break;
 /*
         case NewtonLibGMRES:
                 bb     = (double*) malloc( NP*sizeof(double) );
@@ -1182,7 +1184,7 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
 //        if (status)  { /* check if solver is stuck */
 //            break;
 //       }
-    } while (OZd->it < MAXSTEPS && err > RELERROR );
+    } while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0);
     gsl_multiroot_fsolver_free (sgsl);
     return 0;
 }
@@ -1765,9 +1767,9 @@ void root_finding (sasfit_oz_data *OZd) {
     i = 0;
     while (signchange==0 && i<=28) {
         if (CLOSURE==RY || CLOSURE==HMSA){
-            refnew=compressibility_calc(100/pow(2,i), OZd);
-            alpha_left  = 100/pow(2,i);
-            alpha_right = 100/pow(2,i-1);
+            refnew=compressibility_calc(100/pow(3,i), OZd);
+            alpha_left  = 100/pow(3,i);
+            alpha_right = 100/pow(3,i-1);
         }
         if (CLOSURE==BPGG) {
             refnew=compressibility_calc(5.601-0.2*i, OZd);

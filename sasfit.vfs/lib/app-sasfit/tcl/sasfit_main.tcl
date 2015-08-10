@@ -323,11 +323,11 @@ set OZ(PrintProgress) 0
 set OZ(phi) 0.3
 set OZ(T) 300
 set OZ(mindimOZ) 128
-set OZ(mult) 4
+set OZ(mult) 16
 set OZ(mix) 0.5
 set OZ(maxit) 10000
 set OZ(dr/dsigma) 0.0703125
-set OZ(dr/dsigma) 0.07
+set OZ(dr/dsigma) 0.02
 set OZ(releps) 1e-12
 set OZ(gridlength) [expr int($OZ(mindimOZ)*$OZ(mult))]
 set OZ(plottedgraphs) 0
