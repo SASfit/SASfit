@@ -778,8 +778,9 @@ proc sasfit_OZ_solver {} {
     		         "Krasnoselskij iteration" \
     		         "S* iteration" \
     		         "NewtonLibGMRES" \
-			 "dNewton" "Hybrid" \
-	    		 "Hybrids (int. sc.)" "Broyden" 
+				 "dNewton" "Hybrid" \
+	    		 "Hybrids (int. sc.)" "Broyden" \
+				 "Andersen mixing"
 			} \
 	    -textvariable OZ(algorithm) -width 19
 #    		         "Steffensen iteration" \
