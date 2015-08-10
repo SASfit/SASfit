@@ -139,7 +139,8 @@ typedef enum {
         MannII_iteration,   //
         Krasnoselskij_iteration, //
         Sstar_iteration,    //
-        Steffensen_iteration
+        Steffensen_iteration, //
+        AndersenAcc
 } sasfit_oz_root_algorithms;
 
 typedef struct {
