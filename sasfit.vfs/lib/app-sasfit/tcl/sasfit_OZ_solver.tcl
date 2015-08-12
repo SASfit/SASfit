@@ -780,7 +780,7 @@ proc sasfit_OZ_solver {} {
     		         "NewtonLibGMRES" \
 				 "dNewton" "Hybrid" \
 	    		 "Hybrids (int. sc.)" "Broyden" \
-				 "Andersen mixing"
+				 "Anderson mixing"
 			} \
 	    -textvariable OZ(algorithm) -width 19
 #    		         "Steffensen iteration" \
