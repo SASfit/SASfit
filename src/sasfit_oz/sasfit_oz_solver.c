@@ -1073,7 +1073,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(xn);
                 free(Tx);
                 break;
-        case AndersenAcc:
+        case AndersonAcc:
                 break;
 /*
         case NewtonLibGMRES:
@@ -1496,6 +1496,9 @@ void OZ_solver (sasfit_oz_data *OZd) {
                 break;
         case Steffensen_iteration:
                 OZ_solver_by_iteration(OZd,Steffensen_iteration);
+                break;
+        case AndersonAcc:
+                OZ_solver_by_iteration(OZd,AndersonAcc);
                 break;
         case Broyden:
                 OZ_solver_by_gsl_multroot(OZd,Broyden);
