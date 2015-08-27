@@ -410,6 +410,74 @@ function(build_from_source CURRENT_DIR CONFIGURE_OPTIONS)
 
 endfunction()
 
+
+# looks for existing source dirs and extracts the package
+function(build_from_source_by_cmake CURRENT_DIR CONFIGURE_OPTIONS)
+    if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
+        return()
+    endif()
+    
+    # look for existing source dir
+    get_package_dir(${CURRENT_DIR})
+
+    # remove any existing source tree first
+    if(IS_DIRECTORY ${SOURCE_DIR})
+        message(STATUS "Removing existing source tree first: '${SOURCE_DIR}'")
+        file(REMOVE_RECURSE ${SOURCE_DIR})
+    endif()
+
+    # extract source tree, assuming *.tar.gz archive file
+    file(GLOB PCKG_FILE ${CURRENT_DIR}/${BASE_NAME}*.tar.gz)
+    if(NOT EXISTS ${PCKG_FILE})
+        return() # break up if no package was found, nothing to do
+    endif()
+    get_filename_component(PCKG_FILE ${PCKG_FILE} NAME)
+    message(STATUS "Extracting package: '${PCKG_FILE}'")
+
+    # actual tar command for extraction
+    execute_process(COMMAND tar zxvf ${PCKG_FILE}
+                    WORKING_DIRECTORY ${CURRENT_DIR})
+    # rename source dir to platform name
+    find_configure(${CURRENT_DIR}/${BASE_NAME}*)
+    if(NOT EXISTS "${SOURCE_DIR}")
+        message(STATUS "${BASE_NAME} source dir not found! Giving up.")
+        return()
+    endif()
+    message("SOURCE_DIR: '${SOURCE_DIR}' '${SUFFIX_DIR}' '${PLATFORM}'")
+    set(TARGET ${CURRENT_DIR}/${PLATFORM})
+    message("rename 'RENAME ${SOURCE_DIR} ${TARGET}'")
+    if(EXISTS ${TARGET})
+        file(REMOVE_RECURSE ${TARGET})
+    endif()
+    file(RENAME ${SOURCE_DIR} ${TARGET})
+
+    # look again for the source directory, should be ready now
+    get_package_dir(${CURRENT_DIR})
+    # set general package install location
+    set(CONFIGURE_OPTIONS
+        --prefix=${SOURCE_DIR}
+    )
+
+    # get configure options from var args of this function
+    foreach(ARGIDX RANGE 1 ${ARGC})
+        list(APPEND CONFIGURE_OPTIONS ${ARGV${ARGIDX}})
+    endforeach()
+
+    set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
+    # run configure script
+    message(STATUS "Running ${BASE_NAME} configure with options: '${CONFIGURE_OPTIONS}'")
+    execute_process(COMMAND sh cmake ${CONFIGURE_OPTIONS}
+                    WORKING_DIRECTORY ${WORK_DIR})
+
+    # run make, i.e. build the library and install it in this local path
+    message(STATUS "Building ${BASE_NAME} ...")
+    execute_process(COMMAND make all
+                    WORKING_DIRECTORY ${WORK_DIR})
+    execute_process(COMMAND make install
+                    WORKING_DIRECTORY ${WORK_DIR})
+
+endfunction()
+
 function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
     message("build_saskit '${SASFIT_ROOT_DIR}' '${SASKIT_FILENAME}'")
     set(SASKIT_PATH ${SASFIT_ROOT_DIR}/saskit)

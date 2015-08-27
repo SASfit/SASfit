@@ -168,9 +168,9 @@ add_definitions(
 )
 
 # openMP
-find_package(OpenMP QUIET REQUIRED)
+find_package(OpenMP QUIET)
 if(NOT OPENMP_FOUND)
-        find_package(OpenMP REQUIRED)
+        find_package(OpenMP)
 endif()
 
 if(OPENMP_FOUND)
