@@ -2417,9 +2417,7 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 			AP[i].FF_active[j] = 0;
 		}
 	}
-	nthreads = 1;
-//	nthreads = omp_get_num_threads();
-	sasfit_out("%d threads are available\n",nthreads);
+
 	sasfit_ap2paramlist(&lista,&ma,&mfit,&a,AP,NULL,max_SD);
 
 	Ith = dvector(0,ndata-1);
@@ -2429,8 +2427,23 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	Tcl_DStringInit(&DsBuffer);
 
 	Tcl_DStringStartSublist(&DsBuffer);
+
+     sasfit_out("max num threads %d\n",omp_get_num_procs());
+     omp_set_num_threads((omp_get_num_procs()>1)?omp_get_num_procs()-1:1);
+//     omp_set_num_threads(1);
+
+    sasfit_int_ws_init();
+{
+    #pragma omp  parallel for
 	for (i=0;i<ndata;i++) {
-		IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
+        IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
+        #pragma omp atom
+        sasfit_out("nthreads: %d, i:%d\n",omp_get_num_threads(),i);
+	}
+}
+
+    for (i=0;i<ndata;i++) {
+//		IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
 		if (DIh[i] !=0) {
 			chisq = chisq+pow((Ih[i]-Ith[i])/DIh[i],2.0);
             wobsR = wobsR + Ih[i]*Ih[i]/(DIh[i]*DIh[i]);
