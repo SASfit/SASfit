@@ -9,6 +9,9 @@ src/scripts/*.tmp
 src/cmake/*.tmp
 src/*.tar.*
 src/sasfit*.zip
+src/sundials/windows_*
+src/sundials/linux_*
+src/sundials/darwin_*
 src/fftw/windows_*
 src/fftw/linux_*
 src/fftw/darwin_*

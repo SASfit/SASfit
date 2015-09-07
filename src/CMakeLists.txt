@@ -162,6 +162,16 @@ endif()
 message(STATUS "FFTW INCLUDES:  ${FFTW_INCLUDE_DIRS}")
 message(STATUS "FFTW LIBRARIES: ${FFTW_LIBRARIES}")
 
+# sundials
+find_package(sundials QUIET REQUIRED)
+if(NOT sundials_FOUND)
+        message("subdir sundials")
+        add_subdirectory(sundials)
+        find_package(sundials REQUIRED)
+endif()
+message(STATUS "sundials INCLUDES:  ${sundials_INCLUDE_DIRS}")
+message(STATUS "sundials LIBRARIES: ${sundials_LIBRARIES}")
+
 add_definitions(
 	-DUSE_TCL_STUBS
 	-DUSE_TK_STUBS
@@ -203,6 +213,7 @@ include_directories(
 	${TCL_INCLUDE_DIRS}
 	${GSL_INCLUDE_DIRS}
 	${FFTW_INCLUDE_DIRS}
+	${sundials_INCLUDE_DIRS}
 )
 
 add_library(sasfit SHARED
@@ -213,6 +224,7 @@ target_link_libraries(sasfit
         ${TCL_LIBRARIES}
 	${GSL_STATIC_LIBRARIES}
 	${FFTW_LIBRARIES}
+	${sundials_LIBRARIES}
 )
 
 # configure build flags, assumes gcc-style flags on all platforms
