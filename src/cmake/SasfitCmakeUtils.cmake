@@ -301,6 +301,7 @@ function(get_package_dir CURRENT_DIR)
     if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
         return()
     endif()
+    get_filename_component(CURRENT_DIR "${CURRENT_DIR}" REALPATH)
     message(STATUS "get_package_dir: '${CURRENT_DIR}'")
     get_filename_component(BASE_NAME ${CURRENT_DIR} NAME)
     set(BASE_NAME ${BASE_NAME} PARENT_SCOPE)
@@ -309,6 +310,7 @@ function(get_package_dir CURRENT_DIR)
     find_configure(${CURRENT_DIR}/${PLATFORM})
     #message("SOURCE_DIR: '${SOURCE_DIR}' '${SUFFIX_DIR}' '${PLATFORM}'")
     message(STATUS "found source dir: '${SOURCE_DIR}'")
+    message(STATUS "found config file: '${CONFIG_FILE}'")
     set(SOURCE_DIR ${SOURCE_DIR} PARENT_SCOPE)
 endfunction()
 
@@ -326,32 +328,34 @@ function(find_configure PCKG_PATH)
     unset(SUFFIX_DIR)
     set(SUFFIX_DIR PARENT_SCOPE)
     # list of sub directories containing the configure script eventually
-    set(candidates .)
+    set(subdirCandidates .)
     if(WIN32)
-        list(APPEND candidates win)
+        list(APPEND subdirCandidates win)
     elseif(UNIX)
-        list(APPEND candidates unix)
+        list(APPEND subdirCandidates unix)
     endif()
-    foreach(candidate ${candidates})
-        # try sth for the TCL case
-        #message("GLOB: '${PCKG_PATH}/${candidate}/configure'")
-        file(GLOB CONFIG_FILE "${PCKG_PATH}/${candidate}/configure")
-        #message("CONFIG_FILE1 '${CONFIG_FILE}'")
-        if(CONFIG_FILE)
-            get_filename_component(CONFIG_FILE ${CONFIG_FILE} PATH ABSOLUTE)
-            #message("CONFIG_FILE2 '${CONFIG_FILE}'")
-            if(EXISTS "${CONFIG_FILE}")
-                set(SUFFIX_DIR ${candidate} PARENT_SCOPE)
-                get_filename_component(SOURCE_DIR ${CONFIG_FILE} PATH ABSOLUTE)
-                set(SOURCE_DIR ${SOURCE_DIR} PARENT_SCOPE)
-                break()
+    set(configfileCandidates configure CMakeLists.txt)
+    foreach(configfileCandidate ${configfileCandidates})
+        foreach(subdirCandidate ${subdirCandidates})
+            # try sth for the TCL case
+            file(GLOB CONFIG_FILE "${PCKG_PATH}/${subdirCandidate}/${configfileCandidate}")
+            if(CONFIG_FILE)
+                get_filename_component(CONFIG_PATH ${CONFIG_FILE} PATH ABSOLUTE)
+                if(EXISTS "${CONFIG_PATH}")
+                    set(SUFFIX_DIR ${subdirCandidate} PARENT_SCOPE)
+                    get_filename_component(SOURCE_DIR "${CONFIG_PATH}" PATH ABSOLUTE)
+                    set(SOURCE_DIR "${SOURCE_DIR}" PARENT_SCOPE)
+                    get_filename_component(CONFIG_FILE "${CONFIG_FILE}" NAME)
+                    set(CONFIG_FILE "${CONFIG_FILE}" PARENT_SCOPE)
+                    return() # found it
+                endif()
             endif()
-        endif()
+        endforeach()
     endforeach()
 endfunction()
 
 # looks for existing source dirs and extracts the package
-function(build_from_source CURRENT_DIR CONFIGURE_OPTIONS)
+function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
         return()
     endif()
@@ -392,20 +396,45 @@ function(build_from_source CURRENT_DIR CONFIGURE_OPTIONS)
 
     # look again for the source directory, should be ready now
     get_package_dir(${CURRENT_DIR})
-    # set general package install location
-    set(CONFIGURE_OPTIONS
-        --prefix=${SOURCE_DIR}
-    )
-
     # get configure options from var args of this function
+    set(CONFIG_OPTIONS)
     foreach(ARGIDX RANGE 1 ${ARGC})
-        list(APPEND CONFIGURE_OPTIONS ${ARGV${ARGIDX}})
+        list(APPEND CONFIG_OPTIONS ${ARGV${ARGIDX}})
     endforeach()
 
     set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
+    get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
+
+    # configure and build by appropriate script
+    if(${CONFIG_FILE} STREQUAL "configure")
+        run_configure(${CURRENT_DIR} "${CONFIG_OPTIONS}")
+    elseif(${CONFIG_FILE} STREQUAL "CMakeLists.txt")
+        run_cmake(${CURRENT_DIR} "${CONFIG_OPTIONS}")
+    endif()
+endfunction()
+
+function(run_cmake CURRENT_DIR CONFIG_OPTIONS)
+    # local build directory
+    set(WORK_DIR ${WORK_DIR}/build)
+    file(MAKE_DIRECTORY "${WORK_DIR}")
     # run configure script
-    message(STATUS "Running ${BASE_NAME} configure with options: '${CONFIGURE_OPTIONS}'")
-    execute_process(COMMAND sh configure ${CONFIGURE_OPTIONS}
+    message(STATUS "Running ${BASE_NAME} cmake with options: '${CONFIG_OPTIONS}'")
+
+    execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" ${CONFIG_OPTIONS} ..
+                    WORKING_DIRECTORY ${WORK_DIR})
+
+    # run make, i.e. build the library and install it in this local path
+    message(STATUS "Building ${BASE_NAME} ...")
+    execute_process(COMMAND make all
+                    WORKING_DIRECTORY ${WORK_DIR})
+endfunction()
+
+function(run_configure CURRENT_DIR CONFIG_OPTIONS)
+    # set general package install location
+    list(APPEND CONFIG_OPTIONS --prefix=${SOURCE_DIR})
+    # run configure script
+    message(STATUS "Running ${BASE_NAME} configure with options: '${CONFIG_OPTIONS}'")
+    execute_process(COMMAND sh configure ${CONFIG_OPTIONS}
                     WORKING_DIRECTORY ${WORK_DIR})
 
     # run make, i.e. build the library and install it in this local path
@@ -414,7 +443,6 @@ function(build_from_source CURRENT_DIR CONFIGURE_OPTIONS)
                     WORKING_DIRECTORY ${WORK_DIR})
     execute_process(COMMAND make install
                     WORKING_DIRECTORY ${WORK_DIR})
-
 endfunction()
 
 function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
