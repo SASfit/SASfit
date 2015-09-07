@@ -1,0 +1,315 @@
+<html><head>
+<title>dns - Domain Name Service </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/dns/tcllib_dns.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002, Pat Thoyts
+   -->
+<! -- CVS: $Id: tcllib_dns.html,v 1.1 2006/05/02 12:32:20 kohlbrecher Exp $ dns.n
+   -->
+
+<body>
+<h1> dns(n) 1.3.0 dns &quot;Domain Name Service&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> dns - Tcl Domain Name Service Client
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>dns ?1.3.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::dns::resolve</b> <i class='arg'>query</i> ?<i class='arg'>options</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::dns::configure</b> ?<i class='arg'>options</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::dns::name</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::dns::address</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::dns::cname</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::dns::result</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::dns::status</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::dns::error</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::dns::reset</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::dns::wait</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::dns::cleanup</b> <i class='arg'>token</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+The dns package provides a Tcl only Domain Name Service client. You
+should refer to (1) and (2) for information about the DNS protocol or
+read resolver(3) to find out how the C library resolves domain names.
+
+The intention of this package is to insulate Tcl scripts
+from problems with using the system library resolver for slow name servers.
+It may or may not be of practical use. Internet name resolution is a
+complex business and DNS is only one part of the resolver. You may
+find you are supposed to be using hosts files, NIS or WINS to name a
+few other systems. This package is not a substitute for the C library
+resolver - it does however implement name resolution over DNS.
+
+The package also extends the package <strong>uri</strong> to support DNS URIs
+(4) of the form <a href="dns:what.host.com">dns:what.host.com</a> or
+<a href="dns://my.nameserver/what.host.com">dns://my.nameserver/what.host.com</a>. The <b class='cmd'>dns::resolve</b>
+command can handle DNS URIs or simple domain names as a query.
+
+<p>
+
+<em>Note:</em> The package defaults to using DNS over TCP
+connections. If you wish to use UDP you will need to have the 
+<strong>tcludp</strong> package installed and have a version that
+correctly handles binary data (&gt; 1.0.4).
+This is available at <a href="http://tcludp.sourceforge.net/">http://tcludp.sourceforge.net/</a>. 
+If the <strong>udp</strong> package is present then UDP will be used by default.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::dns::resolve</b> <i class='arg'>query</i> ?<i class='arg'>options</i>?</a><dd>
+
+
+Resolve a domain name using the <em>DNS</em> protocol. <i class='arg'>query</i> is
+the domain name to be lookup up. This should be either a fully
+qualified domain name or a DNS URI.
+
+<br><br>
+<dl>
+<dt><b class='cmd'>-nameserver</b> <i class='arg'>hostname</i> or <b class='cmd'>-server</b> <i class='arg'>hostname</i><dd>
+  Specify an alternative name server for this request.
+<br><br>
+<dt><b class='cmd'>-protocol</b> <i class='arg'>tcp|udp</i><dd>
+  Specify the network protocol to use for this request. Can be one of
+  <i class='arg'>tcp</i> or <i class='arg'>udp</i>. 
+<br><br>
+<dt><b class='cmd'>-port</b> <i class='arg'>portnum</i><dd>
+  Specify an alternative port.
+<br><br>
+<dt><b class='cmd'>-search</b> <i class='arg'>domainlist</i><dd>
+<dt><b class='cmd'>-timeout</b> <i class='arg'>milliseconds</i><dd>
+  Override the default timeout.
+<br><br>
+<dt><b class='cmd'>-type</b> <i class='arg'>TYPE</i><dd>
+  Specify the type of DNS record you are interested in. Valid values
+  are A, NS, MD, MF, CNAME, SOA, MB, MG, MR, NULL, WKS, PTR, HINFO, 
+  MINFO, MX, TXT, SPF, SRV, AAAA, AXFR, MAILB, MAILA and *. 
+  See RFC1035 for details about the return values.
+  See <a href="http://spf.pobox.com/">http://spf.pobox.com/</a> about SPF.
+  See (3) about AAAA records and RFC2782 for details of SRV records.
+
+<br><br>
+<dt><b class='cmd'>-class</b> <i class='arg'>CLASS</i><dd>
+  Specify the class of domain name. This is usually IN but may be one
+  of IN for internet domain names, CS, CH, HS or * for any class.
+<br><br>
+<dt><b class='cmd'>-recurse</b> <i class='arg'>boolean</i><dd>
+  Set to <i class='arg'>false</i> if you do not want the name server to recursively
+  act upon your request. Normally set to <i class='arg'>true</i>.
+<br><br>
+<dt><b class='cmd'>-command</b> <i class='arg'>procname</i><dd>
+  Set a procedure to be called upon request completion. The procedure 
+  will be passed the token as its only argument.
+</dl>
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::dns::configure</b> ?<i class='arg'>options</i>?</a><dd>
+
+
+The <b class='cmd'>::dns::configure</b> command is used to setup the dns
+package. The server to query, the protocol and domain search path are
+all set via this command. If no arguments are provided then a list of
+all the current settings is returned.  If only one argument then it
+must the the name of an option and the value for that option is
+returned.
+
+<br><br>
+<dl>
+<dt><b class='cmd'>-nameserver</b> <i class='arg'>hostname</i><dd>
+  Set the default name server to be used by all queries. The default is
+  <em>localhost</em>.
+<br><br>
+<dt><b class='cmd'>-protocol</b> <i class='arg'>tcp|udp</i><dd>
+  Set the default network protocol to be used. Default is <i class='arg'>tcp</i>.
+<br><br>
+<dt><b class='cmd'>-port</b> <i class='arg'>portnum</i><dd>
+  Set the default port to use on the name server. The default is 53.
+<br><br>
+<dt><b class='cmd'>-search</b> <i class='arg'>domainlist</i><dd>
+  Set the domain search list. This is currently not used.
+<br><br>
+<dt><b class='cmd'>-timeout</b> <i class='arg'>milliseconds</i><dd>
+  Set the default timeout value for DNS lookups. Default is 30 seconds.
+</dl>
+
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::dns::name</b> <i class='arg'>token</i></a><dd>
+
+  Returns a list of all domain names returned as an answer to your query.
+
+<br><br>
+<br><br>
+<dt><a name="4"><b class='cmd'>::dns::address</b> <i class='arg'>token</i></a><dd>
+
+  Returns a list of the address records that match your query.
+
+<br><br>
+<br><br>
+<dt><a name="5"><b class='cmd'>::dns::cname</b> <i class='arg'>token</i></a><dd>
+
+  Returns a list of canonical names (usually just one) matching your query.
+
+<br><br>
+<br><br>
+<dt><a name="6"><b class='cmd'>::dns::result</b> <i class='arg'>token</i></a><dd>
+
+  Returns a list of all the decoded answer records provided for your
+  query. This permits you to extract the result for more unusual query types.
+
+<br><br>
+<br><br>
+<dt><a name="7"><b class='cmd'>::dns::status</b> <i class='arg'>token</i></a><dd>
+
+  Returns the status flag. For a successfully completed query this will be
+  <em>ok</em>. May be <em>error</em> or <em>timeout</em> or <em>eof</em>.
+  See also <b class='cmd'>::dns::error</b>
+
+<br><br>
+<br><br>
+<dt><a name="8"><b class='cmd'>::dns::error</b> <i class='arg'>token</i></a><dd>
+
+  Returns the error message provided for requests whose status is <em>error</em>.
+  If there is no error message then an empty string is returned.
+
+<br><br>
+<br><br>
+<dt><a name="9"><b class='cmd'>::dns::reset</b> <i class='arg'>token</i></a><dd>
+
+  Reset or cancel a DNS query.
+
+<br><br>
+<br><br>
+<dt><a name="10"><b class='cmd'>::dns::wait</b> <i class='arg'>token</i></a><dd>
+
+  Wait for a DNS query to complete and return the status upon completion.
+
+<br><br>
+<br><br>
+<dt><a name="11"><b class='cmd'>::dns::cleanup</b> <i class='arg'>token</i></a><dd>
+
+  Remove all state variables associated with the request.
+
+</dl>
+
+<! --  -----------------------------------------------------------  
+   -->
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [dns::resolve www.tcl.tk]
+::dns::1
+% dns::status $tok
+ok
+% dns::address $tok
+199.175.6.239
+% dns::name $tok
+www.tcl.tk
+% dns::cleanup $tok
+</pre></td></tr></table></p>
+
+<p>
+Using DNS URIs as queries:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [dns::resolve &quot;dns:tcl.tk;type=MX&quot;]
+% set tok [dns::resolve &quot;dns://l.root-servers.net/www.tcl.tk&quot;]
+</pre></td></tr></table></p>
+
+<p>
+Reverse address lookup:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [dns::resolve 127.0.0.1]
+::dns::1
+% dns::name $tok
+localhost
+% dns::cleanup $tok
+</pre></td></tr></table></p>
+
+<! --  -----------------------------------------------------------  
+   -->
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+
+<li>
+    Mockapetris, P., &quot;Domain Names - Concepts and Facilities&quot;,
+    RFC 1034, November 1987.
+    (<a href="http://www.ietf.org/rfc/rfc1034.txt">http://www.ietf.org/rfc/rfc1034.txt</a>)
+
+<br><br>
+<li>
+    Mockapetris, P., &quot;Domain Names - Implementation and Specification&quot;,
+    RFC 1035, November 1087.
+    (<a href="http://www.ietf.org/rfc/rfc1035.txt">http://www.ietf.org/rfc/rfc1035.txt</a>) 
+
+<br><br>
+<li>
+    Thompson, S. and Huitema, C., &quot;DNS Extensions to support IP version 6&quot;,
+    RFC 1886, December 1995.
+    (<a href="http://www.ietf.org/rfc/rfc1886.txt">http://www.ietf.org/rfc/rfc1886.txt</a>)
+
+<br><br>
+<li>
+    Josefsson, S., &quot;Domain Name System Uniform Resource Identifiers&quot;,
+    Internet-Draft, October 2003,
+    (<a href="http://www.ietf.org/internet-drafts/draft-josefsson-dns-url-09.txt">http://www.ietf.org/internet-drafts/draft-josefsson-dns-url-09.txt</a>)
+
+<br><br>
+<li>
+    Gulbrandsen, A., Vixie, P. and Esibov, L.,
+    &quot;A DNS RR for specifying the location of services (DNS SRV)&quot;,
+    RFC 2782, February 2000,
+    (<a href="http://www.ietf.org/rfc/rfc2782.txt">http://www.ietf.org/rfc/rfc2782.txt</a>)
+
+<br><br>
+<li>
+    Ohta, M. &quot;Incremental Zone Transfer in DNS&quot;,
+    RFC 1995, August 1996,
+    (<a href="http://www.ietf.org/rfc/rfc1995.txt">http://www.ietf.org/rfc/rfc1995.txt</a>)
+
+</ol>
+
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+resolver(5)
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+DNS, domain name service, resolver, rfc 1034, rfc 1035, rfc 1886
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002, Pat Thoyts<br>
+</body></html>

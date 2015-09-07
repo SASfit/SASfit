@@ -1,0 +1,198 @@
+<html><head>
+<title>ntp_time - Network Time Facilities </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/ntp/ntp_time.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: ntp_time.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ ntp_time.n
+   -->
+
+<body>
+<h1> ntp_time(n) 1.2 ntp &quot;Network Time Facilities&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> ntp_time - Tcl Time Service Client
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#authors">AUTHORS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.0</b><br>
+package require <b>time ?1.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::time::gettime</b> ?<i class='arg'>options</i>? <i class='arg'>timeserver</i> ?<i class='arg'>port</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::time::getsntp</b> ?<i class='arg'>options</i>? <i class='arg'>timeserver</i> ?<i class='arg'>port</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::time::configure</b> ?<i class='arg'>options</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::time::cget</b> <i class='arg'>name</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::time::unixtime</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::time::status</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::time::error</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::time::reset</b> <i class='arg'>token</i> <i class='arg'>?reason?</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::time::wait</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::time::cleanup</b> <i class='arg'>token</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package implements a client for the RFC 868 TIME protocol
+(<a href="http://www.rfc-editor.org/rfc/rfc868.txt">http://www.rfc-editor.org/rfc/rfc868.txt</a>) and also a minimal
+client for the RFC 2030 Simple Network Time Protocol 
+(<a href="http://www.rfc-editor.org/rfc/rfc2030.txt">http://www.rfc-editor.org/rfc/rfc2030.txt</a>).
+
+RFC 868 returns the time in seconds since 1 January 1900
+to either tcp or udp clients. RFC 2030 also gives this time but also
+provides a fractional part which is not used in this client.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::time::gettime</b> ?<i class='arg'>options</i>? <i class='arg'>timeserver</i> ?<i class='arg'>port</i>?</a><dd>
+
+
+Get the time from <i class='arg'>timeserver</i>. You may specify any of the options
+listed for the <b class='cmd'>configure</b> command here. This command returns a
+token which must then be used with the remaining commands in this
+package. Once you have finished, you should use <b class='cmd'>cleanup</b> to
+release all resources. The default port is <strong>37</strong>.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::time::getsntp</b> ?<i class='arg'>options</i>? <i class='arg'>timeserver</i> ?<i class='arg'>port</i>?</a><dd>
+
+
+Get the time from an SNTP server. This accepts exactly the same
+arguments as <b class='cmd'>::time::gettime</b> except that the default port is 
+<strong>123</strong>. The result is a token as per <b class='cmd'>::time::gettime</b> and
+should be handled in the same way.
+<br><br>
+Note that it is unlikely that any SNTP server will reply using tcp so
+you will require the <strong>tcludp</strong> or the <strong>ceptcl</strong>
+package. If a suitable package can be loaded then the udp protocol
+will be used by default.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::time::configure</b> ?<i class='arg'>options</i>?</a><dd>
+
+
+Called with no arguments this command returns all the current
+configuration options and values. Otherwise it should be called with
+pairs of option name and value.
+
+<br><br>
+<dl>
+<dt><b class='cmd'>-protocol</b> <i class='arg'>number</i><dd>
+  Set the default network protocol. This defaults to udp if the tcludp
+  package is available. Otherwise it will use tcp.
+<br><br>
+<dt><b class='cmd'>-port</b> <i class='arg'>number</i><dd>
+  Set the default port to use. RFC 868 uses port <strong>37</strong>, RFC 2030 uses
+port <strong>123</strong>.
+<br><br>
+<dt><b class='cmd'>-timeout</b> <i class='arg'>number</i><dd>
+  Set the default timeout value in milliseconds. The default is 10 seconds.
+<br><br>
+<dt><b class='cmd'>-command</b> <i class='arg'>number</i><dd>
+  Set a command procedure to be run when a reply is received. The
+  procedure is called with the time token appended to the argument list.
+<br><br>
+<dt><b class='cmd'>-loglevel</b> <i class='arg'>number</i><dd>
+  Set the logging level. The default is 'warning'.
+</dl>
+
+<dt><a name="4"><b class='cmd'>::time::cget</b> <i class='arg'>name</i></a><dd>
+
+
+Get the current value for the named configuration option.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::time::unixtime</b> <i class='arg'>token</i></a><dd>
+
+  Format the returned time for the unix epoch. RFC 868 time defines
+  time 0 as 1 Jan 1900, while unix time defines time 0 as 1 Jan
+  1970. This command converts the reply to unix time.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::time::status</b> <i class='arg'>token</i></a><dd>
+
+  Returns the status flag. For a successfully completed query this will be
+  <em>ok</em>. May be <em>error</em> or <em>timeout</em> or <em>eof</em>.
+  See also <b class='cmd'>::time::error</b>
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::time::error</b> <i class='arg'>token</i></a><dd>
+
+  Returns the error message provided for requests whose status is <em>error</em>.
+  If there is no error message then an empty string is returned.
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::time::reset</b> <i class='arg'>token</i> <i class='arg'>?reason?</i></a><dd>
+
+  Reset or cancel the query optionally specfying the reason to record
+  for the <b class='cmd'>error</b> command.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::time::wait</b> <i class='arg'>token</i></a><dd>
+
+  Wait for a query to complete and return the status upon completion.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::time::cleanup</b> <i class='arg'>token</i></a><dd>
+
+  Remove all state variables associated with the request.
+
+</dl>
+
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [::time::gettime ntp2a.mcc.ac.uk]
+% set t [::time::unixtime $tok]
+% ::time::cleanup $tok
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [::time::getsntp pool.ntp.org]
+% set t [::time::unixtime $tok]
+% ::time::cleanup $tok
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+proc on_time {token} {
+   if {[time::status $token] eq &quot;ok&quot;} {
+      puts [clock format [time::unixtime $token]]
+   } else {
+      puts [time::error $token]
+   }
+   time::cleanup $token
+}
+time::getsntp -command on_time pool.ntp.org
+</pre></td></tr></table></p>
+
+
+<h2><a name="authors">AUTHORS</a></h2>
+<p>
+Pat Thoyts
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+ntp
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+NTP, SNTP, rfc 2030, rfc 868, time
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>

@@ -1,0 +1,220 @@
+<html><head>
+<title>md4 - MD4 Message-Digest Algorithm </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/md4/md4.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2003, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: md4.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ md4.n
+   -->
+
+<body>
+<h1> md4(n) 1.0.3 md4 &quot;MD4 Message-Digest Algorithm&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> md4 - MD4 Message-Digest Algorithm
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#programming_interface">PROGRAMMING INTERFACE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.2</b><br>
+package require <b>md4 ?1.0.3?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::md4::md4</b> ?<i class='arg'>-hex</i>? [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::md4::hmac</b> ?<i class='arg'>-hex</i>? <i class='arg'>-key key</i> [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::md4::MD4Init</b> </a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::md4::MD4Update</b> <i class='arg'>token</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::md4::MD4Final</b> <i class='arg'>token</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::md4::HMACInit</b> <i class='arg'>key</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::md4::HMACUpdate</b> <i class='arg'>token</i> <i class='arg'>data</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::md4::HMACFinal</b> <i class='arg'>token</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+
+This package is an implementation in Tcl of the MD4 message-digest
+algorithm as described in RFC 1320 (1) and (2). This algorithm takes
+an arbitrary quantity of data and generates a 128-bit message digest
+from the input. The MD4 algorithm is faster but potentially weaker than
+the related MD5 algorithm (3).
+
+<p>
+
+If you have <strong>critcl</strong> and have built the <strong>tcllibc</strong> package
+then the implementation of the hashing function will be performed by compiled
+code. Alternatively if <strong>cryptkit</strong> is available this will be
+used. If no accelerator package can be found then the pure-tcl
+implementation is used. The programming interface remains the same in
+all cases.
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::md4::md4</b> ?<i class='arg'>-hex</i>? [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a><dd>
+
+
+Calculate the MD4 digest of the data given in string. This is returned
+as a binary string by default. Giving the <i class='arg'>-hex</i> option will
+return a hexadecimal encoded version of the digest.
+
+<br><br>
+
+The data to be hashed can be specified either as a string argument to
+the md4 command, or as a filename or a pre-opened channel. If the 
+<i class='arg'>-filename</i> argument is given then the file is opened, the data read
+and hashed and the file is closed. If the <i class='arg'>-channel</i> argument is
+given then data is read from the channel until the end of file. The
+channel is not closed.
+
+<br><br>
+
+Only one of <i class='arg'>-file</i>, <i class='arg'>-channel</i> or <i class='arg'>string</i> should be given.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::md4::hmac</b> ?<i class='arg'>-hex</i>? <i class='arg'>-key key</i> [ <i class='arg'>-channel channel</i> | <i class='arg'>-file filename</i> | <i class='arg'>string</i> ]</a><dd>
+
+
+Calculate an Hashed Message Authentication digest (HMAC) using the MD4
+digest algorithm. HMACs are described in RFC 2104 (4) and provide an MD4
+digest that includes a key. All options other than <i class='arg'>-key</i> are as
+for the <b class='cmd'>::md4::md4</b> command.
+
+</dl>
+
+<h2><a name="programming_interface">PROGRAMMING INTERFACE</a></h2>
+<p>
+
+For the programmer, the MD4 hash can be viewed as a bucket into which
+one pours data. When you have finished, you extract a value that is
+derived from the data that was poured into the bucket. The programming
+interface to the MD4 hash operates on a token (equivalent to the
+bucket). You call <b class='cmd'>MD4Init</b> to obtain a token and then call 
+<b class='cmd'>MD4Update</b> as many times as required to add data to the hash. To
+release any resources and obtain the hash value, you then call 
+<b class='cmd'>MD4Final</b>. An equivalent set of functions gives you a keyed digest (HMAC).
+
+<dl>
+
+<dt><a name="3"><b class='cmd'>::md4::MD4Init</b> </a><dd>
+
+
+Begins a new MD4 hash. Returns a token ID that must be used for the
+remaining functions.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::md4::MD4Update</b> <i class='arg'>token</i> <i class='arg'>data</i></a><dd>
+
+
+Add data to the hash identified by token. Calling 
+<em>MD4Update $token &quot;abcd&quot;</em> is equivalent to calling
+<em>MD4Update $token &quot;ab&quot;</em> followed by 
+<em>MD4Update $token &quot;cb&quot;</em>. See <a href="#examples">EXAMPLES</a>.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::md4::MD4Final</b> <i class='arg'>token</i></a><dd>
+
+
+Returns the hash value and releases any resources held by this
+token. Once this command completes the token will be invalid. The
+result is a binary string of 16 bytes representing the 128 bit MD4
+digest value.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::md4::HMACInit</b> <i class='arg'>key</i></a><dd>
+
+
+This is equivalent to the <b class='cmd'>::md4::MD4Init</b> command except that
+it requires the key that will be included in the HMAC.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::md4::HMACUpdate</b> <i class='arg'>token</i> <i class='arg'>data</i></a><dd>
+
+<dt><a name="8"><b class='cmd'>::md4::HMACFinal</b> <i class='arg'>token</i></a><dd>
+
+
+These commands are identical to the MD4 equivalent commands.
+
+</dl>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% md4::md4 -hex &quot;Tcl does MD4&quot;
+858da9b31f57648a032230447bd15f25
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% md4::hmac -hex -key Sekret &quot;Tcl does MD4&quot;
+c324088e5752872689caedf2a0464758
+</pre></td></tr></table></p>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+% set tok [md4::MD4Init]
+::md4::1
+% md4::MD4Update $tok &quot;Tcl &quot;
+% md4::MD4Update $tok &quot;does &quot;
+% md4::MD4Update $tok &quot;MD4&quot;
+% md4::Hex [md4::MD4Final $tok]
+858da9b31f57648a032230447bd15f25
+</pre></td></tr></table></p>
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+
+<ol>
+
+<li>
+       Rivest, R., &quot;The MD4 Message Digest Algorithm&quot;, RFC 1320, MIT,
+       April 1992. (<a href="http://www.rfc-editor.org/rfc/rfc1320.txt">http://www.rfc-editor.org/rfc/rfc1320.txt</a>)
+
+<br><br>
+<li>
+       Rivest, R., &quot;The MD4 message digest algorithm&quot;, in A.J.  Menezes
+       and S.A. Vanstone, editors, Advances in Cryptology - CRYPTO '90
+       Proceedings, pages 303-311, Springer-Verlag, 1991.
+
+<br><br>
+<li>
+       Rivest, R., &quot;The MD5 Message-Digest Algorithm&quot;, RFC 1321, MIT and
+       RSA Data Security, Inc, April 1992.
+	(<a href="http://www.rfc-editor.org/rfc/rfc1321.txt">http://www.rfc-editor.org/rfc/rfc1321.txt</a>)
+
+<br><br>
+<li>
+      Krawczyk, H., Bellare, M. and Canetti, R. &quot;HMAC: Keyed-Hashing for 
+      Message Authentication&quot;, RFC 2104, February 1997.
+	(<a href="http://www.rfc-editor.org/rfc/rfc2104.txt">http://www.rfc-editor.org/rfc/rfc2104.txt</a>)
+
+</ol>
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+md5, sha1
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+hashing, md4, message-digest, rfc 1320, rfc 1321, rfc 2104, security
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2003, Pat Thoyts &lt;patthoyts@users.sourceforge.net&gt;<br>
+</body></html>

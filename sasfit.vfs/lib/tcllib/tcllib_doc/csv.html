@@ -1,0 +1,295 @@
+<! -- -*- tcl -*-
+   -->
+<html><head>
+<title>csv - CSV processing </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/csv/csv.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002-2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: csv.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ csv.n
+   -->
+
+<body>
+<h1> csv(n) 0.6 csv &quot;CSV processing&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> csv - Procedures to handle CSV data.
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#commands">COMMANDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#format">FORMAT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example">EXAMPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.3</b><br>
+package require <b>csv ?0.6?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::csv::join</b> <i class='arg'>values</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::csv::joinlist</b> <i class='arg'>values</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::csv::joinmatrix</b> <i class='arg'>matrix</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::csv::read2matrix</b> ?<strong>-alternate</strong>? <i class='arg'>chan m</i> {<i class='arg'>sepChar</i> ,} {<i class='arg'>expand</i> none}</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::csv::read2queue</b> ?<strong>-alternate</strong>? <i class='arg'>chan q</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::csv::report</b> <i class='arg'>cmd matrix</i> ?<i class='arg'>chan</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::csv::split</b> ?<strong>-alternate</strong>? <i class='arg'>line</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::csv::split2matrix</b> ?<strong>-alternate</strong>? <i class='arg'>m line</i> {<i class='arg'>sepChar</i> ,} {<i class='arg'>expand</i> none}</a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::csv::split2queue</b> ?<strong>-alternate</strong>? <i class='arg'>q line</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::csv::writematrix</b> <i class='arg'>m chan</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::csv::writequeue</b> <i class='arg'>q chan</i> {<i class='arg'>sepChar</i> ,}</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+<p>
+
+The <strong>csv</strong> package provides commands to manipulate information
+in CSV <a href="#format">FORMAT</a> (CSV = Comma Separated Values).
+
+<h2><a name="commands">COMMANDS</a></h2>
+<p>
+<p>
+
+The following commands are available:
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::csv::join</b> <i class='arg'>values</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+Takes a list of values and returns a string in CSV format containing
+these values. The separator character can be defined by the caller,
+but this is optional. The default is &quot;,&quot;.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::csv::joinlist</b> <i class='arg'>values</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+Takes a list of lists of values and returns a string in CSV format
+containing these values. The separator character can be defined by the
+caller, but this is optional. The default is &quot;,&quot;. Each element of the
+outer list is considered a record, these are separated by newlines in
+the result. The elements of each record are formatted as usual (via
+<b class='cmd'>::csv::join</b>).
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::csv::joinmatrix</b> <i class='arg'>matrix</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+Takes a <i class='arg'>matrix</i> object following the API specified for the
+struct::matrix package and returns a string in CSV format containing
+these values. The separator character can be defined by the caller,
+but this is optional. The default is &quot;,&quot;. Each row of the matrix is
+considered a record, these are separated by newlines in the
+result. The elements of each record are formatted as usual (via
+<b class='cmd'>::csv::join</b>).
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::csv::read2matrix</b> ?<strong>-alternate</strong>? <i class='arg'>chan m</i> {<i class='arg'>sepChar</i> ,} {<i class='arg'>expand</i> none}</a><dd>
+
+
+A wrapper around <b class='cmd'>::csv::split2matrix</b> (see below) reading
+CSV-formatted lines from the specified channel (until EOF) and adding
+them to the given matrix. For an explanation of the <i class='arg'>expand</i>
+argument see <b class='cmd'>::csv::split2matrix</b>.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::csv::read2queue</b> ?<strong>-alternate</strong>? <i class='arg'>chan q</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+A wrapper around <b class='cmd'>::csv::split2queue</b> (see below) reading
+CSV-formatted lines from the specified channel (until EOF) and adding
+them to the given queue.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::csv::report</b> <i class='arg'>cmd matrix</i> ?<i class='arg'>chan</i>?</a><dd>
+
+
+A report command which can be used by the matrix methods
+
+<b class='cmd'>format 2string</b> and <b class='cmd'>format 2chan</b>. For the latter this
+command delegates the work to <b class='cmd'>::csv::writematrix</b>. <i class='arg'>cmd</i> is
+expected to be either <strong>printmatrix</strong> or
+
+<strong>printmatrix2channel</strong>. The channel argument, <i class='arg'>chan</i>, has
+to be present for the latter and must not be present for the first.
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::csv::split</b> ?<strong>-alternate</strong>? <i class='arg'>line</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+converts a <i class='arg'>line</i> in CSV format into a list of the values
+contained in the line. The character used to separate the values from
+each other can be defined by the caller, via <i class='arg'>sepChar</i>, but this
+is optional. The default is &quot;,&quot;.
+
+<br><br>
+
+If the option <strong>-alternate</strong> is spcified a slightly different
+syntax is used to parse the input. This syntax is explained below, in
+the section <a href="#format">FORMAT</a>.
+
+
+<br><br>
+<dt><a name="8"><b class='cmd'>::csv::split2matrix</b> ?<strong>-alternate</strong>? <i class='arg'>m line</i> {<i class='arg'>sepChar</i> ,} {<i class='arg'>expand</i> none}</a><dd>
+
+
+The same as <b class='cmd'>::csv::split</b>, but appends the resulting list as a
+new row to the matrix <i class='arg'>m</i>, using the method <b class='cmd'>add row</b>. The
+expansion mode specified via <i class='arg'>expand</i> determines how the command
+handles a matrix with less columns than contained in <i class='arg'>line</i>. The
+allowed modes are:
+
+<br><br>
+<dl>
+
+<dt><strong>none</strong><dd>
+
+This is the default mode. In this mode it is the responsibility of the
+caller to ensure that the matrix has enough columns to contain the
+full line. If there are not enough columns the list of values is
+silently truncated at the end to fit.
+
+<br><br>
+<dt><strong>empty</strong><dd>
+
+In this mode the command expands an empty matrix to hold all columns
+of the specified line, but goes no further. The overall effect is that
+the first of a series of lines determines the number of columns in the
+matrix and all following lines are truncated to that size, as if mode
+<strong>none</strong> was set.
+
+<br><br>
+<dt><strong>auto</strong><dd>
+
+In this mode the command expands the matrix as needed to hold all
+columns contained in <i class='arg'>line</i>. The overall effect is that after
+adding a series of lines the matrix will have enough columns to hold
+all columns of the longest line encountered so far.
+
+</dl>
+
+<dt><a name="9"><b class='cmd'>::csv::split2queue</b> ?<strong>-alternate</strong>? <i class='arg'>q line</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+The same as <b class='cmd'>::csv::split</b>, but appending the resulting list as a
+single item to the queue <i class='arg'>q</i>, using the method <b class='cmd'>put</b>.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::csv::writematrix</b> <i class='arg'>m chan</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+A wrapper around <b class='cmd'>::csv::join</b> taking all rows in the matrix
+<i class='arg'>m</i> and writing them CSV formatted into the channel <i class='arg'>chan</i>.
+
+<br><br>
+<dt><a name="11"><b class='cmd'>::csv::writequeue</b> <i class='arg'>q chan</i> {<i class='arg'>sepChar</i> ,}</a><dd>
+
+
+A wrapper around <b class='cmd'>::csv::join</b> taking all items in the queue
+<i class='arg'>q</i> (assumes that they are lists) and writing them CSV formatted
+into the channel <i class='arg'>chan</i>.
+
+</dl>
+
+<h2><a name="format">FORMAT</a></h2>
+<p>
+<p>
+
+The format of regular CSV files is specified as 
+
+<ol>
+
+<li>
+Each record of a csv file (comma-separated values, as exported e.g. by
+Excel) is a set of ASCII values separated by &quot;,&quot;. For other languages
+it may be &quot;;&quot; however, although this is not important for this case as
+the functions provided here allow any separator character.
+
+<br><br>
+<li>
+If and only if a value contains itself the separator &quot;,&quot;, then it (the
+value) has to be put between &quot;&quot;. If the value does not contain the
+separator character then quoting is optional.
+
+<br><br>
+<li>
+If a value contains the character &quot;, that character is represented by &quot;&quot;.
+
+<br><br>
+<li>
+The output string &quot;&quot; represents the value &quot;. In other words, it is
+assumed that it was created through rule 3, and only this rule,
+i.e. that the value was not quoted.
+
+</ol>
+<p>
+
+An alternate format definition mainly used by MS products specifies
+that the output string &quot;&quot; is an representatation of the empty
+string. In other words, it is assumed that the output was generated
+out of the empty string by quoting it (i.e. rule 2), and not through
+rule 3. This is the only difference between the regular and the
+alternate format.
+
+<p>
+
+The alternate format is activated through specification of the option
+<strong>-alternate</strong> to the various split commands.
+
+<h2><a name="example">EXAMPLE</a></h2>
+<p>
+
+Using the regular format the record
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+123,&quot;123,521.2&quot;,&quot;Mary says &quot;&quot;Hello, I am Mary&quot;&quot;&quot;,&quot;&quot;
+</pre></td></tr></table></p>
+
+<p>
+is parsed into the items
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+a) 123
+b) 123,521.2
+c) Mary says &quot;Hello, I am Mary&quot;
+d) (the empty string)
+</pre></td></tr></table></p>
+<p>
+
+Using the alternate format the result is
+
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+a) 123
+b) 123,521.2
+c) Mary says &quot;Hello, I am Mary&quot;
+d) &quot;
+</pre></td></tr></table></p>
+
+instead. As can be seen only item (d) is different, now a &quot; instead of
+the empty string.
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+matrix, queue
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+csv, matrix, package, queue, tcllib
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002-2005 Andreas Kupries &lt;andreas_kupries@users.sourceforge.net&gt;<br>
+</body></html>

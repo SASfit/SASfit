@@ -1,0 +1,192 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>ipentry - An IP address entry widget </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/ipentry/ipentry.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: ipentry.html,v 1.1 2006/05/02 08:24:44 kohlbrecher Exp $ ipentry.n
+   -->
+
+<body>
+<h1> ipentry(n) 0.1 ipentry &quot;An IP address entry widget&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> ipentry - An IP address entry widget
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#widget_options">Widget options</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>ipentry ?0.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::ipentry::ipentry</b> <i class='arg'>pathName</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a></td></tr>
+<tr valign=top ><td ><a href="#2"><i class='arg'>pathName</i> <strong>complete</strong></a></td></tr>
+<tr valign=top ><td ><a href="#3"><i class='arg'>pathName</i> <strong>get</strong></a></td></tr>
+<tr valign=top ><td ><a href="#4"><i class='arg'>pathName</i> <strong>insert</strong> <i class='arg'>iplist</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><i class='arg'>pathName</i> <strong>icursor</strong> <i class='arg'>index</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><i class='arg'>pathName</i> <strong>configure</strong> <i class='arg'>option</i> <i class='arg'>value</i>...</a></td></tr>
+<tr valign=top ><td ><a href="#7"><i class='arg'>pathName</i> <strong>cget</strong> <i class='arg'>option</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package provides a widget for the entering of a IP address.  It
+guarantees a valid address at all times.
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::ipentry::ipentry</b> <i class='arg'>pathName</i> ?<i class='arg'>option</i> <i class='arg'>value</i>...?</a><dd>
+
+
+Creates a new ipentry widget and configures it with the given options and their values.
+
+</dl>
+
+
+Each widget created with the command above supports the following methods:
+
+<dl>
+
+<dt><a name="2"><i class='arg'>pathName</i> <strong>complete</strong></a><dd>
+
+
+Returns a boolean value. True indicates that the entry contains a
+complete IP address, meaning all 4 fields have a value.
+
+<br><br>
+<dt><a name="3"><i class='arg'>pathName</i> <strong>get</strong></a><dd>
+
+
+Returns the contents of the entry as a list consisting of 4 elements.
+
+<br><br>
+<dt><a name="4"><i class='arg'>pathName</i> <strong>insert</strong> <i class='arg'>iplist</i></a><dd>
+
+
+Takes a list of 4 elements and inserts one into each quad of the entry, in order.
+All values in the list must be integers. Values outside the range 0 to 255
+are modified to be within the range.
+
+<br><br>
+<dt><a name="5"><i class='arg'>pathName</i> <strong>icursor</strong> <i class='arg'>index</i></a><dd>
+
+
+Sets the position of the widgets insertion cursor. Only integer values between
+0 and 15 are valid. Setting the icursor will only have an effect if the widget
+already has the input focus.
+
+<br><br>
+<dt><a name="6"><i class='arg'>pathName</i> <strong>configure</strong> <i class='arg'>option</i> <i class='arg'>value</i>...</a><dd>
+
+
+Modifies the configuration of the widget. For options and
+their meaning see the widget options section.
+
+<br><br>
+<dt><a name="7"><i class='arg'>pathName</i> <strong>cget</strong> <i class='arg'>option</i></a><dd>
+
+
+Returns information about the current configuration of the widget, for
+the specified option. For options and their meaning see the widget
+options section.
+
+</dl>
+
+
+<h2><a name="widget_options">Widget options</a></h2>
+<p>
+
+<dl>
+
+<dt>Command-Line Switch:	<strong>-state</strong><br>
+Database Name:	<strong>state</strong><br>
+Database Class:	<strong>State</strong><br>
+<dd>
+
+Specifies one of three states for the entry: <strong>normal</strong>,
+<strong>disabled</strong>, or <strong>readonly</strong>.
+
+<br><br>
+<dt>Command-Line Switch:	<strong>-font</strong><br>
+Database Name:	<strong>font</strong><br>
+Database Class:	<strong>Font</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-bd</strong><br>
+Database Name:	<strong>borderWidth</strong><br>
+Database Class:	<strong>BorderWidth</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-fg</strong><br>
+Database Name:	<strong>foreground</strong><br>
+Database Class:	<strong>Foreground</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-bg</strong><br>
+Database Name:	<strong>background</strong><br>
+Database Class:	<strong>Background</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-relief</strong><br>
+Database Name:	<strong>relief</strong><br>
+Database Class:	<strong>Relief</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-highlightthickness</strong><br>
+Database Name:	<strong>highlightThickness</strong><br>
+Database Class:	<strong>HighlightThickness</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-highlightcolor</strong><br>
+Database Name:	<strong>highlightColor</strong><br>
+Database Class:	<strong>HighlightColor</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-highlightbackground</strong><br>
+Database Name:	<strong>highlightBackground</strong><br>
+Database Class:	<strong>HighlightBackground</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-selectbackground</strong><br>
+Database Name:	<strong>selectBackground</strong><br>
+Database Class:	<strong>Background</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-selectforeground</strong><br>
+Database Name:	<strong>selectForeground</strong><br>
+Database Class:	<strong>Foreground</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-selectborderwidth</strong><br>
+Database Name:	<strong>selectBorderWidth</strong><br>
+Database Class:	<strong>BorderWidth</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-disabledbackground</strong><br>
+Database Name:	<strong>disabledBackground</strong><br>
+Database Class:	<strong>DisabledBackground</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-disabledforeground</strong><br>
+Database Name:	<strong>disabledForeground</strong><br>
+Database Class:	<strong>DisabledForeground</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-readonlybackground</strong><br>
+Database Name:	<strong>readonlyBackground</strong><br>
+Database Class:	<strong>ReadonlyBackground</strong><br>
+<dd>
+<dt>Command-Line Switch:	<strong>-insertbackground</strong><br>
+Database Name:	<strong>insertBackground</strong><br>
+Database Class:	<strong>Background</strong><br>
+<dd>
+
+Standard widget options. See <b class='cmd'>options</b> for a description of their
+meanings and values.
+
+</dl>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+entry, ip address
+</body></html>
+

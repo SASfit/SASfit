@@ -1,0 +1,105 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>autoscroll - Automatic mapping of scrollbars </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tklib-0.4.1/modules/autoscroll/autoscroll.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: autoscroll.html,v 1.1 2006/05/02 08:24:43 kohlbrecher Exp $ autoscroll.n
+   -->
+
+<body>
+<h1> autoscroll(n) 1.1 autoscroll &quot;Automatic mapping of scrollbars&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> autoscroll - Provides for a scrollbar to automatically mapped and unmapped as needed
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl</b><br>
+package require <b>autoscroll ?1.1?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::autoscroll::autoscroll</b> <i class='arg'>scrollbar</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::autoscroll::unautoscroll</b> <i class='arg'>scrollbar</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::autoscroll::wrap</b> </a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::autoscroll::unwrap</b> </a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+This package allows scrollbars to be mapped and
+unmapped as needed depending on the size and
+content of the scrollbars scrolled widget. The
+scrollbar must be managed by either pack or grid,
+other geometry managers are not supported.
+
+<p>
+
+When managed by pack, any geometry changes made in the
+scrollbars parent between the time a scrollbar is
+unmapped, and when it is mapped will be lost. It is
+an error to destroy any of the scrollbars siblings while the
+scrollbar is unmapped. When managed by grid, if anything
+becomes gridded in the same row and column the scrollbar
+occupied it will be replaced by the scrollbar when remapped.
+
+<p>
+
+This package may be used on any scrollbar-like widget
+as long as it supports the <strong>set</strong> subcommand in the same
+style as scrollbar. If the <strong>set</strong> subcommand is not used
+then this package will have no effect.
+
+<p>
+
+<dl>
+
+<dt><a name="1"><b class='cmd'>::autoscroll::autoscroll</b> <i class='arg'>scrollbar</i></a><dd>
+
+
+Arranges for the already existing scrollbar <strong>scrollbar</strong>
+to be mapped and unmapped as needed.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::autoscroll::unautoscroll</b> <i class='arg'>scrollbar</i></a><dd>
+
+
+Returns the named scrollbar to its original static state.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::autoscroll::wrap</b> </a><dd>
+
+
+Arranges for all scrollbars created after this command is run
+to be automatically mapped and unmapped as needed.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::autoscroll::unwrap</b> </a><dd>
+
+
+Turns off the automatic autoscrolling of all new scrollbars.
+Does not effect existing scrollbars
+
+</dl>
+
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+text .t -yscrollcommand &quot;.scrolly set&quot;
+scrollbar .scrolly -orient v -command &quot;.t yview&quot;
+pack .scrolly -side right -fill y
+pack .t -side left -fill both -expand 1
+::autoscroll::autoscroll .scrolly
+</pre></td></tr></table></p>
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+scroll, scrollbar
+</body></html>

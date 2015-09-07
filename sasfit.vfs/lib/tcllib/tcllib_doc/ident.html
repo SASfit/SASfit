@@ -1,0 +1,88 @@
+<! -- -*- Tcl -*- doctools manpage
+   -->
+<html><head>
+<title>ident - Identification protocol client </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/ident/ident.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Reinhard Max &lt;max@tclers.tk&gt;
+   -->
+<! -- CVS: $Id: ident.html,v 1.1 2006/05/02 12:32:17 kohlbrecher Exp $ ident.n
+   -->
+
+<body>
+<h1> ident(n) 0.42 ident &quot;Identification protocol client&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> ident - Ident protocol client
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.3</b><br>
+package require <b>ident ?0.42?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::ident::query</b> <i class='arg'>socket</i> ?<i class='arg'>callback</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+
+The <strong>ident</strong> package provides a client implementation of the ident
+protocol as defined in
+
+RFC 1413 (<a href="http://www.rfc-editor.org/rfc/rfc1413.txt">http://www.rfc-editor.org/rfc/rfc1413.txt</a>).
+
+
+<dl>
+<dt><a name="1"><b class='cmd'>::ident::query</b> <i class='arg'>socket</i> ?<i class='arg'>callback</i>?</a><dd>
+
+
+This command queries the ident daemon on the remote side of the given
+socket, and returns the result of the query as a dictionary.
+
+Interpreting the dictionary as list the first key will always be
+<strong>resp-type</strong>, and can have one of the values <strong>USERID</strong>,
+<strong>ERROR</strong>, and <strong>FATAL</strong>.  These <em>response types</em> have
+the following meanings:
+
+<br><br>
+<dl>
+<dt>USERID<dd>
+
+This indicates a successful response. Two more keys and associated
+values are returned, <strong>opsys</strong>, and <strong>user-id</strong>.
+
+<br><br>
+<dt>ERROR<dd>
+
+This means the ident server has returned an error.  A second key named
+<strong>error</strong> is present whose value contains the <strong>error-type</strong>
+field from the server response.
+
+<br><br>
+<dt>FATAL<dd>
+
+Fatal errors happen when no ident server is listening on the remote
+side, or when the ident server gives a response that does not conform
+to the RFC. A detailed error message is returned under the
+<strong>error</strong> key.
+
+</dl>
+</dl>
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+ident, identification, rfc 1413
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Reinhard Max &lt;max@tclers.tk&gt;<br>
+</body></html>

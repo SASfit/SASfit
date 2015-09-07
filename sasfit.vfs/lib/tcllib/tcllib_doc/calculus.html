@@ -1,0 +1,516 @@
+<html><head>
+<title>math::calculus - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/calculus.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2002,2003,2004 Arjen Markus
+   -->
+<! -- CVS: $Id: calculus.html,v 1.1 2006/05/02 12:32:15 kohlbrecher Exp $ math::calculus.n
+   -->
+
+<body>
+<h1> math::calculus(n) 0.6.1 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::calculus - Integration and ordinary differential equations
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#procedures">PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#see_also">SEE ALSO</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>math::calculus 0.6.1</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::calculus::integral</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>nosteps</i> <i class='arg'>func</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::calculus::integralExpr</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>nosteps</i> <i class='arg'>expression</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::calculus::integral2D</b> <i class='arg'>xinterval</i> <i class='arg'>yinterval</i> <i class='arg'>func</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::calculus::integral3D</b> <i class='arg'>xinterval</i> <i class='arg'>yinterval</i> <i class='arg'>zinterval</i> <i class='arg'>func</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::calculus::eulerStep</b> <i class='arg'>t</i> <i class='arg'>tstep</i> <i class='arg'>xvec</i> <i class='arg'>func</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::calculus::heunStep</b> <i class='arg'>t</i> <i class='arg'>tstep</i> <i class='arg'>xvec</i> <i class='arg'>func</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::calculus::rungeKuttaStep</b> <i class='arg'>t</i> <i class='arg'>tstep</i> <i class='arg'>xvec</i> <i class='arg'>func</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::calculus::boundaryValueSecondOrder</b> <i class='arg'>coeff_func</i> <i class='arg'>force_func</i> <i class='arg'>leftbnd</i> <i class='arg'>rightbnd</i> <i class='arg'>nostep</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::calculus::solveTriDiagonal</b> <i class='arg'>acoeff</i> <i class='arg'>bcoeff</i> <i class='arg'>ccoeff</i> <i class='arg'>dvalue</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::calculus::newtonRaphson</b> <i class='arg'>func</i> <i class='arg'>deriv</i> <i class='arg'>initval</i></a></td></tr>
+<tr valign=top ><td ><a href="#11"><b class='cmd'>::math::calculus::newtonRaphsonParameters</b> <i class='arg'>maxiter</i> <i class='arg'>tolerance</i></a></td></tr>
+<tr valign=top ><td ><a href="#12"><b class='cmd'>::math::calculus::regula_falsi</b> <i class='arg'>f</i> <i class='arg'>xb</i> <i class='arg'>xe</i> <i class='arg'>eps</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+This package implements several simple mathematical algorithms:
+
+<ul>
+<li>
+The integration of a function over an interval
+
+<br><br>
+<li>
+The numerical integration of a system of ordinary differential
+equations.
+
+<br><br>
+<li>
+Estimating the root(s) of an equation of one variable.
+
+</ul>
+
+<p>
+The package is fully implemented in Tcl. No particular attention has
+been paid to the accuracy of the calculations. Instead, well-known
+algorithms have been used in a straightforward manner.
+<p>
+This document describes the procedures and explains their usage.
+
+<h2><a name="procedures">PROCEDURES</a></h2>
+<p>
+This package defines the following public procedures:
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::calculus::integral</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>nosteps</i> <i class='arg'>func</i></a><dd>
+
+Determine the integral of the given function using the Simpson
+rule. The interval for the integration is [<i class='arg'>begin</i>, <i class='arg'>end</i>].
+The remaining arguments are:
+
+<br><br>
+<dl>
+<dt><i class='arg'>nosteps</i><dd>
+Number of steps in which the interval is divided.
+
+<br><br>
+<dt><i class='arg'>func</i><dd>
+Function to be integrated. It should take one single argument.
+</dl>
+<br><br>
+
+<dt><a name="2"><b class='cmd'>::math::calculus::integralExpr</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>nosteps</i> <i class='arg'>expression</i></a><dd>
+
+Similar to the previous proc, this one determines the integral of
+the given <i class='arg'>expression</i> using the Simpson rule.
+The interval for the integration is [<i class='arg'>begin</i>, <i class='arg'>end</i>].
+The remaining arguments are:
+
+<br><br>
+<dl>
+<dt><i class='arg'>nosteps</i><dd>
+Number of steps in which the interval is divided.
+
+<br><br>
+<dt><i class='arg'>expression</i><dd>
+Expression to be integrated. It should
+use the variable &quot;x&quot; as the only variable (the &quot;integrate&quot;)
+</dl>
+<br><br>
+
+<dt><a name="3"><b class='cmd'>::math::calculus::integral2D</b> <i class='arg'>xinterval</i> <i class='arg'>yinterval</i> <i class='arg'>func</i></a><dd>
+
+The command <b class='cmd'>integral2D</b> calculates the integral of
+a function of two variables over the rectangle given by the
+first two arguments, each a list of three items, the start and
+stop interval for the variable and the number of steps.
+<br><br>
+The currently implemented integration is simple: the function is
+evaluated at the centre of each rectangle and the content of
+this block is added to the integral. In future this will be
+replaced by a bilinear interpolation.
+<br><br>
+The function must take two arguments and return the function
+value.
+
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::math::calculus::integral3D</b> <i class='arg'>xinterval</i> <i class='arg'>yinterval</i> <i class='arg'>zinterval</i> <i class='arg'>func</i></a><dd>
+
+The command <b class='cmd'>Integral3D</b> is the three-dimensional
+equivalent of <b class='cmd'>integral2D</b>. The function taking three
+arguments is integrated over the block in 3D space given by three
+intervals.
+
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::math::calculus::eulerStep</b> <i class='arg'>t</i> <i class='arg'>tstep</i> <i class='arg'>xvec</i> <i class='arg'>func</i></a><dd>
+
+Set a single step in the numerical integration of a system of
+differential equations. The method used is Euler's.
+
+<br><br>
+<dl>
+<dt><i class='arg'>t</i><dd>
+Value of the independent variable (typically time)
+at the beginning of the step.
+
+<br><br>
+<dt><i class='arg'>tstep</i><dd>
+Step size for the independent variable.
+
+<br><br>
+<dt><i class='arg'>xvec</i><dd>
+List (vector) of dependent values
+
+<br><br>
+<dt><i class='arg'>func</i><dd>
+Function of t and the dependent values, returning
+a list of the derivatives of the dependent values. (The lengths of
+xvec and the return value of &quot;func&quot; must match).
+</dl>
+<br><br>
+
+
+<dt><a name="6"><b class='cmd'>::math::calculus::heunStep</b> <i class='arg'>t</i> <i class='arg'>tstep</i> <i class='arg'>xvec</i> <i class='arg'>func</i></a><dd>
+
+Set a single step in the numerical integration of a system of
+differential equations. The method used is Heun's.
+
+<br><br>
+<dl>
+<dt><i class='arg'>t</i><dd>
+Value of the independent variable (typically time)
+at the beginning of the step.
+
+<br><br>
+<dt><i class='arg'>tstep</i><dd>
+Step size for the independent variable.
+
+<br><br>
+<dt><i class='arg'>xvec</i><dd>
+List (vector) of dependent values
+
+<br><br>
+<dt><i class='arg'>func</i><dd>
+Function of t and the dependent values, returning
+a list of the derivatives of the dependent values. (The lengths of
+xvec and the return value of &quot;func&quot; must match).
+</dl>
+<br><br>
+
+
+<dt><a name="7"><b class='cmd'>::math::calculus::rungeKuttaStep</b> <i class='arg'>t</i> <i class='arg'>tstep</i> <i class='arg'>xvec</i> <i class='arg'>func</i></a><dd>
+
+Set a single step in the numerical integration of a system of
+differential equations. The method used is Runge-Kutta 4th
+order.
+
+<br><br>
+<dl>
+<dt><i class='arg'>t</i><dd>
+Value of the independent variable (typically time)
+at the beginning of the step.
+
+<br><br>
+<dt><i class='arg'>tstep</i><dd>
+Step size for the independent variable.
+
+<br><br>
+<dt><i class='arg'>xvec</i><dd>
+List (vector) of dependent values
+
+<br><br>
+<dt><i class='arg'>func</i><dd>
+Function of t and the dependent values, returning
+a list of the derivatives of the dependent values. (The lengths of
+xvec and the return value of &quot;func&quot; must match).
+</dl>
+<br><br>
+
+
+<dt><a name="8"><b class='cmd'>::math::calculus::boundaryValueSecondOrder</b> <i class='arg'>coeff_func</i> <i class='arg'>force_func</i> <i class='arg'>leftbnd</i> <i class='arg'>rightbnd</i> <i class='arg'>nostep</i></a><dd>
+
+Solve a second order linear differential equation with boundary
+values at two sides. The equation has to be of the form (the
+&quot;conservative&quot; form):
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+         d      dy     d
+         -- A(x)--  +  -- B(x)y + C(x)y  =  D(x)
+         dx     dx     dx
+</pre></td></tr></table></p>
+Ordinarily, such an equation would be written as:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+             d2y        dy
+         a(x)---  + b(x)-- + c(x) y  =  D(x)
+             dx2        dx
+</pre></td></tr></table></p>
+The first form is easier to discretise (by integrating over a
+finite volume) than the second form. The relation between the two
+forms is fairly straightforward:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+         A(x)  =  a(x)
+         B(x)  =  b(x) - a'(x)
+         C(x)  =  c(x) - B'(x)  =  c(x) - b'(x) + a''(x)
+</pre></td></tr></table></p>
+Because of the differentiation, however, it is much easier to ask
+the user to provide the functions A, B and C directly.
+
+<br><br>
+<dl>
+<dt><i class='arg'>coeff_func</i><dd>
+Procedure returning the three coefficients
+(A, B, C) of the equation, taking as its one argument the x-coordinate.
+
+<br><br>
+<dt><i class='arg'>force_func</i><dd>
+Procedure returning the right-hand side
+(D) as a function of the x-coordinate.
+
+<br><br>
+<dt><i class='arg'>leftbnd</i><dd>
+A list of two values: the x-coordinate of the
+left boundary and the value at that boundary.
+
+<br><br>
+<dt><i class='arg'>rightbnd</i><dd>
+A list of two values: the x-coordinate of the
+right boundary and the value at that boundary.
+
+<br><br>
+<dt><i class='arg'>nostep</i><dd>
+Number of steps by which to discretise the
+interval.
+
+The procedure returns a list of x-coordinates and the approximated
+values of the solution.
+</dl>
+<br><br>
+
+
+<dt><a name="9"><b class='cmd'>::math::calculus::solveTriDiagonal</b> <i class='arg'>acoeff</i> <i class='arg'>bcoeff</i> <i class='arg'>ccoeff</i> <i class='arg'>dvalue</i></a><dd>
+
+Solve a system of linear equations Ax = b with A a tridiagonal
+matrix. Returns the solution as a list.
+
+<br><br>
+<dl>
+<dt><i class='arg'>acoeff</i><dd>
+List of values on the lower diagonal
+
+<br><br>
+<dt><i class='arg'>bcoeff</i><dd>
+List of values on the main diagonal
+
+<br><br>
+<dt><i class='arg'>ccoeff</i><dd>
+List of values on the upper diagonal
+
+<br><br>
+<dt><i class='arg'>dvalue</i><dd>
+List of values on the righthand-side
+</dl>
+<br><br>
+
+
+<dt><a name="10"><b class='cmd'>::math::calculus::newtonRaphson</b> <i class='arg'>func</i> <i class='arg'>deriv</i> <i class='arg'>initval</i></a><dd>
+
+Determine the root of an equation given by
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    func(x) = 0
+</pre></td></tr></table></p>
+using the method of Newton-Raphson. The procedure takes the following
+arguments:
+
+<br><br>
+<dl>
+<dt><i class='arg'>func</i><dd>
+Procedure that returns the value the function at x
+
+<br><br>
+<dt><i class='arg'>deriv</i><dd>
+Procedure that returns the derivative of the function at x
+
+<br><br>
+<dt><i class='arg'>initval</i><dd>
+Initial value for x
+</dl>
+<br><br>
+
+
+<dt><a name="11"><b class='cmd'>::math::calculus::newtonRaphsonParameters</b> <i class='arg'>maxiter</i> <i class='arg'>tolerance</i></a><dd>
+
+Set the numerical parameters for the Newton-Raphson method:
+
+<br><br>
+<dl>
+<dt><i class='arg'>maxiter</i><dd>
+Maximum number of iteration steps (defaults to 20)
+
+<br><br>
+<dt><i class='arg'>tolerance</i><dd>
+Relative precision (defaults to 0.001)
+</dl>
+
+
+<dt><a name="12"><b class='cmd'>::math::calculus::regula_falsi</b> <i class='arg'>f</i> <i class='arg'>xb</i> <i class='arg'>xe</i> <i class='arg'>eps</i></a><dd>
+
+
+Return an estimate of the zero or one of the zeros of the function
+contained in the interval [xb,xe]. The error in this estimate is of the
+order of eps*abs(xe-xb), the actual error may be slightly larger.
+
+<br><br>
+The method used is the so-called <em>regula falsi</em> or
+<em>false position</em> method. It is a straightforward implementation.
+The method is robust, but requires that the interval brackets a zero or
+at least an uneven number of zeros, so that the value of the function at
+the start has a different sign than the value at the end.
+
+<br><br>
+In contrast to Newton-Raphson there is no need for the computation of
+the function's derivative.
+
+<br><br>
+<dl>
+<dt>command <i class='arg'>f</i><dd> Name of the command that evaluates the function for
+which the zero is to be returned
+
+<br><br>
+<dt>float <i class='arg'>xb</i><dd> Start of the interval in which the zero is supposed
+to lie
+
+<br><br>
+<dt>float <i class='arg'>xe</i><dd> End of the interval
+
+<br><br>
+<dt>float <i class='arg'>eps</i><dd> Relative allowed error (defaults to 1.0e-4)
+
+</dl>
+
+</dl>
+<p>
+
+<em>Notes:</em>
+<p>
+Several of the above procedures take the <em>names</em> of procedures as
+arguments. To avoid problems with the <em>visibility</em> of these
+procedures, the fully-qualified name of these procedures is determined
+inside the calculus routines. For the user this has only one
+consequence: the named procedure must be visible in the calling
+procedure. For instance:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    namespace eval ::mySpace {
+       namespace export calcfunc
+       proc calcfunc { x } { return $x }
+    }
+    #
+    # Use a fully-qualified name
+    #
+    namespace eval ::myCalc {
+       proc detIntegral { begin end } {
+          return [integral $begin $end 100 ::mySpace::calcfunc]
+       }
+    }
+    #
+    # Import the name
+    #
+    namespace eval ::myCalc {
+       namespace import ::mySpace::calcfunc
+       proc detIntegral { begin end } {
+          return [integral $begin $end 100 calcfunc]
+       }
+    }
+</pre></td></tr></table></p>
+<p>
+Enhancements for the second-order boundary value problem:
+<ul>
+<li>
+Other types of boundary conditions (zero gradient, zero flux)
+<br><br>
+<li>
+Other schematisation of the first-order term (now central
+differences are used, but upstream differences might be useful too).
+</ul>
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+Let us take a few simple examples:
+<p>
+Integrate x over the interval [0,100] (20 steps):
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+proc linear_func { x } { return $x }
+puts &quot;Integral: [::math::calculus::integral 0 100 20 linear_func]&quot;
+</pre></td></tr></table></p>
+For simple functions, the alternative could be:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+puts &quot;Integral: [::math::calculus::integralExpr 0 100 20 {$x}]&quot;
+</pre></td></tr></table></p>
+Do not forget the braces!
+<p>
+The differential equation for a dampened oscillator:
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+x'' + rx' + wx = 0
+</pre></td></tr></table></p>
+<p>
+can be split into a system of first-order equations:
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+x' = y
+y' = -ry - wx
+</pre></td></tr></table></p>
+<p>
+Then this system can be solved with code like this:
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+proc dampened_oscillator { t xvec } {
+   set x  [lindex $xvec 0]
+   set x1 [lindex $xvec 1]
+   return [list $x1 [expr {-$x1-$x}]]
+}
+
+set xvec   { 1.0 0.0 }
+set t      0.0
+set tstep  0.1
+for { set i 0 } { $i &lt; 20 } { incr i } {
+   set result [::math::calculus::eulerStep $t $tstep $xvec dampened_oscillator]
+   puts &quot;Result ($t): $result&quot;
+   set t      [expr {$t+$tstep}]
+   set xvec   $result
+}
+</pre></td></tr></table></p>
+<p>
+Suppose we have the boundary value problem:
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    Dy'' + ky = 0
+    x = 0: y = 1
+    x = L: y = 0
+</pre></td></tr></table></p>
+<p>
+This boundary value problem could originate from the diffusion of a
+decaying substance.
+<p>
+It can be solved with the following fragment:
+<p>
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   proc coeffs { x } { return [list $::Diff 0.0 $::decay] }
+   proc force  { x } { return 0.0 }
+
+   set Diff   1.0e-2
+   set decay  0.0001
+   set length 100.0
+
+   set y [::math::calculus::boundaryValueSecondOrder \
+      coeffs force {0.0 1.0} [list $length 0.0] 100]
+</pre></td></tr></table></p>
+
+
+
+
+
+<h2><a name="see_also">SEE ALSO</a></h2>
+<p>
+romberg
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+calculus, differential equations, integration, math, roots
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2002,2003,2004 Arjen Markus<br>
+</body></html>

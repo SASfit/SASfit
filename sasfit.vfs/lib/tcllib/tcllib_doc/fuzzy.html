@@ -1,0 +1,192 @@
+<html><head>
+<title>math::fuzzy - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/fuzzy.man' by tcllib/doctools with format 'html'
+   -->
+<! -- CVS: $Id: fuzzy.html,v 1.1 2006/05/02 12:32:16 kohlbrecher Exp $ math::fuzzy.n
+   -->
+
+<body>
+<h1> math::fuzzy(n) 0.2 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::fuzzy - Fuzzy comparison of floating-point numbers
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#procedures">PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#test_cases">TEST CASES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#references">REFERENCES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl ?8.3?</b><br>
+package require <b>math::fuzzy ?0.2?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::fuzzy::teq</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::fuzzy::tne</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::fuzzy::tge</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::fuzzy::tle</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::fuzzy::tlt</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::fuzzy::tgt</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::fuzzy::tfloor</b> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#8"><b class='cmd'>::math::fuzzy::tceil</b> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#9"><b class='cmd'>::math::fuzzy::tround</b> <i class='arg'>value</i></a></td></tr>
+<tr valign=top ><td ><a href="#10"><b class='cmd'>::math::fuzzy::troundn</b> <i class='arg'>value</i> <i class='arg'>ndigits</i></a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+The package Fuzzy is meant to solve common problems with floating-point
+numbers in a systematic way:
+
+<ul>
+<li>
+Comparing two numbers that are &quot;supposed&quot; to be identical, like
+1.0 and 2.1/(1.2+0.9) is not guaranteed to give the
+intuitive result.
+
+<br><br>
+<li>
+Rounding a number that is halfway two integer numbers can cause
+strange errors, like int(100.0*2.8) != 28 but 27
+</ul>
+
+<p>
+The Fuzzy package is meant to help sorting out this type of problems
+by defining &quot;fuzzy&quot; comparison procedures for floating-point numbers.
+It does so by allowing for a small margin that is determined
+automatically - the margin is three times the &quot;epsilon&quot; value, that is
+three times the smallest number <em>eps</em> such that 1.0 and 1.0+$eps
+canbe distinguished. In Tcl, which uses double precision floating-point
+numbers, this is typically 1.1e-16.
+
+<h2><a name="procedures">PROCEDURES</a></h2>
+<p>
+Effectively the package provides the following procedures:
+
+<dl>
+<dt><a name="1"><b class='cmd'>::math::fuzzy::teq</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a><dd>
+
+Compares two floating-point numbers and returns 1 if their values
+fall within a small range. Otherwise it returns 0.
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::math::fuzzy::tne</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a><dd>
+
+Returns the negation, that is, if the difference is larger than
+the margin, it returns 1.
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::math::fuzzy::tge</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a><dd>
+
+Compares two floating-point numbers and returns 1 if their values
+either fall within a small range or if the first number is larger
+than the second. Otherwise it returns 0.
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::math::fuzzy::tle</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a><dd>
+
+Returns 1 if the two numbers are equal according to
+[teq] or if the first is smaller than the second.
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::math::fuzzy::tlt</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a><dd>
+
+Returns the opposite of [tge].
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::math::fuzzy::tgt</b> <i class='arg'>value1</i> <i class='arg'>value2</i></a><dd>
+
+Returns the opposite of [tle].
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::math::fuzzy::tfloor</b> <i class='arg'>value</i></a><dd>
+
+Returns the integer number that is lower or equal
+to the given floating-point number, within a well-defined
+tolerance.
+<br><br>
+<dt><a name="8"><b class='cmd'>::math::fuzzy::tceil</b> <i class='arg'>value</i></a><dd>
+
+Returns the integer number that is greater or equal to the given
+floating-point number, within a well-defined tolerance.
+
+<br><br>
+<dt><a name="9"><b class='cmd'>::math::fuzzy::tround</b> <i class='arg'>value</i></a><dd>
+
+Rounds the floating-point number off.
+
+<br><br>
+<dt><a name="10"><b class='cmd'>::math::fuzzy::troundn</b> <i class='arg'>value</i> <i class='arg'>ndigits</i></a><dd>
+
+Rounds the floating-point number off to the
+specified number of decimals (Pro memorie).
+
+</dl>
+
+Usage:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+if { [teq $x $y] } { puts &quot;x == y&quot; }
+if { [tne $x $y] } { puts &quot;x != y&quot; }
+if { [tge $x $y] } { puts &quot;x &gt;= y&quot; }
+if { [tgt $x $y] } { puts &quot;x &gt; y&quot; }
+if { [tlt $x $y] } { puts &quot;x &lt; y&quot; }
+if { [tle $x $y] } { puts &quot;x &lt;= y&quot; }
+
+set fx      [tfloor $x]
+set fc      [tceil  $x]
+set rounded [tround $x]
+set roundn  [troundn $x $nodigits]
+</pre></td></tr></table></p>
+
+<h2><a name="test_cases">TEST CASES</a></h2>
+<p>
+The problems that can occur with floating-point numbers are illustrated
+by the test cases in the file &quot;fuzzy.test&quot;:
+<ul>
+<li>
+Several test case use the ordinary comparisons, and they
+fail invariably to produce understandable results
+
+<br><br>
+<li>
+One test case uses [expr] without braces ({ and }). It too
+fails.
+</ul>
+
+The conclusion from this is that any expression should be surrounded by
+braces, because otherwise very awkward things can happen if you need
+accuracy. Furthermore, accuracy and understandable results are
+enhanced by using these &quot;tolerant&quot; or fuzzy comparisons.
+<p>
+Note that besides the Tcl-only package, there is also a C-based version.
+
+<h2><a name="references">REFERENCES</a></h2>
+<p>
+Original implementation in Fortran by dr. H.D. Knoble (Penn State
+University).
+<p>
+P. E. Hagerty, &quot;More on Fuzzy Floor and Ceiling,&quot;
+
+APL QUOTE QUAD 8(4):20-24, June 1978. Note that TFLOOR=FL5 took five
+years of refereed evolution (publication).
+<p>
+L. M. Breed, &quot;Definitions for Fuzzy Floor and Ceiling&quot;,
+
+APL QUOTE QUAD 8(3):16-23, March 1978.
+<p>
+D. Knuth, Art of Computer Programming,
+
+Vol. 1, Problem 1.2.4-5.
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+floating-point, math, rounding
+</body></html>

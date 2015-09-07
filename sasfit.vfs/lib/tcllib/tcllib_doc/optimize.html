@@ -1,0 +1,380 @@
+<! -- -*- tcl -*- doctools manpage
+   -->
+<html><head>
+<title>math::optimize - Tcl Math Library </title>
+</head>
+<! -- Generated from file 'C:/Documents and Settings/Kohlbrecher/Desktop/tcllib-1.8/modules/math/optimize.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;   -- Copyright &copy; 2004,2005 Kevn B. Kenny &lt;kennykb@users.sourceforge.net&gt;
+   -->
+<! -- CVS: $Id: optimize.html,v 1.1 2006/05/02 12:32:18 kohlbrecher Exp $ math::optimize.n
+   -->
+
+<body>
+<h1> math::optimize(n) 1.0 math &quot;Tcl Math Library&quot;</h1>
+<h2><a name="name">NAME</a></h2>
+<p>
+<p> math::optimize - Optimisation routines
+
+
+
+
+
+
+<h2><a name="table_of_contents">TABLE OF CONTENTS</a></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#table_of_contents">TABLE OF CONTENTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#synopsis">SYNOPSIS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">DESCRIPTION</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#procedures">PROCEDURES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#notes">NOTES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#examples">EXAMPLES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keywords">KEYWORDS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyright">COPYRIGHT</a><br>
+<h2><a name="synopsis">SYNOPSIS</a></h2>
+<p>
+package require <b>Tcl 8.4</b><br>
+package require <b>math::optimize ?1.0?</b><br>
+<br><table border=1 width=100% cellspacing=0 cellpadding=0><tr            bgcolor=lightyellow><td bgcolor=lightyellow><table 0 width=100% cellspacing=0 cellpadding=0><tr valign=top ><td ><a href="#1"><b class='cmd'>::math::optimize::minimize</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>func</i> <i class='arg'>maxerr</i></a></td></tr>
+<tr valign=top ><td ><a href="#2"><b class='cmd'>::math::optimize::maximize</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>func</i> <i class='arg'>maxerr</i></a></td></tr>
+<tr valign=top ><td ><a href="#3"><b class='cmd'>::math::optimize::min_bound_1d</b> <i class='arg'>func</i> <i class='arg'>begin</i> <i class='arg'>end</i> ?<strong>-relerror</strong> <i class='arg'>reltol</i>? ?<strong>-abserror</strong> <i class='arg'>abstol</i>? ?<strong>-maxiter</strong> <i class='arg'>maxiter</i>? ?<strong>-trace</strong> <i class='arg'>traceflag</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#4"><b class='cmd'>::math::optimize::min_unbound_1d</b> <i class='arg'>func</i> <i class='arg'>begin</i> <i class='arg'>end</i> ?<strong>-relerror</strong> <i class='arg'>reltol</i>? ?<strong>-abserror</strong> <i class='arg'>abstol</i>? ?<strong>-maxiter</strong> <i class='arg'>maxiter</i>? ?<strong>-trace</strong> <i class='arg'>traceflag</i>?</a></td></tr>
+<tr valign=top ><td ><a href="#5"><b class='cmd'>::math::optimize::solveLinearProgram</b> <i class='arg'>objective</i> <i class='arg'>constraints</i></a></td></tr>
+<tr valign=top ><td ><a href="#6"><b class='cmd'>::math::optimize::linearProgramMaximum</b> <i class='arg'>objective</i> <i class='arg'>result</i></a></td></tr>
+<tr valign=top ><td ><a href="#7"><b class='cmd'>::math::optimize::nelderMead</b> <i class='arg'>objective</i> <i class='arg'>xVector</i> ?<strong>-scale</strong> <i class='arg'>xScaleVector</i>? ?<strong>-ftol</strong> <i class='arg'>epsilon</i>? ?<strong>-maxiter</strong> <i class='arg'>count</i>? ??-trace? <i class='arg'>flag</i>?</a></td></tr>
+</table></td></tr></table>
+<h2><a name="description">DESCRIPTION</a></h2>
+<p>
+<p>
+This package implements several optimisation algorithms:
+
+<ul>
+<li>
+Minimize or maximize a function over a given interval
+
+<br><br>
+<li>
+Solve a linear program (maximize a linear function subject to linear
+constraints)
+
+<br><br>
+<li>
+Minimize a function of several variables given an initial guess for the
+location of the minimum.
+
+</ul>
+
+<p>
+The package is fully implemented in Tcl. No particular attention has
+been paid to the accuracy of the calculations. Instead, the
+algorithms have been used in a straightforward manner.
+<p>
+This document describes the procedures and explains their usage.
+
+<h2><a name="procedures">PROCEDURES</a></h2>
+<p>
+<p>
+This package defines the following public procedures:
+<dl>
+
+<dt><a name="1"><b class='cmd'>::math::optimize::minimize</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>func</i> <i class='arg'>maxerr</i></a><dd>
+
+Minimize the given (continuous) function by examining the values in the
+given interval. The procedure determines the values at both ends and in the
+centre of the interval and then constructs a new interval of 1/2 length
+that includes the minimum. No guarantee is made that the <em>global</em>
+minimum is found.
+<br><br>
+The procedure returns the &quot;x&quot; value for which the function is minimal.
+<br><br>
+<em>This procedure has been deprecated - use min_bound_1d instead</em>
+<br><br>
+<i class='arg'>begin</i> - Start of the interval
+<br><br>
+<i class='arg'>end</i> - End of the interval
+<br><br>
+<i class='arg'>func</i> - Name of the function to be minimized (a procedure taking
+one argument).
+<br><br>
+<i class='arg'>maxerr</i> - Maximum relative error (defaults to 1.0e-4)
+
+<br><br>
+<dt><a name="2"><b class='cmd'>::math::optimize::maximize</b> <i class='arg'>begin</i> <i class='arg'>end</i> <i class='arg'>func</i> <i class='arg'>maxerr</i></a><dd>
+
+Maximize the given (continuous) function by examining the values in the
+given interval. The procedure determines the values at both ends and in the
+centre of the interval and then constructs a new interval of 1/2 length
+that includes the maximum. No guarantee is made that the <em>global</em>
+maximum is found.
+<br><br>
+The procedure returns the &quot;x&quot; value for which the function is maximal.
+<br><br>
+<em>This procedure has been deprecated - use max_bound_1d instead</em>
+<br><br>
+<i class='arg'>begin</i> - Start of the interval
+<br><br>
+<i class='arg'>end</i> - End of the interval
+<br><br>
+<i class='arg'>func</i> - Name of the function to be maximized (a procedure taking
+one argument).
+<br><br>
+<i class='arg'>maxerr</i> - Maximum relative error (defaults to 1.0e-4)
+
+<br><br>
+<dt><a name="3"><b class='cmd'>::math::optimize::min_bound_1d</b> <i class='arg'>func</i> <i class='arg'>begin</i> <i class='arg'>end</i> ?<strong>-relerror</strong> <i class='arg'>reltol</i>? ?<strong>-abserror</strong> <i class='arg'>abstol</i>? ?<strong>-maxiter</strong> <i class='arg'>maxiter</i>? ?<strong>-trace</strong> <i class='arg'>traceflag</i>?</a><dd>
+
+
+Miminizes a function of one variable in the given interval.  The procedure
+uses Brent's method of parabolic interpolation, protected by golden-section
+subdivisions if the interpolation is not converging.  No guarantee is made
+that a <em>global</em> minimum is found.  The function to evaluate, <i class='arg'>func</i>,
+must be a single Tcl command; it will be evaluated with an abscissa appended
+as the last argument.
+<br><br>
+<i class='arg'>x1</i> and <i class='arg'>x2</i> are the two bounds of
+the interval in which the minimum is to be found.  They need not be in
+increasing order.
+<br><br>
+<i class='arg'>reltol</i>, if specified, is the desired upper bound
+on the relative error of the result; default is 1.0e-7.  The given value
+should never be smaller than the square root of the machine's floating point
+precision, or else convergence is not guaranteed.  <i class='arg'>abstol</i>, if specified,
+is the desired upper bound on the absolute error of the result; default
+is 1.0e-10.  Caution must be used with small values of <i class='arg'>abstol</i> to
+avoid overflow/underflow conditions; if the minimum is expected to lie
+about a small but non-zero abscissa, you consider either shifting the
+function or changing its length scale.
+<br><br>
+<i class='arg'>maxiter</i> may be used to constrain the number of function evaluations
+to be performed; default is 100.  If the command evaluates the function
+more than <i class='arg'>maxiter</i> times, it returns an error to the caller.
+<br><br>
+<i class='arg'>traceFlag</i> is a Boolean value. If true, it causes the command to
+print a message on the standard output giving the abscissa and ordinate
+at each function evaluation, together with an indication of what type
+of interpolation was chosen.  Default is 0 (no trace).
+
+<br><br>
+<dt><a name="4"><b class='cmd'>::math::optimize::min_unbound_1d</b> <i class='arg'>func</i> <i class='arg'>begin</i> <i class='arg'>end</i> ?<strong>-relerror</strong> <i class='arg'>reltol</i>? ?<strong>-abserror</strong> <i class='arg'>abstol</i>? ?<strong>-maxiter</strong> <i class='arg'>maxiter</i>? ?<strong>-trace</strong> <i class='arg'>traceflag</i>?</a><dd>
+
+
+Miminizes a function of one variable over the entire real number line.
+The procedure uses parabolic extrapolation combined with golden-section
+dilatation to search for a region where a minimum exists, followed by
+Brent's method of parabolic interpolation, protected by golden-section
+subdivisions if the interpolation is not converging.  No guarantee is made
+that a <em>global</em> minimum is found.  The function to evaluate, <i class='arg'>func</i>,
+must be a single Tcl command; it will be evaluated with an abscissa appended
+as the last argument.
+<br><br>
+<i class='arg'>x1</i> and <i class='arg'>x2</i> are two initial guesses at where the minimum
+may lie.  <i class='arg'>x1</i> is the starting point for the minimization, and
+the difference between <i class='arg'>x2</i> and <i class='arg'>x1</i> is used as a hint at the
+characteristic length scale of the problem.
+<br><br>
+<i class='arg'>reltol</i>, if specified, is the desired upper bound
+on the relative error of the result; default is 1.0e-7.  The given value
+should never be smaller than the square root of the machine's floating point
+precision, or else convergence is not guaranteed.  <i class='arg'>abstol</i>, if specified,
+is the desired upper bound on the absolute error of the result; default
+is 1.0e-10.  Caution must be used with small values of <i class='arg'>abstol</i> to
+avoid overflow/underflow conditions; if the minimum is expected to lie
+about a small but non-zero abscissa, you consider either shifting the
+function or changing its length scale.
+<br><br>
+<i class='arg'>maxiter</i> may be used to constrain the number of function evaluations
+to be performed; default is 100.  If the command evaluates the function
+more than <i class='arg'>maxiter</i> times, it returns an error to the caller.
+<br><br>
+<i class='arg'>traceFlag</i> is a Boolean value. If true, it causes the command to
+print a message on the standard output giving the abscissa and ordinate
+at each function evaluation, together with an indication of what type
+of interpolation was chosen.  Default is 0 (no trace).
+
+<br><br>
+<dt><a name="5"><b class='cmd'>::math::optimize::solveLinearProgram</b> <i class='arg'>objective</i> <i class='arg'>constraints</i></a><dd>
+
+Solve a <em>linear program</em> in standard form using a straightforward
+implementation of the Simplex algorithm. (In the explanation below: The
+linear program has N constraints and M variables).
+<br><br>
+The procedure returns a list of M values, the values for which the
+objective function is maximal or a single keyword if the linear program
+is not feasible or unbounded (either &quot;unfeasible&quot; or &quot;unbounded&quot;)
+<br><br>
+<i class='arg'>objective</i> - The M coefficients of the objective function
+<br><br>
+<i class='arg'>constraints</i> - Matrix of coefficients plus maximum values that
+implement the linear constraints. It is expected to be a list of N lists
+of M+1 numbers each, M coefficients and the maximum value.
+
+<br><br>
+<dt><a name="6"><b class='cmd'>::math::optimize::linearProgramMaximum</b> <i class='arg'>objective</i> <i class='arg'>result</i></a><dd>
+
+Convenience function to return the maximum for the solution found by the
+solveLinearProgram procedure.
+<br><br>
+<i class='arg'>objective</i> - The M coefficients of the objective function
+<br><br>
+<i class='arg'>result</i> - The result as returned by solveLinearProgram
+
+
+<br><br>
+<dt><a name="7"><b class='cmd'>::math::optimize::nelderMead</b> <i class='arg'>objective</i> <i class='arg'>xVector</i> ?<strong>-scale</strong> <i class='arg'>xScaleVector</i>? ?<strong>-ftol</strong> <i class='arg'>epsilon</i>? ?<strong>-maxiter</strong> <i class='arg'>count</i>? ??-trace? <i class='arg'>flag</i>?</a><dd>
+
+
+Minimizes, in unconstrained fashion, a function of several variable over all
+of space.  The function to evaluate, <i class='arg'>objective</i>, must be a single Tcl
+command. To it will be appended as many elements as appear in the initial guess at
+the location of the minimum, passed in as a Tcl list, <i class='arg'>xVector</i>.
+<br><br>
+<i class='arg'>xScaleVector</i> is an initial guess at the problem scale; the first
+function evaluations will be made by varying the co-ordinates in <i class='arg'>xVector</i>
+by the amounts in <i class='arg'>xScaleVector</i>.  If <i class='arg'>xScaleVector</i> is not supplied,
+the co-ordinates will be varied by a factor of 1.0001 (if the co-ordinate
+is non-zero) or by a constant 0.0001 (if the co-ordinate is zero).
+<br><br>
+<i class='arg'>epsilon</i> is the desired relative error in the value of the function
+evaluated at the minimum. The default is 1.0e-7, which usually gives three
+significant digits of accuracy in the values of the x's.
+<br><br>pp
+<i class='arg'>count</i> is a limit on the number of trips through the main loop of
+the optimizer.  The number of function evaluations may be several times
+this number.  If the optimizer fails to find a minimum to within <i class='arg'>ftol</i>
+in <i class='arg'>maxiter</i> iterations, it returns its current best guess and an
+error status. Default is to allow 500 iterations.
+<br><br>
+<i class='arg'>flag</i> is a flag that, if true, causes a line to be written to the
+standard output for each evaluation of the objective function, giving
+the arguments presented to the function and the value returned. Default is
+false.
+
+<br><br>
+The <b class='cmd'>nelderMead</b> procedure returns a list of alternating keywords and
+values suitable for use with <b class='cmd'>array set</b>. The meaning of the keywords is:
+
+<br><br>
+<i class='arg'>x</i> is the approximate location of the minimum.
+<br><br>
+<i class='arg'>y</i> is the value of the function at <i class='arg'>x</i>.
+<br><br>
+<i class='arg'>yvec</i> is a vector of the best N+1 function values achieved, where
+N is the dimension of <i class='arg'>x</i>
+<br><br>
+<i class='arg'>vertices</i> is a list of vectors giving the function arguments
+corresponding to the values in <i class='arg'>yvec</i>.
+<br><br>
+<i class='arg'>nIter</i> is the number of iterations required to achieve convergence or
+fail.
+<br><br>
+<i class='arg'>status</i> is 'ok' if the operation succeeded, or 'too-many-iterations'
+if the maximum iteration count was exceeded.
+<br><br>
+<b class='cmd'>nelderMead</b> minimizes the given function using the downhill
+simplex method of Nelder and Mead.  This method is quite slow - much
+faster methods for minimization are known - but has the advantage of being
+extremely robust in the face of problems where the minimum lies in
+a valley of complex topology.
+<br><br>
+<b class='cmd'>nelderMead</b> can occasionally find itself &quot;stuck&quot; at a point where
+it can make no further progress; it is recommended that the caller
+run it at least a second time, passing as the initial guess the
+result found by the previous call.  The second run is usually very
+fast.
+<br><br>
+<b class='cmd'>nelderMead</b> can be used in some cases for constrained optimization.
+To do this, add a large value to the objective function if the parameters
+are outside the feasible region.  To work effectively in this mode,
+<b class='cmd'>nelderMead</b> requires that the initial guess be feasible and
+usually requires that the feasible region be convex.
+</dl>
+
+<h2><a name="notes">NOTES</a></h2>
+<p>
+<p>
+Several of the above procedures take the <em>names</em> of procedures as
+arguments. To avoid problems with the <em>visibility</em> of these
+procedures, the fully-qualified name of these procedures is determined
+inside the optimize routines. For the user this has only one
+consequence: the named procedure must be visible in the calling
+procedure. For instance:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+    namespace eval ::mySpace {
+       namespace export calcfunc
+       proc calcfunc { x } { return $x }
+    }
+    #
+    # Use a fully-qualified name
+    #
+    namespace eval ::myCalc {
+       puts [min_bound_1d ::myCalc::calcfunc $begin $end]
+    }
+    #
+    # Import the name
+    #
+    namespace eval ::myCalc {
+       namespace import ::mySpace::calcfunc
+       puts [min_bound_1d calcfunc $begin $end]
+    }
+</pre></td></tr></table></p>
+
+The simple procedures <em>minimum</em> and <em>maximum</em> have been
+deprecated: the alternatives are much more flexible, robust and
+require less function evaluations.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+<p>
+<p>
+Let us take a few simple examples:
+<p>
+Determine the maximum of f(x) = x^3 exp(-3x), on the interval (0,10):
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+proc efunc { x } { expr {$x*$x*$x * exp(-3.0*$x)} }
+puts &quot;Maximum at: [::math::optimize::max_bound_1d efunc 0.0 10.0]&quot;
+</pre></td></tr></table></p>
+<p>
+The maximum allowed error determines the number of steps taken (with
+each step in the iteration the interval is reduced with a factor 1/2).
+Hence, a maximum error of 0.0001 is achieved in approximately 14 steps.
+<p>
+An example of a <em>linear program</em> is:
+<p>
+Optimise the expression 3x+2y, where:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   x &gt;= 0 and y &gt;= 0 (implicit constraints, part of the
+                     definition of linear programs)
+
+   x + y   &lt;= 1      (constraints specific to the problem)
+   2x + 5y &lt;= 10
+</pre></td></tr></table></p>
+<p>
+This problem can be solved as follows:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+
+   set solution [::math::optimize::solveLinearProgram  { 3.0   2.0 }  { { 1.0   1.0   1.0 }
+        { 2.0   5.0  10.0 } } ]
+</pre></td></tr></table></p>
+<p>
+Note, that a constraint like:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   x + y &gt;= 1
+</pre></td></tr></table></p>
+can be turned into standard form using:
+<p><table><tr><td bgcolor=black>&nbsp;</td><td><pre class='sample'>
+   -x  -y &lt;= -1
+</pre></td></tr></table></p>
+
+<p>
+The theory of linear programming is the subject of many a text book and
+the Simplex algorithm that is implemented here is the best-known
+method to solve this type of problems, but it is not the only one.
+
+
+
+<h2><a name="keywords">KEYWORDS</a></h2>
+<p>
+linear program, math, maximum, minimum, optimization
+<h2><a name="copyright">COPYRIGHT</a></h2>
+<p>
+Copyright &copy; 2004 Arjen Markus &lt;arjenmarkus@users.sourceforge.net&gt;<br>
+Copyright &copy; 2004,2005 Kevn B. Kenny &lt;kennykb@users.sourceforge.net&gt;<br>
+</body></html>
