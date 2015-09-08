@@ -178,16 +178,23 @@ add_definitions(
 )
 
 # openMP
-find_package(OpenMP QUIET REQUIRED)
-if(NOT OPENMP_FOUND)
-        find_package(OpenMP REQUIRED)
-endif()
-
+find_package(OpenMP REQUIRED)
 if(OPENMP_FOUND)
         message(STATUS "Enabling OpenMP support")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+        message(STATUS "OpenMP_C_FLAGS: '${OpenMP_C_FLAGS}'")
+        message(STATUS "OpenMP_CXX_FLAGS: '${OpenMP_CXX_FLAGS}'")
+        message(STATUS "OpenMP_EXE_LINKER_FLAGS: '${OpenMP_EXE_LINKER_FLAGS}'")
+        # gather required libraries
+        execute_process(COMMAND ${CMAKE_C_COMPILER} -print-file-name=libgomp.a
+                        OUTPUT_VARIABLE OpenMP_LIB)
+        string(STRIP "${OpenMP_LIB}" OpenMP_LIB)
+        get_filename_component(OpenMP_LIB "${OpenMP_LIB}" REALPATH)
+        find_library(pthread_LIB pthread-2)
+        list(APPEND OpenMP_LIB "${pthread_LIB}")
+        message(STATUS "OpenMP LIBRARIES: '${OpenMP_LIB}'")
 else()
         message(STATUS "Disabling OpenMP support")
 endif()
@@ -222,9 +229,10 @@ add_library(sasfit SHARED
 
 target_link_libraries(sasfit
         ${TCL_LIBRARIES}
-	${GSL_STATIC_LIBRARIES}
-	${FFTW_LIBRARIES}
-	${sundials_LIBRARIES}
+        ${GSL_STATIC_LIBRARIES}
+        ${FFTW_LIBRARIES}
+        ${sundials_LIBRARIES}
+        ${OpenMP_LIB}
 )
 
 # configure build flags, assumes gcc-style flags on all platforms
@@ -323,6 +331,7 @@ if(CREATE_BINARY)
 	# set the saskit filename, chose the debug version if required
 	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
         build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
+        get_filename_component(SASKIT_FILENAME "${SASKIT_FILENAME}" REALPATH)
         message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
         get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
 	# write the list of filenames to a temporary file
@@ -371,3 +380,5 @@ if(CREATE_SOURCE)
 		VERBATIM
 	)
 endif(CREATE_SOURCE)
+
+# vim: set ts=4 sw=4 sts=4 tw=0:
