@@ -499,8 +499,10 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
             "/usr/lib/*-linux-gnu/libXrender.so.[0-9]"
             "/usr/lib/*-linux-gnu/libXfixes.so.[0-9]"
             )
+    elseif(WIN32)
+        find_library(pthread_LIB pthread-2)
+        list(APPEND PREREQ "${pthread_LIB}")
     endif()
-#    message(STATUS "dependent libs: '${PREREQ}'")
     message(STATUS "dependent libs:")
     foreach(FN ${PREREQ})
         unset(ABSFN)
