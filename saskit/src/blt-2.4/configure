@@ -1075,7 +1075,7 @@ fi
 case $target in
   *-*-cygwin*|*-*-mingw*)
     if test "${blt_enable_cygwin}" = "no" ; then
-      CC="${CC} -mno-cygwin"
+      CC="${CC}"
     fi
     ;;
 esac
