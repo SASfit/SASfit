@@ -134,6 +134,132 @@ void matvec(int n, double *y, double *z, void *opt)
 */
 }
 
+//*****************************************************************************
+//Additional functions needed for Anderson Mixing
+//*****************************************************************************
+//Fixpoint operator:
+double fixpointOperatorOZ_GSL_API(gsl_vector * x, void *OZd, gsl_vector * fres) {
+    double res;
+    sasfit_oz_data *OZdata;
+    OZdata = (sasfit_oz_data *) OZd;
+    cp_gsl_vector_to_array(x, OZdata->G, OZdata->Npoints);
+    res = OZ_step(OZdata);
+//    sasfit_out("fixpointOperator_OZ_GSL_API just has been called\n");
+    cp_array_to_gsl_vector(OZdata->G, fres, OZdata->Npoints);
+    return res;
+}
+
+//W is a matrix which helps to reduce the constrained
+//k dimensional optimization problem to a unconstrained,
+//k-1 dimensional optimization problem (constraint is 1D)
+gsl_matrix* calculateW(int k){
+  gsl_matrix* W = gsl_matrix_alloc(k, k -1);
+  gsl_matrix_set_zero(W);
+  int i,j;
+  for(i = 0; i < k; i++)
+    for(j = 0; j < k-1; j++){
+      if (i==j) //-1 on diagonal
+        gsl_matrix_set(W, i, j, -1.0);
+      if (i-1 == j) //1 on subdiagonal
+        gsl_matrix_set(W, i, j, 1.0);
+    }
+  return W;
+}
+
+
+//A -> [A,c]. TODO: Don't exit if exception, handle somehow
+gsl_matrix* addColumnToMatrixByExtension(gsl_matrix* A, const gsl_vector* c){
+  int es; //To hold the exit status of the GSL methods
+
+  size_t vectorSize = c->size;
+  //A may be empty, this needs special treatment
+  if (!A){
+    //We allocate a Matrix containing c as single column
+    gsl_matrix* A_new = gsl_matrix_alloc(vectorSize, 1);
+    es = gsl_matrix_set_col(A_new, 0, c);
+    return A_new;
+  }
+  //From here, Matrix must be already filled previously.
+  //Find new Matrix dimensions: what is current dim?
+  size_t numberOfRows = A->size1;
+  
+  if (vectorSize != numberOfRows){
+    printf("Cannot add column vector to matrix due to dimension problems \n");
+    printf("Number of rows in matrix: %zu \n", numberOfRows);
+    printf("Vector size %zu \n", vectorSize);
+    printf("Exiting from addColumnToMatrixByExtension... \n");
+    exit(-1);
+  }
+  
+  
+  int oldNumberOfColumns = A->size2;
+  int newNumberOfColumns = oldNumberOfColumns +1;
+
+  //Allocate new matrix
+  gsl_matrix* A_new = gsl_matrix_alloc(numberOfRows, newNumberOfColumns);
+  //Initialize new matrix to 0
+  gsl_matrix_set_zero(A_new);
+  //copy old values (i.e columns)
+  //first we allocate a buffer column vector v
+  gsl_vector* v = gsl_vector_alloc(numberOfRows);
+  //Start loop over columns
+  int j;
+  for(j = 0; j < oldNumberOfColumns; j++){
+    //copy the jth column of A to buffer vector v
+    es = gsl_matrix_get_col(v, A, j);
+    //Copy buffer to new matrix
+    es = gsl_matrix_set_col(A_new, j, v);
+  }
+  //Finally add the new column
+  es = gsl_matrix_set_col(A_new, newNumberOfColumns -1, c);
+  //A is now unused, so we free its memory
+  gsl_matrix_free(A);
+  return A_new;
+}  
+
+//A = [a_0,...,a_n] -> [a_1,...a_n, c]
+void addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
+  //Find new Matrix dimensions
+  size_t numberOfRows = A->size1;
+  size_t vectorSize = c->size;
+  
+  if (vectorSize != numberOfRows){
+    printf("Cannot add column vector to matrix due to dimension problems \n");
+    printf("Number of rows in matrix: %zu \n", numberOfRows);
+    printf("Vector size %zu \n", vectorSize);
+    printf("Exiting from addColumnToMatrixByShifting...\n");
+    exit(-1);
+  }
+  
+  int es; //To hold the exit status of the GSL methods
+  
+  int numberOfColumns = A->size2;
+  //copy old values (i.e columns)
+  //first we allocate a buffer column vector v
+  gsl_vector* v = gsl_vector_alloc(numberOfRows);
+  //Start loop over columns
+  int j;
+  for(j = 0; j < numberOfColumns -1; j++){
+    //copy the (j+1)th column of A to buffer vector v
+    es = gsl_matrix_get_col(v, (const gsl_matrix*) A, j+1);
+    //Copy buffer to column at the left
+    es = gsl_matrix_set_col(A, j, v);
+  }
+  //Finally add the new column
+  es = gsl_matrix_set_col(A, numberOfColumns -1, c);
+}
+
+//*****************************************************************************
+//FINISHED: Additional functions needed for Anderson Mixing
+//*****************************************************************************
+
+//COMMENT (AS): THE FOLLOWING define STATEMENTS ARE DANGEROUS,
+//NEVER USE ANY IF THESE LETTERS/STRINGS TO DEFINE YOUR OWN VARIABLES IN THIS FILE!
+//WORST CASE SCENARIO: YOU USE A NEW VARIABLE, SAY r, WHICH HAPPENS TO BE OF THE SAME TYPE AS
+//OZd->r, THEN THE COMPILER IS HAPPY, ESPECIALLY IF YOU FORGET TO DECLARE IT, AND THIS
+//WILL COMPLETELY MESS UP THE CODE.
+
+
 #define MINDIMOZ 128
 #define NITSTEP 20
 
@@ -324,6 +450,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     double xh, resnorm, xdnorm;
  //   TERM_CHECK termcheck = CheckOnRestart;
 
+
+//
     Normold=1;
     err=2*RELERROR;
     switch (algorithm) {
@@ -1074,6 +1202,213 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 break;
         case AndersonAcc:
+                sasfit_out("\n");
+  //This is the number of elements in the vector space used
+  //for anderson mixing. Both the residuals and the states
+  //usd for mixing are in the Krylov subspace of the problem,
+  //hence the name
+  int maximalDimensionOfKrylovSpace = 3;
+  int isMaximalDimensionOfKrylovSpaceReached = 0;
+  int dimensionOfKrylovSpace = 0;
+  //This is the dimension of the vector space where the fix point operator lives
+  int dimensionOfVectorSpace = OZd->Npoints;;
+  //Parameter of the algorithm
+  //float b = 1.0; using alpha instead below
+  //current state
+  gsl_vector* x;
+  //new (updated state), x_n = G(x), where G is fix Point Operator
+  gsl_vector* x_n;
+  //vector to hold residuum
+  gsl_vector* r_n;
+  //norm of the above
+  double r_norm;
+  //Anderson mixed state, i.e x_A = K a - (1- b) Da
+  gsl_vector* x_A;
+  //vector to hold mixing coefficients
+  gsl_vector* a;
+  //vector holding unconstrained lsf solution
+  gsl_vector* a_reduced;
+  //helper vector for QR decomposition
+  gsl_vector* tau;
+  //Matrix to hold previous states
+  gsl_matrix* K = NULL;
+  //Matrix to hold previous residuals
+  gsl_matrix* D = NULL;
+  //helper matrix to transform constrained optimization
+  //problem to unconstrained optimization problem
+  gsl_matrix* W;
+  gsl_matrix* D_reduced;
+  gsl_vector* res_opt;
+  //negarive of last entry in D
+  gsl_vector* d;
+  
+  //GSL internal
+  int gslReturnValue = 0;
+  
+  //allocate memory for gsl variables
+  x = gsl_vector_alloc(dimensionOfVectorSpace);
+  x_n = gsl_vector_alloc(dimensionOfVectorSpace);
+  x_A = gsl_vector_alloc(dimensionOfVectorSpace);
+  //res_opt is internal (how good was the optimization)
+  res_opt = gsl_vector_alloc(dimensionOfVectorSpace);
+  d = gsl_vector_alloc(dimensionOfVectorSpace);
+
+  //helper (buffer) vectors
+  gsl_vector* summand_1 = gsl_vector_alloc(dimensionOfVectorSpace);
+  gsl_vector* summand_2 = gsl_vector_alloc(dimensionOfVectorSpace);
+
+  //initialize gsl variables
+  //init x to zero
+  gsl_vector_set_zero(x);
+  //gsl_vector_add_constant(x, 1.0);
+  gsl_vector_set_zero(x_n);
+  gsl_vector_set_zero(x_A);
+
+  //Main Loop of algorithm. x must be initialized to x_0 at this stage
+
+  n=0;
+  iloop=0;
+  while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+	n++;
+    check_interrupt(OZd);
+	if (MIXCOEFF > 0) {
+		alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+    } else {
+		if (err < errold) {
+			iloop++;
+			iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+        } else {
+			iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+        }
+		alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
+    }
+    //Increment current dimension of Krylov space
+    //(This equals the number of states used for AA mixing)
+    if (dimensionOfKrylovSpace < maximalDimensionOfKrylovSpace)
+      dimensionOfKrylovSpace++;
+    else
+      isMaximalDimensionOfKrylovSpaceReached = 1;
+    //printf("dimensionOfKrylovSpace %d\n", dimensionOfKrylovSpace);
+    //Apply x_n = G(x)
+    //fixPointOperator4(x, x_n, linearPartOfFixPointOperator); //Variante 4, non-diagonal, non-linear
+    Norm = fixpointOperatorOZ_GSL_API(x, OZd, x_n);
+    if (Norm != Norm) {
+      sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+      for (j=0; j < NP; j++) {
+        G[j]=0.0;
+      }
+    }
+    err = fabs((Norm-Normold)/Norm); //err must be defined since is loop criterion
+    //sasfit_out("error %f\n", err);
+    Normold=Norm;
+    if ((n % 10)==0 && OZd->PrintProgress == 1)
+         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
+    //First we save the new value x_n in Matrix K (GSL sub will overwrite it)
+    //As long as current dimensionOfKrylovSpace is smaller than what defined as maximum,
+    //we extend the vector to the matrix...
+    if (!isMaximalDimensionOfKrylovSpaceReached){
+      K = addColumnToMatrixByExtension(K, x_n);
+    }else{ //... we add by replacing the oldest
+      addColumnToMatrixByShifting(K, x_n);
+    }
+    //printf("K: \n"); printMatrix(K);
+    
+    //Calculate residuum r = x_n - x, result is stored in x_n
+    gslReturnValue = gsl_vector_sub(x_n, x); //printf("%d \n", gslReturnValue);
+    r_n = x_n; //r ist just a pointer without allocated memory, just used for better naming
+
+    //save residuum r in Matrix D
+    if (!isMaximalDimensionOfKrylovSpaceReached){
+      D = addColumnToMatrixByExtension(D, r_n);
+    }else{
+      addColumnToMatrixByShifting(D, r_n);
+    }
+    //printf("D: \n"); printMatrix(D);
+    
+    if (dimensionOfKrylovSpace == 1){
+      gsl_vector_memcpy (x, x_n);
+      continue; //If D consists of one vector only, we skip the least square fit
+                //(The constraint sum a_i =1 implies that there must be at least two vectors)
+    }
+    //Since we updated the Matrix D, we are now ready to solve the
+    //constrained least square optimization problem
+    if (!isMaximalDimensionOfKrylovSpaceReached)
+      W = calculateW(dimensionOfKrylovSpace);
+    //else W needs not be recalculated since it remains constant (in size)
+    //We allocate memory for the result matrix D_reduced := DW
+    if (!isMaximalDimensionOfKrylovSpaceReached){
+      D_reduced = gsl_matrix_alloc(dimensionOfVectorSpace, dimensionOfKrylovSpace -1);
+      //tau is internal to store QR decomposition
+      tau = gsl_vector_alloc(dimensionOfKrylovSpace -1);
+      //Allocate memory for the solution of the reduced (unconstrained) optimization problem
+      a_reduced = gsl_vector_alloc(dimensionOfKrylovSpace -1);
+      a = gsl_vector_alloc(dimensionOfKrylovSpace);
+    }
+    gsl_matrix_set_zero(D_reduced);
+    //We calculate D_reduced = DW
+    //printf("W:\n"); printMatrix(W);
+    
+    gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, D, W, 0.0, D_reduced);
+    //Ready to solve min || D_reduced a_reduced + r_n || 
+    //            a_reduced
+    //QR decomposition
+    gsl_vector_set_zero(tau);
+    gslReturnValue = gsl_linalg_QR_decomp(D_reduced, tau);
+    gsl_vector_set_zero(a_reduced);
+    //d = -r
+    gsl_vector_memcpy(d,r_n);
+    //mind the sign in the lsf problem: D_reduced*a_reduced = -d
+    gsl_vector_scale(d, -1.0);
+    gslReturnValue = gsl_linalg_QR_lssolve(D_reduced, tau, d, a_reduced, res_opt);
+    //printf("norm if least square fit difference vector: %f\n", gsl_blas_dnrm2(r));
+    //Now a_reduced holds the solution of the unconstrained problem, next we want a
+    //zero a
+    gsl_vector_set_zero(a);
+    //a = W*a_reduced + (0,0,..,0,1)
+    gsl_blas_dgemv(CblasNoTrans, 1.0, W, a_reduced, 0.0, a);
+    gsl_vector_set(a, dimensionOfKrylovSpace -1, gsl_vector_get(a, dimensionOfKrylovSpace -1) + 1.0);
+    //printf("a = "); printVector(a);
+    //x = Ka - (1-b)Da = Ka + (b-1)Da. First x_A = Ka ....
+    gsl_vector_set_zero(summand_1);
+    gsl_blas_dgemv(CblasNoTrans, 1.0, K, a, 0.0, summand_1);
+    //...then  (1-b)Da
+    gsl_vector_set_zero(summand_2);
+    gsl_blas_dgemv(CblasNoTrans, (alpha - 1.0), D, a, 0.0, summand_2); // using alpha here instead of b
+    //Finally calculate the sum
+    gsl_vector_add(summand_1, summand_2);
+    gsl_vector_memcpy(x_A, summand_1);
+    gsl_vector_memcpy(x, x_A);
+    
+    //Finally, free memory, if dimensionOfKrylovSpace == maximalDimensionOfKrylovSpace then
+    //the memory will be reused, else we can free it.
+    if (dimensionOfKrylovSpace < maximalDimensionOfKrylovSpace){
+      gsl_matrix_free(W);
+      gsl_matrix_free(D_reduced);
+      gsl_vector_free(a);
+      gsl_vector_free(a_reduced);
+      gsl_vector_free(tau);
+    }
+  }//end main loop
+  //Free all memory explicitly, first the memory of size DimensionOfKrylovSpace 
+  //(or mixed with dimensionOfVectorSpace like D_reduced)...
+  gsl_matrix_free(W);
+  gsl_matrix_free(D_reduced);
+  gsl_vector_free(a);
+  gsl_vector_free(a_reduced);
+  gsl_vector_free(tau);
+  
+  gsl_matrix_free(D);
+  gsl_matrix_free(K);
+  
+  //..then the memory of size dimensionOfVectorSpace
+  gsl_vector_free(x);
+  gsl_vector_free(x_n);
+  gsl_vector_free(x_A);
+  gsl_vector_free(res_opt);
+  gsl_vector_free(d);
+  gsl_vector_free(summand_1);
+  gsl_vector_free(summand_2);  
+                    sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
 /*
         case NewtonLibGMRES:
@@ -1125,6 +1460,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 break;
 */
     }
+    sasfit_out("number of OZ_step calls are: %d\n",OZd->it);
 }
 
 int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algorithm) {

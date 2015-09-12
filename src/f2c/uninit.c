@@ -37,6 +37,23 @@
 #endif
 #endif /*RNAN*/
 
+#ifndef _EM_DENORMAL
+#define	_EM_DENORMAL	0x00080000
+#endif
+
+#ifndef _EM_UNDERFLOW
+#define	_EM_UNDERFLOW	0x00000002
+#endif
+
+#ifndef _EM_INEXACT
+#define	_EM_INEXACT	0x00000001
+#endif
+
+#ifndef _MCW_EM
+#define	_MCW_EM		0x0008001F
+_CRTIMP unsigned int __cdecl __MINGW_NOTHROW _control87 (unsigned int unNew, unsigned int unMask);
+#endif
+
 #ifdef KR_headers
 #define Void /*void*/
 #define FA7UL (unsigned Long) 0xfa7a7a7aL
