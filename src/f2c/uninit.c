@@ -49,10 +49,16 @@
 #define	_EM_INEXACT	0x00000001
 #endif
 
+
 #ifndef _MCW_EM
 #define	_MCW_EM		0x0008001F
+#endif
+
+/*
+#ifndef _CRTIMP
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _control87 (unsigned int unNew, unsigned int unMask);
 #endif
+*/
 
 #ifdef KR_headers
 #define Void /*void*/
