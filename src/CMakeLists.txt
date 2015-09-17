@@ -13,6 +13,7 @@ project(sasfit C)
 # we assume this script resides in sasfit/src
 get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 set(SASFIT_ROOT_DIR ${CURRENT_DIR}/..)
+get_filename_component(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}" REALPATH)
 set(LIBRARY_OUTPUT_PATH ${CURRENT_DIR}/lib)
 
 set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
@@ -194,6 +195,7 @@ if(OPENMP_FOUND)
         get_filename_component(OpenMP_LIB "${OpenMP_LIB}" REALPATH)
 #        find_library(pthread_LIB pthread-2)
 #        list(APPEND OpenMP_LIB "${pthread_LIB}")
+        set(OpenMP_LIB) # disables above code ...
         message(STATUS "OpenMP LIBRARIES: '${OpenMP_LIB}'")
 else()
         message(STATUS "Disabling OpenMP support")
@@ -330,12 +332,11 @@ if(CREATE_BINARY)
 
 	# set the saskit filename, chose the debug version if required
 	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
-        build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
-        get_filename_component(SASKIT_FILENAME "${SASKIT_FILENAME}" REALPATH)
-        message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
-        get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
+    build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
+    message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
+    get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
 	# write the list of filenames to a temporary file
-        # (workaround for shell command length restrictions)
+    # (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
 	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
 
@@ -352,7 +353,7 @@ if(CREATE_BINARY)
 				-D SASFIT_VERSION:STRING=${SASFIT_VERSION}
 				-P ${SASFIT_PCKG_SCRIPT}
 		DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
-		COMMENT "Now copying sasfit binary files to a separate directory ..."
+        COMMENT "Copying sasfit binary files to a separate directory ..."
 		VERBATIM
 	)
 
@@ -376,7 +377,7 @@ if(CREATE_SOURCE)
 				-D CM_GEN:STRING=${CMAKE_GENERATOR}
 				-D SASFIT_VERSION:STRING=${SASFIT_VERSION}
 				-P ${SASFIT_PCKG_SCRIPT}
-		COMMENT "Now copying sasfit source files to a separate directory ..."
+        COMMENT "Copying sasfit source files to a separate directory ..."
 		VERBATIM
 	)
 endif(CREATE_SOURCE)
