@@ -188,14 +188,16 @@ if(OPENMP_FOUND)
         message(STATUS "OpenMP_C_FLAGS: '${OpenMP_C_FLAGS}'")
         message(STATUS "OpenMP_CXX_FLAGS: '${OpenMP_CXX_FLAGS}'")
         message(STATUS "OpenMP_EXE_LINKER_FLAGS: '${OpenMP_EXE_LINKER_FLAGS}'")
-        # gather required libraries
-        execute_process(COMMAND ${CMAKE_C_COMPILER} -print-file-name=libgomp.a
-                        OUTPUT_VARIABLE OpenMP_LIB)
-        string(STRIP "${OpenMP_LIB}" OpenMP_LIB)
-        get_filename_component(OpenMP_LIB "${OpenMP_LIB}" REALPATH)
-#        find_library(pthread_LIB pthread-2)
-#        list(APPEND OpenMP_LIB "${pthread_LIB}")
-        set(OpenMP_LIB) # disables above code ...
+        set(OpenMP_LIB)
+        if(WIN32)
+            # gather required libraries
+            execute_process(COMMAND ${CMAKE_C_COMPILER} -print-file-name=libgomp.a
+                            OUTPUT_VARIABLE OpenMP_LIB)
+            string(STRIP "${OpenMP_LIB}" OpenMP_LIB)
+            get_filename_component(OpenMP_LIB "${OpenMP_LIB}" REALPATH)
+            find_library(pthread_LIB pthread-2)
+            list(APPEND OpenMP_LIB "${pthread_LIB}")
+        endif()
         message(STATUS "OpenMP LIBRARIES: '${OpenMP_LIB}'")
 else()
         message(STATUS "Disabling OpenMP support")
