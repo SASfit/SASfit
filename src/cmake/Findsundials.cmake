@@ -45,27 +45,28 @@
 message("find sundials")
 get_package_dir(${SASFIT_ROOT_DIR}/src/sundials)
 
-# file include dir of custom build library
-find_path(sundials_INCLUDE_DIRS
-        NAMES kinsol.h
-        PATHS ${SOURCE_DIR}/include
-        PATH_SUFFIXES kinsol
-        NO_DEFAULT_PATH
-        DOC "sundials header include dir"
-)
-if(IS_DIRECTORY "${sundials_INCLUDE_DIRS}")
-        get_filename_component(sundials_INCLUDE_DIRS
-                "${sundials_INCLUDE_DIRS}" PATH ABSOLUTE)
+set(sundials_INCLUDE_DIRS ${SOURCE_DIR}/include)
+
+# search build directory
+file(GLOB sundials_BUILD_DIRS ${SOURCE_DIR}/*/CMakeCache.txt)
+list(LENGTH sundials_BUILD_DIRS NUM_DIRS)
+if(NUM_DIRS GREATER 0)
+        list(GET sundials_BUILD_DIRS 0 sundials_BUILD_DIR)
+        get_filename_component(sundials_BUILD_DIR
+                               "${sundials_BUILD_DIR}" DIRECTORY)
+#        message("sundials_BUILD_DIR: '${sundials_BUILD_DIR}'")
+        list(APPEND sundials_INCLUDE_DIRS ${sundials_BUILD_DIR}/include)
 endif()
 
-file(GLOB sundials_STATIC_LIBS ${SOURCE_DIR}/build/src/*/*.a)
+file(GLOB sundials_STATIC_LIBS ${sundials_BUILD_DIR}/src/*/*.a)
 
 if(sundials_STATIC_LIBS)
         set(sundials_LIBRARIES ${sundials_STATIC_LIBS})
 endif()
 
+list(LENGTH sundials_INCLUDE_DIRS NUM_INC_DIRS)
 set(sundials_FOUND FALSE)
-if(IS_DIRECTORY ${sundials_INCLUDE_DIRS} AND sundials_LIBRARIES)
-    set(sundials_FOUND TRUE)
+if(NUM_INC_DIRS EQUAL 2 AND sundials_LIBRARIES)
+        set(sundials_FOUND TRUE)
 endif()
 
