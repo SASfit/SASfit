@@ -446,12 +446,13 @@ function(run_configure CURRENT_DIR CONFIG_OPTIONS)
 endfunction()
 
 function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
-    message(STATUS "build_saskit '${SASFIT_ROOT_DIR}' '${SASKIT_FILENAME}'")
     set(SASKIT_PATH ${SASFIT_ROOT_DIR}/saskit)
     set(SASKIT_FILE ${SASKIT_PATH}/${SASKIT_FILENAME})
     if(EXISTS "${SASKIT_FILE}")
+        message(STATUS "saskit exists already: '${SASKIT_FILE}'.")
         return() # nothing to do if saskit file exists already
     endif()
+    message(STATUS "Building saskit '${SASKIT_FILE}'.")
     message(STATUS "Saskit file '${SASKIT_FILE}' does not exist. "
                    "Attempting to build it.")
     if(EXISTS "${TCL_SH}")
@@ -476,6 +477,7 @@ endfunction()
 function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
     set(SASKIT_FILE ${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME})
     if(NOT EXISTS "${SASKIT_FILE}")
+        message(STATUS "saskit '${SASKIT_FILE}' does not exist, not checking dependencies.")
         return()
     endif()
     # init with linux settings
