@@ -230,7 +230,7 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             OZD->root_algorithm=Sstar_iteration;
             break;
         case 12 :
-            OZD->root_algorithm=Steffensen_iteration;
+            OZD->root_algorithm=Steffensen4_iteration;
             break;
         case 13 :
             OZD->root_algorithm=AndersonAcc;

@@ -17,8 +17,8 @@ Calculations are done by iterative solution of Ornstein-Zernike equation with a 
 
 Structure OZdata is a principal element of this package which encapsulates input and output variables.
 Input variables that describe physical system itself:
-- OZD.phi —  particles volume fraction;
-- OZD.pPot — array with parameters of interaction potental;
+- OZD.phi Â—  particles volume fraction;
+- OZD.pPot Â— array with parameters of interaction potental;
 - OZD.potential - pointer to definition of pair potential;
 - OZD.T - temperature;
 - OZD.cl - specifies closure relation that will be used in calculation
@@ -93,7 +93,7 @@ typedef enum {
                   // where \delta_j is a step of size \sqrt\epsilon |x_j| with
                   // \epsilon being the machine precision
                   // (\epsilon \approx 2.22 \times 10^-16).
-                  // The order of convergence of Newton’s algorithm is quadratic,
+                  // The order of convergence of NewtonÂ’s algorithm is quadratic,
                   // but the finite differences require n^2 function evaluations
                   // on each iteration. The algorithm may become unstable if the
                   // finite differences are not a good approximation to the true
@@ -139,7 +139,8 @@ typedef enum {
         MannII_iteration,   //
         Krasnoselskij_iteration, //
         Sstar_iteration,    //
-        Steffensen_iteration, //
+        Steffensen2_iteration, //
+        Steffensen4_iteration, //
         AndersonAcc
 } sasfit_oz_root_algorithms;
 
@@ -176,6 +177,7 @@ typedef struct {
         double *in, *out;
         fftw_plan pl;
         int interrupt;
+        int failed;
         int PrintProgress;
         Tcl_Obj *oz_obj;
 } sasfit_oz_data;
