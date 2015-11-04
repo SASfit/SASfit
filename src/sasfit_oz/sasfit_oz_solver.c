@@ -1716,7 +1716,7 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
         status = gsl_multiroot_fsolver_iterate (sgsl);
         Norm=0;
         for (j=0; j < NP; j++) {
-            Norm=gsl_pow_2(S[j])+Norm;
+            Norm=gsl_pow_2(G[j])+Norm;
         }
         Norm=sqrt(Norm);
         err = fabs((Norm-Normold)/Norm);
@@ -1766,10 +1766,10 @@ void OZ_calculation (sasfit_oz_data *OZd) {
 
 
 double OZ_step(sasfit_oz_data *OZd) {
-    double  err, ro, dk, Sm, Norm, V, Gstar,residualG,tmpr;
+    double  err, ro, dk, Sm, GNorm2, Norm, V, Gstar,residualG,tmpr;
     static double Normold=0;
     int i,j;
-    double powarg, logarg;
+    double powarg, logarg,dtmp ;
     bool doneB;
 
     OZ_func_one_t * tmp_potential;
@@ -1779,17 +1779,20 @@ double OZ_step(sasfit_oz_data *OZd) {
     doneB=FALSE;
     OZd->it++;
 
+
     if (((OZd->it*OZd->Npoints) % (100*MINDIMOZ))==0) {
         Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
     }
-    
+   
     switch (CLOSURE) {
         case PY:
             for (i=0; i < NP; i++){
                 BRIDGE[i] = log(1.0+G[i])-G[i];
                 doneB=TRUE;
                 c[i]=(1.+G[i])*(EN[i]-1.);
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case HNC:
@@ -1797,11 +1800,15 @@ double OZ_step(sasfit_oz_data *OZd) {
                 BRIDGE[i] = 0.0;
                 doneB=TRUE;
                 c[i]=-1-G[i]+EN[i]*exp(G[i]);
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case RHNC:
             for (i=0; i < NP; i++){
                 c[i]=g0[i]*exp((G[i]-G0[i])-OZd->beta*OZd->pertubation_pot(r[i],T,PARAM))-G[i]-1;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case RY:
@@ -1815,6 +1822,8 @@ double OZ_step(sasfit_oz_data *OZd) {
                     doneB=TRUE;
                     c[i]=EN[i]*(1+(exp(Fswitch[i]*G[i])-1)/Fswitch[i])-G[i]-1;
                 }
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case HMSA:
@@ -1829,6 +1838,8 @@ double OZ_step(sasfit_oz_data *OZd) {
                     doneB=TRUE;
                     c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
                 }
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case Verlet:
@@ -1836,6 +1847,8 @@ double OZ_step(sasfit_oz_data *OZd) {
                 BRIDGE[i] = -(gsl_pow_2(G[i])/(2.0*(1.+4.0/5.0*G[i])));
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case DH:
@@ -1849,6 +1862,8 @@ double OZ_step(sasfit_oz_data *OZd) {
                 BRIDGE[i] = -gsl_pow_2(Gstar)/(2.0*(1.0+(5.0*Gstar+11.0)/(7.0*Gstar+9.0)*Gstar));
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case CG:
@@ -1861,6 +1876,8 @@ double OZ_step(sasfit_oz_data *OZd) {
                 }
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case MS:
@@ -1869,6 +1886,8 @@ double OZ_step(sasfit_oz_data *OZd) {
                 BRIDGE[i] = GSL_SIGN(powarg)*sqrt(fabs(powarg))-G[i]-1.0;
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case BPGG:
@@ -1877,6 +1896,8 @@ double OZ_step(sasfit_oz_data *OZd) {
                 BRIDGE[i] = GSL_SIGN(powarg)*pow(fabs(powarg),1.0/sBPGG)-G[i]-1.0;
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case VM:
@@ -1887,6 +1908,8 @@ double OZ_step(sasfit_oz_data *OZd) {
 //            BRIDGE[i] = sqrt(1.0+2.0*Gstar)-Gstar-1.0;
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case CJVM:
@@ -1897,6 +1920,8 @@ double OZ_step(sasfit_oz_data *OZd) {
 //            BRIDGE[i] = 1.0/(2*aCJVM)*(sqrt((1.0+4.0*aCJVM*Gstar))-1.0-2.0*aCJVM*Gstar);
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case BB:
@@ -1907,6 +1932,8 @@ double OZ_step(sasfit_oz_data *OZd) {
 //           BRIDGE[i] = sqrt(1.0+2.0*Gstar+fBB*Gstar*Gstar)-1.0-Gstar;
                 doneB=TRUE;
                 c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case SMSA:
@@ -1915,13 +1942,19 @@ double OZ_step(sasfit_oz_data *OZd) {
                 BRIDGE[i] = log(1.0+Gstar)-Gstar;
                 doneB=TRUE;
                 c[i]=EN[i]*exp(OZd->beta*OZd->attractive_pot(r[i],T,PARAM))*(Gstar+1.0)-G[i]-1.0;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
         case MSA:
             for (i=0; i < NP; i++){
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
         case mMSA:
             for (i=0; i < NP; i++){
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
         case RMSA:
             for (i=0; i < NP; i++){
@@ -1934,33 +1967,19 @@ double OZ_step(sasfit_oz_data *OZd) {
                         c[i] = MAYER[i];
                     }
                 }
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
             }
             break;
     }
-  
-    for (i=0; i < NP; i++){  
-        if (G[i]!=G[i]) {
- //           sasfit_out("i: %d gamma(r)=%g\n",i, G[i]);
-            OZd->failed = 1;
-            G[i]=0.0;
-        }
-        g[i]= c[i]+G[i]+1.0;
-
-        if (g[i]!=g[i]) {
-//            sasfit_out("i: %d g(r)=%g\n",i, g[i]);
-            OZd->failed = 1;
-            g[i]=0.0;
-        }
-        OZIN[i]=(i+1)*c[i];
-
-    }
+    
     cp_array_to_gsl_vector(G,GAMMA_R,NP);
  
  //   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute_r2r(OZd->pl,OZIN,OZOUT);
-
+    dtmp=4.0*M_PI*dr*dr/(2.0*dk);
     for (j=0; j < NP; j++) {
-        cf[j]=4.0*M_PI*dr*dr*OZOUT[j]/(2.0*dk*(j+1.0));
+        cf[j]=dtmp*OZOUT[j]/(j+1.0);
         CFOLD[j]=cf[j];
         GF[j]=ro*cf[j]*cf[j]/(1.0-ro*cf[j]);
         OZIN[j]=GF[j]*(j+1.0);
@@ -1968,14 +1987,14 @@ double OZ_step(sasfit_oz_data *OZd) {
 //    OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute_r2r(OZd->pl,OZIN,OZOUT);
     Sm=0;
-    residualG = 0;
+    GNorm2 = 0;
+    dtmp=4.*M_PI*dk*dk/(2.0*dr*gsl_pow_3(2.0*M_PI));
     for (j=0; j < NP; j++) {
-        tmpr=G[i];
-        G[j]=4.*M_PI*dk*dk*OZOUT[j]/(2.0*dr*gsl_pow_3(2.0*M_PI)*(j+1.0));
-        residualG = residualG+fabs(G[i]-tmpr);
+        G[j]=dtmp*OZOUT[j]/(j+1.0);
         S[j]=1./(1.-ro*cf[j]);
         HR[j]=c[j]+G[j];
-        Sm=gsl_pow_2(S[j])+Sm;
+        Sm=S[j]*S[j]+Sm;
+        GNorm2=G[j]*G[j]+GNorm2;
         if (!doneB) {
             if (g[j] > 0 && EN[j] != 0) {
                 BRIDGE[j]=log(g[j])+UBETA[j]-G[j];
@@ -1985,6 +2004,7 @@ double OZ_step(sasfit_oz_data *OZd) {
         }
         CAVITY[j] = exp(BRIDGE[j]+G[j]);
     }
+    return sqrt(GNorm2);
     return sqrt(Sm);
 }
 
@@ -2112,9 +2132,9 @@ void OZ_solver (sasfit_oz_data *OZd) {
                 sasfit_err("this algorithm is planned to be implemented\n");
     }
 
-    if (OZd->PrintProgress == 1) {
-            sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
-    }
+
+    sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
+ 
     Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
     Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
 
@@ -2358,9 +2378,9 @@ void root_finding (sasfit_oz_data *OZd) {
     i = 0;
     while (signchange==0 && i<=28) {
         if (CLOSURE==RY || CLOSURE==HMSA){
-            refnew=compressibility_calc(100/pow(3,i), OZd);
-            alpha_left  = 100/pow(3,i);
-            alpha_right = 100/pow(3,i-1);
+            refnew=compressibility_calc(100/pow(2,i), OZd);
+            alpha_left  = 100/pow(2,i);
+            alpha_right = 100/pow(2,i-1);
         }
         if (CLOSURE==BPGG) {
             refnew=compressibility_calc(5.601-0.2*i, OZd);

@@ -54,7 +54,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[17] = "RHNC";
     ClosureNames[18] = "Soft-Core MSA";
     ClosureNames[19] = "SMSA";
-    ClosureNames[20] = "HNC–SMSA";
+    ClosureNames[20] = "HNCÂ–SMSA";
     ClosureNames[21] = "HMSA";
     ClosureNames[22] = "Choudhury-Gosh";
     ClosureNames[23] = "CG";
@@ -230,7 +230,7 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             OZD->root_algorithm=Sstar_iteration;
             break;
         case 12 :
-            OZD->root_algorithm=Steffensen4_iteration;
+            OZD->root_algorithm=Steffensen2_iteration;
             break;
         case 13 :
             OZD->root_algorithm=AndersonAcc;
