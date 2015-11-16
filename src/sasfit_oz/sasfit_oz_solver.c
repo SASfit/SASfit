@@ -190,7 +190,7 @@ gsl_matrix* addColumnToMatrixByExtension(gsl_matrix* A, const gsl_vector* c){
   //From here, Matrix must be already filled previously.
   //Find new Matrix dimensions: what is current dim?
   size_t numberOfRows = A->size1;
-  
+
   if (vectorSize != numberOfRows){
     sasfit_out("Cannot add column vector to matrix due to dimension problems \n");
     sasfit_out("Number of rows in matrix: %zu \n", numberOfRows);
@@ -198,8 +198,8 @@ gsl_matrix* addColumnToMatrixByExtension(gsl_matrix* A, const gsl_vector* c){
     sasfit_out("Exiting from addColumnToMatrixByExtension... \n");
     return NULL;
   }
-  
-  
+
+
   int oldNumberOfColumns = A->size2;
   int newNumberOfColumns = oldNumberOfColumns +1;
 
@@ -222,15 +222,17 @@ gsl_matrix* addColumnToMatrixByExtension(gsl_matrix* A, const gsl_vector* c){
   es = gsl_matrix_set_col(A_new, newNumberOfColumns -1, c);
   //A is now unused, so we free its memory
   gsl_matrix_free(A);
+  //so is v..
+  gsl_vector_free(v);
   return A_new;
-}  
+}
 
 //A = [a_0,...,a_n] -> [a_1,...a_n, c]
 int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
   //Find new Matrix dimensions
   size_t numberOfRows = A->size1;
   size_t vectorSize = c->size;
-  
+
   if (vectorSize != numberOfRows){
     sasfit_out("Cannot add column vector to matrix due to dimension problems \n");
     sasfit_out("Number of rows in matrix: %zu \n", numberOfRows);
@@ -238,9 +240,9 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
     sasfit_out("Exiting from addColumnToMatrixByShifting...\n");
     return -1;
   }
-  
+
   int es; //To hold the exit status of the GSL methods
-  
+
   int numberOfColumns = A->size2;
   //copy old values (i.e columns)
   //first we allocate a buffer column vector v
@@ -255,6 +257,8 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
   }
   //Finally add the new column
   es = gsl_matrix_set_col(A, numberOfColumns -1, c);
+  //...and deallocate buffer
+  gsl_vector_free(v);
   return es;
 }
 
@@ -373,7 +377,7 @@ int OZ_first_order_divided_difference_matrix(sasfit_oz_data *OZd, double *x, dou
     DDF = gsl_matrix_calloc(NP,NP);
     DDFinv = gsl_matrix_calloc(NP,NP);
  */
- 
+
     u = (double*)malloc((NP)*sizeof(double));
     v = (double*)malloc((NP)*sizeof(double));
     Fu = (double*)malloc((NP)*sizeof(double));
@@ -507,7 +511,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     int  rcode,error,ms;
     double xh, resnorm, xdnorm;
 	long int N;
-    
+
  //   TERM_CHECK termcheck = CheckOnRestart;
 
  //Variable declaration:
@@ -517,7 +521,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   //for this choice is good performance and a good condition number (see section
   //'method comparison' in PhD). However, from a theoretical point of view, I am not sure
   //on what extend the DFT results (where the fix point operator is the Hamiltonian
-  //describing a Hartree-Fock step for a many-electron system, eq 3.2) 
+  //describing a Hartree-Fock step for a many-electron system, eq 3.2)
   //can be transferred to OZ, but benchmarking this algorithm against others gives good results.
   //........................................................................................
   //maximalDimensionOfKrylovSpace is the number of elements in the vector space used
@@ -533,7 +537,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   //float b = 1.0; using alpha instead below. b is the notation in the above cited PhD.
   //Note that alpha here (contary to the other algorithms) does not describe the mixing coefficients.
   //These are stored in the vector 'a'. alpha here describes how the the mixing of the new state as a
-  //weighted sum of the linear combination of past states plus the linear combination of past residuals 
+  //weighted sum of the linear combination of past states plus the linear combination of past residuals
   //is calculated. alpha = 1.0 means that we only take past states into account, alpha = 0.0 gives a
   //equal mixing. (General formula: x_new = Ka + (alpha - 1)Da, K: past states, D: past residuals)
   //alpha-values close to one seem to have better performance.
@@ -564,13 +568,13 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   gsl_vector* res_opt;
   //negative of last entry in D
   gsl_vector* d;
-  
+
   //GSL internal
   int gslReturnValue = 0;
   //did addColumnToMatrixByShifting succeed?:
   int matrixShiftReturnValue = 0;
-  
-  
+
+
     OZd->failed = 0;
     phi_actual = OZd->phi;
     phi_set = OZd->phi;
@@ -1295,7 +1299,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 yn = (double*)malloc((NP)*sizeof(double));
                 zn = (double*)malloc((NP)*sizeof(double));
 				un = (double*)malloc((NP)*sizeof(double));
-				
+
 				gsl_matrix *A, *B, *b0, *b2;
 				gsl_matrix *Ainv, *Binv;
 				gsl_permutation *perm;
@@ -1305,7 +1309,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				Binv = gsl_matrix_calloc(NP,NP);
 				b0 = gsl_matrix_calloc(NP,NP);
 				b2 = gsl_matrix_calloc(NP,NP);
-				
+
                 iloop = 0;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
@@ -1322,10 +1326,10 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                     }
 
                     iloop++;
-					
+
                     Norm = OZ_fp(xn,OZd,Tx);
 					cp_array_to_array(G,zn,NP);
-					
+
 					sasfit_out("loop: %d , error=%g\nnext step divided difference routine\n",iloop,err);
                     error = OZ_first_order_divided_difference_matrix(OZd,xn,zn,A);
 					sasfit_out("success divided differenzes: %d\n",error);
@@ -1346,13 +1350,13 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 					error = OZ_first_order_divided_difference_matrix(OZd,zn,un,b2);
 					sasfit_out("success divided differenzes: %d\n",error);
 					if (!error) break;
-					
+
 					for (i=0;i<NP;i++) {
 						for (j=0;j<NP;j++) gsl_matrix_set(B,i,j,gsl_matrix_get(b0,i,j)-gsl_matrix_get(A,i,j)+gsl_matrix_get(b2,i,j));
 					}
 					gsl_linalg_LU_decomp(B, perm, &ms);
 					gsl_linalg_LU_invert(B, perm, Binv);
-					
+
 					Norm = OZ_fp(un,OZd,Ty);
 					Norm = 0;
                     for (i=0;i<NP;i++) {
@@ -1384,7 +1388,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(zn);
 				free(un);
                 free(Tx);
-                free(Ty); 
+                free(Ty);
 				gsl_matrix_free(A);
 				gsl_matrix_free(Ainv);
 				gsl_matrix_free(B);
@@ -1456,12 +1460,12 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 K = NULL;
                 //Matrix to hold previous residuals
                 D = NULL;
-  
+
                 //GSL internal
                 gslReturnValue = 0;
                 //did addColumnToMatrixByShifting succeed?:
                 matrixShiftReturnValue = 0;
- 
+
  //Variable allocation
   //............................................................
   //allocate memory for gsl variables
@@ -1487,7 +1491,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 gsl_vector_set_zero(x_A);
 
 //
- 
+
   //Main Loop of algorithm. x must be initialized to x_0 at this stage
   //...................................................................
   n=0;
@@ -1544,7 +1548,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
         break; //We exit the while Loop, not all memory is freed
       }
     }
-    
+
     //Calculate residuum r = x_n - x, result is stored in x_n
     gslReturnValue = gsl_vector_sub(x_n, x); //printf("%d \n", gslReturnValue);
     r_n = x_n; //r_n ist just a pointer without allocated memory, just used for better naming
@@ -1556,7 +1560,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
         sasfit_out("Couldn't extend D matrix, exiting AAA");
         break; //We exit the while Loop, not all memory is freed
       }
-      
+
     }else{
       matrixShiftReturnValue = addColumnToMatrixByShifting(D, r_n);
       if (matrixShiftReturnValue < 0){
@@ -1565,7 +1569,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
       }
     }
     //printf("D: \n"); printMatrix(D);
-    
+
     if (dimensionOfKrylovSpace == 1){
       gsl_vector_memcpy(x, x_n);
       continue; //If D consists of one vector only, we skip the least square fit
@@ -1586,9 +1590,9 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
       a = gsl_vector_alloc(dimensionOfKrylovSpace);
     }
     gsl_matrix_set_zero(D_reduced);
-    //We calculate D_reduced = DW    
+    //We calculate D_reduced = DW
     gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, D, W, 0.0, D_reduced);
-    //Ready to solve min || D_reduced a_reduced + r_n || 
+    //Ready to solve min || D_reduced a_reduced + r_n ||
     //            a_reduced
     //QR decomposition
     gsl_vector_set_zero(tau);
@@ -1617,7 +1621,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     gsl_vector_add(summand_1, summand_2);
     gsl_vector_memcpy(x_A, summand_1);
     gsl_vector_memcpy(x, x_A);
-    
+
     //Finally, free memory, if dimensionOfKrylovSpace == maximalDimensionOfKrylovSpace then
     //the memory will be reused, else we can free it.
     if (dimensionOfKrylovSpace < maximalDimensionOfKrylovSpace){
@@ -1628,7 +1632,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
       gsl_vector_free(tau);
     }
   }//end main loop
-  
+
   //Memory de-allocation
   //............................................................................
   //Free all memory explicitly, first the memory of size DimensionOfKrylovSpace
@@ -1638,10 +1642,10 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   gsl_vector_free(a);
   gsl_vector_free(a_reduced);
   gsl_vector_free(tau);
-  
+
   gsl_matrix_free(D);
   gsl_matrix_free(K);
-  
+
   //..then the memory of size dimensionOfVectorSpace
   gsl_vector_free(x);
   gsl_vector_free(x_n);
@@ -1649,21 +1653,22 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   gsl_vector_free(res_opt);
   gsl_vector_free(d);
   gsl_vector_free(summand_1);
-  gsl_vector_free(summand_2);  
-  
+  gsl_vector_free(summand_2);
+
   //                  sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
     }
-   
-        if (OZd->failed == 1) { 
+
+        if (OZd->failed == 1) {
             if (phi_actual == phi_set) {
-                    phi_actual = phi_set/ 2.0;
+                    phi_actual = phi_set/ 10.0;
                     OZd->failed = 0;
                      sasfit_out("try first phi %lf\n",phi_actual);
-            } 
+            }
         } else {
                 if (phi_actual != phi_set) {
-                    phi_actual =phi_actual+phi_set/ 20.0;
+                    phi_actual =phi_actual+phi_set/ 1000.0;
+                    sasfit_out("number of OZ_step calls so far: %d\n",OZd->it);
                     sasfit_out("try now phi %lf\n",phi_actual);
                 }
         }
@@ -1784,7 +1789,7 @@ double OZ_step(sasfit_oz_data *OZd) {
         Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
     }
-   
+
     switch (CLOSURE) {
         case PY:
             for (i=0; i < NP; i++){
@@ -1972,9 +1977,9 @@ double OZ_step(sasfit_oz_data *OZd) {
             }
             break;
     }
-    
+
     cp_array_to_gsl_vector(G,GAMMA_R,NP);
- 
+
  //   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute_r2r(OZd->pl,OZIN,OZOUT);
     dtmp=4.0*M_PI*dr*dr/(2.0*dk);
@@ -2134,7 +2139,7 @@ void OZ_solver (sasfit_oz_data *OZd) {
 
 
     sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
- 
+
     Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
     Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
 
