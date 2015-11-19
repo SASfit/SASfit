@@ -34,6 +34,64 @@
 #define kb GSL_CONST_MKSA_BOLTZMANN
 #define GET_TCL(val_type, target, src_name) (sasfit_tcl_get_ ## val_type(interp, target, ozname, src_name) == TCL_OK)
 
+void  KINErrSASfit(int error_code, 
+                               const char *module, const char *function, 
+                               char *msg, void *OZd_structure){
+
+    sasfit_oz_data *OZd;
+    OZd = (sasfit_oz_data*) OZd_structure;
+    sasfit_out("optained error code %d from %s-%s:%s\n",error_code, module,function,msg);
+}; 
+void KINInfoSASfit(const char *module, const char *function, 
+                                char *msg, void *OZd_structure){
+
+    sasfit_oz_data *OZd;
+    OZd = (sasfit_oz_data*) OZd_structure;
+    sasfit_out("Info message from %s-%s:%s\n",module,function,msg);
+}; 
+/*
+ * Check function return value...
+ *    opt == 0 means SUNDIALS function allocates memory so check if
+ *             returned NULL pointer
+ *    opt == 1 means SUNDIALS function returns a flag so check if
+ *             flag >= 0
+ *    opt == 2 means function allocates memory so check if returned
+ *             NULL pointer 
+ */
+static int check_flag(void *flagvalue, char *funcname, int opt)
+{
+  int *errflag;
+
+  /* Check if SUNDIALS function returned NULL pointer - no memory allocated */
+  if (opt == 0 && flagvalue == NULL) {
+    fprintf(stderr, 
+            "\nSUNDIALS_ERROR: %s() failed - returned NULL pointer\n\n",
+	    funcname);
+    return(1);
+  }
+
+  /* Check if flag < 0 */
+  else if (opt == 1) {
+    errflag = (int *) flagvalue;
+    if (*errflag < 0) {
+      fprintf(stderr,
+              "\nSUNDIALS_ERROR: %s() failed with flag = %d\n\n",
+	      funcname, *errflag);
+      return(1); 
+    }
+  }
+
+  /* Check if function returned NULL pointer - no memory allocated */
+  else if (opt == 2 && flagvalue == NULL) {
+    fprintf(stderr,
+            "\nMEMORY_ERROR: %s() failed - returned NULL pointer\n\n",
+	    funcname);
+    return(1);
+  }
+
+  return(0);
+}
+
 void check_interrupt(sasfit_oz_data *OZd) {
     int interupt_signal;
     Tcl_Interp *interp;
@@ -56,6 +114,28 @@ int cp_gsl_vector_to_array(const gsl_vector *src, double *target, int dimtarget)
     int i;
     if (src->size != dimtarget) return GSL_FAILURE;
     for (i=0;i<dimtarget;i++) target[i] = gsl_vector_get(src,i);
+    return GSL_SUCCESS;
+}
+
+
+int cp_N_Vector_to_array(N_Vector src, double *target, int dimtarget) {
+    int i;
+    if (NV_LENGTH_S(src) != dimtarget) return GSL_FAILURE;
+    for (i=0;i<dimtarget;i++) target[i] = NV_Ith_S(src,i);
+    return GSL_SUCCESS;
+}
+
+int cp_array_to_N_Vector( double * src, N_Vector target, int dimsrc) {
+    int i;
+    if (NV_LENGTH_S(target) != dimsrc) return GSL_FAILURE;
+    for (i=0;i<dimsrc;i++) NV_Ith_S(target,i) = src[i] ;
+    return GSL_SUCCESS;
+}
+
+int cp_array_diff_N_Vector_to_N_Vector(double *src1,  N_Vector src2, N_Vector target, int dimsrc) {
+    int i;
+    if (NV_LENGTH_S(target) != dimsrc) return GSL_FAILURE;
+    for (i=0;i<dimsrc;i++)  NV_Ith_S(target,i) = src1[i]-NV_Ith_S(src2,i);
     return GSL_SUCCESS;
 }
 
@@ -512,6 +592,10 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     double xh, resnorm, xdnorm;
 	long int N;
 
+    N_Vector u, f, u_scale, f_scale;
+    void * kin_mem;
+    int flag, maxlrst;
+    
  //   TERM_CHECK termcheck = CheckOnRestart;
 
  //Variable declaration:
@@ -1397,61 +1481,306 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				gsl_matrix_free(b2);
 				gsl_permutation_free(perm);
                 break;
-        case NGMRES:
-                xn = (double*)malloc((NP)*sizeof(double));
-                Tx = (double*)malloc((NP)*sizeof(double));
-                cp_array_to_array(G,xn,NP);
-/*
-				u = N_VMake_Serial(N,G);
-				NV_DATA S(u);
+        case KINSOLFP:                
+                maxlrst = MAXSTEPS/10;
+				u_scale = N_VNew_Serial(NP);
+                f_scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, u_scale);        /* no scaling */
+                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+                kin_mem=NULL;
+				u = N_VNew_Serial(NP);
+                cp_array_to_N_Vector(G,u,NP);
+                
 				kin_mem = KINCreate();
-				flag = KINSpfgmr(kin_mem, 0);
-				KINSetPrintLevel(kin_mem,0);
-				KINSetUserData(kin_mem,OZd);
-				KINSetSysFunc(kin_mem,OZ_step);
-				KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
-                cp_array_to_array(Tx,G,NP);
+                  /* Set number of prior residuals used in Anderson acceleration */
+                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
+                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
+                flag = KINSetMAA(kin_mem, 5);
+                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
+                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
+				flag = KINSetPrintLevel(kin_mem,3);
+                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+ //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
+ //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
+ 
+                
+                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
+                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
+                
+                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
+                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
+
+                flag = KINSetFuncNormTol(kin_mem, RELERROR);
+                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
+                
+ //               flag = KINSetNoInitSetup(kin_mem, TRUE);
+ //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
+                
+				flag = KINSetUserData(kin_mem,OZd);
+                sasfit_out("KINSetUserData(flag)=%d\n",flag);
+                
+ //               flag = KINSetConstraints(kin_mem, 1.0);
+ //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                
+   				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
+                sasfit_out("KINInit(flag)=%d\n",flag);
+                 
+				flag = KINSpgmr(kin_mem, 0);
+                sasfit_out("KINSpgmr(flag)=%d\n",flag);
+//                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
+//                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
+                
+				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+                sasfit_out("KINSol(flag)=%d\n",flag);
+                KINGetFuncNorm(kin_mem, &Norm);
+                sasfit_out("error/Norm %lg, Norm %lg, FNorm/GNorm%lg, GNorm=%lg\n:",RELERROR/Norm,Norm,Norm/OZd->GNorm,OZd->GNorm);
+                
+                
 				N_VDestroy_Serial(u);
-				KINFree(&kin mem);
+                N_VDestroy_Serial(u_scale);
+                N_VDestroy_Serial(f_scale);
+				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
-*/
-                free(xn);
-                free(Tx);
                 break;
-        case NBiCGSTAB:
-                xn = (double*)malloc((NP)*sizeof(double));
-                Tx = (double*)malloc((NP)*sizeof(double));
-                cp_array_to_array(G,xn,NP);
-                nsoliparam[0]=240;
-                nsoliparam[1]=480;
-                nsoliparam[2]=-0.1;
-                nsoliparam[3]=3;
-                nsoliparam[4]=20;
-                tol[0]=RELERROR;
-                tol[1]=RELERROR;
-                nsoli(xn,&OZ_step,OZd,tol,nsoliparam,Tx,&ierr);
-                cp_array_to_array(Tx,G,NP);
+        case GMRES:                
+                maxlrst = MAXSTEPS/10;
+				u_scale = N_VNew_Serial(NP);
+                f_scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, u_scale);        /* no scaling */
+                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+                kin_mem=NULL;
+				u = N_VNew_Serial(NP);
+                cp_array_to_N_Vector(G,u,NP);
+                
+				kin_mem = KINCreate();
+                  /* Set number of prior residuals used in Anderson acceleration */
+                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
+                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
+                flag = KINSetMAA(kin_mem, 5);
+                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
+                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
+				flag = KINSetPrintLevel(kin_mem,3);
+                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+ //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
+ //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
+ 
+                
+                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
+                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
+                
+                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
+                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
+
+                flag = KINSetFuncNormTol(kin_mem, RELERROR);
+                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
+                
+ //               flag = KINSetNoInitSetup(kin_mem, TRUE);
+ //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
+                
+				flag = KINSetUserData(kin_mem,OZd);
+                sasfit_out("KINSetUserData(flag)=%d\n",flag);
+                
+ //               flag = KINSetConstraints(kin_mem, 1.0);
+ //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                
+   				flag = KINInit(kin_mem,OZ_step_kinsol,u);
+                sasfit_out("KINInit(flag)=%d\n",flag);
+                 
+				flag = KINSpgmr(kin_mem, 0);
+                sasfit_out("KINSpgmr(flag)=%d\n",flag);
+//                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
+//                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
+                
+				flag = KINSol(kin_mem,u,KIN_LINESEARCH,u_scale, f_scale);
+                sasfit_out("KINSol(flag)=%d\n",flag);
+                KINGetFuncNorm(kin_mem, &Norm);
+                sasfit_out("error/Norm %lg, Norm %lg, FNorm/GNorm%lg, GNorm=%lg\n:",RELERROR/Norm,Norm,Norm/OZd->GNorm,OZd->GNorm);
+                
+                
+				N_VDestroy_Serial(u);
+                N_VDestroy_Serial(u_scale);
+                N_VDestroy_Serial(f_scale);
+				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
-                free(xn);
-                free(Tx);
                 break;
-        case NTFQMR:
-                xn = (double*)malloc((NP)*sizeof(double));
-                Tx = (double*)malloc((NP)*sizeof(double));
-                cp_array_to_array(G,xn,NP);
-                nsoliparam[0]=20;
-                nsoliparam[1]=40;
-                nsoliparam[2]=-0.1;
-                nsoliparam[3]=4;
-                nsoliparam[4]=20;
-                tol[0]=RELERROR;
-                tol[1]=RELERROR;
-                nsoli(xn,&OZ_step,OZd,tol,nsoliparam,Tx,&ierr);
-                cp_array_to_array(Tx,G,NP);
+        case FGMRES:            
+                maxlrst = MAXSTEPS/10;
+				u_scale = N_VNew_Serial(NP);
+                f_scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, u_scale);        /* no scaling */
+                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+                kin_mem=NULL;
+				u = N_VNew_Serial(NP);
+                cp_array_to_N_Vector(G,u,NP);
+                
+				kin_mem = KINCreate();
+                  /* Set number of prior residuals used in Anderson acceleration */
+                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
+                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
+                flag = KINSetMAA(kin_mem, 5);
+                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
+                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
+				flag = KINSetPrintLevel(kin_mem,3);
+                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+               
+ //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
+ //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
+ 
+                
+                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
+                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
+                
+                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
+                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
+                
+                flag = KINSetFuncNormTol(kin_mem, RELERROR);
+                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
+                
+ //               flag = KINSetNoInitSetup(kin_mem, TRUE);
+ //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
+                
+				flag = KINSetUserData(kin_mem,OZd);
+                sasfit_out("KINSetUserData(flag)=%d\n",flag);
+                
+ //               flag = KINSetConstraints(kin_mem, 1.0);
+ //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                
+   				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
+                sasfit_out("KINInit(flag)=%d\n",flag);
+                 
+				flag = KINSpfgmr(kin_mem, 0);
+                sasfit_out("KINSpfgmr(flag)=%d\n",flag);
+//                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
+//                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
+				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+                sasfit_out("KINSol(flag)=%d\n",flag);
+                KINGetFuncNorm(kin_mem, &Norm);
+                sasfit_out("error/Norm %lg, Norm %lg, FNorm/GNorm%lg, GNorm=%lg\n:",RELERROR/Norm,Norm,Norm/OZd->GNorm,OZd->GNorm);
+                
+				N_VDestroy_Serial(u);
+                N_VDestroy_Serial(u_scale);
+                N_VDestroy_Serial(f_scale);
+				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
-                free(xn);
-                free(Tx);
                 break;
+        case BiCGSTAB:   
+                maxlrst = MAXSTEPS/10;
+				u_scale = N_VNew_Serial(NP);
+                f_scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, u_scale);        /* no scaling */
+                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+                kin_mem=NULL;
+				u = N_VNew_Serial(NP);
+                cp_array_to_N_Vector(G,u,NP);
+                
+				kin_mem = KINCreate();
+                  /* Set number of prior residuals used in Anderson acceleration */
+                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
+                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
+                flag = KINSetMAA(kin_mem, 5);
+                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
+                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
+				flag = KINSetPrintLevel(kin_mem,3);
+                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+               
+ //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
+ //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
+ 
+                
+                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
+                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
+                
+                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
+                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
+                
+                flag = KINSetFuncNormTol(kin_mem, RELERROR);
+                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
+                
+ //               flag = KINSetNoInitSetup(kin_mem, TRUE);
+ //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
+                
+				flag = KINSetUserData(kin_mem,OZd);
+                sasfit_out("KINSetUserData(flag)=%d\n",flag);
+                
+ //               flag = KINSetConstraints(kin_mem, 1.0);
+ //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                
+   				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
+                sasfit_out("KINInit(flag)=%d\n",flag);
+                 
+				flag = KINSpbcg(kin_mem, 0);
+                sasfit_out("KINSpbcg(flag)=%d\n",flag);
+                
+				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+                sasfit_out("KINSol(flag)=%d\n",flag);
+                KINGetFuncNorm(kin_mem, &Norm);
+                sasfit_out("error/Norm %lg, Norm %lg\n:",RELERROR/Norm,Norm);
+                
+				N_VDestroy_Serial(u);
+                N_VDestroy_Serial(u_scale);
+                N_VDestroy_Serial(f_scale);
+				KINFree(&kin_mem);
+                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                break;      
+        case TFQMR:
+                maxlrst = MAXSTEPS/10;
+				u_scale = N_VNew_Serial(NP);
+                f_scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, u_scale);        /* no scaling */
+                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+                kin_mem=NULL;
+				u = N_VNew_Serial(NP);
+                cp_array_to_N_Vector(G,u,NP);
+                
+				kin_mem = KINCreate();
+                  /* Set number of prior residuals used in Anderson acceleration */
+                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
+                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
+                flag = KINSetMAA(kin_mem, 5);
+                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
+                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
+				flag = KINSetPrintLevel(kin_mem,3);
+                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+               
+ //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
+ //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
+ 
+                
+                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
+                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
+                
+                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
+                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
+                
+                flag = KINSetFuncNormTol(kin_mem, RELERROR);
+                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
+                
+ //               flag = KINSetNoInitSetup(kin_mem, TRUE);
+ //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
+                
+				flag = KINSetUserData(kin_mem,OZd);
+                sasfit_out("KINSetUserData(flag)=%d\n",flag);
+                
+ //               flag = KINSetConstraints(kin_mem, 1.0);
+ //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                
+   				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
+                sasfit_out("KINInit(flag)=%d\n",flag);
+                 
+				flag = KINSptfqmr(kin_mem, 0);
+                sasfit_out("KINSptfqmr(flag)=%d\n",flag);
+                
+				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+                sasfit_out("KINSol(flag)=%d\n",flag);
+                KINGetFuncNorm(kin_mem, &Norm);
+                sasfit_out("error/Norm %lg, Norm %lg\n:",RELERROR/Norm,Norm);
+                
+				N_VDestroy_Serial(u);
+                N_VDestroy_Serial(u_scale);
+                N_VDestroy_Serial(f_scale);
+				KINFree(&kin_mem);
+                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                break;      
         case AndersonAcc:
                 //To check when to switch between extend and shift
                 isMaximalDimensionOfKrylovSpaceReached = 0;
@@ -2009,8 +2338,43 @@ double OZ_step(sasfit_oz_data *OZd) {
         }
         CAVITY[j] = exp(BRIDGE[j]+G[j]);
     }
-    return sqrt(GNorm2);
-    return sqrt(Sm);
+    OZd->GNorm= sqrt(GNorm2);
+    OZd->SNorm= sqrt(Sm);
+    return OZd->GNorm;
+}
+
+
+static int OZ_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
+    sasfit_oz_data *OZd;
+    cp_N_Vector_to_array(cc,G,NP);
+    OZd = (sasfit_oz_data*) OZd_structure;
+    OZ_step(OZd);
+    cp_array_diff_N_Vector_to_N_Vector(G,cc,fval,NP);
+    check_interrupt(OZd);
+    if (OZd->GNorm != OZd->GNorm) {
+        return -1;
+    } else if (OZd->interrupt != 0){
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+static int OZ_step_kinsolFP(N_Vector cc, N_Vector fval, void *OZd_structure) {
+    sasfit_oz_data *OZd;
+    double Norm;
+    cp_N_Vector_to_array(cc,G,NP);
+    OZd = (sasfit_oz_data*) OZd_structure;
+    OZ_step(OZd);
+    cp_array_to_N_Vector(G,fval,NP);
+    check_interrupt(OZd);
+    if (OZd->GNorm != OZd->GNorm) {
+        return -1;
+    } else if (OZd->interrupt != 0){
+        return -1;
+    } else {
+        return 0;
+    }
 }
 
 // Iterative solution of Ornstein-Zernike equation
@@ -2124,14 +2488,20 @@ void OZ_solver (sasfit_oz_data *OZd) {
         case Hybrids:
                 OZ_solver_by_gsl_multroot(OZd,Hybrids);
                 break;
-        case NGMRES:
-                OZ_solver_by_iteration(OZd,NGMRES);
+        case KINSOLFP:
+                OZ_solver_by_iteration(OZd,KINSOLFP);
                 break;
-        case NTFQMR:
-                OZ_solver_by_iteration(OZd,NTFQMR);
+        case GMRES:
+                OZ_solver_by_iteration(OZd,GMRES);
                 break;
-        case NewtonLibGMRES:
-                OZ_solver_by_iteration(OZd,NewtonLibGMRES);
+        case FGMRES:
+                OZ_solver_by_iteration(OZd,FGMRES);
+                break;
+        case TFQMR:
+                OZ_solver_by_iteration(OZd,TFQMR);
+                break;
+        case BiCGSTAB:
+                OZ_solver_by_iteration(OZd,BiCGSTAB);
                 break;
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");

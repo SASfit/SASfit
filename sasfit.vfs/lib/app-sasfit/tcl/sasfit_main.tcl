@@ -315,7 +315,7 @@ set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}
 
-set OZ(algorithm) "S iteration"
+set OZ(algorithm) "Anderson mixing"
 #set OZ(algorithm) "GMRES"
 #set OZ(phi) 0.41887902047863909846168578443727
 set OZ(interrupt) 0
