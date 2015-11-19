@@ -23,6 +23,7 @@
 
 #define OZMAXPAR 16
 #define PUTS(format, ...) sasfit_out(format, __VA_ARGS__)
+
 double U_ZERO(double d, double temp, double *p) {
 return 0.0;
 }
@@ -54,7 +55,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[17] = "RHNC";
     ClosureNames[18] = "Soft-Core MSA";
     ClosureNames[19] = "SMSA";
-    ClosureNames[20] = "HNC–SMSA";
+    ClosureNames[20] = "HNCÂ–SMSA";
     ClosureNames[21] = "HMSA";
     ClosureNames[22] = "Choudhury-Gosh";
     ClosureNames[23] = "CG";
@@ -157,7 +158,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
 {
-#define MAXROOTALGORITHMS 22
+#define MAXROOTALGORITHMS 23
     const char * RootAlgorithms[MAXROOTALGORITHMS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -175,14 +176,15 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
     RootAlgorithms[11] = "S* iteration";
     RootAlgorithms[12] = "Steffensen iteration";
     RootAlgorithms[13] = "Anderson mixing";
+    RootAlgorithms[14] = "GMRES" ;
+    RootAlgorithms[15] = "Bi-CGStab" ;
+    RootAlgorithms[16] = "TFQMR" ;
+    RootAlgorithms[17] = "FGMRES";
+    RootAlgorithms[18] = "KINSOL_FP";
     RootAlgorithms[MAXROOTALGORITHMS-1] = "dNewton";
     RootAlgorithms[MAXROOTALGORITHMS-2] = "Hybrid";
     RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
     RootAlgorithms[MAXROOTALGORITHMS-4] = "Broyden";
-    RootAlgorithms[MAXROOTALGORITHMS-5] = "GMRES";
-    RootAlgorithms[MAXROOTALGORITHMS-6] = "Bi-CGSTAB";
-    RootAlgorithms[MAXROOTALGORITHMS-7] = "TFQMR";
-    RootAlgorithms[MAXROOTALGORITHMS-8] = "NewtonLibGMRES";
 
     i=0;
     eq=-1;
@@ -230,10 +232,25 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             OZD->root_algorithm=Sstar_iteration;
             break;
         case 12 :
-            OZD->root_algorithm=Steffensen4_iteration;
+            OZD->root_algorithm=Steffensen2_iteration;
             break;
         case 13 :
             OZD->root_algorithm=AndersonAcc;
+            break;
+        case 14 :
+            OZD->root_algorithm=GMRES;
+            break;
+        case 15 :
+            OZD->root_algorithm=BiCGSTAB;
+            break;
+        case 16 :
+            OZD->root_algorithm=TFQMR;
+            break;
+        case 17 :
+            OZD->root_algorithm=FGMRES;
+            break;
+        case 18 :
+            OZD->root_algorithm=KINSOLFP;
             break;
         case MAXROOTALGORITHMS-1 :
             OZD->root_algorithm=dNewton;
@@ -246,19 +263,6 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
             break;
         case MAXROOTALGORITHMS-4 :
             OZD->root_algorithm=Broyden;
-            break;
-        case MAXROOTALGORITHMS-5 :
-            OZD->root_algorithm=NGMRES;
-            break;
-        case MAXROOTALGORITHMS-6 :
-            OZD->root_algorithm=NBiCGSTAB;
-            break;
-        case MAXROOTALGORITHMS-7 :
-            OZD->root_algorithm=NTFQMR;
-            break;
-        case MAXROOTALGORITHMS-8 :
-            OZD->root_algorithm=NewtonLibGMRES;
-            sasfit_out("NewtonLibGMRES\n");
             break;
         default :
             OZD->root_algorithm=S_iteration;

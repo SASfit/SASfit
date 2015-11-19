@@ -180,6 +180,7 @@ add_definitions(
 
 # openMP
 find_package(OpenMP REQUIRED)
+
 if(OPENMP_FOUND)
         message(STATUS "Enabling OpenMP support")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
