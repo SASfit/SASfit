@@ -58,6 +58,7 @@ Output variables:
 
 #include "sasfit_oz_tclcmd.h"
 #include "sasfit_oz_potentials.h"
+#include <nvector/nvector_serial.h>
 
 typedef enum {
         PY,     // Percus-Yevik
@@ -123,10 +124,6 @@ typedef enum {
                   //      as time passes. The algorithm has a tendency to become unstable unless
                   //      it starts close to the root. The Jacobian is refreshed if this instability
                   //      is detected (consult the source for details).
-        NGMRES,
-        NBiCGSTAB,
-        NTFQMR,
-        NewtonLibGMRES,
         Picard_iteration,   // fixed point iteration of the form: x_n+1 = OZ(xn)
         Mann_iteration,     //
         Ishikawa_iteration, //
@@ -141,7 +138,12 @@ typedef enum {
         Sstar_iteration,    //
         Steffensen2_iteration, //
         Steffensen4_iteration, //
-        AndersonAcc
+        AndersonAcc,
+        GMRES,  // routine from sundials/konsol library
+        BiCGSTAB, // routine from sundials/konsol library
+        TFQMR, // routine from sundials/konsol library
+        FGMRES, // routine from sundials/konsol library
+        KINSOLFP
 } sasfit_oz_root_algorithms;
 
 typedef struct {
@@ -165,6 +167,8 @@ typedef struct {
         double phi;
         double *pPot;
         double *ubeta;
+        double GNorm;
+        double SNorm;
         sasfit_oz_closure cl;
         sasfit_oz_root_algorithms root_algorithm;
         OZ_func_one_t * potential;
@@ -187,6 +191,9 @@ void OZ_calculation (sasfit_oz_data *);
 void OZ_solver (sasfit_oz_data *);
 void OZ_init (sasfit_oz_data *);
 void OZ_free (sasfit_oz_data *);
+static int OZ_step_kinsol(N_Vector, N_Vector, void *);
+static int OZ_step_kinsolFP(N_Vector, N_Vector, void *);
+
 double OZ_step(sasfit_oz_data *);
 double extrapolate (double x1, double x2, double x3, double y1, double y2, double y3);
 void OZ_pot_der (sasfit_oz_data *);
