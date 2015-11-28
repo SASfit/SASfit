@@ -2346,8 +2346,10 @@ double OZ_step(sasfit_oz_data *OZd) {
 
 static int OZ_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
     sasfit_oz_data *OZd;
-    cp_N_Vector_to_array(cc,G,NP);
+    //This definition must be here (and not later), otherwise the macro G in next line is undefined
     OZd = (sasfit_oz_data*) OZd_structure;
+    cp_N_Vector_to_array(cc,G,NP);
+    //OZd = (sasfit_oz_data*) OZd_structure;
     OZ_step(OZd);
     cp_array_diff_N_Vector_to_N_Vector(G,cc,fval,NP);
     check_interrupt(OZd);
@@ -2363,8 +2365,11 @@ static int OZ_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
 static int OZ_step_kinsolFP(N_Vector cc, N_Vector fval, void *OZd_structure) {
     sasfit_oz_data *OZd;
     double Norm;
-    cp_N_Vector_to_array(cc,G,NP);
+    //This definition must be here (and not later), otherwise the macro G in next line is undefined
     OZd = (sasfit_oz_data*) OZd_structure;
+    cp_N_Vector_to_array(cc,G,NP); //This line can in principle be omitted, but it is cleaner to have it....
+                                   //....in case Kinsol and OZd get 'out of sync' (due to whatever reason)
+    //OZd = (sasfit_oz_data*) OZd_structure;
     OZ_step(OZd);
     cp_array_to_N_Vector(G,fval,NP);
     check_interrupt(OZd);
