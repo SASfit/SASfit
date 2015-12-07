@@ -10,12 +10,12 @@
 #define sigma p[0] //Diameter of spheres in nm
 
 double U_Hard_Sphere(double r, double T, double *p) {
-    if (r<sigma) return GSL_POSINF;
+    if (r<=sigma) return GSL_POSINF;
     else  return 0;
 }
 
 double U_SR_Hard_Sphere(double r, double T, double *p) {
-    if (r<sigma) return GSL_POSINF;
+    if (r<=sigma) return GSL_POSINF;
     else  return 0;
 }
 
@@ -24,7 +24,7 @@ double U_LR_Hard_Sphere(double r, double T, double *p) {
 }
 
 double U_R_Hard_Sphere(double r, double T, double *p) {
-    if (r<sigma) return GSL_POSINF;
+    if (r<=sigma) return GSL_POSINF;
     else  return 0;
 }
 

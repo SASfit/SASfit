@@ -363,6 +363,7 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 #define k   OZd->k
 #define GF  OZd->Gf
 #define G  OZd->G
+#define Gprevious  OZd->Gprevious
 #define G0  OZd->G0
 #define g  OZd->g
 #define HR  OZd->h
@@ -398,7 +399,7 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 
 // Initialization of memory needed for computation
 
-void OZ_init(sasfit_oz_data *OZd) {
+int OZ_init(sasfit_oz_data *OZd) {
    double *tp;
    int i;
    OZd->beta=1.0/(kb*T);
@@ -406,6 +407,7 @@ void OZ_init(sasfit_oz_data *OZd) {
    k      = (double*)malloc((NP)*sizeof(double));
    EN     = (double*)malloc((NP)*sizeof(double));
    G      = (double*)malloc((NP)*sizeof(double));
+   Gprevious      = (double*)malloc((NP)*sizeof(double));
    HR     = (double*)malloc((NP)*sizeof(double));
    G0     = (double*)malloc((NP)*sizeof(double));
    g      = (double*)malloc((NP)*sizeof(double));
@@ -430,7 +432,8 @@ void OZ_init(sasfit_oz_data *OZd) {
    for (i=0; i < NP; i++) {
         G[i]=0;
    }
-   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
+   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT10, FFTW_ESTIMATE);
+   return 1;
    }
 
 //Extrapolation routine
@@ -583,7 +586,7 @@ int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *x, double *y
 }
 
 int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algorithm) {
-    double err, errold, Norm, Normold;
+    double err, errold;
     double alpha, beta, gama,phi_set, phi_actual;
     double *xn, *yn, *zn, *un, *Tx, *Ty, *Tz;
     double nsoliparam[5], tol[2];
@@ -592,7 +595,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     double xh, resnorm, xdnorm;
 	long int N;
 
-    N_Vector u, f, u_scale, f_scale;
+    N_Vector u, f, scale;
     void * kin_mem;
     int flag, maxlrst;
     
@@ -611,7 +614,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   //maximalDimensionOfKrylovSpace is the number of elements in the vector space used
   //for Anderson mixing. Both the residuals and the states
   //used for mixing are in the Krylov subspace of the problem, hence the name
-  int maximalDimensionOfKrylovSpace = 3;
+  int maximalDimensionOfKrylovSpace = 5;
   //To check when to switch between extend and shift
   int isMaximalDimensionOfKrylovSpaceReached = 0;
   int dimensionOfKrylovSpace = 0;
@@ -663,7 +666,6 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     phi_actual = OZd->phi;
     phi_set = OZd->phi;
     do {
-        Normold=1;
         err=2*RELERROR;
         OZd->phi=phi_actual ;
          if ( OZd->PrintProgress == 1)  sasfit_out("solving OZ for phi=%lf\n",OZd->phi);
@@ -673,13 +675,11 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     n++;
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g\n",n,OZd->it,err);
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
@@ -694,22 +694,23 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                     check_interrupt(OZd);
                     cp_array_to_array(G,xn,NP);
                     n++;
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    if ((n % 100)==0 && OZd->PrintProgress == 1)
-                        sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g\n",n,OZd->it,err);
-                    Normold=Norm;
+                    err = OZ_step(OZd);
                     alpha=fabs(MIXCOEFF);
+                    err = 0;
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*xn[j]+alpha*G[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
                     }
+                    if ((n % 100)==0 && OZd->PrintProgress == 1)
+                        sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g\n",n,OZd->it,err);
                 }
                 free(xn);
                 break;
@@ -718,43 +719,59 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 Tx = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
                     n++;
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tx,NP);
-                    err = fabs((Norm-Normold)/Norm);
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                    }
-                    if ((n % 100)==0 && OZd->PrintProgress == 1)
-                        sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
-                    Normold=Norm;
+                    err = 0;
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*xn[j]+alpha*Tx[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
                     }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                    }
+                    if ((n % 100)==0 && OZd->PrintProgress == 1)
+                        sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                 }
                 free(xn);
                 free(Tx);
@@ -766,44 +783,62 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 Ty = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
                     n++;
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tx,NP);
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                    }
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     for (j=0; j < NP; j++) {
                             yn[j]=(1-beta)*xn[j]+beta*Tx[j];
                     }
                     cp_array_to_array(yn,G,NP);
-                    Norm = OZ_step(OZd);
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err = OZ_step(OZd);
+                    err = 0;
+                    for (j=0; j < NP; j++) {
+                            err += gsl_pow_2(G[j]-xn[j]);
+                    }
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
@@ -819,50 +854,64 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 Ty = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
                     n++;
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tx,NP);
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                    }
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     for (j=0; j < NP; j++) {
                             yn[j]=(1-beta)*xn[j]+beta*Tx[j];
                     }
                     cp_array_to_array(yn,G,NP);
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Ty,NP);
+                    err = 0;
                     for (j=0; j < NP; j++) {
-                            xn[j]=(1-alpha)*yn[j]+alpha*Ty[j];
+                            G[j]=(1-alpha)*yn[j]+alpha*Ty[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    cp_array_to_array(xn,G,NP);
-
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
@@ -877,102 +926,130 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop = 0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                    }
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-beta)*xn[j]+beta*Tx[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
+                    err = 0;
 //                    cp_array_to_array(G,Ty,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*Tx[j]+alpha*G[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
                 free(Tx);
                 free(Ty);
-                Norm = OZ_step(OZd);
                 break;
         case Ishikawa_iteration:
                 xn = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop = 0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                    }
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     for (j=0; j < NP; j++) {
                             G[j]=(1.0-beta)*xn[j]+beta*G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
+                    err = 0;
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*xn[j]+alpha*G[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
                     }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                    }
                 }
-                Norm = OZ_step(OZd);
                 free(xn);
                 break;
         case SP_iteration:
@@ -985,31 +1062,15 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     n++;
                     errold=err;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                        gama=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                        gama=alpha;
-                    }
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
@@ -1017,26 +1078,54 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                             G[j]=(1-gama)*xn[j]+gama*Tx[j];
                             zn[j]= G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tz,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-beta)*zn[j]+beta*Tz[j];
                             yn[j] = G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
+                    err = 0;
                     cp_array_to_array(G,Ty,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*yn[j]+alpha*Ty[j];
-                            xn[j] = G[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
@@ -1045,7 +1134,6 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 free(Ty);
                 free(Tz);
-                Norm = OZ_step(OZd);
                 break;
         case Noor_iteration:
                 Tx = (double*)malloc((NP)*sizeof(double));
@@ -1057,31 +1145,15 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                        gama=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                        gama=alpha;
-                    }
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
@@ -1089,26 +1161,54 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                             G[j]=(1-gama)*xn[j]+gama*Tx[j];
                             zn[j]= G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tz,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-beta)*xn[j]+beta*Tz[j];
                             yn[j] = G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Ty,NP);
+                    err = 0;
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*xn[j]+alpha*Ty[j];
-                            xn[j] = G[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
@@ -1117,7 +1217,6 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 free(Ty);
                 free(Tz);
-                Norm = OZ_step(OZd);
                 break;
         case CR_iteration:
                 Tx = (double*)malloc((NP)*sizeof(double));
@@ -1129,32 +1228,15 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                        gama=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                        gama=alpha;
-                    }
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
@@ -1162,24 +1244,54 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                             G[j]=(1-gama)*xn[j]+gama*Tx[j];
                             zn[j]= G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tz,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-beta)*Tx[j]+beta*Tz[j];
                             yn[j] = G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
+                    err = 0;
                     cp_array_to_array(G,Ty,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*yn[j]+alpha*Ty[j];
-                            xn[j] = G[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
@@ -1188,7 +1300,6 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 free(Ty);
                 free(Tz);
-                Norm = OZ_step(OZd);
                 break;
         case PicardS_iteration:
                 Tx = (double*)malloc((NP)*sizeof(double));
@@ -1200,31 +1311,15 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                 n=0;
                 iloop=0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     n++;
                     errold=err;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        if (alpha>1) alpha =1.0;
-                        beta=alpha;
-                        gama=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                        gama=alpha;
-                    }
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
@@ -1232,21 +1327,47 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                             G[j]=(1-beta)*xn[j]+beta*Tx[j];
                             zn[j]= G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tz,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*Tx[j]+alpha*Tz[j];
                             yn[j] = G[j];
                     }
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err = OZ_step(OZd);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
@@ -1255,7 +1376,6 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 free(Ty);
                 free(Tz);
-                Norm = OZ_step(OZd);
                 break;
         case Sstar_iteration:
                 Tx = (double*)malloc((NP)*sizeof(double));
@@ -1266,30 +1386,15 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 zn = (double*)malloc((NP)*sizeof(double));
                 n=0;
                 iloop=0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
                     n++;
                     errold=err;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
-                    err = fabs((Norm-Normold)/Norm);
-                    if (MIXCOEFF > 0) {
-                        alpha=1./(1+MIXCOEFF*n);
-                        beta=1./(1.+MIXCOEFF*MIXCOEFF*n*n);
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                        beta=alpha;
-                        gama=alpha;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                        beta=alpha;
-                        gama=alpha;
-                    }
+                    err = OZ_step(OZd);
                     if ((n % 100)==0 && OZd->PrintProgress == 1)
                         sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
                     cp_array_to_array(G,Tx,NP);
@@ -1297,26 +1402,54 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                             G[j]=(1-gama)*xn[j]+gama*Tx[j];
                             zn[j]= G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tz,NP);
                     for (j=0; j < NP; j++) {
                             G[j]=(1-beta)*Tx[j]+beta*Tz[j];
                             yn[j] = G[j];
                     }
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Ty,NP);
+                    err=0;
                     for (j=0; j < NP; j++) {
                             G[j]=(1-alpha)*Tx[j]+alpha*Ty[j];
-                            xn[j] = G[j];
+                            err += gsl_pow_2(G[j]-xn[j]);
                     }
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    err=sqrt(err);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
                         }
+                    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
                     }
                 }
                 free(xn);
@@ -1325,7 +1458,6 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(Tx);
                 free(Ty);
                 free(Tz);
-                Norm = OZ_step(OZd);
                 break;
         case Steffensen2_iteration:
                 Tx = (double*)malloc((NP)*sizeof(double));
@@ -1334,26 +1466,16 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 yn = (double*)malloc((NP)*sizeof(double));
                 zn = (double*)malloc((NP)*sizeof(double));
                 iloop = 0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
-                    if (MIXCOEFF > 0) {
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                    }
-
                     iloop++;
                     cp_array_to_array(G,xn,NP);
-                    Norm = OZ_step(OZd);
+                    err = OZ_step(OZd);
                     cp_array_to_array(G,Tx,NP);
                     for (i=0;i<NP;i++) yn[i] = (1-alpha)*xn[i]+alpha*G[i];
-                    err = fabs((Norm-Normold)/Norm);
 
                     sasfit_out("loop: %d , error=%g\nnext step divided difference routine\n",iloop,err);
                     OZ_first_order_divided_difference(OZd,xn,yn,Tx);
@@ -1361,9 +1483,9 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
                     cp_array_to_array(Tx,G,NP);
 
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    errold=err;
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
@@ -1395,23 +1517,14 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				b2 = gsl_matrix_calloc(NP,NP);
 
                 iloop = 0;
+                alpha=MIXCOEFF;
+                beta=alpha;
+                gama=alpha;
                 while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
                     check_interrupt(OZd);
-                    if (MIXCOEFF > 0) {
-                        alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-                    } else {
-                        if (err < errold) {
-                            iloop++;
-                            iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-                        } else {
-                            iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-                        }
-                        alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-                    }
-
                     iloop++;
-
-                    Norm = OZ_fp(xn,OZd,Tx);
+                    cp_array_to_array(G,xn,NP);
+                    err = OZ_fp(xn,OZd,Tx);
 					cp_array_to_array(G,zn,NP);
 
 					sasfit_out("loop: %d , error=%g\nnext step divided difference routine\n",iloop,err);
@@ -1427,40 +1540,15 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 						un[i] = xn[i];
 						for (j=0;j<NP;j++) un[i] = un[i]-gsl_matrix_get(Ainv,i,j)*Tx[j];
 					}
-/*
-					error = OZ_first_order_divided_difference_matrix(OZd,un,xn,b0);
-					sasfit_out("success divided differenzes: %d\n",error);
-					if (!error) break;
-					error = OZ_first_order_divided_difference_matrix(OZd,zn,un,b2);
-					sasfit_out("success divided differenzes: %d\n",error);
-					if (!error) break;
 
+                    err=0;
 					for (i=0;i<NP;i++) {
-						for (j=0;j<NP;j++) gsl_matrix_set(B,i,j,gsl_matrix_get(b0,i,j)-gsl_matrix_get(A,i,j)+gsl_matrix_get(b2,i,j));
+						err +=  gsl_pow_2(un[i]-xn[j]);
 					}
-					gsl_linalg_LU_decomp(B, perm, &ms);
-					gsl_linalg_LU_invert(B, perm, Binv);
-
-					Norm = OZ_fp(un,OZd,Ty);
-					Norm = 0;
-                    for (i=0;i<NP;i++) {
-						yn[i] = un[i];
-						for (j=0;j<NP;j++) yn[i] = yn[i]-gsl_matrix_get(Binv,i,j)*Ty[j];
-						Norm = Norm + gsl_pow_2(yn[i]);
-					}
-					Norm=sqrt(Norm);
-                    err = fabs((Norm-Normold)/Norm);
-                    cp_array_to_array(yn,G,NP);
-*/
+                    err=sqrt(err);
 					cp_array_to_array(un,G,NP);
-					for (i=0;i<NP;i++) {
-						Norm = Norm + gsl_pow_2(un[i]);
-					}
-					Norm=sqrt(Norm);
-                    err = fabs((Norm-Normold)/Norm);
-                    Normold=Norm;
-                    if (Norm != Norm) {
-                        sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
                         OZd->failed = 1;
                         for (j=0; j < NP; j++) {
                             G[j]=0.0;
@@ -1483,10 +1571,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 break;
         case KINSOLFP:                
                 maxlrst = MAXSTEPS/10;
-				u_scale = N_VNew_Serial(NP);
-                f_scale = N_VNew_Serial(NP);
-                N_VConst_Serial(1.0, u_scale);        /* no scaling */
-                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+				scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
@@ -1498,7 +1584,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 flag = KINSetMAA(kin_mem, 5);
                 flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
                 flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,3);
+				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
                 sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
  //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
  //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
@@ -1530,24 +1616,22 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
-				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+				flag = KINSol(kin_mem,u,KIN_FP,scale, scale);
+                if (flag != 0) OZd->failed = 1;
                 sasfit_out("KINSol(flag)=%d\n",flag);
-                KINGetFuncNorm(kin_mem, &Norm);
-                sasfit_out("error/Norm %lg, Norm %lg, FNorm/GNorm%lg, GNorm=%lg\n:",RELERROR/Norm,Norm,Norm/OZd->GNorm,OZd->GNorm);
+                KINGetFuncNorm(kin_mem, &err);
+                sasfit_out("err %lg\n:",err);
                 
                 
 				N_VDestroy_Serial(u);
-                N_VDestroy_Serial(u_scale);
-                N_VDestroy_Serial(f_scale);
+                N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
         case GMRES:                
                 maxlrst = MAXSTEPS/10;
-				u_scale = N_VNew_Serial(NP);
-                f_scale = N_VNew_Serial(NP);
-                N_VConst_Serial(1.0, u_scale);        /* no scaling */
-                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+				scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
@@ -1559,7 +1643,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 flag = KINSetMAA(kin_mem, 5);
                 flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
                 flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,3);
+				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
                 sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
  //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
  //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
@@ -1591,24 +1675,22 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
-				flag = KINSol(kin_mem,u,KIN_LINESEARCH,u_scale, f_scale);
+				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
+                if (flag != 0) OZd->failed = 1;
                 sasfit_out("KINSol(flag)=%d\n",flag);
-                KINGetFuncNorm(kin_mem, &Norm);
-                sasfit_out("error/Norm %lg, Norm %lg, FNorm/GNorm%lg, GNorm=%lg\n:",RELERROR/Norm,Norm,Norm/OZd->GNorm,OZd->GNorm);
+                KINGetFuncNorm(kin_mem, &err);
+                sasfit_out("err=%lg\n:",err);
                 
                 
 				N_VDestroy_Serial(u);
-                N_VDestroy_Serial(u_scale);
-                N_VDestroy_Serial(f_scale);
+                N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
         case FGMRES:            
                 maxlrst = MAXSTEPS/10;
-				u_scale = N_VNew_Serial(NP);
-                f_scale = N_VNew_Serial(NP);
-                N_VConst_Serial(1.0, u_scale);        /* no scaling */
-                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+				scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
@@ -1620,7 +1702,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 flag = KINSetMAA(kin_mem, 5);
                 flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
                 flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,3);
+				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
                 sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
                
  //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
@@ -1645,30 +1727,28 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
  //               flag = KINSetConstraints(kin_mem, 1.0);
  //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
                 
-   				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
+   				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 sasfit_out("KINInit(flag)=%d\n",flag);
                  
 				flag = KINSpfgmr(kin_mem, 0);
                 sasfit_out("KINSpfgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
-				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
+                if (flag != 0) OZd->failed = 1;
                 sasfit_out("KINSol(flag)=%d\n",flag);
-                KINGetFuncNorm(kin_mem, &Norm);
-                sasfit_out("error/Norm %lg, Norm %lg, FNorm/GNorm%lg, GNorm=%lg\n:",RELERROR/Norm,Norm,Norm/OZd->GNorm,OZd->GNorm);
+                KINGetFuncNorm(kin_mem, &err);
+                sasfit_out("err=%lg\n:",err);
                 
 				N_VDestroy_Serial(u);
-                N_VDestroy_Serial(u_scale);
-                N_VDestroy_Serial(f_scale);
+                N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
         case BiCGSTAB:   
                 maxlrst = MAXSTEPS/10;
-				u_scale = N_VNew_Serial(NP);
-                f_scale = N_VNew_Serial(NP);
-                N_VConst_Serial(1.0, u_scale);        /* no scaling */
-                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+				scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
@@ -1680,8 +1760,8 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 flag = KINSetMAA(kin_mem, 5);
                 flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
                 flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,3);
-                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
+               sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
                
  //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
  //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
@@ -1705,29 +1785,27 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
  //               flag = KINSetConstraints(kin_mem, 1.0);
  //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
                 
-   				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
+   				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 sasfit_out("KINInit(flag)=%d\n",flag);
                  
 				flag = KINSpbcg(kin_mem, 0);
                 sasfit_out("KINSpbcg(flag)=%d\n",flag);
                 
-				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
+                if (flag != 0) OZd->failed = 1;
                 sasfit_out("KINSol(flag)=%d\n",flag);
-                KINGetFuncNorm(kin_mem, &Norm);
-                sasfit_out("error/Norm %lg, Norm %lg\n:",RELERROR/Norm,Norm);
+                KINGetFuncNorm(kin_mem, &err);
+                sasfit_out("err: %lg\n:",err);
                 
 				N_VDestroy_Serial(u);
-                N_VDestroy_Serial(u_scale);
-                N_VDestroy_Serial(f_scale);
+                N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;      
         case TFQMR:
                 maxlrst = MAXSTEPS/10;
-				u_scale = N_VNew_Serial(NP);
-                f_scale = N_VNew_Serial(NP);
-                N_VConst_Serial(1.0, u_scale);        /* no scaling */
-                N_VConst_Serial(1.0, f_scale);        /* no scaling */
+				scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
@@ -1739,7 +1817,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 flag = KINSetMAA(kin_mem, 5);
                 flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
                 flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,3);
+				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
                 sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
                
  //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
@@ -1764,20 +1842,20 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
  //               flag = KINSetConstraints(kin_mem, 1.0);
  //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
                 
-   				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
+   				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 sasfit_out("KINInit(flag)=%d\n",flag);
                  
 				flag = KINSptfqmr(kin_mem, 0);
                 sasfit_out("KINSptfqmr(flag)=%d\n",flag);
                 
-				flag = KINSol(kin_mem,u,KIN_FP,u_scale, f_scale);
+				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
+                if (flag != 0) OZd->failed = 1;
                 sasfit_out("KINSol(flag)=%d\n",flag);
-                KINGetFuncNorm(kin_mem, &Norm);
-                sasfit_out("error/Norm %lg, Norm %lg\n:",RELERROR/Norm,Norm);
+                KINGetFuncNorm(kin_mem, &err);
+                sasfit_out("err: %lg\n:",err);
                 
 				N_VDestroy_Serial(u);
-                N_VDestroy_Serial(u_scale);
-                N_VDestroy_Serial(f_scale);
+                N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;      
@@ -1828,17 +1906,34 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
 	n++;
     check_interrupt(OZd);
-	if (MIXCOEFF > 0) {
-		alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
-    } else {
-		if (err < errold) {
-			iloop++;
-			iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
-        } else {
-			iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
-        }
-		alpha=-MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1+MIXCOEFF);
-    }
+                    switch (OZd->mixstrategy) {
+                        case mix_const:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_err:
+                                    alpha=(1-MIXCOEFF)*exp(-log10(err/RELERROR))+MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                        case mix_reward_penalty:
+                                    if (err < errold) {
+                                        iloop++;
+                                        iloop = (((1.0*iloop)/(1.0*NITSTEP) >= 1)?NITSTEP:iloop);
+                                    } else {
+                                        iloop = (((iloop-1) >= 0) ? (iloop-1) : (0));
+                                    }
+                                    alpha=MIXCOEFF+(1.0*iloop)/(1.0*NITSTEP)*(1-MIXCOEFF);
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                       default:
+                                    alpha=MIXCOEFF;
+                                    beta=alpha;
+                                    gama=alpha;
+                                    break;
+                    }
     //Increment current dimension of Krylov space
     //(This equals the number of states used for AA mixing)
     if (dimensionOfKrylovSpace < maximalDimensionOfKrylovSpace)
@@ -1847,18 +1942,15 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
       isMaximalDimensionOfKrylovSpaceReached = 1;
     //printf("dimensionOfKrylovSpace %d\n", dimensionOfKrylovSpace);
     //Apply x_n = G(x)
-    Norm = fixpointOperatorOZ_GSL_API(x, OZd, x_n);
-    if (Norm != Norm) {
-      sasfit_out("detected NAN for precision of OZ solution: %g\n",Norm);
+    err = fixpointOperatorOZ_GSL_API(x, OZd, x_n);
+    if (err != err) {
+      sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
       OZd->failed = 1;
       for (j=0; j < NP; j++) {
         G[j]=0.0;
         gsl_vector_set(x,j,0.0);
       }
     }
-    err = fabs((Norm-Normold)/Norm); //err must be defined since is loop criterion
-    //sasfit_out("error %f\n", err);
-    Normold=Norm;
     if ((n % 100)==0 && OZd->PrintProgress == 1)
          sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%g\n",n,OZd->it,err,alpha);
     //First we save the new value x_n in Matrix K (GSL sub will overwrite it)
@@ -2004,15 +2096,26 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //        sasfit_out("it %d, interrupt: %d\n",OZd->it,OZd->interrupt);
     } while (OZd->failed == 0 && fabs(phi_actual - phi_set) > 1e-8 && OZd->it < MAXSTEPS  && OZd->interrupt == 0);
  //   sasfit_out("number of OZ_step calls are: %d\n",OZd->it);
+   if (OZd->failed == 1) {
+       sasfit_err("Failure in OZstep. OZ algoriythm does not converge.\n");
+       return TCL_ERROR;
+   }
+   if (OZd->it >= MAXSTEPS) { 
+       sasfit_err("OZ algorithm reached maximum allowed number of steps\n");
+       return TCL_ERROR;
+   }
+   if (OZd->interrupt == 1) {
+       sasfit_err("OZ algorithm was interrupted by user.\n");
+       return TCL_ERROR;
+   }
 }
 
 int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algorithm) {
     const gsl_multiroot_fsolver_type *Tgsl;
     gsl_multiroot_fsolver *sgsl;
     gsl_multiroot_function Fgsl;
-    int status,j;
+    int status,j,stoppingflag;
     size_t iter;
-    double Norm, Normold, err;
 
 
     Fgsl.f = &OZ_f;
@@ -2043,34 +2146,27 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
     sgsl = gsl_multiroot_fsolver_alloc (Tgsl, Fgsl.n);
     gsl_multiroot_fsolver_set (sgsl, &Fgsl, GAMMA_R);
     iter = 0;
-    Normold=1;
     do {
         sasfit_out("starting %d-th iteration\n", iter+1);
         iter++;
         status = gsl_multiroot_fsolver_iterate (sgsl);
-        Norm=0;
-        for (j=0; j < NP; j++) {
-            Norm=gsl_pow_2(G[j])+Norm;
-        }
-        Norm=sqrt(Norm);
-        err = fabs((Norm-Normold)/Norm);
-        Normold=Norm;
-//        status = gsl_multiroot_test_residual (sgsl->f, RELERROR);
         sasfit_out("iterations: %d, status = %s\n", iter, gsl_strerror (status));
         sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
         sasfit_out("residual of gamma(r)-OZ(gamma(r)):%g \n",gsl_blas_dasum(sgsl->f));
-        sasfit_out("error:%g \n",err);
+                
+        stoppingflag = gsl_multiroot_test_residual (sgsl->f, RELERROR);
+        
 //        if (status)  { /* check if solver is stuck */
 //            break;
 //       }
-    } while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0);
+    } while (OZd->it < MAXSTEPS && stoppingflag == GSL_CONTINUE && OZd->interrupt == 0);
     gsl_multiroot_fsolver_free (sgsl);
-    return 0;
+    return TCL_OK;
 }
 
 //Calling OZ_solver and generating output
-void OZ_calculation (sasfit_oz_data *OZd) {
-  int igneg;
+int OZ_calculation (sasfit_oz_data *OZd) {
+  int igneg,status;
   OZd->it=0;
   if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA || CLOSURE==CJVM || CLOSURE==BB) {
         sasfit_out("Root finding\n");
@@ -2078,7 +2174,11 @@ void OZ_calculation (sasfit_oz_data *OZd) {
   } else if (CLOSURE==RMSA) {
         CLOSURE=MSA;
         sasfit_out("Solving with MSA-closure first ...");
-        OZ_solver(OZd);
+         status = OZ_solver(OZd);
+         if (status == 0) {
+             sasfit_err("could not solve OZ equations\n");
+             return TCL_ERROR;
+        }
         sasfit_out(" done\n");
         CLOSURE = RMSA;
         igneg = 0;
@@ -2089,19 +2189,27 @@ void OZ_calculation (sasfit_oz_data *OZd) {
 // check where g(sigma+) >= 0, than nothing has to be done as RMSA=MSA which has been solved already above
         if (g[igneg] >= 0 || igneg == NP) {
             sasfit_out("g(sigma+)>=0 or g(r) > 0 for all r, i.e. no rescaling necessary\n");
-            return;
+            return TCL_ERROR;
         }
   } else {
         sasfit_out("Root finding not required\n");
   }
-  OZ_solver(OZd);
-  OZ_pot_der(OZd);
+   status = OZ_solver(OZd); 
+   if (status != TCL_OK) {
+             sasfit_err("could not solve OZ equations\n");
+             return TCL_ERROR;
+    }
+   status = OZ_pot_der(OZd);
+    if (status != TCL_OK) {
+             sasfit_err("could not calculate derivative of potential\n");
+             return TCL_ERROR;
+    }
+    return TCL_OK;
 }
 
 
 double OZ_step(sasfit_oz_data *OZd) {
-    double  err, ro, dk, Sm, GNorm2, Norm, V, Gstar,residualG,tmpr;
-    static double Normold=0;
+    double  err, ro, dk, Sm, GNorm2, V, Gstar,residualG,tmpr;
     int i,j;
     double powarg, logarg,dtmp ;
     bool doneB;
@@ -2113,7 +2221,8 @@ double OZ_step(sasfit_oz_data *OZd) {
     doneB=FALSE;
     OZd->it++;
 
-
+    cp_array_to_array(G, Gprevious, NP);
+    
     if (((OZd->it*OZd->Npoints) % (100*MINDIMOZ))==0) {
         Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
@@ -2328,7 +2437,7 @@ double OZ_step(sasfit_oz_data *OZd) {
         S[j]=1./(1.-ro*cf[j]);
         HR[j]=c[j]+G[j];
         Sm=S[j]*S[j]+Sm;
-        GNorm2=G[j]*G[j]+GNorm2;
+        GNorm2=gsl_pow_2(G[j]-Gprevious[j])+GNorm2;
         if (!doneB) {
             if (g[j] > 0 && EN[j] != 0) {
                 BRIDGE[j]=log(g[j])+UBETA[j]-G[j];
@@ -2346,6 +2455,7 @@ double OZ_step(sasfit_oz_data *OZd) {
 
 static int OZ_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
     sasfit_oz_data *OZd;
+    int i;
     //This definition must be here (and not later), otherwise the macro G in next line is undefined
     OZd = (sasfit_oz_data*) OZd_structure;
     cp_N_Vector_to_array(cc,G,NP);
@@ -2354,8 +2464,10 @@ static int OZ_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
     cp_array_diff_N_Vector_to_N_Vector(G,cc,fval,NP);
     check_interrupt(OZd);
     if (OZd->GNorm != OZd->GNorm) {
+        for (i=0;i<NP;i++) G[i] = 0;
         return -1;
-    } else if (OZd->interrupt != 0){
+    } 
+    if (OZd->interrupt != 0){
         return -1;
     } else {
         return 0;
@@ -2364,6 +2476,7 @@ static int OZ_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
 
 static int OZ_step_kinsolFP(N_Vector cc, N_Vector fval, void *OZd_structure) {
     sasfit_oz_data *OZd;
+    int i;
     double Norm;
     //This definition must be here (and not later), otherwise the macro G in next line is undefined
     OZd = (sasfit_oz_data*) OZd_structure;
@@ -2374,6 +2487,7 @@ static int OZ_step_kinsolFP(N_Vector cc, N_Vector fval, void *OZd_structure) {
     cp_array_to_N_Vector(G,fval,NP);
     check_interrupt(OZd);
     if (OZd->GNorm != OZd->GNorm) {
+         for (i=0;i<NP;i++) G[i] = 0;
         return -1;
     } else if (OZd->interrupt != 0){
         return -1;
@@ -2383,8 +2497,8 @@ static int OZ_step_kinsolFP(N_Vector cc, N_Vector fval, void *OZd_structure) {
 }
 
 // Iterative solution of Ornstein-Zernike equation
-void OZ_solver (sasfit_oz_data *OZd) {
-    int i;
+int OZ_solver (sasfit_oz_data *OZd) {
+    int i,status;
     double V, dk;
     OZ_func_one_t * tmp_potential;
 
@@ -2402,7 +2516,11 @@ void OZ_solver (sasfit_oz_data *OZd) {
         OZd->potential=OZd->reference_pot;
         CLOSURE=PY;
         sasfit_out("Solving reference system (HS) with PY-closure first ...");
-        OZ_solver(OZd);
+        status = OZ_solver(OZd);
+        if (status == 0) {
+                sasfit_err("OZ algorithm did not converge.\n");
+                return TCL_ERROR;
+        }
         sasfit_out(" done\n");
         CLOSURE = RHNC;
         OZd->potential=tmp_potential;
@@ -2437,76 +2555,76 @@ void OZ_solver (sasfit_oz_data *OZd) {
     OZd->it=0;
     switch (OZd->root_algorithm) {
         case Picard_iteration:
-                OZ_solver_by_iteration(OZd,Picard_iteration);
+                status = OZ_solver_by_iteration(OZd,Picard_iteration);
                 break;
         case Mann_iteration:
-                OZ_solver_by_iteration(OZd,Mann_iteration);
+                status = OZ_solver_by_iteration(OZd,Mann_iteration);
                 break;
         case Ishikawa_iteration:
-                OZ_solver_by_iteration(OZd,Ishikawa_iteration);
+                status = OZ_solver_by_iteration(OZd,Ishikawa_iteration);
                 break;
         case Noor_iteration:
-                OZ_solver_by_iteration(OZd,Noor_iteration);
+                status = OZ_solver_by_iteration(OZd,Noor_iteration);
                 break;
         case S_iteration:
-                OZ_solver_by_iteration(OZd,S_iteration);
+                status = OZ_solver_by_iteration(OZd,S_iteration);
                 break;
         case SP_iteration:
-                OZ_solver_by_iteration(OZd,SP_iteration);
+                status = OZ_solver_by_iteration(OZd,SP_iteration);
                 break;
         case CR_iteration:
-                OZ_solver_by_iteration(OZd,CR_iteration);
+                status = OZ_solver_by_iteration(OZd,CR_iteration);
                 break;
         case PicardS_iteration:
-                OZ_solver_by_iteration(OZd,PicardS_iteration);
+               status =  OZ_solver_by_iteration(OZd,PicardS_iteration);
                 break;
         case PMH_iteration:
-                OZ_solver_by_iteration(OZd,PMH_iteration);
+                status = OZ_solver_by_iteration(OZd,PMH_iteration);
                 break;
         case MannII_iteration:
-                OZ_solver_by_iteration(OZd,MannII_iteration);
+                status = OZ_solver_by_iteration(OZd,MannII_iteration);
                 break;
         case Krasnoselskij_iteration:
-                OZ_solver_by_iteration(OZd,Krasnoselskij_iteration);
+                status = OZ_solver_by_iteration(OZd,Krasnoselskij_iteration);
                 break;
         case Sstar_iteration:
-                OZ_solver_by_iteration(OZd,Sstar_iteration);
+                status = OZ_solver_by_iteration(OZd,Sstar_iteration);
                 break;
         case Steffensen2_iteration:
-                OZ_solver_by_iteration(OZd,Steffensen2_iteration);
+                status = OZ_solver_by_iteration(OZd,Steffensen2_iteration);
                 break;
         case Steffensen4_iteration:
-                OZ_solver_by_iteration(OZd,Steffensen4_iteration);
+                status = OZ_solver_by_iteration(OZd,Steffensen4_iteration);
                 break;
         case AndersonAcc:
-                OZ_solver_by_iteration(OZd,AndersonAcc);
+               status = OZ_solver_by_iteration(OZd,AndersonAcc);
                 break;
         case Broyden:
-                OZ_solver_by_gsl_multroot(OZd,Broyden);
+                status = OZ_solver_by_gsl_multroot(OZd,Broyden);
                 break;
         case dNewton:
-                OZ_solver_by_gsl_multroot(OZd,dNewton);
+                status = OZ_solver_by_gsl_multroot(OZd,dNewton);
                 break;
         case Hybrid:
-                OZ_solver_by_gsl_multroot(OZd,Hybrid);
+                status = OZ_solver_by_gsl_multroot(OZd,Hybrid);
                 break;
         case Hybrids:
-                OZ_solver_by_gsl_multroot(OZd,Hybrids);
+                status = OZ_solver_by_gsl_multroot(OZd,Hybrids);
                 break;
         case KINSOLFP:
-                OZ_solver_by_iteration(OZd,KINSOLFP);
+                status = OZ_solver_by_iteration(OZd,KINSOLFP);
                 break;
         case GMRES:
-                OZ_solver_by_iteration(OZd,GMRES);
+                status = OZ_solver_by_iteration(OZd,GMRES);
                 break;
         case FGMRES:
-                OZ_solver_by_iteration(OZd,FGMRES);
+               status =  OZ_solver_by_iteration(OZd,FGMRES);
                 break;
         case TFQMR:
-                OZ_solver_by_iteration(OZd,TFQMR);
+                status = OZ_solver_by_iteration(OZd,TFQMR);
                 break;
         case BiCGSTAB:
-                OZ_solver_by_iteration(OZd,BiCGSTAB);
+                status = OZ_solver_by_iteration(OZd,BiCGSTAB);
                 break;
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");
@@ -2523,11 +2641,12 @@ void OZ_solver (sasfit_oz_data *OZd) {
     OZd->gr0=extrapolate(r[0],r[1],r[2],g[0],g[1],g[2]);
     OZd->cr0=extrapolate(r[0],r[1],r[2],c[0],c[1],c[2]);
     OZd->dq=dk;
+    return status;
 }
 
 //Routine for calculation derivative from pair potential
 
-void OZ_pot_der(sasfit_oz_data *OZd)
+int OZ_pot_der(sasfit_oz_data *OZd)
 {  int n;
 
     if (U(r[0],T,PARAM)==GSL_POSINF && U(r[1],T,PARAM)==GSL_POSINF) {
@@ -2559,6 +2678,7 @@ void OZ_pot_der(sasfit_oz_data *OZd)
     }
 
      dU_dR[NP-1]=(U(r[NP-1],T,PARAM)-U(r[NP-2],T,PARAM))/(dr);
+     return TCL_OK;
  }
 
 //Routine for calculation the difference between compressibilities determined by virial and compressibility routes
@@ -2853,11 +2973,12 @@ void root_finding (sasfit_oz_data *OZd) {
 }
 
 //Release of memory used for computation
-void OZ_free (sasfit_oz_data *OZd) {
+int OZ_free (sasfit_oz_data *OZd) {
     free(r);
     free(k);
     free(EN);
     free(G);
+    free(Gprevious);
     free(G0);
     free(g);
     free(HR);
@@ -2879,5 +3000,6 @@ void OZ_free (sasfit_oz_data *OZd) {
     fftw_destroy_plan(OZd->pl);
     fftw_free(OZIN);
     fftw_free(OZOUT);
+    return TCL_OK;
 }
 

@@ -27,6 +27,46 @@
 double U_ZERO(double d, double temp, double *p) {
 return 0.0;
 }
+
+int
+assign_mixing_strategy(const char * token, sasfit_oz_data * OZD)
+{
+#define MAXMIXSTRATEGIES 3
+    const char * MixStrategy[MAXMIXSTRATEGIES];
+    int i,eq;
+    if (!token || !OZD) return 0;
+    MixStrategy[0] = "mixing parameter (const)";
+    MixStrategy[1] = "mixing parameter (err)";
+    MixStrategy[2] = "mixing parameter (reward/penalty)";
+
+    i=0;
+    eq=-1;
+    while (i<MAXMIXSTRATEGIES && eq != 0) {
+        eq = strcmp(token,MixStrategy[i]);
+        i++;
+    }
+    PUTS("%s %d\n",token,i-1);
+
+    switch (i-1) {
+        case 0 :
+            OZD->mixstrategy=mix_const;
+            break;
+        case 1 :
+            OZD->mixstrategy=mix_err;
+            break;
+        case 2 :
+            OZD->mixstrategy=mix_reward_penalty;
+            break;
+        default :
+            OZD->mixstrategy=mix_const;
+            sasfit_out("mixing strategy  not found: %s. Using mix_const instead.\n", token);
+            sasfit_err("mixing strategy  not found: %s. Using mix_const instead.\n", token);
+            break;
+    }
+    if (i<=MAXMIXSTRATEGIES) return 1;
+    return 0;
+}
+
 #define OZMAXCLOSURES 34
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
@@ -583,6 +623,13 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 sasfit_err("Unknown Root finding Algorithm\n");
                 return TCL_ERROR;
         }
+        
+        status = assign_mixing_strategy(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "mixstrategy"), 0),
+                   &ozd);
+        if (status == 0) {
+                sasfit_err("Unknown mixing strategy\n");
+                return TCL_ERROR;
+        }
 
         for (i = 0; i < OZMAXPAR; i++) {
             sprintf(paramName, "p%d", i);
@@ -609,8 +656,16 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         PUTS("Volume fraction is set to %g\n", ozd.phi);
 
         // calulate
-        OZ_init(&ozd);
-        OZ_calculation(&ozd);
+        status =OZ_init(&ozd); 
+        if (status == 0) {
+                sasfit_err("OZ initialisation error.\n");
+                return TCL_ERROR;
+        }
+        status =OZ_calculation(&ozd); 
+        if (status == TCL_ERROR) {
+                sasfit_err("OZ algorithm did not converge.\n");
+                return TCL_ERROR;
+        }
 
         Tcl_Obj * sx = Tcl_NewListObj(0, 0);
         Tcl_Obj * sy = Tcl_NewListObj(0, 0);
@@ -675,8 +730,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         SET(ozname, "res,gamma,x", gammax);
         SET(ozname, "res,gamma,y", gammay);
 
-        OZ_free(&ozd);
-        return TCL_OK;
+        return OZ_free(&ozd);
 }
 
 int sasfit_oz_assign_data_sq_cmd(ClientData clientData,

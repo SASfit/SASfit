@@ -61,6 +61,12 @@ Output variables:
 #include <nvector/nvector_serial.h>
 
 typedef enum {
+    mix_const,
+    mix_err,
+    mix_reward_penalty
+} sasfit_oz_mixstrategy;
+
+typedef enum {
         PY,     // Percus-Yevik
         HNC,    // Hypernetted Chain
         RHNC,   // Refernce Hypernetted Chain
@@ -148,7 +154,7 @@ typedef enum {
 
 typedef struct {
         Tcl_Interp *interp;
-        double *r, *k, *En, *G,
+        double *r, *k, *En, *G, *Gprevious,
                *G0, *g, *g0, *c, *h,
                *cf, *cfold, *cfnew,
                *Gf,*f, *S,  *ud,
@@ -171,6 +177,7 @@ typedef struct {
         double SNorm;
         sasfit_oz_closure cl;
         sasfit_oz_root_algorithms root_algorithm;
+        sasfit_oz_mixstrategy mixstrategy;
         OZ_func_one_t * potential;
         OZ_func_one_t * reference_pot;
         OZ_func_one_t * pertubation_pot;
@@ -186,17 +193,16 @@ typedef struct {
         Tcl_Obj *oz_obj;
 } sasfit_oz_data;
 
-void OZ_init (sasfit_oz_data *);
-void OZ_calculation (sasfit_oz_data *);
-void OZ_solver (sasfit_oz_data *);
-void OZ_init (sasfit_oz_data *);
-void OZ_free (sasfit_oz_data *);
+int OZ_init (sasfit_oz_data *);
+int OZ_calculation (sasfit_oz_data *);
+int OZ_solver (sasfit_oz_data *);
+int OZ_free (sasfit_oz_data *);
 static int OZ_step_kinsol(N_Vector, N_Vector, void *);
 static int OZ_step_kinsolFP(N_Vector, N_Vector, void *);
 
 double OZ_step(sasfit_oz_data *);
 double extrapolate (double x1, double x2, double x3, double y1, double y2, double y3);
-void OZ_pot_der (sasfit_oz_data *);
+int OZ_pot_der (sasfit_oz_data *);
 double compressibility_calc (double alpha, void * params);
 void root_finding (sasfit_oz_data *);
 

@@ -24,6 +24,7 @@ proc put_OZ_res {} {
 	global OZ
 	lappend OZ(result,closure) 	$OZ(closure)
 	lappend OZ(result,potential) 	$OZ(potential)
+	lappend OZ(result,mixstrategy) 	$OZ(mixstrategy)
 	lappend OZ(result,p) 		[list $OZ(p0) $OZ(p1) $OZ(p2) $OZ(p3) $OZ(p4) $OZ(p5) $OZ(p6) $OZ(p7) $OZ(p8) $OZ(p9) $OZ(p10) $OZ(p11) $OZ(p12) $OZ(p13) $OZ(p14) $OZ(p15)]
 	lappend OZ(result,algorithm)	$OZ(algorithm)
 	lappend OZ(result,phi)		$OZ(phi)
@@ -590,6 +591,7 @@ proc update_ozmenu {} {
     if {$idx >=0} {
        set OZ(closure)	 [lindex $OZ(result,closure) $idx]
        set OZ(potential) [lindex $OZ(result,potential) $idx]
+       set OZ(mixstrategy) [lindex $OZ(result,mixstrategy) $idx]
        oz_input_names
        set OZ(p)	 [lindex $OZ(result,p) $idx]
        for {set i 0} {$i < 16} {incr i} {
@@ -705,7 +707,7 @@ proc sasfit_OZ_solver {} {
     ComboBox $w.param.clvalue \
 	    -values {"Percus\-Yevick" "Hypernetted\-Chain" "Reference HNC" MSA RMSA mMSA SMSA HMSA \
 	             "Rogers\-Young" Verlet MS DH "Vompe\-Martynov" BB BPGG CJVM "Choudhury\-Gosh"} \
-	    -textvariable OZ(closure)
+	    -textvariable OZ(closure) -editable 0
     grid  $w.param.clvalue\
 	    -column 1 -row 0
     ComboBox $w.param.potvalue \
@@ -715,7 +717,7 @@ proc sasfit_OZ_solver {} {
 	    		"IonicMicrogel"  \
 	    		"PenetrableSphere" "Fermi" "DLVO" "GGCM-n"} \
 	    -textvariable OZ(potential) \
-	    -modifycmd {oz_input_names}
+	    -modifycmd {oz_input_names}  -editable 0
     grid  $w.param.potvalue\
 	    -column 1 -row 1
 
@@ -782,7 +784,7 @@ proc sasfit_OZ_solver {} {
 				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES"\
 				 "Steffensen iteration"
 			} \
-	    -textvariable OZ(algorithm) -width 19
+	    -textvariable OZ(algorithm) -width 19  -editable 0
 		
     label $w.param.phitext -text "volume fraction:"  
     entry $w.param.phivalue -textvariable OZ(phi)
@@ -807,11 +809,13 @@ proc sasfit_OZ_solver {} {
     label $w.param.empty3 -text " "
     label $w.param.gridtext -text "gridsize (n x 128), n:"  
     entry $w.param.gridvalue -textvariable OZ(mult)
-    label $w.param.mixtext -text "mixing parameter:"  
+	ComboBox $w.param.mixtext \
+	    -values {"mixing parameter (const)" "mixing parameter (err)" "mixing parameter (reward/penalty)"} \
+	    -textvariable OZ(mixstrategy) -editable 0
     entry $w.param.mixvalue -textvariable OZ(mix)
     label $w.param.ittext -text "max iterations:"  
     entry $w.param.itvalue -textvariable OZ(maxit)
-    label $w.param.relepstext -text "rel. iteration precision:"  
+    label $w.param.relepstext -text "iteration precision:"  
     entry $w.param.relepsvalue -textvariable OZ(releps) 
     label $w.param.drdsigmatext -text "rel. grid step width:" 
     entry $w.param.drdsigmavalue -textvariable OZ(dr/dsigma)
