@@ -315,7 +315,8 @@ set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}
 
-set OZ(algorithm) "FGMRES"
+
+
 set OZ(interrupt) 0
 set OZ(PrintProgress) 0
 set OZ(phi) 0.3
@@ -329,6 +330,19 @@ set OZ(dr/dsigma) 0.0703125
 set OZ(dr/dsigma) 0.02
 set OZ(releps) 1e-10
 set OZ(gridlength) [expr int($OZ(mindimOZ)*$OZ(mult))]
+
+set OZ(algorithm) "FGMRES"
+set OZ(KINSetMAA) 5
+set OZ(KINSetFuncNormTol) $OZ(releps)
+set OZ(KINSetScaledSteptol) [expr $OZ(KINSetFuncNormTol)/100.]
+set OZ(KINSetNumMaxIters) $OZ(maxit)
+set OZ(KINSetPrintLevel) 0
+set OZ(KINSetEtaForm) "KIN_ETACHOICE1"
+set OZ(KINSetEtaConstValue) 0.1
+set OZ(KINSpilsSetMaxRestarts) 10
+set OZ(KINSolStrategy) KIN_LINESEARCH
+set OZ(KINSetMaxNewtonStep) [expr 100*$OZ(mindimOZ)*$OZ(mult)]
+
 set OZ(plottedgraphs) 0
 set OZ(symbol_i) 0
 set OZ(color_i) 0

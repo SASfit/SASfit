@@ -20,12 +20,86 @@
 #include <sasfit_common.h>
 #include <sasfit_plugin.h>
 #include <sasfit_plugin_backend.h>
+#include <kinsol/kinsol.h>
 
 #define OZMAXPAR 16
 #define PUTS(format, ...) sasfit_out(format, __VA_ARGS__)
 
 double U_ZERO(double d, double temp, double *p) {
 return 0.0;
+}
+
+
+int assign_KINSetEtaForm(const char * token, sasfit_oz_data * OZD)
+{
+#define MAXKINSetEtaForm 3
+    const char * KINSetEtaForm[MAXKINSetEtaForm];
+    int i,eq;
+    if (!token || !OZD) return 0;
+    KINSetEtaForm[0] = "KIN_ETACHOICE1";
+    KINSetEtaForm[1] = "KIN_ETACHOICE2";
+    KINSetEtaForm[3] = "KIN_ETACONSTANT";
+
+    i=0;
+    eq=-1;
+    while (i<MAXKINSetEtaForm && eq != 0) {
+        eq = strcmp(token,KINSetEtaForm[i]);
+        i++;
+    }
+    if (OZD->PrintProgress) PUTS("%s %d\n",token,i-1);
+
+    switch (i-1) {
+        case 0 :
+            OZD->KINSetEtaForm=KIN_ETACHOICE1;
+            break;
+        case 1 :
+            OZD->KINSetEtaForm=KIN_ETACHOICE2;
+            break;
+        case 2 :
+            OZD->KINSetEtaForm=KIN_ETACONSTANT;
+            break;
+        default :
+            OZD->KINSetEtaForm=KIN_ETACHOICE1;
+            sasfit_out("KINSetEtaForm  not found: %s. Using KIN_ETACHOICE1 instead.\n", token);
+            sasfit_err("KINSetEtaForm  not found: %s. Using KIN_ETACHOICE1 instead.\n", token);
+            break;
+    }
+    if (i<=MAXKINSetEtaForm) return 1;
+    return 0;
+}
+
+int assign_KINSolStrategy(const char * token, sasfit_oz_data * OZD)
+{
+#define MAXKINSolStrategy 2
+    const char * KINSolStrategy[MAXKINSolStrategy];
+    int i,eq;
+    if (!token || !OZD) return 0;
+    KINSolStrategy[0] = "KIN_NONE";
+    KINSolStrategy[1] = "KIN_LINESEARCH";
+
+    i=0;
+    eq=-1;
+    while (i<MAXKINSolStrategy && eq != 0) {
+        eq = strcmp(token,KINSolStrategy[i]);
+        i++;
+    }
+    if (OZD->PrintProgress) PUTS("%s %d\n",token,i-1);
+
+    switch (i-1) {
+        case 0 :
+            OZD->KINSolStrategy=KIN_NONE;
+            break;
+        case 1 :
+            OZD->KINSolStrategy=KIN_LINESEARCH;
+            break;
+        default :
+            OZD->KINSolStrategy=KIN_NONE;
+            sasfit_out("KINSolStrategy  not found: %s. Using KIN_NONE instead.\n", token);
+            sasfit_err("KINSolStrategy  not found: %s. Using KIN_NONE instead.\n", token);
+            break;
+    }
+    if (i<=MAXKINSolStrategy) return 1;
+    return 0;
 }
 
 int
@@ -45,7 +119,7 @@ assign_mixing_strategy(const char * token, sasfit_oz_data * OZD)
         eq = strcmp(token,MixStrategy[i]);
         i++;
     }
-    PUTS("%s %d\n",token,i-1);
+    if (OZD->PrintProgress) PUTS("%s %d\n",token,i-1);
 
     switch (i-1) {
         case 0 :
@@ -115,7 +189,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
         eq = strcmp(token,ClosureNames[i]);
         i++;
     }
-    PUTS("%s %d\n",token,i-1);
+    if (OZD->PrintProgress) PUTS("%s %d\n",token,i-1);
 //    PY, HNC, RY, Verlet, MS, BPGG
     switch (i-1) {
         case 0 :
@@ -232,7 +306,7 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
         eq = strcmp(token,RootAlgorithms[i]);
         i++;
     }
-    PUTS("%s %d\n",token,i-1);
+    if (OZD->PrintProgress) PUTS("%s %d\n",token,i-1);
 
     switch (i-1) {
         case 0 :
@@ -358,10 +432,10 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
         i++;
     }
     if (i== MAXPOTENTIALS) {
-        PUTS("the potential >%s< is unknown\n",token,i-1);
+        if (OZD->PrintProgress)  PUTS("the potential >%s< is unknown\n",token,i-1);
         return 0;
     } else {
-        PUTS("potential name:%s, index:%d\n",token,i-1);
+        if (OZD->PrintProgress)  PUTS("potential name:%s, index:%d\n",token,i-1);
     }
 
     switch (i-1) {
@@ -579,27 +653,27 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         {
                 ozd.Npoints = factor * grid;
         }
-        PUTS("Grid length has been set to %d.\n", ozd.Npoints);
+        if (ozd.PrintProgress) PUTS("Grid length has been set to %d.\n", ozd.Npoints);
 
         if (!GET_TCL(int, &ozd.maxsteps, "maxit")) {
                 ozd.maxsteps = 1000;
         }
-        PUTS("Maximum number of iterations has been set to %d.\n", ozd.maxsteps);
+        if (ozd.PrintProgress) PUTS("Maximum number of iterations has been set to %d.\n", ozd.maxsteps);
 
         if (!GET_TCL(double, &ozd.relerror, "releps")) {
                 ozd.relerror = 1e-15;
         }
-        PUTS("Relative iteration precision has been set to %g.\n", ozd.relerror);
+        if (ozd.PrintProgress) PUTS("Relative iteration precision has been set to %g.\n", ozd.relerror);
 
         if (!GET_TCL(double, &ozd.dr_dsigma, "dr/dsigma")) {
                 ozd.dr_dsigma = 0.005;
         }
-        PUTS("Relative grid width will be set to %g.\n", ozd.dr_dsigma);
+        if (ozd.PrintProgress) PUTS("Relative grid width will be set to %g.\n", ozd.dr_dsigma);
 
         if (!GET_TCL(double, &ozd.mixcoeff, "mix")) {
                 ozd.mixcoeff = 1;
         }
-        PUTS("The mixing coefficient alpha for weighting new and old c(r)\n",
+        if (ozd.PrintProgress) PUTS("The mixing coefficient alpha for weighting new and old c(r)\n",
              "will be set to %f.\n",
              "c_next(r) = alpha*c_new(r)+(1-alpha)c_old(r)\n",ozd.mixcoeff);
 
@@ -642,18 +716,77 @@ int sasfit_oz_calc_cmd(ClientData clientData,
             }
  //             ozd.mixcoeff = 1;
         }
-        for (i = 0; i < 6; i++) PUTS("param %d: %f\n", i, ozd.pPot[i]);
+        for (i = 0; i < 6; i++)   if (ozd.PrintProgress) PUTS("param %d: %f\n", i, ozd.pPot[i]);
         ozd.dr = ozd.dr_dsigma * ozd.pPot[0];
 
         if (!GET_TCL(double, &ozd.T, "T")) {
                 ozd.T = 300.;
         }
-        PUTS("Temperature is set to %gK\n", ozd.T);
+        if (ozd.PrintProgress) PUTS("Temperature is set to %gK\n", ozd.T);
 
         if (!GET_TCL(double, &ozd.phi, "phi")) {
                 ozd.phi = .3;
         }
-        PUTS("Volume fraction is set to %g\n", ozd.phi);
+        if (ozd.PrintProgress) PUTS("Volume fraction is set to %g\n", ozd.phi);
+
+        if (!GET_TCL(int, &ozd.KINSetMAA, "KINSetMAA")) {
+                ozd.KINSetMAA = 5;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetMAA is set to %d\n", ozd.KINSetMAA);
+        
+        if (!GET_TCL(double, &ozd.KINSetFuncNormTol, "KINSetFuncNormTol")) {
+                ozd.KINSetFuncNormTol = 1e-10;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetFuncNormTol is set to %g\n", ozd.KINSetFuncNormTol);
+        
+        if (!GET_TCL(double, &ozd.KINSetScaledSteptol, "KINSetScaledSteptol")) {
+                ozd.KINSetScaledSteptol = 1e-9;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetScaledSteptol is set to %g\n", ozd.KINSetScaledSteptol);
+
+        if (!GET_TCL(int, &ozd.KINSetNumMaxIters, "KINSetNumMaxIters")) {
+                ozd.KINSetNumMaxIters = 100000;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetNumMaxIters is set to %d\n", ozd.KINSetNumMaxIters);
+
+        if (!GET_TCL(double, &ozd.KINSetMaxNewtonStep, "KINSetMaxNewtonStep")) {
+                ozd.KINSetMaxNewtonStep = ozd.Npoints*100.0;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetMaxNewtonStep is set to %d\n", ozd.KINSetMaxNewtonStep);
+        
+        if (!GET_TCL(int, &ozd.KINSetPrintLevel, "KINSetPrintLevel")) {
+                ozd.KINSetPrintLevel = 0;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetPrintLevel is set to %d\n", ozd.KINSetPrintLevel);
+        
+        status = assign_KINSetEtaForm(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "KINSetEtaForm"), 0),
+                   &ozd);
+        if (status == 0) {
+                sasfit_err("Unknown KINSetEtaForm\n");
+                return TCL_ERROR;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetEtaForm is set to %d\n", ozd.KINSetEtaForm);
+        
+        if (!GET_TCL(double, &ozd.KINSetEtaConstValue, "KINSetEtaConstValue")) {
+                ozd.KINSetEtaConstValue = 0.1;
+        }
+        if (ozd.PrintProgress) PUTS("KINSetEtaConstValue is set to %g\n", ozd.KINSetEtaConstValue);
+
+        if (!GET_TCL(int, &ozd.KINSpilsSetMaxRestarts, "KINSpilsSetMaxRestarts")) {
+                ozd.KINSpilsSetMaxRestarts =10;
+        }
+        if (ozd.PrintProgress) PUTS("KINSpilsSetMaxRestarts is set to %d\n", ozd.KINSpilsSetMaxRestarts);
+        
+         status = assign_KINSolStrategy(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "KINSolStrategy"), 0),
+                   &ozd);
+        if (status == 0) {
+                sasfit_err("Unknown KINSolStrategy\n");
+                return TCL_ERROR;
+        }
+        if (ozd.PrintProgress) PUTS("KINSolStrategy is set to %d\n", ozd.KINSolStrategy);
+        
+        
+
 
         // calulate
         status =OZ_init(&ozd); 

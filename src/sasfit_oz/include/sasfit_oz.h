@@ -191,6 +191,16 @@ typedef struct {
         int failed;
         int PrintProgress;
         Tcl_Obj *oz_obj;
+        int KINSetMAA;
+        double  KINSetFuncNormTol;
+        double KINSetScaledSteptol;
+        int KINSetNumMaxIters;
+        int KINSetPrintLevel;
+        int KINSetEtaForm;
+        double KINSetEtaConstValue;
+        int KINSpilsSetMaxRestarts;
+        int KINSolStrategy;
+        double KINSetMaxNewtonStep;
 } sasfit_oz_data;
 
 int OZ_init (sasfit_oz_data *);

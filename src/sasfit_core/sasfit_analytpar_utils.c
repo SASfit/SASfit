@@ -506,6 +506,7 @@ exit:
 	return result;
 }
 
+
 #define GET_SINGLE_VAL(type) \
 Tcl_Obj * val_obj = 0; \
 int result; \

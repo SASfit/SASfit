@@ -29,6 +29,17 @@ proc put_OZ_res {} {
 	lappend OZ(result,algorithm)	$OZ(algorithm)
 	lappend OZ(result,phi)		$OZ(phi)
 	lappend OZ(result,T) 		$OZ(T)
+	
+	lappend OZ(result,KINSetMAA) $OZ(KINSetMAA)
+	lappend OZ(result,KINSetFuncNormTol) $OZ(KINSetFuncNormTol)
+	lappend OZ(result,KINSetScaledSteptol) $OZ(KINSetScaledSteptol)
+	lappend OZ(result,KINSetNumMaxIters) $OZ(KINSetNumMaxIters)
+	lappend OZ(result,KINSetPrintLevel) $OZ(KINSetPrintLevel)
+	lappend OZ(result,KINSetEtaForm) $OZ(KINSetEtaForm)
+	lappend OZ(result,KINSpilsSetMaxRestarts) $OZ(KINSpilsSetMaxRestarts)
+	lappend OZ(result,KINSolStrategy) $OZ(KINSolStrategy)
+	lappend OZ(result,KINSetMaxNewtonStep) $OZ(KINSetMaxNewtonStep)
+	
     	lappend OZ(result,mindimOZ)	$OZ(mindimOZ)
     	lappend OZ(result,mult) 	$OZ(mult)
     	lappend OZ(result,mix) 		$OZ(mix)
@@ -58,6 +69,18 @@ proc pop_OZ_res {} {
 	set OZ(result,potential) 	[lrange $OZ(result,potential) 	0 [expr [llength $OZ(result,potential)]	-2]]
 	set OZ(result,p) 		[lrange $OZ(result,p) 		0 [expr [llength $OZ(result,p)]		-2]]
 	set OZ(result,algorithm)		[lrange $OZ(result,algorithm) 	0 [expr [llength $OZ(result,algorithm)]	-2]]
+	
+	set OZ(result,KINSetMAA) [lrange $OZ(result,KINSetMAA) 		0 [expr [llength $OZ(result,KINSetMAA)]		-2]]
+	set OZ(result,KINSetFuncNormTol) [lrange $OZ(result,KINSetFuncNormTol) 		0 [expr [llength $OZ(result,KINSetFuncNormTol)]		-2]]
+	set OZ(result,KINSetScaledSteptol) [lrange $OZ(result,KINSetScaledSteptol) 		0 [expr [llength $OZ(result,KINSetScaledSteptol)]		-2]]
+	set OZ(result,KINSetNumMaxIters) [lrange $OZ(result,KINSetNumMaxIters) 		0 [expr [llength $OZ(result,KINSetNumMaxIters)]		-2]]
+	set OZ(result,KINSetPrintLevel) [lrange $OZ(result,KINSetPrintLevel) 		0 [expr [llength $OZ(result,KINSetPrintLevel)]		-2]]
+	set OZ(result,KINSetEtaForm) [lrange $OZ(result,KINSetEtaForm) 		0 [expr [llength $OZ(result,KINSetEtaForm)]		-2]]
+	set OZ(result,KINSolStrategy) [lrange $OZ(result,KINSolStrategy) 		0 [expr [llength $OZ(result,KINSolStrategy)]		-2]]
+	set OZ(result,KINSetMaxNewtonStep) [lrange $OZ(result,KINSetMaxNewtonStep) 		0 [expr [llength $OZ(result,KINSetMaxNewtonStep)]		-2]]
+
+	set OZ(result,KINSpilsSetMaxRestarts) [lrange $OZ(result,KINSpilsSetMaxRestarts) 		0 [expr [llength $OZ(result,KINSpilsSetMaxRestarts)]		-2]]
+
 	set OZ(result,phi)		[lrange $OZ(result,phi) 	0 [expr [llength $OZ(result,phi)]	-2]]
 	set OZ(result,T) 		[lrange $OZ(result,T) 		0 [expr [llength $OZ(result,T)]		-2]]
     	set OZ(result,mindimOZ)		[lrange $OZ(result,mindimOZ) 	0 [expr [llength $OZ(result,mindimOZ)]	-2]]
@@ -398,6 +421,17 @@ proc ClearOZsolver {} {
     set OZ(result,potential) {}
     set OZ(result,p) {}
     set OZ(result,algorithm) {}
+		
+	set OZ(result,KINSetMAA) {}
+	set OZ(result,KINSetFuncNormTol) {}
+	set OZ(result,KINSetScaledSteptol) {}
+	set OZ(result,KINSetNumMaxIters) {}
+	set OZ(result,KINSetPrintLevel) {}
+	set OZ(result,KINSetEtaForm) {}
+	set OZ(result,KINSpilsSetMaxRestarts) {}
+	set OZ(result,KINSolStrategy) {}
+	set OZ(result,KINSetMaxNewtonStep) {}
+	
     set OZ(result,phi) {}
     set OZ(result,T) {}
     set OZ(result,mindimOZ) {}
@@ -598,6 +632,17 @@ proc update_ozmenu {} {
            set OZ(p$i) [lindex $OZ(p) $i]
        }      
        set OZ(algorithm) [lindex $OZ(result,algorithm) $idx]
+	   
+	   set OZ(KINSetMAA) [lindex OZ(result,KINSetMAA) $idx]
+	   set OZ(KINSetFuncNormTol) [lindex OZ(result,KINSetFuncNormTol)  $idx]
+	   set OZ(KINSetScaledSteptol) [lindex OZ(result,KINSetScaledSteptol) $idx]
+	   set OZ(KINSetNumMaxIters) [lindex OZ(result,KINSetNumMaxIters)  $idx]
+	   set OZ(KINSetPrintLevel) [lindex OZ(result,KINSetPrintLevel)  $idx]
+	   set OZ(KINSetEtaForm) [lindex OZ(result,KINSetEtaForm)  $idx]
+	   set OZ(KINSolStrategy) [lindex OZ(result,KINSolStrategy)  $idx
+	   set OZ(KINSetMaxNewtonStep) [lindex OZ(result,KINSetMaxNewtonStep)  $idx
+	   set OZ(KINSpilsSetMaxRestarts) [lindex OZ(result,KINSpilsSetMaxRestarts) $idx] 
+
        set OZ(phi)	[lindex $OZ(result,phi) $idx]
        set OZ(T)	[lindex $OZ(result,T) $idx]
        set OZ(mindimOZ)	[lindex $OZ(result,mindimOZ) $idx]
@@ -618,13 +663,131 @@ proc update_ozmenu {} {
 	
 }
 
+proc configOZalgorithm {} {
+	global OZ
+	set w .ozconfig
+    if {[winfo exists $w]} {destroy $w}
+    toplevel $w
+    wm geometry $w
+    wm title $w "configuration of Ornstein Zernike solver algorithm"
+    raise $w
+	
+    label $w.algorithmtext -text "algorithm:"  
+    ComboBox $w.algorithmvalue \
+    		-values {"Picard iteration" "Mann iteration" \
+    		         "Ishikawa iteration" "Noor iteration" \
+    		         "SP iteration" "S iteration"	\
+    		         "CR iteration" "Picard-S iteration" \
+    		         "PMH iteration" "Mann II iteration" \
+    		         "Krasnoselskij iteration" \
+    		         "S* iteration" \
+				 "dNewton" "Hybrid" \
+	    		 "Hybrids (int. sc.)" "Broyden" \
+				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES"\
+				 "Steffensen iteration"
+			} \
+	    -textvariable OZ(algorithm) -width 19  -editable 0
+		
+    
+    grid  $w.algorithmtext -sticky e\
+	    -column 0 -row 15
+    grid  $w.algorithmvalue\
+	    -column 1 -row 15
+
+
+    label $w.gridtext -text "gridsize (n x 128), n:"  
+    entry $w.gridvalue -textvariable OZ(mult)
+	ComboBox $w.mixtext \
+	    -values {"mixing parameter (const)" "mixing parameter (err)" "mixing parameter (reward/penalty)"} \
+	    -textvariable OZ(mixstrategy) -editable 0
+    entry $w.mixvalue -textvariable OZ(mix)
+    label $w.ittext -text "max iterations:"  
+    entry $w.itvalue -textvariable OZ(maxit)
+    label $w.relepstext -text "iteration precision:"  
+    entry $w.relepsvalue -textvariable OZ(releps) 
+    label $w.drdsigmatext -text "rel. grid step width:" 
+    entry $w.drdsigmavalue -textvariable OZ(dr/dsigma)
+    
+
+    grid  $w.gridtext -sticky e\
+	    -column 0 -row 16
+    grid  $w.mixtext -sticky e\
+	    -column 0 -row 17
+    grid  $w.ittext -sticky e\
+	    -column 0 -row 18
+    grid  $w.relepstext -sticky e\
+	    -column 0 -row 19
+    grid  $w.drdsigmatext -sticky e\
+	    -column 0 -row 20
+    grid  $w.gridvalue \
+	    -column 1 -row 16
+    grid  $w.mixvalue \
+	    -column 1 -row 17
+    grid  $w.itvalue \
+	    -column 1 -row 18
+    grid  $w.relepsvalue \
+	    -column 1 -row 19
+    grid  $w.drdsigmavalue \
+	    -column 1 -row 20
+		
+	label $w.kinsolMMAtext -text KINSetMAA
+    entry $w.kinsolMMAvalue -textvariable OZ(KINSetMAA)
+
+	label $w.kinsolFuncNormToltext -text KINSetFuncNormTol
+    entry $w.kinsolFuncNormTolvalue -textvariable OZ(KINSetFuncNormTol)
+
+	label $w.kinsolScaledSteptoltext -text KINSetScaledSteptol
+	entry $w.kinsolScaledSteptolvalue -textvariable OZ(KINSetScaledSteptol)
+
+    label $w.kinsolNumMaxIterstext -text KINSetNumMaxIters
+	entry $w.kinsolNumMaxItersvalue -textvariable OZ(KINSetNumMaxIters)
+
+    label $w.kinsolPrintLeveltext -text KINSetPrintLevel
+	entry $w.kinsolPrintLevelvalue -textvariable OZ(KINSetPrintLevel)
+
+    label $w.kinsolEtaFormtext -text KINSetEtaForm
+	ComboBox $w.kinsolEtaFormvalue \
+	    -values {"KIN_ETACHOICE1" "KIN_ETACHOICE2" "KIN_ETACONSTANT"} \
+	    -textvariable OZ(KINSetEtaForm) -editable 0
+		
+    label $w.kinsolMaxRestartstext -text KINSpilsSetMaxRestarts
+	entry $w.kinsolMaxRestartsvalue -textvariable OZ(KINSpilsSetMaxRestarts)
+	
+    label $w.kinsolStrategytext -text KINSolStrategy
+	ComboBox $w.kinsolStrategyvalue \
+	    -values {"KIN_NONE" "KIN_LINESEARCH"} \
+	    -textvariable OZ(KINSolStrategy) -editable 0
+
+	label $w.kinsolMaxNewtonSteptext -text KINSetMaxNewtonStep
+	entry $w.kinsolMaxNewtonStepvalue -textvariable OZ(KINSetMaxNewtonStep)
+
+    grid  $w.kinsolMMAtext  -column 0 -row 21 -sticky e
+    grid  $w.kinsolMMAvalue -column 1 -row 21
+    grid  $w.kinsolFuncNormToltext  -column 0 -row 22 -sticky e
+    grid  $w.kinsolFuncNormTolvalue -column 1 -row 22
+    grid  $w.kinsolScaledSteptoltext  -column 0 -row 23 -sticky e
+    grid  $w.kinsolScaledSteptolvalue -column 1 -row 23
+    grid  $w.kinsolNumMaxIterstext  -column 0 -row 24 -sticky e
+    grid  $w.kinsolNumMaxItersvalue -column 1 -row 24
+    grid  $w.kinsolPrintLeveltext  -column 0 -row 25 -sticky e
+    grid  $w.kinsolPrintLevelvalue -column 1 -row 25
+    grid  $w.kinsolEtaFormtext  -column 0 -row 26 -sticky e
+    grid  $w.kinsolEtaFormvalue -column 1 -row 26
+    grid  $w.kinsolMaxRestartstext  -column 0 -row 27 -sticky e
+    grid  $w.kinsolMaxRestartsvalue -column 1 -row 27
+    grid  $w.kinsolStrategytext  -column 0 -row 28 -sticky e
+    grid  $w.kinsolStrategyvalue -column 1 -row 28
+    grid  $w.kinsolMaxNewtonSteptext  -column 0 -row 29 -sticky e
+    grid  $w.kinsolMaxNewtonStepvalue -column 1 -row 29
+
+}
 proc sasfit_OZ_solver {} {
     global sasfit ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph OZ
     set w .oztop
     if {[winfo exists $w]} {destroy $w}
-    toplevel .oztop
+    toplevel $w
     wm geometry $w
-    wm title .oztop "Ornstein Zernike solver"
+    wm title $w "Ornstein Zernike solver"
     raise $w
     bind $w <KeyPress-Return> StartOZsolver
     bind $w <Alt-c> ClearOZsolver
@@ -646,7 +809,7 @@ proc sasfit_OZ_solver {} {
     
     checkbutton $w.interface.progressbar.label -variable OZ(PrintProgress) -text "progress:"
     ProgressBar $w.interface.progressbar.value \
-    		-maximum 100 -width 50m\
+    		-maximum 100 -width 40m\
     		-type infinite -variable OZ(progressbar)
     pack $w.interface.progressbar.label $w.interface.progressbar.value \
     		-fill both  -expand yes -side left -pady 2m
@@ -769,89 +932,42 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.v6value\
 	    -column 1 -row 9
 
-    label $w.param.empty2 -text "parameters for OZ solver:" -font "Arial 10 bold underline"
-    label $w.param.algorithmtext -text "algorithm:"  
-    ComboBox $w.param.algorithmvalue \
-    		-values {"Picard iteration" "Mann iteration" \
-    		         "Ishikawa iteration" "Noor iteration" \
-    		         "SP iteration" "S iteration"	\
-    		         "CR iteration" "Picard-S iteration" \
-    		         "PMH iteration" "Mann II iteration" \
-    		         "Krasnoselskij iteration" \
-    		         "S* iteration" \
-				 "dNewton" "Hybrid" \
-	    		 "Hybrids (int. sc.)" "Broyden" \
-				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES"\
-				 "Steffensen iteration"
-			} \
-	    -textvariable OZ(algorithm) -width 19  -editable 0
-		
+    label $w.param.empty2 -text "parameters for OZ solver:" -font "Arial 10 bold underline" 
+    grid  $w.param.empty2 -sticky w\
+	    -column 0 -row 10 -columnspan 2
+
     label $w.param.phitext -text "volume fraction:"  
     entry $w.param.phivalue -textvariable OZ(phi)
     label $w.param.ttext -text "temperature \[K\]:"  
     entry $w.param.tvalue -textvariable OZ(T)
-    
-    grid  $w.param.empty2 -sticky w\
-	    -column 0 -row 10 -columnspan 2
-    grid  $w.param.algorithmtext -sticky e\
-	    -column 0 -row 11
     grid  $w.param.phitext -sticky e\
-	    -column 0 -row 12
+	    -column 0 -row 11
     grid  $w.param.ttext -sticky e\
-	    -column 0 -row 13
-    grid  $w.param.algorithmvalue\
-	    -column 1 -row 11
+	    -column 0 -row 12
     grid  $w.param.phivalue\
-	    -column 1 -row 12
+	    -column 1 -row 11
     grid  $w.param.tvalue\
-	    -column 1 -row 13
-
+	    -column 1 -row 12
+	
     label $w.param.empty3 -text " "
-    label $w.param.gridtext -text "gridsize (n x 128), n:"  
-    entry $w.param.gridvalue -textvariable OZ(mult)
-	ComboBox $w.param.mixtext \
-	    -values {"mixing parameter (const)" "mixing parameter (err)" "mixing parameter (reward/penalty)"} \
-	    -textvariable OZ(mixstrategy) -editable 0
-    entry $w.param.mixvalue -textvariable OZ(mix)
-    label $w.param.ittext -text "max iterations:"  
-    entry $w.param.itvalue -textvariable OZ(maxit)
-    label $w.param.relepstext -text "iteration precision:"  
-    entry $w.param.relepsvalue -textvariable OZ(releps) 
-    label $w.param.drdsigmatext -text "rel. grid step width:" 
-    entry $w.param.drdsigmavalue -textvariable OZ(dr/dsigma)
-    
-    grid $w.param.empty3 \
-	    -column 0 -row 14
-    grid  $w.param.gridtext -sticky e\
-	    -column 0 -row 15
-    grid  $w.param.mixtext -sticky e\
-	    -column 0 -row 16
-    grid  $w.param.ittext -sticky e\
-	    -column 0 -row 17
-    grid  $w.param.relepstext -sticky e\
-	    -column 0 -row 18
-    grid  $w.param.drdsigmatext -sticky e\
-	    -column 0 -row 19
-    grid  $w.param.gridvalue \
-	    -column 1 -row 15
-    grid  $w.param.mixvalue \
-	    -column 1 -row 16
-    grid  $w.param.itvalue \
-	    -column 1 -row 17
-    grid  $w.param.relepsvalue \
-	    -column 1 -row 18
-    grid  $w.param.drdsigmavalue \
-	    -column 1 -row 19
+	grid $w.param.empty3 \
+	    -column 0 -row 13
+	
+    button  $w.param.algorithmconfig -text "configure OZ solver algorithm" \
+	        -font "Arial 10 bold" -bg "light grey" \
+			-command {configOZalgorithm}
+	grid  $w.param.algorithmconfig -sticky w\
+	    -column 0 -row 14 -columnspan 2
 
     label $w.param.empty4 -text " "
     label $w.param.labeltext -text "label:"  
     entry $w.param.labelvalue -textvariable OZ(label)
     grid $w.param.empty4 \
-	    -column 0 -row 20
+	    -column 0 -row 15
     grid  $w.param.labeltext -sticky e\
-	    -column 0 -row 21
+	    -column 0 -row 16
     grid  $w.param.labelvalue \
-	    -column 1 -row 21
+	    -column 1 -row 16
 
 #
 #  create "ozSQGraph"

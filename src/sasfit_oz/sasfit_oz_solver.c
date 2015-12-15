@@ -432,7 +432,7 @@ int OZ_init(sasfit_oz_data *OZd) {
    for (i=0; i < NP; i++) {
         G[i]=0;
    }
-   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT10, FFTW_ESTIMATE);
+   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
    return 1;
    }
 
@@ -583,6 +583,41 @@ int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *x, double *y
     free(Fu);
     free(Fv);
 
+}
+
+int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
+    int flag;
+    flag += KINSetMaxNewtonStep(kin_mem, OZd->KINSetMaxNewtonStep);
+    if (OZd->PrintProgress) sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
+    
+    flag += KINSetMAA(kin_mem, OZd->KINSetMAA);
+    flag += KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
+    flag += KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
+    flag += KINSetPrintLevel(kin_mem,OZd->PrintProgress*OZd->KINSetPrintLevel);
+    if (OZd->PrintProgress) sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+               
+    flag += KINSetEtaForm(kin_mem, OZd->KINSetEtaForm); 
+    if (OZd->PrintProgress) sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
+ 
+                
+    flag += KINSetNumMaxIters(kin_mem,OZd->KINSetNumMaxIters);
+    if (OZd->PrintProgress) sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
+                
+    flag += KINSetScaledStepTol(kin_mem,OZd->KINSetScaledSteptol);
+    if (OZd->PrintProgress) sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
+
+    flag += KINSetFuncNormTol(kin_mem, OZd->KINSetFuncNormTol);
+    if (OZd->PrintProgress) sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
+                
+ //               flag = KINSetNoInitSetup(kin_mem, TRUE);
+ //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
+                
+    flag += KINSetUserData(kin_mem,OZd);
+    if (OZd->PrintProgress) sasfit_out("KINSetUserData(flag)=%d\n",flag);
+                
+ //               flag = KINSetConstraints(kin_mem, 1.0);
+ //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+ return flag;
 }
 
 int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algorithm) {
@@ -1578,55 +1613,27 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 cp_array_to_N_Vector(G,u,NP);
                 
 				kin_mem = KINCreate();
-                  /* Set number of prior residuals used in Anderson acceleration */
-                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
-                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
-                flag = KINSetMAA(kin_mem, 5);
-                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
-                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
-                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
- //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
- //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
- 
-                
-                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
-                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
-                
-                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
-                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
-
-                flag = KINSetFuncNormTol(kin_mem, RELERROR);
-                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
-                
- //               flag = KINSetNoInitSetup(kin_mem, TRUE);
- //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
-                
-				flag = KINSetUserData(kin_mem,OZd);
-                sasfit_out("KINSetUserData(flag)=%d\n",flag);
-                
- //               flag = KINSetConstraints(kin_mem, 1.0);
- //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                KIN_sasfit_configure(kin_mem,OZd);
                 
    				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
-                sasfit_out("KINInit(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
                  
 				flag = KINSpgmr(kin_mem, 0);
-                sasfit_out("KINSpgmr(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSpgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_FP,scale, scale);
                 if (flag != 0) OZd->failed = 1;
-                sasfit_out("KINSol(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
-                sasfit_out("err %lg\n:",err);
+                if (OZd->PrintProgress) sasfit_out("err %lg\n:",err);
                 
                 
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
-                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
         case GMRES:                
                 maxlrst = MAXSTEPS/10;
@@ -1638,54 +1645,27 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 
 				kin_mem = KINCreate();
                   /* Set number of prior residuals used in Anderson acceleration */
-                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
-                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
-                flag = KINSetMAA(kin_mem, 5);
-                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
-                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
-                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
- //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
- //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
- 
-                
-                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
-                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
-                
-                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
-                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
-
-                flag = KINSetFuncNormTol(kin_mem, RELERROR);
-                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
-                
- //               flag = KINSetNoInitSetup(kin_mem, TRUE);
- //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
-                
-				flag = KINSetUserData(kin_mem,OZd);
-                sasfit_out("KINSetUserData(flag)=%d\n",flag);
-                
- //               flag = KINSetConstraints(kin_mem, 1.0);
- //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                KIN_sasfit_configure(kin_mem,OZd);
                 
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
-                sasfit_out("KINInit(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
                  
 				flag = KINSpgmr(kin_mem, 0);
-                sasfit_out("KINSpgmr(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSpgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
                 if (flag != 0) OZd->failed = 1;
-                sasfit_out("KINSol(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
-                sasfit_out("err=%lg\n:",err);
+                if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
                 
                 
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
-                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
         case FGMRES:            
                 maxlrst = MAXSTEPS/10;
@@ -1697,53 +1677,25 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 
 				kin_mem = KINCreate();
                   /* Set number of prior residuals used in Anderson acceleration */
-                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
-                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
-                flag = KINSetMAA(kin_mem, 5);
-                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
-                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
-                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
-               
- //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
- //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
- 
-                
-                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
-                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
-                
-                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
-                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
-                
-                flag = KINSetFuncNormTol(kin_mem, RELERROR);
-                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
-                
- //               flag = KINSetNoInitSetup(kin_mem, TRUE);
- //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
-                
-				flag = KINSetUserData(kin_mem,OZd);
-                sasfit_out("KINSetUserData(flag)=%d\n",flag);
-                
- //               flag = KINSetConstraints(kin_mem, 1.0);
- //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                KIN_sasfit_configure(kin_mem,OZd);
                 
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
-                sasfit_out("KINInit(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
                  
 				flag = KINSpfgmr(kin_mem, 0);
-                sasfit_out("KINSpfgmr(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSpfgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
                 if (flag != 0) OZd->failed = 1;
-                sasfit_out("KINSol(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
-                sasfit_out("err=%lg\n:",err);
+                if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
                 
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
-                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
         case BiCGSTAB:   
                 maxlrst = MAXSTEPS/10;
@@ -1756,51 +1708,24 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				kin_mem = KINCreate();
                   /* Set number of prior residuals used in Anderson acceleration */
                 flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
-                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
-                flag = KINSetMAA(kin_mem, 5);
-                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
-                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
-               sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
-               
- //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
- //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
- 
-                
-                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
-                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
-                
-                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
-                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
-                
-                flag = KINSetFuncNormTol(kin_mem, RELERROR);
-                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
-                
- //               flag = KINSetNoInitSetup(kin_mem, TRUE);
- //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
-                
-				flag = KINSetUserData(kin_mem,OZd);
-                sasfit_out("KINSetUserData(flag)=%d\n",flag);
-                
- //               flag = KINSetConstraints(kin_mem, 1.0);
- //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
+                KIN_sasfit_configure(kin_mem,OZd);
                 
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
-                sasfit_out("KINInit(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
                  
 				flag = KINSpbcg(kin_mem, 0);
-                sasfit_out("KINSpbcg(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSpbcg(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
                 if (flag != 0) OZd->failed = 1;
-                sasfit_out("KINSol(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
-                sasfit_out("err: %lg\n:",err);
+                if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
                 
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
-                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;      
         case TFQMR:
                 maxlrst = MAXSTEPS/10;
@@ -1812,47 +1737,19 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 
 				kin_mem = KINCreate();
                   /* Set number of prior residuals used in Anderson acceleration */
-                flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
-                sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
-                flag = KINSetMAA(kin_mem, 5);
-                flag = KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
-                flag = KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-				flag = KINSetPrintLevel(kin_mem,OZd->PrintProgress*3);
-                sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
-               
- //               flag = KINSetEtaForm(kin_mem, KIN_ETACHOICE2);
- //               sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
- 
-                
-                flag = KINSetNumMaxIters(kin_mem, MAXSTEPS);
-                sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
-                
-                flag = KINSetScaledStepTol(kin_mem, RELERROR/100.);
-                sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
-                
-                flag = KINSetFuncNormTol(kin_mem, RELERROR);
-                sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
-                
- //               flag = KINSetNoInitSetup(kin_mem, TRUE);
- //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
-                
-				flag = KINSetUserData(kin_mem,OZd);
-                sasfit_out("KINSetUserData(flag)=%d\n",flag);
-                
- //               flag = KINSetConstraints(kin_mem, 1.0);
- //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
-                
-   				flag = KINInit(kin_mem,OZ_step_kinsol,u);
-                sasfit_out("KINInit(flag)=%d\n",flag);
-                 
+                KIN_sasfit_configure(kin_mem,OZd);
+
+                flag = KINInit(kin_mem,OZ_step_kinsol,u);
+                if (OZd->PrintProgress)sasfit_out("KINInit(flag)=%d\n",flag);
+
 				flag = KINSptfqmr(kin_mem, 0);
-                sasfit_out("KINSptfqmr(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSptfqmr(flag)=%d\n",flag);
                 
-				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
+				flag = KINSol(kin_mem,u,OZd->KINSolStrategy,scale, scale);
                 if (flag != 0) OZd->failed = 1;
-                sasfit_out("KINSol(flag)=%d\n",flag);
+                if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
-                sasfit_out("err: %lg\n:",err);
+                if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
                 
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
@@ -2420,7 +2317,7 @@ double OZ_step(sasfit_oz_data *OZd) {
 
  //   OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
     fftw_execute_r2r(OZd->pl,OZIN,OZOUT);
-    dtmp=4.0*M_PI*dr*dr/(2.0*dk);
+   dtmp=4.0*M_PI*dr*dr/(2.0*dk);
     for (j=0; j < NP; j++) {
         cf[j]=dtmp*OZOUT[j]/(j+1.0);
         CFOLD[j]=cf[j];
@@ -2503,12 +2400,10 @@ int OZ_solver (sasfit_oz_data *OZd) {
     OZ_func_one_t * tmp_potential;
 
     dk = M_PI/((NP+1.0)*dr);
-    r[0]=dr;
-    k[0]=dk;
 
-    for (i=1; i < NP; i++) {
-        r[i]=(r[i-1]+dr);
-        k[i]=(k[i-1]+dk);
+    for (i=0; i < NP; i++) {
+        r[i]=(i+1)*dr;
+        k[i]=(i+1)*dk;
     }
 
     if (CLOSURE==RHNC) {
