@@ -38,7 +38,7 @@ int assign_KINSetEtaForm(const char * token, sasfit_oz_data * OZD)
     if (!token || !OZD) return 0;
     KINSetEtaForm[0] = "KIN_ETACHOICE1";
     KINSetEtaForm[1] = "KIN_ETACHOICE2";
-    KINSetEtaForm[3] = "KIN_ETACONSTANT";
+    KINSetEtaForm[2] = "KIN_ETACONSTANT";
 
     i=0;
     eq=-1;

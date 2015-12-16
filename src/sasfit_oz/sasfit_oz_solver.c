@@ -649,7 +649,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   //maximalDimensionOfKrylovSpace is the number of elements in the vector space used
   //for Anderson mixing. Both the residuals and the states
   //used for mixing are in the Krylov subspace of the problem, hence the name
-  int maximalDimensionOfKrylovSpace = 5;
+  int maximalDimensionOfKrylovSpace = OZd->KINSetMAA;
   //To check when to switch between extend and shift
   int isMaximalDimensionOfKrylovSpaceReached = 0;
   int dimensionOfKrylovSpace = 0;
@@ -1754,7 +1754,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
-                sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+                  if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;      
         case AndersonAcc:
                 //To check when to switch between extend and shift
@@ -2039,17 +2039,17 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
                 MIXCOEFF = 1.0;
                 Tgsl = gsl_multiroot_fsolver_broyden;
     }
-    sasfit_out("initialising root solver: %d\n",algorithm);
+      if (OZd->PrintProgress) sasfit_out("initialising root solver: %d\n",algorithm);
     sgsl = gsl_multiroot_fsolver_alloc (Tgsl, Fgsl.n);
     gsl_multiroot_fsolver_set (sgsl, &Fgsl, GAMMA_R);
     iter = 0;
     do {
-        sasfit_out("starting %d-th iteration\n", iter+1);
+          if (OZd->PrintProgress) sasfit_out("starting %d-th iteration\n", iter+1);
         iter++;
         status = gsl_multiroot_fsolver_iterate (sgsl);
-        sasfit_out("iterations: %d, status = %s\n", iter, gsl_strerror (status));
-        sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
-        sasfit_out("residual of gamma(r)-OZ(gamma(r)):%g \n",gsl_blas_dasum(sgsl->f));
+        if (OZd->PrintProgress) sasfit_out("iterations: %d, status = %s\n", iter, gsl_strerror (status));
+        if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+        if (OZd->PrintProgress) sasfit_out("residual of gamma(r)-OZ(gamma(r)):%g \n",gsl_blas_dasum(sgsl->f));
                 
         stoppingflag = gsl_multiroot_test_residual (sgsl->f, RELERROR);
         
@@ -2524,9 +2524,8 @@ int OZ_solver (sasfit_oz_data *OZd) {
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");
     }
-
-
-    sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
+    
+    if (OZd->PrintProgress) sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
 
     Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
     Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
