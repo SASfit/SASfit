@@ -334,7 +334,7 @@ set OZ(gridlength) [expr int($OZ(mindimOZ)*$OZ(mult))]
 set OZ(algorithm) "FGMRES"
 set OZ(KINSetMAA) 5
 set OZ(KINSetFuncNormTol) $OZ(releps)
-set OZ(KINSetScaledSteptol) [expr $OZ(KINSetFuncNormTol)/100.]
+set OZ(KINSetScaledSteptol) [expr $OZ(KINSetFuncNormTol)/1000.]
 set OZ(KINSetNumMaxIters) $OZ(maxit)
 set OZ(KINSetPrintLevel) 0
 set OZ(KINSetEtaForm) "KIN_ETACHOICE1"

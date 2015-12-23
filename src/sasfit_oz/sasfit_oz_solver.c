@@ -14,12 +14,14 @@
 #include "../sasfit_old/include/SASFIT_x_tcl.h"
 
 #include <gsl/gsl_vector.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_min.h>
 #include <gsl/gsl_multiroots.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_cblas.h>
 #include <gsl/gsl_blas.h>
-#include <gsl/gsl_errno.h>
 #include <kinsol/kinsol.h>
 // #include <nvector/nvector_openmp.h>
 #include <nvector/nvector_serial.h>
@@ -46,8 +48,19 @@ void KINInfoSASfit(const char *module, const char *function,
                                 char *msg, void *OZd_structure){
 
     sasfit_oz_data *OZd;
+    long int nfe, nnlsi;
+    double fnorm;
+    int flag;
+    char sBuffer[256];
     OZd = (sasfit_oz_data*) OZd_structure;
     sasfit_out("Info message from %s-%s:%s\n",module,function,msg);
+    if (OZd->KINSetPrintLevel == 5) {
+        flag= KINGetNumFuncEvals(OZd->kin_mem,&nfe);
+        flag = KINGetNumNonlinSolvIters(OZd->kin_mem,&nnlsi);
+        flag = KINGetFuncNorm(OZd->kin_mem,&fnorm);
+        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",OZd->it,OZd->GNorm, nfe, nnlsi,fnorm);
+        Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
+    }
 }; 
 /*
  * Check function return value...
@@ -593,7 +606,13 @@ int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
     flag += KINSetMAA(kin_mem, OZd->KINSetMAA);
     flag += KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
     flag += KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-    flag += KINSetPrintLevel(kin_mem,OZd->PrintProgress*OZd->KINSetPrintLevel);
+    if  (OZd->KINSetPrintLevel > 3 ) {
+        flag += KINSetPrintLevel(kin_mem,1);
+    } else if ( OZd->KINSetPrintLevel < 0) {
+        flag += KINSetPrintLevel(kin_mem,3);
+    } else {
+        flag += KINSetPrintLevel(kin_mem,OZd->KINSetPrintLevel);
+    }
     if (OZd->PrintProgress) sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
                
     flag += KINSetEtaForm(kin_mem, OZd->KINSetEtaForm); 
@@ -1613,6 +1632,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 cp_array_to_N_Vector(G,u,NP);
                 
 				kin_mem = KINCreate();
+                OZd->kin_mem=kin_mem;
                 KIN_sasfit_configure(kin_mem,OZd);
                 
    				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
@@ -1624,7 +1644,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_FP,scale, scale);
-                if (flag != 0) OZd->failed = 1;
+                if (flag != KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err %lg\n:",err);
@@ -1644,6 +1664,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 cp_array_to_N_Vector(G,u,NP);
                 
 				kin_mem = KINCreate();
+                OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
                 
@@ -1656,7 +1677,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
-                if (flag != 0) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
@@ -1676,6 +1697,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 cp_array_to_N_Vector(G,u,NP);
                 
 				kin_mem = KINCreate();
+                OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
                 
@@ -1687,7 +1709,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
-                if (flag != 0) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
@@ -1706,6 +1728,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 cp_array_to_N_Vector(G,u,NP);
                 
 				kin_mem = KINCreate();
+                OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
                 KIN_sasfit_configure(kin_mem,OZd);
@@ -1717,7 +1740,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 if (OZd->PrintProgress) sasfit_out("KINSpbcg(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
-                if (flag != 0) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
@@ -1736,6 +1759,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 cp_array_to_N_Vector(G,u,NP);
                 
 				kin_mem = KINCreate();
+                OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
 
@@ -1746,7 +1770,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 if (OZd->PrintProgress) sasfit_out("KINSptfqmr(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,OZd->KINSolStrategy,scale, scale);
-                if (flag != 0) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
@@ -2110,7 +2134,8 @@ double OZ_step(sasfit_oz_data *OZd) {
     int i,j;
     double powarg, logarg,dtmp ;
     bool doneB;
-
+    char sBuffer[256];
+    
     OZ_func_one_t * tmp_potential;
     ro=6*PHI/(M_PI*gsl_pow_3(PARAM[0]));
     dk = M_PI/((NP+1.0)*dr);
@@ -2346,6 +2371,11 @@ double OZ_step(sasfit_oz_data *OZd) {
     }
     OZd->GNorm= sqrt(GNorm2);
     OZd->SNorm= sqrt(Sm);
+    if (OZd->KINSetPrintLevel == 4) {  
+        sprintf(sBuffer,"storeOZstepinfo \"%d\t%lg\"",OZd->it,OZd->GNorm);
+        Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
+//        sasfit_out("%d\t%lg\n",OZd->it,OZd->GNorm);
+    };
     return OZd->GNorm;
 }
 
@@ -2599,6 +2629,8 @@ double compressibility_calc(double scp, void *params)
    PHI=iphi-iphi*0.01;
    r2=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
+   if (OZd->interrupt == 1) return NAN;
+   
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
             if (i>0) {
@@ -2621,6 +2653,8 @@ double compressibility_calc(double scp, void *params)
    PHI=iphi+iphi*0.01;
    r3=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
+   if (OZd->interrupt == 1) return NAN;
+   
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
             if (i>0) {
@@ -2642,6 +2676,8 @@ double compressibility_calc(double scp, void *params)
    chivir=(r3-r2)/((P3-P2)*r1);
    PHI=iphi;
    Delta_chi = chicp-chivir;
+   OZd->chi_virial_route=chivir;
+   OZd->chi_compressibility_route=chicp;
    if (Delta_chi != Delta_chi) {
         sasfit_out("detected NAN for compressibility, alpha value: %g\n",ALPHA);
         OZd->failed = 1;
@@ -2651,6 +2687,12 @@ double compressibility_calc(double scp, void *params)
     }
    return Delta_chi;
 }
+
+double mod_delta_chi(double scp, void *params)
+{   
+    return fabs(compressibility_calc(scp, params));
+}
+
 //Routine to minimize the difference between two compressibilities
 
 void rescaleMSA (sasfit_oz_data *OZd) {
@@ -2726,13 +2768,12 @@ void rescaleMSA (sasfit_oz_data *OZd) {
         double x_hi = alpha_right;
         gsl_function F;
 
-        F.function = compressibility_calc;
+        F.function = &compressibility_calc;
         F.params = OZd;
-
         Tt = gsl_root_fsolver_brent;
         s = gsl_root_fsolver_alloc (Tt);
         gsl_root_fsolver_set (s, &F, x_lo, x_hi);
-
+        gsl_set_error_handler_off ();
         sasfit_out("using %s method\n",gsl_root_fsolver_name (s));
         sasfit_out(" iter |  lower      upper  |    root    err(est)\n");
         iter = 0;
@@ -2762,15 +2803,82 @@ void rescaleMSA (sasfit_oz_data *OZd) {
 
 void root_finding (sasfit_oz_data *OZd) {
     int signchange,i,j;
+        int status;
+        int iter;
+        int max_iter;
+        const gsl_root_fsolver_type *Tt;
+        gsl_root_fsolver *s;
+        const gsl_min_fminimizer_type *Tm;
+        gsl_min_fminimizer *sm;
+        double root;
+        double x_lo;
+        double x_hi;
+        gsl_function F, Fm;
     double refnew, refold, alpha_left, alpha_right, scp_inter;
     refold=0;
     signchange = 0;
     sasfit_out("\nSearching for the interval where sign changes: \n");
     sasfit_out("%s |  %s \n","self-consistency parameter" , "(chicomp-chivir)/beta");
     sasfit_out("---------------------------|-------------------------\n");
+    
+    switch (CLOSURE) {
+        case RY:
+        case HMSA:
+                alpha_right=100.;
+                alpha_left=100./pow(2,28);
+                break;
+        case BPGG:
+                alpha_right=5.6;
+                alpha_left=0;
+                break;
+        case CJVM:
+                alpha_right=1.4;
+                alpha_left=0;
+                break;
+        case BB:
+                alpha_right=2.3;
+                alpha_left=-0.5;
+                break;
+    }
+    refold=compressibility_calc(alpha_right, OZd);
+    sasfit_out("          %15g  |   %15g \n", alpha_right , refold/OZd->beta);
+    refnew=compressibility_calc(alpha_left, OZd);
+    sasfit_out("          %15g  |   %15g \n", alpha_left , refnew/OZd->beta);
 
+    if ((refnew*refold<0)) {
+            signchange=1;
+    } else {
+            sasfit_out("No change of sign between %le and %le \n", alpha_left,alpha_left);
+            sasfit_out("Try to scan the interval to find sig change or a rough minimum\n",scp_inter);
+            
+            Fm.function = &mod_delta_chi;
+            Fm.params = OZd;
+            Tm = gsl_min_fminimizer_quad_golden;
+            sm = gsl_min_fminimizer_alloc (Tm);
+            gsl_min_fminimizer_set (sm, &Fm, (alpha_left+alpha_right)/2.0, alpha_left, alpha_right);
+            iter = 0;
+            max_iter = 100;
+            gsl_set_error_handler_off ();
+            do {
+                iter++;
+                status = gsl_min_fminimizer_iterate (sm);
+                root = gsl_min_fminimizer_x_minimum (sm);
+                x_lo = gsl_min_fminimizer_x_lower (sm);
+                x_hi = gsl_min_fminimizer_x_upper (sm);
+                status = gsl_min_test_interval (x_lo, x_hi, 0, 1e-5);
+                if (status == GSL_SUCCESS) {
+                    sasfit_out("found minimum:\n");
+                }
+                sasfit_out("%5d |%.7f, %.7f| %.7f %.7f\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
+                Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
+                Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
+                check_interrupt(OZd);
+            } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0);
+            gsl_min_fminimizer_free (sm);
+            signchange=2;
+    }
     i = 0;
-    while (signchange==0 && i<=28) {
+    while (signchange==0 && i<=28 &&  OZd->interrupt == 0) {
         if (CLOSURE==RY || CLOSURE==HMSA){
             refnew=compressibility_calc(100/pow(2,i), OZd);
             alpha_left  = 100/pow(2,i);
@@ -2822,28 +2930,22 @@ void root_finding (sasfit_oz_data *OZd) {
         Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
     }
-    if (signchange==1) {
-        int status;
-        int iter;
-        int max_iter;
-        const gsl_root_fsolver_type *Tt;
-        gsl_root_fsolver *s;
-        double root = 0.0;
-        double x_lo = alpha_left;
-        double x_hi = alpha_right;
-        gsl_function F;
-
-        F.function = compressibility_calc;
+    if (signchange==1 && OZd->interrupt == 0) {
+        root = 0.0;
+        alpha_left;
+        x_hi = alpha_right;
+        
+        F.function = &compressibility_calc;
         F.params = OZd;
 
         Tt = gsl_root_fsolver_brent;
         s = gsl_root_fsolver_alloc (Tt);
         gsl_root_fsolver_set (s, &F, x_lo, x_hi);
-
         sasfit_out("using %s method\n",gsl_root_fsolver_name (s));
         sasfit_out(" iter |  lower      upper  |    root    err(est)\n");
         iter = 0;
         max_iter = 100;
+        gsl_set_error_handler_off ();
         do {
             iter++;
             status = gsl_root_fsolver_iterate (s);

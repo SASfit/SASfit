@@ -378,3 +378,41 @@ proc isnan {x} {
 	}
 }
 
+proc redefaultProc {procn argn value} {
+    set argl {}
+    foreach arg [info args $procn] {
+        if [info default $procn $arg default] {
+            if {$arg==$argn} {set default $value}
+            lappend argl [list $arg $default]
+        } else {
+            lappend argl $arg
+        }
+    }
+    proc $procn $argl [info body $procn]
+ }
+ 
+proc static args {
+    set caller [lindex [info level -1] 0]
+    foreach arg $args {
+        uplevel 1 [list trace var $arg w [list staticTrace $caller]]
+    }
+ }
+ # ... and the trace proc, which only serves to ignore 'el' and 'op':
+ proc staticTrace {caller name el op} {
+    upvar 1 $name var
+    redefaultProc $caller $name $var 
+ }
+ 
+proc storeOZstepinfo { OZinfo {ofn {}}} {
+	global sasfit OZ
+	static ofn
+	set fn $sasfit(datadir)/$OZ(closure)_$OZ(potential)_phi($OZ(phi))_mix($OZ(mix))_MAA($OZ(KINSetMAA))_$OZ(algorithm).txt
+	if ([string equal $fn $ofn]) {
+		set fid [open $fn a+]
+	} else {
+		set fid [open $fn w]
+	}
+	puts $fid $OZinfo
+	close $fid
+	set ofn $fn
+}

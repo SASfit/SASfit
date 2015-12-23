@@ -175,6 +175,8 @@ typedef struct {
         double *ubeta;
         double GNorm;
         double SNorm;
+        double chi_virial_route;
+        double chi_compressibility_route;
         sasfit_oz_closure cl;
         sasfit_oz_root_algorithms root_algorithm;
         sasfit_oz_mixstrategy mixstrategy;
@@ -192,6 +194,7 @@ typedef struct {
         int PrintProgress;
         Tcl_Obj *oz_obj;
         int KINSetMAA;
+        void  *kin_mem;
         double  KINSetFuncNormTol;
         double KINSetScaledSteptol;
         int KINSetNumMaxIters;
