@@ -489,7 +489,6 @@ sasfit_ff_DLLEXP scalar sasfit_ff_Worm_R_ma_Profile(scalar q, sasfit_param * par
 sasfit_ff_DLLEXP scalar sasfit_ff_Worm_RWbrush(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_worm_w_gauss_chains(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_background(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_guinier(scalar q, sasfit_param * param);
 
 sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_homogeneousPlanar(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_homogeneousCyl(scalar q, sasfit_param * param);

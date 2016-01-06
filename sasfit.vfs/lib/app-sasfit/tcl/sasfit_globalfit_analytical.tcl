@@ -788,17 +788,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
                                   set actualPar(FF,l9,label) ""
                                   set actualPar(FF,l10,label) ""
                                 }
-	   "Guinier"            { set actualPar(FF,l1,label) "I0 ="
-				  set actualPar(FF,l2,label) "a ="
-				  set actualPar(FF,l3,label) "Ra ="
-				  set actualPar(FF,l4,label) ""
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
 	   "Sphere"             { set actualPar(FF,l1,label) "R ="
 				  set actualPar(FF,l2,label) ""
 				  set actualPar(FF,l3,label) ""
@@ -4539,8 +4528,7 @@ proc analyticalGlobalSDCmd {simorfit
 			       {DAB Monodisperse} \ 
                                {Spinodal Monodisperse} \
 			       {BeaucageExpPowLaw Monodisperse} \ 
-                               {BeaucageExpPowLaw2 Monodisperse} \
-			       {Guinier Monodisperse} \
+                               {BeaucageExpPowLaw2 Monodisperse} 
 		               }} \
 	    {cyl "cylindrical obj." { \
 				{Disc Delta} \

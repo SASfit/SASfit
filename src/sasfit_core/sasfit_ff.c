@@ -852,10 +852,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_background;
 	} else
-	if ( strcmp(ff->typestr, "Guinier") == 0 )
-	{
-		ff->fct = sasfit_ff_guinier;
-	} else
 	if ( strcmp(ff->typestr, "Sphere") == 0 )
 	{
 		ff->fct 	= sasfit_ff_sphere;

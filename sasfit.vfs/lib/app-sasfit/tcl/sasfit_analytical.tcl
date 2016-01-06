@@ -481,17 +481,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "Guinier"            { set actualPar(FF,l1,label) "I0 ="
-                          set actualPar(FF,l2,label) "a ="
-                          set actualPar(FF,l3,label) "Ra ="
-                          set actualPar(FF,l4,label) ""
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
    "Sphere"             { set actualPar(FF,l1,label) "R ="
                           set actualPar(FF,l2,label) ""
                           set actualPar(FF,l3,label) ""
@@ -3919,17 +3908,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
-	   "Guinier"            { set actualAnalytPar(FF,l1,label) "I0 ="
-				  set actualAnalytPar(FF,l2,label) "a ="
-				  set actualAnalytPar(FF,l3,label) "Ra ="
-				  set actualAnalytPar(FF,l4,label) ""
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
 	   "Sphere"             { set actualAnalytPar(FF,l1,label) "R ="
 				  set actualAnalytPar(FF,l2,label) ""
 				  set actualAnalytPar(FF,l3,label) ""
@@ -6998,8 +6976,7 @@ proc set_actualAP_config {type AactualAnalytPar globalfit
 		} {
 			$path_rangebutton configure -state disabled
 			# forces the usage of a specific size distribution for a given form factor
-			if { [string equal $actualAnalytPar(FF,typestr) Background] ||
-			     [string equal $actualAnalytPar(FF,typestr) Guinier]
+			if { [string equal $actualAnalytPar(FF,typestr) Background]
 			} {
 				$path_dropdownl configure -fg #a3a3a3
 				$path_dropdownl configure -state disabled
@@ -7065,8 +7042,7 @@ proc set_actualAP_config {type AactualAnalytPar globalfit
 		    [string equal $actualAnalytPar(SD,typestr) "A_div_B"]
 		} {
 			distr_disable distr actualAnalytPar $type $path $p $globalfit
-			if { ![string equal $actualAnalytPar($type,typestr) Background] &&
-			     ![string equal $actualAnalytPar($type,typestr) Guinier]
+			if { ![string equal $actualAnalytPar($type,typestr) Background] 
 			} {
 				.analytical.fitpar.sd.lay.wrl.whichsd configure -fg Black 
 				.analytical.fitpar.sd.lay.wrl.whichsd configure -state normal
@@ -11117,7 +11093,6 @@ switch -exact $type {
               }
            }
            "Background" { return "c_0 + c_1 Q + c_4 Q^(-alpha)\n" }
-           "Guinier" { return "if a==0 then I(Q) = I0 exp(-Ra^2Q^2/3)   a==0: sphere\nif a!=0 the I(Q) = a pi/Q^a I0 exp(-Ra^2Q^2/(3-a)))   a==2: lamellar,  a==1: rod" }
 	   default { return [get_descr_by_id $ap($type,typestr) $num] }
       }
    }
@@ -12361,16 +12336,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 		 DoubleShellChain \ 
 		 TetrahedronDoubleShell \
 		}} \ 
-{nonparticular "non-particular structures" {\
-    {OrnsteinZernike Monodisperse} \ 
-    {BroadPeak Monodisperse} \  
-    {TeubnerStrey Monodisperse} \
-    {DAB Monodisperse} \ 
-    {Spinodal Monodisperse} \
-    {BeaucageExpPowLaw Monodisperse} \ 
-    {BeaucageExpPowLaw2 Monodisperse} \
-    {Guinier Monodisperse} \
-  }} \
 {cyl "cylindrical obj." { \
 		{Disc Delta} \
 		 PorodCylinder \
@@ -12503,7 +12468,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 			 DLS_Sphere_RDG \
 			{Robertus1 Delta} \
 			{Robertus2 Delta} \
-			{Guinier Monodisperse} \ 
 			{JuelichMicelle Monodisperse} \
 			{Francois1 Monodisperse} \
 			{CopolymerMicelleR^-a Monodisperse} \ 

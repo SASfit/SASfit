@@ -674,7 +674,6 @@ src/sasfit_ff/sasfit_ff_dumbbell_shell.c
 src/sasfit_ff/sasfit_ff_ellip_core_shell_old.c
 src/sasfit_ff/sasfit_ff_flat_cyl.c
 src/sasfit_ff/sasfit_ff_francois.c
-src/sasfit_ff/sasfit_ff_guinier.c
 src/sasfit_ff/sasfit_ff_homogenousXS.c
 src/sasfit_ff/sasfit_ff_hysteresesFFpsiStrobo.c
 src/sasfit_ff/sasfit_ff_long_cyl.c
