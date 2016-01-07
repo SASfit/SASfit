@@ -12,6 +12,11 @@ S.~Alexander, P.~M. Chaikin, P.~Grant, G.~J. Morales, P.~Pincus, and D.~Hone.
   colloidal crystals: Theory.
 \newblock {\em The Journal of Chemical Physics}, 80(11):5776--5781, 1984.
 
+\bibitem{Anderson1965}
+Donald~G. Anderson.
+\newblock Iterative procedures for nonlinear integral equations.
+\newblock {\em J. ACM}, 12(4):547--560, October 1965.
+
 \bibitem{scatt97}
 N.~W. Ashcroft and L.~Lenker.
 \newblock Structure and resistivity of liquid metals.
@@ -258,6 +263,12 @@ Peter Fratzl.
   the collagen of bone.
 \newblock {\em Journal of Statistical Physics}, 77(1-2):125--143, 1994.
 
+\bibitem{Freund1993}
+Roland~W. Freund.
+\newblock A transpose-free quasi-minimal residual algorithm for non-hermitian
+  linear systems.
+\newblock {\em SIAM Journal on Scientific Computing}, 14(2):470--482, 1993.
+
 \bibitem{FFTW97}
 Matteo Frigo and Steven~G. Johnson.
 \newblock The fastest {Fourier} transform in the west.
@@ -329,6 +340,11 @@ B.~Hammouda.
 \newblock
   \href{http://www.ncnr.nist.gov/staff/hammouda/the\_SANS\_toolbox.pdf}{$\dots$/the\_SANS\_toolbox.pdf}.
 
+\bibitem{Hammouda2010}
+Boualem Hammouda.
+\newblock {A new Guinier{--}Porod model}.
+\newblock {\em Journal of Applied Crystallography}, 43(4):716--719, Aug 2010.
+
 \bibitem{Hammouda2012}
 Boualem Hammouda.
 \newblock Small-angle scattering from branched polymers.
@@ -367,6 +383,13 @@ Douglas Henderson, Stefan Soko{\l}owski, and Malgorza{\l}a Bor\'{o}wko.
 \newblock {\em Computational Methods in Surface And Colloidal Science}, chapter
   Integral Equations in the Theory of Simple Fluids, pages 135--166.
 \newblock Marcel Dekker, Inc., 2000.
+
+\bibitem{Hindmarsh2005}
+Alan~C. Hindmarsh, Peter~N. Brown, Keith~E. Grant, Steven~L. Lee, Radu Serban,
+  Dan~E. Shumaker, and Carol~S. Woodward.
+\newblock Sundials: Suite of nonlinear and differential/algebraic equation
+  solvers.
+\newblock {\em ACM Trans. Math. Softw.}, 31(3):363--396, September 2005.
 
 \bibitem{hittmair}
 O.~Hittmair.
@@ -457,6 +480,11 @@ H{\aa}kon Kaya.
 H{\aa}kon Kaya and Nicolas-Rapha{\"{e}}l de~Souza.
 \newblock {Scattering from capped cylinders. Addendum}.
 \newblock {\em Journal of Applied Crystallography}, 37(3):508--509, Jun 2004.
+
+\bibitem{Kelley2003}
+C.~T. Kelley.
+\newblock {\em Solving Nonlinear Equations with Newton's Method}.
+\newblock SIAM, Philadelphia, 2003.
 
 \bibitem{Khan2013}
 Safeer Khan.
@@ -809,6 +837,18 @@ D.~Roux and C.R. Safinya.
   interlayer interactions in fluid multimembrane lyotropic phases.
 \newblock {\em J. Phys. France}, 49(2):307--318, 1988.
 
+\bibitem{Saad1993}
+Youcef Saad.
+\newblock A flexible inner-outer preconditioned gmres algorithm.
+\newblock {\em SIAM Journal on Scientific Computing}, 14(2):461--469, 1993.
+
+\bibitem{Saad1986}
+Youcef Saad and Martin~H. Schultz.
+\newblock Gmres: A generalized minimal residual algorithm for solving
+  nonsymmetric linear systems.
+\newblock {\em SIAM Journal on Scientific and Statistical Computing},
+  7(3):856--869, 1986.
+
 \bibitem{StreyKlineKaler1994}
 K.-V. Schubert, R.~Strey, S.~R. Kline, and E.~W. Kaler.
 \newblock Small angle neutron scattering near lifshitz lines: Transition from
@@ -895,6 +935,12 @@ O.~Toon and T.~Ackerman.
 \newblock Algorithms for the calculation of scattering by stratified spheres.
 \newblock {\em Applied Optics}, 20(20):3657, 1981.
 
+\bibitem{Toth2015}
+A.~Toth and C.T. Kelley.
+\newblock Convergence analysis for anderson acceleration.
+\newblock {\em SIAM Journal on Numerical Analysis}, 53(2):805--819, 2015.
+\newblock cited By 0.
+
 \bibitem{Ulander2001}
 Johan Ulander, Hans Greberg, and Roland Kjellander.
 \newblock Primary and secondary effective charges for electrical double layer
@@ -911,6 +957,13 @@ P.~van Beurten and A.~Vrij.
 H.C. van~de Hulst.
 \newblock {\em Light Scattering by Small Particles}.
 \newblock Wiley, New York, 1957.
+
+\bibitem{Vorst1992}
+H.~A. van~der Vorst.
+\newblock Bi-cgstab: A fast and smoothly converging variant of bi-cg for the
+  solution of nonsymmetric linear systems.
+\newblock {\em SIAM Journal on Scientific and Statistical Computing},
+  13(2):631--644, 1992.
 
 \bibitem{Verlet1980}
 Loup Verlet.
@@ -951,6 +1004,11 @@ W.~Wagner and J.~Kohlbrecher.
 \newblock {\em Modern Techniques For Characterising Magnetic Materials:},
   chapter Small-angle neutron scattering, pages 65--104.
 \newblock Kluwer Academic Publishers, 2005.
+
+\bibitem{Walker2011}
+Homer~F. Walker and Peng Ni.
+\newblock Anderson acceleration for fixed-point iterations.
+\newblock {\em SIAM Journal on Numerical Analysis}, 49(4):1715--1735, 2011.
 
 \bibitem{Walter1985}
 G.~Walter, R.~Kranold, T.~Gerber, J.~Baldrian, and M.~Steinhart.

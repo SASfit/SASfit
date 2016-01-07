@@ -170,7 +170,7 @@ and $\Delta q$, respectively ($r_0=\Delta r, q_0=\Delta q$).
 \gamma_i    &= \frac{1}{(2\pi)^3}\frac{4\pi \Delta q^2}{(i+1)\Delta r} \sum_{j=0}^{N_p-1} \tilde{\gamma}_j (j+1) \sin\left(\frac{\pi(j+1)(i+1)}{N_p+1}\right)
 \end{align}
 For calculating the Fourier transformation the library \texttt{FFTW} for fast fourier transformation
-\cite{FFTW05,FFTW97} has been used. The library supplies a discrete sin transformation (type-I DST)
+\cite{FFTW05,FFTW97} has been used. The library (source code available at \url{http://www.fftw.org/}) supplies a discrete sin transformation (type-I DST)
 named \verb"FFTW_RODFT00" which is doing the transformation
 \begin{align}
 Y_k &= 2 \sum_{j=0}^{N_p-1} X_j \sin\left(\frac{\pi(j + 1)(k + 1)}{N_p + 1}\right)
@@ -178,7 +178,9 @@ Y_k &= 2 \sum_{j=0}^{N_p-1} X_j \sin\left(\frac{\pi(j + 1)(k + 1)}{N_p + 1}\righ
 The unnormalized inverse of \verb"FFTW_RODFT00" is \verb"FFTW_RODFT00" itself.
 The same routine can be used for both transformations.
 
-For the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ several iteration schemes are implemented. Tests have shown, that one can not easily make a prediction which one converges fastest or in case of e.g.\ very high volume or strong attraction converges at all. The following iteration schemes are implemented:
+For the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ several iteration schemes are implemented. Tests have shown, that one can not easily make a prediction which one converges fastest or in case of e.g.\ very high volume or strong attraction converges at all. Next to some simple iteration schemes also a the very efficient Anderson Acceleration for fixed-point iteration \cite{Anderson1965,Walker2011,Toth2015} 
+
+The following iteration schemes are implemented:
 \begin{description}
 \item[Picard iteration \cite{Picard1890}]
 \begin{align}
@@ -254,11 +256,13 @@ y_n      &= (1-\beta_n)  T^\mathrm{OZ}_f(\gamma_{n}) + \beta_n  T^\mathrm{OZ}_f(
 \end{align}
 with $\alpha_n,\beta_n,\xi_n \in (0,1]$
 \end{description}
-$\alpha_n$, $\beta_n$, and $\xi_n$ are series of constants between $(0;1]$. In \SASfit the parameters $\alpha_n$, $\beta_n$, and $\xi_n$ have been chosen to be the same for each iteration $n$. Furthermore two series schemes have been implemented. The starting values for $n=0$ of the series is the modulus of the mixing parameter $m_\mathrm{mix}$, which can be changed in the GUI. The default value is +0.5. As $\alpha_n,\beta_n,\xi_n \in (0,1]$ the series is in \SASfit is defined for positive mixing parameters as $\alpha_n=\beta_n=\xi_n=(1-m_\mathrm{mix}) \exp\left(-\log_{10}( \|T^\mathrm{OZ}_f(\gamma_{n})-\gamma_{n}\|/\Delta_{rel})\right)+m_\mathrm{mix}$ where $\Delta_{rel}$ is a user defined relative iteration precision. The default value is $\Delta_{rel}=10^{-12}$. If one supplies a negative mixing parameter the series is defined as  $\alpha_n=\beta_n=\xi_n=-m_\mathrm{mix}+(i_\mathrm{n}/i_\mathrm{max}) \left(1+m_\mathrm{mix}\right)$. SASfit uses for the moment $i_\mathrm{max}=20$. $i_\mathrm{n}$ is incremented by 1 one in case the relative error has been reduced and decremented if the relative error increased in one iteration step. Decrementation and incrementation is only performed in the interval $[0,i_\mathrm{max}]$. 
+$\alpha_n$, $\beta_n$, and $\xi_n$ are series of constants between $(0;1]$. In \SASfit the parameters $\alpha_n$, $\beta_n$, and $\xi_n$ have been chosen to be the same for each iteration $n$. Furthermore two series schemes have been implemented. The starting values for $n=0$ of the series is the modulus of the mixing parameter $m_\mathrm{mix}$, which can be changed in the GUI. The default value is +0.5. As $\alpha_n,\beta_n,\xi_n \in (0,1]$ the series is in \SASfit is defined for positive mixing parameters as $\alpha_n=\beta_n=\xi_n=(1-m_\mathrm{mix}) \exp\left(-\log_{10}( \|T^\mathrm{OZ}_f(\gamma_{n})-\gamma_{n}\|/\Delta_{rel})\right)+m_\mathrm{mix}$ where $\Delta_{rel}$ is a user defined relative iteration precision. The default value is $\Delta_{rel}=10^{-12}$. If one supplies a negative mixing parameter the series is defined as  $\alpha_n=\beta_n=\xi_n=-m_\mathrm{mix}+(i_\mathrm{n}/i_\mathrm{max}) \left(1+m_\mathrm{mix}\right)$. SASfit uses for the moment $i_\mathrm{max}=20$. $i_\mathrm{n}$ is incremented by 1 one in case the relative error has been reduced and decremented if the relative error increased in one iteration step. Decrementation and incrementation is only performed in the interval $[0,i_\mathrm{max}]$.
 
-Instead of solving the OZ-fixed point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ one can also use multi-dimensional root-finding algorithms for solving $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. The root finding algorithms supplied are those available in the gnu scientific library gsl for functions without derivatives namely the Hybrid algorithm which replaces calls to the Jacobian function by its finite difference approximation (\texttt{Hybrid}), a finite difference version of the Hybrid algorithm without internal scaling (\texttt{Hybrids (int. sc.)}), the discrete Newton algorithm (\texttt{dNewton}), and the Broyden algorithm (\texttt{Broyden}).
+Instead of solving the OZ-fixed point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ one can also use multi-dimensional root-finding algorithms for solving $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. Some root finding algorithms are supplied from the gnu scientific library gsl for functions without derivatives namely the Hybrid algorithm which replaces calls to the Jacobian function by its finite difference approximation (\texttt{Hybrid}), a finite difference version of the Hybrid algorithm without internal scaling (\texttt{Hybrids (int. sc.)}), the discrete Newton algorithm (\texttt{dNewton}), and the Broyden algorithm (\texttt{Broyden}). All of them have the disadvantage to fill a Jacobian matrix and to calculate its inverse. 
 
-The best choice for the iteration method depends often on the problem, i.e. the type of closure and the potential and also on the volume fraction. In some tests it turned out that the simple \texttt{Picard iteration} was often the fastest for those problems with less pronounced structure factors, i.e. low volume fractions. However at larger volume fractions the \texttt{Picard iteration} scheme failed several times where e.g. the \texttt{S Iteration} scheme still got a solution. In a few case also the root finding algorithm \texttt{Broyden} was the fastest solver (e.g. Percus-Yevick closure with a hard sphere potential at a volume fractions of 0.6, or for Vompe-Martynov closure with a Lennard Jones potential with $\epsilon=1$ and a volume fraction of 0.6), but in many other cases also much slower than e.g. the \texttt{Picard iteration} scheme. As a default iteration scheme the \texttt{S iteration} has been chosen. It is reasonable fast and converges well for many problems. Other similar well behaving, but slightly slower schemes are the \texttt{Mann iteration}, \texttt{SP iteration}, \texttt{Krasnoselskij iteration}, and \texttt{S* iteration}.
+Next to the gsl root finding algorithms also several very efficient nonlinear system solver based on Newton-Krylov solver technology, like GMRES (Generalized Minimal RESidual)\cite{Saad1986,Kelley2003}, FGMRES (Flexible Generalized Minimal RESidual) \cite{Saad1993}, Bi-CGStab (Bi-Conjugate Gradient Stabilized) \cite{Vorst1992,Kelley2003}, and TFQMR (Transpose-Free Quasi-Minimal Residual) \cite{Freund1993,Kelley2003} are supplied. The nonlinear system solver are supplied using the "kinsol" library which is part of the SUNDIALS package \cite{Hindmarsh2005} available at \url{https://computation.llnl.gov/casc/sundials/main.html}
+
+Test have shown that either the Anderson acceleration, GMRES or FGMRES seems to be the most efficient algorithm to solve the Ornstein-Zernike with a minimum number of calls to the procedure to evaluating the self consistent operator $F^\mathrm{OZ}_r(\gamma)$ or $T^\mathrm{OZ}_f(\gamma)$. The best choice for the iteration method depends often on the problem, i.e. the type of closure and the potential and also on the volume fraction. Therefore there are still all methods mentioned above available, which might change after getting some more experience with them.
 
 \section{Thermodynamic Parameters and Consistency Tests}
 
@@ -418,7 +422,7 @@ Also analytical solution for both Hard Sphere \cite{Percus1958,Wertheim1963} and
 Sticky Hard Sphere  \cite{Baxter1968} with a size distribution has been found.
 The bridge function of this approximation reads as
 \begin{align} \label{eq:ozBHNC}
-B_\text{PY}(r) &=\gamma(r)-\ln\left[\gamma(r)-1\right] \\
+B_\text{PY}(r) &=\ln\left[\gamma(r)-1\right]-\gamma(r) \\
 g(r)&= \exp\left[ -\beta u(r)\right]\left(1 +\gamma(r)\right)
 \end{align}
 The PY equation proves to be more successful than the HNC

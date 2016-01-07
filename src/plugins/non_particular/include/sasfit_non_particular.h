@@ -49,22 +49,22 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b G2</td>
- *       <td></td>
+ *       <td>scaling factor</td>
  *      </tr><tr>
  *       <td>\b s2</td>
- *       <td>s2: potential law for small q-region\ndimensionality parameter: (3-s2)</td>
+ *       <td>s2: potential law for the small q-region, dimensionality parameter: (3>s1>=s2)</td>
  *      </tr><tr>
  *       <td>\b Rg2</td>
- *       <td>radius of gyration</td>
+ *       <td>radius of gyration (larger dimension, Rg1<Rg2) </td>
  *      </tr><tr>
  *       <td>\b s1</td>
- *       <td>s2: potential law in intermediate q-range\ndimensionality parameter (3-s1)</td>
+ *       <td>s1: potential law in intermediate q-range, dimensionality parameter: (3>s1>=s2)</td>
  *      </tr><tr>
  *       <td>\b Rg1</td>
- *       <td>radius of gyration</td>
+ *       <td>radius of gyration (smaller dimension, Rg1<Rg2)</td>
  *      </tr><tr>
  *       <td>\b m</td>
- *       <td>m: potential law at large q-values</td>
+ *       <td>m: potential law at large q-values (m>=s1)</td>
  *      </tr></table>
  */
 
@@ -107,7 +107,7 @@ sasfit_non_particular_DLLEXP scalar sasfit_ff_generalized_guinier_porod_law_v(sc
  *       <td>scakling factor</td>
  *      </tr><tr>
  *       <td>\b a</td>
- *       <td>potential law </td>
+ *       <td>dimensionality parameter: a=0:sphere, a=1:rod, a=2:lamellar </td>
  *      </tr><tr>
  *       <td>\b Ra</td>
  *       <td>radius of gyration</td>
@@ -301,9 +301,9 @@ sasfit_non_particular_DLLEXP scalar sasfit_ff_spinodal_f(scalar q, sasfit_param 
 sasfit_non_particular_DLLEXP scalar sasfit_ff_spinodal_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_spinodal ################ */
 
-/* ################ start ff_debye_andersen_brumberger ################ */
+/* ################ start ff_debye_anderson_brumberger ################ */
 /** 
- * \defgroup ff_debye_andersen_brumberger Debye-Andersen-Brumberger
+ * \defgroup ff_debye_anderson_brumberger Debye-Anderson-Brumberger
  * \ingroup ff_non-particular
  *
  * \brief I(Q,Rg,I0) = I0/(1+Q^2*xi^2)^2
@@ -323,26 +323,26 @@ sasfit_non_particular_DLLEXP scalar sasfit_ff_spinodal_v(scalar q, sasfit_param 
  */
 
 /**
- * \ingroup ff_debye_andersen_brumberger
+ * \ingroup ff_debye_anderson_brumberger
  *
  * \sa sasfit_non_particular.h, ff_non-particular
  */
-sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_andersen_brumberger(scalar q, sasfit_param * p);
+sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_anderson_brumberger(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_debye_andersen_brumberger
+ * \ingroup ff_debye_anderson_brumberger
  *
  * \sa sasfit_non_particular.h, ff_non-particular
  */
-sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_andersen_brumberger_f(scalar q, sasfit_param * p);
+sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_anderson_brumberger_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_debye_andersen_brumberger
+ * \ingroup ff_debye_anderson_brumberger
  *
  * \sa sasfit_non_particular.h, ff_non-particular
  */
-sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_andersen_brumberger_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_debye_andersen_brumberger ################ */
+sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_anderson_brumberger_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_debye_anderson_brumberger ################ */
 
 /* ################ start ff_ornstein_zernike ################ */
 /** 

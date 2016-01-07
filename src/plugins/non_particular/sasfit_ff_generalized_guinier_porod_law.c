@@ -26,7 +26,12 @@ scalar sasfit_ff_generalized_guinier_porod_law(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((S1 < 0.0), param, "s1(%lg) < 0",S1); // modify condition to your needs
 	SASFIT_CHECK_COND1((RG1 < 0.0), param, "Rg1(%lg) < 0",RG1); // modify condition to your needs
 	SASFIT_CHECK_COND1((M < 0.0), param, "m(%lg) < 0",M); // modify condition to your needs
+	SASFIT_CHECK_COND1((3 <= S1), param, "3<=s1(%lg)",S1); // modify condition to your needs
+	SASFIT_CHECK_COND1((3 <= S2), param, "3<=s2(%lg)",S2); // modify condition to your needs
+	SASFIT_CHECK_COND2((S2 > S1), param, "s2(%lg)>s1(%lg)",S2,S1); // modify condition to your needs
 
+	SASFIT_CHECK_COND2((M < S1), param, "m(%lg)<s1(%lg)",M,S1); // modify condition to your needs
+    
 	// insert your code here
 	Q2 = sqrt((S1-S2)/(2./(3.-S2)*RG2*RG2-2./(3.-S1)*RG1*RG1));
 	G1 = G2*exp(Q2*Q2*(RG1*RG1/(3.-S1)-RG2*RG2/(3.-S2)))*pow(Q2,S1-S2);
