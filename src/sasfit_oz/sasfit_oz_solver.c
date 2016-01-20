@@ -415,6 +415,7 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 int OZ_init(sasfit_oz_data *OZd) {
    double *tp;
    int i;
+   OZd->it=0;
    OZd->beta=1.0/(kb*T);
    r      = (double*)malloc((NP)*sizeof(double));
    k      = (double*)malloc((NP)*sizeof(double));
@@ -726,7 +727,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
         switch (algorithm) {
         case Picard_iteration:
                 n = 0;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     n++;
                     err = OZ_step(OZd);
@@ -744,7 +745,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
         case Krasnoselskij_iteration:
                 xn = (double*)malloc((NP)*sizeof(double));
                 n=0;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     cp_array_to_array(G,xn,NP);
                     n++;
@@ -776,7 +777,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
@@ -840,7 +841,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
@@ -911,7 +912,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     errold=err;
                     cp_array_to_array(G,xn,NP);
@@ -983,7 +984,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
@@ -1050,7 +1051,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
@@ -1119,7 +1120,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     n++;
                     errold=err;
@@ -1202,7 +1203,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
@@ -1285,7 +1286,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     errold=err;
                     n++;
@@ -1368,7 +1369,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     n++;
                     errold=err;
@@ -1443,7 +1444,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
                     check_interrupt(OZd);
                     n++;
                     errold=err;
@@ -1523,7 +1524,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0  && OZd->failed==0) {
                     check_interrupt(OZd);
                     iloop++;
                     cp_array_to_array(G,xn,NP);
@@ -1574,7 +1575,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 alpha=MIXCOEFF;
                 beta=alpha;
                 gama=alpha;
-                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+                while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0  && OZd->failed==0) {
                     check_interrupt(OZd);
                     iloop++;
                     cp_array_to_array(G,xn,NP);
@@ -1824,7 +1825,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
   //...................................................................
   n=0;
   iloop=0;
-  while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0) {
+  while (OZd->it < MAXSTEPS && err > RELERROR && OZd->interrupt == 0 && OZd->failed==0) {
 	n++;
     check_interrupt(OZd);
                     switch (OZd->mixstrategy) {
@@ -2010,8 +2011,11 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
         } else {
                 if (phi_actual != phi_set) {
                     phi_actual =phi_actual+phi_set/ 1000.0;
-                    sasfit_out("number of OZ_step calls so far: %d\n",OZd->it);
-                    sasfit_out("try now phi %lf\n",phi_actual);
+                    if (OZd->PrintProgress) {
+                            sasfit_out("number of OZ_step calls so far: %d\n",OZd->it);
+                            sasfit_out("try now phi %lf\n",phi_actual);
+                    }
+                    
                 }
         }
 //        sasfit_out("it %d, interrupt: %d\n",OZd->it,OZd->interrupt);
@@ -2066,6 +2070,7 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
       if (OZd->PrintProgress) sasfit_out("initialising root solver: %d\n",algorithm);
     sgsl = gsl_multiroot_fsolver_alloc (Tgsl, Fgsl.n);
     gsl_multiroot_fsolver_set (sgsl, &Fgsl, GAMMA_R);
+    gsl_set_error_handler_off ();
     iter = 0;
     do {
           if (OZd->PrintProgress) sasfit_out("starting %d-th iteration\n", iter+1);
@@ -2080,7 +2085,7 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
 //        if (status)  { /* check if solver is stuck */
 //            break;
 //       }
-    } while (OZd->it < MAXSTEPS && stoppingflag == GSL_CONTINUE && OZd->interrupt == 0);
+    } while (OZd->it < MAXSTEPS && stoppingflag == GSL_CONTINUE && OZd->interrupt == 0 && OZd->failed==0);
     gsl_multiroot_fsolver_free (sgsl);
     return TCL_OK;
 }
@@ -2088,7 +2093,7 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
 //Calling OZ_solver and generating output
 int OZ_calculation (sasfit_oz_data *OZd) {
   int igneg,status;
-  OZd->it=0;
+
   if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA || CLOSURE==CJVM || CLOSURE==BB) {
         sasfit_out("Root finding\n");
         root_finding(OZd);
@@ -2477,7 +2482,7 @@ int OZ_solver (sasfit_oz_data *OZd) {
         CAVITY[i] = 0.0;
     }
 
-    OZd->it=0;
+
     switch (OZd->root_algorithm) {
         case Picard_iteration:
                 status = OZ_solver_by_iteration(OZd,Picard_iteration);
@@ -2629,7 +2634,7 @@ double compressibility_calc(double scp, void *params)
    PHI=iphi-iphi*0.01;
    r2=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
-   if (OZd->interrupt == 1) return NAN;
+   if (OZd->interrupt == 1) return 0;
    
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
@@ -2653,7 +2658,7 @@ double compressibility_calc(double scp, void *params)
    PHI=iphi+iphi*0.01;
    r3=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
-   if (OZd->interrupt == 1) return NAN;
+   if (OZd->interrupt == 1) return 0;
    
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
@@ -2793,7 +2798,7 @@ void rescaleMSA (sasfit_oz_data *OZd) {
             Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
             Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
             check_interrupt(OZd);
-        } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0);
+        } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0 && OZd->failed==0);
         OZd->alpha = root;
         sasfit_out("consistency parameter after optimization: %g \n", root);
         gsl_root_fsolver_free (s);
@@ -2873,12 +2878,12 @@ void root_finding (sasfit_oz_data *OZd) {
                 Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
                 Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
                 check_interrupt(OZd);
-            } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0);
+            } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0 && OZd->failed==0);
             gsl_min_fminimizer_free (sm);
             signchange=2;
     }
     i = 0;
-    while (signchange==0 && i<=28 &&  OZd->interrupt == 0) {
+    while (signchange==0 && i<=28 &&  OZd->interrupt == 0 && OZd->failed==0) {
         if (CLOSURE==RY || CLOSURE==HMSA){
             refnew=compressibility_calc(100/pow(2,i), OZd);
             alpha_left  = 100/pow(2,i);
@@ -2930,7 +2935,7 @@ void root_finding (sasfit_oz_data *OZd) {
         Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
     }
-    if (signchange==1 && OZd->interrupt == 0) {
+    if (signchange==1 && OZd->interrupt == 0 && OZd->failed==0) {
         root = 0.0;
         alpha_left;
         x_hi = alpha_right;
@@ -2961,7 +2966,7 @@ void root_finding (sasfit_oz_data *OZd) {
             Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
             Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
             check_interrupt(OZd);
-        } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0);
+        } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0 && OZd->failed==0);
         OZd->alpha = root;
         sasfit_out("consistency parameter after optimization: %g \n", root);
         gsl_root_fsolver_free (s);

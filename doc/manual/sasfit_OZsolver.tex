@@ -178,7 +178,7 @@ Y_k &= 2 \sum_{j=0}^{N_p-1} X_j \sin\left(\frac{\pi(j + 1)(k + 1)}{N_p + 1}\righ
 The unnormalized inverse of \verb"FFTW_RODFT00" is \verb"FFTW_RODFT00" itself.
 The same routine can be used for both transformations.
 
-For the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ several iteration schemes are implemented. Tests have shown, that one can not easily make a prediction which one converges fastest or in case of e.g.\ very high volume or strong attraction converges at all. Next to some simple iteration schemes also a the very efficient Anderson Acceleration for fixed-point iteration \cite{Anderson1965,Walker2011,Toth2015} 
+For the fix point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ several iteration schemes are implemented. Tests have shown, that one can not easily make a prediction which one converges fastest or in case of e.g.\ very high volume or strong attraction converges at all. Next to some simple iteration schemes also a the very efficient Anderson Acceleration for fixed-point iteration \cite{Anderson1965,Walker2011,Toth2015}
 
 The following iteration schemes are implemented:
 \begin{description}
@@ -258,7 +258,7 @@ with $\alpha_n,\beta_n,\xi_n \in (0,1]$
 \end{description}
 $\alpha_n$, $\beta_n$, and $\xi_n$ are series of constants between $(0;1]$. In \SASfit the parameters $\alpha_n$, $\beta_n$, and $\xi_n$ have been chosen to be the same for each iteration $n$. Furthermore two series schemes have been implemented. The starting values for $n=0$ of the series is the modulus of the mixing parameter $m_\mathrm{mix}$, which can be changed in the GUI. The default value is +0.5. As $\alpha_n,\beta_n,\xi_n \in (0,1]$ the series is in \SASfit is defined for positive mixing parameters as $\alpha_n=\beta_n=\xi_n=(1-m_\mathrm{mix}) \exp\left(-\log_{10}( \|T^\mathrm{OZ}_f(\gamma_{n})-\gamma_{n}\|/\Delta_{rel})\right)+m_\mathrm{mix}$ where $\Delta_{rel}$ is a user defined relative iteration precision. The default value is $\Delta_{rel}=10^{-12}$. If one supplies a negative mixing parameter the series is defined as  $\alpha_n=\beta_n=\xi_n=-m_\mathrm{mix}+(i_\mathrm{n}/i_\mathrm{max}) \left(1+m_\mathrm{mix}\right)$. SASfit uses for the moment $i_\mathrm{max}=20$. $i_\mathrm{n}$ is incremented by 1 one in case the relative error has been reduced and decremented if the relative error increased in one iteration step. Decrementation and incrementation is only performed in the interval $[0,i_\mathrm{max}]$.
 
-Instead of solving the OZ-fixed point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ one can also use multi-dimensional root-finding algorithms for solving $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. Some root finding algorithms are supplied from the gnu scientific library gsl for functions without derivatives namely the Hybrid algorithm which replaces calls to the Jacobian function by its finite difference approximation (\texttt{Hybrid}), a finite difference version of the Hybrid algorithm without internal scaling (\texttt{Hybrids (int. sc.)}), the discrete Newton algorithm (\texttt{dNewton}), and the Broyden algorithm (\texttt{Broyden}). All of them have the disadvantage to fill a Jacobian matrix and to calculate its inverse. 
+Instead of solving the OZ-fixed point problem $T^\mathrm{OZ}_f(\gamma)=\gamma$ one can also use multi-dimensional root-finding algorithms for solving $F^\mathrm{OZ}_r(\gamma)=T^\mathrm{OZ}_f(\gamma)-\gamma=0$. Some root finding algorithms are supplied from the gnu scientific library gsl for functions without derivatives namely the Hybrid algorithm which replaces calls to the Jacobian function by its finite difference approximation (\texttt{Hybrid}), a finite difference version of the Hybrid algorithm without internal scaling (\texttt{Hybrids (int. sc.)}), the discrete Newton algorithm (\texttt{dNewton}), and the Broyden algorithm (\texttt{Broyden}). All of them have the disadvantage to fill a Jacobian matrix and to calculate its inverse.
 
 Next to the gsl root finding algorithms also several very efficient nonlinear system solver based on Newton-Krylov solver technology, like GMRES (Generalized Minimal RESidual)\cite{Saad1986,Kelley2003}, FGMRES (Flexible Generalized Minimal RESidual) \cite{Saad1993}, Bi-CGStab (Bi-Conjugate Gradient Stabilized) \cite{Vorst1992,Kelley2003}, and TFQMR (Transpose-Free Quasi-Minimal Residual) \cite{Freund1993,Kelley2003} are supplied. The nonlinear system solver are supplied using the "kinsol" library which is part of the SUNDIALS package \cite{Hindmarsh2005} available at \url{https://computation.llnl.gov/casc/sundials/main.html}
 
@@ -1120,8 +1120,7 @@ For water at 278 K with a relativ permittivity of $\epsilon_r=78.7$ the Bjerrum 
 The effective macroion valency is denoted $Z_\text{eff}$, and $\kappa^{-1}$ is the Debye-H\"uckel screening length
 due to all macroions. This length characterize the typical distance at which the charge at the origin is screened
 by the other charges. It is given by $\kappa^{2}= 4\pi L_B \sum_{i=1}^N n_i Z_i$, where $n_i$ is the number density
-of ion $i$, $Z_i$ is the charge number of that ion, and the sum is taken over all ions in the
-solution. A discussion about effective parameters can be found in \cite{Alexander1984,Ulander2001}.
+of ion $i$ in the bulk solution, $Z_i$ is the charge number or valency of that ion, and the sum is taken over all ions in the solution. A discussion about effective parameters can be found in \cite{Alexander1984,Ulander2001}.
 
 \begin{figure}[htb]
 \centering

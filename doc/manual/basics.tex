@@ -1050,7 +1050,21 @@ $Q$ values into the Porod law
 I(Q) \longrightarrow \Delta\eta^2\, \frac{2\pi\, S}{Q^4} .
 \label{eq:Porodlaw}
 \EE
-A scaling of the scattering intensity on $\tilde Q$ provides an expression
+In case of a system of $N$ identical spheres with radii $R$ a scattering contrast $\Delta \eta$ this law can be easily veryfied. The scattering intensity of $N$ spherical particle is given by
+\BE
+I(Q) = N \left[ \Delta\eta 3 \frac{4}{3}\pi R^3 \frac{\sin QR - QR \cos QR}{(QR)^3}\right]^2
+\EE 
+in the limit $Q \rightarrow \infty$ we get
+\begin{align}\label{eq:speherePorodLaw}
+  \lim_{Q \rightarrow \infty} I(Q) (Q*R)^4 = & N \left[ \Delta\eta  \frac{4}{3}\pi R^3 3 \frac{\sin QR - QR \cos QR}{(QR)^3}\right]^2 (Q*R)^4\\
+    \rightarrow & N \left[\Delta\eta 4 \pi R^3 \right]^2 \cos^2 QR 
+\end{align}
+Due to resolution limits the oscillations normally smear out in average so that 
+\begin{align}\label{eq:speherePorodLaw}
+I(Q) \rightarrow N\frac{\left[\Delta\eta 4\pi R^3 \right]^2 }{2 (QR)^4} = N \Delta\eta^2\frac{2\pi A_{sp}}{Q^4} =  \Delta\eta^2\frac{2\pi S}{Q^4}
+\end{align}
+where $A_{sp}=4\pi R^2$ is the area of the sphere's surface and $N A_{sp}=S$ the total surface of all spheres in the beam.
+By scaling the scattering intensity on $\tilde Q$ one obtains an expression
 for the specific surface $S/V$ of
 \BE
 \lim_{Q\rightarrow \infty} \, \pi\,\frac{I(Q)}{\tilde Q}\, Q^4\, f_p\,
