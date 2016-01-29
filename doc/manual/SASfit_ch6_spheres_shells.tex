@@ -550,3 +550,131 @@ The scattering length density of the core $\eta_\text{c}$ and the solvent $\eta_
 $\phi_\text{in}=0$,  $\phi_\text{out}=1$, and $\Delta R =10$.}
 \label{fig:ExpShellExample}
 \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsubsection{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$}
+\label{sect:BoucherSphere} ~\\
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Some radial profiles with $\eta_0=\Delta\eta$ for several values of $\alpha$.
+]{
+\includegraphics[width=0.48\textwidth]{Boucherprofile.png}}
+\hfill
+\subfigure[Radial profiles for several values of $\alpha$ with a normalised radial profile to assure $\alpha$-independent excess scattering length.
+]{
+\includegraphics[width=0.48\textwidth]{Boucherprofile2.png}}
+\end{center}
+\caption{The two implemented case for the radial profiles according to Boucher \cite{Boucher1983}}
+\label{fig:Boucherprofilea}
+\end{figure}
+
+Boucher  has described in \cite{Boucher1983} a simple analytical radial profile for which also the form factor can be calculated analytically. The radial profile is parameterized in a way that any potential law in the Porod regime can be obtained. The radial profile is defined by
+\begin{align}
+    \label{eq:profileBoucherSphere}
+    \eta(r) &= \eta_0
+    \begin{cases}
+        \left[1-\left(\frac{r}{R}\right)^2 \right]^{\frac{\alpha}{2}-2} & \mbox{ for } r \leq R \\
+        0 & \mbox{ for } r > R
+    \end{cases}
+\end{align}
+The excess scattering $\beta$ of such a particle is
+\BE
+\beta = \int_0^R \eta(r) 4\pi r^2 \mathrm{d}r = \eta_0  R^3 \pi^{\frac{3}{2}} \frac{\Gamma\left(\frac{\alpha}{2}-1\right)}{\Gamma\left(\frac{\alpha+1}{2}\right)}
+\EE
+The input value $\Delta\eta$ for this profile is the scatter contrast at $r=0$, i.e.
+\begin{align}
+\eta_0&=\Delta\eta \qquad \mbox{(case \texttt{BoucherSphere})}
+\label{eq:eta0BoucherSphere}
+\end{align}
+The special case of $\alpha=4$ corresponds to a homogeneous sphere with a scattering contrast $\Delta\eta$ for which the excess scattering length becomes $\beta_\mathrm{sp}=\Delta\eta \frac{4}{3}\pi R^3$.
+
+ Also a second variant of the form factor has been implemented. In the second case the excess scattering length is normalised to the one of a homogeneous sphere with contrast $\Delta\eta$, so that the excess scattering length is for all $\alpha$ equal to $\beta_\mathrm{sp}=\Delta\eta \frac{4}{3}\pi R^3$. This is done by setting the contrast at $r=0$ in eq.\ \ref{eq:profileBoucherSphere} to
+\begin{align}
+\eta_0&=\Delta\eta \frac{4}{3\sqrt{\pi}} \frac{\Gamma\left(\frac{\alpha+1}{2}\right)}{\Gamma\left(\frac{\alpha}{2}-1\right)}  \qquad \mbox{(case \texttt{BoucherSphere2})}
+\label{eq:eta0BoucherSphere2}
+\end{align}
+By this normalisation the excess scattering length is for all $\alpha$ equal to the one of a homogeneous sphere with a scattering contrast $\Delta\eta$, i.e. $\beta_\mathrm{sp}=\Delta\eta \frac{4}{3}\pi R^3$.
+
+To get feeling which part of the spherical contributes most to the scattering ones can define
+a fractional relative excess scattering length according to \cite{Boucher1983} which reads as
+\begin{align}
+Z(x) = & \frac{
+            \int_{0}^{x}\! \left( 1-{\frac {{r}^{2}}{{R}^{2}}} \right) ^{\frac{\alpha}{2}-2} 4\pi\,{r}^{2}\,{\rm d}r
+           }{
+            \int_{0}^{R}\! \left( 1-{\frac {{r}^{2}}{{R}^{2}}} \right) ^{\frac{\alpha}{2}-2} 4\pi\,{r}^{2}\,{\rm d}r
+           } \nonumber \\
+  = & \frac{4}{3} \,{\frac {{x}^{3}\Gamma  \left(\frac{\alpha+1}{2} \right) }{\sqrt {\pi }
+\Gamma  \left( \frac{\alpha}{2}-1 \right) {R}^{3}}
+\;_2F_1\left(\frac{3}{2},-\frac{\alpha}{2}+2;\,\frac{5}{2};\,{\frac {{x}^{2}}{{R}^{2}}}\right)}
+\end{align}
+$Z(x)$ is the excess scattering of the sub-domain of the spherical particle ranging from $r=0$ to $r=x$ relative to the excess scattering of the whole particle. The derivative $Z'(x)$ then defines the fractional contribution of a sub-shell with radius $r=x$ and thickness $\textrm{d}x$  of the spherical particle compared to its total excess scattering length of the particle.
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Fractional relative excess scattering length $Z(x)$ for several $\alpha$.
+]{
+\includegraphics[width=0.48\textwidth]{BoucherZr.png}}
+\hfill
+\subfigure[Derivative of fractional relative excess scattering length $Z'(x)$ shows which part of the particle contributes how much to the excess scattering.
+]{
+\includegraphics[width=0.48\textwidth]{BoucherZprime.png}}
+\end{center}
+\caption{For $\alpha=2$ all the scattering is caused by an infinitesimal thin outer shell of the particle where all the fractional excess scattering length is located.}
+\label{fig:BoucherZr}
+\end{figure}
+
+The scattering amplitude for the radial profile in eq.\ \ref{eq:profileBoucherSphere} can be calculated as
+\begin{align}
+ F(Q) &= \int_0^R \eta(r) 4\pi r^2 \frac{\sin Qr}{Qr}\mathrm{d}r \nonumber \\
+      &= \beta \left(\frac{2}{QR}\right)^{\frac{\alpha-1}{2}} J_{\frac{\alpha-1}{2}}(QR) \, \Gamma\left(\frac{\alpha+1}{2}\right) \nonumber \\
+      &= \beta \;_0F_1\left(\frac{\alpha+1}{2};-\tfrac{(QR)^2}{4}\right)
+\end{align}
+making use of the fact that the bessel function can be expressed in terms of generalised hypergeometric functions $J_\alpha(x)=\frac{(\frac{x}{2})^\alpha}{\Gamma(\alpha+1)}  \;_0F_1 (\alpha+1; -\tfrac{x^2}{4})$. The scattering amplitude simplifies in case of $\alpha=4$ exactly the the one of a homogenous spherical shell and in case of $\alpha=2$ to an infinitesimal thin spherical shell. For the scattering intensity $I(Q) = F^2(Q)$ we get in the Porod limit $Q\rightarrow\infty$
+\BE
+ \lim_{Q\rightarrow\infty} I(Q)= \lim_{Q\rightarrow\infty}  F^2(Q) =
+ \beta^2 \frac{2^{\alpha-1}}{\pi} \Gamma^2\left(\frac{\alpha+1}{2}\right) \frac{1}{(QR)^\alpha}
+\EE
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}\\
+\begin{description}
+\item[\texttt{R}] radius $R$
+\item[\texttt{alpha}] shape parameter of the profile $\alpha$, which is also equal to the potential law at large $Q$-values
+\item[\texttt{Delta\_eta}] scattering length density at $r=0$, $\Delta\eta}=\eta(r=0)$
+\end{description}
+
+\noindent\underline{Note for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}
+\begin{itemize}
+\item For $\alpha<4$ the scattering length density profile has a pole at $r=R$
+\item For $\alpha \leq 2$ the excess scattering length of the overall particle diverges and are therefore forbidden values.
+\end{itemize}
+
+\underline{Input Parameters for model \texttt{BoucherSphere2} and \texttt{Boucher profile}:}\\
+\begin{description}
+\item[\texttt{R}] radius $R$
+\item[\texttt{alpha}] shape parameter of the profile $\alpha$, which is also equal to the potential law at large $Q$-values
+\item[\texttt{Delta\_eta}] average scattering length density so that the excess scattering length corresponds to that one of a homogeneous sphere with contrast $\Delta\eta}$
+\end{description}
+
+\noindent\underline{Note for model \texttt{BoucherSphere2} and \texttt{Boucher profile}:}
+\begin{itemize}
+\item For $\alpha<4$ the scattering length density profile has a pole at $r=R$
+\item There is no restriction for the input values of $\alpha$. However, $\alpha$-values below 2 do not have a standard physical interpretation.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Scattering curves of \texttt{BoucherSpheres} for sevaral $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$.]{
+\includegraphics[width=0.48\textwidth]{BoucherSphereI(Q).png}}
+\hfill
+\subfigure[Scattering curves of \texttt{BoucherSpheres2} for sevaral $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$. As the excess scattering length diverges for $\alpha\leq 2$ this limiting case is not allowed.]{
+\includegraphics[width=0.48\textwidth]{BoucherSphere2I(Q).png}}
+\end{center}
+\caption{Scattering curves for the form factors \texttt{BoucherSpheres} and \texttt{BoucherSpheres2}.}
+\label{fig:BoucherIQ}
+\end{figure} 

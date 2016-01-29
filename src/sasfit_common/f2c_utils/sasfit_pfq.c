@@ -3015,11 +3015,11 @@ double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, int ip, i
     }
   	z.i = z_i;
 	z.r = z_r;
-	pfq_( &ret_val, P, Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
-		&param->errStatus, param->errStr, &errstr_len);
+	pfq_( &ret_val, P, Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,&param->errStatus, param->errStr, &errstr_len);
     *pFq_r = ret_val.r;
     *pFq_i = ret_val.i;
     free(P);
     free(Q);
+    return sqrt(ret_val.r*ret_val.r+ret_val.i*ret_val.i);
 }
 #define float double
