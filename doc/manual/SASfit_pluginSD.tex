@@ -1,0 +1,191 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{LogNorm\_fp} \hspace{1pt}
+\label{sec:sd_lognorm_fp}
+
+The \texttt{LogNorm} distribution is a continuous distribuion in which the logarithm of a variable
+has a normal distribution.
+\begin{subequations}
+\begin{align}
+\text{LogNorm}(x,N,\sigma,p,\mu) &=  \frac{N}{c_\text{LN}}
+                                    \frac{1}{x^{p}}\,
+                                    \exp\!\!\left(-\frac{\ln(x/\mu)^2}{2\sigma^2}\right) \\
+c_\text{LN} &= \sqrt{2\pi}\,\sigma \,\mu^{1-p}
+\,\exp\!\!\left((1-p)^2\frac{\sigma^2}{2}\right)
+\label{eq:LogNorm}
+\end{align}
+\end{subequations}
+where $\sigma$ is the width parameter, $p$ a shape parameter, $\mu$ is the location parameter.
+$c_\text{LN}$ is choosen so that $\int_0^\infty\! \text{LogNorm}(x,\mu,\sigma,p)\,dR = N$
+The mode of the distribution is defined as
+\begin{align}
+x_\text{mode} = \mu e^{-p \sigma^2}
+\end{align}
+and the $n^\text{th}$ moment $\langle X^n\rangle$ of the \texttt{LogNorm} distribution as
+\begin{align}
+\langle X^n\rangle = \frac{\int X^n\, \textrm{LogNorm}(X)\, dX}{\int \textrm{LogNorm}(X)\, dX} =
+\mu^n \, e^{\frac{1}{2} \sigma^2 n (2 - 2 p + n)}.
+\label{eq:nMoment:LogNorm}
+\end{align}
+
+Instead of using the parameter $N$ (particle number density) another
+Log-Normal size distribution namely {\tt LogNorm\_fp} with the
+volume fraction $f_p$ as a parameter has been implemented.
+Using the volume fraction as a scaling parameter requires that the intensity is
+given in units of cm$^{-1}$ and the scattering vector in nm$^{-1}$. Furthermore
+the scattering contrast needs to be supplied in units of cm$^{-2}$. More details
+about absolute intensity can be found in chapter \ref{ch:absint}.
+The volume fraction $f_p$ can be obtained from the \texttt{LogNorm}-distribution
+(eq.\ \ref{eq:LogNorm}) by integrating over the particle volume $V_P$. In case
+of spheres we get
+\begin{align}
+f_p &= 10^{21} \int_0^\infty \mathrm{LogNorm}(R,N,\sigma,p,\mu) V_P(R) \, dR \label{eq:fpMomentsV} \\
+    &= 10^{21} \int_0^\infty \mathrm{LogNorm}(R,N,\sigma,p,\mu) \frac{4}{3}\pi R^3 \, dR = 10^{21}
+    N \frac{4}{3}\pi \langle X^3 \rangle .
+\end{align}
+The scaling factor $10^{21}$ depends on the actual units. More details are
+given in section \ref{sec:volumefraction}.
+
+
+For other shapes than spheres the corresponding volume of the object has to be used in eq.\ \ref{eq:fpMomentsV}.
+In case of cylinders the volume is given by $V_\text{cyl}=\pi R^2 L$. Depending whether the radius $R$ or the
+cylinder length $L$ has a size distribution the volume fraction $f_p$ is calculated differently namely
+in case for a radius distribution by
+\begin{align}
+f_p &= 10^{21} \int_0^\infty \mathrm{LogNorm}(R) V_\text{cyl}(R,L) \, dR \label{eq:fpMomentsV} \\
+    &= 10^{21} \int_0^\infty \mathrm{LogNorm}(R) \pi R^2L \, dR = 10^{21} N \pi L \langle X^2 \rangle
+\end{align}
+and in case of a length distribution by
+\begin{align}
+f_p % &= 10^{21} \int_0^\infty \mathrm{LogNorm}(L) V_\text{cyl}(R,L) \, dL  \\
+    &= 10^{21} \int_0^\infty \mathrm{LogNorm}(L) \pi R^2L \, dL = 10^{21} N \pi R^2 \langle X \rangle .
+\end{align}
+As the cylinder volume depends on $R^2$  and $L$ either the second or the first moment of the distribution
+function is involved in calculating the volume fraction depending which parameter has a distribution.
+For a spherical shell a sum of different moments has to be used as listed in table \ref{tab:volumefraction}.
+
+\begin{table}
+  \centering
+  \scriptsize
+\rotatebox{270}{
+  \setlength\doublerulesep{0pt}
+\begin{tabular}{|>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} l%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c|}
+ \rowcolor[gray]{0.7}
+ shape &  form factor &  distrib. & \texttt{length2} & \texttt{length3}
+                             &  volume  & $V$ & $N(f_p)$\\
+ \rowcolor[gray]{0.7}
+  & &  param.\ & & & & &  \\
+  \hline\hline
+1      &  \texttt{Sphere} & $R$  & not used & not used & whole sph. &
+            \mbox{\tiny$\frac{4}{3}\pi R^3$} &
+            $  \frac{f_p}{10^{21}} \frac{3}{4\pi} \, \frac{1}{\langle X^3 \rangle}$ \\
+ \rowcolor[gray]{0.95}
+2 &  \texttt{Cylinder}    & $R$  & $L$ & not used & whole cyl. &
+            \mbox{\tiny$ \pi R^2 L$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \, \frac{1}{\langle X^2 \rangle L}$ \\
+ \rowcolor[gray]{0.95}
+3 &  \texttt{Cylinder}   & $L$   & $R$ & not used & whole cyl. &
+            \mbox{\tiny$\pi R^2 L$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \, \frac{1}{R^2 \langle X^1 \rangle}$ \\
+4 &  \texttt{Sph.Sh.iii}    & $R$ & $\Delta R$ & not used & core+shell&
+            \mbox{\tiny$ 4\pi \left(R^2 \Delta R +R \Delta R^2+\frac{1}{3}\Delta R^3+\frac{1}{3} R^3\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{4\pi}\,
+            \frac{1}{
+            \frac{1}{3}\langle X^3 \rangle +
+            \langle X^2 \rangle \Delta R+
+            \langle X^1 \rangle \Delta R^2+
+            \langle X^0 \rangle \frac{\Delta R^3}{3}}$\\
+5 &  \texttt{Sph.Sh.iii}    & $\Delta R$ & $R$ & not used & core+shell &
+            \mbox{\tiny$ 4\pi \left(R^2 \Delta R +R \Delta R^2+\frac{1}{3}\Delta R^3+\frac{1}{3} R^3\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{4\pi}\,
+            \frac{1}{
+            \frac{1}{3}R^3\langle X^0\rangle +
+            R^2 \langle X^1 \rangle+
+            R \langle X^2 \rangle +
+            \frac{1}{3}\langle X^3 \rangle}$ \\
+ \rowcolor[gray]{0.95}
+6 &  \texttt{Sph.Sh.iii}    & $R$ & $\Delta R$ & not used & core &
+            \mbox{\tiny$ \frac{4}{3}\pi R^3$} &
+            $  \frac{f_p}{10^{21}} \frac{3}{4\pi} \, \frac{1}{\langle X^3 \rangle}$\\
+ \rowcolor[gray]{0.95}
+7 &  \texttt{Sph.Sh.iii}    & $\Delta R$ & $R$ & not used & core &
+            \mbox{\tiny$ \frac{4}{3}\pi R^3$} &
+            $  \frac{f_p}{10^{21}} \frac{3}{4\pi} \, \frac{1}{R^3 \langle X^0 \rangle}$\\
+8 &  \texttt{Sph.Sh.iii}    & $R$ & $\Delta R$ & not used & shell &
+            \mbox{\tiny$ 4\pi \left(R^2 \Delta R +R \Delta R^2+\frac{1}{3}\Delta R^3\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{4\pi}\,
+            \frac{1}{\langle X^2 \rangle \Delta R+
+            \langle X^1 \rangle \Delta R^2+
+            \langle X^0 \rangle \frac{\Delta R^3}{3}}$ \\
+9 &  \texttt{Sph.Sh.iii}    & $\Delta R$ & $R$ & not used & shell &
+            \mbox{\tiny$ 4\pi \left(R^2 \Delta R +R \Delta R^2+\frac{1}{3}\Delta R^3\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{4\pi}\,
+            \frac{1}{R^2 \langle X^1 \rangle+
+            R \langle X^2 \rangle +
+            \frac{1}{3}\langle X^3 \rangle}$ \\
+ \rowcolor[gray]{0.95}
+10 &  \texttt{CylShell1}    & $R$ & $\Delta R$ & $L$ & core+shell &
+            \mbox{\tiny$ \pi L\left( \Delta R^2 + 2R \Delta R +R^2\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi}\,
+            \frac{1}{
+            L\left( \Delta R^2 \langle X^0 \rangle + 2\langle X^1 \rangle \Delta R +\langle X^2 \rangle\right)
+            }$ \\
+ \rowcolor[gray]{0.95}
+11 &  \texttt{CylShell1}    & $\Delta R$ & $R$ & $L$ &  core+shell  &
+            \mbox{\tiny$ \pi L\left( \Delta R^2 + 2R \Delta R +R^2\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi}\,
+            \frac{1}{
+            L\left( \langle X^2 \rangle + 2R \langle X^1 \rangle +R^2\langle X^0 \rangle\right)
+            }$\\
+ \rowcolor[gray]{0.95}
+12 &  \texttt{CylShell1}    & $L$ & $R$ & $\Delta R$ &  core+shell  &
+            \mbox{\tiny$ \pi L\left( \Delta R^2 + 2R \Delta R +R^2\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi}\,
+            \frac{1}{
+            \langle X^1 \rangle \left( \Delta R^2 + 2R \Delta R +R^2\right)
+            }$\\
+13 &  \texttt{CylShell1}    & $R$ & $\Delta R$ & $L$ & core&
+            \mbox{\tiny$ \pi L R^2$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \, \frac{1}{\langle X^2 \rangle L}$ \\
+14 &  \texttt{CylShell1}    & $\Delta R$ & $R$ & $L$ &  core  &
+            \mbox{\tiny$ \pi L R^2$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \, \frac{1}{R^2 L \langle X^0 \rangle}$\\
+15 &  \texttt{CylShell1}    & $L$ & $R$ & $\Delta R$ &  core  &
+            \mbox{\tiny$ \pi L R^2$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \, \frac{1}{R^2 \langle X^1 \rangle}$\\
+ \rowcolor[gray]{0.95}
+16 &  \texttt{CylShell1}    & $R$ & $\Delta R$ & $L$ & shell  &
+            \mbox{\tiny$ \pi L\left( \Delta R^2 + 2R \Delta R\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \,
+            \frac{1}{L\left( \Delta R^2\langle X^0 \rangle + 2\langle X^1 \rangle \Delta R\right)}$  \\
+ \rowcolor[gray]{0.95}
+17 &  \texttt{CylShell1}    & $\Delta R$ & $R$ & $L$ &  shell  &
+            \mbox{\tiny$ \pi L\left( \Delta R^2 + 2R \Delta R\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \,
+            \frac{1}{L\left( \langle X^2 \rangle + 2R \langle X^1 \rangle\right)}$  \\
+ \rowcolor[gray]{0.95}
+18 &  \texttt{CylShell1}    & $L$ & $R$ & $\Delta R$ &  shell  &
+            \mbox{\tiny$ \pi L\left( \Delta R^2 + 2R \Delta R\right)$} &
+            $  \frac{f_p}{10^{21}} \frac{1}{\pi} \,
+            \frac{1}{\langle X^1 \rangle\left( \Delta R^2 + 2R \Delta R\right)}$  \\
+\hline
+\end{tabular}
+}
+
+\vspace{3mm}
+
+  \caption{The number density $N$ expressed in terms of volume fraction $f_p$ and moments
+  $\langle X^n\rangle$ of the distribution function for
+  some particle shapes and different parameters having a distribution.
+ The factor $10^{21}$ is needed due to unit
+conversion. It is assumed that the radius is given in nm, the
+intensity in cm$^{-1}$ and the scattering length densities in
+cm$^{-2}$.}
+\label{tab:volumefraction}
+\end{table}

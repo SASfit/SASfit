@@ -3,9 +3,10 @@
   a proper error reporting to the GUI for undefined input values
 - removed some old structure factors, 
   which were rarely used and theoretically not up to date 
-- plugin for ordered mesoscopic and nano structures. 
+- starting a plugin for ordered mesoscopic and nano structures. 
   The plugin is providing a part of the structure factors available
   in the software package "scatter" from S. Förster.
+- plugin of a radial profile for a sphere resulting in a Porod law both below and above Q^-4
   
 0.94.6 2014-12-14
 - improved analysis of confidence intervals of fit parameters:

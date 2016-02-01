@@ -33,6 +33,7 @@ scalar sasfit_ff_boucher_sphere2_f(scalar q, sasfit_param * param)
     
 //   beta = DELTA_ETA*gsl_pow_3(R*sqrt(M_PI))*gsl_sf_gamma(ALPHA/2.-1)/gsl_sf_gamma(ALPHA/2.+0.5);
    beta  = DELTA_ETA*gsl_pow_3(R)*4./3.*M_PI;
+    if (q*R == 0) return beta;
 	return beta*gsl_sf_hyperg_0F1(0.5*(ALPHA+1),-gsl_pow_2(q*R/2.));
 }
 
