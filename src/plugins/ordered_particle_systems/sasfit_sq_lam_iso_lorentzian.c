@@ -24,6 +24,7 @@ scalar sasfit_sq_lam_iso_lorentzian(scalar q, sasfit_param * param)
 	ADVAL       = PAD;
 	DELTAVAL    = PDELTA;
 	CLVAL       = PCL;
+    MAXHKLVAL = PMAXHKL;
 
 	return Lattice_Factor_iso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
 }
@@ -42,9 +43,6 @@ scalar sasfit_sq_lam_iso_lorentzian_v(scalar q, sasfit_param * param, int dist)
 
 	// insert your code here
 
-
-	PEAKSHAPE = LORENTZIANPEAK;
-	ORDERTYPE = SC;
 	return 0.0;
 }
 

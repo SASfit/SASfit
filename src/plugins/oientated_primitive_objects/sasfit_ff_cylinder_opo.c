@@ -55,7 +55,8 @@ scalar sasfit_ff_cylinder_opo_f(scalar q, sasfit_param * param)
 	opod.a = A;
 	opod.b = B;
 	opod.c = C;
-    opod.Rotation.convention = yaw_pitch_roll;
+    opo_setConvention(&opod,yaw_pitch_roll);
+ //   opod.Rotation.convention =Z1_X2_Y3;
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
     opo_init(&opod);
 

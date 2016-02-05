@@ -85,6 +85,7 @@
 #define VARPHIVAL   ospParameter.varphi
 #define VARTHETAVAL ospParameter.vartheta
 #define ADVAL       ospParameter.ad
+#define BDVAL       ospParameter.bd
 #define DELTAVAL    ospParameter.delta
 #define DELTAQVAL   ospParameter.delta_q
 #define DELTAPSIVAL ospParameter.delta_psi
@@ -100,17 +101,17 @@
 
 typedef enum
 {
-	SC,
-	BCC,
+	SC, Pm3m,
+	BCC, Im3m,
 	BCCTWIN,
-	FCC,
+	FCC, Fm3m,
 	FCCTWIN,
-	HCP,
+	HCP, P6_mmc,
 	HCPTWIN,
-	BCT,
-	HEX,
-	SQ,
-	CREC,
+	BCT, l4_mm,
+	HEX, P6_mm,
+	SQ, P4_mm,
+	CREC, cmm2,
 	LAM,
 	la3d,
 	lm3m,

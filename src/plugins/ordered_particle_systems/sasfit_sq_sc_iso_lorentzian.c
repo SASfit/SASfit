@@ -21,8 +21,10 @@ scalar sasfit_sq_sc_iso_lorentzian(scalar q, sasfit_param * param)
 
 	QMODVAL     = q;
 	ADVAL       = PAD;
+    
 	DELTAVAL    = PDELTA;
-	CLVAL       = 1;
+	CLVAL       = PCL;
+    MAXHKLVAL = PMAXHKL;
 
 	return Lattice_Factor_iso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
 }

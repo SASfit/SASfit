@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_sq_sq_iso_lorentzian(scalar q, sasfit_param * param)
+scalar sasfit_sq_hcp_iso_gaussian(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -16,8 +16,8 @@ scalar sasfit_sq_sq_iso_lorentzian(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((PAD < 0.0), param, "a(%lg) < 0",PAD); // modify condition to your needs
 
 	// insert your code here
-	PEAKSHAPE = LORENTZIANPEAK;
-	ORDERTYPE = SQ;
+	PEAKSHAPE = GAUSSIANPEAK;
+	ORDERTYPE = HCP;
 
 	QMODVAL     = q;
 	ADVAL       = PAD;
@@ -29,7 +29,7 @@ scalar sasfit_sq_sq_iso_lorentzian(scalar q, sasfit_param * param)
 	return Lattice_Factor_iso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
 }
 
-scalar sasfit_sq_sq_iso_lorentzian_f(scalar q, sasfit_param * param)
+scalar sasfit_sq_hcp_iso_gaussian_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -37,12 +37,11 @@ scalar sasfit_sq_sq_iso_lorentzian_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_sq_sq_iso_lorentzian_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sq_hcp_iso_gaussian_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-
 	return 0.0;
 }
 

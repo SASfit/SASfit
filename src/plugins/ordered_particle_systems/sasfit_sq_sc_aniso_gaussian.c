@@ -24,7 +24,6 @@ scalar sasfit_sq_sc_aniso_gaussian(scalar x, sasfit_param * param)
 	PEAKSHAPE = GAUSSIANPEAK;
 	ORDERTYPE = SC;
 
-
 	ADVAL       = PAD;
 	DELTAQVAL   = PDELTAQ;
 	DELTAPSIVAL = PDELTAPSI;

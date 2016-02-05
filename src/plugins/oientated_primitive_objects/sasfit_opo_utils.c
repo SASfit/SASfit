@@ -24,7 +24,7 @@ void opo_setEulerAngles(opo_data *opod, double alpha, double beta,double gamma)
 
 void opo_setRotationMatrix(opo_data *opod) {
     double s[3], c[3];
-    int i;
+    int i,j;
     opo_rot *opoparam;
     opoparam = &opod->Rotation;
 
@@ -35,187 +35,193 @@ void opo_setRotationMatrix(opo_data *opod) {
     switch (opoparam->convention) {
 // proper Euler Angles:
         case X1_Z2_X3 : {
-                        opoparam->RotationMatrix[0][0] = c[1];
-                        opoparam->RotationMatrix[1][0] = c[0]*s[1];
-                        opoparam->RotationMatrix[2][0] = s[0]*s[1];
+                        opoparam->RotationMatrixT[0][0] = c[1];
+                        opoparam->RotationMatrixT[1][0] = c[0]*s[1];
+                        opoparam->RotationMatrixT[2][0] = s[0]*s[1];
 
-                        opoparam->RotationMatrix[0][1] = -c[2]*s[1];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opoparam->RotationMatrix[2][1] =  c[0]*s[2]     +c[1]*c[2]*s[0];
+                        opoparam->RotationMatrixT[0][1] = -c[2]*s[1];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opoparam->RotationMatrixT[2][1] =  c[0]*s[2]     +c[1]*c[2]*s[0];
 
-                        opoparam->RotationMatrix[0][2] =  s[1]*s[2];
-                        opoparam->RotationMatrix[1][2] = -c[2]*s[0]-c[0]*c[1]*s[2];
-                        opoparam->RotationMatrix[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opoparam->RotationMatrixT[0][2] =  s[1]*s[2];
+                        opoparam->RotationMatrixT[1][2] = -c[2]*s[0]-c[0]*c[1]*s[2];
+                        opoparam->RotationMatrixT[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
                         break;
                         }
         case X1_Y2_X3 : {
-                        opoparam->RotationMatrix[0][0] =  c[1];
-                        opoparam->RotationMatrix[1][0] =  s[0]*s[1];
-                        opoparam->RotationMatrix[2][0] = -c[0]*s[1];
+                        opoparam->RotationMatrixT[0][0] =  c[1];
+                        opoparam->RotationMatrixT[1][0] =  s[0]*s[1];
+                        opoparam->RotationMatrixT[2][0] = -c[0]*s[1];
 
-                        opoparam->RotationMatrix[0][1] =  s[1]*s[2];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
-                        opoparam->RotationMatrix[2][1] =  c[2]*s[0]+c[0]*c[1]*s[2];
+                        opoparam->RotationMatrixT[0][1] =  s[1]*s[2];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opoparam->RotationMatrixT[2][1] =  c[2]*s[0]+c[0]*c[1]*s[2];
 
-                        opoparam->RotationMatrix[0][2] =  c[2]*s[1];
-                        opoparam->RotationMatrix[1][2] = -c[0]*s[2]     -c[1]*c[2]*s[0];
-                        opoparam->RotationMatrix[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opoparam->RotationMatrixT[0][2] =  c[2]*s[1];
+                        opoparam->RotationMatrixT[1][2] = -c[0]*s[2]     -c[1]*c[2]*s[0];
+                        opoparam->RotationMatrixT[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
                         break;
                         }
         case Y1_X2_Y3 : {
-                        opoparam->RotationMatrix[0][0] =  c[0]*c[2]-c[1]*s[0]*s[2];
-                        opoparam->RotationMatrix[1][0] =  s[1]*s[2];
-                        opoparam->RotationMatrix[2][0] = -c[2]*s[0]-c[0]*c[1]*s[2];
+                        opoparam->RotationMatrixT[0][0] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opoparam->RotationMatrixT[1][0] =  s[1]*s[2];
+                        opoparam->RotationMatrixT[2][0] = -c[2]*s[0]-c[0]*c[1]*s[2];
 
-                        opoparam->RotationMatrix[0][1] =  s[0]*s[1];
-                        opoparam->RotationMatrix[1][1] =  c[1];
-                        opoparam->RotationMatrix[2][1] =  c[0]*s[1];
+                        opoparam->RotationMatrixT[0][1] =  s[0]*s[1];
+                        opoparam->RotationMatrixT[1][1] =  c[1];
+                        opoparam->RotationMatrixT[2][1] =  c[0]*s[1];
 
-                        opoparam->RotationMatrix[0][2] =  c[0]*s[2]+c[1]*c[2]*s[0];
-                        opoparam->RotationMatrix[1][2] = -c[2]*s[1];
-                        opoparam->RotationMatrix[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opoparam->RotationMatrixT[0][2] =  c[0]*s[2]+c[1]*c[2]*s[0];
+                        opoparam->RotationMatrixT[1][2] = -c[2]*s[1];
+                        opoparam->RotationMatrixT[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
                         break;
                         }
         case Y1_Z2_Y3 : {
-                        opoparam->RotationMatrix[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opoparam->RotationMatrix[1][0] =  c[2]*s[1];
-                        opoparam->RotationMatrix[2][0] = -c[0]*s[2]-c[1]*c[2]*s[0];
+                        opoparam->RotationMatrixT[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opoparam->RotationMatrixT[1][0] =  c[2]*s[1];
+                        opoparam->RotationMatrixT[2][0] = -c[0]*s[2]-c[1]*c[2]*s[0];
 
-                        opoparam->RotationMatrix[0][1] = -c[0]*s[1];
-                        opoparam->RotationMatrix[1][1] =  c[1];
-                        opoparam->RotationMatrix[2][1] =  s[0]*s[1];
+                        opoparam->RotationMatrixT[0][1] = -c[0]*s[1];
+                        opoparam->RotationMatrixT[1][1] =  c[1];
+                        opoparam->RotationMatrixT[2][1] =  s[0]*s[1];
 
-                        opoparam->RotationMatrix[0][2] =  c[2]*s[0]+c[0]*c[1]*s[2];
-                        opoparam->RotationMatrix[1][2] =  s[1]*s[2];
-                        opoparam->RotationMatrix[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opoparam->RotationMatrixT[0][2] =  c[2]*s[0]+c[0]*c[1]*s[2];
+                        opoparam->RotationMatrixT[1][2] =  s[1]*s[2];
+                        opoparam->RotationMatrixT[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
                         break;
                         }
         case Z1_X2_Z3 : { // x-convention
-                        opoparam->RotationMatrix[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
-                        opoparam->RotationMatrix[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
-                        opoparam->RotationMatrix[2][0] = s[1]*s[2];
+                        opoparam->RotationMatrixT[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
+                        opoparam->RotationMatrixT[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
+                        opoparam->RotationMatrixT[2][0] = s[1]*s[2];
 
-                        opoparam->RotationMatrix[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opoparam->RotationMatrix[2][1] =  c[2]*s[1];
+                        opoparam->RotationMatrixT[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opoparam->RotationMatrixT[2][1] =  c[2]*s[1];
 
-                        opoparam->RotationMatrix[0][2] =  s[0]*s[1];
-                        opoparam->RotationMatrix[1][2] = -c[0]*s[1];
-                        opoparam->RotationMatrix[2][2] =  c[2];
+                        opoparam->RotationMatrixT[0][2] =  s[0]*s[1];
+                        opoparam->RotationMatrixT[1][2] = -c[0]*s[1];
+                        opoparam->RotationMatrixT[2][2] =  c[2];
                         break;
                         }
         case Z1_Y2_Z3 : {
-                        opoparam->RotationMatrix[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opoparam->RotationMatrix[1][0] =  c[0]*s[2]     +c[1]*c[2]*s[0];
-                        opoparam->RotationMatrix[2][0] = -c[2]*s[1];
+                        opoparam->RotationMatrixT[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opoparam->RotationMatrixT[1][0] =  c[0]*s[2]     +c[1]*c[2]*s[0];
+                        opoparam->RotationMatrixT[2][0] = -c[2]*s[1];
 
-                        opoparam->RotationMatrix[0][1] = -c[2]*s[0]-c[0]*c[1]*s[2];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
-                        opoparam->RotationMatrix[2][1] =  s[1]*s[2];
+                        opoparam->RotationMatrixT[0][1] = -c[2]*s[0]-c[0]*c[1]*s[2];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opoparam->RotationMatrixT[2][1] =  s[1]*s[2];
 
-                        opoparam->RotationMatrix[0][2] = c[0]*s[1];
-                        opoparam->RotationMatrix[1][2] = s[0]*s[1];
-                        opoparam->RotationMatrix[2][2] = c[1];
+                        opoparam->RotationMatrixT[0][2] = c[0]*s[1];
+                        opoparam->RotationMatrixT[1][2] = s[0]*s[1];
+                        opoparam->RotationMatrixT[2][2] = c[1];
                         break;
                         }
 // Tait-Bryan angles:
         case X1_Z2_Y3 : {
-                        opoparam->RotationMatrix[0][0] =  c[1]*c[2];
-                        opoparam->RotationMatrix[1][0] =  s[0]*s[2]     +c[0]*c[2]*s[1];
-                        opoparam->RotationMatrix[2][0] =  c[2]*s[0]*s[1]-c[0]*s[2];
+                        opoparam->RotationMatrixT[0][0] =  c[1]*c[2];
+                        opoparam->RotationMatrixT[1][0] =  s[0]*s[2]     +c[0]*c[2]*s[1];
+                        opoparam->RotationMatrixT[2][0] =  c[2]*s[0]*s[1]-c[0]*s[2];
 
-                        opoparam->RotationMatrix[0][1] = -s[1];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[1];
-                        opoparam->RotationMatrix[2][1] =  c[1]*s[0];
+                        opoparam->RotationMatrixT[0][1] = -s[1];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[1];
+                        opoparam->RotationMatrixT[2][1] =  c[1]*s[0];
 
-                        opoparam->RotationMatrix[0][2] = c[1]*s[2];
-                        opoparam->RotationMatrix[1][2] = c[0]*s[1]*s[2]-c[2]*s[0];
-                        opoparam->RotationMatrix[2][2] = c[0]*c[2]     +s[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[0][2] = c[1]*s[2];
+                        opoparam->RotationMatrixT[1][2] = c[0]*s[1]*s[2]-c[2]*s[0];
+                        opoparam->RotationMatrixT[2][2] = c[0]*c[2]     +s[0]*s[1]*s[2];
                         break;
                         }
         case X1_Y2_Z3 : {
-                        opoparam->RotationMatrix[0][0] =  c[1]*c[2];
-                        opoparam->RotationMatrix[1][0] =  c[0]*s[2]+c[2]*s[0]*s[1];
-                        opoparam->RotationMatrix[2][0] =  s[0]*s[2]-c[0]*c[2]*s[1];
+                        opoparam->RotationMatrixT[0][0] =  c[1]*c[2];
+                        opoparam->RotationMatrixT[1][0] =  c[0]*s[2]+c[2]*s[0]*s[1];
+                        opoparam->RotationMatrixT[2][0] =  s[0]*s[2]-c[0]*c[2]*s[1];
 
-                        opoparam->RotationMatrix[0][1] = -c[1]*s[2];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[2]-s[0]*s[1]*s[2];
-                        opoparam->RotationMatrix[2][1] =  c[2]*s[0]+c[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[0][1] = -c[1]*s[2];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[2]-s[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[2][1] =  c[2]*s[0]+c[0]*s[1]*s[2];
 
-                        opoparam->RotationMatrix[0][2] =  s[1];
-                        opoparam->RotationMatrix[1][2] = -c[1]*s[0];
-                        opoparam->RotationMatrix[2][2] =  c[0]*c[1];
+                        opoparam->RotationMatrixT[0][2] =  s[1];
+                        opoparam->RotationMatrixT[1][2] = -c[1]*s[0];
+                        opoparam->RotationMatrixT[2][2] =  c[0]*c[1];
                         break;
+                        
                         }
         case Y1_X2_Z3 : {
-                        opoparam->RotationMatrix[0][0] =  c[0]*c[2]     +s[0]*s[1]*s[2];
-                        opoparam->RotationMatrix[1][0] =  c[1]*s[2];
-                        opoparam->RotationMatrix[2][0] =  c[0]*s[1]*s[2]-c[2]*s[1];
+                        opoparam->RotationMatrixT[0][0] =  c[0]*c[2]     +s[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[1][0] =  c[1]*s[2];
+                        opoparam->RotationMatrixT[2][0] =  c[0]*s[1]*s[2]-c[2]*s[1];
 
-                        opoparam->RotationMatrix[0][1] =  c[2]*s[0]*s[1]-c[0]*s[2];
-                        opoparam->RotationMatrix[1][1] =  c[1]*c[2];
-                        opoparam->RotationMatrix[2][1] =  c[0]*c[2]*s[1]+s[0]*s[2];
+                        opoparam->RotationMatrixT[0][1] =  c[2]*s[0]*s[1]-c[0]*s[2];
+                        opoparam->RotationMatrixT[1][1] =  c[1]*c[2];
+                        opoparam->RotationMatrixT[2][1] =  c[0]*c[2]*s[1]+s[0]*s[2];
 
-                        opoparam->RotationMatrix[0][2] =  c[1]*s[0];
-                        opoparam->RotationMatrix[1][2] = -s[1];
-                        opoparam->RotationMatrix[2][2] =  c[0]*c[1];
+                        opoparam->RotationMatrixT[0][2] =  c[1]*s[0];
+                        opoparam->RotationMatrixT[1][2] = -s[1];
+                        opoparam->RotationMatrixT[2][2] =  c[0]*c[1];
                         break;
                         }
         case Y1_Z2_X3 : {
-                        opoparam->RotationMatrix[0][0] =  c[0]*c[1];
-                        opoparam->RotationMatrix[1][0] =  s[1];
-                        opoparam->RotationMatrix[2][0] = -c[1]*s[0];
+                        opoparam->RotationMatrixT[0][0] =  c[0]*c[1];
+                        opoparam->RotationMatrixT[1][0] =  s[1];
+                        opoparam->RotationMatrixT[2][0] = -c[1]*s[0];
 
-                        opoparam->RotationMatrix[0][1] = s[0]*s[2]-c[0]*c[2]*s[1];
-                        opoparam->RotationMatrix[1][1] = c[1]*c[2];
-                        opoparam->RotationMatrix[2][1] = c[0]*s[2]+c[2]*s[0]*s[1];
+                        opoparam->RotationMatrixT[0][1] = s[0]*s[2]-c[0]*c[2]*s[1];
+                        opoparam->RotationMatrixT[1][1] = c[1]*c[2];
+                        opoparam->RotationMatrixT[2][1] = c[0]*s[2]+c[2]*s[0]*s[1];
 
-                        opoparam->RotationMatrix[0][2] =  c[2]*s[0]+c[0]*s[1]*s[2];
-                        opoparam->RotationMatrix[1][2] = -c[1]*s[2];
-                        opoparam->RotationMatrix[2][2] =  c[0]*c[2]-s[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[0][2] =  c[2]*s[0]+c[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[1][2] = -c[1]*s[2];
+                        opoparam->RotationMatrixT[2][2] =  c[0]*c[2]-s[0]*s[1]*s[2];
                         break;
                         }
         case Z1_Y2_X3 : {
-                        opoparam->RotationMatrix[0][0] = c[0]*c[1];
-                        opoparam->RotationMatrix[1][0] = c[1]*s[0];
-                        opoparam->RotationMatrix[2][0] = -s[1];
+                        opoparam->RotationMatrixT[0][0] = c[0]*c[1];
+                        opoparam->RotationMatrixT[1][0] = c[1]*s[0];
+                        opoparam->RotationMatrixT[2][0] = -s[1];
 
-                        opoparam->RotationMatrix[0][1] = c[0]*s[1]*s[2]-c[2]*s[0];
-                        opoparam->RotationMatrix[1][1] = c[0]*c[2]     +s[0]*s[1]*s[2];
-                        opoparam->RotationMatrix[2][1] = c[1]*s[2];
+                        opoparam->RotationMatrixT[0][1] = c[0]*s[1]*s[2]-c[2]*s[0];
+                        opoparam->RotationMatrixT[1][1] = c[0]*c[2]     +s[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[2][1] = c[1]*s[2];
 
-                        opoparam->RotationMatrix[0][2] = s[0]*s[2]     +c[0]*c[2]*s[1];
-                        opoparam->RotationMatrix[1][2] = c[2]*s[0]*s[1]-c[0]*s[2];
-                        opoparam->RotationMatrix[2][2] = c[1]*c[2];
+                        opoparam->RotationMatrixT[0][2] = s[0]*s[2]     +c[0]*c[2]*s[1];
+                        opoparam->RotationMatrixT[1][2] = c[2]*s[0]*s[1]-c[0]*s[2];
+                        opoparam->RotationMatrixT[2][2] = c[1]*c[2];
                         break;
                         }
         case Z1_X2_Y3 : {
-                        opoparam->RotationMatrix[0][0] =  c[0]*c[2]-s[0]*s[1]*s[2];
-                        opoparam->RotationMatrix[1][0] =  c[2]*s[0]+c[0]*s[1]*s[2];
-                        opoparam->RotationMatrix[2][0] = -c[1]*s[2];
+                        opoparam->RotationMatrixT[0][0] =  c[0]*c[2]-s[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[1][0] =  c[2]*s[0]+c[0]*s[1]*s[2];
+                        opoparam->RotationMatrixT[2][0] = -c[1]*s[2];
 
-                        opoparam->RotationMatrix[0][1] = -c[1]*s[0];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[1];
-                        opoparam->RotationMatrix[2][1] =  s[1];
+                        opoparam->RotationMatrixT[0][1] = -c[1]*s[0];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[1];
+                        opoparam->RotationMatrixT[2][1] =  s[1];
 
-                        opoparam->RotationMatrix[0][2] = c[0]*s[2]+c[2]*s[0]*s[1];
-                        opoparam->RotationMatrix[1][2] = s[0]*s[2]-c[0]*c[2]*s[1];
-                        opoparam->RotationMatrix[2][2] = c[1]*c[2];
+                        opoparam->RotationMatrixT[0][2] = c[0]*s[2]+c[2]*s[0]*s[1];
+                        opoparam->RotationMatrixT[1][2] = s[0]*s[2]-c[0]*c[2]*s[1];
+                        opoparam->RotationMatrixT[2][2] = c[1]*c[2];
                         break;
                         }
         default:        {// x-convention
-                        opoparam->RotationMatrix[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
-                        opoparam->RotationMatrix[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
-                        opoparam->RotationMatrix[2][0] = s[1]*s[2];
+                        opoparam->RotationMatrixT[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
+                        opoparam->RotationMatrixT[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
+                        opoparam->RotationMatrixT[2][0] = s[1]*s[2];
 
-                        opoparam->RotationMatrix[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
-                        opoparam->RotationMatrix[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opoparam->RotationMatrix[2][1] =  c[2]*s[1];
+                        opoparam->RotationMatrixT[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
+                        opoparam->RotationMatrixT[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opoparam->RotationMatrixT[2][1] =  c[2]*s[1];
 
-                        opoparam->RotationMatrix[0][2] =  s[0]*s[1];
-                        opoparam->RotationMatrix[1][2] = -c[0]*s[1];
-                        opoparam->RotationMatrix[2][2] =  c[2];
+                        opoparam->RotationMatrixT[0][2] =  s[0]*s[1];
+                        opoparam->RotationMatrixT[1][2] = -c[0]*s[1];
+                        opoparam->RotationMatrixT[2][2] =  c[2];
                         }
+    }
+    for (i=0;i<3;i++) {
+        for (j=0;j<3;j++) {
+            opoparam->RotationMatrix[i][j] = opoparam->RotationMatrixT[j][i];
+        }
     }
 }
 

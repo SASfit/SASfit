@@ -37,6 +37,7 @@ typedef enum
 typedef struct {
     opo_Euler_convention_t convention;
     double RotationMatrix[3][3];
+    double RotationMatrixT[3][3];
     double EulerAngles[3];
 } opo_rot;
 
@@ -56,6 +57,7 @@ typedef struct {
     double detDinv;
     double detD;
     opo_rot Rotation;
+    opo_rot RotationInv;
 } opo_data;
 
 int opo_set_e(double *, double, double, double);
