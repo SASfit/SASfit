@@ -378,24 +378,8 @@ set(SOURCE_sasfit_oz
 	sasfit_oz_potential_FermiDistributionModel.c
 	sasfit_oz_potential_square_well.c
 	sasfit_oz_tclcmd.c
-#	gmres.c
-#	utils.c
 )
-set(SOURCE_sasfit_gmres
-	sasfit_gmres_utils.c
-	sasfit_netlib_f2c_gmres.c
-	sasfit_netlib_f2c_dcopy.c
-	sasfit_netlib_f2c_dscal.c
-	sasfit_netlib_f2c_ddot.c
-	sasfit_netlib_f2c_drot.c
-	sasfit_netlib_f2c_dnrm2.c
-	sasfit_netlib_f2c_drotg.c
-	sasfit_netlib_f2c_daxpy.c
-	sasfit_netlib_f2c_dgemv.c
-	sasfit_netlib_f2c_dtrsv.c
-	sasfit_netlib_f2c_lsame.c
-	sasfit_netlib_f2c_xerbla.c
-)
+
 
 set(SOURCE_sasfit_old
 # former sasfit main

@@ -46,13 +46,25 @@ scalar sasfit_peak_PearsonIVAmplitude(scalar x, sasfit_param * param)
 	a4 = shape2; nu_temp= shape2;
 
 	SASFIT_CHECK_COND1((width <= 0), param, "width(%lg) <= 0",width);
-	SASFIT_CHECK_COND1((shape1 <= 0), param, "shape1(%lg) <= 0",shape1);
+	SASFIT_CHECK_COND1((shape1 <= 0.5), param, "shape1(%lg) <= 1/2",shape1);
 
 	u = a4/(2.*a3);
 	l_temp = center+a2*u;
 	z = (x-l_temp)/width;
 
 	a0 = ampl*exp(-a4*atan(u))/pow(1+u*u,-a3);
+    
+// mode: lambda-a*nu/(2*m)  => lambda = mode + a*nu/(2*m) 
+// l_temp=lambda
+// center = mode
+// m = a3
+// nu = a4
+// a = a2
+// mean == E[X] lambda-a*nu/(2*(m-1)) for m>1
+// variance = (standard deviation)^2 = E[(X-mean)^2]  = E[X^2]-(E[X])^2 = a^2*(r^2+nu^2) / (r^2*(r-1)) with r=2*(m-1)  for m>3/2
+
+// ref: http://www-cdf.fnal.gov/physics/statistics/notes/cdf6820_pearson4.pdf
+
 	return bckgr+a0*pow(1+z*z,-a3)*exp(-a4*atan(z));
 }
 

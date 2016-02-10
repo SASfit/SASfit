@@ -164,7 +164,7 @@ label $w.frame.right.prog.info.l2 -text $sasfit(version) -font {Helvetica 10}
 pack $w.frame.right.prog.info.l1 $w.frame.right.prog.info.l2
 
 label $w.frame.right.address.line1 -text \
-"Copyright (c) 2008-2014, Paul Scherrer Institute (PSI)
+"Copyright (c) 2008-2016, Paul Scherrer Institute (PSI)
 Laboratory for Neutron Scattering and Imaging
 CH-5232 Villigen PSI, Switzerland"
 entry $w.frame.right.address.url
@@ -178,16 +178,18 @@ pack $w.frame.right.sasfit.left $w.frame.right.sasfit.right -side left
 
 label $w.frame.right.sasfit.left.writtenby -text "written by:"
 label $w.frame.right.sasfit.right.author1 -text "Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)"
-label $w.frame.right.sasfit.left.contribs -text "contributions since March 2008 by:"
+label $w.frame.right.sasfit.left.contribs -text "contributing since 2008:"
 label $w.frame.right.sasfit.right.author2 -text "Ingo Bressler (ingo.bressler@bam.de)"
 
 pack $w.frame.right.sasfit.left.writtenby $w.frame.right.sasfit.left.contribs -anchor e
 pack $w.frame.right.sasfit.right.author1 $w.frame.right.sasfit.right.author2 -anchor w
 
 
-#label $w.frame.right.notice.line5 -text "SASfit has been mainly developed for users analysing data taken at PSI"
+label $w.frame.right.notice.line5 -text \
+"J. Appl. Cryst. (2015). 48, 1587-1598
+doi:10.1107/S1600576715016544"
 
-#pack $w.frame.right.notice.line5
+pack $w.frame.right.notice.line5
 
 # get license information from file
 text $w.frame.right.textbox.box -yscrollcommand "$w.frame.right.textbox.sb set"

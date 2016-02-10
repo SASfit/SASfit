@@ -790,6 +790,85 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_iso_gaussian_f(scalar
 sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_iso_gaussian_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_sc_iso_gaussian ################ */
 
+/* ################ start sq_sc_iso_pearson ################ */
+/**
+ * \defgroup sq_sc_iso_pearson SC-iso-Pearson
+ * \ingroup sq_plugins_SC
+ *
+ * \brief \<some brief description of SC function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b sigma_a</td>
+ *       <td>peak Pearson lattice point distribution</td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td>peak width</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b cL</td>
+ *       <td>scaling constant for Z0</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b max(hkl)</td>
+ *       <td>maximum considered values for hkl</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>peak shape shape parameter (n=1: Lorentzian, n->infinity: Gaussian)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_sc_iso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_SC
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_iso_pearson(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_sc_iso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_SC
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_iso_pearson_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_sc_iso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_SC
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_iso_pearson_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_sc_iso_pearson ################ */
+
+
 /* ################ start sq_lam_iso_lorentzian ################ */
 /**
  * \defgroup sq_lam_iso_lorentzian LAM-iso-Lorentzian
@@ -1401,7 +1480,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_aniso_gaussian_f(scal
  */
 sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_aniso_gaussian_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_sc_aniso_gaussian ################ */
-
+    
 /* ################ start sq_sq_aniso_lorentzian ################ */
 /**
  * \defgroup sq_sq_aniso_lorentzian SQ-aniso-Lorentzian

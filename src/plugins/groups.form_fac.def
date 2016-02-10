@@ -257,3 +257,31 @@
  *
  * \modname{ff_devel}
  */
+
+ 
+/** 
+ * \defgroup ff_peaks Peaks 
+ * \ingroup ff_plugins
+ *
+ * This group contains peak functions (probability distributions).
+ *
+ * \modname{ff_peaks}
+ */
+ 
+/** 
+ * \defgroup ff_peak_amplitudes Amplitude Functions 
+ * \ingroup ff_peaks
+ *
+ * This group contains peak functions normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes}
+ */
+ 
+/** 
+ * \defgroup ff_peak_area Area Functions 
+ * \ingroup ff_peaks
+ *
+ * This group contains peak functions normalized on area.
+ *
+ * \modname{ff_peak_area}
+ */

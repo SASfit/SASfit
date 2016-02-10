@@ -50,3 +50,4 @@ saskit/src/tcl-8.4.13/lib/Mk4tcl/Mk4tcl.so
 saskit/src/tcl-8.4.13/lib/Mk4tcl/pkgIndex.tcl
 saskit/saskit_*
 
+/src/plugins/ordered_particle_systems/sasfit_sq_sq_iso_pearson.c

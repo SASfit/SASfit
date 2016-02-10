@@ -48,6 +48,7 @@
 #define PSI_DEG     param->p[10]
 #define PLAMBDA     param->p[11]
 #define PMAXHKL     param->p[12]
+#define PNU     param->p[13]
 
 
 #define KI          ospparam->ki
@@ -62,6 +63,7 @@
 #define D           ospparam->d             // detector distance
 #define ABAR        ospparam->abar
 #define CL          ospparam->cL
+#define VARNU          ospparam->nu
 
 #define PHI         ospparam->phi
 #define THETA       ospparam->theta
@@ -71,7 +73,7 @@
 #define BETA        ospparam->beta
 #define GAMMA       ospparam->gamma
 
-#define MR          ospparam->mR
+#define MR          ospparam->EulerR.RotationMatrix
 #define MM          ospparam->mM
 #define MN          ospparam->mN
 #define MAXHKL      ospparam->maxhkl
@@ -94,10 +96,54 @@
 #define BETAVAL     ospParameter.beta
 #define GAMMAVAL    ospParameter.gamma
 #define MAXHKLVAL   ospParameter.maxhkl
+#define NUVAL   ospParameter.nu
 
 /**
  * A set of parameters used by every model function in sasfit.
  */
+
+typedef enum
+{
+//  Proper Euler angles
+    X1_Z2_X3,
+    X1_Y2_X3,
+    Y1_X2_Y3,
+    Y1_Z2_Y3,
+	Z1_X2_Z3,
+             // x-convention (z,x',z'')
+             // alpha=EulerAngles[0], beta =EulerAngles[1], gamma=EulerAngles[2]
+             // phi  =EulerAngles[0], theta=EulerAngles[1], psi  =EulerAngles[2]
+    Z1_Y2_Z3,
+             // y-convention (z,y',z'')
+             // gamma=EulerAngles[0], beta =EulerAngles[1], alpha=EulerAngles[2]
+             // phi  =EulerAngles[0], theta=EulerAngles[1], psi  =EulerAngles[2]
+
+//  Tait-Bryan angles
+    X1_Z2_Y3,
+    X1_Y2_Z3,
+    Y1_X2_Z3,
+    Y1_Z2_X3,
+    Z1_Y2_X3,
+             // alpha=EulerAngles[0], beta =EulerAngles[1], gamma=EulerAngles[2]
+             // alpha=yaw=Gier
+             // beta=pitch=Nick
+             // gama=roll=Roll
+    Z1_X2_Y3
+} ops_Euler_convention_t;
+
+#define x_convention Z1_X2_Z3
+#define y_convention Z1_Y2_Z3
+#define yaw_pitch_roll Z1_Y2_X3
+#define Gier_Nick_Roll Z1_Y2_X3
+#define East_North_Up Z1_Y2_X3
+#define North_East_Down Z1_Y2_X3
+
+typedef struct {
+    ops_Euler_convention_t convention;
+    double RotationMatrix[3][3];
+    double RotationMatrixT[3][3];
+    double EulerAngles[3];
+} ops_rot;
 
 typedef enum
 {
@@ -173,7 +219,7 @@ typedef struct
                                     // (Gier-,      Nick-,      Roll-) Winkel,
                                     // (heading,    elevation,  bank) angle
                                     //  (-pi:pi], [-pi/2:pi/2], (-pi:pi]
-	scalar     mR[3][3];        //
+	ops_rot  EulerR;     //
 	scalar     mM[3][3],mMT[3][3],mN[3][3],mNT[3][3], mNTm1[3][3], mMTm1[3][3];
 	scalar     psi_hkl, abar;
 	scalar     delta;       // width parameter of peak function

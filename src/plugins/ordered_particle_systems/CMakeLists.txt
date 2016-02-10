@@ -12,6 +12,7 @@ set(LIBS_EXT
 set(SOURCE_${PRJ_NAME}
 	sasfit_sq_sc_iso_lorentzian.c
 	sasfit_sq_sc_iso_gaussian.c
+	sasfit_sq_sc_iso_pearson.c
 	sasfit_sq_sc_aniso_lorentzian.c
 	sasfit_sq_sc_aniso_gaussian.c
 	sasfit_sq_bcc_iso_lorentzian.c

@@ -2169,7 +2169,14 @@ distribution.} \label{fig:generalizedMaxwellArea}
     p(x) &= \frac{\left|\frac{\Gamma\!\left(m+\frac{\nu}{2}i\right)}{\Gamma(m)}\right|^2} {\alpha\,\mathrm{B}\!\left(m-\frac12, \frac12\right)} \left[1 + \left(\frac{x-\lambda}{\alpha}\right)^{\!2\,} \right]^{-m} \exp\left[-\nu \arctan\left(\frac{x-\lambda}{\alpha}\right)\right]. \!
 \end{align}
 The normalizing constant involves the complex Gamma function ($\Gamma$) and the Beta function ($\mathrm{B}$).
-
+For the distribution the mode, mean and variance are given by
+\begin{align}
+\mathrm{mode} &= \mathcal{M} = \lambda-\frac{\alpha\nu}{2m} \\
+\mathrm{mean} &= \langle x \rangle = \lambda-\frac{\alpha\nu}{2(m-1)} \qquad ((m>1)) \\
+\mathrm{variance} &= \langle (x-\langle x \rangle)^2 \rangle = \frac{\alpha^2}{r^2(r-1)} \left(r^2+\nu^2 \right)\mbox{ for } m>\frac{3}{2} \\
+& \mbox{ with } r=2(m-1) \nonumber
+\end{align}
+The shape parameter $\nu$ of the Pearson type IV distribution controls its skewness. If we fix its value at zero, we obtain a symmetric three-parameter family. This special case is known as the Pearson type VII distribution \ref{sec:PearsonVII}.
 \subsection{Pearson-IV (Amplitude)} ~\\
 \label{sec:PearsonIVAmplitude}
 \begin{figure}[htb]
@@ -2205,13 +2212,39 @@ parametrization of the Student-t distribution function and reads as
     p(x) &= \frac{1}{\alpha\,\mathrm{B}\!\left(m-\frac12, \frac12\right)}
         \left[1 + \left(\frac{x-\lambda}{\alpha}\right)^{\!2\,} \right]^{-m}
 \end{align}
-with $\alpha=\frac12\sigma/\sqrt{2^{1/m}-1}$ we get
-\begin{align}
-    p(x) &= \frac{2\sqrt{2^{1/m}-1}}{\sigma\,\mathrm{B}\!\left(m-\frac12, \frac12\right)}
-             \left [ 1+ 4\left (\frac{x-x_0}{\sigma} \right )^2\left(2^{1/m}-1\right) \right ]^{-m}
-\end{align}
-where B is the Beta function.
+where B is the Beta function $\mathrm{B}(a,b)=\Gamma(a)\Gamma(b)/\Gamma(a+b)$, with $a$ and $b$ not being negative integers. The mode $\mathcal{M}$ of the distribution is equals $\mathcal{M} = \lambda$.
 
+Sometimes distribution function are described by the mode $\mathcal{M}$ and integral peak width or peak breadth $\beta$. The peak breadth is given by $\beta=p(\mathcal{M})/\int_{\infty}^\infty p(x)\, \mathrm{d}x = \alpha\,\mathrm{B}\left(m-\frac12, \frac12\right)$, so that
+\begin{align}
+    p(x) &= \frac{1}{\beta}
+        \left[1 + \mathrm{B}^2\left(m-\frac12, \frac12\right)\left(\frac{x-\mathcal{M}}{\beta}\right)^{\!2\,} \right]^{-m}
+\end{align}
+
+An alternative parameterization (and slight specialization) of the type VII distribution is obtained by letting
+$\alpha=\sigma\sqrt{2m-3}$, which requires $m > 3/2$. By this constrain the variance of the distribution exists and is equal to $\sigma^2$. 
+\begin{align}
+    p(x) &=  \frac{1}{\sigma\,\sqrt{2\,m-3}\,\mathrm{B}\!\left(m-\frac12, \frac12\right)} \left[1 + \left(\frac{x-\lambda}{\sigma\,\sqrt{2\,m-3}}\right)^{\!2\,} \right]^{-m}
+\end{align}
+Now the parameter $m$ only controls the kurtosis of the distribution. If $m$ approaches infinity as $\lambda$ 
+and $\sigma$ are held constant, the normal distribution arises as a special case:
+\begin{align}
+& \lim_{m\to\infty}\frac{1}{\sigma\,\sqrt{2\,m-3}\,\mathrm{B}\!\left(m-\frac12, \frac12\right)} \left[1 + \left(\frac{x-\lambda}{\sigma\,\sqrt{2\,m-3}}\right)^{\!2\,} \right]^{-m} \nonumber\\
+& = \frac{1}{\sigma\,\sqrt{2}\,\Gamma\!\left(\frac12\right)} \times \lim_{m\to\infty} \frac{\Gamma(m)}{\Gamma\!\left(m-\frac12\right) \sqrt{m-\frac32}} \times \lim_{m\to\infty} \left[1 + \frac{\left(\frac{x-\lambda}{\sigma}\right)^2}{2\,m-3} \right]^{-m} \nonumber\\
+& = \frac{1}{\sigma\sqrt{2\,\pi}} \times 1 \times \exp\!\left[-\frac12 \left(\frac{x-\lambda}{\sigma}\right)^{\!2\,} \right] \nonumber
+\end{align}
+For $m>\frac52$ the distribution could also be expressed in terms of excess kurtosis $\gamma_2$ or kurtosis $\kappa$ by letting
+\begin{align}
+m =& \frac52+\frac{3}{\gamma_2} \\
+\mbox{or } m =& \frac52+\frac{3}{\kappa-3}
+\end{align}
+
+It is also possible to express the Pearson distribution in terms of the full width of half maximum $\omega_\mathrm{FWHM}$ by substituting $\alpha=\omega_\mathrm{FWHM}/\left(2\sqrt{2^{1/m}-1}\right)$. This leads to
+\begin{align}
+    p(x) &= \frac{2\sqrt{2^{1/m}-1}}{\omega_\mathrm{FWHM}\,\mathrm{B}\!\left(m-\frac12, \frac12\right)}
+        \left[1 + 4\left(\sqrt{2^{1/m}-1}\right)\left(\frac{x-\lambda}{\omega_\mathrm{FWHM}}\right)^{\!2\,} \right]^{-m}
+\end{align}
+
+\clearpage
 \subsection{Pearson-VII (Amplitude)} ~\\
 \label{sec:PearsonVIIAmplitude}
 \begin{figure}[htb]
