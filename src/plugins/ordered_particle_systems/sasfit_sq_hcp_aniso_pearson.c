@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_sq_sq_aniso_lorentzian(scalar x, sasfit_param * param)
+scalar sasfit_sq_hcp_aniso_pearson(scalar x, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -18,10 +18,12 @@ scalar sasfit_sq_sq_aniso_lorentzian(scalar x, sasfit_param * param)
 	SASFIT_CHECK_COND1((PDELTAPSI   < 0.0), param, "a(%lg) < 0",PDELTAPSI); // modify condition to your needs
 	SASFIT_CHECK_COND1((PLAMBDA     < 0.0), param, "a(%lg) < 0",PLAMBDA); // modify condition to your needs
 	SASFIT_CHECK_COND1((PMAXHKL     < 0.0), param, "a(%lg) < 0",PMAXHKL); // modify condition to your needs
+	SASFIT_CHECK_COND1((PNU < 1.0), param, "a(%lg) < 1",PNU); // modify condition to your needs
+	SASFIT_CHECK_COND1((PNU > 100.0), param, "a(%lg) > 100",PNU); // modify condition to your needs
 
 	// insert your code here
-	PEAKSHAPE = LORENTZIANPEAK;
-	ORDERTYPE = SQ;
+	PEAKSHAPE = PEARSON;
+	ORDERTYPE = HCP;
 
 	ADVAL       = PAD;
 	DELTAQVAL   = PDELTAQ;
@@ -30,6 +32,7 @@ scalar sasfit_sq_sq_aniso_lorentzian(scalar x, sasfit_param * param)
 	ALPHAVAL    = PROLL*M_PI/180.;
 	BETAVAL     = PPITCH*M_PI/180.;
 	GAMMAVAL    = PYAW*M_PI/180.;
+    NUVAL = PNU;
     if (PSI_DEG >= 0) {
         QMODVAL     = x;
         VARPHIVAL = sasfit_param_override_get_psi(PSI_DEG*M_PI/180.);
@@ -51,7 +54,7 @@ scalar sasfit_sq_sq_aniso_lorentzian(scalar x, sasfit_param * param)
 	return Lattice_Factor_aniso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
 }
 
-scalar sasfit_sq_sq_aniso_lorentzian_f(scalar q, sasfit_param * param)
+scalar sasfit_sq_hcp_aniso_pearson_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -59,12 +62,11 @@ scalar sasfit_sq_sq_aniso_lorentzian_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_sq_sq_aniso_lorentzian_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sq_hcp_aniso_pearson_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-
 	return 0.0;
 }
 

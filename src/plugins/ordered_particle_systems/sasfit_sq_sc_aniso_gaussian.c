@@ -45,7 +45,8 @@ scalar sasfit_sq_sc_aniso_gaussian(scalar x, sasfit_param * param)
 	set_ki(&ospParameter,param);
 	set_ks(&ospParameter,param);
 	set_q(&ospParameter,param);
-	set_R_Nautic(&ospParameter,param);
+    ops_setConvention(&ospParameter,yaw_pitch_roll);
+    ops_setEulerAngles(&ospParameter,ALPHAVAL,BETAVAL,GAMMAVAL);
 	init_osp(&ospParameter,param);
 
  	return (Lattice_Factor_aniso(&ospParameter,param)-1.0)*G(&ospParameter,param)+1.0;

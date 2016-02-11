@@ -74,6 +74,7 @@
 #define GAMMA       ospparam->gamma
 
 #define MR          ospparam->EulerR.RotationMatrix
+#define MRI          ospparam->EulerR.RotationMatrixT
 #define MM          ospparam->mM
 #define MN          ospparam->mN
 #define MAXHKL      ospparam->maxhkl

@@ -8,6 +8,7 @@
 #include "include/cerf.h"
 #include "include/defs.h"
 
+
 void set_ki(ordered_particles_param *ospparam, sasfit_param *param)
 {
     scalar k;
@@ -39,6 +40,12 @@ void set_q(ordered_particles_param *ospparam, sasfit_param *param)
     Q[0]=k*cos(VARPHI)*sin(VARTHETA);
     Q[1]=k*sin(VARPHI)*sin(VARTHETA);
     Q[2]=k*(1-cos(VARTHETA));   // 1-cos(theta) = 2 sin^2(theta/2)
+    
+    Q[0]=k*cos(VARPHI)*cos(VARTHETA);
+    Q[1]=k*sin(VARPHI)*cos(VARTHETA);
+    Q[2]=k*sin(VARTHETA);   // 1-cos(theta) = 2 sin^2(theta/2)
+
+
     QMOD = 2.0*k*sin(VARTHETA/2.0);
 }
 
@@ -281,6 +288,7 @@ void ops_setRotationMatrix(ordered_particles_param *opsparam) {
     }
 }
 
+/*
 void set_R_Nautic(ordered_particles_param *ospparam, sasfit_param *param)
 {
     // http://upload.wikimedia.org/math/6/3/e/63e6b5b5426a3336d8da8eb60f3825d8.png
@@ -317,6 +325,7 @@ void set_R_Euler(ordered_particles_param *ospparam, sasfit_param *param)
     MR[1][2] =-sin(THETA)*cos(PHI);
     MR[2][2] = cos(THETA);
 }
+*/
 
 void set_f_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_param *param)
 {
@@ -617,6 +626,7 @@ void R_mult_r(scalar R[3][3],scalar r[3]) {
 
 void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
 {
+    ops_setRotationMatrix(ospparam);
     ospparam->ex[0] = 1.0;
     ospparam->ex[1] = 0.0;
     ospparam->ex[2] = 0.0;

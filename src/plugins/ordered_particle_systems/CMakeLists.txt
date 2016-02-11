@@ -15,34 +15,49 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_sc_iso_pearson.c
 	sasfit_sq_sc_aniso_lorentzian.c
 	sasfit_sq_sc_aniso_gaussian.c
+	sasfit_sq_sc_aniso_pearson.c
 	sasfit_sq_bcc_iso_lorentzian.c
 	sasfit_sq_bcc_iso_gaussian.c
+	sasfit_sq_bcc_iso_pearson.c
 	sasfit_sq_bcc_aniso_lorentzian.c
 	sasfit_sq_bcc_aniso_gaussian.c
+	sasfit_sq_bcc_aniso_pearson.c
 	sasfit_sq_fcc_iso_lorentzian.c
 	sasfit_sq_fcc_iso_gaussian.c
+	sasfit_sq_fcc_iso_pearson.c
 	sasfit_sq_fcc_aniso_lorentzian.c
 	sasfit_sq_fcc_aniso_gaussian.c
+	sasfit_sq_fcc_aniso_pearson.c
 	sasfit_sq_hcp_iso_lorentzian.c
 	sasfit_sq_hcp_iso_gaussian.c
+	sasfit_sq_hcp_iso_pearson.c
 	sasfit_sq_hcp_aniso_lorentzian.c
 	sasfit_sq_hcp_aniso_gaussian.c
+	sasfit_sq_hcp_aniso_pearson.c
 	sasfit_sq_hex_iso_lorentzian.c
 	sasfit_sq_hex_iso_gaussian.c
+	sasfit_sq_hex_iso_pearson.c
 	sasfit_sq_hex_aniso_lorentzian.c
 	sasfit_sq_hex_aniso_gaussian.c
+	sasfit_sq_hex_aniso_pearson.c
 	sasfit_sq_lam_iso_lorentzian.c
 	sasfit_sq_lam_iso_gaussian.c
+	sasfit_sq_lam_iso_pearson.c
 	sasfit_sq_lam_aniso_lorentzian.c
 	sasfit_sq_lam_aniso_gaussian.c
+	sasfit_sq_lam_aniso_pearson.c
 	sasfit_sq_crec_iso_lorentzian.c
 	sasfit_sq_crec_iso_gaussian.c
+	sasfit_sq_crec_iso_pearson.c
 	sasfit_sq_crec_aniso_lorentzian.c
 	sasfit_sq_crec_aniso_gaussian.c
+	sasfit_sq_crec_aniso_pearson.c
 	sasfit_sq_sq_iso_lorentzian.c
 	sasfit_sq_sq_iso_gaussian.c
+	sasfit_sq_sq_iso_pearson.c
 	sasfit_sq_sq_aniso_lorentzian.c
 	sasfit_sq_sq_aniso_gaussian.c
+	sasfit_sq_sq_aniso_pearson.c
 	ops_utils.c
 	interface.c
 	erfcx.c
