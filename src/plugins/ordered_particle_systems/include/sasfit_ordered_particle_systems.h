@@ -1911,7 +1911,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sq_iso_pearson_v(scalar 
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -1986,7 +1986,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_aniso_lorentzian_v(sc
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2061,7 +2061,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_aniso_gaussian_v(scal
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2140,7 +2140,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sc_aniso_pearson_v(scala
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2215,7 +2215,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sq_aniso_lorentzian_v(sc
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2290,7 +2290,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sq_aniso_gaussian_v(scal
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2368,7 +2368,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sq_aniso_pearson_v(scala
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2443,7 +2443,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_crec_aniso_lorentzian_v(
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2518,7 +2518,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_crec_aniso_gaussian_v(sc
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2596,7 +2596,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_crec_aniso_pearson_v(sca
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2671,7 +2671,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_lam_aniso_lorentzian_v(s
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2746,7 +2746,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_lam_aniso_gaussian_v(sca
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2824,7 +2824,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_lam_aniso_pearson_v(scal
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2899,7 +2899,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_hex_aniso_lorentzian_v(s
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -2974,7 +2974,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_hex_aniso_gaussian_v(sca
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3052,7 +3052,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_hex_aniso_pearson_v(scal
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3127,7 +3127,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_hcp_aniso_lorentzian_v(s
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3202,7 +3202,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_hcp_aniso_gaussian_v(sca
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3280,7 +3280,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_hcp_aniso_pearson_v(scal
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3355,7 +3355,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_fcc_aniso_lorentzian_v(s
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3430,7 +3430,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_fcc_aniso_gaussian_v(sca
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3508,7 +3508,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_fcc_aniso_pearson_v(scal
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3583,7 +3583,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bcc_aniso_lorentzian_v(s
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>
@@ -3658,7 +3658,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bcc_aniso_gaussian_v(sca
  *       <td>\b pitch</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b roll</td>
+ *       <td>\b Gier</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Psi (deg)</td>

@@ -40,13 +40,11 @@ void set_q(ordered_particles_param *ospparam, sasfit_param *param)
     Q[0]=k*cos(VARPHI)*sin(VARTHETA);
     Q[1]=k*sin(VARPHI)*sin(VARTHETA);
     Q[2]=k*(1-cos(VARTHETA));   // 1-cos(theta) = 2 sin^2(theta/2)
-    
-    Q[0]=k*cos(VARPHI)*cos(VARTHETA);
-    Q[1]=k*sin(VARPHI)*cos(VARTHETA);
-    Q[2]=k*sin(VARTHETA);   // 1-cos(theta) = 2 sin^2(theta/2)
 
+    if (fabs(QMOD - 2.0*k*sin(VARTHETA/2.0)) > 1e-8) sasfit_out("Qmod might by not precise enough\n");;
 
-    QMOD = 2.0*k*sin(VARTHETA/2.0);
+ //   QMOD = 2.0*k*sin(VARTHETA/2.0);
+
 }
 
 void set_l(ordered_particles_param *ospparam, sasfit_param *param)
@@ -66,7 +64,7 @@ scalar set_q_via_l(ordered_particles_param *ospparam, sasfit_param *param)
     Q[0]=k*L[0]/D*cos(VARTHETA);
     Q[1]=k*L[1]/D*cos(VARTHETA);
     Q[2]=k*(1-cos(VARTHETA));
-    QMOD = 2.0*k*sin(VARTHETA/2.0);
+    if (fabs(QMOD - 2.0*k*sin(VARTHETA/2.0)) > 1e-8) sasfit_out("Qmod might by not precise enough\n");;
 }
 
 void ops_setConvention (ordered_particles_param *opsparam, ops_Euler_convention_t convention)
@@ -80,9 +78,9 @@ void ops_setEulerAngles(ordered_particles_param *opsparam, double alpha, double 
 {
     ops_rot *opsd;
     opsd= &opsparam->EulerR;
-    opsd->EulerAngles[0] = alpha;  // [0, 2 pi]
+    opsd->EulerAngles[2] = alpha;  // [0, 2 pi]
     opsd->EulerAngles[1] = beta;   // [0, pi]
-    opsd->EulerAngles[2] = gamma;  // [0, 2 pi]
+    opsd->EulerAngles[0] = gamma;  // [0, 2 pi]
 }
 
 void ops_setRotationMatrix(ordered_particles_param *opsparam) {
@@ -98,192 +96,191 @@ void ops_setRotationMatrix(ordered_particles_param *opsparam) {
     switch (opsd->convention) {
 // proper Euler Angles:
         case X1_Z2_X3 : {
-                        opsd->RotationMatrixT[0][0] = c[1];
-                        opsd->RotationMatrixT[1][0] = c[0]*s[1];
-                        opsd->RotationMatrixT[2][0] = s[0]*s[1];
+                        opsd->RotationMatrix[0][0] = c[1];
+                        opsd->RotationMatrix[1][0] = c[0]*s[1];
+                        opsd->RotationMatrix[2][0] = s[0]*s[1];
 
-                        opsd->RotationMatrixT[0][1] = -c[2]*s[1];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opsd->RotationMatrixT[2][1] =  c[0]*s[2]     +c[1]*c[2]*s[0];
+                        opsd->RotationMatrix[0][1] = -c[2]*s[1];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opsd->RotationMatrix[2][1] =  c[0]*s[2]     +c[1]*c[2]*s[0];
 
-                        opsd->RotationMatrixT[0][2] =  s[1]*s[2];
-                        opsd->RotationMatrixT[1][2] = -c[2]*s[0]-c[0]*c[1]*s[2];
-                        opsd->RotationMatrixT[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opsd->RotationMatrix[0][2] =  s[1]*s[2];
+                        opsd->RotationMatrix[1][2] = -c[2]*s[0]-c[0]*c[1]*s[2];
+                        opsd->RotationMatrix[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
                         break;
                         }
         case X1_Y2_X3 : {
-                        opsd->RotationMatrixT[0][0] =  c[1];
-                        opsd->RotationMatrixT[1][0] =  s[0]*s[1];
-                        opsd->RotationMatrixT[2][0] = -c[0]*s[1];
+                        opsd->RotationMatrix[0][0] =  c[1];
+                        opsd->RotationMatrix[1][0] =  s[0]*s[1];
+                        opsd->RotationMatrix[2][0] = -c[0]*s[1];
 
-                        opsd->RotationMatrixT[0][1] =  s[1]*s[2];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
-                        opsd->RotationMatrixT[2][1] =  c[2]*s[0]+c[0]*c[1]*s[2];
+                        opsd->RotationMatrix[0][1] =  s[1]*s[2];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opsd->RotationMatrix[2][1] =  c[2]*s[0]+c[0]*c[1]*s[2];
 
-                        opsd->RotationMatrixT[0][2] =  c[2]*s[1];
-                        opsd->RotationMatrixT[1][2] = -c[0]*s[2]     -c[1]*c[2]*s[0];
-                        opsd->RotationMatrixT[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opsd->RotationMatrix[0][2] =  c[2]*s[1];
+                        opsd->RotationMatrix[1][2] = -c[0]*s[2]     -c[1]*c[2]*s[0];
+                        opsd->RotationMatrix[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
                         break;
                         }
         case Y1_X2_Y3 : {
-                        opsd->RotationMatrixT[0][0] =  c[0]*c[2]-c[1]*s[0]*s[2];
-                        opsd->RotationMatrixT[1][0] =  s[1]*s[2];
-                        opsd->RotationMatrixT[2][0] = -c[2]*s[0]-c[0]*c[1]*s[2];
+                        opsd->RotationMatrix[0][0] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opsd->RotationMatrix[1][0] =  s[1]*s[2];
+                        opsd->RotationMatrix[2][0] = -c[2]*s[0]-c[0]*c[1]*s[2];
 
-                        opsd->RotationMatrixT[0][1] =  s[0]*s[1];
-                        opsd->RotationMatrixT[1][1] =  c[1];
-                        opsd->RotationMatrixT[2][1] =  c[0]*s[1];
+                        opsd->RotationMatrix[0][1] =  s[0]*s[1];
+                        opsd->RotationMatrix[1][1] =  c[1];
+                        opsd->RotationMatrix[2][1] =  c[0]*s[1];
 
-                        opsd->RotationMatrixT[0][2] =  c[0]*s[2]+c[1]*c[2]*s[0];
-                        opsd->RotationMatrixT[1][2] = -c[2]*s[1];
-                        opsd->RotationMatrixT[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opsd->RotationMatrix[0][2] =  c[0]*s[2]+c[1]*c[2]*s[0];
+                        opsd->RotationMatrix[1][2] = -c[2]*s[1];
+                        opsd->RotationMatrix[2][2] =  c[0]*c[1]*c[2]-s[0]*s[2];
                         break;
                         }
         case Y1_Z2_Y3 : {
-                        opsd->RotationMatrixT[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opsd->RotationMatrixT[1][0] =  c[2]*s[1];
-                        opsd->RotationMatrixT[2][0] = -c[0]*s[2]-c[1]*c[2]*s[0];
+                        opsd->RotationMatrix[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opsd->RotationMatrix[1][0] =  c[2]*s[1];
+                        opsd->RotationMatrix[2][0] = -c[0]*s[2]-c[1]*c[2]*s[0];
 
-                        opsd->RotationMatrixT[0][1] = -c[0]*s[1];
-                        opsd->RotationMatrixT[1][1] =  c[1];
-                        opsd->RotationMatrixT[2][1] =  s[0]*s[1];
+                        opsd->RotationMatrix[0][1] = -c[0]*s[1];
+                        opsd->RotationMatrix[1][1] =  c[1];
+                        opsd->RotationMatrix[2][1] =  s[0]*s[1];
 
-                        opsd->RotationMatrixT[0][2] =  c[2]*s[0]+c[0]*c[1]*s[2];
-                        opsd->RotationMatrixT[1][2] =  s[1]*s[2];
-                        opsd->RotationMatrixT[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opsd->RotationMatrix[0][2] =  c[2]*s[0]+c[0]*c[1]*s[2];
+                        opsd->RotationMatrix[1][2] =  s[1]*s[2];
+                        opsd->RotationMatrix[2][2] =  c[0]*c[2]-c[1]*s[0]*s[2];
                         break;
                         }
         case Z1_X2_Z3 : { // x-convention
-                        opsd->RotationMatrixT[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
-                        opsd->RotationMatrixT[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
-                        opsd->RotationMatrixT[2][0] = s[1]*s[2];
+                        opsd->RotationMatrix[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
+                        opsd->RotationMatrix[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
+                        opsd->RotationMatrix[2][0] = s[1]*s[2];
 
-                        opsd->RotationMatrixT[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opsd->RotationMatrixT[2][1] =  c[2]*s[1];
+                        opsd->RotationMatrix[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opsd->RotationMatrix[2][1] =  c[2]*s[1];
 
-                        opsd->RotationMatrixT[0][2] =  s[0]*s[1];
-                        opsd->RotationMatrixT[1][2] = -c[0]*s[1];
-                        opsd->RotationMatrixT[2][2] =  c[2];
+                        opsd->RotationMatrix[0][2] =  s[0]*s[1];
+                        opsd->RotationMatrix[1][2] = -c[0]*s[1];
+                        opsd->RotationMatrix[2][2] =  c[2];
                         break;
                         }
         case Z1_Y2_Z3 : {
-                        opsd->RotationMatrixT[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opsd->RotationMatrixT[1][0] =  c[0]*s[2]     +c[1]*c[2]*s[0];
-                        opsd->RotationMatrixT[2][0] = -c[2]*s[1];
+                        opsd->RotationMatrix[0][0] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opsd->RotationMatrix[1][0] =  c[0]*s[2]     +c[1]*c[2]*s[0];
+                        opsd->RotationMatrix[2][0] = -c[2]*s[1];
 
-                        opsd->RotationMatrixT[0][1] = -c[2]*s[0]-c[0]*c[1]*s[2];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
-                        opsd->RotationMatrixT[2][1] =  s[1]*s[2];
+                        opsd->RotationMatrix[0][1] = -c[2]*s[0]-c[0]*c[1]*s[2];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[2]-c[1]*s[0]*s[2];
+                        opsd->RotationMatrix[2][1] =  s[1]*s[2];
 
-                        opsd->RotationMatrixT[0][2] = c[0]*s[1];
-                        opsd->RotationMatrixT[1][2] = s[0]*s[1];
-                        opsd->RotationMatrixT[2][2] = c[1];
+                        opsd->RotationMatrix[0][2] = c[0]*s[1];
+                        opsd->RotationMatrix[1][2] = s[0]*s[1];
+                        opsd->RotationMatrix[2][2] = c[1];
                         break;
                         }
 // Tait-Bryan angles:
         case X1_Z2_Y3 : {
-                        opsd->RotationMatrixT[0][0] =  c[1]*c[2];
-                        opsd->RotationMatrixT[1][0] =  s[0]*s[2]     +c[0]*c[2]*s[1];
-                        opsd->RotationMatrixT[2][0] =  c[2]*s[0]*s[1]-c[0]*s[2];
+                        opsd->RotationMatrix[0][0] =  c[1]*c[2];
+                        opsd->RotationMatrix[1][0] =  s[0]*s[2]     +c[0]*c[2]*s[1];
+                        opsd->RotationMatrix[2][0] =  c[2]*s[0]*s[1]-c[0]*s[2];
 
-                        opsd->RotationMatrixT[0][1] = -s[1];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[1];
-                        opsd->RotationMatrixT[2][1] =  c[1]*s[0];
+                        opsd->RotationMatrix[0][1] = -s[1];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[1];
+                        opsd->RotationMatrix[2][1] =  c[1]*s[0];
 
-                        opsd->RotationMatrixT[0][2] = c[1]*s[2];
-                        opsd->RotationMatrixT[1][2] = c[0]*s[1]*s[2]-c[2]*s[0];
-                        opsd->RotationMatrixT[2][2] = c[0]*c[2]     +s[0]*s[1]*s[2];
+                        opsd->RotationMatrix[0][2] = c[1]*s[2];
+                        opsd->RotationMatrix[1][2] = c[0]*s[1]*s[2]-c[2]*s[0];
+                        opsd->RotationMatrix[2][2] = c[0]*c[2]     +s[0]*s[1]*s[2];
                         break;
                         }
         case X1_Y2_Z3 : {
-                        opsd->RotationMatrixT[0][0] =  c[1]*c[2];
-                        opsd->RotationMatrixT[1][0] =  c[0]*s[2]+c[2]*s[0]*s[1];
-                        opsd->RotationMatrixT[2][0] =  s[0]*s[2]-c[0]*c[2]*s[1];
+                        opsd->RotationMatrix[0][0] =  c[1]*c[2];
+                        opsd->RotationMatrix[1][0] =  c[0]*s[2]+c[2]*s[0]*s[1];
+                        opsd->RotationMatrix[2][0] =  s[0]*s[2]-c[0]*c[2]*s[1];
 
-                        opsd->RotationMatrixT[0][1] = -c[1]*s[2];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[2]-s[0]*s[1]*s[2];
-                        opsd->RotationMatrixT[2][1] =  c[2]*s[0]+c[0]*s[1]*s[2];
+                        opsd->RotationMatrix[0][1] = -c[1]*s[2];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[2]-s[0]*s[1]*s[2];
+                        opsd->RotationMatrix[2][1] =  c[2]*s[0]+c[0]*s[1]*s[2];
 
-                        opsd->RotationMatrixT[0][2] =  s[1];
-                        opsd->RotationMatrixT[1][2] = -c[1]*s[0];
-                        opsd->RotationMatrixT[2][2] =  c[0]*c[1];
+                        opsd->RotationMatrix[0][2] =  s[1];
+                        opsd->RotationMatrix[1][2] = -c[1]*s[0];
+                        opsd->RotationMatrix[2][2] =  c[0]*c[1];
                         break;
-                        
                         }
         case Y1_X2_Z3 : {
-                        opsd->RotationMatrixT[0][0] =  c[0]*c[2]     +s[0]*s[1]*s[2];
-                        opsd->RotationMatrixT[1][0] =  c[1]*s[2];
-                        opsd->RotationMatrixT[2][0] =  c[0]*s[1]*s[2]-c[2]*s[1];
+                        opsd->RotationMatrix[0][0] =  c[0]*c[2]     +s[0]*s[1]*s[2];
+                        opsd->RotationMatrix[1][0] =  c[1]*s[2];
+                        opsd->RotationMatrix[2][0] =  c[0]*s[1]*s[2]-c[2]*s[1];
 
-                        opsd->RotationMatrixT[0][1] =  c[2]*s[0]*s[1]-c[0]*s[2];
-                        opsd->RotationMatrixT[1][1] =  c[1]*c[2];
-                        opsd->RotationMatrixT[2][1] =  c[0]*c[2]*s[1]+s[0]*s[2];
+                        opsd->RotationMatrix[0][1] =  c[2]*s[0]*s[1]-c[0]*s[2];
+                        opsd->RotationMatrix[1][1] =  c[1]*c[2];
+                        opsd->RotationMatrix[2][1] =  c[0]*c[2]*s[1]+s[0]*s[2];
 
-                        opsd->RotationMatrixT[0][2] =  c[1]*s[0];
-                        opsd->RotationMatrixT[1][2] = -s[1];
-                        opsd->RotationMatrixT[2][2] =  c[0]*c[1];
+                        opsd->RotationMatrix[0][2] =  c[1]*s[0];
+                        opsd->RotationMatrix[1][2] = -s[1];
+                        opsd->RotationMatrix[2][2] =  c[0]*c[1];
                         break;
                         }
         case Y1_Z2_X3 : {
-                        opsd->RotationMatrixT[0][0] =  c[0]*c[1];
-                        opsd->RotationMatrixT[1][0] =  s[1];
-                        opsd->RotationMatrixT[2][0] = -c[1]*s[0];
+                        opsd->RotationMatrix[0][0] =  c[0]*c[1];
+                        opsd->RotationMatrix[1][0] =  s[1];
+                        opsd->RotationMatrix[2][0] = -c[1]*s[0];
 
-                        opsd->RotationMatrixT[0][1] = s[0]*s[2]-c[0]*c[2]*s[1];
-                        opsd->RotationMatrixT[1][1] = c[1]*c[2];
-                        opsd->RotationMatrixT[2][1] = c[0]*s[2]+c[2]*s[0]*s[1];
+                        opsd->RotationMatrix[0][1] = s[0]*s[2]-c[0]*c[2]*s[1];
+                        opsd->RotationMatrix[1][1] = c[1]*c[2];
+                        opsd->RotationMatrix[2][1] = c[0]*s[2]+c[2]*s[0]*s[1];
 
-                        opsd->RotationMatrixT[0][2] =  c[2]*s[0]+c[0]*s[1]*s[2];
-                        opsd->RotationMatrixT[1][2] = -c[1]*s[2];
-                        opsd->RotationMatrixT[2][2] =  c[0]*c[2]-s[0]*s[1]*s[2];
+                        opsd->RotationMatrix[0][2] =  c[2]*s[0]+c[0]*s[1]*s[2];
+                        opsd->RotationMatrix[1][2] = -c[1]*s[2];
+                        opsd->RotationMatrix[2][2] =  c[0]*c[2]-s[0]*s[1]*s[2];
                         break;
                         }
         case Z1_Y2_X3 : {
-                        opsd->RotationMatrixT[0][0] = c[0]*c[1];
-                        opsd->RotationMatrixT[1][0] = c[1]*s[0];
-                        opsd->RotationMatrixT[2][0] = -s[1];
+                        opsd->RotationMatrix[0][0] = c[0]*c[1];
+                        opsd->RotationMatrix[1][0] = c[1]*s[0];
+                        opsd->RotationMatrix[2][0] = -s[1];
 
-                        opsd->RotationMatrixT[0][1] = c[0]*s[1]*s[2]-c[2]*s[0];
-                        opsd->RotationMatrixT[1][1] = c[0]*c[2]     +s[0]*s[1]*s[2];
-                        opsd->RotationMatrixT[2][1] = c[1]*s[2];
+                        opsd->RotationMatrix[0][1] = c[0]*s[1]*s[2]-c[2]*s[0];
+                        opsd->RotationMatrix[1][1] = c[0]*c[2]     +s[0]*s[1]*s[2];
+                        opsd->RotationMatrix[2][1] = c[1]*s[2];
 
-                        opsd->RotationMatrixT[0][2] = s[0]*s[2]     +c[0]*c[2]*s[1];
-                        opsd->RotationMatrixT[1][2] = c[2]*s[0]*s[1]-c[0]*s[2];
-                        opsd->RotationMatrixT[2][2] = c[1]*c[2];
+                        opsd->RotationMatrix[0][2] = s[0]*s[2]     +c[0]*c[2]*s[1];
+                        opsd->RotationMatrix[1][2] = c[2]*s[0]*s[1]-c[0]*s[2];
+                        opsd->RotationMatrix[2][2] = c[1]*c[2];
                         break;
                         }
         case Z1_X2_Y3 : {
-                        opsd->RotationMatrixT[0][0] =  c[0]*c[2]-s[0]*s[1]*s[2];
-                        opsd->RotationMatrixT[1][0] =  c[2]*s[0]+c[0]*s[1]*s[2];
-                        opsd->RotationMatrixT[2][0] = -c[1]*s[2];
+                        opsd->RotationMatrix[0][0] =  c[0]*c[2]-s[0]*s[1]*s[2];
+                        opsd->RotationMatrix[1][0] =  c[2]*s[0]+c[0]*s[1]*s[2];
+                        opsd->RotationMatrix[2][0] = -c[1]*s[2];
 
-                        opsd->RotationMatrixT[0][1] = -c[1]*s[0];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[1];
-                        opsd->RotationMatrixT[2][1] =  s[1];
+                        opsd->RotationMatrix[0][1] = -c[1]*s[0];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[1];
+                        opsd->RotationMatrix[2][1] =  s[1];
 
-                        opsd->RotationMatrixT[0][2] = c[0]*s[2]+c[2]*s[0]*s[1];
-                        opsd->RotationMatrixT[1][2] = s[0]*s[2]-c[0]*c[2]*s[1];
-                        opsd->RotationMatrixT[2][2] = c[1]*c[2];
+                        opsd->RotationMatrix[0][2] = c[0]*s[2]+c[2]*s[0]*s[1];
+                        opsd->RotationMatrix[1][2] = s[0]*s[2]-c[0]*c[2]*s[1];
+                        opsd->RotationMatrix[2][2] = c[1]*c[2];
                         break;
                         }
         default:        {// x-convention
-                        opsd->RotationMatrixT[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
-                        opsd->RotationMatrixT[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
-                        opsd->RotationMatrixT[2][0] = s[1]*s[2];
+                        opsd->RotationMatrix[0][0] = c[0]*c[2]-c[1]*s[0]*s[2];
+                        opsd->RotationMatrix[1][0] = c[2]*s[0]+c[0]*c[1]*s[2];
+                        opsd->RotationMatrix[2][0] = s[1]*s[2];
 
-                        opsd->RotationMatrixT[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
-                        opsd->RotationMatrixT[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
-                        opsd->RotationMatrixT[2][1] =  c[2]*s[1];
+                        opsd->RotationMatrix[0][1] = -c[0]*s[2]     -c[1]*c[2]*s[0];
+                        opsd->RotationMatrix[1][1] =  c[0]*c[1]*c[2]-s[0]*s[2];
+                        opsd->RotationMatrix[2][1] =  c[2]*s[1];
 
-                        opsd->RotationMatrixT[0][2] =  s[0]*s[1];
-                        opsd->RotationMatrixT[1][2] = -c[0]*s[1];
-                        opsd->RotationMatrixT[2][2] =  c[2];
+                        opsd->RotationMatrix[0][2] =  s[0]*s[1];
+                        opsd->RotationMatrix[1][2] = -c[0]*s[1];
+                        opsd->RotationMatrix[2][2] =  c[2];
                         }
     }
     for (i=0;i<3;i++) {
         for (j=0;j<3;j++) {
-            opsd->RotationMatrix[i][j] = opsd->RotationMatrixT[j][i];
+            opsd->RotationMatrixT[i][j] = opsd->RotationMatrix[j][i];
         }
     }
 }
@@ -1483,13 +1480,11 @@ scalar Lpsi_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_p
     case GAUSSIANPEAK   :   
                             ahkl = 4*gsl_pow_2(ospparam->ghklmod/deltapsi)/M_PI;
                             cG = 1.0/(2.0*M_PI*gsl_pow_2(ospparam->ghklmod)*K(ahkl,ospparam,param));
-//                            sasfit_out("Gauss: ghkl: %lg bhkllg cL=%lg\n",ospparam->ghklmod, bhkl,cG);
                             return cG * exp(-gsl_pow_2(2*x/deltapsi)/M_PI);
                             break;
     case LORENTZIANPEAK :  
                             bhkl = 4*gsl_pow_2(ospparam->ghklmod/deltapsi);
                             cL = 1.0/(2.0*M_PI*gsl_pow_2(ospparam->ghklmod)*K(bhkl,ospparam,param));
-//                            sasfit_out("Lorentz: ghkl: %lg bhkl=%lg cL=%lg\n",ospparam->ghklmod, bhkl,cL);
                             return cL / (1.0+gsl_pow_2(2.0*x/deltapsi));
                             break;
     case PEARSON:

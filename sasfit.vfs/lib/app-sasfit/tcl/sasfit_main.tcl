@@ -2614,24 +2614,24 @@ proc SaveCmd {} {
 			      }
 		      }
 	      }
-	      puts_arr $fid IQGraph
-	      puts_arr $fid GlobalFitIQGraph
-	      puts_arr $fid ResIQGraph
-	      puts_arr $fid SDGraph
-	      puts_arr $fid StructParData
-	      puts_arr $fid G2ParData
-	      puts_arr $fid FitPrecision
-	      puts_arr $fid OZ 
-	      puts_arr $fid ozSQGraph 
-	      puts_arr $fid ozgrGraph 
-	      puts_arr $fid ozcrGraph 
-	      puts_arr $fid ozhrGraph 
-	      puts_arr $fid ozgammarGraph 
-	      puts_arr $fid ozbetaUrGraph
-	      puts_arr $fid ozBrGraph 
-	      puts_arr $fid ozyrGraph 
-	      puts_arr $fid ozfrGraph 
-		  puts_arr $fid Detector2DIQGraph
+	      puts_arr $fid ::IQGraph
+	      puts_arr $fid ::GlobalFitIQGraph
+	      puts_arr $fid ::ResIQGraph
+	      puts_arr $fid ::SDGraph
+	      puts_arr $fid ::StructParData
+	      puts_arr $fid ::G2ParData
+	      puts_arr $fid ::FitPrecision
+	      puts_arr $fid ::OZ 
+	      puts_arr $fid ::ozSQGraph 
+	      puts_arr $fid ::ozgrGraph 
+	      puts_arr $fid ::ozcrGraph 
+	      puts_arr $fid ::ozhrGraph 
+	      puts_arr $fid ::ozgammarGraph 
+	      puts_arr $fid ::ozbetaUrGraph
+	      puts_arr $fid ::ozBrGraph 
+	      puts_arr $fid ::ozyrGraph 
+	      puts_arr $fid ::ozfrGraph 
+	      puts_arr $fid ::Detector2DIQGraph
 	      close $fid
 	   }
 	   set ::sasfit(lastProjectFile) $filename

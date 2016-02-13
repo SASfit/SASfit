@@ -190,16 +190,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
         for (j=0; j < sasfit_2d_param.num_pix;j++) {
             ry = (j-By)*sasfit_2d_param.pixelsize*1e-3;
 
-			// Det2DPar.Psi = atan(ry/rx);
-			if (rx == 0) {
-                if (ry > 0) {
-                    sasfit_param_override_set_psi(M_PI_2);
-                } else {
-                    sasfit_param_override_set_psi(-M_PI_2);
-                }
-			} else {
-                sasfit_param_override_set_psi( atan(ry/rx) );
-			}
+            sasfit_param_override_set_psi( atan2(ry,rx) );
 			r = sqrt(rx*rx+ry*ry);
 			TwoTheta = atan(r/sasfit_2d_param.dist);
 			Theta = 0.5*TwoTheta;

@@ -73,10 +73,10 @@
 #define BETA        ospparam->beta
 #define GAMMA       ospparam->gamma
 
-#define MR          ospparam->EulerR.RotationMatrix
-#define MRI          ospparam->EulerR.RotationMatrixT
-#define MM          ospparam->mM
-#define MN          ospparam->mN
+#define MR         ospparam->EulerR.RotationMatrix
+#define MRI        ospparam->EulerR.RotationMatrixT
+#define MM        ospparam->mM
+#define MN         ospparam->mN
 #define MAXHKL      ospparam->maxhkl
 
 #define VUC         ospparam->vd     // volume of unit cell
@@ -102,6 +102,7 @@
 /**
  * A set of parameters used by every model function in sasfit.
  */
+
 
 typedef enum
 {
@@ -132,13 +133,9 @@ typedef enum
     Z1_X2_Y3
 } ops_Euler_convention_t;
 
-#define x_convention Z1_X2_Z3
-#define y_convention Z1_Y2_Z3
-#define yaw_pitch_roll Z1_Y2_X3
-#define Gier_Nick_Roll Z1_Y2_X3
-#define East_North_Up Z1_Y2_X3
-#define North_East_Down Z1_Y2_X3
-
+//    #define DEFAULT_CONVENTION Z1_X2_Z3
+    #define DEFAULT_CONVENTION Z1_Y2_X3
+    
 typedef struct {
     ops_Euler_convention_t convention;
     double RotationMatrix[3][3];

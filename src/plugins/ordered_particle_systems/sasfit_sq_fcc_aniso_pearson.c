@@ -47,7 +47,7 @@ scalar sasfit_sq_fcc_aniso_pearson(scalar x, sasfit_param * param)
 	set_ki(&ospParameter,param);
 	set_ks(&ospParameter,param);
 	set_q(&ospParameter,param);
-    ops_setConvention(&ospParameter,yaw_pitch_roll);
+    ops_setConvention(&ospParameter,DEFAULT_CONVENTION);
     ops_setEulerAngles(&ospParameter,ALPHAVAL,BETAVAL,GAMMAVAL);
 	init_osp(&ospParameter,param);
 

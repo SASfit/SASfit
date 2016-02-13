@@ -251,6 +251,20 @@ L.~A. Feigin and D.~I. Svergun.
 \newblock {\em Structure Analysis by Small-Angle X-ray and Neutron Scattering}.
 \newblock Plenum Press, 1987.
 
+\bibitem{Forster2010}
+S.~F{\"{o}}rster, L.~Apostol, and W.~Bras.
+\newblock {{\it Scatter}: software for the analysis of nano- and mesoscale
+  small-angle scattering}.
+\newblock {\em Journal of Applied Crystallography}, 43(3):639--646, Jun 2010.
+
+\bibitem{Forster2011}
+S.~F\"orster, S.~Fischer, K.~Zielske, C.~Schellbach, M.~Sztucki, P.~Lindner,
+  and J.~Perlich.
+\newblock Calculation of scattering-patterns of ordered nano- and mesoscale
+  materials.
+\newblock {\em Advances in Colloid and Interface Science}, 163(1):53 -- 83,
+  2011.
+
 \bibitem{FoersterHermsdorf2002}
 S.~F\"orster, N.~Hermsdorf, C.~B\"ottcher, and P.~Lindner.
 \newblock Structure of polyelectrolyte block copolymer micelles,
@@ -262,6 +276,13 @@ S.~F\"orster, N.~Hermsdorf, W.~Leube, H.~Schnablegger, M.~Regenbrecht,
   S.~Akari, P.~Lindner, and C.~B\"ottcher.
 \newblock Fusion of charged block copolymer micelles into toroid networks.
 \newblock {\em J. Phys. Chem. B}, 103:6657--6668, 1999.
+
+\bibitem{Forster2005}
+S.~F\"orster, A.~Timmann, M.~Konrad, C.~Schellbach, , A.~Meyer, S.~S. Funari,
+  P.~Mulvaney, and R.~Knott.
+\newblock Scattering curves of ordered mesoscopic materials.
+\newblock {\em The Journal of Physical Chemistry B}, 109(4):1347--1360, 2005.
+\newblock PMID: 16851102.
 
 \bibitem{Fratzl1994}
 Peter Fratzl.
