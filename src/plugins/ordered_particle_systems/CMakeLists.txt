@@ -22,6 +22,12 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_bcc_aniso_lorentzian.c
 	sasfit_sq_bcc_aniso_gaussian.c
 	sasfit_sq_bcc_aniso_pearson.c
+	sasfit_sq_bct_iso_lorentzian.c
+	sasfit_sq_bct_iso_gaussian.c
+	sasfit_sq_bct_iso_pearson.c
+	sasfit_sq_bct_aniso_lorentzian.c
+	sasfit_sq_bct_aniso_gaussian.c
+	sasfit_sq_bct_aniso_pearson.c
 	sasfit_sq_fcc_iso_lorentzian.c
 	sasfit_sq_fcc_iso_gaussian.c
 	sasfit_sq_fcc_iso_pearson.c

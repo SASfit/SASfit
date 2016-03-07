@@ -26,6 +26,15 @@ SASFIT_PLUGIN_EXP_ADD( sq_bcc_aniso_gaussian )
 SASFIT_PLUGIN_EXP_ADD( sq_bcc_aniso_pearson )
 
 
+SASFIT_PLUGIN_EXP_ADD( sq_bct_iso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_bct_iso_gaussian )
+SASFIT_PLUGIN_EXP_ADD( sq_bct_iso_pearson )
+
+SASFIT_PLUGIN_EXP_ADD( sq_bct_aniso_lorentzian )
+SASFIT_PLUGIN_EXP_ADD( sq_bct_aniso_gaussian )
+SASFIT_PLUGIN_EXP_ADD( sq_bct_aniso_pearson )
+
+
 SASFIT_PLUGIN_EXP_ADD( sq_fcc_iso_lorentzian )
 SASFIT_PLUGIN_EXP_ADD( sq_fcc_iso_gaussian )
 SASFIT_PLUGIN_EXP_ADD( sq_fcc_iso_pearson )
