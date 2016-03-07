@@ -21,9 +21,12 @@ scalar sasfit_sq_sc_iso_gaussian(scalar q, sasfit_param * param)
 
 	QMODVAL     = q;
 	ADVAL       = PAD;
+    
 	DELTAVAL    = PDELTA;
 	CLVAL       = PCL;
-	return Lattice_Factor_iso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
+    MAXHKLVAL = PMAXHKL;
+    
+	return (Lattice_Factor_iso(&ospParameter,param)-1)*G(&ospParameter,param)+1.0;
 }
 
 scalar sasfit_sq_sc_iso_gaussian_f(scalar q, sasfit_param * param)

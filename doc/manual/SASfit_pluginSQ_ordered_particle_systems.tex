@@ -1,7 +1,139 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ordered particle systems} \hspace{1pt}
-\label{sec:_ops}
-\cite{Forster2005,Forster2011,Forster2010}
+\label{sec:ops}
+This plugin contains the structure factor of ordered mesoscopic materials in case the domains are random orientated like in powder diffraction as described in \cite{Forster2005}. For oriented domains the scattering pattern is not anymore radial symmetric and depends both on the direction and modulus of the scattering vector. For this case the structure factor are taken from  \cite{Forster2011}. This plugin tries to re-implement the functions which are originally supplied by the software package \texttt{scatter} described in \cite{Forster2010}. The software package \texttt{scatter} is specialised on calculating and fitting ordered structures and has much more options and better GUI for this kind of studies. In both case the structure factor is approximated in the decoupling approach (\cite{Kotlarchyk1983}) as defined in \ref{sec:SQdecoupling} or in eq.\ \ref{Mittel} of section \ref{sec:decouplingGF}
+
+In case of random oriented domains of three dimensional ordered particle systems the decoupling approach is implemented as
+\begin{align}
+I(Q) &= \langle\overline{F^2(Q)}\rangle_{or} + \langle\overline{F(Q)}\rangle_{or}^2 (S(Q)-1)
+\end{align}
+The overline symbol denotes the average over a particle size distribution and the brackets $\langle\rangle_{or}$ for the orientational average. In the above case it is assumed that the position of the scatterer is independent
+of their size and orientation. For small size distributions and only small deviations from spherical symmetry of the scatterer the decoupling approximation works quite well.
+For two and one dimensional ordered particle systems the particles can be very anisotropic, i.e.  very long cylindrical in case of 2D ordering and thin planar objects in case of 1D ordering. For this very anisotropic shaped particles the scattering amplitude and scattering intensity can be written as a product \ref{sec:anisotropic_particles} in terms of a cross section term for the short dimension $L_\mathrm{short}$ and a shape factor for the long dimension $L_\mathrm{long}$ as well as there averages
+\begin{align}
+F(Q,L_\mathrm{short},L_\mathrm{long}) &= F_\mathrm{cs}(Q,L_\mathrm{short}) F'(Q,L_\mathrm{long}) \\
+\langle\overline{F^2(Q,L_\mathrm{short},L_\mathrm{long})}\rangle_{or} &= \langle\overline{F^2_\mathrm{cs}(Q,L_\mathrm{short})}\rangle_{or} \langle\overline{F'^2(Q,L_\mathrm{long})}\rangle_{or} \\
+\langle\overline{F(Q,L_\mathrm{short},L_\mathrm{long})}\rangle_{or}^2 &= \langle\overline{F_\mathrm{cs}(Q,L_\mathrm{short})}\rangle_{or}^2 \langle\overline{F'(Q,L_\mathrm{long})}\rangle_{or}^2
+\end{align}
+
+In case of one (multi-lamellar structures) as well as of two dimensional (ordering of structures on a planar surface) ordered particles strongly anisotropic particles are often ordered along their short dimension, i.e. cylindrical pillar have their cylindrical axis often perpendicular to the ordering plane or in case of lamellar structures ordering happens always in the direction of the normal of the planar scattering objects.
+The averages, which needs to be performed in the decoupling approximation are
+\begin{align}
+\label{eq:DecouplingPlusLattice}
+I(\mathbf{Q}) &= \langle\langle\overline{F^2(\mathbf{Q})}\rangle_{i}\rangle_{d} + \langle\langle\overline{F(\mathbf{Q})}\rangle_{i}^2 (S(\mathbf{Q})-1)\rangle_{d} \\
+&= \langle\langle\overline{F^2(\mathbf{Q})}\rangle_{i}\rangle_{d} + \langle\langle\overline{F(\mathbf{Q})}\rangle_{i}^2 (Z(\mathbf{Q})-1) G(\mathbf{Q})\rangle_{d}
+\end{align}
+with
+\begin{align}
+S(\mathbf{Q}) &= (Z(\mathbf{Q})-1) G(\mathbf{Q}) + 1
+\end{align}
+In the last equation the structure factor $S(\mathbf{Q})$ has been expressed in terms of the lattice factor function $Z(\mathbf{Q})$ and the Debye-Waller factor $G(\mathbf(Q))$. The term $Z(\mathbf{Q})G(\mathbf{Q})$ describes the decay of the Bragg peaks due to displacement and $1-G(\mathbf{Q})$ the concomitant increase of diffuse scattering. For a perfect lattice $G(\mathbf(Q))=1$.
+The orientation averages is done here slightly different than in the paper from \cite{Forster2011}. The orientational averaging of the scatterer within the domain are denoted by $\langle\ldots\rangle_{i}$ and the orientation averaging of the whole domains by $\langle\ldots\rangle_{d}$
+In the appendix of \cite{Forster2011} it is discussed under which conditions the orientation distribution over the structure factor and form factor can be factorized. If the orientation distribution of the scatterer in a domain is significant larger than the orientation distribution of the domains the averages can be factorized $\langle\left(\langle\ldots\rangle_{i}\right)^2\ldots\rangle_{d}\simeq\left(\langle\ldots\rangle_{i}\right)^2\langle \ldots\rangle_d$ and one obtains
+\begin{align}
+I(\mathbf{Q}) &=  \langle\overline{F^2(\mathbf{Q})}\rangle_{i} + \langle\langle\overline{F(\mathbf{Q})}\rangle_{i}^2 (S(\mathbf{Q})-1)\rangle_{d} \\
+&\simeq\langle\overline{F^2(\mathbf{Q})}\rangle_{i} + \langle\overline{F(\mathbf{Q})}\rangle_{i}^2 \langle(Z(\mathbf{Q})-1) G(\mathbf{Q})\rangle_{d}
+\end{align}
+The formula above is different to the one given in \cite{Forster2011}, where the orientational averaging is done after squaring the size average of the scattering amplitude $\langle\overline{F(\mathbf{Q})}^2\rangle_{or}$ instead of doing the orientation averaging first $\langle\overline{F(\mathbf{Q})}\rangle_{or}^2$.
+
+However, in case of a powder signal, where the orientation distribution within a domain is small and the domains are random oriented. Also the structures can be very anisotropic in two or one dimensional ordered structures and the periodicity is in most cases perpendicular to the long dimension of the scattering object.
+
+\subsection{Domains of ordered particle systems isotropically oriented}
+\label{subsec:iso_ops}
+~\newline
+
+For random oriented domains of ordered particle systems the structure factor can be written as
+\begin{align}
+S(Q) &= \left(Z_0(Q)-1\right) G(Q) + 1
+\end{align}
+$Z_0(Q)$ is the lattice factor got an ideal undistorted lattice and $G(Q)$ the Debye-Waller factor. The lattice factor expressed with Miller indices reads as
+\begin{align}
+Z_0(Q) &= \frac{\left(2\pi\right)^{d-1}}{n v_d \Omega_d Q^{d-1}} \sum_{\{hkl\}} m_{hkl} f^2_{hkl} L_{hkl}(Q-Q_{hkl})
+\end{align}
+where $n$ is the number of particles per unit cell, $f_{hkl}$ is the symmetry factor taking into account extinction rules, $v_d$ is the volume ($d=3$), surface ($d=2$), or long-period ($d=1$) of the $d$-dimensional unit cell, $\Omega_d$ is the $d$-dimensional solid angle, and $L_{hkl}(Q-Q_{hkl})$ is a normalised peak-shape function. The sum is done over all reflections $\{hkl\}$ where $m_{hkl}$ is the corresponding multiplicity. For the normalized peak shape function $L_{hkl}(x)$ the user can choose between Lorentzian, Gaussian, and Pearson VII peak shape
+\begin{align}
+L_{hkl}(x) &=
+\begin{cases}
+ \frac{2}{\pi\delta} \exp\left(-4\frac{x^2}{\pi\delta}\right)& \mbox{for Gaussian} \\
+ \frac{\delta}{2\pi}\frac{1}{x^2+\left(\frac{\delta}{2}\right)^2}& \mbox{for Lorentzian} \\
+ \frac{\left(1+\mathrm{B}^2\left(\nu-\frac12,\frac12\right)\left(\frac{x}{\delta}\right)^2\right)^{-\nu}}{\delta}& \mbox{for Pearson VII}
+\end{cases}
+\end{align}
+
+\begin{table}
+  \centering
+  \scriptsize
+
+  \setlength\doublerulesep{0pt}
+\begin{tabular}{|>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} l%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c|}
+ \rowcolor[gray]{0.7}
+ lattice & LAM &  SQ  &  HEX  & CREC \\
+ \rowcolor[gray]{0.7}
+ & & (P4/mm) & (P6/mm) & (cmm)  \\
+  \hline\hline
+ $n$ & 1 & 1 & 1 & 2 \\
+ \rowcolor[gray]{0.95}
+ $v_d$ & $a$ & $a^2$& $\sqrt{3}a^2/2$ & $ab$ \\
+ $d$ & 1 & 2 & 2 & 2 \\
+ \rowcolor[gray]{0.95}
+ $f_{hkl}$ & $f_h=1$ & $f_{hk}=1$ & $f_{hk}=1$ & $f_{hk}=1$  \\
+ $m_{hkl}$ & & & & \\
+ \rowcolor[gray]{0.95}
+ $\Omega_d$ & 1 & $2\pi$ & $2\pi$ & $2\pi$  \\
+ $\overline{a}$ & $a$ & $a$ & $a$ & $\min\left\{a,b,\frac12\sqrt{a^2+b^2}\right\}$  \\
+ \rowcolor[gray]{0.95}
+ $Q_{hkl}$ & $ \frac{2\pi h}{a}$ & $\frac{2\pi\sqrt{h^2+k^2}}{a}$ & $\frac{4\pi\sqrt{h^2+hk+k^2}}{\sqrt{3}a}$ & $2\pi\sqrt{\frac{h^2}{a^2}+\frac{k^2}{b^2}}$ \\
+\hline
+\end{tabular}
+
+\vspace{3mm}
+
+\begin{tabular}{|>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} l%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%
+                |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c|}
+ \rowcolor[gray]{0.7}
+ lattice &  BCT  &  FCC  & BCC & HCP & SC\\
+ \rowcolor[gray]{0.7}
+ &(I4/mmm)& (Fm3m) & (Im3m) & (P6/mmc) & (Pm3m) \\
+  \hline\hline
+ $n$ & 2 & 4 & 2 & 2 & 1\\
+ \rowcolor[gray]{0.95}
+ $v_d$ & $a^2 c$ & $a^3$ & $a^3$ & $\sqrt{2}a^3$ & $a^3$\\
+ $d$ & 3 & 3 & 3 & 3 & 3\\
+ \rowcolor[gray]{0.95}
+ $ f_{hkl}$ & $\scriptscriptstyle f_{hkl}= 1+\cos(\pi(h+k+l))$ &
+    $\scriptscriptstyle \begin{array}{r@{}l@{}} \scriptscriptstyle f_{hkl}=& {}\scriptscriptstyle 1+\cos(\pi(h+k)) \\&{}\scriptscriptstyle+\cos(\pi(h+l)) \\&{}\scriptscriptstyle+\cos(\pi(k+l))\end{array}$ &
+    $\scriptscriptstyle f_{hkl}=1+\cos(\pi(h+k+l))$ &
+    $\scriptscriptstyle f_{hkl}=2\cos\left(\pi\left(\frac{h+2k}{3}+\frac{l}{2}\right)\right)$ &
+    $\scriptscriptstyle f_{hkl}=1$ \\
+ $m_{hkl}$ & & & & & \\
+ \rowcolor[gray]{0.95}
+ $\Omega_d$ & $4\pi$ & $4\pi$ & $4\pi$ & $4\pi$ & $4\pi$ \\
+ $\overline{a}$ & $\sqrt{2}a/2$ & $\sqrt{2}a/2$ & $\sqrt{3}a/2$ & $a$ & $a$ \\
+ \rowcolor[gray]{0.95}
+ $Q_{hkl}$ &  $\scriptscriptstyle 2\pi\sqrt{\frac{h^2+k^2}{a^2}+\frac{l^2}{c^2}}$ &
+  $\scriptscriptstyle \frac{2\pi\sqrt{h^2+k^2+l^2}}{a}$ & $\scriptscriptstyle \frac{2\pi\sqrt{h^2+k^2+l^2}}{a}$ & $\scriptscriptstyle \frac{2\pi\sqrt{\frac43(h^2+hk+k^2)+\frac38 l^2}}{a}$ & $\scriptscriptstyle \frac{2\pi\sqrt{h^2+k^2+l^2}}{a}$\\
+\hline
+\end{tabular}
+
+\vspace{3mm}
+\caption{}
+\label{tab:opoiso}
+\end{table}
+
+
+\subsection{Domains of ordered particle systems with preferred orientation}
+\label{subsec:aniso_ops}
+~\newline
+
+
 
 \begin{figure}[htb]
 \begin{center}
@@ -11,14 +143,14 @@
 \end{figure}
 
 \begin{align}
-\mathbf{k}_i &= 
+\mathbf{k}_i &=
     \left(
         \begin{array}{c}
                   k_{i,x} \\
                   k_{i,y} \\
-                  k_{i,z} 
+                  k_{i,z}
         \end{array}
-    \right) 
+    \right)
     = \frac{2\pi}{\lambda}
     \left(
         \begin{array}{c}
@@ -59,4 +191,4 @@
                   1-\cos(\theta)
         \end{array}
     \right)
-\end{align}
+\end{align} 

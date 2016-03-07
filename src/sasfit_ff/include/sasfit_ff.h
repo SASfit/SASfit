@@ -163,6 +163,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_cyl_mic(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_DAB(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_DaisyLikeRing(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Disc(scalar q, sasfit_param * param);
+sasfit_ff_DLLEXP scalar sasfit_ff_Disc_f(scalar q, sasfit_param * param);
 
 #include "../disc_rwbrush/include/public.h"
 

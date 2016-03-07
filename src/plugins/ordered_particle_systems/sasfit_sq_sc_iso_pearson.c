@@ -31,7 +31,7 @@ scalar sasfit_sq_sc_iso_pearson(scalar q, sasfit_param * param)
     
   //  return K(q,&ospParameter,param);
     
-	return Lattice_Factor_iso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
+	return (Lattice_Factor_iso(&ospParameter,param)-1)*G(&ospParameter,param)+1.0;
 }
 
 scalar sasfit_sq_sc_iso_pearson_f(scalar q, sasfit_param * param)

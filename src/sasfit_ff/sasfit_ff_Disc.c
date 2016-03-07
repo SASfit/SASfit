@@ -40,8 +40,22 @@ scalar sasfit_ff_Disc(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R);
 
-	if (q == 0.0) return eta*eta*R*R*R*R*M_PI*M_PI;
-	if (R == 0.0) return 0.0;
+	if (q*R == 0.0) return gsl_pow_2(eta*R*R*M_PI);
 	//   return 2.0*eta*eta*M_PI*M_PI*R*R/(Q*Q)*(1.0-bessj1(2.0*Q*R)/(Q*R));
-	return 2.0*eta*eta*M_PI*M_PI*R*R/(q*q)*(1.0-gsl_sf_bessel_J1(2.0*q*R)/(q*R));
+	return 2.0*gsl_pow_2(eta*R*M_PI)/(q*q)*(1.0-gsl_sf_bessel_J1(2.0*q*R)/(q*R));
+}
+
+scalar sasfit_ff_Disc_f(scalar q, sasfit_param * param)
+{
+	scalar R, eta;
+
+	SASFIT_ASSERT_PTR(param);
+
+	sasfit_get_param(param, 4, &R, EMPTY, EMPTY, &eta);
+
+	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
+	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R);
+
+	if (q*R == 0.0) return eta*R*R*M_PI;;
+	return eta*M_PI*R*R*2*(cos(q*R)-1.0)/(q*q*R*R);
 }

@@ -26,7 +26,7 @@ scalar sasfit_sq_crec_iso_gaussian(scalar q, sasfit_param * param)
 	CLVAL       = PCL;
     MAXHKLVAL = PMAXHKL;
 
-	return Lattice_Factor_iso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
+    return (Lattice_Factor_iso(&ospParameter,param)-1)*G(&ospParameter,param)+1.0;
 }
 
 scalar sasfit_sq_crec_iso_gaussian_f(scalar q, sasfit_param * param)

@@ -39,22 +39,22 @@ scalar sasfit_ff_rod(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((LENGTH < 0.0), param, "LENGTH(%lg) < 0",LENGTH);
 
-	if (q == 0.0) return ETA*ETA*LENGTH*LENGTH;
-	if (LENGTH == 0.0) return 0.0;
+	if (q*LENGTH == 0.0) return ETA*ETA*LENGTH*LENGTH;
 
-	return ETA*ETA * LENGTH*LENGTH * 
-		(2.0*gsl_sf_Si(q*LENGTH)/(q*LENGTH)-pow(sin(q*LENGTH*0.5)/(q*LENGTH*0.5),2.0));
+	return ETA*ETA * LENGTH * 
+		(2.0*LENGTH*gsl_sf_Si(q*LENGTH)/q - pow(sin(q*LENGTH*0.5)/(q*0.5),2.0));
 }
 
 scalar sasfit_ff_rod_f(scalar q, sasfit_param * param)
 {
 	// insert your code here
-	return 0.0;
+    if (q*LENGTH == 0.0) return ETA*LENGTH;
+	return ETA *2.*gsl_sf_Si(q*LENGTH/2.0)/q;
 }
 
 scalar sasfit_ff_rod_v(scalar q, sasfit_param * param, int dist)
 {
 	// insert your code here
-	return 0.0;
+	return LENGTH;
 }
 

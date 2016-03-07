@@ -721,6 +721,7 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	if ( strcmp(ff->typestr, "Disc") == 0 )
 	{
 		ff->fct = sasfit_ff_Disc;
+		ff->fct_f = sasfit_ff_Disc_f;
 	} else
 	if ( strcmp(ff->typestr, "homogenousXS") == 0 )
 	{

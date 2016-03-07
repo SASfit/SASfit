@@ -30,7 +30,7 @@ scalar sasfit_sq_sq_iso_pearson(scalar q, sasfit_param * param)
     MAXHKLVAL = PMAXHKL;
     NUVAL= PNU;
 
-	return Lattice_Factor_iso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
+	return (Lattice_Factor_iso(&ospParameter,param)-1)*G(&ospParameter,param)+1.0;
 }
 
 scalar sasfit_sq_sq_iso_pearson_f(scalar q, sasfit_param * param)

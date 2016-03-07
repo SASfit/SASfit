@@ -152,7 +152,7 @@ typedef enum
 	FCCTWIN,
 	HCP, P6_mmc,
 	HCPTWIN,
-	BCT, l4_mm,
+	BCT, I4_mm,
 	HEX, P6_mm,
 	SQ, P4_mm,
 	CREC, cmm2,

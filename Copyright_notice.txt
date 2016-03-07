@@ -1,6 +1,6 @@
 <FILENAME/>
 
-Copyright (c) 2008-2014, Paul Scherrer Institute (PSI)
+Copyright (c) 2008-2016, Paul Scherrer Institute (PSI)
 
 This file is part of SASfit.
 
