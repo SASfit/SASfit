@@ -60,10 +60,52 @@ L_{hkl}(x) &=
 \end{cases}
 \end{align}
 
-\begin{table}
+To describe the diffraction pattern one has to define the unit cell of the ordered structure and the position of the particles with in the unit cell. The unit cell can be specified totally by six scalar quantities, which are called the unit cell dimensions or lattice parameters. These are (see also Fig.\ \ref{fig:UnitCellDimensions}:
+$$ a,b,c,\alpha,\beta,\gamma $$
+The first three parameters ($a$, $b$ and $c$) represent the lengths of the unit cell edges,
+and the last three ($\alpha$,$\beta$ and $\gamma$) represent the angles between them. By convention, $\alpha$ is the angle between $b$ and $c$, $\beta$ is the angle between $a$ and $c$, and $\gamma$ is the angle between $a$ and $b$.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../images/structure_factor/OrderedParticleSystems/UnitCellParameters.png}
+\end{center}
+\caption{Unit cell in three dimensions. } \label{fig:UnitCellDimensions}
+\end{figure}
+
+If we assume that the vectors $\mathbf{a}$ and $\mathbf{b}$ are in the $x$-$y$ plane and $\mathbf{a} \| \mathbf{e}_x$ we can write the vector of the unit cell as
+$$
+\mathbf{a} = a \spvec{1;0;0}
+\qquad
+\mathbf{b} = b \spvec{\cos \gamma;\sin \gamma;0}
+\qquad
+\mathbf{c} = c \spvec{\cos\beta;\frac{\cos\alpha-\cos\beta \cos\gamma}{\sin\gamma};\sqrt{1-\cos^2\beta-\left(\frac{\cos\alpha-\cos\beta \cos\gamma}{\sin\gamma}\right)^2}}
+$$
+Next to the direct lattice with $\mathbf{a}$, $\mathbf{b}$, and $\mathbf{c}$ be the elementary
+translations in a three-dimensional lattice a second lattice, reciprocal to the direct lattice, is defined by three elementary translations $\mathbf{a}^\star$, $\mathbf{b}^\star$ and $\mathbf{c}^\star$
+$$
+\mathbf{a}^\star = \frac{\mathbf{b}\times\mathbf{c}}{\mathbf{a}\cdot (\mathbf{b}\times\mathbf{c})}
+\qquad
+\mathbf{b}^\star = \frac{\mathbf{c}\times\mathbf{a}}{\mathbf{a}\cdot (\mathbf{b}\times\mathbf{c})}
+\qquad
+\mathbf{c}^\star = \frac{\mathbf{a}\times\mathbf{b}}{\mathbf{a}\cdot (\mathbf{b}\times\mathbf{c})}
+$$
+Diffraction peaks can occur at integer multiples, called Miller indices $(hkl)$, of the reciprocal lattice
+$$
+\mathbf{Q}_{hkl} = h\mathbf{a}^\star+k\mathbf{b}^\star+l\mathbf{c}^\star
+$$
+Due to the symmetry of the unit cell certain $(hkl)$ reflections might be forbidden. This is described by the structure factor of the unit cell $F_{hkl}$. The structure factor depends next to the Miller indices also from the type and position of the scattering objects within the unit cell. The position $\mathbf{R}_i(u,v,w)$ of the $i^\mathrm{th}$ scatterer with the unit cell are normally given in terms of the direct lattice vectors
+$$
+\mathbf{R}_i(u_i,v_i,w_i) = u_i \mathbf{a} + v_i\mathbf{b} +w_i\mathbf{c}
+$$
+The scattering amplitude of the unit cell $F_{uc}$ is than given by
+\begin{align}
+F_{uc} (\mathbf{Q}_{hkl}) &= \sum_{i=1}^N f_i(\mathbf{Q}_{hkl}) \exp\left( -\imath \mathbf{Q}_{hkl} R_i\right) \\
+                          &= \sum_{i=1}^N f_i(\mathbf{Q}_{hkl}) \exp\left( -\imath 2\pi \left(hu_i+kv_i+lw_i\right)\right) \\
+                          &= \sum_{i=1}^N f_i(\mathbf{Q}_{hkl}) \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) - \imath \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right)
+\end{align}
+
+\begin{table}[htb]
   \centering
   \scriptsize
-
   \setlength\doublerulesep{0pt}
 \begin{tabular}{|>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} l%
                 |>{\columncolor[gray]{1.0}[0.8\tabcolsep][0.8\tabcolsep]} c%

@@ -13,6 +13,7 @@ scalar sasfit_sq_bcc_aniso_gaussian(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((PAD < 0.0), param, "a(%lg) < 0",PAD); // modify condition to your needs
+    
 	SASFIT_CHECK_COND1((SIGMA_A     < 0.0), param, "a(%lg) < 0",SIGMA_A); // modify condition to your needs
 	SASFIT_CHECK_COND1((PDELTAQ     < 0.0), param, "a(%lg) < 0",PDELTAQ); // modify condition to your needs
 	SASFIT_CHECK_COND1((PDELTAPSI   < 0.0), param, "a(%lg) < 0",PDELTAPSI); // modify condition to your needs
@@ -23,6 +24,7 @@ scalar sasfit_sq_bcc_aniso_gaussian(scalar x, sasfit_param * param)
 	ORDERTYPE = BCC;
 
 	ADVAL       = PAD;
+    
 	DELTAQVAL   = PDELTAQ;
 	DELTAPSIVAL = PDELTAPSI;
 	LAMBDAVAL   = PLAMBDA;

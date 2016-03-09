@@ -37,9 +37,11 @@
 #define PAD         param->p[0]
 #define PBD         param->p[1]
 #define PCD         param->p[2]
+
 #define SIGMA_A     param->p[3]
 #define PDELTA      param->p[4]
 #define PDELTAQ     param->p[4]
+
 #define PDELTAPSI   param->p[5]
 #define PCL         param->p[6]
 #define PYAW        param->p[7]
@@ -87,8 +89,11 @@
 #define LAMBDAVAL   ospParameter.wavelength    // wavelength of the beam
 #define VARPHIVAL   ospParameter.varphi
 #define VARTHETAVAL ospParameter.vartheta
+
 #define ADVAL       ospParameter.ad
 #define BDVAL       ospParameter.bd
+#define CDVAL       ospParameter.cd
+
 #define DELTAVAL    ospParameter.delta
 #define DELTAQVAL   ospParameter.delta_q
 #define DELTAPSIVAL ospParameter.delta_psi

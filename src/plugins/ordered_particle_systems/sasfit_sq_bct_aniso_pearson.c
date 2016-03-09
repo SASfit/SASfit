@@ -8,11 +8,12 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_sq_bcc_aniso_pearson(scalar x, sasfit_param * param)
+scalar sasfit_sq_bct_aniso_pearson(scalar x, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((PAD < 0.0), param, "a(%lg) < 0",PAD); // modify condition to your needs
+	SASFIT_CHECK_COND1((PCD < 0.0), param, "a(%lg) < 0",PCD); // modify condition to your needs
 	SASFIT_CHECK_COND1((SIGMA_A     < 0.0), param, "a(%lg) < 0",SIGMA_A); // modify condition to your needs
 	SASFIT_CHECK_COND1((PDELTAQ     < 0.0), param, "a(%lg) < 0",PDELTAQ); // modify condition to your needs
 	SASFIT_CHECK_COND1((PDELTAPSI   < 0.0), param, "a(%lg) < 0",PDELTAPSI); // modify condition to your needs
@@ -23,9 +24,10 @@ scalar sasfit_sq_bcc_aniso_pearson(scalar x, sasfit_param * param)
 
 	// insert your code here
 	PEAKSHAPE = PEARSON;
-	ORDERTYPE = BCC;
+	ORDERTYPE = BCT;
 
 	ADVAL       = PAD;
+	CDVAL       = PCD;
 	DELTAQVAL   = PDELTAQ;
 	DELTAPSIVAL = PDELTAPSI;
 	LAMBDAVAL   = PLAMBDA;
@@ -54,7 +56,7 @@ scalar sasfit_sq_bcc_aniso_pearson(scalar x, sasfit_param * param)
 	return Lattice_Factor_aniso(&ospParameter,param)*G(&ospParameter,param)+(1.0-G(&ospParameter,param));
 }
 
-scalar sasfit_sq_bcc_aniso_pearson_f(scalar q, sasfit_param * param)
+scalar sasfit_sq_bct_aniso_pearson_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -62,7 +64,7 @@ scalar sasfit_sq_bcc_aniso_pearson_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_sq_bcc_aniso_pearson_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sq_bct_aniso_pearson_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

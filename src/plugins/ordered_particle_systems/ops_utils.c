@@ -290,23 +290,17 @@ void set_f_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_pa
     switch (ospparam->order_type_Selector) {
         case SC  :  ospparam->f_hkl = 1;
                     break;
+        case BCT : 
         case BCC :  ospparam->f_hkl = (1+cos(M_PI*(h+k+l)));
                     break;
         case FCC :  ospparam->f_hkl = (1+cos(M_PI*(h+k))+cos(M_PI*(h+l))+cos(M_PI*(k+l)));
                     break;
         case HCP :  
-                         ospparam->f_hkl = 2*cos(M_PI*((h+2*k)/3.+l/4.));
-//                         ospparam->f_hkl = sqrt(2+2*cos(2*M_PI*((h+2.*k)/3.+l/2.)));
+                        ospparam->f_hkl = 2*cos(M_PI*((2*h+k)/3.+l/2.));
+//                        ospparam->f_hkl = sqrt(2+2*cos(2*M_PI*((h+2.*k)/3.+l/2.)));
                         break;
-//                       ospparam->f_hkl = 0;
-//                        h = abs(h); k=abs(k);l=abs(l);
-                        if (((h+2*k-1)%3 == 0) || ((h+2*k-2)%3 == 0) && ((l%2) !=0)) ospparam->f_hkl= sqrt(3);
-                        if (((h+2*k-1)%3 == 0) || ((h+2*k-2)%3 == 0) && ((l%2) ==0)) ospparam->f_hkl =1;
-                        if (((h+2*k)%3 == 0) && ((l%2)==0)) ospparam->f_hkl= 2;
-                        
-                    break;
-        case BCT :  ospparam->f_hkl = (1+cos(M_PI*(h+k+l)));
-                    break;
+//       case BCT :  ospparam->f_hkl = (1+cos(M_PI*(h+k+l)));
+//                   break;
         case HEX :  ospparam->f_hkl = 1;
                     break;
         case SQ  :  ospparam->f_hkl = 1;
@@ -384,8 +378,49 @@ void set_f_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_pa
     }
 }
 
+void set_g_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_param *param) {
+    int i;
+    switch (ospparam->order_type_Selector) {
+        case la3d :
+        case lm3m :
+        case Pn3m :
+        case SC  :
+        case HCPTWIN:
+        case HCP :
+        case BCCTWIN:
+        case BCC :
+        case FCCTWIN:
+        case FCC :
+        case BCT :  for (i=0;i<3;i++) {
+                        ospparam->ghkl[i]=h*ospparam->ast[i]+k*ospparam->bst[i]+l*ospparam->cst[i];
+                    }
+                    break;
+        case SQ  :
+        case CREC:
+        case HEX :  for (i=0;i<3;i++) {
+                        ospparam->ghkl[i]=h*ospparam->ast[i]+k*ospparam->bst[i];
+                    }
+                    break;
+        case LAM :  for (i=0;i<3;i++) {
+                        ospparam->ghkl[i]=h*ospparam->ast[i];
+                    }
+                    break;
+        default:    sasfit_err("Unknown type of ordered mesoscopic structure");
+
+    }
+    ospparam->ghklmod = 0;
+    for (i=0;i<3;i++) {
+        ospparam->ghklmod=ospparam->ghklmod+gsl_pow_2(ospparam->ghkl[i]);
+    }
+    ospparam->ghklmod = sqrt(ospparam->ghklmod);
+    return;
+}
+
 scalar qmod_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_param *param)
 {
+    set_g_hkl(h,k,l,ospparam,param);
+    return ospparam->ghklmod;
+    
     switch (ospparam->order_type_Selector) {
         case SC  :  return 2*M_PI*sqrt(h*h+k*k+l*l)/(ospparam->ad);
                     break;
@@ -398,7 +433,7 @@ scalar qmod_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_p
         case FCCTWIN:
         case FCC :  return 2*M_PI*sqrt(h*h+k*k+l*l)/(ospparam->ad);
                     break;
-        case BCT :  return 2*M_PI*sqrt((h*h+k*k)/(ospparam->ad)+l*l/(ospparam->cd));
+        case BCT :  return 2*M_PI*sqrt((h*h+k*k)/gsl_pow_2(ospparam->ad)+gsl_pow_2(l/ospparam->cd));
                     break;
         case SQ  :  return 2*M_PI*sqrt(h*h+k*k)/(ospparam->ad);
                     break;
@@ -495,7 +530,7 @@ void set_m_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_pa
                     }
                     break;
         case BCT :
-                    break;
+//                    break;
         case HEX :  if (h!=0 && k==0 && l==0) {
                         ospparam->m_hkl = 6;
                     } else if (h!=0 && k==h && l==0) {
@@ -545,43 +580,6 @@ void set_m_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_pa
     }
 }
 
-void set_g_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_param *param) {
-    int i;
-    switch (ospparam->order_type_Selector) {
-        case la3d :
-        case lm3m :
-        case Pn3m :
-        case SC  :
-        case HCPTWIN:
-        case HCP :
-        case BCCTWIN:
-        case BCC :
-        case FCCTWIN:
-        case FCC :
-        case BCT :  for (i=0;i<3;i++) {
-                        ospparam->ghkl[i]=h*ospparam->ast[i]+k*ospparam->bst[i]+l*ospparam->cst[i];
-                    }
-                    break;
-        case SQ  :
-        case CREC:
-        case HEX :  for (i=0;i<3;i++) {
-                        ospparam->ghkl[i]=h*ospparam->ast[i]+k*ospparam->bst[i];
-                    }
-                    break;
-        case LAM :  for (i=0;i<3;i++) {
-                        ospparam->ghkl[i]=h*ospparam->ast[i];
-                    }
-                    break;
-        default:    sasfit_err("Unknown type of ordered mesoscopic structure");
-
-    }
-    ospparam->ghklmod = 0;
-    for (i=0;i<3;i++) {
-        ospparam->ghklmod=ospparam->ghklmod+gsl_pow_2(ospparam->ghkl[i]);
-    }
-    ospparam->ghklmod = sqrt(ospparam->ghklmod);
-    return;
-}
 
 void set_psi_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_param *param)
 {
@@ -663,17 +661,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=ospparam->ad;
-        /*
-                ospparam->ast[0]=2.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=0.0;
-                ospparam->ast[2]=0.0;
-                ospparam->bst[0]=0.0;
-                ospparam->bst[1]=2.0*M_PI/ospparam->ad;
-                ospparam->bst[2]=0.0;
-                ospparam->cst[0]=0.0;
-                ospparam->cst[1]=0.0;
-                ospparam->cst[2]=2.0*M_PI/ospparam->ad;
-        */
                 ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3;
@@ -681,13 +668,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->abar = ospparam->ad;
                 ospparam->Omega = 4*M_PI;
                 ospparam->fphimax = M_PI/6.0;
-                MM[0][0]=ospparam->ad;  MM[0][1]=0.0;           MM[0][2]=0.0;
-                MM[1][0]=0.0;           MM[1][1]=ospparam->ad;  MM[1][2]=0.0;
-                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->ad;
-
-                MN[0][0]=1./ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
-                MN[1][0]=0.0;           MN[1][1]=1./ospparam->ad;MN[1][2]=0.0;
-                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1./ospparam->ad;
                 break;
 // BCC Body-centered cubic
         case BCC : 
@@ -700,32 +680,12 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=ospparam->ad;
-/*
-                ospparam->ast[0]=2.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=0.0;
-                ospparam->ast[2]=0.0;
-                ospparam->bst[0]=0.0;
-                ospparam->bst[1]=2.0*M_PI/ospparam->ad;
-                ospparam->bst[2]=0.0;
-                ospparam->cst[0]=0.0;
-                ospparam->cst[1]=0.0;
-                ospparam->cst[2]=2.0*M_PI/ospparam->ad;
-                ospparam->Vd = gsl_pow_3(ospparam->ad);
-*/
                 ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3;
                 ospparam->n = 2;
                 ospparam->abar = ospparam->ad*sqrt(3)*0.5;
                 ospparam->Omega = 4*M_PI;
-                ospparam->fphimax = M_PI*sqrt(3)/8.0;
-                MM[0][0]=ospparam->ad;  MM[0][1]=0.0;           MM[0][2]=0.0;
-                MM[1][0]=0.0;           MM[1][1]=ospparam->bd;  MM[1][2]=0.0;
-                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->cd;
-
-                MN[0][0]=1/ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
-                MN[1][0]=0.0;           MN[1][1]=1/ospparam->bd;MN[1][2]=0.0;
-                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1/ospparam->cd;
                 break;
 // BCCTWIN: twinned Body-centered cubic
         case BCCTWIN : 
@@ -738,18 +698,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=ospparam->ad;
-/*
-                ospparam->ast[0]=4.0*M_PI/(3.*ospparam->ad);
-                ospparam->ast[1]=2.0*M_PI/(3.*ospparam->ad);
-                ospparam->ast[2]=-4.0*M_PI/(3.*ospparam->ad);
-                ospparam->bst[0]=2.0*M_PI/(3.*ospparam->ad);
-                ospparam->bst[1]=4.0*M_PI/(3.*ospparam->ad);
-                ospparam->bst[2]=4.0*M_PI/(3.*ospparam->ad);
-                ospparam->cst[0]=4.0*M_PI/(3.*ospparam->ad);
-                ospparam->cst[1]=-4.0*M_PI/(3.*ospparam->ad);
-                ospparam->cst[2]=2.0*M_PI/(3.*ospparam->ad);
-                ospparam->Vd = gsl_pow_3(ospparam->ad);
-*/
                 ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3;
@@ -757,19 +705,12 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->abar = ospparam->ad*sqrt(3)*0.5;
                 ospparam->Omega = 4.0*M_PI;
                 ospparam->fphimax = M_PI*sqrt(3)/8.0;
-                MM[0][0]=ospparam->ad;  MM[0][1]=0.0;           MM[0][2]=0.0;
-                MM[1][0]=0.0;           MM[1][1]=ospparam->bd;  MM[1][2]=0.0;
-                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->cd;
-
-                MN[0][0]=1/ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
-                MN[1][0]=0.0;           MN[1][1]=1/ospparam->bd;MN[1][2]=0.0;
-                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1/ospparam->cd;
                 break;
 // FCC Face-centered cubic (also called cubic close packed)
         case Fm3m:
         case FCC : 
-                ospparam->a[0]=ospparam->ad;
-                ospparam->a[1]=0.0;
+                ospparam->a[0]=ospparam->ad
+                                ospparam->a[1]=0.0;
                 ospparam->a[2]=0.0;
                 ospparam->b[0]=0.0;
                 ospparam->b[1]=ospparam->ad;
@@ -777,18 +718,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=ospparam->ad;
-/*
-                ospparam->ast[0]=2.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=0.0;
-                ospparam->ast[2]=0.0;
-                ospparam->bst[0]=0.0;
-                ospparam->bst[1]=2.0*M_PI/ospparam->ad;
-                ospparam->bst[2]=0.0;
-                ospparam->cst[0]=0.0;
-                ospparam->cst[1]=0.0;
-                ospparam->cst[2]=2.0*M_PI/ospparam->ad;
-                ospparam->Vd = gsl_pow_3(ospparam->ad);
-*/
                 ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3;
@@ -796,13 +725,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->abar = ospparam->ad*sqrt(2)*0.5;
                 ospparam->Omega = 4*M_PI;
                 ospparam->fphimax = M_PI*sqrt(2)/6.0;
-                MM[0][0]=ospparam->ad;  MM[0][1]=0.0;           MM[0][2]=0.0;
-                MM[1][0]=0.0;           MM[1][1]=ospparam->bd;  MM[1][2]=0.0;
-                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->cd;
-
-                MN[0][0]=1/ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
-                MN[1][0]=0.0;           MN[1][1]=1/ospparam->bd;MN[1][2]=0.0;
-                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1/ospparam->cd;
                 break;
 // FCCTWIN twinned Face-centered cubic (also called cubic close packed)
         case FCCTWIN : 
@@ -815,21 +737,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=ospparam->ad;
-/*
-                ospparam->ast[0]=4.0/3.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=-2.0/3.0*M_PI/ospparam->ad;
-                ospparam->ast[2]=4.0/3.0*M_PI/ospparam->ad;
-
-                ospparam->bst[0]=4.0/3.0*M_PI/ospparam->ad;
-                ospparam->bst[1]=4.0/3.0*M_PI/ospparam->ad;
-                ospparam->bst[2]=-2.0/3.0*M_PI/ospparam->ad;
-
-                ospparam->cst[0]=-2.0/3.0*M_PI/ospparam->ad;
-                ospparam->cst[1]=4.0/3.0*M_PI/ospparam->ad;
-                ospparam->cst[2]=4.0/3.0*M_PI/ospparam->ad;
-                 
-                ospparam->Vd = gsl_pow_3(ospparam->ad);
-*/
                 ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3;
@@ -837,13 +744,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->abar = ospparam->ad*sqrt(2)*0.5;
                 ospparam->Omega = 4*M_PI;
                 ospparam->fphimax = M_PI*sqrt(2)/6.0;
-                MM[0][0]=ospparam->ad;  MM[0][1]=0.0;           MM[0][2]=0.0;
-                MM[1][0]=0.0;           MM[1][1]=ospparam->bd;  MM[1][2]=0.0;
-                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->cd;
-
-                MN[0][0]=1/ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
-                MN[1][0]=0.0;           MN[1][1]=1/ospparam->bd;MN[1][2]=0.0;
-                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1/ospparam->cd;
                 break;
 // HCP Hexagonal close-packed
         case P6_mmc:
@@ -851,65 +751,31 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->a[0]=ospparam->ad;
                 ospparam->a[1]=0.0;
                 ospparam->a[2]=0.0;
-                ospparam->b[0]=0.5*ospparam->ad;
+                ospparam->b[0]=-0.5*ospparam->ad;
                 ospparam->b[1]=sqrt(3.)/2.0*ospparam->ad;
                 ospparam->b[2]=0.0;
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=sqrt(8./3.)*ospparam->ad;
-/*
-                ospparam->ast[0]=2.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=-2.0/sqrt(3.0)*M_PI/ospparam->ad;
-                ospparam->ast[2]=0.0;
-                ospparam->bst[0]=0.0;
-                ospparam->bst[1]=4.0/sqrt(3.0)*M_PI/ospparam->ad;
-                ospparam->bst[2]=0.0;
-                ospparam->cst[0]=0.0;
-                ospparam->cst[1]=0.0;
-                ospparam->cst[2]=sqrt(3./8.)*2.0*M_PI/ospparam->ad;
-                ospparam->Vd = sqrt(2)*gsl_pow_3(ospparam->ad);
-*/ 
-               ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
+                ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3; 
                 ospparam->n = 2;
                 ospparam->abar = ospparam->ad;
                 ospparam->Omega = 4*M_PI;
                 ospparam->fphimax = M_PI/(3*sqrt(2));
-                MM[0][0]=ospparam->ad;      MM[0][1]=0.0;                       MM[0][2]=0.0;
-                MM[1][0]=-ospparam->ad/2.;  MM[1][1]=sqrt(3)*ospparam->ad/2.;   MM[1][2]=0.0;
-                MM[2][0]=0.0;               MM[2][1]=0.0;                       MM[2][2]=sqrt(8.0/3.0)*ospparam->ad;
-
-                MN[0][0]=1/ospparam->ad;    MN[0][1]=1./(sqrt(3)*ospparam->ad); MN[0][2]=0.0;
-                MN[1][0]=0.0;               MN[1][1]=2./(sqrt(3)*ospparam->ad); MN[1][2]=0.0;
-                MN[2][0]=0.0;               MN[2][1]=0.0;                       MN[2][2]=sqrt(3./8.)/ospparam->ad;
                 break;
 // HCPTWIN twinned Hexagonal close-packed
         case HCPTWIN :
                 ospparam->a[0]=ospparam->ad;
                 ospparam->a[1]=0.0;
                 ospparam->a[2]=0.0;
-                ospparam->b[0]=0.5*ospparam->ad;
+                ospparam->b[0]=-0.5*ospparam->ad;
                 ospparam->b[1]=sqrt(3.)/2.0*ospparam->ad;
                 ospparam->b[2]=0.0;
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=sqrt(8./3.)*ospparam->ad;
-/*
-                ospparam->ast[0]=-2.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=0.0;
-                ospparam->ast[2]=0.0;
-
-                ospparam->bst[0]=-2.0/sqrt(3.0)*M_PI/ospparam->ad;
-                ospparam->bst[1]= 4.0/sqrt(3.0)*M_PI/ospparam->ad;
-                ospparam->bst[2]=0.0;
-
-                ospparam->cst[0]=0.0;
-                ospparam->cst[1]=0.0;
-                ospparam->cst[2]=sqrt(3./8.)*2.0*M_PI/ospparam->ad;
-
-                ospparam->Vd = sqrt(2.0)*gsl_pow_3(ospparam->ad);
-*/
                 ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3;
@@ -917,13 +783,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->abar = ospparam->ad;
                 ospparam->Omega = 4*M_PI;
                 ospparam->fphimax = M_PI/(3*sqrt(2));
-                MM[0][0]=ospparam->ad;      MM[0][1]=0.0;                       MM[0][2]=0.0;
-                MM[1][0]=-ospparam->ad/2.;  MM[1][1]=sqrt(3)*ospparam->ad/2.;   MM[1][2]=0.0;
-                MM[2][0]=0.0;               MM[2][1]=0.0;                       MM[2][2]=sqrt(8.0/3.0)*ospparam->ad;
-
-                MN[0][0]=1/ospparam->ad;    MN[0][1]=1./(sqrt(3)*ospparam->ad); MN[0][2]=0.0;
-                MN[1][0]=0.0;               MN[1][1]=2./(sqrt(3)*ospparam->ad); MN[1][2]=0.0;
-                MN[2][0]=0.0;               MN[2][1]=0.0;                       MN[2][2]=sqrt(3./8.)/ospparam->ad;
                 break;
 // BCT: body centered tetragonal
         case  I4_mm:
@@ -937,33 +796,13 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
                 ospparam->c[2]=ospparam->cd;
-/*
-                ospparam->ast[0]=2.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=0.0;
-                ospparam->ast[2]=0.0;
-                ospparam->bst[0]=0.0;
-                ospparam->bst[1]=2.0*M_PI/ospparam->ad;
-                ospparam->bst[2]=0.0;
-                ospparam->cst[0]=0.0;
-                ospparam->cst[1]=0.0;
-                ospparam->cst[2]=2.0*M_PI/ospparam->cd;
-                ospparam->Vd = gsl_pow_2(ospparam->ad)*ospparam->cd;
-*/ 
-               ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
+                ospparam->Vd = CalcReciprocalLatticeVectors(ospparam->a,ospparam->b,ospparam->c,ospparam->ast,ospparam->bst,ospparam->cst);
                 ospparam->vd = ospparam->Vd;
                 ospparam->dim = 3;
                 ospparam->n = 2;
-                ospparam->abar = ospparam->ad*sqrt(2)*0.5;
+                ospparam->abar = ospparam->ad*sqrt(3)*0.5;
                 ospparam->Omega = 4*M_PI;
                 ospparam->fphimax = M_PI*sqrt(2)/6.0;
-                MM[0][0]=ospparam->ad;  MM[0][1]=0.0;           MM[0][2]=0.0;
-                MM[1][0]=0.0;           MM[1][1]=ospparam->bd;  MM[1][2]=0.0;
-                MM[2][0]=0.0;           MM[2][1]=0.0;           MM[2][2]=ospparam->cd;
-
-                MN[0][0]=1/ospparam->ad;MN[0][1]=0.0;           MN[0][2]=0.0;
-                MN[1][0]=0.0;           MN[1][1]=1/ospparam->bd;MN[1][2]=0.0;
-                MN[2][0]=0.0;           MN[2][1]=0.0;           MN[2][2]=1/ospparam->cd;
-                break;
         case P6_mm:
         case HEX : 
                 ospparam->a[0]=ospparam->ad;
@@ -1046,10 +885,10 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->b[2]=0.0;
                 ospparam->c[0]=0.0;
                 ospparam->c[1]=0.0;
-                ospparam->c[2]=0;
+                ospparam->c[2]=0.0;
                 
                 ospparam->ast[0]=2.0*M_PI/ospparam->ad;
-                ospparam->ast[1]=0;
+                ospparam->ast[1]=0.0;
                 ospparam->ast[2]=0.0;
                 ospparam->bst[0]=0.0;
                 ospparam->bst[1]=2.0*M_PI/ospparam->bd;
@@ -1066,13 +905,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 if (ospparam->abar > ospparam->bd) ospparam->abar=ospparam->bd;
                 ospparam->Omega = 2*M_PI;
                 ospparam->fphimax = 0.0;
-                MM[0][0]=0.0;  MM[0][1]=0.0;  MM[0][2]=0.0;
-                MM[1][0]=0.0;  MM[1][1]=0.0;  MM[1][2]=0.0;
-                MM[2][0]=0.0;  MM[2][1]=0.0;  MM[2][2]=0.0;
-
-                MN[0][0]=0.0; MN[0][1]=0.0;MN[0][2]=0.0;
-                MN[1][0]=0.0; MN[1][1]=0.0;MN[1][2]=0.0;
-                MN[2][0]=0.0; MN[2][1]=0.0;MN[2][2]=0.0;
                 break;
         case LAM : 
                 ospparam->a[0]=ospparam->ad;
@@ -1100,14 +932,6 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->abar = ospparam->ad;
                 ospparam->Omega = 1;
                 ospparam->fphimax = 1;
-                
-                MM[0][0]=ospparam->ad;  MM[0][1]=0.0;                           MM[0][2]=0.0;
-                MM[1][0]=0.0;                       MM[1][1]=1/ospparam->bd;  MM[1][2]=0.0;
-                MM[2][0]=0.0;                       MM[2][1]=0.0;                          MM[2][2]=1/ospparam->cd;
-                
-                MN[0][0]=1/ospparam->ad;MN[0][1]=0.0;                           MN[0][2]=0.0;
-                MN[1][0]=0.0;                        MN[1][1]=1/ospparam->bd;   MN[1][2]=0.0;
-                MN[2][0]=0.0;                        MN[2][1]=0.0;                           MN[2][2]=1/ospparam->cd;
                 break;
         default:    sasfit_err("Unknown type of ordered mesoscopic structure");
     }
@@ -1636,7 +1460,10 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
                 for (h=-MAXHKL;h<=MAXHKL;h++) {
                         for (k=-MAXHKL;k<=MAXHKL;k++) {
                             for (l=-MAXHKL;l<=MAXHKL;l++) {
+                                set_m_hkl(h,k,l,ospparam,param);
                                 set_f_hkl(h,k,l,ospparam,param);
+                                set_g_hkl(h,k,l,ospparam,param);
+//                                qmod_hkl(h,k,l,ospparam,param);
                                 Z = Z+gsl_pow_2(ospparam->f_hkl)*L_hkl_iso(h,k,l,ospparam,param);
                             }
                         }
@@ -1666,7 +1493,9 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
                 l = 0;
                 for (h=-MAXHKL;h<=MAXHKL;h++) {
                         for (k=-MAXHKL;k<=MAXHKL;k++) {
+                             set_m_hkl(h,k,l,ospparam,param);
                              set_f_hkl(h,k,l,ospparam,param);
+                             set_g_hkl(h,k,l,ospparam,param);
                              Z = Z+gsl_pow_2(ospparam->f_hkl)*L_hkl_iso(h,k,l,ospparam,param);
                         }
                     }
@@ -1689,6 +1518,7 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
                     for (h=0;h<=MAXHKL;h++) {
                         set_m_hkl(h,k,l,ospparam,param);
                         set_f_hkl(h,k,l,ospparam,param);
+                        set_g_hkl(h,k,l,ospparam,param);
                         Z = Z+ospparam->m_hkl*gsl_pow_2(ospparam->f_hkl)*L_hkl_iso(h,k,l,ospparam,param);
                     }
                     Z=Z*prefactorZ;

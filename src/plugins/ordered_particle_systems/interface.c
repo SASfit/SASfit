@@ -7,7 +7,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(48)
+SASFIT_PLUGIN_EXP_BEGIN(54)
 SASFIT_PLUGIN_EXP_ADD( sq_sc_iso_lorentzian )
 SASFIT_PLUGIN_EXP_ADD( sq_sc_iso_gaussian )
 SASFIT_PLUGIN_EXP_ADD( sq_sc_iso_pearson )

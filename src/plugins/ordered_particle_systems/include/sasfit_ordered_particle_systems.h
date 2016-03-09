@@ -3469,6 +3469,7 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_fcc_aniso_pearson_f(scal
 sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_fcc_aniso_pearson_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_fcc_aniso_pearson ################ */
 
+
 /* ################ start sq_bcc_aniso_lorentzian ################ */
 /**
  * \defgroup sq_bcc_aniso_lorentzian BCC-aniso-Lorentzian
@@ -3696,5 +3697,465 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bcc_aniso_pearson_f(scal
  */
 sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bcc_aniso_pearson_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_bcc_aniso_pearson ################ */
+
+
+/* ################ start sq_bct_iso_lorentzian ################ */
+/**
+ * \defgroup sq_bct_iso_lorentzian BCT-iso-Lorentzian
+ * \ingroup sq_plugins_BCT
+ *
+ * \brief \<some brief description of BCT function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b sigma_a</td>
+ *       <td>peak Gaussian lattice point distribution</td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td>peak width</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b cL</td>
+ *       <td>scaling constant for Z0</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b max(hkl)</td>
+ *       <td>maximum considered values for hkl</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_bct_iso_lorentzian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_lorentzian(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_iso_lorentzian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_lorentzian_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_iso_lorentzian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_lorentzian_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_bct_iso_lorentzian ################ */
+
+/* ################ start sq_bct_iso_gaussian ################ */
+/**
+ * \defgroup sq_bct_iso_gaussian BCT-iso-Gaussian
+ * \ingroup sq_plugins_BCT
+ *
+ * \brief \<some brief description of BCT function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b sigma_a</td>
+ *       <td>peak Gaussian lattice point distribution</td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td>peak width</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b cL</td>
+ *       <td>scaling constant for Z0</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b max(hkl)</td>
+ *       <td>maximum considered values for hkl</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_bct_iso_gaussian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_gaussian(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_iso_gaussian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_gaussian_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_iso_gaussian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_gaussian_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_bct_iso_gaussian ################ */
+
+/* ################ start sq_bct_iso_pearson ################ */
+/**
+ * \defgroup sq_bct_iso_pearson BCT-iso-Pearson
+ * \ingroup sq_plugins_BCT
+ *
+ * \brief \<some brief description of BCT function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b sigma_a</td>
+ *       <td>peak Gaussian lattice point distribution</td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td>peak width</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b cL</td>
+ *       <td>scaling constant for Z0</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b max(hkl)</td>
+ *       <td>maximum considered values for hkl</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>peak shape shape parameter (n=1: Lorentzian, n->infinity: Gaussian)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_bct_iso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_pearson(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_iso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_pearson_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_iso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_iso_pearson_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_bct_iso_pearson ################ */
+
+/* ################ start sq_bct_aniso_lorentzian ################ */
+/**
+ * \defgroup sq_bct_aniso_lorentzian BCT-aniso-Lorentzian
+ * \ingroup sq_plugins_BCT
+ *
+ * \brief \<some brief description of BCT function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b sigma_a</td>
+ *       <td>peak Gaussian lattice point distribution</td>
+ *      </tr><tr>
+ *       <td>\b delta_q</td>
+ *       <td>radial peak width</td>
+ *      </tr><tr>
+ *       <td>\b delta_psi</td>
+ *       <td>azimuthal peak width</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b yaw</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b pitch</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b Gier</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b Psi (deg)</td>
+ *       <td>azimuthal angle in detector plane in degree (Psi = 0: horizontal)</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>wavelength in reciprocal units of q</td>
+ *      </tr><tr>
+ *       <td>\b max(hkl)</td>
+ *       <td>maximum considered values for hkl</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_bct_aniso_lorentzian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_lorentzian(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_aniso_lorentzian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_lorentzian_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_aniso_lorentzian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_lorentzian_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_bct_aniso_lorentzian ################ */
+
+/* ################ start sq_bct_aniso_gaussian ################ */
+/**
+ * \defgroup sq_bct_aniso_gaussian BCT-aniso-Gaussian
+ * \ingroup sq_plugins_BCT
+ *
+ * \brief \<some brief description of BCT function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b sigma_a</td>
+ *       <td>peak Gaussian lattice point distribution</td>
+ *      </tr><tr>
+ *       <td>\b delta_q</td>
+ *       <td>radial peak width</td>
+ *      </tr><tr>
+ *       <td>\b delta_psi</td>
+ *       <td>azimuthal peak width</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b yaw</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b pitch</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b Gier</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b Psi (deg)</td>
+ *       <td>azimuthal angle in detector plane in degree (Psi = 0: horizontal)</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>wavelength in reciprocal units of q</td>
+ *      </tr><tr>
+ *       <td>\b max(hkl)</td>
+ *       <td>maximum considered values for hkl</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_bct_aniso_gaussian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_gaussian(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_aniso_gaussian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_gaussian_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_aniso_gaussian
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_gaussian_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_bct_aniso_gaussian ################ */
+
+/* ################ start sq_bct_aniso_pearson ################ */
+/**
+ * \defgroup sq_bct_aniso_pearson BCT-aniso-Pearson
+ * \ingroup sq_plugins_BCT
+ *
+ * \brief \<some brief description of BCT function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>lattice constant</td>
+ *      </tr><tr>
+ *       <td>\b sigma_a</td>
+ *       <td>peak Gaussian lattice point distribution</td>
+ *      </tr><tr>
+ *       <td>\b delta_q</td>
+ *       <td>radial peak width</td>
+ *      </tr><tr>
+ *       <td>\b delta_psi</td>
+ *       <td>azimuthal peak width</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b yaw</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b pitch</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b Gier</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b Psi (deg)</td>
+ *       <td>azimuthal angle in detector plane in degree (Psi = 0: horizontal)</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>wavelength in reciprocal units of q</td>
+ *      </tr><tr>
+ *       <td>\b max(hkl)</td>
+ *       <td>maximum considered values for hkl</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>peak shape shape parameter (n=1: Lorentzian, n->infinity: Gaussian)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_bcc_aniso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_pearson(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_aniso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_pearson_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_bct_aniso_pearson
+ *
+ * \sa sasfit_ordered_particle_systems.h, sq_plugins_BCT
+ */
+sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_bct_aniso_pearson_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_bct_aniso_pearson ################ */
+
+
+
 #endif // this file
 

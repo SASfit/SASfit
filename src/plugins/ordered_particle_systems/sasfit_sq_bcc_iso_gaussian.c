@@ -14,6 +14,7 @@ scalar sasfit_sq_bcc_iso_gaussian(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((PAD < 0.0), param, "a(%lg) < 0",PAD); // modify condition to your needs
+    
 
 	// insert your code here
 	PEAKSHAPE = GAUSSIANPEAK;
@@ -21,6 +22,7 @@ scalar sasfit_sq_bcc_iso_gaussian(scalar q, sasfit_param * param)
 
 	QMODVAL     = q;
 	ADVAL       = PAD;
+    
     
 	DELTAVAL    = PDELTA;
 	CLVAL       = PCL;
