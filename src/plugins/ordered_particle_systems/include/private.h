@@ -186,17 +186,21 @@ typedef struct
     scalar     ecx[3];
     scalar     ecy[3];
     scalar     ecz[3];
+    scalar     ad, bd, cd;  // lattice constants
     scalar     a[3];        // direct space bases vectors
     scalar     b[3];
     scalar     c[3];
+    scalar     lalpha;      // angle betwee  b and c
+    scalar     lbeta;        // agle betwee c and a 
+    scalar     lgamma;   //  angle between a and b
+    scalar     n;             // number of particle per unit cell
+    scalar     positions[4][3];  // position of particles in unit cell in terms of direct cell . Maximum allowed positions aree 4 at the moment
     scalar     ast[3];      // reciprocal space basis vectors
     scalar     bst[3];
     scalar     cst[3];
-    scalar     ad, bd, cd;  // lattice constants
     scalar     Vd;          // volume of unit cell
     scalar     vd;          // projected d-dimension volume
-    scalar     dim;         // dimension of periodic structure
-    scalar     n;           // number of particle per unit cell
+    int        dim;         // dimension of periodic structure
     scalar     Omega;       // Solid Angle
     scalar     cL;          // constant of order unity whose exact value is calculated using the Porod invariant
     scalar     fphi;        // particle volume fraction
@@ -229,7 +233,8 @@ typedef struct
 	scalar     delta_q;     // width parameter for radial peak width of anisotropic and aligned structures
 	scalar     delta_psi;   // width parameter for ayimuthal peak width of anisotropic and aligned structures
 	scalar     nu;          // shape parameter for peak function
-	int        f_hkl, m_hkl, maxhkl;
+	int        m_hkl, maxhkl;
+    scalar     f_hkl;
 	order_type       order_type_Selector;
 	peak_shape_type  peak_shape_type_Selector;
 } ordered_particles_param;

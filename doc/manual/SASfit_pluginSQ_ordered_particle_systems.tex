@@ -90,17 +90,17 @@ $$
 $$
 Diffraction peaks can occur at integer multiples, called Miller indices $(hkl)$, of the reciprocal lattice
 $$
-\mathbf{Q}_{hkl} = h\mathbf{a}^\star+k\mathbf{b}^\star+l\mathbf{c}^\star
+\mathbf{Q}_{hkl} = 2\pi\left( h\mathbf{a}^\star+k\mathbf{b}^\star+l\mathbf{c}^\star \right)
 $$
-Due to the symmetry of the unit cell certain $(hkl)$ reflections might be forbidden. This is described by the structure factor of the unit cell $F_{hkl}$. The structure factor depends next to the Miller indices also from the type and position of the scattering objects within the unit cell. The position $\mathbf{R}_i(u,v,w)$ of the $i^\mathrm{th}$ scatterer with the unit cell are normally given in terms of the direct lattice vectors
+Due to the symmetry of the unit cell certain $(hkl)$ reflections might be forbidden. This is described by the structure factor of the unit cell $f_{hkl}$. The structure factor depends next to the Miller indices also from the type and position of the scattering objects within the unit cell. The position $\mathbf{R}_i(u,v,w)$ of the $i^\mathrm{th}$ scatterer with the the scattering amplitude $F_i()$ in the unit cell is normally given in terms of the direct lattice vectors $\mathbf{a}$, $\mathbf{b}$, and $\mathbf{c}$
 $$
 \mathbf{R}_i(u_i,v_i,w_i) = u_i \mathbf{a} + v_i\mathbf{b} +w_i\mathbf{c}
 $$
-The scattering amplitude of the unit cell $F_{uc}$ is than given by
+The scattering amplitude of the unit cell $F_{hkl}$ is than given by
 \begin{align}
-F_{uc} (\mathbf{Q}_{hkl}) &= \sum_{i=1}^N f_i(\mathbf{Q}_{hkl}) \exp\left( -\imath \mathbf{Q}_{hkl} R_i\right) \\
-                          &= \sum_{i=1}^N f_i(\mathbf{Q}_{hkl}) \exp\left( -\imath 2\pi \left(hu_i+kv_i+lw_i\right)\right) \\
-                          &= \sum_{i=1}^N f_i(\mathbf{Q}_{hkl}) \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) - \imath \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right)
+f_{hkl} (\mathbf{Q}_{hkl}) &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \exp\left( -\imath \mathbf{Q}_{hkl} R_i\right) \\
+                          &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \exp\left( -\imath 2\pi \left(hu_i+kv_i+lw_i\right)\right) \\
+                          &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \left[ \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) - \imath \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \right]
 \end{align}
 
 \begin{table}[htb]
@@ -146,14 +146,15 @@ F_{uc} (\mathbf{Q}_{hkl}) &= \sum_{i=1}^N f_i(\mathbf{Q}_{hkl}) \exp\left( -\ima
  &(I4/mmm)& (Fm3m) & (Im3m) & (P6/mmc) & (Pm3m) \\
   \hline\hline
  $n$ & 2 & 4 & 2 & 2 & 1\\
+ $\mathbf{R}_i=\spvec{u_i;v_i;w_i}$ & $\spvec{0;0;0}$, $\spvec{\sfrac12;\sfrac12;\sfrac12}$ & $\spvec{0;0;0}$, $\spvec{\sfrac12;\sfrac12;0}$, $\spvec{\sfrac12;0;\sfrac12}$, $\spvec{0;\sfrac12;\sfrac12}$ & $\spvec{0;0;0}$, $\spvec{\sfrac12;\sfrac12;\sfrac12}$ & $\spvec{0;0;0}$, $\spvec{\sfrac23;\sfrac13;\sfrac12}$ & $\spvec{0;0;0}$\\
  \rowcolor[gray]{0.95}
  $v_d$ & $a^2 c$ & $a^3$ & $a^3$ & $\sqrt{2}a^3$ & $a^3$\\
  $d$ & 3 & 3 & 3 & 3 & 3\\
  \rowcolor[gray]{0.95}
- $ f_{hkl}$ & $\scriptscriptstyle f_{hkl}= 1+\cos(\pi(h+k+l))$ &
-    $\scriptscriptstyle \begin{array}{r@{}l@{}} \scriptscriptstyle f_{hkl}=& {}\scriptscriptstyle 1+\cos(\pi(h+k)) \\&{}\scriptscriptstyle+\cos(\pi(h+l)) \\&{}\scriptscriptstyle+\cos(\pi(k+l))\end{array}$ &
-    $\scriptscriptstyle f_{hkl}=1+\cos(\pi(h+k+l))$ &
-    $\scriptscriptstyle f_{hkl}=2\cos\left(\pi\left(\frac{h+2k}{3}+\frac{l}{2}\right)\right)$ &
+ $ \abs{f_{hkl}}$ & $\scriptscriptstyle \abs{1+\cos(\pi(h+k+l))}$ &
+    $\scriptscriptstyle \abs{\begin{array}{l@{}}  \scriptscriptstyle 1+\cos(\pi(h+k)) \\ \scriptscriptstyle +\cos(\pi(h+l)) \\ \scriptscriptstyle +\cos(\pi(k+l))\end{array}}$ &
+    $\scriptscriptstyle \abs{1+\cos(\pi(h+k+l))}$ &
+    $\scriptscriptstyle \abs{2\cos\left(\pi\left(\frac{h+2k}{3}+\frac{l}{2}\right)\right)}$ &
     $\scriptscriptstyle f_{hkl}=1$ \\
  $m_{hkl}$ & & & & & \\
  \rowcolor[gray]{0.95}

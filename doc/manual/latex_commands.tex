@@ -27,8 +27,30 @@
                                           \caption{#5}\label{#6}
                                           \end{center}\end{figure}}
 
-\def\spvec#1{\left(\vcenter{\halign{\hfil$##$\hfil\cr \spvecA#1;;}}\right)}
-\def\spvecA#1;{\if;#1;\else #1\cr \expandafter \spvecA \fi}
+\newcommand{\vek}[2]{\left(\begin{array}{r}{#1}\\{#2}\end{array}\right)}
+\newcommand{\Vek}[3]{\left(\begin{array}{r}#1\\#2\\#3\end{array}\right)}
+
+% \def\spvec#1{\left(\vcenter{\halign{\hfil$##$\hfil\cr \spvecA#1;;}}\right)}
+% \def\spvecA#1;{\if;#1;\else #1\cr \expandafter \spvecA \fi}
+
+\makeatletter
+\newcommand{\spvec}[2][c]{%
+  \gdef\@VORNE{1}
+  \left(\hskip-\arraycolsep%
+    \begin{array}{#1}\vekSp@lten{#2}\end{array}%
+  \hskip-\arraycolsep\right)}
+
+\def\vekSp@lten#1{\xvekSp@lten#1;vekL@stLine;}
+\def\vekL@stLine{vekL@stLine}
+\def\xvekSp@lten#1;{\def\temp{#1}%
+  \ifx\temp\vekL@stLine
+  \else
+    \ifnum\@VORNE=1\gdef\@VORNE{0}
+    \else\@arraycr\fi%
+    #1%
+    \expandafter\xvekSp@lten
+  \fi}
+\makeatother
 
 % New definition of square root:
 % it renames \sqrt as \oldsqrt
