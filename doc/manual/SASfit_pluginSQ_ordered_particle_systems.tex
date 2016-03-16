@@ -92,15 +92,22 @@ Diffraction peaks can occur at integer multiples, called Miller indices $(hkl)$,
 $$
 \mathbf{Q}_{hkl} = 2\pi\left( h\mathbf{a}^\star+k\mathbf{b}^\star+l\mathbf{c}^\star \right)
 $$
-Due to the symmetry of the unit cell certain $(hkl)$ reflections might be forbidden. This is described by the structure factor of the unit cell $f_{hkl}$. The structure factor depends next to the Miller indices also from the type and position of the scattering objects within the unit cell. The position $\mathbf{R}_i(u,v,w)$ of the $i^\mathrm{th}$ scatterer with the the scattering amplitude $F_i()$ in the unit cell is normally given in terms of the direct lattice vectors $\mathbf{a}$, $\mathbf{b}$, and $\mathbf{c}$
+Due to the symmetry of the unit cell certain $(hkl)$ reflections might be forbidden. This is described by the structure factor of the unit cell $f_{hkl}$. The structure factor depends next to the Miller indices also from the type and position of the scattering objects within the unit cell. The position $\mathbf{R}_i(u,v,w)$ of the $i^\mathrm{th}$ scatterer with the scattering amplitude $F_i(\mathbf{Q})$ in the unit cell is normally given in terms of the direct lattice vectors $\mathbf{a}$, $\mathbf{b}$, and $\mathbf{c}$
 $$
 \mathbf{R}_i(u_i,v_i,w_i) = u_i \mathbf{a} + v_i\mathbf{b} +w_i\mathbf{c}
 $$
-The scattering amplitude of the unit cell $F_{hkl}$ is than given by
+The scattering amplitude of the unit cell $f_{hkl}$ is than given by
 \begin{align}
 f_{hkl} (\mathbf{Q}_{hkl}) &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \exp\left( -\imath \mathbf{Q}_{hkl} R_i\right) \\
                           &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \exp\left( -\imath 2\pi \left(hu_i+kv_i+lw_i\right)\right) \\
-                          &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \left[ \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) - \imath \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \right]
+&=  \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \left[ \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \right. \nonumber \\
+    & \qquad \qquad \qquad \qquad \left.- \imath \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \right] \\
+    &= \sqrt{A^2+B^2} \exp(-\imath \arctan(\sfrac{A}{B}))
+\end{align}
+with
+\begin{align}
+A &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \\
+B &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right)
 \end{align}
 
 \begin{table}[htb]
