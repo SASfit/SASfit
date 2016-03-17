@@ -10,19 +10,23 @@ I(Q) &= \langle\overline{F^2(Q)}\rangle_{or} + \langle\overline{F(Q)}\rangle_{or
 The overline symbol denotes the average over a particle size distribution and the brackets $\langle\rangle_{or}$ for the orientational average. In the above case it is assumed that the position of the scatterer is independent
 of their size and orientation. For small size distributions and only small deviations from spherical symmetry of the scatterer the decoupling approximation works quite well.
 For two and one dimensional ordered particle systems the particles can be very anisotropic, i.e.  very long cylindrical in case of 2D ordering and thin planar objects in case of 1D ordering. For this very anisotropic shaped particles the scattering amplitude and scattering intensity can be written as a product \ref{sec:anisotropic_particles} in terms of a cross section term for the short dimension $L_\mathrm{short}$ and a shape factor for the long dimension $L_\mathrm{long}$ as well as there averages
+\begin{subequations}
 \begin{align}
 F(Q,L_\mathrm{short},L_\mathrm{long}) &= F_\mathrm{cs}(Q,L_\mathrm{short}) F'(Q,L_\mathrm{long}) \\
 \langle\overline{F^2(Q,L_\mathrm{short},L_\mathrm{long})}\rangle_{or} &= \langle\overline{F^2_\mathrm{cs}(Q,L_\mathrm{short})}\rangle_{or} \langle\overline{F'^2(Q,L_\mathrm{long})}\rangle_{or} \\
 \langle\overline{F(Q,L_\mathrm{short},L_\mathrm{long})}\rangle_{or}^2 &= \langle\overline{F_\mathrm{cs}(Q,L_\mathrm{short})}\rangle_{or}^2 \langle\overline{F'(Q,L_\mathrm{long})}\rangle_{or}^2
 \end{align}
+\end{subequations}
 
 In case of one (multi-lamellar structures) as well as of two dimensional (ordering of structures on a planar surface) ordered particles strongly anisotropic particles are often ordered along their short dimension, i.e. cylindrical pillar have their cylindrical axis often perpendicular to the ordering plane or in case of lamellar structures ordering happens always in the direction of the normal of the planar scattering objects.
 The averages, which needs to be performed in the decoupling approximation are
+\begin{subequations}
 \begin{align}
 \label{eq:DecouplingPlusLattice}
 I(\mathbf{Q}) &= \langle\langle\overline{F^2(\mathbf{Q})}\rangle_{i}\rangle_{d} + \langle\langle\overline{F(\mathbf{Q})}\rangle_{i}^2 (S(\mathbf{Q})-1)\rangle_{d} \\
 &= \langle\langle\overline{F^2(\mathbf{Q})}\rangle_{i}\rangle_{d} + \langle\langle\overline{F(\mathbf{Q})}\rangle_{i}^2 (Z(\mathbf{Q})-1) G(\mathbf{Q})\rangle_{d}
 \end{align}
+\end{subequations}
 with
 \begin{align}
 S(\mathbf{Q}) &= (Z(\mathbf{Q})-1) G(\mathbf{Q}) + 1
@@ -30,10 +34,12 @@ S(\mathbf{Q}) &= (Z(\mathbf{Q})-1) G(\mathbf{Q}) + 1
 In the last equation the structure factor $S(\mathbf{Q})$ has been expressed in terms of the lattice factor function $Z(\mathbf{Q})$ and the Debye-Waller factor $G(\mathbf(Q))$. The term $Z(\mathbf{Q})G(\mathbf{Q})$ describes the decay of the Bragg peaks due to displacement and $1-G(\mathbf{Q})$ the concomitant increase of diffuse scattering. For a perfect lattice $G(\mathbf(Q))=1$.
 The orientation averages is done here slightly different than in the paper from \cite{Forster2011}. The orientational averaging of the scatterer within the domain are denoted by $\langle\ldots\rangle_{i}$ and the orientation averaging of the whole domains by $\langle\ldots\rangle_{d}$
 In the appendix of \cite{Forster2011} it is discussed under which conditions the orientation distribution over the structure factor and form factor can be factorized. If the orientation distribution of the scatterer in a domain is significant larger than the orientation distribution of the domains the averages can be factorized $\langle\left(\langle\ldots\rangle_{i}\right)^2\ldots\rangle_{d}\simeq\left(\langle\ldots\rangle_{i}\right)^2\langle \ldots\rangle_d$ and one obtains
+\begin{subequations}
 \begin{align}
 I(\mathbf{Q}) &=  \langle\overline{F^2(\mathbf{Q})}\rangle_{i} + \langle\langle\overline{F(\mathbf{Q})}\rangle_{i}^2 (S(\mathbf{Q})-1)\rangle_{d} \\
 &\simeq\langle\overline{F^2(\mathbf{Q})}\rangle_{i} + \langle\overline{F(\mathbf{Q})}\rangle_{i}^2 \langle(Z(\mathbf{Q})-1) G(\mathbf{Q})\rangle_{d}
 \end{align}
+\end{subequations}
 The formula above is different to the one given in \cite{Forster2011}, where the orientational averaging is done after squaring the size average of the scattering amplitude $\langle\overline{F(\mathbf{Q})}^2\rangle_{or}$ instead of doing the orientation averaging first $\langle\overline{F(\mathbf{Q})}\rangle_{or}^2$.
 
 However, in case of a powder signal, where the orientation distribution within a domain is small and the domains are random oriented. Also the structures can be very anisotropic in two or one dimensional ordered structures and the periodicity is in most cases perpendicular to the long dimension of the scattering object.
@@ -50,7 +56,7 @@ $Z_0(Q)$ is the lattice factor got an ideal undistorted lattice and $G(Q)$ the D
 \begin{align}
 Z_0(Q) &= \frac{\left(2\pi\right)^{d-1}}{n v_d \Omega_d Q^{d-1}} \sum_{\{hkl\}} m_{hkl} f^2_{hkl} L_{hkl}(Q-Q_{hkl})
 \end{align}
-where $n$ is the number of particles per unit cell, $f_{hkl}$ is the symmetry factor taking into account extinction rules, $v_d$ is the volume ($d=3$), surface ($d=2$), or long-period ($d=1$) of the $d$-dimensional unit cell, $\Omega_d$ is the $d$-dimensional solid angle, and $L_{hkl}(Q-Q_{hkl})$ is a normalised peak-shape function. The sum is done over all reflections $\{hkl\}$ where $m_{hkl}$ is the corresponding multiplicity. For the normalized peak shape function $L_{hkl}(x)$ the user can choose between Lorentzian, Gaussian, and Pearson VII peak shape
+where $n$ is the number of particles per unit cell, $f_{hkl}$ is the symmetry factor taking into account extinction rules, $v_d$ is the volume ($d=3$), surface ($d=2$), or long-period ($d=1$) of the $d$-dimensional unit cell, $\Omega_d$ is the $d$-dimensional solid angle,  $L_{hkl}(Q-Q_{hkl})$ is a normalised peak-shape function, and $m_{hkl}$ is the multiplicity. If the sum is done over all reflections $\{hkl\}$, i.e. $\sum_{\{hkl\}}=\sum_{h=-\infty}^{\infty}\sum_{k=-\infty}^{\infty}\sum_{l=-\infty}^{\infty}$, one automatically accounts for multiplicity but one the costs for summing over all combinations of $\{hkl\}$. For the normalized peak shape function $L_{hkl}(x)$ the user can choose between Lorentzian, Gaussian, and Pearson VII peak shape
 \begin{align}
 L_{hkl}(x) &=
 \begin{cases}
@@ -72,44 +78,72 @@ and the last three ($\alpha$,$\beta$ and $\gamma$) represent the angles between 
 \end{figure}
 
 If we assume that the vectors $\mathbf{a}$ and $\mathbf{b}$ are in the $x$-$y$ plane and $\mathbf{a} \| \mathbf{e}_x$ we can write the vector of the unit cell as
-$$
+\begin{align}
+\label{eq:direct_lattice_vector}
 \mathbf{a} = a \spvec{1;0;0}
 \qquad
 \mathbf{b} = b \spvec{\cos \gamma;\sin \gamma;0}
 \qquad
 \mathbf{c} = c \spvec{\cos\beta;\frac{\cos\alpha-\cos\beta \cos\gamma}{\sin\gamma};\sqrt{1-\cos^2\beta-\left(\frac{\cos\alpha-\cos\beta \cos\gamma}{\sin\gamma}\right)^2}}
-$$
+\end{align}
 Next to the direct lattice with $\mathbf{a}$, $\mathbf{b}$, and $\mathbf{c}$ be the elementary
 translations in a three-dimensional lattice a second lattice, reciprocal to the direct lattice, is defined by three elementary translations $\mathbf{a}^\star$, $\mathbf{b}^\star$ and $\mathbf{c}^\star$
-$$
+\begin{align}
+\label{eq:reciprocal_lattice_vector}
 \mathbf{a}^\star = \frac{\mathbf{b}\times\mathbf{c}}{\mathbf{a}\cdot (\mathbf{b}\times\mathbf{c})}
 \qquad
 \mathbf{b}^\star = \frac{\mathbf{c}\times\mathbf{a}}{\mathbf{a}\cdot (\mathbf{b}\times\mathbf{c})}
 \qquad
 \mathbf{c}^\star = \frac{\mathbf{a}\times\mathbf{b}}{\mathbf{a}\cdot (\mathbf{b}\times\mathbf{c})}
-$$
-Diffraction peaks can occur at integer multiples, called Miller indices $(hkl)$, of the reciprocal lattice
-$$
-\mathbf{Q}_{hkl} = 2\pi\left( h\mathbf{a}^\star+k\mathbf{b}^\star+l\mathbf{c}^\star \right)
-$$
-Due to the symmetry of the unit cell certain $(hkl)$ reflections might be forbidden. This is described by the structure factor of the unit cell $f_{hkl}$. The structure factor depends next to the Miller indices also from the type and position of the scattering objects within the unit cell. The position $\mathbf{R}_i(u,v,w)$ of the $i^\mathrm{th}$ scatterer with the scattering amplitude $F_i(\mathbf{Q})$ in the unit cell is normally given in terms of the direct lattice vectors $\mathbf{a}$, $\mathbf{b}$, and $\mathbf{c}$
-$$
-\mathbf{R}_i(u_i,v_i,w_i) = u_i \mathbf{a} + v_i\mathbf{b} +w_i\mathbf{c}
-$$
-The scattering amplitude of the unit cell $f_{hkl}$ is than given by
+\end{align}
+For the scalar product between the direct and reciprocal lattice the following conditions holds:
+\begin{subequations}
 \begin{align}
-f_{hkl} (\mathbf{Q}_{hkl}) &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \exp\left( -\imath \mathbf{Q}_{hkl} R_i\right) \\
+\mathbf{a}\cdot\mathbf{a}^\star=1 \quad \mathbf{a}\cdot\mathbf{b}^\star=0 \quad \mathbf{a}\cdot\mathbf{c}^\star=0 \\
+\mathbf{b}\cdot\mathbf{a}^\star=0 \quad \mathbf{b}\cdot\mathbf{b}^\star=1 \quad \mathbf{b}\cdot\mathbf{c}^\star=0 \\
+\mathbf{c}\cdot\mathbf{a}^\star=0 \quad \mathbf{c}\cdot\mathbf{b}^\star=0 \quad \mathbf{c}\cdot\mathbf{c}^\star=1 \\
+\end{align}
+\end{subequations}
+For a two dimensional periodic lattice with the direct lattice vectors $\mathbf{a}, \mathbf{b}$ and reciprocal lattice vector $\mathbf{a}^\star, \mathbf{b}^\star$ the orthogonal relations above also hold and by using eq.\ \ref{eq:reciprocal_lattice_vector} with $\mathbf{c}=\spvec{0,0,1}^T$ ($c=1,\alpha=\beta=\pi/2$) one can calculate them in the same way.
+\begin{subequations}
+\begin{align}
+\label{eq:2D_lattice_vector}
+\mathbf{a} &= a \spvec{1;0;0}  & \mathbf{b} &= b \spvec{\cos \gamma;\sin \gamma;0} \\
+\mathbf{a}^\star &= \frac{1}{a} \spvec{1;-\frac{\cos\gamma}{\sin\gamma};0} &  \mathbf{b}^\star &= \frac{1}{b} \spvec{0;\frac{1}{\sin \gamma};0}
+\end{align}
+\end{subequations}
+Last but not least, for a one dimensional lattice $\mathbf{a}=\spvec{a,0,0}^T$ the reciprocal lattice vector is simply $\mathbf{a}^\star=\frac1a\spvec{1,0,0}^T$.
+
+Diffraction peaks can occur at integer multiples, called Miller indices $(hkl)$, of the reciprocal lattice
+\begin{subequations}
+\begin{align}
+\mathbf{Q}_{hkl}^{3D} &= 2\pi\left( h\mathbf{a}^\star+k\mathbf{b}^\star+l\mathbf{c}^\star \right) \\
+\mathbf{Q}_{hk}^{2D} &= 2\pi\left( h\mathbf{a}^\star+k\mathbf{b}^\star\right) \\
+\mathbf{Q}_{h}^{1D} &= 2\pi h\mathbf{a}^\star
+\end{align}
+\end{subequations}
+Due to the symmetry of the unit cell certain $(hkl)$ reflections might be forbidden. This is described by the structure factor of the unit cell $f_{hkl}$. The structure factor depends next to the Miller indices also from the type and position of the scattering objects within the unit cell. The position $\mathbf{R}_i(u,v,w)$ of the $i^\mathrm{th}$ scatterer with the scattering amplitude $F_i(\mathbf{Q})$ in the unit cell is normally given in terms of the direct lattice vectors $\mathbf{a}$, $\mathbf{b}$, and $\mathbf{c}$
+\begin{align}
+\mathbf{R}_i(u_i,v_i,w_i) = u_i \mathbf{a} + v_i\mathbf{b} +w_i\mathbf{c}
+\end{align}
+The scattering amplitude of the unit cell $f_{hkl}$ is than given by
+\begin{subequations}
+\begin{align}
+f_{hkl} (\mathbf{Q}_{hkl}) &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \exp\left( -\imath \mathbf{Q}_{hkl} \mathbf{R}_i\right) \\
                           &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \exp\left( -\imath 2\pi \left(hu_i+kv_i+lw_i\right)\right) \\
 &=  \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \left[ \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \right. \nonumber \\
     & \qquad \qquad \qquad \qquad \left.- \imath \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \right] \\
     &= \sqrt{A^2+B^2} \exp(-\imath \arctan(\sfrac{A}{B}))
 \end{align}
+\end{subequations}
 with
+\begin{subequations}
 \begin{align}
 A &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \cos\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right) \\
 B &= \sum_{i=1}^N F_i(\mathbf{Q}_{hkl}) \sin\left( 2\pi \left(hu_i+kv_i+lw_i\right)\right)
 \end{align}
-
+\end{subequations}
+For a 2D and 1D lattice the scattering amplitude of the unit cell $f_{hk}$ and $f_h$ are calculated accordingly.
 \begin{table}[htb]
   \centering
   \scriptsize
