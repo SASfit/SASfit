@@ -71,7 +71,7 @@ int DLS_CumulantFitCmd(clientData, interp, argc, argv)
    const gsl_multifit_fdfsolver_type *T;
    gsl_multifit_fdfsolver *s;
    gsl_multifit_function_fdf f;
-   gsl_matrix *covar;
+   gsl_matrix *covar, *J;
    gsl_vector *x;
    int status;
 
@@ -126,6 +126,7 @@ int DLS_CumulantFitCmd(clientData, interp, argc, argv)
 	 stable_iter ++;
      iter = 0;
      covar = gsl_matrix_alloc (ma, ma);
+     J = gsl_matrix_alloc (ndata, ma);
      f.f = &DLS_f;
      f.df = &DLS_df;
      f.fdf = &DLS_fdf;
@@ -143,8 +144,9 @@ int DLS_CumulantFitCmd(clientData, interp, argc, argv)
         status = gsl_multifit_test_delta (s->dx, s->x,1e-6, 1e-6);
 
      } while (status == GSL_CONTINUE && iter < 500);
-
-     gsl_multifit_covar (s->J, 0.0, covar);
+     
+     gsl_multifit_fdfsolver_jac(s, J);
+     gsl_multifit_covar (J, 0.0, covar);
 	 chi = gsl_blas_dnrm2 (s->f)/sqrt(ndata-ma);
 
 	 k = 0;
@@ -161,6 +163,7 @@ int DLS_CumulantFitCmd(clientData, interp, argc, argv)
      save_DLSpar(clientData,interp,argv,&DLSParData);
      gsl_multifit_fdfsolver_free (s);
 	 gsl_matrix_free (covar);
+	 gsl_matrix_free (J);
 
 	 MAD = 0.0;
 	 for (i=0;i<ndata;i++) {
