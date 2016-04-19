@@ -1361,11 +1361,11 @@ proc read_Ascii {filename ASCIIData args} {
 	if {![info exist Data]} {create_ASCIIData Data}
 	if {[string equal $Data(in_out) "nm->Ångstrøm" ] == 1} {
 	   set Data(unit) Ångstrøm
-	   set Data(xscale) 0.1
+	   set Data(xscale) 10
 	}
 	if {[string equal $Data(in_out) "Ångstrøm->nm" ] == 1} {
 	   set Data(unit) nm
-	   set Data(xscale) 10.0
+	   set Data(xscale) 0.1
 	}
 	if {[string equal $Data(in_out) "Ångstrøm->Ångstrøm" ] == 1} {
 	   set Data(unit) Ångstrøm
@@ -1377,7 +1377,7 @@ proc read_Ascii {filename ASCIIData args} {
 	}
 	if {[string equal $Data(in_out) "ms->s" ] == 1} {
 	   set Data(unit) s
-	   set Data(xscale) 1000.0
+	   set Data(xscale) 1e-3
 	}
 	if {[string equal $Data(in_out) "s->s" ] == 1} {
 	   set Data(unit) s
@@ -1385,11 +1385,23 @@ proc read_Ascii {filename ASCIIData args} {
 	}
 	if {[string equal $Data(in_out) "s->ms" ] == 1} {
 	   set Data(unit) ms
-	   set Data(xscale) 1e-3
+	   set Data(xscale) 1000.0
 	}
 	if {[string equal $Data(in_out) "ms->ms" ] == 1} {
 	   set Data(unit) ms
-	   set Data(xscale) 1000.0
+	   set Data(xscale) 1.0
+	}
+	if {[string equal $Data(in_out) "mus->mus" ] == 1} {
+	   set Data(unit) mus
+	   set Data(xscale) 1.0
+	}
+	if {[string equal $Data(in_out) "mus->s" ] == 1} {
+	   set Data(unit) s
+	   set Data(xscale) 1.0e-6
+	}
+	if {[string equal $Data(in_out) "s->mus" ] == 1} {
+	   set Data(unit) mus
+	   set Data(xscale) 1e+6
 	}
 
 	set Data(InputFormat) [string tolower $Data(InputFormat)]

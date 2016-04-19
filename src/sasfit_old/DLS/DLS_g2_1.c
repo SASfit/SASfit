@@ -41,7 +41,7 @@
 /*#                                                                       #*/
 /*# Written by Joachim Kohlbrecher                                        #*/
 /*#########################################################################*/
-/*#     Version Va.1 27.09.99  JKcom                                      #*/
+/*#     27.09.2016    Joachim Kohlbrecher                                 #*/
 /*#########################################################################*/
 
 #include <math.h>
@@ -250,6 +250,7 @@ int DLS_CumulantFitCmd(clientData, interp, argc, argv)
    return TCL_OK;
 }
 
+/*
 int DLS_ExponentialFitCmd(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
@@ -268,6 +269,7 @@ int DLS_StretchedExpFitCmd(clientData, interp, argc, argv)
 return TCL_OK;
 }
 
+*/
 
 int DLS_CumulantCalcCmd(clientData, interp, argc, argv)
     ClientData clientData;
@@ -340,6 +342,7 @@ int DLS_CumulantCalcCmd(clientData, interp, argc, argv)
 }
 
 
+/*
 int DLS_ExponentialCalcCmd(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
@@ -357,7 +360,7 @@ int DLS_StretchedExpCalcCmd(clientData, interp, argc, argv)
 {
 return TCL_OK;
 }
-
+*/
 
 
 int get_DLSpar(clientData,interp,argv,DLSParData,Q,IQ,DIQ)

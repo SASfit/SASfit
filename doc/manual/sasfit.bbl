@@ -228,6 +228,11 @@ P.~Debye and A.~M. Bueche.
 \newblock Scattering by an inhomogeneous solid.
 \newblock {\em Journal of Applied Physics}, 20(6):518--525, 1949.
 
+\bibitem{Dhont1996}
+J.K.G. Dhont.
+\newblock {\em An Introduction to Dynamics of Colloids}.
+\newblock Studies in Interface Science. Elsevier Science, 1996.
+
 \bibitem{dozier91}
 W.~D. Dozier, J.~S. Huang, and L.~J. Fetters.
 \newblock Colloidal nature of star polymer dilute and semidilute solutions.
@@ -278,7 +283,7 @@ S.~F\"orster, N.~Hermsdorf, W.~Leube, H.~Schnablegger, M.~Regenbrecht,
 \newblock {\em J. Phys. Chem. B}, 103:6657--6668, 1999.
 
 \bibitem{Forster2005}
-S.~F\"orster, A.~Timmann, M.~Konrad, C.~Schellbach, , A.~Meyer, S.~S. Funari,
+S.~F\"orster, A.~Timmann, M.~Konrad, C.~Schellbach, A.~Meyer, S.~S. Funari,
   P.~Mulvaney, and R.~Knott.
 \newblock Scattering curves of ordered mesoscopic materials.
 \newblock {\em The Journal of Physical Chemistry B}, 109(4):1347--1360, 2005.
@@ -308,6 +313,12 @@ Matteo Frigo and Steven~G. Johnson.
 \newblock {\em Proceedings of the IEEE}, 93(2):216--231, 2005.
 \newblock Special issue on ``Program Generation, Optimization, and Platform
   Adaptation''.
+
+\bibitem{Frisken2001}
+Barbara~J. Frisken.
+\newblock Revisiting the method of cumulants for the analysis of dynamic
+  light-scattering data.
+\newblock {\em Appl. Opt.}, 40(24):4087--4091, Aug 2001.
 
 \bibitem{Fruhwirth2004}
 Thomas Fr{\"{u}}hwirth, Gerhard Fritz, Norbert Freiberger, and Otto Glatter.
@@ -531,6 +542,12 @@ J.~Kohlbrecher, A.~Wiedenmann, and H.~Wollenberger.
 \newblock {\em Zeitschrift für Physik B Condensed Matter}, 104(1):1--4, August
   1997.
 
+\bibitem{Koppel1972}
+Dennis~E. Koppel.
+\newblock Analysis of macromolecular polydispersity in intensity correlation
+  spectroscopy: The method of cumulants.
+\newblock {\em The Journal of Chemical Physics}, 57(11):4814--4820, 1972.
+
 \bibitem{Kotlarchyk1983}
 M.~Kotlarchyk and S.-H. Chen.
 \newblock Analysis of small angle neutron scattering spectra from polydisperse
@@ -630,6 +647,12 @@ William~G. Madden and Stuart~A. Rice.
 \newblock The mean spherical approximation and effective pair potentials in
   liquids.
 \newblock {\em The Journal of Chemical Physics}, 72(7):4208--4215, 1980.
+
+\bibitem{Mailer2015}
+Alastair~G Mailer, Paul~S Clegg, and Peter~N Pusey.
+\newblock Particle sizing by dynamic light scattering: non-linear cumulant
+  analysis.
+\newblock {\em Journal of Physics: Condensed Matter}, 27(14):145102, 4 2015.
 
 \bibitem{Mann1953}
 W.~Robert Mann.
@@ -827,6 +850,15 @@ William~H. Press, Saul~A. Teukolsky, William~T. Vetterling, and Brian~P.
   Flannery.
 \newblock {\em Numerical Recipes. The Art of Scientific Computing}.
 \newblock Cambridge University Press, 3rd edition, 2007.
+
+\bibitem{Pusey1974}
+Peter~N. Pusey, Dennis~E. Koppel, Dale~E. Schaefer, Rafael~D. Camerini-Otero,
+  and Seymour~H. Koenig.
+\newblock Intensity fluctuation spectroscopy of laser light scattered by
+  solutions of spherical viruses. r17, q.beta., bsv, pm2, and t7. i.
+  light-scattering technique.
+\newblock {\em Biochemistry}, 13(5):952--960, 1974.
+\newblock PMID: 4591621.
 
 \bibitem{scatt188}
 C.~V. Raman.

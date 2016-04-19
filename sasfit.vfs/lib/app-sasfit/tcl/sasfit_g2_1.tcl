@@ -22,7 +22,7 @@
 
 proc g2_1toR_PDI {} {
 global G2ParData
-if {[string compare $G2ParData(DLSmodel) "cumulant analysis"] == 0} {
+if {[string compare $G2ParData(DLSmodel) "cumulant analysis (traditional)"] == 0 || [string compare $G2ParData(DLSmodel) "cumulant analysis (recommended)"] == 0} {
    set  k 1.3806505e-23
    set PI [expr atan(1)*4.0]
    set Q [expr 4e9*$PI*$G2ParData(refind)/$G2ParData(lambda) \
@@ -36,10 +36,7 @@ if {[string compare $G2ParData(DLSmodel) "cumulant analysis"] == 0} {
 }
 
 #------------------------------------------------------------------------------
-#  calculates Guinier and Porod approximations and integral structural 
-#  parameters of the scattering curves like Guinier radius, forward scattering,
-#  Porod constant, Background, scattering invariant, Porod volume, specific 
-#  surface, correlation length, intersection length
+#  
 #
 proc g2_1_ParFitCmd {} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -131,12 +128,14 @@ pack $w.menu.help -side right
 #
 
 set DLSpar [tk_optionMenu $w.input.model G2ParData(DLSmodel) \
-                          "cumulant analysis" \
+                          "cumulant analysis (recommended)" \
+                          "cumulant analysis (traditional)" \
                           "double decay cumulant analysis" \
                           "double stretched exponential"]
+						  
 $DLSpar entryconfigure 0 -command { 
         global G2ParData
-        set G2ParData(DLSmodel) "cumulant analysis"
+        set G2ParData(DLSmodel) "cumulant analysis (recommended)"
         set i 1
         foreach ParNam [lindex $G2ParData(Par) 0] {
            set G2ParData([format %s%d%s Par $i lab]) $ParNam
@@ -146,9 +145,10 @@ $DLSpar entryconfigure 0 -command {
            incr i
 	} 
         }
+		
 $DLSpar entryconfigure 1 -command { 
-        global G2ParData 
-        set G2ParData(DLSmodel) "double decay cumulant analysis"
+        global G2ParData
+        set G2ParData(DLSmodel) "cumulant analysis (traditional)"
         set i 1
         foreach ParNam [lindex $G2ParData(Par) 1] {
            set G2ParData([format %s%d%s Par $i lab]) $ParNam
@@ -158,11 +158,25 @@ $DLSpar entryconfigure 1 -command {
            incr i
 	} 
         }
+		
 $DLSpar entryconfigure 2 -command { 
+        global G2ParData 
+        set G2ParData(DLSmodel) "double decay cumulant analysis"
+        set i 1
+        foreach ParNam [lindex $G2ParData(Par) 2] {
+           set G2ParData([format %s%d%s Par $i lab]) $ParNam
+	   if {[string length $ParNam] == 0} {
+              set G2ParData([format %s%d%s Par $i active]) 0
+           }
+           incr i
+	} 
+        }
+		
+$DLSpar entryconfigure 3 -command { 
         global G2ParData 
         set G2ParData(DLSmodel) "double stretched exponential"
         set i 1
-        foreach ParNam [lindex $G2ParData(Par) 2] {
+        foreach ParNam [lindex $G2ParData(Par) 3] {
            set G2ParData([format %s%d%s Par $i lab]) $ParNam
 	   if {[string length $ParNam] == 0} {
               set G2ParData([format %s%d%s Par $i active]) 0
@@ -188,7 +202,7 @@ label $w.input.iter_l -text "max iter. (>=0):"
 entry $w.input.iter_v -textvariable G2ParData(iter) -width 4
 label $w.input.iter_d -textvariable G2ParData(iter_d) -width 24 -anchor w
 
-grid $w.input.model  -column 0 -columnspan 4 -row 0 -pady 2m -sticky w
+grid $w.input.model  -column 0 -columnspan 3 -row 0 -pady 2m -sticky w
 grid $w.input.iter_l  -column 3 -columnspan 3 -row 0 -pady 2m -sticky w
 grid $w.input.iter_v  -column 6 -columnspan 1 -row 0 -pady 2m -sticky w
 grid $w.input.iter_d  -column 7 -columnspan 3 -row 0 -pady 2m -sticky w

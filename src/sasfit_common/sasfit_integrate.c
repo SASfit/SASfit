@@ -24,10 +24,10 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
+#include <omp.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
 #include "include/sasfit_common.h"
-#include "omp.h"
 
 //sasfit_int_workspace_t	sasfit_int_workspace;
 // = {0, NULL};

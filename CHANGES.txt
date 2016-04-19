@@ -1,4 +1,8 @@
-0.94.7 2015-xx-xx
+0.94.7 2016-04-19
+- implementation of another cumulant formula for DLS
+- Bug-fix in the unit conversion routine
+- implementation of GMRES, Bi-CGStab, TFQMR and Andersen Accelarion 
+  for solving efficiently the Ornstein Zernicke fixpoint problem
 - bug fix: since version 0.94.4 the new interrupt option suppressed 
   a proper error reporting to the GUI for undefined input values
 - removed some old structure factors, 

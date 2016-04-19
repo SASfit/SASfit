@@ -40,7 +40,7 @@ particles).
 \newpage
 \section{Cumulant Analysis}
 The formulas in eq.\ \ref{g1} to \ref{DiffRDLS} are valid for monodisperse
-dispersions only. For polydisperse dispersions the cumulants method of Koppel (1972) is widely used,
+dispersions only. For polydisperse dispersions the cumulants method of Koppel (1972) \cite{Koppel1972} is widely used,
 which assumes a multi-exponential behaviour so that $g_1(\tau)$ and $G^{(2)}(\tau)$
 can be written in a series expansion as:
 \begin{align}
@@ -48,14 +48,14 @@ can be written in a series expansion as:
  G^{(2)}(\tau) &=  A \exp\left(- 2\Gamma_1 \tau + \Gamma_2 \tau^2 - \frac{\Gamma_3 \tau^3}{3} + \cdots \right) + B
 \label{G2Cumulant}
 \end{align}
-\texttt{SASfit} assumes for the cumulant fit-routine that the function $G^{(2)}(\tau)$ is supplied. As normally no error
-bar is available from the correlator a robust least square procedure is implemented.
+\texttt{SASfit} assumes for the cumulant fit-routine that the function $G^{(2)}(\tau)$ is supplied. As normally no error bar is available from the correlator a robust least square procedure is implemented.
 
-\vspace{5mm}
-\noindent REFERENCE:\\
-Dennis E. Koppel, Analysis of Macromolecular Polydispersity in
-Intensity Correlation Spectroscopy: The Method of Cumulants, The
-Journal of Chemical Physics, Vol.1, No. 11 (1972), 4815- 4820
+The formula given by Koppel has been obtained by a Taylor expansion of $\ln g_1(\tau)$ around $\tau=0$. A more stable expansion can be obtained by a series expansion of $g_1(\tau)$ around the average relaxation time $\Gamma_1$ \cite{Pusey1974,Dhont1996, Frisken2001,Mailer2015}.
+
+\begin{align}
+ g_1(\tau)  &= \exp\left(-\Gamma_1 \tau\right) \left(1 +  \frac{\Gamma_2 \tau^2}{2} - \frac{\Gamma_3 \tau^3}{6} + \cdots \right) \\
+G^{(2)}(\tau) &= A \exp\left(- 2\Gamma_1 \tau\right) \left(1 +  \frac{\Gamma_2 \tau^2}{2} - \frac{\Gamma_3 \tau^3}{6} + \cdots \right)^2 + B
+\end{align}
 
 \newpage
 \section{Double Decay Cumulant Analysis}

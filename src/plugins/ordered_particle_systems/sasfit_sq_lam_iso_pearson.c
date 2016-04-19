@@ -24,6 +24,7 @@ scalar sasfit_sq_lam_iso_pearson(scalar q, sasfit_param * param)
 
 	QMODVAL     = q;
 	ADVAL       = PAD;
+    
 	DELTAVAL    = PDELTA;
 	CLVAL       = PCL;
     MAXHKLVAL = PMAXHKL;

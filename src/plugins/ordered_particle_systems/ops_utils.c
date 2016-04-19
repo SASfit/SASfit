@@ -384,11 +384,9 @@ void set_f_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_pa
 
 void set_g_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_param *param) {
     int i;
-    for (i=0;i<3;i++) {
-        ospparam->ghkl[i]=h*ospparam->ast[i]+k*ospparam->bst[i]+l*ospparam->cst[i];
-    }
     ospparam->ghklmod = 0;
     for (i=0;i<3;i++) {
+        ospparam->ghkl[i]=h*ospparam->ast[i]+k*ospparam->bst[i]+l*ospparam->cst[i];
         ospparam->ghklmod=ospparam->ghklmod+gsl_pow_2(ospparam->ghkl[i]);
     }
     ospparam->ghklmod = sqrt(ospparam->ghklmod);
@@ -1317,7 +1315,6 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
         case FCC :
         case HCP :
         case BCT :  
-                Z = 0.0;
                 for (h=-MAXHKL;h<=MAXHKL;h++) {
                         for (k=-MAXHKL;k<=MAXHKL;k++) {
                             for (l=-MAXHKL;l<=MAXHKL;l++) {
@@ -1334,7 +1331,6 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
         case HEX :
         case SQ  :
         case CREC:  
-                l = 0;
                 for (h=-MAXHKL;h<=MAXHKL;h++) {
                         for (k=-MAXHKL;k<=MAXHKL;k++) {
                              set_f_hkl(h,k,l,ospparam,param);
@@ -1347,13 +1343,11 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
                     Z=Z*prefactorZ;
                     break;
         case LAM :  
-                    k = 0;
-                    l = 0;
                     for (h=1;h<=MAXHKL;h++) {
                         set_f_hkl(h,k,l,ospparam,param);
                         set_g_hkl(h,k,l,ospparam,param);
                         if (h!=0 || k!=0 || l!=0) {
-                            Z = Z+ospparam->m_hkl*gsl_pow_2(ospparam->f_hkl)*L_hkl_iso(h,k,l,ospparam,param);
+                            Z = Z+gsl_pow_2(ospparam->f_hkl)*L_hkl_iso(h,k,l,ospparam,param);
                         }
                     }
                     Z=Z*prefactorZ;

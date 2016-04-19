@@ -50,6 +50,8 @@ function(_OPENMP_FLAG_CANDIDATES LANG)
     " "
     #GNU
     "-fopenmp"
+    #Clang
+    "-fopenmp=libomp"
     #Microsoft Visual Studio
     "/openmp"
     #Intel windows
@@ -67,6 +69,7 @@ function(_OPENMP_FLAG_CANDIDATES LANG)
   )
 
   set(OMP_FLAG_GNU "-fopenmp")
+  set(OMP_FLAG_Clang "-fopenmp=libomp")
   set(OMP_FLAG_HP "+Oopenmp")
   if(WIN32)
     set(OMP_FLAG_Intel "-Qopenmp")
@@ -127,7 +130,7 @@ if(CMAKE_C_COMPILER_LOADED)
     unset(OpenMP_C_FLAG_CANDIDATES)
   else()
     _OPENMP_FLAG_CANDIDATES("C")
-    include(CheckCSourceCompiles)
+    include(${CMAKE_CURRENT_LIST_DIR}/CheckCSourceCompiles.cmake)
   endif()
 
   foreach(FLAG IN LISTS OpenMP_C_FLAG_CANDIDATES)
@@ -160,7 +163,7 @@ if(CMAKE_CXX_COMPILER_LOADED)
     unset(OpenMP_CXX_FLAG_CANDIDATES)
   else()
     _OPENMP_FLAG_CANDIDATES("CXX")
-    include(CheckCXXSourceCompiles)
+    include(${CMAKE_CURRENT_LIST_DIR}/CheckCXXSourceCompiles.cmake)
 
     # use the same source for CXX as C for now
     set(OpenMP_CXX_TEST_SOURCE ${OpenMP_C_TEST_SOURCE})
@@ -197,7 +200,7 @@ if(CMAKE_Fortran_COMPILER_LOADED)
     unset(OpenMP_Fortran_FLAG_CANDIDATES)
   else()
     _OPENMP_FLAG_CANDIDATES("Fortran")
-    include(CheckFortranSourceCompiles)
+    include(${CMAKE_CURRENT_LIST_DIR}/CheckFortranSourceCompiles.cmake)
   endif()
 
   foreach(FLAG IN LISTS OpenMP_Fortran_FLAG_CANDIDATES)
@@ -226,7 +229,7 @@ endif()
 set(CMAKE_REQUIRED_QUIET ${CMAKE_REQUIRED_QUIET_SAVE})
 
 if(_OPENMP_REQUIRED_VARS)
-  include(FindPackageHandleStandardArgs)
+  include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
 
   find_package_handle_standard_args(OpenMP
                                     REQUIRED_VARS ${_OPENMP_REQUIRED_VARS})

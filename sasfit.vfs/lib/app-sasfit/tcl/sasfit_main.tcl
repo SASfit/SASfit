@@ -794,9 +794,9 @@ set StructParData(lowQFit)     "Guinier fit results:"
 set StructParData(largeQFit)   "Porod fit results:"
 
 set G2ParData(plottype) 0
-set G2ParData(DLSmodel) "cumulant analysis"
+set G2ParData(DLSmodel) "cumulant analysis (recommended)"
 set G2ParData(DLSerror) "lin. error"
-set G2ParData(Par) {{A Gamma1 Gamma2 Gamma3 B "" ""} {A p Gamma_a1 Gamma_a2 Gamma_b1 Gamma_b2 B} {A BaseLine p tau1 gamma1 tau2 gamma2}}
+set G2ParData(Par) {{A Gamma1 Gamma2 Gamma3 B "" ""} {A Gamma1 Gamma2 Gamma3 B "" ""} {A p Gamma_a1 Gamma_a2 Gamma_b1 Gamma_b2 B} {A BaseLine p tau1 gamma1 tau2 gamma2}}
 set G2ParData(Par1lab) A
 set G2ParData(Par2lab) Gamma1
 set G2ParData(Par3lab) Gamma2
@@ -1514,7 +1514,8 @@ proc AsciiOptionsCmd {} {
 	pack $w.lay1.a.ext.entry $w.lay1.a.ext.label -side right
 
 	label $w.lay1.a.uc.label -text "unit conversion:" -highlightthickness 0 
-	tk_optionMenu $w.lay1.a.uc.inu  tmpASCIIData(in_out) "nm->nm" "nm->Ångstrøm" "Ångstrøm->nm" "Ångstrøm->Ångstrøm" "ms->s" "s->s" "ms->ms" "s->ms"
+	tk_optionMenu $w.lay1.a.uc.inu  tmpASCIIData(in_out) "nm->nm" "nm->Ångstrøm" "Ångstrøm->nm" "Ångstrøm->Ångstrøm" "ms->s" "s->s" 
+#"ms->ms" "s->ms"
 	pack $w.lay1.a.uc.label $w.lay1.a.uc.inu \
 	     -side left
 
@@ -3336,6 +3337,11 @@ proc sasfit_menubar_build { p } {
       $p.fit.menu add command -label "Ornstein Zernike solver" \
 	      -command {sasfit_OZ_solver} \
 	       -underline 0 
+		   
+#	  $p.fit.menu add command -label "p(r), N(R), eta(r) obtained by regularization" \
+#	      -command {sasfit_regularization} \
+#	       -underline 0 
+		   
    menubutton $p.tools -text Tools -underline 0 \
               -menu $p.tools.menu
       menu $p.tools.menu

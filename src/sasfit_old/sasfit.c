@@ -2339,16 +2339,17 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateObjCommand(interp, "sasfit_get_lib_suffix", (Tcl_ObjCmdProc*) sasfit_get_lib_suffix_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_load_plugin", (Tcl_ObjCmdProc*) sasfit_load_plugin_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_covar", (Tcl_ObjCmdProc*) sasfit_covar_cmd, (void *)SASFIT_CData, NULL);
-        // sasfit_oz commands
+    
+    // sasfit_oz commands
 	Tcl_CreateObjCommand(interp, "sasfit_oz_calc", (Tcl_ObjCmdProc*) sasfit_oz_calc_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_oz_assign_data_sq", (Tcl_ObjCmdProc*) sasfit_oz_assign_data_sq_cmd, NULL, NULL);
 	// DLS
 	Tcl_CreateCommand(interp, "dls_CumulantFit", (Tcl_CmdProc*) DLS_CumulantFitCmd, NULL, NULL);
-	Tcl_CreateCommand(interp, "dls_ExponentialFit", (Tcl_CmdProc*) DLS_ExponentialFitCmd, NULL, NULL);
-	Tcl_CreateCommand(interp, "dls_StretchedExpFit", (Tcl_CmdProc*) DLS_StretchedExpFitCmd, NULL, NULL);
+//	Tcl_CreateCommand(interp, "dls_ExponentialFit", (Tcl_CmdProc*) DLS_ExponentialFitCmd, NULL, NULL);
+//	Tcl_CreateCommand(interp, "dls_StretchedExpFit", (Tcl_CmdProc*) DLS_StretchedExpFitCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "dls_CumulantCalc", (Tcl_CmdProc*) DLS_CumulantCalcCmd, NULL, NULL);
-	Tcl_CreateCommand(interp, "dls_ExponentialCalc", (Tcl_CmdProc*) DLS_ExponentialCalcCmd, NULL, NULL);
-	Tcl_CreateCommand(interp, "dls_StretchedExpCalc", (Tcl_CmdProc*) DLS_StretchedExpCalcCmd, NULL, NULL);
+//	Tcl_CreateCommand(interp, "dls_ExponentialCalc", (Tcl_CmdProc*) DLS_ExponentialCalcCmd, NULL, NULL);
+//	Tcl_CreateCommand(interp, "dls_StretchedExpCalc", (Tcl_CmdProc*) DLS_StretchedExpCalcCmd, NULL, NULL);
 
 	// sasfit extrapol
 	Tcl_CreateCommand(interp, "sasfit_PorodFit", (Tcl_CmdProc*) Sasfit_PorodFitCmd, NULL, NULL);

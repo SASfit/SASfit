@@ -2033,6 +2033,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
        sasfit_err("OZ algorithm was interrupted by user.\n");
        return TCL_ERROR;
    }
+   return TCL_OK;
 }
 
 int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algorithm) {
