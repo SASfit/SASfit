@@ -1,4 +1,4 @@
-0.94.7 2016-04-19
+0.94.7 2016-04-25
 - implementation of another cumulant formula for DLS
 - Bug-fix in the unit conversion routine
 - implementation of GMRES, Bi-CGStab, TFQMR and Andersen Accelarion 

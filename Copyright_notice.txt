@@ -21,3 +21,6 @@ along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
 Author(s) of this file:
   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
   Ingo Bressler (ingo@cs.tu-berlin.de)
+
+  J. Appl. Cryst. (2015). 48, 1587-1598
+  doi:10.1107/S1600576715016544
