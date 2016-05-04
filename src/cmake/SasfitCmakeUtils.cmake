@@ -405,6 +405,13 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
     get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
 
+    # applying any patches lying around in ${CURRENT_DIR}
+    execute_process(COMMAND sh -c "for fn in ../*.patch; do
+                                     echo \"Applying '$fn':\";
+                                     patch -p1 < \"$fn\";
+                                   done"
+                    WORKING_DIRECTORY ${WORK_DIR})
+
     # configure and build by appropriate script
     if(${CONFIG_FILE} STREQUAL "configure")
         run_configure(${CURRENT_DIR} "${CONFIG_OPTIONS}")
