@@ -224,7 +224,6 @@ set(SOURCE_sasfit_ff
 	cyl_rwbrush/sasfit_ff_cyl_rwbrush.c
 	cyl_rwbrush/sasfit_ff_cyl_rwbrush_nagg.c
 	cyl_rwbrush/sasfit_ff_cyl_rwbrush_rc.c
-
 	cyl_shell/sasfit_ff_cyl_shell_1.c
 	cyl_shell/sasfit_ff_cyl_shell_2.c
 	cyl_shell/utils.c
@@ -269,11 +268,9 @@ set(SOURCE_sasfit_ff
 	magnetic_shell/sasfit_ff_magnetic_shell_aniso.c
 	magnetic_shell/sasfit_ff_magnetic_shell_psi.c
 	magnetic_shell/sasfit_ff_magnetic_shell_cross.c
-
 	p_cs/sasfit_ff_Pcs_ellCylSh.c
 	p_cs/sasfit_ff_Pcs_homogeneousCyl.c
 	p_cs/sasfit_ff_Pcs_homogeneousPlanar.c
-
 	superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq.c
 	superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq_l2x_pol_albr.c
 	superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo2.c
@@ -320,7 +317,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_Robertus1.c
 	sasfit_ff_Robertus2.c
 	sasfit_ff_Robertus3.c
-#	rod/sasfit_ff_rod.c
 	sasfit_ff_Rod_Exp_Profile.c
 	sasfit_ff_Rod_Gauss_Profile.c
 	sasfit_ff_Rodlike_BlockCopolymerMicelle.c
@@ -379,7 +375,6 @@ set(SOURCE_sasfit_oz
 	sasfit_oz_potential_square_well.c
 	sasfit_oz_tclcmd.c
 )
-
 
 set(SOURCE_sasfit_old
 # former sasfit main
