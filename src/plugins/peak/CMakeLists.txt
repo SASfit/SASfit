@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 # the project name
-set(PRJ_NAME sasfit_peaks)
+set(PRJ_NAME sasfit_peak)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
@@ -10,8 +10,8 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_peaks_gex_amplitude.c
-	sasfit_peaks_gex_area.c
+	sasfit_peak_gex_amplitude.c
+	sasfit_peak_gex_area.c
 	interface.c
 )
 
