@@ -764,8 +764,7 @@ The special case of $\alpha=4$ corresponds to a homogeneous sphere with a scatte
 \end{align}
 By this normalisation the excess scattering length is for all $\alpha$ equal to the one of a homogeneous sphere with a scattering contrast $\Delta\eta$, i.e. $\beta_\mathrm{sp}=\Delta\eta \frac{4}{3}\pi R^3$.
 
-To get feeling which part of the spherical contributes most to the scattering ones can define
-a fractional relative excess scattering length according to \cite{Boucher1983} which reads as
+To get a feeling which part of the spherical scattering length density profile contributes most to the scattering it is convenient to define a fractional relative excess scattering length according to \cite{Boucher1983} which reads as
 \begin{align}
 Z(x) = & \frac{
             \int_{0}^{x}\! \left( 1-{\frac {{r}^{2}}{{R}^{2}}} \right) ^{\frac{\alpha}{2}-2} 4\pi\,{r}^{2}\,{\rm d}r
@@ -798,7 +797,7 @@ The scattering amplitude for the radial profile in eq.\ \ref{eq:profileBoucherSp
       &= \beta \left(\frac{2}{QR}\right)^{\frac{\alpha-1}{2}} J_{\frac{\alpha-1}{2}}(QR) \, \Gamma\left(\frac{\alpha+1}{2}\right) \nonumber \\
       &= \beta \;_0F_1\left(\frac{\alpha+1}{2};-\tfrac{(QR)^2}{4}\right)
 \end{align}
-making use of the fact that the bessel function can be expressed in terms of generalised hypergeometric functions $J_\alpha(x)=\frac{(\frac{x}{2})^\alpha}{\Gamma(\alpha+1)}  \;_0F_1 (\alpha+1; -\tfrac{x^2}{4})$. The scattering amplitude simplifies in case of $\alpha=4$ exactly the one of a homogenous spherical shell and in case of $\alpha=2$ to an infinitesimal thin spherical shell. For the scattering intensity $I(Q) = F^2(Q)$ we get in the Porod limit $Q\rightarrow\infty$
+making use of the fact that the bessel function can be expressed in terms of generalised hypergeometric functions $J_\alpha(x)=\frac{(\frac{x}{2})^\alpha}{\Gamma(\alpha+1)}  \;_0F_1 (\alpha+1; -\tfrac{x^2}{4})$. The scattering amplitude simplifies in case of $\alpha=4$ exactly the one of a homogenous sphere and in case of $\alpha=2$ to an infinitesimal thin spherical shell. For the scattering intensity $I(Q) = F^2(Q)$ we get in the Porod limit $Q\rightarrow\infty$
 \BE
  \lim_{Q\rightarrow\infty} I(Q)= \lim_{Q\rightarrow\infty}  F^2(Q) =
  \beta^2 \frac{2^{\alpha-1}}{\pi} \Gamma^2\left(\frac{\alpha+1}{2}\right) \frac{1}{(QR)^\alpha}
@@ -825,7 +824,7 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \begin{description}
 \item[\texttt{R}] radius $R$
 \item[\texttt{alpha}] shape parameter of the profile $\alpha$, which is also equal to the potential law at large $Q$-values
-\item[\texttt{Delta\_eta}] average scattering length density so that the excess scattering length corresponds to that one of a homogeneous sphere with contrast $\Delta\eta$
+\item[\texttt{Delta\_eta}] is the average scattering length density so that the excess scattering length corresponds to the one of a homogeneous sphere with contrast $\Delta\eta$
 \end{description}
 
 \noindent\underline{Note for model \texttt{BoucherSphere2} and \texttt{Boucher profile}:}

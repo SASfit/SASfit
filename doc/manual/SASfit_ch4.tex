@@ -126,6 +126,7 @@ F_\textrm{LogNorm} &=
 
 \clearpage
 \section{Schulz-Zimm (Flory) distribution}
+\label{sec:SchulzZimm}
 
 \begin{figure}[htb]
 \begin{center}
@@ -207,6 +208,7 @@ function which are special cases of the gamma distribution function.
 When $k$ is large, the gamma distribution closely approximates a normal distribution
 with the advantage that the gamma distribution has density only for positive real
 numbers. For small values of $k$ the distribution becomes a right tailed distribution.
+The gamm distribution is equivalent to the Schulz-Zimm distribution (sec.\ \ref{sec:SchulzZimm}), which is using the mean value instead of $\theta=x_\mathrm{mean}/k$ for the parametrization. Also the Pearson III \ref{sec:PearsonIIIdist} is just another name for this distribution.
 
 The $m^\text{th}$ moment $\langle X^m\rangle$ of the size distribution is given by
 \begin{align}
@@ -256,6 +258,7 @@ $\sigma > 0$}
 
 \clearpage
 \section{PearsonIII distribution}
+\label{sec:PearsonIIIdist}
 
 The Pearson distribution is a family of probability distributions
 that are a generalisation of the normal distribution. The Pearson
@@ -317,7 +320,7 @@ c_\text{Gauss} &=\sqrt{\frac{\pi}{2}}\sigma\left(1 +
 \text{erf}\left(\frac{R_0}{\sqrt{2}\sigma}\right) \right)
 \end{align}
 \end{subequations}
-$c_\text{Gauss}$ is choosen so that $\int_0^\infty\!
+$c_\text{Gauss}$ is chosen so that $\int_0^\infty\!
 \text{Gauss}(R,\sigma,R_0)\,dR = N$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -325,15 +328,32 @@ $c_\text{Gauss}$ is choosen so that $\int_0^\infty\!
 \clearpage
 \section{Generalized exponential distribution (GEX)}
 
-\begin{subequations}
+The generalised exponential distribution is a three parameter distribution.
 \begin{align}
-\text{GEX}(R,\beta,\lambda,\gamma))&= N
-\frac{\beta}{\gamma}\left(\frac{x}{\gamma}\right)^{\lambda+1}
-\frac{e^{-(x/\gamma)^{\beta}}}{\Gamma  \left( {\frac
-{\lambda+2}{\beta}} \right)}
+\text{GEX} (x,\beta,\lambda,\gamma) &= N \frac{\abs{\beta}}{\gamma} \left(\frac{x}{\gamma}\right)^{\lambda+1} 
+\frac{e^{-(x/\gamma)^\beta}}{\Gamma\left( \frac{\lambda+2}{\beta} \right)} \\
+\text{GEX}(x,\beta,p,\gamma)     &= N
+\frac{\abs{\beta}}{\gamma}\left(\frac{x}{\gamma}\right)^{p-1}
+\frac{e^{-(x/\gamma)^{\beta}}}{\Gamma  \left( {\frac{p}{\beta}} \right)}
 \end{align}
-\end{subequations}
-
+For $\lambda+2=p=\beta$ it will transform in the Weibull distribution (eq.\ \ref{eq:Weibull}). For $\beta=1$ one yields the Schulz-Zimm distribution (eq.\ \ref{eq:SZn(M)}) or the equivalent gamma distribution (eq.\ \ref{eq:GammaDistr}). In The limit $\beta \rightarrow 0$ the GEX distribution transforms into a Lognormal distribution.
+The mode $x_\mathrm{mode}$, mean $x_\mathrm{mean}$, and variance $\sigma^2$ of this distribution are given by
+\begin{align}
+x_\mathrm{mode} &= \gamma \left( \frac{\lambda+1}{\beta}\right)^\frac{1}{\beta} \\
+x_\mathrm{mean} &=
+\begin{cases}
+\gamma \Gamma\left(\frac{\lambda+3}{\beta}\right)/\Gamma\left(\frac{\lambda+2}{\beta}\right) & \mbox{for } \beta > 0 \wedge \lambda > -3 \\
+\mbox{undefined} & \mbox{otherwise}
+\end{cases} \\
+\sigma^2 &=
+\begin{cases}
+\gamma^2 \left(
+\frac{\Gamma\left(\frac{\lambda+4}{\beta}\right)}{\Gamma\left(\frac{\lambda+2}{\beta}\right)} -
+\left(\frac{\Gamma\left(\frac{\lambda+3}{\beta}\right)}{\Gamma\left(\frac{\lambda+2}{\beta}\right)}\right)^2
+\right)& \mbox{for } \beta > 0 \wedge \lambda > -3 \\
+\mbox{undefined} & \mbox{otherwise}
+\end{cases}
+\end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
@@ -458,6 +478,7 @@ $\mu \in [0,\infty)$, $\alpha > 0$, $\lambda > 0$}
 \label{fig:Weibull}
 \end{figure}
 \begin{align}
+\label{eq:Weibull}
 \text{Weibull}(R,\alpha,\lambda,\mu) =
           \frac{N \lambda}{\alpha}
           \left(\frac{R-\mu}{\alpha}\right)^{\lambda-1}

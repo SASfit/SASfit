@@ -1314,6 +1314,29 @@ proc load_sasfit_inp_file_old {AanalyticPar filename} {
 #------------------------------------------------------------------------------
 #                   Create a variable of Type ASCIIData
 #
+proc create_ALVData {ALVData} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $ALVData Data
+set Data(InputFormat) ALV-5000
+set Data(FileName) ""
+set Data(Ext) "ASC"
+set Data(in_out) "ms->s"
+set Data(xscale) 1e-3
+set Data(unit) s
+set Data(npoints) 0
+set Data(LineSkip) 0
+set Data(Comment) {}
+set Data(error) 0
+set Data(tau) {}
+set Data(g2_1) {}
+set Data(error) {}
+set Data(res) {}
+set Data(nonneg) 0
+}
+
+#------------------------------------------------------------------------------
+#                   Create a variable of Type ASCIIData
+#
 proc create_ASCIIData {ASCIIData} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $ASCIIData Data
@@ -1530,6 +1553,259 @@ proc read_Ascii {filename ASCIIData args} {
 	return 1
 }
 
+#------------------------------------------------------------------------------
+# Reads data file "filename" in ALV-format and stores the contents in ALVData
+#
+#
+# read_ALV opens the file "filename" and stores all the lines 
+# corresponding to the block "BlockName" in "ALVData($BlockName)" as a list.
+# After successfully opening the data file the array ALVData first is unset.
+# The neccessary array indeces corresponding to the different blocks in
+# the data file are automatically defined.
+#
+proc read_ALV {filename ALVData} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $ALVData Data
+if {![info exist Data]} {create_ALVData Data}
+#catch {unset Data}
+if { !([file readable $filename] && [file isfile $filename])  } {
+   return 0
+}
+set BlockName WasteBasket
+set f [open $filename r]
+
+while {![eof $f]} {
+   gets $f line
+   if { [eof $f] } {
+      close $f
+      return 1
+   }
+   set linelength [string length $line]
+   if { $linelength > 0 } {
+      set ch1st [string index $line 0]
+      if {[string compare $ch1st "-"] != 0} {
+         switch $ch1st {
+            \"      { 
+                     set tBlockname [string range $line 1 [expr $linelength-2]]
+                     set BNword [split $tBlockname]
+                     if { [string length [lindex $BNword 0] ] > 0 } {
+                        set BlockName $tBlockname 
+#[lindex $BNword 0]
+                     } else { set BlockName WasteBasket }
+	            }
+			A {
+                     set tBlockname [string range $line 0 [expr $linelength-1]]
+                     set BNword [split $tBlockname]
+                     if { [string length [lindex $BNword 0] ] > 0 } {
+					    if {[string first ALV-5000 [lindex $BNword 0]] == 0} {
+							set BlockName "ALV-5000header"
+							set Data(Type) "ALV-5000"
+						} else { lappend Data($BlockName)  "$line" }
+                     } else { set BlockName WasteBasket }
+				}
+            default { lappend Data($BlockName)  "$line" }
+        }
+     }
+   }
+}
+}
+
+#------------------------------------------------------------------------------
+#           get item "ItemName" of type "ItemType" in block "BlockName" 
+#
+# ALVData:   array containing the different blocks of a HMI data file which can
+#            be read with "read_HMI $filename HMIData"
+# BlockName: string containing the name of teh block from which an item to
+#            be read.
+# ItemName:  string containing the name of the item to be read.
+# ItemType:  item type are coded according to the following sheme
+#            w - word format (string without spaces)
+#            t - text format (string, spaces allowed)
+#            i - integer format 
+#            r - real format
+#            d - date/time format (VMS date/time string without spaces)
+#                date: dd-monthname-yy, time hh:mm:ss
+#
+# supported blocks and items:
+#
+# The default procedure is to look for the character "=" in each element of
+# the list HMIData($BlockName). If the left the string on the left side of
+# "=" (without leading and trailing white characters) is equal to $ItemName
+# the  right side will be read with in the format given in $ItemType". 
+#
+# Example file begin:
+# ALV-5000/E-WIN Data
+# ALV-5000/EPP-WIN Data
+# Date :	"04.12.2007"
+# Time :	"17:05:13"
+# Samplename : 	""
+# SampMemo(0) : 	""
+# SampMemo(1) : 	""
+# SampMemo(2) : 	""
+# SampMemo(3) : 	""
+# SampMemo(4) : 	""
+# SampMemo(5) : 	""
+# SampMemo(6) : 	""
+# SampMemo(7) : 	""
+# SampMemo(8) : 	""
+# SampMemo(9) : 	""
+# Temperature [K] :	     298.16000
+# Viscosity [cp]  :	       0.89000
+# Refractive Index:	       1.33200
+# Wavelength [nm] :	     632.80000
+# Angle [°]       :	      15.00100
+# Duration [s]    :	        60
+# Runs            :	         1
+# Mode            :	"SINGLE AUTO CH0"
+# MeanCR0 [kHz]   :	     390.12515
+# MeanCR1 [kHz]   :	       0.00000
+# 
+# "Correlation"
+#   1.25000E-004	  7.11621E-001
+#   2.50000E-004	  8.31231E-001
+#   3.75000E-004	  8.33391E-001
+#   5.00000E-004	  8.31041E-001
+#   6.25000E-004	  8.30614E-001
+# end example file
+#
+# after reading the file with read_ALV filename ALVData, the array ALVData(File)
+# contains a list with two elements "ItemName: value" 
+# the call of "ALVgetItem ALVData ALV-5000header $Temperature \[K\]$ r" returns the float value for the temperature.
+#
+# If $Blockname is not a valid array index an empty string
+# will be returned. If the item could not be found in one of the list 
+# elements of ALVData($BlockName) the procedure will return an empty string. 
+# If the item has been found everything behind the substring {$ItemName}: 
+# in the list element will be converted corresponding to the value $ItemType. 
+# Only the first occurence of {$ItemName}: will be analysed.
+#
+# For the blocks "Correlation", "Count Rate" and "StandardDeviation" the item name defines what kind of 
+# data are stored in the data file. If ItemName is not listed in the 
+# following list, the item will be treated in the default way (see above)
+# Supported items are:
+#    1.) ItemName = ALV-5000 
+#         for block name "Correlation":
+#           Varying number of lines of 2 real numbers each, separated by whitespace characters.
+#           Each line contains a data points with tau [ms], g2(tau)-1 
+#			It also looks for the blockname "StandardDeviation" in the same way and merges 
+#           the normalized correlation function with the standard deviation of it.
+#    2.) other standard ALV-formats are not supported yet
+#
+proc ALVgetItem {ALVData BlockName ItemName ItemType} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $ALVData Data
+#
+# check if $BlockName is a valid array name of ALVData
+#
+if {![string compare $BlockName [array names Data $BlockName]]==0} {
+   puts "invalid BlockName"
+   return {}
+}
+
+# 
+# check for a non-default treatment, then perform special treatment
+# and return the value otherwise perfom default treatment
+#
+
+#
+# check for one dimensional scattering data Q IQ DIQ DQ
+# columns can be separated by " ", "\t" or/and ","
+#
+
+# "Correlation", "Count Rate" and "StandardDeviation"
+if {![string compare $BlockName "Correlation"] && \
+    ![string compare $ItemName  ALV5000]} {
+   set tau        {}
+   set I          {}
+   set dI         {}
+   foreach lineC $Data($BlockName) lineE $Data(StandardDeviation) {
+      set x_ok 1
+      set x2_ok 1
+      set y_ok 1
+      set e_ok 1
+      set tmpsplitlineC [split $lineC "\t ,"]
+      set tmpsplitlineE [split $lineE "\t ,"]
+      set splitlineC {}
+      set splitlineE {}
+      foreach i $tmpsplitlineC {
+         if {[llength $i] != 0} {
+            lappend splitlineC $i
+         }
+      }
+      foreach j  $tmpsplitlineE {
+         if {[llength $j] != 0} {
+            lappend splitlineE $j
+         }
+      }
+      set x_ok [scan [lindex $splitlineC 0] "%f" x ]
+      set y_ok [scan [lindex $splitlineC 1] "%f" y ]
+      set x2_ok [scan [lindex $splitlineE 0] "%f" x2 ]
+      set e_ok [scan [lindex $splitlineE 1] "%f" sigma ]
+#
+# lines which cannot be converted are ignored (no error message)
+#
+      if {$x_ok && $y_ok && $x2_ok && $e_ok && $x == $x2} {
+	      switch $Data(in_out) {
+			"ms->s"  	{ 	set Data(xscale) 1e-3	}
+			"mus->s"  	{	set Data(xscale) 1e-6	}
+			"s->s"  	{	set Data(xscale) 1.0	}
+			default  	{	set Data(xscale) 1.0	}
+			
+		  }
+		  lappend tau   [expr $x*$Data(xscale)]
+	      lappend I  	$y
+	      lappend dI  	$sigma
+	      lappend dtau  -1
+      }
+   }
+   
+   set CorrData {}
+   lappend CorrData $tau $I $dI $dtau
+   return $CorrData
+}
+
+#
+# default treatment
+#
+
+foreach line $Data($BlockName) {
+   set where_eq [string first : $line]
+   if {$where_eq != -1} {
+      set leftside  [string range $line 0 [expr $where_eq - 1]]
+      set rightside [string range $line [expr $where_eq + 1]  \
+                              [expr [string length $line] - 1] ]
+      set leftside [string trim $leftside]
+      set rightside [string trim $rightside]
+      if {([string compare $leftside $ItemName] == 0) &&  \
+          ([string length $rightside] > 0) } {
+#
+# evaluate right side of string "line"
+#
+         switch $ItemType {
+            w { set split_right_side [split $rightside "\t "]
+                return [lindex $split_right_side 0] }
+            t { return $rightside }
+            i { set i_ok [scan $rightside "%d" itemvalue]
+                if {$i_ok} { return $itemvalue } else { return {} }
+              }
+            r { set r_ok [scan $rightside "%f" itemvalue]
+                if {$r_ok} { return $itemvalue } else { return {} }
+              }
+            d {
+#
+# for the moment d will be treated as t, i.e. no check if $rightside is
+# really of date/time format
+#
+                return $rightside }
+            default { puts "%ALVgetItem: unknown ItemType, inform me about it"
+                      return {} }
+         }
+      } 
+   }
+}
+return {5}
+} 
+
 
 #------------------------------------------------------------------------------
 # Reads data file "filename" in HMI-format and stores the contents in HMIData
@@ -1547,7 +1823,8 @@ proc read_HMI {filename HMIData} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $HMIData Data
 
-catch {unset Data}
+# catch {unset Data}
+if {![info exist Data]} {create_ALVData Data}
 if { !([file readable $filename] && [file isfile $filename])  } {
    return 0
 }

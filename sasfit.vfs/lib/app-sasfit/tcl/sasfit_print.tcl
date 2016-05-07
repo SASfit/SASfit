@@ -796,7 +796,7 @@ frame $w.name
 frame $w.actions 
 pack $w.format $w.name $w.actions -fill both -expand yes
 set format [tk_optionMenu $w.format.format sasfit(export,actualdatatype) \
-                           Ascii csv PDH HMI]
+                           Ascii csv PDH BerSANS]
 label $w.format.label -text "File Format:"
 pack $w.format.label $w.format.format -side left -fill x
 

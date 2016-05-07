@@ -16,10 +16,9 @@ sasfit-core     (core functionality of the sasfit program,
                  not complete, in progress)
 
 Requirements: 
-- Cmake >=2.8.0 (http://www.gnu.org/software/gsl/)
-- GSL library (http://www.gnu.org/software/gsl/)
-              (for Windows: http://gnuwin32.sourceforge.net/packages/gsl.htm)
-- Tcl >=8.4 for sasfit-core
+- Cmake >=3.5.0 (http://www.gnu.org/software/gsl/)
+- C and C++ compiler (e.g. gcc)
+- standard compression software like bzip2, zip, tar, gz
 
 
 Author Information:
@@ -42,6 +41,10 @@ For license information see COPYING.txt.
 
 Documentation
 =============
+
+A paper about SASfit has been published in
+J. Appl. Cryst. (2015). 48, 1587-1598
+doi:10.1107/S1600576715016544
 
 Documentation is provided in HTML format in the directory
 <your-sasfit-source-directory>/doc/html/

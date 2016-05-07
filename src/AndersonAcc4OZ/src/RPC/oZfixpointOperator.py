@@ -67,7 +67,6 @@ class OZfixpointOperator:
       self.shieldingLengthInSigmaUnits = -1.0 #Yukawa length scale, negative value means not set
       self.interactionStrengthInKTunits = 0.0 #Yukawa energy (may be attractive or repulsive)
       self.isHardSphereAdded = False #Yukawa + HS
-      self.enforceGrandCanonicalZeroQlimit = False
       self.volumeDensity = 0.2
       self.particleDensity = self.transformVolume2ParticleNumberDensity(self.volumeDensity)
       #internal result exp(-beta u) (Default: Ideal Gas Boltzmann potential factor)
@@ -167,16 +166,7 @@ class OZfixpointOperator:
       c_new = self.update_c(G)
       c_hat = self.hankelTransform(c_new, self.Delta_r)
       #G_new = inverseHankelTransform( (rho*c_hat**2)/(1.0 - rho*c_hat) )
-      if not self.enforceGrandCanonicalZeroQlimit:
-          G_hat = c_hat/(1.0 - self.particleDensity*c_hat) - c_hat
-      else:
-          #Note that this numerical scheme is inferior to the direct one above
-          Sq = 1.0/(1.0 - self.particleDensity*c_hat)
-          #We must enforce this condition *within* the algorithm, not at the end, bc the 
-          #Fixpoint property might be killed. (Here we guarantee that both FP and GCE are fine)
-          Sq[0:10] = self.zeroQlimitOfStructureFactor #ten is random..
-          G_hat = c_hat*Sq - c_hat
-      
+      G_hat = c_hat/(1.0 - self.particleDensity*c_hat) - c_hat
       #G_hat[np.isinf(G_hat)] = 0.0; G_hat[np.isneginf(G_hat)] = 0.0; G_hat[np.isnan(G_hat)] = 0.0
       G_new = self.inverseHankelTransform(G_hat, self.Delta_r)
       #G_new[np.isinf(G_new)] = 0.0; G_new[np.isneginf(G_new)] = 0.0; G_new[np.isnan(G_new)] = 0.0
@@ -411,11 +401,6 @@ class OZfixpointOperator:
       r = self.getrArray()
       self.helperRYfunction = 1.0 - np.exp(-self.alpha*r)
 
-
-    def doEnforceGrandCanonicalZeroQlimit(self):
-      if self.isHNC or self.alpha >= 0:
-          print "Warning: Grand Canonical zero q limit only valid for PY"
-      self.enforceGrandCanonicalZeroQlimit = True
       
     #Standard getters (returning members)
     def getNumberOfRadialSamplingPoints(self):

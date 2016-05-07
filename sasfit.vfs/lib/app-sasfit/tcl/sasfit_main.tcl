@@ -228,6 +228,9 @@ source $::sasfit(tcl)/sasfit_OZ_solver.tcl
 
 sasfit_load_plugins $::sasfit(plugins)
 
+create_ALVData ALVData
+global ALVData
+
 create_ASCIIData CT
 set CT(InputFormat) xye
 #puts "reading jet color table ..."
@@ -381,17 +384,17 @@ switch $::tcl_platform(platform) {
       windows {
 		set sasfit(datatypes) { { Ascii  ".*"      } \
 		                  { BerSANS "D???????.???" } \
+						  { ALV5000  "*.ASC"} \
 		                  { All    "*"       } }
       }
       unix {
 	  set sasfit(datatypes) { { Ascii  ".*"         } \
 		                  { BerSANS ".\\[0-9\\]*" } \
+						  { ALV5000  "*.ASC"} \
                                   { All    "*"          } }
       }
    }
-#set sasfit(datatypes) { { Ascii  ".*"      } \
-#                        { BerSANS ".*" } \
-#                        { All    "*"         } }
+
 set sasfit(actualdatatype) Ascii
 #set sasfit(filename)       [list "$sasfit(datadir)/test.dat"]
 set sasfit(filename)       {}
@@ -652,6 +655,7 @@ set ask4dataser_var(simorfit) simulate
 cp_arr sasfit  addsasfit
 
 create_ASCIIData ASCIIData
+create_ALVData ALVData
 
 CreateGraphPar IQGraph
 CreateGraphPar GlobalFitIQGraph
@@ -1203,10 +1207,10 @@ proc ReadFileCmd {sasfitarray args} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # Read small angle scattering data file. Supported formats are
-# ASCII, BerSANS
+# ASCII, BerSANS ALV5000
 #
 upvar $sasfitarray ssasfit
-global ASCIIData
+global ASCIIData ALVData HMIData
 global IQGraph ResIQGraph SDGraph CollectIQGraph CollectSDGraph \
        StructParData GlobalFitIQGraph
 #
@@ -1226,8 +1230,35 @@ if { [file isfile $ssasfit(filename) ] } {
                 set ssasfit(DI_enable)  $ASCIIData(error)
                 set ssasfit(res_enable) $ASCIIData(res_available)
 				set ssasfit(res,file)   $ASCIIData(res)
+                set ssasfit(format) ASCII
+				set ssasfit(filelabel) unknown
+				set ssasfit(viscosity) 1
+				set ssasfit(angle) 90
+				set ssasfit(refractionindex) 1.33
+				set ssasfit(wavelength) 632
+				set ssasfit(temperature) 298
             }
 	    }
+      ALV5000   {
+            read_ALV $ssasfit(filename) ALVData
+            set tau_G2_E_dtau [ALVgetItem ALVData Correlation ALV5000 y]
+            set npoints [llength [lindex $tau_G2_E_dtau 0]]
+			if {$npoints > 0} {
+		        dr ::data_redu 0 ssasfit $npoints [lindex $tau_G2_E_dtau 0] [lindex $tau_G2_E_dtau 1] [lindex $tau_G2_E_dtau 2]  [lindex $tau_G2_E_dtau 3] [lindex $tau_G2_E_dtau 3] [lindex $tau_G2_E_dtau 3]
+				set error no
+                set ssasfit(I_enable)   1
+                set ssasfit(DI_enable)  1
+                set ssasfit(res_enable) 1
+                set ssasfit(format) ALV5000
+				set ssasfit(filelabel) [ALVgetItem ALVData "ALV-5000header" Samplename t]
+				set ssasfit(viscosity) [ALVgetItem ALVData "ALV-5000header" "Viscosity \[cp\]" r]
+				set ssasfit(angle) [ALVgetItem ALVData "ALV-5000header" "Angle \[°\]" r]
+				set ssasfit(refractionindex) [ALVgetItem ALVData "ALV-5000header" "Refractive Index" r]
+				set ssasfit(wavelength) [ALVgetItem ALVData "ALV-5000header" "Wavelength \[nm\]" r]
+				set ssasfit(temperature) [ALVgetItem ALVData "ALV-5000header" "Temperature \[K\]" r]
+				
+			}
+		}
       BerSANS   {
             read_HMI $ssasfit(filename) HMIData
             set Q_IQ_E_DQ [HMIgetItem HMIData Counts SANSDIso y]
@@ -1238,8 +1269,14 @@ if { [file isfile $ssasfit(filename) ] } {
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  1
                 set ssasfit(res_enable) 1
-#                set ssasfit(res,file) [lindex $Q_IQ_E_DQ 3] 
+                set ssasfit(format) BerSANS 
 			}
+			set ssasfit(filelabel) [HMIgetItem HMIData Sample SampleName t]
+			set ssasfit(viscosity) 1
+			set ssasfit(angle) 90
+			set ssasfit(refractionindex) 1.33
+			set ssasfit(wavelength) 632
+			set ssasfit(temperature) 298
 		}
 	}
 
@@ -1300,6 +1337,13 @@ if {$ASCIIData(npoints) > 0} {
     set ssasfit(I_enable)   1
     set ssasfit(DI_enable)  $ASCIIData(error)
     set ssasfit(res_enable) $ASCIIData(res_available)
+    set ssasfit(format) ASCII
+	set ssasfit(filelabel) unknown
+	set ssasfit(viscosity) 1
+	set ssasfit(angle) 90
+	set ssasfit(refractionindex) 1.33
+	set ssasfit(wavelength) 632
+	set ssasfit(temperature) 298
 }
 
 if {[llength $args] == 0} {
@@ -1438,6 +1482,26 @@ set sasfit(actualdatatype) $Type
 }
 
 #------------------------------------------------------------------------------
+#                  apply options for reading ALV data
+#
+proc applyALVOptionsCmd {tmpALVData parent} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	global ALVData
+	upvar $tmpALVData Data
+	if { ![string is integer -strict $Data(LineSkip)] || $Data(LineSkip) < 0 
+	} {
+		tk_messageBox -parent $parent \
+			-message "\"lines to skip\" must be an positive integer value"
+		return 0
+	}
+	set ALVData(InputFormat) $Data(InputFormat)
+	set ALVData(Ext) $Data(Ext)
+	set ALVData(LineSkip) $Data(LineSkip)
+	set ALVData(in_out) $Data(in_out)
+	return 1
+}
+
+#------------------------------------------------------------------------------
 #                  apply options for reading ASCII data
 #
 proc applyAsciiOptionsCmd {tmpASCIIData parent} {
@@ -1542,6 +1606,72 @@ proc AsciiOptionsCmd {} {
 			  -command "if {\[applyAsciiOptionsCmd tmpASCIIData $w\]} {
 					destroy $w}"
 	button $w.lay2.apply -text Apply -command "applyAsciiOptionsCmd tmpASCIIData $w" \
+	       -highlightthickness 0
+	button $w.lay2.cancel -text Cancel -command "destroy $w" \
+	       -highlightthickness 0
+	pack $w.lay2.ok $w.lay2.apply  $w.lay2.cancel \
+	     -side left  -fill x -padx 4
+	pack $w.lay1  $w.lay2  -pady 4
+	data_redu_menu $w 0
+	if {[winfo exists $w.lay11]} {
+		pack $w.lay11 -after $w.lay1 -before $w.lay2
+	}
+}
+
+
+proc ALVOptionsCmd {} {
+#^^^^^^^^^^^^^^^^^^^^^^^^
+	global ALVData
+	global tmpALVData
+	cp_arr ALVData tmpALVData
+	set w .alvoptions
+	if {[winfo exists $w]} {destroy $w}
+	toplevel $w
+	wm geometry $w 
+	wm title $w "ALV Options"
+	raise $w
+	focus $w
+	grab $w
+	frame $w.lay1 -relief solid -borderwidth 1
+	frame $w.lay1.a
+	frame $w.lay1.b
+	frame $w.lay2
+	frame $w.lay1.a.if
+	frame $w.lay1.a.ls
+	frame $w.lay1.a.ext
+	frame $w.lay1.a.uc
+	frame $w.lay1.a.nonneg
+
+	label $w.lay1.a.if.label -text "input format:" -highlightthickness 0
+	tk_optionMenu $w.lay1.a.if.entry  tmpALVData(InputFormat) "ALV-5000" 
+	pack $w.lay1.a.if.entry $w.lay1.a.if.label -side right 
+
+	label $w.lay1.a.ls.label -text "lines to skip:" -highlightthickness 0
+	entry $w.lay1.a.ls.entry -width 6 -relief sunken \
+					  -textvariable tmpALVData(LineSkip) \
+					  -highlightthickness 0
+	pack $w.lay1.a.ls.entry $w.lay1.a.ls.label -side right
+
+	label $w.lay1.a.ext.label -text "file extension:" -highlightthickness 0
+	entry $w.lay1.a.ext.entry -width 6 -relief sunken \
+					  -textvariable tmpALVData(Ext) \
+					  -highlightthickness 0
+	pack $w.lay1.a.ext.entry $w.lay1.a.ext.label -side right
+
+	label $w.lay1.a.uc.label -text "unit conversion:" -highlightthickness 0 
+	tk_optionMenu $w.lay1.a.uc.inu  tmpALVData(in_out) "mus->s" "ms->s" "s->s" 
+	pack $w.lay1.a.uc.label $w.lay1.a.uc.inu \
+	     -side left
+		 
+	label $w.lay1.b.tmp -text " "
+	pack $w.lay1.b.tmp -side left -fill x
+	pack $w.lay1.a.if $w.lay1.a.ls $w.lay1.a.ext $w.lay1.a.uc  $w.lay1.a.nonneg -fill x -pady 4
+	pack $w.lay1.a $w.lay1.b -side left -fill x
+
+	button $w.lay2.ok -text OK -highlightthickness 0 \
+			  -command "if {\[applyALVOptionsCmd tmpALVData $w\]} {
+					destroy $w}"
+	button $w.lay2.apply -text Apply -command "applyALVOptionsCmd tmpALVData $w" \
 	       -highlightthickness 0
 	button $w.lay2.cancel -text Cancel -command "destroy $w" \
 	       -highlightthickness 0
@@ -1720,6 +1850,7 @@ proc ReadOptionsCmd {} {
 	switch $sasfit(actualdatatype) {
 		Ascii {AsciiOptionsCmd}
 		BerSANS {HMIOptionsCmd}
+		ALV5000 {ALVOptionsCmd} 
 	}
 }
 
@@ -1742,7 +1873,7 @@ proc NewCmd {} {
 	frame .openfile.layout2
 	frame .openfile.layout3
 
-	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii BerSANS]
+	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii BerSANS ALV5000]
 
 	.openfile.layout1.format configure -highlightthickness 0
 	label .openfile.layout1.label -text "File Format:" -highlightthickness 0
@@ -2140,7 +2271,7 @@ proc MergeCmd {} {
 	pack  .addfile.lay2 -fill both -expand yes
 	frame .addfile.layout3
 
-	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii BerSANS]
+	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii BerSANS ALV5000]
 
 	$w.layout1.format configure -highlightthickness 0
 	label $w.layout1.label -text "File Format:" \

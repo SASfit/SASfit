@@ -8,11 +8,11 @@ https://intranet.psi.ch/AIT/AAA4OZ
 
 All you need to experiment with the code is an instance of the solver class, e.g:
 
-solver = ScipyAndersonOZsolver(port = 0)
-solver.setPotentialByName('HardSphere')
-solver.setVolumeDensity(0.4)
-solver.solve()
-radialDistributionFunction = solver.getRDF()
+solver = ScipyAndersonOZsolver(port = 0)<br />
+solver.setPotentialByName('HardSphere')<br />
+solver.setVolumeDensity(0.4)<br />
+solver.solve()<br />
+radialDistributionFunction = solver.getRDF()<br />
 
 ## Motivation
 
@@ -30,6 +30,11 @@ To solver class can be used locally or remotely via RPC API.
 ## Tests
 
 In the RPC dir, there are various unit tests.
+
+## Parallel Computing
+
+You can start multiple workers, send them jobs and collect the results via RPC.
+Only trivial parallelization is implemented. (OZ step remains serial).
 
 ## Contributors
 

@@ -1,3 +1,6 @@
+0.94.8 2016-MM-DD
+- reading ascii data from ALV-5000 for DLS-analysis
+
 0.94.7 2016-04-25
 - implementation of another cumulant formula for DLS
 - Bug-fix in the unit conversion routine
