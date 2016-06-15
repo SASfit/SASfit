@@ -62,9 +62,9 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 	static scalar gMSAWave[17];
 	scalar RHS, Z, eta, T, salt, epsilon_r;
 		
-	scalar Elcharge=1.60217653e-19;		// electron charge in Coulombs (C)
-	scalar kB=1.380662e-23;				// Boltzman constant in J/K
-	scalar FrSpPerm=8.85418782E-12;		//Permittivity of free space in C^2/(N m^2)
+	scalar Elcharge=1.6021766208e-19;		// electron charge in Coulombs (C)
+	scalar kB=1.38064852e-23;				// Boltzman constant in J/K
+	scalar FrSpPerm=8.854187817E-12;		//Permittivity of free space in C^2/(N m^2)
 
 	scalar SofQ, QQ, Qdiam;
 //	scalar gammaek;

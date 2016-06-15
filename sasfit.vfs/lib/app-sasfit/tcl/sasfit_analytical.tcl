@@ -13085,6 +13085,14 @@ if {$simulate && [winfo exists $w.adj.calc]} {
 	}
 }
 
+proc setIQorGz2int {} {
+	switch $::FitPrecision(IQorGz) {
+		"I(Q)" {set ::FitPrecision(IQorGz_int) 0}
+		"G(z)" {set ::FitPrecision(IQorGz_int) 1}
+		default {set ::FitPrecision(IQorGz_int) 0}
+	}
+}
+
 proc analytical_widgets_bottom { w simulate isGlobal
 } {
 	frame $w.adj -relief groove -borderwidth 1
@@ -13095,7 +13103,12 @@ proc analytical_widgets_bottom { w simulate isGlobal
 	message [quick_message_window] -text "" \
 		-justify left -width 350 -anchor w
 	pack [quick_message_window] -side left -fill x
-
+	
+	ComboBox $w.adj.iq_gz -values {"I(Q)" "G(z)"} \
+				-width 5 \
+				-textvariable ::FitPrecision(IQorGz) \
+				-label "calc." \
+				-modifycmd setIQorGz2int
 	if { ! $simulate
 	} {
 		button $w.adj.calc -text "Apply" -highlightthickness 0 \
@@ -13111,6 +13124,7 @@ proc analytical_widgets_bottom { w simulate isGlobal
 			-textvariable ::addsasfit(maxIterations)
 		pack $w.adj.run $w.adj.step $w.adj.calc \
 			$w.adj.maxIterEntry $w.adj.maxIterLabel \
+			$w.adj.iq_gz \
 			-padx 1m -pady 1m -side right
 	} else {
 		.analytical.whichSD.fitcalc.fit configure -state disabled
@@ -13154,6 +13168,7 @@ proc analytical_widgets_bottom { w simulate isGlobal
 		     $w.adj.qmin $w.adj.qmintxt \
 		     $w.adj.qmax $w.adj.qmaxtxt \
 		     $w.adj.qN $w.adj.qNtxt \
+			 $w.adj.iq_gz \
 		     -padx 1m -pady 1m -side right
 	}
         bind $w <KeyPress-Return> "$w.adj.calc invoke"

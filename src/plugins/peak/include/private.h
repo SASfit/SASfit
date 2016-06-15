@@ -4,8 +4,8 @@
  *   8th of May 2016
  */
 
-#ifndef PEAKS_PRIVATE_H
-#define PEAKS_PRIVATE_H
+#ifndef PEAK_PRIVATE_H
+#define PEAK_PRIVATE_H
 
 /*
  * Header file for the implementation of the form factor itself.
@@ -31,7 +31,7 @@
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_peaks.h"
+#include "sasfit_peak.h"
 
 //
 // add local defines here:

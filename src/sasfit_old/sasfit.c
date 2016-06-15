@@ -75,6 +75,7 @@
 
 
 
+class SASFITqrombIQ;
 typedef enum {
 	LogNorm,
 	BiLogNorm,
@@ -2142,6 +2143,16 @@ void copyGAP(sasfit_analytpar *fromGAP,sasfit_analytpar *toGAP)
    return;
 }
 
+scalar test(scalar x,scalar* a, Tcl_Interp *interp) {
+    return exp(-x*x);
+}
+
+void int_test(void) {
+    scalar a;
+    a=2;
+    sasfit_integrate(0,GSL_POSINF,&test,&a);
+}
+
 void IQ_Global(Tcl_Interp *interp,
 	    float Q,
 	  	float Qres,
@@ -2196,7 +2207,7 @@ void IQ_Global(Tcl_Interp *interp,
 		} else {
 			Qmin = Q-3.0*Qres;
 		}
-		Qmax = Q+7*Qres;
+		Qmax = Q+3*Qres;
 		SASFITqrombIQglobal(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
 	}
 	Tcl_Free((char *)tmpGAP);

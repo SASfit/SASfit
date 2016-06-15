@@ -40,7 +40,7 @@
 /* ################ start peak_gex_amplitude ################ */
 /** 
  * \defgroup peak_gex_amplitude GEX Amplitude
- * \ingroup peak_peak_amplitudes
+ * \ingroup ff_peak_amplitudes
  *
  * \brief \<some brief description of GEX Amplitude function\>
  *
@@ -75,23 +75,23 @@
 sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_gex_amplitude
+ * \ingroup peak_gex_amplitude
  *
  * \sa sasfit_peak.h, ff_peak_amplitudes
  */
-sasfit_peak_DLLEXP scalar sasfit_ff_gex_amplitude_f(scalar q, sasfit_param * p);
+sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_gex_amplitude
+ * \ingroup peak_gex_amplitude
  *
  * \sa sasfit_peak.h, ff_peak_amplitudes
  */
-sasfit_peak_DLLEXP scalar sasfit_ff_gex_amplitude_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_gex_amplitude ################ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gex_amplitude ################ */
 
-/* ################ start ff_gex_area ################ */
+/* ################ start peak_gex_area ################ */
 /** 
- * \defgroup ff_gex_area GEX Area
+ * \defgroup peak_gex_area GEX Area
  * \ingroup ff_peak_area
  *
  * \brief \<some brief description of GEX Area function\>
@@ -120,26 +120,26 @@ sasfit_peak_DLLEXP scalar sasfit_ff_gex_amplitude_v(scalar q, sasfit_param * p, 
  */
 
 /**
- * \ingroup ff_gex_area
+ * \ingroup peak`_gex_area
  *
  * \sa sasfit_peak.h, ff_peak_area
  */
-sasfit_peak_DLLEXP scalar sasfit_ff_gex_area(scalar q, sasfit_param * p);
+sasfit_peak_DLLEXP scalar sasfit_peak_gex_area(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_gex_area
+ * \ingroup peak_gex_area
  *
  * \sa sasfit_peak.h, ff_peak_area
  */
-sasfit_peak_DLLEXP scalar sasfit_ff_gex_area_f(scalar q, sasfit_param * p);
+sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_gex_area
+ * \ingroup peak_gex_area
  *
  * \sa sasfit_peak.h, ff_peak_area
  */
-sasfit_peak_DLLEXP scalar sasfit_ff_gex_area_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_gex_area ################ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gex_area ################ */
 
 
 #endif // this file

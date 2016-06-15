@@ -9,8 +9,8 @@
 
 // functions to mark for export
 SASFIT_PLUGIN_EXP_BEGIN(2)
-SASFIT_PLUGIN_EXP_ADD( peaks_gex_amplitude )
-SASFIT_PLUGIN_EXP_ADD( peaks_gex_area )
+SASFIT_PLUGIN_EXP_ADD( peak_gex_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_gex_area )
 
 SASFIT_PLUGIN_EXP_END
 

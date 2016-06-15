@@ -77,6 +77,14 @@ sasfit_common_DLLEXP
 scalar sasfit_eps_get_comp(void) {
 	return sasfit_eps.comparison;
 }
+sasfit_common_DLLEXP 
+void sasfit_set_iq_or_gz(int value) {
+	sasfit_eps.iq_or_gz = value;
+}
+sasfit_common_DLLEXP 
+int sasfit_get_iq_or_gz(void) {
+	return sasfit_eps.iq_or_gz;
+}
 
 sasfit_common_DLLEXP 
 void sasfit_eps_set_aniso(scalar value) {

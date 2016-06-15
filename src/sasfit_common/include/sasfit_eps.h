@@ -54,6 +54,7 @@ typedef struct
 	scalar  nriq;
 	int     jmax_nriq;
 	int     sq_or_iq;
+    int     iq_or_gz;
 	int     robertus_p;
 	int     iter_4_mc;
 	int     fitorsim;
@@ -91,6 +92,7 @@ sasfit_common_DLLEXP scalar sasfit_eps_get_h(void);
  * Returns comparison tolerance for equality definition of floats.
  */
 sasfit_common_DLLEXP scalar sasfit_eps_get_comp(void);
+sasfit_common_DLLEXP int sasfit_get_iq_or_gz(void);
 
 sasfit_common_DLLEXP void sasfit_eps_set_aniso(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_jmax_aniso(int value);
@@ -104,6 +106,7 @@ sasfit_common_DLLEXP void sasfit_eps_set_iter_4_mc(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_fitorsim(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_h(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_comp(scalar value);
+sasfit_common_DLLEXP void sasfit_set_iq_or_gz(int value);
 
 /**
  * \ingroup sasfit_eps

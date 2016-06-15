@@ -116,8 +116,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_eps_set_fitorsim, /* 72 */
 	sasfit_eps_set_h, /* 73 */
 	sasfit_eps_set_comp, /* 74 */
-	NULL, /* 75 */
-	NULL, /* 76 */
+	sasfit_set_iq_or_gz, /* 75 */
+	sasfit_get_iq_or_gz, /* 76 */
 	NULL, /* 77 */
 	NULL, /* 78 */
 	sasfit_sd_LogNorm, /* 79 */
