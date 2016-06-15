@@ -78,16 +78,17 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
 endforeach()
 
 # build zip/tar archive
+set(CPackConfigPattern "\\\\\"[^\"]+\\\\\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-	"CPACK_PACKAGE_FILE_NAME \\\\\"[^\"]+\\\\\""
+        "CPACK_PACKAGE_FILE_NAME ${CPackConfigPattern}"
 	"CPACK_PACKAGE_FILE_NAME \"${PCKG_DIR_NAME}\""
 )
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-	"CPACK_CMAKE_GENERATOR \\\\\"[^\"]+\\\\\""
+        "CPACK_CMAKE_GENERATOR ${CPackConfigPattern}"
 	"CPACK_CMAKE_GENERATOR \"${CM_GEN}\""
 )
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-	"CPACK_INSTALLED_DIRECTORIES \\\\\"[^\"]+\\\\\""
+        "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
 	"CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\\;.\""
 )
 execute_process(COMMAND cpack --config "${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake"
@@ -96,6 +97,19 @@ execute_process(COMMAND cpack --config "${SASFIT_ROOT_DIR}/src/cmake/CPackConfig
 		RESULT_VARIABLE CPACK_RES
 		OUTPUT_VARIABLE CPACK_OUT
 		ERROR_VARIABLE CPACK_OUT
+)
+# restore default values in CPackConfig.cmake; prevents changes from being tracked by git
+replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
+        "CPACK_PACKAGE_FILE_NAME ${CPackConfigPattern}"
+	"CPACK_PACKAGE_FILE_NAME \"\""
+)
+replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
+        "CPACK_CMAKE_GENERATOR ${CPackConfigPattern}"
+	"CPACK_CMAKE_GENERATOR \"\""
+)
+replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
+        "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
+	"CPACK_INSTALLED_DIRECTORIES \"\""
 )
 message("${CPACK_RES}${CPACK_OUT}")
 
