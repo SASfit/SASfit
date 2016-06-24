@@ -132,6 +132,36 @@ struct sasfit_CData {
 };
 typedef struct sasfit_CData sasfit_cdata;
 
+
+struct GzIntStruct {
+        Tcl_Interp *interp;
+	    scalar z;
+        scalar *par;
+        scalar *Ifit;
+		scalar *Isub;
+        scalar *dydpar;
+        int   max_SD;
+        sasfit_analytpar *AP;
+        int   error_type;
+        bool  *error;
+};
+typedef struct GzIntStruct sasfit_GzIntStruct;
+
+struct GlobalGzIntStruct {
+        Tcl_Interp *interp;
+	    scalar z;
+        scalar *par;
+        scalar *Ifit;
+		scalar *Isub;
+        scalar *dydpar;
+        int   max_SD;
+        sasfit_analytpar *GAP;
+        sasfit_commonpar *GCP;
+        int   error_type;
+        bool  *error;
+};
+typedef struct GlobalGzIntStruct sasfit_GlobalGzIntStruct;
+
 /**
  * Allocates and initializes an array of sasfit_analytpar structures.
  * @param AParr Pointer to an array of sasfit_analytpar, will be freed if not 0.

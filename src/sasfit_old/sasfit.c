@@ -46,6 +46,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef MACOSX
+#include <sys/malloc.h>
+#else
+#include <malloc.h>
+#endif
+
 #include <sasfit_sd.h>
 #include <sasfit_sq.h>
 
@@ -56,6 +62,7 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_multifit.h>
 #include <gsl/gsl_errno.h>
+#include <gsl/gsl_integration.h>
 
 #include "include/sasfit.h"
 #include "include/SASFIT_nr.h"
@@ -75,7 +82,7 @@
 
 
 
-class SASFITqrombIQ;
+
 typedef enum {
 	LogNorm,
 	BiLogNorm,
@@ -1530,28 +1537,98 @@ float TmpIfit,a[MAXPAR],l[MAXPAR],s[MAXPAR];
    }
 }
 
+
+scalar HTIQ_OOURA(scalar Q, void *GIP) {
+        Tcl_Interp *interp;
+	    scalar z;
+        scalar *par;
+        scalar *Ifit;
+		scalar *Isub;
+        scalar *dydpar;
+        int   max_SD;
+        sasfit_analytpar *AP;
+        int   error_type;
+        bool  *error;
+        
+        interp = (( sasfit_GzIntStruct *) GIP)->interp;
+        z = (( sasfit_GzIntStruct *) GIP)->z;
+        par = (( sasfit_GzIntStruct *) GIP)->par;
+        Ifit = (( sasfit_GzIntStruct *) GIP)->Ifit;
+        Isub = (( sasfit_GzIntStruct *) GIP)->Isub;
+        dydpar = (( sasfit_GzIntStruct *) GIP)->dydpar;
+        max_SD = (( sasfit_GzIntStruct *) GIP)->max_SD;
+        AP = (( sasfit_GzIntStruct *) GIP)->AP;
+        error_type = ((sasfit_GzIntStruct *) GIP)->error_type;
+        error = (( sasfit_GzIntStruct *) GIP)->error;
+        IQ_t(interp,Q,par,Ifit,Isub,dydpar,max_SD,AP,error_type,error);
+        if (*error) return 0;
+        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
+        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;
+        return (*Ifit)*Q*bessj0(Q*z);
+}
+
+scalar HTIQ_Global_OOURA(scalar Q, void *GIP_Global) {
+        Tcl_Interp *interp;
+	    scalar z;
+        scalar *par;
+        scalar *Ifit;
+		scalar *Isub;
+        scalar *dydpar;
+        int   max_SD;
+        sasfit_analytpar *GAP;
+        sasfit_commonpar *GCP;
+        int   error_type;
+        bool  *error;
+        
+        interp = (( sasfit_GlobalGzIntStruct *) GIP_Global)->interp;
+        z = (( sasfit_GlobalGzIntStruct *) GIP_Global)->z;
+        par = (( sasfit_GlobalGzIntStruct *) GIP_Global)->par;
+        Ifit = (( sasfit_GlobalGzIntStruct *) GIP_Global)->Ifit;
+        Isub = (( sasfit_GlobalGzIntStruct *) GIP_Global)->Isub;
+        dydpar = (( sasfit_GlobalGzIntStruct *) GIP_Global)->dydpar;
+        max_SD = (( sasfit_GlobalGzIntStruct *) GIP_Global)->max_SD;
+        GAP = (( sasfit_GlobalGzIntStruct *) GIP_Global)->GAP;
+        GCP = (( sasfit_GlobalGzIntStruct *) GIP_Global)->GCP;
+        error_type = ((sasfit_GlobalGzIntStruct *) GIP_Global)->error_type;
+        error = (( sasfit_GlobalGzIntStruct *) GIP_Global)->error;
+        IQ_t_global(interp,Q,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,error);
+        if (*error) return 0;
+        *((( sasfit_GlobalGzIntStruct *)GIP_Global)->Ifit) = *Ifit;
+        *((( sasfit_GlobalGzIntStruct *)GIP_Global)->Isub) = *Isub;
+        return (*Ifit)*Q*bessj0(Q*z);
+}
+
 void IQ(Tcl_Interp *interp,
-	    float Q,
-	  	float Qres,
-        float *par,
-        float *Ifit,
-		float *Isubstract,
-        float *dydpar,
+	    scalar Q,
+	  	scalar Qres,
+        scalar *par,
+        scalar *Ifit,
+		scalar *Isub,
+        scalar *dydpar,
         int   max_SD,
         sasfit_analytpar *AP,
         int   error_type,
 		int   Nthdataset,
         bool  *error)
 {
-	int i,DLS;
+	int i,kk, DLS;
     sasfit_analytpar *tmpAP;
 	sasfit_analytpar *APdummy;
-	float SUM,SUMres,Qmin,Qmax;
-
+	scalar Qmin,Qmax, Xi, Xisub;
+    gsl_integration_workspace * w;
+    gsl_integration_workspace * wc;
+    gsl_integration_qawo_table * wo;
+    int status;
+    int lenaw;
+    scalar *aw;
+    scalar Gz, err;
+    scalar res0to8, res8toInftyCoSine, res8toInftySine, abserr;
+    gsl_function intF;
+    sasfit_GzIntStruct GIP;
+    
+            
     *Ifit = 0.0;
-	*Isubstract = 0.0;
-	SUM = 0.0;
-	SUMres = 0.0;
+	*Isub = 0.0;
     DLS = 0;
 
 	tmpAP = (sasfit_analytpar *) Tcl_Alloc(sizeof(sasfit_analytpar)*max_SD);
@@ -1570,19 +1647,73 @@ void IQ(Tcl_Interp *interp,
 		}
 
 	}
-
-	if (Qres <= 0.0) {
-		IQ_t(interp,Q,par,Ifit,Isubstract,dydpar,max_SD,tmpAP,error_type,error);
-	} else {
-        if (Q-3.0*Qres<=0.0) {
-			Qmin = 1.0e-6;
-		} else {
-			Qmin = Q-3.0*Qres;
-		}
-		Qmax = Q+3*Qres;
-		SASFITqrombIQ(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isubstract,dydpar,max_SD,tmpAP,error_type,error);
-	}
-    if (DLS==max_SD) *Ifit = (*Ifit)*(*Ifit);
+    switch (sasfit_get_iq_or_gz()) {
+        case 0:
+        {
+            if (Qres <= 0.0) {
+                IQ_t(interp,Q,par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
+            } else {
+                if (Q-3.0*Qres<=0.0) {
+                    Qmin = 1.0e-6;
+                } else {
+                Qmin = Q-3.0*Qres;
+            }
+            Qmax = Q+3*Qres;
+            SASFITqrombIQ(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
+            }
+            if (DLS==max_SD) *Ifit = (*Ifit)*(*Ifit);
+            break;
+        }
+        case 1:
+        {           
+            lenaw=4000;
+            aw = (double *)malloc((lenaw)*sizeof(double));
+            for (i=0;i<lenaw;i++) aw[i]=0;
+            
+            GIP.interp=interp;
+            GIP.par = par;
+            GIP.Ifit=Ifit;
+            GIP.Isub=Isub;
+            GIP.dydpar = dydpar;
+            GIP.max_SD = max_SD;
+            GIP.AP = tmpAP;
+            GIP.error_type=error_type;
+            GIP.error=error;
+            
+ 
+            GIP.z = 0;
+            sasfit_intdeiini(lenaw, 1.0e-307, sasfit_eps_get_nriq(), aw);
+            sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Xi, &err,&GIP);
+            
+            for (i=0;i<lenaw;i++) aw[i]=0;
+            GIP.z = Q;
+            sasfit_intdeoini(lenaw, 1.0e-307, sasfit_eps_get_nriq(), aw);
+            sasfit_intdeo(&HTIQ_OOURA, 0.0, GIP.z, aw, &Gz, &err,&GIP);
+            
+            *Ifit= 1.0*Gz/Xi;
+            free(aw) ;
+            break;
+        }
+        case 2: 
+        {
+            SASFITqromoGz(interp,0,GSL_POSINF,0,Qres,par,&Xi,&Xisub,dydpar,max_SD,tmpAP,error_type,error);
+            SASFITqromoGz(interp,0,GSL_POSINF,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
+            *Ifit=*Ifit/Xi;
+            *Isub=*Isub/Xi;
+            for (i=0;i<max_SD;i++) {
+                for (kk=0;kk<(3*MAXPAR);kk++) {
+                    dydpar[i*(3*MAXPAR)+kk] = dydpar[i*(3*MAXPAR)+kk]/Xi;
+                }
+            }
+            break;
+        }
+        default: 
+        {
+            sasfit_err("This should not happen. Contact developer. (unknown return value for sasfit_get_iq_or_gz())\n");
+            break;
+        }
+    }
+    
 	Tcl_Free((char *)tmpAP);
 	Tcl_Free((char *)APdummy);
     return;
@@ -2143,7 +2274,8 @@ void copyGAP(sasfit_analytpar *fromGAP,sasfit_analytpar *toGAP)
    return;
 }
 
-scalar test(scalar x,scalar* a, Tcl_Interp *interp) {
+/*
+ * scalar test(scalar x,scalar* a, Tcl_Interp *interp) {
     return exp(-x*x);
 }
 
@@ -2152,14 +2284,15 @@ void int_test(void) {
     a=2;
     sasfit_integrate(0,GSL_POSINF,&test,&a);
 }
+*/
 
 void IQ_Global(Tcl_Interp *interp,
-	    float Q,
-	  	float Qres,
-        float *par,
-        float *Ifit,
-		float *Isub,
-        float *dydpar,
+	    scalar Q,
+	  	scalar Qres,
+        scalar *par,
+        scalar *Ifit,
+		scalar *Isub,
+        scalar *dydpar,
         int   max_SD,
         sasfit_analytpar *GAP,
 		sasfit_commonpar *GCP,
@@ -2167,15 +2300,14 @@ void IQ_Global(Tcl_Interp *interp,
 		int   Nthdataset,
         bool  *error)
 {
-	int i,j;
+	int i,j,kk;
+    scalar Xi;
     sasfit_analytpar *tmpGAP;
 	sasfit_analytpar *GAPdummy;
-	float SUM,SUMres,Qmin,Qmax;
-
+	scalar Qmin,Qmax;
+ 
     *Ifit = 0.0;
 	*Isub = 0.0;
-	SUM = 0.0;
-	SUMres = 0.0;
 
 
 	tmpGAP = (sasfit_analytpar *) Tcl_Alloc(sizeof(sasfit_analytpar)*max_SD);
@@ -2199,19 +2331,43 @@ void IQ_Global(Tcl_Interp *interp,
 	}
 
 
-	if (Qres <= 0.0) {
-		IQ_t_global(interp,Q,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
-	} else {
-        if (Q-3.0*Qres<=0.0) {
-			Qmin = 1.0e-6;
-		} else {
-			Qmin = Q-3.0*Qres;
-		}
-		Qmax = Q+3*Qres;
-		SASFITqrombIQglobal(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
-	}
-	Tcl_Free((char *)tmpGAP);
-	Tcl_Free((char *)GAPdummy);
+    switch (sasfit_get_iq_or_gz()) {
+        case 0:
+        {
+            if (Qres <= 0.0) {
+                IQ_t_global(interp,Q,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
+            } else {
+                if (Q-3.0*Qres<=0.0) {
+                    Qmin = 1.0e-6;
+                } else {
+                Qmin = Q-3.0*Qres;
+            }
+            Qmax = Q+3*Qres;
+            SASFITqrombIQglobal(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
+            }
+            break;
+        }
+        case 1: 
+        {
+            SASFITqromoGlobalGz(interp,0,GSL_POSINF,0,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
+            SASFITqromoGlobalGz(interp,0,GSL_POSINF,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
+            *Ifit=*Ifit/Xi;
+            *Isub=*Isub/Xi;
+            for (i=0;i<max_SD;i++) {
+                for (kk=0;kk<(3*MAXPAR);kk++) {
+                    dydpar[i*(3*MAXPAR)+kk] = dydpar[i*(3*MAXPAR)+kk]/Xi;
+                }
+            }
+            break;
+        }
+        default: 
+        {
+            sasfit_err("This should not happen. Contact developer. (unknown return value for sasfit_get_iq_or_gz())\n");
+            break;
+        }
+    }
+    Tcl_Free((char *)tmpGAP);
+    Tcl_Free((char *)GAPdummy);
     return;
 }
 

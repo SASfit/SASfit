@@ -46,6 +46,7 @@ set(SOURCE_sasfit_common
 	sasfit_utils.c
 	sasfit_trapzd.c
 	sasfit_integrate.c
+	sasfit_intDE2.c
 	sasfit_mem.c
 	sasfit_message.c
 	sasfit_function.c

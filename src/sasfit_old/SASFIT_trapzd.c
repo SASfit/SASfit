@@ -28,7 +28,12 @@
 #include <sasfit_core.h>
 #include "include/SASFIT_nr.h"
 #include "include/sasfit.h"
+#include <gsl/gsl_sf_bessel.h>
 
+float Hankel(float q, float  x) {
+    return q*gsl_sf_bessel_J0(q*x);
+}
+ 
 
 float SASFITtrapzdNR_V_dR(Tcl_Interp* interp, 
 			  float* aa, 
@@ -354,6 +359,109 @@ float SASFITtrapzdSA_IQSQijdRj(Tcl_Interp* interp,
 }
 
 
+float SASFITmidexpGzHankel(interp,aa,bb,Q,Qres,par,Ifit,Isub,dydpar,max_SD,AP,error_type,n,error)
+Tcl_Interp	*interp;
+int			n;
+float		aa,bb,Qres,Q;
+float		*par;
+float		*Ifit;
+float		*Isub;
+float		*dydpar; 
+int			max_SD;
+sasfit_analytpar *AP;
+int			error_type;
+bool		*error;
+{
+	float x,tnm,sum,ssum,*dsum,del,ddel;
+	float t1,ts1, *dt1, tHankel;
+    float a,b,midpnt;
+	static float s,ss, *ds;
+	static int it;
+	int j,i,k;
+    dsum = dvector(0,(3*MAXPAR)*max_SD-1);
+    ds = dvector(0,(3*MAXPAR)*max_SD-1);
+	dt1 = dvector(0,(3*MAXPAR)*max_SD-1);
+    a=0;
+    b=exp(-aa);
+  	if (n == 1) {
+        x=0.5*(a+b);
+        IQ_t(interp,-log(x),par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+		if (*error) {
+			*Ifit = 0.0;
+			*Isub = 0.0;
+			free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
+			free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
+			return *Ifit;
+		}
+        tHankel=Hankel(-log(x),Q)/x;
+        t1 = (b-a)*t1*tHankel;
+		ts1 = (b-a)*ts1*tHankel;
+        for (i=0;i<max_SD;i++) {
+		    for (k=0;k<(3*MAXPAR);k++) {
+		       ds[i*(3*MAXPAR)+k] =(b-a)*dt1[i*(3*MAXPAR)+k]*tHankel;
+			}
+		}
+        s=t1;
+        ss=ts1;
+        return s;
+    } else {
+        for (it=1,j=1;j<n-1;j++) it*=3;
+        tnm=it;
+        del=(b-a)/(3.0*tnm);
+        ddel=del+del;
+        x=a+0.5*del;
+        sum=0.0;
+        ssum=0.0;
+        for (j=1;j<=it;j++) {
+            IQ_t(interp,-log(x),par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+            if (*error) {
+                *Ifit = 0.0;
+                *Isub = 0.0;
+                free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
+                free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
+                return *Ifit;
+            }
+            tHankel=Hankel(-log(x),Q)/x;
+            sum += t1*tHankel;
+            ssum += ts1*tHankel;
+            for (i=0;i<max_SD;i++) {
+                for (k=0;k<(3*MAXPAR);k++) {
+                    dsum[i*(3*MAXPAR)+k] += dt1[i*(3*MAXPAR)+k]*tHankel;
+                }   
+            }
+            x +=ddel;
+            
+            IQ_t(interp,-log(x),par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+            if (*error) {
+                *Ifit = 0.0;
+                *Isub = 0.0;
+                free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
+                free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
+                return *Ifit;
+            }
+            tHankel=Hankel(-log(x),Q)/x;
+            sum += t1*tHankel;
+            ssum += ts1*tHankel;
+            for (i=0;i<max_SD;i++) {
+                for (k=0;k<(3*MAXPAR);k++) {
+                    dsum[i*(3*MAXPAR)+k] += dt1[i*(3*MAXPAR)+k]*tHankel;
+                }   
+            }
+            x+=del;
+            
+        }
+        s=(s+(b-a)*sum/tnm)/3.0;
+        *Ifit=s;
+        *Isub=(ss+(b-a)*ssum/tnm)/3.0;
+        for (i=0;i<max_SD;i++) {
+            for (k=0;k<(3*MAXPAR);k++) {
+                dydpar[i*(3*MAXPAR)+k] = (ds[i*(3*MAXPAR)+k]+(b-a)*dsum[i*(3*MAXPAR)+k]/tnm)/3.0;
+            }   
+        }
+        return s;
+    }
+}
+
 float SASFITtrapzdIQ(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isubstract,dydpar,max_SD,AP,error_type,n,error)
 Tcl_Interp	*interp;
 int			n;
@@ -456,6 +564,96 @@ bool		*error;
 	}
 }
 
+
+float SASFITmidexpGlobalGzHankel(interp,aa,bb,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,n,error)
+Tcl_Interp	*interp;
+int			n;
+float		aa,bb,Qres,Q;
+float		*par;
+float		*Ifit;
+float		*Isub;
+float		*dydpar; 
+int			max_SD;
+sasfit_analytpar *GAP;
+sasfit_commonpar *GCP;
+int			error_type;
+bool		*error;
+{
+	float x,tnm,sum,ssum,*dsum,del,ddel;
+	float t1,ts1, *dt1, tHankel;
+    float a,b,midpnt;
+	static float s,ss, *ds;
+	static int it;
+	int j,i,k;
+    dsum = dvector(0,(3*MAXPAR)*max_SD-1);
+    ds = dvector(0,(3*MAXPAR)*max_SD-1);
+	dt1 = dvector(0,(3*MAXPAR)*max_SD-1);
+    a=0;
+    b=exp(-aa);
+  	if (n == 1) {
+        x=0.5*(a+b);
+        IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+		if (*error) {
+			*Ifit = 0.0;
+			*Isub = 0.0;
+			free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
+			free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
+			return *Ifit;
+		}
+        tHankel=Hankel(-log(x),Q)/x;
+        t1 = (b-a)*t1*tHankel;
+		ts1 = (b-a)*ts1*tHankel;
+        for (i=0;i<max_SD;i++) {
+		    for (k=0;k<(3*MAXPAR);k++) {
+		       ds[i*(3*MAXPAR)+k] =(b-a)*dt1[i*(3*MAXPAR)+k]*tHankel;
+			}
+		}
+        s=t1;
+        ss=ts1;
+        return s;
+    } else {
+        for (it=1,j=1;j<n-1;j++) it*=3;
+        tnm=it;
+        del=(b-a)/(3.0*tnm);
+        ddel=del+del;
+        x=a+0.5*del;
+        sum=0.0;
+        ssum=0.0;
+        for (j=1;j<=it;j++) {
+            IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+            tHankel=Hankel(-log(x),Q)/x;
+            sum += t1*tHankel;
+            ssum += ts1*tHankel;
+            for (i=0;i<max_SD;i++) {
+                for (k=0;k<(3*MAXPAR);k++) {
+                    dsum[i*(3*MAXPAR)+k] += dt1[i*(3*MAXPAR)+k]*tHankel;
+                }   
+            }
+            x +=ddel;
+            
+            IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+            tHankel=Hankel(-log(x),Q)/x;
+            sum += t1*tHankel;
+            ssum += ts1*tHankel;
+            for (i=0;i<max_SD;i++) {
+                for (k=0;k<(3*MAXPAR);k++) {
+                    dsum[i*(3*MAXPAR)+k] += dt1[i*(3*MAXPAR)+k]*tHankel;
+                }   
+            }
+            x+=del;
+            
+        }
+        s=(s+(b-a)*sum/tnm)/3.0;
+        *Ifit=s;
+        *Isub=(ss+(b-a)*ssum/tnm)/3.0;
+        for (i=0;i<max_SD;i++) {
+            for (k=0;k<(3*MAXPAR);k++) {
+                dydpar[i*(3*MAXPAR)+k] = (ds[i*(3*MAXPAR)+k]+(b-a)*dsum[i*(3*MAXPAR)+k]/tnm)/3.0;
+            }   
+        }
+        return s;
+    }
+}
 
 float SASFITtrapzdIQglobal(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,n,error)
 Tcl_Interp	*interp;

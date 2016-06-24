@@ -31,3 +31,6 @@ SASfit is provided "as is" and with no warranty.
 
 For license information see COPYING.txt.
 
+A paper about SASfit has been published in
+J. Appl. Cryst. (2015). 48, 1587-1598
+doi:10.1107/S1600576715016544

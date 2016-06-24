@@ -378,6 +378,7 @@ src/sasfit_common/sasfit_common.c
 src/sasfit_common/sasfit_function.c
 src/sasfit_common/sasfit_gamma.c
 src/sasfit_common/sasfit_integrate.c
+src/sasfit_common/sasfit_intDE2.c
 src/sasfit_common/sasfit_mem.c
 src/sasfit_common/sasfit_message.c
 src/sasfit_common/sasfit_timer.c

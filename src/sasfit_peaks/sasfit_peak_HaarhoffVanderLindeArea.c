@@ -29,7 +29,10 @@
 #include <float.h>
 #include "include/sasfit_peaks_utils.h"
 
+#ifndef DBL_MAX_10_EXP
 #define DBL_MAX_10_EXP 999
+#endif
+
 scalar sasfit_peak_HaarhoffVanderLindeArea(scalar x, sasfit_param * param)
 {
 	scalar y, bckgr, area, center, width, distortion;

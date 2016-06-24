@@ -1889,10 +1889,8 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
 	   sasfit_err("StructParDataFit: EP.RG == 0\n");
    } else {
        EP.intIq0 = EP.I0/EP.RG * sqrt(3.0*PI)/2.0 * 
-		           sasfit_erf(interp,EP.Qmin*EP.RG/sqrt(3.0),&error);
+		           sasfit_erf(EP.Qmin*EP.RG/sqrt(3.0));
    }
-   if (error == TRUE) return TCL_ERROR;
-
    if (EP.I0 == 0.0) {
 	   error = TRUE;
 	   sasfit_err("StructParDataFit: EP.I0 == 0\n");
@@ -2323,7 +2321,7 @@ if (error == TRUE) {
 }
 
 /*
- * The Levenberg - Marquard Minimierung wird vorl‰ufig nicht angewendet,
+ * The Levenberg - Marquard Minimierung wird vorl√§ufig nicht angewendet,
  * deshalb ist error auf TRUE gesetzt, EP.error auf 3 gesetzt und lchisq negiert 
  */
 

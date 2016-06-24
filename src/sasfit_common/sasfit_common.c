@@ -137,6 +137,24 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_3f2, /* 93 */
 	sasfit_2f1, /* 94 */
 	sasfit_pfq, /* 95 */
+    NULL, /* 96 */
+    NULL, /* 97 */
+    NULL, /* 98 */
+    NULL, /* 99 */
+    NULL, /* 100 */
+    NULL, /* 101 */
+    NULL, /* 102 */
+    NULL, /* 103 */
+    NULL, /* 104 */
+    NULL, /* 105 */
+    NULL, /* 106 */
+    NULL, /* 107 */
+    NULL, /* 108 */
+    NULL, /* 109 */
+    sasfit_intdeiini, /* 110 */
+    sasfit_intdei, /* 111 */
+    sasfit_intdeoini, /* 112 */
+    sasfit_intdeo, /* 113 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

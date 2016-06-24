@@ -172,6 +172,24 @@ typedef struct
 	double (*sasfit_pfq) (double *p_r, double *p_i,  double *q_r, double *q_i, int ip, int iq,
                           double z_r, double z_i, int ln_pFq, int ix,
                           double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param);/* 95 */
+	void *reserved96; /* 96 */
+	void *reserved97; /* 97 */
+	void *reserved98; /* 98 */
+	void *reserved99; /* 99 */
+	void *reserved100; /* 100 */
+	void *reserved101; /* 101 */
+	void *reserved102; /* 102 */
+	void *reserved103; /* 103 */
+	void *reserved104; /* 104 */
+	void *reserved105; /* 105 */
+	void *reserved106; /* 106 */
+	void *reserved107; /* 107 */
+	void *reserved108; /* 108 */
+	void *reserved109; /* 109 */
+	void (* sasfit_intdeiini) (int lenaw, double tiny, double eps, double *aw);  /* 110 */
+	void (* sasfit_intdei) (double (*f)(double, void *), double a, double *aw, double *i, double *err, void *fparams);  /* 111 */
+	void (* sasfit_intdeoini) (int lenaw, double tiny, double eps, double *aw);  /* 112 */
+	void (* sasfit_intdeo) (double (*f)(double, void *), double a, double omega, double *aw, double *i, double *err, void *fparams);  /* 113 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -515,6 +533,22 @@ typedef struct
 #ifndef sasfit_pfq
 #define sasfit_pfq \
 	(sasfit_common_stubs_ptr->sasfit_pfq) /* 94 */
+#endif
+#ifndef sasfit_intdeiini
+#define sasfit_intdeiini \
+	(sasfit_common_stubs_ptr->sasfit_intdeiini) /* 110 */
+#endif
+#ifndef sasfit_intdei
+#define sasfit_intdei \
+	(sasfit_common_stubs_ptr->sasfit_intdei) /* 111 */
+#endif
+#ifndef sasfit_intdeoini
+#define sasfit_intdeoini \
+	(sasfit_common_stubs_ptr->sasfit_intdeoini) /* 112 */
+#endif
+#ifndef sasfit_intdeo
+#define sasfit_intdeo \
+	(sasfit_common_stubs_ptr->sasfit_intdeo) /* 113 */
 #endif
 
 #endif /* defined(MAKE_SASFIT_PLUGIN) */

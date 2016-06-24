@@ -1,4 +1,19 @@
 /*
+ * The code is an adaption of a numerical package from Takuya OOURA 
+ * (email: ooura@mmm.t.u-tokyo.ac.jp)
+ * under http://www.kurims.kyoto-u.ac.jp/~ooura/ he supplies several numerical packages in Fortran and C.
+ * The code below has been taken from his libarary package for numerical integration (Quadrature) - 
+ * DE Formula (Almighty Quadrature).
+ * 
+ * see also the References:
+ * [1] M.Mori, Developments in the double exponential formula for numerical integration, Proceedings of the International Congress of Mathematicians, Kyoto 1990, 1991, Springer-Verlag, 1585-1594.
+ * [2] H.Takahasi and M.Mori, Double exponential formulas for numerical integration, Pub. RIMS Kyoto Univ. 9, 1974, 721-741
+ * [3] T.Ooura and M.Mori, The Double exponential formula for oscillatory functions over the half infinite interval, Journal of Computational and Applied Mathematics 38, 1991, 353-360
+ * [4] M.Mori and T.Ooura, Double exponential formulas for Fourier type integrals with a divergent integrand, Contributions in Numerical Mathematics, ed. R.P.Agarwal, World Scientific Series in Applicable Analysis, 2, 1993, 301-308
+ * [5] H.Toda and H.Ono, Some remarks for efficient usage of the double exponential formulas(in Japanese), Kokyuroku, RIMS, Kyoto Univ. 339, 1978, 74-109. 
+ */
+ 
+/*
 DE-Quadrature
 Numerical Automatic Integrator for Improper Integral
     method    : Double Exponential (DE) Transformation
@@ -176,7 +191,31 @@ intdeo
 
 
 #include <math.h>
-#include "include/sasfit_common.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef MACOSX
+#include <sys/malloc.h>
+#else
+#include <malloc.h>
+#endif
+
+#include <sasfit_sd.h>
+#include <sasfit_sq.h>
+
+#include <tcl.h>
+
+
+#include <sasfit.h>
+#include <SASFIT_nr.h>
+#include <SASFIT_x_tcl.h>
+#include <SASFIT_resolution.h>
+#include <tcl_cmds.h>
+#include <sasfit_common.h>
+#include <sasfit_plugin.h>
+#include <sasfit_core.h>
+#include <sasfit_plugin_backend.h>
 
 void intdeini(int lenaw, double tiny, double eps, double *aw)
 {
@@ -572,12 +611,39 @@ void sasfit_intdeoini(int lenaw, double tiny, double eps, double *aw)
 
 
 void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *aw, 
-    double *i, double *err, void *fparams)
+    double *i, double *err, void *GIP)
 {
     int lenawm, nk0, noff0, nk, noff, lmax, m, k, j, jm, l;
     double eps, per, perw, w02, ir, h, iback, irback, t, tk, 
         xa, fm, fp, errh, s0, s1, s2, errd;
     
+    Tcl_Interp *interp;
+    scalar z;
+    scalar *par;
+    scalar *Ifit;
+    scalar *Isub;
+    scalar *dydpar;
+    scalar *Intdydpar, *Intdydpar_r;
+    scalar IntIsub, IntIsub_r, IntIsub_err, IntIsub_back,IntIsub_errh, IntIsub_errd, IntIsub_rback, fmIsub, fpIsub, s2Isub, s0Isub, s1Isub;
+    int   max_SD;
+    sasfit_analytpar *AP;
+    int   error_type;
+    bool  *error;
+    
+    interp = (( sasfit_GzIntStruct *) GIP)->interp;
+    z = (( sasfit_GzIntStruct *) GIP)->z;
+    par = (( sasfit_GzIntStruct *) GIP)->par;
+    Ifit = (( sasfit_GzIntStruct *) GIP)->Ifit;
+    Isub = (( sasfit_GzIntStruct *) GIP)->Isub;
+    dydpar = (( sasfit_GzIntStruct *) GIP)->dydpar;
+    max_SD = (( sasfit_GzIntStruct *) GIP)->max_SD;
+    AP = (( sasfit_GzIntStruct *) GIP)->AP;
+    error_type = ((sasfit_GzIntStruct *) GIP)->error_type;
+    error = (( sasfit_GzIntStruct *) GIP)->error;
+    
+ //   Intdydpar = (scalar *)malloc((max_SD*(3*MAXPAR))*sizeof(scalar));
+ //   Intdydpar_r = (scalar *)malloc((max_SD*(3*MAXPAR))*sizeof(scalar));
+        
     lenawm = (int) (aw[0] + 0.5);
     nk0 = (int) (aw[1] + 0.5);
     noff0 = 6;
@@ -588,16 +654,28 @@ void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *
     per = 1 / fabs(omega);
     w02 = 2 * aw[noff + 2];
     perw = per * w02;
-    *i = (*f)(a + aw[noff] * per,fparams);
+    
+    *i = (*f)(a + aw[noff] * per,GIP);
+    IntIsub = *Isub;
+    
     ir = *i * aw[noff + 1];
+    IntIsub_r = IntIsub* aw[noff + 1];
+    
     *i *= aw[noff + 2];
+    IntIsub *= aw[noff + 2];
+    
     *err = fabs(*i);
+    IntIsub_err = fabs(IntIsub);
+    
     h = 2;
     m = 1;
     k = noff;
     do {
         iback = *i;
         irback = ir;
+        IntIsub_back = IntIsub;
+        IntIsub_rback = IntIsub_r;
+        
         t = h * 0.5;
         do {
             if (k == noff) {
@@ -607,28 +685,43 @@ void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *
                 do {
                     j += 3;
                     xa = per * aw[j];
-                    fm = (*f)(a + xa,fparams);
-                    fp = (*f)(a + xa + perw * tk,fparams);
+                    fm = (*f)(a + xa,GIP);
+                    fmIsub = *Isub;
+                    fp = (*f)(a + xa + perw * tk,GIP);
+                    fpIsub = *Isub;
                     ir += (fm + fp) * aw[j + 1];
+                    IntIsub_r += (fmIsub + fpIsub) * aw[j + 1];
                     fm *= aw[j + 2];
+                    fmIsub *= aw[j + 2];
                     fp *= w02 - aw[j + 2];
+                    fpIsub *= w02 - aw[j + 2];
                     *i += fm + fp;
+                    IntIsub += fm + fp;
                     *err += fabs(fm) + fabs(fp);
+                    IntIsub_err += fabs(fm) + fabs(fp);
                     tk += 1;
                 } while (aw[j] > eps && j < k);
                 errh = *err * aw[5];
                 *err *= eps;
+                IntIsub_errh = IntIsub * aw[5];
+                IntIsub_err *=eps;
                 jm = j - noff;
             } else {
                 tk = t;
                 for (j = k + 3; j <= k + jm; j += 3) {
                     xa = per * aw[j];
-                    fm = (*f)(a + xa,fparams);
-                    fp = (*f)(a + xa + perw * tk,fparams);
+                    fm = (*f)(a + xa,GIP);
+                    fmIsub = *Isub;
+                    fp = (*f)(a + xa + perw * tk,GIP);
+                    fpIsub = *Isub;
                     ir += (fm + fp) * aw[j + 1];
+                    IntIsub_r += (fmIsub + fpIsub) * aw[j + 1];
                     fm *= aw[j + 2];
+                    fmIsub *= aw[j + 2];
                     fp *= w02 - aw[j + 2];
+                    fpIsub *= w02 - aw[j + 2];
                     *i += fm + fp;
+                    IntIsub += fm + fp;
                     tk += 1;
                 }
                 j = k + jm;
@@ -636,14 +729,21 @@ void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *
             }
             while (fabs(fm) > *err && j < k) {
                 j += 3;
-                fm = (*f)(a + per * aw[j],fparams);
+                fm = (*f)(a + per * aw[j],GIP);
+                fmIsub = *Isub;
                 ir += fm * aw[j + 1];
+                IntIsub_r += fmIsub * aw[j + 1];
                 fm *= aw[j + 2];
+                fmIsub *= aw[j + 2];
                 *i += fm;
+                IntIsub += fm;
             }
-            fm = (*f)(a + perw * tk,fparams);
+            fm = (*f)(a + perw * tk,GIP);
+            fmIsub = *Isub;
             s2 = w02 * fm;
+            s2Isub =  w02 * fmIsub;
             *i += s2;
+            IntIsub += s2Isub; 
             if (fabs(fp) > *err || fabs(s2) > *err) {
                 l = 0;
                 for (;;) {
@@ -651,34 +751,52 @@ void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *
                     s0 = 0;
                     s1 = 0;
                     s2 = fm * aw[noff0 + 1];
+                    s0Isub=0;
+                    s1Isub=0;
+                    s2Isub = fmIsub * aw[noff0 + 1];
                     for (j = noff0 + 2; j <= noff - 2; j += 2) {
                         tk += 1;
-                        fm = (*f)(a + perw * tk,fparams);
+                        fm = (*f)(a + perw * tk,GIP);
+                        fmIsub = *Isub;
                         s0 += fm;
                         s1 += fm * aw[j];
                         s2 += fm * aw[j + 1];
+                        s0Isub += fmIsub;
+                        s1Isub += fmIsub * aw[j];
+                        s2Isub += fmIsub * aw[j + 1];
                     }
                     if (s2 <= *err || l >= lmax) break;
                     *i += w02 * s0;
+                    IntIsub += w02 * s0Isub;
                 }
                 *i += s1;
+                IntIsub += s1Isub;
                 if (s2 > *err) *err = s2;
+                if (s2Isub > IntIsub_err) IntIsub_err = s2Isub;
             }
             t += h;
         } while (t < 1);
         if (m == 1) {
             errd = 1 + 2 * errh;
+            IntIsub_errd = 1 + 2 * IntIsub_errh;
         } else {
             errd = h * (fabs(*i - 2 * iback) + fabs(ir - 2 * irback));
+            IntIsub_errd = h * (fabs(*i - 2 * IntIsub_back) + fabs(IntIsub_r - 2 * IntIsub_rback));
         }
         h *= 0.5;
         m *= 2;
     } while (errd > errh && 2 * k - noff <= lenawm);
     *i *= h * per;
+    IntIsub *= h * per;
     if (errd > errh) {
         *err = -errd * per;
     } else {
         *err *= per * m * 0.5;
+    };
+    if (IntIsub_errd > IntIsub_errh) {
+        IntIsub_err = -IntIsub_errd * per;
+    } else {
+        IntIsub_err *= per * m * 0.5;
     }
 }
 

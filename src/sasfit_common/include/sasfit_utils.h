@@ -115,6 +115,10 @@ sasfit_common_DLLEXP scalar sasfit_rod_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_sphere_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_gauss_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_g(scalar fp, scalar a);
+sasfit_common_DLLEXP void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *aw, double *i, double *err, void *fparams);
+sasfit_common_DLLEXP void sasfit_intdeoini(int lenaw, double tiny, double eps, double *aw);
+sasfit_common_DLLEXP void sasfit_intdei(double (*f)(double, void *), double a, double *aw, double *i, double *err, void *fparams);
+sasfit_common_DLLEXP void sasfit_intdeiini(int lenaw, double tiny, double eps, double *aw);
 
 /**
  * Returns the shared library prefix for the current platform.

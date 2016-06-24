@@ -81,10 +81,10 @@ struct sasfit_gsl_multifit_CData {
 	float gammq(Tcl_Interp *, float, float, bool *);
 	void gcf(Tcl_Interp *, float *, float, float, float *, bool *);
 	void gser(Tcl_Interp *, float *, float, float, float *, bool *);
-	float bessj1(float);
-	float bessj0(float);
-	float bessi0(float);
-	float sasfit_erf(Tcl_Interp *interp, float x, bool *error);
+	double bessj1(double);
+	double bessj0(double);
+	double bessi0(double);
+	double sasfit_erf(double);
 	float gammp(Tcl_Interp *,float, float,bool *);
 
 	void SASFITindexx(int, float *, int *);
@@ -111,14 +111,20 @@ struct sasfit_gsl_multifit_CData {
 	float SASFITtrapzdSA_IQSQijdRi(Tcl_Interp *, int *,float *, float, float, float *,float,float *,sasfit_function* ,sasfit_function* ,sasfit_function* ,int,float,float,int,bool *);
 	float SASFITqrombSA_IQSQijdRi(Tcl_Interp *, int *,float *, float, float, float *,float,float *,sasfit_function* ,sasfit_function* ,sasfit_function* ,int,float,float,bool *);
 
-	float SASFITtrapzdIQ(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, int, bool *);
-	float SASFITtrapzdIQglobal(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
+	float SASFITtrapzdIQ(      Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, int, bool *);
+	float SASFITtrapzdIQglobal(      Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
+    float SASFITmidexpGzHankel(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, int, bool *);
+	float SASFITmidexpGlobalGzHankel(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
+
 	float SASFITtrapzdIQ_gsl_global(Tcl_Interp	*, float, float, float, float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, int, bool *);
 
 	void SASFITpolint(Tcl_Interp *, float *, float *, int, float, float *, float *, bool *);
 
 	float SASFITqrombIQ(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, bool *);
 	float SASFITqrombIQglobal(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, bool *);
+   	float SASFITqromoGz(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, int, bool *);
+	float SASFITqromoGlobalGz(Tcl_Interp	*, float, float, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, bool *);
+ 
 	float SASFITqrombIQ_gsl_global(Tcl_Interp	*, float, float, float, float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *, int, bool *);
 
 	void SASFITcovsrt(Tcl_Interp *, float **, int, int *, int, bool *);

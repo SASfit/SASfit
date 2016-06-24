@@ -46,6 +46,8 @@
 #define JMAXP JMAX+1
 #define JMAXELL2 22
 #define JMAXPELL2 JMAXELL2+1
+#define JMAXINF 14
+#define JMAXPINF JMAX+1
 
 #define K 5
 
@@ -302,6 +304,191 @@ float SASFITqrombSA_IQSQijdRj(Tcl_Interp *interp,
 	return 0.0;
 }
 
+float SASFITqromoGz(interp,aa,bb,Q,Qres,par,Ifit,Isubstract,dydpar,max_SD,AP,error_type,error)
+Tcl_Interp	*interp;
+float		aa,bb,Q,Qres;
+float		*par;
+float		*Ifit;
+float		*Isubstract;
+float		*dydpar; 
+int			max_SD;
+sasfit_analytpar *AP;
+int			error_type;
+bool		*error;
+{
+	float ss, dss, *DDss, *DDdss;
+	float s[JMAXPINF+1],h[JMAXPINF+1], **DDs, **DDh;
+	int j,i,kk;
+	bool integrate_ready;
+
+	DDss  = dvector(0,(3*MAXPAR)*max_SD-1);
+	DDdss = dvector(0,(3*MAXPAR)*max_SD-1);
+    DDs   = matrix(0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	DDh   = matrix(0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	h[1]=1.0;
+	for (i=0;i<max_SD;i++) {
+		for (kk=0;kk<(3*MAXPAR);kk++) {
+	       DDh[i*(3*MAXPAR)+kk][1] = 1.0;
+		}
+	}
+	for (j=1;j<=JMAXINF;j++) {
+		integrate_ready = TRUE;
+		s[j]=SASFITmidexpGzHankel(interp,aa,bb,Q,Qres,par,Ifit,Isubstract,dydpar,max_SD,AP,error_type,j,error);
+		for (i=0;i<max_SD;i++) {
+		    for (kk=0;kk<(3*MAXPAR);kk++) {
+				DDs[i*(3*MAXPAR)+kk][j] = dydpar[i*(3*MAXPAR)+kk];
+			}
+		}
+		if (*error) {
+			free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+			free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+			free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+			free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+			return 0.0;
+		}
+		if (j >= K) {
+			SASFITpolint(interp,&h[j-K],&s[j-K],K,0.0,&ss,&dss,error);
+			if (*error) {
+				free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+				free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+				free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+				free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+				return 0.0;
+			}
+			for (i=0;i<max_SD;i++) {
+				for (kk=0;kk<(3*MAXPAR);kk++) {
+					SASFITpolint(interp,&DDh[i*(3*MAXPAR)+kk][j-K],&DDs[i*(3*MAXPAR)+kk][j-K],K,0.0,&DDss[i*(3*MAXPAR)+kk],&DDdss[i*(3*MAXPAR)+kk],error);
+					if (*error) {
+						free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+						free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+						free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+						free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+						return 0.0;
+					}
+				}
+			}
+			for (i=0;i<max_SD;i++) {
+				for (kk=0;kk<(3*MAXPAR);kk++) {
+					if (fabs(DDdss[i*(3*MAXPAR)+kk]) > sasfit_eps_get_res()*fabs(DDss[i*(3*MAXPAR)+kk])) integrate_ready = FALSE;
+				}
+			}
+			if (fabs(dss) > sasfit_eps_get_res()*fabs(ss)) integrate_ready = FALSE;
+			if (integrate_ready == TRUE) return ss;
+		}
+		s[j+1]=s[j];
+		h[j+1]=h[j]/9.0;
+		for (i=0;i<max_SD;i++) {
+		    for (kk=0;kk<(3*MAXPAR);kk++) {
+				DDs[i*(3*MAXPAR)+kk][j+1] = DDs[i*(3*MAXPAR)+kk][j];
+				DDh[i*(3*MAXPAR)+kk][j+1] = DDh[i*(3*MAXPAR)+kk][j]/9.0;
+			}
+		}
+	}
+	sasfit_err("Too many steps in routine SASFITqromoGz\n");
+	*error = TRUE;
+	free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+	free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+	free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	return 0.0;
+}
+
+float SASFITqromoGlobalGz(interp,aa,bb,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,error)
+Tcl_Interp	*interp;
+float		aa,bb,Q,Qres;
+float		*par;
+float		*Ifit;
+float		*Isub;
+float		*dydpar; 
+int			max_SD;
+sasfit_analytpar *GAP;
+sasfit_commonpar *GCP;
+int			error_type;
+bool		*error;
+{
+	float ss, dss, *DDss, *DDdss;
+	float s[JMAXPINF+1],h[JMAXPINF+1], **DDs, **DDh;
+	int j,i,kk;
+	bool integrate_ready;
+
+	DDss  = dvector(0,(3*MAXPAR)*max_SD-1);
+	DDdss = dvector(0,(3*MAXPAR)*max_SD-1);
+    DDs   = matrix(0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	DDh   = matrix(0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	h[1]=1.0;
+	for (i=0;i<max_SD;i++) {
+		for (kk=0;kk<(3*MAXPAR);kk++) {
+	       DDh[i*(3*MAXPAR)+kk][1] = 1.0;
+		}
+	}
+	for (j=1;j<=JMAXINF;j++) {
+		integrate_ready = TRUE;
+		s[j]=SASFITmidexpGlobalGzHankel(interp,aa,bb,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,j,error);
+		for (i=0;i<max_SD;i++) {
+		    for (kk=0;kk<(3*MAXPAR);kk++) {
+				DDs[i*(3*MAXPAR)+kk][j] = dydpar[i*(3*MAXPAR)+kk];
+			}
+		}
+		if (*error) {
+			free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+			free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+			free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+			free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+			return 0.0;
+		}
+		if (j >= K) {
+			SASFITpolint(interp,&h[j-K],&s[j-K],K,0.0,&ss,&dss,error);
+			if (*error) {
+				free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+				free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+				free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+				free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+				return 0.0;
+			}
+			for (i=0;i<max_SD;i++) {
+				for (kk=0;kk<(3*MAXPAR);kk++) {
+					SASFITpolint(interp,&DDh[i*(3*MAXPAR)+kk][j-K],&DDs[i*(3*MAXPAR)+kk][j-K],K,0.0,&DDss[i*(3*MAXPAR)+kk],&DDdss[i*(3*MAXPAR)+kk],error);
+					if (*error) {
+						free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+						free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+						free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+						free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+						return 0.0;
+					}
+				}
+			}
+			for (i=0;i<max_SD;i++) {
+				for (kk=0;kk<(3*MAXPAR);kk++) {
+					if (fabs(DDdss[i*(3*MAXPAR)+kk]) > sasfit_eps_get_res()*fabs(DDss[i*(3*MAXPAR)+kk])) integrate_ready = FALSE;
+				}
+			}
+			if (fabs(dss) > sasfit_eps_get_res()*fabs(ss)) integrate_ready = FALSE;
+			if (integrate_ready == TRUE) {
+				free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+			    free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+			    free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+  			    free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+				return ss;
+			}
+		}
+		s[j+1]=s[j];
+		h[j+1]=h[j]/9.0;
+		for (i=0;i<max_SD;i++) {
+		    for (kk=0;kk<(3*MAXPAR);kk++) {
+				DDs[i*(3*MAXPAR)+kk][j+1] = DDs[i*(3*MAXPAR)+kk][j];
+				DDh[i*(3*MAXPAR)+kk][j+1] = DDh[i*(3*MAXPAR)+kk][j]/9.0;
+			}
+		}
+	}
+	sasfit_err("Too many steps in routine SASFITqromoGlobalGz\n");
+	*error = TRUE;
+	free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+	free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+	free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXPINF+1);
+	return 0.0;
+}
+
 float SASFITqrombIQ(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isubstract,dydpar,max_SD,AP,error_type,error)
 Tcl_Interp	*interp;
 float		Qmin,Qmax,Q,Qres;
@@ -370,7 +557,7 @@ bool		*error;
 					if (fabs(DDdss[i*(3*MAXPAR)+kk]) > sasfit_eps_get_res()*fabs(DDss[i*(3*MAXPAR)+kk])) integrate_ready = FALSE;
 				}
 			}
-			if (fabs(dss) > EPS_RES*fabs(ss)) integrate_ready = FALSE;
+			if (fabs(dss) > sasfit_eps_get_res()*fabs(ss)) integrate_ready = FALSE;
 			if (integrate_ready == TRUE) return ss;
 		}
 		s[j+1]=s[j];
@@ -533,5 +720,7 @@ bool		*error;
 #undef JMAXP
 #undef JMAXELL2
 #undef JMAXPELL2
+#undef JMAXINF 
+#undef JMAXPINF 
 #undef K
 

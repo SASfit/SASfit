@@ -37,4 +37,3 @@ if(NOT WIN32)
 else(NOT WIN32)
 	set(CPACK_GENERATOR "ZIP")
 endif(NOT WIN32)
-

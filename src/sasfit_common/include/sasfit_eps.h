@@ -45,6 +45,7 @@
  * \ingroup sasfit_eps
  * Contains various numerical constants.
  */
+
 typedef struct 
 {
 	scalar  aniso;
