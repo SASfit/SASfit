@@ -25,6 +25,7 @@
  */
 
 #include <math.h>
+#include <sasfit.h>
 #include "include/SASFIT_nr.h"
 
 #ifndef M_PI
@@ -82,7 +83,48 @@ float SASFITqrombNR_V_dR(Tcl_Interp *interp,
 }
 
 
-float SASFITqrombIQdR(Tcl_Interp *interp,
+scalar SASFITqrombIQdR(Tcl_Interp *interp,
+			int   *dF_dpar,
+			scalar l[],
+			scalar sq[],
+			scalar Q, 
+			scalar a[],
+			sasfit_function*  SD, 
+			sasfit_function*  FF,
+			sasfit_function*  SQ,
+			int   distr,
+			scalar Len_start, 
+			scalar Len_end, 
+			bool  *error)
+{
+    scalar *aw, res,err;
+    int lenaw=4000;
+    sasfit_param4int param4int;
+    param4int.dF_dpar=dF_dpar;
+    param4int.l=l;
+    param4int.sq=sq;
+    param4int.Q=Q;
+    param4int.a=a;
+    param4int.SD=SD;
+    param4int.FF=FF;
+    param4int.SQ=SQ;
+    param4int.distr=distr;
+    param4int.error=error;
+    
+//    aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+//    sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+//    sasfit_intde(&IQ_IntdLen, Len_start,Len_end, aw, &res, &err,&param4int);
+    aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
+    sasfit_intccini(lenaw, aw);
+    sasfit_intcc(&IQ_IntdLen, Len_start,Len_end, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&param4int);
+    free(aw);
+    if (err < 0) {
+        sasfit_err("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
+    }
+    return res;
+}
+
+float SASFITqrombIQdR_old(Tcl_Interp *interp,
 		      int  *dF_dpar,
 		      float l[],
 		      float sq[],
@@ -118,6 +160,8 @@ float SASFITqrombIQdR(Tcl_Interp *interp,
 	return 0.0;
 }
 
+
+          
 float SASFITqrombIQSQdR(Tcl_Interp *interp,
 			int   *dF_dpar,
 			float l[],

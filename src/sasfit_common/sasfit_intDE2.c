@@ -208,16 +208,13 @@ intdeo
 
 
 #include <sasfit.h>
-#include <SASFIT_nr.h>
-#include <SASFIT_x_tcl.h>
-#include <SASFIT_resolution.h>
-#include <tcl_cmds.h>
 #include <sasfit_common.h>
-#include <sasfit_plugin.h>
 #include <sasfit_core.h>
-#include <sasfit_plugin_backend.h>
 
-void intdeini(int lenaw, double tiny, double eps, double *aw)
+#include "sasfit_fft2f.c"
+#include "sasfit_intcc2.c"
+
+void sasfit_intdeini(int lenaw, double tiny, double eps, double *aw)
 {
     /* ---- adjustable parameter ---- */
     double efs = 0.1, hoff = 8.5;
@@ -273,7 +270,7 @@ void intdeini(int lenaw, double tiny, double eps, double *aw)
 }
 
 
-void intde(double (*f)(double, void *), double a, double b, double *aw, 
+void sasfit_intde(double (*f)(double, void *), double a, double b, double *aw, 
     double *i, double *err, void *fparams)
 {
     int noff, lenawm, nk, k, j, jtmp, jm, m, klim;

@@ -184,12 +184,14 @@ typedef struct
 	void *reserved105; /* 105 */
 	void *reserved106; /* 106 */
 	void *reserved107; /* 107 */
-	void *reserved108; /* 108 */
-	void *reserved109; /* 109 */
+	void (* sasfit_intccini) (int lenw, double *w);  /* 108 */
+	void (* sasfit_intcc) (double (*f)(double, void *), double a, double b, double eps, int lenw, double *w, double *i, double *err, void *fparams);  /* 109 */
 	void (* sasfit_intdeiini) (int lenaw, double tiny, double eps, double *aw);  /* 110 */
 	void (* sasfit_intdei) (double (*f)(double, void *), double a, double *aw, double *i, double *err, void *fparams);  /* 111 */
 	void (* sasfit_intdeoini) (int lenaw, double tiny, double eps, double *aw);  /* 112 */
 	void (* sasfit_intdeo) (double (*f)(double, void *), double a, double omega, double *aw, double *i, double *err, void *fparams);  /* 113 */
+	void (* sasfit_intdeini) (int lenaw, double tiny, double eps, double *aw);  /* 114 */
+	void (* sasfit_intde) (double (*f)(double, void *), double a, double b, double *aw, double *i, double *err, void *fparams);  /* 115 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -549,6 +551,14 @@ typedef struct
 #ifndef sasfit_intdeo
 #define sasfit_intdeo \
 	(sasfit_common_stubs_ptr->sasfit_intdeo) /* 113 */
+#endif
+#ifndef sasfit_intdeini
+#define sasfit_intdeini \
+	(sasfit_common_stubs_ptr->sasfit_intdeini) /* 114 */
+#endif
+#ifndef sasfit_intde
+#define sasfit_intde \
+	(sasfit_common_stubs_ptr->sasfit_intde) /* 115 */
 #endif
 
 #endif /* defined(MAKE_SASFIT_PLUGIN) */

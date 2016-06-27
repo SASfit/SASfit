@@ -38,6 +38,22 @@
 
 typedef struct
 {
+	Tcl_Interp *interp;
+    int   *dF_dpar;
+    scalar *l;
+    scalar *sq;
+    scalar Q;
+    scalar *a;
+    sasfit_function*  SD;
+    sasfit_function*  FF;
+    sasfit_function*  SQ;
+    int   distr;
+    bool  *error;
+} param4int;
+typedef param4int sasfit_param4int;
+
+typedef struct
+{
 	int		fit;
 	int		calcSDFF;
 	int		fitSDFF;

@@ -149,12 +149,14 @@ sasfit_common_stubs_t sasfit_common_stubs = {
     NULL, /* 105 */
     NULL, /* 106 */
     NULL, /* 107 */
-    NULL, /* 108 */
-    NULL, /* 109 */
+    sasfit_intccini, /* 108 */
+    sasfit_intcc, /* 109 */
     sasfit_intdeiini, /* 110 */
     sasfit_intdei, /* 111 */
     sasfit_intdeoini, /* 112 */
     sasfit_intdeo, /* 113 */
+    sasfit_intdeini, /* 114 */
+    sasfit_intde, /* 115 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

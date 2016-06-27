@@ -295,6 +295,12 @@ declare 95 generic {
                   double z_r, double z_i, int ln_pFq, int ix,
                   double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param)
 }
+declare 108 generic {
+	void sasfit_intccini(int lenw, double *w)
+}
+declare 109 generic {
+	void sasfit_intcc(double (*f)(double, void *), double a, double b, double eps, int lenw, double *w, double *i, double *err, void *fparams)
+}
 declare 110 generic {
 	void sasfit_intdeiini(int lenaw, double tiny, double eps, double *aw)
 }
@@ -306,4 +312,10 @@ declare 112 generic {
 }
 declare 113 generic {
 	void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *aw, double *i, double *err, void *fparams)
+}
+declare 114 generic {
+	void sasfit_intdeini(int lenaw, double tiny, double eps, double *aw)
+}
+declare 115 generic {
+	void sasfit_intde(double (*f)(double, void *), double a, double b, double *aw, double *i, double *err, void *fparams)
 }

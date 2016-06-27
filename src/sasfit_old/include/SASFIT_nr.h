@@ -41,29 +41,29 @@
 #include <sasfit_core.h>
 
 #define float double
-typedef struct FCOMPLEX {float r,i;} fcomplex;
+typedef struct FCOMPLEX {scalar r,i;} fcomplex;
 typedef struct IMMENSE {unsigned long l,r;} immense;
 typedef struct GREAT {unsigned short l,c,r;} great;
 
 struct sasfit_gsl_multifit_CData {
-   float **covar;
-   float **alpha;
+   scalar **covar;
+   scalar **alpha;
    int   ma;
    int   mfit;
    int   common_i;
    int   max_SD;
-   float chisq;
-   float *a;
-   float *da;
-   float *atry;
-   float *P_common;
+   scalar chisq;
+   scalar *a;
+   scalar *da;
+   scalar *atry;
+   scalar *P_common;
    int   *lista;
-   float *beta;
-   float **oneda;
+   scalar *beta;
+   scalar **oneda;
 };
 
 
-	void float_to_string(char *, float);
+	void float_to_string(char *, scalar);
 	void int_to_string(char *, int);
 	float **matrix(int, int, int, int);
 	float **convert_matrix(float *, int, int, int, int);

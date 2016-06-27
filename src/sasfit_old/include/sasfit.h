@@ -161,6 +161,8 @@ float dI_dnu_Ellipsoid_2_core(Tcl_Interp *, float, float, float, float, bool *);
 float dI_dR_Ellipsoid_2_core(Tcl_Interp *, float, float, float, float, bool *);
 float Int_r_K_Torus_core(Tcl_Interp *,float,float,float,float,float,float,float,bool *);
 float Int_theta_K_Torus_core(Tcl_Interp *,float,float,float,float,float,float,float,float,float,bool *);
+
+float IQ_IntdLen(scalar, sasfit_param4int *);
 float IQ_core(Tcl_Interp *,int *,float *, float *,float,float,float *,sasfit_function* ,sasfit_function* ,sasfit_function* ,int,bool *);
 float IQSQij_core(Tcl_Interp *,int *,float *, float *,float,float,float,float *,sasfit_function* ,sasfit_function* ,sasfit_function* ,int,bool *);
 float IQSQij_SA_core(Tcl_Interp *,int *,float *, float *,float,float,float,float,float *,sasfit_function* ,sasfit_function* ,sasfit_function* ,int,bool *);

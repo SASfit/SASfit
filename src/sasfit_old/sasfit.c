@@ -173,18 +173,18 @@ void which_len(Tcl_Interp *interp,
  * the number of integration intervals is calculated by R_n/R_50 * Nint       *
  ******************************************************************************/
 void find_integration_range(Tcl_Interp *interp,
-							float *Rstart,
-                            float *Rend,
+							scalar *Rstart,
+                            scalar *Rend,
                             int   *n_intervals,
-                            float *a,
+                            scalar *a,
                             char  *SD_typestr,
 							int moment,
                             bool  *error)
 {
-	double R_n, R_50,R_0,R_max, tmp;
-	double R2_n, R2_50,R2_0, R2start, R2end;
+	scalar R_n, R_50,R_0,R_max, tmp;
+	scalar R2_n, R2_50,R2_0, R2start, R2end;
 	int   n;
-	double a1,a2,a3,a4,a5;
+	scalar a1,a2,a3,a4,a5;
 	int funcid;
 	sasfit_param subParam;
 	const sasfit_plugin_func_t * func_descr;
@@ -626,13 +626,27 @@ void find_integration_range(Tcl_Interp *interp,
 	return;
 }
 
-float IQ_core(Tcl_Interp *interp,
+scalar IQ_IntdLen(scalar x, sasfit_param4int *param4int) {
+    return IQ_core( param4int->interp,
+                    param4int->dF_dpar,
+                    param4int->l,
+                    param4int->sq,
+                    x,
+                    param4int->Q,
+                    param4int->a,
+                    param4int->SD,
+                    param4int->FF,
+                    param4int->SQ,
+                    param4int->distr,
+                    param4int->error);
+}
+scalar IQ_core(Tcl_Interp *interp,
 	      int *dF_dpar,
-	      float l[],
-	      float s[],
-          float len,
-          float Q,
-          float a[],
+	      scalar l[],
+	      scalar s[],
+          scalar len,
+          scalar Q,
+          scalar a[],
           sasfit_function*  SD,
           sasfit_function*  FF,
 	      sasfit_function*  SQ,
@@ -652,14 +666,14 @@ float IQ_core(Tcl_Interp *interp,
 }
 
 
-float IQSQij_core(Tcl_Interp *interp,
+scalar IQSQij_core(Tcl_Interp *interp,
 		  int *dF_dpar,
-		  float l[],
-		  float s[],
-          float len1,
-		  float len2,
-		  float Q,
-		  float a[],
+		  scalar l[],
+		  scalar s[],
+          scalar len1,
+		  scalar len2,
+		  scalar Q,
+		  scalar a[],
 		  sasfit_function*  SD,
 		  sasfit_function*  FF,
 		  sasfit_function*  SQ,
@@ -671,8 +685,8 @@ float IQSQij_core(Tcl_Interp *interp,
  * particles with shape FF_typestr and a size distribution SD_typestr         *
  * for a given Q-value                                                        *
  ******************************************************************************/
-{  float Fij, Vi, Vj;
-   float sq[MAXPAR];
+{  scalar Fij, Vi, Vj;
+   scalar sq[MAXPAR];
    int j;
 
    for (j=0;j<MAXPAR;j++) sq[j]=s[j];
@@ -702,9 +716,9 @@ float IQSQij_core(Tcl_Interp *interp,
 }
 
 
-float CalcNth_V_Moment(Tcl_Interp *interp,
-		       float a[],
-		       float l[],
+scalar CalcNth_V_Moment(Tcl_Interp *interp,
+		       scalar a[],
+		       scalar l[],
 		       sasfit_function*  SD,
 		       sasfit_function*  FF,
 		       int	distr,
@@ -712,10 +726,10 @@ float CalcNth_V_Moment(Tcl_Interp *interp,
 		       bool  *error)
 {
     int    i;
-    float  NR, NRprevious, NRint;
-    float  Rstart,Rend,dR;
+    scalar  NR, NRprevious, NRint;
+    scalar  Rstart,Rend,dR;
     int    n_intervals;
-    float  V_moments, Vim1, Vi;
+    scalar  V_moments, Vim1, Vi;
 	sasfit_param param;
 
     if( SD == 0 )
@@ -767,15 +781,15 @@ float CalcNth_V_Moment(Tcl_Interp *interp,
     return V_moments/NRint;
 }
 
-float IQSQij_SA_core(Tcl_Interp *interp,
+scalar IQSQij_SA_core(Tcl_Interp *interp,
 		     int   *dF_dpar,
-		     float l[],
-		     float s[],
-		     float len1,
-		     float len2,
-		     float Vav,
-		     float Q,
-		     float a[],
+		     scalar l[],
+		     scalar s[],
+		     scalar len1,
+		     scalar len2,
+		     scalar Vav,
+		     scalar Q,
+		     scalar a[],
 		     sasfit_function*  SD,
 		     sasfit_function*  FF,
 		     sasfit_function*  SQ,
@@ -787,8 +801,8 @@ float IQSQij_SA_core(Tcl_Interp *interp,
  * particles with shape FF_typestr and a size distribution SD_typestr         *
  * for a given Q-value                                                        *
  ******************************************************************************/
-{  float Fij, Vi, Vj;
-   float sq[MAXPAR];
+{  scalar Fij, Vi, Vj;
+   scalar sq[MAXPAR];
    int j;
 
    for (j=0;j<MAXPAR;j++) sq[j]=s[j];
@@ -817,24 +831,24 @@ float IQSQij_SA_core(Tcl_Interp *interp,
 }
 
 
-float integral_IQ_int_core( Tcl_Interp *interp,
+scalar integral_IQ_int_core( Tcl_Interp *interp,
 			    int dF_dpar[],
-			    float l[],
-			    float s[],
-                float Q,
-                float a[],
+			    scalar l[],
+			    scalar s[],
+                scalar Q,
+                scalar a[],
                 sasfit_function*  SD,
                 sasfit_function*  FF,
 			    sasfit_function*  SQ,
                 int   distr,
 			    int   SQ_how,
-				float Rstart,
-                float Rend,
+				scalar Rstart,
+                scalar Rend,
                 int   nintervals,
                 bool  *error)
 /*############################################################################*/
 {
-	float res,res2,restot,Vav, Vx;
+	scalar res,res2,restot,Vav, Vx;
 	char FF_typestr[132];
 	char strtmp[256];
 
@@ -1144,12 +1158,12 @@ float integral_IQ_int_core( Tcl_Interp *interp,
 }
 
 void IQ_int_core(Tcl_Interp *interp,
-				 float *IQ,
-                 float *dIQ_da,
-                 float l[],
-                 float Q,
-                 float a[],
-				 float s[],
+				 scalar *IQ,
+                 scalar *dIQ_da,
+                 scalar l[],
+                 scalar Q,
+                 scalar a[],
+				 scalar s[],
                  sasfit_analytpar *AP,
                  bool  *error)
 /*############################################################################*/
@@ -1160,11 +1174,11 @@ void IQ_int_core(Tcl_Interp *interp,
  * for a given Q-value                                                        *
  ******************************************************************************/
 {
-float Rstart, Rend,t_a[MAXPAR],t_l[MAXPAR],tDLS_l[MAXPAR],tDLS_a[MAXPAR], t_s[MAXPAR];
-float tmp_a[MAXPAR];
+scalar Rstart, Rend,t_a[MAXPAR],t_l[MAXPAR],tDLS_l[MAXPAR],tDLS_a[MAXPAR], t_s[MAXPAR];
+scalar tmp_a[MAXPAR];
 int   nintervals,SQdistr,FFdistr,i;
 char  strtmp[132];
-float d_a2_IntNVdR, d_a3_IntNVdR, d_a4_IntNVdR, IntNVdR, tmpIQ,
+scalar d_a2_IntNVdR, d_a3_IntNVdR, d_a4_IntNVdR, IntNVdR, tmpIQ,
        d_a5_IntNVdR,d_a6_IntNVdR,
        d_a7_IntNVdR,d_a8_IntNVdR,d_a9_IntNVdR,d_a10_IntNVdR;
 char  tmpFF_typestr[132];
@@ -1421,11 +1435,11 @@ int dF_dpar[3] = {0,0,0};
 }
 
 void IQ_t(Tcl_Interp *interp,
-		  float Q,
-          float *par,
-          float *Ifit,
-		  float *Isubstract,
-          float *dydpar,
+		  scalar Q,
+          scalar *par,
+          scalar *Ifit,
+		  scalar *Isubstract,
+          scalar *dydpar,
           int   max_SD,
           sasfit_analytpar *AP,
           int   error_type,
@@ -1436,7 +1450,7 @@ void IQ_t(Tcl_Interp *interp,
  ******************************************************************************/
 {
 int   i,j;
-float TmpIfit,a[MAXPAR],l[MAXPAR],s[MAXPAR];
+scalar TmpIfit,a[MAXPAR],l[MAXPAR],s[MAXPAR];
    *Ifit = 0.0;
    *Isubstract = 0.0;
 
@@ -1667,7 +1681,7 @@ void IQ(Tcl_Interp *interp,
         case 1:
         {           
             lenaw=4000;
-            aw = (double *)malloc((lenaw)*sizeof(double));
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             for (i=0;i<lenaw;i++) aw[i]=0;
             
             GIP.interp=interp;
@@ -1682,12 +1696,12 @@ void IQ(Tcl_Interp *interp,
             
  
             GIP.z = 0;
-            sasfit_intdeiini(lenaw, 1.0e-307, sasfit_eps_get_nriq(), aw);
+            sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Xi, &err,&GIP);
             
             for (i=0;i<lenaw;i++) aw[i]=0;
             GIP.z = Q;
-            sasfit_intdeoini(lenaw, 1.0e-307, sasfit_eps_get_nriq(), aw);
+            sasfit_intdeoini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intdeo(&HTIQ_OOURA, 0.0, GIP.z, aw, &Gz, &err,&GIP);
             
             *Ifit= 1.0*Gz/Xi;
@@ -1722,7 +1736,7 @@ void IQ(Tcl_Interp *interp,
 
 
 void IQ_int_core_global(interp,IQ,l,Q,a,s,AP,error)
-float *l, *a,*s,*IQ,Q;
+scalar *l, *a,*s,*IQ,Q;
 sasfit_analytpar *AP;
 Tcl_Interp *interp;
 bool *error;
@@ -1734,9 +1748,9 @@ bool *error;
  * for a given Q-value                                                        *
  ******************************************************************************/
 {
-float Rstart, Rend,tmp_a[MAXPAR],t_a[MAXPAR],t_l[MAXPAR], t_s[MAXPAR];
+scalar Rstart, Rend,tmp_a[MAXPAR],t_a[MAXPAR],t_l[MAXPAR], t_s[MAXPAR];
 int   nintervals,distr,i;
-float d_a2_IntNVdR, d_a3_IntNVdR, d_a4_IntNVdR, IntNVdR, tmpIQ;
+scalar d_a2_IntNVdR, d_a3_IntNVdR, d_a4_IntNVdR, IntNVdR, tmpIQ;
 char  tmpFF_typestr[132];
 int dF_dpar[3];
 /*
@@ -1851,11 +1865,11 @@ int dF_dpar[3];
 
 
 void IQ_t_global(Tcl_Interp *interp,
-		  float Q,
-          float *par,
-          float *Ifit,
-		  float *Isub,
-          float *dydpar,
+		  scalar Q,
+          scalar *par,
+          scalar *Ifit,
+		  scalar *Isub,
+          scalar *dydpar,
           int   max_SD,
           sasfit_analytpar *GAP,
 		  sasfit_commonpar *GCP,
@@ -1867,9 +1881,9 @@ void IQ_t_global(Tcl_Interp *interp,
  ******************************************************************************/
 {
 int   i,j,k;
-float TmpIfit,Tmp2Ifit,Tmp3Ifit,a[MAXPAR],l[MAXPAR],s[MAXPAR];
-float dx = 0.0; // was uninitialized, see line 1737
-float h;
+scalar TmpIfit,Tmp2Ifit,Tmp3Ifit,a[MAXPAR],l[MAXPAR],s[MAXPAR];
+scalar dx = 0.0; // was uninitialized, see line 1737
+scalar h;
 bool  dy,dy2,active;
 
    h = sasfit_eps_get_h();
@@ -2373,9 +2387,9 @@ void IQ_Global(Tcl_Interp *interp,
 
 
 void IQ_t_gsl_global(Tcl_Interp *interp,
-		  float Q,
-          float *par,
-          float *Ifit,
+		  scalar Q,
+          scalar *par,
+          scalar *Ifit,
           int   max_SD,
           sasfit_analytpar *GAP,
 		  sasfit_commonpar *GCP,
@@ -2387,7 +2401,7 @@ void IQ_t_gsl_global(Tcl_Interp *interp,
  ******************************************************************************/
 {
 int   i,j,k;
-float TmpIfit=0.0,a[MAXPAR],l[MAXPAR],s[MAXPAR];
+scalar TmpIfit=0.0,a[MAXPAR],l[MAXPAR],s[MAXPAR];
 bool  active;
    for (k=1; k <= (*GCP).common_i;k++) {
 	   active = FALSE;
@@ -2554,16 +2568,16 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	sasfit_analytpar *AP;
 	int    i, j;
 	int    max_SD;
-	float  alambda,chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
-	float  varianceOFfit, avgsigma;
+	scalar  alambda,chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+	scalar  varianceOFfit, avgsigma;
 	char   sBuffer[256];
 	Tcl_DString DsBuffer;
-	float  *h, *Ih, *DIh, *Ith, *res, *Ihsubstract;
+	scalar  *h, *Ih, *DIh, *Ith, *res, *Ihsubstract;
 	int    *lista;
 	int    ma, mfit,ndata;
 	bool   error;
 	int    error_type, rcode, interrupt;
-	float  *a, *dydpar;
+	scalar  *a, *dydpar;
 	int th_id, nthreads;
 
 	error = FALSE;
@@ -2793,15 +2807,15 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
     sasfit_commonpar GCP;
     int    i, j, k;
     int    max_SD;
-    float  alambda, chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
-    float  avgsigma,varianceOFfit;
+    scalar  alambda, chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+    scalar  avgsigma,varianceOFfit;
     Tcl_DString DsBuffer;
-    float  **h, **Ih, **DIh, **Ith, **res, **Isub;
+    scalar  **h, **Ih, **DIh, **Ith, **res, **Isub;
     int    *lista, npoints, ipoint;
     int    ma, mfit,*ndata,*hide, totndata;
     bool   error;
     int    error_type, interrupt;
-    float  *a, *dydpar;
+    scalar  *a, *dydpar;
 	char   sBuffer[132];
 
 	error = FALSE;
@@ -2835,7 +2849,7 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
 
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GAP,&GCP,max_SD);
 dydpar = dvector(0,ma-1);
-Isub = (double **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(double*));
+Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
 for (k=0;k<GCP.nmultset;k++) {
 	Isub[k] = dvector(0,ndata[k]-1);
 }
@@ -3067,16 +3081,16 @@ sasfit_commonpar GCP;
 int    i,j,m,k;
 int    max_SD;
 char   sBuffer[256];
-float  **h, **Ih, **DIh, **Ith, **Isub, **res;
+scalar  **h, **Ih, **DIh, **Ith, **Isub, **res;
 int    *lista;
 int    ma;
 int    mfit,*ndata,*hide, totndata;
 bool   error;
 int    error_type;
-float  *a;
-float  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
-float  avgsigma,varianceOFfit;
-float  alambda;
+scalar  *a;
+scalar  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+scalar  avgsigma,varianceOFfit;
+scalar  alambda;
 Tcl_DString DsBuffer;
 
 error = FALSE;
@@ -3096,7 +3110,7 @@ if (TCL_ERROR == get_GlobalAP(interp,argv,
 
 sasfit_out("nmultset: %d\n",GCP.nmultset);
 
-Isub = (double **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(double*));
+Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
 for (k=0;k<GCP.nmultset;k++) {
 	Isub[k] = dvector(0,ndata[k]-1);
 }
@@ -3391,8 +3405,8 @@ int Sasfit_resCmd(clientData, interp, argc, argv)
     char       **argv;
 {
 	bool  error;
-	float Dd, D, Dlam, lam, r1, r2, L, l;
-	float *Q;
+	scalar Dd, D, Dlam, lam, r1, r2, L, l;
+	scalar *Q;
 	int   ndata;
 	int   Splitcode, tcode, targc, j;
     const char  **targv;
@@ -3504,18 +3518,18 @@ int Sasfit_nrCmd(clientData, interp, argc, argv)
 	sasfit_analytpar *AP;
 	int    i, j, k, distr;
 	int    max_SD;
-	float  alambda;
+	scalar  alambda;
 	char   sBuffer[256];
 	Tcl_DString DsBuffer;
-	float  *h, *Ih, *DIh, NR, NRprevious, tmpNR, *res;
+	scalar  *h, *Ih, *DIh, NR, NRprevious, tmpNR, *res;
 	int    ndata;
 	bool   error, Verror;
 	int    error_type;
-	float  *Rstart_SD, *Rend_SD, *dR_SD;
+	scalar  *Rstart_SD, *Rend_SD, *dR_SD;
 	int    *n_intervals_SD, nSD;
-	float  Rstart,Rend,dR;
-	float  tmp_Rstart,tmp_Rend,tmp_dR;
-	float  Rstart_total, Rend_total, dR_total;
+	scalar  Rstart,Rend,dR;
+	scalar  tmp_Rstart,tmp_Rend,tmp_dR;
+	scalar  Rstart_total, Rend_total, dR_total;
 	int    tmp_n_intervals,n_intervals_total,n_intervals;
 
 	error = FALSE;
@@ -3731,16 +3745,16 @@ sasfit_analytpar *AP;
 int    i,j;
 int    max_SD;
 char   sBuffer[256];
-float  *h, *Ih, *DIh, *Ith, *Ihsub, *res;
+scalar  *h, *Ih, *DIh, *Ith, *Ihsub, *res;
 int    *lista;
 int    ma;
 int    mfit,ndata;
 bool   error;
 int    error_type;
-float  *a;
-float  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
-float  avgsigma,varianceOFfit;
-float  alambda;
+scalar  *a;
+scalar  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+scalar  avgsigma,varianceOFfit;
+scalar  alambda;
 Tcl_DString DsBuffer;
 
 ndata = 0.0;
@@ -4007,11 +4021,11 @@ int Sasfit_guess_errCmd(clientData, interp, argc, argv)
 int    i,j,k;
 int    sw, po;
 char   sBuffer[256];
-float  *x, *y, *err;
+scalar  *x, *y, *err;
 int    Splitcode, Splitargc_x, Splitargc_y,code;
 const char   **Splitargv_x,**Splitargv_y;
 int    ndata,nd,ncoeffs;
-double chisq;
+scalar chisq;
 gsl_matrix *X, *cov;
 gsl_vector *yd, *c,*w;
 Tcl_DString DsBuffer;
