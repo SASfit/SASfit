@@ -161,8 +161,55 @@ float SASFITqrombIQdR_old(Tcl_Interp *interp,
 }
 
 
+
+float SASFITqrombIQSQdR_old(Tcl_Interp *interp,
+			int   *dF_dpar,
+			float l[],
+			float sq[],
+			float Q, 
+			float a[],
+			sasfit_function*  SD, 
+			sasfit_function*  FF,
+			sasfit_function*  SQ,
+			int   distr,
+			float Rstart, 
+			float Rend, 
+			bool  *error)
+{
+	float ss,dss;
+	float s[JMAXP+1],h[JMAXP+1];
+	int j;
+
+	h[1]=1.0;
+	for (j=1;j<=JMAX;j++) {
+		s[j]=SASFITtrapzdIQSQdR(interp,dF_dpar,l,sq,Q,a,SD,FF,SQ,distr,Rstart,Rend,j,error);
+		if (*error) return 0.0;
+		if (j >= K) {
+			SASFITpolint(interp,&h[j-K],&s[j-K],K,0.0,&ss,&dss,error);
+			if (*error) return 0.0;
+			if (fabs(dss) <= sasfit_eps_get_nriq()*fabs(ss)) return ss;
+		}
+		s[j+1]=s[j];
+		h[j+1]=0.25*h[j];
+	}
+	return ss;
+	sasfit_err("Too many steps in routine SASFITqrombIQSQdR\n");
+	*error = TRUE;
+	return 0.0;
+}
+//	float sqs[MAXPAR];
+//	static float s;
+//	static int it;
+//	int j;
+
+//	for (j=0;j<MAXPAR;j++) sqs[j]=sq[j];
+//		t1 = IQ_core(interp,dF_dpar,l,sqs,a,Q,aa,SD,FF,SQ,distr,error)		;
+//		if (*error) return 0.0;
+//		V = sasfit_volume(a,l,FF,distr,error);
+//		sqs[0] = pow( 3./(4.*M_PI) *  V, 1./3.);
+//		t1 = t1*sasfit_sq(Q,sqs,SQ,dF_dpar,error);
           
-float SASFITqrombIQSQdR(Tcl_Interp *interp,
+float SASFITqrombIQSQdR_old(Tcl_Interp *interp,
 			int   *dF_dpar,
 			float l[],
 			float sq[],
