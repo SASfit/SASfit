@@ -230,7 +230,7 @@ void find_integration_range(Tcl_Interp *interp,
 //sasfit_out("n_intervals: %d, (R_n-R_0): %lg, (2.0*R_0-R_n): %lg, cond: %d\n",*n_intervals, (R_n-R_0),(2.0*R_0-R_n),((R_n-R_0) < R_0));
 	      *Rstart = 0.0;
 	      *Rend = R_n;
-		  if (*n_intervals > 500) {
+		  if (*n_intervals > 4000) {
 			  if ((R_n-R_0) < R_0) {
 		      *Rend = R_n;
 				  *Rstart = 2.0*R_0-R_n;
@@ -626,19 +626,20 @@ void find_integration_range(Tcl_Interp *interp,
 	return;
 }
 
-scalar IQ_IntdLen(scalar x, sasfit_param4int *param4int) {
-    return IQ_core( param4int->interp,
-                    param4int->dF_dpar,
-                    param4int->l,
-                    param4int->sq,
+scalar IQ_IntdLen(scalar x, void *param4int) {
+    
+    return IQ_core( ((sasfit_param4int *)param4int)->interp,
+                    ((sasfit_param4int *)param4int)->dF_dpar,
+                    ((sasfit_param4int *)param4int)->l,
+                    ((sasfit_param4int *)param4int)->sq,
                     x,
-                    param4int->Q,
-                    param4int->a,
-                    param4int->SD,
-                    param4int->FF,
-                    param4int->SQ,
-                    param4int->distr,
-                    param4int->error);
+                    ((sasfit_param4int *)param4int)->Q,
+                    ((sasfit_param4int *)param4int)->a,
+                    ((sasfit_param4int *)param4int)->SD,
+                    ((sasfit_param4int *)param4int)->FF,
+                    ((sasfit_param4int *)param4int)->SQ,
+                    ((sasfit_param4int *)param4int)->distr,
+                    ((sasfit_param4int *)param4int)->error);
 }
 scalar IQ_core(Tcl_Interp *interp,
 	      int *dF_dpar,
@@ -1552,6 +1553,37 @@ scalar TmpIfit,a[MAXPAR],l[MAXPAR],s[MAXPAR];
 }
 
 
+scalar HTIQGlobal_OOURA(scalar Q, void *GIP) {
+        Tcl_Interp *interp;
+	    scalar z;
+        scalar *par;
+        scalar *Ifit;
+		scalar *Isub;
+        scalar *dydpar;
+        int   max_SD;
+        sasfit_analytpar *GAP;
+        sasfit_commonpar *GCP;
+        int   error_type;
+        bool  *error;
+        
+        interp = (( sasfit_GlobalGzIntStruct *) GIP)->interp;
+        z = (( sasfit_GlobalGzIntStruct *) GIP)->z;
+        par = (( sasfit_GlobalGzIntStruct *) GIP)->par;
+        Ifit = (( sasfit_GlobalGzIntStruct *) GIP)->Ifit;
+        Isub = (( sasfit_GlobalGzIntStruct *) GIP)->Isub;
+        dydpar = (( sasfit_GlobalGzIntStruct *) GIP)->dydpar;
+        max_SD = (( sasfit_GlobalGzIntStruct *) GIP)->max_SD;
+        GAP = (( sasfit_GlobalGzIntStruct *) GIP)->GAP;
+        GCP = (( sasfit_GlobalGzIntStruct *) GIP)->GCP;
+        error_type = ((sasfit_GlobalGzIntStruct *) GIP)->error_type;
+        error = (( sasfit_GlobalGzIntStruct *) GIP)->error;
+        IQ_t_global(interp,Q,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,error);
+        if (*error) return 0;
+        *((( sasfit_GlobalGzIntStruct *)GIP)->Ifit) = *Ifit;
+        *((( sasfit_GlobalGzIntStruct *)GIP)->Isub) = *Isub;
+        return (*Ifit)*Q*bessj0(Q*z);
+}
+
 scalar HTIQ_OOURA(scalar Q, void *GIP) {
         Tcl_Interp *interp;
 	    scalar z;
@@ -1681,8 +1713,6 @@ void IQ(Tcl_Interp *interp,
         case 1:
         {           
             lenaw=4000;
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            for (i=0;i<lenaw;i++) aw[i]=0;
             
             GIP.interp=interp;
             GIP.par = par;
@@ -1696,10 +1726,11 @@ void IQ(Tcl_Interp *interp,
             
  
             GIP.z = 0;
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Xi, &err,&GIP);
             
-            for (i=0;i<lenaw;i++) aw[i]=0;
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             GIP.z = Q;
             sasfit_intdeoini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intdeo(&HTIQ_OOURA, 0.0, GIP.z, aw, &Gz, &err,&GIP);
@@ -2315,11 +2346,14 @@ void IQ_Global(Tcl_Interp *interp,
         bool  *error)
 {
 	int i,j,kk;
-    scalar Xi;
     sasfit_analytpar *tmpGAP;
 	sasfit_analytpar *GAPdummy;
 	scalar Qmin,Qmax;
- 
+    scalar Xi, Xisub;
+    int lenaw;
+    scalar *aw,err,Gz;
+    sasfit_GlobalGzIntStruct GIP;
+    
     *Ifit = 0.0;
 	*Isub = 0.0;
 
@@ -2361,12 +2395,42 @@ void IQ_Global(Tcl_Interp *interp,
             }
             break;
         }
-        case 1: 
+        case 1:
+        {           
+            lenaw=4000;
+            
+            GIP.interp=interp;
+            GIP.par = par;
+            GIP.Ifit=Ifit;
+            GIP.Isub=Isub;
+            GIP.dydpar = dydpar;
+            GIP.max_SD = max_SD;
+            GIP.GAP = tmpGAP;
+            GIP.GCP = GCP;
+            GIP.error_type=error_type;
+            GIP.error=error;
+            
+ 
+            GIP.z = 0;
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intdei(&HTIQGlobal_OOURA, 0.0, aw, &Xi, &err,&GIP);
+            
+            GIP.z = Q;
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            sasfit_intdeoini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intdeo(&HTIQGlobal_OOURA, 0.0, GIP.z, aw, &Gz, &err,&GIP);
+            
+            *Ifit= 1.0*Gz/Xi;
+            free(aw) ;
+            break;
+        }
+        case 2:  
         {
-            SASFITqromoGlobalGz(interp,0,GSL_POSINF,0,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
+            SASFITqromoGlobalGz(interp,0,GSL_POSINF,0,Qres,par,&Xi,&Xisub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
             SASFITqromoGlobalGz(interp,0,GSL_POSINF,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
-            *Ifit=*Ifit/Xi;
-            *Isub=*Isub/Xi;
+            *Ifit=(*Ifit)/Xi;
+            *Isub=(*Isub)/Xi;
             for (i=0;i<max_SD;i++) {
                 for (kk=0;kk<(3*MAXPAR);kk++) {
                     dydpar[i*(3*MAXPAR)+kk] = dydpar[i*(3*MAXPAR)+kk]/Xi;

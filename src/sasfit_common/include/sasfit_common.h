@@ -39,6 +39,15 @@
 #include "sasfit_eps.h"
 #include "sasfit_common_stubs.h"
 
+
+#define OOURA_DOUBLE_EXP_QUADRATURE 0
+#define OOURA_CLENSHAW_CURTIS_QUADRATURE 1
+#define GSL_CQUAD 2
+#define GSL_QAG 3
+#define H_CUBATURE 4
+#define P_CUBATURE 5
+#define NR_QROMB 6
+
 // hide direct functions from plugins
 #ifndef MAKE_SASFIT_PLUGIN
 

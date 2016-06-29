@@ -118,8 +118,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_eps_set_comp, /* 74 */
 	sasfit_set_iq_or_gz, /* 75 */
 	sasfit_get_iq_or_gz, /* 76 */
-	NULL, /* 77 */
-	NULL, /* 78 */
+	sasfit_set_int_strategy, /* 77 */
+	sasfit_get_int_strategy, /* 78 */
 	sasfit_sd_LogNorm, /* 79 */
 	sasfit_miev0, /* 80 */
 	sasfit_dmilay, /* 81 */

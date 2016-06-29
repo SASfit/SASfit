@@ -87,6 +87,15 @@ int sasfit_get_iq_or_gz(void) {
 }
 
 sasfit_common_DLLEXP 
+void sasfit_set_int_strategy(int value) {
+	sasfit_eps.int_strategy = value;
+}
+sasfit_common_DLLEXP 
+int sasfit_get_int_strategy(void) {
+	return sasfit_eps.int_strategy;
+}
+
+sasfit_common_DLLEXP 
 void sasfit_eps_set_aniso(scalar value) {
 	sasfit_eps.aniso = value;
 }
@@ -148,6 +157,8 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
 	sasfit_out("epsNRIQ:         %f\n", fitp->nriq);
 	sasfit_out("JMAXNRIQ:        %d\n", fitp->jmax_nriq);
 	sasfit_out("SQ_or_IQ:        %d\n", fitp->sq_or_iq);
+    sasfit_out("IQorGz_int       %d\n", fitp->iq_or_gz);
+    sasfit_out("IntStrategy_int  %d\n", fitp->int_strategy);
 	sasfit_out("Robertus_p:      %d\n", fitp->robertus_p);
 	sasfit_out("iter_4_MC:       %d\n", fitp->iter_4_mc);
 	sasfit_out("fitorsim:        %d\n", fitp->fitorsim);

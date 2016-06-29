@@ -49,6 +49,7 @@ typedef struct
     sasfit_function*  SQ;
     int   distr;
     bool  *error;
+    scalar (* function) (scalar x, void * params);
 } param4int;
 typedef param4int sasfit_param4int;
 

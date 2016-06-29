@@ -62,6 +62,8 @@ set(SOURCE_sasfit_common
 	f2c_utils/sasfit_th36.c
 	f2c_utils/sasfit_miev0.c
 	f2c_utils/sasfit_pfq.c
+	cubature/hcubature.c
+	cubature/pcubature.c
 )
 
 set(SOURCE_sasfit_core

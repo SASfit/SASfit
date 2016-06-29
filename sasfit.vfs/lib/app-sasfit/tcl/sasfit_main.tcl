@@ -266,6 +266,8 @@ set FitPrecision(SQ_or_IQ)        1
 set FitPrecision(IQorGz)  "I(Q)"
 set FitPrecision(IQorGz_int)  0
 set FitPrecision(SQ_or_IQ,label)  "calculate scattering intensity"
+set FitPrecision(IntStrategy) OOURA_CC
+set FitPrecision(IntStrategy_int) 1
 set FitPrecision(Robertus_p)      9
 set FitPrecision(iter_4_MC)       1000
 set FitPrecision(int)             no

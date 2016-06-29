@@ -20,6 +20,19 @@
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 
+proc setIntStrategy2int {} {
+	switch $::FitPrecision(IntStrategy) {
+		"OOURA_DE" {set ::FitPrecision(IntStrategy_int) 0}
+		"OOURA_CC" {set ::FitPrecision(IntStrategy_int) 1}
+		"GSL_CQUAD" {set ::FitPrecision(IntStrategy_int) 2}
+		"GSL_QAG" {set ::FitPrecision(IntStrategy_int) 3}
+		"H_CUBATURE" {set ::FitPrecision(IntStrategy_int) 4}
+		"P_CUBATURE" {set ::FitPrecision(IntStrategy_int) 5}
+		"NR_QROMB" {set ::FitPrecision(IntStrategy_int) 6}
+		default {set ::FitPrecision(IntStrategy_int) 0}
+	}
+}
+
 #-------------------------------------------------------------------------
 #   setting some parameters for the fitting routine
 #
@@ -67,6 +80,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	entry $w.robertus_pvalue -textvariable FitPrecision(Robertus_p) -width $entrywidth
 	grid $w.robertus_plabel -row 3 -column 2 -sticky e
 	grid $w.robertus_pvalue -row 3 -column 3 -sticky w
+	
 	label $w.mc_plabel -text "number of iterations for\n Monte Carlo simulation"
 	entry $w.mc_pvalue -textvariable FitPrecision(iter_4_MC) -width $entrywidth
 	grid $w.mc_plabel -row 4 -column 0 -sticky e
@@ -83,6 +97,16 @@ proc CustomizeCmd { analytpar tanalytpar } {
 		-command "update_parameter_increment $analytpar $tanalytpar"
 	grid $w.adjust_entry -row 5 -column 2 -columnspan 2 -sticky ew
 	$w.adjust_entry set [expr log10(100*$ap(par_x_X)-100)]
+	
+	label $w.intStrat_label -text "integration strategy"
+	ComboBox $w.intStrat_value -values {"OOURA_DE" "OOURA_CC" "GSL_CQUAD" "GSL_QAG" \
+										"H_CUBATURE" "P_CUBATURE" "NR_QROMB"} \
+				-width 15 \
+				-textvariable ::FitPrecision(IntStrategy) \
+				-modifycmd setIntStrategy2int
+	grid $w.intStrat_label -row 5 -column 0 -sticky e
+	grid $w.intStrat_value -row 5 -column 1 -sticky w
+
 }
 
 proc update_parameter_increment { analytpar tanalytpar value } {

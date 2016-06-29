@@ -621,6 +621,13 @@ bool		*error;
         ssum=0.0;
         for (j=1;j<=it;j++) {
             IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+            if (*error) {
+                *Ifit = 0.0;
+                *Isub = 0.0;
+                free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
+                free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
+                return *Ifit;
+            }
             tHankel=Hankel(-log(x),Q)/x;
             sum += t1*tHankel;
             ssum += ts1*tHankel;
@@ -632,6 +639,13 @@ bool		*error;
             x +=ddel;
             
             IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+            if (*error) {
+                *Ifit = 0.0;
+                *Isub = 0.0;
+                free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
+                free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
+                return *Ifit;
+            }
             tHankel=Hankel(-log(x),Q)/x;
             sum += t1*tHankel;
             ssum += ts1*tHankel;

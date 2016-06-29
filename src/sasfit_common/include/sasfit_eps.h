@@ -56,6 +56,7 @@ typedef struct
 	int     jmax_nriq;
 	int     sq_or_iq;
     int     iq_or_gz;
+    int     int_strategy;
 	int     robertus_p;
 	int     iter_4_mc;
 	int     fitorsim;
@@ -78,10 +79,14 @@ sasfit_common_DLLEXP int    sasfit_eps_get_jmax_res(void);
 sasfit_common_DLLEXP scalar sasfit_eps_get_nriq(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_jmax_nriq(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_sq_or_iq(void);
+sasfit_common_DLLEXP int    sasfit_get_iq_or_gz(void);
+sasfit_common_DLLEXP int    sasfit_get_int_strategy(void);
+sasfit_common_DLLEXP int    sasfit_get_int_strategy(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_robertus_p(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_iter_4_mc(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_fitorsim(void);
 
+sasfit_common_DLLEXP scalar sasfit_eps_get_comp(void);
 /**
  * \ingroup sasfit_eps
  * Returns step width for numerical differentiation.
@@ -92,8 +97,6 @@ sasfit_common_DLLEXP scalar sasfit_eps_get_h(void);
  * \ingroup sasfit_eps
  * Returns comparison tolerance for equality definition of floats.
  */
-sasfit_common_DLLEXP scalar sasfit_eps_get_comp(void);
-sasfit_common_DLLEXP int sasfit_get_iq_or_gz(void);
 
 sasfit_common_DLLEXP void sasfit_eps_set_aniso(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_jmax_aniso(int value);
@@ -102,12 +105,14 @@ sasfit_common_DLLEXP void sasfit_eps_set_jmax_res(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_nriq(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_jmax_nriq(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_sq_or_iq(int value);
+sasfit_common_DLLEXP void sasfit_set_iq_or_gz(int value);
+sasfit_common_DLLEXP void sasfit_set_int_strategy(int value);
+sasfit_common_DLLEXP void sasfit_set_int_strategy(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_robertus_p(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_iter_4_mc(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_fitorsim(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_h(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_comp(scalar value);
-sasfit_common_DLLEXP void sasfit_set_iq_or_gz(int value);
 
 /**
  * \ingroup sasfit_eps

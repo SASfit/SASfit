@@ -24,9 +24,11 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
+#include <cubature.h>
 #include <math.h>
 #include <sasfit.h>
 #include "include/SASFIT_nr.h"
+#include <gsl/gsl_integration.h>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846264338328      /* pi */
@@ -51,7 +53,6 @@
 #define JMAXPINF JMAX+1
 
 #define K 5
-
 
 float SASFITqrombNR_V_dR(Tcl_Interp *interp, 
                             float a[],
@@ -80,48 +81,6 @@ float SASFITqrombNR_V_dR(Tcl_Interp *interp,
 	sasfit_err("Too many steps in routine SASFITqrombNRdR\n");
 	*error = TRUE;
 	return 0.0;
-}
-
-
-scalar SASFITqrombIQdR(Tcl_Interp *interp,
-			int   *dF_dpar,
-			scalar l[],
-			scalar sq[],
-			scalar Q, 
-			scalar a[],
-			sasfit_function*  SD, 
-			sasfit_function*  FF,
-			sasfit_function*  SQ,
-			int   distr,
-			scalar Len_start, 
-			scalar Len_end, 
-			bool  *error)
-{
-    scalar *aw, res,err;
-    int lenaw=4000;
-    sasfit_param4int param4int;
-    param4int.dF_dpar=dF_dpar;
-    param4int.l=l;
-    param4int.sq=sq;
-    param4int.Q=Q;
-    param4int.a=a;
-    param4int.SD=SD;
-    param4int.FF=FF;
-    param4int.SQ=SQ;
-    param4int.distr=distr;
-    param4int.error=error;
-    
-//    aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-//    sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-//    sasfit_intde(&IQ_IntdLen, Len_start,Len_end, aw, &res, &err,&param4int);
-    aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-    sasfit_intccini(lenaw, aw);
-    sasfit_intcc(&IQ_IntdLen, Len_start,Len_end, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&param4int);
-    free(aw);
-    if (err < 0) {
-        sasfit_err("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
-    }
-    return res;
 }
 
 float SASFITqrombIQdR_old(Tcl_Interp *interp,
@@ -160,9 +119,121 @@ float SASFITqrombIQdR_old(Tcl_Interp *interp,
 	return 0.0;
 }
 
+int f1D_cubature(unsigned ndim, const double *x, void *param4int,
+      unsigned fdim, double *fval) {
+    fval[0] = (*((sasfit_param4int *)param4int)->function)(x[0],param4int);
+    if (((sasfit_param4int *)param4int)->error) {
+        return 0;
+    } else {
+        return 1;
+    }
+} 
+
+scalar SASFITqrombIQdR(Tcl_Interp *interp,
+			int   *dF_dpar,
+			scalar l[],
+			scalar sq[],
+			scalar Q, 
+			scalar a[],
+			sasfit_function*  SD, 
+			sasfit_function*  FF,
+			sasfit_function*  SQ,
+			int   distr,
+			scalar Len_start, 
+			scalar Len_end, 
+			bool  *error)
+{
+    scalar *aw, res,err;
+    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
+    gsl_integration_workspace * w;
+    gsl_integration_cquad_workspace * wcquad;
+    gsl_integration_glfixed_table * wglfixed;
+    gsl_function F;
+    size_t neval;
+    int lenaw=4000;
+    sasfit_param4int param4int;
+    param4int.dF_dpar=dF_dpar;
+    param4int.l=l;
+    param4int.sq=sq;
+    param4int.Q=Q;
+    param4int.a=a;
+    param4int.SD=SD;
+    param4int.FF=FF;
+    param4int.SQ=SQ;
+    param4int.distr=distr;
+    param4int.error=error;
+    
+    switch(sasfit_get_int_strategy()) {
+    case OOURA_DOUBLE_EXP_QUADRATURE: {
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intde(&IQ_IntdLen, Len_start,Len_end, aw, &res, &err,&param4int);
+            free(aw);
+            break;
+            } 
+    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
+            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
+            sasfit_intccini(lenaw, aw);
+            sasfit_intcc(&IQ_IntdLen, Len_start,Len_end, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&param4int);
+            free(aw);
+            break;
+            }
+    case GSL_CQUAD: {
+            wcquad = gsl_integration_cquad_workspace_alloc(lenaw);
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            gsl_integration_cquad (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), wcquad, &res, &err,&neval);
+            gsl_integration_cquad_workspace_free(wcquad);
+            break;
+            }
+    case GSL_QAG: {
+            w = gsl_integration_workspace_alloc(lenaw);
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            gsl_integration_qag (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), lenaw, 3,
+                        w, &res, &err);
+            gsl_integration_workspace_free (w);
+            break;
+            }
+    case H_CUBATURE: {
+            param4int.function=&IQ_IntdLen;
+            cubxmin[0]=Len_start;
+            cubxmax[0]=Len_end;
+            hcubature(1, &f1D_cubature,&param4int,1, cubxmin, cubxmax, 
+              10000, 0.0, sasfit_eps_get_nriq(), 
+              ERROR_INDIVIDUAL, fval, ferr);
+            res = fval[0];
+            break;
+            }
+    case P_CUBATURE: {
+            param4int.function=&IQ_IntdLen;
+            cubxmin[0]=Len_start;
+            cubxmax[0]=Len_end;
+            pcubature(1, &f1D_cubature, &param4int,1, cubxmin, cubxmax, 
+              10000,0.0, sasfit_eps_get_nriq(), 
+              ERROR_INDIVIDUAL, fval, ferr);
+            res = fval[0];
+            break;
+            }
+    case NR_QROMB: {
+            res = SASFITqrombIQdR_old(interp,dF_dpar,l,sq,Q,a,
+		                    SD,FF,SQ,
+							distr,Len_start, Len_end,error);
+            break;
+            }
+    default: {
+            sasfit_err("Unknown integration strategy\n");
+            break;
+            }
+    }
+    if (err < 0) {
+        sasfit_err("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
+    }
+    return res;
+}
 
 
-float SASFITqrombIQSQdR_old(Tcl_Interp *interp,
+float SASFITqrombIQSQdR(Tcl_Interp *interp,
 			int   *dF_dpar,
 			float l[],
 			float sq[],

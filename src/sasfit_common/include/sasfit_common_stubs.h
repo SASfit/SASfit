@@ -464,10 +464,22 @@ typedef struct
 #define sasfit_eps_set_comp \
 	(sasfit_common_stubs_ptr->sasfit_eps_set_comp) /* 74 */
 #endif
-/* Slot 75 is reserved */
-/* Slot 76 is reserved */
-/* Slot 77 is reserved */
-/* Slot 78 is reserved */
+#ifndef sasfit_set_iq_or_gz
+#define sasfit_set_iq_or_gz \
+	(sasfit_common_stubs_ptr->sasfit_set_iq_or_gz) /* 75 */
+#endif
+#ifndef sasfit_get_iq_or_gz
+#define sasfit_get_iq_or_gz \
+	(sasfit_common_stubs_ptr->sasfit_get_iq_or_gz) /* 76 */
+#endif
+#ifndef sasfit_set_int_strategy
+#define sasfit_set_int_strategy \
+	(sasfit_common_stubs_ptr->sasfit_set_int_strategy) /* 77 */
+#endif
+#ifndef sasfit_get_int_strategy
+#define sasfit_get_int_strategy \
+	(sasfit_common_stubs_ptr->sasfit_get_int_strategy) /* 78 */
+#endif
 #ifndef sasfit_sd_LogNorm
 #define sasfit_sd_LogNorm \
 	(sasfit_common_stubs_ptr->sasfit_sd_LogNorm) /* 79 */

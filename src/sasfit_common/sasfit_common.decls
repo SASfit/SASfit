@@ -242,6 +242,18 @@ declare 74 generic {
 	void sasfit_eps_set_comp(scalar value)
 }
 
+declare 75 generic {
+	void sasfit_set_iq_or_gz(scalar value)
+}
+declare 76 generic {
+	scalar sasfit_get_iq_or_gz(void)
+}
+declare 77 generic {
+	void sasfit_set_int_strategy(scalar value)
+}
+declare 78 generic {
+	scalar sasfit_get_int_strategy(void)
+}
 declare 79 generic {
 	scalar sasfit_sd_LogNorm(scalar value, sasfit_param * param)
 }

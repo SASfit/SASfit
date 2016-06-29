@@ -586,6 +586,7 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET_F(int,    "::FitPrecision", "JMAXresolution", sasfit_eps_set_jmax_res);
 	SF_TCL_GET_F(int,    "::FitPrecision", "SQ_or_IQ", sasfit_eps_set_sq_or_iq);
 	SF_TCL_GET_F(int,    "::FitPrecision", "IQorGz_int", sasfit_set_iq_or_gz);
+	SF_TCL_GET_F(int,    "::FitPrecision", "IntStrategy_int", sasfit_set_int_strategy);
 	SF_TCL_GET_F(int,    "::FitPrecision", "Robertus_p", sasfit_eps_set_robertus_p);
 	SF_TCL_GET_F(bool, argv[1], "fit", sasfit_eps_set_fitorsim);
 	return TCL_OK;
