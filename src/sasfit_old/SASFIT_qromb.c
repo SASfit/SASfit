@@ -132,7 +132,7 @@ int f1D_cubature(unsigned ndim, const double *x, void *param4int,
 scalar SASFITqrombIQdR(Tcl_Interp *interp,
 			int   *dF_dpar,
 			scalar l[],
-			scalar sq[],
+			scalar s[],
 			scalar Q, 
 			scalar a[],
 			sasfit_function*  SD, 
@@ -154,7 +154,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
     sasfit_param4int param4int;
     param4int.dF_dpar=dF_dpar;
     param4int.l=l;
-    param4int.sq=sq;
+    param4int.s=s;
     param4int.Q=Q;
     param4int.a=a;
     param4int.SD=SD;
@@ -216,7 +216,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case NR_QROMB: {
-            res = SASFITqrombIQdR_old(interp,dF_dpar,l,sq,Q,a,
+            res = SASFITqrombIQdR_old(interp,dF_dpar,l,s,Q,a,
 		                    SD,FF,SQ,
 							distr,Len_start, Len_end,error);
             break;

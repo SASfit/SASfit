@@ -35,19 +35,23 @@
 //#define Tcl_GetDoubleD(a,b,c) Tcl_GetDoubleE(a,b,c,"Tcl_GetDouble %d: %x %x %x\n",__LINE__)
 #define Tcl_GetDoubleD(a,b,c) Tcl_GetDouble((a),(b),(c))
 
-
 typedef struct
 {
 	Tcl_Interp *interp;
     int   *dF_dpar;
     scalar *l;
-    scalar *sq;
-    scalar Q;
+    scalar *s;
     scalar *a;
+    scalar Q;
+    scalar z;
     sasfit_function*  SD;
     sasfit_function*  FF;
     sasfit_function*  SQ;
     int   distr;
+    int   SQ_how;
+    scalar Rstart;
+    scalar Rend;
+    int   nintervals;
     bool  *error;
     scalar (* function) (scalar x, void * params);
 } param4int;
@@ -159,25 +163,13 @@ struct GzIntStruct {
         scalar *dydpar;
         int   max_SD;
         sasfit_analytpar *AP;
-        int   error_type;
-        bool  *error;
-};
-typedef struct GzIntStruct sasfit_GzIntStruct;
-
-struct GlobalGzIntStruct {
-        Tcl_Interp *interp;
-	    scalar z;
-        scalar *par;
-        scalar *Ifit;
-		scalar *Isub;
-        scalar *dydpar;
-        int   max_SD;
         sasfit_analytpar *GAP;
         sasfit_commonpar *GCP;
         int   error_type;
         bool  *error;
 };
-typedef struct GlobalGzIntStruct sasfit_GlobalGzIntStruct;
+typedef struct GzIntStruct sasfit_GzIntStruct;
+
 
 /**
  * Allocates and initializes an array of sasfit_analytpar structures.

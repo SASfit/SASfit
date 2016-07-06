@@ -255,7 +255,7 @@ foreach r $CT(Q) g $CT(I) b $CT(DI) {
 }
 #puts ...done
 
-set FitPrecision(epsNRIQ)         1e-6
+set FitPrecision(epsNRIQ)         1e-10
 set FitPrecision(epsanisotropic)  1e-5
 set FitPrecision(epsresolution)   1e-3
 set FitPrecision(h)               1e-2

@@ -12610,6 +12610,7 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
 	      set ::SASfitinterrupt 0
               set ::fitparamguiupdate yes
               set sub no
+		      sasfit_timer_start "\nStart apply"
 
               if {([string length $::sasfit(lower,Q)] > 0) && \
                   ([string length $::sasfit(upper,Q)] > 0) } {
@@ -12645,6 +12646,8 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
                                          [list $Q $I $DI] \
                                 ]
 		 }
+		 sasfit_timer_stop "Plotting" "finished" ""
+		 sasfit_timer_start "\nStart plotting"
 
 		 foreach subt $::AnalytPar(substrSDFF) calct $::AnalytPar(calcSDFF) {
 		     if {$subt && $calct} {
@@ -12664,6 +12667,7 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
               }
               RefreshAnalytParDataTab ::AnalytPar
               set ::fitparamguiupdate yes
+			  sasfit_timer_stop "Apply" "finished" ""
 	}
 }
 

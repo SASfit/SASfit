@@ -4875,6 +4875,9 @@ proc analyticalGlobalSDCmd {simorfit
 						 [list $Q $I $DI] $::addsasfit(Nth,hide)\
 					]
 			 }
+			 
+		     sasfit_timer_stop "Apply" "finished" ""
+		     sasfit_timer_start "\nStart plotting"
 			 set ::addsasfit(Nth,Ith)     [lindex $IthIres 0] 
 			 set ::addsasfit(Nth,sub,Ith) [lindex $IthIres 1] 
 			 set ::addsasfit(Nth,sub,Ih)  [lindex $IthIres 2]
@@ -4899,7 +4902,7 @@ proc analyticalGlobalSDCmd {simorfit
 					     -title ERROR -message "NO data loaded" 
 		      }
 		      RefreshAnalytParDataTab ::GlobalAnalytPar /Global
-		      sasfit_timer_stop "Apply" "finished" ""
+		      sasfit_timer_stop "Plotting" "finished" ""
                       set ::fitparamguiupdate yes
 		    }
 	}
