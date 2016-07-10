@@ -24,7 +24,7 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <cubature.h>
+#include "../sasfit_common/cubature/cubature.h"
 #include <math.h>
 #include <sasfit.h>
 #include "include/SASFIT_nr.h"
