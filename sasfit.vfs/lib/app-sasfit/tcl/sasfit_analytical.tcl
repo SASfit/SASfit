@@ -13092,7 +13092,10 @@ if {$simulate && [winfo exists $w.adj.calc]} {
 proc setIQorGz2int {} {
 	switch $::FitPrecision(IQorGz) {
 		"I(Q)" {set ::FitPrecision(IQorGz_int) 0}
-		"G(z)" {set ::FitPrecision(IQorGz_int) 1}
+		"Exp(G(z)-G(0))" {set ::FitPrecision(IQorGz_int) 1}
+		"G(z)-G(0)" {set ::FitPrecision(IQorGz_int) 2}
+		"G(z)" {set ::FitPrecision(IQorGz_int) 3}
+		"Exp(G(z)-G(0))_ln" {set ::FitPrecision(IQorGz_int) 4}
 		default {set ::FitPrecision(IQorGz_int) 0}
 	}
 }
@@ -13108,8 +13111,8 @@ proc analytical_widgets_bottom { w simulate isGlobal
 		-justify left -width 350 -anchor w
 	pack [quick_message_window] -side left -fill x
 	
-	ComboBox $w.adj.iq_gz -values {"I(Q)" "G(z)"} \
-				-width 5 \
+	ComboBox $w.adj.iq_gz -values {"I(Q)" "Exp(G(z)-G(0))" "G(z)-G(0)" "G(z)" "Exp(G(z)-G(0))_ln"} \
+				-width 12 \
 				-textvariable ::FitPrecision(IQorGz) \
 				-label "calc." \
 				-modifycmd setIQorGz2int

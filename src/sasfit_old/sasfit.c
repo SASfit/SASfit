@@ -1234,11 +1234,11 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
         lenaw=4000;
             
         aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            
-        param4int.z = 0;            
-        sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-        sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Xi, &err,&param4int);
-            
+        if ((sasfit_get_iq_or_gz()!=3) && (sasfit_get_iq_or_gz()!=4)) {
+            param4int.z = 0;            
+            sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Xi, &err,&param4int);
+        }
         param4int.z = Q;
         sasfit_intdeoini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
         sasfit_intdeo(&HTIQ_OOURA, 0.0, param4int.z, aw, &Gz, &err,&param4int);
@@ -1247,7 +1247,11 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
         free(aw) ;
 //      Here only (Gz-Xi) is returned as at this stage the contribution of different scattering species is still a linear combination
 //      Only at the very end, when all contributions are summed up the exponential is taken. (see IQ() and IQ_Global())
-        return (Gz-Xi);
+        if ((sasfit_get_iq_or_gz()==3) || (sasfit_get_iq_or_gz()==4)) {
+            return Gz;
+        } else {
+            return (Gz-Xi);
+        }
     }
 }
 
@@ -1775,10 +1779,11 @@ void IQ(Tcl_Interp *interp,
         IQ_t(interp,Q,par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
 // In case of calculating the SESANS signal up to now only (Gz-Xi) has been calculated.
 // Now the still missing exponential of it is taken, as well as for the derivatives of the fitting parameters.
-
-        *Ifit = exp((*Ifit));
-        *Isub = exp((*Isub));
-        for (i=0;i<max_SD*(3*MAXPAR);i++) dydpar[i] = dydpar[i] * (*Ifit);
+        if (sasfit_get_iq_or_gz() == 1) {
+            *Ifit = exp((*Ifit));
+            *Isub = exp((*Isub));
+            for (i=0;i<max_SD*(3*MAXPAR);i++) dydpar[i] = dydpar[i] * (*Ifit);
+        }
     }
     
 	Tcl_Free((char *)tmpAP);
@@ -2802,9 +2807,11 @@ void IQ_Global(Tcl_Interp *interp,
         IQ_t_global(interp,Q,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
 // In case of calculating the SESANS signal up to now only (Gz-Xi) has been calculated.
 // Now the still missing exponential of it is taken, as well as for the derivatives of the fitting parameters.
-        *Ifit = exp((*Ifit));
-        *Isub = exp((*Isub));
-        for (i=0;i<max_SD*(3*MAXPAR);i++) dydpar[i] = dydpar[i] * (*Ifit);
+        if (sasfit_get_iq_or_gz()==1) {
+            *Ifit = exp((*Ifit));
+            *Isub = exp((*Isub));
+            for (i=0;i<max_SD*(3*MAXPAR);i++) dydpar[i] = dydpar[i] * (*Ifit);
+        }
     }
  
     Tcl_Free((char *)tmpGAP);
@@ -3043,7 +3050,8 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	}
 
 	sasfit_ap2paramlist(&lista,&ma,&mfit,&a,AP,NULL,max_SD);
-
+    if (sasfit_get_iq_or_gz()==4) sasfit_set_iq_or_gz(1);
+    
 	Ith = dvector(0,ndata-1);
 	Ihsubstract = dvector(0,ndata-1);
 	dydpar = dvector(0,ma-1);
@@ -3155,10 +3163,10 @@ Tcl_SetVar2(interp,argv[1],"ndata", sBuffer,0);
 
 	Tcl_DStringStartSublist(&DsBuffer);
 	for (i=0;i<ndata;i++) {
-        if (sasfit_get_iq_or_gz()) {
-            float_to_string(sBuffer,Ih[i]-Ihsubstract[i]);
-        } else {
+    if (sasfit_get_iq_or_gz() == 1) {
             float_to_string(sBuffer,Ih[i]/Ihsubstract[i]);
+        } else {
+            float_to_string(sBuffer,Ih[i]-Ihsubstract[i]);
         }
 		Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 	}
@@ -3166,10 +3174,10 @@ Tcl_SetVar2(interp,argv[1],"ndata", sBuffer,0);
 
 	Tcl_DStringStartSublist(&DsBuffer);
 	for (i=0;i<ndata;i++) {
-        if (sasfit_get_iq_or_gz()) {
-            float_to_string(sBuffer,Ith[i]-Ihsubstract[i]);
-        } else {
+        if (sasfit_get_iq_or_gz() == 1) {
             float_to_string(sBuffer,Ith[i]/Ihsubstract[i]);
+        } else {
+            float_to_string(sBuffer,Ith[i]-Ihsubstract[i]);
         }
 		Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 	}
@@ -3285,6 +3293,8 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
 
 
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GAP,&GCP,max_SD);
+if (sasfit_get_iq_or_gz()==4) sasfit_set_iq_or_gz(1); 
+
 dydpar = dvector(0,ma-1);
 Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
 for (k=0;k<GCP.nmultset;k++) {
@@ -3382,10 +3392,10 @@ Tcl_DStringStartSublist(&DsBuffer);
 for (j=0;j<GCP.nmultset;j++) {
 	Tcl_DStringStartSublist(&DsBuffer);
 	for (i=0;i<ndata[j];i++) {
-       if (sasfit_get_iq_or_gz() == 0) {
-           float_to_string(sBuffer,Ith[j][i]-Isub[j][i]);
-       } else {
+       if (sasfit_get_iq_or_gz() == 1) {
            float_to_string(sBuffer,Ith[j][i]/Isub[j][i]);
+       } else {
+           float_to_string(sBuffer,Ith[j][i]-Isub[j][i]);
        }
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
  	}
@@ -3397,10 +3407,10 @@ Tcl_DStringStartSublist(&DsBuffer);
 for (j=0;j<GCP.nmultset;j++) {
 	Tcl_DStringStartSublist(&DsBuffer);
 	for (i=0;i<ndata[j];i++) {
-       if (sasfit_get_iq_or_gz() == 0) {
-           float_to_string(sBuffer,Ih[j][i]-Isub[j][i]);
-       } else {
+       if (sasfit_get_iq_or_gz() == 1) {
            float_to_string(sBuffer,Ih[j][i]/Isub[j][i]);
+       } else {
+           float_to_string(sBuffer,Ih[j][i]-Isub[j][i]);
        }
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
  	}
@@ -3531,7 +3541,7 @@ sasfit_commonpar GCP;
 int    i,j,m,k;
 int    max_SD;
 char   sBuffer[256];
-scalar  **h, **Ih, **DIh, **Ith, **Isub, **res;
+scalar  **h, **Ih, **DIh, **Ith, **Ihtrans, **DIhtrans, **Isub, **res;
 int    *lista;
 int    ma;
 int    mfit,*ndata,*hide, totndata;
@@ -3561,9 +3571,14 @@ if (TCL_ERROR == get_GlobalAP(interp,argv,
 sasfit_out("nmultset: %d\n",GCP.nmultset);
 
 Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
+DIhtrans = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
+Ihtrans = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
 for (k=0;k<GCP.nmultset;k++) {
 	Isub[k] = dvector(0,ndata[k]-1);
+	DIhtrans[k] = dvector(0,ndata[k]-1);
+	Ihtrans[k] = dvector(0,ndata[k]-1);
 }
+
 for (j=0;j<max_SD;j++){
    GlobalAP[j].fit = TRUE;
    for (i=0;i<MAXPAR;i++) {
@@ -3635,8 +3650,36 @@ for (i=0;i<max_SD;i++) {
 	GlobalAP[i].dodydpar = 1;
 }
 
-SASFITmrqminGlobal(interp,h,Ih,res,DIh,Ith,Isub,ndata,max_SD,GlobalAP,&GCP,error_type,
+if (sasfit_get_iq_or_gz() == 4) {
+    for (j=0;j<GCP.nmultset;j++) {
+        for (i=0;i<ndata[j];i++) {
+            Ihtrans[j][i] = log(Ih[j][i]/Ih[j][ndata[j]-1]);
+            DIhtrans[j][i] = sqrt( gsl_pow_2(DIh[j][i]/Ih[j][i]) + gsl_pow_2(DIh[j][ndata[j]-1]/Ih[j][ndata[j]-1]) );
+        } 
+ 	}
+} else {
+    for (j=0;j<GCP.nmultset;j++) {
+        for (i=0;i<ndata[j];i++) {
+            Ihtrans[j][i] = Ih[j][i];
+            DIhtrans[j][i] = DIh[j][i];
+        }
+    }
+}
+SASFITmrqminGlobal(interp,h,Ihtrans,res,DIhtrans,Ith,Isub,ndata,max_SD,GlobalAP,&GCP,error_type,
        SASFIT_CData,&chisq,IQ_Global,&alambda,&error);
+       
+if (sasfit_get_iq_or_gz() == 4) {
+    for (j=0;j<GCP.nmultset;j++) {
+        for (i=0;i<ndata[j];i++) {
+            Ith[j][i] = exp(Ith[j][i])*(Ih[j][ndata[j]-1]);
+            if (Isub[j][i] == 0) {
+                Isub[j][i] == 1.0;
+            } else {
+                Isub[j][i] = exp(Isub[j][i])*(Ih[j][ndata[j]-1]);
+            }
+        }
+ 	}
+}
 
 for (j=0;j<max_SD;j++) {
    GlobalAP[j].fit = FALSE;
@@ -3665,6 +3708,8 @@ if (error == TRUE) {
       free_dvector(res[k],0,ndata[k]-1);
       free_dvector(Ih[k],0,ndata[k]-1);
       free_dvector(DIh[k],0,ndata[k]-1);
+      free_dvector(DIhtrans[k],0,ndata[k]-1);
+      free_dvector(Ihtrans[k],0,ndata[k]-1);
    }
    free_dvector(GCP.P_common,0,GCP.common_i-1);
    free_ivector(GCP.P_common_index,0,GCP.common_i-1);
@@ -3680,6 +3725,7 @@ if (error == TRUE) {
 //   Tcl_Free((char *) *res);
    return TCL_ERROR;
 }
+
 
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GlobalAP,&GCP,max_SD);
 
@@ -3725,10 +3771,10 @@ Tcl_DStringStartSublist(&DsBuffer);
 for (j=0;j<GCP.nmultset;j++) {
 	Tcl_DStringStartSublist(&DsBuffer);
 	for (i=0;i<ndata[j];i++) {
-       if (sasfit_get_iq_or_gz() == 0) {
-           float_to_string(sBuffer,Ith[j][i]-Isub[j][i]);
-       } else {
+       if ((sasfit_get_iq_or_gz() == 1) || (sasfit_get_iq_or_gz() == 4)) {
            float_to_string(sBuffer,Ith[j][i]/Isub[j][i]);
+       } else {
+           float_to_string(sBuffer,Ith[j][i]-Isub[j][i]);
        }
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
  	}
@@ -3740,10 +3786,10 @@ Tcl_DStringStartSublist(&DsBuffer);
 for (j=0;j<GCP.nmultset;j++) {
 	Tcl_DStringStartSublist(&DsBuffer);
 	for (i=0;i<ndata[j];i++) {
-       if (sasfit_get_iq_or_gz() == 0) {
-           float_to_string(sBuffer,Ih[j][i]-Isub[j][i]);
-       } else {
+       if ((sasfit_get_iq_or_gz() == 1) || (sasfit_get_iq_or_gz() == 4)){
            float_to_string(sBuffer,Ih[j][i]/Isub[j][i]);
+       } else {
+           float_to_string(sBuffer,Ih[j][i]-Isub[j][i]);
        }
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
  	}
@@ -3820,6 +3866,8 @@ for (k=0;k<GCP.nmultset;k++) {
    free_dvector(res[k],0,ndata[k]-1);
    free_dvector(Ih[k],0,ndata[k]-1);
    free_dvector(DIh[k],0,ndata[k]-1);
+   free_dvector(DIhtrans[k],0,ndata[k]-1);
+   free_dvector(Ihtrans[k],0,ndata[k]-1);
 }
 free_dvector(GCP.P_common,0,GCP.common_i-1);
 free_ivector(GCP.P_common_index,0,GCP.common_i-1);
@@ -3834,6 +3882,8 @@ Tcl_Free((char *) h);
 Tcl_Free((char *) Ih);
 Tcl_Free((char *) Ith);
 Tcl_Free((char *) DIh);
+Tcl_Free((char *) DIhtrans);
+Tcl_Free((char *) Ihtrans);
 Tcl_Free((char *) res);
 
 return TCL_OK;
@@ -4203,7 +4253,7 @@ sasfit_analytpar *AP;
 int    i,j;
 int    max_SD;
 char   sBuffer[256];
-scalar  *h, *Ih, *DIh, *Ith, *Ihsub, *res;
+scalar  *h, *Ih, *DIh, *Ith, *Ihsub, *res, *Ihtrans, *DIhtrans;
 int    *lista;
 int    ma;
 int    mfit,ndata;
@@ -4298,10 +4348,38 @@ SASFIT_CData->max_SD = max_SD;
 
 Ith = dvector(0,ndata-1);
 Ihsub = dvector(0,ndata-1);
+Ihtrans = dvector(0,ndata-1);
+DIhtrans = dvector(0,ndata-1);
 Tcl_ResetResult(interp);
 
-SASFITmrqmin(interp,h,Ih,res,DIh,Ith,Ihsub,ndata,max_SD,AP,error_type,
+if (sasfit_get_iq_or_gz() == 4) {
+   for (i=0;i<ndata;i++) {
+        Ihtrans[i] = log(Ih[i]/Ih[ndata-1]);
+        DIhtrans[i] = sqrt( gsl_pow_2(DIh[i]/Ih[i]) + gsl_pow_2(DIh[ndata-1]/Ih[ndata-1]) );
+    }
+} else {
+    for (i=0;i<ndata;i++) {
+        Ihtrans[i] = Ih[i];
+        DIhtrans[i] = DIh[i];
+    }
+}
+SASFITmrqmin(interp,h,Ihtrans,res,DIhtrans,Ith,Ihsub,ndata,max_SD,AP,error_type,
        SASFIT_CData,&chisq,IQ,&alambda,&error);
+if (sasfit_get_iq_or_gz() == 4) {
+   for (i=0;i<ndata;i++) {
+            Ith[i] = exp(Ith[i])*(Ih[ndata-1]);
+            if (Ihsub[i] == 0) {
+                Ihsub[i] == 1.0;
+            } else {
+                Ihsub[i] = exp(Ihsub[i])*(Ih[ndata-1]);
+            }
+    }
+} else {
+    for (i=0;i<ndata;i++) {
+        Ihtrans[i] = Ih[i];
+        DIhtrans[i] = DIh[i];
+    }
+}
 
 for (j=0;j<max_SD;j++) {
    AP[j].fit = FALSE;
@@ -4329,6 +4407,8 @@ if (error == TRUE) {
    free_dvector(res,0,ndata-1);
    free_dvector(Ih,0,ndata-1);
    free_dvector(DIh,0,ndata-1);
+   free_dvector(Ihtrans,0,ndata-1);
+   free_dvector(DIhtrans,0,ndata-1);
    return TCL_ERROR;
 }
 
@@ -4346,10 +4426,10 @@ Tcl_DStringEndSublist(&DsBuffer);
 
 Tcl_DStringStartSublist(&DsBuffer);
 for (i=0;i<ndata;i++) {
-    if (sasfit_get_iq_or_gz() == 0) {
-        float_to_string(sBuffer,Ih[i]-Ihsub[i]);
-    } else {
+    if ((sasfit_get_iq_or_gz() == 1) || (sasfit_get_iq_or_gz() == 4)) {
         float_to_string(sBuffer,Ih[i]/Ihsub[i]);
+    } else {
+        float_to_string(sBuffer,Ih[i]-Ihsub[i]);
     }
    Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 }
@@ -4358,10 +4438,10 @@ Tcl_DStringEndSublist(&DsBuffer);
 
 Tcl_DStringStartSublist(&DsBuffer);
 for (i=0;i<ndata;i++) {
-    if (sasfit_get_iq_or_gz() == 0) {
-        float_to_string(sBuffer,Ith[i]-Ihsub[i]);
-    } else {
+    if ((sasfit_get_iq_or_gz() == 1) || (sasfit_get_iq_or_gz() == 4)) {
         float_to_string(sBuffer,Ith[i]/Ihsub[i]);
+    } else {
+        float_to_string(sBuffer,Ith[i]-Ihsub[i]);
     }
    Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 }
@@ -4387,6 +4467,8 @@ for (i=0;i<ndata;i++) {
       free_dvector(res,0,ndata-1);
       free_dvector(Ih,0,ndata-1);
       free_dvector(DIh,0,ndata-1);
+      free_dvector(Ihtrans,0,ndata-1);
+      free_dvector(DIhtrans,0,ndata-1);
 //      free_dvector(dydpar,0,ma-1);
       Tcl_Free((char *) AP);
       return TCL_ERROR;
@@ -4460,6 +4542,8 @@ free_dvector(h,0,ndata-1);
 free_dvector(res,0,ndata-1);
 free_dvector(Ih,0,ndata-1);
 free_dvector(DIh,0,ndata-1);
+free_dvector(Ihtrans,0,ndata-1);
+free_dvector(DIhtrans,0,ndata-1);
 Tcl_Free((char *) AP);
 return TCL_OK;
 }
