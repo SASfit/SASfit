@@ -425,6 +425,7 @@ int OZ_init(sasfit_oz_data *OZd) {
    HR     = (double*)malloc((NP)*sizeof(double));
    G0     = (double*)malloc((NP)*sizeof(double));
    g      = (double*)malloc((NP)*sizeof(double));
+   OZd->gate4g = (int*)malloc((NP)*sizeof(int));
    g0     = (double*)malloc((NP)*sizeof(double));
    c      = (double*)malloc((NP)*sizeof(double));
    cf     = (double*)malloc((NP)*sizeof(double));
@@ -2093,17 +2094,18 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
 
 //Calling OZ_solver and generating output
 int OZ_calculation (sasfit_oz_data *OZd) {
-  int igneg,status;
+  int igneg,status,i;
 
   if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA || CLOSURE==CJVM || CLOSURE==BB) {
         sasfit_out("Root finding\n");
         root_finding(OZd);
+        if (OZd->failed==1) return TCL_ERROR;
   } else if (CLOSURE==RMSA) {
         CLOSURE=MSA;
         sasfit_out("Solving with MSA-closure first ...");
          status = OZ_solver(OZd);
-         if (status == 0) {
-             sasfit_err("could not solve OZ equations\n");
+         if (status != TCL_OK) {
+             sasfit_err("could not solve OZ equations for MSA-closure\n");
              return TCL_ERROR;
         }
         sasfit_out(" done\n");
@@ -2111,14 +2113,47 @@ int OZ_calculation (sasfit_oz_data *OZd) {
         igneg = 0;
 // finding contact point sigma+
         while (EN[igneg] == 0.0 && igneg < NP) {
+            OZd->gate4g[igneg] = 0;
             igneg++;
         }
 // check where g(sigma+) >= 0, than nothing has to be done as RMSA=MSA which has been solved already above
         if (g[igneg] >= 0 || igneg == NP) {
-            sasfit_out("g(sigma+)>=0 or g(r) > 0 for all r, i.e. no rescaling necessary\n");
-            return TCL_ERROR;
+            sasfit_out("g(sigma+)>=0, i.e. no rescaling necessary\n");
+        } else {
+            sasfit_out("g(sigma+)<0, i.e. rescaling necessary\n");
+            OZd->indx_min_appearent_sigma=igneg;
+            OZd->indx_max_appearent_sigma=NP;
+
+            OZd->gate4g[igneg] = 0;
+            for (i=igneg+1;i<NP;i++)  {
+                OZd->gate4g[i] = 1;
+            }
+
+            do {
+                
+                sasfit_out("try to solve next OZ with RMSA, igneg: %d\n",igneg);
+                status = OZ_solver(OZd);
+                sasfit_out("solved OZ with RMSA, igneg: %d\n",igneg);
+                if (status != TCL_OK) {
+                    sasfit_err("could not solve OZ equations for RMSA-closure\n");
+                    return TCL_ERROR;
+                }
+                igneg++;
+                if (igneg==NP) {
+                    sasfit_err("No solution for RMSA closure\n");
+                    return TCL_ERROR;
+                }
+                if (g[igneg]<0) {
+                    sasfit_out("g[igneg] at appearant contact value is still negative, igneg: %d\n",igneg);
+                    OZd->gate4g[igneg] = 0; // found a unphysical negative value for g[] at appearant contact point
+                } else {
+                    sasfit_out("g[igneg] at appearant contact value is now positive, igneg: %d\n",igneg);
+                    break;
+                }
+            } while (igneg<NP);
+            return TCL_OK;
         }
-  } else {
+  } else { 
         sasfit_out("Root finding not required\n");
   }
    status = OZ_solver(OZd); 
@@ -2319,26 +2354,34 @@ double OZ_step(sasfit_oz_data *OZd) {
             break;
         case MSA:
             for (i=0; i < NP; i++){
+                if (EN[i]==0.0) {
+                    c[i] = -(G[i]+1.0);
+                } else {
+                    c[i] = -UBETA[i];
+                }
                 g[i]= c[i]+G[i]+1.0;
                 OZIN[i]=(i+1)*c[i];
             }
+            break;
         case mMSA:
-            for (i=0; i < NP; i++){
-                g[i]= c[i]+G[i]+1.0;
-                OZIN[i]=(i+1)*c[i];
-            }
-        case RMSA:
             for (i=0; i < NP; i++){
                 if (EN[i]==0.0) {
                     c[i] = -(G[i]+1.0);
                 } else {
-                    if (CLOSURE==MSA || CLOSURE==RMSA) {
-                        c[i] = -UBETA[i];
-                    } else if (CLOSURE==mMSA) {
-                        c[i] = MAYER[i];
-                    }
+                    c[i] = MAYER[i];
                 }
                 g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
+            }
+            break;
+        case RMSA:
+            for (i=0; i < NP; i++){
+                if (OZd->gate4g[i]==0.0) {
+                    c[i] = -(G[i]+1.0);
+                } else {
+                    c[i] = -UBETA[i];
+                }
+                g[i]= (c[i]+G[i]+1.0)*OZd->gate4g[i];
                 OZIN[i]=(i+1)*c[i];
             }
             break;
@@ -2465,18 +2508,10 @@ int OZ_solver (sasfit_oz_data *OZd) {
         Fswitch[i]=1-exp(-ALPHA*r[i]);
         V = U(r[i],T,PARAM);
         UBETA[i]=V*OZd->beta;
-        if (CLOSURE==RMSA) {
-            if (r[i]<PARAM[0] || V==GSL_POSINF) {
-                EN[i]=0.0;
-            } else {
-                EN[i]=exp(-UBETA[i]);
-            }
+        if (V == GSL_POSINF) {
+            EN[i]=0.0;
         } else {
-            if (V == GSL_POSINF) {
-                EN[i]=0.0;
-            } else {
-                EN[i]=exp(-UBETA[i]);
-            }
+            EN[i]=exp(-UBETA[i]);
         }
         MAYER[i] = EN[i]-1.;
         BRIDGE[i] = 0.0;
@@ -2696,7 +2731,13 @@ double compressibility_calc(double scp, void *params)
 
 double mod_delta_chi(double scp, void *params)
 {   
-    return fabs(compressibility_calc(scp, params));
+    scalar res;
+    res=fabs(compressibility_calc(scp, params));
+    if (res!=res) {
+         ((sasfit_oz_data *)params)->failed = 1;
+        return 0;
+    }
+    return res;
 }
 
 //Routine to minimize the difference between two compressibilities
@@ -2779,7 +2820,7 @@ void rescaleMSA (sasfit_oz_data *OZd) {
         Tt = gsl_root_fsolver_brent;
         s = gsl_root_fsolver_alloc (Tt);
         gsl_root_fsolver_set (s, &F, x_lo, x_hi);
-        gsl_set_error_handler_off ();
+        gsl_set_error_handler_off();
         sasfit_out("using %s method\n",gsl_root_fsolver_name (s));
         sasfit_out(" iter |  lower      upper  |    root    err(est)\n");
         iter = 0;
@@ -2853,36 +2894,39 @@ void root_finding (sasfit_oz_data *OZd) {
 
     if ((refnew*refold<0)) {
             signchange=1;
-    } else {
-            sasfit_out("No change of sign between %le and %le \n", alpha_left,alpha_left);
+    } /* else {
+            sasfit_out("No change of sign between %le and %le \n", alpha_left,alpha_right);
             sasfit_out("Try to scan the interval to find sig change or a rough minimum\n",scp_inter);
             
             Fm.function = &mod_delta_chi;
             Fm.params = OZd;
-            Tm = gsl_min_fminimizer_quad_golden;
+            gsl_set_error_handler_off();
+//            Tm = gsl_min_fminimizer_quad_golden;
+            Tm = gsl_min_fminimizer_brent;
             sm = gsl_min_fminimizer_alloc (Tm);
             gsl_min_fminimizer_set (sm, &Fm, (alpha_left+alpha_right)/2.0, alpha_left, alpha_right);
             iter = 0;
             max_iter = 100;
-            gsl_set_error_handler_off ();
             do {
                 iter++;
                 status = gsl_min_fminimizer_iterate (sm);
                 root = gsl_min_fminimizer_x_minimum (sm);
                 x_lo = gsl_min_fminimizer_x_lower (sm);
                 x_hi = gsl_min_fminimizer_x_upper (sm);
+                sasfit_out("before: %5d |%.7f, %.7f| %.7f %.7f\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
                 status = gsl_min_test_interval (x_lo, x_hi, 0, 1e-5);
+                sasfit_out("status:%d \n",status);
                 if (status == GSL_SUCCESS) {
                     sasfit_out("found minimum:\n");
                 }
-                sasfit_out("%5d |%.7f, %.7f| %.7f %.7f\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
+                sasfit_out("after: %5d |%.7f, %.7f| %.7f %.7f\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
                 Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
                 Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
                 check_interrupt(OZd);
             } while (status == GSL_CONTINUE && iter < max_iter && OZd->interrupt == 0 && OZd->failed==0);
             gsl_min_fminimizer_free (sm);
             signchange=2;
-    }
+    }*/
     i = 0;
     while (signchange==0 && i<=28 &&  OZd->interrupt == 0 && OZd->failed==0) {
         if (CLOSURE==RY || CLOSURE==HMSA){
@@ -2971,6 +3015,8 @@ void root_finding (sasfit_oz_data *OZd) {
         OZd->alpha = root;
         sasfit_out("consistency parameter after optimization: %g \n", root);
         gsl_root_fsolver_free (s);
+    } else {
+        sasfit_err("failed to solve the OZ equation\n");
     }
 }
 
@@ -2983,6 +3029,7 @@ int OZ_free (sasfit_oz_data *OZd) {
     free(Gprevious);
     free(G0);
     free(g);
+    free(OZd->gate4g);
     free(HR);
     free(g0);
     free(dU_dR);

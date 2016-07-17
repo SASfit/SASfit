@@ -159,6 +159,7 @@ typedef struct {
                *cf, *cfold, *cfnew,
                *Gf,*f, *S,  *ud,
                *Br, *yr, *fr;
+        int *gate4g, indx_min_appearent_sigma, indx_max_appearent_sigma;
         gsl_vector *gamma_r;
         double dr, dq, dr_dsigma;
         double Sq0, gr0, cr0;
