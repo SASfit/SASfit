@@ -133,6 +133,12 @@ W.~Burchard, E.~Michel, and V.~Trappe.
   daisy-like structures.
 \newblock {\em Macromolecules}, 29(18):5934--5939, 1996.
 
+\bibitem{Burchard1974}
+Walther Burchard.
+\newblock Statistics of star-shaped molecules. i. stars with polydisperse side
+  chains.
+\newblock {\em Macromolecules}, 7(6):835--841, 1974.
+
 \bibitem{Caccamo1996}
 C.~Caccamo.
 \newblock Integral equation theory description of phase equilibria in classical
@@ -463,6 +469,12 @@ A.J. Hurd and W.L. Flower.
 \newblock {\em Journal of Colloid and Interface Science}, 122(1):178--192,
   1988.
 
+\bibitem{Hus2013}
+Matej Hu\u{s}, Matja Zalar, and Tomaz Urbic.
+\newblock Correctness of certain integral equation theories for core-softened
+  fluids.
+\newblock {\em The Journal of Chemical Physics}, 138(22), 2013.
+
 \bibitem{Ida2000}
 T.~Ida, M.~Ando, and H.~Toraya.
 \newblock Extended pseudo-voigt function for approximating the voigt profile.
@@ -547,6 +559,13 @@ M.~Kotlarchyk and S.-H. Chen.
 \newblock Analysis of small angle neutron scattering spectra from polydisperse
   interacting colooids.
 \newblock {\em J. Chem. Phys}, 79(5):2461--2489, 1983.
+
+\bibitem{Kovalenko1999}
+Andriy Kovalenko and Fumio Hirata.
+\newblock Self-consistent description of a metal-water interface by the
+  kohn-sham density functional theory and the three-dimensional reference
+  interaction site model.
+\newblock {\em The Journal of Chemical Physics}, 110(20):10095--10112, 1999.
 
 \bibitem{Krasnoselskij1955}
 M.~A. Krasnoselskij.

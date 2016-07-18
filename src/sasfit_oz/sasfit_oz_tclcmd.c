@@ -141,7 +141,7 @@ assign_mixing_strategy(const char * token, sasfit_oz_data * OZD)
     return 0;
 }
 
-#define OZMAXCLOSURES 34
+#define OZMAXCLOSURES 36
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
 {
@@ -183,6 +183,8 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[31] = "DH";
     ClosureNames[32] = "rescaled Mean-Spherical Approximation";
     ClosureNames[33] = "RMSA";
+    ClosureNames[34] = "Kovalenko-Hirata";
+    ClosureNames[35] = "KH";
     i=0;
     eq=-1;
     while (i<OZMAXCLOSURES && eq != 0) {
@@ -259,6 +261,10 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
         case 32 :
         case 33 :
             OZD->cl=RMSA;
+            break;
+        case 34 :
+        case 35 :
+            OZD->cl=KH;
             break;
         default :
             OZD->cl=PY;

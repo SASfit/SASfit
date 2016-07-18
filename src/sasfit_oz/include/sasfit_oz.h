@@ -83,7 +83,8 @@ typedef enum {
         DH,     // Duh-Haymet Approximation
         MS,     // Martynov-Sarkisov Approximation
         CJVM,   // Chapentier-Jakse' semiempirical extention of the VM Approximation
-        BB      // Bomont-Bretonnet Approximation
+        BB,     // Bomont-Bretonnet Approximation
+        KH      // Kovalenko-Hirata closure
 } sasfit_oz_closure;
 
 typedef enum {

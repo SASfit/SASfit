@@ -869,7 +869,7 @@ proc sasfit_OZ_solver {} {
 	    -column 0 -row 1
     ComboBox $w.param.clvalue \
 	    -values {"Percus\-Yevick" "Hypernetted\-Chain" "Reference HNC" MSA RMSA mMSA SMSA HMSA \
-	             "Rogers\-Young" Verlet MS DH "Vompe\-Martynov" BB BPGG CJVM "Choudhury\-Gosh"} \
+	             "Rogers\-Young" Verlet MS DH "Vompe\-Martynov" BB BPGG CJVM "Choudhury\-Gosh" KH} \
 	    -textvariable OZ(closure) -editable 0
     grid  $w.param.clvalue\
 	    -column 1 -row 0

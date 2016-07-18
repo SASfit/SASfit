@@ -2244,6 +2244,20 @@ double OZ_step(sasfit_oz_data *OZd) {
                 OZIN[i]=(i+1)*c[i];
             }
             break;
+        case KH:
+            for (i=0; i < NP; i++){
+                BRIDGE[i] = -UBETA[i]+G[i];
+                if (BRIDGE[i] <= 0) {
+                    BRIDGE[i]=0.0;
+                } else {
+                    BRIDGE[i] = -BRIDGE[i]+log(BRIDGE[i]+1);
+                }
+                doneB=TRUE;
+                c[i]=-1-G[i]+EN[i]*exp(G[i]);
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
+            }
+            break;
         case RHNC:
             for (i=0; i < NP; i++){
                 c[i]=g0[i]*exp((G[i]-G0[i])-OZd->beta*OZd->pertubation_pot(r[i],T,PARAM))-G[i]-1;
