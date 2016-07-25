@@ -868,8 +868,8 @@ proc sasfit_OZ_solver {} {
     grid $w.param.pottext  -sticky e\
 	    -column 0 -row 1
     ComboBox $w.param.clvalue \
-	    -values {"Percus\-Yevick" "Hypernetted\-Chain" "Reference HNC" MSA RMSA mMSA SMSA HMSA \
-	             "Rogers\-Young" Verlet MS DH "Vompe\-Martynov" BB BPGG CJVM "Choudhury\-Gosh" KH} \
+	    -values {"Percus\-Yevick" "Hypernetted\-Chain" "Reference HNC" "modified HNC" PLHNC MSA RMSA mMSA SMSA HMSA \
+	             "Rogers\-Young" Verlet MS DH "Vompe\-Martynov" BB BPGG CJVM "Choudhury\-Gosh"} \
 	    -textvariable OZ(closure) -editable 0
     grid  $w.param.clvalue\
 	    -column 1 -row 0
@@ -1045,7 +1045,7 @@ proc sasfit_OZ_solver {} {
     set ozgrGraph(x,type)     x
     set ozgrGraph(y,type)     y
     set ozgrGraph(x,title) "r / nm"
-    set ozgrGraph(y,title) "g(r))"
+    set ozgrGraph(y,title) "g(r)"
     set ozgrGraph(l,hide)  no
     pack $ozgrGraph(w) -in .oztop.tab.gr
     pack configure $ozgrGraph(w) -fill both -expand yes

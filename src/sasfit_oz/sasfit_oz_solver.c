@@ -36,6 +36,75 @@
 #define kb GSL_CONST_MKSA_BOLTZMANN
 #define GET_TCL(val_type, target, src_name) (sasfit_tcl_get_ ## val_type(interp, target, ozname, src_name) == TCL_OK)
 
+scalar crPY(scalar x, scalar eta) {
+    if (x>1) return 0.0;
+	return -(gsl_pow_2(1.+2.*eta)-6*eta*gsl_pow_2(1.+0.5*eta)*x+eta*gsl_pow_2(1+2*eta)*0.5*gsl_pow_3(x))/gsl_pow_4(1.0-eta);
+}
+scalar grPY(scalar x, scalar eta) {
+    scalar d, g0, mu0, a0, b0, a, b, rstar, gm, A, B, delta, C, gexpt, omega, kappa;
+	
+#define SIGMA 1
+#define ETA eta
+	// insert your code here
+	if (x<SIGMA) return 0.0;
+    if (ETA<0.02) return 1;
+    d=2*ETA*(
+            ETA*ETA-3.*ETA-3+
+            sqrt(3*(gsl_pow_4(ETA)-2*gsl_pow_3(ETA)+ETA*ETA+6*ETA+3))
+            );
+    d=pow(d,1./3.);
+    mu0=(2*ETA/(1-ETA)*(-1.-d/(2.*ETA)+ETA/d))/SIGMA;
+    a0=2*ETA/(1.-ETA)*(-1+d/(4.*ETA)-ETA/(2.*d))/SIGMA;
+    b0=2*ETA/(1.-ETA)*sqrt(3)*(-d/(4.*ETA)-ETA/(2.*d))/SIGMA;
+    g0=atan(-(SIGMA*(a0*(a0*a0+b0*b0)-mu0*(a0*a0-b0*b0)
+                     )*(1+ETA/2.)
+               +(a0*a0+b0*b0-mu0*a0)*(1+2.*ETA)
+               )/
+              (b0*( SIGMA*(a0*a0+b0*b0-2*mu0*a0)*(1+ETA/2.)
+                     -mu0*(1+2*ETA)
+                  )
+              )
+            );
+    omega=-0.682*exp(-24.697*ETA)+4.720+4.450*ETA;
+    omega=omega/SIGMA;
+    kappa=4.674*exp(-3.935*ETA)+3.536*exp(-56.270*ETA);
+    kappa=kappa/SIGMA;
+    a=44.554+79.868*ETA+116.432*ETA*ETA-44.652*exp(2*ETA);
+    a=a/SIGMA;
+    b=-5.022+5.857*ETA+5.089*exp(-4.*ETA);
+    b=b/SIGMA;
+    rstar=2.0116-1.0647*ETA+0.0538*ETA*ETA;
+    rstar=rstar*SIGMA;
+    gm =  1.0286-0.6095*ETA + 3.5781*ETA*ETA-21.3651*gsl_pow_3(ETA)
+        + 42.6344*gsl_pow_4(ETA)-33.8485*gsl_pow_5(ETA);
+    gexpt=((1+ETA+ETA*ETA-2./3*(gsl_pow_3(ETA)+gsl_pow_4(ETA)))/gsl_pow_3(1-ETA)-1)/(4*ETA);
+    delta=-omega*rstar-atan((kappa*rstar+1)/(omega*rstar));
+    C=rstar*(gm-1)*exp(kappa*rstar)/cos(omega*rstar+delta);
+    B=gm-(SIGMA*gexpt/rstar)*exp(mu0*(rstar-SIGMA));
+    B=B/(cos(b*(rstar-SIGMA)+g0)*exp(a*(rstar-SIGMA))-cos(g0)*exp(mu0*(rstar-SIGMA)));
+    B=B*rstar;
+    A=SIGMA*gexpt-B*cos(g0);
+    if (x<=rstar) return A/x*exp(mu0*(x-SIGMA))+B/x*cos(b*(x-SIGMA)+g0)*exp(a*(x-SIGMA));
+    return 1+C/x*cos(omega*x+delta)*exp(-kappa*x);
+#undef ETA
+#undef SIGMA
+}
+scalar BPY(scalar r,scalar eta) {
+    scalar cr,gr,br;
+        if (r<1) {
+        cr = crPY(r,eta);
+        br = -cr-1-log(-cr);
+    } else if (r>1) {
+        gr = grPY(r,eta);
+        br = gr-1-log(gr);
+    } else {
+        cr = crPY(1-1./1000.,eta);
+        gr = grPY(1+1./1000.,eta);
+        br = (gr-cr)/2.-1-log((gr-cr)/2.);
+    }
+    return -br;
+}
+
 void  KINErrSASfit(int error_code, 
                                const char *module, const char *function, 
                                char *msg, void *OZd_structure){
@@ -1646,7 +1715,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_FP,scale, scale);
-                if (flag != KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
+                if (flag != KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err %lg\n:",err);
@@ -1679,7 +1748,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
-                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
@@ -1711,7 +1780,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
-                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
@@ -1742,7 +1811,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 if (OZd->PrintProgress) sasfit_out("KINSpbcg(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
-                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
@@ -1772,7 +1841,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 if (OZd->PrintProgress) sasfit_out("KINSptfqmr(flag)=%d\n",flag);
                 
 				flag = KINSol(kin_mem,u,OZd->KINSolStrategy,scale, scale);
-                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK) OZd->failed = 1;
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
@@ -2096,7 +2165,7 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
 int OZ_calculation (sasfit_oz_data *OZd) {
   int igneg,status,i;
 
-  if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA || CLOSURE==CJVM || CLOSURE==BB) {
+  if (CLOSURE==RY || CLOSURE==BPGG || CLOSURE==HMSA || CLOSURE==CJVM || CLOSURE==BB || CLOSURE==MHNC) {
         sasfit_out("Root finding\n");
         root_finding(OZd);
         if (OZd->failed==1) return TCL_ERROR;
@@ -2116,12 +2185,14 @@ int OZ_calculation (sasfit_oz_data *OZd) {
             OZd->gate4g[igneg] = 0;
             igneg++;
         }
+        OZd->indx_min_appearent_sigma=igneg;
+        OZd->indx_max_appearent_sigma=igneg;
 // check where g(sigma+) >= 0, than nothing has to be done as RMSA=MSA which has been solved already above
         if (g[igneg] >= 0 || igneg == NP) {
             sasfit_out("g(sigma+)>=0, i.e. no rescaling necessary\n");
         } else {
             sasfit_out("g(sigma+)<0, i.e. rescaling necessary\n");
-            OZd->indx_min_appearent_sigma=igneg;
+            OZd->indx_min_appearent_sigma=igneg-1;
             OZd->indx_max_appearent_sigma=NP;
 
             OZd->gate4g[igneg] = 0;
@@ -2135,28 +2206,30 @@ int OZ_calculation (sasfit_oz_data *OZd) {
                 OZd->gate4g[i] = 1;
             }
         }
-        do  {
-            sasfit_out("try to solve next OZ with RMSA, igneg: %d\n",igneg);
-            status = OZ_solver(OZd); 
-            sasfit_out("solved OZ with RMSA, igneg: %d\n",igneg);
-            if (status != TCL_OK) {
-                sasfit_err("could not solve OZ equations\n");
-                return TCL_ERROR;
-            }
-            if (g[igneg]<0) {
-                OZd->indx_min_appearent_sigma=igneg;
-                while (g[igneg] < 0.0 && igneg < NP) {
-                    OZd->gate4g[igneg] = 0;
-                    igneg++;
+        if (OZd->indx_min_appearent_sigma < OZd->indx_max_appearent_sigma) {
+            do  {
+                sasfit_out("try to solve next OZ with RMSA, igneg: %d\n",igneg);
+                status = OZ_solver(OZd); 
+                sasfit_out("solved OZ with RMSA, igneg: %d\n",igneg);
+                if (status != TCL_OK) {
+                    sasfit_err("could not solve OZ equations\n");
+                    return TCL_ERROR;
                 }
-                OZd->indx_max_appearent_sigma=igneg;
-            } else {
-                OZd->indx_max_appearent_sigma=(OZd->indx_min_appearent_sigma+OZd->indx_max_appearent_sigma)/2;
-                for (i=igneg;i<NP;i++)  {
-                    OZd->gate4g[i] = 1;
+                if (g[igneg]<0) {
+                    OZd->indx_min_appearent_sigma=igneg;
+                    while (g[igneg] < 0.0 && igneg < NP) {
+                        OZd->gate4g[igneg] = 0;
+                        igneg++;
+                    }
+                    OZd->indx_max_appearent_sigma=igneg;
+                } else {
+                    OZd->indx_max_appearent_sigma=(OZd->indx_min_appearent_sigma+OZd->indx_max_appearent_sigma)/2;
+                    for (i=igneg;i<NP;i++)  {
+                        OZd->gate4g[i] = 1;
+                    }
                 }
-            }
-        } while ( OZd->indx_min_appearent_sigma !=  OZd->indx_max_appearent_sigma);
+            } while ( OZd->indx_min_appearent_sigma !=  OZd->indx_max_appearent_sigma);
+        }
 /* simple scheme            
             for (i=igneg+1;i<NP;i++)  {
                 OZd->gate4g[i] = 1;
@@ -2188,12 +2261,12 @@ int OZ_calculation (sasfit_oz_data *OZd) {
 */
   } else { 
         sasfit_out("Root finding not required\n");
-  }
-   status = OZ_solver(OZd); 
-   if (status != TCL_OK) {
+        status = OZ_solver(OZd); 
+        if (status != TCL_OK) {
              sasfit_err("could not solve OZ equations\n");
              return TCL_ERROR;
-    }
+        }
+  }
    status = OZ_pot_der(OZd);
     if (status != TCL_OK) {
              sasfit_err("could not calculate derivative of potential\n");
@@ -2261,6 +2334,14 @@ double OZ_step(sasfit_oz_data *OZd) {
         case RHNC:
             for (i=0; i < NP; i++){
                 c[i]=g0[i]*exp((G[i]-G0[i])-OZd->beta*OZd->pertubation_pot(r[i],T,PARAM))-G[i]-1;
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
+            }
+            break;
+        case MHNC:
+            for (i=0; i < NP; i++){
+                doneB=TRUE;
+                c[i]=EN[i]*exp(G[i]+BRIDGE[i])-G[i]-1.0;
                 g[i]= c[i]+G[i]+1.0;
                 OZIN[i]=(i+1)*c[i];
             }
@@ -2536,11 +2617,11 @@ int OZ_solver (sasfit_oz_data *OZd) {
     if (CLOSURE==RHNC) {
         tmp_potential =OZd->potential;
         OZd->potential=OZd->reference_pot;
-        CLOSURE=PY;
-        sasfit_out("Solving reference system (HS) with PY-closure first ...");
+        CLOSURE=MS;
+        sasfit_out("Solving reference system (HS) with Martynov-Sarkisov (MS) closure first ...");
         status = OZ_solver(OZd);
         if (status == 0) {
-                sasfit_err("OZ algorithm did not converge.\n");
+                sasfit_err("OZ algorithm for reference potential did not converge.\n");
                 return TCL_ERROR;
         }
         sasfit_out(" done\n");
@@ -2562,7 +2643,11 @@ int OZ_solver (sasfit_oz_data *OZd) {
             EN[i]=exp(-UBETA[i]);
         }
         MAYER[i] = EN[i]-1.;
-        BRIDGE[i] = 0.0;
+        if (CLOSURE == MHNC && ALPHA>0.02) {
+            BRIDGE[i]=BPY(r[i]/OZd->pPot[0],ALPHA);
+        } else {
+            BRIDGE[i] = 0.0;
+        }
         CAVITY[i] = 0.0;
     }
 
@@ -2773,6 +2858,7 @@ double compressibility_calc(double scp, void *params)
         for (i=0; i < NP; i++) {
             G[i]=0.0;
         }
+        return Delta_chi=-99.9;
     }
    return Delta_chi;
 }
@@ -2781,7 +2867,7 @@ double mod_delta_chi(double scp, void *params)
 {   
     scalar res;
     res=fabs(compressibility_calc(scp, params));
-    if (res!=res) {
+    if (res!=res || ((sasfit_oz_data *)params)->failed == 1) {
          ((sasfit_oz_data *)params)->failed = 1;
         return 0;
     }
@@ -2814,6 +2900,10 @@ void root_finding (sasfit_oz_data *OZd) {
         case HMSA:
                 alpha_right=100.;
                 alpha_left=100./pow(2,28);
+                break;
+        case MHNC:
+                alpha_right=0.6;
+                alpha_left=0.05;
                 break;
         case BPGG:
                 alpha_right=5.6;
@@ -2875,6 +2965,11 @@ void root_finding (sasfit_oz_data *OZd) {
             alpha_left  = 100/pow(2,i);
             alpha_right = 100/pow(2,i-1);
         }
+        if (CLOSURE==MHNC) {
+            refnew=compressibility_calc(0.63-(0.6-0.05)/28.*i, OZd);
+            alpha_left  = 0.6-(0.63-0.05)/28.*i;
+            alpha_right = 0.6-(0.63-0.05)/28.*(i-1);
+        }
         if (CLOSURE==BPGG) {
             refnew=compressibility_calc(5.601-0.2*i, OZd);
             alpha_left  = 5.601-0.2*i;
@@ -2901,6 +2996,7 @@ void root_finding (sasfit_oz_data *OZd) {
 
                 if (    CLOSURE==BPGG
                     ||  CLOSURE==CJVM
+                    ||  CLOSURE==MHNC
                     ||  CLOSURE==BB)     scp_inter=alpha_left;
             } else {
                 if (    CLOSURE==RY
@@ -2908,6 +3004,7 @@ void root_finding (sasfit_oz_data *OZd) {
 
                 if (    CLOSURE==BPGG
                     ||  CLOSURE==CJVM
+                    ||  CLOSURE==MHNC
                     ||  CLOSURE==BB)     scp_inter=alpha_right;
             }
             refold=refnew;

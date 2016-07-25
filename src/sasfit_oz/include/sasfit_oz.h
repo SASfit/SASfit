@@ -70,6 +70,7 @@ typedef enum {
         PY,     // Percus-Yevik
         HNC,    // Hypernetted Chain
         RHNC,   // Refernce Hypernetted Chain
+        MHNC,   // modified HNC
         RY,     // Roger-Young
         Verlet, // Verlet
         BPGG,   // Ballone, Pastore, Galli, and Gazzillo Approximations.

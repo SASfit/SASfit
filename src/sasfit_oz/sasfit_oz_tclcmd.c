@@ -141,7 +141,7 @@ assign_mixing_strategy(const char * token, sasfit_oz_data * OZD)
     return 0;
 }
 
-#define OZMAXCLOSURES 36
+#define OZMAXCLOSURES 40
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
 {
@@ -185,6 +185,11 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[33] = "RMSA";
     ClosureNames[34] = "Kovalenko-Hirata";
     ClosureNames[35] = "KH";
+    ClosureNames[36] = "patially linearized HNC";
+    ClosureNames[37] = "PLHNC";
+    ClosureNames[38] = "modified HNC";
+    ClosureNames[39] = "MHNC";
+
     i=0;
     eq=-1;
     while (i<OZMAXCLOSURES && eq != 0) {
@@ -264,7 +269,13 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
             break;
         case 34 :
         case 35 :
+        case 36 :
+        case 37 :
             OZD->cl=KH;
+            break;
+        case 38 :
+        case 39 :
+            OZD->cl=MHNC;
             break;
         default :
             OZD->cl=PY;
@@ -478,8 +489,8 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
         case 6 :
         case 7 :
             OZD->potential=&U_Lennard_Jones;
-            OZD->reference_pot=&U_Lennard_Jones;
-            OZD->pertubation_pot=&U_ZERO;
+            OZD->reference_pot=&U_SR_Lennard_Jones;
+            OZD->pertubation_pot=&U_LR_Lennard_Jones;
             OZD->repulsive_pot=&U_SR_Lennard_Jones;
             OZD->attractive_pot=&U_LR_Lennard_Jones;
             OZD->shortrange_pot=&U_SR_Lennard_Jones;
@@ -498,32 +509,32 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
         case 10 :
         case 11 :
             OZD->potential=&U_DepletionOfSpheresBySpheres;
-            OZD->reference_pot=&U_ZERO;
-            OZD->pertubation_pot=&U_ZERO;
-            OZD->repulsive_pot=&U_ZERO;
-            OZD->attractive_pot=&U_ZERO;
-            OZD->shortrange_pot=&U_ZERO;
-            OZD->longrange_pot=&U_ZERO;
+            OZD->reference_pot=&U_Ref_DepletionOfSpheresBySpheres;
+            OZD->pertubation_pot=&U_Pert_DepletionOfSpheresBySpheres;
+            OZD->repulsive_pot=&U_R_DepletionOfSpheresBySpheres;
+            OZD->attractive_pot=&U_A_DepletionOfSpheresBySpheres;
+            OZD->shortrange_pot=&U_SR_DepletionOfSpheresBySpheres;
+            OZD->longrange_pot=&U_LR_DepletionOfSpheresBySpheres;
             break;
         case 12 :
         case 13 :
             OZD->potential=&U_DepletionOfSpheresByDiscs;
-            OZD->reference_pot=&U_ZERO;
-            OZD->pertubation_pot=&U_ZERO;
-            OZD->repulsive_pot=&U_ZERO;
-            OZD->attractive_pot=&U_ZERO;
-            OZD->shortrange_pot=&U_ZERO;
-            OZD->longrange_pot=&U_ZERO;
+            OZD->reference_pot=&U_Ref_DepletionOfSpheresByDiscs;
+            OZD->pertubation_pot=&U_Pert_DepletionOfSpheresByDiscs;
+            OZD->repulsive_pot=&U_R_DepletionOfSpheresByDiscs;
+            OZD->attractive_pot=&U_A_DepletionOfSpheresByDiscs;
+            OZD->shortrange_pot=&U_SR_DepletionOfSpheresByDiscs;
+            OZD->longrange_pot=&U_LR_DepletionOfSpheresByDiscs;
             break;
         case 14 :
         case 15 :
             OZD->potential=&U_DepletionOfSpheresByRods;
-            OZD->reference_pot=&U_ZERO;
-            OZD->pertubation_pot=&U_ZERO;
-            OZD->repulsive_pot=&U_ZERO;
-            OZD->attractive_pot=&U_ZERO;
-            OZD->shortrange_pot=&U_ZERO;
-            OZD->longrange_pot=&U_ZERO;
+            OZD->reference_pot=&U_Ref_DepletionOfSpheresByRods;
+            OZD->pertubation_pot=&U_Pert_DepletionOfSpheresByRods;
+            OZD->repulsive_pot=&U_R_DepletionOfSpheresByRods;
+            OZD->attractive_pot=&U_A_DepletionOfSpheresByRods;
+            OZD->shortrange_pot=&U_SR_DepletionOfSpheresByRods;
+            OZD->longrange_pot=&U_LR_DepletionOfSpheresByRods;
             break;
         case 16 :
             OZD->potential=&U_DLVO;

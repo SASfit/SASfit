@@ -903,6 +903,12 @@ Forrest~J. Rogers and David~A. Young.
   fluids.
 \newblock {\em Phys. Rev. A}, 30:999--1007, Aug 1984.
 
+\bibitem{Rosenfeld1979}
+Yaakov Rosenfeld and N.~W. Ashcroft.
+\newblock Theory of simple classical fluids: Universality in the short-range
+  structure.
+\newblock {\em Phys. Rev. A}, 20:1208--1235, Sep 1979.
+
 \bibitem{Roux1988}
 D.~Roux and C.R. Safinya.
 \newblock A synchrotron x-ray study of competing undulation and electrostatic
@@ -1012,6 +1018,17 @@ A.~Toth and C.T. Kelley.
 \newblock Convergence analysis for anderson acceleration.
 \newblock {\em SIAM Journal on Numerical Analysis}, 53(2):805--819, 2015.
 \newblock cited By 0.
+
+\bibitem{Trokhymchuk2005}
+Andrij Trokhymchuk, Ivo Nezbeda, Jan Jirsák, and Douglas Henderson.
+\newblock Hard-sphere radial distribution function again.
+\newblock {\em The Journal of Chemical Physics}, 123(2), 2005.
+
+\bibitem{Trokhymchuk2006}
+Andrij Trokhymchuk, Ivo Nezbeda, Jan Jirsák, and Douglas Henderson.
+\newblock Erratum: "hard sphere radial distribution function again" [j. chem.
+  phys.123, 024501 (2005)].
+\newblock {\em The Journal of Chemical Physics}, 124(14), 2006.
 
 \bibitem{Ulander2001}
 Johan Ulander, Hans Greberg, and Roland Kjellander.

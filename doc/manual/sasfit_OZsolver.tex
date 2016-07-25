@@ -394,7 +394,7 @@ and Caccamo \cite{Caccamo1996} and the references in there.
 
 ~\\
 \subsection{Hypernetted-chain(HNC) approximation}
-~\\
+\label{sec:HNC}~\\
 
 The HNC is one of the earliest and most applied integral equation theory of fluids \cite{Hansen2013}
 It simply assumes for completing the closure relation
@@ -412,7 +412,46 @@ The HNC closure is often used for long range repulsive potentials.
 For short range repulsive potentials the PY approximation yields
 somehow better results.
 
-~\\
+\vphantom{.}~\\
+\subsection{Reference hypernetted chain closure (RHNC)}
+\label{sec:RHNC}~\\
+
+This closure is an extension of the HNC closure, which requires that a reference system is known and only need to be corrected for a small pertubation. Therefore the potential needs to be written as a sum of a reference and pertubation potential $u(r)=u_\mathrm{ref}+u_\mathrm{pert}(r)$. By that the indirect correlation function is given by $\gamma(r)=\gamma_\mathrm{ref}(r)+\gamma_\mathrm{pert}(r)$ and the direct correlation function by
+\begin{align}
+c(r) &= g_\mathrm{ref}(r)\exp\left(\gamma_\mathrm{pert}-\beta u_\mathrm{pert}\right) - \gamma(r) -1
+\end{align}
+with $g_\mathrm{ref}(r)$ being the radial distribution function of the reference system. To solve the OZ equation for the reference system the Martynov-Sarkisov (MS) closure (sec.\ \ref{sec:MS}) is used in SASfit as it yields results with relative good thermodynamic consistency for hard sphere potentials, at least better than the PY closure.
+
+\vphantom{.}~\\
+\subsection{modified hypernetted chain closure (MHNC)}
+\label{sec:PLHNC}~\\
+
+The modified hypernetted chain closure was introduced by Resnfeld and Ashcroft \cite{Rosenfeld1979}. They suggested to approximate the bridge $B_\mathrm{MHNC}(r)$ function by the one of hard spheres $B_\mathrm{PY}(r,\eta^*)$ however with an effective volume fraction $\eta^*$ to get thermodynamic consistency. The bridge function in PY approximation they is given by
+\begin{align}
+B_\mathrm{PY}(r) &=
+\begin{cases}
+c_\mathrm{PY}(r) +1+\ln \left[ -c_\mathrm{PY}(r)\right] &\mbox{for } r<\sigma \\
+-g_\mathrm{PY}(r) +1+\ln \left[ g_\mathrm{PY}(r)\right]
+&\mbox{for } r>\sigma
+\end{cases}
+\end{align}
+The direct correlation function $c_\mathrm{PY}(r)$ and radial distribution function $g_\mathrm{PY}(r)$ are taken from the analytical solution for $c_\mathrm{PY}(r)$ given by Wertheim \cite{Wertheim1963} and $g_\mathrm{PY}(r)$ by \cite{Trokhymchuk2005,Trokhymchuk2006}.  \SASfit is searching within the interval $\eta^* \in [0.02,0.6]$ for a thermodynamic consistent solution.
+
+\vphantom{.}~\\
+\subsection{Kovalenko-Hirata or partially linearized hypernetted chain closure (KH, PLHNC)}
+\label{sec:PLHNC}~\\
+
+Kovalenko and Hirata \cite{Kovalenko1999} introduced a closure for studying self-consistent description of a metal–water interface and which has been used later on e.g. by \cite{Hus2013} to study core-softened potentials. This closure is also named partially linearized hypernetted chain closure PLHNC. Their bridge function reads as
+\begin{align} \label{eq:ozKH}
+B_\text{KH}(r)
+&=
+\begin{cases}
+0  & \mbox{for } -\beta u(r) + \gamma(r) \leq 0  \\
+\beta u(r)-\gamma(r)+\ln(-\beta u(r)+\gamma(r)+1)   & \mbox{for } -\beta u(r) + \gamma(r) > 0
+\end{cases}
+\end{align}
+
+\vphantom{.}~\\
 \subsection{Percus-Yevick (PY) approximation}
 ~\\
 
@@ -431,9 +470,9 @@ ranged. The PY equation is of particular interest in the theory of
 simple liquids because it is soluble analytically in the important
 case of the hard-sphere fluid.
 
-~\\
+\vphantom{.}~\\
 \subsection{Mean Spherical Approximation (MSA)}
-~\\
+\label{sec:MSA}~\\
 
 This approximation has originally been proposed by Lebowitz and Percus \cite{Lebowitz1966}.
 It has been mainly successfully applied to spherical potentials interacting through an infinitely
@@ -444,14 +483,33 @@ c(r) &= -\beta u(r) &\mbox{ for } \beta u(r) \neq +\infty
 \end{alignat}
 Analytical solutions have been obtained for charged hard spheres and hard core Yukawa potentials \cite{Caccamo1996}.
 
-~\\
+\vphantom{.}~\\
 \subsection{Rescaled Mean Spherical Approximation (RMSA)}
-~\\
-\cite{Hansen1982}
-The mean spherical approximation can especially for dilute cases result in a negative $g(r)$ at the contact point $\sigma^+$, which is just out of the the hard core radius, i.e. the first distance for which $\exp(-\beta u(r)) >0$. The rescaled mean spherical approximation (RMSA) is searching for the smallest apparent contact point $\tilde{\sigma}^+$ for which  $g\left(\tilde{\sigma}^+\right) > 0$.
-~\\
+\label{sec:RMSA}~\\
+
+The mean spherical approximation can especially for dilute cases result in a negative $g(r)$ at the contact point $\sigma^+$, which is just out of the the hard core radius, i.e. the first distance for which $\exp(-\beta u(r)) >0$. The rescaled mean spherical approximation (RMSA) \cite{Hansen1982} is searching for the smallest apparent contact point $\tilde{\sigma}^+$ for which  $g\left(\tilde{\sigma}^+\right) > 0$.
+
+\vphantom{.}~\\
+\subsection{"Soft core" MSA (SMSA) Approximation}
+\label{sec:SMSA}~\\
+
+This closure has been motivated because the Percus-Yevick (PY) approximation is not accurate for attractive
+potentials. The SMSA \cite{Madden1980,Chihara1973} is a generalisation of the MSA closure. This has been
+done by incorporating the division scheme as of Weeks et al.\ \cite{Weeks1971} by dividing the potential
+in a entirely repulsive part and a attractive part $u(r) = u_\text{R}(r)+u_\text{A}(r)$. The SMSA bridge function reads as
+\begin{align}
+B_\text{SMSA}(r) &= \ln \left[1+\gamma^*(r)\right]-\gamma^*(r)
+\end{align}
+with $\gamma^*(r)=\gamma(r)-\beta u_\text{A}(r)$.
+Normally  $u_\text{R}(r)$ describes a short range repulsive interaction like hard sphere interaction or as in the
+division scheme from Weeks et al.\ the potential up to the minimum $r_m$. For $r>r_m$ or $r > \sigma^\text{HS}$ the
+closure reduces to the MSA approximation $c(r)=-\beta u(r)$. In a case of a purely repulsive interaction, one has
+$r_m\rightarrow \infty$ and $u_\text{A}(r) \equiv 0$. In this case the closure reduces to the PY closure.
+The SMSA interpolates between PY and MSA \cite{Bomont2008}.
+
+\vphantom{.}~\\
 \subsection{Verlet Approximation}
-~\\
+\label{sec:Verlet}~\\
 
 A semi-phenomenological equation for the radial distribution function was proposed by Verlet
 \cite{Verlet1980,Verlet1981} for the case of hard spheres with the following bridge function
@@ -462,22 +520,11 @@ B_\text{Verlet}(r)
 The approximation yield very good results for both thermodynamic as well as structural properties.
 This closure has been extended and refined by others and are listed below.
 
-\vphantom{.}~\\
-\subsection{Kovalenko-Hirata closure (KH)}
-~\\
-Kovalenko and Hirata \cite{Kovalenko1999} introduced a closure for studying self-consistent description of a metal–water interface and which has been used later on e.g. by \cite{Hus2013} to study core-softened potentials. Their bridge function reads as
-\begin{align} \label{eq:ozKH}
-B_\text{KH}(r)
-&=
-\begin{cases}
-0  & \mbox{for } -\beta u(r) + \gamma(r) \leq 0  \\
-\beta u(r)-\gamma(r)+\ln(-\beta u(r)+\gamma(r)+1)   & \mbox{for } -\beta u(r) + \gamma(r) > 0
-\end{cases}
-\end{align}
 
 \vphantom{.}~\\
 \subsection{Choudhury-Gosh (CG) Approximation}
 ~\\
+
 Choudhury and Gosh \cite{Choudhury2002} proposed a bridge function based on the closure of Verlet
 which reads as
 \begin{align}
@@ -506,22 +553,9 @@ with $\gamma^*(r) = \gamma(r) - \beta u_\text{A}(r)$ or in case of the Lennard-J
 $\gamma^*(r) = \gamma(r) - \beta u^\text{LR,DH}_\text{pert}(r)$
 
 
-
-\vphantom{.}~\\
-\subsection{Zero separation theorem based closure (ZSEP)}
-~\\
-
-The closure based on the zero separation theorem (ZSEP) has been introduced by
-Lloyd L. Lee \cite{Lee1995,Lomba1996}. The closure is basing on the one from Verlet \cite{Verlet1980}
-and has the form
-\begin{align}
-B_\text{ZSEP}(r) &= - \frac{\zeta \gamma^*(r)^2}{2}\left[ 1- \frac{\alpha\phi\gamma^*(r)}{1+\alpha\gamma^*(r)}\right]
-\end{align}
-
-
 \vphantom{.}~\\
 \subsection{Martynov-Sarkisov (MS) Approximation}
-~\\
+\label{sec:MS}~\\
 
 An approximation proposed by Martynov and Sarkisov \cite{Martynov1983} sets the bridge function as
 \begin{align}
@@ -582,43 +616,7 @@ Also here $\alpha$ can be chosen so that thermodynamic consistency is obtained.
 %\subsection{Reference HNC Approximation}
 %~\\
 
-~\\
-\subsection{"Soft core" MSA (SMSA) Approximation}
-~\\
 
-This closure has been motivated because the Percus-Yevick (PY) approximation is not accurate for attractive
-potentials. The SMSA \cite{Madden1980,Chihara1973} is a generalisation of the MSA closure. This has been
-done by incorporating the division scheme as of Weeks et al.\ \cite{Weeks1971} by dividing the potential
-in a entirely repulsive part and a attractive part $u(r) = u_\text{R}(r)+u_\text{A}(r)$. The SMSA bridge function reads as
-\begin{align}
-B_\text{SMSA}(r) &= \ln \left[1+\gamma^*(r)\right]-\gamma^*(r)
-\end{align}
-with $\gamma^*(r)=\gamma(r)-\beta u_\text{A}(r)$.
-Normally  $u_\text{R}(r)$ describes a short range repulsive interaction like hard sphere interaction or as in the
-division scheme from Weeks et al.\ the potential up to the minimum $r_m$. For $r>r_m$ or $r > \sigma^\text{HS}$ the
-closure reduces to the MSA approximation $c(r)=-\beta u(r)$. In a case of a purely repulsive interaction, one has
-$r_m\rightarrow \infty$ and $u_\text{A}(r) \equiv 0$. In this case the closure reduces to the PY closure.
-The SMSA interpolates between PY and MSA \cite{Bomont2008}.
-
-~\\
-\subsection{Roger-Young (RY) closure}
-~\\
-
-Roger and Young have introduced a closure to interpolate continuously between HNC and PY
-theory \cite{Rogers1984}
-\begin{align}
-B_\text{RY}(r) &= \ln
-\left[1+\frac{\exp\left[f(r,\alpha)\gamma(r)\right]-1}{f(r,\alpha)}\right]-\gamma(r)
-\end{align}
-where $f(r,\alpha)$ is a "switching function", which they defined as
-\begin{align}
-f(r,\alpha) &= 1- \exp(-\alpha r)
-\end{align}
-For $\alpha \rightarrow \infty$ the switching function becomes $f(r,\alpha)=1$ and the
-closure becomes the HNC closure.
-For $\alpha \rightarrow 0$ the switching function becomes $f(r,\alpha)=0$ and the
-closure converges to the PY closure. The parameter $\alpha$ is varied until the
-virial-compressibility consistency condition is satisfied.
 
 ~\\
 \subsection{HNC-SMSA (HMSA) Approximation}
@@ -641,6 +639,37 @@ The parameter $\alpha$ is varied in a self-consistent manner until virial and
 compressibility routes for the pressure coincide.
 The HMSA closure reduces to HNC for $f(r,\alpha) \xrightarrow{\alpha\rightarrow\infty} 1$
 and to SMSA when $f(r,\alpha) \xrightarrow{\alpha\rightarrow 0} 0$.
+
+\vphantom{.}~\\
+\subsection{Roger-Young (RY) closure}
+~\\
+
+Roger and Young have introduced a closure to interpolate continuously between HNC and PY
+theory \cite{Rogers1984}
+\begin{align}
+B_\text{RY}(r) &= \ln
+\left[1+\frac{\exp\left[f(r,\alpha)\gamma(r)\right]-1}{f(r,\alpha)}\right]-\gamma(r)
+\end{align}
+where $f(r,\alpha)$ is a "switching function", which they defined as
+\begin{align}
+f(r,\alpha) &= 1- \exp(-\alpha r)
+\end{align}
+For $\alpha \rightarrow \infty$ the switching function becomes $f(r,\alpha)=1$ and the
+closure becomes the HNC closure.
+For $\alpha \rightarrow 0$ the switching function becomes $f(r,\alpha)=0$ and the
+closure converges to the PY closure. The parameter $\alpha$ is varied until the
+virial-compressibility consistency condition is satisfied.
+
+\vphantom{.}~\\
+\subsection{Zero separation theorem based closure (ZSEP)}
+~\\
+
+The closure based on the zero separation theorem (ZSEP) has been introduced by
+Lloyd L. Lee \cite{Lee1995,Lomba1996}. The closure is basing on the one from Verlet \cite{Verlet1980}
+and has the form
+\begin{align}
+B_\text{ZSEP}(r) &= - \frac{\zeta \gamma^*(r)^2}{2}\left[ 1- \frac{\alpha\phi\gamma^*(r)}{1+\alpha\gamma^*(r)}\right]
+\end{align}
 
 \section{Interaction Potentials}
 
@@ -980,17 +1009,12 @@ The LJ potential is not splitted in a reference and perturbation part, i.e. the 
 \subsection{Depletion Potential}
 ~\\
 
-The pair interaction potential of spheres by a depleting agent is implemented depending on the shape of the depleting
-agent. Analytical expressions have been developed for
+The pair interaction potential of spheres by a depleting agent is implemented depending on the shape of the depleting agent. Analytical expressions have been developed for
 spherical, disc-like or rod-like shapes \cite{Oversteegen2004,Lekkerkerker2011}.
-The potential between two large spheres and spherical depleting agents of diameter $l$
-is given by
-\begin{align}
-u^\text{depl}_\text{sph}(r) &= -k_\text{B} T (N_\text{I}+N_\text{II}-N_\text{III}) \\
-N_\text{I} &= n_d \frac{2}{3}\left(\frac{l}{2}-\frac{r-\sigma}{2}\right)^2
-                \left(\frac{3\sigma}{2}+l+\frac{r-\sigma}{2}\right)\\
-N_\text{II} &= N_\text{III} = 0
-\end{align}
+
+\begin{figure}[htb]
+\includegraphics[width=0.65\textwidth]{../images/OZsolver/potentials/DepletionSketchSphSph.png}  \caption{Attractive depletion forces between large spheres due to small spheres as depleting agent.}
+\end{figure}
 
 \begin{figure}[htb]
 \centering
@@ -999,6 +1023,54 @@ N_\text{II} &= N_\text{III} = 0
   \subfigure[Mayer-f function of $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Sph.png}}
   \caption{potential $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{sph}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
+
+The potential between two large spheres and spherical depleting agents of diameter $l$
+is given by
+\begin{align}
+u^\text{depl}_\text{sph}(r) &=
+\begin{cases}
+\infty & \mbox{for } r<\sigma \\
+-k_\text{B} T (N_\text{I}+N_\text{II}-N_\text{III}) & \mbox{for } r\geq\sigma
+\end{cases}\\
+N_\text{I} &= n_d \frac{2}{3}\left(\frac{l}{2}-\frac{r-\sigma}{2}\right)^2
+                \left(\frac{3\sigma}{2}+l+\frac{r-\sigma}{2}\right)\\
+N_\text{II} &= N_\text{III} = 0
+\end{align}
+
+Also a splitting of the potential in repulsive-attractive, reference-perturbation, shortrange-longrange has been implemented as
+\begin{subeqnarray}
+u^\text{depl}_\text{sph,R}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{sph}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{sph,A}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{sph}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{sph}(r) &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{sph,ref}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{sph}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{sph,pert}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{sph}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{sph}(r) &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{sph,SR}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{sph}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{sph,LR}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{sph}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{sph}(r) &\mbox{for } r>=\sigma
+\end{cases}
+\end{subeqnarray}
+
 
 The potential between two large spheres and infinitesimal thin discs of diameter $D$
 as a depleting agents is given by
@@ -1018,6 +1090,46 @@ N_\text{II} - N_\text{III} &= \frac{\pi}{6} n_d D^2\sigma
 \end{split}
 \end{align}
 
+
+\begin{figure}[htb]
+\includegraphics[width=0.65\textwidth]{../images/OZsolver/potentials/DepletionSketchSphDiscs.png}  \caption{Attractive depletion forces between large spheres due to depletion forces of infinitesimal thin discs of diameter $D$ as a depleting agents}
+\end{figure}
+
+Also a splitting of the potential in repulsive-attractive, reference-perturbation, shortrange-longrange has been implemented as
+\begin{subeqnarray}
+u^\text{depl}_\text{discs,R}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{discs}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{discs,A}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{discs}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{discs}(r) &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{discs,ref}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{discs}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{discs,pert}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{discs}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{discs}(r) &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{discs,SR}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{discs}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{discs,LR}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{discs}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{discs}(r) &\mbox{for } r>=\sigma
+\end{cases}
+\end{subeqnarray}
+
+
 \begin{figure}[htb]
 \centering
   \subfigure[potential between two large spheres and disclike depleting agents $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Discs.png}}
@@ -1025,6 +1137,7 @@ N_\text{II} - N_\text{III} &= \frac{\pi}{6} n_d D^2\sigma
   \subfigure[Mayer-f function of $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth,height=0.314\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Discs.png}}
   \caption{potential $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{discs}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
+
 
 Another depletion potential of two hard spheres of diameter $\sigma$ surrounded
 by infinitely thin hard rods of length $L$ is given by
@@ -1039,6 +1152,45 @@ N_\text{II} - N_\text{III} &= \frac{\pi}{12} n_d L^2\sigma
                                       +3\frac{r-\sigma}{D}\right\}
 \end{split}
 \end{align}
+
+\begin{figure}[htb]
+\includegraphics[width=0.65\textwidth]{../images/OZsolver/potentials/DepletionSketchSphRods.png}  \caption{Attractive depletion forces between large spheres due to depletion forces of infinitely thin hard rods of length $L$ as depleting agent.}
+\end{figure}
+
+Also a splitting of the potential in repulsive-attractive, reference-perturbation, shortrange-longrange has been implemented as
+\begin{subeqnarray}
+u^\text{depl}_\text{rods,R}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{rods}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{rods,A}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{rods}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{rods}(r) &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{rods,ref}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{rods}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{rods,pert}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{rods}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{rods}(r) &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{rods,SR}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{rods}(r) &\mbox{for } r<\sigma \\
+0 &\mbox{for } r>=\sigma
+\end{cases}\\
+u^\text{depl}_\text{rods,LR}(r) &=&
+\begin{cases}
+u^\text{depl}_\text{rods}(\sigma) &\mbox{for } r<\sigma \\
+u^\text{depl}_\text{rods}(r) &\mbox{for } r>=\sigma
+\end{cases}
+\end{subeqnarray}
+
 
 \begin{figure}[htb]
 \centering
