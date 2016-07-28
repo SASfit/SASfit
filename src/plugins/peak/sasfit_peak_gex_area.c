@@ -8,7 +8,7 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define A	param->p[0]
+#define AREA	param->p[0]
 #define XMODE	param->p[1]
 #define X0	param->p[2]
 #define BETA	param->p[3]
@@ -17,21 +17,22 @@
 
 scalar sasfit_peak_gex_area(scalar x, sasfit_param * param)
 {
-	scalar xmode,c,gamma;
-	gamma = (xmode - X0)*pow((LAMBDA+1.0)/BETA,-1.0/BETA);
-	
+	scalar c,gamma;
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 //	SASFIT_CHECK_COND1((XMODE <= 0.0), param, "xmode(%lg) <= 0",XMODE); // modify condition to your needs
-//	SASFIT_CHECK_COND1((X0 < 0.0), param, "X0(%lg) < 0",X0); // modify condition to your needs
-//	SASFIT_CHECK_COND1((BETA < 0.0), param, "beta(%lg) < 0",BETA); // modify condition to your needs
-	SASFIT_CHECK_COND2(((LAMBDA+2) > 0.0) && (BETA < 0), param, "lambda(%lg)+2 > 0 && beta< 0",LAMBDA+2, BETA); // modify condition to your needs
-
-	c=log(fabs(BETA)/gamma)-sasfit_gammaln((LAMBDA+2.0)/BETA)+(gamma+1.0)*log((x-X0)/gamma)-pow((x-X0)/gamma,BETA);
+	SASFIT_CHECK_COND1((BETA == 0.0), param, "beta(%lg) == 0",BETA); // modify condition to your needs
+	SASFIT_CHECK_COND1(((LAMBDA+2)/BETA <= 0.0), param, "(lambda+2)/beta (%lg) < 0 ",(LAMBDA+2)/BETA); // modify condition to your needs
  
 	// insert your code here
 	if (x>X0) {
-		return A*exp(c)+BACKGR;
+        gamma = (XMODE - X0)*pow((LAMBDA+1.0)/BETA,-1.0/BETA);
+        SASFIT_CHECK_COND1((gamma == 0.0), param, "gamma(%lg) == 0",gamma); // modify condition to your needs
+//        c=(fabs(BETA)/gamma)/sasfit_gamma((LAMBDA+2.0)/BETA)*pow((x-X0)/gamma,(LAMBDA+1.0))*exp(-pow((x-X0)/gamma,BETA));
+//        return AREA*c+BACKGR;
+        c=log(fabs(BETA)/gamma)-sasfit_gammaln((LAMBDA+2.0)/BETA)+(LAMBDA+1.0)*log((x-X0)/gamma)-pow((x-X0)/gamma,BETA);
+		return AREA*exp(c)+BACKGR;
 	} else {
 		return BACKGR;
 	}

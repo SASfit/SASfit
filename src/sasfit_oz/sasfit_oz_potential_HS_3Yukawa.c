@@ -28,3 +28,73 @@ double U_HS_3Yukawa(double r, double T, double *p) {
     }
 }
 
+double U_Ref_HS_3Yukawa(double r, double T, double *p) {
+    double Y1, Y2, Y3;
+    if (r<sigma) {
+        return GSL_POSINF;
+    } else {
+        return 0;
+    }
+}
+
+
+double U_Pert_HS_3Yukawa(double r, double T, double *p) {
+    double Y1, Y2, Y3;
+    if (r<sigma) {
+        return U_HS_3Yukawa(sigma, T, p);
+    } else {
+        Y1 = K1*exp(-LAMBDA1*(r-sigma)/sigma);
+        Y2 = K2*exp(-LAMBDA2*(r-sigma)/sigma);
+        Y3 = K3*exp(-LAMBDA3*(r-sigma)/sigma);
+        return kb*T*sigma/r*(Y1+Y2+Y3);
+    }
+}
+
+double U_SR_HS_3Yukawa(double r, double T, double *p) {
+    double Y1, Y2, Y3;
+    if (r<sigma) {
+        return GSL_POSINF;
+    } else {
+        return 0;
+    }
+}
+
+
+double U_LR_HS_3Yukawa(double r, double T, double *p) {
+    double Y1, Y2, Y3;
+    if (r<sigma) {
+        return U_HS_3Yukawa(sigma, T, p);
+    } else {
+        Y1 = K1*exp(-LAMBDA1*(r-sigma)/sigma);
+        Y2 = K2*exp(-LAMBDA2*(r-sigma)/sigma);
+        Y3 = K3*exp(-LAMBDA3*(r-sigma)/sigma);
+        return kb*T*sigma/r*(Y1+Y2+Y3);
+    }
+}
+
+double U_R_HS_3Yukawa(double r, double T, double *p) {
+    double Y1, Y2, Y3;
+    if (r<sigma) {
+        return GSL_POSINF;
+    } else {
+        if (K1>0) Y1 = K1*exp(-LAMBDA1*(r-sigma)/sigma); else Y1=0;
+        if (K2>0) Y2 = K2*exp(-LAMBDA2*(r-sigma)/sigma); else Y2=0;
+        if (K3>0) Y3 = K3*exp(-LAMBDA3*(r-sigma)/sigma); else Y3=0;
+        return kb*T*sigma/r*(Y1+Y2+Y3);
+    }
+}
+
+double U_A_HS_3Yukawa(double r, double T, double *p) {
+    double Y1, Y2, Y3;
+    if (r<sigma) {
+        if (K1<0) Y1 = K1; else Y1=0;
+        if (K2<0) Y2 = K2; else Y2=0;
+        if (K3<0) Y3 = K3; else Y3=0;
+        return kb*T*sigma/r*(Y1+Y2+Y3);
+    } else {
+        if (K1<0) Y1 = K1*exp(-LAMBDA1*(r-sigma)/sigma); else Y1=0;
+        if (K2<0) Y2 = K2*exp(-LAMBDA2*(r-sigma)/sigma); else Y2=0;
+        if (K3<0) Y3 = K3*exp(-LAMBDA3*(r-sigma)/sigma); else Y3=0;
+        return kb*T*sigma/r*(Y1+Y2+Y3);
+    }
+}

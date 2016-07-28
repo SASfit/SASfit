@@ -989,28 +989,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) "psi ="
 				  set actualPar(FF,l10,label) "pol ="
 				}
-	  "LinShell"            { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "dR ="
-				  set actualPar(FF,l3,label) "eta_c ="
-				  set actualPar(FF,l4,label) "eta_sh =" 
-				  set actualPar(FF,l5,label) "x_in ="
-				  set actualPar(FF,l6,label) "x_out ="
-				  set actualPar(FF,l7,label) "eta_s ="
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}   
-	  "LinShell2"           { set actualPar(FF,l1,label) "Rtot ="
-				  set actualPar(FF,l2,label) "dR ="
-				  set actualPar(FF,l3,label) "eta_c ="
-				  set actualPar(FF,l4,label) "eta_sh =" 
-				  set actualPar(FF,l5,label) "x_in ="
-				  set actualPar(FF,l6,label) "x_out ="
-				  set actualPar(FF,l7,label) "eta_s ="
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}    
 	  "SphereShell_compr"   { set actualPar(FF,l1,label) "Rtot ="
 				  set actualPar(FF,l2,label) "dR ="
 				  set actualPar(FF,l3,label) "eta_c ="
@@ -1021,17 +999,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l8,label) "kappa_sh ="
 				  set actualPar(FF,l9,label) "kappa_s ="
 				  set actualPar(FF,l10,label) "P ="
-				}
-	  "ExpShell"            { set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "DR ="
-				  set actualPar(FF,l3,label) "eta_core ="
-				  set actualPar(FF,l4,label) "eta_shell =" 
-				  set actualPar(FF,l5,label) "x_in_solv ="
-				  set actualPar(FF,l6,label) "x_out_solv ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "eta_solvent ="
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
 				}
 	  "DumbbellShell"       { set actualPar(FF,l1,label) "R ="
 				  set actualPar(FF,l2,label) "dR ="
@@ -4422,10 +4389,7 @@ proc analyticalGlobalSDCmd {simorfit
 				      {RNDMultiLamellarVesicle2 Delta} \ 
 				      {MLVesicleFrielinghaus Delta} \
 				       BiLayeredVesicle \
-				       LinShell \
-				       LinShell2 \
-				       SphereShell_compr \
-				       ExpShell}} \ 
+				       SphereShell_compr}} \ 
 	{ellipsoid "ellipsoidal obj." { \
 				       {{Ellipsoid i}} \
 				       {{Ellipsoid ii}} \

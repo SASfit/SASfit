@@ -685,28 +685,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) "pol ="
                         }
-  "LinShell"            { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "dR ="
-                          set actualPar(FF,l3,label) "eta_c ="
-                          set actualPar(FF,l4,label) "eta_sh =" 
-                          set actualPar(FF,l5,label) "x_in ="
-                          set actualPar(FF,l6,label) "x_out ="
-                          set actualPar(FF,l7,label) "eta_s ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }  
-  "LinShell2"           { set actualPar(FF,l1,label) "Rtot ="
-                          set actualPar(FF,l2,label) "dR ="
-                          set actualPar(FF,l3,label) "eta_c ="
-                          set actualPar(FF,l4,label) "eta_sh =" 
-                          set actualPar(FF,l5,label) "x_in ="
-                          set actualPar(FF,l6,label) "x_out ="
-                          set actualPar(FF,l7,label) "eta_s ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }   
   "SphereShell_compr"   { set actualPar(FF,l1,label) "Rtot ="
                           set actualPar(FF,l2,label) "dR ="
                           set actualPar(FF,l3,label) "eta_c ="
@@ -718,17 +696,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) "kappa_s ="
                           set actualPar(FF,l10,label) "P ="
                         }
-  "ExpShell"            { set actualPar(FF,l1,label) "R_core ="
-                          set actualPar(FF,l2,label) "DR ="
-                          set actualPar(FF,l3,label) "eta_core ="
-                          set actualPar(FF,l4,label) "eta_shell =" 
-                          set actualPar(FF,l5,label) "x_in_solv ="
-                          set actualPar(FF,l6,label) "x_out_solv ="
-                          set actualPar(FF,l7,label) "alpha ="
-                          set actualPar(FF,l8,label) "eta_solvent ="
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }   
   "DumbbellShell"       { set actualPar(FF,l1,label) "R ="
                           set actualPar(FF,l2,label) "dR ="
                           set actualPar(FF,l3,label) "L ="
@@ -4109,28 +4076,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) "pol ="
 				}
-	  "LinShell"            { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "dR ="
-				  set actualAnalytPar(FF,l3,label) "eta_c ="
-				  set actualAnalytPar(FF,l4,label) "eta_sh =" 
-				  set actualAnalytPar(FF,l5,label) "x_in ="
-				  set actualAnalytPar(FF,l6,label) "x_out ="
-				  set actualAnalytPar(FF,l7,label) "eta_s ="
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}  
-	  "LinShell2"           { set actualAnalytPar(FF,l1,label) "Rtot ="
-				  set actualAnalytPar(FF,l2,label) "dR ="
-				  set actualAnalytPar(FF,l3,label) "eta_c ="
-				  set actualAnalytPar(FF,l4,label) "eta_sh =" 
-				  set actualAnalytPar(FF,l5,label) "x_in ="
-				  set actualAnalytPar(FF,l6,label) "x_out ="
-				  set actualAnalytPar(FF,l7,label) "eta_s ="
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}   
 	  "SphereShell_compr"   { set actualAnalytPar(FF,l1,label) "Rtot ="
 				  set actualAnalytPar(FF,l2,label) "dR ="
 				  set actualAnalytPar(FF,l3,label) "eta_c ="
@@ -4142,17 +4087,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) "kappa_s ="
 				  set actualAnalytPar(FF,l10,label) "P ="
 				}
-	  "ExpShell"            { set actualAnalytPar(FF,l1,label) "R_core ="
-				  set actualAnalytPar(FF,l2,label) "DR ="
-				  set actualAnalytPar(FF,l3,label) "eta_core ="
-				  set actualAnalytPar(FF,l4,label) "eta_shell =" 
-				  set actualAnalytPar(FF,l5,label) "x_in_solv ="
-				  set actualAnalytPar(FF,l6,label) "x_out_solv ="
-				  set actualAnalytPar(FF,l7,label) "alpha ="
-				  set actualAnalytPar(FF,l8,label) "eta_solvent ="
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}   
 	  "DumbbellShell"       { set actualAnalytPar(FF,l1,label) "R ="
 				  set actualAnalytPar(FF,l2,label) "dR ="
 				  set actualAnalytPar(FF,l3,label) "L ="
@@ -7985,36 +7919,6 @@ switch -exact $type {
                 9 {return "\n"}
                }
            }
-           "LinShell" {
-               switch $num {
-                 0 {return "LinShell = core shell form factor\nwith linear dependent contrast profile of shell\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "dR: shell thickness\n"}
-                 3 {return "eta_c: scattering length density of core\n"}
-                 4 {return "eta_sh: scattering length density of non-swollen shell\n"}
-                 5 {return "x_in: amount of solvent at R\n"}
-                 6 {return "x_out: amount of solvent at R+dR\n"}
-                 7 {return "eta_s: scattering length density of solvent\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "LinShell2" {
-               switch $num {
-                 0 {return "LinShell2 = core shell form factor\nwith linear dependent contrast profile of shell\n"}
-                 1 {return "Rtot: overall radius\n"}
-                 2 {return "dR: shell thickness\n"}
-                 3 {return "eta_c: scattering length density of core\n"}
-                 4 {return "eta_sh: scattering length density of non-swollen shell\n"}
-                 5 {return "x_in: amount of solvent at R\n"}
-                 6 {return "x_out: amount of solvent at R+dR\n"}
-                 7 {return "eta_s: scattering length density of solvent\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
            "SphereShell_compr" {
                switch $num {
                  0 {return "SphereShell_compr = spherical core shell form factor\nwhich is compressable\n"}
@@ -8028,21 +7932,6 @@ switch -exact $type {
                  8 {return "kappa_sh: compressibility of shell\n"}
                  9 {return "kappa_s: compressibility of solvent\n"}
                 10 {return "P: applied pressure\n"}
-               }
-           }
-           "ExpShell" {
-               switch $num {
-                 0 {return "ExpShell = core shell form factor\nwith expotential dependent contrast profile of shell\n"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "dR: shell thickness\n"}
-                 3 {return "eta_core: scattering length density of core\n"}
-                 4 {return "eta_shell: scattering length density of non-swollen shell\n"}
-                 5 {return "x_in_solv: amount of solvent at R\n"}
-                 6 {return "x_out_solv: amount of solvent at R+dR\n"}
-                 7 {return "alpha: factor for exponentail decay of scattering length density in shell\n"}
-                 8 {return "eta_solv: scattering length density of solvent\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
                }
            }
            "DumbbellShell" {
@@ -12237,10 +12126,7 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 		      {RNDMultiLamellarVesicle2 Delta} \ 
 		      {MLVesicleFrielinghaus Delta} \
 		       BiLayeredVesicle \
-		       LinShell \
-		       LinShell2 \
-		       SphereShell_compr \
-		       ExpShell}} \ 
+		       SphereShell_compr }} \ 
 {ellipsoid "ellipsoidal obj." { \
 		       {{Ellipsoid i}} \
 		       {{Ellipsoid ii}} \

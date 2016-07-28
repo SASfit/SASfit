@@ -64,6 +64,9 @@
  *      </tr><tr>
  *       <td>\b lambda</td>
  *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
  *      </tr></table>
  */
 
@@ -105,8 +108,8 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude_v(scalar q, sasfit_param * p
  *       <td>\b A</td>
  *       <td>area</td>
  *      </tr><tr>
- *       <td>\b gamma</td>
- *       <td>location parameter</td>
+ *       <td>\b mode</td>
+ *       <td>mode of distribution</td>
  *      </tr><tr>
  *       <td>\b X0</td>
  *       <td>shift parameter</td>
@@ -116,6 +119,9 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude_v(scalar q, sasfit_param * p
  *      </tr><tr>
  *       <td>\b lambda</td>
  *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
  *      </tr></table>
  */
 

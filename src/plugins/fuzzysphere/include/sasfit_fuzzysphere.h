@@ -39,7 +39,7 @@
 /* ################ start ff_fuzzysphere ################ */
 /** 
  * \defgroup ff_fuzzysphere FuzzySphere
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief \<some scattering from spherical particles with a "fuzzy" interface function\>
  *
@@ -66,7 +66,7 @@
 /**
  * \ingroup ff_fuzzysphere
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_fuzzysphere(scalar q, sasfit_param * p);
 
@@ -80,7 +80,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_fuzzysphere_f(scalar q, sasfit_param 
 /**
  * \ingroup ff_fuzzysphere
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_fuzzysphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_fuzzysphere ################ */
@@ -88,7 +88,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_fuzzysphere_v(scalar q, sasfit_param 
 /* ################ start ff_radial_profile_of_fuzzysphere ################ */
 /** 
  * \defgroup ff_radial_profile_of_fuzzysphere radial profile of FuzzySphere
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief \<some brief description of Radial Profile from a spherical particles with a "fuzzy" interface\>
  *
@@ -115,21 +115,21 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_fuzzysphere_v(scalar q, sasfit_param 
 /**
  * \ingroup ff_radial_profile_of_fuzzysphere
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_radial_profile_of_fuzzysphere
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_radial_profile_of_fuzzysphere
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_radial_profile_of_fuzzysphere ################ */
@@ -137,7 +137,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere_v(scala
 /* ################ start ff_coreshellmicrogel ################ */
 /** 
  * \defgroup ff_coreshellmicrogel CoreShellMicrogel
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief \<some scattering from spherical particles with a "fuzzy" interface function\>
  *
@@ -179,7 +179,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_fuzzysphere_v(scala
 /**
  * \ingroup ff_coreshellmicrogel
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_coreshellmicrogel(scalar q, sasfit_param * p);
 
@@ -193,7 +193,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_coreshellmicrogel_f(scalar q, sasfit_
 /**
  * \ingroup ff_coreshellmicrogel
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_coreshellmicrogel_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_coreshellmicrogel ################ */
@@ -201,7 +201,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_coreshellmicrogel_v(scalar q, sasfit_
 /* ################ start ff_radial_profile_of_coreshellmicrogel ################ */
 /** 
  * \defgroup ff_radial_profile_of_coreshellmicrogel radial profile of CoreShellMicrogel
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief \<some brief description of Radial Profile from a spherical particles with a "fuzzy" interface\>
  *
@@ -243,21 +243,21 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_coreshellmicrogel_v(scalar q, sasfit_
 /**
  * \ingroup ff_radial_profile_of_coreshellmicrogel
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_coreshellmicrogel(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_radial_profile_of_coreshellmicrogel
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_coreshellmicrogel_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_radial_profile_of_coreshellmicrogel
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_coreshellmicrogel_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_radial_profile_of_coreshellmicrogel ################ */
@@ -270,7 +270,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_coreshellmicrogel_v
 /* ################ start ff_expshell ################ */
 /** 
  * \defgroup ff_expshell ExpShell
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief ExpShell is a core shell form factor with an expotential dependent contrast profile of the shell
  *
@@ -309,7 +309,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_coreshellmicrogel_v
 /**
  * \ingroup ff_expshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell(scalar q, sasfit_param * p);
 
@@ -323,7 +323,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell_f(scalar q, sasfit_param * p
 /**
  * \ingroup ff_expshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_expshell ################ */
@@ -332,7 +332,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell_v(scalar q, sasfit_param * p
 /* ################ start ff_radial_profile_of_expshell ################ */
 /** 
  * \defgroup ff_radial_profile_of_expshell radial profile of ExpShell
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief radial profile of the from factor ExpShell, which is a core shell form factor with an expotential dependent contrast profile of the shell
  *
@@ -371,7 +371,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_expshell_v(scalar q, sasfit_param * p
 /**
  * \ingroup ff_radial_profile_of_expshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell(scalar q, sasfit_param * p);
 
@@ -385,7 +385,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell_f(scalar q
 /**
  * \ingroup ff_radial_profile_of_expshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_radial_profile_of_expshell ################ */
@@ -394,7 +394,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell_v(scalar q
 /* ################ start ff_linshell ################ */
 /** 
  * \defgroup ff_linshell LinShell
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief LinShell is a core shell form factor with a linear dependent contrast profile of the shell
  *
@@ -430,7 +430,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_expshell_v(scalar q
 /**
  * \ingroup ff_linshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell(scalar q, sasfit_param * p);
 
@@ -444,7 +444,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell_f(scalar q, sasfit_param * p
 /**
  * \ingroup ff_linshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_linshell ################ */
@@ -453,7 +453,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell_v(scalar q, sasfit_param * p
 /* ################ start ff_radial_profile_of_linshell ################ */
 /** 
  * \defgroup ff_radial_profile_of_linshell radial profile of LinShell
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief radial profile of LinShell which is a core shell form factor with a linear dependent contrast profile of the shell
  *
@@ -489,7 +489,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell_v(scalar q, sasfit_param * p
 /**
  * \ingroup ff_radial_profile_of_linshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell(scalar q, sasfit_param * p);
 
@@ -503,7 +503,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell_f(scalar q
 /**
  * \ingroup ff_radial_profile_of_linshell
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_radial_profile_of_linshell ################ */
@@ -512,7 +512,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell_v(scalar q
 /* ################ start ff_linshell2 ################ */
 /** 
  * \defgroup ff_linshell2 LinShell2
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief LinShell2 is a core shell form factor with a linear dependent contrast profile of the shell
  *
@@ -548,7 +548,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell_v(scalar q
 /**
  * \ingroup ff_linshell2
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2(scalar q, sasfit_param * p);
 
@@ -562,7 +562,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2_f(scalar q, sasfit_param * 
 /**
  * \ingroup ff_linshell2
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_linshell2 ################ */
@@ -570,7 +570,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2_v(scalar q, sasfit_param * 
 /* ################ start ff_radial_profile_of_linshell2 ################ */
 /** 
  * \defgroup ff_radial_profile_of_linshell2 radial profile of LinShell2
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief radial radial profile of LinShell2 which is a core shell form factor with a linear dependent contrast profile of the shell
  *
@@ -606,7 +606,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_linshell2_v(scalar q, sasfit_param * 
 /**
  * \ingroup ff_radial_profile_of_linshell2
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell2(scalar q, sasfit_param * p);
 
@@ -620,7 +620,7 @@ sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell2_f(scalar 
 /**
  * \ingroup ff_radial_profile_of_linshell2
  *
- * \sa sasfit_fuzzysphere.h, ff_plugins_spheres_shells
+ * \sa sasfit_fuzzysphere.h, ff_plugins_fuzzy_sph
  */
 sasfit_fuzzysphere_DLLEXP scalar sasfit_ff_radial_profile_of_linshell2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_radial_profile_of_linshell2 ################ */

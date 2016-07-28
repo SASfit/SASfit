@@ -330,15 +330,16 @@ $c_\text{Gauss}$ is chosen so that $\int_0^\infty\!
 
 The generalised exponential distribution is a three parameter distribution.
 \begin{align}
-\text{GEX} (x,\beta,\lambda,\gamma) &= N \frac{\abs{\beta}}{\gamma} \left(\frac{x}{\gamma}\right)^{\lambda+1} 
+\text{GEX} (x,\beta,\lambda,\gamma) &= N \frac{\abs{\beta}}{\gamma} \left(\frac{x}{\gamma}\right)^{\lambda+1}
 \frac{e^{-(x/\gamma)^\beta}}{\Gamma\left( \frac{\lambda+2}{\beta} \right)} \\
 \text{GEX}(x,\beta,p,\gamma)     &= N
 \frac{\abs{\beta}}{\gamma}\left(\frac{x}{\gamma}\right)^{p-1}
 \frac{e^{-(x/\gamma)^{\beta}}}{\Gamma  \left( {\frac{p}{\beta}} \right)}
 \end{align}
-For $\lambda+2=p=\beta$ it will transform in the Weibull distribution (eq.\ \ref{eq:Weibull}). For $\beta=1$ one yields the Schulz-Zimm distribution (eq.\ \ref{eq:SZn(M)}) or the equivalent gamma distribution (eq.\ \ref{eq:GammaDistr}). In The limit $\beta \rightarrow 0$ the GEX distribution transforms into a Lognormal distribution.
+For $\lambda+2=p=\beta$ it will transform in the Weibull distribution (eq.\ \ref{eq:Weibull}). For $\beta=1$ one yields the Schulz-Zimm distribution (eq.\ \ref{eq:SZn(M)}) or the equivalent gamma distribution (eq.\ \ref{eq:GammaDistr}). In the limit $(\beta,\lambda) \rightarrow (0,\infty)$ whereas the product $\beta(\lambda+2)->\sigma$ the GEX distribution transforms into a Lognormal distribution.
 \begin{align}
-\lim_{\beta\rightarrow 0} \text{GEX} (x,\beta,\lambda,\gamma) &= \frac{1}{11}
+\lim_{(\beta,\lambda)\rightarrow (0,\infty)} \text{GEX} (x,\beta,\lambda,\gamma) &= \frac{1}{\sqrt{2\pi}\sigma x} \exp\left(-\frac{\left(\log x-\log \gamma\right)^2}{2\sigma^2} \right) \\
+\mbox{with } \lim_{(\beta,\lambda)\rightarrow (0,\infty)} \beta(\lambda+2) &= \sigma
 \end{align}
 The mode $x_\mathrm{mode}$, mean $x_\mathrm{mean}$, and variance $\sigma^2$ of this distribution are given by
 \begin{align}

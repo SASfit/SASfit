@@ -39,7 +39,7 @@
 /* ################ start ff_rodlike_micelle_plusprism ################ */
 /** 
  * \defgroup ff_rodlike_micelle_plusprism Rodlike_Micelle_PlusPrism
- * \ingroup ff_plugins
+ * \ingroup ff_user2
  *
  * \brief \<some brief description of Rodlike_Micelle_PlusPrism function\>
  *
@@ -83,21 +83,21 @@
 /**
  * \ingroup ff_rodlike_micelle_plusprism
  *
- * \sa sasfit_rod_micelle_prism.h, form_fac
+ * \sa sasfit_rod_micelle_prism.h, ff_user2
  */
 sasfit_rod_micelle_prism_DLLEXP scalar sasfit_ff_rodlike_micelle_plusprism(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_rodlike_micelle_plusprism
  *
- * \sa sasfit_rod_micelle_prism.h, form_fac
+ * \sa sasfit_rod_micelle_prism.h, ff_user2
  */
 sasfit_rod_micelle_prism_DLLEXP scalar sasfit_ff_rodlike_micelle_plusprism_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_rodlike_micelle_plusprism
  *
- * \sa sasfit_rod_micelle_prism.h, form_fac
+ * \sa sasfit_rod_micelle_prism.h, ff_user2
  */
 sasfit_rod_micelle_prism_DLLEXP scalar sasfit_ff_rodlike_micelle_plusprism_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_rodlike_micelle_plusprism ################ */

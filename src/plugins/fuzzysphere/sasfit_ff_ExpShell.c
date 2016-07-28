@@ -10,7 +10,12 @@
 
 #define R		param->p[0]
 #define DR		param->p[1]
+#define ETA_CORE param->p[2]
+#define ETA_SH param->p[3]
+#define X_IN_SOLV param->p[4]
+#define X_OUT_SOLV param->p[5]
 #define ALPHA	param->p[6]
+#define ETA_SOL param->p[7]
 
 scalar sasfit_kshexp1(scalar q, sasfit_param * param);
 scalar sasfit_kshexp2(scalar q, sasfit_param * param);
@@ -39,10 +44,26 @@ scalar sasfit_ff_expshell_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_expshell_v(scalar q, sasfit_param * param, int dist)
 {
+    scalar Vc, Vsh, VshSolid;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 4./3.*M_PI*gsl_pow_3(R+DR);
+    
+	Vc = 4./3.*M_PI*gsl_pow_3(R);
+    VshSolid = 4./3.*M_PI*gsl_pow_3(R+DR) - Vc;
+    if (ALPHA<0) {
+        Vsh = (-4*DR*M_PI*(gsl_pow_2(DR)*(6 + ALPHA*(6 + ALPHA*(3 + ALPHA)) - 6*exp(ALPHA)) + 2*ALPHA*DR*(2 + ALPHA*(2 + ALPHA) - 2*exp(ALPHA))*R + 
+            gsl_pow_2(ALPHA)*(1 + ALPHA - exp(ALPHA))*gsl_pow_2(R)))/gsl_pow_4(ALPHA);
+            if (X_IN_SOLV < X_OUT_SOLV) {
+                return Vc+VshSolid+(X_OUT_SOLV-X_IN_SOLV)/(1.-X_IN_SOLV)*Vsh;
+            } else {
+                return Vc+VshSolid+(X_OUT_SOLV-X_IN_SOLV)/(1.-X_OUT_SOLV)*Vsh;
+            }
+    } else {
+        Vsh = (4*DR*M_PI*(gsl_pow_2(DR)*(6 + 4*ALPHA + gsl_pow_2(ALPHA) + 2*(-3 + ALPHA)*exp(ALPHA)) + 2*ALPHA*DR*(2 + ALPHA + (-2 + ALPHA)*exp(ALPHA))*R + 
+            gsl_pow_2(ALPHA)*(1 + (-1 + ALPHA)*exp(ALPHA))*gsl_pow_2(R)))/(gsl_pow_4(ALPHA)*exp(ALPHA));
+        return Vc+VshSolid*(1-X_OUT_SOLV)+Vsh*(X_OUT_SOLV-X_IN_SOLV);
+    }
 }
 
 

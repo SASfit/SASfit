@@ -39,7 +39,7 @@
 /* ################ start ff_juelichcoreshell ################ */
 /** 
  * \defgroup ff_juelichcoreshell JuelichCoreShell
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief \<some brief description of JuelichCoreShell function\>
  *
@@ -117,21 +117,21 @@
 /**
  * \ingroup ff_juelichcoreshell
  *
- * \sa sasfit_juelichcoreshell.h, ff_plugins
+ * \sa sasfit_juelichcoreshell.h, ff_plugins_fuzzy_sph
  */
 sasfit_juelichcoreshell_DLLEXP scalar sasfit_ff_juelichcoreshell(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_juelichcoreshell
  *
- * \sa sasfit_juelichcoreshell.h, ff_plugins
+ * \sa sasfit_juelichcoreshell.h, ff_plugins_fuzzy_sph
  */
 sasfit_juelichcoreshell_DLLEXP scalar sasfit_ff_juelichcoreshell_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_juelichcoreshell
  *
- * \sa sasfit_juelichcoreshell.h, ff_plugins
+ * \sa sasfit_juelichcoreshell.h, ff_plugins_fuzzy_sph
  */
 sasfit_juelichcoreshell_DLLEXP scalar sasfit_ff_juelichcoreshell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_juelichcoreshell ################ */

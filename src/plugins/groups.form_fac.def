@@ -61,6 +61,15 @@
  */
 
  /** 
+ * \defgroup ff_plugins_fuzzy_sph Fuzzy Spheres
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * This group contains form factors for sheres and shperical shells with special radial profiles.
+ *
+ * \modname{ff_plugins_fuzzy_sph}
+ */
+ 
+ /** 
  * \defgroup ff_clusters clusters 
  * \ingroup ff_plugins
  *

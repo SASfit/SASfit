@@ -538,12 +538,12 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             break;
         case 16 :
             OZD->potential=&U_DLVO;
-            OZD->reference_pot=&U_ZERO;
-            OZD->pertubation_pot=&U_ZERO;
-            OZD->repulsive_pot=&U_ZERO;
-            OZD->attractive_pot=&U_ZERO;
-            OZD->shortrange_pot=&U_ZERO;
-            OZD->longrange_pot=&U_ZERO;
+            OZD->reference_pot=&U_Ref_DLVO;
+            OZD->pertubation_pot=&U_Pert_DLVO;
+            OZD->repulsive_pot=&U_R_DLVO;
+            OZD->attractive_pot=&U_A_DLVO;
+            OZD->shortrange_pot=&U_SR_DLVO;
+            OZD->longrange_pot=&U_LR_DLVO;
             break;
         case 17 :
             OZD->potential=&U_PSM;
@@ -583,12 +583,12 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             break;
         case 21 :
             OZD->potential=&U_HS_3Yukawa;
-            OZD->reference_pot=&U_HS_3Yukawa;
-            OZD->pertubation_pot=&U_ZERO;
-            OZD->repulsive_pot=&U_HS_3Yukawa;
-            OZD->attractive_pot=&U_ZERO;
-            OZD->shortrange_pot=&U_HS_3Yukawa;
-            OZD->longrange_pot=&U_ZERO;
+            OZD->reference_pot=&U_Ref_HS_3Yukawa;
+            OZD->pertubation_pot=&U_Pert_HS_3Yukawa;
+            OZD->repulsive_pot=&U_R_HS_3Yukawa;
+            OZD->attractive_pot=&U_A_HS_3Yukawa;
+            OZD->shortrange_pot=&U_SR_HS_3Yukawa;
+            OZD->longrange_pot=&U_LR_HS_3Yukawa;
             break;
         case 22 :
         case 23 :

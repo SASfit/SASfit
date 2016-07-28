@@ -384,20 +384,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_peak_QENS_ConfinementWithGaussianPotential;
 	} else
-	if ( strcmp(ff->typestr, "LinShell") == 0 )
-	{
-		ff->fct 	= sasfit_ff_LinShell;
-		ff->fct_f 	= sasfit_ff_Kshlin;
-		ff->fct_v 	= sasfit_ff_spherical_shell_v;
-		ff->params.kernelSelector = KSHLIN1;
-	} else
-	if ( strcmp(ff->typestr, "LinShell2") == 0 )
-	{
-		ff->fct 	= sasfit_ff_LinShell;
-		ff->fct_f 	= sasfit_ff_Kshlin;
-		ff->fct_v 	= sasfit_ff_spherical_shell_v;
-		ff->params.kernelSelector = KSHLIN2;
-	} else
 	if ( strcmp(ff->typestr, "P39") == 0 )
 	{
 		ff->fct = sasfit_ff_P39;
@@ -837,13 +823,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_triaxEllShell1;
 		ff->fct_v = sasfit_ff_triaxEllShell1_v;
-	} else
-	if ( strcmp(ff->typestr, "ExpShell") == 0 )
-	{
-		ff->fct 	= sasfit_ff_ExpShell;
-		ff->fct_f 	= sasfit_ff_KshExp;
-		ff->fct_v 	= sasfit_ff_spherical_shell_v;
-		ff->params.kernelSelector = KSHLIN1; // for volume function
 	} else
 	if ( strcmp(ff->typestr, "SPHERE+Exp_Rc") == 0 )
 	{
