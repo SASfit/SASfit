@@ -1657,54 +1657,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "Beta (Amplitude)"   { \
-	                  set actualPar(FF,l1,label) "amplitude ="
-                          set actualPar(FF,l2,label) "xmin ="
-                          set actualPar(FF,l3,label) "xmax ="
-                          set actualPar(FF,l4,label) "alpha ="
-                          set actualPar(FF,l5,label) "beta ="
-                          set actualPar(FF,l6,label) "backgr. ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "Beta (Area)"   { \
-	                  set actualPar(FF,l1,label) "area ="
-                          set actualPar(FF,l2,label) "xmin ="
-                          set actualPar(FF,l3,label) "xmax ="
-                          set actualPar(FF,l4,label) "alpha ="
-                          set actualPar(FF,l5,label) "beta ="
-                          set actualPar(FF,l6,label) "backgr. ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "Chi-squared (Amplitude)"   { \
-	                  set actualPar(FF,l1,label) "amplitude ="
-                          set actualPar(FF,l2,label) "center ="
-                          set actualPar(FF,l3,label) "width ="
-                          set actualPar(FF,l4,label) "shape ="
-                          set actualPar(FF,l5,label) "backgr. ="
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "Chi-squared (Area)"   { \
-	                  set actualPar(FF,l1,label) "area ="
-                          set actualPar(FF,l2,label) "center ="
-                          set actualPar(FF,l3,label) "width ="
-                          set actualPar(FF,l4,label) "shape ="
-                          set actualPar(FF,l5,label) "backgr. ="
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
    "Erfc (Amplitude)"   { \
 	                  set actualPar(FF,l1,label) "amplitude ="
                           set actualPar(FF,l2,label) "center ="
@@ -5062,54 +5014,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l6,label) "ms_re ="
 				  set actualAnalytPar(FF,l7,label) "ms_im ="
 				  set actualAnalytPar(FF,l8,label) "pol ="
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Beta (Amplitude)"   { \
-				  set actualAnalytPar(FF,l1,label) "amplitude ="
-				  set actualAnalytPar(FF,l2,label) "xmin ="
-				  set actualAnalytPar(FF,l3,label) "xmax ="
-				  set actualAnalytPar(FF,l4,label) "alpha ="
-				  set actualAnalytPar(FF,l5,label) "beta ="
-				  set actualAnalytPar(FF,l6,label) "backgr. ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Beta (Area)"   { \
-				  set actualAnalytPar(FF,l1,label) "area ="
-				  set actualAnalytPar(FF,l2,label) "xmin ="
-				  set actualAnalytPar(FF,l3,label) "xmax ="
-				  set actualAnalytPar(FF,l4,label) "alpha ="
-				  set actualAnalytPar(FF,l5,label) "beta ="
-				  set actualAnalytPar(FF,l6,label) "backgr. ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Chi-squared (Amplitude)"   { \
-				  set actualAnalytPar(FF,l1,label) "amplitude ="
-				  set actualAnalytPar(FF,l2,label) "center ="
-				  set actualAnalytPar(FF,l3,label) "width ="
-				  set actualAnalytPar(FF,l4,label) "shape ="
-				  set actualAnalytPar(FF,l5,label) "backgr. ="
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Chi-squared (Area)"   { \
-				  set actualAnalytPar(FF,l1,label) "area ="
-				  set actualAnalytPar(FF,l2,label) "center ="
-				  set actualAnalytPar(FF,l3,label) "width ="
-				  set actualAnalytPar(FF,l4,label) "shape ="
-				  set actualAnalytPar(FF,l5,label) "backgr. ="
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
@@ -9226,66 +9130,6 @@ switch -exact $type {
                 10 {return "\n"}
               }
            }
-           "Beta (Amplitude)" { 
-              switch $num {
-                 0 {return "Beta (Amplitude)\n"}
-                 1 {return "amplitude: maximum amplitude\n"}
-                 2 {return "xmax: \n"}
-                 3 {return "xmax: \n"}
-                 4 {return "alpha: first shape parameter \n"}
-                 5 {return "beta: second shape parameter\n"}
-                 6 {return "backgr.: constant offset\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Beta (Area)" { 
-              switch $num {
-                 0 {return "Beta (Area)\n"}
-                 1 {return "area = int(y(x),x=-infinity..infinity))\n"}
-                 2 {return "xmax: \n"}
-                 3 {return "xmax: \n"}
-                 4 {return "alpha: first shape parameter \n"}
-                 5 {return "beta: second shape parameter\n"}
-                 6 {return "backgr.: constant offset\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Chi-squared (Amplitude)" { 
-              switch $num {
-                 0 {return "Chi-squared (Amplitude)\n"}
-                 1 {return "amplitude: maximum amplitude\n"}
-                 2 {return "center: location parameter (mode)\n"}
-                 3 {return "width: scale parameter (width > 0)\n"}
-                 4 {return "shape: shape parameter (shape>2)\n"}
-                 5 {return "backgr.: constant offset\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Chi-squared (Area)" { 
-              switch $num {
-                 0 {return "Chi-squared (Area)\n"}
-                 1 {return "area = int(y(x),x=-infinity..infinity))\n"}
-                 2 {return "center: location parameter (mode)\n"}
-                 3 {return "width: scale parameter (width > 0)\n"}
-                 4 {return "shape: shape parameter (shape>2)\n"}
-                 5 {return "backgr.: constant offset\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
            "Erfc (Amplitude)" { 
               switch $num {
                  0 {return "Erfc Peak (Amplitude)\ny(x)=amplitude*erfc(((x-center)/width)^2)"}
@@ -12267,8 +12111,7 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 {mieFF "Mie FF for SLS" {MieSphere \
 		 MieShell}} \
 {qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
-{peaks "Peaks" {{amplitude "Amplitude Functions" {{{Beta (Amplitude)} Monodisperse} \
-					  {{Chi-squared (Amplitude)} Monodisperse} \
+{peaks "Peaks" {{amplitude "Amplitude Functions" { \
 					  {{Erfc (Amplitude)} Monodisperse} \
 					  {{Error (Amplitude)} Monodisperse} \
 					  {{exponentially modified Gaussian (Amplitude)} Monodisperse} \
@@ -12300,8 +12143,7 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 					  {{Voigt (Amplitude)} Monodisperse} \
 					  {{Weibull (Amplitude)} Monodisperse} \
 			  }   }
-	{area "Area Functions" {          {{Beta (Area)} Monodisperse} \
-					  {{Chi-squared (Area)} Monodisperse} \
+	{area "Area Functions" {   \
 					  {{Erfc (Area)} Monodisperse} \
 					  {{Error (Area)} Monodisperse} \
 					  {{exponentially modified Gaussian (Area)} Monodisperse} \

@@ -856,22 +856,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct_v = sasfit_ff_spherical_shell_v;
 		ff->params.kernelSelector = SPH_SHELL3;
 	} else
-	if ( strcmp(ff->typestr, "Beta (Amplitude)") == 0 )
-	{
-		ff->fct = sasfit_peak_BetaAmplitude;
-	} else
-	if ( strcmp(ff->typestr, "Beta (Area)") == 0 )
-	{
-		ff->fct = sasfit_peak_BetaArea;
-	} else
-	if ( strcmp(ff->typestr, "Chi-squared (Amplitude)") == 0 )
-	{
-		ff->fct = sasfit_peak_ChiSquaredAmplitude;
-	} else
-	if ( strcmp(ff->typestr, "Chi-squared (Area)") == 0 )
-	{
-		ff->fct = sasfit_peak_ChiSquaredArea;
-	} else
 	if ( strcmp(ff->typestr, "Erfc (Amplitude)") == 0 )
 	{
 		ff->fct = sasfit_peak_ErfcPeakAmplitude;

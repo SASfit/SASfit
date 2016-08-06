@@ -1243,25 +1243,34 @@ y(x) & =  \frac{A}{1-\exp\left(-\frac{\beta}{\sigma}\right)} \,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Haarhoff - Van der Linde (Area)} ~\\
-\label{sec:HaarhoffVanderLindeArea} \textbf{Required parameters:}
+\label{sec:HaarhoffVanderLindeArea} 
 
 \begin{align}
-y(x) & =
+\textrm{HVL}(x) & =
 \frac{
        \frac{A\sigma}{\mu\delta\sqrt{2\pi}}
        \exp\left[-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2\right]
      }{
-       \exp\left(1-\frac{\mu\delta}{\sigma^2}\right)
+       \left(\exp\left(\frac{\mu\delta}{\sigma^2}\right)-1\right)^{-1}
        + \frac{1}{2}\left[1+\mathrm{erf}\left(\frac{x-\mu}{\sqrt{2}\sigma}\right)\right]
      }
 \end{align}
-
+for $\delta\rightarrow 0$ one get the Gaussian distribution as a limiting case
+\begin{align}
+\lim_{\delta \rightarrow 0} \textrm{HVL}(x) & =
+       \frac{A}{\sigma\sqrt{2\pi}}
+       \exp\left[-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2\right]
+\end{align}
+as well as for $\mu\rightarrow 0$ 
+\begin{align}
+\lim_{\mu \rightarrow 0} \textrm{HVL}(x) & =
+       \frac{A}{\sigma\sqrt{2\pi}}
+       \exp\left[-\frac{1}{2}\left(\frac{x}{\sigma}\right)^2\right]
+\end{align}
 \textbf{Required parameters:}
 \begin{description}
     \item[area] area $A$ below the peak
-    \item[location] location parameter $\mu > 0$
     \item[width] scaling parameter $\sigma > 0$
-    \item[delta] distortion parameter $\delta \neq 0$
     \item[backgr] offset $c_0$
 \end{description}
 
@@ -2221,11 +2230,11 @@ Sometimes distribution function are described by the mode $\mathcal{M}$ and inte
 \end{align}
 
 An alternative parameterization (and slight specialization) of the type VII distribution is obtained by letting
-$\alpha=\sigma\sqrt{2m-3}$, which requires $m > 3/2$. By this constrain the variance of the distribution exists and is equal to $\sigma^2$. 
+$\alpha=\sigma\sqrt{2m-3}$, which requires $m > 3/2$. By this constrain the variance of the distribution exists and is equal to $\sigma^2$.
 \begin{align}
     p(x) &=  \frac{1}{\sigma\,\sqrt{2\,m-3}\,\mathrm{B}\!\left(m-\frac12, \frac12\right)} \left[1 + \left(\frac{x-\lambda}{\sigma\,\sqrt{2\,m-3}}\right)^{\!2\,} \right]^{-m}
 \end{align}
-Now the parameter $m$ only controls the kurtosis of the distribution. If $m$ approaches infinity as $\lambda$ 
+Now the parameter $m$ only controls the kurtosis of the distribution. If $m$ approaches infinity as $\lambda$
 and $\sigma$ are held constant, the normal distribution arises as a special case:
 \begin{align}
 & \lim_{m\to\infty}\frac{1}{\sigma\,\sqrt{2\,m-3}\,\mathrm{B}\!\left(m-\frac12, \frac12\right)} \left[1 + \left(\frac{x-\lambda}{\sigma\,\sqrt{2\,m-3}}\right)^{\!2\,} \right]^{-m} \nonumber\\

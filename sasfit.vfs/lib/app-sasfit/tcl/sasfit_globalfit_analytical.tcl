@@ -1947,54 +1947,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	   "Beta (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "xmin ="
-				  set actualPar(FF,l3,label) "xmax ="
-				  set actualPar(FF,l4,label) "alpha ="
-				  set actualPar(FF,l5,label) "beta ="
-				  set actualPar(FF,l6,label) "backgr. ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Beta (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "xmin ="
-				  set actualPar(FF,l3,label) "xmax ="
-				  set actualPar(FF,l4,label) "alpha ="
-				  set actualPar(FF,l5,label) "beta ="
-				  set actualPar(FF,l6,label) "backgr. ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Chi-squared (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Chi-squared (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
 	   "Erfc (Amplitude)"   { \
 				  set actualPar(FF,l1,label) "amplitude ="
 				  set actualPar(FF,l2,label) "center ="
@@ -4539,8 +4491,7 @@ proc analyticalGlobalSDCmd {simorfit
 	{mieFF "Mie FF for SLS" {MieSphere \
 				 MieShell}} \
 	{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
-	{peaks "Peaks" {{amplitude "Amplitude Functions" {{{Beta (Amplitude)} Monodisperse} \
-							  {{Chi-squared (Amplitude)} Monodisperse} \
+	{peaks "Peaks" {{amplitude "Amplitude Functions" { \
 							  {{Erfc (Amplitude)} Monodisperse} \
 							  {{Error (Amplitude)} Monodisperse} \
 							  {{exponentially modified Gaussian (Amplitude)} Monodisperse} \
@@ -4572,8 +4523,7 @@ proc analyticalGlobalSDCmd {simorfit
 							  {{Voigt (Amplitude)} Monodisperse} \
 							  {{Weibull (Amplitude)} Monodisperse} \
 					  }   }
-			{area "Area Functions" {          {{Beta (Area)} Monodisperse} \
-							  {{Chi-squared (Area)} Monodisperse} \
+			{area "Area Functions" {  \
 							  {{Erfc (Area)} Monodisperse} \
 							  {{Error (Area)} Monodisperse} \
 							  {{exponentially modified Gaussian (Area)} Monodisperse} \

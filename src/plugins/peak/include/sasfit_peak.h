@@ -37,6 +37,228 @@
 // - brief description
 // - description of parameters in HTML table-style
 
+
+/* ################ start peak_beta_amplitude ################ */
+/** 
+ * \defgroup peak_beta_amplitude Beta Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Beta Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b x_min</td>
+ *       <td>lower bound/td>
+ *      </tr><tr>
+ *       <td>\b x_max</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_beta_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_beta_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_beta_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_beta_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_beta_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_beta_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_beta_amplitude ################ */
+
+/* ################ start peak_beta_area ################ */
+/** 
+ * \defgroup peak_beta_area Beta Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Beta Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b x_min</td>
+ *       <td>lower bound/td>
+ *      </tr><tr>
+ *       <td>\b x_max</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_beta_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_beta_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_beta_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_beta_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_beta_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_beta_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_beta_area ################ */
+
+/* ################ start peak_chi_squared_amplitude ################ */
+/** 
+ * \defgroup peak_chi_squared__amplitude Chi-squared Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Chi-squared Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b mode</td>
+ *       <td>mode of distribution</td>
+ *      </tr><tr>
+ *       <td>\b X0</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_chi_squared_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_chi_squared_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_chi_squared_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_chi_squared_amplitude ################ */
+
+/* ################ start peak_chi_squared_area ################ */
+/** 
+ * \defgroup peak_chi_squared_area Chi-squared Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Chi-squared Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b mode</td>
+ *       <td>mode of distribution</td>
+ *      </tr><tr>
+ *       <td>\b X0</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_chi_squared_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_chi_squared_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_chi_squared_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_chi_squared_area ################ */
+
+
 /* ################ start peak_gex_amplitude ################ */
 /** 
  * \defgroup peak_gex_amplitude GEX Amplitude
@@ -53,8 +275,8 @@
  *       <td>\b A</td>
  *       <td>amplitude</td>
  *      </tr><tr>
- *       <td>\b gamma</td>
- *       <td>location parameter</td>
+ *       <td>\b mode</td>
+ *       <td>mode of distribution</td>
  *      </tr><tr>
  *       <td>\b X0</td>
  *       <td>shift parameter</td>
@@ -126,7 +348,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude_v(scalar q, sasfit_param * p
  */
 
 /**
- * \ingroup peak`_gex_area
+ * \ingroup peak_gex_area
  *
  * \sa sasfit_peak.h, ff_peak_area
  */

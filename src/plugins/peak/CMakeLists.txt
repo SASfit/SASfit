@@ -10,6 +10,10 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
+	sasfit_peak_beta_amplitude.c
+	sasfit_peak_beta_area.c
+	sasfit_peak_chi_squared_amplitude.c
+	sasfit_peak_chi_squared_area.c
 	sasfit_peak_gex_amplitude.c
 	sasfit_peak_gex_area.c
 	interface.c
