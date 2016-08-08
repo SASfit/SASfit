@@ -182,59 +182,62 @@ scalar sasfit_peak_HaarhoffVanderLindeArea(scalar x, sasfit_param * param)
             (24 + 12*k + 4*gsl_pow_2(k) + gsl_pow_3(k) - k*(12 + 12*k + 7*gsl_pow_2(k))*derfc(-z) + 
             3*gsl_pow_2(k)*(2 + 3*k)*gsl_pow_2(derfc(-z)) - 3*gsl_pow_3(k)*gsl_pow_3(derfc(-z)))/
             (24.*sqrt(2*M_PI)*width);
+sasfit_out("0 HLV(%lf)=%lf\n",x,y);
         return y;
     }
     
-    if (k<= log(DBL_MAX)/10 && k >0) {
+    if (k<= log(DBL_MAX)/1.1 && k >0) {
         y=bckgr+area*exp(-z*z)/(k*sqrt(2*M_PI)*width*(1/(exp(k)-1)+derfc(-z)/2));
 sasfit_out("1 HLV(%lf)=%lf\n",x,y);
         return y;
     }
-    if (k>= -log(DBL_MAX)/10 && k <0) {
-        cond0=(1/(exp(k)-1.0)+derfc(-(z+0.5))/2.);
+    if (k>= -log(DBL_MAX)/1.1 ) {
+        cond0=(1./(exp(k)-1.0)+derfc(-(z+0.5))/2.);
         if (fabs(cond0) > 0.) {
-            cond0=(1/(exp(k)-1.0)+derfc(-z)/2.);
+            cond0=(1./(exp(k)-1.0)+derfc(-z)/2.);
             y=bckgr+area*exp(-z*z)/(k*sqrt(2*M_PI)*width)/cond0;
-//sasfit_out("1a HLV(%lg)=%lg, z=%lg\n",x,y,z);
+sasfit_out("1a HLV(%lf)=%lf cond0=%lg k=%lg, z>%lg, erfc(-z)=%lg\n",x,y,cond0, k,z,derfc(-z));
             return y;
         } 
-        if (k+z*z <= log(DBL_MAX)/10) {
+        if (k+z*z <= log(DBL_MAX)/1.1) {
             y=bckgr+area/(exp(k+z*z)*sqrt(2*M_PI)/(exp(k)-1) - (3-2*z*z+4*gsl_pow_4(z))/(4*sqrt(2)*gsl_pow_5(z)))/(k*width);
-//sasfit_out("1b HLV(%lg)=%lg dic=%lg\n",x,y,(exp(k+z*z)*sqrt(2*M_PI)/(exp(k)-1) - (3-2*z*z+4*gsl_pow_4(z))/(4*sqrt(2)*gsl_pow_5(z)))*(k*width));
+sasfit_out("1b HLV(%lg)=%lg dic=%lg\n",x,y,(exp(k+z*z)*sqrt(2*M_PI)/(exp(k)-1) - (3-2*z*z+4*gsl_pow_4(z))/(4*sqrt(2)*gsl_pow_5(z)))*(k*width));
             return y;
         } else {
-//sasfit_out("1c HLV(%lg)=%lg dic=%lg\n",x,y,(exp(k+z*z)*sqrt(2*M_PI)/(exp(k)-1) - (3-2*z*z+4*gsl_pow_4(z))/(4*sqrt(2)*gsl_pow_5(z)))*(k*width));
+sasfit_out("1c HLV(%lg)=%lg dic=%lg\n",x,y,(exp(k+z*z)*sqrt(2*M_PI)/(exp(k)-1) - (3-2*z*z+4*gsl_pow_4(z))/(4*sqrt(2)*gsl_pow_5(z)))*(k*width));
             return bckgr;
         }
     }
     
-    if (k> log(DBL_MAX)/2) {
+    if (k> log(DBL_MAX)/1.1) {
         cond0 = derfc(-z)*k*width/sqrt(2.0/M_PI);
         if (fabs(cond0)>0) {
             y=bckgr+area*exp(-z*z)/cond0;
-//sasfit_out("2 HLV(%lf)=%lf\n",x,y);
+sasfit_out("2 HLV(%lf)=%lf k=%lg, z>%lg, erfc(-z)=%lg\n",x,y,k,z,derfc(-z));
             return y;
-        } else if (k-z*z <= log(DBL_MAX)/2) {
+        } else if (k-z*z <= log(DBL_MAX)/1.1) {
             y=bckgr+area*sqrt(2/M_PI)/(k*width)
                    / (-3 + 2*z*z - 4*gsl_pow_4(z))/(4.*sqrt(M_PI)*gsl_pow_5(z));
-//sasfit_out("3 HLV(%lf)=%lf\n",x,y);
+sasfit_out("3 HLV(%lf)=%lf k=%lg, z>%lg, erfc(-z)=%lg\n",x,y,k,z,derfc(-z));
             return y;
         }
-    } else if (k<= -log(DBL_MAX)/2) {
+    } else if (k<= -log(DBL_MAX)/1.1) {
         cond0=(2-derfc(-z))*k*width/sqrt(2.0/M_PI);
         if (fabs(cond0)>0) {
             y=bckgr-area*exp(-z*z)/cond0;
-//sasfit_out("4 HLV(%lf)=%lf\n",x,y);
+sasfit_out("4 HLV(%lf)=%lf k=%lg, z>%lg, erfc(-z)=%lg\n",x,y,k,z,derfc(-z));
             return y;
-        } else if (k+z*z > -log(DBL_MAX)/2 && k+z*z <= log(DBL_MAX)/2) {
-            y=bckgr-area/(2*exp(k+z*z)+(-3 + 2*z*z - 4*gsl_pow_4(z))/(4.*sqrt(M_PI)*gsl_pow_5(z)))/(k*width);
-//sasfit_out("5 HLV(%lf)=%lf\n",x,y);
+        } else if (k+z*z > -log(DBL_MAX)/1.1 && k+z*z <= log(DBL_MAX)/1.1) {
+            y=bckgr+area/(2*exp(k+z*z)+(-3 + 2*z*z - 4*gsl_pow_4(z))/(4.*sqrt(M_PI)*gsl_pow_5(z)))/(k*width);
+sasfit_out("5 HLV(%lf)=%lf k=%lg, z>%lg, erfc(-z)=%lg\n",x,y,k,z,derfc(-z));
             return y;
         }
     }
+sasfit_out("6 HLV(%lg)=%lg k=%lg, z>%lg, erfc(-z)=%lg\n",x,bckgr,k,z,derfc(-z));
     
-    SASFIT_CHECK_COND1(TRUE, param, "could not calculate HLV with the given input parameters at HLV(%lf)\n",x);
     return bckgr;
+    SASFIT_CHECK_COND1(TRUE, param, "could not calculate HLV with the given input parameters at HLV(%lf)\n",x);
+
 /*  
 	if (center*distortion/(width*width) >= log(DBL_MAX)) {
         z=(x-center)/(sqrt(2)*width);

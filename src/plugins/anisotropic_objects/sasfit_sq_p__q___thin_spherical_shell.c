@@ -16,7 +16,6 @@
 scalar ThinSphericalShell_core(scalar x, sasfit_param * param)
 {
 	scalar P, LNdistr;
-
 	sasfit_param subParam;
 
 	SASFIT_ASSERT_PTR(param);
@@ -50,13 +49,11 @@ scalar sasfit_sq_p__q___thin_spherical_shell(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R); // modify condition to your needs
-	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
-	SASFIT_CHECK_COND1((SIGMA < 0.0), param, "sigma(%lg) < 0",SIGMA); // modify condition to your needs
 
 	// insert your code here
 
 	Q = q;
-	if (SIGMA == 0) return ThinSphericalShell_core(R,param);
+	if (SIGMA <= 1E-6 || R==0.0) return ThinSphericalShell_core(R,param);
 	find_LogNorm_int_range(2,R,SIGMA,&Rstart,&Rend,param);
 	return sasfit_integrate(Rstart,Rend,&ThinSphericalShell_core,param);
 

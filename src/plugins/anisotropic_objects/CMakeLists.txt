@@ -16,7 +16,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_disc_sd_bilayergauss.c
 	sasfit_ff_ellsh_sd_bilayergauss.c
 	sasfit_ff_cylsh_sd_bilayergauss.c
-	sasfit_ff_pcs_homogeneous_plate.c
+	sasfit_ff_pcs_homogeneousplate.c
 	sasfit_ff_pcs_plate_chains_rw_.c
 	sasfit_ff_pcs_layeredcentrosymmetricxs.c
 	sasfit_ff_pcs_bilayergaus.c

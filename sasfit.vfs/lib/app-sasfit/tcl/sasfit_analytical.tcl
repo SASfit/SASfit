@@ -12081,7 +12081,7 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 	       {{partly aligned CylShell} Delta} \
 		 Torus \
 		}} \ 
-{anisotropic "anisotropic obj." {{planar "Pcs(Q) for planar obj." {{Pcs:homogenousXS Delta} \
+{anisotropic "anisotropic obj." {{planar "Pcs(Q) for planar obj." { \
 							   {Pcs:TwoInfinitelyThinPlates Delta} \ 
 							   {Pcs:LayeredCentroSymmetricXS Delta} \
 							   {Pcs:BiLayerGauss Delta} \ 
