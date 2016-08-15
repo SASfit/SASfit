@@ -1,6 +1,7 @@
-0.94.8 2016-MM-DD
+0.94.8 2016-08-08
 - supplying some alternative integration routines for integrating over the size distribution
-- first minimal routine for reading sinmple ascii data from ALV-5000 with single correlation function for DLS-analysis
+- bug fix of sasfit_integrate routine, which caused a crash when called from plugin functions
+- first minimal routine for reading simple ascii data from ALV-5000 with single correlation function for DLS-analysis
 - adding the PLHNC and RMSA closure to the OZ solver
 - tried to implement a first version for SESANS data analysis
 - SESANS and SANS analysis share the same GUI

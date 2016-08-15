@@ -31,27 +31,38 @@
 #define AMPL   param->p[0]
 #define CENTER param->p[1]
 #define X0	   param->p[2]
-#define MODE   (CENTER-X0)
-#define WIDTH  param->p[3]
+#define MODE   (CENTER+X0)
+#define WIDTH  fabs(param->p[3])
 #define SHAPE  param->p[4]
 #define BACKGR param->p[5]
 
 scalar sasfit_peak_chi_squared_amplitude(scalar x, sasfit_param * param)
 {
-	scalar z,u,v;
+	scalar z,u,v,zm;
 	scalar A0;
 
 	SASFIT_ASSERT_PTR( param );
 
-	SASFIT_CHECK_COND1((WIDTH <= 0), param, "width(%lg) <= 0",WIDTH);
-	SASFIT_CHECK_COND1((SHAPE <= 2), param, "shape(%lg) <= 2",SHAPE);
+	SASFIT_CHECK_COND1((WIDTH == 0), param, "width(%lg) == 0",WIDTH);
+	SASFIT_CHECK_COND1((SHAPE < 2), param, "shape(%lg) < 2",SHAPE);
 
 	z = (x-MODE)/WIDTH;
-	u = SHAPE-2.0;
-	v = 0.5*SHAPE-1.0;
-	A0 = AMPL/pow(u,v)*exp(v);
-	if ((z+u) < 0)  return BACKGR;
-	return BACKGR+A0*pow(z+u,v)*exp(-0.5*(z+u));
+    u = SHAPE-2.0;
+    v = 0.5*SHAPE-1.0;
+    if ((z+u) < 0)  return BACKGR;
+    A0 = AMPL/pow(u,v)*exp(v);
+    return BACKGR+A0*pow(z+u,v)*exp(-0.5*(z+u));
+    
+/*
+    if (SHAPE >= 2) {
+        A0 = AMPL/pow(u,v)*exp(v);
+        return BACKGR+A0*pow(z+u,v)*exp(-0.5*(z+u));
+    } else {
+        zm = (X0-MODE)/WIDTH;
+        A0 = pow(zm+u,v)*exp(-0.5*(zm+u));
+        return BACKGR+AMPL/A0 *pow(z+u,v)*exp(-0.5*(z+u));
+    }
+*/
 }
 
 

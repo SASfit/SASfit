@@ -150,7 +150,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_beta_area_v(scalar q, sasfit_param * p, in
 
 /* ################ start peak_chi_squared_amplitude ################ */
 /** 
- * \defgroup peak_chi_squared__amplitude Chi-squared Amplitude
+ * \defgroup peak_chi_squared_amplitude Chi-squared Amplitude
  * \ingroup ff_peak_amplitudes
  *
  * \brief \<some brief description of Chi-squared Amplitude function\>

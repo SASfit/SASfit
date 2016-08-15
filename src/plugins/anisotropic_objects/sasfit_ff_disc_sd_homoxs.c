@@ -30,10 +30,15 @@ scalar sasfit_ff_disc_sd_homoxs(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((ETA_SOL < 0.0), param, "eta_sol(%lg) < 0",ETA_SOL); // modify condition to your needs
 
 	// insert your code here
-
-	Pcs = sasfit_ff_pcs_homogeneousplate(q,param);
-	
 	sasfit_init_param( &subParam );
+	subParam.p[0] =	param->p[0];
+	subParam.p[1] =	param->p[1];
+	subParam.p[4] =	param->p[6];
+	subParam.p[5] =	param->p[7];
+    
+	Pcs = sasfit_ff_pcs_homogeneousplate(q,&subParam);
+	
+
 	subParam.p[0] = D/2.;
 	subParam.p[1] = 0.0;
 	subParam.p[2] = SIGMA_D;

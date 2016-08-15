@@ -25,15 +25,18 @@ scalar sasfit_ff_ellsh_sd_homoxs(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T); // modify condition to your needs
-	SASFIT_CHECK_COND1((SIGMA_T < 0.0), param, "sigma_t(%lg) < 0",SIGMA_T); // modify condition to your needs
 	SASFIT_CHECK_COND1((R0 < 0.0), param, "R0(%lg) < 0",R0); // modify condition to your needs
 	SASFIT_CHECK_COND1((SIGMA_R0 < 0.0), param, "sigma_R0(%lg) < 0",SIGMA_R0); // modify condition to your needs
 	SASFIT_CHECK_COND1((EPSILON <= 0.0), param, "epsilon(%lg) <= 0",EPSILON); // modify condition to your needs
-	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
 
 	// insert your code here
-
-	Pcs = sasfit_ff_pcs_homogeneousplate(q,param);
+	sasfit_init_param( &subParam );
+	subParam.p[0] =	param->p[0];
+	subParam.p[1] =	param->p[1];
+	subParam.p[4] =	param->p[6];
+	subParam.p[5] =	param->p[7];
+    
+	Pcs = sasfit_ff_pcs_homogeneousplate(q,&subParam);
 
 	sasfit_init_param( &subParam );
 	subParam.p[0] = R0;

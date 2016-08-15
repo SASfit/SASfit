@@ -17,7 +17,7 @@
 #define RG param->p[7]
 #define D param->p[8]
 
-#define SURF M_PI*gsl_pow_2(100*LC) // surface area is not really known for this cross section form factor and is guessed to be the one of a disc with a radius 100 times larger than the thickjness of the core layer
+#define SURF M_PI*gsl_pow_2(100*LC) // surface area is not really known for this cross section form factor and is fixed to be the one of a disc with a radius 100 times larger than the thickjness of the core layer
 #define PCHAIN param->p[MAXPAR-3]
 #define NAGG param->p[MAXPAR-2]
 #define V_CORE param->p[MAXPAR-1]

@@ -24,13 +24,6 @@ scalar homoXScore(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param);
 	sasfit_init_param( &subParam );
     
-    if (SIGMA_T == 0) {
-        if (Q==0) {
-            return THICK*THICK;
-        } else {
-            return gsl_pow_2(2*sin(Q*THICK/2.0)/Q);
-        }
-    }
    	u = Q*x*0.5;
 	Pcs = gsl_pow_2(x*gsl_sf_sinc(u));
 
@@ -55,10 +48,10 @@ scalar homogeneousXS(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param);
 
 
+    Q = q;
 	if (SIGMA_T <= 1.0e-6 || THICK == 0.0) {
-		Pcs = homoXScore(q,param);
+		Pcs = gsl_pow_2(THICK*gsl_sf_sinc(Q*THICK/2.0));
 	} else {
-        Q = q;
 		find_LogNorm_int_range(2,THICK,SIGMA_T,&tstart, &tend, param);
 		Pcs = sasfit_integrate(tstart, tend, &homoXScore, param);
 	}

@@ -12839,11 +12839,6 @@ proc analytical_widgets_bottom { w simulate isGlobal
 		-justify left -width 350 -anchor w
 	pack [quick_message_window] -side left -fill x
 	
-	ComboBox $w.adj.iq_gz -values {"I(Q)" "Exp(G(z)-G(0))" "G(z)-G(0)" "G(z)" "Exp(G(z)-G(0))_ln"} \
-				-width 12 \
-				-textvariable ::FitPrecision(IQorGz) \
-				-label "calc." \
-				-modifycmd setIQorGz2int
 	if { ! $simulate
 	} {
 		button $w.adj.calc -text "Apply" -highlightthickness 0 \
@@ -12859,7 +12854,6 @@ proc analytical_widgets_bottom { w simulate isGlobal
 			-textvariable ::addsasfit(maxIterations)
 		pack $w.adj.run $w.adj.step $w.adj.calc \
 			$w.adj.maxIterEntry $w.adj.maxIterLabel \
-			$w.adj.iq_gz \
 			-padx 1m -pady 1m -side right
 	} else {
 		.analytical.whichSD.fitcalc.fit configure -state disabled
@@ -12903,7 +12897,6 @@ proc analytical_widgets_bottom { w simulate isGlobal
 		     $w.adj.qmin $w.adj.qmintxt \
 		     $w.adj.qmax $w.adj.qmaxtxt \
 		     $w.adj.qN $w.adj.qNtxt \
-			 $w.adj.iq_gz \
 		     -padx 1m -pady 1m -side right
 	}
         bind $w <KeyPress-Return> "$w.adj.calc invoke"
@@ -12923,8 +12916,15 @@ proc analytical_widgets_bottom { w simulate isGlobal
         	}
         ProgressBar $w.progress.value \
 	    		-maximum 100\
-    		-type normal -variable ::SASfitprogressbar 
+				-type normal -variable ::SASfitprogressbar 
+		ComboBox $w.progress.iq_gz -values {"I(Q)" "Exp(G(z)-G(0))" "G(z)-G(0)" "G(z)" "Exp(G(z)-G(0))_ln"} \
+				-width 12 \
+				-textvariable ::FitPrecision(IQorGz) \
+				-label "calc." \
+				-modifycmd setIQorGz2int
+
     	pack $w.progress.interrupt -padx 3 -pady 5 -side left 
+        pack $w.progress.iq_gz -padx 3 -pady 5 -side right 
         pack $w.progress.value -padx 3 -pady 5 -side right -fill x -expand yes
         set ::SASfitprogressbar 0
         set ::SASfitinterrupt 0

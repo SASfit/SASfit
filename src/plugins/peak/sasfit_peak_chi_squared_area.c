@@ -31,8 +31,8 @@
 #define AREA   param->p[0]
 #define CENTER param->p[1]
 #define X0	   param->p[2]
-#define MODE   (CENTER-X0)
-#define WIDTH  param->p[3]
+#define MODE   (CENTER+X0)
+#define WIDTH  fabs(param->p[3])
 #define SHAPE  param->p[4]
 #define BACKGR param->p[5]
 
@@ -43,8 +43,8 @@ scalar sasfit_peak_chi_squared_area(scalar x, sasfit_param * param)
 
 	SASFIT_ASSERT_PTR( param );
 
-	SASFIT_CHECK_COND1((WIDTH <= 0), param, "width(%lg) <= 0",WIDTH);
-	SASFIT_CHECK_COND1((SHAPE <= 2), param, "shape(%lg) <= 2",SHAPE);
+	SASFIT_CHECK_COND1((WIDTH == 0), param, "width(%lg) <= 0",WIDTH);
+	SASFIT_CHECK_COND1((SHAPE < 0), param, "shape(%lg) <= 0",SHAPE);
 	
 	A0 = AREA/(WIDTH*pow(2.0,SHAPE*0.5)*gsl_sf_gamma(SHAPE*0.5));
 	z = (x-MODE)/WIDTH;

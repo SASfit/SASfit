@@ -27,8 +27,6 @@ scalar sasfit_ff_disc_sd_bilayergauss(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((SIGMA_T < 0.0), param, "sigma_t(%lg) < 0",SIGMA_T); // modify condition to your needs
 	SASFIT_CHECK_COND1((D < 0.0), param, "D(%lg) < 0",D); // modify condition to your needs
 	SASFIT_CHECK_COND1((SIGMA_D < 0.0), param, "sigma_D(%lg) < 0",SIGMA_D); // modify condition to your needs
-	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
-	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
 	SASFIT_CHECK_COND1((SIGMA_OUT < 0.0), param, "sigma_out(%lg) < 0",SIGMA_OUT); // modify condition to your needs
 	SASFIT_CHECK_COND1((B_OUT < 0.0), param, "b_out(%lg) < 0",B_OUT); // modify condition to your needs
 	SASFIT_CHECK_COND1((SIGMA_CORE < 0.0), param, "sigma_core(%lg) < 0",SIGMA_CORE); // modify condition to your needs
