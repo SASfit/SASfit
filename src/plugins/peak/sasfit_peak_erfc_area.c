@@ -24,15 +24,15 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf.h>
-#include <sasfit_common.h>
-#include "include/sasfit_peaks_utils.h"
+#include "include/private.h"
+#include <sasfit_error_ff.h>
 
 #define AREA   param->p[0]
 #define CENTER param->p[1]
-#define WIDTH  param->p[2]
-#define BACKGR param->p[3]
+#define DUMMY1  paran->p[2]
+#define WIDTH  param->p[3]
+#define DUMMY2  paran->p[4]
+#define BACKGR param->p[5]
 
 scalar int_erfc_x2_kern(scalar x, sasfit_param *param) 
 {	
@@ -42,7 +42,7 @@ scalar int_erfc_x2_kern(scalar x, sasfit_param *param)
 	return gsl_sf_erfc(z*z);
 }
 
-scalar sasfit_peak_ErfcPeakArea(scalar x, sasfit_param * param)
+scalar sasfit_peak_erfc_area(scalar x, sasfit_param * param)
 {
 	scalar z, a0, int_erfc_z2;
 
@@ -57,5 +57,21 @@ scalar sasfit_peak_ErfcPeakArea(scalar x, sasfit_param * param)
 	a0 = AREA/int_erfc_z2;
 
 	return BACKGR+a0*gsl_sf_erfc(z*z);
+}
+
+scalar sasfit_peak_erfc_area_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+scalar sasfit_peak_erfc_area_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
 }
 

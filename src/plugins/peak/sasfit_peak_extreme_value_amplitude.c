@@ -24,26 +24,45 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf.h>
-#include "include/sasfit_peaks_utils.h"
+#include "include/private.h"
+#include <sasfit_error_ff.h>
 
-
-#define AMPL   param->p[0]
+#define AMPLITUDE param->p[0]
 #define CENTER param->p[1]
-#define WIDTH  param->p[2]
-#define BACKGR param->p[3]
+#define DUMMY1  paran->p[2]
+#define WIDTH  param->p[3]
+#define DUMMY2  paran->p[4]
+#define BACKGR param->p[5]
 
-scalar sasfit_peak_ExtremeValueAmplitude(scalar x, sasfit_param * param)
+scalar sasfit_peak_extreme_value_amplitude(scalar x, sasfit_param * param)
 {
 	scalar z;
 
 	SASFIT_ASSERT_PTR( param );
 
-	SASFIT_CHECK_COND1((WIDTH  == 0), param,  "width(%lg) == 0 ",WIDTH);
+	SASFIT_CHECK_COND1((WIDTH <= 0), param, "width(%lg) <= 0",WIDTH);
+	
 
 	z=(x-CENTER)/WIDTH; 
-	return BACKGR + AMPL
+	return BACKGR + AMPLITUDE
 			* exp(-exp(-z)-z+1);
 }
+
+scalar sasfit_peak_extreme_value_amplitude_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+scalar sasfit_peak_extreme_value_amplitude_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+
 

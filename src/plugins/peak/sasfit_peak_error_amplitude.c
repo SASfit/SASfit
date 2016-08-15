@@ -24,16 +24,17 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <gsl/gsl_math.h>
-#include "include/sasfit_peaks_utils.h"
+#include "include/private.h"
+#include <sasfit_error_ff.h>
 
 #define AMPL   param->p[0]
 #define CENTER param->p[1]
-#define WIDTH  fabs(param->p[2])
-#define SHAPE  fabs(param->p[3])
-#define BACKGR param->p[4]
+#define DUMMY param->p[1]
+#define WIDTH  fabs(param->p[3])
+#define SHAPE  fabs(param->p[4])
+#define BACKGR param->p[5]
 
-scalar sasfit_peak_ErrorAmplitude(scalar x, sasfit_param * param)
+scalar sasfit_peak_error_amplitude(scalar x, sasfit_param * param)
 {
 	scalar z, a0;
 	SASFIT_ASSERT_PTR( param );
@@ -44,5 +45,21 @@ scalar sasfit_peak_ErrorAmplitude(scalar x, sasfit_param * param)
 	a0 = AMPL;
 	z = .5*pow(fabs(x-CENTER),2./SHAPE)/WIDTH;
 	return BACKGR+a0*exp(-z);
+}
+
+scalar sasfit_peak_error_amplitude_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+scalar sasfit_peak_error_amplitude_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
 }
 

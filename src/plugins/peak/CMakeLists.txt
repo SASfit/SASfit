@@ -14,6 +14,14 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_peak_beta_area.c
 	sasfit_peak_chi_squared_amplitude.c
 	sasfit_peak_chi_squared_area.c
+	sasfit_peak_erfc_amplitude.c
+	sasfit_peak_erfc_area.c
+	sasfit_peak_error_amplitude.c
+	sasfit_peak_error_area.c
+	sasfit_peak_exponentially_modified_gaussian_amplitude.c
+	sasfit_peak_exponentially_modified_gaussian_area.c
+	sasfit_peak_extreme_value_amplitude.c
+	sasfit_peak_extreme_value_area.c
 	sasfit_peak_gex_amplitude.c
 	sasfit_peak_gex_area.c
 	interface.c

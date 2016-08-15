@@ -1947,102 +1947,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	   "Erfc (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "backgr. ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Erfc (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "backgr. ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Error (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Error (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "exponentially modified Gaussian (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "distortion ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "exponentially modified Gaussian (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "distortion ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Extreme Value (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "backgr. ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Extreme Value (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "backgr. ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
 	   "fatique life (Area)"   { \
 				  set actualPar(FF,l1,label) "area ="
 				  set actualPar(FF,l2,label) "center ="
@@ -4492,10 +4396,6 @@ proc analyticalGlobalSDCmd {simorfit
 				 MieShell}} \
 	{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
 	{peaks "Peaks" {{amplitude "Amplitude Functions" { \
-							  {{Erfc (Amplitude)} Monodisperse} \
-							  {{Error (Amplitude)} Monodisperse} \
-							  {{exponentially modified Gaussian (Amplitude)} Monodisperse} \
-							  {{Extreme Value (Amplitude)} Monodisperse} \
 							  {{F-variance (Amplitude)} Monodisperse} \
 							  {{Gamma (Amplitude)} Monodisperse} \
 							  {{Gaussian (Amplitude)} Monodisperse} \
@@ -4524,10 +4424,6 @@ proc analyticalGlobalSDCmd {simorfit
 							  {{Weibull (Amplitude)} Monodisperse} \
 					  }   }
 			{area "Area Functions" {  \
-							  {{Erfc (Area)} Monodisperse} \
-							  {{Error (Area)} Monodisperse} \
-							  {{exponentially modified Gaussian (Area)} Monodisperse} \
-							  {{Extreme Value (Area)} Monodisperse} \
 							  {{fatique life (Area)} Monodisperse} \
 							  {{F-variance (Area)} Monodisperse} \
 							  {{Gamma (Area)} Monodisperse} \

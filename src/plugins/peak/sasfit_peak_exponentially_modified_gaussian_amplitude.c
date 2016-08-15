@@ -24,44 +24,47 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_min.h>
-#include "include/sasfit_peaks_utils.h"
+#include "include/private.h"
+#include <sasfit_error_ff.h>
+// #include <gsl/gsl_errno.h>
+// #include <gsl/gsl_min.h>
+
+#define AMPLITUDE   param->p[0]
+#define CENTER param->p[1]
+#define DUMMY param->p[1]
+#define WIDTH  fabs(param->p[3])
+#define DISTORTION  param->p[4]
+#define BACKGR param->p[5]
 
 scalar df_emg(scalar x, sasfit_param *param)
 {
-	scalar bckgr, amplitude, center, width, distortion;
-	sasfit_get_param(param, 5, &amplitude, &center, &width, &distortion, &bckgr);
 
-	return -pow(distortion, -0.2e1) * exp(width * width * pow(distortion, -0.2e1) / 0.2e1 + (center - x) / distortion) * 
-		(scalar) (gsl_sf_erf((x - center) * sqrt(0.2e1) / width / 0.2e1 - width * sqrt(0.2e1) / distortion / 0.2e1) + distortion/fabs(distortion)) / 0.2e1 + 1. / distortion * exp(width * width * pow(distortion, -0.2e1) / 0.2e1 + (center - x) / distortion) * pow(0.3141592654e1, -0.1e1 / 0.2e1) * exp(-pow((x - center) * sqrt(0.2e1) / width / 0.2e1 - width * sqrt(0.2e1) / distortion / 0.2e1, 0.2e1)) * sqrt(0.2e1) / width / 0.2e1;
+	return -pow(DISTORTION, -0.2e1) * exp(WIDTH * WIDTH * pow(DISTORTION, -0.2e1) / 0.2e1 + (CENTER - x) / DISTORTION) * 
+		(scalar) (gsl_sf_erf((x - CENTER) * sqrt(0.2e1) / WIDTH / 0.2e1 - WIDTH * sqrt(0.2e1) / DISTORTION / 0.2e1) + DISTORTION/fabs(DISTORTION)) / 0.2e1 + 1. / DISTORTION * exp(WIDTH * WIDTH * pow(DISTORTION, -0.2e1) / 0.2e1 + (CENTER - x) / DISTORTION) * pow(0.3141592654e1, -0.1e1 / 0.2e1) * exp(-pow((x - CENTER) * sqrt(0.2e1) / WIDTH / 0.2e1 - WIDTH * sqrt(0.2e1) / DISTORTION / 0.2e1, 0.2e1)) * sqrt(0.2e1) / WIDTH / 0.2e1;
 }
 
 scalar sasfit_peak_ExponentiallyModifiedGaussianMode(sasfit_param * param)
 {	
-	scalar bckgr, a0,Atmp, amplitude, center, width, distortion,xl,xr,m;
+	scalar a0,Atmp,xl,xr,m;
 	int iter;
 
-	sasfit_get_param(param, 5, &amplitude, &center, &width, &distortion, &bckgr);
 
-	Atmp=param->p[0];
-	param->p[0]=1.0;
+	Atmp=AMPLITUDE;
+	AMPLITUDE=1.0;
 // searching for interval
 
-	xr = center;
-	a0 = sasfit_peak_ExponentiallyModifiedGaussianArea(center,param);
+	xr = CENTER;
+	a0 = sasfit_peak_exponentially_modified_gaussian_area(CENTER,param);
 	do {
-		xr = xr+fabs(width);
-	} while (a0 < sasfit_peak_ExponentiallyModifiedGaussianArea(xr,param));
+		xr = xr+fabs(WIDTH);
+	} while (a0 < sasfit_peak_exponentially_modified_gaussian_area(xr,param));
 
-	xl = center;
+	xl = CENTER;
 	do {
-		xl = xl-fabs(width);
-	} while (a0 < sasfit_peak_ExponentiallyModifiedGaussianArea(xl,param));
+		xl = xl-fabs(WIDTH);
+	} while (a0 < sasfit_peak_exponentially_modified_gaussian_area(xl,param));
 
-//	sasfit_out("center:%lg l:%lg r:%lg\n",center,xl,xr);
+//	sasfit_out("center:%lg l:%lg r:%lg\n",CENTER,xl,xr);
 
 	iter = 0;
 	do {
@@ -72,34 +75,49 @@ scalar sasfit_peak_ExponentiallyModifiedGaussianMode(sasfit_param * param)
 		} else {
 			xr=m;
 		}
-	} while (fabs((xr-xl)/width) > 1e-8);
+	} while (fabs((xr-xl)/WIDTH) > 1e-8);
 	param->p[0]=Atmp;
 // 	sasfit_out("iter:%d center:%lg l:%lg r:%lg m:%lg\n",iter,center,xl,xr,m);
 
 	return m;
 }
-scalar sasfit_peak_ExponentiallyModifiedGaussianAmplitude(scalar x, sasfit_param * param)
-{
-	scalar y, bckgr, a0, amplitude, center, xa, width, distortion;
+
+scalar sasfit_peak_exponentially_modified_gaussian_amplitude(scalar x, sasfit_param * param)
+{   
+    scalar a0, xa;
 
 	SASFIT_ASSERT_PTR( param );
 
-	sasfit_get_param(param, 5, &amplitude, &center, &width, &distortion, &bckgr);
 
-	SASFIT_CHECK_COND1((width <= 0), param, "width(%lg) <= 0 ",width);
-	SASFIT_CHECK_COND1((distortion == 0), param, "distortion(%lg) = 0 ",distortion);
+	SASFIT_CHECK_COND1((WIDTH <= 0), param, "width(%lg) <= 0 ",WIDTH);
+	SASFIT_CHECK_COND1((DISTORTION == 0), param, "distortion(%lg) = 0 ",DISTORTION);
 
 //	a0 = 1./(.753*2*width*sqrt(-2.*log(1./4.)));
 
 	xa = sasfit_peak_ExponentiallyModifiedGaussianMode(param);
-	a0 = 1./(2*distortion) *
-		exp(pow(width/distortion,2)/2.+(center-xa)/distortion) *
-		(gsl_sf_erf((xa-center)/(sqrt(2)*width)-width/(sqrt(2)*distortion))+distortion/fabs(distortion));
+	a0 = 1./(2*DISTORTION) *
+		exp(pow(WIDTH/DISTORTION,2)/2.+(CENTER-xa)/DISTORTION) *
+		(gsl_sf_erf((xa-CENTER)/(sqrt(2)*WIDTH)-WIDTH/(sqrt(2)*DISTORTION))+DISTORTION/fabs(DISTORTION));
 
 	xa = x;
-	y = bckgr+amplitude/a0/(2*distortion) *
-		exp(pow(width/distortion,2)/2.+(center-xa)/distortion) *
-		(gsl_sf_erf((xa-center)/(sqrt(2)*width)-width/(sqrt(2)*distortion))+distortion/fabs(distortion));
-	return y;
+	return BACKGR+AMPLITUDE/a0/(2*DISTORTION) *
+		exp(pow(WIDTH/DISTORTION,2)/2.+(CENTER-xa)/DISTORTION) *
+		(gsl_sf_erf((xa-CENTER)/(sqrt(2)*WIDTH)-WIDTH/(sqrt(2)*DISTORTION))+DISTORTION/fabs(DISTORTION));
+}
+
+scalar sasfit_peak_exponentially_modified_gaussian_amplitude_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+scalar sasfit_peak_exponentially_modified_gaussian_amplitude_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
 }
 

@@ -24,24 +24,43 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf.h>
-#include "include/sasfit_peaks_utils.h"
+#include "include/private.h"
+#include <sasfit_error_ff.h>
 
+#define AREA   param->p[0]
+#define CENTER param->p[1]
+#define DUMMY1  paran->p[2]
+#define WIDTH  param->p[3]
+#define DUMMY2  paran->p[4]
+#define BACKGR param->p[5]
 
-scalar sasfit_peak_ExtremeValueArea(scalar x, sasfit_param * param)
+scalar sasfit_peak_extreme_value_area(scalar x, sasfit_param * param)
 {
-	scalar backgr, area, center, width,z;
+	scalar z;
 
 	SASFIT_ASSERT_PTR( param );
 
-	sasfit_get_param(param, 4, &area, &center, &width, &backgr);
+	SASFIT_CHECK_COND1((WIDTH <= 0), param, "width(%lg) <= 0",WIDTH);
+	
 
-	SASFIT_CHECK_COND1((width  <= 0), param,  "width(%lg) <= 0 ",width);
-
-	z=(x-center)/width; 
-	return backgr
-			+ area/width
+	z=(x-CENTER)/WIDTH; 
+	return BACKGR
+			+ AREA/WIDTH
 			* exp(-exp(-z)-z);
 }
 
+scalar sasfit_peak_extreme_value_area_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+scalar sasfit_peak_extreme_value_area_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}

@@ -258,6 +258,447 @@ sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_area_f(scalar q, sasfit_param 
 sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_area_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop peak_chi_squared_area ################ */
 
+/* ################ start peak_erfc_amplitude ################ */
+/** 
+ * \defgroup peak_erfc_amplitude Erfc Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Erfc Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_erfc_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_erfc_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_erfc_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_erfc_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_erfc_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_erfc_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_erfc_amplitude ################ */
+
+/* ################ start peak_erfc_area ################ */
+/** 
+ * \defgroup peak_erfc_area Erfc Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Erfc Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_erfc_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_erfc_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_erfc_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_erfc_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_erfc_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_erfc_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_erfc_area ################ */
+
+/* ################ start peak_error_amplitude ################ */
+/** 
+ * \defgroup peak_error_amplitude Error Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Error Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter k>0</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_error_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_error_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_error_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_error_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_error_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_error_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_error_amplitude ################ */
+
+/* ################ start peak_error_area ################ */
+/** 
+ * \defgroup peak_error_area Error Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Error Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter k>0</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_error_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_error_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_error_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_error_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_error_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_error_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_error_area ################ */
+
+
+/* ################ start peak_exponentially_modified_gaussian_amplitude ################ */
+/** 
+ * \defgroup peak_exponentially_modified_gaussian_amplitude Exponentially Modified Gaussian Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Exponentially Modified Gaussian Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b distortion</td>
+ *       <td>distortion parameter </td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_exponentially_modified_gaussian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_exponentially_modified_gaussian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_exponentially_modified_gaussian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_exponentially_modified_gaussian_amplitude ################ */
+
+/* ################ start peak_exponentially_modified_gaussian_area ################ */
+/** 
+ * \defgroup peak_exponentially_modified_gaussian_area Exponentially Modified Gaussian Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Exponentially Modified Gaussian Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b distortion</td>
+ *       <td>distortion parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_exponentially_modified_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_exponentially_modified_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_exponentially_modified_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_exponentially_modified_gaussian_area ################ */
+
+/* ################ start peak_extreme_value_amplitude ################ */
+/** 
+ * \defgroup peak_extreme_value_amplitude Extreme Value Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Extreme Value Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_extreme_value_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_extreme_value_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_extreme_value_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_extreme_value_amplitude ################ */
+
+/* ################ start peak_extreme_value_area ################ */
+/** 
+ * \defgroup peak_extreme_value_area Extreme Value Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Extreme Value Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter/td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_extreme_value_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_extreme_value_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_extreme_value_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_extreme_value_area ################ */
+
 
 /* ################ start peak_gex_amplitude ################ */
 /** 

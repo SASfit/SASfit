@@ -24,25 +24,40 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf.h>
-#include "include/sasfit_peaks_utils.h"
+#include "include/private.h"
+#include <sasfit_error_ff.h>
 
+#define AREA   param->p[0]
+#define CENTER param->p[1]
+#define DUMMY param->p[1]
+#define WIDTH  fabs(param->p[3])
+#define DISTORTION  param->p[4]
+#define BACKGR param->p[5]
 
-scalar sasfit_peak_ExponentiallyModifiedGaussianArea(scalar x, sasfit_param * param)
+scalar sasfit_peak_exponentially_modified_gaussian_area(scalar x, sasfit_param * param)
 {
-	scalar y, bckgr, area, center, width, distortion;
-
 	SASFIT_ASSERT_PTR( param );
 
-	sasfit_get_param(param, 5, &area, &center, &width, &distortion, &bckgr);
+	SASFIT_CHECK_COND1((WIDTH <= 0), param, "width(%lg) <= 0 ",WIDTH);
+	SASFIT_CHECK_COND1((DISTORTION == 0), param, "distortion(%lg) == 0 ",DISTORTION);
 
-	SASFIT_CHECK_COND1((width <= 0), param, "width(%lg) <= 0 ",width);
-	SASFIT_CHECK_COND1((distortion == 0), param, "distortion(%lg) == 0 ",distortion);
-
-	y = bckgr+area/(2*distortion) *
-		exp(pow(width/distortion,2)/2.+(center-x)/distortion) *
-		(gsl_sf_erf((x-center)/(sqrt(2)*width)-width/(sqrt(2)*distortion))+distortion/fabs(distortion));
-	return y;
+	return BACKGR+AREA/(2*DISTORTION) *
+		exp(pow(WIDTH/DISTORTION,2)/2.+(CENTER-x)/DISTORTION) *
+		(gsl_sf_erf((x-CENTER)/(sqrt(2)*WIDTH)-WIDTH/(sqrt(2)*DISTORTION))+DISTORTION/fabs(DISTORTION));
 }
 
+scalar sasfit_peak_exponentially_modified_gaussian_area_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+scalar sasfit_peak_exponentially_modified_gaussian_area_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
