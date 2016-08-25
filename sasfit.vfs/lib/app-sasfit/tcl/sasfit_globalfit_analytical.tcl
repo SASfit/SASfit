@@ -1947,42 +1947,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	   "fatique life (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "beta ="
-				  set actualPar(FF,l4,label) "gamma ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "F-variance (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape1 ="
-				  set actualPar(FF,l5,label) "shape2 ="
-				  set actualPar(FF,l6,label) "backgr. ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "F-variance (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape1 ="
-				  set actualPar(FF,l5,label) "shape2 ="
-				  set actualPar(FF,l6,label) "backgr. ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
 	   "Gamma (Amplitude)"   { \
 				  set actualPar(FF,l1,label) "amplitude ="
 				  set actualPar(FF,l2,label) "center ="
@@ -4396,7 +4360,6 @@ proc analyticalGlobalSDCmd {simorfit
 				 MieShell}} \
 	{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
 	{peaks "Peaks" {{amplitude "Amplitude Functions" { \
-							  {{F-variance (Amplitude)} Monodisperse} \
 							  {{Gamma (Amplitude)} Monodisperse} \
 							  {{Gaussian (Amplitude)} Monodisperse} \
 							  {{Gaussian-Lorentzian cross product (Amplitude)} Monodisperse} \
@@ -4423,9 +4386,7 @@ proc analyticalGlobalSDCmd {simorfit
 							  {{Voigt (Amplitude)} Monodisperse} \
 							  {{Weibull (Amplitude)} Monodisperse} \
 					  }   }
-			{area "Area Functions" {  \
-							  {{fatique life (Area)} Monodisperse} \
-							  {{F-variance (Area)} Monodisperse} \
+			{area "Area Functions" {  
 							  {{Gamma (Area)} Monodisperse} \
 							  {{Gaussian (Area)} Monodisperse} \
 							  {{Gaussian-Lorentzian cross product (Area)} Monodisperse} \

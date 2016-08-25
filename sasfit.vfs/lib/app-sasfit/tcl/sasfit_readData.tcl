@@ -1311,6 +1311,35 @@ proc load_sasfit_inp_file_old {AanalyticPar filename} {
 	return $retval
 }
 
+
+#------------------------------------------------------------------------------
+#                   Create a variable of Type SESANSData
+#
+proc create_SESANSData {SESANSData} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SESANSData Data
+set Data(InputFormat) SESANS
+set Data(FileName) ""
+set Data(Ext) "ses"
+set Data(in_out) "nm->nm"
+set Data(xscale) 1
+set Data(unit) nm
+set Data(npoints) 0
+set Data(LineSkip) 0
+set Data(Comment) {}
+set Data(error) 0
+set Data(SEL) {}
+set Data(DeltaSEL) {}
+set Data(Pz) {}
+set Data(DeltaPz) {}
+set Data(Lambda) {}
+set Data(DeltaLambda) {}
+set Data(Qmax_x) {}
+set Data(Qmax_y) {}
+set Data(nonneg) 0
+set Data(Gz-G0) "Pz->Gz-G0" ;# possible values {"Pz->Pz" "Pz->Gz-G0"} 
+}
+
 #------------------------------------------------------------------------------
 #                   Create a variable of Type ASCIIData
 #
@@ -1586,7 +1615,7 @@ while {![eof $f]} {
       if {[string compare $ch1st "-"] != 0} {
          switch $ch1st {
             \"      { 
-                     set tBlockname [string range $line 1 [expr $linelength-2]]
+                     set tBlockname [string range $line 1 [expr $linelength-1]]
                      set BNword [split $tBlockname]
                      if { [string length [lindex $BNword 0] ] > 0 } {
                         set BlockName $tBlockname 
@@ -2019,6 +2048,244 @@ foreach line $Data($BlockName) {
 return {5}
 } 
 
+#------------------------------------------------------------------------------
+# Reads data file "filename" in SESANS-format and stores the contents in SESANSData
+#
+#
+# read_SESANS opens the file "filename" and stores all the lines 
+# corresponding to the block "BlockName" in "SESANSData($BlockName)" as a list.
+# After successfully opening the data file the array SESANSData first is unset.
+# The neccessary array indeces corresponding to the different blocks in
+# the data file are automatically defined.
+#
+proc read_SESANS {filename SESANSData} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SESANSData Data
+if {![info exist Data]} {create_SESANSData Data}
+#catch {unset Data}
+if { !([file readable $filename] && [file isfile $filename])  } {
+   return 0
+}
+set BlockName SESANSHeader
+set f [open $filename r]
+
+while {![eof $f]} {
+   gets $f line
+   if { [eof $f] } {
+      close $f
+      return 1
+   }
+   set linelength [string length $line]
+   if { $linelength > 0 } {
+      set linetrim [string trim $line]
+	  set key [string range $linetrim 0 15]
+      switch $key {
+            "spin echo length"      { 
+                     set BlockName SESANSData
+	            }
+            default { lappend Data($BlockName)  "$line" }
+     }
+   }
+}
+}
+
+#------------------------------------------------------------------------------
+#           get item "ItemName" of type "ItemType" in block "BlockName" 
+#
+# SESANSData: array containing the different blocks of a HMI data file which can
+#             be read with "read_HMI $filename HMIData"
+# BlockName:  string containing the name of teh block from which an item to
+#             be read.
+# ItemName:   string containing the name of the item to be read.
+# ItemType:   item type are coded according to the following sheme
+#            w - word format (string without spaces)
+#            t - text format (string, spaces allowed)
+#            i - integer format 
+#            r - real format
+#            d - date/time format (VMS date/time string without spaces)
+#                date: dd-monthname-yy, time hh:mm:ss
+#
+# supported blocks and items:
+#
+# The default procedure is to look for the character "\t" in each element of
+# the list SESANSData($BlockName). If the left the string on the left side of
+# "=" (without leading and trailing white characters) is equal to $ItemName
+# the  right side will be read with in the format given in $ItemType". 
+#
+# Example file begin:
+# #############################################################################################
+# DataFileTitle 	Oil & Surfactants (Shell), Sine ++ only 
+# Sample 	Sample 6 (2.0% NaCl) 
+# Settings 	D1=D2=20x8 mm,Ds = 12x10 mm (WxH), GF1 =scanning, GF2 = 2.5 A.  
+# Operator 	CPD 
+# Date 	wo 1 apr 2015 15:52:53 
+# ScanType 	sine one element scan 
+# Thickness [cm] 	0.4 
+# Q_zmax [\AA^-1] 	0.05 
+# Q_ymax [\AA^-1] 	0.05 
+#   
+# spin echo length [nm] 	 error SEL 	 wavelength [nm] 	 error wavelength 	 polarisation 	 error pol 
+# 28.77	1.4385	0.203	0.05	0.83661	0.0084561
+# 34.587	1.7294	0.203	0.05	0.76921	0.0083706
+# 40.468	2.0234	0.203	0.05	0.72961	0.0081288
+# 46.406	2.3203	0.203	0.05	0.6771	0.0081332
+# 52.398	2.6199	0.203	0.05	0.6257	0.0080548
+# 58.579	2.9289	0.203	0.05	0.58638	0.0080726
+# 64.764	3.2382	0.203	0.05	0.55493	0.0079709
+# 71.127	3.5564	0.203	0.05	0.51375	0.0080619
+# 77.541	3.877	0.203	0.05	0.488	0.0080518
+# 84.115	4.2058	0.203	0.05	0.45708	0.0081632
+# 90.819	4.5409	0.203	0.05	0.45625	0.0082216
+# 97.607	4.8804	0.203	0.05	0.4605	0.0081209
+# 104.54	5.2268	0.203	0.05	0.47003	0.0081647
+# #############################################################################################
+# end example file
+#
+# after reading the file with read_SESANS filename SESANSData, the array SESANSData(File)
+# contains a list with two elements "ItemName: value" 
+# the call of "SESANSgetItem SESANSData SESANSheader $Q_zmax \[\AA^-1\]$ r" returns the float value for Q_zmax.
+#
+# If $Blockname is not a valid array index an empty string
+# will be returned. If the item could not be found in one of the list 
+# elements of SESANSData($BlockName) the procedure will return an empty string. 
+# If the item has been found everything behind the substring {$ItemName}: 
+# in the list element will be converted corresponding to the value $ItemType. 
+# Only the first occurence of {$ItemName}: will be analysed.
+#
+# For the block "SESANS" the item name defines what kind of 
+# data are stored in the data file. If ItemName is not listed in the 
+# following list, the item will be treated in the default way (see above)
+# Supported items are:
+#    1.) ItemName = SESANS 
+#         for block name "spin echo":
+#           Varying number of lines of 6 real numbers each, separated by whitespace characters.
+#           Each line contains a data points with SEL DeltaSEL Lambda DeltaLambda P DeltaP
+#    2.) other standard SESANS-formats are not supported yet
+#
+proc SESANSgetItem {SESANSData BlockName ItemName ItemType} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SESANSData Data
+#
+# check if $BlockName is a valid array name of ALVData
+#
+if {![string compare $BlockName [array names Data $BlockName]]==0} {
+   puts "invalid BlockName"
+   return {}
+}
+
+# 
+# check for a non-default treatment, then perform special treatment
+# and return the value otherwise perfom default treatment
+#
+
+#
+# check for one dimensional scattering data SEL DeltaSEL Lambda DeltaLambda P DeltaP
+# columns can be separated by " ", "\t" or/and ","
+#
+
+if {![string compare $BlockName "SESANSData"] && \
+    ![string compare $ItemName  SESANS]} {
+   set SEL         {}
+   set DeltaSEL    {}
+   set Lambda      {}
+   set DeltaLambda {}
+   set P           {}
+   set DeltaP      {}
+   set Y           {}
+   set DeltaY      {}
+   set resY        {}
+   foreach line $Data($BlockName) {
+      set x_ok 1
+      set xe_ok 1
+      set y_ok 1
+	  set ye_ok 1
+      set z_ok 1
+      set ze_ok 1
+      set tmpsplitline [split $line "\t ,"]]
+      set splitline {}
+      foreach i $tmpsplitline {
+         if {[llength $i] != 0} {
+            lappend splitline $i
+         }
+      }
+      set x_ok  [scan [lindex $splitline 0] "%f" x  ]
+      set xe_ok [scan [lindex $splitline 1] "%f" xe ]
+      set y_ok  [scan [lindex $splitline 2] "%f" y  ]
+      set ye_ok [scan [lindex $splitline 3] "%f" ye ]
+      set z_ok  [scan [lindex $splitline 4] "%f" z  ]
+      set ze_ok [scan [lindex $splitline 5] "%f" ze ]
+#
+# lines which cannot be converted are ignored (no error message)
+#
+      if {$x_ok && $y_ok && $z_ok && $xe_ok && $ye_ok && $ze_ok && $z>0} {
+	     lappend SEL $x
+		 lappend DeltaSEL $xe
+		 lappend Lambda $y
+		 lappend DeltaLambda $ye
+		 lappend P $z
+		 lappend DeltaP $ze
+		 lappend resY [expr 10*[SESANSgetItem Data SESANSHeader "Q_zmax \[\\AA\^-1\]" r]]
+		 switch $Data(Gz-G0) {
+			"Pz->Pz"  			{ 	
+										lappend Y $z	
+										lappend DeltaY $ze	
+									}
+			"Pz->Gz-G0"  	{	set M_PI [expr 4*atan(1)]
+										set thickness [SESANSgetItem Data SESANSHeader "Thickness \[cm\]" r]
+										set tmp [expr log($z)*(4*$M_PI*$M_PI)/($y*$y*$thickness)]
+										lappend Y $tmp
+										lappend DeltaY [expr sqrt(pow(abs((4*$M_PI*$M_PI)/($y*$y*$thickness)),2)*($ze/$z)*($ze/$z)+0*4*($tmp*$ye/$y)*($tmp*$ye/$y))]
+									}
+		 }
+		 
+      }
+ }
+	set SESANSData {}
+	lappend SESANSData $SEL $Y $DeltaY $resY
+	return $SESANSData
+}
+
+#
+# default treatment
+#
+
+foreach line $Data($BlockName) {
+   set where_eq [string first \t $line]
+   if {$where_eq != -1} {
+      set leftside  [string range $line 0 [expr $where_eq - 1]]
+      set rightside [string range $line [expr $where_eq + 1]  \
+                              [expr [string length $line] - 1] ]
+      set leftside [string trim $leftside]
+      set rightside [string trim $rightside]
+      if {([string compare $leftside $ItemName] == 0) &&  \
+          ([string length $rightside] > 0) } {
+#
+# evaluate right side of string "line"
+#
+         switch $ItemType {
+            w { set split_right_side [split $rightside "\t "]
+                return [lindex $split_right_side 0] }
+            t { return $rightside }
+            i { set i_ok [scan $rightside "%d" itemvalue]
+                if {$i_ok} { return $itemvalue } else { return {} }
+              }
+            r { set r_ok [scan $rightside "%f" itemvalue]
+                if {$r_ok} { return $itemvalue } else { return {} }
+              }
+            d {
+#
+# for the moment d will be treated as t, i.e. no check if $rightside is
+# really of date/time format
+#
+                return $rightside }
+            default { puts "%SESANSgetItem: unknown ItemType, inform me about it"
+                      return {} }
+         }
+      } 
+   }
+}
+return {5}
+} 
 
 #------------------------------------------------------------------------------
 #      Reads ascii file "filename" and stores the contents in ASCIIData

@@ -1657,42 +1657,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "F-variance (Amplitude)"   { \
-	                  set actualPar(FF,l1,label) "amplitude ="
-                          set actualPar(FF,l2,label) "center ="
-                          set actualPar(FF,l3,label) "width ="
-                          set actualPar(FF,l4,label) "shape1 ="
-                          set actualPar(FF,l5,label) "shape2 ="
-                          set actualPar(FF,l6,label) "backgr. ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "fatique life (Area)"   { \
-	                  set actualPar(FF,l1,label) "area ="
-                          set actualPar(FF,l2,label) "center ="
-                          set actualPar(FF,l3,label) "beta ="
-                          set actualPar(FF,l4,label) "gamma ="
-                          set actualPar(FF,l5,label) "backgr. ="
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "F-variance (Area)"   { \
-	                  set actualPar(FF,l1,label) "area ="
-                          set actualPar(FF,l2,label) "center ="
-                          set actualPar(FF,l3,label) "width ="
-                          set actualPar(FF,l4,label) "shape1 ="
-                          set actualPar(FF,l5,label) "shape2 ="
-                          set actualPar(FF,l6,label) "backgr. ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
    "Gamma (Amplitude)"   { \
 	                  set actualPar(FF,l1,label) "amplitude ="
                           set actualPar(FF,l2,label) "center ="
@@ -4918,42 +4882,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l6,label) "ms_re ="
 				  set actualAnalytPar(FF,l7,label) "ms_im ="
 				  set actualAnalytPar(FF,l8,label) "pol ="
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "fatique life (Area)"   { \
-				  set actualAnalytPar(FF,l1,label) "area ="
-				  set actualAnalytPar(FF,l2,label) "center ="
-				  set actualAnalytPar(FF,l3,label) "beta ="
-				  set actualAnalytPar(FF,l4,label) "gamma ="
-				  set actualAnalytPar(FF,l5,label) "backgr. ="
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "F-variance (Amplitude)"   { \
-				  set actualAnalytPar(FF,l1,label) "amplitude ="
-				  set actualAnalytPar(FF,l2,label) "center ="
-				  set actualAnalytPar(FF,l3,label) "width ="
-				  set actualAnalytPar(FF,l4,label) "shape1 ="
-				  set actualAnalytPar(FF,l5,label) "shape2 ="
-				  set actualAnalytPar(FF,l6,label) "backgr. ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "F-variance (Area)"   { \
-				  set actualAnalytPar(FF,l1,label) "area ="
-				  set actualAnalytPar(FF,l2,label) "center ="
-				  set actualAnalytPar(FF,l3,label) "width ="
-				  set actualAnalytPar(FF,l4,label) "shape1 ="
-				  set actualAnalytPar(FF,l5,label) "shape2 ="
-				  set actualAnalytPar(FF,l6,label) "backgr. ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
@@ -8938,51 +8866,6 @@ switch -exact $type {
                 10 {return "\n"}
               }
            }
-           "fatique life (Area)" { 
-              switch $num {
-                 0 {return "fatique life (Area)\n"}
-                 1 {return "area: = int(y(x),x=-infinity..infinity))\n"}
-                 2 {return "center: location parameter (mode)\n"}
-                 3 {return "beta: scale parameter (width > 0)\n"}
-                 4 {return "gamma: shape parameter (shape > 0)\n"}
-                 5 {return "backgr.: constant offset\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "F-variance (Amplitude)" { 
-              switch $num {
-                 0 {return "F-variance (Amplitude)\n"}
-                 1 {return "amplitude: maximum amplitude\n"}
-                 2 {return "center: location parameter (mode)\n"}
-                 3 {return "width: scale parameter (width > 0)\n"}
-                 4 {return "shape1: shape1 parameter (shape1 > 2)\n"}
-                 5 {return "shape2: shape2 parameter (shape2 > 2)\n"}
-                 6 {return "backgr.: constant offset\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "F-variance (Area)" { 
-              switch $num {
-                 0 {return "F-variance (Area)\n"}
-                 1 {return "area: = int(y(x),x=-infinity..infinity))\n"}
-                 2 {return "center: location parameter (mode)\n"}
-                 3 {return "width: scale parameter (width > 0)\n"}
-                 4 {return "shape1: shape1 parameter (shape1 > 2)\n"}
-                 5 {return "shape2: shape2 parameter (shape2 > 2)\n"}
-                 6 {return "backgr.: constant offset\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
            "Gamma (Amplitude)" { 
               switch $num {
                  0 {return "Gamma (Amplitude)\ny(x)=amplitude*exp(-z)*pow((z+shape-1.)/(shape-1.),shape-1.) with z=(x-center)/width"}
@@ -11800,11 +11683,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 		 MieShell}} \
 {qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
 {peaks "Peaks" {{amplitude "Amplitude Functions" { \
-					  {{Erfc (Amplitude)} Monodisperse} \
-					  {{Error (Amplitude)} Monodisperse} \
-					  {{exponentially modified Gaussian (Amplitude)} Monodisperse} \
-					  {{Extreme Value (Amplitude)} Monodisperse} \
-					  {{F-variance (Amplitude)} Monodisperse} \
 					  {{Gamma (Amplitude)} Monodisperse} \
 					  {{Gaussian (Amplitude)} Monodisperse} \
 					  {{Gaussian-Lorentzian cross product (Amplitude)} Monodisperse} \
@@ -11832,12 +11710,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 					  {{Weibull (Amplitude)} Monodisperse} \
 			  }   }
 	{area "Area Functions" {   \
-					  {{Erfc (Area)} Monodisperse} \
-					  {{Error (Area)} Monodisperse} \
-					  {{exponentially modified Gaussian (Area)} Monodisperse} \
-					  {{Extreme Value (Area)} Monodisperse} \
-					  {{fatique life (Area)} Monodisperse} \
-					  {{F-variance (Area)} Monodisperse} \
 					  {{Gamma (Area)} Monodisperse} \
 					  {{Gaussian (Area)} Monodisperse} \
 					  {{Gaussian-Lorentzian cross product (Area)} Monodisperse} \
@@ -12507,11 +12379,9 @@ if {$simulate && [winfo exists $w.adj.calc]} {
 
 proc setIQorGz2int {} {
 	switch $::FitPrecision(IQorGz) {
-		"I(Q)" {set ::FitPrecision(IQorGz_int) 0}
-		"Exp(G(z)-G(0))" {set ::FitPrecision(IQorGz_int) 1}
-		"G(z)-G(0)" {set ::FitPrecision(IQorGz_int) 2}
-		"G(z)" {set ::FitPrecision(IQorGz_int) 3}
-		"Exp(G(z)-G(0))_ln" {set ::FitPrecision(IQorGz_int) 4}
+		"1" {set ::FitPrecision(IQorGz_int) 0} 
+		"Exp(2pi H{...})" {set ::FitPrecision(IQorGz_int) 1}
+		"2pi H{...}" {set ::FitPrecision(IQorGz_int) 2}
 		default {set ::FitPrecision(IQorGz_int) 0}
 	}
 }
@@ -12605,10 +12475,10 @@ proc analytical_widgets_bottom { w simulate isGlobal
         ProgressBar $w.progress.value \
 	    		-maximum 100\
 				-type normal -variable ::SASfitprogressbar 
-		ComboBox $w.progress.iq_gz -values {"I(Q)" "Exp(G(z)-G(0))" "G(z)-G(0)" "G(z)" "Exp(G(z)-G(0))_ln"} \
+		ComboBox $w.progress.iq_gz -values {"1" "Exp(2pi H{...})" "2pi H{...}"} \
 				-width 12 \
 				-textvariable ::FitPrecision(IQorGz) \
-				-label "calc." \
+				-label "transform:" \
 				-modifycmd setIQorGz2int
 
     	pack $w.progress.interrupt -padx 3 -pady 5 -side left 

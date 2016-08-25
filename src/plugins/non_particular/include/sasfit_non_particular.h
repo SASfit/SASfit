@@ -306,7 +306,7 @@ sasfit_non_particular_DLLEXP scalar sasfit_ff_spinodal_v(scalar q, sasfit_param 
  * \defgroup ff_debye_anderson_brumberger Debye-Anderson-Brumberger
  * \ingroup ff_non-particular
  *
- * \brief I(Q,Rg,I0) = I0/(1+Q^2*xi^2)^2
+ * \brief I(Q,Rg,I0) = (pi*eta)^2*(2xi)^6/(1+Q^2*xi^2)^2
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -314,11 +314,17 @@ sasfit_non_particular_DLLEXP scalar sasfit_ff_spinodal_v(scalar q, sasfit_param 
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b I0</td>
- *       <td>forward scattering I(Q=0)</td>
- *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>scattering length density contrast</td>
  *      </tr></table>
  */
 

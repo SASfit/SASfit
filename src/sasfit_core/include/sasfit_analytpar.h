@@ -161,6 +161,7 @@ struct GzIntStruct {
         scalar *Ifit;
 		scalar *Isub;
         scalar *dydpar;
+        scalar Qres;
         int   max_SD;
         sasfit_analytpar *AP;
         sasfit_analytpar *GAP;

@@ -30,7 +30,7 @@ scalar sasfit_peak_fatique_lifeArea(scalar x, sasfit_param * param)
 
 	return AREA/BETA
 			* (sqrt(z)+sqrt(1/z))/(2*GAMMA*z)
-			* gsl_ran_gaussian_pdf((sqrt(z)+sqrt(1/z))/GAMMA,1)+BACKGR;
+			* gsl_ran_gaussian_pdf((sqrt(z)-sqrt(1/z))/GAMMA,1)+BACKGR;
             
 /*
  * mode:

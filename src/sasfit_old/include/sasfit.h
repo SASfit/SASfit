@@ -170,7 +170,7 @@ float IQSQij_SA_core(Tcl_Interp *,int *,float *, float *,float,float,float,float
 float I_EllipsoidalCoreShell_core(Tcl_Interp *,float,float,float,float,float,float,float,float,bool *);
 float F_EllipsoidalCoreShell_core(Tcl_Interp *,float,float,float,float,float,float,float,float,bool *);
 
-void  IQ_t(Tcl_Interp *, float, float*, float *, float *, float *, int, sasfit_analytpar *, int, bool *);
-void  IQ_t_global(Tcl_Interp *, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *,int, bool *);
-void  IQ_t_gsl_global(Tcl_Interp *, float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *,int, bool *);
+void  IQ_t(Tcl_Interp *, float, float, float*, float *, float *, float *, int, sasfit_analytpar *, int, bool *);
+void  IQ_t_global(Tcl_Interp *, float, float, float *, float *, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *,int, bool *);
+void  IQ_t_gsl_global(Tcl_Interp *, float,float, float *, float *, int, sasfit_analytpar *, sasfit_commonpar *,int, bool *);
 #endif

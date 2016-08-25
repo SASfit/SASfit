@@ -231,6 +231,9 @@ sasfit_load_plugins $::sasfit(plugins)
 create_ALVData ALVData
 global ALVData
 
+create_SESANSData SESANSData
+global SESANSData
+
 create_ASCIIData CT
 set CT(InputFormat) xye
 #puts "reading jet color table ..."
@@ -263,7 +266,7 @@ set FitPrecision(JMAXNRIQ)        18
 set FitPrecision(JMAXanisotropic) 18
 set FitPrecision(JMAXresolution)  18
 set FitPrecision(SQ_or_IQ)        1
-set FitPrecision(IQorGz)  "I(Q)"
+set FitPrecision(IQorGz)  "1"
 set FitPrecision(IQorGz_int)  0
 set FitPrecision(SQ_or_IQ,label)  "calculate scattering intensity"
 set FitPrecision(IntStrategy) OOURA_CC
@@ -388,12 +391,14 @@ switch $::tcl_platform(platform) {
       windows {
 		set sasfit(datatypes) { { Ascii  ".*"      } \
 		                  { BerSANS "D???????.???" } \
+						  { SESANS  "*.ses"} \
 						  { ALV5000  "*.ASC"} \
 		                  { All    "*"       } }
       }
       unix {
 	  set sasfit(datatypes) { { Ascii  ".*"         } \
 		                  { BerSANS ".\\[0-9\\]*" } \
+						  { SESANS  "*.ses"} \
 						  { ALV5000  "*.ASC"} \
                                   { All    "*"          } }
       }
@@ -1214,7 +1219,7 @@ proc ReadFileCmd {sasfitarray args} {
 # ASCII, BerSANS ALV5000
 #
 upvar $sasfitarray ssasfit
-global ASCIIData ALVData HMIData
+global ASCIIData ALVData HMIData SESANSData
 global IQGraph ResIQGraph SDGraph CollectIQGraph CollectSDGraph \
        StructParData GlobalFitIQGraph
 #
@@ -1253,6 +1258,7 @@ if { [file isfile $ssasfit(filename) ] } {
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  1
                 set ssasfit(res_enable) 1
+				set ssasfit(res,file)   [lindex $tau_G2_E_dtau 3]
                 set ssasfit(format) ALV5000
 				set ssasfit(filelabel) [ALVgetItem ALVData "ALV-5000header" Samplename t]
 				set ssasfit(viscosity) [ALVgetItem ALVData "ALV-5000header" "Viscosity \[cp\]" r]
@@ -1261,6 +1267,26 @@ if { [file isfile $ssasfit(filename) ] } {
 				set ssasfit(wavelength) [ALVgetItem ALVData "ALV-5000header" "Wavelength \[nm\]" r]
 				set ssasfit(temperature) [ALVgetItem ALVData "ALV-5000header" "Temperature \[K\]" r]
 				
+			}
+		}
+      SESANS   {
+            read_SESANS $ssasfit(filename) SESANSData
+            set SEL_P [SESANSgetItem SESANSData SESANSData SESANS y]
+            set npoints [llength [lindex $SEL_P 0]]
+			if {$npoints > 0} {
+		        dr ::data_redu 0 ssasfit $npoints [lindex $SEL_P 0] [lindex $SEL_P 1] [lindex $SEL_P 2]  [lindex $SEL_P 3] [lindex $SEL_P 3] [lindex $SEL_P 3]
+				set error no
+                set ssasfit(I_enable)   1
+                set ssasfit(DI_enable)  1
+                set ssasfit(res_enable) 1
+				set ssasfit(res,file)   [lindex $SEL_P 3]
+                set ssasfit(format) SESANS
+				set ssasfit(filelabel) [SESANSgetItem SESANSData "SESANSheader" Sample t]
+				set ssasfit(viscosity) 1
+				set ssasfit(angle) 90
+				set ssasfit(refractionindex) 1.33
+				set ssasfit(wavelength) 632
+				set ssasfit(temperature) 298
 			}
 		}
       BerSANS   {
@@ -1273,14 +1299,14 @@ if { [file isfile $ssasfit(filename) ] } {
                 set ssasfit(I_enable)   1
                 set ssasfit(DI_enable)  1
                 set ssasfit(res_enable) 1
+				set ssasfit(res,file)   [lindex $Q_IQ_E_DQ 3]
                 set ssasfit(format) BerSANS 
+				set ssasfit(viscosity) 1
+				set ssasfit(angle) 90
+				set ssasfit(refractionindex) 1.33
+				set ssasfit(wavelength) 632
+				set ssasfit(temperature) 298
 			}
-			set ssasfit(filelabel) [HMIgetItem HMIData Sample SampleName t]
-			set ssasfit(viscosity) 1
-			set ssasfit(angle) 90
-			set ssasfit(refractionindex) 1.33
-			set ssasfit(wavelength) 632
-			set ssasfit(temperature) 298
 		}
 	}
 
@@ -1486,6 +1512,26 @@ set sasfit(actualdatatype) $Type
 }
 
 #------------------------------------------------------------------------------
+#                  apply options for reading SESANS data
+#
+proc applySESANSOptionsCmd {tmpSESANSData parent} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	global SESANSData
+	upvar $tmpSESANSData Data
+	if { ![string is integer -strict $Data(LineSkip)] || $Data(LineSkip) < 0 
+	} {
+		tk_messageBox -parent $parent \
+			-message "\"lines to skip\" must be an positive integer value"
+		return 0
+	}
+	set SESANSData(InputFormat) $Data(InputFormat)
+	set SESANSData(Ext) $Data(Ext)
+	set SESANSData(LineSkip) $Data(LineSkip)
+	set SESANSData(Gz-G0) $Data(Gz-G0)
+	return 1
+}
+
+#------------------------------------------------------------------------------
 #                  apply options for reading ALV data
 #
 proc applyALVOptionsCmd {tmpALVData parent} {
@@ -1622,6 +1668,71 @@ proc AsciiOptionsCmd {} {
 	}
 }
 
+proc SESANSOptionsCmd {} {
+#^^^^^^^^^^^^^^^^^^^^^^^^
+	global SESANSData
+	global tmpSESANSData
+	cp_arr SESANSData tmpSESANSData
+	set w .sesansoptions
+	if {[winfo exists $w]} {destroy $w}
+	toplevel $w
+	wm geometry $w 
+	wm title $w "SESANS Options"
+	raise $w
+	focus $w
+	focus $w
+	grab $w
+	frame $w.lay1 -relief solid -borderwidth 1
+	frame $w.lay1.a
+	frame $w.lay1.b
+	frame $w.lay2
+	frame $w.lay1.a.if
+	frame $w.lay1.a.ls
+	frame $w.lay1.a.ext
+	frame $w.lay1.a.uc
+	frame $w.lay1.a.nonneg
+
+	label $w.lay1.a.if.label -text "input format:" -highlightthickness 0
+	tk_optionMenu $w.lay1.a.if.entry  tmpSESANSData(InputFormat) "SESANS" 
+	pack $w.lay1.a.if.entry $w.lay1.a.if.label -side right 
+
+	label $w.lay1.a.ls.label -text "lines to skip:" -highlightthickness 0
+	entry $w.lay1.a.ls.entry -width 6 -relief sunken \
+					  -textvariable tmpSESANSData(LineSkip) \
+					  -highlightthickness 0
+	pack $w.lay1.a.ls.entry $w.lay1.a.ls.label -side right
+
+	label $w.lay1.a.ext.label -text "file extension:" -highlightthickness 0
+	entry $w.lay1.a.ext.entry -width 6 -relief sunken \
+					  -textvariable tmpSESANSData(Ext) \
+					  -highlightthickness 0
+	pack $w.lay1.a.ext.entry $w.lay1.a.ext.label -side right
+
+	label $w.lay1.a.uc.label -text "data conversion:" -highlightthickness 0 
+	tk_optionMenu $w.lay1.a.uc.inu  tmpSESANSData(Gz-G0) "Pz->Pz" "Pz->Gz-G0"
+	pack $w.lay1.a.uc.label $w.lay1.a.uc.inu \
+	     -side left
+		 
+	label $w.lay1.b.tmp -text " "
+	pack $w.lay1.b.tmp -side left -fill x
+	pack $w.lay1.a.if $w.lay1.a.ls $w.lay1.a.ext $w.lay1.a.uc  $w.lay1.a.nonneg -fill x -pady 4
+	pack $w.lay1.a $w.lay1.b -side left -fill x
+
+	button $w.lay2.ok -text OK -highlightthickness 0 \
+			  -command "if {\[applySESANSOptionsCmd tmpSESANSData $w\]} {
+					destroy $w}"
+	button $w.lay2.apply -text Apply -command "applySESANSOptionsCmd tmpSESANSData $w" \
+	       -highlightthickness 0
+	button $w.lay2.cancel -text Cancel -command "destroy $w" \
+	       -highlightthickness 0
+	pack $w.lay2.ok $w.lay2.apply  $w.lay2.cancel \
+	     -side left  -fill x -padx 4
+	pack $w.lay1  $w.lay2  -pady 4
+	data_redu_menu $w 0
+	if {[winfo exists $w.lay11]} {
+		pack $w.lay11 -after $w.lay1 -before $w.lay2
+	}
+}
 
 proc ALVOptionsCmd {} {
 #^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1854,6 +1965,7 @@ proc ReadOptionsCmd {} {
 	switch $sasfit(actualdatatype) {
 		Ascii {AsciiOptionsCmd}
 		BerSANS {HMIOptionsCmd}
+		SESANS  {SESANSOptionsCmd}
 		ALV5000 {ALVOptionsCmd} 
 	}
 }
@@ -1877,7 +1989,7 @@ proc NewCmd {} {
 	frame .openfile.layout2
 	frame .openfile.layout3
 
-	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii BerSANS ALV5000]
+	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii BerSANS SESANS ALV5000]
 
 	.openfile.layout1.format configure -highlightthickness 0
 	label .openfile.layout1.label -text "File Format:" -highlightthickness 0
@@ -2275,7 +2387,7 @@ proc MergeCmd {} {
 	pack  .addfile.lay2 -fill both -expand yes
 	frame .addfile.layout3
 
-	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii BerSANS ALV5000]
+	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii BerSANS SESANS ALV5000]
 
 	$w.layout1.format configure -highlightthickness 0
 	label $w.layout1.label -text "File Format:" \
@@ -2284,7 +2396,7 @@ proc MergeCmd {} {
 	       -highlightthickness 0 -pady 1m
 	button $w.layout1.read -text "Read file" -command \
 			{
-				global tmpsasfit ASCIIData
+				global tmpsasfit 
 				set tmpfnlist $tmpsasfit(filename)
 				set errornessFiles {}
 				foreach fin $tmpfnlist {
@@ -2505,12 +2617,44 @@ proc destroy_ascii_options {} {
 proc merge_cmd_apply { sasfit_arr isGlobal
 } {
 	upvar $sasfit_arr localsasfit
-	global ASCIIData IQGraph GlobalFitIQGraph
+	global ASCIIData SESANSData ALVData IQGraph GlobalFitIQGraph
 	global fn hide fskip lskip divisor widname
 
-	set titleText "Q / $ASCIIData(unit)\^-1"
-	if {$isGlobal} { set GlobalFitIQGraph(x,title) $titleText
-	} else {         set IQGraph(x,title) $titleText }
+	set yscale {}
+	switch $localsasfit(actualdatatype) {
+		Ascii {set titlexText "Q / $ASCIIData(unit)\^-1"
+				 set titleyText "I(Q)"}
+		BerSANS {set titlexText "Q / nm\^-1"
+				 set titleyText "I(Q)"}
+		SESANS  {set titlexText "z / nm"
+		         set yscale "y"
+				 switch $SESANSData(Gz-G0) {
+					"Pz->Gz-G0" {set titleyText "G(z)-G(0)"}
+					"Pz->Pz" {set titleyText "P(z)/P(0)"}				 }
+				 }
+		ALV5000 {set titlexText "tau"
+				 set yscale "y"
+				 set titleyText "g2(tau)-1"}
+	}
+	if {$isGlobal} { if {[string compare $yscale y] == 0} {
+						set GlobalFitIQGraph(y,logscale) 0
+						set GlobalFitIQGraph(y,type) y
+						set GlobalFitIQGraph(x,title) $titlexText
+						set GlobalFitIQGraph(y,title) $titleyText
+					 } else {
+						set GlobalFitIQGraph(x,title) $titlexText
+						set GlobalFitIQGraph(y,title) $titleyText
+					 }
+	} else {         if {[string length $yscale] > 0} {
+						set IQGraph(y,logscale) 0
+						set IQGraph(y,type) y
+						set IQGraph(x,title) $titlexText
+						set IQGraph(y,title) $titleyText
+					 } else {
+						set IQGraph(x,title) $titlexText
+						set IQGraph(y,title) $titleyText
+					 }
+		   }
 
 	clear_sasfit_config localsasfit "file," {name divisor firstskip lastskip \
 		hide dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_errorbar dr_multerror dr_max_Dq_q}

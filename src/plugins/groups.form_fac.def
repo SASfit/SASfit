@@ -267,6 +267,14 @@
  * \modname{ff_devel}
  */
 
+/** 
+ * \defgroup ff_sesans SESANS 
+ * \ingroup ff_plugins
+ *
+ * This group contains SESANS functions.
+ *
+ * \modname{ff_sesans}
+ */
  
 /** 
  * \defgroup ff_peaks Peaks 

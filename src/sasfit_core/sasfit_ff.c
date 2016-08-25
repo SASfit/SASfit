@@ -856,42 +856,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct_v = sasfit_ff_spherical_shell_v;
 		ff->params.kernelSelector = SPH_SHELL3;
 	} else
-	if ( strcmp(ff->typestr, "Erfc (Amplitude)") == 0 )
-	{
-		ff->fct = sasfit_peak_ErfcPeakAmplitude;
-	} else
-	if ( strcmp(ff->typestr, "Erfc (Area)") == 0 )
-	{
-		ff->fct = sasfit_peak_ErfcPeakArea;
-	} else
-	if ( strcmp(ff->typestr, "Error (Amplitude)") == 0 )
-	{
-		ff->fct = sasfit_peak_ErrorAmplitude;
-	} else
-	if ( strcmp(ff->typestr, "Error (Area)") == 0 )
-	{
-		ff->fct = sasfit_peak_ErrorArea;
-	} else
-	if ( strcmp(ff->typestr, "exponentially modified Gaussian (Amplitude)") == 0 )
-	{
-		ff->fct = sasfit_peak_ExponentiallyModifiedGaussianAmplitude;
-	} else
-	if ( strcmp(ff->typestr, "exponentially modified Gaussian (Area)") == 0 )
-	{
-		ff->fct = sasfit_peak_ExponentiallyModifiedGaussianArea;
-	} else
-	if ( strcmp(ff->typestr, "Extreme Value (Amplitude)") == 0 )
-	{
-		ff->fct = sasfit_peak_ExtremeValueAmplitude;
-	} else
-	if ( strcmp(ff->typestr, "Extreme Value (Area)") == 0 )
-	{
-		ff->fct = sasfit_peak_ExtremeValueArea;
-	} else
-	if ( strcmp(ff->typestr, "fatique life (Area)") == 0 )
-	{
-		ff->fct = sasfit_peak_fatique_lifeArea;
-	} else
 	if ( strcmp(ff->typestr, "F-variance (Amplitude)") == 0 )
 	{
 		ff->fct = sasfit_peak_FVarianceAmplitude;

@@ -22,6 +22,10 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_peak_exponentially_modified_gaussian_area.c
 	sasfit_peak_extreme_value_amplitude.c
 	sasfit_peak_extreme_value_area.c
+    sasfit_peak_f_variance_amplitude.c
+    sasfit_peak_f_variance_area.c
+	sasfit_peak_fatique_life_amplitude.c
+	sasfit_peak_fatique_life_area.c
 	sasfit_peak_gex_amplitude.c
 	sasfit_peak_gex_area.c
 	interface.c

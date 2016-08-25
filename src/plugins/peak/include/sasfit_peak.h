@@ -699,6 +699,225 @@ sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_area_f(scalar q, sasfit_para
 sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_area_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop peak_extreme_value_area ################ */
 
+/* ################ start peak_fatique_life_amplitude ################ */
+/** 
+ * \defgroup peak_fatique_life_amplitude Fatique Life Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Fatique Life Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b X0</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_fatique_life_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_fatique_life_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_fatique_life_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_fatique_life_amplitude ################ */
+
+/* ################ start peak_fatique_life_area ################ */
+/** 
+ * \defgroup peak_fatique_life_area Fatique Life Area Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Fatique Life Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b X0</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_fatique_life_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_fatique_life_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_fatique_life_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_fatique_life_area ################ */
+
+/* ################ start peak_f_variance_amplitude ################ */
+/** 
+ * \defgroup peak_f_variance_amplitude F-variance Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of F-variance Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b wifth</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape1</td>
+ *       <td>1st shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape2</td>
+ *       <td>2nd shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_f_variance_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_f_variance_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_f_variance_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_f_variance_amplitude ################ */
+
+/* ################ start peak_f_variance_area ################ */
+/** 
+ * \defgroup peak_f_variance_area F-variance Area Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of F-variance Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b wifth</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape1</td>
+ *       <td>1st shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape2</td>
+ *       <td>2nd shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_f_variance_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_f_variance_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_f_variance_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_f_variance_area ################ */
 
 /* ################ start peak_gex_amplitude ################ */
 /** 
@@ -809,6 +1028,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_f(scalar q, sasfit_param * p);
  */
 sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop peak_gex_area ################ */
+
 
 
 #endif // this file

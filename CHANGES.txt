@@ -1,4 +1,5 @@
 0.94.8 2016-08-08
+- updated to FFTW 3.3.5
 - supplying some alternative integration routines for integrating over the size distribution
 - bug fix of sasfit_integrate routine, which caused a crash when called from plugin functions
 - first minimal routine for reading simple ascii data from ALV-5000 with single correlation function for DLS-analysis

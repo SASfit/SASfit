@@ -385,7 +385,7 @@ bool		*error;
     b=exp(-aa);
   	if (n == 1) {
         x=0.5*(a+b);
-        IQ_t(interp,-log(x),par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+        IQ_t(interp,-log(x),Qres,par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
 		if (*error) {
 			*Ifit = 0.0;
 			*Isub = 0.0;
@@ -413,7 +413,7 @@ bool		*error;
         sum=0.0;
         ssum=0.0;
         for (j=1;j<=it;j++) {
-            IQ_t(interp,-log(x),par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+            IQ_t(interp,-log(x),Qres,par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
             if (*error) {
                 *Ifit = 0.0;
                 *Isub = 0.0;
@@ -431,7 +431,7 @@ bool		*error;
             }
             x +=ddel;
             
-            IQ_t(interp,-log(x),par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+            IQ_t(interp,-log(x),Qres,par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
             if (*error) {
                 *Ifit = 0.0;
                 *Isub = 0.0;
@@ -487,7 +487,7 @@ bool		*error;
 
 	if (n == 1) {
 		it=1;
-		IQ_t(interp,Qmin,par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+		IQ_t(interp,Qmin,Qres,par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
 		if (*error) {
 			*Ifit = 0.0;
 			free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
@@ -495,7 +495,7 @@ bool		*error;
 			free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
 			return *Ifit;
 		}
-		IQ_t(interp,Qmax,par,&t2,&ts2,dt2,max_SD,AP,error_type,error);
+		IQ_t(interp,Qmax,Qres,par,&t2,&ts2,dt2,max_SD,AP,error_type,error);
 		if (*error) {
 			free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
 			free_dvector(dt2,0,(3*MAXPAR)*max_SD-1);
@@ -531,7 +531,7 @@ bool		*error;
 			}
 		}
 		for (sum=ssum=0.0,j=1;j<=it;j++,x+=del) {
-			IQ_t(interp,x,par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
+			IQ_t(interp,x,Qres,par,&t1,&ts1,dt1,max_SD,AP,error_type,error);
 			if (*error) {
 				free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
 				free_dvector(dt2,0,(3*MAXPAR)*max_SD-1);
@@ -592,7 +592,7 @@ bool		*error;
     b=exp(-aa);
   	if (n == 1) {
         x=0.5*(a+b);
-        IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+        IQ_t_global(interp,-log(x),Qres,par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
 		if (*error) {
 			*Ifit = 0.0;
 			*Isub = 0.0;
@@ -620,7 +620,7 @@ bool		*error;
         sum=0.0;
         ssum=0.0;
         for (j=1;j<=it;j++) {
-            IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+            IQ_t_global(interp,-log(x),Qres,par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
             if (*error) {
                 *Ifit = 0.0;
                 *Isub = 0.0;
@@ -638,7 +638,7 @@ bool		*error;
             }
             x +=ddel;
             
-            IQ_t_global(interp,-log(x),par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+            IQ_t_global(interp,-log(x),Qres,par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
             if (*error) {
                 *Ifit = 0.0;
                 *Isub = 0.0;
@@ -695,7 +695,7 @@ bool		*error;
 
 	if (n == 1) {
 		it=1;
-		IQ_t_global(interp,Qmin,par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+		IQ_t_global(interp,Qmin,Qres,par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
 		if (*error) {
 			*Ifit = 0.0;
 			*Isub = 0.0;
@@ -704,7 +704,7 @@ bool		*error;
 			free_dvector(dsum,0,(3*MAXPAR)*max_SD-1);
 			return *Ifit;
 		}
-		IQ_t_global(interp,Qmax,par,&t2,&ts2,dt2,max_SD,GAP,GCP,error_type,error);
+		IQ_t_global(interp,Qmax,Qres,par,&t2,&ts2,dt2,max_SD,GAP,GCP,error_type,error);
 		if (*error) {
 			free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
 			free_dvector(dt2,0,(3*MAXPAR)*max_SD-1);
@@ -742,7 +742,7 @@ bool		*error;
 			}
 		}
 		for (sum=0.0,ssum=0.0,j=1;j<=it;j++,x+=del) {
-			IQ_t_global(interp,x,par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
+			IQ_t_global(interp,x,Qres,par,&t1,&ts1,dt1,max_SD,GAP,GCP,error_type,error);
 			if (*error) {
 				free_dvector(dt1,0,(3*MAXPAR)*max_SD-1);
 				free_dvector(dt2,0,(3*MAXPAR)*max_SD-1);
@@ -797,12 +797,12 @@ bool		*error;
 
 	if (n == 1) {
 		it=1;
-		IQ_t_gsl_global(interp,Qmin,par,&t1,max_SD,GAP,GCP,error_type,error);
+		IQ_t_gsl_global(interp,Qmin,Qres,par,&t1,max_SD,GAP,GCP,error_type,error);
 		if (*error) {
 			*Ifit = 0.0;
 			return *Ifit;
 		}
-		IQ_t_gsl_global(interp,Qmax,par,&t2,max_SD,GAP,GCP,error_type,error);
+		IQ_t_gsl_global(interp,Qmax,Qres,par,&t2,max_SD,GAP,GCP,error_type,error);
 		if (*error) {
 			*Ifit = 0.0;
 			return 0.0;
@@ -816,7 +816,7 @@ bool		*error;
 		del=(Qmax-Qmin)/tnm;
 		x=Qmin+0.5*del;
 		for (sum=0.0,j=1;j<=it;j++,x+=del) {
-			IQ_t_gsl_global(interp,x,par,&t1,max_SD,GAP,GCP,error_type,error);
+			IQ_t_gsl_global(interp,x,Qres,par,&t1,max_SD,GAP,GCP,error_type,error);
 			if (*error) {
 				*Ifit = 0.0;
 				return *Ifit;
