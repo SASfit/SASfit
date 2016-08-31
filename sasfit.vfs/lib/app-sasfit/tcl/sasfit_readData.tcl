@@ -1337,7 +1337,7 @@ set Data(DeltaLambda) {}
 set Data(Qmax_x) {}
 set Data(Qmax_y) {}
 set Data(nonneg) 0
-set Data(Gz-G0) "Pz->Gz-G0" ;# possible values {"Pz->Pz" "Pz->Gz-G0"} 
+set Data(Gz-G0) "Pz->Gz-G0" ;# possible values {"Pz->Pz" "Pz->Gz-G0" "Pz->Pz^(lmax^2/l^2)"} 
 }
 
 #------------------------------------------------------------------------------
@@ -2227,19 +2227,38 @@ if {![string compare $BlockName "SESANSData"] && \
 		 lappend resY [expr 10*[SESANSgetItem Data SESANSHeader "Q_zmax \[\\AA\^-1\]" r]]
 		 switch $Data(Gz-G0) {
 			"Pz->Pz"  			{ 	
-										lappend Y $z	
-										lappend DeltaY $ze	
-									}
-			"Pz->Gz-G0"  	{	set M_PI [expr 4*atan(1)]
-										set thickness [SESANSgetItem Data SESANSHeader "Thickness \[cm\]" r]
-										set tmp [expr log($z)*(4*$M_PI*$M_PI)/($y*$y*$thickness)]
-										lappend Y $tmp
-										lappend DeltaY [expr sqrt(pow(abs((4*$M_PI*$M_PI)/($y*$y*$thickness)),2)*($ze/$z)*($ze/$z)+0*4*($tmp*$ye/$y)*($tmp*$ye/$y))]
-									}
+									lappend Y $z	
+									lappend DeltaY $ze	
+								}
+			"Pz->Gz-G0"  		{	set M_PI [expr 4*atan(1)]
+									set thickness [SESANSgetItem Data SESANSHeader "Thickness \[cm\]" r]
+									set tmp [expr log($z)*(4*$M_PI*$M_PI)/($y*$y*$thickness)]
+									lappend Y $tmp
+									lappend DeltaY [expr sqrt(pow(abs((4*$M_PI*$M_PI)/($y*$y*$thickness)),2)*($ze/$z)*($ze/$z)+0*4*($tmp*$ye/$y)*($tmp*$ye/$y))]
+								}
+			"Pz->Pz^(lmax^2/l^2)"	{ 
+									lappend Y $z	
+									lappend DeltaY $ze
+								}
 		 }
-		 
       }
  }
+ 
+if ([string compare $Data(Gz-G0) "Pz->Pz^(lmax^2/l^2)"]==0) {
+	set lmax [lindex [lsort -real -decreasing $Lambda] 0]
+	set nY {}
+	set nDY {}
+	set M_PI [expr 4*atan(1)]
+	set MPI2 [expr $M_PI*$M_PI]
+	foreach l $Lambda y $Y Dy $DeltaY {
+		set cex [expr $lmax*$lmax/($l*$l)]
+#		puts "lmax: $lmax lambda $l"
+		lappend nY [expr pow($y,$cex)]
+		lappend nDY [expr abs(pow($y,$cex)*$cex*$Dy/$y)]
+	}
+	set Y $nY
+	set DeltaY $nDY
+}
 	set SESANSData {}
 	lappend SESANSData $SEL $Y $DeltaY $resY
 	return $SESANSData

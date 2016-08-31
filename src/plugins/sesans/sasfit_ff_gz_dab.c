@@ -8,6 +8,8 @@
 
 // define shortcuts for local parameters/variables
 #define XI	param->p[0]
+#define DUMMY1 param->p[1]
+#define DUMMY2 param->p[2]
 #define ETA	param->p[3]
 
 scalar sasfit_ff_gz_dab(scalar z, sasfit_param * param)

@@ -8,7 +8,9 @@
 
 // define shortcuts for local parameters/variables
 #define R	param->p[0]
-#define ETA	param->p[1]
+#define DUMMY1 param->p[1]
+#define DUMMY2 param->p[2]
+#define ETA	param->p[3]
 scalar sasfit_ff_gz_sphere(scalar z, sasfit_param * param)
 {
 	scalar xi,xi2,Gz,G0;

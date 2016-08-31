@@ -27,7 +27,7 @@ string need to contain
 at least the two characters {\tt x} and {\tt y}. \\
 
 \begin{description}
-\item[Example 1 (HMI-BerSANS format)] ~\\
+\item[Example 1 (BerSANS format)] ~\\
 {\tiny
 \begin{verbatim}
 %File
@@ -45,10 +45,10 @@ Type=SANSDIso Title=IMF
 ~\\
 As the first lines start with a string, they will be automatically
 ignored. To interpret the three columns as $Q$, $I(Q)$, $\Delta
-I(Q)$ the format string should be simply {\tt xyz}. The HMI-BerSANS
-format can also be read in by explicitly selecting instead of the
-"ASCII"-format
-the "HMI"-format button in the menu. \\[1cm]
+I(Q)$ the format string should be simply {\tt xyz}. The BerSANS
+format can also be read in by explicitly selecting  
+the "BerSANS"-format button in the menu instead of the
+"ASCII"-format. \\[1cm]
 
 \item[Example 2] \hspace{1pt}\\
 {\tiny
@@ -185,11 +185,7 @@ This procedure gives reasonable error bars as long as the data are oversampled a
 \begin{figure}[htb]
 \begin{center}
 \subfigure[simulated model data set with supplied error bars]{\label{fig:ModelDataWithError}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/ModelDataWithError.png}}
-\subfigure[Ration between supplied error bar and the error bar guessed by \SASfit]{\label{fig:ErrorGUI}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/RatioErrSuppGuess.png}}
-\end{center}
-\begin{center}
-\subfigure[simulated model data set with supplied error bars]{\label{fig:ModelDataWithError2}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/ModelDataWithError.png}}
-\subfigure[Ration between supplied error bar and the error bar guessed by \SASfit]{\label{fig:ErrorGUI2}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/RatioErrSuppGuess.png}}
+\subfigure[Ratio between supplied error bar and the error bar guessed by \SASfit]{\label{fig:ErrorGUI}\includegraphics[width=0.47\textwidth]{../images/ErrorBar/RatioErrSuppGuess.png}}
 \end{center}
 \caption{Comparison of a simulated model data set with supplied error bar and an error bar guessed by \SASfit.}
 \label{fig:ErrBar}

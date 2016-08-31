@@ -26,10 +26,27 @@ set(SOURCE_${PRJ_NAME}
     sasfit_peak_f_variance_area.c
 	sasfit_peak_fatique_life_amplitude.c
 	sasfit_peak_fatique_life_area.c
+	sasfit_peak_gamma_amplitude.c
+	sasfit_peak_gamma_area.c
+	sasfit_peak_gaussian_amplitude.c
+	sasfit_peak_gaussian_area.c
+	sasfit_peak_gaussian_lorentzian_cross_product_amplitude.c
+	sasfit_peak_gaussian_lorentzian_cross_product_area.c
+	sasfit_peak_gaussian_lorentzian_sum_amplitude.c
+	sasfit_peak_gaussian_lorentzian_sum_area.c
+	sasfit_peak_generalized_gaussian1_amplitude.c
+	sasfit_peak_generalized_gaussian1_area.c
+	sasfit_peak_generalized_gaussian2_amplitude.c
+	sasfit_peak_generalized_gaussian2_area.c
+	sasfit_peak_generalized_maxwell_amplitude.c
+	sasfit_peak_generalized_maxwell_area.c
 	sasfit_peak_gex_amplitude.c
 	sasfit_peak_gex_area.c
+	sasfit_peak_giddings_amplitude.c
+	sasfit_peak_giddings_area.c
 	interface.c
 )
+
 
 # add plugin path for finding 'Find*.cmake' files for new <LIBS_EXT>
 set(REL_CMAKE_MODULE_PATH .)

@@ -18,9 +18,9 @@ depend on the nature of the radiation employed. The advantage of
 small-angle neutron scattering (SANS) over other SAS methods is the
 deuteration method. This consists in using deuterium labeled
 components in the sample in order to enhance their contrast. Whereas
-SANS has disadvantaged over small-angle x-ray scattering (SAXS) by
+the disadvantage of SANS over small-angle x-ray scattering (SAXS) is
 the intrinsically low flux of neutron sources compared to the orders
-of magnitude higher fluxes of x-ray sources. Neutron scattering in
+of magnitude higher flux at x-ray sources. Neutron scattering in
 general is sensitive to fluctuations in the density of nuclei in the
 sample. X-ray scattering is sensitive to inhomogeneities in electron
 densities whereas light scattering is sensitive to fluctuations in
@@ -30,16 +30,86 @@ most important of these is the fact that, with minor adjustments to
 account for the different types of radiation, the same basic
 equations and laws can be used to analyze data from these
 techniques. The small-angle scattering data can contain information
-concerning both the structure and interaction within the sytem. This
+concerning both the structure and interaction within the system. This
 information can be obtained by either performing model-independent
 analysis or detailed model dependent analysis. \SASfit is such a
-software package built for analysis of small-angle neutron
-scattering data concerning soft matter. The main emphasis of the
-software is to provide easy to use visual interface for the new as
-well as for an expert user. The software package contains most of
-the tools to treat large range of scientific problems and large
-volume of data produced on a SAS instrument. It allows users to
+software package built originally for analysis of small-angle scattering data
+in the field of soft matter. The main emphasis of the
+software is to provide easy to use graphical user interface.
+The software package contains most of
+the tools to treat the basic scientific problems for
+data produced on a SAS instrument. It allows users to
 derive useful information from the SAS scattering data.
+
+\section{Overview}
+
+\SASfit is designed for analysing small angle scattering data and also supplies some simple analysis for dynamic light scattering data. At the moment it performs the following analysis routines to both single 1D data sets as well as multiple 1D data sets, where one like to simultaneously fit several data sets, like from concentration series or contrast variation experiments. In principle by this way also 2D data sets can be analysed by loading segmentationally averaged 2D data. 
+\begin{itemize}
+\item determining integral structural parameters by simple Guinier and Porod analysis
+\item fitting and simulating single or multiple data sets in terms of of size distribution, form factor and structure factors
+\item analysing DLS data in terms of stretched exponentials or cumulants.
+\item calculating scattering length densities for x-rays and neutrons
+\item solving numerically the Ornstein-Zernike equations for any combination of supplied pair interaction potential and closure relation
+\item allows to read, transforms, merge, clip and scale data files. The number of formats is limited.
+\end{itemize}
+\begin{figure}[htb]
+\begin{center}
+\
+\begin{tikzpicture}
+  \path[mindmap,concept color=black,text=white, align=flush center,
+    every node/.style=concept]
+    node[concept] {\bf \SASfit}
+    [clockwise from=90]
+    child[concept color=Green,text=white] {
+      node[concept] {analytical\ models}
+      [clockwise from=112.5, level 2 concept/.append style={sibling angle=45}]
+      child[ concept color=LimeGreen ] {
+        node[concept] {single\ data set}
+        [clockwise from=135 , level 3 concept/.append style={sibling angle=45}]
+        child { node[concept color=YellowGreen] {fitting} }
+        child { node[concept color=YellowGreen] {simu\-la\-ting} }
+      }
+      child [ concept color=LimeGreen ] {
+        node[concept] {multiple\ data sets}
+        [clockwise from=90, level 3 concept/.append style={sibling angle=45}]
+        child { node[concept color=YellowGreen] {fitting} }
+        child { node[concept color=YellowGreen] {simu\-la\-ting} }
+      }
+    }
+    child[concept color=PineGreen,text=white] { node[concept] {integral\ structural\ parameters}
+        [clockwise from=105, level 2 concept/.append style={sibling angle=30}]
+        child { node[concept color=ProcessBlue] {Guinier analysis} }
+        child { node[concept color=ProcessBlue] {Porod analysis} }
+        child { node[concept color=ProcessBlue] {scattering invariant} }
+        child { node[concept color=ProcessBlue] {specific surface} }
+        child { node[concept color=ProcessBlue] {correlation length} }
+        child { node[concept color=ProcessBlue] {etc.} }
+    }
+    child[concept color=Blue,text=white] { node[concept] {simple DLS analysis} }
+%    child[concept color=ProcessBlue] {
+%      node[concept] {regu\-la\-ri\-za\-tion tech\-niques (soon)}  }
+    child[concept color=Mulberry,text=white] {
+      node[concept] {OZ solver}  }
+    child[concept color=red,text=white] { node[concept] {IO routines}
+        [clockwise from=310, level 2 concept/.append style={sibling angle=30}]
+        child { node[concept color=RubineRed] {merging\ scaling\ clipping\ thinning} }
+        child { node[concept color=RubineRed] {ALV5000} }
+        child { node[concept color=RubineRed] {Clip\-board} }
+        child { node[concept color=RubineRed] {SESANS} }
+        child { node[concept color=RubineRed] {ASCII} }
+        child { node[concept color=RubineRed] {BerSANS} }
+        child { node[concept color=RubineRed] {re\-so\-lu\-tion from instr. geom.} }
+   }
+    child[concept color=BurntOrange,text=black] { node[concept] {SLD\ calculator}
+        [clockwise from=-187.5, level 2 concept/.append style={sibling angle=45}]
+        child { node[concept color=YellowOrange] {x-rays} }
+        child { node[concept color=YellowOrange] {neutrons} }
+    };
+\end{tikzpicture}
+\end{center}
+\caption{Mind map about the tools in SASfit}
+\label{fig:mindmapSASfit}
+\end{figure}
 
 \section{System Requirements And Software Installation}
 
@@ -240,10 +310,10 @@ After reading a data file a new entry is generated in the GUI, see e.\ g.\  \ref
 \forall n \in (k,l] : \abs{I_k-I_n} < D_\mathrm{min} (\Delta I_k + \Delta I_n)
 \quad \bigwedge \quad \abs{q_k-q_n}/\overline{q} <  \Delta q_{max}
 \end{align}
-where $D_\mathrm{min} $ and $\Delta q_{max}$ are user supplied values. 
+where $D_\mathrm{min} $ and $\Delta q_{max}$ are user supplied values.
 The averaging of data points therefore depends on a user-defined maximum allowed $q$-smearing $\Delta q_{max}$ and  a user-defined maximum distance in intensity in units of the error bar ($D_\mathrm{min} $), so that an averaging is only performed, if the intensities look similar with $D_\mathrm{min}$-times the intensity error bars and are not to far away from each other on the q-axes.
 The second option simply skips data points equally to reduce the amount data. The parameter "percentage/100 to load" defines the amount of data to be kept. A value of 1 means all data are kept and a value of 0.5 means every second data point will be kept. In the third option one can define a distance in the $q:I(q)$-plot or $\log q: \log I(q)$ plot. The next data point, which will be plotted must have either in the linear or logarithmic plot a distance exceeding a user defined value.
- 
+
 \begin{figure}[htb]
 \centering
   \subfigure[Averaging data points depending on the error bar and resulting resolution.]{\label{fig:DataReductionOptionAVG1}

@@ -56,12 +56,10 @@ scalar sasfit_ff_gz_generalized_dab(scalar z, sasfit_param * param)
     V = gsl_pow_3(2*A)*sqrt(M_PI)*exp(gsl_sf_lngamma(1.5+H)-gsl_sf_lngamma(H));
     u=z/A;
     G0 = V*2*A*sqrt(M_PI)*exp(gsl_sf_lngamma(0.5+H)-gsl_sf_lngamma(H));
-    if ( ((0.5+H) - (int) (0.5+H)) == 0) {
+    if ( ((0.5+H) - (int) (0.5+H)) != 0) {
         KH = gsl_sf_bessel_Kn((int) (H+0.5),u);
     } else {
-        nu = H+0.5;
-        z2_4 = u*u/4.;
-        KH = pow(2,nu-1)*dgamma(nu)*pow(u,-nu)*gsl_sf_hyperg_0F1(1-nu,z2_4)+ pow(2,-nu-1)*dgamma(-nu)*pow(u,nu)*gsl_sf_hyperg_0F1(1+nu,z2_4);
+        KH = sqrt(M_PI)*pow(2*u,(H+0.5))*exp(-u)*gsl_sf_hyperg_U((H+1),2*H+2,2*u);
     }
     Gz = KH*V*pow(2,1.5-H)*sqrt(M_PI)*pow(u,H)*sqrt(z*A)/gsl_sf_gamma(H);
     return Gz-G0;

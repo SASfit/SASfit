@@ -919,6 +919,775 @@ sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_area_f(scalar q, sasfit_param *
 sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_area_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop peak_f_variance_area ################ */
 
+/* ################ start peak_gamma_amplitude ################ */
+/** 
+ * \defgroup peak_gamma_amplitude Gamma Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Gamma Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_gamma_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gamma_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gamma_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gamma_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gamma_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gamma_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gamma_amplitude ################ */
+
+/* ################ start peak_gamma_area ################ */
+/** 
+ * \defgroup peak_gamma_area Gamma Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Gamma Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_gamma_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gamma_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gamma_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gamma_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gamma_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gamma_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gamma_area ################ */
+
+/* ################ start peak_gaussian_amplitude ################ */
+/** 
+ * \defgroup peak_gaussian_amplitude Gaussian Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Gaussian Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_gaussian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gaussian_amplitude ################ */
+
+/* ################ start peak_gaussian_area ################ */
+/** 
+ * \defgroup peak_gaussian_area Gaussian Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Gaussian Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gaussian_area ################ */
+
+/* ################ start peak_gaussian_lorentzian_cross_product_amplitude ################ */
+/** 
+ * \defgroup peak_gaussian_lorentzian_cross_product_amplitude Gaussian-Lorentzian Cross-Product Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Gaussian-Lorentzian Cross-Product Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_gaussian_lorentzian_cross_product_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_cross_product_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_cross_product_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gaussian_lorentzian_cross_product_amplitude ################ */
+
+/* ################ start peak_gaussian_lorentzian_cross_product_area ################ */
+/** 
+ * \defgroup peak_gaussian_lorentzian_cross_product_area Gaussian-Lorentzian Cross-Product Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Gaussian-Lorentzian Cross-Product Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_gaussian_lorentzian_cross_product_area
+ *
+ * \sa sasfit_peak.h, peak_gaussian_lorentzian_cross_product_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_cross_product_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_cross_product_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gaussian_lorentzian_cross_product_area ################ */
+
+/* ################ start peak_gaussian_lorentzian_sum_amplitude ################ */
+/** 
+ * \defgroup peak_gaussian_lorentzian_sum_amplitude Gaussian-Lorentzian Sum Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Gaussian-Lorentzian Sum Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_gaussian_lorentzian_sum_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_sum_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_sum_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gaussian_lorentzian_sum_amplitude ################ */
+
+/* ################ start peak_gaussian_lorentzian_sum_area ################ */
+/** 
+ * \defgroup peak_gaussian_lorentzian_sum_area Gaussian-Lorentzian Sum Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Gaussian-Lorentzian Sum Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ */
+
+/**
+ * \ingroup peak_gaussian_lorentzian_sum_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_sum_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_gaussian_lorentzian_sum_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_gaussian_lorentzian_sum_area ################ */
+
+/* ################ start peak_generalized_gaussian1_amplitude ################ */
+/** 
+ * \defgroup peak_generalized_gaussian1_amplitude generalized Gaussian1 Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of generalized Gaussian1 Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b location</td>
+ *       <td>location parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_generalized_gaussian1_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian1_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian1_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_generalized_gaussian1_amplitude ################ */
+
+/* ################ start peak_generalized_gaussian1_area ################ */
+/** 
+ * \defgroup peak_generalized_gaussian1_area generalized Gaussian1 Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of generalized Gaussian1 Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b location</td>
+ *       <td>location parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_generalized_gaussian1_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian1_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian1_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_generalized_gaussian1_area ################ */
+
+/* ################ start peak_generalized_gaussian2_area ################ */
+/** 
+ * \defgroup peak_generalized_gaussian2_area generalized Gaussian2 Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of generalized Gaussian2 Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b location</td>
+ *       <td>location parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_generalized_gaussian2_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian2_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian2_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_generalized_gaussian2_are ################ */
+
+/* ################ start peak_generalized_gaussian2_amplitude ################ */
+/** 
+ * \defgroup peak_generalized_gaussian2_amplitude generalized Gaussian2 Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of generalized Gaussian2 Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b location</td>
+ *       <td>location parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_generalized_gaussian2_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian2_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian2_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_generalized_gaussian2_amplitude ################ */
+
+/* ################ start peak_generalized_maxwell_area ################ */
+/** 
+ * \defgroup peak_generalized_maxwell_area generalized Maxwell Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of generalized Maxwell Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b offset</td>
+ *       <td>offset parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b n</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b m</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_generalized_maxwell_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian2_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_gaussian2_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sasfit_peak_generalized_maxwell_area ################ */
+
+/* ################ start peak_generalized_maxwell_amplitude ################ */
+/** 
+ * \defgroup peak_generalized_maxwell_amplitude Maxwell Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Maxwell Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b offset</td>
+ *       <td>offset parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b n</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b m</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_generalized_maxwell_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_maxwell_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_generalized_maxwell_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_generalized_maxwell_amplitude ################ */
+
 /* ################ start peak_gex_amplitude ################ */
 /** 
  * \defgroup peak_gex_amplitude GEX Amplitude
@@ -1028,6 +1797,116 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_f(scalar q, sasfit_param * p);
  */
 sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop peak_gex_area ################ */
+
+/* ################ start peak_giddings_area ################ */
+/** 
+ * \defgroup peak_giddings_area Giddings Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Giddings Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b mode</td>
+ *       <td>mode of distribution</td>
+ *      </tr><tr>
+ *       <td>\b X0</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_giddings_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_giddings_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_giddings_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_giddings_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_giddings_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_giddings_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_giddings_area ################ */
+
+/* ################ start peak_giddings_amplitude ################ */
+/** 
+ * \defgroup peak_giddings_amplitude Giddings Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Giddings Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b mode</td>
+ *       <td>mode of distribution</td>
+ *      </tr><tr>
+ *       <td>\b X0</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_giddings_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_giddings_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_giddings_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_giddings_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_giddings_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_giddings_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_giddings_amplitude ################ */
 
 
 

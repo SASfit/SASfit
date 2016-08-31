@@ -1,11 +1,16 @@
-0.94.8 2016-08-08
+0.94.8 2016-08-24
+- Added the possibility to apply after the summation of all scattering contributions a final operator. 
+  At the moment betwee three operator can be choosen>
+  1) Unit opreator which does do anything with the data
+  2) Taking the Hankel transform 2pi*H[I(Q)], which is converting SAS model into a SESANS model
+  3) Applying the operator from 2) and taking the exponetial function of it exp(2pi*H[I(Q)])
+- For the extension to SESANS also an option for reading SESANS data. 
+  The format has been defined as *.ses files in Delft.
 - updated to FFTW 3.3.5
 - supplying some alternative integration routines for integrating over the size distribution
 - bug fix of sasfit_integrate routine, which caused a crash when called from plugin functions
 - first minimal routine for reading simple ascii data from ALV-5000 with single correlation function for DLS-analysis
 - adding the PLHNC and RMSA closure to the OZ solver
-- tried to implement a first version for SESANS data analysis
-- SESANS and SANS analysis share the same GUI
 
 0.94.7 2016-04-25
 - implementation of another cumulant formula for DLS

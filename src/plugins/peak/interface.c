@@ -8,7 +8,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(18)
+SASFIT_PLUGIN_EXP_BEGIN(34)
 SASFIT_PLUGIN_EXP_ADD( peak_beta_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_beta_area )
 SASFIT_PLUGIN_EXP_ADD( peak_chi_squared_amplitude )
@@ -25,8 +25,24 @@ SASFIT_PLUGIN_EXP_ADD( peak_f_variance_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_f_variance_area )
 SASFIT_PLUGIN_EXP_ADD( peak_fatique_life_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_fatique_life_area )
+SASFIT_PLUGIN_EXP_ADD( peak_gamma_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_gamma_area )
+SASFIT_PLUGIN_EXP_ADD( peak_gaussian_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_gaussian_area )
+SASFIT_PLUGIN_EXP_ADD( peak_gaussian_lorentzian_cross_product_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_gaussian_lorentzian_cross_product_area )
+SASFIT_PLUGIN_EXP_ADD( peak_gaussian_lorentzian_sum_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_gaussian_lorentzian_sum_area )
+SASFIT_PLUGIN_EXP_ADD( peak_generalized_gaussian1_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_generalized_gaussian1_area )
+SASFIT_PLUGIN_EXP_ADD( peak_generalized_gaussian2_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_generalized_gaussian2_area )
+SASFIT_PLUGIN_EXP_ADD( peak_generalized_maxwell_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_generalized_maxwell_area )
 SASFIT_PLUGIN_EXP_ADD( peak_gex_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_gex_area )
+SASFIT_PLUGIN_EXP_ADD( peak_giddings_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_giddings_area )
 
 SASFIT_PLUGIN_EXP_END
 

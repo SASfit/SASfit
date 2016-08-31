@@ -1947,174 +1947,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	   "Gamma (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gamma (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gaussian (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "backgr. ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gaussian (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "backgr. ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gaussian-Lorentzian cross product (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gaussian-Lorentzian cross product (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gaussian-Lorentzian sum (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gaussian-Lorentzian sum (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "generalized Gaussian 1 (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "generalized Gaussian 1 (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "generalized Gaussian 2 (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "generalized Gaussian 2 (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Giddings (Amplitude)"   { \
-				  set actualPar(FF,l1,label) "amplitude ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Giddings (Area)"   { \
-				  set actualPar(FF,l1,label) "area ="
-				  set actualPar(FF,l2,label) "center ="
-				  set actualPar(FF,l3,label) "width ="
-				  set actualPar(FF,l4,label) "shape ="
-				  set actualPar(FF,l5,label) "backgr. ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
    "Haarhoff Van der Linde (Area)"   { \
 	                          set actualPar(FF,l1,label) "area ="
                                   set actualPar(FF,l2,label) "location ="
@@ -4360,13 +4192,6 @@ proc analyticalGlobalSDCmd {simorfit
 				 MieShell}} \
 	{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
 	{peaks "Peaks" {{amplitude "Amplitude Functions" { \
-							  {{Gamma (Amplitude)} Monodisperse} \
-							  {{Gaussian (Amplitude)} Monodisperse} \
-							  {{Gaussian-Lorentzian cross product (Amplitude)} Monodisperse} \
-							  {{Gaussian-Lorentzian sum (Amplitude)} Monodisperse} \
-							  {{generalized Gaussian 1 (Amplitude)} Monodisperse} \
-							  {{generalized Gaussian 2 (Amplitude)} Monodisperse} \
-							  {{Giddings (Amplitude)} Monodisperse} \
 							  {{Inverted Gamma (Amplitude)} Monodisperse} \
 							  {{Kumaraswamy (Amplitude)} Monodisperse} \
 							  {{Laplace (Amplitude)} Monodisperse} \
@@ -4386,14 +4211,7 @@ proc analyticalGlobalSDCmd {simorfit
 							  {{Voigt (Amplitude)} Monodisperse} \
 							  {{Weibull (Amplitude)} Monodisperse} \
 					  }   }
-			{area "Area Functions" {  
-							  {{Gamma (Area)} Monodisperse} \
-							  {{Gaussian (Area)} Monodisperse} \
-							  {{Gaussian-Lorentzian cross product (Area)} Monodisperse} \
-							  {{Gaussian-Lorentzian sum (Area)} Monodisperse} \
-							  {{generalized Gaussian 1 (Area)} Monodisperse} \
-							  {{generalized Gaussian 2 (Area)} Monodisperse} \
-							  {{Giddings (Area)} Monodisperse} \
+			{area "Area Functions" { \
 							  {{Haarhoff Van der Linde (Area)} Monodisperse} \
 							  {{half Gaussian modified Gaussian (Area)} Monodisperse} \
 							  {{Inverted Gamma (Area)} Monodisperse} \

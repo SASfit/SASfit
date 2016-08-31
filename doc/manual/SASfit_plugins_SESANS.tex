@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
-\chapter{Plugin functions for SESANS}
+\section{Plugin functions for SESANS}
 \label{ch:pluginsSESANS}
 
 The depolarization of the neutron beam as a function of the spin-echo length $z$ is given by
@@ -12,7 +12,7 @@ where the unnormalized SESANS correlation function reads as
 \mathcal{G}(z) &= \frac{1}{k_0^2} \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} \mathrm{d}Q_y\, \mathrm{d}Q_z \frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}\frac{\cos(Q_z z)}{S} \\
              &= \frac{1}{k_0^2} \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} \mathrm{d}Q_y\, \mathrm{d}Q_z  \frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}t \cos(Q_z z)
 \end{align}
-with $\mathbf{Q}=(0,Q_y,Q_z)^T$ and $\frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}$ being the macroscopic differential scattering cross-section in units of cm$^2$ and $\frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}=\frac{1}{V}\frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}$ differential scattering cross-section normalized on the sample volume $V=tS$ in units of cm$^{-1}$. $t$ is the sample thickness and $S$ the aperture cross-section defining the illuminated sample area. For isotropic scattering $\frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}=\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}$, where the scattering only depends on the modulus of the scattering vector $Q=\abs{\mathbf{Q}}$ the unnormalized SESANS correlation function simplifies to a Hankel transform of the scattering intensity multiplied by $\frac{\lambda^2 t}{2\pi}$. To see this, one has to change from cartesian coordinates $(0,Q_y,Q_z)$ to polar coordinates $Q (0,\sin\phi,\cos\phi)$ with $\mathrm{d}Q_y \mathrm{d}Q_z = Q\mathrm{d}Q \mathrm{d}\phi$. The integration over $\phi$ yield the cylindrical zeroth-order Bessel function
+with $\mathbf{Q}=(0,Q_y,Q_z)^T$ and $\frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}$ being the macroscopic differential scattering cross-section in units of cm$^2$ and $\frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}=\frac{1}{V}\frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}$ the differential scattering cross-section normalized on the sample volume $V=tS$ in units of cm$^{-1}$. $t$ is the sample thickness and $S$ the aperture cross-section defining the illuminated sample area. For isotropic scattering $\frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}=\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}$, where the scattering only depends on the modulus of the scattering vector $Q=\abs{\mathbf{Q}}$ the unnormalized SESANS correlation function simplifies to a Hankel transform of the scattering intensity multiplied by $\frac{\lambda^2 t}{2\pi}$. To see this, one has to change from cartesian coordinates $(0,Q_y,Q_z)$ to polar coordinates $Q (0,\sin\phi,\cos\phi)$ with $\mathrm{d}Q_y \mathrm{d}Q_z = Q\mathrm{d}Q \mathrm{d}\phi$. The integration over $\phi$ yield the cylindrical zeroth-order Bessel function
 \begin{align}
 J_0(Qz)=\frac{1}{2\pi}\int_{0}^{2\pi} \cos\left(Q\cos(\phi)z\right) \mathrm{d}\phi
 \end{align}
@@ -37,9 +37,34 @@ The scattering intensity $I(Q)$ and  $\tilde{\gamma}(r)$ are related by Fourier 
 \begin{align}
 I(Q) &= \int_0^\infty \tilde{\gamma}(r) \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}r
 \end{align}
-In literature the expressions for the scattering length density autocorrelation function are often normalized to to 1 for $r=0$, i.e. the expressions $\gamma_0(r)=\tilde{\gamma}(r)/\tilde{\gamma}(0)$ are given.
+In literature the expressions for the scattering length density autocorrelation function are often normalized to to 1 for $r=0$, i.e. the expressions $\gamma_0(r)=\tilde{\gamma}(r)/\tilde{\gamma}(0)$ are given. Also one finds that 
+\begin{align}
+\tilde{\gamma}(0)&=\Delta\eta^2 V_P
+\end{align} 
+and 
+\begin{align}
+\int_0^\infty \tilde{\gamma}(r) 4\pi r^2 \, \mathrm{d}r =\Delta\eta^2 V_P
+\end{align}
+where in case of spherical particle $V_P=\frac43 \pi R^3$
 
-\section{Sphere}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/GUI/GzPlugins.png}
+\end{center}
+\caption{\SASfit plugins which directly calculate SESANS correlation function}
+\label{fig:HankelOp}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/GUI/HankelOperator.png}
+\end{center}
+\caption{\SASfit allows to perform a final transformation on the model function to convert a SANS signal into a SESANS signal}
+\label{fig:HankelOp}
+\end{figure}
+
+
+\subsection{$G(z)$ of a sphere}
 The scattering intensity for a single sphere is given by
 \begin{align}
 I(Q) &= \left(\frac{4}{3}\pi R^3 \Delta\eta\right)^2 \left(3\frac{\sin QR-QR\cos QR}{Q^3R^3}\right)^2
@@ -54,6 +79,36 @@ The unnormalized autocorrelation function for this sphere is given by
 \end{align}
 and the unnormalized SESANS correlation function
 \begin{align}
-\tilde{G}(z)&= \Delta\eta^2 \pi R^4 \left(\sqrt{1-\xi^2}(2+\xi^2)-\xi^2(\xi^2-4)\ln\left(\frac{\xi}{1+\sqrt{1-\xi^2}}\right)\right)
+\tilde{G}_\mathrm{sphere}(z)&= \Delta\eta^2 \pi R^4 \left(\sqrt{1-\xi^2}(2+\xi^2)-\xi^2(\xi^2-4)\ln\left(\frac{\xi}{1+\sqrt{1-\xi^2}}\right)\right)
 \end{align}
-with $\xi=\frac{z}{2R}$. 
+with $\xi=\frac{z}{2R}$.
+
+\section{$G(z)$ of a randomly distributed, two-phase system (DAB) }~\\
+The scattering intensity for a randomly distributed, two-phase system (DAB) is given by
+\begin{align}
+I(Q) &= \frac{\left(8 \pi xi^3 \Delta\eta\right)^2}{ \left(1+Q^2\xi^2\right)^2}
+\end{align}
+The unnormalized autocorrelation function for this sphere is given by
+\begin{align}
+\tilde{\gamma}(r) &=
+ \Delta\eta^2 8\pi\xi^3 \exp\left( -r/\xi\right)
+\end{align}
+and the unnormalized SESANS correlation function
+\begin{align}
+\tilde{G}_\mathrm{DAB}(z)&= 8\pi\xi^4 2\frac{z}{\xi}K_1\left(\frac{z}{\xi}\right)
+\end{align}
+
+\section{$G(z)$ of a self-affine random density distribution (gDAB) }~\\
+The scattering intensity for a randomly distributed, two-phase system (DAB) is given by
+\begin{align}
+I(Q) &= \frac{\left(4 \pi \xi^3 (1+2H) \Delta\eta\right)^2}{ \left(1+Q^2\xi^2\right)^{3/2+H}}
+\end{align}
+The unnormalized autocorrelation function for this sphere is given by
+\begin{align}
+\tilde{\gamma}(r) &=
+ \Delta\eta^2 8a^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma\left(H\right)}\frac{2}{\Gamma(H)}\left(\frac{r}{2a}\right)^H K_H\left(\frac{r}{a}\right)
+\end{align}
+and the unnormalized SESANS correlation function
+\begin{align}
+\tilde{G}_\mathrm{gDAB}(z)&=  8a^3\pi\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma^2\left(H\right)} 2\sqrt{az}\left(\frac{z}{2a}\right)^{H+\frac12}K_{\frac12+H}\left(\frac{z}{a}\right)
+\end{align} 

@@ -1709,7 +1709,7 @@ proc SESANSOptionsCmd {} {
 	pack $w.lay1.a.ext.entry $w.lay1.a.ext.label -side right
 
 	label $w.lay1.a.uc.label -text "data conversion:" -highlightthickness 0 
-	tk_optionMenu $w.lay1.a.uc.inu  tmpSESANSData(Gz-G0) "Pz->Pz" "Pz->Gz-G0"
+	tk_optionMenu $w.lay1.a.uc.inu  tmpSESANSData(Gz-G0) "Pz->Pz" "Pz->Gz-G0" "Pz->Pz^(lmax^2/l^2)"
 	pack $w.lay1.a.uc.label $w.lay1.a.uc.inu \
 	     -side left
 		 
@@ -2630,7 +2630,8 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 		         set yscale "y"
 				 switch $SESANSData(Gz-G0) {
 					"Pz->Gz-G0" {set titleyText "G(z)-G(0)"}
-					"Pz->Pz" {set titleyText "P(z)/P(0)"}				 }
+					"Pz->Pz" {set titleyText "P(z)/P(0)"}
+					"Pz->Pz^(lmax^2/l^2)" {set titleyText "EXP(c(G(z)-G(0)))"}	 }
 				 }
 		ALV5000 {set titlexText "tau"
 				 set yscale "y"
