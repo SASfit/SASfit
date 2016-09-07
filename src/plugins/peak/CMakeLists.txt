@@ -22,8 +22,8 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_peak_exponentially_modified_gaussian_area.c
 	sasfit_peak_extreme_value_amplitude.c
 	sasfit_peak_extreme_value_area.c
-    sasfit_peak_f_variance_amplitude.c
-    sasfit_peak_f_variance_area.c
+	sasfit_peak_f_variance_amplitude.c
+	sasfit_peak_f_variance_area.c
 	sasfit_peak_fatique_life_amplitude.c
 	sasfit_peak_fatique_life_area.c
 	sasfit_peak_gamma_amplitude.c
@@ -44,6 +44,44 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_peak_gex_area.c
 	sasfit_peak_giddings_amplitude.c
 	sasfit_peak_giddings_area.c
+	sasfit_peak_haarhoff_vander_linde_area.c
+	sasfit_peak_half_gaussian_modified_gaussian_area.c
+	sasfit_peak_inverted_gamma_amplitude.c
+	sasfit_peak_inverted_gamma_area.c
+	sasfit_peak_kumaraswamy_amplitude.c
+	sasfit_peak_kumaraswamy_area.c
+	sasfit_peak_laplace_amplitude.c
+	sasfit_peak_laplace_area.c
+	sasfit_peak_logistic_amplitude.c
+	sasfit_peak_logistic_area.c
+	sasfit_peak_loglogistic_amplitude.c
+	sasfit_peak_loglogistic_area.c
+	sasfit_peak_lognormal4parameter_amplitude.c
+	sasfit_peak_lognormal4parameter_area.c
+	sasfit_peak_lognormal_amplitude.c
+	sasfit_peak_lognormal_area.c
+	sasfit_peak_lorentzian_amplitude.c
+	sasfit_peak_lorentzian_area.c
+	sasfit_peak_maxwell_amplitude.c
+	sasfit_peak_maxwell_area.c
+	sasfit_peak_pearsonIV_amplitude.c
+	sasfit_peak_pearsonIV_area.c
+	sasfit_peak_pearsonVII_amplitude.c
+	sasfit_peak_pearsonVII_area.c
+	sasfit_peak_powerlognormal_area.c
+	sasfit_peak_powernormal_area.c
+	sasfit_peak_pulse_amplitude.c
+	sasfit_peak_pulse_area.c
+	sasfit_peak_pulse_with_2nd_width_amplitude.c
+	sasfit_peak_pulse_with_2nd_width_area.c
+	sasfit_peak_pulse_with_power_term_amplitude.c
+	sasfit_peak_pulse_with_power_term_area.c
+	sasfit_peak_student_t_amplitude.c
+	sasfit_peak_student_t_area.c
+	sasfit_peak_voigt_amplitude.c
+	sasfit_peak_voigt_area.c
+	sasfit_peak_weibull_amplitude.c
+	sasfit_peak_weibull_area.c
 	interface.c
 )
 

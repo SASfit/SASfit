@@ -172,7 +172,7 @@ typedef struct
 	double (*sasfit_pfq) (double *p_r, double *p_i,  double *q_r, double *q_i, int ip, int iq,
                           double z_r, double z_i, int ln_pFq, int ix,
                           double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param);/* 95 */
-	void *reserved96; /* 96 */
+	int (*sasfit_wofz) (double * xi, double * yi, double * u, double * v, long * flag__); /* 96 */
 	void *reserved97; /* 97 */
 	void *reserved98; /* 98 */
 	void *reserved99; /* 99 */
@@ -546,7 +546,11 @@ typedef struct
 #endif
 #ifndef sasfit_pfq
 #define sasfit_pfq \
-	(sasfit_common_stubs_ptr->sasfit_pfq) /* 94 */
+	(sasfit_common_stubs_ptr->sasfit_pfq) /* 95 */
+#endif
+#ifndef sasfit_wofz
+#define sasfit_wofz \
+	(sasfit_common_stubs_ptr->sasfit_wofz) /* 96 */
 #endif
 #ifndef sasfit_intdeiini
 #define sasfit_intdeiini \

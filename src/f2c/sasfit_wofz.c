@@ -1,5 +1,5 @@
 #include "math.h"
-#include "f2c.h"
+#include <f2c.h>
 
 /*      ALGORITHM 680, COLLECTED ALGORITHMS FROM ACM. */
 /*      THIS WORK PUBLISHED IN TRANSACTIONS ON MATHEMATICAL SOFTWARE, */

@@ -1908,7 +1908,2094 @@ sasfit_peak_DLLEXP scalar sasfit_peak_giddings_amplitude_f(scalar q, sasfit_para
 sasfit_peak_DLLEXP scalar sasfit_peak_giddings_amplitude_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop peak_giddings_amplitude ################ */
 
+/* ################ start peak_haarhoff_vander_linde_area ################ */
+/** 
+ * \defgroup peak_haarhoff_vander_linde_area Haarhoff Van der Linde Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Haarhoff Van der Linde Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b distortion</td>
+ *       <td>distortion parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
 
+/**
+ * \ingroup peak_haarhoff_vander_linde_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_haarhoff_vander_linde_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_haarhoff_vander_linde_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_haarhoff_vander_linde_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_haarhoff_vander_linde_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_haarhoff_vander_linde_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_haarhoff_vander_linde_area ################ */
+
+/* ################ start peak_half_gaussian_modified_gaussian_area ################ */
+/** 
+ * \defgroup peak_half_gaussian_modified_gaussian_area half Gaussian modified Gaussian Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of half Gaussian modified Gaussian Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b distortion</td>
+ *       <td>distortion parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_half_gaussian_modified_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_half_gaussian_modified_gaussian_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_half_gaussian_modified_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_half_gaussian_modified_gaussian_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_half_gaussian_modified_gaussian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_half_gaussian_modified_gaussian_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_half_gaussian_modified_gaussian_area ################ */
+
+/* ################ start peak_inverted_gamma_area ################ */
+/** 
+ * \defgroup peak_inverted_gamma_area Inverted Gamma Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Inverted Gamma Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_inverted_gamma_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_inverted_gamma_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_inverted_gamma_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_inverted_gamma_area ################ */
+
+/* ################ start peak_inverted_gamma_amplitude ################ */
+/** 
+ * \defgroup peak_inverted_gamma_amplitude Inverted Gamma Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Inverted Gamma Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center parameter of distribution</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_inverted_gamma_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_inverted_gamma_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_inverted_gamma_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_inverted_gamma_amplitude ################ */
+
+/* ################ start peak_kumaraswamy_area ################ */
+/** 
+ * \defgroup peak_kumaraswamy_area Kumaraswamy Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Kumaraswamy Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b xmin</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b xmax</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_kumaraswamy_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_kumaraswamy_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_kumaraswamy_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_kumaraswamy_area ################ */
+
+/* ################ start peak_kumaraswamy_amplitude ################ */
+/** 
+ * \defgroup peak_kumaraswamy_amplitude Kumaraswamy Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Kumaraswamy Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b xmin</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b xmax</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_kumaraswamy_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_kumaraswamy_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_kumaraswamy_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_kumaraswamy_amplitude ################ */
+
+/* ################ start peak_laplace_area ################ */
+/** 
+ * \defgroup peak_laplace_area Laplace Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Laplace Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_laplace_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_laplace_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_laplace_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_laplace_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_laplace_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_laplace_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_laplace_area ################ */
+
+/* ################ start peak_laplace_amplitude ################ */
+/** 
+ * \defgroup peak_laplace_amplitude Laplace Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Laplace Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_laplace_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_laplace_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_laplace_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_laplace_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_laplace_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_laplace_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_laplace_amplitude ################ */
+
+/* ################ start peak_logistic_area ################ */
+/** 
+ * \defgroup peak_logistic_area Logistic Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Logistic Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_logistic_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logistic_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logistic_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logistic_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logistic_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logistic_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_logistic_area ################ */
+
+/* ################ start peak_logistic_amplitude ################ */
+/** 
+ * \defgroup peak_logistic_amplitude Logistic Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Logistic Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_logistic_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logistic_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logistic_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logistic_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logistic_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logistic_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_logistic_amplitude ################ */
+
+/* ################ start peak_loglogistic_area ################ */
+/** 
+ * \defgroup peak_loglogistic_area LogLogistic Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of LogLogistic Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b x0</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_loglogistic_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_loglogistic_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_loglogistic_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_loglogistic_area ################ */
+
+/* ################ start peak_loglogistic_amplitude ################ */
+/** 
+ * \defgroup peak_loglogistic_amplitude LogLogistic Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of LogLogistic Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b x0</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_loglogistic_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_loglogistic_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_loglogistic_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_loglogistic_amplitude ################ */
+
+/* ################ start peak_lognormal_area ################ */
+/** 
+ * \defgroup peak_lognormal_area LogNormal Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of LogNormal Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b x0</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_lognormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_lognormal_area ################ */
+
+/* ################ start peak_lognormal_amplitude ################ */
+/** 
+ * \defgroup peak_lognormal_amplitude LogNormal Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of LogNormal Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b x0</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_lognormal_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_lognormal_amplitude ################ */
+
+/* ################ start peak_lognormal4parameter_area ################ */
+/** 
+ * \defgroup peak_lognormal4parameter_area LogNormal4Parameter Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of LogNorma4Parameterl Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_lognormal4parameter_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal4parameter_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal4parameter_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_lognormal4parameter_area ################ */
+
+/* ################ start peak_lognormal4parameter_amplitude ################ */
+/** 
+ * \defgroup peak_lognormal4parameter_amplitude LogNormal4Parameter Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of LogNormal4Parameter Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_lognormal4parameter_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal4parameter_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lognormal4parameter_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_lognormal4parameter_amplitude ################ */
+
+/* ################ start peak_lorentzian_area ################ */
+/** 
+ * \defgroup peak_lorentzian_area Lorentzian Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Lorentzian Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_lorentzian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lorentzian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lorentzian_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_lorentzian_area ################ */
+
+/* ################ start peak_lorentzian_amplitude ################ */
+/** 
+ * \defgroup peak_lorentzian_amplitude Lorentzian Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Lorentzian Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_lorentzian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lorentzian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_lorentzian_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_lorentzian_amplitude ################ */
+
+/* ################ start peak_maxwell_area ################ */
+/** 
+ * \defgroup peak_maxwell_area Maxwell Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Maxwell Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b x0</td>
+ *       <td>offset parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_maxwell_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_maxwell_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_maxwell_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_maxwell_area ################ */
+
+/* ################ start peak_maxwell_amplitude ################ */
+/** 
+ * \defgroup peak_maxwell_amplitude Maxwell Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Maxwell Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b x0</td>
+ *       <td>offset parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_maxwell_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_maxwell_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_maxwell_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_maxwell_amplitude ################ */
+
+/* ################ start peak_pearsonIV_area ################ */
+/** 
+ * \defgroup peak_pearsonIV_area PearsonIV Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of PearsonIV Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape1</td>
+ *       <td>first shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b shape2</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pearsonIV_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonIV_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonIV_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pearsonIV_area ################ */
+
+/* ################ start peak_pearsonIV_amplitude ################ */
+/** 
+ * \defgroup peak_pearsonIV_amplitude PearsonIV Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of PearsonIV Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape1</td>
+ *       <td>first shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b shape2</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pearsonIV_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonIV_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonIV_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pearsonIV_amplitude ################ */
+
+/* ################ start peak_pearsonVII_area ################ */
+/** 
+ * \defgroup peak_pearsonVII_area PearsonVII Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of PearsonVII Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pearsonVII_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonVII_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonVII_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pearsonVII_area ################ */
+
+/* ################ start peak_pearsonVII_amplitude ################ */
+/** 
+ * \defgroup peak_pearsonVII_amplitude PearsonVII Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of PearsonVII Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pearsonVII_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonVII_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pearsonVII_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pearsonVII_amplitude ################ */
+
+/* ################ start peak_powerlognormal_area ################ */
+/** 
+ * \defgroup peak_powerlognormal_area power LogNormal Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of power LogNormal Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b location</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>first shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b p</td>
+ *       <td>second shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_powerlognormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_powerlognormal_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_powerlognormal_area
+ *
+ * \sa sasfit_peak.h, peak_powerlognormal_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_powerlognormal_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_powerlognormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_powerlognormal_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_powerlognormal_area ################ */
+
+/* ################ start peak_powernormal_area ################ */
+/** 
+ * \defgroup peak_powernormal_area power Normal Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of power Normal Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b location</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_powernormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_powernormal_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_powernormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_powernormal_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_powernormal_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_powernormal_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_powernormal_area ################ */
+
+/* ################ start peak_pulse_area ################ */
+/** 
+ * \defgroup peak_pulse_area Pulse Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Pulse Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pulse_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_area
+ *
+ * \sa sasfit_peak.h, peak_pulse_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pulse_area ################ */
+
+/* ################ start peak_pulse_amplitude ################ */
+/** 
+ * \defgroup peak_pulse_amplitude Pulse Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Pulse Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pulse_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pulse_amplitude ################ */
+
+/* ################ start peak_pulse_with_2nd_width_area ################ */
+/** 
+ * \defgroup peak_pulse_with_2nd_width_area Pulse with 2nd width term Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Pulse with 2nd width term Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width1</td>
+ *       <td>first width parameter</td>
+ *      </tr><tr>
+ *       <td>\b width2</td>
+ *       <td>second width parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pulse_with_2nd_width_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_2nd_width_area
+ *
+ * \sa sasfit_peak.h, peak_pulse_with_2nd_width_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_2nd_width_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pulse_with_2nd_width_area ################ */
+
+/* ################ start peak_pulse_with_2nd_width_amplitude ################ */
+/** 
+ * \defgroup peak_pulse_with_2nd_width_amplitude Pulse with 2nd width term Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Pulse with 2nd width term Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width1</td>
+ *       <td>first width parameter</td>
+ *      </tr><tr>
+ *       <td>\b width2</td>
+ *       <td>second width parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pulse_with_2nd_width_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_2nd_width_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_2nd_width_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pulse_with_2nd_width_amplitude ################ */
+
+/* ################ start peak_pulse_with_power_term_area ################ */
+/** 
+ * \defgroup peak_pulse_with_power_term_area Pulse with power term Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Pulse with power term Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pulse_with_power_term_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_power_term_area
+ *
+ * \sa sasfit_peak.h, peak_pulse_with_power_term_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_power_term_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pulse_with_power_term_area ################ */
+
+/* ################ start peak_pulse_with_power_term_amplitude ################ */
+/** 
+ * \defgroup peak_pulse_with_power_term_amplitude Pulse with power term Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Pulse with power term Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shaper</td>
+ *       <td>shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_pulse_with_power_term_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_power_term_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_pulse_with_power_term_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_pulse_with_power_term_amplitude ################ */
+
+/* ################ start peak_student_t_area ################ */
+/** 
+ * \defgroup peak_student_t_area Student-t Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Student-t Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_student_t_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_student_t_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_student_t_area
+ *
+ * \sa sasfit_peak.h, peak_student_t_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_student_t_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_student_t_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_student_t_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_student_t_area ################ */
+
+/* ################ start peak_student_t_amplitude ################ */
+/** 
+ * \defgroup peak_student_t_amplitude Student-t Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Student-t Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_student_t_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_student_t_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_student_t_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_student_t_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_student_t_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_student_t_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_student_t_amplitude ################ */
+
+/* ################ start peak_voigt_area ################ */
+/** 
+ * \defgroup peak_voigt_area Voigt Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Voigt Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>Gaussian width parameter</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>Lorentzian width parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ */
+
+/**
+ * \ingroup peak_voigt_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_voigt_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_voigt_area
+ *
+ * \sa sasfit_peak.h, peak_voigt_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_voigt_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_voigt_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_voigt_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_voigt_area ################ */
+
+/* ################ start peak_voigt_amplitude ################ */
+/** 
+ * \defgroup peak_voigt_amplitude Voigt Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Voigt Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>Gaussian width parameter</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>Lorentzian width parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_voigt_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_voigt_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_voigt_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_voigt_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_voigt_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_voigt_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_voigt_amplitude ################ */
+
+/* ################ start peak_weibull_area ################ */
+/** 
+ * \defgroup peak_weibull_area Weibull Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of Weibull Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter </td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_weibull_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_weibull_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_weibull_area
+ *
+ * \sa sasfit_peak.h, peak_weibull_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_weibull_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_weibull_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_weibull_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_weibull_area ################ */
+
+/* ################ start peak_weibull_amplitude ################ */
+/** 
+ * \defgroup peak_weibull_amplitude Weibull Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of Weibull Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b width</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b shape</td>
+ *       <td>shape parameter </td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_weibull_amplitudes
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_weibull_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_weibull_amplitudes
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_weibull_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_weibull_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_weibull_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_weibull_amplitude ################ */
 
 #endif // this file
 

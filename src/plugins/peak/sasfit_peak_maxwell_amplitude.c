@@ -1,0 +1,66 @@
+/*
+ * src/sasfit_peaks/sasfit_peak_MaxwellArea.c
+ *
+ * Copyright (c) 2008-2011, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ */
+
+#include "include/private.h"
+#include <sasfit_error_ff.h>
+
+#define AMPL	param->p[0]
+#define OFFSET	param->p[1]
+#define WIDTH	param->p[2]
+#define DUMMY1	param->p[3]
+#define DUMMY2	param->p[4]
+#define BACKGR	param->p[5]
+#define MODE	param->p[MAXPAR-1]
+
+scalar sasfit_peak_maxwell_amplitude(scalar x, sasfit_param * param)
+{
+	scalar c;
+
+	SASFIT_ASSERT_PTR( param );
+
+	SASFIT_CHECK_COND1((WIDTH == 0), param, "width(%lg) == 0",WIDTH);
+	MODE=sqrt(2)*fabs(WIDTH)+OFFSET;
+	if (x <= OFFSET)  return BACKGR;
+	c = sqrt(2/M_PI)/gsl_pow_3(fabs(WIDTH))*gsl_pow_2(MODE-OFFSET)*exp(-0.5*gsl_pow_2((MODE-OFFSET)/WIDTH));
+	return BACKGR+AMPL/c*sqrt(2/M_PI)/gsl_pow_3(fabs(WIDTH))*gsl_pow_2(x-OFFSET)*exp(-0.5*gsl_pow_2((x-OFFSET)/WIDTH));
+}
+
+
+scalar sasfit_peak_maxwell_amplitude_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
+scalar sasfit_peak_maxwell_amplitude_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}

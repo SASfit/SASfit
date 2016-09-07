@@ -307,6 +307,9 @@ declare 95 generic {
                   double z_r, double z_i, int ln_pFq, int ix,
                   double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param)
 }
+declare 96 generic {
+	int sasfit_wofz(double * xi, double * yi, double * u, double * v, long * flag__)
+}
 declare 108 generic {
 	void sasfit_intccini(int lenw, double *w)
 }
