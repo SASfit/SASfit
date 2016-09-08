@@ -392,7 +392,7 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     if(EXISTS ${TARGET})
         file(REMOVE_RECURSE ${TARGET})
     endif()
-    file(RENAME ${SOURCE_DIR} ${TARGET})
+    file(RENAME "${SOURCE_DIR}" "${TARGET}")
 
     # look again for the source directory, should be ready now
     get_package_dir(${CURRENT_DIR})
@@ -406,7 +406,7 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
 
     # applying any patches lying around in ${CURRENT_DIR}
-    execute_process(COMMAND sh -c "for fn in ../*.patch; do
+    execute_process(COMMAND sh -c "for fn in $(ls -1 ../*.patch); do
                                      echo \"Applying '$fn':\";
                                      patch -p1 < \"$fn\";
                                    done"
