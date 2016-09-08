@@ -1,11 +1,14 @@
-0.94.8 2016-08-24
+0.94.8 2016-09-7
+- moved all peak functions into the plugin area.
 - Added the possibility to apply after the summation of all scattering contributions a final operator. 
-  At the moment betwee three operator can be choosen>
+  At the moment between three operator can be choosen:
   1) Unit opreator which does do anything with the data
   2) Taking the Hankel transform 2pi*H[I(Q)], which is converting SAS model into a SESANS model
   3) Applying the operator from 2) and taking the exponetial function of it exp(2pi*H[I(Q)])
-- For the extension to SESANS also an option for reading SESANS data. 
-  The format has been defined as *.ses files in Delft.
+- For the extension to SESANS also an option for reading SESANS data has been supplied. 
+  The format has been defined by TU Delft and has the default extension *.ses.
+- added a model for of a self-fine random density distribution (gDAB) both under non-particular 
+  structures as well as under SESANS as a correlation function.
 - updated to FFTW 3.3.5
 - supplying some alternative integration routines for integrating over the size distribution
 - bug fix of sasfit_integrate routine, which caused a crash when called from plugin functions

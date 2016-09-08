@@ -7,13 +7,14 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(9)
+SASFIT_PLUGIN_EXP_BEGIN(10)
 SASFIT_PLUGIN_EXP_ADD( ff_generalized_guinier_porod_law )
 SASFIT_PLUGIN_EXP_ADD( ff_extended_guinier_law )
 SASFIT_PLUGIN_EXP_ADD( ff_beaucage_exppowlaw_2 )
 SASFIT_PLUGIN_EXP_ADD( ff_beaucage_exppowlaw )
 SASFIT_PLUGIN_EXP_ADD( ff_spinodal )
 SASFIT_PLUGIN_EXP_ADD( ff_debye_anderson_brumberger )
+SASFIT_PLUGIN_EXP_ADD( ff_g_dab )
 SASFIT_PLUGIN_EXP_ADD( ff_ornstein_zernike )
 SASFIT_PLUGIN_EXP_ADD( ff_broad_peak )
 SASFIT_PLUGIN_EXP_ADD( ff_teubner_strey )

@@ -148,8 +148,8 @@ I(q) = I_0 \frac{1}{\left[1+(q\xi)^2\right]^2}
 
 \underline{Input Parameters for model \texttt{Debye-Anderson-Brumberger}:}\\
 \begin{description}
-\item[\texttt{I0}] forward scattering $I_0$
 \item[\texttt{xi}] correlation length $\xi$
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
 \end{description}
 
 \underline{Note:}
@@ -165,6 +165,44 @@ I(q) = I_0 \frac{1}{\left[1+(q\xi)^2\right]^2}
 \caption{Some typical curves for the Debye-Anderson-Brumberger model function} \label{fig:DABIq}
 \end{figure}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{Generalization of the Debye-Anderson-Brumberger model (gDAB)}
+\label{sect:gDAB}~\\
+The Debye-Anderson-Brumberger(DAB) model from the previous section \ref{sect:DAB} can be considered as a special case from a more general correlation function describing self-affine random density distributions \cite{Klimes2002,Hunter2006,Andersson2008}
+\begin{align}
+\gamma(r) &=
+\frac{2}{\Gamma(H)}\left(\frac{r}{2a}\right)^H K_H\left(\frac{r}{a}\right)
+\end{align}
+where $K_n(x)$ is the modified Bessel function of the second kind
+and $\Gamma$ is the Gamma function. $H$ is the so-called Hurst
+exponent with typical valuse around $\frac12$. For $H=\frac12$ the gDAB-model results into the the DAB model describes in section \ref{sect:DAB}. The scattering intensity is implemented as
+\begin{align}
+I(q) =  \frac{\left(\Delta\eta 4\pi(1+2H)\xi^3\right)^2}{\left[1+(q\xi)^2\right]^{\frac32+H}}
+\end{align}
+
+
+\underline{Input Parameters for model \texttt{gDAB}:}\\
+\begin{description}
+\item[\texttt{xi}] correlation length $\xi$
+\item[\texttt{H}] Hurst exponent $H$
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item None
+\end{itemize}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{../images/form_factor/nonparticular/gDAB.png}
+\end{center}
+\caption{Some typical curves for the generalized Debye-Anderson-Brumberger model function} \label{fig:gDABIq}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -348,7 +386,7 @@ per unit area per unit mass (cm$^2$ \AA$^{-2}$ g$^{-1}$) of a sheet.
 \underline{Input Parameters for model \texttt{generalized Guinier law}:}\\
 \begin{description}
 \item[\texttt{I0}] scaling factor $I0$.
-\item[\texttt{a}]  dimensionality parameter $\alpha$ for potential law at small 
+\item[\texttt{a}]  dimensionality parameter $\alpha$ for potential law at small
      $Q$-values; $\alpha=0$: sphere, $\alpha=1$: rod, $\alpha=2$: lamellar
 \item[\texttt{Ra}] radius of gyration $R_{a}$
 \end{description}
@@ -389,7 +427,7 @@ Q_1 &= \frac{1}{R_{g1}}\sqrt{\left(m-s_1\right)\frac{3-s_1}{2}} \\
 D   &= G_1 \exp\left(-\frac{Q_1^2 R_{g1}^2}{3-s_1}\right) Q_1^{m-s_1}
 \label{eq:generalizedGuinierPorodConstrains}
 \end{align}
-The constrains for the parameters are $R_{g2}>R_{g1}$, $3>s_1>s_2$, and $m>s_1$. The reason for that is, that the functions and their derivatives used in \ref{eq:generalizedGuinierPorod} are strongly monotonic decaying and the constrains are required to get a continuous function and derivative at $Q_1$ and $Q_2$. 
+The constrains for the parameters are $R_{g2}>R_{g1}$, $3>s_1>s_2$, and $m>s_1$. The reason for that is, that the functions and their derivatives used in \ref{eq:generalizedGuinierPorod} are strongly monotonic decaying and the constrains are required to get a continuous function and derivative at $Q_1$ and $Q_2$.
 
 \hspace{1pt}\\
 \underline{Input Parameters for model \texttt{generalized Guinier-Porod law}:}\\
@@ -405,7 +443,7 @@ The constrains for the parameters are $R_{g2}>R_{g1}$, $3>s_1>s_2$, and $m>s_1$.
 \hspace{1pt}\\
 \underline{Note:}
 \begin{itemize}
-\item parameter constrain: $R_{g2}>R_{g1}$ 
+\item parameter constrain: $R_{g2}>R_{g1}$
 \item parameter constrain: $3>s_1>s_2$
 \item parameter constrain: $m>s_1$
 \end{itemize}
@@ -415,4 +453,4 @@ The constrains for the parameters are $R_{g2}>R_{g1}$, $3>s_1>s_2$, and $m>s_1$.
 \includegraphics[width=0.85\textwidth,height=0.6\textwidth]{GuinierPorodIQ.png}
 \end{center}
 \caption{some examples showing the behaviour of the generalized Guinier-Porod law} \label{fig:GuinierPorodIQ}
-\end{figure}
+\end{figure} 

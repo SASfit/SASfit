@@ -350,6 +350,55 @@ sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_anderson_brumberger_f(scalar
 sasfit_non_particular_DLLEXP scalar sasfit_ff_debye_anderson_brumberger_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_debye_anderson_brumberger ################ */
 
+/* ################ start ff_g_dab ################ */
+/** 
+ * \defgroup ff_g_dab gDAB
+ * \ingroup ff_non-particular
+ *
+ * \brief I(Q,Rg,I0) = (4 pi eta (1+2H))^2 (xi)^6/(1+Q^2*xi^2)^(3/2+H)
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b H</td>
+ *       <td>Hurst exponent</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>scattering length density contrast</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_g_dab
+ *
+ * \sa sasfit_non_particular.h, ff_non-particular
+ */
+sasfit_non_particular_DLLEXP scalar sasfit_ff_g_dab(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_g_dab
+ *
+ * \sa sasfit_non_particular.h, ff_non-particular
+ */
+sasfit_non_particular_DLLEXP scalar sasfit_ff_g_dab_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_g_dab
+ *
+ * \sa sasfit_non_particular.h, ff_non-particular
+ */
+sasfit_non_particular_DLLEXP scalar sasfit_ff_g_dab_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_g_dab ################ */
+
 /* ################ start ff_ornstein_zernike ################ */
 /** 
  * \defgroup ff_ornstein_zernike Ornstein-Zernike

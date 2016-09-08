@@ -47,7 +47,7 @@
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -55,7 +55,7 @@
  *       <td>amplitude</td>
  *      </tr><tr>
  *       <td>\b x_min</td>
- *       <td>lower bound/td>
+ *       <td>lower bound</td>
  *      </tr><tr>
  *       <td>\b x_max</td>
  *       <td>upper bound</td>
@@ -102,7 +102,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_beta_amplitude_v(scalar q, sasfit_param * 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -157,7 +157,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_beta_area_v(scalar q, sasfit_param * p, in
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -212,7 +212,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_amplitude_v(scalar q, sasfit_p
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -267,7 +267,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_area_v(scalar q, sasfit_param 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -322,7 +322,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_erfc_amplitude_v(scalar q, sasfit_param * 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -377,7 +377,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_erfc_area_v(scalar q, sasfit_param * p, in
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -432,7 +432,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_error_amplitude_v(scalar q, sasfit_param *
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -488,7 +488,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_error_area_v(scalar q, sasfit_param * p, i
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -543,7 +543,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_amplitude_
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -598,7 +598,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_area_v(sca
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -653,7 +653,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_amplitude_v(scalar q, sasfit
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -708,7 +708,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_area_v(scalar q, sasfit_para
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -763,7 +763,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_amplitude_v(scalar q, sasfit_
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -818,7 +818,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_area_v(scalar q, sasfit_param
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -873,7 +873,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_amplitude_v(scalar q, sasfit_pa
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -928,7 +928,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_area_v(scalar q, sasfit_param *
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -983,7 +983,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gamma_amplitude_v(scalar q, sasfit_param *
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1038,7 +1038,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gamma_area_v(scalar q, sasfit_param * p, i
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1093,7 +1093,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_amplitude_v(scalar q, sasfit_para
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1148,7 +1148,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_area_v(scalar q, sasfit_param * p
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1203,7 +1203,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_amplitud
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1258,7 +1258,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_area_v(s
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1313,7 +1313,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_amplitude_v(scalar
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1367,7 +1367,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_area_v(scalar q, s
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1422,7 +1422,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_amplitude_v(scalar q
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1477,7 +1477,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_area_v(scalar q, sas
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1532,7 +1532,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_area_v(scalar q, sas
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1587,7 +1587,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_amplitude_v(scalar q
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1642,7 +1642,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_area_v(scalar q, sasfi
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1697,7 +1697,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_amplitude_v(scalar q, 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1752,7 +1752,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude_v(scalar q, sasfit_param * p
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1807,7 +1807,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_v(scalar q, sasfit_param * p, int
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1862,7 +1862,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_giddings_area_v(scalar q, sasfit_param * p
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1917,7 +1917,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_giddings_amplitude_v(scalar q, sasfit_para
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -1972,7 +1972,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_haarhoff_vander_linde_area_v(scalar q, sas
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2027,7 +2027,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_half_gaussian_modified_gaussian_area_v(sca
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2082,7 +2082,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_area_v(scalar q, sasfit_par
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2137,7 +2137,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_amplitude_v(scalar q, sasfi
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2192,7 +2192,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_area_v(scalar q, sasfit_param 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2247,7 +2247,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_amplitude_v(scalar q, sasfit_p
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2302,7 +2302,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_laplace_area_v(scalar q, sasfit_param * p,
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2357,7 +2357,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_laplace_amplitude_v(scalar q, sasfit_param
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2412,7 +2412,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_logistic_area_v(scalar q, sasfit_param * p
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2467,7 +2467,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_logistic_amplitude_v(scalar q, sasfit_para
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2522,7 +2522,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_area_v(scalar q, sasfit_param 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2577,7 +2577,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_amplitude_v(scalar q, sasfit_p
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2632,7 +2632,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_area_v(scalar q, sasfit_param * 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2687,7 +2687,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_amplitude_v(scalar q, sasfit_par
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2742,7 +2742,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_area_v(scalar q, sasfi
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2797,7 +2797,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_amplitude_v(scalar q, 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2852,7 +2852,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_area_v(scalar q, sasfit_param *
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2907,7 +2907,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_amplitude_v(scalar q, sasfit_pa
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -2962,7 +2962,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_area_v(scalar q, sasfit_param * p,
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3017,7 +3017,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_amplitude_v(scalar q, sasfit_param
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3072,7 +3072,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_area_v(scalar q, sasfit_param * 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3127,7 +3127,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_amplitude_v(scalar q, sasfit_par
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3182,7 +3182,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_area_v(scalar q, sasfit_param *
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3237,7 +3237,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_amplitude_v(scalar q, sasfit_pa
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3292,7 +3292,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_powerlognormal_area_v(scalar q, sasfit_par
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3347,7 +3347,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_powernormal_area_v(scalar q, sasfit_param 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3402,7 +3402,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_area_v(scalar q, sasfit_param * p, i
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3457,7 +3457,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_amplitude_v(scalar q, sasfit_param *
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3512,7 +3512,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_area_v(scalar q, sasf
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3567,7 +3567,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_amplitude_v(scalar q,
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3622,7 +3622,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_area_v(scalar q, sas
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3677,7 +3677,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_amplitude_v(scalar q
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3732,7 +3732,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_student_t_area_v(scalar q, sasfit_param * 
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3787,7 +3787,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_student_t_amplitude_v(scalar q, sasfit_par
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3841,7 +3841,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_voigt_area_v(scalar q, sasfit_param * p, i
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3896,7 +3896,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_voigt_amplitude_v(scalar q, sasfit_param *
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>
@@ -3951,7 +3951,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_weibull_area_v(scalar q, sasfit_param * p,
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
- * \note Default (Size) Distribution: \ref delta
+ * \note Default (Size) Distribution: \ref Delta
  *
  * \par Required parameters:
  *      <table border="0"><tr>

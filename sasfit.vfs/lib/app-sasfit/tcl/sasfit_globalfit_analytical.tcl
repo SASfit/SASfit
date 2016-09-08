@@ -3699,30 +3699,6 @@ proc analyticalGlobalSDCmd {simorfit
 	{mieFF "Mie FF for SLS" {MieSphere \
 				 MieShell}} \
 	{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
-	{peaks "Peaks" {{amplitude "Amplitude Functions" { \
-							  {{generalized Maxwell (Amplitude)} Monodisperse} \
-							  {{Pearson IV (Amplitude)} Monodisperse} \
-							  {{Pearson VII (Amplitude)} Monodisperse} \
-							  {{pulse (Amplitude)} Monodisperse} \
-							  {{pulse with 2nd width (Amplitude)} Monodisperse} \
-							  {{pulse with power term (Amplitude)} Monodisperse} \
-							  {{Student-t (Amplitude)} Monodisperse} \
-							  {{Voigt (Amplitude)} Monodisperse} \
-							  {{Weibull (Amplitude)} Monodisperse} \
-					  }   }
-			{area "Area Functions" { \
-							  {{generalized Maxwell (Area)} Monodisperse} \
-							  {{Pearson IV (Area)} Monodisperse} \
-							  {{Pearson VII (Area)} Monodisperse} \
-							  {{power LogNormal (Area)} Monodisperse} \
-							  {{power Normal (Area)} Monodisperse}
-							  {{pulse (Area)} Monodisperse} \
-							  {{pulse with 2nd width (Area)} Monodisperse} \
-							  {{pulse with power term (Area)} Monodisperse} \
-							  {{Student-t (Area)} Monodisperse} \
-							  {{Voigt (Area)} Monodisperse} \
-							  {{Weibull (Area)} Monodisperse} \
-					  }   }   }   } \
 	{others "other form factors" {   LangevinMH DoubleShell_withSD \
 					{SuperParStroboPsi Delta} \
 					{SuperParStroboPsi2 Delta} \ 

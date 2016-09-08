@@ -16,6 +16,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_beaucage_exppowlaw.c
 	sasfit_ff_spinodal.c
 	sasfit_ff_debye_anderson_brumberger.c
+	sasfit_ff_g_dab.c
 	sasfit_ff_ornstein_zernike.c
 	sasfit_ff_broad_peak.c
 	sasfit_ff_teubner_strey.c
