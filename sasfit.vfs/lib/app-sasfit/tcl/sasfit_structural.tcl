@@ -689,7 +689,7 @@ proc seriesSetOutFile { configarr outFile
 	if {[info exists arr(output_individual)]} {
 		set fname [file tail $outFile]
 		set dir [file dirname $outFile]
-		set arr(series_outfile) [file join $dir "%s $fname"]
+		set arr(series_outfile) [file join $dir "%s_$fname"]
 	} else {
 		set arr(series_outfile) $outFile
 	}
