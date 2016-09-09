@@ -13,6 +13,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_gz_sphere.c
 	sasfit_ff_gz_dab.c
 	sasfit_ff_gz_generalized_dab.c
+	sasfit_ff_gz_ggc.c
 	interface.c
 )
 

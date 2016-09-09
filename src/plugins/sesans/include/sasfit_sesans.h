@@ -183,6 +183,53 @@ sasfit_sesans_DLLEXP scalar sasfit_ff_gz_generalized_dab_f(scalar q, sasfit_para
 sasfit_sesans_DLLEXP scalar sasfit_ff_gz_generalized_dab_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_gz_generalized_dab ################ */
 
+/* ################ start ff_gz_ggc ################ */
+/** 
+ * \defgroup ff_gz_ggc G_gGc(z)
+ * \ingroup ff_sesans
+ *
+ * \brief \<some brief description of G_gGc(z) (generalized Gaussian coil) \>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rg </td>
+ *       <td>radius of gyration</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>Flory exponent (should be between 0 and 1/2)</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b beta^2</td>
+ *       <td>forward scattering or squared excess scattering length</td>
+ *      </tr></table>
+ */
 
+/**
+ * \ingroup ff_gz_ggc
+ *
+ * \sa sasfit_sesans.h, ff_sesans
+ */
+sasfit_sesans_DLLEXP scalar sasfit_ff_gz_ggc(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_gz_ggc
+ *
+ * \sa sasfit_sesans.h, ff_sesans
+ */
+sasfit_sesans_DLLEXP scalar sasfit_ff_gz_ggc_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_gz_ggc
+ *
+ * \sa sasfit_sesans.h, ff_sesans
+ */
+sasfit_sesans_DLLEXP scalar sasfit_ff_gz_ggc_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_gz_ggc ################ */
 #endif // this file
 
