@@ -64,6 +64,7 @@ proc saveBatchResult { configarr } {
 
 	# create output filename
 	set basename [join [lindex $::sasfit(file,name) end] " "]
+	set basename [join [lrange [split "$basename" {.}] 0 end-1] .]
 
 	set result {}
 	lappend result $basename
@@ -79,7 +80,7 @@ proc saveBatchResult { configarr } {
 
 	set fname "fitresult.csv"
 	if {[string length $basename] > 0} {
-		set fname "$basename fitresult.csv"
+		set fname "${basename}_fitresult.csv"
 	}
 	if {[info exists ca(series_outfile)] &&
 		[string first "%s" $ca(series_outfile)] >= 0
