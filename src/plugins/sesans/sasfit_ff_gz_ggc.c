@@ -21,6 +21,7 @@ scalar sasfit_ff_gz_ggc(scalar z, sasfit_param * param)
     SASFIT_CHECK_COND1((NU <= 0.0), param, "nu(%lg) <= 0",NU); // modify condition to your needs
     SASFIT_CHECK_COND1((NU >= 0.5), param, "nu(%lg) >= 0.5",NU); // modify condition to your needs
 	// insert your code here
+    gsl_set_error_handler_off();
 	w = z*z/((1 + 3*NU + 2*NU*NU)*RG*RG);
     G0 =  I0*(3*M_PI)/((1 - 5*gsl_pow_2(NU) + 4*gsl_pow_4(NU))*gsl_pow_2(RG));
     if (z==0) return 0;
