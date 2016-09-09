@@ -143,11 +143,9 @@ P(q) &= 2\int_0^1 \mathrm{d}x \; (1-x)e^{-q^2R_g^2(2\nu+1)(2\nu+2)x^{2\nu}}
 The unnormalized autocorrelation function the order of integration over $x$ and  over $q$ for the Hankel transform can be changed and one gets
 \begin{align}
 \tilde{G}_\mathrm{gGc}(z) &=
- I_0 \pi \left(
- \frac{  \left(\frac{3w}{4}\right)^{\frac{1}{2\nu}} \frac{4}{w} \Gamma \left(1-\frac{1}{2 \nu },\frac{3 w}{4}\right)}{\nu  (\nu +1) (2
-   \nu +1) R_g^2}-\frac{ \left(\frac{3w}{4}\right)^{\frac{1}{\nu }} \frac{4}{w} \Gamma \left(1-\frac{1}{\nu },\frac{3 w}{4}\right)}{\nu
-   (\nu +1) (2 \nu +1) R_g^2} \right)\\
-   w &= \frac{z^2}{\left(2 \nu ^2+3 \nu +1\right) R_g^2}
+ \frac{I_0 4\pi}{\nu z^2} \left(
+   w^{\frac{1}{2\nu}} \Gamma \left(1-\frac{1}{2 \nu },w\right) - w^{\frac{1}{\nu }} \Gamma \left(1-\frac{1}{\nu },w\right) \right)\\
+   w &= \frac34 \frac{z^2}{\left(2 \nu ^2+3 \nu +1\right) R_g^2}
 \end{align}
 where $\Gamma(a,x) = \int_x^\infty \mathrm{d}t \; t^{a-1} \exp(-t)$ is the upper incomplete Gamma Function.
 The limit $\tilde{G}_\mathrm{gGc}(0)$ is only finite for $\nu \in \left(0,\frac12\right)$
