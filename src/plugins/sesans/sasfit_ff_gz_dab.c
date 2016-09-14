@@ -32,7 +32,7 @@ scalar sasfit_ff_gz_dab(scalar z, sasfit_param * param)
     } else {
         Gz=G0*u*gsl_sf_bessel_K1(u);
     }
-	return Gz-G0;
+	return (Gz-G0)*gsl_pow_2(2*M_PI); // not clear yet wy /gsl_pow_2(2*M_PI); is needed
 }
 
 scalar sasfit_ff_gz_dab_f(scalar q, sasfit_param * param)

@@ -62,7 +62,7 @@ scalar sasfit_ff_gz_generalized_dab(scalar z, sasfit_param * param)
         KH = sqrt(M_PI)*pow(2*u,(H+0.5))*exp(-u)*gsl_sf_hyperg_U((H+1),2*H+2,2*u);
     }
     Gz = KH*V*pow(2,1.5-H)*sqrt(M_PI)*pow(u,H)*sqrt(z*A)/gsl_sf_gamma(H);
-    return Gz-G0;
+    return (Gz-G0)*gsl_pow_2(2*M_PI); // not clear yet wy /gsl_pow_2(2*M_PI); is needed
 }
 
 scalar sasfit_ff_gz_generalized_dab_f(scalar q, sasfit_param * param)
