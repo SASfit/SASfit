@@ -556,24 +556,18 @@ proc plugin_gui_create_files { p plg_name funclist importlist } {
 		-title "Plugin created successfully" \
 		-message \
 "Plugin directory written successfully !\n
-To build the plugin, you need to have CMake 2.6 (www.cmake.org) and a build environment installed (e.g. GCC, MinGW).
+To build the plugin, you need to have CMake (cmake.org) and a build environment installed (e.g. GCC, MinGW on Windows).
 
-Open a command shell or terminal window and type:
+In a terminal window, running CMake again followed by make will build this new plugin:
 
-> cd \"$dir\"
-> cmake .
+> cd \"$::sasfit_basedir/build\"
+> cmake ../src
 > make
 
 On Windows, you may want to run cmake this way:
 
-> cmake . -G \"MinGW Makefiles\"
-or
-> cmake . -G \"MSYS Makefiles\"
-or
-> cmake . -G \"Visual Studio 8 2005\"
-
-Double-Click on the generated \".sln\" file to open the project and chose \"build\".
-See also: 'cmake --help'"
+> cmake ../src -G \"MSYS Makefiles\"
+"
 }
 
 ############################## navigation marker #########################
