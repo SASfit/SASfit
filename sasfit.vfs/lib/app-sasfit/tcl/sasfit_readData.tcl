@@ -1852,8 +1852,8 @@ proc read_HMI {filename HMIData} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $HMIData Data
 
-# catch {unset Data}
-if {![info exist Data]} {create_ALVData Data}
+catch {unset Data}
+#if {![info exist Data]} {create_HMIData Data}
 if { !([file readable $filename] && [file isfile $filename])  } {
    return 0
 }
@@ -2092,8 +2092,8 @@ while {![eof $f]} {
 #------------------------------------------------------------------------------
 #           get item "ItemName" of type "ItemType" in block "BlockName" 
 #
-# SESANSData: array containing the different blocks of a HMI data file which can
-#             be read with "read_HMI $filename HMIData"
+# SESANSData: array containing the different blocks of a SESANS data file which can
+#             be read with "read_SESANS $filename SESANSData"
 # BlockName:  string containing the name of teh block from which an item to
 #             be read.
 # ItemName:   string containing the name of the item to be read.

@@ -141,7 +141,7 @@ assign_mixing_strategy(const char * token, sasfit_oz_data * OZD)
     return 0;
 }
 
-#define OZMAXCLOSURES 40
+#define OZMAXCLOSURES 41
 int
 assign_closure(const char * token, sasfit_oz_data * OZD)
 {
@@ -189,6 +189,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
     ClosureNames[37] = "PLHNC";
     ClosureNames[38] = "modified HNC";
     ClosureNames[39] = "MHNC";
+    ClosureNames[40] = "EuRah";
 
     i=0;
     eq=-1;
@@ -276,6 +277,9 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
         case 38 :
         case 39 :
             OZD->cl=MHNC;
+            break;
+        case 40 :
+            OZD->cl=EuRah;
             break;
         default :
             OZD->cl=PY;
@@ -920,8 +924,8 @@ int sasfit_oz_assign_data_sq_cmd(ClientData clientData,
                 PUTS("<q*sigma> and <S(q*sigma)> need to have the same length",0);
                 return TCL_ERROR;
         }
-        if (q==NULL) free(q);
-        if (Sq==NULL) free(Sq);
+        if (q!=NULL) free(q);
+        if (Sq!=NULL) free(Sq);
         q = (double *)malloc(sizeof(double)*lq);
         Sq = (double *)malloc(sizeof(double)*lq);
         for (i=0; i<lq; i++) {

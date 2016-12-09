@@ -3,13 +3,14 @@
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
  *   extended and last modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   25.09.2015
+ *   07.12.2016
  *   Andersen Acceleration option has been implemented by Alain Studer
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <sasfit_oz.h>
 #include <bool.h>
+#include "../sasfit_old/include/sasfit.h"
 #include "../sasfit_old/include/sasfit.h"
 #include "../sasfit_old/include/SASFIT_x_tcl.h"
 
@@ -443,6 +444,7 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 #define r   OZd->r
 #define DR  OZd->dr
 #define k   OZd->k
+#define Q0PQ OZd->Q0pQ
 #define GF  OZd->Gf
 #define G  OZd->G
 #define Gprevious  OZd->Gprevious
@@ -462,6 +464,7 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 #define MAYER OZd->fr
 #define dr  OZd->dr
 #define c  OZd->c
+#define CEURAH  OZd->c_EuRah
 #define CFOLD OZd->cfold
 #define CFNEW OZd->cfnew
 #define cf OZd->cf
@@ -473,6 +476,9 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 #define CLOSURE OZd->cl
 #define Fswitch OZd->f
 #define S OZd->S
+#define S0PSQ OZd->S0pSq
+#define F2 OZd->F2
+#define SIGMA_2 (OZd->pPot[0]/2.)
 #define MIXCOEFF OZd->mixcoeff
 #define MAXSTEPS OZd->maxsteps
 #define RELERROR OZd->relerror
@@ -482,12 +488,13 @@ int addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 // Initialization of memory needed for computation
 
 int OZ_init(sasfit_oz_data *OZd) {
-   double *tp;
+   double *tp, dk, QR;
    int i;
    OZd->it=0;
    OZd->beta=1.0/(kb*T);
    r      = (double*)malloc((NP)*sizeof(double));
    k      = (double*)malloc((NP)*sizeof(double));
+   Q0PQ      = (double*)malloc((NP+1)*sizeof(double));
    EN     = (double*)malloc((NP)*sizeof(double));
    G      = (double*)malloc((NP)*sizeof(double));
    Gprevious      = (double*)malloc((NP)*sizeof(double));
@@ -498,11 +505,14 @@ int OZ_init(sasfit_oz_data *OZd) {
    g0     = (double*)malloc((NP)*sizeof(double));
    c      = (double*)malloc((NP)*sizeof(double));
    cf     = (double*)malloc((NP)*sizeof(double));
+   CEURAH = (double*)malloc((NP)*sizeof(double));
    CFOLD  = (double*)malloc((NP)*sizeof(double));
    CFNEW  = (double*)malloc((NP)*sizeof(double));
    GF     = (double*)malloc((NP)*sizeof(double));
    Fswitch= (double*)malloc((NP)*sizeof(double));
    S      = (double*)malloc((NP)*sizeof(double));
+   S0PSQ  = (double*)malloc((NP+1)*sizeof(double));
+   F2     = (double*)malloc((NP)*sizeof(double));
    UBETA  = (double*)malloc((NP)*sizeof(double));
    dU_dR  = (double*)malloc((NP)*sizeof(double));
    BRIDGE = (double*)malloc((NP)*sizeof(double));
@@ -512,8 +522,18 @@ int OZ_init(sasfit_oz_data *OZd) {
    OZOUT  = (double*)fftw_malloc(sizeof(double)*NP);
 
  //  GAMMA_R  = gsl_vector_view_array(G,NP);
+ 
+   OZd->acc_splineOZSQ=gsl_interp_accel_alloc ();
    GAMMA_R  = gsl_vector_alloc(NP);
+
+   dk = M_PI/((NP+1.0)*dr);
+   OZd->dq=dk;
    for (i=0; i < NP; i++) {
+        r[i]=(i+1)*dr;
+        k[i]=(i+1)*dk;
+        QR = (SIGMA_2*k[i]);
+        F2[i] = 2./3./M_PI*gsl_pow_3(SIGMA_2)*gsl_pow_2(3*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR));
+        CEURAH[i] = crPY(r[i],OZd->phi);
         G[i]=0;
    }
    OZd->pl=fftw_plan_r2r_1d(NP, OZIN, OZOUT, FFTW_RODFT00, FFTW_ESTIMATE);
@@ -709,6 +729,49 @@ int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
  //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
  return flag;
 }
+
+int FP4cr_EuRah(sasfit_oz_data *OZd) {
+    int status; 
+    double err;
+    N_Vector u, f, scale;
+    void * kin_mem;
+    int flag, maxlrst;
+                maxlrst = MAXSTEPS/10;
+				scale = N_VNew_Serial(NP);
+                N_VConst_Serial(1.0, scale);        /* no scaling */
+                kin_mem=NULL;
+				u = N_VNew_Serial(NP);
+                cp_array_to_N_Vector(CEURAH,u,NP);
+                
+				kin_mem = KINCreate();
+                OZd->kin_mem=kin_mem;
+                KIN_sasfit_configure(kin_mem,OZd);
+                
+   				flag = KINInit(kin_mem,OZ_EuRah_step_kinsol,u);
+                if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
+                 
+				flag = KINSpfgmr(kin_mem, 0);
+                if (OZd->PrintProgress) sasfit_out("KINSpfgmr(flag)=%d\n",flag);
+//                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
+//                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
+				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
+                if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
+                if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
+                KINGetFuncNorm(kin_mem, &err);
+                if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
+                
+				N_VDestroy_Serial(u);
+                N_VDestroy_Serial(scale);
+				KINFree(&kin_mem);
+                if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
+
+                
+    status = OZ_solver(OZd); 
+    if (status != TCL_OK) {
+        sasfit_err("could not solve OZ equations\n");
+        return TCL_ERROR;
+    }
+};
 
 int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algorithm) {
     double err, errold;
@@ -2169,6 +2232,9 @@ int OZ_calculation (sasfit_oz_data *OZd) {
         sasfit_out("Root finding\n");
         root_finding(OZd);
         if (OZd->failed==1) return TCL_ERROR;
+  } else if (CLOSURE==EuRah) {
+        FP4cr_EuRah(OZd);
+        if (OZd->failed==1) return TCL_ERROR;
   } else if (CLOSURE==RMSA) {
         CLOSURE=MSA;
         sasfit_out("Solving with MSA-closure first ...");
@@ -2514,6 +2580,13 @@ double OZ_step(sasfit_oz_data *OZd) {
                 OZIN[i]=(i+1)*c[i];
             }
             break;
+        case EuRah:
+            for (i=0; i < NP; i++){
+                c[i]=CEURAH[i];
+                g[i]= c[i]+G[i]+1.0;
+                OZIN[i]=(i+1)*c[i];
+            }
+            break;
     }
 
     cp_array_to_gsl_vector(G,GAMMA_R,NP);
@@ -2601,18 +2674,115 @@ static int OZ_step_kinsolFP(N_Vector cc, N_Vector fval, void *OZd_structure) {
     }
 }
 
+void calc_dy(double *y, double *dy, double dx, int np, void *OZd_structure) {
+    int n;
+    dy[0] = (y[1]-y[0])/dx;
+    for (n=1;n<(np-1);n++)  dy[n] = (y[n+1]-y[n-1])/(2*dx);
+    dy[np-1] = (y[np-1]-y[np-2])/dx;
+}
+
+static int OZ_EuRah_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
+    sasfit_oz_data *OZd;
+    int i;
+    double NormCr, phiorig, Drho, Dphi, *dydr, *dydrdrho, *dydrho, *dydr_rhop1, *dydr_rhom1, *dydrhop1, *dydrhom1;
+    OZd = (sasfit_oz_data*) OZd_structure;
+    cp_N_Vector_to_array(cc,CEURAH,NP);
+    dydr = (double*)malloc((NP)*sizeof(double));
+    dydrhom1 = (double*)malloc((NP)*sizeof(double));
+    dydrhop1 = (double*)malloc((NP)*sizeof(double));
+    dydrho = (double*)malloc((NP)*sizeof(double));
+    dydrdrho = (double*)malloc((NP)*sizeof(double));
+    dydr_rhop1 = (double*)malloc((NP)*sizeof(double));
+    dydr_rhom1 = (double*)malloc((NP)*sizeof(double));
+    
+    Dphi = PHI*0.01;
+    Drho = Dphi*6/M_PI/gsl_pow_3(OZd->pPot[0]);
+    phiorig = PHI;
+    PHI=phiorig-Dphi;
+    OZ_solver(OZd);
+    calc_dy(CAVITY,dydr_rhom1,dr,NP,OZd);
+    for (i=0;i<NP;i++) {
+        dydrhom1[i]=CAVITY[i];
+    } 
+    
+    PHI=phiorig+Dphi;
+    OZ_solver(OZd);
+    calc_dy(CAVITY,dydr_rhop1,dr,NP, OZd);
+    for (i=0;i<NP;i++) {
+        dydrhop1[i]=CAVITY[i];
+    } 
+    
+    PHI=phiorig;
+    OZ_solver(OZd);
+    calc_dy(CAVITY,dydr,dr,NP, OZd);
+    
+    NormCr=0;
+    for (i=0;i<NP;i++) {
+        dydrdrho[i]=(dydr_rhop1[i]-dydr_rhom1[i])/(2*Drho);
+        dydrho[i]=(dydrhop1[i]-dydrhom1[i])/(2*Drho);
+        CEURAH[i] = 1./36.*MAYER[i]*(36*CAVITY[i]+18*PHI*dydr[i]+12.*r[i]*dydrho[i]+6*PHI*r[i]*dydrdrho[i]);
+        NormCr=NormCr+CEURAH[i]*CEURAH[i];
+    }
+    sasfit_out("NormCr:%lg\n",NormCr);
+    free(dydr);
+    free(dydrhom1);
+    free(dydrhop1);
+    free(dydrho);
+    free(dydrdrho);
+    free(dydr_rhop1);
+    free(dydr_rhom1);
+    
+    cp_array_diff_N_Vector_to_N_Vector(CEURAH,cc,fval,NP);
+    check_interrupt(OZd);
+    if (OZd->GNorm != OZd->GNorm) {
+        for (i=0;i<NP;i++) {
+            G[i] = 0;
+            CEURAH[i] = 0;
+        }
+        return -1;
+    } 
+    if (OZd->interrupt != 0){
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+double PInvariantKernel(double q, void *OZd) {
+    double QR;
+    QR = fabs(((sasfit_oz_data *) OZd)->pPot[0]/2.0*q);
+    if (QR > 0) {
+        return  2./3./M_PI*gsl_pow_3(((sasfit_oz_data *) OZd)->pPot[0]/2.0)*gsl_pow_2(3*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR)) * q*q;
+    } else {
+        return  2./3./M_PI*gsl_pow_3(((sasfit_oz_data *) OZd)->pPot[0]/2.0) * q*q;
+    }
+}
+
+double PSInvariantKernel(double q, void *OZd) {
+    double Sspline, res ,sigmaR;
+    int evalOK;
+    
+    sigmaR = ((sasfit_oz_data *) OZd)->pPot[0]*q;
+    if (((sasfit_oz_data *) OZd)->OZSQakima_T==NULL) {
+        Sspline = 1.0;
+	} else {
+	     evalOK=gsl_spline_eval_e(((sasfit_oz_data *) OZd)->OZSQakima_T,sigmaR,((sasfit_oz_data *) OZd)->acc_splineOZSQ,&res);
+	     if (evalOK==GSL_SUCCESS) {
+            Sspline=res;
+	     } else {
+            Sspline = 1.0;
+	     }
+	}
+    return Sspline*PInvariantKernel(q,OZd);
+}
+
+
+
 // Iterative solution of Ornstein-Zernike equation
 int OZ_solver (sasfit_oz_data *OZd) {
     int i,status;
-    double V, dk;
+    double V;
     OZ_func_one_t * tmp_potential;
-
-    dk = M_PI/((NP+1.0)*dr);
-
-    for (i=0; i < NP; i++) {
-        r[i]=(i+1)*dr;
-        k[i]=(i+1)*dk;
-    }
 
     if (CLOSURE==RHNC) {
         tmp_potential =OZd->potential;
@@ -2738,7 +2908,6 @@ int OZ_solver (sasfit_oz_data *OZd) {
     OZd->Sq0=extrapolate(k[0],k[1],k[2],S[0],S[1],S[2]);
     OZd->gr0=extrapolate(r[0],r[1],r[2],g[0],g[1],g[2]);
     OZd->cr0=extrapolate(r[0],r[1],r[2],c[0],c[1],c[2]);
-    OZd->dq=dk;
     return status;
 }
 
@@ -2783,11 +2952,13 @@ int OZ_pot_der(sasfit_oz_data *OZd)
 
 double compressibility_calc(double scp, void *params)
 {    sasfit_oz_data *OZd;
-     int i;
+     int i, lenaw=100000000;
+     double *aw, err, res;
      double iphi;
-     double S0, chicp, chivir,Delta_chi, r1,r2,r3,P2,P3, sum2,sum3;
-     sum2=0.0;
-     sum3=0.0;
+     double S0, chicp, chivir,Delta_chi, r1,r2,r3,P2,P3, sum2,sum3, Iqinf,R;
+
+   sum2=0.0;
+   sum3=0.0;
 
    OZd = (sasfit_oz_data *) params;
    ALPHA=scp;
@@ -2795,6 +2966,38 @@ double compressibility_calc(double scp, void *params)
    iphi = PHI;
    OZ_solver(OZd);
    S0=OZd->Sq0;
+   OZd->F2xS_Inv = 0;
+   OZd->F2_Inv = 0;
+ /*  
+   Q0PQ[0] = 0;
+   S0PSQ[0] = OZd->Sq0;
+   for (i=1; i<=NP; i++) {
+        Q0PQ[i] = k[i-1];
+        S0PSQ[i] = S[i-1]; 
+   }
+   OZd->OZSQakima_T = gsl_spline_alloc(gsl_interp_akima,NP+1);
+   gsl_spline_init(OZd->OZSQakima_T, Q0PQ, S0PSQ, NP+1);
+   sasfit_out("did the initialization.\nnew spline generated from %d data points\n",NP+1);
+
+    aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+    sasfit_intdeiini(lenaw, GSL_DBL_MIN, 1e-10, aw);
+    sasfit_intdei(&PSInvariantKernel, 0.0, //k[NP-1],
+                  aw, &res, &err,OZd);
+    OZd->F2xS_Inv=res;
+    sasfit_intdei(&PInvariantKernel, 0.0, //k[NP-1], 
+                  aw, &res, &err,OZd);
+    OZd->F2_Inv=res;
+    free(aw);
+    gsl_spline_free(OZd->OZSQakima_T);
+       
+   OZd->F2xS_Inv=(OZd->F2xS_Inv +Iqinf) / (1-PHI);
+   OZd->F2_Inv  = OZd->F2_Inv   +Iqinf;
+   sasfit_out("1: %e %e\n",OZd->F2xS_Inv, OZd->F2_Inv);
+   sasfit_out("2: %e %e %e\n",OZd->F2xS_Inv/ OZd->F2_Inv-1, k[NP-1], err);
+*/  
+//  The commented code above was for testing the mass conservation. It seems, at leat as fas as the simple numerics allows to check it 
+//  that mass conservation seems to be fullfilled
+   
    r1=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    chicp=S0*OZd->beta/r1;
 
@@ -2892,6 +3095,7 @@ void root_finding (sasfit_oz_data *OZd) {
     refold=0;
     signchange = 0;
     sasfit_out("\nSearching for the interval where sign changes: \n");
+    sasfit_out("-----------------------------------------------------\n");
     sasfit_out("%s |  %s \n","self-consistency parameter" , "(chicomp-chivir)/beta");
     sasfit_out("---------------------------|-------------------------\n");
     
@@ -2919,9 +3123,9 @@ void root_finding (sasfit_oz_data *OZd) {
                 break;
     }
     refold=compressibility_calc(alpha_right, OZd);
-    sasfit_out("          %15g  |   %15g \n", alpha_right , refold/OZd->beta);
+    sasfit_out("          % 15e  |   % 15e\n", alpha_right, refold/OZd->beta);
     refnew=compressibility_calc(alpha_left, OZd);
-    sasfit_out("          %15g  |   %15g \n", alpha_left , refnew/OZd->beta);
+    sasfit_out("          % 15e  |   % 15e\n", alpha_left, refnew/OZd->beta);
 
     if ((refnew*refold<0)) {
             signchange=1;
@@ -2985,7 +3189,7 @@ void root_finding (sasfit_oz_data *OZd) {
             alpha_right  = -0.5+0.1*i;
             alpha_left = -0.5+0.1*(i-1);
         }
-        sasfit_out("          %15g  |   %15g \n", alpha_left , refnew/OZd->beta);
+        sasfit_out("          % 15e  |   % 15e \n", alpha_left , refnew/OZd->beta);
 
         if ((refnew*refold<0)) {
             signchange=1;
@@ -3020,7 +3224,7 @@ void root_finding (sasfit_oz_data *OZd) {
     }
     if (signchange==1 && OZd->interrupt == 0 && OZd->failed==0) {
         root = 0.0;
-        alpha_left;
+        x_lo = alpha_left;
         x_hi = alpha_right;
         
         F.function = &compressibility_calc;
@@ -3030,7 +3234,10 @@ void root_finding (sasfit_oz_data *OZd) {
         s = gsl_root_fsolver_alloc (Tt);
         gsl_root_fsolver_set (s, &F, x_lo, x_hi);
         sasfit_out("using %s method\n",gsl_root_fsolver_name (s));
-        sasfit_out(" iter |  lower      upper  |    root    err(est)\n");
+        
+        sasfit_out(" --------------------------------------------------------------\n");
+        sasfit_out(" iter |   lower          upper     |     root         err(est) \n");
+        sasfit_out(" --------------------------------------------------------------\n");
         iter = 0;
         max_iter = 100;
         gsl_set_error_handler_off ();
@@ -3044,8 +3251,7 @@ void root_finding (sasfit_oz_data *OZd) {
             if (status == GSL_SUCCESS) {
                 sasfit_out("Converged:\n");
             }
-            sasfit_out("%5d |%.7f, %.7f| %.7f %.7f\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
-
+            sasfit_out("%5d |% 6.5e, % 6.5e| % 6.5e % 6.5e\n", iter, x_lo, x_hi,  root,  x_hi - x_lo);
             Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
             Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
             check_interrupt(OZd);
@@ -3062,6 +3268,7 @@ void root_finding (sasfit_oz_data *OZd) {
 int OZ_free (sasfit_oz_data *OZd) {
     free(r);
     free(k);
+    free(Q0PQ);
     free(EN);
     free(G);
     free(Gprevious);
@@ -3074,16 +3281,20 @@ int OZ_free (sasfit_oz_data *OZd) {
     free(UBETA);
     free(c);
     free(cf);
+    free(CEURAH);
     free(CFNEW);
     free(CFOLD);
     free(GF);
     free(Fswitch);
     free(S);
+    free(S0PSQ);
+    free(F2);
     free(BRIDGE);
     free(CAVITY);
     free(MAYER);
     gsl_vector_free(GAMMA_R);
-
+    gsl_interp_accel_free(OZd->acc_splineOZSQ);
+    
     fftw_destroy_plan(OZd->pl);
     fftw_free(OZIN);
     fftw_free(OZOUT);

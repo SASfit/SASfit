@@ -984,7 +984,7 @@ by replacing the expression $\frac{\sin Qr}{Qr}$ in eq.\ \ref{IQofgamma}
 by a McLaurin series which leads to
 \BE
 I(Q) = V\, \int 4\pi\, r^2\, \gamma(r)\,
-       \left[1-\frac{Q^2r^2}{3!} + \frac{Q^4r^4}{5!} - \dots \right] \, dr
+       \left[1-\frac{Q^2r^2}{3!} + \frac{Q^4r^4}{5!} - \dots \right] \, \mathrm{d}r
        \quad ,
 \EE
 i.e.\ $I(Q)$ is expanded by moments $\overline{r^n}$ of $\gamma(r)$.
@@ -993,14 +993,14 @@ For the second term Guinier and Fournet \cite{book:Guinier:Fournet}
 have shown, that it can be related to the gyration radius of the scattering length density
 $R_G$ by
 \BE
-V\,\int 4\pi\, r^2\, \frac{Q^2r^2}{3!}\, \gamma(r)\, dr = I(0)\,
+V\,\int 4\pi\, r^2\, \frac{Q^2r^2}{3!}\, \gamma(r)\, \mathrm{d}r = I(0)\,
          \frac{Q^2R_G^2}{3}
      \quad \Rightarrow \quad
    I(Q) = I(0) \, \left( 1-\frac{Q^2R_G^2}{3} \right)
 \EE
 with $R_G^2 = \int \eta(r)\, r^2\, dr/\int \eta(r)\, dr$.
 Up to the term of $Q^4$ this series expansion at the beginning of the scattering curve
-is identical to the series expansion of an exponential function which than leads to
+is identical to the series expansion of an exponential function which then leads to
 the well known Guinier approximation
 \BE
 I(Q) = I(0)\, e^{-Q^2R_G^2/3} .
@@ -1018,17 +1018,19 @@ Another characteristic quantity, which can be easily extracted from
 the scattering curve $I(Q)$ is the correlation length $l_c$. The correlation length
 is defined as the average width of the correlation function  $\gamma(r)$:
 \BE
-l_c = \frac{2}{\gamma(0)}\, \int \gamma(r) \, dr .
+l_c = \frac{2}{\gamma(0)}\, \int \gamma(r) \, \mathrm{d}r .
 \label{eq:lc1}
 \EE
 Together with the definition of the scattering invariant $\tilde Q$ in
 eq.\  \ref{Invariante} and the relation between $I(Q)$ and $\gamma(r)$ in
-eq.\ \ref{gamma} this results after a short calculation (changing of
-integrations) to
-\BE
-l_c = \pi\, \frac{\int Q\, I(Q)\, dQ}{\int Q^2\, I(Q)\, dQ} \quad .
+eq.\ \ref{gamma} this results to
+\begin{align}
+l_c & =  \frac{2}{\frac{1}{2\pi^2 V}\int_0^\infty Q^2 I(Q)\mathrm{d}Q}\, \int \frac{1}{2\pi^2 V}\int_0^\infty Q^2 I(Q)\frac{\sin Qr}{Qr}\,\mathrm{d}Q \, \mathrm{d}r  \nonumber \\
+&= \frac{2}{\int_0^\infty Q^2 I(Q)\mathrm{d}Q}\, \int_0^\infty Q^2 I(Q) \int_0^\infty \frac{\sin Qr}{Qr} \, \mathrm{d}r \, \mathrm{d}Q \nonumber \\
+&= \frac{2}{\int_0^\infty Q^2 I(Q)\mathrm{d}Q}\, \int_0^\infty Q^2 I(Q) \frac{\pi}{2Q} \, \mathrm{d}Q \nonumber \\
+& = \pi\, \frac{\int Q\, I(Q)\, \mathrm{d}Q}{\int Q^2\, I(Q)\, \mathrm{d}Q} \quad .
 \label{eq:lc2}
-\EE
+\end{align}
 A sphere with radius $R$ has therefore a correlation length of $l_c = \frac{3}{2}\, R$.
 
 \subsubsection{Porod law and specific surfaces}

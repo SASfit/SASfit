@@ -1247,8 +1247,8 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
         }
         param4int.z = Q; 
         if (Qres <=0) {
-            sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Gz, &err,&param4int);
+            sasfit_intdeoini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intdeo(&HTIQ_OOURA, 0.0, Q, aw, &Gz, &err,&param4int);
         } else {
             sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intde(&HTIQ_OOURA, 0.0, Qres, aw, &Gz, &err,&param4int);

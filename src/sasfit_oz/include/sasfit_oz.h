@@ -51,7 +51,9 @@ Output variables:
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_roots.h>
+#include <gsl/gsl_sf.h>
 #include <gsl/gsl_const_mksa.h>
+#include <gsl/gsl_spline.h>
 #define PiCube 8*gsl_pow_3(M_PI)
 
 #include <fftw3.h>
@@ -85,7 +87,8 @@ typedef enum {
         MS,     // Martynov-Sarkisov Approximation
         CJVM,   // Chapentier-Jakse' semiempirical extention of the VM Approximation
         BB,     // Bomont-Bretonnet Approximation
-        KH      // Kovalenko-Hirata closure
+        KH,     // Kovalenko-Hirata closure
+        EuRah   // EuRah closure
 } sasfit_oz_closure;
 
 typedef enum {
@@ -157,14 +160,14 @@ typedef enum {
 typedef struct {
         Tcl_Interp *interp;
         double *r, *k, *En, *G, *Gprevious,
-               *G0, *g, *g0, *c, *h,
+               *G0, *g, *g0, *c, *c_EuRah, *h,
                *cf, *cfold, *cfnew,
-               *Gf,*f, *S,  *ud,
+               *Gf,*f, *S, *S0pSq, *Q0pQ, *F2,  *ud,
                *Br, *yr, *fr;
         int *gate4g, indx_min_appearent_sigma, indx_max_appearent_sigma;
         gsl_vector *gamma_r;
         double dr, dq, dr_dsigma;
-        double Sq0, gr0, cr0;
+        double Sq0, gr0, cr0, F2xS_Inv, F2_Inv;
         double T;
         int    it;
         double beta;
@@ -207,6 +210,9 @@ typedef struct {
         int KINSpilsSetMaxRestarts;
         int KINSolStrategy;
         double KINSetMaxNewtonStep;
+        gsl_interp_accel *acc_splineOZSQ;
+        gsl_spline * OZSQakima_T;
+        gsl_spline * OZSQcspline_T;
 } sasfit_oz_data;
 
 int OZ_init (sasfit_oz_data *);
@@ -215,6 +221,7 @@ int OZ_solver (sasfit_oz_data *);
 int OZ_free (sasfit_oz_data *);
 static int OZ_step_kinsol(N_Vector, N_Vector, void *);
 static int OZ_step_kinsolFP(N_Vector, N_Vector, void *);
+static int OZ_EuRah_step_kinsol(N_Vector, N_Vector, void *);
 
 double OZ_step(sasfit_oz_data *);
 double extrapolate (double x1, double x2, double x3, double y1, double y2, double y3);

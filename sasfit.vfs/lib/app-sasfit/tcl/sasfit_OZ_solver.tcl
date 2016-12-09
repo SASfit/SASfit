@@ -683,11 +683,9 @@ proc configOZalgorithm {} {
     		         "S* iteration" \
 				 "dNewton" "Hybrid" \
 	    		 "Hybrids (int. sc.)" "Broyden" \
-				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES"\
-				 "Steffensen iteration"
+				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
 			} \
 	    -textvariable OZ(algorithm) -width 19  -editable 0
-		
     
     grid  $w.algorithmtext -sticky e\
 	    -column 0 -row 15
