@@ -53,7 +53,7 @@ and
 \int_0^\infty \tilde{\gamma}(r) 4\pi r^2 \, \mathrm{d}r =\Delta\eta^2 V_P^2 \quad \mbox{or} \quad  \int_0^\infty \gamma_0(r) 4\pi r^2 \, \mathrm{d}r = V_P
 \end{align}
 where in case of spherical particle $V_P=\frac43 \pi R^3$
-In Fig.\ \ref{fig:FAHcycle} it is shown how the functions $\tilde{\gamma}(r)$, $\tilde{G}(z)$ and $IQ)$ are related to each other. However, the cycle is mathematically only exact for a two-dimensional Fourier transformation on a radial symmetric function. 
+In Fig.\ \ref{fig:FAHcycle} it is shown how the functions $\tilde{\gamma}(r)$, $\tilde{G}(z)$ and $IQ)$ are related to each other. However, the cycle is mathematically only exact for a two-dimensional Fourier transformation on a radial symmetric function.
 Such a transformation cycle is called the projection-slice theorem which is a standard analysis in imaging \cite{Bracewell2003}. The projection-slice theorem makes use of the fact that the
 \begin{align}
 \mathcal{F}\mathcal{H}\mathcal{A}=\mathcal{F}\mathcal{A}\mathcal{H}=\mathcal{A}\mathcal{F}\mathcal{H}=\mathcal{I}
@@ -70,34 +70,42 @@ By pursuing the cycle of transforms in the opposite direction,one finds three fu
 
 \begin{figure}[htb]
 \begin{center}
-\begin{tikzpicture}[->,>=stealth,shorten >=5pt,auto,node distance=3cm,
+\begin{tikzpicture}[->,>=stealth,shorten >=5pt,auto,node distance=1cm,
   thick,main node/.style={circle,fill=blue!20,draw,
-  font=\sffamily\LARGE\bfseries,minimum size=15mm}]
+  font=\sffamily\large\bfseries,minimum size=10mm}]
 
-  \node[main node] (gamma0) at (5,15) {$\gamma_0(r)$};
-  \node[main node] (gamma) at (5,8.66) {$\tilde{\gamma}(r)$};
-  \node[main node] (IQ) at (10,0) {$I(Q)$};
-  \node[main node] (Gz) at (0,0) {$\tilde{G}(z)$};
+  \node[main node] (gamma0) at (3,7.5) {$\gamma_0(r)$};
+  \node[main node] (gamma) at (3,4.33) {$\tilde{\gamma}(r)$};
+  \node[main node] (IQp) at (6,0) {$\frac{\mathrm{d}\Sigma_p}{\mathrm{d}\Omega}(q)$};
+  \node[main node] (Gp) at (0,0) {$G_p(\delta)$};
+  \node[main node] (Gz) at (0,-4) {$\tilde{G}(\delta)$};
+  \node[main node] (IQ) at (6,-4) {$I(q)$};
    \pgfsetarrowsend{latex}
-  \pgfsetlinewidth{1ex}
+  \pgfsetlinewidth{0.5ex}
   \path[every node/.style={font=\sffamily\large,
   		fill=white,inner sep=1pt}]
   	% Right-hand-side arrows rendered from top to bottom to
   	% achieve proper rendering of labels over arrows.
 
-    (gamma0) edge [bend right=15] node[outer sep=6pt,pos=0.5,left] {
-    $\frac{\tilde{\gamma}(r)}{\Delta\eta^2}= \gamma_0(r) \int_0^\infty 4\pi r^2 \gamma_0(r) \mathrm{d}r$} (gamma)
-    (gamma) edge [bend right=15] node[outer sep=6pt,pos=0.5,right] { $ \gamma_0(r)= \frac{\tilde{\gamma}(r)}{\tilde{\gamma}(0)}=\frac{\tilde{\gamma}(r)}{V_p\Delta\eta^2}$} (gamma0)
-    (gamma) edge [bend right=15] node[outer sep=6pt,pos=0.5,sloped,below] { $ \mathcal{F}= (2\pi)^3\mathcal{F}^{-1}$} (IQ)
-            edge [bend right=15] node[outer sep=6pt,pos=0.5,sloped,above] { $ (2\pi)^2\mathcal{A}$} (Gz)
-    (Gz) edge [bend right=15] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{1}{2\pi}\mathcal{H}^{-1}=\frac{1}{2\pi}\mathcal{H}$} (IQ)
-         edge [bend right=15] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{1}{(2\pi)^2}\mathcal{A}^{-1}$} (gamma)
-    (IQ) edge [bend right=15] node[outer sep=6pt,pos=0.5,sloped,above] { $ 2\pi\mathcal{H}=2\pi\mathcal{H}^{-1}$} (Gz)
-         edge [bend right=15] node[outer sep=6pt,pos=0.5,sloped,above] { $ \mathcal{F}^{-1}=\frac{1}{(2\pi)^3}\mathcal{F}$} (gamma);
+    (gamma0) edge [bend right=10] node[outer sep=6pt,pos=0.5,left] {
+    $\begin{array}{l}
+       \tilde{\gamma}(r) = \gamma_0(r) \Delta\eta^2\, \times\\[2mm]
+       \quad \int_0^\infty 4\pi r^2 \gamma_0(r) \mathrm{d}r
+     \end{array}$} (gamma)
+    (gamma) edge [bend right=10] node[outer sep=6pt,pos=0.5,right] { $ \begin{array}{ll} \gamma_0(r)\!\!\!\!\! &= \frac{\tilde{\gamma}(r)}{\tilde{\gamma}(0)}\\[2mm] &=\frac{\tilde{\gamma}(r)}{V_p\Delta\eta^2}\end{array}$} (gamma0)
+    (gamma) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \mathcal{F}_{I,3D}$} (IQp)
+            edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ (2\pi)^2\mathcal{A}$} (Gp)
+    (Gp) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{1}{2\pi}\mathcal{H}_0^{-1}$} (IQp)
+         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{\mathcal{A}^{-1}}{(2\pi)^2}$} (gamma)
+         edge [bend right=0,dotted] node[outer sep=6pt,pos=0.5,sloped,below] { $ \int \mathrm{d}R\, n(R)$} (Gz)
+    (IQp) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ 2\pi\mathcal{H}_0$} (Gp)
+         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ \mathcal{F}_{I,3D}^{-1}$} (gamma)
+         edge [bend right=0,dotted] node[outer sep=6pt,pos=0.5,sloped,below] { $ \int \mathrm{d}R\, n(R)$} (IQ)
+    (IQ) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ 2\pi\mathcal{H}_0$} (Gz)
+    (Gz) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{1}{2\pi}\mathcal{H}_0^{-1}$} (IQ);
 \end{tikzpicture}
 \end{center}
-\caption{$\mathcal{FAH} $-cycle between $\gamma(r)$, $I(Q)$, and $G(z)$}
-\label{fig:FAHcycle}
+\caption{Transformation cycle between $\tilde{\gamma}(r)$, $I(q)$, and $\tilde{G}(\delta)$.}\label{fig:FAHcycle}
 \end{figure}
 
 \begin{figure}[htb]
