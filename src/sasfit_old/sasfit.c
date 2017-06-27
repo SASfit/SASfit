@@ -1,7 +1,7 @@
 /*
  * src/sasfit_old/sasfit.c
  *
- * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ * Copyright (c) 2008-2017, Paul Scherrer Institute (PSI)
  *
  * This file is part of SASfit.
  *
@@ -74,6 +74,7 @@
 #include <sasfit_core.h>
 #include <sasfit_plugin_backend.h>
 #include <sasfit_oz.h>
+#include <sasfit_frida.h>
 #include <omp.h>
 
 #define NRES 30
@@ -2994,6 +2995,9 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateCommand(interp, "sasfit_DebyeFit", (Tcl_CmdProc*) Sasfit_DebyeFitCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_OrnsteinZernickeFit", (Tcl_CmdProc*) Sasfit_OrnsteinZernickeFitCmd, NULL, NULL);
 
+	Tcl_CreateCommand(interp, "sasfit_FredholmIntegrals_Regularization", (Tcl_CmdProc*) Sasfit_FredholmIntegrals_RegularizationCmd, (void *)SASFIT_CData, NULL);
+
+
 	return Tcl_PkgProvide(interp, "sasfit", "1.0");
 }
 
@@ -3243,7 +3247,6 @@ Tcl_SetVar2(interp,argv[1],"ndata", sBuffer,0);
 	Tcl_Free((char *) AP);
 	return TCL_OK;
 }
-
 
 
 
@@ -3535,6 +3538,320 @@ free_ivector(ndata,0,GCP.nmultset-1);
 return TCL_OK;
 }
 
+/*############################################################################################*/
+/*#                                                                                          #*/
+/*# Sasfit_FredholmIntegrals_RegularizationCmd --                                            #*/
+/*#                                                                                          #*/
+/*#      This function implements the Tcl "Sasfit_FredholmIntegrals_Regularization" command. #*/
+/*#                                                                                          #*/
+/*# Results:                                                                                 #*/
+/*#      A standard Tcl result.                                                              #*/
+/*#                                                                                          #*/
+/*# Side effects:                                                                            #*/
+/*#      None.                                                                               #*/
+/*#                                                                                          #*/
+/*############################################################################################*/
+
+int Sasfit_FredholmIntegrals_RegularizationCmd(SASFIT_CData, interp, argc, argv)
+    struct sasfit_CData *SASFIT_CData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+sasfit_analytpar *GlobalAP;
+sasfit_commonpar GCP;
+int    i,j,m,k;
+int    max_SD;
+char   sBuffer[256];
+scalar  **h, **Ih, **DIh, **Ith, **Ihtrans, **DIhtrans, **Isub, **res;
+int    *lista;
+int    ma;
+int    mfit,*ndata,*hide, totndata;
+bool   error;
+int    error_type;
+scalar  *a;
+scalar  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
+scalar  avgsigma,varianceOFfit;
+scalar  alambda;
+Tcl_DString DsBuffer;
+
+error = FALSE;
+//Det2DPar.calc2D = FALSE;
+sasfit_param_override_init();
+
+if (argc != 5) {
+   sasfit_err("wrong # args: shoud be sasfit_iqglobalfit ?analyt_par? ?xyer_data? ?hide?\n");
+   return TCL_ERROR;
+}
+if (TCL_ERROR == get_GlobalAP(interp,argv,
+                        &GlobalAP,&GCP,&max_SD,&alambda,&error_type,
+                        &h,&Ih,&DIh,&res,&Ith,&ndata,&hide)) {
+   return TCL_ERROR;
+}
+
+
+sasfit_out("nmultset: %d\n",GCP.nmultset);
+
+Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
+DIhtrans = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
+Ihtrans = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
+for (k=0;k<GCP.nmultset;k++) {
+	Isub[k] = dvector(0,ndata[k]-1);
+	DIhtrans[k] = dvector(0,ndata[k]-1);
+	Ihtrans[k] = dvector(0,ndata[k]-1);
+}
+
+sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GlobalAP,&GCP,max_SD);
+
+if (SASFIT_CData->ma == 0) {
+   SASFIT_CData->lista = ivector(0,ma-1);
+   SASFIT_CData->a = dvector(0,ma-1);
+}
+if ((SASFIT_CData->ma != 0) && (   (SASFIT_CData->mfit != mfit)
+                                  || (SASFIT_CData->ma != ma    ))  ){
+   free_matrix(SASFIT_CData->alpha,0,SASFIT_CData->ma-1,
+                                     0,SASFIT_CData->ma-1);
+   free_matrix(SASFIT_CData->covar,0,SASFIT_CData->ma-1,
+                                     0,SASFIT_CData->ma-1);
+   free_dvector(SASFIT_CData->da,0,SASFIT_CData->ma-1);
+   free_dvector(SASFIT_CData->P_common,0,GCP.common_i-1);
+   free_dvector(SASFIT_CData->atry,0,SASFIT_CData->ma-1);
+   free_dvector(SASFIT_CData->beta,0,SASFIT_CData->ma-1);
+   free_matrix(SASFIT_CData->oneda,0,SASFIT_CData->ma-1,0,0);
+}
+if (    (SASFIT_CData->ma == 0)
+     || (SASFIT_CData->ma != ma)
+     || (SASFIT_CData->mfit != mfit) ) {
+   SASFIT_CData->alpha = matrix(0,ma-1,0,ma-1);
+   SASFIT_CData->covar = matrix(0,ma-1,0,ma-1);
+   SASFIT_CData->da    = dvector(0,ma-1);
+   SASFIT_CData->atry  = dvector(0,ma-1);
+   SASFIT_CData->P_common = dvector(0,GCP.common_i-1);
+   SASFIT_CData->common_i = GCP.common_i;
+   SASFIT_CData->beta  = dvector(0,ma-1);
+   SASFIT_CData->oneda = matrix(0,ma-1,0,0);
+}
+free_ivector(SASFIT_CData->lista,0,ma-1);
+free_dvector(SASFIT_CData->a,0,ma-1);
+SASFIT_CData->lista = lista;
+SASFIT_CData->a = a;
+SASFIT_CData->ma    = ma;
+SASFIT_CData->mfit  = mfit;
+SASFIT_CData->max_SD = max_SD;
+
+Tcl_ResetResult(interp);
+
+for (i=0;i<max_SD;i++) {
+	GlobalAP[i].dodydpar = 1;
+}
+
+if (sasfit_get_iq_or_gz() == 4) {
+    for (j=0;j<GCP.nmultset;j++) {
+        for (i=0;i<ndata[j];i++) {
+            Ihtrans[j][i] = log(Ih[j][i]/Ih[j][ndata[j]-1]);
+            DIhtrans[j][i] = sqrt( gsl_pow_2(DIh[j][i]/Ih[j][i]) + gsl_pow_2(DIh[j][ndata[j]-1]/Ih[j][ndata[j]-1]) );
+        } 
+ 	}
+} else {
+    for (j=0;j<GCP.nmultset;j++) {
+        for (i=0;i<ndata[j];i++) {
+            Ihtrans[j][i] = Ih[j][i];
+            DIhtrans[j][i] = DIh[j][i];
+        }
+    }
+}
+SASFITfridaGlobal(interp,h,Ihtrans,res,DIhtrans,Ith,Isub,ndata,max_SD,GlobalAP,&GCP,error_type,
+       SASFIT_CData,&chisq,IQ_Global,&alambda,&error);
+       
+if (error == TRUE) {
+   save_GlobalAP(interp,argv[1],GlobalAP,&GCP,max_SD,alambda);
+   for (k=0;k<GCP.nmultset;k++) {
+      free_dvector(Ith[k],0,ndata[k]-1);
+      free_dvector(Isub[k],0,ndata[k]-1);
+      free_dvector(h[k],0,ndata[k]-1);
+      free_dvector(res[k],0,ndata[k]-1);
+      free_dvector(Ih[k],0,ndata[k]-1);
+      free_dvector(DIh[k],0,ndata[k]-1);
+      free_dvector(DIhtrans[k],0,ndata[k]-1);
+      free_dvector(Ihtrans[k],0,ndata[k]-1);
+   }
+   free_dvector(GCP.P_common,0,GCP.common_i-1);
+   free_ivector(GCP.P_common_index,0,GCP.common_i-1);
+   free_dvector(GCP.P_common_err,0,GCP.common_i-1);
+   Tcl_Free((char *) GlobalAP);
+//   Tcl_Free((char *) *Isub);
+//   free_dvector(dydpar,0,ma-1);
+   free_ivector(ndata,0,GCP.nmultset-1);
+//   Tcl_Free((char *) *h);
+//   Tcl_Free((char *) *Ih);
+//   Tcl_Free((char *) *Ith);
+//   Tcl_Free((char *) *DIh);
+//   Tcl_Free((char *) *res);
+   return TCL_ERROR;
+}
+
+
+sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GlobalAP,&GCP,max_SD);
+
+chisq = 0.0;
+reducedchisq = 0.0;
+totndata = 0.0;
+mfit = 0.0;
+QQ = 0.0;
+R = 0.0;
+wR = 0.0;
+diffR = 0.0;
+wdiffR = 0.0;
+obsR = 0.0;
+wobsR = 0.0;
+avgsigma = 0.0;
+varianceOFfit = 0.0;
+
+Tcl_DStringInit(&DsBuffer);
+
+Tcl_DStringStartSublist(&DsBuffer);
+for (m=0;m<GCP.nmultset;m++) {
+   Tcl_DStringStartSublist(&DsBuffer);
+   for (i=0;i<ndata[m];i++) {
+      float_to_string(sBuffer,Ith[m][i]);
+      Tcl_DStringAppendElement(&DsBuffer,sBuffer);
+	  if (DIh[m][i] == 0) {
+	     sasfit_err("Sasfit_global_iqCmd: zero error bar\n");
+	     return TCL_ERROR;
+	  }
+	  chisq = chisq + pow((Ith[m][i]-Ih[m][i])/DIh[m][i],2.0);
+      diffR = diffR + fabs((Ith[m][i]-Ih[m][i]));
+      obsR = obsR + fabs(Ih[m][i]);
+	  wdiffR=wdiffR + (Ith[m][i]-Ih[m][i])*(Ith[m][i]-Ih[m][i])/(DIh[m][i]*DIh[m][i]);
+	  wobsR=wobsR + Ih[m][i]*Ih[m][i]/(DIh[m][i]*DIh[m][i]);
+	  avgsigma = avgsigma/(DIh[m][i]*DIh[m][i]);
+      totndata++;
+   }
+   Tcl_DStringEndSublist(&DsBuffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+
+Tcl_DStringStartSublist(&DsBuffer);
+for (j=0;j<GCP.nmultset;j++) {
+	Tcl_DStringStartSublist(&DsBuffer);
+	for (i=0;i<ndata[j];i++) {
+       if (((sasfit_get_iq_or_gz() == 1) || (sasfit_get_iq_or_gz() == 4)) && Isub[j][i]!=0) {
+           float_to_string(sBuffer,Ith[j][i]/Isub[j][i]);
+       } else {
+           float_to_string(sBuffer,Ith[j][i]-Isub[j][i]);
+       }
+       Tcl_DStringAppendElement(&DsBuffer,sBuffer);
+ 	}
+	Tcl_DStringEndSublist(&DsBuffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+
+Tcl_DStringStartSublist(&DsBuffer);
+for (j=0;j<GCP.nmultset;j++) {
+	Tcl_DStringStartSublist(&DsBuffer);
+	for (i=0;i<ndata[j];i++) {
+       if (((sasfit_get_iq_or_gz() == 1) || (sasfit_get_iq_or_gz() == 4)) && (Isub[j][i] !=0)){
+           float_to_string(sBuffer,Ih[j][i]/Isub[j][i]);
+       } else {
+           float_to_string(sBuffer,Ih[j][i]-Isub[j][i]);
+       }
+       Tcl_DStringAppendElement(&DsBuffer,sBuffer);
+ 	}
+	Tcl_DStringEndSublist(&DsBuffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+
+
+Tcl_DStringStartSublist(&DsBuffer);
+for (j=0;j<GCP.nmultset;j++) {
+	Tcl_DStringStartSublist(&DsBuffer);
+	for (i=0;i<ndata[j];i++) {
+   	   float_to_string(sBuffer,DIh[j][i]);
+       Tcl_DStringAppendElement(&DsBuffer,sBuffer);
+ 	}
+	Tcl_DStringEndSublist(&DsBuffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+
+
+Tcl_DStringStartSublist(&DsBuffer);
+for (m=0;m<GCP.nmultset;m++) {
+   Tcl_DStringStartSublist(&DsBuffer);
+   for (i=0;i<ndata[m];i++) {
+	  if (DIh[m][i] == 0) {
+	     sasfit_err("Sasfit_iqglobalfitCmd: zero error bar\n");
+	     return TCL_ERROR;
+	  }
+      float_to_string(sBuffer,(Ith[m][i]-Ih[m][i])/DIh[m][i]);
+      Tcl_DStringAppendElement(&DsBuffer,sBuffer);
+   }
+   Tcl_DStringEndSublist(&DsBuffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+
+
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+float_to_string(sBuffer,chisq);
+Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
+if ((totndata-mfit) !=0) {
+	reducedchisq = chisq/(totndata-mfit);
+}
+float_to_string(sBuffer,reducedchisq);
+Tcl_SetVar2(interp,argv[1],"reducedchisq", sBuffer,0);
+
+if (obsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,diffR/obsR);
+    }
+Tcl_SetVar2(interp,argv[1],"R", sBuffer,0);
+
+if (wobsR == 0) {
+        float_to_string(sBuffer,0);
+    } else {
+        float_to_string(sBuffer,sqrt(wdiffR/wobsR));
+    }
+Tcl_SetVar2(interp,argv[1],"wR", sBuffer,0);
+
+QQ=gsl_sf_gamma_inc_Q((totndata-mfit)/2.0,chisq/2.0);
+float_to_string(sBuffer,QQ);
+Tcl_SetVar2(interp,argv[1],"Q", sBuffer,0);
+if (avgsigma > 0) varianceOFfit=reducedchisq*totndata/avgsigma;
+float_to_string(sBuffer,varianceOFfit);
+Tcl_SetVar2(interp,argv[1],"varianceOFfit", sBuffer,0);
+
+save_GlobalAP(interp,argv[1],GlobalAP,&GCP,max_SD,alambda);
+for (k=0;k<GCP.nmultset;k++) {
+   free_dvector(Ith[k],0,ndata[k]-1);
+   free_dvector(Isub[k],0,ndata[k]-1);
+   free_dvector(h[k],0,ndata[k]-1);
+   free_dvector(res[k],0,ndata[k]-1);
+   free_dvector(Ih[k],0,ndata[k]-1);
+   free_dvector(DIh[k],0,ndata[k]-1);
+   free_dvector(DIhtrans[k],0,ndata[k]-1);
+   free_dvector(Ihtrans[k],0,ndata[k]-1);
+}
+free_dvector(GCP.P_common,0,GCP.common_i-1);
+free_ivector(GCP.P_common_index,0,GCP.common_i-1);
+free_dvector(GCP.P_common_err,0,GCP.common_i-1);
+
+Tcl_Free((char *) GlobalAP);
+free_ivector(ndata,0,GCP.nmultset-1);
+free_ivector(hide,0,GCP.nmultset-1);
+
+Tcl_Free((char *) Isub);
+Tcl_Free((char *) h);
+Tcl_Free((char *) Ih);
+Tcl_Free((char *) Ith);
+Tcl_Free((char *) DIh);
+Tcl_Free((char *) DIhtrans);
+Tcl_Free((char *) Ihtrans);
+Tcl_Free((char *) res);
+
+return TCL_OK;
+}
 
 
 /*#########################################################################*/

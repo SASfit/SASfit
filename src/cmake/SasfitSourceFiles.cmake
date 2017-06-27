@@ -379,6 +379,10 @@ set(SOURCE_sasfit_oz
 	sasfit_oz_tclcmd.c
 )
 
+set(SOURCE_sasfit_frida
+	sasfit_frida_solver.c
+)
+
 set(SOURCE_sasfit_old
 # former sasfit main
 	bessi0.c

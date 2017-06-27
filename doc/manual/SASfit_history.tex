@@ -1,5 +1,31 @@
 \appendix{History}
 \begin{description}
+\item[2017-xx-xx] \SASfit 0.94.9
+    \begin{itemize}
+    \item xxx
+    \end{itemize}
+\item[2016-12-16] \SASfit 0.94.8
+    \begin{itemize}
+        \item Moved all peak functions into the plugin area.
+        \item Added the possibility to apply after the summation of all scattering contributions a final operator.  At the moment between three operator can be chosen:
+        \begin{enumerate}
+            \item Unit operator which does not do anything with the data
+            \item Taking the Hankel transform 2pi*H[I(Q)] for converting SAS model into a projected correlation function G(delta), which defines the SESANS signal
+            \item Applying the operator from 2) and taking the exponential function of it exp(2pi*H[I(Q)]) to get SESANS signal
+        \end{enumerate}
+        \item  For the extension to SESANS also an option for reading SESANS data has been supplied. The format has been defined by TU Delft and has the default extension *.ses.
+        \item added a model for of a self-fine random density distribution (gDAB) both under non-particular  structures as well as under SESANS as a correlation function.
+        \item added a SESANS correlation function for a generalized Gaussian chain for Flory exponents between nu in (0,1/2)
+        \item updated to FFTW 3.3.5
+        \item updated to sundials 2.7.0
+        \item updated to gsl 2.3
+        \item supplying some alternative integration routines for integrating over the size distribution
+        \item bug fix of sasfit\_integrate routine, which caused a crash when called from plugin functions
+        \item first minimal routine for reading simple ascii data from ALV-5000 with single correlation function for DLS-analysis
+        \item adding the PLHNC and RMSA closure to the OZ solver
+        \item fixed a bug in the scaling parameter of the Teubner-Strey model
+        \item bugfix in routine for reading data in BerSANS format
+    \end{itemize}
 \item[2016-04-25] \SASfit 0.94.7
     \begin{itemize}
         \item  implementation of another cumulant formula for DLS

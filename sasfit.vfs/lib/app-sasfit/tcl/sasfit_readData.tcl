@@ -1372,7 +1372,7 @@ upvar $ASCIIData Data
 set Data(InputFormat) xye
 set Data(FileName) ""
 set Data(Ext) "dat"
-set Data(in_out) "nm->nm"
+set Data(in_out) "nm^-1->nm^-1"
 set Data(xscale) 1
 set Data(unit) nm
 set Data(npoints) 0
@@ -1411,16 +1411,34 @@ proc read_Ascii {filename ASCIIData args} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	upvar $ASCIIData Data
 	if {![info exist Data]} {create_ASCIIData Data}
-	if {[string equal $Data(in_out) "nm->Ångstrøm" ] == 1} {
-	   set Data(unit) Ångstrøm
+	set Data(unit) xxx
+	set Data(xscale) 1
+	if {[string equal $Data(in_out) "nm^-1->Ångström^-1" ] == 1} {
+	   set Data(unit) Ångström^-1
+	   set Data(xscale) 0.1
+	}
+	if {[string equal $Data(in_out) "Ångström^-1->nm^-1" ] == 1} {
+	   set Data(unit) nm^-1
 	   set Data(xscale) 10
 	}
-	if {[string equal $Data(in_out) "Ångstrøm->nm" ] == 1} {
+	if {[string equal $Data(in_out) "Ångström^-1->Ångström^-1" ] == 1} {
+	   set Data(unit) Ångström^-1
+	   set Data(xscale) 1.0
+	}
+	if {[string equal $Data(in_out) "nm^-1->nm^-1" ] == 1} {
+	   set Data(unit) nm^-1
+	   set Data(xscale) 1.0
+	}
+	if {[string equal $Data(in_out) "nm->Ångström" ] == 1} {
+	   set Data(unit) Ångström
+	   set Data(xscale) 10
+	}
+	if {[string equal $Data(in_out) "Ångström->nm" ] == 1} {
 	   set Data(unit) nm
 	   set Data(xscale) 0.1
 	}
-	if {[string equal $Data(in_out) "Ångstrøm->Ångstrøm" ] == 1} {
-	   set Data(unit) Ångstrøm
+	if {[string equal $Data(in_out) "Ångström->Ångström" ] == 1} {
+	   set Data(unit) Ångström
 	   set Data(xscale) 1.0
 	}
 	if {[string equal $Data(in_out) "nm->nm" ] == 1} {
@@ -2332,16 +2350,32 @@ proc read_Clipboard {ASCIIData args} {
 upvar $ASCIIData Data
 #puts $args
 if {![info exist Data]} {create_ASCIIData Data}
-if {[string equal $Data(in_out) "nm->Ångstrøm" ] == 1} {
-   set Data(unit) Ångstrøm
+if {[string equal $Data(in_out) "nm^-1->Ångström^-1" ] == 1} {
+   set Data(unit) Ångström^-1
    set Data(xscale) 0.1
 }
-if {[string equal $Data(in_out) "Ångstrøm->nm" ] == 1} {
-   set Data(unit) nm
+if {[string equal $Data(in_out) "Ångström^-1->nm^-1" ] == 1} {
+   set Data(unit) nm^-1
    set Data(xscale) 10.0
 }
-if {[string equal $Data(in_out) "Ångstrøm->Ångstrøm" ] == 1} {
-   set Data(unit) Ångstrøm
+if {[string equal $Data(in_out) "Ångström^-1->Ångström^-1" ] == 1} {
+   set Data(unit) Ångström^-1
+   set Data(xscale) 1.0
+}
+if {[string equal $Data(in_out) "nm^-1->nm^-1" ] == 1} {
+   set Data(unit) nm^-1
+   set Data(xscale) 1.0
+}
+if {[string equal $Data(in_out) "nm->Ångström" ] == 1} {
+   set Data(unit) Ångström
+   set Data(xscale) 10
+}
+if {[string equal $Data(in_out) "Ångström->nm" ] == 1} {
+   set Data(unit) nm
+   set Data(xscale) 0.1
+}
+if {[string equal $Data(in_out) "Ångström->Ångström" ] == 1} {
+   set Data(unit) Ångström
    set Data(xscale) 1.0
 }
 if {[string equal $Data(in_out) "nm->nm" ] == 1} {
@@ -2464,19 +2498,19 @@ proc readANDaverage_Clipboard {ASCIIData args} {
 upvar $ASCIIData Data
 #puts $args
 if {![info exist Data]} {create_ASCIIData Data}
-if {[string equal $Data(in_out) "nm->Ångstrøm" ] == 1} {
-   set Data(unit) Ångstrøm
+if {[string equal $Data(in_out) "nm^-1->Ångström^-1" ] == 1} {
+   set Data(unit) Ångström^-1
    set Data(xscale) 0.1
 }
-if {[string equal $Data(in_out) "Ångstrøm->nm" ] == 1} {
-   set Data(unit) nm
+if {[string equal $Data(in_out) "Ångström^-1->nm^-1" ] == 1} {
+   set Data(unit) nm^-1
    set Data(xscale) 10.0
 }
-if {[string equal $Data(in_out) "Ångstrøm->Ångstrøm" ] == 1} {
-   set Data(unit) Ångstrøm
+if {[string equal $Data(in_out) "Ångström^-1->Ångström^-1" ] == 1} {
+   set Data(unit) Ångström^-1
    set Data(xscale) 1.0
 }
-if {[string equal $Data(in_out) "nm->nm" ] == 1} {
+if {[string equal $Data(in_out) "nm^-1->nm^-1" ] == 1} {
    set Data(unit) nm
    set Data(xscale) 1.0
 }

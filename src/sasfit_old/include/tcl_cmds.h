@@ -80,6 +80,8 @@ int Sasfit_DebyeFitCmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));
 int Sasfit_OrnsteinZernickeFitCmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));
+int Sasfit_FredholmIntegrals_RegularizationCmd _ANSI_ARGS_((struct sasfit_CData *SASFIT_CData,
+                                Tcl_Interp *interp, int argc, char **argv));
 
 #endif
 

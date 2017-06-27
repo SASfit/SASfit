@@ -1628,7 +1628,7 @@ proc AsciiOptionsCmd {} {
 	pack $w.lay1.a.ext.entry $w.lay1.a.ext.label -side right
 
 	label $w.lay1.a.uc.label -text "unit conversion:" -highlightthickness 0 
-	tk_optionMenu $w.lay1.a.uc.inu  tmpASCIIData(in_out) "nm->nm" "nm->Ångstrøm" "Ångstrøm->nm" "Ångstrøm->Ångstrøm" "ms->s" "s->s" 
+	tk_optionMenu $w.lay1.a.uc.inu  tmpASCIIData(in_out) "nm^-1->nm^-1" "nm^-1->Ångström^-1" "Ångström^-1->nm^-1" "Ångström^-1->Ångström^-1" nm->nm" "nm->Ångström" "Ångström->nm" "Ångström->Ångström" "ms->s" "s->s" 
 #"ms->ms" "s->ms"
 	pack $w.lay1.a.uc.label $w.lay1.a.uc.inu \
 	     -side left
@@ -3590,7 +3590,7 @@ proc sasfit_menubar_build { p } {
 #      setTooltip $p.fit.menu -index "DLS ..." \
 #                               "fitting DLS curves"
 
-      $p.fit.menu add cascade -label "Single Data Set" \
+      $p.fit.menu add cascade -label "single data set" \
 	      -menu $p.fit.menu.single \
 	      -underline 0
       [menu $p.fit.menu.single -tearoff 0] add command \
@@ -3602,7 +3602,7 @@ proc sasfit_menubar_build { p } {
 	      -underline 0 \
 	      -command {analyticalSDCmd sim}
 
-       $p.fit.menu add cascade -label "Multiple Data Sets" \
+       $p.fit.menu add cascade -label "multiple data sets" \
            -menu $p.fit.menu.multiple \
 	   -underline 0
        [menu $p.fit.menu.multiple -tearoff 0] add command \
@@ -3613,7 +3613,19 @@ proc sasfit_menubar_build { p } {
 	       -label  "simulate..." \
 	       -underline 0 \
 	       -command {analyticalGlobalSDCmd simulate}
-       
+		   
+       $p.fit.menu add cascade -label "Fredholm Integral solver" \
+	      -menu $p.fit.menu.fredholm \
+	   -underline 0
+       [menu $p.fit.menu.fredholm -tearoff 0] add command \
+   	       -label  "single data set ..." \
+	       -underline 0 \
+	       -command {analyticalSDCmd Fredholm}
+       $p.fit.menu.fredholm add command \
+	       -label  "multiple data sets ..." \
+	       -underline 0 \
+	       -command {analyticalGlobalSDCmd Fredholm}
+		   
       $p.fit.menu add command -label "Ornstein Zernike solver" \
 	      -command {sasfit_OZ_solver} \
 	       -underline 0 

@@ -8985,7 +8985,7 @@ proc analytical_menu_bar { simorfit analytPar tmpAnalytPar actualAnalytPar \
 	upvar $addsasfit sf
 
 	if { [winfo exists .analytical] } {destroy .analytical}
-	if { [string equal $simorfit fit] } {
+	if { [string equal $simorfit fit] || [string equal $simorfit Fredholm]} {
 		if { ($ap(isGlobal) && ($sf(Nth,n,nonhidden) < 1))
 			|| !$sf(I_enable)
 		} {
@@ -9065,7 +9065,7 @@ proc analytical_menu_bar { simorfit analytPar tmpAnalytPar actualAnalytPar \
 		-label "update menu during fit ?" \
 		-variable ::sasfit(update_menu_during_fit)
 
-	if { !$ap(isGlobal) } {
+	if { !$ap(isGlobal) && ![string equal $simorfit Fredholm]} {
 		$w.menu.options.menu add command -label "run batch ..." \
 			-command { menuBatch }
 	}
@@ -9460,7 +9460,7 @@ if {[string equal $::sasfit(simorfit) "fit"]
 #	label $wds.empty -text " "
 #	pack $wds.empty
 }
-
+#####return
 #
 # frames of entry fields
 #
