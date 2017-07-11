@@ -140,7 +140,7 @@ proc clearGraph_el {GraphPar} {
 
 #------------------------------------------------------------------------------
 #        Adds a new curve to GraphPar (GraphPar = e.g. IQGraph SDGraph ...)
-#        procedure returns 0 if put_Graph_el fails otherwise 1
+#        procedure returns 0 if Put_Graph_el fails otherwise 1
 #        after succesfull call of the procedure GraphPar is updated
 #
 proc Put_Graph_el {GraphPar xdata args } {
@@ -149,10 +149,10 @@ proc Put_Graph_el {GraphPar xdata args } {
 	if {[llength $args] > 3} {return 0}
 	# $args may consist of up to 3 lists: '{ydata dydata resdata}'
 	# $args is printed over $xdata
-	set data    {ydata dydata resdata}
 	set ydata   {}
 	set dydata  {}
 	set resdata {}
+	set data    {ydata dydata resdata}
 	set j 0
 
 	# cycle through each list in $args and assign it to ydata, dydata and resdata
@@ -171,7 +171,7 @@ proc Put_Graph_el {GraphPar xdata args } {
 
 	#
 	# if ydata not set than xdata becomes ydata, xdata becomes {1 2 3 ...}
-	# and dydata becomes {}
+	# and dydata becomes {-1.0 -1.0 ...} and resdata {}
 	if { [llength $ydata] == 0 } {
 		set ydata $xdata
 		set xdata {}
@@ -900,8 +900,8 @@ proc RefreshGraph {Graph} {
 
 		if { [llength $error] > 0 && $thereIsError } {
 			foreach y $ydata e $error {
-				lappend dylow [expr $y - 0.5*abs($e)]
-				lappend dyhi  [expr $y + 0.5*abs($e)]
+				lappend dylow [expr $y - 1.0*abs($e)]
+				lappend dyhi  [expr $y + 1.0*abs($e)]
 			}
 			#
 			# real transformation of dylow and dyhi
@@ -961,8 +961,8 @@ proc RefreshGraph {Graph} {
 	
 		if { [llength $resdata] > 0 && $thereIsResdata } {
 			foreach x $xdata r $resdata {
-				lappend dxlow [expr $x - 0.5*abs($r)]
-				lappend dxhi  [expr $x + 0.5*abs($r)]
+				lappend dxlow [expr $x - 1.0*abs($r)]
+				lappend dxhi  [expr $x + 1.0*abs($r)]
 			}
 			#
 			# real transformation of dxlow and dxhi

@@ -9004,7 +9004,9 @@ proc analytical_menu_bar { simorfit analytPar tmpAnalytPar actualAnalytPar \
 			create_GlobalAnalytPar tmpap
 		}
 	} else {
-		if { ![info exist $analytPar]} { create_AnalytPar $analytPar }
+		if { ![info exist ap(actual_SD)]} { 
+		    create_AnalytPar ap 
+		   }
 	}
 
 	cp_arr ap tmpap

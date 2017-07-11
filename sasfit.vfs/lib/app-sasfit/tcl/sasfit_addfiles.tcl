@@ -106,7 +106,7 @@ proc NewFitDataCmd {l_Q l_IthIres sub l_NR args} {
 	set indx1 -1
 
 	# draw and configure the calculated graph
-	Put_Graph_el IQGraph $Q $Ith
+	Put_Graph_el IQGraph $Q $Ith 
 	incr indx1
 	if {[llength $args] == 0} {
 		set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
@@ -122,11 +122,11 @@ proc NewFitDataCmd {l_Q l_IthIres sub l_NR args} {
 	# draw the data (for fit mode)
 	if {[llength $args] == 0} {
 		if {$sub} {
-			Put_Graph_el IQGraph $Q $Ih $DI
+			Put_Graph_el IQGraph $Q $Ih $DI $Ires
 			incr indx1
 			lset IQGraph(e,fill) $indx1 {}; # show empty symbols
 		}
-		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI)
+		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
 		incr indx1
 	}
 	
