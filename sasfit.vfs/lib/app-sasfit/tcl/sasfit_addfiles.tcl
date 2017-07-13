@@ -100,6 +100,32 @@ proc NewFitDataCmd {l_Q l_IthIres sub l_NR args} {
 	if {[string equal $::sasfit(simorfit) "fit"]} {
 #		updateChisqr $Q $Ith
 	}
+	if {![llength $Q] || ![llength $Ih]} {
+		return
+	}
+	set exp_q  $::sasfit(Q)
+	set exp_i  $::sasfit(I)
+	set exp_di $::sasfit(DI)
+	set exp_res $::sasfit(res)
+	# take the selected q-range into account 
+	if {$::sasfit(lower,Q) > 0 && 
+	    $::sasfit(upper,Q) > $::sasfit(lower,Q)
+	} {
+		set exp_q   {}
+		set exp_i   {}
+		set exp_di  {}
+		set exp_res {}
+		foreach x $::sasfit(Q) y $::sasfit(I) e $::sasfit(DI) r $::sasfit(res) {
+			if { $x >= $::sasfit(lower,Q) &&
+			     $x <= $::sasfit(upper,Q) 
+			} {
+				lappend exp_q $x
+				lappend exp_i $y
+				lappend exp_di $e
+				lappend exp_res $r
+			}
+		}
+	}
 
 	clearGraph_el IQGraph
 
@@ -122,7 +148,7 @@ proc NewFitDataCmd {l_Q l_IthIres sub l_NR args} {
 	# draw the data (for fit mode)
 	if {[llength $args] == 0} {
 		if {$sub} {
-			Put_Graph_el IQGraph $Q $Ih $DI $Ires
+			Put_Graph_el IQGraph $Q $Ih $DI $exp_res
 			incr indx1
 			lset IQGraph(e,fill) $indx1 {}; # show empty symbols
 		}
