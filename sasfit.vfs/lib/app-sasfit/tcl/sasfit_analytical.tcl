@@ -10039,44 +10039,53 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
 
 if {[winfo exists $w.adj.step]} {
 	$w.adj.step configure -command { 
-              set ::fitparamguiupdate no
-	      set ::SASfitprogressbar 0
-	      set ::SASfitinterrupt 0
-              set sub no
-              if {([string length $::sasfit(lower,Q)] > 0) && \
-                  ([string length $::sasfit(upper,Q)] > 0) } {
+		set ::fitparamguiupdate no
+		set ::SASfitprogressbar 0
+		set ::SASfitinterrupt 0
+		set sub no
+		$::nomenu activate [expr $::actualAnalytPar(actual_SD)-1]
+		$::nomenu invoke [expr $::actualAnalytPar(actual_SD)-1]
+		cp_arr ::tmpAnalytPar ::AnalytPar
+		
+		if {([string length $::sasfit(lower,Q)] > 0) && \
+            ([string length $::sasfit(upper,Q)] > 0) } {
 	         set Q {}
-                 set I {}
-                 set DI {}
-                 set res {}
-                 foreach x $::sasfit(Q) y $::sasfit(I) e $::sasfit(DI) r $::sasfit(res) {
-		    if {($x>=$::sasfit(lower,Q)) && ($x<=$::sasfit(upper,Q))} {
+             set I {}
+             set DI {}
+             set res {}
+             foreach x $::sasfit(Q) y $::sasfit(I) e $::sasfit(DI) r $::sasfit(res) {
+				if {($x>=$::sasfit(lower,Q)) && ($x<=$::sasfit(upper,Q))} {
                        lappend Q  $x
                        lappend I  $y
                        lappend DI $e
                        lappend res $r
                     }
                  } 
-	      } else {
-                 set Q  $::sasfit(Q)
-                 set I  $::sasfit(I)
-                 set DI $::sasfit(DI)
-                 set res $::sasfit(res)
-              }
+		} else {
+              set Q  $::sasfit(Q)
+              set I  $::sasfit(I)
+              set DI $::sasfit(DI)
+              set res $::sasfit(res)
+        }
               set alambda $::AnalytPar(alambda)
+              if {$alambda == 0} { set alambda  -1 }
               set ::tmpAnalytPar(alambda) $alambda
               save_AP ::tmpAnalytPar ::actualAnalytPar 
               cp_arr ::tmpAnalytPar ::AnalytPar
+			  RefreshAnalytParDataTab ::AnalytPar
+			  
               set ::AnalytPar(alambda) $alambda
               set ::tmpAnalytPar(alambda) $alambda
+			  update
+			  
               if { $::sasfit(I_enable) } {
                  if {$alambda == -1} {
 		       set ::stepfit(oalambda) ::AnalytPar(alambda)
-		     if {[string compare $::AnalytPar(resolution) yes] == 0} {
+		    if {[string compare $::AnalytPar(resolution) yes] == 0} {
                        set IthIres [sasfit_iqfit ::AnalytPar  \
                                        [list $Q $I $DI $res] ::stepfit \
                                ]
-                    } else {
+            } else {
                        set IthIres [sasfit_iqfit ::AnalytPar  \
                                        [list $Q $I $DI] ::stepfit \
                                ]

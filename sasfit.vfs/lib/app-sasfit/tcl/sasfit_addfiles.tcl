@@ -258,9 +258,10 @@ global addsasfit
 	  }
 	  if {[lindex $sub $i] && ([string compare $simorfit simulate]!= 0)} {
                Put_Graph_el GlobalFitIQGraph \
-                       [lindex $ssasfit(Nth,Qth)     $count_j] \
-		       [lindex $ssasfit(Nth,sub,Ih)  $count_j] \
-		       [lindex $ssasfit(Nth,DIh) $count_j]
+						[lindex $ssasfit(Nth,Qth)     	$count_j] \
+						[lindex $ssasfit(Nth,sub,Ih) 	$count_j] \
+						[lindex $ssasfit(Nth,DIh) 		$count_j] \
+						[lindex $ssasfit(Nth,res) 		$count_j]
 	       incr ssasfit(Nth,n,nonhidden)
 	       set symbol_n [lindex $GlobalFitIQGraph(symbolselection) $symbol_i] 
                set GlobalFitIQGraph(e,symbol)     [lreplace $GlobalFitIQGraph(e,symbol)     $count_k $count_k  $symbol_n]
@@ -285,9 +286,10 @@ global addsasfit
 	  }
 	  if {[string compare $simorfit simulate] != 0} {
 	      Put_Graph_el GlobalFitIQGraph \
-		      [lindex $ssasfit(Nth,Q)  $count_i] \
-		      [lindex $ssasfit(Nth,I)  $count_i] \
-		      [lindex $ssasfit(Nth,DI) $count_i]
+		      [lindex $ssasfit(Nth,Q)  	$count_i] \
+		      [lindex $ssasfit(Nth,I)  	$count_i] \
+		      [lindex $ssasfit(Nth,DI) 	$count_i] \
+			  [lindex $ssasfit(Nth,res) $count_i]
 	      incr ssasfit(Nth,n,nonhidden)
 	      set GlobalFitIQGraph(e,symbol)     [lreplace $GlobalFitIQGraph(e,symbol)     $count_k $count_k  $symbol_n]
 	      set GlobalFitIQGraph(e,fill)       [lreplace $GlobalFitIQGraph(e,fill)       $count_k $count_k  $color_n ]
