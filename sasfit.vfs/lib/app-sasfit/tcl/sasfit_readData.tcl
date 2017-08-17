@@ -2250,9 +2250,9 @@ if {![string compare $BlockName "SESANSData"] && \
 								}
 			"Pz->Gz-G0"  		{	set M_PI [expr 4*atan(1)]
 									set thickness [SESANSgetItem Data SESANSHeader "Thickness \[cm\]" r]
-									set tmp [expr log($z)*(4*$M_PI*$M_PI)/($y*$y*$thickness)]
+									set tmp [expr log($z)*(1.0)/($y*$y*$thickness)]
 									lappend Y $tmp
-									lappend DeltaY [expr sqrt(pow(abs((4*$M_PI*$M_PI)/($y*$y*$thickness)),2)*($ze/$z)*($ze/$z)+0*4*($tmp*$ye/$y)*($tmp*$ye/$y))]
+									lappend DeltaY [expr sqrt(pow(abs((1.0)/($y*$y*$thickness)),2)*($ze/$z)*($ze/$z)+0*4*($tmp*$ye/$y)*($tmp*$ye/$y))]
 								}
 			"Pz->Pz^(lmax^2/l^2)"	{ 
 									lappend Y $z	

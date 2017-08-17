@@ -26,7 +26,7 @@ scalar sasfit_ff_gz_sphere(scalar z, sasfit_param * param)
     xi=z/(2*R);
     xi2=xi*xi;
     Gz = M_PI*gsl_pow_4(R)*ETA*ETA*(sqrt(1-xi2)*(2+xi2)+xi2*(4-xi2)*log(xi/(1+sqrt(1-xi2))));
-	return (Gz-G0)*gsl_pow_2(2*M_PI); // not clear yet wy /gsl_pow_2(2*M_PI); is needed
+	return (Gz-G0); 
 }
 
 scalar sasfit_ff_gz_sphere_f(scalar q, sasfit_param * param)

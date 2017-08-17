@@ -10467,8 +10467,8 @@ if {$simulate && [winfo exists $w.adj.calc]} {
 proc setIQorGz2int {} {
 	switch $::FitPrecision(IQorGz) {
 		"1" {set ::FitPrecision(IQorGz_int) 0} 
-		"Exp(2pi H{...})" {set ::FitPrecision(IQorGz_int) 1}
-		"2pi H{...}" {set ::FitPrecision(IQorGz_int) 2}
+		"Exp(H{...}/2pi)" {set ::FitPrecision(IQorGz_int) 1}
+		"H{...}/2pi" {set ::FitPrecision(IQorGz_int) 2}
 		default {set ::FitPrecision(IQorGz_int) 0}
 	}
 }
@@ -10562,7 +10562,7 @@ proc analytical_widgets_bottom { w simulate isGlobal
         ProgressBar $w.progress.value \
 	    		-maximum 100\
 				-type normal -variable ::SASfitprogressbar 
-		ComboBox $w.progress.iq_gz -values {"1" "Exp(2pi H{...})" "2pi H{...}"} \
+		ComboBox $w.progress.iq_gz -values {"1" "Exp(H{...}/2pi)" "H{...}/2pi"} \
 				-width 12 \
 				-textvariable ::FitPrecision(IQorGz) \
 				-label "transform:" \

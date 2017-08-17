@@ -1192,7 +1192,7 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         if (*error) return 0;
 //        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
 //        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;
-        return (Icalc)*Q*bessj0(Q*z)*(2*M_PI);
+        return (Icalc)*Q*bessj0(Q*z)/(2*M_PI);
 }
 
 scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
@@ -1696,7 +1696,7 @@ scalar HTIQGlobal_OOURA(scalar Q, void *GIP) {
         if (*error) return 0;
 //        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
 //        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;
-        return (*Ifit)*Q*bessj0(Q*z)*(2*M_PI);
+        return (*Ifit)*Q*bessj0(Q*z)/(2*M_PI);
 }
 
 scalar HTIQ_OOURA_delete_afterwards(scalar Q, void *GIP) {
@@ -1727,7 +1727,7 @@ scalar HTIQ_OOURA_delete_afterwards(scalar Q, void *GIP) {
         if (*error) return 0;
 //        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
 //        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;
-        return (*Ifit)*Q*bessj0(Q*z)*(2*M_PI);
+        return (*Ifit)*Q*bessj0(Q*z)/(2*M_PI);
 }
 
 void IQ(Tcl_Interp *interp,
@@ -1785,7 +1785,7 @@ void IQ(Tcl_Interp *interp,
             IQ_t(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
         } else {
             if (Q-3.0*Qres<=0.0) {
-                Qmin = 1.0e-6;
+                Qmin = 1.0e-3*Q;
             } else {
                 Qmin = Q-3.0*Qres;
             }
@@ -2816,7 +2816,7 @@ void IQ_Global(Tcl_Interp *interp,
             IQ_t_global(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
         } else {
             if (Q-3.0*Qres<=0.0) {
-                Qmin = 1.0e-6;
+                Qmin = 1.0e-3*Q;
             } else {
                 Qmin = Q-3.0*Qres;
             }
@@ -3905,7 +3905,7 @@ if (TCL_ERROR == get_GlobalAP(interp,argv,
 }
 
 
-sasfit_out("nmultset: %d\n",GCP.nmultset);
+//sasfit_out("nmultset: %d\n",GCP.nmultset);
 
 Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
 DIhtrans = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
@@ -4338,6 +4338,28 @@ sasfit_err(Tcl_DStringValue(&DsBuffer));
 Tcl_DStringFree(&DsBuffer);
 
 return TCL_OK;
+}
+
+/*#########################################################################*/
+/*#                                                                       #*/
+/*# Sasfit_nrGlobalCmd --                                                       #*/
+/*#                                                                       #*/
+/*#      This function implements the Tcl "sasfit_nr" command.            #*/
+/*#                                                                       #*/
+/*# Results:                                                              #*/
+/*#      A standard Tcl result.                                           #*/
+/*#                                                                       #*/
+/*# Side effects:                                                         #*/
+/*#      None.                                                            #*/
+/*#                                                                       #*/
+/*#########################################################################*/
+
+int Sasfit_nrGlobalCmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    const char  **argv;
+{
 }
 
 /*#########################################################################*/

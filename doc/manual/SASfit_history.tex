@@ -2,7 +2,12 @@
 \begin{description}
 \item[2017-xx-xx] \SASfit 0.94.9
     \begin{itemize}
-    \item xxx
+    \item unit conversion for reading ASCII files corrected and extended
+    \item update to FFTW 3.3.6-pl2 did not work, went back to 3.3.5
+    \item updated to gsl 2.4
+    \item bug fix: resolution bar was not plotted properly
+    \item Uncertainties on $x$ and $y$ axis are now plotted symmetrically from $x\pm\Delta x$ and $y\pm\Delta y$.
+          Before they were plotted from $x\pm0.5\Delta x$ and $y\pm0.5\Delta y$.
     \end{itemize}
 \item[2016-12-16] \SASfit 0.94.8
     \begin{itemize}
@@ -13,7 +18,7 @@
             \item Taking the Hankel transform 2pi*H[I(Q)] for converting SAS model into a projected correlation function G(delta), which defines the SESANS signal
             \item Applying the operator from 2) and taking the exponential function of it exp(2pi*H[I(Q)]) to get SESANS signal
         \end{enumerate}
-        \item  For the extension to SESANS also an option for reading SESANS data has been supplied. The format has been defined by TU Delft and has the default extension *.ses.
+        \item For the extension to SESANS also an option for reading SESANS data has been supplied. The format has been defined by TU Delft and has the default extension *.ses.
         \item added a model for of a self-fine random density distribution (gDAB) both under non-particular  structures as well as under SESANS as a correlation function.
         \item added a SESANS correlation function for a generalized Gaussian chain for Flory exponents between nu in (0,1/2)
         \item updated to FFTW 3.3.5

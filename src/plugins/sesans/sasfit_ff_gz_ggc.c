@@ -31,7 +31,7 @@ scalar sasfit_ff_gz_ggc(scalar z, sasfit_param * param)
          pow(w,0.5/NU)*gsl_sf_gamma_inc(1.0-0.5/NU,w)
         -pow(w,1.0/NU)*gsl_sf_gamma_inc(1.0-1.0/NU,w)
     );
-    return Gz-G0;
+    return (Gz-G0)/gsl_pow_2(2*M_PI);
 
 // old implementation:    
     
@@ -42,7 +42,7 @@ scalar sasfit_ff_gz_ggc(scalar z, sasfit_param * param)
       (NU*(1 + NU)*(1 + 2*NU)*pow(RG,2))) + 
    (pow(3,1/(2.*NU))*pow(4,1 - 1/(2.*NU))*M_PI*pow(w,-1 + 1/(2.*NU))*
       gsl_sf_gamma_inc(1 - 1/(2.*NU),(3*w)/4.))/(NU*(1 + NU)*(1 + 2*NU)*pow(RG,2));
-	return Gz-G0;
+	return (Gz-G0)/gsl_pow_2(2*M_PI);
 }
 
 scalar sasfit_ff_gz_ggc_f(scalar q, sasfit_param * param)
