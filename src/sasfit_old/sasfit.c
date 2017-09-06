@@ -3085,8 +3085,8 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	Tcl_DStringStartSublist(&DsBuffer);
 
 //     sasfit_out("max num threads %d\n",omp_get_num_procs());
-     omp_set_num_threads((omp_get_num_procs()>1)?omp_get_num_procs()-1:1);
-     omp_set_num_threads(1);
+//     omp_set_num_threads((omp_get_num_procs()>1)?omp_get_num_procs()-1:1);
+ //    omp_set_num_threads(1);
 
     sasfit_int_ws_init();
 //{

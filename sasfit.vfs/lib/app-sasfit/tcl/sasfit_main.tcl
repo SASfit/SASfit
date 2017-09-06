@@ -3614,17 +3614,17 @@ proc sasfit_menubar_build { p } {
 	       -underline 0 \
 	       -command {analyticalGlobalSDCmd simulate}
 		   
-       $p.fit.menu add cascade -label "Fredholm Integral solver" \
-	      -menu $p.fit.menu.fredholm \
-	   -underline 0
-       [menu $p.fit.menu.fredholm -tearoff 0] add command \
-   	       -label  "single data set ..." \
-	       -underline 0 \
-	       -command {analyticalSDCmd Fredholm}
-       $p.fit.menu.fredholm add command \
-	       -label  "multiple data sets ..." \
-	       -underline 0 \
-	       -command {analyticalGlobalSDCmd Fredholm}
+#       $p.fit.menu add cascade -label "Fredholm Integral solver" \
+#	      -menu $p.fit.menu.fredholm \
+#	   -underline 0
+#       [menu $p.fit.menu.fredholm -tearoff 0] add command \
+#   	       -label  "single data set ..." \
+#	       -underline 0 \
+#	       -command {analyticalSDCmd Fredholm}
+#       $p.fit.menu.fredholm add command \
+#	       -label  "multiple data sets ..." \
+#	       -underline 0 \
+#	       -command {analyticalGlobalSDCmd Fredholm}
 		   
       $p.fit.menu add command -label "Ornstein Zernike solver" \
 	      -command {sasfit_OZ_solver} \

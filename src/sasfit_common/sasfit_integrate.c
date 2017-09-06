@@ -24,7 +24,9 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
-#include <omp.h>
+
+
+// #include <omp.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
 #include "include/sasfit_common.h"
@@ -34,6 +36,9 @@
 sasfit_int_ws_all_t	sasfit_int_ws_all;
 // = { -1 };
 
+int omp_get_thread_num() {
+	return 1;
+}
 
 // not used yet
 void sasfit_int_ws_all_free(int thid)

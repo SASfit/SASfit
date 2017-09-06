@@ -151,8 +151,8 @@ typedef struct
 	void (*sasfit_eps_set_comp) (scalar value); /* 74 */
 	void *reserved75;
 	void *reserved76;
-	void *reserved77;
-	void *reserved78;
+	void (*sasfit_set_int_strategy) (int value);
+	int (*sasfit_get_int_strategy) (void);
 	scalar (*sasfit_sd_LogNorm) (scalar x, sasfit_param * param); /* 79 */
 	int (*sasfit_miev0) (real * xx, complex * crefin, logical * perfct, real * mimcut, logical * anyang, integer * numang, real * xmu, integer * nmom, integer * ipolzn, integer * momdim, logical * prnt, real * qext, real * qsca, real * gqsc, real * pmom, complex * sforw, complex * sback, complex * s1, complex * s2, complex * tforw, complex * tback, real * spike); /* 80 */
 	int (*sasfit_dmilay) (real * rcore, real * rshell, real * wvno, complex * rindsh, complex * rindco, real * mu, integer * numang, real * qext, real * qsca, real * qbs, real * gqsc, real * m1, real * m2, real * s21, real * d21, integer * maxang); /* 81 */

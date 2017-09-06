@@ -504,13 +504,13 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
         # using dyn.lib.loader in sasfit.sh instead
         list(APPEND PREREQ
             "/lib/*-linux-gnu/ld-[0-9].[0-9][0-9].so"
-            "/lib/*-linux-gnu/libpthread.so.[0-9]"
+#            "/lib/*-linux-gnu/libpthread.so.[0-9]"
             "/usr/lib/*-linux-gnu/libXrender.so.[0-9]"
             "/usr/lib/*-linux-gnu/libXfixes.so.[0-9]"
             )
     elseif(WIN32)
-        find_library(pthread_LIB pthread-2)
-        list(APPEND PREREQ "${pthread_LIB}")
+#        find_library(pthread_LIB pthread-2)
+#        list(APPEND PREREQ "${pthread_LIB}")
     endif()
     message(STATUS "dependent libs:")
     foreach(FN ${PREREQ})

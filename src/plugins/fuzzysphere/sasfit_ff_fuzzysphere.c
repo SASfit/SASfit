@@ -27,9 +27,10 @@ scalar sasfit_ff_fuzzysphere_f(scalar q, sasfit_param * param)
 	scalar u,v;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-
-	u = q*fabs(R);
-	v=q*fabs(SIGMA);
+    SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
+	
+	u = fabs(q*R);
+	v=fabs(q*SIGMA);
 	// insert your code here
 	if (u==0) {
 		return sasfit_ff_fuzzysphere_v(R,param,1)
@@ -48,6 +49,6 @@ scalar sasfit_ff_fuzzysphere_v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 4./3.*M_PI*gsl_pow_3(R);
+	return 4./3.*M_PI*gsl_pow_3(fabs(R));
 }
 
