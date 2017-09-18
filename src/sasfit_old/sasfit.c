@@ -75,7 +75,7 @@
 #include <sasfit_plugin_backend.h>
 #include <sasfit_oz.h>
 #include <sasfit_frida.h>
-#include <omp.h>
+//#include <omp.h>
 
 #define NRES 30
 #define n_percent 0.1

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="sasfit" Version="10.0.0">
+  <Project Name="sasfit" Path="sasfit.project" Active="Yes"/>
+  <Project Name="sasfit_anisotropic_objects" Path="plugins/anisotropic_objects/sasfit_anisotropic_objects.project" Active="No"/>
+  <Project Name="sasfit_baba_ahmed" Path="plugins/baba_ahmed/sasfit_baba_ahmed.project" Active="No"/>
+  <Project Name="sasfit_boucherprofile" Path="plugins/boucherprofile/sasfit_boucherprofile.project" Active="No"/>
+  <Project Name="sasfit_ferrofluid" Path="plugins/ferrofluid/sasfit_ferrofluid.project" Active="No"/>
+  <Project Name="sasfit_fractal_series" Path="plugins/fractal_series/sasfit_fractal_series.project" Active="No"/>
+  <Project Name="sasfit_fuzzysphere" Path="plugins/fuzzysphere/sasfit_fuzzysphere.project" Active="No"/>
+  <Project Name="sasfit_juelichcoreshell" Path="plugins/juelichcoreshell/sasfit_juelichcoreshell.project" Active="No"/>
+  <Project Name="sasfit_kratky_sphere" Path="plugins/kratky_sphere/sasfit_kratky_sphere.project" Active="No"/>
+  <Project Name="sasfit_langevin_polaris" Path="plugins/langevin_polaris/sasfit_langevin_polaris.project" Active="No"/>
+  <Project Name="sasfit_local_planar_micelles" Path="plugins/local_planar_micelles/sasfit_local_planar_micelles.project" Active="No"/>
+  <Project Name="sasfit_lognorm_fp" Path="plugins/lognorm_fp/sasfit_lognorm_fp.project" Active="No"/>
+  <Project Name="sasfit_magnetic_correlation" Path="plugins/magnetic_correlation/sasfit_magnetic_correlation.project" Active="No"/>
+  <Project Name="sasfit_magneticfieldalignedvesicle" Path="plugins/magneticfieldalignedvesicle/sasfit_magneticfieldalignedvesicle.project" Active="No"/>
+  <Project Name="sasfit_non_particular" Path="plugins/non_particular/sasfit_non_particular.project" Active="No"/>
+  <Project Name="sasfit_oientated_primitive_objects" Path="plugins/oientated_primitive_objects/sasfit_oientated_primitive_objects.project" Active="No"/>
+  <Project Name="sasfit_ordered_particle_systems" Path="plugins/ordered_particle_systems/sasfit_ordered_particle_systems.project" Active="No"/>
+  <Project Name="sasfit_parallel_epiped" Path="plugins/parallel_epiped/sasfit_parallel_epiped.project" Active="No"/>
+  <Project Name="sasfit_peak" Path="plugins/peak/sasfit_peak.project" Active="No"/>
+  <Project Name="sasfit_pearl_necklace" Path="plugins/pearl_necklace/sasfit_pearl_necklace.project" Active="No"/>
+  <Project Name="sasfit_rod_micelle_prism" Path="plugins/rod_micelle_prism/sasfit_rod_micelle_prism.project" Active="No"/>
+  <Project Name="sasfit_sesans" Path="plugins/sesans/sasfit_sesans.project" Active="No"/>
+  <Project Name="sasfit_simple_clusters" Path="plugins/simple_clusters/sasfit_simple_clusters.project" Active="No"/>
+  <Project Name="sasfit_sphere_with_3_shells" Path="plugins/sphere_with_3_shells/sasfit_sphere_with_3_shells.project" Active="No"/>
+  <Project Name="sasfit_spline" Path="plugins/spline/sasfit_spline.project" Active="No"/>
+  <Project Name="sasfit_sq_of_oz_solver" Path="plugins/sq_of_oz_solver/sasfit_sq_of_oz_solver.project" Active="No"/>
+  <Project Name="sasfit_triax_ellip_shell" Path="plugins/triax_ellip_shell/sasfit_triax_ellip_shell.project" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="NoConfig" Selected="yes">
+      <Project Name="sasfit" ConfigName="NoConfig"/>
+      <Project Name="sasfit_anisotropic_objects" ConfigName="NoConfig"/>
+      <Project Name="sasfit_baba_ahmed" ConfigName="NoConfig"/>
+      <Project Name="sasfit_boucherprofile" ConfigName="NoConfig"/>
+      <Project Name="sasfit_ferrofluid" ConfigName="NoConfig"/>
+      <Project Name="sasfit_fractal_series" ConfigName="NoConfig"/>
+      <Project Name="sasfit_fuzzysphere" ConfigName="NoConfig"/>
+      <Project Name="sasfit_juelichcoreshell" ConfigName="NoConfig"/>
+      <Project Name="sasfit_kratky_sphere" ConfigName="NoConfig"/>
+      <Project Name="sasfit_langevin_polaris" ConfigName="NoConfig"/>
+      <Project Name="sasfit_local_planar_micelles" ConfigName="NoConfig"/>
+      <Project Name="sasfit_lognorm_fp" ConfigName="NoConfig"/>
+      <Project Name="sasfit_magnetic_correlation" ConfigName="NoConfig"/>
+      <Project Name="sasfit_magneticfieldalignedvesicle" ConfigName="NoConfig"/>
+      <Project Name="sasfit_non_particular" ConfigName="NoConfig"/>
+      <Project Name="sasfit_oientated_primitive_objects" ConfigName="NoConfig"/>
+      <Project Name="sasfit_ordered_particle_systems" ConfigName="NoConfig"/>
+      <Project Name="sasfit_parallel_epiped" ConfigName="NoConfig"/>
+      <Project Name="sasfit_peak" ConfigName="NoConfig"/>
+      <Project Name="sasfit_pearl_necklace" ConfigName="NoConfig"/>
+      <Project Name="sasfit_rod_micelle_prism" ConfigName="NoConfig"/>
+      <Project Name="sasfit_sesans" ConfigName="NoConfig"/>
+      <Project Name="sasfit_simple_clusters" ConfigName="NoConfig"/>
+      <Project Name="sasfit_sphere_with_3_shells" ConfigName="NoConfig"/>
+      <Project Name="sasfit_spline" ConfigName="NoConfig"/>
+      <Project Name="sasfit_sq_of_oz_solver" ConfigName="NoConfig"/>
+      <Project Name="sasfit_triax_ellip_shell" ConfigName="NoConfig"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

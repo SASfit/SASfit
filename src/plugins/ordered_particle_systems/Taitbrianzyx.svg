@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="680"
+   height="665"
+   id="tait-bryan-angles"
+   version="1.0">
+
+  <title>Tait-Bryan angles</title>
+
+  <desc>
+    http://commons.wikimedia.org/wiki/File:Taitbrianzyx.svg
+  </desc>
+
+  <defs>
+    <marker
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrowhead_red"
+       style="overflow:visible">
+      <path
+         d="M -11,0 L -16,5 L 2,0 L -16,-5 L -11,0 z"
+         style="fill:#eb2d2e;stroke:none;stroke-width:0"/>
+    </marker>
+    <marker
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrowhead_green"
+       style="overflow:visible">
+      <path
+         d="M -11,0 L -16,5 L 2,0 L -16,-5 L -11,0 z"
+         style="fill:#00aa4f;stroke:none;stroke-width:0"/>
+    </marker>
+    <marker
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrowhead_blue"
+       style="overflow:visible">
+      <path
+         d="M -11,0 L -16,5 L 2,0 L -16,-5 L -11,0 z"
+         style="fill:#008dd1;stroke:none;stroke-width:0"/>
+    </marker>
+    <marker
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrowhead_black"
+       style="overflow:visible">
+      <path
+         d="M -5,0 L -6,3 L 2,0 L -6,-3 L -5,0 z"
+         style="fill:#000000;stroke:none;stroke-width:0"/>
+    </marker>
+  </defs>
+
+<rect style="fill:#ffffff;stroke:none" x="0" y="0" width="680" height="665"/>
+
+  <g id="drawing"
+     transform="translate(353.5,439.5)"
+     style="fill:none;stroke:#000000;stroke-width:3px;stroke-linecap:butt;stroke-linejoin:round">
+    <path id="ellipse_blue"
+       d="M -322,0 A 322,188 0 1 1 322,0 A 322,188 0 1 1 -322,0 z"
+       style="stroke:#008dd1"/>
+    <path id="arrow_x"
+       d="M 0,0 H -322"
+       style="stroke:#008dd1;marker-end:url(#Arrowhead_blue)"/>
+    <path id="ellipse_red"
+       d="M -114.16,175.79 A 322,188 66 1 1 114.16,-175.79"
+       style="stroke:#eb2d2e;fill:#ffffff"/>
+
+    <g id="green_elements"
+       style="stroke:#00aa4f;fill:#00aa4f">
+      <path id="knot_line"
+         d="M -114.16,175.79 L 176.64,-272"
+         style="marker-end:url(#Arrowhead_green)"/>
+      <path id="perpendicular_line_green"
+         d="M 0,0 L 301.08,66.65"
+         style="stroke-dasharray:32,32;stroke-dashoffset:32"/>
+    </g>
+
+    <path id="arrow_y"
+       d="M 0,0 L 120.62,174.31"
+       style="stroke:#008dd1;marker-end:url(#Arrowhead_blue)"/>
+
+    <path id="angle_psi"
+       d="M 29.97,43.31 A 80,46.71 0 0,0 33.81,-42.33"
+       style="stroke:#000000;marker-end:url(#Arrowhead_black)"/>
+
+     <g id="red_axes"
+       style="stroke:#eb2d2e">
+      <path id="arrow_X"
+         d="M 0,0 L 270,-195"
+         style="marker-end:url(#Arrowhead_red)"/>
+      <path id="arrow_Y"
+         d="M 0,0 L -143,-288"
+         style="marker-end:url(#Arrowhead_red)"/>
+      <path id="arrow_Z"
+         d="M 0,0 L -188,36"
+         style="marker-end:url(#Arrowhead_red)"/>
+    </g>
+
+    <path id="angle_phi"
+       d="M 41.10,-63.28 A 115.92,67.68 66 0,0 -46,-106"
+       style="stroke:#000000;marker-end:url(#Arrowhead_black)"/>
+    <path id="angle_theta"
+       d="M 117,25.9 C 117,-6 113,-31 94.5,-61"
+       style="stroke:#000000;marker-end:url(#Arrowhead_black)"/>
+
+    <path id="arrow_z"
+       d="M 0,0 V -400"
+       style="stroke:#008dd1;marker-end:url(#Arrowhead_blue)"/>
+
+    <g id="labels"
+       style="stroke-width:1.5px;font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:100%;writing-mode:lr-tb;text-anchor:middle;font-family:Times New Roman">
+      <text id="labels_blue"
+         style="fill:#008dd1;stroke:#008dd1">
+        <tspan x="-340" y="10" id="label_x">x</tspan>
+        <tspan x="130" y="212" id="label_y">y</tspan>
+        <tspan x="0" y="-413" id="label_z">z</tspan>
+      </text>
+      <text id="labels_green"
+         style="fill:#00aa4f;stroke:#00aa4f">
+        <tspan x="196" y="-307" id="label_Ny">N(y')</tspan>
+        <tspan x="228" y="33" id="label_N">N</tspan>
+      </text>
+      <text id="labels_green" transform="scale(0.6,-0.6)"
+         style="fill:#00aa4f;stroke:#00aa4f">
+        <tspan x="434" y="22" id="label_T">T</tspan>
+      </text>
+      <text id="labels_red"
+         style="fill:#eb2d2e;stroke:#eb2d2e">
+        <tspan x="302" y="-210" id="label_X">X</tspan>
+        <tspan x="-160" y="-308" id="label_Y">Y</tspan>
+        <tspan x="-224" y="61" id="label_Z">Z</tspan>
+      </text>
+      <text id="labels_black"
+         style="fill:#000000;stroke:none">
+        <tspan x="90" y="61" id="label_psi">ψ</tspan>
+        <tspan x="139" y="-7" id="label_theta">θ</tspan>
+        <tspan x="-19" y="-130" id="label_phi">Φ</tspan>
+      </text>
+    </g>
+  </g>
+</svg>
+

@@ -187,7 +187,9 @@ pack $w.frame.right.sasfit.right.author1 $w.frame.right.sasfit.right.author2 -an
 
 label $w.frame.right.notice.line5 -text \
 "J. Appl. Cryst. (2015). 48, 1587-1598
-doi:10.1107/S1600576715016544"
+doi:10.1107/S1600576715016544
+J. Appl. Cryst. (2017). 50, 
+doi:10.1107/S1600576717011979"
 
 pack $w.frame.right.notice.line5
 
@@ -1108,15 +1110,15 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 					 if {$te > 0} {
 					    set wi [expr 1./($te*$te)]
 					    set yav [expr $yav+$ti*$wi]
-				            set qav [expr $qav+$tq*$wi]
-					    set eav [expr $eav+$wi]        
-			 	            set e_NotZero 1
+						set qav [expr $qav+$tq*$wi]
+					    set eav [expr $eav+$wi]
+						set e_NotZero 1
 					 } else {
 					    set wi [expr 1.0]
 					    set yav [expr $yav+$ti*$wi]
 					    set qav [expr $qav+$tq*$wi]
-					    set eav [expr $eav+$wi]        
-			 	            set e_NotZero 0
+					    set eav [expr $eav+$wi]
+						set e_NotZero 0
 					 }
 				      }
 				      set yav [expr $yav/$eav]
@@ -1133,10 +1135,10 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 			 	      set n_q     [lindex $q_stats 3]
 			 	      set stdev_q [lindex $q_stats 4]
 			 	      set var_q   [lindex $q_stats 5]
-			 	      set rav [expr ($max_q-$min_q)/(2.0*sqrt(2.0*log(2.0))*$mean_q)]
-			 	      set rfav [expr sqrt($rav + [::math::statistics::max $avg_resfile])]
-			 	      set rcav [expr sqrt($rav + [::math::statistics::max $avg_rescalc])]
-			 	      set rav  [expr sqrt($rav + [::math::statistics::max $avg_res])]
+			 	      set rav [expr ($max_q-$min_q)/(2.0*sqrt(2.0*log(2.0)))]
+			 	      set rfav [expr sqrt(pow($rav,2) + pow([::math::statistics::max $avg_resfile],2))]
+			 	      set rcav [expr sqrt(pow($rav,2) + pow([::math::statistics::max $avg_rescalc],2))]
+			 	      set rav  [expr sqrt(pow($rav,2) + pow([::math::statistics::max $avg_res],2))]
 			 	      lappend tmp_q  $mean_q
 			 	      #lappend tmp_q       $qav
 			 	      lappend tmp_i       $yav
@@ -1165,15 +1167,6 @@ proc dr {redu_arr index sf num_data list_q list_i list_di list_res list_resfile 
 				      set rcalcval_old $rcalcval
 			 	      set rfileval_old $rfileval
 			 	   } 
-#			 	   if {([llength $avg_q] >= 2)} {
-#			 	      puts "no averaging needed, should never arrive at this point"
-#			 	      lappend tmp_q       $xval
-#			 	      lappend tmp_i       $yval
-#			 	      lappend tmp_di      $eval
-#			 	      lappend tmp_res     $rval
-#			 	      lappend tmp_resfile $rfileval
-#			 	      lappend tmp_rescalc $rcalcval
-#			 	   }
 				} else {
 				   set avg_q       [list [lindex $list_q       $idx]]
 				   set avg_i       [list [lindex $list_i       $idx]]

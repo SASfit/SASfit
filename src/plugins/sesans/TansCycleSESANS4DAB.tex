@@ -1,0 +1,68 @@
+%% AMS-LaTeX Created with the Wolfram Language : www.wolfram.com
+
+\documentclass{article}
+\usepackage{amsmath, amssymb, graphics, setspace}
+
+\newcommand{\mathsym}[1]{{}}
+\newcommand{\unicode}[1]{{}}
+
+\newcounter{mathematicapage}
+\begin{document}
+
+\begin{doublespace}
+\noindent\(\pmb{\text{gamma0DAB}[\text{r$\_$},\text{xi$\_$}]\text{:=}\text{Exp}[-r/\text{xi}]}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\pmb{\text{gamma0DAB}[r,\text{xi}]}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(e^{-\frac{r}{\text{xi}}}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\pmb{\text{Integrate}[\text{gamma0DAB}[r,\text{xi}]*4*\text{Pi}*r{}^{\wedge}2,\{r,0,\text{Infinity}\},}\\
+\pmb{\text{Assumptions}\to \text{xi}>0]}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(8 \pi  \text{xi}^3\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\pmb{\text{gammaDAB}[\text{r$\_$},\text{xi$\_$},\text{eta$\_$}]\text{:=}}\\
+\pmb{\text{Integrate}[\text{gamma0DAB}[r,\text{xi}]*4*\text{Pi}*r{}^{\wedge}2,\{r,0,\text{Infinity}\},}\\
+\pmb{\text{Assumptions}\to \text{xi}>0]*\text{gamma0DAB}[r,\text{xi}]*\text{eta}{}^{\wedge}2}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\pmb{\text{IDAB}=}\\
+\pmb{\text{FullSimplify}[}\\
+\pmb{\text{Integrate}[\text{gammaDAB}[r,\text{xi},\text{eta}]*\text{Sin}[Q*r]/(Q*r)*4*\text{Pi}*r{}^{\wedge}2,}\\
+\pmb{\{r,0,\text{Infinity}\}],\text{Assumptions}\to \text{xi}>0\&\&Q>0]}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\frac{64 \text{eta}^2 \pi ^2 \text{xi}^6}{\left(1+Q^2 \text{xi}^2\right)^2}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\pmb{\text{GzHF}=\text{Integrate}[2*\text{Pi}*\text{IDAB}*\text{BesselJ}[0,Q*z]*Q,\{Q,0,\text{Infinity}\},}\\
+\pmb{\text{Assumptions}\to z>0\&\&\text{xi}>0]}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(64 \text{eta}^2 \pi ^3 \text{xi}^3 z \text{BesselK}\left[1,\frac{z}{\text{xi}}\right]\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\pmb{\text{GzA}=\text{Integrate}[2*(2*\text{Pi}){}^{\wedge}2*\text{gammaDAB}[r,\text{xi},\text{eta}]r/\text{Sqrt}[r{}^{\wedge}2-z{}^{\wedge}2],}\\
+\pmb{\{r,z,\text{Infinity}\}, \text{Assumptions}\to z>0\&\&\text{xi}>0]}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(64 \text{eta}^2 \pi ^3 \text{xi}^3 z \text{BesselK}\left[1,\frac{z}{\text{xi}}\right]\)
+\end{doublespace}
+
+\end{document}

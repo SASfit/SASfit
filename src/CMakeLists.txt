@@ -28,7 +28,7 @@ message(STATUS "System Processor: '${CMAKE_SYSTEM_PROCESSOR}'")
 #message("## generator: '${CMAKE_GENERATOR}'")
 
 # updates the version number in some files
-set(SASFIT_VERSION "0.94.9")
+set(SASFIT_VERSION "0.94.10")
 sasfit_update_version()
 # this can be set on the command line too:
 #cmake . -DCREATE_SOURCE=TRUE
@@ -73,6 +73,7 @@ endif(MSVC80)
 
 if(CMAKE_HOST_APPLE)
 	add_definitions(-DMACOSX)
+	ADD_DEFINITIONS(-DNO_LONGLONG_AND_NO_LONGINT ) # needed for f2c
 	set(CMAKE_OSX_ARCHITECTURES ${CMAKE_SYSTEM_PROCESSOR})
 	if(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
 		# assuming os is recent enough to understand x64

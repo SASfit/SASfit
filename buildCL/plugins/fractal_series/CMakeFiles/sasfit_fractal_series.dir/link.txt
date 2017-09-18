@@ -1,0 +1,3 @@
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\sasfit_fractal_series.dir/objects.a
+c:\MinGW\bin\ar.exe cr CMakeFiles\sasfit_fractal_series.dir/objects.a @CMakeFiles\sasfit_fractal_series.dir\objects1.rsp
+c:\MinGW\bin\gcc.exe    -fopenmp  -shared -o C:\user\SASfitGit\src\plugins\fractal_series\lib\libsasfit_fractal_series.dll -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\sasfit_fractal_series.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\sasfit_fractal_series.dir\linklibs.rsp

@@ -1,0 +1,96 @@
+The system is: Windows - 6.1 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: c:/MinGW/bin/gcc.exe 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+
+The C compiler identification is GNU, found in "C:/user/SASfitGit/buildCL/CMakeFiles/3.3.1/CompilerIdC/a.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp
+
+Run Build Command:"c:/MinGW/bin/mingw32-make.exe" "cmTC_98b46/fast"
+c:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_98b46.dir\build.make CMakeFiles/cmTC_98b46.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp'
+[0mBuilding C object CMakeFiles/cmTC_98b46.dir/testCCompiler.c.obj[0m
+c:\MinGW\bin\gcc.exe    -o CMakeFiles\cmTC_98b46.dir\testCCompiler.c.obj   -c C:\user\SASfitGit\buildCL\CMakeFiles\CMakeTmp\testCCompiler.c
+[0mLinking C executable cmTC_98b46.exe[0m
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_98b46.dir\link.txt --verbose=1
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_98b46.dir/objects.a
+c:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_98b46.dir/objects.a @CMakeFiles\cmTC_98b46.dir\objects1.rsp
+c:\MinGW\bin\gcc.exe       -Wl,--whole-archive CMakeFiles\cmTC_98b46.dir/objects.a -Wl,--no-whole-archive  -o cmTC_98b46.exe -Wl,--out-implib,libcmTC_98b46.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_98b46.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp
+
+Run Build Command:"c:/MinGW/bin/mingw32-make.exe" "cmTC_bcd93/fast"
+c:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_bcd93.dir\build.make CMakeFiles/cmTC_bcd93.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp'
+[0mBuilding C object CMakeFiles/cmTC_bcd93.dir/CMakeCCompilerABI.c.obj[0m
+c:\MinGW\bin\gcc.exe    -o CMakeFiles\cmTC_bcd93.dir\CMakeCCompilerABI.c.obj   -c "c:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c"
+[0mLinking C executable cmTC_bcd93.exe[0m
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_bcd93.dir\link.txt --verbose=1
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_bcd93.dir/objects.a
+c:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_bcd93.dir/objects.a @CMakeFiles\cmTC_bcd93.dir\objects1.rsp
+c:\MinGW\bin\gcc.exe      -v -Wl,--whole-archive CMakeFiles\cmTC_bcd93.dir/objects.a -Wl,--no-whole-archive  -o cmTC_bcd93.exe -Wl,--out-implib,libcmTC_bcd93.dll.a -Wl,--major-image-version,0,--minor-image-version,0   
+Using built-in specs.
+COLLECT_GCC=c:\MinGW\bin\gcc.exe
+COLLECT_LTO_WRAPPER=c:/mingw/bin/../libexec/gcc/mingw32/4.8.1/lto-wrapper.exe
+Target: mingw32
+Configured with: ../gcc-4.8.1/configure --prefix=/mingw --host=mingw32 --build=mingw32 --without-pic --enable-shared --enable-static --with-gnu-ld --enable-lto --enable-libssp --disable-multilib --enable-languages=c,c++,fortran,objc,obj-c++,ada --disable-sjlj-exceptions --with-dwarf2 --disable-win32-registry --enable-libstdcxx-debug --enable-version-specific-runtime-libs --with-gmp=/usr/src/pkg/gmp-5.1.2-1-mingw32-src/bld --with-mpc=/usr/src/pkg/mpc-1.0.1-1-mingw32-src/bld --with-mpfr= --with-system-zlib --with-gnu-as --enable-decimal-float=yes --enable-libgomp --enable-threads --with-libiconv-prefix=/mingw32 --with-libintl-prefix=/mingw --disable-bootstrap LDFLAGS=-s CFLAGS=-D_USE_32BIT_TIME_T
+Thread model: win32
+gcc version 4.8.1 (GCC) 
+COMPILER_PATH=c:/mingw/bin/../libexec/gcc/mingw32/4.8.1/;c:/mingw/bin/../libexec/gcc/;c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../../mingw32/bin/
+LIBRARY_PATH=c:/mingw/bin/../lib/gcc/mingw32/4.8.1/;c:/mingw/bin/../lib/gcc/;c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../../mingw32/lib/;c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_bcd93.exe' '-mtune=generic' '-march=pentiumpro'
+ c:/mingw/bin/../libexec/gcc/mingw32/4.8.1/collect2.exe -Bdynamic -o cmTC_bcd93.exe c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../crt2.o c:/mingw/bin/../lib/gcc/mingw32/4.8.1/crtbegin.o -Lc:/mingw/bin/../lib/gcc/mingw32/4.8.1 -Lc:/mingw/bin/../lib/gcc -Lc:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../../mingw32/lib -Lc:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../.. --whole-archive CMakeFiles\cmTC_bcd93.dir/objects.a --no-whole-archive --out-implib libcmTC_bcd93.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt c:/mingw/bin/../lib/gcc/mingw32/4.8.1/crtend.o
+mingw32-make.exe[1]: Leaving directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.exe|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"c:/MinGW/bin/mingw32-make.exe" "cmTC_bcd93/fast"]
+  ignore line: [c:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_bcd93.dir\build.make CMakeFiles/cmTC_bcd93.dir/build]
+  ignore line: [mingw32-make.exe[1]: Entering directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp']
+  ignore line: [[0mBuilding C object CMakeFiles/cmTC_bcd93.dir/CMakeCCompilerABI.c.obj[0m;c:\MinGW\bin\gcc.exe    -o CMakeFiles\cmTC_bcd93.dir\CMakeCCompilerABI.c.obj   -c "c:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c";[0mLinking C executable cmTC_bcd93.exe[0m;"c:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_bcd93.dir\link.txt --verbose=1;"c:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_bcd93.dir/objects.a;c:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_bcd93.dir/objects.a @CMakeFiles\cmTC_bcd93.dir\objects1.rsp;c:\MinGW\bin\gcc.exe      -v -Wl,--whole-archive CMakeFiles\cmTC_bcd93.dir/objects.a -Wl,--no-whole-archive  -o cmTC_bcd93.exe -Wl,--out-implib,libcmTC_bcd93.dll.a -Wl,--major-image-version,0,--minor-image-version,0   ;Using built-in specs.;COLLECT_GCC=c:\MinGW\bin\gcc.exe;COLLECT_LTO_WRAPPER=c:/mingw/bin/../libexec/gcc/mingw32/4.8.1/lto-wrapper.exe;Target: mingw32;Configured with: ../gcc-4.8.1/configure --prefix=/mingw --host=mingw32 --build=mingw32 --without-pic --enable-shared --enable-static --with-gnu-ld --enable-lto --enable-libssp --disable-multilib --enable-languages=c,c++,fortran,objc,obj-c++,ada --disable-sjlj-exceptions --with-dwarf2 --disable-win32-registry --enable-libstdcxx-debug --enable-version-specific-runtime-libs --with-gmp=/usr/src/pkg/gmp-5.1.2-1-mingw32-src/bld --with-mpc=/usr/src/pkg/mpc-1.0.1-1-mingw32-src/bld --with-mpfr= --with-system-zlib --with-gnu-as --enable-decimal-float=yes --enable-libgomp --enable-threads --with-libiconv-prefix=/mingw32 --with-libintl-prefix=/mingw --disable-bootstrap LDFLAGS=-s CFLAGS=-D_USE_32BIT_TIME_T;Thread model: win32;gcc version 4.8.1 (GCC) ;COMPILER_PATH=c:/mingw/bin/../libexec/gcc/mingw32/4.8.1/;c:/mingw/bin/../libexec/gcc/;c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../../mingw32/bin/;LIBRARY_PATH=c:/mingw/bin/../lib/gcc/mingw32/4.8.1/;c:/mingw/bin/../lib/gcc/;c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../../mingw32/lib/;c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../;COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_bcd93.exe' '-mtune=generic' '-march=pentiumpro'; c:/mingw/bin/../libexec/gcc/mingw32/4.8.1/collect2.exe -Bdynamic -o cmTC_bcd93.exe c:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../crt2.o c:/mingw/bin/../lib/gcc/mingw32/4.8.1/crtbegin.o -Lc:/mingw/bin/../lib/gcc/mingw32/4.8.1 -Lc:/mingw/bin/../lib/gcc -Lc:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../../../mingw32/lib -Lc:/mingw/bin/../lib/gcc/mingw32/4.8.1/../../.. --whole-archive CMakeFiles\cmTC_bcd93.dir/objects.a --no-whole-archive --out-implib libcmTC_bcd93.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt c:/mingw/bin/../lib/gcc/mingw32/4.8.1/crtend.o;mingw32-make.exe[1]: Leaving directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp';]
+  implicit libs: []
+  implicit dirs: []
+  implicit fwks: []
+
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED succeded with the following output:
+Change Dir: C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp
+
+Run Build Command:"c:/MinGW/bin/mingw32-make.exe" "cmTC_57795/fast"
+c:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_57795.dir\build.make CMakeFiles/cmTC_57795.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp'
+[0mBuilding C object CMakeFiles/cmTC_57795.dir/src.c.obj[0m
+c:\MinGW\bin\gcc.exe   -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles\cmTC_57795.dir\src.c.obj   -c C:\user\SASfitGit\buildCL\CMakeFiles\CMakeTmp\src.c
+[0mLinking C executable cmTC_57795.exe[0m
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_57795.dir\link.txt --verbose=1
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_57795.dir/objects.a
+c:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_57795.dir/objects.a @CMakeFiles\cmTC_57795.dir\objects1.rsp
+c:\MinGW\bin\gcc.exe   -DOpenMP_FLAG_DETECTED -fopenmp    -Wl,--whole-archive CMakeFiles\cmTC_57795.dir/objects.a -Wl,--no-whole-archive  -o cmTC_57795.exe -Wl,--out-implib,libcmTC_57795.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_57795.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'C:/user/SASfitGit/buildCL/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+

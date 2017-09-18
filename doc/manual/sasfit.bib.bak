@@ -1,0 +1,4520 @@
+% Encoding: windows-1252
+
+@MISC{Rfactor,
+  author = {Online Dictionary of crystallography},
+  title = {R factor},
+  howpublished = {\href{http://reference.iucr.org/dictionary/R_factor}{http://reference.iucr.org/dictionary/R\_factor}},
+  url = {http://reference.iucr.org/dictionary/R_factor},
+  owner = {kohlbrecher},
+  timestamp = {2013.04.26}
+}
+
+@ARTICLE{Agarwal2007,
+  author = {R. P. Agarwal and Donal O'Regan and D. R. Sahu},
+  title = {Iterative construction of fixed points of nearly asymptotically nonexpansive
+	mappings},
+  year = {2007},
+  volume = {8},
+  number = {1},
+  pages = {61--79},
+  url = {http://www.ybook.co.jp/online2/jncav8-1.html},
+  journal = {Journal of Nonlinear and
+	
+	Covnex Analysis},
+  owner = {kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Alexander1984,
+  author = {Alexander, S. and Chaikin, P. M. and Grant, P. and Morales, G. J.
+	and Pincus, P. and Hone, D.},
+  title = {Charge renormalization, osmotic pressure, and bulk modulus of colloidal
+	crystals: Theory},
+  year = {1984},
+  volume = {80},
+  number = {11},
+  pages = {5776-5781},
+  doi = {http://dx.doi.org/10.1063/1.446600},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/80/11/10.1063/1.446600},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.20}
+}
+
+@ARTICLE{Anderson1965,
+  author = {Anderson, Donald G.},
+  title = {Iterative Procedures for Nonlinear Integral Equations},
+  year = {1965},
+  volume = {12},
+  number = {4},
+  month = oct,
+  pages = {547--560},
+  issn = {0004-5411},
+  doi = {10.1145/321296.321305},
+  url = {http://doi.acm.org/10.1145/321296.321305},
+  acmid = {321305},
+  address = {New York, NY, USA},
+  issue_date = {Oct. 1965},
+  journal = {J. ACM},
+  numpages = {14},
+  owner = {kohlbrecher},
+  publisher = {ACM},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{Asakura1958,
+  author = {Asakura, Sho and Oosawa, Fumio},
+  title = {Interaction between particles suspended in solutions of macromolecules},
+  year = {1958},
+  volume = {33},
+  number = {126},
+  pages = {183--192},
+  issn = {1542-6238},
+  doi = {10.1002/pol.1958.1203312618},
+  url = {http://dx.doi.org/10.1002/pol.1958.1203312618},
+  abstract = {An attractive force appears between particles suspended in solutions
+	of macromolecules when there is neither direct interaction between
+	two particles nor energetic interaction between particles and solute
+	macromolecules. The magnitude of this force is of the order of the
+	osmotic pressure of the solution of macromolecules and the range
+	is of the order of the diameter of macromolecules. This force is
+	calculated as a function of concentration, shape, and charge of macromolecules,
+	and it is shown that it becomes stronger in solutions of chain macromolecules
+	or of macromolecules of dissymmetrical shape than in solutions of
+	rigid spherical macromolecules at the same net concentration. If
+	macromolecules have charge, the force can be greatly intensified.
+	In every case numerical estimation is made, and it is found that
+	actually this kind of force can have a remarkable influence on the
+	state of suspended particles. Numerical examples of the critical
+	concentration of particles at their macroscopic aggregation are given.
+	Finally a short description is added on the effect of energetic interaction
+	between particles and macromolecules.},
+  journal = {Journal of Polymer Science},
+  owner = {kohlbrecher},
+  publisher = {Interscience Publishers, Inc.},
+  timestamp = {2013.11.21}
+}
+
+@ARTICLE{scatt97,
+  author = {N. W. Ashcroft and L. Lenker},
+  title = {Structure and resistivity of liquid metals},
+  year = {1966},
+  volume = {145},
+  number = {1},
+  month = {May},
+  pages = {83-90},
+  journal = {Physical Review},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Ballone1986,
+  author = {Ballone, P. and Pastore, G. and Galli, G. and Gazzillo, D.},
+  title = {Additive and non-additive hard sphere mixtures},
+  year = {1986},
+  volume = {59},
+  number = {2},
+  pages = {275-290},
+  doi = {10.1080/00268978600102071},
+  eprint = {http://www.tandfonline.com/doi/pdf/10.1080/00268978600102071},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/00268978600102071},
+  journal = {Molecular Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.08}
+}
+
+@ARTICLE{Barboy1974,
+  author = {B. Barboy},
+  title = {On a representation of the equation of state of
+	
+	fluids in terms of the adhesive hard-sphere model},
+  year = {1974},
+  volume = {61},
+  number = {8},
+  pages = {3194-3196},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Barker:gl0350,
+  author = {Barker, J. G. and Pedersen, J. S.},
+  title = {Instrumental Smearing Effects in Radially Symmetric Small-Angle Neutron
+	Scattering by Numerical and Analytical Methods},
+  year = {1995},
+  volume = {28},
+  number = {2},
+  month = {Apr},
+  pages = {105--114},
+  doi = {10.1107/S0021889894010095},
+  url = {http://dx.doi.org/10.1107/S0021889894010095},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2010.05.08}
+}
+
+@ARTICLE{Baxter1968,
+  author = {R.J. Baxter},
+  title = {Percus-Yevick equation for hard spheres with
+	
+	surface adhesion},
+  year = {1968},
+  volume = {49},
+  number = {6},
+  pages = {2770-2774},
+  doi = {10.1063/1.1673684},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/52/9/10.1063/1.1673684},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{beaucage96,
+  author = {G. Beaucage},
+  title = {Small-Angle Scattering from Polymeric Mass Fractals of Arbitrary
+	Mass-Fractal Dimension},
+  year = {1996},
+  volume = {29},
+  pages = {134-146},
+  journal = {J. Appl. Cryst.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{beaucage95,
+  author = {G. Beaucage},
+  title = {Approximations Leading to a Unified Exponential/Power-Law Approach
+	to Small-Angle Scattering},
+  year = {1995},
+  volume = {28},
+  pages = {717-728},
+  journal = {J. Appl. Cryst.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Benoit53,
+  author = {H. Benoit},
+  title = {On the effect of branching and polydispersity on the angular distribution
+	of the light scattered by gaussian coils},
+  year = {1953},
+  volume = {11},
+  pages = {507-510},
+  journal = {J. Polym. Sci.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Berndt2006,
+  author = {Berndt, Ingo and Pedersen, Jan Skov and Lindner, Peter and Richtering,
+	Walter},
+  title = {Influence of Shell Thickness and Cross-Link Density on the Structure
+	of Temperature-Sensitive Poly-N-Isopropylacrylamide−Poly-N-Isopropylmethacrylamide
+	Core−Shell Microgels Investigated by Small-Angle Neutron Scattering},
+  year = {2006},
+  volume = {22},
+  number = {1},
+  pages = {459-468},
+  note = {PMID: 16378460},
+  doi = {10.1021/la052463u},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/la052463u},
+  url = {http://pubs.acs.org/doi/abs/10.1021/la052463u},
+  abstract = {Swelling properties of doubly temperature sensitive core−shell microgels
+	consisting of two thermosensitive polymers with lower critical solution
+	temperatures (LCTS) at, respectively, 34 °C in the core and 44 °C
+	in the shell have been investigated by small-angle neutron scattering
+	(SANS). A core−shell form factor has been employed to evaluate
+	the structure, and the real space particle structure is expressed
+	by radial density profiles. By this means, the influences of both
+	shell/core mass composition and shell cross-linker content on the
+	internal structure have been revealed at temperatures above, between,
+	and below the LCSTs. Higher shell/core mass ratios lead to an increased
+	expansion of the core at temperatures between the LCSTs, whereas
+	a variation of cross-linker in the shell mainly effects the dimensions
+	of the shell. The influence on the core structure was interpreted
+	as resulting from an elastic force developed from the swollen shell.
+	At temperatures below the core LCST, the core cannot swell to its
+	native size (i.e., in the absence of a shell), because the maximum
+	expanded shell network prohibits further swelling. Thus, depending
+	on temperature, the shell either expands or compresses the core.},
+  journal = {Langmuir},
+  owner = {Kohlbrecher},
+  timestamp = {2012.04.02}
+}
+
+@ARTICLE{Berndt2006a,
+  author = {Berndt, Ingo and Pedersen, Jan Skov and Richtering, Walter},
+  title = {Temperature-Sensitive Core–Shell Microgel Particles with Dense
+	Shell},
+  year = {2006},
+  volume = {118},
+  number = {11},
+  pages = {1769--1773},
+  issn = {1521-3757},
+  doi = {10.1002/ange.200503888},
+  url = {http://dx.doi.org/10.1002/ange.200503888},
+  journal = {Angewandte Chemie},
+  keywords = {Blockcopolymere, Kern-Schale-Nanopartikel, Mikrogele, Neutronenbeugung},
+  owner = {Kohlbrecher},
+  publisher = {WILEY-VCH Verlag},
+  timestamp = {2012.04.02}
+}
+
+@ARTICLE{Berndt2005,
+  author = {Berndt, Ingo and Pedersen, Jan Skov and Richtering, Walter},
+  title = {Structure of Multiresponsive “Intelligent�? Core−Shell Microgels},
+  year = {2005},
+  volume = {127},
+  number = {26},
+  pages = {9372-9373},
+  note = {PMID: 15984856},
+  doi = {10.1021/ja051825h},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/ja051825h},
+  url = {http://pubs.acs.org/doi/abs/10.1021/ja051825h},
+  abstract = {A doubly temperature-sensitive core−shell microgel composed of two
+	temperature-sensitive polymers with different lower critical solution
+	temperatures (LCSTs) in the core and shell has been studied by small-angle
+	neutron scattering (SANS). The application of a novel universal form
+	factor model in the analysis of the SANS data reveals that the radial
+	density profile at temperatures above the LCSTs of both polymers
+	can be well described by a two-box profile with narrow interfaces.
+	At temperatures between the LCSTs, the radial density profile reveals
+	that the core in the core−shell microgel has larger dimensions
+	than the naked core. Thus the swollen shell pulls the core apart.
+	At temperatures below both LCSTs, however, the shell restricts the
+	core swelling, and the core is found to be smaller than in its native
+	state. This clearly demonstrates the mutual influence of core and
+	shell swelling.},
+  journal = {Journal of the American Chemical Society},
+  owner = {Kohlbrecher},
+  timestamp = {2012.04.02}
+}
+
+@ARTICLE{scatt151,
+  author = {P. van Beurten and A. Vrij},
+  title = {Polydispersity effects in the small-angle scattering of concentrated
+	solutions of colloidal spheres},
+  year = {1981},
+  volume = {74},
+  number = {5},
+  month = {March},
+  pages = {2744-2748},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@BOOK{Bevington2003,
+  author = {Philip Bevington and D. Keith Robinson},
+  title = {Data Reduction and Error Analysis for the Physical Sciences},
+  year = {2002},
+  edition = {3rd},
+  note = {ISBN-10: 0072472278, ISBN-13: 978-0072472271},
+  publisher = {McGraw-Hill},
+  url = {http://catalogs.mhhe.com/mhhe/viewProductDetails.do?isbn=0072472278},
+  abstract = {The purpose of this book is to provide an introduction to the concepts
+	of statistical analysis of data for students at the undergraduate
+	and graduate level, and to provide tools for data reduction and error
+	analysis commonly required in the physical sciences. The presentation
+	is developed from a practical point of view, including enough derivation
+	to justify the results, but emphasizing methods of handling data
+	more than theory. The text provides a variety of numerical and graphical
+	techniques. Computer programs that support these techniques will
+	be available on an accompanying website in both Fortran and C++.},
+  month = {23 July},
+  owner = {kohlbrecher},
+  timestamp = {2013.04.26}
+}
+
+@ARTICLE{Blaurock1982,
+  author = {A. E. Blaurock},
+  title = {Evidence of bilayer structure and of membrane interactions from X-ray
+	diffraction analysis},
+  year = {1982},
+  volume = {650},
+  number = {4},
+  pages = {167 - 207},
+  doi = {10.1016/0304-4157(82)90016-8},
+  url = {http://www.sciencedirect.com/science/article/B6T22-47T348J-3W/2/6bece612b691d434da265844aa3e86eb},
+  journal = {Biochimica et Biophysica Acta (BBA) - Reviews on Biomembranes},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@BOOK{Bohren1983,
+  author = {C.F. Bohren and D.R. Huffman},
+  title = {Absorption and Scattering of Light by Small Particles},
+  year = {1983},
+  publisher = {Wiley, New York},
+  pages = {82�129},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@INBOOK{Bomont2008,
+  author = {Bomont, Jean-Marc},
+  title = {Recent Advances in the Field of Integral Equation Theories: Bridge
+	Functions and Applications to Classical Fluids},
+  booktitle = {Advances in Chemical Physics},
+  year = {2008},
+  publisher = {John Wiley \& Sons, Inc.},
+  isbn = {9780470259498},
+  chapter = {Chapter 1},
+  pages = {1--84},
+  doi = {10.1002/9780470259498.ch1},
+  url = {http://dx.doi.org/10.1002/9780470259498.ch1},
+  keywords = {statistical mechanics, liquid state, thermodynamics quantities, nonconsistent
+	integral equations, thermodynamic properties},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.02}
+}
+
+@ARTICLE{Bomont2003,
+  author = {Bomont, J. M. and Bretonnet, J. L.},
+  title = {A self-consistent integral equation: Bridge function and thermodynamic
+	properties for the Lennard-Jones fluid},
+  year = {2003},
+  volume = {119},
+  number = {4},
+  pages = {2188-2191},
+  doi = {http://dx.doi.org/10.1063/1.1583675},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/119/4/10.1063/1.1583675},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Bomont2004,
+  author = {Bomont, Jean-Marc and Bretonnet, Jean-Louis},
+  title = {A consistent integral equation theory for hard spheres},
+  year = {2004},
+  volume = {121},
+  number = {3},
+  pages = {1548-1552},
+  doi = {http://dx.doi.org/10.1063/1.1764772},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/121/3/10.1063/1.1764772},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Booth1999,
+  author = {Michael J. Booth and A.G. Schlijper and L.E. Scales and A.D.J. Haymet},
+  title = {Efficient solution of liquid state integral equations using the Newton-GMRES
+	algorithm},
+  year = {1999},
+  volume = {119},
+  number = {2–3},
+  pages = {122 - 134},
+  issn = {0010-4655},
+  doi = {http://dx.doi.org/10.1016/S0010-4655(99)00186-1},
+  url = {http://www.sciencedirect.com/science/article/pii/S0010465599001861},
+  journal = {Computer Physics Communications },
+  keywords = {Newton},
+  owner = {kohlbrecher},
+  timestamp = {2013.12.03}
+}
+
+@ARTICLE{scatt144,
+  author = {M. Born and H. S. Green},
+  title = {A general kinetic theory of liquids},
+  year = {1947},
+  volume = {A190},
+  pages = {455-474},
+  journal = {Proc. Roy. Soc.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{scatt145,
+  author = {M. Born and H. S. Green},
+  title = {A general kinetic theory of liquids. {IV. Quantum} mechanics of fluids},
+  year = {1947},
+  volume = {A191},
+  pages = {168-181},
+  journal = {Proc. Roy. Soc.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{scatt142,
+  author = {M. Born and H. S. Green},
+  title = {A general kinetic theory of liquids {I. The} molecular distribution
+	functions},
+  year = {1946},
+  volume = {A188},
+  pages = {10-18},
+  journal = {Proc. Roy. Soc.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Boucher1983,
+  author = {B Boucher and P Chieux and P Convert and M Tournarie},
+  title = {Small-angle neutron scattering determination of medium and long range
+	order in the amorphous metallic alloy TbCu 3.54},
+  year = {1983},
+  volume = {13},
+  number = {7},
+  pages = {1339},
+  url = {http://stacks.iop.org/0305-4608/13/i=7/a=006},
+  abstract = {Small-angle neutron scattering measurements have been performed on
+	the amorphous metallic alloy TbCu 3.54 in its as-prepared state and
+	after annealing for 5 h at 240 degrees C. The sample impurity atoms
+	such as hydrogen, argon and oxygen were identified and their concentrations
+	determined. At very small momentum transfer values a very strong
+	scattering is observed which decreases as q -3 in an oscillatory
+	fashion. A well defined weak ring is observed at about 0.2 AA -1
+	. Annealing doubles the intensity of the whole pattern. In a model
+	description of the observed small-angle scattering, the alloy is
+	composed of domains several thousand of angstroms wide, in which
+	the impurities tend to accumulate near the walls. The impurities
+	might be diluted in the alloy or concentrated such as in small bubbles.
+	In any case, their distribution within the domains is characteristic.
+	The annealing purifies the centres of the domains and repels the
+	impurities to the periphery.},
+  journal = {Journal of Physics F: Metal Physics},
+  owner = {kohlbrecher},
+  timestamp = {2016.01.20}
+}
+
+@ARTICLE{Burchard1996,
+  author = {W. Burchard and E. Michel and V. Trappe},
+  title = {Conformational Properties of Multiply Twisted Ring Systems and Daisy-Like
+	Structures},
+  year = {1996},
+  volume = {29},
+  number = {18},
+  pages = {5934-5939},
+  doi = {10.1021/ma9603286},
+  url = {http://dx.doi.org/10.1021/ma9603286},
+  abstract = {Two multiple ring systems are considered and relationships are derived
+	for the angular dependence of the scattered light (P(q)), the radius
+	of gyration (Rg) and the hydrodynamic radius (Rh). The two models
+	of consideration are (i) the multiply twisted ring system and (ii)
+	the daisy-like ring structure. The derivations are made on the basis
+	of the Wang?Uhlenbeck theorem on Gaussian distributions for the static
+	properties and the Kirkwood?Riseman preaverage approximation for
+	the hydrodynamics. The derived particle scattering factors show significant
+	differences for the two different ring systems. To distinguish the
+	multiply twisted ring system from a linear open chain, it is necessary
+	to measure the scattering intensity over a large q range. The daisy-like
+	structures resemble star-branched macromolecules but with numbers
+	of subrings 4 to 5 times smaller than the arm numbers in a star.
+	Differences between the shrinking factors and the ? parameter of
+	the various systems are noticeable and can be used to discern these
+	systems.},
+  journal = {Macromolecules},
+  owner = {Kohlbrecher},
+  timestamp = {2009.07.01}
+}
+
+@ARTICLE{Caccamo1996,
+  author = {C. Caccamo},
+  title = {Integral equation theory description of phase equilibria in classical
+	fluids },
+  year = {1996},
+  volume = {274},
+  number = {1–2},
+  pages = {1 - 105},
+  issn = {0370-1573},
+  doi = {http://dx.doi.org/10.1016/0370-1573(96)00011-7},
+  url = {http://www.sciencedirect.com/science/article/pii/0370157396000117},
+  abstract = {We review the present status of applications of integral equation
+	theories (IETs) for the radial distribution function g(r), to the
+	determination of phase diagrams and stability conditions of simple
+	and charged classical fluids. After having recalled some basic concepts
+	and definitions in the structural description of fluid systems, a
+	number of \{IETs\} are examined by reporting the constituting equations
+	and solution procedures; these last are discussed also in relationship
+	with the actual calculation of coexistence lines and description
+	of the critical behavior of each envisaged theory. In this context,
+	the crucial role played by the fulfilment of thermodynamic consistency
+	in the improvement of the performances of the various approximations,
+	is highlighted. Then, a number of results of phase diagram determinations,
+	phase stability investigations, and estimates of critical exponents,
+	are reported for several neutral and charged model fluids (and their
+	mixtures) such as the hard sphere fluid, the square-well fluid, the
+	hard-core Yukawa fluid, the Lennard-Jones fluid, and charged hard
+	spheres in different regimes of density, sizes and charges. Calculations
+	of the phase diagram of a rigid molecule model of \{C60\} are also
+	reported. Besides their theoretical interest, these models are investigated
+	by many authors also because they can reasonably mimic real systems
+	like rare gas liquids, electrolyte solutions, molten salts, neutral
+	and charged micellar systems, and colloidal solutions. The related
+	experimental evidence is therefore frequently referred, and comparison
+	with experimental results is also performed in some case. Theoretical
+	results are usually presented in parallel with the available computer
+	simulation data, which are extensively quoted both with the aim of
+	a systematic assessment of the theories, and in order to offer a
+	more complete scenario of phase behavior calculations in classical
+	fluids. Perspectives and advantages of future extensions and applications
+	of \{IETs\} in different physical contexts in which phase coexistence
+	conditions seem worth of a timely investigation, are also discussed.
+	},
+  journal = {Physics Reports },
+  keywords = {Integral equation theories},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.02}
+}
+
+@ARTICLE{Caille1972,
+  author = {A. Caille},
+  title = {X-ray scattering in smectic A},
+  year = {1972},
+  volume = {274},
+  pages = {891-893},
+  abstract = {The x-ray intensity, I(q), scattered by a smectic A single crystal,
+	was analyzed for q close to the Bragg wave vector |qz| = 2p/density
+	Expressions of the I(q) function was obtained for the 2 main directions
+	(z and x). The laws describing this process are different from those
+	for scattering by a solid. The characteristic exponent of the derived
+	function is dependent on temperature},
+  journal = {Comptes Rendus des Seances de l'Academie des Sciences, Serie B: Sciences
+	Physiques},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{Charpentier2001,
+  author = {Charpentier, I. and Jakse, N.},
+  title = {Exact numerical derivatives of the pair-correlation function of simple
+	liquids using the tangent linear method},
+  year = {2001},
+  volume = {114},
+  number = {5},
+  pages = {2284-2292},
+  doi = {http://dx.doi.org/10.1063/1.1332808},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/114/5/10.1063/1.1332808},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.12}
+}
+
+@ARTICLE{Chihara1973,
+  author = {Chihara, Junzo},
+  title = {Integral Euqations for Fluids with Long-Range and Short-Range Potentials:
+	Application to a Charged Particle System},
+  year = {1973},
+  volume = {50},
+  number = {2},
+  pages = {409-423},
+  doi = {10.1143/PTP.50.409},
+  eprint = {http://ptp.oxfordjournals.org/content/50/2/409.full.pdf+html},
+  url = {http://ptp.oxfordjournals.org/content/50/2/409.abstract},
+  journal = {Progress of Theoretical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Choudhury2002,
+  author = {Choudhury, Niharendu and Ghosh, Swapan K.},
+  title = {Integral equation theory of Lennard-Jones fluids: A modified Verlet
+	bridge function approach},
+  year = {2002},
+  volume = {116},
+  number = {19},
+  pages = {8517-8522},
+  doi = {http://dx.doi.org/10.1063/1.1467894},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/116/19/10.1063/1.1467894},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.08}
+}
+
+@ARTICLE{Chugh2012,
+  author = {R. Chugh and V. Kumar and S. Kumar},
+  title = {Strong Convergence of a New Three Step Iterative Scheme in Banach
+	Spaces},
+  year = {2012},
+  volume = {2},
+  number = {4},
+  pages = {345--357},
+  doi = {10.4236/ajcm.2012.24048},
+  url = {http://www.scirp.org/journal/PaperInformation.aspx?paperID=26176#.U5WZoCjc2M8},
+  journal = {American Journal of Computational Mathematics},
+  owner = {kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Damaschun1971,
+  author = {Damaschun, G. and P{\"{u}}rschel, H.-V.},
+  title = {{R{\"{o}}ntgen-Kleinwinkelstreuung von isotropen Proben ohne Fernordnung.
+	I. Allgemeine Theorie}},
+  year = {1971},
+  volume = {27},
+  number = {3},
+  month = {May},
+  pages = {193--197},
+  doi = {10.1107/S0567739471000457},
+  url = {http://dx.doi.org/10.1107/S0567739471000457},
+  journal = {Acta Crystallographica Section A},
+  owner = {kohlbrecher},
+  timestamp = {2010.05.07}
+}
+
+@ARTICLE{Damaschun1969,
+  author = {G. Damaschun and H.-V. Porschel and G. Sommer},
+  title = {{Bestimmung der Gestalt gel\"oster Makromolek\"ule aus R\"ontgen-Kleinwinkeldiagrammen
+	mit Hilfe von Gleichungssystemen}},
+  year = {1969},
+  volume = {A25},
+  pages = {708},
+  journal = {Acta Cryst.},
+  owner = {Kohlbrecher},
+  timestamp = {2009.03.20}
+}
+
+@ARTICLE{DaoudCotton82,
+  author = {M. Daoud and J.P. Cotton},
+  title = {Star shaped polymers - A model for the conformation and its concentration-dependence},
+  year = {1982},
+  volume = {43},
+  pages = {531},
+  journal = {Journal de Physique (Paris)},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{David1986,
+  author = {W. I. F. David},
+  title = {Powder diffraction peak shapes. Parameterization of the pseudo-Voigt
+	as a Voigt function},
+  year = {1986},
+  volume = {19},
+  number = {1},
+  month = {Feb},
+  pages = {63-64},
+  doi = {doi:10.1107/S0021889886089999},
+  url = {http://dx.doi.org/10.1107/S0021889886089999},
+  abstract = {The Voigt function is now recognized to be one of the best mathematical
+	descriptions of the symmetrical component of the peak shape in constant-wavelength
+	X-ray and neutron powder diffraction. The simpler pseudo-Voigt function
+	has been used previously to provide an empirical fit to observed
+	peak shapes. In this paper, a parameterization of this function is
+	obtained to make it, to a very good approximation, equivalent to
+	a Voigt function, and, additionally, it is described by the half-width
+	parameters of the Gaussian and Lorentzian components of that Voigt
+	function. This new construction allows for greater flexibility in
+	peak-shape description and, in particular, allows for a more straightforward
+	convolution of additional functional contributions into the `Voigt'
+	component of a peak shape description.},
+  journal = {Journal of Applied Crystallography},
+  owner = {Kohlbrecher},
+  timestamp = {2008.11.21}
+}
+
+@ARTICLE{Debye1947,
+  author = {P. Debye},
+  title = {Mollecular-weight determination by Light Scattering},
+  year = {1947},
+  volume = {51},
+  pages = {18-32},
+  journal = {Journal of Physical and Colloid Chemistry},
+  owner = {Kohlbrecher},
+  timestamp = {2009.04.13}
+}
+
+@ARTICLE{scatt186,
+  author = {P. Debye},
+  title = {{\"Uber die Zerstreuung von R\"ontgenstrahlen an amorphen K\"orpern}},
+  year = {1927},
+  volume = {28},
+  pages = {135-141},
+  journal = {Physik. Z.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{DAB1957,
+  author = {Debye, P. and Anderson, H. R. and Brumberger, H.},
+  title = {Scattering by an Inhomogeneous Solid. II. The Correlation Function
+	and Its Application},
+  year = {1957},
+  volume = {28},
+  number = {6},
+  pages = {679-683},
+  doi = {http://dx.doi.org/10.1063/1.1722830},
+  url = {http://scitation.aip.org/content/aip/journal/jap/28/6/10.1063/1.1722830},
+  journal = {Journal of Applied Physics},
+  owner = {kohlbrecher},
+  timestamp = {2015.04.24}
+}
+
+@ARTICLE{DebyeBueche1949,
+  author = {Debye, P. and Bueche, A. M.},
+  title = {Scattering by an Inhomogeneous Solid},
+  year = {1949},
+  volume = {20},
+  number = {6},
+  pages = {518-525},
+  doi = {http://dx.doi.org/10.1063/1.1698419},
+  url = {http://scitation.aip.org/content/aip/journal/jap/20/6/10.1063/1.1698419},
+  journal = {Journal of Applied Physics},
+  owner = {kohlbrecher},
+  timestamp = {2015.04.24}
+}
+
+@ARTICLE{dozier91,
+  author = {W. D. Dozier and J. S. Huang and L. J. Fetters},
+  title = {Colloidal nature of star polymer dilute and semidilute solutions},
+  year = {1991},
+  volume = {24},
+  number = {10},
+  pages = {2810-2814},
+  journal = {Macromolecules},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Duh1995,
+  author = {Duh, Der-Ming and Haymet, A. D. J.},
+  title = {Integral equation theory for uncharged liquids: The Lennard-Jones
+	fluid and the bridge function},
+  year = {1995},
+  volume = {103},
+  number = {7},
+  pages = {2625-2633},
+  doi = {http://dx.doi.org/10.1063/1.470724},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/103/7/10.1063/1.470724},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.08}
+}
+
+@ARTICLE{Dzubiella2001,
+  author = {Dzubiella, J. and Jusufi, A. and Likos, C. N. and von Ferber, C.
+	and L\"owen, H. and Stellbrink, J. and Allgaier, J. and Richter,
+	D. and Schofield, A. B. and Smith, P. A. and Poon, W. C. K. and Pusey,
+	P. N.},
+  title = {Phase separation in star-polymer\char21{}colloid mixtures},
+  year = {2001},
+  volume = {64},
+  issue = {1},
+  month = {Jun},
+  pages = {010401},
+  doi = {10.1103/PhysRevE.64.010401},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.64.010401},
+  journal = {Phys. Rev. E},
+  numpages = {4},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.11.19}
+}
+
+@ARTICLE{Forster2010,
+  author = {F{\"{o}}rster, S. and Apostol, L. and Bras, W.},
+  title = {{{\it Scatter}: software for the analysis of nano- and mesoscale
+	small-angle scattering}},
+  year = {2010},
+  volume = {43},
+  number = {3},
+  month = {Jun},
+  pages = {639--646},
+  doi = {10.1107/S0021889810008289},
+  url = {http://dx.doi.org/10.1107/S0021889810008289},
+  abstract = {{\it Scatter} is a new software for analysis, modeling and fitting
+	of one- and two-dimensional small-angle scattering data of non-ordered,
+	partially ordered or fully ordered nano- and mesoscale structures.
+	The calculations are based on closed analytical expressions for the
+	scattering intensity, enabling efficient evaluation of form factors
+	and structure factors. The software allows one to sequentially fit
+	large series of scattering curves and scattering patterns automatically.
+	It provides further tools for data loading, beam centering, calibration,
+	zooming, binning, lattice identification, calculation of density
+	profiles and size distributions, and visualization of real-space
+	structures. Presentations of experimental and calculated data can
+	be saved as is for presentations or exported for further graphical
+	or mathematical treatment.},
+  journal = {Journal of Applied Crystallography},
+  keywords = {small-angle scattering, SAS, computer programs},
+  owner = {kohlbrecher},
+  timestamp = {2016.02.12}
+}
+
+@Article{Forster2005,
+  author    = {S. F\"orster and A. Timmann and M. Konrad and C. Schellbach and A. Meyer and S. S. Funari and P. Mulvaney and R. Knott},
+  title     = {Scattering Curves of Ordered Mesoscopic Materials},
+  year      = {2005},
+  journal   = {The Journal of Physical Chemistry B},
+  volume    = {109},
+  number    = {4},
+  pages     = {1347-1360},
+  note      = {PMID: 16851102},
+  doi       = {10.1021/jp0467494},
+  eprint    = { http://dx.doi.org/10.1021/jp0467494 },
+  url       = { http://dx.doi.org/10.1021/jp0467494 
+},
+  abstract  = { Analytical expressions for the scattering functions of ordered mesoscopic
+	materials are derived and compared to experimentally determined scattering
+	curves. Ordered structures comprising spheres (fcc, bcc, hcp, sc),
+	cylinders (hex, sq), and lamellar structures are considered. The
+	expressions take into account particle size distributions and lattice
+	point deviations, domain size, core/shell structures, as well as
+	peak shapes varying analytically between Lorentzian and Gaussian
+	functions. The expressions allow one to quantitatively describe high-resolution
+	synchrotron small-angle X-ray (SAXS) and neutron scattering (SANS)
+	curves from lipid and block copolymer lyotropic phases, core/shell
+	nanoparticle superstructures, ordered nanocomposites, and ordered
+	mesoporous materials. In addition, the diffuse out-of-plane scattering
+	of grazing incidence GISAXS and GISANS experiments of laterally ordered
+	thin films can be quantitatively analyzed. },
+  owner     = {kohlbrecher},
+  timestamp = {2016.02.12},
+}
+
+@ARTICLE{Forster1998,
+  author = {Stephan F\"orster and and Christian Burger},
+  title = {Scattering Functions of Polymeric Core-Shell Structures and Excluded
+	Volume Chains},
+  year = {1998},
+  volume = {31},
+  number = {3},
+  pages = {879-891},
+  doi = {10.1021/ma970761v},
+  eprint = { http://dx.doi.org/10.1021/ma970761v },
+  url = {http://dx.doi.org/10.1021/ma970761v},
+  journal = {Macromolecules},
+  owner = {kohlbrecher},
+  timestamp = {2016.02.14}
+}
+
+@ARTICLE{Forster2011,
+  author = {S. F\"orster and S. Fischer and K. Zielske and C. Schellbach and
+	M. Sztucki and P. Lindner and J. Perlich},
+  title = {Calculation of scattering-patterns of ordered nano- and mesoscale
+	materials },
+  year = {2011},
+  volume = {163},
+  number = {1},
+  pages = {53 - 83},
+  issn = {0001-8686},
+  doi = {http://dx.doi.org/10.1016/j.cis.2010.12.003},
+  url = {http://www.sciencedirect.com/science/article/pii/S0001868611000029},
+  abstract = {Analytical expressions for the scattering patterns of ordered nano-
+	and mesoscopic materials are derived and compared to measured scattering
+	patterns. Ordered structures comprising spheres (fcc, bcc, hcp, sc,
+	and bct), cylinders (hex and sq), lamellae (lam) and vesicles, as
+	well as bicontinuous cubic structures (Ia3d, Pn3m, and Im3m) are
+	considered. The expressions take into account unit cell dimensions,
+	particle sizes and size distributions, lattice point deviations,
+	finite domain sizes, orientational distributions, core/shell-structures
+	as well a variety of peak shapes. The expressions allow to quantitatively
+	describe, model and even fit measured \{SAXS\} and SANS-patterns
+	of ordered or oriented micellar solutions, lyotropic phases, block
+	copolymers, colloidal solutions, nanocomposites, photonic crystals,
+	as well as mesoporous materials. },
+  journal = {Advances in Colloid and Interface Science },
+  keywords = {Scattering},
+  owner = {kohlbrecher},
+  timestamp = {2016.02.12}
+}
+
+@ARTICLE{FoersterHermsdorf2002,
+  author = {S. F\"orster and N. Hermsdorf and C. B\"ottcher and P. Lindner},
+  title = {Structure of Polyelectrolyte Block Copolymer Micelles,
+	
+	Macromolecules},
+  year = {2002},
+  volume = {35},
+  pages = {4096-4105},
+  journal = {Macromolecules},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Forster1999,
+  author = {S. F\"orster and N. Hermsdorf and W. Leube and H. Schnablegger and
+	M. Regenbrecht and S. Akari and P.
+	
+	Lindner and C. B\"ottcher},
+  title = {Fusion of Charged Block
+	
+	Copolymer Micelles into Toroid Networks},
+  year = {1999},
+  volume = {103},
+  pages = {6657-6668},
+  journal = {J. Phys. Chem. B},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@BOOK{book:Feigin:Svergun,
+  author = {L. A. Feigin and D. I. Svergun},
+  title = {Structure Analysis by Small-Angle X-ray and Neutron Scattering},
+  year = {1987},
+  publisher = {Plenum Press},
+  file = {:http\://sans.web.psi.ch/sansstatus/SASbooks/structure_analysis_saxs_sans_feigin_svergun.pdf:PDF},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Fruhwirth2004,
+  author = {Fr{\"{u}}hwirth, Thomas and Fritz, Gerhard and Freiberger, Norbert
+	and Glatter, Otto},
+  title = {{Structure and order in lamellar phases determined by small-angle
+	scattering}},
+  year = {2004},
+  volume = {37},
+  number = {5},
+  month = {Oct},
+  pages = {703--710},
+  doi = {10.1107/S0021889804012956},
+  url = {http://dx.doi.org/10.1107/S0021889804012956},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{Fratzl1994,
+  author = {Peter Fratzl},
+  title = {Statistical model of the habit and arrangement of mineral crystals
+	in the collagen of bone},
+  year = {1994},
+  volume = {77},
+  number = {1-2},
+  pages = {125-143},
+  doi = {10.1007/BF02186835},
+  file = {:http\://sans.web.psi.ch/sansstatus/papers/generalizedGuinier/E000547671_1.pdf:PDF},
+  journal = {Journal of Statistical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2008.02.05}
+}
+
+@ARTICLE{Freund1993,
+  author = {Roland W. Freund},
+  title = {A Transpose-Free Quasi-Minimal Residual Algorithm for Non-Hermitian
+	Linear Systems},
+  year = {1993},
+  volume = {14},
+  number = {2},
+  pages = {470-482},
+  doi = {10.1137/0914029},
+  eprint = { http://dx.doi.org/10.1137/0914029 },
+  url = { http://dx.doi.org/10.1137/0914029 
+},
+  journal = {SIAM Journal on Scientific Computing},
+  owner = {kohlbrecher},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{FFTW05,
+  author = {Frigo, Matteo and Johnson, Steven~G.},
+  title = {The Design and Implementation of {FFTW3}},
+  year = {2005},
+  volume = {93},
+  number = {2},
+  pages = {216--231},
+  note = {Special issue on ``Program Generation, Optimization, and Platform
+	Adaptation''},
+  journal = {Proceedings of the IEEE},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.02}
+}
+
+@TECHREPORT{FFTW97,
+  author = {Frigo, Matteo and Johnson, Steven~G.},
+  title = {The Fastest {Fourier} Transform in the West},
+  institution = {Massachusetts Institute of Technology},
+  year = {1997},
+  number = {MIT-LCS-TR-728},
+  month = {September},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.02}
+}
+
+@ARTICLE{Furukawa1984,
+  author = {H. Furukawa},
+  title = {Dynamics-scaling theory for phase-separating unmixing mixtures: Growth
+	rates of droplets and scaling properties of autocorrelation functions},
+  year = {1984},
+  volume = {123},
+  pages = {497},
+  doi = {10.1016/0378-4371(84)90168-7},
+  journal = {Physica A},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Gursoy2014,
+  author = {{G{\"u}rsoy}, F. and {Karakaya}, V.},
+  title = {{A Picard-S hybrid type iteration method for solving a differential
+	equation with retarded argument}},
+  year = {2014},
+  month = mar,
+  eprint = {1403.2546},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System},
+  adsurl = {http://adsabs.harvard.edu/abs/2014arXiv1403.2546G},
+  archiveprefix = {arXiv},
+  journal = {ArXiv e-prints},
+  keywords = {Mathematics - Functional Analysis, 47H06, 54H25, 34L05},
+  owner = {kohlbrecher},
+  primaryclass = {math.FA},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Gazzillo1999,
+  author = {Domenico Gazzillo and Achille Giacometti and Raffaele Guido Della
+	Valle and Elisabetta Venuti and Flavio Carsughi},
+  title = {A scaling approximation for structure factors in the integral equation
+	theory of polydisperse nonionic colloidal fluids},
+  year = {1999},
+  volume = {111},
+  number = {16},
+  pages = {7636-7645},
+  doi = {10.1063/1.480089},
+  url = {http://link.aip.org/link/?JCP/111/7636/1},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2008.01.25}
+}
+
+@ARTICLE{Gillan1979,
+  author = {Gillan, M.J.},
+  title = {A new method of solving the liquid structure integral equations},
+  year = {1979},
+  volume = {38},
+  number = {6},
+  pages = {1781-1794},
+  doi = {10.1080/00268977900102861},
+  eprint = {http://www.tandfonline.com/doi/pdf/10.1080/00268977900102861},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/00268977900102861},
+  abstract = {We present a new method of obtaining numerical solutions to the Percus-Yevick
+	and hypernetted chain equations for liquid structure. The method,
+	which is rapidly convergent and very stable, is a hybrid of the traditional
+	iterative scheme and the Newton-Raphson technique. We show by numerical
+	tests for typical potentials that the method gives well-converged
+	solutions in 20 or 30 iterations even for very high densities. The
+	number of iterations needed is insensitive to the choice of initial
+	estimate, even if this is extremely inaccurate.},
+  journal = {Molecular Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.12.03}
+}
+
+@ARTICLE{scatt75,
+  author = {O. Glatter},
+  title = {Data evaluation in small angle scattering: Calculation of the radial
+	electron density distribution by means of indirect {Fourier} transformation},
+  year = {1977},
+  volume = {47},
+  pages = {83-102},
+  journal = {Acta Physica Austriaca},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Greschner1973,
+  author = {Georg S. Greschner},
+  title = {Mathematical properties of polydisperse systems, 2. Application to
+	light scattering},
+  year = {1973},
+  volume = {170},
+  number = {1},
+  pages = {203-229},
+  doi = {10.1002/macp.1973.021700117},
+  url = {http://dx.doi.org/10.1002/macp.1973.021700117},
+  abstract = {The direct and the inverse problem of the light scattering from dilute
+	polymer solutions is solved for GAUssian coils at the theta point.
+	Theoretical scattering functions and their derivatives are analytically
+	calculated for the general gamma distribution of molecular weights
+	as a function of the non-uniformity and the weight average molecular
+	weight, and also for various ratios of the statistical segment length
+	of the coil to the wave length of the scattered light. The asymptote
+	and the tangent of P-1Theta are obtained by analysing the operator
+	in the ZIMM equation and their mutual position is compared in the
+	angle range 150� to 180�. The scattering envelopes of microgel systems
+	are analytically calculated and discussed. In order to obtain the
+	molecular weight distribution (MWD) from a given ZIMM diagram of
+	GAUssian coils at the theta point, the corresponding inverse problem
+	is solved analytically, the necessary zero approximation of the segment
+	length being taken from viscometric measurements. With the help of
+	the presented method the MWD and the correct statistical segment
+	length of the coil can theoretically be computed with any reasonable
+	accuracy. However, the calculation shows that for practical use extremely
+	high accuracy of the light scattering measurements is necessary.},
+  journal = {Die Makromolekulare Chemie},
+  owner = {Kohlbrecher},
+  timestamp = {2009.04.13}
+}
+
+@BOOK{Guinier1963,
+  author = {A. Guinier},
+  title = {X-ray Diffraction},
+  year = {1963},
+  publisher = {San Francisco: Freeman},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@BOOK{book:Guinier:Fournet,
+  author = {A. Guinier and G. Fournet},
+  title = {Small-Angle Scattering of X-Rays},
+  year = {1955},
+  publisher = {John Wiley \& Sons, Inc.},
+  file = {:http\://sans.web.psi.ch/sansstatus/SASbooks/saxs_guinier_fournet.pdf:PDF},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Hamilton1965,
+  author = {Hamilton, W. C.},
+  title = {{Significance tests on the crystallographic {\it R} factor}},
+  year = {1965},
+  volume = {18},
+  number = {3},
+  month = {Mar},
+  pages = {502--510},
+  doi = {10.1107/S0365110X65001081},
+  url = {http://dx.doi.org/10.1107/S0365110X65001081},
+  journal = {Acta Crystallographica},
+  owner = {kohlbrecher},
+  timestamp = {2013.04.26}
+}
+
+@Electronic{Hammouda,
+  author       = {B. Hammouda},
+  editor       = {B. Hammouda},
+  title        = {the SANS toolbox},
+  url          = {http://www.ncnr.nist.gov/staff/hammouda/the_SANS_toolbox.pdf},
+  howpublished = {\href{http://www.ncnr.nist.gov/staff/hammouda/the\_SANS\_toolbox.pdf}{$\dots$/the\_SANS\_toolbox.pdf}},
+  owner        = {Kohlbrecher},
+  timestamp    = {2009.04.13},
+}
+
+@ARTICLE{Hammouda2012,
+  author = {Hammouda, Boualem},
+  title = {Small-Angle Scattering From Branched Polymers},
+  year = {2012},
+  volume = {21},
+  number = {6},
+  pages = {372--381},
+  issn = {1521-3919},
+  doi = {10.1002/mats.201100111},
+  url = {http://dx.doi.org/10.1002/mats.201100111},
+  abstract = {The single-polymer form factor is determined for branched polymers
+	using a scaling argument in order to recover the low-Q Porod exponent
+	characteristic of the overall structure. The high-Q Porod exponent
+	characterizes the local branching structure. An alternative approach
+	based on a high-Q expansion contains information about functionality,
+	branch length and branch content. The specific case of a starburst
+	dendrimer for which the form factor is known is discussed. The model
+	predictions are compared to small-angle neutron scattering data from
+	a dilute solution of dendrimer in D2O.},
+  journal = {Macromolecular Theory and Simulations},
+  keywords = {branched polymers, dendrimers, small-angle scattering, structure,
+	Zimm plot},
+  owner = {kohlbrecher},
+  publisher = {WILEY-VCH Verlag},
+  timestamp = {2014.12.06}
+}
+
+@ARTICLE{Hammouda2010,
+  author = {Hammouda, Boualem},
+  title = {{A new Guinier{--}Porod model}},
+  year = {2010},
+  volume = {43},
+  number = {4},
+  month = {Aug},
+  pages = {716--719},
+  doi = {10.1107/S0021889810015773},
+  url = {http://dx.doi.org/10.1107/S0021889810015773},
+  abstract = {Small-angle scattering (SAS) curves are characterized by two main
+	features: the Guinier region and the Porod region. Standard linear
+	plots are available to fit SAS data and obtain a radius of gyration
+	and a Porod exponent. A new Guinier{--}Porod empirical model is introduced
+	to fit SAS data from spherical as well as nonspherical objects such
+	as rods or platelets. It also applies to shapes intermediate between
+	spheres and rods or between rods and platelets. The new model is
+	used to fit SAS data from a Pluronic solution that sequentially forms
+	unimers, then spherical micelles, then cylindrical micelles, then
+	lamellar micelles upon heating. This single model can fit structures
+	associated with all four phases as well as the intermediate structures.},
+  journal = {Journal of Applied Crystallography},
+  keywords = {Guinier model, Porod model, small-angle scattering, empirical models,
+	Pluronic solutions, scattering from cylinders},
+  owner = {kohlbrecher},
+  timestamp = {2016.01.06}
+}
+
+@ARTICLE{Hanley2003,
+  author = {Hanley, H. J. M. and Muzny, C. D. and Ho, D. L. and Glinka, C. J.},
+  title = {A Small-Angle Neutron Scattering Study of a Commercial Organoclay
+	Dispersion},
+  year = {2003},
+  volume = {19},
+  number = {14},
+  pages = {5575-5580},
+  doi = {10.1021/la026342v},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/la026342v},
+  url = {http://pubs.acs.org/doi/abs/10.1021/la026342v},
+  abstract = { The paper explores the capacity of small angle neutron neutron scattering
+	(SANS) to characterize the dispersion of an exchanged clay in an
+	organic solvent. As an illustration, results are reported for 1%
+	and 2% by mass suspensions of a representative commercial complex,
+	known as Cloisite, C15A in toluene. C15A is prepared from montmorillonite
+	and the cation ditallow (a naturally occurring variant of dimethydioctodecylammonium).
+	For this particular example, the SANS scattered intensity data suggest
+	that the complex is well dispersed into clusters which consist of
+	a stack of between three and six ditallow-coated montmorillonite
+	platelets. The size of the clusters, the amount of ditallow adsorbed
+	on a montmorillonite platelet, and an estimate of the thickness of
+	the adsorbed layer are evaluated. General comments on the fitting
+	of SANS data obtained from a cluster composed of stacked, coated
+	disks are given. },
+  journal = {Langmuir},
+  owner = {kohlbrecher},
+  timestamp = {2010.12.12}
+}
+
+@Article{Hansen1982,
+  author    = {Jean-Pierre Hansen and John B. Hayter},
+  title     = {A rescaled MSA structure factor for dilute charged colloidal dispersions},
+  year      = {1982},
+  journal   = {Molecular Physics},
+  volume    = {46},
+  number    = {3},
+  pages     = {651-656},
+  doi       = {10.1080/00268978200101471},
+  eprint    = { http://dx.doi.org/10.1080/00268978200101471 },
+  url       = { http://dx.doi.org/10.1080/00268978200101471 
+},
+  abstract  = { The structure of a dispersion of charged colloidal particles interacting
+	through a screened Coulomb potential is well described at moderate
+	to high densities by calculating the correlations in the mean spherical
+	approximation (MSA). In this paper we extend the validity of the
+	MSA calculation to arbitrarily low densities, using a physical rescaling
+	argument which preserves the analytic form of the MSA solution. Our
+	results are in excellent agreement with other numerical calculations
+	and with experimental low-density light scattering data. The method
+	may be viewed as a generalization of Gillan's prescription for one
+	component plasmas to systems interacting through a Yukawa potential.
+	An advantage of the present prescription is that it allows a smooth
+	transition from strong to weak coupling, and it implies no functional
+	relation between the experimentally independent parameters. },
+  owner     = {kohlbrecher},
+  timestamp = {2007.12.18},
+}
+
+@BOOK{Hansen2013,
+  author = {Jean-Pierre Hansen and Ian R. McDonald},
+  title = {Theory of Simple Liquids with Applications to Soft Matter},
+  year = {2013},
+  edition = {Fourth},
+  publisher = {Academic Press},
+  owner = {kohlbrecher},
+  timestamp = {2013.10.18}
+}
+
+@Article{Hayter1981,
+  author    = {J.B. Hayter and J. Penfold},
+  title     = {An analytic structure factor for macroion solutions},
+  year      = {1981},
+  journal   = {Molecular Physics},
+  volume    = {42},
+  pages     = {109-118},
+  doi       = {10.1080/00268978100100091},
+  eprint    = { http://dx.doi.org/10.1080/00268978100100091 },
+  url       = { http://dx.doi.org/10.1080/00268978100100091 
+},
+  owner     = {kohlbrecher},
+  timestamp = {2007.12.18},
+}
+
+@ARTICLE{Hayter1984,
+  author = {J. B. Hayter and J. Penfold},
+  title = {Use of Viscous Shear Alignment
+	
+	To Study Anisotropic Micellar Structure by Small-Angle Neutron
+	
+	Scattering},
+  year = {1984},
+  volume = {88},
+  pages = {4589-4593},
+  journal = {J. Phys. Chem.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@INBOOK{Henderson2000,
+  author = {Douglas Henderson and Stefan Soko{\l}owski and Malgorza{\l}a Bor\'{o}wko},
+  title = {Computational Methods in Surface And Colloidal Science},
+  year = {2000},
+  editor = {Ma{\l}gorzata Bor\'{o}wko},
+  publisher = {Marcel Dekker, Inc.},
+  chapter = {Integral Equations in the Theory of Simple Fluids},
+  pages = {135-166},
+  owner = {kohlbrecher},
+  timestamp = {2013.10.18}
+}
+
+@ARTICLE{Hindmarsh2005,
+  author = {Alan C. Hindmarsh and Peter N. Brown and Keith E. Grant and Steven
+	L. Lee and Radu Serban and Dan E. Shumaker and Carol S. Woodward},
+  title = {SUNDIALS: Suite of Nonlinear and Differential/Algebraic Equation
+	Solvers},
+  year = {2005},
+  volume = {31},
+  number = {3},
+  month = sep,
+  pages = {363--396},
+  issn = {0098-3500},
+  doi = {10.1145/1089014.1089020},
+  url = {http://doi.acm.org/10.1145/1089014.1089020},
+  acmid = {1089020},
+  address = {New York, NY, USA},
+  issue_date = {September 2005},
+  journal = {ACM Trans. Math. Softw.},
+  keywords = {DAEs, ODEs, nonlinear systems, sensitivity analysis},
+  numpages = {34},
+  owner = {kohlbrecher},
+  publisher = {ACM},
+  timestamp = {2015.12.16}
+}
+
+@BOOK{hittmair,
+  author = {O. Hittmair},
+  title = {{Lehrbuch der Quantentheorie}},
+  year = {1972},
+  publisher = {Verlag Karl Thiemig},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Hjelm1995,
+  author = {Rex P. Hjelm and Claudio Schteingart and Alan F. Hofmann and Devinderjit
+	S. Sivia},
+  title = {Form and Structure of Self-Assembling Particles in Monoolein-Bile
+	Salt Mixtures},
+  year = {1995},
+  volume = {99},
+  pages = {16395-16406},
+  url = {http://pubs.acs.org/cgi-bin/searchRedirect.cgi/jpchax/1995/99/i44/pdf/j100044a030.pdf},
+  file = {:http\://sans.web.psi.ch/sansstatus/papers/generalizedGuinier/j100200a080_generalizedGuinierApprox.pdf:PDF},
+  journal = {J. Phys. Chem.},
+  owner = {kohlbrecher},
+  timestamp = {2008.02.06}
+}
+
+@ARTICLE{Hjelm2000,
+  author = {Rex P. Hjelm and Claudio D. Schteingart and Alan F. Hofmann and P.
+	Thiyagarajan},
+  title = {Structure of Conjugated Bile Salt-Fatty Acid-Monoglyceride Mixed
+	Colloids: Studies by Small-Angle Neutron Scattering},
+  year = {2000},
+  volume = {104},
+  pages = {197-211},
+  doi = {http://dx.doi.org/10.1021/jp992157n},
+  url = {http://pubs.acs.org/cgi-bin/searchRedirect.cgi/jpcbfk/2000/104/i02/pdf/jp992157n.pdf},
+  file = {:http\://sans.web.psi.ch/sansstatus/papers/generalizedGuinier/jp992157n_generalizedGuinierApprox.pdf:PDF},
+  journal = {J. Phys. Chem. B},
+  owner = {kohlbrecher},
+  timestamp = {2008.02.05}
+}
+
+@ARTICLE{Hjelm1992,
+  author = {Rex P. Hjelm and P. Thiyagarajan and Hayat Alkan-Onyuksel},
+  title = {Organization of Phosphatidylcholine and Bile Salt in Rodlike Mixed
+	Micelles},
+  year = {1992},
+  volume = {96},
+  pages = {8653-8661},
+  url = {http://pubs.acs.org/cgi-bin/searchRedirect.cgi/jpchax/1992/96/i21/pdf/j100200a080.pdf},
+  file = {:http\://sans.web.psi.ch/sansstatus/papers/generalizedGuinier/j100200a080_generalizedGuinierApprox.pdf:PDF},
+  journal = {J. Phys. Chem},
+  owner = {kohlbrecher},
+  timestamp = {2008.02.05}
+}
+
+@ARTICLE{Homeier1995,
+  author = {Herbert H.H Homeier and Sebastian Rast and Hartmut Krienke},
+  title = {Iterative solution of the Ornstein-Zernike equation with various
+	closures using vector extrapolation },
+  year = {1995},
+  volume = {92},
+  number = {2–3},
+  pages = {188 - 202},
+  issn = {0010-4655},
+  doi = {http://dx.doi.org/10.1016/0010-4655(95)00116-0},
+  url = {http://www.sciencedirect.com/science/article/pii/0010465595001160},
+  abstract = {The solution of the Ornstein-Zernike equation with various closure
+	approximations is studied. This problem is rewritten as an integral
+	equation that can be solved iteratively on a grid. The convergence
+	of the fixed point iterations is relatively slow. We consider transformations
+	of the sequence of solution vectors using non-linear sequence transformations,
+	so-called vector extrapolation processes. An example is the vector
+	J transformation. The transformed vector sequences turn out to converge
+	considerably faster than the original sequences. },
+  journal = {Computer Physics Communications },
+  keywords = {Many-particle theory},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.05}
+}
+
+@ARTICLE{Homeier1995a,
+  author = {Herbert H.H Homeier and Sebastian Rast and Hartmut Krienke},
+  title = {Iterative solution of the Ornstein-Zernike equation with various
+	closures using vector extrapolation},
+  year = {1995},
+  volume = {92},
+  number = {2–3},
+  pages = {188 - 202},
+  issn = {0010-4655},
+  doi = {http://dx.doi.org/10.1016/0010-4655(95)00116-0},
+  url = {http://www.sciencedirect.com/science/article/pii/0010465595001160},
+  abstract = {The solution of the Ornstein-Zernike equation with various closure
+	approximations is studied. This problem is rewritten as an integral
+	equation that can be solved iteratively on a grid. The convergence
+	of the fixed point iterations is relatively slow. We consider transformations
+	of the sequence of solution vectors using non-linear sequence transformations,
+	so-called vector extrapolation processes. An example is the vector
+	J transformation. The transformed vector sequences turn out to converge
+	considerably faster than the original sequences. },
+  journal = {Computer Physics Communications },
+  keywords = {Many-particle theory},
+  owner = {kohlbrecher},
+  timestamp = {2013.12.03}
+}
+
+@BOOK{Hosemann1962,
+  author = {R. Hosemann and S.N. Bagchi},
+  title = {Direct Analysis of Diffraction by Matter},
+  year = {1962},
+  publisher = {Amsterdam: North-Holland.},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@BOOK{Hulst1957,
+  author = {H.C. van de Hulst},
+  title = {Light Scattering by Small Particles},
+  year = {1957},
+  publisher = {Wiley, New York},
+  pages = {70ff},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Hurd1988,
+  author = {A.J. Hurd and W.L. Flower},
+  title = {In Situ Growth and Structure of Fractal Silica Aggregates in a Flame},
+  year = {1988},
+  volume = {122},
+  number = {1},
+  pages = {178-192},
+  journal = {Journal of Colloid and Interface Science},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Ida2000,
+  author = {T. Ida and M. Ando and H. Toraya},
+  title = {Extended pseudo-Voigt function for approximating the Voigt profile},
+  year = {2000},
+  volume = {33},
+  number = {6},
+  month = {Dec},
+  pages = {1311-1316},
+  doi = {doi:10.1107/S0021889800010219},
+  url = {http://dx.doi.org/10.1107/S0021889800010219},
+  journal = {Journal of Applied Crystallography},
+  owner = {Kohlbrecher},
+  timestamp = {2008.11.21}
+}
+
+@ARTICLE{Ishikawa1974,
+  author = {Shiro Ishikawa},
+  title = {Fixed points by a new iteration method},
+  year = {1974},
+  volume = {44},
+  pages = {147--150},
+  doi = {10.1090/S0002-9939-1974-0336469-5},
+  url = {http://dx.doi.org/10.1090/S0002-9939-1974-0336469-5},
+  journal = {Proc. Amer. Math. Soc.},
+  owner = {Kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{J.Moller1995,
+  author = {J. M\"oller, R. Kranold, J. Schmelzer and U. Lembke},
+  title = {Small-Angle X-ray Scattering Size Parameters and Higher Moments of
+	the Particle-Size Distribution Function in the Asymptotic Stage of
+	Ostwald Ripening},
+  year = {1995},
+  volume = {28},
+  pages = {553-560},
+  journal = {J Appl. Cryst.},
+  owner = {Kohlbrecher},
+  timestamp = {2009.03.20}
+}
+
+@ARTICLE{Jones1924,
+  author = {Jones, J. E.},
+  title = {On the Determination of Molecular Fields. II. From the Equation of
+	State of a Gas},
+  year = {1924},
+  volume = {106},
+  number = {738},
+  pages = {463-477},
+  doi = {10.1098/rspa.1924.0082},
+  eprint = {http://rspa.royalsocietypublishing.org/content/106/738/463.full.pdf+html},
+  url = {http://rspa.royalsocietypublishing.org/content/106/738/463.short},
+  journal = {Proceedings of the Royal Society of London. Series A},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.09}
+}
+
+@ARTICLE{Jusufi2001,
+  author = {A Jusufi and J Dzubiella and C N Likos and C von Ferber and H Löwen},
+  title = {Effective interactions between star polymers and colloidal particles},
+  year = {2001},
+  volume = {13},
+  number = {28},
+  pages = {6177},
+  url = {http://stacks.iop.org/0953-8984/13/i=28/a=303},
+  abstract = {Using monomer-resolved molecular dynamics simulations and theoretical
+	arguments based on the radial dependence of the osmotic pressure
+	in the interior of a star, we systematically investigate the effective
+	interactions between hard, colloidal particles and star polymers
+	in a good solvent. The relevant parameters are the size ratio q between
+	the stars and the colloids, as well as the number of polymeric arms
+	f (functionality) attached to the common centre of the star. By covering
+	a wide range of q 's ranging from zero (star against a flat wall)
+	up to about 0.75, we establish analytical forms for the star-colloid
+	interaction which are in excellent agreement with simulation results.
+	A modified expression for the star-star interaction for low functionalities,
+	f ##IMG## [http://ej.iop.org/icons/Entities/lesssim.gif] {lesssim}
+	10 is also introduced.},
+  journal = {Journal of Physics: Condensed Matter},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.19}
+}
+
+@ARTICLE{Karahan2013,
+  author = {Ibrahim Karahan and Murat Ozdemir},
+  title = {A general iterative method for approximation of fixed points and
+	their applications},
+  year = {2013},
+  volume = {3},
+  number = {3},
+  pages = {510--526},
+  url = {http://scik.org/index.php/afpt/article/view/1100/527},
+  journal = {Advances in Fixed Point Theory},
+  owner = {Kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Karahan2013a,
+  author = {Karahan, Ibrahim and Ozdemir, Murat},
+  title = {Fixed point problems of the Picard-Mann hybrid iterative process
+	for continuous functions on an arbitrary interval},
+  year = {2013},
+  volume = {2013},
+  number = {1},
+  pages = {244},
+  issn = {1687-1812},
+  doi = {10.1186/1687-1812-2013-244},
+  url = {http://www.fixedpointtheoryandapplications.com/content/2013/1/244},
+  abstract = {In this paper, we consider the iteration method called 'Picard-Mann
+	hybrid iterative process' for finding a fixed point of continuous
+	functions on an arbitrary interval. We give a necessary and sufficient
+	condition for convergence of this iteration for continuous functions
+	on an arbitrary interval. Also, we compare the rate of convergence
+	of the Picard-Mann hybrid iteration with the other iterations and
+	prove that it is better than the others under the same computational
+	cost. Moreover, we present numerical examples.MSC: 26A18, 47H10,
+	54C05.},
+  journal = {Fixed Point Theory and Applications},
+  owner = {kohlbrecher},
+  timestamp = {2014.06.10}
+}
+
+@ARTICLE{Kawaguchi2001,
+  author = {Takeshi Kawaguchi},
+  title = {Radii of gyration and scattering
+	
+	functions of a torus and its derivatives},
+  year = {2001},
+  volume = {34},
+  pages = {580-584},
+  journal = {J. Appl. Cryst.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Kaya:aj5008,
+  author = {Kaya, H{\aa}kon},
+  title = {{Scattering from cylinders with globular end-caps}},
+  year = {2004},
+  volume = {37},
+  number = {2},
+  month = {Apr},
+  pages = {223--230},
+  doi = {10.1107/S0021889804000020},
+  url = {http://dx.doi.org/10.1107/S0021889804000020},
+  journal = {Journal of Applied Crystallography},
+  owner = {Kohlbrecher},
+  timestamp = {2009.02.09}
+}
+
+@ARTICLE{Kaya:aj5016,
+  author = {Kaya, H{\aa}kon and de Souza, Nicolas-Rapha{\"{e}}l},
+  title = {{Scattering from capped cylinders. Addendum}},
+  year = {2004},
+  volume = {37},
+  number = {3},
+  month = {Jun},
+  pages = {508--509},
+  doi = {10.1107/S0021889804005709},
+  url = {http://dx.doi.org/10.1107/S0021889804005709},
+  journal = {Journal of Applied Crystallography},
+  owner = {Kohlbrecher},
+  timestamp = {2009.02.09}
+}
+
+@ARTICLE{Kelley2004,
+  author = {C.T. Kelley and B.Montgomery Pettitt},
+  title = {A fast solver for the Ornstein–Zernike equations},
+  year = {2004},
+  volume = {197},
+  number = {2},
+  pages = {491 - 501},
+  issn = {0021-9991},
+  doi = {http://dx.doi.org/10.1016/j.jcp.2003.12.006},
+  url = {http://www.sciencedirect.com/science/article/pii/S002199910300648X},
+  abstract = {In this paper, we report on the design and analysis of a multilevel
+	method for the solution of the Ornstein–Zernike Equations and related
+	systems of integro-algebraic equations. Our approach is based on
+	an extension of the Atkinson–Brakhage method, with Newton-GMRES
+	used as the coarse mesh solver. We report on several numerical experiments
+	to illustrate the effectiveness of the method. The problems chosen
+	are related to simple short ranged fluids with continuous potentials.
+	Speedups over traditional methods for a given accuracy are reported.
+	The new multilevel method is roughly six times faster than Newton-GMRES
+	and 40 times faster than Picard.},
+  journal = {Journal of Computational Physics },
+  owner = {kohlbrecher},
+  timestamp = {2013.12.03}
+}
+
+@BOOK{doi:10.1137/1.9780898718898,
+  author = {C. T. Kelley},
+  title = {Solving Nonlinear Equations with Newton's Method},
+  year = {2003},
+  publisher = {Society for Industrial and Applied Mathematics},
+  doi = {10.1137/1.9780898718898},
+  eprint = {http://epubs.siam.org/doi/pdf/10.1137/1.9780898718898},
+  url = {http://epubs.siam.org/doi/abs/10.1137/1.9780898718898},
+  owner = {kohlbrecher},
+  timestamp = {2013.12.03}
+}
+
+@BOOK{Kelley2003,
+  author = {C. T. Kelley},
+  title = {Solving Nonlinear Equations with Newton's Method},
+  year = {2003},
+  publisher = {SIAM, Philadelphia},
+  owner = {kohlbrecher},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{Khan2013,
+  author = {Khan, Safeer},
+  title = {A Picard-Mann hybrid iterative process},
+  year = {2013},
+  volume = {2013},
+  number = {1},
+  pages = {69},
+  issn = {1687-1812},
+  doi = {10.1186/1687-1812-2013-69},
+  url = {http://www.fixedpointtheoryandapplications.com/content/2013/1/69},
+  abstract = {We introduce a new iterative process which can be seen as a hybrid
+	of Picard and Mann iterative processes. We show that the new process
+	converges faster than all of Picard, Mann and Ishikawa iterative
+	processes in the sense of Berinde (Iterative Approximation of Fixed
+	Points, 2002) for contractions. We support our analytical proof by
+	a numerical example. We prove a strong convergence theorem with the
+	help of our process for the class of nonexpansive mappings in general
+	Banach spaces and apply it to get a result in uniformly convex Banach
+	spaces. Our weak convergence results are proved when the underlying
+	space satisfies Opial's condition or has Frechet differentiable norm
+	or its dual satisfies the Kadec-Klee property.MSC: 47H10, 54H25.},
+  journal = {Fixed Point Theory and Applications},
+  owner = {kohlbrecher},
+  timestamp = {2014.06.10}
+}
+
+@ARTICLE{kholodenko93,
+  author = {A. L. Kholodenko},
+  title = {Analytical Calculation of the Scattering Function for Polymers of
+	Arbitrary Flexibility Using the Dirac Propagator},
+  year = {1993},
+  volume = {26},
+  pages = {4179-4183},
+  journal = {Macromolecules},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Kohlbrecher1997,
+  author = {J. Kohlbrecher and A. Wiedenmann and H. Wollenberger},
+  title = {Magnetic coupling between the different phases in nanocrystalline
+	Fe-Si-B studied by small angle neutron scattering},
+  year = {1997},
+  volume = {104},
+  number = {1},
+  month = {August},
+  pages = {1-4},
+  doi = {10.1007/s002570050411},
+  url = {http://www.springerlink.com/content/ryf4cquxpj9rkgje},
+  abstract = {The magnetic coupling in the two-phase nanostructure of Fe$_{73.5}$Si$_{15.5}$B$_7$Nb$_3$Cu$_1$
+	has been investigated by SANS technique. The scattering function
+	for partially aligned magnetic moments of ferromagnetic single domain
+	particles following the Langevin statistics of superparamagnetism
+	has been derived which describes the field and temperature dependency
+	of the SANS profiles. Above the Curie temperature of the amorphous
+	phase $T_ c^{am}$ the nanocrystals show superparamagnetic scattering
+	behaviour whereas below $T_c^{am}$ they interact by magnetostatic
+	forces only and not by exchange coupling via the amorphous matrix.},
+  journal = {Zeitschrift f�r Physik B Condensed Matter},
+  owner = {kohlbrecher},
+  timestamp = {2008.02.10}
+}
+
+@ARTICLE{Koppel1972,
+  author = {Dennis E. Koppel},
+  title = {Analysis of Macromolecular Polydispersity in Intensity Correlation
+	Spectroscopy: The Method of Cumulants},
+  year = {1972},
+  volume = {57},
+  number = {11},
+  pages = {4814-4820},
+  doi = {10.1063/1.1678153},
+  url = {http://link.aip.org/link/?JCP/57/4814/1},
+  file = {:http\://sans.web.psi.ch/sansstatus/DLS/E005665994.pdf:PDF},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2008.01.26}
+}
+
+@ARTICLE{Kotlarchyk1983,
+  author = {M. Kotlarchyk and S.-H. Chen},
+  title = {Analysis of small angle neutron scattering spectra from polydisperse
+	interacting colooids},
+  year = {1983},
+  volume = {79},
+  number = {5},
+  pages = {2461-2489},
+  file = {:http\://sans.web.psi.ch/sansstatus/SQ/E001775346.pdf:PDF},
+  journal = {J. Chem. Phys},
+  owner = {kohlbrecher},
+  timestamp = {2008.01.25}
+}
+
+@ARTICLE{Krasnoselskij1955,
+  author = {M. A. Krasnoselskij},
+  title = {Two remarks on the method of successive approximations, (Russian)},
+  year = {1955},
+  volume = {63},
+  number = {1},
+  pages = {123--127},
+  journal = {Uspehi Mat. Nauk. 10},
+  owner = {kohlbrecher},
+  timestamp = {2014.06.10}
+}
+
+@ARTICLE{Kratky194935,
+  author = {O. Kratky and G. Porod},
+  title = {Diffuse small-angle scattering of x-rays in colloid systems},
+  year = {1949},
+  volume = {4},
+  number = {1},
+  pages = {35 - 70},
+  issn = {0095-8522},
+  doi = {DOI: 10.1016/0095-8522(49)90032-X},
+  url = {http://www.sciencedirect.com/science/article/B759F-4CXCV60-TN/2/2f342262dbb7d1c2084706b447db7ee8},
+  journal = {Journal of Colloid Science},
+  owner = {kohlbrecher},
+  timestamp = {2010.12.12}
+}
+
+@ARTICLE{Kruif1989,
+  author = {C. G. de Kruif and P. W. Rouw and W. J. Briels and M. H. G. Duits
+	and A. Vrij and R. P. May},
+  title = {Adhesive Hard-Sphere Colloidal Dispersions. A
+	
+	Small-Angle Neutron-Scattering Study of Stickiness and the
+	
+	Structure Factor},
+  year = {1989},
+  volume = {5},
+  pages = {422-428},
+  journal = {Langmuir},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Labik1985,
+  author = {Lab\'{i}k, Stanislav and Malijevsk\'{y}, Anatol and Vo\v{n}ka, Petr},
+  title = {A rapidly convergent method of solving the OZ equation},
+  year = {1985},
+  volume = {56},
+  number = {3},
+  pages = {709-715},
+  doi = {10.1080/00268978500102651},
+  eprint = {http://www.tandfonline.com/doi/pdf/10.1080/00268978500102651},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/00268978500102651},
+  abstract = {A new method is proposed for solving numerically the Ornstein-Zernike
+	equation for systems with a spherically symmetrical pair-potential.
+	The method is based on expansion of the function Γ(r)=r[h(r) - c(r)]
+	in suitable basis functions and on a combination of Newton-Raphson
+	and direct iterations. Tests on the PY and HNC approximations for
+	hard spheres and Lennard-Jones fluid have shown that the proposed
+	method is three to nine times as rapid as the related and so far
+	the most efficient method of Gillan. Other advantages besides the
+	speed are low sensitivity to the choice of initial estimate and a
+	relatively simple computational scheme.},
+  journal = {Molecular Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.12.03}
+}
+
+@INCOLLECTION{Lang2012,
+  author = {P.R. Lang and D. Vlassopoulos and W. Richtering},
+  editor = {Matyjaszewski, Krzysztof and Möller, Martin },
+  title = {1.12 - Polymer/Colloid Interactions and Soft Polymer Colloids },
+  booktitle = {Polymer Science: A Comprehensive Reference },
+  year = {2012},
+  publisher = {Elsevier},
+  isbn = {978-0-08-087862-1},
+  pages = {315 - 338},
+  doi = {http://dx.doi.org/10.1016/B978-0-444-53349-4.00007-8},
+  url = {http://www.sciencedirect.com/science/article/pii/B9780444533494000078},
+  abstract = {Abstract Polymer colloids are important model systems for investigating
+	fundamental aspects of colloid science. Traditionally rigid particles
+	that have rather "simple", for example, hard sphere-like or Yukawa,
+	interaction potentials have been employed. Such systems have been
+	reviewed frequently in the past. In this chapter we focus on recent
+	developments: depletion interaction and soft spheres. Concerning
+	the latter topic, two different types of materials are discussed:
+	star polymers and responsive microgels.},
+  address = {Amsterdam},
+  keywords = {Colloidal crystal},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.21}
+}
+
+@ARTICLE{Lebowitz1966,
+  author = {Lebowitz, J. L. and Percus, J. K.},
+  title = {Mean Spherical Model for Lattice Gases with Extended Hard Cores and
+	Continuum Fluids},
+  year = {1966},
+  volume = {144},
+  issue = {1},
+  month = {Apr},
+  pages = {251--258},
+  doi = {10.1103/PhysRev.144.251},
+  url = {http://link.aps.org/doi/10.1103/PhysRev.144.251},
+  journal = {Phys. Rev.},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Lee1995,
+  author = {Lee, Lloyd L.},
+  title = {An accurate integral equation theory for hard spheres: Role of the
+	zero-separation theorems in the closure relation},
+  year = {1995},
+  volume = {103},
+  number = {21},
+  pages = {9388-9396},
+  doi = {http://dx.doi.org/10.1063/1.469998},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/103/21/10.1063/1.469998},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.28}
+}
+
+@ARTICLE{Lee1996,
+  author = {Lee, Lloyd L. and Ghonasgi, Dhananjay and Lomba, Enrique},
+  title = {The fluid structures for soft-sphere potentials via the zero-separation
+	theorems on molecular distribution functions},
+  year = {1996},
+  volume = {104},
+  number = {20},
+  pages = {8058-8067},
+  doi = {http://dx.doi.org/10.1063/1.471522},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/104/20/10.1063/1.471522},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.29}
+}
+
+@BOOK{Lekkerkerker2011,
+  author = {Henk N.W. Lekkerkerker and Remco Tuinier},
+  title = {Colloids and the Depletion Interaction},
+  year = {2011},
+  volume = {833},
+  series = {Lecture Notes in Physics},
+  publisher = {Springer Netherlands},
+  doi = {10.1007/978-94-007-1223-2},
+  url = {http://link.springer.com/book/10.1007%2F978-94-007-1223-2},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.20}
+}
+
+@INBOOK{Likos2011,
+  author = {Christos N. Likos},
+  title = {Microgel Suspensions: Fundamentals and Applications},
+  booktitle = {Microgel Suspensions},
+  year = {2011},
+  editor = {Alberto Fernandez-Nieves Hans M. Wyss and Johan Mattsson and David
+	A. Weitz},
+  publisher = {Wiley-VCH Verlag GmbH \& Co. KGaA},
+  isbn = {9783527632992},
+  chapter = {Chapter 7. Structure and Thermodynamics of Ionic Microgels},
+  pages = {163--193},
+  doi = {10.1002/9783527632992.ch7},
+  url = {http://dx.doi.org/10.1002/9783527632992.ch7},
+  abstract = {This chapter contains sections titled: * Introduction * Effective
+	Interparticle Potentials * The Fluid Phase of Ionic Microgels * Genetic
+	Algorithms for the Crystal Structures * Phase Behavior * Summary
+	and Concluding Remarks * References},
+  keywords = {degrees of freedom, effective Hamiltonian, effective interaction potential,
+	electroneutrality condition, ionic microgels, phase behavior},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.20}
+}
+
+@ARTICLE{Likos2006,
+  author = {Likos, Christos N.},
+  title = {Soft matter with soft particles},
+  year = {2006},
+  volume = {2},
+  issue = {6},
+  pages = {478-498},
+  doi = {10.1039/B601916C},
+  url = {http://dx.doi.org/10.1039/B601916C},
+  abstract = {In this review we present a summary of recent progress achieved in
+	examining the equilibrium and dynamical properties of concentrated
+	solutions of two novel kinds of soft matter systems: and starburst
+	molecules known as . The two systems share a host of interesting
+	properties. The both consist of highly branched polymers{,} they
+	allow for tuning of their properties through modification of the
+	macromolecular architecture and they are both representatives of
+	a quite novel class of colloidal particles{,} termed . On the other
+	hand there are also important differences{,} reflecting the fundamental
+	difference in their architecture. It will be shown that a combination
+	of scattering techniques and rheology with computer simulations and
+	analytical methods from the realm of theoretical physics can shed
+	light on the unusual properties of such systems. In this fashion{,}
+	new ways appear for the manipulation of soft matter systems under
+	external influences and promising perspectives for the fabrication
+	of new materials are opened up and the versatility in manipulating
+	soft matter is underlined.},
+  journal = {Soft Matter},
+  owner = {kohlbrecher},
+  publisher = {The Royal Society of Chemistry},
+  timestamp = {2015.06.10}
+}
+
+@ARTICLE{Likos2001,
+  author = {Christos N. Likos},
+  title = {Effective interactions in soft condensed matter physics },
+  year = {2001},
+  volume = {348},
+  number = {4–5},
+  pages = {267 - 439},
+  issn = {0370-1573},
+  doi = {http://dx.doi.org/10.1016/S0370-1573(00)00141-1},
+  url = {http://www.sciencedirect.com/science/article/pii/S0370157300001411},
+  abstract = {In this work, we present a review of recently achieved progress in
+	the field of soft condensed matter physics, and in particular on
+	the study of the static properties of solutions or suspensions of
+	colloidal particles. The latter are macromolecular entities with
+	typical sizes ranging from 1 nm to 1$\mu$m and their suspension typically
+	contain, in addition to the solvent, smaller components such as salt
+	ions or free polymer chains. The theoretical tool introduced is the
+	effective Hamiltonian which formally results by a canonical trace
+	over the smaller degrees of freedom for a fixed, "frozen" configuration
+	of the large ones. After presenting the formal definitions of this
+	effective Hamiltonian, we proceed with the applications to some common
+	soft matter systems having a variable softness and ranging from free
+	polymer chains to hard colloidal particles. We begin from the extreme
+	case of nondiverging effective interactions between ultrasoft polymer
+	chains and derive an exact criterion to determine the topology of
+	the phase diagrams of such systems. We use star polymers with a variable
+	arm number f as a hybrid system in order to interpolate between these
+	two extremes. By deriving an effective interaction between stars
+	we can monitor the change in the phase behavior of a system as the
+	steepness of the repulsion between its constituent particles increases.
+	We also review recent results on the nature and the effects of short-range
+	attractions on the phase diagrams of spherical, nonoverlapping colloidal
+	particles.},
+  journal = {Physics Reports},
+  keywords = {Soft matter},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.18}
+}
+
+@ARTICLE{Likos1998,
+  author = {Likos, C. N. and L\"owen, H. and Watzlawek, M. and Abbas, B. and
+	Jucknischke, O. and Allgaier, J. and Richter, D.},
+  title = {Star Polymers Viewed as Ultrasoft Colloidal Particles},
+  year = {1998},
+  volume = {80},
+  issue = {20},
+  month = {May},
+  pages = {4450--4453},
+  doi = {10.1103/PhysRevLett.80.4450},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.80.4450},
+  journal = {Phys. Rev. Lett.},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.11.19}
+}
+
+@ARTICLE{Lin1990,
+  author = {M.Y. Lin and H.M. Lindsay and D.A. Weitz and R.C. Ball and R. Klein
+	and P. Meakin},
+  title = {Universal reaction-limited colloidal aggregation},
+  year = {1990},
+  volume = {41},
+  number = {4},
+  pages = {2005-2020},
+  journal = {Physical Review A},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Lin1990a,
+  author = {M.Y. Lin and H.M. Lindsay and D.A. Weitz and R.C. Ball and R. Klein
+	and P. Meakin},
+  title = {Universal diffusion-limited colloid aggregation},
+  year = {1990},
+  volume = {2},
+  pages = {3093-3113},
+  journal = {J. Phys.: Condens. Matter},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Lin1989,
+  author = {M.Y. Lin and H.M. Lindsay and D.A. Weitz and R.C. Ball and R. Klein
+	and P. Meakin},
+  title = {Universality of Fractal Aggregates as Probed by Light Scattering},
+  year = {1989},
+  volume = {423},
+  pages = {71-87},
+  doi = {10.1098/rspa.1989.0042},
+  journal = {Proc. R. Soc. Lond. A},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Liu2001,
+  author = {Yuyan Liu and Jieli Lin and Guangming Huang and Yuanqing Guo and
+	Chuanxi Duan},
+  title = {Simple empirical analytical approximation to the Voigt profile},
+  year = {2001},
+  volume = {18},
+  number = {5},
+  pages = {666--672},
+  doi = {10.1364/JOSAB.18.000666},
+  url = {http://josab.osa.org/abstract.cfm?URI=josab-18-5-666},
+  journal = {J. Opt. Soc. Am. B},
+  keywords = {Spectroscopy},
+  owner = {Kohlbrecher},
+  timestamp = {2008.11.21}
+}
+
+@ARTICLE{Lomba1996,
+  author = {Lomba, E. and Lee, L.L.},
+  title = {Consistency conditions for the integral equations of liquid structures},
+  year = {1996},
+  volume = {17},
+  number = {3},
+  pages = {663-672},
+  issn = {0195-928X},
+  doi = {10.1007/BF01441512},
+  url = {http://dx.doi.org/10.1007/BF01441512},
+  language = {English},
+  journal = {International Journal of Thermophysics},
+  keywords = {bridge function; chemical potential; closure relation; GibbsDuhem
+	relation; integral equations; Lennard Jones potential; pressure consistency;
+	thermodynamic consistency},
+  owner = {kohlbrecher},
+  publisher = {Kluwer Academic Publishers-Plenum Publishers},
+  timestamp = {2013.11.28}
+}
+
+@ARTICLE{Louis2000,
+  author = {Louis, A. A. and Bolhuis, P. G. and Hansen, J. P.},
+  title = {Mean-field fluid behavior of the Gaussian core model},
+  year = {2000},
+  volume = {62},
+  issue = {6},
+  month = {Dec},
+  pages = {7961--7972},
+  doi = {10.1103/PhysRevE.62.7961},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.62.7961},
+  journal = {Phys. Rev. E},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.11.20}
+}
+
+@ARTICLE{Lyatskaya2000,
+  author = {Lyatskaya, Yulia and Liu, Yufeng and Tristram-Nagle, Stephanie and
+	Katsaras, John and Nagle, John F.},
+  title = {Method for obtaining structure and interactions from oriented lipid
+	bilayers},
+  year = {2000},
+  volume = {63},
+  number = {1},
+  month = {Dec},
+  pages = {011907},
+  doi = {10.1103/PhysRevE.63.011907},
+  journal = {Phys. Rev. E},
+  numpages = {9},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{Moller1995,
+  author = {M{\"{o}}ller, J. and Kranold, R. and Schmelzer, J. and Lembke, U.},
+  title = {{Small-Angle X-ray Scattering Size Parameters and Higher Moments
+	of the Particle-Size Distribution Function in the Asymptotic Stage
+	of Ostwald Ripening}},
+  year = {1995},
+  volume = {28},
+  number = {5},
+  month = {Oct},
+  pages = {553--560},
+  doi = {10.1107/S0021889895003827},
+  url = {http://dx.doi.org/10.1107/S0021889895003827},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2010.05.07}
+}
+
+@ARTICLE{MuellerDelsanti2000,
+  author = {F. M\"uller and M. Delsanti and L. Auvray and J. Yang and Y.J. Chen
+	and J.W. Mays and
+	
+	B. Dem� and M. Tirrell and and P. Guenoun},
+  title = {Ordering of urchin-like charged
+	
+	copolymer micelles: Electrostatic, packing and polyelectrolyte
+	
+	correlations},
+  year = {2000},
+  volume = {3},
+  pages = {45-53},
+  journal = {Eur. Phys. J. E},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Madden1980,
+  author = {Madden, William G. and Rice, Stuart A.},
+  title = {The mean spherical approximation and effective pair potentials in
+	liquids},
+  year = {1980},
+  volume = {72},
+  number = {7},
+  pages = {4208-4215},
+  doi = {http://dx.doi.org/10.1063/1.439651},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/72/7/10.1063/1.439651},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Mann1953,
+  author = {Mann, W. Robert},
+  title = {Mean value methods in iteration},
+  year = {1953},
+  volume = {4},
+  pages = {506--510},
+  doi = {10.1090/S0002-9939-1953-0054846-3},
+  url = {http://www.ams.org/journals/proc/1953-004-03/S0002-9939-1953-0054846-3/},
+  journal = {Proc. Amer. Math. Soc.},
+  owner = {Kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Marquest1989,
+  author = {C. Marquest and T.A. Witten},
+  title = {Simple cubic structure in copolymer mesophases},
+  year = {1989},
+  volume = {50},
+  number = {10},
+  pages = {1267-1277},
+  doi = {10.1051/jphys:0198900500100126700},
+  url = {http://dx.doi.org/10.1051/jphys:0198900500100126700},
+  journal = {J. Phys. France},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.10}
+}
+
+@ARTICLE{Martynov1999,
+  author = {Martynov, G. A. and Sarkisov, G. N. and Vompe, A. G.},
+  title = {New closure for the Ornstein-Zernike equation},
+  year = {1999},
+  volume = {110},
+  number = {8},
+  pages = {3961-3969},
+  doi = {http://dx.doi.org/10.1063/1.478276},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/110/8/10.1063/1.478276},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Martynov1993,
+  author = {Martynov, G. A. and Vompe, A. G.},
+  title = {Differential condition of thermodynamic consistency as a closure
+	for the Ornstein-Zernike equation},
+  year = {1993},
+  volume = {47},
+  issue = {2},
+  month = {Feb},
+  pages = {1012--1017},
+  doi = {10.1103/PhysRevE.47.1012},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.47.1012},
+  journal = {Phys. Rev. E},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.12.01}
+}
+
+@ARTICLE{Martynov1983,
+  author = {Martynov, G.A. and Sarkisov, G.N.},
+  title = {Exact equations and the theory of liquids. V},
+  year = {1983},
+  volume = {49},
+  number = {6},
+  pages = {1495-1504},
+  doi = {10.1080/00268978300102111},
+  eprint = {http://www.tandfonline.com/doi/pdf/10.1080/00268978300102111},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/00268978300102111},
+  journal = {Molecular Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Mauritz2004,
+  author = {Mauritz, Kenneth A. and Moore, Robert B.},
+  title = {State of Understanding of Nafion},
+  year = {2004},
+  volume = {104},
+  number = {10},
+  pages = {4535-4586},
+  note = {PMID: 15669162},
+  doi = {10.1021/cr0207123},
+  eprint = { http://dx.doi.org/10.1021/cr0207123 },
+  url = { http://dx.doi.org/10.1021/cr0207123 
+},
+  journal = {Chemical Reviews},
+  owner = {kohlbrecher},
+  timestamp = {2015.02.17}
+}
+
+@ARTICLE{Menon1991,
+  author = {S.V.G. Menon and V.K. Kelkar and C. Monohar},
+  title = {Application of
+	
+	Baxter�s model to the theory of cloud points of nonionic
+	
+	surfactant solutions},
+  year = {1991},
+  volume = {43},
+  number = {2},
+  pages = {1130-1133},
+  journal = {Physical Review A},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Menon1991a,
+  author = {S.V.G. Menon and C. Manobar and K. Srinivasa Rao},
+  title = {A new interpretation of a sticky hard sphere model},
+  year = {1991},
+  volume = {95},
+  number = {12},
+  pages = {9186-9190},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Michels2010,
+  author = {Michels, Andreas},
+  title = {Correlation functions of the spin misalignment in magnetic small-angle
+	neutron scattering},
+  year = {2010},
+  volume = {82},
+  issue = {2},
+  month = {Jul},
+  pages = {024433},
+  doi = {10.1103/PhysRevB.82.024433},
+  url = {http://link.aps.org/doi/10.1103/PhysRevB.82.024433},
+  journal = {Phys. Rev. B},
+  numpages = {12},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.05.25}
+}
+
+@ARTICLE{Michels2013,
+  author = {Michels, Andreas and Bick, Jens-Peter},
+  title = {{Autocorrelation function of the spin misalignment in magnetic small-angle
+	neutron scattering: application to nanocrystalline metals}},
+  year = {2013},
+  volume = {46},
+  number = {3},
+  month = {Jun},
+  pages = {788--790},
+  doi = {10.1107/S0021889813005402},
+  url = {http://dx.doi.org/10.1107/S0021889813005402},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2013.05.25}
+}
+
+@ARTICLE{Mie1908,
+  author = {G. Mie},
+  title = {{Beitr\"age zur Optik tr\"uber Medien, speziell kolloidaler Metall\"osungen}},
+  year = {1908},
+  volume = {25},
+  pages = {377-455},
+  journal = {Annalen der Physik},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Mladek2005,
+  author = {B.M. Mladek and M.J. Fernaud and G. Kahl and M. Neumann},
+  title = {On the thermodynamic properties of the generalized Gaussian core
+	model},
+  year = {2005},
+  volume = {8},
+  pages = {135-148},
+  doi = {10.5488/CMP.8.1.135},
+  url = {http://www.icmp.lviv.ua/journal/zbirnyk.41/011/abstract.html},
+  journal = {Condensed Matter Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.20}
+}
+
+@ARTICLE{scatt91,
+  author = {R. M. Moon and T. Riste and W. C. Koehler},
+  title = {Polarization analysis of thermal-neutron scattering},
+  year = {1969},
+  volume = {181},
+  number = {2},
+  month = {May},
+  pages = {920-931},
+  journal = {Physical Review},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Morita1960,
+  author = {Morita, Tohru and Hiroike, Kazuo},
+  title = {A New Approach to the Theory of Classical Fluids. I},
+  year = {1960},
+  volume = {23},
+  number = {6},
+  pages = {1003-1027},
+  doi = {10.1143/PTP.23.1003},
+  eprint = {http://ptp.oxfordjournals.org/content/23/6/1003.full.pdf+html},
+  url = {http://ptp.oxfordjournals.org/content/23/6/1003.abstract},
+  abstract = {An exact integral equation is found for the pair distribution function.
+	The integral equation is of somewhat different nature from the usual
+	ones known in the theory of classical fluids, in the point that it
+	involves an infinite series. The Helmholtz free energy is expressed
+	as a series expansion which may be more rapidly convergent than the
+	usual one. It is shown that the integral equation can be derived
+	also by means of a variational principle from the expression for
+	the free energy. It is pointed out that the theory of classical fluids
+	may be constructed with the knowledge of the pair distribution function
+	alone, even if a form of the pair interaction potential is not known.},
+  journal = {Progress of Theoretical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.12.01}
+}
+
+@BOOK{Naegele2004,
+  author = {Gerhard N\"agele},
+  title = {The Physics of Colloidal Soft Matter},
+  year = {2004},
+  editor = {Centre of Excellence for Advanced Materials and Structures},
+  series = {Lecture Notes},
+  number = {14},
+  publisher = {Institute of Fundamental Technological Research - Polish Academy
+	of Sciences},
+  url = {http://hera.physik.uni-konstanz.de/igk/news/workshops/Naegele.pdf},
+  address = {Warsaw},
+  owner = {kohlbrecher},
+  timestamp = {2013.10.18}
+}
+
+@ARTICLE{Naegele1996,
+  author = {Gerhard N\"agele},
+  title = {On the dynamics and structure of charge-stabilized suspensions },
+  year = {1996},
+  volume = {272},
+  number = {5-6},
+  pages = {215 - 372},
+  issn = {0370-1573},
+  doi = {http://dx.doi.org/10.1016/0370-1573(95)00078-X},
+  url = {http://www.sciencedirect.com/science/article/pii/037015739500078X},
+  abstract = {Charge-stabilized suspensions of spherically shaped particles show
+	a variety of interesting properties. As a consequence, there has
+	been considerable interest in the investigation of the microstructure
+	and the dynamic properties of well characterized model systems, such
+	as polystyrene spheres dispersed in water and charged silica spheres
+	dispersed in an organic solvent. Among various experimental techniques,
+	static and dynamic light scattering have been the major tools for
+	the characterization of colloidal suspensions. Whereas there is an
+	essentially quantitative understanding of monodisperse suspensions,
+	only very recently good progress was achieved, both theoretically
+	and experimentally, in understanding certain properties of colloidal
+	mixtures and intrinsically polydisperse one-component suspensions.
+	Colloidal mixtures show additional phenomena, e.g., a variety of
+	microstructures and phase behaviour, tracer-diffusion and interdiffusion,
+	which do not exist in monodisperse systems. This article offers a
+	survey on our current knowledge of the dynamics and statics of charge-stabilized
+	suspensions in the fluid phase, with emphasis on the authors own
+	work. It further contains a summary of basic concepts, and of analytical
+	and numerical methods, which are relevant for the theoretical description
+	of charge-stabilized suspensions. Special effort is made to point
+	out the salient differences between colloidal mixtures and monodisperse
+	suspensions. The calculated or computer-simulated quantities characterizing
+	the suspensions are compared, whenever available, with the results
+	of light scattering experiments. The article is divided into two
+	major parts. The first part (chapters 2 and 3) is concerned with
+	static properties. It includes a discussion of the origin of the
+	repulsive and attractive forces between charged colloidal particles,
+	the concepts of the effective charge and global correlation functions,
+	the influence of the finite size of the counterions on the microstructure
+	of concentrated ionic micellar solutions, and the extension of the
+	rescaled mean spherical approximation to colloidal mixtures. The
+	central issue of the first part is, however, the theoretical modeling
+	of intrinsic polydispersity, and the calculation of static structure
+	factors and radial distribution functions by various integral equation
+	methods. The relative accuracy of these methods is assessed from
+	the comparisons with computer simulations and light scattering results.
+	The main body of this article is contained in the second part (chapter
+	4), which is concerned with the dynamics of charge-stabilized suspensions.
+	A thorough discussion of the various levels of description of the
+	suspension dynamics is given in terms of the time scales characterizing
+	various relaxation processes associated with the colloidal particles
+	and the molecules of the host fluid. The description of the dynamics
+	of the colloidal particles, based on the generalized Smoluchowski
+	equation, is justified for the time interval accessible in dynamic
+	light scattering experiments. A summary of general properties of
+	the generalized Smoluchowski equation is provided, and various ordering
+	relations for diffusion coefficients are presented. The combined
+	influence of the electrostatic and solvent mediated hydrodynamic
+	interactions on the short-time dynamics of monodisperse and polydisperse
+	charge-stabilized suspensions is investigated in great detail. It
+	is shown that the effect of hydrodynamic interaction is strongly
+	enhanced by the presence of long-ranged electrostatic repulsion,
+	and its influence is more pronounced for collective diffusion than
+	for short-time self-diffusion. The additional influence of polydispersity
+	is found to be quite significant. Finally, a thorough study of tracer-diffusion
+	in charge-stabilized suspensions is presented. Mean square displacements
+	and long-time tracer-diffusion coefficients are calculated with two
+	alternative approximations, i.e., a mode-coupling scheme and a single
+	relaxation time ansatz. The range of validity of these approximations
+	is assessed by numerous comparisons with Brownian dynamics simulation
+	results, and with large-wavenumber dynamic light scattering and forced-Rayleigh
+	data. It is observed that tracer-diffusion is quite sensitive to
+	the amount of intrinsic polydispersity.},
+  journal = {Physics Reports },
+  keywords = {Charge-stabilized suspensions},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.20}
+}
+
+@ARTICLE{Neugebauer1943,
+  author = {Neugebauer, Th.},
+  title = {Berechnung der Lichtzerstreuung von Fadenkettenlösungen},
+  year = {1943},
+  volume = {434},
+  number = {7-8},
+  pages = {509--533},
+  issn = {1521-3889},
+  url = {http://dx.doi.org/10.1002/andp.19434340702},
+  abstract = {Abstract 10.1002/andp.19434340702.abs Die Methode der Messung der
+	Deporalisation des gestreuten Lichtes zur Erforschung der Molekülstruktur
+	ist bei Fadenketten unbrauchbar, weil die Anisotropie von diesen
+	mit zunehmender Kettengliederzahl sich kaum ändert; dagegen ändert
+	sich aber die Intensität des gestreuten Lichtes, aus der man dem
+	Gang der Polymerisation oder Depolymerisation im Ablaufe folgen kann,
+	die dazu benötigten Formeln (58), (59) und (61) werden hergeleitet.
+	Gleichzeitig wird eine Methode angegeben, mit Hilfe deren man die
+	Frage entscheiden kann, ob die Fadenketten gerade, verbogen oder
+	geknäuelt sind, und außerdem, wie man die Dichte- und Orientierungsstreuung
+	des Lösungsmittels von der Streuung der Fadenketten trennen kann
+	(§ 4). Der in dieser Arbeit erhaltene „diffusometrische�?�?
+	Mittelwert des Polymerisationsgrades ist mit dem Staudingerschen
+	„viskosimetrischen�?�? identisch. Für den Fall, daß die Kettenlänge
+	nicht mehr klein im Verhältnis zur Wellenlänge des Lichtes ist,
+	werden ebenfalls Formeln (92), (93) und (94) hergeleitet (§ 5),
+	mit Hilfe deren man noch ein Verfahren zur Entscheidung der Frage,
+	ob die Ketten gerade sind, erhält. Besitzen die Ketten ein starkes
+	Assoziationsbestreben, so werden unsere Formeln ungültig, das ist
+	das Gebiet des Plotnikoweffektes.},
+  journal = {Ann. Phys.},
+  owner = {Kohlbrecher},
+  publisher = {WILEY-VCH Verlag},
+  timestamp = {2011.01.17}
+}
+
+@ARTICLE{Noor2000,
+  author = {Muhammad Aslam Noor},
+  title = {New Approximation Schemes for General Variational Inequalities },
+  year = {2000},
+  volume = {251},
+  number = {1},
+  pages = {217 - 229},
+  issn = {0022-247X},
+  doi = {http://dx.doi.org/10.1006/jmaa.2000.7042},
+  url = {http://www.sciencedirect.com/science/article/pii/S0022247X00970422},
+  abstract = {In this paper, we suggest and consider a class of new three-step approximation
+	schemes for general variational inequalities. Our results include
+	Ishikawa and Mann iterations as special cases. We also study the
+	convergence criteria of these schemes. },
+  journal = {Journal of Mathematical Analysis and Applications },
+  keywords = {variational inequalities},
+  owner = {kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Olivero1977,
+  author = {J. J. Olivero and R. L. Longbothum},
+  title = {Empirical fits to the Voigt line width: A brief review.},
+  year = {1977},
+  volume = {17},
+  number = {233-236},
+  pages = {12�98},
+  journal = {J. Quant. Spectrosc. Radiat. Transfer},
+  owner = {Kohlbrecher},
+  timestamp = {2008.11.21}
+}
+
+@ARTICLE{Ornstein1914,
+  author = {L.S. Ornstein and F. Zernike},
+  title = {Accidental deviations of density and opalescence at the critical
+	point of a single substance},
+  year = {1914},
+  volume = {17},
+  pages = {793--806},
+  url = {http://www.dwc.knaw.nl/DL/publications/PU00012727.pdf},
+  journal = {Koninklijke Nederlandsche Akademie van Wetenschappen Proceedings},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.12}
+}
+
+@ARTICLE{Oversteegen2004,
+  author = {Oversteegen, S.M. and Lekkerkerker, H.N.W.},
+  title = {On the accuracy of the Derjaguin approximation for depletion potentials},
+  year = {2004},
+  volume = {341},
+  number = {1-4},
+  pages = {23-39},
+  note = {cited By (since 1996)12},
+  doi = {http://dx.doi.org/10.1016/j.physa.2004.04.103},
+  url = {http://www.sciencedirect.com/science/article/pii/S037843710400528X},
+  abstract = {The accuracy of the Derjaguin expressions for the depletion potential
+	of large spheres due to small spheres, discs, and rods is analysed.
+	To that end, we subdivide the generalised Gibbs adsorption equation
+	into three contributions. We determine these contributions both in
+	first order of curvature of the large spheres as well as exact for
+	small spheres, discs, and rods up to first order in the number density
+	of the depletion agents. The gain of volume in the bulk when the
+	depletion zones of the large spheres overlap is the same for spheres,
+	discs, and rods of equally characteristic sizes. The Derjaguin approximation
+	underestimates the exact solution because of the neglected curvature.
+	The number of particles that fit in the gap between the two large
+	spheres as well as the amount that can enter a single depletion zone,
+	are both underestimated by the Derjaguin approximation for discs
+	and rods to relatively the same extent. Due to the intermediate excluded
+	volume of the discs, the correction of the last two contributions
+	just cancels the error in the first one. Small spheres only exhibit
+	the first contribution, whereas for rods the other parts overcompensate
+	the first. We can thus explain why the depletion potential of large
+	spheres due to small spheres is underestimated by the Derjaguin approximation,
+	is surprisingly accurate for discs, and is overestimated for rod-like
+	depletion agents.s},
+  affiliation = {Van't Hoff Lab. Phys./Colloid Chem., Debye Research Institute, Utrecht
+	University, P.O. Box 80051, 3508 TB Utrecht, Netherlands},
+  author_keywords = {Colloids; Depletion interaction},
+  document_type = {Article},
+  journal = {Physica A: Statistical Mechanics and its Applications},
+  keywords = {Depletion interaction},
+  owner = {kohlbrecher},
+  source = {Scopus},
+  timestamp = {2013.11.20}
+}
+
+@ARTICLE{Pabst2003,
+  author = {G. Pabst and R. Koschuch and B. Pozo-Navas and M. Rappolt and K.
+	Lohner and P. Laggner},
+  title = {Structural analysis of weakly ordered membrane stacks},
+  year = {2003},
+  volume = {36},
+  number = {6},
+  month = {Dec},
+  pages = {1378-1388},
+  doi = {10.1107/S0021889803017527},
+  url = {http://dx.doi.org/10.1107/S0021889803017527},
+  abstract = {The applicability of full-q-range models to fit low-resolution X-ray
+	diffraction data from multibilayers exhibiting only weak quasi-Bragg
+	peak scattering has been analysed. The models consider different
+	structure factors, accounting for different types of lattice disorder
+	caused by stacking faults or bending fluctuations. Numerical tests
+	of the models, considering instrumental influence of a line-focus
+	collimation system, demonstrated that Bragg peak line shapes given
+	by different lattice disorders cannot be discerned. However, line-shape
+	parameters can be determined for a particular sample, if the type
+	of disorder is known a priori. This has been verified by comparing
+	the experimental results for the fluctuation parameter of palmitoyl-oleoyl
+	phosphatidylcholine (POPC) as a function of temperature with high-resolution
+	data on the same lipid. Tests further show that the calculation of
+	structural parameters, such as the membrane thickness or the extent
+	of the interbilayer water region, is not obscured by the smearing
+	imposed by the instrument. The model was further applied successfully
+	to experimental data of lipid mixtures composed of sphingomyelin
+	(SM)/POPC/cholesterol and dipalmitoyl phosphatidylethanolamine (DPPE)/dipalmitoyl
+	phosphatidylglycerol (DPPG). The structural parameters determined
+	give valuable insight into the physical state of the membrane system,
+	which is not accessible when quasi-Bragg reflections only are considered.},
+  journal = {Journal of Applied Crystallography},
+  keywords = {biological model membranes; liquid crystals; diffuse scattering; instrumental
+	resolution; data modelling.},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{Pabst2000,
+  author = {Pabst, Georg and Rappolt, Michael and Amenitsch, Heinz and Laggner,
+	Peter},
+  title = {Structural information from multilamellar liposomes at full hydration:
+	Full \textit{q} -range fitting with high quality x-ray data},
+  year = {2000},
+  volume = {62},
+  issue = {3},
+  month = {Sep},
+  pages = {4000--4009},
+  doi = {10.1103/PhysRevE.62.4000},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.62.4000},
+  journal = {Phys. Rev. E},
+  owner = {Kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2012.03.27}
+}
+
+@ARTICLE{Pedersen1994,
+  author = {.S. Pedersen},
+  title = {Determination of size distributions from small-angle scattering data
+	for systems with effective hard-sphere interactions},
+  year = {1994},
+  volume = {27},
+  pages = {595-608},
+  file = {:http\://sans.web.psi.ch/sansstatus/SQ/gl0327.pdf:PDF},
+  journal = {J. Appl. Cryst.},
+  owner = {kohlbrecher},
+  timestamp = {2008.01.25}
+}
+
+@ARTICLE{PedersenJApplCryst2000,
+  author = {J.S. Pedersen},
+  title = {Form factors of block copolymer micelles with spherical, ellipsoidal
+	and cylindrical cores},
+  year = {2000},
+  volume = {33},
+  number = {3 Part 1},
+  month = {Jun},
+  pages = {637-640},
+  doi = {10.1107/S0021889899012248},
+  url = {http://dx.doi.org/10.1107/S0021889899012248},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@INBOOK{Pedersen2002,
+  author = {Jan Skov Pedersen},
+  title = {Neutrons, X-Rays and Light},
+  year = {2002},
+  editor = {P. Lindner and Th. Zemb},
+  publisher = {Elsevier Science},
+  chapter = {Modelling of Small-Angle Scattering Data from Colloids and Polymer
+	Systems},
+  pages = {391-420},
+  owner = {Kohlbrecher},
+  timestamp = {2009.04.13}
+}
+
+@ARTICLE{pedersen:2839,
+  author = {Jan Skov Pedersen},
+  title = {Structure factors effects in small-angle scattering from block copolymer
+	micelles and star polymers},
+  year = {2001},
+  volume = {114},
+  number = {6},
+  pages = {2839-2846},
+  doi = {10.1063/1.1339221},
+  url = {http://link.aip.org/link/?JCP/114/2839/1},
+  journal = {The Journal of Chemical Physics},
+  keywords = {polymers; polymer blends; colloids; liquid structure; polymer structure;
+	Monte Carlo methods; digital simulation},
+  owner = {Kohlbrecher},
+  publisher = {AIP},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{Pedersen1997,
+  author = {Jan Skov Pedersen},
+  title = {Analysis of small-angle scattering data from colloids and polymer
+	solutions: modeling and least-squares fitting},
+  year = {1997},
+  volume = {70},
+  number = {0},
+  pages = {171 - 210},
+  issn = {0001-8686},
+  doi = {10.1016/S0001-8686(97)00312-6},
+  url = {http://www.sciencedirect.com/science/article/pii/S0001868697003126},
+  abstract = {Analysis and modeling of small-angle scattering data from systems
+	consisting of colloidal particles or polymers in solution are discussed.
+	The analysis requires application of least-squares methods, and the
+	basic principles of linear and non-linear leastsquares methods are
+	summarized with emphasis on applications in the analysis of small-angle
+	scattering data. These include indirect Fourier transformation, square-root
+	deconvolution, size distribution determinations, and modeling. The
+	inclusion of corrections for instrumental smearing effects is also
+	discussed. The most common analytical expressions for model form
+	factors and structure factors are summarized. An example of analysis
+	of small-angle neutron and X-ray scattering data from block copolymer
+	micelles is given.},
+  journal = {Advances in Colloid and Interface Science},
+  owner = {Kohlbrecher},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{PedersenGerstenberg96,
+  author = {Pedersen, Jan Skov and Gerstenberg, Michael C.},
+  title = {Scattering Form Factor of Block Copolymer Micelles},
+  year = {1996},
+  volume = {29},
+  number = {4},
+  pages = {1363-1365},
+  doi = {10.1021/ma9512115},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/ma9512115},
+  url = {http://pubs.acs.org/doi/abs/10.1021/ma9512115},
+  journal = {Macromolecules},
+  owner = {Kohlbrecher},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{Pedersen1990,
+  author = {Pedersen, J. S. and Posselt, D. and Mortensen, K.},
+  title = {Analytical treatment of the resolution function for small-angle scattering},
+  year = {1990},
+  volume = {23},
+  number = {4},
+  month = {Aug},
+  pages = {321--333},
+  doi = {10.1107/S0021889890003946},
+  url = {http://dx.doi.org/10.1107/S0021889890003946},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2010.05.08}
+}
+
+@ARTICLE{Pedersen96Macrom,
+  author = {Pedersen, J. S. and P. Schurtenberger},
+  title = {Scattering functions of semiflexible polymers with and without excluded
+	volume effects.},
+  year = {1996},
+  volume = {29},
+  pages = {7602-7612},
+  doi = {10.1021/ma9607630},
+  url = {http://pubs.acs.org/doi/abs/10.1021/ma9607630},
+  abstract = {Off-lattice Monte Carlo simulations on semiflexible polymer chains
+	with and without excluded volume interactions have been performed.
+	The model used in the simulations is a discrete representation of
+	the worm-like chain model of Kratky and Porod applied in the pseudocontinuous
+	limit. The ratio between the cross-section radius R of the chain
+	and the statistical segment length b was chosen to be R/b = 0.1 which
+	corresponds to the value found for polymer-like micelles. The ratio
+	R/b is equivalent to a reduced binary cluster integral of B = 0.30,
+	which is in accordance with the value for polystyrene in a good solvent.
+	The scattering functions of the semiflexible chains have been determined
+	with a precision of 1−2% for L/b = 0.3−640, where L is the contour
+	length of the chain. Numerical approximations to these functions
+	have been determined which interpolate between the simulated functions,
+	and these can be used in the analysis of experimental scattering
+	data. The approximations have been used in least-squares fitting
+	of experimental small-angle neutron scattering data from polystyrene
+	in a good solvent.},
+  journal = {Macromolecules},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Pedersen2002a,
+  author = {Jan Skov Pedersen and Carsten Svaneborg},
+  title = {Scattering from block copolymer micelles},
+  year = {2002},
+  volume = {7},
+  number = {3–4},
+  pages = {158 - 166},
+  issn = {1359-0294},
+  doi = {10.1016/S1359-0294(02)00044-4},
+  url = {http://www.sciencedirect.com/science/article/pii/S1359029402000444},
+  abstract = {Small-angle neutron and X-ray scattering are techniques, which are
+	frequently used for studying the structure and interactions of block
+	copolymer micelles. Recent developments of models for the analysis
+	of small-angle scattering data are reviewed. The most recent models,
+	based on Monte Carlo simulations, are able to provide information
+	on shape, aggregation number, polydispersity, core size, core solvation,
+	corona shape/size, and on the interactions between the chains in
+	the corona.},
+  journal = {Current Opinion in Colloid \&amp; Interface Science},
+  keywords = {Block copolymer},
+  owner = {Kohlbrecher},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{Percus1958,
+  author = {J. K. Percus and G. J. Yevick},
+  title = {Analysis of classical statistical mechanics by means of collective
+	coordinates},
+  year = {1958},
+  volume = {110},
+  number = {1},
+  pages = {1-13},
+  journal = {Phys. Rev.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Petrache1998,
+  author = {Petrache, Horia I. and Gouliaev, Nikolai and Tristram-Nagle, Stephanie
+	and Zhang, Ruitian and Suter, Robert M. and Nagle, John F.},
+  title = {Interbilayer interactions from high-resolution x-ray scattering},
+  year = {1998},
+  volume = {57},
+  number = {6},
+  month = {Jun},
+  pages = {7014--7024},
+  doi = {10.1103/PhysRevE.57.7014},
+  journal = {Phys. Rev. E},
+  numpages = {10},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{Phuengrattana2011,
+  author = {Withun Phuengrattana and Suthep Suantai},
+  title = {On the rate of convergence of Mann, Ishikawa, Noor and SP-iterations
+	for continuous functions on an arbitrary interval },
+  year = {2011},
+  volume = {235},
+  number = {9},
+  pages = {3006 - 3014},
+  issn = {0377-0427},
+  doi = {http://dx.doi.org/10.1016/j.cam.2010.12.022},
+  url = {http://www.sciencedirect.com/science/article/pii/S0377042710006722},
+  abstract = {In this paper, we propose a new iteration, called the SP-iteration,
+	for approximating a fixed point of continuous functions on an arbitrary
+	interval. Then, a necessary and sufficient condition for the convergence
+	of the SP-iteration of continuous functions on an arbitrary interval
+	is given. We also compare the convergence speed of Mann, Ishikawa,
+	Noor and SP-iterations. It is proved that the SP-iteration is equivalent
+	to and converges faster than the others. Our results extend and improve
+	the corresponding results of Borwein and Borwein [D. Borwein, J. Borwein,
+	Fixed point iterations for real functions, J. Math. Anal. Appl. 157
+	(1991) 112–126], Qing and Qihou [Y. Qing, L. Qihou, The necessary
+	and sufficient condition for the convergence of Ishikawa iteration
+	on an arbitrary interval, J. Math. Anal. Appl. 323 (2006) 1383–1386],
+	Rhoades [B.E. Rhoades, Comments on two fixed point iteration methods,
+	J. Math. Anal. Appl. 56 (1976) 741–750], and many others. Moreover,
+	we also present numerical examples for the SP-iteration to compare
+	with the Mann, Ishikawa and Noor iterations. },
+  journal = {Journal of Computational and Applied Mathematics },
+  keywords = {Continuous functions},
+  owner = {kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Picard1890,
+  author = {Emile Picard},
+  title = {M�moire sur la th�orie des �quations aux d�riv�es partielles et la
+	m�thode des approximations successives},
+  year = {1890},
+  volume = {6},
+  number = {4},
+  pages = {145--210},
+  url = {http://portail.mathdoc.fr/JMPA/PDF/JMPA_1890_4_6_A3_0.pdf},
+  journal = {Journal de math�matiques pures et appliqu�es},
+  owner = {Kohlbrecher},
+  timestamp = {2014.06.09}
+}
+
+@ARTICLE{Porod1948,
+  author = {G. Porod},
+  title = {{Die Abh{\"a}ngigkeit der R{\"o}ntgenkleinwinkelstreuung von Form
+	und Gr{\"o}sse der Kolloiden Teilchen in verd{\"u}nnten Systemen,
+	IV}},
+  year = {1948},
+  volume = {2},
+  pages = {255-292},
+  journal = {Acta Physica Austriaca},
+  owner = {Kohlbrecher},
+  timestamp = {2009.12.15}
+}
+
+@ARTICLE{Poeschke2000,
+  author = {P�schke, Dominic and Hickl, Peter and Ballauff, Matthias and �strand,
+	Per-Olof and Pedersen, Jan Skov},
+  title = {Analysis of the conformation of worm-like chains by small-angle scattering:
+	Monte-Carlo simulations in comparison to analytical theory},
+  year = {2000},
+  volume = {9},
+  number = {6},
+  pages = {345--353},
+  issn = {1521-3919},
+  doi = {10.1002/1521-3919(20000701)9:6<345::AID-MATS345>3.0.CO;2-9},
+  url = {http://dx.doi.org/10.1002/1521-3919(20000701)9:6<345::AID-MATS345>3.0.CO;2-9},
+  abstract = {The analysis of the scattering intensity I0 (q) (q = (4 π/λ) sin (θ/2);
+	λ: wavelength of radiation; θ: scattering angle) of dissolved linear
+	polymers derived from static scattering experiments is considered.
+	The determination of I0 (q) and possible sources of experimental
+	uncertainties are discussed in detail. Moreover, a comprehensive
+	overview of current analytical models for the calculation of I0 (q)
+	of chains without excluded volume is given. These analytical theories
+	are compared to Monte-Carlo simulations of semiflexible chains without
+	excluded volume. It is shown that analytical expressions given by
+	Pedersen and Schurtenberger (Macromolecules 29, 7602 (1996); method
+	2) provides the best description of the I0 (q) throughout the entire
+	range of stiffness. Among the analytical theories the expression
+	derived by Kholodenko (Macromolecules 26, 4179 (1993)) gives the
+	best description of the scattering function of worm-like chains.},
+  journal = {Macromolecular Theory and Simulations},
+  owner = {Kohlbrecher},
+  publisher = {WILEY-VCH Verlag GmbH},
+  timestamp = {2014.03.04}
+}
+
+@BOOK{Press2007,
+  author = {William H. Press and Saul A. Teukolsky and William T. Vetterling
+	and Brian P. Flannery},
+  title = {Numerical Recipes. The Art of Scientific Computing},
+  year = {2007},
+  edition = {3rd},
+  publisher = {Cambridge University Press},
+  owner = {kohlbrecher},
+  timestamp = {2013.04.26}
+}
+
+@ARTICLE{scatt188,
+  author = {C. V. Raman},
+  title = {LXI. On the mean distance between neighbouring molecules in a fluid},
+  year = {1924},
+  volume = {47},
+  pages = {671-679},
+  doi = {http://dx.doi.org/10.1080/14786442408634406},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/14786442408634406},
+  journal = {Phil. Mag.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Regnaut1990,
+  author = {C. Regnaut and J. C. Ravey},
+  title = {Erratum: Application of the adhesive sphere model to the structure
+	of colloidal suspensions [J. Chem. Phys. 91, 1211 (1989)]},
+  year = {1990},
+  volume = {92},
+  number = {5},
+  pages = {3250-3250},
+  doi = {10.1063/1.458616},
+  url = {http://link.aip.org/link/?JCP/92/3250/1},
+  journal = {The Journal of Chemical Physics},
+  owner = {Kohlbrecher},
+  publisher = {AIP},
+  timestamp = {2009.12.18}
+}
+
+@ARTICLE{Regnaut1989,
+  author = {C. Regnaut and J. C. Ravey},
+  title = {Application of the adhesive sphere model to the structure of colloidal
+	suspensions},
+  year = {1989},
+  volume = {91},
+  number = {2},
+  pages = {1211-1221},
+  doi = {10.1063/1.457194},
+  url = {http://link.aip.org/link/?JCP/91/1211/1},
+  journal = {The Journal of Chemical Physics},
+  keywords = {COLLOIDS; SUSPENSIONS; LIQUID STRUCTURE; THERMODYNAMIC PROPERTIES;
+	PERCUSYEVICK EQUATION; HNC METHOD},
+  owner = {Kohlbrecher},
+  publisher = {AIP},
+  timestamp = {2009.12.18}
+}
+
+@ARTICLE{Richter1997,
+  author = {Richter, D. and Schneiders, D. and Monkenbusch, M. and Willner, L.
+	and Fetters, L. J. and Huang, J. S. and Lin, M. and Mortensen, K.
+	and Farago, B.},
+  title = {Polymer Aggregates with Crystalline Cores:  The System Polyethylene−Poly(ethylenepropylene)},
+  year = {1997},
+  volume = {30},
+  number = {4},
+  pages = {1053-1068},
+  doi = {10.1021/ma961039k},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/ma961039k},
+  url = {http://pubs.acs.org/doi/abs/10.1021/ma961039k},
+  abstract = { We have studied the aggregation behavior of polyethylene−poly(ethylenepropylene)
+	(PE−PEP) diblock copolymers dissolved in decane. For this purpose
+	PE−PEP diblock copolymers of various molecular weights, compositions,
+	and degrees of deuteration were synthesized via an anionic route.
+	The structure and morphology of the aggregates was studied by small
+	angle neutron scattering varying both the contrast as well as the
+	polymer labeling. We found a hierarchy of structures:  The PE component
+	crystallizes in lamellar sheets (thickness 40−80 Å) surrounded
+	on both sides by a PEP brush which exhibits a close to parabolic
+	density profile. Different aggregates form macroaggregates of needlelike
+	shape with the PE lamellar planes in the long direction. This macroaggregation
+	is well described by a paracrystalline structure factor. The structural
+	parameters depending on composition and molecular weights can be
+	well understood in terms of a free energy of formation based on a
+	scaling model. A quantitative evaluation of the different contributions
+	to the free energy reveals an important role of defect structures
+	resulting from the ethylene side branches in the polyethylene component.
+	Finally, we show in a semiquantitative approach that the van der
+	Waals energy between the brushes is large enough to facilitate macroaggregation.
+	},
+  journal = {Macromolecules},
+  owner = {Kohlbrecher},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{Robertus1989,
+  author = {C. Robertus and W.H. Philipse and J.G.H. Joosten and Y.K. Levine},
+  title = {Solution of the Percus-Yevick approximation of the multicomponent
+	
+	adhesive sphere system to the small angle x-ray scattering from
+	
+	microemulsions},
+  year = {1989},
+  volume = {90},
+  number = {8},
+  pages = {4482-4490},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Rogers1984,
+  author = {Rogers, Forrest J. and Young, David A.},
+  title = {New, thermodynamically consistent, integral equation for simple fluids},
+  year = {1984},
+  volume = {30},
+  issue = {2},
+  month = {Aug},
+  pages = {999--1007},
+  doi = {10.1103/PhysRevA.30.999},
+  url = {http://link.aps.org/doi/10.1103/PhysRevA.30.999},
+  journal = {Phys. Rev. A},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.10.21}
+}
+
+@ARTICLE{Roux1988,
+  author = {D. Roux and C.R. Safinya},
+  title = {A synchrotron X-ray study of competing undulation and electrostatic
+	interlayer interactions in fluid multimembrane lyotropic phases},
+  year = {1988},
+  volume = {49},
+  number = {2},
+  pages = {307-318},
+  doi = {10.1051/jphys:01988004902030700},
+  url = {http://hal.archives-ouvertes.fr/docs/00/21/06/98/PDF/ajp-jphys_1988_49_2_307_0.pdf},
+  journal = {J. Phys. France},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{Sorensen1992,
+  author = {C. M. S{\o}rensen and J. Cai and N. Lu},
+  title = {Test of Static Structure Factors for Describing Light Scattering
+	from Fractal Soot Aggregates},
+  year = {1992},
+  volume = {8},
+  pages = {2064-2069},
+  doi = {10.1021/la00044a029},
+  url = {http://pubs.acs.org/doi/abs/10.1021/la00044a029},
+  journal = {Langmuir},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Sorensen1999,
+  author = {C. M. S{\o}rensen and G. M. Wang},
+  title = {Size distribution effect on the power law regime of the structure
+	factor of fractal aggregates},
+  year = {1999},
+  volume = {60},
+  number = {6},
+  pages = {7143-7148},
+  doi = {10.1103/PhysRevE.60.7143},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.60.7143},
+  journal = {Physical Review E},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Saad1993,
+  author = {Youcef Saad},
+  title = {A Flexible Inner-Outer Preconditioned GMRES Algorithm},
+  year = {1993},
+  volume = {14},
+  number = {2},
+  pages = {461-469},
+  doi = {10.1137/0914028},
+  eprint = { http://dx.doi.org/10.1137/0914028 },
+  url = { http://dx.doi.org/10.1137/0914028 
+},
+  journal = {SIAM Journal on Scientific Computing},
+  owner = {kohlbrecher},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{Saad1986,
+  author = {Youcef Saad and Martin H. Schultz},
+  title = {GMRES: A Generalized Minimal Residual Algorithm for Solving Nonsymmetric
+	Linear Systems},
+  year = {1986},
+  volume = {7},
+  number = {3},
+  pages = {856-869},
+  doi = {10.1137/0907058},
+  eprint = { http://dx.doi.org/10.1137/0907058 },
+  url = { http://dx.doi.org/10.1137/0907058 
+},
+  journal = {SIAM Journal on Scientific and Statistical Computing},
+  owner = {kohlbrecher},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{StreyKlineKaler1994,
+  author = {K.-V. Schubert and R. Strey and S. R. Kline and E. W. Kaler},
+  title = {Small angle neutron scattering near Lifshitz lines: Transition from
+	weakly structured mixtures to microemulsions},
+  year = {1994},
+  volume = {101},
+  pages = {5343},
+  doi = {10.1063/1.467387},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Schumacher2009,
+  author = {Manuela Schumacher and Markus Ruppel and Joachim Kohlbrecher and
+	Markus Burkhardt and Felix Plamper and Markus Drechsler and Axel
+	H.E. M�ller},
+  title = {Smart organic-inorganic nanohybrid stars based on star-shaped poly(acrylic
+	acid) and functional silsesquioxane nanoparticles},
+  year = {2009},
+  volume = {50},
+  number = {8},
+  pages = {1908 - 1917},
+  issn = {0032-3861},
+  doi = {DOI: 10.1016/j.polymer.2009.02.010},
+  url = {http://www.sciencedirect.com/science/article/B6TXW-4VNH42B-2/2/681e3a8be5ecf579297bde4679bc481a},
+  abstract = {pH- and salinity-responsive organic-inorganic nanohybrid stars based
+	on poly(acrylic acid) (PAA) stars and N,N-di(2,3-dihydroxypropyl)3-aminopropylfunctional
+	silsesquioxane nanoparticles are readily formed by mixing of aqueous
+	solutions of the components. The interaction between stars of two
+	different arm lengths, (PAA100)21, (PAA200)24, with water-soluble
+	silsesquioxane nanoparticles is studied according to changes in pH
+	and salt concentration. The original size of the stars is conserved
+	during complexation according to dynamic light scattering (DLS) measurements
+	and light scattering (LS) titration experiments, which exclude star-star
+	aggregation or crosslinking during the interaction. The proposed
+	interaction mechanism is based on hydrogen-bonding and Coulomb interactions.
+	Cryogenic transmission electron microscopy measurements demonstrate
+	the formation of nanohybrid stars. Small-angle neutron scattering
+	experiments enable a quantitative determination of the fraction of
+	bound nanoparticles and indicate an equilibrium between free and
+	bound nanoparticles.},
+  journal = {Polymer},
+  keywords = {Polyelectrolyte stars},
+  owner = {Kohlbrecher},
+  timestamp = {2009.03.25}
+}
+
+@ARTICLE{Schwartz1975,
+  author = {S. Schwartz and J.E. Cain and E.A. Dratz and J.K. Blasie},
+  title = {An analysis of lamellar x-ray diffraction from disordered membrane
+	multilayers with application to data from retinal rod},
+  year = {1975},
+  volume = {15},
+  pages = {1201 - 1233},
+  doi = {10.1016/S0006-3495(75)85895-4},
+  url = {http://www.sciencedirect.com/science/article/B94RW-4V8RSSX-3/2/1b9b816948c363ebf75128d31846eca1},
+  abstract = {Oriented multilayers containing a membrane pair within the unit cell
+	potentially possess both lattice disorder and substitution disorder.
+	Lattice disorder occurs when there is a lack of long-range order
+	in the lattice spacings produced by a variation in the nearest neighbor
+	distances between unit cells. A simple form of substitution disorder
+	can arise from a variation in the separation of the two membranes
+	within the unit cells in the multilayer. Lattice disorder produces
+	a monotonically increasing width for higher order lamellar "reflections"
+	while simple substitution disorder produces an incoherent intensity
+	underlying the coherent intensity. A generalized Patterson function
+	analysis has been developed for treating lamellar diffraction from
+	lattice disordered multilayers. This analysis allows the identification
+	of the autocorrelation function of the unit cell electron density
+	profile and its subsequent deconvolution to provide the unit cell
+	electron density profile. A recursive procedure has been developed
+	for separating the incoherent intensity from the coherent intensity
+	via a Gaussian probability model of the membrane intra-pair separation.
+	In cases studied so far both disorders can be quantitatively accounted
+	for and eliminated from interfering with the phasing of the coherent
+	intensity or distorting the derived electron density profile. Lamellar
+	X-ray diffraction data from intact retinal rods, using either film
+	or position sensitive detectors, shows severe effects of both forms
+	of disorder which have not been taken into account in past analysis
+	of such data. We have applied our analysis to the data on dark adapted
+	rod outer segments in electrophysiologically intact retinas of Chabre
+	and Cavaggioni (unpublished). An electron density profile is derived
+	at 25 A resolution. The lattice nearest neighbor spacing has a variation
+	of +/- 19 A out of a 295 A repeat. The intra-unit cell membrane pair
+	center to center distance of 88 A varies +/-8 A."},
+  journal = {Biophysical Journal},
+  owner = {kohlbrecher},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{Sergiievskyi2011,
+  author = {Sergiievskyi, Volodymyr P. and Hackbusch, Wolfgang and Fedorov, Maxim
+	V.},
+  title = {Multigrid solver for the reference interaction site model of molecular
+	liquids theory},
+  year = {2011},
+  volume = {32},
+  number = {9},
+  pages = {1982--1992},
+  issn = {1096-987X},
+  doi = {10.1002/jcc.21783},
+  url = {http://dx.doi.org/10.1002/jcc.21783},
+  journal = {Journal of Computational Chemistry},
+  keywords = {multigrid, RISM, integral equation theory, hydration free energy},
+  owner = {kohlbrecher},
+  publisher = {Wiley Subscription Services, Inc., A Wiley Company},
+  timestamp = {2013.12.03}
+}
+
+@ARTICLE{Sharma1977,
+  author = {R. V. Sharma and K. C. Sharma},
+  title = {The structure factor and the transport properties of dense fluids
+	having molecules with square well potential, a possible generalization},
+  year = {1977},
+  volume = {89},
+  number = {1},
+  pages = {213 - 218},
+  issn = {0378-4371},
+  doi = {DOI: 10.1016/0378-4371(77)90151-0},
+  url = {http://www.sciencedirect.com/science/article/B6TVG-46D5KXJ-TB/2/a0c6ad232ccc1b7979ac2fefe23f9b02},
+  abstract = {An analytical expression of the static structure factor S(k) has been
+	presented, treating the square well potential as a perturbation on
+	the hard sphere system incorporating the correct equation of state
+	given by Carnahan and Starling (CS). Reasonable values of potential
+	parameters are obtained from a fit with the experimental peak of
+	S(k). The present calculation of transport coefficients for liquid
+	sodium at 373 K, is found to be in closer agreement with the experimental
+	data. The role of back scattering correction is also discussed.},
+  journal = {Physica A: Statistical and Theoretical Physics},
+  owner = {Kohlbrecher},
+  timestamp = {2009.12.18}
+}
+
+@ARTICLE{Sjoberg1974,
+  author = {Sj{\"{o}}berg, B.},
+  title = {{Small-angle X-ray investigation of the equilibria between copper(II)
+	and glycyl-{\sc l}-histidylglycine in water solution. A method for
+	analysing polydispersed systems}},
+  year = {1974},
+  volume = {7},
+  number = {2},
+  month = {Apr},
+  pages = {192--199},
+  doi = {10.1107/S0021889874009241},
+  url = {http://dx.doi.org/10.1107/S0021889874009241},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2010.05.07}
+}
+
+@ARTICLE{Smith1977,
+  author = {Smith, William R. and Henderson, Douglas and Tago, Yoshio},
+  title = {Mean spherical approximation and optimized cluster theory for the
+	squar-well fluid},
+  year = {1977},
+  volume = {67},
+  number = {11},
+  pages = {5308-5316},
+  doi = {http://dx.doi.org/10.1063/1.434709},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/67/11/10.1063/1.434709},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.12.01}
+}
+
+@ARTICLE{Sottmann1997,
+  author = {Sottmann, T. and Strey, R. and Chen, S.-H.},
+  title = {A small-angle neutron scattering study of nonionic surfactant molecules
+	at the water–oil interface: Area per molecule, microemulsion domain
+	size, and rigidity},
+  year = {1997},
+  volume = {106},
+  number = {15},
+  pages = {6483-6491},
+  doi = {http://dx.doi.org/10.1063/1.473638},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/106/15/10.1063/1.473638},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2015.01.28}
+}
+
+@BOOK{book:Squires,
+  author = {G. L. Squires},
+  title = {Thermal Neutron Scattering},
+  year = {1978},
+  publisher = {Cambridge University Press},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Stieger2004,
+  author = {Stieger, Markus and Pedersen, Jan Skov and Lindner, Peter and Richtering,
+	Walter},
+  title = {Are Thermoresponsive Microgels Model Systems for Concentrated Colloidal
+	Suspensions? A Rheology and Small-Angle Neutron Scattering Study},
+  year = {2004},
+  volume = {20},
+  number = {17},
+  pages = {7283-7292},
+  note = {PMID: 15301516},
+  doi = {10.1021/la049518x},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/la049518x},
+  url = {http://pubs.acs.org/doi/abs/10.1021/la049518x},
+  abstract = { The structure of concentrated temperature-sensitive poly(N-isopropylacrylamide)
+	(PNiPAM) microgel suspensions has been investigated employing rheology
+	and small-angle neutron scattering (SANS). A previously described
+	model expression for the particle form factor Pinho(q) is extended
+	by a model hard sphere structure factor S(q), and the average radial
+	density profiles φ(r) are calculated from the amplitude of the form
+	factor A(q) and the structure factor S(q). By this procedure, a direct
+	real space description of the spatial ordering in the neighborhood
+	of a single particle is obtained. The overall particle size and the
+	correlation length ξ of the concentration fluctuations of the internal
+	polymer network decrease with concentration, revealing the increasing
+	compression of the spheres. Thus, the particle form factor Pinho(q)
+	of the swollen PNiPAM microgels depends on concentration. The particle−particle
+	interaction potential does not change significantly between 25 and
+	32 °C. Even approximately 1 K below the lower critical solution
+	temperature (LCST), the experimental scattering intensity distributions
+	I(q)/c are described very well by the hard sphere structure factor
+	when an equivalent hard sphere particle size RHS and volume fraction
+	ηHS are used. Microgels with different degrees of cross-linking
+	and particle size resemble true hard sphere behavior up to effective
+	volume fractions of φeff < 0.35. At higher effective volume fractions
+	φeff > 0.35 strong deviations from true hard spheres are observed.
+	Interpenetration of the outer, less cross-linked regions of the soft
+	spheres as well as particle compression occurred at higher concentrations.
+	In agreement with this, the equilibrium colloidal phase behavior
+	and rheology also has some features of soft sphere systems. At temperatures
+	well above the LCST, the interaction potential becomes strongly attractive
+	and the collapsed microgel spheres form aggregates consisting of
+	flocculated particles without significant long-range order. Hence,
+	an attractive interaction potential in concentrated suspensions of
+	PNiPAM microgels leads to distinctively different structures as compared
+	to attractive hard sphere colloids. When the peculiar structural
+	properties of the PNiPAM microgels are considered, they can be used
+	as model systems in colloidal science. },
+  journal = {Langmuir},
+  owner = {Kohlbrecher},
+  timestamp = {2012.01.14}
+}
+
+@ARTICLE{Strey1991,
+  author = {Strey, R. and Winkler, J. and Magid, L.},
+  title = {Small-angle neutron scattering from diffuse interfaces. 1. Mono-
+	and bilayers in the water-octane-pentaoxyethylene monododecyl ether
+	(C12Es) system},
+  year = {1991},
+  volume = {95},
+  number = {19},
+  pages = {7502-7507},
+  doi = {10.1021/j100172a070},
+  eprint = { http://dx.doi.org/10.1021/j100172a070 },
+  url = { http://dx.doi.org/10.1021/j100172a070 
+},
+  journal = {The Journal of Physical Chemistry},
+  owner = {kohlbrecher},
+  timestamp = {2015.01.28}
+}
+
+@ARTICLE{Svaneborg2012,
+  author = {Carsten Svaneborg and Jan Skov Pedersen},
+  title = {A formalism for scattering of complex composite structures. I. Applications
+	to branched structures of asymmetric sub-units},
+  year = {2012},
+  volume = {136},
+  number = {10},
+  eid = {104105},
+  pages = {104105},
+  doi = {10.1063/1.3682778},
+  url = {http://link.aip.org/link/?JCP/136/104105/1},
+  journal = {The Journal of Chemical Physics},
+  keywords = {molecular configurations; polymers},
+  numpages = {14},
+  owner = {Kohlbrecher},
+  publisher = {AIP},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{SvaneborgPedersen2002,
+  author = {Svaneborg, Carsten and Pedersen, Jan Skov},
+  title = {Form Factors of Block Copolymer Micelles with Excluded-Volume Interactions
+	of the Corona Chains Determined by Monte Carlo Simulations},
+  year = {2002},
+  volume = {35},
+  number = {3},
+  pages = {1028-1037},
+  doi = {10.1021/ma011046v},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/ma011046v},
+  url = {http://pubs.acs.org/doi/abs/10.1021/ma011046v},
+  abstract = {The scattering of a diblock copolymer micelle has been simulated using
+	Monte Carlo techniques. The scattering is analyzed using a novel
+	model, where the corona is represented as a dilute/semidilute polymer
+	solution with a radial profile. This approach decouples the scattering
+	due to interaction and connectivity induced density fluctuations
+	and scattering due to the radial profile of the corona. Three different
+	profiles have been used to fit the simulated corona scattering: 
+	a box with a Gaussian tail and two maximum entropy (ME) profiles;
+	chain penetration into the core region is not allowed for any of
+	the profiles. Excellent fits are obtained, especially for a ME profile
+	with three parameters. An excluded-volume parameter and the corona
+	compressibility are obtained and show a strong dependence on surface
+	coverage. The derived expressions for the form factor provides a
+	new approach for analyzing experimental data obtained by neutron
+	or X-ray small-angle scattering for block copolymer micelles with
+	significant intra- and interchain excluded-volume interactions.},
+  journal = {Macromolecules},
+  owner = {Kohlbrecher},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{Svaneborg2001,
+  author = {Svaneborg, Carsten and Pedersen, Jan Skov},
+  title = {Block copolymer micelle coronas as quasi-two-dimensional dilute or
+	semidilute polymer solutions},
+  year = {2001},
+  volume = {64},
+  issue = {1},
+  month = {Jun},
+  pages = {010802},
+  doi = {10.1103/PhysRevE.64.010802},
+  url = {http://link.aps.org/doi/10.1103/PhysRevE.64.010802},
+  journal = {Phys. Rev. E},
+  numpages = {4},
+  owner = {Kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{Svaneborg2000,
+  author = {Carsten Svaneborg and Jan Skov Pedersen},
+  title = {A Monte Carlo study on the effect of excluded volume interactions
+	on the scattering from block copolymer micelles},
+  year = {2000},
+  volume = {112},
+  number = {21},
+  pages = {9661-9670},
+  doi = {10.1063/1.481586},
+  url = {http://link.aip.org/link/?JCP/112/9661/1},
+  journal = {The Journal of Chemical Physics},
+  keywords = {polymer blends; colloids; scattering; Monte Carlo methods; digital
+	simulation; light scattering; polymer solutions},
+  owner = {Kohlbrecher},
+  publisher = {AIP},
+  timestamp = {2012.03.30}
+}
+
+@ARTICLE{TeubnerStrey87,
+  author = {M. Teubner and R. Strey},
+  title = {Origin of the scattering peak in microemulsions},
+  year = {1987},
+  volume = {87},
+  pages = {3195},
+  doi = {10.1063/1.453006},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Toon1981,
+  author = {O. Toon and T. Ackerman},
+  title = {Algorithms for the calculation of scattering by stratified spheres},
+  year = {1981},
+  volume = {20},
+  number = {20},
+  pages = {3657},
+  journal = {Applied Optics},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Toth2015,
+  author = {A. Toth and C.T. Kelley},
+  title = {Convergence analysis for Anderson acceleration},
+  year = {2015},
+  volume = {53},
+  number = {2},
+  pages = {805-819},
+  note = {cited By 0},
+  doi = {10.1137/130919398},
+  url = {http://www.scopus.com/inward/record.url?eid=2-s2.0-84929440254&partnerID=40&md5=d51e4f335fb6b709974bb40be37ca09f},
+  abstract = {Anderson(m) is a method for acceleration of fixed point iteration
+	which stores m+1 prior evaluations of the fixed point map and computes
+	the new iteration as a linear combination of those evaluations. Anderson(0)
+	is fixed point iteration. In this paper we show that Anderson(m)
+	is locally r-linearly convergent if the fixed point map is a contraction
+	and the coefficients in the linear combination remain bounded. Without
+	assumptions on the coefficients, we prove q-linear convergence of
+	Anderson(1) and, in the case of linear problems, Anderson(m). We
+	observe that the optimization problem for the coefficients can be
+	formulated and solved in nonstandard ways and report on numerical
+	experiments which illustrate the ideas. © 2015 Society for Industrial
+	and Applied Mathematics.},
+  affiliation = {Department of Mathematics, North Carolina State University, Raleigh,
+	NC, United States},
+  author_keywords = {Anderson acceleration; Local convergence; Nonlinear equations},
+  document_type = {Article},
+  journal = {SIAM Journal on Numerical Analysis},
+  owner = {kohlbrecher},
+  source = {Scopus},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{Tuinier2003,
+  author = {R Tuinier and J Rieger and C.G de Kruif},
+  title = {Depletion-induced phase separation in colloid-polymer mixtures},
+  year = {2003},
+  volume = {103},
+  number = {1},
+  pages = {1 - 31},
+  issn = {0001-8686},
+  doi = {http://dx.doi.org/10.1016/S0001-8686(02)00081-7},
+  url = {http://www.sciencedirect.com/science/article/pii/S0001868602000817},
+  abstract = {Phase separation can be induced in a colloidal dispersion by adding
+	non-adsorbing polymers. Depletion of polymer around the colloidal
+	particles induces an effective attraction, leading to demixing at
+	sufficient polymer concentration. This communication reviews theoretical
+	and experimental work carried out on the polymer-mediated attraction
+	between spherical colloids and the resulting phase separation of
+	the polymer-colloid mixture. Theoretical studies have mainly focused
+	on the limits where polymers are small or large as compared to the
+	colloidal size. Recently, however, theories are being developed that
+	cover a wider colloid-polymer size ratio range. In practical systems,
+	size polydispersity and polyelectrolytes (instead of neutral polymers)
+	and/or charges on the colloidal surfaces play a role in polymer-colloid
+	mixtures. The limited amount of theoretical work performed on this
+	is also discussed. Finally, an overview is given on experimental
+	investigations with respect to phase behavior and results obtained
+	with techniques enabling measurement of the depletion-induced interaction
+	potential, the structure factor, the depletion layer thickness and
+	the interfacial tension between the demixed phases of a colloid-polymer
+	mixture.},
+  journal = {Advances in Colloid and Interface Science },
+  keywords = {Depletion},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.21}
+}
+
+@ARTICLE{Ulander2001,
+  author = {Ulander, Johan and Greberg, Hans and Kjellander, Roland},
+  title = {Primary and secondary effective charges for electrical double layer
+	systems with asymmetric electrolytes},
+  year = {2001},
+  volume = {115},
+  number = {15},
+  pages = {7144-7160},
+  doi = {http://dx.doi.org/10.1063/1.1398587},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/115/15/10.1063/1.1398587},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.20}
+}
+
+@ARTICLE{Verlet1981,
+  author = {Verlet, Loup},
+  title = {Integral equations for classical fluids},
+  year = {1981},
+  volume = {42},
+  number = {6},
+  pages = {1291-1302},
+  doi = {10.1080/00268978100100971},
+  eprint = {http://www.tandfonline.com/doi/pdf/10.1080/00268978100100971},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/00268978100100971},
+  journal = {Molecular Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.10.21}
+}
+
+@ARTICLE{Verlet1980,
+  author = {Verlet, Loup},
+  title = {Integral equations for classical fluids},
+  year = {1980},
+  volume = {41},
+  number = {1},
+  pages = {183-190},
+  doi = {10.1080/00268978000102671},
+  eprint = {http://www.tandfonline.com/doi/pdf/10.1080/00268978000102671},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/00268978000102671},
+  journal = {Molecular Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.10.21}
+}
+
+@ARTICLE{Viererblova2010,
+  author = {Viererblova, Linda and Kolafa, Jiri and Labik, Stanislav and Malijevsky,
+	Anatol},
+  title = {Virial coefficients and equation of state of the penetrable sphere
+	model},
+  year = {2010},
+  volume = {12},
+  issue = {1},
+  pages = {254-262},
+  doi = {10.1039/B917204A},
+  url = {http://dx.doi.org/10.1039/B917204A},
+  abstract = {We study the penetrable sphere (alias square mound) model in the fluid
+	phase by means of the virial expansion{,} molecular dynamics simulations{,}
+	and Ornstein-Zernike integral equation. The virial coefficients up
+	to B8 are expressed as polynomials in the Boltzmann factor with the
+	coefficients calculated by a Monte Carlo integration. New data for
+	pressure and internal energy are obtained by molecular dynamics simulations
+	with attention paid to finite-size errors and properties of the Andersen
+	thermostat. The data and virial coefficients are correlated by a
+	formula for the Helmholtz free energy. We also propose a new closure
+	for the Ornstein-Zernike equation and test several other closures.},
+  journal = {Phys. Chem. Chem. Phys.},
+  owner = {kohlbrecher},
+  publisher = {The Royal Society of Chemistry},
+  timestamp = {2013.11.10}
+}
+
+@ARTICLE{Vompe1994,
+  author = {Vompe, A. G. and Martynov, G. A.},
+  title = {The bridge function expansion and the self-consistency problem of
+	the Ornstein-Zernike equation solution},
+  year = {1994},
+  volume = {100},
+  number = {7},
+  pages = {5249-5258},
+  doi = {http://dx.doi.org/10.1063/1.467189},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/100/7/10.1063/1.467189},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{scatt121,
+  author = {C. G. Vonk},
+  title = {On two methods for determination of particle size distribution functions
+	by means of small-angle x-ray scattering},
+  year = {1976},
+  volume = {9},
+  pages = {433-440},
+  journal = {J. Appl. Cryst.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Vorst1992,
+  author = {H. A. van der Vorst},
+  title = {Bi-CGSTAB: A Fast and Smoothly Converging Variant of Bi-CG for the
+	Solution of Nonsymmetric Linear Systems},
+  year = {1992},
+  volume = {13},
+  number = {2},
+  pages = {631-644},
+  doi = {10.1137/0913035},
+  eprint = { http://dx.doi.org/10.1137/0913035 },
+  url = { http://dx.doi.org/10.1137/0913035 
+},
+  journal = {SIAM Journal on Scientific and Statistical Computing},
+  owner = {kohlbrecher},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{Vrij1979,
+  author = {A. Vrij},
+  title = {Mixtures of hard spheres in the Percus-Yevick approximation. Light
+	scattering at finite angles},
+  year = {1979},
+  volume = {71},
+  number = {8},
+  pages = {3267-3270},
+  journal = {J. Chem. Phys.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Vrij1976,
+  author = {A. Vrij},
+  title = {Polymers at Interfaces and the Interactions in Colloidal Dispersions},
+  year = {1976},
+  volume = {48},
+  number = {4},
+  pages = {471--483},
+  doi = {10.1351/pac197648040471},
+  url = {http://dx.doi.org/10.1351/pac197648040471},
+  journal = {Pure Appl. Chem.},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.21}
+}
+
+@PHDTHESIS{Vyskocil1994,
+  author = {Pavel Vyskocil},
+  title = {Decomposition and coarsening in Ni-Ti},
+  year = {1994},
+  doi = {http://dx.doi.org/10.3929/ethz-a-000937740},
+  url = {http://e-collection.library.ethz.ch/view/eth:39304},
+  abstract = {http://e-collection.library.ethz.ch/eserv/eth:39304/eth-39304-01.pdf},
+  owner = {kohlbrecher},
+  school = {ETH Zurich},
+  timestamp = {2014.12.22}
+}
+
+@INBOOK{Wagner2005,
+  author = {W. Wagner and J. Kohlbrecher},
+  title = {Modern Techniques For Characterising Magnetic Materials:},
+  year = {2005},
+  editor = {Yimei Zhu},
+  publisher = {Kluwer Academic Publishers},
+  chapter = {Small-angle neutron scattering},
+  pages = {65-104},
+  url = {http://sans.web.psi.ch/sansstatus/SASbooks/KluwerBookch2.pdf},
+  keywords = {magnetic materials - Analysis;
+	
+	magnetic materials - Microscopy; 
+	
+	Electrons - Scattering;},
+  owner = {Kohlbrecher},
+  timestamp = {2008.05.10}
+}
+
+@ARTICLE{Walker2011,
+  author = {Homer F. Walker and Peng Ni},
+  title = {Anderson Acceleration for Fixed-Point Iterations},
+  year = {2011},
+  volume = {49},
+  number = {4},
+  pages = {1715-1735},
+  doi = {10.1137/10078356X},
+  eprint = { http://dx.doi.org/10.1137/10078356X },
+  url = { http://dx.doi.org/10.1137/10078356X 
+},
+  journal = {SIAM Journal on Numerical Analysis},
+  owner = {kohlbrecher},
+  timestamp = {2015.12.16}
+}
+
+@ARTICLE{Walter1985,
+  author = {Walter, G. and Kranold, R. and Gerber, T. and Baldrian, J. and Steinhart,
+	M.},
+  title = {{Particle size distribution from small-angle X-ray scattering data}},
+  year = {1985},
+  volume = {18},
+  number = {4},
+  month = {Aug},
+  pages = {205--213},
+  doi = {10.1107/S0021889885010160},
+  url = {http://dx.doi.org/10.1107/S0021889885010160},
+  journal = {Journal of Applied Crystallography},
+  owner = {kohlbrecher},
+  timestamp = {2010.05.07}
+}
+
+@ARTICLE{Weeks1971,
+  author = {Weeks, John D. and Chandler, David and Andersen, Hans C.},
+  title = {Role of Repulsive Forces in Determining the Equilibrium Structure
+	of Simple Liquids},
+  year = {1971},
+  volume = {54},
+  number = {12},
+  pages = {5237-5247},
+  doi = {http://dx.doi.org/10.1063/1.1674820},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/54/12/10.1063/1.1674820},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.08}
+}
+
+@ARTICLE{Wertheim1963,
+  author = {Wertheim, M. S.},
+  title = {Exact Solution of the Percus-Yevick Integral Equation for Hard Spheres},
+  year = {1963},
+  volume = {10},
+  issue = {8},
+  month = {Apr},
+  pages = {321--323},
+  doi = {10.1103/PhysRevLett.10.321},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.10.321},
+  journal = {Phys. Rev. Lett.},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2013.11.11}
+}
+
+@ARTICLE{Wiedenmann2011,
+  author = {Wiedenmann, A. and G\"ahler, R. and Dewhurst, C. D. and Keiderling,
+	U. and Pr\'evost, S. and Kohlbrecher, J.},
+  title = {Relaxation mechanisms in magnetic colloids studied by stroboscopic
+	spin-polarized small-angle neutron scattering},
+  year = {2011},
+  volume = {84},
+  issue = {21},
+  month = {Dec},
+  pages = {214303},
+  doi = {10.1103/PhysRevB.84.214303},
+  url = {http://link.aps.org/doi/10.1103/PhysRevB.84.214303},
+  abstract = {Stroboscopic small-angle neutron scattering by using polarized neutrons
+	is presented as a technique for investigations of relaxation phenomena
+	on a nanometer scale. Applying a cyclic perturbation to the sample
+	by an oscillating magnetic field allows the polarization-dependent
+	scattering cross-sections to be extracted as time-dependent response.
+	The potential of this special type of �physical� contrast variation
+	technique is demonstrated with three examples of ferrofluids of different
+	particle sizes and viscosities. The dynamics of magnetic moment reorientations
+	turned out to be governed by different time scales. For a temperature-dependent
+	fraction of individual mobile particles, a frequency-dependent phase
+	shift and damping of the intensity modulation have been precisely
+	determined and quantitatively explained using a Debye-like relaxation
+	model. The characteristic relaxation times, $\tau$, in the liquid
+	state of all samples scale with the particle volume and viscosity
+	confirming a Brownian-relaxation mechanism. For the remaining fraction
+	of particles that form locally ordered domains the orientation distribution
+	of the dynamically arrested static moments has been quantified by
+	an order parameter $S_1^\textrm{arr}$, which is not accessible with
+	nonpolarized neutrons. In a high viscous Co and a magnetite-based
+	ferrofluid, $S_1^\textrm{arr}$ corresponds to maximal alignment of
+	the static moments in the liquid state and to a gradual decrease
+	at lower temperatures when the solvent is frozen. In a low viscosity
+	Co-ferrofluid almost no preferred alignment of the arrested particle
+	moments was observed. In the magnetite-based ferrofluid with the
+	highest dipolar attraction energy an additional phase shift has been
+	detected which increases with frequency and magnitude of the magnetic
+	field. This indicates clearly that the set-up of local particle ordering
+	in distorted hexagonal arrangement is delayed with respect to the
+	moment alignment in the time varying magnetic field.},
+  journal = {Phys. Rev. B},
+  numpages = {13},
+  owner = {Kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2011.12.07}
+}
+
+@ARTICLE{Wijmans93,
+  author = {C. M. Wijmans and E. B. Zhulina},
+  title = {Polymer Brushes at Curved Surfaces},
+  year = {1993},
+  volume = {26},
+  pages = {1214-7224},
+  journal = {Macromolecules},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Willner2000,
+  author = {L. Willner and A. Poppe and J. Allgaier and M. Monkenbusch and P.
+	Lindner and D. Richter},
+  title = {Micellization of amphiphilic diblock copolymers: Corona shape and
+	mean-field to scaling crossover},
+  year = {2000},
+  volume = {51},
+  number = {6},
+  pages = {628},
+  url = {http://stacks.iop.org/0295-5075/51/i=6/a=628},
+  abstract = {The aggregation behaviour of six amphiphilic poly(ethylene-propylene)-block-polyethylene
+	oxide (PEP-PEO) copolymers in water was investigated with the aim
+	to study systematically the influence of a growing soluble block
+	on the structural properties of the micelle. The polymers were prepared
+	such that they differ in the PEO content over a large range of molecular
+	weights, while the PEP size was kept constant. The micelles were
+	characterized by small-angle neutron scattering (SANS) involving
+	contrast variation experiments. Data analysis was performed by a
+	spherical core/shell model with either constant or radial decreasing
+	density profile in the corona and constant density in the core for
+	both cases. The main new result is that we have observed a coronal
+	shape crossover from a micelle with homogeneous density distribution
+	for polymers of low PEO content to a starlike micelle with a hyperbolic
+	density profile for polymers of high PEO content. With respect to
+	the aggregation number this corresponds to a crossover from the mean-field
+	to the scaling behavior of a starlike micelle.},
+  journal = {EPL (Europhysics Letters)},
+  owner = {kohlbrecher},
+  timestamp = {2010.10.03}
+}
+
+@ARTICLE{Wiscombe1980,
+  author = {W. Wiscombe},
+  title = {Improved Mie scattering algorithms},
+  year = {1980},
+  volume = {19},
+  pages = {1505-1509},
+  journal = {Appl. Opt.},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@TECHREPORT{Wiscombe1979,
+  author = {W. Wiscombe},
+  title = {Mie Scattering Calculations--Advances in
+	
+	Technique And Fast, Vector-Speed Computer Codes, Ncar Tech Note
+	
+	TN-140+STR},
+  institution = {National Center For Atmospheric Research, Boulder,
+	
+	Colorado},
+  year = {1979},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@ARTICLE{Yoshizaki1980,
+  author = {Yoshizaki, Takenao and Yamakawa, Hiromi},
+  title = {Scattering Functions of Wormlike and Helical Wormlike Chains},
+  year = {1980},
+  volume = {13},
+  number = {6},
+  pages = {1518-1525},
+  doi = {10.1021/ma60078a030},
+  eprint = {http://pubs.acs.org/doi/pdf/10.1021/ma60078a030},
+  url = {http://pubs.acs.org/doi/abs/10.1021/ma60078a030},
+  journal = {Macromolecules},
+  owner = {Kohlbrecher},
+  timestamp = {2014.03.04}
+}
+
+@ARTICLE{Zerah1986,
+  author = {Zerah, Gilles and Hansen, Jean-Pierre},
+  title = {Self-consistent integral equations for fluid pair distribution functions:
+	Another attempt},
+  year = {1986},
+  volume = {84},
+  number = {4},
+  pages = {2336-2343},
+  doi = {http://dx.doi.org/10.1063/1.450397},
+  url = {http://scitation.aip.org/content/aip/journal/jcp/84/4/10.1063/1.450397},
+  journal = {The Journal of Chemical Physics},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.08}
+}
+
+@ARTICLE{scatt163,
+  author = {F. Zernike and J. A. Prins},
+  title = {{Die Beugung von R\"ontgenstrahlen in Fl\"ussigkeiten als Effekt
+	der Molek\"ulanordnung}},
+  year = {1927},
+  volume = {XLI},
+  pages = {184-194},
+  journal = {Zeitschrift f\"ur Physik},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.17}
+}
+
+@ARTICLE{Zhang1994,
+  author = {Zhang, Ruitian and Suter, Robert M. and Nagle, John F.},
+  title = {Theory of the structure factor of lipid bilayers},
+  year = {1994},
+  volume = {50},
+  number = {6},
+  month = {Dec},
+  pages = {5047--5060},
+  doi = {10.1103/PhysRevE.50.5047},
+  journal = {Phys. Rev. E},
+  numpages = {13},
+  owner = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2010.06.04}
+}
+
+@ARTICLE{zimm:1093,
+  author = {Bruno H. Zimm},
+  title = {The Scattering of Light and the Radial Distribution Function of High
+	Polymer Solutions},
+  year = {1948},
+  volume = {16},
+  number = {12},
+  pages = {1093-1099},
+  doi = {10.1063/1.1746738},
+  url = {http://link.aip.org/link/?JCP/16/1093/1},
+  journal = {The Journal of Chemical Physics},
+  owner = {Kohlbrecher},
+  publisher = {AIP},
+  timestamp = {2009.04.13}
+}
+
+@BOOK{Glatter1982,
+  title = {Small Angle X-ray Scattering},
+  year = {1982},
+  editor = {O. Glatter and O. Kratky},
+  publisher = {Academic Press},
+  file = {:http\://sans.web.psi.ch/sansstatus/SASbooks/Glatter_Kratky_SAXS_1982.pdf:PDF},
+  owner = {kohlbrecher},
+  timestamp = {2007.12.18}
+}
+
+@INBOOK{doi:10.1142/9789812814203_0010,
+  title = {Ionic Distributions: An Integral Equation Approach},
+  booktitle = {Molecular Thermodynamics Of Electrolyte Solutions},
+  chapter = {10},
+  pages = {103-141},
+  doi = {10.1142/9789812814203_0010},
+  eprint = {http://www.worldscientific.com/doi/pdf/10.1142/9789812814203_0010},
+  url = {http://www.worldscientific.com/doi/abs/10.1142/9789812814203_0010},
+  owner = {kohlbrecher},
+  timestamp = {2013.11.30}
+}
+
+@Article{Frisken2001,
+  author    = {Barbara J. Frisken},
+  title     = {Revisiting the method of cumulants for the analysis of dynamic light-scattering data},
+  year      = {2001},
+  journal   = {Appl. Opt.},
+  volume    = {40},
+  number    = {24},
+  month     = {Aug},
+  pages     = {4087--4091},
+  doi       = {10.1364/AO.40.004087},
+  url       = {http://ao.osa.org/abstract.cfm?URI=ao-40-24-4087},
+  abstract  = {The method of cumulants is a standard technique used to analyzedynamic
+	light-scattering data measured for polydispersesamples. These data,
+	from an intensity--intensity autocorrelationfunction of the scattered
+	light, can be described in terms of adistribution of decay rates.
+	The method of cumulants providesinformation about the cumulants and
+	the moments of thisdistribution. However, the method does not permit
+	independentdetermination of the long-time baseline of the intensity
+	correlationfunction and can lead to inconsistent results when different
+	numbers ofdata points are included in the fit. The method is reformulated
+	interms of the moments about the mean to permit more robust andsatisfactory
+	fits. The different versions of the method arecompared by analysis
+	of the data for polydisperse-vesiclesamples.},
+  keywords  = {Scattering measurements; Scattering, Rayleigh},
+  owner     = {kohlbrecher},
+  publisher = {OSA},
+  timestamp = {2016.04.18},
+}
+
+@Book{Dhont1996,
+  author    = {Dhont, J.K.G.},
+  title     = {An Introduction to Dynamics of Colloids},
+  year      = {1996},
+  series    = {Studies in Interface Science},
+  publisher = {Elsevier Science},
+  isbn      = {9780080535074},
+  url       = {https://books.google.ch/books?id=mmArTF5SJ9oC},
+  owner     = {kohlbrecher},
+  timestamp = {2016.04.18},
+}
+
+@Article{Pusey1974,
+  author    = {Peter N. Pusey and Dennis E. Koppel and Dale E. Schaefer and Rafael D. Camerini-Otero and Seymour H. Koenig},
+  title     = {Intensity fluctuation spectroscopy of laser light scattered by solutions of spherical viruses. R17, Q.beta., BSV, PM2, and T7. I. Light-scattering technique},
+  year      = {1974},
+  journal   = {Biochemistry},
+  volume    = {13},
+  number    = {5},
+  pages     = {952-960},
+  note      = {PMID: 4591621},
+  doi       = {10.1021/bi00702a020},
+  eprint    = { http://dx.doi.org/10.1021/bi00702a020 },
+  url       = { http://dx.doi.org/10.1021/bi00702a020 
+},
+  owner     = {kohlbrecher},
+  timestamp = {2016.04.16},
+}
+
+@Article{Mailer2015,
+  author    = {Alastair G Mailer and Paul S Clegg and Peter N Pusey},
+  title     = {Particle sizing by dynamic light scattering: non-linear cumulant analysis},
+  year      = {2015},
+  journal   = {Journal of Physics: Condensed Matter},
+  volume    = {27},
+  number    = {14},
+  month     = {4},
+  pages     = {145102},
+  issn      = {0953-8984},
+  doi       = {10.1088/0953-8984/27/14/145102},
+  url       = {http://stacks.iop.org/0953-8984/27/i=14/a=145102},
+  abstract  = {We revisit the method of cumulants for analysing dynamic light scattering
+	data in particle sizing applications. Here the data, in the form
+	of the time correlation function of scattered light, is written as
+	a series involving the first few cumulants (or moments) of the distribution
+	of particle diffusion constants. Frisken (2001 Appl. Opt. 40 [http://dx.doi.org/10.1364/AO.40.004087]
+	4087 ) has pointed out that, despite greater computational complexity,
+	a non-linear, iterative, analysis of the data has advantages over
+	the linear least-squares analysis used originally. In order to explore
+	further the potential and limitations of cumulant methods we analyse,
+	by both linear and non-linear methods, computer-generated data with
+	realistic noise, where the parameters of the distribution can be
+	set explicitly. We find that, with modern computers, non-linear analysis
+	is straightforward and robust. The mean and variance of the distribution
+	of diffusion constants can be obtained quite accurately for distributions
+	of width (standard deviation/mean) up to about 0.6, but there appears
+	to be little prospect of obtaining meaningful higher moments.},
+  keywords  = {photon correlation spectroscopy, colloids, polydispersity, CORRELATION SPECTROSCOPY, INTEGRAL-EQUATIONS, PHOTON-CORRELATION, POLYDISPERSITY, INVERSION},
+  owner     = {kohlbrecher},
+  timestamp = {2016.04.16},
+}
+
+@Article{BURCHARD1979589,
+  author    = {Walther Burchard},
+  title     = {Determination of type and width of a size distribution from the z-averages of the radii moments rnz},
+  year      = {1979},
+  journal   = {Polymer},
+  volume    = {20},
+  number    = {5},
+  pages     = {589 - 592},
+  issn      = {0032-3861},
+  doi       = {http://dx.doi.org/10.1016/0032-3861(79)90170-8},
+  url       = {http://www.sciencedirect.com/science/article/pii/0032386179901708},
+  abstract  = {Relationships are given between the z-average radii moments r�?nz and the common moments r�?n of a size distribution. Instructions are given for finding the type and width of a size distribution from measurements of the r�?nz moments.},
+  owner     = {kohlbrecher},
+  timestamp = {2016.04.20},
+}
+
+@Article{Burchard1974,
+  author    = {Walther Burchard},
+  title     = {Statistics of Star-Shaped Molecules. I. Stars with Polydisperse Side Chains},
+  year      = {1974},
+  journal   = {Macromolecules},
+  volume    = {7},
+  number    = {6},
+  pages     = {835-841},
+  doi       = {10.1021/ma60042a027},
+  eprint    = { http://dx.doi.org/10.1021/ma60042a027 },
+  url       = { http://dx.doi.org/10.1021/ma60042a027 
+},
+  owner     = {kohlbrecher},
+  timestamp = {2016.04.20},
+}
+
+@Article{Jakes1991,
+  author    = {Jarom�r Jake�},
+  title     = {A simple method of estimation of the polydispersity index of narrow molecular weight distributions by using quasielastic light scattering data},
+  year      = {1991},
+  journal   = {Collect. Czech. Chem. Commun.},
+  volume    = {56},
+  issue     = {8},
+  pages     = {1642-1652},
+  doi       = {http://dx.doi.org/10.1135/cccc19911642},
+  owner     = {kohlbrecher},
+  timestamp = {2016.05.06},
+}
+
+@Article{Jakes1986,
+  author    = {Jake�, Jaromir and Saudek, Vladimir},
+  title     = {Empirical molecular weight distribution functions as determined from gel permeation chromatography data},
+  year      = {1986},
+  journal   = {Makromol. Chem.},
+  volume    = {187},
+  number    = {9},
+  month     = sep,
+  pages     = {2223--2234},
+  issn      = {0025-116X},
+  url       = {http://dx.doi.org/10.1002/macp.1986.021870919},
+  abstract  = {Two- and three-parameter functions commonly used for the description
+	of the molecular weight distribution of polymers were determined
+	from gel permeation chromatography data for 80 water-soluble samples
+	of polymers derived from glutamic acid. Two methods were applied:
+	the moment method in which two or three different molecular weight
+	averages are used, and a least squares adjustment method using the
+	whole chromatogram. Convergence difficulties observed in the past
+	were overcome, and a fully automated computer procedure was developed.
+	The moment method, although virtually the only one still in use,
+	often gives inexact results: sometimes the type of two-parameter
+	distribution is wrongly assigned, or the description of experimental
+	data cannot be improved by adding yet another parameter. On the other
+	hand, in all cases under study the least squares method gave a function
+	which describes the real distribution within the limits of experimental
+	error. Although the majority of samples could be described by employing
+	one of the common two-parameter functions, the more general three-parameter
+	function, encompassing all two-parameter ones as special cases, has
+	the advantage of wider applicability. It is shown that the standard
+	gel permeation chromatography data often cannot provide reliable
+	values of higher molecular weight moment averages, including Mz.
+	Hence, it may be inferred that in the description of the experimental
+	molecular weight distribution curves the least squares method should
+	be preferred over the moment method.},
+  owner     = {kohlbrecher},
+  timestamp = {2016.05.06},
+}
+
+@Article{Miltz1972,
+  author    = {Miltz, J. and Ram, A.},
+  title     = {A three-parameter equation for molecular weight distribution of low-density polyethylene},
+  year      = {1972},
+  journal   = {Journal of Applied Polymer Science},
+  volume    = {16},
+  number    = {8},
+  pages     = {2051--2056},
+  issn      = {1097-4628},
+  doi       = {10.1002/app.1972.070160816},
+  url       = {http://dx.doi.org/10.1002/app.1972.070160816},
+  abstract  = {A new three-parameter distribution function is proposed
+\documentclass{article}\pagestyle{empty}\begin{document}$ W\left( M \right) = AM^a \exp {\rm }[ - {\rm }b{\rm }\ln ^c \left( M \right)] $\end{document}
+which fits best the experimental molecular weight distribution curves of branched lowdensity polyethylenes. The data were interpreted from GPC measurements, and a special computer program was utilized in order to derive the best values of the empirical constants a, b, and c.},
+  owner     = {kohlbrecher},
+  publisher = {Wiley Subscription Services, Inc., A Wiley Company},
+  timestamp = {2016.05.11},
+}
+
+@Article{Wieder1999,
+  author     = {Wieder, Thomas},
+  title      = {Algorithm 794: Numerical Hankel Transform by the Fortran Program HANKEL},
+  year       = {1999},
+  journal    = {ACM Trans. Math. Softw.},
+  volume     = {25},
+  number     = {2},
+  month      = jun,
+  pages      = {240--250},
+  issn       = {0098-3500},
+  doi        = {10.1145/317275.317284},
+  url        = {http://doi.acm.org/10.1145/317275.317284},
+  acmid      = {317284},
+  address    = {New York, NY, USA},
+  issue_date = {June 1999},
+  keywords   = {Hankel transform, numerical analysis},
+  numpages   = {11},
+  owner      = {kohlbrecher},
+  publisher  = {ACM},
+  timestamp  = {2016.06.22},
+}
+
+@Article{Ooura1991,
+  author    = {Takuya Ooura and Masatake Mori},
+  title     = {The double exponential formula for oscillatory functions over the half infinite interval},
+  year      = {1991},
+  journal   = {Journal of Computational and Applied Mathematics},
+  volume    = {38},
+  number    = {1},
+  pages     = {353 - 360},
+  issn      = {0377-0427},
+  doi       = {http://dx.doi.org/10.1016/0377-0427(91)90181-I},
+  url       = {http://www.sciencedirect.com/science/article/pii/037704279190181I},
+  abstract  = {The double exponential formula is known to be very powerful for evaluation of various kinds of integrals, in particular integrals with end point singularities or integrals over the half infinite interval. It is also known that a weak point of this formula is the inefficiency when applied to a slowly decaying oscillatory integral over the half infinite interval such as I = Int_0^Infty f1(x) sin x dx, f1(x) is an algebraic function. In this paper we propose a new type of the double exponential formula which is quite efficient for evaluation of the integral mentioned above. It is based on such a transformation that makes the points of the formula after the transformation approach to the zeros of sin x double exponentially for large x.},
+  keywords  = {Numerical integration, variable transformation, double exponential formula, DE-transformation, oscillatory integral},
+  owner     = {kohlbrecher},
+  timestamp = {2016.06.24},
+}
+
+@Misc{LourakisJul.2004,
+  author       = {M.I.A. Lourakis},
+  title        = {levmar: Levenberg-Marquardt nonlinear least squares algorithms in {C}/{C}++},
+  year         = {Jul. 2004},
+  howpublished = {[web page] \verb+http://www.ics.forth.gr/~lourakis/levmar/+},
+  note         = {[Accessed on 31 Jan. 2005.]},
+  url          = {http://users.ics.forth.gr/~lourakis/levmar/},
+  owner        = {kohlbrecher},
+  timestamp    = {2016.07.07},
+}
+
+@Article{Kovalenko1999,
+  author    = {Kovalenko, Andriy and Hirata, Fumio},
+  title     = {Self-consistent description of a metal-water interface by the Kohn-Sham density functional theory and the three-dimensional reference interaction site model},
+  year      = {1999},
+  journal   = {The Journal of Chemical Physics},
+  volume    = {110},
+  number    = {20},
+  pages     = {10095-10112},
+  doi       = {http://dx.doi.org/10.1063/1.478883},
+  url       = {http://scitation.aip.org/content/aip/journal/jcp/110/20/10.1063/1.478883},
+  owner     = {kohlbrecher},
+  timestamp = {2016.07.18},
+}
+
+@Article{Hus2013,
+  author    = {Hu\u{s}, Matej and Zalar, Matja and Urbic, Tomaz},
+  title     = {Correctness of certain integral equation theories for core-softened fluids},
+  year      = {2013},
+  journal   = {The Journal of Chemical Physics},
+  volume    = {138},
+  number    = {22},
+  eid       = {224508},
+  doi       = {http://dx.doi.org/10.1063/1.4809744},
+  url       = {http://scitation.aip.org/content/aip/journal/jcp/138/22/10.1063/1.4809744},
+  owner     = {kohlbrecher},
+  timestamp = {2016.07.18},
+}
+
+@Article{Rosenfeld1979,
+  author    = {Rosenfeld, Yaakov and Ashcroft, N. W.},
+  title     = {Theory of simple classical fluids: Universality in the short-range structure},
+  year      = {1979},
+  journal   = {Phys. Rev. A},
+  volume    = {20},
+  issue     = {3},
+  month     = {Sep},
+  pages     = {1208--1235},
+  doi       = {10.1103/PhysRevA.20.1208},
+  url       = {http://link.aps.org/doi/10.1103/PhysRevA.20.1208},
+  numpages  = {0},
+  owner     = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2016.07.21},
+}
+
+@Article{Trokhymchuk2005,
+  author    = {Trokhymchuk, Andrij and Nezbeda, Ivo and Jirsák, Jan and Henderson, Douglas},
+  title     = {Hard-sphere radial distribution function again},
+  year      = {2005},
+  journal   = {The Journal of Chemical Physics},
+  volume    = {123},
+  number    = {2},
+  eid       = {024501},
+  doi       = {http://dx.doi.org/10.1063/1.1979488},
+  url       = {http://scitation.aip.org/content/aip/journal/jcp/123/2/10.1063/1.1979488},
+  owner     = {kohlbrecher},
+  timestamp = {2016.07.21},
+}
+
+@Article{Trokhymchuk2006,
+  author    = {Trokhymchuk, Andrij and Nezbeda, Ivo and Jirsák, Jan and Henderson, Douglas},
+  title     = {Erratum: "Hard sphere radial distribution function again" [J. Chem. Phys.123, 024501 (2005)]},
+  year      = {2006},
+  journal   = {The Journal of Chemical Physics},
+  volume    = {124},
+  number    = {14},
+  eid       = {149902},
+  doi       = {http://dx.doi.org/10.1063/1.2188941},
+  url       = {http://scitation.aip.org/content/aip/journal/jcp/124/14/10.1063/1.2188941},
+  owner     = {kohlbrecher},
+  timestamp = {2016.07.21},
+}
+
+@Article{Hunter2006,
+  author    = {Hunter, Martin and Backman, Vadim and Popescu, Gabriel and Kalashnikov, Maxim and Boone, Charles W. and Wax, Adam and Gopal, Venkatesh and Badizadegan, Kamran and Stoner, Gary D. and Feld, Michael S.},
+  title     = {Tissue Self-Affinity and Polarized Light Scattering in the Born Approximation: A New Model for Precancer Detection},
+  year      = {2006},
+  journal   = {Phys. Rev. Lett.},
+  volume    = {97},
+  issue     = {13},
+  month     = {Sep},
+  pages     = {138102},
+  doi       = {10.1103/PhysRevLett.97.138102},
+  url       = {http://link.aps.org/doi/10.1103/PhysRevLett.97.138102},
+  numpages  = {4},
+  owner     = {kohlbrecher},
+  publisher = {American Physical Society},
+  timestamp = {2016.09.08},
+}
+
+@Article{Andersson2008,
+  author    = {Andersson, Robert and van Heijkamp, L{\'{e}}on F. and de Schepper, Ignatz M. and Bouwman, Wim G.},
+  title     = {{Analysis of spin-echo small-angle neutron scattering measurements}},
+  year      = {2008},
+  journal   = {Journal of Applied Crystallography},
+  volume    = {41},
+  number    = {5},
+  month     = {Oct},
+  pages     = {868--885},
+  doi       = {10.1107/S0021889808026770},
+  url       = {http://dx.doi.org/10.1107/S0021889808026770},
+  abstract  = {Spin-echo small-angle neutron scattering (SESANS) is, in contrast to conventional small-angle neutron scattering (SANS), a real-space technique. SESANS measures the projection of the density{--}density correlation function of a sample, rather than, as in SANS, its Fourier transform. This paper introduces a toolkit for interpretion and analysis of a SESANS measurement. Models that are used in SANS are discussed and translated into a SESANS formalism. These models can be used to analyse and fit the data obtained by SESANS. Dilute, concentrated, random, fractal and anisotropic density distributions are considered. Numerical methods used to calculate the projection from numerical data are presented, either by using Fourier transformation or {\it via} the real-space pair correlation function.},
+  keywords  = {spin-echo small-angle neutron scattering (SESANS), data analysis},
+  owner     = {kohlbrecher},
+  timestamp = {2016.09.08},
+}
+
+@Article{Klimes2002,
+  author    = {Klime�, L.},
+  title     = {Correlation Functions of Random Media},
+  year      = {2002},
+  journal   = {pure and applied geophysics},
+  volume    = {159},
+  number    = {7},
+  pages     = {1811--1831},
+  issn      = {1420-9136},
+  doi       = {10.1007/s00024-002-8710-2},
+  url       = {http://dx.doi.org/10.1007/s00024-002-8710-2},
+  abstract  = {--- In geophysics, the correlation functions of random media are of principal importance for understanding and inverting the properties of seismic waves propagating in geological structures. Unfortunately, the kinds of correlation functions inappropriate for the description of geological structures are often assumed and applied. The most frequently used types of correlation functions are thus summarized and reviewed in this paper, together with an explanation of the physical meaning of their parameters.{\textparagraph}A stationary random medium is assumed to be realized in terms of a white noise filtered by a spectral filter. The spectral filter is considered isotropic, in a simple general form enabling the random media used in geophysics to be specified. The medium correlation functions, corresponding to the individual special cases of the general random medium (Gaussian, exponential, von K{\'a}rm{\'a}n, self-affine, Kummer), are then derived and briefly discussed. The corresponding elliptically anisotropic correlation functions can simply be obtained by linear coordinate transforms.},
+  owner     = {kohlbrecher},
+  timestamp = {2016.09.08},
+}
+
+@InBook{Hammouda1993,
+  author    = {Hammouda, Boualem},
+  title     = {SANS from homogeneous polymer mixtures: A unified overview},
+  booktitle = {Polymer Characteristics},
+  year      = {1993},
+  publisher = {Springer Berlin Heidelberg},
+  isbn      = {978-3-540-47477-7},
+  pages     = {87--133},
+  doi       = {10.1007/BFb0025862},
+  url       = {http://dx.doi.org/10.1007/BFb0025862},
+  address   = {Berlin, Heidelberg},
+  owner     = {kohlbrecher},
+  timestamp = {2016.09.09},
+}
+
+@Article{Hammouda2016,
+  author    = {Boualem Hammouda},
+  title     = {Form Factors for Branched Polymers with Excluded Volume},
+  year      = {2016},
+  journal   = {Journal of Research of NIST},
+  volume    = {121},
+  pages     = {139--164},
+  issn      = {2165-7254},
+  doi       = {10.6028/jres.121.006},
+  url       = {http://dx.doi.org/10.6028/jres.121.006},
+  owner     = {kohlbrecher},
+  timestamp = {2016.09.09},
+}
+
+@InBook{Bracewell2003,
+  author    = {Bracewell, Ronald},
+  title     = {The Projection-Slice Theorem},
+  booktitle = {Fourier Analysis and Imaging},
+  year      = {2003},
+  publisher = {Springer US},
+  isbn      = {978-1-4419-8963-5},
+  pages     = {493--504},
+  doi       = {10.1007/978-1-4419-8963-5_14},
+  url       = {http://dx.doi.org/10.1007/978-1-4419-8963-5_14},
+  address   = {Boston, MA},
+  owner     = {kohlbrecher},
+  timestamp = {2016.09.13},
+}
+
+@Comment{jabref-meta: databaseType:biblatex;}

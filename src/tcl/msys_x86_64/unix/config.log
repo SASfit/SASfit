@@ -1,0 +1,434 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:581: checking whether to use symlinks for manpages
+configure:593: checking whether to compress the manpages
+configure:619: checking whether to add a package name suffix for the manpages
+configure:650: checking for gcc
+configure:763: checking whether the C compiler (/usr/bin/cc.exe  ) works
+configure:779: /usr/bin/cc.exe -o conftest    conftest.c  1>&5
+configure:805: checking whether the C compiler (/usr/bin/cc.exe  ) is a cross-compiler
+configure:810: checking whether we are using GNU C
+configure:819: /usr/bin/cc.exe -E conftest.c
+configure:838: checking whether /usr/bin/cc.exe accepts -g
+configure:880: checking how to run the C preprocessor
+configure:901: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:961: checking dirent.h
+configure:992: /usr/bin/cc.exe -o conftest    conftest.c  1>&5
+configure:1015: checking for errno.h
+configure:1025: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1052: checking for float.h
+configure:1062: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1089: checking for values.h
+configure:1099: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1095:20: fatal error: values.h: No such file or directory
+ #include <values.h>
+                    ^
+compilation terminated.
+configure: failed program was:
+#line 1094 "configure"
+#include "confdefs.h"
+#include <values.h>
+configure:1126: checking for limits.h
+configure:1136: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1166: checking for stdlib.h
+configure:1176: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1248: checking for string.h
+configure:1258: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1321: checking for sys/wait.h
+configure:1331: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1358: checking for dlfcn.h
+configure:1368: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1399: checking for unistd.h
+configure:1409: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1399: checking for sys/param.h
+configure:1409: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:1445: checking if the compiler understands -pipe
+configure:1456: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:1864: checking for building with threads
+configure:1895: checking for sin
+configure:1923: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:1907:6: warning: conflicting types for built-in function 'sin'
+ char sin();
+      ^
+configure:1944: checking for main in -lieee
+configure:1959: /usr/bin/cc.exe -pipe -o conftest    conftest.c -lieee   1>&5
+/usr/lib/gcc/x86_64-pc-msys/4.9.2/../../../../x86_64-pc-msys/bin/ld: cannot find -lieee
+collect2: error: ld returned 1 exit status
+configure: failed program was:
+#line 1952 "configure"
+#include "confdefs.h"
+
+int main() {
+main()
+; return 0; }
+configure:1986: checking for main in -linet
+configure:2001: /usr/bin/cc.exe -pipe -o conftest    conftest.c -linet   1>&5
+/usr/lib/gcc/x86_64-pc-msys/4.9.2/../../../../x86_64-pc-msys/bin/ld: cannot find -linet
+collect2: error: ld returned 1 exit status
+configure: failed program was:
+#line 1994 "configure"
+#include "confdefs.h"
+
+int main() {
+main()
+; return 0; }
+configure:2023: checking for net/errno.h
+configure:2033: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:2029:23: fatal error: net/errno.h: No such file or directory
+ #include <net/errno.h>
+                       ^
+compilation terminated.
+configure: failed program was:
+#line 2028 "configure"
+#include "confdefs.h"
+#include <net/errno.h>
+configure:2078: checking for connect
+configure:2106: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:2271: checking for gethostbyname
+configure:2299: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:2372: checking how to build libraries
+configure:2411: checking for ranlib
+configure:2443: checking if 64bit support is requested
+configure:2457: checking if 64bit Sparc VIS support is requested
+configure:2478: checking system version
+configure:2513: checking for dlopen in -ldl
+configure:2532: /usr/bin/cc.exe -pipe -o conftest    conftest.c -ldl   1>&5
+configure:2580: checking for ar
+configure:4429: checking for build with symbols
+configure:4490: checking for required early compiler flags
+configure:4504: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:4554: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:4550:15: error: storage size of 'buf' isn't known
+ int main() {
+               ^
+configure: failed program was:
+#line 4547 "configure"
+#include "confdefs.h"
+#include <sys/stat.h>
+int main() {
+struct stat64 buf; int i = stat64("/", &buf);
+; return 0; }
+configure:4570: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:4566:15: error: storage size of 'buf' isn't known
+ int main() {
+               ^
+configure: failed program was:
+#line 4562 "configure"
+#include "confdefs.h"
+#define _LARGEFILE64_SOURCE 1
+#include <sys/stat.h>
+int main() {
+struct stat64 buf; int i = stat64("/", &buf);
+; return 0; }
+configure:4604: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:4600:19: error: 'open64' undeclared (first use in this function)
+ int main() {
+                   ^
+configure:4600:19: note: each undeclared identifier is reported only once for each function it appears in
+configure: failed program was:
+#line 4597 "configure"
+#include "confdefs.h"
+#include <sys/stat.h>
+int main() {
+char *p = (char *)open64;
+; return 0; }
+configure:4620: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:4616:19: error: 'open64' undeclared (first use in this function)
+ int main() {
+                   ^
+configure:4616:19: note: each undeclared identifier is reported only once for each function it appears in
+configure: failed program was:
+#line 4612 "configure"
+#include "confdefs.h"
+#define _LARGEFILE_SOURCE64 1
+#include <sys/stat.h>
+int main() {
+char *p = (char *)open64;
+; return 0; }
+configure:4651: checking for 64-bit integer type
+configure:4666: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:4662:1: error: unknown type name '__int64'
+ int main() {
+ ^
+configure:4662:18: error: '__int64' undeclared (first use in this function)
+ int main() {
+                  ^
+configure:4662:18: note: each undeclared identifier is reported only once for each function it appears in
+configure:4662:27: error: expected ',' or ';' before numeric constant
+ int main() {
+                           ^
+configure: failed program was:
+#line 4659 "configure"
+#include "confdefs.h"
+
+int main() {
+__int64 value = (__int64) 0;
+; return 0; }
+configure:4689: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:4684:21: error: duplicate case value
+ switch (0) { 
+                     ^
+configure:4684:13: error: previously used here
+ switch (0) { 
+             ^
+configure: failed program was:
+#line 4680 "configure"
+#include "confdefs.h"
+
+int main() {
+switch (0) { 
+            case 1: case (sizeof(long long)==sizeof(long)): ; 
+        }
+; return 0; }
+configure:4885: checking whether byte ordering is bigendian
+configure:4903: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:4918: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:4913:2: error: unknown type name 'not'
+ #if BYTE_ORDER != BIG_ENDIAN
+  ^
+configure:4913:10: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'endian'
+ #if BYTE_ORDER != BIG_ENDIAN
+          ^
+configure: failed program was:
+#line 4907 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <sys/param.h>
+int main() {
+
+#if BYTE_ORDER != BIG_ENDIAN
+ not big endian
+#endif
+; return 0; }
+configure:4984: checking for getcwd
+configure:5012: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5046: checking for opendir
+configure:5074: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5046: checking for strstr
+configure:5074: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5058:6: warning: conflicting types for built-in function 'strstr'
+     builtin and then its argument prototype would still apply.  */
+      ^
+configure:5046: checking for strtol
+configure:5074: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5046: checking for strtoll
+configure:5074: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5046: checking for strtoull
+configure:5074: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5046: checking for tmpnam
+configure:5074: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5046: checking for waitpid
+configure:5074: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5101: checking for strerror
+configure:5129: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5153: checking for getwd
+configure:5181: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5205: checking for wait3
+configure:5233: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5257: checking for uname
+configure:5285: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5309: checking for realpath
+configure:5337: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5372: checking for sys/modem.h
+configure:5382: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:5378:23: fatal error: sys/modem.h: No such file or directory
+ #include "confdefs.h"
+                       ^
+compilation terminated.
+configure: failed program was:
+#line 5377 "configure"
+#include "confdefs.h"
+#include <sys/modem.h>
+configure:5409: checking termios vs. termio vs. sgtty
+configure:5433: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5644: checking for fd_set in sys/types
+configure:5656: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:5714: checking whether struct tm is in sys/time.h or time.h
+configure:5727: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:5752: checking for sys/time.h
+configure:5762: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:5789: checking whether time.h and sys/time.h may both be included
+configure:5803: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:5824: checking for tm_zone in struct tm
+configure:5837: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:5897: checking for gmtime_r
+configure:5925: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5897: checking for localtime_r
+configure:5925: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:5951: checking tm_tzadj in struct tm
+configure:5963: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:5959:17: error: 'struct tm' has no member named 'tm_tzadj'
+ int main() {
+                 ^
+configure: failed program was:
+#line 5956 "configure"
+#include "confdefs.h"
+#include <time.h>
+int main() {
+struct tm tm; tm.tm_tzadj;
+; return 0; }
+configure:5984: checking tm_gmtoff in struct tm
+configure:5996: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:6021: checking long timezone variable
+configure:6035: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure: In function 'main':
+configure:6031:6: warning: incompatible implicit declaration of built-in function 'exit'
+      timezone += 1;
+      ^
+configure:6099: checking for st_blksize in struct stat
+configure:6112: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:6133: checking for fstatfs
+configure:6161: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:6190: checking for 8-bit clean memcmp
+configure:6208: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure: In function 'main':
+configure:6203:3: warning: incompatible implicit declaration of built-in function 'exit'
+   char c0 = 0x40, c1 = 0x80, c2 = 0x81;
+   ^
+configure:6232: checking for memmove
+configure:6260: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:6244:6: warning: conflicting types for built-in function 'memmove'
+     builtin and then its argument prototype would still apply.  */
+      ^
+configure:6293: checking proper strstr implementation
+configure:6311: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:6304:13: warning: conflicting types for built-in function 'strstr'
+ 
+             ^
+configure: In function 'main':
+configure:6307:6: warning: incompatible implicit declaration of built-in function 'exit'
+  {
+      ^
+configure:6338: checking for strtoul
+configure:6366: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:6388: checking proper strtoul implementation
+configure:6413: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure: In function 'main':
+configure:6407:3: warning: incompatible implicit declaration of built-in function 'exit'
+      if ((value != 0) || (term != (string+1))) {
+   ^
+configure:6409:6: warning: incompatible implicit declaration of built-in function 'exit'
+      }
+      ^
+configure:6442: checking for strtod
+configure:6470: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:6492: checking proper strtod implementation
+configure:6517: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure: In function 'main':
+configure:6511:3: warning: incompatible implicit declaration of built-in function 'exit'
+      if ((value != 69) || (term != (string+4))) {
+   ^
+configure:6513:6: warning: incompatible implicit declaration of built-in function 'exit'
+      }
+      ^
+configure:6549: checking for strtod
+configure:6599: checking for Solaris2.4/Tru64 strtod bugs
+configure:6631: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure: In function 'main':
+configure:6617:4: warning: incompatible implicit declaration of built-in function 'exit'
+       if ((term != infString) && (term[-1] == 0)) {
+    ^
+configure:6621:4: warning: incompatible implicit declaration of built-in function 'exit'
+       if ((term != nanString) && (term[-1] == 0)) {
+    ^
+configure:6625:4: warning: incompatible implicit declaration of built-in function 'exit'
+       if (term == (spaceString+1)) {
+    ^
+configure:6627:7: warning: incompatible implicit declaration of built-in function 'exit'
+       }
+       ^
+configure:6662: checking for ANSI C header files
+configure:6675: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:6742: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure: In function 'main':
+configure:6737:67: warning: incompatible implicit declaration of built-in function 'exit'
+ int main () { int i; for (i = 0; i < 256; i++)
+                                                                   ^
+configure:6766: checking for mode_t
+configure:6799: checking for pid_t
+configure:6832: checking for size_t
+configure:6865: checking for uid_t in sys/types.h
+configure:6900: checking for socklen_t
+configure:6944: checking for opendir
+configure:7005: checking union wait
+configure:7022: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:7049: checking for strncasecmp
+configure:7077: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:7061:6: warning: conflicting types for built-in function 'strncasecmp'
+     builtin and then its argument prototype would still apply.  */
+      ^
+configure:7199: checking for BSDgettimeofday
+configure:7227: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+/tmp/ccq4oWZp.o:conftest.c:(.text+0xe): undefined reference to `BSDgettimeofday'
+/tmp/ccq4oWZp.o:conftest.c:(.text+0xe): relocation truncated to fit: R_X86_64_PC32 against undefined symbol `BSDgettimeofday'
+collect2: error: ld returned 1 exit status
+configure: failed program was:
+#line 7204 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char BSDgettimeofday(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char BSDgettimeofday();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_BSDgettimeofday) || defined (__stub___BSDgettimeofday)
+choke me
+#else
+BSDgettimeofday();
+#endif
+
+; return 0; }
+configure:7249: checking for gettimeofday
+configure:7277: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:7304: checking for gettimeofday declaration
+configure:7340: checking whether char is unsigned
+configure:7403: checking signed char declarations
+configure:7418: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:7443: checking for a putenv() that copies the buffer
+configure:7473: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure: In function 'main':
+configure:7458:20: warning: incompatible implicit declaration of built-in function 'strdup'
+      char *foo, *bar;
+                    ^
+configure:7460:6: warning: incompatible implicit declaration of built-in function 'strcpy'
+      putenv(foo);
+      ^
+configure:7460:22: warning: incompatible implicit declaration of built-in function 'strchr'
+      putenv(foo);
+                      ^
+configure:7514: checking for langinfo.h
+configure:7524: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:7548: checking whether to use nl_langinfo
+configure:7561: /usr/bin/cc.exe -pipe -c   conftest.c 1>&5
+configure:7590: checking for fts
+configure:7607: /usr/bin/cc.exe -pipe -o conftest    conftest.c  1>&5
+configure:7639: checking for sys/ioctl.h
+configure:7649: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:7679: checking for sys/filio.h
+configure:7689: /usr/bin/cc.exe -E  conftest.c >/dev/null 2>conftest.out
+configure:7685:23: fatal error: sys/filio.h: No such file or directory
+ #include "confdefs.h"
+                       ^
+compilation terminated.
+configure: failed program was:
+#line 7684 "configure"
+#include "confdefs.h"
+#include <sys/filio.h>
+configure:7717: checking system version
+configure:7748: checking FIONBIO vs. O_NONBLOCK for nonblocking I/O
