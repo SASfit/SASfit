@@ -1,6 +1,7 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *  Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *  10. Oct. 2017
  */
 
 #ifndef HELIIX_PRIVATE_H
@@ -30,7 +31,7 @@
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_heliix.h"
+#include "sasfit_helix.h"
 
 //
 // add local defines here:

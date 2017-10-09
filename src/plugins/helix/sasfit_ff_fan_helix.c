@@ -1,6 +1,7 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *  Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *  10. Oct. 2017
  */
 
 #include "include/private.h"
@@ -43,7 +44,7 @@ scalar prefct(int n, sasfit_param * param)
 	return gsl_pow_2(cos(n*PHI*0.5)*sin(n*OMEGA*0.5)/(n*OMEGA*0.5));
 }
 
-scalar sasfit_ff_pringle_schmidt_helix(scalar q, sasfit_param * param)
+scalar sasfit_ff_fan_helix(scalar q, sasfit_param * param)
 {
 	scalar prefac, sum;
 	int n;
@@ -68,7 +69,7 @@ scalar sasfit_ff_pringle_schmidt_helix(scalar q, sasfit_param * param)
 	return M_PI/(q*H)*sum;
 }
 
-scalar sasfit_ff_pringle_schmidt_helix_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_fan_helix_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -76,7 +77,7 @@ scalar sasfit_ff_pringle_schmidt_helix_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_pringle_schmidt_helix_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_fan_helix_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

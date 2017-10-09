@@ -1,6 +1,7 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *  Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *  10. Oct. 2017
  */
 
 #include "include/private.h"
