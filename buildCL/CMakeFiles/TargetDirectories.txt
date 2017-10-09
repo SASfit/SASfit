@@ -22,9 +22,9 @@ C:/user/SASfitGit/buildCL/plugins/fractal_series/CMakeFiles/rebuild_cache.dir
 C:/user/SASfitGit/buildCL/plugins/fuzzysphere/CMakeFiles/sasfit_fuzzysphere.dir
 C:/user/SASfitGit/buildCL/plugins/fuzzysphere/CMakeFiles/edit_cache.dir
 C:/user/SASfitGit/buildCL/plugins/fuzzysphere/CMakeFiles/rebuild_cache.dir
-C:/user/SASfitGit/buildCL/plugins/heliix/CMakeFiles/sasfit_heliix.dir
-C:/user/SASfitGit/buildCL/plugins/heliix/CMakeFiles/edit_cache.dir
-C:/user/SASfitGit/buildCL/plugins/heliix/CMakeFiles/rebuild_cache.dir
+C:/user/SASfitGit/buildCL/plugins/helix/CMakeFiles/sasfit_helix.dir
+C:/user/SASfitGit/buildCL/plugins/helix/CMakeFiles/edit_cache.dir
+C:/user/SASfitGit/buildCL/plugins/helix/CMakeFiles/rebuild_cache.dir
 C:/user/SASfitGit/buildCL/plugins/juelichcoreshell/CMakeFiles/sasfit_juelichcoreshell.dir
 C:/user/SASfitGit/buildCL/plugins/juelichcoreshell/CMakeFiles/edit_cache.dir
 C:/user/SASfitGit/buildCL/plugins/juelichcoreshell/CMakeFiles/rebuild_cache.dir

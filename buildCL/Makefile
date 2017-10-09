@@ -215,17 +215,17 @@ sasfit_fuzzysphere/fast:
 .PHONY : sasfit_fuzzysphere/fast
 
 #=============================================================================
-# Target rules for targets named sasfit_heliix
+# Target rules for targets named sasfit_helix
 
 # Build rule for target.
-sasfit_heliix: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sasfit_heliix
-.PHONY : sasfit_heliix
+sasfit_helix: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sasfit_helix
+.PHONY : sasfit_helix
 
 # fast build rule for target.
-sasfit_heliix/fast:
-	$(MAKE) -f plugins/heliix/CMakeFiles/sasfit_heliix.dir/build.make plugins/heliix/CMakeFiles/sasfit_heliix.dir/build
-.PHONY : sasfit_heliix/fast
+sasfit_helix/fast:
+	$(MAKE) -f plugins/helix/CMakeFiles/sasfit_helix.dir/build.make plugins/helix/CMakeFiles/sasfit_helix.dir/build
+.PHONY : sasfit_helix/fast
 
 #=============================================================================
 # Target rules for targets named sasfit_juelichcoreshell
@@ -13949,7 +13949,7 @@ help:
 	@echo "... sasfit_ferrofluid"
 	@echo "... sasfit_fractal_series"
 	@echo "... sasfit_fuzzysphere"
-	@echo "... sasfit_heliix"
+	@echo "... sasfit_helix"
 	@echo "... sasfit_juelichcoreshell"
 	@echo "... sasfit_kratky_sphere"
 	@echo "... sasfit_langevin_polaris"

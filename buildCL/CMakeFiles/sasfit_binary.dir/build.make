@@ -60,7 +60,7 @@ CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/boucherprofile/lib/libsa
 CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/ferrofluid/lib/libsasfit_ferrofluid.dll
 CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/fractal_series/lib/libsasfit_fractal_series.dll
 CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/fuzzysphere/lib/libsasfit_fuzzysphere.dll
-CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/heliix/lib/libsasfit_heliix.dll
+CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/helix/lib/libsasfit_helix.dll
 CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/juelichcoreshell/lib/libsasfit_juelichcoreshell.dll
 CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/kratky_sphere/lib/libsasfit_kratky_sphere.dll
 CMakeFiles/sasfit_binary: C:/user/SASfitGit/src/plugins/langevin_polaris/lib/libsasfit_langevin_polaris.dll

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Workspace Name="sasfit" Version="10.0.0">
-  <Project Name="sasfit" Path="sasfit.project" Active="No"/>
+  <Project Name="sasfit" Path="sasfit.project" Active="Yes"/>
   <Project Name="sasfit_anisotropic_objects" Path="plugins/anisotropic_objects/sasfit_anisotropic_objects.project" Active="No"/>
   <Project Name="sasfit_baba_ahmed" Path="plugins/baba_ahmed/sasfit_baba_ahmed.project" Active="No"/>
   <Project Name="sasfit_boucherprofile" Path="plugins/boucherprofile/sasfit_boucherprofile.project" Active="No"/>
   <Project Name="sasfit_ferrofluid" Path="plugins/ferrofluid/sasfit_ferrofluid.project" Active="No"/>
   <Project Name="sasfit_fractal_series" Path="plugins/fractal_series/sasfit_fractal_series.project" Active="No"/>
   <Project Name="sasfit_fuzzysphere" Path="plugins/fuzzysphere/sasfit_fuzzysphere.project" Active="No"/>
-  <Project Name="sasfit_heliix" Path="plugins/heliix/sasfit_heliix.project" Active="Yes"/>
+  <Project Name="sasfit_helix" Path="plugins/helix/sasfit_helix.project" Active="No"/>
   <Project Name="sasfit_juelichcoreshell" Path="plugins/juelichcoreshell/sasfit_juelichcoreshell.project" Active="No"/>
   <Project Name="sasfit_kratky_sphere" Path="plugins/kratky_sphere/sasfit_kratky_sphere.project" Active="No"/>
   <Project Name="sasfit_langevin_polaris" Path="plugins/langevin_polaris/sasfit_langevin_polaris.project" Active="No"/>
@@ -37,7 +37,7 @@
       <Project Name="sasfit_ferrofluid" ConfigName="NoConfig"/>
       <Project Name="sasfit_fractal_series" ConfigName="NoConfig"/>
       <Project Name="sasfit_fuzzysphere" ConfigName="NoConfig"/>
-      <Project Name="sasfit_heliix" ConfigName="NoConfig"/>
+      <Project Name="sasfit_helix" ConfigName="NoConfig"/>
       <Project Name="sasfit_juelichcoreshell" ConfigName="NoConfig"/>
       <Project Name="sasfit_kratky_sphere" ConfigName="NoConfig"/>
       <Project Name="sasfit_langevin_polaris" ConfigName="NoConfig"/>

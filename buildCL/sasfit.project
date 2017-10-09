@@ -243,10 +243,10 @@
 		<File Name="../src/plugins/fuzzysphere/sasfit_ff_radial_profile_of_LinShell2.c"/>
 		<File Name="../src/plugins/fuzzysphere/sasfit_ff_radial_profile_of_coreshellmicrogel.c"/>
 		<File Name="../src/plugins/fuzzysphere/sasfit_ff_radial_profile_of_fuzzysphere.c"/>
-		<File Name="../src/plugins/heliix/interface.c"/>
-		<File Name="../src/plugins/heliix/sasfit_ff_beads_helix.c"/>
-		<File Name="../src/plugins/heliix/sasfit_ff_pringle_schmidt_helix.c"/>
-		<File Name="../src/plugins/heliix/sasfit_ff_unnamed_helix.c"/>
+		<File Name="../src/plugins/helix/interface.c"/>
+		<File Name="../src/plugins/helix/sasfit_ff_beads_helix.c"/>
+		<File Name="../src/plugins/helix/sasfit_ff_fan_helix.c"/>
+		<File Name="../src/plugins/helix/sasfit_ff_round_helix.c"/>
 		<File Name="../src/plugins/juelichcoreshell/interface.c"/>
 		<File Name="../src/plugins/juelichcoreshell/sasfit_ff_juelichcoreshell.c"/>
 		<File Name="../src/plugins/kratky_sphere/interface.c"/>
