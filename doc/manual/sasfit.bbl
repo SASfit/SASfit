@@ -133,6 +133,11 @@ B~Boucher, P~Chieux, P~Convert, and M~Tournarie.
   order in the amorphous metallic alloy tbcu 3.54.
 \newblock {\em Journal of Physics F: Metal Physics}, 13(7):1339, 1983.
 
+\bibitem{Bracewell1956}
+RN~Bracewell.
+\newblock Strip integration in radio astronomy.
+\newblock {\em Australian Journal of Physics}, 9(2):198--217, 1956.
+
 \bibitem{Bracewell2003}
 Ronald Bracewell.
 \newblock {\em The Projection-Slice Theorem}, pages 493--504.
@@ -575,6 +580,13 @@ A.~L. Kholodenko.
 L.~Klimeš.
 \newblock Correlation functions of random media.
 \newblock {\em pure and applied geophysics}, 159(7):1811--1831, 2002.
+
+\bibitem{Kohlbrecher2017}
+J.~Kohlbrecher and A.~Studer.
+\newblock {Transformation cycle between the spherically symmetric correlation
+  function, projected correlation function and differential cross section as
+  implemented in {\it SASfit}}.
+\newblock {\em Journal of Applied Crystallography}, 50(5):1395--1403, Oct 2017.
 
 \bibitem{Kohlbrecher1997}
 J.~Kohlbrecher, A.~Wiedenmann, and H.~Wollenberger.

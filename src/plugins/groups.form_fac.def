@@ -70,6 +70,24 @@
  */
  
  /** 
+ * \defgroup ff_plugins_cylindrical_obj cylindrical obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for cylindrical objects.
+ *
+ * \modname{ff_plugins_cylindrical_obj}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_helix helical obj.
+ * \ingroup ff_plugins_cylindrical_obj
+ *
+ * This group contains form factors for helical objects.
+ *
+ * \modname{ff_plugins_helix}
+ */
+ 
+ /** 
  * \defgroup ff_clusters clusters 
  * \ingroup ff_plugins
  *

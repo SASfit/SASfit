@@ -3,46 +3,50 @@
 \section{Plugin functions for SESANS}
 \label{ch:pluginsSESANS}
 
+An overview about the transformation cycle between the spherically symmetric correlation function, projected correlation function and differential cross section, which is relevant for the SESANS plugin functions, is described in detail in \cite{Kohlbrecher2017}.
+
 The depolarization of the neutron beam as a function of the spin-echo length $z$ is given by
 \begin{align}
-\frac{P_n(z)}{P_{n0}}&=\exp\left(\mathcal{G}(z)-\mathcal{G}(0)\right)
+\frac{P_n(\delta)}{P_{n0}(\delta)}&=\exp\left(\mathcal{G}(\delta)-\mathcal{G}(0)\right)
 \end{align}
 where the unnormalized SESANS correlation function reads as
 \begin{align}
-\mathcal{G}(z) &= \frac{1}{k_0^2} \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} \mathrm{d}Q_y\, \mathrm{d}Q_z \frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}\frac{\cos(Q_z z)}{S} \\
-             &= \frac{1}{k_0^2} \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} \mathrm{d}Q_y\, \mathrm{d}Q_z  \frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}t \cos(Q_z z)
+\mathcal{G}(\delta) &= \frac{1}{k_0^2} \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} \mathrm{d}Q_y\, \mathrm{d}Q_z \frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}\frac{\cos(Q_z \delta)}{S} \\
+             &= \frac{1}{k_0^2} \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} \mathrm{d}Q_y\, \mathrm{d}Q_z  \frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}t \cos(Q_z \delta)
 \end{align}
 with $\mathbf{Q}=(0,Q_y,Q_z)^T$ and $\frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}$ being the macroscopic differential scattering cross-section in units of cm$^2$ and $\frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}=\frac{1}{V}\frac{\mathrm{d}\Sigma(\mathbf{Q})}{\mathrm{d}\Omega}$ the differential scattering cross-section normalized on the sample volume $V=tS$ in units of cm$^{-1}$. $t$ is the sample thickness and $S$ the aperture cross-section defining the illuminated sample area. For isotropic scattering $\frac{\mathrm{d}\sigma(\mathbf{Q})}{\mathrm{d}\Omega}=\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}$, where the scattering only depends on the modulus of the scattering vector $Q=\abs{\mathbf{Q}}$ the unnormalized SESANS correlation function simplifies to a Hankel transform of the scattering intensity multiplied by $\frac{\lambda^2 t}{2\pi}$. To see this, one has to change from cartesian coordinates $(0,Q_y,Q_z)$ to polar coordinates $Q (0,\sin\phi,\cos\phi)$ with $\mathrm{d}Q_y \mathrm{d}Q_z = Q\mathrm{d}Q \mathrm{d}\phi$. The integration over $\phi$ yield the cylindrical zeroth-order Bessel function
 \begin{align}
-J_0(Qz)=\frac{1}{2\pi}\int_{0}^{2\pi} \cos\left(Q\cos(\phi)z\right) \mathrm{d}\phi
+J_0(Qz)=\frac{1}{2\pi}\int_{0}^{2\pi} \cos\left(Q\cos(\phi)\delta\right) \mathrm{d}\phi
 \end{align}
 so that one gets
 \begin{align}
-\mathcal{G}(z) &= \frac{2\pi t}{k_0^2} \int_{0}^{\infty} Q J_0(Qz) \frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega} \, \mathrm{d}Q \\
-&= \frac{\lambda^2 t}{4\pi^2} 2\pi\underbrace{\int_{0}^{\infty} Q J_0(Qz) \frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega} \, \mathrm{d}Q}_{\mathcal{H}_0\left\{\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}\right\}} = \frac{\lambda^2 t}{4\pi^2}  2\pi \mathcal{H}_0\left\{\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}\right\} = \frac{\lambda^2 t}{4\pi^2} \tilde{G}(z)
+\mathcal{G}(\delta) &= \frac{2\pi t}{k_0^2} \int_{0}^{\infty} Q J_0(Q\delta) \frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega} \, \mathrm{d}Q \\
+&= \frac{\lambda^2 t}{4\pi^2} 2\pi\underbrace{\int_{0}^{\infty} Q J_0(Q\delta) \frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega} \, \mathrm{d}Q}_{\mathcal{H}_0\left[\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}\right](\delta)} = \frac{\lambda^2 t}{4\pi^2}  2\pi \mathcal{H}_0\left[\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}\right](\delta)
+= \lambda^2 t \tilde{G}(\delta)
 \end{align}
-where $\tilde{G}(z)=2\pi\mathcal{H}_0\left\{\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}\right\}$. $\mathcal{H}_0\left\{\ldots\right\}$ denotes the Hankel transform of zeroth order.\footnote{
-There are several possible definitions of a Hankel transform $\mathcal{H}_\nu\left\{f(r)\right\}$ of order $\nu$ of a function $f(r)$ and its inverse $\mathcal{H}_\nu^{-1}\left\{F_\nu(k)\right\}$
-\begin{itemize}
+where $\tilde{G}(\delta)=\frac{1}{2\pi}\mathcal{H}_0\left[\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}\right](\delta)$. $\mathcal{H}_0\left[\ldots\right]$ denotes the Hankel transform of zeroth order.\footnote{\label{footnote:Hankel}
+There are several possible definitions of a Hankel transform $\mathcal{H}_\nu\left[f(r)\right]$ of order $\nu$ of a function $f(r)$ and its inverse $\mathcal{H}_\nu^{-1}\left[F_\nu(k)\right]$
+\begin{enumerate}
 \item $F_\nu(k) = \int_0^\infty f(r) J_\nu(kr) r \,\mathrm{d}r$ and its inverse $f(r)=\int_0^\infty F_\nu(k)J_\nu(kr) k \,\mathrm{d}k$
 \item $F_\nu(k) = \int_0^\infty f(r) J_\nu(kr) \sqrt{kr} \,\mathrm{d}r$ and its inverse $f(r)=\int_0^\infty F_\nu(k)J_\nu(kr)  \sqrt{kr}  \, \mathrm{d}k$
 \item $F_\nu(k) = 2\pi \int_0^\infty f(r) J_\nu(2\pi kr) r \,\mathrm{d}r$ and its inverse $f(r)=2\pi \int_0^\infty F_\nu(q)J_\nu(2\pi kr) k \,\mathrm{d}k$
-\end{itemize}
+\end{enumerate}
 }
-The instrument independent projected sample correlation function $\tilde{G}(z)$ can be calculated via the Abel transform $\mathcal{A}$ of the scattering length density autocorrelation function $\tilde{\gamma}(\mathbf{r})=\int \rho(\mathbf{r'})\rho(\mathbf{r'-r})\mathrm{d}\mathbf{r'}$.
+The instrument independent projected sample correlation function $\tilde{G}(\delta)$ can be calculated via the Abel transform $\mathcal{A}$ of the scattering length density autocorrelation function $\tilde{\gamma}(\mathbf{r})=\int \rho(\mathbf{r'})\rho(\mathbf{r'-r})\mathrm{d}\mathbf{r'}$.
 \begin{align}
-\tilde{G}(z) &= \frac{2}{(2\pi)^2} \int_z^\infty \frac{\tilde{\gamma}(r) r}{\sqrt{r^2-z^2}} \mathrm{d}r = \frac{1}{(2\pi)^2} \mathcal{A}\left[\tilde{\gamma}(r)\right]
+\tilde{G}(\delta) &= 2 \int_z^\infty \frac{\tilde{\gamma}(r) r}{\sqrt{r^2-z^2}} \mathrm{d}r = \mathcal{A}\left[\tilde{\gamma}(r)\right](\delta)
 \end{align}
-The scattering intensity $I(Q)$ and  $\tilde{\gamma}(r)$ are related by Fourier transform\footnote{Similar to the Hankel transform also for the Fourier transform several conventions (spherical symmetric functions are assumed here) are in use which are
+The scattering intensity $I(Q)$ and  $\tilde{\gamma}(r)$ are related by Fourier transform\footnote{\label{footnote:Fourier}Similar to the Hankel transform also for the Fourier transform several conventions (spherical symmetric functions are assumed here) are in use which are
 \begin{enumerate}
-\item $\mathcal{F}[f(r)]=F(Q)=\int_0^\infty \frac{\sin 2\pi Qr}{2\pi Qr}4\pi r^2\mathrm{d}r$ and $\mathcal{F}^{-1}[F(Q)]=f(r)=\int_0^\infty \frac{\sin 2\pi Qr}{2\pi Qr}4\pi r^2\mathrm{d}Q$
-\item $\mathcal{F}[f(r)]=F(Q)=\int_0^\infty \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}r$ and $\mathcal{F}^{-1}[F(Q)]=f(r)=\frac{1}{(2\pi)^3}\int_0^\infty \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}Q$
-\item $\mathcal{F}[f(r)]=F(Q)=\frac{1}{(2\pi)^{3/2}}\int_0^\infty \frac{\sin Qr}{ Qr}4\pi r^2\mathrm{d}r$ and $\mathcal{F}^{-1}[F(Q)]=f(r)=\frac{1}{(2\pi)^{3/2}}\int_0^\infty \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}Q$
+\item $\mathcal{F}_{I,3D}[f(r)](Q)=F(Q)=\int_0^\infty f(r) \frac{\sin 2\pi Qr}{2\pi Qr}4\pi r^2\mathrm{d}r$ and \\ $\mathcal{F}_{I,3D}^{-1}[F(Q)](r)=f(r)=\int_0^\infty F(Q) \frac{\sin 2\pi Qr}{2\pi Qr}4\pi r^2\mathrm{d}Q$
+\item $\mathcal{F}_{I,3D}[f(r)](Q)=F(Q)=\int_0^\infty f(r) \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}r$ and \\ $\mathcal{F}_{I,3D}^{-1}[F(Q)](r)=f(r)=\frac{1}{(2\pi)^3}\int_0^\infty F(Q) \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}Q$
+\item $\mathcal{F}_{I,3D}[f(r)](Q)=F(Q)=\frac{1}{(2\pi)^{3/2}}\int_0^\infty f(r) \frac{\sin Qr}{ Qr}4\pi r^2\mathrm{d}r$ and \\ $\mathcal{F}_{I,3D}^{-1}[F(Q)](r)=f(r)=\frac{1}{(2\pi)^{3/2}}\int_0^\infty F(Q) \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}Q$
 \end{enumerate}
 In small angle scattering convention 2 is normally used.
-} $\mathcal{F}$
+} $\mathcal{F}_{I,3D}[\ldots]$
 \begin{align}
-I(Q) &= \int_0^\infty \tilde{\gamma}(r) \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}r = \mathcal{F}\left[\tilde{\gamma}(r)\right]
+I(Q) &= \int_0^\infty \tilde{\gamma}(r) \frac{\sin Qr}{Qr}4\pi r^2\mathrm{d}r =
+\mathcal{F}_{I,3D}\left[\tilde{\gamma}(r)\right](Q)
 \end{align}
 In literature the expressions for the scattering length density autocorrelation function are often normalized to to 1 for $r=0$, i.e. the expressions $\gamma_0(r)=\tilde{\gamma}(r)/\tilde{\gamma}(0)$ are given. Also one finds that
 \begin{align}
@@ -53,20 +57,14 @@ and
 \int_0^\infty \tilde{\gamma}(r) 4\pi r^2 \, \mathrm{d}r =\Delta\eta^2 V_P^2 \quad \mbox{or} \quad  \int_0^\infty \gamma_0(r) 4\pi r^2 \, \mathrm{d}r = V_P
 \end{align}
 where in case of spherical particle $V_P=\frac43 \pi R^3$
-In Fig.\ \ref{fig:FAHcycle} it is shown how the functions $\tilde{\gamma}(r)$, $\tilde{G}(z)$ and $IQ)$ are related to each other. However, the cycle is mathematically only exact for a two-dimensional Fourier transformation on a radial symmetric function.
-Such a transformation cycle is called the projection-slice theorem which is a standard analysis in imaging \cite{Bracewell2003}. The projection-slice theorem makes use of the fact that the
+In Fig.\ \ref{fig:FAHcycle} it is shown how the functions $\tilde{\gamma}(r)$, $\tilde{G}(\delta)$ and $IQ)$ are related to each other. However, the cycle is mathematically only exact for a one-dimensional Fourier transformation on a radial symmetric function. Such a transformation cycle is called the projection-slice theorem which is a standard analysis in imaging \cite{Bracewell2003, Bracewell1956}. The projection-slice theorem makes use of the fact that
 \begin{align}
-\mathcal{F}\mathcal{H}\mathcal{A}=\mathcal{F}\mathcal{A}\mathcal{H}=\mathcal{A}\mathcal{F}\mathcal{H}=\mathcal{I}
+\mathcal{H}\circ \mathcal{F}_{1D}\circ \mathcal{A} &
+              =\mathcal{F}_{1D} \circ \mathcal{A}\circ \mathcal{H}
+              =\mathcal{A}\circ \mathcal{H}\circ \mathcal{F}_{1D}=\mathcal{I}
 \end{align}
-Furthermore we have
-\begin{align}
-\mathcal{HH}=(2\pi)^3\mathcal{FF}=\mathcal{H}^{-1}\mathcal{H}^{-1}=(2\pi)^{-3}\mathcal{F}^{-1}\mathcal{F}^{-1}=\mathcal{I}
-\end{align}
-where $\mathcal{I}$ is the identity operator.
-By pursuing the cycle of transforms in the opposite direction,one finds three further cyclic statements:
-\begin{align}
-\mathcal{HF}\mathcal{A}^{-1}=\mathcal{F}\mathcal{A}^{-1}\mathcal{H}=\mathcal{A}^{-1}\mathcal{HF}=\mathcal{I}
-\end{align}
+with $\mathcal{F}_{1D}(s)=\int_{-\infty}^{\infty} \exp\left(-\imath 2\pi s r\right) f(r) \mathrm{d}r$, i.e. using the pair (1) of Fourier as well pair (1) of Hankel transform conventions as given in footnote\footref{footnote:Fourier} and footnote\footref{footnote:Hankel}.
+That the $\mathcal{FAH}$ cycle is still valid using the isotropic 3 dimensional Fourier transform $\mathcal{F}_{I,3D}$ as shown in fig.\ \ref{fig:FAHcycle} has been shown in \cite{Kohlbrecher2017}.
 
 \begin{figure}[htb]
 \begin{center}
@@ -75,11 +73,11 @@ By pursuing the cycle of transforms in the opposite direction,one finds three fu
   font=\sffamily\large\bfseries,minimum size=10mm}]
 
   \node[main node] (gamma0) at (3,7.5) {$\gamma_0(r)$};
-  \node[main node] (gamma) at (3,4.33) {$\tilde{\gamma}(r)$};
-  \node[main node] (IQp) at (6,0) {$\frac{\mathrm{d}\Sigma_p}{\mathrm{d}\Omega}(q)$};
-  \node[main node] (Gp) at (0,0) {$G_p(\delta)$};
-  \node[main node] (Gz) at (0,-4) {$\tilde{G}(\delta)$};
-  \node[main node] (IQ) at (6,-4) {$I(q)$};
+  \node[main node] (gamma) at (3,4.33) {$\tilde{\gamma}_p(r)$};
+  \node[main node] (IQp) at (6,0) {$\frac{\mathrm{d}\sigma_p}{\mathrm{d}\Omega}(Q)$};
+  \node[main node] (Gp) at (0,0) {$\tilde{G}_p(\delta)$};
+  \node[main node] (Gz) at (0,-6.5) {$\tilde{G}(\delta)$};
+  \node[main node] (IQ) at (6,-6.5) {$I(Q)$};
    \pgfsetarrowsend{latex}
   \pgfsetlinewidth{0.5ex}
   \path[every node/.style={font=\sffamily\large,
@@ -89,20 +87,20 @@ By pursuing the cycle of transforms in the opposite direction,one finds three fu
 
     (gamma0) edge [bend right=10] node[outer sep=6pt,pos=0.5,left] {
     $\begin{array}{l}
-       \tilde{\gamma}(r) = \gamma_0(r) \Delta\eta^2\, \times\\[2mm]
-       \quad \int_0^\infty 4\pi r^2 \gamma_0(r) \mathrm{d}r
+       \tilde{\gamma}_p(r) = \gamma_0(r) \times\\[2mm]
+       \Delta\eta^2\, \int_0^\infty 4\pi r^2 \gamma_0(r) \mathrm{d}r
      \end{array}$} (gamma)
-    (gamma) edge [bend right=10] node[outer sep=6pt,pos=0.5,right] { $ \begin{array}{ll} \gamma_0(r)\!\!\!\!\! &= \frac{\tilde{\gamma}(r)}{\tilde{\gamma}(0)}\\[2mm] &=\frac{\tilde{\gamma}(r)}{V_p\Delta\eta^2}\end{array}$} (gamma0)
+    (gamma) edge [bend right=10] node[outer sep=6pt,pos=0.5,right] { $ \begin{array}{ll} \gamma_0(r)\!\!\!\!\! &= \frac{\tilde{\gamma}_p(r)}{\tilde{\gamma}_p(0)}\\[2mm] &=\frac{\tilde{\gamma}_p(r)}{V_p\Delta\eta^2}\end{array}$} (gamma0)
     (gamma) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \mathcal{F}_{I,3D}$} (IQp)
-            edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ (2\pi)^2\mathcal{A}$} (Gp)
-    (Gp) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{1}{2\pi}\mathcal{H}_0^{-1}$} (IQp)
-         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{\mathcal{A}^{-1}}{(2\pi)^2}$} (gamma)
-         edge [bend right=0,dotted] node[outer sep=6pt,pos=0.5,sloped,below] { $ \int \mathrm{d}R\, n(R)$} (Gz)
-    (IQp) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ 2\pi\mathcal{H}_0$} (Gp)
+            edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ \mathcal{A}$} (Gp)
+    (Gp) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ {2\pi}\mathcal{H}_0^{-1}$} (IQp)
+         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \mathcal{A}^{-1}$} (gamma)
+         edge [bend right=0,dotted] node[outer sep=6pt,pos=0.5,sloped,below] {  $ \displaystyle \sum_p \int n_p(R) \tilde{G}_p(\delta)\, \mathrm{d}R$} (Gz)
+    (IQp) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ \frac{1}{2\pi}\mathcal{H}_0$} (Gp)
          edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ \mathcal{F}_{I,3D}^{-1}$} (gamma)
-         edge [bend right=0,dotted] node[outer sep=6pt,pos=0.5,sloped,below] { $ \int \mathrm{d}R\, n(R)$} (IQ)
-    (IQ) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ 2\pi\mathcal{H}_0$} (Gz)
-    (Gz) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \frac{1}{2\pi}\mathcal{H}_0^{-1}$} (IQ);
+         edge [bend right=0,dotted] node[outer sep=6pt,pos=0.5,sloped,below] { $ \displaystyle \sum_p\int n_p(R)\frac{\mathrm{d}\sigma_p}{\mathrm{d}\Omega}\, \mathrm{d}R$} (IQ)
+    (IQ) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ \frac{1}{2\pi}\mathcal{H}_0$} (Gz)
+    (Gz) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ {2\pi}\mathcal{H}_0^{-1}$} (IQ);
 \end{tikzpicture}
 \end{center}
 \caption{Transformation cycle between $\tilde{\gamma}(r)$, $I(q)$, and $\tilde{G}(\delta)$.}\label{fig:FAHcycle}

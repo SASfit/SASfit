@@ -509,18 +509,18 @@
   timestamp = {2009.07.01}
 }
 
-@ARTICLE{Caccamo1996,
-  author = {C. Caccamo},
-  title = {Integral equation theory description of phase equilibria in classical
-	fluids },
-  year = {1996},
-  volume = {274},
-  number = {1–2},
-  pages = {1 - 105},
-  issn = {0370-1573},
-  doi = {http://dx.doi.org/10.1016/0370-1573(96)00011-7},
-  url = {http://www.sciencedirect.com/science/article/pii/0370157396000117},
-  abstract = {We review the present status of applications of integral equation
+@Article{Caccamo1996,
+  author    = {C. Caccamo},
+  title     = {Integral equation theory description of phase equilibria in classical fluids},
+  year      = {1996},
+  journal   = {Physics Reports},
+  volume    = {274},
+  number    = {1-2},
+  pages     = {1 - 105},
+  issn      = {0370-1573},
+  doi       = {http://dx.doi.org/10.1016/0370-1573(96)00011-7},
+  url       = {http://www.sciencedirect.com/science/article/pii/0370157396000117},
+  abstract  = {We review the present status of applications of integral equation
 	theories (IETs) for the radial distribution function g(r), to the
 	determination of phase diagrams and stability conditions of simple
 	and charged classical fluids. After having recalled some basic concepts
@@ -552,10 +552,9 @@
 	of \{IETs\} in different physical contexts in which phase coexistence
 	conditions seem worth of a timely investigation, are also discussed.
 	},
-  journal = {Physics Reports },
-  keywords = {Integral equation theories},
-  owner = {kohlbrecher},
-  timestamp = {2013.11.02}
+  keywords  = {Integral equation theories},
+  owner     = {kohlbrecher},
+  timestamp = {2013.11.02},
 }
 
 @ARTICLE{Caille1972,
@@ -4515,6 +4514,80 @@ which fits best the experimental molecular weight distribution curves of branche
   address   = {Boston, MA},
   owner     = {kohlbrecher},
   timestamp = {2016.09.13},
+}
+
+@Article{Kohlbrecher2017,
+  author   = {Kohlbrecher, J. and Studer, A.},
+  title    = {{Transformation cycle between the spherically symmetric correlation function, projected correlation function and differential cross section as implemented in {\it SASfit}}},
+  journal  = {Journal of Applied Crystallography},
+  year     = {2017},
+  volume   = {50},
+  number   = {5},
+  month    = {Oct},
+  doi      = {10.1107/S1600576717011979},
+  url      = {https://doi.org/10.1107/S1600576717011979},
+  abstract = {Spin-echo-based small-angle neutron scattering techniques like spin-echo SANS (SESANS) or spin-echo modulated SANS (SEMSANS) as well as dark-field (DF) imaging are directly sensitive to \tilde{G}(\delta), which is the projection of the scattering length density autocorrelation function \tilde{\gamma}(r). Here, a simplified transformation cycle relating the spherically symmetric correlation function \tilde{\gamma}(r), the projected correlation function \tilde{G}(\delta) and the macroscopic small-angle scattering cross section d{$\Sigma$}/d{$\Omega$} is introduced. The suggested changes to the cycle make it easier to include size distribution on an absolute scale if the data from the different techniques are fitted simultaneously. As up to now only very few analytical expressions for the projected correlation function are known, a numerical transformation of known scattering functions into the projected correlation function in the {\it SASfit} software package is supplied. Furthermore, a new analytical expression for the projected correlation function for polymers that can be described by the generalized Gaussian coil model is provided. For this polymer model, the Hankel transform used to calculate \tilde{G}(0) from the SANS signal is divergent for a certain parameter range describing a polymer in a good solvent and finite in the case of a poor solvent. It is therefore a suitable example of how the experimentally available {\it q} range can strongly influence the obtained results.},
+  keywords = {spin-echo small-angle neutron scattering, small-angle neutron scattering, data analysis},
+}
+
+@Article{Bracewell1956,
+  author    = {Bracewell, RN},
+  title     = {Strip Integration in Radio Astronomy},
+  journal   = {Australian Journal of Physics},
+  year      = {1956},
+  volume    = {9},
+  number    = {2},
+  issue     = {9},
+  pages     = {198-217},
+  doi       = {http://dx.doi.org/10.1071/PH560198},
+  url       = {http://dx.doi.org/10.1071/PH560198},
+  abstract  = {When a celestial source of radio waves is scanned with an aerial beam which is much longer than the source in one direction but suitably narrow in the other, the transformation from the true distribution to the measured value is referred to as strip integration. It is here treated as a special case of two-dimensional aerial smoothing in which the aerial beam is allowed to spin about its centre as it moves about the sky. It is shown that the resolution obtainable is set by the cross-sectional profile of the strip beam in the narrow dimension. Thus, when the strip reduces to a line, the resolution is complete and full reconstruction of the true distribution is possible; but scans must be made in all directions. In the general case it is shown that there is a principal solution, and that a finite number of scans suffices to determine it. A method is presented for reconstructing the principal solution from the observed data.},
+  owner     = {kohlbrecher},
+  publisher = {{CSIRO} Publishing},
+  timestamp = {2016.11.07},
+}
+
+@Book{Bracewell2000,
+  author    = {Ronald N. Bracewell},
+  title     = {The Fourier Transform and its Applications.},
+  year      = {2000},
+  publisher = {New York: McGraw-Hill},
+  owner     = {kohlbrecher},
+  timestamp = {2016.10.24},
+}
+
+@InBook{Bracewell2007,
+  author    = {Bracewell, Ronald N.},
+  title     = {Fourier and Other Transform Methods},
+  booktitle = {The Optics Encyclopedia},
+  year      = {2007},
+  publisher = {Wiley-VCH Verlag GmbH \& Co. KGaA},
+  isbn      = {9783527600441},
+  chapter   = {The Optics Encyclopedia},
+  pages     = {725--749},
+  doi       = {10.1002/9783527600441.oe023},
+  url       = {http://dx.doi.org/10.1002/9783527600441.oe023},
+  abstract  = {The Fourier transform is a basic tool for optical diffraction, interferometry, sky mapping, laser resonance, tomography, and other fields. Chemical analysis using Fourier transform spectroscopy and optical signal processing are traditional one-dimensional applications, while in fiber-optic transmission and optical analogue computing, the fractional Fourier transform is a new tool. Applications of other transforms (Abel, Hankel, Hartley, Radon) are also described. Mathematical definitions and properties are tabulated for reference.},
+  keywords  = {transforms, interferometry, coherence, fractional Fourier transform, tomography, projection-slice theorem, nulling interferometry, volume rendering, Abel transform, Hankel transform, Hartley transform, Radon transform},
+  owner     = {kohlbrecher},
+  timestamp = {2016.11.07},
+}
+
+@Article{Bracewell1990,
+  author    = {R. N. Bracewell},
+  title     = {Numerical Transforms},
+  journal   = {Science},
+  year      = {1990},
+  volume    = {248},
+  number    = {4956},
+  pages     = {697-704},
+  issn      = {00368075, 10959203},
+  doi       = {10.1126/science.248.4956.697},
+  url       = {http://www.jstor.org/stable/2874133},
+  abstract  = {Numerical computation of transforms is now widely practiced in science and industry and has been revolutionized by the development of fast transforms that make feasible computing projects that once could not be contemplated. The article discusses the significance of transforms in numerical work, defines the modern forms of several common transforms and their inverses, gives examples, and describes and gives references to methods of numerical evaluation.},
+  owner     = {kohlbrecher},
+  publisher = {American Association for the Advancement of Science},
+  timestamp = {2016.11.08},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

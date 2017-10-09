@@ -41,6 +41,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "C:/user/SASfitGit/src/sasfit_core/include"
   "C:/user/SASfitGit/src/sasfit_old/include"
   "C:/user/SASfitGit/src/sasfit_oz/include"
+  "C:/user/SASfitGit/src/sasfit_frida/include"
   "C:/user/SASfitGit/src/tcl/windows_amd64/include"
   "C:/user/SASfitGit/src/gsl/windows_amd64/include"
   "C:/user/SASfitGit/src/fftw/windows_amd64/include"
@@ -51,3 +52,6 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
   )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

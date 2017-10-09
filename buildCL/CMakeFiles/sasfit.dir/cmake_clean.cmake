@@ -496,6 +496,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/sasfit.dir/sasfit_oz/sasfit_oz_potential_FermiDistributionModel.c.obj"
   "CMakeFiles/sasfit.dir/sasfit_oz/sasfit_oz_potential_square_well.c.obj"
   "CMakeFiles/sasfit.dir/sasfit_oz/sasfit_oz_tclcmd.c.obj"
+  "CMakeFiles/sasfit.dir/sasfit_frida/sasfit_frida_solver.c.obj"
   "C:/user/SASfitGit/src/lib/libsasfit.pdb"
   "C:/user/SASfitGit/src/lib/libsasfit.dll"
   "C:/user/SASfitGit/src/lib/libsasfit.dll.a"

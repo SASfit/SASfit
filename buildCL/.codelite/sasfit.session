@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="C:\user\SASfitGit\buildCL\sasfit.workspace">
-  <int Value="7" Name="m_selectedTab"/>
+  <int Value="15" Name="m_selectedTab"/>
   <wxString Value="C:\user\SASfitGit\buildCL\sasfit.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
@@ -56,6 +56,62 @@
       <wxString Value="C:\user\SASfitGit\src\plugins\parallel_epiped\sasfit_ff_parallelepiped_abc.c" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
       <int Value="8" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\plugins\heliix\sasfit_ff_beads_helix.c" Name="FileName"/>
+      <int Value="17" Name="FirstVisibleLine"/>
+      <int Value="36" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\sasfit_common\f2c_utils\sasfit_pfq.c" Name="FileName"/>
+      <int Value="2872" Name="FirstVisibleLine"/>
+      <int Value="2805" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\plugins\heliix\sasfit_ff_pringle_schmidt_helix.c" Name="FileName"/>
+      <int Value="43" Name="FirstVisibleLine"/>
+      <int Value="62" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\plugins\heliix\sasfit_ff_unnamed_helix.c" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="11" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\plugins\heliix\include\sasfit_heliix.h" Name="FileName"/>
+      <int Value="47" Name="FirstVisibleLine"/>
+      <int Value="67" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\plugins\anisotropic_objects\sasfit_ff_pcs_homogeneouscyl.c" Name="FileName"/>
+      <int Value="14" Name="FirstVisibleLine"/>
+      <int Value="29" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\plugins\heliix\interface.c" Name="FileName"/>
+      <int Value="2" Name="FirstVisibleLine"/>
+      <int Value="9" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\user\SASfitGit\src\plugins\heliix\CMakeLists.txt" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="4" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

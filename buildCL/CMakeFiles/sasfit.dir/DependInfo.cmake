@@ -346,6 +346,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "C:/user/SASfitGit/src/sasfit_ff/superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq_l2x_pol_albr_stat.c" "C:/user/SASfitGit/buildCL/CMakeFiles/sasfit.dir/sasfit_ff/superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq_l2x_pol_albr_stat.c.obj"
   "C:/user/SASfitGit/src/sasfit_ff/superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq_lx.c" "C:/user/SASfitGit/buildCL/CMakeFiles/sasfit.dir/sasfit_ff/superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_strobo_sq_lx.c.obj"
   "C:/user/SASfitGit/src/sasfit_ff/superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_tisane.c" "C:/user/SASfitGit/buildCL/CMakeFiles/sasfit.dir/sasfit_ff/superparamagnetic_ff_psi/sasfit_ff_superparamagnetic_ff_psi_tisane.c.obj"
+  "C:/user/SASfitGit/src/sasfit_frida/sasfit_frida_solver.c" "C:/user/SASfitGit/buildCL/CMakeFiles/sasfit.dir/sasfit_frida/sasfit_frida_solver.c.obj"
   "C:/user/SASfitGit/src/sasfit_old/DLS/DLS_g2_1.c" "C:/user/SASfitGit/buildCL/CMakeFiles/sasfit.dir/sasfit_old/DLS/DLS_g2_1.c.obj"
   "C:/user/SASfitGit/src/sasfit_old/DLS/DLS_models.c" "C:/user/SASfitGit/buildCL/CMakeFiles/sasfit.dir/sasfit_old/DLS/DLS_models.c.obj"
   "C:/user/SASfitGit/src/sasfit_old/SASFIT_covsrt.c" "C:/user/SASfitGit/buildCL/CMakeFiles/sasfit.dir/sasfit_old/SASFIT_covsrt.c.obj"
@@ -530,6 +531,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "C:/user/SASfitGit/src/sasfit_core/include"
   "C:/user/SASfitGit/src/sasfit_old/include"
   "C:/user/SASfitGit/src/sasfit_oz/include"
+  "C:/user/SASfitGit/src/sasfit_frida/include"
   "C:/user/SASfitGit/src/tcl/windows_amd64/include"
   "C:/user/SASfitGit/src/gsl/windows_amd64/include"
   "C:/user/SASfitGit/src/fftw/windows_amd64/include"
@@ -540,3 +542,6 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
   )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

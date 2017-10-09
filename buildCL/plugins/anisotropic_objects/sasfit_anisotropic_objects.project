@@ -1,74 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Project Name="sasfit_anisotropic_objects" InternalType="">
-  <VirtualDirectory Name="src">
-    <File Name="../../../src/plugins/anisotropic_objects/interface.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ao_utils.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_cylsh_sd_bilayergauss.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_cylsh_sd_homoxs.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_disc_sd_bilayergauss.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_disc_sd_homoxs.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_rod.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_kholodenko.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_ps1.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_ps2.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_ps3.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellsh_sd_bilayergauss.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellsh_sd_homoxs.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_bilayergaus.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_ellcylsh.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_homogeneouscyl.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_homogeneousplate.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_layeredcentrosymmetricxs.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_plate_chains_rw_.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_twoinfinitelythinlayers.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___kholodenko_worm.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___rod.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_disc.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_ellipsoidal_shell.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_hollow_cylinder.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_spherical_shell.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___worm_ps1_.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___worm_ps2_.c"/>
-    <File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___worm_ps3_.c"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="include">
-  </VirtualDirectory>
-
-  <Settings Type="Dynamic Library">
-    <Configuration Name="NoConfig" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g" Required="yes" PreCompiledHeader="">
-        <IncludePath Value="."/>
-      </Compiler>
-      <Linker Options="" Required="yes"/>
-      <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
-      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands/>
-        <StartupCommands/>
-      </Debugger>
-      <PreBuild/>
-      <PostBuild/>
-      <CustomBuild Enabled="yes">
-        <RebuildCommand>c:/MinGW/bin/mingw32-make.exe -j 0 clean &amp;&amp; c:/MinGW/bin/mingw32-make.exe -j 0</RebuildCommand>
-        <CleanCommand>c:/MinGW/bin/mingw32-make.exe -j 0 clean</CleanCommand>
-        <BuildCommand>c:/MinGW/bin/mingw32-make.exe -j 0</BuildCommand>
-        <SingleFileCommand>c:/MinGW/bin/mingw32-make.exe -f$(ProjectPath)/Makefile $(CurrentFileName).cpp.o</SingleFileCommand>
-        <PreprocessFileCommand/>
-        <WorkingDirectory>$(WorkspacePath)</WorkingDirectory>
-      </CustomBuild>
-      <AdditionalRules>
-        <CustomPostBuild/>
-        <CustomPreBuild/>
-      </AdditionalRules>
-    </Configuration>
-    <GlobalSettings>
-      <Compiler Options="">
-        <IncludePath Value="."/>
-      </Compiler>
-      <Linker Options="">
-        <LibraryPath Value="."/>
-      </Linker>
-      <ResourceCompiler Options=""/>
-    </GlobalSettings>
-  </Settings>
+	<VirtualDirectory Name="src">
+		<File Name="../../../src/plugins/anisotropic_objects/interface.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ao_utils.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_cylsh_sd_bilayergauss.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_cylsh_sd_homoxs.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_disc_sd_bilayergauss.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_disc_sd_homoxs.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_rod.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_kholodenko.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_ps1.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_ps2.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellcylsh_sd_worm_ps3.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellsh_sd_bilayergauss.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_ellsh_sd_homoxs.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_bilayergaus.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_ellcylsh.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_homogeneouscyl.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_homogeneousplate.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_layeredcentrosymmetricxs.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_plate_chains_rw_.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_ff_pcs_twoinfinitelythinlayers.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___kholodenko_worm.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___rod.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_disc.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_ellipsoidal_shell.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_hollow_cylinder.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___thin_spherical_shell.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___worm_ps1_.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___worm_ps2_.c"/>
+		<File Name="../../../src/plugins/anisotropic_objects/sasfit_sq_p__q___worm_ps3_.c"/>
+	</VirtualDirectory>
+	<VirtualDirectory Name="include"/>
+	<Settings Type="">
+		<Configuration Name="NoConfig" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+			<Compiler Options="-g" Required="yes" PreCompiledHeader="">
+				<IncludePath Value="."/>
+			</Compiler>
+			<Linker Options="" Required="yes"/>
+			<ResourceCompiler Options="" Required="no"/>
+			<General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+			<Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+				<PostConnectCommands/>
+				<StartupCommands/>
+			</Debugger>
+			<PreBuild/>
+			<PostBuild/>
+			<CustomBuild Enabled="yes">
+				<RebuildCommand>C:/MinGW/msys/1.0/bin/make.exe -j 0 clean &amp;&amp; C:/MinGW/msys/1.0/bin/make.exe -j 0</RebuildCommand>
+				<CleanCommand>C:/MinGW/msys/1.0/bin/make.exe -j 0 clean</CleanCommand>
+				<BuildCommand>C:/MinGW/msys/1.0/bin/make.exe -j 0</BuildCommand>
+				<SingleFileCommand>C:/MinGW/msys/1.0/bin/make.exe -f$(ProjectPath)/Makefile $(CurrentFileName).cpp.o</SingleFileCommand>
+				<PreprocessFileCommand/>
+				<WorkingDirectory>$(WorkspacePath)</WorkingDirectory>
+			</CustomBuild>
+			<AdditionalRules>
+				<CustomPostBuild/>
+				<CustomPreBuild/>
+			</AdditionalRules>
+		</Configuration>
+		<GlobalSettings>
+			<Compiler Options="">
+				<IncludePath Value="."/>
+			</Compiler>
+			<Linker Options="">
+				<LibraryPath Value="."/>
+			</Linker>
+			<ResourceCompiler Options=""/>
+		</GlobalSettings>
+	</Settings>
 </CodeLite_Project>
