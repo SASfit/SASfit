@@ -344,20 +344,25 @@ if(CREATE_BINARY)
 	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
 	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
 
-	add_custom_target(sasfit_binary ALL 
+	add_custom_target(sasfit_binary ALL
 		${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
 				-D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
 				-D SASFIT_EXEC_FILENAME:STRING=${SASFIT_EXEC_FILENAME}
 				-D SASFIT_DEBUG:BOOL=${DEBUG}
 				-P ${SASFIT_STARPACK_SCRIPT}
+		DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
+        COMMENT "Creating sasfit binary ..."
+		VERBATIM
+	)
+	add_custom_target(sasfit_binary_package ALL
 		${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
 				-D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
 				-D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
 				-D CM_GEN:STRING=${CMAKE_GENERATOR}
 				-D SASFIT_VERSION:STRING=${SASFIT_VERSION}
 				-P ${SASFIT_PCKG_SCRIPT}
-		DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
-        COMMENT "Copying sasfit binary files to a separate directory ..."
+		DEPENDS sasfit_binary
+        COMMENT "Creating sasfit package ..."
 		VERBATIM
 	)
 
@@ -369,7 +374,8 @@ if(CREATE_SOURCE)
 	### create a sasfit source package ###
 	 ####################################
 
-	# write the list of filenames to a temporary file (workaround for shell command length restrictions)
+	# write the list of filenames to a temporary file
+    # (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_SRC_LIST_FILE}.tmp)
 	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_SRC_FILE_LIST}")
 

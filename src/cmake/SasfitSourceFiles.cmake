@@ -36,9 +36,7 @@
 # This module expects to live in <sasfit-dir>/src/cmake
 
 cmake_minimum_required(VERSION 2.6.2)
-if(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} VERSION_GREATER 2.6.2)
-	cmake_policy(SET CMP0011 OLD)
-endif(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} VERSION_GREATER 2.6.2)
+cmake_policy(SET CMP0011 NEW)
 
 set(SOURCE_sasfit_common
 	sasfit_timer.c
