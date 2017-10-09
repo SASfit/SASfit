@@ -374,7 +374,8 @@ if(CREATE_SOURCE)
 	### create a sasfit source package ###
 	 ####################################
 
-	# write the list of filenames to a temporary file (workaround for shell command length restrictions)
+	# write the list of filenames to a temporary file
+    # (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_SRC_LIST_FILE}.tmp)
 	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_SRC_FILE_LIST}")
 

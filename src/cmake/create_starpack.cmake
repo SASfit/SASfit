@@ -64,7 +64,7 @@ else(SASKIT_RES EQUAL 0 OR SASKIT_RES STREQUAL "Process terminated due to timeou
         message(STATUS "An error occured while creating executable '${SASFIT_EXEC}'!")
         message("return value: '${SASKIT_RES}'")
         message("output: '${SASKIT_OUT}'")
-endif(SASKIT_RES EQUAL 0 OR SASKIT_RES STREQUAL "Process terminated due to timeout")
+endif()
 file(REMOVE ${SASKIT_FILE}_rt)
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
