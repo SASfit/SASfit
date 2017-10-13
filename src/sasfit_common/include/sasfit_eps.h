@@ -81,7 +81,6 @@ sasfit_common_DLLEXP int    sasfit_eps_get_jmax_nriq(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_sq_or_iq(void);
 sasfit_common_DLLEXP int    sasfit_get_iq_or_gz(void);
 sasfit_common_DLLEXP int    sasfit_get_int_strategy(void);
-sasfit_common_DLLEXP int    sasfit_get_int_strategy(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_robertus_p(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_iter_4_mc(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_fitorsim(void);

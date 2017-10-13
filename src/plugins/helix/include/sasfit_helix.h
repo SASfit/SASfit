@@ -56,17 +56,29 @@
  *       <td>\b a</td>
  *       <td>0<a<1, aR : inner helix radius</td>
  *      </tr><tr>
+ *       <td>\b omega</td>
+ *       <td>angular of the sector of material</td>
+ *      </tr><tr>
+ *       <td>\b phi</td>
+ *       <td>angle between the two sectors of a double helix</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
  *       <td>\b P</td>
  *       <td>helix period</td>
  *      </tr><tr>
  *       <td>\b H</td>
  *       <td>helix length</td>
  *      </tr><tr>
- *       <td>\b omega</td>
- *       <td>angular of the sector of material</td>
+ *       <td>\b eta_b</td>
+ *       <td>scattering length density of beads</td>
  *      </tr><tr>
- *       <td>\b phi</td>
- *       <td>angle between the two sectors of a double helix</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
  *      </tr></table>
  */
 
@@ -125,6 +137,15 @@ sasfit_helix_DLLEXP scalar sasfit_ff_fan_helix_v(scalar q, sasfit_param * p, int
  *      </tr><tr>
  *       <td>\b H</td>
  *       <td>helix length</td>
+ *      </tr><tr>
+ *       <td>\b eta_1</td>
+ *       <td>scattering length density of first strand</td>
+ *      </tr><tr>
+ *       <td>\b eta_2</td>
+ *       <td>scattering length density of second strand</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
  *      </tr></table>
  */
 
@@ -164,13 +185,34 @@ sasfit_helix_DLLEXP scalar sasfit_ff_round_helix_v(scalar q, sasfit_param * p, i
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b R</td>
- *       <td>radius of beads</td>
- *      </tr><tr>
- *       <td>\b H</td>
- *       <td>pitch of helix</td>
+ *       <td>radius of monomer units/beads</td>
  *      </tr><tr>
  *       <td>\b D</td>
- *       <td>diameter of helix</td>
+ *       <td>mean diameter of the heli</td>
+ *      </tr><tr>
+ *       <td>\b n</td>
+ *       <td>number of monomers per turn</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b P</td>
+ *       <td>helix period</td>
+ *      </tr><tr>
+ *       <td>\b H</td>
+ *       <td>helix length</td>
+ *      </tr><tr>
+ *       <td>\b eta_b</td>
+ *       <td>scattering length density of beads</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
  *      </tr></table>
  */
 

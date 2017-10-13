@@ -10,10 +10,16 @@
 // define shortcuts for local parameters/variables
 #define R	param->p[0]
 #define A	param->p[1]
-#define P	param->p[2]
-#define H	param->p[3]
-#define OMEGA	param->p[4]*M_PI/180
-#define PHI	param->p[5]*M_PI/180
+#define OMEGA	(param->p[2]*M_PI/180.)
+#define PHI	(param->p[3]*M_PI/180.)
+
+#define DUMMY param->p[4]
+
+#define P	param->p[5]
+#define H	param->p[6]
+#define ETA_H	param->p[7]
+
+#define ETA_SOLV	param->p[9]
 
 #define Q param->p[MAXPAR-1]
 #define QN param->p[MAXPAR-2]
@@ -21,7 +27,7 @@
 
 scalar bessfct(scalar r, sasfit_param * param) 
 {
-	return r* gsl_sf_bessel_Jn(lround(N),Q*r/sqrt(1.0-QN*QN));
+	return r* gsl_sf_bessel_Jn(lround(N),Q*r*sqrt(1.0-QN*QN));
 }
 
 scalar gn2(scalar q, int n, sasfit_param * param)
@@ -29,6 +35,7 @@ scalar gn2(scalar q, int n, sasfit_param * param)
 	scalar qn,b,u,BessInt;
 	b=2*M_PI*R/P;
 	u=q*R;
+	if (u==0.0) return 0.0;
 	qn=n*b/u;
 	if (qn > 1.0) return 0.0;
 	Q=q;
@@ -36,37 +43,46 @@ scalar gn2(scalar q, int n, sasfit_param * param)
 	N=n;
 //	sasfit_out("lround(N): %d, Q: %lf\n",lround(N), Q);
 	BessInt = sasfit_integrate(A*R,R,bessfct,param);
-	return gsl_pow_2(2.0/(R*R*(1.0-A*A))*BessInt);
+	return gsl_pow_2(BessInt);
 }
 
 scalar prefct(int n, sasfit_param * param)
 {
-	return gsl_pow_2(cos(n*PHI*0.5)*sin(n*OMEGA*0.5)/(n*OMEGA*0.5));
+	return gsl_pow_2(cos(n*PHI*0.5)*sinc(n*OMEGA*0.5));
 }
 
 scalar sasfit_ff_fan_helix(scalar q, sasfit_param * param)
 {
-	scalar prefac, sum;
+	scalar prefac, sum, sumold;
 	int n;
 	n=0;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R); // modify condition to your needs
-	SASFIT_CHECK_COND1((A <= 0.0), param, "a(%lg) <= 0",A); // modify condition to your needs
+	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((A >= 1.0), param, "a(%lg) >= 1",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((P <= 0.0), param, "P(%lg) < 0",P); // modify condition to your needs
 	SASFIT_CHECK_COND1((H < 0.0), param, "H(%lg) < 0",H); // modify condition to your needs
-	SASFIT_CHECK_COND1((OMEGA <= 0.0), param, "omega(%lg) < 0",OMEGA); // modify condition to your needs
-	SASFIT_CHECK_COND1((PHI < 0.0), param, "phi(%lg) < 0",PHI); // modify condition to your needs
-
+	
 	// insert your code here
-	sum = gn2(q,0,param);
-	for (n=1;n<q*P/(2*M_PI);n++) {
+	prefac =  gsl_pow_2(2.0/(R*R*(1.0-A*A))*(ETA_H-ETA_SOLV));
+	sum = prefac*gn2(q,0,param);
+	sumold = sum;
+//	for (n=1;n<q*P/(2*M_PI);n++) {
 //		sasfit_out("n: %d\n",n);
-		sum = sum+2*prefct(n,param)*gn2(q,n,param);
+//		sum = sum+2*prefct(n,param)*gn2(q,n,param);
+//	}
+	for (n=1;n<q*P/(2*M_PI);n++) {
+		sum = sum + 2*prefac*prefct(n,param)*gn2(q,n,param);
+		if (n>=1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || n>NMAX || n>=sasfit_eps_get_jmax_nriq())) {
+//			sasfit_out("fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t n:%d\n",sum,sum-sumold,n);
+			break;
+		}
+		sumold=sum;
 	}
-	return M_PI/(q*H)*sum;
+//	return sum 
+	return thinrod_helix(q,H)*sum * gsl_pow_2(M_PI*R*R*(1.0-A*A)*OMEGA/M_PI);
 }
 
 scalar sasfit_ff_fan_helix_f(scalar q, sasfit_param * param)

@@ -15,8 +15,9 @@
 #define ALPHA	param->p[4]*M_PI/180.
 #define P	param->p[5]
 #define H	param->p[6]
-
-#define NMAX 100
+#define ETA_1	param->p[7]
+#define ETA_2	param->p[8]
+#define ETA_SOLV	param->p[9]
 
 scalar twoJ1x_x(scalar x) {
 	if (fabs(x)<1e-6) {
@@ -28,7 +29,7 @@ scalar twoJ1x_x(scalar x) {
 
 scalar sasfit_ff_round_helix(scalar q, sasfit_param * param)
 {
-	scalar Qperp, sum,sumold, a1n, a2n;
+	scalar Qperp, sum,sumold, a1n, a2n,beta1, beta2;
 	int n;
 	
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -44,19 +45,23 @@ scalar sasfit_ff_round_helix(scalar q, sasfit_param * param)
 	// insert your code here
 	sum = 0.0;
 	sumold = 0.0;
-	for (n=0;n<q*P/(2*M_PI) && n<NMAX;n++) {
+	
+	beta1 = R1*R1*M_PI*(ETA_1-ETA_SOLV);
+	beta2 = R2*R2*M_PI*(ETA_2-ETA_SOLV);
+	for (n=0;n<q*P/(2*M_PI);n++) {
 //		sasfit_out("q: %lf  n: %d\n",q, n);
 		Qperp = sqrt(fabs(q*q-gsl_pow_2(2*M_PI*n/P)));
-		a1n = gsl_sf_bessel_Jn(n,DELTA1*Qperp)*twoJ1x_x(R1*Qperp)*R1*R1*M_PI;
-		a2n = gsl_sf_bessel_Jn(n,DELTA2*Qperp)*twoJ1x_x(R2*Qperp)*R2*R2*M_PI;
+		a1n = gsl_sf_bessel_Jn(n,DELTA1*Qperp)*twoJ1x_x(R1*Qperp)*beta1;
+		a2n = gsl_sf_bessel_Jn(n,DELTA2*Qperp)*twoJ1x_x(R2*Qperp)*beta2;
 		sum = sum+a1n*a1n+a2n*a2n+2.*a1n*a2n*cos(n*ALPHA);
-		if (n>1 && fabs(sum-sumold)<1e-6*sum) {
-			sasfit_out("fabs(sum-sumold)<1e-6*sum, sum:%lf, n:%d\n",sum,n);
+		if (n>1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || n>NMAX)) {
+//			sasfit_out("fabs(sum-sumold)<eps*sum\t sum:%lf\t sum-sumold:%lf\t n:%d\n",sum,sum-sumold,n);
 			break;
 		}
 		sumold=sum;
 	}
-	return sum;
+//	return sum/gsl_pow_2(beta1+beta2);
+	return thinrod_helix(q,H)*sum;
 }
 
 scalar sasfit_ff_round_helix_f(scalar q, sasfit_param * param)
