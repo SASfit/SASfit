@@ -52,3 +52,6 @@ saskit/saskit_*
 
 /src/plugins/ordered_particle_systems/sasfit_sq_sq_iso_pearson.c
 /src/fftw/fftw-3.3.6-pl2.tar.gz
+/buildCL
+/examples/dll/libsasfit_fuzzysphere.dll
+/examples/dll/libsasfit.dll
