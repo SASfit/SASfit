@@ -24,7 +24,7 @@ scalar thinrod_helix(scalar q, scalar L)
 	if (u==0.0) {
 		P = L*L;
 	} else {
-		P =L*L*(2.0*gsl_sf_Si(u)/u-gsl_pow_2(sin(u2)/u2) );
+		P =L*L*(2.0*gsl_sf_Si(u)/u-gsl_pow_2(sinc(u2)) );
 	}
 
 	return P;

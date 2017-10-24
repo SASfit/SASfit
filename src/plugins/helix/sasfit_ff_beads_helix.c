@@ -50,20 +50,20 @@ scalar sasfit_ff_beads_helix(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((N < 0.0), param, "N(%lg) < 0",N); // modify condition to your needs
 
 	// insert your code here
-	V = 3./4. * M_PI *gsl_pow_3(R);
-	prefactor = gsl_pow_2(N*V/P *(ETA_B-ETA_SOLV)*hphi(q,param));
+	V = 4./3. * M_PI *gsl_pow_3(R);
+	prefactor = gsl_pow_2(N*H/P*V *(ETA_B-ETA_SOLV)*hphi(q,param));
 	sum = hPsi2(q,0,param);
 	sumold=sum;
 	for (i=1;i<q*P/(2*M_PI);i++) {
 		sum = sum + 2*hPsi2(q,i,param);
-		if (i>=1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || i>NMAX || i>=sasfit_eps_get_jmax_nriq())) {
+		if (i>=1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || i>NMAX )) {
 //			sasfit_out("fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t i:%d\n",sum,sum-sumold,i);
 			break;
 		}
 		sumold=sum;
 	}
 //	return sum;
-	return thinrod_helix(q,H)*prefactor*sum;
+	return thinrod_helix(q,H)*prefactor*sum / gsl_pow_2(N*H/P*V *(ETA_B-ETA_SOLV)*H);
 }
 
 scalar sasfit_ff_beads_helix_f(scalar q, sasfit_param * param)

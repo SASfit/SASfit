@@ -71,8 +71,8 @@
  *       <td>\b H</td>
  *       <td>helix length</td>
  *      </tr><tr>
- *       <td>\b eta_b</td>
- *       <td>scattering length density of beads</td>
+ *       <td>\b eta_h</td>
+ *       <td>scattering length density of helix</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -237,6 +237,73 @@ sasfit_helix_DLLEXP scalar sasfit_ff_beads_helix_f(scalar q, sasfit_param * p);
  */
 sasfit_helix_DLLEXP scalar sasfit_ff_beads_helix_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_beads_helix ################ */
+
+/* ################ start ff_beads_helix ################ */
+/** 
+ * \defgroup ff_superhelices superhelices
+ * \ingroup ff_plugins_helix
+ *
+ * \brief \< some brief description of superhelices function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R1</td>
+ *       <td>radius of monomer units/beads</td>
+ *      </tr><tr>
+ *       <td>\b D</td>
+ *       <td>mean diameter of the heli</td>
+ *      </tr><tr>
+ *       <td>\b n</td>
+ *       <td>number of monomers per turn</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b P</td>
+ *       <td>helix period</td>
+ *      </tr><tr>
+ *       <td>\b H</td>
+ *       <td>helix length</td>
+ *      </tr><tr>
+ *       <td>\b eta_b</td>
+ *       <td>scattering length density of beads</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_superhelices
+ *
+ * \sa sasfit_helix.h, ff_plugins_helix
+ */
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superhelices
+ *
+ * \sa sasfit_helix.h, ff_plugins_helix
+ */
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superhelices
+ *
+ * \sa sasfit_helix.h, ff_plugins_helix
+ */
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superhelices ################ */
 
 
 #endif // this file

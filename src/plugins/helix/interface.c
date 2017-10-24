@@ -8,10 +8,11 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(3)
+SASFIT_PLUGIN_EXP_BEGIN(4)
 SASFIT_PLUGIN_EXP_ADD( ff_fan_helix )
 SASFIT_PLUGIN_EXP_ADD( ff_round_helix )
 SASFIT_PLUGIN_EXP_ADD( ff_beads_helix )
+SASFIT_PLUGIN_EXP_ADD( ff_superhelices )
 
 SASFIT_PLUGIN_EXP_END
 

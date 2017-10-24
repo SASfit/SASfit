@@ -14,6 +14,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_round_helix.c
 	sasfit_ff_beads_helix.c
 	sasfit_helix_utils.c
+	sasfit_ff_superhelices_straight.c
 	interface.c
 )
 

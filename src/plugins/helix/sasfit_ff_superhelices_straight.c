@@ -18,19 +18,27 @@
 #define ETA_1	param->p[7]
 #define ETA_2	param->p[8]
 #define ETA_SOLV	param->p[9]
+#define Q	param->p[MAXPAR-1]
+#define L	param->p[MAXPAR-2]
+#define A	param->p[MAXPAR-3]
 
-scalar twoJ1x_x(scalar x) {
-	if (fabs(x)<1e-6) {
-		return 1-x*x/8.0+gsl_pow_4(x)/192.-gsl_pow_6(x)/9216.;
-	} else  {
-		return 2*gsl_sf_bessel_J1(x)/x;
-	}
+scalar Kernel_w(scalar w, void * pam) {
+	scalar Psi;
+	sasfit_param *param;
+	param = (sasfit_param *) pam;
+
+	Psi = sqrt(2.*R1*R1*(1.-cos(w/sqrt(R1*R1+A*A)))+A*A*w*w/(R1*R1+A*A)); 
+//	sasfit_out("a:%lg\t P:%lg\t R:%lg\t H:%lg\t L:%lg\t q:%lg\t\n",A,P,R1,H,L,Q);
+	return 2./(L*L) * (L-w)*sinc(Q*Psi);
 }
 
-scalar sasfit_ff_round_helix(scalar q, sasfit_param * param)
+scalar sasfit_ff_superhelices(scalar q, sasfit_param * param)
 {
-	scalar Qperp, sum,sumold, a1n, a2n,beta1, beta2;
-	int n;
+	scalar sum,err, *aw;
+	int lenaw;
+	
+	lenaw=4000;
+    aw = (scalar *)malloc((lenaw)*sizeof(scalar));
 	
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -43,28 +51,22 @@ scalar sasfit_ff_round_helix(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((P < 0.0), param, "P(%lg) < 0",P); // modify condition to your needs
 
 	// insert your code here
-	sum = 0.0;
-	sumold = 0.0;
+	Q=q;
+	A = P/(2.*M_PI);
+	L=H/A*sqrt(R1*R1+A*A);
+//	sum = Kernel_w(0,param);
 	
-	beta1 = R1*R1*M_PI*(ETA_1-ETA_SOLV);
-	beta2 = R2*R2*M_PI*(ETA_2-ETA_SOLV);
-	for (n=0;n<q*P/(2*M_PI);n++) {
-//		sasfit_out("q: %lf  n: %d\n",q, n);
-		Qperp = sqrt(fabs(q*q-gsl_pow_2(2*M_PI*n/P)));
-		a1n = gsl_sf_bessel_Jn(n,DELTA1*Qperp)*twoJ1x_x(R1*Qperp)*beta1;
-		a2n = gsl_sf_bessel_Jn(n,DELTA2*Qperp)*twoJ1x_x(R2*Qperp)*beta2;
-		sum = sum+(a1n*a1n+a2n*a2n+2.*a1n*a2n*cos(n*ALPHA)) * (n==0?1:2);
-		if (n>1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || n>NMAX)) {
-//			sasfit_out("q:%lf\t fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t n:%d\n",q,sum,sum-sumold,n);
-			break;
-		}
-		sumold=sum;
-	}
-//	return sum/gsl_pow_2(beta1+beta2);
-	return thinrod_helix(q,H)*sum/gsl_pow_2((beta1+beta2)*H);
+	sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+	sasfit_intde(&Kernel_w, 0.0, L, aw, &sum, &err,param);
+//	sasfit_out("a:%lg\t P:%lg\t R:%lg\t H:%lg\t L:%lg\t q:%lg\t I:%lg\t Delta_I:%lg\t\n",A,P,R1,H,L,q,sum,err);
+//	sum = sasfit_integrate(0,L,&Kernel_w,param);
+	
+
+    free(aw);
+	return sum;
 }
 
-scalar sasfit_ff_round_helix_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_superhelices_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -72,7 +74,7 @@ scalar sasfit_ff_round_helix_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_round_helix_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_superhelices_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

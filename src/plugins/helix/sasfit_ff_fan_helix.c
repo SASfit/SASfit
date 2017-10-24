@@ -75,14 +75,14 @@ scalar sasfit_ff_fan_helix(scalar q, sasfit_param * param)
 //	}
 	for (n=1;n<q*P/(2*M_PI);n++) {
 		sum = sum + 2*prefac*prefct(n,param)*gn2(q,n,param);
-		if (n>=1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || n>NMAX || n>=sasfit_eps_get_jmax_nriq())) {
-//			sasfit_out("fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t n:%d\n",sum,sum-sumold,n);
+		if (n>=1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || n>NMAX )) {
+//			sasfit_out("q:%lf\t fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t n:%d\n",q,sum,sum-sumold,n);
 			break;
 		}
 		sumold=sum;
 	}
 //	return sum 
-	return thinrod_helix(q,H)*sum * gsl_pow_2(M_PI*R*R*(1.0-A*A)*OMEGA/M_PI);
+	return thinrod_helix(q,H)*sum * gsl_pow_2(M_PI*R*R*(1.0-A*A)*OMEGA/M_PI)   /  gsl_pow_2(R*R*(1.0-A*A)*OMEGA*H);
 }
 
 scalar sasfit_ff_fan_helix_f(scalar q, sasfit_param * param)

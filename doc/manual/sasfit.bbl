@@ -28,6 +28,15 @@ N.~W. Ashcroft and L.~Lenker.
 \newblock Structure and resistivity of liquid metals.
 \newblock {\em Physical Review}, 145(1):83--90, May 1966.
 
+\bibitem{Avdeev2013}
+Mikhail~V. Avdeev, Victor~L. Aksenov, Zuzana Gazov{\'{a}}, L{\'{a}}szl{\'{o}}
+  Alm{\'{a}}sy, Viktor~I. Petrenko, Hubert Gojzewski, Artem~V. Feoktystov,
+  Katarina Siposova, Andrea Antosova, Milan Timko, and Peter Kopcansky.
+\newblock {On the determination of the helical structure parameters of amyloid
+  protofilaments by small-angle neutron scattering and atomic force
+  microscopy}.
+\newblock {\em Journal of Applied Crystallography}, 46(1):224--233, Feb 2013.
+
 \bibitem{Ballone1986}
 P.~Ballone, G.~Pastore, G.~Galli, and D.~Gazzillo.
 \newblock Additive and non-additive hard sphere mixtures.
@@ -55,6 +64,12 @@ G.~Beaucage.
 \newblock Small-angle scattering from polymeric mass fractals of arbitrary
   mass-fractal dimension.
 \newblock {\em J. Appl. Cryst.}, 29:134--146, 1996.
+
+\bibitem{Benham1980}
+C.J. Benham, G.W. Brady, and D.B. Fein.
+\newblock X-ray scattering from randomly oriented superhelices. circular
+  superhelical {DNA}.
+\newblock {\em Biophysical Journal}, 29(3):351--366, mar 1980.
 
 \bibitem{Benoit53}
 H.~Benoit.
@@ -274,7 +289,7 @@ L.~A. Feigin and D.~I. Svergun.
 
 \bibitem{Forster2010}
 S.~F{\"{o}}rster, L.~Apostol, and W.~Bras.
-\newblock {{\it Scatter}: software for the analysis of nano- and mesoscale
+\newblock {Scatter: software for the analysis of nano- and mesoscale
   small-angle scattering}.
 \newblock {\em Journal of Applied Crystallography}, 43(3):639--646, Jun 2010.
 
@@ -304,6 +319,13 @@ S.~F\"orster, A.~Timmann, M.~Konrad, C.~Schellbach, A.~Meyer, S.~S. Funari,
 \newblock Scattering curves of ordered mesoscopic materials.
 \newblock {\em The Journal of Physical Chemistry B}, 109(4):1347--1360, 2005.
 \newblock PMID: 16851102.
+
+\bibitem{Franklin1956}
+Rosalind~E. Franklin and A.~Klug.
+\newblock The nature of the helical groove on the tobacco mosaic virus particle
+  x-ray diffraction studies.
+\newblock {\em Biochimica et Biophysica Acta}, 19(Supplement C):403 -- 416,
+  1956.
 
 \bibitem{Fratzl1994}
 Peter Fratzl.
@@ -341,6 +363,12 @@ Thomas Fr{\"{u}}hwirth, Gerhard Fritz, Norbert Freiberger, and Otto Glatter.
 \newblock {Structure and order in lamellar phases determined by small-angle
   scattering}.
 \newblock {\em Journal of Applied Crystallography}, 37(5):703--710, Oct 2004.
+
+\bibitem{Fukuda2002}
+Hiroshi Fukuda, Ayako Goto, and Toyoko Imae.
+\newblock Structure determination of helical fibers by numerical simulation for
+  small-angle neutron scattering{\textdagger}.
+\newblock {\em Langmuir}, 18(19):7107--7114, sep 2002.
 
 \bibitem{Furukawa1984}
 H.~Furukawa.
@@ -623,6 +651,14 @@ M.~A. Krasnoselskij.
 O.~Kratky and G.~Porod.
 \newblock Diffuse small-angle scattering of x-rays in colloid systems.
 \newblock {\em Journal of Colloid Science}, 4(1):35 -- 70, 1949.
+
+\bibitem{Lebedev2003}
+D.V. Lebedev, D.M. Baitin, A.Kh. Islamov, A.I. Kuklin, V.Kh. Shalguev, V.A.
+  Lanzov, and V.V. Isaev-Ivanov.
+\newblock Analytical model for determination of parameters of helical
+  structures in solution by small angle scattering: comparison of reca
+  structures by sans.
+\newblock {\em FEBS Letters}, 537(1-3):182--186, 2003.
 
 \bibitem{Lebowitz1966}
 J.~L. Lebowitz and J.~K. Percus.
@@ -911,6 +947,17 @@ William~H. Press, Saul~A. Teukolsky, William~T. Vetterling, and Brian~P.
 \newblock {\em Numerical Recipes. The Art of Scientific Computing}.
 \newblock Cambridge University Press, 3rd edition, 2007.
 
+\bibitem{Pringle1971}
+O.~A. Pringle and P.~W. Schmidt.
+\newblock {Small-angle X-ray scattering from helical macromolecules}.
+\newblock {\em Journal of Applied Crystallography}, 4(4):290--293, Aug 1971.
+
+\bibitem{Puigjaner1974}
+L.~C. Puigjaner and J.~A. Subirana.
+\newblock {Low-angle X-ray scattering by disordered and partially ordered
+  helical systems}.
+\newblock {\em Journal of Applied Crystallography}, 7(2):169--173, Apr 1974.
+
 \bibitem{Pusey1974}
 Peter~N. Pusey, Dennis~E. Koppel, Dale~E. Schaefer, Rafael~D. Camerini-Otero,
   and Seymour~H. Koenig.
@@ -973,6 +1020,11 @@ Youcef Saad and Martin~H. Schultz.
   nonsymmetric linear systems.
 \newblock {\em SIAM Journal on Scientific and Statistical Computing},
   7(3):856--869, 1986.
+
+\bibitem{Schmidt1970}
+P.~W. Schmidt.
+\newblock {Small angle X-ray scattering from helical filaments}.
+\newblock {\em Journal of Applied Crystallography}, 3(4):257--264, Aug 1970.
 
 \bibitem{StreyKlineKaler1994}
 K.-V. Schubert, R.~Strey, S.~R. Kline, and E.~W. Kaler.
@@ -1049,6 +1101,13 @@ Carsten Svaneborg and Jan~Skov Pedersen.
 \newblock Form factors of block copolymer micelles with excluded-volume
   interactions of the corona chains determined by monte carlo simulations.
 \newblock {\em Macromolecules}, 35(3):1028--1037, 2002.
+
+\bibitem{Teixeira2010}
+Cil{\^{a}}ine~V. Teixeira, Heinz Amenitsch, Takanori Fukushima, Jonathan~P.
+  Hill, Wusong Jin, Takuso Aida, Matti Hotokka, and Mika Lind{\'{e}}n.
+\newblock {Form factor of an {\it N}-layered helical tape and its application
+  to nanotube formation of hexa-{\it peri}-hexabenzocoronene-based molecules}.
+\newblock {\em Journal of Applied Crystallography}, 43(4):850--857, Aug 2010.
 
 \bibitem{TeubnerStrey87}
 M.~Teubner and R.~Strey.

@@ -37,7 +37,7 @@
 // add local defines here:
 // #define P0 param->p[0]
 //
-#define NMAX 100
+#define NMAX 200
 
 scalar thinrod_helix(scalar, scalar);
 scalar sinc(scalar);
