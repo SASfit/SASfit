@@ -30,7 +30,7 @@
 
 #include "sasfit_common_shared_exports.h"
 #include <gsl/gsl_integration.h>
-
+#include "cubature.h"
 /**
  * \file sasfit_utils.h
  * \ingroup sasfit_utils
@@ -115,6 +115,16 @@ sasfit_common_DLLEXP scalar sasfit_rod_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_sphere_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_gauss_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_g(scalar fp, scalar a);
+sasfit_common_DLLEXP int hcubature(unsigned fdim, integrand f, void *fdata,
+	      unsigned dim, const double *xmin, const double *xmax, 
+	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      error_norm norm,
+	      double *val, double *err);
+sasfit_common_DLLEXP int pcubature(unsigned fdim, integrand f, void *fdata,
+	      unsigned dim, const double *xmin, const double *xmax, 
+	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      error_norm norm,
+	      double *val, double *err);
 sasfit_common_DLLEXP void sasfit_intcc(double (*f)(double, void *), double a, double b, double eps, int lenw, double *w, double *i, double *err, void *fparams);
 sasfit_common_DLLEXP void sasfit_intccini(int lenw, double *w);
 sasfit_common_DLLEXP void sasfit_intdeo(double (*f)(double, void *), double a, double omega, double *aw, double *i, double *err, void *fparams);

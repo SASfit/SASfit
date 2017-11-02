@@ -147,8 +147,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
     NULL, /* 103 */
     NULL, /* 104 */
     NULL, /* 105 */
-    NULL, /* 106 */
-    NULL, /* 107 */
+    hcubature, /* 106 */
+    pcubature, /* 107 */
     sasfit_intccini, /* 108 */
     sasfit_intcc, /* 109 */
     sasfit_intdeiini, /* 110 */

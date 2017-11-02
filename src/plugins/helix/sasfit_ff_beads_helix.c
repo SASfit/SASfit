@@ -79,6 +79,6 @@ scalar sasfit_ff_beads_helix_v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return  4./3. * M_PI *gsl_pow_3(R)*N*H/P;
 }
 

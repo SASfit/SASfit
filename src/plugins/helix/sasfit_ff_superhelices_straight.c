@@ -32,13 +32,19 @@ scalar Kernel_w(scalar w, void * pam) {
 	return 2./(L*L) * (L-w)*sinc(Q*Psi);
 }
 
-scalar sasfit_ff_superhelices(scalar q, sasfit_param * param)
+int Kernel_straight(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+	fval[0] = Kernel_w(x[0], pam);
+	return 0;
+}
+
+scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * param)
 {
 	scalar sum,err, *aw;
+	scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
 	int lenaw;
 	
 	lenaw=4000;
-    aw = (scalar *)malloc((lenaw)*sizeof(scalar));
 	
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -55,18 +61,58 @@ scalar sasfit_ff_superhelices(scalar q, sasfit_param * param)
 	A = P/(2.*M_PI);
 	L=H/A*sqrt(R1*R1+A*A);
 //	sum = Kernel_w(0,param);
-	
-	sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-	sasfit_intde(&Kernel_w, 0.0, L, aw, &sum, &err,param);
+	switch(sasfit_get_int_strategy()) {
+    case OOURA_DOUBLE_EXP_QUADRATURE: {
+			aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+			sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+			sasfit_intde(&Kernel_w, 0.0, L, aw, &sum, &err,param);
+			free(aw);
+            break;
+            } 
+    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
+			aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
+			sasfit_intccini(lenaw, aw);
+			sasfit_intcc(&Kernel_w, 0.0, L, sasfit_eps_get_nriq(), lenaw, aw, &sum, &err,param);
+			free(aw);
+            break;
+            } 
+	case H_CUBATURE: {
+			cubxmin[0]=0;
+			cubxmax[0]=L;
+			hcubature(1, &Kernel_straight,param,1, cubxmin, cubxmax, 
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+				fval, ferr);
+			sum = fval[0];
+            break;
+            }
+    case P_CUBATURE: {	
+			cubxmin[0]=0;
+			cubxmax[0]=L;
+			pcubature(1, &Kernel_straight,param,1, cubxmin, cubxmax, 
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+				fval, ferr);
+//	ERROR_PAIRED
+//	ERROR_INDIVIDUAL
+//  ERROR_L2
+//  ERROR_L1
+//  ERROR_LINF
+			sum = fval[0];
+            break;
+            }
+    default: {
+            sasfit_err("Unknown integration strategy\n");
+            break;
+            }
+	}
+
 //	sasfit_out("a:%lg\t P:%lg\t R:%lg\t H:%lg\t L:%lg\t q:%lg\t I:%lg\t Delta_I:%lg\t\n",A,P,R1,H,L,q,sum,err);
 //	sum = sasfit_integrate(0,L,&Kernel_w,param);
 	
 
-    free(aw);
 	return sum;
 }
 
-scalar sasfit_ff_superhelices_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_superhelices_straight_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -74,11 +120,12 @@ scalar sasfit_ff_superhelices_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_superhelices_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_superhelices_straight_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	A = P/(2.*M_PI);
+	return H/A*sqrt(R1*R1+A*A);
 }
 

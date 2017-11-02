@@ -62,7 +62,7 @@
  */
 
 typedef int sasfit_func_zspow_t(real * xla, real * f, integer * n, real * par);
-
+						  
 /**
  * \ingroup sasfit_stubs
  * Contains pointer to all functions in sasfit_common available for usage in
@@ -182,8 +182,16 @@ typedef struct
 	void *reserved103; /* 103 */
 	void *reserved104; /* 104 */
 	void *reserved105; /* 105 */
-	void *reserved106; /* 106 */
-	void *reserved107; /* 107 */
+	void (*hcubature) (unsigned fdim, integrand f, void *fdata,
+	      unsigned dim, const double *xmin, const double *xmax, 
+	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      error_norm norm,
+	      double *val, double *err); /* 106 */
+	void (*pcubature) (unsigned fdim, integrand f, void *fdata,
+	      unsigned dim, const double *xmin, const double *xmax, 
+	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      error_norm norm,
+	      double *val, double *err); /* 107 */
 	void (* sasfit_intccini) (int lenw, double *w);  /* 108 */
 	void (* sasfit_intcc) (double (*f)(double, void *), double a, double b, double eps, int lenw, double *w, double *i, double *err, void *fparams);  /* 109 */
 	void (* sasfit_intdeiini) (int lenaw, double tiny, double eps, double *aw);  /* 110 */
@@ -551,6 +559,22 @@ typedef struct
 #ifndef sasfit_wofz
 #define sasfit_wofz \
 	(sasfit_common_stubs_ptr->sasfit_wofz) /* 96 */
+#endif
+#ifndef hcubature
+#define hcubature \
+	(sasfit_common_stubs_ptr->hcubature) /* 106 */
+#endif
+#ifndef pcubature
+#define pcubature \
+	(sasfit_common_stubs_ptr->pcubature) /* 107 */
+#endif
+#ifndef sasfit_intccini
+#define sasfit_intccini \
+	(sasfit_common_stubs_ptr->sasfit_intccini) /* 108 */
+#endif
+#ifndef sasfit_intcc
+#define sasfit_intcc \
+	(sasfit_common_stubs_ptr->sasfit_intcc) /* 109 */
 #endif
 #ifndef sasfit_intdeiini
 #define sasfit_intdeiini \

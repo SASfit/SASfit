@@ -238,12 +238,12 @@ sasfit_helix_DLLEXP scalar sasfit_ff_beads_helix_f(scalar q, sasfit_param * p);
 sasfit_helix_DLLEXP scalar sasfit_ff_beads_helix_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_beads_helix ################ */
 
-/* ################ start ff_beads_helix ################ */
+/* ################ start ff_superhelices_straight ################ */
 /** 
- * \defgroup ff_superhelices superhelices
+ * \defgroup ff_superhelices_straight straight superhelix
  * \ingroup ff_plugins_helix
  *
- * \brief \< some brief description of superhelices function\>
+ * \brief \< some brief description of straight superhelix function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -254,11 +254,11 @@ sasfit_helix_DLLEXP scalar sasfit_ff_beads_helix_v(scalar q, sasfit_param * p, i
  *       <td>\b R1</td>
  *       <td>radius of monomer units/beads</td>
  *      </tr><tr>
- *       <td>\b D</td>
- *       <td>mean diameter of the heli</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b n</td>
- *       <td>number of monomers per turn</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -272,39 +272,105 @@ sasfit_helix_DLLEXP scalar sasfit_ff_beads_helix_v(scalar q, sasfit_param * p, i
  *       <td>\b H</td>
  *       <td>helix length</td>
  *      </tr><tr>
- *       <td>\b eta_b</td>
- *       <td>scattering length density of beads</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b eta_solv</td>
- *       <td>scattering length density of solvent</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr></table>
  */
 
 /**
- * \ingroup ff_superhelices
+ * \ingroup ff_superhelices_straight
  *
  * \sa sasfit_helix.h, ff_plugins_helix
  */
-sasfit_helix_DLLEXP scalar sasfit_ff_superhelices(scalar q, sasfit_param * p);
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_superhelices
+ * \ingroup ff_superhelices_straight
  *
  * \sa sasfit_helix.h, ff_plugins_helix
  */
-sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_f(scalar q, sasfit_param * p);
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_straight_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_superhelices
+ * \ingroup ff_superhelices_straight
  *
  * \sa sasfit_helix.h, ff_plugins_helix
  */
-sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_superhelices ################ */
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_straight_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superhelices_straight ################ */
 
+/* ################ start ff_superhelices_coiled ################ */
+/** 
+ * \defgroup ff_superhelices_coiled coiled superhelix
+ * \ingroup ff_plugins_helix
+ *
+ * \brief \< some brief description of coiled superhelix function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R1</td>
+ *       <td>radius primary turns</td>
+ *      </tr><tr>
+ *       <td>\b R2</td>
+ *       <td>radius of secondary turns</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b N</td>
+ *       <td>number of primary turns per secondary turn</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>tilting angle</td>
+ *      </tr><tr>
+ *       <td>\b P</td>
+ *       <td>helix period</td>
+ *      </tr><tr>
+ *       <td>\b turns</td>
+ *       <td>number of secondary turns</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_superhelices_coiled
+ *
+ * \sa sasfit_helix.h, ff_plugins_helix
+ */
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superhelices_coiled
+ *
+ * \sa sasfit_helix.h, ff_plugins_helix
+ */
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_coiled_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superhelices_coiled
+ *
+ * \sa sasfit_helix.h, ff_plugins_helix
+ */
+sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_coiled_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superhelices_coiled ################ */
 
 #endif // this file
 
