@@ -30,7 +30,7 @@ scalar twoJ1x_x(scalar x) {
 scalar sasfit_ff_round_helix(scalar q, sasfit_param * param)
 {
 	scalar Qperp, sum,sumold, a1n, a2n,beta1, beta2;
-	int n;
+	int n,twice;
 	
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -48,20 +48,21 @@ scalar sasfit_ff_round_helix(scalar q, sasfit_param * param)
 	
 	beta1 = R1*R1*M_PI*(ETA_1-ETA_SOLV);
 	beta2 = R2*R2*M_PI*(ETA_2-ETA_SOLV);
+	twice = 0;
 	for (n=0;n<q*P/(2*M_PI);n++) {
-//		sasfit_out("q: %lf  n: %d\n",q, n);
 		Qperp = sqrt(fabs(q*q-gsl_pow_2(2*M_PI*n/P)));
 		a1n = gsl_sf_bessel_Jn(n,DELTA1*Qperp)*twoJ1x_x(R1*Qperp)*beta1;
 		a2n = gsl_sf_bessel_Jn(n,DELTA2*Qperp)*twoJ1x_x(R2*Qperp)*beta2;
 		sum = sum+(a1n*a1n+a2n*a2n+2.*a1n*a2n*cos(n*ALPHA)) * (n==0?1:2);
 		if (n>1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || n>NMAX)) {
-//			sasfit_out("q:%lf\t fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t n:%d\n",q,sum,sum-sumold,n);
-			break;
+			twice++;
+			if (twice >= 2) break;
+		} else {
+			twice = 0;
 		}
 		sumold=sum;
 	}
-//	return sum/gsl_pow_2(beta1+beta2);
-	return thinrod_helix(q,H)*sum/gsl_pow_2((beta1+beta2)*H);
+	return thinrod_helix(q,H)*sum;
 }
 
 scalar sasfit_ff_round_helix_f(scalar q, sasfit_param * param)
@@ -72,11 +73,13 @@ scalar sasfit_ff_round_helix_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_round_helix_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_round_helix_v(scalar x, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
+	
+	param->p[dist] = x;
 	return (R1*R1+R2*R2)*M_PI*H;
 }
 

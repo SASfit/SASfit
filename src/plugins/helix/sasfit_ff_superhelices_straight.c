@@ -9,18 +9,21 @@
 
 // define shortcuts for local parameters/variables
 #define R1	param->p[0]
-#define DELTA1	param->p[1]
-#define R2	param->p[2]
-#define DELTA2	param->p[3]
-#define ALPHA	param->p[4]*M_PI/180.
+// #define DUMMY	param->p[1]
+// #define DUMMY	param->p[2]
+// #define DUMMY	param->p[3]
+// #define DUMMY	param->p[4]
 #define P	param->p[5]
 #define H	param->p[6]
-#define ETA_1	param->p[7]
-#define ETA_2	param->p[8]
-#define ETA_SOLV	param->p[9]
+// #define DUMMY	param->p[7]
+// #define DUMMY	param->p[8]
+// #define DUMMY	param->p[9]
 #define Q	param->p[MAXPAR-1]
 #define L	param->p[MAXPAR-2]
 #define A	param->p[MAXPAR-3]
+#define GAM1 param->p[MAXPAR-4]
+#define GAM2 param->p[MAXPAR-5]
+#define ALPHA	param->p[MAXPAR-6]
 
 scalar Kernel_w(scalar w, void * pam) {
 	scalar Psi;
@@ -42,7 +45,7 @@ scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * param)
 {
 	scalar sum,err, *aw;
 	scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
-	int lenaw;
+	int lenaw, intstrategy;
 	
 	lenaw=4000;
 	
@@ -50,9 +53,6 @@ scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R1 < 0.0), param, "r1(%lg) < 0",R1); // modify condition to your needs
-	SASFIT_CHECK_COND1((R2 < 0.0), param, "r2(%lg) < 0",R2); // modify condition to your needs
-	SASFIT_CHECK_COND1((DELTA1 < 0.0), param, "delta_1(%lg) < 0",DELTA1); // modify condition to your needs
-	SASFIT_CHECK_COND1((DELTA2 < 0.0), param, "delta_2(%lg) < 0",DELTA2); // modify condition to your needs
 	SASFIT_CHECK_COND1((H < 0.0), param, "H(%lg) < 0",H); // modify condition to your needs
 	SASFIT_CHECK_COND1((P < 0.0), param, "P(%lg) < 0",P); // modify condition to your needs
 
@@ -60,8 +60,9 @@ scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * param)
 	Q=q;
 	A = P/(2.*M_PI);
 	L=H/A*sqrt(R1*R1+A*A);
-//	sum = Kernel_w(0,param);
-	switch(sasfit_get_int_strategy()) {
+    intstrategy = sasfit_get_int_strategy();
+	intstrategy=P_CUBATURE;
+	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
 			aw = (scalar *)malloc((lenaw)*sizeof(scalar));
 			sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
@@ -109,7 +110,7 @@ scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * param)
 //	sum = sasfit_integrate(0,L,&Kernel_w,param);
 	
 
-	return sum;
+	return sum*L*L;
 }
 
 scalar sasfit_ff_superhelices_straight_f(scalar q, sasfit_param * param)

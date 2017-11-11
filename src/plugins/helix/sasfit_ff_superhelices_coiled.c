@@ -12,7 +12,7 @@
 #define R2	param->p[1]
 // #define DUMMY	param->p[2]
 #define N	param->p[3]
-#define ALPHA	param->p[4]*M_PI/180.
+// #define DUMMY	param->p[4]
 #define P	param->p[5]
 #define TURNS	param->p[6]
 // #define DUMMY	param->p[7]
@@ -23,6 +23,20 @@
 #define A	param->p[MAXPAR-3]
 #define GAM1 param->p[MAXPAR-4]
 #define GAM2 param->p[MAXPAR-5]
+#define ALPHA	param->p[MAXPAR-6]
+
+void pitchangle(sasfit_param * param) {
+scalar x;
+	if (fabs(P) < 1e-6) {
+		x = 2*M_PI*R1/P;
+		ALPHA = M_PI/2. 
+		       - x 
+			   + gsl_pow_3(x)/3. 
+		       - gsl_pow_5(x)/5.;
+	} else {
+		ALPHA = atan(x);
+	}
+}
 
 scalar r2(scalar g1, scalar g2, void * pam) {
 sasfit_param *param;
@@ -101,7 +115,7 @@ scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
 {
 	scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
 	scalar sum, err, *aw;
-	int lenaw;
+	int lenaw,intstrategy;
 	
 	lenaw=10000;
     
@@ -118,6 +132,7 @@ scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
 	// insert your code here
 	Q=q;
 	A = P/(2.*M_PI);
+	pitchangle(param);
 	
 	aw = (scalar *)malloc((lenaw)*sizeof(scalar));
 	sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
@@ -125,7 +140,9 @@ scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
     free(aw);
 	L = sum;
 	
-	switch(sasfit_get_int_strategy()) {
+    intstrategy = sasfit_get_int_strategy();
+	intstrategy=P_CUBATURE;
+	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
 			aw = (scalar *)malloc((lenaw)*sizeof(scalar));
 			sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
@@ -177,7 +194,7 @@ scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
             break;
             }
     }
-    return sum;
+    return sum*L*L;
 }
 
 scalar sasfit_ff_superhelices_coiled_f(scalar q, sasfit_param * param)
@@ -196,6 +213,7 @@ scalar sasfit_ff_superhelices_coiled_v(scalar q, sasfit_param * param, int dist)
 
 	// insert your code here
 	A = P/(2.*M_PI);
+	pitchangle(param);
 	
 	sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
 	sasfit_intde(&sqrt_f, 0.0, TURNS, aw, &sum, &err,param);

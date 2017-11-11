@@ -27,7 +27,7 @@
 
 scalar bessfct(scalar r, sasfit_param * param) 
 {
-	return r* gsl_sf_bessel_Jn(lround(N),Q*r*sqrt(1.0-QN*QN));
+	return r*gsl_sf_bessel_Jn(lround(N),Q*r*sqrt(1.0-QN*QN));
 }
 
 scalar gn2(scalar q, int n, sasfit_param * param)
@@ -37,11 +37,10 @@ scalar gn2(scalar q, int n, sasfit_param * param)
 	u=q*R;
 	if (u==0.0) return 0.0;
 	qn=n*b/u;
-	if (qn > 1.0) return 0.0;
+	if (qn >= 1.0) return 0.0;
 	Q=q;
 	QN = qn;
 	N=n;
-//	sasfit_out("lround(N): %d, Q: %lf\n",lround(N), Q);
 	BessInt = sasfit_integrate(A*R,R,bessfct,param);
 	return gsl_pow_2(BessInt);
 }
@@ -54,7 +53,7 @@ scalar prefct(int n, sasfit_param * param)
 scalar sasfit_ff_fan_helix(scalar q, sasfit_param * param)
 {
 	scalar prefac, sum, sumold;
-	int n;
+	int n,twice;
 	n=0;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -66,23 +65,22 @@ scalar sasfit_ff_fan_helix(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((H < 0.0), param, "H(%lg) < 0",H); // modify condition to your needs
 	
 	// insert your code here
-	prefac =  gsl_pow_2(2.0/(R*R*(1.0-A*A))*(ETA_H-ETA_SOLV));
+	prefac =  gsl_pow_2(2.0/(R*R*(1.0-A*A)));
 	sum = prefac*gn2(q,0,param);
 	sumold = sum;
-//	for (n=1;n<q*P/(2*M_PI);n++) {
-//		sasfit_out("n: %d\n",n);
-//		sum = sum+2*prefct(n,param)*gn2(q,n,param);
-//	}
+
+	twice = 0;
 	for (n=1;n<q*P/(2*M_PI);n++) {
-		sum = sum + 2*prefac*prefct(n,param)*gn2(q,n,param);
+		sum = sum + 2.0*prefac*prefct(n,param)*gn2(q,n,param);
 		if (n>=1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || n>NMAX )) {
-//			sasfit_out("q:%lf\t fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t n:%d\n",q,sum,sum-sumold,n);
-			break;
+			twice++;
+			if (twice >= 2) break;
+		} else {
+			twice = 0;
 		}
 		sumold=sum;
 	}
-//	return sum 
-	return thinrod_helix(q,H)*sum * gsl_pow_2(M_PI*R*R*(1.0-A*A)*OMEGA/M_PI)   /  gsl_pow_2(R*R*(1.0-A*A)*OMEGA*H);
+	return thinrod_helix(q,H)*sum*gsl_pow_2(sasfit_ff_fan_helix_v(R,param,0)*(ETA_H-ETA_SOLV));
 }
 
 scalar sasfit_ff_fan_helix_f(scalar q, sasfit_param * param)
@@ -93,11 +91,12 @@ scalar sasfit_ff_fan_helix_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_fan_helix_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_fan_helix_v(scalar x, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
+	param->p[dist] = x;
 	return R*R*(1.0-A*A)*OMEGA*H;
 }
 

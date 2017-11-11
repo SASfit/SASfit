@@ -39,7 +39,7 @@ scalar hPsi2(scalar q, int j, sasfit_param * param) {
 scalar sasfit_ff_beads_helix(scalar q, sasfit_param * param)
 {
 	scalar sum,sumold, prefactor,V;
-	int i;
+	int i,twice;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -54,16 +54,18 @@ scalar sasfit_ff_beads_helix(scalar q, sasfit_param * param)
 	prefactor = gsl_pow_2(N*H/P*V *(ETA_B-ETA_SOLV)*hphi(q,param));
 	sum = hPsi2(q,0,param);
 	sumold=sum;
+	twice=0;
 	for (i=1;i<q*P/(2*M_PI);i++) {
 		sum = sum + 2*hPsi2(q,i,param);
 		if (i>=1 && (fabs(sum-sumold)<sasfit_eps_get_nriq()*sum || i>NMAX )) {
-//			sasfit_out("fabs(sum-sumold)<eps*sum\t sum:%lg\t sum-sumold:%lg\t i:%d\n",sum,sum-sumold,i);
-			break;
+			twice++;
+			if (twice >= 2) break;
+		} else {
+			twice = 0;
 		}
 		sumold=sum;
 	}
-//	return sum;
-	return thinrod_helix(q,H)*prefactor*sum / gsl_pow_2(N*H/P*V *(ETA_B-ETA_SOLV)*H);
+	return thinrod_helix(q,H)*prefactor*sum; // gsl_pow_2(N*H/P*V *(ETA_B-ETA_SOLV)*H);
 }
 
 scalar sasfit_ff_beads_helix_f(scalar q, sasfit_param * param)

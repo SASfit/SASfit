@@ -330,8 +330,8 @@ sasfit_helix_DLLEXP scalar sasfit_ff_superhelices_straight_v(scalar q, sasfit_pa
  *       <td>\b N</td>
  *       <td>number of primary turns per secondary turn</td>
  *      </tr><tr>
- *       <td>\b alpha</td>
- *       <td>tilting angle</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b P</td>
  *       <td>helix period</td>
