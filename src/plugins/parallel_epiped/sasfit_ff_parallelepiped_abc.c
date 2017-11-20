@@ -11,36 +11,21 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define A	param->p[0]
-#define B	param->p[1]
-#define C	param->p[2]
-#define ETA	param->p[3]
-#define Q	param->p[MAXPAR-1]
-#define ALPHA	param->p[MAXPAR-2]
-#define BETA	param->p[MAXPAR-3]
+#define NU	param->p[3]
 
-scalar sinc(scalar x)
-{
-	if (fabs(x) <= 1e-4) {
-		return 1.0-gsl_pow_2(x)/6.0
-		          +gsl_pow_4(x)/120.0
-		          -gsl_pow_6(x)/5040.0
-		          +gsl_pow_8(x)/362880.0;
-	} else {
-		return sin(x)/x;
-	}
-}
-
-scalar Kernel_P(const double *gam, void * pam) {
+int abc_cubature(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
 	sasfit_param *param;
 	param = (sasfit_param *) pam;
-	param->p[MAXPAR-3] = gam[0];
-	param->p[MAXPAR-2] = gam[1];
-	return 2./M_PI * gsl_pow_2(sinc(Q*A/2.0*sin(param->p[MAXPAR-2])*cos(param->p[MAXPAR-3])) *
-				               sinc(Q*B/2.0*sin(param->p[MAXPAR-2])*sin(param->p[MAXPAR-3])) *
-							   sinc(Q*C/2.0*cos(param->p[MAXPAR-2]))) * sin(param->p[MAXPAR-2]);
-}
-
+	
+	fval[0] = 0;
+	if ((ndim < 2) || (fdim < 1)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+    fval[0] = Kernel_P(x,pam);
+    return 0;
+} 
 scalar Kernel_P_OOURA2(scalar x, void * pam) {
 	sasfit_param *param;
 	scalar gam[2];
@@ -78,23 +63,12 @@ scalar Kernel_P_OOURA1(scalar x, void * pam) {
 	return sum;
 }
 
-int K_cubature(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval) {
-	fval[0] = 0;
-	if ((ndim < 2) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
-		return 1;
-	}
-    fval[0] = Kernel_P(x,pam);
-    return 0;
-} 
-
 scalar Psi_P_kernel(scalar y, sasfit_param * param)
 {
 	param->p[MAXPAR-2] = y;
-	return 2./M_PI * gsl_pow_2(sinc(Q*A/2.0*sin(param->p[MAXPAR-2])*cos(param->p[MAXPAR-3])) *
-				               sinc(Q*B/2.0*sin(param->p[MAXPAR-2])*sin(param->p[MAXPAR-3])) *
-							   sinc(Q*C/2.0*cos(param->p[MAXPAR-2]))) * sin(param->p[MAXPAR-2]);
+	return 2./M_PI * gsl_pow_2(sinc(Q*NUA/2.0*sin(param->p[MAXPAR-2])*cos(param->p[MAXPAR-3])) *
+				               sinc(Q*NUB/2.0*sin(param->p[MAXPAR-2])*sin(param->p[MAXPAR-3])) *
+							   sinc(Q*NUC/2.0*cos(param->p[MAXPAR-2]))) * sin(param->p[MAXPAR-2]);
 }
 
 scalar Psi_kernel(scalar x, sasfit_param * param)
@@ -112,7 +86,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
     gsl_integration_glfixed_table * wglfixed;
     gsl_function F;
     size_t neval;
-    int lenaw=4000;
+    int intstrategy, lenaw=4000;
 	
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -123,8 +97,13 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((ETA < 0.0), param, "eta(%lg) < 0",ETA); // modify condition to your needs
 
 	Q=q;
+	NUA = NU*A;
+	NUB = NU*B;
+	NUC = NU*C;
 	// insert your code here
-	switch(sasfit_get_int_strategy()) {
+    intstrategy = sasfit_get_int_strategy();
+	intstrategy=P_CUBATURE;
+	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
@@ -146,7 +125,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 			cubxmax[0]=M_PI/2.0;
 			cubxmin[1]=0;
 			cubxmax[1]=M_PI/2.0;
-			hcubature(1, &K_cubature,param,2, cubxmin, cubxmax, 
+			hcubature(1, &abc_cubature,param,2, cubxmin, cubxmax, 
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
 				fval, ferr);
 			sum = fval[0];
@@ -157,7 +136,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 			cubxmax[0]=M_PI/2.0;
 			cubxmin[1]=0;
 			cubxmax[1]=M_PI/2.0;
-			pcubature(1, &K_cubature,param,2, cubxmin, cubxmax, 
+			pcubature(1, &abc_cubature,param,2, cubxmin, cubxmax, 
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
 				fval, ferr);
 			sum = fval[0];

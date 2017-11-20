@@ -7,8 +7,11 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(1)
+SASFIT_PLUGIN_EXP_BEGIN(4)
 SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_abc )
+SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_abc1 )
+SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_abc2 )
+SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_abc3 )
 
 SASFIT_PLUGIN_EXP_END
 

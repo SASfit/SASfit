@@ -31,7 +31,7 @@ proc NewFitDataCmd {l_Q l_IthIres sub l_NR args} {
 	upvar $l_IthIres IthIres
 	upvar $l_NR NR
 	upvar $l_Q Q
-	global SDGraph ResIQGraph IQGraph 
+	global SDGraph ResIQGraph IQGraph ASCIIData
 	global sasfit
 
 	# calculates an alternative fit-quality indicator (across datasets)
@@ -174,10 +174,15 @@ proc NewFitDataCmd {l_Q l_IthIres sub l_NR args} {
 #                                            [lindex [lindex $NR $i] 0]] points)"
 			Put_Graph_el SDGraph [lindex [lindex $NR $i] 0] \
 						[lindex [lindex $NR $i] 1]
-			set SDGraph(x,logscale) 0
-			set SDGraph(x,title) R
-			set SDGraph(y,logscale) 0
-			set SDGraph(y,title) N(R)
+			set SDGraph(x,logscale) 0	
+		switch $::sasfit(actualdatatype) {
+		Ascii {  set nrtitlexText "R / [string map {"\^-1" ""} $ASCIIData(unit)]" }
+		BerSANS { set nrtitlexText "R / nm"}
+		SESANS  {set nrtitlexText "R / nm"}
+		}
+			if {!$::AnalytPar(isGlobal)} { set SDGraph(x,title) $nrtitlexText}   
+#			set SDGraph(y,logscale) 0
+#			set SDGraph(y,title) N(R)
 			set SDGraph(e,symbol)   [lreplace $SDGraph(e,symbol)   \
 				[expr $i] [expr $i] none]
 			set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide)   \
@@ -419,7 +424,7 @@ if {$tmpsasfit(file,n) < 1} {
 } else {
     SelectNewDataFromClipboardCmd $average [expr $tmpsasfit(Nth,n)+1]
 }
-set GlobalFitIQGraph(x,title) "Q / $ASCIIData(unit)\^-1"
+set GlobalFitIQGraph(x,title) "Q / $ASCIIData(unit)"
 # tmpsasfit
 NewGlobalFitDataCmd tmpsasfit
 cp_arr tmpsasfit addsasfit

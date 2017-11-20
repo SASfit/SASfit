@@ -92,11 +92,6 @@ scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * param)
 			pcubature(1, &Kernel_straight,param,1, cubxmin, cubxmax, 
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
 				fval, ferr);
-//	ERROR_PAIRED
-//	ERROR_INDIVIDUAL
-//  ERROR_L2
-//  ERROR_L1
-//  ERROR_LINF
 			sum = fval[0];
             break;
             }
@@ -105,10 +100,6 @@ scalar sasfit_ff_superhelices_straight(scalar q, sasfit_param * param)
             break;
             }
 	}
-
-//	sasfit_out("a:%lg\t P:%lg\t R:%lg\t H:%lg\t L:%lg\t q:%lg\t I:%lg\t Delta_I:%lg\t\n",A,P,R1,H,L,q,sum,err);
-//	sum = sasfit_integrate(0,L,&Kernel_w,param);
-	
 
 	return sum*L*L;
 }

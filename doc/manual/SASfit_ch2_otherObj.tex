@@ -6,8 +6,8 @@ This function has been implemented to simulate the relaxation
 signal $g_2(t)-1 = g_1^2(t)$ of a DLS (dynamic light scattering)
 measurement. The $Q$ dependent contribution to the relaxation
 signal by particles of different radius $R$ is considered by
-weighting $g_2(t)-1$ with the form factor of sperical particles in
-Raylay-Debye-Gans approximation:
+weighting $g_2(t)-1$ with the form factor of spherical particles in
+Rayleigh-Debye-Gans approximation:
 \begin{align}
    I_\text{DLS\_Sphere\_RDG} (t,\eta,T,Q) &=  \int\limits_0^\infty N(R) \; K^2_\text{sp}(Q,R)
    \: e^{-D Q^2t} \; dR
@@ -272,8 +272,8 @@ additional constant phase shift between trigger signal and the
 magnetic field due to phase shifts in the amplifier.
 If the neutron polarization can follow adiabatically the varying magnetic field needs to be verified
 experimentally. Therefore we introduce here a parameter $a_\text{ad} \in [0;1]$ which takes into account
-wether ($a_\text{ad}=1$) or not ($a_\text{ad}=0$) the neutron spin adiabatically follows the change
-of of magnetic field direction ($\text{sgn}(B(t))$).
+whether ($a_\text{ad}=1$) or not ($a_\text{ad}=0$) the neutron spin adiabatically follows the change
+of magnetic field direction ($\text{sgn}(B(t))$).
 \begin{align}
 \BM{r}_\text{ad} =
 \left(

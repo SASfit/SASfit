@@ -106,12 +106,12 @@
  */
  
  /** 
- * \defgroup ff_non-particular non-particular structures 
+ * \defgroup ff_non-particulate non-particulate structures 
  * \ingroup ff_plugins
  *
- * This group contains form factors of non-particular structures.
+ * This group contains form factors of non-particulate structures.
  *
- * \modname{ff_non-particular}
+ * \modname{ff_non-particulate}
  */
  
 /** 

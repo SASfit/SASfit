@@ -10,7 +10,11 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
+	sasfit_parallelepiped_utils.c
 	sasfit_ff_parallelepiped_abc.c
+	sasfit_ff_parallelepiped_abc1.c
+	sasfit_ff_parallelepiped_abc2.c
+	sasfit_ff_parallelepiped_abc3.c
 	interface.c
 )
 

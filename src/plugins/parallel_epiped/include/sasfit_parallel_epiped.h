@@ -58,6 +58,9 @@
  *       <td>\b c</td>
  *       <td>third side length</td>
  *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>scaling factor of linear particle dimensions</td>
+ *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering length density contrast</td>
  *      </tr></table>
@@ -84,6 +87,162 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc_f(scalar q, sa
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_parallelepiped_abc ################ */
+
+/* ################ start ff_parallelepiped_abc1 ################ */
+/** 
+ * \defgroup ff_parallelepiped_abc1 Parallelepiped_abc1
+ * \ingroup ff_plugins_anisotropic
+ *
+ * \brief \<some brief description of Parallelepiped_abc1 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>first side length</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>second side length</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>third side length</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>scaling factor of linear particle dimensions</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>scattering length density contrast</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_parallelepiped_abc1
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_parallelepiped_abc1
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_parallelepiped_abc1
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_parallelepiped_abc1 ################ */
+
+/* ################ start ff_parallelepiped_abc2 ################ */
+/** 
+ * \defgroup ff_parallelepiped_abc2 Parallelepiped_abc2
+ * \ingroup ff_plugins_anisotropic
+ *
+ * \brief \<some brief description of Parallelepiped_abc function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>first side length</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>scaling factor of linear particle dimensions</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>second side length</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>third side length</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>scattering length density contrast</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_parallelepiped_abc2
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_parallelepiped_abc2
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_parallelepiped_abc2
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_parallelepiped_abc2 ################ */
+
+/* ################ start ff_parallelepiped_abc ################ */
+/** 
+ * \defgroup ff_parallelepiped_abc3 Parallelepiped_abc3
+ * \ingroup ff_plugins_anisotropic
+ *
+ * \brief \<some brief description of Parallelepiped_abc function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b nu*a</td>
+ *       <td>first side length with size distribution</td>
+ *      </tr><tr>
+ *       <td>\b nu*b</td>
+ *       <td>second side length with size distribution</td>
+ *      </tr><tr>
+ *       <td>\b nu*c</td>
+ *       <td>third side length with size distribution</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>lognormal width</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>scattering length density contrast</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_parallelepiped_abc3
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_parallelepiped_abc3
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_parallelepiped_abc3
+ *
+ * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ */
+sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_parallelepiped_abc3 ################ */
 
 
 #endif // this file

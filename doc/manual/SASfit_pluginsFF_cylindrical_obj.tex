@@ -7,13 +7,13 @@
 
 %\clearpage
 \subsection{Helical structures} ~\\
-Several approaches for describing the small angle scattering signal from randomly oriented helical structures has been published.
+Several approaches for describing the small angle scattering signal from randomly oriented helical structures have been published.
 In \cite{Franklin1956,Puigjaner1974} a model of a double helix with a round cross section for each strand has been developed. For a fanlike cross section of a double helix a solution has been given by \cite{Schmidt1970,Pringle1971}. Fukuda et al.\ \cite{Fukuda2002} have extended the model to an arbitrary shaped cross section. In a model developed by Lebedev et al.\ \cite{Lebedev2003} it is assumed, that beads are arranged on a helical path assuming a single strand. In all models the helix is straight and its length dimension is large compared to all other characteristic length of the helix.
 In \cite{Benham1980} a solution of a single helical strand which can have a secondary coiling has been described. In this paper the cross section of the helical strand is assumed to be infinitesimal thin.
 
 ~\\
 \subsubsection{Fanlike helix} ~\\
-Double helices with a fanlike cross section in the plane perpendicular to the helix axis have been described by by Schmidt and Pringle \cite{Schmidt1970,Pringle1971}. The model has been generalized by Fakuda et al.\ \cite{Fukuda2002} and Teixeira et al.\ \cite{Teixeira2010}.
+Double helices with a fanlike cross section in the plane perpendicular to the helix axis have been described by by Schmidt and Pringle \cite{Schmidt1970,Pringle1971}. The model has been generalized by Fakuda et al.\ \cite{Fukuda2002} for an arbitrarily shaped cross section and by Teixeira et al.\ \cite{Teixeira2010} to a multi radial shell with fanlike cross section.
 \begin{figure}[htb]
 \begin{center}
   \subfigure[top on view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helicesXS.png}}
@@ -38,7 +38,10 @@ q_n &=
 \end{cases} \\
 P_\text{rod}(Q,H) &= H^2 \left(2\frac{\mathrm{Si}(QH)}{(QH)}-\left(\frac{\sin(QH/2)}{QH/2}\right)^2\right)
 \end{align}
-with $\epsilon_0=1$ for $n=0$ and $\epsilon_n=2$ for $n\geq 1$. The sum converges very fast and for small $Q$-values the first few terms are already sufficient. However, {\tt SASfit} is continuing the sum until the relative change of the sum is less than $10^{-10}$.
+with $\epsilon_n=1$ for $n=0$ and $\epsilon_n=2$ for $n\geq 1$. 
+
+The sum converges very fast and for small $Q$-values the first few terms are already sufficient. However, {\tt SASfit} is continuing the sum until the relative change of the sum is less than $10^{-10}$.
+
 The forward scattering of the model is normalized to the squared scattering length density contrast and squared total volume of the helix so that
 \begin{align}
 I(Q=0) &= \left(H\left(\eta_\text{h}-\eta_\text{solv}\right)\omega R^2\left(1-a^2\right)\right)^2
@@ -79,7 +82,7 @@ I(Q=0) &= \left(H\left(\eta_\text{h}-\eta_\text{solv}\right)\omega R^2\left(1-a^
 %\phantom{.}~\\
 \newpage
 \subsubsection{Helix with round cross-section} ~\\
-Originally Franklin et al.\ \cite{Franklin1956} and Puigjaner et al.\ \cite{Puigjaner1974} have given the form factor of a cylinder in with a groove of a double helix of round cross section. Fukada \cite{Fukuda2002} is discussing the form factor of the random oriented double helices alone, but with arbitrary cross-sections.
+Originally Franklin et al.\ \cite{Franklin1956} and Puigjaner et al.\ \cite{Puigjaner1974} have given the form factor of a cylinder with a groove of a double helix shape of round cross section. Fukada \cite{Fukuda2002} is discussing the form factor of the random oriented double helices alone, but with arbitrary cross-sections.
 \begin{figure}[htb]
 \begin{center}
   \subfigure[top on view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/roundhelices1.png}}
@@ -101,6 +104,13 @@ Q_\perp^2 &= Q^2-\left[\frac{2\pi n}{P}\right]^2
 with $\epsilon_j=1$ for $j=0$ and $\epsilon_j=2$ for $j\geq 1$. Furthermore $R_1$ and $R_2$ are the radii of the round helical strands.
 $\delta_1$ and $\delta_2$ are the distances of the strands to the helix axis.
 The pitch of the helix is denoted by $P$, whereas $\alpha$ is the angle between the two strands.
+
+The sum converges very fast and for small $Q$-values the first few terms are already sufficient. However, {\tt SASfit} is continuing the sum until the relative change of the sum is less than $10^{-10}$.
+
+The forward scattering of the model is normalized to the squared scattering length density contrast and squared total volume of the helix so that
+\begin{align}
+I(Q=0) &= H^2\left(\left(\eta_\text{1}-\eta_\text{solv}\right)\pi R_1^2+\left(\eta_\text{2}-\eta_\text{solv}\right)\pi R_2^2\right)^2
+\end{align}
 
 \vspace{5mm}
 
@@ -136,13 +146,13 @@ The pitch of the helix is denoted by $P$, whereas $\alpha$ is the angle between 
 %\phantom{.}~\\
 \newpage
 \subsubsection{Beads model of a single helical strand} ~\\
-\cite{Lebedev2003,Avdeev2013}
+In this model  \cite{Lebedev2003,Avdeev2013} it is assumed that spherical beads are arranged along the path of a single helical strand. It is the product of the form factor of a sphere and the structure factor described by a helix with an infinitesimal thin single strand.
 
 \begin{figure}[htb]
 \begin{center}
-  \subfigure[side view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_1.png}}
+  \subfigure[side view]{\label{fig:beadshelixside}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_1.png}}
 \hfill
-  \subfigure[top on view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_2.png}}
+  \subfigure[top on view]{\label{fig:beadshelixside}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_2.png}}
 %\includegraphics[width=0.4\textwidth,height=0.74\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model.png}
 \end{center}
 \caption{Bead model of a helix. In figure a) bead helices with different bead radius and different number of beads per turn are shown} \label{fig:beadshelix}
@@ -171,7 +181,9 @@ Therefore the sum in eq.\ \ref{eq:beadshelix1} can be written as
 I(Q) &= P_\text{rod}(Q,H) \sum_{j=0}^{\infty} \epsilon_j \abs{\frac{nH}{P}\Psi_j\left(QD,\frac{2\pi j}{PQ}\right) \Phi(Q,R)}^2
 \label{eq:beadshelix2}
 \end{align}
-with $\epsilon_0=1$ for $j=0$ and $\epsilon_j=2$ for $j\geq 1$. The sum converges very fast and for small $Q$-values the first two term are already sufficient. However, {\tt SASfit} is continuing the sum until either the argument below the square root becomes negative or the relative change of the sum is less than $10^{-10}$.
+with $\epsilon_j=1$ for $j=0$ and $\epsilon_j=2$ for $j\geq 1$. 
+
+The sum converges very fast and for small $Q$-values the first two term are already sufficient. However, {\tt SASfit} is continuing the sum until either the argument below the square root becomes negative or the relative change of the sum is less than $10^{-10}$.
 
 The forward scattering of the model is normalized so that
 \begin{align}
@@ -213,22 +225,25 @@ I(Q=0) &= \left(H\frac{nH}{P}\frac{4\pi}{3}R^3\left(\eta_\text{b}-\eta_\text{sol
 %\phantom{.}~\\
 \newpage
 \subsubsection{straight superhelix} ~\\
-
+Benham et al.\ \cite{Benham1980} and Crick \cite{Crick1953} describe single helices with a secondary helical curvature, which they call coiled superhelices or coiled coil. They assume in their analysis an infinitesimal thin helical strand.
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.497\textwidth,height=0.529\textwidth]{../images/form_factor/cylindrical_obj/straightSuperhelix.png}
 \end{center}
 \caption{infinitesimal thin single stranded helix} \label{fig:straightsuperhelix}
 \end{figure}
-
-Benham et al.\ \cite{Benham1980} and Crick \cite{Crick1953} describe single helices with a secondary helical curvature, which they call coiled superhelices or coiled coil. They assume in their analysis an infinitesimal thin helical strand. The straight superhelix is their starting geometry without a secondary coiling. The expression for a random oriented straight superhelix of finite length can be written exact in form of a single integral and is given by
+ The straight superhelix is their starting geometry without a secondary coiling. The expression for a random oriented straight superhelix of finite length can be written exact in form of a single integral and is given by
 \begin{align}
 I(Q) &= 2 \int_0^{\mathcal{L}} \frac{(\mathcal{L}-w)\sin Q\psi}{Q\psi} \mathrm{d}w \\
 \psi &= + \sqrt{2 R_1^2\left[1-\cos\left(\frac{w}{\sqrt{R_1^2+a^2)}}\right) \right]+\frac{a^2w^2}{R_1^2+a^2}} \\
 \mathcal{L} &= 2\pi \frac{H}{P} \sqrt{R_1^2+a^2} \\
 a &= \frac{P}{2\pi}
 \end{align}
-$\mathcal{L}$ is the arclength of the helix, $R_1$ the distance to the helix axis and $P$ the pitch of the helix. The intensity is normalized to the squared arclength of the helix. i.e. $I(Q=0)=\mathcal{L}^2$.
+$\mathcal{L}$ is the arclength of the helix, $R_1$ the distance to the helix axis and $P$ the pitch of the helix. The intensity is normalized to the squared arclength of the helix. i.e. 
+\begin{align}
+I(Q=0)&=\mathcal{L}^2
+\end{align}
+
 \vspace{5mm}
 
 \underline{Input Parameters for model \texttt{straight superhelix}:}\\
@@ -263,7 +278,7 @@ $\mathcal{L}$ is the arclength of the helix, $R_1$ the distance to the helix axi
 %\phantom{.}~\\
 \newpage
 \subsubsection{coiled superhelix} ~\\
-A coiled superhelix or coiled coil is helix with a small repeat whose axis is slightly deformed and follows a larger more graded helical path \cite{Benham1980,Crick1953}.
+A coiled superhelix or coiled coil is a helix with a small repeat whose axis is slightly deformed and follows a larger more graded helical path \cite{Benham1980,Crick1953}.
 \begin{figure}[htb]
 \begin{center}
   \subfigure[A superhelix with primary and secondary turns. The bottom one has ten times more primary turns per secondary turn than the top one]{\label{fig:superhelixcoiled1}
@@ -302,6 +317,11 @@ f(\gamma) &= R_2^2+R_1^2N^2 \left(\cos^2\left(N\gamma\right)+\sin^2\left(N\gamma
 &+\frac{P^2}{(2\pi)^2} + 2R_2*R_1\cos\left(N\gamma\right) +2R_1^2N\cos(\alpha_2)
 \end{split}
 \end{align}
+and 
+\begin{align}
+\gamma_\mathrm{max} &= N_\mathrm{2nd}/(2\pi)
+\end{align}
+where $N_\mathrm{2nd}$ is the number of secondary turns of the coiled superhelix.
 The scattering intensity is than given by
 \begin{align}
 I(Q) &= \int_0^{\gamma_\mathrm{max}} \mathrm{d}\gamma_2 \int_0^{\gamma_\mathrm{max}} \sqrt{f(\gamma_2)f(\gamma_1)}
@@ -320,7 +340,11 @@ r^2(\gamma_1,\gamma_2) &= \left( \begin{pmatrix}
                             z(\gamma_1) \\
                           \end{pmatrix} \right)^2
 \end{align}
-The intensity is normalized to the squared arclength of the helix. i.e. $I(Q=0)=\mathcal{L}^2$.
+The intensity is normalized to the squared arclength of the helix. i.e.
+\begin{align}
+I(Q=0)&=\mathcal{L}^2
+\end{align}
+
 \vspace{5mm}
 
 \underline{Input Parameters for model \texttt{coiled superhelix}:}\\
@@ -343,7 +367,7 @@ The intensity is normalized to the squared arclength of the helix. i.e. $I(Q=0)=
 \item $R_1$,$R_2$, $P$, $N_\mathrm{2nd}$ and $N$ are only physical for values larger than 0.
 \item The model is exact.
 \item The calculation of the scattering intensity requires a double integration, which is the reason for the longer computing time.
-\end{itemize} 
+\end{itemize}
 
 \begin{figure}[htb]
 \begin{center}
@@ -351,4 +375,4 @@ The intensity is normalized to the squared arclength of the helix. i.e. $I(Q=0)=
 \end{center}
 \caption{Normalized scattering curves of single stranded infinitesimal thin coiled helices.}
 \label{fig:helixcoiledIQ}
-\end{figure}
+\end{figure} 

@@ -699,8 +699,8 @@ set SDGraph(x,logscale) 0
 set SDGraph(y,logscale) 0
 set SDGraph(x,type)     x 
 set SDGraph(y,type)     "y*pow(x,3)"
-set SDGraph(x,title) "D / nm"
-set SDGraph(y,title) "N(D)"
+set SDGraph(x,title) "R / nm"
+set SDGraph(y,title) "N(R)"
 
 CreateGraphPar ozSQGraph
 CreateGraphPar ozgrGraph
@@ -719,8 +719,8 @@ set CollectSDGraph(x,logscale) 0
 set CollectSDGraph(y,logscale) 0
 set CollectSDGraph(x,type)     x 
 set CollectSDGraph(y,type)     y 
-set CollectSDGraph(x,title) "D / nm"
-set CollectSDGraph(y,title) "N(D)"
+set CollectSDGraph(x,title) "R / nm"
+set CollectSDGraph(y,title) "N(R)"
 set CollectSDGraph(x,logscale) 0
 set CollectSDGraph(y,logscale) 0
 
@@ -2615,11 +2615,14 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 
 	set yscale {}
 	switch $localsasfit(actualdatatype) {
-		Ascii {set titlexText "Q / $ASCIIData(unit)\^-1"
-				 set titleyText "I(Q)"}
+		Ascii {set titlexText "Q / $ASCIIData(unit)"
+				 set titleyText "I(Q)"
+				 set nrtitlexText "R / [string map {"\^-1" ""} $ASCIIData(unit)]" }
 		BerSANS {set titlexText "Q / nm\^-1"
-				 set titleyText "I(Q)"}
+				 set titleyText "I(Q)"
+				 set nrtitlexText "R / nm"}
 		SESANS  {set titlexText "z / nm"
+		         set nrtitlexText "R / nm"
 		         set yscale "y"
 				 switch $SESANSData(Gz-G0) {
 					"Pz->Gz-G0" {set titleyText "G(z)-G(0)"}
@@ -2644,9 +2647,11 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 						set IQGraph(y,type) y
 						set IQGraph(x,title) $titlexText
 						set IQGraph(y,title) $titleyText
+						set SDGraph(x,title) $nrtitlexText
 					 } else {
 						set IQGraph(x,title) $titlexText
 						set IQGraph(y,title) $titleyText
+						set SDGraph(x,title) $nrtitlexText
 					 }
 		   }
 
@@ -3997,8 +4002,8 @@ frame .obW.tab.sizedistr -relief groove -borderwidth 2
    set SDGraph(y,logscale) 0
    set SDGraph(x,type)     x
    set SDGraph(y,type)     "y*pow(x,3)"
-   set SDGraph(x,title) "D / nm"
-   set SDGraph(y,title) "N(D)"
+   set SDGraph(x,title) "R / nm"
+   set SDGraph(y,title) "N(R)"
    pack $SDGraph(w) -in .obW.tab.sizedistr
    pack configure $SDGraph(w) -fill both -expand yes
 #   .obW.tab manage [list "size distrib." \

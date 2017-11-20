@@ -165,11 +165,6 @@ scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
 			hcubature(1, &f2D_cubature,param,2, cubxmin, cubxmax, 
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
 				fval, ferr);
-//	ERROR_PAIRED
-//	ERROR_INDIVIDUAL
-//  ERROR_L2
-//  ERROR_L1
-//  ERROR_LINF
 			sum = fval[0];
             break;
             }
@@ -181,11 +176,6 @@ scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
 			pcubature(1, &f2D_cubature,param,2, cubxmin, cubxmax, 
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
 				fval, ferr);
-//	ERROR_PAIRED
-//	ERROR_INDIVIDUAL
-//  ERROR_L2
-//  ERROR_L1
-//  ERROR_LINF
 			sum = fval[0];
             break;
             }

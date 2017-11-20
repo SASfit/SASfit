@@ -36,6 +36,24 @@
 // add local defines here:
 // #define P0 param->p[0]
 //
+#define A	param->p[0]
+#define B	param->p[1]
+#define C	param->p[2]
+#define SIGMA param->p[3]
+#define ETA	param->p[4]
+#define Q	param->p[MAXPAR-1]
+#define ALPHA	param->p[MAXPAR-2]
+#define BETA	param->p[MAXPAR-3]
+#define NUA 	param->p[MAXPAR-4]
+#define NUB 	param->p[MAXPAR-5]
+#define NUC 	param->p[MAXPAR-6]
+#define NUDIM 	param->p[MAXPAR-7]
+
+scalar sinc(scalar);
+scalar Kernel_P(const double *, void *);
+int K_cubature(unsigned , const double *, void *, unsigned , double *);
+
+scalar find_LogNorm_int_range(scalar, scalar, scalar, scalar *, scalar *, sasfit_param *);
 
 #endif // end of file
 
