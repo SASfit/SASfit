@@ -74,6 +74,6 @@ scalar sasfit_sq_p__q___rod_v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return L*L;
 }
 

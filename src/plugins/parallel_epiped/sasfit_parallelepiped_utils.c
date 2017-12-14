@@ -22,7 +22,7 @@ scalar Kernel_P(const double *gam, void * pam) {
 	param->p[MAXPAR-2] = gam[1];
 	return 2./M_PI * gsl_pow_2(sinc(Q*NUA/2.0*sin(param->p[MAXPAR-2])*cos(param->p[MAXPAR-3])) *
 				               sinc(Q*NUB/2.0*sin(param->p[MAXPAR-2])*sin(param->p[MAXPAR-3])) *
-							   sinc(Q*NUC/2.0*cos(param->p[MAXPAR-2]))*NUA*NUB*NUC) * sin(param->p[MAXPAR-2]);
+							   sinc(Q*NUC/2.0*cos(param->p[MAXPAR-2]))*NUA*NUB*NUC*ETA) * sin(param->p[MAXPAR-2]);
 }
 
 int K_cubature(unsigned ndim, const double *x, void *pam,

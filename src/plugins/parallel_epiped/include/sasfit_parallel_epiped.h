@@ -39,7 +39,7 @@
 /* ################ start ff_parallelepiped_abc ################ */
 /** 
  * \defgroup ff_parallelepiped_abc Parallelepiped_abc
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_polyhedra
  *
  * \brief \<some brief description of Parallelepiped_abc function\>
  *
@@ -49,17 +49,17 @@
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b a</td>
+ *       <td>\b A</td>
  *       <td>first side length</td>
  *      </tr><tr>
- *       <td>\b b</td>
+ *       <td>\b B</td>
  *       <td>second side length</td>
  *      </tr><tr>
- *       <td>\b c</td>
+ *       <td>\b C</td>
  *       <td>third side length</td>
  *      </tr><tr>
- *       <td>\b nu</td>
- *       <td>scaling factor of linear particle dimensions</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering length density contrast</td>
@@ -69,21 +69,21 @@
 /**
  * \ingroup ff_parallelepiped_abc
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_parallelepiped_abc ################ */
@@ -91,7 +91,7 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc_v(scalar q, sa
 /* ################ start ff_parallelepiped_abc1 ################ */
 /** 
  * \defgroup ff_parallelepiped_abc1 Parallelepiped_abc1
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_polyhedra
  *
  * \brief \<some brief description of Parallelepiped_abc1 function\>
  *
@@ -101,17 +101,17 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc_v(scalar q, sa
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b a</td>
- *       <td>first side length</td>
+ *       <td>\b nu*a</td>
+ *       <td>first side length with size distribution</td>
  *      </tr><tr>
- *       <td>\b b</td>
+ *       <td>\b B</td>
  *       <td>second side length</td>
  *      </tr><tr>
- *       <td>\b c</td>
+ *       <td>\b C</td>
  *       <td>third side length</td>
  *      </tr><tr>
- *       <td>\b nu</td>
- *       <td>scaling factor of linear particle dimensions</td>
+ *       <td>\b sigma</td>
+ *       <td>lognormal width</td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering length density contrast</td>
@@ -121,21 +121,21 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc_v(scalar q, sa
 /**
  * \ingroup ff_parallelepiped_abc1
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc1
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc1
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_parallelepiped_abc1 ################ */
@@ -143,7 +143,7 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1_v(scalar q, s
 /* ################ start ff_parallelepiped_abc2 ################ */
 /** 
  * \defgroup ff_parallelepiped_abc2 Parallelepiped_abc2
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_polyhedra
  *
  * \brief \<some brief description of Parallelepiped_abc function\>
  *
@@ -153,17 +153,17 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1_v(scalar q, s
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b a</td>
- *       <td>first side length</td>
+ *       <td>\b nu*a</td>
+ *       <td>first side length with size distribution</td>
  *      </tr><tr>
- *       <td>\b nu</td>
- *       <td>scaling factor of linear particle dimensions</td>
+ *       <td>\b nu*b</td>
+ *       <td>second side length with size distribution</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>second side length</td>
- *      </tr><tr>
- *       <td>\b c</td>
+ *       <td>\b C</td>
  *       <td>third side length</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>lognormal width</td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering length density contrast</td>
@@ -173,21 +173,21 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc1_v(scalar q, s
 /**
  * \ingroup ff_parallelepiped_abc2
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc2
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc2
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_parallelepiped_abc2 ################ */
@@ -195,7 +195,7 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2_v(scalar q, s
 /* ################ start ff_parallelepiped_abc ################ */
 /** 
  * \defgroup ff_parallelepiped_abc3 Parallelepiped_abc3
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_polyhedra
  *
  * \brief \<some brief description of Parallelepiped_abc function\>
  *
@@ -225,21 +225,21 @@ sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc2_v(scalar q, s
 /**
  * \ingroup ff_parallelepiped_abc3
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc3(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc3
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc3_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_parallelepiped_abc3
  *
- * \sa sasfit_parallel_epiped.h, ff_plugins_anisotropic
+ * \sa sasfit_parallel_epiped.h, ff_plugins_polyhedra
  */
 sasfit_parallel_epiped_DLLEXP scalar sasfit_ff_parallelepiped_abc3_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_parallelepiped_abc3 ################ */

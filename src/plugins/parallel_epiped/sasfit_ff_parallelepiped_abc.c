@@ -97,9 +97,9 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((ETA < 0.0), param, "eta(%lg) < 0",ETA); // modify condition to your needs
 
 	Q=q;
-	NUA = NU*A;
-	NUB = NU*B;
-	NUC = NU*C;
+	NUA = A;
+	NUB = B;
+	NUC = C;
 	// insert your code here
     intstrategy = sasfit_get_int_strategy();
 	intstrategy=P_CUBATURE;
@@ -148,7 +148,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
             break;
             }
     }
-	return gsl_pow_2(ETA*sasfit_ff_parallelepiped_abc_v(q,param,1))	*sum;
+	return sum;
 }
 
 scalar sasfit_ff_parallelepiped_abc_f(scalar q, sasfit_param * param)

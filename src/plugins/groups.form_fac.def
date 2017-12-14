@@ -159,6 +159,15 @@
  * \modname{ff_plugins_pcslocalcylindrical}
  */ 
 
+ /** 
+ * \defgroup ff_plugins_polyhedra polyhedra 
+ * \ingroup ff_plugins_anisotropic
+ *
+ * This group contains cross section factors for polyhedra
+ *
+ * \modname{ff_plugins_polyhedra}
+ */ 
+ 
 /** 
  * \defgroup ff_polymer_micelles polymers & micelles 
  * \ingroup ff_plugins

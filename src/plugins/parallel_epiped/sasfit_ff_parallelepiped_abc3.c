@@ -33,11 +33,12 @@ scalar sasfit_ff_parallelepiped_abc3(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((C < 0.0), param, "c(%lg) < 0",C); // modify condition to your needs
 	SASFIT_CHECK_COND1((ETA < 0.0), param, "eta(%lg) < 0",ETA); // modify condition to your needs
 
+    if (SIGMA==0) return sasfit_ff_parallelepiped_abc(q,param);
 	Q=q;
 	NUDIM = 3;
 	// insert your code here
     intstrategy = sasfit_get_int_strategy();
-
+	intstrategy = P_CUBATURE;
 	switch(intstrategy) {
 		// ERROR_INDIVIDUAL, ERROR_PAIRED, ERROR_L2
     case H_CUBATURE: {
@@ -78,6 +79,7 @@ scalar sasfit_ff_parallelepiped_abc3_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
+    if (SIGMA==0) return sasfit_ff_parallelepiped_abc_f(q,param);
 	return 0.0;
 }
 
@@ -86,6 +88,7 @@ scalar sasfit_ff_parallelepiped_abc3_v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
+    if (SIGMA==0) return sasfit_ff_parallelepiped_abc_v(q,param,dist);
 	return A*B*C;
 }
 

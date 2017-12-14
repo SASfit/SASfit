@@ -1,8 +1,74 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\clearpage
+\section{Non-spherical symmetric randomly oriented particles}
+\label{sec:anisotropic_randomlyoriented_particles}
+\subsection{Rectangular parallelepiped}
+In a rectangular parallelepiped, all angles are right angles, and opposite faces of a parallelepiped are equal. Also the terms rectangular cuboid or orthogonal parallelepiped are used to designate this polyhedron. Four variants of rectangular parallelepipeds have been implemented, where either none, one, two are all three axis have a common size distribution.
+\label{sec:reccuboid}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/anisotropic/rectangularparallelepiped.png}
+\end{center}
+\caption{Rectangular parallelepiped with edge lengths $A$, $B$, and $C$.}
+\label{fig:recparallelepiped}
+\end{figure}
+The scattering intensity of a monodisperse randomly oriented rectangular parallelepiped with the edge lengths $A$, $B$, $C$, and a scattering length density contrast $\Delta\eta$ is given by
+\begin{align}
+\begin{split}
+I_\text{rPE}(Q,A,B,C,\Delta\eta) = & \int\limits_0^\pi\int\limits_0^{\pi/2}
+\frac{2}{\pi} \Bigg[ \textrm{sinc}\left(\frac{QA}{2} \sin(\alpha) \cos(\varphi)\right)  \\
+				     &\textrm{sinc}\left(\frac{QB}{2} \sin(\alpha) \sin(\varphi)\right) \\
+		             &\textrm{sinc}\left(\frac{QC}{2} \cos(\alpha)\right) ABC\, \Delta\eta \Bigg]^2  \sin\left(\alpha\right) \mathrm{d}\alpha \mathrm{d}\varphi
+\end{split}
+\end{align}
+An additional size distribution is implemented in several ways either linearly, quadratically or cubically, depending if one two or all three axis scale with a single size distribution
+\begin{align}
+I_\text{rPE,1}(Q,\sigma, a, b,c,\Delta\eta) &= \int\limits_0^\infty \textrm{LogNorm}(\nu,\sigma) I_\text{rPE}(Q,\nu a,b,c,\Delta\eta) \mathrm{d}\nu \\
+I_\text{rPE,2}(Q,\sigma, a, b,c,\Delta\eta) &= \int\limits_0^\infty \textrm{LogNorm}(\nu,\sigma) I_\text{rPE}(Q,\nu a,\nu b,c,\Delta\eta) \mathrm{d}\nu \\
+I_\text{rPE,3}(Q,\sigma, a, b,c,\Delta\eta) &= \int\limits_0^\infty \textrm{LogNorm}(\nu,\sigma) I_\text{rPE}(Q,\nu a,\nu b,\nu c,\Delta\eta) \mathrm{d}\nu
+\end{align}
+with
+\begin{align}
+\textrm{LogNorm}(\nu,\sigma) &= \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{\ln^2(\nu)}{2\sigma^2}\right)
+\end{align}
+
+\vspace{5mm}
+
+\noindent \underline{Input Parameters for model \texttt{Parallelepiped\_abc}:}\\
+\begin{description}
+\item[\texttt{A}] width $A$
+\item[\texttt{B}] depth $B$
+\item[\texttt{C}] hight $C$
+\item[\texttt{dummy}] not used
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\noindent \underline{Input Parameters for models \texttt{Parallelepiped\_abc1}, \texttt{Parallelepiped\_abc2}}, \underline{and \texttt{Parallelepiped\_abc3}:}\\
+\begin{description}
+\item[\texttt{A}] width $A$
+\item[\texttt{B}] depth $B$
+\item[\texttt{C}] hight $C$
+\item[\texttt{sigma}] width parameter $\sigma$ assuming a LogNorm-distribution
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item None
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/anisotropic/parallelepipedABC.png}
+\end{center}
+\caption{Scattering curves for parallelepiped with optional size distribution a single edge length (\texttt{parallelepiped\_abc1}), of a surface area (\texttt{parallelepiped\_abc1}), or volume \texttt{parallelepiped\_abc3}.}
+\label{fig:IQparallelepiped}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
 \section{Very anisotropic particles (local planar \& local cylindrical objects)}
-\label{sec:anisotropic_particles}
+\label{sec:very_anisotropic_particles}
 For very anisotropic random orientated particles the form factor
 can be factorize according to Porod \cite{Porod1948} in a cross
 section term $P_\text{cs}(Q)$ for the shorter dimension and a

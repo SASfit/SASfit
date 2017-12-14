@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  20 NOV 2017 16:05
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  14 DEC 2017 10:51
 entering extended mode
 **sasfit.tex
 (C:\user\SASfitGit\doc\manual\sasfit.tex
@@ -1143,7 +1143,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--53
 
  []
 
-<SASfit.png, id=1702, 963.6pt x 734.745pt>
+<SASfit.png, id=1710, 963.6pt x 734.745pt>
 File: SASfit.png Graphic file (type png)
  <use SASfit.png>
 Package pdftex.def Info: SASfit.png used on input line 61.
@@ -1181,12 +1181,14 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10]
-[11]
+Underfull \vbox (badness 1558) has occurred while \output is active []
 
-LaTeX Warning: Command \b invalid in math mode on input line 395.
+ [11]
+
+LaTeX Warning: Command \b invalid in math mode on input line 397.
 
 
-LaTeX Warning: Command \b invalid in math mode on input line 395.
+LaTeX Warning: Command \b invalid in math mode on input line 397.
 
 )
 \tf@toc=\write5
@@ -1225,13 +1227,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--131
 
 ]
 Chapter 2
-<QTmainA.png, id=2332, 465.48709pt x 358.50473pt>
+<QTmainA.png, id=2342, 465.48709pt x 358.50473pt>
 File: QTmainA.png Graphic file (type png)
  <use QTmainA.png>
 Package pdftex.def Info: QTmainA.png used on input line 146.
 (pdftex.def)             Requested size: 215.10092pt x 165.6636pt.
 
-<QTmainB.png, id=2334, 465.48709pt x 358.50473pt>
+<QTmainB.png, id=2344, 465.48709pt x 358.50473pt>
 File: QTmainB.png Graphic file (type png)
  <use QTmainB.png>
 Package pdftex.def Info: QTmainB.png used on input line 147.
@@ -1256,26 +1258,26 @@ Underfull \hbox (badness 3128) in paragraph at lines 152--176
  []
 
 [17 <C:/user/SASfitGit/doc/manual/QTmainA.png> <C:/user/SASfitGit/doc/manual/QT
-mainB.png>] <QTloadingSingleDS.png, id=2346, 821.0675pt x 639.38875pt>
+mainB.png>] <QTloadingSingleDS.png, id=2356, 821.0675pt x 639.38875pt>
 File: QTloadingSingleDS.png Graphic file (type png)
 
 <use QTloadingSingleDS.png>
 Package pdftex.def Info: QTloadingSingleDS.png used on input line 179.
 (pdftex.def)             Requested size: 215.10092pt x 167.50546pt.
 
-<QTNewFile.png, id=2347, 380.42125pt x 133.49875pt>
+<QTNewFile.png, id=2357, 380.42125pt x 133.49875pt>
 File: QTNewFile.png Graphic file (type png)
  <use QTNewFile.png>
 Package pdftex.def Info: QTNewFile.png used on input line 187.
 (pdftex.def)             Requested size: 197.1787pt x 69.19566pt.
 
-<QTascii1.png, id=2348, 191.71625pt x 217.81375pt>
+<QTascii1.png, id=2358, 191.71625pt x 217.81375pt>
 File: QTascii1.png Graphic file (type png)
  <use QTascii1.png>
 Package pdftex.def Info: QTascii1.png used on input line 190.
 (pdftex.def)             Requested size: 98.58934pt x 112.0108pt.
 
-<QTascii2.png, id=2349, 191.71625pt x 217.81375pt>
+<QTascii2.png, id=2359, 191.71625pt x 217.81375pt>
 File: QTascii2.png Graphic file (type png)
  <use QTascii2.png>
 Package pdftex.def Info: QTascii2.png used on input line 190.
@@ -1283,19 +1285,19 @@ Package pdftex.def Info: QTascii2.png used on input line 190.
  [18 <C:/user/SASfitGit/doc/manual/QTloadingSingleDS.png> <C:/user/SASfitGit/do
 c/manual/QTNewFile.png (PNG copy)> <C:/user/SASfitGit/doc/manual/QTascii1.png> 
 <C:/user/SASfitGit/doc/manual/QTascii2.png>]
-<QTmergeSDS1.png, id=2364, 437.38406pt x 269.50688pt>
+<QTmergeSDS1.png, id=2374, 437.38406pt x 269.50688pt>
 File: QTmergeSDS1.png Graphic file (type png)
  <use QTmergeSDS1.png>
 Package pdftex.def Info: QTmergeSDS1.png used on input line 221.
 (pdftex.def)             Requested size: 224.06546pt x 138.06352pt.
 
-<QTmergeSDS2.png, id=2365, 437.38406pt x 269.50688pt>
+<QTmergeSDS2.png, id=2375, 437.38406pt x 269.50688pt>
 File: QTmergeSDS2.png Graphic file (type png)
  <use QTmergeSDS2.png>
 Package pdftex.def Info: QTmergeSDS2.png used on input line 223.
 (pdftex.def)             Requested size: 224.06546pt x 138.06352pt.
 
-<QTmergeRes.png, id=2366, 272.01625pt x 245.91875pt>
+<QTmergeRes.png, id=2376, 272.01625pt x 245.91875pt>
 File: QTmergeRes.png Graphic file (type png)
  <use QTmergeRes.png>
 Package pdftex.def Info: QTmergeRes.png used on input line 225.
@@ -1303,35 +1305,35 @@ Package pdftex.def Info: QTmergeRes.png used on input line 225.
 
 [19 <C:/user/SASfitGit/doc/manual/QTmergeSDS1.png (PNG copy)> <C:/user/SASfitGi
 t/doc/manual/QTmergeSDS2.png (PNG copy)> <C:/user/SASfitGit/doc/manual/QTmergeR
-es.png>] <QTloadingMultipleDS1.png, id=2377, 821.0675pt x 639.38875pt>
+es.png>] <QTloadingMultipleDS1.png, id=2387, 821.0675pt x 639.38875pt>
 File: QTloadingMultipleDS1.png Graphic file (type png)
 
 <use QTloadingMultipleDS1.png>
 Package pdftex.def Info: QTloadingMultipleDS1.png used on input line 257.
 (pdftex.def)             Requested size: 219.58661pt x 170.99821pt.
 
-<QTloadingMultipleDS2.png, id=2378, 821.0675pt x 639.38875pt>
+<QTloadingMultipleDS2.png, id=2388, 821.0675pt x 639.38875pt>
 File: QTloadingMultipleDS2.png Graphic file (type png)
 
 <use QTloadingMultipleDS2.png>
 Package pdftex.def Info: QTloadingMultipleDS2.png used on input line 258.
 (pdftex.def)             Requested size: 219.58661pt x 170.99821pt.
 
-<QTloadingMultipleDS3.png, id=2380, 380.42125pt x 133.49875pt>
+<QTloadingMultipleDS3.png, id=2390, 380.42125pt x 133.49875pt>
 File: QTloadingMultipleDS3.png Graphic file (type png)
 
 <use QTloadingMultipleDS3.png>
 Package pdftex.def Info: QTloadingMultipleDS3.png used on input line 276.
 (pdftex.def)             Requested size: 268.88129pt x 94.35901pt.
 
-<QTloadingMultipleDS4.png, id=2381, 191.71625pt x 217.81375pt>
+<QTloadingMultipleDS4.png, id=2391, 191.71625pt x 217.81375pt>
 File: QTloadingMultipleDS4.png Graphic file (type png)
 
 <use QTloadingMultipleDS4.png>
 Package pdftex.def Info: QTloadingMultipleDS4.png used on input line 278.
 (pdftex.def)             Requested size: 134.44064pt x 152.75107pt.
 
-<QTloadingMultipleDS5.png, id=2382, 583.17876pt x 440.64626pt>
+<QTloadingMultipleDS5.png, id=2392, 583.17876pt x 440.64626pt>
 File: QTloadingMultipleDS5.png Graphic file (type png)
 
 <use QTloadingMultipleDS5.png>
@@ -1341,7 +1343,7 @@ Package pdftex.def Info: QTloadingMultipleDS5.png used on input line 283.
 r/SASfitGit/doc/manual/QTloadingMultipleDS2.png>] [21 <C:/user/SASfitGit/doc/ma
 nual/QTloadingMultipleDS3.png> <C:/user/SASfitGit/doc/manual/QTloadingMultipleD
 S4.png> <C:/user/SASfitGit/doc/manual/QTloadingMultipleDS5.png (PNG copy)>]
-<../images/GUI/DataReductionOptionAVG1.png, id=2403, 310.15875pt x 196.48407pt>
+<../images/GUI/DataReductionOptionAVG1.png, id=2413, 310.15875pt x 196.48407pt>
 File: ../images/GUI/DataReductionOptionAVG1.png Graphic file (type png)
 <use ../images/GUI/DataReductionOptionAVG1.png>
 Package pdftex.def Info: ../images/GUI/DataReductionOptionAVG1.png used on inpu
@@ -1359,7 +1361,7 @@ Underfull \hbox (badness 1527) in paragraph at lines 323--323
  []
 
 
-<../images/GUI/DataReductionOptionSKIP2.png, id=2404, 310.15875pt x 198.7425pt>
+<../images/GUI/DataReductionOptionSKIP2.png, id=2414, 310.15875pt x 198.7425pt>
 File: ../images/GUI/DataReductionOptionSKIP2.png Graphic file (type png)
 <use ../images/GUI/DataReductionOptionSKIP2.png>
 Package pdftex.def Info: ../images/GUI/DataReductionOptionSKIP2.png used on inp
@@ -1397,13 +1399,13 @@ Underfull \hbox (badness 2245) in paragraph at lines 332--346
 
 [22 <C:/user/SASfitGit/doc/images/GUI/DataReductionOptionAVG1.png (PNG copy)> <
 C:/user/SASfitGit/doc/images/GUI/DataReductionOptionSKIP2.png (PNG copy)>]
-<QTsimulateSDS.png, id=2417, 821.0675pt x 639.38875pt>
+<QTsimulateSDS.png, id=2427, 821.0675pt x 639.38875pt>
 File: QTsimulateSDS.png Graphic file (type png)
  <use QTsimulateSDS.png>
 Package pdftex.def Info: QTsimulateSDS.png used on input line 350.
 (pdftex.def)             Requested size: 215.10092pt x 167.50546pt.
 
-<QTsimulateMDS.png, id=2418, 821.0675pt x 639.38875pt>
+<QTsimulateMDS.png, id=2428, 821.0675pt x 639.38875pt>
 File: QTsimulateMDS.png Graphic file (type png)
  <use QTsimulateMDS.png>
 Package pdftex.def Info: QTsimulateMDS.png used on input line 352.
@@ -1411,14 +1413,14 @@ Package pdftex.def Info: QTsimulateMDS.png used on input line 352.
 
 [23 <C:/user/SASfitGit/doc/manual/QTsimulateSDS.png> <C:/user/SASfitGit/doc/man
 ual/QTsimulateMDS.png>]
-<QTintegralparameterTab.png, id=2430, 615.80063pt x 587.19376pt>
+<QTintegralparameterTab.png, id=2440, 615.80063pt x 587.19376pt>
 File: QTintegralparameterTab.png Graphic file (type png)
 
 <use QTintegralparameterTab.png>
 Package pdftex.def Info: QTintegralparameterTab.png used on input line 398.
 (pdftex.def)             Requested size: 215.10092pt x 205.10873pt.
 
-<QTintegralparameterMenu.png, id=2431, 539.01375pt x 476.78125pt>
+<QTintegralparameterMenu.png, id=2441, 539.01375pt x 476.78125pt>
 File: QTintegralparameterMenu.png Graphic file (type png)
 
 <use QTintegralparameterMenu.png>
@@ -1429,32 +1431,32 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [24 <C:/user/SASfitGit/doc/manual/QTintegralparameterTab.png> <C:/user/SASfitG
 it/doc/manual/QTintegralparameterMenu.png>]
-<QTsinglefit1.png, id=2447, 821.0675pt x 639.38875pt>
+<QTsinglefit1.png, id=2457, 821.0675pt x 639.38875pt>
 File: QTsinglefit1.png Graphic file (type png)
  <use QTsinglefit1.png>
 Package pdftex.def Info: QTsinglefit1.png used on input line 426.
 (pdftex.def)             Requested size: 224.06546pt x 174.4812pt.
 
-<QTsinglefit2.png, id=2448, 693.59125pt x 697.60625pt>
+<QTsinglefit2.png, id=2458, 693.59125pt x 697.60625pt>
 File: QTsinglefit2.png Graphic file (type png)
  <use QTsinglefit2.png>
 Package pdftex.def Info: QTsinglefit2.png used on input line 428.
 (pdftex.def)             Requested size: 215.10092pt x 216.34085pt.
 
-<QTsinglefit3.png, id=2449, 821.0675pt x 639.38875pt>
+<QTsinglefit3.png, id=2459, 821.0675pt x 639.38875pt>
 File: QTsinglefit3.png Graphic file (type png)
  <use QTsinglefit3.png>
 Package pdftex.def Info: QTsinglefit3.png used on input line 430.
 (pdftex.def)             Requested size: 215.10092pt x 167.50546pt.
 
-[25] <QTmultiplefit1.png, id=2483, 821.0675pt x 639.38875pt>
+[25] <QTmultiplefit1.png, id=2493, 821.0675pt x 639.38875pt>
 File: QTmultiplefit1.png Graphic file (type png)
 
 <use QTmultiplefit1.png>
 Package pdftex.def Info: QTmultiplefit1.png used on input line 475.
 (pdftex.def)             Requested size: 215.10092pt x 167.50546pt.
 
-<QTmultiplefit2.png, id=2484, 790.955pt x 687.56876pt>
+<QTmultiplefit2.png, id=2494, 790.955pt x 687.56876pt>
 File: QTmultiplefit2.png Graphic file (type png)
 
 <use QTmultiplefit2.png>
@@ -1462,56 +1464,56 @@ Package pdftex.def Info: QTmultiplefit2.png used on input line 477.
 (pdftex.def)             Requested size: 215.10092pt x 186.97845pt.
  [26 <C:/user/SASfitGit/doc/manual/QTsinglefit1.png> <C:/user/SASfitGit/doc/man
 ual/QTsinglefit2.png> <C:/user/SASfitGit/doc/manual/QTsinglefit3.png>] <QTmulti
-plefitUI1.png, id=2496, 779.91376pt x 695.59875pt>
+plefitUI1.png, id=2506, 779.91376pt x 695.59875pt>
 File: QTmultiplefitUI1.png Graphic file (type png)
 
 <use QTmultiplefitUI1.png>
 Package pdftex.def Info: QTmultiplefitUI1.png used on input line 501.
 (pdftex.def)             Requested size: 215.10092pt x 191.84747pt.
 
-<QTmultiplefitUI2.png, id=2497, 779.91376pt x 695.59875pt>
+<QTmultiplefitUI2.png, id=2507, 779.91376pt x 695.59875pt>
 File: QTmultiplefitUI2.png Graphic file (type png)
 
 <use QTmultiplefitUI2.png>
 Package pdftex.def Info: QTmultiplefitUI2.png used on input line 503.
 (pdftex.def)             Requested size: 215.10092pt x 191.84747pt.
 
-<QTmultiplefitUI3.png, id=2498, 779.91376pt x 695.59875pt>
+<QTmultiplefitUI3.png, id=2508, 779.91376pt x 695.59875pt>
 File: QTmultiplefitUI3.png Graphic file (type png)
 
 <use QTmultiplefitUI3.png>
 Package pdftex.def Info: QTmultiplefitUI3.png used on input line 505.
 (pdftex.def)             Requested size: 215.10092pt x 191.84747pt.
 
-<QTmultiplefitUI4.png, id=2499, 779.91376pt x 695.59875pt>
+<QTmultiplefitUI4.png, id=2509, 779.91376pt x 695.59875pt>
 File: QTmultiplefitUI4.png Graphic file (type png)
 
 <use QTmultiplefitUI4.png>
 Package pdftex.def Info: QTmultiplefitUI4.png used on input line 507.
 (pdftex.def)             Requested size: 215.10092pt x 191.84747pt.
 
-<QTmultiplefitUI5.png, id=2504, 821.0675pt x 639.38875pt>
+<QTmultiplefitUI5.png, id=2514, 821.0675pt x 639.38875pt>
 File: QTmultiplefitUI5.png Graphic file (type png)
 
 <use QTmultiplefitUI5.png>
 Package pdftex.def Info: QTmultiplefitUI5.png used on input line 538.
 (pdftex.def)             Requested size: 215.10092pt x 167.50546pt.
 
-<QTmultiplefitUI6.png, id=2505, 821.0675pt x 639.38875pt>
+<QTmultiplefitUI6.png, id=2515, 821.0675pt x 639.38875pt>
 File: QTmultiplefitUI6.png Graphic file (type png)
 
 <use QTmultiplefitUI6.png>
 Package pdftex.def Info: QTmultiplefitUI6.png used on input line 540.
 (pdftex.def)             Requested size: 215.10092pt x 167.50546pt.
 
-<QTmultiplefitUI7.png, id=2506, 821.0675pt x 639.38875pt>
+<QTmultiplefitUI7.png, id=2516, 821.0675pt x 639.38875pt>
 File: QTmultiplefitUI7.png Graphic file (type png)
 
 <use QTmultiplefitUI7.png>
 Package pdftex.def Info: QTmultiplefitUI7.png used on input line 542.
 (pdftex.def)             Requested size: 215.10092pt x 167.50546pt.
 
-<QTmultiplefitUI8.png, id=2507, 821.0675pt x 639.38875pt>
+<QTmultiplefitUI8.png, id=2517, 821.0675pt x 639.38875pt>
 File: QTmultiplefitUI8.png Graphic file (type png)
 
 <use QTmultiplefitUI8.png>
@@ -1540,7 +1542,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 77--78
  []
 
 [31]
-<../images/related_pages/goodnessOFfitPAR.png, id=2572, 714.67pt x 573.14125pt>
+<../images/related_pages/goodnessOFfitPAR.png, id=2582, 714.67pt x 573.14125pt>
 File: ../images/related_pages/goodnessOFfitPAR.png Graphic file (type png)
 <use ../images/related_pages/goodnessOFfitPAR.png>
 Package pdftex.def Info: ../images/related_pages/goodnessOFfitPAR.png used on i
@@ -1552,7 +1554,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 136--137
  []
 
 
-<../images/related_pages/menueConfidenceIntervall.png, id=2575, 536.0025pt x 42
+<../images/related_pages/menueConfidenceIntervall.png, id=2585, 536.0025pt x 42
 9.85594pt>
 File: ../images/related_pages/menueConfidenceIntervall.png Graphic file (type p
 ng)
@@ -1561,7 +1563,7 @@ Package pdftex.def Info: ../images/related_pages/menueConfidenceIntervall.png u
 sed on input line 158.
 (pdftex.def)             Requested size: 210.62209pt x 168.90904pt.
 
-<../images/related_pages/ConfidenceIntervallANDCorrelationMatrix.png, id=2576, 
+<../images/related_pages/ConfidenceIntervallANDCorrelationMatrix.png, id=2586, 
 427.5975pt x 530.98375pt>
 File: ../images/related_pages/ConfidenceIntervallANDCorrelationMatrix.png Graph
 ic file (type png)
@@ -1623,7 +1625,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 163--164
 
  []
 
-<../images/ErrorBar/ModelDataWithError.png, id=2609, 816.651pt x 573.1011pt>
+<../images/ErrorBar/ModelDataWithError.png, id=2619, 816.651pt x 573.1011pt>
 File: ../images/ErrorBar/ModelDataWithError.png Graphic file (type png)
 
 <use ../images/ErrorBar/ModelDataWithError.png>
@@ -1631,7 +1633,7 @@ Package pdftex.def Info: ../images/ErrorBar/ModelDataWithError.png used on inpu
 t line 187.
 (pdftex.def)             Requested size: 210.62209pt x 147.80473pt.
 
-<../images/ErrorBar/RatioErrSuppGuess.png, id=2610, 816.651pt x 573.1011pt>
+<../images/ErrorBar/RatioErrSuppGuess.png, id=2620, 816.651pt x 573.1011pt>
 File: ../images/ErrorBar/RatioErrSuppGuess.png Graphic file (type png)
 
 <use ../images/ErrorBar/RatioErrSuppGuess.png>
@@ -1735,7 +1737,7 @@ Overfull \hbox (23.62584pt too wide) in paragraph at lines 219--219
 ) (C:\user\SASfitGit\doc\manual\SASfit_SLDcalculator.tex [38 <C:/user/SASfitGit
 /doc/images/ErrorBar/ModelDataWithError.png> <C:/user/SASfitGit/doc/images/Erro
 rBar/RatioErrSuppGuess.png>]
-<SLDcalculator.png, id=2629, 247.67531pt x 339.51843pt>
+<SLDcalculator.png, id=2639, 247.67531pt x 339.51843pt>
 File: SLDcalculator.png Graphic file (type png)
 
 <use SLDcalculator.png>
@@ -1759,7 +1761,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 5--6
 
  []
 
-<../images/form_factor/spheres/sphere.png, id=2666, 314.8563pt x 392.9079pt>
+<../images/form_factor/spheres/sphere.png, id=2676, 314.8563pt x 392.9079pt>
 File: ../images/form_factor/spheres/sphere.png Graphic file (type png)
 
 <use ../images/form_factor/spheres/sphere.png>
@@ -1769,7 +1771,7 @@ Package pdftex.def Info: ../images/form_factor/spheres/sphere.png used on input
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 31.
 
-<../images/form_factor/spheres/sphere_P.png, id=2667, 370.0224pt x 283.2984pt>
+<../images/form_factor/spheres/sphere_P.png, id=2677, 370.0224pt x 283.2984pt>
 File: ../images/form_factor/spheres/sphere_P.png Graphic file (type png)
 
 <use ../images/form_factor/spheres/sphere_P.png>
@@ -1782,7 +1784,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 54--55
 
  []
 
-<../images/form_factor/spheres/shell1.png, id=2683, 572.1375pt x 538.26094pt>
+<../images/form_factor/spheres/shell1.png, id=2693, 572.1375pt x 538.26094pt>
 File: ../images/form_factor/spheres/shell1.png Graphic file (type png)
 
 <use ../images/form_factor/spheres/shell1.png>
@@ -1795,7 +1797,7 @@ Overfull \hbox (2.61108pt too wide) detected at line 93
  []
 
 
-<../images/form_factor/spheres/shell_i_P.png, id=2684, 381.5856pt x 294.8616pt>
+<../images/form_factor/spheres/shell_i_P.png, id=2694, 381.5856pt x 294.8616pt>
 File: ../images/form_factor/spheres/shell_i_P.png Graphic file (type png)
 <use ../images/form_factor/spheres/shell_i_P.png>
 Package pdftex.def Info: ../images/form_factor/spheres/shell_i_P.png used on in
@@ -1809,7 +1811,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 109--110
 
  []
 
-<../images/form_factor/spheres/shell2.png, id=2698, 570.63188pt x 536.0025pt>
+<../images/form_factor/spheres/shell2.png, id=2708, 570.63188pt x 536.0025pt>
 File: ../images/form_factor/spheres/shell2.png Graphic file (type png)
 
 <use ../images/form_factor/spheres/shell2.png>
@@ -1822,7 +1824,7 @@ Overfull \hbox (2.61108pt too wide) detected at line 146
  []
 
 
-<../images/form_factor/spheres/shell_ii_P.png, id=2699, 381.5856pt x 294.8616pt
+<../images/form_factor/spheres/shell_ii_P.png, id=2709, 381.5856pt x 294.8616pt
 >
 File: ../images/form_factor/spheres/shell_ii_P.png Graphic file (type png)
  <use ../images/form_factor/spheres/shell_ii_P.png>
@@ -1837,7 +1839,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 161--162
 
  []
 
-<../images/form_factor/spheres/shell3.png, id=2714, 572.1375pt x 538.26094pt>
+<../images/form_factor/spheres/shell3.png, id=2724, 572.1375pt x 538.26094pt>
 File: ../images/form_factor/spheres/shell3.png Graphic file (type png)
 
 <use ../images/form_factor/spheres/shell3.png>
@@ -1850,7 +1852,7 @@ Overfull \hbox (2.61108pt too wide) detected at line 199
  []
 
 
-<../images/form_factor/spheres/shell_iii_P.png, id=2715, 381.5856pt x 294.8616p
+<../images/form_factor/spheres/shell_iii_P.png, id=2725, 381.5856pt x 294.8616p
 t>
 File: ../images/form_factor/spheres/shell_iii_P.png Graphic file (type png)
  <use ../images/form_factor/spheres/shell_iii_P.png>
@@ -1866,7 +1868,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 218--219
  []
 
 
-<../images/form_factor/spheres/BiLayeredVesicle.png, id=2729, 489.2679pt x 553.
+<../images/form_factor/spheres/BiLayeredVesicle.png, id=2739, 489.2679pt x 553.
 1064pt>
 File: ../images/form_factor/spheres/BiLayeredVesicle.png Graphic file (type png
 )
@@ -1885,7 +1887,7 @@ Overfull \hbox (2.61108pt too wide) detected at line 250
  []
 
 
-<../images/form_factor/spheres/bilayered_vesicle.png, id=2730, 370.0224pt x 283
+<../images/form_factor/spheres/bilayered_vesicle.png, id=2740, 370.0224pt x 283
 .2984pt>
 File: ../images/form_factor/spheres/bilayered_vesicle.png Graphic file (type pn
 g)
@@ -1903,7 +1905,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 266--267
  []
 
 
-<../images/form_factor/spheres/multilamellar_vesicle.png, id=2745, 539.01375pt 
+<../images/form_factor/spheres/multilamellar_vesicle.png, id=2755, 539.01375pt 
 x 568.1225pt>
 File: ../images/form_factor/spheres/multilamellar_vesicle.png Graphic file (typ
 e png)
@@ -1917,7 +1919,7 @@ Overfull \hbox (2.61108pt too wide) detected at line 297
  []
 
 
-<../images/form_factor/spheres/multilamellar_vesicle_Iq.png, id=2746, 370.0224p
+<../images/form_factor/spheres/multilamellar_vesicle_Iq.png, id=2756, 370.0224p
 t x 283.2984pt>
 File: ../images/form_factor/spheres/multilamellar_vesicle_Iq.png Graphic file (
 type png)
@@ -1936,7 +1938,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 317--318
  []
 
 
-<../images/form_factor/spheres/random_multilamellar_vesicle.png, id=2761, 515.9
+<../images/form_factor/spheres/random_multilamellar_vesicle.png, id=2771, 515.9
 275pt x 592.2125pt>
 File: ../images/form_factor/spheres/random_multilamellar_vesicle.png Graphic fi
 le (type png)
@@ -1960,7 +1962,7 @@ enu
  []
 
 
-<../images/form_factor/spheres/random_multilamellar_vesicle_Iq.png, id=2778, 37
+<../images/form_factor/spheres/random_multilamellar_vesicle_Iq.png, id=2788, 37
 0.0224pt x 283.2984pt>
 File: ../images/form_factor/spheres/random_multilamellar_vesicle_Iq.png Graphic
  file (type png)
@@ -1981,7 +1983,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 382--383
 
  []
 
-<vesicle_capped_poles_aligned.png, id=2787, 493.845pt x 524.96124pt>
+<vesicle_capped_poles_aligned.png, id=2797, 493.845pt x 524.96124pt>
 File: vesicle_capped_poles_aligned.png Graphic file (type png)
 
 <use vesicle_capped_poles_aligned.png>
@@ -2044,7 +2046,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--7
  []
 
 
-<../images/form_factor/Ellipsoid/Elpsminr.png, id=2824, 354.32375pt x 173.64874
+<../images/form_factor/Ellipsoid/Elpsminr.png, id=2834, 354.32375pt x 173.64874
 pt>
 File: ../images/form_factor/Ellipsoid/Elpsminr.png Graphic file (type png)
  <use ../images/form_factor/Ellipsoid/Elpsminr.png>
@@ -2052,7 +2054,7 @@ Package pdftex.def Info: ../images/form_factor/Ellipsoid/Elpsminr.png used on i
 nput line 12.
 (pdftex.def)             Requested size: 224.06856pt x 109.79408pt.
 
-<../images/form_factor/Ellipsoid/OblateSpheroid.png, id=2825, 384.43625pt x 295
+<../images/form_factor/Ellipsoid/OblateSpheroid.png, id=2835, 384.43625pt x 295
 .1025pt>
 File: ../images/form_factor/Ellipsoid/OblateSpheroid.png Graphic file (type png
 )
@@ -2061,7 +2063,7 @@ Package pdftex.def Info: ../images/form_factor/Ellipsoid/OblateSpheroid.png use
 d on input line 31.
 (pdftex.def)             Requested size: 213.39983pt x 162.18079pt.
 
-<../images/form_factor/Ellipsoid/ProlateSpheroid.png, id=2826, 264.99pt x 392.4
+<../images/form_factor/Ellipsoid/ProlateSpheroid.png, id=2836, 264.99pt x 392.4
 6625pt>
 File: ../images/form_factor/Ellipsoid/ProlateSpheroid.png Graphic file (type pn
 g)
@@ -2075,7 +2077,7 @@ ed on input line 37.
  <C:/user/SASfitGit/doc/images/form_factor/Ellipsoid/Elpsminr.png> <C:/user/SAS
 fitGit/doc/images/form_factor/Ellipsoid/OblateSpheroid.png> <C:/user/SASfitGit/
 doc/images/form_factor/Ellipsoid/ProlateSpheroid.png>]
-<../images/form_factor/Ellipsoid/ellipsoid_ii.png, id=2834, 370.0224pt x 283.29
+<../images/form_factor/Ellipsoid/ellipsoid_ii.png, id=2844, 370.0224pt x 283.29
 84pt>
 File: ../images/form_factor/Ellipsoid/ellipsoid_ii.png Graphic file (type png)
  <use ../images/form_factor/Ellipsoid/ellipsoid_ii.png>
@@ -2105,7 +2107,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 76--77
  []
 
 
-<../images/form_factor/Ellipsoid/ellipsoid_i.png, id=2842, 370.0224pt x 283.298
+<../images/form_factor/Ellipsoid/ellipsoid_i.png, id=2852, 370.0224pt x 283.298
 4pt>
 File: ../images/form_factor/Ellipsoid/ellipsoid_i.png Graphic file (type png)
  <use ../images/form_factor/Ellipsoid/ellipsoid_i.png>
@@ -2119,7 +2121,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 106--107
 
  []
 
-<ellipsoidalShell.png, id=2850, 393.6306pt x 227.1687pt>
+<ellipsoidalShell.png, id=2860, 393.6306pt x 227.1687pt>
 File: ellipsoidalShell.png Graphic file (type png)
 
 <use ellipsoidalShell.png>
@@ -2128,7 +2130,7 @@ Package pdftex.def Info: ellipsoidalShell.png used on input line 110.
  [63
 
  <C:/user/SASfitGit/doc/manual/ellipsoidalShell.png>]
-<../images/form_factor/Ellipsoid/ellipsoidal_core_shell.png, id=2859, 370.0224p
+<../images/form_factor/Ellipsoid/ellipsoidal_core_shell.png, id=2869, 370.0224p
 t x 283.2984pt>
 File: ../images/form_factor/Ellipsoid/ellipsoidal_core_shell.png Graphic file (
 type png)
@@ -2144,7 +2146,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 164--165
  []
 
 
-<../images/form_factor/Ellipsoid/triaxEll.png, id=2866, 648.92438pt x 463.7325p
+<../images/form_factor/Ellipsoid/triaxEll.png, id=2876, 648.92438pt x 463.7325p
 t>
 File: ../images/form_factor/Ellipsoid/triaxEll.png Graphic file (type png)
  <use ../images/form_factor/Ellipsoid/triaxEll.png>
@@ -2152,7 +2154,7 @@ Package pdftex.def Info: ../images/form_factor/Ellipsoid/triaxEll.png used on i
 nput line 168.
 (pdftex.def)             Requested size: 201.64966pt x 144.20137pt.
 
-<../images/form_factor/Ellipsoid/A4ellipd.png, id=2867, 335.75438pt x 305.64188
+<../images/form_factor/Ellipsoid/A4ellipd.png, id=2877, 335.75438pt x 305.64188
 pt>
 File: ../images/form_factor/Ellipsoid/A4ellipd.png Graphic file (type png)
  <use ../images/form_factor/Ellipsoid/A4ellipd.png>
@@ -2168,7 +2170,7 @@ Overfull \hbox (4.11963pt too wide) in paragraph at lines 184--184
 
  <C:/user/SASfitGit/doc/images/form_factor/Ellipsoid/triaxEll.png> <C:/user/SAS
 fitGit/doc/images/form_factor/Ellipsoid/A4ellipd.png>]
-<../images/form_factor/Ellipsoid/triax_ellipsoidal_core_shell.png, id=2878, 370
+<../images/form_factor/Ellipsoid/triax_ellipsoidal_core_shell.png, id=2888, 370
 .0224pt x 283.2984pt>
 File: ../images/form_factor/Ellipsoid/triax_ellipsoidal_core_shell.png Graphic 
 file (type png)
@@ -2184,7 +2186,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--7
 
  []
 
-<Walk3d_0.png, id=2886, 560.0925pt x 619.56468pt>
+<Walk3d_0.png, id=2896, 560.0925pt x 619.56468pt>
 File: Walk3d_0.png Graphic file (type png)
  <use Walk3d_0.png>
 Package pdftex.def Info: Walk3d_0.png used on input line 10.
@@ -2224,7 +2226,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 150--151
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 153.
 
-<gaussian_coils.png, id=2935, 370.0224pt x 283.2984pt>
+<gaussian_coils.png, id=2945, 370.0224pt x 283.2984pt>
 File: gaussian_coils.png Graphic file (type png)
 
 <use gaussian_coils.png>
@@ -2245,7 +2247,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 186--190
 
  []
 
-[70] <gauss_poly.png, id=2945, 370.0224pt x 283.2984pt>
+[70] <gauss_poly.png, id=2955, 370.0224pt x 283.2984pt>
 File: gauss_poly.png Graphic file (type png)
  <use gauss_poly.png>
 Package pdftex.def Info: gauss_poly.png used on input line 208.
@@ -2269,7 +2271,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 280.
 
-<generalized_gaussian_coils.png, id=2977, 370.0224pt x 283.2984pt>
+<generalized_gaussian_coils.png, id=2987, 370.0224pt x 283.2984pt>
 File: generalized_gaussian_coils.png Graphic file (type png)
 
 <use generalized_gaussian_coils.png>
@@ -2286,13 +2288,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 320--321
 
  []
 
-<Benoit.png, id=2993, 528.97626pt x 520.94624pt>
+<Benoit.png, id=3003, 528.97626pt x 520.94624pt>
 File: Benoit.png Graphic file (type png)
  <use Benoit.png>
 Package pdftex.def Info: Benoit.png used on input line 324.
 (pdftex.def)             Requested size: 118.07822pt x 116.29372pt.
 
-<Benoit_Iq.png, id=2995, 370.0224pt x 283.2984pt>
+<Benoit_Iq.png, id=3005, 370.0224pt x 283.2984pt>
 File: Benoit_Iq.png Graphic file (type png)
  <use Benoit_Iq.png>
 Package pdftex.def Info: Benoit_Iq.png used on input line 354.
@@ -2305,7 +2307,7 @@ enoit_Iq.png>]
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 369.
 
-<polyBenoit.png, id=3010, 510.90875pt x 572.1375pt>
+<polyBenoit.png, id=3020, 510.90875pt x 572.1375pt>
 File: polyBenoit.png Graphic file (type png)
  <use polyBenoit.png>
 Package pdftex.def Info: polyBenoit.png used on input line 372.
@@ -2313,7 +2315,7 @@ Package pdftex.def Info: polyBenoit.png used on input line 372.
 Missing character: There is no – in font cmr12!
 Missing character: There is no – in font cmr12!
 
-<polyBenoit_Iq.png, id=3012, 370.0224pt x 283.2984pt>
+<polyBenoit_Iq.png, id=3022, 370.0224pt x 283.2984pt>
 File: polyBenoit_Iq.png Graphic file (type png)
  <use polyBenoit_Iq.png>
 Package pdftex.def Info: polyBenoit_Iq.png used on input line 399.
@@ -2332,7 +2334,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 410--411
 
  []
 
-<Dozier.png, id=3028, 543.59608pt x 436.76218pt>
+<Dozier.png, id=3038, 543.59608pt x 436.76218pt>
 File: Dozier.png Graphic file (type png)
  <use Dozier.png>
 Package pdftex.def Info: Dozier.png used on input line 416.
@@ -2342,7 +2344,7 @@ Overfull \hbox (13.41072pt too wide) in paragraph at lines 438--438
 [] 
  []
 
-<Dozier_Iq.png, id=3030, 370.0224pt x 283.2984pt>
+<Dozier_Iq.png, id=3040, 370.0224pt x 283.2984pt>
 File: Dozier_Iq.png Graphic file (type png)
  <use Dozier_Iq.png>
 Package pdftex.def Info: Dozier_Iq.png used on input line 455.
@@ -2355,7 +2357,7 @@ Overfull \hbox (20.00294pt too wide) in paragraph at lines 486--486
 [] 
  []
 
-<Dozier2_Iq.png, id=3043, 821.9508pt x 574.5465pt>
+<Dozier2_Iq.png, id=3053, 821.9508pt x 574.5465pt>
 File: Dozier2_Iq.png Graphic file (type png)
  <use Dozier2_Iq.png>
 Package pdftex.def Info: Dozier2_Iq.png used on input line 504.
@@ -2373,13 +2375,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 521--522
 
  []
 
-<flexibleRing.png, id=3056, 472.76625pt x 354.32375pt>
+<flexibleRing.png, id=3066, 472.76625pt x 354.32375pt>
 File: flexibleRing.png Graphic file (type png)
  <use flexibleRing.png>
 Package pdftex.def Info: flexibleRing.png used on input line 525.
 (pdftex.def)             Requested size: 211.06923pt x 158.1899pt.
 
-<ringIQ.png, id=3057, 821.7099pt x 574.3056pt>
+<ringIQ.png, id=3067, 821.7099pt x 574.3056pt>
 File: ringIQ.png Graphic file (type png)
  <use ringIQ.png>
 Package pdftex.def Info: ringIQ.png used on input line 549.
@@ -2400,13 +2402,13 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 559.
 
-<TWsnap.png, id=3076, 385.44pt x 258.9675pt>
+<TWsnap.png, id=3086, 385.44pt x 258.9675pt>
 File: TWsnap.png Graphic file (type png)
  <use TWsnap.png>
 Package pdftex.def Info: TWsnap.png used on input line 562.
 (pdftex.def)             Requested size: 344.16385pt x 231.24692pt.
 
-<mMemberedTwistedRing.png, id=3077, 821.7099pt x 574.3056pt>
+<mMemberedTwistedRing.png, id=3087, 821.7099pt x 574.3056pt>
 File: mMemberedTwistedRing.png Graphic file (type png)
 
 <use mMemberedTwistedRing.png>
@@ -2420,21 +2422,21 @@ oc/manual/mMemberedTwistedRing.png>]
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 598.
 
-<ma9603286f00001.png, id=3095, 501.875pt x 454.69875pt>
+<ma9603286f00001.png, id=3105, 501.875pt x 454.69875pt>
 File: ma9603286f00001.png Graphic file (type png)
 
 <use ma9603286f00001.png>
 Package pdftex.def Info: ma9603286f00001.png used on input line 601.
 (pdftex.def)             Requested size: 224.065pt x 203.0029pt.
 
-<RosetteLikeMicelle.png, id=3096, 915.42pt x 917.4275pt>
+<RosetteLikeMicelle.png, id=3106, 915.42pt x 917.4275pt>
 File: RosetteLikeMicelle.png Graphic file (type png)
 
 <use RosetteLikeMicelle.png>
 Package pdftex.def Info: RosetteLikeMicelle.png used on input line 602.
 (pdftex.def)             Requested size: 201.65842pt x 201.6527pt.
 
-<DaisyRingIQ.png, id=3097, 821.7099pt x 574.3056pt>
+<DaisyRingIQ.png, id=3107, 821.7099pt x 574.3056pt>
 File: DaisyRingIQ.png Graphic file (type png)
  <use DaisyRingIQ.png>
 Package pdftex.def Info: DaisyRingIQ.png used on input line 628.
@@ -2454,7 +2456,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 638--639
 
  []
 
-<Beaucage.png, id=3118, 955.57pt x 404.51125pt>
+<Beaucage.png, id=3128, 955.57pt x 404.51125pt>
 File: Beaucage.png Graphic file (type png)
  <use Beaucage.png>
 Package pdftex.def Info: Beaucage.png used on input line 642.
@@ -2472,7 +2474,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 705--707
  []
 
 
-<../images/form_factor/nonparticular/Beaucage.png, id=3134, 821.9508pt x 574.54
+<../images/form_factor/nonparticular/Beaucage.png, id=3144, 821.9508pt x 574.54
 65pt>
 File: ../images/form_factor/nonparticular/Beaucage.png Graphic file (type png)
  <use ../images/form_factor/nonparticular/Beaucage.png>
@@ -2491,7 +2493,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 751--753
  []
 
 
-<../images/form_factor/nonparticular/Beaucage2.png, id=3150, 821.7099pt x 574.3
+<../images/form_factor/nonparticular/Beaucage2.png, id=3160, 821.7099pt x 574.3
 056pt>
 File: ../images/form_factor/nonparticular/Beaucage2.png Graphic file (type png)
 
@@ -2506,7 +2508,7 @@ Package pdftex.def Info: ../images/form_factor/nonparticular/Beaucage2.png used
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 787.
 
-<wormlike2.png, id=3163, 2049.6575pt x 965.6075pt>
+<wormlike2.png, id=3173, 2049.6575pt x 965.6075pt>
 File: wormlike2.png Graphic file (type png)
  <use wormlike2.png>
 Package pdftex.def Info: wormlike2.png used on input line 790.
@@ -2516,7 +2518,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 814--816
 
  []
 
-<wormlike_Iq.png, id=3166, 370.0224pt x 283.2984pt>
+<wormlike_Iq.png, id=3176, 370.0224pt x 283.2984pt>
 File: wormlike_Iq.png Graphic file (type png)
  <use wormlike_Iq.png>
 Package pdftex.def Info: wormlike_Iq.png used on input line 825.
@@ -2530,7 +2532,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 836--837
 
  []
 
-<SemiflexiblePolymerTxt.png, id=3183, 619.31375pt x 764.8575pt>
+<SemiflexiblePolymerTxt.png, id=3193, 619.31375pt x 764.8575pt>
 File: SemiflexiblePolymerTxt.png Graphic file (type png)
 
 <use SemiflexiblePolymerTxt.png>
@@ -2553,19 +2555,19 @@ File: wormlike_Iq.png Graphic file (type png)
 Package pdftex.def Info: wormlike_Iq.png used on input line 896.
 (pdftex.def)             Requested size: 344.18501pt x 263.51233pt.
  [97] [98]
-<spheregauss.png, id=3211, 530.4618pt x 794.97pt>
+<spheregauss.png, id=3221, 530.4618pt x 794.97pt>
 File: spheregauss.png Graphic file (type png)
  <use spheregauss.png>
 Package pdftex.def Info: spheregauss.png used on input line 911.
 (pdftex.def)             Requested size: 112.0316pt x 168.04034pt.
 
-<ellipsoidgauss.png, id=3212, 434.3427pt x 740.5266pt>
+<ellipsoidgauss.png, id=3222, 434.3427pt x 740.5266pt>
 File: ellipsoidgauss.png Graphic file (type png)
 
 <use ellipsoidgauss.png>
 Package pdftex.def Info: ellipsoidgauss.png used on input line 914.
 (pdftex.def)             Requested size: 112.03172pt x 183.73004pt.
- <cylindergauss.png, id=3213, 391.4625pt x 773.289pt>
+ <cylindergauss.png, id=3223, 391.4625pt x 773.289pt>
 File: cylindergauss.png Graphic file (type png)
 
 <use cylindergauss.png>
@@ -2741,7 +2743,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1696--1697
 
  []
 
-<R_ma.png, id=3369, 438.9198pt x 306.9066pt>
+<R_ma.png, id=3379, 438.9198pt x 306.9066pt>
 File: R_ma.png Graphic file (type png)
  <use R_ma.png>
 Package pdftex.def Info: R_ma.png used on input line 1700.
@@ -2769,7 +2771,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2150--2151
 
  []
 
-<agghalf.png, id=3460, 1027.84pt x 770.88pt>
+<agghalf.png, id=3470, 1027.84pt x 770.88pt>
 File: agghalf.png Graphic file (type png)
  <use agghalf.png>
 Package pdftex.def Info: agghalf.png used on input line 2155.
@@ -2807,7 +2809,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--9
  []
 
 
-<../images/form_factor/cluster/fractaldimension.png, id=3501, 1332.98pt x 898.3
+<../images/form_factor/cluster/fractaldimension.png, id=3511, 1332.98pt x 898.3
 5625pt>
 File: ../images/form_factor/cluster/fractaldimension.png Graphic file (type png
 )
@@ -2822,7 +2824,7 @@ Package amsmath Warning: Foreign command \atop;
 (amsmath)                 on input line 63.
 
 
-<../images/form_factor/cluster/AggregateComparison.png, id=3502, 821.7099pt x 5
+<../images/form_factor/cluster/AggregateComparison.png, id=3512, 821.7099pt x 5
 74.3056pt>
 File: ../images/form_factor/cluster/AggregateComparison.png Graphic file (type 
 png)
@@ -2844,14 +2846,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 131--132
  []
 
 
-<../images/form_factor/cluster/stackdiscs.png, id=3525, 411.939pt x 239.6955pt>
+<../images/form_factor/cluster/stackdiscs.png, id=3535, 411.939pt x 239.6955pt>
 File: ../images/form_factor/cluster/stackdiscs.png Graphic file (type png)
 <use ../images/form_factor/cluster/stackdiscs.png>
 Package pdftex.def Info: ../images/form_factor/cluster/stackdiscs.png used on i
 nput line 135.
 (pdftex.def)             Requested size: 224.06543pt x 130.31874pt.
 
-<../images/form_factor/cluster/StackedDiscsIQ.png, id=3527, 821.469pt x 574.305
+<../images/form_factor/cluster/StackedDiscsIQ.png, id=3537, 821.469pt x 574.305
 6pt>
 File: ../images/form_factor/cluster/StackedDiscsIQ.png Graphic file (type png)
  <use ../images/form_factor/cluster/StackedDiscsIQ.png>
@@ -2867,7 +2869,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 176--177
  []
 
 
-<../images/form_factor/cluster/l_doubleshell.png, id=3545, 797.22844pt x 335.75
+<../images/form_factor/cluster/l_doubleshell.png, id=3555, 797.22844pt x 335.75
 438pt>
 File: ../images/form_factor/cluster/l_doubleshell.png Graphic file (type png)
  <use ../images/form_factor/cluster/l_doubleshell.png>
@@ -2883,7 +2885,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 191--192
  []
 
 
-<../images/form_factor/cluster/tetrahedron1.png, id=3551, 170.6375pt x 169.6337
+<../images/form_factor/cluster/tetrahedron1.png, id=3561, 170.6375pt x 169.6337
 4pt>
 File: ../images/form_factor/cluster/tetrahedron1.png Graphic file (type png)
  <use ../images/form_factor/cluster/tetrahedron1.png>
@@ -2891,7 +2893,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/tetrahedron1.png used on
  input line 195.
 (pdftex.def)             Requested size: 80.66048pt x 80.65968pt.
 
-<../images/form_factor/cluster/tetrahedron2.png, id=3552, 199.74625pt x 188.705
+<../images/form_factor/cluster/tetrahedron2.png, id=3562, 199.74625pt x 188.705
 pt>
 File: ../images/form_factor/cluster/tetrahedron2.png Graphic file (type png)
  <use ../images/form_factor/cluster/tetrahedron2.png>
@@ -2899,7 +2901,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/tetrahedron2.png used on
  input line 196.
 (pdftex.def)             Requested size: 80.65904pt x 80.66069pt.
 
-<../images/form_factor/cluster/DoubleShellChain3.png, id=3553, 321.2pt x 321.2p
+<../images/form_factor/cluster/DoubleShellChain3.png, id=3563, 321.2pt x 321.2p
 t>
 File: ../images/form_factor/cluster/DoubleShellChain3.png Graphic file (type pn
 g)
@@ -2908,7 +2910,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/DoubleShellChain3.png us
 ed on input line 197.
 (pdftex.def)             Requested size: 80.65758pt x 80.65758pt.
 
-<../images/form_factor/cluster/DoubleShellChain4.png, id=3554, 346.29375pt x 34
+<../images/form_factor/cluster/DoubleShellChain4.png, id=3564, 346.29375pt x 34
 6.29375pt>
 File: ../images/form_factor/cluster/DoubleShellChain4.png Graphic file (type pn
 g)
@@ -2917,7 +2919,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/DoubleShellChain4.png us
 ed on input line 198.
 (pdftex.def)             Requested size: 80.66042pt x 80.66042pt.
 
-<../images/form_factor/cluster/DoubleShellChain5.png, id=3555, 421.575pt x 421.
+<../images/form_factor/cluster/DoubleShellChain5.png, id=3565, 421.575pt x 421.
 575pt>
 File: ../images/form_factor/cluster/DoubleShellChain5.png Graphic file (type pn
 g)
@@ -2932,7 +2934,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/l_doubleshell.png used o
 n input line 206.
 (pdftex.def)             Requested size: 358.5062pt x 151.02147pt.
 
-<../images/form_factor/cluster/DoubleShellChain.png, id=3556, 711.00313pt x 496
+<../images/form_factor/cluster/DoubleShellChain.png, id=3566, 711.00313pt x 496
 .6996pt>
 File: ../images/form_factor/cluster/DoubleShellChain.png Graphic file (type png
 )
@@ -2953,7 +2955,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/tetrahedron2.png used on
  input line 227.
 (pdftex.def)             Requested size: 80.65904pt x 80.66069pt.
 
-<../images/form_factor/cluster/tetrahedron3.png, id=3557, 228.855pt x 226.8475p
+<../images/form_factor/cluster/tetrahedron3.png, id=3567, 228.855pt x 226.8475p
 t>
 File: ../images/form_factor/cluster/tetrahedron3.png Graphic file (type png)
  <use ../images/form_factor/cluster/tetrahedron3.png>
@@ -2961,7 +2963,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/tetrahedron3.png used on
  input line 228.
 (pdftex.def)             Requested size: 80.65916pt x 80.66122pt.
 
-<../images/form_factor/cluster/tetrahedron4.png, id=3558, 209.78375pt x 205.768
+<../images/form_factor/cluster/tetrahedron4.png, id=3568, 209.78375pt x 205.768
 75pt>
 File: ../images/form_factor/cluster/tetrahedron4.png Graphic file (type png)
  <use ../images/form_factor/cluster/tetrahedron4.png>
@@ -2969,7 +2971,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/tetrahedron4.png used on
  input line 229.
 (pdftex.def)             Requested size: 80.65974pt x 80.66078pt.
 
-<../images/form_factor/cluster/tetrahedron5.png, id=3559, 215.80624pt x 243.911
+<../images/form_factor/cluster/tetrahedron5.png, id=3569, 215.80624pt x 243.911
 25pt>
 File: ../images/form_factor/cluster/tetrahedron5.png Graphic file (type png)
  <use ../images/form_factor/cluster/tetrahedron5.png>
@@ -2983,7 +2985,7 @@ Package pdftex.def Info: ../images/form_factor/cluster/l_doubleshell.png used o
 n input line 236.
 (pdftex.def)             Requested size: 358.5062pt x 151.02147pt.
 
-<../images/form_factor/cluster/TetraHedronDoubleShell.png, id=3560, 711.00313pt
+<../images/form_factor/cluster/TetraHedronDoubleShell.png, id=3570, 711.00313pt
  x 496.6996pt>
 File: ../images/form_factor/cluster/TetraHedronDoubleShell.png Graphic file (ty
 pe png)
@@ -3016,7 +3018,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--7
  []
 
 
-<../images/form_factor/cylindrical_obj/disc.png, id=3590, 666.49pt x 162.6075pt
+<../images/form_factor/cylindrical_obj/disc.png, id=3600, 666.49pt x 162.6075pt
 >
 File: ../images/form_factor/cylindrical_obj/disc.png Graphic file (type png)
  <use ../images/form_factor/cylindrical_obj/disc.png>
@@ -3024,7 +3026,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/disc.png used on
  input line 10.
 (pdftex.def)             Requested size: 224.06114pt x 32.21324pt.
 
-<../images/form_factor/cylindrical_obj/DiscIQ.png, id=3591, 821.7099pt x 574.30
+<../images/form_factor/cylindrical_obj/DiscIQ.png, id=3601, 821.7099pt x 574.30
 56pt>
 File: ../images/form_factor/cylindrical_obj/DiscIQ.png Graphic file (type png)
  <use ../images/form_factor/cylindrical_obj/DiscIQ.png>
@@ -3040,7 +3042,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--48
  []
 
 
-<../images/form_factor/cylindrical_obj/rod.png, id=3601, 482.80376pt x 50.1875p
+<../images/form_factor/cylindrical_obj/rod.png, id=3611, 482.80376pt x 50.1875p
 t>
 File: ../images/form_factor/cylindrical_obj/rod.png Graphic file (type png)
  <use ../images/form_factor/cylindrical_obj/rod.png>
@@ -3048,7 +3050,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/rod.png used on
 input line 51.
 (pdftex.def)             Requested size: 224.06677pt x 23.27643pt.
 
-<../images/form_factor/cylindrical_obj/RodIQ.png, id=3602, 821.7099pt x 574.305
+<../images/form_factor/cylindrical_obj/RodIQ.png, id=3612, 821.7099pt x 574.305
 6pt>
 File: ../images/form_factor/cylindrical_obj/RodIQ.png Graphic file (type png)
  <use ../images/form_factor/cylindrical_obj/RodIQ.png>
@@ -3067,7 +3069,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 89--90
  []
 
 
-<../images/form_factor/cylindrical_obj/long_cylinder.png, id=3612, 810.77907pt 
+<../images/form_factor/cylindrical_obj/long_cylinder.png, id=3622, 810.77907pt 
 x 319.1925pt>
 File: ../images/form_factor/cylindrical_obj/long_cylinder.png Graphic file (typ
 e png)
@@ -3076,7 +3078,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/long_cylinder.pn
 g used on input line 93.
 (pdftex.def)             Requested size: 358.51302pt x 141.16109pt.
 
-<../images/form_factor/cylindrical_obj/LongCylinder.png, id=3613, 821.7099pt x 
+<../images/form_factor/cylindrical_obj/LongCylinder.png, id=3623, 821.7099pt x 
 574.3056pt>
 File: ../images/form_factor/cylindrical_obj/LongCylinder.png Graphic file (type
  png)
@@ -3100,7 +3102,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 145--146
  []
 
 
-<../images/form_factor/cylindrical_obj/flat_cylinder.png, id=3632, 825.0825pt x
+<../images/form_factor/cylindrical_obj/flat_cylinder.png, id=3642, 825.0825pt x
  460.96214pt>
 File: ../images/form_factor/cylindrical_obj/flat_cylinder.png Graphic file (typ
 e png)
@@ -3117,7 +3119,7 @@ pdfTeX warning: pdflatex.exe (file C:/user/SASfitGit/doc/images/form_factor/cyl
 indrical_obj/flat_cylinder.png): large interlaced PNG might cause out of memory
  (use non-interlaced PNG to fix this)
 >]
-<../images/form_factor/cylindrical_obj/FlatCylinder.png, id=3645, 821.7099pt x 
+<../images/form_factor/cylindrical_obj/FlatCylinder.png, id=3655, 821.7099pt x 
 574.3056pt>
 File: ../images/form_factor/cylindrical_obj/FlatCylinder.png Graphic file (type
  png)
@@ -3133,7 +3135,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 196.
 
 
-<../images/form_factor/cylindrical_obj/cylinder.png, id=3654, 394.47375pt x 526
+<../images/form_factor/cylindrical_obj/cylinder.png, id=3664, 394.47375pt x 526
 .96875pt>
 File: ../images/form_factor/cylindrical_obj/cylinder.png Graphic file (type png
 )
@@ -3142,7 +3144,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/cylinder.png use
 d on input line 199.
 (pdftex.def)             Requested size: 129.05716pt x 172.52522pt.
 
-<../images/form_factor/cylindrical_obj/PorodCylinder.png, id=3657, 821.7099pt x
+<../images/form_factor/cylindrical_obj/PorodCylinder.png, id=3667, 821.7099pt x
  574.3056pt>
 File: ../images/form_factor/cylindrical_obj/PorodCylinder.png Graphic file (typ
 e png)
@@ -3200,7 +3202,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/cylinder.png use
 d on input line 251.
 (pdftex.def)             Requested size: 86.0381pt x 115.16959pt.
 
-<../images/form_factor/cylindrical_obj/ExactCylinder.png, id=3671, 821.7099pt x
+<../images/form_factor/cylindrical_obj/ExactCylinder.png, id=3681, 821.7099pt x
  574.3056pt>
 File: ../images/form_factor/cylindrical_obj/ExactCylinder.png Graphic file (typ
 e png)
@@ -3217,7 +3219,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 289--290
  []
 
 
-<../images/form_factor/cylindrical_obj/CylShell.png, id=3680, 928.46875pt x 680
+<../images/form_factor/cylindrical_obj/CylShell.png, id=3690, 928.46875pt x 680
 .5425pt>
 File: ../images/form_factor/cylindrical_obj/CylShell.png Graphic file (type png
 )
@@ -3226,7 +3228,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/CylShell.png use
 d on input line 293.
 (pdftex.def)             Requested size: 179.24435pt x 131.29819pt.
 
-<../images/form_factor/cylindrical_obj/cylshell2D.png, id=3681, 643.6848pt x 42
+<../images/form_factor/cylindrical_obj/cylshell2D.png, id=3691, 643.6848pt x 42
 9.5247pt>
 File: ../images/form_factor/cylindrical_obj/cylshell2D.png Graphic file (type p
 ng)
@@ -3247,7 +3249,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 343--345
  []
 
 
-<../images/form_factor/cylindrical_obj/CylShell1IQ.png, id=3691, 821.7099pt x 5
+<../images/form_factor/cylindrical_obj/CylShell1IQ.png, id=3701, 821.7099pt x 5
 74.3056pt>
 File: ../images/form_factor/cylindrical_obj/CylShell1IQ.png Graphic file (type 
 png)
@@ -3256,7 +3258,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/CylShell1IQ.png
 used on input line 361.
 (pdftex.def)             Requested size: 246.46472pt x 179.25098pt.
 
-<../images/form_factor/cylindrical_obj/CylShell2IQ.png, id=3692, 821.7099pt x 5
+<../images/form_factor/cylindrical_obj/CylShell2IQ.png, id=3702, 821.7099pt x 5
 74.3056pt>
 File: ../images/form_factor/cylindrical_obj/CylShell2IQ.png Graphic file (type 
 png)
@@ -3273,7 +3275,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 381--382
  []
 
 
-<../images/form_factor/cylindrical_obj/ellCylShell_shape.png, id=3710, 293.0548
+<../images/form_factor/cylindrical_obj/ellCylShell_shape.png, id=3720, 293.0548
 6pt x 183.084pt>
 File: ../images/form_factor/cylindrical_obj/ellCylShell_shape.png Graphic file 
 (type png)
@@ -3298,7 +3300,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 420--422
 
  <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/ellCylShell_shape.pn
 g>]
-<../images/form_factor/cylindrical_obj/ellCylShell1.png, id=3721, 821.7099pt x 
+<../images/form_factor/cylindrical_obj/ellCylShell1.png, id=3731, 821.7099pt x 
 574.3056pt>
 File: ../images/form_factor/cylindrical_obj/ellCylShell1.png Graphic file (type
  png)
@@ -3307,7 +3309,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/ellCylShell1.png
  used on input line 434.
 (pdftex.def)             Requested size: 291.28902pt x 224.06592pt.
 
-<../images/form_factor/cylindrical_obj/ellCylShell1_2.png, id=3722, 821.7099pt 
+<../images/form_factor/cylindrical_obj/ellCylShell1_2.png, id=3732, 821.7099pt 
 x 574.3056pt>
 File: ../images/form_factor/cylindrical_obj/ellCylShell1_2.png Graphic file (ty
 pe png)
@@ -3324,7 +3326,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 468--470
  []
 
 
-<../images/form_factor/cylindrical_obj/Pcs_ellCylShell.png, id=3731, 821.9508pt
+<../images/form_factor/cylindrical_obj/Pcs_ellCylShell.png, id=3741, 821.9508pt
  x 574.5465pt>
 File: ../images/form_factor/cylindrical_obj/Pcs_ellCylShell.png Graphic file (t
 ype png)
@@ -3340,7 +3342,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 494.
 
 
-<../images/form_factor/cylindrical_obj/partly_aligned_discs.png, id=3748, 788.9
+<../images/form_factor/cylindrical_obj/partly_aligned_discs.png, id=3758, 788.9
 475pt x 560.0925pt>
 File: ../images/form_factor/cylindrical_obj/partly_aligned_discs.png Graphic fi
 le (type png)
@@ -3358,7 +3360,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 562--564
  []
 
 
-<../images/form_factor/cylindrical_obj/partly_aligned_CylShell.png, id=3760, 37
+<../images/form_factor/cylindrical_obj/partly_aligned_CylShell.png, id=3770, 37
 0.0224pt x 283.2984pt>
 File: ../images/form_factor/cylindrical_obj/partly_aligned_CylShell.png Graphic
  file (type png)
@@ -3384,13 +3386,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 602--603
 
  []
 
-<torus.png, id=3776, 577.15625pt x 391.4625pt>
+<torus.png, id=3786, 577.15625pt x 391.4625pt>
 File: torus.png Graphic file (type png)
  <use torus.png>
 Package pdftex.def Info: torus.png used on input line 606.
 (pdftex.def)             Requested size: 257.68356pt x 224.06776pt.
 
-<torus_sh_xsect.png, id=3777, 654.2844pt x 324.2514pt>
+<torus_sh_xsect.png, id=3787, 654.2844pt x 324.2514pt>
 File: torus_sh_xsect.png Graphic file (type png)
 
 <use torus_sh_xsect.png>
@@ -3398,7 +3400,7 @@ Package pdftex.def Info: torus_sh_xsect.png used on input line 609.
 (pdftex.def)             Requested size: 268.87732pt x 134.43813pt.
  [152 <C:/user/SASfitGit/doc/manual/torus.png (PNG copy)> <C:/user/SASfitGit/do
 c/manual/torus_sh_xsect.png>]
-<../images/form_factor/cylindrical_obj/Torus.png, id=3788, 821.9508pt x 574.546
+<../images/form_factor/cylindrical_obj/Torus.png, id=3798, 821.9508pt x 574.546
 5pt>
 File: ../images/form_factor/cylindrical_obj/Torus.png Graphic file (type png)
  <use ../images/form_factor/cylindrical_obj/Torus.png>
@@ -3406,7 +3408,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/Torus.png used o
 n input line 645.
 (pdftex.def)             Requested size: 291.2741pt x 224.06346pt.
  [153 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/Torus.png>]
-<stacked_torus.png, id=3797, 493.845pt x 759.0759pt>
+<stacked_torus.png, id=3807, 493.845pt x 759.0759pt>
 File: stacked_torus.png Graphic file (type png)
  <use stacked_torus.png>
 Package pdftex.def Info: stacked_torus.png used on input line 658.
@@ -3468,7 +3470,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 79.
 
-<planarHomo.png, id=3824, 1166.3575pt x 377.41pt>
+<planarHomo.png, id=3834, 1166.3575pt x 377.41pt>
 File: planarHomo.png Graphic file (type png)
  <use planarHomo.png>
 Package pdftex.def Info: planarHomo.png used on input line 84.
@@ -3476,7 +3478,7 @@ Package pdftex.def Info: planarHomo.png used on input line 84.
  [157
 
  <C:/user/SASfitGit/doc/manual/planarHomo.png>]
-<planar2thin.png, id=3832, 1181.41376pt x 477.785pt>
+<planar2thin.png, id=3842, 1181.41376pt x 477.785pt>
 File: planar2thin.png Graphic file (type png)
  <use planar2thin.png>
 Package pdftex.def Info: planar2thin.png used on input line 101.
@@ -3489,7 +3491,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 115--116
 
  []
 
-<planar2centrosymm.png, id=3840, 1175.39125pt x 471.7625pt>
+<planar2centrosymm.png, id=3850, 1175.39125pt x 471.7625pt>
 File: planar2centrosymm.png Graphic file (type png)
 
 <use planar2centrosymm.png>
@@ -3502,13 +3504,13 @@ Package pdftex.def Info: planar2centrosymm.png used on input line 119.
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 139.
 
-<BiLayers.png, id=3849, 321.2pt x 462.72874pt>
+<BiLayers.png, id=3859, 321.2pt x 462.72874pt>
 File: BiLayers.png Graphic file (type png)
  <use BiLayers.png>
 Package pdftex.def Info: BiLayers.png used on input line 142.
 (pdftex.def)             Requested size: 179.25323pt x 224.06308pt.
 
-<bilayerprofile.png, id=3850, 1395.2125pt x 927.465pt>
+<bilayerprofile.png, id=3860, 1395.2125pt x 927.465pt>
 File: bilayerprofile.png Graphic file (type png)
 
 <use bilayerprofile.png>
@@ -3528,14 +3530,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--7
 
  []
 
-<sheared_cylinders1.png, id=3864, 880.28876pt x 427.5975pt>
+<sheared_cylinders1.png, id=3874, 880.28876pt x 427.5975pt>
 File: sheared_cylinders1.png Graphic file (type png)
 
 <use sheared_cylinders1.png>
 Package pdftex.def Info: sheared_cylinders1.png used on input line 10.
 (pdftex.def)             Requested size: 313.68001pt x 134.43945pt.
 
-<shear_cuette_SANS_geometry.png, id=3865, 2561.57pt x 2152.04pt>
+<shear_cuette_SANS_geometry.png, id=3875, 2561.57pt x 2152.04pt>
 File: shear_cuette_SANS_geometry.png Graphic file (type png)
 
 <use shear_cuette_SANS_geometry.png>
@@ -3602,7 +3604,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--39
  []
 
 
-<../images/form_factor/MieSphere/MieSphere.png, id=3963, 821.7099pt x 574.3056p
+<../images/form_factor/MieSphere/MieSphere.png, id=3973, 821.7099pt x 574.3056p
 t>
 File: ../images/form_factor/MieSphere/MieSphere.png Graphic file (type png)
  <use ../images/form_factor/MieSphere/MieSphere.png>
@@ -3617,7 +3619,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 86--87
  []
 
 
-<../images/form_factor/MieSphere/MieShell.png, id=3980, 821.7099pt x 574.3056pt
+<../images/form_factor/MieSphere/MieShell.png, id=3990, 821.7099pt x 574.3056pt
 >
 File: ../images/form_factor/MieSphere/MieShell.png Graphic file (type png)
  <use ../images/form_factor/MieSphere/MieShell.png>
@@ -4093,7 +4095,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 180.
 
 LaTeX Warning: Command \b invalid in math mode on input line 180.
 
-<../images/structure_factor/Seff.png, id=4155, 821.7099pt x 574.3056pt>
+<../images/structure_factor/Seff.png, id=4165, 821.7099pt x 574.3056pt>
 File: ../images/structure_factor/Seff.png Graphic file (type png)
 
 <use ../images/structure_factor/Seff.png>
@@ -4106,7 +4108,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 204.
 
 
-<../images/structure_factor/HardSphere/HardSphereSQ.png, id=4167, 821.9508pt x 
+<../images/structure_factor/HardSphere/HardSphereSQ.png, id=4177, 821.9508pt x 
 574.5465pt>
 File: ../images/structure_factor/HardSphere/HardSphereSQ.png Graphic file (type
  png)
@@ -4123,7 +4125,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 243--244
  []
 
 
-<../images/structure_factor/HardSphere/StickyHardSphere1.png, id=4188, 821.9508
+<../images/structure_factor/HardSphere/StickyHardSphere1.png, id=4198, 821.9508
 pt x 574.5465pt>
 File: ../images/structure_factor/HardSphere/StickyHardSphere1.png Graphic file 
 (type png)
@@ -4159,7 +4161,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 293--294
  []
 
 
-<../images/structure_factor/HardSphere/StickyHardSphere2.png, id=4220, 821.9508
+<../images/structure_factor/HardSphere/StickyHardSphere2.png, id=4230, 821.9508
 pt x 574.5465pt>
 File: ../images/structure_factor/HardSphere/StickyHardSphere2.png Graphic file 
 (type png)
@@ -4183,7 +4185,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 349--350
  []
 
 
-<../images/structure_factor/HardSphere/SquareWellSQ.png, id=4248, 821.9508pt x 
+<../images/structure_factor/HardSphere/SquareWellSQ.png, id=4258, 821.9508pt x 
 574.5465pt>
 File: ../images/structure_factor/HardSphere/SquareWellSQ.png Graphic file (type
  png)
@@ -4207,7 +4209,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 430--431
 
  []
 
-<ThermalDisorderSQ.png, id=4273, 1099.10625pt x 665.48625pt>
+<ThermalDisorderSQ.png, id=4283, 1099.10625pt x 665.48625pt>
 File: ThermalDisorderSQ.png Graphic file (type png)
 
 <use ThermalDisorderSQ.png>
@@ -4216,7 +4218,7 @@ Package pdftex.def Info: ThermalDisorderSQ.png used on input line 434.
  [199
 
  <C:/user/SASfitGit/doc/manual/ThermalDisorderSQ.png>]
-<../images/structure_factor/Lamellar/TDLamellar.png, id=4289, 821.7099pt x 574.
+<../images/structure_factor/Lamellar/TDLamellar.png, id=4299, 821.7099pt x 574.
 3056pt>
 File: ../images/structure_factor/Lamellar/TDLamellar.png Graphic file (type png
 )
@@ -4235,7 +4237,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 531--532
 
  []
 
-<ParacrystallineTheorySQ.png, id=4298, 827.09pt x 502.87875pt>
+<ParacrystallineTheorySQ.png, id=4308, 827.09pt x 502.87875pt>
 File: ParacrystallineTheorySQ.png Graphic file (type png)
 
 <use ParacrystallineTheorySQ.png>
@@ -4244,7 +4246,7 @@ Package pdftex.def Info: ParacrystallineTheorySQ.png used on input line 535.
  [201
 
  <C:/user/SASfitGit/doc/manual/ParacrystallineTheorySQ.png>]
-<../images/structure_factor/Lamellar/PCLamellar.png, id=4322, 821.7099pt x 574.
+<../images/structure_factor/Lamellar/PCLamellar.png, id=4332, 821.7099pt x 574.
 3056pt>
 File: ../images/structure_factor/Lamellar/PCLamellar.png Graphic file (type png
 )
@@ -4263,7 +4265,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 644--645
 
  []
 
-<ModifiedCailleTheorySQ.png, id=4335, 878.28125pt x 519.9425pt>
+<ModifiedCailleTheorySQ.png, id=4345, 878.28125pt x 519.9425pt>
 File: ModifiedCailleTheorySQ.png Graphic file (type png)
 
 <use ModifiedCailleTheorySQ.png>
@@ -4272,7 +4274,7 @@ Package pdftex.def Info: ModifiedCailleTheorySQ.png used on input line 648.
  [204
 
  <C:/user/SASfitGit/doc/manual/ModifiedCailleTheorySQ.png>]
-<../images/structure_factor/Lamellar/MCLamellar.png, id=4362, 821.7099pt x 574.
+<../images/structure_factor/Lamellar/MCLamellar.png, id=4372, 821.7099pt x 574.
 3056pt>
 File: ../images/structure_factor/Lamellar/MCLamellar.png Graphic file (type png
 )
@@ -4290,7 +4292,7 @@ Underfull \hbox (badness 2261) in paragraph at lines 759--760
 ng>] [207
 
 ]
-<../images/structure_factor/MassFractals/ComparingSQMassFractals.png, id=4400, 
+<../images/structure_factor/MassFractals/ComparingSQMassFractals.png, id=4410, 
 821.9508pt x 574.5465pt>
 File: ../images/structure_factor/MassFractals/ComparingSQMassFractals.png Graph
 ic file (type png)
@@ -4307,7 +4309,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 869--870
  []
 
 
-<../images/structure_factor/MassFractals/SQExpCutOff.png, id=4413, 821.7099pt x
+<../images/structure_factor/MassFractals/SQExpCutOff.png, id=4423, 821.7099pt x
  574.3056pt>
 File: ../images/structure_factor/MassFractals/SQExpCutOff.png Graphic file (typ
 e png)
@@ -4324,7 +4326,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 896--897
  []
 
 
-<../images/structure_factor/MassFractals/SQExp(pow(x,a))CutOff.png, id=4421, 82
+<../images/structure_factor/MassFractals/SQExp(pow(x,a))CutOff.png, id=4431, 82
 1.7099pt x 574.3056pt>
 File: ../images/structure_factor/MassFractals/SQExp(pow(x,a))CutOff.png Graphic
  file (type png)
@@ -4343,7 +4345,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 924--925
  []
 
 
-<../images/structure_factor/MassFractals/SQGaussCutOff.png, id=4429, 711.00313p
+<../images/structure_factor/MassFractals/SQGaussCutOff.png, id=4439, 711.00313p
 t x 496.6996pt>
 File: ../images/structure_factor/MassFractals/SQGaussCutOff.png Graphic file (t
 ype png)
@@ -4361,7 +4363,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 951--952
  []
 
 
-<../images/structure_factor/MassFractals/SQOverlapSphCutOff.png, id=4436, 821.7
+<../images/structure_factor/MassFractals/SQOverlapSphCutOff.png, id=4446, 821.7
 099pt x 574.3056pt>
 File: ../images/structure_factor/MassFractals/SQOverlapSphCutOff.png Graphic fi
 le (type png)
@@ -4619,7 +4621,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 693--694
 
  []
 
-<../images/OZsolver/potentials/potUHS.png, id=4791, 820.9872pt x 573.1011pt>
+<../images/OZsolver/potentials/potUHS.png, id=4801, 820.9872pt x 573.1011pt>
 File: ../images/OZsolver/potentials/potUHS.png Graphic file (type png)
 
 <use ../images/OZsolver/potentials/potUHS.png>
@@ -4627,7 +4629,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potUHS.png used on input
  line 721.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfHS.png, id=4792, 820.9872pt x 573.1011pt>
+<../images/OZsolver/potentials/potfHS.png, id=4802, 820.9872pt x 573.1011pt>
 File: ../images/OZsolver/potentials/potfHS.png Graphic file (type png)
 
 <use ../images/OZsolver/potentials/potfHS.png>
@@ -4647,7 +4649,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 729--730
 
  []
 
-<../images/OZsolver/potentials/potUSHS.png, id=4806, 820.9872pt x 573.1011pt>
+<../images/OZsolver/potentials/potUSHS.png, id=4816, 820.9872pt x 573.1011pt>
 File: ../images/OZsolver/potentials/potUSHS.png Graphic file (type png)
 
 <use ../images/OZsolver/potentials/potUSHS.png>
@@ -4659,7 +4661,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 790--790
 []|\OT1/cmr/m/n/10 (a) Sticky Hard Sphere po-ten-tial
  []
 
-<../images/OZsolver/potentials/potfSHS.png, id=4807, 820.9872pt x 573.1011pt>
+<../images/OZsolver/potentials/potfSHS.png, id=4817, 820.9872pt x 573.1011pt>
 File: ../images/OZsolver/potentials/potfSHS.png Graphic file (type png)
 
 <use ../images/OZsolver/potentials/potfSHS.png>
@@ -4680,7 +4682,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 799--800
  []
 
 
-<../images/OZsolver/potentials/potUSoftSphere.png, id=4828, 820.9872pt x 573.10
+<../images/OZsolver/potentials/potUSoftSphere.png, id=4838, 820.9872pt x 573.10
 11pt>
 File: ../images/OZsolver/potentials/potUSoftSphere.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potUSoftSphere.png>
@@ -4688,7 +4690,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potUSoftSphere.png used
 on input line 827.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfSoftSphere.png, id=4829, 820.9872pt x 573.10
+<../images/OZsolver/potentials/potfSoftSphere.png, id=4839, 820.9872pt x 573.10
 11pt>
 File: ../images/OZsolver/potentials/potfSoftSphere.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potfSoftSphere.png>
@@ -4711,7 +4713,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 836--837
  []
 
 
-<../images/OZsolver/potentials/potUPenetrableSphere.png, id=4843, 820.9872pt x 
+<../images/OZsolver/potentials/potUPenetrableSphere.png, id=4853, 820.9872pt x 
 573.1011pt>
 File: ../images/OZsolver/potentials/potUPenetrableSphere.png Graphic file (type
  png)
@@ -4720,7 +4722,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potUPenetrableSphere.png
  used on input line 851.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfPenetrableSphere.png, id=4844, 820.9872pt x 
+<../images/OZsolver/potentials/potfPenetrableSphere.png, id=4854, 820.9872pt x 
 573.1011pt>
 File: ../images/OZsolver/potentials/potfPenetrableSphere.png Graphic file (type
  png)
@@ -4747,7 +4749,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 860--861
  []
 
 
-<../images/OZsolver/potentials/potUGGCM-n.png, id=4859, 820.9872pt x 573.1011pt
+<../images/OZsolver/potentials/potUGGCM-n.png, id=4869, 820.9872pt x 573.1011pt
 >
 File: ../images/OZsolver/potentials/potUGGCM-n.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potUGGCM-n.png>
@@ -4765,7 +4767,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 875--875
  []
 
 
-<../images/OZsolver/potentials/potfGGCM-n.png, id=4860, 820.9872pt x 573.1011pt
+<../images/OZsolver/potentials/potfGGCM-n.png, id=4870, 820.9872pt x 573.1011pt
 >
 File: ../images/OZsolver/potentials/potfGGCM-n.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potfGGCM-n.png>
@@ -4786,14 +4788,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 885--886
  []
 
 
-<../images/OZsolver/potentials/potUFermi.png, id=4873, 820.9872pt x 573.1011pt>
+<../images/OZsolver/potentials/potUFermi.png, id=4883, 820.9872pt x 573.1011pt>
 File: ../images/OZsolver/potentials/potUFermi.png Graphic file (type png)
 <use ../images/OZsolver/potentials/potUFermi.png>
 Package pdftex.def Info: ../images/OZsolver/potentials/potUFermi.png used on in
 put line 895.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfFermi.png, id=4874, 820.9872pt x 573.1011pt>
+<../images/OZsolver/potentials/potfFermi.png, id=4884, 820.9872pt x 573.1011pt>
 File: ../images/OZsolver/potentials/potfFermi.png Graphic file (type png)
 <use ../images/OZsolver/potentials/potfFermi.png>
 Package pdftex.def Info: ../images/OZsolver/potentials/potfFermi.png used on in
@@ -4816,7 +4818,7 @@ Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no “ in font cmr12!
 
-<../images/OZsolver/potentials/potUStarfGT10.png, id=4889, 820.9872pt x 573.101
+<../images/OZsolver/potentials/potUStarfGT10.png, id=4899, 820.9872pt x 573.101
 1pt>
 File: ../images/OZsolver/potentials/potUStarfGT10.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potUStarfGT10.png>
@@ -4824,7 +4826,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potUStarfGT10.png used o
 n input line 937.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfStarfGT10.png, id=4890, 820.9872pt x 573.101
+<../images/OZsolver/potentials/potfStarfGT10.png, id=4900, 820.9872pt x 573.101
 1pt>
 File: ../images/OZsolver/potentials/potfStarfGT10.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potfStarfGT10.png>
@@ -4839,7 +4841,7 @@ on
  []
 
 
-<../images/OZsolver/potentials/potUStarfLT10.png, id=4895, 820.9872pt x 573.101
+<../images/OZsolver/potentials/potUStarfLT10.png, id=4905, 820.9872pt x 573.101
 1pt>
 File: ../images/OZsolver/potentials/potUStarfLT10.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potUStarfLT10.png>
@@ -4847,7 +4849,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potUStarfLT10.png used o
 n input line 962.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfStarfLT10.png, id=4896, 820.9872pt x 573.101
+<../images/OZsolver/potentials/potfStarfLT10.png, id=4906, 820.9872pt x 573.101
 1pt>
 File: ../images/OZsolver/potentials/potfStarfLT10.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potfStarfLT10.png>
@@ -4870,7 +4872,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 971--972
  []
 
 
-<../images/OZsolver/potentials/potULennardJones.png, id=4924, 820.9872pt x 573.
+<../images/OZsolver/potentials/potULennardJones.png, id=4934, 820.9872pt x 573.
 1011pt>
 File: ../images/OZsolver/potentials/potULennardJones.png Graphic file (type png
 )
@@ -4879,7 +4881,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potULennardJones.png use
 d on input line 1001.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfLennardJones.png, id=4925, 820.9872pt x 573.
+<../images/OZsolver/potentials/potfLennardJones.png, id=4935, 820.9872pt x 573.
 1011pt>
 File: ../images/OZsolver/potentials/potfLennardJones.png Graphic file (type png
 )
@@ -4901,7 +4903,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1010--1011
  []
 
 
-<../images/OZsolver/potentials/DepletionSketchSphSph.png, id=4943, 540.8205pt x
+<../images/OZsolver/potentials/DepletionSketchSphSph.png, id=4953, 540.8205pt x
  395.076pt>
 File: ../images/OZsolver/potentials/DepletionSketchSphSph.png Graphic file (typ
 e png)
@@ -4910,7 +4912,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/DepletionSketchSphSph.pn
 g used on input line 1016.
 (pdftex.def)             Requested size: 291.28236pt x 212.78325pt.
 
-<../images/OZsolver/potentials/potUDepl-Sph-Sph.png, id=4944, 820.9872pt x 573.
+<../images/OZsolver/potentials/potUDepl-Sph-Sph.png, id=4954, 820.9872pt x 573.
 1011pt>
 File: ../images/OZsolver/potentials/potUDepl-Sph-Sph.png Graphic file (type png
 )
@@ -4929,7 +4931,7 @@ Underfull \hbox (badness 1009) in paragraph at lines 1021--1021
  []
 
 
-<../images/OZsolver/potentials/potfDepl-Sph-Sph.png, id=4945, 820.9872pt x 573.
+<../images/OZsolver/potentials/potfDepl-Sph-Sph.png, id=4955, 820.9872pt x 573.
 1011pt>
 File: ../images/OZsolver/potentials/potfDepl-Sph-Sph.png Graphic file (type png
 )
@@ -4947,7 +4949,7 @@ nc-tion
 [242 <C:/user/SASfitGit/doc/images/OZsolver/potentials/DepletionSketchSphSph.pn
 g> <C:/user/SASfitGit/doc/images/OZsolver/potentials/potUDepl-Sph-Sph.png> <C:/
 user/SASfitGit/doc/images/OZsolver/potentials/potfDepl-Sph-Sph.png>]
-<../images/OZsolver/potentials/DepletionSketchSphDiscs.png, id=4959, 597.432pt 
+<../images/OZsolver/potentials/DepletionSketchSphDiscs.png, id=4969, 597.432pt 
 x 410.4936pt>
 File: ../images/OZsolver/potentials/DepletionSketchSphDiscs.png Graphic file (t
 ype png)
@@ -4959,7 +4961,7 @@ png used on input line 1095.
 Underfull \vbox (badness 1107) has occurred while \output is active []
 
  [243]
-<../images/OZsolver/potentials/potUDepl-Sph-Discs.png, id=4977, 820.9872pt x 57
+<../images/OZsolver/potentials/potUDepl-Sph-Discs.png, id=4987, 820.9872pt x 57
 3.1011pt>
 File: ../images/OZsolver/potentials/potUDepl-Sph-Discs.png Graphic file (type p
 ng)
@@ -4978,7 +4980,7 @@ Underfull \hbox (badness 3179) in paragraph at lines 1135--1135
  []
 
 
-<../images/OZsolver/potentials/potfDepl-Sph-Discs.png, id=4978, 820.9872pt x 57
+<../images/OZsolver/potentials/potfDepl-Sph-Discs.png, id=4988, 820.9872pt x 57
 3.1011pt>
 File: ../images/OZsolver/potentials/potfDepl-Sph-Discs.png Graphic file (type p
 ng)
@@ -4998,7 +5000,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [244 <C:/user/SASfitGit/doc/images/OZsolver/potentials/DepletionSketchSphDiscs
 .png>]
-<../images/OZsolver/potentials/DepletionSketchSphRods.png, id=4992, 624.6537pt 
+<../images/OZsolver/potentials/DepletionSketchSphRods.png, id=5002, 624.6537pt 
 x 370.2633pt>
 File: ../images/OZsolver/potentials/DepletionSketchSphRods.png Graphic file (ty
 pe png)
@@ -5010,7 +5012,7 @@ ng used on input line 1157.
 [245 <C:/user/SASfitGit/doc/images/OZsolver/potentials/potUDepl-Sph-Discs.png> 
 <C:/user/SASfitGit/doc/images/OZsolver/potentials/potfDepl-Sph-Discs.png> <C:/u
 ser/SASfitGit/doc/images/OZsolver/potentials/DepletionSketchSphRods.png>]
-<../images/OZsolver/potentials/potUDepl-Sph-Rods.png, id=5007, 820.9872pt x 573
+<../images/OZsolver/potentials/potUDepl-Sph-Rods.png, id=5017, 820.9872pt x 573
 .1011pt>
 File: ../images/OZsolver/potentials/potUDepl-Sph-Rods.png Graphic file (type pn
 g)
@@ -5019,7 +5021,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potUDepl-Sph-Rods.png us
 ed on input line 1197.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfDepl-Sph-Rods.png, id=5008, 820.9872pt x 573
+<../images/OZsolver/potentials/potfDepl-Sph-Rods.png, id=5018, 820.9872pt x 573
 .1011pt>
 File: ../images/OZsolver/potentials/potfDepl-Sph-Rods.png Graphic file (type pn
 g)
@@ -5049,7 +5051,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1251--1252
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [248]
-<../images/OZsolver/potentials/potUDLVO_a.png, id=5054, 820.9872pt x 573.1011pt
+<../images/OZsolver/potentials/potUDLVO_a.png, id=5064, 820.9872pt x 573.1011pt
 >
 File: ../images/OZsolver/potentials/potUDLVO_a.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potUDLVO_a.png>
@@ -5067,7 +5069,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1328--1328
  []
 
 
-<../images/OZsolver/potentials/potfDLVO.png, id=5055, 820.9872pt x 573.1011pt>
+<../images/OZsolver/potentials/potfDLVO.png, id=5065, 820.9872pt x 573.1011pt>
 File: ../images/OZsolver/potentials/potfDLVO.png Graphic file (type png)
 
 <use ../images/OZsolver/potentials/potfDLVO.png>
@@ -5088,7 +5090,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1337--1338
  []
 
 
-<../images/OZsolver/potentials/potUHC3Yukawa.png, id=5072, 820.9872pt x 573.101
+<../images/OZsolver/potentials/potUHC3Yukawa.png, id=5082, 820.9872pt x 573.101
 1pt>
 File: ../images/OZsolver/potentials/potUHC3Yukawa.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potUHC3Yukawa.png>
@@ -5096,7 +5098,7 @@ Package pdftex.def Info: ../images/OZsolver/potentials/potUHC3Yukawa.png used o
 n input line 1384.
 (pdftex.def)             Requested size: 201.65097pt x 140.70395pt.
 
-<../images/OZsolver/potentials/potfHC3Yukawa.png, id=5073, 820.9872pt x 573.101
+<../images/OZsolver/potentials/potfHC3Yukawa.png, id=5083, 820.9872pt x 573.101
 1pt>
 File: ../images/OZsolver/potentials/potfHC3Yukawa.png Graphic file (type png)
  <use ../images/OZsolver/potentials/potfHC3Yukawa.png>
@@ -5111,7 +5113,7 @@ nc-tion
  []
 
 [250]
-<../images/OZsolver/startOZsolver.png, id=5086, 615.80063pt x 479.54156pt>
+<../images/OZsolver/startOZsolver.png, id=5096, 615.80063pt x 479.54156pt>
 File: ../images/OZsolver/startOZsolver.png Graphic file (type png)
 
 <use ../images/OZsolver/startOZsolver.png>
@@ -5119,7 +5121,7 @@ Package pdftex.def Info: ../images/OZsolver/startOZsolver.png used on input lin
 e 1397.
 (pdftex.def)             Requested size: 317.27711pt x 224.06746pt.
 
-<../images/OZsolver/mainGUIozSolver.png, id=5087, 801.74532pt x 438.8897pt>
+<../images/OZsolver/mainGUIozSolver.png, id=5097, 801.74532pt x 438.8897pt>
 File: ../images/OZsolver/mainGUIozSolver.png Graphic file (type png)
 
 <use ../images/OZsolver/mainGUIozSolver.png>
@@ -5127,7 +5129,7 @@ Package pdftex.def Info: ../images/OZsolver/mainGUIozSolver.png used on input l
 ine 1405.
 (pdftex.def)             Requested size: 409.14162pt x 224.07187pt.
 
-<../images/OZsolver/OZsolverResults4fitting.png, id=5088, 619.56468pt x 437.384
+<../images/OZsolver/OZsolverResults4fitting.png, id=5098, 619.56468pt x 437.384
 06pt>
 File: ../images/OZsolver/OZsolverResults4fitting.png Graphic file (type png)
  <use ../images/OZsolver/OZsolverResults4fitting.png>
@@ -5158,7 +5160,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--17
 
  []
 
-<Uniform.png, id=5118, 803.0pt x 602.25pt>
+<Uniform.png, id=5128, 803.0pt x 602.25pt>
 File: Uniform.png Graphic file (type png)
  <use Uniform.png>
 Package pdftex.def Info: Uniform.png used on input line 20.
@@ -5170,7 +5172,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--53
 
  []
 
-<Triangular.png, id=5127, 803.0pt x 602.25pt>
+<Triangular.png, id=5137, 803.0pt x 602.25pt>
 File: Triangular.png Graphic file (type png)
  <use Triangular.png>
 Package pdftex.def Info: Triangular.png used on input line 56.
@@ -5184,7 +5186,7 @@ ion. $\OML/cmm/m/it/12 x[]; x[]; x[] \OMS/cmsy/m/n/12 2
 [257
 
  <C:/user/SASfitGit/doc/manual/Triangular.png>]
-<LogNorm.png, id=5136, 1335.99126pt x 997.7275pt>
+<LogNorm.png, id=5146, 1335.99126pt x 997.7275pt>
 File: LogNorm.png Graphic file (type png)
  <use LogNorm.png>
 Package pdftex.def Info: LogNorm.png used on input line 84.
@@ -5192,7 +5194,7 @@ Package pdftex.def Info: LogNorm.png used on input line 84.
  [258
 
  <C:/user/SASfitGit/doc/manual/LogNorm.png>] [259]
-<SZ.png, id=5157, 1312.905pt x 985.6825pt>
+<SZ.png, id=5167, 1312.905pt x 985.6825pt>
 File: SZ.png Graphic file (type png)
  <use SZ.png>
 Package pdftex.def Info: SZ.png used on input line 133.
@@ -5200,7 +5202,7 @@ Package pdftex.def Info: SZ.png used on input line 133.
  [260
 
  <C:/user/SASfitGit/doc/manual/SZ.png>] [261]
-<Gamma_distribution_pdf.png, id=5183, 1304.875pt x 978.65625pt>
+<Gamma_distribution_pdf.png, id=5193, 1304.875pt x 978.65625pt>
 File: Gamma_distribution_pdf.png Graphic file (type png)
 
 <use Gamma_distribution_pdf.png>
@@ -5212,7 +5214,7 @@ Package pdftex.def Info: Gamma_distribution_pdf.png used on input line 247.
 64
 
 ]
-<GaussSD.png, id=5207, 547.3248pt x 381.5856pt>
+<GaussSD.png, id=5217, 547.3248pt x 381.5856pt>
 File: GaussSD.png Graphic file (type png)
  <use GaussSD.png>
 Package pdftex.def Info: GaussSD.png used on input line 306.
@@ -5224,7 +5226,7 @@ Package pdftex.def Info: GaussSD.png used on input line 306.
 ] [267
 
 ] [268]
-<Maxwell.png, id=5244, 1370.11874pt x 983.675pt>
+<Maxwell.png, id=5254, 1370.11874pt x 983.675pt>
 File: Maxwell.png Graphic file (type png)
  <use Maxwell.png>
 Package pdftex.def Info: Maxwell.png used on input line 441.
@@ -5232,7 +5234,7 @@ Package pdftex.def Info: Maxwell.png used on input line 441.
  [269
 
  <C:/user/SASfitGit/doc/manual/Maxwell.png>]
-<Weibull.png, id=5255, 1342.01375pt x 1011.78pt>
+<Weibull.png, id=5265, 1342.01375pt x 1011.78pt>
 File: Weibull.png Graphic file (type png)
  <use Weibull.png>
 Package pdftex.def Info: Weibull.png used on input line 477.
@@ -5248,7 +5250,7 @@ Package pdftex.def Info: Weibull.png used on input line 477.
 
 ]
 Chapter 7
-[273] <BetaAmplitude.png, id=5277, 370.0224pt x 283.2984pt>
+[273] <BetaAmplitude.png, id=5287, 370.0224pt x 283.2984pt>
 File: BetaAmplitude.png Graphic file (type png)
 
 <use BetaAmplitude.png>
@@ -5258,21 +5260,21 @@ Package pdftex.def Info: BetaAmplitude.png used on input line 60.
 
 ] [275 <C:/user/SASfitGit/doc/manual/BetaAmplitude.png>] [276
 
-] <ChiSquaredAmplitude.png, id=5309, 370.0224pt x 283.2984pt>
+] <ChiSquaredAmplitude.png, id=5319, 370.0224pt x 283.2984pt>
 File: ChiSquaredAmplitude.png Graphic file (type png)
 
 <use ChiSquaredAmplitude.png>
 Package pdftex.def Info: ChiSquaredAmplitude.png used on input line 170.
 (pdftex.def)             Requested size: 344.18501pt x 263.51233pt.
  [277 <C:/user/SASfitGit/doc/manual/ChiSquaredAmplitude.png>] <ChiSquaredArea.p
-ng, id=5321, 370.0224pt x 283.2984pt>
+ng, id=5331, 370.0224pt x 283.2984pt>
 File: ChiSquaredArea.png Graphic file (type png)
 
 <use ChiSquaredArea.png>
 Package pdftex.def Info: ChiSquaredArea.png used on input line 216.
 (pdftex.def)             Requested size: 344.18501pt x 263.51233pt.
  [278 <C:/user/SASfitGit/doc/manual/ChiSquaredArea.png>] <ErfcAmplitude.png, id
-=5328, 370.0224pt x 283.2984pt>
+=5338, 370.0224pt x 283.2984pt>
 File: ErfcAmplitude.png Graphic file (type png)
 
 <use ErfcAmplitude.png>
@@ -5281,7 +5283,7 @@ Package pdftex.def Info: ErfcAmplitude.png used on input line 247.
  [279
 
  <C:/user/SASfitGit/doc/manual/ErfcAmplitude.png>]
-<ErfcArea.png, id=5336, 370.0224pt x 283.2984pt>
+<ErfcArea.png, id=5346, 370.0224pt x 283.2984pt>
 File: ErfcArea.png Graphic file (type png)
  <use ErfcArea.png>
 Package pdftex.def Info: ErfcArea.png used on input line 279.
@@ -5289,7 +5291,7 @@ Package pdftex.def Info: ErfcArea.png used on input line 279.
  [280
 
  <C:/user/SASfitGit/doc/manual/ErfcArea.png>]
-<ErrorAmplitude.png, id=5344, 370.0224pt x 283.2984pt>
+<ErrorAmplitude.png, id=5354, 370.0224pt x 283.2984pt>
 File: ErrorAmplitude.png Graphic file (type png)
 
 <use ErrorAmplitude.png>
@@ -5297,7 +5299,7 @@ Package pdftex.def Info: ErrorAmplitude.png used on input line 313.
 (pdftex.def)             Requested size: 344.18501pt x 263.51233pt.
  [281
 
- <C:/user/SASfitGit/doc/manual/ErrorAmplitude.png>] <ErrorArea.png, id=5352, 37
+ <C:/user/SASfitGit/doc/manual/ErrorAmplitude.png>] <ErrorArea.png, id=5362, 37
 0.0224pt x 283.2984pt>
 File: ErrorArea.png Graphic file (type png)
  <use ErrorArea.png>
@@ -5307,7 +5309,7 @@ Package pdftex.def Info: ErrorArea.png used on input line 347.
 [282
 
  <C:/user/SASfitGit/doc/manual/ErrorArea.png>]
-<EMGAmplitude.png, id=5361, 370.0224pt x 283.2984pt>
+<EMGAmplitude.png, id=5371, 370.0224pt x 283.2984pt>
 File: EMGAmplitude.png Graphic file (type png)
  <use EMGAmplitude.png>
 Package pdftex.def Info: EMGAmplitude.png used on input line 386.
@@ -5316,7 +5318,7 @@ Package pdftex.def Info: EMGAmplitude.png used on input line 386.
 [283
 
 ] [284 <C:/user/SASfitGit/doc/manual/EMGAmplitude.png>]
-<EMGArea.png, id=5373, 370.0224pt x 283.2984pt>
+<EMGArea.png, id=5383, 370.0224pt x 283.2984pt>
 File: EMGArea.png Graphic file (type png)
  <use EMGArea.png>
 Package pdftex.def Info: EMGArea.png used on input line 423.
@@ -5324,7 +5326,7 @@ Package pdftex.def Info: EMGArea.png used on input line 423.
  [285
 
  <C:/user/SASfitGit/doc/manual/EMGArea.png>]
-<ExtremeValueAmplitude.png, id=5381, 370.0224pt x 283.2984pt>
+<ExtremeValueAmplitude.png, id=5391, 370.0224pt x 283.2984pt>
 File: ExtremeValueAmplitude.png Graphic file (type png)
 
 <use ExtremeValueAmplitude.png>
@@ -5333,7 +5335,7 @@ Package pdftex.def Info: ExtremeValueAmplitude.png used on input line 458.
  [286
 
  <C:/user/SASfitGit/doc/manual/ExtremeValueAmplitude.png>] <ExtremeValueArea.pn
-g, id=5389, 370.0224pt x 283.2984pt>
+g, id=5399, 370.0224pt x 283.2984pt>
 File: ExtremeValueArea.png Graphic file (type png)
 
 <use ExtremeValueArea.png>
@@ -5343,14 +5345,14 @@ Package pdftex.def Info: ExtremeValueArea.png used on input line 490.
 
  <C:/user/SASfitGit/doc/manual/ExtremeValueArea.png>] [288
 
-] <FvarianceAmplitude.png, id=5406, 370.0224pt x 283.2984pt>
+] <FvarianceAmplitude.png, id=5416, 370.0224pt x 283.2984pt>
 File: FvarianceAmplitude.png Graphic file (type png)
 
 <use FvarianceAmplitude.png>
 Package pdftex.def Info: FvarianceAmplitude.png used on input line 569.
 (pdftex.def)             Requested size: 344.18501pt x 263.51233pt.
  [289 <C:/user/SASfitGit/doc/manual/FvarianceAmplitude.png>] <FvarianceArea.png
-, id=5415, 370.0224pt x 283.2984pt>
+, id=5425, 370.0224pt x 283.2984pt>
 File: FvarianceArea.png Graphic file (type png)
 
 <use FvarianceArea.png>
@@ -5361,7 +5363,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 676--677
 
  []
 
-<GammaAmplitude.png, id=5422, 370.0224pt x 283.2984pt>
+<GammaAmplitude.png, id=5432, 370.0224pt x 283.2984pt>
 File: GammaAmplitude.png Graphic file (type png)
 
 <use GammaAmplitude.png>
@@ -5374,13 +5376,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 720--721
 
  []
 
-<GammaArea.png, id=5429, 370.0224pt x 283.2984pt>
+<GammaArea.png, id=5439, 370.0224pt x 283.2984pt>
 File: GammaArea.png Graphic file (type png)
  <use GammaArea.png>
 Package pdftex.def Info: GammaArea.png used on input line 740.
 (pdftex.def)             Requested size: 344.18501pt x 263.51233pt.
  [292 <C:/user/SASfitGit/doc/manual/GammaAmplitude.png>] [293 <C:/user/SASfitGi
-t/doc/manual/GammaArea.png>] <GaussianAmplitude.png, id=5443, 370.0224pt x 283.
+t/doc/manual/GammaArea.png>] <GaussianAmplitude.png, id=5453, 370.0224pt x 283.
 2984pt>
 File: GaussianAmplitude.png Graphic file (type png)
 
@@ -5390,7 +5392,7 @@ Package pdftex.def Info: GaussianAmplitude.png used on input line 776.
  [294
 
  <C:/user/SASfitGit/doc/manual/GaussianAmplitude.png>] <GaussianArea.png, id=54
-52, 370.0224pt x 283.2984pt>
+62, 370.0224pt x 283.2984pt>
 File: GaussianArea.png Graphic file (type png)
 
 <use GaussianArea.png>
@@ -5402,7 +5404,7 @@ Package pdftex.def Info: GaussianArea.png used on input line 808.
 [296
 
 ]
-<GaussianLorentzianCrossProductAmplitude.png, id=5464, 370.0224pt x 283.2984pt>
+<GaussianLorentzianCrossProductAmplitude.png, id=5474, 370.0224pt x 283.2984pt>
 File: GaussianLorentzianCrossProductAmplitude.png Graphic file (type png)
 <use GaussianLorentzianCrossProductAmplitude.png>
 Package pdftex.def Info: GaussianLorentzianCrossProductAmplitude.png used on in
@@ -5417,7 +5419,7 @@ n-Lorentzian cross product
 [297
 
  <C:/user/SASfitGit/doc/manual/GaussianLorentzianCrossProductAmplitude.png>] <G
-aussianLorentzianCrossProductArea.png, id=5472, 370.0224pt x 283.2984pt>
+aussianLorentzianCrossProductArea.png, id=5482, 370.0224pt x 283.2984pt>
 File: GaussianLorentzianCrossProductArea.png Graphic file (type png)
 
 <use GaussianLorentzianCrossProductArea.png>
@@ -5429,7 +5431,7 @@ ine 887.
  <C:/user/SASfitGit/doc/manual/GaussianLorentzianCrossProductArea.png>] [299
 
 ]
-<GaussianLorentzianSumAmplitude.png, id=5484, 370.0224pt x 283.2984pt>
+<GaussianLorentzianSumAmplitude.png, id=5494, 370.0224pt x 283.2984pt>
 File: GaussianLorentzianSumAmplitude.png Graphic file (type png)
 
 <use GaussianLorentzianSumAmplitude.png>
@@ -5439,7 +5441,7 @@ Package pdftex.def Info: GaussianLorentzianSumAmplitude.png used on input line
  [300
 
  <C:/user/SASfitGit/doc/manual/GaussianLorentzianSumAmplitude.png>]
-<GaussianLorentzianSumArea.png, id=5493, 370.0224pt x 283.2984pt>
+<GaussianLorentzianSumArea.png, id=5503, 370.0224pt x 283.2984pt>
 File: GaussianLorentzianSumArea.png Graphic file (type png)
 
 <use GaussianLorentzianSumArea.png>
@@ -5450,7 +5452,7 @@ Package pdftex.def Info: GaussianLorentzianSumArea.png used on input line 967.
  <C:/user/SASfitGit/doc/manual/GaussianLorentzianSumArea.png>] [302
 
 ]
-<generalizedGaussian1Amplitude.png, id=5505, 513.5988pt x 393.1488pt>
+<generalizedGaussian1Amplitude.png, id=5515, 513.5988pt x 393.1488pt>
 File: generalizedGaussian1Amplitude.png Graphic file (type png)
 
 <use generalizedGaussian1Amplitude.png>
@@ -5460,7 +5462,7 @@ Package pdftex.def Info: generalizedGaussian1Amplitude.png used on input line 1
  [303
 
  <C:/user/SASfitGit/doc/manual/generalizedGaussian1Amplitude.png>]
-<generalizedGaussian1Area.png, id=5513, 513.5988pt x 393.1488pt>
+<generalizedGaussian1Area.png, id=5523, 513.5988pt x 393.1488pt>
 File: generalizedGaussian1Area.png Graphic file (type png)
 
 <use generalizedGaussian1Area.png>
@@ -5471,7 +5473,7 @@ Package pdftex.def Info: generalizedGaussian1Area.png used on input line 1052.
  <C:/user/SASfitGit/doc/manual/generalizedGaussian1Area.png>] [305
 
 ]
-<generalizedGaussian2Amplitude.png, id=5526, 513.5988pt x 393.1488pt>
+<generalizedGaussian2Amplitude.png, id=5536, 513.5988pt x 393.1488pt>
 File: generalizedGaussian2Amplitude.png Graphic file (type png)
 
 <use generalizedGaussian2Amplitude.png>
@@ -5481,7 +5483,7 @@ Package pdftex.def Info: generalizedGaussian2Amplitude.png used on input line 1
  [306
 
  <C:/user/SASfitGit/doc/manual/generalizedGaussian2Amplitude.png>]
-<generalizedGaussian2Area.png, id=5537, 513.5988pt x 393.1488pt>
+<generalizedGaussian2Area.png, id=5547, 513.5988pt x 393.1488pt>
 File: generalizedGaussian2Area.png Graphic file (type png)
 
 <use generalizedGaussian2Area.png>
@@ -5492,7 +5494,7 @@ Package pdftex.def Info: generalizedGaussian2Area.png used on input line 1148.
  <C:/user/SASfitGit/doc/manual/generalizedGaussian2Area.png>] [308
 
 ]
-<GiddingsAmplitude.png, id=5552, 513.5988pt x 393.1488pt>
+<GiddingsAmplitude.png, id=5562, 513.5988pt x 393.1488pt>
 File: GiddingsAmplitude.png Graphic file (type png)
 
 <use GiddingsAmplitude.png>
@@ -5501,7 +5503,7 @@ Package pdftex.def Info: GiddingsAmplitude.png used on input line 1204.
  [309
 
  <C:/user/SASfitGit/doc/manual/GiddingsAmplitude.png>] <GiddingsArea.png, id=55
-62, 513.5988pt x 393.1488pt>
+72, 513.5988pt x 393.1488pt>
 File: GiddingsArea.png Graphic file (type png)
 
 <use GiddingsArea.png>
@@ -5510,7 +5512,7 @@ Package pdftex.def Info: GiddingsArea.png used on input line 1237.
  [310
 
  <C:/user/SASfitGit/doc/manual/GiddingsArea.png>]
-<HaarhoffVanderLindeArea.png, id=5570, 513.5988pt x 393.1488pt>
+<HaarhoffVanderLindeArea.png, id=5580, 513.5988pt x 393.1488pt>
 File: HaarhoffVanderLindeArea.png Graphic file (type png)
 
 <use HaarhoffVanderLindeArea.png>
@@ -5519,7 +5521,7 @@ Package pdftex.def Info: HaarhoffVanderLindeArea.png used on input line 1287.
  [311
 
 ] [312 <C:/user/SASfitGit/doc/manual/HaarhoffVanderLindeArea.png>]
-<halfGaussianModifiedGaussianArea.png, id=5585, 513.5988pt x 393.1488pt>
+<halfGaussianModifiedGaussianArea.png, id=5595, 513.5988pt x 393.1488pt>
 File: halfGaussianModifiedGaussianArea.png Graphic file (type png)
 
 <use halfGaussianModifiedGaussianArea.png>
@@ -5532,7 +5534,7 @@ e 1333.
 5
 
 ]
-<invertedGammaAmplitude.png, id=5602, 513.5988pt x 393.1488pt>
+<invertedGammaAmplitude.png, id=5612, 513.5988pt x 393.1488pt>
 File: invertedGammaAmplitude.png Graphic file (type png)
 
 <use invertedGammaAmplitude.png>
@@ -5541,7 +5543,7 @@ Package pdftex.def Info: invertedGammaAmplitude.png used on input line 1392.
  [316
 
  <C:/user/SASfitGit/doc/manual/invertedGammaAmplitude.png>] <invertedGammaArea.
-png, id=5610, 513.5988pt x 393.1488pt>
+png, id=5620, 513.5988pt x 393.1488pt>
 File: invertedGammaArea.png Graphic file (type png)
 
 <use invertedGammaArea.png>
@@ -5550,7 +5552,7 @@ Package pdftex.def Info: invertedGammaArea.png used on input line 1426.
  [317
 
  <C:/user/SASfitGit/doc/manual/invertedGammaArea.png>] <KumaraswamyAmplitude.pn
-g, id=5618, 370.0224pt x 283.2984pt>
+g, id=5628, 370.0224pt x 283.2984pt>
 File: KumaraswamyAmplitude.png Graphic file (type png)
 
 <use KumaraswamyAmplitude.png>
@@ -5559,7 +5561,7 @@ Package pdftex.def Info: KumaraswamyAmplitude.png used on input line 1484.
  [318
 
 ] [319 <C:/user/SASfitGit/doc/manual/KumaraswamyAmplitude.png>] <KumaraswamyAre
-a.png, id=5633, 370.0224pt x 283.2984pt>
+a.png, id=5643, 370.0224pt x 283.2984pt>
 File: KumaraswamyArea.png Graphic file (type png)
 
 <use KumaraswamyArea.png>
@@ -5568,7 +5570,7 @@ Package pdftex.def Info: KumaraswamyArea.png used on input line 1523.
  [320
 
  <C:/user/SASfitGit/doc/manual/KumaraswamyArea.png>] <LaplaceAmplitude.png, id=
-5641, 821.7099pt x 574.3056pt>
+5651, 821.7099pt x 574.3056pt>
 File: LaplaceAmplitude.png Graphic file (type png)
 
 <use LaplaceAmplitude.png>
@@ -5576,7 +5578,7 @@ Package pdftex.def Info: LaplaceAmplitude.png used on input line 1573.
 (pdftex.def)             Requested size: 305.80833pt x 213.7604pt.
  [321
 
- <C:/user/SASfitGit/doc/manual/LaplaceAmplitude.png>] <LaplaceArea.png, id=5650
+ <C:/user/SASfitGit/doc/manual/LaplaceAmplitude.png>] <LaplaceArea.png, id=5660
 , 821.7099pt x 574.3056pt>
 File: LaplaceArea.png Graphic file (type png)
 
@@ -5586,7 +5588,7 @@ Package pdftex.def Info: LaplaceArea.png used on input line 1605.
  [322
 
  <C:/user/SASfitGit/doc/manual/LaplaceArea.png>]
-<LogisticAmplitude.png, id=5658, 821.7099pt x 574.3056pt>
+<LogisticAmplitude.png, id=5668, 821.7099pt x 574.3056pt>
 File: LogisticAmplitude.png Graphic file (type png)
 
 <use LogisticAmplitude.png>
@@ -5595,7 +5597,7 @@ Package pdftex.def Info: LogisticAmplitude.png used on input line 1649.
  [323
 
  <C:/user/SASfitGit/doc/manual/LogisticAmplitude.png>] <LogisticArea.png, id=56
-67, 821.7099pt x 574.3056pt>
+77, 821.7099pt x 574.3056pt>
 File: LogisticArea.png Graphic file (type png)
 
 <use LogisticArea.png>
@@ -5604,7 +5606,7 @@ Package pdftex.def Info: LogisticArea.png used on input line 1679.
  [324
 
  <C:/user/SASfitGit/doc/manual/LogisticArea.png>]
-<LogLogisticAmplitude.png, id=5676, 711.00313pt x 496.6996pt>
+<LogLogisticAmplitude.png, id=5686, 711.00313pt x 496.6996pt>
 File: LogLogisticAmplitude.png Graphic file (type png)
 
 <use LogLogisticAmplitude.png>
@@ -5613,7 +5615,7 @@ Package pdftex.def Info: LogLogisticAmplitude.png used on input line 1736.
  [325
 
 ] [326 <C:/user/SASfitGit/doc/manual/LogLogisticAmplitude.png>] <LogLogisticAre
-a.png, id=5690, 711.00313pt x 496.6996pt>
+a.png, id=5700, 711.00313pt x 496.6996pt>
 File: LogLogisticArea.png Graphic file (type png)
 
 <use LogLogisticArea.png>
@@ -5622,7 +5624,7 @@ Package pdftex.def Info: LogLogisticArea.png used on input line 1768.
  [327
 
  <C:/user/SASfitGit/doc/manual/LogLogisticArea.png>] <LogNormal4ParameterAmplit
-ude.png, id=5698, 370.0224pt x 283.2984pt>
+ude.png, id=5708, 370.0224pt x 283.2984pt>
 File: LogNormal4ParameterAmplitude.png Graphic file (type png)
 
 <use LogNormal4ParameterAmplitude.png>
@@ -5636,7 +5638,7 @@ Overfull \hbox (17.9628pt too wide) in paragraph at lines 1827--1827
 [] 
  []
 
-<LogNormal4ParameterArea.png, id=5706, 370.0224pt x 283.2984pt>
+<LogNormal4ParameterArea.png, id=5716, 370.0224pt x 283.2984pt>
 File: LogNormal4ParameterArea.png Graphic file (type png)
 
 <use LogNormal4ParameterArea.png>
@@ -5647,7 +5649,7 @@ Package pdftex.def Info: LogNormal4ParameterArea.png used on input line 1851.
  <C:/user/SASfitGit/doc/manual/LogNormal4ParameterArea.png>] [330
 
 ]
-<LogNormalAmplitude.png, id=5725, 821.9508pt x 574.5465pt>
+<LogNormalAmplitude.png, id=5735, 821.9508pt x 574.5465pt>
 File: LogNormalAmplitude.png Graphic file (type png)
 
 <use LogNormalAmplitude.png>
@@ -5656,7 +5658,7 @@ Package pdftex.def Info: LogNormalAmplitude.png used on input line 1934.
  [331
 
  <C:/user/SASfitGit/doc/manual/LogNormalAmplitude.png>] <LogNormalArea.png, id=
-5733, 821.9508pt x 574.5465pt>
+5743, 821.9508pt x 574.5465pt>
 File: LogNormalArea.png Graphic file (type png)
 
 <use LogNormalArea.png>
@@ -5673,7 +5675,7 @@ Package amsmath Warning: Foreign command \over;
 (amsmath)                \frac or \genfrac should be used instead
 (amsmath)                 on input line 1993.
 
-<LorentzianAmplitude.png, id=5741, 821.9508pt x 574.5465pt>
+<LorentzianAmplitude.png, id=5751, 821.9508pt x 574.5465pt>
 File: LorentzianAmplitude.png Graphic file (type png)
 
 <use LorentzianAmplitude.png>
@@ -5682,7 +5684,7 @@ Package pdftex.def Info: LorentzianAmplitude.png used on input line 2004.
  [333
 
  <C:/user/SASfitGit/doc/manual/LorentzianAmplitude.png>] <LorentzianArea.png, i
-d=5749, 821.9508pt x 574.5465pt>
+d=5759, 821.9508pt x 574.5465pt>
 File: LorentzianArea.png Graphic file (type png)
 
 <use LorentzianArea.png>
@@ -5692,7 +5694,7 @@ Package pdftex.def Info: LorentzianArea.png used on input line 2016.
 
  <C:/user/SASfitGit/doc/manual/LorentzianArea.png>] [335
 
-] <MaxwellAmplitude.png, id=5762, 845.0772pt x 597.1911pt>
+] <MaxwellAmplitude.png, id=5772, 845.0772pt x 597.1911pt>
 File: MaxwellAmplitude.png Graphic file (type png)
 
 <use MaxwellAmplitude.png>
@@ -5700,7 +5702,7 @@ Package pdftex.def Info: MaxwellAmplitude.png used on input line 2093.
 (pdftex.def)             Requested size: 305.80072pt x 213.75845pt.
  [336
 
- <C:/user/SASfitGit/doc/manual/MaxwellAmplitude.png>] <MaxwellArea.png, id=5771
+ <C:/user/SASfitGit/doc/manual/MaxwellAmplitude.png>] <MaxwellArea.png, id=5781
 , 845.0772pt x 597.1911pt>
 File: MaxwellArea.png Graphic file (type png)
 
@@ -5710,7 +5712,7 @@ Package pdftex.def Info: MaxwellArea.png used on input line 2116.
  [337
 
  <C:/user/SASfitGit/doc/manual/MaxwellArea.png>]
-<generalizedMaxwellAmplitude.png, id=5779, 845.0772pt x 597.1911pt>
+<generalizedMaxwellAmplitude.png, id=5789, 845.0772pt x 597.1911pt>
 File: generalizedMaxwellAmplitude.png Graphic file (type png)
 
 <use generalizedMaxwellAmplitude.png>
@@ -5720,7 +5722,7 @@ Package pdftex.def Info: generalizedMaxwellAmplitude.png used on input line 214
  [338
 
  <C:/user/SASfitGit/doc/manual/generalizedMaxwellAmplitude.png>]
-<generalizedMaxwellArea.png, id=5787, 845.0772pt x 597.1911pt>
+<generalizedMaxwellArea.png, id=5797, 845.0772pt x 597.1911pt>
 File: generalizedMaxwellArea.png Graphic file (type png)
 
 <use generalizedMaxwellArea.png>
@@ -5729,7 +5731,7 @@ Package pdftex.def Info: generalizedMaxwellArea.png used on input line 2164.
  [339
 
  <C:/user/SASfitGit/doc/manual/generalizedMaxwellArea.png>] <PearsonIVAmplitude
-.png, id=5796, 821.9508pt x 574.5465pt>
+.png, id=5806, 821.9508pt x 574.5465pt>
 File: PearsonIVAmplitude.png Graphic file (type png)
 
 <use PearsonIVAmplitude.png>
@@ -5738,7 +5740,7 @@ Package pdftex.def Info: PearsonIVAmplitude.png used on input line 2193.
  [340
 
  <C:/user/SASfitGit/doc/manual/PearsonIVAmplitude.png>] <PearsonIVArea.png, id=
-5807, 821.9508pt x 574.5465pt>
+5817, 821.9508pt x 574.5465pt>
 File: PearsonIVArea.png Graphic file (type png)
 
 <use PearsonIVArea.png>
@@ -5749,7 +5751,7 @@ Package pdftex.def Info: PearsonIVArea.png used on input line 2204.
  <C:/user/SASfitGit/doc/manual/PearsonIVArea.png>]
 [342
 
-] [343] <PearsonVIIAmplitude.png, id=5829, 821.9508pt x 574.5465pt>
+] [343] <PearsonVIIAmplitude.png, id=5839, 821.9508pt x 574.5465pt>
 File: PearsonVIIAmplitude.png Graphic file (type png)
 
 <use PearsonVIIAmplitude.png>
@@ -5758,7 +5760,7 @@ Package pdftex.def Info: PearsonVIIAmplitude.png used on input line 2261.
  [344
 
  <C:/user/SASfitGit/doc/manual/PearsonVIIAmplitude.png>] <PearsonVIIArea.png, i
-d=5836, 821.9508pt x 574.5465pt>
+d=5846, 821.9508pt x 574.5465pt>
 File: PearsonVIIArea.png Graphic file (type png)
 
 <use PearsonVIIArea.png>
@@ -5766,7 +5768,7 @@ Package pdftex.def Info: PearsonVIIArea.png used on input line 2273.
 (pdftex.def)             Requested size: 305.8102pt x 213.76239pt.
  [345
 
- <C:/user/SASfitGit/doc/manual/PearsonVIIArea.png>] <PulseAmplitude.png, id=584
+ <C:/user/SASfitGit/doc/manual/PearsonVIIArea.png>] <PulseAmplitude.png, id=585
 3, 711.00313pt x 496.6996pt>
 File: PulseAmplitude.png Graphic file (type png)
 
@@ -5775,7 +5777,7 @@ Package pdftex.def Info: PulseAmplitude.png used on input line 2294.
 (pdftex.def)             Requested size: 305.80133pt x 213.75856pt.
  [346
 
- <C:/user/SASfitGit/doc/manual/PulseAmplitude.png>] <PulseArea.png, id=5852, 71
+ <C:/user/SASfitGit/doc/manual/PulseAmplitude.png>] <PulseArea.png, id=5862, 71
 1.00313pt x 496.6996pt>
 File: PulseArea.png Graphic file (type png)
  <use PulseArea.png>
@@ -5785,7 +5787,7 @@ Package pdftex.def Info: PulseArea.png used on input line 2307.
 [347
 
  <C:/user/SASfitGit/doc/manual/PulseArea.png>]
-<Pulse2ndWidthAmplitude.png, id=5859, 711.00313pt x 496.6996pt>
+<Pulse2ndWidthAmplitude.png, id=5869, 711.00313pt x 496.6996pt>
 File: Pulse2ndWidthAmplitude.png Graphic file (type png)
 
 <use Pulse2ndWidthAmplitude.png>
@@ -5794,7 +5796,7 @@ Package pdftex.def Info: Pulse2ndWidthAmplitude.png used on input line 2329.
  [348
 
  <C:/user/SASfitGit/doc/manual/Pulse2ndWidthAmplitude.png>] <Pulse2ndWidthArea.
-png, id=5869, 711.00313pt x 496.6996pt>
+png, id=5879, 711.00313pt x 496.6996pt>
 File: Pulse2ndWidthArea.png Graphic file (type png)
 
 <use Pulse2ndWidthArea.png>
@@ -5803,7 +5805,7 @@ Package pdftex.def Info: Pulse2ndWidthArea.png used on input line 2342.
  [349
 
  <C:/user/SASfitGit/doc/manual/Pulse2ndWidthArea.png>] <PulsePowerAmplitude.png
-, id=5876, 711.00313pt x 496.6996pt>
+, id=5886, 711.00313pt x 496.6996pt>
 File: PulsePowerAmplitude.png Graphic file (type png)
 
 <use PulsePowerAmplitude.png>
@@ -5812,7 +5814,7 @@ Package pdftex.def Info: PulsePowerAmplitude.png used on input line 2364.
  [350
 
  <C:/user/SASfitGit/doc/manual/PulsePowerAmplitude.png>] <PulsePowerArea.png, i
-d=5885, 711.00313pt x 496.6996pt>
+d=5895, 711.00313pt x 496.6996pt>
 File: PulsePowerArea.png Graphic file (type png)
 
 <use PulsePowerArea.png>
@@ -5821,7 +5823,7 @@ Package pdftex.def Info: PulsePowerArea.png used on input line 2377.
  [351
 
  <C:/user/SASfitGit/doc/manual/PulsePowerArea.png>] <StudenttAmplitude.png, id=
-5892, 821.9508pt x 574.5465pt>
+5902, 821.9508pt x 574.5465pt>
 File: StudenttAmplitude.png Graphic file (type png)
 
 <use StudenttAmplitude.png>
@@ -5830,7 +5832,7 @@ Package pdftex.def Info: StudenttAmplitude.png used on input line 2395.
  [352
 
  <C:/user/SASfitGit/doc/manual/StudenttAmplitude.png>] <StudenttArea.png, id=59
-00, 821.9508pt x 574.5465pt>
+10, 821.9508pt x 574.5465pt>
 File: StudenttArea.png Graphic file (type png)
 
 <use StudenttArea.png>
@@ -5846,7 +5848,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2474--2476
 
  []
 
-<VoigtArea.png, id=5928, 370.0224pt x 283.2984pt>
+<VoigtArea.png, id=5938, 370.0224pt x 283.2984pt>
 File: VoigtArea.png Graphic file (type png)
  <use VoigtArea.png>
 Package pdftex.def Info: VoigtArea.png used on input line 2496.
@@ -5865,7 +5867,7 @@ Package pdftex.def Info: VoigtArea.png used on input line 2535.
  [356
 
 ]
-<WeibullAmplitude.png, id=5942, 821.7099pt x 574.3056pt>
+<WeibullAmplitude.png, id=5952, 821.7099pt x 574.3056pt>
 File: WeibullAmplitude.png Graphic file (type png)
 
 <use WeibullAmplitude.png>
@@ -5873,7 +5875,7 @@ Package pdftex.def Info: WeibullAmplitude.png used on input line 2583.
 (pdftex.def)             Requested size: 305.80833pt x 213.7604pt.
  [357
 
- <C:/user/SASfitGit/doc/manual/WeibullAmplitude.png>] <WeibullArea.png, id=5952
+ <C:/user/SASfitGit/doc/manual/WeibullAmplitude.png>] <WeibullArea.png, id=5962
 , 821.7099pt x 574.3056pt>
 File: WeibullArea.png Graphic file (type png)
 
@@ -5886,357 +5888,401 @@ Package pdftex.def Info: WeibullArea.png used on input line 2608.
 (C:\user\SASfitGit\doc\manual\SASfit_plugins.tex
 Chapter 8
 (C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_anisotropic.tex
-Underfull \hbox (badness 2005) in paragraph at lines 28--39
+<../images/form_factor/anisotropic/rectangularparallelepiped.png, id=5970, 608.
+63385pt x 401.45985pt>
+File: ../images/form_factor/anisotropic/rectangularparallelepiped.png Graphic f
+ile (type png)
+
+<use ../images/form_factor/anisotropic/rectangularparallelepiped.png>
+Package pdftex.def Info: ../images/form_factor/anisotropic/rectangularparallele
+piped.png used on input line 10.
+(pdftex.def)             Requested size: 336.09819pt x 221.69183pt.
+ [359
+
+
+
+ <C:/user/SASfitGit/doc/images/form_factor/anisotropic/rectangularparallelepipe
+d.png
+
+pdfTeX warning: pdflatex.exe (file C:/user/SASfitGit/doc/images/form_factor/ani
+sotropic/rectangularparallelepiped.png): large interlaced PNG might cause out o
+f memory (use non-interlaced PNG to fix this)
+>]
+Underfull \hbox (badness 10000) in paragraph at lines 37--38
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
+$[]$\OT1/cmr/m/n/12 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
+
+ []
+
+
+<../images/form_factor/anisotropic/parallelepipedABC.png, id=5978, 774.7344pt x
+ 592.8549pt>
+File: ../images/form_factor/anisotropic/parallelepipedABC.png Graphic file (typ
+e png)
+ <use ../images/form_factor/anisotropic/parallelepipedABC.png>
+Package pdftex.def Info: ../images/form_factor/anisotropic/parallelepipedABC.pn
+g used on input line 62.
+(pdftex.def)             Requested size: 336.09819pt x 257.19324pt.
+
+[360] [361 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/parallelepiped
+ABC.png>]
+Underfull \hbox (badness 2005) in paragraph at lines 94--105
 \OT1/cmtt/m/n/12 cylindrical obj.]\OT1/cmr/m/n/12 ". The shape fac-tors are als
 o avail-able as struc-ture fac-
  []
 
-[359
-
-
+[362
 
 ]
-<../images/form_factor/anisotropic/localplanar.png, id=5968, 1682.285pt x 915.4
+<../images/form_factor/anisotropic/localplanar.png, id=6002, 1682.285pt x 915.4
 2pt>
 File: ../images/form_factor/anisotropic/localplanar.png Graphic file (type png)
 
  <use ../images/form_factor/anisotropic/localplanar.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/localplanar.png used
- on input line 67.
+ on input line 133.
 (pdftex.def)             Requested size: 375.52013pt x 204.3403pt.
- [360
+ [363
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/localplanar.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
+Underfull \hbox (badness 10000) in paragraph at lines 154--155
 
  []
 
 
-<../images/form_factor/anisotropic/Pcs_homogeneousXS_txt.png, id=5976, 1158.729
+<../images/form_factor/anisotropic/Pcs_homogeneousXS_txt.png, id=6009, 1158.729
 pt x 383.5128pt>
 File: ../images/form_factor/anisotropic/Pcs_homogeneousXS_txt.png Graphic file 
 (type png)
 
 <use ../images/form_factor/anisotropic/Pcs_homogeneousXS_txt.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/Pcs_homogeneousXS_tx
-t.png used on input line 92.
+t.png used on input line 158.
 (pdftex.def)             Requested size: 359.39677pt x 118.75314pt.
 
-<../images/form_factor/anisotropic/localplanarIQ.png, id=5978, 845.0772pt x 597
+<../images/form_factor/anisotropic/localplanarIQ.png, id=6011, 845.0772pt x 597
 .1911pt>
 File: ../images/form_factor/anisotropic/localplanarIQ.png Graphic file (type pn
 g)
  <use ../images/form_factor/anisotropic/localplanarIQ.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/localplanarIQ.png us
-ed on input line 131.
+ed on input line 197.
 (pdftex.def)             Requested size: 358.50186pt x 246.47194pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 134--134
-\OT1/cmr/m/sc/12 Figure 8.3.[]\OT1/cmr/m/n/12 Scattering curve for the form fac
--tor
- []
-
-
-Underfull \hbox (badness 1424) in paragraph at lines 134--134
-\OT1/cmr/m/n/12 "\OT1/cmtt/m/n/12 Pcs:homogeneousPlate\OT1/cmr/m/n/12 " only (i
-n-sert) and in com-bi-na-tion with a
- []
-
-[361
-
- <C:/user/SASfitGit/doc/images/form_factor/anisotropic/Pcs_homogeneousXS_txt.pn
-g>] [362 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/localplanarIQ.pn
-g>]
-<../images/form_factor/anisotropic/planar2thin_txt.png, id=5992, 1160.6562pt x 
-476.2593pt>
-File: ../images/form_factor/anisotropic/planar2thin_txt.png Graphic file (type 
-png)
- <use ../images/form_factor/anisotropic/planar2thin_txt.png>
-Package pdftex.def Info: ../images/form_factor/anisotropic/planar2thin_txt.png 
-used on input line 144.
-(pdftex.def)             Requested size: 358.50687pt x 146.9848pt.
-
-<../images/form_factor/anisotropic/planar2thinIQ.png, id=5994, 845.0772pt x 597
-.1911pt>
-File: ../images/form_factor/anisotropic/planar2thinIQ.png Graphic file (type pn
-g)
- <use ../images/form_factor/anisotropic/planar2thinIQ.png>
-Package pdftex.def Info: ../images/form_factor/anisotropic/planar2thinIQ.png us
-ed on input line 178.
-(pdftex.def)             Requested size: 358.50186pt x 246.47194pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 181--181
+Underfull \hbox (badness 10000) in paragraph at lines 200--200
 \OT1/cmr/m/sc/12 Figure 8.5.[]\OT1/cmr/m/n/12 Scattering curve for the form fac
 -tor
  []
 
 
-Underfull \hbox (badness 1990) in paragraph at lines 181--181
+Underfull \hbox (badness 1424) in paragraph at lines 200--200
+\OT1/cmr/m/n/12 "\OT1/cmtt/m/n/12 Pcs:homogeneousPlate\OT1/cmr/m/n/12 " only (i
+n-sert) and in com-bi-na-tion with a
+ []
+
+[364
+
+ <C:/user/SASfitGit/doc/images/form_factor/anisotropic/Pcs_homogeneousXS_txt.pn
+g>] [365 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/localplanarIQ.pn
+g>]
+<../images/form_factor/anisotropic/planar2thin_txt.png, id=6025, 1160.6562pt x 
+476.2593pt>
+File: ../images/form_factor/anisotropic/planar2thin_txt.png Graphic file (type 
+png)
+ <use ../images/form_factor/anisotropic/planar2thin_txt.png>
+Package pdftex.def Info: ../images/form_factor/anisotropic/planar2thin_txt.png 
+used on input line 210.
+(pdftex.def)             Requested size: 358.50687pt x 146.9848pt.
+
+<../images/form_factor/anisotropic/planar2thinIQ.png, id=6027, 845.0772pt x 597
+.1911pt>
+File: ../images/form_factor/anisotropic/planar2thinIQ.png Graphic file (type pn
+g)
+ <use ../images/form_factor/anisotropic/planar2thinIQ.png>
+Package pdftex.def Info: ../images/form_factor/anisotropic/planar2thinIQ.png us
+ed on input line 244.
+(pdftex.def)             Requested size: 358.50186pt x 246.47194pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 247--247
+\OT1/cmr/m/sc/12 Figure 8.7.[]\OT1/cmr/m/n/12 Scattering curve for the form fac
+-tor
+ []
+
+
+Underfull \hbox (badness 1990) in paragraph at lines 247--247
 \OT1/cmr/m/n/12 "\OT1/cmtt/m/n/12 Pcs:TwoInfinitelyThinLayers\OT1/cmr/m/n/12 " 
 only (in-sert) and in com-bi-na-tion
  []
 
-[363
+[366
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/planar2thin_txt.png>] [3
-64 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/planar2thinIQ.png>]
-<../images/form_factor/anisotropic/planar2centrosymm_txt.png, id=6008, 1086.459
+67 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/planar2thinIQ.png>]
+<../images/form_factor/anisotropic/planar2centrosymm_txt.png, id=6042, 1086.459
 pt x 490.7133pt>
 File: ../images/form_factor/anisotropic/planar2centrosymm_txt.png Graphic file 
 (type png)
 
 <use ../images/form_factor/anisotropic/planar2centrosymm_txt.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/planar2centrosymm_tx
-t.png used on input line 192.
+t.png used on input line 258.
 (pdftex.def)             Requested size: 358.49942pt x 161.77115pt.
- [365
+ [368
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/planar2centrosymm_txt.pn
 g>]
-<../images/form_factor/anisotropic/Pcs_planar2centrosymmIQ.png, id=6017, 845.07
+<../images/form_factor/anisotropic/Pcs_planar2centrosymmIQ.png, id=6051, 845.07
 72pt x 597.1911pt>
 File: ../images/form_factor/anisotropic/Pcs_planar2centrosymmIQ.png Graphic fil
 e (type png)
 
 <use ../images/form_factor/anisotropic/Pcs_planar2centrosymmIQ.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/Pcs_planar2centrosym
-mIQ.png used on input line 238.
+mIQ.png used on input line 304.
 (pdftex.def)             Requested size: 358.50186pt x 246.47194pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 241--241
-\OT1/cmr/m/sc/12 Figure 8.7.[]\OT1/cmr/m/n/12 Scattering curve for the form fac
+Underfull \hbox (badness 10000) in paragraph at lines 307--307
+\OT1/cmr/m/sc/12 Figure 8.9.[]\OT1/cmr/m/n/12 Scattering curve for the form fac
 -tor
  []
 
-[366 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/Pcs_planar2centrosym
+[369 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/Pcs_planar2centrosym
 mIQ.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 247.
+(hyperref)                removing `\@ifnextchar' on input line 313.
 
 
-<../images/form_factor/anisotropic/BiLayerGauss_Profile.png, id=6027, 845.0772p
+<../images/form_factor/anisotropic/BiLayerGauss_Profile.png, id=6060, 845.0772p
 t x 597.1911pt>
 File: ../images/form_factor/anisotropic/BiLayerGauss_Profile.png Graphic file (
 type png)
 
 <use ../images/form_factor/anisotropic/BiLayerGauss_Profile.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/BiLayerGauss_Profile
-.png used on input line 252.
+.png used on input line 318.
 (pdftex.def)             Requested size: 358.50186pt x 246.47194pt.
- [367
+ [370
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/BiLayerGauss_Profile.png
 >]
-<../images/form_factor/anisotropic/BiLayerGauss_IQa.png, id=6042, 845.0772pt x 
+<../images/form_factor/anisotropic/BiLayerGauss_IQa.png, id=6075, 845.0772pt x 
 597.1911pt>
 File: ../images/form_factor/anisotropic/BiLayerGauss_IQa.png Graphic file (type
  png)
  <use ../images/form_factor/anisotropic/BiLayerGauss_IQa.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/BiLayerGauss_IQa.png
- used on input line 312.
+ used on input line 378.
 (pdftex.def)             Requested size: 215.09854pt x 156.84247pt.
 
-<../images/form_factor/anisotropic/BiLayerGauss_IQb.png, id=6043, 845.0772pt x 
+<../images/form_factor/anisotropic/BiLayerGauss_IQb.png, id=6076, 845.0772pt x 
 597.1911pt>
 File: ../images/form_factor/anisotropic/BiLayerGauss_IQb.png Graphic file (type
  png)
  <use ../images/form_factor/anisotropic/BiLayerGauss_IQb.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/BiLayerGauss_IQb.png
- used on input line 316.
+ used on input line 382.
 (pdftex.def)             Requested size: 215.09854pt x 156.84247pt.
 
-Underfull \hbox (badness 5417) in paragraph at lines 320--320
-\OT1/cmr/m/sc/12 Figure 8.9.[]\OT1/cmr/m/n/12 Scattering curve for the cross-se
-ction form fac-tor
+Underfull \hbox (badness 3612) in paragraph at lines 386--386
+\OT1/cmr/m/sc/12 Figure 8.11.[]\OT1/cmr/m/n/12 Scattering curve for the cross-s
+ection form fac-tor
  []
 
-[368 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/BiLayerGauss_IQa.png
+[371 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/BiLayerGauss_IQa.png
 > <C:/user/SASfitGit/doc/images/form_factor/anisotropic/BiLayerGauss_IQb.png>]
-<../images/form_factor/anisotropic/SketchdiffXSWorm.png, id=6059, 485.6544pt x 
+<../images/form_factor/anisotropic/SketchdiffXSWorm.png, id=6092, 485.6544pt x 
 352.4367pt>
 File: ../images/form_factor/anisotropic/SketchdiffXSWorm.png Graphic file (type
  png)
  <use ../images/form_factor/anisotropic/SketchdiffXSWorm.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/SketchdiffXSWorm.png
- used on input line 418.
+ used on input line 484.
 (pdftex.def)             Requested size: 380.91402pt x 276.44293pt.
 
-[369
+[372
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/SketchdiffXSWorm.png>]
-<../images/form_factor/anisotropic/CylindricalHomogeneousXSIQ.png, id=6066, 845
+<../images/form_factor/anisotropic/CylindricalHomogeneousXSIQ.png, id=6100, 845
 .0772pt x 597.1911pt>
 File: ../images/form_factor/anisotropic/CylindricalHomogeneousXSIQ.png Graphic 
 file (type png)
 
 <use ../images/form_factor/anisotropic/CylindricalHomogeneousXSIQ.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/CylindricalHomogeneo
-usXSIQ.png used on input line 466.
+usXSIQ.png used on input line 532.
 (pdftex.def)             Requested size: 358.50186pt x 246.47194pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 469--469
-\OT1/cmr/m/sc/12 Figure 8.11.[]\OT1/cmr/m/n/12 Scattering curve for the form fa
+Underfull \hbox (badness 10000) in paragraph at lines 535--535
+\OT1/cmr/m/sc/12 Figure 8.13.[]\OT1/cmr/m/n/12 Scattering curve for the form fa
 c-tor
  []
 
 
-Underfull \hbox (badness 3668) in paragraph at lines 469--469
+Underfull \hbox (badness 3668) in paragraph at lines 535--535
 \OT1/cmr/m/n/12 "\OT1/cmtt/m/n/12 Pcs:homogeneousCyl\OT1/cmr/m/n/12 " only (in-
 sert) and in com-bi-na-tion with a
  []
 
-[370
+[373
 
-] [371 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/CylindricalHomogen
-eousXSIQ.png>] [372
+] [374 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/CylindricalHomogen
+eousXSIQ.png>] [375
 
-] [373
+] [376
 
 ]
-<../images/form_factor/anisotropic/ThinDisc.png, id=6092, 975.645pt x 224.33812
+<../images/form_factor/anisotropic/ThinDisc.png, id=6125, 975.645pt x 224.33812
 pt>
 File: ../images/form_factor/anisotropic/ThinDisc.png Graphic file (type png)
  <use ../images/form_factor/anisotropic/ThinDisc.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/ThinDisc.png used on
- input line 536.
+ input line 602.
 (pdftex.def)             Requested size: 307.41913pt x 120.99701pt.
 
-<../images/form_factor/anisotropic/PprimeThinDisc.png, id=6093, 820.9872pt x 57
+<../images/form_factor/anisotropic/PprimeThinDisc.png, id=6126, 820.9872pt x 57
 3.1011pt>
 File: ../images/form_factor/anisotropic/PprimeThinDisc.png Graphic file (type p
 ng)
  <use ../images/form_factor/anisotropic/PprimeThinDisc.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/PprimeThinDisc.png u
-sed on input line 560.
+sed on input line 626.
 (pdftex.def)             Requested size: 358.50455pt x 246.4724pt.
- [374
+ [377
 
- <C:/user/SASfitGit/doc/images/form_factor/anisotropic/ThinDisc.png>] [375 <C:/
+ <C:/user/SASfitGit/doc/images/form_factor/anisotropic/ThinDisc.png>] [378 <C:/
 user/SASfitGit/doc/images/form_factor/anisotropic/PprimeThinDisc.png>]
-<../images/form_factor/anisotropic/Sphere_thin.png, id=6106, 431.6125pt x 464.7
+<../images/form_factor/anisotropic/Sphere_thin.png, id=6140, 431.6125pt x 464.7
 3625pt>
 File: ../images/form_factor/anisotropic/Sphere_thin.png Graphic file (type png)
 
  <use ../images/form_factor/anisotropic/Sphere_thin.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/Sphere_thin.png used
- on input line 572.
+ on input line 638.
 (pdftex.def)             Requested size: 192.68932pt x 207.4771pt.
 
-<../images/form_factor/anisotropic/PprimeThinSphShell.png, id=6107, 820.9872pt 
+<../images/form_factor/anisotropic/PprimeThinSphShell.png, id=6141, 820.9872pt 
 x 573.1011pt>
 File: ../images/form_factor/anisotropic/PprimeThinSphShell.png Graphic file (ty
 pe png)
  <use ../images/form_factor/anisotropic/PprimeThinSphShell.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/PprimeThinSphShell.p
-ng used on input line 596.
+ng used on input line 662.
 (pdftex.def)             Requested size: 358.50455pt x 246.4724pt.
 
-[376
+[379
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/Sphere_thin.png (PNG cop
-y)>] [377 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/PprimeThinSphSh
+y)>] [380 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/PprimeThinSphSh
 ell.png>]
-<../images/form_factor/anisotropic/Ellipsoid_hollow.png, id=6119, 598.235pt x 4
+<../images/form_factor/anisotropic/Ellipsoid_hollow.png, id=6153, 598.235pt x 4
 50.68375pt>
 File: ../images/form_factor/anisotropic/Ellipsoid_hollow.png Graphic file (type
  png)
  <use ../images/form_factor/anisotropic/Ellipsoid_hollow.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/Ellipsoid_hollow.png
- used on input line 609.
+ used on input line 675.
 (pdftex.def)             Requested size: 267.0855pt x 201.21724pt.
 
-<../images/form_factor/anisotropic/PprimeThinEllShell.png, id=6120, 820.9872pt 
+<../images/form_factor/anisotropic/PprimeThinEllShell.png, id=6154, 820.9872pt 
 x 573.1011pt>
 File: ../images/form_factor/anisotropic/PprimeThinEllShell.png Graphic file (ty
 pe png)
  <use ../images/form_factor/anisotropic/PprimeThinEllShell.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/PprimeThinEllShell.p
-ng used on input line 633.
+ng used on input line 699.
 (pdftex.def)             Requested size: 358.50455pt x 246.4724pt.
 
-[378
+[381
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/Ellipsoid_hollow.png (PN
-G copy)>] [379 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/PprimeThin
+G copy)>] [382 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/PprimeThin
 EllShell.png>]
-<../images/form_factor/anisotropic/ThinHollowCylinder.png, id=6133, 472.4049pt 
+<../images/form_factor/anisotropic/ThinHollowCylinder.png, id=6166, 472.4049pt 
 x 520.1031pt>
 File: ../images/form_factor/anisotropic/ThinHollowCylinder.png Graphic file (ty
 pe png)
  <use ../images/form_factor/anisotropic/ThinHollowCylinder.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/ThinHollowCylinder.p
-ng used on input line 645.
+ng used on input line 711.
 (pdftex.def)             Requested size: 175.7602pt x 193.49857pt.
 
-[380
+[383
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/ThinHollowCylinder.png>]
 
-<../images/form_factor/anisotropic/PprimeThinHollowCylinder.png, id=6143, 820.9
+<../images/form_factor/anisotropic/PprimeThinHollowCylinder.png, id=6176, 820.9
 872pt x 573.1011pt>
 File: ../images/form_factor/anisotropic/PprimeThinHollowCylinder.png Graphic fi
 le (type png)
 
 <use ../images/form_factor/anisotropic/PprimeThinHollowCylinder.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/PprimeThinHollowCyli
-nder.png used on input line 685.
+nder.png used on input line 751.
 (pdftex.def)             Requested size: 358.50455pt x 246.4724pt.
- [381 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/PprimeThinHollowCyl
-inder.png>] [382
+ [384 <C:/user/SASfitGit/doc/images/form_factor/anisotropic/PprimeThinHollowCyl
+inder.png>] [385
 
 ]
-<../images/form_factor/anisotropic/ThinRod.png, id=6154, 1394.20876pt x 361.35p
+<../images/form_factor/anisotropic/ThinRod.png, id=6188, 1394.20876pt x 361.35p
 t>
 File: ../images/form_factor/anisotropic/ThinRod.png Graphic file (type png)
  <use ../images/form_factor/anisotropic/ThinRod.png>
 Package pdftex.def Info: ../images/form_factor/anisotropic/ThinRod.png used on 
-input line 703.
+input line 769.
 (pdftex.def)             Requested size: 414.9684pt x 107.5512pt.
- [383
+ [386
 
  <C:/user/SASfitGit/doc/images/form_factor/anisotropic/ThinRod.png>]
 File: SemiflexiblePolymerTxt.png Graphic file (type png)
 
 <use SemiflexiblePolymerTxt.png>
-Package pdftex.def Info: SemiflexiblePolymerTxt.png used on input line 723.
+Package pdftex.def Info: SemiflexiblePolymerTxt.png used on input line 789.
 (pdftex.def)             Requested size: 276.50568pt x 341.47507pt.
- [384
+ [387
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 764--766
+Underfull \hbox (badness 10000) in paragraph at lines 830--832
 
  []
 
-[385]
-Underfull \hbox (badness 10000) in paragraph at lines 788--789
+[388]
+Underfull \hbox (badness 10000) in paragraph at lines 854--855
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 789--790
+Underfull \hbox (badness 10000) in paragraph at lines 855--856
 
  []
 
-[386
+[389
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 886--887
+Underfull \hbox (badness 10000) in paragraph at lines 952--953
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 887--888
+Underfull \hbox (badness 10000) in paragraph at lines 953--954
 
  []
 
-[387] [388] [389] [390
+[390] [391] [392] [393
 
 ])
-(C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_spheres_shells.tex [391
+(C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_spheres_shells.tex [394
 
 ]
-[392
+[395
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 27--28
@@ -6251,21 +6297,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 71--74
 
 Underfull \vbox (badness 1168) has occurred while \output is active []
 
- [393
+ [396
 
 ]
-[394]
+[397]
 Underfull \hbox (badness 10000) in paragraph at lines 130--134
 
  []
 
-[395]
+[398]
 Underfull \hbox (badness 10000) in paragraph at lines 191--192
 
  []
 
 
-<../images/form_factor/FuzzySphere/FuzzySphereProfile.png, id=6292, 845.0772pt 
+<../images/form_factor/FuzzySphere/FuzzySphereProfile.png, id=6326, 845.0772pt 
 x 597.1911pt>
 File: ../images/form_factor/FuzzySphere/FuzzySphereProfile.png Graphic file (ty
 pe png)
@@ -6276,7 +6322,7 @@ ng used on input line 195.
 
 Underfull \vbox (badness 1308) has occurred while \output is active []
 
- [396
+ [399
 
  <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/FuzzySphereProfile.png>]
 
@@ -6284,8 +6330,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 290--292
 
  []
 
-[397]
-<../images/form_factor/FuzzySphere/FuzzySphereIQ.png, id=6315, 845.0772pt x 597
+[400]
+<../images/form_factor/FuzzySphere/FuzzySphereIQ.png, id=6348, 845.0772pt x 597
 .1911pt>
 File: ../images/form_factor/FuzzySphere/FuzzySphereIQ.png Graphic file (type pn
 g)
@@ -6293,9 +6339,9 @@ g)
 Package pdftex.def Info: ../images/form_factor/FuzzySphere/FuzzySphereIQ.png us
 ed on input line 327.
 (pdftex.def)             Requested size: 313.69235pt x 224.06458pt.
- [398 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/FuzzySphereIQ.png>]
+ [401 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/FuzzySphereIQ.png>]
 
-<../images/form_factor/FuzzySphere/CoreShellMicrogel1.png, id=6324, 845.0772pt 
+<../images/form_factor/FuzzySphere/CoreShellMicrogel1.png, id=6357, 845.0772pt 
 x 596.9502pt>
 File: ../images/form_factor/FuzzySphere/CoreShellMicrogel1.png Graphic file (ty
 pe png)
@@ -6304,7 +6350,7 @@ Package pdftex.def Info: ../images/form_factor/FuzzySphere/CoreShellMicrogel1.p
 ng used on input line 346.
 (pdftex.def)             Requested size: 215.09854pt x 156.84296pt.
 
-<../images/form_factor/FuzzySphere/CoreShellMicrogel2.png, id=6325, 845.0772pt 
+<../images/form_factor/FuzzySphere/CoreShellMicrogel2.png, id=6358, 845.0772pt 
 x 597.1911pt>
 File: ../images/form_factor/FuzzySphere/CoreShellMicrogel2.png Graphic file (ty
 pe png)
@@ -6313,7 +6359,7 @@ Package pdftex.def Info: ../images/form_factor/FuzzySphere/CoreShellMicrogel2.p
 ng used on input line 349.
 (pdftex.def)             Requested size: 215.09854pt x 156.84247pt.
 
-[399
+[402
 
  <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/CoreShellMicrogel1.png> 
 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/CoreShellMicrogel2.png>]
@@ -6323,7 +6369,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 418--420
  []
 
 
-<../images/form_factor/FuzzySphere/Example_CoreShellMicrogel1.png, id=6346, 845
+<../images/form_factor/FuzzySphere/Example_CoreShellMicrogel1.png, id=6380, 845
 .0772pt x 596.9502pt>
 File: ../images/form_factor/FuzzySphere/Example_CoreShellMicrogel1.png Graphic 
 file (type png)
@@ -6333,7 +6379,7 @@ Package pdftex.def Info: ../images/form_factor/FuzzySphere/Example_CoreShellMic
 rogel1.png used on input line 447.
 (pdftex.def)             Requested size: 215.09854pt x 156.84296pt.
 
-<../images/form_factor/FuzzySphere/Example_CoreShellMicrogel2.png, id=6347, 845
+<../images/form_factor/FuzzySphere/Example_CoreShellMicrogel2.png, id=6381, 845
 .0772pt x 596.9502pt>
 File: ../images/form_factor/FuzzySphere/Example_CoreShellMicrogel2.png Graphic 
 file (type png)
@@ -6342,8 +6388,8 @@ file (type png)
 Package pdftex.def Info: ../images/form_factor/FuzzySphere/Example_CoreShellMic
 rogel2.png used on input line 450.
 (pdftex.def)             Requested size: 215.09854pt x 156.84296pt.
- [400]
-[401 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/Example_CoreShellMic
+ [403]
+[404 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/Example_CoreShellMic
 rogel1.png> <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/Example_CoreS
 hellMicrogel2.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 461--462
@@ -6351,7 +6397,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 461--462
  []
 
 
-<../images/form_factor/spheres/linshell.png, id=6368, 518.6878pt x 551.05875pt>
+<../images/form_factor/spheres/linshell.png, id=6402, 518.6878pt x 551.05875pt>
 File: ../images/form_factor/spheres/linshell.png Graphic file (type png)
 <use ../images/form_factor/spheres/linshell.png>
 Package pdftex.def Info: ../images/form_factor/spheres/linshell.png used on inp
@@ -6360,7 +6406,7 @@ ut line 465.
 
 Underfull \vbox (badness 1117) has occurred while \output is active []
 
- [402
+ [405
 
  <C:/user/SASfitGit/doc/images/form_factor/spheres/linshell.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 505--506
@@ -6368,7 +6414,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 505--506
  []
 
 
-<../images/form_factor/FuzzySphere/LinShell_profile.png, id=6380, 845.0772pt x 
+<../images/form_factor/FuzzySphere/LinShell_profile.png, id=6413, 845.0772pt x 
 596.9502pt>
 File: ../images/form_factor/FuzzySphere/LinShell_profile.png Graphic file (type
  png)
@@ -6377,7 +6423,7 @@ Package pdftex.def Info: ../images/form_factor/FuzzySphere/LinShell_profile.png
  used on input line 527.
 (pdftex.def)             Requested size: 215.09854pt x 156.84296pt.
 
-<../images/form_factor/FuzzySphere/LinShell_IQ.png, id=6381, 845.0772pt x 596.9
+<../images/form_factor/FuzzySphere/LinShell_IQ.png, id=6414, 845.0772pt x 596.9
 502pt>
 File: ../images/form_factor/FuzzySphere/LinShell_IQ.png Graphic file (type png)
 
@@ -6385,7 +6431,7 @@ File: ../images/form_factor/FuzzySphere/LinShell_IQ.png Graphic file (type png)
 Package pdftex.def Info: ../images/form_factor/FuzzySphere/LinShell_IQ.png used
  on input line 530.
 (pdftex.def)             Requested size: 215.09854pt x 156.84296pt.
- [403] [404 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/LinShell_prof
+ [406] [407 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/LinShell_prof
 ile.png> <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/LinShell_IQ.png>
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 540--541
@@ -6393,7 +6439,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 540--541
  []
 
 
-<../images/form_factor/spheres/linshell2.png, id=6398, 518.8986pt x 555.5154pt>
+<../images/form_factor/spheres/linshell2.png, id=6431, 518.8986pt x 555.5154pt>
 File: ../images/form_factor/spheres/linshell2.png Graphic file (type png)
 <use ../images/form_factor/spheres/linshell2.png>
 Package pdftex.def Info: ../images/form_factor/spheres/linshell2.png used on in
@@ -6402,27 +6448,27 @@ put line 544.
 
 Underfull \vbox (badness 1014) has occurred while \output is active []
 
- [405
+ [408
 
  <C:/user/SASfitGit/doc/images/form_factor/spheres/linshell2.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 600--602
 
  []
 
-[406]
+[409]
 Underfull \hbox (badness 10000) in paragraph at lines 622--623
 
  []
 
 
-<../images/form_factor/spheres/ExpShell.png, id=6418, 550.2156pt x 552.3837pt>
+<../images/form_factor/spheres/ExpShell.png, id=6452, 550.2156pt x 552.3837pt>
 File: ../images/form_factor/spheres/ExpShell.png Graphic file (type png)
 
 <use ../images/form_factor/spheres/ExpShell.png>
 Package pdftex.def Info: ../images/form_factor/spheres/ExpShell.png used on inp
 ut line 626.
 (pdftex.def)             Requested size: 246.47812pt x 224.06818pt.
- [407
+ [410
 
  <C:/user/SASfitGit/doc/images/form_factor/spheres/ExpShell.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 683--685
@@ -6430,7 +6476,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 683--685
  []
 
 
-<../images/form_factor/FuzzySphere/ExpShell_profile.png, id=6430, 845.0772pt x 
+<../images/form_factor/FuzzySphere/ExpShell_profile.png, id=6464, 845.0772pt x 
 596.9502pt>
 File: ../images/form_factor/FuzzySphere/ExpShell_profile.png Graphic file (type
  png)
@@ -6439,7 +6485,7 @@ Package pdftex.def Info: ../images/form_factor/FuzzySphere/ExpShell_profile.png
  used on input line 708.
 (pdftex.def)             Requested size: 215.09854pt x 156.84296pt.
 
-<../images/form_factor/FuzzySphere/ExpShell_IQ.png, id=6431, 845.0772pt x 596.9
+<../images/form_factor/FuzzySphere/ExpShell_IQ.png, id=6465, 845.0772pt x 596.9
 502pt>
 File: ../images/form_factor/FuzzySphere/ExpShell_IQ.png Graphic file (type png)
 
@@ -6447,7 +6493,7 @@ File: ../images/form_factor/FuzzySphere/ExpShell_IQ.png Graphic file (type png)
 Package pdftex.def Info: ../images/form_factor/FuzzySphere/ExpShell_IQ.png used
  on input line 711.
 (pdftex.def)             Requested size: 215.09854pt x 156.84296pt.
- [408] [409 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/ExpShell_prof
+ [411] [412 <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/ExpShell_prof
 ile.png> <C:/user/SASfitGit/doc/images/form_factor/FuzzySphere/ExpShell_IQ.png>
 ]
 
@@ -6467,36 +6513,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 724--725
 
  []
 
-<Boucherprofile.png, id=6449, 774.7344pt x 592.8549pt>
+<Boucherprofile.png, id=6482, 774.7344pt x 592.8549pt>
 File: Boucherprofile.png Graphic file (type png)
 
 <use Boucherprofile.png>
 Package pdftex.def Info: Boucherprofile.png used on input line 730.
 (pdftex.def)             Requested size: 215.10092pt x 164.60512pt.
 
-<Boucherprofile2.png, id=6450, 774.7344pt x 592.8549pt>
+<Boucherprofile2.png, id=6483, 774.7344pt x 592.8549pt>
 File: Boucherprofile2.png Graphic file (type png)
 
 <use Boucherprofile2.png>
 Package pdftex.def Info: Boucherprofile2.png used on input line 734.
 (pdftex.def)             Requested size: 215.10092pt x 164.60512pt.
- [410
+ [413
 
  <C:/user/SASfitGit/doc/manual/Boucherprofile.png> <C:/user/SASfitGit/doc/manua
 l/Boucherprofile2.png>]
-<BoucherZr.png, id=6468, 774.7344pt x 592.8549pt>
+<BoucherZr.png, id=6501, 774.7344pt x 592.8549pt>
 File: BoucherZr.png Graphic file (type png)
  <use BoucherZr.png>
 Package pdftex.def Info: BoucherZr.png used on input line 784.
 (pdftex.def)             Requested size: 215.10092pt x 164.60512pt.
 
-<BoucherZprime.png, id=6469, 774.7344pt x 592.8549pt>
+<BoucherZprime.png, id=6502, 774.7344pt x 592.8549pt>
 File: BoucherZprime.png Graphic file (type png)
  <use BoucherZprime.png>
 Package pdftex.def Info: BoucherZprime.png used on input line 788.
 (pdftex.def)             Requested size: 215.10092pt x 164.60512pt.
 
-[411 <C:/user/SASfitGit/doc/manual/BoucherZr.png> <C:/user/SASfitGit/doc/manual
+[414 <C:/user/SASfitGit/doc/manual/BoucherZr.png> <C:/user/SASfitGit/doc/manual
 /BoucherZprime.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 808--810
 
@@ -6507,29 +6553,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 822--824
 
  []
 
-<BoucherSphereI(Q).png, id=6482, 774.7344pt x 592.8549pt>
+<BoucherSphereI(Q).png, id=6516, 774.7344pt x 592.8549pt>
 File: BoucherSphereI(Q).png Graphic file (type png)
 
 <use BoucherSphereI(Q).png>
 Package pdftex.def Info: BoucherSphereI(Q).png used on input line 839.
 (pdftex.def)             Requested size: 215.10092pt x 164.60512pt.
 
-<BoucherSphere2I(Q).png, id=6483, 774.7344pt x 592.8549pt>
+<BoucherSphere2I(Q).png, id=6517, 774.7344pt x 592.8549pt>
 File: BoucherSphere2I(Q).png Graphic file (type png)
 
 <use BoucherSphere2I(Q).png>
 Package pdftex.def Info: BoucherSphere2I(Q).png used on input line 842.
 (pdftex.def)             Requested size: 215.10092pt x 164.60512pt.
 )
-(C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_cylindrical_obj.tex [412]
-[413 <C:/user/SASfitGit/doc/manual/BoucherSphereI(Q).png> <C:/user/SASfitGit/do
+(C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_cylindrical_obj.tex [415]
+[416 <C:/user/SASfitGit/doc/manual/BoucherSphereI(Q).png> <C:/user/SASfitGit/do
 c/manual/BoucherSphere2I(Q).png>]
 Underfull \hbox (badness 10000) in paragraph at lines 14--15
 
  []
 
 
-<../images/form_factor/cylindrical_obj/fanlike_helicesXS.png, id=6510, 532.6299
+<../images/form_factor/cylindrical_obj/fanlike_helicesXS.png, id=6544, 532.6299
 pt x 532.6299pt>
 File: ../images/form_factor/cylindrical_obj/fanlike_helicesXS.png Graphic file 
 (type png)
@@ -6539,7 +6585,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/fanlike_helicesX
 S.png used on input line 19.
 (pdftex.def)             Requested size: 201.65755pt x 201.65375pt.
 
-<../images/form_factor/cylindrical_obj/fanlike_helices3D.png, id=6511, 568.2831
+<../images/form_factor/cylindrical_obj/fanlike_helices3D.png, id=6545, 568.2831
 pt x 739.563pt>
 File: ../images/form_factor/cylindrical_obj/fanlike_helices3D.png Graphic file 
 (type png)
@@ -6551,7 +6597,7 @@ D.png used on input line 21.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [414
+ [417
 
  <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/fanlike_helicesXS.pn
 g
@@ -6571,7 +6617,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--53
  []
 
 
-<../images/form_factor/cylindrical_obj/helix_fanlike_IQ.png, id=6530, 652.839pt
+<../images/form_factor/cylindrical_obj/helix_fanlike_IQ.png, id=6563, 652.839pt
  x 531.4254pt>
 File: ../images/form_factor/cylindrical_obj/helix_fanlike_IQ.png Graphic file (
 type png)
@@ -6580,8 +6626,8 @@ type png)
 Package pdftex.def Info: ../images/form_factor/cylindrical_obj/helix_fanlike_IQ
 .png used on input line 76.
 (pdftex.def)             Requested size: 313.69028pt x 255.35698pt.
- [415]
-<../images/form_factor/cylindrical_obj/roundhelices1.png, id=6543, 429.0429pt x
+ [418]
+<../images/form_factor/cylindrical_obj/roundhelices1.png, id=6576, 429.0429pt x
  429.2838pt>
 File: ../images/form_factor/cylindrical_obj/roundhelices1.png Graphic file (typ
 e png)
@@ -6590,7 +6636,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/roundhelices1.pn
 g used on input line 88.
 (pdftex.def)             Requested size: 201.65755pt x 201.76996pt.
 
-<../images/form_factor/cylindrical_obj/round_helices3D.png, id=6544, 510.708pt 
+<../images/form_factor/cylindrical_obj/round_helices3D.png, id=6577, 510.708pt 
 x 667.5339pt>
 File: ../images/form_factor/cylindrical_obj/round_helices3D.png Graphic file (t
 ype png)
@@ -6599,13 +6645,13 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/round_helices3D.
 png used on input line 90.
 (pdftex.def)             Requested size: 201.65755pt x 263.57623pt.
 
-[416 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_fanlike_IQ
+[419 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_fanlike_IQ
 .png>]
 Underfull \hbox (badness 10000) in paragraph at lines 117--118
 
  []
 
-[417 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/roundhelices1.pn
+[420 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/roundhelices1.pn
 g
 
 pdfTeX warning: pdflatex.exe (file C:/user/SASfitGit/doc/images/form_factor/cyl
@@ -6618,7 +6664,7 @@ pdfTeX warning: pdflatex.exe (file C:/user/SASfitGit/doc/images/form_factor/cyl
 indrical_obj/round_helices3D.png): large interlaced PNG might cause out of memo
 ry (use non-interlaced PNG to fix this)
 >]
-<../images/form_factor/cylindrical_obj/helix_round_IQ.png, id=6564, 635.2533pt 
+<../images/form_factor/cylindrical_obj/helix_round_IQ.png, id=6598, 635.2533pt 
 x 517.4532pt>
 File: ../images/form_factor/cylindrical_obj/helix_round_IQ.png Graphic file (ty
 pe png)
@@ -6627,9 +6673,9 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/helix_round_IQ.p
 ng used on input line 140.
 (pdftex.def)             Requested size: 313.69028pt x 255.52031pt.
 
-[418 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_round_IQ.p
+[421 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_round_IQ.p
 ng>]
-<../images/form_factor/cylindrical_obj/beads_helix_model_1.png, id=6573, 574.78
+<../images/form_factor/cylindrical_obj/beads_helix_model_1.png, id=6607, 574.78
 74pt x 815.9283pt>
 File: ../images/form_factor/cylindrical_obj/beads_helix_model_1.png Graphic fil
 e (type png)
@@ -6639,7 +6685,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/beads_helix_mode
 l_1.png used on input line 153.
 (pdftex.def)             Requested size: 179.24963pt x 254.4416pt.
 
-<../images/form_factor/cylindrical_obj/beads_helix_model_2.png, id=6574, 555.51
+<../images/form_factor/cylindrical_obj/beads_helix_model_2.png, id=6608, 555.51
 54pt x 506.8536pt>
 File: ../images/form_factor/cylindrical_obj/beads_helix_model_2.png Graphic fil
 e (type png)
@@ -6648,7 +6694,7 @@ e (type png)
 Package pdftex.def Info: ../images/form_factor/cylindrical_obj/beads_helix_mode
 l_2.png used on input line 155.
 (pdftex.def)             Requested size: 179.24963pt x 163.5499pt.
- [419 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/beads_helix_mod
+ [422 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/beads_helix_mod
 el_1.png
 
 pdfTeX warning: pdflatex.exe (file C:/user/SASfitGit/doc/images/form_factor/cyl
@@ -6666,7 +6712,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 195--196
  []
 
 
-<../images/form_factor/cylindrical_obj/helix_beadsIQ.png, id=6590, 644.1666pt x
+<../images/form_factor/cylindrical_obj/helix_beadsIQ.png, id=6624, 644.1666pt x
  517.4532pt>
 File: ../images/form_factor/cylindrical_obj/helix_beadsIQ.png Graphic file (typ
 e png)
@@ -6675,8 +6721,8 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/helix_beadsIQ.pn
 g used on input line 218.
 (pdftex.def)             Requested size: 313.69028pt x 251.98303pt.
 
-[420]
-<../images/form_factor/cylindrical_obj/straightSuperhelix.png, id=6600, 569.005
+[423]
+<../images/form_factor/cylindrical_obj/straightSuperhelix.png, id=6633, 569.005
 8pt x 605.3817pt>
 File: ../images/form_factor/cylindrical_obj/straightSuperhelix.png Graphic file
  (type png)
@@ -6690,9 +6736,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 249--250
 
  []
 
-[421 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_beadsIQ.pn
+[424 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_beadsIQ.pn
 g>]
-<../images/form_factor/cylindrical_obj/helix_straightIQ.png, id=6613, 635.4942p
+<../images/form_factor/cylindrical_obj/helix_straightIQ.png, id=6646, 635.4942p
 t x 517.4532pt>
 File: ../images/form_factor/cylindrical_obj/helix_straightIQ.png Graphic file (
 type png)
@@ -6701,9 +6747,9 @@ type png)
 Package pdftex.def Info: ../images/form_factor/cylindrical_obj/helix_straightIQ
 .png used on input line 272.
 (pdftex.def)             Requested size: 313.69028pt x 255.42555pt.
- [422 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/straightSuperhe
+ [425 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/straightSuperhe
 lix.png>]
-<../images/form_factor/cylindrical_obj/superhelixcoiled1.png, id=6622, 570.4512
+<../images/form_factor/cylindrical_obj/superhelixcoiled1.png, id=6655, 570.4512
 pt x 165.2574pt>
 File: ../images/form_factor/cylindrical_obj/superhelixcoiled1.png Graphic file 
 (type png)
@@ -6713,7 +6759,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/superhelixcoiled
 1.png used on input line 289.
 (pdftex.def)             Requested size: 201.65755pt x 58.4184pt.
 
-<../images/form_factor/cylindrical_obj/superhelixcoiled2.png, id=6623, 6190.126
+<../images/form_factor/cylindrical_obj/superhelixcoiled2.png, id=6656, 6190.126
 25pt x 2935.96875pt>
 File: ../images/form_factor/cylindrical_obj/superhelixcoiled2.png Graphic file 
 (type png)
@@ -6723,7 +6769,7 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/superhelixcoiled
 2.png used on input line 289.
 (pdftex.def)             Requested size: 201.65755pt x 95.60153pt.
 
-<../images/form_factor/cylindrical_obj/superhelixcoiled3.png, id=6624, 5880.971
+<../images/form_factor/cylindrical_obj/superhelixcoiled3.png, id=6657, 5880.971
 25pt x 4692.53125pt>
 File: ../images/form_factor/cylindrical_obj/superhelixcoiled3.png Graphic file 
 (type png)
@@ -6732,17 +6778,17 @@ File: ../images/form_factor/cylindrical_obj/superhelixcoiled3.png Graphic file
 Package pdftex.def Info: ../images/form_factor/cylindrical_obj/superhelixcoiled
 3.png used on input line 293.
 (pdftex.def)             Requested size: 201.65755pt x 160.89008pt.
- [423 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_straightI
+ [426 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_straightI
 Q.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 350--351
 
  []
 
-[424 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/superhelixcoiled
+[427 <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/superhelixcoiled
 1.png> <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/superhelixcoil
 ed2.png (PNG copy)> <C:/user/SASfitGit/doc/images/form_factor/cylindrical_obj/s
 uperhelixcoiled3.png (PNG copy)>]
-<../images/form_factor/cylindrical_obj/helix_coiledIQ.png, id=6648, 665.1249pt 
+<../images/form_factor/cylindrical_obj/helix_coiledIQ.png, id=6682, 665.1249pt 
 x 582.7371pt>
 File: ../images/form_factor/cylindrical_obj/helix_coiledIQ.png Graphic file (ty
 pe png)
@@ -6751,9 +6797,9 @@ Package pdftex.def Info: ../images/form_factor/cylindrical_obj/helix_coiledIQ.p
 ng used on input line 374.
 (pdftex.def)             Requested size: 313.69028pt x 274.8379pt.
 )
-(C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_magnetic_structures.tex [425 <C:
+(C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_magnetic_structures.tex [428 <C:
 /user/SASfitGit/doc/images/form_factor/cylindrical_obj/helix_coiledIQ.png>]
-[426
+[429
 
 ]
 Missing character: There is no â in font cmr12!
@@ -6768,7 +6814,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 62--65
  []
 
 
-<../images/form_factor/magnetic/IQ4spinmisalignment.png, id=6662, 820.9872pt x 
+<../images/form_factor/magnetic/IQ4spinmisalignment.png, id=6695, 820.9872pt x 
 572.8602pt>
 File: ../images/form_factor/magnetic/IQ4spinmisalignment.png Graphic file (type
  png)
@@ -6777,7 +6823,7 @@ Package pdftex.def Info: ../images/form_factor/magnetic/IQ4spinmisalignment.png
  used on input line 80.
 (pdftex.def)             Requested size: 215.0927pt x 156.85086pt.
 
-<../images/form_factor/magnetic/correlation4spinmisalignment.png, id=6663, 820.
+<../images/form_factor/magnetic/correlation4spinmisalignment.png, id=6696, 820.
 9872pt x 572.8602pt>
 File: ../images/form_factor/magnetic/correlation4spinmisalignment.png Graphic f
 ile (type png)
@@ -6786,13 +6832,13 @@ ile (type png)
 Package pdftex.def Info: ../images/form_factor/magnetic/correlation4spinmisalig
 nment.png used on input line 83.
 (pdftex.def)             Requested size: 215.0927pt x 156.85086pt.
- [427
+ [430
 
 ]
-[428 <C:/user/SASfitGit/doc/images/form_factor/magnetic/IQ4spinmisalignment.png
+[431 <C:/user/SASfitGit/doc/images/form_factor/magnetic/IQ4spinmisalignment.png
 > <C:/user/SASfitGit/doc/images/form_factor/magnetic/correlation4spinmisalignme
 nt.png>]
-<../images/form_factor/ferrofluid/ferrfluidparticle.png, id=6683, 586.3506pt x 
+<../images/form_factor/ferrofluid/ferrfluidparticle.png, id=6716, 586.3506pt x 
 471.2004pt>
 File: ../images/form_factor/ferrofluid/ferrfluidparticle.png Graphic file (type
  png)
@@ -6801,18 +6847,18 @@ Package pdftex.def Info: ../images/form_factor/ferrofluid/ferrfluidparticle.png
  used on input line 122.
 (pdftex.def)             Requested size: 268.88129pt x 216.07895pt.
 
-[429
+[432
 
  <C:/user/SASfitGit/doc/images/form_factor/ferrofluid/ferrfluidparticle.png
 
 pdfTeX warning: pdflatex.exe (file C:/user/SASfitGit/doc/images/form_factor/fer
 rofluid/ferrfluidparticle.png): large interlaced PNG might cause out of memory 
 (use non-interlaced PNG to fix this)
->] [430]
+>] [433]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no “ in font cmr12!
- [431]
+ [434]
 Underfull \hbox (badness 10000) in paragraph at lines 319--320
 
  []
@@ -6820,8 +6866,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 319--320
 
 Underfull \vbox (badness 5331) has occurred while \output is active []
 
- [432]
-[433]
+ [435]
+[436]
 Underfull \hbox (badness 1097) in paragraph at lines 430--436
 []\OT1/cmr/m/n/12 In the case of a Boltz-mann ori-en-ta-tion dis-tri-bu-tion $\
 OML/cmm/m/it/12 f\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 \OT1/cmr/m/n/12 ) = [] [] =
@@ -6833,7 +6879,7 @@ Overfull \hbox (24.57407pt too wide) in paragraph at lines 450--450
 [] 
  []
 
-[434] [435]) (C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_nonparticular.tex
+[437] [438]) (C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_nonparticular.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
  []
@@ -6841,20 +6887,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
 LaTeX Warning: Command \l invalid in math mode on input line 27.
 
-[436
+[439
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 93--94
 
  []
 
-[437] <TeubnerStrey.png, id=6812, 821.9508pt x 574.5465pt>
+[440] <TeubnerStrey.png, id=6846, 821.9508pt x 574.5465pt>
 File: TeubnerStrey.png Graphic file (type png)
 
 <use TeubnerStrey.png>
 Package pdftex.def Info: TeubnerStrey.png used on input line 114.
 (pdftex.def)             Requested size: 380.91136pt x 268.87965pt.
- [438 <C:/user/SASfitGit/doc/manual/TeubnerStrey.png>]
+ [441 <C:/user/SASfitGit/doc/manual/TeubnerStrey.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 127--128
 
  []
@@ -6864,16 +6910,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 149--150
 
  []
 
-<DAB.png, id=6823, 821.9508pt x 574.5465pt>
+<DAB.png, id=6856, 821.9508pt x 574.5465pt>
 File: DAB.png Graphic file (type png)
  <use DAB.png>
 Package pdftex.def Info: DAB.png used on input line 163.
 (pdftex.def)             Requested size: 380.91136pt x 268.87965pt.
- [439
+ [442
 
  <C:/user/SASfitGit/doc/manual/DAB.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 173--175
- \OT1/cmr/bx/n/12 8.5.3.Generalization of the Debye-Anderson-Brumberger model
+ \OT1/cmr/bx/n/12 8.6.3.Generalization of the Debye-Anderson-Brumberger model
  []
 
 
@@ -6882,21 +6928,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 187--188
  []
 
 
-<../images/form_factor/nonparticular/gDAB.png, id=6839, 774.7344pt x 592.8549pt
+<../images/form_factor/nonparticular/gDAB.png, id=6872, 774.7344pt x 592.8549pt
 >
 File: ../images/form_factor/nonparticular/gDAB.png Graphic file (type png)
  <use ../images/form_factor/nonparticular/gDAB.png>
 Package pdftex.def Info: ../images/form_factor/nonparticular/gDAB.png used on i
 nput line 202.
 (pdftex.def)             Requested size: 380.91173pt x 268.88097pt.
- [440
+ [443
 
  <C:/user/SASfitGit/doc/images/form_factor/nonparticular/gDAB.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 212--213
 
  []
 
-<spinodal2.png, id=6851, 1842.885pt x 981.6675pt>
+<spinodal2.png, id=6884, 1842.885pt x 981.6675pt>
 File: spinodal2.png Graphic file (type png)
  <use spinodal2.png>
 Package pdftex.def Info: spinodal2.png used on input line 216.
@@ -6906,42 +6952,42 @@ Underfull \hbox (badness 10000) in paragraph at lines 237--238
 
  []
 
-<spinodalIQ.png, id=6853, 821.9508pt x 574.5465pt>
+<spinodalIQ.png, id=6886, 821.9508pt x 574.5465pt>
 File: spinodalIQ.png Graphic file (type png)
  <use spinodalIQ.png>
 Package pdftex.def Info: spinodalIQ.png used on input line 253.
 (pdftex.def)             Requested size: 380.91136pt x 268.87965pt.
 
-[441
+[444
 
- <C:/user/SASfitGit/doc/manual/spinodal2.png>] [442 <C:/user/SASfitGit/doc/manu
+ <C:/user/SASfitGit/doc/manual/spinodal2.png>] [445 <C:/user/SASfitGit/doc/manu
 al/spinodalIQ.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 274--276
 
  []
 
-<OrnsteinZernicke.png, id=6868, 821.9508pt x 574.5465pt>
+<OrnsteinZernicke.png, id=6902, 821.9508pt x 574.5465pt>
 File: OrnsteinZernicke.png Graphic file (type png)
 
 <use OrnsteinZernicke.png>
 Package pdftex.def Info: OrnsteinZernicke.png used on input line 283.
 (pdftex.def)             Requested size: 380.91136pt x 268.87965pt.
- [443
+ [446
 
  <C:/user/SASfitGit/doc/manual/OrnsteinZernicke.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 306--308
 
  []
 
-<BroadPeak.png, id=6876, 774.7344pt x 592.8549pt>
+<BroadPeak.png, id=6910, 774.7344pt x 592.8549pt>
 File: BroadPeak.png Graphic file (type png)
  <use BroadPeak.png>
 Package pdftex.def Info: BroadPeak.png used on input line 324.
 (pdftex.def)             Requested size: 380.91173pt x 268.88097pt.
- [444
+ [447
 
 ]
-[445 <C:/user/SASfitGit/doc/manual/BroadPeak.png>]
+[448 <C:/user/SASfitGit/doc/manual/BroadPeak.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\@ifnextchar' on input line 331.
@@ -6951,26 +6997,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 331--332
 
  []
 
-<generalizedGuinier_q.png, id=6893, 553.3473pt x 155.8623pt>
+<generalizedGuinier_q.png, id=6926, 553.3473pt x 155.8623pt>
 File: generalizedGuinier_q.png Graphic file (type png)
 
 <use generalizedGuinier_q.png>
 Package pdftex.def Info: generalizedGuinier_q.png used on input line 335.
 (pdftex.def)             Requested size: 336.09753pt x 112.03287pt.
- [446
+ [449
 
  <C:/user/SASfitGit/doc/manual/generalizedGuinier_q.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 385--387
 
  []
 
-<generalizedGuinierIq.png, id=6903, 821.7099pt x 574.3056pt>
+<generalizedGuinierIq.png, id=6936, 821.7099pt x 574.3056pt>
 File: generalizedGuinierIq.png Graphic file (type png)
 
 <use generalizedGuinierIq.png>
 Package pdftex.def Info: generalizedGuinierIq.png used on input line 402.
 (pdftex.def)             Requested size: 380.91257pt x 268.88962pt.
- [447 <C:/user/SASfitGit/doc/manual/generalizedGuinierIq.png>]
+ [450 <C:/user/SASfitGit/doc/manual/generalizedGuinierIq.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 409--410
 
  []
@@ -6980,22 +7026,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 432--434
 
  []
 
-<GuinierPorodIQ.png, id=6913, 774.7344pt x 592.8549pt>
+<GuinierPorodIQ.png, id=6947, 774.7344pt x 592.8549pt>
 File: GuinierPorodIQ.png Graphic file (type png)
 
 <use GuinierPorodIQ.png>
 Package pdftex.def Info: GuinierPorodIQ.png used on input line 453.
 (pdftex.def)             Requested size: 380.91173pt x 268.88097pt.
-) [448
+) [451
 
-] [449 <C:/user/SASfitGit/doc/manual/GuinierPorodIQ.png>]
+] [452 <C:/user/SASfitGit/doc/manual/GuinierPorodIQ.png>]
 Missing character: There is no – in font cmr12!
- [450
+ [453
 
 ]
 Underfull \vbox (badness 2142) has occurred while \output is active []
 
- [451]
+ [454]
 Underfull \hbox (badness 10000) in paragraph at lines 129--131
 
  []
@@ -7010,8 +7056,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 149--151
 
  []
 
-[452]
-<../images/form_factor/fractal_series/fractalseries3IQ.png, id=6961, 774.7344pt
+[455]
+<../images/form_factor/fractal_series/fractalseries3IQ.png, id=6994, 774.7344pt
  x 592.8549pt>
 File: ../images/form_factor/fractal_series/fractalseries3IQ.png Graphic file (t
 ype png)
@@ -7020,7 +7066,7 @@ Package pdftex.def Info: ../images/form_factor/fractal_series/fractalseries3IQ.
 png used on input line 166.
 (pdftex.def)             Requested size: 210.62209pt x 161.1766pt.
 
-<../images/form_factor/fractal_series/fractalseries3Nx.png, id=6962, 774.7344pt
+<../images/form_factor/fractal_series/fractalseries3Nx.png, id=6995, 774.7344pt
  x 592.8549pt>
 File: ../images/form_factor/fractal_series/fractalseries3Nx.png Graphic file (t
 ype png)
@@ -7029,12 +7075,12 @@ Package pdftex.def Info: ../images/form_factor/fractal_series/fractalseries3Nx.
 png used on input line 168.
 (pdftex.def)             Requested size: 210.62209pt x 161.1766pt.
 
-(C:\user\SASfitGit\doc\manual\SASfit_plugins_SESANS.tex [453 <C:/user/SASfitGit
+(C:\user\SASfitGit\doc\manual\SASfit_plugins_SESANS.tex [456 <C:/user/SASfitGit
 /doc/images/form_factor/fractal_series/fractalseries3IQ.png> <C:/user/SASfitGit
-/doc/images/form_factor/fractal_series/fractalseries3Nx.png>] [454
+/doc/images/form_factor/fractal_series/fractalseries3Nx.png>] [457
 
-] [455]
-<../images/GUI/HankelOperator.png, id=7015, 742.27313pt x 552.56438pt>
+] [458]
+<../images/GUI/HankelOperator.png, id=7049, 742.27313pt x 552.56438pt>
 File: ../images/GUI/HankelOperator.png Graphic file (type png)
 
 <use ../images/GUI/HankelOperator.png>
@@ -7050,7 +7096,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 119.
 
-[456]
+[459]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 137.
@@ -7067,7 +7113,7 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 153.
 
-[457 <C:/user/SASfitGit/doc/images/GUI/HankelOperator.png>]
+[460 <C:/user/SASfitGit/doc/images/GUI/HankelOperator.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 168.
@@ -7076,29 +7122,29 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 168.
 
-[458]) [459] [460
+[461]) [462]
+Chapter 9
+(C:\user\SASfitGit\doc\manual\SASfit_pluginSD.tex [463
 
 
 ]
-Chapter 9
-(C:\user\SASfitGit\doc\manual\SASfit_pluginSD.tex [461]
 
 LaTeX Warning: Float too large for page by 54.46706pt on input line 191.
 
-) [462] [463] [464
+) [464] [465] [466
 
 
 ]
 Chapter 10
 (C:\user\SASfitGit\doc\manual\SASfit_pluginSQ_ordered_particle_systems.tex
-[465]
+[467]
 Underfull \hbox (badness 10000) in paragraph at lines 49--50
 
  []
 
-[466]
+[468]
 <../images/structure_factor/OrderedParticleSystems/UnitCellParameters.png, id=7
-140, 14580.4725pt x 10419.92876pt>
+170, 14580.4725pt x 10419.92876pt>
 File: ../images/structure_factor/OrderedParticleSystems/UnitCellParameters.png 
 Graphic file (type png)
 
@@ -7107,7 +7153,7 @@ Package pdftex.def Info: ../images/structure_factor/OrderedParticleSystems/Unit
 CellParameters.png used on input line 75.
 (pdftex.def)             Requested size: 224.06546pt x 160.10806pt.
 
-[467 <C:/user/SASfitGit/doc/images/structure_factor/OrderedParticleSystems/Unit
+[469 <C:/user/SASfitGit/doc/images/structure_factor/OrderedParticleSystems/Unit
 CellParameters.png>]
 LaTeX Font Info:    Calculating math sizes for size <8.39996> on input line 137
 .
@@ -7135,7 +7181,7 @@ LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.19998> not available
 
 Underfull \vbox (badness 3108) has occurred while \output is active []
 
- [468]
+ [470]
 LaTeX Font Info:    Calculating math sizes for size <6.29997> on input line 190
 .
 
@@ -7189,23 +7235,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 218--219
 
  []
 
-<osp_coord_system.png, id=7168, 797.379pt x 377.4903pt>
+<osp_coord_system.png, id=7197, 797.379pt x 377.4903pt>
 File: osp_coord_system.png Graphic file (type png)
 
 <use osp_coord_system.png>
 Package pdftex.def Info: osp_coord_system.png used on input line 224.
 (pdftex.def)             Requested size: 380.91402pt x 180.32927pt.
- [469 <C:/user/SASfitGit/doc/manual/osp_coord_system.png>])) [470] (C:\user\SAS
+ [471 <C:/user/SASfitGit/doc/manual/osp_coord_system.png>])) [472] (C:\user\SAS
 fitGit\doc\manual\SASfit_absInt.tex
 Chapter 11
 
 LaTeX Warning: Command \r invalid in math mode on input line 29.
 
-[471
+[473
 
 
 
-] [472]
+] [474]
 Underfull \hbox (badness 2277) in paragraph at lines 169--169
 [][]\OT1/cmr/m/n/10 Definition of uni-fied atomic mass unit: $1u = \OML/cmm/m/i
 t/10 m[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 m [] =\OT1/cmr/m/n/10 12 = 1\OML/cm
@@ -7218,11 +7264,11 @@ Overfull \hbox (49.65741pt too wide) has occurred while \output is active
 VOLUME - ABSOLUTE SCALE []
  []
 
-[473] [474]
+[475] [476]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [475]
-<QTintegralparameterGUI.png, id=7252, 301.8778pt x 472.76625pt>
+ [477]
+<QTintegralparameterGUI.png, id=7281, 301.8778pt x 472.76625pt>
 File: QTintegralparameterGUI.png Graphic file (type png)
 
 <use QTintegralparameterGUI.png>
@@ -7242,7 +7288,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 301--302
 
  []
 
-[476] <QTmoments.png, id=7266, 615.80063pt x 479.54156pt>
+[478] <QTmoments.png, id=7295, 615.80063pt x 479.54156pt>
 File: QTmoments.png Graphic file (type png)
  <use QTmoments.png>
 Package pdftex.def Info: QTmoments.png used on input line 330.
@@ -7250,16 +7296,16 @@ Package pdftex.def Info: QTmoments.png used on input line 330.
 
 Underfull \vbox (badness 1127) has occurred while \output is active []
 
- [477 <C:/user/SASfitGit/doc/manual/QTintegralparameterGUI.png>] [478 <C:/user/
-SASfitGit/doc/manual/QTmoments.png>]) [479] [480]
+ [479 <C:/user/SASfitGit/doc/manual/QTintegralparameterGUI.png>] [480 <C:/user/
+SASfitGit/doc/manual/QTmoments.png>]) [481] [482]
 (C:\user\SASfitGit\doc\manual\SASfit_DLS.tex
 Chapter 12
-[481
+[483
 
 
 
-] [482] [483] [484]) [485] (C:\user\SASfitGit\doc\manual\basics.tex
-[486
+] [484] [485] [486]) [487] (C:\user\SASfitGit\doc\manual\basics.tex
+[488
 
 
 
@@ -7268,13 +7314,13 @@ Chapter 13
 
 LaTeX Warning: Command \b invalid in math mode on input line 12.
 
-<EwaldSphereTeX.png, id=7357, 2437.105pt x 1237.62375pt>
+<EwaldSphereTeX.png, id=7386, 2437.105pt x 1237.62375pt>
 File: EwaldSphereTeX.png Graphic file (type png)
 
 <use EwaldSphereTeX.png>
 Package pdftex.def Info: EwaldSphereTeX.png used on input line 18.
 (pdftex.def)             Requested size: 403.29497pt x 201.64969pt.
- [487 <C:/user/SASfitGit/doc/manual/EwaldSphereTeX.png>]
+ [489 <C:/user/SASfitGit/doc/manual/EwaldSphereTeX.png>]
 
 LaTeX Warning: Command \b invalid in math mode on input line 68.
 
@@ -7320,7 +7366,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 94.
 
 LaTeX Warning: Command \b invalid in math mode on input line 97.
 
-[488]
+[490]
 
 LaTeX Warning: Command \b invalid in math mode on input line 110.
 
@@ -7366,7 +7412,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 160.
 
 LaTeX Warning: Command \b invalid in math mode on input line 165.
 
-[489]
+[491]
 
 LaTeX Warning: Command \b invalid in math mode on input line 206.
 
@@ -7466,7 +7512,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 246.
 
 LaTeX Warning: Command \b invalid in math mode on input line 246.
 
-[490]
+[492]
 
 LaTeX Warning: Command \b invalid in math mode on input line 250.
 
@@ -7547,7 +7593,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 288--294
 
  []
 
-[491]
+[493]
 
 LaTeX Warning: Command \b invalid in math mode on input line 308.
 
@@ -7580,13 +7626,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 343--347
 
  []
 
-[492] <FEFPFPP.png, id=7437, 314.1336pt x 324.2514pt>
+[494] <FEFPFPP.png, id=7466, 314.1336pt x 324.2514pt>
 File: FEFPFPP.png Graphic file (type png)
  <use FEFPFPP.png>
 Package pdftex.def Info: FEFPFPP.png used on input line 369.
 (pdftex.def)             Requested size: 333.45935pt x 352.14063pt.
 
-[493 <C:/user/SASfitGit/doc/manual/FEFPFPP.png>]
+[495 <C:/user/SASfitGit/doc/manual/FEFPFPP.png>]
 
 LaTeX Warning: Command \b invalid in math mode on input line 397.
 
@@ -7785,7 +7831,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 451.
 
 LaTeX Warning: Command \b invalid in math mode on input line 451.
 
-[494]
+[496]
 
 LaTeX Warning: Command \b invalid in math mode on input line 455.
 
@@ -7871,7 +7917,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 501.
 
 LaTeX Warning: Command \b invalid in math mode on input line 501.
 
-[495]
+[497]
 
 LaTeX Warning: Command \b invalid in math mode on input line 505.
 
@@ -8003,7 +8049,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 548.
 
 LaTeX Warning: Command \b invalid in math mode on input line 548.
 
-[496]
+[498]
 
 LaTeX Warning: Command \b invalid in math mode on input line 616.
 
@@ -8058,7 +8104,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 631.
 
 LaTeX Warning: Command \b invalid in math mode on input line 631.
 
-[497]
+[499]
 
 LaTeX Warning: Command \b invalid in math mode on input line 633.
 
@@ -8176,7 +8222,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 681.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [498]
+ [500]
 
 LaTeX Warning: Command \b invalid in math mode on input line 691.
 
@@ -8231,7 +8277,7 @@ LaTeX Warning: Command \b invalid in math mode on input line 736.
 
 LaTeX Warning: Command \b invalid in math mode on input line 737.
 
-[499]
+[501]
 
 LaTeX Warning: Command \b invalid in math mode on input line 742.
 
@@ -8256,14 +8302,14 @@ LaTeX Warning: Command \b invalid in math mode on input line 765.
 
 LaTeX Warning: Command \b invalid in math mode on input line 766.
 
-[500]
+[502]
 
 LaTeX Warning: Command \b invalid in math mode on input line 845.
 
 
 LaTeX Warning: Command \b invalid in math mode on input line 845.
 
-[501]
+[503]
 
 LaTeX Warning: Command \b invalid in math mode on input line 868.
 
@@ -8284,59 +8330,59 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 880.
 
 
-LaTeX Warning: Reference `ch:anisotrop:form' on page 502 undefined on input lin
+LaTeX Warning: Reference `ch:anisotrop:form' on page 504 undefined on input lin
 e 913.
 
-[502] <FORMINTE.png, id=7571, 208.1376pt x 256.3176pt>
+[504] <FORMINTE.png, id=7601, 208.1376pt x 256.3176pt>
 File: FORMINTE.png Graphic file (type png)
  <use FORMINTE.png>
 Package pdftex.def Info: FORMINTE.png used on input line 938.
 (pdftex.def)             Requested size: 215.1114pt x 268.88329pt.
 
-<SIZEINTE.png, id=7572, 208.1376pt x 256.3176pt>
+<SIZEINTE.png, id=7602, 208.1376pt x 256.3176pt>
 File: SIZEINTE.png Graphic file (type png)
  <use SIZEINTE.png>
 Package pdftex.def Info: SIZEINTE.png used on input line 944.
 (pdftex.def)             Requested size: 215.1114pt x 268.88329pt.
- [503 <C:/user/SASfitGit/doc/manual/FORMINTE.png> <C:/user/SASfitGit/doc/manual
-/SIZEINTE.png>] [504] [505]) (C:\user\SASfitGit\doc\manual\DatenRed.tex [506]
+ [505 <C:/user/SASfitGit/doc/manual/FORMINTE.png> <C:/user/SASfitGit/doc/manual
+/SIZEINTE.png>] [506] [507]) (C:\user\SASfitGit\doc\manual\DatenRed.tex [508]
 Chapter 14
-<SANSAN.png, id=7617, 3411.74625pt x 2139.995pt>
+<SANSAN.png, id=7646, 3411.74625pt x 2139.995pt>
 File: SANSAN.png Graphic file (type png)
  <use SANSAN.png>
 Package pdftex.def Info: SANSAN.png used on input line 5.
 (pdftex.def)             Requested size: 448.12378pt x 280.95203pt.
 
-<CJUSIFA.png, id=7618, 1604.99625pt x 959.83594pt>
+<CJUSIFA.png, id=7647, 1604.99625pt x 959.83594pt>
 File: CJUSIFA.png Graphic file (type png)
  <use CJUSIFA.png>
 Package pdftex.def Info: CJUSIFA.png used on input line 14.
 (pdftex.def)             Requested size: 448.12239pt x 267.99065pt.
- [507
+ [509
 
 
- <C:/user/SASfitGit/doc/manual/SANSAN.png>] [508 <C:/user/SASfitGit/doc/manual/
+ <C:/user/SASfitGit/doc/manual/SANSAN.png>] [510 <C:/user/SASfitGit/doc/manual/
 CJUSIFA.png>]
 Chapter 15
-[509
+[511
 
 
-] [510]) [511] (C:\user\SASfitGit\doc\manual\SASfit_history.tex
+] [512]) [513] (C:\user\SASfitGit\doc\manual\SASfit_history.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [512
+ [514
 
 ]
 Missing character: There is no Ã in font cmr12!
 Missing character: There is no ¶ in font cmr12!
 
-[513]
+[515]
 Underfull \hbox (badness 1817) in paragraph at lines 142--144
 []\OT1/cmr/m/n/12 new plu-gin for \OT1/cmtt/m/n/12 generalized Guinier law \OT1
 /cmr/m/n/12 to be found un-der \OT1/cmtt/m/n/12 [by
  []
 
-[514]
+[516]
 Underfull \hbox (badness 4403) in paragraph at lines 160--162
 []\OT1/cmr/m/n/12 included un-der peak func-tion the \OT1/cmtt/m/n/12 Maxwell \
 OT1/cmr/m/n/12 dis-tri-bu-tion and the
@@ -8348,12 +8394,12 @@ Underfull \hbox (badness 1881) in paragraph at lines 177--179
 /cmr/m/n/12 as re-place-ment for dep-re-cated
  []
 
-[515] [516]
+[517] [518]
 Underfull \hbox (badness 1924) in paragraph at lines 243--250
 \OT1/cmr/m/n/12 in Macro-molecules 1996, 29, 7602-7612. They have been im-ple-
  []
 
-[517] [518]
+[519] [520]
 Underfull \hbox (badness 10000) in paragraph at lines 351--360
 []\OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 SASfit \OT1/cmr/m/n/12 ver-sion 0.84) Form 
 fac-tor for worm-like mi-celles
@@ -8464,8 +8510,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 388--389
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [519])
-(C:\user\SASfitGit\doc\manual\sasfit.bbl [520]
+ [521])
+(C:\user\SASfitGit\doc\manual\sasfit.bbl [522]
 Bibliography
 Missing character: There is no â in font cmr10!
 Missing character: There is no ˆ in font cmr10!
@@ -8487,23 +8533,23 @@ Missing character: There is no “ in font cmr10!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [521
+ [523
 
 
 ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [522]
+ [524]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [523]
+ [525]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no “ in font cmr10!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [524]
+ [526]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¶ in font cmr10!
 Missing character: There is no š in font cmr10!
@@ -8511,7 +8557,7 @@ Missing character: There is no ü in font cmti10!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [525]
+ [527]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no “ in font cmr10!
@@ -8519,7 +8565,7 @@ Missing character: There is no ´ in font cmr10!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [526]
+ [528]
 Missing character: There is no é in font cmr10!
 Missing character: There is no – in font cmr10!
 Missing character: There is no é in font cmr10!
@@ -8533,14 +8579,14 @@ Missing character: There is no é in font cmti10!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [527]
+ [529]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no “ in font cmr10!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [528]
+ [530]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¡ in font cmr10!
 Missing character: There is no Ã in font cmr10!
@@ -8548,23 +8594,17 @@ Missing character: There is no ¡ in font cmr10!
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [529])
+ [531])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 125.
 
-[530]
+[532]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 125.
  (C:\user\SASfitGit\doc\manual\sasfit.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 125.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 125.
+Package rerunfilecheck Info: File `sasfit.out' has not changed.
+(rerunfilecheck)             Checksum: AC7582FF0F145E1E813C2BA97ECBD0BA;38579.
 
-
-Package rerunfilecheck Warning: File `sasfit.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `sasfit.out':
-(rerunfilecheck)             Before: 1F59CC480E3B8437DE6312F955CE8396;38380
-(rerunfilecheck)             After:  3C95553FA1C902CB304761A275A361ED;38379.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 3.25002pt have occurred.
@@ -8578,68 +8618,68 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 125.
  ) 
 Here is how much of TeX's memory you used:
- 27899 strings out of 494049
- 523834 string characters out of 3148531
- 619128 words of memory out of 3000000
- 27159 multiletter control sequences out of 15000+200000
+ 27926 strings out of 494049
+ 524664 string characters out of 3148531
+ 619825 words of memory out of 3000000
+ 27173 multiletter control sequences out of 15000+200000
  35476 words of font info for 146 fonts, out of 3000000 for 9000
  876 hyphenation exceptions out of 8191
- 56i,29n,81p,2457b,1523s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{Hfootnote.2098} has been referenced but does not 
+ 56i,29n,81p,2458b,1523s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{Hfootnote.2107} has been referenced but does not 
 exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2097} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2106} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2084} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2093} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2083} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2092} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2082} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2091} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2076} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2085} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2071} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2080} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2070} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2079} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.2064} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2073} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1998} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2007} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1997} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.2006} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Hfootnote.1907} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Hfootnote.1906} has been referenced but does not ex
 ist, replaced by a fixed one
 
 pdfTeX warning (dest): name{Hfootnote.1898} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1897} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.1893} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1889} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.1871} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1884} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.1821} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1862} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.1773} has been referenced but does not ex
 ist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Hfootnote.1812} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{Hfootnote.1764} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{Hfootnote.1556} has been referenced but does not ex
+pdfTeX warning (dest): name{Hfootnote.1565} has been referenced but does not ex
 ist, replaced by a fixed one
 
 pdfTeX warning (dest): name{Hfootnote.1215} has been referenced but does not ex
@@ -8713,9 +8753,9 @@ rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm7.pfb><C:
 /Program Files (x86)/MiKTeX 2.9/fonts/type1/hoekwater/rsfs/rsfs10.pfb><C:/Progr
 am Files (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program 
 Files (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on sasfit.pdf (531 pages, 32577938 bytes).
+Output written on sasfit.pdf (533 pages, 33020661 bytes).
 PDF statistics:
- 8496 PDF objects out of 8907 (max. 8388607)
- 2941 named destinations out of 2984 (max. 500000)
- 5241 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 8526 PDF objects out of 8907 (max. 8388607)
+ 2952 named destinations out of 2984 (max. 500000)
+ 5267 words of extra memory for PDF output out of 10000 (max. 10000000)
 

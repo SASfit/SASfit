@@ -1,0 +1,37 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: C:/cygwin64/bin/cc 
+Build flags: 
+Id flags:  
+
+The output was:
+Access is denied
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: C:/cygwin64/bin/cc 
+Build flags: 
+Id flags: -c 
+
+The output was:
+Access is denied
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: C:/cygwin64/bin/cc 
+Build flags: 
+Id flags: -Aa 
+
+The output was:
+Access is denied
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: C:/cygwin64/bin/cc 
+Build flags: 
+Id flags: -D__CLASSIC_C__ 
+
+The output was:
+Access is denied
+
+
+Checking whether the C compiler is IAR using "" did not match "IAR .+ Compiler":
