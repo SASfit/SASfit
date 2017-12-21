@@ -356,3 +356,73 @@ scalar opo_Fc(opo_data *opod) {
                 *opo_sinc(opod->Qhat[2])
                 *opo_J1x_x(Qxy);
 }
+
+scalar opo_Foctahedral(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+	Qx2_Qy2 = Qx*Qx-Qy*Qy;
+	Qx2_Qz2 = Qx*Qx-Qz*Qz;
+	Qy2_Qz2 = Qy*Qy-Qz*Qz;
+	if (Qx2_Qy2 == 0) {
+		if (Qy == 0)  {
+			if (Qz == 0)  {
+				return opod->detDinv * 4./3.;
+			} else {
+				return opod->detDinv * 8. * (Qz - sin(Qz))/gsl_pow_3(Qz);
+			}
+		} else {
+			if (Qy2_Qz2 ==0 ) {
+				return opod->detDinv *
+					(-Qz*cos(Qz) + (1 + Qz*Qz)*sin(Qz))/(Qz*Qz*Qz);
+			} else {
+				return opod->detDinv *
+					4*(Qy*(-Qy*Qy + Qz*Qz)*cos(Qy) + (Qy*Qy + Qz*Qz)*sin(Qy) -2*Qy*Qz*sin(Qz)) /
+							(Qy*gsl_pow_2(Qy2_Qz2));
+			}
+		}
+	}
+	
+	if (Qx2_Qz2 ==0) {
+		if (Qz==0)  {
+			if (Qy == 0)  {
+				return opod->detDinv * 4./3.;
+			} else {
+				return opod->detDinv * 8. * (Qy - sin(Qy))/gsl_pow_3(Qy);
+			}
+		} else {
+			if (Qy2_Qz2 ==0 ) {
+				return opod->detDinv *
+					(-Qz*cos(Qz) + (1 + Qz*Qz)*sin(Qz))/(Qz*Qz*Qz);
+			} else {
+				return opod->detDinv *
+					(4*(Qz*(Qy*Qy - Qz*Qz)*cos(Qz) - 2*Qy*Qz*sin(Qy) + (Qy*Qy + Qz*Qz)*sin(Qz)) )/
+						(Qz*gsl_pow_2(Qy2_Qz2));
+			}
+		}
+	}
+	
+	if (Qy2_Qz2 ==0) {
+		if (Qz==0)  {
+			if (Qz == 0)  {
+				return opod->detDinv * 4./3.;
+			} else {
+				return opod->detDinv * 8. * (Qy - sin(Qy))/gsl_pow_3(Qy);
+			}
+		}else {
+			if (Qx2_Qz2 ==0 ) {
+				return opod->detDinv *
+					(-Qz*cos(Qz) + (1 + Qz*Qz)*sin(Qz))/(Qz*Qz*Qz);
+			} else {
+				return opod->detDinv *
+				(4*(Qz*(Qx*Qx - Qz*Qz)*cos(Qz) - 2*Qx*Qz*sin(Qx) + (Qx*Qx + Qz*Qz)*sin(Qz)) )/
+					(Qz*gsl_pow_2(Qx2_Qz2));
+			}
+		}
+	}
+	
+    return opod->detDinv /(Qx*Qx - Qy*Qy)*(
+	           (8*Qy*sin(Qy) - 8*Qz*sin(Qz))/(Qy*Qy - Qz*Qz) 
+			 + (8*Qz*sin(Qz) - 8*Qx*sin(Qx))/(Qx*Qx - Qz*Qz));
+}

@@ -1,4 +1,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Structure factor of a random flight model} \hspace{1pt}
+\cite{Schweins2004,Burchard1970,Giehm2010}
+\begin{align}
+S_N(QD)&=
+     \frac{2}{1-\frac{\sin⁡(QD)}{QD} )}-1-\frac{2\left[1-\left[\frac{\sin⁡(QD)}{QD}\right]^N \right]}{N\left[1-\frac{\sin⁡(QD)}{QD}\right]^2}   \frac{\sin⁡(QD)}{QD}
+\end{align}
+The formula above is only defined for the whole real space for integer values of $N$. For non integer values $n$ a linear interpolation between $[n]$ and $[n]+1$ is taken, where $[n]$ is the largest integer smaller or equal to $n$. With $w=n-[n]$ we get
+\begin{align}
+S_N(QD)&= (1-w)S_{[n]} + wS_{[n]+1}
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ordered particle systems} \hspace{1pt}
 \label{sec:ops}
 This plugin contains the structure factor of ordered mesoscopic materials in case the domains are random orientated like in powder diffraction as described in \cite{Forster2005}. For oriented domains the scattering pattern is not anymore radial symmetric and depends both on the direction and modulus of the scattering vector. For this case the structure factor are taken from  \cite{Forster2011}. This plugin tries to re-implement the functions which are originally supplied by the software package \texttt{scatter} described in \cite{Forster2010}. The software package \texttt{scatter} is specialised on calculating and fitting ordered structures and has much more options and better GUI for this kind of studies. In both case the structure factor is approximated in the decoupling approach (\cite{Kotlarchyk1983}) as defined in \ref{sec:SQdecoupling} or in eq.\ \ref{Mittel} of section \ref{sec:decouplingGF}
