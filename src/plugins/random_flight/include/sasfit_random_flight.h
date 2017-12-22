@@ -49,10 +49,10 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b D</td>
- *       <td>step size</td>
+ *       <td>step width</td>
  *      </tr><tr>
- *       <td>\b N</td>
- *       <td>number of random-flight steps</td>
+ *       <td>\b n</td>
+ *       <td>number of random flight steps</td>
  *      </tr></table>
  */
 

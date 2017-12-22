@@ -1,14 +1,43 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Structure factor of a random flight model} \hspace{1pt}
-\cite{Schweins2004,Burchard1970,Giehm2010}
+The random flight model describes a discrete chain, where the positions of the $N$ units forming the discrete chains follow a 3D random walk. The distance between neighbouring units is constants.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.35\textwidth]{../images/structure_factor/randomflight3D.png}
+\end{center}
+\caption{Random flight of $N$ particles with constant distances $D$.}
+\label{fig:randomflight3D}
+\end{figure}
+The structure factor $S_N(QD)$ describing such an arrangement of $N$ particles on a random flight
+with a constant step size $D$ is given by \cite{Burchard1970} as
 \begin{align}
 S_N(QD)&=
      \frac{2}{1-\frac{\sin⁡(QD)}{QD} )}-1-\frac{2\left[1-\left[\frac{\sin⁡(QD)}{QD}\right]^N \right]}{N\left[1-\frac{\sin⁡(QD)}{QD}\right]^2}   \frac{\sin⁡(QD)}{QD}
 \end{align}
-The formula above is only defined for the whole real space for integer values of $N$. For non integer values $n$ a linear interpolation between $[n]$ and $[n]+1$ is taken, where $[n]$ is the largest integer smaller or equal to $n$. With $w=n-[n]$ we get
+The formula above is only real for all values of $QD$ for integer values of $N$. For non integer values $n$ a linear interpolation between $[n]$ and $[n]+1$ is taken \cite{Giehm2010}, where $[n]$ is the largest integer smaller or equal to $n$. With $w=n-[n]$ we get
 \begin{align}
-S_N(QD)&= (1-w)S_{[n]} + wS_{[n]+1}
+S_n(QD)&= (1-w)S_{[n]}(QD) + wS_{[n]+1}(QD)
 \end{align}
+
+\noindent \underline{Input Parameters for model \texttt{random flight}:}\\
+\begin{description}
+\item[\texttt{D}] step length $D$
+\item[\texttt{n}] number of steps $n$
+\end{description}
+
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item $N$ needs to be larger or equal to 1. For non-integer values of $N$ the curve is linear interpolated between the structure factor for $N$ and $N+1$.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/structure_factor/randomflight.png}
+\end{center}
+\caption{Random flight structure factor with $N$ steps of length $D$.}
+\label{fig:randomflight}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ordered particle systems} \hspace{1pt}

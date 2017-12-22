@@ -1365,8 +1365,8 @@
 \newlabel{ch:pluginsFF}{{8}{359}{Plugin functions for form factors\relax }{chapter.1492}{}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{8.1}{Non spherical-symmetric randomly oriented particles}}{359}{section.1493}}
 \newlabel{sec:anisotropic_randomlyoriented_particles}{{8.1}{359}{Non spherical-symmetric randomly oriented particles\relax }{section.1493}{}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.1.1}{Rectangular parallelepiped}}{359}{subsection.1494}}
 \newlabel{sec:reccuboid}{{8.1.1}{359}{Rectangular parallelepiped\relax }{subsection.1494}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.1.1}{Rectangular parallelepiped}}{359}{subsection.1494}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8.1}{\ignorespaces Rectangular parallelepiped with edge lengths $A$, $B$, and $C$.}}{359}{figure.1495}}
 \newlabel{fig:recparallelepiped}{{8.1}{359}{Rectangular parallelepiped with edge lengths $A$, $B$, and $C$}{figure.1495}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8.2}{\ignorespaces Scattering curves for parallelepiped with optional size distribution a single edge length (\texttt  {parallelepiped\_abc1}), of a surface area (\texttt  {parallelepiped\_abc1}), or volume \texttt  {parallelepiped\_abc3}.}}{361}{figure.1501}}
@@ -1506,4 +1506,635 @@
 \newlabel{eq:radiiCoreShellMicrogel}{{8.86}{403}{CoreShellMicrogel\relax }{equation.1655}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8.27}{\ignorespaces The profiles and scattering curves hve been calculated with the plugin functions "\texttt  {CoreShellMicrogel}" and "\texttt  {Radial Profile of CoreShellMicrogel}".}}{404}{figure.1661}}
 \newlabel{fig:profile:Example_CoreShellMicrogel}{{8.27}{404}{The profiles and scattering curves hve been calculated with the plugin functions "\texttt {CoreShellMicrogel}" and "\texttt {Radial Profile of CoreShellMicrogel}"}{figure.1661}{}}
-\newlabel{sect:LinShell}{{8.3.4}{405}{
+\newlabel{sect:LinShell}{{8.3.4}{405}{Spherical shell with linear varying contrast profile (LinShell)\relax }{subsection.1662}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.3.4}{Spherical shell with linear varying contrast profile (LinShell)}}{405}{subsection.1662}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.28}{\ignorespaces Radial profile for calculating the form factor of a spherical shell with a core radius $R$ and a shell thickness of $\Delta R$ and a linear varying contrast profile.}}{405}{figure.1663}}
+\newlabel{LinShell1Profile}{{8.28}{405}{Radial profile for calculating the form factor of a spherical shell with a core radius $R$ and a shell thickness of $\Delta R$ and a linear varying contrast profile}{figure.1663}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.29}{\ignorespaces Scattering intensity of a spherical shell with an linear shell profile. The scattering intensity has been calculated with a lognormal size distribution for the core radius $R_c$.}}{407}{figure.1674}}
+\newlabel{fig:I_LinShell1}{{8.29}{407}{Scattering intensity of a spherical shell with an linear shell profile. The scattering intensity has been calculated with a lognormal size distribution for the core radius $R_c$}{figure.1674}{}}
+\newlabel{sect:LinShell2}{{8.3.5}{408}{LinShell2\relax }{subsection.1675}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.3.5}{LinShell2}}{408}{subsection.1675}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.30}{\ignorespaces Radial profile for calculating the form factor of a spherical shell with a total radius $R_\text  {tot}$, a shell thickness of $\Delta R$, and a linear varying contrast profile.}}{408}{figure.1676}}
+\newlabel{LinShell2Profile}{{8.30}{408}{Radial profile for calculating the form factor of a spherical shell with a total radius $R_\text {tot}$, a shell thickness of $\Delta R$, and a linear varying contrast profile}{figure.1676}{}}
+\newlabel{sect:ExpShell}{{8.3.6}{410}{ExpShell\relax }{subsection.1686}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.3.6}{ExpShell}}{410}{subsection.1686}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.31}{\ignorespaces Radial profile for calculating the form factor of a spherical shell with a core radius $R_c$ and a shell thickness of $\Delta R$ and a exponentially varying contrast profile. The profile shape can be varied by the parameter $\alpha $ describing the penetration of the solvent into the shell. A value of $\alpha =0$ means linear profile and is equivalent to {\tt  LinShell} and {\tt  LinShell2}. For $\alpha >0$ the solvent penetrates further into the shell and for $\alpha <0$ less.}}{410}{figure.1687}}
+\newlabel{ExpShellProfile}{{8.31}{410}{Radial profile for calculating the form factor of a spherical shell with a core radius $R_c$ and a shell thickness of $\Delta R$ and a exponentially varying contrast profile. The profile shape can be varied by the parameter $\alpha $ describing the penetration of the solvent into the shell. A value of $\alpha =0$ means linear profile and is equivalent to {\tt LinShell} and {\tt LinShell2}. For $\alpha >0$ the solvent penetrates further into the shell and for $\alpha <0$ less}{figure.1687}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.32}{\ignorespaces Scattering intensity of a spherical shell with an exponential shell profile. The scattering intensity has been calculated with a lognormal $[\mathrm  {LogNorm}(N\tmspace  -\thinmuskip {.1667em}=\tmspace  -\thinmuskip {.1667em}1,\sigma \tmspace  -\thinmuskip {.1667em}=\tmspace  -\thinmuskip {.1667em}0.05,p\tmspace  -\thinmuskip {.1667em}=\tmspace  -\thinmuskip {.1667em}1,R\tmspace  -\thinmuskip {.1667em}=\tmspace  -\thinmuskip {.1667em}30)]$ size distribution for the core radius $R_c$. The scattering length density of the core $\eta _\text  {c}$ and the solvent $\eta _\text  {sol}$ are set to 0, $\eta _\text  {sh}=1$, $\phi _\text  {in}=0$, $\phi _\text  {out}=1$, and $\Delta R =10$.}}{412}{figure.1698}}
+\newlabel{fig:ExpShellExample}{{8.32}{412}{Scattering intensity of a spherical shell with an exponential shell profile. The scattering intensity has been calculated with a lognormal $[\mathrm {LogNorm}(N\!=\!1,\sigma \!=\!0.05,p\!=\!1,R\!=\!30)]$ size distribution for the core radius $R_c$. The scattering length density of the core $\eta _\text {c}$ and the solvent $\eta _\text {sol}$ are set to 0, $\eta _\text {sh}=1$, $\phi _\text {in}=0$, $\phi _\text {out}=1$, and $\Delta R =10$}{figure.1698}{}}
+\citation{Boucher1983}
+\citation{Boucher1983}
+\newlabel{sect:BoucherSphere}{{8.3.7}{413}{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$\relax }{subsection.1699}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.3.7}{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$}}{413}{subsection.1699}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.33}{\ignorespaces The two implemented case for the radial profiles according to Boucher \cite  {Boucher1983}}}{413}{figure.1702}}
+\newlabel{fig:Boucherprofilea}{{8.33}{413}{The two implemented case for the radial profiles according to Boucher \cite {Boucher1983}\relax }{figure.1702}{}}
+\newlabel{eq:profileBoucherSphere}{{8.113}{413}{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$\relax }{equation.1703}{}}
+\newlabel{eq:eta0BoucherSphere}{{8.115}{413}{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$\relax }{equation.1705}{}}
+\citation{Boucher1983}
+\newlabel{eq:eta0BoucherSphere2}{{8.116}{414}{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$\relax }{equation.1706}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.34}{\ignorespaces For $\alpha =2$ all the scattering is caused by an infinitesimal thin outer shell of the particle where all the fractional excess scattering length is located.}}{414}{figure.1710}}
+\newlabel{fig:BoucherZr}{{8.34}{414}{For $\alpha =2$ all the scattering is caused by an infinitesimal thin outer shell of the particle where all the fractional excess scattering length is located}{figure.1710}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.35}{\ignorespaces Scattering curves for the form factors \texttt  {BoucherSpheres} and \texttt  {BoucherSpheres2}.}}{416}{figure.1715}}
+\newlabel{fig:BoucherIQ}{{8.35}{416}{Scattering curves for the form factors \texttt {BoucherSpheres} and \texttt {BoucherSpheres2}}{figure.1715}{}}
+\citation{Franklin1956}
+\citation{Puigjaner1974}
+\citation{Schmidt1970}
+\citation{Pringle1971}
+\citation{Fukuda2002}
+\citation{Lebedev2003}
+\citation{Benham1980}
+\citation{Schmidt1970}
+\citation{Pringle1971}
+\citation{Fukuda2002}
+\citation{Teixeira2010}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.4}{Cylindrical objects}}{417}{section.1716}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.4.1}{Helical structures}}{417}{subsection.1717}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{8.4.1.1}{Fanlike helix}}{417}{subsubsection.1718}}
+\newlabel{fig:beadshelixside}{{36(a)}{417}{Fanlike helix\relax }{subfigure.1719}{}}
+\newlabel{fig:beadshelixside}{{36(b)}{417}{Fanlike helix\relax }{subfigure.1720}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.36}{\ignorespaces Double helix with strands of round cross sections.}}{417}{figure.1721}}
+\newlabel{fig:roundhelix}{{8.36}{417}{Double helix with strands of round cross sections}{figure.1721}{}}
+\citation{Franklin1956}
+\citation{Puigjaner1974}
+\citation{Fukuda2002}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.37}{\ignorespaces Normalized scattering curves of fanlike helices.}}{419}{figure.1727}}
+\newlabel{fig:helixfanlikeIQ}{{8.37}{419}{Normalized scattering curves of fanlike helices}{figure.1727}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{8.4.1.2}{Helix with round cross-section}}{419}{subsubsection.1728}}
+\newlabel{eq:roundhelix1}{{8.125}{419}{Helix with round cross-section\relax }{equation.1732}{}}
+\newlabel{fig:beadshelixside}{{38(a)}{420}{Helix with round cross-section\relax }{subfigure.1729}{}}
+\newlabel{fig:beadshelixside}{{38(b)}{420}{Helix with round cross-section\relax }{subfigure.1730}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.38}{\ignorespaces Double helix with strands of round cross sections. The cross-sections are round in the plane perpendicular to the helix axis.}}{420}{figure.1731}}
+\newlabel{fig:roundhelix}{{8.38}{420}{Double helix with strands of round cross sections. The cross-sections are round in the plane perpendicular to the helix axis}{figure.1731}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.39}{\ignorespaces Normalized scattering curves of helices with round cross sections.}}{421}{figure.1736}}
+\newlabel{fig:helixroundIQ}{{8.39}{421}{Normalized scattering curves of helices with round cross sections}{figure.1736}{}}
+\citation{Lebedev2003}
+\citation{Avdeev2013}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{8.4.1.3}{Beads model of a single helical strand}}{422}{subsubsection.1737}}
+\newlabel{fig:beadshelixside}{{40(a)}{422}{Beads model of a single helical strand\relax }{subfigure.1738}{}}
+\newlabel{fig:beadshelixside}{{40(b)}{422}{Beads model of a single helical strand\relax }{subfigure.1739}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.40}{\ignorespaces Bead model of a helix. In figure a) bead helices with different bead radius and different number of beads per turn are shown}}{422}{figure.1740}}
+\newlabel{fig:beadshelix}{{8.40}{422}{Bead model of a helix. In figure a) bead helices with different bead radius and different number of beads per turn are shown\relax }{figure.1740}{}}
+\newlabel{eq:beadshelix1}{{8.129}{422}{Beads model of a single helical strand\relax }{equation.1741}{}}
+\newlabel{eq:beadshelix2}{{8.133}{423}{Beads model of a single helical strand\relax }{equation.1745}{}}
+\citation{Benham1980}
+\citation{Crick1953}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.41}{\ignorespaces Normalized scattering curves of a single stranded helices formed by spherical beads.}}{424}{figure.1747}}
+\newlabel{fig:helixbeadsIQ}{{8.41}{424}{Normalized scattering curves of a single stranded helices formed by spherical beads}{figure.1747}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{8.4.1.4}{straight superhelix}}{424}{subsubsection.1748}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.42}{\ignorespaces infinitesimal thin single stranded helix}}{425}{figure.1749}}
+\newlabel{fig:straightsuperhelix}{{8.42}{425}{infinitesimal thin single stranded helix\relax }{figure.1749}{}}
+\citation{Benham1980}
+\citation{Crick1953}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.43}{\ignorespaces Normalized scattering curves of single stranded infinitesimal thin stranded helices.}}{426}{figure.1755}}
+\newlabel{fig:helixstraightIQ}{{8.43}{426}{Normalized scattering curves of single stranded infinitesimal thin stranded helices}{figure.1755}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{8.4.1.5}{coiled superhelix}}{426}{subsubsection.1756}}
+\newlabel{fig:superhelixcoiled1}{{44(a)}{427}{coiled superhelix\relax }{subfigure.1757}{}}
+\newlabel{fig:superhelixcoiled2}{{44(b)}{427}{coiled superhelix\relax }{subfigure.1758}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.44}{\ignorespaces Combinations of two helical orders are referred to as coiled coils or coiled superhelix.}}{427}{figure.1759}}
+\newlabel{fig:superhelixcoiled}{{8.44}{427}{Combinations of two helical orders are referred to as coiled coils or coiled superhelix}{figure.1759}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.45}{\ignorespaces Normalized scattering curves of single stranded infinitesimal thin coiled helices.}}{428}{figure.1769}}
+\newlabel{fig:helixcoiledIQ}{{8.45}{428}{Normalized scattering curves of single stranded infinitesimal thin coiled helices}{figure.1769}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.5}{Form factors of magnetic objects}}{429}{section.1770}}
+\newlabel{sec:magneticstructures}{{8.5}{429}{Form factors of magnetic objects\relax }{section.1770}{}}
+\citation{Michels2013}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.5.1}{Magnetic spin misalignment}}{430}{subsection.1771}}
+\newlabel{sec:spinmisalignment}{{8.5.1}{430}{Magnetic spin misalignment\relax }{subsection.1771}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.46}{\ignorespaces Scattering curves and corresponding correlation functions. In one case the radius of the anisotropy field is assumed to have a lognormal size distribution.}}{431}{figure.1778}}
+\newlabel{fig:MagSpinMisAlignment}{{8.46}{431}{Scattering curves and corresponding correlation functions. In one case the radius of the anisotropy field is assumed to have a lognormal size distribution}{figure.1778}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.5.2}{Ferrofluids}}{432}{subsection.1779}}
+\newlabel{sec:ferrofluid}{{8.5.2}{432}{Ferrofluids\relax }{subsection.1779}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.47}{\ignorespaces Sketch of a ferrofluid particle stabilised with surfactant molecules on its surface. The magnetic core can have a shell with lower magnetisation. The direction of the shell magnetisation is assumed to be parallel or antiparallel to the core magnetisation, depending on the signs of the magnetic scattering length densities.}}{432}{figure.1780}}
+\newlabel{fig:ferrofluidparticle}{{8.47}{432}{Sketch of a ferrofluid particle stabilised with surfactant molecules on its surface. The magnetic core can have a shell with lower magnetisation. The direction of the shell magnetisation is assumed to be parallel or antiparallel to the core magnetisation, depending on the signs of the magnetic scattering length densities}{figure.1780}{}}
+\newlabel{eq:magnetic_SLD}{{8.152}{433}{Ferrofluids\relax }{equation.1781}{}}
+\citation{Wiedenmann2011}
+\citation{Wagner2005}
+\citation{Kohlbrecher1997}
+\newlabel{eq:alpha}{{8.155}{434}{Ferrofluids\relax }{equation.1784}{}}
+\newlabel{eq:mu_FF}{{8.156}{434}{Ferrofluids\relax }{equation.1785}{}}
+\newlabel{eq:dsigma_dOmega_ijSQ}{{8.158}{434}{Ferrofluids\relax }{equation.1787}{}}
+\citation{PedersenGerstenberg96}
+\citation{PedersenJApplCryst2000}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.5.3}{Langevin statistics for averages of the form factor and averages of the squared form factor}}{435}{subsection.1794}}
+\newlabel{eq:plugin:F_ijSQ}{{8.165}{436}{Langevin statistics for averages of the form factor and averages of the squared form factor\relax }{equation.1795}{}}
+\newlabel{eq:S_l_Boltzmann}{{8.170}{437}{Langevin statistics for averages of the form factor and averages of the squared form factor\relax }{equation.1807}{}}
+\newlabel{eq:plugin:I_iSQ_I_unpSQ}{{8.171}{437}{Langevin statistics for averages of the form factor and averages of the squared form factor\relax }{equation.1811}{}}
+\citation{TeubnerStrey87}
+\citation{StreyKlineKaler1994}
+\citation{Sottmann1997}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.6}{Bi-continuous and non-particulate structures}}{439}{section.1818}}
+\newlabel{sect:TeubnerStrey}{{8.6.1}{439}{Teubner-Strey\relax }{subsection.1819}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.1}{Teubner-Strey}}{439}{subsection.1819}}
+\newlabel{eq:TeubnerStrey}{{8.174}{439}{Teubner-Strey\relax }{equation.1820}{}}
+\newlabel{eq:lcTS}{{8.177}{439}{Teubner-Strey\relax }{equation.1824}{}}
+\newlabel{eq:TSc4}{{8.178}{439}{Teubner-Strey\relax }{equation.1825}{}}
+\citation{Strey1991}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.48}{\ignorespaces Some typical curves for the Teubner-Strey model function}}{441}{figure.1836}}
+\newlabel{fig:TeubnerStreyIq}{{8.48}{441}{Some typical curves for the Teubner-Strey model function\relax }{figure.1836}{}}
+\citation{DAB1957}
+\citation{DebyeBueche1949}
+\citation{DebyeBueche1949}
+\newlabel{sect:DAB}{{8.6.2}{442}{Debye-Anderson-Brumberger(DAB)\relax }{subsection.1837}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.2}{Debye-Anderson-Brumberger(DAB)}}{442}{subsection.1837}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.49}{\ignorespaces Some typical curves for the Debye-Anderson-Brumberger model function}}{442}{figure.1840}}
+\newlabel{fig:DABIq}{{8.49}{442}{Some typical curves for the Debye-Anderson-Brumberger model function\relax }{figure.1840}{}}
+\citation{Klimes2002}
+\citation{Hunter2006}
+\citation{Andersson2008}
+\newlabel{sect:gDAB}{{8.6.3}{443}{Generalization of the Debye-Anderson-Brumberger model (gDAB)\relax }{subsection.1841}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.3}{Generalization of the Debye-Anderson-Brumberger model (gDAB)}}{443}{subsection.1841}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.50}{\ignorespaces Some typical curves for the generalized Debye-Anderson-Brumberger model function}}{443}{figure.1844}}
+\newlabel{fig:gDABIq}{{8.50}{443}{Some typical curves for the generalized Debye-Anderson-Brumberger model function\relax }{figure.1844}{}}
+\citation{Furukawa1984}
+\newlabel{sect:Spinodal}{{8.6.4}{444}{Spinodal\relax }{subsection.1845}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.4}{Spinodal}}{444}{subsection.1845}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.51}{\ignorespaces Schematic representation of a phase separation scheme resulting in a connected globule structure.}}{444}{figure.1846}}
+\newlabel{Spinodal}{{8.51}{444}{Schematic representation of a phase separation scheme resulting in a connected globule structure}{figure.1846}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.52}{\ignorespaces }}{445}{figure.1848}}
+\newlabel{fig:spinodalIQ}{{8.52}{445}{\relax }{figure.1848}{}}
+\newlabel{sect:Zernike}{{8.6.5}{446}{OrnsteinZernike\relax }{subsection.1849}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.5}{OrnsteinZernike}}{446}{subsection.1849}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.53}{\ignorespaces Ornstein-Zernike Scattering intensity $I(q)$ for different correlation lengths $\xi $}}{446}{figure.1851}}
+\newlabel{fig:OrnsteinZernicke}{{8.53}{446}{Ornstein-Zernike Scattering intensity $I(q)$ for different correlation lengths $\xi $\relax }{figure.1851}{}}
+\newlabel{sect:BroadPeak}{{8.6.6}{447}{Broad-Peak\relax }{subsection.1852}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.6}{Broad-Peak}}{447}{subsection.1852}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.54}{\ignorespaces Empirical form factor of Broad-Peak}}{448}{figure.1854}}
+\newlabel{fig:BroadPeakIq}{{8.54}{448}{Empirical form factor of Broad-Peak\relax }{figure.1854}{}}
+\citation{Fratzl1994}
+\citation{Hjelm1992}
+\citation{Hjelm1995}
+\citation{Hjelm2000}
+\newlabel{sec:generalizedGuinier}{{8.6.7}{449}{generalized Guinier approximation \cite {Fratzl1994,Hjelm1992,Hjelm1995,Hjelm2000}\relax }{subsection.1855}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.7}{generalized Guinier approximation \cite  {Fratzl1994,Hjelm1992,Hjelm1995,Hjelm2000}}}{449}{subsection.1855}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.55}{\ignorespaces generalized Guinier approximation}}{449}{figure.1856}}
+\newlabel{eq:generalizedGuinier}{{8.196}{449}{generalized Guinier approximation \cite {Fratzl1994,Hjelm1992,Hjelm1995,Hjelm2000}\relax }{equation.1857}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.56}{\ignorespaces generalized Guinier law}}{450}{figure.1858}}
+\newlabel{fig:generalizedGuinierIq}{{8.56}{450}{generalized Guinier law\relax }{figure.1858}{}}
+\citation{Hammouda2010}
+\newlabel{sec:generalizedGuinierPorodLaw}{{8.6.8}{451}{generalized Guinier-Porod law\relax }{subsection.1859}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.6.8}{generalized Guinier-Porod law}}{451}{subsection.1859}}
+\newlabel{eq:generalizedGuinierPorod}{{8.197}{451}{generalized Guinier-Porod law\relax }{equation.1860}{}}
+\newlabel{eq:generalizedGuinierPorodConstrains}{{8.201}{451}{generalized Guinier-Porod law\relax }{equation.1864}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.57}{\ignorespaces some examples showing the behaviour of the generalized Guinier-Porod law}}{452}{figure.1865}}
+\newlabel{fig:GuinierPorodIQ}{{8.57}{452}{some examples showing the behaviour of the generalized Guinier-Porod law\relax }{figure.1865}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.7}{fractal size distribution of particles}}{453}{section.1866}}
+\newlabel{sec:ff_fractal_series}{{8.7}{453}{fractal size distribution of particles\relax }{section.1866}{}}
+\newlabel{fig:fractalseries}{{8.7}{456}{fractal size distribution of particles\relax }{subfigure.1884}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.58}{\ignorespaces Scattering curve and corresponding size distribution for the plugin "\texttt  {fractal series 3}".}}{456}{figure.1885}}
+\citation{Kohlbrecher2017}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.8}{Plugin functions for SESANS}}{457}{section.1886}}
+\newlabel{ch:pluginsSESANS}{{8.8}{457}{Plugin functions for SESANS\relax }{section.1886}{}}
+\citation{Bracewell2003}
+\citation{Bracewell1956}
+\citation{Kohlbrecher2017}
+\newlabel{footnote:Hankel}{{5}{458}{Plugin functions for SESANS\relax }{equation.1892}{}}
+\newlabel{footnote:Fourier}{{6}{458}{Plugin functions for SESANS\relax }{equation.1897}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.59}{\ignorespaces Transformation cycle between $\mathaccentV {tilde}07E{\gamma }(r)$, $I(q)$, and $\mathaccentV {tilde}07E{G}(\delta )$.}}{459}{figure.1908}}
+\newlabel{fig:FAHcycle}{{8.59}{459}{Transformation cycle between $\tilde {\gamma }(r)$, $I(q)$, and $\tilde {G}(\delta )$}{figure.1908}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{8.8.1}{$G(z)$ of a sphere}}{459}{subsection.1910}}
+\citation{DebyeBueche1949}
+\citation{DAB1957}
+\citation{Andersson2008}
+\citation{Klimes2002}
+\citation{Hunter2006}
+\citation{Andersson2008}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.60}{\ignorespaces {\tt  SASfit }allows to perform a final transformation on the model function to convert a SANS signal into a SESANS signal}}{460}{figure.1909}}
+\newlabel{fig:HankelOp}{{8.60}{460}{\SASfit allows to perform a final transformation on the model function to convert a SANS signal into a SESANS signal\relax }{figure.1909}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.9}{$G(z)$ of a randomly distributed, two-phase system (DAB) }}{460}{section.1914}}
+\citation{Hammouda}
+\citation{Hammouda2012}
+\citation{Hammouda1993}
+\citation{Hammouda2016}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.10}{$G(z)$ of a self-affine random density distribution (gDAB) }}{461}{section.1918}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8.11}{$G(z)$ for a generalized Gaussian coil (gGc) }}{461}{section.1922}}
+\newlabel{eq:generalizedGauss1inSESANS}{{8.234}{461}{$G(z)$ for a generalized Gaussian coil (gGc)\relax }{equation.1923}{}}
+\newlabel{eq:generalizedGaussinSESANS}{{8.236}{461}{$G(z)$ for a generalized Gaussian coil (gGc)\relax }{equation.1925}{}}
+\@writefile{toc}{\contentsline {chapter}{\tocchapter {Chapter}{9}{Plugin functions for size distributions}}{463}{chapter.1929}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:pluginsSD}{{9}{463}{Plugin functions for size distributions\relax }{chapter.1929}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{9.1}{LogNorm\_fp}}{463}{section.1930}}
+\newlabel{sec:sd_lognorm_fp}{{9.1}{463}{LogNorm\_fp\relax }{section.1930}{}}
+\newlabel{eq:LogNorm}{{9.1b}{463}{LogNorm\_fp\relax }{equation.1933}{}}
+\newlabel{eq:nMoment:LogNorm}{{9.3}{463}{LogNorm\_fp\relax }{equation.1935}{}}
+\newlabel{eq:fpMomentsV}{{9.4}{463}{LogNorm\_fp\relax }{equation.1936}{}}
+\newlabel{eq:fpMomentsV}{{9.6}{464}{LogNorm\_fp\relax }{equation.1938}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The number density $N$ expressed in terms of volume fraction $f_p$ and moments $\delimiter "426830A X^n\delimiter "526930B $ of the distribution function for some particle shapes and different parameters having a distribution. The factor $10^{21}$ is needed due to unit conversion. It is assumed that the radius is given in nm, the intensity in cm$^{-1}$ and the scattering length densities in cm$^{-2}$.}}{465}{table.1941}}
+\newlabel{tab:volumefraction}{{1}{465}{The number density $N$ expressed in terms of volume fraction $f_p$ and moments $\langle X^n\rangle $ of the distribution function for some particle shapes and different parameters having a distribution. The factor $10^{21}$ is needed due to unit conversion. It is assumed that the radius is given in nm, the intensity in cm$^{-1}$ and the scattering length densities in cm$^{-2}$}{table.1941}{}}
+\citation{Burchard1970}
+\citation{Giehm2010}
+\citation{Forster2005}
+\citation{Forster2011}
+\citation{Forster2010}
+\citation{Kotlarchyk1983}
+\@writefile{toc}{\contentsline {chapter}{\tocchapter {Chapter}{10}{Plugin functions for structure factors}}{467}{chapter.1942}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:pluginsSQ}{{10}{467}{Plugin functions for structure factors\relax }{chapter.1942}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{10.1}{Structure factor of a random flight model}}{467}{section.1943}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10.1}{\ignorespaces Random flight of $N$ particles with constant distances $D$.}}{467}{figure.1944}}
+\newlabel{fig:randomflight3D}{{10.1}{467}{Random flight of $N$ particles with constant distances $D$}{figure.1944}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10.2}{\ignorespaces Random flight structure factor with $N$ steps of length $D$.}}{468}{figure.1947}}
+\newlabel{fig:randomflight}{{10.2}{468}{Random flight structure factor with $N$ steps of length $D$}{figure.1947}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{10.2}{ordered particle systems}}{468}{section.1948}}
+\newlabel{sec:ops}{{10.2}{468}{ordered particle systems\relax }{section.1948}{}}
+\citation{Forster2011}
+\citation{Forster2011}
+\citation{Forster2011}
+\newlabel{eq:DecouplingPlusLattice}{{10.5a}{469}{ordered particle systems\relax }{equation.1955}{}}
+\newlabel{subsec:iso_ops}{{10.2.1}{469}{Domains of ordered particle systems isotropically oriented\relax }{subsection.1961}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.2.1}{Domains of ordered particle systems isotropically oriented}}{469}{subsection.1961}}
+\newlabel{eq:direct_lattice_vector}{{10.11}{470}{Domains of ordered particle systems isotropically oriented\relax }{equation.1966}{}}
+\newlabel{eq:reciprocal_lattice_vector}{{10.12}{470}{Domains of ordered particle systems isotropically oriented\relax }{equation.1967}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10.3}{\ignorespaces Unit cell in three dimensions. }}{471}{figure.1965}}
+\newlabel{fig:UnitCellDimensions}{{10.3}{471}{Unit cell in three dimensions}{figure.1965}{}}
+\newlabel{eq:2D_lattice_vector}{{10.14a}{471}{Domains of ordered particle systems isotropically oriented\relax }{equation.1973}{}}
+\newlabel{subsec:aniso_ops}{{10.2.2}{472}{Domains of ordered particle systems with preferred orientation\relax }{subsection.1989}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.2.2}{Domains of ordered particle systems with preferred orientation}}{472}{subsection.1989}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces }}{473}{table.1988}}
+\newlabel{tab:opoiso}{{1}{473}{\relax }{table.1988}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10.4}{\ignorespaces The scattering vector in polar coordinates coordination system with respect to a laboratory-fixed coordinate system based on the three orthogonal unit vectors ($\mathbf  {e}_x$, $\mathbf  {e}_y$, $\mathbf  {e}_z$). They are arranged such that the x-direction coincides with the x-direction of the detector, and the y-direction coincides with the y-direction of the detector. The direction of the incoming neutron beam is chosen to be $-\mathbf  {e}_z$. }}{473}{figure.1990}}
+\newlabel{fig:opsCoordSys}{{10.4}{473}{The scattering vector in polar coordinates coordination system with respect to a laboratory-fixed coordinate system based on the three orthogonal unit vectors ($\mathbf {e}_x$, $\mathbf {e}_y$, $\mathbf {e}_z$). They are arranged such that the x-direction coincides with the x-direction of the detector, and the y-direction coincides with the y-direction of the detector. The direction of the incoming neutron beam is chosen to be $-\mathbf {e}_z$}{figure.1990}{}}
+\@writefile{toc}{\contentsline {chapter}{\tocchapter {Chapter}{11}{Absolute intensities, moments and volume fractions}}{475}{chapter.1994}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:absint}{{11}{475}{Absolute intensities, moments and volume fractions\relax }{chapter.1994}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{11.1}{Fitting absolute intensities}}{475}{section.1995}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{11.2}{Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale}}{477}{section.2007}}
+\newlabel{sec:contrast-concentration-I(0)}{{11.2}{477}{Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale\relax }{section.2007}{}}
+\newlabel{eq:xsabsolut1}{{11.12}{477}{Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale\relax }{equation.2008}{}}
+\newlabel{eq:xsabsolut1}{{11.14}{477}{Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale\relax }{equation.2010}{}}
+\citation{Damaschun1969}
+\citation{Sjoberg1974}
+\citation{Damaschun1971}
+\citation{Walter1985}
+\citation{Moller1995}
+\citation{book:Guinier:Fournet}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{11.3}{Moments of scattering curves and size distribution}}{479}{section.2020}}
+\newlabel{sec:SASmoments}{{11.3}{479}{Moments of scattering curves and size distribution\relax }{section.2020}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11.1}{\ignorespaces Menu and tabbed window for integral structural parameters. {\tt  SASfit }also supports analysis of series of data, whereby the structural parameters are stored in CSV format readable by many software packages in a separate file for further analysis.}}{481}{figure.2032}}
+\newlabel{fig:QTintegralstructuralparameters}{{11.1}{481}{Menu and tabbed window for integral structural parameters. \SASfit also supports analysis of series of data, whereby the structural parameters are stored in CSV format readable by many software packages in a separate file for further analysis}{figure.2032}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11.2}{\ignorespaces Menu displaying the different moments of a size distribution. At the moment these values are only calculated for single data sets but not yet for multiple data sets}}{482}{figure.2034}}
+\newlabel{fig:QTmoments}{{11.2}{482}{Menu displaying the different moments of a size distribution. At the moment these values are only calculated for single data sets but not yet for multiple data sets\relax }{figure.2034}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{11.4}{Volume fractions}}{482}{section.2035}}
+\newlabel{sec:volumefraction}{{11.4}{482}{Volume fractions\relax }{section.2035}{}}
+\newlabel{eq:fpMomentSphere}{{11.25}{482}{Volume fractions\relax }{equation.2036}{}}
+\newlabel{eq:fpMoments_eg}{{11.26}{483}{Volume fractions\relax }{equation.2037}{}}
+\newlabel{eq:fpMomentsCylR}{{11.28}{483}{Volume fractions\relax }{equation.2039}{}}
+\newlabel{eq:fpMomentsCylR}{{11.29}{483}{Volume fractions\relax }{equation.2040}{}}
+\@writefile{toc}{\contentsline {chapter}{\tocchapter {Chapter}{12}{Basic Analysis of Dynamic Light Scattering Data}}{485}{chapter.2041}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{basicDLS}{{12}{485}{Basic Analysis of Dynamic Light Scattering Data\relax }{chapter.2041}{}}
+\newlabel{g1}{{12.2}{485}{Basic Analysis of Dynamic Light Scattering Data\relax }{equation.2043}{}}
+\newlabel{G2}{{12.3}{485}{Basic Analysis of Dynamic Light Scattering Data\relax }{equation.2044}{}}
+\newlabel{DiffRDLS}{{12.5}{485}{Basic Analysis of Dynamic Light Scattering Data\relax }{equation.2046}{}}
+\citation{Koppel1972}
+\citation{Pusey1974}
+\citation{Dhont1996}
+\citation{Frisken2001}
+\citation{Mailer2015}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{12.1}{Cumulant Analysis}}{486}{section.2047}}
+\newlabel{G2Cumulant}{{12.7}{486}{Cumulant Analysis\relax }{equation.2049}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{12.2}{Double Decay Cumulant Analysis}}{487}{section.2052}}
+\newlabel{G2DoubleCumulantDecay}{{12.10}{487}{Double Decay Cumulant Analysis\relax }{equation.2053}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{12.3}{Fit of Double Stretched Exponentials}}{488}{section.2054}}
+\newlabel{G2DoubleExpDecay}{{12.11}{488}{Fit of Double Stretched Exponentials\relax }{equation.2055}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{12.3.1}{The least squares minimiser and the robust least squares procedure}}{489}{subsection.2056}}
+\@writefile{toc}{\contentsline {chapter}{\tocchapter {Chapter}{13}{Scattering Theory}}{491}{chapter.2062}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chap:basics}{{13}{491}{Scattering Theory\relax }{chapter.2062}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{13.1}{Scattering Cross-Section}}{491}{section.2063}}
+\newlabel{crosssection}{{13.1}{491}{Scattering Cross-Section\relax }{section.2063}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13.1}{\ignorespaces Schematic representation of a scattering process}}{491}{figure.2064}}
+\newlabel{scatt2}{{13.1}{491}{Schematic representation of a scattering process\relax }{figure.2064}{}}
+\citation{hittmair}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.1.1}{Scattering of neutrons on atoms}}{492}{subsection.2067}}
+\newlabel{fermipot}{{13.5}{492}{Scattering of neutrons on atoms\relax }{equation.2070}{}}
+\newlabel{scatteringfunction}{{13.6}{493}{Scattering of neutrons on atoms\relax }{equation.2071}{}}
+\newlabel{scatteq1}{{13.7}{493}{Scattering of neutrons on atoms\relax }{equation.2072}{}}
+\newlabel{scatteq2}{{13.8}{493}{Scattering of neutrons on atoms\relax }{equation.2073}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.1.1.1}{Nuclear scattering}}{493}{subsubsection.2077}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.1.1.2}{Magnetic Scattering}}{494}{subsubsection.2082}}
+\citation{book:Squires}
+\citation{scatt91}
+\newlabel{eq:Spin:pmpm}{{13.22}{495}{Magnetic Scattering\relax }{equation.2092}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.1.2}{Scattering of x-ray at atoms}}{496}{subsection.2094}}
+\newlabel{diffx}{{13.27}{496}{Scattering of x-ray at atoms\relax }{equation.2100}{}}
+\newlabel{diffx}{{13.28}{496}{Scattering of x-ray at atoms\relax }{equation.2101}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.1.2.1}{Anomalous scattering of x-rays}}{497}{subsubsection.2102}}
+\newlabel{KramerKronig}{{13.30}{497}{Anomalous scattering of x-rays\relax }{equation.2104}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13.2}{\ignorespaces Energy dependence of the real and imaginary part of the scattering length of iron: $Z_{\rm  Fe}+ f'_{\rm  Fe}(E)$ and $f''_{\rm  Fe}(E)$ ($Z_{\rm  Fe}=26$)}}{497}{figure.2105}}
+\newlabel{fpfppsketch}{{13.2}{497}{Energy dependence of the real and imaginary part of the scattering length of iron: $Z_{\rm Fe}+ f'_{\rm Fe}(E)$ and $f''_{\rm Fe}(E)$ ($Z_{\rm Fe}=26$)\relax }{figure.2105}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{13.2}{Small angle scattering}}{498}{section.2106}}
+\newlabel{scatteq3}{{13.32}{498}{Small angle scattering\relax }{equation.2108}{}}
+\newlabel{Gamma}{{13.34}{498}{Small angle scattering\relax }{equation.2110}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.2.1}{Autocorrelation function $\Gamma ({\b r})$ and $\gamma ({\b r})$}}{499}{subsection.2113}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.1}{Isotropic averages}}{499}{subsubsection.2114}}
+\newlabel{equalorientations}{{13.37}{499}{Isotropic averages\relax }{equation.2116}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.2}{Absence of long range order}}{500}{subsubsection.2118}}
+\newlabel{barrho}{{13.38}{500}{Absence of long range order\relax }{equation.2119}{}}
+\newlabel{IQofgamma}{{13.40}{500}{Absence of long range order\relax }{equation.2120}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.3}{Limits $r=0$ and $r=\infty $}}{500}{subsubsection.2122}}
+\newlabel{gamma}{{13.44}{500}{Limits $r=0$ and $r=\infty $\relax }{equation.2123}{}}
+\newlabel{gamma0}{{13.45}{500}{Limits $r=0$ and $r=\infty $\relax }{equation.2124}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.2.2}{Volume fraction}}{501}{subsection.2125}}
+\newlabel{eta2bar}{{13.46}{501}{Volume fraction\relax }{equation.2126}{}}
+\newlabel{eq:eta2bar}{{13.48}{501}{Volume fraction\relax }{equation.2128}{}}
+\newlabel{Invariante}{{13.49}{501}{Volume fraction\relax }{equation.2129}{}}
+\newlabel{chap:Interpartikelinterferenzen}{{13.2.3}{501}{Interparticle interferences\relax }{subsection.2130}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.2.3}{Interparticle interferences}}{501}{subsection.2130}}
+\newlabel{masterIQ}{{13.51}{502}{Interparticle interferences\relax }{equation.2132}{}}
+\newlabel{DefPsi}{{13.53}{502}{Interparticle interferences\relax }{equation.2133}{}}
+\citation{book:Guinier:Fournet}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.3.1}{Isotropic ensemble of particles}}{503}{subsubsection.2136}}
+\newlabel{sec:decouplingGF}{{13.2.4}{503}{Influence of the relative arrangement of scatterers on interparticle interferences\relax }{subsection.2138}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.2.4}{Influence of the relative arrangement of scatterers on interparticle interferences}}{503}{subsection.2138}}
+\newlabel{Mittel}{{13.56}{503}{Influence of the relative arrangement of scatterers on interparticle interferences\relax }{equation.2139}{}}
+\citation{scatt163}
+\citation{scatt186}
+\citation{scatt188}
+\citation{scatt142}
+\newlabel{eq:generalPrinsZernicke}{{13.61}{504}{Influence of the relative arrangement of scatterers on interparticle interferences\relax }{equation.2143}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.1}{Formula from Prins and Zernicke}}{504}{subsubsection.2144}}
+\newlabel{eq:originalPrinsZernicke}{{13.62}{504}{Formula from Prins and Zernicke\relax }{equation.2145}{}}
+\citation{scatt97}
+\citation{scatt75}
+\citation{scatt121}
+\newlabel{eq:Interferenzen:Potential}{{13.63}{505}{Formula from Prins and Zernicke\relax }{equation.2146}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.2}{Isolate particles}}{505}{subsubsection.2149}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.3}{Polydisperse System of isolated particles}}{506}{subsubsection.2151}}
+\newlabel{eq:N(R)F(QR)}{{13.67}{506}{Polydisperse System of isolated particles\relax }{equation.2152}{}}
+\newlabel{chap:Einfluss:N(R):F(Q)}{{13.2.5}{506}{Influence of $N(R)$ and $F(Q,R)$ on interparticle interferences\relax }{subsection.2153}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.2.5}{Influence of $N(R)$ and $F(Q,R)$ on interparticle interferences}}{506}{subsection.2153}}
+\newlabel{eq:Mittelwert:Einfluss}{{13.68}{506}{Influence of $N(R)$ and $F(Q,R)$ on interparticle interferences\relax }{equation.2154}{}}
+\citation{scatt151}
+\citation{book:Guinier:Fournet}
+\@writefile{lof}{\contentsline {figure}{\numberline {13.3}{\ignorespaces For identical and spherical symmetric scatterers the ratio $\delimiter "026A30C \overline  {F(Q)}\delimiter "026A30C ^2 / \overline  {{\left \delimiter "026A30C F(Q)\right \delimiter "026A30C }^2} \equiv 1$. Interparticle interferences depend then only on the relative positions of the scatterers. Size distribution and irregular shapes reduce these interference effects.}}{507}{figure.2157}}
+\newlabel{fig:formfactor:interferenzen}{{13.3}{507}{For identical and spherical symmetric scatterers the ratio $\vert \overline {F(Q)}\vert ^2 / \overline {\abs {F(Q)}^2} \equiv 1$. Interparticle interferences depend then only on the relative positions of the scatterers. Size distribution and irregular shapes reduce these interference effects}{figure.2157}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{13.2.6}{Scattering laws and structural parameter}}{507}{subsection.2158}}
+\citation{book:Guinier:Fournet}
+\citation{book:Feigin:Svergun}
+\citation{book:Guinier:Fournet}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.1}{Porod volume}}{508}{subsubsection.2159}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.2}{Radius of gyration and Guinier approximation}}{508}{subsubsection.2161}}
+\newlabel{eq:Guinier}{{13.72}{508}{Radius of gyration and Guinier approximation\relax }{equation.2164}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.3}{Correlation length}}{508}{subsubsection.2165}}
+\newlabel{eq:lc1}{{13.73}{508}{Correlation length\relax }{equation.2166}{}}
+\citation{book:Guinier:Fournet}
+\newlabel{eq:lc2}{{13.74}{509}{Correlation length\relax }{equation.2167}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.4}{Porod law and specific surfaces}}{509}{subsubsection.2168}}
+\newlabel{eq:gamma:Taylor}{{13.75}{509}{Porod law and specific surfaces\relax }{equation.2169}{}}
+\newlabel{eq:Porodlaw}{{13.76}{509}{Porod law and specific surfaces\relax }{equation.2170}{}}
+\newlabel{eq:speherePorodLaw}{{13.78}{509}{Porod law and specific surfaces\relax }{equation.2172}{}}
+\newlabel{eq:speherePorodLaw}{{13.80}{509}{Porod law and specific surfaces\relax }{equation.2174}{}}
+\newlabel{eq:spez:surface}{{13.81}{510}{Porod law and specific surfaces\relax }{equation.2175}{}}
+\@writefile{toc}{\contentsline {chapter}{\tocchapter {Chapter}{14}{Experimental Setup of a Small Angle Scattering Instrument}}{511}{chapter.2176}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{14.1}{SANS-Camera}}{511}{section.2177}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14.1}{\ignorespaces SANS-1 instrument at PSI, Switzerkand}}{511}{figure.2178}}
+\newlabel{SANS1@PSI}{{14.1}{511}{SANS-1 instrument at PSI, Switzerkand\relax }{figure.2178}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{14.2}{SAXS-Camera}}{511}{section.2179}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14.2}{\ignorespaces Small angle x-ray scattering instrument Jusifa at the synchrotron light source HASYLAB in Hamburg}}{512}{figure.2180}}
+\newlabel{Jusifa}{{14.2}{512}{Small angle x-ray scattering instrument Jusifa at the synchrotron light source HASYLAB in Hamburg\relax }{figure.2180}{}}
+\@writefile{toc}{\contentsline {chapter}{\tocchapter {Chapter}{15}{Data Reduction in SAS}}{513}{chapter.2181}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:SASdatacorrection}{{15}{513}{Data Reduction in SAS\relax }{chapter.2181}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{15.1}{Correction and Normalization of SANS-Raw data}}{513}{section.2182}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{15.1.1}{Contribution of the isolated sample}}{513}{subsection.2186}}
+\newlabel{dsdotheo}{{15.3}{514}{Contribution of the isolated sample\relax }{equation.2189}{}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{15.1.2}{Correction for sample holder and background noise}}{514}{subsection.2190}}
+\newlabel{dsdoexp}{{15.4}{514}{Correction for sample holder and background noise\relax }{equation.2191}{}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{15.2}{Correction and normalization of SAXS raw data}}{515}{section.2195}}
+\bibdata{sasfit}
+\bibcite{Agarwal2007}{1}
+\bibcite{Alexander1984}{2}
+\bibcite{Anderson1965}{3}
+\bibcite{Andersson2008}{4}
+\bibcite{scatt97}{5}
+\bibcite{Avdeev2013}{6}
+\bibcite{Ballone1986}{7}
+\bibcite{Barboy1974}{8}
+\bibcite{Baxter1968}{9}
+\bibcite{beaucage95}{10}
+\bibcite{beaucage96}{11}
+\bibcite{Benham1980}{12}
+\bibcite{Benoit53}{13}
+\bibcite{Berndt2006}{14}
+\bibcite{Berndt2005}{15}
+\bibcite{Berndt2006a}{16}
+\bibcite{Bevington2003}{17}
+\bibcite{Blaurock1982}{18}
+\@writefile{toc}{\contentsline {chapter}{\tocappendix {Appendix}{}{Bibliography}}{525}{appendix*.2206}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\bibcite{Bohren1983}{19}
+\bibcite{Bomont2003}{20}
+\bibcite{Bomont2008}{21}
+\bibcite{Bomont2004}{22}
+\bibcite{scatt142}{23}
+\bibcite{Boucher1983}{24}
+\bibcite{Bracewell1956}{25}
+\bibcite{Bracewell2003}{26}
+\bibcite{Burchard1970}{27}
+\bibcite{Burchard1996}{28}
+\bibcite{Burchard1974}{29}
+\bibcite{Caccamo1996}{30}
+\bibcite{Caille1972}{31}
+\bibcite{Charpentier2001}{32}
+\bibcite{Chihara1973}{33}
+\bibcite{Choudhury2002}{34}
+\bibcite{Chugh2012}{35}
+\bibcite{Crick1953}{36}
+\bibcite{Damaschun1969}{37}
+\bibcite{Damaschun1971}{38}
+\bibcite{DaoudCotton82}{39}
+\bibcite{David1986}{40}
+\bibcite{Kruif1989}{41}
+\bibcite{scatt186}{42}
+\bibcite{Debye1947}{43}
+\bibcite{DAB1957}{44}
+\bibcite{DebyeBueche1949}{45}
+\bibcite{Dhont1996}{46}
+\bibcite{dozier91}{47}
+\bibcite{Duh1995}{48}
+\bibcite{Dzubiella2001}{49}
+\bibcite{book:Feigin:Svergun}{50}
+\bibcite{Forster2010}{51}
+\bibcite{Forster2011}{52}
+\bibcite{FoersterHermsdorf2002}{53}
+\bibcite{Forster1999}{54}
+\bibcite{Forster2005}{55}
+\bibcite{Franklin1956}{56}
+\bibcite{Fratzl1994}{57}
+\bibcite{Freund1993}{58}
+\bibcite{FFTW97}{59}
+\bibcite{FFTW05}{60}
+\bibcite{Frisken2001}{61}
+\bibcite{Fruhwirth2004}{62}
+\bibcite{Fukuda2002}{63}
+\bibcite{Furukawa1984}{64}
+\bibcite{Gazzillo1999}{65}
+\bibcite{Giehm2010}{66}
+\bibcite{scatt75}{67}
+\bibcite{Greschner1973}{68}
+\bibcite{Guinier1963}{69}
+\bibcite{book:Guinier:Fournet}{70}
+\bibcite{Gursoy2014}{71}
+\bibcite{Hamilton1965}{72}
+\bibcite{Hammouda}{73}
+\bibcite{Hammouda1993}{74}
+\bibcite{Hammouda2010}{75}
+\bibcite{Hammouda2012}{76}
+\bibcite{Hammouda2016}{77}
+\bibcite{Hanley2003}{78}
+\bibcite{Hansen1982}{79}
+\bibcite{Hansen2013}{80}
+\bibcite{Hayter1984}{81}
+\bibcite{Hayter1981}{82}
+\bibcite{Henderson2000}{83}
+\bibcite{Hindmarsh2005}{84}
+\bibcite{hittmair}{85}
+\bibcite{Hjelm1995}{86}
+\bibcite{Hjelm2000}{87}
+\bibcite{Hjelm1992}{88}
+\bibcite{Homeier1995}{89}
+\bibcite{Hosemann1962}{90}
+\bibcite{Hunter2006}{91}
+\bibcite{Hurd1988}{92}
+\bibcite{Hus2013}{93}
+\bibcite{Ida2000}{94}
+\bibcite{Ishikawa1974}{95}
+\bibcite{Jones1924}{96}
+\bibcite{Jusufi2001}{97}
+\bibcite{Karahan2013a}{98}
+\bibcite{Karahan2013}{99}
+\bibcite{Kawaguchi2001}{100}
+\bibcite{Kaya:aj5008}{101}
+\bibcite{Kaya:aj5016}{102}
+\bibcite{Kelley2003}{103}
+\bibcite{Khan2013}{104}
+\bibcite{kholodenko93}{105}
+\bibcite{Klimes2002}{106}
+\bibcite{Kohlbrecher2017}{107}
+\bibcite{Kohlbrecher1997}{108}
+\bibcite{Koppel1972}{109}
+\bibcite{Kotlarchyk1983}{110}
+\bibcite{Kovalenko1999}{111}
+\bibcite{Krasnoselskij1955}{112}
+\bibcite{Kratky194935}{113}
+\bibcite{Lebedev2003}{114}
+\bibcite{Lebowitz1966}{115}
+\bibcite{Lee1995}{116}
+\bibcite{Lekkerkerker2011}{117}
+\bibcite{Likos1998}{118}
+\bibcite{Likos2001}{119}
+\bibcite{Likos2006}{120}
+\bibcite{Likos2011}{121}
+\bibcite{Lin1989}{122}
+\bibcite{Lin1990a}{123}
+\bibcite{Lin1990}{124}
+\bibcite{Liu2001}{125}
+\bibcite{Lomba1996}{126}
+\bibcite{Louis2000}{127}
+\bibcite{Lyatskaya2000}{128}
+\bibcite{Madden1980}{129}
+\bibcite{Mailer2015}{130}
+\bibcite{Mann1953}{131}
+\bibcite{Marquest1989}{132}
+\bibcite{Martynov1993}{133}
+\bibcite{Martynov1983}{134}
+\bibcite{Menon1991}{135}
+\bibcite{Menon1991a}{136}
+\bibcite{Michels2013}{137}
+\bibcite{Mie1908}{138}
+\bibcite{Mladek2005}{139}
+\bibcite{Moller1995}{140}
+\bibcite{scatt91}{141}
+\bibcite{MuellerDelsanti2000}{142}
+\bibcite{Naegele1996}{143}
+\bibcite{Naegele2004}{144}
+\bibcite{Noor2000}{145}
+\bibcite{Rfactor}{146}
+\bibcite{Olivero1977}{147}
+\bibcite{Ornstein1914}{148}
+\bibcite{Oversteegen2004}{149}
+\bibcite{Pabst2003}{150}
+\bibcite{Pabst2000}{151}
+\bibcite{Pedersen1990}{152}
+\bibcite{Pedersen96Macrom}{153}
+\bibcite{Pedersen2002}{154}
+\bibcite{PedersenGerstenberg96}{155}
+\bibcite{PedersenJApplCryst2000}{156}
+\bibcite{Pedersen1994}{157}
+\bibcite{Percus1958}{158}
+\bibcite{Petrache1998}{159}
+\bibcite{Phuengrattana2011}{160}
+\bibcite{Picard1890}{161}
+\bibcite{Porod1948}{162}
+\bibcite{Press2007}{163}
+\bibcite{Pringle1971}{164}
+\bibcite{Puigjaner1974}{165}
+\bibcite{Pusey1974}{166}
+\bibcite{scatt188}{167}
+\bibcite{Regnaut1989}{168}
+\bibcite{Regnaut1990}{169}
+\bibcite{Robertus1989}{170}
+\bibcite{Rogers1984}{171}
+\bibcite{Rosenfeld1979}{172}
+\bibcite{Roux1988}{173}
+\bibcite{Saad1993}{174}
+\bibcite{Saad1986}{175}
+\bibcite{Schmidt1970}{176}
+\bibcite{StreyKlineKaler1994}{177}
+\bibcite{Schwartz1975}{178}
+\bibcite{Schweins2004}{179}
+\bibcite{Sharma1977}{180}
+\bibcite{Sjoberg1974}{181}
+\bibcite{Smith1977}{182}
+\bibcite{Sorensen1992}{183}
+\bibcite{Sorensen1999}{184}
+\bibcite{Sottmann1997}{185}
+\bibcite{book:Squires}{186}
+\bibcite{Stieger2004}{187}
+\bibcite{Strey1991}{188}
+\bibcite{SvaneborgPedersen2002}{189}
+\bibcite{Teixeira2010}{190}
+\bibcite{TeubnerStrey87}{191}
+\bibcite{Toon1981}{192}
+\bibcite{Toth2015}{193}
+\bibcite{Trokhymchuk2005}{194}
+\bibcite{Trokhymchuk2006}{195}
+\bibcite{Ulander2001}{196}
+\bibcite{scatt151}{197}
+\bibcite{Hulst1957}{198}
+\bibcite{Vorst1992}{199}
+\bibcite{Verlet1980}{200}
+\bibcite{Verlet1981}{201}
+\bibcite{Viererblova2010}{202}
+\bibcite{Vompe1994}{203}
+\bibcite{scatt121}{204}
+\bibcite{Vrij1979}{205}
+\bibcite{Wagner2005}{206}
+\bibcite{Walker2011}{207}
+\bibcite{Walter1985}{208}
+\bibcite{Weeks1971}{209}
+\bibcite{Wertheim1963}{210}
+\bibcite{Wiedenmann2011}{211}
+\bibcite{Wijmans93}{212}
+\bibcite{Willner2000}{213}
+\bibcite{Wiscombe1979}{214}
+\bibcite{Wiscombe1980}{215}
+\bibcite{Yoshizaki1980}{216}
+\bibcite{Zerah1986}{217}
+\bibcite{scatt163}{218}
+\bibcite{Zhang1994}{219}
+\bibcite{zimm:1093}{220}
+\bibstyle{plain}
+\newlabel{tocindent-1}{0pt}
+\newlabel{tocindent0}{72.45758pt}
+\newlabel{tocindent1}{35.9024pt}
+\newlabel{tocindent2}{51.75pt}
+\newlabel{tocindent3}{62.40054pt}
