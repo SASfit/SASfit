@@ -169,4 +169,3 @@ scalar sasfit_integrate_ctm(scalar int_start,
 
 	return res;
 }
-

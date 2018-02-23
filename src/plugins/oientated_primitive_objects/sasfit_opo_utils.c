@@ -426,3 +426,52 @@ scalar opo_Foctahedral(opo_data *opod) {
 	           (8*Qy*sin(Qy) - 8*Qz*sin(Qz))/(Qy*Qy - Qz*Qz) 
 			 + (8*Qz*sin(Qz) - 8*Qx*sin(Qx))/(Qx*Qx - Qz*Qz));
 }
+
+scalar opo_Fprism3(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+}
+
+scalar opo_Fprism6(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+}
+
+scalar opo_Fcone(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+}
+
+scalar opo_Fcone6(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+}
+
+scalar opo_Fpyramid(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+}
+
+scalar opo_Ftetrahedron(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+}
+
+scalar opo_Fcubooctahedron(opo_data *opod) {
+    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+}

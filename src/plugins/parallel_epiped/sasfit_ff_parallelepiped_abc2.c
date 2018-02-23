@@ -3,7 +3,6 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
  
-#include "../../sasfit_common/cubature/cubature.h"
 #include <sasfit.h>
 
 #include <sasfit_common.h>
@@ -17,13 +16,6 @@ scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * param)
 	scalar sum;
     scalar cubxmin[3], cubxmax[3], fval[1], ferr[1];
     int intstrategy;
-	sasfit_param subParam;
-	sasfit_init_param( &subParam );
-	
-	subParam.p[0] = 1.0;
-	subParam.p[1] = SIGMA;
-	subParam.p[2] = 1.0;
-	subParam.p[3] = 1.0;
 	
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -47,7 +39,7 @@ scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * param)
 			cubxmax[0]=M_PI/2.0;
 			cubxmin[1]=0;
 			cubxmax[1]=M_PI/2.0;
-			find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], &subParam);
+			find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], param);
 			hcubature(1, &K_cubature,param,3, cubxmin, cubxmax, 
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2, 
 				fval, ferr);
@@ -59,7 +51,7 @@ scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * param)
 			cubxmax[0]=M_PI/2.0;
 			cubxmin[1]=0;
 			cubxmax[1]=M_PI/2.0;
-			find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], &subParam);
+			find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], param);
 			pcubature(1, &K_cubature,param,3, cubxmin, cubxmax, 
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2, 
 				fval, ferr);

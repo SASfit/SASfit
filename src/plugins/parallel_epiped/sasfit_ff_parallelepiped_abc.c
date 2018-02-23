@@ -3,7 +3,6 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
  
-#include "../../sasfit_common/cubature/cubature.h"
 #include <sasfit.h>
 
 #include <sasfit_common.h>

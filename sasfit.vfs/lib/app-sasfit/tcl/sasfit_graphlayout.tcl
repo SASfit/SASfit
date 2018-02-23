@@ -566,7 +566,7 @@ pack  $wl.lay_bottom.label $wl.lay_bottom.entry -side left
 
 frame $wl.lay_top
 grid $wl.lay_top -row 1 -column 0 
-label $wl.lay_top.label -text "Top:" -width 7 \
+label $wl.lay_top.label -text "top:" -width 7 \
       -highlightthickness 0 -anchor w
 entry $wl.lay_top.entry -textvariable tmpPar(margin,top) -width 8 \
       -highlightthickness 0

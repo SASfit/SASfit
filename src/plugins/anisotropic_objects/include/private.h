@@ -44,7 +44,7 @@
 #define EXVOL	param->p[2]
 
 #define CLB		param->p[MAXPAR-1]
-scalar find_LogNorm_int_range(scalar, scalar, scalar, scalar *, scalar *, sasfit_param *);
+
 scalar fRg2(scalar, scalar);
 scalar falpha2(scalar, scalar);
 scalar IDebye(scalar, scalar);

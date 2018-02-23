@@ -32,6 +32,15 @@ proc fp n1 {
 format %4g $n1
 }
 
+
+proc Erik {} {
+	global sasfit erik
+	if { [catch {source $sasfit(tcl)/Erik.tcl} result] } {
+		puts stderr "error while sourcing Erik.tcl: $result"
+	}
+}
+
+
 package require BLT
 
 # global settings for GUI elements
@@ -74,8 +83,6 @@ if { [catch {source $sasfit(tcl)/sasfit_NTprinter.tcl} result] } {
 if { [catch {source $sasfit(tcl)/sasfit_print.tcl} result] } {
 	puts stderr "error while sourcing sasfit_print.tcl: $result"
 }
-
-
 
 set sasfit(Message) "??"
 

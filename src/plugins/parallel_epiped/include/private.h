@@ -53,7 +53,5 @@ scalar sinc(scalar);
 scalar Kernel_P(const double *, void *);
 int K_cubature(unsigned , const double *, void *, unsigned , double *);
 
-scalar find_LogNorm_int_range(scalar, scalar, scalar, scalar *, scalar *, sasfit_param *);
-
 #endif // end of file
 

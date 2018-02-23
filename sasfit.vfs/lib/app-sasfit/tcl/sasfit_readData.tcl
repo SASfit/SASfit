@@ -1853,6 +1853,178 @@ foreach line $Data($BlockName) {
 return {5}
 } 
 
+proc getRunNo_SCA {DATASET Type} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	if {([string compare $Type Standard] == 0) || ([string compare $Type FlippeOn] == 0) || ([string compare $Type FlippeOff] == 0)} {
+		set whereTypeStart [lsearch $DATASET $Type]
+		if {$whereTypeStart < 0} {return "not used"}
+		set whereTypeEnd [lsearch -start $whereTypeStart $DATASET End]
+		set RunNoList [lrange $DATASET [expr $whereTypeStart+1] [expr $whereTypeEnd-1]]
+#		puts "*  Run    Ext-In   - SampleName"
+		set NoExtName {}
+		foreach run $RunNoList {
+			set where_eq [string first - $run]
+			if {$where_eq != -1} {
+				set leftside  [string range $run 0 [expr $where_eq - 1]]
+				set rightside [string range $run [expr $where_eq + 1]  \
+                              [expr [string length $run] - 1] ]
+				set leftside [string trim $leftside]
+				set rightside [string trim $rightside]
+				set NoExt [split [regexp -all -inline {\S+} $leftside]]
+				if {[llength $NoExt] == 2} {
+#					puts "[format "%8s" [lindex $NoExt 0]] [format "%5s" [lindex $NoExt 1]]     - $rightside"
+					lappend NoExtName [list [lindex $NoExt 0] [lindex $NoExt 1] "$rightside"]
+				}
+				
+			}
+		}
+		return $NoExtName
+	} else {
+		return "not used"
+	}
+}
+
+proc read_SCA {filename SCAData} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SCAData Data
+
+catch {unset Data}
+#if {![info exist Data]} {create_SCAData Data}
+if { !([file readable $filename] && [file isfile $filename])  } {
+   puts "cannot read $filename"
+   return 0
+}
+set BlockName WasteBasket
+set SubBlockName Waste
+set TypeBlockName Basket
+set SampleIndx 0
+set f [open $filename r]
+
+while {![eof $f]} {
+   gets $f line
+   if { [eof $f] } {
+      close $f
+      return 1
+   }
+   set linelength [string length $line]
+   if { $linelength > 0 } {
+      set ch1st [string index $line 0]
+         switch $ch1st {
+            \%      { 
+                     set tBlockname [string range $line 1 [expr $linelength-1]]
+                     set BNword [split $tBlockname]
+                     if { [string length [lindex $BNword 0] ] > 0 } {
+                        set BlockName [lindex $BNword 0]
+                     } else { set BlockName WasteBasket }
+					 if { [string compare $BlockName File] == 0 } {
+                        set SubBlockName Info
+                        set TypeBlockName File
+                     } elseif {[string compare $BlockName Default] == 0} { 
+						set SubBlockName Info
+						set TypeBlockName Default
+					 } else { 
+						set SubBlockName Waste
+						set TypeBlockName Basket
+					 }
+					}
+            \*      { lappend Data(WasteBasket) $line }
+			"$"      {
+					 set sBlockname [string range $line 1 [expr $linelength-1]]
+					 set BNword [split $sBlockname]
+					 puts "puts $BlockName"
+                     if { [string compare $BlockName Commands] == 0 } {
+                        set SubBlockName [lindex $BNword 0]
+                     } else { 
+						set SubBlockName Waste
+						set TypeBlockName Basket
+					 }
+					}
+            default { 
+					set where_eq [string first = $line]
+					if {$where_eq != -1} {
+						set leftside  [string range $line 0 [expr $where_eq - 1]]
+						set rightside [string range $line [expr $where_eq + 1]  \
+											[expr [string length $line] - 1] ]
+						set leftside [string trim $leftside]
+						set rightside [string trim $rightside]
+						if {([string compare $leftside DataType] == 0) &&  \
+							([string length $rightside] > 0) } {
+							if {[string compare $rightside Sample] == 0} {
+								incr SampleIndx
+								set SubBlockName $SampleIndx
+								set TypeBlockName ${rightside}
+							} else {						
+								set SubBlockName 0
+								set TypeBlockName ${rightside}
+							}
+						} else {
+							lappend Data($BlockName,$SubBlockName,$TypeBlockName)  $line 
+						}
+					} else {
+						lappend Data($BlockName,$SubBlockName,$TypeBlockName)  $line 
+					}
+					}
+        }
+   }
+}
+}
+
+proc SCAgetItem {SCAData BlockName ItemName args} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SCAData Data
+#
+# check if $BlockName is a valid array name of HMIData
+#
+switch $BlockName {
+	"File" 		{ return [HMIgetItem  Data "File,Info,File" $ItemName t]
+				}
+	"Default" 	{ return [HMIgetItem  Data "Default,Info,Default" $ItemName t]
+				}
+	"Commands"	{ switch $ItemName {
+					"Water"	{ 	
+					          if {![string compare "$BlockName,0,$ItemName" [array names Data "$BlockName,0,$ItemName"]]==0} {
+								return "not used"
+							  }
+							  if {[llength $args] == 0} {return $Data($BlockName,0,$ItemName)}
+							  if {[string compare [lindex $args 1] Standard] == 0} {return $Data($BlockName,0,$ItemName)}
+							  return [HMIgetItem  Data "$BlockName,0,$ItemName" [lindex $args 0] t]
+							}
+					"WaterBackground"	{ 	
+					          if {![string compare "$BlockName,0,$ItemName" [array names Data "$BlockName,0,$ItemName"]]==0} {
+								return "not used"
+							  }
+							  if {[llength $args] == 0} {return $Data($BlockName,0,$ItemName)}
+							  return [HMIgetItem  Data "$BlockName,0,$ItemName" [lindex $args 0] t]
+							}
+					"Cadmium"	{ 	
+					          if {![string compare "$BlockName,0,$ItemName" [array names Data "$BlockName,0,$ItemName"]]==0} {
+								return "not used"
+							  }
+							  if {[llength $args] == 0} {return $Data($BlockName,0,$ItemName)}
+							  return [HMIgetItem  Data "$BlockName,0,$ItemName" [lindex $args 0] t]
+							}
+					"SampleBackground"	{ 	
+					          if {![string compare "$BlockName,0,$ItemName" [array names Data "$BlockName,0,$ItemName"]]==0} {
+								return "not used"
+							  }
+							  if {[llength $args] == 0} {return $Data($BlockName,0,$ItemName)}
+							  return [HMIgetItem  Data "$BlockName,0,$ItemName" [lindex $args 0] t]
+							}
+					"Sample"	{ 	if {[llength $args] < 1} {return "more arguments are required"}
+					          if {![string compare "$BlockName,[lindex $args 0],$ItemName" [array names Data "$BlockName,[lindex $args 0],$ItemName"]]==0} {
+								return "not used"
+							  }
+							  if {[llength $args] == 1} {return $Data($BlockName,[lindex $args 0],$ItemName)}
+							  return [HMIgetItem  Data "$BlockName,[lindex $args 0],$ItemName" [lindex $args 1] t]
+							}
+					default { return UNKNOWN
+							}
+				  }
+				}
+	default		{ return UNKNOWN
+				}	
+}
+}
 
 #------------------------------------------------------------------------------
 # Reads data file "filename" in HMI-format and stores the contents in HMIData
@@ -2384,7 +2556,7 @@ if {[string equal $Data(in_out) "nm->nm" ] == 1} {
 }
 if {[string equal $Data(in_out) "ms->s" ] == 1} {
    set Data(unit) s
-   set Data(xscale) 1000.0
+   set Data(xscale) 1.0e-3
 }
 if {[string equal $Data(in_out) "s->s" ] == 1} {
    set Data(unit) s
@@ -2392,11 +2564,11 @@ if {[string equal $Data(in_out) "s->s" ] == 1} {
 }
 if {[string equal $Data(in_out) "s->ms" ] == 1} {
    set Data(unit) ms
-   set Data(xscale) 1e-3
+   set Data(xscale) 1e3
 }
 if {[string equal $Data(in_out) "ms->ms" ] == 1} {
    set Data(unit) ms
-   set Data(xscale) 1000.0
+   set Data(xscale) 1.0
 }
 
 set ClipboardData [selection get -selection CLIPBOARD]

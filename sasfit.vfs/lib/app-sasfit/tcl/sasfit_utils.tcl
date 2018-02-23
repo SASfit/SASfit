@@ -142,7 +142,20 @@ proc print_arr {arr} {
 	}
 	return 1
 }
-
+proc print_index {arr} {
+	upvar $arr a1
+#set error [catch {set searchID [array startsearch a1]}]
+#if { $error==1 } { return 0}
+#for {set i 1} {$i <= [array size a1]} {incr i} {
+#   set nel [array nextelement a1 $searchID]
+#   puts "$nel: $a1($nel)"
+#}
+#array donesearch a1 $searchID
+	foreach {name value} [array get a1] {
+		puts $name
+	}
+	return 1
+}
 #------------------------------------------------------------------------------
 # cp_arr copies contents of array arr1 into array arr2
 #

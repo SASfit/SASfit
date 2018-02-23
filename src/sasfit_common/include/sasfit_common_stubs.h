@@ -151,8 +151,8 @@ typedef struct
 	void (*sasfit_eps_set_comp) (scalar value); /* 74 */
 	void *reserved75;
 	void *reserved76;
-	void (*sasfit_set_int_strategy) (int value);
-	int (*sasfit_get_int_strategy) (void);
+	void (*sasfit_set_int_strategy) (int value); /* 77 */
+	int (*sasfit_get_int_strategy) (void); /* 78 */
 	scalar (*sasfit_sd_LogNorm) (scalar x, sasfit_param * param); /* 79 */
 	int (*sasfit_miev0) (real * xx, complex * crefin, logical * perfct, real * mimcut, logical * anyang, integer * numang, real * xmu, integer * nmom, integer * ipolzn, integer * momdim, logical * prnt, real * qext, real * qsca, real * gqsc, real * pmom, complex * sforw, complex * sback, complex * s1, complex * s2, complex * tforw, complex * tback, real * spike); /* 80 */
 	int (*sasfit_dmilay) (real * rcore, real * rshell, real * wvno, complex * rindsh, complex * rindco, real * mu, integer * numang, real * qext, real * qsca, real * qbs, real * gqsc, real * m1, real * m2, real * s21, real * d21, integer * maxang); /* 81 */
@@ -181,7 +181,7 @@ typedef struct
 	void *reserved102; /* 102 */
 	void *reserved103; /* 103 */
 	void *reserved104; /* 104 */
-	void *reserved105; /* 105 */
+	scalar (*find_LogNorm_int_range) (scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param); /* 105 */
 	void (*hcubature) (unsigned fdim, integrand f, void *fdata,
 	      unsigned dim, const double *xmin, const double *xmax, 
 	      size_t maxEval, double reqAbsError, double reqRelError, 
@@ -559,6 +559,10 @@ typedef struct
 #ifndef sasfit_wofz
 #define sasfit_wofz \
 	(sasfit_common_stubs_ptr->sasfit_wofz) /* 96 */
+#endif
+#ifndef find_LogNorm_int_range
+#define find_LogNorm_int_range \
+	(sasfit_common_stubs_ptr->find_LogNorm_int_range) /* 105 */
 #endif
 #ifndef hcubature
 #define hcubature \

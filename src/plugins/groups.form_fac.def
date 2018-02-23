@@ -55,7 +55,7 @@
  * \defgroup ff_plugins_spheres_shells Spheres & Shells
  * \ingroup ff_plugins
  *
- * This group contains form factors for sheres and shperical shells with many different radial profiles.
+ * This group contains form factors for spheres and spherical shells with many different radial profiles.
  *
  * \modname{ff_plugins_spheres_shells}
  */
@@ -64,9 +64,27 @@
  * \defgroup ff_plugins_fuzzy_sph Fuzzy Spheres
  * \ingroup ff_plugins_spheres_shells
  *
- * This group contains form factors for sheres and shperical shells with special radial profiles.
+ * This group contains form factors for spheres and spherical shells with special radial profiles.
  *
  * \modname{ff_plugins_fuzzy_sph}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_ellipsoidal_obj ellipsoidal obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for ellipsoidal objects.
+ *
+ * \modname{ff_plugins_ellipsoidal_obj}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_triax_ellshells triaxial elliptical shell
+ * \ingroup ff_plugins_ellipsoidal_obj
+ *
+ * This group contains form factors for triaxial elliptical shells.
+ *
+ * \modname{ff_plugins_triax_ellshells}
  */
  
  /** 

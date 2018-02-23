@@ -39,7 +39,7 @@
 /* ################ start ff_triax_ellip_shell ################ */
 /**
  * \defgroup ff_triax_ellip_shell triax ellip shell
- * \ingroup ff_user1
+ * \ingroup ff_plugins_triax_ellshells
  *
  * \brief \<some brief description of triax ellip shell function\>
  *
@@ -61,6 +61,9 @@
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
+ *      </tr><tr>
  *       <td>\b eta_c</td>
  *       <td>core scattering length density</td>
  *      </tr><tr>
@@ -75,21 +78,21 @@
 /**
  * \ingroup ff_triax_ellip_shell
  *
- * \sa sasfit_triax_ellip_shell.h, ff_user1
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell
  *
- * \sa sasfit_triax_ellip_shell.h, ff_user1
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_triax_ellip_shell
  *
- * \sa sasfit_triax_ellip_shell.h, ff_user1
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
  */
 sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_triax_ellip_shell ################ */
@@ -329,6 +332,374 @@ sasfit_triax_ellip_shell_DLLEXP scalar
 sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2_v(scalar q, sasfit_param * p, int dist);
 
 /* ################ stop ff_triax_ellip_shell_sq_baba_ahmed_2 ################ */
+
+/* ################ start ff_triax_ellip_shell_1 ################ */
+/**
+ * \defgroup ff_triax_ellip_shell_1 triax ellip shell 1
+ * \ingroup ff_plugins_triax_ellshells
+ *
+ * \brief \<some brief description of triax ellip shell 1 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>core scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>shell scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>solvent scattering length density</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_triax_ellip_shell_1
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_1
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_1
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_triax_ellip_shell_1 ################ */
+
+/* ################ start ff_triax_ellip_shell_1t ################ */
+/**
+ * \defgroup ff_triax_ellip_shell_1t triax ellip shell 1t
+ * \ingroup ff_plugins_triax_ellshells
+ *
+ * \brief \<some brief description of triax ellip shell 1t function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>core scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>shell scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>solvent scattering length density</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_triax_ellip_shell_1t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_1t(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_1t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_1t_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_1t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_1t_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_triax_ellip_shell_1t ################ */
+
+/* ################ start ff_triax_ellip_shell_2 ################ */
+/**
+ * \defgroup ff_triax_ellip_shell_2 triax ellip shell 2
+ * \ingroup ff_plugins_triax_ellshells
+ *
+ * \brief \<some brief description of triax ellip shell 2 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>core scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>shell scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>solvent scattering length density</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_triax_ellip_shell_2
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_2
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_2
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_triax_ellip_shell_2 ################ */
+
+/* ################ start ff_triax_ellip_shell_2t ################ */
+/**
+ * \defgroup ff_triax_ellip_shell_2t triax ellip shell 2t
+ * \ingroup ff_plugins_triax_ellshells
+ *
+ * \brief \<some brief description of triax ellip shell 2t function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>core scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>shell scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>solvent scattering length density</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_triax_ellip_shell_2t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_2t(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_2t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_2t_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_2t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_2t_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_triax_ellip_shell_2t ################ */
+
+/* ################ start ff_triax_ellip_shell_3 ################ */
+/**
+ * \defgroup ff_triax_ellip_shell_3 triax ellip shell 3
+ * \ingroup ff_plugins_triax_ellshells
+ *
+ * \brief \<some brief description of triax ellip shell 3 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>core scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>shell scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>solvent scattering length density</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_triax_ellip_shell_3
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_3
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_3
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_triax_ellip_shell_3 ################ */
+
+
+/* ################ start ff_triax_ellip_shell_3t ################ */
+/**
+ * \defgroup ff_triax_ellip_shell_3t triax ellip shell 3t
+ * \ingroup ff_plugins_triax_ellshells
+ *
+ * \brief \<some brief description of triax ellip shell 3t function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>core scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>shell scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>solvent scattering length density</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_triax_ellip_shell_3t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_3t(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_3t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_3t_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_triax_ellip_shell_3t
+ *
+ * \sa sasfit_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_triax_ellip_shell_3t_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_triax_ellip_shell_3t ################ */
+
 
 #endif // this file
 

@@ -115,6 +115,7 @@ sasfit_common_DLLEXP scalar sasfit_rod_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_sphere_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_gauss_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_g(scalar fp, scalar a);
+sasfit_common_DLLEXP scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param);
 sasfit_common_DLLEXP int hcubature(unsigned fdim, integrand f, void *fdata,
 	      unsigned dim, const double *xmin, const double *xmax, 
 	      size_t maxEval, double reqAbsError, double reqRelError, 

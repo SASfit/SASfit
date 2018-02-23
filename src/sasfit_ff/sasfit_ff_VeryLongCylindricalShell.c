@@ -54,19 +54,19 @@ scalar sasfit_ff_VeryLongCylindricalShell(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((R < 0), param, "R(%lg) < 0", R);
 	SASFIT_CHECK_COND1((DR < 0), param, "DR(%lg) < 0", DR);
 
-	if (q == 0.0) return pow((eta_core-eta_shell)*R*R*L*M_PI+(eta_shell-eta_solv)*(R+DR)*(R+DR)*L*M_PI, 2.0);
+	if (q == 0.0) return gsl_pow_2((eta_core-eta_shell)*R*R*L*M_PI+(eta_shell-eta_solv)*(R+DR)*(R+DR)*L*M_PI);
 	if (L == 0.0) return 0.0;
 	if (R+DR == 0.0) return 0.0;
 
-	Pp =(2.0*gsl_sf_Si(q*L)/(q*L)-pow(sin(q*L*0.5)/(q*L*0.5),2.0));
+	Pp =(2.0*gsl_sf_Si(q*L)/(q*L)-gsl_pow_2(sin(q*L*0.5)/(q*L*0.5)));
 
 	if (R==0) 
 	{
-		Pcs = pow(2*gsl_sf_bessel_J1(q*(R+DR))/(q*(R+DR))*(eta_shell-eta_solv)*(R+DR)*(R+DR)*L*M_PI, 2.0);
+		Pcs = gsl_pow_2(2*gsl_sf_bessel_J1(q*(R+DR))/(q*(R+DR))*(eta_shell-eta_solv)*(R+DR)*(R+DR)*L*M_PI);
 	} else 
 	{
-		Pcs = pow(2*gsl_sf_bessel_J1(q*R)     /(q*R)     *(eta_core-eta_shell)*R*R*L*M_PI + 
-			2*gsl_sf_bessel_J1(q*(R+DR))/(q*(R+DR))*(eta_shell-eta_solv)*(R+DR)*(R+DR)*L*M_PI, 2.0);
+		Pcs = gsl_pow_2(2*gsl_sf_bessel_J1(q*R)     /(q*R)     *(eta_core-eta_shell)*R*R*L*M_PI + 
+			2*gsl_sf_bessel_J1(q*(R+DR))/(q*(R+DR))*(eta_shell-eta_solv)*(R+DR)*(R+DR)*L*M_PI);
 	}
 
 	return Pp*Pcs;

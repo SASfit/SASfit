@@ -310,6 +310,24 @@ declare 95 generic {
 declare 96 generic {
 	int sasfit_wofz(double * xi, double * yi, double * u, double * v, long * flag__)
 }
+
+declare 105 generic {	
+	scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param)
+}
+declare 106 generic {	
+	void hcubature(unsigned fdim, integrand f, void *fdata,
+	      unsigned dim, const double *xmin, const double *xmax, 
+	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      error_norm norm,
+	      double *val, double *err)
+}
+declare 107 generic {
+	void pcubature (unsigned fdim, integrand f, void *fdata,
+	      unsigned dim, const double *xmin, const double *xmax, 
+	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      error_norm norm,
+	      double *val, double *err)
+}
 declare 108 generic {
 	void sasfit_intccini(int lenw, double *w)
 }
