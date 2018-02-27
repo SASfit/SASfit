@@ -77,6 +77,15 @@
  *
  * \modname{ff_plugins_ellipsoidal_obj}
  */
+   
+ /** 
+ * \defgroup ff_spheroid_obj ellipsoid of revolution
+ * \ingroup ff_plugins_ellipsoidal_obj
+ *
+ * This group contains form factors for spheroids or ellipsoids of revolution.
+ *
+ * \modname{ff_spheroid_obj}
+ */
  
  /** 
  * \defgroup ff_plugins_triax_ellshells triaxial elliptical shell
