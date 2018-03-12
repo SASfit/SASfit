@@ -33,6 +33,10 @@
 #define B	param->p[1]
 #define C	param->p[2]
 #define T	param->p[3]
+#define AA	param->p[0]
+#define BB	param->p[1]
+#define CC	param->p[2]
+#define TT	param->p[3]
 
 scalar sasfit_ff_triax_ellip_shell_1_core(sasfit_param * param)
 {
@@ -158,7 +162,7 @@ scalar sasfit_ff_triax_ellip_shell_1(scalar q, sasfit_param * param)
 	cparam.func = &sasfit_ff_triax_ellip_shell_1_core;
 	
 	intstrategy = sasfit_get_int_strategy();
-//	intstrategy=P_CUBATURE;
+	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -285,13 +289,15 @@ scalar sasfit_ff_triax_ellip_shell_1_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_triax_ellip_shell_1_v(scalar x, sasfit_param * param, int dist)
 {
-	scalar V,nu1,nu2,nu3;
+	scalar V,nu1,nu2,nu3,TT3,TT2;
 	SASFIT_ASSERT_PTR(param);
 	nu1=exp(0.5*SIGMA*SIGMA*1*1);
 	nu2=exp(0.5*SIGMA*SIGMA*2*2);
 	nu3=exp(0.5*SIGMA*SIGMA*3*3);
+	TT3= gsl_pow_3(TT);
+	TT2=gsl_pow_2(TT);
 	
-	V = (A*T*T+A*C*T+A*B*T+A*B*C)*nu1+T*T*T+C*T*T+B*T*T+B*C*T;
+	V = (A*TT2+A*C*T+A*B*T+A*B*C)*nu1+TT3+C*TT2+B*TT2+B*C*T;
 	V=V*4./3.*M_PI;
 	return V;
 	

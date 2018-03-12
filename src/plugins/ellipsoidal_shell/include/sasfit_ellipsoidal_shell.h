@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_ELLIPSOIDAL_SHELL_H
@@ -36,143 +36,23 @@
 // - brief description
 // - description of parameters in HTML table-style
 
-/* ################ start ff_ellipsoidal_shell_1 ################ */
-/** 
- * \defgroup ff_ellipsoidal_shell_1 ellipsoidal shell 1
- * \ingroup ff_spheroid_obj
- *
- * \brief \<some brief description of ellipsoidal shell 1 function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- * \note Default (Size) Distribution: \ref delta
- *
- * \par Required parameters:
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
- *      </tr><tr>
- *       <td>\b R_equitorial</td>
- *       <td>radii of minor axis</td>
- *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b t</td>
- *       <td>shell thickness</td>
- *      </tr><tr>
- *       <td>\b sigma</td>
- *       <td>width of LogNormal size distribution</td>
- *      </tr><tr>
- *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
- *      </tr><tr>
- *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
- *      </tr><tr>
- *       <td>\b eta_solv</td>
- *       <td>scattering length density of solvent</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup ff_ellipsoidal_shell_1
- *
- * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
- */
-sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_1(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_ellipsoidal_shell_1
- *
- * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
- */
-sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_1_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_ellipsoidal_shell_1
- *
- * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
- */
-sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_1_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_ellipsoidal_shell_1 ################ */
-
-/* ################ start ff_ellipsoidal_shell_1t ################ */
-/** 
- * \defgroup ff_ellipsoidal_shell_1t ellipsoidal shell 1t
- * \ingroup ff_spheroid_obj
- *
- * \brief \<some brief description of ellipsoidal shell 1t function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- * \note Default (Size) Distribution: \ref delta
- *
- * \par Required parameters:
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
- *      </tr><tr>
- *       <td>\b R_equitorial</td>
- *       <td>radii of minor axis</td>
- *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b t</td>
- *       <td>shell thickness</td>
- *      </tr><tr>
- *       <td>\b sigma</td>
- *       <td>width of LogNormal size distribution</td>
- *      </tr><tr>
- *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
- *      </tr><tr>
- *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
- *      </tr><tr>
- *       <td>\b eta_solv</td>
- *       <td>scattering length density of solvent</td>
- *      </tr></table>
- */
-
-/**
- * \ingroup ff_ellipsoidal_shell_1t
- *
- * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
- */
-sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_1t(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_ellipsoidal_shell_1t
- *
- * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
- */
-sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_1t_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup ff_ellipsoidal_shell_1t
- *
- * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
- */
-sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_1t_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_ellipsoidal_shell_1t ################ */
-
 /* ################ start ff_ellipsoidal_shell_0 ################ */
 /** 
- * \defgroup ff_ellipsoidal_shell_0 ellipsoidal shell 0
+ * \defgroup ff_ellipsoidal_shell_0 ellipsoidal shell
  * \ingroup ff_spheroid_obj
  *
- * \brief \<some brief description of ellipsoidal shell 0 function\>
+ * \brief \<some brief description of ellipsoidal shell function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
  * \note Default (Size) Distribution: \ref delta
  *
  * \par Required parameters:
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
  *      </tr><tr>
- *       <td>\b R_equitorial</td>
- *       <td>radii of minor axis</td>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
@@ -218,7 +98,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0_v(scalar q,
 
 /* ################ start ff_ellipsoidal_shell_0t ################ */
 /** 
- * \defgroup ff_ellipsoidal_shell_0t ellipsoidal shell 0t
+ * \defgroup ff_ellipsoidal_shell_0t ellipsoidal shell (t)
  * \ingroup ff_spheroid_obj
  *
  * \brief \<some brief description of ellipsoidal shell 0t function\>
@@ -228,11 +108,11 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0_v(scalar q,
  * \note Default (Size) Distribution: \ref delta
  *
  * \par Required parameters:
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
  *      </tr><tr>
- *       <td>\b R_equitorial</td>
- *       <td>radii of minor axis</td>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
@@ -276,23 +156,263 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0t_f(scalar q
 sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0t_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellipsoidal_shell_0t ################ */
 
-/* ################ start ff_ellipsoidal_shell_2 ################ */
+/* ################ start ff_ellipsoidal_shell_rp ################ */
 /** 
- * \defgroup ff_ellipsoidal_shell_2 ellipsoidal shell 2
+ * \defgroup ff_ellipsoidal_shell_rp ellipsoidal shell (Rp)
  * \ingroup ff_spheroid_obj
  *
- * \brief \<some brief description of ellipsoidal shell 2 function\>
+ * \brief \<some brief description of ellipsoidal shell (Rp) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
  * \note Default (Size) Distribution: \ref delta
  *
  * \par Required parameters:
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
  *      </tr><tr>
- *       <td>\b R_equitorial</td>
- *       <td>radii of minor axis</td>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNormal size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellipsoidal_shell_rp
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_rp
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_rp
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellipsoidal_shell_rp ################ */
+
+/* ################ start ff_ellipsoidal_shell_rp_t ################ */
+/** 
+ * \defgroup ff_ellipsoidal_shell_rp_t ellipsoidal shell (Rp t)
+ * \ingroup ff_spheroid_obj
+ *
+ * \brief \<some brief description of ellipsoidal shell (Rp t) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
+ *      </tr><tr>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNormal size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellipsoidal_shell_rp_t
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_t(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_rp_t
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_t_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_rp_t
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_t_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellipsoidal_shell_rp_t ################ */
+
+/* ################ start ff_ellipsoidal_shell_re ################ */
+/** 
+ * \defgroup ff_ellipsoidal_shell_re ellipsoidal shell (Re)
+ * \ingroup ff_spheroid_obj
+ *
+ * \brief \<some brief description of ellipsoidal shell (Re) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
+ *      </tr><tr>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNormal size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellipsoidal_shell_re
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_re
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_re
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellipsoidal_shell_re ################ */
+
+/* ################ start ff_ellipsoidal_shell_re_t ################ */
+/** 
+ * \defgroup ff_ellipsoidal_shell_re_t ellipsoidal shell (Re t)
+ * \ingroup ff_spheroid_obj
+ *
+ * \brief \<some brief description of ellipsoidal shell (Re t) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
+ *      </tr><tr>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNormal size distribution</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_shell</td>
+ *       <td>scattering length density of shell</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ellipsoidal_shell_re_t
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_t(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_re_t
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_t_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ellipsoidal_shell_re_t
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_t_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ellipsoidal_shell_re_t ################ */
+
+/* ################ start ff_ellipsoidal_shell_2 ################ */
+/** 
+ * \defgroup ff_ellipsoidal_shell_2 ellipsoidal shell (Re Rp)
+ * \ingroup ff_spheroid_obj
+ *
+ * \brief \<some brief description of ellipsoidal shell (Re Rp) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
+ *      </tr><tr>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
@@ -338,10 +458,10 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_2_v(scalar q,
 
 /* ################ start ff_ellipsoidal_shell_2t ################ */
 /** 
- * \defgroup ff_ellipsoidal_shell_2t ellipsoidal shell 2t
+ * \defgroup ff_ellipsoidal_shell_2t ellipsoidal shell (Re Rp t)
  * \ingroup ff_spheroid_obj
  *
- * \brief \<some brief description of ellipsoidal shell 2t function\>
+ * \brief \<some brief description of ellipsoidal shell (Re Rp t) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -349,11 +469,11 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_2_v(scalar q,
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
  *      </tr><tr>
- *       <td>\b R_equitorial</td>
- *       <td>radii of minor axis</td>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
@@ -409,11 +529,11 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_2t_v(scalar q
  * \note Default (Size) Distribution: \ref delta
  *
  * \par Required parameters:
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
+ *       <td>\b R_polar</td>
+ *       <td>length of polar semi axis</td>
  *      </tr><tr>
- *       <td>\b R_equitorial</td>
- *       <td>radii of minor axis</td>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
@@ -425,10 +545,10 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_2t_v(scalar q
  *       <td></td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of spheroid</td>
  *      </tr><tr>
- *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
@@ -469,26 +589,26 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_R_v(scalar q, sasfit_p
  * \note Default (Size) Distribution: \ref delta
  *
  * \par Required parameters:
- *       <td>\b R_principle</td>
- *       <td>radius of major axis</td>
- *      </tr><tr>
  *       <td>\b V</td>
  *       <td>volume of ellipsoid</td>
+ *      </tr><tr>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b t</td>
- *       <td>shell thickness</td>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
- *       <td>\b sigma</td>
- *       <td>width of LogNormal size distribution</td>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of spheroid</td>
  *      </tr><tr>
- *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
@@ -516,6 +636,66 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_V_f(scalar q, sasfit_p
  */
 sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_V_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_spheroid_V ################ */
+
+/* ################ start ff_spheroid_nu ################ */
+/** 
+ * \defgroup ff_spheroid_nu spheroid nu
+ * \ingroup ff_spheroid_obj
+ *
+ * \brief \<some brief description of spheroid nu function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *       <td>\b nu</td>
+ *       <td>nu assymetry factor,  nu*R_equatorial = length of polar semi axis</td>
+ *      </tr><tr>
+ *       <td>\b R_equatorial</td>
+ *       <td>length of equatorial semi axes</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of spheroid</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_spheroid_nu
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_nu(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_spheroid_nu
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_nu_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_spheroid_nu
+ *
+ * \sa sasfit_ellipsoidal_shell.h, ff_spheroid_obj
+ */
+sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_nu_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_spheroid_nu ################ */
 
 #endif // this file
 

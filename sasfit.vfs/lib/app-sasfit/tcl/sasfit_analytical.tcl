@@ -739,51 +739,7 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l8,label) "eta_sol ="
                           set actualPar(FF,l9,label) "x_sol_sh2 ="
                           set actualPar(FF,l10,label) "n ="
-                        }      
- "EllipsoidalCoreShell" { set actualPar(FF,l1,label) "a ="
-                          set actualPar(FF,l2,label) "b ="
-                          set actualPar(FF,l3,label) "t ="
-                          set actualPar(FF,l4,label) "eta_c ="
-                          set actualPar(FF,l5,label) "eta_sh ="
-                          set actualPar(FF,l6,label) "eta_sol ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }      
- "triaxEllShell1"       { set actualPar(FF,l1,label) "a ="
-                          set actualPar(FF,l2,label) "b ="
-                          set actualPar(FF,l3,label) "c ="
-                          set actualPar(FF,l4,label) "t ="
-                          set actualPar(FF,l5,label) "eta_c ="
-                          set actualPar(FF,l6,label) "eta_sh ="
-                          set actualPar(FF,l7,label) "eta_sol ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "Ellipsoid i"        { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "V ="
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) "eta ="
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "Ellipsoid ii"       { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "nu ="
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) "eta"
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
+                        }    
    "Cylinder"           { set actualPar(FF,l1,label) "R ="
                           set actualPar(FF,l2,label) "L ="
                           set actualPar(FF,l3,label) ""
@@ -3543,62 +3499,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) "x_sol_sh2 ="
 				  set actualAnalytPar(FF,l10,label) "n ="
 				} 
-	 "EllipsoidalCoreShell" { set actualAnalytPar(FF,l1,label) "a ="
-				  set actualAnalytPar(FF,l2,label) "b ="
-				  set actualAnalytPar(FF,l3,label) "t ="
-				  set actualAnalytPar(FF,l4,label) "eta_c ="
-				  set actualAnalytPar(FF,l5,label) "eta_sh ="
-				  set actualAnalytPar(FF,l6,label) "eta_sol"
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	 "triaxEllShell1"       { set actualAnalytPar(FF,l1,label) "a ="
-				  set actualAnalytPar(FF,l2,label) "b ="
-				  set actualAnalytPar(FF,l3,label) "c ="
-				  set actualAnalytPar(FF,l4,label) "t ="
-				  set actualAnalytPar(FF,l5,label) "eta_c ="
-				  set actualAnalytPar(FF,l6,label) "eta_sh ="
-				  set actualAnalytPar(FF,l7,label) "eta_sol ="
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Ellipsoid i"        { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "V ="
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) "eta ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Ellipsoid ii"       { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "nu ="
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) "eta ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "EllCylShell"         \
-				{ set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "epsilon ="
-				  set actualAnalytPar(FF,l3,label) "L ="
-				  set actualAnalytPar(FF,l4,label) "t ="
-				  set actualAnalytPar(FF,l5,label) "eta_core ="
-				  set actualAnalytPar(FF,l6,label) "eta_shell ="
-				  set actualAnalytPar(FF,l7,label) "eta_sol ="
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
 	   "Cylinder"           { set actualAnalytPar(FF,l1,label) "R ="
 				  set actualAnalytPar(FF,l2,label) "L ="
 				  set actualAnalytPar(FF,l3,label) ""
@@ -6577,82 +6477,7 @@ switch -exact $type {
                  9 {return "x_sol_sh2: amount of solvent in shell 2\n"}
                 10 {return "n: number of double shell spheres in the chain\n 1<=n<=5"}
                }
-           }
-           "EllipsoidalCoreShell" {
-               switch $num {
-                 0 {return "ellipsoidal core shell structure"}
-                 1 {return "a: principle semi-axis\n"}
-                 2 {return "b: equatorial semi-axes\n(rotational axis)"}
-                 3 {return "t: shell thickness\n"}
-                 4 {return "eta_c: core scattering length density\n"}
-                 5 {return "eta_sh: shell scattering length density\n"}
-                 6 {return "eta_solvent: solvent scattering length density\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-                }
-	   }   
-           "triaxEllShell1" {
-               switch $num {
-                 0 {return "triaxial ellipsoidal core shell structure"}
-                 1 {return "a: semi-axis\n"}
-                 2 {return "b: semi-axis\n"}
-                 3 {return "c: semi-axis\n"}
-                 4 {return "t: shell thickness\n"}
-                 5 {return "eta_c: core scattering length density\n"}
-                 6 {return "eta_sh: shell scattering length density\n"}
-                 7 {return "eta_solvent: solvent scattering length density\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-                }
-	   }
-           "Ellipsoid i" {
-               switch $num {
-                 0 {return "F^2(Q,R,V,eta) = 1/2/Pi*V^2*eta^2*Int(sin(Theta)*\nK(Q,1/4*R*(9*V^2/Pi^2/R^6*cos(Theta)^2+16*sin(Theta)^2)^(1/2),eta)^2,Theta=0..Pi)"}
-                 1 {return "R: equatorial semi-axes\n"}
-                 2 {return "V: Volume\n"}
-                 3 {return "\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-                }
-	   }   
-            "Ellipsoid ii" {
-               switch $num {
-                 0 {return "F^2(Q,R,nu,eta) = 1/2/Pi*V^2*eta^2*Int(sin(Theta)*\nK(Q,1/4*R*(9*V^2/Pi^2/R^6*cos(Theta)^2+16*sin(Theta)^2)^(1/2),eta)^2,Theta=0..Pi)"}
-                 1 {return "R: equatorial semi-axes\n"}
-                 2 {return "nu: nu*R principle semi-axis\n"}
-                 3 {return "\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-                }
-	   }  
-           "EllCylShell" {
-               switch $num {
-                 0 {return "form factor of a cylinder with an elliptical cross-section\n"}
-                 1 {return "R: radius, R is length of first semiaxis\n"}
-                 2 {return "epsilon: eccentricity, epsilon*R is length of second semiaxes\n"}
-                 3 {return "L: cylinder length\n"}
-                 4 {return "t: shell thickness\n"}
-                 5 {return "eta_core: scattering length density of cylinder core\n"}
-                 6 {return "eta_shell: scattering length density of cylinder shell\n"}
-                 7 {return "eta_sol: scattering length density of solvent\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-	     }
-	   }      
+           } 
            "Cylinder" {
                switch $num {
                  0 {return "F^2(Q,R,L,eta) = 4 int(J_1^2(QR sqrt(1-x^2)/(QR sqrt(1-x^2))^2 sinc^2(QLx/2,x=0..1)\n"}
@@ -9678,12 +9503,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 		      {MLVesicleFrielinghaus Delta} \
 		       BiLayeredVesicle \
 		       SphereShell_compr }} \ 
-{ellipsoid "ellipsoidal obj." { \
-		       {{Ellipsoid i}} \
-		       {{Ellipsoid ii}} \
-			 EllipsoidalCoreShell \
-			{triaxEllShell1 Delta} \
-		      }} \ 
 {polymers_micelles "polymers & micelles" {{gauss "polymer chains" { \
 							   {Gauss Delta} \
 							   {Gauss2 Delta} \

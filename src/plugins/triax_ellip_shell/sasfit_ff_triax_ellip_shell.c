@@ -34,7 +34,10 @@
 #define B	param->p[1]
 #define C	param->p[2]
 #define T	param->p[3]*NU
-
+#define AA	param->p[0]
+#define BB	param->p[1]
+#define CC	param->p[2]
+#define TT	param->p[3]
 
 scalar sasfit_ff_triax_ellip_shell_core(sasfit_param * param)
 {
@@ -286,8 +289,20 @@ scalar sasfit_ff_triax_ellip_shell_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_triax_ellip_shell_v(scalar x, sasfit_param * param, int dist)
 {
-	scalar V;
+	scalar V,nu1,nu2,nu3,TT3,TT2;
 	SASFIT_ASSERT_PTR(param);
+	nu1=exp(0.5*SIGMA*SIGMA*1*1);
+	nu2=exp(0.5*SIGMA*SIGMA*2*2);
+	nu3=exp(0.5*SIGMA*SIGMA*3*3);
+	TT3= gsl_pow_3(TT);
+	TT2=gsl_pow_2(TT);
+	
+	V =  TT3*nu3
+		+TT2*(CC+BB+AA)*nu2
+		+TT*(BB*CC+AA*CC+AA*BB)*nu1
+		+AA*BB*CC;
+	V=V*4./3.*M_PI;
+	return V;
 
 	switch ( dist )
 	{

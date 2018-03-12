@@ -34,6 +34,10 @@
 #define B	param->p[1]
 #define C	param->p[2]
 #define T	param->p[3]*NU
+#define AA	param->p[0]
+#define BB	param->p[1]
+#define CC	param->p[2]
+#define TT	param->p[3]
 
 
 scalar sasfit_ff_triax_ellip_shell_1t_core(sasfit_param * param)

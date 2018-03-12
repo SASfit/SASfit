@@ -4812,4 +4812,29 @@ which fits best the experimental molecular weight distribution curves of branche
   timestamp = {2017-12-21},
 }
 
+@Article{Kuhn1934,
+  author    = {Kuhn, Werner},
+  title     = {{\"U}ber die Gestalt fadenf{\"o}rmiger Molek{\"u}le in L{\"o}sungen},
+  journal   = {Kolloid-Zeitschrift},
+  year      = {1934},
+  volume    = {68},
+  number    = {1},
+  month     = {Feb},
+  pages     = {2--15},
+  issn      = {1435-1536},
+  doi       = {10.1007/BF01451681},
+  url       = {https://doi.org/10.1007/BF01451681},
+  abstract  = {Es werden statistische Betrachtungen angestellt betreffend die Form, welche kettenf{\"o}rmig gebaute Molek{\"u}le, welche in einer L{\"o}sung (oder im Gasraum) suspendiert sind, infolge der Valenzwinkelung und der freien Drehbarkeit annehmen k{\"o}nnen.},
+  day       = {01},
+  timestamp = {2017-12-22},
+}
+
+@WWW{Johnson,
+  author    = {Steven G. Johnson},
+  title     = {multi-dimensional adaptive integration (cubature) in C, https://github.com/stevengj/cubature},
+  year      = {2017},
+  url       = {https://github.com/stevengj/cubature},
+  timestamp = {2018-03-05},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

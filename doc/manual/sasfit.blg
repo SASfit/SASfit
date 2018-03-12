@@ -3,9 +3,11 @@ The style file: plain.bst
 Database file #1: sasfit.bib
 Warning--entry type for "Hammouda" isn't style-file defined
 --line 1173 of file sasfit.bib
+Warning--entry type for "Johnson" isn't style-file defined
+--line 4832 of file sasfit.bib
 Warning--can't use both author and editor fields in Henderson2000
 Warning--can't use both author and editor fields in Likos2011
 Warning--can't use both author and editor fields in Naegele2004
 Warning--can't use both author and editor fields in Pedersen2002
 Warning--can't use both author and editor fields in Wagner2005
-(There were 6 warnings)
+(There were 7 warnings)

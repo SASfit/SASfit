@@ -567,6 +567,11 @@ Shiro Ishikawa.
 \newblock Fixed points by a new iteration method.
 \newblock {\em Proc. Amer. Math. Soc.}, 44:147--150, 1974.
 
+\bibitem{Johnson}
+Steven~G. Johnson.
+\newblock multi-dimensional adaptive integration (cubature) in {C},
+  https://github.com/stevengj/cubature, 2017.
+
 \bibitem{Jones1924}
 J.~E. Jones.
 \newblock On the determination of molecular fields. ii. from the equation of
@@ -1056,11 +1061,6 @@ S.~Schwartz, J.E. Cain, E.A. Dratz, and J.K. Blasie.
 \newblock An analysis of lamellar x-ray diffraction from disordered membrane
   multilayers with application to data from retinal rod.
 \newblock {\em Biophysical Journal}, 15:1201 -- 1233, 1975.
-
-\bibitem{Schweins2004}
-Ralf Schweins and Klaus Huber.
-\newblock Particle scattering factor of pearl necklace chains.
-\newblock {\em Macromolecular Symposia}, 211(1):25--42, apr 2004.
 
 \bibitem{Sharma1977}
 R.~V. Sharma and K.~C. Sharma.

@@ -1,19 +1,19 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define R_MAJOR	param->p[0]
-#define R_MINOR	param->p[1]
+#define R_PRINCIPLE	param->p[0]
+#define R_EQUATORIAL	param->p[1]
 #define T	param->p[3]
 
 scalar sasfit_ff_ellip_shell_0_core(sasfit_param * param) {
-	A = R_MAJOR;
-	B = R_MINOR;
+	A = R_PRINCIPLE;
+	B = R_EQUATORIAL;
 	TNU = T;
 	return LNDISTR*gsl_sf_pow_int(F_EllSh(param),lround(P));
 }
@@ -69,8 +69,8 @@ scalar sasfit_ff_ellipsoidal_shell_0(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 	
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((R_MAJOR < 0.0), param, "R_MAJOR(%lg) < 0",R_MAJOR);
-	SASFIT_CHECK_COND1((R_MINOR < 0.0), param, "R_MINOR(%lg) < 0",R_MINOR);
+	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
+	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_EQUATORIAL(%lg) < 0",R_EQUATORIAL);
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T);
 	SASFIT_CHECK_COND1((SIGMA < 0.0), param, "SIGMA(%lg) < 0",SIGMA);
 
@@ -151,8 +151,8 @@ scalar sasfit_ff_ellipsoidal_shell_0_f(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 	
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((R_MAJOR < 0.0), param, "R_MAJOR(%lg) < 0",R_MAJOR);
-	SASFIT_CHECK_COND1((R_MINOR < 0.0), param, "R_MINOR(%lg) < 0",R_MINOR);
+	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
+	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_EQUATORIAL(%lg) < 0",R_EQUATORIAL);
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T);
 	SASFIT_CHECK_COND1((SIGMA < 0.0), param, "SIGMA(%lg) < 0",SIGMA);
 
@@ -221,9 +221,6 @@ scalar sasfit_ff_ellipsoidal_shell_0_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_ellipsoidal_shell_0_v(scalar q, sasfit_param * param, int dist)
 {
-	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-
-	// insert your code here
-	return 0.0;
+	return 4./3.*M_PI*R_PRINCIPLE*gsl_pow_2(R_EQUATORIAL);
 }
 

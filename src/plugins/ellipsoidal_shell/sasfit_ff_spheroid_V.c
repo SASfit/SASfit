@@ -1,19 +1,19 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define R_PRINCIPLE		param->p[0]
-#define V	param->p[1]
+#define V	param->p[0]
+#define R_EQUATORIAL		param->p[1]
 #define T	param->p[3]
 
 scalar sasfit_ff_spheroid_V_core(sasfit_param * param) {
-	A = R_PRINCIPLE;
-	B = sqrt(V/A*3./(4.0*M_PI));
+	A = R_EQUATORIAL;
+	B = V/(A*A)*3./(4.0*M_PI);
 	TNU = 0;
 	return LNDISTR*gsl_sf_pow_int(F_EllSh(param),lround(P));
 }
@@ -69,7 +69,7 @@ scalar sasfit_ff_spheroid_V(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 	
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
+	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_EQUATORIAL(%lg) < 0",R_EQUATORIAL);
 	SASFIT_CHECK_COND1((V < 0.0), param, "V(%lg) < 0",V);
 
 	Q = q;		// Q
@@ -150,7 +150,7 @@ scalar sasfit_ff_spheroid_V_f(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 	
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
+	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_EQUATORIAL(%lg) < 0",R_EQUATORIAL);
 	SASFIT_CHECK_COND1((V < 0.0), param, "V(%lg) < 0",V);
 
 	Q = q;		// Q

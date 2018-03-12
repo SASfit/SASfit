@@ -1,19 +1,22 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define R_MAJOR	param->p[0]
-#define R_MINOR	param->p[1]
+#define R_PRINCIPLE	param->p[0]
+#define R_EQUATORIAL	param->p[1]
 #define T	param->p[3]*NU
+#define RP param->p[0]
+#define RE param->p[1]
+#define TT param->p[3]
 
 scalar sasfit_ff_ellip_shell_0t_core(sasfit_param * param) {
-	A = R_MAJOR;
-	B = R_MINOR;
+	A = R_PRINCIPLE;
+	B = R_EQUATORIAL;
 	TNU = T;
 	return LNDISTR*gsl_sf_pow_int(F_EllSh(param),lround(P));
 }
@@ -69,8 +72,8 @@ scalar sasfit_ff_ellipsoidal_shell_0t(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 	
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((R_MAJOR < 0.0), param, "R_MAJOR(%lg) < 0",R_MAJOR);
-	SASFIT_CHECK_COND1((R_MINOR < 0.0), param, "R_MINOR(%lg) < 0",R_MINOR);
+	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
+	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_EQUATORIAL(%lg) < 0",R_EQUATORIAL);
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T);
 	SASFIT_CHECK_COND1((SIGMA < 0.0), param, "SIGMA(%lg) < 0",SIGMA);
 
@@ -150,8 +153,8 @@ scalar sasfit_ff_ellipsoidal_shell_0t_f(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 	
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((R_MAJOR < 0.0), param, "R_MAJOR(%lg) < 0",R_MAJOR);
-	SASFIT_CHECK_COND1((R_MINOR < 0.0), param, "R_MINOR(%lg) < 0",R_MINOR);
+	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
+	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_EQUATORIAL(%lg) < 0",R_EQUATORIAL);
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T);
 	SASFIT_CHECK_COND1((SIGMA < 0.0), param, "SIGMA(%lg) < 0",SIGMA);
 
@@ -219,9 +222,15 @@ scalar sasfit_ff_ellipsoidal_shell_0t_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_ellipsoidal_shell_0t_v(scalar q, sasfit_param * param, int dist)
 {
-	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-
+	scalar V,nu1,nu2,nu3,T3,T2;
+	SASFIT_ASSERT_PTR(param);
+	nu1=exp(0.5*SIGMA*SIGMA*1*1);
+	nu2=exp(0.5*SIGMA*SIGMA*2*2);
+	nu3=exp(0.5*SIGMA*SIGMA*3*3);
+	T3 = gsl_pow_3(TT);
+	T2 = gsl_pow_2(TT);
+	V = T3*nu3+(RP+2*RE)*T2*nu2+(2*RE*RP+RE*RE)*TT*nu1+RE*RE*RP;
 	// insert your code here
-	return 0.0;
+	return 4/3.*M_PI*V;
 }
 

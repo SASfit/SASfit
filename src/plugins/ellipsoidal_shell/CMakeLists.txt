@@ -12,10 +12,13 @@ set(LIBS_EXT
 set(SOURCE_${PRJ_NAME}
 	sasfit_ff_spheroid_R.c
 	sasfit_ff_spheroid_V.c
+	sasfit_ff_spheroid_nu.c
 	sasfit_ff_ellipsoidal_shell_0.c
 	sasfit_ff_ellipsoidal_shell_0t.c
-	sasfit_ff_ellipsoidal_shell_1.c
-	sasfit_ff_ellipsoidal_shell_1t.c
+	sasfit_ff_ellipsoidal_shell_re.c
+	sasfit_ff_ellipsoidal_shell_re_t.c
+	sasfit_ff_ellipsoidal_shell_rp.c
+	sasfit_ff_ellipsoidal_shell_rp_t.c
 	sasfit_ff_ellipsoidal_shell_2.c
 	sasfit_ff_ellipsoidal_shell_2t.c
 	sasfit_ff_ellipsoidal_shell_utils.c

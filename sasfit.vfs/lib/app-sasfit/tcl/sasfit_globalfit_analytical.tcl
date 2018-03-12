@@ -1044,50 +1044,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) "x_sol_sh2 ="
 				  set actualPar(FF,l10,label) "n ="
 				}    
-	 "EllipsoidalCoreShell" { set actualPar(FF,l1,label) "a="
-				  set actualPar(FF,l2,label) "b ="
-				  set actualPar(FF,l3,label) "t ="
-				  set actualPar(FF,l4,label) "eta_c ="
-				  set actualPar(FF,l5,label) "eta_sh ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}  
-	 "triaxEllShell1"       { set actualPar(FF,l1,label) "a ="
-				  set actualPar(FF,l2,label) "b ="
-				  set actualPar(FF,l3,label) "c ="
-				  set actualPar(FF,l4,label) "t ="
-				  set actualPar(FF,l5,label) "eta_c ="
-				  set actualPar(FF,l6,label) "eta_sh ="
-				  set actualPar(FF,l7,label) "eta_sol ="
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Ellipsoid i"        { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "V ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "eta ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Ellipsoid ii"       { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "nu ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "eta =" 
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
 	   "Cylinder"           { set actualPar(FF,l1,label) "R ="
 				  set actualPar(FF,l2,label) "L ="
 				  set actualPar(FF,l3,label) ""
@@ -3550,12 +3506,6 @@ proc analyticalGlobalSDCmd {simorfit
 				      {MLVesicleFrielinghaus Delta} \
 				       BiLayeredVesicle \
 				       SphereShell_compr}} \ 
-	{ellipsoid "ellipsoidal obj." { \
-				       {{Ellipsoid i}} \
-				       {{Ellipsoid ii}} \
-					 EllipsoidalCoreShell \
-					{triaxEllShell1 Delta} \
-				      }} \ 
 	{polymers_micelles "polymers & micelles" {{gauss "polymer chains" { \
 									   {Gauss Delta} \
 									   {Gauss2 Delta} \
