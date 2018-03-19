@@ -113,8 +113,8 @@ set sasfit(export,filename) ""
 set sasfit(Nth,file,Dlambda) ""
 set sasfit(Nth,file,DI) ""
 set sasfit(datatypes) { { Ascii  ".*"      }  { BerSANS "D???????.???" }  { SESANS  "*.ses"}  { ALV5000  "*.ASC"}  { All    "*"       } }
-set sasfit(SQ,root_menu) ".analytical.fitpar.sq.lay.wrl.whichsq.menu"
 set sasfit(FF,root_menu) ".analytical.fitpar.ff.lay.wrl.whichff.menu"
+set sasfit(SQ,root_menu) ".analytical.fitpar.sq.lay.wrl.whichsq.menu"
 set sasfit(Nth,hide) ""
 set sasfit(print,ipady1) "0"
 set sasfit(print,file) "sasfit.ps"
@@ -311,68 +311,69 @@ set addsasfit(file,lastskip) ""
 set addsasfit(file,r1) ""
 set addsasfit(Nth,file,l1) ""
 set ::ask4dataset_var(simorfit) "simulate"
-set ::ask4dataset_var(datasetlabel) {1 2 3 4 5 6}
 set ::ask4dataset_var(go_on) "1"
-set ::ask4dataset_var(N_datasets) "6"
-set ::ask4dataset_var(dataset) "6"
-set ::GlobalAnalytPar(R_lc) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::ask4dataset_var(datasetlabel) {1 2 3 4 5 6 7 8}
+set ::ask4dataset_var(N_datasets) "8"
+set ::ask4dataset_var(dataset) "8"
+set ::GlobalAnalytPar(R_lc) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::GlobalAnalytPar(P1) "20.0"
-set ::GlobalAnalytPar(wR) "3.29166e+010"
+set ::GlobalAnalytPar(wR) "3.17525e+010"
 set ::GlobalAnalytPar(P2) "50.0"
-set ::GlobalAnalytPar(SQ,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::GlobalAnalytPar(FF,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::GlobalAnalytPar(SQ,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::GlobalAnalytPar(FF,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::GlobalAnalytPar(P3) "4.0"
 set ::GlobalAnalytPar(sumfp) "0.0"
 set ::GlobalAnalytPar(P4) "0.2"
 set ::GlobalAnalytPar(<sumR^5>) "0.0"
 set ::GlobalAnalytPar(resolution) "no"
-set ::GlobalAnalytPar(SD,param_count) "0"
-set ::GlobalAnalytPar(SD,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::GlobalAnalytPar(SD,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
+set ::GlobalAnalytPar(SD,param_count) {10 10 10 10 10 10 10 10}
+set ::GlobalAnalytPar(SD,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::GlobalAnalytPar(SD,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
 set ::GlobalAnalytPar(P5) "1.0"
-set ::GlobalAnalytPar(<R^3>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(<R^3>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::GlobalAnalytPar(P6) "0.5"
-set ::GlobalAnalytPar(fp) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(R_li) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(fp) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(R_li) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::GlobalAnalytPar(alpha) ""
-set ::GlobalAnalytPar(calcSDFF) {yes yes yes yes yes yes}
-set ::GlobalAnalytPar(SD,typestr) {Delta Delta Delta Delta Delta Delta}
+set ::GlobalAnalytPar(calcSDFF) {yes yes yes yes yes yes yes yes}
+set ::GlobalAnalytPar(SD,typestr) {Delta Delta Delta Delta Delta Delta Delta Delta}
 set ::GlobalAnalytPar(P7) "0.0"
 set ::GlobalAnalytPar(sumR_RG) "0.0"
-set ::GlobalAnalytPar(SD,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::GlobalAnalytPar(SD,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::GlobalAnalytPar(par_w) ".obW.tab.analytpar"
 set ::GlobalAnalytPar(mom_descr) {moments of_analytical_size distrib.}
 set ::GlobalAnalytPar(sumR_Ac) "0.0"
 set ::GlobalAnalytPar(covar) ""
-set ::GlobalAnalytPar(SD,a) {{1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::GlobalAnalytPar(SD,a) {{1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::GlobalAnalytPar(sumR_lc) "0.0"
 set ::GlobalAnalytPar(<sumR^6>) "0.0"
-set ::GlobalAnalytPar(<R^4>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(SQ,how) {0 0 0 0 0 0}
+set ::GlobalAnalytPar(<R^4>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(SQ,how) {0 0 0 0 0 0 0 0}
 set ::GlobalAnalytPar(mfit) "0"
 set ::GlobalAnalytPar(Q) "0"
 set ::GlobalAnalytPar(error) "0"
-set ::GlobalAnalytPar(R) "1.62226e+010"
+set ::GlobalAnalytPar(R) "1.56815e+010"
 set ::GlobalAnalytPar(sumR_li) "0.0"
-set ::GlobalAnalytPar(SQ,typestr) {None None None None None None}
-set ::GlobalAnalytPar(FF,typestr) {38 39 40 41 36 37}
-set ::GlobalAnalytPar(reducedchisq) "1.0835e+021"
+set ::GlobalAnalytPar(SQ,typestr) {None None None None None None None None}
+set ::GlobalAnalytPar(FF,typestr) {37 38 41 42 39 40 43 44}
+set ::GlobalAnalytPar(reducedchisq) "1.00822e+021"
 set ::GlobalAnalytPar(<sumR^7>) "0.0"
-set ::GlobalAnalytPar(FF,distr) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::GlobalAnalytPar(FF,distr) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::GlobalAnalytPar(<sumR^0>) "0.0"
-set ::GlobalAnalytPar(<R^5>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(SQ,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
-set ::GlobalAnalytPar(FF,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+set ::GlobalAnalytPar(<R^5>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(SQ,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+set ::GlobalAnalytPar(FF,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+set ::GlobalAnalytPar(ndata) "4008"
 set ::GlobalAnalytPar(par_text_export) {description;value;error;factor;global_param;description;value;error;factor;global_param;description;value;error;factor;global_param
 scattering contribution;1;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;1;;;;label;1;;;;;;;;
-Delta;;;;;ellipsoidal shell 1;;;;;None;;;;
-N;1.0;;;;R_principle;30.0;;;P1;;;;;
-;;;;;R_equitorial;10.0;;;P2;;;;;
+Delta;;;;;ellipsoidal shell;;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5.0;;;P3;;;;;
-;;;;;sigma;0.2;;;P4;;;;;
+;;;;;t;4.0;;;P3;;;;;
+;;;;;dummy;0.0;;;;;;;;
 ;;;;;eta_core;1.0;;;P5;;;;;
 ;;;;;eta_shell;0.5;;;P6;;;;;
 ;;;;;eta_solv;0.0;;;P7;;;;;
@@ -380,12 +381,12 @@ N;1.0;;;;R_principle;30.0;;;P1;;;;;
 scattering contribution;2;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;2;;;;label;;;;;;;;;
-Delta;;;;;ellipsoidal shell 1t;;;;;None;;;;
-N;1.0;;;;R_principle;30.0;;;P1;;;;;
-;;;;;R_equitorial;10.0;;;P2;;;;;
+Delta;;;;;ellipsoidal shell (t);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5.0;;;P3;;;;;
-;;;;;sigma;0.2;;;P4;;;;;
+;;;;;t;4.0;;;P3;;;;;
+;;;;;sigma;0.0;;;;;;;;
 ;;;;;eta_core;1.0;;;P5;;;;;
 ;;;;;eta_shell;0.5;;;P6;;;;;
 ;;;;;eta_solv;0.0;;;P7;;;;;
@@ -393,11 +394,11 @@ N;1.0;;;;R_principle;30.0;;;P1;;;;;
 scattering contribution;3;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;3;;;;label;;;;;;;;;
-Delta;;;;;ellipsoidal shell 2;;;;;None;;;;
-N;1.0;;;;R_principle;30.0;;;P1;;;;;
-;;;;;R_equitorial;10.0;;;P2;;;;;
+Delta;;;;;ellipsoidal shell (Rp);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5.0;;;P3;;;;;
+;;;;;t;4.0;;;P3;;;;;
 ;;;;;sigma;0.2;;;P4;;;;;
 ;;;;;eta_core;1.0;;;P5;;;;;
 ;;;;;eta_shell;0.5;;;P6;;;;;
@@ -406,11 +407,11 @@ N;1.0;;;;R_principle;30.0;;;P1;;;;;
 scattering contribution;4;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;4;;;;label;;;;;;;;;
-Delta;;;;;ellipsoidal shell 2t;;;;;None;;;;
-N;1.0;;;;R_principle;30.0;;;P1;;;;;
-;;;;;R_equitorial;10.0;;;P2;;;;;
+Delta;;;;;ellipsoidal shell (Rp t);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5.0;;;P3;;;;;
+;;;;;t;4.0;;;P3;;;;;
 ;;;;;sigma;0.2;;;P4;;;;;
 ;;;;;eta_core;1.0;;;P5;;;;;
 ;;;;;eta_shell;0.5;;;P6;;;;;
@@ -419,12 +420,12 @@ N;1.0;;;;R_principle;30.0;;;P1;;;;;
 scattering contribution;5;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;5;;;;label;0;;;;;;;;
-Delta;;;;;ellipsoidal shell 0;;;;;None;;;;
-N;1.0;;;;R_principle;10.0;;;P1;;;;;
-;;;;;R_equitorial;30.0;;;P2;;;;;
+Delta;;;;;ellipsoidal shell (Re);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5.0;;;P3;;;;;
-;;;;;dummy;0.0;;;;;;;;
+;;;;;t;4.0;;;P3;;;;;
+;;;;;sigma;0.0;;;;;;;;
 ;;;;;eta_core;1.0;;;P5;;;;;
 ;;;;;eta_shell;0.5;;;P6;;;;;
 ;;;;;eta_solv;0.0;;;P7;;;;;
@@ -432,116 +433,167 @@ N;1.0;;;;R_principle;10.0;;;P1;;;;;
 scattering contribution;6;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;6;;;;label;;;;;;;;;
-Delta;;;;;ellipsoidal shell 0t;;;;;None;;;;
-N;1.0;;;;R_principle;20.0;;;P1;;;;;
-;;;;;R_equitorial;50.0;;;P2;;;;;
+Delta;;;;;ellipsoidal shell (Re t);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
+;;;;;dummy;0.0;;;;;;;;
+;;;;;t;4.0;;;P3;;;;;
+;;;;;sigma;0.2;;;P4;;;;;
+;;;;;eta_core;1.0;;;P5;;;;;
+;;;;;eta_shell;0.5;;;P6;;;;;
+;;;;;eta_solv;0.0;;;P7;;;;;
+;;;;;;;;;;;;;;
+scattering contribution;7;;;;approximation type;monodisperse approx.;;;;;;;;
+calculate;yes;;;;substract;no;;;;fit;yes;;;
+dataset;7;;;;label;;;;;;;;;
+Delta;;;;;ellipsoidal shell (Re Rp);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
+;;;;;dummy;0.0;;;;;;;;
+;;;;;t;4.0;;;P3;;;;;
+;;;;;sigma;0.2;;;P4;;;;;
+;;;;;eta_core;1.0;;;P5;;;;;
+;;;;;eta_shell;0.5;;;P6;;;;;
+;;;;;eta_solv;0.0;;;P7;;;;;
+;;;;;;;;;;;;;;
+scattering contribution;8;;;;approximation type;monodisperse approx.;;;;;;;;
+calculate;yes;;;;substract;no;;;;fit;yes;;;
+dataset;8;;;;label;;;;;;;;;
+Delta;;;;;ellipsoidal shell (Re Rp t);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
 ;;;;;t;4.0;;;P3;;;;;
 ;;;;;sigma;0.2;;;P4;;;;;
 ;;;;;eta_core;1.0;;;P5;;;;;
 ;;;;;eta_shell;0.5;;;P6;;;;;
 ;;;;;eta_solv;0.0;;;P7;;;;;}
-set ::GlobalAnalytPar(ndata) "3006"
 set ::GlobalAnalytPar(par_x_X) "1.1"
-set ::GlobalAnalytPar(mom_text_display) {scattering contribution =           1            calculate =         yes
-                  Delta                ellipsoidal shell 1              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           2            calculate =         yes
-                  Delta               ellipsoidal shell 1t              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           3            calculate =         yes
-                  Delta                ellipsoidal shell 2              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           4            calculate =         yes
-                  Delta               ellipsoidal shell 2t              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           5            calculate =         yes
-                  Delta                ellipsoidal shell 0              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           6            calculate =         yes
-                  Delta               ellipsoidal shell 0t              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
+set ::GlobalAnalytPar(SD,param_count_old) {10 10 10 10 10 10 10 10}
+set ::GlobalAnalytPar(mom_text_display) {scattering contribution =           1                   calculate =         yes
+                  Delta                         ellipsoidal shell              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           2                   calculate =         yes
+                  Delta                     ellipsoidal shell (t)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           3                   calculate =         yes
+                  Delta                    ellipsoidal shell (Rp)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           4                   calculate =         yes
+                  Delta                  ellipsoidal shell (Rp t)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           5                   calculate =         yes
+                  Delta                    ellipsoidal shell (Re)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           6                   calculate =         yes
+                  Delta                  ellipsoidal shell (Re t)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           7                   calculate =         yes
+                  Delta                 ellipsoidal shell (Re Rp)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           8                   calculate =         yes
+                  Delta               ellipsoidal shell (Re Rp t)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
 scattering contribution
-   of all size distrib.                            sum N_i = 0.0000e+000
-               <sumR^1> = 0.0000e+000             <sumR^5> = 0.0000e+000
-               <sumR^2> = 0.0000e+000             <sumR^6> = 0.0000e+000
-               <sumR^3> = 0.0000e+000             <sumR^7> = 0.0000e+000
-               <sumR^4> = 0.0000e+000             <sumR^8> = 0.0000e+000
-                sumR_lc = 0.0000e+000                sumlc = 0.0000e+000
-                sumR_li = 0.0000e+000                sumli = 0.0000e+000
-                sumR_Ac = 0.0000e+000                sumAc = 0.0000e+000
-                sumR_VP = 0.0000e+000                sumVP = 0.0000e+000
-                sumR_RG = 0.0000e+000                sumRG = 0.0000e+000
-            sumfp(Sph.) = 0.0000e+000                                   }
-set ::GlobalAnalytPar(SD,param_count_old) {10 10 10 10 10 10}
-set ::GlobalAnalytPar(datalabel) {1 {} {} {} 0 {}}
+   of all size distrib.                                   sum N_i = 0.0000e+000
+               <sumR^1> = 0.0000e+000                    <sumR^5> = 0.0000e+000
+               <sumR^2> = 0.0000e+000                    <sumR^6> = 0.0000e+000
+               <sumR^3> = 0.0000e+000                    <sumR^7> = 0.0000e+000
+               <sumR^4> = 0.0000e+000                    <sumR^8> = 0.0000e+000
+                sumR_lc = 0.0000e+000                       sumlc = 0.0000e+000
+                sumR_li = 0.0000e+000                       sumli = 0.0000e+000
+                sumR_Ac = 0.0000e+000                       sumAc = 0.0000e+000
+                sumR_VP = 0.0000e+000                       sumVP = 0.0000e+000
+                sumR_RG = 0.0000e+000                       sumRG = 0.0000e+000
+            sumfp(Sph.) = 0.0000e+000                                          }
+set ::GlobalAnalytPar(datalabel) {1 {} {} {} 0 {} {} {}}
 set ::GlobalAnalytPar(GraphName) "AnalytPar"
 set ::GlobalAnalytPar(isGlobal) "1"
 set ::GlobalAnalytPar(w_MomentsAnalytPar) ""
-set ::GlobalAnalytPar(SD,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::GlobalAnalytPar(SD,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::GlobalAnalytPar(mom_text_export) {description;value;description;value
 scattering contribution;1;calculate;yes
-Delta;;ellipsoidal shell 1;
+Delta;;ellipsoidal shell;
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -554,7 +606,7 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;2;calculate;yes
-Delta;;ellipsoidal shell 1t;
+Delta;;ellipsoidal shell (t);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -567,7 +619,7 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;3;calculate;yes
-Delta;;ellipsoidal shell 2;
+Delta;;ellipsoidal shell (Rp);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -580,7 +632,7 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;4;calculate;yes
-Delta;;ellipsoidal shell 2t;
+Delta;;ellipsoidal shell (Rp t);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -593,7 +645,7 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;5;calculate;yes
-Delta;;ellipsoidal shell 0;
+Delta;;ellipsoidal shell (Re);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -606,7 +658,33 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;6;calculate;yes
-Delta;;ellipsoidal shell 0t;
+Delta;;ellipsoidal shell (Re t);
+<R^1>;0.0000e+000;<R^5>;0.0000e+000
+<R^2>;0.0000e+000;<R^6>;0.0000e+000
+<R^3>;0.0000e+000;<R^7>;0.0000e+000
+<R^4>;0.0000e+000;<R^8>;0.0000e+000
+R_lc;0.0000e+000;lc;0.0000e+000
+R_li;0.0000e+000;li;0.0000e+000
+R_Ac;0.0000e+000;Ac;0.0000e+000
+R_VP;0.0000e+000;VP;0.0000e+000
+R_RG;0.0000e+000;RG;0.0000e+000
+fp;0.0000e+000;;
+;;;
+scattering contribution;7;calculate;yes
+Delta;;ellipsoidal shell (Re Rp);
+<R^1>;0.0000e+000;<R^5>;0.0000e+000
+<R^2>;0.0000e+000;<R^6>;0.0000e+000
+<R^3>;0.0000e+000;<R^7>;0.0000e+000
+<R^4>;0.0000e+000;<R^8>;0.0000e+000
+R_lc;0.0000e+000;lc;0.0000e+000
+R_li;0.0000e+000;li;0.0000e+000
+R_Ac;0.0000e+000;Ac;0.0000e+000
+R_VP;0.0000e+000;VP;0.0000e+000
+R_RG;0.0000e+000;RG;0.0000e+000
+fp;0.0000e+000;;
+;;;
+scattering contribution;8;calculate;yes
+Delta;;ellipsoidal shell (Re Rp t);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -631,334 +709,372 @@ sumR_RG;0.0000e+000;sumRG;0.0000e+000
 sumfp(Sph.);0.0000e+000;;}
 set ::GlobalAnalytPar(<sumR^8>) "0.0"
 set ::GlobalAnalytPar(<sumR^1>) "0.0"
-set ::GlobalAnalytPar(<R^6>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(chisq) "3.257e+024"
+set ::GlobalAnalytPar(<R^6>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(chisq) "4.04094e+024"
 set ::GlobalAnalytPar(file) "unknown.par"
-set ::GlobalAnalytPar(varianceOFfit) "1.0835e+021"
+set ::GlobalAnalytPar(varianceOFfit) "1.00822e+021"
 set ::GlobalAnalytPar(par_descr) {parameters of_analytical_size distrib.}
-set ::GlobalAnalytPar(par_text_display) {scattering contribution =   1        approximation type = monodisperse approx.                       
-              calculate = yes                 substract =                   no         fit = yes     
-                dataset =   1                     label =                    1                       
-                  Delta             ellipsoidal shell 1                               None           
-                      N = 1.0               R_principle =                 30.0     P1                
-                                           R_equitorial =                 10.0     P2                
-                                                  dummy =                  0.0                       
-                                                      t =                  5.0     P3                
-                                                  sigma =                  0.2     P4                
-                                               eta_core =                  1.0     P5                
-                                              eta_shell =                  0.5     P6                
-                                               eta_solv =                  0.0     P7                
-                                                                                                     
-scattering contribution =   2        approximation type = monodisperse approx.                       
-              calculate = yes                 substract =                   no         fit = yes     
-                dataset =   2                     label                                              
-                  Delta            ellipsoidal shell 1t                               None           
-                      N = 1.0               R_principle =                 30.0     P1                
-                                           R_equitorial =                 10.0     P2                
-                                                  dummy =                  0.0                       
-                                                      t =                  5.0     P3                
-                                                  sigma =                  0.2     P4                
-                                               eta_core =                  1.0     P5                
-                                              eta_shell =                  0.5     P6                
-                                               eta_solv =                  0.0     P7                
-                                                                                                     
-scattering contribution =   3        approximation type = monodisperse approx.                       
-              calculate = yes                 substract =                   no         fit = yes     
-                dataset =   3                     label                                              
-                  Delta             ellipsoidal shell 2                               None           
-                      N = 1.0               R_principle =                 30.0     P1                
-                                           R_equitorial =                 10.0     P2                
-                                                  dummy =                  0.0                       
-                                                      t =                  5.0     P3                
-                                                  sigma =                  0.2     P4                
-                                               eta_core =                  1.0     P5                
-                                              eta_shell =                  0.5     P6                
-                                               eta_solv =                  0.0     P7                
-                                                                                                     
-scattering contribution =   4        approximation type = monodisperse approx.                       
-              calculate = yes                 substract =                   no         fit = yes     
-                dataset =   4                     label                                              
-                  Delta            ellipsoidal shell 2t                               None           
-                      N = 1.0               R_principle =                 30.0     P1                
-                                           R_equitorial =                 10.0     P2                
-                                                  dummy =                  0.0                       
-                                                      t =                  5.0     P3                
-                                                  sigma =                  0.2     P4                
-                                               eta_core =                  1.0     P5                
-                                              eta_shell =                  0.5     P6                
-                                               eta_solv =                  0.0     P7                
-                                                                                                     
-scattering contribution =   5        approximation type = monodisperse approx.                       
-              calculate = yes                 substract =                   no         fit = yes     
-                dataset =   5                     label =                    0                       
-                  Delta             ellipsoidal shell 0                               None           
-                      N = 1.0               R_principle =                 10.0     P1                
-                                           R_equitorial =                 30.0     P2                
-                                                  dummy =                  0.0                       
-                                                      t =                  5.0     P3                
-                                                  dummy =                  0.0                       
-                                               eta_core =                  1.0     P5                
-                                              eta_shell =                  0.5     P6                
-                                               eta_solv =                  0.0     P7                
-                                                                                                     
-scattering contribution =   6        approximation type = monodisperse approx.                       
-              calculate = yes                 substract =                   no         fit = yes     
-                dataset =   6                     label                                              
-                  Delta            ellipsoidal shell 0t                               None           
-                      N = 1.0               R_principle =                 20.0     P1                
-                                           R_equitorial =                 50.0     P2                
-                                                  dummy =                  0.0                       
-                                                      t =                  4.0     P3                
-                                                  sigma =                  0.2     P4                
-                                               eta_core =                  1.0     P5                
-                                              eta_shell =                  0.5     P6                
-                                               eta_solv =                  0.0     P7                }
-set ::GlobalAnalytPar(SQ,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
-set ::GlobalAnalytPar(FF,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
-set ::GlobalAnalytPar(SQ,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
-set ::GlobalAnalytPar(FF,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
-set ::GlobalAnalytPar(fitSDFF) {yes yes yes yes yes yes}
-set ::GlobalAnalytPar(FF,param_count_old) {8 8 8 8 8 8}
-set ::GlobalAnalytPar(SQ,param_count_old) {10 10 10 10 10 10}
-set ::GlobalAnalytPar(R_VP) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(actual_SD) "6"
+set ::GlobalAnalytPar(par_text_display) {scattering contribution =   1               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   1                            label =                    1                       
+                  Delta                      ellipsoidal shell                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         dummy =                  0.0                       
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   2               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   2                            label                                              
+                  Delta                  ellipsoidal shell (t)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.0                       
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   3               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   3                            label                                              
+                  Delta                 ellipsoidal shell (Rp)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   4               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   4                            label                                              
+                  Delta               ellipsoidal shell (Rp t)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   5               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   5                            label =                    0                       
+                  Delta                 ellipsoidal shell (Re)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.0                       
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   6               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   6                            label                                              
+                  Delta               ellipsoidal shell (Re t)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   7               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   7                            label                                              
+                  Delta              ellipsoidal shell (Re Rp)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   8               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   8                            label                                              
+                  Delta            ellipsoidal shell (Re Rp t)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                }
+set ::GlobalAnalytPar(SQ,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::GlobalAnalytPar(FF,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::GlobalAnalytPar(SQ,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::GlobalAnalytPar(FF,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::GlobalAnalytPar(fitSDFF) {yes yes yes yes yes yes yes yes}
+set ::GlobalAnalytPar(SQ,param_count_old) {10 10 10 10 10 10 10 10}
+set ::GlobalAnalytPar(FF,param_count_old) {8 0 8 8 8 8 8 8}
+set ::GlobalAnalytPar(R_VP) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(actual_SD) "8"
 set ::GlobalAnalytPar(<sumR^2>) "0.0"
-set ::GlobalAnalytPar(<R^7>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(SQ,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
-set ::GlobalAnalytPar(FF,common) {{P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
+set ::GlobalAnalytPar(<R^7>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(SQ,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
+set ::GlobalAnalytPar(FF,common) {{P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
 set ::GlobalAnalytPar(alambda) "-1"
-set ::GlobalAnalytPar(<R^0>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(<R^0>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::GlobalAnalytPar(fit) "no"
-set ::GlobalAnalytPar(max_SD) "6"
+set ::GlobalAnalytPar(max_SD) "8"
 set ::GlobalAnalytPar(common_names) {NONE NEW P1 P2 P3 P4 P5 P6 P7}
-set ::GlobalAnalytPar(SQ,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::GlobalAnalytPar(FF,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::GlobalAnalytPar(SQ,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::GlobalAnalytPar(FF,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::GlobalAnalytPar(mom_w) ".obW.tab.analytmoments"
 set ::GlobalAnalytPar(common_i) "7"
-set ::GlobalAnalytPar(SQ,param_count) "0"
-set ::GlobalAnalytPar(SQ,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::GlobalAnalytPar(FF,param_count) "0"
-set ::GlobalAnalytPar(FF,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::GlobalAnalytPar(SQ,param_count) {10 10 10 10 10 10 10 10}
+set ::GlobalAnalytPar(SQ,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::GlobalAnalytPar(FF,param_count) {8 8 8 8 8 8 8 8}
+set ::GlobalAnalytPar(FF,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::GlobalAnalytPar(<sumR^3>) "0.0"
-set ::GlobalAnalytPar(<R^8>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(<R^8>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::GlobalAnalytPar(w_AnalytPar) ""
-set ::GlobalAnalytPar(SD,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
-set ::GlobalAnalytPar(<R^1>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(SD,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+set ::GlobalAnalytPar(<R^1>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::GlobalAnalytPar(sumR_VP) "0.0"
-set ::GlobalAnalytPar(FF,l) {{30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {10.0 30.0 0.0 5.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::GlobalAnalytPar(FF,l) {{20.0 50.0 0.0 4.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::GlobalAnalytPar(geometrical/datafile) "yes"
-set ::GlobalAnalytPar(substrSDFF) {no no no no no no}
+set ::GlobalAnalytPar(substrSDFF) {no no no no no no no no}
 set ::GlobalAnalytPar(w) ""
-set ::GlobalAnalytPar(SD,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
-set ::GlobalAnalytPar(SD,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
-set ::GlobalAnalytPar(R_RG) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(SD,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::GlobalAnalytPar(SD,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::GlobalAnalytPar(R_RG) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::GlobalAnalytPar(<sumR^4>) "0.0"
-set ::GlobalAnalytPar(SQ,s) {{100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::GlobalAnalytPar(<R^2>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(R_Ac) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::GlobalAnalytPar(old_actual_SD) "6"
-set ::GlobalAnalytPar(dataset) {1 2 3 4 5 6}
-set ::tmpGlobalAnalytPar(R_lc) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(wR) "3.65138e+008"
+set ::GlobalAnalytPar(SQ,s) {{100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::GlobalAnalytPar(<R^2>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(R_Ac) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::GlobalAnalytPar(old_actual_SD) "8"
+set ::GlobalAnalytPar(dataset) {1 2 3 4 5 6 7 8}
+set ::tmpGlobalAnalytPar(R_lc) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::tmpGlobalAnalytPar(P1) "20.0"
-set ::tmpGlobalAnalytPar(FF,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::tmpGlobalAnalytPar(SQ,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpGlobalAnalytPar(wR) "3.29166e+010"
 set ::tmpGlobalAnalytPar(P2) "50.0"
-set ::tmpGlobalAnalytPar(sumfp) "0.0"
+set ::tmpGlobalAnalytPar(SQ,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpGlobalAnalytPar(FF,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpGlobalAnalytPar(P3) "4.0"
-set ::tmpGlobalAnalytPar(SD,param_count) "0"
-set ::tmpGlobalAnalytPar(resolution) "no"
-set ::tmpGlobalAnalytPar(<sumR^5>) "0.0"
+set ::tmpGlobalAnalytPar(sumfp) "0.0"
 set ::tmpGlobalAnalytPar(P4) "0.2"
-set ::tmpGlobalAnalytPar(SD,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::tmpGlobalAnalytPar(SD,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
+set ::tmpGlobalAnalytPar(<sumR^5>) "0.0"
+set ::tmpGlobalAnalytPar(resolution) "no"
+set ::tmpGlobalAnalytPar(SD,param_count) {10 10 10 10 10 10 10 10}
+set ::tmpGlobalAnalytPar(SD,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::tmpGlobalAnalytPar(SD,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
 set ::tmpGlobalAnalytPar(P5) "1.0"
-set ::tmpGlobalAnalytPar(<R^3>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(<R^3>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::tmpGlobalAnalytPar(P6) "0.5"
-set ::tmpGlobalAnalytPar(fp) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(R_li) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(fp) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(R_li) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::tmpGlobalAnalytPar(alpha) ""
-set ::tmpGlobalAnalytPar(calcSDFF) {yes yes yes yes yes yes}
-set ::tmpGlobalAnalytPar(SD,typestr) {Delta Delta Delta Delta Delta Delta}
+set ::tmpGlobalAnalytPar(calcSDFF) {yes yes yes yes yes yes yes yes}
+set ::tmpGlobalAnalytPar(SD,typestr) {Delta Delta Delta Delta Delta Delta Delta Delta}
 set ::tmpGlobalAnalytPar(P7) "0.0"
 set ::tmpGlobalAnalytPar(sumR_RG) "0.0"
-set ::tmpGlobalAnalytPar(SD,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpGlobalAnalytPar(SD,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpGlobalAnalytPar(par_w) ".obW.tab.analytpar"
 set ::tmpGlobalAnalytPar(mom_descr) {moments of_analytical_size distrib.}
 set ::tmpGlobalAnalytPar(sumR_Ac) "0.0"
 set ::tmpGlobalAnalytPar(covar) ""
-set ::tmpGlobalAnalytPar(SD,a) {{1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::tmpGlobalAnalytPar(SD,a) {{1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {1.0 0.05 1.0 10.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpGlobalAnalytPar(sumR_lc) "0.0"
 set ::tmpGlobalAnalytPar(<sumR^6>) "0.0"
-set ::tmpGlobalAnalytPar(<R^4>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(SQ,how) {0 0 0 0 0 0}
+set ::tmpGlobalAnalytPar(<R^4>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(SQ,how) {0 0 0 0 0 0 0 0}
 set ::tmpGlobalAnalytPar(mfit) "0"
 set ::tmpGlobalAnalytPar(Q) "0"
 set ::tmpGlobalAnalytPar(error) "0"
-set ::tmpGlobalAnalytPar(R) "2.14227e+008"
+set ::tmpGlobalAnalytPar(R) "1.62226e+010"
 set ::tmpGlobalAnalytPar(sumR_li) "0.0"
-set ::tmpGlobalAnalytPar(SQ,typestr) {None None None None None None}
-set ::tmpGlobalAnalytPar(FF,typestr) {38 39 40 41 36 37}
-set ::tmpGlobalAnalytPar(reducedchisq) "1.33326e+017"
+set ::tmpGlobalAnalytPar(SQ,typestr) {None None None None None None None None}
+set ::tmpGlobalAnalytPar(FF,typestr) {37 38 41 42 39 40 43 44}
+set ::tmpGlobalAnalytPar(reducedchisq) "1.0835e+021"
 set ::tmpGlobalAnalytPar(<sumR^7>) "0.0"
-set ::tmpGlobalAnalytPar(FF,distr) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpGlobalAnalytPar(FF,distr) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpGlobalAnalytPar(<sumR^0>) "0.0"
-set ::tmpGlobalAnalytPar(<R^5>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(SQ,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
-set ::tmpGlobalAnalytPar(FF,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
-set ::tmpGlobalAnalytPar(ndata) "2505"
+set ::tmpGlobalAnalytPar(<R^5>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(SQ,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+set ::tmpGlobalAnalytPar(FF,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
 set ::tmpGlobalAnalytPar(par_text_export) {description;value;error;factor;global_param;description;value;error;factor;global_param;description;value;error;factor;global_param
 scattering contribution;1;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;1;;;;label;1;;;;;;;;
-Delta;;;;;ellipsoidal shell 1;;;;;None;;;;
-N;1.0;;;;R_major;30.0;;;;;;;;
-;;;;;R_minor;10;;;;;;;;
-;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5;;;;;;;;
-;;;;;sigma;0.2;;;;;;;;
-;;;;;eta_core;1;;;;;;;;
-;;;;;eta_shell;0.5;;;;;;;;
-;;;;;eta_solv;0.0;;;;;;;;
+Delta;;;;;ff_ellipsoidal_shell_1;;;;;None;;;;
+N;1.0;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
 scattering contribution;2;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;2;;;;label;;;;;;;;;
-Delta;;;;;ellipsoidal shell 1t;;;;;None;;;;
-N;1.0;;;;R_major;30.0;;;;;;;;
-;;;;;R_minor;10;;;;;;;;
-;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5;;;;;;;;
-;;;;;sigma;0.2;;;;;;;;
-;;;;;eta_core;1;;;;;;;;
-;;;;;eta_shell;0.5;;;;;;;;
-;;;;;eta_solv;0.0;;;;;;;;
+Delta;;;;;ff_ellipsoidal_shell_1t;;;;;None;;;;
+N;1.0;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
 scattering contribution;3;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;3;;;;label;;;;;;;;;
-Delta;;;;;ellipsoidal shell 2;;;;;None;;;;
-N;1.0;;;;R_major;30.0;;;;;;;;
-;;;;;R_minor;10;;;;;;;;
+Delta;;;;;ellipsoidal shell (Re Rp);;;;;None;;;;
+N;1.0;;;;R_polar;30.0;;;P1;;;;;
+;;;;;R_equatorial;10.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5;;;;;;;;
-;;;;;sigma;0.2;;;;;;;;
-;;;;;eta_core;1;;;;;;;;
-;;;;;eta_shell;0.5;;;;;;;;
-;;;;;eta_solv;0.0;;;;;;;;
+;;;;;t;5.0;;;P3;;;;;
+;;;;;sigma;0.2;;;P4;;;;;
+;;;;;eta_core;1.0;;;P5;;;;;
+;;;;;eta_shell;0.5;;;P6;;;;;
+;;;;;eta_solv;0.0;;;P7;;;;;
 ;;;;;;;;;;;;;;
 scattering contribution;4;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;4;;;;label;;;;;;;;;
-Delta;;;;;ellipsoidal shell 2t;;;;;None;;;;
-N;1.0;;;;R_major;30.0;;;;;;;;
-;;;;;R_minor;10;;;;;;;;
+Delta;;;;;ellipsoidal shell (Re Rp t);;;;;None;;;;
+N;1.0;;;;R_polar;30.0;;;P1;;;;;
+;;;;;R_equatorial;10.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5;;;;;;;;
-;;;;;sigma;0.2;;;;;;;;
-;;;;;eta_core;1;;;;;;;;
-;;;;;eta_shell;0.5;;;;;;;;
-;;;;;eta_solv;0.0;;;;;;;;
+;;;;;t;5.0;;;P3;;;;;
+;;;;;sigma;0.2;;;P4;;;;;
+;;;;;eta_core;1.0;;;P5;;;;;
+;;;;;eta_shell;0.5;;;P6;;;;;
+;;;;;eta_solv;0.0;;;P7;;;;;
 ;;;;;;;;;;;;;;
 scattering contribution;5;;;;approximation type;monodisperse approx.;;;;;;;;
 calculate;yes;;;;substract;no;;;;fit;yes;;;
 dataset;5;;;;label;0;;;;;;;;
-Delta;;;;;ellipsoidal shell 2t;;;;;None;;;;
-N;1.0;;;;R_major;30.0;;;;;;;;
-;;;;;R_minor;10;;;;;;;;
+Delta;;;;;ellipsoidal shell;;;;;None;;;;
+N;1.0;;;;R_polar;10.0;;;P1;;;;;
+;;;;;R_equatorial;30.0;;;P2;;;;;
 ;;;;;dummy;0.0;;;;;;;;
-;;;;;t;5;;;;;;;;
-;;;;;sigma;0.0;;;;;;;;
-;;;;;eta_core;1;;;;;;;;
-;;;;;eta_shell;0.5;;;;;;;;
-;;;;;eta_solv;0.0;;;;;;;;}
+;;;;;t;5.0;;;P3;;;;;
+;;;;;dummy;0.0;;;;;;;;
+;;;;;eta_core;1.0;;;P5;;;;;
+;;;;;eta_shell;0.5;;;P6;;;;;
+;;;;;eta_solv;0.0;;;P7;;;;;
+;;;;;;;;;;;;;;
+scattering contribution;6;;;;approximation type;monodisperse approx.;;;;;;;;
+calculate;yes;;;;substract;no;;;;fit;yes;;;
+dataset;6;;;;label;;;;;;;;;
+Delta;;;;;ellipsoidal shell (t);;;;;None;;;;
+N;1.0;;;;R_polar;20.0;;;P1;;;;;
+;;;;;R_equatorial;50.0;;;P2;;;;;
+;;;;;dummy;0.0;;;;;;;;
+;;;;;t;4.0;;;P3;;;;;
+;;;;;sigma;0.2;;;P4;;;;;
+;;;;;eta_core;1.0;;;P5;;;;;
+;;;;;eta_shell;0.5;;;P6;;;;;
+;;;;;eta_solv;0.0;;;P7;;;;;}
+set ::tmpGlobalAnalytPar(ndata) "3006"
 set ::tmpGlobalAnalytPar(par_x_X) "1.1"
-set ::tmpGlobalAnalytPar(datalabel) {1 {} {} {} 0 {}}
-set ::tmpGlobalAnalytPar(SD,param_count_old) {10 10 10 10 10 10}
-set ::tmpGlobalAnalytPar(mom_text_display) {scattering contribution =           1            calculate =         yes
-                  Delta                ellipsoidal shell 1              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           2            calculate =         yes
-                  Delta               ellipsoidal shell 1t              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           3            calculate =         yes
-                  Delta                ellipsoidal shell 2              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           4            calculate =         yes
-                  Delta               ellipsoidal shell 2t              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
-scattering contribution =           5            calculate =         yes
-                  Delta               ellipsoidal shell 2t              
-                  <R^1> = 0.0000e+000                <R^5> = 0.0000e+000
-                  <R^2> = 0.0000e+000                <R^6> = 0.0000e+000
-                  <R^3> = 0.0000e+000                <R^7> = 0.0000e+000
-                  <R^4> = 0.0000e+000                <R^8> = 0.0000e+000
-                   R_lc = 0.0000e+000                   lc = 0.0000e+000
-                   R_li = 0.0000e+000                   li = 0.0000e+000
-                   R_Ac = 0.0000e+000                   Ac = 0.0000e+000
-                   R_VP = 0.0000e+000                   VP = 0.0000e+000
-                   R_RG = 0.0000e+000                   RG = 0.0000e+000
-                     fp = 0.0000e+000                                   
-                                                                        
+set ::tmpGlobalAnalytPar(mom_text_display) {scattering contribution =           1                   calculate =         yes
+                  Delta                    ff_ellipsoidal_shell_1              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           2                   calculate =         yes
+                  Delta                   ff_ellipsoidal_shell_1t              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           3                   calculate =         yes
+                  Delta                 ellipsoidal shell (Re Rp)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           4                   calculate =         yes
+                  Delta               ellipsoidal shell (Re Rp t)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           5                   calculate =         yes
+                  Delta                         ellipsoidal shell              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
+scattering contribution =           6                   calculate =         yes
+                  Delta                     ellipsoidal shell (t)              
+                  <R^1> = 0.0000e+000                       <R^5> = 0.0000e+000
+                  <R^2> = 0.0000e+000                       <R^6> = 0.0000e+000
+                  <R^3> = 0.0000e+000                       <R^7> = 0.0000e+000
+                  <R^4> = 0.0000e+000                       <R^8> = 0.0000e+000
+                   R_lc = 0.0000e+000                          lc = 0.0000e+000
+                   R_li = 0.0000e+000                          li = 0.0000e+000
+                   R_Ac = 0.0000e+000                          Ac = 0.0000e+000
+                   R_VP = 0.0000e+000                          VP = 0.0000e+000
+                   R_RG = 0.0000e+000                          RG = 0.0000e+000
+                     fp = 0.0000e+000                                          
+                                                                               
 scattering contribution
-   of all size distrib.                            sum N_i = 0.0000e+000
-               <sumR^1> = 0.0000e+000             <sumR^5> = 0.0000e+000
-               <sumR^2> = 0.0000e+000             <sumR^6> = 0.0000e+000
-               <sumR^3> = 0.0000e+000             <sumR^7> = 0.0000e+000
-               <sumR^4> = 0.0000e+000             <sumR^8> = 0.0000e+000
-                sumR_lc = 0.0000e+000                sumlc = 0.0000e+000
-                sumR_li = 0.0000e+000                sumli = 0.0000e+000
-                sumR_Ac = 0.0000e+000                sumAc = 0.0000e+000
-                sumR_VP = 0.0000e+000                sumVP = 0.0000e+000
-                sumR_RG = 0.0000e+000                sumRG = 0.0000e+000
-            sumfp(Sph.) = 0.0000e+000                                   }
+   of all size distrib.                                   sum N_i = 0.0000e+000
+               <sumR^1> = 0.0000e+000                    <sumR^5> = 0.0000e+000
+               <sumR^2> = 0.0000e+000                    <sumR^6> = 0.0000e+000
+               <sumR^3> = 0.0000e+000                    <sumR^7> = 0.0000e+000
+               <sumR^4> = 0.0000e+000                    <sumR^8> = 0.0000e+000
+                sumR_lc = 0.0000e+000                       sumlc = 0.0000e+000
+                sumR_li = 0.0000e+000                       sumli = 0.0000e+000
+                sumR_Ac = 0.0000e+000                       sumAc = 0.0000e+000
+                sumR_VP = 0.0000e+000                       sumVP = 0.0000e+000
+                sumR_RG = 0.0000e+000                       sumRG = 0.0000e+000
+            sumfp(Sph.) = 0.0000e+000                                          }
+set ::tmpGlobalAnalytPar(SD,param_count_old) {10 10 10 10 10 10 10 10}
+set ::tmpGlobalAnalytPar(datalabel) {1 {} {} {} 0 {} {} {}}
 set ::tmpGlobalAnalytPar(GraphName) "AnalytPar"
-set ::tmpGlobalAnalytPar(SD,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::tmpGlobalAnalytPar(w_MomentsAnalytPar) ""
 set ::tmpGlobalAnalytPar(isGlobal) "1"
+set ::tmpGlobalAnalytPar(w_MomentsAnalytPar) ""
+set ::tmpGlobalAnalytPar(SD,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpGlobalAnalytPar(mom_text_export) {description;value;description;value
 scattering contribution;1;calculate;yes
-Delta;;ellipsoidal shell 1;
+Delta;;ff_ellipsoidal_shell_1;
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -971,7 +1087,7 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;2;calculate;yes
-Delta;;ellipsoidal shell 1t;
+Delta;;ff_ellipsoidal_shell_1t;
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -984,7 +1100,7 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;3;calculate;yes
-Delta;;ellipsoidal shell 2;
+Delta;;ellipsoidal shell (Re Rp);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -997,7 +1113,7 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;4;calculate;yes
-Delta;;ellipsoidal shell 2t;
+Delta;;ellipsoidal shell (Re Rp t);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -1010,7 +1126,20 @@ R_RG;0.0000e+000;RG;0.0000e+000
 fp;0.0000e+000;;
 ;;;
 scattering contribution;5;calculate;yes
-Delta;;ellipsoidal shell 2t;
+Delta;;ellipsoidal shell;
+<R^1>;0.0000e+000;<R^5>;0.0000e+000
+<R^2>;0.0000e+000;<R^6>;0.0000e+000
+<R^3>;0.0000e+000;<R^7>;0.0000e+000
+<R^4>;0.0000e+000;<R^8>;0.0000e+000
+R_lc;0.0000e+000;lc;0.0000e+000
+R_li;0.0000e+000;li;0.0000e+000
+R_Ac;0.0000e+000;Ac;0.0000e+000
+R_VP;0.0000e+000;VP;0.0000e+000
+R_RG;0.0000e+000;RG;0.0000e+000
+fp;0.0000e+000;;
+;;;
+scattering contribution;6;calculate;yes
+Delta;;ellipsoidal shell (t);
 <R^1>;0.0000e+000;<R^5>;0.0000e+000
 <R^2>;0.0000e+000;<R^6>;0.0000e+000
 <R^3>;0.0000e+000;<R^7>;0.0000e+000
@@ -1034,121 +1163,120 @@ sumR_VP;0.0000e+000;sumVP;0.0000e+000
 sumR_RG;0.0000e+000;sumRG;0.0000e+000
 sumfp(Sph.);0.0000e+000;;}
 set ::tmpGlobalAnalytPar(<sumR^8>) "0.0"
-set ::tmpGlobalAnalytPar(file) "unknown.par"
-set ::tmpGlobalAnalytPar(chisq) "3.33982e+020"
-set ::tmpGlobalAnalytPar(<R^6>) {0.0 0.0 0.0 0.0 0.0 0.0}
 set ::tmpGlobalAnalytPar(<sumR^1>) "0.0"
-set ::tmpGlobalAnalytPar(varianceOFfit) "1.33326e+017"
+set ::tmpGlobalAnalytPar(<R^6>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(chisq) "3.257e+024"
+set ::tmpGlobalAnalytPar(file) "unknown.par"
+set ::tmpGlobalAnalytPar(varianceOFfit) "1.0835e+021"
 set ::tmpGlobalAnalytPar(par_descr) {parameters of_analytical_size distrib.}
-set ::tmpGlobalAnalytPar(FF,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
-set ::tmpGlobalAnalytPar(SQ,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
-set ::tmpGlobalAnalytPar(par_text_display) {scattering contribution =   1        approximation type = monodisperse approx.                     
-              calculate = yes                 substract =                   no       fit = yes     
-                dataset =   1                     label =                    1                     
-                  Delta             ellipsoidal shell 1                             None           
-                      N = 1.0                   R_major =                 30.0                     
-                                                R_minor =                   10                     
-                                                  dummy =                  0.0                     
-                                                      t =                    5                     
-                                                  sigma =                  0.2                     
-                                               eta_core =                    1                     
-                                              eta_shell =                  0.5                     
-                                               eta_solv =                  0.0                     
-                                                                                                   
-scattering contribution =   2        approximation type = monodisperse approx.                     
-              calculate = yes                 substract =                   no       fit = yes     
-                dataset =   2                     label                                            
-                  Delta            ellipsoidal shell 1t                             None           
-                      N = 1.0                   R_major =                 30.0                     
-                                                R_minor =                   10                     
-                                                  dummy =                  0.0                     
-                                                      t =                    5                     
-                                                  sigma =                  0.2                     
-                                               eta_core =                    1                     
-                                              eta_shell =                  0.5                     
-                                               eta_solv =                  0.0                     
-                                                                                                   
-scattering contribution =   3        approximation type = monodisperse approx.                     
-              calculate = yes                 substract =                   no       fit = yes     
-                dataset =   3                     label                                            
-                  Delta             ellipsoidal shell 2                             None           
-                      N = 1.0                   R_major =                 30.0                     
-                                                R_minor =                   10                     
-                                                  dummy =                  0.0                     
-                                                      t =                    5                     
-                                                  sigma =                  0.2                     
-                                               eta_core =                    1                     
-                                              eta_shell =                  0.5                     
-                                               eta_solv =                  0.0                     
-                                                                                                   
-scattering contribution =   4        approximation type = monodisperse approx.                     
-              calculate = yes                 substract =                   no       fit = yes     
-                dataset =   4                     label                                            
-                  Delta            ellipsoidal shell 2t                             None           
-                      N = 1.0                   R_major =                 30.0                     
-                                                R_minor =                   10                     
-                                                  dummy =                  0.0                     
-                                                      t =                    5                     
-                                                  sigma =                  0.2                     
-                                               eta_core =                    1                     
-                                              eta_shell =                  0.5                     
-                                               eta_solv =                  0.0                     
-                                                                                                   
-scattering contribution =   5        approximation type = monodisperse approx.                     
-              calculate = yes                 substract =                   no       fit = yes     
-                dataset =   5                     label =                    0                     
-                  Delta            ellipsoidal shell 2t                             None           
-                      N = 1.0                   R_major =                 30.0                     
-                                                R_minor =                   10                     
-                                                  dummy =                  0.0                     
-                                                      t =                    5                     
-                                                  sigma =                  0.0                     
-                                               eta_core =                    1                     
-                                              eta_shell =                  0.5                     
-                                               eta_solv =                  0.0                     }
-set ::tmpGlobalAnalytPar(fitSDFF) {yes yes yes yes yes yes}
-set ::tmpGlobalAnalytPar(FF,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
-set ::tmpGlobalAnalytPar(SQ,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
-set ::tmpGlobalAnalytPar(R_VP) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(FF,param_count_old) {8 8 8 8 8 8}
-set ::tmpGlobalAnalytPar(SQ,param_count_old) {10 10 10 10 10 10}
-set ::tmpGlobalAnalytPar(actual_SD) "6"
-set ::tmpGlobalAnalytPar(FF,common) {{P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
-set ::tmpGlobalAnalytPar(SQ,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
-set ::tmpGlobalAnalytPar(<R^7>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(par_text_display) {scattering contribution =   1               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   1                            label =                    1                       
+                  Delta                 ff_ellipsoidal_shell_1                               None           
+                      N = 1.0                                                                               
+                                                                                                            
+scattering contribution =   2               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   2                            label                                              
+                  Delta                ff_ellipsoidal_shell_1t                               None           
+                      N = 1.0                                                                               
+                                                                                                            
+scattering contribution =   3               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   3                            label                                              
+                  Delta              ellipsoidal shell (Re Rp)                               None           
+                      N = 1.0                          R_polar =                 30.0     P1                
+                                                  R_equatorial =                 10.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  5.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   4               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   4                            label                                              
+                  Delta            ellipsoidal shell (Re Rp t)                               None           
+                      N = 1.0                          R_polar =                 30.0     P1                
+                                                  R_equatorial =                 10.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  5.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   5               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   5                            label =                    0                       
+                  Delta                      ellipsoidal shell                               None           
+                      N = 1.0                          R_polar =                 10.0     P1                
+                                                  R_equatorial =                 30.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  5.0     P3                
+                                                         dummy =                  0.0                       
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                
+                                                                                                            
+scattering contribution =   6               approximation type = monodisperse approx.                       
+              calculate = yes                        substract =                   no         fit = yes     
+                dataset =   6                            label                                              
+                  Delta                  ellipsoidal shell (t)                               None           
+                      N = 1.0                          R_polar =                 20.0     P1                
+                                                  R_equatorial =                 50.0     P2                
+                                                         dummy =                  0.0                       
+                                                             t =                  4.0     P3                
+                                                         sigma =                  0.2     P4                
+                                                      eta_core =                  1.0     P5                
+                                                     eta_shell =                  0.5     P6                
+                                                      eta_solv =                  0.0     P7                }
+set ::tmpGlobalAnalytPar(SQ,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::tmpGlobalAnalytPar(FF,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::tmpGlobalAnalytPar(SQ,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::tmpGlobalAnalytPar(FF,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::tmpGlobalAnalytPar(fitSDFF) {yes yes yes yes yes yes yes yes}
+set ::tmpGlobalAnalytPar(SQ,param_count_old) {10 10 10 10 10 10 10 10}
+set ::tmpGlobalAnalytPar(FF,param_count_old) {8 0 8 8 8 8 8 8}
+set ::tmpGlobalAnalytPar(R_VP) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(actual_SD) "8"
 set ::tmpGlobalAnalytPar(<sumR^2>) "0.0"
-set ::tmpGlobalAnalytPar(<R^0>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(<R^7>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(SQ,common) {{NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
+set ::tmpGlobalAnalytPar(FF,common) {{P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 NONE P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE} {P1 P2 NONE P3 P4 P5 P6 P7 NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE NONE}}
 set ::tmpGlobalAnalytPar(alambda) "-1"
+set ::tmpGlobalAnalytPar(<R^0>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::tmpGlobalAnalytPar(fit) "no"
-set ::tmpGlobalAnalytPar(FF,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::tmpGlobalAnalytPar(SQ,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpGlobalAnalytPar(max_SD) "8"
 set ::tmpGlobalAnalytPar(common_names) {NONE NEW P1 P2 P3 P4 P5 P6 P7}
-set ::tmpGlobalAnalytPar(max_SD) "6"
+set ::tmpGlobalAnalytPar(SQ,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpGlobalAnalytPar(FF,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpGlobalAnalytPar(mom_w) ".obW.tab.analytmoments"
-set ::tmpGlobalAnalytPar(FF,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::tmpGlobalAnalytPar(FF,param_count) "0"
-set ::tmpGlobalAnalytPar(SQ,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::tmpGlobalAnalytPar(SQ,param_count) "0"
 set ::tmpGlobalAnalytPar(common_i) "7"
-set ::tmpGlobalAnalytPar(SD,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
-set ::tmpGlobalAnalytPar(w_AnalytPar) ""
-set ::tmpGlobalAnalytPar(<R^8>) {0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(SQ,param_count) {10 10 10 10 10 10 10 10}
+set ::tmpGlobalAnalytPar(SQ,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::tmpGlobalAnalytPar(FF,param_count) {8 8 8 8 8 8 8 8}
+set ::tmpGlobalAnalytPar(FF,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpGlobalAnalytPar(<sumR^3>) "0.0"
-set ::tmpGlobalAnalytPar(<R^1>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(FF,l) {{30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {30.0 10.0 0.0 5.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {10.0 30.0 0.0 5.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::tmpGlobalAnalytPar(<R^8>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(w_AnalytPar) ""
+set ::tmpGlobalAnalytPar(SD,factor) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+set ::tmpGlobalAnalytPar(<R^1>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::tmpGlobalAnalytPar(sumR_VP) "0.0"
+set ::tmpGlobalAnalytPar(FF,l) {{20.0 50.0 0.0 4.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.0 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {20.0 50.0 0.0 4.0 0.2 1.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpGlobalAnalytPar(geometrical/datafile) "yes"
-set ::tmpGlobalAnalytPar(substrSDFF) {no no no no no no}
-set ::tmpGlobalAnalytPar(SD,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::tmpGlobalAnalytPar(substrSDFF) {no no no no no no no no}
 set ::tmpGlobalAnalytPar(w) ""
-set ::tmpGlobalAnalytPar(SD,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
-set ::tmpGlobalAnalytPar(R_RG) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(SQ,s) {{100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::tmpGlobalAnalytPar(SD,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200} {-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::tmpGlobalAnalytPar(SD,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200} {1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::tmpGlobalAnalytPar(R_RG) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
 set ::tmpGlobalAnalytPar(<sumR^4>) "0.0"
-set ::tmpGlobalAnalytPar(<R^2>) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(R_Ac) {0.0 0.0 0.0 0.0 0.0 0.0}
-set ::tmpGlobalAnalytPar(dataset) {1 2 3 4 5 6}
-set ::tmpGlobalAnalytPar(old_actual_SD) "6"
+set ::tmpGlobalAnalytPar(SQ,s) {{100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::tmpGlobalAnalytPar(<R^2>) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(R_Ac) {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+set ::tmpGlobalAnalytPar(old_actual_SD) "8"
+set ::tmpGlobalAnalytPar(dataset) {1 2 3 4 5 6 7 8}
 set ::actualGlobalAnalytPar(SQ,s8,common) "NONE"
 set ::actualGlobalAnalytPar(P1) "20.0"
 set ::actualGlobalAnalytPar(SQ,s1,var) "100.0"
@@ -1161,46 +1289,46 @@ set ::actualGlobalAnalytPar(sumfp) "0.0"
 set ::actualGlobalAnalytPar(P4) "0.2"
 set ::actualGlobalAnalytPar(P5) "1.0"
 set ::actualGlobalAnalytPar(<R^3>) "0.0"
-set ::actualGlobalAnalytPar(fp) "0.0"
-set ::actualGlobalAnalytPar(SD,a2,min) "-1e+200"
 set ::actualGlobalAnalytPar(P6) "0.5"
-set ::actualGlobalAnalytPar(FF,l6,var) "1.0"
+set ::actualGlobalAnalytPar(SD,a2,min) "-1e+200"
+set ::actualGlobalAnalytPar(fp) "0.0"
 set ::actualGlobalAnalytPar(P7) "0.0"
+set ::actualGlobalAnalytPar(FF,l6,var) "1.0"
 set ::actualGlobalAnalytPar(SD,a10,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s9,var) "0.0"
-set ::actualGlobalAnalytPar(SD,a4,max) "1e+200"
 set ::actualGlobalAnalytPar(SQ,s4,factor) "1"
-set ::actualGlobalAnalytPar(SD,a7,distr) "0"
-set ::actualGlobalAnalytPar(SD,a6,factor) "1"
+set ::actualGlobalAnalytPar(SD,a4,max) "1e+200"
 set ::actualGlobalAnalytPar(SQ,s2,min) "-1e+200"
-set ::actualGlobalAnalytPar(SQ,s6,common) "NONE"
+set ::actualGlobalAnalytPar(SD,a6,factor) "1"
+set ::actualGlobalAnalytPar(SD,a7,distr) "0"
 set ::actualGlobalAnalytPar(<R^4>) "0.0"
+set ::actualGlobalAnalytPar(SQ,s6,common) "NONE"
 set ::actualGlobalAnalytPar(FF,l1,max) "1e+200"
-set ::actualGlobalAnalytPar(SD,a8,common) "NONE"
-set ::actualGlobalAnalytPar(SQ,s6,active) "0"
 set ::actualGlobalAnalytPar(SQ,s4,max) "1e+200"
+set ::actualGlobalAnalytPar(SQ,s6,active) "0"
+set ::actualGlobalAnalytPar(SD,a8,common) "NONE"
+set ::actualGlobalAnalytPar(FF,l2,label) {R_equatorial =}
 set ::actualGlobalAnalytPar(SD,a10,var) "0.0"
-set ::actualGlobalAnalytPar(FF,l2,label) {R_minor =}
-set ::actualGlobalAnalytPar(SQ,typestr) "None"
 set ::actualGlobalAnalytPar(FF,l7,min) "-1e+200"
+set ::actualGlobalAnalytPar(SQ,typestr) "None"
 set ::actualGlobalAnalytPar(SD,a8,active) "0"
 set ::actualGlobalAnalytPar(SD,a4,err) "0.0"
 set ::actualGlobalAnalytPar(<R^5>) "0.0"
 set ::actualGlobalAnalytPar(SQ,s2,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s8,limits) "0"
-set ::actualGlobalAnalytPar(SD,a10,common) "NONE"
 set ::actualGlobalAnalytPar(FF,l1,err) "0.0"
+set ::actualGlobalAnalytPar(SD,a10,common) "NONE"
 set ::actualGlobalAnalytPar(SD,a4,factor) "1"
-set ::actualGlobalAnalytPar(SD,a6,distr) "0"
-set ::actualGlobalAnalytPar(SQ,s4,common) "NONE"
 set ::actualGlobalAnalytPar(SQ,s4,err) "0.0"
+set ::actualGlobalAnalytPar(SQ,s4,common) "NONE"
+set ::actualGlobalAnalytPar(SD,a6,distr) "0"
 set ::actualGlobalAnalytPar(SD,a10,active) "0"
-set ::actualGlobalAnalytPar(SD,a6,var) "0.0"
 set ::actualGlobalAnalytPar(SQ,s4,active) "0"
+set ::actualGlobalAnalytPar(SD,a6,var) "0.0"
 set ::actualGlobalAnalytPar(SD,a6,common) "NONE"
-set ::actualGlobalAnalytPar(chisq) "3.33982e+020"
+set ::actualGlobalAnalytPar(chisq) "3.257e+024"
 set ::actualGlobalAnalytPar(<R^6>) "0.0"
-set ::actualGlobalAnalytPar(FF,l1,label) {R_major =}
+set ::actualGlobalAnalytPar(FF,l1,label) {R_polar =}
 set ::actualGlobalAnalytPar(SD,a6,active) "0"
 set ::actualGlobalAnalytPar(FF,l3,var) "0.0"
 set ::actualGlobalAnalytPar(SQ,s9,distr) "0"
@@ -1267,7 +1395,7 @@ set ::actualGlobalAnalytPar(SQ,s10,var) "0.0"
 set ::actualGlobalAnalytPar(Q) "0"
 set ::actualGlobalAnalytPar(FF,l3,max) "1e+200"
 set ::actualGlobalAnalytPar(FF,l5,active) "0"
-set ::actualGlobalAnalytPar(R) "2.14227e+008"
+set ::actualGlobalAnalytPar(R) "1.62226e+010"
 set ::actualGlobalAnalytPar(SQ,s6,distr) "0"
 set ::actualGlobalAnalytPar(SQ,s6,max) "1e+200"
 set ::actualGlobalAnalytPar(SD,a2,limits) "0"
@@ -1322,13 +1450,15 @@ set ::actualGlobalAnalytPar(SQ,s3,err) "0.0"
 set ::actualGlobalAnalytPar(datalabel,6) "0t"
 set ::actualGlobalAnalytPar(SQ,s9,active) "0"
 set ::actualGlobalAnalytPar(SD,a5,label) ""
+set ::actualGlobalAnalytPar(datalabel,7) {Re Rp}
 set ::actualGlobalAnalytPar(SD,a10,min) "-1e+200"
+set ::actualGlobalAnalytPar(datalabel,8) {Re Rp t}
 set ::actualGlobalAnalytPar(SD,a5,var) "0.0"
 set ::actualGlobalAnalytPar(SQ,s10,max) "1e+200"
-set ::actualGlobalAnalytPar(old_actual_SD) "6"
+set ::actualGlobalAnalytPar(old_actual_SD) "8"
 set ::actualGlobalAnalytPar(SQ,s3,distr) "0"
 set ::actualGlobalAnalytPar(SQ,s10,common) "NONE"
-set ::actualGlobalAnalytPar(wR) "3.65138e+008"
+set ::actualGlobalAnalytPar(wR) "3.29166e+010"
 set ::actualGlobalAnalytPar(FF,l8,err) "0.0"
 set ::actualGlobalAnalytPar(SQ,s5,factor) "1"
 set ::actualGlobalAnalytPar(FF,l1,limits) "0"
@@ -1341,227 +1471,227 @@ set ::actualGlobalAnalytPar(SD,a7,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s8,label) ""
 set ::actualGlobalAnalytPar(SQ,s7,common) "NONE"
 set ::actualGlobalAnalytPar(SQ,s10,err) "0.0"
-set ::actualGlobalAnalytPar(SQ,s7,active) "0"
-set ::actualGlobalAnalytPar(SD,a6,min) "-1e+200"
 set ::actualGlobalAnalytPar(SD,a9,common) "NONE"
+set ::actualGlobalAnalytPar(SD,a6,min) "-1e+200"
+set ::actualGlobalAnalytPar(SQ,s7,active) "0"
 set ::actualGlobalAnalytPar(SD,a4,label) ""
 set ::actualGlobalAnalytPar(SD,a9,active) "0"
+set ::actualGlobalAnalytPar(datasetlabel) {1 2 3 4 5 6 7 8}
 set ::actualGlobalAnalytPar(SD,a8,max) "1e+200"
-set ::actualGlobalAnalytPar(datasetlabel) {1 2 3 4 5 6}
-set ::actualGlobalAnalytPar(SQ,s2,distr) "0"
 set ::actualGlobalAnalytPar(FF,l3,min) "-1e+200"
-set ::actualGlobalAnalytPar(SQ,s3,factor) "1"
+set ::actualGlobalAnalytPar(SQ,s2,distr) "0"
 set ::actualGlobalAnalytPar(SQ,s6,min) "-1e+200"
-set ::actualGlobalAnalytPar(error) "0"
+set ::actualGlobalAnalytPar(SQ,s3,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s9,limits) "0"
-set ::actualGlobalAnalytPar(FF,typestr) "37"
-set ::actualGlobalAnalytPar(FF,l5,max) "1e+200"
+set ::actualGlobalAnalytPar(error) "0"
 set ::actualGlobalAnalytPar(FF,l5,distr) "0"
+set ::actualGlobalAnalytPar(FF,l5,max) "1e+200"
+set ::actualGlobalAnalytPar(FF,typestr) "44"
+set ::actualGlobalAnalytPar(reducedchisq) "1.0835e+021"
 set ::actualGlobalAnalytPar(SD,a5,factor) "1"
-set ::actualGlobalAnalytPar(reducedchisq) "1.33326e+017"
-set ::actualGlobalAnalytPar(SQ,s8,max) "1e+200"
 set ::actualGlobalAnalytPar(SQ,s5,common) "NONE"
+set ::actualGlobalAnalytPar(SQ,s8,max) "1e+200"
 set ::actualGlobalAnalytPar(SQ,s7,label) ""
 set ::actualGlobalAnalytPar(<sumR^0>) "0.0"
-set ::actualGlobalAnalytPar(SD,a7,common) "NONE"
 set ::actualGlobalAnalytPar(SQ,s5,active) "0"
+set ::actualGlobalAnalytPar(SD,a7,common) "NONE"
 set ::actualGlobalAnalytPar(SD,a8,err) "0.0"
-set ::actualGlobalAnalytPar(SQ,s10,limits) "0"
 set ::actualGlobalAnalytPar(datalabel) ""
-set ::actualGlobalAnalytPar(SD,a7,active) "0"
-set ::actualGlobalAnalytPar(SD,a2,var) "0.05"
+set ::actualGlobalAnalytPar(SQ,s10,limits) "0"
 set ::actualGlobalAnalytPar(SD,a3,label) ""
-set ::actualGlobalAnalytPar(SQ,s1,distr) "0"
+set ::actualGlobalAnalytPar(SD,a2,var) "0.05"
+set ::actualGlobalAnalytPar(SD,a7,active) "0"
 set ::actualGlobalAnalytPar(FF,l5,err) "0.0"
+set ::actualGlobalAnalytPar(SQ,s1,distr) "0"
 set ::actualGlobalAnalytPar(SQ,s1,factor) "1"
-set ::actualGlobalAnalytPar(SQ,s8,err) "0.0"
-set ::actualGlobalAnalytPar(SQ,s7,limits) "0"
 set ::actualGlobalAnalytPar(<sumR^1>) "0.0"
-set ::actualGlobalAnalytPar(varianceOFfit) "1.33326e+017"
-set ::actualGlobalAnalytPar(SD,a3,factor) "1"
-set ::actualGlobalAnalytPar(FF,l4,distr) "0"
+set ::actualGlobalAnalytPar(SQ,s7,limits) "0"
+set ::actualGlobalAnalytPar(SQ,s8,err) "0.0"
+set ::actualGlobalAnalytPar(varianceOFfit) "1.0835e+021"
 set ::actualGlobalAnalytPar(SQ,s2,var) "0.2"
-set ::actualGlobalAnalytPar(SD,a9,limits) "0"
+set ::actualGlobalAnalytPar(FF,l4,distr) "0"
+set ::actualGlobalAnalytPar(SD,a3,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s3,common) "NONE"
+set ::actualGlobalAnalytPar(SD,a9,limits) "0"
 set ::actualGlobalAnalytPar(SQ,s6,label) ""
-set ::actualGlobalAnalytPar(SD,a5,common) "NONE"
 set ::actualGlobalAnalytPar(SQ,s3,active) "0"
-set ::actualGlobalAnalytPar(SD,a3,min) "-1e+200"
+set ::actualGlobalAnalytPar(SD,a5,common) "NONE"
 set ::actualGlobalAnalytPar(FF,l8,factor) "1"
-set ::actualGlobalAnalytPar(actual_SD) "6"
+set ::actualGlobalAnalytPar(SD,a3,min) "-1e+200"
 set ::actualGlobalAnalytPar(FF,l7,var) "0.5"
-set ::actualGlobalAnalytPar(SD,a5,active) "0"
+set ::actualGlobalAnalytPar(actual_SD) "8"
 set ::actualGlobalAnalytPar(<sumR^2>) "0.0"
+set ::actualGlobalAnalytPar(SD,a5,active) "0"
 set ::actualGlobalAnalytPar(SD,a2,label) ""
 set ::actualGlobalAnalytPar(SD,a5,max) "1e+200"
-set ::actualGlobalAnalytPar(SQ,s5,limits) "0"
 set ::actualGlobalAnalytPar(SQ,s3,min) "-1e+200"
-set ::actualGlobalAnalytPar(SD,a1,factor) "1"
+set ::actualGlobalAnalytPar(SQ,s5,limits) "0"
 set ::actualGlobalAnalytPar(FF,l2,max) "1e+200"
-set ::actualGlobalAnalytPar(SD,a7,limits) "0"
-set ::actualGlobalAnalytPar(FF,l3,distr) "0"
+set ::actualGlobalAnalytPar(SD,a1,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s1,common) "NONE"
-set ::actualGlobalAnalytPar(SQ,s5,max) "1e+200"
+set ::actualGlobalAnalytPar(FF,l3,distr) "0"
+set ::actualGlobalAnalytPar(SD,a7,limits) "0"
 set ::actualGlobalAnalytPar(<sumR^3>) "0.0"
-set ::actualGlobalAnalytPar(SD,a3,common) "NONE"
-set ::actualGlobalAnalytPar(FF,l8,min) "-1e+200"
-set ::actualGlobalAnalytPar(SQ,s1,active) "0"
+set ::actualGlobalAnalytPar(SQ,s5,max) "1e+200"
 set ::actualGlobalAnalytPar(SQ,s5,label) ""
+set ::actualGlobalAnalytPar(SQ,s1,active) "0"
+set ::actualGlobalAnalytPar(FF,l8,min) "-1e+200"
+set ::actualGlobalAnalytPar(SD,a3,common) "NONE"
 set ::actualGlobalAnalytPar(FF,l6,factor) "1"
 set ::actualGlobalAnalytPar(SD,a5,err) "0.0"
 set ::actualGlobalAnalytPar(SD,a3,active) "0"
 set ::actualGlobalAnalytPar(FF,l8,label) {eta_solv =}
-set ::actualGlobalAnalytPar(FF,l8,common) "P7"
 set ::actualGlobalAnalytPar(SD,a1,label) {N =}
+set ::actualGlobalAnalytPar(FF,l8,common) "P7"
 set ::actualGlobalAnalytPar(R_RG) "0.0"
-set ::actualGlobalAnalytPar(<sumR^4>) "0.0"
 set ::actualGlobalAnalytPar(FF,l2,err) "0.0"
-set ::actualGlobalAnalytPar(SQ,s10,min) "-1e+200"
-set ::actualGlobalAnalytPar(SQ,s3,limits) "0"
+set ::actualGlobalAnalytPar(<sumR^4>) "0.0"
 set ::actualGlobalAnalytPar(FF,l8,active) "0"
+set ::actualGlobalAnalytPar(SQ,s3,limits) "0"
+set ::actualGlobalAnalytPar(SQ,s10,min) "-1e+200"
 set ::actualGlobalAnalytPar(SQ,s5,err) "0.0"
-set ::actualGlobalAnalytPar(dataset) "6"
+set ::actualGlobalAnalytPar(dataset) "8"
 set ::actualGlobalAnalytPar(SD,a5,limits) "0"
-set ::actualGlobalAnalytPar(SD,a7,var) "0.0"
-set ::actualGlobalAnalytPar(R_lc) "0.0"
 set ::actualGlobalAnalytPar(FF,l2,distr) "0"
+set ::actualGlobalAnalytPar(R_lc) "0.0"
+set ::actualGlobalAnalytPar(SD,a7,var) "0.0"
 set ::actualGlobalAnalytPar(SD,a1,common) "NONE"
-set ::actualGlobalAnalytPar(FF,l4,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s4,label) ""
+set ::actualGlobalAnalytPar(FF,l4,factor) "1"
 set ::actualGlobalAnalytPar(<sumR^5>) "0.0"
-set ::actualGlobalAnalytPar(SD,a1,active) "0"
 set ::actualGlobalAnalytPar(FF,l4,var) "4.0"
-set ::actualGlobalAnalytPar(R_li) "0.0"
+set ::actualGlobalAnalytPar(SD,a1,active) "0"
 set ::actualGlobalAnalytPar(SD,typestr) "Delta"
-set ::actualGlobalAnalytPar(SQ,s7,var) "0.0"
-set ::actualGlobalAnalytPar(sumR_RG) "0.0"
-set ::actualGlobalAnalytPar(FF,l6,common) "P5"
+set ::actualGlobalAnalytPar(R_li) "0.0"
 set ::actualGlobalAnalytPar(FF,l7,label) {eta_shell =}
+set ::actualGlobalAnalytPar(FF,l6,common) "P5"
+set ::actualGlobalAnalytPar(sumR_RG) "0.0"
+set ::actualGlobalAnalytPar(SQ,s7,var) "0.0"
 set ::actualGlobalAnalytPar(SD,a2,max) "1e+200"
 set ::actualGlobalAnalytPar(plottype) "-1"
-set ::actualGlobalAnalytPar(FF,l6,active) "0"
 set ::actualGlobalAnalytPar(SQ,s1,limits) "0"
+set ::actualGlobalAnalytPar(FF,l6,active) "0"
 set ::actualGlobalAnalytPar(SD,a8,min) "-1e+200"
-set ::actualGlobalAnalytPar(SD,a3,limits) "0"
-set ::actualGlobalAnalytPar(sumR_lc) "0.0"
 set ::actualGlobalAnalytPar(<sumR^6>) "0.0"
-set ::actualGlobalAnalytPar(FF,l1,distr) "0"
+set ::actualGlobalAnalytPar(sumR_lc) "0.0"
+set ::actualGlobalAnalytPar(SD,a3,limits) "0"
 set ::actualGlobalAnalytPar(SQ,s2,max) "1e+200"
-set ::actualGlobalAnalytPar(FF,l2,factor) "1"
+set ::actualGlobalAnalytPar(FF,l1,distr) "0"
 set ::actualGlobalAnalytPar(FF,l5,min) "-1e+200"
-set ::actualGlobalAnalytPar(FF,l8,limits) "0"
+set ::actualGlobalAnalytPar(FF,l2,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s3,label) ""
-set ::actualGlobalAnalytPar(SD,a2,err) "0.0"
-set ::actualGlobalAnalytPar(SQ,s8,min) "-1e+200"
+set ::actualGlobalAnalytPar(FF,l8,limits) "0"
 set ::actualGlobalAnalytPar(sumR_li) "0.0"
-set ::actualGlobalAnalytPar(FF,l4,common) "P3"
+set ::actualGlobalAnalytPar(SQ,s8,min) "-1e+200"
+set ::actualGlobalAnalytPar(SD,a2,err) "0.0"
 set ::actualGlobalAnalytPar(FF,l7,max) "1e+200"
-set ::actualGlobalAnalytPar(<sumR^7>) "0.0"
+set ::actualGlobalAnalytPar(FF,l4,common) "P3"
 set ::actualGlobalAnalytPar(FF,l6,label) {eta_core =}
+set ::actualGlobalAnalytPar(<sumR^7>) "0.0"
 set ::actualGlobalAnalytPar(FF,l4,active) "0"
-set ::actualGlobalAnalytPar(SD,param_count_old) "10"
 set ::actualGlobalAnalytPar(SQ,s2,err) "0.0"
+set ::actualGlobalAnalytPar(SD,param_count_old) "10"
 set ::actualGlobalAnalytPar(SD,a1,limits) "0"
 set ::actualGlobalAnalytPar(SD,a4,var) "10.0"
 set ::actualGlobalAnalytPar(<sumR^8>) "0.0"
-set ::actualGlobalAnalytPar(FF,l6,limits) "0"
 set ::actualGlobalAnalytPar(FF,l7,err) "0.0"
+set ::actualGlobalAnalytPar(FF,l6,limits) "0"
 set ::actualGlobalAnalytPar(SQ,s2,label) ""
 set ::actualGlobalAnalytPar(FF,l1,var) "20.0"
 set ::actualGlobalAnalytPar(FF,l2,common) "P2"
 set ::actualGlobalAnalytPar(SQ,s4,var) "0.0"
 set ::actualGlobalAnalytPar(FF,l5,label) {sigma =}
-set ::actualGlobalAnalytPar(fitSDFF) "yes"
 set ::actualGlobalAnalytPar(FF,l2,active) "0"
-set ::actualGlobalAnalytPar(R_VP) "0.0"
+set ::actualGlobalAnalytPar(fitSDFF) "yes"
 set ::actualGlobalAnalytPar(FF,param_count_old) "8"
+set ::actualGlobalAnalytPar(R_VP) "0.0"
 set ::actualGlobalAnalytPar(SD,a5,min) "-1e+200"
-set ::actualGlobalAnalytPar(alambda) "-1"
 set ::actualGlobalAnalytPar(<R^0>) "0.0"
-set ::actualGlobalAnalytPar(max_SD) "6"
+set ::actualGlobalAnalytPar(alambda) "-1"
 set ::actualGlobalAnalytPar(common_names) {NONE NEW P1 P2 P3 P4 P5 P6 P7}
+set ::actualGlobalAnalytPar(max_SD) "8"
 set ::actualGlobalAnalytPar(SD,a7,max) "1e+200"
-set ::actualGlobalAnalytPar(SQ,s10,distr) "0"
-set ::actualGlobalAnalytPar(SQ,s8,factor) "1"
-set ::actualGlobalAnalytPar(FF,l2,min) "-1e+200"
 set ::actualGlobalAnalytPar(FF,l4,limits) "0"
+set ::actualGlobalAnalytPar(FF,l2,min) "-1e+200"
+set ::actualGlobalAnalytPar(SQ,s8,factor) "1"
+set ::actualGlobalAnalytPar(SQ,s10,distr) "0"
 set ::actualGlobalAnalytPar(SD,a9,distr) "0"
-set ::actualGlobalAnalytPar(SQ,s5,min) "-1e+200"
 set ::actualGlobalAnalytPar(SQ,s1,label) ""
+set ::actualGlobalAnalytPar(SQ,s5,min) "-1e+200"
 set ::actualGlobalAnalytPar(SQ,param_count) "10"
 set ::actualGlobalAnalytPar(FF,l4,max) "1e+200"
 set ::actualGlobalAnalytPar(<R^1>) "0.0"
-set ::actualGlobalAnalytPar(SQ,s7,max) "1e+200"
-set ::actualGlobalAnalytPar(sumR_VP) "0.0"
 set ::actualGlobalAnalytPar(FF,l4,label) {t =}
+set ::actualGlobalAnalytPar(sumR_VP) "0.0"
+set ::actualGlobalAnalytPar(SQ,s7,max) "1e+200"
 set ::actualGlobalAnalytPar(substrSDFF) "no"
 set ::actualGlobalAnalytPar(SD,a7,err) "0.0"
 set ::actualGlobalAnalytPar(SD,a1,var) "1.0"
-set ::actualGlobalAnalytPar(SQ,s6,factor) "1"
-set ::actualGlobalAnalytPar(<R^2>) "0.0"
 set ::actualGlobalAnalytPar(FF,l2,limits) "0"
+set ::actualGlobalAnalytPar(<R^2>) "0.0"
+set ::actualGlobalAnalytPar(SQ,s6,factor) "1"
 set ::actualGlobalAnalytPar(FF,l4,err) "0.0"
 set ::actualGlobalAnalytPar(SD,a8,distr) "0"
-set ::actualGlobalAnalytPar(SD,a10,distr) "0"
-set ::actualGlobalAnalytPar(SD,a8,factor) "1"
 set ::actualGlobalAnalytPar(SQ,s7,err) "0.0"
+set ::actualGlobalAnalytPar(SD,a8,factor) "1"
+set ::actualGlobalAnalytPar(SD,a10,distr) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s8,common) "NONE"
-set ::tmpactualGlobalAnalytPar(P1) "10.0"
+set ::tmpactualGlobalAnalytPar(P1) "20.0"
 set ::tmpactualGlobalAnalytPar(SQ,s1,var) "100.0"
-set ::tmpactualGlobalAnalytPar(P2) "30.0"
+set ::tmpactualGlobalAnalytPar(P2) "50.0"
 set ::tmpactualGlobalAnalytPar(SD,a9,var) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l10,common) "NONE"
-set ::tmpactualGlobalAnalytPar(P3) "5.0"
+set ::tmpactualGlobalAnalytPar(P3) "4.0"
 set ::tmpactualGlobalAnalytPar(SQ,s8,active) "0"
 set ::tmpactualGlobalAnalytPar(sumfp) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l3,label) ""
 set ::tmpactualGlobalAnalytPar(P4) "0.2"
-set ::tmpactualGlobalAnalytPar(FF,l10,active) "0"
-set ::tmpactualGlobalAnalytPar(<R^3>) "0.0"
 set ::tmpactualGlobalAnalytPar(P5) "1.0"
-set ::tmpactualGlobalAnalytPar(fp) "0.0"
-set ::tmpactualGlobalAnalytPar(SD,a2,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(<R^3>) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l10,active) "0"
 set ::tmpactualGlobalAnalytPar(P6) "0.5"
-set ::tmpactualGlobalAnalytPar(FF,l6,var) "0.2"
+set ::tmpactualGlobalAnalytPar(SD,a2,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(fp) "0.0"
 set ::tmpactualGlobalAnalytPar(P7) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l6,var) "1.0"
 set ::tmpactualGlobalAnalytPar(SD,a10,factor) "1"
 set ::tmpactualGlobalAnalytPar(SQ,s9,var) "0.0"
-set ::tmpactualGlobalAnalytPar(SQ,s4,factor) "1"
 set ::tmpactualGlobalAnalytPar(SD,a4,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(SD,a7,distr) "0"
-set ::tmpactualGlobalAnalytPar(SQ,s2,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s4,factor) "1"
 set ::tmpactualGlobalAnalytPar(SD,a6,factor) "1"
-set ::tmpactualGlobalAnalytPar(<R^4>) "0.0"
+set ::tmpactualGlobalAnalytPar(SQ,s2,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SD,a7,distr) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s6,common) "NONE"
+set ::tmpactualGlobalAnalytPar(<R^4>) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l1,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s4,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s6,active) "0"
 set ::tmpactualGlobalAnalytPar(SD,a8,common) "NONE"
-set ::tmpactualGlobalAnalytPar(FF,l2,label) {R_minor =}
+set ::tmpactualGlobalAnalytPar(SQ,s6,active) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s4,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(SD,a10,var) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l7,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(FF,l2,label) {R_equatorial =}
 set ::tmpactualGlobalAnalytPar(SQ,typestr) "None"
+set ::tmpactualGlobalAnalytPar(FF,l7,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SD,a8,active) "0"
 set ::tmpactualGlobalAnalytPar(SD,a4,err) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l9,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(<R^5>) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l9,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(SQ,s2,factor) "1"
 set ::tmpactualGlobalAnalytPar(SQ,s8,limits) "0"
-set ::tmpactualGlobalAnalytPar(FF,l1,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a10,common) "NONE"
-set ::tmpactualGlobalAnalytPar(FF,l10,limits) "0"
+set ::tmpactualGlobalAnalytPar(FF,l1,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a4,factor) "1"
-set ::tmpactualGlobalAnalytPar(SQ,s4,err) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l10,limits) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s4,common) "NONE"
+set ::tmpactualGlobalAnalytPar(SQ,s4,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a6,distr) "0"
 set ::tmpactualGlobalAnalytPar(SD,a10,active) "0"
 set ::tmpactualGlobalAnalytPar(SD,a6,common) "NONE"
 set ::tmpactualGlobalAnalytPar(SD,a6,var) "0.0"
 set ::tmpactualGlobalAnalytPar(SQ,s4,active) "0"
-set ::tmpactualGlobalAnalytPar(chisq) "3.33982e+020"
+set ::tmpactualGlobalAnalytPar(chisq) "3.257e+024"
 set ::tmpactualGlobalAnalytPar(FF,l9,factor) "1"
 set ::tmpactualGlobalAnalytPar(<R^6>) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l1,label) {R_major =}
+set ::tmpactualGlobalAnalytPar(FF,l1,label) {R_polar =}
 set ::tmpactualGlobalAnalytPar(SD,a6,active) "0"
 set ::tmpactualGlobalAnalytPar(FF,l9,err) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l3,var) "0.0"
@@ -1633,7 +1763,7 @@ set ::tmpactualGlobalAnalytPar(Q) "0"
 set ::tmpactualGlobalAnalytPar(SD,a10,label) ""
 set ::tmpactualGlobalAnalytPar(FF,l3,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(FF,l5,active) "0"
-set ::tmpactualGlobalAnalytPar(R) "2.14227e+008"
+set ::tmpactualGlobalAnalytPar(R) "1.62226e+010"
 set ::tmpactualGlobalAnalytPar(SQ,s6,distr) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s6,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(SD,a2,limits) "0"
@@ -1670,7 +1800,7 @@ set ::tmpactualGlobalAnalytPar(SQ,s10,factor) "1"
 set ::tmpactualGlobalAnalytPar(SQ,s3,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(SQ,s4,distr) "0"
 set ::tmpactualGlobalAnalytPar(common_i) "7"
-set ::tmpactualGlobalAnalytPar(FF,param_count) "10"
+set ::tmpactualGlobalAnalytPar(FF,param_count) "8"
 set ::tmpactualGlobalAnalytPar(FF,l6,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(FF,l10,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a3,err) "0.0"
@@ -1691,196 +1821,198 @@ set ::tmpactualGlobalAnalytPar(datalabel,5) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s3,err) "0.0"
 set ::tmpactualGlobalAnalytPar(datalabel,6) "0t"
 set ::tmpactualGlobalAnalytPar(SQ,s9,active) "0"
+set ::tmpactualGlobalAnalytPar(datalabel,7) {Re Rp}
 set ::tmpactualGlobalAnalytPar(SD,a10,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SD,a5,label) ""
+set ::tmpactualGlobalAnalytPar(datalabel,8) {Re Rp t}
 set ::tmpactualGlobalAnalytPar(SD,a5,var) "0.0"
 set ::tmpactualGlobalAnalytPar(SQ,s10,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(old_actual_SD) "6"
+set ::tmpactualGlobalAnalytPar(old_actual_SD) "8"
 set ::tmpactualGlobalAnalytPar(SQ,s3,distr) "0"
-set ::tmpactualGlobalAnalytPar(FF,l8,err) "0.0"
-set ::tmpactualGlobalAnalytPar(wR) "3.65138e+008"
 set ::tmpactualGlobalAnalytPar(SQ,s10,common) "NONE"
-set ::tmpactualGlobalAnalytPar(FF,l2,var) "30.0"
-set ::tmpactualGlobalAnalytPar(FF,l1,limits) "0"
+set ::tmpactualGlobalAnalytPar(wR) "3.29166e+010"
+set ::tmpactualGlobalAnalytPar(FF,l8,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SQ,s5,factor) "1"
-set ::tmpactualGlobalAnalytPar(SD,param_count) "10"
-set ::tmpactualGlobalAnalytPar(SQ,s10,active) "0"
+set ::tmpactualGlobalAnalytPar(FF,l1,limits) "0"
+set ::tmpactualGlobalAnalytPar(FF,l2,var) "50.0"
 set ::tmpactualGlobalAnalytPar(FF,l6,distr) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s10,active) "0"
+set ::tmpactualGlobalAnalytPar(SD,param_count) "10"
 set ::tmpactualGlobalAnalytPar(SQ,s5,var) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a7,factor) "1"
-set ::tmpactualGlobalAnalytPar(SQ,s7,common) "NONE"
 set ::tmpactualGlobalAnalytPar(SQ,s8,label) ""
+set ::tmpactualGlobalAnalytPar(SQ,s7,common) "NONE"
 set ::tmpactualGlobalAnalytPar(SQ,s10,err) "0.0"
-set ::tmpactualGlobalAnalytPar(SD,a9,common) "NONE"
-set ::tmpactualGlobalAnalytPar(SD,a6,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SQ,s7,active) "0"
+set ::tmpactualGlobalAnalytPar(SD,a6,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SD,a9,common) "NONE"
 set ::tmpactualGlobalAnalytPar(SD,a4,label) ""
 set ::tmpactualGlobalAnalytPar(SD,a9,active) "0"
-set ::tmpactualGlobalAnalytPar(datasetlabel) {1 2 3 4 5 6}
 set ::tmpactualGlobalAnalytPar(SD,a8,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s2,distr) "0"
+set ::tmpactualGlobalAnalytPar(datasetlabel) {1 2 3 4 5 6 7 8}
 set ::tmpactualGlobalAnalytPar(FF,l3,min) "-1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s6,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s2,distr) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s3,factor) "1"
-set ::tmpactualGlobalAnalytPar(error) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s6,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SQ,s9,limits) "0"
-set ::tmpactualGlobalAnalytPar(FF,l5,distr) "0"
-set ::tmpactualGlobalAnalytPar(FF,typestr) "37"
+set ::tmpactualGlobalAnalytPar(error) "0"
 set ::tmpactualGlobalAnalytPar(FF,l5,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(reducedchisq) "1.33326e+017"
+set ::tmpactualGlobalAnalytPar(FF,typestr) "44"
+set ::tmpactualGlobalAnalytPar(FF,l5,distr) "0"
 set ::tmpactualGlobalAnalytPar(SD,a5,factor) "1"
-set ::tmpactualGlobalAnalytPar(SQ,s5,common) "NONE"
+set ::tmpactualGlobalAnalytPar(reducedchisq) "1.0835e+021"
 set ::tmpactualGlobalAnalytPar(SQ,s8,max) "1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s5,common) "NONE"
 set ::tmpactualGlobalAnalytPar(SQ,s7,label) ""
 set ::tmpactualGlobalAnalytPar(<sumR^0>) "0.0"
-set ::tmpactualGlobalAnalytPar(SQ,s5,active) "0"
 set ::tmpactualGlobalAnalytPar(SD,a7,common) "NONE"
+set ::tmpactualGlobalAnalytPar(SQ,s5,active) "0"
 set ::tmpactualGlobalAnalytPar(SD,a8,err) "0.0"
-set ::tmpactualGlobalAnalytPar(datalabel) ""
 set ::tmpactualGlobalAnalytPar(SQ,s10,limits) "0"
-set ::tmpactualGlobalAnalytPar(SD,a3,label) ""
-set ::tmpactualGlobalAnalytPar(SD,a2,var) "0.05"
+set ::tmpactualGlobalAnalytPar(datalabel) ""
 set ::tmpactualGlobalAnalytPar(SD,a7,active) "0"
-set ::tmpactualGlobalAnalytPar(SQ,s1,distr) "0"
+set ::tmpactualGlobalAnalytPar(SD,a2,var) "0.05"
+set ::tmpactualGlobalAnalytPar(SD,a3,label) ""
 set ::tmpactualGlobalAnalytPar(FF,l5,err) "0.0"
+set ::tmpactualGlobalAnalytPar(SQ,s1,distr) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s1,factor) "1"
-set ::tmpactualGlobalAnalytPar(<sumR^1>) "0.0"
-set ::tmpactualGlobalAnalytPar(SQ,s7,limits) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s8,err) "0.0"
-set ::tmpactualGlobalAnalytPar(varianceOFfit) "1.33326e+017"
-set ::tmpactualGlobalAnalytPar(SQ,s2,var) "0.2"
-set ::tmpactualGlobalAnalytPar(FF,l4,distr) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s7,limits) "0"
+set ::tmpactualGlobalAnalytPar(<sumR^1>) "0.0"
+set ::tmpactualGlobalAnalytPar(varianceOFfit) "1.0835e+021"
 set ::tmpactualGlobalAnalytPar(SD,a3,factor) "1"
-set ::tmpactualGlobalAnalytPar(SQ,s3,common) "NONE"
+set ::tmpactualGlobalAnalytPar(FF,l4,distr) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s2,var) "0.2"
 set ::tmpactualGlobalAnalytPar(SD,a9,limits) "0"
-set ::tmpactualGlobalAnalytPar(FF,l10,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s3,common) "NONE"
 set ::tmpactualGlobalAnalytPar(SQ,s6,label) ""
-set ::tmpactualGlobalAnalytPar(SQ,s3,active) "0"
+set ::tmpactualGlobalAnalytPar(FF,l10,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SD,a5,common) "NONE"
-set ::tmpactualGlobalAnalytPar(FF,l10,distr) "0"
-set ::tmpactualGlobalAnalytPar(FF,l8,factor) "1"
+set ::tmpactualGlobalAnalytPar(SQ,s3,active) "0"
 set ::tmpactualGlobalAnalytPar(SD,a3,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(FF,l8,factor) "1"
+set ::tmpactualGlobalAnalytPar(FF,l10,distr) "0"
+set ::tmpactualGlobalAnalytPar(actual_SD) "8"
 set ::tmpactualGlobalAnalytPar(FF,l7,var) "0.5"
-set ::tmpactualGlobalAnalytPar(actual_SD) "6"
-set ::tmpactualGlobalAnalytPar(FF,l9,label) ""
-set ::tmpactualGlobalAnalytPar(<sumR^2>) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a5,active) "0"
+set ::tmpactualGlobalAnalytPar(<sumR^2>) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l9,label) ""
 set ::tmpactualGlobalAnalytPar(SD,a2,label) ""
 set ::tmpactualGlobalAnalytPar(SD,a5,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s3,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SQ,s5,limits) "0"
-set ::tmpactualGlobalAnalytPar(FF,l2,max) "1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s3,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SD,a1,factor) "1"
-set ::tmpactualGlobalAnalytPar(SQ,s1,common) "NONE"
-set ::tmpactualGlobalAnalytPar(FF,l3,distr) "0"
+set ::tmpactualGlobalAnalytPar(FF,l2,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(SD,a7,limits) "0"
-set ::tmpactualGlobalAnalytPar(<sumR^3>) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l3,distr) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s1,common) "NONE"
 set ::tmpactualGlobalAnalytPar(SQ,s5,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s1,active) "0"
-set ::tmpactualGlobalAnalytPar(FF,l8,min) "-1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s5,label) ""
+set ::tmpactualGlobalAnalytPar(<sumR^3>) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a3,common) "NONE"
+set ::tmpactualGlobalAnalytPar(SQ,s5,label) ""
+set ::tmpactualGlobalAnalytPar(FF,l8,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s1,active) "0"
 set ::tmpactualGlobalAnalytPar(FF,l6,factor) "1"
 set ::tmpactualGlobalAnalytPar(SD,a5,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a3,active) "0"
 set ::tmpactualGlobalAnalytPar(FF,l8,label) {eta_solv =}
-set ::tmpactualGlobalAnalytPar(FF,l8,common) "P7"
 set ::tmpactualGlobalAnalytPar(SD,a1,label) {N =}
+set ::tmpactualGlobalAnalytPar(FF,l8,common) "P7"
 set ::tmpactualGlobalAnalytPar(R_RG) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l2,err) "0.0"
 set ::tmpactualGlobalAnalytPar(<sumR^4>) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l8,active) "0"
-set ::tmpactualGlobalAnalytPar(SQ,s3,limits) "0"
+set ::tmpactualGlobalAnalytPar(FF,l2,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SQ,s10,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s3,limits) "0"
+set ::tmpactualGlobalAnalytPar(FF,l8,active) "0"
 set ::tmpactualGlobalAnalytPar(SQ,s5,err) "0.0"
-set ::tmpactualGlobalAnalytPar(dataset) "6"
+set ::tmpactualGlobalAnalytPar(dataset) "8"
 set ::tmpactualGlobalAnalytPar(SD,a5,limits) "0"
-set ::tmpactualGlobalAnalytPar(FF,l2,distr) "0"
-set ::tmpactualGlobalAnalytPar(R_lc) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a7,var) "0.0"
+set ::tmpactualGlobalAnalytPar(R_lc) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l2,distr) "0"
 set ::tmpactualGlobalAnalytPar(SD,a1,common) "NONE"
-set ::tmpactualGlobalAnalytPar(FF,l4,factor) "1"
 set ::tmpactualGlobalAnalytPar(SQ,s4,label) ""
+set ::tmpactualGlobalAnalytPar(FF,l4,factor) "1"
 set ::tmpactualGlobalAnalytPar(<sumR^5>) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l4,var) "5.0"
 set ::tmpactualGlobalAnalytPar(SD,a1,active) "0"
-set ::tmpactualGlobalAnalytPar(SD,typestr) "Delta"
+set ::tmpactualGlobalAnalytPar(FF,l4,var) "4.0"
 set ::tmpactualGlobalAnalytPar(R_li) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l6,common) "P4"
-set ::tmpactualGlobalAnalytPar(FF,l7,label) {eta_shell =}
-set ::tmpactualGlobalAnalytPar(sumR_RG) "0.0"
+set ::tmpactualGlobalAnalytPar(SD,typestr) "Delta"
 set ::tmpactualGlobalAnalytPar(SQ,s7,var) "0.0"
+set ::tmpactualGlobalAnalytPar(sumR_RG) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l7,label) {eta_shell =}
+set ::tmpactualGlobalAnalytPar(FF,l6,common) "P5"
 set ::tmpactualGlobalAnalytPar(SD,a2,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(plottype) "-1"
-set ::tmpactualGlobalAnalytPar(SQ,s1,limits) "0"
 set ::tmpactualGlobalAnalytPar(FF,l6,active) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s1,limits) "0"
 set ::tmpactualGlobalAnalytPar(SD,a8,min) "-1e+200"
-set ::tmpactualGlobalAnalytPar(<sumR^6>) "0.0"
-set ::tmpactualGlobalAnalytPar(sumR_lc) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a3,limits) "0"
-set ::tmpactualGlobalAnalytPar(SQ,s2,max) "1e+200"
+set ::tmpactualGlobalAnalytPar(sumR_lc) "0.0"
+set ::tmpactualGlobalAnalytPar(<sumR^6>) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l1,distr) "0"
-set ::tmpactualGlobalAnalytPar(FF,l5,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s2,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(FF,l2,factor) "1"
-set ::tmpactualGlobalAnalytPar(FF,l8,limits) "0"
+set ::tmpactualGlobalAnalytPar(FF,l5,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SQ,s3,label) ""
-set ::tmpactualGlobalAnalytPar(sumR_li) "0.0"
-set ::tmpactualGlobalAnalytPar(SQ,s8,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(FF,l8,limits) "0"
 set ::tmpactualGlobalAnalytPar(SD,a2,err) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l7,max) "1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s8,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(sumR_li) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l4,common) "P3"
-set ::tmpactualGlobalAnalytPar(FF,l6,label) {eta_core =}
+set ::tmpactualGlobalAnalytPar(FF,l7,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(<sumR^7>) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l6,label) {eta_core =}
 set ::tmpactualGlobalAnalytPar(FF,l4,active) "0"
-set ::tmpactualGlobalAnalytPar(SQ,s2,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,param_count_old) "10"
+set ::tmpactualGlobalAnalytPar(SQ,s2,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a1,limits) "0"
 set ::tmpactualGlobalAnalytPar(SD,a4,var) "10.0"
 set ::tmpactualGlobalAnalytPar(<sumR^8>) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l7,err) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l6,limits) "0"
+set ::tmpactualGlobalAnalytPar(FF,l7,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SQ,s2,label) ""
-set ::tmpactualGlobalAnalytPar(FF,l1,var) "10.0"
+set ::tmpactualGlobalAnalytPar(FF,l1,var) "20.0"
 set ::tmpactualGlobalAnalytPar(FF,l2,common) "P2"
 set ::tmpactualGlobalAnalytPar(SQ,s4,var) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l5,label) {sigma =}
-set ::tmpactualGlobalAnalytPar(FF,l2,active) "0"
 set ::tmpactualGlobalAnalytPar(fitSDFF) "yes"
-set ::tmpactualGlobalAnalytPar(FF,param_count_old) "8"
+set ::tmpactualGlobalAnalytPar(FF,l2,active) "0"
 set ::tmpactualGlobalAnalytPar(R_VP) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,param_count_old) "8"
 set ::tmpactualGlobalAnalytPar(SD,a5,min) "-1e+200"
-set ::tmpactualGlobalAnalytPar(FF,l9,var) "0.0"
-set ::tmpactualGlobalAnalytPar(<R^0>) "0.0"
 set ::tmpactualGlobalAnalytPar(alambda) "-1"
+set ::tmpactualGlobalAnalytPar(<R^0>) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l9,var) "0.0"
+set ::tmpactualGlobalAnalytPar(max_SD) "8"
 set ::tmpactualGlobalAnalytPar(common_names) {NONE NEW P1 P2 P3 P4 P5 P6 P7}
-set ::tmpactualGlobalAnalytPar(max_SD) "6"
 set ::tmpactualGlobalAnalytPar(SD,a7,max) "1e+200"
-set ::tmpactualGlobalAnalytPar(SQ,s10,distr) "0"
-set ::tmpactualGlobalAnalytPar(FF,l4,limits) "0"
-set ::tmpactualGlobalAnalytPar(FF,l2,min) "-1e+200"
 set ::tmpactualGlobalAnalytPar(SQ,s8,factor) "1"
+set ::tmpactualGlobalAnalytPar(FF,l2,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(FF,l4,limits) "0"
+set ::tmpactualGlobalAnalytPar(SQ,s10,distr) "0"
 set ::tmpactualGlobalAnalytPar(SD,a9,distr) "0"
-set ::tmpactualGlobalAnalytPar(FF,l10,factor) "1"
-set ::tmpactualGlobalAnalytPar(SQ,s1,label) ""
 set ::tmpactualGlobalAnalytPar(SQ,s5,min) "-1e+200"
+set ::tmpactualGlobalAnalytPar(SQ,s1,label) ""
+set ::tmpactualGlobalAnalytPar(FF,l10,factor) "1"
 set ::tmpactualGlobalAnalytPar(SQ,param_count) "10"
 set ::tmpactualGlobalAnalytPar(FF,l4,max) "1e+200"
 set ::tmpactualGlobalAnalytPar(<R^1>) "0.0"
-set ::tmpactualGlobalAnalytPar(FF,l4,label) {t =}
-set ::tmpactualGlobalAnalytPar(sumR_VP) "0.0"
 set ::tmpactualGlobalAnalytPar(SQ,s7,max) "1e+200"
+set ::tmpactualGlobalAnalytPar(sumR_VP) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l4,label) {t =}
 set ::tmpactualGlobalAnalytPar(substrSDFF) "no"
 set ::tmpactualGlobalAnalytPar(SD,a7,err) "0.0"
 set ::tmpactualGlobalAnalytPar(FF,l10,label) ""
 set ::tmpactualGlobalAnalytPar(SD,a1,var) "1.0"
-set ::tmpactualGlobalAnalytPar(FF,l2,limits) "0"
-set ::tmpactualGlobalAnalytPar(<R^2>) "0.0"
 set ::tmpactualGlobalAnalytPar(SQ,s6,factor) "1"
+set ::tmpactualGlobalAnalytPar(<R^2>) "0.0"
+set ::tmpactualGlobalAnalytPar(FF,l2,limits) "0"
 set ::tmpactualGlobalAnalytPar(FF,l4,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a8,distr) "0"
-set ::tmpactualGlobalAnalytPar(SD,a10,distr) "0"
-set ::tmpactualGlobalAnalytPar(SQ,s7,err) "0.0"
 set ::tmpactualGlobalAnalytPar(SD,a8,factor) "1"
+set ::tmpactualGlobalAnalytPar(SQ,s7,err) "0.0"
+set ::tmpactualGlobalAnalytPar(SD,a10,distr) "0"
 set ::AnalytPar(R_lc) "26.7406"
 set ::AnalytPar(wR) "1"
 set ::AnalytPar(SQ,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
@@ -1888,7 +2020,7 @@ set ::AnalytPar(FF,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 set ::AnalytPar(sumfp) "0"
 set ::AnalytPar(<sumR^5>) "4.46639e-049"
 set ::AnalytPar(SD,err) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::AnalytPar(SD,param_count) "10"
+set ::AnalytPar(SD,param_count) "0"
 set ::AnalytPar(resolution) "no"
 set ::AnalytPar(<R^3>) "6.56021e-019"
 set ::AnalytPar(fp) "0"
@@ -2011,8 +2143,8 @@ set ::AnalytPar(FF,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+20
 set ::AnalytPar(SQ,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
 set ::AnalytPar(FF,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
 set ::AnalytPar(fitSDFF) "yes"
-set ::AnalytPar(FF,param_count_old) "10"
 set ::AnalytPar(SQ,param_count_old) "10"
+set ::AnalytPar(FF,param_count_old) "8"
 set ::AnalytPar(R_VP) "1.10583e-010"
 set ::AnalytPar(actual_SD) "1"
 set ::AnalytPar(<sumR^2>) "3.30289e-019"
@@ -2025,9 +2157,9 @@ set ::AnalytPar(max_SD) "1"
 set ::AnalytPar(SQ,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::AnalytPar(FF,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::AnalytPar(mom_w) ".obW.tab.analytmoments"
-set ::AnalytPar(SQ,param_count) "10"
+set ::AnalytPar(SQ,param_count) "0"
 set ::AnalytPar(SQ,err) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::AnalytPar(FF,param_count) "8"
+set ::AnalytPar(FF,param_count) "0"
 set ::AnalytPar(FF,err) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::AnalytPar(<sumR^3>) "6.56021e-019"
 set ::AnalytPar(w_AnalytPar) ""
@@ -2047,17 +2179,17 @@ set ::AnalytPar(<R^2>) "3.30289e-019"
 set ::AnalytPar(R_Ac) "8.25125e-016"
 set ::AnalytPar(old_actual_SD) "1"
 set ::tmpAnalytPar(R_lc) "0.0"
-set ::tmpAnalytPar(FF,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpAnalytPar(SQ,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpAnalytPar(FF,limits) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpAnalytPar(sumfp) "0.0"
-set ::tmpAnalytPar(resolution) "no"
-set ::tmpAnalytPar(SD,param_count) "10"
-set ::tmpAnalytPar(SD,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpAnalytPar(<sumR^5>) "0.0"
+set ::tmpAnalytPar(SD,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::tmpAnalytPar(SD,param_count) "0"
+set ::tmpAnalytPar(resolution) "no"
 set ::tmpAnalytPar(<R^3>) "0.0"
-set ::tmpAnalytPar(calcSDFF) "yes"
-set ::tmpAnalytPar(SD,typestr) "Delta"
 set ::tmpAnalytPar(fp) "0.0"
+set ::tmpAnalytPar(SD,typestr) "Delta"
+set ::tmpAnalytPar(calcSDFF) "yes"
 set ::tmpAnalytPar(alpha) ""
 set ::tmpAnalytPar(R_li) "0.0"
 set ::tmpAnalytPar(sumR_RG) "0.0"
@@ -2148,7 +2280,7 @@ set ::tmpAnalytPar(<sumR^1>) "0.0"
 set ::tmpAnalytPar(file) "unknown.par"
 set ::tmpAnalytPar(<R^6>) "0.0"
 set ::tmpAnalytPar(par_descr) {parameters of_analytical_size distrib.}
-set ::tmpAnalytPar(FF,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::tmpAnalytPar(SQ,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
 set ::tmpAnalytPar(par_text_display) {scattering contribution =    1    approximation type = monodisperse approx.                 
               calculate =  yes             substract =                   no     fit = yes   
                 LogNorm                       Sphere                           None         
@@ -2156,42 +2288,42 @@ set ::tmpAnalytPar(par_text_display) {scattering contribution =    1    approxim
                       s = 0.05                                                              
                       p =  1.0                                                              
                      mu = 10.0                   eta =                  1.0                 }
-set ::tmpAnalytPar(SQ,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
-set ::tmpAnalytPar(fitSDFF) "yes"
-set ::tmpAnalytPar(FF,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::tmpAnalytPar(FF,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
 set ::tmpAnalytPar(SQ,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
-set ::tmpAnalytPar(FF,param_count_old) "10"
-set ::tmpAnalytPar(SQ,param_count_old) "10"
+set ::tmpAnalytPar(FF,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
+set ::tmpAnalytPar(fitSDFF) "yes"
 set ::tmpAnalytPar(R_VP) "0.0"
+set ::tmpAnalytPar(SQ,param_count_old) "10"
+set ::tmpAnalytPar(FF,param_count_old) "8"
 set ::tmpAnalytPar(actual_SD) "1"
-set ::tmpAnalytPar(<R^7>) "0.0"
 set ::tmpAnalytPar(<sumR^2>) "0.0"
-set ::tmpAnalytPar(<R^0>) "0.0"
+set ::tmpAnalytPar(<R^7>) "0.0"
 set ::tmpAnalytPar(alambda) "-1.0"
+set ::tmpAnalytPar(<R^0>) "0.0"
 set ::tmpAnalytPar(fit) "no"
-set ::tmpAnalytPar(common_names) ""
-set ::tmpAnalytPar(FF,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
-set ::tmpAnalytPar(SQ,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
 set ::tmpAnalytPar(max_SD) "1"
+set ::tmpAnalytPar(SQ,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpAnalytPar(FF,active) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::tmpAnalytPar(common_names) ""
 set ::tmpAnalytPar(mom_w) ".obW.tab.analytmoments"
-set ::tmpAnalytPar(FF,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::tmpAnalytPar(FF,param_count) "8"
+set ::tmpAnalytPar(SQ,param_count) "0"
 set ::tmpAnalytPar(SQ,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
-set ::tmpAnalytPar(SQ,param_count) "10"
-set ::tmpAnalytPar(<R^8>) "0.0"
-set ::tmpAnalytPar(w_AnalytPar) ""
+set ::tmpAnalytPar(FF,param_count) "0"
+set ::tmpAnalytPar(FF,err) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpAnalytPar(<sumR^3>) "0.0"
+set ::tmpAnalytPar(w_AnalytPar) ""
+set ::tmpAnalytPar(<R^8>) "0.0"
 set ::tmpAnalytPar(<R^1>) "0.0"
-set ::tmpAnalytPar(FF,l) {{30.0 10 0.0 1.0 0.0 1 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpAnalytPar(sumR_VP) "0.0"
+set ::tmpAnalytPar(FF,l) {{30.0 10 0.0 1.0 0.0 1 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpAnalytPar(geometrical/datafile) "yes"
 set ::tmpAnalytPar(substrSDFF) "no"
-set ::tmpAnalytPar(w) ""
 set ::tmpAnalytPar(SD,min) {{-1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200 -1e+200}}
+set ::tmpAnalytPar(w) ""
 set ::tmpAnalytPar(SD,max) {{1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200 1e+200}}
 set ::tmpAnalytPar(R_RG) "0.0"
-set ::tmpAnalytPar(SQ,s) {{100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpAnalytPar(<sumR^4>) "0.0"
+set ::tmpAnalytPar(SQ,s) {{100.0 0.2 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::tmpAnalytPar(<R^2>) "0.0"
 set ::tmpAnalytPar(R_Ac) "0.0"
 set ::tmpAnalytPar(old_actual_SD) "1"
@@ -2206,43 +2338,43 @@ set ::actualAnalytPar(SD,a2,min) "-1e+200"
 set ::actualAnalytPar(FF,l6,var) "1"
 set ::actualAnalytPar(SQ,s9,var) "0.0"
 set ::actualAnalytPar(SD,a4,max) "1e+200"
-set ::actualAnalytPar(SD,a7,distr) "0"
 set ::actualAnalytPar(SQ,s2,min) "-1e+200"
+set ::actualAnalytPar(SD,a7,distr) "0"
 set ::actualAnalytPar(<R^4>) "0.0"
 set ::actualAnalytPar(FF,l1,max) "1e+200"
-set ::actualAnalytPar(SQ,s6,active) "0"
 set ::actualAnalytPar(SQ,s4,max) "1e+200"
-set ::actualAnalytPar(FF,l2,label) {R_equitorial =}
+set ::actualAnalytPar(SQ,s6,active) "0"
 set ::actualAnalytPar(SD,a10,var) "0.0"
-set ::actualAnalytPar(SQ,typestr) "None"
+set ::actualAnalytPar(FF,l2,label) {R_equitorial =}
 set ::actualAnalytPar(FF,l7,min) "-1e+200"
+set ::actualAnalytPar(SQ,typestr) "None"
 set ::actualAnalytPar(SD,a8,active) "0"
 set ::actualAnalytPar(SD,a4,err) "0.0"
 set ::actualAnalytPar(<R^5>) "0.0"
 set ::actualAnalytPar(SQ,s8,limits) "0"
 set ::actualAnalytPar(FF,l1,err) "0.0"
-set ::actualAnalytPar(SD,a6,distr) "0"
 set ::actualAnalytPar(SQ,s4,err) "0.0"
+set ::actualAnalytPar(SD,a6,distr) "0"
 set ::actualAnalytPar(SD,a10,active) "0"
-set ::actualAnalytPar(SQ,s4,active) "0"
 set ::actualAnalytPar(SD,a6,var) "0.0"
+set ::actualAnalytPar(SQ,s4,active) "0"
 set ::actualAnalytPar(<R^6>) "0.0"
 set ::actualAnalytPar(FF,l1,label) {R_principle =}
 set ::actualAnalytPar(SD,a6,active) "0"
 set ::actualAnalytPar(FF,l3,var) "0.0"
-set ::actualAnalytPar(SQ,s9,distr) "0"
 set ::actualAnalytPar(SQ,s6,var) "0.0"
-set ::actualAnalytPar(SQ,s6,limits) "0"
+set ::actualAnalytPar(SQ,s9,distr) "0"
 set ::actualAnalytPar(SD,a1,max) "1e+200"
+set ::actualAnalytPar(SQ,s6,limits) "0"
 set ::actualAnalytPar(<R^7>) "0.0"
 set ::actualAnalytPar(SD,a8,limits) "0"
-set ::actualAnalytPar(SD,a5,distr) "0"
 set ::actualAnalytPar(SD,a7,min) "-1e+200"
+set ::actualAnalytPar(SD,a5,distr) "0"
 set ::actualAnalytPar(SQ,s2,active) "0"
 set ::actualAnalytPar(SQ,s1,max) "1e+200"
 set ::actualAnalytPar(SD,a9,max) "1e+200"
-set ::actualAnalytPar(FF,l4,min) "-1e+200"
 set ::actualAnalytPar(SD,a4,active) "0"
+set ::actualAnalytPar(FF,l4,min) "-1e+200"
 set ::actualAnalytPar(SQ,s7,min) "-1e+200"
 set ::actualAnalytPar(<R^8>) "0.0"
 set ::actualAnalytPar(w_AnalytPar) ""
@@ -2391,87 +2523,87 @@ set ::actualAnalytPar(SD,a3,active) "0"
 set ::actualAnalytPar(FF,l8,label) {eta_solv =}
 set ::actualAnalytPar(SD,a1,label) {N =}
 set ::actualAnalytPar(R_RG) "0.0"
-set ::actualAnalytPar(<sumR^4>) "0.0"
 set ::actualAnalytPar(FF,l2,err) "0.0"
-set ::actualAnalytPar(SQ,s10,min) "-1e+200"
-set ::actualAnalytPar(SQ,s3,limits) "0"
+set ::actualAnalytPar(<sumR^4>) "0.0"
 set ::actualAnalytPar(FF,l8,active) "0"
+set ::actualAnalytPar(SQ,s3,limits) "0"
+set ::actualAnalytPar(SQ,s10,min) "-1e+200"
 set ::actualAnalytPar(SQ,s5,err) "0.0"
 set ::actualAnalytPar(SD,a5,limits) "0"
-set ::actualAnalytPar(R_lc) "0.0"
-set ::actualAnalytPar(FF,l2,distr) "0"
 set ::actualAnalytPar(SD,a7,var) "0.0"
+set ::actualAnalytPar(FF,l2,distr) "0"
+set ::actualAnalytPar(R_lc) "0.0"
 set ::actualAnalytPar(SQ,s4,label) ""
 set ::actualAnalytPar(<sumR^5>) "0.0"
-set ::actualAnalytPar(FF,l4,var) "1.0"
 set ::actualAnalytPar(SD,a1,active) "0"
-set ::actualAnalytPar(SD,typestr) "Delta"
+set ::actualAnalytPar(FF,l4,var) "1.0"
 set ::actualAnalytPar(R_li) "0.0"
-set ::actualAnalytPar(FF,l7,label) {eta_shell =}
-set ::actualAnalytPar(SQ,s7,var) "0.0"
+set ::actualAnalytPar(SD,typestr) "Delta"
 set ::actualAnalytPar(sumR_RG) "0.0"
+set ::actualAnalytPar(SQ,s7,var) "0.0"
+set ::actualAnalytPar(FF,l7,label) {eta_shell =}
 set ::actualAnalytPar(SD,a2,max) "1e+200"
 set ::actualAnalytPar(plottype) "-1"
-set ::actualAnalytPar(SQ,s1,limits) "0"
 set ::actualAnalytPar(FF,l6,active) "0"
+set ::actualAnalytPar(SQ,s1,limits) "0"
 set ::actualAnalytPar(SD,a8,min) "-1e+200"
-set ::actualAnalytPar(sumR_lc) "0.0"
-set ::actualAnalytPar(<sumR^6>) "0.0"
 set ::actualAnalytPar(SD,a3,limits) "0"
-set ::actualAnalytPar(SQ,s2,max) "1e+200"
+set ::actualAnalytPar(<sumR^6>) "0.0"
+set ::actualAnalytPar(sumR_lc) "0.0"
 set ::actualAnalytPar(FF,l1,distr) "0"
+set ::actualAnalytPar(SQ,s2,max) "1e+200"
 set ::actualAnalytPar(FF,l5,min) "-1e+200"
-set ::actualAnalytPar(SQ,s3,label) ""
 set ::actualAnalytPar(FF,l8,limits) "0"
-set ::actualAnalytPar(SQ,s8,min) "-1e+200"
-set ::actualAnalytPar(sumR_li) "0.0"
+set ::actualAnalytPar(SQ,s3,label) ""
 set ::actualAnalytPar(SD,a2,err) "0.0"
+set ::actualAnalytPar(sumR_li) "0.0"
+set ::actualAnalytPar(SQ,s8,min) "-1e+200"
 set ::actualAnalytPar(FF,l7,max) "1e+200"
-set ::actualAnalytPar(FF,l6,label) {eta_core =}
 set ::actualAnalytPar(<sumR^7>) "0.0"
+set ::actualAnalytPar(FF,l6,label) {eta_core =}
 set ::actualAnalytPar(FF,l4,active) "0"
-set ::actualAnalytPar(SQ,s2,err) "0.0"
 set ::actualAnalytPar(SD,param_count_old) "10"
+set ::actualAnalytPar(SQ,s2,err) "0.0"
 set ::actualAnalytPar(SD,a1,limits) "0"
 set ::actualAnalytPar(SD,a4,var) "10.0"
 set ::actualAnalytPar(<sumR^8>) "0.0"
-set ::actualAnalytPar(FF,l6,limits) "0"
 set ::actualAnalytPar(FF,l7,err) "0.0"
+set ::actualAnalytPar(FF,l6,limits) "0"
 set ::actualAnalytPar(SQ,s2,label) ""
 set ::actualAnalytPar(FF,l1,var) "30.0"
 set ::actualAnalytPar(SQ,s4,var) "0.0"
 set ::actualAnalytPar(FF,l5,label) ""
-set ::actualAnalytPar(fitSDFF) "yes"
 set ::actualAnalytPar(FF,l2,active) "0"
+set ::actualAnalytPar(fitSDFF) "yes"
+set ::actualAnalytPar(FF,param_count_old) "8"
 set ::actualAnalytPar(R_VP) "0.0"
-set ::actualAnalytPar(FF,param_count_old) "10"
 set ::actualAnalytPar(SD,a5,min) "-1e+200"
-set ::actualAnalytPar(alambda) "-1.0"
 set ::actualAnalytPar(<R^0>) "0.0"
-set ::actualAnalytPar(common_names) ""
+set ::actualAnalytPar(alambda) "-1.0"
 set ::actualAnalytPar(max_SD) "1"
+set ::actualAnalytPar(common_names) ""
 set ::actualAnalytPar(SD,a7,max) "1e+200"
-set ::actualAnalytPar(SQ,s10,distr) "0"
-set ::actualAnalytPar(FF,l2,min) "-1e+200"
 set ::actualAnalytPar(FF,l4,limits) "0"
+set ::actualAnalytPar(FF,l2,min) "-1e+200"
+set ::actualAnalytPar(SQ,s10,distr) "0"
 set ::actualAnalytPar(SD,a9,distr) "0"
-set ::actualAnalytPar(SQ,s1,label) ""
 set ::actualAnalytPar(SQ,s5,min) "-1e+200"
+set ::actualAnalytPar(SQ,s1,label) ""
 set ::actualAnalytPar(SQ,param_count) "10"
 set ::actualAnalytPar(FF,l4,max) "1e+200"
 set ::actualAnalytPar(<R^1>) "0.0"
-set ::actualAnalytPar(FF,l4,label) ""
-set ::actualAnalytPar(SQ,s7,max) "1e+200"
 set ::actualAnalytPar(sumR_VP) "0.0"
+set ::actualAnalytPar(SQ,s7,max) "1e+200"
+set ::actualAnalytPar(FF,l4,label) ""
 set ::actualAnalytPar(substrSDFF) "no"
 set ::actualAnalytPar(SD,a7,err) "0.0"
 set ::actualAnalytPar(SD,a1,var) "1.0"
-set ::actualAnalytPar(<R^2>) "0.0"
 set ::actualAnalytPar(FF,l2,limits) "0"
+set ::actualAnalytPar(<R^2>) "0.0"
 set ::actualAnalytPar(FF,l4,err) "0.0"
 set ::actualAnalytPar(SD,a8,distr) "0"
-set ::actualAnalytPar(SD,a10,distr) "0"
 set ::actualAnalytPar(SQ,s7,err) "0.0"
+set ::actualAnalytPar(SD,a10,distr) "0"
 set ::tmpactualAnalytPar(SQ,s1,var) "100.0"
 set ::tmpactualAnalytPar(SD,a9,var) "0.0"
 set ::tmpactualAnalytPar(SQ,s8,active) "0"
@@ -2484,41 +2616,41 @@ set ::tmpactualAnalytPar(SD,a2,min) "-1e+200"
 set ::tmpactualAnalytPar(FF,l6,var) "0.0"
 set ::tmpactualAnalytPar(SQ,s9,var) "0.0"
 set ::tmpactualAnalytPar(SD,a4,max) "1e+200"
-set ::tmpactualAnalytPar(SD,a7,distr) "0"
 set ::tmpactualAnalytPar(SQ,s2,min) "-1e+200"
+set ::tmpactualAnalytPar(SD,a7,distr) "0"
 set ::tmpactualAnalytPar(<R^4>) "0.0"
 set ::tmpactualAnalytPar(FF,l1,max) "1e+200"
-set ::tmpactualAnalytPar(SQ,s4,max) "1e+200"
 set ::tmpactualAnalytPar(SQ,s6,active) "0"
-set ::tmpactualAnalytPar(FF,l2,label) {R_equitorial =}
+set ::tmpactualAnalytPar(SQ,s4,max) "1e+200"
 set ::tmpactualAnalytPar(SD,a10,var) "0.0"
-set ::tmpactualAnalytPar(FF,l7,min) "-1e+200"
+set ::tmpactualAnalytPar(FF,l2,label) {R_equitorial =}
 set ::tmpactualAnalytPar(SQ,typestr) "None"
+set ::tmpactualAnalytPar(FF,l7,min) "-1e+200"
 set ::tmpactualAnalytPar(SD,a8,active) "0"
 set ::tmpactualAnalytPar(SD,a4,err) "0.0"
-set ::tmpactualAnalytPar(FF,l9,max) "1e+200"
 set ::tmpactualAnalytPar(<R^5>) "0.0"
+set ::tmpactualAnalytPar(FF,l9,max) "1e+200"
 set ::tmpactualAnalytPar(SQ,s8,limits) "0"
 set ::tmpactualAnalytPar(FF,l1,err) "0.0"
 set ::tmpactualAnalytPar(FF,l10,limits) "0"
-set ::tmpactualAnalytPar(SD,a6,distr) "0"
 set ::tmpactualAnalytPar(SQ,s4,err) "0.0"
+set ::tmpactualAnalytPar(SD,a6,distr) "0"
 set ::tmpactualAnalytPar(SD,a10,active) "0"
-set ::tmpactualAnalytPar(SD,a6,var) "0.0"
 set ::tmpactualAnalytPar(SQ,s4,active) "0"
+set ::tmpactualAnalytPar(SD,a6,var) "0.0"
 set ::tmpactualAnalytPar(<R^6>) "0.0"
 set ::tmpactualAnalytPar(FF,l1,label) {R_principle =}
-set ::tmpactualAnalytPar(SD,a6,active) "0"
 set ::tmpactualAnalytPar(FF,l9,err) "0.0"
+set ::tmpactualAnalytPar(SD,a6,active) "0"
 set ::tmpactualAnalytPar(FF,l3,var) "0.0"
-set ::tmpactualAnalytPar(SQ,s9,distr) "0"
 set ::tmpactualAnalytPar(SQ,s6,var) "0.0"
-set ::tmpactualAnalytPar(SD,a1,max) "1e+200"
+set ::tmpactualAnalytPar(SQ,s9,distr) "0"
 set ::tmpactualAnalytPar(SQ,s6,limits) "0"
+set ::tmpactualAnalytPar(SD,a1,max) "1e+200"
 set ::tmpactualAnalytPar(<R^7>) "0.0"
 set ::tmpactualAnalytPar(SD,a8,limits) "0"
-set ::tmpactualAnalytPar(SD,a5,distr) "0"
 set ::tmpactualAnalytPar(SD,a7,min) "-1e+200"
+set ::tmpactualAnalytPar(SD,a5,distr) "0"
 set ::tmpactualAnalytPar(SQ,s2,active) "0"
 set ::tmpactualAnalytPar(SQ,s1,max) "1e+200"
 set ::tmpactualAnalytPar(SD,a9,max) "1e+200"
@@ -2598,7 +2730,7 @@ set ::tmpactualAnalytPar(FF,l1,active) "0"
 set ::tmpactualAnalytPar(SD,a6,label) ""
 set ::tmpactualAnalytPar(SQ,s3,max) "1e+200"
 set ::tmpactualAnalytPar(SQ,s4,distr) "0"
-set ::tmpactualAnalytPar(FF,param_count) "8"
+set ::tmpactualAnalytPar(FF,param_count) "10"
 set ::tmpactualAnalytPar(FF,l6,min) "-1e+200"
 set ::tmpactualAnalytPar(FF,l10,err) "0.0"
 set ::tmpactualAnalytPar(SQ,s9,min) "-1e+200"
@@ -2662,119 +2794,119 @@ set ::tmpactualAnalytPar(FF,l10,distr) "0"
 set ::tmpactualAnalytPar(SD,a3,min) "-1e+200"
 set ::tmpactualAnalytPar(actual_SD) "1"
 set ::tmpactualAnalytPar(FF,l7,var) "0.0"
+set ::tmpactualAnalytPar(SD,a5,active) "0"
 set ::tmpactualAnalytPar(<sumR^2>) "0.0"
 set ::tmpactualAnalytPar(FF,l9,label) ""
-set ::tmpactualAnalytPar(SD,a5,active) "0"
 set ::tmpactualAnalytPar(SD,a2,label) ""
 set ::tmpactualAnalytPar(SD,a5,max) "1e+200"
-set ::tmpactualAnalytPar(SQ,s5,limits) "0"
 set ::tmpactualAnalytPar(SQ,s3,min) "-1e+200"
+set ::tmpactualAnalytPar(SQ,s5,limits) "0"
 set ::tmpactualAnalytPar(FF,l2,max) "1e+200"
-set ::tmpactualAnalytPar(FF,l3,distr) "0"
 set ::tmpactualAnalytPar(SD,a7,limits) "0"
-set ::tmpactualAnalytPar(SQ,s5,max) "1e+200"
+set ::tmpactualAnalytPar(FF,l3,distr) "0"
 set ::tmpactualAnalytPar(<sumR^3>) "0.0"
-set ::tmpactualAnalytPar(SQ,s1,active) "0"
-set ::tmpactualAnalytPar(SQ,s5,label) ""
+set ::tmpactualAnalytPar(SQ,s5,max) "1e+200"
 set ::tmpactualAnalytPar(FF,l8,min) "-1e+200"
+set ::tmpactualAnalytPar(SQ,s5,label) ""
+set ::tmpactualAnalytPar(SQ,s1,active) "0"
 set ::tmpactualAnalytPar(SD,a5,err) "0.0"
 set ::tmpactualAnalytPar(SD,a3,active) "0"
 set ::tmpactualAnalytPar(FF,l8,label) {eta_solv =}
 set ::tmpactualAnalytPar(SD,a1,label) {N =}
 set ::tmpactualAnalytPar(R_RG) "0.0"
-set ::tmpactualAnalytPar(FF,l2,err) "0.0"
 set ::tmpactualAnalytPar(<sumR^4>) "0.0"
-set ::tmpactualAnalytPar(FF,l8,active) "0"
-set ::tmpactualAnalytPar(SQ,s3,limits) "0"
+set ::tmpactualAnalytPar(FF,l2,err) "0.0"
 set ::tmpactualAnalytPar(SQ,s10,min) "-1e+200"
+set ::tmpactualAnalytPar(SQ,s3,limits) "0"
+set ::tmpactualAnalytPar(FF,l8,active) "0"
 set ::tmpactualAnalytPar(SQ,s5,err) "0.0"
 set ::tmpactualAnalytPar(SD,a5,limits) "0"
-set ::tmpactualAnalytPar(SD,a7,var) "0.0"
-set ::tmpactualAnalytPar(FF,l2,distr) "0"
 set ::tmpactualAnalytPar(R_lc) "0.0"
+set ::tmpactualAnalytPar(FF,l2,distr) "0"
+set ::tmpactualAnalytPar(SD,a7,var) "0.0"
 set ::tmpactualAnalytPar(SQ,s4,label) ""
 set ::tmpactualAnalytPar(<sumR^5>) "0.0"
-set ::tmpactualAnalytPar(SD,a1,active) "0"
 set ::tmpactualAnalytPar(FF,l4,var) "1.0"
-set ::tmpactualAnalytPar(R_li) "0.0"
+set ::tmpactualAnalytPar(SD,a1,active) "0"
 set ::tmpactualAnalytPar(SD,typestr) "Delta"
-set ::tmpactualAnalytPar(FF,l7,label) {eta_shell =}
-set ::tmpactualAnalytPar(sumR_RG) "0.0"
+set ::tmpactualAnalytPar(R_li) "0.0"
 set ::tmpactualAnalytPar(SQ,s7,var) "0.0"
+set ::tmpactualAnalytPar(sumR_RG) "0.0"
+set ::tmpactualAnalytPar(FF,l7,label) {eta_shell =}
 set ::tmpactualAnalytPar(SD,a2,max) "1e+200"
 set ::tmpactualAnalytPar(plottype) "-1"
-set ::tmpactualAnalytPar(FF,l6,active) "0"
 set ::tmpactualAnalytPar(SQ,s1,limits) "0"
+set ::tmpactualAnalytPar(FF,l6,active) "0"
 set ::tmpactualAnalytPar(SD,a8,min) "-1e+200"
-set ::tmpactualAnalytPar(SD,a3,limits) "0"
-set ::tmpactualAnalytPar(<sumR^6>) "0.0"
 set ::tmpactualAnalytPar(sumR_lc) "0.0"
-set ::tmpactualAnalytPar(FF,l1,distr) "0"
+set ::tmpactualAnalytPar(<sumR^6>) "0.0"
+set ::tmpactualAnalytPar(SD,a3,limits) "0"
 set ::tmpactualAnalytPar(SQ,s2,max) "1e+200"
+set ::tmpactualAnalytPar(FF,l1,distr) "0"
 set ::tmpactualAnalytPar(FF,l5,min) "-1e+200"
-set ::tmpactualAnalytPar(FF,l8,limits) "0"
 set ::tmpactualAnalytPar(SQ,s3,label) ""
-set ::tmpactualAnalytPar(SD,a2,err) "0.0"
-set ::tmpactualAnalytPar(sumR_li) "0.0"
+set ::tmpactualAnalytPar(FF,l8,limits) "0"
 set ::tmpactualAnalytPar(SQ,s8,min) "-1e+200"
+set ::tmpactualAnalytPar(sumR_li) "0.0"
+set ::tmpactualAnalytPar(SD,a2,err) "0.0"
 set ::tmpactualAnalytPar(FF,l7,max) "1e+200"
-set ::tmpactualAnalytPar(FF,l6,label) {eta_core =}
 set ::tmpactualAnalytPar(<sumR^7>) "0.0"
+set ::tmpactualAnalytPar(FF,l6,label) {eta_core =}
 set ::tmpactualAnalytPar(FF,l4,active) "0"
-set ::tmpactualAnalytPar(SD,param_count_old) "10"
 set ::tmpactualAnalytPar(SQ,s2,err) "0.0"
+set ::tmpactualAnalytPar(SD,param_count_old) "10"
 set ::tmpactualAnalytPar(SD,a1,limits) "0"
 set ::tmpactualAnalytPar(SD,a4,var) "10.0"
 set ::tmpactualAnalytPar(<sumR^8>) "0.0"
-set ::tmpactualAnalytPar(FF,l7,err) "0.0"
 set ::tmpactualAnalytPar(FF,l6,limits) "0"
+set ::tmpactualAnalytPar(FF,l7,err) "0.0"
 set ::tmpactualAnalytPar(SQ,s2,label) ""
 set ::tmpactualAnalytPar(FF,l1,var) "10.0"
 set ::tmpactualAnalytPar(SQ,s4,var) "0.0"
 set ::tmpactualAnalytPar(FF,l5,label) ""
-set ::tmpactualAnalytPar(FF,l2,active) "0"
 set ::tmpactualAnalytPar(fitSDFF) "yes"
-set ::tmpactualAnalytPar(FF,param_count_old) "10"
+set ::tmpactualAnalytPar(FF,l2,active) "0"
 set ::tmpactualAnalytPar(R_VP) "0.0"
+set ::tmpactualAnalytPar(FF,param_count_old) "8"
 set ::tmpactualAnalytPar(SD,a5,min) "-1e+200"
-set ::tmpactualAnalytPar(FF,l9,var) "0.0"
-set ::tmpactualAnalytPar(<R^0>) "0.0"
 set ::tmpactualAnalytPar(alambda) "-1.0"
-set ::tmpactualAnalytPar(common_names) ""
+set ::tmpactualAnalytPar(<R^0>) "0.0"
+set ::tmpactualAnalytPar(FF,l9,var) "0.0"
 set ::tmpactualAnalytPar(max_SD) "1"
+set ::tmpactualAnalytPar(common_names) ""
 set ::tmpactualAnalytPar(SD,a7,max) "1e+200"
-set ::tmpactualAnalytPar(SQ,s10,distr) "0"
-set ::tmpactualAnalytPar(FF,l4,limits) "0"
 set ::tmpactualAnalytPar(FF,l2,min) "-1e+200"
+set ::tmpactualAnalytPar(FF,l4,limits) "0"
+set ::tmpactualAnalytPar(SQ,s10,distr) "0"
 set ::tmpactualAnalytPar(SD,a9,distr) "0"
-set ::tmpactualAnalytPar(SQ,s1,label) ""
 set ::tmpactualAnalytPar(SQ,s5,min) "-1e+200"
+set ::tmpactualAnalytPar(SQ,s1,label) ""
 set ::tmpactualAnalytPar(SQ,param_count) "10"
 set ::tmpactualAnalytPar(FF,l4,max) "1e+200"
 set ::tmpactualAnalytPar(<R^1>) "0.0"
-set ::tmpactualAnalytPar(sumR_VP) "0.0"
-set ::tmpactualAnalytPar(FF,l4,label) ""
 set ::tmpactualAnalytPar(SQ,s7,max) "1e+200"
+set ::tmpactualAnalytPar(FF,l4,label) ""
+set ::tmpactualAnalytPar(sumR_VP) "0.0"
 set ::tmpactualAnalytPar(substrSDFF) "no"
 set ::tmpactualAnalytPar(SD,a7,err) "0.0"
 set ::tmpactualAnalytPar(FF,l10,label) ""
 set ::tmpactualAnalytPar(SD,a1,var) "1.0"
-set ::tmpactualAnalytPar(FF,l2,limits) "0"
 set ::tmpactualAnalytPar(<R^2>) "0.0"
+set ::tmpactualAnalytPar(FF,l2,limits) "0"
 set ::tmpactualAnalytPar(FF,l4,err) "0.0"
 set ::tmpactualAnalytPar(SD,a8,distr) "0"
-set ::tmpactualAnalytPar(SD,a10,distr) "0"
 set ::tmpactualAnalytPar(SQ,s7,err) "0.0"
-set ::GlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_1 ff_ellipsoidal_shell_1t ff_ellipsoidal_shell_2 ff_ellipsoidal_shell_2t ff_ellipsoidal_shell_0 ff_ellipsoidal_shell_0t }
-set ::GlobalAnalytPar(SD,typestr) { Delta Delta Delta Delta Delta Delta }
-set ::GlobalAnalytPar(SQ,typestr) { None None None None None None }
-set ::tmpGlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_1 ff_ellipsoidal_shell_1t ff_ellipsoidal_shell_2 ff_ellipsoidal_shell_2t ff_ellipsoidal_shell_0 ff_ellipsoidal_shell_0t }
-set ::tmpGlobalAnalytPar(SD,typestr) { Delta Delta Delta Delta Delta Delta }
-set ::tmpGlobalAnalytPar(SQ,typestr) { None None None None None None }
-set ::actualGlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_0t }
+set ::tmpactualAnalytPar(SD,a10,distr) "0"
+set ::GlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_0 ff_ellipsoidal_shell_0t ff_ellipsoidal_shell_rp ff_ellipsoidal_shell_rp_t ff_ellipsoidal_shell_re ff_ellipsoidal_shell_re_t ff_ellipsoidal_shell_2 ff_ellipsoidal_shell_2t }
+set ::GlobalAnalytPar(SD,typestr) { Delta Delta Delta Delta Delta Delta Delta Delta }
+set ::GlobalAnalytPar(SQ,typestr) { None None None None None None None None }
+set ::tmpGlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_0 ff_ellipsoidal_shell_0t ff_ellipsoidal_shell_rp ff_ellipsoidal_shell_rp_t ff_ellipsoidal_shell_re ff_ellipsoidal_shell_re_t ff_ellipsoidal_shell_2 ff_ellipsoidal_shell_2t }
+set ::tmpGlobalAnalytPar(SD,typestr) { Delta Delta Delta Delta Delta Delta Delta Delta }
+set ::tmpGlobalAnalytPar(SQ,typestr) { None None None None None None None None }
+set ::actualGlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_2t }
 set ::actualGlobalAnalytPar(SD,typestr) { Delta }
 set ::actualGlobalAnalytPar(SQ,typestr) { None }
-set ::tmpactualGlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_0t }
+set ::tmpactualGlobalAnalytPar(FF,typestr) { ff_ellipsoidal_shell_2t }
 set ::tmpactualGlobalAnalytPar(SD,typestr) { Delta }
 set ::tmpactualGlobalAnalytPar(SQ,typestr) { None }
 set ::AnalytPar(FF,typestr) { ff_spheroid_R }
@@ -2789,16 +2921,16 @@ set ::actualAnalytPar(SQ,typestr) { None }
 set ::tmpactualAnalytPar(FF,typestr) { ff_spheroid_R }
 set ::tmpactualAnalytPar(SD,typestr) { Delta }
 set ::tmpactualAnalytPar(SQ,typestr) { None }
-set ::IQGraph(e,fill) "Black"
+set ::IQGraph(e,fill) ""
 set ::IQGraph(e.resstipples) ""
-set ::IQGraph(e,scale) "no"
-set ::IQGraph(e,dash) "0"
-set ::IQGraph(e,linewidth) "2"
+set ::IQGraph(e,scale) ""
+set ::IQGraph(e,dash) ""
+set ::IQGraph(e,linewidth) ""
 set ::IQGraph(y,min) ""
 set ::IQGraph(l,hide) "yes"
-set ::IQGraph(e,resoutline) "blue"
-set ::IQGraph(e,xdata) {{0.01 0.0106770427203 0.0113999241252 0.0121717476894 0.012995827006 0.013875700013 0.0148151441813 0.0158181927332 0.0168891519571 0.0180326196956 0.019253505085 0.0205570496309 0.0219488497113 0.0234348806031 0.0250215221345 0.0267155860758 0.028524345383 0.0304555654225 0.0325175373088 0.0347191135006 0.0370697458059 0.0395795259602 0.0422592289528 0.0451203592858 0.0481752003651 0.051436867236 0.0549193628879 0.0586376383729 0.0626076569927 0.0668464628332 0.0713722539374 0.0762044604337 0.0813638279531 0.0868725066946 0.0927541465202 0.0990339984885 0.105739023263 0.112898006859 0.120541684227 0.128702871207 0.137416605411 0.146720296646 0.156653887523 0.167260024939 0.178584243168 0.190675159349 0.203584682208 0.217368234914 0.232084993022 0.247798138525 0.264575131105 0.282487997755 0.301613642002 0.322034174069 0.343837263395 0.367116515011 0.391971871412 0.418510041624 0.446844959331 0.477098272015 0.50939986321 0.543888410123 0.580711978999 0.620028660799 0.662007249918 0.706827968856 0.754683241941 0.805778521453 0.860333169669 0.918581400629 0.980773285663 1.047175827 1.11807410406 1.19377249735 1.27459599526 1.36089158926 1.45302976363 1.55140608602 1.6564429057 1.7685911668 1.88833234428 2.016180511 2.15268454479 2.29843048482 2.45404404761 2.6201933134 2.79759159427 2.98700049661 3.1892331908 3.40515790233 3.63570163927 3.88185417209 4.14467228296 4.4252843027 4.72489495496 5.04479052832 5.38634439861 5.75102292504 6.14039174564 6.55612249878 6.99999999993}}
-set ::IQGraph(e,element) "1"
+set ::IQGraph(e,resoutline) ""
+set ::IQGraph(e,xdata) ""
+set ::IQGraph(e,element) "0"
 set ::IQGraph(y,max) ""
 set ::IQGraph(x,linewidth) "2"
 set ::IQGraph(colorselection) {black red green blue cyan magenta yellow violet purple orange pink gray}
@@ -2807,32 +2939,32 @@ set ::IQGraph(y,titlecolor) "black"
 set ::IQGraph(y,loose) "no"
 set ::IQGraph(fit,background) "#cccccc"
 set ::IQGraph(x,size) "12"
-set ::IQGraph(e,dashcolor) "red"
-set ::IQGraph(e,outlinewidth) "1"
+set ::IQGraph(e,dashcolor) ""
+set ::IQGraph(e,outlinewidth) ""
 set ::IQGraph(x,ticklength) "10"
 set ::IQGraph(l,posx) "10"
-set ::IQGraph(e,errlinewidth) "1"
+set ::IQGraph(e,errlinewidth) ""
 set ::IQGraph(l,posy) "10"
-set ::IQGraph(e,linehide) "1"
+set ::IQGraph(e,linehide) ""
 set ::IQGraph(graph,fg) "black"
-set ::IQGraph(e,elementname) "graph1"
+set ::IQGraph(e,elementname) ""
 set ::IQGraph(dashnames) {{-} {..} {--} {.-}  {..-} {--.}}
-set ::IQGraph(e,reshide) "no"
+set ::IQGraph(e,reshide) ""
 set ::IQGraph(graph,relief) "flat"
-set ::IQGraph(e,pixels) "4"
+set ::IQGraph(e,pixels) ""
 set ::IQGraph(dashpattern) {{0} {2 2} {8 2 8 2} {2 2 8 2}  {2 2 2 2 8 2} {8 2 8 2 2 2} }
 set ::IQGraph(x,tickcolor) "black"
 set ::IQGraph(x,logscale) "1"
 set ::IQGraph(e,resstipples) "hline1"
 set ::IQGraph(y,title) "I(Q)"
 set ::IQGraph(l,bg) "white"
-set ::IQGraph(e,errtags) "{}"
-set ::IQGraph(e,symbolhide) "no"
+set ::IQGraph(e,errtags) ""
+set ::IQGraph(e,symbolhide) ""
 set ::IQGraph(c,hide) "yes"
 set ::IQGraph(plot,borderwidth) "0"
 set ::IQGraph(y,rot) "0"
-set ::IQGraph(e,smooth) "linear"
-set ::IQGraph(e,offdashcolor) "White"
+set ::IQGraph(e,smooth) ""
+set ::IQGraph(e,offdashcolor) ""
 set ::IQGraph(g,dash) "0"
 set ::IQGraph(y,color) "Black"
 set ::IQGraph(x,subticks) "5"
@@ -2842,16 +2974,16 @@ set ::IQGraph(l,pady) {0 0}
 set ::IQGraph(y,titlefont) {Helvetica 10}
 set ::IQGraph(x,loose) "no"
 set ::IQGraph(x,type) "log10(x)"
-set ::IQGraph(c,x) "123"
+set ::IQGraph(c,x) "413"
 set ::IQGraph(y,logscale) "1"
+set ::IQGraph(c,y) "0"
 set ::IQGraph(e.errstipples) ""
-set ::IQGraph(c,y) "19"
 set ::IQGraph(e,restags) ""
 set ::IQGraph(title) "unknown"
 set ::IQGraph(l,anchor) "n"
 set ::IQGraph(GraphName) "IQGraph"
 set ::IQGraph(symbolselection) {square circle diamond plus cross splus scross triangle}
-set ::IQGraph(e,errorhide) "no"
+set ::IQGraph(e,errorhide) ""
 set ::IQGraph(y,subticks) "5"
 set ::IQGraph(l,ipadx) {0 0}
 set ::IQGraph(c,color) "black"
@@ -2866,41 +2998,41 @@ set ::IQGraph(margin,plotpady) {5 5}
 set ::IQGraph(fitrange) "no"
 set ::IQGraph(margin,right) "0"
 set ::IQGraph(x,min) ""
-set ::IQGraph(e,errfill) "Black"
+set ::IQGraph(e,errfill) ""
 set ::IQGraph(height) "512"
-set ::IQGraph(e,erroutline) "blue"
-set ::IQGraph(e,errdash) "0"
+set ::IQGraph(e,erroutline) ""
+set ::IQGraph(e,errdash) ""
 set ::IQGraph(y,ticklength) "10"
 set ::IQGraph(g,color) "black"
 set ::IQGraph(x,max) ""
 set ::IQGraph(g,linewidth) "1"
 set ::IQGraph(x,color) "Black"
-set ::IQGraph(l,legendtext) "Fit"
-set ::IQGraph(e,ydata) {{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+set ::IQGraph(l,legendtext) ""
+set ::IQGraph(e,ydata) ""
 set ::IQGraph(y,mapped) "1"
 set ::IQGraph(margin,top) "0"
 set ::IQGraph(l,borderwidth) "2"
 set ::IQGraph(e,errstipples) "hline1"
-set ::IQGraph(e,symbol) "none"
+set ::IQGraph(e,symbol) ""
 set ::IQGraph(y,tickfont) {Helvetica 10}
 set ::IQGraph(font) {Helvetica 10}
 set ::IQGraph(graph,bg) "white"
 set ::IQGraph(margin,bottom) "0"
-set ::IQGraph(e,outline) "Black"
-set ::IQGraph(e,resfill) "Black"
+set ::IQGraph(e,outline) ""
+set ::IQGraph(e,resfill) ""
 set ::IQGraph(plot,relief) "flat"
-set ::IQGraph(e,resdash) "0"
+set ::IQGraph(e,resdash) ""
 set ::IQGraph(x,showticks) "yes"
 set ::IQGraph(x,mapped) "1"
 set ::IQGraph(y,factor) "1.0"
 set ::IQGraph(stipples) {bdiagonal1 bdiagonal2 checker2 checker3  cross1 cross2 cross3 crossdiag  dot1 dot2 dot3 dot4 fdiagonal1 fdiagonal2  hline1 hline2 lbottom ltop rbottom rtop  vline1 vline2}
 set ::IQGraph(graph,borderwidth) "0"
-set ::IQGraph(e,resdata) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::IQGraph(e,resdata) ""
 set ::IQGraph(x,titlecolor) "black"
 set ::IQGraph(c,dash) "0"
 set ::IQGraph(y,size) "12"
 set ::IQGraph(x,rot) "0"
-set ::IQGraph(e,error) {{-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0}}
+set ::IQGraph(e,error) ""
 set ::IQGraph(x,factor) "1.0"
 set ::IQGraph(x,stepsize) "0"
 set ::IQGraph(plot,background) "gray90"
@@ -2913,23 +3045,23 @@ set ::IQGraph(upper,x) ""
 set ::IQGraph(width) "768"
 set ::IQGraph(g,minor) "no"
 set ::IQGraph(upper,y) ""
-set ::IQGraph(e,reslinewidth) "1"
+set ::IQGraph(e,reslinewidth) ""
 set ::IQGraph(y,stepsize) "0"
 set ::IQGraph(y,showticks) "yes"
 set ::IQGraph(lower,x) ""
 set ::IQGraph(l,position) "right"
 set ::IQGraph(lower,y) ""
 set ::IQGraph(y,type) "log10(y)"
-set ::GlobalFitIQGraph(e,fill) ""
+set ::GlobalFitIQGraph(e,fill) {Black Black Black Black Black Black Black Black}
 set ::GlobalFitIQGraph(e.resstipples) ""
-set ::GlobalFitIQGraph(e,scale) ""
-set ::GlobalFitIQGraph(e,dash) ""
-set ::GlobalFitIQGraph(e,linewidth) ""
+set ::GlobalFitIQGraph(e,scale) {no no no no no no no no}
+set ::GlobalFitIQGraph(e,dash) {0 0 0 0 0 0 0 0}
+set ::GlobalFitIQGraph(e,linewidth) {2 2 2 2 2 2 2 2}
 set ::GlobalFitIQGraph(y,min) ""
 set ::GlobalFitIQGraph(l,hide) "no"
-set ::GlobalFitIQGraph(e,resoutline) ""
-set ::GlobalFitIQGraph(e,xdata) ""
-set ::GlobalFitIQGraph(e,element) "0"
+set ::GlobalFitIQGraph(e,resoutline) {blue blue blue blue blue blue blue blue}
+set ::GlobalFitIQGraph(e,xdata) {{0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993} {0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993} {0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993} {0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993} {0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993} {0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993} {0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993} {0.01 0.0101318837008 0.0102655067326 0.0104008920344 0.0105380628476 0.0106770427203 0.0108178555111 0.010960525393 0.0111050768581 0.0112515347214 0.0113999241252 0.0115502705434 0.0117025997858 0.0118569380026 0.012013311689 0.0121717476894 0.0123322732023 0.0124949157852 0.0126597033587 0.0128266642116 0.012995827006 0.013167220782 0.0133408749626 0.0135168193587 0.0136950841747 0.013875700013 0.0140586978798 0.0142441091902 0.0144319657736 0.0146222998792 0.0148151441813 0.0150105317855 0.0152084962337 0.0154090715104 0.015612292048 0.0158181927332 0.0160268089129 0.0162381764 0.0164523314797 0.0166693109158 0.0168891519571 0.0171118923434 0.0173375703123 0.0175662246058 0.0177978944767 0.0180326196956 0.0182704405576 0.0185113978891 0.0187555330551 0.019002887966 0.019253505085 0.0195074274353 0.0197646986076 0.0200253627672 0.0202894646623 0.0205570496309 0.0208281636091 0.0211028531388 0.0213811653756 0.0216631480972 0.0219488497113 0.0222383192641 0.0225316064484 0.0228287616126 0.0231298357691 0.0234348806031 0.0237439484811 0.0240570924607 0.0243743662991 0.0246958244622 0.0250215221345 0.0253515152283 0.0256858603931 0.0260246150256 0.0263678372797 0.0267155860758 0.0270679211118 0.0274249028726 0.0277865926409 0.0281530525078 0.028524345383 0.0289005350061 0.0292816859572 0.029667863668 0.0300591344334 0.0304555654225 0.0308572246901 0.0312641811888 0.0316765047805 0.0320942662482 0.0325175373088 0.0329463906248 0.033380899817 0.0338211394772 0.034267185181 0.0347191135006 0.0351770020182 0.0356409293389 0.0361109751049 0.0365872200084 0.0370697458059 0.0375586353322 0.0380539725145 0.0385558423868 0.0390643311048 0.0395795259602 0.0401015153959 0.0406303890216 0.0411662376283 0.0417091532048 0.0422592289528 0.0428165593033 0.0433812399328 0.0439533677793 0.0445330410597 0.0451203592858 0.045715423282 0.0463183352024 0.0469291985483 0.0475481181861 0.0481752003651 0.048810552736 0.0494542843691 0.0501065057732 0.0507673289145 0.051436867236 0.0521152356766 0.0528025506913 0.0534989302707 0.0542044939618 0.0549193628879 0.05564365977 0.0563775089474 0.0571210363993 0.0578743697665 0.0586376383729 0.0594109732481 0.0601945071498 0.0609883745866 0.061792711841 0.0626076569927 0.0634333499427 0.0642699324369 0.0651175480906 0.0659763424132 0.0668464628332 0.0677280587233 0.0686212814262 0.0695262842807 0.0704432226478 0.0713722539374 0.0723135376354 0.0732672353312 0.0742335107452 0.0752125297569 0.0762044604337 0.0772094730593 0.0782277401633 0.0792594365508 0.080304739332 0.0813638279531 0.0824368842269 0.083524092364 0.0846256390043 0.0857417132494 0.0868725066946 0.0880182134623 0.0891790302348 0.0903551562886 0.0915467935279 0.0927541465202 0.0939774225305 0.0952168315576 0.0964725863696 0.0977449025408 0.0990339984885 0.100340095511 0.101663417824 0.103004192601 0.104362650012 0.105739023263 0.107133548633 0.10854646552 0.109978016478 0.111428447259 0.112898006859 0.114386947554 0.11589552495 0.117423998023 0.118972629165 0.120541684227 0.122131432568 0.123742147099 0.125374104329 0.127027584414 0.128702871207 0.130400252303 0.132120019088 0.133862466794 0.135627894545 0.137416605411 0.139228906458 0.141065108802 0.142925527661 0.144810482413 0.146720296646 0.148655298216 0.150615819302 0.152602196467 0.154614770708 0.156653887523 0.158719896966 0.160813153705 0.162934017089 0.165082851205 0.167260024939 0.169465912047 0.17170089121 0.173965346106 0.176259665471 0.178584243168 0.180939478257 0.183325775057 0.185743543223 0.18819319781 0.190675159349 0.193189853915 0.195737713203 0.198319174602 0.20093468127 0.203584682208 0.206269632338 0.208989992585 0.211746229949 0.214538817592 0.217368234914 0.220234967639 0.223139507895 0.226082354304 0.22906401206 0.232084993022 0.235145815799 0.23824700584 0.241389095522 0.244572624246 0.247798138525 0.25106619208 0.254377345934 0.257732168511 0.26113123573 0.264575131105 0.268064445847 0.271599778963 0.27518173736 0.278810935951 0.282487997755 0.286213554011 0.289988244282 0.293812716565 0.297687627404 0.301613642002 0.305591434332 0.30962168726 0.313705092655 0.317842351512 0.322034174069 0.326281279934 0.330584398202 0.334944267587 0.339361636542 0.343837263395 0.34837191647 0.352966374228 0.357621425396 0.362337869101 0.367116515011 0.371958183472 0.376863705648 0.381833923666 0.386869690759 0.391971871412 0.397141341511 0.402378988495 0.407685711506 0.413062421544 0.418510041624 0.424029506933 0.429621764993 0.435287775822 0.441028512099 0.446844959331 0.452738116021 0.458708993842 0.46475861781 0.470888026458 0.477098272015 0.483390420588 0.489765552346 0.496224761701 0.502769157499 0.50939986321 0.516118017123 0.522924772535 0.529821297957 0.536808777308 0.543888410123 0.551061411756 0.558329013588 0.565692463244 0.573153024798 0.580711978999 0.588370623485 0.596130273009 0.603992259663 0.611957933106 0.620028660799 0.628205828235 0.636490839181 0.644885115918 0.653390099483 0.662007249918 0.670738046523 0.679583988104 0.688546593237 0.697627400523 0.706827968856 0.716149877689 0.725594727305 0.735164139094 0.744859755827 0.754683241941 0.764636283825 0.77472059011 0.784937891957 0.795289943363 0.805778521453 0.816405426793 0.827172483693 0.838081540524 0.849134470034 0.860333169669 0.871679561899 0.883175594549 0.894823241131 0.906624501187 0.918581400629 0.930695992085 0.942970355256 0.955406597271 0.968006853049 0.980773285663 0.993708086714 1.00681347671 1.02009170544 1.03354505236 1.047175827 1.06098636934 1.07497905022 1.08915627176 1.10352046774 1.11807410406 1.13281967911 1.14775972427 1.16289680427 1.17823351769 1.19377249735 1.20951641084 1.22546796087 1.24162988586 1.25800496029 1.27459599526 1.29140583894 1.30843737707 1.32569353342 1.34317727034 1.36089158926 1.37883953117 1.39702417718 1.41544864904 1.43411610964 1.45302976363 1.47219285788 1.49160868211 1.51128056942 1.53121189686 1.55140608602 1.57186660362 1.5925969621 1.61360072021 1.63488148367 1.6564429057 1.67828868775 1.70042258006 1.72284838233 1.74556994438 1.7685911668 1.79191600162 1.81554845299 1.83949257788 1.86375248675 1.88833234428 1.91323637006 1.93846883935 1.96403408378 1.98993649212 2.016180511 2.04277064572 2.06971146098 2.09700758167 2.12466369371 2.15268454479 2.18107494522 2.20983976876 2.23898395344 2.26851250241 2.29843048482 2.32874303664 2.35945536162 2.39057273211 2.42210048999 2.45404404761 2.48640888869 2.51920056928 2.55242471868 2.58608704046 2.6201933134 2.65474939248 2.68976120993 2.72523477618 2.76117618095 2.79759159427 2.83448726754 2.87186953459 2.90974481283 2.94811960424 2.98700049661 3.02639416458 3.06630737081 3.10674696718 3.14771989592 3.1892331908 3.23129397838 3.27390947919 3.31708700899 3.36083398004 3.40515790233 3.45006638491 3.49556713718 3.54166797021 3.58837679809 3.63570163927 3.68365061797 3.73223196555 3.78145402192 3.83132523699 3.88185417209 3.93304950149 3.98492001384 4.03747461371 4.09072232308 4.14467228296 4.19933375487 4.2547161225 4.31082889329 4.36768170006 4.4252843027 4.48364658977 4.54277858028 4.60269042537 4.66339241005 4.72489495496 4.78720861819 4.85034409708 4.91431223002 4.97912399838 5.04479052832 5.11132309276 5.17873311329 5.24703216211 5.31623196406 5.38634439861 5.45738150189 5.52935546878 5.60227865498 5.67616357915 5.75102292504 5.82686954369 5.90371645562 5.98157685305 6.06046410223 6.14039174564 6.22137350439 6.30342328054 6.38655515951 6.47078341246 6.55612249878 6.64258706856 6.73019196508 6.81895222739 6.90888309289 6.99999999993}}
+set ::GlobalFitIQGraph(e,element) "8"
 set ::GlobalFitIQGraph(y,max) ""
 set ::GlobalFitIQGraph(x,linewidth) "2"
 set ::GlobalFitIQGraph(colorselection) {black red green blue cyan magenta yellow violet purple orange pink gray}
@@ -2938,32 +3070,32 @@ set ::GlobalFitIQGraph(y,titlecolor) "black"
 set ::GlobalFitIQGraph(y,loose) "no"
 set ::GlobalFitIQGraph(fit,background) "#cccccc"
 set ::GlobalFitIQGraph(x,size) "12"
-set ::GlobalFitIQGraph(e,dashcolor) ""
-set ::GlobalFitIQGraph(e,outlinewidth) ""
+set ::GlobalFitIQGraph(e,dashcolor) {black red green blue cyan magenta yellow violet}
+set ::GlobalFitIQGraph(e,outlinewidth) {1 1 1 1 1 1 1 1}
 set ::GlobalFitIQGraph(x,ticklength) "10"
 set ::GlobalFitIQGraph(l,posx) "10"
-set ::GlobalFitIQGraph(e,errlinewidth) ""
+set ::GlobalFitIQGraph(e,errlinewidth) {1 1 1 1 1 1 1 1}
 set ::GlobalFitIQGraph(l,posy) "10"
-set ::GlobalFitIQGraph(e,linehide) ""
+set ::GlobalFitIQGraph(e,linehide) {1 1 1 1 1 1 1 1}
 set ::GlobalFitIQGraph(graph,fg) "black"
-set ::GlobalFitIQGraph(e,elementname) ""
+set ::GlobalFitIQGraph(e,elementname) {graph1 graph2 graph3 graph4 graph5 graph6 graph7 graph8}
 set ::GlobalFitIQGraph(dashnames) {{-} {..} {--} {.-}  {..-} {--.}}
-set ::GlobalFitIQGraph(e,reshide) ""
+set ::GlobalFitIQGraph(e,reshide) {no no no no no no no no}
 set ::GlobalFitIQGraph(graph,relief) "flat"
-set ::GlobalFitIQGraph(e,pixels) ""
+set ::GlobalFitIQGraph(e,pixels) {4 4 4 4 4 4 4 4}
 set ::GlobalFitIQGraph(dashpattern) {{0} {2 2} {8 2 8 2} {2 2 8 2}  {2 2 2 2 8 2} {8 2 8 2 2 2} }
 set ::GlobalFitIQGraph(x,tickcolor) "black"
 set ::GlobalFitIQGraph(x,logscale) "1"
-set ::GlobalFitIQGraph(e,resstipples) {hline1 hline1 hline1 hline1 hline1 hline1}
+set ::GlobalFitIQGraph(e,resstipples) {hline1 hline1 hline1 hline1 hline1 hline1 hline1 hline1}
 set ::GlobalFitIQGraph(y,title) "I(Q)"
 set ::GlobalFitIQGraph(l,bg) "white"
-set ::GlobalFitIQGraph(e,errtags) ""
-set ::GlobalFitIQGraph(e,symbolhide) ""
+set ::GlobalFitIQGraph(e,errtags) {{} {} {} {} {} {} {} {}}
+set ::GlobalFitIQGraph(e,symbolhide) {no no no no no no no no}
 set ::GlobalFitIQGraph(c,hide) "yes"
 set ::GlobalFitIQGraph(plot,borderwidth) "0"
 set ::GlobalFitIQGraph(y,rot) "0"
-set ::GlobalFitIQGraph(e,smooth) ""
-set ::GlobalFitIQGraph(e,offdashcolor) ""
+set ::GlobalFitIQGraph(e,smooth) {linear linear linear linear linear linear linear linear}
+set ::GlobalFitIQGraph(e,offdashcolor) {White White White White White White White White}
 set ::GlobalFitIQGraph(g,dash) "0"
 set ::GlobalFitIQGraph(y,color) "Black"
 set ::GlobalFitIQGraph(x,subticks) "5"
@@ -2973,16 +3105,16 @@ set ::GlobalFitIQGraph(l,pady) {0 0}
 set ::GlobalFitIQGraph(y,titlefont) {Helvetica 10}
 set ::GlobalFitIQGraph(x,loose) "no"
 set ::GlobalFitIQGraph(x,type) "log10(x)"
-set ::GlobalFitIQGraph(c,x) "5"
+set ::GlobalFitIQGraph(c,x) "103"
 set ::GlobalFitIQGraph(y,logscale) "1"
+set ::GlobalFitIQGraph(c,y) "424"
 set ::GlobalFitIQGraph(e.errstipples) ""
-set ::GlobalFitIQGraph(c,y) "433"
 set ::GlobalFitIQGraph(e,restags) ""
 set ::GlobalFitIQGraph(title) "unknown"
 set ::GlobalFitIQGraph(l,anchor) "n"
 set ::GlobalFitIQGraph(GraphName) "GlobalFitIQGraph"
 set ::GlobalFitIQGraph(symbolselection) {square circle diamond plus cross splus scross triangle}
-set ::GlobalFitIQGraph(e,errorhide) ""
+set ::GlobalFitIQGraph(e,errorhide) {no no no no no no no no}
 set ::GlobalFitIQGraph(y,subticks) "5"
 set ::GlobalFitIQGraph(l,ipadx) {0 0}
 set ::GlobalFitIQGraph(c,color) "black"
@@ -2997,41 +3129,41 @@ set ::GlobalFitIQGraph(margin,plotpady) {5 5}
 set ::GlobalFitIQGraph(fitrange) "no"
 set ::GlobalFitIQGraph(margin,right) "0"
 set ::GlobalFitIQGraph(x,min) ""
-set ::GlobalFitIQGraph(e,errfill) ""
+set ::GlobalFitIQGraph(e,errfill) {Black Black Black Black Black Black Black Black}
 set ::GlobalFitIQGraph(height) "512"
-set ::GlobalFitIQGraph(e,erroutline) ""
-set ::GlobalFitIQGraph(e,errdash) ""
+set ::GlobalFitIQGraph(e,erroutline) {blue blue blue blue blue blue blue blue}
+set ::GlobalFitIQGraph(e,errdash) {0 0 0 0 0 0 0 0}
 set ::GlobalFitIQGraph(y,ticklength) "10"
 set ::GlobalFitIQGraph(g,color) "black"
 set ::GlobalFitIQGraph(x,max) ""
 set ::GlobalFitIQGraph(g,linewidth) "1"
 set ::GlobalFitIQGraph(x,color) "Black"
-set ::GlobalFitIQGraph(l,legendtext) ""
-set ::GlobalFitIQGraph(e,ydata) ""
+set ::GlobalFitIQGraph(l,legendtext) {{Sim.: 1} {Sim.: 1t} {Sim.: 2} {Sim.: 2t} {Sim.: 0} {Sim.: 0t} {Sim.: Re Rp} {Sim.: Re Rp t}}
+set ::GlobalFitIQGraph(e,ydata) {{6.06753e+010 6.06109e+010 6.05449e+010 6.04772e+010 6.04077e+010 6.03365e+010 6.02635e+010 6.01887e+010 6.01119e+010 6.00332e+010 5.99525e+010 5.98698e+010 5.9785e+010 5.96981e+010 5.9609e+010 5.95177e+010 5.9424e+010 5.93281e+010 5.92297e+010 5.91289e+010 5.90256e+010 5.89197e+010 5.88112e+010 5.87e+010 5.85861e+010 5.84694e+010 5.83498e+010 5.82272e+010 5.81017e+010 5.79731e+010 5.78414e+010 5.77065e+010 5.75683e+010 5.74268e+010 5.72819e+010 5.71334e+010 5.69815e+010 5.68259e+010 5.66666e+010 5.65035e+010 5.63365e+010 5.61656e+010 5.59907e+010 5.58117e+010 5.56285e+010 5.5441e+010 5.52492e+010 5.50529e+010 5.48522e+010 5.46468e+010 5.44368e+010 5.4222e+010 5.40023e+010 5.37777e+010 5.35481e+010 5.33133e+010 5.30734e+010 5.28281e+010 5.25775e+010 5.23214e+010 5.20598e+010 5.17925e+010 5.15195e+010 5.12407e+010 5.0956e+010 5.06653e+010 5.03686e+010 5.00657e+010 4.97567e+010 4.94413e+010 4.91196e+010 4.87914e+010 4.84567e+010 4.81154e+010 4.77675e+010 4.74129e+010 4.70515e+010 4.66832e+010 4.63081e+010 4.59261e+010 4.55371e+010 4.51411e+010 4.4738e+010 4.43279e+010 4.39107e+010 4.34863e+010 4.30549e+010 4.26162e+010 4.21705e+010 4.17176e+010 4.12577e+010 4.07906e+010 4.03165e+010 3.98354e+010 3.93473e+010 3.88523e+010 3.83506e+010 3.7842e+010 3.73268e+010 3.68051e+010 3.62769e+010 3.57425e+010 3.52018e+010 3.46552e+010 3.41027e+010 3.35445e+010 3.29809e+010 3.2412e+010 3.18381e+010 3.12593e+010 3.0676e+010 3.00884e+010 2.94967e+010 2.89014e+010 2.83027e+010 2.77009e+010 2.70963e+010 2.64894e+010 2.58805e+010 2.527e+010 2.46583e+010 2.40458e+010 2.3433e+010 2.28203e+010 2.22081e+010 2.1597e+010 2.09874e+010 2.03798e+010 1.97748e+010 1.91728e+010 1.85744e+010 1.79801e+010 1.73904e+010 1.68059e+010 1.62271e+010 1.56545e+010 1.50888e+010 1.45305e+010 1.398e+010 1.34379e+010 1.29047e+010 1.2381e+010 1.18673e+010 1.13639e+010 1.08714e+010 1.03903e+010 9.92087e+009 9.46358e+009 9.01879e+009 8.58682e+009 8.16799e+009 7.76257e+009 7.37078e+009 6.99281e+009 6.62883e+009 6.27894e+009 5.9432e+009 5.62165e+009 5.31425e+009 5.02093e+009 4.74158e+009 4.47604e+009 4.22409e+009 3.98548e+009 3.7599e+009 3.54702e+009 3.34645e+009 3.15777e+009 2.98052e+009 2.81421e+009 2.65832e+009 2.51231e+009 2.37561e+009 2.24766e+009 2.12785e+009 2.01561e+009 1.91033e+009 1.81144e+009 1.71835e+009 1.63052e+009 1.54741e+009 1.46852e+009 1.39337e+009 1.32154e+009 1.25262e+009 1.18628e+009 1.1222e+009 1.06015e+009 9.99903e+008 9.41322e+008 8.84299e+008 8.28776e+008 7.74741e+008 7.22219e+008 6.71274e+008 6.21998e+008 5.74507e+008 5.28936e+008 4.85426e+008 4.44126e+008 4.05176e+008 3.68705e+008 3.34825e+008 3.03621e+008 2.75148e+008 2.49427e+008 2.26441e+008 2.06133e+008 1.88408e+008 1.73132e+008 1.60133e+008 1.49211e+008 1.40139e+008 1.32669e+008 1.26545e+008 1.21506e+008 1.17296e+008 1.13674e+008 1.10418e+008 1.07337e+008 1.04272e+008 1.01102e+008 9.77466e+007 9.41645e+007 9.03531e+007 8.63434e+007 8.21951e+007 7.79887e+007 7.38175e+007 6.97789e+007 6.5965e+007 6.24553e+007 5.93089e+007 5.65598e+007 5.42135e+007 5.2247e+007 5.06098e+007 4.92289e+007 4.80149e+007 4.68702e+007 4.56974e+007 4.44084e+007 4.29324e+007 4.12224e+007 3.92596e+007 3.70546e+007 3.46459e+007 3.20958e+007 2.94831e+007 2.68948e+007 2.44163e+007 2.21227e+007 2.00704e+007 1.82919e+007 1.67933e+007 1.55553e+007 1.45374e+007 1.36845e+007 1.29359e+007 1.22344e+007 1.15342e+007 1.08075e+007 1.00468e+007 9.26494e+006 8.4903e+006 7.76036e+006 7.11311e+006 6.5787e+006 6.17277e+006 5.8927e+006 5.71756e+006 5.61194e+006 5.53273e+006 5.43749e+006 5.29264e+006 5.07958e+006 4.79748e+006 4.4619e+006 4.09985e+006 3.74229e+006 3.41624e+006 3.13822e+006 2.9111e+006 2.72474e+006 2.56046e+006 2.39773e+006 2.22105e+006 2.02493e+006 1.81528e+006 1.60701e+006 1.41853e+006 1.26515e+006 1.15384e+006 1.08099e+006 1.03407e+006 996421 953299 896732 827372 752723 682703 624641 579983 544135 509318 468833 420491 367479 316324 273243 240963 217765 199092 180551 160348 139731 121387 107129 96555.6 87524.9 77878.8 66964.9 55809.6 45984.9 38264.2 32205.3 26848.3 21695.1 17005.1 13252.8 10473.5 8236.43 6182.66 4399.21 3170.94 2492.75 2041.12 1643.17 1528.7 1920.83 2542.36 2888.18 3020 3660.23 5196.76 6966.93 8108.58 8921.83 10500.6 12835.3 14390.3 14348 14193.5 15634 17816.3 18749.5 18989.3 20925.7 24224.9 25723.7 24866.3 24810.9 26456 26771.1 25358.2 26011.6 29064.3 30225.2 29238.1 29918 31100.3 29227.8 27277.9 28606.6 29438.5 28232.7 28981 30084.7 27829.6 26104.2 26532 25150.9 24133 25399.7 24450.7 22602.5 22420.8 20597.6 19099.7 19551 18345.1 17436.6 16938.1 14842.6 14106.2 13383.9 12237.2 12000.3 10602.6 9638.78 8796.85 7777.54 7413.46 6442.04 5813.96 4970.77 4332.16 3823.51 3248.22 2786.71 2245.69 1870.89 1486.17 1192.55 900.868 672.35 480.862 330.148 219.596 142.329 91.9997 85.4589 89.1511 144.641 165.798 248.723 347.773 428.144 544.372 586.825 758.987 851.709 880.959 1023.1 1078.92 1138.64 1199.4 1193.91 1249.28 1264.66 1198.4 1194.58 1185.34 1096.27 1023.03 971.106 887.699 793.661 699.531 606.332 524.341 438.446 350.809 276.096 210.477 153.572 106.974 70.995 45.1879 30.5914 24.7364 28.2718 42.7903 58.3037 84.4567 109.13 133.599 162.739 179.932 203.33 213.158 222.322 223.511 217.084 208.279 191.004 174.265 152.035 130.242 105.898 82.6524 61.2905 43.2778 28.8807 19.2967 14.041 12.8649 14.2477 22.3326 29.4978 36.7039 47.9704 54.5455 60.096 64.468 63.8446 62.2884 56.6387 49.9933 41.4183 32.6795} {6.06753e+010 6.06109e+010 6.05449e+010 6.04772e+010 6.04077e+010 6.03365e+010 6.02635e+010 6.01887e+010 6.01119e+010 6.00332e+010 5.99525e+010 5.98698e+010 5.9785e+010 5.96981e+010 5.9609e+010 5.95177e+010 5.9424e+010 5.93281e+010 5.92297e+010 5.91289e+010 5.90256e+010 5.89197e+010 5.88112e+010 5.87e+010 5.85861e+010 5.84694e+010 5.83498e+010 5.82272e+010 5.81017e+010 5.79731e+010 5.78414e+010 5.77065e+010 5.75683e+010 5.74268e+010 5.72819e+010 5.71334e+010 5.69815e+010 5.68259e+010 5.66666e+010 5.65035e+010 5.63365e+010 5.61656e+010 5.59907e+010 5.58117e+010 5.56285e+010 5.5441e+010 5.52492e+010 5.50529e+010 5.48522e+010 5.46468e+010 5.44368e+010 5.4222e+010 5.40023e+010 5.37777e+010 5.35481e+010 5.33133e+010 5.30734e+010 5.28281e+010 5.25775e+010 5.23214e+010 5.20598e+010 5.17925e+010 5.15195e+010 5.12407e+010 5.0956e+010 5.06653e+010 5.03686e+010 5.00657e+010 4.97567e+010 4.94413e+010 4.91196e+010 4.87914e+010 4.84567e+010 4.81154e+010 4.77675e+010 4.74129e+010 4.70515e+010 4.66832e+010 4.63081e+010 4.59261e+010 4.55371e+010 4.51411e+010 4.4738e+010 4.43279e+010 4.39107e+010 4.34863e+010 4.30549e+010 4.26162e+010 4.21705e+010 4.17176e+010 4.12577e+010 4.07906e+010 4.03165e+010 3.98354e+010 3.93473e+010 3.88523e+010 3.83506e+010 3.7842e+010 3.73268e+010 3.68051e+010 3.62769e+010 3.57425e+010 3.52018e+010 3.46552e+010 3.41027e+010 3.35445e+010 3.29809e+010 3.2412e+010 3.18381e+010 3.12593e+010 3.0676e+010 3.00884e+010 2.94967e+010 2.89014e+010 2.83027e+010 2.77009e+010 2.70963e+010 2.64894e+010 2.58805e+010 2.527e+010 2.46583e+010 2.40458e+010 2.3433e+010 2.28203e+010 2.22081e+010 2.1597e+010 2.09874e+010 2.03798e+010 1.97748e+010 1.91728e+010 1.85744e+010 1.79801e+010 1.73904e+010 1.68059e+010 1.62271e+010 1.56545e+010 1.50888e+010 1.45305e+010 1.398e+010 1.34379e+010 1.29047e+010 1.2381e+010 1.18673e+010 1.13639e+010 1.08714e+010 1.03903e+010 9.92087e+009 9.46358e+009 9.01879e+009 8.58682e+009 8.16799e+009 7.76257e+009 7.37078e+009 6.99281e+009 6.62883e+009 6.27894e+009 5.9432e+009 5.62165e+009 5.31425e+009 5.02093e+009 4.74158e+009 4.47604e+009 4.22409e+009 3.98548e+009 3.7599e+009 3.54702e+009 3.34645e+009 3.15777e+009 2.98052e+009 2.81421e+009 2.65832e+009 2.51231e+009 2.37561e+009 2.24766e+009 2.12785e+009 2.01561e+009 1.91033e+009 1.81144e+009 1.71835e+009 1.63052e+009 1.54741e+009 1.46852e+009 1.39337e+009 1.32154e+009 1.25262e+009 1.18628e+009 1.1222e+009 1.06015e+009 9.99903e+008 9.41322e+008 8.84299e+008 8.28776e+008 7.74741e+008 7.22219e+008 6.71274e+008 6.21998e+008 5.74507e+008 5.28936e+008 4.85426e+008 4.44126e+008 4.05176e+008 3.68705e+008 3.34825e+008 3.03621e+008 2.75148e+008 2.49427e+008 2.26441e+008 2.06133e+008 1.88408e+008 1.73132e+008 1.60133e+008 1.49211e+008 1.40139e+008 1.32669e+008 1.26545e+008 1.21506e+008 1.17296e+008 1.13674e+008 1.10418e+008 1.07337e+008 1.04272e+008 1.01102e+008 9.77466e+007 9.41645e+007 9.03531e+007 8.63434e+007 8.21951e+007 7.79887e+007 7.38175e+007 6.97789e+007 6.5965e+007 6.24553e+007 5.93089e+007 5.65598e+007 5.42135e+007 5.2247e+007 5.06098e+007 4.92289e+007 4.80149e+007 4.68702e+007 4.56974e+007 4.44084e+007 4.29324e+007 4.12224e+007 3.92596e+007 3.70546e+007 3.46459e+007 3.20958e+007 2.94831e+007 2.68948e+007 2.44163e+007 2.21227e+007 2.00704e+007 1.82919e+007 1.67933e+007 1.55553e+007 1.45374e+007 1.36845e+007 1.29359e+007 1.22344e+007 1.15342e+007 1.08075e+007 1.00468e+007 9.26494e+006 8.4903e+006 7.76036e+006 7.11311e+006 6.5787e+006 6.17277e+006 5.8927e+006 5.71756e+006 5.61194e+006 5.53273e+006 5.43749e+006 5.29264e+006 5.07958e+006 4.79748e+006 4.4619e+006 4.09985e+006 3.74229e+006 3.41624e+006 3.13822e+006 2.9111e+006 2.72474e+006 2.56046e+006 2.39773e+006 2.22105e+006 2.02493e+006 1.81528e+006 1.60701e+006 1.41853e+006 1.26515e+006 1.15384e+006 1.08099e+006 1.03407e+006 996421 953299 896732 827372 752723 682703 624641 579983 544135 509318 468833 420491 367479 316324 273243 240963 217765 199092 180551 160348 139731 121387 107129 96555.6 87524.9 77878.8 66964.9 55809.6 45984.9 38264.2 32205.3 26848.3 21695.1 17005.1 13252.8 10473.5 8236.43 6182.66 4399.21 3170.94 2492.75 2041.12 1643.17 1528.7 1920.83 2542.36 2888.18 3020 3660.23 5196.76 6966.93 8108.58 8921.83 10500.6 12835.3 14390.3 14348 14193.5 15634 17816.3 18749.5 18989.3 20925.7 24224.9 25723.7 24866.3 24810.9 26456 26771.1 25358.2 26011.6 29064.3 30225.2 29238.1 29918 31100.3 29227.8 27277.9 28606.6 29438.5 28232.7 28981 30084.7 27829.6 26104.2 26532 25150.9 24133 25399.7 24450.7 22602.5 22420.8 20597.6 19099.7 19551 18345.1 17436.6 16938.1 14842.6 14106.2 13383.9 12237.2 12000.3 10602.6 9638.78 8796.85 7777.54 7413.46 6442.04 5813.96 4970.77 4332.16 3823.51 3248.22 2786.71 2245.69 1870.89 1486.17 1192.55 900.868 672.35 480.862 330.148 219.596 142.329 91.9997 85.4589 89.1511 144.641 165.798 248.723 347.773 428.144 544.372 586.825 758.987 851.709 880.959 1023.1 1078.92 1138.64 1199.4 1193.91 1249.28 1264.66 1198.4 1194.58 1185.34 1096.27 1023.03 971.106 887.699 793.661 699.531 606.332 524.341 438.446 350.809 276.096 210.477 153.572 106.974 70.995 45.1879 30.5914 24.7364 28.2718 42.7903 58.3037 84.4567 109.13 133.599 162.739 179.932 203.33 213.158 222.322 223.511 217.084 208.279 191.004 174.265 152.035 130.242 105.898 82.6524 61.2905 43.2778 28.8807 19.2967 14.041 12.8649 14.2477 22.3326 29.4978 36.7039 47.9704 54.5455 60.096 64.468 63.8446 62.2884 56.6387 49.9933 41.4183 32.6795} {6.49618e+010 6.48916e+010 6.48196e+010 6.47457e+010 6.467e+010 6.45924e+010 6.45128e+010 6.44312e+010 6.43475e+010 6.42617e+010 6.41737e+010 6.40835e+010 6.39911e+010 6.38963e+010 6.37992e+010 6.36996e+010 6.35975e+010 6.34929e+010 6.33856e+010 6.32757e+010 6.31631e+010 6.30477e+010 6.29294e+010 6.28082e+010 6.2684e+010 6.25567e+010 6.24264e+010 6.22928e+010 6.2156e+010 6.20158e+010 6.18722e+010 6.17251e+010 6.15745e+010 6.14203e+010 6.12623e+010 6.11005e+010 6.09349e+010 6.07653e+010 6.05916e+010 6.04139e+010 6.02319e+010 6.00457e+010 5.98551e+010 5.966e+010 5.94603e+010 5.9256e+010 5.9047e+010 5.88332e+010 5.86144e+010 5.83907e+010 5.81618e+010 5.79278e+010 5.76885e+010 5.74438e+010 5.71936e+010 5.69379e+010 5.66765e+010 5.64093e+010 5.61363e+010 5.58574e+010 5.55724e+010 5.52813e+010 5.4984e+010 5.46803e+010 5.43703e+010 5.40538e+010 5.37307e+010 5.34009e+010 5.30643e+010 5.2721e+010 5.23707e+010 5.20134e+010 5.16491e+010 5.12776e+010 5.08989e+010 5.0513e+010 5.01196e+010 4.97189e+010 4.93108e+010 4.88951e+010 4.84718e+010 4.8041e+010 4.76025e+010 4.71564e+010 4.67026e+010 4.62411e+010 4.57718e+010 4.52949e+010 4.48103e+010 4.43179e+010 4.38179e+010 4.33102e+010 4.27949e+010 4.22721e+010 4.17418e+010 4.1204e+010 4.06589e+010 4.01065e+010 3.9547e+010 3.89805e+010 3.8407e+010 3.78268e+010 3.724e+010 3.66467e+010 3.60473e+010 3.54417e+010 3.48304e+010 3.42134e+010 3.35911e+010 3.29637e+010 3.23315e+010 3.16948e+010 3.10538e+010 3.04091e+010 2.97607e+010 2.91093e+010 2.8455e+010 2.77984e+010 2.71398e+010 2.64797e+010 2.58185e+010 2.51567e+010 2.44947e+010 2.38331e+010 2.31724e+010 2.25131e+010 2.18557e+010 2.12007e+010 2.05488e+010 1.99005e+010 1.92564e+010 1.8617e+010 1.7983e+010 1.73549e+010 1.67334e+010 1.61191e+010 1.55124e+010 1.49141e+010 1.43248e+010 1.37449e+010 1.31751e+010 1.26159e+010 1.20678e+010 1.15315e+010 1.10073e+010 1.04959e+010 9.99751e+009 9.5127e+009 9.04184e+009 8.58528e+009 8.14336e+009 7.71635e+009 7.30451e+009 6.90803e+009 6.52706e+009 6.16173e+009 5.81209e+009 5.47815e+009 5.15986e+009 4.85715e+009 4.56985e+009 4.29778e+009 4.04069e+009 3.79828e+009 3.57019e+009 3.35604e+009 3.15538e+009 2.96772e+009 2.79254e+009 2.62928e+009 2.47735e+009 2.33612e+009 2.20497e+009 2.08322e+009 1.97021e+009 1.86526e+009 1.76771e+009 1.67688e+009 1.59212e+009 1.5128e+009 1.43831e+009 1.36808e+009 1.30155e+009 1.23825e+009 1.17771e+009 1.11953e+009 1.06337e+009 1.00893e+009 9.55978e+008 9.04324e+008 8.53844e+008 8.04465e+008 7.56164e+008 7.08962e+008 6.62924e+008 6.18146e+008 5.74756e+008 5.32901e+008 4.92739e+008 4.54437e+008 4.18154e+008 3.84043e+008 3.52233e+008 3.2283e+008 2.95909e+008 2.71507e+008 2.49623e+008 2.30212e+008 2.13188e+008 1.98424e+008 1.85755e+008 1.74984e+008 1.65884e+008 1.5821e+008 1.51705e+008 1.46108e+008 1.41166e+008 1.3664e+008 1.32314e+008 1.28006e+008 1.23568e+008 1.18895e+008 1.13925e+008 1.08638e+008 1.03058e+008 9.72432e+007 9.12821e+007 8.52852e+007 7.93756e+007 7.36789e+007 6.83132e+007 6.33803e+007 5.89577e+007 5.50928e+007 5.17992e+007 4.90565e+007 4.68119e+007 4.49852e+007 4.34758e+007 4.21718e+007 4.09594e+007 3.97331e+007 3.84049e+007 3.69117e+007 3.522e+007 3.33283e+007 3.1265e+007 2.90847e+007 2.68602e+007 2.46739e+007 2.26069e+007 2.07297e+007 1.90936e+007 1.77245e+007 1.66208e+007 1.57541e+007 1.5074e+007 1.4516e+007 1.40107e+007 1.3494e+007 1.29163e+007 1.22489e+007 1.14873e+007 1.06504e+007 9.77557e+006 8.91113e+006 8.10664e+006 7.40346e+006 6.82707e+006 6.38259e+006 6.05444e+006 5.8103e+006 5.60828e+006 5.40607e+006 5.16983e+006 4.88099e+006 4.53929e+006 4.16149e+006 3.77598e+006 3.41474e+006 3.10471e+006 2.86082e+006 2.68256e+006 2.55492e+006 2.45342e+006 2.35167e+006 2.22916e+006 2.07696e+006 1.89943e+006 1.71167e+006 1.53356e+006 1.38247e+006 1.26728e+006 1.18578e+006 1.12626e+006 1.07257e+006 1.01055e+006 933330 843246 749871 665099 597594 549132 514404 484173 450064 408496 361810 316214 277867 249425 228932 211517 192615 170607 147276 126028 109301 97019.8 87038.4 77004.6 66058.9 55105.7 45657 38412.2 32806.2 27752 22695 17937.2 14050.4 11149.7 8832.36 6732.43 4924 3678.61 2970.37 2460.27 1993.29 1849.86 2291.6 3028.28 3510.26 3771.71 4519.07 6077.3 7677.24 8429.86 8789.19 10085.1 12411 14159 14450.7 14808.7 16865.4 19421.6 20161.5 19747.8 20984.2 23757 24888 23994.2 24531.4 27187.4 28220.6 26879.2 27207.1 29676 29938.6 28209 28993.1 30948.1 29809.2 28384.4 29969.9 30332.4 28122.5 28273.4 29408 27477.7 26436.7 27537.9 26047.9 24423.5 25194.9 23875.1 22135.3 22600.2 21155.2 19620.7 19813.5 18103.3 17029.5 16816.2 14988.7 14460.4 13617 12143.6 11816 10468.2 9712.11 8980.79 7853.38 7384.18 6342.68 5800.18 5033.19 4398.98 3844.97 3230.52 2793.5 2276.77 1913.28 1515.02 1219.66 932.547 709.474 519.234 370.148 260.742 184.762 137.314 132.087 127.452 183.107 213.614 299.756 379.866 449.281 590.185 631.813 777.049 859.2 912.961 1059 1071.67 1134.83 1228.48 1196.14 1225.62 1267.59 1204 1170.4 1168.73 1095.86 1003.87 948.364 881.332 780.567 681.24 598.266 516.754 430.606 348.024 275.208 212.212 158.341 114.258 80.5297 56.9494 43.1249 38.7437 43.3828 55.8091 73.5881 97.8588 118.468 144.857 168.803 186.552 204.932 214.465 219.884 218.285 211.378 199.53 184.358 165.414 144.861 123.354 100.958 79.1578 59.7742 43.7364 31.2918 23.2574 19.7442 18.8911 21.3174 28.7655 35.8447 41.5776 51.3986 57.0083 59.7233 63.6321 60.856 58.5441 52.457 45.5581 37.5437 29.6637} {6.68844e+010 6.68108e+010 6.67354e+010 6.66581e+010 6.65788e+010 6.64975e+010 6.64142e+010 6.63287e+010 6.62411e+010 6.61512e+010 6.60591e+010 6.59647e+010 6.58679e+010 6.57687e+010 6.5667e+010 6.55627e+010 6.54558e+010 6.53463e+010 6.5234e+010 6.5119e+010 6.50011e+010 6.48802e+010 6.47564e+010 6.46296e+010 6.44996e+010 6.43664e+010 6.42299e+010 6.40901e+010 6.39469e+010 6.38003e+010 6.365e+010 6.34961e+010 6.33385e+010 6.31771e+010 6.30118e+010 6.28425e+010 6.26692e+010 6.24918e+010 6.23102e+010 6.21242e+010 6.19339e+010 6.17391e+010 6.15397e+010 6.13357e+010 6.11269e+010 6.09132e+010 6.06947e+010 6.04711e+010 6.02424e+010 6.00084e+010 5.97692e+010 5.95245e+010 5.92743e+010 5.90186e+010 5.87571e+010 5.84898e+010 5.82167e+010 5.79375e+010 5.76523e+010 5.73608e+010 5.70631e+010 5.6759e+010 5.64485e+010 5.61314e+010 5.58076e+010 5.5477e+010 5.51397e+010 5.47954e+010 5.44441e+010 5.40857e+010 5.37201e+010 5.33473e+010 5.29671e+010 5.25795e+010 5.21844e+010 5.17818e+010 5.13716e+010 5.09538e+010 5.05282e+010 5.00948e+010 4.96536e+010 4.92046e+010 4.87477e+010 4.82828e+010 4.78101e+010 4.73293e+010 4.68407e+010 4.63441e+010 4.58395e+010 4.5327e+010 4.48067e+010 4.42784e+010 4.37424e+010 4.31986e+010 4.26471e+010 4.20881e+010 4.15215e+010 4.09475e+010 4.03662e+010 3.97777e+010 3.91822e+010 3.85799e+010 3.79708e+010 3.73553e+010 3.67334e+010 3.61054e+010 3.54716e+010 3.48322e+010 3.41874e+010 3.35375e+010 3.28829e+010 3.22239e+010 3.15607e+010 3.08937e+010 3.02234e+010 2.955e+010 2.88741e+010 2.81959e+010 2.7516e+010 2.68349e+010 2.61529e+010 2.54705e+010 2.47884e+010 2.4107e+010 2.34267e+010 2.27483e+010 2.20722e+010 2.1399e+010 2.07293e+010 2.00637e+010 1.94027e+010 1.87471e+010 1.80974e+010 1.74542e+010 1.68181e+010 1.61898e+010 1.55698e+010 1.49588e+010 1.43574e+010 1.37661e+010 1.31856e+010 1.26164e+010 1.2059e+010 1.15141e+010 1.0982e+010 1.04632e+010 9.95833e+009 9.46765e+009 8.99161e+009 8.53053e+009 8.08474e+009 7.65451e+009 7.24006e+009 6.84158e+009 6.45919e+009 6.09298e+009 5.74298e+009 5.40917e+009 5.09148e+009 4.78978e+009 4.50389e+009 4.23358e+009 3.97856e+009 3.73849e+009 3.51299e+009 3.3016e+009 3.10387e+009 2.91925e+009 2.74718e+009 2.58708e+009 2.4383e+009 2.3002e+009 2.17211e+009 2.05333e+009 1.94318e+009 1.84095e+009 1.74596e+009 1.65751e+009 1.57495e+009 1.49763e+009 1.42495e+009 1.35631e+009 1.2912e+009 1.22912e+009 1.16962e+009 1.11232e+009 1.05688e+009 1.00304e+009 9.50559e+008 8.99289e+008 8.49122e+008 8.00004e+008 7.51931e+008 7.04945e+008 6.59126e+008 6.14586e+008 5.71464e+008 5.29915e+008 4.90105e+008 4.522e+008 4.1636e+008 3.8273e+008 3.51434e+008 3.22567e+008 2.96188e+008 2.72322e+008 2.5095e+008 2.32011e+008 2.15405e+008 2.00989e+008 1.88587e+008 1.7799e+008 1.68967e+008 1.61269e+008 1.54641e+008 1.48827e+008 1.43584e+008 1.38685e+008 1.33932e+008 1.29159e+008 1.2424e+008 1.19089e+008 1.13663e+008 1.07961e+008 1.0202e+008 9.59117e+007 8.97303e+007 8.35892e+007 7.76093e+007 7.19095e+007 6.65976e+007 6.17619e+007 5.74644e+007 5.37365e+007 5.05764e+007 4.79502e+007 4.57946e+007 4.40227e+007 4.25318e+007 4.12119e+007 3.99556e+007 3.86669e+007 3.72697e+007 3.57131e+007 3.39758e+007 3.20657e+007 3.0018e+007 2.78894e+007 2.57507e+007 2.36778e+007 2.17422e+007 2.00025e+007 1.84973e+007 1.72411e+007 1.62232e+007 1.54104e+007 1.47518e+007 1.41867e+007 1.36538e+007 1.30992e+007 1.24844e+007 1.17907e+007 1.10211e+007 1.01975e+007 9.35648e+006 8.54097e+006 7.79243e+006 7.14287e+006 6.60917e+006 6.19039e+006 5.86878e+006 5.61406e+006 5.39009e+006 5.16264e+006 4.90626e+006 4.60911e+006 4.27435e+006 3.91807e+006 3.56423e+006 3.23791e+006 2.95869e+006 2.73577e+006 2.56607e+006 2.43589e+006 2.32533e+006 2.21427e+006 2.08808e+006 1.94135e+006 1.77856e+006 1.6116e+006 1.4551e+006 1.32119e+006 1.21547e+006 1.13555e+006 1.07253e+006 1.01478e+006 952391 880657 801224 720617 646896 585980 539232 503278 471988 439535 403014 363389 324431 290347 263439 243032 226143 209380 190872 171119 152308 136666 124940 115999 107750 98660.1 88767 79464.5 72250.1 67442.7 63910.8 60047.4 55172.1 50111.5 46378.2 44649.9 44004.6 42756.7 40169.3 37282.1 35839.5 36313.1 37215 36681.6 34682.5 33179.5 33769.4 35561.9 36141.7 34688.8 33197.4 33849.4 35889 36533.5 34983 33721.9 34821.5 36647.8 36332.8 34420.4 34053.9 35690.8 36247.5 34481 33246.1 34295.2 35002.1 33356.6 31854.7 32539.3 32910.8 31115.8 29788.4 30365.8 30040.6 28058 27319 27664.6 26398.9 24728.7 24680.4 24172.9 22396.6 21740.6 21529.9 20012.1 19007 18796.1 17529.5 16452.6 16168.4 15045.2 14069.4 13722.7 12669.7 11890.6 11476.8 10496.9 9947.81 9432.01 8607.9 8230.44 7614.3 7045.84 6691.35 6097.26 5759.8 5332.08 4925.19 4641.12 4243.08 4003.37 3686.61 3443.76 3215.38 2975.39 2808.88 2590.85 2460.81 2274.67 2167.59 2012.33 1923.74 1792.54 1721.97 1606.83 1554.07 1449.27 1411.17 1316.59 1284.05 1207.13 1165.67 1116.48 1056.72 1032.44 966.702 941.27 898.077 849.224 829.142 779.819 745.482 722.599 677.358 647.897 625.767 587.034 557.116 537.779 507.94 476.59 456.418 436.887 410.515 385.737 368.066 352.062 332.616 312.027 294.518 280.414 267.493 254.319 240.021 225.916 213.123 201.757 191.635 182.273 173.536 164.966 156.878 148.997 141.447 134.246 127.386 120.845 114.587 108.573 102.781 97.222 91.9665 87.1336 82.8295 79.0252 75.4612 71.7458 67.7211 63.7858 60.5691 58.0031 55.1862 51.8673 49.1146 47.1174 44.5709 41.917 40.2202 38.0491 35.8611 34.4436 32.2949 30.9118 29.1988} {6.06753e+010 6.06109e+010 6.05449e+010 6.04772e+010 6.04077e+010 6.03365e+010 6.02635e+010 6.01887e+010 6.01119e+010 6.00332e+010 5.99525e+010 5.98698e+010 5.9785e+010 5.96981e+010 5.9609e+010 5.95177e+010 5.9424e+010 5.93281e+010 5.92297e+010 5.91289e+010 5.90256e+010 5.89197e+010 5.88112e+010 5.87e+010 5.85861e+010 5.84694e+010 5.83498e+010 5.82272e+010 5.81017e+010 5.79731e+010 5.78414e+010 5.77065e+010 5.75683e+010 5.74268e+010 5.72819e+010 5.71334e+010 5.69815e+010 5.68259e+010 5.66666e+010 5.65035e+010 5.63365e+010 5.61656e+010 5.59907e+010 5.58117e+010 5.56285e+010 5.5441e+010 5.52492e+010 5.50529e+010 5.48522e+010 5.46468e+010 5.44368e+010 5.4222e+010 5.40023e+010 5.37777e+010 5.35481e+010 5.33133e+010 5.30734e+010 5.28281e+010 5.25775e+010 5.23214e+010 5.20598e+010 5.17925e+010 5.15195e+010 5.12407e+010 5.0956e+010 5.06653e+010 5.03686e+010 5.00657e+010 4.97567e+010 4.94413e+010 4.91196e+010 4.87914e+010 4.84567e+010 4.81154e+010 4.77675e+010 4.74129e+010 4.70515e+010 4.66832e+010 4.63081e+010 4.59261e+010 4.55371e+010 4.51411e+010 4.4738e+010 4.43279e+010 4.39107e+010 4.34863e+010 4.30549e+010 4.26162e+010 4.21705e+010 4.17176e+010 4.12577e+010 4.07906e+010 4.03165e+010 3.98354e+010 3.93473e+010 3.88523e+010 3.83506e+010 3.7842e+010 3.73268e+010 3.68051e+010 3.62769e+010 3.57425e+010 3.52018e+010 3.46552e+010 3.41027e+010 3.35445e+010 3.29809e+010 3.2412e+010 3.18381e+010 3.12593e+010 3.0676e+010 3.00884e+010 2.94967e+010 2.89014e+010 2.83027e+010 2.77009e+010 2.70963e+010 2.64894e+010 2.58805e+010 2.527e+010 2.46583e+010 2.40458e+010 2.3433e+010 2.28203e+010 2.22081e+010 2.1597e+010 2.09874e+010 2.03798e+010 1.97748e+010 1.91728e+010 1.85744e+010 1.79801e+010 1.73904e+010 1.68059e+010 1.62271e+010 1.56545e+010 1.50888e+010 1.45305e+010 1.398e+010 1.34379e+010 1.29047e+010 1.2381e+010 1.18673e+010 1.13639e+010 1.08714e+010 1.03903e+010 9.92087e+009 9.46358e+009 9.01879e+009 8.58682e+009 8.16799e+009 7.76257e+009 7.37078e+009 6.99281e+009 6.62883e+009 6.27894e+009 5.9432e+009 5.62165e+009 5.31425e+009 5.02093e+009 4.74158e+009 4.47604e+009 4.22409e+009 3.98548e+009 3.7599e+009 3.54702e+009 3.34645e+009 3.15777e+009 2.98052e+009 2.81421e+009 2.65832e+009 2.51231e+009 2.37561e+009 2.24766e+009 2.12785e+009 2.01561e+009 1.91033e+009 1.81144e+009 1.71835e+009 1.63052e+009 1.54741e+009 1.46852e+009 1.39337e+009 1.32154e+009 1.25262e+009 1.18628e+009 1.1222e+009 1.06015e+009 9.99903e+008 9.41322e+008 8.84299e+008 8.28776e+008 7.74741e+008 7.22219e+008 6.71274e+008 6.21998e+008 5.74507e+008 5.28936e+008 4.85426e+008 4.44126e+008 4.05176e+008 3.68705e+008 3.34825e+008 3.03621e+008 2.75148e+008 2.49427e+008 2.26441e+008 2.06133e+008 1.88408e+008 1.73132e+008 1.60133e+008 1.49211e+008 1.40139e+008 1.32669e+008 1.26545e+008 1.21506e+008 1.17296e+008 1.13674e+008 1.10418e+008 1.07337e+008 1.04272e+008 1.01102e+008 9.77466e+007 9.41645e+007 9.03531e+007 8.63434e+007 8.21951e+007 7.79887e+007 7.38175e+007 6.97789e+007 6.5965e+007 6.24553e+007 5.93089e+007 5.65598e+007 5.42135e+007 5.2247e+007 5.06098e+007 4.92289e+007 4.80149e+007 4.68702e+007 4.56974e+007 4.44084e+007 4.29324e+007 4.12224e+007 3.92596e+007 3.70546e+007 3.46459e+007 3.20958e+007 2.94831e+007 2.68948e+007 2.44163e+007 2.21227e+007 2.00704e+007 1.82919e+007 1.67933e+007 1.55553e+007 1.45374e+007 1.36845e+007 1.29359e+007 1.22344e+007 1.15342e+007 1.08075e+007 1.00468e+007 9.26494e+006 8.4903e+006 7.76036e+006 7.11311e+006 6.5787e+006 6.17277e+006 5.8927e+006 5.71756e+006 5.61194e+006 5.53273e+006 5.43749e+006 5.29264e+006 5.07958e+006 4.79748e+006 4.4619e+006 4.09985e+006 3.74229e+006 3.41624e+006 3.13822e+006 2.9111e+006 2.72474e+006 2.56046e+006 2.39773e+006 2.22105e+006 2.02493e+006 1.81528e+006 1.60701e+006 1.41853e+006 1.26515e+006 1.15384e+006 1.08099e+006 1.03407e+006 996421 953299 896732 827372 752723 682703 624641 579983 544135 509318 468833 420491 367479 316324 273243 240963 217765 199092 180551 160348 139731 121387 107129 96555.6 87524.9 77878.8 66964.9 55809.6 45984.9 38264.2 32205.3 26848.3 21695.1 17005.1 13252.8 10473.5 8236.43 6182.66 4399.21 3170.94 2492.75 2041.12 1643.17 1528.7 1920.83 2542.36 2888.18 3020 3660.23 5196.76 6966.93 8108.58 8921.83 10500.6 12835.3 14390.3 14348 14193.5 15634 17816.3 18749.5 18989.3 20925.7 24224.9 25723.7 24866.3 24810.9 26456 26771.1 25358.2 26011.6 29064.3 30225.2 29238.1 29918 31100.3 29227.8 27277.9 28606.6 29438.5 28232.7 28981 30084.7 27829.6 26104.2 26532 25150.9 24133 25399.7 24450.7 22602.5 22420.8 20597.6 19099.7 19551 18345.1 17436.6 16938.1 14842.6 14106.2 13383.9 12237.2 12000.3 10602.6 9638.78 8796.85 7777.54 7413.46 6442.04 5813.96 4970.77 4332.16 3823.51 3248.22 2786.71 2245.69 1870.89 1486.17 1192.55 900.868 672.35 480.862 330.148 219.596 142.329 91.9997 85.4589 89.1511 144.641 165.798 248.723 347.773 428.144 544.372 586.825 758.987 851.709 880.959 1023.1 1078.92 1138.64 1199.4 1193.91 1249.28 1264.66 1198.4 1194.58 1185.34 1096.27 1023.03 971.106 887.699 793.661 699.531 606.332 524.341 438.446 350.809 276.096 210.477 153.572 106.974 70.995 45.1879 30.5914 24.7364 28.2718 42.7903 58.3037 84.4567 109.13 133.599 162.739 179.932 203.33 213.158 222.322 223.511 217.084 208.279 191.004 174.265 152.035 130.242 105.898 82.6524 61.2905 43.2778 28.8807 19.2967 14.041 12.8649 14.2477 22.3326 29.4978 36.7039 47.9704 54.5455 60.096 64.468 63.8446 62.2884 56.6387 49.9933 41.4183 32.6795} {6.68844e+010 6.68108e+010 6.67354e+010 6.66581e+010 6.65788e+010 6.64975e+010 6.64142e+010 6.63287e+010 6.62411e+010 6.61512e+010 6.60591e+010 6.59647e+010 6.58679e+010 6.57687e+010 6.5667e+010 6.55627e+010 6.54558e+010 6.53463e+010 6.5234e+010 6.5119e+010 6.50011e+010 6.48802e+010 6.47564e+010 6.46296e+010 6.44996e+010 6.43664e+010 6.42299e+010 6.40901e+010 6.39469e+010 6.38003e+010 6.365e+010 6.34961e+010 6.33385e+010 6.31771e+010 6.30118e+010 6.28425e+010 6.26692e+010 6.24918e+010 6.23102e+010 6.21242e+010 6.19339e+010 6.17391e+010 6.15397e+010 6.13357e+010 6.11269e+010 6.09132e+010 6.06947e+010 6.04711e+010 6.02424e+010 6.00084e+010 5.97692e+010 5.95245e+010 5.92743e+010 5.90186e+010 5.87571e+010 5.84898e+010 5.82167e+010 5.79375e+010 5.76523e+010 5.73608e+010 5.70631e+010 5.6759e+010 5.64485e+010 5.61314e+010 5.58076e+010 5.5477e+010 5.51397e+010 5.47954e+010 5.44441e+010 5.40857e+010 5.37201e+010 5.33473e+010 5.29671e+010 5.25795e+010 5.21844e+010 5.17818e+010 5.13716e+010 5.09538e+010 5.05282e+010 5.00948e+010 4.96536e+010 4.92046e+010 4.87477e+010 4.82828e+010 4.78101e+010 4.73293e+010 4.68407e+010 4.63441e+010 4.58395e+010 4.5327e+010 4.48067e+010 4.42784e+010 4.37424e+010 4.31986e+010 4.26471e+010 4.20881e+010 4.15215e+010 4.09475e+010 4.03662e+010 3.97777e+010 3.91822e+010 3.85799e+010 3.79708e+010 3.73553e+010 3.67334e+010 3.61054e+010 3.54716e+010 3.48322e+010 3.41874e+010 3.35375e+010 3.28829e+010 3.22239e+010 3.15607e+010 3.08937e+010 3.02234e+010 2.955e+010 2.88741e+010 2.81959e+010 2.7516e+010 2.68349e+010 2.61529e+010 2.54705e+010 2.47884e+010 2.4107e+010 2.34267e+010 2.27483e+010 2.20722e+010 2.1399e+010 2.07293e+010 2.00637e+010 1.94027e+010 1.87471e+010 1.80974e+010 1.74542e+010 1.68181e+010 1.61898e+010 1.55698e+010 1.49588e+010 1.43574e+010 1.37661e+010 1.31856e+010 1.26164e+010 1.2059e+010 1.15141e+010 1.0982e+010 1.04632e+010 9.95833e+009 9.46765e+009 8.99161e+009 8.53053e+009 8.08474e+009 7.65451e+009 7.24006e+009 6.84158e+009 6.45919e+009 6.09298e+009 5.74298e+009 5.40917e+009 5.09148e+009 4.78978e+009 4.50389e+009 4.23358e+009 3.97856e+009 3.73849e+009 3.51299e+009 3.3016e+009 3.10387e+009 2.91925e+009 2.74718e+009 2.58708e+009 2.4383e+009 2.3002e+009 2.17211e+009 2.05333e+009 1.94318e+009 1.84095e+009 1.74596e+009 1.65751e+009 1.57495e+009 1.49763e+009 1.42495e+009 1.35631e+009 1.2912e+009 1.22912e+009 1.16962e+009 1.11232e+009 1.05688e+009 1.00304e+009 9.50559e+008 8.99289e+008 8.49122e+008 8.00004e+008 7.51931e+008 7.04945e+008 6.59126e+008 6.14586e+008 5.71464e+008 5.29915e+008 4.90105e+008 4.522e+008 4.1636e+008 3.8273e+008 3.51434e+008 3.22567e+008 2.96188e+008 2.72322e+008 2.5095e+008 2.32011e+008 2.15405e+008 2.00989e+008 1.88587e+008 1.7799e+008 1.68967e+008 1.61269e+008 1.54641e+008 1.48827e+008 1.43584e+008 1.38685e+008 1.33932e+008 1.29159e+008 1.2424e+008 1.19089e+008 1.13663e+008 1.07961e+008 1.0202e+008 9.59117e+007 8.97303e+007 8.35892e+007 7.76093e+007 7.19095e+007 6.65976e+007 6.17619e+007 5.74644e+007 5.37365e+007 5.05764e+007 4.79502e+007 4.57946e+007 4.40227e+007 4.25318e+007 4.12119e+007 3.99556e+007 3.86669e+007 3.72697e+007 3.57131e+007 3.39758e+007 3.20657e+007 3.0018e+007 2.78894e+007 2.57507e+007 2.36778e+007 2.17422e+007 2.00025e+007 1.84973e+007 1.72411e+007 1.62232e+007 1.54104e+007 1.47518e+007 1.41867e+007 1.36538e+007 1.30992e+007 1.24844e+007 1.17907e+007 1.10211e+007 1.01975e+007 9.35648e+006 8.54097e+006 7.79243e+006 7.14287e+006 6.60917e+006 6.19039e+006 5.86878e+006 5.61406e+006 5.39009e+006 5.16264e+006 4.90626e+006 4.60911e+006 4.27435e+006 3.91807e+006 3.56423e+006 3.23791e+006 2.95869e+006 2.73577e+006 2.56607e+006 2.43589e+006 2.32533e+006 2.21427e+006 2.08808e+006 1.94135e+006 1.77856e+006 1.6116e+006 1.4551e+006 1.32119e+006 1.21547e+006 1.13555e+006 1.07253e+006 1.01478e+006 952391 880657 801224 720617 646896 585980 539232 503278 471988 439535 403014 363389 324431 290347 263439 243032 226143 209380 190872 171119 152308 136666 124940 115999 107750 98660.1 88767 79464.5 72250.1 67442.7 63910.8 60047.4 55172.1 50111.5 46378.2 44649.9 44004.6 42756.7 40169.3 37282.1 35839.5 36313.1 37215 36681.6 34682.5 33179.5 33769.4 35561.9 36141.7 34688.8 33197.4 33849.4 35889 36533.5 34983 33721.9 34821.5 36647.8 36332.8 34420.4 34053.9 35690.8 36247.5 34481 33246.1 34295.2 35002.1 33356.6 31854.7 32539.3 32910.8 31115.8 29788.4 30365.8 30040.6 28058 27319 27664.6 26398.9 24728.7 24680.4 24172.9 22396.6 21740.6 21529.9 20012.1 19007 18796.1 17529.5 16452.6 16168.4 15045.2 14069.4 13722.7 12669.7 11890.6 11476.8 10496.9 9947.81 9432.01 8607.9 8230.44 7614.3 7045.84 6691.35 6097.26 5759.8 5332.08 4925.19 4641.12 4243.08 4003.37 3686.61 3443.76 3215.38 2975.39 2808.88 2590.85 2460.81 2274.67 2167.59 2012.33 1923.74 1792.54 1721.97 1606.83 1554.07 1449.27 1411.17 1316.59 1284.05 1207.13 1165.67 1116.48 1056.72 1032.44 966.702 941.27 898.077 849.224 829.142 779.819 745.482 722.599 677.358 647.897 625.767 587.034 557.116 537.779 507.94 476.59 456.418 436.887 410.515 385.737 368.066 352.062 332.616 312.027 294.518 280.414 267.493 254.319 240.021 225.916 213.123 201.757 191.635 182.273 173.536 164.966 156.878 148.997 141.447 134.246 127.386 120.845 114.587 108.573 102.781 97.222 91.9665 87.1336 82.8295 79.0252 75.4612 71.7458 67.7211 63.7858 60.5691 58.0031 55.1862 51.8673 49.1146 47.1174 44.5709 41.917 40.2202 38.0491 35.8611 34.4436 32.2949 30.9118 29.1988} {1.21013e+011 1.20791e+011 1.20563e+011 1.2033e+011 1.20091e+011 1.19846e+011 1.19595e+011 1.19338e+011 1.19075e+011 1.18806e+011 1.1853e+011 1.18248e+011 1.17959e+011 1.17663e+011 1.1736e+011 1.17051e+011 1.16733e+011 1.16409e+011 1.16076e+011 1.15737e+011 1.15389e+011 1.15033e+011 1.14669e+011 1.14297e+011 1.13916e+011 1.13527e+011 1.13129e+011 1.12722e+011 1.12305e+011 1.1188e+011 1.11445e+011 1.11001e+011 1.10547e+011 1.10083e+011 1.09609e+011 1.09124e+011 1.0863e+011 1.08125e+011 1.07609e+011 1.07083e+011 1.06545e+011 1.05997e+011 1.05437e+011 1.04866e+011 1.04283e+011 1.03688e+011 1.03082e+011 1.02464e+011 1.01834e+011 1.01192e+011 1.00537e+011 9.98698e+010 9.91903e+010 9.84981e+010 9.77933e+010 9.70756e+010 9.63452e+010 9.56018e+010 9.48454e+010 9.4076e+010 9.32935e+010 9.2498e+010 9.16893e+010 9.08675e+010 9.00325e+010 8.91845e+010 8.83234e+010 8.74492e+010 8.65621e+010 8.56621e+010 8.47492e+010 8.38237e+010 8.28855e+010 8.19348e+010 8.09719e+010 7.99968e+010 7.90098e+010 7.8011e+010 7.70007e+010 7.59791e+010 7.49466e+010 7.39033e+010 7.28496e+010 7.17859e+010 7.07124e+010 6.96296e+010 6.85378e+010 6.74376e+010 6.63292e+010 6.52132e+010 6.40901e+010 6.29603e+010 6.18245e+010 6.06831e+010 5.95367e+010 5.8386e+010 5.72315e+010 5.60739e+010 5.49138e+010 5.3752e+010 5.2589e+010 5.14256e+010 5.02626e+010 4.91006e+010 4.79405e+010 4.67829e+010 4.56287e+010 4.44786e+010 4.33334e+010 4.21939e+010 4.1061e+010 3.99354e+010 3.88179e+010 3.77092e+010 3.66103e+010 3.55219e+010 3.44447e+010 3.33795e+010 3.23271e+010 3.12881e+010 3.02634e+010 2.92536e+010 2.82593e+010 2.72812e+010 2.63199e+010 2.5376e+010 2.44501e+010 2.35427e+010 2.26541e+010 2.1785e+010 2.09356e+010 2.01064e+010 1.92977e+010 1.85097e+010 1.77427e+010 1.69968e+010 1.62722e+010 1.5569e+010 1.48872e+010 1.42269e+010 1.3588e+010 1.29703e+010 1.23739e+010 1.17985e+010 1.12438e+010 1.07097e+010 1.01959e+010 9.70192e+009 9.22756e+009 8.77239e+009 8.33597e+009 7.91789e+009 7.51766e+009 7.13482e+009 6.76885e+009 6.41926e+009 6.08551e+009 5.76707e+009 5.46341e+009 5.17399e+009 4.89826e+009 4.63571e+009 4.38578e+009 4.14798e+009 3.92177e+009 3.70665e+009 3.50215e+009 3.30779e+009 3.1231e+009 2.94764e+009 2.781e+009 2.62275e+009 2.47252e+009 2.32993e+009 2.19462e+009 2.06627e+009 1.94454e+009 1.82914e+009 1.71979e+009 1.6162e+009 1.51812e+009 1.42531e+009 1.33754e+009 1.25458e+009 1.17623e+009 1.10227e+009 1.03253e+009 9.66814e+008 9.04945e+008 8.4675e+008 7.92065e+008 7.40727e+008 6.9258e+008 6.47471e+008 6.05251e+008 5.65776e+008 5.28902e+008 4.94492e+008 4.62411e+008 4.32528e+008 4.04714e+008 3.78846e+008 3.54803e+008 3.32469e+008 3.11731e+008 2.92482e+008 2.74618e+008 2.58039e+008 2.42652e+008 2.28367e+008 2.151e+008 2.02769e+008 1.91301e+008 1.80624e+008 1.70673e+008 1.61388e+008 1.52711e+008 1.44591e+008 1.36981e+008 1.29835e+008 1.23116e+008 1.16785e+008 1.10812e+008 1.05165e+008 9.98191e+007 9.47501e+007 8.99368e+007 8.53605e+007 8.10043e+007 7.68537e+007 7.28955e+007 6.91182e+007 6.55117e+007 6.20671e+007 5.87764e+007 5.56326e+007 5.26296e+007 4.97616e+007 4.70237e+007 4.44111e+007 4.19196e+007 3.95452e+007 3.72841e+007 3.51325e+007 3.3087e+007 3.11441e+007 2.93004e+007 2.75523e+007 2.58965e+007 2.43296e+007 2.28481e+007 2.14486e+007 2.01277e+007 1.8882e+007 1.77079e+007 1.66022e+007 1.55615e+007 1.45826e+007 1.36621e+007 1.27969e+007 1.1984e+007 1.12205e+007 1.05034e+007 9.83011e+006 9.19793e+006 8.60442e+006 8.0472e+006 7.52406e+006 7.03289e+006 6.57174e+006 6.13873e+006 5.73216e+006 5.35039e+006 4.99192e+006 4.65534e+006 4.33935e+006 4.04271e+006 3.7643e+006 3.50305e+006 3.25796e+006 3.02811e+006 2.81262e+006 2.61069e+006 2.42155e+006 2.24447e+006 2.07877e+006 1.92382e+006 1.779e+006 1.64373e+006 1.51748e+006 1.39973e+006 1.28998e+006 1.18777e+006 1.09266e+006 1.00422e+006 922064 845803 775083 709563 648921 592851 541066 493291 449269 408757 371524 337354 306041 277393 251227 227374 205670 185965 168114 151984 137447 124385 112684 102240 92953.9 84731.6 77486 71135.1 65601.6 60813.4 56702.7 53206.2 50264.5 47822.2 45827.4 44231.9 42990.7 42061.8 41600.4 40988.4 40774.3 40733.2 40836.4 41057.9 41097.5 41190.6 41951.9 42555.6 43147.8 43612.4 44085.1 44560 44968.9 45349.2 45653.8 45902.1 46086.7 46226.1 46293.8 46390.7 46198.2 46138.2 45893.8 45473.6 45067.4 44692.6 44044 43411.7 42824.1 42065.3 41244.3 40261.4 39431.4 38357.4 37419.7 36213.5 35246.5 34111.5 32950.8 31769.3 30572 29363.8 28149.3 26933.3 25720.3 24514.5 23320.2 22141.3 20987.8 19851.2 18842 17953.7 16310.1 15527.5 14587 13400.8 12983.8 11856.5 10921.6 10404.6 9542.25 8785.31 8228.15 7611.72 7019.85 6512.42 6011.61 5539.83 5116.13 4731.15 4356.11 4030.06 3733.53 3471.01 3228.64 3012.89 2816.71 2642.02 2482.27 2339.73 2211.74 2097.27 1995.51 1905.54 1824.5 1748.77 1681.02 1616.93 1553.89 1488.06 1439.96 1388.24 1342.04 1292.12 1246.03 1202.96 1148.26 1101.31 1055.46 1008.83 962.326 922.817 885.592 839.957 794.446 768.572 734.188 682.268 654.95 626.231 585.882 550.046 524.199 493.424 467.561 440.354 413.067 390.685 371.688 348.149 331.145 314.125 294.281 281.322 266.535 252.55 239.163 226.894 215.282 204.619 194.279 184.44 175.045 166.365 157.949 150.174 142.711 135.529 128.824 122.246 116.092 110.425 104.731 99.397 94.2292 89.485 85.0021 80.6549 76.3028 72.3582 68.8584 65.2814 61.9768 58.9672 55.7931 52.803 50.3221 47.8273 45.0731 43.1485 40.6636 38.5788 36.8541 34.6778 33.0279 31.4814} {1.21013e+011 1.20791e+011 1.20563e+011 1.2033e+011 1.20091e+011 1.19846e+011 1.19595e+011 1.19338e+011 1.19075e+011 1.18806e+011 1.1853e+011 1.18248e+011 1.17959e+011 1.17663e+011 1.1736e+011 1.17051e+011 1.16733e+011 1.16409e+011 1.16076e+011 1.15737e+011 1.15389e+011 1.15033e+011 1.14669e+011 1.14297e+011 1.13916e+011 1.13527e+011 1.13129e+011 1.12722e+011 1.12305e+011 1.1188e+011 1.11445e+011 1.11001e+011 1.10547e+011 1.10083e+011 1.09609e+011 1.09124e+011 1.0863e+011 1.08125e+011 1.07609e+011 1.07083e+011 1.06545e+011 1.05997e+011 1.05437e+011 1.04866e+011 1.04283e+011 1.03688e+011 1.03082e+011 1.02464e+011 1.01834e+011 1.01192e+011 1.00537e+011 9.98698e+010 9.91903e+010 9.84981e+010 9.77933e+010 9.70756e+010 9.63452e+010 9.56018e+010 9.48454e+010 9.4076e+010 9.32935e+010 9.2498e+010 9.16893e+010 9.08675e+010 9.00325e+010 8.91845e+010 8.83234e+010 8.74492e+010 8.65621e+010 8.56621e+010 8.47492e+010 8.38237e+010 8.28855e+010 8.19348e+010 8.09719e+010 7.99968e+010 7.90098e+010 7.8011e+010 7.70007e+010 7.59791e+010 7.49466e+010 7.39033e+010 7.28496e+010 7.17859e+010 7.07124e+010 6.96296e+010 6.85378e+010 6.74376e+010 6.63292e+010 6.52132e+010 6.40901e+010 6.29603e+010 6.18245e+010 6.06831e+010 5.95367e+010 5.8386e+010 5.72315e+010 5.60739e+010 5.49138e+010 5.3752e+010 5.2589e+010 5.14256e+010 5.02626e+010 4.91006e+010 4.79405e+010 4.67829e+010 4.56287e+010 4.44786e+010 4.33334e+010 4.21939e+010 4.1061e+010 3.99354e+010 3.88179e+010 3.77092e+010 3.66103e+010 3.55219e+010 3.44447e+010 3.33795e+010 3.23271e+010 3.12881e+010 3.02634e+010 2.92536e+010 2.82593e+010 2.72812e+010 2.63199e+010 2.5376e+010 2.44501e+010 2.35427e+010 2.26541e+010 2.1785e+010 2.09356e+010 2.01064e+010 1.92977e+010 1.85097e+010 1.77427e+010 1.69968e+010 1.62722e+010 1.5569e+010 1.48872e+010 1.42269e+010 1.3588e+010 1.29703e+010 1.23739e+010 1.17985e+010 1.12438e+010 1.07097e+010 1.01959e+010 9.70192e+009 9.22756e+009 8.77239e+009 8.33597e+009 7.91789e+009 7.51766e+009 7.13482e+009 6.76885e+009 6.41926e+009 6.08551e+009 5.76707e+009 5.46341e+009 5.17399e+009 4.89826e+009 4.63571e+009 4.38578e+009 4.14798e+009 3.92177e+009 3.70665e+009 3.50215e+009 3.30779e+009 3.1231e+009 2.94764e+009 2.781e+009 2.62275e+009 2.47252e+009 2.32993e+009 2.19462e+009 2.06627e+009 1.94454e+009 1.82914e+009 1.71979e+009 1.6162e+009 1.51812e+009 1.42531e+009 1.33754e+009 1.25458e+009 1.17623e+009 1.10227e+009 1.03253e+009 9.66814e+008 9.04945e+008 8.4675e+008 7.92065e+008 7.40727e+008 6.9258e+008 6.47471e+008 6.05251e+008 5.65776e+008 5.28902e+008 4.94492e+008 4.62411e+008 4.32528e+008 4.04714e+008 3.78846e+008 3.54803e+008 3.32469e+008 3.11731e+008 2.92482e+008 2.74618e+008 2.58039e+008 2.42652e+008 2.28367e+008 2.151e+008 2.02769e+008 1.91301e+008 1.80624e+008 1.70673e+008 1.61388e+008 1.52711e+008 1.44591e+008 1.36981e+008 1.29835e+008 1.23116e+008 1.16785e+008 1.10812e+008 1.05165e+008 9.98191e+007 9.47501e+007 8.99368e+007 8.53605e+007 8.10043e+007 7.68537e+007 7.28955e+007 6.91182e+007 6.55117e+007 6.20671e+007 5.87764e+007 5.56326e+007 5.26296e+007 4.97616e+007 4.70237e+007 4.44111e+007 4.19196e+007 3.95452e+007 3.72841e+007 3.51325e+007 3.3087e+007 3.11441e+007 2.93004e+007 2.75523e+007 2.58965e+007 2.43296e+007 2.28481e+007 2.14486e+007 2.01277e+007 1.8882e+007 1.77079e+007 1.66022e+007 1.55615e+007 1.45826e+007 1.36621e+007 1.27969e+007 1.1984e+007 1.12205e+007 1.05034e+007 9.83011e+006 9.19793e+006 8.60442e+006 8.0472e+006 7.52406e+006 7.03289e+006 6.57174e+006 6.13873e+006 5.73216e+006 5.35039e+006 4.99192e+006 4.65534e+006 4.33935e+006 4.04271e+006 3.7643e+006 3.50305e+006 3.25796e+006 3.02811e+006 2.81262e+006 2.61069e+006 2.42155e+006 2.24447e+006 2.07877e+006 1.92382e+006 1.779e+006 1.64373e+006 1.51748e+006 1.39973e+006 1.28998e+006 1.18777e+006 1.09266e+006 1.00422e+006 922064 845803 775083 709563 648921 592851 541066 493291 449269 408757 371524 337354 306041 277393 251227 227374 205670 185965 168114 151984 137447 124385 112684 102240 92953.9 84731.6 77486 71135.1 65601.6 60813.4 56702.7 53206.2 50264.5 47822.2 45827.4 44231.9 42990.7 42061.8 41600.4 40988.4 40774.3 40733.2 40836.4 41057.9 41097.5 41190.6 41951.9 42555.6 43147.8 43612.4 44085.1 44560 44968.9 45349.2 45653.8 45902.1 46086.7 46226.1 46293.8 46390.7 46198.2 46138.2 45893.8 45473.6 45067.4 44692.6 44044 43411.7 42824.1 42065.3 41244.3 40261.4 39431.4 38357.4 37419.7 36213.5 35246.5 34111.5 32950.8 31769.3 30572 29363.8 28149.3 26933.3 25720.3 24514.5 23320.2 22141.3 20987.8 19851.2 18842 17953.7 16310.1 15527.5 14587 13400.8 12983.8 11856.5 10921.6 10404.6 9542.25 8785.31 8228.15 7611.72 7019.85 6512.42 6011.61 5539.83 5116.13 4731.15 4356.11 4030.06 3733.53 3471.01 3228.64 3012.89 2816.71 2642.02 2482.27 2339.73 2211.74 2097.27 1995.51 1905.54 1824.5 1748.77 1681.02 1616.93 1553.89 1488.06 1439.96 1388.24 1342.04 1292.12 1246.03 1202.96 1148.26 1101.31 1055.46 1008.83 962.326 922.817 885.592 839.957 794.446 768.572 734.188 682.268 654.95 626.231 585.882 550.046 524.199 493.424 467.561 440.354 413.067 390.685 371.688 348.149 331.145 314.125 294.281 281.322 266.535 252.55 239.163 226.894 215.282 204.619 194.279 184.44 175.045 166.365 157.949 150.174 142.711 135.529 128.824 122.246 116.092 110.425 104.731 99.397 94.2292 89.485 85.0021 80.6549 76.3028 72.3582 68.8584 65.2814 61.9768 58.9672 55.7931 52.803 50.3221 47.8273 45.0731 43.1485 40.6636 38.5788 36.8541 34.6778 33.0279 31.4814}}
 set ::GlobalFitIQGraph(y,mapped) "1"
 set ::GlobalFitIQGraph(margin,top) "0"
 set ::GlobalFitIQGraph(l,borderwidth) "2"
-set ::GlobalFitIQGraph(e,errstipples) {hline1 hline1 hline1 hline1 hline1 hline1}
-set ::GlobalFitIQGraph(e,symbol) ""
+set ::GlobalFitIQGraph(e,errstipples) {hline1 hline1 hline1 hline1 hline1 hline1 hline1 hline1}
+set ::GlobalFitIQGraph(e,symbol) {none none none none none none none none}
 set ::GlobalFitIQGraph(y,tickfont) {Helvetica 10}
 set ::GlobalFitIQGraph(font) {Helvetica 10}
 set ::GlobalFitIQGraph(graph,bg) "white"
 set ::GlobalFitIQGraph(margin,bottom) "0"
-set ::GlobalFitIQGraph(e,outline) ""
-set ::GlobalFitIQGraph(e,resfill) ""
+set ::GlobalFitIQGraph(e,outline) {Black Black Black Black Black Black Black Black}
+set ::GlobalFitIQGraph(e,resfill) {Black Black Black Black Black Black Black Black}
 set ::GlobalFitIQGraph(plot,relief) "flat"
-set ::GlobalFitIQGraph(e,resdash) ""
+set ::GlobalFitIQGraph(e,resdash) {0 0 0 0 0 0 0 0}
 set ::GlobalFitIQGraph(x,showticks) "yes"
 set ::GlobalFitIQGraph(x,mapped) "1"
 set ::GlobalFitIQGraph(y,factor) "1.0"
 set ::GlobalFitIQGraph(stipples) {bdiagonal1 bdiagonal2 checker2 checker3  cross1 cross2 cross3 crossdiag  dot1 dot2 dot3 dot4 fdiagonal1 fdiagonal2  hline1 hline2 lbottom ltop rbottom rtop  vline1 vline2}
 set ::GlobalFitIQGraph(graph,borderwidth) "0"
-set ::GlobalFitIQGraph(e,resdata) ""
+set ::GlobalFitIQGraph(e,resdata) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
 set ::GlobalFitIQGraph(x,titlecolor) "black"
 set ::GlobalFitIQGraph(c,dash) "0"
 set ::GlobalFitIQGraph(y,size) "12"
 set ::GlobalFitIQGraph(x,rot) "0"
-set ::GlobalFitIQGraph(e,error) ""
+set ::GlobalFitIQGraph(e,error) {{-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0} {-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0} {-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0} {-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0} {-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0} {-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0} {-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0} {-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0}}
 set ::GlobalFitIQGraph(x,factor) "1.0"
 set ::GlobalFitIQGraph(x,stepsize) "0"
 set ::GlobalFitIQGraph(plot,background) "gray90"
@@ -3044,23 +3176,23 @@ set ::GlobalFitIQGraph(upper,x) ""
 set ::GlobalFitIQGraph(width) "768"
 set ::GlobalFitIQGraph(g,minor) "no"
 set ::GlobalFitIQGraph(upper,y) ""
-set ::GlobalFitIQGraph(e,reslinewidth) ""
+set ::GlobalFitIQGraph(e,reslinewidth) {1 1 1 1 1 1 1 1}
 set ::GlobalFitIQGraph(y,stepsize) "0"
 set ::GlobalFitIQGraph(y,showticks) "yes"
 set ::GlobalFitIQGraph(lower,x) ""
 set ::GlobalFitIQGraph(l,position) "right"
 set ::GlobalFitIQGraph(lower,y) ""
 set ::GlobalFitIQGraph(y,type) "log10(y)"
-set ::ResIQGraph(e,fill) "Black"
+set ::ResIQGraph(e,fill) ""
 set ::ResIQGraph(e.resstipples) ""
-set ::ResIQGraph(e,scale) "no"
-set ::ResIQGraph(e,dash) "0"
-set ::ResIQGraph(e,linewidth) "2"
+set ::ResIQGraph(e,scale) ""
+set ::ResIQGraph(e,dash) ""
+set ::ResIQGraph(e,linewidth) ""
 set ::ResIQGraph(y,min) ""
-set ::ResIQGraph(l,hide) "yes"
-set ::ResIQGraph(e,resoutline) "blue"
-set ::ResIQGraph(e,xdata) {{0.01 0.0106770427203 0.0113999241252 0.0121717476894 0.012995827006 0.013875700013 0.0148151441813 0.0158181927332 0.0168891519571 0.0180326196956 0.019253505085 0.0205570496309 0.0219488497113 0.0234348806031 0.0250215221345 0.0267155860758 0.028524345383 0.0304555654225 0.0325175373088 0.0347191135006 0.0370697458059 0.0395795259602 0.0422592289528 0.0451203592858 0.0481752003651 0.051436867236 0.0549193628879 0.0586376383729 0.0626076569927 0.0668464628332 0.0713722539374 0.0762044604337 0.0813638279531 0.0868725066946 0.0927541465202 0.0990339984885 0.105739023263 0.112898006859 0.120541684227 0.128702871207 0.137416605411 0.146720296646 0.156653887523 0.167260024939 0.178584243168 0.190675159349 0.203584682208 0.217368234914 0.232084993022 0.247798138525 0.264575131105 0.282487997755 0.301613642002 0.322034174069 0.343837263395 0.367116515011 0.391971871412 0.418510041624 0.446844959331 0.477098272015 0.50939986321 0.543888410123 0.580711978999 0.620028660799 0.662007249918 0.706827968856 0.754683241941 0.805778521453 0.860333169669 0.918581400629 0.980773285663 1.047175827 1.11807410406 1.19377249735 1.27459599526 1.36089158926 1.45302976363 1.55140608602 1.6564429057 1.7685911668 1.88833234428 2.016180511 2.15268454479 2.29843048482 2.45404404761 2.6201933134 2.79759159427 2.98700049661 3.1892331908 3.40515790233 3.63570163927 3.88185417209 4.14467228296 4.4252843027 4.72489495496 5.04479052832 5.38634439861 5.75102292504 6.14039174564 6.55612249878 6.99999999993}}
-set ::ResIQGraph(e,element) "1"
+set ::ResIQGraph(l,hide) "no"
+set ::ResIQGraph(e,resoutline) ""
+set ::ResIQGraph(e,xdata) ""
+set ::ResIQGraph(e,element) "0"
 set ::ResIQGraph(y,max) ""
 set ::ResIQGraph(x,linewidth) "2"
 set ::ResIQGraph(colorselection) {black red green blue cyan magenta yellow violet purple orange pink gray}
@@ -3069,32 +3201,32 @@ set ::ResIQGraph(y,titlecolor) "black"
 set ::ResIQGraph(y,loose) "no"
 set ::ResIQGraph(fit,background) "#cccccc"
 set ::ResIQGraph(x,size) "12"
-set ::ResIQGraph(e,dashcolor) "Black"
-set ::ResIQGraph(e,outlinewidth) "1"
+set ::ResIQGraph(e,dashcolor) ""
+set ::ResIQGraph(e,outlinewidth) ""
 set ::ResIQGraph(x,ticklength) "10"
 set ::ResIQGraph(l,posx) "10"
-set ::ResIQGraph(e,errlinewidth) "1"
+set ::ResIQGraph(e,errlinewidth) ""
 set ::ResIQGraph(l,posy) "10"
-set ::ResIQGraph(e,linehide) "0"
+set ::ResIQGraph(e,linehide) ""
 set ::ResIQGraph(graph,fg) "black"
-set ::ResIQGraph(e,elementname) "graph1"
+set ::ResIQGraph(e,elementname) ""
 set ::ResIQGraph(dashnames) {{-} {..} {--} {.-}  {..-} {--.}}
-set ::ResIQGraph(e,reshide) "no"
+set ::ResIQGraph(e,reshide) ""
 set ::ResIQGraph(graph,relief) "flat"
-set ::ResIQGraph(e,pixels) "4"
+set ::ResIQGraph(e,pixels) ""
 set ::ResIQGraph(dashpattern) {{0} {2 2} {8 2 8 2} {2 2 8 2}  {2 2 2 2 8 2} {8 2 8 2 2 2} }
 set ::ResIQGraph(x,tickcolor) "black"
 set ::ResIQGraph(x,logscale) "0"
 set ::ResIQGraph(e,resstipples) "hline1"
 set ::ResIQGraph(y,title) "(I(Q)-Ith(Q))/DI(Q)"
 set ::ResIQGraph(l,bg) "white"
-set ::ResIQGraph(e,errtags) "{}"
-set ::ResIQGraph(e,symbolhide) "no"
+set ::ResIQGraph(e,errtags) ""
+set ::ResIQGraph(e,symbolhide) ""
 set ::ResIQGraph(c,hide) "yes"
 set ::ResIQGraph(plot,borderwidth) "0"
 set ::ResIQGraph(y,rot) "0"
-set ::ResIQGraph(e,smooth) "linear"
-set ::ResIQGraph(e,offdashcolor) "White"
+set ::ResIQGraph(e,smooth) ""
+set ::ResIQGraph(e,offdashcolor) ""
 set ::ResIQGraph(g,dash) "0"
 set ::ResIQGraph(y,color) "Black"
 set ::ResIQGraph(x,subticks) "5"
@@ -3111,7 +3243,7 @@ set ::ResIQGraph(title) "unknown"
 set ::ResIQGraph(l,anchor) "n"
 set ::ResIQGraph(GraphName) "ResIQGraph"
 set ::ResIQGraph(symbolselection) {square circle diamond plus cross splus scross triangle}
-set ::ResIQGraph(e,errorhide) "no"
+set ::ResIQGraph(e,errorhide) ""
 set ::ResIQGraph(y,subticks) "5"
 set ::ResIQGraph(l,ipadx) {0 0}
 set ::ResIQGraph(c,color) "black"
@@ -3126,41 +3258,41 @@ set ::ResIQGraph(margin,plotpady) {5 5}
 set ::ResIQGraph(fitrange) "no"
 set ::ResIQGraph(margin,right) "0"
 set ::ResIQGraph(x,min) ""
-set ::ResIQGraph(e,errfill) "Black"
+set ::ResIQGraph(e,errfill) ""
 set ::ResIQGraph(height) "512"
-set ::ResIQGraph(e,erroutline) "blue"
-set ::ResIQGraph(e,errdash) "0"
+set ::ResIQGraph(e,erroutline) ""
+set ::ResIQGraph(e,errdash) ""
 set ::ResIQGraph(y,ticklength) "10"
 set ::ResIQGraph(g,color) "black"
 set ::ResIQGraph(x,max) ""
 set ::ResIQGraph(g,linewidth) "1"
 set ::ResIQGraph(x,color) "Black"
-set ::ResIQGraph(l,legendtext) "{}"
-set ::ResIQGraph(e,ydata) {{1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+set ::ResIQGraph(l,legendtext) ""
+set ::ResIQGraph(e,ydata) ""
 set ::ResIQGraph(y,mapped) "1"
 set ::ResIQGraph(margin,top) "0"
 set ::ResIQGraph(l,borderwidth) "2"
 set ::ResIQGraph(e,errstipples) "hline1"
-set ::ResIQGraph(e,symbol) "circle"
+set ::ResIQGraph(e,symbol) ""
 set ::ResIQGraph(y,tickfont) {Helvetica 10}
 set ::ResIQGraph(font) {Helvetica 10}
 set ::ResIQGraph(graph,bg) "white"
 set ::ResIQGraph(margin,bottom) "0"
-set ::ResIQGraph(e,outline) "Black"
-set ::ResIQGraph(e,resfill) "Black"
+set ::ResIQGraph(e,outline) ""
+set ::ResIQGraph(e,resfill) ""
 set ::ResIQGraph(plot,relief) "flat"
-set ::ResIQGraph(e,resdash) "0"
+set ::ResIQGraph(e,resdash) ""
 set ::ResIQGraph(x,showticks) "yes"
 set ::ResIQGraph(x,mapped) "1"
 set ::ResIQGraph(y,factor) "1.0"
 set ::ResIQGraph(stipples) {bdiagonal1 bdiagonal2 checker2 checker3  cross1 cross2 cross3 crossdiag  dot1 dot2 dot3 dot4 fdiagonal1 fdiagonal2  hline1 hline2 lbottom ltop rbottom rtop  vline1 vline2}
 set ::ResIQGraph(graph,borderwidth) "0"
-set ::ResIQGraph(e,resdata) {{0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0}}
+set ::ResIQGraph(e,resdata) ""
 set ::ResIQGraph(x,titlecolor) "black"
 set ::ResIQGraph(c,dash) "0"
 set ::ResIQGraph(y,size) "12"
 set ::ResIQGraph(x,rot) "0"
-set ::ResIQGraph(e,error) {{-1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0}}
+set ::ResIQGraph(e,error) ""
 set ::ResIQGraph(x,factor) "1.0"
 set ::ResIQGraph(x,stepsize) "0"
 set ::ResIQGraph(plot,background) "gray90"
@@ -3173,7 +3305,7 @@ set ::ResIQGraph(upper,x) ""
 set ::ResIQGraph(width) "768"
 set ::ResIQGraph(g,minor) "no"
 set ::ResIQGraph(upper,y) ""
-set ::ResIQGraph(e,reslinewidth) "1"
+set ::ResIQGraph(e,reslinewidth) ""
 set ::ResIQGraph(y,stepsize) "0"
 set ::ResIQGraph(y,showticks) "yes"
 set ::ResIQGraph(lower,x) ""
@@ -3355,8 +3487,8 @@ set ::StructParData(isp_text_export) {description;value;error
 Guinier approx.: I(Q) = I0 exp(-Rg^2*Q^2/3);;
 1st data point (ascending);1;
 number of points;7;
-Q_min;;
-Q_max;;
+Q_min;0.01;
+Q_max;0.0148151441813;
 Guinier radius RG;-1.0000e+000;-1.0000e+000
 forward scattering I(0);-1.0000e+000;-1.0000e+000
 chisq(Guinier);-1.0;
@@ -3364,8 +3496,8 @@ chisq(Guinier);-1.0;
 Porod approx.: I(Q) = c0+c4*Q^(D-4);;
 1st data point (descending);1;
 number of points;25;
-Q_min;;
-Q_max;;
+Q_min;1.45302976363;
+Q_max;6.99999999993;
 background c_0;-1.0000e+000;-1.0000e+000
 Porod constant c_4;-1.0000e+000;-1.0000e+000
 potential law D;0.0000e+000;-1.0000e+000
@@ -3412,38 +3544,38 @@ set ::StructParData(Dc4) "-1.0"
 set ::StructParData(Dlc) "-1.0"
 set ::StructParData(DQc4) "-1.0"
 set ::StructParData(isp_text_display) {Guinier approx.:
-             I(Q) = I0 exp(-Rg^2*Q^2/3)                              
-             1st data point (ascending) =            1               
-                       number of points =            7               
-                                  Q_min                              
-                                  Q_max                              
-                      Guinier radius RG = -1.0000e+000 ± -1.0000e+000
-                forward scattering I(0) = -1.0000e+000 ± -1.0000e+000
-                         chisq(Guinier) =         -1.0               
-                                                                     
+             I(Q) = I0 exp(-Rg^2*Q^2/3)                                 
+             1st data point (ascending) =               1               
+                       number of points =               7               
+                                  Q_min =            0.01               
+                                  Q_max = 0.0148151441813               
+                      Guinier radius RG =    -1.0000e+000 ± -1.0000e+000
+                forward scattering I(0) =    -1.0000e+000 ± -1.0000e+000
+                         chisq(Guinier) =            -1.0               
+                                                                        
 Porod approx.:
-                   I(Q) = c0+c4*Q^(D-4)                              
-            1st data point (descending) =            1               
-                       number of points =           25               
-                                  Q_min                              
-                                  Q_max                              
-                         background c_0 = -1.0000e+000 ± -1.0000e+000
-                     Porod constant c_4 = -1.0000e+000 ± -1.0000e+000
-                        potential law D =  0.0000e+000 ± -1.0000e+000
-                           chisq(Porod) =         -1.0               
-                                                                     
-        integral structural parameters:                              
-                  correlation length lc = -1.0000e+000 ± -1.0000e+000
-                    correlation area Ac = -1.0000e+000 ± -1.0000e+000
-                 intersection length li = -1.0000e+000 ± -1.0000e+000
-                        Porod volume VP = -1.0000e+000 ± -1.0000e+000
-                        Porod radius RP = -1.0000e+000 ± -1.0000e+000
-                   specific surface S/V = -1.0000e+000 ± -1.0000e+000
-               scattering invariant Inv = -1.0000e+000 ± -1.0000e+000
-integrated intensity iI = int(I(Q)*Q)dQ = -1.0000e+000 ± -1.0000e+000
-  integral intensity intI = int(I(Q))dQ = -1.0000e+000 ± -1.0000e+000
-                                  Q_min =         -1.0               
-                                  Q_max =         -1.0               }
+                   I(Q) = c0+c4*Q^(D-4)                                 
+            1st data point (descending) =               1               
+                       number of points =              25               
+                                  Q_min =   1.45302976363               
+                                  Q_max =   6.99999999993               
+                         background c_0 =    -1.0000e+000 ± -1.0000e+000
+                     Porod constant c_4 =    -1.0000e+000 ± -1.0000e+000
+                        potential law D =     0.0000e+000 ± -1.0000e+000
+                           chisq(Porod) =            -1.0               
+                                                                        
+        integral structural parameters:                                 
+                  correlation length lc =    -1.0000e+000 ± -1.0000e+000
+                    correlation area Ac =    -1.0000e+000 ± -1.0000e+000
+                 intersection length li =    -1.0000e+000 ± -1.0000e+000
+                        Porod volume VP =    -1.0000e+000 ± -1.0000e+000
+                        Porod radius RP =    -1.0000e+000 ± -1.0000e+000
+                   specific surface S/V =    -1.0000e+000 ± -1.0000e+000
+               scattering invariant Inv =    -1.0000e+000 ± -1.0000e+000
+integrated intensity iI = int(I(Q)*Q)dQ =    -1.0000e+000 ± -1.0000e+000
+  integral intensity intI = int(I(Q))dQ =    -1.0000e+000 ± -1.0000e+000
+                                  Q_min =            -1.0               
+                                  Q_max =            -1.0               }
 set ::StructParData(li) "-1.0"
 set ::StructParData(DRP) "-1.0"
 set ::StructParData(w) "123"

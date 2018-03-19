@@ -9,7 +9,7 @@
 // define shortcuts for local parameters/variables
 #define R_PRINCIPLE	param->p[0]*NU
 #define R_EQUATORIAL	param->p[1]*NU
-#define T	param->p[3]*NU
+#define T	param->p[3]
 #define RP param->p[0]
 #define RE param->p[1]
 #define TT param->p[3]

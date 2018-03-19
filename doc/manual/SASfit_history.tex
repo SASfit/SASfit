@@ -1,9 +1,14 @@
 \appendix{History}
 \begin{description}
-\item[201x-xx-xx] \SASfit 0.94.10
+\item[2018-xx-xx] \SASfit 0.94.10
     \begin{itemize}
-    \item bug fix in the algorithm for calculating the resolution parameter in case of averaging neighbouring data points
-    \item plugin implementation of several variants of helices
+    \item The form factors \texttt{"EllipsoidalCoreShell"}, \texttt{"Ellipsoid i"}, \texttt{"Ellipsoid ii"}, and \texttt{"triaxEllShell1"} have been disabled and replaced by a series of plug-in functions. Those replacements make use of a faster routine for multidimensional integrals (pcubature). Because of this an optional size distribution became part of the supplied plug-in form factors.
+    \item bug fix of unit conversion via clipboard
+    \item added a plug-in for a random flight structure factor
+    \item bug fix in the algorithm for calculating the resolution parameter in case of averaging neighboring data points
+    \item  plug-in implementation of several variants of helices
+    \item plug-in for rectangular parallelepipeds have been extended so that it can have a size distribution of one, two or all three axis. The multiple integration is done by using the pcubature code from  Steven G. Johnson
+    \item multi dimensional integration package "cubature" from  Steven G. Johnson becomes generally available also in plug-ins (\href{https://github.com/stevengj/cubature}{cubature})
     \end{itemize}
 \item[2017-08-16] \SASfit 0.94.9
     \begin{itemize}
@@ -41,7 +46,7 @@
     \begin{itemize}
         \item  implementation of another cumulant formula for DLS
         \item  bug-fix in the unit conversion routine
-        \item  implementation of GMRES, Bi-CGStab, TFQMR and Andersen Accelarion
+        \item  implementation of GMRES, Bi-CGStab, TFQMR and Andersen Acceleration
                 for solving efficiently the Ornstein Zernicke fixpoint problem
         \item   bug fix: since version 0.94.4 the new interrupt option suppressed
                 a proper error reporting to the GUI for undefined input values
@@ -89,8 +94,8 @@
     \item[2014-07-02] \SASfit 0.94.3
     \begin{itemize}
         \item bug fix in the plugin for parallel epiped
-        \item spelling errors in the menue interface
-        \item in case of slow convergence the OZ solver can be interupted now
+        \item spelling errors in the menu interface
+        \item in case of slow convergence the OZ solver can be interrupted now
     \end{itemize}
     \item[2014-02-06] \SASfit 0.94.2
     \begin{itemize}
@@ -206,8 +211,8 @@
         \item optical (layout) GUI improvements:
             \begin{itemize}
             \item removed thick margin around text boxes for ISP/analyt results
-            \item added resizeable file list in \texttt{ISP} window
-            \item added resizeable 'merge files' list when loading data files
+            \item added resizable file list in \texttt{ISP} window
+            \item added resizable 'merge files' list when loading data files
             \end{itemize}
         \item added menu->tools->toggle console to show the console, it is hidden by default now
         \item added \texttt{OPTIM} parameter to \texttt{src/CMakeLists.txt} for optimized binary generation on the underlying hardware, use: '\texttt{cmake -DOPTIM=TRUE}'

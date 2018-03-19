@@ -56,3 +56,8 @@ saskit/saskit_*
 /examples/dll/libsasfit_fuzzysphere.dll
 /examples/dll/libsasfit.dll
 /src/fftw/fftw-3.3.7.tar.gz
+/src/plugins/magcylshell/include
+/src/plugins/magcylshell/include/private.h
+/src/plugins/sin2
+/src/plugins/sin2/include/private.h
+/src/plugins/sin2/include/sasfit_sin2.h

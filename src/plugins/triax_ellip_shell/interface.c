@@ -7,8 +7,9 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(10)
+SASFIT_PLUGIN_EXP_BEGIN(11)
 SASFIT_PLUGIN_EXP_ADD( ff_triax_ellip_shell )
+SASFIT_PLUGIN_EXP_ADD( ff_triax_ellip_shell_t )
 SASFIT_PLUGIN_EXP_ADD( ff_triax_ellip_shell_1 )
 SASFIT_PLUGIN_EXP_ADD( ff_triax_ellip_shell_1t )
 SASFIT_PLUGIN_EXP_ADD( ff_triax_ellip_shell_2 )

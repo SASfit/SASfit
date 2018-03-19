@@ -5,7 +5,7 @@
 \begin{center}
 \includegraphics[width=0.85\textwidth]{../images/form_factor/Ellipsoid/Ellipsoide.png}
 \end{center}
-\caption{Ellipse of revolution or spheroid and triaxial ellipse}
+\caption{Ellipse of revolution (spheroid) and triaxial ellipse}
 \label{fig:EllipsoidalObjects}
 \end{figure}
 
@@ -147,7 +147,7 @@ $\oldsqrt[3]{V\frac{3}{4\pi}}$.} \label{fig:I_ellipsoid_i}
 \clearpage
 \subsection{Ellipsoidal core shell structure}
 \label{sect:EllipsoidalCoreShell} ~\\
-For these form factor plugins a size distribution parameter has been included directly in the form factor to avoid apply nested numerical integration routines. A routine for multi-dimensional integration routines (\texttt{pcubature} \cite{Johnson}) has been used instead. 
+For these form factor plugins a size distribution parameter has been included directly in the form factor to avoid applying nested numerical integration routines. A routine for multi-dimensional integration (\texttt{pcubature} \cite{Johnson}) has been used instead.
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.5\textwidth,height=0.28855\textwidth]{../images/form_factor/Ellipsoid/ellipsoidalShell.png}
@@ -155,13 +155,14 @@ For these form factor plugins a size distribution parameter has been included di
 \caption{Ellipsoid of revolution with an outer shell of constant thickness $t$} \label{ellipsoidalShell}
 \end{figure}
 \begin{align}
-I_\text{ECSh}(Q) = \left\langle F^2(Q,\mu) \right\rangle
-& = \int_0^1 \left[F(Q,\mu)\right]^2 d\mu \\
-\left\langle F(Q,\mu) \right\rangle^2 & = \left[\int_0^1 F(Q,\mu)
-d\mu \right]^2
+I_\text{ECSh}(Q,R_\mathrm{p},R_\mathrm{e},t) = \left\langle F^2(Q,R_\mathrm{p},R_\mathrm{e},t) \right\rangle
+& = \int_0^1 \left[F(Q,R_\mathrm{p},R_\mathrm{e},t,\mu)\right]^2 d\mu \\
+\left\langle F(Q,R_\mathrm{p},R_\mathrm{e},t) \right\rangle & = \int_0^1 F(Q,R_\mathrm{p},R_\mathrm{e},t,\mu)
+d\mu
 \end{align}
+with
 \begin{align}
-F(Q,\mu) &= \left(\eta_\text{core}-\eta_\text{shell}\right) V_c\left[
+F(Q,R_\mathrm{p},R_\mathrm{e},t,\mu) &= \left(\eta_\text{core}-\eta_\text{shell}\right) V_c\left[
 \frac{3j_1(x_c)}{x_c}\right]
           +\left(\eta_\text{shell}-\eta_\text{sol}\right) V_t\left[ \frac{3j_1(x_t)}{x_t}\right]
           \nonumber \\
@@ -175,16 +176,45 @@ V_t &= \frac{4}{3}\pi (R_\mathrm{p}+t)(R_\mathrm{e}+t)^2 \nonumber
 \eta_\text{core} &: \text{scattering length density of core} \nonumber \\
 \eta_\text{shell} &: \text{scattering length density of shell} \nonumber \\
 \eta_\text{sol} &: \text{scattering length density of solvent} \nonumber \\
-R_\mathrm{p} &: \text{semi-principal axes of elliptical core} \nonumber \\
+R_\mathrm{p} &: \text{polar semi-axes of elliptical core} \nonumber \\
 R_\mathrm{e} &: \text{equatorial semi-axis of elliptical core} \nonumber \\
 t &: \text{thickness of shell} \nonumber \\
 V_c &: \text{volume of core} \nonumber \\
 V_t &: \text{total volume of core along with shell} \nonumber
 \end{align}
 
+Several variants including a size distribution have been implemented which just differ if only none, one or both axis scale with the same size distribution and if additionally also scales with that distribution.
+\begin{align*}
+\text{\texttt{Ellipsoidal Shell}}           &:                                            \left\langle F^n(Q,R_\mathrm{p},R_\mathrm{e},t)\right\rangle\\
+\text{\texttt{Ellipsoidal Shell (t)}}       &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,R_\mathrm{p},R_\mathrm{e},\nu t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{Ellipsoidal Shell (Rp)}}      &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu R_\mathrm{p},R_\mathrm{e}, t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{Ellipsoidal Shell (Rp t)}}    &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu R_\mathrm{p},R_\mathrm{e},\nu t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{Ellipsoidal Shell (Re)}}      &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,R_\mathrm{p},\nu R_\mathrm{e},t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{Ellipsoidal Shell (Re t)}}    &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,R_\mathrm{p},\nu R_\mathrm{e},\nu t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{Ellipsoidal Shell (Re Rp)}}   &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu R_\mathrm{p},\nu R_\mathrm{e},t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{Ellipsoidal Shell (Re Rp t)}} &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu R_\mathrm{p},\nu R_\mathrm{e},\nu t)\right\rangle \mathrm{d}\nu
+\end{align*}
+with $n$ being either 1 or 2 depending if the size averaged amplitude or the size averaged intensity needs to be calculated. As a size distribution a lognormal distribution is assumed where all parameters are scaled simultaneously. The used lognormal distribution is defined as
+$$
+\mathrm{LogNorm}(x,\sigma) = \frac{1}{\sqrt{2\pi}x} \exp\left(-\frac{\ln^2(x)}{2\sigma^2}\right)
+$$
 \vspace{0.5cm}
-
-\underline{Input Parameters for model \texttt{EllipsoidalCoreShell}:}
+~\\
+\underline{Input Parameters for model \texttt{Ellipsoidal Shell}:}
+\begin{description}
+\item[\texttt{R\_p}] semi-principal polar axes of elliptical core $R_\mathrm{p}$
+\item[\texttt{R\_e}] equatorial semi-axis axes of elliptical core $R_\mathrm{e}$
+\item[\texttt{dummy}] not used
+\item[\texttt{t}] thickness of shell $t$
+\item[\texttt{dummy}] not used
+\item[\texttt{eta\_core}] scattering length density of core $\eta_\text{c}$
+\item[\texttt{eta\_shell}] scattering length density of shell $\eta_\text{sh}$
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\text{sol}$
+\end{description}
+~\\
+\underline{Input Parameters for model \texttt{Ellipsoidal Shell (t)}, \texttt{Ellipsoidal Shell (Rp)},}
+\underline{\texttt{Ellipsoidal Shell (Rp t)}, \texttt{Ellipsoidal Shell (Re)}, \texttt{Ellipsoidal Shell (Re t)},}
+\underline{\texttt{Ellipsoidal Shell (Re Rp)}, \texttt{Ellipsoidal Shell (Re Rp t)}:}
 \begin{description}
 \item[\texttt{R\_p}] semi-principal polar axes of elliptical core $R_\mathrm{p}$
 \item[\texttt{R\_e}] equatorial semi-axis axes of elliptical core $R_\mathrm{e}$
@@ -198,10 +228,9 @@ V_t &: \text{total volume of core along with shell} \nonumber
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.768\textwidth,height=0.588\textwidth]{../images/form_factor/Ellipsoid/ellipsoidal_core_shell.png}
+\includegraphics[width=0.768\textwidth,height=0.588\textwidth]{../images/form_factor/Ellipsoid/spheroid_core_shell.png}
 \end{center}
-\caption{form factor of an ellipsoidal core shell $a$, $b$, $b$ and
-$t$.} \label{fig:I_ellipsoidal_core_shell}
+\caption{Form factor of an ellipsoidal core shell structure including a lognormal size distribution.} \label{fig:I_ellipsoidal_core_shell}
 \end{figure}
 
 
@@ -209,6 +238,7 @@ $t$.} \label{fig:I_ellipsoidal_core_shell}
 \clearpage
 \subsection{triaxial ellipsoidal core shell structure}
 \label{sect:triaxEllShell1} ~\\
+Also for these form factor plugins a size distribution parameter has been included directly in the form factor similar to the ellipsoidal shell of revolution to avoid applying nested numerical integration routines. As for the triaxial ellipsoid already a double integration for the orientational averaging is required it becomes even more important to have an optimized integration routine for including an additional size distribution, i.e an additional integration. The routine for multi-dimensional integration  (\texttt{pcubature} \cite{Johnson}) has been used.
 
 \begin{figure}[htb]
 \begin{center}
@@ -220,7 +250,11 @@ $t$.} \label{fig:I_ellipsoidal_core_shell}
 \end{figure}
 
 \begin{align}
-I_\text{triaxEllSh}(Q) &= \int^1_0 \int ^1_0 dx\,dy\, K_\text{sh}^2(Q,R,R_t)\\
+I_\text{triaxEllSh}(Q) = \left\langle F^2(Q,a,b,c,t) \right\rangle &= \int^1_0 \int ^1_0 dx\,dy\, K_\text{sh}^2(Q,R,R_t)\\
+\left\langle F(Q,a,b,c,t) \right\rangle & = \int^1_0 \int ^1_0 dx\,dy\, K_\text{sh}(Q,R,R_t)
+\end{align}
+with
+\begin{align}
 K(QR)         &= 3 \frac{\sin QR - QR\cos QR}{(QR)^3} \\
 K_\text{sh}(Q,R,R_t) &= \left(\eta_\text{c}-\eta_\text{sh}\right)K(QR)+\left(\eta_\text{sh}-\eta_\text{sol}\right)K(QR_t) \\
 R^2 &= \left[a^2\cos^2\left(\pi x/2\right) + b^2\sin^2\left(\pi x/2\right)\right](1-y^2)+c^2y^2 \nonumber \\
@@ -241,13 +275,44 @@ V_c &: \text{volume of core} \nonumber \\
 V_t &: \text{total volume of core along with shell} \nonumber
 \end{align}
 
+Several variants including a size distribution have been implemented which just differ if only none, one or both axis scale with the same size distribution and if additionally also scales with that distribution.
+\begin{align*}
+\text{\texttt{triax ellip shell}}     &:                                            \left\langle F^n(Q,    a,    b,    c,    t)\right\rangle\\
+\text{\texttt{triax ellip shell t}}   &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,    a,    b,    c,\nu t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{triax ellip shell 1}}   &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu a,    b,    c,    t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{triax ellip shell 1t}}  &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu a,    b,    c,\nu t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{triax ellip shell 2}}   &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu a,\nu b,    c,    t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{triax ellip shell 2t}}  &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu a,\nu b,    c,\nu t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{triax ellip shell 3}}   &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu a,\nu b,\nu c,    t)\right\rangle \mathrm{d}\nu\\
+\text{\texttt{triax ellip shell 3t}}  &: \int_0^\infty \mathrm{LogNorm}(\nu,\sigma) \left\langle F^n(Q,\nu a,\nu b,\nu c,\nu t)\right\rangle \mathrm{d}\nu
+\end{align*}
+with $n$ being either 1 or 2 depending if the size averaged amplitude or the size averaged intensity needs to be calculated. As a size distribution a lognormal distribution is assumed where all parameters are scaled simultaneously. The used lognormal distribution is defined as
+$$
+\mathrm{LogNorm}(x,\sigma) = \frac{1}{\sqrt{2\pi}x} \exp\left(-\frac{\ln^2(x)}{2\sigma^2}\right)
+$$
+
 \vspace{3cm}
-\underline{Input Parameters for model \texttt{triaxEllShell1}:}
+\noindent \underline{Input Parameters for model \texttt{triax ellip shell}:}
 \begin{description}
 \item[\texttt{a}] semi-axes of elliptical core $a$
 \item[\texttt{b}] semi-axes of elliptical core $b$
 \item[\texttt{c}] semi-axes of elliptical core $c$
 \item[\texttt{t}] thickness of shell $t$
+\item[\texttt{dummy}] not used
+\item[\texttt{eta\_c}] scattering length density of core $\eta_\text{c}$
+\item[\texttt{eta\_sh}] scattering length density of shell $\eta_\text{sh}$
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\text{sol}$
+\end{description}
+~\\
+\underline{Input Parameters for model \texttt{triax ellip shell t}, \texttt{triax ellip shell 1},}
+\underline{\texttt{triax ellip shell 1t}, \texttt{triax ellip shell 2}, \texttt{triax ellip shell 2t},}
+\underline{\texttt{triax ellip shell 3}, \texttt{triax ellip shell 3t}}:
+\begin{description}
+\item[\texttt{a}] semi-axes of elliptical core $a$
+\item[\texttt{b}] semi-axes of elliptical core $b$
+\item[\texttt{c}] semi-axes of elliptical core $c$
+\item[\texttt{t}] thickness of shell $t$
+\item[\texttt{sigma}] width of the LogNorm size distribution $\sigma$
 \item[\texttt{eta\_c}] scattering length density of core $\eta_\text{c}$
 \item[\texttt{eta\_sh}] scattering length density of shell $\eta_\text{sh}$
 \item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\text{sol}$
@@ -255,9 +320,10 @@ V_t &: \text{total volume of core along with shell} \nonumber
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.768\textwidth,height=0.588\textwidth]{../images/form_factor/Ellipsoid/triax_ellipsoidal_core_shell.png}
+\includegraphics[width=0.48\textwidth]{../images/form_factor/Ellipsoid/triax_ellipsoidal_core_shell_1.png}
+\includegraphics[width=0.48\textwidth]{../images/form_factor/Ellipsoid/triax_ellipsoidal_core_shell_2.png}
 \end{center}
 \caption{Form factor of a triaxial ellipsoidal core shell with semi
-axis $a$, $b$ and $c$ and a shell thickness $t$.}
+axis $a$, $b$ and $c$, with and without a shell thickness $t$ plus an additional size distribution.}
 \label{fig:I_triax_ellipsoidal_core_shell}
 \end{figure} 
