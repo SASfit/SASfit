@@ -243,7 +243,7 @@ S_\text{HS}(q,R_\text{HS},f_p)  = & \cfrac{1}{1+24 f_p
 \subsection{Sticky Hard Sphere} ~\\
 
 In Baxter's model \cite{Baxter1968,Robertus1989,Kruif1989,Barboy1974,Menon1991,Menon1991a}
-of adhesive hard spheres the pair interaction potential $U(r)$ is replaces by
+of adhesive hard spheres the pair interaction potential $U(r)$ is replaced by
 \begin{equation}
 \frac{U(r)}{k_BT} =
  \begin{cases}
@@ -293,13 +293,13 @@ stickiness parameters $\tau$.}
 \subsection{Sticky Hard Sphere ($2^\text{nd}$ version \cite{Regnaut1989,Regnaut1990})} ~\\
 
 In Baxter's model of adhesive hard spheres the pair interaction
-potential $U(r)$ is replaces by
+potential $U(r)$ is replaced by
 \begin{equation}
 \frac{U(r)}{k_BT} =
  \begin{cases}
-      \infty    & \text{for} \quad 0<r<\sigma \\
-      \ln\frac{12\tau\Delta}{\sigma+\Delta} & \text{for} \quad \sigma<r<\sigma+\Delta \\
-      0         & \text{for} \quad r>\sigma+\Delta
+      \infty    & \text{for} \quad 0<r<\sigma-\Delta \\
+      \ln\frac{12\tau\Delta}{\sigma+\Delta} & \text{for} \quad \sigma-\Delta<r<\sigma \\
+      0         & \text{for} \quad r>\sigma
    \end{cases}
 \end{equation}
 
@@ -340,7 +340,7 @@ S(Q) & = \frac{1}{\alpha^2+\beta^2}
 \end{center}
 \caption{Structure factor $S(q)$ for a sticky hard sphere interaction potential for the different
 stickiness parameters $\tau$.}
-\label{fig:SQStickyHardSphere1}
+\label{fig:SQStickyHardSphere2}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -359,7 +359,7 @@ U(r) =
 \end{equation}
 where $\lambda$ and $\epsilon$ correspond to the breadth and the
 depth of the square well potential. The structure factor $S(Q)$ is
-than given by the following relations:
+then given by the following relations:
 \begin{subequations}
 \begin{align}
 S(Q)  = & \frac{1}{1-C(Q)} \\
@@ -407,7 +407,7 @@ U(r) =
 \end{equation}
 where $\Delta$ and $\epsilon$ correspond to the width and the
 depth of the square well potential. The structure factor $S(Q)$ is
-than given by the following relations:
+then given by the following relations:
 \begin{equation}
 S(Q)  = 1
 -4\pi\rho\sigma^3\frac{\sin(Q\sigma)-Q\sigma\cos(Q\sigma)}{Q^3\sigma^3}
@@ -969,7 +969,7 @@ cut-off function $h_\text{Gauss}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)
 \end{center}
 \caption{Structure factor of a mass fractal with a
 cut-off function $h_\text{OverlapSph}(r,\xi) = \left(1+\frac{r}{4\xi}\right)\left(1-\frac{r}{2\xi}\right)^2$ for $r\leq 2\xi$.}
-\label{fig:SQGaussCutOff}
+\label{fig:SQOverlappSphCutOff}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

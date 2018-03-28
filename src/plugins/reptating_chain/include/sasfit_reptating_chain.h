@@ -50,7 +50,7 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b I0</td>
- *       <td>forward scattering of unstreched polymer</td>
+ *       <td>forward scattering</td>
  *      </tr><tr>
  *       <td>\b Rg</td>
  *       <td>radius of gyration of unstreched polymer</td>
@@ -59,13 +59,13 @@
  *       <td>streching factor</td>
  *      </tr><tr>
  *       <td>\b t/tau</td>
- *       <td>ralaxation timer in units of Rouse time</td>
+ *       <td>ralaxation time in units of Rouse time</td>
  *      </tr><tr>
  *       <td>\b theta_0</td>
  *       <td>stretching direction in the detector plane</td>
  *      </tr><tr>
  *       <td>\b psi</td>
- *       <td>q-sirection on the detector plane</td>
+ *       <td>q-direction on the detector plane</td>
  *      </tr></table>
  */
 

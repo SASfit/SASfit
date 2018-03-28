@@ -66,12 +66,12 @@ scalar sasfit_ff_ellipsoidal_shell_re(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
-	
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-	
+
 	NU = 1;
 	LNDISTR=1.0;
-	
+
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
 	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_EQUATORIAL(%lg) < 0",R_EQUATORIAL);
@@ -97,9 +97,9 @@ scalar sasfit_ff_ellipsoidal_shell_re(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &sasfit_ff_ellip_shell_re_core;
-	
+
 	intstrategy = sasfit_get_int_strategy();
-//	intstrategy=P_CUBATURE;
+	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -108,7 +108,7 @@ scalar sasfit_ff_ellipsoidal_shell_re(scalar q, sasfit_param * param)
 			sum=res;
             free(aw);
             break;
-            } 
+            }
     case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
             aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
             sasfit_intccini(lenaw, aw);
@@ -118,15 +118,15 @@ scalar sasfit_ff_ellipsoidal_shell_re(scalar q, sasfit_param * param)
             break;
             }
     case H_CUBATURE: {
-			hcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+			hcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+			pcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
             break;
@@ -147,12 +147,12 @@ scalar sasfit_ff_ellipsoidal_shell_re_f(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
-	
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-	
+
 	NU = 1;
 	LNDISTR=1.0;
-	
+
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R_PRINCIPLE < 0.0), param, "R_PRINCIPLE(%lg) < 0",R_PRINCIPLE);
 	SASFIT_CHECK_COND1((R_EQUATORIAL < 0.0), param, "R_MINOR(%lg) < 0",R_EQUATORIAL);
@@ -178,9 +178,9 @@ scalar sasfit_ff_ellipsoidal_shell_re_f(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &sasfit_ff_ellip_shell_re_core;
-	
+
 	intstrategy = sasfit_get_int_strategy();
-//	intstrategy=P_CUBATURE;
+	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -189,7 +189,7 @@ scalar sasfit_ff_ellipsoidal_shell_re_f(scalar q, sasfit_param * param)
 			sum=res;
             free(aw);
             break;
-            } 
+            }
     case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
             aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
             sasfit_intccini(lenaw, aw);
@@ -199,15 +199,15 @@ scalar sasfit_ff_ellipsoidal_shell_re_f(scalar q, sasfit_param * param)
             break;
             }
     case H_CUBATURE: {
-			hcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+			hcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+			pcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
             break;

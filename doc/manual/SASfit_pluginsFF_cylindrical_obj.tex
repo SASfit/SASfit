@@ -16,11 +16,11 @@ In \cite{Benham1980} a solution of a single helical strand which can have a seco
 Double helices with a fanlike cross section in the plane perpendicular to the helix axis have been described by by Schmidt and Pringle \cite{Schmidt1970,Pringle1971}. The model has been generalized by Fakuda et al.\ \cite{Fukuda2002} for an arbitrarily shaped cross section and by Teixeira et al.\ \cite{Teixeira2010} to a multi radial shell with fanlike cross section.
 \begin{figure}[htb]
 \begin{center}
-  \subfigure[top on view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helicesXS.png}}
+  \subfigure[top on view]{\label{fig:fanhelixside1}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helicesXS.png}}
 \hfill
-  \subfigure[side view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helices3D.png}}
+  \subfigure[side view]{\label{fig:fanhelixside2}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helices3D.png}}
 \end{center}
-\caption{Double helix with strands of round cross sections.} \label{fig:roundhelix}
+\caption{Double helix with strands of round cross sections.} \label{fig:fanhelix}
 \end{figure}
 
 \begin{align}
@@ -38,7 +38,7 @@ q_n &=
 \end{cases} \\
 P_\text{rod}(Q,H) &= H^2 \left(2\frac{\mathrm{Si}(QH)}{(QH)}-\left(\frac{\sin(QH/2)}{QH/2}\right)^2\right)
 \end{align}
-with $\epsilon_n=1$ for $n=0$ and $\epsilon_n=2$ for $n\geq 1$. 
+with $\epsilon_n=1$ for $n=0$ and $\epsilon_n=2$ for $n\geq 1$.
 
 The sum converges very fast and for small $Q$-values the first few terms are already sufficient. However, {\tt SASfit} is continuing the sum until the relative change of the sum is less than $10^{-10}$.
 
@@ -85,9 +85,9 @@ I(Q=0) &= \left(H\left(\eta_\text{h}-\eta_\text{solv}\right)\omega R^2\left(1-a^
 Originally Franklin et al.\ \cite{Franklin1956} and Puigjaner et al.\ \cite{Puigjaner1974} have given the form factor of a cylinder with a groove of a double helix shape of round cross section. Fukada \cite{Fukuda2002} is discussing the form factor of the random oriented double helices alone, but with arbitrary cross-sections.
 \begin{figure}[htb]
 \begin{center}
-  \subfigure[top on view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/roundhelices1.png}}
+  \subfigure[top on view]{\label{fig:roundhelix1}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/roundhelices1.png}}
 \hfill
-  \subfigure[side view]{\label{fig:beadshelixside}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/round_helices3D.png}}
+  \subfigure[side view]{\label{fig:roundhelix2}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/round_helices3D.png}}
 \end{center}
 \caption{Double helix with strands of round cross sections. The cross-sections are round in the plane perpendicular to the helix axis.} \label{fig:roundhelix}
 \end{figure}
@@ -150,9 +150,9 @@ In this model  \cite{Lebedev2003,Avdeev2013} it is assumed that spherical beads 
 
 \begin{figure}[htb]
 \begin{center}
-  \subfigure[side view]{\label{fig:beadshelixside}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_1.png}}
+  \subfigure[side view]{\label{fig:beadshelixside1}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_1.png}}
 \hfill
-  \subfigure[top on view]{\label{fig:beadshelixside}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_2.png}}
+  \subfigure[top on view]{\label{fig:beadshelixside2}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_2.png}}
 %\includegraphics[width=0.4\textwidth,height=0.74\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model.png}
 \end{center}
 \caption{Bead model of a helix. In figure a) bead helices with different bead radius and different number of beads per turn are shown} \label{fig:beadshelix}
@@ -181,7 +181,7 @@ Therefore the sum in eq.\ \ref{eq:beadshelix1} can be written as
 I(Q) &= P_\text{rod}(Q,H) \sum_{j=0}^{\infty} \epsilon_j \abs{\frac{nH}{P}\Psi_j\left(QD,\frac{2\pi j}{PQ}\right) \Phi(Q,R)}^2
 \label{eq:beadshelix2}
 \end{align}
-with $\epsilon_j=1$ for $j=0$ and $\epsilon_j=2$ for $j\geq 1$. 
+with $\epsilon_j=1$ for $j=0$ and $\epsilon_j=2$ for $j\geq 1$.
 
 The sum converges very fast and for small $Q$-values the first two term are already sufficient. However, {\tt SASfit} is continuing the sum until either the argument below the square root becomes negative or the relative change of the sum is less than $10^{-10}$.
 
@@ -239,7 +239,7 @@ I(Q) &= 2 \int_0^{\mathcal{L}} \frac{(\mathcal{L}-w)\sin Q\psi}{Q\psi} \mathrm{d
 \mathcal{L} &= 2\pi \frac{H}{P} \sqrt{R_1^2+a^2} \\
 a &= \frac{P}{2\pi}
 \end{align}
-$\mathcal{L}$ is the arclength of the helix, $R_1$ the distance to the helix axis and $P$ the pitch of the helix. The intensity is normalized to the squared arclength of the helix. i.e. 
+$\mathcal{L}$ is the arclength of the helix, $R_1$ the distance to the helix axis and $P$ the pitch of the helix. The intensity is normalized to the squared arclength of the helix. i.e.
 \begin{align}
 I(Q=0)&=\mathcal{L}^2
 \end{align}
@@ -317,7 +317,7 @@ f(\gamma) &= R_2^2+R_1^2N^2 \left(\cos^2\left(N\gamma\right)+\sin^2\left(N\gamma
 &+\frac{P^2}{(2\pi)^2} + 2R_2*R_1\cos\left(N\gamma\right) +2R_1^2N\cos(\alpha_2)
 \end{split}
 \end{align}
-and 
+and
 \begin{align}
 \gamma_\mathrm{max} &= N_\mathrm{2nd}/(2\pi)
 \end{align}

@@ -332,7 +332,7 @@ probability distribution of the electron in the atom. The scattering amplitude o
 \BE
  f_a(\B{Q}) = r_0\, \underbrace{L(Q)}_{{\rm {polarization\atop {factor}}}\sim 1}
 \int d\B{r} \, \rho_e(\B{r})\, e^{\imath \B{Qr}}
-\stackrel{Q\rightarrow 0}{=} r_0\, Z. \label{diffx}
+\stackrel{Q\rightarrow 0}{=} r_0\, Z. \label{diffx_vec}
 \EE
 The charge distribution in an atom can be described in good approximation by a radial symmetric
 function so that
@@ -909,8 +909,8 @@ Taking for example a system of identical but random oriented rotational ellipsoi
 with the half axis $R$, $R$, $\nu R$ the ratio of the two averages
 is shown in figure \ref{fig:formfactor:interferenzen} together with the scattering
 intensity {\small $\overline{\abs{F(Q)}^2}$} of the corresponding ideal dilutes system.
-The derivation of the formula for calculating  {\small $\overline{\abs{F(Q)}^2}$} and
-{\small $\vert{\overline{F(Q)}}\vert^2$} are given in appendix \ref{ch:anisotrop:form}.
+%The derivation of the formula for calculating  {\small $\overline{\abs{F(Q)}^2}$} and
+%{\small $\vert{\overline{F(Q)}}\vert^2$} are given in appendix \ref{ch:anisotrop:form}.
 The figure shows that the ratio decreases for larger scattering vectors $Q$
 the more the shaper of the rotational ellipsoid is different from the ideal spherical
 case ($\nu=1$). An irregular particle shape already is sufficient to reduce the influence
@@ -1058,12 +1058,12 @@ In case of a system of $N$ identical spheres with radii $R$ a scattering contras
 I(Q) = N \left[ \Delta\eta 3 \frac{4}{3}\pi R^3 \frac{\sin QR - QR \cos QR}{(QR)^3}\right]^2
 \EE
 in the limit $Q \rightarrow \infty$ we get
-\begin{align}\label{eq:speherePorodLaw}
-  \lim_{Q \rightarrow \infty} I(Q) (Q*R)^4 = & N \left[ \Delta\eta  \frac{4}{3}\pi R^3 3 \frac{\sin QR - QR \cos QR}{(QR)^3}\right]^2 (Q*R)^4\\
+\begin{align}\label{eq:spherePorodLaw1}
+  \lim_{Q \rightarrow \infty} I(Q) (QR)^4 = & N \left[ \Delta\eta  \frac{4}{3}\pi R^3 3 \frac{\sin QR - QR \cos QR}{(QR)^3}\right]^2 (QR)^4\\
     \rightarrow & N \left[\Delta\eta 4 \pi R^3 \right]^2 \cos^2 QR
 \end{align}
 Due to resolution limits the oscillations normally smear out in average so that
-\begin{align}\label{eq:speherePorodLaw}
+\begin{align}\label{eq:spherePorodLaw2}
 I(Q) \rightarrow N\frac{\left[\Delta\eta 4\pi R^3 \right]^2 }{2 (QR)^4} = N \Delta\eta^2\frac{2\pi A_{sp}}{Q^4} =  \Delta\eta^2\frac{2\pi S}{Q^4}
 \end{align}
 where $A_{sp}=4\pi R^2$ is the area of the sphere's surface and $N A_{sp}=S$ the total surface of all spheres in the beam.

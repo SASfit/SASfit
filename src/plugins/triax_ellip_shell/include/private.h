@@ -35,11 +35,15 @@
 #include "sasfit_triax_ellip_shell.h"
 
 typedef scalar sasfit_cubature_f(sasfit_param *);
+typedef scalar sasfit_cubature_p(scalar , sasfit_param *);
 
 typedef struct
 {
 	sasfit_param *param;
 	sasfit_cubature_f *func; //!< Selects the kernel function to use, when used with gsl functions.
+	sasfit_cubature_p *p1; //!< Selects the kernel function to use, when used with gsl functions.
+	sasfit_cubature_p *p2; //!< Selects the kernel function to use, when used with gsl functions.
+	sasfit_cubature_p *p3; //!< Selects the kernel function to use, when used with gsl functions.
 	scalar *cubxmin;
 	scalar *cubxmax;
 	int ndim;
@@ -55,8 +59,8 @@ typedef struct
 #define	Y	param->p[MAXPAR-4] // param from middle integration
 #define NU	param->p[MAXPAR-5] // param from innermost integration
 #define LNDISTR	param->p[MAXPAR-6]
-#define NUMIN	param->p[MAXPAR-7] 
-#define NUMAX	param->p[MAXPAR-8] 
+#define NUMIN	param->p[MAXPAR-7]
+#define NUMAX	param->p[MAXPAR-8]
 
 #define SIGMA	param->p[4]
 #define ETA_C	param->p[5]

@@ -293,6 +293,15 @@
  *
  * \modname{ff_plugins_ferrofluid}
  */
+ 
+/** 
+ * \defgroup ff_azimuthal azimuthal 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (1).
+ *
+ * \modname{ff_user1}
+ */ 
 
 /** 
  * \defgroup ff_user1 user plugins 1 

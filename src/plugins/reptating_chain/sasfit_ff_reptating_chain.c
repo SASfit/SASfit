@@ -59,6 +59,7 @@ scalar sasfit_ff_reptating_chain(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((PSI < 0.0), param, "psi(%lg) < 0",PSI); // modify condition to your needs
 
 	// insert your code here
+	
     PSI = sasfit_param_override_get_psi(PSIDEG*M_PI/180.);
 	Dpsi = PSI-THETA_0;
 	q_ll = q*cos(Dpsi);
@@ -67,7 +68,9 @@ scalar sasfit_ff_reptating_chain(scalar q, sasfit_param * param)
 	L3 = sqrt(gsl_pow_3(LAMBDA)-1);
 	E= 1./2.*(LAMBDA+gsl_asinh(L3)/sqrt(LAMBDA)/L3); 
 	BETA = (gsl_pow_2(LAMBDA*q_ll)+ gsl_pow_2(q_perp)/LAMBDA)*RG*RG/E;
-
+	
+	if (LAMBDA == 1) return D(ALPHA);
+		
 	return D(ALPHA)+1./6.*(ALPHA-BETA)*(1.+exp(-ALPHA))*H(ALPHA,1,param)
 				   +1./6.*gsl_pow_2(ALPHA-BETA)*sasfit_integrate(0.0,1.0,&HKernel,param);
 

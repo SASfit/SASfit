@@ -1,109 +1,133 @@
 \begin{thebibliography}{100}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname doi\endcsname\relax
+  \def\doi#1{\burlalt{doi:#1}{http://dx.doi.org/#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2}\fi
+\expandafter\ifx\csname burlalt\endcsname\relax
+  \def\burlalt#1#2{\href{#2}{#1}}\fi
 
 \bibitem{Agarwal2007}
-R.~P. Agarwal, Donal O'Regan, and D.~R. Sahu.
+R.~P. Agarwal, D.~O'Regan, and D.~R. Sahu.
 \newblock Iterative construction of fixed points of nearly asymptotically
   nonexpansive mappings.
 \newblock {\em Journal of Nonlinear and Covnex Analysis}, 8(1):61--79, 2007.
+\newblock \urlprefix\url{http://www.ybook.co.jp/online2/jncav8-1.html}.
 
 \bibitem{Alexander1984}
 S.~Alexander, P.~M. Chaikin, P.~Grant, G.~J. Morales, P.~Pincus, and D.~Hone.
 \newblock Charge renormalization, osmotic pressure, and bulk modulus of
   colloidal crystals: Theory.
-\newblock {\em The Journal of Chemical Physics}, 80(11):5776--5781, 1984.
+\newblock {\em The Journal of Chemical Physics}, 80(11):5776--5781, jun 1984.
+\newblock \doi{10.1063/1.446600}.
 
 \bibitem{Anderson1965}
-Donald~G. Anderson.
+D.~G. Anderson.
 \newblock Iterative procedures for nonlinear integral equations.
-\newblock {\em J. ACM}, 12(4):547--560, October 1965.
+\newblock {\em Journal of the {ACM}}, 12(4):547--560, oct 1965.
+\newblock \doi{10.1145/321296.321305}.
 
 \bibitem{Andersson2008}
-Robert Andersson, L{\'{e}}on~F. van Heijkamp, Ignatz~M. de~Schepper, and Wim~G.
-  Bouwman.
-\newblock {Analysis of spin-echo small-angle neutron scattering measurements}.
-\newblock {\em Journal of Applied Crystallography}, 41(5):868--885, Oct 2008.
+R.~Andersson, L.~F. van Heijkamp, I.~M. de~Schepper, and W.~G. Bouwman.
+\newblock Analysis of spin-echo small-angle neutron scattering measurements.
+\newblock {\em Journal of Applied Crystallography}, 41(5):868--885, sep 2008.
+\newblock \doi{10.1107/s0021889808026770}.
 
 \bibitem{scatt97}
-N.~W. Ashcroft and L.~Lenker.
+N.~W. Ashcroft and J.~Lekner.
 \newblock Structure and resistivity of liquid metals.
-\newblock {\em Physical Review}, 145(1):83--90, May 1966.
+\newblock {\em Physical Review}, 145(1):83--90, may 1966.
+\newblock \doi{10.1103/physrev.145.83}.
 
 \bibitem{Avdeev2013}
-Mikhail~V. Avdeev, Victor~L. Aksenov, Zuzana Gazov{\'{a}}, L{\'{a}}szl{\'{o}}
-  Alm{\'{a}}sy, Viktor~I. Petrenko, Hubert Gojzewski, Artem~V. Feoktystov,
-  Katarina Siposova, Andrea Antosova, Milan Timko, and Peter Kopcansky.
-\newblock {On the determination of the helical structure parameters of amyloid
-  protofilaments by small-angle neutron scattering and atomic force
-  microscopy}.
-\newblock {\em Journal of Applied Crystallography}, 46(1):224--233, Feb 2013.
+M.~V. Avdeev, V.~L. Aksenov, Z.~Gazov{\'{a}}, L.~Alm{\'{a}}sy, V.~I. Petrenko,
+  H.~Gojzewski, A.~V. Feoktystov, K.~Siposova, A.~Antosova, M.~Timko, and
+  P.~Kopcansky.
+\newblock On the determination of the helical structure parameters of amyloid
+  protofilaments by small-angle neutron scattering and atomic force microscopy.
+\newblock {\em Journal of Applied Crystallography}, 46(1):224--233, jan 2013.
+\newblock \doi{10.1107/s0021889812050042}.
 
 \bibitem{Ballone1986}
 P.~Ballone, G.~Pastore, G.~Galli, and D.~Gazzillo.
 \newblock Additive and non-additive hard sphere mixtures.
-\newblock {\em Molecular Physics}, 59(2):275--290, 1986.
+\newblock {\em Molecular Physics}, 59(2):275--290, oct 1986.
+\newblock \doi{10.1080/00268978600102071}.
 
 \bibitem{Barboy1974}
 B.~Barboy.
 \newblock On a representation of the equation of state of fluids in terms of
-  the adhesive hard-sphere model.
-\newblock {\em J. Chem. Phys.}, 61(8):3194--3196, 1974.
+  the adhesive hard-spheres model.
+\newblock {\em The Journal of Chemical Physics}, 61(8):3194--3196, oct 1974.
+\newblock \doi{10.1063/1.1682475}.
 
 \bibitem{Baxter1968}
-R.J. Baxter.
+R.~Baxter.
 \newblock Percus-yevick equation for hard spheres with surface adhesion.
 \newblock {\em J. Chem. Phys.}, 49(6):2770--2774, 1968.
+\newblock \doi{10.1063/1.1673684}.
 
 \bibitem{beaucage95}
 G.~Beaucage.
 \newblock Approximations leading to a unified exponential/power-law approach to
   small-angle scattering.
-\newblock {\em J. Appl. Cryst.}, 28:717--728, 1995.
+\newblock {\em Journal of Applied Crystallography}, 28(6):717--728, dec 1995.
+\newblock \doi{10.1107/s0021889895005292}.
 
 \bibitem{beaucage96}
 G.~Beaucage.
 \newblock Small-angle scattering from polymeric mass fractals of arbitrary
   mass-fractal dimension.
-\newblock {\em J. Appl. Cryst.}, 29:134--146, 1996.
+\newblock {\em Journal of Applied Crystallography}, 29(2):134--146, apr 1996.
+\newblock \doi{10.1107/s0021889895011605}.
 
 \bibitem{Benham1980}
-C.J. Benham, G.W. Brady, and D.B. Fein.
+C.~Benham, G.~Brady, and D.~Fein.
 \newblock X-ray scattering from randomly oriented superhelices. circular
   superhelical {DNA}.
 \newblock {\em Biophysical Journal}, 29(3):351--366, mar 1980.
+\newblock \doi{10.1016/S0006-3495(80)85139-3}.
 
 \bibitem{Benoit53}
 H.~Benoit.
 \newblock On the effect of branching and polydispersity on the angular
   distribution of the light scattered by gaussian coils.
-\newblock {\em J. Polym. Sci.}, 11:507--510, 1953.
+\newblock {\em Journal of Polymer Science}, 11(5):507--510, nov 1953.
+\newblock \doi{10.1002/pol.1953.120110512}.
 
 \bibitem{Berndt2006}
-Ingo Berndt, Jan~Skov Pedersen, Peter Lindner, and Walter Richtering.
+I.~Berndt, J.~S. Pedersen, P.~Lindner, and W.~Richtering.
 \newblock Influence of shell thickness and cross-link density on the structure
   of temperature-sensitive
-  poly-n-isopropylacrylamideâˆ’poly-n-isopropylmethacrylamide coreâˆ’shell
+  poly-n-isopropylacrylamide-poly-n-isopropylmethacrylamide core-shell
   microgels investigated by small-angle neutron scattering.
-\newblock {\em Langmuir}, 22(1):459--468, 2006.
-\newblock PMID: 16378460.
+\newblock {\em Langmuir}, 22(1):459--468, jan 2006.
+\newblock \doi{10.1021/la052463u}.
 
 \bibitem{Berndt2005}
-Ingo Berndt, Jan~Skov Pedersen, and Walter Richtering.
-\newblock Structure of multiresponsive â€œintelligentâ€? coreâˆ’shell
-  microgels.
+I.~Berndt, J.~S. Pedersen, and W.~Richtering.
+\newblock Structure of multiresponsive
+  {\textquotedblleft}intelligent{\textquotedblright} core-shell microgels.
 \newblock {\em Journal of the American Chemical Society}, 127(26):9372--9373,
-  2005.
+  jul 2005.
+\newblock \doi{10.1021/ja051825h}.
 \newblock PMID: 15984856.
 
 \bibitem{Berndt2006a}
-Ingo Berndt, Jan~Skov Pedersen, and Walter Richtering.
-\newblock Temperature-sensitive coreâ€“shell microgel particles with dense
-  shell.
-\newblock {\em Angewandte Chemie}, 118(11):1769--1773, 2006.
+I.~Berndt, J.~S. Pedersen, and W.~Richtering.
+\newblock Temperature-sensitive core{\textendash}shell microgel particles with
+  dense shell.
+\newblock {\em Angewandte Chemie}, 118(11):1769--1773, mar 2006.
+\newblock \doi{10.1002/ange.200503888}.
 
 \bibitem{Bevington2003}
-Philip Bevington and D.~Keith Robinson.
+P.~Bevington and D.~K. Robinson.
 \newblock {\em Data Reduction and Error Analysis for the Physical Sciences}.
 \newblock McGraw-Hill, 3rd edition, 23 July 2002.
+\newblock
+  \urlprefix\url{http://catalogs.mhhe.com/mhhe/viewProductDetails.do?isbn=0072472278}.
 \newblock ISBN-10: 0072472278, ISBN-13: 978-0072472271.
 
 \bibitem{Blaurock1982}
@@ -111,77 +135,99 @@ A.~E. Blaurock.
 \newblock Evidence of bilayer structure and of membrane interactions from x-ray
   diffraction analysis.
 \newblock {\em Biochimica et Biophysica Acta (BBA) - Reviews on Biomembranes},
-  650(4):167 -- 207, 1982.
+  650(4):167--207, may 1982.
+\newblock \doi{10.1016/0304-4157(82)90016-8}.
 
 \bibitem{Bohren1983}
-C.F. Bohren and D.R. Huffman.
+C.~Bohren and D.~Huffman.
 \newblock {\em Absorption and Scattering of Light by Small Particles}.
-\newblock Wiley, New York, 1983.
+\newblock Wiley-{VCH} Verlag {GmbH}, apr 1998.
+\newblock \doi{10.1002/9783527618156}.
+
+\bibitem{Bomont2008}
+J.-M. Bomont.
+\newblock {\em Recent Advances in the Field of Integral Equation Theories:
+  Bridge Functions and Applications to Classical Fluids}, chapter Chapter 1,
+  pages 1--84.
+\newblock John Wiley {\&} Sons, Inc., apr 2008.
+\newblock \doi{10.1002/9780470259498.ch1}.
 
 \bibitem{Bomont2003}
 J.~M. Bomont and J.~L. Bretonnet.
 \newblock A self-consistent integral equation: Bridge function and
   thermodynamic properties for the lennard-jones fluid.
-\newblock {\em The Journal of Chemical Physics}, 119(4):2188--2191, 2003.
-
-\bibitem{Bomont2008}
-Jean-Marc Bomont.
-\newblock {\em Recent Advances in the Field of Integral Equation Theories:
-  Bridge Functions and Applications to Classical Fluids}, chapter Chapter 1,
-  pages 1--84.
-\newblock John Wiley \& Sons, Inc., 2008.
+\newblock {\em The Journal of Chemical Physics}, 119(4):2188--2191, jul 2003.
+\newblock \doi{10.1063/1.1583675}.
 
 \bibitem{Bomont2004}
-Jean-Marc Bomont and Jean-Louis Bretonnet.
+J.-M. Bomont and J.-L. Bretonnet.
 \newblock A consistent integral equation theory for hard spheres.
-\newblock {\em The Journal of Chemical Physics}, 121(3):1548--1552, 2004.
+\newblock {\em The Journal of Chemical Physics}, 121(3):1548--1552, jul 2004.
+\newblock \doi{10.1063/1.1764772}.
 
 \bibitem{scatt142}
 M.~Born and H.~S. Green.
-\newblock A general kinetic theory of liquids {I. The} molecular distribution
+\newblock A general kinetic theory of liquids. i. the molecular distribution
   functions.
-\newblock {\em Proc. Roy. Soc.}, A188:10--18, 1946.
+\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Sciences}, 188(1012):10--18, dec 1946.
+\newblock \doi{10.1098/rspa.1946.0093}.
+
+\bibitem{Henderson2000}
+M.~Borowko, S.~Sokolowski, and D.~Henderson.
+\newblock Integral equations in the theory of simple fluids.
+\newblock In {\em Surfactant Science}, chapter~3, pages 135--165. {CRC} Press,
+  feb 2000.
+\newblock \doi{10.1201/9781420030037.ch3}.
 
 \bibitem{Boucher1983}
-B~Boucher, P~Chieux, P~Convert, and M~Tournarie.
+B.~Boucher, P.~Chieux, P.~Convert, and M.~Tournarie.
 \newblock Small-angle neutron scattering determination of medium and long range
-  order in the amorphous metallic alloy tbcu 3.54.
-\newblock {\em Journal of Physics F: Metal Physics}, 13(7):1339, 1983.
+  order in the amorphous metallic alloy {TbCu}3.54.
+\newblock {\em Journal of Physics F: Metal Physics}, 13(7):1339--1357, jul
+  1983.
+\newblock \doi{10.1088/0305-4608/13/7/006}.
 
 \bibitem{Bracewell1956}
-RN~Bracewell.
+R.~Bracewell.
 \newblock Strip integration in radio astronomy.
-\newblock {\em Australian Journal of Physics}, 9(2):198--217, 1956.
+\newblock {\em Australian Journal of Physics}, 9(2):198, 1956.
+\newblock \doi{10.1071/ph560198}.
 
 \bibitem{Bracewell2003}
-Ronald Bracewell.
+R.~Bracewell.
 \newblock {\em The Projection-Slice Theorem}, pages 493--504.
-\newblock Springer US, Boston, MA, 2003.
+\newblock Springer {US}, Boston, MA, 2003.
+\newblock \doi{10.1007/978-1-4419-8963-5_14}.
+
+\bibitem{Burchard1974}
+W.~Burchard.
+\newblock Statistics of star-shaped molecules. i. stars with polydisperse side
+  chains.
+\newblock {\em Macromolecules}, 7(6):835--841, nov 1974.
+\newblock \doi{10.1021/ma60042a027}.
 
 \bibitem{Burchard1970}
 W.~Burchard and K.~Kajiwara.
-\newblock The statistics of stiff chain molecules i. the particle scattering
+\newblock The statistics of stiff chain molecules. i. the particle scattering
   factor.
-\newblock {\em Proceedings of the Royal Society of London A: Mathematical,
-  Physical and Engineering Sciences}, 316(1525):185--199, apr 1970.
+\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Sciences}, 316(1525):185--199, apr 1970.
+\newblock \doi{10.1098/rspa.1970.0074}.
 
 \bibitem{Burchard1996}
 W.~Burchard, E.~Michel, and V.~Trappe.
 \newblock Conformational properties of multiply twisted ring systems and
   daisy-like structures.
-\newblock {\em Macromolecules}, 29(18):5934--5939, 1996.
-
-\bibitem{Burchard1974}
-Walther Burchard.
-\newblock Statistics of star-shaped molecules. i. stars with polydisperse side
-  chains.
-\newblock {\em Macromolecules}, 7(6):835--841, 1974.
+\newblock {\em Macromolecules}, 29(18):5934--5939, jan 1996.
+\newblock \doi{10.1021/ma9603286}.
 
 \bibitem{Caccamo1996}
 C.~Caccamo.
 \newblock Integral equation theory description of phase equilibria in classical
   fluids.
-\newblock {\em Physics Reports}, 274(1-2):1 -- 105, 1996.
+\newblock {\em Physics Reports}, 274(1-2):1--105, sep 1996.
+\newblock \doi{10.1016/0370-1573(96)00011-7}.
 
 \bibitem{Caille1972}
 A.~Caille.
@@ -193,62 +239,64 @@ A.~Caille.
 I.~Charpentier and N.~Jakse.
 \newblock Exact numerical derivatives of the pair-correlation function of
   simple liquids using the tangent linear method.
-\newblock {\em The Journal of Chemical Physics}, 114(5):2284--2292, 2001.
+\newblock {\em The Journal of Chemical Physics}, 114(5):2284--2292, feb 2001.
+\newblock \doi{10.1063/1.1332808}.
 
 \bibitem{Chihara1973}
-Junzo Chihara.
+J.~Chihara.
 \newblock Integral euqations for fluids with long-range and short-range
-  potentials: Application to a charged particle system.
-\newblock {\em Progress of Theoretical Physics}, 50(2):409--423, 1973.
+  potentials.
+\newblock {\em Progress of Theoretical Physics}, 50(2):409--423, aug 1973.
+\newblock \doi{10.1143/ptp.50.409}.
 
 \bibitem{Choudhury2002}
-Niharendu Choudhury and Swapan~K. Ghosh.
+N.~Choudhury and S.~K. Ghosh.
 \newblock Integral equation theory of lennard-jones fluids: A modified verlet
   bridge function approach.
-\newblock {\em The Journal of Chemical Physics}, 116(19):8517--8522, 2002.
+\newblock {\em The Journal of Chemical Physics}, 116(19):8517, 2002.
+\newblock \doi{10.1063/1.1467894}.
 
 \bibitem{Chugh2012}
 R.~Chugh, V.~Kumar, and S.~Kumar.
 \newblock Strong convergence of a new three step iterative scheme in banach
   spaces.
-\newblock {\em American Journal of Computational Mathematics}, 2(4):345--357,
+\newblock {\em American Journal of Computational Mathematics}, 02(04):345--357,
   2012.
+\newblock \doi{10.4236/ajcm.2012.24048}.
 
 \bibitem{Crick1953}
 F.~H.~C. Crick.
-\newblock {The Fourier transform of a coiled-coil}.
-\newblock {\em Acta Crystallographica}, 6(8-9):685--689, Sep 1953.
-
-\bibitem{Damaschun1969}
-G.~Damaschun, H.-V. Porschel, and G.~Sommer.
-\newblock {Bestimmung der Gestalt gel\"oster Makromolek\"ule aus
-  R\"ontgen-Kleinwinkeldiagrammen mit Hilfe von Gleichungssystemen}.
-\newblock {\em Acta Cryst.}, A25:708, 1969.
+\newblock The fourier transform of a coiled-coil.
+\newblock {\em Acta Crystallographica}, 6(8):685--689, sep 1953.
+\newblock \doi{10.1107/s0365110x53001952}.
 
 \bibitem{Damaschun1971}
-G.~Damaschun and H.-V. P{\"{u}}rschel.
-\newblock {R{\"{o}}ntgen-Kleinwinkelstreuung von isotropen Proben ohne
-  Fernordnung. I. Allgemeine Theorie}.
-\newblock {\em Acta Crystallographica Section A}, 27(3):193--197, May 1971.
+G.~Damaschun and H.-V. Pürschel.
+\newblock Röntgen-kleinwinkelstreuung von isotropen proben ohne fernordnung. i.
+  allgemeine theorie.
+\newblock {\em Acta Crystallographica Section A}, 27(3):193--197, may 1971.
+\newblock \doi{10.1107/s0567739471000457}.
+
+\bibitem{Damaschun1969}
+G.~Damaschun, H.-V. Pürschel, and G.~Sommer.
+\newblock {Bestimmung der Gestalt gel\"oster Makromolek\"ule aus
+  R\"ontgen-Kleinwinkeldiagrammen mit Hilfe von Gleichungssystemen}.
+\newblock {\em Acta Crystallographica Section A}, 25(6):708, nov 1969.
+\newblock \doi{10.1107/s0567739469001586}.
 
 \bibitem{DaoudCotton82}
-M.~Daoud and J.P. Cotton.
-\newblock Star shaped polymers - a model for the conformation and its
-  concentration-dependence.
-\newblock {\em Journal de Physique (Paris)}, 43:531, 1982.
+M.~Daoud and J.~Cotton.
+\newblock Star shaped polymers : a model for the conformation and its
+  concentration dependence.
+\newblock {\em Journal de Physique}, 43(3):531--538, 1982.
+\newblock \doi{10.1051/jphys:01982004303053100}.
 
 \bibitem{David1986}
 W.~I.~F. David.
 \newblock Powder diffraction peak shapes. parameterization of the pseudo-voigt
   as a voigt function.
-\newblock {\em Journal of Applied Crystallography}, 19(1):63--64, Feb 1986.
-
-\bibitem{Kruif1989}
-C.~G. de~Kruif, P.~W. Rouw, W.~J. Briels, M.~H.~G. Duits, A.~Vrij, and R.~P.
-  May.
-\newblock Adhesive hard-sphere colloidal dispersions. a small-angle
-  neutron-scattering study of stickiness and the structure factor.
-\newblock {\em Langmuir}, 5:422--428, 1989.
+\newblock {\em Journal of Applied Crystallography}, 19(1):63--64, feb 1986.
+\newblock \doi{10.1107/s0021889886089999}.
 
 \bibitem{scatt186}
 P.~Debye.
@@ -258,149 +306,171 @@ P.~Debye.
 \bibitem{Debye1947}
 P.~Debye.
 \newblock Mollecular-weight determination by light scattering.
-\newblock {\em Journal of Physical and Colloid Chemistry}, 51:18--32, 1947.
+\newblock {\em Journal of Physical and Colloid Chemistry}, 51(1):18--32, jan
+  1947.
+\newblock \doi{10.1021/j150451a002}.
 
 \bibitem{DAB1957}
 P.~Debye, H.~R. Anderson, and H.~Brumberger.
 \newblock Scattering by an inhomogeneous solid. ii. the correlation function
   and its application.
-\newblock {\em Journal of Applied Physics}, 28(6):679--683, 1957.
+\newblock {\em Journal of Applied Physics}, 28(6):679--683, jun 1957.
+\newblock \doi{10.1063/1.1722830}.
 
 \bibitem{DebyeBueche1949}
 P.~Debye and A.~M. Bueche.
 \newblock Scattering by an inhomogeneous solid.
-\newblock {\em Journal of Applied Physics}, 20(6):518--525, 1949.
+\newblock {\em Journal of Applied Physics}, 20(6):518--525, jun 1949.
+\newblock \doi{10.1063/1.1698419}.
 
 \bibitem{Dhont1996}
-J.K.G. Dhont.
+J.~Dhont.
 \newblock {\em An Introduction to Dynamics of Colloids}.
 \newblock Studies in Interface Science. Elsevier Science, 1996.
+\newblock \urlprefix\url{https://books.google.ch/books?id=mmArTF5SJ9oC}.
 
 \bibitem{dozier91}
 W.~D. Dozier, J.~S. Huang, and L.~J. Fetters.
 \newblock Colloidal nature of star polymer dilute and semidilute solutions.
-\newblock {\em Macromolecules}, 24(10):2810--2814, 1991.
+\newblock {\em Macromolecules}, 24(10):2810--2814, may 1991.
+\newblock \doi{10.1021/ma00010a026}.
 
 \bibitem{Duh1995}
-Der-Ming Duh and A.~D.~J. Haymet.
+D.-M. Duh and A.~D.~J. Haymet.
 \newblock Integral equation theory for uncharged liquids: The lennard-jones
   fluid and the bridge function.
-\newblock {\em The Journal of Chemical Physics}, 103(7):2625--2633, 1995.
+\newblock {\em The Journal of Chemical Physics}, 103(7):2625--2633, aug 1995.
+\newblock \doi{10.1063/1.470724}.
 
 \bibitem{Dzubiella2001}
-J.~Dzubiella, A.~Jusufi, C.~N. Likos, C.~von Ferber, H.~L\"owen, J.~Stellbrink,
+J.~Dzubiella, A.~Jusufi, C.~N. Likos, C.~von Ferber, H.~Löwen, J.~Stellbrink,
   J.~Allgaier, D.~Richter, A.~B. Schofield, P.~A. Smith, W.~C.~K. Poon, and
   P.~N. Pusey.
-\newblock Phase separation in star-polymer\char21{}colloid mixtures.
-\newblock {\em Phys. Rev. E}, 64:010401, Jun 2001.
+\newblock Phase separation in star-polymer{\textendash}colloid mixtures.
+\newblock {\em Physical Review E}, 64(1):010401, jun 2001.
+\newblock \doi{10.1103/physreve.64.010401}.
 
 \bibitem{book:Feigin:Svergun}
 L.~A. Feigin and D.~I. Svergun.
 \newblock {\em Structure Analysis by Small-Angle X-ray and Neutron Scattering}.
 \newblock Plenum Press, 1987.
 
-\bibitem{Forster2010}
-S.~F{\"{o}}rster, L.~Apostol, and W.~Bras.
-\newblock {Scatter: software for the analysis of nano- and mesoscale
-  small-angle scattering}.
-\newblock {\em Journal of Applied Crystallography}, 43(3):639--646, Jun 2010.
-
-\bibitem{Forster2011}
-S.~F\"orster, S.~Fischer, K.~Zielske, C.~Schellbach, M.~Sztucki, P.~Lindner,
-  and J.~Perlich.
-\newblock Calculation of scattering-patterns of ordered nano- and mesoscale
-  materials.
-\newblock {\em Advances in Colloid and Interface Science}, 163(1):53 -- 83,
-  2011.
-
-\bibitem{FoersterHermsdorf2002}
-S.~F\"orster, N.~Hermsdorf, C.~B\"ottcher, and P.~Lindner.
-\newblock Structure of polyelectrolyte block copolymer micelles,
-  macromolecules.
-\newblock {\em Macromolecules}, 35:4096--4105, 2002.
-
-\bibitem{Forster1999}
-S.~F\"orster, N.~Hermsdorf, W.~Leube, H.~Schnablegger, M.~Regenbrecht,
-  S.~Akari, P.~Lindner, and C.~B\"ottcher.
-\newblock Fusion of charged block copolymer micelles into toroid networks.
-\newblock {\em J. Phys. Chem. B}, 103:6657--6668, 1999.
-
-\bibitem{Forster2005}
-S.~F\"orster, A.~Timmann, M.~Konrad, C.~Schellbach, A.~Meyer, S.~S. Funari,
-  P.~Mulvaney, and R.~Knott.
-\newblock Scattering curves of ordered mesoscopic materials.
-\newblock {\em The Journal of Physical Chemistry B}, 109(4):1347--1360, 2005.
-\newblock PMID: 16851102.
-
 \bibitem{Franklin1956}
-Rosalind~E. Franklin and A.~Klug.
+R.~E. Franklin and A.~Klug.
 \newblock The nature of the helical groove on the tobacco mosaic virus particle
   x-ray diffraction studies.
-\newblock {\em Biochimica et Biophysica Acta}, 19(Supplement C):403 -- 416,
+\newblock {\em Biochimica et Biophysica Acta}, 19(Supplement C):403--416, jan
   1956.
+\newblock \doi{10.1016/0006-3002(56)90463-2}.
 
 \bibitem{Fratzl1994}
-Peter Fratzl.
+P.~Fratzl.
 \newblock Statistical model of the habit and arrangement of mineral crystals in
   the collagen of bone.
 \newblock {\em Journal of Statistical Physics}, 77(1-2):125--143, 1994.
+\newblock \doi{10.1007/BF02186835}.
 
 \bibitem{Freund1993}
-Roland~W. Freund.
+R.~W. Freund.
 \newblock A transpose-free quasi-minimal residual algorithm for non-hermitian
   linear systems.
-\newblock {\em SIAM Journal on Scientific Computing}, 14(2):470--482, 1993.
+\newblock {\em SIAM Journal on Scientific Computing}, 14(2):470--482, mar 1993.
+\newblock \doi{10.1137/0914029}.
+
+\bibitem{Fruhwirth2004}
+T.~Frühwirth, G.~Fritz, N.~Freiberger, and O.~Glatter.
+\newblock Structure and order in lamellar phases determined by small-angle
+  scattering.
+\newblock {\em Journal of Applied Crystallography}, 37(5):703--710, sep 2004.
+\newblock \doi{10.1107/s0021889804012956}.
 
 \bibitem{FFTW97}
-Matteo Frigo and Steven~G. Johnson.
+M.~Frigo and S.~G. Johnson.
 \newblock The fastest {Fourier} transform in the west.
 \newblock Technical Report MIT-LCS-TR-728, Massachusetts Institute of
   Technology, September 1997.
+\newblock \urlprefix\url{http://www.fftw.org/fftw-paper.pdf}.
 
 \bibitem{FFTW05}
-Matteo Frigo and Steven~G. Johnson.
+M.~Frigo and S.~G. Johnson.
 \newblock The design and implementation of {FFTW3}.
 \newblock {\em Proceedings of the IEEE}, 93(2):216--231, 2005.
+\newblock \doi{10.1109/JPROC.2004.840301}.
 \newblock Special issue on ``Program Generation, Optimization, and Platform
   Adaptation''.
 
 \bibitem{Frisken2001}
-Barbara~J. Frisken.
+B.~J. Frisken.
 \newblock Revisiting the method of cumulants for the analysis of dynamic
   light-scattering data.
-\newblock {\em Appl. Opt.}, 40(24):4087--4091, Aug 2001.
+\newblock {\em Applied Optics}, 40(24):4087, aug 2001.
+\newblock \doi{10.1364/ao.40.004087}.
 
-\bibitem{Fruhwirth2004}
-Thomas Fr{\"{u}}hwirth, Gerhard Fritz, Norbert Freiberger, and Otto Glatter.
-\newblock {Structure and order in lamellar phases determined by small-angle
-  scattering}.
-\newblock {\em Journal of Applied Crystallography}, 37(5):703--710, Oct 2004.
+\bibitem{Forster2010}
+S.~Förster, L.~Apostol, and W.~Bras.
+\newblock Scatter: software for the analysis of nano- and mesoscale small-angle
+  scattering.
+\newblock {\em Journal of Applied Crystallography}, 43(3):639--646, apr 2010.
+\newblock \doi{10.1107/s0021889810008289}.
+
+\bibitem{Forster2011}
+S.~Förster, S.~Fischer, K.~Zielske, C.~Schellbach, M.~Sztucki, P.~Lindner, and
+  J.~Perlich.
+\newblock Calculation of scattering-patterns of ordered nano- and mesoscale
+  materials.
+\newblock {\em Advances in Colloid and Interface Science}, 163(1):53--83, mar
+  2011.
+\newblock \doi{10.1016/j.cis.2010.12.003}.
+
+\bibitem{FoersterHermsdorf2002}
+S.~Förster, N.~Hermsdorf, C.~Böttcher, and P.~Lindner.
+\newblock Structure of polyelectrolyte block copolymer micelles.
+\newblock {\em Macromolecules}, 35(10):4096--4105, may 2002.
+\newblock \doi{10.1021/ma011565y}.
+
+\bibitem{Forster1999}
+S.~Förster, N.~Hermsdorf, W.~Leube, H.~Schnablegger, M.~Regenbrecht, S.~Akari,
+  P.~Lindner, and C.~Böttcher.
+\newblock Fusion of charged block copolymer micelles into toroid networks.
+\newblock {\em The Journal of Physical Chemistry B}, 103(32):6657--6668, aug
+  1999.
+\newblock \doi{10.1021/jp990076l}.
+
+\bibitem{Forster2005}
+S.~Förster, A.~Timmann, M.~Konrad, C.~Schellbach, A.~Meyer, S.~S. Funari,
+  P.~Mulvaney, and R.~Knott.
+\newblock Scattering curves of ordered mesoscopic materials.
+\newblock {\em The Journal of Physical Chemistry B}, 109(4):1347--1360, feb
+  2005.
+\newblock \doi{10.1021/jp0467494}.
 
 \bibitem{Fukuda2002}
-Hiroshi Fukuda, Ayako Goto, and Toyoko Imae.
+H.~Fukuda, A.~Goto, and T.~Imae.
 \newblock Structure determination of helical fibers by numerical simulation for
   small-angle neutron scattering{\textdagger}.
 \newblock {\em Langmuir}, 18(19):7107--7114, sep 2002.
+\newblock \doi{10.1021/la025528r}.
 
 \bibitem{Furukawa1984}
 H.~Furukawa.
 \newblock Dynamics-scaling theory for phase-separating unmixing mixtures:
   Growth rates of droplets and scaling properties of autocorrelation functions.
 \newblock {\em Physica A}, 123:497, 1984.
+\newblock \doi{10.1016/0378-4371(84)90168-7}.
 
 \bibitem{Gazzillo1999}
-Domenico Gazzillo, Achille Giacometti, Raffaele Guido~Della Valle, Elisabetta
-  Venuti, and Flavio Carsughi.
+D.~Gazzillo, A.~Giacometti, R.~G.~D. Valle, E.~Venuti, and F.~Carsughi.
 \newblock A scaling approximation for structure factors in the integral
   equation theory of polydisperse nonionic colloidal fluids.
-\newblock {\em The Journal of Chemical Physics}, 111(16):7636--7645, 1999.
+\newblock {\em The Journal of Chemical Physics}, 111(16):7636--7645, oct 1999.
+\newblock \doi{10.1063/1.480089}.
 
 \bibitem{Giehm2010}
-Lise Giehm, Cristiano Luis~Pinto Oliveira, Gunna Christiansen, Jan~Skov
-  Pedersen, and Daniel~E. Otzen.
+L.~Giehm, C.~L.~P. Oliveira, G.~Christiansen, J.~S. Pedersen, and D.~E. Otzen.
 \newblock {SDS}-induced fibrillation of $\alpha$-synuclein: An alternative
   fibrillation pathway.
 \newblock {\em Journal of Molecular Biology}, 401(1):115--133, aug 2010.
+\newblock \doi{10.1016/j.jmb.2010.05.060}.
 
 \bibitem{scatt75}
 O.~Glatter.
@@ -409,10 +479,32 @@ O.~Glatter.
 \newblock {\em Acta Physica Austriaca}, 47:83--102, 1977.
 
 \bibitem{Greschner1973}
-Georg~S. Greschner.
+G.~S. Greschner.
 \newblock Mathematical properties of polydisperse systems, 2. application to
   light scattering.
 \newblock {\em Die Makromolekulare Chemie}, 170(1):203--229, 1973.
+\newblock \doi{10.1002/macp.1973.021700117}.
+
+\bibitem{Gu2016}
+X.~Gu and D.~F.~R. Mildner.
+\newblock Ultra-small-angle neutron scattering with azimuthal asymmetry.
+\newblock {\em Journal of Applied Crystallography}, 49(3):934--943, may 2016.
+\newblock \doi{10.1107/S1600576716005586}.
+
+\bibitem{Gu2018}
+X.~Gu and D.~F.~R. Mildner.
+\newblock Determination of porosity in anisotropic fractal systems by neutron
+  scattering.
+\newblock {\em Journal of Applied Crystallography}, 51(1):175--184, feb 2018.
+\newblock \doi{10.1107/S1600576718000080}.
+
+\bibitem{Guinier1939}
+A.~Guinier.
+\newblock La diffraction des rayons x aux tr{\`{e}}s petits angles :
+  application {\`{a}} l{\textquotesingle}{\'{e}}tude de ph{\'{e}}nom{\`{e}}nes
+  ultramicroscopiques.
+\newblock {\em Annales de Physique}, 11(12):161--237, 1939.
+\newblock \doi{10.1051/anphys/193911120161}.
 
 \bibitem{Guinier1963}
 A.~Guinier.
@@ -428,80 +520,106 @@ A.~Guinier and G.~Fournet.
 F.~{G{\"u}rsoy} and V.~{Karakaya}.
 \newblock {A Picard-S hybrid type iteration method for solving a differential
   equation with retarded argument}.
-\newblock {\em ArXiv e-prints}, March 2014.
+\newblock {\em ArXiv e-prints}, Mar. 2014,
+  \burlalt{1403.2546}{http://arxiv.org/abs/1403.2546}.
+\newblock \urlprefix\url{https://arxiv.org/abs/1403.2546}.
 
 \bibitem{Hamilton1965}
 W.~C. Hamilton.
-\newblock {Significance tests on the crystallographic {\it R} factor}.
-\newblock {\em Acta Crystallographica}, 18(3):502--510, Mar 1965.
+\newblock Significance tests on the crystallographic r factor.
+\newblock {\em Acta Crystallographica}, 18(3):502--510, may 1965.
+\newblock \doi{10.1107/s0365110x65001081}.
+
+\bibitem{Hammouda1993}
+B.~Hammouda.
+\newblock {\em {SANS} from homogeneous polymer mixtures: A unified overview},
+  pages 87--133.
+\newblock Springer-Verlag, Berlin, Heidelberg, 1993.
+\newblock \doi{10.1007/bfb0025862}.
+
+\bibitem{Hammouda2010}
+B.~Hammouda.
+\newblock A new guinier{\textendash}porod model.
+\newblock {\em Journal of Applied Crystallography}, 43(4):716--719, may 2010.
+\newblock \doi{10.1107/s0021889810015773}.
+
+\bibitem{Hammouda2012}
+B.~Hammouda.
+\newblock Small-angle scattering from branched polymers.
+\newblock {\em Macromolecular Theory and Simulations}, 21(6):372--381, mar
+  2012.
+\newblock \doi{10.1002/mats.201100111}.
+
+\bibitem{Hammouda2016}
+B.~Hammouda.
+\newblock Form factors for branched polymers with excluded volume.
+\newblock {\em Journal of Research of the National Institute of Standards and
+  Technology}, 121:139, apr 2016.
+\newblock \doi{10.6028/jres.121.006}.
 
 \bibitem{Hammouda}
 B.~Hammouda.
 \newblock the sans toolbox.
 \newblock
-  \href{http://www.ncnr.nist.gov/staff/hammouda/the\_SANS\_toolbox.pdf}{$\dots$/the\_SANS\_toolbox.pdf}.
+  \href{http://www.ncnr.nist.gov/staff/hammouda/the\_SANS\_toolbox.pdf}{$\dots$/the\_SANS\_toolbox.pdf},
+  2016.
+\newblock
+  \urlprefix\url{http://www.ncnr.nist.gov/staff/hammouda/the_SANS_toolbox.pdf}.
 
-\bibitem{Hammouda1993}
-Boualem Hammouda.
-\newblock {\em SANS from homogeneous polymer mixtures: A unified overview},
-  pages 87--133.
-\newblock Springer Berlin Heidelberg, Berlin, Heidelberg, 1993.
+\bibitem{Hammouda1986a}
+B.~Hammouda, R.~A. Bubeck, and D.~F. Mildner.
+\newblock Macromolecular orientation in hot stretched and injection moulded
+  polystyrene.
+\newblock {\em Polymer}, 27(3):393--397, mar 1986.
+\newblock \doi{10.1016/0032-3861(86)90155-2}.
 
-\bibitem{Hammouda2010}
-Boualem Hammouda.
-\newblock {A new Guinier{--}Porod model}.
-\newblock {\em Journal of Applied Crystallography}, 43(4):716--719, Aug 2010.
-
-\bibitem{Hammouda2012}
-Boualem Hammouda.
-\newblock Small-angle scattering from branched polymers.
-\newblock {\em Macromolecular Theory and Simulations}, 21(6):372--381, 2012.
-
-\bibitem{Hammouda2016}
-Boualem Hammouda.
-\newblock Form factors for branched polymers with excluded volume.
-\newblock {\em Journal of Research of NIST}, 121:139--164, 2016.
+\bibitem{Hammouda1986}
+B.~Hammouda, D.~F.~R. Mildner, R.~A. Bubeck, and M.~T. Malanga.
+\newblock The inclination angle of nonisotropic inhomogeneities determined by
+  {SANS}.
+\newblock {\em Journal of Applied Crystallography}, 19(5):320--323, oct 1986.
+\newblock \doi{10.1107/S002188988608929X}.
 
 \bibitem{Hanley2003}
 H.~J.~M. Hanley, C.~D. Muzny, D.~L. Ho, and C.~J. Glinka.
 \newblock A small-angle neutron scattering study of a commercial organoclay
   dispersion.
-\newblock {\em Langmuir}, 19(14):5575--5580, 2003.
+\newblock {\em Langmuir}, 19(14):5575--5580, jul 2003.
+\newblock \doi{10.1021/la026342v}.
 
 \bibitem{Hansen1982}
-Jean-Pierre Hansen and John~B. Hayter.
-\newblock A rescaled msa structure factor for dilute charged colloidal
+J.-P. Hansen and J.~B. Hayter.
+\newblock A rescaled {MSA} structure factor for dilute charged colloidal
   dispersions.
-\newblock {\em Molecular Physics}, 46(3):651--656, 1982.
+\newblock {\em Molecular Physics}, 46(3):651--656, jun 1982.
+\newblock \doi{10.1080/00268978200101471}.
 
 \bibitem{Hansen2013}
-Jean-Pierre Hansen and Ian~R. McDonald.
+J.-P. Hansen and I.~R. McDonald.
 \newblock {\em Theory of Simple Liquids with Applications to Soft Matter}.
 \newblock Academic Press, fourth edition, 2013.
+\newblock \doi{10.1016/B978-0-12-387032-2.00013-1}.
+
+\bibitem{Hayter1981}
+J.~B. Hayter and J.~Penfold.
+\newblock An analytic structure factor for macroion solutions.
+\newblock {\em Molecular Physics}, 42(1):109--118, jan 1981.
+\newblock \doi{10.1080/00268978100100091}.
 
 \bibitem{Hayter1984}
 J.~B. Hayter and J.~Penfold.
 \newblock Use of viscous shear alignment to study anisotropic micellar
   structure by small-angle neutron scattering.
-\newblock {\em J. Phys. Chem.}, 88:4589--4593, 1984.
-
-\bibitem{Hayter1981}
-J.B. Hayter and J.~Penfold.
-\newblock An analytic structure factor for macroion solutions.
-\newblock {\em Molecular Physics}, 42:109--118, 1981.
-
-\bibitem{Henderson2000}
-Douglas Henderson, Stefan Soko{\l}owski, and Malgorza{\l}a Bor\'{o}wko.
-\newblock {\em Computational Methods in Surface And Colloidal Science}, chapter
-  Integral Equations in the Theory of Simple Fluids, pages 135--166.
-\newblock Marcel Dekker, Inc., 2000.
+\newblock {\em The Journal of Physical Chemistry}, 88(20):4589--4593, sep 1984.
+\newblock \doi{10.1021/j150664a030}.
 
 \bibitem{Hindmarsh2005}
-Alan~C. Hindmarsh, Peter~N. Brown, Keith~E. Grant, Steven~L. Lee, Radu Serban,
-  Dan~E. Shumaker, and Carol~S. Woodward.
-\newblock Sundials: Suite of nonlinear and differential/algebraic equation
-  solvers.
-\newblock {\em ACM Trans. Math. Softw.}, 31(3):363--396, September 2005.
+A.~C. Hindmarsh, P.~N. Brown, K.~E. Grant, S.~L. Lee, R.~Serban, D.~E.
+  Shumaker, and C.~S. Woodward.
+\newblock {SUNDIALS}.
+\newblock {\em {ACM} Transactions on Mathematical Software}, 31(3):363--396,
+  sep 2005.
+\newblock \doi{10.1145/1089014.1089020}.
 
 \bibitem{hittmair}
 O.~Hittmair.
@@ -509,455 +627,568 @@ O.~Hittmair.
 \newblock Verlag Karl Thiemig, 1972.
 
 \bibitem{Hjelm1995}
-Rex~P. Hjelm, Claudio Schteingart, Alan~F. Hofmann, and Devinderjit~S. Sivia.
+R.~P. Hjelm, C.~Schteingart, A.~F. Hofmann, and D.~S. Sivia.
 \newblock Form and structure of self-assembling particles in monoolein-bile
   salt mixtures.
-\newblock {\em J. Phys. Chem.}, 99:16395--16406, 1995.
+\newblock {\em The Journal of Physical Chemistry}, 99(44):16395--16406, nov
+  1995.
+\newblock \doi{10.1021/j100044a030}.
 
 \bibitem{Hjelm2000}
-Rex~P. Hjelm, Claudio~D. Schteingart, Alan~F. Hofmann, and P.~Thiyagarajan.
+R.~P. Hjelm, C.~D. Schteingart, A.~F. Hofmann, and P.~Thiyagarajan.
 \newblock Structure of conjugated bile salt-fatty acid-monoglyceride mixed
   colloids: Studies by small-angle neutron scattering.
-\newblock {\em J. Phys. Chem. B}, 104:197--211, 2000.
+\newblock {\em The Journal of Physical Chemistry B}, 104:197--211, 2000.
+\newblock \doi{10.1021/jp992157n}.
 
 \bibitem{Hjelm1992}
-Rex~P. Hjelm, P.~Thiyagarajan, and Hayat Alkan-Onyuksel.
+R.~P. Hjelm, P.~Thiyagarajan, and H.~Alkan-Onyuksel.
 \newblock Organization of phosphatidylcholine and bile salt in rodlike mixed
   micelles.
-\newblock {\em J. Phys. Chem}, 96:8653--8661, 1992.
+\newblock {\em The Journal of Physical Chemistry}, 96(21):8653--8661, oct 1992.
+\newblock \doi{10.1021/j100200a080}.
 
 \bibitem{Homeier1995}
-Herbert~H.H Homeier, Sebastian Rast, and Hartmut Krienke.
+H.~H. Homeier, S.~Rast, and H.~Krienke.
 \newblock Iterative solution of the ornstein-zernike equation with various
   closures using vector extrapolation.
-\newblock {\em Computer Physics Communications}, 92(2â€“3):188 -- 202, 1995.
+\newblock {\em Computer Physics Communications}, 92(2-3):188 -- 202, dec 1995.
+\newblock \doi{10.1016/0010-4655(95)00116-0}.
+
+\bibitem{Hong1983}
+K.~M. Hong and J.~Noolandi.
+\newblock Non-equilibrium static form factor of a reptating chain.
+\newblock {\em Die Makromolekulare Chemie, Rapid Communications},
+  4(9):617--621, sep 1983.
+\newblock \doi{10.1002/marc.1983.030040907}.
 
 \bibitem{Hosemann1962}
-R.~Hosemann and S.N. Bagchi.
+R.~Hosemann and S.~Bagchi.
 \newblock {\em Direct Analysis of Diffraction by Matter}.
 \newblock Amsterdam: North-Holland., 1962.
 
 \bibitem{Hunter2006}
-Martin Hunter, Vadim Backman, Gabriel Popescu, Maxim Kalashnikov, Charles~W.
-  Boone, Adam Wax, Venkatesh Gopal, Kamran Badizadegan, Gary~D. Stoner, and
-  Michael~S. Feld.
+M.~Hunter, V.~Backman, G.~Popescu, M.~Kalashnikov, C.~W. Boone, A.~Wax,
+  V.~Gopal, K.~Badizadegan, G.~D. Stoner, and M.~S. Feld.
 \newblock Tissue self-affinity and polarized light scattering in the born
   approximation: A new model for precancer detection.
-\newblock {\em Phys. Rev. Lett.}, 97:138102, Sep 2006.
+\newblock {\em Physical Review Letters}, 97(13):138102, sep 2006.
+\newblock \doi{10.1103/physrevlett.97.138102}.
 
 \bibitem{Hurd1988}
-A.J. Hurd and W.L. Flower.
+A.~J. Hurd and W.~L. Flower.
 \newblock In situ growth and structure of fractal silica aggregates in a flame.
-\newblock {\em Journal of Colloid and Interface Science}, 122(1):178--192,
+\newblock {\em Journal of Colloid and Interface Science}, 122(1):178--192, mar
   1988.
+\newblock \doi{10.1016/0021-9797(88)90301-3}.
 
 \bibitem{Hus2013}
-Matej Hu\u{s}, Matja Zalar, and Tomaz Urbic.
+M.~Hu{\v{s}}, M.~Zalar, and T.~Urbic.
 \newblock Correctness of certain integral equation theories for core-softened
   fluids.
-\newblock {\em The Journal of Chemical Physics}, 138(22), 2013.
+\newblock {\em The Journal of Chemical Physics}, 138(22):224508, jun 2013.
+\newblock \doi{10.1063/1.4809744}.
 
 \bibitem{Ida2000}
 T.~Ida, M.~Ando, and H.~Toraya.
 \newblock Extended pseudo-voigt function for approximating the voigt profile.
-\newblock {\em Journal of Applied Crystallography}, 33(6):1311--1316, Dec 2000.
+\newblock {\em Journal of Applied Crystallography}, 33(6):1311--1316, dec 2000.
+\newblock \doi{10.1107/s0021889800010219}.
 
 \bibitem{Ishikawa1974}
-Shiro Ishikawa.
+S.~Ishikawa.
 \newblock Fixed points by a new iteration method.
-\newblock {\em Proc. Amer. Math. Soc.}, 44:147--150, 1974.
+\newblock {\em Proceedings of the American Mathematical Society},
+  44(1):147--150, jan 1974.
+\newblock \doi{10.1090/s0002-9939-1974-0336469-5}.
 
 \bibitem{Johnson}
-Steven~G. Johnson.
-\newblock multi-dimensional adaptive integration (cubature) in {C},
-  https://github.com/stevengj/cubature, 2017.
+S.~G. Johnson.
+\newblock multi-dimensional adaptive integration (cubature) in {C}, 2017.
+\newblock \urlprefix\url{https://github.com/stevengj/cubature}.
 
 \bibitem{Jones1924}
 J.~E. Jones.
-\newblock On the determination of molecular fields. ii. from the equation of
+\newblock On the determination of molecular fields. {II}. from the equation of
   state of a gas.
-\newblock {\em Proceedings of the Royal Society of London. Series A},
-  106(738):463--477, 1924.
+\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Sciences}, 106(738):463--477, oct 1924.
+\newblock \doi{10.1098/rspa.1924.0082}.
 
 \bibitem{Jusufi2001}
-A~Jusufi, J~Dzubiella, C~N Likos, C~von Ferber, and H~LÃ¶wen.
+A.~Jusufi, J.~Dzubiella, C.~N. Likos, C.~von Ferber, and H.~LÃ¶wen.
 \newblock Effective interactions between star polymers and colloidal particles.
-\newblock {\em Journal of Physics: Condensed Matter}, 13(28):6177, 2001.
+\newblock {\em Journal of Physics: Condensed Matter}, 13(28):6177, jun 2001.
+\newblock \doi{10.1088/0953-8984/13/28/303}.
 
 \bibitem{Karahan2013a}
-Ibrahim Karahan and Murat Ozdemir.
+I.~Karahan and M.~Ozdemir.
 \newblock Fixed point problems of the picard-mann hybrid iterative process for
   continuous functions on an arbitrary interval.
 \newblock {\em Fixed Point Theory and Applications}, 2013(1):244, 2013.
+\newblock \doi{10.1186/1687-1812-2013-244}.
 
 \bibitem{Karahan2013}
-Ibrahim Karahan and Murat Ozdemir.
+I.~Karahan and M.~Ozdemir.
 \newblock A general iterative method for approximation of fixed points and
   their applications.
 \newblock {\em Advances in Fixed Point Theory}, 3(3):510--526, 2013.
+\newblock \urlprefix\url{http://scik.org/index.php/afpt/article/view/1100/527}.
 
 \bibitem{Kawaguchi2001}
-Takeshi Kawaguchi.
+T.~Kawaguchi.
 \newblock Radii of gyration and scattering functions of a torus and its
   derivatives.
-\newblock {\em J. Appl. Cryst.}, 34:580--584, 2001.
+\newblock {\em Journal of Applied Crystallography}, 34(5):580--584, sep 2001.
+\newblock \doi{10.1107/s0021889801009517}.
 
 \bibitem{Kaya:aj5008}
-H{\aa}kon Kaya.
-\newblock {Scattering from cylinders with globular end-caps}.
-\newblock {\em Journal of Applied Crystallography}, 37(2):223--230, Apr 2004.
+H.~Kaya.
+\newblock Scattering from cylinders with globular end-caps.
+\newblock {\em Journal of Applied Crystallography}, 37(2):223--230, mar 2004.
+\newblock \doi{10.1107/s0021889804000020}.
 
 \bibitem{Kaya:aj5016}
-H{\aa}kon Kaya and Nicolas-Rapha{\"{e}}l de~Souza.
-\newblock {Scattering from capped cylinders. Addendum}.
-\newblock {\em Journal of Applied Crystallography}, 37(3):508--509, Jun 2004.
+H.~Kaya and N.-R. de~Souza.
+\newblock Scattering from capped cylinders. addendum.
+\newblock {\em Journal of Applied Crystallography}, 37(3):508--509, may 2004.
+\newblock \doi{10.1107/s0021889804005709}.
 
 \bibitem{Kelley2003}
 C.~T. Kelley.
-\newblock {\em Solving Nonlinear Equations with Newton's Method}.
-\newblock SIAM, Philadelphia, 2003.
+\newblock {\em Solving Nonlinear Equations with Newton{\textquotesingle}s
+  Method}.
+\newblock Society for Industrial and Applied Mathematics, jan 2003.
+\newblock \doi{10.1137/1.9780898718898}.
 
 \bibitem{Khan2013}
-Safeer Khan.
+S.~Khan.
 \newblock A picard-mann hybrid iterative process.
 \newblock {\em Fixed Point Theory and Applications}, 2013(1):69, 2013.
+\newblock \doi{10.1186/1687-1812-2013-69}.
 
 \bibitem{kholodenko93}
 A.~L. Kholodenko.
 \newblock Analytical calculation of the scattering function for polymers of
   arbitrary flexibility using the dirac propagator.
-\newblock {\em Macromolecules}, 26:4179--4183, 1993.
+\newblock {\em Macromolecules}, 26(16):4179--4183, aug 1993.
+\newblock \doi{10.1021/ma00068a017}.
 
 \bibitem{Klimes2002}
-L.~Klimeš.
+L.~Klime{\v{s}}.
 \newblock Correlation functions of random media.
-\newblock {\em pure and applied geophysics}, 159(7):1811--1831, 2002.
+\newblock {\em Pure and Applied Geophysics}, 159(7-8):1811--1831, jul 2002.
+\newblock \doi{10.1007/s00024-002-8710-2}.
 
 \bibitem{Kohlbrecher2017}
 J.~Kohlbrecher and A.~Studer.
-\newblock {Transformation cycle between the spherically symmetric correlation
+\newblock Transformation cycle between the spherically symmetric correlation
   function, projected correlation function and differential cross section as
-  implemented in {\it SASfit}}.
-\newblock {\em Journal of Applied Crystallography}, 50(5):1395--1403, Oct 2017.
+  implemented in {SASfit}.
+\newblock {\em Journal of Applied Crystallography}, 50(5):1395--1403, sep 2017.
+\newblock \doi{10.1107/s1600576717011979}.
 
 \bibitem{Kohlbrecher1997}
 J.~Kohlbrecher, A.~Wiedenmann, and H.~Wollenberger.
 \newblock Magnetic coupling between the different phases in nanocrystalline
   fe-si-b studied by small angle neutron scattering.
-\newblock {\em Zeitschrift für Physik B Condensed Matter}, 104(1):1--4, August
+\newblock {\em Zeitschrift für Physik B Condensed Matter}, 104(1):1--4, jan
   1997.
+\newblock \doi{10.1007/s002570050411}.
 
 \bibitem{Koppel1972}
-Dennis~E. Koppel.
+D.~E. Koppel.
 \newblock Analysis of macromolecular polydispersity in intensity correlation
   spectroscopy: The method of cumulants.
 \newblock {\em The Journal of Chemical Physics}, 57(11):4814--4820, 1972.
+\newblock \doi{10.1063/1.1678153}.
 
 \bibitem{Kotlarchyk1983}
 M.~Kotlarchyk and S.-H. Chen.
 \newblock Analysis of small angle neutron scattering spectra from polydisperse
-  interacting colooids.
-\newblock {\em J. Chem. Phys}, 79(5):2461--2489, 1983.
+  interacting colloids.
+\newblock {\em The Journal of Chemical Physics}, 79(5):2461--2469, sep 1983.
+\newblock \doi{10.1063/1.446055}.
 
 \bibitem{Kovalenko1999}
-Andriy Kovalenko and Fumio Hirata.
-\newblock Self-consistent description of a metal-water interface by the
-  kohn-sham density functional theory and the three-dimensional reference
-  interaction site model.
-\newblock {\em The Journal of Chemical Physics}, 110(20):10095--10112, 1999.
+A.~Kovalenko and F.~Hirata.
+\newblock Self-consistent description of a metal{\textendash}water interface by
+  the kohn{\textendash}sham density functional theory and the three-dimensional
+  reference interaction site model.
+\newblock {\em The Journal of Chemical Physics}, 110(20):10095--10112, may
+  1999.
+\newblock \doi{10.1063/1.478883}.
 
 \bibitem{Krasnoselskij1955}
 M.~A. Krasnoselskij.
 \newblock Two remarks on the method of successive approximations, (russian).
 \newblock {\em Uspehi Mat. Nauk. 10}, 63(1):123--127, 1955.
+\newblock \urlprefix\url{http://mi.mathnet.ru/eng/umn7954}.
 
-\bibitem{Kratky194935}
+\bibitem{Kratky1949}
 O.~Kratky and G.~Porod.
 \newblock Diffuse small-angle scattering of x-rays in colloid systems.
-\newblock {\em Journal of Colloid Science}, 4(1):35 -- 70, 1949.
+\newblock {\em Journal of Colloid Science}, 4(1):35--70, feb 1949.
+\newblock \doi{10.1016/0095-8522(49)90032-x}.
+
+\bibitem{Kruif1989}
+C.~G.~D. Kruif, P.~W. Rouw, W.~J. Briels, M.~H.~G. Duits, A.~Vrij, and R.~P.
+  May.
+\newblock Adhesive hard-sphere colloidal dispersions. a small-angle
+  neutron-scattering study of stickiness and the structure factor.
+\newblock {\em Langmuir}, 5(2):422--428, mar 1989.
+\newblock \doi{10.1021/la00086a023}.
 
 \bibitem{Lebedev2003}
-D.V. Lebedev, D.M. Baitin, A.Kh. Islamov, A.I. Kuklin, V.Kh. Shalguev, V.A.
-  Lanzov, and V.V. Isaev-Ivanov.
+D.~Lebedev, D.~Baitin, A.~Islamov, A.~Kuklin, V.~Shalguev, V.~Lanzov, and
+  V.~Isaev-Ivanov.
 \newblock Analytical model for determination of parameters of helical
-  structures in solution by small angle scattering: comparison of reca
-  structures by sans.
-\newblock {\em FEBS Letters}, 537(1-3):182--186, 2003.
+  structures in solution by small angle scattering: comparison of {RecA}
+  structures by {SANS}.
+\newblock {\em {FEBS} Letters}, 537(1-3):182--186, feb 2003.
+\newblock \doi{10.1016/s0014-5793(03)00107-8}.
 
 \bibitem{Lebowitz1966}
 J.~L. Lebowitz and J.~K. Percus.
 \newblock Mean spherical model for lattice gases with extended hard cores and
   continuum fluids.
-\newblock {\em Phys. Rev.}, 144:251--258, Apr 1966.
+\newblock {\em Physical Review}, 144(1):251--258, apr 1966.
+\newblock \doi{10.1103/physrev.144.251}.
 
 \bibitem{Lee1995}
-Lloyd~L. Lee.
+L.~L. Lee.
 \newblock An accurate integral equation theory for hard spheres: Role of the
   zero-separation theorems in the closure relation.
-\newblock {\em The Journal of Chemical Physics}, 103(21):9388--9396, 1995.
+\newblock {\em The Journal of Chemical Physics}, 103(21):9388--9396, dec 1995.
+\newblock \doi{10.1063/1.469998}.
 
 \bibitem{Lekkerkerker2011}
-Henk~N.W. Lekkerkerker and Remco Tuinier.
+H.~N. Lekkerkerker and R.~Tuinier.
 \newblock {\em Colloids and the Depletion Interaction}, volume 833 of {\em
   Lecture Notes in Physics}.
 \newblock Springer Netherlands, 2011.
-
-\bibitem{Likos1998}
-C.~N. Likos, H.~L\"owen, M.~Watzlawek, B.~Abbas, O.~Jucknischke, J.~Allgaier,
-  and D.~Richter.
-\newblock Star polymers viewed as ultrasoft colloidal particles.
-\newblock {\em Phys. Rev. Lett.}, 80:4450--4453, May 1998.
+\newblock \doi{10.1007/978-94-007-1223-2}.
 
 \bibitem{Likos2001}
-Christos~N. Likos.
+C.~N. Likos.
 \newblock Effective interactions in soft condensed matter physics.
-\newblock {\em Physics Reports}, 348(4â€“5):267 -- 439, 2001.
+\newblock {\em Physics Reports}, 348(4-5):267--439, jul 2001.
+\newblock \doi{10.1016/s0370-1573(00)00141-1}.
 
 \bibitem{Likos2006}
-Christos~N. Likos.
+C.~N. Likos.
 \newblock Soft matter with soft particles.
-\newblock {\em Soft Matter}, 2:478--498, 2006.
+\newblock {\em Soft Matter}, 2(6):478, 2006.
+\newblock \doi{10.1039/B601916C}.
 
 \bibitem{Likos2011}
-Christos~N. Likos.
-\newblock {\em Microgel Suspensions: Fundamentals and Applications}, chapter
-  Chapter 7. Structure and Thermodynamics of Ionic Microgels, pages 163--193.
-\newblock Wiley-VCH Verlag GmbH \& Co. KGaA, 2011.
+C.~N. Likos.
+\newblock Structure and thermodynamics of ionic microgels.
+\newblock In A.~F.-N. H.~M. Wyss, J.~Mattsson, and D.~A. Weitz, editors, {\em
+  Microgel Suspensions}, chapter Chapter 7., pages 163--193. Wiley-{VCH} Verlag
+  {GmbH} {\&} Co. {KGaA}, feb 2011.
+\newblock \doi{10.1002/9783527632992.ch7}.
+
+\bibitem{Likos1998}
+C.~N. Likos, H.~Löwen, M.~Watzlawek, B.~Abbas, O.~Jucknischke, J.~Allgaier, and
+  D.~Richter.
+\newblock Star polymers viewed as ultrasoft colloidal particles.
+\newblock {\em Physical Review Letters}, 80(20):4450--4453, may 1998.
+\newblock \doi{10.1103/physrevlett.80.4450}.
 
 \bibitem{Lin1989}
-M.Y. Lin, H.M. Lindsay, D.A. Weitz, R.C. Ball, R.~Klein, and P.~Meakin.
+M.~Lin, H.~Lindsay, D.~Weitz, R.~Ball, R.~Klein, and P.~Meakin.
 \newblock Universality of fractal aggregates as probed by light scattering.
 \newblock {\em Proc. R. Soc. Lond. A}, 423:71--87, 1989.
-
-\bibitem{Lin1990a}
-M.Y. Lin, H.M. Lindsay, D.A. Weitz, R.C. Ball, R.~Klein, and P.~Meakin.
-\newblock Universal diffusion-limited colloid aggregation.
-\newblock {\em J. Phys.: Condens. Matter}, 2:3093--3113, 1990.
+\newblock \doi{10.1098/rspa.1989.0042}.
 
 \bibitem{Lin1990}
-M.Y. Lin, H.M. Lindsay, D.A. Weitz, R.C. Ball, R.~Klein, and P.~Meakin.
-\newblock Universal reaction-limited colloidal aggregation.
-\newblock {\em Physical Review A}, 41(4):2005--2020, 1990.
+M.~Y. Lin, H.~M. Lindsay, D.~A. Weitz, R.~C. Ball, R.~Klein, and P.~Meakin.
+\newblock Universal reaction-limited colloid aggregation.
+\newblock {\em Physical Review A}, 41(4):2005--2020, feb 1990.
+\newblock \doi{10.1103/physreva.41.2005}.
+
+\bibitem{Lin1990a}
+M.~Y. Lin, H.~M. Lindsay, D.~A. Weitz, R.~Klein, R.~C. Ball, and P.~Meakin.
+\newblock Universal diffusion-limited colloid aggregation.
+\newblock {\em Journal of Physics: Condensed Matter}, 2(13):3093--3113, apr
+  1990.
+\newblock \doi{10.1088/0953-8984/2/13/019}.
+
+\bibitem{Lin1990b}
+M.~Y. Lin, H.~M. Lindsay, D.~A. Weitz, R.~Klein, R.~C. Ball, and P.~Meakin.
+\newblock Universal diffusion-limited colloid aggregation.
+\newblock {\em Journal of Physics: Condensed Matter}, 2(23):5283--5283, jun
+  1990.
+\newblock \doi{10.1088/0953-8984/2/23/521}.
 
 \bibitem{Liu2001}
-Yuyan Liu, Jieli Lin, Guangming Huang, Yuanqing Guo, and Chuanxi Duan.
+Y.~Liu, J.~Lin, G.~Huang, Y.~Guo, and C.~Duan.
 \newblock Simple empirical analytical approximation to the voigt profile.
-\newblock {\em J. Opt. Soc. Am. B}, 18(5):666--672, 2001.
+\newblock {\em Journal of the Optical Society of America B}, 18(5):666, may
+  2001.
+\newblock \doi{10.1364/josab.18.000666}.
 
 \bibitem{Lomba1996}
-E.~Lomba and L.L. Lee.
+E.~Lomba and L.~L. Lee.
 \newblock Consistency conditions for the integral equations of liquid
   structures.
-\newblock {\em International Journal of Thermophysics}, 17(3):663--672, 1996.
+\newblock {\em International Journal of Thermophysics}, 17(3):663--672, may
+  1996.
+\newblock \doi{10.1007/bf01441512}.
 
 \bibitem{Louis2000}
 A.~A. Louis, P.~G. Bolhuis, and J.~P. Hansen.
 \newblock Mean-field fluid behavior of the gaussian core model.
-\newblock {\em Phys. Rev. E}, 62:7961--7972, Dec 2000.
+\newblock {\em Physical Review E}, 62(6):7961--7972, dec 2000.
+\newblock \doi{10.1103/physreve.62.7961}.
 
 \bibitem{Lyatskaya2000}
-Yulia Lyatskaya, Yufeng Liu, Stephanie Tristram-Nagle, John Katsaras, and
-  John~F. Nagle.
+Y.~Lyatskaya, Y.~Liu, S.~Tristram-Nagle, J.~Katsaras, and J.~F. Nagle.
 \newblock Method for obtaining structure and interactions from oriented lipid
   bilayers.
 \newblock {\em Phys. Rev. E}, 63(1):011907, Dec 2000.
+\newblock \doi{10.1103/PhysRevE.63.011907}.
 
 \bibitem{Madden1980}
-William~G. Madden and Stuart~A. Rice.
+W.~G. Madden and S.~A. Rice.
 \newblock The mean spherical approximation and effective pair potentials in
   liquids.
-\newblock {\em The Journal of Chemical Physics}, 72(7):4208--4215, 1980.
+\newblock {\em The Journal of Chemical Physics}, 72(7):4208--4215, apr 1980.
+\newblock \doi{10.1063/1.439651}.
 
 \bibitem{Mailer2015}
-Alastair~G Mailer, Paul~S Clegg, and Peter~N Pusey.
+A.~G. Mailer, P.~S. Clegg, and P.~N. Pusey.
 \newblock Particle sizing by dynamic light scattering: non-linear cumulant
   analysis.
-\newblock {\em Journal of Physics: Condensed Matter}, 27(14):145102, 4 2015.
+\newblock {\em Journal of Physics: Condensed Matter}, 27(14):145102, mar 2015.
+\newblock \doi{10.1088/0953-8984/27/14/145102}.
 
 \bibitem{Mann1953}
-W.~Robert Mann.
+W.~R. Mann.
 \newblock Mean value methods in iteration.
-\newblock {\em Proc. Amer. Math. Soc.}, 4:506--510, 1953.
+\newblock {\em Proceedings of the American Mathematical Society},
+  4(3):506--510, mar 1953.
+\newblock \doi{10.1090/s0002-9939-1953-0054846-3}.
 
 \bibitem{Marquest1989}
-C.~Marquest and T.A. Witten.
+C.~Marquest and T.~Witten.
 \newblock Simple cubic structure in copolymer mesophases.
-\newblock {\em J. Phys. France}, 50(10):1267--1277, 1989.
+\newblock {\em Journal de Physique}, 50(10):1267--1277, 1989.
+\newblock \doi{10.1051/jphys:0198900500100126700}.
+
+\bibitem{Martynov1983}
+G.~Martynov and G.~Sarkisov.
+\newblock Exact equations and the theory of liquids. v.
+\newblock {\em Molecular Physics}, 49(6):1495--1504, aug 1983.
+\newblock \doi{10.1080/00268978300102111}.
 
 \bibitem{Martynov1993}
 G.~A. Martynov and A.~G. Vompe.
 \newblock Differential condition of thermodynamic consistency as a closure for
   the ornstein-zernike equation.
-\newblock {\em Phys. Rev. E}, 47:1012--1017, Feb 1993.
-
-\bibitem{Martynov1983}
-G.A. Martynov and G.N. Sarkisov.
-\newblock Exact equations and the theory of liquids. v.
-\newblock {\em Molecular Physics}, 49(6):1495--1504, 1983.
+\newblock {\em Physical Review E}, 47(2):1012--1017, feb 1993.
+\newblock \doi{10.1103/physreve.47.1012}.
 
 \bibitem{Menon1991}
-S.V.G. Menon, V.K. Kelkar, and C.~Monohar.
-\newblock Application of baxter´s model to the theory of cloud points of
+S.~V.~G. Menon, V.~K. Kelkar, and C.~Manohar.
+\newblock Application of baxter's model to the theory of cloud points of
   nonionic surfactant solutions.
-\newblock {\em Physical Review A}, 43(2):1130--1133, 1991.
+\newblock {\em Physical Review A}, 43(2):1130--1133, jan 1991.
+\newblock \doi{10.1103/physreva.43.1130}.
 
 \bibitem{Menon1991a}
-S.V.G. Menon, C.~Manobar, and K.~Srinivasa Rao.
-\newblock A new interpretation of a sticky hard sphere model.
-\newblock {\em J. Chem. Phys.}, 95(12):9186--9190, 1991.
+S.~V.~G. Menon, C.~Manohar, and K.~S. Rao.
+\newblock A new interpretation of the sticky hard sphere model.
+\newblock {\em J. Chem. Phys.}, 95(12):9186--9190, dec 1991.
+\newblock \doi{10.1063/1.461199}.
 
 \bibitem{Michels2013}
-Andreas Michels and Jens-Peter Bick.
-\newblock {Autocorrelation function of the spin misalignment in magnetic
-  small-angle neutron scattering: application to nanocrystalline metals}.
-\newblock {\em Journal of Applied Crystallography}, 46(3):788--790, Jun 2013.
+A.~Michels and J.-P. Bick.
+\newblock Autocorrelation function of the spin misalignment in magnetic
+  small-angle neutron scattering: application to nanocrystalline metals.
+\newblock {\em Journal of Applied Crystallography}, 46(3):788--790, apr 2013.
+\newblock \doi{10.1107/s0021889813005402}.
 
 \bibitem{Mie1908}
 G.~Mie.
-\newblock {Beitr\"age zur Optik tr\"uber Medien, speziell kolloidaler
-  Metall\"osungen}.
-\newblock {\em Annalen der Physik}, 25:377--455, 1908.
+\newblock Beiträge zur optik trüber medien, speziell kolloidaler metallösungen.
+\newblock {\em Annalen der Physik}, 330(3):377--445, 1908.
+\newblock \doi{10.1002/andp.19083300302}.
+
+\bibitem{Mildner1983}
+D.~F.~R. Mildner.
+\newblock Efficient use of two-dimensional detectors for small-angle neutron
+  scattering contours from polymers under external constraint.
+\newblock {\em Macromolecules}, 16(11):1760--1763, nov 1983.
+\newblock \doi{10.1021/ma00245a014}.
 
 \bibitem{Mladek2005}
-B.M. Mladek, M.J. Fernaud, G.~Kahl, and M.~Neumann.
+B.~Mladek, M.~Fernaud, G.~Kahl, and M.~Neumann.
 \newblock On the thermodynamic properties of the generalized gaussian core
   model.
-\newblock {\em Condensed Matter Physics}, 8:135--148, 2005.
+\newblock {\em Condensed Matter Physics}, 8(1):135--148, 2005.
+\newblock \doi{10.5488/cmp.8.1.135}.
 
 \bibitem{Moller1995}
-J.~M{\"{o}}ller, R.~Kranold, J.~Schmelzer, and U.~Lembke.
-\newblock {Small-Angle X-ray Scattering Size Parameters and Higher Moments of
-  the Particle-Size Distribution Function in the Asymptotic Stage of Ostwald
-  Ripening}.
-\newblock {\em Journal of Applied Crystallography}, 28(5):553--560, Oct 1995.
+J.~Möller, R.~Kranold, J.~Schmelzer, and U.~Lembke.
+\newblock Small-angle x-ray scattering size parameters and higher moments of
+  the particle-size distribution function in the asymptotic stage of ostwald
+  ripening.
+\newblock {\em Journal of Applied Crystallography}, 28(5):553--560, oct 1995.
+\newblock \doi{10.1107/s0021889895003827}.
 
 \bibitem{scatt91}
 R.~M. Moon, T.~Riste, and W.~C. Koehler.
 \newblock Polarization analysis of thermal-neutron scattering.
-\newblock {\em Physical Review}, 181(2):920--931, May 1969.
+\newblock {\em Physical Review}, 181(2):920--931, may 1969.
+\newblock \doi{10.1103/physrev.181.920}.
 
 \bibitem{MuellerDelsanti2000}
-F.~M\"uller, M.~Delsanti, L.~Auvray, J.~Yang, Y.J. Chen, J.W. Mays, B.~Demé,
-  M.~Tirrell, , and P.~Guenoun.
+F.~Muller, M.~Delsanti, L.~Auvray, J.~Yang, Y.~Chen, J.~Mays, B.~Dem{\'{e}},
+  M.~Tirrell, and P.~Guenoun.
 \newblock Ordering of urchin-like charged copolymer micelles: Electrostatic,
   packing and polyelectrolyte correlations.
-\newblock {\em Eur. Phys. J. E}, 3:45--53, 2000.
+\newblock {\em The European Physical Journal E}, 3(1):45--53, sep 2000.
+\newblock \doi{10.1007/s101890070040}.
 
 \bibitem{Naegele1996}
-Gerhard N\"agele.
+G.~Nägele.
 \newblock On the dynamics and structure of charge-stabilized suspensions.
-\newblock {\em Physics Reports}, 272(5-6):215 -- 372, 1996.
+\newblock {\em Physics Reports}, 272(5-6):215--372, jul 1996.
+\newblock \doi{10.1016/0370-1573(95)00078-x}.
 
 \bibitem{Naegele2004}
-Gerhard N\"agele.
-\newblock {\em The Physics of Colloidal Soft Matter}.
-\newblock Number~14 in Lecture Notes. Institute of Fundamental Technological
-  Research - Polish Academy of Sciences, Warsaw, 2004.
+G.~Nägele.
+\newblock The physics of colloidal soft matter, 2004.
+
+\bibitem{Noolandi1984}
+J.~Noolandi and K.~Hong.
+\newblock Non-equilibrium correlation function of a reptating chain.
+\newblock {\em Journal de Physique Lettres}, 45(3):149--157, 1984.
+\newblock \doi{10.1051/jphyslet:01984004503014900}.
 
 \bibitem{Noor2000}
-Muhammad~Aslam Noor.
+M.~A. Noor.
 \newblock New approximation schemes for general variational inequalities.
-\newblock {\em Journal of Mathematical Analysis and Applications}, 251(1):217
-  -- 229, 2000.
+\newblock {\em Journal of Mathematical Analysis and Applications},
+  251(1):217--229, nov 2000.
+\newblock \doi{10.1006/jmaa.2000.7042}.
 
 \bibitem{Rfactor}
-Online~Dictionary of~crystallography.
+O.~D. of~crystallography.
 \newblock R factor.
 \newblock
   \href{http://reference.iucr.org/dictionary/R_factor}{http://reference.iucr.org/dictionary/R\_factor}.
+\newblock \urlprefix\url{http://reference.iucr.org/dictionary/R_factor}.
 
 \bibitem{Olivero1977}
-J.~J. Olivero and R.~L. Longbothum.
+J.~Olivero and R.~Longbothum.
 \newblock Empirical fits to the voigt line width: A brief review.
-\newblock {\em J. Quant. Spectrosc. Radiat. Transfer}, 17(233-236):12–98, 1977.
+\newblock {\em Journal of Quantitative Spectroscopy and Radiative Transfer},
+  17(2):233--236, feb 1977.
+\newblock \doi{10.1016/0022-4073(77)90161-3}.
 
 \bibitem{Ornstein1914}
-L.S. Ornstein and F.~Zernike.
+L.~Ornstein and F.~Zernike.
 \newblock Accidental deviations of density and opalescence at the critical
   point of a single substance.
 \newblock {\em Koninklijke Nederlandsche Akademie van Wetenschappen
   Proceedings}, 17:793--806, 1914.
+\newblock
+  \urlprefix\url{http://www.dwc.knaw.nl/DL/publications/PU00012727.pdf}.
 
 \bibitem{Oversteegen2004}
-S.M. Oversteegen and H.N.W. Lekkerkerker.
+S.~Oversteegen and H.~Lekkerkerker.
 \newblock On the accuracy of the derjaguin approximation for depletion
   potentials.
 \newblock {\em Physica A: Statistical Mechanics and its Applications},
-  341(1-4):23--39, 2004.
-\newblock cited By (since 1996)12.
+  341(1-4):23--39, oct 2004.
+\newblock \doi{10.1016/j.physa.2004.04.103}.
 
 \bibitem{Pabst2003}
 G.~Pabst, R.~Koschuch, B.~Pozo-Navas, M.~Rappolt, K.~Lohner, and P.~Laggner.
 \newblock Structural analysis of weakly ordered membrane stacks.
-\newblock {\em Journal of Applied Crystallography}, 36(6):1378--1388, Dec 2003.
+\newblock {\em Journal of Applied Crystallography}, 36(6):1378--1388, nov 2003.
+\newblock \doi{10.1107/s0021889803017527}.
 
 \bibitem{Pabst2000}
-Georg Pabst, Michael Rappolt, Heinz Amenitsch, and Peter Laggner.
+G.~Pabst, M.~Rappolt, H.~Amenitsch, and P.~Laggner.
 \newblock Structural information from multilamellar liposomes at full
-  hydration: Full \textit{q} -range fitting with high quality x-ray data.
-\newblock {\em Phys. Rev. E}, 62:4000--4009, Sep 2000.
+  hydration: Fullq-range fitting with high quality x-ray data.
+\newblock {\em Physical Review E}, 62(3):4000--4009, sep 2000.
+\newblock \doi{10.1103/physreve.62.4000}.
+
+\bibitem{Pedersen1994}
+J.~S. Pedersen.
+\newblock Determination of size distribution from small-angle scattering data
+  for systems with effective hard-sphere interactions.
+\newblock {\em Journal of Applied Crystallography}, 27(4):595--608, aug 1994.
+\newblock \doi{10.1107/s0021889893013810}.
+
+\bibitem{PedersenJApplCryst2000}
+J.~S. Pedersen.
+\newblock Form factors of block copolymer micelles with spherical, ellipsoidal
+  and cylindrical cores.
+\newblock {\em Journal of Applied Crystallography}, 33(3):637--640, jun 2000.
+\newblock \doi{10.1107/s0021889899012248}.
+
+\bibitem{Pedersen2002}
+J.~S. Pedersen.
+\newblock {\em Modelling of Small-Angle Scattering Data from Colloids and
+  Polymer Systems}, chapter~6, pages 391--420.
+\newblock Elsevier Science, 2002.
+
+\bibitem{PedersenGerstenberg96}
+J.~S. Pedersen and M.~C. Gerstenberg.
+\newblock Scattering form factor of block copolymer micelles.
+\newblock {\em Macromolecules}, 29(4):1363--1365, jan 1996.
+\newblock \doi{10.1021/ma9512115}.
 
 \bibitem{Pedersen1990}
 J.~S. Pedersen, D.~Posselt, and K.~Mortensen.
 \newblock Analytical treatment of the resolution function for small-angle
   scattering.
-\newblock {\em Journal of Applied Crystallography}, 23(4):321--333, Aug 1990.
+\newblock {\em Journal of Applied Crystallography}, 23(4):321--333, aug 1990.
+\newblock \doi{10.1107/s0021889890003946}.
 
 \bibitem{Pedersen96Macrom}
 J.~S. Pedersen and P.~Schurtenberger.
 \newblock Scattering functions of semiflexible polymers with and without
   excluded volume effects.
-\newblock {\em Macromolecules}, 29:7602--7612, 1996.
-
-\bibitem{Pedersen2002}
-Jan~Skov Pedersen.
-\newblock {\em Neutrons, X-Rays and Light}, chapter Modelling of Small-Angle
-  Scattering Data from Colloids and Polymer Systems, pages 391--420.
-\newblock Elsevier Science, 2002.
-
-\bibitem{PedersenGerstenberg96}
-Jan~Skov Pedersen and Michael~C. Gerstenberg.
-\newblock Scattering form factor of block copolymer micelles.
-\newblock {\em Macromolecules}, 29(4):1363--1365, 1996.
-
-\bibitem{PedersenJApplCryst2000}
-J.S. Pedersen.
-\newblock Form factors of block copolymer micelles with spherical, ellipsoidal
-  and cylindrical cores.
-\newblock {\em Journal of Applied Crystallography}, 33(3 Part 1):637--640, Jun
-  2000.
-
-\bibitem{Pedersen1994}
-.S. Pedersen.
-\newblock Determination of size distributions from small-angle scattering data
-  for systems with effective hard-sphere interactions.
-\newblock {\em J. Appl. Cryst.}, 27:595--608, 1994.
+\newblock {\em Macromolecules}, 29(23):7602--7612, jan 1996.
+\newblock \doi{10.1021/ma9607630}.
 
 \bibitem{Percus1958}
 J.~K. Percus and G.~J. Yevick.
 \newblock Analysis of classical statistical mechanics by means of collective
   coordinates.
-\newblock {\em Phys. Rev.}, 110(1):1--13, 1958.
+\newblock {\em Physical Review}, 110(1):1--13, apr 1958.
+\newblock \doi{10.1103/physrev.110.1}.
 
 \bibitem{Petrache1998}
-Horia~I. Petrache, Nikolai Gouliaev, Stephanie Tristram-Nagle, Ruitian Zhang,
-  Robert~M. Suter, and John~F. Nagle.
+H.~I. Petrache, N.~Gouliaev, S.~Tristram-Nagle, R.~Zhang, R.~M. Suter, and
+  J.~F. Nagle.
 \newblock Interbilayer interactions from high-resolution x-ray scattering.
 \newblock {\em Phys. Rev. E}, 57(6):7014--7024, Jun 1998.
+\newblock \doi{10.1103/PhysRevE.57.7014}.
 
 \bibitem{Phuengrattana2011}
-Withun Phuengrattana and Suthep Suantai.
-\newblock On the rate of convergence of mann, ishikawa, noor and sp-iterations
-  for continuous functions on an arbitrary interval.
-\newblock {\em Journal of Computational and Applied Mathematics}, 235(9):3006
-  -- 3014, 2011.
+W.~Phuengrattana and S.~Suantai.
+\newblock On the rate of convergence of mann, ishikawa, noor and
+  {SP}-iterations for continuous functions on an arbitrary interval.
+\newblock {\em Journal of Computational and Applied Mathematics},
+  235(9):3006--3014, mar 2011.
+\newblock \doi{10.1016/j.cam.2010.12.022}.
 
 \bibitem{Picard1890}
-Emile Picard.
+E.~Picard.
 \newblock Mémoire sur la théorie des équations aux dérivées partielles et la
   méthode des approximations successives.
 \newblock {\em Journal de mathématiques pures et appliquées}, 6(4):145--210,
   1890.
+\newblock
+  \urlprefix\url{http://portail.mathdoc.fr/JMPA/PDF/JMPA_1890_4_6_A3_0.pdf}.
 
 \bibitem{Porod1948}
 G.~Porod.
@@ -966,151 +1197,195 @@ G.~Porod.
 \newblock {\em Acta Physica Austriaca}, 2:255--292, 1948.
 
 \bibitem{Press2007}
-William~H. Press, Saul~A. Teukolsky, William~T. Vetterling, and Brian~P.
-  Flannery.
+W.~H. Press, S.~A. Teukolsky, W.~T. Vetterling, and B.~P. Flannery.
 \newblock {\em Numerical Recipes. The Art of Scientific Computing}.
 \newblock Cambridge University Press, 3rd edition, 2007.
 
 \bibitem{Pringle1971}
 O.~A. Pringle and P.~W. Schmidt.
-\newblock {Small-angle X-ray scattering from helical macromolecules}.
-\newblock {\em Journal of Applied Crystallography}, 4(4):290--293, Aug 1971.
+\newblock Small-angle x-ray scattering from helical macromolecules.
+\newblock {\em Journal of Applied Crystallography}, 4(4):290--293, aug 1971.
+\newblock \doi{10.1107/s002188987100699x}.
 
 \bibitem{Puigjaner1974}
 L.~C. Puigjaner and J.~A. Subirana.
-\newblock {Low-angle X-ray scattering by disordered and partially ordered
-  helical systems}.
-\newblock {\em Journal of Applied Crystallography}, 7(2):169--173, Apr 1974.
+\newblock Low-angle x-ray scattering by disordered and partially ordered
+  helical systems.
+\newblock {\em Journal of Applied Crystallography}, 7(2):169--173, apr 1974.
+\newblock \doi{10.1107/s002188987400906x}.
 
 \bibitem{Pusey1974}
-Peter~N. Pusey, Dennis~E. Koppel, Dale~E. Schaefer, Rafael~D. Camerini-Otero,
-  and Seymour~H. Koenig.
+P.~N. Pusey, D.~E. Koppel, D.~E. Schaefer, R.~D. Camerini-Otero, and S.~H.
+  Koenig.
 \newblock Intensity fluctuation spectroscopy of laser light scattered by
-  solutions of spherical viruses. r17, q.beta., bsv, pm2, and t7. i.
+  solutions of spherical viruses. r17, q.beta., {BSV}, {PM}2, and t7. i.
   light-scattering technique.
-\newblock {\em Biochemistry}, 13(5):952--960, 1974.
-\newblock PMID: 4591621.
+\newblock {\em Biochemistry}, 13(5):952--960, feb 1974.
+\newblock \doi{10.1021/bi00702a020}.
 
 \bibitem{scatt188}
-C.~V. Raman.
-\newblock Lxi. on the mean distance between neighbouring molecules in a fluid.
-\newblock {\em Phil. Mag.}, 47:671--679, 1924.
+C.~Raman.
+\newblock {LXI}. on the mean distance between neighbouring molecules in a
+  fluid.
+\newblock {\em The London, Edinburgh, and Dublin Philosophical Magazine and
+  Journal of Science}, 47(280):671--679, may 1924.
+\newblock \doi{10.1080/14786442408634406}.
+
+\bibitem{Rayleigh1914}
+L.~Rayleigh.
+\newblock On the theory of long waves and bores.
+\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Sciences}, 90(619):324--328, jul 1914.
+\newblock \doi{10.1098/rspa.1914.0055}.
 
 \bibitem{Regnaut1989}
 C.~Regnaut and J.~C. Ravey.
 \newblock Application of the adhesive sphere model to the structure of
   colloidal suspensions.
-\newblock {\em The Journal of Chemical Physics}, 91(2):1211--1221, 1989.
+\newblock {\em The Journal of Chemical Physics}, 91(2):1211--1221, jul 1989.
+\newblock \doi{10.1063/1.457194}.
 
 \bibitem{Regnaut1990}
 C.~Regnaut and J.~C. Ravey.
 \newblock Erratum: Application of the adhesive sphere model to the structure of
   colloidal suspensions [j. chem. phys. 91, 1211 (1989)].
-\newblock {\em The Journal of Chemical Physics}, 92(5):3250--3250, 1990.
+\newblock {\em The Journal of Chemical Physics}, 92(5):3250--3250, mar 1990.
+\newblock \doi{10.1063/1.458616}.
+
+\bibitem{Reynolds1984}
+L.~E. Reynolds and D.~F.~R. Mildner.
+\newblock The elliptical average of small-angle scattering data.
+\newblock {\em Journal of Applied Crystallography}, 17(6):411--416, dec 1984.
+\newblock \doi{10.1107/S0021889884011857}.
 
 \bibitem{Robertus1989}
-C.~Robertus, W.H. Philipse, J.G.H. Joosten, and Y.K. Levine.
+C.~Robertus, W.~H. Philipse, J.~G.~H. Joosten, and Y.~K. Levine.
 \newblock Solution of the percus-yevick approximation of the multicomponent
   adhesive sphere system to the small angle x-ray scattering from
   microemulsions.
-\newblock {\em J. Chem. Phys.}, 90(8):4482--4490, 1989.
+\newblock {\em The Journal of Chemical Physics}, 90(8):4482--4490, apr 1989.
+\newblock \doi{10.1063/1.456635}.
 
 \bibitem{Rogers1984}
-Forrest~J. Rogers and David~A. Young.
+F.~J. Rogers and D.~A. Young.
 \newblock New, thermodynamically consistent, integral equation for simple
   fluids.
-\newblock {\em Phys. Rev. A}, 30:999--1007, Aug 1984.
+\newblock {\em Physical Review A}, 30(2):999--1007, Aug 1984.
+\newblock \doi{10.1103/physreva.30.999}.
 
 \bibitem{Rosenfeld1979}
-Yaakov Rosenfeld and N.~W. Ashcroft.
+Y.~Rosenfeld and N.~W. Ashcroft.
 \newblock Theory of simple classical fluids: Universality in the short-range
   structure.
-\newblock {\em Phys. Rev. A}, 20:1208--1235, Sep 1979.
+\newblock {\em Physical Review A}, 20(3):1208--1235, sep 1979.
+\newblock \doi{10.1103/physreva.20.1208}.
 
 \bibitem{Roux1988}
-D.~Roux and C.R. Safinya.
+D.~Roux and C.~Safinya.
 \newblock A synchrotron x-ray study of competing undulation and electrostatic
   interlayer interactions in fluid multimembrane lyotropic phases.
-\newblock {\em J. Phys. France}, 49(2):307--318, 1988.
+\newblock {\em Journal de Physique}, 49(2):307--318, 1988.
+\newblock \doi{10.1051/jphys:01988004902030700}.
 
 \bibitem{Saad1993}
-Youcef Saad.
-\newblock A flexible inner-outer preconditioned gmres algorithm.
-\newblock {\em SIAM Journal on Scientific Computing}, 14(2):461--469, 1993.
+Y.~Saad.
+\newblock A flexible inner-outer preconditioned {GMRES} algorithm.
+\newblock {\em {SIAM} Journal on Scientific Computing}, 14(2):461--469, mar
+  1993.
+\newblock \doi{10.1137/0914028}.
 
 \bibitem{Saad1986}
-Youcef Saad and Martin~H. Schultz.
-\newblock Gmres: A generalized minimal residual algorithm for solving
+Y.~Saad and M.~H. Schultz.
+\newblock {GMRES}: A generalized minimal residual algorithm for solving
   nonsymmetric linear systems.
-\newblock {\em SIAM Journal on Scientific and Statistical Computing},
-  7(3):856--869, 1986.
+\newblock {\em {SIAM} Journal on Scientific and Statistical Computing},
+  7(3):856--869, jul 1986.
+\newblock \doi{10.1137/0907058}.
+
+\bibitem{Saraf1989}
+R.~F. Saraf.
+\newblock Small-angle scattering from anisotropic systems in the guinier
+  region.
+\newblock {\em Macromolecules}, 22(2):675--681, mar 1989.
+\newblock \doi{10.1021/ma00192a028}.
 
 \bibitem{Schmidt1970}
 P.~W. Schmidt.
-\newblock {Small angle X-ray scattering from helical filaments}.
-\newblock {\em Journal of Applied Crystallography}, 3(4):257--264, Aug 1970.
+\newblock Small angle x-ray scattering from helical filaments.
+\newblock {\em Journal of Applied Crystallography}, 3(4):257--264, aug 1970.
+\newblock \doi{10.1107/s0021889870006155}.
 
 \bibitem{StreyKlineKaler1994}
 K.-V. Schubert, R.~Strey, S.~R. Kline, and E.~W. Kaler.
 \newblock Small angle neutron scattering near lifshitz lines: Transition from
   weakly structured mixtures to microemulsions.
 \newblock {\em J. Chem. Phys.}, 101:5343, 1994.
+\newblock \doi{10.1063/1.467387}.
 
 \bibitem{Schwartz1975}
-S.~Schwartz, J.E. Cain, E.A. Dratz, and J.K. Blasie.
+S.~Schwartz, J.~Cain, E.~Dratz, and J.~Blasie.
 \newblock An analysis of lamellar x-ray diffraction from disordered membrane
-  multilayers with application to data from retinal rod.
-\newblock {\em Biophysical Journal}, 15:1201 -- 1233, 1975.
+  multilayers with application to data from retinal rod outer segments.
+\newblock {\em Biophysical Journal}, 15(12):1201--1233, dec 1975.
+\newblock \doi{10.1016/s0006-3495(75)85895-4}.
 
 \bibitem{Sharma1977}
 R.~V. Sharma and K.~C. Sharma.
 \newblock The structure factor and the transport properties of dense fluids
   having molecules with square well potential, a possible generalization.
-\newblock {\em Physica A: Statistical and Theoretical Physics}, 89(1):213 --
-  218, 1977.
+\newblock {\em Physica A: Statistical Mechanics and its Applications},
+  89(1):213 -- 218, oct 1977.
+\newblock \doi{10.1016/0378-4371(77)90151-0}.
 
 \bibitem{Sjoberg1974}
-B.~Sj{\"{o}}berg.
-\newblock {Small-angle X-ray investigation of the equilibria between copper(II)
-  and glycyl-{\sc l}-histidylglycine in water solution. A method for analysing
-  polydispersed systems}.
-\newblock {\em Journal of Applied Crystallography}, 7(2):192--199, Apr 1974.
+B.~Sjöberg.
+\newblock Small-angle x-ray investigation of the equilibria between
+  copper({II}) and glycyl-l-histidylglycine in water solution. a method for
+  analysing polydispersed systems.
+\newblock {\em Journal of Applied Crystallography}, 7(2):192--199, apr 1974.
+\newblock \doi{10.1107/s0021889874009241}.
 
 \bibitem{Smith1977}
-William~R. Smith, Douglas Henderson, and Yoshio Tago.
+W.~R. Smith, D.~Henderson, and Y.~Tago.
 \newblock Mean spherical approximation and optimized cluster theory for the
-  squar-well fluid.
-\newblock {\em The Journal of Chemical Physics}, 67(11):5308--5316, 1977.
+  square-well fluid.
+\newblock {\em The Journal of Chemical Physics}, 67(11):5308--5316, dec 1977.
+\newblock \doi{10.1063/1.434709}.
 
 \bibitem{Sorensen1992}
-C.~M. S{\o}rensen, J.~Cai, and N.~Lu.
+C.~M. Sorensen, J.~Cai, and N.~Lu.
 \newblock Test of static structure factors for describing light scattering from
   fractal soot aggregates.
-\newblock {\em Langmuir}, 8:2064--2069, 1992.
+\newblock {\em Langmuir}, 8(8):2064--2069, aug 1992.
+\newblock \doi{10.1021/la00044a029}.
 
 \bibitem{Sorensen1999}
-C.~M. S{\o}rensen and G.~M. Wang.
+C.~M. Sorensen and G.~M. Wang.
 \newblock Size distribution effect on the power law regime of the structure
   factor of fractal aggregates.
-\newblock {\em Physical Review E}, 60(6):7143--7148, 1999.
+\newblock {\em Physical Review E}, 60(6):7143--7148, dec 1999.
+\newblock \doi{10.1103/physreve.60.7143}.
 
 \bibitem{Sottmann1997}
 T.~Sottmann, R.~Strey, and S.-H. Chen.
 \newblock A small-angle neutron scattering study of nonionic surfactant
-  molecules at the waterâ€“oil interface: Area per molecule, microemulsion
-  domain size, and rigidity.
-\newblock {\em The Journal of Chemical Physics}, 106(15):6483--6491, 1997.
+  molecules at the water{\textendash}oil interface: Area per molecule,
+  microemulsion domain size, and rigidity.
+\newblock {\em The Journal of Chemical Physics}, 106(15):6483--6491, apr 1997.
+\newblock \doi{10.1063/1.473638}.
 
 \bibitem{book:Squires}
 G.~L. Squires.
 \newblock {\em Thermal Neutron Scattering}.
 \newblock Cambridge University Press, 1978.
+\newblock \doi{10.1017/CBO9781139107808}.
 
 \bibitem{Stieger2004}
-Markus Stieger, Jan~Skov Pedersen, Peter Lindner, and Walter Richtering.
+M.~Stieger, J.~S. Pedersen, P.~Lindner, and W.~Richtering.
 \newblock Are thermoresponsive microgels model systems for concentrated
   colloidal suspensions? a rheology and small-angle neutron scattering study.
-\newblock {\em Langmuir}, 20(17):7283--7292, 2004.
+\newblock {\em Langmuir}, 20(17):7283--7292, aug 2004.
+\newblock \doi{10.1021/la049518x}.
 \newblock PMID: 15301516.
 
 \bibitem{Strey1991}
@@ -1118,190 +1393,236 @@ R.~Strey, J.~Winkler, and L.~Magid.
 \newblock Small-angle neutron scattering from diffuse interfaces. 1. mono- and
   bilayers in the water-octane-pentaoxyethylene monododecyl ether (c12es)
   system.
-\newblock {\em The Journal of Physical Chemistry}, 95(19):7502--7507, 1991.
+\newblock {\em The Journal of Physical Chemistry}, 95(19):7502--7507, sep 1991.
+\newblock \doi{10.1021/j100172a070}.
+
+\bibitem{Summerfield1983}
+G.~C. Summerfield and D.~F.~R. Mildner.
+\newblock Small-angle scattering with azimuthal asymmetry.
+\newblock {\em Journal of Applied Crystallography}, 16(4):384--389, aug 1983.
+\newblock \doi{10.1107/S0021889883010663}.
 
 \bibitem{SvaneborgPedersen2002}
-Carsten Svaneborg and Jan~Skov Pedersen.
+C.~Svaneborg and J.~S. Pedersen.
 \newblock Form factors of block copolymer micelles with excluded-volume
   interactions of the corona chains determined by monte carlo simulations.
-\newblock {\em Macromolecules}, 35(3):1028--1037, 2002.
+\newblock {\em Macromolecules}, 35(3):1028--1037, jan 2002.
+\newblock \doi{10.1021/ma011046v}.
+
+\bibitem{Svetogorsky1990}
+D.~A. Svetogorsky.
+\newblock The properties of anisotropic small-angle scattering.
+\newblock {\em Journal of Applied Crystallography}, 23(2):79--81, apr 1990.
+\newblock \doi{10.1107/S0021889889008253}.
 
 \bibitem{Teixeira2010}
-Cil{\^{a}}ine~V. Teixeira, Heinz Amenitsch, Takanori Fukushima, Jonathan~P.
-  Hill, Wusong Jin, Takuso Aida, Matti Hotokka, and Mika Lind{\'{e}}n.
-\newblock {Form factor of an {\it N}-layered helical tape and its application
-  to nanotube formation of hexa-{\it peri}-hexabenzocoronene-based molecules}.
-\newblock {\em Journal of Applied Crystallography}, 43(4):850--857, Aug 2010.
+C.~V. Teixeira, H.~Amenitsch, T.~Fukushima, J.~P. Hill, W.~Jin, T.~Aida,
+  M.~Hotokka, and M.~Lind{\'{e}}n.
+\newblock Form factor of {anN}-layered helical tape and its application to
+  nanotube formation of hexa-peri-hexabenzocoronene-based molecules.
+\newblock {\em Journal of Applied Crystallography}, 43(4):850--857, jun 2010.
+\newblock \doi{10.1107/s0021889810015736}.
 
 \bibitem{TeubnerStrey87}
 M.~Teubner and R.~Strey.
 \newblock Origin of the scattering peak in microemulsions.
 \newblock {\em J. Chem. Phys.}, 87:3195, 1987.
+\newblock \doi{10.1063/1.453006}.
 
 \bibitem{Toon1981}
-O.~Toon and T.~Ackerman.
+O.~B. Toon and T.~P. Ackerman.
 \newblock Algorithms for the calculation of scattering by stratified spheres.
-\newblock {\em Applied Optics}, 20(20):3657, 1981.
+\newblock {\em Applied Optics}, 20(20):3657, oct 1981.
+\newblock \doi{10.1364/ao.20.003657}.
 
 \bibitem{Toth2015}
-A.~Toth and C.T. Kelley.
+A.~Toth and C.~T. Kelley.
 \newblock Convergence analysis for anderson acceleration.
-\newblock {\em SIAM Journal on Numerical Analysis}, 53(2):805--819, 2015.
-\newblock cited By 0.
+\newblock {\em {SIAM} Journal on Numerical Analysis}, 53(2):805--819, jan 2015.
+\newblock \doi{10.1137/130919398}.
 
 \bibitem{Trokhymchuk2005}
-Andrij Trokhymchuk, Ivo Nezbeda, Jan JirsÃ¡k, and Douglas Henderson.
+A.~Trokhymchuk, I.~Nezbeda, J.~Jirs{\'{a}}k, and D.~Henderson.
 \newblock Hard-sphere radial distribution function again.
-\newblock {\em The Journal of Chemical Physics}, 123(2), 2005.
+\newblock {\em The Journal of Chemical Physics}, 123(2):024501, jul 2005.
+\newblock \doi{10.1063/1.1979488}.
 
 \bibitem{Trokhymchuk2006}
-Andrij Trokhymchuk, Ivo Nezbeda, Jan JirsÃ¡k, and Douglas Henderson.
-\newblock Erratum: "hard sphere radial distribution function again" [j. chem.
-  phys.123, 024501 (2005)].
-\newblock {\em The Journal of Chemical Physics}, 124(14), 2006.
+A.~Trokhymchuk, I.~Nezbeda, J.~Jirs{\'{a}}k, and D.~Henderson.
+\newblock Erratum: {\textquotedblleft}hard sphere radial distribution function
+  again{\textquotedblright} [j. chem. phys. 123, 024501 (2005)].
+\newblock {\em The Journal of Chemical Physics}, 124(14):149902, apr 2006.
+\newblock \doi{10.1063/1.2188941}.
 
 \bibitem{Ulander2001}
-Johan Ulander, Hans Greberg, and Roland Kjellander.
+J.~Ulander, H.~Greberg, and R.~Kjellander.
 \newblock Primary and secondary effective charges for electrical double layer
   systems with asymmetric electrolytes.
-\newblock {\em The Journal of Chemical Physics}, 115(15):7144--7160, 2001.
+\newblock {\em The Journal of Chemical Physics}, 115(15):7144--7160, oct 2001.
+\newblock \doi{10.1063/1.1398587}.
 
 \bibitem{scatt151}
 P.~van Beurten and A.~Vrij.
 \newblock Polydispersity effects in the small-angle scattering of concentrated
   solutions of colloidal spheres.
-\newblock {\em J. Chem. Phys.}, 74(5):2744--2748, March 1981.
+\newblock {\em The Journal of Chemical Physics}, 74(5):2744--2748, mar 1981.
+\newblock \doi{10.1063/1.441443}.
 
 \bibitem{Hulst1957}
-H.C. van~de Hulst.
+H.~van~de Hulst.
 \newblock {\em Light Scattering by Small Particles}.
 \newblock Wiley, New York, 1957.
 
 \bibitem{Vorst1992}
 H.~A. van~der Vorst.
-\newblock Bi-cgstab: A fast and smoothly converging variant of bi-cg for the
-  solution of nonsymmetric linear systems.
-\newblock {\em SIAM Journal on Scientific and Statistical Computing},
-  13(2):631--644, 1992.
+\newblock Bi-{CGSTAB}: A fast and smoothly converging variant of bi-{CG} for
+  the solution of nonsymmetric linear systems.
+\newblock {\em {SIAM} Journal on Scientific and Statistical Computing},
+  13(2):631--644, mar 1992.
+\newblock \doi{10.1137/0913035}.
 
 \bibitem{Verlet1980}
-Loup Verlet.
+L.~Verlet.
 \newblock Integral equations for classical fluids.
-\newblock {\em Molecular Physics}, 41(1):183--190, 1980.
+\newblock {\em Molecular Physics}, 41(1):183--190, sep 1980.
+\newblock \doi{10.1080/00268978000102671}.
 
 \bibitem{Verlet1981}
-Loup Verlet.
+L.~Verlet.
 \newblock Integral equations for classical fluids.
-\newblock {\em Molecular Physics}, 42(6):1291--1302, 1981.
+\newblock {\em Molecular Physics}, 42(6):1291--1302, apr 1981.
+\newblock \doi{10.1080/00268978100100971}.
 
 \bibitem{Viererblova2010}
-Linda Viererblova, Jiri Kolafa, Stanislav Labik, and Anatol Malijevsky.
+L.~Viererblov{\'{a}}, J.~Kolafa, S.~Lab{\'{\i}}k, and A.~Malijevsk{\'{y}}.
 \newblock Virial coefficients and equation of state of the penetrable sphere
   model.
-\newblock {\em Phys. Chem. Chem. Phys.}, 12:254--262, 2010.
+\newblock {\em Phys. Chem. Chem. Phys.}, 12(1):254--262, 2010.
+\newblock \doi{10.1039/b917204a}.
 
 \bibitem{Vompe1994}
 A.~G. Vompe and G.~A. Martynov.
 \newblock The bridge function expansion and the self-consistency problem of the
-  ornstein-zernike equation solution.
-\newblock {\em The Journal of Chemical Physics}, 100(7):5249--5258, 1994.
+  ornstein{\textendash}zernike equation solution.
+\newblock {\em The Journal of Chemical Physics}, 100(7):5249--5258, apr 1994.
+\newblock \doi{10.1063/1.467189}.
 
 \bibitem{scatt121}
 C.~G. Vonk.
-\newblock On two methods for determination of particle size distribution
+\newblock On two methods of determination of particle size distribution
   functions by means of small-angle x-ray scattering.
-\newblock {\em J. Appl. Cryst.}, 9:433--440, 1976.
+\newblock {\em Journal of Applied Crystallography}, 9(6):433--440, dec 1976.
+\newblock \doi{10.1107/s0021889876011874}.
 
 \bibitem{Vrij1979}
 A.~Vrij.
 \newblock Mixtures of hard spheres in the percus-yevick approximation. light
   scattering at finite angles.
-\newblock {\em J. Chem. Phys.}, 71(8):3267--3270, 1979.
+\newblock {\em J. Chem. Phys.}, 71(8):3267--3270, oct 1979.
+\newblock \doi{10.1063/1.438756}.
 
 \bibitem{Wagner2005}
 W.~Wagner and J.~Kohlbrecher.
-\newblock {\em Modern Techniques For Characterising Magnetic Materials:},
-  chapter Small-angle neutron scattering, pages 65--104.
-\newblock Kluwer Academic Publishers, 2005.
+\newblock Small-angle neutron scattering.
+\newblock In Y.~Zhu, editor, {\em Modern Techniques for Characterizing Magnetic
+  Materials}, chapter Small-angle neutron scattering, pages 65--105.
+  Springer-Verlag, 2005.
+\newblock \doi{10.1007/0-387-23395-4_2}.
 
 \bibitem{Walker2011}
-Homer~F. Walker and Peng Ni.
+H.~F. Walker and P.~Ni.
 \newblock Anderson acceleration for fixed-point iterations.
-\newblock {\em SIAM Journal on Numerical Analysis}, 49(4):1715--1735, 2011.
+\newblock {\em {SIAM} Journal on Numerical Analysis}, 49(4):1715--1735, jan
+  2011.
+\newblock \doi{10.1137/10078356X}.
 
 \bibitem{Walter1985}
 G.~Walter, R.~Kranold, T.~Gerber, J.~Baldrian, and M.~Steinhart.
-\newblock {Particle size distribution from small-angle X-ray scattering data}.
-\newblock {\em Journal of Applied Crystallography}, 18(4):205--213, Aug 1985.
+\newblock Particle size distribution from small-angle x-ray scattering data.
+\newblock {\em Journal of Applied Crystallography}, 18(4):205--213, aug 1985.
+\newblock \doi{10.1107/s0021889885010160}.
 
 \bibitem{Weeks1971}
-John~D. Weeks, David Chandler, and Hans~C. Andersen.
+J.~D. Weeks, D.~Chandler, and H.~C. Andersen.
 \newblock Role of repulsive forces in determining the equilibrium structure of
   simple liquids.
-\newblock {\em The Journal of Chemical Physics}, 54(12):5237--5247, 1971.
+\newblock {\em The Journal of Chemical Physics}, 54(12):5237--5247, jun 1971.
+\newblock \doi{10.1063/1.1674820}.
 
 \bibitem{Wertheim1963}
 M.~S. Wertheim.
 \newblock Exact solution of the percus-yevick integral equation for hard
   spheres.
-\newblock {\em Phys. Rev. Lett.}, 10:321--323, Apr 1963.
+\newblock {\em Physical Review Letters}, 10(8):321--323, apr 1963.
+\newblock \doi{10.1103/physrevlett.10.321}.
 
 \bibitem{Wiedenmann2011}
-A.~Wiedenmann, R.~G\"ahler, C.~D. Dewhurst, U.~Keiderling, S.~Pr\'evost, and
+A.~Wiedenmann, R.~Gähler, C.~D. Dewhurst, U.~Keiderling, S.~Pr{\'{e}}vost, and
   J.~Kohlbrecher.
 \newblock Relaxation mechanisms in magnetic colloids studied by stroboscopic
   spin-polarized small-angle neutron scattering.
-\newblock {\em Phys. Rev. B}, 84:214303, Dec 2011.
+\newblock {\em Physical Review B}, 84(21):214303, dec 2011.
+\newblock \doi{10.1103/physrevb.84.214303}.
 
 \bibitem{Wijmans93}
 C.~M. Wijmans and E.~B. Zhulina.
 \newblock Polymer brushes at curved surfaces.
-\newblock {\em Macromolecules}, 26:1214--7224, 1993.
+\newblock {\em Macromolecules}, 26(26):7214--7224, dec 1993.
+\newblock \doi{10.1021/ma00078a016}.
 
 \bibitem{Willner2000}
 L.~Willner, A.~Poppe, J.~Allgaier, M.~Monkenbusch, P.~Lindner, and D.~Richter.
 \newblock Micellization of amphiphilic diblock copolymers: Corona shape and
   mean-field to scaling crossover.
-\newblock {\em EPL (Europhysics Letters)}, 51(6):628, 2000.
+\newblock {\em Europhysics Letters ({EPL})}, 51(6):628--634, sep 2000.
+\newblock \doi{10.1209/epl/i2000-00384-1}.
 
 \bibitem{Wiscombe1979}
 W.~Wiscombe.
-\newblock Mie scattering calculations--advances in technique and fast,
-  vector-speed computer codes, ncar tech note tn-140+str.
+\newblock Mie scattering calculations: Advances in technique and fast,
+  vector-speed computer codes.
 \newblock Technical report, National Center For Atmospheric Research, Boulder,
   Colorado, 1979.
+\newblock \doi{10.5065/d6zp4414}.
 
 \bibitem{Wiscombe1980}
-W.~Wiscombe.
+W.~J. Wiscombe.
 \newblock Improved mie scattering algorithms.
-\newblock {\em Appl. Opt.}, 19:1505--1509, 1980.
+\newblock {\em Applied Optics}, 19(9):1505--1509, may 1980.
+\newblock \doi{10.1364/AO.19.001505}.
 
 \bibitem{Yoshizaki1980}
-Takenao Yoshizaki and Hiromi Yamakawa.
+T.~Yoshizaki and H.~Yamakawa.
 \newblock Scattering functions of wormlike and helical wormlike chains.
-\newblock {\em Macromolecules}, 13(6):1518--1525, 1980.
+\newblock {\em Macromolecules}, 13(6):1518--1525, nov 1980.
+\newblock \doi{10.1021/ma60078a030}.
 
 \bibitem{Zerah1986}
-Gilles Zerah and Jean-Pierre Hansen.
+G.~Zerah and J.-P. Hansen.
 \newblock Self-consistent integral equations for fluid pair distribution
   functions: Another attempt.
-\newblock {\em The Journal of Chemical Physics}, 84(4):2336--2343, 1986.
+\newblock {\em The Journal of Chemical Physics}, 84(4):2336--2343, feb 1986.
+\newblock \doi{10.1063/1.450397}.
 
 \bibitem{scatt163}
 F.~Zernike and J.~A. Prins.
-\newblock {Die Beugung von R\"ontgenstrahlen in Fl\"ussigkeiten als Effekt der
-  Molek\"ulanordnung}.
-\newblock {\em Zeitschrift f\"ur Physik}, XLI:184--194, 1927.
+\newblock Die beugung von röntgenstrahlen in flüssigkeiten als effekt der
+  molekülanordnung.
+\newblock {\em Zeitschrift für Physik A Hadrons and nuclei}, 41(2-3):184--194,
+  jun 1927.
+\newblock \doi{10.1007/bf01391926}.
 
 \bibitem{Zhang1994}
-Ruitian Zhang, Robert~M. Suter, and John~F. Nagle.
+R.~Zhang, R.~M. Suter, and J.~F. Nagle.
 \newblock Theory of the structure factor of lipid bilayers.
 \newblock {\em Phys. Rev. E}, 50(6):5047--5060, Dec 1994.
+\newblock \doi{10.1103/PhysRevE.50.5047}.
 
 \bibitem{zimm:1093}
-Bruno~H. Zimm.
+B.~H. Zimm.
 \newblock The scattering of light and the radial distribution function of high
   polymer solutions.
-\newblock {\em The Journal of Chemical Physics}, 16(12):1093--1099, 1948.
+\newblock {\em The Journal of Chemical Physics}, 16(12):1093--1099, dec 1948.
+\newblock \doi{10.1063/1.1746738}.
 
 \end{thebibliography}
