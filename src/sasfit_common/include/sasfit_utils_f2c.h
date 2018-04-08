@@ -126,7 +126,10 @@ logical sasfit_f2c_wrtdim_(char *dimnam, integer *minval, ftnlen dimnam_len);
 
 doublereal sasfit_struve_h0(doublereal *xvalue);
 doublereal sasfit_struve_h1(doublereal *xvalue);
-
+double re_cerf_z(double x, double y);
+double im_cerf_z(double x, double y);
+double re_cerfi_z(double x, double y);
+double im_cerfi_z(double x, double y);
 int zspow_(sasfit_func_zspow_t * fcn, integer * nsig, integer * n, integer * itmax, real * par, real * x, real * fnorm, real * wk, integer * ier);
 
 int sasfit_robertus_deal(doublereal * rm, doublereal * sig, doublereal * phi, logical * labdas);

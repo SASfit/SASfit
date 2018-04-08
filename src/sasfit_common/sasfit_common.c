@@ -138,10 +138,10 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_2f1, /* 94 */
 	sasfit_pfq, /* 95 */
     sasfit_wofz, /* 96 */
-    NULL, /* 97 */
-    NULL, /* 98 */
-    NULL, /* 99 */
-    NULL, /* 100 */
+    re_cerf_z, /* 97 */
+    im_cerf_z, /* 98 */
+    re_cerfi_z, /* 99 */
+    im_cerfi_z, /* 100 */
     NULL, /* 101 */
     NULL, /* 102 */
     NULL, /* 103 */

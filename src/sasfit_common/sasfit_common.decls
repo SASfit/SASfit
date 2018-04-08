@@ -311,6 +311,13 @@ declare 96 generic {
 	int sasfit_wofz(double * xi, double * yi, double * u, double * v, long * flag__)
 }
 
+declare 97 generic {
+	double re_cerf_z(double x, double y)
+}
+declare 98 generic {
+	double im_cerf_z(double x, double y)
+}
+
 declare 105 generic {	
 	scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param)
 }

@@ -73,7 +73,7 @@ corresponding SANS-pattern.} \label{sheared_cylinders1}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.7\textwidth,height=0.7\textwidth]{shear_cuette_SANS_geometry.png}
+\includegraphics[width=0.7\textwidth]{shear_cuette_SANS_geometry.png}
 \end{center}
 \caption{Cartesian and angular coordinates referred to the center
 of a cylindrical micelle at origin. The relationship to the
@@ -137,31 +137,87 @@ and
 \cos \angle(\mathbf{Q,n}) &= \cos \gamma = \frac{\mathbf{Q\cdot n}}{\abs{\mathbf{Q}}\abs{\mathbf{n}}} =  \cos\psi \sin\theta \cos\phi + \sin\psi \cos\theta
 \end{align}
 
-%[1] John B. Hayter and Jeff Penfold, Use of Viscous Shear Alignment
-%To Study Anisotropic Micellar Structure by Small-Angle Neutron
-%Scattering, J. Phys. Chem. 1984, 88, 4589-4593
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\subsection{ShearedCylinderBoltzmann} ~\\
+\subsection{Maier-Saupe orientation distribution} ~\\
 
 \begin{align}
-p(\theta,\phi;\bar{\theta}) & = \exp(-\theta/\bar{\theta}) \\
-\cos\gamma^\pm & = \sin\theta\cos\phi\cos\psi\pm\cos\theta\sin\psi
+p(\theta,\phi;\kappa) & = \frac{1}{c_\mathrm{MS}}\exp\left(\kappa \cos^2\theta\right) 
 \end{align}
+with
+\begin{align}
+c_\mathrm{MS} &=
+\begin{cases} 
+\displaystyle
+4\pi\exp(\kappa) \frac{\mathrm{D}\left(\sqrt{\kappa}\right)}{\sqrt{\kappa}}   &\mathrm{for~} \kappa > 0 \\[5mm]
+\displaystyle
+2\pi \sqrt{\pi} \frac{\mathrm{erf}\left(\sqrt{\abs{\kappa}}\right)}{\sqrt{\abs{\kappa}}}  &\mathrm{for~} \kappa < 0 \\[2mm]
+\displaystyle
+4\pi                                                                                      &\mathrm{for~} \kappa = 0
+\end{cases}
+\end{align}
+with $D(x)$ being Dawson's integral $D(x)=e^{-x^2}\int_0^x e^{y^2} \mathrm{d}y = \frac12\sqrt{\pi}e^{-x^2}\mathrm{erfi}(x)$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\subsection{Onsager orientation distribution} ~\\
+
+\begin{align}
+p(\theta,\phi;\kappa) & = 
+\begin{cases} \displaystyle
+\frac{\kappa \cosh\left(\kappa \cos(\theta)\right)}{4\pi \sinh(\kappa)}      &\mathrm{for~} \kappa \geq 0 \\[5mm]
+ \displaystyle
+\frac{\cosh\left(\abs{\kappa} sin(\theta)\right)}{2\pi^2 L_1(\abs{\kappa})}  &\mathrm{for~} \kappa < 0 
+\end{cases}
+\end{align}
+where $L_\nu(x)$ is the modified Struve function.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\subsection{ShearedCylinderGaussian}
+\subsection{Boltzmann orientation distribution} ~\\
+
+\begin{align}
+p(\theta,\phi;\kappa) & = 
+\begin{cases}
+\displaystyle
+\frac{1}{c_\mathrm{B}}\exp\left(-\theta\kappa\right) & \mathrm{for~}  \theta \leq \pi/2\\[5mm]
+\displaystyle
+\frac{1}{c_\mathrm{B}}\exp\left(-(\pi-\theta)\kappa\right) & \mathrm{for~}  \theta > \pi/2
+\end{cases}
+\end{align}
+with
+\begin{align}
+c_\mathrm{B} &= \frac{4\pi\left(1-\kappa*exp\left(-\frac{\pi}{2}\kappa\right)\right)}{\kappa^2+1}
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\subsection{Gaussian orientation distribution}
 \label{sect:ShearedCylinderGaussian}
 ~\\
 \begin{align}
-p(\theta,\phi;\bar{\theta}) & = \exp(-(\theta/\bar{\theta})^2) \\
-\cos\gamma^\pm & = \sin\theta\cos\phi\cos\psi\pm\cos\theta\sin\psi
+p(\theta,\phi;\kappa) & = 
+\begin{cases}
+\displaystyle
+\frac{1}{c_\mathrm{G}}\exp\left(-\theta^2\kappa^2\right) & \mathrm{for~} \kappa \geq 0 \mathrm{~and~} \theta \leq \pi/2\\[5mm]
+\displaystyle
+\frac{1}{c_\mathrm{G}}\exp\left(-(\pi-\theta)^2\kappa^2\right) & \mathrm{for~} \kappa \geq 0 \mathrm{~and~} \theta > \pi/2\\[5mm]
+\displaystyle
+\frac{1}{c_\mathrm{G}}\exp\left(-(\frac{\pi}{2}-\theta)^2\abs{\kappa}^2\right) & \mathrm{for~} \kappa < 0 
+\end{cases}
 \end{align}
-
+with
+\begin{align}
+c_\mathrm{G} & =
+\begin{cases}\displaystyle
+2\pi\frac{D\left(\kappa/2\right)}{\kappa}
+           +2\pi\frac{\sqrt{\pi}}{2\kappa} e^{-\frac{1}{4\kappa^2}} \Re\left(\mathrm{cerfi}\left(-\frac{1}{2\kappa}+\imath\frac{\pi}{2}\kappa\right) \right)& \mathrm{for~} \kappa \geq 0 \\[5mm]
+\displaystyle
+2\pi\frac{\sqrt{\pi}}{\abs{\kappa}} e^{-\frac{1}{4\kappa^2}} \Im\left(\mathrm{cerfi}\left(-\frac{1}{2\abs{\kappa}}+\imath\frac{\pi}{2}\abs{\kappa}\right) \right) & \mathrm{for~} \kappa < 0
+\end{cases}
+\end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage

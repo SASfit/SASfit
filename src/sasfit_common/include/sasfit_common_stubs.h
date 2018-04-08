@@ -173,10 +173,10 @@ typedef struct
                           double z_r, double z_i, int ln_pFq, int ix,
                           double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param);/* 95 */
 	int (*sasfit_wofz) (double * xi, double * yi, double * u, double * v, long * flag__); /* 96 */
-	void *reserved97; /* 97 */
-	void *reserved98; /* 98 */
-	void *reserved99; /* 99 */
-	void *reserved100; /* 100 */
+	double (*re_cerf_z)(double x, double y); /* 97 */
+	double (*im_cerf_z)(double x, double y); /* 98 */
+	double (*re_cerfi_z)(double x, double y); /* 99 */
+	double (*im_cerfi_z)(double x, double y); /* 100 */
 	void *reserved101; /* 101 */
 	void *reserved102; /* 102 */
 	void *reserved103; /* 103 */
@@ -559,6 +559,22 @@ typedef struct
 #ifndef sasfit_wofz
 #define sasfit_wofz \
 	(sasfit_common_stubs_ptr->sasfit_wofz) /* 96 */
+#endif
+#ifndef re_cerf_z
+#define re_cerf_z \
+	(sasfit_common_stubs_ptr->re_cerf_z) /* 97 */
+#endif
+#ifndef im_cerf_z
+#define im_cerf_z \
+	(sasfit_common_stubs_ptr->im_cerf_z) /* 98 */
+#endif
+#ifndef re_cerfi_z
+#define re_cerfi_z \
+	(sasfit_common_stubs_ptr->re_cerfi_z) /* 99 */
+#endif
+#ifndef im_cerfi_z
+#define im_cerfi_z \
+	(sasfit_common_stubs_ptr->im_cerfi_z) /* 100 */
 #endif
 #ifndef find_LogNorm_int_range
 #define find_LogNorm_int_range \

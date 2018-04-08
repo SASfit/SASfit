@@ -62,6 +62,10 @@ set(SOURCE_sasfit_common
 	f2c_utils/sasfit_pfq.c
 	cubature/hcubature.c
 	cubature/pcubature.c
+	libcerf_1.5/erfcx.c
+	libcerf_1.5/err_fcts.c
+	libcerf_1.5/im_w_of_x.c
+	libcerf_1.5/w_of_z.c
 )
 
 set(SOURCE_sasfit_core
