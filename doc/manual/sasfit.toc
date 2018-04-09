@@ -1,430 +1,429 @@
-\contentsline {chapter}{\tocchapter {Chapter}{1}{Introduction to the data analysis program {\tt SASfit }}}{13}{chapter.1}
-\contentsline {section}{\tocsection {}{1.1}{Overview}}{13}{section.2}
-\contentsline {section}{\tocsection {}{1.2}{System Requirements And Software Installation}}{14}{section.4}
-\contentsline {section}{\tocsection {}{1.3}{Installation Procedure}}{14}{section.5}
-\contentsline {chapter}{\tocchapter {Chapter}{2}{Quick Start Tour}}{17}{chapter.9}
-\contentsline {section}{\tocsection {}{2.1}{User Interface Window}}{17}{section.10}
-\contentsline {section}{\tocsection {}{2.2}{Importing data files for a single data set}}{18}{section.14}
-\contentsline {section}{\tocsection {}{2.3}{Importing data files for multiple data sets}}{20}{section.23}
-\contentsline {section}{\tocsection {}{2.4}{Reducing the number of data points}}{20}{section.29}
-\contentsline {section}{\tocsection {}{2.5}{Simulating scattering curves}}{22}{section.38}
-\contentsline {section}{\tocsection {}{2.6}{Fitting}}{23}{section.42}
-\contentsline {subsection}{\tocsubsection {}{2.6.1}{Model Independent Fitting (Integral parameters)}}{23}{subsection.43}
-\contentsline {subsection}{\tocsubsection {}{2.6.2}{Model dependent analysis}}{25}{subsection.55}
-\contentsline {subsubsection}{\tocsubsubsection {}{2.6.2.1}{Modeling a single data set}}{25}{subsubsection.56}
-\contentsline {subsubsection}{\tocsubsubsection {}{2.6.2.2}{Modeling multiple data sets}}{26}{subsubsection.62}
-\contentsline {section}{\tocsection {}{2.7}{Criteria for goodness-of-fit}}{30}{section.76}
-\contentsline {subsection}{\tocsubsection {}{2.7.1}{chi square test}}{30}{subsection.77}
-\contentsline {subsection}{\tocsubsection {}{2.7.2}{R-factor}}{31}{subsection.82}
-\contentsline {subsection}{\tocsubsection {}{2.7.3}{Confidence interval of the fitting parameter}}{32}{subsection.86}
-\contentsline {section}{\tocsection {}{2.8}{Fitting strategies}}{34}{section.97}
-\contentsline {section}{\tocsection {}{2.9}{Data I/O Formats}}{35}{section.98}
-\contentsline {subsection}{\tocsubsection {}{2.9.1}{Input Format}}{35}{subsection.99}
-\contentsline {subsection}{\tocsubsection {}{2.9.2}{Error bar}}{37}{subsection.100}
-\contentsline {subsection}{\tocsubsection {}{2.9.3}{Export Format}}{38}{subsection.107}
-\contentsline {section}{\tocsection {}{2.10}{Scattering length density calculator}}{39}{section.108}
-\contentsline {section}{\tocsection {}{2.11}{Resolution Function}}{41}{section.110}
-\contentsline {chapter}{\tocchapter {Chapter}{3}{Form Factors}}{43}{chapter.124}
-\contentsline {section}{\tocsection {}{3.1}{Spheres \& Shells}}{43}{section.125}
-\contentsline {subsection}{\tocsubsection {}{3.1.1}{Sphere}}{43}{subsection.126}
-\contentsline {subsection}{\tocsubsection {}{3.1.2}{Spherical Shell i}}{45}{subsection.132}
-\contentsline {subsection}{\tocsubsection {}{3.1.3}{Spherical Shell ii}}{47}{subsection.137}
-\contentsline {subsection}{\tocsubsection {}{3.1.4}{Spherical Shell iii}}{49}{subsection.142}
-\contentsline {subsection}{\tocsubsection {}{3.1.5}{Bilayered Vesicle}}{51}{subsection.147}
-\contentsline {subsection}{\tocsubsection {}{3.1.6}{Multi Lamellar Vesicle}}{53}{subsection.152}
-\contentsline {subsection}{\tocsubsection {}{3.1.7}{RNDMultiLamellarVesicle}}{55}{subsection.157}
-\contentsline {subsection}{\tocsubsection {}{3.1.8}{Vesicle with aligned flat capped ends \cite {Kaya:aj5008,Kaya:aj5016}}}{57}{subsection.170}
-\contentsline {section}{\tocsection {}{3.2}{Polymers and Micelles}}{60}{section.191}
-\contentsline {subsection}{\tocsubsection {}{3.2.1}{Gaussian chain}}{60}{subsection.192}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.1}{Gauss \cite {Debye1947}}}{62}{subsubsection.217}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.2}{Gauss2 \cite {Debye1947}}}{63}{subsubsection.220}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.3}{Gauss3 \cite {Debye1947}}}{63}{subsubsection.222}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.4}{Polydisperse flexible polymers with Gaussian statistics \cite {Pedersen2002}}}{64}{subsubsection.225}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.5}{generalized Gaussian coil \cite {Hammouda,Hammouda2012,Hammouda1993,Hammouda2016}}}{65}{subsubsection.228}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.6}{generalized Gaussian coil 2 \cite {Hammouda,Hammouda2012}}}{66}{subsubsection.231}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.7}{generalized Gaussian coil 3 \cite {Hammouda,Hammouda2012}}}{66}{subsubsection.234}
-\contentsline {subsection}{\tocsubsection {}{3.2.2}{Star polymer with Gaussian statistic according to Benoit \cite {Benoit53}}}{68}{subsection.238}
-\contentsline {subsection}{\tocsubsection {}{3.2.3}{Polydisperse star polymer with Gaussian statistics \cite {Burchard1974}}}{70}{subsection.242}
-\contentsline {subsection}{\tocsubsection {}{3.2.4}{Star polymer according to Dozier \cite {dozier91}}}{72}{subsection.246}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.4.1}{Dozier}}{72}{subsubsection.247}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.4.2}{Dozier2}}{74}{subsubsection.251}
-\contentsline {subsection}{\tocsubsection {}{3.2.5}{Flexible Ring Polymer \cite {Burchard1996}}}{76}{subsection.254}
-\contentsline {subsection}{\tocsubsection {}{3.2.6}{$m$-membered twisted ring \cite {Burchard1996}}}{78}{subsection.261}
-\contentsline {subsection}{\tocsubsection {}{3.2.7}{Daisy-like Ring \cite {Burchard1996}}}{80}{subsection.269}
-\contentsline {subsection}{\tocsubsection {}{3.2.8}{Unified Exponential Power Law according to Beaucage \cite {beaucage95,beaucage96}}}{82}{subsection.277}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.8.1}{Beaucage}}{82}{subsubsection.279}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.8.2}{Beaucage2}}{85}{subsubsection.282}
-\contentsline {subsection}{\tocsubsection {}{3.2.9}{WormLikeChainEXV \cite {Pedersen96Macrom}}}{87}{subsection.285}
-\contentsline {subsection}{\tocsubsection {}{3.2.10}{KholodenkoWorm}}{89}{subsection.289}
-\contentsline {subsection}{\tocsubsection {}{3.2.11}{Diblock copolymer micelles}}{92}{subsection.299}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.1}{Micelles with a homogeneous core and Gaussian chains on the surface}}{92}{subsubsection.304}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.2}{\bf Spherical core:}}{93}{subsubsection.306}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.3}{\bf ellipsoidal core with semi-axis $(R,R,\epsilon R)$:}}{96}{subsubsection.321}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.4}{\bf cylindrical core with radius $R_\text {core}$ and height $H$:}}{99}{subsubsection.336}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.5}{\bf wormlike micelles with cylindrical cross-section with radius $R_\text {core}$, Kuhn-length $l$ and contour length $L$:}}{102}{subsubsection.353}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.6}{\bf micelles with rod-like core:}}{105}{subsubsection.370}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.7}{Micelles with a homogeneous core and a corona with decaying density profile . of the form $\varphi (r)\varpropto r^{-\alpha }$}}{107}{subsubsection.378}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.8}{\bf spherical core:}}{108}{subsubsection.385}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.9}{\bf rodlike core:}}{112}{subsubsection.397}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.10}{spherical Micelles with a homogeneous core and a corona of semi-flexible interacting self-avoiding chains}}{115}{subsubsection.412}
-\contentsline {subsection}{\tocsubsection {}{3.2.12}{Sphere with Gaussian chains attached}}{115}{subsection.413}
-\contentsline {subsection}{\tocsubsection {}{3.2.13}{Sphere with Gaussian chains attached (block copolymer micelle)}}{117}{subsection.423}
-\contentsline {section}{\tocsection {}{3.3}{Clustered Objects}}{118}{section.430}
-\contentsline {subsection}{\tocsubsection {}{3.3.1}{Mass Fractal \cite {Sorensen1999,Sorensen1992,Hurd1988,Lin1989,Lin1990,Lin1990a,Lin1990b}}}{118}{subsection.431}
-\contentsline {subsection}{\tocsubsection {}{3.3.2}{Stacked Discs \cite {Kratky1949,Hanley2003}}}{120}{subsection.438}
-\contentsline {subsection}{\tocsubsection {}{3.3.3}{DumbbellShell}}{122}{subsection.447}
-\contentsline {subsection}{\tocsubsection {}{3.3.4}{DoubleShellChain}}{123}{subsection.449}
-\contentsline {subsection}{\tocsubsection {}{3.3.5}{simplified cluster}}{125}{subsection.456}
-\contentsline {section}{\tocsection {}{3.4}{Cylindrical Objects}}{126}{section.457}
-\contentsline {subsection}{\tocsubsection {}{3.4.1}{Disc}}{126}{subsection.458}
-\contentsline {subsection}{\tocsubsection {}{3.4.2}{Rod}}{127}{subsection.462}
-\contentsline {subsection}{\tocsubsection {}{3.4.3}{Porod's approximation for a long cylinder \cite {Porod1948}}}{128}{subsection.466}
-\contentsline {subsection}{\tocsubsection {}{3.4.4}{Porod's approximation for a flat cylinder \cite {Porod1948}}}{130}{subsection.474}
-\contentsline {subsection}{\tocsubsection {}{3.4.5}{Porod's approximations for cylinder \cite {Porod1948}}}{132}{subsection.483}
-\contentsline {subsection}{\tocsubsection {}{3.4.6}{Cylinder of length $L$, radius $R$ and scattering contrast $\Delta \eta $}}{134}{subsection.488}
-\contentsline {subsection}{\tocsubsection {}{3.4.7}{Random oriented cylindrical shell with circular cross-section}}{135}{subsection.492}
-\contentsline {subsection}{\tocsubsection {}{3.4.8}{Random oriented cylindrical shell with elliptical cross-section}}{138}{subsection.503}
-\contentsline {subsection}{\tocsubsection {}{3.4.9}{partly aligned cylindrical shell \cite {Hayter1984}}}{142}{subsection.517}
-\contentsline {subsection}{\tocsubsection {}{3.4.10}{aligned cylindrical shell}}{144}{subsection.527}
-\contentsline {subsection}{\tocsubsection {}{3.4.11}{Torus with elliptical shell cross-section \cite {Kawaguchi2001,Forster1999}}}{145}{subsection.528}
-\contentsline {subsection}{\tocsubsection {}{3.4.12}{stacked tori with elliptical shell cross-section}}{147}{subsection.536}
-\contentsline {section}{\tocsection {}{3.5}{Local Planar Objects}}{148}{section.539}
-\contentsline {subsection}{\tocsubsection {}{3.5.1}{Shape factors $P'(Q)$}}{148}{subsection.541}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.1}{Polydisperse infinitesimal thin discs}}{148}{subsubsection.542}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.2}{Infinitesimal thin spherical shell}}{148}{subsubsection.545}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.3}{Infinitesimal thin elliptical shell}}{149}{subsubsection.548}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.4}{Infinitesimal thin cylindrical shell}}{149}{subsubsection.551}
-\contentsline {subsection}{\tocsubsection {}{3.5.2}{Cross-section form factors $P_\text {cs}(Q)$}}{150}{subsection.553}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.5.2.1}{homogeneousXS}}{150}{subsubsection.554}
-\contentsline {subsection}{\tocsubsection {}{3.5.3}{TwoInfinitelyThinPlates}}{151}{subsection.557}
-\contentsline {subsection}{\tocsubsection {}{3.5.4}{LayeredCentroSymmetricXS}}{152}{subsection.560}
-\contentsline {subsection}{\tocsubsection {}{3.5.5}{BiLayerGauss \cite {Pabst2000}}}{153}{subsection.563}
-\contentsline {section}{\tocsection {}{3.6}{Magnetic Scattering}}{154}{section.570}
-\contentsline {subsection}{\tocsubsection {}{3.6.1}{Magnetic Saturation}}{156}{subsection.578}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.6.1.1}{MagneticShellAniso}}{156}{subsubsection.579}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.6.1.2}{MagneticShellCrossTerm}}{157}{subsubsection.586}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.6.1.3}{MagneticShellPsi}}{158}{subsubsection.592}
-\contentsline {subsection}{\tocsubsection {}{3.6.2}{Superparamagnetic Particles (like ferrofluids)}}{159}{subsection.598}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.1}{SuperparamagneticFFpsi}}{159}{subsubsection.602}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.2}{SuperparamagneticFFAniso}}{159}{subsubsection.603}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.3}{SuperparamagneticFFIso}}{159}{subsubsection.604}
-\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.4}{SuperparamagneticFFCrossTerm}}{159}{subsubsection.605}
-\contentsline {section}{\tocsection {}{3.7}{Lorenz-Mie Form Factors for Static Light Scattering}}{160}{section.606}
-\contentsline {subsection}{\tocsubsection {}{3.7.1}{MieSphere}}{160}{subsection.607}
-\contentsline {subsection}{\tocsubsection {}{3.7.2}{MieShell}}{162}{subsection.609}
-\contentsline {section}{\tocsection {}{3.8}{Other functions}}{164}{section.611}
-\contentsline {subsection}{\tocsubsection {}{3.8.1}{DLS\_Sphere\_RDG}}{164}{subsection.612}
-\contentsline {subsection}{\tocsubsection {}{3.8.2}{Langevin}}{165}{subsection.614}
-\contentsline {subsection}{\tocsubsection {}{3.8.3}{SuperParStroboPsi}}{166}{subsection.616}
-\contentsline {subsection}{\tocsubsection {}{3.8.4}{SuperParStroboPsiSQ}}{173}{subsection.676}
-\contentsline {subsection}{\tocsubsection {}{3.8.5}{SuperParStroboPsiSQBt}}{174}{subsection.684}
-\contentsline {subsection}{\tocsubsection {}{3.8.6}{SuperParStroboPsiSQLx}}{174}{subsection.686}
-\contentsline {subsection}{\tocsubsection {}{3.8.7}{SuperParStroboPsiSQL2x}}{174}{subsection.688}
-\contentsline {chapter}{\tocchapter {Chapter}{4}{Analytical Solutions for Structure factors}}{175}{chapter.690}
-\contentsline {section}{\tocsection {}{4.1}{Methods to include structure factors}}{175}{section.691}
-\contentsline {subsection}{\tocsubsection {}{4.1.1}{Monodisperse approach}}{175}{subsection.693}
-\contentsline {subsection}{\tocsubsection {}{4.1.2}{Decoupling approximation}}{175}{subsection.695}
-\contentsline {subsection}{\tocsubsection {}{4.1.3}{Local monodisperse approximation}}{176}{subsection.698}
-\contentsline {subsection}{\tocsubsection {}{4.1.4}{partial structure factors}}{176}{subsection.701}
-\contentsline {subsection}{\tocsubsection {}{4.1.5}{Scaling approximation}}{177}{subsection.703}
-\contentsline {subsection}{\tocsubsection {}{4.1.6}{van der Waals one-fluid approximation}}{177}{subsection.707}
-\contentsline {section}{\tocsection {}{4.2}{Hard \& Sticky Hard Sphere}}{179}{section.712}
-\contentsline {subsection}{\tocsubsection {}{4.2.1}{Hard Sphere \cite {Percus1958,Vrij1979} }}{179}{equation.714}
-\contentsline {subsection}{\tocsubsection {}{4.2.2}{Sticky Hard Sphere}}{180}{subsection.723}
-\contentsline {subsection}{\tocsubsection {}{4.2.3}{Sticky Hard Sphere ($2^\text {nd}$ version \cite {Regnaut1989,Regnaut1990})}}{182}{subsection.737}
-\contentsline {subsection}{\tocsubsection {}{4.2.4}{Square Well Potential \cite {Sharma1977}}}{184}{subsection.754}
-\contentsline {subsection}{\tocsubsection {}{4.2.5}{Square Well Potential 2}}{186}{subsection.763}
-\contentsline {section}{\tocsection {}{4.3}{Multi Lamellar Structures}}{187}{section.766}
-\contentsline {subsection}{\tocsubsection {}{4.3.1}{Multi-Lamellar Structures, Thermal Disorder}}{187}{subsection.767}
-\contentsline {subsection}{\tocsubsection {}{4.3.2}{Multi-Lamellar Structures, Paracrystalline Theory}}{189}{subsection.774}
-\contentsline {subsection}{\tocsubsection {}{4.3.3}{Multi-Lamellar Structures, Modified Caill\'e Theory}}{192}{subsection.781}
-\contentsline {section}{\tocsection {}{4.4}{Mass Fractal}}{195}{section.788}
-\contentsline {subsection}{\tocsubsection {}{4.4.1}{Mass Fractal (Exp Cut-Off)}}{197}{subsection.803}
-\contentsline {subsection}{\tocsubsection {}{4.4.2}{Mass Fractal (Exp(-x\^{}a) Cut-Off)}}{198}{subsection.805}
-\contentsline {subsection}{\tocsubsection {}{4.4.3}{Mass Fractal (Gaussian Cut-Off)}}{199}{subsection.807}
-\contentsline {subsection}{\tocsubsection {}{4.4.4}{Mass Fractal (OverlapSph Cut-Off)}}{200}{subsection.809}
-\contentsline {section}{\tocsection {}{4.5}{Other Structure Factors}}{201}{section.811}
-\contentsline {subsection}{\tocsubsection {}{4.5.1}{Hayter-Penfold RMSA \cite {Hayter1981,Hansen1982}}}{201}{subsection.812}
-\contentsline {subsection}{\tocsubsection {}{4.5.2}{MacroIon}}{202}{equation.814}
-\contentsline {subsection}{\tocsubsection {}{4.5.3}{Critical Scattering}}{203}{equation.825}
-\contentsline {subsection}{\tocsubsection {}{4.5.4}{Cylinder(PRISM)}}{203}{equation.827}
-\contentsline {subsection}{\tocsubsection {}{4.5.5}{Voigt Peak}}{204}{subsection.828}
-\contentsline {chapter}{\tocchapter {Chapter}{5}{Numerical solutions of the Ornstein Zernike equations}}{205}{chapter.836}
-\contentsline {section}{\tocsection {}{5.1}{Background}}{205}{section.837}
-\contentsline {section}{\tocsection {}{5.2}{Numerical implementation of the iterative algorithm in {\tt SASfit }}}{207}{section.851}
-\contentsline {section}{\tocsection {}{5.3}{Thermodynamic Parameters and Consistency Tests}}{210}{section.891}
-\contentsline {section}{\tocsection {}{5.4}{Closures}}{213}{section.908}
-\contentsline {subsection}{\tocsubsection {}{5.4.1}{Hypernetted-chain(HNC) approximation}}{213}{subsection.909}
-\contentsline {subsection}{\tocsubsection {}{5.4.2}{Reference hypernetted chain closure (RHNC)}}{213}{subsection.912}
-\contentsline {subsection}{\tocsubsection {}{5.4.3}{modified hypernetted chain closure (MHNC)}}{214}{subsection.914}
-\contentsline {subsection}{\tocsubsection {}{5.4.4}{Kovalenko-Hirata or partially linearized hypernetted chain closure (KH, PLHNC)}}{214}{subsection.916}
-\contentsline {subsection}{\tocsubsection {}{5.4.5}{Percus-Yevick (PY) approximation}}{214}{subsection.918}
-\contentsline {subsection}{\tocsubsection {}{5.4.6}{Mean Spherical Approximation (MSA)}}{215}{subsection.921}
-\contentsline {subsection}{\tocsubsection {}{5.4.7}{Rescaled Mean Spherical Approximation (RMSA)}}{215}{subsection.924}
-\contentsline {subsection}{\tocsubsection {}{5.4.8}{"Soft core" MSA (SMSA) Approximation}}{215}{subsection.925}
-\contentsline {subsection}{\tocsubsection {}{5.4.9}{Verlet Approximation}}{216}{subsection.927}
-\contentsline {subsection}{\tocsubsection {}{5.4.10}{Choudhury-Gosh (CG) Approximation}}{216}{subsection.929}
-\contentsline {subsection}{\tocsubsection {}{5.4.11}{Duh-Haymet (DH) Approximation }}{216}{subsection.931}
-\contentsline {subsection}{\tocsubsection {}{5.4.12}{Martynov-Sarkisov (MS) Approximation}}{217}{subsection.934}
-\contentsline {subsection}{\tocsubsection {}{5.4.13}{Ballone, Pastore, Galli, and Gazzillo (BPGG) approximations }}{217}{subsection.936}
-\contentsline {subsection}{\tocsubsection {}{5.4.14}{Vompe-Martynov (VM) Approximation}}{217}{subsection.938}
-\contentsline {subsection}{\tocsubsection {}{5.4.15}{Bomont-Bretonnet (BB) Approximation}}{217}{subsection.940}
-\contentsline {subsection}{\tocsubsection {}{5.4.16}{Charpentier-Jakse' semiempirical extention of the VM Approximation (CJ-VM)}}{218}{subsection.942}
-\contentsline {subsection}{\tocsubsection {}{5.4.17}{HNC-SMSA (HMSA) Approximation}}{218}{subsection.944}
-\contentsline {subsection}{\tocsubsection {}{5.4.18}{Roger-Young (RY) closure}}{218}{subsection.947}
-\contentsline {subsection}{\tocsubsection {}{5.4.19}{Zero separation theorem based closure (ZSEP)}}{219}{subsection.950}
-\contentsline {section}{\tocsection {}{5.5}{Interaction Potentials}}{219}{section.952}
-\contentsline {subsection}{\tocsubsection {}{5.5.1}{Hard Sphere Potential}}{220}{subsection.953}
-\contentsline {subsection}{\tocsubsection {}{5.5.2}{Sticky Hard Sphere Potential (SHS)}}{221}{subsection.960}
-\contentsline {subsection}{\tocsubsection {}{5.5.3}{Soft Sphere Potential}}{223}{subsection.970}
-\contentsline {subsection}{\tocsubsection {}{5.5.4}{Penetrable Sphere Model}}{224}{subsection.975}
-\contentsline {subsection}{\tocsubsection {}{5.5.5}{Generalized Gaussian Core Model Potential - GGCM-n Potential}}{225}{subsection.980}
-\contentsline {subsection}{\tocsubsection {}{5.5.6}{Fermi Distribution Model}}{226}{subsection.985}
-\contentsline {subsection}{\tocsubsection {}{5.5.7}{Star Polymer Potential}}{227}{subsection.990}
-\contentsline {subsection}{\tocsubsection {}{5.5.8}{Lennard-Jones Potential}}{229}{subsection.1000}
-\contentsline {subsection}{\tocsubsection {}{5.5.9}{Depletion Potential}}{230}{subsection.1009}
-\contentsline {subsection}{\tocsubsection {}{5.5.10}{Ionic Microgel Potential}}{235}{subsection.1052}
-\contentsline {subsection}{\tocsubsection {}{5.5.11}{DLVO Potential}}{236}{subsection.1057}
-\contentsline {subsection}{\tocsubsection {}{5.5.12}{Hard Core 3Yukawa Potential}}{238}{subsection.1073}
-\contentsline {section}{\tocsection {}{5.6}{GUI interface for the Ornstein Zernike solver}}{239}{section.1085}
-\contentsline {chapter}{\tocchapter {Chapter}{6}{Size Distributions}}{243}{chapter.1089}
-\contentsline {section}{\tocsection {}{6.1}{Delta}}{243}{section.1090}
-\contentsline {section}{\tocsection {}{6.2}{Uniform distribution}}{244}{section.1091}
-\contentsline {section}{\tocsection {}{6.3}{Triangular distribution}}{245}{section.1095}
-\contentsline {section}{\tocsection {}{6.4}{Log-Normal distribution}}{246}{section.1099}
-\contentsline {section}{\tocsection {}{6.5}{Schulz-Zimm (Flory) distribution}}{248}{section.1110}
-\contentsline {section}{\tocsection {}{6.6}{Gamma distribution}}{250}{section.1124}
-\contentsline {section}{\tocsection {}{6.7}{PearsonIII distribution}}{252}{section.1133}
-\contentsline {section}{\tocsection {}{6.8}{Gauss distribution}}{253}{section.1135}
-\contentsline {section}{\tocsection {}{6.9}{Generalized exponential distribution (GEX)}}{254}{section.1140}
-\contentsline {section}{\tocsection {}{6.10}{Generalized extreme value distribution (GEV)}}{255}{section.1148}
-\contentsline {section}{\tocsection {}{6.11}{Maxwell distribution}}{257}{section.1152}
-\contentsline {section}{\tocsection {}{6.12}{Weibull distribution}}{258}{section.1158}
-\contentsline {section}{\tocsection {}{6.13}{fractal size distribution}}{259}{section.1161}
-\contentsline {chapter}{\tocchapter {Chapter}{7}{Peak functions}}{261}{chapter.1164}
-\contentsline {section}{\tocsection {}{7.1}{Beta}}{262}{section.1165}
-\contentsline {subsection}{\tocsubsection {}{7.1.1}{Beta (Amplitude)}}{262}{subsection.1168}
-\contentsline {subsection}{\tocsubsection {}{7.1.2}{Beta (Area)}}{262}{subsection.1171}
-\contentsline {section}{\tocsection {}{7.2}{Chi-Squared}}{264}{section.1173}
-\contentsline {subsection}{\tocsubsection {}{7.2.1}{Chi-Squared (Amplitude)}}{264}{subsection.1177}
-\contentsline {subsection}{\tocsubsection {}{7.2.2}{Chi-Squared (Area)}}{265}{subsection.1184}
-\contentsline {section}{\tocsection {}{7.3}{Erfc peak}}{267}{section.1191}
-\contentsline {subsection}{\tocsubsection {}{7.3.1}{Erfc (Amplitude)}}{267}{subsection.1192}
-\contentsline {subsection}{\tocsubsection {}{7.3.2}{Erfc (Area)}}{268}{subsection.1195}
-\contentsline {section}{\tocsection {}{7.4}{Error peak}}{269}{section.1198}
-\contentsline {subsection}{\tocsubsection {}{7.4.1}{Error (Amplitude)}}{269}{subsection.1199}
-\contentsline {subsection}{\tocsubsection {}{7.4.2}{Error (Area)}}{270}{subsection.1202}
-\contentsline {section}{\tocsection {}{7.5}{Exponentially Modified Gaussian}}{271}{section.1205}
-\contentsline {subsection}{\tocsubsection {}{7.5.1}{Exponentially Modified Gaussian (Amplitude)}}{271}{subsection.1206}
-\contentsline {subsection}{\tocsubsection {}{7.5.2}{Exponentially Modified Gaussian (Area)}}{273}{subsection.1209}
-\contentsline {section}{\tocsection {}{7.6}{Extreme Value}}{274}{section.1212}
-\contentsline {subsection}{\tocsubsection {}{7.6.1}{Extreme Value (Amplitude)}}{274}{subsection.1213}
-\contentsline {subsection}{\tocsubsection {}{7.6.2}{Extreme Value (Area)}}{275}{subsection.1216}
-\contentsline {section}{\tocsection {}{7.7}{F-Variance}}{276}{section.1219}
-\contentsline {subsection}{\tocsubsection {}{7.7.1}{F-Variance (Amplitude)}}{276}{subsection.1222}
-\contentsline {subsection}{\tocsubsection {}{7.7.2}{F-Variance (Area)}}{277}{subsection.1226}
-\contentsline {section}{\tocsection {}{7.8}{Gamma}}{279}{section.1230}
-\contentsline {subsection}{\tocsubsection {}{7.8.1}{Gamma (Amplitude)}}{279}{subsection.1233}
-\contentsline {subsection}{\tocsubsection {}{7.8.2}{Gamma (Area)}}{280}{subsection.1236}
-\contentsline {section}{\tocsection {}{7.9}{Gaussian or Normal distribution}}{282}{section.1239}
-\contentsline {subsection}{\tocsubsection {}{7.9.1}{Gaussian (Amplitude)}}{282}{subsection.1240}
-\contentsline {subsection}{\tocsubsection {}{7.9.2}{Gaussian (Area)}}{283}{subsection.1243}
-\contentsline {section}{\tocsection {}{7.10}{Gaussian-Lorentzian cross product}}{284}{section.1246}
-\contentsline {subsection}{\tocsubsection {}{7.10.1}{Gaussian-Lorentzian cross product (Amplitude)}}{285}{subsection.1247}
-\contentsline {subsection}{\tocsubsection {}{7.10.2}{Gaussian-Lorentzian cross product (Area)}}{286}{subsection.1250}
-\contentsline {section}{\tocsection {}{7.11}{Gaussian-Lorentzian sum}}{287}{section.1253}
-\contentsline {subsection}{\tocsubsection {}{7.11.1}{Gaussian-Lorentzian sum (Amplitude)}}{288}{subsection.1254}
-\contentsline {subsection}{\tocsubsection {}{7.11.2}{Gaussian-Lorentzian sum (Area)}}{289}{subsection.1257}
-\contentsline {section}{\tocsection {}{7.12}{generalized Gaussian 1}}{290}{section.1260}
-\contentsline {subsection}{\tocsubsection {}{7.12.1}{generalized Gaussian 1 (Amplitude)}}{291}{subsection.1261}
-\contentsline {subsection}{\tocsubsection {}{7.12.2}{generalized Gaussian 1 (Area)}}{292}{subsection.1264}
-\contentsline {section}{\tocsection {}{7.13}{generalized Gaussian 2}}{293}{section.1267}
-\contentsline {subsection}{\tocsubsection {}{7.13.1}{generalized Gaussian 2 (Amplitude)}}{294}{subsection.1269}
-\contentsline {subsection}{\tocsubsection {}{7.13.2}{generalized Gaussian 2 (Area)}}{295}{subsection.1274}
-\contentsline {section}{\tocsection {}{7.14}{Giddings}}{296}{section.1280}
-\contentsline {subsection}{\tocsubsection {}{7.14.1}{Giddings (Amplitude)}}{297}{subsection.1281}
-\contentsline {subsection}{\tocsubsection {}{7.14.2}{Giddings (Area)}}{298}{subsection.1286}
-\contentsline {section}{\tocsection {}{7.15}{Haarhoff - Van der Linde (Area)}}{299}{section.1289}
-\contentsline {section}{\tocsection {}{7.16}{Half Gaussian Modified Gaussian (Area)}}{301}{section.1294}
-\contentsline {section}{\tocsection {}{7.17}{Inverted Gamma}}{303}{section.1297}
-\contentsline {subsection}{\tocsubsection {}{7.17.1}{Inverted Gamma (Amplitude)}}{304}{subsection.1299}
-\contentsline {subsection}{\tocsubsection {}{7.17.2}{Inverted Gamma (Area)}}{305}{subsection.1302}
-\contentsline {section}{\tocsection {}{7.18}{Kumaraswamy}}{306}{section.1305}
-\contentsline {subsection}{\tocsubsection {}{7.18.1}{Kumaraswamy (Amplitude)}}{306}{subsection.1308}
-\contentsline {section}{\tocsection {}{7.19}{Kumaraswamy (Area)}}{308}{section.1311}
-\contentsline {section}{\tocsection {}{7.20}{Laplace}}{309}{section.1314}
-\contentsline {subsection}{\tocsubsection {}{7.20.1}{Laplace (Amplitude)}}{309}{subsection.1316}
-\contentsline {subsection}{\tocsubsection {}{7.20.2}{Laplace (Area)}}{310}{subsection.1319}
-\contentsline {section}{\tocsection {}{7.21}{Logistic}}{311}{section.1322}
-\contentsline {subsection}{\tocsubsection {}{7.21.1}{Logistic (Amplitude)}}{311}{subsection.1324}
-\contentsline {subsection}{\tocsubsection {}{7.21.2}{Logistic (Area)}}{312}{subsection.1327}
-\contentsline {section}{\tocsection {}{7.22}{LogLogistic}}{313}{section.1330}
-\contentsline {subsection}{\tocsubsection {}{7.22.1}{LogLogistic (Amplitude)}}{313}{subsection.1333}
-\contentsline {subsection}{\tocsubsection {}{7.22.2}{LogLogistic (Area)}}{315}{subsection.1336}
-\contentsline {section}{\tocsection {}{7.23}{Lognormal 4-Parameter}}{316}{section.1339}
-\contentsline {subsection}{\tocsubsection {}{7.23.1}{Lognormal 4-Parameter (Amplitude)}}{316}{subsection.1340}
-\contentsline {subsection}{\tocsubsection {}{7.23.2}{Lognormal 4-Parameter (Area)}}{317}{subsection.1343}
-\contentsline {section}{\tocsection {}{7.24}{LogNormal}}{318}{section.1346}
-\contentsline {subsection}{\tocsubsection {}{7.24.1}{LogNormal (Amplitude)}}{319}{subsection.1353}
-\contentsline {subsection}{\tocsubsection {}{7.24.2}{LogNormal (Area)}}{320}{subsection.1356}
-\contentsline {section}{\tocsection {}{7.25}{Lorentzian or Cauchy distribution}}{321}{section.1359}
-\contentsline {subsection}{\tocsubsection {}{7.25.1}{Lorentzian (Amplitude)}}{321}{subsection.1361}
-\contentsline {subsection}{\tocsubsection {}{7.25.2}{Lorentzian (Area)}}{322}{subsection.1363}
-\contentsline {section}{\tocsection {}{7.26}{Maxwell-Boltzmann distribution}}{323}{section.1365}
-\contentsline {subsection}{\tocsubsection {}{7.26.1}{Maxwell (Amplitude)}}{324}{subsection.1368}
-\contentsline {subsection}{\tocsubsection {}{7.26.2}{Maxwell (Area)}}{325}{subsection.1371}
-\contentsline {subsection}{\tocsubsection {}{7.26.3}{generalized Maxwell (Amplitude)}}{326}{subsection.1374}
-\contentsline {subsection}{\tocsubsection {}{7.26.4}{generalized Maxwell (Area)}}{327}{subsection.1377}
-\contentsline {section}{\tocsection {}{7.27}{Pearson-IV}}{328}{section.1380}
-\contentsline {subsection}{\tocsubsection {}{7.27.1}{Pearson-IV (Amplitude)}}{328}{subsection.1385}
-\contentsline {subsection}{\tocsubsection {}{7.27.2}{Pearson-IV (Area)}}{329}{subsection.1387}
-\contentsline {section}{\tocsection {}{7.28}{Pearson-VII}}{330}{section.1389}
-\contentsline {subsection}{\tocsubsection {}{7.28.1}{Pearson-VII (Amplitude)}}{332}{subsection.1396}
-\contentsline {subsection}{\tocsubsection {}{7.28.2}{Pearson-VII (Area)}}{333}{subsection.1398}
-\contentsline {section}{\tocsection {}{7.29}{Pulse Peak}}{334}{section.1400}
-\contentsline {subsection}{\tocsubsection {}{7.29.1}{Pulse Peak (Amplitude)}}{334}{subsection.1403}
-\contentsline {subsection}{\tocsubsection {}{7.29.2}{Pulse Peak (Area)}}{335}{subsection.1405}
-\contentsline {section}{\tocsection {}{7.30}{Pulse Peak with 2nd Width Term}}{336}{section.1407}
-\contentsline {subsection}{\tocsubsection {}{7.30.1}{Pulse Peak with 2nd Width Term (Amplitude)}}{336}{subsection.1410}
-\contentsline {subsection}{\tocsubsection {}{7.30.2}{Pulse Peak with 2nd Width Term (Area)}}{337}{subsection.1412}
-\contentsline {section}{\tocsection {}{7.31}{Pulse Peak with Power Term}}{338}{section.1414}
-\contentsline {subsection}{\tocsubsection {}{7.31.1}{Pulse Peak with Power Term (Amplitude)}}{338}{subsection.1417}
-\contentsline {subsection}{\tocsubsection {}{7.31.2}{Pulse Peak with Power Term (Area)}}{339}{subsection.1419}
-\contentsline {section}{\tocsection {}{7.32}{Student-t}}{340}{section.1421}
-\contentsline {subsection}{\tocsubsection {}{7.32.1}{Student-t (Amplitude)}}{340}{subsection.1423}
-\contentsline {subsection}{\tocsubsection {}{7.32.2}{Student-t (Area)}}{341}{subsection.1425}
-\contentsline {section}{\tocsection {}{7.33}{Voigt}}{342}{section.1427}
-\contentsline {subsection}{\tocsubsection {}{7.33.1}{Voigt (Amplitude)}}{343}{subsection.1436}
-\contentsline {subsection}{\tocsubsection {}{7.33.2}{Voigt (Area)}}{344}{subsection.1439}
-\contentsline {subsection}{\tocsubsection {}{7.33.3}{Weibull}}{345}{subsection.1442}
-\contentsline {subsection}{\tocsubsection {}{7.33.4}{Weibull (Amplitude)}}{345}{subsection.1445}
-\contentsline {subsection}{\tocsubsection {}{7.33.5}{Weibull (Area)}}{346}{subsection.1448}
-\contentsline {chapter}{\tocchapter {Chapter}{8}{Plugin functions for form factors}}{347}{chapter.1451}
-\contentsline {section}{\tocsection {}{8.1}{Non spherical-symmetric randomly oriented particles}}{347}{section.1452}
-\contentsline {subsection}{\tocsubsection {}{8.1.1}{Rectangular parallelepiped}}{347}{subsection.1453}
-\contentsline {section}{\tocsection {}{8.2}{Very anisotropic particles (local planar \& local cylindrical objects)}}{350}{section.1461}
-\contentsline {subsection}{\tocsubsection {}{8.2.1}{Pcs(Q) for planar obj.}}{351}{subsection.1465}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.1}{Pcs(Q) for a homogeneous cross-section}}{352}{subsubsection.1467}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.2}{Pcs(Q) for two infinitely thin parallel layers}}{354}{subsubsection.1471}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.3}{Pcs(Q) for a layered centro symmetric cross-section structure}}{356}{subsubsection.1475}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.4}{Pcs(Q) for a bilayer with a Gaussian electron density profile \cite {Pabst2000,Pabst2003}}}{358}{subsubsection.1479}
-\contentsline {subsection}{\tocsubsection {}{8.2.2}{Pcs(Q) for cylindrical obj.}}{360}{subsection.1488}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.2.1}{Pcs(Q) for homogeneous cross-section of a cylinder}}{361}{subsubsection.1490}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.2.2}{Pcs(Q) for cross-section of a cylindrical shell with elliptical cross section}}{363}{subsubsection.1493}
-\contentsline {subsection}{\tocsubsection {}{8.2.3}{P'(Q) for local planar obj.}}{364}{subsection.1498}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.1}{P'(Q): thin discs}}{365}{subsubsection.1499}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.2}{P'(Q): thin spherical shell}}{367}{subsubsection.1502}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.3}{P'(Q): thin ellipsoidal shell}}{369}{subsubsection.1505}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.4}{P'(Q): thin hollow cylinder}}{371}{subsubsection.1508}
-\contentsline {subsection}{\tocsubsection {}{8.2.4}{P'(Q) for local cylindrical obj.}}{373}{subsection.1514}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.1}{P'(Q): rods}}{374}{subsubsection.1515}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.2}{P'(Q): Kholodenko's worm}}{375}{subsubsection.1517}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.3}{P'(Q): wormlike PS1}}{377}{subsubsection.1525}
-\contentsline {paragraph}{\tocparagraph {}{}{\textbf {Without Excluded Volume Effects.}}}{377}{section*.1526}
-\contentsline {paragraph}{\tocparagraph {}{}{\textbf {With Excluded Volume Effects.}}}{378}{section*.1538}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.4}{P'(Q): wormlike PS2}}{381}{subsubsection.1546}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.5}{P'(Q): wormlike PS3}}{382}{subsubsection.1547}
-\contentsline {subsection}{\tocsubsection {}{8.2.5}{local planar obj.}}{382}{subsection.1548}
-\contentsline {subsection}{\tocsubsection {}{8.2.6}{local cylindrical obj.}}{382}{subsection.1549}
-\contentsline {section}{\tocsection {}{8.3}{Spherical core-shell structures with smooth or fuzzy interfaces}}{383}{section.1550}
-\contentsline {subsection}{\tocsubsection {}{8.3.1}{JuelichCoreShell}}{384}{subsection.1560}
-\contentsline {subsection}{\tocsubsection {}{8.3.2}{Fuzzy Sphere}}{387}{subsection.1590}
-\contentsline {subsection}{\tocsubsection {}{8.3.3}{CoreShellMicrogel}}{390}{figure.1607}
-\contentsline {subsection}{\tocsubsection {}{8.3.4}{Spherical shell with linear varying contrast profile (LinShell)}}{393}{subsection.1621}
-\contentsline {subsection}{\tocsubsection {}{8.3.5}{LinShell2}}{396}{subsection.1634}
-\contentsline {subsection}{\tocsubsection {}{8.3.6}{ExpShell}}{398}{subsection.1645}
-\contentsline {subsection}{\tocsubsection {}{8.3.7}{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$}}{401}{subsection.1658}
-\contentsline {section}{\tocsection {}{8.4}{Ellipsoidal Objects}}{405}{section.1675}
-\contentsline {subsection}{\tocsubsection {}{8.4.1}{Ellipsoid of revolution or spheroid}}{405}{subsection.1677}
-\contentsline {subsection}{\tocsubsection {}{8.4.2}{Ellipsoid with two equal equatorial semi-axis $R$ and volume $V$}}{409}{subsection.1688}
-\contentsline {subsection}{\tocsubsection {}{8.4.3}{Ellipsoidal core shell structure}}{410}{subsection.1691}
-\contentsline {subsection}{\tocsubsection {}{8.4.4}{triaxial ellipsoidal core shell structure}}{413}{subsection.1696}
-\contentsline {section}{\tocsection {}{8.5}{Cylindrical objects}}{416}{section.1703}
-\contentsline {subsection}{\tocsubsection {}{8.5.1}{Helical structures}}{416}{subsection.1704}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.1}{Fanlike helix}}{416}{subsubsection.1705}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.2}{Helix with round cross-section}}{418}{subsubsection.1715}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.3}{Beads model of a single helical strand}}{421}{subsubsection.1724}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.4}{straight superhelix}}{423}{subsubsection.1735}
-\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.5}{coiled superhelix}}{425}{subsubsection.1743}
-\contentsline {section}{\tocsection {}{8.6}{Sheared and deformed objects}}{428}{section.1757}
-\contentsline {section}{\tocsection {}{8.7}{Non-equilibrium static form factor of a reptating chain}}{428}{section.1758}
-\contentsline {subsection}{\tocsubsection {}{8.7.1}{ShearedCylinderHayterPenfold \cite {Hayter1984}}}{429}{subsection.1767}
-\contentsline {subsection}{\tocsubsection {}{8.7.2}{Maier-Saupe orientation distribution}}{432}{subsection.1778}
-\contentsline {subsection}{\tocsubsection {}{8.7.3}{Onsager orientation distribution}}{433}{subsection.1781}
-\contentsline {subsection}{\tocsubsection {}{8.7.4}{Boltzmann orientation distribution}}{434}{subsection.1783}
-\contentsline {subsection}{\tocsubsection {}{8.7.5}{Gaussian orientation distribution}}{435}{subsection.1786}
-\contentsline {subsection}{\tocsubsection {}{8.7.6}{ShearedCylinderHeaviside}}{436}{subsection.1789}
-\contentsline {section}{\tocsection {}{8.8}{Form factors of magnetic objects}}{437}{section.1792}
-\contentsline {subsection}{\tocsubsection {}{8.8.1}{Magnetic spin misalignment}}{438}{subsection.1793}
-\contentsline {subsection}{\tocsubsection {}{8.8.2}{Ferrofluids}}{440}{subsection.1801}
-\contentsline {subsection}{\tocsubsection {}{8.8.3}{Langevin statistics for averages of the form factor and averages of the squared form factor}}{443}{subsection.1816}
-\contentsline {section}{\tocsection {}{8.9}{Bi-continuous and non-particulate structures}}{447}{section.1840}
-\contentsline {subsection}{\tocsubsection {}{8.9.1}{Teubner-Strey}}{447}{subsection.1841}
-\contentsline {subsection}{\tocsubsection {}{8.9.2}{Debye-Anderson-Brumberger(DAB)}}{450}{subsection.1859}
-\contentsline {subsection}{\tocsubsection {}{8.9.3}{Generalization of the Debye-Anderson-Brumberger model (gDAB)}}{451}{subsection.1863}
-\contentsline {subsection}{\tocsubsection {}{8.9.4}{Spinodal}}{452}{subsection.1867}
-\contentsline {subsection}{\tocsubsection {}{8.9.5}{OrnsteinZernike}}{454}{subsection.1871}
-\contentsline {subsection}{\tocsubsection {}{8.9.6}{Broad-Peak}}{455}{subsection.1874}
-\contentsline {subsection}{\tocsubsection {}{8.9.7}{generalized Guinier approximation \cite {Fratzl1994,Hjelm1992,Hjelm1995,Hjelm2000}}}{457}{subsection.1877}
-\contentsline {subsection}{\tocsubsection {}{8.9.8}{generalized Guinier-Porod law}}{459}{subsection.1881}
-\contentsline {section}{\tocsection {}{8.10}{Functions for analysing azimuthal averaged data}}{461}{section.1888}
-\contentsline {subsection}{\tocsubsection {}{8.10.1}{$\qopname \relax o{sin}^2$-$\qopname \relax o{sin}^4$ azimuthal analysis}}{461}{subsection.1889}
-\contentsline {subsection}{\tocsubsection {}{8.10.2}{Maier-Saupe azimuthal analysis}}{461}{subsection.1890}
-\contentsline {subsection}{\tocsubsection {}{8.10.3}{Ellipsoidal azimuthal analysis}}{461}{subsection.1891}
-\contentsline {section}{\tocsection {}{8.11}{fractal size distribution of particles}}{462}{section.1892}
-\contentsline {section}{\tocsection {}{8.12}{Plugin functions for SESANS}}{466}{section.1912}
-\contentsline {subsection}{\tocsubsection {}{8.12.1}{$G(z)$ of a sphere}}{468}{subsection.1936}
-\contentsline {section}{\tocsection {}{8.13}{$G(z)$ of a randomly distributed, two-phase system (DAB) }}{469}{section.1940}
-\contentsline {section}{\tocsection {}{8.14}{$G(z)$ of a self-affine random density distribution (gDAB) }}{470}{section.1944}
-\contentsline {section}{\tocsection {}{8.15}{$G(z)$ for a generalized Gaussian coil (gGc) }}{470}{section.1948}
-\contentsline {chapter}{\tocchapter {Chapter}{9}{Plugin functions for size distributions}}{473}{chapter.1955}
-\contentsline {section}{\tocsection {}{9.1}{LogNorm\_fp}}{473}{section.1956}
-\contentsline {chapter}{\tocchapter {Chapter}{10}{Plugin functions for structure factors}}{477}{chapter.1968}
-\contentsline {section}{\tocsection {}{10.1}{Structure factor of a random flight model}}{477}{section.1969}
-\contentsline {section}{\tocsection {}{10.2}{ordered particle systems}}{478}{section.1974}
-\contentsline {subsection}{\tocsubsection {}{10.2.1}{Domains of ordered particle systems isotropically oriented}}{479}{subsection.1987}
-\contentsline {subsection}{\tocsubsection {}{10.2.2}{Domains of ordered particle systems with preferred orientation}}{482}{subsection.2015}
-\contentsline {chapter}{\tocchapter {Chapter}{11}{Absolute intensities, moments and volume fractions}}{485}{chapter.2020}
-\contentsline {section}{\tocsection {}{11.1}{Fitting absolute intensities}}{485}{section.2021}
-\contentsline {section}{\tocsection {}{11.2}{Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale}}{487}{section.2033}
-\contentsline {section}{\tocsection {}{11.3}{Moments of scattering curves and size distribution}}{489}{section.2046}
-\contentsline {section}{\tocsection {}{11.4}{Volume fractions}}{492}{section.2061}
-\contentsline {chapter}{\tocchapter {Chapter}{12}{Basic Analysis of Dynamic Light Scattering Data}}{495}{chapter.2067}
-\contentsline {section}{\tocsection {}{12.1}{Cumulant Analysis}}{496}{section.2073}
-\contentsline {section}{\tocsection {}{12.2}{Double Decay Cumulant Analysis}}{497}{section.2078}
-\contentsline {section}{\tocsection {}{12.3}{Fit of Double Stretched Exponentials}}{498}{section.2080}
-\contentsline {subsection}{\tocsubsection {}{12.3.1}{The least squares minimiser and the robust least squares procedure}}{499}{subsection.2082}
-\contentsline {chapter}{\tocchapter {Chapter}{13}{Scattering Theory}}{501}{chapter.2088}
-\contentsline {section}{\tocsection {}{13.1}{Scattering Cross-Section}}{501}{section.2089}
-\contentsline {subsection}{\tocsubsection {}{13.1.1}{Scattering of neutrons on atoms}}{502}{subsection.2093}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.1.1.1}{Nuclear scattering}}{503}{subsubsection.2103}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.1.1.2}{Magnetic Scattering}}{504}{subsubsection.2108}
-\contentsline {subsection}{\tocsubsection {}{13.1.2}{Scattering of x-ray at atoms}}{506}{subsection.2120}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.1.2.1}{Anomalous scattering of x-rays}}{507}{subsubsection.2128}
-\contentsline {section}{\tocsection {}{13.2}{Small angle scattering}}{508}{section.2132}
-\contentsline {subsection}{\tocsubsection {}{13.2.1}{Autocorrelation function $\Gamma ({\bf r})$ and $\gamma ({\bf r})$}}{509}{subsection.2139}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.1}{Isotropic averages}}{509}{subsubsection.2140}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.2}{Absence of long range order}}{510}{subsubsection.2144}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.3}{Limits $r=0$ and $r=\infty $}}{510}{subsubsection.2148}
-\contentsline {subsection}{\tocsubsection {}{13.2.2}{Volume fraction}}{511}{subsection.2151}
-\contentsline {subsection}{\tocsubsection {}{13.2.3}{Interparticle interferences}}{511}{subsection.2156}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.3.1}{Isotropic ensemble of particles}}{513}{subsubsection.2162}
-\contentsline {subsection}{\tocsubsection {}{13.2.4}{Influence of the relative arrangement of scatterers on interparticle interferences}}{513}{subsection.2164}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.1}{Formula from Prins and Zernicke}}{514}{subsubsection.2170}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.2}{Isolate particles}}{515}{subsubsection.2175}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.3}{Polydisperse System of isolated particles}}{515}{subsubsection.2177}
-\contentsline {subsection}{\tocsubsection {}{13.2.5}{Influence of $N(R)$ and $F(Q,R)$ on interparticle interferences}}{516}{subsection.2179}
-\contentsline {subsection}{\tocsubsection {}{13.2.6}{Scattering laws and structural parameter}}{517}{subsection.2184}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.1}{Porod volume}}{517}{subsubsection.2185}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.2}{Radius of gyration and Guinier approximation}}{518}{subsubsection.2187}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.3}{Correlation length}}{518}{subsubsection.2191}
-\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.4}{Porod law and specific surfaces}}{519}{subsubsection.2194}
-\contentsline {chapter}{\tocchapter {Chapter}{14}{Experimental Setup of a Small Angle Scattering Instrument}}{521}{chapter.2202}
-\contentsline {section}{\tocsection {}{14.1}{SANS-Camera}}{521}{section.2203}
-\contentsline {section}{\tocsection {}{14.2}{SAXS-Camera}}{521}{section.2205}
-\contentsline {chapter}{\tocchapter {Chapter}{15}{Data Reduction in SAS}}{523}{chapter.2207}
-\contentsline {section}{\tocsection {}{15.1}{Correction and Normalization of SANS-Raw data}}{523}{section.2208}
-\contentsline {subsection}{\tocsubsection {}{15.1.1}{Contribution of the isolated sample}}{523}{subsection.2212}
-\contentsline {subsection}{\tocsubsection {}{15.1.2}{Correction for sample holder and background noise}}{524}{subsection.2216}
-\contentsline {section}{\tocsection {}{15.2}{Correction and normalization of SAXS raw data}}{525}{section.2221}
-\contentsline {chapter}{\tocappendix {Appendix}{}{Bibliography}}{535}{appendix*.2232}
+\contentsline {chapter}{\tocchapter {Chapter}{1}{Introduction to the data analysis program {\tt SASfit }}}{15}{chapter.1}
+\contentsline {section}{\tocsection {}{1.1}{Overview}}{15}{section.2}
+\contentsline {section}{\tocsection {}{1.2}{System Requirements And Software Installation}}{16}{section.4}
+\contentsline {section}{\tocsection {}{1.3}{Installation Procedure}}{16}{section.5}
+\contentsline {chapter}{\tocchapter {Chapter}{2}{Quick Start Tour}}{19}{chapter.9}
+\contentsline {section}{\tocsection {}{2.1}{User Interface Window}}{19}{section.10}
+\contentsline {section}{\tocsection {}{2.2}{Importing data files for a single data set}}{20}{section.14}
+\contentsline {section}{\tocsection {}{2.3}{Importing data files for multiple data sets}}{22}{section.23}
+\contentsline {section}{\tocsection {}{2.4}{Reducing the number of data points}}{22}{section.29}
+\contentsline {section}{\tocsection {}{2.5}{Simulating scattering curves}}{24}{section.38}
+\contentsline {section}{\tocsection {}{2.6}{Fitting}}{25}{section.42}
+\contentsline {subsection}{\tocsubsection {}{2.6.1}{Model Independent Fitting (Integral parameters)}}{25}{subsection.43}
+\contentsline {subsection}{\tocsubsection {}{2.6.2}{Model dependent analysis}}{27}{subsection.55}
+\contentsline {subsubsection}{\tocsubsubsection {}{2.6.2.1}{Modeling a single data set}}{27}{subsubsection.56}
+\contentsline {subsubsection}{\tocsubsubsection {}{2.6.2.2}{Modeling multiple data sets}}{28}{subsubsection.62}
+\contentsline {section}{\tocsection {}{2.7}{Criteria for goodness-of-fit}}{32}{section.76}
+\contentsline {subsection}{\tocsubsection {}{2.7.1}{chi square test}}{32}{subsection.77}
+\contentsline {subsection}{\tocsubsection {}{2.7.2}{R-factor}}{33}{subsection.82}
+\contentsline {subsection}{\tocsubsection {}{2.7.3}{Confidence interval of the fitting parameter}}{34}{subsection.86}
+\contentsline {section}{\tocsection {}{2.8}{Fitting strategies}}{36}{section.97}
+\contentsline {section}{\tocsection {}{2.9}{Data I/O Formats}}{37}{section.98}
+\contentsline {subsection}{\tocsubsection {}{2.9.1}{Input Format}}{37}{subsection.99}
+\contentsline {subsection}{\tocsubsection {}{2.9.2}{Error bar}}{39}{subsection.100}
+\contentsline {subsection}{\tocsubsection {}{2.9.3}{Export Format}}{40}{subsection.107}
+\contentsline {section}{\tocsection {}{2.10}{Scattering length density calculator}}{41}{section.108}
+\contentsline {section}{\tocsection {}{2.11}{Resolution Function}}{43}{section.110}
+\contentsline {chapter}{\tocchapter {Chapter}{3}{Form Factors}}{45}{chapter.124}
+\contentsline {section}{\tocsection {}{3.1}{Spheres \& Shells}}{45}{section.125}
+\contentsline {subsection}{\tocsubsection {}{3.1.1}{Sphere}}{45}{subsection.126}
+\contentsline {subsection}{\tocsubsection {}{3.1.2}{Spherical Shell i}}{47}{subsection.132}
+\contentsline {subsection}{\tocsubsection {}{3.1.3}{Spherical Shell ii}}{49}{subsection.137}
+\contentsline {subsection}{\tocsubsection {}{3.1.4}{Spherical Shell iii}}{51}{subsection.142}
+\contentsline {subsection}{\tocsubsection {}{3.1.5}{Bilayered Vesicle}}{53}{subsection.147}
+\contentsline {subsection}{\tocsubsection {}{3.1.6}{Multi Lamellar Vesicle}}{55}{subsection.152}
+\contentsline {subsection}{\tocsubsection {}{3.1.7}{RNDMultiLamellarVesicle}}{57}{subsection.157}
+\contentsline {subsection}{\tocsubsection {}{3.1.8}{Vesicle with aligned flat capped ends \cite {Kaya:aj5008,Kaya:aj5016}}}{59}{subsection.170}
+\contentsline {section}{\tocsection {}{3.2}{Polymers and Micelles}}{62}{section.191}
+\contentsline {subsection}{\tocsubsection {}{3.2.1}{Gaussian chain}}{62}{subsection.192}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.1}{Gauss \cite {Debye1947}}}{64}{subsubsection.217}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.2}{Gauss2 \cite {Debye1947}}}{65}{subsubsection.220}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.3}{Gauss3 \cite {Debye1947}}}{65}{subsubsection.222}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.4}{Polydisperse flexible polymers with Gaussian statistics \cite {Pedersen2002}}}{66}{subsubsection.225}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.5}{generalized Gaussian coil \cite {Hammouda,Hammouda2012,Hammouda1993,Hammouda2016}}}{67}{subsubsection.228}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.6}{generalized Gaussian coil 2 \cite {Hammouda,Hammouda2012}}}{68}{subsubsection.231}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.1.7}{generalized Gaussian coil 3 \cite {Hammouda,Hammouda2012}}}{68}{subsubsection.234}
+\contentsline {subsection}{\tocsubsection {}{3.2.2}{Star polymer with Gaussian statistic according to Benoit \cite {Benoit53}}}{70}{subsection.238}
+\contentsline {subsection}{\tocsubsection {}{3.2.3}{Polydisperse star polymer with Gaussian statistics \cite {Burchard1974}}}{72}{subsection.242}
+\contentsline {subsection}{\tocsubsection {}{3.2.4}{Star polymer according to Dozier \cite {dozier91}}}{74}{subsection.246}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.4.1}{Dozier}}{74}{subsubsection.247}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.4.2}{Dozier2}}{76}{subsubsection.251}
+\contentsline {subsection}{\tocsubsection {}{3.2.5}{Flexible Ring Polymer \cite {Burchard1996}}}{78}{subsection.254}
+\contentsline {subsection}{\tocsubsection {}{3.2.6}{$m$-membered twisted ring \cite {Burchard1996}}}{80}{subsection.261}
+\contentsline {subsection}{\tocsubsection {}{3.2.7}{Daisy-like Ring \cite {Burchard1996}}}{82}{subsection.269}
+\contentsline {subsection}{\tocsubsection {}{3.2.8}{Unified Exponential Power Law according to Beaucage \cite {beaucage95,beaucage96}}}{84}{subsection.277}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.8.1}{Beaucage}}{84}{subsubsection.279}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.8.2}{Beaucage2}}{87}{subsubsection.282}
+\contentsline {subsection}{\tocsubsection {}{3.2.9}{WormLikeChainEXV \cite {Pedersen96Macrom}}}{89}{subsection.285}
+\contentsline {subsection}{\tocsubsection {}{3.2.10}{KholodenkoWorm}}{91}{subsection.289}
+\contentsline {subsection}{\tocsubsection {}{3.2.11}{Diblock copolymer micelles}}{94}{subsection.299}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.1}{Micelles with a homogeneous core and Gaussian chains on the surface}}{94}{subsubsection.304}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.2}{\bf Spherical core:}}{95}{subsubsection.306}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.3}{\bf ellipsoidal core with semi-axis $(R,R,\epsilon R)$:}}{98}{subsubsection.321}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.4}{\bf cylindrical core with radius $R_\text {core}$ and height $H$:}}{101}{subsubsection.336}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.5}{\bf wormlike micelles with cylindrical cross-section with radius $R_\text {core}$, Kuhn-length $l$ and contour length $L$:}}{104}{subsubsection.353}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.6}{\bf micelles with rod-like core:}}{107}{subsubsection.370}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.7}{Micelles with a homogeneous core and a corona with decaying density profile . of the form $\varphi (r)\varpropto r^{-\alpha }$}}{109}{subsubsection.378}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.8}{\bf spherical core:}}{110}{subsubsection.385}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.9}{\bf rodlike core:}}{114}{subsubsection.397}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.2.11.10}{spherical Micelles with a homogeneous core and a corona of semi-flexible interacting self-avoiding chains}}{117}{subsubsection.412}
+\contentsline {subsection}{\tocsubsection {}{3.2.12}{Sphere with Gaussian chains attached}}{117}{subsection.413}
+\contentsline {subsection}{\tocsubsection {}{3.2.13}{Sphere with Gaussian chains attached (block copolymer micelle)}}{119}{subsection.423}
+\contentsline {section}{\tocsection {}{3.3}{Clustered Objects}}{120}{section.430}
+\contentsline {subsection}{\tocsubsection {}{3.3.1}{Mass Fractal \cite {Sorensen1999,Sorensen1992,Hurd1988,Lin1989,Lin1990,Lin1990a,Lin1990b}}}{120}{subsection.431}
+\contentsline {subsection}{\tocsubsection {}{3.3.2}{Stacked Discs \cite {Kratky1949,Hanley2003}}}{122}{subsection.438}
+\contentsline {subsection}{\tocsubsection {}{3.3.3}{DumbbellShell}}{124}{subsection.447}
+\contentsline {subsection}{\tocsubsection {}{3.3.4}{DoubleShellChain}}{125}{subsection.449}
+\contentsline {subsection}{\tocsubsection {}{3.3.5}{simplified cluster}}{127}{subsection.456}
+\contentsline {section}{\tocsection {}{3.4}{Cylindrical Objects}}{128}{section.457}
+\contentsline {subsection}{\tocsubsection {}{3.4.1}{Disc}}{128}{subsection.458}
+\contentsline {subsection}{\tocsubsection {}{3.4.2}{Rod}}{129}{subsection.462}
+\contentsline {subsection}{\tocsubsection {}{3.4.3}{Porod's approximation for a long cylinder \cite {Porod1948}}}{130}{subsection.466}
+\contentsline {subsection}{\tocsubsection {}{3.4.4}{Porod's approximation for a flat cylinder \cite {Porod1948}}}{132}{subsection.474}
+\contentsline {subsection}{\tocsubsection {}{3.4.5}{Porod's approximations for cylinder \cite {Porod1948}}}{134}{subsection.483}
+\contentsline {subsection}{\tocsubsection {}{3.4.6}{Cylinder of length $L$, radius $R$ and scattering contrast $\Delta \eta $}}{136}{subsection.488}
+\contentsline {subsection}{\tocsubsection {}{3.4.7}{Random oriented cylindrical shell with circular cross-section}}{137}{subsection.492}
+\contentsline {subsection}{\tocsubsection {}{3.4.8}{Random oriented cylindrical shell with elliptical cross-section}}{140}{subsection.503}
+\contentsline {subsection}{\tocsubsection {}{3.4.9}{Torus with elliptical shell cross-section \cite {Kawaguchi2001,Forster1999}}}{143}{subsection.517}
+\contentsline {subsection}{\tocsubsection {}{3.4.10}{stacked tori with elliptical shell cross-section}}{145}{subsection.525}
+\contentsline {section}{\tocsection {}{3.5}{Local Planar Objects}}{147}{section.528}
+\contentsline {subsection}{\tocsubsection {}{3.5.1}{Shape factors $P'(Q)$}}{147}{subsection.530}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.1}{Polydisperse infinitesimal thin discs}}{147}{subsubsection.531}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.2}{Infinitesimal thin spherical shell}}{147}{subsubsection.534}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.3}{Infinitesimal thin elliptical shell}}{148}{subsubsection.537}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.5.1.4}{Infinitesimal thin cylindrical shell}}{148}{subsubsection.540}
+\contentsline {subsection}{\tocsubsection {}{3.5.2}{Cross-section form factors $P_\text {cs}(Q)$}}{149}{subsection.542}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.5.2.1}{homogeneousXS}}{149}{subsubsection.543}
+\contentsline {subsection}{\tocsubsection {}{3.5.3}{TwoInfinitelyThinPlates}}{150}{subsection.546}
+\contentsline {subsection}{\tocsubsection {}{3.5.4}{LayeredCentroSymmetricXS}}{151}{subsection.549}
+\contentsline {subsection}{\tocsubsection {}{3.5.5}{BiLayerGauss \cite {Pabst2000}}}{152}{subsection.552}
+\contentsline {section}{\tocsection {}{3.6}{Magnetic Scattering}}{153}{section.559}
+\contentsline {subsection}{\tocsubsection {}{3.6.1}{Magnetic Saturation}}{155}{subsection.567}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.6.1.1}{MagneticShellAniso}}{155}{subsubsection.568}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.6.1.2}{MagneticShellCrossTerm}}{156}{subsubsection.575}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.6.1.3}{MagneticShellPsi}}{157}{subsubsection.581}
+\contentsline {subsection}{\tocsubsection {}{3.6.2}{Superparamagnetic Particles (like ferrofluids)}}{158}{subsection.587}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.1}{SuperparamagneticFFpsi}}{158}{subsubsection.591}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.2}{SuperparamagneticFFAniso}}{158}{subsubsection.592}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.3}{SuperparamagneticFFIso}}{158}{subsubsection.593}
+\contentsline {subsubsection}{\tocsubsubsection {}{3.6.2.4}{SuperparamagneticFFCrossTerm}}{158}{subsubsection.594}
+\contentsline {section}{\tocsection {}{3.7}{Lorenz-Mie Form Factors for Static Light Scattering}}{159}{section.595}
+\contentsline {subsection}{\tocsubsection {}{3.7.1}{MieSphere}}{159}{subsection.596}
+\contentsline {subsection}{\tocsubsection {}{3.7.2}{MieShell}}{161}{subsection.598}
+\contentsline {section}{\tocsection {}{3.8}{Other functions}}{163}{section.600}
+\contentsline {subsection}{\tocsubsection {}{3.8.1}{DLS\_Sphere\_RDG}}{163}{subsection.601}
+\contentsline {subsection}{\tocsubsection {}{3.8.2}{Langevin}}{164}{subsection.603}
+\contentsline {subsection}{\tocsubsection {}{3.8.3}{SuperParStroboPsi}}{165}{subsection.605}
+\contentsline {subsection}{\tocsubsection {}{3.8.4}{SuperParStroboPsiSQ}}{172}{subsection.665}
+\contentsline {subsection}{\tocsubsection {}{3.8.5}{SuperParStroboPsiSQBt}}{173}{subsection.673}
+\contentsline {subsection}{\tocsubsection {}{3.8.6}{SuperParStroboPsiSQLx}}{173}{subsection.675}
+\contentsline {subsection}{\tocsubsection {}{3.8.7}{SuperParStroboPsiSQL2x}}{173}{subsection.677}
+\contentsline {chapter}{\tocchapter {Chapter}{4}{Analytical Solutions for Structure factors}}{175}{chapter.679}
+\contentsline {section}{\tocsection {}{4.1}{Methods to include structure factors}}{175}{section.680}
+\contentsline {subsection}{\tocsubsection {}{4.1.1}{Monodisperse approach}}{175}{subsection.682}
+\contentsline {subsection}{\tocsubsection {}{4.1.2}{Decoupling approximation}}{175}{subsection.684}
+\contentsline {subsection}{\tocsubsection {}{4.1.3}{Local monodisperse approximation}}{176}{subsection.687}
+\contentsline {subsection}{\tocsubsection {}{4.1.4}{partial structure factors}}{176}{subsection.690}
+\contentsline {subsection}{\tocsubsection {}{4.1.5}{Scaling approximation}}{177}{subsection.692}
+\contentsline {subsection}{\tocsubsection {}{4.1.6}{van der Waals one-fluid approximation}}{177}{subsection.696}
+\contentsline {section}{\tocsection {}{4.2}{Hard \& Sticky Hard Sphere}}{179}{section.701}
+\contentsline {subsection}{\tocsubsection {}{4.2.1}{Hard Sphere \cite {Percus1958,Vrij1979} }}{179}{equation.703}
+\contentsline {subsection}{\tocsubsection {}{4.2.2}{Sticky Hard Sphere}}{180}{subsection.712}
+\contentsline {subsection}{\tocsubsection {}{4.2.3}{Sticky Hard Sphere ($2^\text {nd}$ version \cite {Regnaut1989,Regnaut1990})}}{182}{subsection.726}
+\contentsline {subsection}{\tocsubsection {}{4.2.4}{Square Well Potential \cite {Sharma1977}}}{184}{subsection.743}
+\contentsline {subsection}{\tocsubsection {}{4.2.5}{Square Well Potential 2}}{186}{subsection.752}
+\contentsline {section}{\tocsection {}{4.3}{Multi Lamellar Structures}}{187}{section.755}
+\contentsline {subsection}{\tocsubsection {}{4.3.1}{Multi-Lamellar Structures, Thermal Disorder}}{187}{subsection.756}
+\contentsline {subsection}{\tocsubsection {}{4.3.2}{Multi-Lamellar Structures, Paracrystalline Theory}}{189}{subsection.763}
+\contentsline {subsection}{\tocsubsection {}{4.3.3}{Multi-Lamellar Structures, Modified Caill\'e Theory}}{192}{subsection.770}
+\contentsline {section}{\tocsection {}{4.4}{Mass Fractal}}{195}{section.777}
+\contentsline {subsection}{\tocsubsection {}{4.4.1}{Mass Fractal (Exp Cut-Off)}}{197}{subsection.792}
+\contentsline {subsection}{\tocsubsection {}{4.4.2}{Mass Fractal (Exp(-x\^{}a) Cut-Off)}}{198}{subsection.794}
+\contentsline {subsection}{\tocsubsection {}{4.4.3}{Mass Fractal (Gaussian Cut-Off)}}{199}{subsection.796}
+\contentsline {subsection}{\tocsubsection {}{4.4.4}{Mass Fractal (OverlapSph Cut-Off)}}{200}{subsection.798}
+\contentsline {section}{\tocsection {}{4.5}{Other Structure Factors}}{201}{section.800}
+\contentsline {subsection}{\tocsubsection {}{4.5.1}{Hayter-Penfold RMSA \cite {Hayter1981,Hansen1982}}}{201}{subsection.801}
+\contentsline {subsection}{\tocsubsection {}{4.5.2}{MacroIon}}{202}{equation.803}
+\contentsline {subsection}{\tocsubsection {}{4.5.3}{Critical Scattering}}{203}{equation.814}
+\contentsline {subsection}{\tocsubsection {}{4.5.4}{Cylinder(PRISM)}}{203}{equation.816}
+\contentsline {subsection}{\tocsubsection {}{4.5.5}{Voigt Peak}}{204}{subsection.817}
+\contentsline {chapter}{\tocchapter {Chapter}{5}{Numerical solutions of the Ornstein Zernike equations}}{205}{chapter.825}
+\contentsline {section}{\tocsection {}{5.1}{Background}}{205}{section.826}
+\contentsline {section}{\tocsection {}{5.2}{Numerical implementation of the iterative algorithm in {\tt SASfit }}}{207}{section.840}
+\contentsline {section}{\tocsection {}{5.3}{Thermodynamic Parameters and Consistency Tests}}{210}{section.880}
+\contentsline {section}{\tocsection {}{5.4}{Closures}}{213}{section.897}
+\contentsline {subsection}{\tocsubsection {}{5.4.1}{Hypernetted-chain(HNC) approximation}}{213}{subsection.898}
+\contentsline {subsection}{\tocsubsection {}{5.4.2}{Reference hypernetted chain closure (RHNC)}}{213}{subsection.901}
+\contentsline {subsection}{\tocsubsection {}{5.4.3}{modified hypernetted chain closure (MHNC)}}{214}{subsection.903}
+\contentsline {subsection}{\tocsubsection {}{5.4.4}{Kovalenko-Hirata or partially linearized hypernetted chain closure (KH, PLHNC)}}{214}{subsection.905}
+\contentsline {subsection}{\tocsubsection {}{5.4.5}{Percus-Yevick (PY) approximation}}{214}{subsection.907}
+\contentsline {subsection}{\tocsubsection {}{5.4.6}{Mean Spherical Approximation (MSA)}}{215}{subsection.910}
+\contentsline {subsection}{\tocsubsection {}{5.4.7}{Rescaled Mean Spherical Approximation (RMSA)}}{215}{subsection.913}
+\contentsline {subsection}{\tocsubsection {}{5.4.8}{"Soft core" MSA (SMSA) Approximation}}{215}{subsection.914}
+\contentsline {subsection}{\tocsubsection {}{5.4.9}{Verlet Approximation}}{216}{subsection.916}
+\contentsline {subsection}{\tocsubsection {}{5.4.10}{Choudhury-Gosh (CG) Approximation}}{216}{subsection.918}
+\contentsline {subsection}{\tocsubsection {}{5.4.11}{Duh-Haymet (DH) Approximation }}{216}{subsection.920}
+\contentsline {subsection}{\tocsubsection {}{5.4.12}{Martynov-Sarkisov (MS) Approximation}}{217}{subsection.923}
+\contentsline {subsection}{\tocsubsection {}{5.4.13}{Ballone, Pastore, Galli, and Gazzillo (BPGG) approximations }}{217}{subsection.925}
+\contentsline {subsection}{\tocsubsection {}{5.4.14}{Vompe-Martynov (VM) Approximation}}{217}{subsection.927}
+\contentsline {subsection}{\tocsubsection {}{5.4.15}{Bomont-Bretonnet (BB) Approximation}}{217}{subsection.929}
+\contentsline {subsection}{\tocsubsection {}{5.4.16}{Charpentier-Jakse' semiempirical extention of the VM Approximation (CJ-VM)}}{218}{subsection.931}
+\contentsline {subsection}{\tocsubsection {}{5.4.17}{HNC-SMSA (HMSA) Approximation}}{218}{subsection.933}
+\contentsline {subsection}{\tocsubsection {}{5.4.18}{Roger-Young (RY) closure}}{218}{subsection.936}
+\contentsline {subsection}{\tocsubsection {}{5.4.19}{Zero separation theorem based closure (ZSEP)}}{219}{subsection.939}
+\contentsline {section}{\tocsection {}{5.5}{Interaction Potentials}}{219}{section.941}
+\contentsline {subsection}{\tocsubsection {}{5.5.1}{Hard Sphere Potential}}{220}{subsection.942}
+\contentsline {subsection}{\tocsubsection {}{5.5.2}{Sticky Hard Sphere Potential (SHS)}}{221}{subsection.949}
+\contentsline {subsection}{\tocsubsection {}{5.5.3}{Soft Sphere Potential}}{223}{subsection.959}
+\contentsline {subsection}{\tocsubsection {}{5.5.4}{Penetrable Sphere Model}}{224}{subsection.964}
+\contentsline {subsection}{\tocsubsection {}{5.5.5}{Generalized Gaussian Core Model Potential - GGCM-n Potential}}{225}{subsection.969}
+\contentsline {subsection}{\tocsubsection {}{5.5.6}{Fermi Distribution Model}}{226}{subsection.974}
+\contentsline {subsection}{\tocsubsection {}{5.5.7}{Star Polymer Potential}}{227}{subsection.979}
+\contentsline {subsection}{\tocsubsection {}{5.5.8}{Lennard-Jones Potential}}{229}{subsection.989}
+\contentsline {subsection}{\tocsubsection {}{5.5.9}{Depletion Potential}}{230}{subsection.998}
+\contentsline {subsection}{\tocsubsection {}{5.5.10}{Ionic Microgel Potential}}{235}{subsection.1041}
+\contentsline {subsection}{\tocsubsection {}{5.5.11}{DLVO Potential}}{236}{subsection.1046}
+\contentsline {subsection}{\tocsubsection {}{5.5.12}{Hard Core 3Yukawa Potential}}{238}{subsection.1062}
+\contentsline {section}{\tocsection {}{5.6}{GUI interface for the Ornstein Zernike solver}}{239}{section.1074}
+\contentsline {chapter}{\tocchapter {Chapter}{6}{Size Distributions}}{243}{chapter.1078}
+\contentsline {section}{\tocsection {}{6.1}{Delta}}{243}{section.1079}
+\contentsline {section}{\tocsection {}{6.2}{Uniform distribution}}{244}{section.1080}
+\contentsline {section}{\tocsection {}{6.3}{Triangular distribution}}{245}{section.1084}
+\contentsline {section}{\tocsection {}{6.4}{Log-Normal distribution}}{246}{section.1088}
+\contentsline {section}{\tocsection {}{6.5}{Schulz-Zimm (Flory) distribution}}{248}{section.1099}
+\contentsline {section}{\tocsection {}{6.6}{Gamma distribution}}{250}{section.1113}
+\contentsline {section}{\tocsection {}{6.7}{PearsonIII distribution}}{252}{section.1122}
+\contentsline {section}{\tocsection {}{6.8}{Gauss distribution}}{253}{section.1124}
+\contentsline {section}{\tocsection {}{6.9}{Generalized exponential distribution (GEX)}}{254}{section.1129}
+\contentsline {section}{\tocsection {}{6.10}{Generalized extreme value distribution (GEV)}}{255}{section.1137}
+\contentsline {section}{\tocsection {}{6.11}{Maxwell distribution}}{257}{section.1141}
+\contentsline {section}{\tocsection {}{6.12}{Weibull distribution}}{258}{section.1147}
+\contentsline {section}{\tocsection {}{6.13}{fractal size distribution}}{259}{section.1150}
+\contentsline {chapter}{\tocchapter {Chapter}{7}{Peak functions}}{261}{chapter.1153}
+\contentsline {section}{\tocsection {}{7.1}{Beta}}{262}{section.1154}
+\contentsline {subsection}{\tocsubsection {}{7.1.1}{Beta (Amplitude)}}{262}{subsection.1157}
+\contentsline {subsection}{\tocsubsection {}{7.1.2}{Beta (Area)}}{262}{subsection.1160}
+\contentsline {section}{\tocsection {}{7.2}{Chi-Squared}}{264}{section.1162}
+\contentsline {subsection}{\tocsubsection {}{7.2.1}{Chi-Squared (Amplitude)}}{264}{subsection.1166}
+\contentsline {subsection}{\tocsubsection {}{7.2.2}{Chi-Squared (Area)}}{265}{subsection.1173}
+\contentsline {section}{\tocsection {}{7.3}{Erfc peak}}{267}{section.1180}
+\contentsline {subsection}{\tocsubsection {}{7.3.1}{Erfc (Amplitude)}}{267}{subsection.1181}
+\contentsline {subsection}{\tocsubsection {}{7.3.2}{Erfc (Area)}}{268}{subsection.1184}
+\contentsline {section}{\tocsection {}{7.4}{Error peak}}{269}{section.1187}
+\contentsline {subsection}{\tocsubsection {}{7.4.1}{Error (Amplitude)}}{269}{subsection.1188}
+\contentsline {subsection}{\tocsubsection {}{7.4.2}{Error (Area)}}{270}{subsection.1191}
+\contentsline {section}{\tocsection {}{7.5}{Exponentially Modified Gaussian}}{271}{section.1194}
+\contentsline {subsection}{\tocsubsection {}{7.5.1}{Exponentially Modified Gaussian (Amplitude)}}{271}{subsection.1195}
+\contentsline {subsection}{\tocsubsection {}{7.5.2}{Exponentially Modified Gaussian (Area)}}{273}{subsection.1198}
+\contentsline {section}{\tocsection {}{7.6}{Extreme Value}}{274}{section.1201}
+\contentsline {subsection}{\tocsubsection {}{7.6.1}{Extreme Value (Amplitude)}}{274}{subsection.1202}
+\contentsline {subsection}{\tocsubsection {}{7.6.2}{Extreme Value (Area)}}{275}{subsection.1205}
+\contentsline {section}{\tocsection {}{7.7}{F-Variance}}{276}{section.1208}
+\contentsline {subsection}{\tocsubsection {}{7.7.1}{F-Variance (Amplitude)}}{276}{subsection.1211}
+\contentsline {subsection}{\tocsubsection {}{7.7.2}{F-Variance (Area)}}{277}{subsection.1215}
+\contentsline {section}{\tocsection {}{7.8}{Gamma}}{279}{section.1219}
+\contentsline {subsection}{\tocsubsection {}{7.8.1}{Gamma (Amplitude)}}{279}{subsection.1222}
+\contentsline {subsection}{\tocsubsection {}{7.8.2}{Gamma (Area)}}{280}{subsection.1225}
+\contentsline {section}{\tocsection {}{7.9}{Gaussian or Normal distribution}}{282}{section.1228}
+\contentsline {subsection}{\tocsubsection {}{7.9.1}{Gaussian (Amplitude)}}{282}{subsection.1229}
+\contentsline {subsection}{\tocsubsection {}{7.9.2}{Gaussian (Area)}}{283}{subsection.1232}
+\contentsline {section}{\tocsection {}{7.10}{Gaussian-Lorentzian cross product}}{284}{section.1235}
+\contentsline {subsection}{\tocsubsection {}{7.10.1}{Gaussian-Lorentzian cross product (Amplitude)}}{285}{subsection.1236}
+\contentsline {subsection}{\tocsubsection {}{7.10.2}{Gaussian-Lorentzian cross product (Area)}}{286}{subsection.1239}
+\contentsline {section}{\tocsection {}{7.11}{Gaussian-Lorentzian sum}}{287}{section.1242}
+\contentsline {subsection}{\tocsubsection {}{7.11.1}{Gaussian-Lorentzian sum (Amplitude)}}{288}{subsection.1243}
+\contentsline {subsection}{\tocsubsection {}{7.11.2}{Gaussian-Lorentzian sum (Area)}}{289}{subsection.1246}
+\contentsline {section}{\tocsection {}{7.12}{generalized Gaussian 1}}{290}{section.1249}
+\contentsline {subsection}{\tocsubsection {}{7.12.1}{generalized Gaussian 1 (Amplitude)}}{291}{subsection.1250}
+\contentsline {subsection}{\tocsubsection {}{7.12.2}{generalized Gaussian 1 (Area)}}{292}{subsection.1253}
+\contentsline {section}{\tocsection {}{7.13}{generalized Gaussian 2}}{293}{section.1256}
+\contentsline {subsection}{\tocsubsection {}{7.13.1}{generalized Gaussian 2 (Amplitude)}}{294}{subsection.1258}
+\contentsline {subsection}{\tocsubsection {}{7.13.2}{generalized Gaussian 2 (Area)}}{295}{subsection.1263}
+\contentsline {section}{\tocsection {}{7.14}{Giddings}}{296}{section.1269}
+\contentsline {subsection}{\tocsubsection {}{7.14.1}{Giddings (Amplitude)}}{297}{subsection.1270}
+\contentsline {subsection}{\tocsubsection {}{7.14.2}{Giddings (Area)}}{298}{subsection.1275}
+\contentsline {section}{\tocsection {}{7.15}{Haarhoff - Van der Linde (Area)}}{299}{section.1278}
+\contentsline {section}{\tocsection {}{7.16}{Half Gaussian Modified Gaussian (Area)}}{301}{section.1283}
+\contentsline {section}{\tocsection {}{7.17}{Inverted Gamma}}{303}{section.1286}
+\contentsline {subsection}{\tocsubsection {}{7.17.1}{Inverted Gamma (Amplitude)}}{304}{subsection.1288}
+\contentsline {subsection}{\tocsubsection {}{7.17.2}{Inverted Gamma (Area)}}{305}{subsection.1291}
+\contentsline {section}{\tocsection {}{7.18}{Kumaraswamy}}{306}{section.1294}
+\contentsline {subsection}{\tocsubsection {}{7.18.1}{Kumaraswamy (Amplitude)}}{306}{subsection.1297}
+\contentsline {section}{\tocsection {}{7.19}{Kumaraswamy (Area)}}{308}{section.1300}
+\contentsline {section}{\tocsection {}{7.20}{Laplace}}{309}{section.1303}
+\contentsline {subsection}{\tocsubsection {}{7.20.1}{Laplace (Amplitude)}}{309}{subsection.1305}
+\contentsline {subsection}{\tocsubsection {}{7.20.2}{Laplace (Area)}}{310}{subsection.1308}
+\contentsline {section}{\tocsection {}{7.21}{Logistic}}{311}{section.1311}
+\contentsline {subsection}{\tocsubsection {}{7.21.1}{Logistic (Amplitude)}}{311}{subsection.1313}
+\contentsline {subsection}{\tocsubsection {}{7.21.2}{Logistic (Area)}}{312}{subsection.1316}
+\contentsline {section}{\tocsection {}{7.22}{LogLogistic}}{313}{section.1319}
+\contentsline {subsection}{\tocsubsection {}{7.22.1}{LogLogistic (Amplitude)}}{313}{subsection.1322}
+\contentsline {subsection}{\tocsubsection {}{7.22.2}{LogLogistic (Area)}}{315}{subsection.1325}
+\contentsline {section}{\tocsection {}{7.23}{Lognormal 4-Parameter}}{316}{section.1328}
+\contentsline {subsection}{\tocsubsection {}{7.23.1}{Lognormal 4-Parameter (Amplitude)}}{316}{subsection.1329}
+\contentsline {subsection}{\tocsubsection {}{7.23.2}{Lognormal 4-Parameter (Area)}}{317}{subsection.1332}
+\contentsline {section}{\tocsection {}{7.24}{LogNormal}}{318}{section.1335}
+\contentsline {subsection}{\tocsubsection {}{7.24.1}{LogNormal (Amplitude)}}{319}{subsection.1342}
+\contentsline {subsection}{\tocsubsection {}{7.24.2}{LogNormal (Area)}}{320}{subsection.1345}
+\contentsline {section}{\tocsection {}{7.25}{Lorentzian or Cauchy distribution}}{321}{section.1348}
+\contentsline {subsection}{\tocsubsection {}{7.25.1}{Lorentzian (Amplitude)}}{321}{subsection.1350}
+\contentsline {subsection}{\tocsubsection {}{7.25.2}{Lorentzian (Area)}}{322}{subsection.1352}
+\contentsline {section}{\tocsection {}{7.26}{Maxwell-Boltzmann distribution}}{323}{section.1354}
+\contentsline {subsection}{\tocsubsection {}{7.26.1}{Maxwell (Amplitude)}}{324}{subsection.1357}
+\contentsline {subsection}{\tocsubsection {}{7.26.2}{Maxwell (Area)}}{325}{subsection.1360}
+\contentsline {subsection}{\tocsubsection {}{7.26.3}{generalized Maxwell (Amplitude)}}{326}{subsection.1363}
+\contentsline {subsection}{\tocsubsection {}{7.26.4}{generalized Maxwell (Area)}}{327}{subsection.1366}
+\contentsline {section}{\tocsection {}{7.27}{Pearson-IV}}{328}{section.1369}
+\contentsline {subsection}{\tocsubsection {}{7.27.1}{Pearson-IV (Amplitude)}}{328}{subsection.1374}
+\contentsline {subsection}{\tocsubsection {}{7.27.2}{Pearson-IV (Area)}}{329}{subsection.1376}
+\contentsline {section}{\tocsection {}{7.28}{Pearson-VII}}{330}{section.1378}
+\contentsline {subsection}{\tocsubsection {}{7.28.1}{Pearson-VII (Amplitude)}}{332}{subsection.1385}
+\contentsline {subsection}{\tocsubsection {}{7.28.2}{Pearson-VII (Area)}}{333}{subsection.1387}
+\contentsline {section}{\tocsection {}{7.29}{Pulse Peak}}{334}{section.1389}
+\contentsline {subsection}{\tocsubsection {}{7.29.1}{Pulse Peak (Amplitude)}}{334}{subsection.1392}
+\contentsline {subsection}{\tocsubsection {}{7.29.2}{Pulse Peak (Area)}}{335}{subsection.1394}
+\contentsline {section}{\tocsection {}{7.30}{Pulse Peak with 2nd Width Term}}{336}{section.1396}
+\contentsline {subsection}{\tocsubsection {}{7.30.1}{Pulse Peak with 2nd Width Term (Amplitude)}}{336}{subsection.1399}
+\contentsline {subsection}{\tocsubsection {}{7.30.2}{Pulse Peak with 2nd Width Term (Area)}}{337}{subsection.1401}
+\contentsline {section}{\tocsection {}{7.31}{Pulse Peak with Power Term}}{338}{section.1403}
+\contentsline {subsection}{\tocsubsection {}{7.31.1}{Pulse Peak with Power Term (Amplitude)}}{338}{subsection.1406}
+\contentsline {subsection}{\tocsubsection {}{7.31.2}{Pulse Peak with Power Term (Area)}}{339}{subsection.1408}
+\contentsline {section}{\tocsection {}{7.32}{Student-t}}{340}{section.1410}
+\contentsline {subsection}{\tocsubsection {}{7.32.1}{Student-t (Amplitude)}}{340}{subsection.1412}
+\contentsline {subsection}{\tocsubsection {}{7.32.2}{Student-t (Area)}}{341}{subsection.1414}
+\contentsline {section}{\tocsection {}{7.33}{Voigt}}{342}{section.1416}
+\contentsline {subsection}{\tocsubsection {}{7.33.1}{Voigt (Amplitude)}}{343}{subsection.1425}
+\contentsline {subsection}{\tocsubsection {}{7.33.2}{Voigt (Area)}}{344}{subsection.1428}
+\contentsline {subsection}{\tocsubsection {}{7.33.3}{Weibull}}{345}{subsection.1431}
+\contentsline {subsection}{\tocsubsection {}{7.33.4}{Weibull (Amplitude)}}{345}{subsection.1434}
+\contentsline {subsection}{\tocsubsection {}{7.33.5}{Weibull (Area)}}{346}{subsection.1437}
+\contentsline {chapter}{\tocchapter {Chapter}{8}{Plugin functions for form factors}}{347}{chapter.1440}
+\contentsline {section}{\tocsection {}{8.1}{Non spherical-symmetric randomly oriented particles}}{347}{section.1441}
+\contentsline {subsection}{\tocsubsection {}{8.1.1}{Rectangular parallelepiped}}{347}{subsection.1442}
+\contentsline {section}{\tocsection {}{8.2}{Very anisotropic particles (local planar \& local cylindrical objects)}}{350}{section.1450}
+\contentsline {subsection}{\tocsubsection {}{8.2.1}{Pcs(Q) for planar obj.}}{351}{subsection.1454}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.1}{Pcs(Q) for a homogeneous cross-section}}{352}{subsubsection.1456}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.2}{Pcs(Q) for two infinitely thin parallel layers}}{354}{subsubsection.1460}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.3}{Pcs(Q) for a layered centro symmetric cross-section structure}}{356}{subsubsection.1464}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.1.4}{Pcs(Q) for a bilayer with a Gaussian electron density profile \cite {Pabst2000,Pabst2003}}}{358}{subsubsection.1468}
+\contentsline {subsection}{\tocsubsection {}{8.2.2}{Pcs(Q) for cylindrical obj.}}{360}{subsection.1477}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.2.1}{Pcs(Q) for homogeneous cross-section of a cylinder}}{361}{subsubsection.1479}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.2.2}{Pcs(Q) for cross-section of a cylindrical shell with elliptical cross section}}{363}{subsubsection.1482}
+\contentsline {subsection}{\tocsubsection {}{8.2.3}{P'(Q) for local planar obj.}}{364}{subsection.1487}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.1}{P'(Q): thin discs}}{365}{subsubsection.1488}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.2}{P'(Q): thin spherical shell}}{367}{subsubsection.1491}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.3}{P'(Q): thin ellipsoidal shell}}{369}{subsubsection.1494}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.3.4}{P'(Q): thin hollow cylinder}}{371}{subsubsection.1497}
+\contentsline {subsection}{\tocsubsection {}{8.2.4}{P'(Q) for local cylindrical obj.}}{373}{subsection.1503}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.1}{P'(Q): rods}}{374}{subsubsection.1504}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.2}{P'(Q): Kholodenko's worm}}{375}{subsubsection.1506}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.3}{P'(Q): wormlike PS1}}{377}{subsubsection.1514}
+\contentsline {paragraph}{\tocparagraph {}{}{\textbf {Without Excluded Volume Effects.}}}{377}{section*.1515}
+\contentsline {paragraph}{\tocparagraph {}{}{\textbf {With Excluded Volume Effects.}}}{378}{section*.1527}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.4}{P'(Q): wormlike PS2}}{381}{subsubsection.1535}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.2.4.5}{P'(Q): wormlike PS3}}{382}{subsubsection.1536}
+\contentsline {subsection}{\tocsubsection {}{8.2.5}{local planar obj.}}{382}{subsection.1537}
+\contentsline {subsection}{\tocsubsection {}{8.2.6}{local cylindrical obj.}}{382}{subsection.1538}
+\contentsline {section}{\tocsection {}{8.3}{Spherical core-shell structures with smooth or fuzzy interfaces}}{383}{section.1539}
+\contentsline {subsection}{\tocsubsection {}{8.3.1}{JuelichCoreShell}}{384}{subsection.1549}
+\contentsline {subsection}{\tocsubsection {}{8.3.2}{Fuzzy Sphere}}{387}{subsection.1579}
+\contentsline {subsection}{\tocsubsection {}{8.3.3}{CoreShellMicrogel}}{390}{figure.1596}
+\contentsline {subsection}{\tocsubsection {}{8.3.4}{Spherical shell with linear varying contrast profile (LinShell)}}{393}{subsection.1610}
+\contentsline {subsection}{\tocsubsection {}{8.3.5}{LinShell2}}{396}{subsection.1623}
+\contentsline {subsection}{\tocsubsection {}{8.3.6}{ExpShell}}{398}{subsection.1634}
+\contentsline {subsection}{\tocsubsection {}{8.3.7}{BoucherSphere, radial profile for a sphere resulting in a Porod law both below and above $q^{-4}$}}{401}{subsection.1647}
+\contentsline {section}{\tocsection {}{8.4}{Ellipsoidal Objects}}{405}{section.1664}
+\contentsline {subsection}{\tocsubsection {}{8.4.1}{Ellipsoid of revolution or spheroid}}{405}{subsection.1666}
+\contentsline {subsection}{\tocsubsection {}{8.4.2}{Ellipsoid with two equal equatorial semi-axis $R$ and volume $V$}}{409}{subsection.1677}
+\contentsline {subsection}{\tocsubsection {}{8.4.3}{Ellipsoidal core shell structure}}{410}{subsection.1680}
+\contentsline {subsection}{\tocsubsection {}{8.4.4}{triaxial ellipsoidal core shell structure}}{413}{subsection.1685}
+\contentsline {section}{\tocsection {}{8.5}{Cylindrical objects}}{416}{section.1692}
+\contentsline {subsection}{\tocsubsection {}{8.5.1}{Helical structures}}{416}{subsection.1693}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.1}{Fanlike helix}}{416}{subsubsection.1694}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.2}{Helix with round cross-section}}{418}{subsubsection.1704}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.3}{Beads model of a single helical strand}}{421}{subsubsection.1713}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.4}{straight superhelix}}{423}{subsubsection.1724}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.5.1.5}{coiled superhelix}}{425}{subsubsection.1732}
+\contentsline {section}{\tocsection {}{8.6}{Sheared and deformed objects}}{428}{section.1746}
+\contentsline {section}{\tocsection {}{8.7}{Non-equilibrium static form factor of a reptating chain}}{428}{section.1747}
+\contentsline {subsection}{\tocsubsection {}{8.7.1}{ShearedCylinderHayterPenfold}}{430}{subsection.1756}
+\contentsline {subsection}{\tocsubsection {}{8.7.2}{partly aligned cylindrical shell}}{433}{subsection.1767}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.7.2.1}{Maier-Saupe orientation distribution}}{436}{subsubsection.1781}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.7.2.2}{Onsager orientation distribution}}{437}{subsubsection.1784}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.7.2.3}{Boltzmann orientation distribution}}{438}{subsubsection.1786}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.7.2.4}{Gaussian orientation distribution}}{439}{subsubsection.1789}
+\contentsline {subsubsection}{\tocsubsubsection {}{8.7.2.5}{ShearedCylinderHeaviside}}{440}{subsubsection.1792}
+\contentsline {section}{\tocsection {}{8.8}{Form factors of magnetic objects}}{441}{section.1795}
+\contentsline {subsection}{\tocsubsection {}{8.8.1}{Magnetic spin misalignment}}{442}{subsection.1796}
+\contentsline {subsection}{\tocsubsection {}{8.8.2}{Ferrofluids}}{444}{subsection.1804}
+\contentsline {subsection}{\tocsubsection {}{8.8.3}{Langevin statistics for averages of the form factor and averages of the squared form factor}}{447}{subsection.1819}
+\contentsline {section}{\tocsection {}{8.9}{Bi-continuous and non-particulate structures}}{451}{section.1843}
+\contentsline {subsection}{\tocsubsection {}{8.9.1}{Teubner-Strey}}{451}{subsection.1844}
+\contentsline {subsection}{\tocsubsection {}{8.9.2}{Debye-Anderson-Brumberger(DAB)}}{454}{subsection.1862}
+\contentsline {subsection}{\tocsubsection {}{8.9.3}{Generalization of the Debye-Anderson-Brumberger model (gDAB)}}{455}{subsection.1866}
+\contentsline {subsection}{\tocsubsection {}{8.9.4}{Spinodal}}{456}{subsection.1870}
+\contentsline {subsection}{\tocsubsection {}{8.9.5}{OrnsteinZernike}}{458}{subsection.1874}
+\contentsline {subsection}{\tocsubsection {}{8.9.6}{Broad-Peak}}{459}{subsection.1877}
+\contentsline {subsection}{\tocsubsection {}{8.9.7}{generalized Guinier approximation \cite {Fratzl1994,Hjelm1992,Hjelm1995,Hjelm2000}}}{461}{subsection.1880}
+\contentsline {subsection}{\tocsubsection {}{8.9.8}{generalized Guinier-Porod law}}{463}{subsection.1884}
+\contentsline {section}{\tocsection {}{8.10}{Functions for analysing azimuthal averaged data}}{465}{section.1891}
+\contentsline {subsection}{\tocsubsection {}{8.10.1}{$\qopname \relax o{sin}^2$-$\qopname \relax o{sin}^4$ azimuthal analysis}}{465}{subsection.1892}
+\contentsline {subsection}{\tocsubsection {}{8.10.2}{Maier-Saupe azimuthal analysis}}{465}{subsection.1893}
+\contentsline {subsection}{\tocsubsection {}{8.10.3}{Ellipsoidal azimuthal analysis}}{465}{subsection.1894}
+\contentsline {section}{\tocsection {}{8.11}{fractal size distribution of particles}}{466}{section.1895}
+\contentsline {section}{\tocsection {}{8.12}{Plugin functions for SESANS}}{470}{section.1915}
+\contentsline {subsection}{\tocsubsection {}{8.12.1}{$G(z)$ of a sphere}}{472}{subsection.1939}
+\contentsline {section}{\tocsection {}{8.13}{$G(z)$ of a randomly distributed, two-phase system (DAB) }}{473}{section.1943}
+\contentsline {section}{\tocsection {}{8.14}{$G(z)$ of a self-affine random density distribution (gDAB) }}{474}{section.1947}
+\contentsline {section}{\tocsection {}{8.15}{$G(z)$ for a generalized Gaussian coil (gGc) }}{474}{section.1951}
+\contentsline {chapter}{\tocchapter {Chapter}{9}{Plugin functions for size distributions}}{477}{chapter.1958}
+\contentsline {section}{\tocsection {}{9.1}{LogNorm\_fp}}{477}{section.1959}
+\contentsline {chapter}{\tocchapter {Chapter}{10}{Plugin functions for structure factors}}{481}{chapter.1971}
+\contentsline {section}{\tocsection {}{10.1}{Structure factor of a random flight model}}{481}{section.1972}
+\contentsline {section}{\tocsection {}{10.2}{ordered particle systems}}{482}{section.1977}
+\contentsline {subsection}{\tocsubsection {}{10.2.1}{Domains of ordered particle systems isotropically oriented}}{483}{subsection.1990}
+\contentsline {subsection}{\tocsubsection {}{10.2.2}{Domains of ordered particle systems with preferred orientation}}{486}{subsection.2018}
+\contentsline {chapter}{\tocchapter {Chapter}{11}{Absolute intensities, moments and volume fractions}}{489}{chapter.2023}
+\contentsline {section}{\tocsection {}{11.1}{Fitting absolute intensities}}{489}{section.2024}
+\contentsline {section}{\tocsection {}{11.2}{Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale}}{491}{section.2036}
+\contentsline {section}{\tocsection {}{11.3}{Moments of scattering curves and size distribution}}{493}{section.2049}
+\contentsline {section}{\tocsection {}{11.4}{Volume fractions}}{496}{section.2064}
+\contentsline {chapter}{\tocchapter {Chapter}{12}{Basic Analysis of Dynamic Light Scattering Data}}{499}{chapter.2070}
+\contentsline {section}{\tocsection {}{12.1}{Cumulant Analysis}}{500}{section.2076}
+\contentsline {section}{\tocsection {}{12.2}{Double Decay Cumulant Analysis}}{501}{section.2081}
+\contentsline {section}{\tocsection {}{12.3}{Fit of Double Stretched Exponentials}}{502}{section.2083}
+\contentsline {subsection}{\tocsubsection {}{12.3.1}{The least squares minimiser and the robust least squares procedure}}{503}{subsection.2085}
+\contentsline {chapter}{\tocchapter {Chapter}{13}{Scattering Theory}}{505}{chapter.2091}
+\contentsline {section}{\tocsection {}{13.1}{Scattering Cross-Section}}{505}{section.2092}
+\contentsline {subsection}{\tocsubsection {}{13.1.1}{Scattering of neutrons on atoms}}{506}{subsection.2096}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.1.1.1}{Nuclear scattering}}{507}{subsubsection.2106}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.1.1.2}{Magnetic Scattering}}{508}{subsubsection.2111}
+\contentsline {subsection}{\tocsubsection {}{13.1.2}{Scattering of x-ray at atoms}}{510}{subsection.2123}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.1.2.1}{Anomalous scattering of x-rays}}{511}{subsubsection.2131}
+\contentsline {section}{\tocsection {}{13.2}{Small angle scattering}}{512}{section.2135}
+\contentsline {subsection}{\tocsubsection {}{13.2.1}{Autocorrelation function $\Gamma ({\bf r})$ and $\gamma ({\bf r})$}}{513}{subsection.2142}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.1}{Isotropic averages}}{513}{subsubsection.2143}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.2}{Absence of long range order}}{514}{subsubsection.2147}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.1.3}{Limits $r=0$ and $r=\infty $}}{514}{subsubsection.2151}
+\contentsline {subsection}{\tocsubsection {}{13.2.2}{Volume fraction}}{515}{subsection.2154}
+\contentsline {subsection}{\tocsubsection {}{13.2.3}{Interparticle interferences}}{515}{subsection.2159}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.3.1}{Isotropic ensemble of particles}}{517}{subsubsection.2165}
+\contentsline {subsection}{\tocsubsection {}{13.2.4}{Influence of the relative arrangement of scatterers on interparticle interferences}}{517}{subsection.2167}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.1}{Formula from Prins and Zernicke}}{518}{subsubsection.2173}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.2}{Isolate particles}}{519}{subsubsection.2178}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.4.3}{Polydisperse System of isolated particles}}{519}{subsubsection.2180}
+\contentsline {subsection}{\tocsubsection {}{13.2.5}{Influence of $N(R)$ and $F(Q,R)$ on interparticle interferences}}{520}{subsection.2182}
+\contentsline {subsection}{\tocsubsection {}{13.2.6}{Scattering laws and structural parameter}}{521}{subsection.2187}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.1}{Porod volume}}{521}{subsubsection.2188}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.2}{Radius of gyration and Guinier approximation}}{522}{subsubsection.2190}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.3}{Correlation length}}{522}{subsubsection.2194}
+\contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.4}{Porod law and specific surfaces}}{523}{subsubsection.2197}
+\contentsline {chapter}{\tocchapter {Chapter}{14}{Experimental Setup of a Small Angle Scattering Instrument}}{525}{chapter.2205}
+\contentsline {section}{\tocsection {}{14.1}{SANS-Camera}}{525}{section.2206}
+\contentsline {section}{\tocsection {}{14.2}{SAXS-Camera}}{525}{section.2208}
+\contentsline {chapter}{\tocchapter {Chapter}{15}{Data Reduction in SAS}}{527}{chapter.2210}
+\contentsline {section}{\tocsection {}{15.1}{Correction and Normalization of SANS-Raw data}}{527}{section.2211}
+\contentsline {subsection}{\tocsubsection {}{15.1.1}{Contribution of the isolated sample}}{527}{subsection.2215}
+\contentsline {subsection}{\tocsubsection {}{15.1.2}{Correction for sample holder and background noise}}{528}{subsection.2219}
+\contentsline {section}{\tocsection {}{15.2}{Correction and normalization of SAXS raw data}}{529}{section.2224}
+\contentsline {chapter}{\tocappendix {Appendix}{}{Bibliography}}{539}{appendix*.2235}

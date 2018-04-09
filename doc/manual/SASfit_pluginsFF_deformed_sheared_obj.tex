@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\clearpage
+\newpage
 \section{Sheared and deformed objects}
 
 \section{Non-equilibrium static form factor of a reptating chain}
@@ -11,9 +11,11 @@
 \label{fig:stretchpolymermelt}
 \end{figure}
 This model \cite{Hong1983,Noolandi1984} describes the scattering behaviour of an uniaxial deformed (stretched) Gaussian polymer chain as a function of the deformation ratio and Rouse relaxation time. The model might not include an up-to-date tube model but shows some main features of deformed polymer melts.
+\newlength\breites
+\settowidth\breites{$\displaystyle {}+{}$}
 \begin{align}
 \begin{split}
-I\left(q,\frac{t}{\tau}\right)/I_0 = & \hspace{\breite}
+I\left(q,\frac{t}{\tau}\right)/I_0 = & \hspace{\breites}
                                         D(\alpha) + \frac{1}{6}(\alpha-\beta) \left(1+e^{-\alpha}\right) H\left(\alpha,\frac{t}{\tau}\right) \\
                                      & + \frac{1}{6}(\alpha-\beta)^2 e^{-\beta} \int_0^1 \mathrm{d}y \, y^3 e^{\beta y} \left(1+e^{-\alpha y}\right) H\left(\alpha y,\frac{t}{\tau y^2}\right)
 \end{split}
@@ -58,17 +60,17 @@ q_\perp &= q \sin(\psi-\theta_0)
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{ShearedCylinderHayterPenfold \cite{Hayter1984}}
+\newpage
+\subsection{ShearedCylinderHayterPenfold}
 \label{sect:ShearedCylinderHayterPenfold}
 \hspace{1pt}\\
-
+The orientation distribution of long cylinders in a shear cell has been studied by \cite{Scheraga1951,Jerrard1959,Hayter1984}. In contrast to the orientation distributions described in the next section this distribution also describes the tilting of the most probable orientation against the flow direction.
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.7\textwidth,height=0.3\textwidth]{sheared_cylinders1.png}
+\includegraphics[width=\textwidth]{sheared_cylinders_n_phi0.png}
 \end{center}
 \caption{Shear orientation of micelles in a shear cell with the
-corresponding SANS-pattern.} \label{sheared_cylinders1}
+corresponding SANS-pattern. The orientation of rods at rest and under shear according to \cite{Scheraga1951} are shown on th e right as a top view on the cuette cell.} \label{sheared_cylinders1}
 \end{figure}
 
 \begin{figure}[htb]
@@ -76,15 +78,19 @@ corresponding SANS-pattern.} \label{sheared_cylinders1}
 \includegraphics[width=0.7\textwidth]{shear_cuette_SANS_geometry.png}
 \end{center}
 \caption{Cartesian and angular coordinates referred to the center
-of a cylindrical micelle at origin. The relationship to the
+of a cylindrical micelle at origin \cite{Hayter1984}. The relationship to the
 spectrometer geometry is shown schematically. The momentum
 transfer, $Q$, lies in the $z-x$ plane.}
 \label{shear_cuette_SANS_geometry}
 \end{figure}
 
 The scattering from monodisperse dilute (non-interacting)
-isotropic solution of anisotropic micelles is given by \BE I(Q) =
-\left< \vert F(Q)\vert^2 \right>_Q \label{IQ_av} \EE where $F(Q)$
+isotropic solution of anisotropic micelles is given by \cite{Hayter1984}
+\BE 
+I(Q) =
+\left< \vert F(Q)\vert^2 \right>_Q \label{IQ_av} 
+\EE 
+where $F(Q)$
 is the form factor for a micelle at a given orientation relative
 to the momentum transfer $Q$ and $\left<\right>_Q$ denotes an
 average over all such orientations.
@@ -105,15 +111,15 @@ The scattering geometry for shear alignment is shown in Fig.
 \ref{shear_cuette_SANS_geometry}. In general perfect alignment
 will not be achieved, and an orientation distribution must be
 employed such that the resultant scattering will be given by
-\BE
-I(Q,\psi) = \int_0^{2\pi}d\varPhi \int_0^\pi
-p(\theta,\varPhi;\Gamma)\, \left(F^2(Q,\gamma^+)+F^2(Q,\gamma^-)
-\right) \sin\theta d\theta
-\EE
-where
 \begin{align}
-\cos\gamma^\pm & = \sin\theta\cos\phi\cos\psi\pm\cos\theta\sin\psi \\[3mm]
-p(\theta,\phi;\Gamma) & = \frac{(1-\cos
+I(Q,\psi) &= \int_0^{2\pi} \int_0^\pi
+p_\mathrm{HP}(\theta,\phi;\Gamma)\, \left(F^2(Q,\gamma^+)+F^2(Q,\gamma^-)
+\right) \sin\theta \mathrm{d}\theta \mathrm{d}\phi
+\label{eq:IQShear_pHP}
+\end{align}
+with
+\begin{align}
+p_\mathrm{HP}(\theta,\phi;\Gamma) & = \frac{(1-\cos
 2\varPhi_0)(1+\sin^2\theta\cos 2\varPhi_0)^{3/2}}{4\pi\left[
 1-\sin^2\theta\cos 2\varPhi_0\cos 2(\phi-\varPhi_0)\right]^2}
 \end{align}
@@ -121,6 +127,68 @@ and
 \BE
 2\varPhi_0 = \arctan(8/\Gamma)
 \EE
+$(\cos \varPhi_0,\sin \varPhi_0,0)^T$
+is the direction of the most probable orientation $(\theta=\frac{\pi}{2};\phi=\varPhi_0)$. $\varPhi_0$ varies between $\varPhi_0=\frac{\pi}{4}$ for the isotropic case ($\Gamma=0$)  to $\varPhi_0=0$ for perfect alignment ($\Gamma\rightarrow \infty$).
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=\textwidth]{../images/form_factor/cylindrical_obj/pHP3D.png}
+\end{center}
+\caption{3D plot of the orientation distributions $2 p_\mathrm{HP}(\theta,\phi;\Gamma={2})$ ({\bf \color[rgb]{1.0, 0.85, 0.0}yel-}{\bf \color[rgb]{1.0, 0.85, 0.0}low}), $p_\mathrm{HP}(\theta,\phi;\Gamma{=}8)$ ({\bf\color[rgb]{0.36, 0.57, 0.9} blue}), $\frac12 p_\mathrm{HP}(\theta,\phi;\Gamma{=}16)$ ({\bf\color[rgb]{1.0, 0.5, 0.0} orange}).} \label{fig:pHP3D}
+\end{figure}
+As the most probable direction is not the same than the flow direction, which is assumed to be the $x$-direction, and secondly that the beam is passing twice the cuette cell with flow direction $\mathbf{x}$ and $-\mathbf{x}$ we have to take the sum over two values for $\gamma^\pm$ in eq.\ \ref{eq:IQShear_pHP}. The angle $\gamma^\pm = \angle(\mathbf{Q,n}^\pm)$ between the scattering vector $\mathbf{Q}$ and the director of the cylinder axis $\mathbf{n}^\pm$ is
+\begin{align}
+\frac{\mathbf{Q}}{\abs{\mathbf{Q}}} &=
+\begin{pmatrix}
+\cos \psi \\
+0  \\
+\sin \psi
+\end{pmatrix} \qquad
+\frac{\mathbf{n}^\pm}{\abs{\mathbf{n}^\pm}} =
+\begin{pmatrix}
+\pm \sin \theta \cos \phi \\
+\pm \sin \theta \sin \phi  \\
+\cos \theta
+\end{pmatrix} \\
+\cos \angle(\mathbf{Q,n}^\pm) &= \cos \gamma^\pm = \frac{\mathbf{Q\cdot n}^\pm}{\abs{\mathbf{Q}}\abs{\mathbf{n}^\pm}} =  \pm \cos\psi \sin\theta \cos\phi + \sin\psi \cos\theta
+\end{align}
+For the reversed direction of the flow the $x$-component of the vector $\mathbf{n}^-$ changes its sign. In the original paper \cite{Hayter1984} one finds $\cos \gamma^-_\mathrm{HP} = \cos\psi \sin\theta \cos\phi - \sin\psi \cos\theta$, which, however, results to the same scattering intensity as the scattering intensity of a cylinder is invariant by a rotation of $\pi$, i.e. as $\cos(\pi+\gamma^-) =-\cos\gamma^- = \cos\gamma^-_\mathrm{HP}$ the resulting scattering patterns are the same for both value $\gamma^-$ and $\gamma^-_\mathrm{HP}$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{partly aligned cylindrical shell}
+\label{sect:partlyalignedCylShell}
+~\\
+
+In contrast to the model of Hayter and Penfold \cite{Hayter1984} in section \ref{sect:ShearedCylinderHayterPenfold} here we use an orientation distribution with the most probably orientation along the $\mathrm{x}$-axis and independent on the polar angle $\phi$.
+Therefore the coordination system is slightly differently defined than in the Hayter-Penfold model of sheard cylinders. 
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/cylindrical_obj/partly_aligned_discs.png}
+\end{center}
+\caption{Sketch of relative orientation $\mathbf{n}$ of partly
+aligned cylinders or discs to the scattering vector $\mathbf{Q}$.}
+\label{fig:partly_aligned_discs}
+\end{figure}
+
+\noindent The scattering amplitude of a cylindrical shell is given by
+\begin{align}
+K_\text{CylShell}\left(Q,\dots,\gamma\right)  = &K_\text{Cyl}\left(Q,\eta_\text{core}-\eta_\text{shell},R,L,\gamma\right) \\
+& +  K_\text{Cyl}\left(Q,\eta_\text{shell}-\eta_\text{solv},R+\Delta
+R,L,\gamma\right)
+\end{align}
+with
+\begin{align}
+K_\text{Cyl}(Q,\Delta\eta,R,L,\gamma) & = 2 \pi R^2 L \Delta \eta
+    \frac{J_1\left(Q R \sin\gamma\right)}{Q R \sin\gamma} \,
+    \frac{\sin\left(\frac{QL}{2} \cos\gamma\right)}{\frac{QL}{2} \cos\gamma}
+\end{align}
+where $\gamma$ is the angle between $\mathbf{Q}$ and the cylinder
+axis $\mathbf{n}$. $L$ is the length of the cylinder, $R$ its
+radius, $\Delta\eta$ the scattering length density contrast relative
+to the solvent and $J_1(x)$ is the first order Bessel function of
+the first kind. $\gamma$ can be calculated from the orientation
+($\theta$, $\phi$) of the cylinder and the direction of the
+scattering vector $\psi$ in the plane of the detector by
 \begin{align}
 \frac{\mathbf{Q}}{\abs{\mathbf{Q}}} &=
 \begin{pmatrix}
@@ -130,17 +198,97 @@ and
 \end{pmatrix} \qquad
 \frac{\mathbf{n}}{\abs{\mathbf{n}}} =
 \begin{pmatrix}
-\sin \theta \cos \phi \\
+\cos \theta \\
 \sin \theta \sin \phi  \\
-\cos \theta
+\sin \theta \cos \phi
 \end{pmatrix} \\
-\cos \angle(\mathbf{Q,n}) &= \cos \gamma = \frac{\mathbf{Q\cdot n}}{\abs{\mathbf{Q}}\abs{\mathbf{n}}} =  \cos\psi \sin\theta \cos\phi + \sin\psi \cos\theta
+\cos \measuredangle(\mathbf{Q,n}) &= \cos \gamma = \frac{\mathbf{Q\cdot
+n}}{\abs{\mathbf{Q}}\abs{\mathbf{n}}} = \cos\psi \cos\theta +
+\sin\psi \sin\theta \cos\phi
 \end{align}
+If the orientation distribution of the orientation vector $\mathbf{n}$ is described by $p(\theta,\phi)$
+so that the scattering intensity is given by
+\begin{align}
+I_\mathrm{p.a.CylShell}(Q) & =
+            \int_0^\pi d\theta \int_0^{2\pi} d\phi \, \,
+                K_\text{CylShell}\left(Q,\dots,\gamma\right)\,p(\theta,\phi;\kappa)\,\sin(\theta)
+\end{align}
+For this form factor it is assumed that the orientation distribution is independent of $\phi$,
+i.e. $p(\theta,\phi;\kappa)=p(\theta;\kappa)$ and that $p(\theta;\kappa)=p(\pi-\theta;\kappa)$, which means that turning the cylinder by 180$^\circ$ results in the same scattering intensity. 
+Several orientation distributions have been implemented in a way that their resulting order parameter $S_2$ can have values between -0.5 and 1, which correspond to perfect alignment perpendicular to the $\mathrm{x}$ axis and perfect alignment parallel to it. all probability distributions have been normalized so that
+\begin{align}
+\int_0^\pi \int_0^{2\pi} p(\theta,\phi;\kappa) \sin \theta \, d\theta \, d\phi&=1
+\end{align}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/S2(kappa).png}
+\end{center}
+\caption{Order parameter $S_2(\kappa)$ for the orientation distributions described in the next subsections.}
+\label{fig:S2_kappa}
+\end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The order parameters $S_2$ can be calculated by
+\begin{align}
+S_2(\kappa) &= 
+\int_0^\pi \int_0^{2\pi} 
+                p(\theta,\phi;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta\, \mathrm{d}\phi \nonumber \\
+&= \int_0^\pi 2\pi
+                p(\theta;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta
+\end{align}
+\begin{figure}[htb]
+\subfigure[Onsager orientation distribution for $\kappa=3$. ]{\includegraphics[width=0.58\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(3).png}}
+\hfill
+\subfigure[Onsager orientation distribution for $\kappa=-3$. ]{\includegraphics[width=0.38\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(-3).png}}
+\caption{Orientation distributions are are all independent on $\phi$ and have for $\kappa>0$ a positive order parameter, i.e. the most probable orientation is in the $\mathbf{x}$-direction and for $\kappa<0$ a negative order parameter, i.e. the most probable orientation lies in the $\mathbf{zy}$-plane}
+\label{fig:pOnsager3D}
+\end{figure}
+%Instead of assuming a
+%special parametrization of $p(\theta)$ the orientation distribution was expanded in terms of
+%Legendre polynomials $P_l(\cos(\theta))$
+%\begin{align}
+%p(\theta) & = \sum_{l=0,even}^\infty \frac{2l+1}{2} \left\langle P_l\right\rangle\, P_l(\cos(\theta))
+%\end{align}
+%Due to the symmetry $p(\theta)=p(\pi-\theta)$ all terms with odd values for $l$ are zero and only the
+%even terms needs to be considered. For this form factor the first three terms up to $l=6$ are implemented.
+%As $\int_0^\pi p(\theta) \sin\theta \, d\theta =1$ the zero order parameter is one $\left\langle P_0 %\right\rangle=1$.
+%
+%
+%\vspace{5mm}
+%
+%\hspace{1pt}\\
+%\underline{Input Parameters for model \texttt{partly aligned CylShell}:}\\
+%\begin{description}
+%\item[\texttt{R}] core radius $R$
+%\item[\texttt{DR}] shell thickness $\Delta R$
+%\item[\texttt{L}] cylinder length $L$
+%\item[\texttt{eta\_core}] scattering length density $\eta_\text{core}$ of cylinder core
+%\item[\texttt{eta\_shell}] scattering length density $\eta_\text{shell}$ of cylinder shell
+%\item[\texttt{eta\_solv}] scattering length density $\eta_\text{solv}$ of solvent
+%\item[\texttt{psi}] direction $\psi$ of the scattering vector in the plane of the detector
+%\item[\texttt{P2}] order parameter $\langle P_2\rangle$
+%\item[\texttt{P4}] order parameter $\langle P_4\rangle$
+%\item[\texttt{P6}] order parameter $\langle P_6\rangle$
+%\end{description}
+
+%\begin{figure}[htb]
+%\begin{center}
+%\includegraphics[width=0.786\textwidth,height=0.558\textwidth]{../images/form_factor/cylindrical_obj/partly_aligned_CylShell.png}
+%\end{center}
+%\caption{Scattering curve for partly aligned discs with radius $R=20$nm, $L=5$nm, $\Delta R=0$nm,
+%and $\left\langle P_2 \right\rangle=$0, 0.05, 0.1, 0.2, and 0.4. Higher order parameters are set
+%zero. $I(Q)$ is calculated for $\psi=0^\circ$ and $\psi=90^\circ$.}
+%\label{fig:partly_aligned_CylShell}
+%\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+%\subsection{aligned cylindrical shell}
+%\label{sect:alignedCylShell}
+%\hspace{1pt}\\
 
 \newpage
-\subsection{Maier-Saupe orientation distribution} ~\\
+\subsubsection{Maier-Saupe orientation distribution} ~\\
 
 \begin{align}
 p(\theta,\phi;\kappa) & = \frac{1}{c_\mathrm{MS}}\exp\left(\kappa \cos^2\theta\right) 
@@ -161,7 +309,7 @@ with $D(x)$ being Dawson's integral $D(x)=e^{-x^2}\int_0^x e^{y^2} \mathrm{d}y =
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\subsection{Onsager orientation distribution} ~\\
+\subsubsection{Onsager orientation distribution} ~\\
 
 \begin{align}
 p(\theta,\phi;\kappa) & = 
@@ -176,7 +324,7 @@ where $L_\nu(x)$ is the modified Struve function.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\subsection{Boltzmann orientation distribution} ~\\
+\subsubsection{Boltzmann orientation distribution} ~\\
 
 \begin{align}
 p(\theta,\phi;\kappa) & = 
@@ -194,7 +342,7 @@ c_\mathrm{B} &= \frac{4\pi\left(1-\kappa*exp\left(-\frac{\pi}{2}\kappa\right)\ri
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\subsection{Gaussian orientation distribution}
+\subsubsection{Gaussian orientation distribution}
 \label{sect:ShearedCylinderGaussian}
 ~\\
 \begin{align}
@@ -221,7 +369,7 @@ c_\mathrm{G} & =
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\subsection{ShearedCylinderHeaviside} ~\\
+\subsubsection{ShearedCylinderHeaviside} ~\\
 
 \begin{align}
 p(\theta,\phi;\bar{\theta}) & = \Theta[\theta-\bar{\theta}] \\

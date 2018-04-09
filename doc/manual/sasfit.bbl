@@ -702,6 +702,12 @@ S.~Ishikawa.
   44(1):147--150, jan 1974.
 \newblock \doi{10.1090/s0002-9939-1974-0336469-5}.
 
+\bibitem{Jerrard1959}
+H.~G. Jerrard.
+\newblock Theories of streaming double refraction.
+\newblock {\em Chemical Reviews}, 59(3):345--428, jun 1959.
+\newblock \doi{10.1021/cr50027a001}.
+
 \bibitem{Johnson}
 S.~G. Johnson.
 \newblock multi-dimensional adaptive integration (cubature) in {C}, 2017.
@@ -1308,6 +1314,13 @@ R.~F. Saraf.
   region.
 \newblock {\em Macromolecules}, 22(2):675--681, mar 1989.
 \newblock \doi{10.1021/ma00192a028}.
+
+\bibitem{Scheraga1951}
+H.~A. Scheraga, J.~T. Edsall, and J.~O. Gadd.
+\newblock Double refraction of flow: Numerical evaluation of extinction angle
+  and birefringence as a function of velocity gradient.
+\newblock {\em The Journal of Chemical Physics}, 19(9):1101--1108, sep 1951.
+\newblock \doi{10.1063/1.1748483}.
 
 \bibitem{Schmidt1970}
 P.~W. Schmidt.
