@@ -7,8 +7,6 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define DDELTA	param->p[8]
-
 
 scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
 {
@@ -17,6 +15,7 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
+// return pOnsager(q,0,param);
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -24,9 +23,7 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-//
-// return pOnsager(q,0,param);
-//
+
 	Q = q;		// Q
 	P = 2.0;	// pow
 	if (SIGMA==0) {
@@ -48,10 +45,11 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &alignedCylShell;
+	cparam.gam = &gamOthers;
 	cparam.p1 = &pOnsager;
 
 	intstrategy = sasfit_get_int_strategy();
-//	intstrategy=P_CUBATURE;
+	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
 /*
     case OOURA_DOUBLE_EXP_QUADRATURE: {
@@ -72,17 +70,19 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
             }
 */
     case H_CUBATURE: {
-			hcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
 			sum = fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+            cubxmin[0]=0;
+            cubxmax[0]=M_PI_2;
+			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 2*fval[0];
             break;
             }
     default: {

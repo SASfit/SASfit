@@ -36,7 +36,7 @@ scalar sasfit_ff_sheared_cylinders__legendre_(scalar q, sasfit_param * param)
 		NUMAX = 1;
 	} else {
 		ndim =3;
-		find_LogNorm_int_range(4,1,SIGMA,&NUMIN, &NUMAX, param);
+		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
 	cubxmax[0]=M_PI;
@@ -49,10 +49,11 @@ scalar sasfit_ff_sheared_cylinders__legendre_(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &alignedCylShell;
+	cparam.gam = &gamOthers;
 	cparam.p1 = &pLegendre;
 
 	intstrategy = sasfit_get_int_strategy();
-//	intstrategy=P_CUBATURE;
+	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
 /*
     case OOURA_DOUBLE_EXP_QUADRATURE: {
@@ -73,17 +74,19 @@ scalar sasfit_ff_sheared_cylinders__legendre_(scalar q, sasfit_param * param)
             }
 */
     case H_CUBATURE: {
-			hcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
 			sum = fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+            cubxmin[0]=0;
+            cubxmax[0]=M_PI_2;
+			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 2*fval[0];
             break;
             }
     default: {

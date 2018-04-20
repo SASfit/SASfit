@@ -15,7 +15,7 @@ scalar sasfit_ff_sheared_cylinders__boltzmann_(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
-
+// return pBoltzmann(q,0,param);
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	NU = 1;
@@ -32,7 +32,7 @@ scalar sasfit_ff_sheared_cylinders__boltzmann_(scalar q, sasfit_param * param)
 		NUMAX = 1;
 	} else {
 		ndim =3;
-		find_LogNorm_int_range(4,1,SIGMA,&NUMIN, &NUMAX, param);
+		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
 	cubxmax[0]=M_PI;
@@ -45,8 +45,8 @@ scalar sasfit_ff_sheared_cylinders__boltzmann_(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &alignedCylShell;
+	cparam.gam = &gamOthers;
 	cparam.p1 = &pBoltzmann;
-//return pBoltzmann(q,0,param);
 
 	intstrategy = sasfit_get_int_strategy();
 	intstrategy=P_CUBATURE;
@@ -70,17 +70,19 @@ scalar sasfit_ff_sheared_cylinders__boltzmann_(scalar q, sasfit_param * param)
             }
 */
     case H_CUBATURE: {
-			hcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
 			sum = fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+            cubxmin[0]=0;
+            cubxmax[0]=M_PI_2;
+			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 2*fval[0];
             break;
             }
     default: {

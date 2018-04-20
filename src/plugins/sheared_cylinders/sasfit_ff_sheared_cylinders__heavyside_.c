@@ -16,6 +16,7 @@ scalar sasfit_ff_sheared_cylinders__heavyside_(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
+// return pHeavysidePi(q,0,param);
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -33,7 +34,7 @@ scalar sasfit_ff_sheared_cylinders__heavyside_(scalar q, sasfit_param * param)
 		NUMAX = 1;
 	} else {
 		ndim =3;
-		find_LogNorm_int_range(4,1,SIGMA,&NUMIN, &NUMAX, param);
+		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
 	cubxmax[0]=M_PI;
@@ -46,6 +47,7 @@ scalar sasfit_ff_sheared_cylinders__heavyside_(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &alignedCylShell;
+	cparam.gam = &gamOthers;
 	cparam.p1 = &pHeavysidePi;
 
 	intstrategy = sasfit_get_int_strategy();
@@ -70,17 +72,43 @@ scalar sasfit_ff_sheared_cylinders__heavyside_(scalar q, sasfit_param * param)
             }
 */
     case H_CUBATURE: {
-			hcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+            if (KAPPA == 0 || fabs(KAPPA) <= 1./M_PI_2) {
+                cubxmin[0]=0;
+                cubxmax[0]=M_PI_2;
+            } else if (KAPPA > 0 && KAPPA < 1./M_PI_2) {
+                cubxmin[0]=0;
+                cubxmax[0]=1./KAPPA;
+            } else if (KAPPA < 0 && KAPPA > -1./M_PI_2){
+                cubxmin[0]=-1./KAPPA;
+                cubxmax[0]=M_PI_2;
+            } else {
+                cubxmin[0]=0;
+                cubxmax[0]=M_PI_2;
+            }
+			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
 			sum = fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+            if (KAPPA == 0 || fabs(KAPPA) <= 1./M_PI_2) {
+                cubxmin[0]=0;
+                cubxmax[0]=M_PI_2;
+            } else if (KAPPA > 0 && KAPPA < 1./M_PI_2) {
+                cubxmin[0]=0;
+                cubxmax[0]=1./KAPPA;
+            } else if (KAPPA < 0 && KAPPA > -1./M_PI_2){
+                cubxmin[0]=-1./KAPPA;
+                cubxmax[0]=M_PI_2;
+            } else {
+                cubxmin[0]=0;
+                cubxmax[0]=M_PI_2;
+            }
+			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 2*fval[0];
             break;
             }
     default: {

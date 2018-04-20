@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_SHEARED_CYLINDERS_H
@@ -73,7 +73,7 @@
  *       <td>\b sigma</td>
  *       <td>width parameter of lognormal size distribution of radii</td>
  *      </tr><tr>
- *       <td>\b Gamma</td>
+ *       <td>\b kappa</td>
  *       <td>orientation distribution parameter</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
@@ -143,7 +143,7 @@ sasfit_sheared_cylinders_DLLEXP scalar sasfit_ff_sheared_cylinders__maier_saupe_
  *       <td>\b sigma</td>
  *       <td>width parameter of lognormal size distribution of radii</td>
  *      </tr><tr>
- *       <td>\b Gamma</td>
+ *       <td>\b kappa</td>
  *       <td>orientation distribution parameter</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
@@ -213,7 +213,7 @@ sasfit_sheared_cylinders_DLLEXP scalar sasfit_ff_sheared_cylinders__heavyside__v
  *       <td>\b sigma</td>
  *       <td>width parameter of lognormal size distribution of radii</td>
  *      </tr><tr>
- *       <td>\b Gamma</td>
+ *       <td>\b kappa</td>
  *       <td>orientation distribution parameter</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
@@ -283,7 +283,7 @@ sasfit_sheared_cylinders_DLLEXP scalar sasfit_ff_sheared_cylinders__boltzmann__v
  *       <td>\b sigma</td>
  *       <td>width parameter of lognormal size distribution of radii</td>
  *      </tr><tr>
- *       <td>\b Gamma</td>
+ *       <td>\b kappa</td>
  *       <td>orientation distribution parameter</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
@@ -353,7 +353,7 @@ sasfit_sheared_cylinders_DLLEXP scalar sasfit_ff_sheared_cylinders__gauss__v(sca
  *       <td>\b sigma</td>
  *       <td>width parameter of lognormal size distribution of radii</td>
  *      </tr><tr>
- *       <td>\b Gamma</td>
+ *       <td>\b kappa</td>
  *       <td>orientation distribution parameter</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
@@ -423,7 +423,7 @@ sasfit_sheared_cylinders_DLLEXP scalar sasfit_ff_sheared_cylinders__hayterpenfol
  *       <td>\b sigma</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b Ddelta</td>
+ *       <td>\b kappa</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b dummy</td>

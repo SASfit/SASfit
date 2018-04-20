@@ -2,7 +2,7 @@
 \newpage
 \section{Sheared and deformed objects}
 
-\section{Non-equilibrium static form factor of a reptating chain}
+\subsection{Non-equilibrium static form factor of a reptating chain}
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=\textwidth]{../images/form_factor/reptating_chain/reptating_chain.png}
@@ -86,10 +86,10 @@ transfer, $Q$, lies in the $z-x$ plane.}
 
 The scattering from monodisperse dilute (non-interacting)
 isotropic solution of anisotropic micelles is given by \cite{Hayter1984}
-\BE 
+\BE
 I(Q) =
-\left< \vert F(Q)\vert^2 \right>_Q \label{IQ_av} 
-\EE 
+\left< \vert F(Q)\vert^2 \right>_Q \label{IQ_av}
+\EE
 where $F(Q)$
 is the form factor for a micelle at a given orientation relative
 to the momentum transfer $Q$ and $\left<\right>_Q$ denotes an
@@ -113,29 +113,29 @@ will not be achieved, and an orientation distribution must be
 employed such that the resultant scattering will be given by
 \begin{align}
 I(Q,\psi) &= \int_0^{2\pi} \int_0^\pi
-p_\mathrm{HP}(\theta,\phi;\Gamma)\, \left(F^2(Q,\gamma^+)+F^2(Q,\gamma^-)
+p_\mathrm{HP}(\theta,\phi;\kappa)\, \left(F^2(Q,\gamma^+)+F^2(Q,\gamma^-)
 \right) \sin\theta \mathrm{d}\theta \mathrm{d}\phi
 \label{eq:IQShear_pHP}
 \end{align}
 with
 \begin{align}
-p_\mathrm{HP}(\theta,\phi;\Gamma) & = \frac{(1-\cos
+p_\mathrm{HP}(\theta,\phi;\kappa) & = \frac{(1-\cos
 2\varPhi_0)(1+\sin^2\theta\cos 2\varPhi_0)^{3/2}}{4\pi\left[
 1-\sin^2\theta\cos 2\varPhi_0\cos 2(\phi-\varPhi_0)\right]^2}
 \end{align}
 and
 \BE
-2\varPhi_0 = \arctan(8/\Gamma)
+2\varPhi_0 = \arctan(8/\kappa)
 \EE
 $(\cos \varPhi_0,\sin \varPhi_0,0)^T$
-is the direction of the most probable orientation $(\theta=\frac{\pi}{2};\phi=\varPhi_0)$. $\varPhi_0$ varies between $\varPhi_0=\frac{\pi}{4}$ for the isotropic case ($\Gamma=0$)  to $\varPhi_0=0$ for perfect alignment ($\Gamma\rightarrow \infty$).
+is the direction of the most probable orientation $(\theta=\frac{\pi}{2};\phi=\varPhi_0)$. $\varPhi_0$ varies between $\varPhi_0=\frac{\pi}{4}$ for the isotropic case ($\kappa=0$)  to $\varPhi_0=0$ for perfect alignment ($\kappa\rightarrow \infty$).
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=\textwidth]{../images/form_factor/cylindrical_obj/pHP3D.png}
 \end{center}
-\caption{3D plot of the orientation distributions $2 p_\mathrm{HP}(\theta,\phi;\Gamma={2})$ ({\bf \color[rgb]{1.0, 0.85, 0.0}yel-}{\bf \color[rgb]{1.0, 0.85, 0.0}low}), $p_\mathrm{HP}(\theta,\phi;\Gamma{=}8)$ ({\bf\color[rgb]{0.36, 0.57, 0.9} blue}), $\frac12 p_\mathrm{HP}(\theta,\phi;\Gamma{=}16)$ ({\bf\color[rgb]{1.0, 0.5, 0.0} orange}).} \label{fig:pHP3D}
+\caption{3D plot of the orientation distributions $2 p_\mathrm{HP}(\theta,\phi;\kappa={2})$ ({\bf \color[rgb]{1.0, 0.85, 0.0}yel-}{\bf \color[rgb]{1.0, 0.85, 0.0}low}), $p_\mathrm{HP}(\theta,\phi;\kappa{=}8)$ ({\bf\color[rgb]{0.36, 0.57, 0.9} blue}), $\frac12 p_\mathrm{HP}(\theta,\phi;\kappa{=}16)$ ({\bf\color[rgb]{1.0, 0.5, 0.0} orange}).} \label{fig:pHP3D}
 \end{figure}
-As the most probable direction is not the same than the flow direction, which is assumed to be the $x$-direction, and secondly that the beam is passing twice the cuette cell with flow direction $\mathbf{x}$ and $-\mathbf{x}$ we have to take the sum over two values for $\gamma^\pm$ in eq.\ \ref{eq:IQShear_pHP}. The angle $\gamma^\pm = \angle(\mathbf{Q,n}^\pm)$ between the scattering vector $\mathbf{Q}$ and the director of the cylinder axis $\mathbf{n}^\pm$ is
+As the most probable direction is not the same as the flow direction, which is assumed to be the $x$-direction, and secondly that the beam is passing twice the cuette cell with flow direction $\mathbf{x}$ and $-\mathbf{x}$ we have to take the sum over two values for $\gamma^\pm$ in eq.\ \ref{eq:IQShear_pHP}. The angle $\gamma^\pm = \angle(\mathbf{Q,n}^\pm)$ between the scattering vector $\mathbf{Q}$ and the director of the cylinder axis $\mathbf{n}^\pm$ is
 \begin{align}
 \frac{\mathbf{Q}}{\abs{\mathbf{Q}}} &=
 \begin{pmatrix}
@@ -160,7 +160,7 @@ For the reversed direction of the flow the $x$-component of the vector $\mathbf{
 ~\\
 
 In contrast to the model of Hayter and Penfold \cite{Hayter1984} in section \ref{sect:ShearedCylinderHayterPenfold} here we use an orientation distribution with the most probably orientation along the $\mathrm{x}$-axis and independent on the polar angle $\phi$.
-Therefore the coordination system is slightly differently defined than in the Hayter-Penfold model of sheard cylinders. 
+Therefore the coordination system is slightly differently defined in the Hayter-Penfold model of sheared cylinders.
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{../images/form_factor/cylindrical_obj/partly_aligned_discs.png}
@@ -199,12 +199,12 @@ scattering vector $\psi$ in the plane of the detector by
 \frac{\mathbf{n}}{\abs{\mathbf{n}}} =
 \begin{pmatrix}
 \cos \theta \\
-\sin \theta \sin \phi  \\
-\sin \theta \cos \phi
+\sin \theta \cos \phi  \\
+\sin \theta \sin \phi
 \end{pmatrix} \\
 \cos \measuredangle(\mathbf{Q,n}) &= \cos \gamma = \frac{\mathbf{Q\cdot
 n}}{\abs{\mathbf{Q}}\abs{\mathbf{n}}} = \cos\psi \cos\theta +
-\sin\psi \sin\theta \cos\phi
+\sin\psi \sin\theta \sin\phi
 \end{align}
 If the orientation distribution of the orientation vector $\mathbf{n}$ is described by $p(\theta,\phi)$
 so that the scattering intensity is given by
@@ -214,7 +214,7 @@ I_\mathrm{p.a.CylShell}(Q) & =
                 K_\text{CylShell}\left(Q,\dots,\gamma\right)\,p(\theta,\phi;\kappa)\,\sin(\theta)
 \end{align}
 For this form factor it is assumed that the orientation distribution is independent of $\phi$,
-i.e. $p(\theta,\phi;\kappa)=p(\theta;\kappa)$ and that $p(\theta;\kappa)=p(\pi-\theta;\kappa)$, which means that turning the cylinder by 180$^\circ$ results in the same scattering intensity. 
+i.e. $p(\theta,\phi;\kappa)=p(\theta;\kappa)$ and that $p(\theta;\kappa)=p(\pi-\theta;\kappa)$, which means that turning the cylinder by 180$^\circ$ results in the same scattering intensity.
 Several orientation distributions have been implemented in a way that their resulting order parameter $S_2$ can have values between -0.5 and 1, which correspond to perfect alignment perpendicular to the $\mathrm{x}$ axis and perfect alignment parallel to it. all probability distributions have been normalized so that
 \begin{align}
 \int_0^\pi \int_0^{2\pi} p(\theta,\phi;\kappa) \sin \theta \, d\theta \, d\phi&=1
@@ -229,19 +229,44 @@ Several orientation distributions have been implemented in a way that their resu
 
 The order parameters $S_2$ can be calculated by
 \begin{align}
-S_2(\kappa) &= 
-\int_0^\pi \int_0^{2\pi} 
+S_2(\kappa) &=
+\int_0^\pi \int_0^{2\pi}
                 p(\theta,\phi;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta\, \mathrm{d}\phi \nonumber \\
 &= \int_0^\pi 2\pi
                 p(\theta;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta
 \end{align}
 \begin{figure}[htb]
-\subfigure[Onsager orientation distribution for $\kappa=3$. ]{\includegraphics[width=0.58\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(3).png}}
+\subfigure[Onsager orientation distribution for $\kappa=3$. ]{\includegraphics[width=0.55\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(3).png}}
 \hfill
-\subfigure[Onsager orientation distribution for $\kappa=-3$. ]{\includegraphics[width=0.38\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(-3).png}}
+\subfigure[Onsager orientation distribution for $\kappa=-3$. ]{\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(-3).png}}
 \caption{Orientation distributions are are all independent on $\phi$ and have for $\kappa>0$ a positive order parameter, i.e. the most probable orientation is in the $\mathbf{x}$-direction and for $\kappa<0$ a negative order parameter, i.e. the most probable orientation lies in the $\mathbf{zy}$-plane}
 \label{fig:pOnsager3D}
 \end{figure}
+
+\begin{table}[htp]
+\centering
+\caption{Values for $\kappa$ to obtain certain order parameters $S_2(\kappa)$ for the different orientation distributions $p(\theta,\phi,\kappa)$.}
+\label{tab:kappas}
+\begin{tabular}{|l|llllllllll|}
+\toprule
+\diagbox{$p(\theta,\phi,\kappa)$}{$S_2(\kappa)$}  & -0.45    & -0.4    & -0.2    & 0 & 0.2    & 0.4    & 0.6    & 0.8    & 0.9    & 0.95    \\ \midrule
+Gauss       & -3.739 & -1.62  & -1.128 & 0 & 0.83  & 1.220 & 1.686 & 2.576 & 3.762 & 5.4    \\
+Boltzmann   & -7.141 & -4.59  & -1.431 & 0 & 1.114 & 2.218 & 3.581 & 5.989 & 9     & 13.08 \\
+Maier-Saupe & -15    & -7.49  & -1.874 & 0 & 1.367 & 2.709 & 4.444 & 8.241 & 15.59 & 30.54 \\
+Onsager     & -28.43 & -13.35 & -2.918 & 0 & 2.042 & 3.629 & 6.313 & 13.92 & 28.96 & 58.99 \\
+Heavyside   & -3.108 & -2.157 &	-1.129 & 0 & 0.794 & 0.982 & 1.267 & 1.868 & 2.692 & 3.840 \\
+Hayter-Penfold   & $\varnothing$ & $\varnothing$&	$\varnothing$ & 0 & 3.008 & 6.269 & 10.93 & 20.8 & 34.91 & 55.64  \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{../images/form_factor/cylindrical_obj/pXXXcomparison.png}
+\end{center}
+\caption{comparision of different orientation distributions with the same order parameter.}
+\label{fig:S2_comparision}
+\end{figure}
+
 %Instead of assuming a
 %special parametrization of $p(\theta)$ the orientation distribution was expanded in terms of
 %Legendre polynomials $P_l(\cos(\theta))$
@@ -291,12 +316,12 @@ S_2(\kappa) &=
 \subsubsection{Maier-Saupe orientation distribution} ~\\
 
 \begin{align}
-p(\theta,\phi;\kappa) & = \frac{1}{c_\mathrm{MS}}\exp\left(\kappa \cos^2\theta\right) 
+p(\theta,\phi;\kappa) & = \frac{1}{c_\mathrm{MS}}\exp\left(\kappa \cos^2\theta\right)
 \end{align}
 with
 \begin{align}
 c_\mathrm{MS} &=
-\begin{cases} 
+\begin{cases}
 \displaystyle
 4\pi\exp(\kappa) \frac{\mathrm{D}\left(\sqrt{\kappa}\right)}{\sqrt{\kappa}}   &\mathrm{for~} \kappa > 0 \\[5mm]
 \displaystyle
@@ -312,11 +337,11 @@ with $D(x)$ being Dawson's integral $D(x)=e^{-x^2}\int_0^x e^{y^2} \mathrm{d}y =
 \subsubsection{Onsager orientation distribution} ~\\
 
 \begin{align}
-p(\theta,\phi;\kappa) & = 
+p(\theta,\phi;\kappa) & =
 \begin{cases} \displaystyle
 \frac{\kappa \cosh\left(\kappa \cos(\theta)\right)}{4\pi \sinh(\kappa)}      &\mathrm{for~} \kappa \geq 0 \\[5mm]
  \displaystyle
-\frac{\cosh\left(\abs{\kappa} sin(\theta)\right)}{2\pi^2 L_1(\abs{\kappa})}  &\mathrm{for~} \kappa < 0 
+\frac{\cosh\left(\abs{\kappa} \sin(\theta)\right)}{2\pi^2 L_1(\abs{\kappa})}  &\mathrm{for~} \kappa < 0
 \end{cases}
 \end{align}
 where $L_\nu(x)$ is the modified Struve function.
@@ -327,17 +352,17 @@ where $L_\nu(x)$ is the modified Struve function.
 \subsubsection{Boltzmann orientation distribution} ~\\
 
 \begin{align}
-p(\theta,\phi;\kappa) & = 
+p(\theta,\phi;\kappa) & =
 \begin{cases}
 \displaystyle
-\frac{1}{c_\mathrm{B}}\exp\left(-\theta\kappa\right) & \mathrm{for~}  \theta \leq \pi/2\\[5mm]
+\frac{1}{2\pi c_\mathrm{B}}\exp\left(-\theta\kappa\right) & \mathrm{for~}  \theta \leq \frac{\pi}{2}\\[5mm]
 \displaystyle
-\frac{1}{c_\mathrm{B}}\exp\left(-(\pi-\theta)\kappa\right) & \mathrm{for~}  \theta > \pi/2
+\frac{1}{2\pi c_\mathrm{B}}\exp\left(-(\pi-\theta)\kappa\right) & \mathrm{for~}  \theta > \frac{\pi}{2}
 \end{cases}
 \end{align}
 with
 \begin{align}
-c_\mathrm{B} &= \frac{4\pi\left(1-\kappa*exp\left(-\frac{\pi}{2}\kappa\right)\right)}{\kappa^2+1}
+c_\mathrm{B} &= \frac{2\left(1-\kappa \exp\left(-\frac{\pi}{2}\kappa\right)\right)}{\kappa^2+1}
 \end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -346,24 +371,24 @@ c_\mathrm{B} &= \frac{4\pi\left(1-\kappa*exp\left(-\frac{\pi}{2}\kappa\right)\ri
 \label{sect:ShearedCylinderGaussian}
 ~\\
 \begin{align}
-p(\theta,\phi;\kappa) & = 
+p(\theta,\phi;\kappa) & =
 \begin{cases}
 \displaystyle
-\frac{1}{c_\mathrm{G}}\exp\left(-\theta^2\kappa^2\right) & \mathrm{for~} \kappa \geq 0 \mathrm{~and~} \theta \leq \pi/2\\[5mm]
+\frac{1}{2\pi c_\mathrm{G}}\exp\left(-\theta^2\kappa^2\right) & \mathrm{for~} \kappa \geq 0 \mathrm{~and~} \theta \leq \frac{\pi}{2}\\[5mm]
 \displaystyle
-\frac{1}{c_\mathrm{G}}\exp\left(-(\pi-\theta)^2\kappa^2\right) & \mathrm{for~} \kappa \geq 0 \mathrm{~and~} \theta > \pi/2\\[5mm]
+\frac{1}{2\pi c_\mathrm{G}}\exp\left(-\left(\pi-\theta\right)^2\kappa^2\right) & \mathrm{for~} \kappa \geq 0 \mathrm{~and~} \theta > \frac{\pi}{2}\\[5mm]
 \displaystyle
-\frac{1}{c_\mathrm{G}}\exp\left(-(\frac{\pi}{2}-\theta)^2\abs{\kappa}^2\right) & \mathrm{for~} \kappa < 0 
+\frac{1}{2\pi c_\mathrm{G}}\exp\left(-\left(\frac{\pi}{2}-\theta\right)^2\abs{\kappa}^2\right) & \mathrm{for~} \kappa < 0
 \end{cases}
 \end{align}
 with
 \begin{align}
 c_\mathrm{G} & =
 \begin{cases}\displaystyle
-2\pi\frac{D\left(\kappa/2\right)}{\kappa}
-           +2\pi\frac{\sqrt{\pi}}{2\kappa} e^{-\frac{1}{4\kappa^2}} \Re\left(\mathrm{cerfi}\left(-\frac{1}{2\kappa}+\imath\frac{\pi}{2}\kappa\right) \right)& \mathrm{for~} \kappa \geq 0 \\[5mm]
+\frac{D\left(\kappa/2\right)}{\kappa}
+           +\frac{\sqrt{\pi}}{2\kappa} e^{-\frac{1}{4\kappa^2}} \Re\left(\mathrm{cerfi}\left(-\frac{1}{2\kappa}+\imath\frac{\pi}{2}\kappa\right) \right)& \mathrm{for~} \kappa \geq 0 \\[5mm]
 \displaystyle
-2\pi\frac{\sqrt{\pi}}{\abs{\kappa}} e^{-\frac{1}{4\kappa^2}} \Im\left(\mathrm{cerfi}\left(-\frac{1}{2\abs{\kappa}}+\imath\frac{\pi}{2}\abs{\kappa}\right) \right) & \mathrm{for~} \kappa < 0
+\frac{\sqrt{\pi}}{\abs{\kappa}} e^{-\frac{1}{4\kappa^2}} \Im\left(\mathrm{cerfi}\left(-\frac{1}{2\abs{\kappa}}+\imath\frac{\pi}{2}\abs{\kappa}\right) \right) & \mathrm{for~} \kappa < 0
 \end{cases}
 \end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

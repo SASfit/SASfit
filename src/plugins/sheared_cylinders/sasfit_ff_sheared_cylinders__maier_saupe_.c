@@ -16,6 +16,7 @@ scalar sasfit_ff_sheared_cylinders__maier_saupe_(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
+// return pMaierSaupe(q,0,param);
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -23,7 +24,6 @@ scalar sasfit_ff_sheared_cylinders__maier_saupe_(scalar q, sasfit_param * param)
 	LNDISTR=1.0;
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-
 
 	Q = q;		// Q
 	P = 2.0;	// pow
@@ -33,7 +33,7 @@ scalar sasfit_ff_sheared_cylinders__maier_saupe_(scalar q, sasfit_param * param)
 		NUMAX = 1;
 	} else {
 		ndim =3;
-		find_LogNorm_int_range(4,1,SIGMA,&NUMIN, &NUMAX, param);
+		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
 	cubxmax[0]=M_PI;
@@ -46,6 +46,7 @@ scalar sasfit_ff_sheared_cylinders__maier_saupe_(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &alignedCylShell;
+	cparam.gam = &gamOthers;
 	cparam.p1 = &pMaierSaupe;
 
 	intstrategy = sasfit_get_int_strategy();
@@ -70,23 +71,31 @@ scalar sasfit_ff_sheared_cylinders__maier_saupe_(scalar q, sasfit_param * param)
             }
 */
     case H_CUBATURE: {
-			hcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
 			sum = fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+            cubxmin[0]=0;
+            cubxmax[0]=M_PI_2;
+			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 2*fval[0];
+            break;
+            cubxmin[0]=0;
+            cubxmax[0]=1;
+			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				fval, ferr);
+			sum = 2*fval[0];
             break;
             }
     default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_core_x, param);
-//            break;
+            sum=0;
+            break;
             }
     }
 	return sum;

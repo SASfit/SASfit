@@ -17,13 +17,13 @@ scalar sasfit_ff_sheared_cylinders__hayterpenfold_(scalar q, sasfit_param * para
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
 
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	NU = 1;
 	LNDISTR=1.0;
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-
 
 	Q = q;		// Q
 	P = 2.0;	// pow
@@ -33,7 +33,7 @@ scalar sasfit_ff_sheared_cylinders__hayterpenfold_(scalar q, sasfit_param * para
 		NUMAX = 1;
 	} else {
 		ndim =3;
-		find_LogNorm_int_range(4,1,SIGMA,&NUMIN, &NUMAX, param);
+		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
 	cubxmax[0]=M_PI;
@@ -46,10 +46,11 @@ scalar sasfit_ff_sheared_cylinders__hayterpenfold_(scalar q, sasfit_param * para
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &alignedCylShell;
+
 	cparam.p1 = &pHayterPenfold;
 
 	intstrategy = sasfit_get_int_strategy();
-//	intstrategy=P_CUBATURE;
+	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
 /*
     case OOURA_DOUBLE_EXP_QUADRATURE: {
@@ -70,17 +71,46 @@ scalar sasfit_ff_sheared_cylinders__hayterpenfold_(scalar q, sasfit_param * para
             }
 */
     case H_CUBATURE: {
-			hcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+            cparam.gam = &gamHPplus;
+			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 2*fval[0];
+            cparam.gam = &gamHPminus;
+			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				fval, ferr);
+			sum = sum+fval[0];
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &partly_aligned_cylinders_cubature,&cparam,ndim, cubxmin, cubxmax,
+            cubxmin[0]=0;
+            cubxmax[0]=M_PI_2;
+            cparam.gam = &gamHPplus;
+			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				fval, ferr);
+			sum = 2.0*fval[0];
+
+            cparam.gam = &gamHPminus;
+			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				fval, ferr);
+			sum = sum+2.0*fval[0];
+            break;
+
+	cubxmin[0]=0;
+	cubxmax[0]=1;
+            cparam.gam = &gamHPplus;
+			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
 				fval, ferr);
-			sum = fval[0];
+			sum = 2*fval[0];
+            cparam.gam = &gamHPminus;
+			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+				fval, ferr);
+			sum = sum+2*fval[0];
             break;
             }
     default: {

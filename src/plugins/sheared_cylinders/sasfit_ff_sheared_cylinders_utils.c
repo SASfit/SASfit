@@ -94,94 +94,103 @@ e30:          if (L == 0)  BIV0=BIV;
 
 
 scalar pMaierSaupe(scalar x,scalar y, sasfit_param * param) {
-    scalar kappa,norm,u,p;
-    kappa = param->p[8];
-    if (kappa < 0) {
-		u = sqrt(-kappa);
+    scalar norm,u,p;
+    if (KAPPA == 0) return 0.25/M_PI;
+    if (KAPPA < 0) {
+		u = sqrt(-KAPPA);
 		norm = sqrt(M_PI)*gsl_sf_erf(u)/u;
-	} else if (kappa == 0.0) {
-		norm = 2;
 	} else {
-		u = sqrt(kappa);
-		norm = 2.0*exp(kappa)*gsl_sf_dawson(u)/u; // maple: `assuming`([convert(int(exp(P2*cos(THETA)^2)*sin(THETA), theta = 0 .. Pi), dawson)], [kappa > 0])
+		u = sqrt(KAPPA);
+		norm = 2.0*exp(KAPPA)*gsl_sf_dawson(u)/u; // maple: `assuming`([convert(int(exp(P2*cos(THETA)^2)*sin(THETA), theta = 0 .. Pi), dawson)], [kappa > 0])
 	}
-    p = exp(kappa*gsl_pow_2(cos(x)))/norm;
+    p = exp(KAPPA*gsl_pow_2(cos(x)))/norm;
     return p/(2*M_PI);
 }
 
 scalar pGauss(scalar x,scalar y, sasfit_param * param) {
-    scalar kappa,c,p,k;
-    kappa = param->p[8];
-    if (kappa > 0) {
-        c =  gsl_sf_dawson(1./(2.*kappa))/kappa
-           +0.5* sqrt(M_PI)/kappa*exp(-1./gsl_pow_2(2*kappa))*re_cerfi_z(-0.5/kappa,M_PI_2*kappa);
-        if (x <= M_PI_2) {
-            p = exp(-gsl_pow_2(x*kappa))/c;
+    scalar c,p,theta,k,intfrac;
+    theta = modf(x/M_PI,&intfrac)*M_PI;
+    if (KAPPA == 0) return 1./(4.*M_PI);
+    if (KAPPA > 0) {
+        c =  2*gsl_sf_dawson(1./(2.*KAPPA))/KAPPA
+           + sqrt(M_PI)/KAPPA*exp(-1./gsl_pow_2(2*KAPPA))*re_cerfi_z(-0.5/KAPPA,M_PI_2*KAPPA);
+        if (fabs(theta) <= M_PI_2) {
+            p = exp(-gsl_pow_2(fabs(theta)*KAPPA))/c;
         } else {
-            p = exp(-gsl_pow_2((M_PI-x)*kappa))/c;
+            p = exp(-gsl_pow_2((M_PI-fabs(theta))*KAPPA))/c;
         }
     } else {
-        k = fabs(kappa);
+        k = fabs(KAPPA);
         c = sqrt(M_PI)/k*exp(-1./gsl_pow_2(2*k))*im_cerfi_z(-0.5/k,M_PI_2*k);
-        p = exp(-gsl_pow_2((M_PI_2-x)*k))/c;
+        p = exp(-gsl_pow_2((M_PI_2-fabs(theta))*k))/c;
     }
     return p/(2*M_PI);
 }
 
 scalar pBoltzmann(scalar x,scalar y, sasfit_param * param) {
-    scalar kappa,c,p,k;
-    kappa = param->p[8];
-    k = (kappa);
-    c = -(4*M_PI)*(k*exp(-0.5*M_PI*k)-1.0)/(k*k+1.0);
-    if (x<M_PI_2) {
-        p = exp(-x*kappa)/c;
+    scalar c,p,theta,intfrac;
+    theta = modf(x/M_PI,&intfrac)*M_PI;
+    if (KAPPA == 0) return 0.25/M_PI;
+    c = -(4*M_PI)*(KAPPA*exp(-M_PI_2*KAPPA)-1.0)/(KAPPA*KAPPA+1.0);
+    if (theta<M_PI_2) {
+        p = exp(-fabs(theta)*KAPPA)/c;
     } else {
-        p = exp(-(M_PI-x)*kappa)/c;
+        p = exp(-(M_PI-fabs(theta))*KAPPA)/c;
     }
     return p;
-
-    c=2*kappa*kappa*(1+exp(-M_PI/kappa))/(1+kappa*kappa);
-    return (exp(-x*kappa)+exp(-(M_PI-x)*kappa))/c;
 }
 
 scalar pOnsager(scalar x,scalar y, sasfit_param * param) {
-    scalar kappa,c,p,Lv1;
-    kappa = param->p[8];
-    if (kappa > 10 ) {
-        p = 0.5*kappa*exp(gsl_sf_lncosh(kappa*cos(x))-gsl_sf_lnsinh(kappa));
-    } else if (kappa >= 0 && kappa <= 10){
-        p = 0.5*kappa*cosh(kappa*cos(x))/sinh(kappa);
-    } else if (kappa < 0) {
-        STVLV(-1, -kappa, &Lv1);
-        p = cosh(kappa*sin(x))/(M_PI*Lv1);
+    scalar c,p,Lv1;
+    if (KAPPA == 0) return 0.25/M_PI;
+    if (KAPPA > 10 ) {
+        p = 0.5*KAPPA*exp(gsl_sf_lncosh(KAPPA*cos(x))-gsl_sf_lnsinh(KAPPA));
+    } else if (KAPPA >= 0 && KAPPA <= 10){
+        p = 0.5*KAPPA*cosh(KAPPA*cos(x))/sinh(KAPPA);
+    } else if (KAPPA < 0) {
+        STVLV(-1, -KAPPA, &Lv1);
+        p = cosh(KAPPA*sin(x))/(M_PI*Lv1);
     }
     return p/(2*M_PI);
 }
 
 scalar pHayterPenfold(scalar x,scalar y, sasfit_param * param) {
-    scalar kappa,phi,theta,twophi0,phi0;
+    scalar phi,theta,twophi0,phi0;
     phi	= y;
 	theta 	= x;
-    kappa = param->p[8];
 
-    twophi0 = atan(8.0/kappa);
+    if (KAPPA==0) {
+        return 0.25/M_PI;
+    } else {
+        twophi0 = atan(8.0/KAPPA);
+    }
     phi0 = twophi0/2.0;
-    return   (1-cos(twophi0))*pow(1.0+pow(sin(theta),2.0)*cos(twophi0),1.5)
-                /  (4.0*M_PI*pow(1.0-pow(sin(theta),2.0)*cos(twophi0)*cos(2.0*(phi-phi0)),2.0));
+    return   (1.0-cos(twophi0))*sqrt(gsl_pow_3(1.0+gsl_pow_2(sin(theta))*cos(twophi0)))
+                /  (4.0*M_PI*gsl_pow_2(1.0-gsl_pow_2(sin(theta))*cos(twophi0)*cos(2.0*(phi-phi0))));
 }
 
 scalar pHeavysidePi(scalar x,scalar y, sasfit_param * param) {
-    scalar kappa,c;
-    kappa = fabs(param->p[8]);
-    if (kappa <= M_PI/2) {
-        c = 2*(1-cos(kappa));
-    } else {
-        c = 2;
-    }
+    scalar c,k;
+    if (fabs(KAPPA)<0.1) return 0.25/M_PI;
 
-    if (kappa > 0) {
-        if (fabs(x)<kappa) return 1./c;
-        if (fabs(M_PI-x)<kappa) return 1./c;
+    if (KAPPA > 0) {
+        k=1./KAPPA;
+        if (k <= M_PI_2) {
+            c = 4.*M_PI*(1.-cos(k));
+        } else {
+            c = 4.*M_PI;
+        }
+        if (fabs(x)<k) return 1./c;
+        if (fabs(M_PI-x)<k) return 1./c;
+        return 0;
+    } else {
+        k=1./fabs(KAPPA);
+        if (k<= M_PI_2) {
+            c = 4.*M_PI*sin(k);
+        } else {
+            c = 4.*M_PI;
+        }
+        if (fabs(x-M_PI_2)<k) return 1./c;
         return 0;
     }
     return GSL_NAN;
@@ -208,55 +217,44 @@ scalar pLegendre(scalar x,scalar y, sasfit_param * param) {
 	for (l=0;l<=6;l++) {
 		pdistr = pdistr+(l+0.5)*Sl[l]*Pl[l];
 	}
-	return pdistr;
+	return pdistr/(2*M_PI);
 
 }
-scalar alignedCylShell(sasfit_param * param)
+
+scalar gamHPplus(scalar psi, scalar theta, scalar phi) {
+    return acos(  cos(psi) * sin(theta) * cos(phi) + sin(psi) * cos(theta) );
+}
+scalar gamHPminus(scalar psi, scalar theta, scalar phi) {
+    return acos( -cos(psi) * sin(theta) * cos(phi) + sin(psi) * cos(theta) );
+}
+
+scalar gamOthers(scalar psi, scalar theta, scalar phi) {
+    return acos(  cos(psi) * cos(theta) + sin(psi) * sin(theta) * cos(phi));
+    return acos(  cos(psi) * cos(theta) + sin(psi) * sin(theta) * sin(phi));
+}
+
+scalar gamTheta(scalar psi, scalar theta, scalar phi) {
+    return theta;
+}
+
+scalar alignedCylShell(sasfit_cubature_g *gam, sasfit_param * param)
 {
-	scalar gama, psi, theta, phi;
+	scalar gama, psi, cosgama, singama;
 
 	SASFIT_ASSERT_PTR(param);
 
 	psi   = sasfit_param_override_get_psi(PSI_DEG * M_PI/180.);
-//	theta = THETA_DEG * M_PI/180.;
-//	phi   = PHI_DEG * M_PI/180.;
-    theta = X;
-    phi = Y;
 
-//	gama = acos( sin(theta) * cos(phi) * cos(psi) + cos(theta) * sin(psi) );
-	gama = acos( sin(theta) * cos(phi) * sin(psi) + cos(theta) * cos(psi) );
-
-	if ( Q == 0.0 )
-	{
-		return pow( (ETA_CORE - ETA_SHELL)*R*R*L*M_PI + (ETA_SHELL - ETA_SOLV)*(R+T)*(R+T)*L*M_PI, P);
-	}
-	if (L == 0.0)
-	{
-		return 0.0;
-	}
-	if (R+T == 0.0)
-	{
-		return 0.0;
-	}
-
-	if (gama == M_PI/2.0)
-	{
-		return pow(2.*gsl_sf_bessel_J1(Q*R    )/Q *L*  R  *M_PI*(ETA_CORE-ETA_SHELL) +
-		  	       2.*gsl_sf_bessel_J1(Q*(R+T))/Q *L*(R+T)*M_PI*(ETA_SHELL-ETA_SOLV)  ,P);
-	}
-	else if (gama == 0.0)
-	{
-		return pow(2./Q*R    *R    *sin(Q*L*0.5)*(ETA_CORE-ETA_SHELL)*M_PI+
-			       2./Q*(R+T)*(R+T)*sin(Q*L*0.5)*(ETA_SHELL-ETA_SOLV)*M_PI  ,P);
-	}
-	else
-	{
-		return pow(4.*(ETA_CORE-ETA_SHELL)*M_PI* R   *gsl_sf_bessel_J1(Q* R   *sin(gama))*sin(Q*L*cos(gama)/2.)*pow(Q,-2.)/sin(gama)/cos(gama)+
-			       4.*(ETA_SHELL-ETA_SOLV)*M_PI*(R+T)*gsl_sf_bessel_J1(Q*(R+T)*sin(gama))*sin(Q*L*cos(gama)/2.)*pow(Q,-2.)/sin(gama)/cos(gama) ,P);
-	}
+    gama = (*gam)(psi, THETA, PHI);
+    return gsl_sf_pow_int(  (ETA_CORE-ETA_SHELL)*M_PI*gsl_pow_2(R)  *L
+                                                *gsl_sf_hyperg_0F1(2,-0.25*gsl_pow_2(Q* R   *sin(gama)))
+                                                *2*gsl_sf_bessel_j0(Q*L*cos(gama)/2.)+
+                            (ETA_SHELL-ETA_SOLV)*M_PI*gsl_pow_2(R+T)*L
+                                                *gsl_sf_hyperg_0F1(2,-0.25*gsl_pow_2(Q*(R+T)*sin(gama)))
+                                                *2*gsl_sf_bessel_j0(Q*L*cos(gama)/2.) ,lround(P));
 }
 
-int partly_aligned_cylinders_cubature(unsigned ndim, const double *x, void *pam,
+int partly_aligned_cubature(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
 	sasfit_param subParam;
 	sasfit_init_param( &subParam );
@@ -286,11 +284,89 @@ int partly_aligned_cylinders_cubature(unsigned ndim, const double *x, void *pam,
 			return 1;
 		}
 	}
-	X = x[0];
-	Y = x[1];
+	THETA = x[0];
+	PHI = x[1];
 	NR=NU;
 	NT=NU;
 	NL=NU;
-    fval[0] = LNDISTR * (cparam->p1)(X,Y,param) * (cparam->func)(param);
+    fval[0] = sin(THETA)* LNDISTR * (cparam->p1)(THETA,PHI,param) * (cparam->func)(cparam->gam,param);
+    return 0;
+}
+
+int partly_aligned_cubature_u_phi(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+	sasfit_param subParam;
+	sasfit_init_param( &subParam );
+	sasfit_param *param;
+	cubature_param *cparam;
+	cparam = (cubature_param *) pam;
+	param = cparam->param;
+
+	fval[0] = 0;
+	if ((ndim < 2) || (fdim < 1)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+	if ((ndim < 3) || (SIGMA==0)) {
+		LNDISTR = 1;
+		NU = 1;
+	} else {
+		subParam.p[0] = 1.0;
+		subParam.p[1] = SIGMA;
+		subParam.p[2] = 1.0;
+		subParam.p[3] = 1.0;
+		NU=x[2];
+		LNDISTR = sasfit_sd_LogNorm(NU, &subParam);
+		SASFIT_CHECK_SUB_ERR(param, subParam);
+		if ( subParam.errStatus != FALSE ) {
+			sasfit_out("LogNormError: SIGMA:%lf\n",SIGMA);
+			return 1;
+		}
+	}
+	THETA = acos(x[0]);
+	PHI = x[1];
+	NR=NU;
+	NT=NU;
+	NL=NU;
+    fval[0] = LNDISTR * (cparam->p1)(THETA,PHI,param) * (cparam->func)(cparam->gam,param);
+    return 0;
+}
+
+int random_oriented_cubature(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+	sasfit_param subParam;
+	sasfit_init_param( &subParam );
+	sasfit_param *param;
+	cubature_param *cparam;
+	cparam = (cubature_param *) pam;
+	param = cparam->param;
+
+	fval[0] = 0;
+	if ((ndim < 1) || (fdim < 1)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+	if ((ndim < 2) || (SIGMA==0)) {
+		LNDISTR = 1;
+		NU = 1;
+	} else {
+		subParam.p[0] = 1.0;
+		subParam.p[1] = SIGMA;
+		subParam.p[2] = 1.0;
+		subParam.p[3] = 1.0;
+		NU=x[1];
+		LNDISTR = sasfit_sd_LogNorm(NU, &subParam);
+		SASFIT_CHECK_SUB_ERR(param, subParam);
+		if ( subParam.errStatus != FALSE ) {
+			sasfit_out("LogNormError: SIGMA:%lf\n",SIGMA);
+			return 1;
+		}
+	}
+	THETA = x[0];
+	PHI = 0;
+	NR=NU;
+	NT=NU;
+	NL=NU;
+    fval[0] = sin(THETA)* LNDISTR * (cparam->func)(cparam->gam,param);
     return 0;
 }

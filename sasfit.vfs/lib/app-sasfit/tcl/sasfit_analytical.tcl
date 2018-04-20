@@ -10227,7 +10227,7 @@ if {$simulate && [winfo exists $w.adj.calc]} {
               set Q {}
               set I {}
               set DI {}
-              if {$::sasfit(sim,Qmin) > 0} {
+              if {($::sasfit(sim,Qmin) > 0) && (![string compare "log(x)" $::IQGraph(x,type)] || ![string compare "log10(x)" $::IQGraph(x,type)])} {
                  set logDQ [expr log10($::sasfit(sim,Qmax))-log10($::sasfit(sim,Qmin))]
                  set logDQ [expr $logDQ/$::sasfit(sim,N)]
                  for {set k 0} {$k<$::sasfit(sim,N)+1} {incr k} {

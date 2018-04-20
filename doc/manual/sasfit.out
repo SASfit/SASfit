@@ -348,82 +348,82 @@
 \BOOKMARK [1][-]{section.1747}{8.7. Non-equilibrium static form factor of a reptating chain}{chapter.1440}% 348
 \BOOKMARK [2][-]{subsection.1756}{8.7.1. ShearedCylinderHayterPenfold}{section.1747}% 349
 \BOOKMARK [2][-]{subsection.1767}{8.7.2. partly aligned cylindrical shell}{section.1747}% 350
-\BOOKMARK [3][-]{subsubsection.1781}{8.7.2.1. Maier-Saupe orientation distribution}{subsection.1767}% 351
-\BOOKMARK [3][-]{subsubsection.1784}{8.7.2.2. Onsager orientation distribution}{subsection.1767}% 352
-\BOOKMARK [3][-]{subsubsection.1786}{8.7.2.3. Boltzmann orientation distribution}{subsection.1767}% 353
-\BOOKMARK [3][-]{subsubsection.1789}{8.7.2.4. Gaussian orientation distribution}{subsection.1767}% 354
-\BOOKMARK [3][-]{subsubsection.1792}{8.7.2.5. ShearedCylinderHeaviside}{subsection.1767}% 355
-\BOOKMARK [1][-]{section.1795}{8.8. Form factors of magnetic objects}{chapter.1440}% 356
-\BOOKMARK [2][-]{subsection.1796}{8.8.1. Magnetic spin misalignment}{section.1795}% 357
-\BOOKMARK [2][-]{subsection.1804}{8.8.2. Ferrofluids}{section.1795}% 358
-\BOOKMARK [2][-]{subsection.1819}{8.8.3. Langevin statistics for averages of the form factor and averages of the squared form factor}{section.1795}% 359
-\BOOKMARK [1][-]{section.1843}{8.9. Bi-continuous and non-particulate structures}{chapter.1440}% 360
-\BOOKMARK [2][-]{subsection.1844}{8.9.1. Teubner-Strey}{section.1843}% 361
-\BOOKMARK [2][-]{subsection.1862}{8.9.2. Debye-Anderson-Brumberger\(DAB\)}{section.1843}% 362
-\BOOKMARK [2][-]{subsection.1866}{8.9.3. Generalization of the Debye-Anderson-Brumberger model \(gDAB\)}{section.1843}% 363
-\BOOKMARK [2][-]{subsection.1870}{8.9.4. Spinodal}{section.1843}% 364
-\BOOKMARK [2][-]{subsection.1874}{8.9.5. OrnsteinZernike}{section.1843}% 365
-\BOOKMARK [2][-]{subsection.1877}{8.9.6. Broad-Peak}{section.1843}% 366
-\BOOKMARK [2][-]{subsection.1880}{8.9.7. generalized Guinier approximation Fratzl1994,Hjelm1992,Hjelm1995,Hjelm2000}{section.1843}% 367
-\BOOKMARK [2][-]{subsection.1884}{8.9.8. generalized Guinier-Porod law}{section.1843}% 368
-\BOOKMARK [1][-]{section.1891}{8.10. Functions for analysing azimuthal averaged data}{chapter.1440}% 369
-\BOOKMARK [2][-]{subsection.1892}{8.10.1. sin2-sin4 azimuthal analysis}{section.1891}% 370
-\BOOKMARK [2][-]{subsection.1893}{8.10.2. Maier-Saupe azimuthal analysis}{section.1891}% 371
-\BOOKMARK [2][-]{subsection.1894}{8.10.3. Ellipsoidal azimuthal analysis}{section.1891}% 372
-\BOOKMARK [1][-]{section.1895}{8.11. fractal size distribution of particles}{chapter.1440}% 373
-\BOOKMARK [1][-]{section.1915}{8.12. Plugin functions for SESANS}{chapter.1440}% 374
-\BOOKMARK [2][-]{subsection.1939}{8.12.1. G\(z\) of a sphere}{section.1915}% 375
-\BOOKMARK [1][-]{section.1943}{8.13. G\(z\) of a randomly distributed, two-phase system \(DAB\) }{chapter.1440}% 376
-\BOOKMARK [1][-]{section.1947}{8.14. G\(z\) of a self-affine random density distribution \(gDAB\) }{chapter.1440}% 377
-\BOOKMARK [1][-]{section.1951}{8.15. G\(z\) for a generalized Gaussian coil \(gGc\) }{chapter.1440}% 378
-\BOOKMARK [0][-]{chapter.1958}{Chapter 9. Plugin functions for size distributions}{}% 379
-\BOOKMARK [1][-]{section.1959}{9.1. LogNorm\137fp}{chapter.1958}% 380
-\BOOKMARK [0][-]{chapter.1971}{Chapter 10. Plugin functions for structure factors}{}% 381
-\BOOKMARK [1][-]{section.1972}{10.1. Structure factor of a random flight model}{chapter.1971}% 382
-\BOOKMARK [1][-]{section.1977}{10.2. ordered particle systems}{chapter.1971}% 383
-\BOOKMARK [2][-]{subsection.1990}{10.2.1. Domains of ordered particle systems isotropically oriented}{section.1977}% 384
-\BOOKMARK [2][-]{subsection.2018}{10.2.2. Domains of ordered particle systems with preferred orientation}{section.1977}% 385
-\BOOKMARK [0][-]{chapter.2023}{Chapter 11. Absolute intensities, moments and volume fractions}{}% 386
-\BOOKMARK [1][-]{section.2024}{11.1. Fitting absolute intensities}{chapter.2023}% 387
-\BOOKMARK [1][-]{section.2036}{11.2. Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale}{chapter.2023}% 388
-\BOOKMARK [1][-]{section.2049}{11.3. Moments of scattering curves and size distribution}{chapter.2023}% 389
-\BOOKMARK [1][-]{section.2064}{11.4. Volume fractions}{chapter.2023}% 390
-\BOOKMARK [0][-]{chapter.2070}{Chapter 12. Basic Analysis of Dynamic Light Scattering Data}{}% 391
-\BOOKMARK [1][-]{section.2076}{12.1. Cumulant Analysis}{chapter.2070}% 392
-\BOOKMARK [1][-]{section.2081}{12.2. Double Decay Cumulant Analysis}{chapter.2070}% 393
-\BOOKMARK [1][-]{section.2083}{12.3. Fit of Double Stretched Exponentials}{chapter.2070}% 394
-\BOOKMARK [2][-]{subsection.2085}{12.3.1. The least squares minimiser and the robust least squares procedure}{section.2083}% 395
-\BOOKMARK [0][-]{chapter.2091}{Chapter 13. Scattering Theory}{}% 396
-\BOOKMARK [1][-]{section.2092}{13.1. Scattering Cross-Section}{chapter.2091}% 397
-\BOOKMARK [2][-]{subsection.2096}{13.1.1. Scattering of neutrons on atoms}{section.2092}% 398
-\BOOKMARK [3][-]{subsubsection.2106}{13.1.1.1. Nuclear scattering}{subsection.2096}% 399
-\BOOKMARK [3][-]{subsubsection.2111}{13.1.1.2. Magnetic Scattering}{subsection.2096}% 400
-\BOOKMARK [2][-]{subsection.2123}{13.1.2. Scattering of x-ray at atoms}{section.2092}% 401
-\BOOKMARK [3][-]{subsubsection.2131}{13.1.2.1. Anomalous scattering of x-rays}{subsection.2123}% 402
-\BOOKMARK [1][-]{section.2135}{13.2. Small angle scattering}{chapter.2091}% 403
-\BOOKMARK [2][-]{subsection.2142}{13.2.1. Autocorrelation function \(r\) and \(r\)}{section.2135}% 404
-\BOOKMARK [3][-]{subsubsection.2143}{13.2.1.1. Isotropic averages}{subsection.2142}% 405
-\BOOKMARK [3][-]{subsubsection.2147}{13.2.1.2. Absence of long range order}{subsection.2142}% 406
-\BOOKMARK [3][-]{subsubsection.2151}{13.2.1.3. Limits r=0 and r=}{subsection.2142}% 407
-\BOOKMARK [2][-]{subsection.2154}{13.2.2. Volume fraction}{section.2135}% 408
-\BOOKMARK [2][-]{subsection.2159}{13.2.3. Interparticle interferences}{section.2135}% 409
-\BOOKMARK [3][-]{subsubsection.2165}{13.2.3.1. Isotropic ensemble of particles}{subsection.2159}% 410
-\BOOKMARK [2][-]{subsection.2167}{13.2.4. Influence of the relative arrangement of scatterers on interparticle interferences}{section.2135}% 411
-\BOOKMARK [3][-]{subsubsection.2173}{13.2.4.1. Formula from Prins and Zernicke}{subsection.2167}% 412
-\BOOKMARK [3][-]{subsubsection.2178}{13.2.4.2. Isolate particles}{subsection.2167}% 413
-\BOOKMARK [3][-]{subsubsection.2180}{13.2.4.3. Polydisperse System of isolated particles}{subsection.2167}% 414
-\BOOKMARK [2][-]{subsection.2182}{13.2.5. Influence of N\(R\) and F\(Q,R\) on interparticle interferences}{section.2135}% 415
-\BOOKMARK [2][-]{subsection.2187}{13.2.6. Scattering laws and structural parameter}{section.2135}% 416
-\BOOKMARK [3][-]{subsubsection.2188}{13.2.6.1. Porod volume}{subsection.2187}% 417
-\BOOKMARK [3][-]{subsubsection.2190}{13.2.6.2. Radius of gyration and Guinier approximation}{subsection.2187}% 418
-\BOOKMARK [3][-]{subsubsection.2194}{13.2.6.3. Correlation length}{subsection.2187}% 419
-\BOOKMARK [3][-]{subsubsection.2197}{13.2.6.4. Porod law and specific surfaces}{subsection.2187}% 420
-\BOOKMARK [0][-]{chapter.2205}{Chapter 14. Experimental Setup of a Small Angle Scattering Instrument}{}% 421
-\BOOKMARK [1][-]{section.2206}{14.1. SANS-Camera}{chapter.2205}% 422
-\BOOKMARK [1][-]{section.2208}{14.2. SAXS-Camera}{chapter.2205}% 423
-\BOOKMARK [0][-]{chapter.2210}{Chapter 15. Data Reduction in SAS}{}% 424
-\BOOKMARK [1][-]{section.2211}{15.1. Correction and Normalization of SANS-Raw data}{chapter.2210}% 425
-\BOOKMARK [2][-]{subsection.2215}{15.1.1. Contribution of the isolated sample}{section.2211}% 426
-\BOOKMARK [2][-]{subsection.2219}{15.1.2. Correction for sample holder and background noise}{section.2211}% 427
-\BOOKMARK [1][-]{section.2224}{15.2. Correction and normalization of SAXS raw data}{chapter.2210}% 428
-\BOOKMARK [0][-]{appendix*.2235}{Bibliography}{}% 429
+\BOOKMARK [3][-]{subsubsection.1782}{8.7.2.1. Maier-Saupe orientation distribution}{subsection.1767}% 351
+\BOOKMARK [3][-]{subsubsection.1785}{8.7.2.2. Onsager orientation distribution}{subsection.1767}% 352
+\BOOKMARK [3][-]{subsubsection.1787}{8.7.2.3. Boltzmann orientation distribution}{subsection.1767}% 353
+\BOOKMARK [3][-]{subsubsection.1790}{8.7.2.4. Gaussian orientation distribution}{subsection.1767}% 354
+\BOOKMARK [3][-]{subsubsection.1793}{8.7.2.5. ShearedCylinderHeaviside}{subsection.1767}% 355
+\BOOKMARK [1][-]{section.1796}{8.8. Form factors of magnetic objects}{chapter.1440}% 356
+\BOOKMARK [2][-]{subsection.1797}{8.8.1. Magnetic spin misalignment}{section.1796}% 357
+\BOOKMARK [2][-]{subsection.1805}{8.8.2. Ferrofluids}{section.1796}% 358
+\BOOKMARK [2][-]{subsection.1820}{8.8.3. Langevin statistics for averages of the form factor and averages of the squared form factor}{section.1796}% 359
+\BOOKMARK [1][-]{section.1844}{8.9. Bi-continuous and non-particulate structures}{chapter.1440}% 360
+\BOOKMARK [2][-]{subsection.1845}{8.9.1. Teubner-Strey}{section.1844}% 361
+\BOOKMARK [2][-]{subsection.1863}{8.9.2. Debye-Anderson-Brumberger\(DAB\)}{section.1844}% 362
+\BOOKMARK [2][-]{subsection.1867}{8.9.3. Generalization of the Debye-Anderson-Brumberger model \(gDAB\)}{section.1844}% 363
+\BOOKMARK [2][-]{subsection.1871}{8.9.4. Spinodal}{section.1844}% 364
+\BOOKMARK [2][-]{subsection.1875}{8.9.5. OrnsteinZernike}{section.1844}% 365
+\BOOKMARK [2][-]{subsection.1878}{8.9.6. Broad-Peak}{section.1844}% 366
+\BOOKMARK [2][-]{subsection.1881}{8.9.7. generalized Guinier approximation Fratzl1994,Hjelm1992,Hjelm1995,Hjelm2000}{section.1844}% 367
+\BOOKMARK [2][-]{subsection.1885}{8.9.8. generalized Guinier-Porod law}{section.1844}% 368
+\BOOKMARK [1][-]{section.1892}{8.10. Functions for analysing azimuthal averaged data}{chapter.1440}% 369
+\BOOKMARK [2][-]{subsection.1893}{8.10.1. sin2-sin4 azimuthal analysis}{section.1892}% 370
+\BOOKMARK [2][-]{subsection.1894}{8.10.2. Maier-Saupe azimuthal analysis}{section.1892}% 371
+\BOOKMARK [2][-]{subsection.1895}{8.10.3. Ellipsoidal azimuthal analysis}{section.1892}% 372
+\BOOKMARK [1][-]{section.1896}{8.11. fractal size distribution of particles}{chapter.1440}% 373
+\BOOKMARK [1][-]{section.1916}{8.12. Plugin functions for SESANS}{chapter.1440}% 374
+\BOOKMARK [2][-]{subsection.1940}{8.12.1. G\(z\) of a sphere}{section.1916}% 375
+\BOOKMARK [1][-]{section.1944}{8.13. G\(z\) of a randomly distributed, two-phase system \(DAB\) }{chapter.1440}% 376
+\BOOKMARK [1][-]{section.1948}{8.14. G\(z\) of a self-affine random density distribution \(gDAB\) }{chapter.1440}% 377
+\BOOKMARK [1][-]{section.1952}{8.15. G\(z\) for a generalized Gaussian coil \(gGc\) }{chapter.1440}% 378
+\BOOKMARK [0][-]{chapter.1959}{Chapter 9. Plugin functions for size distributions}{}% 379
+\BOOKMARK [1][-]{section.1960}{9.1. LogNorm\137fp}{chapter.1959}% 380
+\BOOKMARK [0][-]{chapter.1972}{Chapter 10. Plugin functions for structure factors}{}% 381
+\BOOKMARK [1][-]{section.1973}{10.1. Structure factor of a random flight model}{chapter.1972}% 382
+\BOOKMARK [1][-]{section.1978}{10.2. ordered particle systems}{chapter.1972}% 383
+\BOOKMARK [2][-]{subsection.1991}{10.2.1. Domains of ordered particle systems isotropically oriented}{section.1978}% 384
+\BOOKMARK [2][-]{subsection.2019}{10.2.2. Domains of ordered particle systems with preferred orientation}{section.1978}% 385
+\BOOKMARK [0][-]{chapter.2024}{Chapter 11. Absolute intensities, moments and volume fractions}{}% 386
+\BOOKMARK [1][-]{section.2025}{11.1. Fitting absolute intensities}{chapter.2024}% 387
+\BOOKMARK [1][-]{section.2037}{11.2. Contrast - Concentration - Forward Scattering - Particle Volume - Absolute Scale}{chapter.2024}% 388
+\BOOKMARK [1][-]{section.2050}{11.3. Moments of scattering curves and size distribution}{chapter.2024}% 389
+\BOOKMARK [1][-]{section.2065}{11.4. Volume fractions}{chapter.2024}% 390
+\BOOKMARK [0][-]{chapter.2071}{Chapter 12. Basic Analysis of Dynamic Light Scattering Data}{}% 391
+\BOOKMARK [1][-]{section.2077}{12.1. Cumulant Analysis}{chapter.2071}% 392
+\BOOKMARK [1][-]{section.2082}{12.2. Double Decay Cumulant Analysis}{chapter.2071}% 393
+\BOOKMARK [1][-]{section.2084}{12.3. Fit of Double Stretched Exponentials}{chapter.2071}% 394
+\BOOKMARK [2][-]{subsection.2086}{12.3.1. The least squares minimiser and the robust least squares procedure}{section.2084}% 395
+\BOOKMARK [0][-]{chapter.2092}{Chapter 13. Scattering Theory}{}% 396
+\BOOKMARK [1][-]{section.2093}{13.1. Scattering Cross-Section}{chapter.2092}% 397
+\BOOKMARK [2][-]{subsection.2097}{13.1.1. Scattering of neutrons on atoms}{section.2093}% 398
+\BOOKMARK [3][-]{subsubsection.2107}{13.1.1.1. Nuclear scattering}{subsection.2097}% 399
+\BOOKMARK [3][-]{subsubsection.2112}{13.1.1.2. Magnetic Scattering}{subsection.2097}% 400
+\BOOKMARK [2][-]{subsection.2124}{13.1.2. Scattering of x-ray at atoms}{section.2093}% 401
+\BOOKMARK [3][-]{subsubsection.2132}{13.1.2.1. Anomalous scattering of x-rays}{subsection.2124}% 402
+\BOOKMARK [1][-]{section.2136}{13.2. Small angle scattering}{chapter.2092}% 403
+\BOOKMARK [2][-]{subsection.2143}{13.2.1. Autocorrelation function \(r\) and \(r\)}{section.2136}% 404
+\BOOKMARK [3][-]{subsubsection.2144}{13.2.1.1. Isotropic averages}{subsection.2143}% 405
+\BOOKMARK [3][-]{subsubsection.2148}{13.2.1.2. Absence of long range order}{subsection.2143}% 406
+\BOOKMARK [3][-]{subsubsection.2152}{13.2.1.3. Limits r=0 and r=}{subsection.2143}% 407
+\BOOKMARK [2][-]{subsection.2155}{13.2.2. Volume fraction}{section.2136}% 408
+\BOOKMARK [2][-]{subsection.2160}{13.2.3. Interparticle interferences}{section.2136}% 409
+\BOOKMARK [3][-]{subsubsection.2166}{13.2.3.1. Isotropic ensemble of particles}{subsection.2160}% 410
+\BOOKMARK [2][-]{subsection.2168}{13.2.4. Influence of the relative arrangement of scatterers on interparticle interferences}{section.2136}% 411
+\BOOKMARK [3][-]{subsubsection.2174}{13.2.4.1. Formula from Prins and Zernicke}{subsection.2168}% 412
+\BOOKMARK [3][-]{subsubsection.2179}{13.2.4.2. Isolate particles}{subsection.2168}% 413
+\BOOKMARK [3][-]{subsubsection.2181}{13.2.4.3. Polydisperse System of isolated particles}{subsection.2168}% 414
+\BOOKMARK [2][-]{subsection.2183}{13.2.5. Influence of N\(R\) and F\(Q,R\) on interparticle interferences}{section.2136}% 415
+\BOOKMARK [2][-]{subsection.2188}{13.2.6. Scattering laws and structural parameter}{section.2136}% 416
+\BOOKMARK [3][-]{subsubsection.2189}{13.2.6.1. Porod volume}{subsection.2188}% 417
+\BOOKMARK [3][-]{subsubsection.2191}{13.2.6.2. Radius of gyration and Guinier approximation}{subsection.2188}% 418
+\BOOKMARK [3][-]{subsubsection.2195}{13.2.6.3. Correlation length}{subsection.2188}% 419
+\BOOKMARK [3][-]{subsubsection.2198}{13.2.6.4. Porod law and specific surfaces}{subsection.2188}% 420
+\BOOKMARK [0][-]{chapter.2206}{Chapter 14. Experimental Setup of a Small Angle Scattering Instrument}{}% 421
+\BOOKMARK [1][-]{section.2207}{14.1. SANS-Camera}{chapter.2206}% 422
+\BOOKMARK [1][-]{section.2209}{14.2. SAXS-Camera}{chapter.2206}% 423
+\BOOKMARK [0][-]{chapter.2211}{Chapter 15. Data Reduction in SAS}{}% 424
+\BOOKMARK [1][-]{section.2212}{15.1. Correction and Normalization of SANS-Raw data}{chapter.2211}% 425
+\BOOKMARK [2][-]{subsection.2216}{15.1.1. Contribution of the isolated sample}{section.2212}% 426
+\BOOKMARK [2][-]{subsection.2220}{15.1.2. Correction for sample holder and background noise}{section.2212}% 427
+\BOOKMARK [1][-]{section.2225}{15.2. Correction and normalization of SAXS raw data}{chapter.2211}% 428
+\BOOKMARK [0][-]{appendix*.2236}{Bibliography}{}% 429

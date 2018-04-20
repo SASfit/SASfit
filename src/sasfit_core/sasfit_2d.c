@@ -229,6 +229,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                                 ry = (j-By)*sasfit_2d_param.pixelsize*1e-3;
                                 rx = (i-Bx)*sasfit_2d_param.pixelsize*1e-3;
                                 // Det2DPar.Psi = atan(ry/rx);
+/*
                                 if (rx+Drx == 0) {
                                     if (ry+Dry > 0) {
                                         sasfit_param_override_set_psi(M_PI_2);
@@ -238,6 +239,8 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                                 } else {
                                     sasfit_param_override_set_psi( atan((ry+Dry)/(rx+Drx)) );
                                 }
+*/
+                                sasfit_param_override_set_psi( atan2((ry+Dry),(rx+Drx)) );
                                 r = sqrt(gsl_pow_2(rx+Drx)+gsl_pow_2(ry+Dry));
                                 TwoTheta = atan(r/sasfit_2d_param.dist);
                                 Theta = 0.5*TwoTheta;
