@@ -4360,7 +4360,7 @@ proc analyticalGlobalSDCmd {simorfit
 		      set Q {}
 		      set I {}
 		      set DI {}
-		      if {($::addsasfit(sim,Qmin) > 0) && (![string compare "log(x)" $::GlobalIQGraph(x,type)] || ![string compare "log10(x)" $::GobalIQGraph(x,type)])} {
+		      if {($::addsasfit(sim,Qmin) > 0) && (![string compare "log(x)" $::GlobalFitIQGraph(x,type)] || ![string compare "log10(x)" $::GlobalFitIQGraph(x,type)])} {
 			 set logDQ [expr log10($::addsasfit(sim,Qmax))-log10($::addsasfit(sim,Qmin))]
 			 set logDQ [expr $logDQ/$::addsasfit(sim,N)]
 			 for {set k 0} {$k<$::addsasfit(sim,N)+1} {incr k} {

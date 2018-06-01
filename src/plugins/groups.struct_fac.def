@@ -204,3 +204,21 @@
  *
  * \modname{sq_plugins_pprimelocalcylindrical}
  */
+ 
+ /** 
+ * \defgroup sq_plugins_user1 user plugins
+ * \ingroup sq_plugins
+ *
+ * This group contains plugins supplied by users
+ *
+ * \modname{sq_plugins_user1}
+ */
+ 
+ /** 
+ * \defgroup sq_plugins_devel devel plugins
+ * \ingroup sq_plugins
+ *
+ * This group contains plugins under development.
+ *
+ * \modname{sq_plugins_devel}
+ */

@@ -1,4 +1,77 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Structure factor for a two dimensional hard spheres/disks fluid} \hspace{1pt}
+The structure factor of hard disks or spheres with diameter/radius $\sigma=2R$ in two dimensions with an interaction potential
+\begin{align}
+U(r,\sigma) &= 
+\begin{cases}
+\infty &\mathrm{for~}  r < \sigma \\
+0  &\mathrm{for~}  r \geq \sigma 
+\end{cases}
+\end{align}
+have been implemented in several variants.
+An analytical form of the structure factor as a function of the disk radius $R$ and surface coverage $\eta=\pi R^2 \rho$, where $\rho$ is the number density of particles, have been given by\cite{Rosenfeld1990,Guo2006}.
+Rosenfeld \cite{Rosenfeld1990} gives the expression
+\begin{align}
+\frac{1}{S(q)}-1 &= 4\eta\left(A \frac{\mathrm{J}_1^2(qR)}{(qR)^2}
+                    +B\mathrm{J}_0(qR)\frac{\mathrm{J}_1(qR)}{qR}
+                    +G\frac{\mathrm{J}_1(2qR)}{qR}
+                    \right)
+\end{align}
+with
+\begin{align}
+A &=\left(1+(2\eta-1)\chi+2\eta G\right)/\eta \\
+B &=\left((1-\eta)\chi-1-3\eta G\right)/\eta \\
+G &= \frac{1}{1-\eta} \\
+\chi &= \frac{1+\eta}{(1-\eta)^2}
+\end{align}
+In the original paper from Rosenfeld the definition of $\chi$ seems to have a typo and has been corrected like in \cite{Engel2009}.
+Guo \cite{Guo2006} supplies the expression
+\begin{align}
+S(q) &= \frac{1}{1-\rho \tilde{c}(q,r)} \\
+\tilde{c}(q,r) &= 2\pi\sigma^2 \int_0^1 c(r′,\eta) J_0(q\sigma r′) r′ \mathrm{d}r′
+\end{align}
+with
+\begin{align}
+\begin{split}
+c(r',\eta) &= 
+\Theta(1-r') \left[-\frac{1-p\eta^2}{\left(1-2\eta+p\eta^2\right)^2}\right]  \\
+&\left\{1-a^2\eta-a^2\eta\frac{2}{\pi}\left[\arccos\left(\frac{r'}{a}\right)-\frac{r'}{a}\sqrt{1-\frac{r'^2}{a^2}}\right]\right\}
+\end{split}  
+\end{align}
+with $p=\left(4\sqrt{3}\pi-12\right)/\pi^2$ and being $\Theta()$ the Heaviside function. The parameter $a$ are the roots of a non-linear equation, which has been solved numerically and then approximated via a polynomial fitting by
+\begin{align}
+a &= 0.3699\eta^4
+      -1.2511\eta^3
+      +2.0199\eta^2
+      -2.2373\eta
+      +2.1
+\end{align}
+
+\vspace{5mm}
+\noindent
+\underline{Input Parameters for model \texttt{2D hard disks (Rosenfeld)} as well as}
+\underline{\texttt{2D hard disks (Guo)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of the disc $R$
+\item[\texttt{eta}] surface coverage $\eta$
+\end{description}
+
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item Both models break down for surface coverage around $\eta>0.75$. The densest possible lattice packing would be $\eta_\mathrm{max}=\frac16\pi\sqrt{3}\simeq 0.907$.
+\item Values for surface coverage $0 < \eta < 1$ are accepted by the software.
+\end{itemize}
+
+\begin{figure}[htb]
+\centering
+  \subfigure[]{\includegraphics[width=0.43\textwidth]{../images/structure_factor/2D_hard_disk_fluid/HardDisks_low.png}}
+  \quad
+  \subfigure[]{\includegraphics[width=0.47\textwidth]{../images/structure_factor/2D_hard_disk_fluid/HardDisks_high.png}}
+  \caption{Comparison between Rosenfeld's and Guo's results}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Structure factor of a random flight model} \hspace{1pt}
 The random flight model describes a discrete chain, where the positions of the $N$ units forming the discrete chains follow a 3D random walk. The distance between neighbouring units is constants.
 \begin{figure}[htb]

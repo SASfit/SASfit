@@ -150,6 +150,34 @@
  * \modname{ff_plugins_anisotropic}
  */
 
+ 
+/** 
+ * \defgroup ff_plugins_deformed_textured deformed and partly oriented obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of deformed, stretched and textured objects.
+ *
+ * \modname{ff_plugins_deformed_textured}
+ */
+  
+/** 
+ * \defgroup ff_plugins_partly_aligned_cylsh partly aligned cylinders
+ * \ingroup ff_plugins_deformed_textured
+ *
+ * This group contains form factors of textured (e.g. by shear) cylindrical objects.
+ *
+ * \modname{ff_plugins_partly_aligned_cylsh}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_partly_aligned_ellsh partly aligned spheroids
+ * \ingroup ff_plugins_deformed_textured
+ *
+ * This group contains form factors of textured (e.g. by shear) ellipsoidal objects.
+ *
+ * \modname{ff_plugins_partly_aligned_ellsh}
+ */
+ 
 /** 
  * \defgroup ff_plugins_localplanar local planar obj.
  * \ingroup ff_plugins_anisotropic

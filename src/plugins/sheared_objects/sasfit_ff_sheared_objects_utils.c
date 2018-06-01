@@ -94,7 +94,8 @@ e30:          if (L == 0)  BIV0=BIV;
 
 
 scalar pMaierSaupe(scalar x,scalar y, sasfit_param * param) {
-    scalar norm,u,p;
+    scalar norm,u,p,theta,intfrac;
+    theta=abs(modf(x/M_PI,&intfrac)*M_PI);
     if (KAPPA == 0) return 0.25/M_PI;
     if (KAPPA < 0) {
 		u = sqrt(-KAPPA);
@@ -103,13 +104,13 @@ scalar pMaierSaupe(scalar x,scalar y, sasfit_param * param) {
 		u = sqrt(KAPPA);
 		norm = 2.0*exp(KAPPA)*gsl_sf_dawson(u)/u; // maple: `assuming`([convert(int(exp(P2*cos(THETA)^2)*sin(THETA), theta = 0 .. Pi), dawson)], [kappa > 0])
 	}
-    p = exp(KAPPA*gsl_pow_2(cos(x)))/norm;
+    p = exp(KAPPA*gsl_pow_2(cos(theta)))/norm;
     return p/(2*M_PI);
 }
 
 scalar pGauss(scalar x,scalar y, sasfit_param * param) {
     scalar c,p,theta,k,intfrac;
-    theta = modf(x/M_PI,&intfrac)*M_PI;
+    theta = abs(modf(x/M_PI,&intfrac)*M_PI);
     if (KAPPA == 0) return 1./(4.*M_PI);
     if (KAPPA > 0) {
         c =  2*gsl_sf_dawson(1./(2.*KAPPA))/KAPPA
@@ -129,7 +130,7 @@ scalar pGauss(scalar x,scalar y, sasfit_param * param) {
 
 scalar pBoltzmann(scalar x,scalar y, sasfit_param * param) {
     scalar c,p,theta,intfrac;
-    theta = modf(x/M_PI,&intfrac)*M_PI;
+    theta = fabs(modf(x/M_PI,&intfrac)*M_PI);
     if (KAPPA == 0) return 0.25/M_PI;
     c = -(4*M_PI)*(KAPPA*exp(-M_PI_2*KAPPA)-1.0)/(KAPPA*KAPPA+1.0);
     if (theta<M_PI_2) {
@@ -141,15 +142,16 @@ scalar pBoltzmann(scalar x,scalar y, sasfit_param * param) {
 }
 
 scalar pOnsager(scalar x,scalar y, sasfit_param * param) {
-    scalar c,p,Lv1;
+    scalar c,p,Lv1,theta,intfrac;
+    theta=abs(modf(x/M_PI,&intfrac)*M_PI);
     if (KAPPA == 0) return 0.25/M_PI;
     if (KAPPA > 10 ) {
         p = 0.5*KAPPA*exp(gsl_sf_lncosh(KAPPA*cos(x))-gsl_sf_lnsinh(KAPPA));
     } else if (KAPPA >= 0 && KAPPA <= 10){
-        p = 0.5*KAPPA*cosh(KAPPA*cos(x))/sinh(KAPPA);
+        p = 0.5*KAPPA*cosh(KAPPA*cos(theta))/sinh(KAPPA);
     } else if (KAPPA < 0) {
         STVLV(-1, -KAPPA, &Lv1);
-        p = cosh(KAPPA*sin(x))/(M_PI*Lv1);
+        p = cosh(KAPPA*sin(theta))/(M_PI*Lv1);
     }
     return p/(2*M_PI);
 }
@@ -170,7 +172,9 @@ scalar pHayterPenfold(scalar x,scalar y, sasfit_param * param) {
 }
 
 scalar pHeavysidePi(scalar x,scalar y, sasfit_param * param) {
-    scalar c,k;
+    scalar c,k,theta,intfrac;
+    theta=abs(modf(x/M_PI,&intfrac)*M_PI);
+
     if (fabs(KAPPA)<0.1) return 0.25/M_PI;
 
     if (KAPPA > 0) {
@@ -180,8 +184,8 @@ scalar pHeavysidePi(scalar x,scalar y, sasfit_param * param) {
         } else {
             c = 4.*M_PI;
         }
-        if (fabs(x)<k) return 1./c;
-        if (fabs(M_PI-x)<k) return 1./c;
+        if (fabs(theta)<k) return 1./c;
+        if (fabs(M_PI-theta)<k) return 1./c;
         return 0;
     } else {
         k=1./fabs(KAPPA);
@@ -190,15 +194,17 @@ scalar pHeavysidePi(scalar x,scalar y, sasfit_param * param) {
         } else {
             c = 4.*M_PI;
         }
-        if (fabs(x-M_PI_2)<k) return 1./c;
+        if (fabs(theta-M_PI_2)<k) return 1./c;
         return 0;
     }
     return GSL_NAN;
 }
 
 scalar pLegendre(scalar x,scalar y, sasfit_param * param) {
-    scalar pdistr, Sl[7], Pl[7], P2, P4, P6;
+    scalar pdistr, Sl[7], Pl[7], P2, P4, P6,theta,intfrac;
 	int l;
+
+    theta=abs(modf(x/M_PI,&intfrac)*M_PI);
 
     P2 = fabs(param->p[8]);
     P4 = fabs(param->p[9]);
@@ -212,10 +218,10 @@ scalar pLegendre(scalar x,scalar y, sasfit_param * param) {
 	Sl[5]=0.0;
 	Sl[6]=P6;
 
-	pdistr=0.0;
-    gsl_sf_legendre_Pl_array(7,cos(x),Pl);
-	for (l=0;l<=6;l++) {
-		pdistr = pdistr+(l+0.5)*Sl[l]*Pl[l];
+	pdistr=0.5;
+    gsl_sf_legendre_Pl_array(7,cos(theta),Pl);
+	for (l=1;l<=6;l++) {
+		pdistr = pdistr+(l+0.5)*Sl[l]*gsl_sf_legendre_Pl(l,cos(theta));
 	}
 	return pdistr/(2*M_PI);
 
@@ -235,6 +241,34 @@ scalar gamOthers(scalar psi, scalar theta, scalar phi) {
 
 scalar gamTheta(scalar psi, scalar theta, scalar phi) {
     return theta;
+}
+
+
+scalar f_sph(scalar x) {
+	if (fabs(x) < 1e-6)	{
+		return 1-gsl_pow_2(x)/10.+gsl_pow_4(x)/280.0-gsl_pow_6(x)/15120.+gsl_pow_8(x)/1330560.;
+	} else {
+		return 3*gsl_sf_bessel_j1(x)/x;
+	}
+}
+
+scalar alignedEllSh(sasfit_cubature_g *gam, sasfit_param * param) {
+	scalar xc, xt, Vc, Vt;
+
+	scalar gama, psi, cosgama, singama;
+
+	SASFIT_ASSERT_PTR(param);
+
+	psi   = sasfit_param_override_get_psi(PSI_DEG * M_PI/180.);
+
+    gama = (*gam)(psi, THETA, PHI);
+
+	xc = Q*sqrt(gsl_pow_2(A*cos(gama))+ gsl_pow_2(B)*(1-cos(gama)*cos(gama)));
+	xt = Q*sqrt(gsl_pow_2((A+T)*cos(gama))+ gsl_pow_2(B+T)*(1-cos(gama)*cos(gama)));
+	Vc = 4./3.*M_PI*A*gsl_pow_2(B);
+	Vt = 4./3.*M_PI*(A+T)*gsl_pow_2(B+T);
+	return 	 gsl_sf_pow_int( (ETA_CORE-ETA_SHELL)*Vc*f_sph(xc)+
+			(ETA_SHELL-ETA_SOLV)*Vt*f_sph(xt),lround(P));
 }
 
 scalar alignedCylShell(sasfit_cubature_g *gam, sasfit_param * param)

@@ -7,7 +7,8 @@
 #include <sasfit_error_ff.h>
 
 scalar f_sph(scalar x) {
-	if (fabs(x) < 1e-6)	{
+
+    	if (fabs(x) < 1e-6)	{
 		return 1-gsl_pow_2(x)/10.+gsl_pow_4(x)/280.0-gsl_pow_6(x)/15120.+gsl_pow_8(x)/1330560.;
 	} else {
 		return 3*gsl_sf_bessel_j1(x)/x;
@@ -32,7 +33,7 @@ int ellip_shell_cubature(unsigned ndim, const double *x, void *pam,
 	cubature_param *cparam;
 	cparam = (cubature_param *) pam;
 	param = cparam->param;
-	
+
 	fval[0] = 0;
 	if ((ndim < 1) || (fdim < 1)) {
 		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
@@ -67,7 +68,7 @@ scalar Kernel_P_OOURA2(scalar x, void * pam) {
 	cubature_param *cparam;
 	cparam = (cubature_param *) pam;
 	param = cparam->param;
-	
+
 	if (SIGMA==0) {
 		LNDISTR = 1;
 		NU = 1;
@@ -85,7 +86,7 @@ scalar Kernel_P_OOURA2(scalar x, void * pam) {
 		}
 	}
 	return  (cparam->func)(param);
-} 
+}
 
 scalar Kernel_P_OOURA1(scalar x, void * pam) {
 	sasfit_param *param;
@@ -94,7 +95,7 @@ scalar Kernel_P_OOURA1(scalar x, void * pam) {
 	param = cparam->param;
 	scalar sum, err, *aw;
 	int lenaw;
-	
+
 	lenaw=10000;
 	MU = x;
 	if (cparam->ndim == 1) {
@@ -109,7 +110,7 @@ scalar Kernel_P_OOURA1(scalar x, void * pam) {
 			sasfit_intde(&Kernel_P_OOURA2, cparam->cubxmin[1], cparam->cubxmax[1], aw, &sum, &err,pam);
 			free(aw);
             break;
-            } 
+            }
     case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
 			aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
 			sasfit_intccini(lenaw, aw);

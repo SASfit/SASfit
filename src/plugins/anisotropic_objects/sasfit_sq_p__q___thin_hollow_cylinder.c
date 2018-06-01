@@ -183,8 +183,53 @@ scalar ThinCylShell(scalar q, sasfit_param * param)
 
 	return Pprime;
 }
+
+
+int thin_hollow_cylinder_cubature(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+	sasfit_param subParam;
+	sasfit_init_param( &subParam );
+	sasfit_param *param;
+	cubature_param *cparam;
+	cparam = (cubature_param *) pam;
+	param = cparam->param;
+/*
+	fval[0] = 0;
+	if ((ndim < 1) || (fdim < 1)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+	if ((ndim == 2)) {
+		LNDISTR = 1;
+		NU = 1;
+	} else if ((ndim == 3)) {
+		subParam.p[0] = 1.0;
+		subParam.p[1] = SIGMA_R;
+		subParam.p[2] = 1.0;
+		subParam.p[3] = 1.0;
+		NU=x[2];
+		LNDISTR = sasfit_sd_LogNorm(NU, &subParam);
+		SASFIT_CHECK_SUB_ERR(param, subParam);
+		if ( subParam.errStatus != FALSE ) {
+			sasfit_out("LogNormError: SIGMA:%lf\n",SIGMA);
+			return 1;
+		}
+	}
+	X = x[0];
+	Y = x[1];
+    fval[0] = (cparam->func)(param);
+    */
+    return 0;
+}
+
 scalar sasfit_sq_p__q___thin_hollow_cylinder(scalar q, sasfit_param * param)
 {
+	scalar *aw, res,err,sum;
+    scalar cubxmin[3], cubxmax[3], fval[1], ferr[1];
+    size_t neval;
+    int intstrategy, ndim, lenaw=4000;
+	cubature_param cparam;
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -193,6 +238,47 @@ scalar sasfit_sq_p__q___thin_hollow_cylinder(scalar q, sasfit_param * param)
 
 	// insert your code here
 	return ThinCylShell(q,param);
+
+	cubxmin[0]=0;
+	cubxmax[0]=M_PI_2;
+	if (SIGMA_R==0 && SIGMA_H==0) {
+        ndim=1;
+	} else if (SIGMA_R==0 && SIGMA_H!=0) {
+	    ndim=2;
+        find_LogNorm_int_range(2,H0,SIGMA_H,&cubxmin[1],&cubxmax[1],param);
+	} else if (SIGMA_R!=0 && SIGMA_H==0) {
+	    ndim=2;
+        find_LogNorm_int_range(2,R0,SIGMA_R,&cubxmin[1],&cubxmax[1],param);
+	} else {
+	    ndim = 3;
+        find_LogNorm_int_range(2,R0,SIGMA_R,&cubxmin[1],&cubxmax[1],param);
+	    find_LogNorm_int_range(2,H0,SIGMA_H,&cubxmin[2],&cubxmax[2],param);
+	}
+
+    intstrategy = sasfit_get_int_strategy();
+	intstrategy=P_CUBATURE;
+	switch(intstrategy) {
+    case H_CUBATURE: {
+			hcubature(1, &thin_hollow_cylinder_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+				fval, ferr);
+			sum = fval[0];
+            break;
+            }
+    case P_CUBATURE: {
+			pcubature(1, &thin_hollow_cylinder_cubature,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+				fval, ferr);
+			sum = fval[0];
+            break;
+            }
+    default: {
+//		    sasfit_out("ise default sasfit_integrate routine\n");
+            sum=ThinCylShell(q,param);
+            break;
+            }
+    }
+    return sum;
 }
 
 scalar sasfit_sq_p__q___thin_hollow_cylinder_f(scalar q, sasfit_param * param)

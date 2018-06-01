@@ -21,8 +21,8 @@ scalar sasfit_sq__d_hard_disks__rosenfeld_(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((ETA <= 0.0), param, "eta(%lg) <= 0",ETA); // modify condition to your needs
 	SASFIT_CHECK_COND1((ETA >= 1.0), param, "eta(%lg) >= 1",ETA); // modify condition to your needs
 	// insert your code here
-
-    G = pow(1-ETA,-1.5);
+	qR=q*R;
+    G = 1./(1.-ETA);
     XI = (1.+ETA)/gsl_pow_3(1.-ETA);
     B=((1.-ETA)*XI-1.-3.*ETA*G)/ETA;
 	A=(1.+(2.*ETA-1.)*XI+2*ETA*G)/ETA;

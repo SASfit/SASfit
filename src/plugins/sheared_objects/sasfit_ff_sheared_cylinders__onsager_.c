@@ -15,7 +15,7 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
-// return pOnsager(q,0,param);
+ // return pOnsager(q,0,param);
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -49,12 +49,12 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
 	cparam.p1 = &pOnsager;
 
 	intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
+//	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
 /*
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_aniso(), aw);
             sasfit_intde(&Kernel_P_OOURA1, cparam.cubxmin[0], cparam.cubxmax[0], aw, &res, &err, &cparam);
 			sum=res;
             free(aw);
@@ -63,7 +63,7 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
     case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
             aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
             sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&Kernel_P_OOURA1, cparam.cubxmin[0], cparam.cubxmax[0], sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&cparam);
+            sasfit_intcc(&Kernel_P_OOURA1, cparam.cubxmin[0], cparam.cubxmax[0], sasfit_eps_get_aniso(), lenaw, aw, &res, &err,&cparam);
 			sum=res;
             free(aw);
             break;
@@ -71,7 +71,7 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
 */
     case H_CUBATURE: {
 			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
 			sum = fval[0];
             break;
@@ -80,15 +80,19 @@ scalar sasfit_ff_sheared_cylinders__onsager_(scalar q, sasfit_param * param)
             cubxmin[0]=0;
             cubxmax[0]=M_PI_2;
 			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
 			sum = 2*fval[0];
             break;
             }
     default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_core_x, param);
-//            break;
+            cubxmin[0]=0;
+            cubxmax[0]=1;
+			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
+				fval, ferr);
+			sum = 2*fval[0];
+            break;
             }
     }
 	return sum;

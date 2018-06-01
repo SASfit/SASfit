@@ -33,12 +33,12 @@
 
 /*
 float RNDMultiLamellarVesicle(Tcl_Interp *interp,
-		float q, 
+		float q,
 		  float R_c,
-		  float t_sh, 
+		  float t_sh,
 		float t_sol,
 		float Dt_sol,
-		  float eta_sh, 
+		  float eta_sh,
 		float eta_sol,
 		float n,
 		float s_Rc,
@@ -47,11 +47,11 @@ float RNDMultiLamellarVesicle(Tcl_Interp *interp,
 */
 /*
  //
- // MultiLamellarVesicle: 
+ // MultiLamellarVesicle:
  //	 l[0]: R_c: core radius, core contains solvent
- //	 l[1]: t_sh: thickness of surfactant layer thickness 
+ //	 l[1]: t_sh: thickness of surfactant layer thickness
  //	 l[2]: t_sol: thickness of solvent layer
- //	 l[3]: eta_sh: scattering length density of surfactant shell 
+ //	 l[3]: eta_sh: scattering length density of surfactant shell
  //	 l[4]: eta_sol: scattering length density of solvent as well as core
  //	 l[5]: n: number of layers
  //	 l[6]: s_Rc: number of layers
@@ -67,7 +67,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 	scalar Dshift;
 	int i,j,k,N,l,m,p, Nav = NRND;
 	static int idum=-1;
-	static gsl_rng * r; 
+	static gsl_rng * r;
 	static const gsl_rng_type * T;
 	static scalar o_R_c=-1., o_t_sh=-1., o_t_sol=-1., o_Dt_sol=-1.,o_n=-1.;
 	static scalar r_i[1000][3][NRND];
@@ -83,7 +83,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((n < 1.0), param, "n(%lg) < 1",n);
 	SASFIT_CHECK_COND1((n > 1000), param, "n(%lg) > 1000",n);
 
-	if (idum < 0) 
+	if (idum < 0)
 	{
 		idum = -idum;
 		gsl_rng_env_setup();
@@ -94,7 +94,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 		(o_t_sh		!= t_sh) ||
 		(o_t_sol  	!= t_sol) ||
 		(o_Dt_sol	!= Dt_sol) ||
-		(o_n		!= n)) 
+		(o_n		!= n))
 	{
 		o_R_c = R_c;
 		o_t_sh = t_sh;
@@ -102,9 +102,9 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 		o_Dt_sol = Dt_sol;
 		o_n = n;
 	}
-	if (Nav > sasfit_eps_get_jmax_aniso()) 
+	if (Nav < sasfit_eps_get_iter_4_mc())
 	{
-		Nav = sasfit_eps_get_jmax_aniso();
+		Nav = sasfit_eps_get_iter_4_mc();
 	}
 
 	sasfit_init_param( &subParam );
@@ -112,30 +112,30 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 	sumtsh = 0.0;
 	sumtsh_im1 = 0.0;
 
-	for (p=0; p <= Nav ;p++) 
+	for (p=0; p <= Nav ;p++)
 	{
 		sum = 0.;
 		sum_im1 = 0.0;
 		t = t_sol-2*s_tsol+p*4.*s_tsol/Nav;
-		for (k=0; k <= Nav ;k++) 
+		for (k=0; k <= Nav ;k++)
 		{
 			sumt = 0.0;
-			for (i=0; i < N ;i++) 
+			for (i=0; i < N ;i++)
 			{
-				for (l=0; l < Nav ;l++) 
+				for (l=0; l < Nav ;l++)
 				{
 					r_i[0][0][l] = 0.0;
 					r_i[0][1][l] = 0.0;
 					r_i[0][2][l] = 0.0;
-					for (m=1; m < N ;m++) 
+					for (m=1; m < N ;m++)
 					{
 						phi = gsl_rng_uniform(r)*2.*M_PI;
 						theta = acos(1.-2.*gsl_rng_uniform(r));
 						Dshift = Dt_sol*t;
 						Delta_s = gsl_rng_uniform(r)*Dshift;
-						r_i[m][0][l] = r_i[m-1][0][l] + Delta_s*cos(phi)*sin(phi);
-						r_i[m][1][l] = r_i[m-1][1][l] + Delta_s*sin(phi)*sin(phi);
-						r_i[m][2][l] = r_i[m-1][2][l] + Delta_s*cos(phi);
+						r_i[m][0][l] = r_i[m-1][0][l] + Delta_s*cos(phi)*sin(theta);
+						r_i[m][1][l] = r_i[m-1][1][l] + Delta_s*sin(phi)*sin(theta);
+						r_i[m][2][l] = r_i[m-1][2][l] + Delta_s         *cos(theta);
 					}
 				}
 
@@ -152,12 +152,12 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 				subParam.p[3] = eta_sh - eta_sol;
 				Fi += sasfit_ff_sphere_f(q, &subParam);
 
-				for (j=0; j < N ;j++) 
+				for (j=0; j < N ;j++)
 				{
-					if (i == j) 
+					if (i == j)
 					{
 						sumt = sumt + Fi*Fi;
-					} else 
+					} else
 					{
 						/*
 						Fj =	K(interp,q,R+j	 *t+j*t_sol,eta_sol-eta_sh,error)
@@ -174,10 +174,10 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 						rij = sqrt(pow(r_i[i][0][k]-r_i[j][0][k],2)
 							+pow(r_i[i][1][k]-r_i[j][1][k],2)
 							+pow(r_i[i][2][k]-r_i[j][2][k],2));
-						if (rij == 0) 
+						if (rij == 0)
 						{
 							sumt = sumt + Fi*Fj;
-						} else 
+						} else
 						{
 							sumt = sumt + Fi*Fj*sin(q*rij)/(q*rij);
 						}

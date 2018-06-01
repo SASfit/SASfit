@@ -3,6 +3,8 @@
 \section{Sheared and deformed objects}
 
 \subsection{Non-equilibrium static form factor of a reptating chain}
+~\\
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=\textwidth]{../images/form_factor/reptating_chain/reptating_chain.png}
@@ -61,7 +63,7 @@ q_\perp &= q \sin(\psi-\theta_0)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{ShearedCylinderHayterPenfold}
+\subsection{Sheared Cylinder according to Hayter and Penfold}
 \label{sect:ShearedCylinderHayterPenfold}
 \hspace{1pt}\\
 The orientation distribution of long cylinders in a shear cell has been studied by \cite{Scheraga1951,Jerrard1959,Hayter1984}. In contrast to the orientation distributions described in the next section this distribution also describes the tilting of the most probable orientation against the flow direction.
@@ -88,24 +90,35 @@ The scattering from monodisperse dilute (non-interacting)
 isotropic solution of anisotropic micelles is given by \cite{Hayter1984}
 \BE
 I(Q) =
-\left< \vert F(Q)\vert^2 \right>_Q \label{IQ_av}
+\left< \vert K_\text{CylSh}(Q)\vert^2 \right>_Q \label{IQ_av}
 \EE
-where $F(Q)$
+where $K(Q)$
 is the form factor for a micelle at a given orientation relative
 to the momentum transfer $Q$ and $\left<\right>_Q$ denotes an
 average over all such orientations.
 
-For a uniform cylinder of length $L$ and diameter $2R$ the form
+
+For a cylindrical shell of length $L$, core diameter $2R$, and shell thickness $t$ the form
 factor is given by:
-\BE F(Q) = F(Q,\gamma) = 2\Delta\eta V
-\frac{\sin\left(QL/2\cos\gamma\right)}{QL/2\cos\gamma}
-\frac{J_1(QR\sin\gamma)}{QR\sin\gamma}
-\EE
-where $\gamma$ is the
-angle between $Q$ and the cylinder axis, $V$ is the volume,
-$\Delta\eta$ the scattering length density contrast relative to
-the solvent, $J_1(x)$ is the first order Bessel function of the
-first kind.
+\begin{align}
+\begin{split}
+K_\text{CylSh}\left(Q,\dots,\gamma\right)  = &
+                  \hspace{\breites} K_\text{Cyl}\left(Q,\eta_\text{core}-\eta_\text{shell},R,L,\gamma\right) \\
+                               & +  K_\text{Cyl}\left(Q,\eta_\text{shell}-\eta_\text{solv},R+\Delta R,L,\gamma\right)
+\end{split}
+\end{align}
+with
+\begin{align}
+K_\text{Cyl}(Q,\Delta\eta,R,L,\gamma) & = 2 \pi R^2 L \Delta \eta
+    \frac{J_1\left(Q R \sin\gamma\right)}{Q R \sin\gamma} \,
+    \frac{\sin\left(\frac{QL}{2} \cos\gamma\right)}{\frac{QL}{2} \cos\gamma}
+\end{align}
+where $\gamma$ is the angle between $\mathbf{Q}$ and the cylinder
+axis $\mathbf{n}$. $\eta_\text{core}$, $\eta_\text{shell}$, and $\eta_\text{solv}$ are the scattering length densities of the cylinder core, shell and solvent. $J_1(x)$ is the first order Bessel function of
+the first kind. $\gamma$ can be calculated from the orientation
+($\theta$, $\phi$) of the cylinder and the direction of the
+scattering vector $\psi$ in the plane of the detector by
+where $\gamma$ is the angle between $Q$ and the cylinder axis.
 
 The scattering geometry for shear alignment is shown in Fig.
 \ref{shear_cuette_SANS_geometry}. In general perfect alignment
@@ -113,7 +126,7 @@ will not be achieved, and an orientation distribution must be
 employed such that the resultant scattering will be given by
 \begin{align}
 I(Q,\psi) &= \int_0^{2\pi} \int_0^\pi
-p_\mathrm{HP}(\theta,\phi;\kappa)\, \left(F^2(Q,\gamma^+)+F^2(Q,\gamma^-)
+p_\mathrm{HP}(\theta,\phi;\kappa)\, \left(K^2_\text{CylSh}(Q,\gamma^+)+K^2_\text{CylSh}(Q,\gamma^-)
 \right) \sin\theta \mathrm{d}\theta \mathrm{d}\phi
 \label{eq:IQShear_pHP}
 \end{align}
@@ -153,9 +166,31 @@ As the most probable direction is not the same as the flow direction, which is a
 \end{align}
 For the reversed direction of the flow the $x$-component of the vector $\mathbf{n}^-$ changes its sign. In the original paper \cite{Hayter1984} one finds $\cos \gamma^-_\mathrm{HP} = \cos\psi \sin\theta \cos\phi - \sin\psi \cos\theta$, which, however, results to the same scattering intensity as the scattering intensity of a cylinder is invariant by a rotation of $\pi$, i.e. as $\cos(\pi+\gamma^-) =-\cos\gamma^- = \cos\gamma^-_\mathrm{HP}$ the resulting scattering patterns are the same for both value $\gamma^-$ and $\gamma^-_\mathrm{HP}$.
 
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Cylinders (HayterPenfold)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of cylinders $R$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{L}] cylinder length $L$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item The size distribution is taken simultaneously over all parameters $R$, $t$ and $L$, so that their aspect rations stay always constant
+\item The most probable orientation is not the $\mathbf{x}$-direction but tilted by the angle $\varPhi_0$. As in a rheometer with cuette geometry the beram is passing the sample twice the forward scattering is twice as large as in the model described in the next section.
+\item As the orientation distribution is also not rotational symmetric around the direction of the most probably orientation and additional tilted against $\mathbf{x}$-axis the scattering pattern with the order parameter than the orientation distributions look slightly less oriented.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{partly aligned cylindrical shell}
+\subsection{partly aligned anisotropic objects}
 \label{sect:partlyalignedCylShell}
 ~\\
 
@@ -172,9 +207,11 @@ aligned cylinders or discs to the scattering vector $\mathbf{Q}$.}
 
 \noindent The scattering amplitude of a cylindrical shell is given by
 \begin{align}
-K_\text{CylShell}\left(Q,\dots,\gamma\right)  = &K_\text{Cyl}\left(Q,\eta_\text{core}-\eta_\text{shell},R,L,\gamma\right) \\
-& +  K_\text{Cyl}\left(Q,\eta_\text{shell}-\eta_\text{solv},R+\Delta
-R,L,\gamma\right)
+\begin{split}
+K_\text{CylShell}\left(Q,\dots,\gamma\right)  = &
+\hspace{\breites} K_\text{Cyl}\left(Q,\eta_\text{core}-\eta_\text{shell},R,L,\gamma\right) \\
+             & +  K_\text{Cyl}\left(Q,\eta_\text{shell}-\eta_\text{solv},R+\Delta R,L,\gamma\right)
+\end{split}
 \end{align}
 with
 \begin{align}
@@ -186,7 +223,22 @@ where $\gamma$ is the angle between $\mathbf{Q}$ and the cylinder
 axis $\mathbf{n}$. $L$ is the length of the cylinder, $R$ its
 radius, $\Delta\eta$ the scattering length density contrast relative
 to the solvent and $J_1(x)$ is the first order Bessel function of
-the first kind. $\gamma$ can be calculated from the orientation
+the first kind. 
+
+The scattering amplitude of an ellispoid of revolution is given by
+\begin{align}
+K_\text{Ell}(Q,\Delta\eta,R_\mathrm{e},R_\mathrm{p},\gamma) & = 4\pi R_\mathrm{e}^2 R_{p} \Delta\eta \frac{j_1(Qs)}{Qs}
+\end{align}
+with $s = \sqrt{R_\mathrm{p}\cos^2\gamma + R_\mathrm{e}\sin^2\gamma}$ and $j_1(x)$ being the spherical bessel function of first kind. $R_\mathrm{e}$ and $R_{p}$ are the equatorial and polar semi-axes of the spheroid, respectively.
+The scattering amplitude of an ellipsoidal shell is given by
+\begin{align}
+\begin{split}
+K_\text{EllShell}\left(Q,\dots,\gamma\right)  = &
+\hspace{\breites} K_\text{Ell}\left(Q,\eta_\text{core}-\eta_\text{shell},R_{\mathrm{p}},R_{\mathrm{e}},\gamma\right) \\
+             & +  K_\text{Ell}\left(Q,\eta_\text{shell}-\eta_\text{solv},R_{\mathrm{p}}+\Delta R,R_{\mathrm{e}}+\Delta R,\gamma\right)
+\end{split}
+\end{align}
+$\gamma$ can be calculated from the orientation
 ($\theta$, $\phi$) of the cylinder and the direction of the
 scattering vector $\psi$ in the plane of the detector by
 \begin{align}
@@ -206,16 +258,19 @@ scattering vector $\psi$ in the plane of the detector by
 n}}{\abs{\mathbf{Q}}\abs{\mathbf{n}}} = \cos\psi \cos\theta +
 \sin\psi \sin\theta \sin\phi
 \end{align}
-If the orientation distribution of the orientation vector $\mathbf{n}$ is described by $p(\theta,\phi)$
+If the orientation distribution of the orientation vector $\mathbf{n}$ is described by $p(\theta,\phi,\kappa)$
 so that the scattering intensity is given by
 \begin{align}
 I_\mathrm{p.a.CylShell}(Q) & =
             \int_0^\pi d\theta \int_0^{2\pi} d\phi \, \,
-                K_\text{CylShell}\left(Q,\dots,\gamma\right)\,p(\theta,\phi;\kappa)\,\sin(\theta)
+                K^2_\text{CylShell}\left(Q,\dots,\gamma\right)\,p(\theta,\phi;\kappa)\,\sin(\theta) \\
+I_\mathrm{p.a.EllShell}(Q) & =
+            \int_0^\pi d\theta \int_0^{2\pi} d\phi \, \,
+                K^2_\text{EllShell}\left(Q,\dots,\gamma\right)\,p(\theta,\phi;\kappa)\,\sin(\theta)
 \end{align}
 For this form factor it is assumed that the orientation distribution is independent of $\phi$,
 i.e. $p(\theta,\phi;\kappa)=p(\theta;\kappa)$ and that $p(\theta;\kappa)=p(\pi-\theta;\kappa)$, which means that turning the cylinder by 180$^\circ$ results in the same scattering intensity.
-Several orientation distributions have been implemented in a way that their resulting order parameter $S_2$ can have values between -0.5 and 1, which correspond to perfect alignment perpendicular to the $\mathrm{x}$ axis and perfect alignment parallel to it. all probability distributions have been normalized so that
+Several orientation distributions have been implemented in a way that their resulting order parameter $S_2$ can have values between -0.5 and 1, which correspond to perfect alignment perpendicular to the $\mathrm{x}$ axis and perfect alignment parallel to it. All probability distributions have been normalized 
 \begin{align}
 \int_0^\pi \int_0^{2\pi} p(\theta,\phi;\kappa) \sin \theta \, d\theta \, d\phi&=1
 \end{align}
@@ -227,23 +282,7 @@ Several orientation distributions have been implemented in a way that their resu
 \label{fig:S2_kappa}
 \end{figure}
 
-The order parameters $S_2$ can be calculated by
-\begin{align}
-S_2(\kappa) &=
-\int_0^\pi \int_0^{2\pi}
-                p(\theta,\phi;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta\, \mathrm{d}\phi \nonumber \\
-&= \int_0^\pi 2\pi
-                p(\theta;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta
-\end{align}
-\begin{figure}[htb]
-\subfigure[Onsager orientation distribution for $\kappa=3$. ]{\includegraphics[width=0.55\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(3).png}}
-\hfill
-\subfigure[Onsager orientation distribution for $\kappa=-3$. ]{\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(-3).png}}
-\caption{Orientation distributions are are all independent on $\phi$ and have for $\kappa>0$ a positive order parameter, i.e. the most probable orientation is in the $\mathbf{x}$-direction and for $\kappa<0$ a negative order parameter, i.e. the most probable orientation lies in the $\mathbf{zy}$-plane}
-\label{fig:pOnsager3D}
-\end{figure}
-
-\begin{table}[htp]
+\begin{table}[htb]
 \centering
 \caption{Values for $\kappa$ to obtain certain order parameters $S_2(\kappa)$ for the different orientation distributions $p(\theta,\phi,\kappa)$.}
 \label{tab:kappas}
@@ -259,61 +298,55 @@ Hayter-Penfold   & $\varnothing$ & $\varnothing$&	$\varnothing$ & 0 & 3.008 & 6.
 \end{tabular}
 \end{table}
 
+The order parameters $S_2$ can be calculated by
+\begin{align}
+S_2(\kappa) &=
+\int_0^\pi \int_0^{2\pi}
+                p(\theta,\phi;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta\, \mathrm{d}\phi \nonumber \\
+&= \int_0^\pi 2\pi
+                p(\theta;\kappa) \frac12 \left(3\cos^2\theta - 1\right) \sin \theta \, \mathrm{d}\theta
+\label{eq:S2kappa}
+\end{align}
+\begin{figure}[htb]
+\subfigure[Onsager orientation distribution for $\kappa=3$. ]{\includegraphics[width=0.55\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(3).png}}
+\hfill
+\subfigure[Onsager orientation distribution for $\kappa=-3$. ]{\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(-3).png}}
+\caption{Orientation distributions are are all independent on $\phi$ and have for $\kappa>0$ a positive order parameter, i.e. the most probable orientation is in the $\mathbf{x}$-direction and for $\kappa<0$ a negative order parameter, i.e. the most probable orientation lies in the $\mathbf{zy}$-plane}
+\label{fig:pOnsager3D}
+\end{figure}
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.95\textwidth]{../images/form_factor/cylindrical_obj/pXXXcomparison.png}
 \end{center}
-\caption{comparision of different orientation distributions with the same order parameter.}
+\caption{comparison of different orientation distributions with the same order parameter.}
 \label{fig:S2_comparision}
 \end{figure}
 
-%Instead of assuming a
-%special parametrization of $p(\theta)$ the orientation distribution was expanded in terms of
-%Legendre polynomials $P_l(\cos(\theta))$
-%\begin{align}
-%p(\theta) & = \sum_{l=0,even}^\infty \frac{2l+1}{2} \left\langle P_l\right\rangle\, P_l(\cos(\theta))
-%\end{align}
-%Due to the symmetry $p(\theta)=p(\pi-\theta)$ all terms with odd values for $l$ are zero and only the
-%even terms needs to be considered. For this form factor the first three terms up to $l=6$ are implemented.
-%As $\int_0^\pi p(\theta) \sin\theta \, d\theta =1$ the zero order parameter is one $\left\langle P_0 %\right\rangle=1$.
-%
-%
-%\vspace{5mm}
-%
-%\hspace{1pt}\\
-%\underline{Input Parameters for model \texttt{partly aligned CylShell}:}\\
-%\begin{description}
-%\item[\texttt{R}] core radius $R$
-%\item[\texttt{DR}] shell thickness $\Delta R$
-%\item[\texttt{L}] cylinder length $L$
-%\item[\texttt{eta\_core}] scattering length density $\eta_\text{core}$ of cylinder core
-%\item[\texttt{eta\_shell}] scattering length density $\eta_\text{shell}$ of cylinder shell
-%\item[\texttt{eta\_solv}] scattering length density $\eta_\text{solv}$ of solvent
-%\item[\texttt{psi}] direction $\psi$ of the scattering vector in the plane of the detector
-%\item[\texttt{P2}] order parameter $\langle P_2\rangle$
-%\item[\texttt{P4}] order parameter $\langle P_4\rangle$
-%\item[\texttt{P6}] order parameter $\langle P_6\rangle$
-%\end{description}
+The order parameter for the Hayter-Penfold orientation distribution has been calculated by performing first a coordination transformation of the polar coordinates with $\mathbf{z}$ being the polar axis to coordination system with a polar axis pointing into the direction of the most probable orientation. The order parameter $S_2(\kappa)$ in eq.\ \ref{eq:S2kappa} is then calculated in this new polar coordinate system.
 
-%\begin{figure}[htb]
-%\begin{center}
-%\includegraphics[width=0.786\textwidth,height=0.558\textwidth]{../images/form_factor/cylindrical_obj/partly_aligned_CylShell.png}
-%\end{center}
-%\caption{Scattering curve for partly aligned discs with radius $R=20$nm, $L=5$nm, $\Delta R=0$nm,
-%and $\left\langle P_2 \right\rangle=$0, 0.05, 0.1, 0.2, and 0.4. Higher order parameters are set
-%zero. $I(Q)$ is calculated for $\psi=0^\circ$ and $\psi=90^\circ$.}
-%\label{fig:partly_aligned_CylShell}
-%\end{figure}
+The form factors additional contain already a size distribution to profit from the speed enhancement by using a specialized multidimensional integration routine. The size distribution is included as
+\begin{align} 
+I(Q) &= \int_0^\infty \mathrm{LogNorm}(\nu,\sigma,1) I_\mathrm{p.a.CylShell}(Q,R\nu,\Delta R\nu,L\nu) \, \mathrm{d}\nu \\
+\end{align}
+and
+\begin{align}
+I(Q) &= \int_0^\infty \mathrm{LogNorm}(\nu,\sigma,1) I_\mathrm{p.a.EllShell}(Q,R_\mathrm{p}\nu,\Delta R\nu,R_\mathrm{e}\nu) \, \mathrm{d}\nu
+\end{align}
+ with 
+\begin{align}
+\mathrm{LogNorm}(\nu,\sigma,\mu) &= \frac{1}{\sqrt{2\pi}\sigma}\frac{1}{\nu} \exp\left(-\frac{(\ln(\nu/\mu))^2}{2\sigma^2}\right)
+\end{align}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
-%\subsection{aligned cylindrical shell}
-%\label{sect:alignedCylShell}
-%\hspace{1pt}\\
-
-\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
 \subsubsection{Maier-Saupe orientation distribution} ~\\
+
+\begin{figure}[htb]
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/pMaierSaupeGr.png}
+\caption{Maier-Saupe orientation distribution $p_\mathrm{MS}(\theta,\kappa)$ for different values of $\kappa$, resulting in an order parameter as listed in table \ref{tab:kappas}.}
+\label{fig:pMaierSaupeGr}
+\end{figure}
 
 \begin{align}
 p(\theta,\phi;\kappa) & = \frac{1}{c_\mathrm{MS}}\exp\left(\kappa \cos^2\theta\right)
@@ -331,13 +364,56 @@ c_\mathrm{MS} &=
 \end{cases}
 \end{align}
 with $D(x)$ being Dawson's integral $D(x)=e^{-x^2}\int_0^x e^{y^2} \mathrm{d}y = \frac12\sqrt{\pi}e^{-x^2}\mathrm{erfi}(x)$
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Cylinders (Maier-Saupe)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of cylinders $R$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{L}] cylinder length $L$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Spheroids (Maier-Saupe)}:}\\
+\begin{description}
+\item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{R\_polar}] polar semi-axis of spheroids $R_\mathrm{p}$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
 \subsubsection{Onsager orientation distribution} ~\\
 
+\begin{figure}[htb]
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/pOnsagerGr.png}
+\caption{Onsager orientation distribution $p_\mathrm{O}(\theta,\kappa)$ for different values of $\kappa$, resulting in an order parameter as listed in table \ref{tab:kappas}.}
+\label{fig:pOnsagerGr}
+\end{figure}
+
 \begin{align}
-p(\theta,\phi;\kappa) & =
+p_\mathrm{O}(\theta,\phi;\kappa) & =
 \begin{cases} \displaystyle
 \frac{\kappa \cosh\left(\kappa \cos(\theta)\right)}{4\pi \sinh(\kappa)}      &\mathrm{for~} \kappa \geq 0 \\[5mm]
  \displaystyle
@@ -346,13 +422,55 @@ p(\theta,\phi;\kappa) & =
 \end{align}
 where $L_\nu(x)$ is the modified Struve function.
 
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Cylinders (Onsager)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of cylinders $R$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{L}] cylinder length $L$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Spheroids (Onsager}:}\\
+\begin{description}
+\item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{R\_polar}] polar semi-axis of spheroids $R_\mathrm{p}$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
 \subsubsection{Boltzmann orientation distribution} ~\\
 
+\begin{figure}[htb]
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/pBoltzmannGr.png}
+\caption{Boltzmann orientation distribution $p_\mathrm{B}(\theta,\kappa)$ for different values of $\kappa$, resulting in an order parameter as listed in table \ref{tab:kappas}.}
+\label{fig:pBoltzmannGr}
+\end{figure}
+
 \begin{align}
-p(\theta,\phi;\kappa) & =
+p_\mathrm{B}(\theta,\phi;\kappa) & =
 \begin{cases}
 \displaystyle
 \frac{1}{2\pi c_\mathrm{B}}\exp\left(-\theta\kappa\right) & \mathrm{for~}  \theta \leq \frac{\pi}{2}\\[5mm]
@@ -364,14 +482,58 @@ with
 \begin{align}
 c_\mathrm{B} &= \frac{2\left(1-\kappa \exp\left(-\frac{\pi}{2}\kappa\right)\right)}{\kappa^2+1}
 \end{align}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Cylinders (Boltzmann)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of cylinders $R$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{L}] cylinder length $L$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Spheroids (Boltzmann)}:}\\
+\begin{description}
+\item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{R\_polar}] polar semi-axis of spheroids $R_\mathrm{p}$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
 \subsubsection{Gaussian orientation distribution}
 \label{sect:ShearedCylinderGaussian}
 ~\\
+
+\begin{figure}[htb]
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/pGaussGr.png}
+\caption{Gaussian orientation distribution $p_\mathrm{G}(\theta,\kappa)$ for different values of $\kappa$, resulting in an order parameter as listed in table \ref{tab:kappas}.}
+\label{fig:pGaussGr}
+\end{figure}
+
 \begin{align}
-p(\theta,\phi;\kappa) & =
+p_\mathrm{G}(\theta,\phi;\kappa) & =
 \begin{cases}
 \displaystyle
 \frac{1}{2\pi c_\mathrm{G}}\exp\left(-\theta^2\kappa^2\right) & \mathrm{for~} \kappa \geq 0 \mathrm{~and~} \theta \leq \frac{\pi}{2}\\[5mm]
@@ -391,25 +553,119 @@ c_\mathrm{G} & =
 \frac{\sqrt{\pi}}{\abs{\kappa}} e^{-\frac{1}{4\kappa^2}} \Im\left(\mathrm{cerfi}\left(-\frac{1}{2\abs{\kappa}}+\imath\frac{\pi}{2}\abs{\kappa}\right) \right) & \mathrm{for~} \kappa < 0
 \end{cases}
 \end{align}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Cylinders (Gauss)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of cylinders $R$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{L}] cylinder length $L$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Spheroids (Gauss)}:}\\
+\begin{description}
+\item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{R\_polar}] polar semi-axis of spheroids $R_\mathrm{p}$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
-\subsubsection{ShearedCylinderHeaviside} ~\\
+\subsubsection{Boxed orientation distribution (HeavisidePi)} ~\\
+
+\begin{figure}[htb]
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/pHeavisideGr.png}
+\caption{Heaviside orientation distribution $p_\mathrm{HS}(\theta,\kappa)$ for different values of $\kappa$, resulting in an order parameter as listed in table \ref{tab:kappas}.}
+\label{fig:pHeavisideGr}
+\end{figure}
+
 
 \begin{align}
-p(\theta,\phi;\bar{\theta}) & = \Theta[\theta-\bar{\theta}] \\
-\cos\gamma^\pm & = \sin\theta\cos\phi\cos\psi\pm\cos\theta\sin\psi
+p(\theta,\phi;\kappa) & =
+\begin{cases}
+\displaystyle
+\frac{1}{4\pi\left(1-\cos\left(1/\kappa\right)\right)}\left(\Pi\left(\frac{x\kappa}{2}\right) + \Pi\left(\frac{(x-\pi)\kappa}{2}\right)\right)
+ & \mathrm{for~} \kappa >  \frac{2}{\pi}
+ \\[5mm]
+\displaystyle
+ \frac{1}{4\pi} & \mathrm{for~}  \abs{\kappa} \leq \frac{2}{\pi}
+ \\[5mm]
+\displaystyle
+ \frac{1}{4\pi\sin\left(\frac{1}{\abs{\kappa}}\right)} \Pi\left(\frac{\left(x-\frac{\pi}{2}\right)\abs{\kappa}}{2}\right) & \mathrm{for~}  \kappa<-\frac{2}{\pi}
+\end{cases}
+\end{align}
+with the rectangle function $\Pi(x)$
+\begin{align}
+\Pi(x) &=
+\begin{cases}
+\displaystyle
+0 & \mathrm{for~} \abs{x} > \frac12
+ \\[5mm]
+\displaystyle
+\frac12 & \mathrm{for~}  \abs{x} = \frac12
+ \\[5mm]
+\displaystyle
+ 1 & \mathrm{for~}  \abs{x} < \frac12
+\end{cases}
 \end{align}
 
-%\item[ShearedCylinderMaierSaupe] ~\\
-%\begin{align}
-%p(\theta,\phi;\bar{\theta}) & = \exp[\cos^2(\theta/\bar{\theta})]-1 \\
-%\cos\gamma^\pm              & = \sin\theta \cos\phi \sin\psi \pm \cos\theta\cos\phi
-%\end{align}
-%
-%\item[ShearedCylinderOnsager] ~\\
-%\begin{align}
-%p(\theta,\phi;\bar{\theta}) & = \exp[-\sin(\theta/\bar{\theta})] \\
-%\cos\gamma^\pm              & = \sin\theta \cos\phi \sin\psi \pm \cos\theta\cos\phi
-%\end{align}
+\vspace{5mm}
 
+\underline{Input Parameters for model \texttt{Sheared Cylinders (Heaviside)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of cylinders $R$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{L}] cylinder length $L$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{Sheared Spheroids (Heaviside)}:}\\
+\begin{description}
+\item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
+\item[\texttt{t}] shell thickness $t$
+\item[\texttt{R\_polar}] polar semi-axis of spheroids $R_\mathrm{p}$
+\item[\texttt{eta\_core}] scattering length density of cylinder core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of cylinder shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\mathrm{solv}$
+\item[\texttt{psi}] direction of scattering vector on the detector $\psi$
+\item[{\texttt{sigma}}] width parameter of lognormal size distribution $\sigma$
+\item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
+\item For $\abs{\kappa}<\frac{2}{\pi}$ the partial derivative $\delta /\delta\kappa$ of the model function is zero which will cause an error message in the minimization routine. This means the fitting procedure will not work in this domain of values.
+\end{itemize} 

@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sq_cluster__tetrahedron_ ################ */
-/** 
+/**
  * \defgroup sq_cluster__tetrahedron_ Cluster (Tetrahedron)
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_devel
  *
  * \brief \<some brief description of Cluster (Tetrahedron) function\>
  *
@@ -59,29 +59,29 @@
 /**
  * \ingroup sq_cluster__tetrahedron_
  *
- * \sa sasfit_simple_clusters.h, sq_plugins
+ * \sa sasfit_simple_clusters.h, sq_plugins_devel
  */
 sasfit_simple_clusters_DLLEXP scalar sasfit_sq_cluster__tetrahedron_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_cluster__tetrahedron_
  *
- * \sa sasfit_simple_clusters.h, sq_plugins
+ * \sa sasfit_simple_clusters.h, sq_plugins_devel
  */
 sasfit_simple_clusters_DLLEXP scalar sasfit_sq_cluster__tetrahedron__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_cluster__tetrahedron_
  *
- * \sa sasfit_simple_clusters.h, sq_plugins
+ * \sa sasfit_simple_clusters.h, sq_plugins_devel
  */
 sasfit_simple_clusters_DLLEXP scalar sasfit_sq_cluster__tetrahedron__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_cluster__tetrahedron_ ################ */
 
 /* ################ start sq_cluster__linear_chain_ ################ */
-/** 
+/**
  * \defgroup sq_cluster__linear_chain_ Cluster (linear chain)
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_devel
  *
  * \brief \<some brief description of Cluster (linear chain) function\>
  *
@@ -101,21 +101,21 @@ sasfit_simple_clusters_DLLEXP scalar sasfit_sq_cluster__tetrahedron__v(scalar q,
 /**
  * \ingroup sq_cluster__linear_chain_
  *
- * \sa sasfit_simple_clusters.h, sq_plugins
+ * \sa sasfit_simple_clusters.h, sq_plugins_devel
  */
 sasfit_simple_clusters_DLLEXP scalar sasfit_sq_cluster__linear_chain_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_cluster__linear_chain_
  *
- * \sa sasfit_simple_clusters.h, sq_plugins
+ * \sa sasfit_simple_clusters.h, sq_plugins_devel
  */
 sasfit_simple_clusters_DLLEXP scalar sasfit_sq_cluster__linear_chain__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_cluster__linear_chain_
  *
- * \sa sasfit_simple_clusters.h, sq_plugins
+ * \sa sasfit_simple_clusters.h, sq_plugins_devel
  */
 sasfit_simple_clusters_DLLEXP scalar sasfit_sq_cluster__linear_chain__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_cluster__linear_chain_ ################ */

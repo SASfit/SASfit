@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 # the project name
-set(PRJ_NAME sasfit_sheared_cylinders)
+set(PRJ_NAME sasfit_sheared_objects)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
@@ -16,8 +16,15 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_sheared_cylinders__gauss_.c
 	sasfit_ff_sheared_cylinders__hayterpenfold_.c
 	sasfit_ff_sheared_cylinders__onsager_.c
-	sasfit_ff_sheared_cylinders__legendre_.c
-	sasfit_ff_sheared_cylinders_utils.c
+
+	sasfit_ff_sheared_spheroids__maier_saupe_.c
+	sasfit_ff_sheared_spheroids__heavyside_.c
+	sasfit_ff_sheared_spheroids__boltzmann_.c
+	sasfit_ff_sheared_spheroids__gauss_.c
+	sasfit_ff_sheared_spheroids__hayterpenfold_.c
+	sasfit_ff_sheared_spheroids__onsager_.c
+
+	sasfit_ff_sheared_objects_utils.c
 	interface.c
 )
 

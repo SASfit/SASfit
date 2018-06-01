@@ -350,6 +350,14 @@ J.~Dzubiella, A.~Jusufi, C.~N. Likos, C.~von Ferber, H.~Löwen, J.~Stellbrink,
 \newblock {\em Physical Review E}, 64(1):010401, jun 2001.
 \newblock \doi{10.1103/physreve.64.010401}.
 
+\bibitem{Engel2009}
+M.~Engel, B.~Stühn, J.~J. Schneider, T.~Cornelius, and M.~Naumann.
+\newblock Small-angle x-ray scattering ({SAXS}) off parallel, cylindrical,
+  well-defined nanopores: from random pore distribution to highly ordered
+  samples.
+\newblock {\em Applied Physics A}, 97(1):99--108, jul 2009.
+\newblock \doi{10.1007/s00339-009-5346-4}.
+
 \bibitem{book:Feigin:Svergun}
 L.~A. Feigin and D.~I. Svergun.
 \newblock {\em Structure Analysis by Small-Angle X-ray and Neutron Scattering}.
@@ -515,6 +523,13 @@ A.~Guinier.
 A.~Guinier and G.~Fournet.
 \newblock {\em Small-Angle Scattering of X-Rays}.
 \newblock John Wiley \& Sons, Inc., 1955.
+
+\bibitem{Guo2006}
+X.~Guo and U.~Riebel.
+\newblock Theoretical direct correlation function for two-dimensional fluids of
+  monodisperse hard spheres.
+\newblock {\em The Journal of Chemical Physics}, 125(14):144504, oct 2006.
+\newblock \doi{10.1063/1.2358133}.
 
 \bibitem{Gursoy2014}
 F.~{G{\"u}rsoy} and V.~{Karakaya}.
@@ -1278,6 +1293,14 @@ F.~J. Rogers and D.~A. Young.
   fluids.
 \newblock {\em Physical Review A}, 30(2):999--1007, Aug 1984.
 \newblock \doi{10.1103/physreva.30.999}.
+
+\bibitem{Rosenfeld1990}
+Y.~Rosenfeld.
+\newblock Free-energy model for the inhomogeneous hard-sphere fluid
+  {inDdimensions}: Structure factors for the hard-disk (d=2) mixtures in simple
+  explicit form.
+\newblock {\em Physical Review A}, 42(10):5978--5989, nov 1990.
+\newblock \doi{10.1103/physreva.42.5978}.
 
 \bibitem{Rosenfeld1979}
 Y.~Rosenfeld and N.~W. Ashcroft.

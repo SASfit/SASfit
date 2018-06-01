@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sq_random_flight ################ */
-/** 
+/**
  * \defgroup sq_random_flight random flight
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_devel
  *
  * \brief \<some brief description of random flight function\>
  *
@@ -59,21 +59,21 @@
 /**
  * \ingroup sq_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins
+ * \sa sasfit_random_flight.h, sq_plugins_devel
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins
+ * \sa sasfit_random_flight.h, sq_plugins_devel
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins
+ * \sa sasfit_random_flight.h, sq_plugins_devel
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_random_flight ################ */

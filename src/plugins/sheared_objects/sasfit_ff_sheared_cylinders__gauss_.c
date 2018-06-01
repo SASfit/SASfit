@@ -15,7 +15,7 @@ scalar sasfit_ff_sheared_cylinders__gauss_(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
-// return pGauss(q,0,param);
+ // return pGauss(q,0,param);
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -50,7 +50,7 @@ scalar sasfit_ff_sheared_cylinders__gauss_(scalar q, sasfit_param * param)
 	cparam.p1 = &pGauss;
 
 	intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
+//	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
 /*
     case OOURA_DOUBLE_EXP_QUADRATURE: {
@@ -87,9 +87,13 @@ scalar sasfit_ff_sheared_cylinders__gauss_(scalar q, sasfit_param * param)
             break;
             }
     default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_core_x, param);
-//            break;
+            cubxmin[0]=0;
+            cubxmax[0]=1;
+			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				fval, ferr);
+			sum = 2*fval[0];
+            break;
             }
     }
 	return sum;

@@ -3,8 +3,8 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#ifndef SHEARED_CYLINDERS_PRIVATE_H
-#define SHEARED_CYLINDERS_PRIVATE_H
+#ifndef SHEARED_OBJECTS_PRIVATE_H
+#define SHEARED_OBJECTS_PRIVATE_H
 
 /*
  * Header file for the implementation of the form factor itself.
@@ -30,7 +30,7 @@
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_sheared_cylinders.h"
+#include "sasfit_sheared_objects.h"
 
 //
 // add local defines here:
@@ -42,8 +42,10 @@
 #define NT	param->p[MAXPAR-10]
 #define NL	param->p[MAXPAR-11]
 #define R	(param->p[0]*NR)
+#define B   (param->p[0]*NR)
 #define T	(param->p[1]*NT)
 #define L	(param->p[2]*NL)
+#define A	(param->p[2]*NL)
 #define ETA_CORE	param->p[3]
 #define ETA_SHELL	param->p[4]
 #define ETA_SOLV	param->p[5]
@@ -96,6 +98,7 @@ int partly_aligned_cubature_u_phi(unsigned ndim, const double *x, void *pam,
 int random_oriented_cubature(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval);
 scalar alignedCylShell(sasfit_cubature_g *gam, sasfit_param * param);
+scalar alignedEllSh(sasfit_cubature_g *gam, sasfit_param * param);
 scalar gamHPplus(scalar psi, scalar theta, scalar phi);
 scalar gamHPminus(scalar psi, scalar theta, scalar phi);
 scalar gamOthers(scalar psi, scalar theta, scalar phi);

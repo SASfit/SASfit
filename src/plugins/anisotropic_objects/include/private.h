@@ -37,6 +37,16 @@
 // #define P0 param->p[0]
 //
 
+typedef scalar sasfit_cubature_f(sasfit_param *);
+
+typedef struct
+{
+	sasfit_param *param;
+	sasfit_cubature_f *func; //!< Selects the kernel function to use, when used with gsl functions.
+	scalar *cubxmin;
+	scalar *cubxmax;
+	int ndim;
+} cubature_param;
 
 #define LB		param->p[0]
 #define B		param->p[0]

@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_reptating_chain ################ */
-/** 
+/**
  * \defgroup ff_reptating_chain reptating chain
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_deformed_textured
  *
  * \brief \<some brief description of reptating chain function\>
  *
@@ -72,21 +72,21 @@
 /**
  * \ingroup ff_reptating_chain
  *
- * \sa sasfit_reptating_chain.h, ff_plugins_anisotropic
+ * \sa sasfit_reptating_chain.h, ff_plugins_deformed_textured
  */
 sasfit_reptating_chain_DLLEXP scalar sasfit_ff_reptating_chain(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_reptating_chain
  *
- * \sa sasfit_reptating_chain.h, ff_plugins_anisotropic
+ * \sa sasfit_reptating_chain.h, ff_plugins_deformed_textured
  */
 sasfit_reptating_chain_DLLEXP scalar sasfit_ff_reptating_chain_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_reptating_chain
  *
- * \sa sasfit_reptating_chain.h, ff_plugins_anisotropic
+ * \sa sasfit_reptating_chain.h, ff_plugins_deformed_textured
  */
 sasfit_reptating_chain_DLLEXP scalar sasfit_ff_reptating_chain_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_reptating_chain ################ */

@@ -20,7 +20,7 @@
 
 // adjust the project name below
 // *_EXPORTS is set by cmake if build as shared library
-#if defined(sasfit_baba_ahmed_EXPORTS) 
+#if defined(sasfit_baba_ahmed_EXPORTS)
 	#ifdef sasfit_baba_ahmed_DLLEXP
 	#undef sasfit_baba_ahmed_DLLEXP
 	#endif
@@ -38,9 +38,9 @@
 
 
 /* ################ start sq_baba_ahmed_1 ################ */
-/** 
+/**
  * \defgroup sq_baba_ahmed_1 Baba Ahmed 1
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_user1
  *
  * \brief \<some brief description of Baba Ahmed 1 function\>
  *
@@ -72,29 +72,29 @@
 /**
  * \ingroup sq_baba_ahmed_1
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_baba_ahmed_1
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_1_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_baba_ahmed_1
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_1_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_baba_ahmed_1 ################ */
 
 /* ################ start sq_baba_ahmed_2 ################ */
-/** 
+/**
  * \defgroup sq_baba_ahmed_2 Baba Ahmed 2
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_user1
  *
  * \brief \<some brief description of Baba Ahmed 2 function\>
  *
@@ -129,29 +129,29 @@ sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_1_v(scalar q, sasfit_param 
 /**
  * \ingroup sq_baba_ahmed_2
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_baba_ahmed_2
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_2_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_baba_ahmed_2
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_baba_ahmed_2 ################ */
 
 /* ################ start sq_baba_ahmed_syl ################ */
-/** 
+/**
  * \defgroup sq_baba_ahmed_syl Baba Ahmed (sylvain)
- * \ingroup sq_plugins
+ * \ingroup sq_plugins_user1
  *
  * \brief \<some brief description of Baba Ahmed (sylvain) function\>
  *
@@ -189,21 +189,21 @@ sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_2_v(scalar q, sasfit_param 
 /**
  * \ingroup sq_baba_ahmed_syl
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_syl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_baba_ahmed_syl
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_syl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_baba_ahmed_syl
  *
- * \sa sasfit_baba_ahmed.h, sq_plugins
+ * \sa sasfit_baba_ahmed.h, sq_plugins_user1
  */
 sasfit_baba_ahmed_DLLEXP scalar sasfit_sq_baba_ahmed_syl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_baba_ahmed_2 ################ */

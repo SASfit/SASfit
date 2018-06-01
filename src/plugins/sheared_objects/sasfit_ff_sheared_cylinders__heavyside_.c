@@ -16,7 +16,7 @@ scalar sasfit_ff_sheared_cylinders__heavyside_(scalar q, sasfit_param * param)
     size_t neval;
     int intstrategy, ndim, lenaw=4000;
 	cubature_param cparam;
-// return pHeavysidePi(q,0,param);
+ // return pHeavysidePi(q,0,param);
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -86,7 +86,7 @@ scalar sasfit_ff_sheared_cylinders__heavyside_(scalar q, sasfit_param * param)
                 cubxmax[0]=M_PI_2;
             }
 			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
 			sum = fval[0];
             break;
@@ -106,15 +106,30 @@ scalar sasfit_ff_sheared_cylinders__heavyside_(scalar q, sasfit_param * param)
                 cubxmax[0]=M_PI_2;
             }
 			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
 			sum = 2*fval[0];
             break;
             }
     default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_core_x, param);
-//            break;
+            if (KAPPA == 0 || fabs(KAPPA) <= 1./M_PI_2) {
+                cubxmin[0]=0;
+                cubxmax[0]=1;
+            } else if (KAPPA > 0 && KAPPA < 1./M_PI_2) {
+                cubxmin[0]=cos(1./KAPPA);
+                cubxmax[0]=1;
+            } else if (KAPPA < 0 && KAPPA > -1./M_PI_2){
+                cubxmin[0]=cos(-1./KAPPA);
+                cubxmax[0]=0;
+            } else {
+                cubxmin[0]=0;
+                cubxmax[0]=1;
+            }
+			hcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
+				fval, ferr);
+			sum = fval[0];
+            break;
             }
     }
 	return sum;
