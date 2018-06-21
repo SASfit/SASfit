@@ -47,11 +47,11 @@ scalar sasfit_sq(scalar q, scalar * a, sasfit_function * sq, int * dparam, int *
 		return 0.0;
 	}
 
-   	if (SASFIT_EQUAL(a[0], 0.0)) a[0] = sasfit_eps_get_nriq(); 
+   	if (SASFIT_EQUAL(a[0], 0.0)) a[0] = sasfit_eps_get_nriq();
 	// the structure factors are often not defined for a[0]=0 (division by zero)
-	// However, this limiting case is needed for scaling approx, 
+	// However, this limiting case is needed for scaling approx,
 	// local monodisperse approx., partical structure factors, etc..
-	// As long as this limiting case is not treated in the struture factor functions 
+	// As long as this limiting case is not treated in the struture factor functions
 	// itself this very poor work around above is required.
 
 	// copy the supplied parameters
@@ -63,17 +63,17 @@ scalar sasfit_sq(scalar q, scalar * a, sasfit_function * sq, int * dparam, int *
 		if(err) *err = TCL_ERROR;
 		return 0.0;
 	}
-   
+
 	if (dparam) dpar = dparam[SQfct];
 //	sasfit_out("SQ: %g %g %g %g %d",sq->params.p[0],sq->params.p[1],sq->params.p[2],sq->params.p[3],dpar);
 
 	res = sasfit_part_diff_fct(q, sq, dpar);
 //	sasfit_out(" %lg\n", res);
 
-	if ( sq->params.errStatus != TCL_OK ) 
+	if ( sq->params.errStatus != TCL_OK )
 	{
 		sasfit_err("#structure factor: can not calculate \n"
-		           "value of %s diff %d\n%s\n",sq->typestr, 
+		           "value of %s diff %d\n%s\n",sq->typestr,
 		           dpar, sq->params.errStr);
 		if(err) *err = TCL_ERROR;
 		return 0.0;
@@ -90,7 +90,7 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	SASFIT_ASSERT_VAL(ap, TCL_ERROR);
 
 	// assuming we get an already initialized (valid) sasfit_function
-	// (initialized during init of according AP, earlier, 
+	// (initialized during init of according AP, earlier,
 	// see SASFIT_x_tcl.c and sasfit_init_fct() in sasfit_common)
 	sq = &(ap->SQ);	// get size distrib function pointer
 
@@ -182,7 +182,7 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	if ( strcmp(sq->typestr, "LorentzianAmplitude") == 0 )
 	{
 		sq->fct = sasfit_peak_LorentzianAmplitude;
-	} else 
+	} else
 	if ( strcmp(sq->typestr, "QENS_ConfinementWithGaussianPotential") == 0 )
 	{
 		sq->fct = sasfit_peak_QENS_ConfinementWithGaussianPotential;
@@ -238,18 +238,6 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	if ( strcmp(sq->typestr, "RandomDistribution") == 0 )
 	{
 		sq->fct = sasfit_sq_RandomDistributionModel;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):ThinDisc") == 0 )
-	{
-		sq->fct = sasfit_sq_ThinDiscs;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):ThinCylindricalShell") == 0 )
-	{
-		sq->fct = sasfit_sq_ThinCylindricalShell;
-	} else
-	if ( strcmp(sq->typestr, "P'(Q):ThinSphericalShell") == 0 )
-	{
-		sq->fct = sasfit_sq_ThinSphericalShell;
 	} else
 	{
 		// unknown structure factor

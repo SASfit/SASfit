@@ -57,6 +57,7 @@ scalar sasfit_ff_chain_parabolic_profile_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
+	SASFIT_CHECK_COND(1>2,param,"scattering amplitude for this form factor is not available");
 	return 0.0;
 }
 

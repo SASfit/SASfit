@@ -11,11 +11,10 @@
 #define DUMMY	param->p[1]
 #define SIGMA	fabs(param->p[2])
 
-#define Q		param->p[MAXPAR-1]
 
 scalar ThinSphericalShell_core(scalar x, sasfit_param * param)
 {
-	scalar P, LNdistr;
+	scalar IP, LNdistr;
 	sasfit_param subParam;
 
 	SASFIT_ASSERT_PTR(param);
@@ -23,9 +22,9 @@ scalar ThinSphericalShell_core(scalar x, sasfit_param * param)
 
 
 	if (Q == 0.0) {
-		P = pow(4.0*M_PI*x*x,2.0);
+		IP = pow(4.0*M_PI*x*x,2.0);
 	} else {
-		P = gsl_pow_2(4.0*M_PI*x*sin(Q*x)/(Q));
+		IP = gsl_pow_2(4.0*M_PI*x*sin(Q*x)/(Q));
 	}
 
 	if (SIGMA == 0) return P;
@@ -39,7 +38,7 @@ scalar ThinSphericalShell_core(scalar x, sasfit_param * param)
 	LNdistr = sasfit_sd_LogNorm(x, &subParam);
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
-	return LNdistr*P;
+	return LNdistr*IP;
 }
 
 scalar sasfit_sq_p__q___thin_spherical_shell(scalar q, sasfit_param * param)

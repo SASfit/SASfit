@@ -16,21 +16,21 @@
 scalar rod_core(scalar x, sasfit_param *param)
 {
 	scalar u,u2;
-	scalar P, LNdistr;
+	scalar IP, LNdistr;
 	sasfit_param subParam;
-	
+
 	SASFIT_ASSERT_PTR(param);
 	sasfit_init_param( &subParam );
 
 	u = Q*x;
 	u2 = u/2.0;
 	if (u==0.0) {
-		P = x*x;
+		IP = x*x;
 	} else {
-		P = x*x*(2.0*gsl_sf_Si(u)/u-gsl_pow_2(sin(u2)/u2) );
+		IP = x*x*(2.0*gsl_sf_Si(u)/u-gsl_pow_2(sin(u2)/u2) );
 	}
-	
-	if (SIGMA_L == 0) return P;
+
+	if (SIGMA_L == 0) return IP;
 
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_L;
@@ -40,7 +40,7 @@ scalar rod_core(scalar x, sasfit_param *param)
 	LNdistr = sasfit_sd_LogNorm(x, &subParam);
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
-	return LNdistr*P;
+	return LNdistr*IP;
 }
 
 scalar sasfit_sq_p__q___rod(scalar q, sasfit_param * param)
@@ -57,7 +57,7 @@ scalar sasfit_sq_p__q___rod(scalar q, sasfit_param * param)
 
 	Q = q;
 	if (SIGMA_L == 0) return rod_core(LL,param);
-	find_LogNorm_int_range(1,LL,SIGMA_L,&Lstart,&Lend,param);
+	find_LogNorm_int_range(2,LL,SIGMA_L,&Lstart,&Lend,param);
 	return sasfit_integrate(Lstart,Lend,&rod_core,param);
 }
 

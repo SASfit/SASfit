@@ -61,6 +61,8 @@ typedef struct
 	sasfit_2d_geom_t  geom;
 	scalar            qwidth;
 	scalar            qminbs;
+	scalar            BCx;
+	scalar            BCy;
 //        char ct[STRLEN];
 } sasfit_2d_param_t;
 
@@ -84,4 +86,13 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                    int           argc,
                    const char ** argv);
 
+
+/**
+ * This function implements the Tcl "sasfit_2Diqfit" command.
+ * \returns A standard Tcl result.
+ */
+int Sasfit_2DiqfitCmd(ClientData    clientData,
+                   Tcl_Interp *  interp,
+                   int           argc,
+                   const char ** argv);
 #endif // SASFIT_2D_H

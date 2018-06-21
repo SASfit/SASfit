@@ -7,11 +7,7 @@
 #include <sasfit_error_sq.h>
 
 // define shortcuts for local parameters/variables
-#define LB	param->p[0]
-#define L	param->p[1]
 
-#define	N	param->p[MAXPAR-1]
-#define	Q	param->p[MAXPAR-2]
 
 scalar sasfit_sq_Pprime_KholodenkoWorm_core(scalar x, sasfit_param * param)
 {

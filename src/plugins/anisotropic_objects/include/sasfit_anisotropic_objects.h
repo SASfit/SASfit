@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_disc_sd_homoxs ################ */
-/** 
+/**
  * \defgroup ff_disc_sd_homoxs Disc+SD+homoXS
  * \ingroup ff_plugins_localplanar
  *
@@ -98,7 +98,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_v(scalar q, sa
 /* ################ stop ff_disc_sd_homoxs ################ */
 
 /* ################ start ff_ellsh_sd_homoxs ################ */
-/** 
+/**
  * \defgroup ff_ellsh_sd_homoxs EllSh+SD+homoXS
  * \ingroup ff_plugins_localplanar
  *
@@ -159,7 +159,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs_v(scalar q, s
 /* ################ stop ff_ellsh_sd_homoxs ################ */
 
 /* ################ start ff_cylsh_sd_homoxs ################ */
-/** 
+/**
  * \defgroup ff_cylsh_sd_homoxs CylSh+SD+homoXS (closed)
  * \ingroup ff_plugins_localplanar
  *
@@ -220,7 +220,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_v(scalar q, s
 /* ################ stop ff_cylsh_sd_homoxs ################ */
 
 /* ################ start ff_disc_sd_bilayergauss ################ */
-/** 
+/**
  * \defgroup ff_disc_sd_bilayergauss Disc+SD+BiLayerGauss
  * \ingroup ff_plugins_localplanar
  *
@@ -287,7 +287,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_v(scalar
 /* ################ stop ff_disc_sd_bilayergauss ################ */
 
 /* ################ start ff_ellsh_sd_bilayergauss ################ */
-/** 
+/**
  * \defgroup ff_ellsh_sd_bilayergauss EllSh+SD+BiLayerGauss
  * \ingroup ff_plugins_localplanar
  *
@@ -300,7 +300,34 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_v(scalar
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b t</td>
- *       <td>t</td>
+ *       <td>most probable layer thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma_t</td>
+ *       <td>width of thickness distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b R0</td>
+ *       <td>most probable radius of unilamellar vesicle</td>
+ *      </tr><tr>
+ *       <td>\b sigma_R0</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b epsilon</td>
+ *       <td>eccentricity</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b sigma_out</td>
+ *       <td>sigma_out</td>
+ *      </tr><tr>
+ *       <td>\b b_out</td>
+ *       <td>b_out</td>
+ *      </tr><tr>
+ *       <td>\b sigma_core</td>
+ *       <td>sigma_core</td>
+ *      </tr><tr>
+ *       <td>\b b_core</td>
+ *       <td>b_core</td>
  *      </tr></table>
  */
 
@@ -327,7 +354,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss_v(scala
 /* ################ stop ff_ellsh_sd_bilayergauss ################ */
 
 /* ################ start ff_cylsh_sd_bilayergauss ################ */
-/** 
+/**
  * \defgroup ff_cylsh_sd_bilayergauss CylSh+SD+BiLayerGauss
  * \ingroup ff_plugins_localplanar
  *
@@ -367,7 +394,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scala
 /* ################ stop ff_cylsh_sd_bilayergauss ################ */
 
 /* ################ start ff_pcs_homogeneousplate ################ */
-/** 
+/**
  * \defgroup ff_pcs_homogeneousplate Pcs:homogeneousPlate
  * \ingroup ff_plugins_pcslocalplanar
  *
@@ -423,7 +450,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_v(scalar
 
 
 /* ################ start ff_pcs_plate_chains_rw_ ################ */
-/** 
+/**
  * \defgroup ff_pcs_plate_chains_rw_ Pcs:Plate+Chains(RW)
  * \ingroup ff_plugins_pcslocalplanar
  *
@@ -487,11 +514,11 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__v(scalar
 /* ################ stop ff_pcs_plate_chains_rw_ ################ */
 
 /* ################ start ff_pcs_layeredcentrosymmetricxs ################ */
-/** 
+/**
  * \defgroup ff_pcs_layeredcentrosymmetricxs Pcs:LayeredCentroSymmetricXS
  * \ingroup ff_plugins_pcslocalplanar
  *
- * \brief cros section form factor with two infinitesimal thin centrosymmetric layers with a LogNorm layer distance distribution 
+ * \brief cros section form factor with two infinitesimal thin centrosymmetric layers with a LogNorm layer distance distribution
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -544,9 +571,9 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_
 sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_layeredcentrosymmetricxs ################ */
 
-/* ################ start ff_pcs_bilayergaus ################ */
-/** 
- * \defgroup ff_pcs_bilayergaus Pcs:BilayerGaus
+/* ################ start ff_pcs_bilayergauss ################ */
+/**
+ * \defgroup ff_pcs_bilayergauss Pcs:BilayerGauss
  * \ingroup ff_plugins_pcslocalplanar
  *
  * \brief cross-section form factor Pcs(Q) for a bilayer with a Gaussian electron density profile
@@ -571,33 +598,36 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_
  *      </tr><tr>
  *       <td>\b D</td>
  *       <td>distance between the centers of the outer Gaussian profiles</td>
+ *      </tr><tr>
+ *       <td>\b sigma_D</td>
+ *       <td>LogNormal distribution of the distance distance between the centers of the outer Gaussian profiles</td>
  *      </tr></table>
  */
 
 /**
- * \ingroup ff_pcs_bilayergaus
+ * \ingroup ff_pcs_bilayergauss
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergaus(scalar q, sasfit_param * p);
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_pcs_bilayergaus
+ * \ingroup ff_pcs_bilayergauss
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergaus_f(scalar q, sasfit_param * p);
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_pcs_bilayergaus
+ * \ingroup ff_pcs_bilayergauss
  *
  * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergaus_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_pcs_bilayergaus ################ */
+sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_pcs_bilayergauss ################ */
 
 /* ################ start ff_pcs_twoinfinitelythinlayers ################ */
-/** 
+/**
  * \defgroup ff_pcs_twoinfinitelythinlayers Pcs:TwoInfinitelyThinLayers
  * \ingroup ff_plugins_pcslocalplanar
  *
@@ -640,7 +670,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_v
 /* ################ stop ff_pcs_twoinfinitelythinlayers ################ */
 
 /* ################ start sq_p__q___thin_disc ################ */
-/** 
+/**
  * \defgroup sq_p__q___thin_disc P'(Q): Thin Disc
  * \ingroup sq_plugins_pprimelocalplanar
  *
@@ -685,7 +715,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc_v(scalar q, 
 /* ################ stop sq_p__q___thin_disc ################ */
 
 /* ################ start sq_p__q___thin_spherical_shell ################ */
-/** 
+/**
  * \defgroup sq_p__q___thin_spherical_shell P'(Q): Thin Spherical Shell
  * \ingroup sq_plugins_pprimelocalplanar
  *
@@ -730,7 +760,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_v
 /* ################ stop sq_p__q___thin_spherical_shell ################ */
 
 /* ################ start sq_p__q___thin_ellipsoidal_shell ################ */
-/** 
+/**
  * \defgroup sq_p__q___thin_ellipsoidal_shell P'(Q): Thin Ellipsoidal Shell
  * \ingroup sq_plugins_pprimelocalplanar
  *
@@ -775,7 +805,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell
 /* ################ stop sq_p__q___thin_ellipsoidal_shell ################ */
 
 /* ################ start sq_p__q___thin_hollow_cylinder ################ */
-/** 
+/**
  * \defgroup sq_p__q___thin_hollow_cylinder P'(Q): Thin Hollow Cylinder (closed)
  * \ingroup sq_plugins_pprimelocalplanar
  *
@@ -823,7 +853,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder_v
 /* ################ stop sq_p__q___thin_hollow_cylinder ################ */
 
 /* ################ start sq_p__q___rod ################ */
-/** 
+/**
  * \defgroup sq_p__q___rod P'(Q): Rod
  * \ingroup sq_plugins_pprimelocalcylindrical
  *
@@ -868,7 +898,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___rod_v(scalar q, sasfit
 /* ################ stop sq_p__q___rod ################ */
 
 /* ################ start sq_p__q___worm_ps1_ ################ */
-/** 
+/**
  * \defgroup sq_p__q___worm_ps1_ P'(Q): Worm(PS1)
  * \ingroup sq_plugins_pprimelocalcylindrical
  *
@@ -913,7 +943,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1__v(scalar q, 
 /* ################ stop sq_p__q___worm_ps1_ ################ */
 
 /* ################ start sq_p__q___worm_ps2_ ################ */
-/** 
+/**
  * \defgroup sq_p__q___worm_ps2_ P'(Q): Worm(PS2)
  * \ingroup sq_plugins_pprimelocalcylindrical
  *
@@ -955,7 +985,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2__v(scalar q, 
 /* ################ stop sq_p__q___worm_ps2_ ################ */
 
 /* ################ start sq_p__q___worm_ps3_ ################ */
-/** 
+/**
  * \defgroup sq_p__q___worm_ps3_ P'(Q): Worm(PS3)
  * \ingroup sq_plugins_pprimelocalcylindrical
  *
@@ -1000,7 +1030,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__v(scalar q, 
 /* ################ stop sq_p__q___worm_ps3_ ################ */
 
 /* ################ start sq_p__q___kholodenko_worm ################ */
-/** 
+/**
  * \defgroup sq_p__q___kholodenko_worm P'(Q): Kholodenko Worm
  * \ingroup sq_plugins_pprimelocalcylindrical
  *
@@ -1042,7 +1072,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
 /* ################ stop sq_p__q___kholodenko_worm ################ */
 
 /* ################ start ff_pcs_homogeneouscyl ################ */
-/** 
+/**
  * \defgroup ff_pcs_homogeneouscyl Pcs:homogeneousCyl
  * \ingroup ff_plugins_pcslocalcylindrical
  *
@@ -1110,7 +1140,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q
 
 
 /* ################ start ff_pcs_ellcylsh ################ */
-/** 
+/**
  * \defgroup ff_pcs_ellcylsh Pcs:ellCylSh
  * \ingroup ff_plugins_pcslocalcylindrical
  *
@@ -1122,20 +1152,20 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b R</td>
- *       <td>core radius</td>
+ *       <td>\b R0</td>
+ *       <td>most probable core radius</td>
  *      </tr><tr>
- *       <td>\b sigma_R</td>
+ *       <td>\b sigma_R0</td>
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
  *       <td>eccentricity of elliptical cross-section</td>
  *      </tr><tr>
- *       <td>\b t</td>
- *       <td>shell thickness</td>
+ *       <td>\b t0</td>
+ *       <td>most probable shell thickness</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b sigma_t0</td>
+ *       <td>width of thickness distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -1177,7 +1207,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasf
 /* ################ stop ff_pcs_ellcylsh ################ */
 
 /* ################ start ff_ellcylsh_sd_rod ################ */
-/** 
+/**
  * \defgroup ff_ellcylsh_sd_rod EllCylSh+SD+Rod
  * \ingroup ff_plugins_localcylindrical
  *
@@ -1245,7 +1275,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_v(scalar q, s
 
 
 /* ################ start ff_ellcylsh_sd_worm_ps1 ################ */
-/** 
+/**
  * \defgroup ff_ellcylsh_sd_worm_ps1 EllCylSh+SD+Worm(PS1)
  * \ingroup ff_plugins_localcylindrical
  *
@@ -1312,7 +1342,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_v(scalar
 /* ################ stop ff_ellcylsh_sd_worm_ps1 ################ */
 
 /* ################ start ff_ellcylsh_sd_worm_ps2 ################ */
-/** 
+/**
  * \defgroup ff_ellcylsh_sd_worm_ps2 EllCylSh+SD+Worm(PS2)
  * \ingroup ff_plugins_localcylindrical
  *
@@ -1380,7 +1410,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_v(scalar
 
 
 /* ################ start ff_ellcylsh_sd_worm_ps3 ################ */
-/** 
+/**
  * \defgroup ff_ellcylsh_sd_worm_ps3 EllCylSh+SD+Worm(PS3)
  * \ingroup ff_plugins_localcylindrical
  *
@@ -1449,7 +1479,7 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_v(scalar
 
 
 /* ################ start ff_ellcylsh_sd_worm_kholodenko ################ */
-/** 
+/**
  * \defgroup ff_ellcylsh_sd_worm_kholodenko EllCylSh+SD+Worm(Kholodenko)
  * \ingroup ff_plugins_localcylindrical
  *

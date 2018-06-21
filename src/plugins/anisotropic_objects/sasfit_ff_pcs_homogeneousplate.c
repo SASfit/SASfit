@@ -9,23 +9,23 @@
 // define shortcuts for local parameters/variables
 #define THICK	param->p[0]
 #define SIGMA_T	fabs(param->p[1])
-#define DUMMY1	param->p[2]
-#define DUMMY2	param->p[3]
+
+
 #define ETA_L	param->p[4]
 #define ETA_SOL	param->p[5]
 
 #define Q	param->p[MAXPAR-1]
 
-scalar homoXScore(scalar x, sasfit_param * param) 
+scalar homoXScore(scalar x, sasfit_param * param)
 {
 	scalar Pcs, u, LNdistr;
 	sasfit_param subParam;
 
 	SASFIT_ASSERT_PTR(param);
 	sasfit_init_param( &subParam );
-    
+
    	u = Q*x*0.5;
-	Pcs = gsl_pow_2(x*gsl_sf_sinc(u));
+	Pcs = gsl_pow_int(x*gsl_sf_bessel_j0(u),lround(P));
 
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_T;
@@ -33,7 +33,7 @@ scalar homoXScore(scalar x, sasfit_param * param)
 	subParam.p[3] = THICK;
 
 	LNdistr = sasfit_sd_LogNorm(x, &subParam);
-    
+
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
 	return LNdistr*Pcs;
@@ -43,14 +43,14 @@ scalar homoXScore(scalar x, sasfit_param * param)
 scalar homogeneousXS(scalar q, sasfit_param * param)
 {
 	scalar Pcs, u;
-	scalar tstart, tend; 
-    
+	scalar tstart, tend;
+
 	SASFIT_ASSERT_PTR(param);
 
 
     Q = q;
 	if (SIGMA_T <= 1.0e-6 || THICK == 0.0) {
-		Pcs = gsl_pow_2(THICK*gsl_sf_sinc(Q*THICK/2.0));
+		Pcs = gsl_pow_int(THICK*gsl_sf_bessel_j0(Q*THICK/2.0),lround(P));
 	} else {
 		find_LogNorm_int_range(2,THICK,SIGMA_T,&tstart, &tend, param);
 		Pcs = sasfit_integrate(tstart, tend, &homoXScore, param);
@@ -66,8 +66,8 @@ scalar sasfit_ff_pcs_homogeneousplate(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((THICK < 0.0), param, "t(%lg) < 0",THICK); // modify condition to your needs
 
 	// insert your code here
-
-	return homogeneousXS(q,param)*gsl_pow_2(ETA_L-ETA_SOL);
+    P=2;
+	return homogeneousXS(q,param)*gsl_pow_int(ETA_L-ETA_SOL,lround(P));
 }
 
 scalar sasfit_ff_pcs_homogeneousplate_f(scalar q, sasfit_param * param)
@@ -75,7 +75,8 @@ scalar sasfit_ff_pcs_homogeneousplate_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+    P=1;
+	return homogeneousXS(q,param)*gsl_pow_int(ETA_L-ETA_SOL,lround(P));
 }
 
 scalar sasfit_ff_pcs_homogeneousplate_v(scalar q, sasfit_param * param, int dist)
@@ -83,6 +84,6 @@ scalar sasfit_ff_pcs_homogeneousplate_v(scalar q, sasfit_param * param, int dist
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return THICK;
 }
 

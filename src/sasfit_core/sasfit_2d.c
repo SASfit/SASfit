@@ -39,6 +39,8 @@ void sasfit_2d_init (void)
 	sasfit_2d_param.dist = 0.0;
 	sasfit_2d_param.min = 0.0;
 	sasfit_2d_param.max = 0.0;
+	sasfit_2d_param.BCx = 63.5;
+	sasfit_2d_param.BCy = 63.5;
 	sasfit_2d_param.scale = LOG;
 	sasfit_2d_param.mode = AUTO;
 	sasfit_2d_param.geom = PINHOLE;
@@ -72,6 +74,10 @@ int sasfit_2d_set(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET(double, argv[3], "Qwidth",    sasfit_2d_param.qwidth);
 	// read qminbs
 	SF_TCL_GET(double, argv[3], "QminBS",    sasfit_2d_param.qminbs);
+	// read BCx
+	SF_TCL_GET(double, argv[3], "BCx",    sasfit_2d_param.BCx);
+	// read BCy
+	SF_TCL_GET(double, argv[3], "BCy",    sasfit_2d_param.BCy);
 
 	str = Tcl_GetVar2(interp, argv[3], "auto", 0);
 	if (str) {
@@ -168,6 +174,8 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 
     Bx = 0.5*(sasfit_2d_param.num_pix-1.);
     By = 0.5*(sasfit_2d_param.num_pix-1.);
+    Bx = sasfit_2d_param.BCx;
+    By = sasfit_2d_param.BCy;
 
     Dr = 2*tan(2*atan(sasfit_2d_param.qwidth*sasfit_2d_param.lambda/(4*M_PI)))*sasfit_2d_param.dist;
     sasfit_out("Dr=%lf\n",Dr*1000);
@@ -354,6 +362,47 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 	Tcl_Free((char *) AP);
 
 	return TCL_OK;
+}
+
+int Sasfit_2DiqfitCmd(ClientData    clientData,
+                   Tcl_Interp *  interp,
+                   int           argc,
+                   const char ** argv)
+{
+	sasfit_analytpar * AP;
+	int                i, j, k,l, nres, nsigma, max_SD;
+	scalar             alambda, wres, tmp;
+	char               sBuffer[256];
+	scalar             Bx, By, rx, ry, r, Q, Qmod, Drx,Dry, Dr, Theta, TwoTheta, psi, ThetaTmp;
+	Tcl_DString        DsBuffer;
+	scalar             * h, * Ih, * DIh, * res;
+	scalar             **Deth, **DetIth, Detres, Detsubstract;
+	scalar             Imin = 0.0, Imax = 0.0; // was uninitialized, see line 198 ff
+	int                * lista, ma, mfit,ndata;
+	bool               error;
+	int                error_type, interrupt;
+	scalar             * a, * dydpar;
+
+	error = FALSE;
+	// Det2DPar.calc2D = TRUE;
+	sasfit_param_override_init();
+
+	if (argc != 4)
+	{
+		sasfit_err("wrong # args: shoud be sasfit_2Diqfit ?analyt_par? "
+			"?xyer_data? ?Detector2DParameter?\n");
+		return TCL_ERROR;
+	}
+
+	if (TCL_ERROR == sasfit_2d_set(interp,argv)) {
+		return TCL_ERROR;
+	}
+
+	if (TCL_ERROR == get_AP(interp, argv, &AP, &max_SD, &alambda,
+		                &error_type,&h,&Ih,&DIh,&res,&ndata))
+	{
+		return TCL_ERROR;
+	}
 }
 
 

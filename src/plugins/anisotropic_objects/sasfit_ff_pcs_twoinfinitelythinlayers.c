@@ -13,7 +13,7 @@
 #define Q	param->p[MAXPAR-1]
 
 
-scalar thincentrosymmetriclayers_core(scalar x, sasfit_param *param) 
+scalar thincentrosymmetriclayers_core(scalar x, sasfit_param *param)
 {
 	scalar Pcs, LNdistr;
 	sasfit_param subParam;
@@ -38,7 +38,7 @@ scalar thincentrosymmetriclayers_core(scalar x, sasfit_param *param)
 
 scalar thincentrosymmetriclayers(scalar q, sasfit_param * param)
 {
-	scalar tstart = 0.0, tend = 0.0; 
+	scalar tstart = 0.0, tend = 0.0;
 	static scalar Q_old = -1.;
 	static scalar T0_old = -1.;
 	static scalar sigma_T_old = -1.;
@@ -83,7 +83,11 @@ scalar sasfit_ff_pcs_twoinfinitelythinlayers_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	if (SIGMA_T == 0) {
+		return (cos(q*T));
+	} else {
+		return thincentrosymmetriclayers(q,param);
+	}
 }
 
 scalar sasfit_ff_pcs_twoinfinitelythinlayers_v(scalar q, sasfit_param * param, int dist)

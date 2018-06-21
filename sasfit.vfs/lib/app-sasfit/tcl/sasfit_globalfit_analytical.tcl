@@ -2761,54 +2761,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
 				}
-           "P'(Q):ThinDisc"    \
-								{ set actualPar(SQ,s1,label) "R ="
-                                  set actualPar(SQ,s2,label) ""
-                                  set actualPar(SQ,s3,label) "sigma ="
-                                  set actualPar(SQ,s4,label) ""
-                                  set actualPar(SQ,s5,label) ""
-                                  set actualPar(SQ,s6,label) ""
-                                  set actualPar(SQ,s7,label) ""
-                                  set actualPar(SQ,s8,label) ""
-                                  set actualPar(SQ,s9,label) ""
-                                  set actualPar(SQ,s10,label) ""
-                                }
-    "P'(Q):ThinSphericalShell" \
-                                { set actualPar(SQ,s1,label) "R ="
-                                  set actualPar(SQ,s2,label) ""
-                                  set actualPar(SQ,s3,label) "sigma ="
-                                  set actualPar(SQ,s4,label) ""
-                                  set actualPar(SQ,s5,label) ""
-                                  set actualPar(SQ,s6,label) ""
-                                  set actualPar(SQ,s7,label) ""
-                                  set actualPar(SQ,s8,label) ""
-                                  set actualPar(SQ,s9,label) ""
-                                  set actualPar(SQ,s10,label) ""
-                                }
-    "P'(Q):ThinEllipsoidalShell" \
-                                { set actualPar(SQ,s1,label) "a ="
-                                  set actualPar(SQ,s2,label) "b ="
-                                  set actualPar(SQ,s3,label) "sigma_a ="
-                                  set actualPar(SQ,s4,label) "sigma_b ="
-                                  set actualPar(SQ,s5,label) ""
-                                  set actualPar(SQ,s6,label) ""
-                                  set actualPar(SQ,s7,label) ""
-                                  set actualPar(SQ,s8,label) ""
-                                  set actualPar(SQ,s9,label) ""
-                                  set actualPar(SQ,s10,label) ""
-                                }
-     "P'(Q):ThinHollowCylinder" \
-                                 { set actualPar(SQ,s1,label) "R ="
-                                   set actualPar(SQ,s2,label) "L ="
-                                   set actualPar(SQ,s3,label) "sigmaL ="
-                                   set actualPar(SQ,s4,label) "sigmaR ="
-                                   set actualPar(SQ,s5,label) ""
-                                   set actualPar(SQ,s6,label) ""
-                                   set actualPar(SQ,s7,label) ""
-                                   set actualPar(SQ,s8,label) ""
-                                   set actualPar(SQ,s9,label) ""
-                                   set actualPar(SQ,s10,label) ""
-                                }
 	   default              { ap_set_param_labels actualPar SQ }
 	}
 	switch -exact $actualPar(SD,typestr) {
@@ -3723,9 +3675,6 @@ proc analyticalGlobalSDCmd {simorfit
                                              {{Thin Square Well Potential}} \
                                              {{Square Well Potential 2}} }} \
 	{lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
-	{anisotropic "anisotropic obj." {{planar "P'(Q):local planar geometry" {{{P'(Q):ThinDisc}} {{P'(Q):ThinSphericalShell}} \
-								{{P'(Q):ThinEllipsoidalShell}} {{P'(Q):ThinHollowCylinder}}}} \
-					}}
 	{fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
 				 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
 	{peaks "Peaks" {VoigtPeak PearsonVIIAmplitude}} \

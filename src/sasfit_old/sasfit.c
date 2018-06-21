@@ -628,7 +628,7 @@ void find_integration_range(Tcl_Interp *interp,
 }
 
 scalar IQ_IntdLen(scalar x, void *param4int) {
-    
+
     return IQ_core( ((sasfit_param4int *)param4int)->interp,
                     ((sasfit_param4int *)param4int)->dF_dpar,
                     ((sasfit_param4int *)param4int)->l,
@@ -1171,8 +1171,8 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         int   nintervals;
         bool  *error;
         scalar Icalc, *l, *s, *a, z;
-        
-        
+
+
         interp = (( sasfit_param4int *) param4int)->interp;
         dF_dpar = (( sasfit_param4int *) param4int)->dF_dpar;
         z = (( sasfit_param4int *) param4int)->z;
@@ -1215,7 +1215,7 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
     sasfit_param4int param4int;
     scalar *aw, Gz, Xi, err;
     int lenaw;
-    
+
     if (sasfit_get_iq_or_gz() == 0) {
         return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
     } else {
@@ -1232,12 +1232,12 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
         param4int.nintervals=nintervals;
         param4int.distr=distr;
         param4int.error=error;
-    
+
         lenaw=4000;
-            
+
         aw = (scalar *)malloc((lenaw)*sizeof(scalar));
         if ((sasfit_get_iq_or_gz()!=3) && (sasfit_get_iq_or_gz()!=4)) {
-            param4int.z = 0;  
+            param4int.z = 0;
             if (Qres <=0) {
                 sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
                 sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Xi, &err,&param4int);
@@ -1246,7 +1246,7 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
                 sasfit_intde(&HTIQ_OOURA, 0.0, Qres, aw, &Xi, &err,&param4int);
             }
         }
-        param4int.z = Q; 
+        param4int.z = Q;
         if (Qres <=0) {
             sasfit_intdeoini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intdeo(&HTIQ_OOURA, 0.0, Q, aw, &Gz, &err,&param4int);
@@ -1254,7 +1254,7 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
             sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intde(&HTIQ_OOURA, 0.0, Qres, aw, &Gz, &err,&param4int);
         }
-            
+
 //           sasfit_out("z:%lf, Gz:%lf, exp(Gz-Xi):%lf\n",GIP.z,Gz,*Ifit);
         free(aw) ;
 //      Here only (Gz-Xi) is returned as at this stage the contribution of different scattering species is still a linear combination
@@ -1677,7 +1677,7 @@ scalar HTIQGlobal_OOURA(scalar Q, void *GIP) {
         sasfit_commonpar *GCP;
         int   error_type;
         bool  *error;
-        
+
         interp = (( sasfit_GzIntStruct *) GIP)->interp;
         z = (( sasfit_GzIntStruct *) GIP)->z;
         par = (( sasfit_GzIntStruct *) GIP)->par;
@@ -1711,7 +1711,7 @@ scalar HTIQ_OOURA_delete_afterwards(scalar Q, void *GIP) {
         int   error_type;
         bool  *error;
         scalar Qres;
-        
+
         interp = (( sasfit_GzIntStruct *) GIP)->interp;
         z = (( sasfit_GzIntStruct *) GIP)->z;
         par = (( sasfit_GzIntStruct *) GIP)->par;
@@ -1757,8 +1757,8 @@ void IQ(Tcl_Interp *interp,
     scalar res0to8, res8toInftyCoSine, res8toInftySine, abserr;
     gsl_function intF;
     sasfit_GzIntStruct GIP;
-    
-            
+
+
     *Ifit = 0.0;
 	*Isub = 0.0;
     DLS = 0;
@@ -1803,7 +1803,7 @@ void IQ(Tcl_Interp *interp,
             for (i=0;i<max_SD*(3*MAXPAR);i++) dydpar[i] = dydpar[i] * (*Ifit);
         }
     }
-    
+
 	Tcl_Free((char *)tmpAP);
 	Tcl_Free((char *)APdummy);
     return;
@@ -2786,7 +2786,7 @@ void IQ_Global(Tcl_Interp *interp,
     sasfit_analytpar *tmpGAP;
 	sasfit_analytpar *GAPdummy;
 	scalar Qmin,Qmax;
-    
+
     *Ifit = 0.0;
 	*Isub = 0.0;
 
@@ -2833,7 +2833,7 @@ void IQ_Global(Tcl_Interp *interp,
             for (i=0;i<max_SD*(3*MAXPAR);i++) dydpar[i] = dydpar[i] * (*Ifit);
         }
     }
- 
+
     Tcl_Free((char *)tmpGAP);
     Tcl_Free((char *)GAPdummy);
     return;
@@ -2962,6 +2962,7 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 
 	Tcl_CreateCommand(interp, "sasfit_iq", (Tcl_CmdProc*) Sasfit_iqCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_2Diq", (Tcl_CmdProc*) Sasfit_2DiqCmd, NULL, NULL);
+	Tcl_CreateCommand(interp, "sasfit_2Diqfit", (Tcl_CmdProc*) Sasfit_2DiqfitCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_global_iq", (Tcl_CmdProc*) Sasfit_global_iqCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_nr", (Tcl_CmdProc*) Sasfit_nrCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_res", (Tcl_CmdProc*) Sasfit_resCmd, NULL, NULL);
@@ -2975,7 +2976,7 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateObjCommand(interp, "sasfit_get_lib_suffix", (Tcl_ObjCmdProc*) sasfit_get_lib_suffix_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_load_plugin", (Tcl_ObjCmdProc*) sasfit_load_plugin_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_covar", (Tcl_ObjCmdProc*) sasfit_covar_cmd, (void *)SASFIT_CData, NULL);
-    
+
     // sasfit_oz commands
 	Tcl_CreateObjCommand(interp, "sasfit_oz_calc", (Tcl_ObjCmdProc*) sasfit_oz_calc_cmd, NULL, NULL);
 	Tcl_CreateObjCommand(interp, "sasfit_oz_assign_data_sq", (Tcl_ObjCmdProc*) sasfit_oz_assign_data_sq_cmd, NULL, NULL);
@@ -3075,7 +3076,7 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 
 	sasfit_ap2paramlist(&lista,&ma,&mfit,&a,AP,NULL,max_SD);
     if (sasfit_get_iq_or_gz()==4) sasfit_set_iq_or_gz(1);
-    
+
 	Ith = dvector(0,ndata-1);
 	Ihsubstract = dvector(0,ndata-1);
 	dydpar = dvector(0,ma-1);
@@ -3316,7 +3317,7 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
 
 
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GAP,&GCP,max_SD);
-if (sasfit_get_iq_or_gz()==4) sasfit_set_iq_or_gz(1); 
+if (sasfit_get_iq_or_gz()==4) sasfit_set_iq_or_gz(1);
 
 dydpar = dvector(0,ma-1);
 Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));
@@ -3650,7 +3651,7 @@ if (sasfit_get_iq_or_gz() == 4) {
         for (i=0;i<ndata[j];i++) {
             Ihtrans[j][i] = log(Ih[j][i]/Ih[j][ndata[j]-1]);
             DIhtrans[j][i] = sqrt( gsl_pow_2(DIh[j][i]/Ih[j][i]) + gsl_pow_2(DIh[j][ndata[j]-1]/Ih[j][ndata[j]-1]) );
-        } 
+        }
  	}
 } else {
     for (j=0;j<GCP.nmultset;j++) {
@@ -3662,7 +3663,7 @@ if (sasfit_get_iq_or_gz() == 4) {
 }
 SASFITfridaGlobal(interp,h,Ihtrans,res,DIhtrans,Ith,Isub,ndata,max_SD,GlobalAP,&GCP,error_type,
        SASFIT_CData,&chisq,IQ_Global,&alambda,&error);
-       
+
 if (error == TRUE) {
    save_GlobalAP(interp,argv[1],GlobalAP,&GCP,max_SD,alambda);
    for (k=0;k<GCP.nmultset;k++) {
@@ -3992,7 +3993,7 @@ if (sasfit_get_iq_or_gz() == 4) {
         for (i=0;i<ndata[j];i++) {
             Ihtrans[j][i] = log(Ih[j][i]/Ih[j][ndata[j]-1]);
             DIhtrans[j][i] = sqrt( gsl_pow_2(DIh[j][i]/Ih[j][i]) + gsl_pow_2(DIh[j][ndata[j]-1]/Ih[j][ndata[j]-1]) );
-        } 
+        }
  	}
 } else {
     for (j=0;j<GCP.nmultset;j++) {
@@ -4004,7 +4005,7 @@ if (sasfit_get_iq_or_gz() == 4) {
 }
 SASFITmrqminGlobal(interp,h,Ihtrans,res,DIhtrans,Ith,Isub,ndata,max_SD,GlobalAP,&GCP,error_type,
        SASFIT_CData,&chisq,IQ_Global,&alambda,&error);
-       
+
 if (sasfit_get_iq_or_gz() == 4) {
     for (j=0;j<GCP.nmultset;j++) {
         for (i=0;i<ndata[j];i++) {

@@ -27,6 +27,7 @@ package require sasfit
 # initialize sasfit
 
 package require Tk
+package require math
 package require inifile
 
 # check if we can find BLT easily otherwise 

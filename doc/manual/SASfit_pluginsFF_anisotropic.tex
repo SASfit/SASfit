@@ -218,7 +218,7 @@ The separation distance can have a distribution described by a log-normal distri
 to eq.\ \ref{eq:LogNormal}.
 
 \begin{align}
-P_\text{cs}(Q,\sigma_{T},T) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{T},1,T) \cos^2(Qx/2) \, \textrm{d}x
+P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t) \cos^2(Qx/2) \, \textrm{d}x
 \end{align}
 
 \noindent
@@ -547,11 +547,11 @@ described by a log-normal distribution according to eq.\ \ref{eq:LogNormal}.
 
 \begin{equation}
 \begin{split}
-    P_\textrm{cs}(Q) = & \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{R},1,R)  \quad \times\\
+    P_\textrm{cs}(Q) = & \int_0^\infty \textrm{LogNorm}(t',1,\sigma_{t},1,t)  \quad \int_0^\infty \textrm{LogNorm}(R',1,\sigma_{R},1,R)  \quad \times\\
         & \int_0^{\pi/2}
-\Big[\left( \eta_\textrm{shell}-\eta_\textrm{solv}\right)F_\textrm{cs,ell}(Q,R+t,\epsilon,\phi) \\
-& \quad + \left(\eta_\textrm{core}-\eta_\textrm{shell}\right)F_\textrm{cs,ell}(Q,R,\epsilon,\phi)
-\Big]^2 \, \mathrm{d}\phi
+\Big[\left( \eta_\textrm{shell}-\eta_\textrm{solv}\right)F_\textrm{cs,ell}(Q,R'+t',\epsilon,\phi) \\
+& \quad + \left(\eta_\textrm{core}-\eta_\textrm{shell}\right)F_\textrm{cs,ell}(Q,R',\epsilon,\phi)
+\Big]^2 \, \mathrm{d}\phi  \, \mathrm{d}R'  \, \mathrm{d}t'
 \end{split}
 \end{equation}
 with
@@ -568,8 +568,8 @@ r(R,\epsilon,\phi) &=& R\sqrt{\sin^2\phi+\epsilon^2\cos^2\phi}
     \item[\texttt{R}] most probable radius $R$
     \item[\texttt{sigm\_R}] width $\sigma_R$ of radius distribution (LogNorm)
     \item[\texttt{epsilon}] eccentricity $\epsilon$ of ellipyical cross-section
-    \item[\texttt{t}] shell thickness $t$
-    \item[\texttt{dummy}] not used
+    \item[\texttt{t}] most probable shell thickness $t$
+    \item[\texttt{dummy}] width $\sigma_t$ of shell thickness distribution (LogNorm)
     \item[\texttt{dummy}] not used
     \item[\texttt{dummy}] not used
     \item[\texttt{eta\_core}] scattering length density of the core $\eta_\textrm{core}$

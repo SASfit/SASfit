@@ -11,14 +11,13 @@
 #define DUMMY	param->p[1]
 #define SIGMA	fabs(param->p[2])
 
-#define Q		param->p[MAXPAR-1]
 
 scalar disc_core(scalar x, sasfit_param * param)
 {
 	scalar u;
-	scalar P, LNdistr;
+	scalar IP, LNdistr;
 	sasfit_param subParam;
-	
+
 	SASFIT_ASSERT_PTR(param);
 	sasfit_init_param( &subParam );
 
@@ -26,12 +25,12 @@ scalar disc_core(scalar x, sasfit_param * param)
 
 	u = Q*x;
 	if (u == 0.0) {
-		P = gsl_pow_4(x)*gsl_pow_2(M_PI); 
+		IP = gsl_pow_4(x)*gsl_pow_2(M_PI);
 	} else {
-	  P = 2.0*gsl_pow_2(M_PI*x/Q)*(1.0-gsl_sf_bessel_J1(2.0*u)/(u));
+	  IP = 2.0*gsl_pow_2(M_PI*x/Q)*(1.0-gsl_sf_bessel_J1(2.0*u)/(u));
 	}
 	if (SIGMA == 0) return P;
-	
+
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA;
 	subParam.p[2] = 1.0;
@@ -40,7 +39,7 @@ scalar disc_core(scalar x, sasfit_param * param)
 	LNdistr = sasfit_sd_LogNorm(x, &subParam);
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
-	return LNdistr*P;
+	return LNdistr*IP;
 }
 
 

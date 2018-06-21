@@ -31,11 +31,13 @@ scalar sasfit_ff_ellsh_sd_homoxs(scalar q, sasfit_param * param)
 
 	// insert your code here
 	sasfit_init_param( &subParam );
-	subParam.p[0] =	param->p[0];
-	subParam.p[1] =	param->p[1];
-	subParam.p[4] =	param->p[6];
-	subParam.p[5] =	param->p[7];
-    
+	subParam.p[0] =	T;
+	subParam.p[1] =	SIGMA_T;
+	subParam.p[4] =	ETA_L;
+	subParam.p[5] =	ETA_SOL;
+	Q=q;
+	P=2;
+
 	Pcs = sasfit_ff_pcs_homogeneousplate(q,&subParam);
 
 	sasfit_init_param( &subParam );
@@ -49,10 +51,29 @@ scalar sasfit_ff_ellsh_sd_homoxs(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_ellsh_sd_homoxs_f(scalar q, sasfit_param * param)
 {
+	scalar Pcs, Pprime;
+	sasfit_param subParam;
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	// insert your code here
-	return 0.0;
+	// insert your code
+	sasfit_init_param( &subParam );
+	subParam.p[0] =	T;
+	subParam.p[1] =	SIGMA_T;
+	subParam.p[4] =	ETA_L;
+	subParam.p[5] =	ETA_SOL;
+	Q=q;
+	P=1;
+
+	Pcs = sasfit_ff_pcs_homogeneousplate_f(q,&subParam);
+
+	sasfit_init_param( &subParam );
+	subParam.p[0] = R0;
+	subParam.p[1] = EPSILON;
+	subParam.p[2] = SIGMA_R0;
+
+	Pprime = sasfit_sq_p__q___thin_ellipsoidal_shell_f(q,&subParam);
+	return Pcs*Pprime;
 }
 
 scalar sasfit_ff_ellsh_sd_homoxs_v(scalar q, sasfit_param * param, int dist)

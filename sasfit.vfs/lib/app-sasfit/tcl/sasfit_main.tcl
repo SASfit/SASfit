@@ -694,6 +694,8 @@ set Detector2DIQGraph(scale)   log(y)
 set Detector2DIQGraph(resolution) pinhole
 set Detector2DIQGraph(Qwidth)  0.0
 set Detector2DIQGraph(QminBS)  0.0
+set Detector2DIQGraph(BCx)  63.5
+set Detector2DIQGraph(BCy)  63.5
 
 set ResIQGraph(x,logscale) 0
 set ResIQGraph(y,logscale) 0
@@ -3801,7 +3803,7 @@ zoomstack $IQGraph(w)
 
 
 #
-#  create scattering 2D detector intesity plot "2DdetectorIQGraph"
+#  create scattering 2D detector intensity plot "2DdetectorIQGraph"
 #
 
 #   frame .obW.tab.detector2Diq -relief groove -borderwidth 2 -background white  
@@ -3816,6 +3818,7 @@ zoomstack $IQGraph(w)
    set Detector2DIQGraph(w) [$Detector2DIQGraph(fw) getframe]
    $Detector2DIQGraph(sw) setwidget $Detector2DIQGraph(fw)
 
+  
    .obW.tab insert 6 Detector2DIQGraph
    .obW.tab tab configure Detector2DIQGraph \
             -text "2D detector\nintensity"
@@ -3830,31 +3833,60 @@ zoomstack $IQGraph(w)
             -windowheight $width2D \
             -windowwidth $width2D 
 
-   set Detector2DIQGraph(cw) [ canvas $Detector2DIQGraph(w).c \
+   set Detector2DIQGraph(cwsim) [ canvas $Detector2DIQGraph(w).c_sim \
+                                      -background white \
+                                      -width $width2D \
+                                      -height $width2D]
+	set Detector2DIQGraph(cwdata) [ canvas $Detector2DIQGraph(w).c_data \
+                                      -background white \
+                                      -width $width2D \
+                                      -height $width2D]
+	set Detector2DIQGraph(cwresiduum) [ canvas $Detector2DIQGraph(w).c_residum \
                                       -background white \
                                       -width $width2D \
                                       -height $width2D]
 
-   pack $Detector2DIQGraph(cw) 
+   pack $Detector2DIQGraph(cwsim) $Detector2DIQGraph(cwdata) $Detector2DIQGraph(cwresiduum)
+menu $Detector2DIQGraph(cwsim).popup -tearoff 0
+$Detector2DIQGraph(cwsim).popup add command -label "copy to clipboard" -un 0 -command {
+window_to_clipboard $Detector2DIQGraph(cwsim)
+}
+bind $Detector2DIQGraph(cwsim) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(cwsim).popup %X %Y }
+bind $Detector2DIQGraph(cwsim) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(cwsim).popup %X %Y }
+
+menu $Detector2DIQGraph(cwdata).popup -tearoff 0
+$Detector2DIQGraph(cwdata).popup add command -label "copy to clipboard" -un 0 -command {
+window_to_clipboard $Detector2DIQGraph(cwdata)
+}
+bind $Detector2DIQGraph(cwdata) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(cwdata).popup %X %Y }
+bind $Detector2DIQGraph(cwdata) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(cwdata).popup %X %Y }
+
+menu $Detector2DIQGraph(cwresiduum).popup -tearoff 0
+$Detector2DIQGraph(cwresiduum).popup add command -label "copy to clipboard" -un 0 -command {
+window_to_clipboard $Detector2DIQGraph(cwresiduum)
+}
+bind $Detector2DIQGraph(cwresiduum) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(cwresiduum).popup %X %Y }
+bind $Detector2DIQGraph(cwresiduum) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(cwresiduum).popup %X %Y }
+
 ##
 ## creating Detector2DIQGraph popup menu
 ##
 menu $Detector2DIQGraph(w).popup -tearoff 0
 $Detector2DIQGraph(w).popup add command -label "copy to clipboard" -un 0 -command {
-     window_to_clipboard $Detector2DIQGraph(cw)
+     window_to_clipboard $Detector2DIQGraph(cwsim)
      }
 bind $Detector2DIQGraph(w) <ButtonPress-3> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 bind $Detector2DIQGraph(w) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 
    set Detector2DIQGraph(nPix) 64
-   set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cw) \
+   set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cwsim) \
                [list 0.0 $Detector2DIQGraph(nPix)] \
                [list 0.0 $Detector2DIQGraph(nPix)] noaxes] 
    set Detector2DIQGraph(s) $s
 
 
 #
-#  create scattering intesity plot "GlobalFitIQGraph"
+#  create scattering intensity plot "GlobalFitIQGraph"
 #
 frame .obW.tab.globaliq -relief groove -borderwidth 2 
    set GlobalFitIQGraph(w) .obW.tab.globaliq.draw

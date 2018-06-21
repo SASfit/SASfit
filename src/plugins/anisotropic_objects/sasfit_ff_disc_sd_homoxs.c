@@ -11,8 +11,8 @@
 #define SIGMA_T	fabs(param->p[1])
 #define D	param->p[2]
 #define SIGMA_D	fabs(param->p[3])
-#define DUMMY1	param->p[4]
-#define DUMMY2	param->p[5]
+
+
 #define ETA_L	param->p[6]
 #define ETA_SOL	param->p[7]
 
@@ -31,13 +31,15 @@ scalar sasfit_ff_disc_sd_homoxs(scalar q, sasfit_param * param)
 
 	// insert your code here
 	sasfit_init_param( &subParam );
-	subParam.p[0] =	param->p[0];
-	subParam.p[1] =	param->p[1];
-	subParam.p[4] =	param->p[6];
-	subParam.p[5] =	param->p[7];
-    
+	subParam.p[0] =	T;
+	subParam.p[1] =	SIGMA_T;
+	subParam.p[4] =	ETA_L;
+	subParam.p[5] =	ETA_SOL;
+	Q=q;
+	P=2;
+
 	Pcs = sasfit_ff_pcs_homogeneousplate(q,&subParam);
-	
+
 
 	subParam.p[0] = D/2.;
 	subParam.p[1] = 0.0;

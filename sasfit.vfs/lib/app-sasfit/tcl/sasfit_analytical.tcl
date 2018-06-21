@@ -2934,53 +2934,6 @@ switch $actualPar(SQ,typestr) {
 #                          set actualPar(SQ,s9,label) ""
 #                          set actualPar(SQ,s10,label) ""
 #                        }
-   "P'(Q):ThinDisc"     { set actualPar(SQ,s1,label) "R ="
-                          set actualPar(SQ,s2,label) ""
-                          set actualPar(SQ,s3,label) ""
-                          set actualPar(SQ,s4,label) ""
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-   "P'(Q):ThinSphericalShell" \
-                        { set actualPar(SQ,s1,label) "R ="
-                          set actualPar(SQ,s2,label) ""
-                          set actualPar(SQ,s3,label) ""
-                          set actualPar(SQ,s4,label) ""
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-"P'(Q):ThinEllipsoidalShell" \
-                        { set actualPar(SQ,s1,label) "a ="
-                          set actualPar(SQ,s2,label) "b"
-                          set actualPar(SQ,s3,label) ""
-                          set actualPar(SQ,s4,label) ""
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                         }
-"P'(Q):ThinHollowCylinder" \
-                        { set actualPar(SQ,s1,label) "R ="
-                          set actualPar(SQ,s2,label) "L"
-                          set actualPar(SQ,s3,label) ""
-                          set actualPar(SQ,s4,label) ""
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
    default              { ap_set_param_labels actualPar SQ }
 }
 ap_update_param_count actualPar SD
@@ -5284,53 +5237,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 #				  set actualAnalytPar(SQ,s9,label) ""
 #				  set actualAnalytPar(SQ,s10,label) ""
 #				}
-           "P'(Q):ThinDisc"     { set actualAnalytPar(SQ,s1,label) "R ="
-                                  set actualAnalytPar(SQ,s2,label) ""
-                                  set actualAnalytPar(SQ,s3,label) "sigma ="
-                                  set actualAnalytPar(SQ,s4,label) ""
-                                  set actualAnalytPar(SQ,s5,label) ""
-                                  set actualAnalytPar(SQ,s6,label) ""
-                                  set actualAnalytPar(SQ,s7,label) ""
-                                  set actualAnalytPar(SQ,s8,label) ""
-                                  set actualAnalytPar(SQ,s9,label) ""
-                                  set actualAnalytPar(SQ,s10,label) ""
-                                }
-    "P'(Q):ThinSphericalShell" \
-                                { set actualAnalytPar(SQ,s1,label) "R ="
-                                  set actualAnalytPar(SQ,s2,label) ""
-                                  set actualAnalytPar(SQ,s3,label) "sigma ="
-                                  set actualAnalytPar(SQ,s4,label) ""
-                                  set actualAnalytPar(SQ,s5,label) ""
-                                  set actualAnalytPar(SQ,s6,label) ""
-                                  set actualAnalytPar(SQ,s7,label) ""
-                                  set actualAnalytPar(SQ,s8,label) ""
-                                  set actualAnalytPar(SQ,s9,label) ""
-                                  set actualAnalytPar(SQ,s10,label) ""
-                                }
-    "P'(Q):ThinEllipsoidalShell" \
-                                { set actualAnalytPar(SQ,s1,label) "a ="
-                                  set actualAnalytPar(SQ,s2,label) "b ="
-                                  set actualAnalytPar(SQ,s3,label) "sigma ="
-                                  set actualAnalytPar(SQ,s4,label) ""
-                                  set actualAnalytPar(SQ,s5,label) ""
-                                  set actualAnalytPar(SQ,s6,label) ""
-                                  set actualAnalytPar(SQ,s7,label) ""
-                                  set actualAnalytPar(SQ,s8,label) ""
-                                  set actualAnalytPar(SQ,s9,label) ""
-                                  set actualAnalytPar(SQ,s10,label) ""
-                                }
-     "P'(Q):ThinHollowCylinder" \
-                                 { set actualAnalytPar(SQ,s1,label) "R ="
-                                   set actualAnalytPar(SQ,s2,label) "L ="
-                                   set actualAnalytPar(SQ,s3,label) "sigma ="
-                                   set actualAnalytPar(SQ,s4,label) ""
-                                   set actualAnalytPar(SQ,s5,label) ""
-                                   set actualAnalytPar(SQ,s6,label) ""
-                                   set actualAnalytPar(SQ,s7,label) ""
-                                   set actualAnalytPar(SQ,s8,label) ""
-                                   set actualAnalytPar(SQ,s9,label) ""
-                                   set actualAnalytPar(SQ,s10,label) ""
-                                }
 	   default              { ap_set_param_labels actualAnalytPar SQ }
 		} }
 	}
@@ -6099,36 +6005,6 @@ switch -exact $type {
  #               10 {return "\n"}
  #              }
  #          }
-           "P'(Q):ThinDisc" {
-               switch $num {
-                 0 {return "\n"}
-                 1 {return "L: cylinder length\n"}
-                 2 {return "\n"}
-                 3 {return "sigma:width of lognormal distribution\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "P'(Q):ThinSphericalShell" {
-               switch $num {
-                 0 {return "\n"}
-                 1 {return "L: cylinder length\n"}
-                 2 {return "\n"}
-                 3 {return "sigma:width of lognormal distribution\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
 	   default { return [get_descr_by_id $ap($type,typestr) $num] }
        }
       }
@@ -9377,7 +9253,7 @@ grid $wdet2D_b.e_min    -row 2 -column 1 -sticky e
 grid $wdet2D_b.e_max    -row 3 -column 1 -sticky e
 
 #puts $wdet2D_b.do
-button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
+button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 -command {     
 	    save_AP ::tmpAnalytPar ::actualAnalytPar 
 	    cp_arr ::tmpAnalytPar ::AnalytPar
@@ -9388,20 +9264,28 @@ button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
 #                    puts $Det2DRes
 		sasfit_timer_stop "Simulation 2D" "finished" ""
 		sasfit_timer_start "\nStart plotting 2d"
-	    destroy $Detector2DIQGraph(cw) 
-
+#	    destroy $Detector2DIQGraph(cwsim)
+#	    destroy $Detector2DIQGraph(cwdata) 
+#	    destroy $Detector2DIQGraph(cwresiduum)
+		
 	    if {$::sasfit(width) < $::sasfit(height)} {
 	       set width2D $::sasfit(width)
 	    } else {
 	       set width2D $::sasfit(height)
 	    }
 
-	    canvas $Detector2DIQGraph(cw)  -background white \
-					   -width $width2D \
-					   -height $width2D
-	    pack $Detector2DIQGraph(cw)
+#	    canvas $Detector2DIQGraph(cwsim)  -background white \
+#					   -width $width2D \
+#					   -height $width2D
+#		canvas $Detector2DIQGraph(cwdata)  -background white \
+#					   -width $width2D \
+#					   -height $width2D
+#		canvas $Detector2DIQGraph(cwresiduum)  -background white \
+#					   -width $width2D \
+#					   -height $width2D
+#	    pack $Detector2DIQGraph(cwsim) $Detector2DIQGraph(cwdata) $Detector2DIQGraph(cwresiduum) 
 #   $Detector2DIQGraph(w) setwidget  $Detector2DIQGraph(cw) 
-	    set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cw) \
+	    set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cwsim) \
 		[list 0.0 $Detector2DIQGraph(nPix)] \
 		[list 0.0 $Detector2DIQGraph(nPix)] noaxes] 
 	    set Detector2DIQGraph(s) $s
@@ -9417,19 +9301,110 @@ button $wdet2D_b.do -text "Calculate\n2D detector pattern" \
 	       }
 	    }
 
-
-menu $Detector2DIQGraph(cw).popup -tearoff 0
-$Detector2DIQGraph(cw).popup add command -label "copy to clipboard" -un 0 -command {
-window_to_clipboard $Detector2DIQGraph(cw)
-}
-bind $Detector2DIQGraph(cw) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(cw).popup %X %Y }
-bind $Detector2DIQGraph(cw) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(cw).popup %X %Y }
-sasfit_timer_stop "Plotting 2D" "finished" ""
+		sasfit_timer_stop "Plotting 2D" "finished" ""
 	  }
 grid   $wdet2D_b.do    -row 4 -column 0 -columnspan 4 -sticky ew
 
+LabelEntry     $wdet2D_c.e_bcx    \
+       -label BCx:  \
+       -width 6 \
+       -textvariable Detector2DIQGraph(BCx)
+LabelEntry     $wdet2D_c.e_bcy    \
+       -label BCy:  \
+       -width 6 \
+       -textvariable Detector2DIQGraph(BCy)
 
-
+grid $wdet2D_c.e_bcx    -row 2 -column 1 -sticky e
+grid $wdet2D_c.e_bcy    -row 3 -column 1 -sticky e	   
+button $wdet2D_c.fit -bg "light coral" -text "Fit\n2D detector pattern" \
+-command {       
+	    save_AP ::tmpAnalytPar ::actualAnalytPar 
+	    cp_arr ::tmpAnalytPar ::AnalytPar
+		set ::SASfitprogressbar 0
+		set ::SASfitinterrupt 0
+		sasfit_timer_start "\nStart simulation 2d"
+		read_HMI "C:/user/SASfitGit/D0040954.018" SANSDAniData
+		read_HMI "C:/user/SASfitGit/18m.sma" SANSDAniMask
+	    set Det2DAni [HMIgetItem SANSDAniData Counts SANSDAni i]
+		set Det2DMask [HMIgetItem SANSDAniMask Mask SANSMAni i]
+		set nPix [expr round(sqrt([HMIgetItem SANSDAniData File DataSize i]))]
+#        puts $Det2DAni
+		
+	    if {$::sasfit(width) < $::sasfit(height)} {
+	       set width2D $::sasfit(width)
+	    } else {
+	       set width2D $::sasfit(height)
+	    }
+		set DMin -1e12
+		set DMax 1e12
+		set DIdat {}
+		for {set i 0} {$i < $nPix} {incr i} {
+			set DIrow {}
+			for {set j 0} {$j < $nPix} {incr j} {
+				set Detji [lindex [lindex $Det2DAni $i] $j]
+				set Maskji [lindex [lindex $Det2DMask $i] $j]
+				if {$Maskji==1} {
+					if {$DMin==-1e12 && $DMax==1e12} {
+						set DMin $Detji
+						set DMax $Detji
+					} else {
+						if {$DMax < $Detji} {
+							set DMax $Detji 
+						}
+						if {$DMin > $Detji} {
+							set DMin $Detji 
+						}
+					}
+					lappend DIrow $Detji
+				} else {
+					lappend DIrow 0
+				}
+			}
+#			puts $DIrow
+			lappend DIdat $DIrow
+		}
+		if {$DMin < 0} {
+			set DMin 0
+		}
+		set DIdat {}
+		for {set i 0} {$i < $nPix} {incr i} {
+			set DIrow {}
+			for {set j 0} {$j < $nPix} {incr j} {
+				set Detji [lindex [lindex $Det2DAni $i] $j]
+				set Maskji [lindex [lindex $Det2DMask $i] $j]
+				if {$Maskji==1 && $Detji > 0} {
+					lappend DIrow $Detji
+				} else {
+					lappend DIrow $DMin
+				}
+			}
+			lappend DIdat $DIrow
+		}
+#		puts now the whole data set
+puts "$DMax $DMin"
+		set DetMin [::math::statistics::min  [join [join $DIdat]]]
+		set DetMax [::math::statistics::max  [join [join $DIdat]]]
+		set DetMin $DMin
+		set DetMax $DMax
+#   $Detector2DIQGraph(w) setwidget  $Detector2DIQGraph(cw) 
+	    set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cwdata) \
+		[list 0.0 $nPix] \
+		[list 0.0 $nPix] noaxes] 
+	    for {set i 0} {$i < $nPix} {incr i} {
+	       for {set j 0} {$j < $nPix} {incr j} {
+		  set xll $i
+		  set yll $j
+		  set xur [expr $i+1]
+		  set yur [expr $j+1]
+		  set Dij [expr (log10(([lindex [lindex $DIdat $i] $j]-$DetMin)/($DetMax-$DetMin)+0.001)-log10(0.001))/(log10(1.001)-log10(0.001))]
+		  set ctIndx [expr round(255*$Dij)]
+		  $s plot filled-rectangle $xll $yll $xur $yur  \
+		      [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
+	       }   
+		}
+		sasfit_timer_stop "Plotting 2D" "finished" ""
+}
+grid   $wdet2D_c.fit    -row 4 -column 0 -columnspan 4 -sticky ew
 #
 # input fields for parameters of size distributions
 #
@@ -9709,9 +9684,6 @@ None \
 				     {{Thin Square Well Potential}} \
                                      {{Square Well Potential 2}}}} \
 {lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
-{anisotropic "anisotropic obj." {{planar "P'(Q):local planar geometry" {{{P'(Q):ThinDisc}} {{P'(Q):ThinSphericalShell}} \
-							{{P'(Q):ThinEllipsoidalShell}} {{P'(Q):ThinHollowCylinder}}}} \
-				}}
 {fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
 			 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
 {peaks "Peaks" {GaussianAmplitude LorentzianAmplitude VoigtPeak PearsonVIIAmplitude}
@@ -10435,7 +10407,7 @@ proc create_analytical_parameter_frame { w isGlobal } {
 		-state normal ]
 	if {!$isGlobal} {
 		set Det2D_f [$wn insert 3 3 \
-			-text "2D detector calculation (under construction)" \
+			-text "2D detector data simulation and fitting (under construction)" \
 			-state normal ]
 	}
 

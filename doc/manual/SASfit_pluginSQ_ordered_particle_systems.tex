@@ -38,7 +38,7 @@ c(r',\eta) &=
 &\left\{1-a^2\eta-a^2\eta\frac{2}{\pi}\left[\arccos\left(\frac{r'}{a}\right)-\frac{r'}{a}\sqrt{1-\frac{r'^2}{a^2}}\right]\right\}
 \end{split}  
 \end{align}
-with $p=\left(4\sqrt{3}\pi-12\right)/\pi^2$ and being $\Theta()$ the Heaviside function. The parameter $a$ are the roots of a non-linear equation, which has been solved numerically and then approximated via a polynomial fitting by
+with $p=\left(4\sqrt{3}\pi-12\right)/\pi^2$ and $\Theta()$ being the Heaviside function. The parameter $a$ is the root of a non-linear equation, which has been solved numerically and then approximated via a polynomial fitting by
 \begin{align}
 a &= 0.3699\eta^4
       -1.2511\eta^3
@@ -87,15 +87,15 @@ with a constant step size $D$ is given by \cite{Burchard1970} as
 S_N(QD)&=
      \frac{2}{1-\frac{\sin⁡(QD)}{QD} )}-1-\frac{2\left[1-\left[\frac{\sin⁡(QD)}{QD}\right]^N \right]}{N\left[1-\frac{\sin⁡(QD)}{QD}\right]^2}   \frac{\sin⁡(QD)}{QD}
 \end{align}
-The formula above is only real for all values of $QD$ for integer values of $N$. For non integer values $n$ a linear interpolation between $[n]$ and $[n]+1$ is taken \cite{Giehm2010}, where $[n]$ is the largest integer smaller or equal to $n$. With $w=n-[n]$ we get
+The formula above is only real for all values of $QD$ for integer values of $N$. For non integer values $N$ a linear interpolation between $[N]$ and $[N]+1$ is taken \cite{Giehm2010}, where $[N]$ is the largest integer smaller or equal to $N$. With $w=N-[N]$ we get
 \begin{align}
-S_n(QD)&= (1-w)S_{[n]}(QD) + wS_{[n]+1}(QD)
+S_N(QD)&= (1-w)S_{[N]}(QD) + wS_{[N]+1}(QD)
 \end{align}
 
 \noindent \underline{Input Parameters for model \texttt{random flight}:}\\
 \begin{description}
 \item[\texttt{D}] step length $D$
-\item[\texttt{n}] number of steps $n$
+\item[\texttt{n}] number of steps $N$
 \end{description}
 
 

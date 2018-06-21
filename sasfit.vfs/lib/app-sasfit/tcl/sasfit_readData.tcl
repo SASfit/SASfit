@@ -2071,7 +2071,7 @@ while {![eof $f]} {
             \*      { lappend Data(WasteBasket) $line }
             default { lappend Data($BlockName)  $line }
         }
-     }
+     } else {lappend Data($BlockName)  $line}
    }
 }
 }
@@ -2196,6 +2196,83 @@ if {![string compare $BlockName Counts] && \
    return $ScattData
 }
 
+if {![string compare $BlockName Mask] && \
+    ![string compare $ItemName  SANSMAni]} {
+	set maskdata {}
+	for {set i 0} {$i < [HMIgetItem Data File DataSizeX i]} {incr i} {
+		set maskline {}
+		for {set j [expr [HMIgetItem Data File DataSizeY i]-1]} {$j >= 0} {incr j -1} {
+			set maskji [string index [lindex $Data(Mask) $j] $i]
+			if {[string compare # $maskji]==0} {
+				lappend maskline 0
+			} else {
+				lappend maskline 1
+			}
+		}
+		lappend maskdata $maskline
+	}
+	return $maskdata
+}
+
+if {![string compare $BlockName Counts] && \
+    ![string compare $ItemName  SANSDAni]} {
+	set SANSDAniData {}
+	set nPix [expr round(sqrt([HMIgetItem Data File DataSize i]))]
+	set nLines [expr round([HMIgetItem Data File DataSize i]/8)]
+	puts "$nPix $nLines"
+	set cPix 0
+	set AData ""
+	for {set nL 0} {$nL < $nLines} {incr nL} {
+		incr cPix 8
+		lappend AData [scan [lindex $Data(Counts) $nL] %10f%10f%10f%10f%10f%10f%10f%10f]
+		set AData [join $AData]
+		if {$cPix==$nPix} {
+			lappend SANSDAniData $AData
+			set cPix 0
+			set AData ""
+		}
+	}
+	set DAniData {}
+	for {set i 0} {$i < $nPix} {incr i} {
+		set AData {}
+		for {set j 0} {$j < $nPix} {incr j} {
+			set adataji [lindex [lindex $SANSDAniData $j] $i]
+			lappend AData $adataji
+		}
+		lappend DAniData $AData
+	}
+	return $DAniData
+}
+
+if {![string compare $BlockName Errors] && \
+    ![string compare $ItemName  SANSDAni]} {
+	set SANSDAniData {}
+	set nPix [expr round(sqrt([HMIgetItem Data File DataSize i]))]
+	set nLines [expr round([HMIgetItem Data File DataSize i]/8)]
+	puts "$nPix $nLines"
+	set cPix 0
+	set AData ""
+	for {set nL 0} {$nL < $nLines} {incr nL} {
+		incr cPix 8
+		lappend AData [scan [lindex $Data(Counts) $nL] %10f%10f%10f%10f%10f%10f%10f%10f]
+		set AData [join $AData]
+		if {$cPix==$nPix} {
+			lappend SANSDAniData $AData
+			set cPix 0
+			set AData ""
+		}
+	}
+	set DAniData {}
+	for {set i 0} {$i < $nPix} {incr i} {
+		set AData {}
+		for {set j 0} {$j < $nPix} {incr j} {
+			set adataji [lindex [lindex $SANSDAniData $j] $i]
+			lappend AData $adataji
+		}
+		lappend DAniData $AData
+	}
+	return $DAniData
+}
 #
 # default treatment
 #
