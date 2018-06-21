@@ -34,10 +34,13 @@ scalar pcs_ellcylsh(sasfit_param *param)
 	b1 = M_PI*R*R*EPSILON*(ETA_CORE-ETA_SHELL);
 	b2 = M_PI*(R+T)*(R*EPSILON+T)*(ETA_SHELL-ETA_SOLV);
 
+	Ain  = gsl_sf_hyperg_0F1(2,-0.25*u1*u1);
+	Aout = gsl_sf_hyperg_0F1(2,-0.25*u2*u2);
+/*
 	if (u1==0) {
 		Ain = 1.0;
 	} else {
-		Ain = 2.0*gsl_sf_bessel_J1(u1)/u1;
+		2.0*gsl_sf_bessel_J1(u1)/u1;
 	}
 
 	if (u2==0) {
@@ -45,6 +48,7 @@ scalar pcs_ellcylsh(sasfit_param *param)
 	} else {
 		Aout = 2.0*gsl_sf_bessel_J1(u2)/u2;
 	}
+*/
 
 	A = b1*Ain+b2*Aout;
 	return gsl_pow_int(A,lround(P));
@@ -181,8 +185,6 @@ scalar sasfit_ff_pcs_ellcylsh(scalar q, sasfit_param * param)
     } else {
         intstrategy=P_CUBATURE;
     }
-
-    intstrategy = sasfit_get_int_strategy();
 
 	switch(intstrategy) {
     case H_CUBATURE: {

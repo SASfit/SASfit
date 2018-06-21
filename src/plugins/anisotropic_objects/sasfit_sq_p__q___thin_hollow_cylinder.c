@@ -34,7 +34,7 @@ scalar XI_CylShell(scalar q, sasfit_param * param)
 		XIres = R/(R+H) * 2.*gsl_sf_bessel_J1(xR)/xR * cos(xH);
 	}
 */
-    XIres = R/(R+H) * 2.*gsl_sf_hyperg_0F1(2,-0.25*gsl_pow_2(qR))* cos(qH);
+    XIres = R/(R+H) * gsl_sf_hyperg_0F1(2,-0.25*gsl_pow_2(qR))* cos(qH);
 	XIres = XIres + H/(R+H) * gsl_sf_bessel_J0(qR)*gsl_sf_bessel_j0(qH);
 
 	return (2.* M_PI*R*R + 2.0*M_PI*R*H)*XIres;
