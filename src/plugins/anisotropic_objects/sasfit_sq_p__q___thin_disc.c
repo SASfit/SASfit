@@ -24,11 +24,14 @@ scalar disc_core(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param);
 
 	u = Q*x;
+	/*
 	if (u == 0.0) {
 		IP = gsl_pow_4(x)*gsl_pow_2(M_PI);
 	} else {
-	  IP = 2.0*gsl_pow_2(M_PI*x/Q)*(1.0-gsl_sf_bessel_J1(2.0*u)/(u));
+	  IP = 2.0*gsl_pow_2(M_PI*x/Q)*(1.0-2*gsl_sf_bessel_J1(2.0*u)/(2*u));
 	}
+	*/
+	IP= 2.0*gsl_pow_2(M_PI*x/Q)*(1.0-gsl_sf_hyperg_0F1(2,-0.25*gsl_pow_2(2*u)));
 	if (SIGMA == 0) return P;
 
 	subParam.p[0] = 1.0;
