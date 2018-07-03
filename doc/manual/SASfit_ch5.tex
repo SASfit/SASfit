@@ -36,7 +36,7 @@ y_\mathrm{Beta (ampl)}\left(x;A,x_\mathrm{min},x_\mathrm{max},\alpha,\beta,c_0\r
 +c_0
 \end{equation}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $A$ of the Beta peak
     \item[xmin] continuous lower boundary parameters $x_\mathrm{min}$
@@ -46,7 +46,7 @@ y_\mathrm{Beta (ampl)}\left(x;A,x_\mathrm{min},x_\mathrm{max},\alpha,\beta,c_0\r
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item Both shape parameter needs to be larger than one $(\alpha,\beta>1)$, as only than
   the distribution has a peak shape.
@@ -73,7 +73,7 @@ y_\mathrm{Beta (area)}\left(x;A,x_\mathrm{min},x_\mathrm{max},\alpha,\beta,c_0\r
 +c_0
 \end{equation}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the beta distribution
     \item[xmin] continuous lower boundary parameters $x_\mathrm{min}$
@@ -83,7 +83,7 @@ y_\mathrm{Beta (area)}\left(x;A,x_\mathrm{min},x_\mathrm{max},\alpha,\beta,c_0\r
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item Both shape parameter needs to be larger than zero $(\alpha,\beta>0)$
   \item where the Beta distribution is not defined the offset value is returned: \\
@@ -149,7 +149,7 @@ The function returns 0 for those x where it is undefined $(z+u<0)$.
 
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $a$ of the Gamma peak
     \item[center] location parameter (mode) $x_c$
@@ -158,7 +158,7 @@ The function returns 0 for those x where it is undefined $(z+u<0)$.
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be larger than zero $(\sigma>0)$.
   \item The shape parameter needs to be larger than two $(k>2)$
@@ -196,7 +196,7 @@ The function returns 0 for those x where it is undefined $(z+u<0)$.
 
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ of the Gamma peak
     \item[center] location parameter (mode) $x_c$
@@ -205,7 +205,7 @@ The function returns 0 for those x where it is undefined $(z+u<0)$.
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be larger than zero $(\sigma>0)$.
   \item The shape parameter needs to be larger than two $(k>2)$
@@ -229,7 +229,7 @@ y(x;a,x_c,\sigma,c_0) = a \, \textrm{erfc}\left(\left(\frac{x-x_c}{\sigma}\right
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $a$ of the erfc peak
     \item[center] location parameter (mode) $x_c$
@@ -237,7 +237,7 @@ y(x;a,x_c,\sigma,c_0) = a \, \textrm{erfc}\left(\left(\frac{x-x_c}{\sigma}\right
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item Default (size) distribution: Monodisperse
@@ -261,7 +261,7 @@ y(x;a,x_c,\sigma,c_0) = a\, \frac{\textrm{erfc}\left(\left(\frac{x-x_c}{\sigma}\
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the erfc peak
     \item[center] location parameter (mode) $x_c$
@@ -269,7 +269,7 @@ y(x;a,x_c,\sigma,c_0) = a\, \frac{\textrm{erfc}\left(\left(\frac{x-x_c}{\sigma}\
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item Default (size) distribution: Monodisperse
@@ -293,7 +293,7 @@ y(x;a,x_c,\sigma,k,c_0) = a \, \exp\left(-\frac{1}{2}\frac{\left|x-x_c\right|^{\
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $a$ of the error distribution
     \item[center] location parameter (mode) $x_c$
@@ -302,7 +302,7 @@ y(x;a,x_c,\sigma,k,c_0) = a \, \exp\left(-\frac{1}{2}\frac{\left|x-x_c\right|^{\
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item The shape parameter needs to be larger than zero $(k>0)$.
@@ -327,7 +327,7 @@ y(x;a,x_c,\sigma,k,c_0) = \frac{a}{\left|\sigma\right|^{\frac{k}{2}}2^{\frac{k}{
 \vspace{5mm}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the error distribution
     \item[center] location parameter (mode) $x_c$
@@ -336,7 +336,7 @@ y(x;a,x_c,\sigma,k,c_0) = \frac{a}{\left|\sigma\right|^{\frac{k}{2}}2^{\frac{k}{
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item The shape parameter needs to be larger than zero $(k>0)$.
@@ -366,7 +366,7 @@ y(x;a,x_c,\sigma,\gamma,c_0) & = &
 $\mbox{const}$ is calculated numerically so that "$a$" represents the amplitude of the distribution.
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $a$ of the distribution
     \item[center] location parameter $x_c$
@@ -375,7 +375,7 @@ $\mbox{const}$ is calculated numerically so that "$a$" represents the amplitude 
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item The distortion parameter needs to be non-zero $(\gamma \neq 0)$.
@@ -403,7 +403,7 @@ y(x;a,x_c,\sigma,\gamma,c_0) & = &
 
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the distribution
     \item[center] location parameter $x_c$
@@ -412,7 +412,7 @@ y(x;a,x_c,\sigma,\gamma,c_0) & = &
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma> 0)$.
   \item The distortion parameter needs to be non-zero $(\gamma \neq 0)$.
@@ -440,7 +440,7 @@ y(x;a,x_c,\sigma,c_0) = a \,
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $a$ of the peak
     \item[center] location parameter (mode) $x_c$
@@ -448,7 +448,7 @@ y(x;a,x_c,\sigma,c_0) = a \,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item Default (size) distribution: Monodisperse
@@ -472,7 +472,7 @@ y(x;a,x_c,\sigma,c_0) = \frac{a}{|\sigma|} \,
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the peak
     \item[center] location parameter (mode) $x_c$
@@ -480,7 +480,7 @@ y(x;a,x_c,\sigma,c_0) = \frac{a}{|\sigma|} \,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item Default (size) distribution: Monodisperse
@@ -546,7 +546,7 @@ function returns the offset $c_0$ for values $z\leq 0$.
 
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $a$ of the F-distribution
     \item[center] location parameter (mode) $x_c$
@@ -556,7 +556,7 @@ function returns the offset $c_0$ for values $z\leq 0$.
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scale parameter needs to be larger than zero $\sigma>0$
   \item The first shape parameter needs to be larger than zero $\nu_1>2$
@@ -594,7 +594,7 @@ $\frac{\nu_1-2}{\nu_1}\frac{\nu_2}{\nu_2+2}$ in the definition of $z$. The distr
 function returns the offset $c_0$ for values $z\leq 0$.
 
 \vspace{5mm}
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ of the F-distribution
     \item[center] location parameter (mode) $x_c$
@@ -604,7 +604,7 @@ function returns the offset $c_0$ for values $z\leq 0$.
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scale parameter needs to be larger than zero $\sigma>0$
   \item The first shape parameter needs to be larger than zero $\nu_1>2$
@@ -675,7 +675,7 @@ e^{-\beta\,x} }{\Gamma(\alpha)} \ \mathrm{for}\ x > 0 \,\!.
 
 ~\\
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $a$ of the Gamma peak
     \item[center] location parameter (mode) $x_c$
@@ -683,7 +683,7 @@ e^{-\beta\,x} }{\Gamma(\alpha)} \ \mathrm{for}\ x > 0 \,\!.
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The shape parameter needs to be larger than one $k>1$.
   \item The scale parameter needs to be larger than zero $\theta>0$
@@ -719,7 +719,7 @@ with $z=\frac{x-x_c}{\theta} +k-1$
 
 ~\\
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ of the Gamma peak
     \item[center] location parameter (mode) $x_c$
@@ -727,7 +727,7 @@ with $z=\frac{x-x_c}{\theta} +k-1$
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The shape parameter needs to be larger than one $k>1$.
   \item The scale parameter needs to be larger than zero $\theta>0$
@@ -758,7 +758,7 @@ y(x;a,x_c,\sigma,c_0) = a \,
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $a$ of the peak
     \item[center] location parameter (mode) $x_c$
@@ -766,7 +766,7 @@ y(x;a,x_c,\sigma,c_0) = a \,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item Default (size) distribution: Monodisperse
@@ -790,7 +790,7 @@ y(x;a,x_c,\sigma,c_0) = \frac{a}{|\sigma|\sqrt{2\pi}} \,
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the peak
     \item[center] location parameter (mode) $x_c$
@@ -798,7 +798,7 @@ y(x;a,x_c,\sigma,c_0) = \frac{a}{|\sigma|\sqrt{2\pi}} \,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item Default (size) distribution: Monodisperse
@@ -831,7 +831,7 @@ y(x,a,x_c,\sigma,\nu,c_0) = a\,
 \end{equation}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $a$ of the peak
     \item[center] location parameter (mode) $x_c$
@@ -840,7 +840,7 @@ y(x,a,x_c,\sigma,\nu,c_0) = a\,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item The shape parameter need to be between 0 and 1 ($\nu\in [0,1]$)
@@ -867,7 +867,7 @@ y(x,a,x_c,\sigma,\nu,c_0) = a\,
 
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the peak
     \item[center] location parameter (mode) $x_c$
@@ -876,7 +876,7 @@ y(x,a,x_c,\sigma,\nu,c_0) = a\,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item The shape parameter need to be between 0 and 1 ($\nu\in [0,1]$)
@@ -912,7 +912,7 @@ a\,\frac{\frac{\nu}{|\sigma|}\sqrt{\frac{\ln 2}{\pi}}\exp\left(-4\ln
 
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $a$ of the peak
     \item[center] location parameter (mode) $x_c$
@@ -921,7 +921,7 @@ a\,\frac{\frac{\nu}{|\sigma|}\sqrt{\frac{\ln 2}{\pi}}\exp\left(-4\ln
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item The shape parameter need to be between 0 and 1 ($\nu\in [0,1]$)
@@ -947,7 +947,7 @@ y(x,a,x_c,\sigma,\nu,c_0) = \\
 \end{multline}
 \vspace{5mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the peak
     \item[center] location parameter (mode) $x_c$
@@ -956,7 +956,7 @@ y(x,a,x_c,\sigma,\nu,c_0) = \\
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\sigma\neq 0)$.
   \item The shape parameter need to be between 0 and 1 ($\nu\in [0,1]$)
@@ -998,7 +998,7 @@ the density converges pointwise to a uniform density on $
 y(x,a,\mu,\alpha,\beta) = a e^{-\abs{\frac{x-\mu}{\alpha}}^\beta}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $a$ of the peak
     \item[center] location parameter (mode) $\mu$
@@ -1007,7 +1007,7 @@ y(x,a,\mu,\alpha,\beta) = a e^{-\abs{\frac{x-\mu}{\alpha}}^\beta}
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The width parameter needs to be non-zero $(\alpha\neq 0)$.
   \item The area parameter needs to be positive $(\beta> 0)$.
@@ -1032,7 +1032,7 @@ y(x,a,\mu,\alpha,\beta) = a\,
 e^{-\abs{\frac{x-\mu}{\alpha}}^\beta}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $a$ below the peak
     \item[center] location parameter (mode) $\mu$
@@ -1041,7 +1041,7 @@ e^{-\abs{\frac{x-\mu}{\alpha}}^\beta}
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\alpha > 0)$.
   \item Default (size) distribution: Monodisperse
@@ -1085,7 +1085,7 @@ u &=
 \phi(x) &= \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right)
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the peak
     \item[location] location parameter $\xi$
@@ -1095,7 +1095,7 @@ u &=
 \end{description}
 
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\alpha > 0)$.
   \item Default (size) distribution: Monodisperse
@@ -1128,7 +1128,7 @@ u &=
 \end{align}
 \end{subequations}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ below the peak
     \item[location] location parameter $\xi$
@@ -1137,7 +1137,7 @@ u &=
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\alpha > 0)$.
   \item Default (size) distribution: Monodisperse
@@ -1185,7 +1185,7 @@ c & = \sqrt{\frac{\beta}{x_\text{mode}}} \,
 \end{align}
 \end{subequations}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the peak
     \item[location] location parameter $\beta$
@@ -1193,7 +1193,7 @@ c & = \sqrt{\frac{\beta}{x_\text{mode}}} \,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\sigma > 0)$.
   \item Default (size) distribution: Monodisperse
@@ -1218,7 +1218,7 @@ y(x) & =  \frac{A}{1-\exp\left(-\frac{\beta}{\sigma}\right)} \,
 \exp\left(-\frac{x+\beta}{\sigma}\right)
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ below the peak
     \item[location] location parameter $\beta$
@@ -1226,7 +1226,7 @@ y(x) & =  \frac{A}{1-\exp\left(-\frac{\beta}{\sigma}\right)} \,
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\sigma > 0)$.
   \item Default (size) distribution: Monodisperse
@@ -1267,14 +1267,14 @@ as well as for $\mu\rightarrow 0$
        \frac{A}{\sigma\sqrt{2\pi}}
        \exp\left[-\frac{1}{2}\left(\frac{x}{\sigma}\right)^2\right]
 \end{align}
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ below the peak
     \item[width] scaling parameter $\sigma > 0$
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The location parameter needs to be positive $(\mu > 0)$.
   \item The scaling parameter needs to be positive $(\sigma > 0)$.
@@ -1312,7 +1312,7 @@ y(x) &= A \frac{
             \sqrt{2\pi}\sqrt{\sigma^2+\delta^2}}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ below the peak
     \item[location] location parameter $\mu$
@@ -1321,7 +1321,7 @@ y(x) &= A \frac{
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\sigma > 0)$.
   \item The distortion parameter needs to be nonzero $(\delta \neq 0)$.
@@ -1371,7 +1371,7 @@ y(x) &= A\frac{\beta\exp\left(\frac{(x-\mu)(\alpha+1)^2}{x(\alpha+1)+\beta-\mu(\
 +c_0
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the peak
     \item[location] location parameter $\mu$
@@ -1380,7 +1380,7 @@ y(x) &= A\frac{\beta\exp\left(\frac{(x-\mu)(\alpha+1)^2}{x(\alpha+1)+\beta-\mu(\
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\beta > 0)$.
   \item The shape parameter needs to be positive $(\alpha > 0)$.
@@ -1405,7 +1405,7 @@ y(x) &= A\frac{(\alpha+1)\exp\left(\frac{\beta(\alpha+1)}{x(\alpha+1)+\beta-\mu(
 +c_0
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ below the peak
     \item[location] location parameter $\mu$
@@ -1414,7 +1414,7 @@ y(x) &= A\frac{(\alpha+1)\exp\left(\frac{\beta(\alpha+1)}{x(\alpha+1)+\beta-\mu(
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The scaling parameter needs to be positive $(\beta > 0)$.
   \item The shape parameter needs to be positive $(\alpha > 0)$.
@@ -1461,7 +1461,7 @@ c_0 & \mbox{for } x \notin [x_\text{min},x_\text{max}]
 \end{cases}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $A$ of the Kumaraswamy peak
     \item[xmin] continuous lower boundary parameters $x_\mathrm{min}$
@@ -1471,7 +1471,7 @@ c_0 & \mbox{for } x \notin [x_\text{min},x_\text{max}]
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item Both shape parameter needs to be larger than one $(\alpha,\beta>1)$, as only than
   the distribution has a peak shape.
@@ -1500,7 +1500,7 @@ c_0 & \mbox{for } x \notin [x_\text{min},x_\text{max}]
 \end{align}
 
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the Kumaraswamy distribution
     \item[xmin] continuous lower boundary parameters $x_\mathrm{min}$
@@ -1510,7 +1510,7 @@ c_0 & \mbox{for } x \notin [x_\text{min},x_\text{max}]
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item Both shape parameter needs to be larger than zero $(\alpha,\beta>0)$
   \item where the Kumaraswamy distribution is not defined the offset value is returned: \\
@@ -1554,7 +1554,7 @@ y(x;x_0,\sigma) &= A \exp \left(
 \end{align}
 
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the Laplace distribution
     \item[center] peak center (mode) $x_0$ of the Laplace distribution
@@ -1562,7 +1562,7 @@ y(x;x_0,\sigma) &= A \exp \left(
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item Width parameter needs to be larger than zero $(\sigma>0)$
   \item Default (size) distribution: Monodisperse
@@ -1585,7 +1585,7 @@ y(x;x_0,\sigma) &= \frac{A}{2\sigma} \exp \left(
 -\frac{\abs{x-x_0}}{\sigma}\right) + c_0
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the Laplace distribution
     \item[center] peak center (mode) $x_0$ of the Laplace distribution
@@ -1593,7 +1593,7 @@ y(x;x_0,\sigma) &= \frac{A}{2\sigma} \exp \left(
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item Width parameter needs to be larger than zero $(\sigma>0)$
   \item Default (size) distribution: Monodisperse
@@ -1630,7 +1630,7 @@ the sech-squared distribution. The mode, mean and median values are $x_0$.
 y(x; x_0,\sigma) &= 4A\frac{\exp\left(-\frac{x-x_0}{\sigma}\right)} {\left(1+\exp\left(-\frac{x-x_0}{\sigma}\right)\right)^2}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the Logistic distribution
     \item[x0] location parameter (mode) $x_0$
@@ -1638,7 +1638,7 @@ y(x; x_0,\sigma) &= 4A\frac{\exp\left(-\frac{x-x_0}{\sigma}\right)} {\left(1+\ex
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $\sigma > 0$
   \item Default (size) distribution: Monodisperse
@@ -1660,7 +1660,7 @@ y(x; x_0,\sigma) &= 4A\frac{\exp\left(-\frac{x-x_0}{\sigma}\right)} {\left(1+\ex
 y(x; x_0,\sigma) &= A\; \frac{\exp\left(-\frac{x-x_0}{\sigma}\right)} {\sigma\left(1+\exp\left(-\frac{x-x_0}{\sigma}\right)\right)^2}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the Logistic distribution
     \item[x0] location parameter (mode) $x_0$
@@ -1668,7 +1668,7 @@ y(x; x_0,\sigma) &= A\; \frac{\exp\left(-\frac{x-x_0}{\sigma}\right)} {\sigma\le
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $\sigma > 0$
   \item Default (size) distribution: Monodisperse
@@ -1715,7 +1715,7 @@ c_0 & \mbox{for } x<x_0
 \end{cases}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the LogLogistic distribution
     \item[x0] location parameter $x_0$
@@ -1724,7 +1724,7 @@ c_0 & \mbox{for } x<x_0
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $0<\sigma <1$
   \item Default (size) distribution: Monodisperse
@@ -1747,7 +1747,7 @@ c_0 & \mbox{for } x<x_0
 y(x) &= A \frac{ \left(\frac{x}{x_0}\right)^{-1/\sigma} } { x\sigma\left[ 1+\left(\frac{x}{x_0}\right)^{-1/\sigma} \right]^2 }.
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the LogLogistic distribution
     \item[x0] location parameter $x_0$
@@ -1756,7 +1756,7 @@ y(x) &= A \frac{ \left(\frac{x}{x_0}\right)^{-1/\sigma} } { x\sigma\left[ 1+\lef
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $\sigma > 0$
   \item Default (size) distribution: Monodisperse
@@ -1789,7 +1789,7 @@ For $\left(x \geq x_0-\frac{\sigma\gamma}{\gamma^2-1} \wedge \gamma < 1\right)
 \vee \left(x \leq x_0-\frac{\sigma\gamma}{\gamma^2-1} \wedge \gamma > 1\right)$ the function returns $c_0$.
 \vspace{2mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the LogLogistic distribution
     \item[x0] location parameter $x_0$
@@ -1798,7 +1798,7 @@ For $\left(x \geq x_0-\frac{\sigma\gamma}{\gamma^2-1} \wedge \gamma < 1\right)
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $\sigma > 0$
   \item the shape parameter needs to be larger than zero $\gamma > 0$
@@ -1829,7 +1829,7 @@ For $\left(x \geq x_0-\frac{\sigma\gamma}{\gamma^2-1} \wedge \gamma < 1\right)
 \vee \left(x \leq x_0-\frac{\sigma\gamma}{\gamma^2-1} \wedge \gamma > 1\right)$ the function returns $c_0$.
 \vspace{2mm}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the LogLogistic distribution
     \item[x0] location parameter $x_0$
@@ -1838,7 +1838,7 @@ For $\left(x \geq x_0-\frac{\sigma\gamma}{\gamma^2-1} \wedge \gamma < 1\right)
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $\sigma > 0$
   \item the shape parameter needs to be larger than zero $\gamma > 0$
@@ -1913,7 +1913,7 @@ y(x) &=
 \end{cases}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the LogNormal distribution
     \item[mu] location parameter $\mu$
@@ -1922,7 +1922,7 @@ y(x) &=
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $\sigma > 0$
   \item the location parameter needs to be larger than the shift parameter $\mu > x_0$
@@ -1950,7 +1950,7 @@ y(x) &=
 \end{cases}
 \end{align}
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the LogNormal distribution
     \item[mu] location parameter $\mu$
@@ -1959,7 +1959,7 @@ y(x) &=
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item the width parameter needs to be larger than zero $\sigma > 0$
   \item the location parameter needs to be larger than the shift parameter $\mu > x_0$
@@ -2474,7 +2474,7 @@ V_\text{Amplitude}(x\vert A,\sigma,\gamma)
 \end{equation}
 ~\\
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[ampl.] amplitude $A$ of the Voigt peak
     \item[center] location parameter (mode) $x_c$
@@ -2483,7 +2483,7 @@ V_\text{Amplitude}(x\vert A,\sigma,\gamma)
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The Doppler (Gaussian) width parameter needs to be larger than 0 $\sigma>0$.
   \item The Lorentzian width parameter needs to be larger than 0 $\gamma>0$.
@@ -2513,7 +2513,7 @@ V_\text{Area}(x\vert A,\sigma,\gamma)
 \end{equation}
 ~\\
 
-\textbf{Required parameters:}
+\underline{Required parameters:}
 \begin{description}
     \item[area] area $A$ of the Voigt peak
     \item[center] location parameter (mode) $x_c$
@@ -2522,7 +2522,7 @@ V_\text{Area}(x\vert A,\sigma,\gamma)
     \item[backgr] offset $c_0$
 \end{description}
 
-\textbf{Note}
+\underline{Note}
 \begin{itemize}
   \item The Doppler (Gaussian) width parameter needs to be larger than 0 $\sigma>0$.
   \item The Lorentzian width parameter needs to be larger than 0 $\gamma>0$.

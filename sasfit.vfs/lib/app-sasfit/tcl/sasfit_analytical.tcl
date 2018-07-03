@@ -9582,15 +9582,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 	       {{partly aligned CylShell} Delta} \
 		 Torus \
 		}} \ 
-{anisotropic "anisotropic obj." {{planar "Pcs(Q) for planar obj." { \
-							   {Pcs:TwoInfinitelyThinPlates Delta} \ 
-							   {Pcs:LayeredCentroSymmetricXS Delta} \
-							   {Pcs:BiLayerGauss Delta} \ 
-							   {Pcs:Plate+Chains(RW) Delta}} } \ 
-			 {cylindrical "Pcs(Q) for cylindrical obj." {{Pcs:homogeneousCyl Delta} \
-								     {Pcs:ellCylSh Delta} \
-								    }} \
-			}} \ 
 {planar "planar obj." {{homogenousXS Delta} \
 	       {SphSh+SD+homoXS Delta} \
 	       {EllSh+SD+homoXS Delta} \
@@ -9600,8 +9591,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 	       {TwoInfinitelyThinPlates Delta} \
 	       {LayeredCentroSymmetricXS Delta} \ 
 	       {BiLayerGauss Delta}}} \ 
-{shear "sheared objects" {ShearedCylinder \
-		  ShearedCylGauss}} \ 
 {magnetic "magnetic objects" {MagneticShellPsi \
 		      MagneticShellAniso \
 		      MagneticShellCrossTerm \

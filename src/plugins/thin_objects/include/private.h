@@ -31,7 +31,7 @@
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_anisotropic_objects.h"
+#include "sasfit_thin_objects.h"
 
 //
 // add local defines here:
@@ -82,7 +82,7 @@ typedef struct
 
 #define ALPHA   param->p[MAXPAR-11]
 #define CLB		param->p[MAXPAR-12]
-#define	N	param->p[MAXPAR-13]
+#define	N	    param->p[MAXPAR-13]
 
 scalar fRg2(scalar, scalar);
 scalar falpha2(scalar, scalar);

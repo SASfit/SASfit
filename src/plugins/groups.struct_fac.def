@@ -179,17 +179,17 @@
  
  
 /** 
- * \defgroup sq_plugins_anisotropic anisotropic obj.
+ * \defgroup sq_plugins_thin_objects thin obj.
  * \ingroup sq_plugins
  *
- * This group contains shape factors of very anisotropic opjects like local planar and local cylindrical objects.
+ * This group contains shape factors of very thin objects like local planar and local cylindrical objects.
  *
- * \modname{sq_plugins_anisotropic}
+ * \modname{sq_plugins_thin_objects}
  */
  
  /** 
  * \defgroup sq_plugins_pprimelocalplanar P'(Q): local planar obj.
- * \ingroup sq_plugins_anisotropic
+ * \ingroup sq_plugins_thin_objects
  *
  * This group contains shape factors P'(Q) for different of local planar obj.
  *
@@ -198,7 +198,7 @@
  
  /** 
  * \defgroup sq_plugins_pprimelocalcylindrical P'(Q): local cylindrical obj.
- * \ingroup sq_plugins_anisotropic
+ * \ingroup sq_plugins_thin_objects
  *
  * This group contains shape factors P'(Q) for different of local cylindrical obj.
  *

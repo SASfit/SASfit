@@ -3,31 +3,31 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#ifndef SASFIT_PLUGIN_ANISOTROPIC_OBJECTS_H
-#define SASFIT_PLUGIN_ANISOTROPIC_OBJECTS_H
+#ifndef SASFIT_PLUGIN_THIN_OBJECTS_H
+#define SASFIT_PLUGIN_THIN_OBJECTS_H
 
 #include <sasfit_common_shared_exports.h>
 
 /**
- * \file sasfit_anisotropic_objects.h
- * Public available functions and descriptions of the anisotropic_objects plugin.
+ * \file sasfit_thin_objects.h
+ * Public available functions and descriptions of the thin_objects plugin.
  */
 
 /**
- * \def sasfit_anisotropic_objects_DLLEXP
+ * \def sasfit_thin_objects_DLLEXP
  * \copydoc sasfit_common_DLLEXP
  */
 
 // adjust the project name below
 // *_EXPORTS is set by cmake if build as shared library
-#if defined(sasfit_anisotropic_objects_EXPORTS)
-	#ifdef sasfit_anisotropic_objects_DLLEXP
-	#undef sasfit_anisotropic_objects_DLLEXP
+#if defined(sasfit_thin_objects_EXPORTS)
+	#ifdef sasfit_thin_objects_DLLEXP
+	#undef sasfit_thin_objects_DLLEXP
 	#endif
-	#define sasfit_anisotropic_objects_DLLEXP SASFIT_LIB_EXPORT
-#elif !defined(sasfit_anisotropic_objects_DLLEXP)
+	#define sasfit_thin_objects_DLLEXP SASFIT_LIB_EXPORT
+#elif !defined(sasfit_thin_objects_DLLEXP)
 	// is set somewhere else for export as non-plugin
-	#define sasfit_anisotropic_objects_DLLEXP SASFIT_LIB_IMPORT
+	#define sasfit_thin_objects_DLLEXP SASFIT_LIB_IMPORT
 #endif
 
 // general information about the form factor here
@@ -78,23 +78,23 @@
 /**
  * \ingroup ff_disc_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_disc_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_disc_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_disc_sd_homoxs ################ */
 
 /* ################ start ff_ellsh_sd_homoxs ################ */
@@ -139,23 +139,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_v(scalar q, sa
 /**
  * \ingroup ff_ellsh_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellsh_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellsh_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellsh_sd_homoxs ################ */
 
 /* ################ start ff_cylsh_sd_homoxs ################ */
@@ -200,23 +200,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_homoxs_v(scalar q, s
 /**
  * \ingroup ff_cylsh_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_cylsh_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_cylsh_sd_homoxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_cylsh_sd_homoxs ################ */
 
 /* ################ start ff_disc_sd_bilayergauss ################ */
@@ -267,23 +267,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_v(scalar q, s
 /**
  * \ingroup ff_disc_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_disc_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_disc_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_disc_sd_bilayergauss ################ */
 
 /* ################ start ff_ellsh_sd_bilayergauss ################ */
@@ -334,23 +334,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_v(scalar
 /**
  * \ingroup ff_ellsh_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellsh_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellsh_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellsh_sd_bilayergauss ################ */
 
 /* ################ start ff_cylsh_sd_bilayergauss ################ */
@@ -374,23 +374,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss_v(scala
 /**
  * \ingroup ff_cylsh_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_cylsh_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_cylsh_sd_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_localplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_cylsh_sd_bilayergauss ################ */
 
 /* ################ start ff_pcs_homogeneousplate ################ */
@@ -429,23 +429,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_cylsh_sd_bilayergauss_v(scala
 /**
  * \ingroup ff_pcs_homogeneousplate
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_homogeneousplate
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_homogeneousplate
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_homogeneousplate ################ */
 
 
@@ -494,23 +494,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneousplate_v(scalar
 /**
  * \ingroup ff_pcs_plate_chains_rw_
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw_(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_plate_chains_rw_
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_plate_chains_rw_
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_plate_chains_rw_ ################ */
 
 /* ################ start ff_pcs_layeredcentrosymmetricxs ################ */
@@ -552,23 +552,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_plate_chains_rw__v(scalar
 /**
  * \ingroup ff_pcs_layeredcentrosymmetricxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_layeredcentrosymmetricxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_layeredcentrosymmetricxs
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_layeredcentrosymmetricxs ################ */
 
 /* ################ start ff_pcs_bilayergauss ################ */
@@ -607,23 +607,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_layeredcentrosymmetricxs_
 /**
  * \ingroup ff_pcs_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_bilayergauss
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_bilayergauss ################ */
 
 /* ################ start ff_pcs_twoinfinitelythinlayers ################ */
@@ -650,23 +650,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_bilayergauss_v(scalar q, 
 /**
  * \ingroup ff_pcs_twoinfinitelythinlayers
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_twoinfinitelythinlayers
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_twoinfinitelythinlayers
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_twoinfinitelythinlayers ################ */
 
 /* ################ start sq_p__q___thin_disc ################ */
@@ -695,23 +695,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_twoinfinitelythinlayers_v
 /**
  * \ingroup sq_p__q___thin_disc
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_disc
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_disc
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___thin_disc ################ */
 
 /* ################ start sq_p__q___thin_spherical_shell ################ */
@@ -740,23 +740,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_disc_v(scalar q, 
 /**
  * \ingroup sq_p__q___thin_spherical_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_spherical_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_spherical_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___thin_spherical_shell ################ */
 
 /* ################ start sq_p__q___thin_ellipsoidal_shell ################ */
@@ -785,23 +785,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_v
 /**
  * \ingroup sq_p__q___thin_ellipsoidal_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins_pprimelocalplanar
+ * \sa sasfit_thin_objects.h, sq_plugins_pprimelocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_ellipsoidal_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins_pprimelocalplanar
+ * \sa sasfit_thin_objects.h, sq_plugins_pprimelocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_ellipsoidal_shell
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins_pprimelocalplanar
+ * \sa sasfit_thin_objects.h, sq_plugins_pprimelocalplanar
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___thin_ellipsoidal_shell ################ */
 
 /* ################ start sq_p__q___thin_hollow_cylinder ################ */
@@ -833,23 +833,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_ellipsoidal_shell
 /**
  * \ingroup sq_p__q___thin_hollow_cylinder
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_hollow_cylinder
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___thin_hollow_cylinder
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___thin_hollow_cylinder ################ */
 
 /* ################ start sq_p__q___rod ################ */
@@ -878,23 +878,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___thin_hollow_cylinder_v
 /**
  * \ingroup sq_p__q___rod
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins, sq_plugins_pprimelocalcylindrical
+ * \sa sasfit_thin_objects.h, sq_plugins, sq_plugins_pprimelocalcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___rod(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___rod(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___rod
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___rod_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___rod_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___rod
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___rod_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___rod_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___rod ################ */
 
 /* ################ start sq_p__q___worm_ps1_ ################ */
@@ -923,23 +923,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___rod_v(scalar q, sasfit
 /**
  * \ingroup sq_p__q___worm_ps1_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1_(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___worm_ps1_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1__f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___worm_ps1_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1__v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___worm_ps1_ ################ */
 
 /* ################ start sq_p__q___worm_ps2_ ################ */
@@ -965,23 +965,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps1__v(scalar q, 
 /**
  * \ingroup sq_p__q___worm_ps2_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2_(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___worm_ps2_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2__f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___worm_ps2_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2__v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___worm_ps2_ ################ */
 
 /* ################ start sq_p__q___worm_ps3_ ################ */
@@ -1010,23 +1010,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps2__v(scalar q, 
 /**
  * \ingroup sq_p__q___worm_ps3_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___worm_ps3_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___worm_ps3_
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___worm_ps3_ ################ */
 
 /* ################ start sq_p__q___kholodenko_worm ################ */
@@ -1052,23 +1052,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__v(scalar q, 
 /**
  * \ingroup sq_p__q___kholodenko_worm
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___kholodenko_worm
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_p__q___kholodenko_worm
  *
- * \sa sasfit_anisotropic_objects.h, sq_plugins
+ * \sa sasfit_thin_objects.h, sq_plugins
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___kholodenko_worm ################ */
 
 /* ################ start ff_pcs_homogeneouscyl ################ */
@@ -1119,23 +1119,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scal
 /**
  * \ingroup ff_pcs_homogeneouscyl
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_homogeneouscyl
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_homogeneouscyl
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_homogeneouscyl ################ */
 
 
@@ -1187,23 +1187,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q
 /**
  * \ingroup ff_pcs_ellcylsh
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_ellcylsh
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_pcs_ellcylsh
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_pcslocalcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_ellcylsh ################ */
 
 /* ################ start ff_ellcylsh_sd_rod ################ */
@@ -1254,23 +1254,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasf
 /**
  * \ingroup ff_ellcylsh_sd_rod
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_rod
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_rod
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellcylsh_sd_rod ################ */
 
 
@@ -1322,23 +1322,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_v(scalar q, s
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps1
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps1
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps1
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellcylsh_sd_worm_ps1 ################ */
 
 /* ################ start ff_ellcylsh_sd_worm_ps2 ################ */
@@ -1389,23 +1389,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_v(scalar
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps2
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps2
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps2
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellcylsh_sd_worm_ps2 ################ */
 
 
@@ -1457,23 +1457,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_v(scalar
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps3
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps3
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_ps3
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellcylsh_sd_worm_ps3 ################ */
 
 
@@ -1526,23 +1526,23 @@ sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_v(scalar
 /**
  * \ingroup ff_ellcylsh_sd_worm_kholodenko
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_kholodenko
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_ellcylsh_sd_worm_kholodenko
  *
- * \sa sasfit_anisotropic_objects.h, ff_plugins_localcylindrical
+ * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_anisotropic_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_v(scalar q, sasfit_param * p, int dist);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellcylsh_sd_worm_kholodenko ################ */
 
 #endif // this file

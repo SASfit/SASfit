@@ -18,15 +18,13 @@
 #define SIGMA_R	fabs(param->p[2])
 #define SIGMA_H	fabs(param->p[3])
 
-#define Q		param->p[MAXPAR-1]
 #define	R		param->p[MAXPAR-2]
 #define	H		param->p[MAXPAR-3]
-#define ALPHA	param->p[MAXPAR-4]
 scalar sasfit_ff_cylsh_sd_bilayergauss(scalar q, sasfit_param * param)
 {
 	scalar Pcs, Pprime;
 	sasfit_param subParam;
-    
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);

@@ -21,8 +21,8 @@ scalar thincentrosymmetriclayers_core(scalar x, sasfit_param *param)
 	SASFIT_ASSERT_PTR(param);
 
 
-	Pcs = gsl_pow_2(cos(Q*x/2));
-
+	Pcs = gsl_pow_int(cos(Q*x/2),lround(P));
+    if (SIGMA_T == 0.0) return Pcs;
 	sasfit_init_param( &subParam );
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_T;
@@ -36,58 +36,44 @@ scalar thincentrosymmetriclayers_core(scalar x, sasfit_param *param)
 }
 
 
-scalar thincentrosymmetriclayers(scalar q, sasfit_param * param)
-{
-	scalar tstart = 0.0, tend = 0.0;
-	static scalar Q_old = -1.;
-	static scalar T0_old = -1.;
-	static scalar sigma_T_old = -1.;
-	static scalar Pcs = 1.;
-
-	SASFIT_ASSERT_PTR(param);
-
-	Q = q;
-
-	if ((Q != Q_old) || (T != T0_old) || (SIGMA_T != sigma_T_old)) {
-		if (SIGMA_T == 0.0) {
-			Pcs = gsl_pow_2(cos(q*T/2));
-		} else {
-			find_LogNorm_int_range(2,T,SIGMA_T,&tstart,&tend,param);
-			Pcs 	= sasfit_integrate(tstart, tend, &thincentrosymmetriclayers_core, param);
-		}
-		Q_old	= Q;
-		T0_old	= T;
-		sigma_T_old = SIGMA_T;
-	}
-
-	return Pcs;
-}
-
 scalar sasfit_ff_pcs_twoinfinitelythinlayers(scalar q, sasfit_param * param)
 {
+    scalar Pcs, tstart, tend;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T); // modify condition to your needs
 
+	Q = q;
+    P = 2;
+
 	// insert your code here
-	if (SIGMA_T == 0) {
-		return gsl_pow_2(cos(q*T));
-	} else {
-		return thincentrosymmetriclayers(q,param);
-	}
+    if (SIGMA_T == 0.0) {
+        Pcs = thincentrosymmetriclayers_core(T,param);
+    } else {
+        find_LogNorm_int_range(2,T,SIGMA_T,&tstart,&tend,param);
+        Pcs 	= sasfit_integrate(tstart, tend, &thincentrosymmetriclayers_core, param);
+    }
+
+	return Pcs;
 }
 
 scalar sasfit_ff_pcs_twoinfinitelythinlayers_f(scalar q, sasfit_param * param)
 {
+    scalar Pcs, tstart, tend;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	if (SIGMA_T == 0) {
-		return (cos(q*T));
-	} else {
-		return thincentrosymmetriclayers(q,param);
-	}
+	Q = q;
+    P = 1;
+    if (SIGMA_T == 0.0) {
+        Pcs = thincentrosymmetriclayers_core(T,param);
+    } else {
+        find_LogNorm_int_range(2,T,SIGMA_T,&tstart,&tend,param);
+        Pcs 	= sasfit_integrate(tstart, tend, &thincentrosymmetriclayers_core, param);
+    }
+
+	return Pcs;
 }
 
 scalar sasfit_ff_pcs_twoinfinitelythinlayers_v(scalar q, sasfit_param * param, int dist)

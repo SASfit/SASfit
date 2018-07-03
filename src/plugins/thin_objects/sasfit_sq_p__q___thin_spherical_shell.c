@@ -27,7 +27,7 @@ scalar ThinSphericalShell_core(scalar x, sasfit_param * param)
 		IP = gsl_pow_2(4.0*M_PI*x*sin(Q*x)/(Q));
 	}
 
-	if (SIGMA == 0) return P;
+	if (SIGMA <= 1E-6 || x==0.0) return IP;
 
         //LNdistr = LogNorm(x, 1, sigma, p, R0);
 	subParam.p[0] = 1.0;
@@ -37,6 +37,10 @@ scalar ThinSphericalShell_core(scalar x, sasfit_param * param)
 
 	LNdistr = sasfit_sd_LogNorm(x, &subParam);
 	SASFIT_CHECK_SUB_ERR(param, subParam);
+    if ( subParam.errStatus != FALSE ) {
+        sasfit_out("LogNormError: SIGMA:%lf\n",SIGMA);
+        return 1;
+    }
 
 	return LNdistr*IP;
 }
@@ -53,7 +57,7 @@ scalar sasfit_sq_p__q___thin_spherical_shell(scalar q, sasfit_param * param)
 
 	Q = q;
 	if (SIGMA <= 1E-6 || R==0.0) return ThinSphericalShell_core(R,param);
-	find_LogNorm_int_range(2,R,SIGMA,&Rstart,&Rend,param);
+	find_LogNorm_int_range(4,R,SIGMA,&Rstart,&Rend,param);
 	return sasfit_integrate(Rstart,Rend,&ThinSphericalShell_core,param);
 
 }

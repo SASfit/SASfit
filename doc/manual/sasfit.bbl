@@ -242,6 +242,13 @@ I.~Charpentier and N.~Jakse.
 \newblock {\em The Journal of Chemical Physics}, 114(5):2284--2292, feb 2001.
 \newblock \doi{10.1063/1.1332808}.
 
+\bibitem{Chen2006}
+W.-R. Chen, P.~D. Butler, and L.~J. Magid.
+\newblock Incorporating intermicellar interactions in the fitting of {SANS}
+  data from cationic wormlike micelles.
+\newblock {\em Langmuir}, 22(15):6539--6548, jul 2006.
+\newblock \doi{10.1021/la0530440}.
+
 \bibitem{Chihara1973}
 J.~Chihara.
 \newblock Integral euqations for fluids with long-range and short-range
@@ -283,6 +290,13 @@ G.~Damaschun, H.-V. Pürschel, and G.~Sommer.
   R\"ontgen-Kleinwinkeldiagrammen mit Hilfe von Gleichungssystemen}.
 \newblock {\em Acta Crystallographica Section A}, 25(6):708, nov 1969.
 \newblock \doi{10.1107/s0567739469001586}.
+
+\bibitem{Daniels1952}
+H.~E. Daniels.
+\newblock {XXI}.{\textemdash}the statistical theory of stiff chains.
+\newblock {\em Proceedings of the Royal Society of Edinburgh. Section A.
+  Mathematical and Physical Sciences}, 63(03):290--311, 1952.
+\newblock \doi{10.1017/s0080454100007160}.
 
 \bibitem{DaoudCotton82}
 M.~Daoud and J.~Cotton.
@@ -945,7 +959,7 @@ M.~Y. Lin, H.~M. Lindsay, D.~A. Weitz, R.~Klein, R.~C. Ball, and P.~Meakin.
 
 \bibitem{Liu2001}
 Y.~Liu, J.~Lin, G.~Huang, Y.~Guo, and C.~Duan.
-\newblock Simple empirical analytical approximation to the voigt profile.
+\newblock Simple emical analytical approximation to the voigt profile.
 \newblock {\em Journal of the Optical Society of America B}, 18(5):666, may
   2001.
 \newblock \doi{10.1364/josab.18.000666}.
@@ -1105,7 +1119,7 @@ O.~D. of~crystallography.
 
 \bibitem{Olivero1977}
 J.~Olivero and R.~Longbothum.
-\newblock Empirical fits to the voigt line width: A brief review.
+\newblock Emical fits to the voigt line width: A brief review.
 \newblock {\em Journal of Quantitative Spectroscopy and Radiative Transfer},
   17(2):233--236, feb 1977.
 \newblock \doi{10.1016/0022-4073(77)90161-3}.
@@ -1372,6 +1386,12 @@ R.~V. Sharma and K.~C. Sharma.
 \newblock {\em Physica A: Statistical Mechanics and its Applications},
   89(1):213 -- 218, oct 1977.
 \newblock \doi{10.1016/0378-4371(77)90151-0}.
+
+\bibitem{Sharp1968}
+P.~Sharp and V.~A. Bloomfield.
+\newblock Light scattering from wormlike chains with excluded volume effects.
+\newblock {\em Biopolymers}, 6(8):1201--1211, aug 1968.
+\newblock \doi{10.1002/bip.1968.360060814}.
 
 \bibitem{Sjoberg1974}
 B.~Sjöberg.

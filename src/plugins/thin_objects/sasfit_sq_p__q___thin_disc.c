@@ -32,7 +32,7 @@ scalar disc_core(scalar x, sasfit_param * param)
 	}
 	*/
 	IP= 2.0*gsl_pow_2(M_PI*x/Q)*(1.0-gsl_sf_hyperg_0F1(2,-0.25*gsl_pow_2(2*u)));
-	if (SIGMA == 0) return P;
+	if (SIGMA == 0) return IP;
 
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA;

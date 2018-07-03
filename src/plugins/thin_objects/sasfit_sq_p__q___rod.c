@@ -11,8 +11,6 @@
 #define DUMMY	param->p[1]
 #define SIGMA_L	fabs(param->p[2])
 
-#define Q		param->p[MAXPAR-1]
-
 scalar rod_core(scalar x, sasfit_param *param)
 {
 	scalar u,u2;

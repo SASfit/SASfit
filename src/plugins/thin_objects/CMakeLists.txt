@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 # the project name
-set(PRJ_NAME sasfit_anisotropic_objects)
+set(PRJ_NAME sasfit_thin_objects)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
@@ -41,7 +41,7 @@ set(SOURCE_${PRJ_NAME}
 	interface.c
 )
 
-# path to 'Find*.cmake' files in sasfit package, 
+# path to 'Find*.cmake' files in sasfit package,
 # relative to the location of this file
 set(REL_CMAKE_MODULE_PATH ../../cmake)
 

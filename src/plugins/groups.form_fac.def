@@ -142,12 +142,12 @@
  */
  
 /** 
- * \defgroup ff_plugins_anisotropic anisotropic obj.
+ * \defgroup ff_plugins_thin_objects thin obj.
  * \ingroup ff_plugins
  *
- * This group contains form factors of very anisotropic shapes like local planar and local cylindrical objects.
+ * This group contains form factors of very thin shapes like local planar and local cylindrical objects.
  *
- * \modname{ff_plugins_anisotropic}
+ * \modname{ff_plugins_thin_objects}
  */
 
  
@@ -180,7 +180,7 @@
  
 /** 
  * \defgroup ff_plugins_localplanar local planar obj.
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_thin_objects
  *
  * This group contains form factors for different of local planar obj.
  *
@@ -189,7 +189,7 @@
  
 /** 
  * \defgroup ff_plugins_localcylindrical local cylindrical obj. 
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_thin_objects
  *
  * This group contains form factors for different of local cylindrical obj.
  *
@@ -198,7 +198,7 @@
  
 /** 
  * \defgroup ff_plugins_pcslocalplanar Pcs(Q) for planar obj.
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_thin_objects
  *
  * This group contains cross section factors for different of of local planar obj.
  *
@@ -207,7 +207,7 @@
  
 /** 
  * \defgroup ff_plugins_pcslocalcylindrical Pcs(Q) for cylindrical obj. 
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_thin_objects
  *
  * This group contains cross section factors for different of local cylindrical obj.
  *
@@ -216,7 +216,7 @@
 
  /** 
  * \defgroup ff_plugins_polyhedra polyhedra 
- * \ingroup ff_plugins_anisotropic
+ * \ingroup ff_plugins_thin_objects
  *
  * This group contains cross section factors for polyhedra
  *

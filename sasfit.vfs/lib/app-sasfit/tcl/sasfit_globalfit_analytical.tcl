@@ -3571,15 +3571,6 @@ proc analyticalGlobalSDCmd {simorfit
 			       {{partly aligned CylShell} Delta} \
 				 Torus \
 				}} \ 
-	{anisotropic "anisotropic obj." {{planar "Pcs(Q) for planar obj." { \
-									   {Pcs:TwoInfinitelyThinPlates Delta} \ 
-									   {Pcs:LayeredCentroSymmetricXS Delta} \
-									   {Pcs:BiLayerGauss Delta} \ 
-									   {Pcs:Plate+Chains(RW) Delta}} } \ 
-					 {cylindrical "Pcs(Q) for cylindrical obj." {{Pcs:homogeneousCyl Delta} \
-										     {Pcs:ellCylSh Delta} \
-										    }} \
-					}} \ 
 	{planar "planar obj." {{homogenousXS Delta} \
 			       {SphSh+SD+homoXS Delta} \
 			       {EllSh+SD+homoXS Delta} \
@@ -3589,8 +3580,6 @@ proc analyticalGlobalSDCmd {simorfit
 			       {TwoInfinitelyThinPlates Delta} \
 			       {LayeredCentroSymmetricXS Delta} \ 
 			       {BiLayerGauss Delta}}} \ 
-	{shear "sheared objects" {ShearedCylinder \
-				  ShearedCylGauss}} \ 
 	{magnetic "magnetic objects" {MagneticShellPsi \
 				      MagneticShellAniso \
 				      MagneticShellCrossTerm \
