@@ -52,6 +52,16 @@
  */
 
 /** 
+ * \defgroup sq_plugins_hard_sphere Hard Sphere 2D/3D 
+ * \ingroup sq_plugins
+ *
+ * This group contains structure factors for hard sphere potentials in 2D and 3D
+ *
+ * \modname{sq_plugins_hard_sphere}
+ */
+
+ 
+/** 
  * \defgroup sq_plugins_oz_solver SQ calculated by OZ solver 
  * \ingroup sq_plugins
  *

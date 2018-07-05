@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sq__d_hard_disks__rosenfeld_ ################ */
-/** 
+/**
  * \defgroup sq__d_hard_disks__rosenfeld_ 2D hard disks (Rosenfeld)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of 2D hard disks (Rosenfeld) function\>
  *
@@ -59,29 +59,29 @@
 /**
  * \ingroup sq__d_hard_disks__rosenfeld_
  *
- * \sa sasfit_two_dim_fluid.h, sq_plugins_devel
+ * \sa sasfit_two_dim_fluid.h, sq_plugins_hard_sphere
  */
 sasfit_two_dim_fluid_DLLEXP scalar sasfit_sq__d_hard_disks__rosenfeld_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq__d_hard_disks__rosenfeld_
  *
- * \sa sasfit_two_dim_fluid.h, sq_plugins_devel
+ * \sa sasfit_two_dim_fluid.h, sq_plugins_hard_sphere
  */
 sasfit_two_dim_fluid_DLLEXP scalar sasfit_sq__d_hard_disks__rosenfeld__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq__d_hard_disks__rosenfeld_
  *
- * \sa sasfit_two_dim_fluid.h, sq_plugins_devel
+ * \sa sasfit_two_dim_fluid.h, sq_plugins_hard_sphere
  */
 sasfit_two_dim_fluid_DLLEXP scalar sasfit_sq__d_hard_disks__rosenfeld__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq__d_hard_disks__rosenfeld_ ################ */
 
 /* ################ start sq__d_hard_disks__guo_ ################ */
-/** 
+/**
  * \defgroup sq__d_hard_disks__guo_ 2D hard disks (Guo)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of 2D hard disks (Guo) function\>
  *
@@ -101,21 +101,21 @@ sasfit_two_dim_fluid_DLLEXP scalar sasfit_sq__d_hard_disks__rosenfeld__v(scalar 
 /**
  * \ingroup sq__d_hard_disks__guo_
  *
- * \sa sasfit_two_dim_fluid.h, sq_plugins_devel
+ * \sa sasfit_two_dim_fluid.h, sq_plugins_hard_sphere
  */
 sasfit_two_dim_fluid_DLLEXP scalar sasfit_sq__d_hard_disks__guo_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq__d_hard_disks__guo_
  *
- * \sa sasfit_two_dim_fluid.h, sq_plugins_devel
+ * \sa sasfit_two_dim_fluid.h, sq_plugins_hard_sphere
  */
 sasfit_two_dim_fluid_DLLEXP scalar sasfit_sq__d_hard_disks__guo__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq__d_hard_disks__guo_
  *
- * \sa sasfit_two_dim_fluid.h, sq_plugins_devel
+ * \sa sasfit_two_dim_fluid.h, sq_plugins_hard_sphere
  */
 sasfit_two_dim_fluid_DLLEXP scalar sasfit_sq__d_hard_disks__guo__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq__d_hard_disks__guo_ ################ */

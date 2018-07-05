@@ -208,7 +208,60 @@ S^\mathrm{GH}(Q,\sigma,\eta) &= S^\mathrm{PY}(Q,\sigma_0,\eta_0) + \frac{6\eta}{
 \hfill
 \subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{GH}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResGH.png}} \\
 \caption{Comparison between analytical PY solution of hard sphere static structure factor and thermodynamically consistent correction as described by Henderson and Grundke}
-\label{fig:SQ:LHR}
+\label{fig:SQ:GH}
+\end{figure}
+
+\clearpage
+\subsection{Hard Sphere (PY)} ~\\
+
+\noindent This is the classical analytical solution of the Percus-Yevick equations \cite{Percus1958,Wertheim1963,Vrij1979} for a hard sphere potential
+\begin{equation}
+U(r) =
+ \begin{cases}
+      \infty    & \text{for} \quad 0<r<2R \\
+      0         & \text{for} \quad r>2R
+   \end{cases}
+\end{equation}
+The structure factor $S^\mathrm{PY}(Q)$ can be calculated 
+\begin{subequations}
+\begin{align}
+\alpha &= \frac{\left(1+2\eta\right)^2}{\left(1-\eta\right)^4} \\
+\beta  &= -6 \eta \frac{\left(1 +\eta/2 \right)^2}{\left(1-\eta\right)^4} \\
+\gamma &= \frac{\eta \alpha}{2}  \\
+A &= 2 R Q
+\end{align}
+
+\begin{align}
+G(\eta,A) =  & \, \alpha \, \frac{\sin A -A \cos A }{A^2} + \beta \, \frac{2 A \sin A +(2-A^2) \cos A -2}{A^3} + \nonumber \\
+    & \, \gamma  \, \frac{-A^4 \cos A + 4\left[(3A^2-6)\cos A+(A^3-6A)\sin A+6\right]}{A^5}
+\end{align}
+\begin{align}
+S^\mathrm{PY}(Q,R,\eta)  = & \cfrac{1}{1+24 \eta
+\cfrac{G(\eta,A)}{A}}
+\end{align}
+\end{subequations}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Hard Sphere (PY)}:}
+\begin{description}
+    \item[\texttt{R}]  radius $R$
+    \item[\texttt{eta}] volume fraction $\eta$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+\item The structure factor accepts volume fractions between $\eta \in [0,1]$.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../images/structure_factor/HardSphere/SQPY.png}
+\end{center}
+\caption{Structure factor $S^\mathrm{PY}(Q)$ for a hard sphere interaction potential for the different volume fractions $\eta$.}
+\label{fig:SQPYHardSphere}
 \end{figure}
 
 \clearpage

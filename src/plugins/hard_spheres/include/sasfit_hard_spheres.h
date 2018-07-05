@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sq_hard_sphere__lhr_ ################ */
-/** 
+/**
  * \defgroup sq_hard_sphere__lhr_ Hard Sphere (LHR)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of Hard Sphere (LHR) function\>
  *
@@ -59,29 +59,29 @@
 /**
  * \ingroup sq_hard_sphere__lhr_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__lhr_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__lhr_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__lhr__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__lhr_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__lhr__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_hard_sphere__lhr_ ################ */
 
 /* ################ start sq_hard_sphere__mv_ ################ */
-/** 
+/**
  * \defgroup sq_hard_sphere__mv_ Hard Sphere (MV)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of Hard Sphere (MV) function\>
  *
@@ -101,29 +101,29 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__lhr__v(scalar q, sasfit
 /**
  * \ingroup sq_hard_sphere__mv_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__mv_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__mv_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__mv__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__mv_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__mv__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_hard_sphere__mv_ ################ */
 
 /* ################ start sq_hard_sphere__4_3_ ################ */
-/** 
+/**
  * \defgroup sq_hard_sphere__4_3_ Hard Sphere (4,3)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of Hard Sphere (4,3) function\>
  *
@@ -143,29 +143,29 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__mv__v(scalar q, sasfit_
 /**
  * \ingroup sq_hard_sphere__4_3_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__4_3_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__4_3_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__4_3__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__4_3_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__4_3__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_hard_sphere__4_3_ ################ */
 
 /* ################ start sq_hard_sphere__cs_ ################ */
-/** 
+/**
  * \defgroup sq_hard_sphere__cs_ Hard Sphere (CS)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of Hard Sphere (CS) function\>
  *
@@ -185,29 +185,29 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__4_3__v(scalar q, sasfit
 /**
  * \ingroup sq_hard_sphere__cs_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__cs_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__cs_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__cs__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__cs_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__cs__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_hard_sphere__cs_ ################ */
 
 /* ################ start sq_hard_sphere__gh_ ################ */
-/** 
+/**
  * \defgroup sq_hard_sphere__gh_ Hard Sphere (GH)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of Hard Sphere (GH) function\>
  *
@@ -227,29 +227,29 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__cs__v(scalar q, sasfit_
 /**
  * \ingroup sq_hard_sphere__gh_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__gh_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__gh_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__gh__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__gh_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__gh__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_hard_sphere__gh_ ################ */
 
 /* ################ start sq_hard_sphere__py_ ################ */
-/** 
+/**
  * \defgroup sq_hard_sphere__py_ Hard Sphere (PY)
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of Hard Sphere (PY) function\>
  *
@@ -269,21 +269,21 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__gh__v(scalar q, sasfit_
 /**
  * \ingroup sq_hard_sphere__py_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__py_(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__py_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__py__f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_hard_sphere__py_
  *
- * \sa sasfit_hard_spheres.h, sq_plugins_devel
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
  */
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__py__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_hard_sphere__py_ ################ */
