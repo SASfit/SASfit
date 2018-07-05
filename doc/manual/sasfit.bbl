@@ -235,6 +235,12 @@ A.~Caille.
 \newblock {\em Comptes Rendus des Seances de l'Academie des Sciences, Serie B:
   Sciences Physiques}, 274:891--893, 1972.
 
+\bibitem{Carnahan1969}
+N.~F. Carnahan and K.~E. Starling.
+\newblock Equation of state for nonattracting rigid spheres.
+\newblock {\em The Journal of Chemical Physics}, 51(2):635--636, jul 1969.
+\newblock \doi{10.1063/1.1672048}.
+
 \bibitem{Charpentier2001}
 I.~Charpentier and N.~Jakse.
 \newblock Exact numerical derivatives of the pair-correlation function of
@@ -311,6 +317,13 @@ W.~I.~F. David.
   as a voigt function.
 \newblock {\em Journal of Applied Crystallography}, 19(1):63--64, feb 1986.
 \newblock \doi{10.1107/s0021889886089999}.
+
+\bibitem{Haro2004}
+M.~L. de~Haro and M.~Robles.
+\newblock The structure factor and equation of state of hard-sphere fluids.
+\newblock {\em Journal of Physics: Condensed Matter}, 16(22):S2089--S2096, may
+  2004.
+\newblock \doi{10.1088/0953-8984/16/22/007}.
 
 \bibitem{scatt186}
 P.~Debye.
@@ -641,6 +654,12 @@ J.~B. Hayter and J.~Penfold.
   structure by small-angle neutron scattering.
 \newblock {\em The Journal of Physical Chemistry}, 88(20):4589--4593, sep 1984.
 \newblock \doi{10.1021/j150664a030}.
+
+\bibitem{Henderson1975}
+D.~Henderson and E.~W. Grundke.
+\newblock Direct correlation function: Hard sphere fluid.
+\newblock {\em The Journal of Chemical Physics}, 63(2):601--607, jul 1975.
+\newblock \doi{10.1063/1.431378}.
 
 \bibitem{Hindmarsh2005}
 A.~C. Hindmarsh, P.~N. Brown, K.~E. Grant, S.~L. Lee, R.~Serban, D.~E.
@@ -999,6 +1018,12 @@ A.~G. Mailer, P.~S. Clegg, and P.~N. Pusey.
 \newblock {\em Journal of Physics: Condensed Matter}, 27(14):145102, mar 2015.
 \newblock \doi{10.1088/0953-8984/27/14/145102}.
 
+\bibitem{Malijevsky1999}
+A.~Malijevsk{\'{y}} and J.~Veverka.
+\newblock New equations of state for pure and binary hard-sphere fluids.
+\newblock {\em Physical Chemistry Chemical Physics}, 1(18):4267--4270, 1999.
+\newblock \doi{10.1039/a902831e}.
+
 \bibitem{Mann1953}
 W.~R. Mann.
 \newblock Mean value methods in iteration.
@@ -1301,6 +1326,20 @@ C.~Robertus, W.~H. Philipse, J.~G.~H. Joosten, and Y.~K. Levine.
 \newblock {\em The Journal of Chemical Physics}, 90(8):4482--4490, apr 1989.
 \newblock \doi{10.1063/1.456635}.
 
+\bibitem{Robles1997}
+M.~Robles and M.~L. de~Haro.
+\newblock On the contact values of the derivatives of the hard-sphere radial
+  distribution function.
+\newblock {\em The Journal of Chemical Physics}, 107(12):4648--4657, sep 1997.
+\newblock \doi{10.1063/1.474826}.
+
+\bibitem{Robles2003}
+M.~Robles and M.~L. de~Haro.
+\newblock On the liquid-glass transition line in monatomic lennard-jones
+  fluids.
+\newblock {\em Europhysics Letters ({EPL})}, 62(1):56--62, apr 2003.
+\newblock \doi{10.1209/epl/i2003-00362-7}.
+
 \bibitem{Rogers1984}
 F.~J. Rogers and D.~A. Young.
 \newblock New, thermodynamically consistent, integral equation for simple
@@ -1344,6 +1383,12 @@ Y.~Saad and M.~H. Schultz.
 \newblock {\em {SIAM} Journal on Scientific and Statistical Computing},
   7(3):856--869, jul 1986.
 \newblock \doi{10.1137/0907058}.
+
+\bibitem{Sanchez1994}
+I.~C. Sanchez.
+\newblock Virial coefficients and close-packing of hard spheres and disks.
+\newblock {\em The Journal of Chemical Physics}, 101(8):7003--7006, oct 1994.
+\newblock \doi{10.1063/1.468456}.
 
 \bibitem{Saraf1989}
 R.~F. Saraf.
@@ -1537,6 +1582,13 @@ H.~A. van~der Vorst.
   13(2):631--644, mar 1992.
 \newblock \doi{10.1137/0913035}.
 
+\bibitem{Rensburg1993}
+E.~J.~J. van Rensburg.
+\newblock Virial coefficients for hard discs and hard spheres.
+\newblock {\em Journal of Physics A: Mathematical and General},
+  26(19):4805--4818, oct 1993.
+\newblock \doi{10.1088/0305-4470/26/19/014}.
+
 \bibitem{Verlet1980}
 L.~Verlet.
 \newblock Integral equations for classical fluids.
@@ -1652,6 +1704,12 @@ T.~Yoshizaki and H.~Yamakawa.
 \newblock Scattering functions of wormlike and helical wormlike chains.
 \newblock {\em Macromolecules}, 13(6):1518--1525, nov 1980.
 \newblock \doi{10.1021/ma60078a030}.
+
+\bibitem{Yuste1996}
+S.~B. Yuste, M.~L. de~Haro, and A.~Santos.
+\newblock Structure of hard-sphere metastable fluids.
+\newblock {\em Physical Review E}, 53(5):4820--4826, may 1996.
+\newblock \doi{10.1103/physreve.53.4820}.
 
 \bibitem{Zerah1986}
 G.~Zerah and J.-P. Hansen.

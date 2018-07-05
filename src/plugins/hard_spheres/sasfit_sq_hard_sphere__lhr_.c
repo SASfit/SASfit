@@ -15,8 +15,8 @@ double Z_LHR(double volf, void * pam){
     ETA3=gsl_pow_3(volf);
     ETA4=gsl_pow_4(volf);
     ETA5=gsl_pow_5(volf);
-    return    (1 + 0.1535*volf - 0.42848*ETA2 - 2.7981*ETA3 - 0.31742*ETA4 - 0.1058*ETA5)
-            / (1 - 3.8464*volf + 4.9574*ETA2 - 2.1639*ETA3);
+    return    (1 + 0.153555*volf - 0.428476*ETA2 - 2.7987*ETA3 - 0.317417*ETA4 - 0.105806*ETA5)
+            / (1 - 3.84644*volf  + 4.9574*ETA2   - 2.16386*ETA3);
 }
 
 scalar sasfit_sq_hard_sphere__lhr_(scalar q, sasfit_param * param)

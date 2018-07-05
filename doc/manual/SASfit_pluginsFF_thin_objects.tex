@@ -1122,7 +1122,7 @@ For this version of the wormlike structure \cite{Pedersen96Macrom} parameterized
 S_\mathrm{PS2}(Q,L,l_B) &=
 \begin{cases}
     S_\mathrm{SB}(Q,L,l_B) f_1 + S_\mathrm{loc}(Q,L,1) (1-f_1) & \mbox{ for~}  n_b > 2 \\
-    S_\mathrm{Debye}(Q,Q^2\langle R_g^2\rangle_0) f_2 + S_\mathrm{loc}(Q,L,a_1) (1-f_2) & \mbox{ for~}  n_b \leq 2
+    S_\mathrm{Debye}(Q,Q^2\langle R_g^2\rangle_0) f_2 + S_\mathrm{loc}(Q,L,l_B,a_1) (1-f_2) & \mbox{ for~}  n_b \leq 2
 \end{cases}
 \end{align}
 with $\langle R_g^2\rangle_0 = Ll_B/6\left(1-\frac{3}{2 n_b}
@@ -1147,7 +1147,7 @@ R_G^2 &=Ll_B/6
 \end{align}
 and in the large $Q$ range
 \begin{align}
-S_\mathrm{loc}(Q,L,a) &= \frac{a}{LbQ^2} + \frac{\pi}{LQ}
+S_\mathrm{loc}(Q,L,l_B,a_1) &= \frac{a_1}{Ll_BQ^2} + \frac{\pi}{LQ}
 \end{align}
 The optimized values of the parameters $q_1,p_1, a_1, a_2, q_2$, and $ p_2$ are
 $q_1 = 5.53$, $p_1 = 5.33$, $a_1 = 0.0625$, $a_2 = 11.7$, $p_2 = 3.95$ and
@@ -1175,27 +1175,27 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \subsubsection{P'(Q): wormlike PS3} ~\\
 \label{plugin:Pprime4wormPS3}
 
-This version of the wormlike structure model originally from \cite{Pedersen96Macrom} is implemented following the suggestions for corrections given in \cite{Chen2006}. 
+This version of the wormlike structure model originally from \cite{Pedersen96Macrom} is implemented together with the suggestions for corrections given in \cite{Chen2006}.
 \begin{align}
 q_0 &=
 \begin{cases}
 3.1 & \mbox{for~} L>4l_B \\
-\max\left\{a_3 l_B/R_G,4\right\} & \mbox{for~} L\leq 4l_B \wedge \mbox{without excluded volume}\\
-\max\left\{a_3 l_B/R_G,3\right\} & \mbox{for~} L\leq 4l_B \wedge \mbox{with excluded volume}\\
-\end{cases} \\
+\max\left\{a_3 l_B/R_G,4\right\} & \mbox{for~} L\leq 4l_B \wedge \mbox{without excl. vol.}\\
+\max\left\{a_3 l_B/R_G,3\right\} & \mbox{for~} L\leq 4l_B \wedge \mbox{with excl. vol.}\\
+\end{cases}\\
 R_G^2 &=
 \begin{cases}
-\frac{Ll_B}{6} & \mbox{for~} L > 4l_B \wedge \mbox{without excluded volume} \\
-\frac{Ll_B}{6} f\left(\frac{L}{l_B}\right) & \mbox{for~} L > 4l_B \wedge \mbox{with excluded volume} \\
-\frac{Ll_B}{6} f\left(\frac{L}{l_B}\right)& \mbox{for~} L\leq 4l_B \wedge \mbox{without excluded volume}\\
-\frac{Ll_B}{6} f\left(\frac{L}{l_B}\right)\alpha^2\left(\frac{L}{l_B}\right) & \mbox{for~} L\leq 4l_B \wedge \mbox{with excluded volume}\\
+\frac{Ll_B}{6} & \mbox{for~} L > 4l_B \wedge \mbox{without excl. vol.} \\
+\frac{Ll_B}{6} f\left(\frac{L}{l_B}\right) & \mbox{for~} L > 4l_B \wedge \mbox{with excl. vol.} \\
+\frac{Ll_B}{6} f\left(\frac{L}{l_B}\right)& \mbox{for~} L\leq 4l_B \wedge \mbox{without excl. vol.}\\
+\frac{Ll_B}{6} f\left(\frac{L}{l_B}\right)\alpha^2\left(\frac{L}{l_B}\right) & \mbox{for~} L\leq 4l_B \wedge \mbox{with excl. vol.}\\
 \end{cases} \\
 f(x) &= 1-\frac{3}{2x}+\frac{3}{2\left(x\right)^2}-\frac{3}{4\left(x\right)^3}\left[1-\exp\left(-2x\right)\right]\\
 \alpha(x) &= \left(1+(x/3.12)^2+(x/8.67)^3\right)^{\epsilon/3} \\
 \epsilon&=0.170 \\
 C\left(\frac{L}{l_B}\right) &=
 \begin{cases}
-a_4/\left(\frac{L}{l_B}\right)^{p_3} & \mbox{for~} L > 10l_B \wedge \mbox{with excluded volume} \\
+a_4/\left(\frac{L}{l_B}\right)^{p_3} & \mbox{for~} L > 10l_B \wedge \mbox{with excl. vol.} \\
 1 & \mbox{ otherwise}\\
 \end{cases}
 \end{align}
@@ -1204,21 +1204,21 @@ with  $a_3=2.02$, $a_4=3.06$, and $p_3=0.44$.
 S(Q,L,l_B) &=
 \begin{cases}
 L^2 S_{\textrm{small~} Q}(Q,L,l_B)& \mbox{for~}  Ql_B<q_0 \\
-L^2 \left(\frac{a_1}{(Ql_B)^{p_1}}+\frac{a_2}{(Ql_B)^{p_2}}+\frac{\pi}{QL}\right))& \mbox{for~}  Ql_B\geq q_0  \\
+L^2 \left(\frac{a_1}{(Ql_B)^{p_1}}+\frac{a_2}{(Ql_B)^{p_2}}+\frac{\pi}{QL}\right)& \mbox{for~}  Ql_B\geq q_0  \\
 \end{cases}\\
 p_1 &=
 \begin{cases}
-4.95 & \mbox{for~} L > 4l_B \wedge \mbox{without excluded volume} \\
-5.13 & \mbox{for~} L \leq 4l_B \wedge \mbox{without excluded volume} \\
-4.12 & \mbox{for~} L > 4l_B \wedge \mbox{with excluded volume} \\
-5.36 & \mbox{for~} L \leq 4l_B \wedge \mbox{with excluded volume} \\
+4.95 & \mbox{for~} L > 4l_B \wedge \mbox{without excl. vol.} \\
+5.13 & \mbox{for~} L \leq 4l_B \wedge \mbox{without excl. vol.} \\
+4.12 & \mbox{for~} L > 4l_B \wedge \mbox{with excl. vol.} \\
+5.36 & \mbox{for~} L \leq 4l_B \wedge \mbox{with excl. vol.} \\
 \end{cases}\\
 p_2 &=
 \begin{cases}
-5.29 & \mbox{for~} L > 4l_B \wedge \mbox{without excluded volume} \\
-7.47 & \mbox{for~} L \leq 4l_B \wedge \mbox{without excluded volume} \\
-4.42 & \mbox{for~} L > 4l_B \wedge \mbox{with excluded volume} \\
-5.62 & \mbox{for~} L \leq 4l_B \wedge \mbox{with excluded volume} \\
+5.29 & \mbox{for~} L > 4l_B \wedge \mbox{without excl. vol.} \\
+7.47 & \mbox{for~} L \leq 4l_B \wedge \mbox{without excl. vol.} \\
+4.42 & \mbox{for~} L > 4l_B \wedge \mbox{with excl. vol.} \\
+5.62 & \mbox{for~} L \leq 4l_B \wedge \mbox{with excl. vol.} \\
 \end{cases}
 \end{align}
 The parameters $a_1$ and $a_2$ are defined by the condition that for $Ql_B=q_0$ the small and large $Q$ region are continuous and smooth, i.e. that also the first derivative of $\mathrm{d}S(q,L,l_B)/\mathrm{d}q|_{q=q_0/l_B}$ is continuous.
@@ -1226,9 +1226,9 @@ The parameters $a_1$ and $a_2$ are defined by the condition that for $Ql_B=q_0$ 
 S_{\textrm{small~} Q}(Q,L,l_B) &=
 \begin{cases}
  S_\textrm{SB}(Q,R_G)    & \mbox{for~} L >    4l_B   \\
- S_\textrm{Debye}(Q,R_G) & \mbox{for~} L \leq 4l_B  \wedge \mbox{without excluded volume}\\
- S_\textrm{cexv}(Q,R_G)  & \mbox{for~} L \leq 4l_B  \wedge \mbox{with excluded volume} \\
-\end{cases}\\
+ S_\textrm{Debye}(Q,R_G) & \mbox{for~} L \leq 4l_B  \wedge \mbox{without excl. vol.}\\
+ S_\textrm{cexv}(Q,R_G)  & \mbox{for~} L \leq 4l_B  \wedge \mbox{with excl. vol.} \\
+\end{cases}
 \end{align}
 where
 \begin{align}
@@ -1240,7 +1240,7 @@ u &= Q^2R_G^2 \\
 x &= QR_G \\
 S_\textrm{EXV}(Q,R_G) &= (1-w)S_\textrm{Debye}(Q,R_G) \\
 &+ w f_\textrm{corr}(Q) \left(C_1x^{-1/\nu}+C_2x^{-2/\nu}+C_3x^{-3/\nu}\right) \nonumber \\
-w &= \frac12\left(1+\tanh((x-1.523)/0.1477)\right) \\
+w &= \frac12\left(1+\tanh((x-1.523)/0.1477)\right) 
 \end{align}
 with the optimized parameters $C_1 = 1.2220$, $C_2 = 0.4288$, and $C_3 = -1.651$.
 As $S_\textrm{EXV}$ should be a monotonic decreasing function also at very small $Q$-values the correction factor $f_\textrm{corr}(Q,R_G)$ has been introduced by \cite{Chen2006} 

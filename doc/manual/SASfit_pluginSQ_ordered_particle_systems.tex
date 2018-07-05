@@ -1,11 +1,224 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Analytical static structure factor for hard spheres} \hspace{1pt}
+The rational function approximation method which is wholly compatible
+with the equation of state used for the fluid has been used for expressions of the hard sphere structure factor. 
+In general, integral equation theories require a closure approximations, and they lead to different equations of state if one takes
+the virial or the compressibility routes (thermodynamic inconsistency problem). In contrast the rational function approximation method
+completely avoids the thermodynamic inconsistency problem, in that the compressibility factor is involved in the derivation of $S(Q)$ \cite{Yuste1996,Robles1997,Haro2004}.
+\begin{align}
+S(Q) &= 1-24\eta\Re\left(\left.\frac{t^2G(t)-1}{t^3}\right|_{t=\imath Q\sigma}\right) \label{eq:RFAstart}\\
+G(t) &= \frac{t}{12\eta}\frac{1}{1-\exp(t)\Phi(t)} \\
+\Phi(t) &= \frac{1+S_1 t + S_2 t^2 + S_3 t^3 + S_4 t^4}{1+L_1 t + L_2 t^2}
+\end{align}
+where the six coefficients $S_1$, $S_2$, $S_3$, $S_4$, $L_1$, and $L_2$ may be evaluated in an
+algebraic form
+\begin{align}
+L_1 &= \frac{1}{2} \frac{η + 12\eta L_2 + 2 - 24\eta S_4}{2\eta + 1} \\
+S_1 &= \frac{3}{2}\eta\frac{-1+4L_2-8S_4}{2\eta +1}\\
+S_2 &= -\frac{1}{2} \frac{-\eta+8\eta L_2+1-2L_2-24\eta S_4}{2\eta +1} \\
+S_3 &= \frac{1}{12} \frac{2\eta-\eta^2+12\eta^2L_2-12\eta L_2-1-72\eta^2 S_4}{\eta (2\eta+1)}
+\end{align}
+with
+\begin{align}
+L_2 &= -3\left(Z-1\right)S_4 \\
+S_4 &= \frac{1-\eta}{36\eta\left(Z-\frac{1}{3}\right)}\left[1-\sqrt{1+\frac{Z-\frac{1}{3}}{Z-Z_\mathrm{PY}}\left(\frac{\chi}{\chi_\mathrm{PY}}-1\right)}\right]
+\end{align}
+Here, $Z_\mathrm{PY} = \frac{1+2\eta+3\eta^2}{(1−\eta)^2}$ and $\chi_\mathrm{PY} = \frac{(1−\eta)^4}{(1+2\eta)^2}$ are the compressibility factor and isothermal susceptibility arising in the PY theory. The isothermal compressibility $\chi$ and the compressibility factor $Z$ are related by
+\begin{align}
+\chi &= \left(\frac{\mathrm{d}(\rho Z)}{\mathrm{d}\rho}\right)^{-1} = \left(Z+\eta\frac{\mathrm{d} Z}{\mathrm{d}\eta}\right)^{-1}
+\label{eq:RFAend}
+\end{align}
+where $\eta = \frac{\pi}{6}\rho \sigma^3$ is the packing fraction of the spheres ($\rho$ is the number density and $\sigma$ the
+hard-sphere diameter).
+The only quantity which is left to calculate the structure factor is an explicit expression for the compressibility factor $Z$.
+
+\vspace{5mm}
+
+\subsection{Carnahan and Starling} \cite{Carnahan1969}
+
+\noindent In this approximation eqs.\ \ref{eq:RFAstart}-\ref{eq:RFAend} are used with $Z=Z^\mathrm{CS}$, where
+\begin{align}
+Z^\mathrm{CS} &= \frac{1+\eta+\eta^2-\eta^3}{\left(1-\eta\right)^3}
+\end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Hard Sphere (CS)}:}
+\begin{description}
+    \item[\texttt{R}]  radius $R$
+    \item[\texttt{eta}] volume fraction $\eta$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+\item The structure factor accepts volume fractions between $\eta \in [0,1]$.
+\item The model lead to physically meaningful structural properties in the whole definition range of volume fractions.
+\end{itemize}
+
+\begin{figure}[htb]
+\subfigure[Comparison between $S^\mathrm{PY}$ and $S^\mathrm{CS}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQCS.png}}
+\hfill
+\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{CS}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResCS.png}} \\
+\caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of Carnahan and Starling}
+\label{fig:SQ:CS}
+\end{figure}
+
+\clearpage
+\subsection{Pad\'{e}(4,3) of van Rensburg and S\'{a}nchez} \cite{Rensburg1993,Sanchez1994}
+
+\noindent In this approximation eqs.\ \ref{eq:RFAstart}-\ref{eq:RFAend} are used with $Z=Z^{(4,3)}$, where
+\begin{align}
+Z^{(4,3)} &= \frac{1+1.024385\eta+1.104537\eta^2-0.4611472\eta^3-0.7430382\eta^4}{1-2.975615\eta+3.007000\eta^2-1.097758\eta^3}
+\end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Hard Sphere (4,3)}:}
+\begin{description}
+    \item[\texttt{R}]  radius $R$
+    \item[\texttt{eta}] volume fraction $\eta$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+\item The structure factor accepts volume fractions between $\eta \in [0,1]$.
+\item The threshold packing fraction (packing
+fraction at which a glass transition in the hard-sphere fluid takes place) of this model is $\eta^{(4,3)}_0 = 0.5604$  beyond
+which no meaningful fluid structure can be derived \cite{Haro2004}.
+\end{itemize}
+
+\begin{figure}[htb]
+\subfigure[Comparison between $S^\mathrm{PY}$ and $S^{(4,3)}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQ(4,3).png}}
+\hfill
+\subfigure[residual between $S^\mathrm{PY}$ and $S^{(4,3)}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/Res(4,3).png}} \\
+\caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of van Rensburg and S\'{a}nchez}
+\label{fig:SQ:43}
+\end{figure}
+
+\clearpage
+\subsection{Malijevsk\'{y} and Veverka} \cite{Malijevsky1999}
+
+\noindent In this approximation eqs.\ \ref{eq:RFAstart}-\ref{eq:RFAend} are used with $Z=Z^\mathrm{MV}$, where
+\begin{align}
+Z^\mathrm{MV} &= \frac{1 + 1.0560\eta + 1.6539\eta^2 + 0.3262\eta^3}{\left(1- 3.8464\eta + 4.9574\eta^2 -2.1639\eta^3\right)\left(1-\eta\right)^3}
+\end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Hard Sphere (MV)}:}
+\begin{description}
+    \item[\texttt{R}]  radius $R$
+    \item[\texttt{eta}] volume fraction $\eta$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+\item The structure factor accepts volume fractions between $\eta \in [0,1]$.
+\item The model lead to physically meaningful structural properties in the whole definition range of volume fractions.
+\end{itemize}
+
+\begin{figure}[htb]
+\subfigure[Comparison between $S^\mathrm{PY}$ and $S^\mathrm{MV}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQMV.png}}
+\hfill
+\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{MV}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResMV.png}} \\
+\caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of Malijevsk\'{y} and Veverka}
+\label{fig:SQ:MV}
+\end{figure}
+
+\clearpage
+\subsection{L\'{o}pez de Haro and Robles} \cite{Robles2003}
+
+\noindent In this approximation eqs.\ \ref{eq:RFAstart}-\ref{eq:RFAend} are used with $Z=Z^\mathrm{LHR}$, where
+\begin{align}
+Z^\mathrm{LHR} &= \frac{1   + 0.153555\eta
+                            - 0.428376\eta^2
+                            - 2.7987\eta^3
+                            - 0.317417\eta^4
+                            - 0.105806\eta^5}{1-3.84644\eta + 4.9574\eta^2 - 2.16386\eta^3}
+\end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Hard Sphere (LHR)}:}
+\begin{description}
+    \item[\texttt{R}]  radius $R$
+    \item[\texttt{eta}] volume fraction $\eta$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+\item The structure factor accepts volume fractions between $\eta \in [0,1]$.
+\item The threshold packing fraction (packing
+fraction at which a glass transition in the hard-sphere fluid takes place) of this model is $\eta^\mathrm{LHR}_0 = 0.5684$  beyond
+which no meaningful fluid structure can be derived \cite{Haro2004}.
+\end{itemize}
+
+\begin{figure}[htb]
+\subfigure[Comparison between $S^\mathrm{PY}$ and $S^\mathrm{LHR}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQLHR.png}}
+\hfill
+\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{LHR}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResLHR.png}} \\
+\caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of L\'{o}pez de Haro and Robles}
+\label{fig:SQ:LHR}
+\end{figure}
+
+\clearpage
+\subsection{Grundke and Henderson} ~\\
+
+\noindent In this approximation the structure factor in the Percus Yevick approximation is corrected to have thermodynamic consistency \cite{Henderson1975} so that both routes leads to the expression of Carnahan and Starling 
+$pV/Nk_BT=\frac{1+\eta+\eta^2-\eta^3}{\left(1-\eta\right)^3}$
+\begin{align}
+\sigma &= 2R\\
+\left(\sigma_0/\sigma\right)^3 &= 1-\eta/16\\
+\eta_0 &= \eta (1-\eta/16) \\
+g_0(s,\eta_0) &\simeq \frac{1+\eta_0/2}{\left(1-\eta_0\right)^2} - \frac{9}{2}\eta_0\frac{1+\eta_0}{\left(1-\eta_0\right)^3}(s-1) \\
+\frac{C}{\sigma} &= \frac{2-\eta}{2(1-\eta)^3} - g_0(\sigma/\sigma_0,\eta_0) \\
+\frac{12\eta C}{m\sigma_0^2} &= \frac{(1-\eta)^4}{1+4\eta+4\eta^2-4\eta^3+\eta^4} - \frac{(1-\eta_0)^4}{(1+2\eta_0)^2} \nonumber \\
+&= 24\eta_0\int_0^{\sigma/\sigma_0} g_0(s,\eta_0)s^2 \mathrm{d}s \\
+S^\mathrm{GH}(Q,\sigma,\eta) &= S^\mathrm{PY}(Q,\sigma_0,\eta_0) + \frac{6\eta}{\pi\sigma^3}\tilde{h}_\mathrm{GH}(Q) \\
+\tilde{h}_\mathrm{GH}(Q)  &= -\frac{4\pi\sigma_0}{Q\sigma_0} \int_1^{\sigma/\sigma_0} sg_0(s,\eta_0)\sin(Q\sigma_0 s)\mathrm{d}s\\
+&+ \frac{2\pi\sigma^3}{Q\sigma}\frac{C}{\sigma} \left\{ \frac{\cos (Q\sigma)}{\sigma}\left[\frac{k+m}{m^2+(Q+m)^2}+\frac{Q-m}{m^2+(Q-m)^2}\right]\right.\nonumber \\
+& + \left. \frac{\sin (Q\sigma)}{\sigma}\left[\frac{m}{m^2+(Q+m)^2}+\frac{m}{m^2+(Q-m)^2}\right]\right\}\nonumber 
+\end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Hard Sphere (GH)}:}
+\begin{description}
+    \item[\texttt{R}]  radius $R$
+    \item[\texttt{eta}] volume fraction $\eta$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+\item The structure factor accepts volume fractions between $\eta \in [0,1]$.
+\end{itemize}
+
+\begin{figure}[htb]
+\subfigure[comparison between $S^\mathrm{PY}$ and $S^\mathrm{GH}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQGH.png}}
+\hfill
+\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{GH}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResGH.png}} \\
+\caption{Comparison between analytical PY solution of hard sphere static structure factor and thermodynamically consistent correction as described by Henderson and Grundke}
+\label{fig:SQ:LHR}
+\end{figure}
+
+\clearpage
 \section{Structure factor for a two dimensional hard spheres/disks fluid} \hspace{1pt}
 The structure factor of hard disks or spheres with diameter/radius $\sigma=2R$ in two dimensions with an interaction potential
 \begin{align}
-U(r,\sigma) &= 
+U(r,\sigma) &=
 \begin{cases}
 \infty &\mathrm{for~}  r < \sigma \\
-0  &\mathrm{for~}  r \geq \sigma 
+0  &\mathrm{for~}  r \geq \sigma
 \end{cases}
 \end{align}
 have been implemented in several variants.
@@ -33,10 +246,10 @@ S(q) &= \frac{1}{1-\rho \tilde{c}(q,r)} \\
 with
 \begin{align}
 \begin{split}
-c(r',\eta) &= 
+c(r',\eta) &=
 \Theta(1-r') \left[-\frac{1-p\eta^2}{\left(1-2\eta+p\eta^2\right)^2}\right]  \\
 &\left\{1-a^2\eta-a^2\eta\frac{2}{\pi}\left[\arccos\left(\frac{r'}{a}\right)-\frac{r'}{a}\sqrt{1-\frac{r'^2}{a^2}}\right]\right\}
-\end{split}  
+\end{split}
 \end{align}
 with $p=\left(4\sqrt{3}\pi-12\right)/\pi^2$ and $\Theta()$ being the Heaviside function. The parameter $a$ is the root of a non-linear equation, which has been solved numerically and then approximated via a polynomial fitting by
 \begin{align}
