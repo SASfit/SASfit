@@ -3810,16 +3810,21 @@ proc analyticalGlobalSDCmd {simorfit
 		      if { $::addsasfit(I_enable)  } {
 		      if {    (($::GlobalAnalytPar(error) == 0) && $::addsasfit(DI_enable) )
 			   || (($::GlobalAnalytPar(error) != 0) && !$::addsasfit(DI_enable) ) } {
-			 if {[string compare $::GlobalAnalytPar(resolution) yes] == 0} {
-			    set IthIres [sasfit_global_iq ::GlobalAnalytPar  \
-						 [list $Q $I $DI $res]  $::addsasfit(Nth,hide)\
-					]
-			 } else {
-			    set IthIres [sasfit_global_iq ::GlobalAnalytPar  \
-						 [list $Q $I $DI] $::addsasfit(Nth,hide)\
-					]
-			 }
-			 
+				if {[catch {
+					if {[string compare $::GlobalAnalytPar(resolution) yes] == 0} {
+						set IthIres [sasfit_global_iq ::GlobalAnalytPar  \
+								[list $Q $I $DI $res]  $::addsasfit(Nth,hide)\
+									]
+					} else {
+						set IthIres [sasfit_global_iq ::GlobalAnalytPar  \
+								[list $Q $I $DI] $::addsasfit(Nth,hide)\
+									]
+					}
+				} msg] } {
+					bgerror $msg
+					set ::sasfit(busy) false
+					return
+				}
 		     sasfit_timer_stop "Apply" "finished" ""
 		     sasfit_timer_start "\nStart plotting"
 			 set ::addsasfit(Nth,Ith)     [lindex $IthIres 0] 
@@ -4345,11 +4350,15 @@ proc analyticalGlobalSDCmd {simorfit
 		      }
 		      save_GlobalAP ::tmpGlobalAnalytPar ::actualGlobalAnalytPar 
 		      cp_arr ::tmpGlobalAnalytPar ::GlobalAnalytPar
-
-		      set IthIres [sasfit_global_iq ::GlobalAnalytPar  \
-					[list $allQ $allI $allDI] $allhide\
-				  ]
-
+			  if {[catch {
+				set IthIres [sasfit_global_iq ::GlobalAnalytPar  \
+							[list $allQ $allI $allDI] $allhide\
+							]
+			  } msg] } {
+				bgerror $msg
+				set ::sasfit(busy) false
+				return
+			  }
 		      cp_arr ::addsasfit t_addsasfit
 		      set ::addsasfit(Nth,Ith)     [lindex $IthIres 0] 
 		      set ::addsasfit(Nth,sub,Ith) [lindex $IthIres 1] 

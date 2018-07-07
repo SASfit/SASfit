@@ -124,8 +124,14 @@ proc InterruptOZsolver {} {
 proc StartOZsolver {} {
         global OZ ozSQGraph ozgrGraph ozcrGraph ozhrGraph ozgammarGraph ozbetaUrGraph ozBrGraph ozyrGraph ozfrGraph sasfit
         sasfit_timer_start "Start OZ Solver"
-        set OZ(interrupt) 0
-        sasfit_oz_calc OZ
+		if {[catch {
+			set OZ(interrupt) 0
+			sasfit_oz_calc OZ
+		} msg] } {
+		    bgerror $msg
+			set ::sasfit(busy) false
+			return
+		}
 	sasfit_timer_stop "OZ solver" "calculation finished" "."
 	
 	sasfit_timer_start "Start plotting OZ Solver results"

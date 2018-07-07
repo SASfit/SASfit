@@ -9263,8 +9263,15 @@ button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 		set ::SASfitprogressbar 0
 		set ::SASfitinterrupt 0
 		sasfit_timer_start "\nStart simulation 2d"
-	    set Det2DRes [sasfit_2Diq ::AnalytPar {{1 1} {1 1} {1 1}} Detector2DIQGraph]
-#                    puts $Det2DRes
+		if {[catch {
+			set Det2DRes [sasfit_2Diq ::AnalytPar {{1 1} {1 1} {1 1}} Detector2DIQGraph]
+#           puts $Det2DRes
+		} msg] } {
+			bgerror $msg
+			set ::sasfit(busy) false
+			return
+		}
+	    
 		sasfit_timer_stop "Simulation 2D" "finished" ""
 		sasfit_timer_start "\nStart plotting 2d"
 #	    destroy $Detector2DIQGraph(cwsim)
@@ -10236,23 +10243,25 @@ if {$simulate && [winfo exists $w.adj.calc]} {
                      lappend DI 1.0
                  }
 	      }
-              save_AP ::tmpAnalytPar ::actualAnalytPar 
-              cp_arr ::tmpAnalytPar ::AnalytPar
+			save_AP ::tmpAnalytPar ::actualAnalytPar 
+			cp_arr ::tmpAnalytPar ::AnalytPar
 
-	      set ::sasfit(Q) $Q
+			set ::sasfit(Q) $Q
+			if {[catch {
+				set IthIres [sasfit_iq ::AnalytPar [list $Q $I $DI]]
+				set ::sasfit(I) [lindex $IthIres 2]
+				set ::sasfit(DI) [lindex $IthIres 4]
 
-              set IthIres [sasfit_iq ::AnalytPar [list $Q $I $DI]]
-	      set ::sasfit(I) [lindex $IthIres 2]
-	      set ::sasfit(DI) [lindex $IthIres 4]
-
-              set NR [sasfit_nr ::AnalytPar [list $Q $I $DI]]
-	      set ::sasfit(NR) $NR
-#puts "size distribution caluclated, plot it ..."
-#puts $NR
-              NewFitDataCmd Q IthIres no NR sim
-              RefreshAnalytParDataTab ::AnalytPar
-		     
-                  sasfit_timer_stop "Simulation" "finished" ""
+				set NR [sasfit_nr ::AnalytPar [list $Q $I $DI]]
+				set ::sasfit(NR) $NR
+			} msg] } {
+				bgerror $msg
+				set ::sasfit(busy) false
+				return
+			}
+			NewFitDataCmd Q IthIres no NR sim
+			RefreshAnalytParDataTab ::AnalytPar
+			sasfit_timer_stop "Simulation" "finished" ""
 		}
 	}
 }
