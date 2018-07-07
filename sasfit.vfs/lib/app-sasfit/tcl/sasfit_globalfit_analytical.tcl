@@ -3758,7 +3758,10 @@ proc analyticalGlobalSDCmd {simorfit
 	}
 
 	if {!$simulate && [winfo exists $w.adj.calc]} {
-		$w.adj.calc configure -command { 
+		$w.adj.calc configure -command {
+			if {$::sasfit(busy)} {
+				puts "SASfit is busy"
+			} else {
 	   	      set ::SASfitprogressbar 0
 	      	      set ::SASfitinterrupt 0
                       set ::fitparamguiupdate no
@@ -3846,10 +3849,14 @@ proc analyticalGlobalSDCmd {simorfit
 		      sasfit_timer_stop "Plotting" "finished" ""
                       set ::fitparamguiupdate yes
 		    }
+			}
 	}
 
 	if {[winfo exists $w.adj.step]} {
 		$w.adj.step configure -command {
+			if {$::sasfit(busy)} {
+				puts "SASfit is busy"
+			} else {
                       set ::fitparamguiupdate no
                       set ::SASfitprogressbar 0
 	       	      set ::SASfitinterrupt 0
@@ -4010,10 +4017,14 @@ proc analyticalGlobalSDCmd {simorfit
 		      RefreshAnalytParDataTab ::GlobalAnalytPar /Global
                       set ::fitparamguiupdate yes
 		    }
+			}
 	}
 
 	if {[winfo exists $w.adj.run]} {
 		$w.adj.run configure -command {
+			if {$::sasfit(busy)} {
+				puts "SASfit is busy"
+			} else {
 			set ::fitparamguiupdate no
 	                set ::SASfitprogressbar 0
 	                set ::SASfitinterrupt 0
@@ -4112,6 +4123,7 @@ proc analyticalGlobalSDCmd {simorfit
 			     set_GlobalalambdaCmd 1 1 1
 			     bgerror $msg
 			     set ::fitparamguiupdate yes
+				 set ::sasfit(busy) false
 			     return
 			 }
 			  set alambda $::GlobalAnalytPar(alambda)
@@ -4171,6 +4183,7 @@ proc analyticalGlobalSDCmd {simorfit
 				 set_GlobalalambdaCmd 1 1 1
 				 bgerror $msg 
 				 set ::fitparamguiupdate yes
+				 set ::sasfit(busy) false
 				 return 
 			     }
 			     set alambda $::GlobalAnalytPar(alambda)
@@ -4239,6 +4252,7 @@ proc analyticalGlobalSDCmd {simorfit
 				set_GlobalalambdaCmd 1 1 1
 				bgerror $msg 
 				set ::fitparamguiupdate yes
+				set ::sasfit(busy) false
 				return
 			    }
 			    set alambda $::GlobalAnalytPar(alambda)
@@ -4286,10 +4300,14 @@ proc analyticalGlobalSDCmd {simorfit
 		      .analytical.adj.calc invoke 
 		      set ::fitparamguiupdate yes
 		    }
+			}
 	}
 
 	if {$simulate && [winfo exists $w.adj.calc]} {
 		$w.adj.calc configure -command {
+			if {$::sasfit(busy)} {
+				puts "SASfit is busy"
+			} else {
 		      set ::fitparamguiupdate no
 	      	      set ::SASfitprogressbar 0
 		      set ::SASfitinterrupt 0
@@ -4350,6 +4368,7 @@ proc analyticalGlobalSDCmd {simorfit
 		      sasfit_timer_stop "Simulation" "finished" ""
 		      set ::fitparamguiupdate yes
 		    }
+			}
 	}
 	 
 	bind $wsd.wrl.whichsd <Enter> \

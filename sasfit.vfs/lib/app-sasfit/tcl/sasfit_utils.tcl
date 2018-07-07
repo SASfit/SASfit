@@ -316,6 +316,8 @@ proc sasfit_timer_start { message_prefix
 } {
 	puts stderr "$message_prefix at [clock format [clock scan now] -format %H:%M:%S]"
 	set ::sasfit_timer_start [clock clicks -milliseconds]
+	set ::sasfit(busy) true
+	puts "SASfit is busy now: $::sasfit(busy)"
 }
 
 proc sasfit_timer_stop { message_prefix message_postprefix message_postfix
@@ -328,6 +330,8 @@ proc sasfit_timer_stop { message_prefix message_postprefix message_postfix
 	set sec [expr ($eti-$min*60000)/1e3]
 
 	puts stderr "$message_prefix needed (${h}h:${min}min:${sec}sec) ($message_postprefix at [clock format [clock scan now] -format %H:%M:%S])$message_postfix"
+	set ::sasfit(busy) false
+	puts "SASfit is ready now: $::sasfit(busy)"
 }
 
 # tooltip code from:

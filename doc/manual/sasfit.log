@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  5 JUL 2018 22:00
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  6 JUL 2018 07:08
 entering extended mode
 **sasfit.tex
 (C:\user\SASfitGit\doc\manual\sasfit.tex
@@ -7081,6 +7081,11 @@ Missing character: There is no ˆ in font cmr8!
 Missing character: There is no ’ in font cmr8!
 
 [491]
+Underfull \hbox (badness 10000) in paragraph at lines 37--38
+
+ []
+
+
 <../images/structure_factor/HardSphere/SQCS.png, id=7489, 642.2394pt x 517.2123
 pt>
 File: ../images/structure_factor/HardSphere/SQCS.png Graphic file (type png)
@@ -7098,6 +7103,11 @@ n input line 63.
 (pdftex.def)             Requested size: 215.10092pt x 170.3561pt.
  [492 <C:/user/SASfitGit/doc/images/structure_factor/HardSphere/SQCS.png> <C:/u
 ser/SASfitGit/doc/images/structure_factor/HardSphere/ResCS.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
+
+ []
+
+
 <../images/structure_factor/HardSphere/SQ(4,3).png, id=7509, 624.8946pt x 517.2
 123pt>
 File: ../images/structure_factor/HardSphere/SQ(4,3).png Graphic file (type png)
@@ -7119,6 +7129,11 @@ d on input line 97.
 
  <C:/user/SASfitGit/doc/images/structure_factor/HardSphere/SQ(4,3).png> <C:/use
 r/SASfitGit/doc/images/structure_factor/HardSphere/Res(4,3).png>]
+Underfull \hbox (badness 10000) in paragraph at lines 103--104
+
+ []
+
+
 <../images/structure_factor/HardSphere/SQMV.png, id=7526, 624.8946pt x 517.2123
 pt>
 File: ../images/structure_factor/HardSphere/SQMV.png Graphic file (type png)
@@ -7138,6 +7153,11 @@ n input line 129.
 
  <C:/user/SASfitGit/doc/images/structure_factor/HardSphere/SQMV.png> <C:/user/S
 ASfitGit/doc/images/structure_factor/HardSphere/ResMV.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 135--136
+
+ []
+
+
 <../images/structure_factor/HardSphere/SQLHR.png, id=7543, 624.8946pt x 517.212
 3pt>
 File: ../images/structure_factor/HardSphere/SQLHR.png Graphic file (type png)
@@ -7192,7 +7212,7 @@ File: ../images/structure_factor/HardSphere/SQPY.png Graphic file (type png)
  <use ../images/structure_factor/HardSphere/SQPY.png>
 Package pdftex.def Info: ../images/structure_factor/HardSphere/SQPY.png used on
  input line 261.
-(pdftex.def)             Requested size: 344.16696pt x 243.58247pt.
+(pdftex.def)             Requested size: 268.88129pt x 190.29288pt.
  [498
 
 ] [499 <C:/user/SASfitGit/doc/images/structure_factor/HardSphere/SQPY.png>]
@@ -7974,7 +7994,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 128.
 Here is how much of TeX's memory you used:
  29345 strings out of 494049
  547885 string characters out of 3148531
- 666888 words of memory out of 3000000
+ 666887 words of memory out of 3000000
  28273 multiletter control sequences out of 15000+200000
  35853 words of font info for 147 fonts, out of 3000000 for 9000
  876 hyphenation exceptions out of 8191
@@ -8117,7 +8137,7 @@ rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm7.pfb><C:
 am Files (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program 
 Files (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1200.pfb><C:/Program Fil
 es (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on sasfit.pdf (572 pages, 40009567 bytes).
+Output written on sasfit.pdf (572 pages, 40009157 bytes).
 PDF statistics:
  9420 PDF objects out of 10688 (max. 8388607)
  3180 named destinations out of 3580 (max. 500000)

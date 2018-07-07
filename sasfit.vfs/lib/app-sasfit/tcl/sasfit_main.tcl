@@ -385,6 +385,7 @@ set OZ(p14,name) ""
 set OZ(p15,name) ""
 global OZ
 
+set sasfit(busy) false
 set sasfit(sim,Qmin) 1e-2
 set sasfit(sim,Qmax) 1
 set sasfit(sim,N) 100

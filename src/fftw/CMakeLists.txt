@@ -11,14 +11,14 @@ cmake_minimum_required(VERSION 2.6.2)
 set(CONFIGURE_OPTIONS
     --enable-static
     --disable-shared
-    --enable-threads
+    --disable-threads
     --enable-sse2
 )
 if(WIN32)
     list(APPEND CONFIGURE_OPTIONS
         --with-our-malloc16
         --with-windows-f77-mangling
-        --with-combined-threads
+    #    --with-combined-threads
     #    --enable-portable-binary
     )
 endif()

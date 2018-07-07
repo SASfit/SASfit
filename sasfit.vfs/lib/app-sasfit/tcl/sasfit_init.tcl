@@ -106,6 +106,7 @@ set sasfit(datadir)	"[file normalize [file join $::sasfit(basedir) data]]"
 set sasfit(homedir)	"[file normalize [file nativename ~/]]"
 set sasfit(docdir)	"[file normalize [file join $::sasfit(basedir) doc]]"
 set sasfit(cfgfile)	"[file normalize [file join $::sasfit(basedir) config.ini]]"
+set sasfit(busy) false
 
 if [file exists $sasfit(tcl)/sasfit_svn_rev.tcl] {
 	source $sasfit(tcl)/sasfit_svn_rev.tcl

@@ -9255,6 +9255,9 @@ grid $wdet2D_b.e_max    -row 3 -column 1 -sticky e
 #puts $wdet2D_b.do
 button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 -command {     
+		if {$::sasfit(busy)} {
+				puts "SASfit is busy"
+		} else {
 	    save_AP ::tmpAnalytPar ::actualAnalytPar 
 	    cp_arr ::tmpAnalytPar ::AnalytPar
 		set ::SASfitprogressbar 0
@@ -9302,6 +9305,7 @@ button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 	    }
 
 		sasfit_timer_stop "Plotting 2D" "finished" ""
+		}
 	  }
 grid   $wdet2D_b.do    -row 4 -column 0 -columnspan 4 -sticky ew
 
@@ -9318,11 +9322,14 @@ grid $wdet2D_c.e_bcx    -row 2 -column 1 -sticky e
 grid $wdet2D_c.e_bcy    -row 3 -column 1 -sticky e	   
 button $wdet2D_c.fit -bg "light coral" -text "Fit\n2D detector pattern" \
 -command {       
+		if {$::sasfit(busy)} {
+			puts "SASfit is busy"
+		} else {
 	    save_AP ::tmpAnalytPar ::actualAnalytPar 
 	    cp_arr ::tmpAnalytPar ::AnalytPar
 		set ::SASfitprogressbar 0
 		set ::SASfitinterrupt 0
-		sasfit_timer_start "\nStart simulation 2d"
+		sasfit_timer_start "\nStart fitting 2d"
 		read_HMI "C:/user/SASfitGit/D0040954.018" SANSDAniData
 		read_HMI "C:/user/SASfitGit/18m.sma" SANSDAniMask
 	    set Det2DAni [HMIgetItem SANSDAniData Counts SANSDAni i]
@@ -9403,6 +9410,7 @@ puts "$DMax $DMin"
 	       }   
 		}
 		sasfit_timer_stop "Plotting 2D" "finished" ""
+		}
 }
 grid   $wdet2D_c.fit    -row 4 -column 0 -columnspan 4 -sticky ew
 #
@@ -9752,6 +9760,9 @@ pack $w.fitpar -fill both -expand 1
 
 if {!$simulate && [winfo exists $w.adj.calc]} {
 	$w.adj.calc configure -command {
+		if {$::sasfit(busy)} {
+			puts "SASfit is busy"
+		} else {
 	      set ::SASfitprogressbar 0
 	      set ::SASfitinterrupt 0
               set ::fitparamguiupdate yes
@@ -9783,6 +9794,7 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
               if { $::sasfit(I_enable)  } {
               if {    (($::AnalytPar(error) == 0) && $::sasfit(DI_enable) )
                    || (($::AnalytPar(error) != 0) && !$::sasfit(DI_enable) ) } {
+		if {[catch {
 		 if {[string compare $::AnalytPar(resolution) yes] == 0} {
                     set IthIres [sasfit_iq ::AnalytPar  \
                                          [list $Q $I $DI $res] \
@@ -9792,7 +9804,12 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
                                          [list $Q $I $DI] \
                                 ]
 		 }
-		 sasfit_timer_stop "Plotting" "finished" ""
+		 } msg] } {
+		     bgerror $msg
+			 set ::sasfit(busy) false
+		     return
+		  }
+		 sasfit_timer_stop "Apply" "finished" ""
 		 sasfit_timer_start "\nStart plotting"
 
 		 foreach subt $::AnalytPar(substrSDFF) calct $::AnalytPar(calcSDFF) {
@@ -9813,12 +9830,16 @@ if {!$simulate && [winfo exists $w.adj.calc]} {
               }
               RefreshAnalytParDataTab ::AnalytPar
               set ::fitparamguiupdate yes
-			  sasfit_timer_stop "Apply" "finished" ""
+			  sasfit_timer_stop "Plotting" "finished" ""
+		}
 	}
 }
 
 if {[winfo exists $w.adj.step]} {
 	$w.adj.step configure -command { 
+		if {$::sasfit(busy)} {
+			puts "SASfit is busy"
+		} else {
 		set ::fitparamguiupdate no
 		set ::SASfitprogressbar 0
 		set ::SASfitinterrupt 0
@@ -9952,11 +9973,15 @@ if {[winfo exists $w.adj.step]} {
               }
               RefreshAnalytParDataTab ::AnalytPar
               set ::fitparamguiupdate yes
+		}
 	}
 }
 
 if {[winfo exists $w.adj.run]} {
 	$w.adj.run configure -command {
+		if {$::sasfit(busy)} {
+			puts "SASfit is busy"
+		} else {
 	      set ::SASfitprogressbar 0
 	      set ::SASfitinterrupt 0
               set ::fitparamguiupdate no
@@ -10041,6 +10066,7 @@ if {[winfo exists $w.adj.run]} {
 		     set_alambdaCmd 1 1 1
 		     bgerror $msg
                      set ::fitparamguiupdate yes
+					 set ::sasfit(busy) false
 		     return
 		  }
 
@@ -10091,7 +10117,8 @@ if {[winfo exists $w.adj.run]} {
 		     } msg] } {
 			 set_alambdaCmd 1 1 1
 			 bgerror $msg
-                         set ::fitparamguiupdate yes
+                    set ::fitparamguiupdate yes
+					set ::sasfit(busy) false
 			 return
 		     }
 
@@ -10177,10 +10204,14 @@ if {[winfo exists $w.adj.run]} {
               RefreshAnalytParDataTab ::AnalytPar
               set ::fitparamguiupdate yes
 	}
+	}
 }
 
 if {$simulate && [winfo exists $w.adj.calc]} {
 	$w.adj.calc configure -command {
+		if {$::sasfit(busy)} {
+			puts "SASfit is busy"
+		} else {
 	      set ::SASfitprogressbar 0
 	      set ::SASfitinterrupt 0
 	      sasfit_timer_start "\nStart simulation"
@@ -10222,6 +10253,7 @@ if {$simulate && [winfo exists $w.adj.calc]} {
               RefreshAnalytParDataTab ::AnalytPar
 		     
                   sasfit_timer_stop "Simulation" "finished" ""
+		}
 	}
 }
 
