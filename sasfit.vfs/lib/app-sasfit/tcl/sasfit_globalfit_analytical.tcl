@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_globalfit_analytical.tcl
 #
-# Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #
@@ -1881,28 +1881,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) "SD ="
 				  set actualPar(FF,l10,label) "psi ="
 				}
-	   "MieSphere"          { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "lam_sol ="
-				  set actualPar(FF,l3,label) "m_re ="
-				  set actualPar(FF,l4,label) "m_im ="
-				  set actualPar(FF,l5,label) "pol ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "MieShell"           { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "dR ="
-				  set actualPar(FF,l3,label) "lam_sol ="
-				  set actualPar(FF,l4,label) "mc_re ="
-				  set actualPar(FF,l5,label) "mc_im ="
-				  set actualPar(FF,l6,label) "ms_re ="
-				  set actualPar(FF,l7,label) "ms_im ="
-				  set actualPar(FF,l8,label) "pol ="
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
 	"confinement with Gaussian potential" \
 				{ set actualPar(FF,l1,label) "amplitude ="
 				  set actualPar(FF,l2,label) {Q \[Ångstrøm\] =}
@@ -3587,8 +3565,6 @@ proc analyticalGlobalSDCmd {simorfit
 				      SuperparamagneticFFAniso \
 				      SuperparamagneticFFIso \
 				      SuperparamagneticFFCrossTerm}} \ 
-	{mieFF "Mie FF for SLS" {MieSphere \
-				 MieShell}} \
 	{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
 	{others "other form factors" {   LangevinMH DoubleShell_withSD \
 					{SuperParStroboPsi Delta} \

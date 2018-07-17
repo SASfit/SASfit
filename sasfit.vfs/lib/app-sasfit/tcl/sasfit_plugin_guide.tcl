@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_plugin_guide.tcl
 #
-# Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #
@@ -209,7 +209,7 @@ proc func_menu { pframe idx } {
 	pack $f.type.err.lbl $f.type.err.ddl
 
 	label $f.type.gui.lbl -text "Select GUI group: \n(double-click for subgroups)"
-	listbox $f.type.gui.box -height 12
+	listbox $f.type.gui.box -height 20
 	$f.type.gui.box insert end $::name_back_entry
 	$f.type.gui.box insert end "form_fac"
 	$f.type.gui.box insert end "size_distrib"

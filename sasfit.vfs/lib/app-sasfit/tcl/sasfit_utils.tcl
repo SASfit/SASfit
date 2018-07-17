@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_utils.tcl
 #
-# Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #

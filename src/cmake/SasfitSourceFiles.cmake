@@ -3,7 +3,7 @@
 # Copyright (c) 2008-2011, Paul Scherrer Institute (PSI)
 #
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@
 #     * Neither the name of the <organization> nor the
 #       names of its contributors may be used to endorse or promote products
 #       derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -30,7 +30,7 @@
 #   Ingo Bressler (ingo.bressler@bam.de)
 #
 #############################################################################
-# A Cmake module to provide utility functions often used 
+# A Cmake module to provide utility functions often used
 # in sasfit cmake scripts
 #
 # This module expects to live in <sasfit-dir>/src/cmake
@@ -307,8 +307,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_MassFractExp_mpow_x_a.c
 	sasfit_ff_MassFractGauss.c
 	sasfit_ff_MassFractOverlappingSpheres.c
-	sasfit_ff_Mie.c
-	sasfit_ff_MieShell.c
 	sasfit_ff_MLVesicleFrielinghaus.c
 	sasfit_ff_mMemberedTwistedRing.c
 	sasfit_ff_MultiLamellarVesicle.c

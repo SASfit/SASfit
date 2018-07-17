@@ -57,20 +57,20 @@ $h(r,\xi)$.
   \hline
   \hline
   & & & & \\[-2mm]
-   {\tt \scriptsize Fischer-Burford}&  $\scriptstyle \text{ca. } \exp\left[-\tfrac{r}{\xi}\right]$  & $\scriptstyle R_g^2/3$ & $\scriptstyle \left(1+\frac{2}{3D}q^2R_g^2\right)^{-D/2}$ &  \\[3mm]
-   {\tt \scriptsize MassFractExp}   & $\scriptstyle \exp\left[-\tfrac{r}{\xi}\right]$          & $\frac{2R_g^2}{D(D+1)}$ & $\scriptstyle \frac{\sin\left[(D-1)\arctan(q\xi)\right]}{(D-1)q\xi(1+q^2\xi^2)^{(D-1)/2}}$ &  \\[3mm]
-   {\tt \scriptsize MassFractGauss} & $\scriptstyle \exp\left[-\left(\tfrac{r}{\xi}\right)^2\right]$ & $\frac{4R_g^2}{D}$ & $\scriptstyle e^{-\frac{q^2R_g^2}{D}} {}_1F_1\left[\frac{3-D}{2},\frac{3}{2},\frac{q^2R_g^2}{D}\right]$ &  \\[3mm]
-   $\text{\tt \scriptsize Aggregate}\atop \text{\tt (Exp(-x$\hat~$a) Cut-Off)}$ & $\scriptstyle \exp\left[-\left(\tfrac{r}{\xi}\right)^\alpha\right]$ & --- & numerical &  \\[3mm]
+   {\tt \scriptsize Fisher-Burford}&  $\scriptstyle \text{ca. } \exp\left[-\tfrac{r}{\xi}\right]$  & $\scriptstyle R_g^2/3$ & $\scriptstyle \left(1+\frac{2}{3D}q^2R_g^2\right)^{-D/2}$ &  \cite{Fisher1967}\\[3mm]
+   {\tt \scriptsize MassFractExp}   & $\scriptstyle \exp\left[-\tfrac{r}{\xi}\right]$          & $\frac{2R_g^2}{D(D+1)}$ & $\scriptstyle \frac{\sin\left[(D-1)\arctan(q\xi)\right]}{(D-1)q\xi(1+q^2\xi^2)^{(D-1)/2}}$ &  \cite{Sorensen1999}\\[3mm]
+   {\tt \scriptsize MassFractGauss} & $\scriptstyle \exp\left[-\left(\tfrac{r}{\xi}\right)^2\right]$ & $\frac{4R_g^2}{D}$ & $\scriptstyle e^{-\frac{q^2R_g^2}{D}} {}_1F_1\left[\frac{3-D}{2},\frac{3}{2},\frac{q^2R_g^2}{D}\right]$ &  \cite{Sorensen1992}\\[3mm]
+   $\text{\tt \scriptsize Aggregate}\atop \text{\tt (Exp(-x$\hat~$a) Cut-Off)}$ & $\scriptstyle \exp\left[-\left(\tfrac{r}{\xi}\right)^\alpha\right]$ & --- & numerical &  \cite{Sorensen2001}\\[3mm]
    $\text{\tt \scriptsize Aggregate}\atop \text{\tt (OverlapSph Cut-Off)}$ & $ \scriptstyle
                                                     \begin{cases}\scriptstyle
                                                         \left(1+\tfrac{r}{4\xi}\right) \left(1-\tfrac{r}{2\xi}\right)^2 ,&  \scriptstyle r<2\xi\\
                                                         \scriptstyle 0 ,&  \scriptstyle r\geq 2\xi
-                                                  \end{cases}$ & $\scriptstyle\frac{(D+2)(D+5)}{2D(D+1)}R_g^2$ & numerical &  \\[3mm]
-   {\tt \scriptsize DLCAggregate} & --- & --- & $\scriptstyle \left[1+{\displaystyle \sum_{\scriptstyle s=1}^{\scriptstyle 4}}C_s(qR_g)^{2s}\right]^{-D/8}$ &  \\
-                                          & & & $\scriptstyle C_1=\frac{8}{3}D, \, C_2=2.5$ & \\
+                                                  \end{cases}$ & $\scriptstyle\frac{(D+2)(D+5)}{2D(D+1)}R_g^2$ & numerical &  \cite{Hurd1988}\\[3mm]
+   {\tt \scriptsize DLCAggregate} & --- & --- & $\scriptstyle \left[1+{\displaystyle \sum_{\scriptstyle s=1}^{\scriptstyle 4}}C_s(qR_g)^{2s}\right]^{-D/8}$ &  \cite{Lin1990c}\\
+                                          & & & $\scriptstyle C_1=\frac{8}{3D}, \, C_2=2.5$ & \\
                                           & & & $\scriptstyle C_3=-1.52, \, C_4=1.02$ & \\[3mm]
-   {\tt \scriptsize RLCAggregate} & --- & --- & $\scriptstyle C_1=\frac{8}{3}D, \, C_2=3.13$ & \\
-                                          & & & $\scriptstyle C_3=-2.58, \, C_4=0.95$ & \\[3mm]
+   {\tt \scriptsize RLCAggregate} & --- & --- & $\scriptstyle C_1=\frac{8}{3D}, \, C_2=3.13$ & \\
+                                          & & & $\scriptstyle C_3=-2.58, \, C_4=0.95$ & \cite{Lin1990c}\\[3mm]
   \hline
 \end{tabular}
 \end{table}

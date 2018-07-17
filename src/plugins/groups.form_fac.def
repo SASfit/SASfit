@@ -70,6 +70,15 @@
  */
  
  /** 
+ * \defgroup ff_plugins_mie Mie Scattering
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * This group contains form factors for spheres and spherical shells in Mie approximation.
+ *
+ * \modname{ff_plugins_mie}
+ */
+ 
+ /** 
  * \defgroup ff_plugins_ellipsoidal_obj ellipsoidal obj.
  * \ingroup ff_plugins
  *

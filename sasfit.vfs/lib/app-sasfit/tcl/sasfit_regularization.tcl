@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_OZ_solver.tcl
 #
-# Copyright (c) 2008-2016, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #

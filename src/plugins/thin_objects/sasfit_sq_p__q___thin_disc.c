@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 #define R	param->p[0]
-#define DUMMY	param->p[1]
+
 #define SIGMA	fabs(param->p[2])
 
 
@@ -53,7 +53,7 @@ scalar sasfit_sq_p__q___thin_disc(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R); // modify condition to your needs
-	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
+
 	SASFIT_CHECK_COND1((SIGMA < 0.0), param, "sigma(%lg) < 0",SIGMA); // modify condition to your needs
 
 	// insert your code here

@@ -53,13 +53,13 @@
  *       <td>most probable layer thickness</td>
  *      </tr><tr>
  *       <td>\b sigma_t</td>
- *       <td>width of thickess distribution (LogNorm)</td>
+ *       <td>width of thickness distribution (LogNorm)</td>
  *      </tr><tr>
- *       <td>\b D</td>
- *       <td>most probable  disc diameter</td>
+ *       <td>\b R0</td>
+ *       <td>most probable  disc radius</td>
  *      </tr><tr>
- *       <td>\b sigma_D</td>
- *       <td>width of diameter distribution (LogNorm) </td>
+ *       <td>\b sigma_R0</td>
+ *       <td>width of radius distribution (LogNorm) </td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -238,10 +238,10 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_v(scalar q, sasfit_p
  *       <td>\b sigma_t</td>
  *       <td>width of distance  distribution (LogNorm)</td>
  *      </tr><tr>
- *       <td>\b D</td>
- *       <td>most probable  disc diameter</td>
+ *       <td>\b R0</td>
+ *       <td>most probable  disc radius</td>
  *      </tr><tr>
- *       <td>\b sigma_D</td>
+ *       <td>\b sigma_R0</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b dummy</td>
@@ -251,16 +251,16 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_cylsh_sd_homoxs_v(scalar q, sasfit_p
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b sigma_out</td>
- *       <td>sigma_out</td>
+ *       <td>width of scattering density distribution in the head groups of the lipids forming the outer layers of the bilayer</td>
  *      </tr><tr>
  *       <td>\b b_out</td>
- *       <td>b_out</td>
+ *       <td>excess scattering length of the head groups</td>
  *      </tr><tr>
  *       <td>\b sigma_core</td>
- *       <td>sigma_core</td>
+ *       <td>width of scattering density distribution in the tail groups of the lipids forming the core of the bilayer</td>
  *      </tr><tr>
  *       <td>\b b_core</td>
- *       <td>b_core</td>
+ *       <td>excess scattering length of the tail groups</td>
  *      </tr></table>
  */
 
@@ -318,16 +318,16 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_v(scalar q, sas
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b sigma_out</td>
- *       <td>sigma_out</td>
+ *       <td>width of scattering density distribution in the head groups of the lipids forming the outer layers of the bilayer</td>
  *      </tr><tr>
  *       <td>\b b_out</td>
- *       <td>b_out</td>
+ *       <td>excess scattering length of the head groups</td>
  *      </tr><tr>
  *       <td>\b sigma_core</td>
- *       <td>sigma_core</td>
+ *       <td>width of scattering density distribution in the tail groups of the lipids forming the core of the bilayer</td>
  *      </tr><tr>
  *       <td>\b b_core</td>
- *       <td>b_core</td>
+ *       <td>excess scattering length of the tail groups</td>
  *      </tr></table>
  */
 
@@ -367,7 +367,34 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellsh_sd_bilayergauss_v(scalar q, sa
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b t</td>
- *       <td>t</td>
+ *       <td>most probable distance between layer centers</td>
+ *      </tr><tr>
+ *       <td>\b sigma_t</td>
+ *       <td>width of distance  distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b R0</td>
+ *       <td>most probable radius of unilamellar cylindrical vesicle</td>
+ *      </tr><tr>
+ *       <td>\b sigma_R0</td>
+ *       <td>width of radius distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b H0</td>
+ *       <td>most probable height of unilamellar cylindrical vesicle</td>
+ *      </tr><tr>
+ *       <td>\b sigma_H0</td>
+ *       <td>width of hight distribution (LogNorm)</td>
+ *      </tr><tr>
+ *       <td>\b sigma_out</td>
+ *       <td>width of scattering density distribution in the head groups of the lipids forming the outer layers of the bilayer</td>
+ *      </tr><tr>
+ *       <td>\b b_out</td>
+ *       <td>excess scattering length of the head groups</td>
+ *      </tr><tr>
+ *       <td>\b sigma_core</td>
+ *       <td>width of scattering density distribution in the tail groups of the lipids forming the core of the bilayer</td>
+ *      </tr><tr>
+ *       <td>\b b_core</td>
+ *       <td>excess scattering length of the tail groups</td>
  *      </tr></table>
  */
 
@@ -1206,12 +1233,12 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_f(scalar q, sasfit_para
 sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_pcs_ellcylsh ################ */
 
-/* ################ start ff_ellcylsh_sd_rod ################ */
+/* ################ start ff_rod_sd_ellcylsh ################ */
 /**
- * \defgroup ff_ellcylsh_sd_rod EllCylSh+SD+Rod
+ * \defgroup ff_rod_sd_ellcylsh Rod+SD+EllCylSh
  * \ingroup ff_plugins_localcylindrical
  *
- * \brief \<some brief description of EllCylSh+SD+Rod function\>
+ * \brief \<some brief description of Rod+SD+EllCylSh function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1219,26 +1246,29 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasfit_para
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b R</td>
- *       <td>core radius</td>
+ *       <td>\b R0</td>
+ *       <td>most probable core radius</td>
  *      </tr><tr>
- *       <td>\b sigma_R</td>
- *       <td>width of radius distribution (LogNorm)</td>
+ *       <td>\b sigma_R0</td>
+ *       <td>width of core radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
  *       <td>eccentricity of elliptical cross-section</td>
  *      </tr><tr>
- *       <td>\b t</td>
- *       <td>shell thickness</td>
+ *       <td>\b t0</td>
+ *       <td>most probable shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma_t0</td>
+ *       <td>width of thickness distribution</td>
+ *      </tr><tr>
+ *       <td>\b L0</td>
+ *       <td>most probable rod length</td>
+ *      </tr><tr>
+ *       <td>\b sigma_L0</td>
+ *       <td>width of lengths distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
- *      </tr><tr>
- *       <td>\b L</td>
- *       <td>length of Rod</td>
- *      </tr><tr>
- *       <td>\b sigma_L</td>
- *       <td>width of length distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
  *       <td>scattering length density of core</td>
@@ -1252,31 +1282,31 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasfit_para
  */
 
 /**
- * \ingroup ff_ellcylsh_sd_rod
+ * \ingroup ff_rod_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_rod_sd_ellcylsh(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_rod
+ * \ingroup ff_rod_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_rod_sd_ellcylsh_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_rod
+ * \ingroup ff_rod_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_ellcylsh_sd_rod ################ */
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_rod_sd_ellcylsh_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_rod_sd_ellcylsh ################ */
 
 
-/* ################ start ff_ellcylsh_sd_worm_ps1 ################ */
+/* ################ start ff_worm_ps1_sd_ellcylsh ################ */
 /**
- * \defgroup ff_ellcylsh_sd_worm_ps1 EllCylSh+SD+Worm(PS1)
+ * \defgroup ff_worm_ps1_sd_ellcylsh EllCylSh+SD+Worm(PS1)
  * \ingroup ff_plugins_localcylindrical
  *
  * \brief \<some brief description of EllCylSh+SD+Worm(PS1) function\>
@@ -1320,30 +1350,30 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_rod_v(scalar q, sasfit_p
  */
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps1
+ * \ingroup ff_worm_ps1_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps1_sd_ellcylsh(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps1
+ * \ingroup ff_worm_ps1_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps1_sd_ellcylsh_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps1
+ * \ingroup ff_worm_ps1_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_ellcylsh_sd_worm_ps1 ################ */
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps1_sd_ellcylsh_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_worm_ps1_sd_ellcylsh ################ */
 
-/* ################ start ff_ellcylsh_sd_worm_ps2 ################ */
+/* ################ start ff_worm_ps2_sd_ellcylsh ################ */
 /**
- * \defgroup ff_ellcylsh_sd_worm_ps2 EllCylSh+SD+Worm(PS2)
+ * \defgroup ff_worm_ps2_sd_ellcylsh EllCylSh+SD+Worm(PS2)
  * \ingroup ff_plugins_localcylindrical
  *
  * \brief \<some brief description of EllCylSh+SD+Worm(PS2) function\>
@@ -1387,31 +1417,31 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps1_v(scalar q, sas
  */
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps2
+ * \ingroup ff_worm_ps2_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps2_sd_ellcylsh(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps2
+ * \ingroup ff_worm_ps2_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps2_sd_ellcylsh_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps2
+ * \ingroup ff_worm_ps2_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_ellcylsh_sd_worm_ps2 ################ */
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps2_sd_ellcylsh_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_worm_ps2_sd_ellcylsh ################ */
 
 
-/* ################ start ff_ellcylsh_sd_worm_ps3 ################ */
+/* ################ start ff_worm_ps3_sd_ellcylsh ################ */
 /**
- * \defgroup ff_ellcylsh_sd_worm_ps3 EllCylSh+SD+Worm(PS3)
+ * \defgroup ff_worm_ps3_sd_ellcylsh EllCylSh+SD+Worm(PS3)
  * \ingroup ff_plugins_localcylindrical
  *
  * \brief \<some brief description of EllCylSh+SD+Worm(PS2) function\>
@@ -1455,32 +1485,32 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps2_v(scalar q, sas
  */
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps3
+ * \ingroup ff_worm_ps3_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps3_sd_ellcylsh(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps3
+ * \ingroup ff_worm_ps3_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps3_sd_ellcylsh_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_ps3
+ * \ingroup ff_worm_ps3_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_ellcylsh_sd_worm_ps3 ################ */
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps3_sd_ellcylsh_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_worm_ps3_sd_ellcylsh ################ */
 
 
 
-/* ################ start ff_ellcylsh_sd_worm_kholodenko ################ */
+/* ################ start ff_worm_kholodenko_sd_ellcylsh ################ */
 /**
- * \defgroup ff_ellcylsh_sd_worm_kholodenko EllCylSh+SD+Worm(Kholodenko)
+ * \defgroup ff_worm_kholodenko_sd_ellcylsh EllCylSh+SD+Worm(Kholodenko)
  * \ingroup ff_plugins_localcylindrical
  *
  * \brief \<some brief description of EllCylSh+SD+Worm(Kholodenko) function\>
@@ -1524,26 +1554,26 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_ps3_v(scalar q, sas
  */
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_kholodenko
+ * \ingroup ff_worm_kholodenko_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_kholodenko_sd_ellcylsh(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_kholodenko
+ * \ingroup ff_worm_kholodenko_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_f(scalar q, sasfit_param * p);
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_kholodenko_sd_ellcylsh_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_ellcylsh_sd_worm_kholodenko
+ * \ingroup ff_worm_kholodenko_sd_ellcylsh
  *
  * \sa sasfit_thin_objects.h, ff_plugins_localcylindrical
  */
-sasfit_thin_objects_DLLEXP scalar sasfit_ff_ellcylsh_sd_worm_kholodenko_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_ellcylsh_sd_worm_kholodenko ################ */
+sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_kholodenko_sd_ellcylsh_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_worm_kholodenko_sd_ellcylsh ################ */
 
 #endif // this file
 

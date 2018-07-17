@@ -25,22 +25,25 @@ scalar sasfit_ff_cylsh_sd_homoxs(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T); // modify condition to your needs
-	SASFIT_CHECK_COND1((SIGMA_T < 0.0), param, "sigma_t(%lg) < 0",SIGMA_T); // modify condition to your needs
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R); // modify condition to your needs
-	SASFIT_CHECK_COND1((SIGMA_R < 0.0), param, "sigma_R(%lg) < 0",SIGMA_R); // modify condition to your needs
 	SASFIT_CHECK_COND1((H < 0.0), param, "H(%lg) < 0",H); // modify condition to your needs
-	SASFIT_CHECK_COND1((SIGMA_H < 0.0), param, "sigma_H(%lg) < 0",SIGMA_H); // modify condition to your needs
-	SASFIT_CHECK_COND1((ETA_L < 0.0), param, "eta_l(%lg) < 0",ETA_L); // modify condition to your needs
-	SASFIT_CHECK_COND1((ETA_SOL < 0.0), param, "eta_sol(%lg) < 0",ETA_SOL); // modify condition to your needs
 
 	// insert your code here
-	Pcs = sasfit_ff_pcs_homogeneousplate(q,param);
+    sasfit_init_param( &subParam );
+	subParam.p[0] =	T;
+	subParam.p[1] =	SIGMA_T;
+	subParam.p[4] =	ETA_L;
+	subParam.p[5] =	ETA_SOL;
+	Q=q;
+	P=2;
+
+	Pcs = sasfit_ff_pcs_homogeneousplate(q,&subParam);
 
 	sasfit_init_param( &subParam );
 	subParam.p[0] = R;
 	subParam.p[1] = H;
 	subParam.p[2] = SIGMA_R;
-	subParam.p[2] = SIGMA_H;
+	subParam.p[3] = SIGMA_H;
 
 	Pprime = sasfit_sq_p__q___thin_hollow_cylinder(q,&subParam);
 	return Pcs*Pprime;

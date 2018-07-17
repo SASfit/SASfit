@@ -16,27 +16,33 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_disc_sd_bilayergauss.c
 	sasfit_ff_ellsh_sd_bilayergauss.c
 	sasfit_ff_cylsh_sd_bilayergauss.c
+
+	sasfit_ff_rod_sd_ellcylsh.c
+	sasfit_ff_worm_ps1_sd_ellcylsh.c
+	sasfit_ff_worm_ps2_sd_ellcylsh.c
+	sasfit_ff_worm_ps3_sd_ellcylsh.c
+	sasfit_ff_worm_kholodenko_sd_ellcylsh.c
+
 	sasfit_ff_pcs_homogeneousplate.c
 	sasfit_ff_pcs_plate_chains_rw_.c
 	sasfit_ff_pcs_layeredcentrosymmetricxs.c
 	sasfit_ff_pcs_bilayergaus.c
 	sasfit_ff_pcs_twoinfinitelythinlayers.c
+	
+	sasfit_ff_pcs_homogeneouscyl.c
+	sasfit_ff_pcs_ellcylsh.c
+
 	sasfit_sq_p__q___thin_disc.c
 	sasfit_sq_p__q___thin_spherical_shell.c
 	sasfit_sq_p__q___thin_ellipsoidal_shell.c
 	sasfit_sq_p__q___thin_hollow_cylinder.c
+	
 	sasfit_sq_p__q___rod.c
 	sasfit_sq_p__q___worm_ps1_.c
 	sasfit_sq_p__q___worm_ps2_.c
 	sasfit_sq_p__q___worm_ps3_.c
 	sasfit_sq_p__q___kholodenko_worm.c
-	sasfit_ff_pcs_homogeneouscyl.c
-	sasfit_ff_pcs_ellcylsh.c
-	sasfit_ff_ellcylsh_sd_rod.c
-	sasfit_ff_ellcylsh_sd_worm_ps1.c
-	sasfit_ff_ellcylsh_sd_worm_ps2.c
-	sasfit_ff_ellcylsh_sd_worm_ps3.c
-	sasfit_ff_ellcylsh_sd_worm_kholodenko.c
+
 	sasfit_ao_utils.c
 	interface.c
 )

@@ -369,17 +369,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_DLS_Sphere_RDG;
 	} else
-	if ( strcmp(ff->typestr, "MieSphere") == 0 )
-	{
-		ff->fct = sasfit_ff_Mie;
-		ff->fct_v = sasfit_ff_sphere_v;
-	} else
-	if ( strcmp(ff->typestr, "MieShell") == 0 )
-	{
-		ff->fct = sasfit_ff_MieShell;
-		ff->fct_v = sasfit_ff_spherical_shell_v;
-		ff->params.kernelSelector = SPH_SHELL3; // only for volume function
-	} else
 	if ( strcmp(ff->typestr, "confinement with Gaussian potential") == 0 )
 	{
 		ff->fct = sasfit_peak_QENS_ConfinementWithGaussianPotential;

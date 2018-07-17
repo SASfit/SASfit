@@ -168,6 +168,7 @@ The thickness can have a distribution described by a log-normal distribution acc
 \begin{align}
 P_\text{cs}(Q,\sigma_{t},t) = \int_0^\infty \textrm{LogNorm}(x,1,\sigma_{t},1,t)
     \left[ \left(\eta_L-\eta_\textrm{solv}\right) x \frac{\sin(Qx/2)}{Qx/2} \right]^2\textrm{d}x
+\label{eq:PcsHomogeneousPlate}
 \end{align}
 
 \vspace{5mm}
@@ -638,6 +639,7 @@ As local planar objects the following shapes have been implemented:
 \end{figure}
 \begin{align}
 P'(Q) &= \int_0^\infty \mathrm{LogNorm}(R',\sigma,1,R) \,\pi^2R'^4\frac{2}{\left(R'Q\right)^2}\left(1-\frac{2\mathrm{J}_1(2QR')}{2QR'}\right) \, \mathrm{d} R'
+\label{eq:PprimeThinDisc}
 \end{align}
 
 \vspace{5mm}
@@ -679,6 +681,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local planar obj.]}".
 \end{figure}
 \begin{align}
 P'(Q) &= \int_0^\infty \, \mathrm{LogNorm}(R',\sigma,1,R)\, \left(4\pi R'^2\frac{\sin(QR')}{QR'}\right)^2 \mathrm{d}R'
+\label{eq:PprimeSphSh}
 \end{align}
 
 \vspace{5mm}
@@ -724,6 +727,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local planar obj.]}".
 \mathrm{S}(R,\epsilon) &= 2\pi R^2\left(1+\epsilon^2 {}_2F_1\left(\frac12,1;\frac32;1-\epsilon^2\right)\right) \\
 u &= QR'\sqrt{\sin^2\alpha+\epsilon^2\cos^2\alpha} \\
 P'(Q,R,\epsilon) &=  \int_0^\infty \mathrm{LogNorm}(R',\sigma,1,R)\, \mathrm{S}^2(R',\epsilon) \mathrm{j}_0^2(Qu)\sin\alpha \, \mathrm{d}\alpha\,\mathrm{d}R'
+\label{eq:PprimeEllSh}
 \end{align}
 with $\mathrm{j}_0$ being the regular spherical Bessel function of zeroth order.
 
@@ -778,6 +782,7 @@ P'_{thc}(Q,R,H) &= \int_0^\infty \int_0^\infty
 & \qquad \qquad  \mathrm{LogNorm}(h,1,\sigma_H,1,H,1) P_\text{thc}(Q,r,h)
 \, \mathrm{d}h \, \mathrm{d}r
 \end{split}
+\label{eq:PprimeThinWalledCylinder_closed}
 \end{align}
 
 \vspace{5mm}
@@ -830,6 +835,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local planar obj.]}".
 
 \begin{align}
 P'(Q) &= \int_0^\infty L'^2 \mathrm{LogNorm}(L',\sigma_L,1,L) \left(2 \frac{\mathrm{Si}(QL')}{QL'}-\frac{\sin^2(QL'/2)}{(QL'/2)^2} \right)\, \mathrm{d}L'
+\label{eq:PprimeRod}
 \end{align}
 where $\mathrm{Si}(z)=\int_0^z\frac{\sin t}{t} \mathrm{d}t$ is the sine integral.
 
@@ -1240,10 +1246,10 @@ u &= Q^2R_G^2 \\
 x &= QR_G \\
 S_\textrm{EXV}(Q,R_G) &= (1-w)S_\textrm{Debye}(Q,R_G) \\
 &+ w f_\textrm{corr}(Q) \left(C_1x^{-1/\nu}+C_2x^{-2/\nu}+C_3x^{-3/\nu}\right) \nonumber \\
-w &= \frac12\left(1+\tanh((x-1.523)/0.1477)\right) 
+w &= \frac12\left(1+\tanh((x-1.523)/0.1477)\right)
 \end{align}
 with the optimized parameters $C_1 = 1.2220$, $C_2 = 0.4288$, and $C_3 = -1.651$.
-As $S_\textrm{EXV}$ should be a monotonic decreasing function also at very small $Q$-values the correction factor $f_\textrm{corr}(Q,R_G)$ has been introduced by \cite{Chen2006} 
+As $S_\textrm{EXV}$ should be a monotonic decreasing function also at very small $Q$-values the correction factor $f_\textrm{corr}(Q,R_G)$ has been introduced by \cite{Chen2006}
 \begin{align}
 f_\textrm{corr}(Q,R_G) &=
 \begin{cases}
@@ -1272,6 +1278,181 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \clearpage
 \subsection{local planar  obj.} ~\\
 \label{plugin:LocalPlanar)}
+A few selected combinations of the cross-sections $P_\mathrm{cs}(Q)$ and shape factors $P'(Q)$ have been collected for thin planar objects in this subsection to give access to structure factor effects on these systems. The list can easily be extended on request.
 
+\vspace{5mm}
+
+\noindent
+\subsubsection{Disc+SD+BiLayerGauss} ~\\
+
+\noindent
+In this form factor the cross section term of a lipid bilayer (eq.\ \ref{eq:PcsBilayer}) is combined with a shape factor of a disc (eq.\ \ref{eq:PprimeThinDisc}).
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{Disc+SD+BiLayerGauss}:}\\
+\begin{description}
+\item[\texttt{t}] most probable layer distance between layer centers $t$
+\item[\texttt{sigma\_t}] width of distance distribution $\sigma_t$
+\item[\texttt{R0}] most probable disc radius $R_0$
+\item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{sigma\_out}] width of scattering density distribution in the head groups of the lipids forming the outer layers of the bilayer $\sigma_\mathrm{out}$
+\item[\texttt{b\_out}] excess scattering length of the head groups $b_\mathrm{out}$
+\item[\texttt{sigma\_core}] width of scattering density distribution in the tail groups of the lipids forming the core of the bilayer $\sigma_\mathrm{core}$
+\item[\texttt{b\_core}] excess scattering length of the tail groups $b_\mathrm{core}$
+\end{description}
+
+\vspace{5mm}
+
+\noindent
+\subsubsection{Disc+SD+homoXS} ~\\
+
+\noindent
+In this form factor the cross section term of a homogeneous plate (eq.\ \ref{eq:PcsHomogeneousPlate}) is combined with a shape factor of a disc (eq.\ \ref{eq:PprimeThinDisc}).
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{Disc+SD+homoXS}:}\\
+\begin{description}
+\item[\texttt{t}] most probable layer thickness $t$
+\item[\texttt{sigma\_t}] width of thickness distribution $\sigma_t$
+\item[\texttt{R0}] most probable disc radius $R_0$
+\item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{eta\_l}] scattering length density of layer $\eta_\mathrm{l}$
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\mathrm{sol}$
+\end{description}
+
+\vspace{5mm}
+
+\noindent
+\subsubsection{EllSh+SD+BiLayerGauss} ~\\
+
+\noindent
+In this form factor the cross section term of a lipid bilayer (eq.\ \ref{eq:PcsBilayer}) is combined with a shape factor of a thin ellipsoidal shell (eq.\ \ref{eq:PprimeEllSh}).
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{EllSh+SD+BiLayerGauss}:}\\
+\begin{description}
+\item[\texttt{t}] most probable layer distance between layer centers $t$
+\item[\texttt{sigma\_t}] width of distance distribution $\sigma_t$
+\item[\texttt{R0}] most probable disc radius $R_0$
+\item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
+\item[\texttt{epsilon}] eccentricity
+\item[\texttt{dummy}] not used
+\item[\texttt{sigma\_out}] width of scattering density distribution in the head groups of the lipids forming the outer layers of the bilayer $\sigma_\mathrm{out}$
+\item[\texttt{b\_out}] excess scattering length of the head groups $b_\mathrm{out}$
+\item[\texttt{sigma\_core}] width of scattering density distribution in the tail groups of the lipids forming the core of the bilayer $\sigma_\mathrm{core}$
+\item[\texttt{b\_core}] excess scattering length of the tail groups $b_\mathrm{core}$
+\end{description}
+
+\vspace{5mm}
+
+\noindent
+\subsubsection{EllSh+SD+homoXS} ~\\
+
+\noindent
+In this form factor the cross section term of a homogeneous plate (eq.\ \ref{eq:PcsHomogeneousPlate}) is combined with a shape factor of a thin ellipsoidal shell (eq.\ \ref{eq:PprimeEllSh}).
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{EllSh+SD+homoXS}:}\\
+\begin{description}
+\item[\texttt{t}] most probable layer thickness $t$
+\item[\texttt{sigma\_t}] width of thickness distribution $\sigma_t$
+\item[\texttt{R0}] most probable disc radius $R_0$
+\item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
+\item[\texttt{epsilon}] eccentricity
+\item[\texttt{dummy}] not used
+\item[\texttt{eta\_l}] scattering length density of layer $\eta_\mathrm{l}$
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\mathrm{sol}$
+\end{description}
+
+
+\vspace{5mm}
+
+\noindent
+\subsubsection{CylSh+SD+BiLayerGauss} ~\\
+
+\noindent
+In this form factor the cross section term of a lipid bilayer (eq.\ \ref{eq:PcsBilayer}) is combined with a shape factor of a thin walled cylinder with closed ends (eq.\ \ref{eq:PprimeThinWalledCylinder_closed}).
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{CylSh+SD+BiLayerGauss}:}\\
+\begin{description}
+\item[\texttt{t}] most probable layer distance between layer centers $t$
+\item[\texttt{sigma\_t}] width of distance distribution $\sigma_t$
+\item[\texttt{R0}] most probable cylinder radius $R_0$
+\item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
+\item[\texttt{R0}] most probable cylinder height $H_0$
+\item[\texttt{sigma\_H0}] width of height distribution $\sigma_{H_0}$
+\item[\texttt{sigma\_out}] width of scattering density distribution in the head groups of the lipids forming the outer layers of the bilayer $\sigma_\mathrm{out}$
+\item[\texttt{b\_out}] excess scattering length of the head groups $b_\mathrm{out}$
+\item[\texttt{sigma\_core}] width of scattering density distribution in the tail groups of the lipids forming the core of the bilayer $\sigma_\mathrm{core}$
+\item[\texttt{b\_core}] excess scattering length of the tail groups $b_\mathrm{core}$
+\end{description}
+
+\vspace{5mm}
+
+\noindent
+\subsubsection{CylSh+SD+homoXS} ~\\
+
+\noindent
+In this form factor the cross section term of a homogeneous plate (eq.\ \ref{eq:PcsHomogeneousPlate}) is combined with a shape factor of a thin walled cylinder with closed ends (eq.\ \ref{eq:PprimeThinWalledCylinder_closed}).
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{CylSh+SD+homoXS}:}\\
+\begin{description}
+\item[\texttt{t}] most probable layer thickness $t$
+\item[\texttt{sigma\_t}] width of thickness distribution $\sigma_t$
+\item[\texttt{R0}] most probable cylinder radius $R_0$
+\item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
+\item[\texttt{R0}] most probable cylinder height $H_0$
+\item[\texttt{sigma\_H0}] width of height distribution $\sigma_{H_0}$
+\item[\texttt{eta\_l}] scattering length density of layer $\eta_\mathrm{l}$
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\mathrm{sol}$
+\end{description}
+
+\clearpage
 \subsection{local cylindrical obj.} ~\\
 \label{plugin:LocalCylindrical)}
+A few selected combinations of the cross-sections $P_\mathrm{cs}(Q)$ and shape factors $P'(Q)$ have
+been collected for thin cylindrical objects in this subsection to give access to structure factor
+effects on these systems. The list can easily be extended on request.
+
+\vspace{5mm}
+
+\noindent
+\subsubsection{Rod+SD+EllCylSh} ~\\
+
+\noindent
+In this form factor the cross section term of a homogeneous plate (eq.\ \ref{Rod+SD+EllCylSh}) is combined with a shape factor of a infinitesimal thin rod of length $L$ (eq.\ \ref{eq:PprimeRod}).
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{Rod+SD+EllCylSh}:}\\
+\begin{description}
+\item[\texttt{R0}] most probable core radius $R_0$
+\item[\texttt{sigma\_R0}] width of core radius distribution $\sigma_{R_0}$  (LogNorm)
+\item[\texttt{epsilon}] eccentricity $\epsilon$ of the elliptical cross-section 
+\item[\texttt{T0}] most probable shell thickness $t_0$
+\item[\texttt{sigma\_t0}] width of thickness distribution $\sigma_{t_0}$ (LogNorm)
+\item[\texttt{L0}] most probable rod length $L_0$
+\item[\texttt{sigma\_L0}] width of lengths distribution $\sigma_{L_0}$ (LogNorm)
+\item[\texttt{eta\_core}] scattering length density of core $\eta_\mathrm{core}$
+\item[\texttt{eta\_shell}] scattering length density of shell $\eta_\mathrm{shell}$
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\mathrm{sol}$
+\end{description}

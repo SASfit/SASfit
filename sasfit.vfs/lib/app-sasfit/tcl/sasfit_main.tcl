@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_main.tcl
 #
-# Copyright (c) 2008-2014, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #
@@ -171,11 +171,11 @@ label $w.frame.right.prog.info.l2 -text $sasfit(version) -font {Helvetica 10}
 pack $w.frame.right.prog.info.l1 $w.frame.right.prog.info.l2
 
 label $w.frame.right.address.line1 -text \
-"Copyright (c) 2008-2016, Paul Scherrer Institute (PSI)
+"Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
 Laboratory for Neutron Scattering and Imaging
 CH-5232 Villigen PSI, Switzerland"
 entry $w.frame.right.address.url
-$w.frame.right.address.url insert end "http://kur.web.psi.ch/sans1/SANSSoft/sasfit.html"
+$w.frame.right.address.url insert end "https://github.com/SASfit/SASfit/"
 $w.frame.right.address.url configure -state readonly -relief flat -width 0 -highlightthickness 0
 pack  $w.frame.right.address.line1 $w.frame.right.address.url
 

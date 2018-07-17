@@ -12,7 +12,7 @@
 #define R0	param->p[2]
 #define SIGMA_R0	fabs(param->p[3])
 #define EPSILON	param->p[4]
-#define DUMMY	param->p[5]
+
 #define SIGMA_OUT	fabs(param->p[6])
 #define B_OUT	param->p[7]
 #define SIGMA_CORE	fabs(param->p[8])

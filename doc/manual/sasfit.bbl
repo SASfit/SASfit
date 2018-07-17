@@ -311,6 +311,26 @@ M.~Daoud and J.~Cotton.
 \newblock {\em Journal de Physique}, 43(3):531--538, 1982.
 \newblock \doi{10.1051/jphys:01982004303053100}.
 
+\bibitem{Dave1968}
+J.~Dave and {IBM Palo Alto Scientific Center}.
+\newblock {\em Subroutines for Computing the Parameters of the Electromagnetic
+  Radiation Scattered by a Sphere}.
+\newblock IBM Scientific Center, 1968.
+\newblock \urlprefix\url{https://books.google.ch/books?id=LQp4NAAACAAJ}.
+
+\bibitem{Dave1969a}
+J.~V. Dave.
+\newblock Scattering of electromagnetic radiation by a large, absorbing sphere.
+\newblock {\em {IBM} Journal of Research and Development}, 13(3):302--313, may
+  1969.
+\newblock \doi{10.1147/rd.133.0302}.
+
+\bibitem{Dave1969}
+J.~V. Dave.
+\newblock Scattering of visible light by large water spheres.
+\newblock {\em Applied Optics}, 8(1):155, jan 1969.
+\newblock \doi{10.1364/ao.8.000155}.
+
 \bibitem{David1986}
 W.~I.~F. David.
 \newblock Powder diffraction peak shapes. parameterization of the pseudo-voigt
@@ -389,6 +409,13 @@ M.~Engel, B.~Stühn, J.~J. Schneider, T.~Cornelius, and M.~Naumann.
 L.~A. Feigin and D.~I. Svergun.
 \newblock {\em Structure Analysis by Small-Angle X-ray and Neutron Scattering}.
 \newblock Plenum Press, 1987.
+
+\bibitem{Fisher1967}
+M.~E. Fisher and R.~J. Burford.
+\newblock Theory of critical-point scattering and correlations. i. the ising
+  model.
+\newblock {\em Physical Review}, 156(2):583--622, apr 1967.
+\newblock \doi{10.1103/physrev.156.583}.
 
 \bibitem{Franklin1956}
 R.~E. Franklin and A.~Klug.
@@ -815,6 +842,12 @@ C.~T. Kelley.
 \newblock Society for Industrial and Applied Mathematics, jan 2003.
 \newblock \doi{10.1137/1.9780898718898}.
 
+\bibitem{Kerker1969}
+M.~Kerker.
+\newblock {\em The Scattering of Light and Other Electromagnetic Radiation}.
+\newblock Elsevier, 1969.
+\newblock \doi{10.1016/c2013-0-06195-6}.
+
 \bibitem{Khan2013}
 S.~Khan.
 \newblock A picard-mann hybrid iterative process.
@@ -949,6 +982,13 @@ C.~N. Likos, H.~Löwen, M.~Watzlawek, B.~Abbas, O.~Jucknischke, J.~Allgaier, and
 \newblock Star polymers viewed as ultrasoft colloidal particles.
 \newblock {\em Physical Review Letters}, 80(20):4450--4453, may 1998.
 \newblock \doi{10.1103/physrevlett.80.4450}.
+
+\bibitem{Lin1990c}
+M.~Lin, R.~Klein, H.~Lindsay, D.~Weitz, R.~Ball, and P.~Meakin.
+\newblock The structure of fractal colloidal aggregates of finite extent.
+\newblock {\em Journal of Colloid and Interface Science}, 137(1):263--280, jun
+  1990.
+\newblock \doi{10.1016/0021-9797(90)90061-r}.
 
 \bibitem{Lin1989}
 M.~Lin, H.~Lindsay, D.~Weitz, R.~Ball, R.~Klein, and P.~Meakin.
@@ -1452,6 +1492,12 @@ W.~R. Smith, D.~Henderson, and Y.~Tago.
   square-well fluid.
 \newblock {\em The Journal of Chemical Physics}, 67(11):5308--5316, dec 1977.
 \newblock \doi{10.1063/1.434709}.
+
+\bibitem{Sorensen2001}
+C.~M. Sorensen.
+\newblock Light scattering by fractal aggregates: A review.
+\newblock {\em Aerosol Science and Technology}, 35(2):648--687, jan 2001.
+\newblock \doi{10.1080/02786820117868}.
 
 \bibitem{Sorensen1992}
 C.~M. Sorensen, J.~Cai, and N.~Lu.
