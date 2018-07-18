@@ -115,10 +115,6 @@ set(SOURCE_sasfit_sq
 	sasfit_sq_HayterPenfoldMSA.c
 	sasfit_sq_LocalOrderModel.c
 	sasfit_sq_MacroIon.c
-	sasfit_sq_MassFractal.c
-	sasfit_sq_MassFractalGaussianCutOff.c
-	sasfit_sq_MassFractExp_mpow_x_a.c
-	sasfit_sq_MassFractOverlapSph.c
 	sasfit_sq_MCT.c
 	sasfit_sq_None.c
 	sasfit_sq_PT.c
@@ -238,13 +234,10 @@ set(SOURCE_sasfit_ff
 	disc_rwbrush/sasfit_ff_disc_rwbrush.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush_lc.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush_nagg.c
-	sasfit_ff_DLCAggregation.c
 	sasfit_ff_DLS_Sphere_RDG.c
-	sasfit_ff_DoubleShellChain.c
 	sasfit_ff_DoubleShell_withSD.c
 	dozier_star/sasfit_ff_dozier_star.c
 	dozier_star/sasfit_ff_dozier_star_2.c
-	sasfit_ff_dumbbell_shell.c
 	ellip_rwbrush/utils.c
 	ellip_rwbrush/sasfit_ff_ellip_rwbrush.c
 	ellip_rwbrush/sasfit_ff_ellip_rwbrush_rc.c
@@ -254,7 +247,6 @@ set(SOURCE_sasfit_ff
 	ellip/sasfit_ff_ellip_1.c
 	ellip/sasfit_ff_ellip_2.c
 	sasfit_ff_ExpShell.c
-	sasfit_ff_FisherBurford.c
 	sasfit_ff_flat_cyl.c
 	sasfit_ff_FlexibleRingPolymer.c
 	sasfit_ff_Fractal.c
@@ -303,10 +295,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_LayeredCentroSymmetricXS.c
 	sasfit_ff_LinShell.c
 	sasfit_ff_long_cyl.c
-	sasfit_ff_MassFractExp.c
-	sasfit_ff_MassFractExp_mpow_x_a.c
-	sasfit_ff_MassFractGauss.c
-	sasfit_ff_MassFractOverlappingSpheres.c
 	sasfit_ff_MLVesicleFrielinghaus.c
 	sasfit_ff_mMemberedTwistedRing.c
 	sasfit_ff_MultiLamellarVesicle.c
@@ -314,7 +302,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_P39.c
 	sasfit_ff_PolydisperseStar.c
 	sasfit_ff_porod_cyl.c
-	sasfit_ff_RLCAggregation.c
 	sasfit_ff_RNDMultiLamellarVesicle2.c
 	sasfit_ff_RNDMultiLamellarVesicle.c
 	sasfit_ff_Robertus1.c
@@ -338,7 +325,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_Spinodal.c
 	sasfit_ff_StackDiscs.c
 	sasfit_ff_StickyHardSphere.c
-	sasfit_ff_TetrahedronDoubleShell.c
 	sasfit_ff_TeubnerStrey.c
 	sasfit_ff_ThinCylShell_homogenousXS.c
 	sasfit_ff_ThinDisc_homogenousXS.c

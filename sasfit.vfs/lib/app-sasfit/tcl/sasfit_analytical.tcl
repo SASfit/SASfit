@@ -5721,66 +5721,6 @@ switch -exact $type {
                 10 {return "\n"}
                }
            }
-           "GaussianAmplitude" {
-               switch $num {
-                 0 {return "Peak with Gaussian Profile\n"}
-                 1 {return "Ampl.: amplitude of peak\n"}
-                 2 {return "mean: position of peak maximum\n"}
-                 3 {return "width: width of Gaussian profile\n"}
-                 4 {return "bckgr: background\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "LorentzianAmplitude" {
-               switch $num {
-                 0 {return "Peak with Lorentzian Profile\n"}
-                 1 {return "Ampl.: amplitude of peak\n"}
-                 2 {return "mean: position of peak maximum\n"}
-                 3 {return "width: width of Lorentzian profile\n"}
-                 4 {return "bckgr: background\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "VoigtPeak" {
-               switch $num {
-                 0 {return "Peak with Voigt Profile\n"}
-                 1 {return "Area: area below peak\n"}
-                 2 {return "mean: position of peak maximum\n"}
-                 3 {return "sigma: width of Doppler profile\n"}
-                 4 {return "gamma: width of Lorentzian profile\n"}
-                 5 {return "backgr: background\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "PearsonVIIAmplitude" {
-               switch $num {
-                 0 {return "Peak with PearsonVII Profile: y=bckr+A/(1+4z^2(w^(1/width2)-1))^width2\nwith z=(x-mean)/width1"}
-                 1 {return "Ampl.: amplitude of peak\n"}
-                 2 {return "mean: position of peak maximum\n"}
-                 3 {return "width1: first width profile\n"}
-                 4 {return "width2: second wisth parameter\n"}
-                 5 {return "bckgr: background\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
            "Mass Fractal (Exp Cut-Off)" {
                switch $num {
                  0 {return "S(Q,xi,D)\n"}
@@ -9539,7 +9479,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 		      SuperparamagneticFFAniso \
 		      SuperparamagneticFFIso \
 		      SuperparamagneticFFCrossTerm}} \ 
-{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
 {others "other form factors" {   LangevinMH DoubleShell_withSD \
 			{SuperParStroboPsi Delta} \
 			{SuperParStroboPsi2 Delta} \ 
@@ -9614,8 +9553,6 @@ None \
 {lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
 {fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
 			 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
-{peaks "Peaks" {GaussianAmplitude LorentzianAmplitude VoigtPeak PearsonVIIAmplitude}
-		} \
 {other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 		BabaAhmed BabaAhmed2}} \
 }]

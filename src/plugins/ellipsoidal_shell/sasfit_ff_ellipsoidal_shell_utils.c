@@ -8,7 +8,7 @@
 
 scalar f_sph(scalar x) {
 
-    	if (fabs(x) < 1e-6)	{
+    if (fabs(x) < 1e-6)	{
 		return 1-gsl_pow_2(x)/10.+gsl_pow_4(x)/280.0-gsl_pow_6(x)/15120.+gsl_pow_8(x)/1330560.;
 	} else {
 		return 3*gsl_sf_bessel_j1(x)/x;

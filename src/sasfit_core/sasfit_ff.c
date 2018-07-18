@@ -27,7 +27,6 @@
 
 #include <string.h>
 #include <sasfit_ff.h>
-#include <sasfit_peaks.h>
 #include "include/sasfit_core.h"
 
 scalar sasfit_ff(scalar q, scalar * a, sasfit_function * ff, int * dparam, int * err)
@@ -257,10 +256,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_DoubleShell_withSD;
 	} else
-	if ( strcmp(ff->typestr, "StackDiscs") == 0 )
-	{
-		ff->fct = sasfit_ff_StackDiscs;
-	} else
 	if ( strcmp(ff->typestr, "Ellipsoid i") == 0 )
 	{
 		ff->fct = sasfit_ff_ellip_1;
@@ -315,38 +310,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct 	= sasfit_ff_StickyHardSphere;
 		ff->fct_v 	= sasfit_ff_sphere_v;
 	} else
-	if ( strcmp(ff->typestr, "Mass Fractal (Exp Cut-Off)") == 0 )
-	{
-		ff->fct = sasfit_ff_Fractal;
-	} else
-	if ( strcmp(ff->typestr, "Aggregate (Exp(-x^a) Cut-Off)") == 0 )
-	{
-		ff->fct = sasfit_ff_MassFractExp_mpow_x_a;
-	} else
-	if ( strcmp(ff->typestr, "Fisher-Burford") == 0 )
-	{
-		ff->fct = sasfit_ff_FisherBurford;
-	} else
-	if ( strcmp(ff->typestr, "DLCAggregation") == 0 )
-	{
-		ff->fct = sasfit_ff_DLCAggregation;
-	} else
-	if ( strcmp(ff->typestr, "RLCAggregation") == 0 )
-	{
-		ff->fct = sasfit_ff_RLCAggregation;
-	} else
-	if ( strcmp(ff->typestr, "MassFractExp") == 0 )
-	{
-		ff->fct = sasfit_ff_MassFractExp;
-	} else
-	if ( strcmp(ff->typestr, "MassFractGauss") == 0 )
-	{
-		ff->fct = sasfit_ff_MassFractGauss;
-	} else
-	if ( strcmp(ff->typestr, "Aggregate (OverlapSph Cut-Off)") == 0 )
-	{
-		ff->fct = sasfit_ff_MassFractOverlappingSpheres;
-	} else
 	if ( strcmp(ff->typestr, "WormLikeChainEXV") == 0 )
 	{
 		ff->fct = sasfit_ff_WormLikeChainEXV;
@@ -369,10 +332,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_DLS_Sphere_RDG;
 	} else
-	if ( strcmp(ff->typestr, "confinement with Gaussian potential") == 0 )
-	{
-		ff->fct = sasfit_peak_QENS_ConfinementWithGaussianPotential;
-	} else
 	if ( strcmp(ff->typestr, "P39") == 0 )
 	{
 		ff->fct = sasfit_ff_P39;
@@ -383,23 +342,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct_f 	= sasfit_ff_KShellcompr;
 		ff->fct_v 	= sasfit_ff_spherical_shell_v;
 		ff->params.kernelSelector = KSHLIN1; // for volume function
-	} else
-	if ( strcmp(ff->typestr, "DumbbellShell") == 0 )
-	{
-		ff->fct = sasfit_ff_dumbbell_shell;
-	} else
-	if ( strcmp(ff->typestr, "two_attached_spheres") == 0 )
-	{
-		ff->fct 	= sasfit_ff_two_attached_spheres;
-		ff->fct_f 	= sasfit_ff_two_attached_spheres_f;
-	} else
-	if ( strcmp(ff->typestr, "DoubleShellChain") == 0 )
-	{
-		ff->fct = sasfit_ff_DoubleShellChain;
-	} else
-	if ( strcmp(ff->typestr, "TetrahedronDoubleShell") == 0 )
-	{
-		ff->fct = sasfit_ff_TetrahedronDoubleShell;
 	} else
 	if ( strcmp(ff->typestr, "ShearedCylinder") == 0 )
 	{

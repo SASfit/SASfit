@@ -3565,7 +3565,6 @@ proc analyticalGlobalSDCmd {simorfit
 				      SuperparamagneticFFAniso \
 				      SuperparamagneticFFIso \
 				      SuperparamagneticFFCrossTerm}} \ 
-	{qensFF "QENS" {{"confinement with Gaussian potential" Monodisperse} }} \
 	{others "other form factors" {   LangevinMH DoubleShell_withSD \
 					{SuperParStroboPsi Delta} \
 					{SuperParStroboPsi2 Delta} \ 
@@ -3642,7 +3641,6 @@ proc analyticalGlobalSDCmd {simorfit
 	{lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
 	{fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
 				 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
-	{peaks "Peaks" {VoigtPeak PearsonVIIAmplitude}} \
 	{other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 			BabaAhmed BabaAhmed2}} \
 	}]

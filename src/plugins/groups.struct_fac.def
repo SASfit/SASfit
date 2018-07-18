@@ -216,6 +216,15 @@
  */
  
  /** 
+ * \defgroup sq_plugins_fractal_objects fractal obj.
+ * \ingroup sq_plugins
+ *
+ * This group contains structure factors of fractal objects.
+ *
+ * \modname{sq_plugins_fractal_objects}
+ */
+ 
+ /** 
  * \defgroup sq_plugins_user1 user plugins
  * \ingroup sq_plugins
  *

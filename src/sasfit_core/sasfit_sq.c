@@ -27,7 +27,6 @@
 
 #include <string.h>
 #include <sasfit_sq.h>
-#include <sasfit_peaks.h>
 #include "include/sasfit_core.h"
 
 scalar sasfit_sq(scalar q, scalar * a, sasfit_function * sq, int * dparam, int * err)
@@ -135,22 +134,6 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	{
 		sq->fct = sasfit_sq_StickyHardSphere2;
 	} else
-	if ( strcmp(sq->typestr, "Mass Fractal (Exp Cut-Off)") == 0 )
-	{
-		sq->fct = sasfit_sq_MassFractal;
-	} else
-	if ( strcmp(sq->typestr, "Mass Fractal (Gaussian Cut-Off)") == 0 )
-	{
-		sq->fct = sasfit_sq_MassFractalGaussianCutOff;
-	} else
-	if ( strcmp(sq->typestr, "Mass Fractal (OverlapSph Cut-Off)") == 0 )
-	{
-		sq->fct = sasfit_sq_MassFractOverlapSph;
-	} else
-	if ( strcmp(sq->typestr, "Mass Fractal (Exp(-x^a) Cut-Off)") == 0 )
-	{
-		sq->fct = sasfit_sq_MassFractExp_mpow_x_a;
-	} else
 	if ( strcmp(sq->typestr, "Square Well Potential") == 0 )
 	{
 		sq->fct = sasfit_sq_SquareWell;
@@ -174,46 +157,6 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	if ( strcmp(sq->typestr, "ModifiedCaille") == 0 )
 	{
 		sq->fct = sasfit_sq_MCT;
-	} else
-	if ( strcmp(sq->typestr, "GaussianAmplitude") == 0 )
-	{
-		sq->fct = sasfit_peak_GaussianAmplitude;
-	} else
-	if ( strcmp(sq->typestr, "LorentzianAmplitude") == 0 )
-	{
-		sq->fct = sasfit_peak_LorentzianAmplitude;
-	} else
-	if ( strcmp(sq->typestr, "QENS_ConfinementWithGaussianPotential") == 0 )
-	{
-		sq->fct = sasfit_peak_QENS_ConfinementWithGaussianPotential;
-	} else
-	if ( strcmp(sq->typestr, "VoigtPeak") == 0 )
-	{
-		sq->fct = sasfit_peak_VoigtPeakArea;
-	} else
-	if ( strcmp(sq->typestr, "PearsonVIIAmplitude") == 0 )
-	{
-		sq->fct = sasfit_peak_PearsonVIIAmplitude;
-	} else
-	if ( strcmp(sq->typestr, "ExpModifiedGaussian") == 0 )
-	{
-		sq->fct = sasfit_peak_ExponentiallyModifiedGaussianArea;
-	} else
-	if ( strcmp(sq->typestr, "HalfGaussianModifiedGaussian") == 0 )
-	{
-		sq->fct = sasfit_peak_HalfGaussianModifiedGaussianArea;
-	} else
-	if ( strcmp(sq->typestr, "Giddings") == 0 )
-	{
-		sq->fct = sasfit_peak_GiddingsArea;
-	} else
-	if ( strcmp(sq->typestr, "LogNormal4Parameters(Area)") == 0 )
-	{
-		sq->fct = sasfit_peak_LogNormal4ParameterArea;
-	} else
-	if ( strcmp(sq->typestr, "Haarhoff-Van der Linde") == 0 )
-	{
-		sq->fct = sasfit_peak_HaarhoffVanderLindeArea;
 	} else
 	if ( strcmp(sq->typestr, "Macro Ion (HP)") == 0 )
 	{
