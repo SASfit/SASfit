@@ -1,5 +1,0 @@
-package ifneeded scripdoc 1.0 [list source [file join $dir scripdoc.tcl]]
-package ifneeded starkit 1.0 [list source [file join $dir starkit.tcl]]
-package ifneeded mk4vfs 1.5 [list source [file join $dir mk4vfs.tcl]]
-package ifneeded vfslib 1.3 [list source [file join $dir vfslib.tcl]]
-package ifneeded zipvfs 1.0 [list source [file join $dir zipvfs.tcl]]

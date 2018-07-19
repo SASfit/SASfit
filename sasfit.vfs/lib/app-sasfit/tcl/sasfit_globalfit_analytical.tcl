@@ -3510,30 +3510,7 @@ proc analyticalGlobalSDCmd {simorfit
 						  {worms "wormlike structures" { \
 									  {WormLikeChainEXV Delta} \
 									  {KholodenkoWorm Delta} \
-									  }} }} \ 
-	{cluster "clusters" { \
-		               {Fisher-Burford Monodisperse} \
-			       {MassFractExp Monodisperse}\
-                               {MassFractGauss Monodisperse}\
-			       {{Aggregate (Exp(-x^a) Cut-Off)} Monodisperse} \
-			       {{Aggregate (OverlapSph Cut-Off)} Monodisperse} \
-			       {DLCAggregation Monodisperse}\
-			       {RLCAggregation Monodisperse}\
-				StackDiscs \
-				DumbbellShell \ 
-				two_attached_spheres \
-				DoubleShellChain \ 
-				TetrahedronDoubleShell \
-				}} \ 
-            {nonparticular "non-particular structures" {\
-		               {OrnsteinZernike Monodisperse} \ 
-                               {BroadPeak Monodisperse} \  
-                               {TeubnerStrey Monodisperse} \
-			       {DAB Monodisperse} \ 
-                               {Spinodal Monodisperse} \
-			       {BeaucageExpPowLaw Monodisperse} \ 
-                               {BeaucageExpPowLaw2 Monodisperse} 
-		               }} \
+									  }} }} \
 	    {cyl "cylindrical obj." { \
 				{Disc Delta} \
 				 PorodCylinder \

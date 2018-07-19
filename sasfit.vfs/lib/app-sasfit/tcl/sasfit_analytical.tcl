@@ -9434,20 +9434,6 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 							  {WormLikeChainEXV Delta} \
 							  {KholodenkoWorm Delta} \
 							  }} }} \ 
-{cluster "clusters" { \
-		 {Fisher-Burford Monodisperse} \
-		 {MassFractExp Monodisperse}\
-		 {MassFractGauss Monodisperse}\
-		 {{Aggregate (Exp(-x^a) Cut-Off)} Monodisperse} \ 
-		 {{Aggregate (OverlapSph Cut-Off)} Monodisperse} \
-		 {DLCAggregation Monodisperse}\
-		 {RLCAggregation Monodisperse}\
-		 StackDiscs \
-		 DumbbellShell \ 
-		 two_attached_spheres \
-		 DoubleShellChain \ 
-		 TetrahedronDoubleShell \
-		}} \ 
 {cyl "cylindrical obj." { \
 		{Disc Delta} \
 		 PorodCylinder \
