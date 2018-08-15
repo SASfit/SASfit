@@ -20,9 +20,6 @@ scalar sasfit_ff_two_attached_spheres(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R1 < 0.0), param, "R1(%lg) < 0",R1); // modify condition to your needs
 	SASFIT_CHECK_COND1((R2 < 0.0), param, "R2(%lg) < 0",R2); // modify condition to your needs
-	SASFIT_CHECK_COND1((ETA_0 < 0.0), param, "eta_0(%lg) < 0",ETA_0); // modify condition to your needs
-	SASFIT_CHECK_COND1((ETA_1 < 0.0), param, "eta_1(%lg) < 0",ETA_1); // modify condition to your needs
-	SASFIT_CHECK_COND1((ETA_2 < 0.0), param, "eta_2(%lg) < 0",ETA_2); // modify condition to your needs
 
 	// insert your code here
 	return 0.0;

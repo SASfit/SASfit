@@ -422,17 +422,17 @@ the center of the macromolecule are commonly called star
 polymers. For a star polymer Dozier \cite{dozier91} has developed
 a scattering function which reads:
 \begin{align}
-I_\text{DozierStar}(Q,I_0,R_G,\alpha,\nu,\xi)
+I_\text{DozierStar}(Q,I_0,R_G,\alpha,\nu,f)
 & = I_0 \exp\left(-\frac{Q^2R_G^2}{3}\right) \\
 +& \frac{4\pi\alpha}{Q\xi} \Gamma(\mu)
 \frac{\sin(\mu\arctan(Q\xi))}{(1+Q^2\xi^2)^{\mu/2}} \nonumber
 \end{align}
-with $\mu=1/\nu-1$
+with $\mu=1/\nu-1$ and $\xi=2R_G/sqrt{f}$.
 \begin{align}
 R_G      & : \text{radius of gyration} \nonumber \\
 I_0      & : \text{scale parameter} \nonumber \\
 \alpha   & : \text{scale parameter for fractal term} \nonumber \\
-\xi      & : \text{exponential damping length in mass fractal} \nonumber \\
+f        & : \text{number of arms in the star} \nonumber \\
 \nu      & : \text{Flory exponent, 3/5 in good solvent, 1/2 in
 theta solvent (i.e. $\mu=2/3$ to 1)} \nonumber
 \end{align}
@@ -443,9 +443,9 @@ theta solvent (i.e. $\mu=2/3$ to 1)} \nonumber
 \underline{Input Parameters for model \texttt{Dozier}:}
 \begin{description}
 \item[\texttt{R\_G}] radius of gyration $R_G$
-\item[\texttt{I\_0}] scale parameter $I_0$
+\item[\texttt{I\_0}] scale parameter if the Gaussian term $I_0$
 \item[\texttt{alpha}] scale parameter for fractal term $\alpha$
-\item[\texttt{xi}] exponential damping length in mass fractal $\xi$
+\item[\texttt{f}]  number of arms $f$ in the star 
 \item[\texttt{nu}] excluded volume parameter or Flory exponent $\nu$
 \end{description}
 \vspace{5mm}
@@ -466,21 +466,21 @@ $\xi=20$, $\nu=1/2$ } \label{fig:IQDozierStar1}
 This is a re-parametrization of the \texttt{Dozier} form factor
 to scale the scattering of the overall star to the local scattering of the individual arms.
 \begin{align}
-I_\text{DozierStar2}(Q,I_0,R_G,N_\text{agg},\nu,\xi)=
-\frac{I_0}{N_\text{agg}}
+I_\text{DozierStar2}(Q,I_0,R_G,f,\nu)=
+\frac{I_0}{f}
 \Biggl(
- &  (N_\text{agg}-1)
+ &  (f-1)
     \exp\left(-\frac{Q^2R_G^2}{3}\right) \\
  +&  \frac{\Gamma(\mu)}{Q\xi}
     \frac{\sin(\mu\arctan(Q\xi))}{(1+Q^2\xi^2)^{\mu/2}} \nonumber
 \Biggr)
 \end{align}
-with $\mu=1/\nu-1$
+with $\mu=1/\nu-1$ and $\xi=2R_G/sqrt{f}$.
 \begin{align}
 R_G      & : \text{radius of gyration of the star} \nonumber \\
 I_0      & : \text{scale parameter} \nonumber \\
-N_\text{agg} & : \text{number of arms in the star} \nonumber \\
-\xi      & : \text{exponential damping length in mass fractal} \nonumber \\
+f & : \text{number of arms in the star} \nonumber \\
+\xi      & : \text{exponential damping length in mass fractal} \xi=2R_G/sqrt{f}\nonumber \\
 \nu      & : \text{Flory exponent, 3/5 in good solvent, 1/2 in
 theta solvent (i.e. $\mu=2/3$ to 1)} \nonumber
 \end{align}
@@ -492,8 +492,7 @@ theta solvent (i.e. $\mu=2/3$ to 1)} \nonumber
 \begin{description}
 \item[\texttt{R\_G}] radius of gyration of the star $R_G$
 \item[\texttt{I\_0}] scale parameter $I_0$
-\item[\texttt{Nagg}]  number of arms $N_\text{agg}$ in the star from which the scale parameter for fractal term is calculated
-\item[\texttt{xi}] exponential damping length in mass fractal $\xi$
+\item[\texttt{f}]  number of arms $f$ in the star from which the scale parameter for fractal term is calculated
 \item[\texttt{nu}] Flory exponent, $\nu=3/5$ in good solvent, $\nu=1/2$ in
 theta solvent (i.e. $\mu=2/3$ to 1)
 \end{description}
@@ -572,6 +571,11 @@ u_{1r}^2 &= q^2R^2_{g,1r} \\
 R^2_{g,1r} &= \sqrt{\frac{b^2N}{12}} \\
 D(X) &= \exp\left(X^2\right) \int_0^X \exp(t^2)\, \mathrm{d}t
 \end{align}
+The above formula is defined for integer values of $m$ larger or equal 1. For non-integer values of $m$ a mixture between $\lfloor m\rfloor$ and $\lfloor m\rfloor+1$ is assumed where $\lfloor m \rfloor$ denotes the greatest integer less than or equal to $m$. (\texttt{\texttt{floor}}-function). We finally get
+\begin{align}
+P_r{q} &= (1-w)P_{\lfloor m\rfloor r}(q) + w P_{(\lfloor m\rfloor+1) r}(q)
+\end{align}
+with $w=m-\lfloor m\rfloor$.
 
 \vspace{5mm}
 

@@ -212,7 +212,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_partly_aligned_CylShell.c
 	sasfit_ff_Andrea1.c
 	sasfit_ff_background.c
-	sasfit_ff_BenoitStar.c
 	sasfit_ff_BiLayeredVesicle.c
 	sasfit_ff_BiLayerGauss.c
 	sasfit_ff_BlockCopolymerMicelle.c
@@ -229,15 +228,12 @@ set(SOURCE_sasfit_ff
 	cyl_shell/sasfit_ff_cyl_shell_2.c
 	cyl_shell/utils.c
 	sasfit_ff_DAB.c
-	sasfit_ff_DaisyLikeRing.c
 	sasfit_ff_Disc.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush_lc.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush_nagg.c
 	sasfit_ff_DLS_Sphere_RDG.c
 	sasfit_ff_DoubleShell_withSD.c
-	dozier_star/sasfit_ff_dozier_star.c
-	dozier_star/sasfit_ff_dozier_star_2.c
 	ellip_rwbrush/utils.c
 	ellip_rwbrush/sasfit_ff_ellip_rwbrush.c
 	ellip_rwbrush/sasfit_ff_ellip_rwbrush_rc.c
@@ -248,16 +244,8 @@ set(SOURCE_sasfit_ff
 	ellip/sasfit_ff_ellip_2.c
 	sasfit_ff_ExpShell.c
 	sasfit_ff_flat_cyl.c
-	sasfit_ff_FlexibleRingPolymer.c
 	sasfit_ff_Fractal.c
 	sasfit_ff_francois.c
-	gauss/sasfit_ff_gauss_1.c
-	gauss/sasfit_ff_gauss_2.c
-	gauss/sasfit_ff_gauss_3.c
-	gauss/sasfit_ff_gauss_generalized_1.c
-	gauss/sasfit_ff_gauss_generalized_2.c
-	gauss/sasfit_ff_gauss_generalized_3.c
-	gauss/sasfit_ff_gauss_poly.c
 	sasfit_ff_guinier.c
 	sasfit_ff_HardSphere.c
 	sasfit_ff_homogenousXS.c
@@ -296,11 +284,9 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_LinShell.c
 	sasfit_ff_long_cyl.c
 	sasfit_ff_MLVesicleFrielinghaus.c
-	sasfit_ff_mMemberedTwistedRing.c
 	sasfit_ff_MultiLamellarVesicle.c
 	sasfit_ff_OrnsteinZernike.c
 	sasfit_ff_P39.c
-	sasfit_ff_PolydisperseStar.c
 	sasfit_ff_porod_cyl.c
 	sasfit_ff_RNDMultiLamellarVesicle2.c
 	sasfit_ff_RNDMultiLamellarVesicle.c

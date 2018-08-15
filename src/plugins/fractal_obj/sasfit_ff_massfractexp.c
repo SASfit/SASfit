@@ -13,7 +13,6 @@
 
 scalar sasfit_ff_massfractexp(scalar q, sasfit_param * param)
 {
-
 	scalar xi;
 
 	SASFIT_ASSERT_PTR(param);
@@ -25,7 +24,7 @@ scalar sasfit_ff_massfractexp(scalar q, sasfit_param * param)
 	xi = sqrt(2.0*RG*RG/(D*(D+1.0)));
 
     if (q*xi == 0) return I0;
-	return I0*(sin((D-1.0)*atan(q*xi))) / ((D-1.)*q*xi*pow(1.0+q*q*xi*xi,(D-1.0)/2.0));
+	return I0*(sin((D-1.0)*atan(q*xi))) / ((D-1.)*q*xi*pow(1.0+gsl_pow_2(q*xi),(D-1.0)/2.0));
 
 }
 

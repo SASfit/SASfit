@@ -267,6 +267,15 @@
  *
  * \modname{ff_polymer_rings}
  */
+ 
+ /** 
+ * \defgroup ff_polymer_worm polymer wormlike 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for wormlike polymer chains.
+ *
+ * \modname{ff_polymer_worm}
+ */
 
 /** 
  * \defgroup ff_spherical_micelles spherical&ellipsoidal micelles 

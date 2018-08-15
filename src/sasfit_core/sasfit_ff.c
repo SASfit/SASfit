@@ -353,22 +353,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct = sasfit_ff_shearedCylinder;
 		ff->params.kernelSelector = CYL_SHRD_GAUSS;
 	} else
-	if ( strcmp(ff->typestr, "BenoitStar") == 0 )
-	{
-		ff->fct = sasfit_ff_BenoitStar;
-	} else
-	if ( strcmp(ff->typestr, "PolydisperseStar") == 0 )
-	{
-		ff->fct = sasfit_ff_PolydisperseStar;
-	} else
-	if ( strcmp(ff->typestr, "DozierStar") == 0 )
-	{
-		ff->fct = sasfit_ff_dozier_star;
-	} else
-	if ( strcmp(ff->typestr, "DozierStar2") == 0 )
-	{
-		ff->fct = sasfit_ff_dozier_star_2;
-	} else
 	if ( strcmp(ff->typestr, "BeaucageExpPowLaw2") == 0 )
 	{
 		ff->fct = sasfit_ff_UnifiedExponetialPowerLaw2;
@@ -695,46 +679,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	if ( strcmp(ff->typestr, "Spinodal") == 0 )
 	{
 		ff->fct = sasfit_ff_Spinodal;
-	} else
-	if ( strcmp(ff->typestr, "Gauss") == 0 )
-	{
-		ff->fct = sasfit_ff_gauss_1;
-	} else
-	if ( strcmp(ff->typestr, "Gauss2") == 0 )
-	{
-		ff->fct = sasfit_ff_gauss_2;
-	} else
-	if ( strcmp(ff->typestr, "Gauss3") == 0 )
-	{
-		ff->fct = sasfit_ff_gauss_3;
-	} else
-	if ( strcmp(ff->typestr, "GaussPoly") == 0 )
-	{
-		ff->fct = sasfit_ff_gauss_poly;
-	} else
-	if ( strcmp(ff->typestr, "generalized Gaussian coil") == 0 )
-	{
-		ff->fct = sasfit_ff_gauss_generalized_1;
-	} else
-	if ( strcmp(ff->typestr, "generalized Gaussian coil 2") == 0 )
-	{
-		ff->fct = sasfit_ff_gauss_generalized_2;
-	} else
-	if ( strcmp(ff->typestr, "generalized Gaussian coil 3") == 0 )
-	{
-		ff->fct = sasfit_ff_gauss_generalized_3;
-	} else
-	if ( strcmp(ff->typestr, "FlexibleRingPolymer") == 0 )
-	{
-		ff->fct = sasfit_ff_FlexibleRingPolymer;
-	} else
-	if ( strcmp(ff->typestr, "mMemberedTwistedRing") == 0 )
-	{
-		ff->fct = sasfit_ff_mMemberedTwistedRing;
-	} else
-	if ( strcmp(ff->typestr, "DaisyLikeRing") == 0 )
-	{
-		ff->fct = sasfit_ff_DaisyLikeRing;
 	} else
 	if ( strcmp(ff->typestr, "A(B)") == 0 )
 	{

@@ -172,8 +172,6 @@ sasfit_ff_DLLEXP scalar sasfit_ff_DLS_Sphere_RDG(scalar q, sasfit_param * param)
 sasfit_ff_DLLEXP scalar sasfit_ff_DoubleShellChain(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_DoubleShell_withSD(scalar q, sasfit_param * param);
 
-#include "../dozier_star/include/public.h"
-
 sasfit_ff_DLLEXP scalar sasfit_ff_dumbbell_shell(scalar q, sasfit_param * param);
 
 #include "../ellip_rwbrush/include/public.h"
@@ -181,13 +179,9 @@ sasfit_ff_DLLEXP scalar sasfit_ff_dumbbell_shell(scalar q, sasfit_param * param)
 
 #include "../ellip/include/public.h"
 sasfit_ff_DLLEXP scalar sasfit_ff_ExpShell(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_FisherBurford(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_flat_cyl(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_FlexibleRingPolymer(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_Fractal(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_francois(scalar q, sasfit_param * param);
-
-#include "../gauss/include/public.h"
 
 sasfit_ff_DLLEXP scalar sasfit_ff_HardSphere(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_d_deta_HardSphere(scalar q, sasfit_param * param);

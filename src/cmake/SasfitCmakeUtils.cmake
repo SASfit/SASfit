@@ -496,7 +496,7 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
         set(RECURSIVE TRUE)
     endif()
     message(STATUS "get_saskit_dependencies of '${SASKIT_FILE}'")
-    get_prerequisites(${SASKIT_FILE} PREREQ ${EXCLUDE_SYSTEM} ${RECURSIVE} "" "")
+#    get_prerequisites(${SASKIT_FILE} PREREQ ${EXCLUDE_SYSTEM} ${RECURSIVE} "" "")
     if(UNIX AND NOT APPLE) # linux
         # avoid modifying LD_LIBRARY_PATH,
         # using dyn.lib.loader in sasfit.sh instead

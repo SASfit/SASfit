@@ -866,6 +866,45 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \end{figure}
 
 \clearpage
+\subsubsection{P'(Q): freely joined chain of rods} ~\\
+\label{plugin:Pprime4freelyjoinedchainofrods}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{freelyjoinedchainofrod.png}
+\end{center}
+\caption{Sketch of a freely joined chain of rods.}
+\label{fig:freelyjoined chainofrod}
+\end{figure}
+
+This form factor describes a freely joined chain of infinitesimal thin rigid rods \cite{Hermans1958}.
+
+\begin{align}
+P'(Q,L,l_b) &= L^2\left( \frac{2l_b}{L}\left(\Lambda(\beta)-\frac12\left(\frac{\sin(\beta/2)}{\beta/2}\right)^2\right)\right) \\
+&+L^2\Lambda^2(\beta)\left(\frac{2l_b}{L}\frac{1}{1-\gamma}-\frac{2l_b^2}{L^2}\frac{1-\gamma^{L/l_b}}{\left(1-\gamma\right)^2}\right) \nonumber \\
+\beta &= q l_b \\
+\gamma &= \frac{\sin(\beta)}{\beta} \\
+\Lambda(\beta) &= \frac{\mathrm{Si}(\beta)}{\beta} \\
+\mathrm{Si}(x) &= \int _{0}^{x}{\frac {\sin t}{t}}\,dt
+\end{align}
+
+\clearpage
+\subsubsection{P'(Q): Koyama worm} ~\\
+\label{plugin:Pprime4koyama}
+\cite{Koyama1973,Koyama1974,Poetschke2000}
+\begin{align}
+P'(Q,L,l_b) &= L^2\frac{2}{X}\int_0^X (X-x)\phi(x)\mathrm{d}x \\
+X &= \frac{2L}{l_b} \\
+\phi(x) &= \exp\left(-\frac{s^2}{3}xf(x)\right) \frac{\sin(sxg(x))}{sxg(x)} \\
+s &= \frac12 ql_b \\
+xf(x) &= \frac{2\langle r^2\rangle}{l_b^2} - \frac12 x^2g^2(x) \\
+x^2g^2(x) &= \frac{2\langle r^2\rangle}{l_b^2} \sqrt{10}\sqrt{1-\frac35 K} \\
+K &= \frac{\langle r^4\rangle}{\langle r^2\rangle^2} \\
+\langle r^2\rangle &= \frac{l_b^2}{2} \left(x-\left(1-e^{-x}\right)\right)\\
+\langle r^4\rangle &= \frac{l_b^4}{4} \left\{\frac53 x^2 -\frac{52}{9}x-\frac{2}{27}\left(1-e^{-3x}\right)+8\left(1-e^{-x}\right)-2xe^{-x}\right\}
+\end{align}
+
+\clearpage
 \subsubsection{P'(Q): Kholodenko's worm} ~\\
 \label{plugin:Pprime4kohlodenko}
 
@@ -904,10 +943,6 @@ f(z) &=
 and
 \begin{align}
 E = \sqrt{1-\left(\frac{l_bQ}{3}\right)^2} \quad \text{and} \quad F = \sqrt{\left(\frac{l_bQ}{3}\right)^2-1}
-\end{align}
-
-\begin{align}
-P(Q,L,l_b,R) = P_0(Q,L,l_b)\, P_{cs}(Q,R)
 \end{align}
 
 \vspace{5mm}
@@ -1447,7 +1482,7 @@ In this form factor the cross section term of a homogeneous plate (eq.\ \ref{Rod
 \begin{description}
 \item[\texttt{R0}] most probable core radius $R_0$
 \item[\texttt{sigma\_R0}] width of core radius distribution $\sigma_{R_0}$  (LogNorm)
-\item[\texttt{epsilon}] eccentricity $\epsilon$ of the elliptical cross-section 
+\item[\texttt{epsilon}] eccentricity $\epsilon$ of the elliptical cross-section
 \item[\texttt{T0}] most probable shell thickness $t_0$
 \item[\texttt{sigma\_t0}] width of thickness distribution $\sigma_{t_0}$ (LogNorm)
 \item[\texttt{L0}] most probable rod length $L_0$

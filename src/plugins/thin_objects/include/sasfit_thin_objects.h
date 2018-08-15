@@ -1098,6 +1098,90 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_f(scalar q, s
 sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___kholodenko_worm ################ */
 
+/* ################ start sq_freely_joined_chain_of_rods ################ */
+/** 
+ * \defgroup sq_freely_joined_chain_of_rods  P'(Q): freely joined chain of rods
+ * \ingroup sq_plugins_pprimelocalcylindrical
+ *
+ * \brief \< some brief description of freely joined chain of rods function \>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_freely_joined_chain_of_rods
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_freely_joined_chain_of_rods(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_freely_joined_chain_of_rods
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_freely_joined_chain_of_rods_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_freely_joined_chain_of_rods
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_freely_joined_chain_of_rods_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_freely_joined_chain_of_rods ################ */
+
+/* ################ start sq_koyama_worms ################ */
+/** 
+ * \defgroup sq_koyama_worms  P'(Q): Koyama worm
+ * \ingroup sq_plugins_pprimelocalcylindrical
+ *
+ * \brief \<some brief description of Koyama worm function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_koyama_worms
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_koyama_worms(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_koyama_worms
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_koyama_worms_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_koyama_worms
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_koyama_worms_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_koyama_worms ################ */
+
 /* ################ start ff_pcs_homogeneouscyl ################ */
 /**
  * \defgroup ff_pcs_homogeneouscyl Pcs:homogeneousCyl

@@ -1377,141 +1377,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	   "Gauss"              { set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) ""
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "I0 ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gauss2"             { set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "b_p ="
-				  set actualPar(FF,l3,label) "V ="
-				  set actualPar(FF,l4,label) "eta_s ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Gauss3"             { set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "b_p ="
-				  set actualPar(FF,l3,label) "Mw ="
-				  set actualPar(FF,l4,label) "rho_p ="
-				  set actualPar(FF,l5,label) "eta_s ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "GaussPoly"          { set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "Mw ="
-				  set actualPar(FF,l3,label) "Mn ="
-				  set actualPar(FF,l4,label) "I0 ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"generalized Gaussian coil" \
-				{ set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "nu ="
-				  set actualPar(FF,l3,label) "I0 ="
-				  set actualPar(FF,l4,label) ""
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"generalized Gaussian coil 2" \
-				{ set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "nu ="
-				  set actualPar(FF,l3,label) "b_p ="
-				  set actualPar(FF,l4,label) "V ="
-				  set actualPar(FF,l5,label) "eta_s ="
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"generalized Gaussian coil 3" \
-				{ set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "nu ="
-				  set actualPar(FF,l3,label) "b_p ="
-				  set actualPar(FF,l4,label) "Mw ="
-				  set actualPar(FF,l5,label) "rho_p ="
-				  set actualPar(FF,l6,label) "eta_s ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	 "FlexibleRingPolymer"  { set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) ""
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "I0 ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	 "mMemberedTwistedRing" { set actualPar(FF,l1,label) "R_G,1r ="
-				  set actualPar(FF,l2,label) "m ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "I0 ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	       "DaisyLikeRing"  { set actualPar(FF,l1,label) "R_G,1r ="
-				  set actualPar(FF,l2,label) "m ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "I0 ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "BenoitStar"         { set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "f ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "I0 ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "PolydisperseStar"   { set actualPar(FF,l1,label) "Rg ="
-				  set actualPar(FF,l2,label) "f ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "I0 ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
 	   "JuelichMicelle"     { set actualPar(FF,l1,label) "mcore/rcore ="
 				  set actualPar(FF,l2,label) "mbrsh/rbrsh ="
 				  set actualPar(FF,l3,label) "bcore ="
@@ -1566,28 +1431,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l8,label) "d ="
 				  set actualPar(FF,l9,label) "Nagg ="
 				  set actualPar(FF,l10,label) "L ="
-				}
-	   "DozierStar"         { set actualPar(FF,l1,label) "I0 ="
-				  set actualPar(FF,l2,label) "Rg ="
-				  set actualPar(FF,l3,label) "alpha ="
-				  set actualPar(FF,l4,label) "xi ="
-				  set actualPar(FF,l5,label) "nu"
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "DozierStar2"        { set actualPar(FF,l1,label) "I0 ="
-				  set actualPar(FF,l2,label) "Rg ="
-				  set actualPar(FF,l3,label) "Nagg ="
-				  set actualPar(FF,l4,label) "xi ="
-				  set actualPar(FF,l5,label) "nu"
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
 				}
 	  "BeaucageExpPowLaw2"  { set actualPar(FF,l1,label) "G ="
 				  set actualPar(FF,l2,label) "B ="
@@ -3436,24 +3279,7 @@ proc analyticalGlobalSDCmd {simorfit
 				      {MLVesicleFrielinghaus Delta} \
 				       BiLayeredVesicle \
 				       SphereShell_compr}} \ 
-	{polymers_micelles "polymers & micelles" {{gauss "polymer chains" { \
-									   {Gauss Delta} \
-									   {Gauss2 Delta} \
-									   {Gauss3 Delta} \
-									   {GaussPoly Delta} \
-									   {{generalized Gaussian coil} Delta} \
-									   {{generalized Gaussian coil 2} Delta} \
-									   {{generalized Gaussian coil 3} Delta} \
-									  }} \ 
-						  {stars "polymer stars" { \
-									  {BenoitStar Delta} \
-									  {PolydisperseStar Delta} \
-									  {DozierStar Delta} \ 
-									  {DozierStar2 Delta} }} \ 
-						  {rings "polymer rings" { \
-									  {FlexibleRingPolymer Delta} \ 
-									  {mMemberedTwistedRing Delta} \ 
-									  {DaisyLikeRing Delta} }} \ 
+	{polymers_micelles "polymers & micelles" { \ 
 						  {spherical "spherical & ellipsoidal micelles" { \
 									  {SPHERE+Chains(RW)_Nagg Delta} \ 
 									  {SPHERE+Chains(RW)_Rc Delta} \
