@@ -688,6 +688,12 @@ D.~Henderson and E.~W. Grundke.
 \newblock {\em The Journal of Chemical Physics}, 63(2):601--607, jul 1975.
 \newblock \doi{10.1063/1.431378}.
 
+\bibitem{Hermans1958}
+J.~Hermans and J.~J. Hermans.
+\newblock Light scattering by zig-zag and worm-like chains.
+\newblock {\em The Journal of Physical Chemistry}, 62(12):1543--1546, dec 1958.
+\newblock \doi{10.1021/j150570a018}.
+
 \bibitem{Hindmarsh2005}
 A.~C. Hindmarsh, P.~N. Brown, K.~E. Grant, S.~L. Lee, R.~Serban, D.~E.
   Shumaker, and C.~S. Woodward.
@@ -905,6 +911,20 @@ A.~Kovalenko and F.~Hirata.
 \newblock {\em The Journal of Chemical Physics}, 110(20):10095--10112, may
   1999.
 \newblock \doi{10.1063/1.478883}.
+
+\bibitem{Koyama1973}
+R.~Koyama.
+\newblock Light scattering of stiff chain polymers.
+\newblock {\em Journal of the Physical Society of Japan}, 34(4):1029--1038, apr
+  1973.
+\newblock \doi{10.1143/jpsj.34.1029}.
+
+\bibitem{Koyama1974}
+R.~Koyama.
+\newblock Light scattering of stiff chain polymers. {II}.
+\newblock {\em Journal of the Physical Society of Japan}, 36(5):1409--1417, may
+  1974.
+\newblock \doi{10.1143/jpsj.36.1409}.
 
 \bibitem{Krasnoselskij1955}
 M.~A. Krasnoselskij.
@@ -1295,6 +1315,13 @@ G.~Porod.
 \newblock {Die Abh{\"a}ngigkeit der R{\"o}ntgenkleinwinkelstreuung von Form und
   Gr{\"o}sse der Kolloiden Teilchen in verd{\"u}nnten Systemen, IV}.
 \newblock {\em Acta Physica Austriaca}, 2:255--292, 1948.
+
+\bibitem{Poetschke2000}
+D.~P\"{o}tschke, P.~Hickl, M.~Ballauff, P.-O. {\AA}strand, and J.~S. Pedersen.
+\newblock Analysis of the conformation of worm-like chains by small-angle
+  scattering: Monte-carlo simulations in comparison to analytical theory.
+\newblock {\em Macromolecular Theory and Simulations}, 9(6):345--353, jul 2000.
+\newblock \doi{10.1002/1521-3919(20000701)9:6<345::aid-mats345>3.0.co;2-9}.
 
 \bibitem{Press2007}
 W.~H. Press, S.~A. Teukolsky, W.~T. Vetterling, and B.~P. Flannery.

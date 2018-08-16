@@ -134,6 +134,59 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_polydispersestar_f(scalar q, sasfit
 sasfit_polymer_stars_DLLEXP scalar sasfit_ff_polydispersestar_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_polydispersestar ################ */
 
+/* ################ start ff_gauss_exvol_star ################ */
+/**
+ * \defgroup ff_gauss_exvol_star excluded volume Gaussian star
+ * \ingroup ff_polymer_stars
+ *
+ * \brief \<some brief description of excluded volume Gaussian star function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration</td>
+ *      </tr><tr>
+ *       <td>\b f</td>
+ *       <td>number of branches</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>Flory exponent</td>
+ *      </tr><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering</td>
+ *      </tr><tr>
+ *       <td>\b version</td>
+ *       <td>version</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_gauss_exvol_star
+ *
+ * \sa sasfit_polymer_stars.h, ff_polymer_stars
+ */
+sasfit_polymer_stars_DLLEXP scalar sasfit_ff_gauss_exvol_star(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_gauss_exvol_star
+ *
+ * \sa sasfit_polymer_stars.h, ff_polymer_stars
+ */
+sasfit_polymer_stars_DLLEXP scalar sasfit_ff_gauss_exvol_star_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_gauss_exvol_star
+ *
+ * \sa sasfit_polymer_stars.h, ff_polymer_stars
+ */
+sasfit_polymer_stars_DLLEXP scalar sasfit_ff_gauss_exvol_star_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_gauss_exvol_star ################ */
+
+
 /* ################ start ff_dozierstar ################ */
 /**
  * \defgroup ff_dozierstar DozierStar

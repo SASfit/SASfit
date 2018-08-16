@@ -24,6 +24,12 @@
 
   SASFIT_PLUGIN_INFO_DECL;
 
+  // use lookup table for ff_generalized_gaussian_coil(q, param)
+  #define sasfit_ff_generalized_gaussian_coil(q,p) imp_ptr->functions[0].func((q),(p))
+  #define sasfit_ff_generalized_gaussian_coil_f(q,p) imp_ptr->functions[0].func_f((q),(p))
+  #define sasfit_ff_generalized_gaussian_coil_v(q,p,d) imp_ptr->functions[0].func_v((q),(p),(d))
+
+
 #else
 
 

@@ -11,6 +11,7 @@ set(LIBS_EXT
 # source files
 set(SOURCE_${PRJ_NAME}
 	sasfit_ff_benoitstar.c
+	sasfit_ff_gauss_exvol_star.c
 	sasfit_ff_polydispersestar.c
 	sasfit_ff_dozierstar.c
 	sasfit_ff_dozierstar2.c
