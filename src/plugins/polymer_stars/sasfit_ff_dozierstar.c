@@ -10,8 +10,8 @@
 #define I0	param->p[0]
 #define RG	param->p[1]
 #define ALPHA	param->p[2]
-#define F	param->p[3]
-#define NU	param->p[4]
+#define NU	param->p[3]
+#define F	param->p[4]
 
 scalar sasfit_ff_dozierstar(scalar q, sasfit_param * param)
 {

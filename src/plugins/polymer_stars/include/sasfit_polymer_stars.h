@@ -49,17 +49,20 @@
  *
  * \par Required parameters:
  *      <table border="0"><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering</td>
+ *      </tr><tr>
  *       <td>\b Rg</td>
  *       <td>radius of gyration</td>
- *      </tr><tr>
- *       <td>\b f</td>
- *       <td>number of branches</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b I0</td>
- *       <td>forward scattering</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b f</td>
+ *       <td>number of branches</td>
  *      </tr></table>
  */
 
@@ -98,16 +101,19 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_benoitstar_v(scalar q, sasfit_param
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b Rg</td>
+ *       <td>\b I0</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b f</td>
+ *       <td>\b Rg</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b I0</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b f</td>
  *       <td></td>
  *      </tr></table>
  */
@@ -136,10 +142,10 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_polydispersestar_v(scalar q, sasfit
 
 /* ################ start ff_gauss_exvol_star ################ */
 /**
- * \defgroup ff_gauss_exvol_star excluded volume Gaussian star
+ * \defgroup ff_gauss_exvol_star star of polymer arms with excl. vol.
  * \ingroup ff_polymer_stars
  *
- * \brief \<some brief description of excluded volume Gaussian star function\>
+ * \brief \<some brief description of "star of polymer arms with excl. vol." function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -147,20 +153,20 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_polydispersestar_v(scalar q, sasfit
  *
  * \par Required parameters:
  *      <table border="0"><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering</td>
+ *      </tr><tr>
  *       <td>\b Rg</td>
  *       <td>radius of gyration</td>
- *      </tr><tr>
- *       <td>\b f</td>
- *       <td>number of branches</td>
  *      </tr><tr>
  *       <td>\b nu</td>
  *       <td>Flory exponent</td>
  *      </tr><tr>
- *       <td>\b I0</td>
- *       <td>forward scattering</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b version</td>
- *       <td>version</td>
+ *       <td>\b f</td>
+ *       <td>number of branches</td>
  *      </tr></table>
  */
 
@@ -209,11 +215,11 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_gauss_exvol_star_v(scalar q, sasfit
  *       <td>\b alpha</td>
  *       <td>scaling factor between overall and blob scattering</td>
  *      </tr><tr>
- *       <td>\b f</td>
- *       <td>f: number of arms, correlation length xi inside star or equivalently the radius of the outermost blobs can be calculated by xi=2Rg/sqrt(f)</td>
- *      </tr><tr>
  *       <td>\b nu</td>
  *       <td>nu: Flory exponent g(r) = r^(1/nu-3), 0.6 in good solvent, .5 in theta solvent</td>
+ *      </tr><tr>
+ *       <td>\b f</td>
+ *       <td>f: number of arms, correlation length xi inside star or equivalently the radius of the outermost blobs can be calculated by xi=2Rg/sqrt(f)</td>
  *      </tr></table>
  */
 
@@ -261,12 +267,12 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_dozierstar_v(scalar q, sasfit_param
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>nu: Flory exponent g(r) = r^(1/nu-3), 0.6 in good solvent, .5 in theta solvent</td>
+ *      </tr><tr>
  *       <td>\b f</td>
  *       <td>f: number of arms, correlation length xi inside star or equivalently the radius of the outermost blobs can be calculated by xi=2Rg/sqrt(f)</td>
  *      </tr><tr>
- *      </tr><tr>
- *       <td>\b nu</td>
- *       <td>nu: Flory exponent g(r) = r^(1/nu-3), 0.6 in good solvent, .5 in theta solvent</td>
  *      </tr></table>
  */
 
@@ -294,10 +300,10 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_dozierstar2_v(scalar q, sasfit_para
 
 /* ################ start ff_broken_rods_star ################ */
 /**
- * \defgroup ff_broken_rods_star broken rods star
+ * \defgroup ff_broken_rods_star star polymer with arms of rigid rods
  * \ingroup ff_polymer_stars
  *
- * \brief \<some brief description of broken rods star function\>
+ * \brief \<some brief description of star polymer with arms of rigid rods\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -310,6 +316,9 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_dozierstar2_v(scalar q, sasfit_para
  *      </tr><tr>
  *       <td>\b L</td>
  *       <td>length of a single stiff chain in the star</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -344,10 +353,10 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_broken_rods_star_v(scalar q, sasfit
 
 /* ################ start ff_broken_worms_star ################ */
 /**
- * \defgroup ff_broken_worms_star broken worms star
+ * \defgroup ff_broken_worms_star star with semi-flexible arms
  * \ingroup ff_polymer_stars
  *
- * \brief \<some brief description of broken worms star function\>
+ * \brief \<some brief description of star with semi-flexible arms function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -363,6 +372,9 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_broken_rods_star_v(scalar q, sasfit
  *      </tr><tr>
  *       <td>\b lb</td>
  *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b f</td>
  *       <td>f: number of arms</td>

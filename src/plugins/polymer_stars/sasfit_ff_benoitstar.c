@@ -7,10 +7,11 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define RG	param->p[0]
-#define F	param->p[1]
+#define I0	param->p[0]
+#define RG	param->p[1]
 
-#define I0	param->p[3]
+#define F	param->p[4]
+
 
 scalar sasfit_ff_benoitstar(scalar q, sasfit_param * param)
 {

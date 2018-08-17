@@ -7,11 +7,11 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define RG	param->p[0]
-#define F	param->p[1]
+#define I0	param->p[0]
+#define RG	param->p[1]
 #define NU	param->p[2]
-#define I0	param->p[3]
-#define TEST	param->p[4]
+#define VERSION	param->p[3]
+#define F	param->p[4]
 
 scalar sasfit_ff_gauss_exvol_star(scalar q, sasfit_param * param)
 {
@@ -25,20 +25,22 @@ scalar sasfit_ff_gauss_exvol_star(scalar q, sasfit_param * param)
 	// insert your code here
 
 	sasfit_init_param( &subParam );
-	
+
 	subParam.p[0] = RG;
 	subParam.p[1] = NU;
 	subParam.p[2] = 1.0;
 	P1f=sasfit_ff_generalized_gaussian_coil(q,&subParam);
 	F1f=sasfit_ff_generalized_gaussian_coil_f(q,&subParam);
-	
-	subParam.p[0] = pow(2,NU)*RG;
-	subParam.p[2] = 1.0;
-	P1f_2=sasfit_ff_generalized_gaussian_coil(q,&subParam);
-//	TEST = 0;
-	if (TEST==1) {
+
+
+	VERSION = 0;
+	if (VERSION==1) {
 		Pib = F1f*F1f;
 	} else {
+	    subParam.p[0] = pow(2,NU)*RG;
+        subParam.p[1] = NU;
+        subParam.p[2] = 1.0;
+        P1f_2=sasfit_ff_generalized_gaussian_coil(q,&subParam);
 		Pib = 2*P1f_2-P1f;
 	}
 	return I0/F*(P1f+(F-1)*Pib);

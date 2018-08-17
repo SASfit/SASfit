@@ -10,7 +10,8 @@
 #define I0	param->p[0]
 #define L	param->p[1]
 #define LB	param->p[2]
-#define F	param->p[3]
+
+#define F	param->p[4]
 #define Q   param->p[MAXPAR-1]
 
 typedef struct
