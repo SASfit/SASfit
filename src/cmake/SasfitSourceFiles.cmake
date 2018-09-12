@@ -204,8 +204,6 @@ set(SOURCE_sasfit_peaks
 )
 
 set(SOURCE_sasfit_ff
-	sasfit_ff_aux_p\(r\).c
-	sasfit_ff_aux_gamma\(r\).c
 	psi_a_b/sasfit_ff_a.c
 	psi_a_b/sasfit_ff_b.c
 	sasfit_ff_alignedCylShell.c
@@ -227,7 +225,6 @@ set(SOURCE_sasfit_ff
 	cyl_shell/sasfit_ff_cyl_shell_1.c
 	cyl_shell/sasfit_ff_cyl_shell_2.c
 	cyl_shell/utils.c
-	sasfit_ff_DAB.c
 	sasfit_ff_Disc.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush_lc.c

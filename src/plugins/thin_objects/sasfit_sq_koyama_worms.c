@@ -110,7 +110,7 @@ scalar sasfit_sq_koyama_worms(scalar q, sasfit_param * param)
 	cubxmin[0]=cparam.X;
 //	sasfit_out("::sasfit_ff_koyama_worm: q: %lf X:%lf s:%lf\n",q, cparam.X, cparam.s);
 	intstrategy = sasfit_get_int_strategy();
-//	intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
+	intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
 	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));

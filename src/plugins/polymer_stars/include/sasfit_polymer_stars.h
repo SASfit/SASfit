@@ -368,7 +368,7 @@ sasfit_polymer_stars_DLLEXP scalar sasfit_ff_broken_rods_star_v(scalar q, sasfit
  *       <td>forward scattering</td>
  *      </tr><tr>
  *       <td>\b L</td>
- *       <td>contour length of a single stiff chain in the star</td>
+ *       <td>contour length of a single arm</td>
  *      </tr><tr>
  *       <td>\b lb</td>
  *       <td>Kuhn length</td>

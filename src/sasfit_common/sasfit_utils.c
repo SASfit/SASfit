@@ -170,35 +170,59 @@ scalar sasfit_bessj1(scalar x)
 
 scalar sasfit_rwbrush_w(scalar Q, scalar R)
 {
-        scalar u = Q*Q * R*R;
+    scalar u2;
+    scalar u = Q*Q * R*R;
+    u2=u*u;
 
-        if ( u == 0.0 )
-        {
-                return 1.0;
-        }
+    if ( fabs(u) <= 1.0e-4 )
+    {
+            return (1 - u/10. + u2/60.)/(1. + (2.*u)/5 + u2/20.);
+    }
 
 	return (1 - exp(-u)) / u;
+}
+
+scalar sasfit_jinc(scalar x) {
+    scalar x2, x4;
+    x2=x*x;
+    x4=x2*x2;
+//PadeApproximant {3,4}
+/*
+    if (fabs(x) <= 1e-6) {
+		return (0.5-23*x2/480.+11*x4/11520.)
+		       /(1+7/240.*x2+x4/2880.);
+	} else {
+		return gsl_sf_bessel_J1(x)/x;
+	}
+*/
+// Taylor Series
+    if (fabs(x) <= 1e-6) {
+		return 0.5-gsl_pow_2(x)/16.0
+		          +gsl_pow_4(x)/384.0
+		          -gsl_pow_6(x)/18432.0
+		          +gsl_pow_8(x)/1474560.0;
+	} else {
+		return gsl_sf_bessel_J1(x)/x;
+	}
 }
 
 scalar sasfit_rod_fc(scalar Q, scalar R)
 {
 	scalar u  = Q * R;
-
-	if (u == 0.0)
-	{
-		return 1.0;
-	}
-
-	return 2.0 * gsl_sf_bessel_J1(u)/u;
+	return 2.0 * sasfit_jinc(u);
 }
 
 scalar sasfit_sphere_fc(scalar Q, scalar R)
 {
+    scalar u2,u4;
 	scalar u  = Q * R;
+    u2=u*u;
+    u4=u2*u2;
 
-	if (u == 0.0)
+	if (fabs(u) <= 1.0e-4)
 	{
-		return 1.0;
+		return   (1. - (211.*u2)/2860. + (2647.*u4)/2162160.)
+                /(1. + (15. *u2)/572.  + (17.  *u4)/61776.);
 	}
 
 	return 3.0* (sin(u)-u*cos(u))/(u*u*u);
@@ -206,12 +230,14 @@ scalar sasfit_sphere_fc(scalar Q, scalar R)
 
 scalar sasfit_gauss_fc(scalar Q, scalar R)
 {
-	scalar u,res;
+	scalar u,res,u2,u3,u4;
 	u = Q*Q * R*R;
-
-	if (u == 0.0)
+    u2=u*u;
+    u3=u2*u;
+    u4=u2*u2;
+	if (fabs(u) <= 1.0e-4)
 	{
-		res = 1.0;
+		res = 1.0-u/3.+u2/12.-u3/60.+u4/360.;
 	} else {
         res = 2 * (exp(-u) - 1 + u) / (u*u);
 	}
@@ -241,7 +267,7 @@ const char * sasfit_get_lib_suffix()
 }
 
 
-scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param) 
+scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param)
 {
 	scalar a1,a2,a3,a4, X_0, X_50, X_n, nperc;
 	nperc = 0.1;

@@ -145,7 +145,7 @@ sasfit_common_stubs_t sasfit_common_stubs = {
     NULL, /* 101 */
     NULL, /* 102 */
     NULL, /* 103 */
-    NULL, /* 104 */
+    sasfit_jinc, /* 104 */
     find_LogNorm_int_range, /* 105 */
     hcubature, /* 106 */
     pcubature, /* 107 */

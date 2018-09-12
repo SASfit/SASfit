@@ -310,14 +310,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct 	= sasfit_ff_StickyHardSphere;
 		ff->fct_v 	= sasfit_ff_sphere_v;
 	} else
-	if ( strcmp(ff->typestr, "WormLikeChainEXV") == 0 )
-	{
-		ff->fct = sasfit_ff_WormLikeChainEXV;
-	} else
-	if ( strcmp(ff->typestr, "KholodenkoWorm") == 0 )
-	{
-		ff->fct = sasfit_ff_KholodenkoWorm;
-	} else
 	if ( strcmp(ff->typestr, "LangevinMH") == 0 )
 	{
 		ff->fct = sasfit_ff_LangevinMH;
@@ -660,26 +652,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_ThinDisc_homogenousXS;
 	} else
-	if ( strcmp(ff->typestr, "OrnsteinZernike") == 0 )
-	{
-		ff->fct = sasfit_ff_OrnsteinZernike;
-	} else
-	if ( strcmp(ff->typestr, "BroadPeak") == 0 )
-	{
-		ff->fct = sasfit_ff_BroadPeak;
-	} else
-	if ( strcmp(ff->typestr, "DAB") == 0 )
-	{
-		ff->fct = sasfit_ff_DAB;
-	} else
-	if ( strcmp(ff->typestr, "TeubnerStrey") == 0 )
-	{
-		ff->fct = sasfit_ff_TeubnerStrey;
-	} else
-	if ( strcmp(ff->typestr, "Spinodal") == 0 )
-	{
-		ff->fct = sasfit_ff_Spinodal;
-	} else
 	if ( strcmp(ff->typestr, "A(B)") == 0 )
 	{
 		ff->fct = sasfit_ff_a;
@@ -730,22 +702,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct = sasfit_ff_spherical_shell;
 		ff->fct_v = sasfit_ff_spherical_shell_v;
 		ff->params.kernelSelector = SPH_SHELL3;
-	} else
-	if ( strcmp(ff->typestr, "Pcs:homogeneousCyl") == 0 )
-	{
-		ff->fct = sasfit_ff_Pcs_homogeneousCyl;
-	} else
-	if ( strcmp(ff->typestr, "Pcs:ellCylSh") == 0 )
-	{
-		ff->fct = sasfit_ff_Pcs_ellCylSh;
-	} else
-	if ( strcmp(ff->typestr, "p(r) -> 4 pi sin(qr)/(qr)") == 0 )
-	{
-		ff->fct = sasfit_ff_aux_p_r;
-	} else
-	if ( strcmp(ff->typestr, "gamma(r) -> 4 pi r^2 sin(qr)/(qr)") == 0 )
-	{
-		ff->fct = sasfit_ff_aux_gamma_r;
 	} else
 	{
 		// unknown form factor

@@ -764,30 +764,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-   "p(r) -> 4 pi sin(qr)/(qr)" \
-                                { set actualPar(FF,l1,label) "r ="
-                                  set actualPar(FF,l2,label) ""
-                                  set actualPar(FF,l3,label) ""
-                                  set actualPar(FF,l4,label) ""
-                                  set actualPar(FF,l5,label) ""
-                                  set actualPar(FF,l6,label) ""
-                                  set actualPar(FF,l7,label) ""
-                                  set actualPar(FF,l8,label) ""
-                                  set actualPar(FF,l9,label) ""
-                                  set actualPar(FF,l10,label) ""
-                                 }
-   "gamma(r) -> 4 pi r^2 sin(qr)/(qr)" \
-                                { set actualPar(FF,l1,label) "r ="
-                                  set actualPar(FF,l2,label) ""
-                                  set actualPar(FF,l3,label) ""
-                                  set actualPar(FF,l4,label) ""
-                                  set actualPar(FF,l5,label) ""
-                                  set actualPar(FF,l6,label) ""
-                                  set actualPar(FF,l7,label) ""
-                                  set actualPar(FF,l8,label) ""
-                                  set actualPar(FF,l9,label) ""
-                                  set actualPar(FF,l10,label) ""
-                                }
 	   "Sphere"             { set actualPar(FF,l1,label) "R ="
 				  set actualPar(FF,l2,label) ""
 				  set actualPar(FF,l3,label) ""
@@ -1790,28 +1766,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l8,label) "eta_shell ="
 				  set actualPar(FF,l9,label) "x_solvent ="
 				  set actualPar(FF,l10,label) "eta_solvent ="
-				}
-	   "WormLikeChainEXV"   { set actualPar(FF,l1,label) "S0 ="
-				  set actualPar(FF,l2,label) "RL ="
-				  set actualPar(FF,l3,label) "RRL ="
-				  set actualPar(FF,l4,label) "R ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "KholodenkoWorm"     { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "l ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) ""
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
 				}
 	"SphereWithGaussChains" { set actualPar(FF,l1,label) "R ="
 				  set actualPar(FF,l2,label) "Rg ="
@@ -3265,10 +3219,6 @@ proc analyticalGlobalSDCmd {simorfit
 	set selected_ff [dropdownl_add_entries_old $ffmenu ::actualGlobalAnalytPar ::tmpGlobalAnalytPar \
 							   update_datasets_multi $root_btn_ff $root_btn_sd FF { \
 	{Background Monodisperse} \ 
-{aux "auxiliary transition functions" { \
-					{{p(r) -> 4 pi sin(qr)/(qr)} Gaussian} \
-					{{gamma(r) -> 4 pi r^2 sin(qr)/(qr)} Gaussian} 
-}   }
 	{sphshell "Spheres & Shells" { Sphere \
 				      {{Spherical Shell i}}\
 				      {{Spherical Shell ii}} \
@@ -3332,11 +3282,7 @@ proc analyticalGlobalSDCmd {simorfit
 									  {EllULV+Chains(RW) Delta} \ 
 									  {CylULV+Chains(RW)_nagg Delta} \
 									  {CylULV+Chains(RW)_tc Delta} \ 
-									  {CylULV+Chains(RW) Delta} }} \ 
-						  {worms "wormlike structures" { \
-									  {WormLikeChainEXV Delta} \
-									  {KholodenkoWorm Delta} \
-									  }} }} \
+									  {CylULV+Chains(RW) Delta} }} }} \
 	    {cyl "cylindrical obj." { \
 				{Disc Delta} \
 				 PorodCylinder \

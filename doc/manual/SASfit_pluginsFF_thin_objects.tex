@@ -818,7 +818,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local planar obj.]}".
 \label{plugin:Pprime4cylindrical}
 \begin{enumerate}
 \item thin rigid rod
-\item wormlike structure
+\item worm-like or semi-flexible structure
 \end{enumerate}
 
 \clearpage
@@ -827,7 +827,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local planar obj.]}".
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.926\textwidth,height=0.24\textwidth]{../images/form_factor/anisotropic/ThinRod.png}
+\includegraphics[width=0.9\textwidth]{../images/form_factor/anisotropic/ThinRod.png}
 \end{center}
 \caption{Sketch of a thin Rod of Length $L$. The diameter of the rod is assumed to be much smaller than its length.}
 \label{fig:ThinRod}
@@ -861,7 +861,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \begin{center}
 \includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/PprimeRod.png}
 \end{center}
-\caption{Scattering curve for the structure factor "\texttt{P'(Q): Rod}" in combination with a constant background of 1".}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Rod}" alone without $P_\mathrm{cs}(Q)$..}
 \label{fig_IQ:PprimeRod}
 \end{figure}
 
@@ -880,7 +880,8 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 This form factor describes a freely joined chain of infinitesimal thin rigid rods \cite{Hermans1958}.
 
 \begin{align}
-P'(Q,L,l_b) &= L^2\left( \frac{2l_b}{L}\left(\Lambda(\beta)-\frac12\left(\frac{\sin(\beta/2)}{\beta/2}\right)^2\right)\right) \\
+P'(Q,L,l_b) &= L^2\left( \frac{2l_b}{L}\left(\Lambda(\beta)-\frac12\left(\frac{\sin(\beta/2)}{\beta/2}\right)^2\right)\right)
+\label{eq:PprimeFreelyJoinedRods}\\
 &+L^2\Lambda^2(\beta)\left(\frac{2l_b}{L}\frac{1}{1-\gamma}-\frac{2l_b^2}{L^2}\frac{1-\gamma^{L/l_b}}{\left(1-\gamma\right)^2}\right) \nonumber \\
 \beta &= q l_b \\
 \gamma &= \frac{\sin(\beta)}{\beta} \\
@@ -888,13 +889,38 @@ P'(Q,L,l_b) &= L^2\left( \frac{2l_b}{L}\left(\Lambda(\beta)-\frac12\left(\frac{\
 \mathrm{Si}(x) &= \int _{0}^{x}{\frac {\sin t}{t}}\,dt
 \end{align}
 
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{P'(Q) freely joined chain of rods}:}\\
+\begin{description}
+\item[\texttt{lb}] Kuhn length $l_B$ of semi-flexible worm-like structure
+\item[\texttt{L}] contour length $L$ of semi-flexible worm-like structure
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
+  \item scattering function is normalized to $P'(Q,L,l_b) \xrightarrow[Q\rightarrow 0]{} L^2$
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_semiflexible/PprimeFreelyJoinedRods.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): freely joined chain of rods}" alone without $P_\mathrm{cs}(Q)$.}
+\label{fig_IQ:PprimeFreelyJoinedChainOfRods}
+\end{figure}
+
 \clearpage
 \subsubsection{P'(Q): Koyama worm} ~\\
 \label{plugin:Pprime4koyama}
 \cite{Koyama1973,Koyama1974,Poetschke2000}
 \begin{align}
 P'(Q,L,l_b) &= L^2\frac{2}{X^2}\int_0^X (X-x)\phi(x)\mathrm{d}x \\
-X &= \frac{2L}{l_b} \\
+X &= \frac{2L}{l_b} \label{eq:PprimeKoyama}\\
 \phi(x) &= \exp\left(-\frac{s^2}{3}xf(x)\right) \frac{\sin(sxg(x))}{sxg(x)} \\
 s &= \frac12 ql_b \\
 xf(x) &= \frac{2\langle r^2\rangle}{l_b^2} - \frac12 x^2g^2(x) \\
@@ -903,6 +929,31 @@ K &= \frac{\langle r^4\rangle}{\langle r^2\rangle^2} \\
 \langle r^2\rangle &= \frac{l_b^2}{2} \left(x-\left(1-e^{-x}\right)\right)\\
 \langle r^4\rangle &= \frac{l_b^4}{4} \left\{\frac53 x^2 -\frac{52}{9}x-\frac{2}{27}\left(1-e^{-3x}\right)+8\left(1-e^{-x}\right)-2xe^{-x}\right\}
 \end{align}
+
+\vspace{5mm}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{P'(Q) Koyama worm}:}\\
+\begin{description}
+\item[\texttt{lb}] Kuhn length $l_B$ of semi-flexible worm-like structure
+\item[\texttt{L}] contour length $L$ of semi-flexible worm-like structure
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
+under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
+  \item scattering function is normalized to $P'(Q,L,l_b) \xrightarrow[Q\rightarrow 0]{} L^2$
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_semiflexible/PprimeKoyamaWorm.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Koyama worm}" alone without $P_\mathrm{cs}(Q)$.}
+\label{fig_IQ:PprimeKoyamaWorm}
+\end{figure}
 
 \clearpage
 \subsubsection{P'(Q): Kholodenko's worm} ~\\
@@ -924,7 +975,7 @@ from Kholodenko's approach is designed to reproduce
 correctly the rigid-rod limit and the random-coil limit.
 Defining $x = 3L/l_b$ ($L$: contour length, $l_b$: Kuhn length), it is given by
 \begin{align}
-P_0(Q,L,l_b) &= \frac{2}{x} \left[I_{(1)} -\frac{1}{x}I_{(2)}\right]
+P'(Q,L,l_b) &= L^2\frac{2}{x} \left[I_{(1)} -\frac{1}{x}I_{(2)}\right]
 \label{eq:KholodenkoPprime}
 \end{align}
 where
@@ -961,7 +1012,16 @@ E = \sqrt{1-\left(\frac{l_bQ}{3}\right)^2} \quad \text{and} \quad F = \sqrt{\lef
   \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
 under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \item The equivalent solution of J.S. Pedersen \cite{Pedersen96Macrom} would be the expressions of wormlike structures without excluded volume effects.
+  \item scattering function is normalized to $P'(Q,L,l_b) \xrightarrow[Q\rightarrow 0]{} L^2$
 \end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_semiflexible/PprimeKholodenkoWorm.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Kholodenko worm}" alone without $P_\mathrm{cs}(Q)$.}
+\label{fig_IQ:PprimeKholodenkoWorm}
+\end{figure}
 
 \clearpage
 \subsubsection{P'(Q): wormlike PS1} ~\\
@@ -1155,16 +1215,25 @@ with $R_g^2$ defined in eq.\ \ref{eq:RgexvWC}. Last, but not least the values of
 under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \end{itemize}
 
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_semiflexible/PprimeWormPS1.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Worm(PS1)}" alone without $P_\mathrm{cs}(Q)$.}
+\label{fig_IQ:PprimeWormPS1}
+\end{figure}
+
 \clearpage
 \subsubsection{P'(Q): wormlike PS2} ~\\
 \label{plugin:Pprime4wormPS2}
 For this version of the wormlike structure \cite{Pedersen96Macrom} parameterized the structure factor in one for long and short wormlike micelles depending on their ratio $n_b=\frac{L}{l_B}$ is larger or smaller than 2.
 \begin{align}
-S_\mathrm{PS2}(Q,L,l_B) &=
+S_\mathrm{PS2}(Q,L,l_B) &= L^2
 \begin{cases}
-    S_\mathrm{SB}(Q,L,l_B) f_1 + S_\mathrm{loc}(Q,L,1) (1-f_1) & \mbox{ for~}  n_b > 2 \\
+    S_\mathrm{SB}(Q,L,l_B) f_1 + S_\mathrm{loc}(Q,L,l_B1) (1-f_1) & \mbox{ for~}  n_b > 2 \\
     S_\mathrm{Debye}(Q,Q^2\langle R_g^2\rangle_0) f_2 + S_\mathrm{loc}(Q,L,l_B,a_1) (1-f_2) & \mbox{ for~}  n_b \leq 2
 \end{cases}
+\label{eq:PprimePS2}
 \end{align}
 with $\langle R_g^2\rangle_0 = Ll_B/6\left(1-\frac{3}{2 n_b}
             +\frac{3}{2 n_b^2}
@@ -1211,6 +1280,13 @@ $q_2 = a_2/n_b$.
 under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \end{itemize}
 
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_semiflexible/PprimeWormPS2.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Worm(PS2)}" alone without $P_\mathrm{cs}(Q)$.}
+\label{fig_IQ:PprimeWormPS2}
+\end{figure}
 
 \clearpage
 \subsubsection{P'(Q): wormlike PS3} ~\\
@@ -1242,11 +1318,12 @@ a_4/\left(\frac{L}{l_B}\right)^{p_3} & \mbox{for~} L > 10l_B \wedge \mbox{with e
 \end{align}
 with  $a_3=2.02$, $a_4=3.06$, and $p_3=0.44$.
 \begin{align}
-S(Q,L,l_B) &=
+S(Q,L,l_B) &= L^2
 \begin{cases}
 L^2 S_{\textrm{small~} Q}(Q,L,l_B)& \mbox{for~}  Ql_B<q_0 \\
 L^2 \left(\frac{a_1}{(Ql_B)^{p_1}}+\frac{a_2}{(Ql_B)^{p_2}}+\frac{\pi}{QL}\right)& \mbox{for~}  Ql_B\geq q_0  \\
-\end{cases}\\
+\end{cases}
+\label{eq:PprimePS3}\\
 p_1 &=
 \begin{cases}
 4.95 & \mbox{for~} L > 4l_B \wedge \mbox{without excl. vol.} \\
@@ -1309,6 +1386,14 @@ f_\textrm{corr}(Q,R_G) &=
   \item This structure factor is supposed to be combined with a form factor with local cylindrical geometry which are implemented as form factor plugins
 under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_semiflexible/PprimeWormPS3.png}
+\end{center}
+\caption{Scattering curve for the structure factor "\texttt{P'(Q): Worm(PS3)}" alone without $P_\mathrm{cs}(Q)$.}
+\label{fig_IQ:PprimeWormPS3}
+\end{figure}
 
 \clearpage
 \subsection{local planar  obj.} ~\\

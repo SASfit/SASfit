@@ -180,7 +180,7 @@ typedef struct
 	void *reserved101; /* 101 */
 	void *reserved102; /* 102 */
 	void *reserved103; /* 103 */
-	void *reserved104; /* 104 */
+	scalar (*sasfit_jinc) (scalar x); /* 104 */
 	scalar (*find_LogNorm_int_range) (scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param); /* 105 */
 	void (*hcubature) (unsigned fdim, integrand f, void *fdata,
 	      unsigned dim, const double *xmin, const double *xmax, 
@@ -575,6 +575,10 @@ typedef struct
 #ifndef im_cerfi_z
 #define im_cerfi_z \
 	(sasfit_common_stubs_ptr->im_cerfi_z) /* 100 */
+#endif
+#ifndef sasfit_jinc
+#define sasfit_jinc \
+	(sasfit_common_stubs_ptr->sasfit_jinc) /* 104 */
 #endif
 #ifndef find_LogNorm_int_range
 #define find_LogNorm_int_range \

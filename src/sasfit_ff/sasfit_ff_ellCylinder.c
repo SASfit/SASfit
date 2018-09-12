@@ -58,27 +58,10 @@ scalar AcylSHell(sasfit_param *param)
 	v2 = Q*(L*0.5+T*TYPE_SHELL)*cos(ALPHA);
 	b1 = M_PI*R*R*EPSILON*L*(ETA_CORE-ETA_SH);
 	b2 = M_PI*(R+T)*(EPSILON*R+T)*(L+2.0*T*TYPE_SHELL)*(ETA_SH-ETA_SOL);
-	if (v1==0.0) {
-		Ain = 1.0;
-	} else {
-		Ain = sin(v1)/v1;
-	}
-	if (u1!=0.0) {
-//		J1 = sasfit_bessj1(u1);
-		J1 = gsl_sf_bessel_J1(u1);
-		Ain = Ain*2.0*J1/u1;
-	}
-	
-	if (v2==0.0) {
-		Aout = 1.0;
-	} else {
-		Aout = sin(v2)/v2;
-	}
-	if (u2!=0.0) {
-//		J1 = sasfit_bessj1(u2);
-		J1 = gsl_sf_bessel_J1(u2);
-		Aout = Aout*2.0*J1/u2;
-	} 
+	Ain = gsl_sf_bessel_j0(v1);
+	Ain = Ain*2*sasfit_jinc(u1);
+	Aout = gsl_sf_bessel_j0(v2);
+	Aout = Aout*2*sasfit_jinc(u2);
 
 
 	A = b1*Ain+b2*Aout;
@@ -95,28 +78,10 @@ scalar PcylSHell(sasfit_param *param)
 	v2 = Q*(L*0.5+T*TYPE_SHELL)*cos(ALPHA);
 	b1 = M_PI*R*R*EPSILON*L*(ETA_CORE-ETA_SH);
 	b2 = M_PI*(R+T)*(EPSILON*R+T)*(L+2.0*T*TYPE_SHELL)*(ETA_SH-ETA_SOL);
-	if (v1==0.0) {
-		Ain = 1.0;
-	} else {
-		Ain = sin(v1)/v1;
-	}
-	if (u1!=0.0) {
-//		J1 = sasfit_bessj1(u1);
-		J1 = gsl_sf_bessel_J1(u1);
-		Ain = Ain*2.0*J1/u1;
-	}
-	
-	if (v2==0.0) {
-		Aout = 1.0;
-	} else {
-		Aout = sin(v2)/v2;
-	}
-	if (u2!=0.0) {
-//		J1 = sasfit_bessj1(u2);
-		J1 = gsl_sf_bessel_J1(u2);
-		Aout = Aout*2.0*J1/u2;
-	} 
-
+	Ain = gsl_sf_bessel_j0(v1);
+	Ain = Ain*2*sasfit_jinc(u1);
+	Aout = gsl_sf_bessel_j0(v2);
+	Aout = Aout*2*sasfit_jinc(u2);
 
 	A = b1*Ain+b2*Aout;
 	return A*A;
@@ -127,16 +92,16 @@ scalar P_theta(scalar x,sasfit_param * param)
 {
 	THETA = x;
 	return PcylSHell(param);
-} 
+}
 
 scalar P_alpha(scalar x,sasfit_param * param)
 {
 	ALPHA = x;
-	
+
 	if (EPSILON == 1.0) {
 		return P_theta(1.0,param)*sin(ALPHA);
 	} else {
-		return sasfit_integrate(0.0,M_PI/2.0,&P_theta,param)*2.0/M_PI*sin(ALPHA);
+		return sasfit_integrate(0.0,M_PI_2,&P_theta,param)/M_PI_2*sin(ALPHA);
 	}
 }
 
@@ -144,16 +109,16 @@ scalar A_theta(scalar x,sasfit_param * param)
 {
 	THETA = x;
 	return AcylSHell(param);
-} 
+}
 
 scalar A_alpha(scalar x,sasfit_param * param)
 {
 	ALPHA = x;
-	
+
 	if (EPSILON == 1.0) {
 		return A_theta(1.0,param)*sin(ALPHA);
 	} else {
-		return sasfit_integrate(0.0,M_PI/2.0,&A_theta,param)*2.0/M_PI*sin(ALPHA);
+		return sasfit_integrate(0.0,M_PI_2,&A_theta,param)/M_PI_2*sin(ALPHA);
 	}
 }
 
@@ -170,7 +135,7 @@ scalar sasfit_ff_ellCylShell1(scalar q, sasfit_param * param)
 
 	Q = q;
 	TYPE_SHELL = 0.0;
-	P_RODSH = sasfit_integrate(0.0,M_PI/2.0,&P_alpha,param);
+	P_RODSH = sasfit_integrate(0.0,M_PI_2,&P_alpha,param);
 	return P_RODSH;
 }
 
@@ -187,14 +152,14 @@ scalar sasfit_ff_ellCylShell2(scalar q, sasfit_param * param)
 
 	Q = q;
 	TYPE_SHELL = 1.0;
-	P_RODSH = sasfit_integrate(0.0,M_PI/2.0,&P_alpha,param);
+	P_RODSH = sasfit_integrate(0.0,M_PI_2,&P_alpha,param);
 	return P_RODSH;
 }
 
 scalar sasfit_ff_ellCylShell1_f(scalar q, sasfit_param * param)
 {
 	scalar A_RODSH;
-	
+
 	Q = q;
 	TYPE_SHELL = 0.0;
 	A_RODSH = sasfit_integrate(0.0,M_PI/2.0,&A_alpha,param);

@@ -47,7 +47,6 @@ scalar sasfit_sq_p__q___worm_ps3_(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((LB < 0.0), param, "lb(%lg) < 0",LB); // modify condition to your needs
 	SASFIT_CHECK_COND1((L < 0.0), param, "L(%lg) < 0",L); // modify condition to your needs
-	SASFIT_CHECK_COND1((EXVOL < 0.0), param, "exvol(%lg) < 0",EXVOL); // modify condition to your needs
 
 	// insert your code here
 

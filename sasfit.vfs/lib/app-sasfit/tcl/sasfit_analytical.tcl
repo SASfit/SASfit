@@ -457,30 +457,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "p(r) -> 4 pi sin(qr)/(qr)" \
-                        { set actualPar(FF,l1,label) "r ="
-                          set actualPar(FF,l2,label) ""
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) ""
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "gamma(r) -> 4 pi r^2 sin(qr)/(qr)" \
-                        { set actualPar(FF,l1,label) "r ="
-                          set actualPar(FF,l2,label) ""
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) ""
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
    "Sphere"             { set actualPar(FF,l1,label) "R ="
                           set actualPar(FF,l2,label) ""
                           set actualPar(FF,l3,label) ""
@@ -1731,28 +1707,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) "x_solvent ="
                           set actualPar(FF,l10,label) "eta_solvent ="
                         }
-   "WormLikeChainEXV"   { set actualPar(FF,l1,label) "S0 ="
-                          set actualPar(FF,l2,label) "RL ="
-                          set actualPar(FF,l3,label) "RRL ="
-                          set actualPar(FF,l4,label) "R ="
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "KholodenkoWorm"     { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "l ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) ""
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
 "SphereWithGaussChains" { set actualPar(FF,l1,label) "R ="
                           set actualPar(FF,l2,label) "Rg ="
                           set actualPar(FF,l3,label) "d ="
@@ -2993,30 +2947,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
- "p(r) -> 4 pi sin(qr)/(qr)"  \
-                                { set actualAnalytPar(FF,l1,label) "r ="
-				  set actualAnalytPar(FF,l2,label) ""
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) ""
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
- "gamma(r) -> 4 pi r^2 sin(qr)/(qr)"  \
-                                { set actualAnalytPar(FF,l1,label) "r ="
-				  set actualAnalytPar(FF,l2,label) ""
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) ""
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
 	   "Sphere"             { set actualAnalytPar(FF,l1,label) "R ="
 				  set actualAnalytPar(FF,l2,label) ""
 				  set actualAnalytPar(FF,l3,label) ""
@@ -4016,28 +3946,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l8,label) "eta_shell ="
 				  set actualAnalytPar(FF,l9,label) "x_solvent ="
 				  set actualAnalytPar(FF,l10,label) "eta_solvent ="
-				}
-	   "WormLikeChainEXV"   { set actualAnalytPar(FF,l1,label) "S0 ="
-				  set actualAnalytPar(FF,l2,label) "RL ="
-				  set actualAnalytPar(FF,l3,label) "RRL ="
-				  set actualAnalytPar(FF,l4,label) "R ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "KholodenkoWorm"     { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "l ="
-				  set actualAnalytPar(FF,l3,label) "L ="
-				  set actualAnalytPar(FF,l4,label) ""
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
 				}
 	"SphereWithGaussChains" { set actualAnalytPar(FF,l1,label) "R ="
 				  set actualAnalytPar(FF,l2,label) "Rg ="
@@ -6897,37 +6805,7 @@ switch -exact $type {
                  9 {return "x_solvent: amount of solvent in shell\n"}
                 10 {return "eta_solvent: scattering length density of solvent\n"}
               }
-	  }
-          "WormLikeChainEXV" { 
-              switch $num {
-                 0 {return "Worm like chain with excluded volume\n"}
-                 1 {return "S0: forward scattering\n"}
-                 2 {return "RL: contour length\n"}
-                 3 {return "RRL: Kuhn length, K\n"}
-                 4 {return "R: cross-section radius\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-          "KholodenkoWorm" { 
-              switch $num {
-                 0 {return "Worm like chain with uniform circular cross-section\n"}
-                 1 {return "R: cross-section radius\n"}
-                 2 {return "l: Kuhn length\n"}
-                 3 {return "L: contour length\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
+			}
           "SphereWithGaussChains" { 
               switch $num {
                  0 {return "Form factor of spherical block copolymer micelles:\nA dense spherical core surrounded by a shell of dissolved polymer chains"}
@@ -7539,36 +7417,6 @@ switch -exact $type {
                  6 {return "eta_l: scattering contrast of layer\n"}
                  7 {return "sigma: Gaussian standard deviation of stacking parameter D\n"}
                  8 {return "D: (2h+d) next neighbour center-to-center distance\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "p(r) -> 4 pi sin(qr)/(qr)" { 
-              switch $num {
-                 0 {return "4 pi sin(qr)/(qr)\nneeded for calculating the pair distribution function"}
-                 1 {return "r: radius\n"}
-                 2 {return "\n"}
-                 3 {return "\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "gamma(r) -> 4 pi r^2 sin(qr)/(qr)" { 
-              switch $num {
-                 0 {return "4 pi r^2 sin(qr)/(qr)\nneeded for calculating the correlation function"}
-                 1 {return "r: radius\n"}
-                 2 {return "\n"}
-                 3 {return "\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
                  9 {return "\n"}
                 10 {return "\n"}
               }
@@ -8583,8 +8431,8 @@ LabelEntry     $wdet2D_b.e_max    \
        -textvariable Detector2DIQGraph(max)
 
 ComboBox $wdet2D_b.c_ct -textvariable Detector2DIQGraph(ct) \
-		-width 5 \
-		-values "jet rainbow bw" \
+		-width 12 \
+		-values "jet rainbow vivid heatmap isocontour harrier hue siemens RGBhot nih_image_fire2 nih_image_fire2_inv iman damson grass gnuplot gnuplot2 py_rainbow gist_rainbow gist_ncar gist_earth gist_stern CMRmap hsv nipy_spectral terrain  coolwarm brg viridis plasma inferno magma Gem Green_Fire_Blue Orange_Hot Red_Hot Smart Royal Blue_Orange_icb Spectrum ice Fire Thal split_blurred_warm phase pastel gyr_centre mixed topography multi prism White_Blue_Green_Red ceretec S-Pet hotter Hot_Iron MMC Sopha StarsAndStripes Ratio A_Squared Yellow_WFG cold cool Blue_Red_Yellow cividis glow Rainbow_RGB Rainbow2 Rainbow3 French Perfusion NIH NDVI_VGYRM CET_R1 CET_R2 CET_R3 CET_I1 CET_I2 CET_I3 CET_CBTL1 CET_CBTL2 CET_CBL1 CET_CBL2 CET_CBD1 CET_L4 CET_L5 CET_L6 CET_L7 CET_L8 CET_L9 CET_L10 CET_L11 CET_L12 CET_L17 bw " \
         -label "color table:"
 
 
@@ -8821,10 +8669,6 @@ set ::sasfit(FF,root_menu) $ffmenu
 set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalytPar \
 				update_datasets_single $root_btn_ff $root_btn_sd FF { \ 
 {Background Monodisperse} \ 
-{aux "auxiliary transition functions" { \
-				{{p(r) -> 4 pi sin(qr)/(qr)} Gauss} \
-				{{gamma(r) -> 4 pi r^2 sin(qr)/(qr)} Gauss} 
-}   }
 {sphshell "Spheres & Shells" { Sphere \
 		      {{Spherical Shell i}}\
 		      {{Spherical Shell ii}} \
@@ -8888,11 +8732,7 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 							  {EllULV+Chains(RW) Delta} \ 
 							  {CylULV+Chains(RW)_nagg Delta} \
 							  {CylULV+Chains(RW)_tc Delta} \ 
-							  {CylULV+Chains(RW) Delta} }} \ 
-				  {worms "wormlike structures" { \
-							  {WormLikeChainEXV Delta} \
-							  {KholodenkoWorm Delta} \
-							  }} }} \ 
+							  {CylULV+Chains(RW) Delta} }} }} \ 
 {cyl "cylindrical obj." { \
 		{Disc Delta} \
 		 PorodCylinder \

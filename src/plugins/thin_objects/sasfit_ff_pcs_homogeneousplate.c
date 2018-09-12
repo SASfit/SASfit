@@ -49,7 +49,7 @@ scalar homogeneousXS(scalar q, sasfit_param * param)
 
 
     Q = q;
-	if (SIGMA_T <= 1.0e-6 || THICK == 0.0) {
+	if (SIGMA_T <= 1.0e-6) {
 		Pcs = gsl_pow_int(THICK*gsl_sf_bessel_j0(Q*THICK/2.0),lround(P));
 	} else {
 		find_LogNorm_int_range(2,THICK,SIGMA_T,&tstart, &tend, param);

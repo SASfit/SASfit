@@ -55,14 +55,11 @@ scalar sasfit_ff_flat_cyl(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R);
 	SASFIT_CHECK_COND1((L < 0.0), param, "L(%lg) < 0",L);
 
-	if (R == 0.0) return 0.0;
-	if (L == 0.0) return 0.0;
+    V = M_PI*R*R*L;
+	if (V == 0.0) return 0.0;
 
 	sigma = L*q;
 	mu = 2.0*R*q;
-	V = M_PI*R*R*L;
-
-	if (R==0 && L==0) return 0;
 	if (q==0) return V*V*eta*eta;
 
 	G1sig = 2.0/sigma * gsl_sf_bessel_J1(sigma);

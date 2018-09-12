@@ -1097,6 +1097,12 @@ W.~R. Mann.
   4(3):506--510, mar 1953.
 \newblock \doi{10.1090/s0002-9939-1953-0054846-3}.
 
+\bibitem{Mansfield1980}
+M.~L. Mansfield and W.~H. Stockmayer.
+\newblock Unperturbed dimensions of wormlike stars.
+\newblock {\em Macromolecules}, 13(6):1713--1715, nov 1980.
+\newblock \doi{10.1021/ma60078a064}.
+
 \bibitem{Marquest1989}
 C.~Marquest and T.~Witten.
 \newblock Simple cubic structure in copolymer mesophases.
@@ -1384,6 +1390,13 @@ C.~Regnaut and J.~C. Ravey.
   colloidal suspensions [j. chem. phys. 91, 1211 (1989)].
 \newblock {\em The Journal of Chemical Physics}, 92(5):3250--3250, mar 1990.
 \newblock \doi{10.1063/1.458616}.
+
+\bibitem{Ren2016}
+J.~M. Ren, T.~G. McKenzie, Q.~Fu, E.~H.~H. Wong, J.~Xu, Z.~An, S.~Shanmugam,
+  T.~P. Davis, C.~Boyer, and G.~G. Qiao.
+\newblock Star polymers.
+\newblock {\em Chemical Reviews}, 116(12):6743--6836, jun 2016.
+\newblock \doi{10.1021/acs.chemrev.6b00008}.
 
 \bibitem{Reynolds1984}
 L.~E. Reynolds and D.~F.~R. Mildner.
@@ -1756,6 +1769,12 @@ C.~M. Wijmans and E.~B. Zhulina.
 \newblock Polymer brushes at curved surfaces.
 \newblock {\em Macromolecules}, 26(26):7214--7224, dec 1993.
 \newblock \doi{10.1021/ma00078a016}.
+
+\bibitem{Wikipedia2018StarShapedPolymers}
+{Wikipedia contributors}.
+\newblock Star-shaped polymers --- {W}ikipedia{,} the free encyclopedia, 2018.
+\newblock \urlprefix\url{https://en.wikipedia.org/wiki/Star-shaped_polymer}.
+\newblock [Online; accessed 22-August-2018].
 
 \bibitem{Willner2000}
 L.~Willner, A.~Poppe, J.~Allgaier, M.~Monkenbusch, P.~Lindner, and D.~Richter.

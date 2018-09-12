@@ -344,8 +344,9 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 				DetIth[i][j] = log(DetIth[i][j]+hypot(DetIth[i][j],1))*255./log(1+hypot(1,1));
 			}
 			else if (sasfit_2d_param.scale == LOG) {
-				DetIth[i][j]=log(fabs(DetIth[i][j])+0.001);
-				DetIth[i][j]=(DetIth[i][j]-log(0.001))/(1.-log(0.001))*255;
+//				DetIth[i][j]=log(fabs(DetIth[i][j])+0.001);
+//				DetIth[i][j]=(DetIth[i][j]-log(0.001))/(1.-log(0.001))*255;
+				DetIth[i][j]=log(1+255*DetIth[i][j])/log(256)*255;
 			} else
                 DetIth[i][j] = fabs(DetIth[i][j])*255.;
 			sprintf(sBuffer,"%d",lround(DetIth[i][j]));
