@@ -21,7 +21,7 @@ scalar sasfit_ff_flexibleringpolymer(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((RG < 0.0), param, "Rg(%lg) < 0",RG); // modify condition to your needs
 
 	// insert your code here
-    u = q*q*RG*RG;
+    u = q*RG;
 	if (u  == 0.0) return I0;
 	return I0*sqrt(2./(u*u))*gsl_sf_dawson(sqrt(u*u/2.));
 }

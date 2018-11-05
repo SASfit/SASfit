@@ -21,6 +21,37 @@
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 #   Ingo Bressler (ingo@cs.tu-berlin.de)
 
+proc change_CT_Det2D {type} {
+global Detector2DIQGraph
+puts $type
+switch $type {
+	sim {puts sim
+		if {[llength $Detector2DIQGraph(Det2DRes)] > 0} {
+		puts CT
+			set width2D 512
+			set ppp [expr $width2D/$Detector2DIQGraph(nPix)]
+			set DetImage {}
+			for {set j [expr $Detector2DIQGraph(nPix) -1]} {$j >= 0} {incr j -1} {
+				set DetLine {}
+				for {set i 0} {$i < $Detector2DIQGraph(nPix)} {incr i} {
+					set ctIndx [lindex [lindex $Detector2DIQGraph(Det2DRes) $i] $j]
+					if {$Detector2DIQGraph(reverseCT)} {
+						set ctIndx [expr 255-$ctIndx]
+					}
+					for {set k 0} {$k < $ppp} {incr k} {
+						lappend DetLine [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
+					}
+				}
+				for {set k 0} {$k < $ppp} {incr k} {
+					lappend DetImage $DetLine
+				}	
+			}
+			$Detector2DIQGraph(s) put $DetImage
+		}
+		}
+}
+}
+
 proc calc_e_by_fit_straight_line {x y} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 set sx 0

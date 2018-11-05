@@ -234,6 +234,7 @@ source $::sasfit(tcl)/sasfit_plugin.tcl
 source $::sasfit(tcl)/sasfit_plugin_guide.tcl
 source $::sasfit(tcl)/sasfit_batch.tcl
 source $::sasfit(tcl)/sasfit_OZ_solver.tcl
+source $::sasfit(tcl)/sasfit_cubehelix.tcl
 
 sasfit_load_plugins $::sasfit(plugins)
 
@@ -243,680 +244,160 @@ global ALVData
 create_SESANSData SESANSData
 global SESANSData
 
+global ColorMap
+create_ASCIIData CT
+
+set CT_full_filenames [glob $::sasfit_basedir/data/color_tables/*.*] 
+set CT_filenames {}
+foreach filename $CT_full_filenames {
+	set fnshort [lindex [file split $filename ] end]
+	if {[string compare [file extension $fnshort] .gpf]==0} {
+		set CT(InputFormat) xyer
+		set is4columns 1
+	} else {
+		set CT(InputFormat) xye
+		set is4columns 0
+	}
+	lappend CT_filenames $fnshort
+	read_Ascii $filename CT noerror
+	set CT_CT {}
+	if $is4columns {
+		foreach p $CT(Q) r $CT(I) g $CT(DI)  b $CT(res) {
+			lappend CT_CT [list $p $r $g $b]
+		}
+	} else {
+		for {set i 0} {$i < [llength $CT(Q)]} {incr i} {
+			set p $i
+			set r [lindex $CT(Q) $i]
+			set g [lindex $CT(I) $i]
+			set b [lindex $CT(DI) $i]
+			lappend CT_CT [list $p $r $g $b]
+		}
+	}
+	set maxval [::math::statistics::max [join [list $CT(Q) $CT(I) $CT(DI)] ]]
+	set ColorMap($fnshort) [gpf_mapLinear CT_CT maxval $maxval]
+}
+set ColorMap(LUTnames) $CT_filenames
+set cubehelix(start) 0.5
+set cubehelix(rot) -1.5
+set cubehelix(gamma)  1
+set cubehelix(reverse) no
+set cubehelix(nlev) 256
+set cubehelix(minSat) 0 
+set cubehelix(maxSat) 1.2 
+set cubehelix(minLight) 0
+set cubehelix(maxLight) 1
+set cubehelix(luminosity) color
+set cubehelix(divergent) no
+set cubehelix(symmetric) no
+set cubehelix(maxLight2) 1
+set cubehelix(maxSat2) 1 
+set cubehelix(rot2) 1.5
+set cubehelix(wedgehight) 64
+
+global cubehelix
+
+lappend ColorMap(LUTnames) cubehelix0
+
+set ColorMap(cubehelix1) [cmap nlev 256 start 0 rot .666 gamma 1 minSat 2 maxSat 2 minLight 0.1 maxLight 0.9 luminosity color]
+lappend ColorMap(LUTnames) cubehelix1
+set ColorMap(cubehelix2) [cmap nlev 256 start 1 rot .666 gamma 1 minSat 2 maxSat 2 minLight 0.1 maxLight 0.9 luminosity color]
+lappend ColorMap(LUTnames) cubehelix2
+set ColorMap(cubehelix3) [cmap nlev 256 start 2 rot .666 gamma 1 minSat 2 maxSat 2 minLight 0.1 maxLight 0.9 luminosity color]
+lappend ColorMap(LUTnames) cubehelix3
+set ColorMap(cubehelix4) [cmap nlev 256 start 0 rot -.666 gamma 1 minSat 2 maxSat 2 minLight 0.1 maxLight 0.9 luminosity color]
+lappend ColorMap(LUTnames) cubehelix4
+set ColorMap(cubehelix5) [cmap nlev 256 start 1 rot -.666 gamma 1 minSat 2 maxSat 2 minLight 0.1 maxLight 0.9 luminosity color]
+lappend ColorMap(LUTnames) cubehelix5
+set ColorMap(cubehelix6) [cmap nlev 256 start 2 rot -.666 gamma 1 minSat 2 maxSat 2 minLight 0.1 maxLight 0.9 luminosity color]
+lappend ColorMap(LUTnames) cubehelix6
+set ColorMap(cubehelix7) [cmap nlev 256 start 2.666 rot 1.0 gamma 1 minSat 2 maxSat 2 minLight 0.0 maxLight 1.0 luminosity color]
+lappend ColorMap(LUTnames) cubehelix7
+set ColorMap(cubehelix8) [cmap nlev 256 start 0.333 rot -1.0 gamma 1 minSat 1.6 maxSat 1.6 minLight 0.1 maxLight 0.9 luminosity color]
+lappend ColorMap(LUTnames) cubehelix8
+
+CTgenerator_trace_cmd nlev 256 ::cubehelix(start) 0 ::cubehelix(rot) -0.33 ::cubehelix(gamma) 0.7 ::cubehelix(minSat) 2 ::cubehelix(maxSat2) 2 ::cubehelix(maxSat) 2 ::cubehelix(minLight) 0.2 ::cubehelix(maxLight) 0.8 ::cubehelix(maxLight2) .2 ::cubehelix(divergent) 1 ::cubehelix(symmetric) 0 ::cubehelix(reverse) 0 ::cubehelix(rot2) -0.33 ::cubehelix(wedgehight) 70 ::cubehelix(luminosity) color
+set ColorMap(cubehelix0) $::Detector2DIQGraph(cubehelix0)
+
+if 0 {
+global ColorMap
 create_ASCIIData CT
 set CT(InputFormat) xye
-#puts "reading jet color table ..."
-read_Ascii $sasfit(tcl)/jet.rgb CT noerror
-set ColorMap(jet) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(jet) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading rainbow color table ..."
-read_Ascii $sasfit(tcl)/rainbow.rgb CT noerror
-set ColorMap(rainbow) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(rainbow) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading black&white color table ..."
-read_Ascii $sasfit(tcl)/bw.rgb CT noerror
-set ColorMap(bw) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(bw) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading damson color table ..."
-read_Ascii $sasfit(tcl)/damson.rgb CT noerror
-set ColorMap(damson) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(damson) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading grass color table ..."
-read_Ascii $sasfit(tcl)/grass.rgb CT noerror
-set ColorMap(grass) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(grass) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading harrier color table ..."
-read_Ascii $sasfit(tcl)/harrier.rgb CT noerror
-set ColorMap(harrier) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(harrier) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading gnuplot color table ..."
-read_Ascii $sasfit(tcl)/gnuplot.rgb CT noerror
-set ColorMap(gnuplot) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(gnuplot) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading gnuplot2 color table ..."
-read_Ascii $sasfit(tcl)/gnuplot2.rgb CT noerror
-set ColorMap(gnuplot2) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(gnuplot2) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading gist_rainbow color table ..."
-read_Ascii $sasfit(tcl)/gist_rainbow.rgb CT noerror
-set ColorMap(gist_rainbow) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(gist_rainbow) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading gist_ncar color table ..."
-read_Ascii $sasfit(tcl)/gist_ncar.rgb CT noerror
-set ColorMap(gist_ncar) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(gist_ncar) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading gist_earth color table ..."
-read_Ascii $sasfit(tcl)/gist_earth.rgb CT noerror
-set ColorMap(gist_earth) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(gist_earth) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading gist_stern color table ..."
-read_Ascii $sasfit(tcl)/gist_stern.rgb CT noerror
-set ColorMap(gist_stern) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(gist_stern) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading py_rainbow color table ..."
-read_Ascii $sasfit(tcl)/py_rainbow.rgb CT noerror
-set ColorMap(py_rainbow) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(py_rainbow) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading hsv color table ..."
-read_Ascii $sasfit(tcl)/hsv.rgb CT noerror
-set ColorMap(hsv) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(hsv) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading nipy_spectral color table ..."
-read_Ascii $sasfit(tcl)/nipy_spectral.rgb CT noerror
-set ColorMap(nipy_spectral) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(nipy_spectral) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CMRmap color table ..."
-read_Ascii $sasfit(tcl)/CMRmap.rgb CT noerror
-set ColorMap(CMRmap) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CMRmap) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading plasma color table ..."
-read_Ascii $sasfit(tcl)/plasma.rgb CT noerror
-set ColorMap(plasma) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(plasma) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading inferno color table ..."
-read_Ascii $sasfit(tcl)/inferno.rgb CT noerror
-set ColorMap(inferno) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(inferno) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading magma color table ..."
-read_Ascii $sasfit(tcl)/magma.rgb CT noerror
-set ColorMap(magma) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(magma) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading viridis color table ..."
-read_Ascii $sasfit(tcl)/viridis.rgb CT noerror
-set ColorMap(viridis) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(viridis) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading brg color table ..."
-read_Ascii $sasfit(tcl)/brg.rgb CT noerror
-set ColorMap(brg) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(brg) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading terrain color table ..."
-read_Ascii $sasfit(tcl)/terrain.rgb CT noerror
-set ColorMap(terrain) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(terrain) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading coolwarm color table ..."
-read_Ascii $sasfit(tcl)/coolwarm.rgb CT noerror
-set ColorMap(coolwarm) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(coolwarm) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Gem color table ..."
-read_Ascii $sasfit(tcl)/Gem.rgb CT noerror
-set ColorMap(Gem) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Gem) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Green_Fire_Blue color table ..."
-read_Ascii $sasfit(tcl)/Green_Fire_Blue.rgb CT noerror
-set ColorMap(Green_Fire_Blue) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Green_Fire_Blue) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Orange_Hot color table ..."
-read_Ascii $sasfit(tcl)/Orange_Hot.rgb CT noerror
-set ColorMap(Orange_Hot) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Orange_Hot) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Thal color table ..."
-read_Ascii $sasfit(tcl)/Thal.rgb CT noerror
-set ColorMap(Thal) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Thal) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Smart color table ..."
-read_Ascii $sasfit(tcl)/Smart.rgb CT noerror
-set ColorMap(Smart) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Smart) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Red_Hot color table ..."
-read_Ascii $sasfit(tcl)/Red_Hot.rgb CT noerror
-set ColorMap(Red_Hot) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Red_Hot) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Royal color table ..."
-read_Ascii $sasfit(tcl)/Royal.rgb CT noerror
-set ColorMap(Royal) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Royal) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading "Blue_Orange_icb" color table ..."
-read_Ascii $sasfit(tcl)/Blue_Orange_icb.rgb CT noerror
-set ColorMap(Blue_Orange_icb) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Blue_Orange_icb) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Spectrum color table ..."
-read_Ascii $sasfit(tcl)/Spectrum.rgb CT noerror
-set ColorMap(Spectrum) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Spectrum) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading ice color table ..."
-read_Ascii $sasfit(tcl)/ice.rgb CT noerror
-set ColorMap(ice) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(ice) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Fire color table ..."
-read_Ascii $sasfit(tcl)/Fire.rgb CT noerror
-set ColorMap(Fire) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Fire) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading physics color table ..."
-read_Ascii $sasfit(tcl)/physics.rgb CT noerror
-set ColorMap(physics) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(physics) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading vivid color table ..."
-read_Ascii $sasfit(tcl)/vivid.rgb CT noerror
-set ColorMap(vivid) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(vivid) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading heatmap color table ..."
-read_Ascii $sasfit(tcl)/heatmap.rgb CT noerror
-set ColorMap(heatmap) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(heatmap) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading isocontour color table ..."
-read_Ascii $sasfit(tcl)/isocontour.rgb CT noerror
-set ColorMap(isocontour) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(isocontour) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading hue color table ..."
-read_Ascii $sasfit(tcl)/hue.rgb CT noerror
-set ColorMap(hue) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(hue) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading iman color table ..."
-read_Ascii $sasfit(tcl)/iman.rgb CT noerror
-set ColorMap(iman) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(iman) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading nih_image_fire2_invv color table ..."
-read_Ascii $sasfit(tcl)/nih_image_fire2_inv.rgb CT noerror
-set ColorMap(nih_image_fire2_inv) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(nih_image_fire2_inv) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading nih_image_fire2 color table ..."
-read_Ascii $sasfit(tcl)/nih_image_fire2.rgb CT noerror
-set ColorMap(nih_image_fire2) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(nih_image_fire2) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading RGBhot color table ..."
-read_Ascii $sasfit(tcl)/RGBhot.rgb CT noerror
-set ColorMap(RGBhot) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(RGBhot) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading siemens color table ..."
-read_Ascii $sasfit(tcl)/siemens.rgb CT noerror
-set ColorMap(siemens) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(siemens) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading split_blurred_warm color table ..."
-read_Ascii $sasfit(tcl)/split_blurred_warm.rgb CT noerror
-set ColorMap(split_blurred_warm) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(split_blurred_warm) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading gyr_centre color table ..."
-read_Ascii $sasfit(tcl)/gyr_centre.rgb CT noerror
-set ColorMap(gyr_centre) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(gyr_centre) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading phase color table ..."
-read_Ascii $sasfit(tcl)/phase.rgb CT noerror
-set ColorMap(phase) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(phase) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading pastel color table ..."
-read_Ascii $sasfit(tcl)/pastel.rgb CT noerror
-set ColorMap(pastel) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(pastel) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading mixed color table ..."
-read_Ascii $sasfit(tcl)/mixed.rgb CT noerror
-set ColorMap(mixed) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(mixed) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading topography color table ..."
-read_Ascii $sasfit(tcl)/topography.rgb CT noerror
-set ColorMap(topography) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(topography) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading prism color table ..."
-read_Ascii $sasfit(tcl)/prism.rgb CT noerror
-set ColorMap(prism) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(prism) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading multi color table ..."
-read_Ascii $sasfit(tcl)/multi.rgb CT noerror
-set ColorMap(multi) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(multi) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading White_Blue_Green_Red color table ..."
-read_Ascii $sasfit(tcl)/White_Blue_Green_Red.rgb CT noerror
-set ColorMap(White_Blue_Green_Red) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(White_Blue_Green_Red) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading ceretec color table ..."
-read_Ascii $sasfit(tcl)/ceretec.rgb CT noerror
-set ColorMap(ceretec) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(ceretec) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading S-Pet color table ..."
-read_Ascii $sasfit(tcl)/S-Pet.rgb CT noerror
-set ColorMap(S-Pet) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(S-Pet) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Hot_Iron color table ..."
-read_Ascii $sasfit(tcl)/Hot_Iron.rgb CT noerror
-set ColorMap(Hot_Iron) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Hot_Iron) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading hotter color table ..."
-read_Ascii $sasfit(tcl)/hotter.rgb CT noerror
-set ColorMap(hotter) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(hotter) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading MMC color table ..."
-read_Ascii $sasfit(tcl)/MMC.rgb CT noerror
-set ColorMap(MMC) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(MMC) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading StarsAndStripes color table ..."
-read_Ascii $sasfit(tcl)/StarsAndStripes.rgb CT noerror
-set ColorMap(StarsAndStripes) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(StarsAndStripes) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Sopha color table ..."
-read_Ascii $sasfit(tcl)/Sopha.rgb CT noerror
-set ColorMap(Sopha) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Sopha) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Ratio color table ..."
-read_Ascii $sasfit(tcl)/Ratio.rgb CT noerror
-set ColorMap(Ratio) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Ratio) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done#puts ...done
-#puts "reading A_Squared color table ..."
-read_Ascii $sasfit(tcl)/A_Squared.rgb CT noerror
-set ColorMap(A_Squared) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(A_Squared) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Yellow_WFG color table ..."
-read_Ascii $sasfit(tcl)/Yellow_WFG.rgb CT noerror
-set ColorMap(Yellow_WFG) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Yellow_WFG) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading cold color table ..."
-read_Ascii $sasfit(tcl)/cold.rgb CT noerror
-set ColorMap(cold) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(cold) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading cool color table ..."
-read_Ascii $sasfit(tcl)/cool.rgb CT noerror
-set ColorMap(cool) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(cool) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Blue_Red_Yellow color table ..."
-read_Ascii $sasfit(tcl)/Blue_Red_Yellow.rgb CT noerror
-set ColorMap(Blue_Red_Yellow) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Blue_Red_Yellow) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading cividis color table ..."
-read_Ascii $sasfit(tcl)/cividis.rgb CT noerror
-set ColorMap(cividis) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(cividis) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading glow color table ..."
-read_Ascii $sasfit(tcl)/glow.rgb CT noerror
-set ColorMap(glow) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(glow) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Rainbow_RGB color table ..."
-read_Ascii $sasfit(tcl)/Rainbow_RGB.rgb CT noerror
-set ColorMap(Rainbow_RGB) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Rainbow_RGB) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Rainbow2 color table ..."
-read_Ascii $sasfit(tcl)/Rainbow2.rgb CT noerror
-set ColorMap(Rainbow2) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Rainbow2) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading NIH color table ..."
-read_Ascii $sasfit(tcl)/NIH.rgb CT noerror
-set ColorMap(NIH) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(NIH) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Rainbow3 color table ..."
-read_Ascii $sasfit(tcl)/Rainbow3.rgb CT noerror
-set ColorMap(Rainbow3) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Rainbow3) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading French color table ..."
-read_Ascii $sasfit(tcl)/French.rgb CT noerror
-set ColorMap(French) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(French) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading Perfusion color table ..."
-read_Ascii $sasfit(tcl)/Perfusion.rgb CT noerror
-set ColorMap(Perfusion) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(Perfusion) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading NDVI_VGYRM color table ..."
-read_Ascii $sasfit(tcl)/NDVI_VGYRM.rgb CT noerror
-set ColorMap(NDVI_VGYRM) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(NDVI_VGYRM) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_CBD1 color table ..."
-read_Ascii $sasfit(tcl)/CET_CBD1.rgb CT noerror
-set ColorMap(CET_CBD1) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_CBD1) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_CBL1 color table ..."
-read_Ascii $sasfit(tcl)/CET_CBL1.rgb CT noerror
-set ColorMap(CET_CBL1) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_CBL1) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_CBL2 color table ..."
-read_Ascii $sasfit(tcl)/CET_CBL2.rgb CT noerror
-set ColorMap(CET_CBL2) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_CBL2) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_CBTL1 color table ..."
-read_Ascii $sasfit(tcl)/CET_CBTL1.rgb CT noerror
-set ColorMap(CET_CBTL1) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_CBTL1) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_CBTL2 color table ..."
-read_Ascii $sasfit(tcl)/CET_CBTL2.rgb CT noerror
-set ColorMap(CET_CBTL2) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_CBTL2) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_I1 color table ..."
-read_Ascii $sasfit(tcl)/CET_I1.rgb CT noerror
-set ColorMap(CET_I1) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_I1) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_I2 color table ..."
-read_Ascii $sasfit(tcl)/CET_I2.rgb CT noerror
-set ColorMap(CET_I2) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_I2) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_I3 color table ..."
-read_Ascii $sasfit(tcl)/CET_I3.rgb CT noerror
-set ColorMap(CET_I3) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_I3) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_R1 color table ..."
-read_Ascii $sasfit(tcl)/CET_R1.rgb CT noerror
-set ColorMap(CET_R1) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_R1) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_R2 color table ..."
-read_Ascii $sasfit(tcl)/CET_R2.rgb CT noerror
-set ColorMap(CET_R2) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_R2) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_R3 color table ..."
-read_Ascii $sasfit(tcl)/CET_R3.rgb CT noerror
-set ColorMap(CET_R3) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_R3) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L4 color table ..."
-read_Ascii $sasfit(tcl)/CET_L4.rgb CT noerror
-set ColorMap(CET_L4) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L4) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L5 color table ..."
-read_Ascii $sasfit(tcl)/CET_L5.rgb CT noerror
-set ColorMap(CET_L5) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L5) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L6 color table ..."
-read_Ascii $sasfit(tcl)/CET_L6.rgb CT noerror
-set ColorMap(CET_L6) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L6) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L7 color table ..."
-read_Ascii $sasfit(tcl)/CET_L7.rgb CT noerror
-set ColorMap(CET_L7) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L7) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L8 color table ..."
-read_Ascii $sasfit(tcl)/CET_L8.rgb CT noerror
-set ColorMap(CET_L8) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L8) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L9 color table ..."
-read_Ascii $sasfit(tcl)/CET_L9.rgb CT noerror
-set ColorMap(CET_L9) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L9) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L10 color table ..."
-read_Ascii $sasfit(tcl)/CET_L10.rgb CT noerror
-set ColorMap(CET_L10) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L10) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L11 color table ..."
-read_Ascii $sasfit(tcl)/CET_L11.rgb CT noerror
-set ColorMap(CET_L11) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L11) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L12 color table ..."
-read_Ascii $sasfit(tcl)/CET_L12.rgb CT noerror
-set ColorMap(CET_L12) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L12) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
-#puts "reading CET_L17 color table ..."
-read_Ascii $sasfit(tcl)/CET_L17.rgb CT noerror
-set ColorMap(CET_L17) {}
-foreach r $CT(Q) g $CT(I) b $CT(DI) {
-   lappend ColorMap(CET_L17) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
-}
-#puts ...done
+set rgb_full_filenames [concat [glob $sasfit(tcl)/rgb/*.rgb] [glob $sasfit(tcl)/CETtbl/*.tbl]]
+set rgb_filenames {}
+foreach filename $rgb_full_filenames {
+	set fnshort [lindex [file split $filename ] end]
+	lappend rgb_filenames $fnshort
+	read_Ascii $filename CT noerror
+	set ColorMap($fnshort) {}
+	foreach r $CT(Q) g $CT(I) b $CT(DI) {
+		lappend ColorMap($fnshort) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
+	}
+}
+
+set CSV_full_filenames [glob $sasfit(tcl)/CSV/*.csv] 
+set CSV_filenames {}
+foreach filename $CSV_full_filenames {
+	set fnshort [lindex [file split $filename ] end]
+	lappend CSV_filenames $fnshort
+	read_Ascii $filename CT noerror
+	set CSV_CT {}
+	for {set i 0} {$i < [llength $CT(Q)]} {incr i} {
+	    set p $i
+		set r [lindex $CT(Q) $i]
+		set g [lindex $CT(I) $i]
+		set b [lindex $CT(DI) $i]
+		lappend CSV_CT [list $p $r $g $b]
+	}
+	set maxval [::math::statistics::max [join [list $CT(Q) $CT(I) $CT(DI)] ]]
+	set ColorMap($fnshort) [gpf_mapLinear CSV_CT maxval $maxval CTname $fnshort]
+}
+
+set NCAR_CT_full_filenames [glob $sasfit(tcl)/NCAR_CT/*.rgb]
+set NCAR_CT_filenames {}
+foreach filename $NCAR_CT_full_filenames {
+	set fnshort [lindex [file split $filename ] end]
+	lappend NCAR_CT_filenames $fnshort
+	read_Ascii $filename CT noerror
+	set NCAR_CT {}
+	for {set i 0} {$i < [llength $CT(Q)]} {incr i} {
+	    set p $i
+		set r [lindex $CT(Q) $i]
+		set g [lindex $CT(I) $i]
+		set b [lindex $CT(DI) $i]
+		lappend NCAR_CT [list $p $r $g $b]
+	}
+	set maxval [::math::statistics::max [join [list $CT(Q) $CT(I) $CT(DI)] ]]
+	set ColorMap($fnshort) [gpf_mapLinear NCAR_CT maxval $maxval CTname $fnshort]
+}
+
+
+set CT(InputFormat) xyer
+set gpf_full_filenames [glob $sasfit(tcl)/gpf/*.gpf]
+set gpf_filenames {}
+foreach filename $gpf_full_filenames {
+	set fnshort [lindex [file split $filename ] end]
+	lappend gpf_filenames $fnshort
+	read_Ascii $filename CT noerror
+	set gpfl {}
+	foreach p $CT(Q) r $CT(I) g $CT(DI)  b $CT(res) {
+		lappend gpfl [list $p $r $g $b]
+	}
+	set maxval [::math::statistics::max [join [list $CT(Q) $CT(I) $CT(DI)] ]]
+	set ColorMap($fnshort) [gpf_mapLinear gpfl maxval $maxval CTname $fnshort]
+}
+set ColorMap(LUTnames) [concat $rgb_filenames $gpf_filenames $NCAR_CT_filenames $CSV_filenames]
+}
+
+#puts ...done
+#puts "reading cubehelix color table ..."
+#read_Ascii $sasfit(tcl)/cubehelix.rgb CT noerror
+#set ColorMap(cubehelix) {}
+#foreach r $CT(Q) g $CT(I) b $CT(DI) {
+#   lappend ColorMap(cubehelix) [format "#%.2x%.2x%.2x" [expr int($r)] [expr int($g)] [expr int($b)] ] 
+#}
+#puts ...done
+
 set FitPrecision(epsNRIQ)         1e-10
 set FitPrecision(epsanisotropic)  1e-5
 set FitPrecision(epsresolution)   1e-3
@@ -935,6 +416,7 @@ set FitPrecision(iter_4_MC)       1000
 set FitPrecision(int)             no
 
 global FitPrecision
+
 
 set OZ(plugin_fct_names) {"SQ oz 1" 	"SQ oz 2" 	"SQ oz 3" \
 			  "SQ oz 4" 	"SQ oz 5" 	"SQ oz 6"}
@@ -1330,104 +812,13 @@ CreateGraphPar IQGraph
 CreateGraphPar GlobalFitIQGraph
 CreateGraphPar ResIQGraph
 CreateGraphPar Detector2DIQGraph
-set Detector2DIQGraph(ct) jet
-set Detector2DIQGraph(jet)     $ColorMap(jet)
-set Detector2DIQGraph(rainbow) $ColorMap(rainbow)
-set Detector2DIQGraph(bw)      $ColorMap(bw)
-set Detector2DIQGraph(harrier) $ColorMap(harrier)
-set Detector2DIQGraph(grass)   $ColorMap(grass)
-set Detector2DIQGraph(damson)  $ColorMap(damson)
-set Detector2DIQGraph(gnuplot)  $ColorMap(gnuplot)
-set Detector2DIQGraph(gnuplot2)  $ColorMap(gnuplot2)
-set Detector2DIQGraph(py_rainbow) $ColorMap(py_rainbow)
-set Detector2DIQGraph(gist_rainbow)  $ColorMap(gist_rainbow)
-set Detector2DIQGraph(gist_ncar)  $ColorMap(gist_ncar)
-set Detector2DIQGraph(gist_earth)  $ColorMap(gist_earth)
-set Detector2DIQGraph(gist_stern)  $ColorMap(gist_stern)
-set Detector2DIQGraph(nipy_spectral)  $ColorMap(nipy_spectral)
-set Detector2DIQGraph(hsv)  $ColorMap(hsv)
-set Detector2DIQGraph(CMRmap)  $ColorMap(CMRmap)
-set Detector2DIQGraph(brg)  $ColorMap(brg)
-set Detector2DIQGraph(viridis)  $ColorMap(viridis)
-set Detector2DIQGraph(plasma)  $ColorMap(plasma)
-set Detector2DIQGraph(inferno)  $ColorMap(inferno)
-set Detector2DIQGraph(magma)  $ColorMap(magma)
-set Detector2DIQGraph(terrain)  $ColorMap(terrain)
-set Detector2DIQGraph(coolwarm)  $ColorMap(coolwarm)
-set Detector2DIQGraph(Gem)  $ColorMap(Gem)
-set Detector2DIQGraph(Green_Fire_Blue)  $ColorMap(Green_Fire_Blue)
-set Detector2DIQGraph(Orange_Hot)  $ColorMap(Orange_Hot)
-set Detector2DIQGraph(Smart)  $ColorMap(Smart)
-set Detector2DIQGraph(Thal)  $ColorMap(Thal)
-set Detector2DIQGraph(Red_Hot)  $ColorMap(Red_Hot)
-set Detector2DIQGraph(Royal)  $ColorMap(Royal)
-set Detector2DIQGraph(Blue_Orange_icb)  $ColorMap(Blue_Orange_icb)
-set Detector2DIQGraph(Spectrum)  $ColorMap(Spectrum)
-set Detector2DIQGraph(ice)  $ColorMap(ice)
-set Detector2DIQGraph(Fire)  $ColorMap(Fire)
-set Detector2DIQGraph(heatmap)  $ColorMap(heatmap)
-set Detector2DIQGraph(vivid)  $ColorMap(vivid)
-set Detector2DIQGraph(physics)  $ColorMap(physics)
-set Detector2DIQGraph(isocontour)  $ColorMap(isocontour)
-set Detector2DIQGraph(iman)  $ColorMap(iman)
-set Detector2DIQGraph(hue)  $ColorMap(hue)
-set Detector2DIQGraph(siemens)  $ColorMap(siemens)
-set Detector2DIQGraph(RGBhot)  $ColorMap(RGBhot)
-set Detector2DIQGraph(nih_image_fire2)  $ColorMap(nih_image_fire2)
-set Detector2DIQGraph(nih_image_fire2_inv)  $ColorMap(nih_image_fire2_inv)
-set Detector2DIQGraph(split_blurred_warm)  $ColorMap(split_blurred_warm)
-set Detector2DIQGraph(gyr_centre)  $ColorMap(gyr_centre)
-set Detector2DIQGraph(pastel)  $ColorMap(pastel)
-set Detector2DIQGraph(phase)  $ColorMap(phase)
-set Detector2DIQGraph(mixed)  $ColorMap(mixed)
-set Detector2DIQGraph(topography)  $ColorMap(topography)
-set Detector2DIQGraph(White_Blue_Green_Red)  $ColorMap(White_Blue_Green_Red)
-set Detector2DIQGraph(multi)  $ColorMap(multi)
-set Detector2DIQGraph(prism)  $ColorMap(prism)
-set Detector2DIQGraph(S-Pet)  $ColorMap(S-Pet)
-set Detector2DIQGraph(ceretec)  $ColorMap(ceretec)
-set Detector2DIQGraph(hotter)  $ColorMap(hotter)
-set Detector2DIQGraph(Hot_Iron)  $ColorMap(Hot_Iron)
-set Detector2DIQGraph(MMC)  $ColorMap(MMC)
-set Detector2DIQGraph(StarsAndStripes)  $ColorMap(StarsAndStripes)
-set Detector2DIQGraph(Ratio)  $ColorMap(Ratio)
-set Detector2DIQGraph(Sopha)  $ColorMap(Sopha)
-set Detector2DIQGraph(A_Squared)  $ColorMap(A_Squared)
-set Detector2DIQGraph(Yellow_WFG)  $ColorMap(Yellow_WFG)
-set Detector2DIQGraph(cold)  $ColorMap(cold)
-set Detector2DIQGraph(cool)  $ColorMap(cool)
-set Detector2DIQGraph(Blue_Red_Yellow)  $ColorMap(Blue_Red_Yellow)
-set Detector2DIQGraph(cividis)  $ColorMap(cividis)
-set Detector2DIQGraph(glow)  $ColorMap(glow)
-set Detector2DIQGraph(Rainbow_RGB)  $ColorMap(Rainbow_RGB)
-set Detector2DIQGraph(Rainbow2)  $ColorMap(Rainbow2)
-set Detector2DIQGraph(Rainbow3)  $ColorMap(Rainbow3)
-set Detector2DIQGraph(French)  $ColorMap(French)
-set Detector2DIQGraph(NDVI_VGYRM)  $ColorMap(NDVI_VGYRM)
-set Detector2DIQGraph(NIH)  $ColorMap(NIH)
-set Detector2DIQGraph(Perfusion)  $ColorMap(Perfusion)
-set Detector2DIQGraph(CET_CBD1)  $ColorMap(CET_CBD1)
-set Detector2DIQGraph(CET_CBL1)  $ColorMap(CET_CBL1)
-set Detector2DIQGraph(CET_CBL2)  $ColorMap(CET_CBL2)
-set Detector2DIQGraph(CET_CBTL1)  $ColorMap(CET_CBTL1)
-set Detector2DIQGraph(CET_CBTL2)  $ColorMap(CET_CBTL2)
-set Detector2DIQGraph(CET_I1)  $ColorMap(CET_I1)
-set Detector2DIQGraph(CET_I2)  $ColorMap(CET_I2)
-set Detector2DIQGraph(CET_I3)  $ColorMap(CET_I3)
-set Detector2DIQGraph(CET_R1)  $ColorMap(CET_R1)
-set Detector2DIQGraph(CET_R2)  $ColorMap(CET_R2)
-set Detector2DIQGraph(CET_R3)  $ColorMap(CET_R3)
-set Detector2DIQGraph(CET_L4)  $ColorMap(CET_L4)
-set Detector2DIQGraph(CET_L5)  $ColorMap(CET_L5)
-set Detector2DIQGraph(CET_L6)  $ColorMap(CET_L6)
-set Detector2DIQGraph(CET_L7)  $ColorMap(CET_L7)
-set Detector2DIQGraph(CET_L8)  $ColorMap(CET_L8)
-set Detector2DIQGraph(CET_L9)  $ColorMap(CET_L9)
-set Detector2DIQGraph(CET_L10)  $ColorMap(CET_L10)
-set Detector2DIQGraph(CET_L11)  $ColorMap(CET_L11)
-set Detector2DIQGraph(CET_L12)  $ColorMap(CET_L12)
-set Detector2DIQGraph(CET_L17)  $ColorMap(CET_L17)
-set Detector2DIQGraph(nPix)    64
+set Detector2DIQGraph(ct) CET-R1.tbl
+set Detector2DIQGraph(ct) cubehelix8
+set Detector2DIQGraph(reverseCT) 1
+foreach CTname $::ColorMap(LUTnames) {
+	set Detector2DIQGraph($CTname)     $ColorMap($CTname)
+}
+set Detector2DIQGraph(nPix)    128
 set Detector2DIQGraph(pixres)  15
 set Detector2DIQGraph(SD)      18
 set Detector2DIQGraph(lambda)  0.6
@@ -1616,13 +1007,13 @@ global f_close
 set f_close "yes"
 
 proc window_to_clipboard { window } {
+  set ::sasfit(tmpclipboard) $window
   if {[catch {$window snap -format emf CLIPBOARD}]} {
-	old_window_to_clipboard $window
+	after 500 { old_window_to_clipboard $::sasfit(tmpclipboard)}
   }
 }
 proc old_window_to_clipboard { window } {
   raise [winfo toplevel $window]
-  update
   set emfdc [wmf open]
   set size [gdi copybits $emfdc -window $window -calc]
   eval gdi copybits $emfdc -window $window -source [ list $size ] -scale 1.01
@@ -2962,6 +2353,7 @@ proc MergeFileCmd {ttmpsasfit args} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $ttmpsasfit ssasfit
 global resolution
+global fn hide fskip lskip divisor widname widcnt
 set w2 .addfile.lay2
    if {[llength $args] == 1} {
          set i [lindex $args 0]
@@ -2991,7 +2383,6 @@ set w2 .addfile.lay2
       lappend ssasfit(file,d)         $resolution(d)
    }
 
-global fn hide fskip lskip divisor widname widcnt
 
    set fn($j)      [lindex $ssasfit(file,name)      $i]
    set hide($j)    [lindex $ssasfit(file,hide)      $i]
@@ -4574,6 +3965,7 @@ zoomstack $IQGraph(w)
    } else {
       set width2D $sasfit(height)
    }
+   set width2D 512
    .obW.tab tab configure Detector2DIQGraph -fill both \
             -padx 0.1i -pady 0.1i \
             -window $Detector2DIQGraph(sw)  \
@@ -4625,10 +4017,11 @@ $Detector2DIQGraph(w).popup add command -label "copy to clipboard" -un 0 -comman
 bind $Detector2DIQGraph(w) <ButtonPress-3> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 bind $Detector2DIQGraph(w) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(w).popup %X %Y }
 
-   set Detector2DIQGraph(nPix) 64
-   set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cwsim) \
-               [list 0.0 $Detector2DIQGraph(nPix)] \
-               [list 0.0 $Detector2DIQGraph(nPix)] noaxes] 
+#   set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cwsim) \
+#               [list 0.0 $Detector2DIQGraph(nPix)] \
+#               [list 0.0 $Detector2DIQGraph(nPix)] noaxes] 
+   set s [image create photo]
+   $Detector2DIQGraph(cwsim) create image  256 256 -image $s
    set Detector2DIQGraph(s) $s
 
 

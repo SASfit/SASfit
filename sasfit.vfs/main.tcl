@@ -57,6 +57,9 @@ if { $argc > 0 } {
 }
 
 # final sasfit application
-package require app-sasfit
+package require math::interpolate
 package require math::statistics
+package require math
+
+package require app-sasfit
 

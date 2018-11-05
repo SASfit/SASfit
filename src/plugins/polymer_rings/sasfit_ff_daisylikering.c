@@ -28,7 +28,7 @@ scalar sasfit_ff_daisylikering(scalar q, sasfit_param * param)
     Pmr = 0.0;
 	k = lround(floor(M));
 	w = M-floor(M);
-	u = q*q * RG*RG;
+	u = q*RG;
 	if (u  == 0.0)
 	{
 		P1r = I0;

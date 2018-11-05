@@ -40,10 +40,11 @@
 #define THETA	param->p[MAXPAR-2]
 #define	ETA		param->p[MAXPAR-3]
 #define ATOT	param->p[MAXPAR-4]
+#define P       param->p[MAXPAR-5]
 
 scalar sasfit_Torus_core_int_r(scalar r, sasfit_param * param)
 {
-	scalar gamma, KTcore, s;
+	scalar gamma, KTcore, s,Q_2;
 
 	SASFIT_ASSERT_PTR(param);
 
@@ -51,20 +52,12 @@ scalar sasfit_Torus_core_int_r(scalar r, sasfit_param * param)
 	SASFIT_CHECK_COND2((ATOT > R), param, "a(%lg) > R(%lg)",ATOT,R);
 
 	s = Q/(2.0*M_PI);
+	Q_2=Q/2.0;
 	gamma = NU*sqrt(ATOT*ATOT - (r-R)*(r-R));
 
-	if (THETA == 0.0) 
-	{
-		return ETA*4.*r*sin(M_PI*s*gamma)*cos(M_PI*s*gamma)/s;
-	}
-	if (THETA == M_PI_2) 
-	{
-		return ETA*4.*gsl_sf_bessel_J0(2.*M_PI*s*r)*M_PI*r*gamma;
-	}
 	KTcore = ETA*4.*M_PI*r
-		* gsl_sf_bessel_J0(2.*M_PI*s*r*sin(THETA)) 
-		* sin(2.*M_PI*s*gamma*cos(THETA))
-		/ (2.0*M_PI*s*cos(THETA));
+		* gsl_sf_bessel_J0(Q*r*sin(THETA))
+		* gamma*gsl_sf_bessel_j0(Q*gamma*cos(THETA));
 
 	return KTcore;
 }
@@ -81,40 +74,32 @@ scalar sasfit_Torus_core_int_theta(scalar theta, sasfit_param * param)
 
 	ATOT = A;
 	int_r	= sasfit_integrate(R-ATOT, R+ATOT, sasfit_Torus_core_int_r, param);
-	
+
 	if (DA == 0.0 || ETASH == ETASOL)
 	{
-		return gsl_pow_2((ETAC-ETASOL)*int_r) * sin(theta);
+		return gsl_pow_int((ETAC-ETASOL)*int_r,lround(P)) * sin(theta);
 	}
 
 	ATOT = A+DA;
 	int_r_delta	= sasfit_integrate(R-ATOT, R+ATOT, sasfit_Torus_core_int_r, param);
 
-	if (ETASH == ETAC) 
+	if (ETASH == ETAC)
 	{
-		return gsl_pow_2((ETASH-ETASOL)*int_r_delta) * sin(theta);
+		return gsl_pow_int((ETASH-ETASOL)*int_r_delta,lround(P)) * sin(theta);
 	}
 
 	TorusShell = (ETASH-ETASOL)*int_r_delta + (ETAC-ETASH)*int_r;
 
-	return TorusShell*TorusShell * sin(theta);
+	return gsl_pow_int(TorusShell,lround(P)) * sin(theta);
 }
 
 
-/*
-        R: radius of torus
-		a: inner radius of toris cross section
-		Delta_a: shell thickness of torus cross section
-		nu: if not equal one it describes scaling factor in case elliptical cross section
-		eta_c: scattering length density of core
-		eta_sh: scattering length density of shell
-		eta_sol: scattering length density of solvent
- */
 scalar sasfit_ff_Torus(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param);
 
 	Q = q;
+	P=2;
 	return sasfit_integrate(0.0, M_PI_2, sasfit_Torus_core_int_theta, param);
 }
 

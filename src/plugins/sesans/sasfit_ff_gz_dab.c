@@ -24,15 +24,15 @@ scalar sasfit_ff_gz_dab(scalar z, sasfit_param * param)
     u=z/XI;
     G0=16*M_PI*gsl_pow_4(XI)*ETA*ETA;
     if (fabs(u)<1e-6) {
-        if (u*u==0) {
+        if (u*u < 1e-20) {
             Gz=G0;
         } else {
-            Gz=G0*(1+u*u/4.*(2*M_EULER)-1+log(u*u/4.));
+            Gz=G0*(1+u*u/4.*(2*M_EULER-1-log(4)+2*log(u)));
         }
     } else {
         Gz=G0*u*gsl_sf_bessel_K1(u);
     }
-	return (Gz-G0); 
+	return (Gz-G0);
 }
 
 scalar sasfit_ff_gz_dab_f(scalar q, sasfit_param * param)

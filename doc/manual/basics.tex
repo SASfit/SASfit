@@ -1075,3 +1075,17 @@ for the specific surface $S/V$ of
 \label{eq:spez:surface}
 \EE
 The Porod law can be applied to all systems having sharp interfaces.
+
+\subsection{Multiple Scattering}
+\cite{Schelten1980,Jensen2018,Frielinghaus2018}
+For isotropic scatterer Schelten \& Schmatz \cite{Schelten1980} gave an expression for multiple scattering based on
+Hankel transform. Here the intermediate function is defined as the projected correlation function $\tilde{G}(r)$
+known in SESANS/SEMSANS and DF-Imaging with gratings is used
+\cite{Kohlbrecher2017} which scales with the one of  Schelten \& Schmatz by $\tilde{G}(r)=\exp(\tau)/(2\pi)^2 S(q)$,
+where $\tau=\Sigma t$ is the total scattering probability.  The multiple scattering intensity $I_m(q)$ then can
+be calculated from the single scattering intensity $I_1(q)$ by
+\begin{align}
+\tilde{G}(r) &= \frac{1}{2\pi} \int_0^\infty I_1(q) J_0(qr) q \, \mathrm{d}q \\
+\tilde{G}_m(r) &= \frac{1}{\lambda^2 t}\left\{\exp\left(\lambda^2 t \tilde{G}(r)\right)-1\right\}\\
+I_m(q) &= 2\pi \int_0^\infty \tilde{G}_m(r) J_0(qr) r \, \mathrm{d}r
+\end{align}

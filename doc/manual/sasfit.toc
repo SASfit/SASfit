@@ -394,9 +394,9 @@
 \contentsline {subsection}{\tocsubsection {}{8.12.3}{Ellipsoidal azimuthal analysis}}{498}{subsection.2042}
 \contentsline {section}{\tocsection {}{8.13}{Plugin functions for SESANS}}{499}{section.2043}
 \contentsline {subsection}{\tocsubsection {}{8.13.1}{$G(z)$ of a sphere}}{501}{subsection.2067}
-\contentsline {section}{\tocsection {}{8.14}{$G(z)$ of a randomly distributed, two-phase system (DAB) }}{502}{section.2071}
-\contentsline {section}{\tocsection {}{8.15}{$G(z)$ of a self-affine random density distribution (gDAB) }}{503}{section.2075}
-\contentsline {section}{\tocsection {}{8.16}{$G(z)$ for a generalized Gaussian coil (gGc) }}{503}{section.2079}
+\contentsline {subsection}{\tocsubsection {}{8.13.2}{$G(z)$ of a randomly distributed, two-phase system (DAB) }}{502}{subsection.2071}
+\contentsline {subsection}{\tocsubsection {}{8.13.3}{$G(z)$ of a self-affine random density distribution (gDAB) }}{503}{subsection.2075}
+\contentsline {subsection}{\tocsubsection {}{8.13.4}{$G(z)$ for a generalized Gaussian coil (gGc) }}{503}{subsection.2079}
 \contentsline {chapter}{\tocchapter {Chapter}{9}{Plugin functions for size distributions}}{505}{chapter.2086}
 \contentsline {section}{\tocsection {}{9.1}{LogNorm\_fp}}{505}{section.2087}
 \contentsline {chapter}{\tocchapter {Chapter}{10}{Plugin functions for structure factors}}{509}{chapter.2099}
@@ -447,12 +447,13 @@
 \contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.2}{Radius of gyration and Guinier approximation}}{560}{subsubsection.2385}
 \contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.3}{Correlation length}}{560}{subsubsection.2389}
 \contentsline {subsubsection}{\tocsubsubsection {}{13.2.6.4}{Porod law and specific surfaces}}{561}{subsubsection.2392}
-\contentsline {chapter}{\tocchapter {Chapter}{14}{Experimental Setup of a Small Angle Scattering Instrument}}{563}{chapter.2400}
-\contentsline {section}{\tocsection {}{14.1}{SANS-Camera}}{563}{section.2401}
-\contentsline {section}{\tocsection {}{14.2}{SAXS-Camera}}{563}{section.2403}
-\contentsline {chapter}{\tocchapter {Chapter}{15}{Data Reduction in SAS}}{565}{chapter.2405}
-\contentsline {section}{\tocsection {}{15.1}{Correction and Normalization of SANS-Raw data}}{565}{section.2406}
-\contentsline {subsection}{\tocsubsection {}{15.1.1}{Contribution of the isolated sample}}{565}{subsection.2410}
-\contentsline {subsection}{\tocsubsection {}{15.1.2}{Correction for sample holder and background noise}}{566}{subsection.2414}
-\contentsline {section}{\tocsection {}{15.2}{Correction and normalization of SAXS raw data}}{567}{section.2419}
-\contentsline {chapter}{\tocappendix {Appendix}{}{Bibliography}}{577}{appendix*.2430}
+\contentsline {subsection}{\tocsubsection {}{13.2.7}{Multiple Scattering}}{561}{subsection.2400}
+\contentsline {chapter}{\tocchapter {Chapter}{14}{Experimental Setup of a Small Angle Scattering Instrument}}{563}{chapter.2404}
+\contentsline {section}{\tocsection {}{14.1}{SANS-Camera}}{563}{section.2405}
+\contentsline {section}{\tocsection {}{14.2}{SAXS-Camera}}{563}{section.2407}
+\contentsline {chapter}{\tocchapter {Chapter}{15}{Data Reduction in SAS}}{565}{chapter.2409}
+\contentsline {section}{\tocsection {}{15.1}{Correction and Normalization of SANS-Raw data}}{565}{section.2410}
+\contentsline {subsection}{\tocsubsection {}{15.1.1}{Contribution of the isolated sample}}{565}{subsection.2414}
+\contentsline {subsection}{\tocsubsection {}{15.1.2}{Correction for sample holder and background noise}}{566}{subsection.2418}
+\contentsline {section}{\tocsection {}{15.2}{Correction and normalization of SAXS raw data}}{567}{section.2423}
+\contentsline {chapter}{\tocappendix {Appendix}{}{Bibliography}}{577}{appendix*.2434}

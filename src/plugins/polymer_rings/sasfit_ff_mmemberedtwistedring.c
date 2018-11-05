@@ -39,7 +39,7 @@ scalar sasfit_ff_mmemberedtwistedring(scalar q, sasfit_param * param)
 	k = lround(floor(M));
 	w = M-floor(M);
 
-	u = q*RG*q*RG;
+	u = q*RG;
 
 	if (u  == 0.0) {
 		P1r = 1;

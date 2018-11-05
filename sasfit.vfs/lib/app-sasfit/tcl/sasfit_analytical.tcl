@@ -8431,12 +8431,16 @@ LabelEntry     $wdet2D_b.e_max    \
        -textvariable Detector2DIQGraph(max)
 
 ComboBox $wdet2D_b.c_ct -textvariable Detector2DIQGraph(ct) \
-		-width 12 \
-		-values "jet rainbow vivid heatmap isocontour harrier hue siemens RGBhot nih_image_fire2 nih_image_fire2_inv iman damson grass gnuplot gnuplot2 py_rainbow gist_rainbow gist_ncar gist_earth gist_stern CMRmap hsv nipy_spectral terrain  coolwarm brg viridis plasma inferno magma Gem Green_Fire_Blue Orange_Hot Red_Hot Smart Royal Blue_Orange_icb Spectrum ice Fire Thal split_blurred_warm phase pastel gyr_centre mixed topography multi prism White_Blue_Green_Red ceretec S-Pet hotter Hot_Iron MMC Sopha StarsAndStripes Ratio A_Squared Yellow_WFG cold cool Blue_Red_Yellow cividis glow Rainbow_RGB Rainbow2 Rainbow3 French Perfusion NIH NDVI_VGYRM CET_R1 CET_R2 CET_R3 CET_I1 CET_I2 CET_I3 CET_CBTL1 CET_CBTL2 CET_CBL1 CET_CBL2 CET_CBD1 CET_L4 CET_L5 CET_L6 CET_L7 CET_L8 CET_L9 CET_L10 CET_L11 CET_L12 CET_L17 bw " \
-        -label "color table:"
+		-width 20 \
+		-values $::ColorMap(LUTnames) \
+        -label "color table:" \
+		-modifycmd {change_CT_Det2D sim}
 
+checkbutton $wdet2D_b.r_reverseCT   -variable ::Detector2DIQGraph(reverseCT) \
+			-text "reverse CT" -command {change_CT_Det2D sim}
 
 grid $wdet2D_b.c_ct     -row 0 -column 0 -sticky e
+grid $wdet2D_b.r_reverseCT -row 1 -column 0 -sticky w
 grid $wdet2D_b.r_manual -row 2 -column 0 -sticky w
 grid $wdet2D_b.r_auto   -row 3 -column 0 -sticky w
 grid $wdet2D_b.e_min    -row 2 -column 1 -sticky e
@@ -8455,6 +8459,7 @@ button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 		sasfit_timer_start "\nStart simulation 2d"
 		if {[catch {
 			set Det2DRes [sasfit_2Diq ::AnalytPar {{1 1} {1 1} {1 1}} Detector2DIQGraph]
+			set Detector2DIQGraph(Det2DRes) $Det2DRes
 #           puts $Det2DRes
 		} msg] } {
 			bgerror $msg
@@ -8467,40 +8472,8 @@ button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 #	    destroy $Detector2DIQGraph(cwsim)
 #	    destroy $Detector2DIQGraph(cwdata) 
 #	    destroy $Detector2DIQGraph(cwresiduum)
+		change_CT_Det2D sim
 		
-	    if {$::sasfit(width) < $::sasfit(height)} {
-	       set width2D $::sasfit(width)
-	    } else {
-	       set width2D $::sasfit(height)
-	    }
-
-#	    canvas $Detector2DIQGraph(cwsim)  -background white \
-#					   -width $width2D \
-#					   -height $width2D
-#		canvas $Detector2DIQGraph(cwdata)  -background white \
-#					   -width $width2D \
-#					   -height $width2D
-#		canvas $Detector2DIQGraph(cwresiduum)  -background white \
-#					   -width $width2D \
-#					   -height $width2D
-#	    pack $Detector2DIQGraph(cwsim) $Detector2DIQGraph(cwdata) $Detector2DIQGraph(cwresiduum) 
-#   $Detector2DIQGraph(w) setwidget  $Detector2DIQGraph(cw) 
-	    set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cwsim) \
-		[list 0.0 $Detector2DIQGraph(nPix)] \
-		[list 0.0 $Detector2DIQGraph(nPix)] noaxes] 
-	    set Detector2DIQGraph(s) $s
-	    for {set i 0} {$i < $Detector2DIQGraph(nPix)} {incr i} {
-	       for {set j 0} {$j < $Detector2DIQGraph(nPix)} {incr j} {
-		  set xll $i
-		  set yll $j
-		  set xur [expr $i+1]
-		  set yur [expr $j+1]
-		  set ctIndx [lindex [lindex $Det2DRes $i] $j]
-		  $s plot filled-rectangle $xll $yll $xur $yur  \
-		      [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
-	       }
-	    }
-
 		sasfit_timer_stop "Plotting 2D" "finished" ""
 		}
 	  }
@@ -8600,10 +8573,10 @@ puts "$DMax $DMin"
 		  set yll $j
 		  set xur [expr $i+1]
 		  set yur [expr $j+1]
-		  set Dij [expr (log10(([lindex [lindex $DIdat $i] $j]-$DetMin)/($DetMax-$DetMin)+0.001)-log10(0.001))/(log10(1.001)-log10(0.001))]
+		  set Dij [expr log10(1.0*([lindex [lindex $DIdat $i] $j]-$DetMin)/($DetMax-$DetMin)+1.0)/log10(256)]
 		  set ctIndx [expr round(255*$Dij)]
-		  $s plot filled-rectangle $xll $yll $xur $yur  \
-		      [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
+#		  $s plot filled-rectangle $xll $yll $xur $yur  \
+#		      [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
 	       }   
 		}
 		sasfit_timer_stop "Plotting 2D" "finished" ""

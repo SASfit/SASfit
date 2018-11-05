@@ -1513,6 +1513,8 @@ proc read_Ascii {filename ASCIIData args} {
 	set fieldseparator_comma "\t ;,"
 	while {![eof $f]} {
 	   gets $f line
+	   regsub -all { +} $line { } line
+	   set line [string trim $line]
 	   if {![string length $line]} { continue }; # skip empty lines
 	   incr lineno
 

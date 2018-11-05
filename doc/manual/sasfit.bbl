@@ -446,6 +446,14 @@ T.~Frühwirth, G.~Fritz, N.~Freiberger, and O.~Glatter.
 \newblock {\em Journal of Applied Crystallography}, 37(5):703--710, sep 2004.
 \newblock \doi{10.1107/s0021889804012956}.
 
+\bibitem{Frielinghaus2018}
+H.~Frielinghaus.
+\newblock Strategies for removing multiple scattering effects revisited.
+\newblock {\em Nuclear Instruments and Methods in Physics Research Section A:
+  Accelerators, Spectrometers, Detectors and Associated Equipment}, 904:9--14,
+  oct 2018.
+\newblock \doi{10.1016/j.nima.2018.07.027}.
+
 \bibitem{FFTW97}
 M.~Frigo and S.~G. Johnson.
 \newblock The fastest {Fourier} transform in the west.
@@ -789,6 +797,13 @@ S.~Ishikawa.
   44(1):147--150, jan 1974.
 \newblock \doi{10.1090/s0002-9939-1974-0336469-5}.
 
+\bibitem{Jensen2018}
+G.~V. Jensen and J.~G. Barker.
+\newblock Effects of multiple scattering encountered for various small-angle
+  scattering model functions.
+\newblock {\em Journal of Applied Crystallography}, 51(5):1455--1466, sep 2018.
+\newblock \doi{10.1107/s1600576718010816}.
+
 \bibitem{Jerrard1959}
 H.~G. Jerrard.
 \newblock Theories of streaming double refraction.
@@ -881,11 +896,11 @@ L.~Klime{\v{s}}.
 
 \bibitem{Kohlbrecher2017}
 J.~Kohlbrecher and A.~Studer.
-\newblock Transformation cycle between the spherically symmetric correlation
+\newblock {Transformation cycle between the spherically symmetric correlation
   function, projected correlation function and differential cross section as
-  implemented in {SASfit}.
-\newblock {\em Journal of Applied Crystallography}, 50(5):1395--1403, sep 2017.
-\newblock \doi{10.1107/s1600576717011979}.
+  implemented in {\it SASfit}}.
+\newblock {\em Journal of Applied Crystallography}, 50(5):1395--1403, Oct 2017.
+\newblock \doi{10.1107/S1600576717011979}.
 
 \bibitem{Kohlbrecher1997}
 J.~Kohlbrecher, A.~Wiedenmann, and H.~Wollenberger.
@@ -1483,6 +1498,12 @@ R.~F. Saraf.
 \newblock {\em Macromolecules}, 22(2):675--681, mar 1989.
 \newblock \doi{10.1021/ma00192a028}.
 
+\bibitem{Schelten1980}
+J.~Schelten and W.~Schmatz.
+\newblock Multiple-scattering treatment for small-angle scattering problems.
+\newblock {\em Journal of Applied Crystallography}, 13(4):385--390, aug 1980.
+\newblock \doi{10.1107/s0021889880012356}.
+
 \bibitem{Scheraga1951}
 H.~A. Scheraga, J.~T. Edsall, and J.~O. Gadd.
 \newblock Double refraction of flow: Numerical evaluation of extinction angle
@@ -1772,7 +1793,7 @@ C.~M. Wijmans and E.~B. Zhulina.
 
 \bibitem{Wikipedia2018StarShapedPolymers}
 {Wikipedia contributors}.
-\newblock Star-shaped polymers --- {W}ikipedia{,} the free encyclopedia, 2018.
+\newblock Star-shaped polymer --- {W}ikipedia{,} the free encyclopedia, 2018.
 \newblock \urlprefix\url{https://en.wikipedia.org/wiki/Star-shaped_polymer}.
 \newblock [Online; accessed 22-August-2018].
 
