@@ -36,12 +36,12 @@
 // - brief description
 // - description of parameters in HTML table-style
 
-/* ################ start ff_flexibleringpolymer ################ */
+/* ################ start ff_ringpolymerCasassa ################ */
 /** 
- * \defgroup ff_flexibleringpolymer FlexibleRingPolymer
+ * \defgroup ff_ringpolymerCasassa RingPolymerCasassa
  * \ingroup ff_polymer_rings
  *
- * \brief \<some brief description of FlexibleRingPolymer function\>
+ * \brief \<some brief description of RingPolymerCasassa function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -63,26 +63,122 @@
  */
 
 /**
- * \ingroup ff_flexibleringpolymer
+ * \ingroup ff_ringpolymerCasassa
  *
  * \sa sasfit_polymer_rings.h, ff_polymer_rings
  */
-sasfit_polymer_rings_DLLEXP scalar sasfit_ff_flexibleringpolymer(scalar q, sasfit_param * p);
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerCasassa(scalar q, sasfit_param * p);
 
 /**
- * \ingroup sq_flexibleringpolymer
+ * \ingroup ff_ringpolymerCasassa
  *
  * \sa sasfit_polymer_rings.h, ff_polymer_rings
  */
-sasfit_polymer_rings_DLLEXP scalar sasfit_ff_flexibleringpolymer_f(scalar q, sasfit_param * p);
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerCasassa_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_flexibleringpolymer
+ * \ingroup ff_ringpolymerCasassa
  *
  * \sa sasfit_polymer_rings.h, ff_polymer_rings
  */
-sasfit_polymer_rings_DLLEXP scalar sasfit_ff_flexibleringpolymer_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_flexibleringpolymer ################ */
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerCasassa_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ringpolymerCasassa ################ */
+
+/* ################ start ff_ringpolymerBZ ################ */
+/** 
+ * \defgroup ff_ringpolymerBZ RingPolymerBZ
+ * \ingroup ff_polymer_rings
+ *
+ * \brief \<some brief description of RingPolymerBZ function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b nu = (1+epsilon)/2</td>
+ *       <td>excluded volume parameter</td>
+ *      </tr><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering I(Q=0)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ringpolymerBZ
+ *
+ * \sa sasfit_polymer_rings.h, ff_polymer_rings
+ */
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerBZ(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ringpolymerBZ
+ *
+ * \sa sasfit_polymer_rings.h, ff_polymer_rings
+ */
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerBZ_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ringpolymerBZ
+ *
+ * \sa sasfit_polymer_rings.h, ff_polymer_rings
+ */
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerBZ_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ringpolymerBZ ################ */
+
+/* ################ start ff_ringpolymerBMB ################ */
+/** 
+ * \defgroup ff_ringpolymerBMB RingPolymerBMB
+ * \ingroup ff_polymer_rings
+ *
+ * \brief \<some brief description of RingPolymerBMB function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b nu = (1+epsilon)/2</td>
+ *       <td>excluded volume parameter</td>
+ *      </tr><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering I(Q=0)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_ringpolymerBMB
+ *
+ * \sa sasfit_polymer_rings.h, ff_polymer_rings
+ */
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerBMB(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ringpolymerBMB
+ *
+ * \sa sasfit_polymer_rings.h, ff_polymer_rings
+ */
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerBMB_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_ringpolymerBMB
+ *
+ * \sa sasfit_polymer_rings.h, ff_polymer_rings
+ */
+sasfit_polymer_rings_DLLEXP scalar sasfit_ff_ringpolymerBMB_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_ringpolymerBMB ################ */
 
 /* ################ start ff_mmemberedtwistedring ################ */
 /** 

@@ -20,7 +20,7 @@ scalar sasfit_ff_g_dab(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((XI < 0.0), param, "xi(%lg) < 0",XI); // modify condition to your needs
 
 	// insert your code here
-	return gsl_pow_2(4*(1+2*H)*ETA*gsl_pow_3(XI)*M_PI)/pow(gsl_pow_2(q*XI)+1.0,1.5+H);
+	return gsl_pow_2(4*(1+2*H)*ETA*gsl_pow_3(XI)*M_PI)/pow(1+gsl_pow_2(q*XI),1.5+H);
 }
 
 scalar sasfit_ff_g_dab_f(scalar q, sasfit_param * param)

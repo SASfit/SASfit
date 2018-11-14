@@ -130,84 +130,9 @@ set(SOURCE_sasfit_sq
 	sasfit_sq_ThinSquareWell.c
 )
 
-set(SOURCE_sasfit_peaks
-	sasfit_peak_QENS_ConfinementWithGaussianPotential.c
-	sasfit_peak_BetaAmplitude.c
-	sasfit_peak_BetaArea.c
-	sasfit_peak_ChiSquaredAmplitude.c
-	sasfit_peak_ChiSquaredArea.c
-	sasfit_peak_ErfcPeakAmplitude.c
-	sasfit_peak_ErfcPeakArea.c
-	sasfit_peak_ErrorAmplitude.c
-	sasfit_peak_ErrorArea.c
-	sasfit_peak_ExtremeValueAmplitude.c
-	sasfit_peak_ExtremeValueArea.c
-	sasfit_peak_ExponentiallyModifiedGaussianArea.c
-	sasfit_peak_ExponentiallyModifiedGaussianAmplitude.c
-	sasfit_peak_fatique_life_area.c
-	sasfit_peak_FVarianceAmplitude.c
-	sasfit_peak_FVarianceArea.c
-	sasfit_peak_GammaAmplitude.c
-	sasfit_peak_GammaArea.c
-	sasfit_peak_GaussianAmplitude.c
-	sasfit_peak_GaussianArea.c
-	sasfit_peak_GaussianLorentzianCrossProductAmplitude.c
-	sasfit_peak_GaussianLorentzianCrossProductArea.c
-	sasfit_peak_GaussianLorentzianSumAmplitude.c
-	sasfit_peak_GaussianLorentzianSumArea.c
-	sasfit_peak_GeneralizedGaussian1Amplitude.c
-	sasfit_peak_GeneralizedGaussian1Area.c
-	sasfit_peak_GeneralizedGaussian2Amplitude.c
-	sasfit_peak_GeneralizedGaussian2Area.c
-	sasfit_peak_GiddingsAmplitude.c
-	sasfit_peak_GiddingsArea.c
-	sasfit_peak_HaarhoffVanderLindeArea.c
-	sasfit_peak_HalfGaussianModifiedGaussianArea.c
-	sasfit_peak_InvertedGammaAmplitude.c
-	sasfit_peak_InvertedGammaArea.c
-	sasfit_peak_KumaraswamyAmplitude.c
-	sasfit_peak_KumaraswamyArea.c
-	sasfit_peak_LaplaceAmplitude.c
-	sasfit_peak_LaplaceArea.c
-	sasfit_peak_LogisticAmplitude.c
-	sasfit_peak_LogisticArea.c
-	sasfit_peak_LogLogisticAmplitude.c
-	sasfit_peak_LogLogisticArea.c
-	sasfit_peak_LogNormal4ParameterAmplitude.c
-	sasfit_peak_LogNormal4ParameterArea.c
-	sasfit_peak_LogNormalAmplitude.c
-	sasfit_peak_LogNormalArea.c
-	sasfit_peak_LorentzianAmplitude.c
-	sasfit_peak_LorentzianArea.c
-	sasfit_peak_generalizedMaxwellAmplitude.c
-	sasfit_peak_generalizedMaxwellArea.c
-	sasfit_peak_MaxwellAmplitude.c
-	sasfit_peak_MaxwellArea.c
-	sasfit_peak_PearsonIVAmplitude.c
-	sasfit_peak_PearsonIVArea.c
-	sasfit_peak_PearsonVIIAmplitude.c
-	sasfit_peak_PearsonVIIArea.c
-	sasfit_peak_powerlognormalArea.c
-	sasfit_peak_powernormalArea.c
-	sasfit_peak_PulsePeakAmplitude.c
-	sasfit_peak_PulsePeakArea.c
-	sasfit_peak_PulsePeakwith2ndWidthTermAmplitude.c
-	sasfit_peak_PulsePeakwith2ndWidthTermArea.c
-	sasfit_peak_PulsePeakwithPowerTermAmplitude.c
-	sasfit_peak_PulsePeakwithPowerTermArea.c
-	sasfit_peak_Student_tAmplitude.c
-	sasfit_peak_Student_tArea.c
-	sasfit_peak_VoigtPeakAmplitude.c
-	sasfit_peak_VoigtPeakArea.c
-	sasfit_peak_WeibullAmplitude.c
-	sasfit_peak_WeibullArea.c
-)
-
 set(SOURCE_sasfit_ff
 	psi_a_b/sasfit_ff_a.c
 	psi_a_b/sasfit_ff_b.c
-	sasfit_ff_alignedCylShell.c
-	sasfit_ff_partly_aligned_CylShell.c
 	sasfit_ff_Andrea1.c
 	sasfit_ff_background.c
 	sasfit_ff_BiLayeredVesicle.c
@@ -215,17 +140,11 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_BlockCopolymerMicelle.c
 	sasfit_ff_BroadPeak.c
 	sasfit_ff_CoPolymerMicelleSphericalProfile.c
-	sasfit_ff_ellCylinder.c
-	sasfit_ff_Cylinder.c
 	sasfit_ff_cyl_mic.c
 	cyl_rwbrush/utils.c
 	cyl_rwbrush/sasfit_ff_cyl_rwbrush.c
 	cyl_rwbrush/sasfit_ff_cyl_rwbrush_nagg.c
 	cyl_rwbrush/sasfit_ff_cyl_rwbrush_rc.c
-	cyl_shell/sasfit_ff_cyl_shell_1.c
-	cyl_shell/sasfit_ff_cyl_shell_2.c
-	cyl_shell/utils.c
-	sasfit_ff_Disc.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush_lc.c
 	disc_rwbrush/sasfit_ff_disc_rwbrush_nagg.c
@@ -240,7 +159,6 @@ set(SOURCE_sasfit_ff
 	ellip/sasfit_ff_ellip_1.c
 	ellip/sasfit_ff_ellip_2.c
 	sasfit_ff_ExpShell.c
-	sasfit_ff_flat_cyl.c
 	sasfit_ff_Fractal.c
 	sasfit_ff_francois.c
 	sasfit_ff_guinier.c
@@ -279,12 +197,10 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_Langevin.c
 	sasfit_ff_LayeredCentroSymmetricXS.c
 	sasfit_ff_LinShell.c
-	sasfit_ff_long_cyl.c
 	sasfit_ff_MLVesicleFrielinghaus.c
 	sasfit_ff_MultiLamellarVesicle.c
 	sasfit_ff_OrnsteinZernike.c
 	sasfit_ff_P39.c
-	sasfit_ff_porod_cyl.c
 	sasfit_ff_RNDMultiLamellarVesicle2.c
 	sasfit_ff_RNDMultiLamellarVesicle.c
 	sasfit_ff_Robertus1.c
@@ -313,7 +229,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_ThinDisc_homogenousXS.c
 	sasfit_ff_ThinEllShell_homogenousXS.c
 	sasfit_ff_ThinSphShell_homogenousXS.c
-	sasfit_ff_Torus.c
 	sasfit_ff_triaxEllShell1.c
 	sasfit_ff_TripleLayeredHomogeneousCentroSymmetricXS.c
 	sasfit_ff_two_attached_spheres.c

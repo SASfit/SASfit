@@ -1,6 +1,29 @@
 \appendix{History}
 \begin{description}
-\item[2018-xx-xx] \SASfit 0.94.10
+\item[2018-xx-xx] \SASfit 0.94.11
+    \begin{itemize}
+    \item added two additional form factors for ring polymers with excluded volume effects (\texttt{"RingPolymerBZ"}, \texttt{"RingPolymerBMB"}) and renamed the old one from \texttt{"FlexibleRingPolymer"} to \texttt{"RingPolymerCasassa"}
+    \item bug fix in ring polymers, daisy-like ring and m-membered twisted ring.
+    \item bug fix of \texttt{"GzSphere"}, returns wrong value for z>2R
+    \item bug fix of \texttt{"GzgDAB"} for extrapolation to $z\rightarrow 0$
+    \item added two more models for $P'(Q)$ of thin cylindrical objects describing wormlike structure: \texttt{"Koyama worm"} and \texttt{"freely joined chain of rods"}
+    \item Some form factors for polymers like Gaussian chains, star polymers and ring polymers have been moved to the plug-in area.
+    \item As all peak functions are now available as plug-ins the obsolete old code has been deleted
+    \item The Lorenz-Mie form factors for static light scattering are now made available as plug-in form factors
+    \item \SASfit now tries to avoids starting a new fit or simulation before the previous one is finished
+    \item Successfully updated from gsl2.4 to gsl2.5 library.
+    \item The new 2D/3D hard sphere structure factors are now available in the structure factor plug-in folder named "Hard Sphere 2D/3D"
+    \item update to FFTW 3.3.8 worked after disabling threads however on Windows McAfee had to switched off during configure process.
+    \item implemented some thermodynamic self-consistent hard sphere structure factors based on the rational function approximation method
+    \item tried to avoid overflow of sinh-function in the model \texttt{"Khodolenko-Worm"}
+    \item now between thin objects (local planar and local cylindrical approximation) and anisotropic shapes is distinguished.
+    \item new plug-in folder for azimuthal data
+    \item new plug-in folder for deformed or sheared objects
+    \item new form factors for partly aligned cylinders and ellipsoids following a Maier-Saupe, Onsager, Heaviside, Gauss, or a Boltzmann orientation distribution
+    \item new form factor of a reptating chain after a deformation step
+    \item new plug-in structure factors for 2-dimensional fluids of monodisperse hard spheres, \texttt{"2D hard disks (Rosenfeld)"} and \texttt{"2D hard disks (Guo)"}
+    \end{itemize}
+\item[2018-03-20] \SASfit 0.94.10
     \begin{itemize}
     \item The form factors \texttt{"EllipsoidalCoreShell"}, \texttt{"Ellipsoid i"}, \texttt{"Ellipsoid ii"}, and \texttt{"triaxEllShell1"} have been disabled and replaced by a series of plug-in functions. Those replacements make use of a faster routine for multidimensional integrals (pcubature). Because of this an optional size distribution became part of the supplied plug-in form factors.
     \item bug fix of unit conversion via clipboard

@@ -1019,96 +1019,7 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l8,label) "eta_sol ="
 				  set actualPar(FF,l9,label) "x_sol_sh2 ="
 				  set actualPar(FF,l10,label) "n ="
-				}    
-	   "Cylinder"           { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "L ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "eta =" 
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "EllCylShell"  \
-				{ set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "epsilon ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "t ="
-				  set actualPar(FF,l5,label) "eta_core =" 
-				  set actualPar(FF,l6,label) "eta_shell ="
-				  set actualPar(FF,l7,label) "eta_sol ="
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "LongCylinder"       { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "L ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "eta ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "FlatCylinder"       { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "L ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "eta ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "PorodCylinder"      { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "L ="
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "eta =" 
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"LongCylShell"          { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "DR ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_shell ="
-				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"ellCylShell1"          { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "epsilon ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "t ="
-				  set actualPar(FF,l5,label) "eta_core ="
-				  set actualPar(FF,l6,label) "eta_shell ="
-				  set actualPar(FF,l7,label) "eta_sol ="
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"ellCylShell2"          { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "epsilon ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "t ="
-				  set actualPar(FF,l5,label) "eta_core ="
-				  set actualPar(FF,l6,label) "eta_shell ="
-				  set actualPar(FF,l7,label) "eta_sol ="
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
+				}  
          "Pcs:homogeneousCyl"    { set actualPar(FF,l1,label) "R ="
                                    set actualPar(FF,l2,label) "eta_core ="
                                    set actualPar(FF,l3,label) "eta_solv ="
@@ -1126,73 +1037,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l4,label) "eta_core ="
 				  set actualPar(FF,l5,label) "eta_shell ="
 				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"CylShell1"             { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "DR ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_shell ="
-				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"CylShell2"             { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "DR ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_shell ="
-				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"alignedCylShell"       { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "DR ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_shell ="
-				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) "psi ="
-				  set actualPar(FF,l8,label) "theta ="
-				  set actualPar(FF,l9,label) "phi ="
-				  set actualPar(FF,l10,label) ""
-				}
-	"partly aligned CylShell" \
-				{ set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "DR ="
-				  set actualPar(FF,l3,label) "L ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_shell ="
-				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) "psi ="
-				  set actualPar(FF,l8,label) "P2 ="
-				  set actualPar(FF,l9,label) "P4 ="
-				  set actualPar(FF,l10,label) "P6 ="
-				}
-	   "Torus"              { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "a ="
-				  set actualPar(FF,l3,label) "Delta_a ="
-				  set actualPar(FF,l4,label) "nu ="
-				  set actualPar(FF,l5,label) "eta_c ="
-				  set actualPar(FF,l6,label) "eta_sh ="
-				  set actualPar(FF,l7,label) "eta_sol ="
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Disc"               { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) ""
-				  set actualPar(FF,l3,label) ""
-				  set actualPar(FF,l4,label) "eta ="
-				  set actualPar(FF,l5,label) ""
-				  set actualPar(FF,l6,label) ""
 				  set actualPar(FF,l7,label) ""
 				  set actualPar(FF,l8,label) ""
 				  set actualPar(FF,l9,label) ""
@@ -3283,21 +3127,6 @@ proc analyticalGlobalSDCmd {simorfit
 									  {CylULV+Chains(RW)_nagg Delta} \
 									  {CylULV+Chains(RW)_tc Delta} \ 
 									  {CylULV+Chains(RW) Delta} }} }} \
-	    {cyl "cylindrical obj." { \
-				{Disc Delta} \
-				 PorodCylinder \
-				 LongCylinder \
-				 FlatCylinder \
-				 Cylinder \
-				 LongCylShell \
-				{ellCylShell1 Delta} \
-				{ellCylShell2 Delta} \
-				 CylShell1 \
-				 CylShell2 \ 
-				 alignedCylShell \
-			       {{partly aligned CylShell} Delta} \
-				 Torus \
-				}} \ 
 	{planar "planar obj." {{homogenousXS Delta} \
 			       {SphSh+SD+homoXS Delta} \
 			       {EllSh+SD+homoXS Delta} \

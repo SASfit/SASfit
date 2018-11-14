@@ -797,7 +797,7 @@ The scattering amplitude for the radial profile in eq.\ \ref{eq:profileBoucherSp
       &= \beta \left(\frac{2}{QR}\right)^{\frac{\alpha-1}{2}} J_{\frac{\alpha-1}{2}}(QR) \, \Gamma\left(\frac{\alpha+1}{2}\right) \nonumber \\
       &= \beta \;_0F_1\left(\frac{\alpha+1}{2};-\tfrac{(QR)^2}{4}\right)
 \end{align}
-making use of the fact that the bessel function can be expressed in terms of generalised hypergeometric functions $J_\alpha(x)=\frac{(\frac{x}{2})^\alpha}{\Gamma(\alpha+1)}  \;_0F_1 (\alpha+1; -\tfrac{x^2}{4})$. The scattering amplitude simplifies in case of $\alpha=4$ exactly the one of a homogenous sphere and in case of $\alpha=2$ to an infinitesimal thin spherical shell. For the scattering intensity $I(Q) = F^2(Q)$ we get in the Porod limit $Q\rightarrow\infty$
+making use of the fact that the bessel function can be expressed in terms of generalised hypergeometric functions $J_\alpha(x)=\frac{(\frac{x}{2})^\alpha}{\Gamma(\alpha+1)}  \;_0F_1 (\alpha+1; -\tfrac{x^2}{4})$. The scattering amplitude simplifies in case of $\alpha=4$ exactly to the one of a homogenous sphere and in case of $\alpha=2$ to an infinitesimal thin spherical shell. For the scattering intensity $I(Q) = F^2(Q)$ we get in the Porod limit $Q\rightarrow\infty$
 \BE
  \lim_{Q\rightarrow\infty} I(Q)= \lim_{Q\rightarrow\infty}  F^2(Q) =
  \beta^2 \frac{2^{\alpha-1}}{\pi} \Gamma^2\left(\frac{\alpha+1}{2}\right) \frac{1}{(QR)^\alpha}
@@ -835,13 +835,13 @@ making use of the fact that the bessel function can be expressed in terms of gen
 
 \begin{figure}[htb]
 \begin{center}
-\subfigure[Scattering curves of \texttt{BoucherSpheres} for sevaral $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$. As the excess scattering length diverges for $\alpha\leq 2$ these values are not allowed.]{
+\subfigure[Scattering curves of \texttt{BoucherSpheres} for several $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$. As the excess scattering length diverges for $\alpha\leq 2$ these values are not allowed.]{
 \includegraphics[width=0.48\textwidth]{BoucherSphereI(Q).png}}
 \hfill
-\subfigure[Scattering curves of \texttt{BoucherSpheres2} for sevaral $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$.]{
+\subfigure[Scattering curves of \texttt{BoucherSpheres2} for several $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$.]{
 \includegraphics[width=0.48\textwidth]{BoucherSphere2I(Q).png}}
 \end{center}
 \caption{Scattering curves for the form factors \texttt{BoucherSpheres} and \texttt{BoucherSpheres2}.}
 \label{fig:BoucherIQ}
-\end{figure} 
+\end{figure}
 

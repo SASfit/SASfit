@@ -10,7 +10,9 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_flexibleringpolymer.c
+	sasfit_ff_ringpolymerCasassa.c
+	sasfit_ff_ringpolymerBZ.c
+	sasfit_ff_ringpolymerBMB.c
 	sasfit_ff_mmemberedtwistedring.c
 	sasfit_ff_daisylikering.c
 	interface.c

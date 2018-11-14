@@ -97,6 +97,12 @@ H.~Benoit.
 \newblock {\em Journal of Polymer Science}, 11(5):507--510, nov 1953.
 \newblock \doi{10.1002/pol.1953.120110512}.
 
+\bibitem{Bensafi2000}
+A.~Bensafi, U.~Maschke, and M.~Benmouna.
+\newblock Cyclic polymers in good solvents.
+\newblock {\em Polymer International}, 49(2):175--183, feb 2000.
+\newblock \doi{10.1002/(sici)1097-0126(200002)49:2<175::aid-pi323>3.0.co;2-m}.
+
 \bibitem{Berndt2006}
 I.~Berndt, J.~S. Pedersen, P.~Lindner, and W.~Richtering.
 \newblock Influence of shell thickness and cross-link density on the structure
@@ -137,6 +143,13 @@ A.~E. Blaurock.
 \newblock {\em Biochimica et Biophysica Acta (BBA) - Reviews on Biomembranes},
   650(4):167--207, may 1982.
 \newblock \doi{10.1016/0304-4157(82)90016-8}.
+
+\bibitem{Bloomfield1966}
+V.~Bloomfield and B.~H. Zimm.
+\newblock Viscosity, sedimentation,et cetera,of ring- and straight-chain
+  polymers in dilute solution.
+\newblock {\em The Journal of Chemical Physics}, 44(1):315--323, jan 1966.
+\newblock \doi{10.1063/1.1726463}.
 
 \bibitem{Bohren1983}
 C.~Bohren and D.~Huffman.
@@ -240,6 +253,13 @@ N.~F. Carnahan and K.~E. Starling.
 \newblock Equation of state for nonattracting rigid spheres.
 \newblock {\em The Journal of Chemical Physics}, 51(2):635--636, jul 1969.
 \newblock \doi{10.1063/1.1672048}.
+
+\bibitem{Casassa1965}
+E.~F. Casassa.
+\newblock Some statistical properties of flexible ring polymers.
+\newblock {\em Journal of Polymer Science Part A: General Papers},
+  3(2):605--614, feb 1965.
+\newblock \doi{10.1002/pol.1965.100030217}.
 
 \bibitem{Charpentier2001}
 I.~Charpentier and N.~Jakse.
@@ -547,6 +567,14 @@ O.~Glatter.
 \newblock Data evaluation in small angle scattering: Calculation of the radial
   electron density distribution by means of indirect {Fourier} transformation.
 \newblock {\em Acta Physica Austriaca}, 47:83--102, 1977.
+
+\bibitem{Goosen2015}
+S.~Goo{\ss}en, A.~R. Br{\'{a}}s, W.~Pyckhout-Hintzen, A.~Wischnewski,
+  D.~Richter, M.~Rubinstein, J.~Roovers, P.~J. Lutz, Y.~Jeong, T.~Chang, and
+  D.~Vlassopoulos.
+\newblock Influence of the solvent quality on ring polymer dimensions.
+\newblock {\em Macromolecules}, 48(5):1598--1605, feb 2015.
+\newblock \doi{10.1021/ma502518p}.
 
 \bibitem{Greschner1973}
 G.~S. Greschner.

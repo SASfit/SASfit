@@ -141,10 +141,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_SphereWithGaussChains;
 	} else
-	if ( strcmp(ff->typestr, "Torus") == 0 )
-	{
-		ff->fct = sasfit_ff_Torus;
-	} else
 	if ( strcmp(ff->typestr, "BiLayeredVesicle") == 0 )
 	{
 		ff->fct = sasfit_ff_BiLayeredVesicle;
@@ -267,38 +263,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 		ff->fct = sasfit_ff_ellip_2;
 		ff->fct_v = sasfit_ff_ellip_v;
 		ff->params.kernelSelector = ELLIP2;
-	} else
-	if ( strcmp(ff->typestr, "ellCylShell1") == 0 )
-	{
-		ff->fct = sasfit_ff_ellCylShell1;
-		ff->fct_v = sasfit_ff_ellCylShell1_v;
-		ff->fct_f = sasfit_ff_ellCylShell1_f;
-	} else
-	if ( strcmp(ff->typestr, "ellCylShell2") == 0 )
-	{
-		ff->fct = sasfit_ff_ellCylShell2;
-		ff->fct_v = sasfit_ff_ellCylShell2_v;
-		ff->fct_f = sasfit_ff_ellCylShell2_f;
-	} else
-	if ( strcmp(ff->typestr, "Cylinder") == 0 )
-	{
-		ff->fct = sasfit_ff_Cylinder;
-		ff->fct_v = sasfit_ff_porod_cyl_v;
-	} else
-	if ( strcmp(ff->typestr, "PorodCylinder") == 0 )
-	{
-		ff->fct = sasfit_ff_porod_cyl;
-		ff->fct_v = sasfit_ff_porod_cyl_v;
-	} else
-	if ( strcmp(ff->typestr, "LongCylinder") == 0 )
-	{
-		ff->fct = sasfit_ff_long_cyl;
-		ff->fct_v = sasfit_ff_porod_cyl_v;
-	} else
-	if ( strcmp(ff->typestr, "FlatCylinder") == 0 )
-	{
-		ff->fct = sasfit_ff_flat_cyl;
-		ff->fct_v = sasfit_ff_porod_cyl_v;
 	} else
 	if ( strcmp(ff->typestr, "HardSphere") == 0 )
 	{
@@ -577,44 +541,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_Sphere_R_ma_Profile_Manuela;
 		ff->params.kernelSelector = SPHERE_RMA_MANU2;
-	} else
-	/*
-	if ( strcmp(ff->typestr, "Rod") == 0 )
-	{
-		ff->fct = sasfit_ff_rod;
-	} else
-	*/
-	if ( strcmp(ff->typestr, "CylShell1") == 0 )
-	{
-		ff->fct = sasfit_ff_cyl_shell_1;
-		ff->fct_f = sasfit_ff_cyl_shell_1_f;
-		ff->fct_v = sasfit_ff_cyl_shell_v;
-	} else
-	if ( strcmp(ff->typestr, "CylShell2") == 0 )
-	{
-		ff->fct = sasfit_ff_cyl_shell_2;
-		ff->fct_f = sasfit_ff_cyl_shell_2_f;
-		ff->fct_v = sasfit_ff_cyl_shell_v;
-	} else
-	if ( strcmp(ff->typestr, "LongCylShell") == 0 )
-	{
-		ff->fct = sasfit_ff_VeryLongCylindricalShell;
-		ff->fct_v = sasfit_ff_cyl_shell_v;
-	} else
-	if ( strcmp(ff->typestr, "alignedCylShell") == 0 )
-	{
-		ff->fct = sasfit_ff_alignedCylShell;
-		ff->fct_v = sasfit_ff_cyl_shell_v;
-	} else
-	if ( strcmp(ff->typestr, "partly aligned CylShell") == 0 )
-	{
-		ff->fct = sasfit_ff_partly_aligned_CylShell;
-		ff->fct_v = sasfit_ff_cyl_shell_v;
-	} else
-	if ( strcmp(ff->typestr, "Disc") == 0 )
-	{
-		ff->fct = sasfit_ff_Disc;
-		ff->fct_f = sasfit_ff_Disc_f;
 	} else
 	if ( strcmp(ff->typestr, "homogenousXS") == 0 )
 	{

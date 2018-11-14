@@ -716,95 +716,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) "x_sol_sh2 ="
                           set actualPar(FF,l10,label) "n ="
                         }    
-   "Cylinder"           { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "L ="
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) "eta ="
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "EllCylShell"  \
-                        { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "epsilon ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "t ="
-                          set actualPar(FF,l5,label) "eta_core =" 
-                          set actualPar(FF,l6,label) "eta_shell ="
-                          set actualPar(FF,l7,label) "eta_sol ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "FlatCylinder"       { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "L ="
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) "eta"
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "LongCylinder"       { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "L ="
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) "eta"
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "PorodCylinder"      { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "L ="
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) "eta"
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-"LongCylShell"          { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "DR ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "eta_core ="
-                          set actualPar(FF,l5,label) "eta_shell ="
-                          set actualPar(FF,l6,label) "eta_solv ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-"ellCylShell1"          { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "epsilon ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "t ="
-                          set actualPar(FF,l5,label) "eta_core ="
-                          set actualPar(FF,l6,label) "eta_shell ="
-                          set actualPar(FF,l7,label) "eta_sol ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-"ellCylShell2"          { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "epsilon ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "t ="
-                          set actualPar(FF,l5,label) "eta_core ="
-                          set actualPar(FF,l6,label) "eta_shell ="
-                          set actualPar(FF,l7,label) "eta_sol ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
 "Pcs:homogeneousCyl"    { set actualPar(FF,l1,label) "R ="
                           set actualPar(FF,l2,label) "eta_core ="
                           set actualPar(FF,l3,label) "eta_solv ="
@@ -822,73 +733,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l4,label) "eta_core ="
                           set actualPar(FF,l5,label) "eta_shell ="
                           set actualPar(FF,l6,label) "eta_solv ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-"CylShell1"             { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "DR ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "eta_core ="
-                          set actualPar(FF,l5,label) "eta_shell ="
-                          set actualPar(FF,l6,label) "eta_solv ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-"CylShell2"             { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "DR ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "eta_core ="
-                          set actualPar(FF,l5,label) "eta_shell ="
-                          set actualPar(FF,l6,label) "eta_solv ="
-                          set actualPar(FF,l7,label) ""
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-"alignedCylShell"       { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "DR ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "eta_core ="
-                          set actualPar(FF,l5,label) "eta_shell ="
-                          set actualPar(FF,l6,label) "eta_solv ="
-                          set actualPar(FF,l7,label) "psi ="
-                          set actualPar(FF,l8,label) "theta ="
-                          set actualPar(FF,l9,label) "phi ="
-                          set actualPar(FF,l10,label) ""
-                        }
-"partly aligned CylShell" \
-	                { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "DR ="
-                          set actualPar(FF,l3,label) "L ="
-                          set actualPar(FF,l4,label) "eta_core ="
-                          set actualPar(FF,l5,label) "eta_shell ="
-                          set actualPar(FF,l6,label) "eta_solv ="
-                          set actualPar(FF,l7,label) "psi ="
-                          set actualPar(FF,l8,label) "P2 ="
-                          set actualPar(FF,l9,label) "P4 ="
-                          set actualPar(FF,l10,label) "P6 ="
-                        }
-   "Torus"              { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "a ="
-                          set actualPar(FF,l3,label) "Delta_a ="
-                          set actualPar(FF,l4,label) "nu ="
-                          set actualPar(FF,l5,label) "eta_c ="
-                          set actualPar(FF,l6,label) "eta_sh ="
-                          set actualPar(FF,l7,label) "eta_sol ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "Disc"               { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) ""
-                          set actualPar(FF,l3,label) ""
-                          set actualPar(FF,l4,label) "eta ="
-                          set actualPar(FF,l5,label) ""
-                          set actualPar(FF,l6,label) ""
                           set actualPar(FF,l7,label) ""
                           set actualPar(FF,l8,label) ""
                           set actualPar(FF,l9,label) ""
@@ -3203,83 +3047,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) "x_sol_sh2 ="
 				  set actualAnalytPar(FF,l10,label) "n ="
 				} 
-	   "Cylinder"           { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "L ="
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) "eta ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "FlatCylinder"       { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "L ="
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) "eta ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "LongCylinder"       { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "L ="
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) "eta ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "PorodCylinder"      { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "L ="
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) "eta ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "LongCylShell"       { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "DR ="
-				  set actualAnalytPar(FF,l3,label) "L ="
-				  set actualAnalytPar(FF,l4,label) "eta_core ="
-				  set actualAnalytPar(FF,l5,label) "eta_shell ="
-				  set actualAnalytPar(FF,l6,label) "eta_solv ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-           "ellCylShell1"       { set actualAnalytPar(FF,l1,label) "R ="
-                                  set actualAnalytPar(FF,l2,label) "epsilon ="
-                                  set actualAnalytPar(FF,l3,label) "L ="
-                                  set actualAnalytPar(FF,l4,label) "t ="
-                                  set actualAnalytPar(FF,l5,label) "eta_core ="
-                                  set actualAnalytPar(FF,l6,label) "eta_shell ="
-                                  set actualAnalytPar(FF,l7,label) "eta_sol ="
-                                  set actualAnalytPar(FF,l8,label) ""
-                                  set actualAnalytPar(FF,l9,label) ""
-                                  set actualAnalytPar(FF,l10,label) ""
-                                }
-           "ellCylShell2"       { set actualAnalytPar(FF,l1,label) "R ="
-                                  set actualAnalytPar(FF,l2,label) "epsilon ="
-                                  set actualAnalytPar(FF,l3,label) "L ="
-                                  set actualAnalytPar(FF,l4,label) "t ="
-                                  set actualAnalytPar(FF,l5,label) "eta_core ="
-                                  set actualAnalytPar(FF,l6,label) "eta_shell ="
-                                  set actualAnalytPar(FF,l7,label) "eta_sol ="
-                                  set actualAnalytPar(FF,l8,label) ""
-                                  set actualAnalytPar(FF,l9,label) ""
-                                  set actualAnalytPar(FF,l10,label) ""
-                                }
 	"Pcs:homogeneousCyl"    { set actualAnalytPar(FF,l1,label) "R ="
 				  set actualAnalytPar(FF,l2,label) "eta_core ="
 				  set actualAnalytPar(FF,l3,label) "eta_solv ="
@@ -3297,62 +3064,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l4,label) "eta_core ="
 				  set actualAnalytPar(FF,l5,label) "eta_shell ="
 				  set actualAnalytPar(FF,l6,label) "eta_solv ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "CylShell1"          { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "DR ="
-				  set actualAnalytPar(FF,l3,label) "L ="
-				  set actualAnalytPar(FF,l4,label) "eta_core ="
-				  set actualAnalytPar(FF,l5,label) "eta_shell ="
-				  set actualAnalytPar(FF,l6,label) "eta_solv ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "CylShell2"          { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "DR ="
-				  set actualAnalytPar(FF,l3,label) "L ="
-				  set actualAnalytPar(FF,l4,label) "eta_core ="
-				  set actualAnalytPar(FF,l5,label) "eta_shell ="
-				  set actualAnalytPar(FF,l6,label) "eta_solv ="
-				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	"alignedCylShell"       { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "DR ="
-				  set actualAnalytPar(FF,l3,label) "L ="
-				  set actualAnalytPar(FF,l4,label) "eta_core ="
-				  set actualAnalytPar(FF,l5,label) "eta_shell ="
-				  set actualAnalytPar(FF,l6,label) "eta_solv ="
-				  set actualAnalytPar(FF,l7,label) "psi ="
-				  set actualAnalytPar(FF,l8,label) "theta ="
-				  set actualAnalytPar(FF,l9,label) "phi ="
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	"partly aligned CylShell" \
-				{ set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "DR ="
-				  set actualAnalytPar(FF,l3,label) "L ="
-				  set actualAnalytPar(FF,l4,label) "eta_core ="
-				  set actualAnalytPar(FF,l5,label) "eta_shell ="
-				  set actualAnalytPar(FF,l6,label) "eta_solv ="
-				  set actualAnalytPar(FF,l7,label) "psi ="
-				  set actualAnalytPar(FF,l8,label) "P2 ="
-				  set actualAnalytPar(FF,l9,label) "P4 ="
-				  set actualAnalytPar(FF,l10,label) "P6 ="
-				}
-	   "Disc"               { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) ""
-				  set actualAnalytPar(FF,l3,label) ""
-				  set actualAnalytPar(FF,l4,label) "eta ="
-				  set actualAnalytPar(FF,l5,label) ""
-				  set actualAnalytPar(FF,l6,label) ""
 				  set actualAnalytPar(FF,l7,label) ""
 				  set actualAnalytPar(FF,l8,label) ""
 				  set actualAnalytPar(FF,l9,label) ""
@@ -3467,17 +3178,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l5,label) "t ="
 				  set actualAnalytPar(FF,l6,label) "D ="
 				  set actualAnalytPar(FF,l7,label) ""
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Torus"              { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "a ="
-				  set actualAnalytPar(FF,l3,label) "Delta_a ="
-				  set actualAnalytPar(FF,l4,label) "nu ="
-				  set actualAnalytPar(FF,l5,label) "eta_c ="
-				  set actualAnalytPar(FF,l6,label) "eta_sh ="
-				  set actualAnalytPar(FF,l7,label) "eta_sol ="
 				  set actualAnalytPar(FF,l8,label) ""
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
@@ -5844,113 +5544,6 @@ switch -exact $type {
                 10 {return "n: number of double shell spheres in the chain\n 1<=n<=5"}
                }
            } 
-           "Cylinder" {
-               switch $num {
-                 0 {return "F^2(Q,R,L,eta) = 4 int(J_1^2(QR sqrt(1-x^2)/(QR sqrt(1-x^2))^2 sinc^2(QLx/2,x=0..1)\n"}
-                 1 {return "R: radius\n"}
-                 2 {return "L: height\n"}
-                 3 {return "\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-	     }
-	   }   
-           "FlatCylinder" {
-               switch $num {
-                 0 {return "F^2(Q,R,L,eta) = Porod's approximation of a flat cylinder\nwith L << R"}
-                 1 {return "R: radius\n"}
-                 2 {return "L: height\n"}
-                 3 {return "\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-	     }
-	   }   
-           "LongCylinder" {
-               switch $num {
-                 0 {return "F^2(Q,R,L,eta) = Porod's approximation of a long cylinder\nwith L >> R"}
-                 1 {return "R: radius\n"}
-                 2 {return "L: height\n"}
-                 3 {return "\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-	     }
-	   }  
-           "PorodCylinder" {
-               switch $num {
-                 0 {return "F^2(Q,R,L,eta) = Porod's approximation of a cylinder\nif L>2R: LongCylinder otherwise FlatCylinder"}
-                 1 {return "R: radius\n"}
-                 2 {return "L: height\n"}
-                 3 {return "\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-	     }
-	   }
-           LongCylShell { 
-              switch $num {
-                 0 {return "P(Q,R,DR,L,...) = P_rod*Pcs\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "DR: shell thickness\n"}
-                 3 {return "L: length of cylinder\n"}
-                 4 {return "eta_core: scattering length density of core\n"}
-                 5 {return "eta_shell: scattering length density of shell\n"}
-                 6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           ellCylShell1 { 
-              switch $num {
-                 0 {return "P(Q,R,epsilon,L,t,...) = ...\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "epsilon: eccentricity of ellipoid\n"}
-                 3 {return "L: length of cylinder\n"}
-                 3 {return "t: shell thickness\n"}
-                 4 {return "eta_core: scattering length density of core\n"}
-                 5 {return "eta_shell: scattering length density of shell\n"}
-                 6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           ellCylShell2 { 
-              switch $num {
-                 0 {return "P(Q,R,epsilon,L,t,...) = ...\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "epsilon: eccentricity of ellipoid\n"}
-                 3 {return "L: length of cylinder\n"}
-                 3 {return "t: shell thickness\n"}
-                 4 {return "eta_core: scattering length density of core\n"}
-                 5 {return "eta_shell: scattering length density of shell\n"}
-                 6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
            Pcs:homogeneousCyl { 
               switch $num {
                  0 {return "Pcs(Q,R,...) \n"}
@@ -5975,81 +5568,6 @@ switch -exact $type {
                  4 {return "eta_core: scattering length density of core\n"}
                  5 {return "eta_shell: scattering length density of shell\n"}
                  6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           CylShell1 { 
-              switch $num {
-                 0 {return "random oriented cylindrical shell WITHOUT capped ends (exact)\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "DR: shell thickness\n"}
-                 3 {return "L: length of cylinder\n"}
-                 4 {return "eta_core: scattering length density of core\n"}
-                 5 {return "eta_shell: scattering length density of shell\n"}
-                 6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           CylShell2 { 
-              switch $num {
-                 0 {return "random oriented cylindrical shell WITH capped ends (exact)\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "DR: shell thickness\n"}
-                 3 {return "L: length of cylinder\n"}
-                 4 {return "eta_core: scattering length density of core\n"}
-                 5 {return "eta_shell: scattering length density of shell\n"}
-                 6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           alignedCylShell { 
-              switch $num {
-                 0 {return "P(Q,R,DR,L,...) = aligned cylindrical shell structure\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "DR: shell thickness\n"}
-                 3 {return "L: length of cylinder\n"}
-                 4 {return "eta_core: scattering length density of core\n"}
-                 5 {return "eta_shell: scattering length density of shell\n"}
-                 6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "psi: direction of Q\[deg\]\n"}
-                 8 {return "theta: orientation of cylinder axis towards horizontal axis in plane of the detector \[deg\]\n"}
-                 9 {return "phi: rotation of cylinder axis out of the detector plane \[deg\]\n"}
-                10 {return "\n"}
-              }
-           }
-           "partly aligned CylShell" { 
-              switch $num {
-                 0 {return "P(Q,R,DR,L,...) = partly aligned cylindrical shell structure\n"}
-                 1 {return "R: core radius\n"}
-                 2 {return "DR: shell thickness\n"}
-                 3 {return "L: length of cylinder\n"}
-                 4 {return "eta_core: scattering length density of core\n"}
-                 5 {return "eta_shell: scattering length density of shell\n"}
-                 6 {return "eta_solv: scattering length density of solvent\n"}
-                 7 {return "psi: direction of Q\[deg\]\n"}
-                 8 {return "P2: order parameter\n"}
-                 9 {return "P4: order parameter\n"}
-                10 {return "P6: order parameter\n"}
-              }
-           }
-           Disc { 
-              switch $num {
-                 0 {return "F^2(Q,R,eta) = 2*Pi^2*R^4*eta^2/(Q*R)^2 * (1-1/(Q*R))*bessj1(2*Q*R)\n"}
-                 1 {return "R: radius\n"}
-                 2 {return "\n"}
-                 3 {return "\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
                  7 {return "\n"}
                  8 {return "\n"}
                  9 {return "\n"}
@@ -8705,22 +8223,7 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 							  {EllULV+Chains(RW) Delta} \ 
 							  {CylULV+Chains(RW)_nagg Delta} \
 							  {CylULV+Chains(RW)_tc Delta} \ 
-							  {CylULV+Chains(RW) Delta} }} }} \ 
-{cyl "cylindrical obj." { \
-		{Disc Delta} \
-		 PorodCylinder \
-		 LongCylinder \
-		 FlatCylinder \
-		 Cylinder \
-		 LongCylShell \
-		{ellCylShell1 Delta} \
-		{ellCylShell2 Delta} \
-		 CylShell1 \
-		 CylShell2 \ 
-		 alignedCylShell \
-	       {{partly aligned CylShell} Delta} \
-		 Torus \
-		}} \ 
+							  {CylULV+Chains(RW) Delta} }} }} \
 {planar "planar obj." {{homogenousXS Delta} \
 	       {SphSh+SD+homoXS Delta} \
 	       {EllSh+SD+homoXS Delta} \

@@ -36,11 +36,11 @@ scalar sasfit_ff_ellip_1_core(scalar theta, sasfit_param * param)
 	if (SASFIT_EQUAL(V[R], 0.0) || SASFIT_EQUAL(V[VOL], 0.0))
 	{
 		return 0.0;
-	} 
-	else if (SASFIT_EQUAL(V[Q], 0.0)) 
+	}
+	else if (SASFIT_EQUAL(V[Q], 0.0))
 	{
 		return V[VOL]*V[VOL];
-	} else 
+	} else
 	{
 		t1 = V[VOL]*V[VOL];
 		t2 = V[R]*V[R];
@@ -75,8 +75,8 @@ scalar sasfit_ff_ellip_2_core(scalar theta, sasfit_param * param)
 	if (SASFIT_EQUAL(V[R], 0.0) || SASFIT_EQUAL(V[NU], 0.0))
 	{
 		return 0.0;
-	} 
-	else if (SASFIT_EQUAL(V[Q], 0.0)) 
+	}
+	else if (SASFIT_EQUAL(V[Q], 0.0))
 	{
 		return pow(4.0/3.0 * M_PI * V[R]*V[R]*V[R] * V[NU] ,2.0);
 	} else {
@@ -99,6 +99,17 @@ scalar sasfit_ff_ellip_2_core(scalar theta, sasfit_param * param)
 		t33 = 16.0*t1*t2*t4*t6*t21/t23/t11/t27/t26;
 		return t33;
 	}
+}
+scalar sasfit_ff_porod_cyl_v(scalar R, sasfit_param * param, int distr)
+{
+	scalar v = R;
+
+	SASFIT_ASSERT_PTR(param);
+
+	if ( distr != 0 ) v = param->p[0];
+	if ( distr != 1 ) R = param->p[1];
+
+	return M_PI * R * pow(v, 2.0);
 }
 
 scalar sasfit_ff_ellip_v(scalar q, sasfit_param * param, int distr)

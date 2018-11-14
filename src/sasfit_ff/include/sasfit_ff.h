@@ -158,11 +158,9 @@ sasfit_ff_DLLEXP scalar sasfit_ff_Cylinder(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_cyl_mic(scalar q, sasfit_param * param);
 
 #include "../cyl_rwbrush/include/public.h"
-#include "../cyl_shell/include/public.h"
 
 sasfit_ff_DLLEXP scalar sasfit_ff_DAB(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_DaisyLikeRing(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_Disc(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Disc_f(scalar q, sasfit_param * param);
 
 #include "../disc_rwbrush/include/public.h"
@@ -179,7 +177,6 @@ sasfit_ff_DLLEXP scalar sasfit_ff_dumbbell_shell(scalar q, sasfit_param * param)
 
 #include "../ellip/include/public.h"
 sasfit_ff_DLLEXP scalar sasfit_ff_ExpShell(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_flat_cyl(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_FlexibleRingPolymer(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_francois(scalar q, sasfit_param * param);
 
@@ -428,8 +425,6 @@ sasfit_ff_DLLEXP scalar sasfit_ff_MultiLamellarVesicle(scalar q, sasfit_param * 
 sasfit_ff_DLLEXP scalar sasfit_ff_OrnsteinZernike(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_P39(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_PolydisperseStar(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_porod_cyl(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_porod_cyl_v(scalar q, sasfit_param * param, int distr);
 sasfit_ff_DLLEXP scalar sasfit_ff_RLCAggregation(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param);
@@ -489,52 +484,6 @@ sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_homogeneousPlanar(scalar q, sasfit_param *
 sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_homogeneousCyl(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Pcs_ellCylSh(scalar q, sasfit_param * param);
 
-/** 
- * \defgroup ff_ellCylShell ellCylShell
- * \ingroup cylindrical_obj
- *
- * \brief Scattering function for a cylindrical shell with an elliptical cross section 
- *
- *
- * \image html black_box.png "cylindrical shell with an elliptical cross section"
- * \image latex missing.eps "cylindrical shell with an elliptical cross section" width=10cm
- *
- * \f[
- *		I_\textbf{ellCylShell}(Q,R) = K^2(Q,R,\Delta\eta)
- * \f]
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b R </td>
- *       <td>radius of sphere</td>
- *      </tr><tr>
- *       <td>\b --- </td>
- *       <td> not used </td>
- *      </tr><tr>
- *       <td>\b --- </td>
- *       <td> not used </td>
- *      </tr><tr>
- *       <td>\b eta </td>
- *       <td> scattering length density contrast \f$\Delta\eta\f$</td>
- *      </tr></table>
- *
- * \note The parameters param.p[1] and param.p[2] are not used.
- *
- * \image html missing.png "Scattering function of cylindrical shell with an elliptical cross section"
- * \image latex missing.eps "Scattering function of cylindrical shell with an elliptical cross section" width=10cm
- */
-
-/**
- * \ingroup ff_ellCylShell
- *
- * \sa sasfit_ff_ellCylShell.c, form_fac
- */
-sasfit_ff_DLLEXP scalar sasfit_ff_ellCylShell1(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_ellCylShell1_f(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_ellCylShell1_v(scalar q, sasfit_param * param, int distr);
-sasfit_ff_DLLEXP scalar sasfit_ff_ellCylShell2(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_ellCylShell2_f(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_ellCylShell2_v(scalar q, sasfit_param * param, int distr);
 
 sasfit_ff_DLLEXP scalar sasfit_ff_aux_p_r(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_aux_gamma_r(scalar q, sasfit_param * param);
