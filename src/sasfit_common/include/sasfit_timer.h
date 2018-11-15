@@ -29,7 +29,7 @@
 
 #include <stdlib.h>
 #include "sasfit_common_shared_exports.h"
-
+#define MAXTM4UPDATE 0.1
 /** \file sasfit_timer.h
  * \ingroup sasfit_timer
  */
@@ -42,14 +42,14 @@
 	#include <sys/time.h>
 	/// Unit for internal representation of time on Linux.
 	#define	SASFIT_TIMEUNIT 	struct timeval
-#endif    
+#endif
 
-/** 
+/**
  * \defgroup sasfit_timer Timer
  * \ingroup sasfit_common
  * Timer functionality for measuring execution time. It is supposed to be more
- * precise and reliable on different platforms than the time related functions 
- * supplied by the standard C library. 
+ * precise and reliable on different platforms than the time related functions
+ * supplied by the standard C library.
  *
  * Example usage:
  * \code
@@ -93,7 +93,7 @@ sasfit_common_DLLEXP sasfit_timer * sasfit_timer_create(void);
  */
 sasfit_common_DLLEXP void sasfit_timer_destroy(sasfit_timer ** sf_timer);
 
-/** 
+/**
 * (Re-)Starts this timer.
 * @param sf_timer A sasfit_timer structure.
 */

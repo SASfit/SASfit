@@ -814,7 +814,7 @@ CreateGraphPar ResIQGraph
 CreateGraphPar Detector2DIQGraph
 set Detector2DIQGraph(ct) CET-R1.tbl
 set Detector2DIQGraph(ct) cubehelix8
-set Detector2DIQGraph(reverseCT) 1
+set Detector2DIQGraph(reverseCT) 0
 foreach CTname $::ColorMap(LUTnames) {
 	set Detector2DIQGraph($CTname)     $ColorMap($CTname)
 }

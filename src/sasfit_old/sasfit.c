@@ -3038,6 +3038,7 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	int    error_type, rcode, interrupt;
 	scalar  *a, *dydpar;
 	int th_id, nthreads;
+    sasfit_timer *tm;
 
 	error = FALSE;
 	//Det2DPar.calc2D = FALSE;
@@ -3098,6 +3099,8 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 //        sasfit_out("nthreads: %d, i:%d\n",omp_get_num_threads(),i);
 //	}
 //}
+    tm = sasfit_timer_create();
+    sasfit_timer_start(tm);
 
     for (i=0;i<ndata;i++) {
 		IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
@@ -3118,12 +3121,16 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 			free_dvector(DIh,0,ndata-1);
 			free_dvector(dydpar,0,ma-1);
 			Tcl_Free((char *) AP);
+			sasfit_timer_destroy(&tm);
 			return TCL_ERROR;
 		}
-	    sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i+1.0)/(1.0*ndata)*100.0);
-	    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
-        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
-        interrupt = check_interrupt4calc(interp,&error);
+		if (sasfit_timer_measure(tm) > MAXTM4UPDATE) {
+            sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i+1.0)/(1.0*ndata)*100.0);
+            Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+            Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+            interrupt = check_interrupt4calc(interp,&error);
+            sasfit_timer_start(tm);
+        }
 		if (error==TRUE) {
 			free_dvector(Ith,0,ndata-1);
 			free_dvector(Ihsubstract,0,ndata-1);
@@ -3133,12 +3140,17 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 			free_dvector(DIh,0,ndata-1);
 			free_dvector(dydpar,0,ma-1);
 			Tcl_Free((char *) AP);
+			sasfit_timer_destroy(&tm);
 			return TCL_ERROR;
 		}
 		float_to_string(sBuffer,Ith[i]);
 		Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 	}
-
+    sprintf(sBuffer,"set ::SASfitprogressbar %lf",100.0);
+    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+    Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+    interrupt = check_interrupt4calc(interp,&error);
+    sasfit_timer_destroy(&tm);
 //	float_to_string(sBuffer,chisq/ndata);
 //	Tcl_SetVar2(interp,argv[1],"chisq", sBuffer,0);
 
@@ -3285,6 +3297,7 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
     int    error_type, interrupt;
     scalar  *a, *dydpar;
 	char   sBuffer[132];
+    sasfit_timer *tm;
 
 	error = FALSE;
 	//Det2DPar.calc2D = FALSE;
@@ -3343,6 +3356,8 @@ npoints=0;
 for (j=0;j<GCP.nmultset;j++) npoints = npoints+ndata[j];
 
 ipoint=0;
+tm = sasfit_timer_create();
+sasfit_timer_start(tm);
 
 for (j=0;j<GCP.nmultset;j++) {
 	Tcl_DStringStartSublist(&DsBuffer);
@@ -3379,12 +3394,16 @@ for (j=0;j<GCP.nmultset;j++) {
 		Tcl_Free((char *) DIh);
 		Tcl_Free((char *) res);
 		  free_ivector(ndata,0,GCP.nmultset-1); // see below
+		  sasfit_timer_destroy(&tm);
           return TCL_ERROR;
 	   }
-       sprintf(sBuffer,"set ::SASfitprogressbar %lf",100.0*ipoint/(1.0*npoints));
-       Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
-       Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
-       interrupt = check_interrupt4calc(interp,&error);
+		if (sasfit_timer_measure(tm) > MAXTM4UPDATE) {
+            sprintf(sBuffer,"set ::SASfitprogressbar %lf",100.0* ipoint/(1.0*npoints));
+            Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+            Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+            interrupt = check_interrupt4calc(interp,&error);
+            sasfit_timer_start(tm);
+        }
 	   if (error==TRUE ) {
 	      for (k=0;k<GCP.nmultset;k++) {
              free_dvector(Ith[k],0,ndata[k]-1);
@@ -3403,6 +3422,7 @@ for (j=0;j<GCP.nmultset;j++) {
 		Tcl_Free((char *) DIh);
 		Tcl_Free((char *) res);
 		  free_ivector(ndata,0,GCP.nmultset-1); // see below
+		  sasfit_timer_destroy(&tm);
           return TCL_ERROR;
 	   }
    	   float_to_string(sBuffer,Ith[j][i]);
@@ -3410,6 +3430,11 @@ for (j=0;j<GCP.nmultset;j++) {
  	}
 	Tcl_DStringEndSublist(&DsBuffer);
 }
+sprintf(sBuffer,"set ::SASfitprogressbar %lf",100.0);
+Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+interrupt = check_interrupt4calc(interp,&error);
+sasfit_timer_destroy(&tm);
 Tcl_DStringEndSublist(&DsBuffer);
 
 Tcl_DStringStartSublist(&DsBuffer);
@@ -3575,6 +3600,7 @@ scalar  chisq,reducedchisq,R,wR,QQ,diffR,obsR,wdiffR,wobsR;
 scalar  avgsigma,varianceOFfit;
 scalar  alambda;
 Tcl_DString DsBuffer;
+sasfit_timer *tm;
 
 error = FALSE;
 //Det2DPar.calc2D = FALSE;

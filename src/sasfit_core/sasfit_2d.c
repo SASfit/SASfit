@@ -131,6 +131,8 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 	bool               error;
 	int                error_type, interrupt;
 	scalar             * a, * dydpar;
+    sasfit_timer *tm;
+    scalar maxtm;
 
 	error = FALSE;
 	// Det2DPar.calc2D = TRUE;
@@ -191,6 +193,9 @@ int Sasfit_2DiqCmd(ClientData    clientData,
         if (nres > 30) nres =30;
     }
 
+    tm = sasfit_timer_create();
+    sasfit_timer_start(tm);
+    maxtm=0.1;
 
 	for (i=0; i < sasfit_2d_param.num_pix; i++) {
         rx = (i-Bx)*sasfit_2d_param.pixelsize*1e-3;
@@ -215,18 +220,15 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                             free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
                             free_dvector(dydpar,0,ma-1);
                             Tcl_Free((char *) AP);
+                            sasfit_timer_destroy(&tm);
                             return TCL_ERROR;
                         }
-                        sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
-                        Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
-                        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
-                        interrupt = check_interrupt4calc(interp,&error);
-                        if ( error==TRUE) {
-                            free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
-                            free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
-                            free_dvector(dydpar,0,ma-1);
-                            Tcl_Free((char *) AP);
-                            return TCL_ERROR;
+                        if (sasfit_timer_measure(tm) > maxtm) {
+                            sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
+                            Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+                            Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+                            interrupt = check_interrupt4calc(interp,&error);
+                            sasfit_timer_start(tm);
                         }
                     } else {
                         tmp = 0.0;
@@ -263,18 +265,15 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                                     free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
                                     free_dvector(dydpar,0,ma-1);
                                     Tcl_Free((char *) AP);
+                                    sasfit_timer_destroy(&tm);
                                     return TCL_ERROR;
                                 }
-                                sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
-                                Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
-                                Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
-                                interrupt = check_interrupt4calc(interp,&error);
-                                if (error==TRUE) {
-                                    free_dmatrix(Deth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
-                                    free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
-                                    free_dvector(dydpar,0,ma-1);
-                                    Tcl_Free((char *) AP);
-                                    return TCL_ERROR;
+                                if (sasfit_timer_measure(tm) > maxtm) {
+                                    sprintf(sBuffer,"set ::SASfitprogressbar %lf",(i*sasfit_2d_param.num_pix+(j+1))/(1.0*sasfit_2d_param.num_pix*sasfit_2d_param.num_pix)*100.0);
+                                    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+                                    Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+                                    interrupt = check_interrupt4calc(interp,&error);
+                                    sasfit_timer_start(tm);
                                 }
                                 wres=1./(2.*M_PI*gsl_pow_2(Dr))
                                      *exp(-(Drx*Drx+Dry*Dry)*0.5/gsl_pow_2(Dr));
@@ -296,6 +295,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                         free_dmatrix(DetIth,0,sasfit_2d_param.num_pix-1,0,sasfit_2d_param.num_pix-1);
                         free_dvector(dydpar,0,ma-1);
                         Tcl_Free((char *) AP);
+                        sasfit_timer_destroy(&tm);
                         return TCL_ERROR;
                     }
                 }
@@ -314,6 +314,11 @@ int Sasfit_2DiqCmd(ClientData    clientData,
         }  // end for-j-loop
 	} // end for-i-loop
 
+    sprintf(sBuffer,"set ::SASfitprogressbar %lf",100.0);
+    Tcl_EvalEx(interp,sBuffer,-1,TCL_EVAL_DIRECT);
+    Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+    interrupt = check_interrupt4calc(interp,&error);
+    sasfit_timer_destroy(&tm);
     if (sasfit_2d_param.mode == AUTO) {
         sprintf(sBuffer,"%e",Imin);
 		//  sasfit_err(sBuffer);
