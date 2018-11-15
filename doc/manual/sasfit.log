@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  15 NOV 2018 10:55
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  15 NOV 2018 11:44
 entering extended mode
 **sasfit.tex
 (C:\user\SASfitGit\doc\manual\sasfit.tex
@@ -7889,132 +7889,128 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Missing character: There is no Ã in font cmr12!
 Missing character: There is no ¶ in font cmr12!
  [570]
-Underfull \hbox (badness 1817) in paragraph at lines 170--172
+Underfull \hbox (badness 1817) in paragraph at lines 171--173
 []\OT1/cmr/m/n/12 new plu-gin for \OT1/cmtt/m/n/12 generalized Guinier law \OT1
 /cmr/m/n/12 to be found un-der \OT1/cmtt/m/n/12 [by
  []
 
 [571]
-Underfull \hbox (badness 4403) in paragraph at lines 188--190
+Underfull \hbox (badness 4403) in paragraph at lines 189--191
 []\OT1/cmr/m/n/12 included un-der peak func-tion the \OT1/cmtt/m/n/12 Maxwell \
 OT1/cmr/m/n/12 dis-tri-bu-tion and the
  []
 
 
-Underfull \hbox (badness 1881) in paragraph at lines 205--207
+Underfull \hbox (badness 1881) in paragraph at lines 206--208
 []\OT1/cmr/m/n/12 added con-fig-u-ra-tion file \OT1/cmtt/m/n/12 config.ini \OT1
 /cmr/m/n/12 as re-place-ment for dep-re-cated
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [572]
-[573]
-Underfull \hbox (badness 1924) in paragraph at lines 271--278
+[572] [573]
+Underfull \hbox (badness 1924) in paragraph at lines 272--279
 \OT1/cmr/m/n/12 in Macro-molecules 1996, 29, 7602-7612. They have been im-ple-
  []
 
 [574] [575]
-Underfull \hbox (badness 10000) in paragraph at lines 379--388
+Underfull \hbox (badness 10000) in paragraph at lines 380--389
 []\OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 SASfit \OT1/cmr/m/n/12 ver-sion 0.84) Form 
 fac-tor for worm-like mi-celles
  []
 
 
-Underfull \hbox (badness 4569) in paragraph at lines 379--388
+Underfull \hbox (badness 4569) in paragraph at lines 380--389
 \OT1/cmr/m/n/12 clus-ter ag-gre-gates (\OT1/cmtt/m/n/12 Mass Fractal (Exp(-x) C
 ut-Off), Fisher-Burford,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 379--388
+Underfull \hbox (badness 10000) in paragraph at lines 380--389
 \OT1/cmtt/m/n/12 MassFractExp,MassFractGauss, Mass Fractal (Exp(-x$[]$a) Cut-Of
 f),
  []
 
 
-Underfull \hbox (badness 1552) in paragraph at lines 379--388
+Underfull \hbox (badness 1552) in paragraph at lines 380--389
 \OT1/cmtt/m/n/12 DLCAggregation, RLCAggregation, MassFractOverlappingSph \OT1/c
 mr/m/n/12 have been
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 388--394
+Underfull \hbox (badness 10000) in paragraph at lines 389--395
 []\OT1/cmr/m/n/12 (SPHERE+Chains(RW), SPHERE+Chains(RW)[]Rc,
  []
 
 
-Underfull \hbox (badness 1371) in paragraph at lines 388--394
+Underfull \hbox (badness 1371) in paragraph at lines 389--395
 \OT1/cmr/m/n/12 SPHERE+Chains(RW)[]Nagg\OT1/cmtt/m/n/12 SASfit \OT1/cmr/m/n/12 
 ver-sion 0.80) Next to the cor-rec-tion
  []
 
 
-Underfull \hbox (badness 1199) in paragraph at lines 388--394
+Underfull \hbox (badness 1199) in paragraph at lines 389--395
 \OT1/cmr/m/n/12 Fur-ther-more an op-tion has been im-ple-mented to sub-tract a 
 the-o-ret-i-cal
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--408
+Underfull \hbox (badness 10000) in paragraph at lines 395--409
 []\OT1/cmr/m/n/12 A cou-ple of form fac-tors for spher-i-cal, el-lip-ti-cal, cy
 lin-
  []
 
 
-Underfull \hbox (badness 5133) in paragraph at lines 394--408
+Underfull \hbox (badness 5133) in paragraph at lines 395--409
 \OT1/cmr/m/n/12 dri-cal and very long rod-like mi-celles con-sist-ing of a ho-m
 o-ge-neous
  []
 
 
-Underfull \hbox (badness 3000) in paragraph at lines 394--408
+Underfull \hbox (badness 3000) in paragraph at lines 395--409
 \OT1/cmr/m/n/12 core and which are ei-ther grafted with Gauss-ian chains \OT1/c
 mtt/m/n/12 *(RW)*\OT1/cmr/m/n/12 , or
  []
 
 
-Underfull \hbox (badness 2922) in paragraph at lines 394--408
+Underfull \hbox (badness 2922) in paragraph at lines 395--409
 \OT1/cmr/m/n/12 grafted with semi-flexible self-avoiding and in-ter-act-ing cha
 ins \OT1/cmtt/m/n/12 *(SAW)*
  []
 
 
-Underfull \hbox (badness 4060) in paragraph at lines 394--408
+Underfull \hbox (badness 4060) in paragraph at lines 395--409
 \OT1/cmr/m/n/12 or a corona with a power-law de-cay-ing pro-file $\OML/cmm/m/it
 /12 r[]$ \OT1/cmtt/m/n/12 *(R$[]$-a)* \OT1/cmr/m/n/12 have
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--408
+Underfull \hbox (badness 10000) in paragraph at lines 395--409
 \OT1/cmr/m/n/12 been im-ple-mented:  \OT1/cmtt/m/n/12 SPHERE+Chains(RW), SPHERE
 +Chains(RW)[]Rc,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--408
+Underfull \hbox (badness 10000) in paragraph at lines 395--409
 \OT1/cmtt/m/n/12 SPHERE+Chains(RW)[]Nagg, SPHERE+Chains(SAW), SPHERE+Chains(SAW
 )[]Rc,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--408
+Underfull \hbox (badness 10000) in paragraph at lines 395--409
 \OT1/cmtt/m/n/12 SPHERE+Chains(SAW)[]Nagg, SPHERE+R$[]$-a, SPHERE+R$[]$-a[]Rc,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--408
+Underfull \hbox (badness 10000) in paragraph at lines 395--409
 \OT1/cmtt/m/n/12 SPHERE+R$[]$-a[]Nagg, ELL+Chains(RW), ELL+Chains(RW)[]Rc,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--408
+Underfull \hbox (badness 10000) in paragraph at lines 395--409
 \OT1/cmtt/m/n/12 ELL+Chains(RW)[]Nagg, CYL+Chains(RW), CYL+Chains(RW)[]Rc,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--408
+Underfull \hbox (badness 10000) in paragraph at lines 395--409
 \OT1/cmtt/m/n/12 CYL+Chains(RW)[]Nagg, ROD+Chains(RW), ROD+Chains(RW)[]Rc,
  []
 
@@ -8022,7 +8018,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 394--408
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [576]
-Underfull \hbox (badness 10000) in paragraph at lines 416--417
+Underfull \hbox (badness 10000) in paragraph at lines 417--418
 []\OT1/cmr/m/n/12 Implementation of form fac-tors for bi-continuous sys-tems
  []
 
@@ -8416,7 +8412,7 @@ rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm7.pfb><C:
 am Files (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program 
 Files (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1200.pfb><C:/Program Fil
 es (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on sasfit.pdf (593 pages, 41123403 bytes).
+Output written on sasfit.pdf (593 pages, 41123494 bytes).
 PDF statistics:
  9814 PDF objects out of 10688 (max. 8388607)
  3305 named destinations out of 3580 (max. 500000)
