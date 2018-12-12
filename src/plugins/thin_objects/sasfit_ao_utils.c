@@ -410,3 +410,34 @@ scalar ThinEllShell_S_core(scalar x, sasfit_param * param)
 	return LNdistr*IP;
 }
 
+scalar PS3_EXP_SD_core(scalar x, void * pam) {
+	sasfit_param *param;
+	sasfit_param subParam;
+	scalar NL;
+	param = (sasfit_param *) pam;
+
+	sasfit_init_param( &subParam );
+	if (x > LB/3) {
+        subParam.p[0] = LB;
+        subParam.p[1] = x;
+        subParam.p[2] = EXVOL;
+        NL = exp(-x/param->p[1])/param->p[1];
+        return NL * sasfit_sq_p__q___worm_ps3_(Q,&subParam);
+	} else {
+        subParam.p[0] = x;
+        subParam.p[2] = 0;
+        NL = exp(-x/param->p[1])/param->p[1];
+        return NL * sasfit_sq_p__q___rod(Q,&subParam);
+	}
+}
+
+scalar PS3_EXP_SD(scalar q, sasfit_param * param) {
+    scalar res,err, *aw;
+    int lenaw=4000;
+    Q=q;
+    aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+    sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+    sasfit_intdei(&PS3_EXP_SD_core, 0.0, aw, &res, &err, param);
+    free(aw);
+    return res;
+}

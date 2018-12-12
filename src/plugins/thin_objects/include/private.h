@@ -58,6 +58,10 @@ typedef struct
 #define B		param->p[0]
 #define L		param->p[1]
 #define EXVOL	param->p[2]
+#define BETA	param->p[3]
+#define RC  	param->p[4]
+#define LP  	param->p[4]
+#define RP  	param->p[4]
 
 #define T_ELLSH	        param->p[0]
 #define SIGMA_T_ELLSH	fabs(param->p[1])
@@ -94,6 +98,7 @@ scalar IRod(scalar, scalar);
 scalar ThinEllShell_R_core(scalar, sasfit_param *);
 scalar ThinEllShell_S_core(scalar, sasfit_param *);
 scalar thin_ellipsoidal_shell(scalar, scalar, scalar, scalar, sasfit_param *);
+scalar PS3_EXP_SD(scalar, sasfit_param *);
 
 #endif // end of file
 

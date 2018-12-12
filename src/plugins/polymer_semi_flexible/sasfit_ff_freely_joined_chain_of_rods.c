@@ -21,6 +21,7 @@ scalar sasfit_ff_freely_joined_chain_of_rods(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((L <= 0.0), param, "L(%lg) < 0",L); // modify condition to your needs
 
 	// insert your code here
+	if (q==0) return I0;
 	return I0*sasfit_sq_freely_joined_chain_of_rods(q,param)/gsl_pow_2(L);
 }
 

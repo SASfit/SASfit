@@ -376,6 +376,15 @@
  * \modname{ff_devel}
  */
 
+ /** 
+ * \defgroup ff_stochastic stochastic models 
+ * \ingroup ff_devel
+ *
+ * This group contains form factors for stochastic models.
+ *
+ * \modname{ff_stochastic}
+ */
+ 
 /** 
  * \defgroup ff_sesans SESANS 
  * \ingroup ff_plugins

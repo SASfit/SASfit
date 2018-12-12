@@ -1056,6 +1056,207 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__f(scalar q, sasfit_
 sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_p__q___worm_ps3_ ################ */
 
+/* ################ start sq_p__q___worm_ps3_RPA ################ */
+/**
+ * \defgroup sq_p__q___worm_ps3_RPA P'(Q): Worm(PS3,RPA)
+ * \ingroup sq_plugins_pprimelocalcylindrical
+ *
+ * \brief \<some brief description of P'(Q): Worm(PS3,RPA) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol < 1 without excluded volume, exvol >= 1 with excluded volume</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>interaction parameter</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_p__q___worm_ps3_RPA
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_RPA(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_RPA
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_RPA_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_RPA
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_RPA_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_p__q___worm_ps3_RPA ################ */
+
+/* ################ start sq_p__q___worm_ps3_PRISM1 ################ */
+/**
+ * \defgroup sq_p__q___worm_ps3_PRISM1 P'(Q): Worm(PS3,PRISM1)
+ * \ingroup sq_plugins_pprimelocalcylindrical
+ *
+ * \brief \<some brief description of P'(Q): Worm(PS3,PRISM1) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol < 1 without excluded volume, exvol >= 1 with excluded volume</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>interaction parameter</td>
+ *      </tr><tr>
+ *       <td>\b Rc</td>
+ *       <td>correlation hole</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM1
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM1
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM1
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_p__q___worm_ps3_PRISM1 ################ */
+
+/* ################ start sq_p__q___worm_ps3_PRISM2 ################ */
+/**
+ * \defgroup sq_p__q___worm_ps3_PRISM2 P'(Q): Worm(PS3,PRISM2)
+ * \ingroup sq_plugins_pprimelocalcylindrical
+ *
+ * \brief \<some brief description of P'(Q): Worm(PS3,PRISM2) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol < 1 without excluded volume, exvol >= 1 with excluded volume</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>interaction parameter</td>
+ *      </tr><tr>
+ *       <td>\b Lc</td>
+ *       <td>rod length correlation hole</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM2
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM2
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM2
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_p__q___worm_ps3_PRISM2 ################ */
+
+/* ################ start sq_p__q___worm_ps3_PRISM3 ################ */
+/**
+ * \defgroup sq_p__q___worm_ps3_PRISM3 P'(Q): Worm(PS3,PRISM3)
+ * \ingroup sq_plugins_pprimelocalcylindrical
+ *
+ * \brief \<some brief description of P'(Q): Worm(PS3,PRISM3) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol < 1 without excluded volume, exvol >= 1 with excluded volume</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>interaction parameter</td>
+ *      </tr><tr>
+ *       <td>\b Rc</td>
+ *       <td>correlation hole Rc=2Log(sigma)+2</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM3
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM3
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_p__q___worm_ps3_PRISM3
+ *
+ * \sa sasfit_thin_objects.h, sq_plugins
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_p__q___worm_ps3_PRISM3 ################ */
+
 /* ################ start sq_p__q___kholodenko_worm ################ */
 /**
  * \defgroup sq_p__q___kholodenko_worm P'(Q): Kholodenko Worm
@@ -1099,7 +1300,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___kholodenko_worm_v(scalar q, s
 /* ################ stop sq_p__q___kholodenko_worm ################ */
 
 /* ################ start sq_freely_joined_chain_of_rods ################ */
-/** 
+/**
  * \defgroup sq_freely_joined_chain_of_rods  P'(Q): freely joined chain of rods
  * \ingroup sq_plugins_pprimelocalcylindrical
  *
@@ -1141,7 +1342,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_freely_joined_chain_of_rods_v(scalar
 /* ################ stop sq_freely_joined_chain_of_rods ################ */
 
 /* ################ start sq_koyama_worms ################ */
-/** 
+/**
  * \defgroup sq_koyama_worms  P'(Q): Koyama worm
  * \ingroup sq_plugins_pprimelocalcylindrical
  *

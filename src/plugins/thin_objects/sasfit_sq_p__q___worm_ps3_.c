@@ -60,6 +60,8 @@ scalar sasfit_sq_p__q___worm_ps3_(scalar q, sasfit_param * param)
 	scalar MapleGenVar1, MapleGenVar2, MapleGenVar3, MapleGenVar4, MapleGenVar5, MapleGenVar6;
 	scalar C1, C2, C3, C4, C5, epsilon, nu;
 
+    if (fabs(L*q)<=1e-16) return gsl_pow_2(L);
+
 	C1 = 1.2220;
 	C2 = 0.4288;
 	C3 = -1.651;

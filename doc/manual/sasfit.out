@@ -38,7 +38,7 @@
 \BOOKMARK [2][-]{subsection.192}{3.2.1. Unified Exponential Power Law according to Beaucage beaucage95,beaucage96}{section.191}% 38
 \BOOKMARK [3][-]{subsubsection.194}{3.2.1.1. Beaucage}{subsection.192}% 39
 \BOOKMARK [3][-]{subsubsection.197}{3.2.1.2. Beaucage2}{subsection.192}% 40
-\BOOKMARK [2][-]{subsection.200}{3.2.2. WormLikeChainEXV Pedersen96Macrom}{section.191}% 41
+\BOOKMARK [2][-]{subsection.200}{3.2.2. WormLikeChainEXV}{section.191}% 41
 \BOOKMARK [2][-]{subsection.204}{3.2.3. KholodenkoWorm}{section.191}% 42
 \BOOKMARK [2][-]{subsection.214}{3.2.4. Diblock copolymer micelles}{section.191}% 43
 \BOOKMARK [3][-]{subsubsection.219}{3.2.4.1. Micelles with a homogeneous core and Gaussian chains on the surface}{subsection.214}% 44
@@ -91,10 +91,10 @@
 \BOOKMARK [2][-]{subsection.504}{4.1.5. Scaling approximation}{section.492}% 91
 \BOOKMARK [2][-]{subsection.508}{4.1.6. van der Waals one-fluid approximation}{section.492}% 92
 \BOOKMARK [1][-]{section.513}{4.2. Hard \046 Sticky Hard Sphere}{chapter.491}% 93
-\BOOKMARK [2][-]{equation.515}{4.2.1. Hard Sphere Percus1958,Vrij1979 }{section.513}% 94
+\BOOKMARK [2][-]{subsection.514}{4.2.1. Hard Sphere}{section.513}% 94
 \BOOKMARK [2][-]{subsection.524}{4.2.2. Sticky Hard Sphere}{section.513}% 95
-\BOOKMARK [2][-]{subsection.538}{4.2.3. Sticky Hard Sphere \(2nd version Regnaut1989,Regnaut1990\)}{section.513}% 96
-\BOOKMARK [2][-]{subsection.555}{4.2.4. Square Well Potential Sharma1977}{section.513}% 97
+\BOOKMARK [2][-]{subsection.538}{4.2.3. Sticky Hard Sphere \(2nd version\)}{section.513}% 96
+\BOOKMARK [2][-]{subsection.555}{4.2.4. Square Well Potential}{section.513}% 97
 \BOOKMARK [2][-]{subsection.564}{4.2.5. Square Well Potential 2}{section.513}% 98
 \BOOKMARK [1][-]{section.567}{4.3. Multi Lamellar Structures}{chapter.491}% 99
 \BOOKMARK [2][-]{subsection.568}{4.3.1. Multi-Lamellar Structures, Thermal Disorder}{section.567}% 100

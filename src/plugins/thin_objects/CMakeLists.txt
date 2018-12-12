@@ -41,6 +41,10 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_p__q___worm_ps1_.c
 	sasfit_sq_p__q___worm_ps2_.c
 	sasfit_sq_p__q___worm_ps3_.c
+	sasfit_sq_p__q___worm_ps3_RPA.c
+	sasfit_sq_p__q___worm_ps3_PRISM1.c
+	sasfit_sq_p__q___worm_ps3_PRISM2.c
+	sasfit_sq_p__q___worm_ps3_PRISM3.c
 	sasfit_sq_p__q___kholodenko_worm.c
 	sasfit_sq_freely_joined_chain_of_rods.c
 	sasfit_sq_koyama_worms.c

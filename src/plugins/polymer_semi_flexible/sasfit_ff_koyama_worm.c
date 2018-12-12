@@ -20,6 +20,7 @@ scalar sasfit_ff_koyama_worm(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((L <= 0.0), param, "L(%lg) <= 0",L); // modify condition to your needs
 
 	// insert your code here
+	if (q==0) return I0;
 	return I0/(L*L)*sasfit_sq_koyama_worms(q,param);
 }
 
