@@ -248,6 +248,21 @@ A.~Caille.
 \newblock {\em Comptes Rendus des Seances de l'Academie des Sciences, Serie B:
   Sciences Physiques}, 274:891--893, 1972.
 
+\bibitem{Cannavacciuolo2002}
+L.~Cannavacciuolo, J.~S. Pedersen, and P.~Schurtenberger.
+\newblock Monte carlo simulation study of concentration effects and scattering
+  functions for polyelectrolyte wormlike micelles.
+\newblock {\em Langmuir}, 18(7):2922--2932, apr 2002.
+\newblock \doi{10.1021/la010884f}.
+
+\bibitem{Cannavacciuolo2002a}
+L.~Cannavacciuolo, J.~S. Pedersen, and P.~Schurtenberger.
+\newblock Single-coil properties and concentration effects for
+  polyelectrolyte-like wormlike micelles: a monte carlo study.
+\newblock {\em Journal of Physics: Condensed Matter}, 14(9):2283--2295, feb
+  2002.
+\newblock \doi{10.1088/0953-8984/14/9/317}.
+
 \bibitem{Carnahan1969}
 N.~F. Carnahan and K.~E. Starling.
 \newblock Equation of state for nonattracting rigid spheres.
@@ -832,6 +847,14 @@ G.~V. Jensen and J.~G. Barker.
 \newblock {\em Journal of Applied Crystallography}, 51(5):1455--1466, sep 2018.
 \newblock \doi{10.1107/s1600576718010816}.
 
+\bibitem{Jerke1997}
+G.~Jerke, J.~S. Pedersen, S.~U. Egelhaaf, and P.~Schurtenberger.
+\newblock Static structure factor of polymerlike micelles:{\hspace{1em}}overall
+  dimension, flexibility, and local properties of lecithin reverse micelles in
+  deuterated isooctane.
+\newblock {\em Physical Review E}, 56(5):5772--5788, nov 1997.
+\newblock \doi{10.1103/physreve.56.5772}.
+
 \bibitem{Jerrard1959}
 H.~G. Jerrard.
 \newblock Theories of streaming double refraction.
@@ -1314,6 +1337,13 @@ J.~S. Pedersen.
   Polymer Systems}, chapter~6, pages 391--420.
 \newblock Elsevier Science, 2002.
 
+\bibitem{Pedersen2008}
+J.~S. Pedersen.
+\newblock Small-angle scattering from surfactants and block copolymer micelles.
+\newblock In {\em Soft Matter Characterization}, pages 191--233. Springer
+  Netherlands, 2008.
+\newblock \doi{10.1007/978-1-4020-4465-6_4}.
+
 \bibitem{PedersenGerstenberg96}
 J.~S. Pedersen and M.~C. Gerstenberg.
 \newblock Scattering form factor of block copolymer micelles.
@@ -1333,6 +1363,22 @@ J.~S. Pedersen and P.~Schurtenberger.
   excluded volume effects.
 \newblock {\em Macromolecules}, 29(23):7602--7612, jan 1996.
 \newblock \doi{10.1021/ma9607630}.
+
+\bibitem{Pedersen1999}
+J.~S. Pedersen and P.~Schurtenberger.
+\newblock Static properties of polystyrene in semidilute solutions: A
+  comparison of monte carlo simulation and small-angle neutron scattering
+  results.
+\newblock {\em Europhysics Letters ({EPL})}, 45(6):666--672, mar 1999.
+\newblock \doi{10.1209/epl/i1999-00219-7}.
+
+\bibitem{Pedersen2004}
+J.~S. Pedersen and P.~Schurtenberger.
+\newblock Scattering functions of semidilute solutions of polymers in a good
+  solvent.
+\newblock {\em Journal of Polymer Science Part B: Polymer Physics},
+  42(17):3081--3094, jul 2004.
+\newblock \doi{10.1002/polb.20173}.
 
 \bibitem{Percus1958}
 J.~K. Percus and G.~J. Yevick.

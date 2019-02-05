@@ -35,9 +35,9 @@ scalar sasfit_ff_sheared_spheroids__boltzmann_(scalar q, sasfit_param * param)
 		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
-	cubxmax[0]=M_PI;
+	cubxmax[0]=M_PI_2;
 	cubxmin[1]=0;
-	cubxmax[1]=2*M_PI;
+	cubxmax[1]=M_PI;
 	cubxmin[2]=NUMIN;
 	cubxmax[2]=NUMAX;
 	cparam.param = param;
@@ -73,7 +73,7 @@ scalar sasfit_ff_sheared_spheroids__boltzmann_(scalar q, sasfit_param * param)
 			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 4*fval[0];
             break;
             }
     case P_CUBATURE: {
@@ -82,7 +82,7 @@ scalar sasfit_ff_sheared_spheroids__boltzmann_(scalar q, sasfit_param * param)
 			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = 2*fval[0];
+			sum = 4*fval[0];
             break;
             }
     default: {
@@ -91,7 +91,7 @@ scalar sasfit_ff_sheared_spheroids__boltzmann_(scalar q, sasfit_param * param)
 			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = 2*fval[0];
+			sum = 4*fval[0];
             break;
             }
     }

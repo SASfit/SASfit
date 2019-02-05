@@ -1318,7 +1318,7 @@ proc load_sasfit_inp_file_old {AanalyticPar filename} {
 proc create_SESANSData {SESANSData} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $SESANSData Data
-set Data(InputFormat) SESANS
+set Data(InputFormat) ""
 set Data(FileName) ""
 set Data(Ext) "ses"
 set Data(in_out) "nm->nm"
@@ -1336,8 +1336,26 @@ set Data(Lambda) {}
 set Data(DeltaLambda) {}
 set Data(Qmax_x) {}
 set Data(Qmax_y) {}
+set Data(Theta_ymax) {}
+set Data(Theta_zmax) {}
+set Data(Theta_ymax_units) {}
+set Data(Theta_zmax_units) {}
 set Data(nonneg) 0
 set Data(Gz-G0) "Pz->Gz-G0" ;# possible values {"Pz->Pz" "Pz->Gz-G0" "Pz->Pz^(lmax^2/l^2)"} 
+
+set Data(FileFormatVersion) 0.0
+set Data(DataFileTitle) "no title given"
+set Data(Sample) "needs to be named"
+set Data(Thickness) 1
+set Data(Thickness_unit) mm
+set Data(Theta_zmax) 0.002
+set Data(Theta_zmax_unit) radians
+set Data(Theta_ymax) 0.002
+set Data(Theta_ymax_unit) radians
+set Data(Orientation) Z
+set Data(SpinEchoLength_unit) A
+set Data(Depolarisation_unit) "A^{-2}cm^{-1}"
+set Data(Wavelength_unit) A
 }
 
 #------------------------------------------------------------------------------
@@ -2327,6 +2345,87 @@ return {5}
 # The neccessary array indeces corresponding to the different blocks in
 # the data file are automatically defined.
 #
+
+proc read_SESANS_0 {filename SESANSData} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SESANSData Data
+if {![info exist Data]} {create_SESANSData Data}
+#catch {unset Data}
+if { !([file readable $filename] && [file isfile $filename])  } {
+   return 0
+}
+set BlockName SESANSHeader
+set f [open $filename r]   
+while {![eof $f]} {
+   gets $f line
+   if { [eof $f] } {
+      close $f
+      return 1
+   }
+   set linelength [string length $line]
+   if { $linelength > 0 } {
+      set linetrim [string tolower [string trim $line]]
+	  set where_eq [string first "spin echo length" $linetrim]
+	  if {$where_eq != -1} {
+		set BlockName SESANSData
+		set where_eq [string first "depolarisation" $linetrim]
+	    if {$where_eq != -1} {
+			set Data(Gz-G0) "Gz-G0->Gz-G0"
+		}
+	  } else {
+		 lappend Data($BlockName)  "$line"
+	  }
+   }
+}
+}
+proc read_SESANS_1p0 {filename SESANSData} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SESANSData Data
+if {![info exist Data]} {create_SESANSData Data}
+#catch {unset Data}
+if { !([file readable $filename] && [file isfile $filename])  } {
+   return 0
+}
+set BlockName SESANSHeader
+set f [open $filename r]   
+while {![eof $f]} {
+   gets $f line
+   if { [eof $f] } {
+      close $f
+      return 1
+   }
+   regsub -line -all "\[ \t\]+" $line " " line
+   set linelength [string length $line]
+   if { $linelength > 0 } {
+      set words [split [string tolower $line]]
+	  set key [lindex $words 0]
+      switch $key {
+            "begin_data" {     
+                     set BlockName SESANSData
+#					the next line should contain a description of the columns				 
+					gets $f line
+					if { [eof $f] } {
+						close $f
+						return 1
+					}
+					regsub -line -all "\[ \t\]+" $line " " line
+					set words [split [string tolower $line]]
+					set Data(InputFormat) ""
+					foreach word $words {
+						switch $word {
+							"spinecholength" {set Data(InputFormat) $Data(InputFormat)x}
+							"depolarisation" {set Data(InputFormat) $Data(InputFormat)y}
+							"depolarisation_error" {set Data(InputFormat) $Data(InputFormat)e}
+							"wavelength" {set Data(InputFormat) $Data(InputFormat)w}
+							default {set Data(InputFormat) $Data(InputFormat)i}
+						}
+					}
+	            }
+            default { lappend Data($BlockName)  "$line" }
+     }
+   }
+}
+}
 proc read_SESANS {filename SESANSData} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $SESANSData Data
@@ -2336,26 +2435,149 @@ if { !([file readable $filename] && [file isfile $filename])  } {
    return 0
 }
 set BlockName SESANSHeader
+set Data(FileFormatVersion) 0.0
+set Data(filename) $filename
 set f [open $filename r]
+gets $f line
+if { [eof $f] } {
+   close $f
+   return 1
+}
+close $f
+regsub -line -all "\[ \t\]+" $line " " line
+set words [split [string tolower $line]]
+if {[string compare [lindex $words 0] fileformatversion] == 0 && [llength $words] > 1} {
+	set Data(FileFormatVersion) [lindex $words 1]
+}
+switch $Data(FileFormatVersion) {
+	0.0 {set readsucc [read_SESANS_0 $filename Data]}
+	1.0 {set readsucc [read_SESANS_1p0 $filename Data]}
+}
+return $readsucc
+}
 
-while {![eof $f]} {
-   gets $f line
-   if { [eof $f] } {
-      close $f
-      return 1
-   }
-   set linelength [string length $line]
-   if { $linelength > 0 } {
-      set linetrim [string trim $line]
-	  set key [string range $linetrim 0 15]
-      switch $key {
-            "spin echo length"      { 
-                     set BlockName SESANSData
-	            }
-            default { lappend Data($BlockName)  "$line" }
-     }
+proc SESANS1p0getItem {SESANSData BlockName ItemName ItemType} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $SESANSData Data
+#
+# check if $BlockName is a valid array name of ALVData
+#
+if {![string compare $BlockName [array names Data $BlockName]]==0} {
+   error "invalid BlockName"
+}
+if {![string compare $BlockName "SESANSData"] && \
+    ![string compare $ItemName  SESANS]} {
+   set SEL         {}
+   set DeltaSEL    {}
+   set Lambda      {}
+   set DeltaLambda {}
+   set Gz           {}
+   set DeltaGz      {}
+   set resY        {}
+   foreach line $Data(SESANSData) {
+	  regsub -line -all "\[ \t\]+" $line " " line
+      set x_ok 1
+      set xe_ok 1
+      set y_ok 1
+	  set ye_ok 1
+      set z_ok 1
+      set ze_ok 1
+	  set z  0.0
+      set ze 0.0
+      set x    0.0
+      set xe   0.0
+      set y    0.0
+      set ye   0.0
+      set tmpsplitline [split $line "\t ,"]
+      set splitline {}
+      foreach i $tmpsplitline {
+         if {[llength $i] != 0} {
+            lappend splitline $i
+         }
+      } 
+	  puts "line: $line"
+	  puts "splitline: $splitline"
+	  puts "tmpsplitline: $tmpsplitline"
+	  if { [string length $Data(InputFormat)] <= [llength $splitline]} {
+		for {set i 0} {$i < [string length $Data(InputFormat)]} {incr i} {
+			switch [string index $Data(InputFormat) $i] {
+				x   { set x_ok [scan [lindex $splitline $i] "%f" x ] }
+				r  { set xe_ok [scan [lindex $splitline $i] "%f" xe ] }
+				y   { set y_ok [scan [lindex $splitline $i] "%f" y ] }
+				e  { set ye_ok [scan [lindex $splitline $i] "%f" ye ] }
+				w 	{ set z_ok [scan [lindex $splitline $i] "%f" z ] }
+				p  { set ze_ok [scan [lindex $splitline $i] "%f" ze ] }
+        }
+      }
+#
+# lines which cannot be converted are ignored (no error message)
+#
+      if {$x_ok && $y_ok && $z_ok && $xe_ok && $ye_ok && $ze_ok && $z>0} {
+	     lappend SEL $x
+		 lappend DeltaSEL $xe
+		 lappend Lambda $z
+		 lappend DeltaLambda $ze
+		 lappend Gz $y
+		 lappend DeltaGz $ye
+#		 lappend resY [expr 10*[SESANSgetItem Data SESANSHeader "Q_zmax \[\\AA\^-1\]" r]]
+         set orientation [string tolower [SESANSgetItem Data SESANSHeader Orientation t]]
+		 switch $orientation {
+			y {set theta_max [SESANSgetItem Data SESANSHeader Theta_ymax r]
+					 set theta_units [string tolower [SESANSgetItem Data SESANSHeader Theta_ymax_unit t]]}
+			z {set theta_max [SESANSgetItem Data SESANSHeader Theta_zmax r]
+					 set theta_units [string tolower [SESANSgetItem Data SESANSHeader Theta_zmax_unit t]]}
+			default {set theta_max [SESANSgetItem Data SESANSHeader Theta_ymax r]
+					 set theta_units [string tolower [SESANSgetItem Data SESANSHeader Theta_ymax_unit t]]}
+		 }
+		 set where_eq [string first "rad" $theta_units]
+		 set theta $theta_max
+		 set PI 3.1415926535897932384626433832795028841971693993751
+         if {$where_eq != -1} {set theta_max [expr $theta_max*$PI/180.0]}
+		 lappend resY [expr 4*$PI/$z*sin($theta_max*0.5)]
+      }
+ }
+}
+ set SESANSData {}
+ lappend SESANSData $SEL $Gz $DeltaGz $resY
+ return $SESANSData
+}
+
+foreach line $Data($BlockName) {
+   set where_eq [string first " " $line]
+   if {$where_eq != -1} {
+      set leftside  [string range $line 0 [expr $where_eq - 1]]
+      set rightside [string range $line [expr $where_eq + 1]  \
+                              [expr [string length $line] - 1] ]
+      set leftside [string trim $leftside]
+      set rightside [string trim $rightside]
+      if {([string compare $leftside $ItemName] == 0) &&  \
+          ([string length $rightside] > 0) } {
+#
+# evaluate right side of string "line"
+#
+         switch $ItemType {
+            w { set split_right_side [split $rightside "\t "]
+                return [lindex $split_right_side 0] }
+            t { return $rightside }
+            i { set i_ok [scan $rightside "%d" itemvalue]
+                if {$i_ok} { return $itemvalue } else { return {} }
+              }
+            r { set r_ok [scan $rightside "%f" itemvalue]
+                if {$r_ok} { return $itemvalue } else { return {} }
+              }
+            d {
+#
+# for the moment d will be treated as t, i.e. no check if $rightside is
+# really of date/time format
+#
+                return $rightside }
+            default { puts "%SESANSgetItem: unknown ItemType, inform me about it"
+                      return {} }
+         }
+      } 
    }
 }
+
 }
 
 #------------------------------------------------------------------------------
@@ -2438,13 +2660,16 @@ upvar $SESANSData Data
 # check if $BlockName is a valid array name of ALVData
 #
 if {![string compare $BlockName [array names Data $BlockName]]==0} {
-   puts "invalid BlockName"
-   return {}
+   error "invalid BlockName"
 }
 
+if {$Data(FileFormatVersion) != 0.0} {
+	set $Data(Gz-G0) "Gz-G0->Gz-G0"
+	return [SESANS1p0getItem Data $BlockName $ItemName $ItemType]
+}
 # 
 # check for a non-default treatment, then perform special treatment
-# and return the value otherwise perfom default treatment
+# and return the value otherwise perform default treatment
 #
 
 #
@@ -2463,14 +2688,14 @@ if {![string compare $BlockName "SESANSData"] && \
    set Y           {}
    set DeltaY      {}
    set resY        {}
-   foreach line $Data($BlockName) {
+   foreach line $Data(SESANSData) {
       set x_ok 1
       set xe_ok 1
       set y_ok 1
 	  set ye_ok 1
       set z_ok 1
       set ze_ok 1
-      set tmpsplitline [split $line "\t ,"]]
+      set tmpsplitline [split $line "\t ,"]
       set splitline {}
       foreach i $tmpsplitline {
          if {[llength $i] != 0} {
@@ -2488,26 +2713,52 @@ if {![string compare $BlockName "SESANSData"] && \
 #
       if {$x_ok && $y_ok && $z_ok && $xe_ok && $ye_ok && $ze_ok && $z>0} {
 	     lappend SEL $x
-		 lappend DeltaSEL $xe
-		 lappend Lambda $y
-		 lappend DeltaLambda $ye
-		 lappend P $z
-		 lappend DeltaP $ze
-		 lappend resY [expr 10*[SESANSgetItem Data SESANSHeader "Q_zmax \[\\AA\^-1\]" r]]
 		 switch $Data(Gz-G0) {
+			"Gz-G0->Gz-G0"  	{ 	
+									lappend DeltaSEL $ye
+									lappend Y $xe	
+									lappend DeltaY $y	
+									lappend Lambda $z
+									lappend DeltaLambda $ze
+									set z_ok  [scan [lindex $splitline 6] "%f" z  ]
+									set ze_ok [scan [lindex $splitline 7] "%f" ze ]
+									if {$z_ok && $ze_ok} {
+										lappend P $z
+										lappend DeltaP $ze
+									}
+									lappend resY [SESANSgetItem Data SESANSHeader "Q_zmax \[\\A\^-1\]" r]
+								}
 			"Pz->Pz"  			{ 	
+									lappend DeltaSEL $xe
 									lappend Y $z	
 									lappend DeltaY $ze	
+									lappend Lambda $y
+									lappend DeltaLambda $ye
+									lappend P $z
+									lappend DeltaP $ze
+									lappend resY [expr 10*[SESANSgetItem Data SESANSHeader "Q_zmax \[\\AA\^-1\]" r]]
 								}
 			"Pz->Gz-G0"  		{	set M_PI [expr 4*atan(1)]
 									set thickness [SESANSgetItem Data SESANSHeader "Thickness \[cm\]" r]
+									lappend DeltaSEL $xe
+									lappend Lambda $y
+									lappend DeltaLambda $ye
+									lappend P $z
+									lappend DeltaP $ze
 									set tmp [expr log($z)*(1.0)/($y*$y*$thickness)]
 									lappend Y $tmp
 									lappend DeltaY [expr sqrt(pow(abs((1.0)/($y*$y*$thickness)),2)*($ze/$z)*($ze/$z)+0*4*($tmp*$ye/$y)*($tmp*$ye/$y))]
+									lappend resY [expr 10*[SESANSgetItem Data SESANSHeader "Q_zmax \[\\AA\^-1\]" r]]
 								}
 			"Pz->Pz^(lmax^2/l^2)"	{ 
+									lappend DeltaSEL $xe
 									lappend Y $z	
 									lappend DeltaY $ze
+									lappend Lambda $y
+									lappend DeltaLambda $ye
+									lappend P $z
+									lappend DeltaP $ze
+									lappend resY [expr 10*[SESANSgetItem Data SESANSHeader "Q_zmax \[\\AA\^-1\]" r]]
 								}
 		 }
       }
@@ -2704,7 +2955,7 @@ foreach line $ClipboardSplit {
            e   { set e_ok [scan [lindex $splitline $i] "%f" e ] }
            x   { set x_ok [scan [lindex $splitline $i] "%f" x ] }
            y   { set y_ok [scan [lindex $splitline $i] "%f" y ] }
-           res { set r_ok [scan [lindex $splitline $i] "%f" r ] }
+           r   { set r_ok [scan [lindex $splitline $i] "%f" res ] }
         }
      }
      if {($e == 0) && ([llength $args] == 0)} {

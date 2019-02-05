@@ -7,5 +7,18 @@
 
 %\clearpage
 \subsection{$\sin^2$-$\sin^4$ azimuthal analysis} ~\\
+This plugin can be used to describe azimuthal averaged data in case of e.g.\ magnetic scattering \cite{Wiedenmann2011}
+\begin{align}
+I_\mathrm{rad}(\psi) &= A + B\sin^2(\psi-\delta) + C \sin^4(\psi-\delta) \\
+I_\mathrm{deg}(\psi) &= A + B\sin^2\left((\psi-\delta)\frac{\pi}{180}\right) + C \sin^4\left((\psi-\delta)\frac{\pi}{180}\right)
+\end{align}
+
 \subsection{Maier-Saupe azimuthal analysis} ~\\
-\subsection{Ellipsoidal azimuthal analysis} ~\\ \cite{Summerfield1983,Mildner1983,Reynolds1984,Hammouda1986,Hammouda1986a,Saraf1989,Svetogorsky1990,Gu2016,Gu2018} 
+
+\subsection{Ellipsoidal azimuthal analysis} ~\\ 
+Instead of radial or sector averaged data this function describes azimuthal averaged data of deformed or textured samples with an anisotropic scattering pattern as described in
+\cite{Summerfield1983,Mildner1983,Reynolds1984,Hammouda1986,Hammouda1986a,Saraf1989,Svetogorsky1990,Gu2016,Gu2018}
+\begin{align}
+I_\mathrm{rad}(\psi) &= \left(\left(\frac{\cos(\psi-\delta)}{A}\right)^2 + \left(\frac{\sin(\psi-\delta)}{B}\right)^2\right)^{-N/2} +C\\
+I_\mathrm{deg}(\psi) &= \left(\left(\frac{\cos\left((\psi-\delta)\frac{\pi}{180}\right)}{A}\right)^2 + \left(\frac{\sin\left((\psi-\delta)\frac{\pi}{180}\right)}{B}\right)^2\right)^{-N/2}+C
+\end{align}

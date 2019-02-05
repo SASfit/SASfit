@@ -16,6 +16,18 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_maiersaupe__rad_.c
 	sasfit_ff_elliptically_averaging_deg_.c
 	sasfit_ff_elliptically_averaging_rad_.c
+	sasfit_ff_azimuthal_sheared_cylinders_boltzmann.c
+	sasfit_ff_azimuthal_sheared_cylinders_gauss.c
+	sasfit_ff_azimuthal_sheared_cylinders_hayterpenfold.c
+	sasfit_ff_azimuthal_sheared_cylinders_heavyside.c
+	sasfit_ff_azimuthal_sheared_cylinders_maier_saupe.c
+	sasfit_ff_azimuthal_sheared_cylinders_onsager.c
+	sasfit_ff_azimuthal_sheared_spheroid_boltzmann.c
+	sasfit_ff_azimuthal_sheared_spheroid_gauss.c
+	sasfit_ff_azimuthal_sheared_spheroid_hayterpenfold.c
+	sasfit_ff_azimuthal_sheared_spheroid_heavyside.c
+	sasfit_ff_azimuthal_sheared_spheroid_maier_saupe.c
+	sasfit_ff_azimuthal_sheared_spheroid_onsager.c
 	sasfit_ff_azimuthal_utils.c
 	interface.c
 )

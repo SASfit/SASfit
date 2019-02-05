@@ -2196,54 +2196,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
 				}
-	   "Mass Fractal (Exp Cut-Off)" \
-				{ set actualPar(SQ,s1,label) "r0 ="
-				  set actualPar(SQ,s2,label) "xi ="
-				  set actualPar(SQ,s3,label) "D ="
-				  set actualPar(SQ,s4,label) "" 
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	   "Mass Fractal (Gaussian Cut-Off)"\
-				{ set actualPar(SQ,s1,label) "r0 ="
-				  set actualPar(SQ,s2,label) "xi ="
-				  set actualPar(SQ,s3,label) "D ="
-				  set actualPar(SQ,s4,label) "" 
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	   "Mass Fractal (OverlapSph Cut-Off)"\
-				{ set actualPar(SQ,s1,label) "r0 ="
-				  set actualPar(SQ,s2,label) "xi ="
-				  set actualPar(SQ,s3,label) "D ="
-				  set actualPar(SQ,s4,label) "" 
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	   "Mass Fractal (Exp(-x^a) Cut-Off)"\
-				{ set actualPar(SQ,s1,label) "r0 ="
-				  set actualPar(SQ,s2,label) "xi ="
-				  set actualPar(SQ,s3,label) "D ="
-				  set actualPar(SQ,s4,label) "alpha=" 
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
 	   "Cylinder(PRISM)"    { set actualPar(SQ,s1,label) "R ="
 				  set actualPar(SQ,s2,label) "L ="
 				  set actualPar(SQ,s3,label) "nu ="
@@ -3217,8 +3169,6 @@ proc analyticalGlobalSDCmd {simorfit
                                              {{Thin Square Well Potential}} \
                                              {{Square Well Potential 2}} }} \
 	{lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
-	{fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
-				 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
 	{other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 			BabaAhmed BabaAhmed2}} \
 	}]

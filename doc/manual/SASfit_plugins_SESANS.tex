@@ -32,7 +32,9 @@ There are several possible definitions of a Hankel transform $\mathcal{H}_\nu\le
 \item $F_\nu(k) = 2\pi \int_0^\infty f(r) J_\nu(2\pi kr) r \,\mathrm{d}r$ and its inverse $f(r)=2\pi \int_0^\infty F_\nu(q)J_\nu(2\pi kr) k \,\mathrm{d}k$
 \end{enumerate}
 }
-The instrument independent projected sample correlation function $\tilde{G}(\delta)$ can be calculated via the Abel transform $\mathcal{A}$ of the scattering length density autocorrelation function $\tilde{\gamma}(\mathbf{r})=\int \rho(\mathbf{r'})\rho(\mathbf{r'-r})\mathrm{d}\mathbf{r'}$.
+Experimentally the differential cross-section is only measured up to a maximum scattering angle $\Theta_\mathrm{max}$. Because of this \SASfit supplies is clipping the Hankel transform of the model of the differential cross-section if the experimental data supplied with a fourth column containing the maximum scattering vector for each spin echo length $Q_\mathrm{max}=\frac{4\pi}{\lambda}\sin \Theta_\mathrm{max}/2$. This clipping is activated by activating the resolution option.
+
+The instrument independent projected sample correlation function $\tilde{G}(\delta)$ can also be calculated via the Abel transform $\mathcal{A}$ of the scattering length density autocorrelation function $\tilde{\gamma}(\mathbf{r})=\int \rho(\mathbf{r'})\rho(\mathbf{r'-r})\mathrm{d}\mathbf{r'}$.
 \begin{align}
 \tilde{G}(\delta) &= 2 \int_z^\infty \frac{\tilde{\gamma}(r) r}{\sqrt{r^2-z^2}} \mathrm{d}r = \mathcal{A}\left[\tilde{\gamma}(r)\right](\delta)
 \end{align}
@@ -116,6 +118,7 @@ That the $\mathcal{FAH}$ cycle is still valid using the isotropic 3 dimensional 
 
 
 \subsection{$G(z)$ of a sphere}
+\label{sec:Gz_sphere}
 The scattering intensity for a single sphere is given by
 \begin{align}
 I(Q) &= \left(\frac{4}{3}\pi R^3 \Delta\eta\right)^2 \left(3\frac{\sin QR-QR\cos QR}{Q^3R^3}\right)^2
@@ -135,6 +138,7 @@ and the unnormalized SESANS correlation function
 with $\xi=\frac{z}{2R}$.
 
 \subsection{$G(z)$ of a randomly distributed, two-phase system (DAB) }~\\
+\label{sec:Gz_DAB}
 The scattering intensity for a randomly distributed, two-phase system (DAB) is given by
 \cite{DebyeBueche1949,DAB1957,Andersson2008}
 \begin{align}
@@ -151,6 +155,7 @@ and the unnormalized SESANS correlation function
 \end{align}
 
 \subsection{$G(z)$ of a self-affine random density distribution (gDAB) }~\\
+\label{sec:Gz_gDAB}
 The scattering intensity for a randomly distributed, two-phase system (DAB) is given by \cite{Klimes2002,Hunter2006,Andersson2008}
 \begin{align}
 I(Q) &= \frac{\left(4 \pi \xi^3 (1+2H) \Delta\eta\right)^2}{ \left(1+Q^2\xi^2\right)^{3/2+H}}
@@ -166,6 +171,7 @@ and the unnormalized SESANS correlation function
 \end{align}
 
 \subsection{$G(z)$ for a generalized Gaussian coil (gGc) }~\\
+\label{sec:Gz_gGc}
 The scattering intensity for a a generalized Gaussian coil (gGc) has been given by  Hammouda \cite{Hammouda,Hammouda2012,Hammouda1993,Hammouda2016} (see also section \ref{sect:generalized_gaussian_coil}) as
 \begin{align}
 I_\text{gGc}(q) &= I_0

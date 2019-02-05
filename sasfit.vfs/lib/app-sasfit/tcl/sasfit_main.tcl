@@ -1411,8 +1411,9 @@ if { [file isfile $ssasfit(filename) ] } {
 			}
 		}
       SESANS   {
+		    unset SESANSData
             read_SESANS $ssasfit(filename) SESANSData
-            set SEL_P [SESANSgetItem SESANSData SESANSData SESANS y]
+            set SEL_P [SESANSgetItem SESANSData SESANSData SESANS r]
             set npoints [llength [lindex $SEL_P 0]]
 			if {$npoints > 0} {
 		        dr ::data_redu 0 ssasfit $npoints [lindex $SEL_P 0] [lindex $SEL_P 1] [lindex $SEL_P 2]  [lindex $SEL_P 3] [lindex $SEL_P 3] [lindex $SEL_P 3]
@@ -1422,9 +1423,7 @@ if { [file isfile $ssasfit(filename) ] } {
                 set ssasfit(res_enable) 1
 				set ssasfit(res,file)   [lindex $SEL_P 3]
                 set ssasfit(format) SESANS
-				set ssasfit(filelabel) [SESANSgetItem SESANSData "SESANSheader" Sample t]
-				set ssasfit(viscosity) 1
-				set ssasfit(angle) 90
+				set ssasfit(filelabel) [SESANSgetItem SESANSData "SESANSHeader" Sample t]
 				set ssasfit(refractionindex) 1.33
 				set ssasfit(wavelength) 632
 				set ssasfit(temperature) 298
@@ -1849,7 +1848,7 @@ proc SESANSOptionsCmd {} {
 	pack $w.lay1.a.ext.entry $w.lay1.a.ext.label -side right
 
 	label $w.lay1.a.uc.label -text "data conversion:" -highlightthickness 0 
-	tk_optionMenu $w.lay1.a.uc.inu  tmpSESANSData(Gz-G0) "Pz->Pz" "Pz->Gz-G0" "Pz->Pz^(lmax^2/l^2)"
+	tk_optionMenu $w.lay1.a.uc.inu  tmpSESANSData(Gz-G0) "Pz->Pz" "Gz-G0->Gz-G0" "Pz->Gz-G0" "Pz->Pz^(lmax^2/l^2)"
 	pack $w.lay1.a.uc.label $w.lay1.a.uc.inu \
 	     -side left
 		 
@@ -2768,13 +2767,22 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 		BerSANS {set titlexText "Q / nm\^-1"
 				 set titleyText "I(Q)"
 				 set nrtitlexText "R / nm"}
-		SESANS  {set titlexText "z / nm"
-		         set nrtitlexText "R / nm"
+		SESANS  {
 		         set yscale "y"
 				 switch $SESANSData(Gz-G0) {
-					"Pz->Gz-G0" {set titleyText "G(z)-G(0)"}
-					"Pz->Pz" {set titleyText "P(z)/P(0)"}
-					"Pz->Pz^(lmax^2/l^2)" {set titleyText "EXP(c(G(z)-G(0)))"}	 }
+					"Gz-G0->Gz-G0" {set titleyText "G(delta)-G(0)"
+									set titlexText "delta"
+									set nrtitlexText "R"
+								   }
+					"Pz->Gz-G0" {set titleyText "G(delta)-G(0)"
+									set titlexText "delta"
+									set nrtitlexText "R"}
+					"Pz->Pz" {set titleyText "P(delta)/P(0)"
+									set titlexText "delta"
+									set nrtitlexText "R"}
+					"Pz->Pz^(lmax^2/l^2)" {set titleyText "EXP(c(G(delta)-G(0)))"}	 
+									set titlexText "delta"
+									set nrtitlexText "R"}
 				 }
 		ALV5000 {set titlexText "tau"
 				 set yscale "y"

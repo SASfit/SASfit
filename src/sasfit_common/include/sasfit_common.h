@@ -24,8 +24,8 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
-#ifndef SASFIT_COMMON_H 
-#define SASFIT_COMMON_H 
+#ifndef SASFIT_COMMON_H
+#define SASFIT_COMMON_H
 
 #include "bool.h"
 #include "sasfit_common_shared_exports.h"

@@ -36,9 +36,9 @@ scalar sasfit_ff_sheared_cylinders__hayterpenfold_(scalar q, sasfit_param * para
 		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
-	cubxmax[0]=M_PI;
+	cubxmax[0]=M_PI_2;
 	cubxmin[1]=0;
-	cubxmax[1]=2*M_PI;
+	cubxmax[1]=M_PI;
 	cubxmin[2]=NUMIN;
 	cubxmax[2]=NUMAX;
 	cparam.param = param;
@@ -75,28 +75,26 @@ scalar sasfit_ff_sheared_cylinders__hayterpenfold_(scalar q, sasfit_param * para
 			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = 2*fval[0];
+			sum = 4*fval[0];
             cparam.gam = &gamHPminus;
 			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = sum+fval[0];
+			sum = sum+4*fval[0];
             break;
             }
     case P_CUBATURE: {
-            cubxmin[0]=0;
-            cubxmax[0]=M_PI_2;
             cparam.gam = &gamHPplus;
 			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = 2.0*fval[0];
+			sum = 4.0*fval[0];
 
             cparam.gam = &gamHPminus;
 			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = sum+2.0*fval[0];
+			sum = sum+4.0*fval[0];
             break;
 
             }
@@ -107,12 +105,12 @@ scalar sasfit_ff_sheared_cylinders__hayterpenfold_(scalar q, sasfit_param * para
 			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
 				fval, ferr);
-			sum = 2*fval[0];
+			sum = 4*fval[0];
             cparam.gam = &gamHPminus;
 			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
 				fval, ferr);
-			sum = sum+2*fval[0];
+			sum = sum+4*fval[0];
             break;
             }
     }

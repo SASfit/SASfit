@@ -11,6 +11,7 @@ set(LIBS_EXT
 # source files
 set(SOURCE_${PRJ_NAME}
 	sasfit_ff_triax_ellip_shell_utils.c
+	sasfit_ff_carved_triax_ellip_shell.c
 	sasfit_ff_triax_ellip_shell.c
 	sasfit_ff_triax_ellip_shell_t.c
 	sasfit_ff_triax_ellip_shell_1.c

@@ -1292,7 +1292,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \subsubsection{P'(Q): wormlike PS3} ~\\
 \label{plugin:Pprime4wormPS3}
 
-This version of the wormlike structure model originally from \cite{Pedersen96Macrom} is implemented together with the suggestions for corrections given in \cite{Chen2006}.
+This version of the worm-like structure model originally from \cite{Pedersen96Macrom} is implemented together with the suggestions for corrections given in \cite{Chen2006}.
 \begin{align}
 q_0 &=
 \begin{cases}
@@ -1394,6 +1394,66 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local cylindrical obj.]}".
 \caption{Scattering curve for the structure factor "\texttt{P'(Q): Worm(PS3)}" alone without $P_\mathrm{cs}(Q)$.}
 \label{fig_IQ:PprimeWormPS3}
 \end{figure}
+
+\clearpage
+\subsubsection{P'(Q): semi-dilute wormlike PS3} ~\\
+\label{plugin:Pprime4interactingwormPS3}
+For describing the structure factor of interacting worm-like micelles the
+RPA (random phase approximation) and PRISM (polymer reference interaction site model) approach has been used \cite{Pedersen2004,Jerke1997,Cannavacciuolo2002,Cannavacciuolo2002a,Pedersen1999,Pedersen2008}. The corresponding structure factors are
+\begin{align}
+S_\mathrm{RPA}(q) &= \frac{1}{1+\beta P_\mathrm{WLM}(q)} \\
+S_\mathrm{PRISM}(q)  &= \frac{1}{1+\beta c(q) P_\mathrm{WLM}(q)}
+\end{align}
+with $\beta=\left(1-S(0)\right)/S(0)$. 
+For the structure factor the worm-like model in section \ref{plugin:Pprime4wormPS3} has been used including an exponential contour length distribution so that
+\begin{align}\label{eq:Pwlm}
+  P_\mathrm{WLM}(q) & \int_0^\infty \frac{1}{\langle L\rangle}\exp\left(-L/\langle L\rangle\right) P'(q,L,l_B) \mathrm{d}L
+\end{align}
+with $ P'(q,L,l_B)$ given by eq.\ \ref{eq:PprimePS3}. The exponential length distribution describes well the the contour length distribution of the worm-like micelles and has the additional advantage not to introduce an additional parameter. 
+
+Depending on the regime of Coulomb interaction different approximations for $c(q)$ have been favored and confirmed both by experiment and MC simulations:
+\begin{itemize}
+  \item micelles which are neutral or in solutions with high salt concentrations\\
+  For these micelles either the RPA approximation or the PRISM approximation has been used with
+  \begin{align}
+c(q) &= \left[2 \textrm{Si}(qL_c)/(qL_c)-4\sin^2(qL_c/2)/(qL_c)^2\right]
+\end{align}
+where $L_c$ is the characteristic length of the function, with magnitude between
+the overall size of the chains and the cross-section dimension of the micelle. The forward scattering is written as a function of a reduced concentration $X \approx c/c^*$
+\begin{align}
+\begin{split}
+  S^{-1}(0) = 1&+\frac18\left(9X-2+\frac{2\ln(1+X)}{X}\right) \\
+               & \exp\left(\frac{1}{2.565}\left[\frac{1}{X}+\left(1-\frac{1}{X^2}\right)\ln(1+X)\right]\right)
+\end{split}
+\end{align}
+  \item highly charged micelles at high ionic strength
+  \begin{align}
+c(q) &= \frac{\sin q2R'-q2R'\cos q2R'}{(q2R')^3}
+\end{align}
+with $R'\approx R+\lambda_D$, where $\lambda_D$ is the Debye screening length. The forward scattering is given by
+\begin{align}\label{eq:S0wlm_charged}
+  S(0) &= \frac{(1-B-C)^4}{[1+2(B+C)]^2+2D[1+B+\frac54 C]}
+\end{align}
+where $B=\pi R^2Ln$, $C=\frac43\pi R^3n$, $D=\frac12\pi RL^2n$, with $n$ being the number density of micelles.\\
+  \item ionic micelles interacting with a screened Coulomb potential
+  \begin{align}
+c(q) &= \frac{\sin qR_c}{qR_c}\exp\left(-\sigma^2q^2\right)
+\end{align}
+with $R_c=2\ln \sigma +2$. The forward scattering follow a behaviour similar to neutral chains with
+\begin{align}\label{eq:S0wlm_screenedCoulomb}
+\begin{split}
+  S^{-1}(0) = 1&+\frac18\left(9X-2+\frac{2\ln(1+X)}{X}\right) \\
+               & \exp\left(0.8\left[\frac{1}{X}+\left(1-\frac{1}{X^2}\right)\ln(1+X)\right]\right)
+\end{split}
+\end{align}
+where $X\approx 42.1 \eta_r$ with
+\begin{align}
+  \eta_r &= \left(\frac{\lambda_D+R}{R}\right)\left(\frac{R_g}{R_{g,u}}\right)^3\eta
+\end{align}
+In this expression, $R_g$ is the radius of gyration of the chains and $R_{g,u}$ is the radius
+of gyration of the uncharged chains of the same length, and $\eta$ is the volume
+fraction of the chains.
+\end{itemize}
 
 \clearpage
 \subsection{local planar  obj.} ~\\

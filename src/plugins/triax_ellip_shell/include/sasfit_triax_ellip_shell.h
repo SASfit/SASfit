@@ -36,6 +36,67 @@
 // - brief description
 // - description of parameters in HTML table-style
 
+/* ################ start ff_carved_triax_ellip_shell ################ */
+/**
+ * \defgroup ff_carved_triax_ellip_shell carved triax ellip shell
+ * \ingroup ff_plugins_triax_ellshells
+ *
+ * \brief \<some brief description of a carved triax ellip shell function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>semi-axis</td>
+ *      </tr><tr>
+ *       <td>\b r0</td>
+ *       <td>ratio between core radius and outer radius r0 in [0,1)</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>cavity in (0,pi/2]</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b eta_sh</td>
+ *       <td>shell scattering length density</td>
+ *      </tr><tr>
+ *       <td>\b eta_sol</td>
+ *       <td>solvent scattering length density</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_carved_triax_ellip_shell
+ *
+ * \sa sasfit_carved_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_carved_triax_ellip_shell(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_carved_triax_ellip_shell
+ *
+ * \sa sasfit_carved_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_carved_triax_ellip_shell_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_carved_triax_ellip_shell
+ *
+ * \sa sasfit_carved_triax_ellip_shell.h, ff_plugins_triax_ellshells
+ */
+sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_carved_triax_ellip_shell_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_carved_triax_ellip_shell ################ */
+
 /* ################ start ff_triax_ellip_shell ################ */
 /**
  * \defgroup ff_triax_ellip_shell triax ellip shell

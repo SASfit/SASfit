@@ -39,9 +39,9 @@ return pLegendre(q,0,param);
 		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
 	cubxmin[0]=0;
-	cubxmax[0]=M_PI;
+	cubxmax[0]=M_PI_2;
 	cubxmin[1]=0;
-	cubxmax[1]=2*M_PI;
+	cubxmax[1]=M_PI;
 	cubxmin[2]=NUMIN;
 	cubxmax[2]=NUMAX;
 	cparam.param = param;
@@ -77,16 +77,14 @@ return pLegendre(q,0,param);
 			hcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = fval[0];
+			sum = 4*fval[0];
             break;
             }
     case P_CUBATURE: {
-            cubxmin[0]=0;
-            cubxmax[0]=M_PI_2;
 			pcubature(1, &partly_aligned_cubature,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = 2*fval[0];
+			sum = 4*fval[0];
             break;
             }
     default: {
@@ -95,7 +93,7 @@ return pLegendre(q,0,param);
 			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
-			sum = 2*fval[0];
+			sum = 4*fval[0];
             break;
             }
     }

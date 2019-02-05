@@ -2316,54 +2316,6 @@ switch $actualPar(SQ,typestr) {
                           set actualPar(SQ,s9,label) ""
                           set actualPar(SQ,s10,label) ""
                         }
-   "Mass Fractal (Exp Cut-Off)" \
-                        { set actualPar(SQ,s1,label) "r0 ="
-                          set actualPar(SQ,s2,label) "xi ="
-                          set actualPar(SQ,s3,label) "D ="
-                          set actualPar(SQ,s4,label) "" 
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-   "Mass Fractal (Gaussian Cut-Off)"\
-                        { set actualPar(SQ,s1,label) "r0 ="
-                          set actualPar(SQ,s2,label) "xi ="
-                          set actualPar(SQ,s3,label) "D ="
-                          set actualPar(SQ,s4,label) "" 
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-   "Mass Fractal (OverapSph Cut-Off)"\
-                        { set actualPar(SQ,s1,label) "r0 ="
-                          set actualPar(SQ,s2,label) "xi ="
-                          set actualPar(SQ,s3,label) "D ="
-                          set actualPar(SQ,s4,label) "" 
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-   "Mass Fractal (Exp(-x^a) Cut-Off)"\
-                        { set actualPar(SQ,s1,label) "r0 ="
-                          set actualPar(SQ,s2,label) "xi ="
-                          set actualPar(SQ,s3,label) "D ="
-                          set actualPar(SQ,s4,label) "alpha=" 
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
    "Cylinder(PRISM)"    { set actualPar(SQ,s1,label) "R ="
                           set actualPar(SQ,s2,label) "L ="
                           set actualPar(SQ,s3,label) "nu ="
@@ -4250,54 +4202,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(SQ,s9,label) ""
 				  set actualAnalytPar(SQ,s10,label) ""
 				}
-	   "Mass Fractal (Exp Cut-Off)"\
-				{ set actualAnalytPar(SQ,s1,label) "r0 ="
-				  set actualAnalytPar(SQ,s2,label) "xi ="
-				  set actualAnalytPar(SQ,s3,label) "D ="
-				  set actualAnalytPar(SQ,s4,label) ""
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	   "Mass Fractal (Exp(-x^a) Cut-Off)"\
-				{ set actualAnalytPar(SQ,s1,label) "r0 ="
-				  set actualAnalytPar(SQ,s2,label) "xi ="
-				  set actualAnalytPar(SQ,s3,label) "D ="
-				  set actualAnalytPar(SQ,s4,label) "alpha ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	   "Mass Fractal (Gaussian Cut-Off)" \
-				{ set actualAnalytPar(SQ,s1,label) "r0 ="
-				  set actualAnalytPar(SQ,s2,label) "xi ="
-				  set actualAnalytPar(SQ,s3,label) "D ="
-				  set actualAnalytPar(SQ,s4,label) ""
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	   "Mass Fractal (OverlapSph Cut-Off)" \
-				{ set actualAnalytPar(SQ,s1,label) "r0 ="
-				  set actualAnalytPar(SQ,s2,label) "xi ="
-				  set actualAnalytPar(SQ,s3,label) "D ="
-				  set actualAnalytPar(SQ,s4,label) ""
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
 	   "Cylinder(PRISM)"    { set actualAnalytPar(SQ,s1,label) "R ="
 				  set actualAnalytPar(SQ,s2,label) "L ="
 				  set actualAnalytPar(SQ,s3,label) "nu ="
@@ -5007,66 +4911,6 @@ switch -exact $type {
                  2 {return "d: stacking separation\n"}
                  3 {return "eta: Caillé parameter, which is measure for bilayer bending fluctuations\n"}
                  4 {return "Nu: scaling constant for the additional diffuse scattering term\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "Mass Fractal (Exp Cut-Off)" {
-               switch $num {
-                 0 {return "S(Q,xi,D)\n"}
-                 1 {return "r0: characteristic dimension of individual scatterers\n"}
-                 2 {return "xi: size of fractal aggregate\n"}
-                 3 {return "D: fractal dimension\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "Mass Fractal (Exp(-x^a) Cut-Off)" {
-               switch $num {
-                 0 {return "S(Q,xi,D)\n"}
-                 1 {return "r0: characteristic dimension of individual scatterers\n"}
-                 2 {return "xi: size of fractal aggregate\n"}
-                 3 {return "D: fractal dimension\n"}
-                 4 {return "alpha: exponent in cut-off function exp(-x^alpha)\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "Mass Fractal (Gaussian Cut-Off)" {
-               switch $num {
-                 0 {return "S(Q,xi,D)\n"}
-                 1 {return "r0: characteristic dimension of individual scatterers\n"}
-                 2 {return "xi: size of fractal aggregate\n"}
-                 3 {return "D: fractal dimension\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "Mass Fractal (OverlapSph Cut-Off)" {
-               switch $num {
-                 0 {return "S(Q,xi,D)\n"}
-                 1 {return "r0: characteristic dimension of individual scatterers\n"}
-                 2 {return "xi: size of fractal aggregate\n"}
-                 3 {return "D: fractal dimension\n"}
-                 4 {return "\n"}
                  5 {return "\n"}
                  6 {return "\n"}
                  7 {return "\n"}
@@ -8312,8 +8156,6 @@ None \
 				     {{Thin Square Well Potential}} \
                                      {{Square Well Potential 2}}}} \
 {lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
-{fractal "fractal obj." {{{Mass Fractal (Exp Cut-Off)}} {{Mass Fractal (Exp(-x^a) Cut-Off)}} {{Mass Fractal (Gaussian Cut-Off)}} \
-			 {{Mass Fractal (OverlapSph Cut-Off)}} }} \
 {other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 		BabaAhmed BabaAhmed2}} \
 }]

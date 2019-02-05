@@ -41,6 +41,7 @@
 #define NR	param->p[MAXPAR-9]
 #define NT	param->p[MAXPAR-10]
 #define NL	param->p[MAXPAR-11]
+
 #define R	(param->p[0]*NR)
 #define B   (param->p[0]*NR)
 #define T	(param->p[1]*NT)
