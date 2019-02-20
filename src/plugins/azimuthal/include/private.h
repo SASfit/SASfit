@@ -98,5 +98,7 @@
 // #define P0 param->p[0]
 //
 scalar MaierSaupeODF(scalar psi, scalar kappa);
+scalar psi_quarter_rad(scalar psi);
+scalar psi_quarter_deg(scalar psi);
 #endif // end of file
 

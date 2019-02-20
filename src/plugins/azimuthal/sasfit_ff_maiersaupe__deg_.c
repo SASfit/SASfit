@@ -18,6 +18,7 @@ scalar sasfit_ff_maiersaupe__deg_(scalar psi, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
+	return psi_quarter_deg(PSI);
 	return A+B*MaierSaupeODF(psi*M_PI/180-DELTA,KAPPA);
 }
 

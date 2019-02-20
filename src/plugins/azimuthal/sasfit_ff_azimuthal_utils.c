@@ -9,7 +9,7 @@
 // define shortcuts for local parameters/variables
 scalar MaierSaupeODF(scalar psi, scalar kappa) {
 // Maier-Saupe orientation distribution
-scalar u, norm; 
+scalar u, norm;
 	if (kappa < 0) {
 		u = sqrt(-kappa);
 		norm = sqrt(M_PI)*gsl_sf_erf(u)/u;
@@ -25,3 +25,24 @@ scalar u, norm;
 }
 
 
+scalar psi_quarter_rad(scalar psi) {
+    scalar tp,tf, ti;
+    ti = modf(fabs(psi/M_PI),&tf)*M_PI;
+    tf = tf*M_PI;
+    if (tf <= M_PI_2) {
+        return tf;
+    } else {
+        return Pi-tf;
+    }
+}
+
+scalar psi_quarter_deg(scalar psi) {
+    scalar tp,tf, ti;
+    ti = modf(fabs(psi/180.),&tf)*180.;
+    tf = tf*180.;
+    if (tf <= 90.) {
+        return tf;
+    } else {
+        return 180.0-tf;
+    }
+}

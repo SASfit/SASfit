@@ -17,7 +17,8 @@ scalar sasfit_ff_maiersaupe__rad_(scalar psi, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-		return A+B*MaierSaupeODF(psi-DELTA,KAPPA);
+	return psi_quarter_rad(PSI);
+	return A+B*MaierSaupeODF(psi-DELTA,KAPPA);
 }
 
 scalar sasfit_ff_maiersaupe__rad__f(scalar psi, sasfit_param * param)
