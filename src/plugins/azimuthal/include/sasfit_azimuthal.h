@@ -53,16 +53,13 @@
  *       <td>isotropic</td>
  *      </tr><tr>
  *       <td>\b B</td>
- *       <td>anisotropic sin^2(psi) term</td>
+ *       <td>anisotropic sin^2-term</td>
  *      </tr><tr>
  *       <td>\b C</td>
- *       <td>anisotropic sin^4(psi) term</td>
+ *       <td>anisotropic sin^4-term</td>
  *      </tr><tr>
- *       <td>\b Delta2</td>
- *       <td>offset for sin^2</td>
- *      </tr><tr>
- *       <td>\b Delta4</td>
- *       <td>offset for sin^4</td>
+ *       <td>\b Delta</td>
+ *       <td>offset for direction of psi=0 direction</td>
  *      </tr></table>
  */
 
@@ -105,16 +102,13 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_a_bsin2_csin4__deg__v(scalar q, sasfit_
  *       <td>isotropic</td>
  *      </tr><tr>
  *       <td>\b B</td>
- *       <td>anisotropic sin^2(psi) term</td>
+ *       <td>anisotropic sin^2-term</td>
  *      </tr><tr>
  *       <td>\b C</td>
- *       <td>anisotropic sin^4(psi) term</td>
+ *       <td>anisotropic sin^4-term</td>
  *      </tr><tr>
- *       <td>\b Delta2</td>
- *       <td>offset for sin^2</td>
- *      </tr><tr>
- *       <td>\b Delta4</td>
- *       <td>offset for sin^4</td>
+ *       <td>\b Delta</td>
+ *       <td>offset for direction of psi=0 direction</td>
  *      </tr></table>
  */
 
@@ -153,17 +147,17 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_a_bsin2_csin4__rad__v(scalar q, sasfit_
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anosotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td>width</td>
  *      </tr><tr>
- *       <td>\b Delta</td>
- *       <td>offset</td>
+ *       <td>\b delta</td>
+ *       <td>reference direction  relative to horizontal direction in degree</td>
  *      </tr></table>
  */
 
@@ -202,17 +196,17 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_maiersaupe__deg__v(scalar q, sasfit_par
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anosotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td>width</td>
  *      </tr><tr>
- *       <td>\b Delta</td>
- *       <td>offset</td>
+ *       <td>\b delta</td>
+ *       <td>reference direction relative to horizontal direction in radian</td>
  *      </tr></table>
  */
 
@@ -237,6 +231,104 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_maiersaupe__rad__f(scalar q, sasfit_par
  */
 sasfit_azimuthal_DLLEXP scalar sasfit_ff_maiersaupe__rad__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_maiersaupe__rad_ ################ */
+
+/* ################ start ff_affine_shrinkage_deg ################ */
+/**
+ * \defgroup ff_affine_shrinkage_deg affine shrinkage (deg)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of affine shrinkage (deg) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
+ *      </tr><tr>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>shrinkage factor 0<lambda<infinity </td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td>direction of shrinkage relative to horizontal direction in degree</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_affine_shrinkage_deg
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_affine_shrinkage_deg(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_affine_shrinkage_deg
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_affine_shrinkage_deg_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_affine_shrinkage_deg
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_affine_shrinkage_deg_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_affine_shrinkage_deg ################ */
+
+/* ################ start ff_affine_shrinkage_rad ################ */
+/**
+ * \defgroup ff_affine_shrinkage_rad affine shrinkage (rad)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of affine shrinkage (rad) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
+ *      </tr><tr>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>shrinkage factor 0<lambda<infinity </td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td>direction of shrinkage relative to horizontal direction in radian</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_affine_shrinkage_rad
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_affine_shrinkage_rad(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_affine_shrinkage_rad
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_affine_shrinkage_rad_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_affine_shrinkage_rad
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_affine_shrinkage_rad_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_affine_shrinkage_rad ################ */
 
 /* ################ start ff_elliptically_averaged_deg_ ################ */
 /**
@@ -341,6 +433,399 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_elliptically_averaged_rad__f(scalar q, 
  */
 sasfit_azimuthal_DLLEXP scalar sasfit_ff_elliptically_averaged_rad__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_elliptically_averaged_rad_ ################ */
+
+/* ################ start ff_longstructures__kratky_ms_deg_ ################ */
+/**
+ * \defgroup ff_longstructures__kratky_ms_deg_ azimuthal long cylinders (Maier-Saupe,Kratky,deg)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,Kratky,deg) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in deg</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__kratky_ms_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_deg_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_ms_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_deg__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_ms_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_deg__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__kratky_ms_deg_ ################ */
+
+/* ################ start ff_longstructures__kratky_ms_rad_ ################ */
+/**
+ * \defgroup ff_longstructures__kratky_ms_rad_ azimuthal long cylinders (Maier-Saupe,Kratky,rad)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,Kratky,rad) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in rad</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__kratky_ms_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_rad_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_ms_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_rad__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_ms_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_rad__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__kratky_ms_rad_ ################ */
+
+/* ################ start ff_longstructures__kratky_onsager_deg_ ################ */
+/**
+ * \defgroup ff_longstructures__kratky_onsager_deg_ azimuthal long cylinders (Onsager,Kratky,deg)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Onsager,Kratky,deg) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in deg</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__kratky_onsager_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_deg_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_onsager_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_deg__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_onsager_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_deg__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__kratky_onsager_deg_ ################ */
+
+/* ################ start ff_longstructures__kratky_onsager_rad_ ################ */
+/**
+ * \defgroup ff_longstructures__kratky_onsager_rad_ azimuthal long cylinders (Onsager,Kratky,rad)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Onsager,Kratky,rad) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in rad</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__kratky_onsager_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_rad_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_onsager_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_rad__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__kratky_onsager_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_rad__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__kratky_onsager_rad_ ################ */
+
+
+/* ################ start ff_longstructures__ln_ms_deg_ ################ */
+/**
+ * \defgroup ff_longstructures__ln_ms_deg_ azimuthal long cylinders (Maier-Saupe,LN,deg)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,LN,deg) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in deg</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__ln_ms_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_deg_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_ms_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_deg__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_ms_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_deg__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__ln_ms_deg_ ################ */
+
+/* ################ start ff_longstructures__ln_ms_rad_ ################ */
+/**
+ * \defgroup ff_longstructures__ln_ms_rad_ azimuthal long cylinders (Maier-Saupe,LN,rad)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,LN,rad) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in rad</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__ln_ms_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_rad_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_ms_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_rad__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_ms_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_rad__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__ln_ms_rad_ ################ */
+
+/* ################ start ff_longstructures__ln_onsager_deg_ ################ */
+/**
+ * \defgroup ff_longstructures__ln_onsager_deg_ azimuthal long cylinders (Onsager,LN,deg)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Onsager,LN,deg) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in deg</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__ln_onsager_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_deg_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_onsager_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_deg__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_onsager_deg_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_deg__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__ln_onsager_deg_ ################ */
+
+/* ################ start ff_longstructures__ln_onsager_rad_ ################ */
+/**
+ * \defgroup ff_longstructures__ln_onsager_rad_ azimuthal long cylinders (Onsager,LN,rad)
+ * \ingroup ff_azimuthal
+ *
+ * \brief \<some brief description of azimuthal long cylinders (Onsager,LN,rad) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>isotropic</td>
+ *      </tr><tr>
+ *       <td>\b B</td>
+ *       <td>anisotropic</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>width</td>
+ *      </tr><tr>
+ *       <td>\b Delta</td>
+ *       <td>offset in rad</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_longstructures__ln_onsager_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_rad_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_onsager_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_rad__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_longstructures__ln_onsager_rad_
+ *
+ * \sa sasfit_azimuthal.h, ff_azimuthal
+ */
+sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_rad__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_longstructures__ln_onsager_rad_ ################ */
 
 /* ################ start ff_azimuthal_sheared_cylinders_maier_saupe ################ */
 /**

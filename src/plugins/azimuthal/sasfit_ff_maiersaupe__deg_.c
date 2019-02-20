@@ -15,11 +15,23 @@
 
 scalar sasfit_ff_maiersaupe__deg_(scalar psi, sasfit_param * param)
 {
+    scalar norm,u;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return psi_quarter_deg(PSI);
-	return A+B*MaierSaupeODF(psi*M_PI/180-DELTA,KAPPA);
+	if (KAPPA < 0) {
+		u = sqrt(-KAPPA);
+		norm = sqrt(M_PI)*gsl_sf_erf(u)/u;
+	}
+	else if (KAPPA == 0.0) {
+		norm = 2;
+	}
+	else {
+		u = sqrt(KAPPA);
+		norm = 2.0*exp(KAPPA)*gsl_sf_dawson(u)/u; // maple: `assuming`([convert(int(exp(ksppa*cos(psi)^2)*sin(psi), psi = 0 .. Pi), dawson)], [kappa > 0])
+	}
+	norm = exp(KAPPA/2.)*gsl_sf_bessel_I0(KAPPA/2.)/norm;
+	return A+B*MaierSaupeODF(psi*M_PI/180-DELTA,KAPPA)/norm;
 }
 
 scalar sasfit_ff_maiersaupe__deg__f(scalar q, sasfit_param * param)

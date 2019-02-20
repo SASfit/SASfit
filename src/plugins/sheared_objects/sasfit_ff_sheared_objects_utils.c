@@ -147,7 +147,7 @@ scalar pOnsager(scalar x,scalar y, sasfit_param * param) {
     if (KAPPA == 0) return 0.25/M_PI;
     if (KAPPA > 10 ) {
         p = 0.5*KAPPA*exp(gsl_sf_lncosh(KAPPA*cos(x))-gsl_sf_lnsinh(KAPPA));
-    } else if (KAPPA >= 0 && KAPPA <= 10){
+    } else if (KAPPA > 0 && KAPPA <= 10){
         p = 0.5*KAPPA*cosh(KAPPA*cos(theta))/sinh(KAPPA);
     } else if (KAPPA < 0) {
         STVLV(-1, -KAPPA, &Lv1);

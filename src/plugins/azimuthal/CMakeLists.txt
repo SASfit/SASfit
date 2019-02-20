@@ -29,6 +29,16 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_azimuthal_sheared_spheroid_maier_saupe.c
 	sasfit_ff_azimuthal_sheared_spheroid_onsager.c
 	sasfit_ff_azimuthal_utils.c
+	sasfit_ff_longstructures__kratky_ms_deg_.c
+	sasfit_ff_longstructures__kratky_ms_rad_.c
+	sasfit_ff_longstructures__kratky_onsager_deg_.c
+	sasfit_ff_longstructures__kratky_onsager_rad_.c
+	sasfit_ff_longstructures__ln_ms_deg_.c
+	sasfit_ff_longstructures__ln_ms_rad_.c 
+	sasfit_ff_longstructures__ln_onsager_deg_.c
+	sasfit_ff_longstructures__ln_onsager_rad_.c
+	sasfit_ff_affine_shrinkage_deg.c
+	sasfit_ff_affine_shrinkage_rad.c
 	interface.c
 )
 

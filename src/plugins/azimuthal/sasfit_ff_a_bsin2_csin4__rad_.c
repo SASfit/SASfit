@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -10,15 +10,14 @@
 #define A	param->p[0]
 #define B	param->p[1]
 #define C	param->p[2]
-#define DELTA2	param->p[3]
-#define DELTA4	param->p[4]
+#define DELTA	param->p[3]
 
 scalar sasfit_ff_a_bsin2_csin4__rad_(scalar psi, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return A+B*gsl_pow_2(sin(psi-DELTA2))+C*gsl_pow_4(sin(psi-DELTA4));;
+	return A+B*gsl_pow_2(sin(psi-DELTA))+C*gsl_pow_4(sin(psi-DELTA));;
 }
 
 scalar sasfit_ff_a_bsin2_csin4__rad__f(scalar psi, sasfit_param * param)

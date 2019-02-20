@@ -1775,9 +1775,9 @@ set ::GlobalFitIQGraph(l,pady) {0 0}
 set ::GlobalFitIQGraph(y,titlefont) {Helvetica 10}
 set ::GlobalFitIQGraph(x,loose) "no"
 set ::GlobalFitIQGraph(x,type) "x"
-set ::GlobalFitIQGraph(c,x) "88"
+set ::GlobalFitIQGraph(c,x) "30"
 set ::GlobalFitIQGraph(y,logscale) "0"
-set ::GlobalFitIQGraph(c,y) "2"
+set ::GlobalFitIQGraph(c,y) "37"
 set ::GlobalFitIQGraph(e.errstipples) ""
 set ::GlobalFitIQGraph(e,restags) ""
 set ::GlobalFitIQGraph(title) "unknown"

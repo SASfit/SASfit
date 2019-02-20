@@ -24,7 +24,7 @@ scalar sasfit_sq_hard_sphere__gh_(scalar q, sasfit_param * param)
 	sigma = 2*R;
 	Rs=R;
 	etas=ETA;
-	sigma0=pow(1-ETA/16.,1/3)*sigma;
+	sigma0=pow(1-ETA/16.,1./3.)*sigma;
 	eta0 = ETA*(1.-ETA/16.);
 	C=sigma*((2-ETA)/(2*gsl_pow_3(1-ETA))-g0(sigma/sigma0,eta0));
 	m =   gsl_pow_4(1-ETA)/(1+4*ETA+4*ETA*ETA-4*gsl_pow_3(ETA)+gsl_pow_4(ETA))

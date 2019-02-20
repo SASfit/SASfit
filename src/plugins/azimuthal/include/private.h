@@ -98,7 +98,10 @@
 // #define P0 param->p[0]
 //
 scalar MaierSaupeODF(scalar psi, scalar kappa);
+scalar OnsagerODF(scalar x, scalar kappa);
 scalar psi_quarter_rad(scalar psi);
 scalar psi_quarter_deg(scalar psi);
+scalar LNKernel(scalar theta, scalar psi);
+scalar KratkyKernel(scalar theta, scalar psi);
 #endif // end of file
 

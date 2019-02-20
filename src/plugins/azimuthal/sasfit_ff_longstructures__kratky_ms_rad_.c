@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -28,7 +28,7 @@ scalar sasfit_ff_longstructures__kratky_ms_rad_(scalar psi, sasfit_param * param
     static scalar NormIdpsi=1.0;
     scalar Idpsi;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-    DPSI=psi_quarter_rad(psi-DELTA);
+    DPSI=psi_quarter_rad(psi-M_PI_2-DELTA);
 	// insert your code here
 	if (fabs(M_PI_2-DPSI) < 1e-6*M_PI_2) DPSI=(1.0-1e-6)*M_PI_2;
 	Idpsi= sasfit_integrate(DPSI,M_PI_2,&K_MS_rad_Kernel,param);

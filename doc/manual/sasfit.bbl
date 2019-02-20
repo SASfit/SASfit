@@ -16,6 +16,13 @@ R.~P. Agarwal, D.~O'Regan, and D.~R. Sahu.
 \newblock {\em Journal of Nonlinear and Covnex Analysis}, 8(1):61--79, 2007.
 \newblock \urlprefix\url{http://www.ybook.co.jp/online2/jncav8-1.html}.
 
+\bibitem{Agra-Kooijman2017}
+D.~M. Agra-Kooijman, M.~R. Fisch, and S.~Kumar.
+\newblock The integrals determining orientational order in liquid crystals by
+  x-ray diffraction revisited.
+\newblock {\em Liquid Crystals}, 45(5):680--686, sep 2017.
+\newblock \doi{10.1080/02678292.2017.1372526}.
+
 \bibitem{Alexander1984}
 S.~Alexander, P.~M. Chaikin, P.~Grant, G.~J. Morales, P.~Pincus, and D.~Hone.
 \newblock Charge renormalization, osmotic pressure, and bulk modulus of
@@ -235,6 +242,12 @@ W.~Burchard, E.~Michel, and V.~Trappe.
 \newblock {\em Macromolecules}, 29(18):5934--5939, jan 1996.
 \newblock \doi{10.1021/ma9603286}.
 
+\bibitem{Burger2006}
+C.~Burger and W.~Ruland.
+\newblock Evaluation of equatorial orientation distributions.
+\newblock {\em Journal of Applied Crystallography}, 39(6):889--891, nov 2006.
+\newblock \doi{10.1107/s0021889806038957}.
+
 \bibitem{Caccamo1996}
 C.~Caccamo.
 \newblock Integral equation theory description of phase equilibria in classical
@@ -439,6 +452,13 @@ M.~Engel, B.~Stühn, J.~J. Schneider, T.~Cornelius, and M.~Naumann.
   samples.
 \newblock {\em Applied Physics A}, 97(1):99--108, jul 2009.
 \newblock \doi{10.1007/s00339-009-5346-4}.
+
+\bibitem{Fan1994}
+S.~M. Fan, G.~R. Luckhurst, and S.~J. Picken.
+\newblock A deuterium nuclear magnetic resonance investigation of orientational
+  order and director kinetics in aramid solutions.
+\newblock {\em The Journal of Chemical Physics}, 101(4):3255--3267, aug 1994.
+\newblock \doi{10.1063/1.467573}.
 
 \bibitem{book:Feigin:Svergun}
 L.~A. Feigin and D.~I. Svergun.
@@ -1004,6 +1024,12 @@ M.~A. Krasnoselskij.
 \newblock {\em Uspehi Mat. Nauk. 10}, 63(1):123--127, 1955.
 \newblock \urlprefix\url{http://mi.mathnet.ru/eng/umn7954}.
 
+\bibitem{Kratky1933}
+O.~Kratky.
+\newblock Zum deformationsmechanismus der faserstoffe, i.
+\newblock {\em Kolloid-Zeitschrift}, 64(2):213--222, aug 1933.
+\newblock \doi{10.1007/bf01434162}.
+
 \bibitem{Kratky1949}
 O.~Kratky and G.~Porod.
 \newblock Diffuse small-angle scattering of x-rays in colloid systems.
@@ -1017,6 +1043,13 @@ C.~G.~D. Kruif, P.~W. Rouw, W.~J. Briels, M.~H.~G. Duits, A.~Vrij, and R.~P.
   neutron-scattering study of stickiness and the structure factor.
 \newblock {\em Langmuir}, 5(2):422--428, mar 1989.
 \newblock \doi{10.1021/la00086a023}.
+
+\bibitem{Leadbetter1979}
+A.~Leadbetter and E.~Norris.
+\newblock Distribution functions in three liquid crystals from x-ray
+  diffraction measurements.
+\newblock {\em Molecular Physics}, 38(3):669--686, sep 1979.
+\newblock \doi{10.1080/00268977900101961}.
 
 \bibitem{Lebedev2003}
 D.~Lebedev, D.~Baitin, A.~Islamov, A.~Kuklin, V.~Shalguev, V.~Lanzov, and
@@ -1150,6 +1183,14 @@ A.~G. Mailer, P.~S. Clegg, and P.~N. Pusey.
 \newblock {\em Journal of Physics: Condensed Matter}, 27(14):145102, mar 2015.
 \newblock \doi{10.1088/0953-8984/27/14/145102}.
 
+\bibitem{Makarova2013}
+V.~V. Makarova, M.~Y. Tolstykh, S.~J. Picken, E.~Mendes, and V.~G. Kulichikhin.
+\newblock Rheology{\textendash}structure interrelationships of
+  hydroxypropylcellulose liquid crystal solutions and their nanocomposites
+  under flow.
+\newblock {\em Macromolecules}, 46(3):1144--1157, feb 2013.
+\newblock \doi{10.1021/ma301095t}.
+
 \bibitem{Malijevsky1999}
 A.~Malijevsk{\'{y}} and J.~Veverka.
 \newblock New equations of state for pure and binary hard-sphere fluids.
@@ -1220,6 +1261,14 @@ D.~F.~R. Mildner.
   scattering contours from polymers under external constraint.
 \newblock {\em Macromolecules}, 16(11):1760--1763, nov 1983.
 \newblock \doi{10.1021/ma00245a014}.
+
+\bibitem{Mills2008}
+T.~T. Mills, G.~E. Toombes, S.~Tristram-Nagle, D.-M. Smilgies, G.~W. Feigenson,
+  and J.~F. Nagle.
+\newblock Order parameters and areas in fluid-phase oriented lipid membranes
+  using wide angle x-ray scattering.
+\newblock {\em Biophysical Journal}, 95(2):669--681, jul 2008.
+\newblock \doi{10.1529/biophysj.107.127845}.
 
 \bibitem{Mladek2005}
 B.~Mladek, M.~Fernaud, G.~Kahl, and M.~Neumann.
@@ -1410,6 +1459,13 @@ E.~Picard.
   1890.
 \newblock
   \urlprefix\url{http://portail.mathdoc.fr/JMPA/PDF/JMPA_1890_4_6_A3_0.pdf}.
+
+\bibitem{Picken1990}
+S.~J. Picken, J.~Aerts, R.~Visser, and M.~G. Northolt.
+\newblock Structure and rheology of aramid solutions: x-ray scattering
+  measurements.
+\newblock {\em Macromolecules}, 23(16):3849--3854, aug 1990.
+\newblock \doi{10.1021/ma00218a021}.
 
 \bibitem{Porod1948}
 G.~Porod.
@@ -1619,6 +1675,13 @@ P.~Sharp and V.~A. Bloomfield.
 \newblock {\em Biopolymers}, 6(8):1201--1211, aug 1968.
 \newblock \doi{10.1002/bip.1968.360060814}.
 
+\bibitem{Sims2018}
+M.~T. Sims, L.~C. Abbott, R.~M. Richardson, J.~W. Goodby, and J.~N. Moore.
+\newblock Considerations in the determination of orientational order parameters
+  from x-ray scattering experiments.
+\newblock {\em Liquid Crystals}, 46(1):11--24, mar 2018.
+\newblock \doi{10.1080/02678292.2018.1455227}.
+
 \bibitem{Sjoberg1974}
 B.~Sjöberg.
 \newblock Small-angle x-ray investigation of the equilibria between
@@ -1795,6 +1858,13 @@ L.~Viererblov{\'{a}}, J.~Kolafa, S.~Lab{\'{\i}}k, and A.~Malijevsk{\'{y}}.
 \newblock {\em Phys. Chem. Chem. Phys.}, 12(1):254--262, 2010.
 \newblock \doi{10.1039/b917204a}.
 
+\bibitem{Vilcinskas2015}
+K.~Vilcinskas, B.~Norder, K.~Goubitz, F.~M. Mulder, G.~J.~M. Koper, and S.~J.
+  Picken.
+\newblock Tunable order in alginate/graphene biopolymer nanocomposites.
+\newblock {\em Macromolecules}, 48(22):8323--8330, nov 2015.
+\newblock \doi{10.1021/acs.macromol.5b01380}.
+
 \bibitem{Vompe1994}
 A.~G. Vompe and G.~A. Martynov.
 \newblock The bridge function expansion and the self-consistency problem of the
@@ -1931,5 +2001,12 @@ B.~H. Zimm.
   polymer solutions.
 \newblock {\em The Journal of Chemical Physics}, 16(12):1093--1099, dec 1948.
 \newblock \doi{10.1063/1.1746738}.
+
+\bibitem{Zlopasa2015}
+J.~Zlopasa, B.~Norder, E.~A.~B. Koenders, and S.~J. Picken.
+\newblock Origin of highly ordered sodium alginate/montmorillonite
+  bionanocomposites.
+\newblock {\em Macromolecules}, 48(4):1204--1209, feb 2015.
+\newblock \doi{10.1021/ma502147m}.
 
 \end{thebibliography}

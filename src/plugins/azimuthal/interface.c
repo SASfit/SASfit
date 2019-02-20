@@ -1,13 +1,13 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifdef MAKE_SASFIT_PLUGIN
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(18)
+SASFIT_PLUGIN_EXP_BEGIN(28)
 SASFIT_PLUGIN_EXP_ADD( ff_a_bsin2_csin4__deg_ )
 SASFIT_PLUGIN_EXP_ADD( ff_a_bsin2_csin4__rad_ )
 SASFIT_PLUGIN_EXP_ADD( ff_maiersaupe__deg_ )
@@ -26,6 +26,16 @@ SASFIT_PLUGIN_EXP_ADD( ff_azimuthal_sheared_spheroid_hayterpenfold )
 SASFIT_PLUGIN_EXP_ADD( ff_azimuthal_sheared_spheroid_heavyside )
 SASFIT_PLUGIN_EXP_ADD( ff_azimuthal_sheared_spheroid_maier_saupe )
 SASFIT_PLUGIN_EXP_ADD( ff_azimuthal_sheared_spheroid_onsager )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__kratky_ms_deg_ )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__kratky_ms_rad_ )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__kratky_onsager_deg_ )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__kratky_onsager_rad_ )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__ln_ms_deg_ )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__ln_ms_rad_ )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__ln_onsager_deg_ )
+SASFIT_PLUGIN_EXP_ADD( ff_longstructures__ln_onsager_rad_ )
+SASFIT_PLUGIN_EXP_ADD( ff_affine_shrinkage_deg )
+SASFIT_PLUGIN_EXP_ADD( ff_affine_shrinkage_rad )
 
 SASFIT_PLUGIN_EXP_END
 
