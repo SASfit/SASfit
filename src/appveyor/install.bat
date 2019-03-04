@@ -21,7 +21,8 @@ IF %COMPILER%==msys2 (
   rem Update
   sh -lc "pacman -Syu --noconfirm"
   rem Install required packages
-  sh -lc "pacman -S --needed --noconfirm mingw-w64-x86_64-gcc cmake make diffutils patch"
+  rem sh -lc "pacman -S --noconfirm mingw-w64-x86_64-gcc cmake make diffutils patch"
+  sh -lc "pacman -S --noconfirm cmake make diffutils patch"
 )
 
 @echo on
