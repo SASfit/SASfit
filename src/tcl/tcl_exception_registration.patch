@@ -1,0 +1,36 @@
+--- a/tclWin32Dll.c	2012-04-04 15:50:53.000000000 +0200
++++ b/tclWin32Dll.c	2019-03-04 11:58:22.888355699 +0100
+@@ -51,7 +51,8 @@
+     void* ebp;
+     void* esp;
+     int status;
+-} EXCEPTION_REGISTRATION;
++} EXCEPTION_REGISTRATION_2;
++#define EXCEPTION_REGISTRATION EXCEPTION_REGISTRATION_2
+ 
+ #endif
+ 
+--- a/tclWinChan.c	2012-04-04 15:50:53.000000000 +0200
++++ b/tclWinChan.c	2019-03-04 12:01:18.473254238 +0100
+@@ -139,7 +139,8 @@
+     void* ebp;
+     void* esp;
+     int status;
+-} EXCEPTION_REGISTRATION;
++} EXCEPTION_REGISTRATION_2;
++#define EXCEPTION_REGISTRATION EXCEPTION_REGISTRATION_2
+ 
+ #endif
+ 
+--- a/tclWinFCmd.c	2012-11-19 17:27:16.000000000 +0100
++++ b/tclWinFCmd.c	2019-03-04 12:01:32.137296386 +0100
+@@ -87,7 +87,8 @@
+     void* ebp;
+     void* esp;
+     int status;
+-} EXCEPTION_REGISTRATION;
++} EXCEPTION_REGISTRATION_2;
++#define EXCEPTION_REGISTRATION EXCEPTION_REGISTRATION_2
+ 
+ #endif
+ 
