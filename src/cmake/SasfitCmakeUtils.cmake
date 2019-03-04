@@ -404,7 +404,7 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
 
     # applying any patches lying around in ${CURRENT_DIR}
-    execute_process(COMMAND sh -c "for fn in $(ls -1 ../*.patch); do
+    execute_process(COMMAND sh -c "ls ../*.patch && for fn in $(ls -1 ../*.patch); do
                                      echo \"Applying '$fn':\";
                                      patch -p1 < \"$fn\";
                                    done"
