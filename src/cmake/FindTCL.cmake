@@ -22,7 +22,7 @@ FIND_PATH(TCL_INCLUDE_DIRS
 )
 
 FIND_FILE(TCL_STATIC_LIB
-    NAMES libtcl8.4.a libtcl84s.a
+    NAMES libtcl8.4.a libtcl84.a libtcl84s.a
     PATHS ${SOURCE_DIR}
     PATH_SUFFIXES lib
     NO_DEFAULT_PATH
@@ -30,7 +30,7 @@ FIND_FILE(TCL_STATIC_LIB
 )
 
 FIND_FILE(TCL_STATIC_STUBS_LIB
-    NAMES libtclstub8.4.a libtclstub84s.a
+    NAMES libtclstub8.4.a libtclstub84.a libtclstub84s.a
     PATHS ${SOURCE_DIR}
     PATH_SUFFIXES lib
     NO_DEFAULT_PATH
