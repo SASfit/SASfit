@@ -20,12 +20,14 @@ environment:
 
 install:
   # running under CI
+  - 'echo|set /p=" => Starting install at: " & time /t'
 #  - set CI_TESTING=1
   - '%APPVEYOR_BUILD_FOLDER%\src\appveyor\install.bat'
-  - 'echo End intall at: & time /t'
+  - 'echo|set /p=" => Finished install at: " & time /t'
 
 build_script:
-  - 'echo Nothing to build'
+  - '%APPVEYOR_BUILD_FOLDER%\src\appveyor\build.bat'
+  - 'echo|set /p=" => Finished build at: " & time /t'
 
 #test_script:
 # - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
