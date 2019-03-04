@@ -9,6 +9,7 @@ cmake_minimum_required(VERSION 2.6.2)
 
 # set up options for configure script
 set(CONFIGURE_OPTIONS
+    --with-our-malloc
     --enable-static
     --disable-shared
     --disable-threads
