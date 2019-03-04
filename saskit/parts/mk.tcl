@@ -10,7 +10,7 @@ part::create mk \
             }
             set ofiles {}; foreach f $files {lappend ofiles [file tail $f.o]}
             set cppfiles {}; foreach f $files {lappend cppfiles [file join [utils::wdrelative [part::srcdir mk]] $f.cpp]}
-            out::oexec [concat [list g++ \
+            out::oexec [concat [list g++ -fpermissive \
                 -I[utils::wdrelative [part::srcdir tcl]]/win \
                 -I[utils::wdrelative [part::srcdir tcl]]/generic \
                 -I[utils::wdrelative [part::srcdir mk]]/include \
