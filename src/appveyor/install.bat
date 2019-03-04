@@ -9,17 +9,20 @@ echo MSYS2 directory: %MSYS2_DIR%
 echo MSYS2 system: %MSYSTEM%
 echo Bits: %BIT%
 
-REM Create a writeable TMPDIR
+rem Create a writeable TMPDIR
 rem mkdir %APPVEYOR_BUILD_FOLDER%\tmp
 rem set TMPDIR=%APPVEYOR_BUILD_FOLDER%\tmp
 
 IF %COMPILER%==msys2 (
   @echo on
-  SET "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
+  set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
   sh -lc "pacman -S --needed --noconfirm pacman-mirrors"
   sh -lc "pacman -S --needed --noconfirm git"
-  REM Update
+  rem Update
   sh -lc "pacman -Syu --noconfirm"
+  rem Install required packages
+  sh -lc "pacman -S --needed --noconfirm mingw-w64-x86_64-gcc cmake make diffutils patch"
 )
 
+@echo on
 rem vim: set ts=2 sw=2 sts=2 tw=0:
