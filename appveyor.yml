@@ -1,0 +1,35 @@
+version: 0.94.12.{build}
+
+branches:
+  only:
+    - master
+
+init:
+  - git config --global core.autocrlf input
+
+clone_depth: 1
+
+environment:
+  matrix:
+    - COMPILER: msys2
+      PLATFORM: x64
+      MSYS2_ARCH: x86_64
+      MSYS2_DIR: msys64
+      MSYSTEM: MINGW64
+      BIT: 64
+
+install:
+  # running under CI
+#  - set CI_TESTING=1
+  - 'echo %APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\install.bat'
+  - 'echo CD: %cd%'
+  - 'dir'
+  - 'echo End intall at: & time /t'
+
+build_script:
+  - 'echo Nothing to build'
+
+#test_script:
+# - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
+
+# vim: set ts=2 sw=2 sts=2 tw=0:
