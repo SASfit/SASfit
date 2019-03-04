@@ -21,9 +21,7 @@ environment:
 install:
   # running under CI
 #  - set CI_TESTING=1
-  - 'echo %APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\install.bat'
-  - 'echo CD: %cd%'
-  - 'dir'
+  - '%APPVEYOR_BUILD_FOLDER%\src\appveyor\install.bat'
   - 'echo End intall at: & time /t'
 
 build_script:
