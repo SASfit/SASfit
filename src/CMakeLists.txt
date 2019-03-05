@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.6.2)
 
+set(CMAKE_LEGACY_CYGWIN_WIN32 1)
 if(CMAKE_HOST_APPLE)
         set(CMAKE_C_COMPILER /usr/bin/gcc)
         set(CMAKE_CXX_COMPILER /usr/bin/g++)
@@ -17,7 +18,7 @@ get_filename_component(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}" REALPATH)
 set(LIBRARY_OUTPUT_PATH ${CURRENT_DIR}/lib)
 
 # fix Windows platform detection with MSYS2/MinGW64
-if(MINGW)
+if(MINGW AND NOT WIN32)
     set(WIN32 TRUE)
 endif()
 
