@@ -13,7 +13,9 @@ set out::mode console
 
 proc out::init {component} {
     variable fh
-    set fh [open [file join $::conf::outdir $component] w]
+    set filepath [file join $::conf::outdir $component]
+    set fh [open $filepath w]
+    puts "Current log file: '$filepath'."
     fconfigure $fh -encoding binary
 }
 
