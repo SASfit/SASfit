@@ -29,7 +29,7 @@ scalar sasfit_ff_longstructures__ln_onsager_deg_(scalar psi, sasfit_param * para
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
     DPSI=psi_quarter_deg(psi-90-DELTA)*M_PI/180.;
 	// insert your code here
-	if (fabs(M_PI_2-DPSI) < 1e-6*M_PI_2) DPSI=(1.0-1e-6)*M_PI_2;
+	if (fabs(M_PI_2-DPSI) < 1e-4*M_PI_2) DPSI=(1.0-1e-4)*M_PI_2;
 	Idpsi= sasfit_integrate(DPSI,M_PI_2,&LN_Onsager_deg_Kernel,param);
 	if (KAPPA!=kappa_old) {
         NormIdpsi=sasfit_integrate(0,M_PI_2,&LN_Onsager_deg_intpsi,param)/M_PI_2;

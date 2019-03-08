@@ -46,6 +46,10 @@
 #define H_CUBATURE 4
 #define P_CUBATURE 5
 #define NR_QROMB 6
+#define Sphere_Lebedev 7
+#define TanhSinh 8
+#define GSL_QAGS 9
+#define GSL_QNG 10
 
 // hide direct functions from plugins
 #ifndef MAKE_SASFIT_PLUGIN

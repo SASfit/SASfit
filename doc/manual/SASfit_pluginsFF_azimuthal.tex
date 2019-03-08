@@ -61,7 +61,7 @@ For $\kappa=0$ the azimuthal intensity is flat, for $\kappa>0$ the highest inten
 \begin{center}
 \includegraphics[width=0.7\textwidth]{../images/form_factor/azimuthal/maiersaupe.png}
 \end{center}
-\caption{Azimuthal intensity distribution of the Maiser-Saupe model from Picken \cite{Picken1990}}
+\caption{Azimuthal intensity distribution of the Maier-Saupe model from Picken \cite{Picken1990}}
 \label{fig:maiersaupe}
 \end{figure}
 
@@ -80,7 +80,7 @@ where $\lambda$ is the degree of compression. The final model function is than n
 \underline{Input Parameters for models \texttt{affine shrinkage (deg)} and \texttt{affine shrinkage (rad)}:}\\
 \begin{description}
 \item[\texttt{I0}] flat background $I_0$
-\item[\texttt{A}] Amplitude $A$ of the angle dependent intensity 
+\item[\texttt{A}] Amplitude $A$ of the angle dependent intensity
 \item[\texttt{lambda}] shrinkage factor $\lambda$
 \item[\texttt{delta}] direction of the polarisation $\delta$ in degree or radian
 \end{description}
@@ -120,3 +120,23 @@ Instead of radial or sector averaged data this function describes azimuthal aver
 I_\mathrm{rad}(\psi) &= \left(\left(\frac{\cos(\psi-\delta)}{A}\right)^2 + \left(\frac{\sin(\psi-\delta)}{B}\right)^2\right)^{-N/2} +C\\
 I_\mathrm{deg}(\psi) &= \left(\left(\frac{\cos\left((\psi-\delta)\frac{\pi}{180}\right)}{A}\right)^2 + \left(\frac{\sin\left((\psi-\delta)\frac{\pi}{180}\right)}{B}\right)^2\right)^{-N/2}+C
 \end{align}
+\hspace{1pt}\\
+\underline{Input Parameters for models \texttt{elliptically averaged (deg)} and \texttt{elliptically averaged (rad)}:}\\
+\begin{description}
+\item[\texttt{A}] semi-axis along $\psi-\delta=0$ of iso-contours in reciprocal space
+\item[\texttt{B}] semi-axis along $\psi-\delta=\pi/2$ of iso-contours in reciprocal space
+\item[\texttt{C}] Amplitude $A$ of the angle dependent intensity
+\item[\texttt{delta}] direction of the polarisation $\delta$ in degree or radian
+\end{description}
+
+\underline{Note:}
+The reciprocal value of $A$ and $B$ are related to the corresponding correlation length of the scattering object in that direction.
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/azimuthal/ellipsoidal.png}
+\end{center}
+\caption{Azimuthal intensity distribution of the elliptically averaged model}
+\label{fig:elliptically_averaged}
+\end{figure}

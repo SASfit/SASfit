@@ -87,7 +87,7 @@ scalar sasfit_ff_sheared_cylinders__maier_saupe_(scalar q, sasfit_param * param)
     default: {
             cubxmin[0]=0;
             cubxmax[0]=1;
-			pcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
+			hcubature(1, &partly_aligned_cubature_u_phi,&cparam,ndim, cubxmin, cubxmax,
 				100000, 0.0, sasfit_eps_get_aniso(), ERROR_L2,
 				fval, ferr);
 			sum = 4*fval[0];

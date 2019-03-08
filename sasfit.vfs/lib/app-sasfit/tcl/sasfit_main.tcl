@@ -247,7 +247,7 @@ global SESANSData
 global ColorMap
 create_ASCIIData CT
 
-set CT_full_filenames [glob $::sasfit_basedir/data/color_tables/*.*] 
+set CT_full_filenames [glob $::sasfit(tcl)/color_tables/*.*] 
 set CT_filenames {}
 foreach filename $CT_full_filenames {
 	set fnshort [lindex [file split $filename ] end]

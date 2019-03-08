@@ -318,20 +318,20 @@ declare 98 generic {
 	double im_cerf_z(double x, double y)
 }
 
-declare 105 generic {	
+declare 105 generic {
 	scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param)
 }
-declare 106 generic {	
+declare 106 generic {
 	void hcubature(unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err)
 }
 declare 107 generic {
 	void pcubature (unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err)
 }
@@ -358,4 +358,16 @@ declare 114 generic {
 }
 declare 115 generic {
 	void sasfit_intde(double (*f)(double, void *), double a, double b, double *aw, double *i, double *err, void *fparams)
+}
+declare 116 generic {
+    int sasfit_cubature(size_t ndim,
+			scalar *int_start,
+			scalar *int_end,
+			sasfit_func_ndim_t *intKern_fct,
+			void * param,
+			int limit,
+			scalar epsabs,
+			scalar epsrel,
+			scalar *result,
+			scalar *error)
 }
