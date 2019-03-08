@@ -16,6 +16,12 @@ set(SASFIT_ROOT_DIR ${CURRENT_DIR}/..)
 get_filename_component(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}" REALPATH)
 set(LIBRARY_OUTPUT_PATH ${CURRENT_DIR}/lib)
 
+# fix Windows platform detection with MSYS2/MinGW64
+if(MINGW)
+    set(WIN32 TRUE)
+endif()
+
+# load custom modules for some automation
 set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
 include(SasfitCmakeUtils)
 include(SasfitSourceFiles)
