@@ -41,6 +41,25 @@ cmake_policy(SET CMP0012 NEW)
 
 include(GetPrerequisites)
 
+# fix Windows platform detection with MSYS2/MinGW64
+if(MINGW AND NOT WIN32)
+    set(WIN32 TRUE)
+endif()
+if(WIN32 AND NOT CMAKE_EXECUTABLE_SUFFIX)
+    set(CMAKE_EXECUTABLE_SUFFIX ".exe")
+endif()
+
+# check for target architecture
+set(SYSTEM_IS_64 FALSE)
+if(CMAKE_SIZEOF_VOID_P)
+    if(${CMAKE_SIZEOF_VOID_P} EQUAL 8) # check for 64bit platform
+        set(SYSTEM_IS_64 TRUE)
+    endif()
+endif()
+
+set(PLATFORM "${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}")
+string(TOLOWER ${PLATFORM} PLATFORM)
+
 # adds given files to binary distribution file list
 # needs to be a function, because we operate on a cmake cache variable
 function(sasfit_file_list)
@@ -278,17 +297,6 @@ macro(sasfit_update_version)
 	endif(DEFINED REV_NR)
 
 endmacro(sasfit_update_version)
-
-# check for target architecture
-set(SYSTEM_IS_64 FALSE)
-if(CMAKE_SIZEOF_VOID_P)
-    if(${CMAKE_SIZEOF_VOID_P} EQUAL 8) # check for 64bit platform
-        set(SYSTEM_IS_64 TRUE)
-    endif()
-endif()
-
-set(PLATFORM "${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}")
-string(TOLOWER ${PLATFORM} PLATFORM)
 
 # retrieves the path to the already extracted source package
 # sets result variables in parent scope:
