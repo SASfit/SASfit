@@ -1,4 +1,4 @@
-#include "tk_base2.rc"
+#include "tk_base.rc"
 
 VS_VERSION_INFO VERSIONINFO
 BEGIN
