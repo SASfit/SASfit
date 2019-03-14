@@ -175,6 +175,10 @@ typedef scalar  sasfit_func_vol_t (scalar, sasfit_param *, int);
  * Prototype of a function with two single-value arguments.
  */
 typedef scalar  sasfit_func_two_t (scalar, scalar, sasfit_param *);
+/**
+ * Prototype of a function with ndim-value arguments.
+ */
+typedef double sasfit_func_ndim_t (const double* v, size_t n, void* p);
 
 /**
  * Prototype of an alternate output (printf) function.

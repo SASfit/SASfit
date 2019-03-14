@@ -62,7 +62,7 @@
  */
 
 typedef int sasfit_func_zspow_t(real * xla, real * f, integer * n, real * par);
-						  
+
 /**
  * \ingroup sasfit_stubs
  * Contains pointer to all functions in sasfit_common available for usage in
@@ -183,13 +183,13 @@ typedef struct
 	scalar (*sasfit_jinc) (scalar x); /* 104 */
 	scalar (*find_LogNorm_int_range) (scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param); /* 105 */
 	void (*hcubature) (unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err); /* 106 */
 	void (*pcubature) (unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err); /* 107 */
 	void (* sasfit_intccini) (int lenw, double *w);  /* 108 */
@@ -200,6 +200,17 @@ typedef struct
 	void (* sasfit_intdeo) (double (*f)(double, void *), double a, double omega, double *aw, double *i, double *err, void *fparams);  /* 113 */
 	void (* sasfit_intdeini) (int lenaw, double tiny, double eps, double *aw);  /* 114 */
 	void (* sasfit_intde) (double (*f)(double, void *), double a, double b, double *aw, double *i, double *err, void *fparams);  /* 115 */
+	int (* sasfit_cubature) (size_t ndim,
+			scalar *int_start,
+			scalar *int_end,
+			sasfit_func_ndim_t *intKern_fct,
+			void * param,
+			int limit,
+			scalar epsabs,
+			scalar epsrel,
+			scalar *result,
+			scalar *error);  /* 116 */
+
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -624,7 +635,10 @@ typedef struct
 #define sasfit_intde \
 	(sasfit_common_stubs_ptr->sasfit_intde) /* 115 */
 #endif
-
+#ifndef sasfit_cubature
+#define sasfit_cubature \
+	(sasfit_common_stubs_ptr->sasfit_cubature) /* 116 */
+#endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

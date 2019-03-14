@@ -149,6 +149,15 @@
  *
  * \modname{ff_non-particulate}
  */
+
+  /** 
+ * \defgroup ff_stochastic stochastic models 
+ * \ingroup ff_non-particulate
+ *
+ * This group contains form factors for stochastic models.
+ *
+ * \modname{ff_stochastic}
+ */
  
 /** 
  * \defgroup ff_plugins_thin_objects thin obj.
@@ -376,14 +385,6 @@
  * \modname{ff_devel}
  */
 
- /** 
- * \defgroup ff_stochastic stochastic models 
- * \ingroup ff_devel
- *
- * This group contains form factors for stochastic models.
- *
- * \modname{ff_stochastic}
- */
  
 /** 
  * \defgroup ff_sesans SESANS 

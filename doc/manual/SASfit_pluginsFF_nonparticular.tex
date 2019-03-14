@@ -1,4 +1,31 @@
 \section{Bi-continuous and non-particulate structures}
+
+\subsection{Stochastic models of disordered porous materials}
+
+The stochastic models implemented base mainly on the paper from \cite{Gommes2018}, where the different existing models have been  compared. The "dead leaves"- model as well as the boolean models described here assume for simplicity spheres for the grains where the covariogram of a sphere is given by
+\begin{align}\label{eq:covariogram_sphere}
+K(r,R) &= \frac{4\pi}{3}R^3\left(1-\frac{r}{2R}\right)^2\left(1+\frac{r}{4R}\right)\Theta(2R-r)
+\end{align}
+where $\Theta()$ is Heavyside's step function, taking the value 1 for a positive argument and 0 otherwise. A LogNormal size distribution $p_\mathrm{LN}(R)$ can be taken into account analytically
+\begin{align}
+  K_\mathrm{LN}(r) =& \int_0^\infty  p_\mathrm{LN}(R) K(r,R) \mathrm{d}R \nonumber\\
+       \begin{split}
+            & \frac{\pi}{24} r^3 \left(1+\mathrm{Erf}\left(\frac{\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right) \\
+            & \frac{\pi}{2}\mu^2r e^{2\sigma^2} \left(1+\mathrm{Erf}\left(\frac{2\sigma^2+\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right) \\
+            & \frac23 \pi e^{9\sigma^2/2}\mu^3\left(1+\mathrm{Erf}\left(\frac{3\sigma^2+\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right)
+       \end{split} \label{eq:covariogram_sphere_LogNorm}
+\end{align}
+with
+\begin{align}
+  p_\mathrm{LN}(R,\mu,\sigma) &=  \frac{1}{R\sigma \sqrt{2 \pi}}\exp\left(-\frac{1}{2}\left(\frac{\ln R -
+        \ln\mu}{\sigma}\right)^2\right)
+\end{align}
+\subsubsection{dead-leaves model}
+\subsubsection{boolean (union model)}
+\subsubsection{boolean (intersection model)}
+\subsubsection{clipped Gaussian random fields}
+
+
 \subsection{Teubner-Strey}
 \label{sect:TeubnerStrey}~\\
 

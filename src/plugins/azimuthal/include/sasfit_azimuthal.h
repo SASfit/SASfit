@@ -436,10 +436,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_elliptically_averaged_rad__v(scalar q, 
 
 /* ################ start ff_longstructures__kratky_ms_deg_ ################ */
 /**
- * \defgroup ff_longstructures__kratky_ms_deg_ azimuthal long cylinders (Maier-Saupe,Kratky,deg)
+ * \defgroup ff_longstructures__kratky_ms_deg_ azimuthal (long cyl.,MS,K,deg)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,Kratky,deg) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,MS,K,deg) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -447,14 +447,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_elliptically_averaged_rad__v(scalar q, 
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in deg</td>
@@ -485,10 +485,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_deg__v(scalar
 
 /* ################ start ff_longstructures__kratky_ms_rad_ ################ */
 /**
- * \defgroup ff_longstructures__kratky_ms_rad_ azimuthal long cylinders (Maier-Saupe,Kratky,rad)
+ * \defgroup ff_longstructures__kratky_ms_rad_ azimuthal (long cyl.,MS,K,rad)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,Kratky,rad) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,MS,K,rad) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -496,14 +496,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_deg__v(scalar
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in rad</td>
@@ -534,10 +534,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_rad__v(scalar
 
 /* ################ start ff_longstructures__kratky_onsager_deg_ ################ */
 /**
- * \defgroup ff_longstructures__kratky_onsager_deg_ azimuthal long cylinders (Onsager,Kratky,deg)
+ * \defgroup ff_longstructures__kratky_onsager_deg_ azimuthal (long cyl.,Onsager,K,deg)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Onsager,Kratky,deg) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,Onsager,K,deg) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -545,14 +545,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_ms_rad__v(scalar
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in deg</td>
@@ -583,10 +583,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_deg__v(s
 
 /* ################ start ff_longstructures__kratky_onsager_rad_ ################ */
 /**
- * \defgroup ff_longstructures__kratky_onsager_rad_ azimuthal long cylinders (Onsager,Kratky,rad)
+ * \defgroup ff_longstructures__kratky_onsager_rad_ azimuthal (long cyl.,Onsager,K,rad)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Onsager,Kratky,rad) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,Onsager,K,rad) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -594,14 +594,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_deg__v(s
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in rad</td>
@@ -633,10 +633,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_rad__v(s
 
 /* ################ start ff_longstructures__ln_ms_deg_ ################ */
 /**
- * \defgroup ff_longstructures__ln_ms_deg_ azimuthal long cylinders (Maier-Saupe,LN,deg)
+ * \defgroup ff_longstructures__ln_ms_deg_ azimuthal (long cyl.,MS,LN,deg)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,LN,deg) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,MS,LN,deg) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -644,14 +644,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__kratky_onsager_rad__v(s
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in deg</td>
@@ -682,10 +682,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_deg__v(scalar q, 
 
 /* ################ start ff_longstructures__ln_ms_rad_ ################ */
 /**
- * \defgroup ff_longstructures__ln_ms_rad_ azimuthal long cylinders (Maier-Saupe,LN,rad)
+ * \defgroup ff_longstructures__ln_ms_rad_ azimuthal (long cyl.,MS,LN,rad)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Maier-Saupe,LN,rad) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,MS,LN,rad) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -693,14 +693,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_deg__v(scalar q, 
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in rad</td>
@@ -731,10 +731,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_rad__v(scalar q, 
 
 /* ################ start ff_longstructures__ln_onsager_deg_ ################ */
 /**
- * \defgroup ff_longstructures__ln_onsager_deg_ azimuthal long cylinders (Onsager,LN,deg)
+ * \defgroup ff_longstructures__ln_onsager_deg_ azimuthal (long cyl.,Onsager,LN,deg)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Onsager,LN,deg) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,Onsager,LN,deg) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -742,14 +742,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_ms_rad__v(scalar q, 
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in deg</td>
@@ -780,10 +780,10 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_deg__v(scala
 
 /* ################ start ff_longstructures__ln_onsager_rad_ ################ */
 /**
- * \defgroup ff_longstructures__ln_onsager_rad_ azimuthal long cylinders (Onsager,LN,rad)
+ * \defgroup ff_longstructures__ln_onsager_rad_ azimuthal (long cyl.,Onsager,LN,rad)
  * \ingroup ff_azimuthal
  *
- * \brief \<some brief description of azimuthal long cylinders (Onsager,LN,rad) function\>
+ * \brief \<some brief description of azimuthal (long cyl.,Onsager,LN,rad) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -791,14 +791,14 @@ sasfit_azimuthal_DLLEXP scalar sasfit_ff_longstructures__ln_onsager_deg__v(scala
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b A</td>
- *       <td>isotropic</td>
+ *       <td>\b I0</td>
+ *       <td>flat background</td>
  *      </tr><tr>
- *       <td>\b B</td>
- *       <td>anisotropic</td>
+ *       <td>\b A</td>
+ *       <td>anisotropic amplitude</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
- *       <td>width</td>
+ *       <td>width of orientation distribution</td>
  *      </tr><tr>
  *       <td>\b Delta</td>
  *       <td>offset in rad</td>

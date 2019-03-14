@@ -42,6 +42,11 @@ R.~Andersson, L.~F. van Heijkamp, I.~M. de~Schepper, and W.~G. Bouwman.
 \newblock {\em Journal of Applied Crystallography}, 41(5):868--885, sep 2008.
 \newblock \doi{10.1107/s0021889808026770}.
 
+\bibitem{Ariane2004}
+B.~Ariane.
+\newblock Sans study of the non-linear relaxation mechanisms in a step-strain
+  elongated linear polymer melt, 2004.
+
 \bibitem{scatt97}
 N.~W. Ashcroft and J.~Lekner.
 \newblock Structure and resistivity of liquid metals.
@@ -753,6 +758,13 @@ J.~B. Hayter and J.~Penfold.
 \newblock {\em The Journal of Physical Chemistry}, 88(20):4589--4593, sep 1984.
 \newblock \doi{10.1021/j150664a030}.
 
+\bibitem{Heinrich1988}
+G.~Heinrich, E.~Straube, and G.~Helmis.
+\newblock Rubber elasticity of polymer networks: Theories.
+\newblock In {\em Polymer Physics}, pages 33--87. Springer Berlin Heidelberg,
+  1988.
+\newblock \doi{10.1007/bfb0024050}.
+
 \bibitem{Henderson1975}
 D.~Henderson and E.~W. Grundke.
 \newblock Direct correlation function: Hard sphere fluid.
@@ -987,6 +999,14 @@ D.~E. Koppel.
   spectroscopy: The method of cumulants.
 \newblock {\em The Journal of Chemical Physics}, 57(11):4814--4820, 1972.
 \newblock \doi{10.1063/1.1678153}.
+
+\bibitem{Korolkovas2019}
+A.~Korolkovas, S.~Pr{\'{e}}vost, M.~Kawecki, A.~Devishvili, F.~A. Adlmann,
+  P.~Gutfreund, and M.~Wolff.
+\newblock The viscoelastic signature underpinning polymer deformation under
+  shear flow.
+\newblock {\em Soft Matter}, 15(3):371--380, 2019.
+\newblock \doi{10.1039/c8sm02255k}.
 
 \bibitem{Kotlarchyk1983}
 M.~Kotlarchyk and S.-H. Chen.
@@ -1241,6 +1261,12 @@ S.~V.~G. Menon, C.~Manohar, and K.~S. Rao.
 \newblock A new interpretation of the sticky hard sphere model.
 \newblock {\em J. Chem. Phys.}, 95(12):9186--9190, dec 1991.
 \newblock \doi{10.1063/1.461199}.
+
+\bibitem{Mergell2001}
+B.~Mergell and R.~Everaers.
+\newblock Tube models for rubber-elastic systems.
+\newblock {\em Macromolecules}, 34(16):5675--5686, jul 2001.
+\newblock \doi{10.1021/ma002228c}.
 
 \bibitem{Michels2013}
 A.~Michels and J.-P. Bick.
@@ -1522,6 +1548,21 @@ L.~Rayleigh.
   Engineering Sciences}, 90(619):324--328, jul 1914.
 \newblock \doi{10.1098/rspa.1914.0055}.
 
+\bibitem{Read2004}
+D.~J. Read.
+\newblock Calculation of scattering from stretched copolymers using the tube
+  model:~ incorporation of the effect of elastic inhomogeneities.
+\newblock {\em Macromolecules}, 37(13):5065--5092, jun 2004.
+\newblock \doi{10.1021/ma030438u}.
+
+\bibitem{Read1997}
+D.~J. Read and T.~C.~B. McLeish.
+\newblock Microscopic theory for the
+  {\textquotedblleft}lozenge{\textquotedblright} contour plots in scattering
+  from stretched polymer networks.
+\newblock {\em Macromolecules}, 30(20):6376--6384, oct 1997.
+\newblock \doi{10.1021/ma970571k}.
+
 \bibitem{Regnaut1989}
 C.~Regnaut and J.~C. Ravey.
 \newblock Application of the adhesive sphere model to the structure of
@@ -1739,6 +1780,13 @@ M.~Stieger, J.~S. Pedersen, P.~Lindner, and W.~Richtering.
 \newblock \doi{10.1021/la049518x}.
 \newblock PMID: 15301516.
 
+\bibitem{Straube1995}
+E.~Straube, V.~Urban, W.~Pyckhout-Hintzen, D.~Richter, and C.~J. Glinka.
+\newblock Small-angle neutron scattering investigation of topological
+  constraints and tube deformation in networks.
+\newblock {\em Physical Review Letters}, 74(22):4464--4467, may 1995.
+\newblock \doi{10.1103/physrevlett.74.4464}.
+
 \bibitem{Strey1991}
 R.~Strey, J.~Winkler, and L.~Magid.
 \newblock Small-angle neutron scattering from diffuse interfaces. 1. mono- and
@@ -1907,6 +1955,13 @@ G.~Walter, R.~Kranold, T.~Gerber, J.~Baldrian, and M.~Steinhart.
 \newblock {\em Journal of Applied Crystallography}, 18(4):205--213, aug 1985.
 \newblock \doi{10.1107/s0021889885010160}.
 
+\bibitem{Warner1978}
+M.~Warner and S.~F. Edwards.
+\newblock Neutron scattering from strained polymer networks.
+\newblock {\em Journal of Physics A: Mathematical and General},
+  11(8):1649--1655, aug 1978.
+\newblock \doi{10.1088/0305-4470/11/8/024}.
+
 \bibitem{Weeks1971}
 J.~D. Weeks, D.~Chandler, and H.~C. Andersen.
 \newblock Role of repulsive forces in determining the equilibrium structure of
@@ -1920,6 +1975,27 @@ M.~S. Wertheim.
   spheres.
 \newblock {\em Physical Review Letters}, 10(8):321--323, apr 1963.
 \newblock \doi{10.1103/physrevlett.10.321}.
+
+\bibitem{Westermann1999}
+S.~Westermann, M.~Kreitschmann, W.~Pyckhout-Hintzen, D.~Richter, E.~Straube,
+  B.~Farago, and G.~Goerigk.
+\newblock Matrix chain deformation in reinforced networks:~ a {SANS} approach.
+\newblock {\em Macromolecules}, 32(18):5793--5802, sep 1999.
+\newblock \doi{10.1021/ma990112e}.
+
+\bibitem{Westermann2001}
+S.~Westermann, W.~Pyckhout-Hintzen, D.~Richter, E.~Straube, S.~Egelhaaf, and
+  R.~May.
+\newblock On the length scale dependence of microscopic strain by {SANS}.
+\newblock {\em Macromolecules}, 34(7):2186--2194, mar 2001.
+\newblock \doi{10.1021/ma0014259}.
+
+\bibitem{Westermann1996}
+S.~Westermann, V.~Urban, W.~Pyckhout-Hintzen, D.~Richter, and E.~Straube.
+\newblock {SANS} investigations of topological constraints in networks made
+  from triblock copolymers.
+\newblock {\em Macromolecules}, 29(19):6165--6174, jan 1996.
+\newblock \doi{10.1021/ma9602381}.
 
 \bibitem{Wiedenmann2011}
 A.~Wiedenmann, R.~Gähler, C.~D. Dewhurst, U.~Keiderling, S.~Pr{\'{e}}vost, and

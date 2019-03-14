@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+\clearpage
 \section{Sheared and deformed objects}
+\label{sec:ShearedAndDeformed}
 
 \subsection{Non-equilibrium static form factor of a reptating chain}
 ~\\
@@ -38,13 +39,13 @@ q_\perp &= q \sin(\psi-\theta_0)
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{CylShell1}, \texttt{CylShell2} and \texttt{LongCylShell}:}\\
+\underline{Input Parameters for models \texttt{reptating chain}:}\\
 \begin{description}
 \item[\texttt{I0}] forward scattering $I_0$
-\item[\texttt{Rg}] radius of gyration of unstretched polymer $R_r$
+\item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
 \item[\texttt{lambda}] stretching factor $\lambda$
 \item[\texttt{t/tau}] relaxation time in units of Rouse time $t/\tau$
-\item[\texttt{theta\_0}] stretching direction in the detector plane $\theta_0$ in degree
+\item[\texttt{theta\_0}] stretching direction $\theta_0$ in the detector plane in degree
 \item[\texttt{psi}] $\mathbf{q}$-direction $\psi$ in the detector plane in degree
 \end{description}
 
@@ -61,6 +62,162 @@ q_\perp &= q \sin(\psi-\theta_0)
 \label{fig:IQ2Dstretchedpolymermelt}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{step-deformed polymer networks}
+\label{sect:DeformedPolymerNetwork}
+\hspace{1pt}\\
+Two slightly different tube models for labeled polymer chains in a deformed network are implemented in this plugin: the original one from Warner-Edwards (WE) \cite{Warner1978} and a refined one from Heinrich-Straube-Helmis (HSH) \cite{Heinrich1988}, which have been extensively used to study uni-axial stretched polymer networks \cite{Straube1995,Mergell2001,Westermann2001,Westermann1999,Westermann1996,Read1997}.
+The form factor of an uniaxial stretched polymer network with a stretching direction in the plane of the detector reads as
+\begin{align}
+\label{eq:SQlambda}
+S(\mathbf{q},\lambda) &= \int_0^1\mathrm{d}\eta \int_0^1 \mathrm{d}\eta' \prod_{\mu} e^{-\left(Q_\mu\lambda_\mu\right)^2\abs{\eta-\eta'}-Q_\mu^2(1-\lambda_\mu^2)\xi\left\{1-\exp\left(-\frac{\abs{\eta-\eta'}}{\xi}\right)\right\}} \\
+\xi &= \frac{d_\mathrm{t}^2}{2\sqrt{6}R_g^2} \\
+Q_\mu &= q_\mu R_g\\
+\mu  &= x,y,z \\
+\mathbf{q} &= \Vek{q_x}{q_y}{q_z} = \Vek{q \cos(\psi-\delta)}{q\sin(\psi-\delta)}{0}
+\end{align}
+As the function of the integral kernel in eq.\ \ref{eq:SQlambda} only depends on $\abs{\eta-\eta'}$ one can transform the 2D-integral into a 1D-integral by using the identity
+\begin{align}
+\label{eq:2D1D_int_identity}
+\int_0^1\mathrm{d}\eta \int_0^1 \mathrm{d}\eta' \: K\left(\abs{\eta-\eta'}\right) &= 2 \int_0^1 (1-x)K(x)\: \mathrm{d}x
+\end{align}
+The difference between the WE-model and the HSH-model is how the deformed tube diameter $d_\mathrm{t}$ is calculated. In case of the WE-model the projection $d_\mu$ of $d_t$ onto the Cartesian axis are used, whereas the HSH-model uses an effective angle dependent diameter $d_\phi$.
+\begin{align}
+\mbox{(WE-model): } d_\mathrm{t} &= d_\mu^2 = d_0^2\lambda_\mu^{2\nu} \\
+\mbox{(HSH-model): } d_\mathrm{t} &= d_\phi^2 = d_0^2\lambda_\phi^{2\nu}
+\end{align}
+If we assume an elongation ratio of $\lambda$ in the $x$-direction
+\begin{align}
+  \lambda_x &=\lambda_{\|}=\lambda, \quad \lambda_y=\lambda_z=\lambda_\perp=\frac{1}{\sqrt{\lambda}} \\
+  \lambda_\phi^2 &= \lambda_{\|}^2 \cos^2(\psi-\delta)+\lambda_\perp^2\sin^2(\psi-\delta)
+\end{align}
+where $R_g$ the radius of gyration of the un-deformed polymer network $\lambda_\mu$ is the macroscopic stretch ratio in this Cartesian direction and the exponent $\nu$ is predicted to take a value of $1/2$ in the case of networks \cite{Straube1995,Read2004}.  Nevertheless $\nu$ is kept as a fit parameter in this plug-in function.
+\begin{multline}
+\label{eq:SQ_WE_HSH}
+%\begin{split}
+S^\mathrm{WE}(\mathbf{q},R_g,\lambda,\nu,d_0) = \\ 2\int_0^1\mathrm{d}x\: (1-x) e^{\left(\sum_{\mu} -Q_\mu^2\lambda_\mu^2 x-
+(1-\lambda_\mu^2)Q_\mu^2\xi_\mu\left\{1-e^{\left(-\frac{x}{\xi_\mu}\right)}\right\}\right)}
+\end{multline}
+\begin{multline}
+S^\mathrm{HSH}(\mathbf{q},R_g,\lambda,\nu,d_0) = \\ 2\int_0^1\mathrm{d}x\: (1-x) e^{\left(\sum_{\mu} -Q_\mu^2\lambda_\mu^2 x- % \\ &\qquad \qquad
+ (1-\lambda_\mu^2)Q_\mu^2\xi_\phi\left\{1-e^{\left(-\frac{x}{\xi_\phi}\right)}\right\}\right)}
+\end{multline}
+with
+\begin{align}
+  \xi_\mu =& \frac{d_\mu^2}{2\sqrt{6}R_g^2} \\
+  \xi_\phi =& \frac{d_\phi^2}{2\sqrt{6}R_g^2}
+\end{align}
+In a work of \cite{Ariane2004} an additional retraction coefficient $\gamma(t)$ has been included so that the final equation for the HSH model reads as
+\begin{multline}
+\label{eq:SQ_HSH_retraction}
+S^\mathrm{HSH}(\mathbf{q},R_g,\lambda,\nu,\gamma,d_0) =  2\int_0^1\mathrm{d}x\: (1-x) \exp\Bigg(\sum_{\mu} Q_\mu^2\left[-\lambda_\mu^2\frac{x}{\gamma(t)}- \right. \\
+\left. \xi_\phi\left\{1-e^{\left(-\frac{x}{\xi_\phi\gamma(t)}\right)}\right\} +\lambda_\mu^2\xi_\phi\left\{1-e^{\left(-\frac{x}{\xi_\phi}\right)}\right\} \right]\Bigg)
+\end{multline}
+The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger for increasing relaxation times $\gamma(t>0)>1$.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/deformed_sheared/deformed_polymer_network_I(sector).png}
+\end{center}
+\caption{sector averaged scattering curves of the Warner-Edwards and Heinrich-Straube-Helmis model of step-deformed polymer networks for tube diameters $d_0$ of 2nm and zero nm}
+\label{fig:I(sector)polymernetwork}
+\end{figure}
+
+\hspace{1pt}\\
+\underline{Input Parameters for models \texttt{WE: deformed polym. netw.}:}\\
+\begin{description}
+\item[\texttt{I0}] forward scattering $I_0$
+\item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
+\item[\texttt{d0}] equilibrium tube diameter $d_0$
+\item[\texttt{nu}] exponent ($\nu=1/2$, $\nu=1$:affine deformation)
+\item[\texttt{lambda}] deformation ratio $\lambda$ along deformation axis
+\item[\texttt{dummy}] not used
+\item[\texttt{psi}] direction $\psi$ of the scattering vector $\mathbf{q}$ in the detector plane in degree
+\item[\texttt{delta}] stretching direction in the detector plane $\delta$ in degree
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input Parameters for models \texttt{HSH: deformed polym. netw.}:}\\
+\begin{description}
+\item[\texttt{I0}] forward scattering $I_0$
+\item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
+\item[\texttt{d0}] equilibrium tube diameter $d_0$
+\item[\texttt{nu}] exponent ($\nu=1/2$, $\nu=1$:affine deformation)
+\item[\texttt{lambda}] deformation ratio $\lambda$ along deformation axis
+
+\item[\texttt{gamma}] retraction coefficient ($1 < \gamma \lesssim 2$)
+\item[\texttt{psi}] direction $\psi$ of the scattering vector $\mathbf{q}$ in the detector plane in degree
+\item[\texttt{delta}] stretching direction in the detector plane $\delta$ in degree
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item for large $q$-values the integration routines might fail to converge.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/deformed_sheared/deformed_polymer_network.png}
+\end{center}
+\caption{2D scattering patterns of the Warner-Edwards and Heinrich-Straube-Helmis model of step-deformed polymer networks}
+\label{fig:IQ2Dpolymernetwork}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{linear polymer under shear flow}
+\label{sect:LinearPolymerShearFlow}
+The form factors describing linear polymers under shear flow has been taken from \cite{Korolkovas2019}.
+It is assumed that the shear-vorticity plane is the same than the detector plane. In the paper three models are given. In the continuous limit the form factor is given by a double integral
+\begin{align}
+  P(\mathbf{q}) & = \frac{1}{N^2}\int_0^N\mathrm{d}n\int_0^N\mathrm{d}m\: \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right)
+\end{align}
+In all three cases given in that paper the mean squared displacement function (MSD) $\langle(\mathbf{q}\cdot\mathbf{r}_{nm})\rangle/2$ was supplied as a function of $\abs{n-m}$, which in the end allows to replace the double integral by a single integral.
+\begin{itemize}
+\item In equilibrium an exact solution of that integral is available as in this case
+\begin{align}
+  \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} & = a \abs{n-m}/N
+\end{align}
+with $N$ being the number of segments of the polymer, $a=(qR_g)^2$, where $R_g$ is the equilibrium radius of gyration, so that
+\begin{align}
+  P_\mathrm{iso}(\mathbf{q}) & = \frac{2\left(e^{-a}-1+a\right)}{a^2}
+\end{align}
+\item for the polymer under shear flow they approximated the MSD-function as a series of straight lines. In the case of two linear segments the MSD function reads as
+    \begin{align}
+      \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}0 &=
+      \begin{cases}
+        b\abs{n-m}/N, & \mbox{if } \abs{n-m}/N \leq \nu \\
+        c\abs{n-m}/N+(b-c)\nu, & \mbox{otherwise}.
+      \end{cases}
+    \end{align}
+    with $0<(\nu<N_1/N)<1$. To account for the deformation of the polymer $b$ and $c$ are described by
+    \begin{align}
+      b &= R_g^2\left[(\alpha q \cos^2(\psi-\phi_0))+(\beta q \sin^2(\psi-\phi_0))\right] \\
+      c &= R_g^2\left[(\gamma q \cos^2(\psi-\phi_0))+(\delta q \sin^2(\psi-\phi_0))\right]
+    \end{align}
+    which gives four fitting parameters $(\alpha,\beta,\gamma,\delta)$. $R_g$ is the equilibrium radius of gyration, $\psi$ the direction if the scattering vector in the detector plane and $\phi_0$ the flow-direction. The form factor can be calculated also analytical and is given by
+    \begin{align}
+      P(\mathrm{q}) & = \frac{2}{b^2}\left(b-1+e^{-\nu b} \left\{1+\left[\frac{b^2}{c^2}-1\right]e^{(\nu-1)c}+
+                        (1-\nu)\frac{b}{c}(b-c)\right\}\right)
+    \end{align}
+\item  a semi-empirical 3-parameter formula $(B_x,B_y,\xi)$ to have a similar shape than the piecewise linear MSD function above.
+    \begin{multline}
+    \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} =\left(qR_g\right)^2 \times \\
+    \left(
+      \abs{\frac{n-m}{N}} + \left(B_x^2q^2\cos^2(\psi-\phi_0)+B_y^2q^2\sin^2(\psi-\phi_0)\right)\abs{\frac{n-m}{N}}^\xi
+    \right)
+    \end{multline}
+    To get the same endpoints than the piecewise linear MSD function the amplitudes should be $B_x=\sqrt{\nu\alpha^2+(1-\nu)\gamma^2}$ and $B_y=\sqrt{\nu\beta^2+(1-\nu)\delta^2}$.
+    After making use of the identity \ref{eq:2D1D_int_identity} the scattering intensity is than given by
+    \begin{multline}
+      P(\mathbf{q}) = 2 \int_0^1 (1-x) \exp\Bigg( \left(qR_g\right)^2\\
+      \left(
+      x + \left(B_x^2q^2\cos^2(\psi-\phi_0)+B_y^2q^2\sin^2(\psi-\phi_0)\right)x^\xi
+      \right)\Bigg)
+    \end{multline}
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Sheared Cylinder according to Hayter and Penfold}
@@ -223,7 +380,7 @@ where $\gamma$ is the angle between $\mathbf{Q}$ and the cylinder
 axis $\mathbf{n}$. $L$ is the length of the cylinder, $R$ its
 radius, $\Delta\eta$ the scattering length density contrast relative
 to the solvent and $J_1(x)$ is the first order Bessel function of
-the first kind. 
+the first kind.
 
 The scattering amplitude of an ellispoid of revolution is given by
 \begin{align}
@@ -270,7 +427,7 @@ I_\mathrm{p.a.EllShell}(Q) & =
 \end{align}
 For this form factor it is assumed that the orientation distribution is independent of $\phi$,
 i.e. $p(\theta,\phi;\kappa)=p(\theta;\kappa)$ and that $p(\theta;\kappa)=p(\pi-\theta;\kappa)$, which means that turning the cylinder by 180$^\circ$ results in the same scattering intensity.
-Several orientation distributions have been implemented in a way that their resulting order parameter $S_2$ can have values between -0.5 and 1, which correspond to perfect alignment perpendicular to the $\mathrm{x}$ axis and perfect alignment parallel to it. All probability distributions have been normalized 
+Several orientation distributions have been implemented in a way that their resulting order parameter $S_2$ can have values between -0.5 and 1, which correspond to perfect alignment perpendicular to the $\mathrm{x}$ axis and perfect alignment parallel to it. All probability distributions have been normalized
 \begin{align}
 \int_0^\pi \int_0^{2\pi} p(\theta,\phi;\kappa) \sin \theta \, d\theta \, d\phi&=1
 \end{align}
@@ -326,14 +483,14 @@ S_2(\kappa) &=
 The order parameter for the Hayter-Penfold orientation distribution has been calculated by performing first a coordination transformation of the polar coordinates with $\mathbf{z}$ being the polar axis to coordination system with a polar axis pointing into the direction of the most probable orientation. The order parameter $S_2(\kappa)$ in eq.\ \ref{eq:S2kappa} is then calculated in this new polar coordinate system.
 
 The form factors additional contain already a size distribution to profit from the speed enhancement by using a specialized multidimensional integration routine. The size distribution is included as
-\begin{align} 
+\begin{align}
 I(Q) &= \int_0^\infty \mathrm{LogNorm}(\nu,\sigma,1) I_\mathrm{p.a.CylShell}(Q,R\nu,\Delta R\nu,L\nu) \, \mathrm{d}\nu \\
 \end{align}
 and
 \begin{align}
 I(Q) &= \int_0^\infty \mathrm{LogNorm}(\nu,\sigma,1) I_\mathrm{p.a.EllShell}(Q,R_\mathrm{p}\nu,\Delta R\nu,R_\mathrm{e}\nu) \, \mathrm{d}\nu
 \end{align}
- with 
+ with
 \begin{align}
 \mathrm{LogNorm}(\nu,\sigma,\mu) &= \frac{1}{\sqrt{2\pi}\sigma}\frac{1}{\nu} \exp\left(-\frac{(\ln(\nu/\mu))^2}{2\sigma^2}\right)
 \end{align}

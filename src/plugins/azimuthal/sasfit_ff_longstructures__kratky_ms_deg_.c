@@ -43,14 +43,15 @@ scalar sasfit_ff_longstructures__kratky_ms_deg_(scalar psi, sasfit_param * param
     scalar Idpsi;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-/*
-	Idpsi = K_MS_anal((psi-DELTA)*M_PI/180.,param)
+    DPSI=psi_quarter_deg(psi-90-DELTA)*M_PI/180.;
+
+	Idpsi = K_MS_anal(DPSI,param);
 	NormIdpsi=sasfit_integrate(0,M_PI_2,&K_MS_anal,param)/M_PI_2;
 	return A+B*Idpsi/NormIdpsi;
-*/
-    DPSI=psi_quarter_deg(psi-90-DELTA)*M_PI/180.;
+
+
 	// insert your code here
-	if (fabs(M_PI_2-DPSI) < 1e-6*M_PI_2) DPSI=(1.0-1e-6)*M_PI_2;
+	if (fabs(M_PI_2-DPSI) < 1e-4*M_PI_2) DPSI=(1.0-1e-4)*M_PI_2;
 	Idpsi= sasfit_integrate(DPSI,M_PI_2,&K_MS_deg_Kernel,param);
 	if (KAPPA!=kappa_old) {
         NormIdpsi=sasfit_integrate(0,M_PI_2,&K_MS_deg_intpsi,param)/M_PI_2;
