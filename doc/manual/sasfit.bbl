@@ -1000,6 +1000,14 @@ D.~E. Koppel.
 \newblock {\em The Journal of Chemical Physics}, 57(11):4814--4820, 1972.
 \newblock \doi{10.1063/1.1678153}.
 
+\bibitem{Korolkovas2019}
+A.~Korolkovas, S.~Pr{\'{e}}vost, M.~Kawecki, A.~Devishvili, F.~A. Adlmann,
+  P.~Gutfreund, and M.~Wolff.
+\newblock The viscoelastic signature underpinning polymer deformation under
+  shear flow.
+\newblock {\em Soft Matter}, 15(3):371--380, 2019.
+\newblock \doi{10.1039/c8sm02255k}.
+
 \bibitem{Kotlarchyk1983}
 M.~Kotlarchyk and S.-H. Chen.
 \newblock Analysis of small angle neutron scattering spectra from polydisperse
@@ -1546,6 +1554,14 @@ D.~J. Read.
   model:~ incorporation of the effect of elastic inhomogeneities.
 \newblock {\em Macromolecules}, 37(13):5065--5092, jun 2004.
 \newblock \doi{10.1021/ma030438u}.
+
+\bibitem{Read1997}
+D.~J. Read and T.~C.~B. McLeish.
+\newblock Microscopic theory for the
+  {\textquotedblleft}lozenge{\textquotedblright} contour plots in scattering
+  from stretched polymer networks.
+\newblock {\em Macromolecules}, 30(20):6376--6384, oct 1997.
+\newblock \doi{10.1021/ma970571k}.
 
 \bibitem{Regnaut1989}
 C.~Regnaut and J.~C. Ravey.

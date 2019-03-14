@@ -197,7 +197,7 @@ This procedure gives reasonable error bars as long as the data are oversampled a
 
 \subsection{SESANS Input Format} \hspace{1pt}\\
 
-For SESANS data several data formats are available. However, the disfferent sources supplying SESANS instruments have started to find a common ASCII format. At The moment \SASfit support some old file formats used by the University of Delft and the common format up to file format version 1.0.  
+For SESANS data several data formats are available. However, the different sources supplying SESANS instruments have started to find a common ASCII format. At The moment \SASfit support some old file formats used by the University of Delft and the common format up to file format version 1.0.
 
 \noindent
 {\bf Example of a data file in SESANS format:}\\
@@ -225,8 +225,8 @@ SpinEchoLength Depolarisation Depolarisation_error Wavelength
 199.073 -0.00286365 0.00078342 4.25
 248.669 -0.00369609 0.000621162 4.75
 \end{verbatim}
-
-For the analysis of SESANS data \SASfit \cite{Kohlbrecher2017} supplies a transformation of a scattering model into a projected correlation function \ref{ch:pluginsSESANS} but also supplies some plug-in functions which directly calculate this quantity in \ref{sec:Gz_sphere} and the following sub-sections. Internally \SASfit generates a 4-column structure. The first two columns are the $x$ and $y$ axes. The third column represents the error bar of the $y$-axis. The fourth column in the \SASfit data represents for the differential cross-section the resolution parameter for the $x$-axis. However, for SESANS data the fourth represents the maximum detectable scattering vector $q_rm{max}$ and limits the Hankel transform for the converting the scattering differential cross-section into a projected correlation function. For fitting the projected correlation function directly with the corresponding plug-in functions the fourth column is not used. 
+\normalsize
+For the analysis of SESANS data \SASfit \cite{Kohlbrecher2017} supplies a transformation of a scattering model into a projected correlation function \ref{ch:pluginsSESANS} but also supplies some plug-in functions which directly calculate this quantity in \ref{sec:Gz_sphere} and the following sub-sections. Internally \SASfit generates a 4-column structure. The first two columns are the $x$ and $y$ axes. The third column represents the error bar of the $y$-axis. The fourth column in the \SASfit data represents for the differential cross-section the resolution parameter for the $x$-axis. However, for SESANS data the fourth represents the maximum detectable scattering vector $q_rm{max}$ and limits the Hankel transform for the converting the scattering differential cross-section into a projected correlation function. For fitting the projected correlation function directly with the corresponding plug-in functions the fourth column is not used.
 Experimentally the differential cross-section is only measured up to a maximum scattering angle $\Theta_\mathrm{max}$. The SESANS data files supply the maximum detected scattering angle and the used wavelength for each spin echo length from which \SASfit calculates $Q_\mathrm{max}$ as $Q_\mathrm{max}=\frac{4\pi}{\lambda}\sin \Theta_\mathrm{max}/2$.
 
 \subsection{Export Format} \hspace{1pt}\\

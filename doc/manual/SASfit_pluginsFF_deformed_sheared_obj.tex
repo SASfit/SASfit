@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Sheared and deformed objects}
+\label{sec:ShearedAndDeformed}
 
 \subsection{Non-equilibrium static form factor of a reptating chain}
 ~\\
@@ -44,7 +45,7 @@ q_\perp &= q \sin(\psi-\theta_0)
 \item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
 \item[\texttt{lambda}] stretching factor $\lambda$
 \item[\texttt{t/tau}] relaxation time in units of Rouse time $t/\tau$
-\item[\texttt{theta\_0}] stretching direction in the detector plane $\theta_0$ in degree
+\item[\texttt{theta\_0}] stretching direction $\theta_0$ in the detector plane in degree
 \item[\texttt{psi}] $\mathbf{q}$-direction $\psi$ in the detector plane in degree
 \end{description}
 
@@ -66,7 +67,7 @@ q_\perp &= q \sin(\psi-\theta_0)
 \subsection{step-deformed polymer networks}
 \label{sect:DeformedPolymerNetwork}
 \hspace{1pt}\\
-Two slightly different tube models for labeled polymer chains in a deformed network are implemented in this plugin: the original one from Warner-Edwards (WE) \cite{Warner1978} and a refined one from Heinrich-Straube-Helmis (HSH) \cite{Heinrich1988}, which have been extensively used to study uni-axial stretched polymer networks \cite{Straube1995,Mergell2001,Westermann2001,Westermann1999,Westermann1996}.
+Two slightly different tube models for labeled polymer chains in a deformed network are implemented in this plugin: the original one from Warner-Edwards (WE) \cite{Warner1978} and a refined one from Heinrich-Straube-Helmis (HSH) \cite{Heinrich1988}, which have been extensively used to study uni-axial stretched polymer networks \cite{Straube1995,Mergell2001,Westermann2001,Westermann1999,Westermann1996,Read1997}.
 The form factor of an uniaxial stretched polymer network with a stretching direction in the plane of the detector reads as
 \begin{align}
 \label{eq:SQlambda}
@@ -78,9 +79,10 @@ Q_\mu &= q_\mu R_g\\
 \end{align}
 As the function of the integral kernel in eq.\ \ref{eq:SQlambda} only depends on $\abs{\eta-\eta'}$ one can transform the 2D-integral into a 1D-integral by using the identity
 \begin{align}
+\label{eq:2D1D_int_identity}
 \int_0^1\mathrm{d}\eta \int_0^1 \mathrm{d}\eta' \: K\left(\abs{\eta-\eta'}\right) &= 2 \int_0^1 (1-x)K(x)\: \mathrm{d}x
 \end{align}
-The difference between the WE-model and the HSH-model is how the deformed tube diameter $d_\mathrm{t}$ is calculated. In case of the EW-model the projection $d_\mu$ of $d_t$ onto the Cartesian axis are used, whereas the HSH-model uses an effective angle dependent diameter $d_\phi$.
+The difference between the WE-model and the HSH-model is how the deformed tube diameter $d_\mathrm{t}$ is calculated. In case of the WE-model the projection $d_\mu$ of $d_t$ onto the Cartesian axis are used, whereas the HSH-model uses an effective angle dependent diameter $d_\phi$.
 \begin{align}
 \mbox{(WE-model): } d_\mathrm{t} &= d_\mu^2 = d_0^2\lambda_\mu^{2\nu} \\
 \mbox{(HSH-model): } d_\mathrm{t} &= d_\phi^2 = d_0^2\lambda_\phi^{2\nu}
@@ -90,30 +92,28 @@ If we assume an elongation ratio of $\lambda$ in the $x$-direction
   \lambda_x &=\lambda_{\|}=\lambda, \quad \lambda_y=\lambda_z=\lambda_\perp=\frac{1}{\sqrt{\lambda}} \\
   \lambda_\phi^2 &= \lambda_{\|}^2 \cos^2(\psi-\delta)+\lambda_\perp^2\sin^2(\psi-\delta)
 \end{align}
-where $R_g$ the radius of gyration of the un-deformed polymer network $\lambda_\mu$ is the macroscopic stretch ratio in this Cartesian direction and the exponent $\nu$ is predicted to take a value of $1/2$ in the case of networks \cite{Straube1995,Read2004}.  Nevertheless $\nu$ is kept as an input parameter in this plug-in function.
-\begin{align}
+where $R_g$ the radius of gyration of the un-deformed polymer network $\lambda_\mu$ is the macroscopic stretch ratio in this Cartesian direction and the exponent $\nu$ is predicted to take a value of $1/2$ in the case of networks \cite{Straube1995,Read2004}.  Nevertheless $\nu$ is kept as a fit parameter in this plug-in function.
+\begin{multline}
 \label{eq:SQ_WE_HSH}
 %\begin{split}
-S^\mathrm{WE}(\mathbf{q},R_g,\lambda,\nu,d_0) = & 2\int_0^1\mathrm{d}x\: (1-x) \exp\left(\sum_{\mu} -Q_\mu^2\lambda_\mu^2 x- %\\ &\qquad \qquad
-(1-\lambda_\mu^2)Q_\mu^2\xi_\mu\left\{1-\exp\left(-\frac{x}{\xi_\mu}\right)\right\}\right) \\
-%\end{split} \\
-%\begin{split}
-S^\mathrm{HSH}(\mathbf{q},R_g,\lambda,\nu,d_0) = & 2\int_0^1\mathrm{d}x\: (1-x) \exp\left(\sum_{\mu} -Q_\mu^2\lambda_\mu^2 x- % \\ &\qquad \qquad
- (1-\lambda_\mu^2)Q_\mu^2\xi_\phi\left\{1-\exp\left(-\frac{x}{\xi_\phi}\right)\right\}\right)
-%\end{split}
-\end{align}
+S^\mathrm{WE}(\mathbf{q},R_g,\lambda,\nu,d_0) = \\ 2\int_0^1\mathrm{d}x\: (1-x) e^{\left(\sum_{\mu} -Q_\mu^2\lambda_\mu^2 x-
+(1-\lambda_\mu^2)Q_\mu^2\xi_\mu\left\{1-e^{\left(-\frac{x}{\xi_\mu}\right)}\right\}\right)}
+\end{multline}
+\begin{multline}
+S^\mathrm{HSH}(\mathbf{q},R_g,\lambda,\nu,d_0) = \\ 2\int_0^1\mathrm{d}x\: (1-x) e^{\left(\sum_{\mu} -Q_\mu^2\lambda_\mu^2 x- % \\ &\qquad \qquad
+ (1-\lambda_\mu^2)Q_\mu^2\xi_\phi\left\{1-e^{\left(-\frac{x}{\xi_\phi}\right)}\right\}\right)}
+\end{multline}
 with
 \begin{align}
   \xi_\mu =& \frac{d_\mu^2}{2\sqrt{6}R_g^2} \\
   \xi_\phi =& \frac{d_\phi^2}{2\sqrt{6}R_g^2}
 \end{align}
 In a work of \cite{Ariane2004} an additional retraction coefficient $\gamma(t)$ has been included so that the final equation for the HSH model reads as
-\begin{align}
+\begin{multline}
 \label{eq:SQ_HSH_retraction}
-\begin{split}
-S^\mathrm{HSH}(\mathbf{q},R_g,\lambda,\nu,\gamma,d_0) = & 2\int_0^1\mathrm{d}x\: (1-x) \exp\Bigg(\sum_{\mu} Q_\mu^2\left[-\lambda_\mu^2\frac{x}{\gamma(t)}- \right. \\ &\qquad \qquad \left. \xi_\phi\left\{1-\exp\left(-\frac{x}{\xi_\phi\gamma(t)}\right)\right\} +\lambda_\mu^2\xi_\phi\left\{1-\exp\left(-\frac{x}{\xi_\phi}\right)\right\} \right]\Bigg)
-\end{split}
-\end{align}
+S^\mathrm{HSH}(\mathbf{q},R_g,\lambda,\nu,\gamma,d_0) =  2\int_0^1\mathrm{d}x\: (1-x) \exp\Bigg(\sum_{\mu} Q_\mu^2\left[-\lambda_\mu^2\frac{x}{\gamma(t)}- \right. \\
+\left. \xi_\phi\left\{1-e^{\left(-\frac{x}{\xi_\phi\gamma(t)}\right)}\right\} +\lambda_\mu^2\xi_\phi\left\{1-e^{\left(-\frac{x}{\xi_\phi}\right)}\right\} \right]\Bigg)
+\end{multline}
 The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger for increasing relaxation times $\gamma(t>0)>1$.
 
 \begin{figure}[htb]
@@ -129,9 +129,9 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 \begin{description}
 \item[\texttt{I0}] forward scattering $I_0$
 \item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
-\item[\texttt{do}] equilibrium tube diameter $d_0$
+\item[\texttt{d0}] equilibrium tube diameter $d_0$
 \item[\texttt{nu}] exponent ($\nu=1/2$, $\nu=1$:affine deformation)
-\item[\texttt{lambda}] deformation ratio along deformation axis $\lambda$
+\item[\texttt{lambda}] deformation ratio $\lambda$ along deformation axis
 \item[\texttt{dummy}] not used
 \item[\texttt{psi}] direction $\psi$ of the scattering vector $\mathbf{q}$ in the detector plane in degree
 \item[\texttt{delta}] stretching direction in the detector plane $\delta$ in degree
@@ -142,9 +142,10 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 \begin{description}
 \item[\texttt{I0}] forward scattering $I_0$
 \item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
-\item[\texttt{do}] equilibrium tube diameter $d_0$
+\item[\texttt{d0}] equilibrium tube diameter $d_0$
 \item[\texttt{nu}] exponent ($\nu=1/2$, $\nu=1$:affine deformation)
-\item[\texttt{lambda}] deformation ratio along deformation axis $\lambda$
+\item[\texttt{lambda}] deformation ratio $\lambda$ along deformation axis
+
 \item[\texttt{gamma}] retraction coefficient ($1 < \gamma \lesssim 2$)
 \item[\texttt{psi}] direction $\psi$ of the scattering vector $\mathbf{q}$ in the detector plane in degree
 \item[\texttt{delta}] stretching direction in the detector plane $\delta$ in degree
@@ -163,6 +164,60 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 \label{fig:IQ2Dpolymernetwork}
 \end{figure}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{linear polymer under shear flow}
+\label{sect:LinearPolymerShearFlow}
+The form factors describing linear polymers under shear flow has been taken from \cite{Korolkovas2019}.
+It is assumed that the shear-vorticity plane is the same than the detector plane. In the paper three models are given. In the continuous limit the form factor is given by a double integral
+\begin{align}
+  P(\mathbf{q}) & = \frac{1}{N^2}\int_0^N\mathrm{d}n\int_0^N\mathrm{d}m\: \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right)
+\end{align}
+In all three cases given in that paper the mean squared displacement function (MSD) $\langle(\mathbf{q}\cdot\mathbf{r}_{nm})\rangle/2$ was supplied as a function of $\abs{n-m}$, which in the end allows to replace the double integral by a single integral.
+\begin{itemize}
+\item In equilibrium an exact solution of that integral is available as in this case
+\begin{align}
+  \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} & = a \abs{n-m}/N
+\end{align}
+with $N$ being the number of segments of the polymer, $a=(qR_g)^2$, where $R_g$ is the equilibrium radius of gyration, so that
+\begin{align}
+  P_\mathrm{iso}(\mathbf{q}) & = \frac{2\left(e^{-a}-1+a\right)}{a^2}
+\end{align}
+\item for the polymer under shear flow they approximated the MSD-function as a series of straight lines. In the case of two linear segments the MSD function reads as
+    \begin{align}
+      \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}0 &=
+      \begin{cases}
+        b\abs{n-m}/N, & \mbox{if } \abs{n-m}/N \leq \nu \\
+        c\abs{n-m}/N+(b-c)\nu, & \mbox{otherwise}.
+      \end{cases}
+    \end{align}
+    with $0<(\nu<N_1/N)<1$. To account for the deformation of the polymer $b$ and $c$ are described by
+    \begin{align}
+      b &= R_g^2\left[(\alpha q \cos^2(\psi-\phi_0))+(\beta q \sin^2(\psi-\phi_0))\right] \\
+      c &= R_g^2\left[(\gamma q \cos^2(\psi-\phi_0))+(\delta q \sin^2(\psi-\phi_0))\right]
+    \end{align}
+    which gives four fitting parameters $(\alpha,\beta,\gamma,\delta)$. $R_g$ is the equilibrium radius of gyration, $\psi$ the direction if the scattering vector in the detector plane and $\phi_0$ the flow-direction. The form factor can be calculated also analytical and is given by
+    \begin{align}
+      P(\mathrm{q}) & = \frac{2}{b^2}\left(b-1+e^{-\nu b} \left\{1+\left[\frac{b^2}{c^2}-1\right]e^{(\nu-1)c}+
+                        (1-\nu)\frac{b}{c}(b-c)\right\}\right)
+    \end{align}
+\item  a semi-empirical 3-parameter formula $(B_x,B_y,\xi)$ to have a similar shape than the piecewise linear MSD function above.
+    \begin{multline}
+    \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} =\left(qR_g\right)^2 \times \\
+    \left(
+      \abs{\frac{n-m}{N}} + \left(B_x^2q^2\cos^2(\psi-\phi_0)+B_y^2q^2\sin^2(\psi-\phi_0)\right)\abs{\frac{n-m}{N}}^\xi
+    \right)
+    \end{multline}
+    To get the same endpoints than the piecewise linear MSD function the amplitudes should be $B_x=\sqrt{\nu\alpha^2+(1-\nu)\gamma^2}$ and $B_y=\sqrt{\nu\beta^2+(1-\nu)\delta^2}$.
+    After making use of the identity \ref{eq:2D1D_int_identity} the scattering intensity is than given by
+    \begin{multline}
+      P(\mathbf{q}) = 2 \int_0^1 (1-x) \exp\Bigg( \left(qR_g\right)^2\\
+      \left(
+      x + \left(B_x^2q^2\cos^2(\psi-\phi_0)+B_y^2q^2\sin^2(\psi-\phi_0)\right)x^\xi
+      \right)\Bigg)
+    \end{multline}
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Sheared Cylinder according to Hayter and Penfold}

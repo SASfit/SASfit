@@ -68,10 +68,10 @@
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b psi</td>
- *       <td>direction_of_scattering_vector</td>
+ *       <td>direction of scattering vector</td>
  *      </tr><tr>
  *       <td>\b delta</td>
- *       <td>deforming dirfection (deg)</td>
+ *       <td>deforming direction (deg)</td>
  *      </tr></table>
  */
 
@@ -126,13 +126,13 @@ sasfit_deformed_polymer_network_DLLEXP scalar sasfit_ff_we__deformed_polym__netw
  *       <td>deformation ratio along deformation axis</td>
  *      </tr><tr>
  *       <td>\b gamma</td>
- *       <td>retraction coeefficient (1<gamma ~<2)</td>
+ *       <td>retraction coefficient (1<gamma ~<2)</td>
  *      </tr><tr>
  *       <td>\b psi</td>
- *       <td>direction_of_scattering_vector</td>
+ *       <td>direction of scattering vector</td>
  *      </tr><tr>
  *       <td>\b delta</td>
- *       <td>deforming dirfection (deg)</td>
+ *       <td>deforming direction (deg)</td>
  *      </tr></table>
  */
 
@@ -191,10 +191,10 @@ sasfit_deformed_polymer_network_DLLEXP scalar sasfit_ff_hsh__deformed_polym__net
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b psi</td>
- *       <td>direction_of_scattering_vector</td>
+ *       <td>direction of scattering_vector</td>
  *      </tr><tr>
  *       <td>\b delta</td>
- *       <td>deforming dirfection (deg)</td>
+ *       <td>deforming direction (deg)</td>
  *      </tr></table>
  */
 
