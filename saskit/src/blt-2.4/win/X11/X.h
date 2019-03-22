@@ -40,7 +40,12 @@ SOFTWARE.
 
 /* Resources */
 
-typedef unsigned long XID;
+// enables Windows 64bit build, fixes segfault on startup
+#ifdef WIN64
+    typedef __int64 XID;
+#else
+    typedef unsigned long XID;
+#endif
 
 typedef XID Window;
 typedef XID Drawable;
