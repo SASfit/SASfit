@@ -116,19 +116,20 @@ sasfit_common_DLLEXP scalar sasfit_sphere_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_gauss_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_g(scalar fp, scalar a);
 sasfit_common_DLLEXP scalar sasfit_jinc(scalar x);
+sasfit_common_DLLEXP scalar sasfit_erfinv(scalar y);
 sasfit_common_DLLEXP scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param);
 sasfit_common_DLLEXP double re_cerf_z(double x, double y);
 sasfit_common_DLLEXP double im_cerf_z(double x, double y);
 sasfit_common_DLLEXP double re_cerfi_z(double x, double y);
 sasfit_common_DLLEXP double im_cerfi_z(double x, double y);
 sasfit_common_DLLEXP int hcubature(unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err);
 sasfit_common_DLLEXP int pcubature(unsigned fdim, integrand f, void *fdata,
-	      unsigned dim, const double *xmin, const double *xmax, 
-	      size_t maxEval, double reqAbsError, double reqRelError, 
+	      unsigned dim, const double *xmin, const double *xmax,
+	      size_t maxEval, double reqAbsError, double reqRelError,
 	      error_norm norm,
 	      double *val, double *err);
 sasfit_common_DLLEXP void sasfit_intcc(double (*f)(double, void *), double a, double b, double eps, int lenw, double *w, double *i, double *err, void *fparams);
@@ -139,7 +140,16 @@ sasfit_common_DLLEXP void sasfit_intdei(double (*f)(double, void *), double a, d
 sasfit_common_DLLEXP void sasfit_intdeiini(int lenaw, double tiny, double eps, double *aw);
 sasfit_common_DLLEXP void sasfit_intde(double (*f)(double, void *), double a, double b, double *aw, double *i, double *err, void *fparams);
 sasfit_common_DLLEXP void sasfit_intdeini(int lenaw, double tiny, double eps, double *aw);
-
+sasfit_common_DLLEXP int sasfit_cubature(size_t ndim,
+			scalar *int_start,
+			scalar *int_end,
+			sasfit_func_ndim_t *intKern_fct,
+			void * param,
+			int limit,
+			scalar epsabs,
+			scalar epsrel,
+			scalar *result,
+			scalar *error);
 /**
  * Returns the shared library prefix for the current platform.
  */

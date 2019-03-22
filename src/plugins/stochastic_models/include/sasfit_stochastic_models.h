@@ -36,6 +36,264 @@
 // - brief description
 // - description of parameters in HTML table-style
 
+/* ################ start ff_clipped_random_waves_1 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_1 CRW 1
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 1 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_1 ################ */
+
+
+/* ################ start ff_clipped_random_waves_2 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_2 CRW 2
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 2 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_2 ################ */
+
+/* ################ start ff_clipped_random_waves_3 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_3 CRW 3
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 3 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_3 ################ */
+
+/* ################ start ff_clipped_random_waves_4 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_4 CRW 4
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 4 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_4(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_4_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_4_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_4 ################ */
+
+/* ################ start ff_clipped_random_waves_5 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_5 CRW 5
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 5 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_5(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_5_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_5_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_5 ################ */
+
 /* ################ start ff_boolean_intersection_model ################ */
 /**
  * \defgroup ff_boolean_intersection_model boolean (intersection model)

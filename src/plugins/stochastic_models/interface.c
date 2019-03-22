@@ -7,10 +7,15 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(3)
+SASFIT_PLUGIN_EXP_BEGIN(8)
 SASFIT_PLUGIN_EXP_ADD( ff_boolean_intersection_model )
 SASFIT_PLUGIN_EXP_ADD( ff_boolean_union_model )
 SASFIT_PLUGIN_EXP_ADD( ff_dead_leaves_model )
+SASFIT_PLUGIN_EXP_ADD( ff_clipped_random_waves_1 )
+SASFIT_PLUGIN_EXP_ADD( ff_clipped_random_waves_2 )
+SASFIT_PLUGIN_EXP_ADD( ff_clipped_random_waves_3 )
+SASFIT_PLUGIN_EXP_ADD( ff_clipped_random_waves_4 )
+SASFIT_PLUGIN_EXP_ADD( ff_clipped_random_waves_5 )
 
 SASFIT_PLUGIN_EXP_END
 

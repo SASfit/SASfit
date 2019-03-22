@@ -1,5 +1,18 @@
 \appendix{History}
 \begin{description}
+\item[2019-XX-XX] \SASfit 0.94.12
+    \begin{itemize}
+    \item added form factors of clipped random waves for 5 different two-point correlation functions
+    \item added form factor of a stochastic model of a boolean union model of spheres with LogNorm size distribution.
+    \item added form factor of a stochastic model of a dead-leave model of spheres with LogNorm size distribution.
+    \item added form factors of polymers under shear flow
+    \item added anisotropic form factor for step deformed networks according to the tube models of Warner-Edwards and a second one from Heinrich-Straube-Helmis
+     \item added some additional azimuthal intensity distributions valid for long objects with certain orientation distribution (Maier-Saupe, Onsager)
+     \item added some azimuthal intensity distributions based on the model of sheared cylinders and spheroids following a Maier-Saupe, Onsager, Heaviside, Gauss, or a Boltzmann orientation distribution. These functions return $I(\psi)$ instead of $I(q)$
+     \item extended the reading routine for SESANS data. A common file format has been established. These data files have in their header a version information (FileFormatVersion 1.0). At the moment some old formats from Delft, where the projected correlation function still has to be calculated from the polarisation and the new format 1.0 are supported.
+    \item  removed the old entries for mass fractal structure factors which have been moved to the plug-in sub-menu.
+    \item Added some structure factors for worm-like micelles: one RPA approximation and three different PRISM approximations. For all of them an exponential length distribution is included.
+    \end{itemize}
 \item[2018-11-15] \SASfit 0.94.11
     \begin{itemize}
     \item reduced the frequency of updating the progress bar as well as checking of pressing the interrupt button to maximal 10 times per second.

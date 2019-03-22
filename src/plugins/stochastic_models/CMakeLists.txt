@@ -13,6 +13,11 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_boolean_intersection_model.c
 	sasfit_ff_boolean_union_model.c
 	sasfit_ff_dead_leaves_model.c
+	sasfit_ff_clipped_random_waves_1.c
+	sasfit_ff_clipped_random_waves_2.c
+	sasfit_ff_clipped_random_waves_3.c
+	sasfit_ff_clipped_random_waves_4.c
+	sasfit_ff_clipped_random_waves_5.c
 	sasfit_stochastic_utils.c
 	interface.c
 )

@@ -157,6 +157,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
     sasfit_intdeo, /* 113 */
     sasfit_intdeini, /* 114 */
     sasfit_intde, /* 115 */
+    sasfit_cubature, /* 116 */
+    sasfit_erfinv, /* 117 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
