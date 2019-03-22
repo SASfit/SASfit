@@ -165,7 +165,10 @@ proc do_printer_attributes { } {
   }
 }
 
-init_printer
+if { [string match "Windows*" $::env(OS)] \
+ && ![string match "*64" $::env(PROCESSOR_ARCHITECTURE)] } {
+  init_printer
+}
 if {[string compare $printer_vars(OS) windows] == 0} {
    printer_about
    do_list_printers
