@@ -32,7 +32,7 @@ build_script:
 test:
   assemblies:
     only:
-      sasfit\saskit\saskit_*.exe
+      - sasfit\saskit\saskit_*.exe
 
 #test_script:
 # - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
