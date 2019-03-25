@@ -29,7 +29,18 @@ build_script:
   - 'sh %APPVEYOR_BUILD_FOLDER%\src\appveyor\build.sh'
   - 'echo  => Finished build at: & time /t'
 
+test:
+  assemblies:
+    only:
+      %APPVEYOR_BUILD_FOLDER%\saskit\saskit_*.exe
+
 #test_script:
 # - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
+
+notifications:
+  - provider: Email
+    to:
+      - sasfit-ci@ingobressler.net
+    on_build_success: false
 
 # vim: set ts=2 sw=2 sts=2 tw=0:
