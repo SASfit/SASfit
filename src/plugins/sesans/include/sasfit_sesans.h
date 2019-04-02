@@ -37,11 +37,11 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_gz_sphere ################ */
-/** 
- * \defgroup ff_gz_sphere G_Sphere(z)
+/**
+ * \defgroup ff_gz_sphere G_Sphere(delta)
  * \ingroup ff_sesans
  *
- * \brief \< some brief description of G_Sphere(z) function \>
+ * \brief \< some brief description of G_Sphere(delta) function \>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -86,11 +86,11 @@ sasfit_sesans_DLLEXP scalar sasfit_ff_gz_sphere_v(scalar q, sasfit_param * p, in
 /* ################ stop ff_gz_sphere ################ */
 
 /* ################ start ff_gz_dab ################ */
-/** 
- * \defgroup ff_gz_dab G_DAB(z)
+/**
+ * \defgroup ff_gz_dab G_DAB(delta)
  * \ingroup ff_sesans
  *
- * \brief \<some brief description of G_DAB(z) function \>
+ * \brief \<some brief description of G_DAB(delta) function \>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -135,11 +135,11 @@ sasfit_sesans_DLLEXP scalar sasfit_ff_gz_dab_v(scalar q, sasfit_param * p, int d
 /* ################ stop ff_gz_dab ################ */
 
 /* ################ start ff_gz_generalized_dab ################ */
-/** 
- * \defgroup ff_gz_generalized_dab G_gDAB(z)
+/**
+ * \defgroup ff_gz_generalized_dab G_gDAB(delta)
  * \ingroup ff_sesans
  *
- * \brief \<some brief description of G_gDAB(z) \>
+ * \brief \<some brief description of G_gDAB(delta) \>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -184,11 +184,11 @@ sasfit_sesans_DLLEXP scalar sasfit_ff_gz_generalized_dab_v(scalar q, sasfit_para
 /* ################ stop ff_gz_generalized_dab ################ */
 
 /* ################ start ff_gz_ggc ################ */
-/** 
- * \defgroup ff_gz_ggc G_gGc(z)
+/**
+ * \defgroup ff_gz_ggc G_gGc(delta)
  * \ingroup ff_sesans
  *
- * \brief \<some brief description of G_gGc(z) (generalized Gaussian coil) \>
+ * \brief \<some brief description of G_gGc(delta) (generalized Gaussian coil) \>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *

@@ -1343,7 +1343,7 @@ u^\text{HC3Y}(r,\ldots) &=
 \begin{cases}
 \infty                                                                  & \mbox{for } r<   \sigma \\
 k_\text{B} T
-\displaystyle \sum_{i=1}^{N=3} K_i\exp\left(-\lambda_i(r-\sigma)/\sigma\right)& \mbox{for } r >= \sigma
+\displaystyle \sum_{i=1}^{N=3} K_i\frac{\exp\left(-\lambda_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma}& \mbox{for } r >= \sigma
 \end{cases}
 \end{align}
 The sign of $K_i$ defines, if the potential is
@@ -1368,14 +1368,14 @@ u^\text{HC3Y}_\text{R}(r,\ldots) &=&
 \begin{cases}
 \infty & \mbox{for } r<\sigma \\
 k_\text{B} T
-\displaystyle \sum_{\forall K_i>0} K_i\exp\left(-\lambda_i(r-\sigma)/\sigma\right) & \mbox{for } r\geq\sigma
+\displaystyle \sum_{\forall K_i>0} K_i\frac{\exp\left(-\lambda_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma} & \mbox{for } r\geq\sigma
 \end{cases}\\
 u^\text{HC3Y}_\text{A}(r,\ldots) &=&
 \begin{cases}
 k_\text{B} T
 \displaystyle \sum_{\forall K_i<0} K_i & \mbox{for } r<\sigma \\
 k_\text{B} T
-\displaystyle \sum_{\forall K_i<0} K_i\exp\left(-\lambda_i(r-\sigma)/\sigma\right) & \mbox{for } r\geq\sigma
+\displaystyle \sum_{\forall K_i<0} K_i\frac{\exp\left(-\lambda_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma} & \mbox{for } r\geq\sigma
 \end{cases}
 \end{subeqnarray}
 

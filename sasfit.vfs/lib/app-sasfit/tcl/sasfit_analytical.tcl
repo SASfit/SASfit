@@ -7046,7 +7046,7 @@ proc build_param_gui { type actual_ap globalfit } {
 			set arrow_cmd_down "btn_cmd_global $type $p $i down"
 			set fit_cmd "fit_cmd_global $type $p $i"
 		} else {
-			bind  $entrypath <KeyPress-Return> { .analytical.adj.calc invoke }
+#			bind  $entrypath <KeyPress-Return> { .analytical.adj.calc invoke }
 			set arrow_cmd_up "btn_up_command $type $p $i"
 			set arrow_cmd_down "btn_down_command $type $p $i"
 			set fit_cmd "fit_command $type $p $i"

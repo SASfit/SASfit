@@ -25,7 +25,7 @@ Author Information:
 Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 Ingo Bressler (ingo.bressler@bam.de)
 
-Laboratory for Neutron Scattering
+Laboratory for Neutron Scattering and Imaging
 Paul Scherrer Institut
 CH-5232 Villigen PSI
 Switzerland
@@ -45,6 +45,8 @@ Documentation
 A paper about SASfit has been published in
 J. Appl. Cryst. (2015). 48, 1587-1598
 doi:10.1107/S1600576715016544
+J. Appl. Cryst. (2017). 50, 
+doi:10.1107/S1600576717011979
 
 Documentation is provided in HTML format in the directory
 <your-sasfit-source-directory>/doc/html/
