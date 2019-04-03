@@ -134,9 +134,10 @@ The unnormalized autocorrelation function for this sphere is given by
 and the unnormalized SESANS correlation function
 \begin{align}
 \begin{split}
-\tilde{G}_\mathrm{sph}(\delta)&= \Delta\eta^2 \pi R^4 \\ 
+\tilde{G}_\mathrm{sph}(\delta)&= \Delta\eta^2 \pi R^4 \\
 &\times \left(\sqrt{1-\xi^2}(2+\xi^2)-\xi^2(\xi^2-4)\ln\left(\frac{\xi}{1+\sqrt{1-\xi^2}}\right)\right)
 \end{split}
+\label{eq:Gz_sph}
 \end{align}
 with $\xi=\frac{\delta}{2R}$.
 
@@ -179,7 +180,7 @@ The unnormalized autocorrelation function for the two-phase system reads as
 \end{align}
 and the unnormalized SESANS correlation function as
 \begin{align}
-\tilde{G}_\mathrm{DAB}(\delta)&= 8\pi\xi^4 2\frac{z}{\xi}K_1\left(\frac{\delta}{\xi}\right)
+\tilde{G}_\mathrm{DAB}(\delta)&= 8\pi\xi^4 2\frac{\delta}{\xi}K_1\left(\frac{\delta}{\xi}\right)
 \end{align}
 
 The scattering intensity for a randomly distributed, self-affine two-phase system (gDAB) is given by \cite{Klimes2002,Hunter2006,Andersson2008}
@@ -194,6 +195,7 @@ The unnormalized autocorrelation function for this system is given by
 and the unnormalised SESANS correlation function
 \begin{align}
 \tilde{G}_\mathrm{gDAB}(\delta)&=  \Delta\eta^2 8\xi^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma^2\left(H\right)} 2\sqrt{\xi\delta}\left(\frac{\delta}{2\xi}\right)^{H+\frac12}K_{\frac12+H}\left(\frac{\delta}{\xi}\right)
+\label{eq:Gz_gDAB}
 \end{align}
 
 \hspace{1pt}\\
@@ -261,13 +263,13 @@ The unnormalized autocorrelation function the order of integration over $x$ and 
 \begin{align}
 \tilde{G}_\mathrm{gGc}(\delta) &=
  \frac{I_0 4\pi}{\nu \delta^2} \left(
-   w^{\frac{1}{2\nu}} \Gamma \left(1-\frac{1}{2 \nu },w\right) - w^{\frac{1}{\nu }} \Gamma \left(1-\frac{1}{\nu },w\right) \right)\\
+   w^{\frac{1}{2\nu}} \Gamma \left(1-\frac{1}{2 \nu },w\right) - w^{\frac{1}{\nu }} \Gamma \left(1-\frac{1}{\nu },w\right) \right) \label{eq:Gz_gGc}\\
    w &= \frac34 \frac{\delta^2}{\left(2 \nu ^2+3 \nu +1\right) R_g^2}
 \end{align}
 where $\Gamma(a,x) = \int_x^\infty \mathrm{d}t \; t^{a-1} \exp(-t)$ is the upper incomplete Gamma Function.
 The limit $\tilde{G}_\mathrm{gGc}(0)$ is only finite for $\nu \in \left(0,\frac12\right)$
 \begin{align}
-\tilde{G}_\mathrm{gGc}(0) &= I_0 \frac{3 \pi }{\left(4 \nu ^4-5 \nu ^2+1\right) R_g^2} \mbox{~for~} \nu \in \left(0,\frac12\right)
+\tilde{G}_\mathrm{gGc}(0) &= I_0 \frac{3 \pi }{\left(4 \nu ^4-5 \nu ^2+1\right) R_g^2} \mbox{~for~} \nu \in \left(0,\frac12\right) \label{eq:G0_gGc}
 \end{align}
 
 \hspace{1pt}\\
@@ -293,4 +295,4 @@ The limit $\tilde{G}_\mathrm{gGc}(0)$ is only finite for $\nu \in \left(0,\frac1
 \end{center}
 \caption{Projected correlation functions of the generalised Gaussian coil model with $R_g=24.5nm$}
 \label{fig:G_gDAB}
-\end{figure}
+\end{figure} 

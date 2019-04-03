@@ -39,7 +39,7 @@
 /* ################ start ff_msas_spheres ################ */
 /**
  * \defgroup ff_msas_spheres MSAS Spheres
- * \ingroup ff_devel
+ * \ingroup ff_msas
  *
  * \brief \<some brief description of MSAS Spheres function\>
  *
@@ -49,17 +49,17 @@
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b mu</td>
- *       <td>mean of size</td>
+ *       <td>\b R</td>
+ *       <td>radius of spheres</td>
  *      </tr><tr>
- *       <td>\b sigma</td>
- *       <td>width of the size distribution</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Sigma_t</td>
- *       <td>total scattering</td>
+ *       <td>total scattering per volume</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>sample thickness in reciprocal units of the intensity, e.g. [cm]</td>
@@ -72,21 +72,21 @@
 /**
  * \ingroup ff_msas_spheres
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_spheres(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_spheres
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_spheres_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_spheres
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_spheres_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_msas_spheres ################ */
@@ -94,7 +94,7 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_spheres_v(scalar q, sasfit_param * p, 
 /* ################ start ff_msas_polydisp_spheres ################ */
 /**
  * \defgroup ff_msas_polydisp_spheres MSAS polidisp. Spheres
- * \ingroup ff_devel
+ * \ingroup ff_msas
  *
  * \brief \<some brief description of MSAS polydisp. Spheres function\>
  *
@@ -105,16 +105,16 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_spheres_v(scalar q, sasfit_param * p, 
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b mu</td>
- *       <td>mean of size</td>
+ *       <td>mean radius of spheres</td>
  *      </tr><tr>
  *       <td>\b sigma</td>
- *       <td>width of the size distribution</td>
+ *       <td>width of the LogNorm size distribution</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Sigma_t</td>
- *       <td>total scattering</td>
+ *       <td>total scattering per volume</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>sample thickness in reciprocal units of the intensity, e.g. [cm]</td>
@@ -127,21 +127,21 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_spheres_v(scalar q, sasfit_param * p, 
 /**
  * \ingroup ff_msas_polydisp_spheres
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_polydisp_spheres(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_polydisp_spheres
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_polydisp_spheres_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_polydisp_spheres
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_polydisp_spheres_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_msas_polydisp_spheres ################ */
@@ -149,7 +149,7 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_polydisp_spheres_v(scalar q, sasfit_pa
 /* ################ start ff_msas_gdab ################ */
 /**
  * \defgroup ff_msas_gdab MSAS gDAB
- * \ingroup ff_devel
+ * \ingroup ff_msas
  *
  * \brief \<some brief description of MSAS gDAB function\>
  *
@@ -169,7 +169,7 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_polydisp_spheres_v(scalar q, sasfit_pa
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Sigma_t</td>
- *       <td>total scattering</td>
+ *       <td>total scattering per volume</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>sample thickness in reciprocal units of the intensity, e.g. [cm]</td>
@@ -182,21 +182,21 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_polydisp_spheres_v(scalar q, sasfit_pa
 /**
  * \ingroup ff_msas_gdab
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_gdab(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_gdab
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_gdab_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_gdab
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_gdab_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_msas_gdab ################ */
@@ -204,7 +204,7 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_gdab_v(scalar q, sasfit_param * p, int
 /* ################ start ff_msas_ggc ################ */
 /**
  * \defgroup ff_msas_ggc MSAS gGc
- * \ingroup ff_devel
+ * \ingroup ff_msas
  *
  * \brief \<some brief description of MSAS gGc function\>
  *
@@ -224,7 +224,7 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_gdab_v(scalar q, sasfit_param * p, int
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b Sigma_t</td>
- *       <td>total scattering</td>
+ *       <td>total scattering per volume</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>sample thickness in reciprocal units of the intensity, e.g. [cm]</td>
@@ -237,21 +237,21 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_gdab_v(scalar q, sasfit_param * p, int
 /**
  * \ingroup ff_msas_ggc
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_ggc(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_ggc
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_ggc_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_msas_ggc
  *
- * \sa sasfit_msans.h, ff_devel
+ * \sa sasfit_msans.h, ff_msas
  */
 sasfit_msans_DLLEXP scalar sasfit_ff_msas_ggc_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_msas_ggc ################ */

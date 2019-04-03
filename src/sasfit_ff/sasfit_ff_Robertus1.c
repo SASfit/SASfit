@@ -36,11 +36,11 @@ double Robertus1(Tcl_Interp *interp,
 					double Q,
 					double Rmean,
 					double dR,
-					double sigma, 
-					double btau, 
+					double sigma,
+					double btau,
 					double P,
 					double fp,
-						  double eta_core, 
+						  double eta_core,
 						  double eta_shell,
 						double x_solvent,
 						double eta_solvent,
@@ -65,7 +65,7 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 	static doublereal aint0,x0;
 
 	scalar res;
-	doublereal lRmean, lDR, leta_core, lfp, leta_sh, lx_sol, leta_sol, lcore, 
+	doublereal lRmean, lDR, leta_core, lfp, leta_sh, lx_sol, leta_sol, lcore,
 		   lshell, lsolvent, kappa_core, kappa_solvent, kappa_shell;
 	scalar Rmean, dR, sigma, btau, P, fp, eta_core, eta_shell, x_solvent, eta_solvent;
 
@@ -78,7 +78,7 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((Rmean < 0.0), param, "Rmean(%lg) < 0",Rmean);
 	SASFIT_CHECK_COND1((sigma < 0.0), param, "sigma(%lg) < 0",sigma);
-	SASFIT_CHECK_COND1((sigma > 0.3), param, "sigma(%lg) > 0.3",sigma);
+	SASFIT_CHECK_COND1((sigma > 1), param, "sigma(%lg) > 1",sigma);
 	SASFIT_CHECK_COND1((fabs(btau) <= 0.0), param, "fabs(btau)(%lg) <= 0",fabs(btau));
 	SASFIT_CHECK_COND1((fp <= 0.0 || fp >= 1.0), param, "fp(%lg) out of range (0,1)",fp);
 
@@ -103,7 +103,7 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 	lfp = fp*(0.873 +P*5.65E-5-P*P*5.272E-9)/0.873;
 
 	deeltje_1.rho[0] = leta_core - leta_sol;
-	if ((lDR == 0.) || ((leta_sh-leta_sol) == 0.0)) 
+	if ((lDR == 0.) || ((leta_sh-leta_sol) == 0.0))
 	{
 		deeltje_1.iform = 1;
 		deeltje_1.rho[1] = 0.;
@@ -111,7 +111,7 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 		deeltje_1.dlayer[0] = 0.;
 		deeltje_1.nlayer = 0;
 		deeltje_1.nrho = 2;
-	} 
+	}
 	else {
 		deeltje_1.iform = -1;
 		deeltje_1.nlayer = 1;
@@ -119,17 +119,17 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 		deeltje_1.nrho = 2;
 		deeltje_1.rho[1] = (1.0- lx_sol)*(leta_sh-leta_sol);
 	}
-		
-	 
-	if (	(Rmean_old != Rmean) || 
-		(sigma_old != sigma) || 
-		(btau_old  != btau)  || 
-		(eta_core_old != eta_core) || 
-		(eta_shell_old != eta_shell) || 
-		(x_solvent_old != x_solvent) || 
-		(eta_solvent_old != eta_solvent) || 
-		(fp_old != fp) || 
-		(P_old	!= P) ) 
+
+
+	if (	(Rmean_old != Rmean) ||
+		(sigma_old != sigma) ||
+		(btau_old  != btau)  ||
+		(eta_core_old != eta_core) ||
+		(eta_shell_old != eta_shell) ||
+		(x_solvent_old != x_solvent) ||
+		(eta_solvent_old != eta_solvent) ||
+		(fp_old != fp) ||
+		(P_old	!= P) )
 	{
 		Rmean_old		= Rmean;
 		sigma_old		= sigma;
@@ -150,7 +150,7 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 		_BLNK__1.atau = (doublereal) 0;
 		_BLNK__1.btau = (doublereal) fabs(btau);
 		/* L5: */
-		for (i__ = 1; i__ <= 100 ;++i__) 
+		for (i__ = 1; i__ <= 100 ;++i__)
 		{
 		  ve_1.x[i__ - 1] = 0.;
 		}
@@ -158,7 +158,7 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 		wl_1.lj = 1;
 		ve_1.v[0] = 0;
 		/* L6: */
-		for (i__ = 1; i__ <= 19 ;++i__) 
+		for (i__ = 1; i__ <= 19 ;++i__)
 		{
 		  ve_1.v[i__] = ve_1.v[i__ - 1] + i__;
 		}
