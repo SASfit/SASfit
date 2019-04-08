@@ -20,7 +20,7 @@
 # Author(s) of this file:
 #   Ingo Bressler (ingo.bressler@bam.de)
 
-SET(CPACK_CMAKE_GENERATOR "MSYS Makefiles")
+set(CPACK_CMAKE_GENERATOR "MSYS Makefiles")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "../Readme.txt")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "SASfit is a SAS tool")
 set(CPACK_PACKAGE_EXECUTABLES "sasfit")
@@ -34,7 +34,7 @@ set(CPACK_INSTALLED_DIRECTORIES "C:/user/sasfit_0.94.12_windows_amd64;.")
 set(CPACK_PACKAGE_FILE_NAME "sasfit_0.94.12_windows_amd64")
 if(NOT WIN32)
 	set(CPACK_GENERATOR "TBZ2")
-else(NOT WIN32)
+else()
 	set(CPACK_GENERATOR "ZIP")
-endif(NOT WIN32)
+endif()
 
