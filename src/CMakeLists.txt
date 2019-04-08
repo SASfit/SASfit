@@ -17,22 +17,10 @@ set(SASFIT_ROOT_DIR ${CURRENT_DIR}/..)
 get_filename_component(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}" REALPATH)
 set(LIBRARY_OUTPUT_PATH ${CURRENT_DIR}/lib)
 
-# fix Windows platform detection with MSYS2/MinGW64
-if(MINGW AND NOT WIN32)
-    set(WIN32 TRUE)
-endif()
-
 # load custom modules for some automation
 set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
 include(SasfitCmakeUtils)
 include(SasfitSourceFiles)
-
-message(STATUS "System Name: '${CMAKE_SYSTEM_NAME}' '${CMAKE_SYSTEM}'")
-#message("## system apple: ${CMAKE_HOST_APPLE}")
-message(STATUS "System Processor: '${CMAKE_SYSTEM_PROCESSOR}'")
-#message("## exe extensi: '${CMAKE_EXECUTABLE_SUFFIX}'")
-#message("## install Prefix: '${CMAKE_INSTALL_PREFIX}'")
-#message("## generator: '${CMAKE_GENERATOR}'")
 
 # updates the version number in some files
 set(SASFIT_VERSION "0.94.12")
