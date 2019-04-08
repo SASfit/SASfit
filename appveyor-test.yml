@@ -32,7 +32,8 @@ build_script:
 test:
   assemblies:
     only:
-      - sasfit\saskit\sas-kit_*.exe
+      - sasfit\saskit\saskit_*.exe
+      - sasfit\src\sasfit_*_*.tar.bz2
 
 #test_script:
 # - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
