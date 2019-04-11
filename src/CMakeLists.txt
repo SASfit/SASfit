@@ -1,24 +1,40 @@
 cmake_minimum_required(VERSION 2.6.2)
 
-set(CMAKE_LEGACY_CYGWIN_WIN32 1)
+# load some very basic settings
+get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
+
+# fix Windows platform detection with MSYS2/MinGW64
+if("$ENV{MSYSTEM}" MATCHES "MINGW64") # Windows
+    if(NOT CMAKE_SYSTEM_NAME)
+        execute_process(COMMAND uname OUTPUT_VARIABLE CMAKE_SYSTEM_NAME
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+    endif()
+#    message("CMAKE_SYSTEM_NAME: '${CMAKE_SYSTEM_NAME}'")
+    set(platform_dst "${CMAKE_ROOT}/Modules/Platform/${CMAKE_SYSTEM_NAME}.cmake")
+    if(NOT EXISTS "${platform_dst}")
+        set(platform_src "${CMAKE_ROOT}/Modules/Platform/Windows-GNU.cmake")
+        if(EXISTS "${platform_src}")
+            message(STATUS "Copying Windows-GNU.cmake -> ${CMAKE_SYSTEM_NAME}.cmake")
+            configure_file("${platform_src}" "${platform_dst}" COPYONLY)
+        endif()
+    endif()
+endif()
+
 if(CMAKE_HOST_APPLE)
         set(CMAKE_C_COMPILER /usr/bin/gcc)
         set(CMAKE_CXX_COMPILER /usr/bin/g++)
 endif()
 
-#
 # get our current location and set the distribution directory name
-#
 project(sasfit C)
 
 # we assume this script resides in sasfit/src
-get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 set(SASFIT_ROOT_DIR ${CURRENT_DIR}/..)
 get_filename_component(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}" REALPATH)
 set(LIBRARY_OUTPUT_PATH ${CURRENT_DIR}/lib)
 
 # load custom modules for some automation
-set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
 include(SasfitCmakeUtils)
 include(SasfitSourceFiles)
 
