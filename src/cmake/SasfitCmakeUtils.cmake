@@ -43,6 +43,11 @@ include(GetPrerequisites)
 
 set(CMAKE_LEGACY_CYGWIN_WIN32 1)
 # fix Windows platform detection with MSYS2/MinGW64
+message("MINGW: ${MINGW}")
+message("CMAKE_SYSTEM_PROCESSOR: '${CMAKE_SYSTEM_PROCESSOR}'")
+if(CMAKE_SYSTEM_PROCESSOR)
+    message("CMAKE_SYSTEM_PROCESSOR is true")
+endif()
 if(MINGW)
     if(NOT WIN32)
         set(WIN32 1)
