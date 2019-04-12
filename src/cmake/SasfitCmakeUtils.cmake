@@ -41,15 +41,16 @@ cmake_policy(SET CMP0012 NEW)
 
 include(GetPrerequisites)
 
-# fix Windows platform detection with MSYS2/MinGW64
-if(MINGW AND NOT WIN32)
-    set(WIN32 1)
-endif()
 set(CMAKE_LEGACY_CYGWIN_WIN32 1)
-message("CMAKE_SYSTEM_PROCESSOR: '${CMAKE_SYSTEM_PROCESSOR}'")
-if(CMAKE_SYSTEM_PROCESSOR MATCHES "unknown")
-    set(CMAKE_SYSTEM_PROCESSOR $ENV{MSYSTEM_CARCH})
-    set(CMAKE_HOST_SYSTEM_PROCESSOR $ENV{MSYSTEM_CARCH})
+# fix Windows platform detection with MSYS2/MinGW64
+if(MINGW)
+    if(NOT WIN32)
+        set(WIN32 1)
+    endif()
+    if(NOT CMAKE_SYSTEM_PROCESSOR OR CMAKE_SYSTEM_PROCESSOR MATCHES "unknown")
+        set(CMAKE_SYSTEM_PROCESSOR $ENV{MSYSTEM_CARCH})
+        set(CMAKE_HOST_SYSTEM_PROCESSOR $ENV{MSYSTEM_CARCH})
+    endif()
 endif()
 if(0) # some debug info, in case ...
 	message("WIN32, MINGW: ${WIN32}, ${MINGW}")
@@ -67,7 +68,7 @@ if(0) # some debug info, in case ...
 	message("CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES: '${CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES}'")
 endif()
 
-# check for target architecture
+# check for target architecture 64bit?
 set(SYSTEM_IS_64 FALSE)
 if(CMAKE_SIZEOF_VOID_P)
     if(${CMAKE_SIZEOF_VOID_P} EQUAL 8) # check for 64bit platform
