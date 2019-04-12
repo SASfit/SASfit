@@ -42,17 +42,7 @@ cmake_policy(SET CMP0012 NEW)
 include(GetPrerequisites)
 
 set(CMAKE_LEGACY_CYGWIN_WIN32 1)
-# fix Windows platform detection with MSYS2/MinGW64
-message("MINGW: ${MINGW}")
-message("uname:")
-execute_process(COMMAND uname -p)
-message("env:")
-execute_process(COMMAND env)
-message("CMAKE_SYSTEM_PROCESSOR: '${CMAKE_SYSTEM_PROCESSOR}'")
-if(NOT CMAKE_SYSTEM_PROCESSOR)
-    message("CMAKE_SYSTEM_PROCESSOR is false")
-endif()
-message("MSYSTEM_CARCH: '$ENV{MSYSTEM_CARCH}'")
+# fix processor architecture on Windows with MSYS2/MinGW64
 if(MINGW)
     if(NOT WIN32)
         set(WIN32 1)
