@@ -32,7 +32,11 @@ build_script:
 test:
   assemblies:
     only:
+      # saskit base package created by CMake
       - sasfit\saskit\saskit_*.exe
+      # assembled SASfit library combined with saskit base package
+      - sasfit\sasfit.exe
+      # final SASfit package for users
       - sasfit\src\sasfit_*_*.tar.bz2
 
 #test_script:
