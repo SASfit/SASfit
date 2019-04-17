@@ -2,7 +2,7 @@ version: 0.94.12.{build}
 
 branches:
   only:
-    - master
+    - saskit-update
 
 init:
   - git config --global core.autocrlf input
