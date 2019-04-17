@@ -5,7 +5,7 @@ starttime="$(date +%s)"
 echo "Current working directory:"
 pwd
 
-export PATH="/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/$MSYSTEM/bin:$PATH"
+#export PATH="/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/$MSYSTEM/bin:$PATH"
 
 echo "Environment variables:"
 env | sort
@@ -18,6 +18,9 @@ echo "MSYS2 dir:    '$MSYS2_DIR'"
 echo "MSYS2 system: '$MSYSTEM'"
 echo "Bits:         '$BIT'"
 echo
+
+ls -la "/c/$MSYS2_DIR/usr/bin"
+ls -la "/c/$MSYS2_DIR/$MSYSTEM/bin"
 
 [ "$COMPILER" = msys2 ] || exit 1
 
