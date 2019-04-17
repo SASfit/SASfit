@@ -21,7 +21,7 @@ environment:
 install:
   # running under CI
   #  - 'echo  => Starting install at: & time /t'
-  - 'sh %APPVEYOR_BUILD_FOLDER%\src\appveyor\install.sh'
+  - 'C:\%MSYS2_DIR%\usr\bin\sh.exe %APPVEYOR_BUILD_FOLDER%\src\appveyor\install.sh'
 #  - set CI_TESTING=1
 #  - '%APPVEYOR_BUILD_FOLDER%\src\appveyor\install.bat'
 #  - 'echo  => Finished install at: & time /t'
