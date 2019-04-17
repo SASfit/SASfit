@@ -19,8 +19,8 @@ sh -lc "pacman -S --needed --noconfirm pacman-mirrors"
 sh -lc "pacman -S --needed --noconfirm git"
 
 @echo "Updating packages first:"
-sh -lc "pacman -Su --noconfirm"
-sh -lc "pacman -Su --noconfirm"
+sh -lc "pacman -Syu --noconfirm"
+sh -lc "pacman -Syu --noconfirm"
 
 @echo "Installing required packages:"
 sh -lc "pacman -S --noconfirm cmake make diffutils patch"
