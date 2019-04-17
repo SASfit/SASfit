@@ -694,6 +694,12 @@ function(get_prerequisites2 target prerequisites_var exclude_system recurse exep
     endif()
   endif()
 
+  if(verbose)
+    message(STATUS "<RawOutput cmd='${gp_cmd} ${gp_cmd_args} ${target}'>")
+    message(STATUS "gp_cmd_ov='${gp_cmd_ov}'")
+    message(STATUS "</RawOutput>")
+  endif()
+
   if(NOT gp_rv STREQUAL "0")
     if(gp_tool STREQUAL "dumpbin")
       # dumpbin error messages seem to go to stdout
@@ -705,12 +711,6 @@ function(get_prerequisites2 target prerequisites_var exclude_system recurse exep
 
   if(gp_tool STREQUAL "ldd")
     set(ENV{LD_LIBRARY_PATH} "${old_ld_env}")
-  endif()
-
-  if(verbose)
-    message(STATUS "<RawOutput cmd='${gp_cmd} ${gp_cmd_args} ${target}'>")
-    message(STATUS "gp_cmd_ov='${gp_cmd_ov}'")
-    message(STATUS "</RawOutput>")
   endif()
 
   get_filename_component(target_dir "${target}" PATH)
