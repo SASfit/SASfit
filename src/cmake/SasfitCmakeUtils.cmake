@@ -526,11 +526,18 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
         set(EXCLUDE_SYSTEM TRUE)
         set(RECURSIVE TRUE)
     endif()
-    message(STATUS "get_saskit_dependencies of '${SASKIT_FILE}'")
-    if(FALSE) # for debugging
+    message(STATUS "Searching dependencies of '${SASKIT_FILE}'")
+    if(TRUE) # for debugging
         message("EXCLUDE_SYSTEM: ${EXCLUDE_SYSTEM}")
         message("RECURSIVE:      ${RECURSIVE}")
     endif()
+    message("debugging get_prerequisites:")
+    execute_process(COMMAND ls -la "C:/msys64/")
+    message("TEST1")
+    execute_process(COMMAND ls -la "/c/msys64/")
+    message("TEST2")
+    execute_process(COMMAND ls -la "/c/msys64/dependents")
+    message("pre get_prerequisites")
     get_prerequisites(${SASKIT_FILE} PREREQ ${EXCLUDE_SYSTEM} ${RECURSIVE} "" "")
 #    message("PREREQ: ${PREREQ}") # for debugging
     if(UNIX AND NOT APPLE) # linux

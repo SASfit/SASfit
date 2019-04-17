@@ -20,6 +20,7 @@ environment:
 
 install:
   # running under CI
+  - 'sh %APPVEYOR_BUILD_FOLDER%\src\appveyor\install.sh'
   - 'echo  => Starting install at: & time /t'
 #  - set CI_TESTING=1
   - '%APPVEYOR_BUILD_FOLDER%\src\appveyor\install.bat'
