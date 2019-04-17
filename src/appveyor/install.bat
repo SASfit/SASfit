@@ -14,14 +14,15 @@ IF NOT %COMPILER%==msys2 exit
 @echo on
 set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
 
-echo "Ensure pacman mirrors and GIT are up to date:"
+@echo "Ensure pacman mirrors and GIT are up to date:"
 sh -lc "pacman -S --needed --noconfirm pacman-mirrors"
 sh -lc "pacman -S --needed --noconfirm git"
 
-echo "Updating packages first:"
-sh -lc "pacman -Syu --noconfirm"
+@echo "Updating packages first:"
+sh -lc "pacman -Su --noconfirm"
+sh -lc "pacman -Su --noconfirm"
 
-echo "Installing required packages:"
+@echo "Installing required packages:"
 sh -lc "pacman -S --noconfirm cmake make diffutils patch"
 
 @echo off
