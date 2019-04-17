@@ -122,9 +122,9 @@ where $\phi_0=1-\phi_1=\exp(-\theta K_\mathrm{LN}(0))$ is the volume fraction of
 
 Clipped random field model are mathematically formalized geometrical models which have been applied to small angle scattering e.g.\ by \cite{Berk1991,Teubner1991,Levitz1998,Roberts1995}. These class of models describe the morphology by stochastic standing wave $S(\mathbf{r})$ defined by
 \begin{align}
-S(\mathbf{r} &= \frac{1}{\sqrt{N\langle A^2\rangle}} \sum_{n=1}^N A_n \cos\left(\mathbf{q}_n\cdot\mathbf{r}+\phi_n\right)
+S(\mathbf{r}) &= \frac{1}{\sqrt{N\langle A^2\rangle}} \sum_{n=1}^N A_n \cos\left(\mathbf{q}_n\cdot\mathbf{r}+\phi_n\right)
 \end{align}
-$\phi_n$ and $A_n$ are independent random variables, however the squared average amplitude need to be finite. For $N\rightarrow \infty$ the properties of $S(\mathbf{r})$ becomes independent of the distribution $A_n$ and are therefore assumed to be $A_n=1/\sqrt{2}$. The phase $\phi_n$ is assumed to be uniform distributed over $(0,2\pi)$ and the direction of the random wave vector $\mathbf{q}_n$ is uniformly distributed over all solid angle $4\pi$. The distribution of the length of the wave vectors however follow a distribution $f(q)$ (spectral function), which than determines the properties of $S(\mathbf{r})$. The distribution is normalized so that $\int_0^\infty f(q) \mathrm{d}q=1$ The scattering length density $\rho(\mathbf(r))$ than takes values of $\rho_1$ or $\rho_0$ depending if $S(\mathbf{r})$ is larger or smaller than a threshold $\alpha$, which can be written as
+$\phi_n$ and $A_n$ are independent random variables, however the squared average amplitude need to be finite. For $N\rightarrow \infty$ the properties of $S(\mathbf{r})$ becomes independent of the distribution $A_n$ and are therefore assumed to be $A_n=1/\sqrt{2}$. The phase $\phi_n$ is assumed to be uniform distributed over $(0,2\pi)$ and the direction of the random wave vector $\mathbf{q}_n$ is uniformly distributed over all solid angle $4\pi$. The distribution of the length of the wave vectors however follow a distribution $f(q)$ (spectral function), which than determines the properties of $S(\mathbf{r})$. The distribution is normalized so that $\int_0^\infty f(q) \mathrm{d}q=1$ The scattering length density $\rho(\mathbf{r})$ than takes values of $\rho_1$ or $\rho_0$ depending if $S(\mathbf{r})$ is larger or smaller than a threshold $\alpha$, which can be written as
 \begin{align}
   \rho(\mathbf{r}) & = (\rho_1-\rho_0) \Theta(S(\mathbf{r})-\alpha) + \rho_0
 \end{align}
@@ -134,11 +134,15 @@ The two-point correlation function $g_S$ of an isotropic gaussian random field i
   g_S(\mathbf{r}) &= g_S(r) = \langle S(\mathbf{r}) S(\mathbf{r}+\mathbf{x}) \rangle \\
                   &= \int_0^\infty f(q) \frac{\sin qr}{qr} 4\pi q^2 \mathrm{d}q
 \end{align}
-In the following a two-phase system described by a single threshold $\alpha$ is assumed. The volume fraction $\phi_1$ of the solid phase with the scattering length density $\rho_1$ is than given by
+
+\hspace{1pt} \\
+\paragraph*{Single threshold:} \phantom{M}\hspace{1pt} \\
+
+For the single threshold model a two-phase system is described by a single threshold $\alpha$. The volume fraction $\phi_1$ of the solid phase with the scattering length density $\rho_1$ is than given by
 \begin{align}\label{eq:volumefraction_alpha}
   \phi_1 & = \frac12 - \frac12\mathrm{erf}\left(\frac{\alpha}{\sqrt{2}}\right)
 \end{align}
-where $\mathrm{erf}$ is the error function and $\phi_0=1-\phi_1$ the porosity. The covariance $C_11(r)$ than is defined as the probability that two gaussian fields $S(\mathbf{r})$ and $S(\mathbf{r}+\mathbf{x})$ takes values larger than $\alpha$. Mathematically this is described equivalently by
+where $\mathrm{erf}$ is the error function and $\phi_0=1-\phi_1$ the porosity. The covariance $C_{11}(r)$ than is defined as the probability that two gaussian fields $S(\mathbf{r})$ and $S(\mathbf{r}+\mathbf{x})$ takes values larger than $\alpha$. Mathematically this is described equivalently by
 \begin{align}
   C_{11}(r) &= \frac{1}{2\pi} \int_0^{\arcsin(g_S(r))} \exp\left[\frac{-\alpha^2}{1+\sin\theta}\right] \mathrm{d}\theta + \phi_1^2
 \end{align}
@@ -151,7 +155,35 @@ from which the scattering intensity can be calculates as
   I_Q(q) &= \frac{1}{(2\pi)^3}\int_0^\infty \gamma(r) \frac{\sin qr}{qr} 4\pi r^2 \mathrm{d}r
 \end{align}
 
-To calculate the scattering intensity $I_Q(q)$ the spectral function $f(q)$ is assumed to be known as a parameterised function as well as its Fourier transformation, i.e. the two-point correlation function $g_S(r)$. In \SASfit four parametrisation for are implemented a simplified two parameter function $ g_{S,1}(r;\xi,d)$ \cite{Gommes2008,Gommes2018} and three 3-parameter functions. For this see e.g. \cite{Quintanilla2003,Roberts1997} $g_{S,2}(r;\xi,d,r_c)$ and \cite{Pieruschka1992} $g_{S,3}(r;\xi,d,r_c)$, \cite{Jinnai2000} $ g_{S,4}(r;\xi,d,r_c)$, or \cite{Chen1998}  $g_{S,5}(r;\xi,d,r_c)$.
+\hspace{1pt} \\
+\paragraph*{Two-cut model:}\hspace{1pt} \\
+In the two-cut model, a solid phase is assumed where the random field has values between $-\alpha$ and $\alpha$
+\begin{align}
+  \rho(\mathbf{r}) & = (\rho_1-\rho_0) \Theta(S(\mathbf{r})-\alpha) \Theta(\alpha-S(\mathbf{r}))+ \rho_0
+\end{align}
+ The volume fraction $\phi'_1$ of the solid phase with the scattering length density $\rho_1$ is then given
+by
+\begin{align}\label{eq:Phi_1_twocut}
+  \phi'_1 &= \mathrm{erf} \left( \frac{\alpha}{\sqrt{2}}\right)
+\end{align}
+The covariance $C'_{11}(r)$ is defined as the probability that two gaussian fields S(r) and S(r+x) takes values
+between $\pm \alpha$ which is equivalent to
+\begin{align}\label{eq:C11twocut}
+  C'_{11}(r) &= \frac{1}{\pi} \int_0^{\arcsin(g_S(r))} \exp\left[\frac{-\alpha^2}{1+\sin\theta}\right] + \exp\left[\frac{-\alpha^2}{1-\sin\theta}\right]\mathrm{d}\theta + (\phi'_1)^2
+\end{align}
+
+\hspace{1pt} \\
+\paragraph*{Two-cut intersection model:}\hspace{1pt} \\
+In case of a two-cut intersection model one assumes that two independent clipped random fields with the same power spectrum must intersect to form the final structure. Therefore the probabilities have to be multiplied and the solid phase volume fraction is given by
+\begin{align}\label{eq:Phi_1_twocutintersection}
+  \phi_1 &=  \left(\phi'_1\right)^2
+\end{align}
+and
+\begin{align}\label{eq:C11twocut}
+  C_{11}(r) &=  \left(C'_{11}(r)\right)^2
+\end{align}
+
+To calculate the scattering intensity $I_Q(q)$ the spectral function $f(q)$ is assumed to be known as a parameterised function as well as its Fourier transformation, i.e. the two-point correlation function $g_S(r)$. In \SASfit four parametrisation of the two-point correlation function $g_S(r)$  have been implemented, a simplified two parameter function $ g_{S,1}(r;\xi,d)$ \cite{Gommes2008,Gommes2018} and three 3-parameter functions. For this see e.g. \cite{Quintanilla2003,Roberts1997} $g_{S,2}(r;\xi,d,r_c)$ and \cite{Pieruschka1992} $g_{S,3}(r;\xi,d,r_c)$, \cite{Jinnai2000} $ g_{S,4}(r;\xi,d,r_c)$, or \cite{Chen1998}  $g_{S,5}(r;\xi,d,r_c)$.
 \begin{align}
   g_{S,1}(r;\xi,d)    &= \frac{1}{\cosh(r/\xi)}\frac{\sin (2\pi r/d)}{2\pi r/d}\\
   g_{S,2}(r;\xi,d,r_c) &= \frac{\exp(-r/\xi)-r_c/\xi \exp(-r/r_c)}{1-r_c/\xi} \frac{\sin (2\pi r/d)}{2\pi r/d}\\

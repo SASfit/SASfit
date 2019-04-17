@@ -32,6 +32,15 @@
 // adjust according to the plugins name
 #include "sasfit_stochastic_models.h"
 
+typedef scalar sasfit_sm_f(scalar , sasfit_param *);
+
+typedef struct
+{
+	sasfit_param *param;
+	sasfit_sm_f *gy;
+	sasfit_sm_f *C11kernel;
+	int sm_intersect;
+} sm_param;
 //
 // add local defines here:
 // #define P0 param->p[0]
@@ -57,11 +66,16 @@ scalar gamaY2(scalar, void *);
 scalar gamaY3(scalar, void *);
 scalar gamaY4(scalar, void *);
 scalar gamaY5(scalar, void *);
+
 scalar gy1(scalar, sasfit_param *);
 scalar gy2(scalar, sasfit_param *);
 scalar gy3(scalar, sasfit_param *);
 scalar gy4(scalar, sasfit_param *);
 scalar gy5(scalar, sasfit_param *);
+
+scalar C11kernel(scalar, sasfit_param *);
+scalar C11_twocut_kernel(scalar, sasfit_param *);
+scalar gama(scalar, void *);
 
 #endif // end of file
 

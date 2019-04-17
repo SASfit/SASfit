@@ -7630,7 +7630,15 @@ eval checkbutton $w.whichSD.fitcalc.substr "-offvalue no -onvalue yes \
 -command {
 	set_actualAP ::actualAnalytPar
       } -highlightthickness 0"
+eval checkbutton $w.whichSD.fitcalc.reset_busy "-offvalue false -onvalue true \
+-variable ::sasfit(busy) $::radio_check_button_prop \
+-text \"busy\" \
+-command {
+	set ::sasfit(busy) false
+      } -highlightthickness 0"	  
+	  
 grid configure $w.whichSD.fitcalc.fit    -column 0 -row 0 -sticky w
+grid configure $w.whichSD.fitcalc.reset_busy   -column 1 -row 0 -sticky w
 grid configure $w.whichSD.fitcalc.calc   -column 0 -row 1 -sticky w
 grid configure $w.whichSD.fitcalc.substr -column 1 -row 1 -sticky w
 

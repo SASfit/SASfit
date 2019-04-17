@@ -822,10 +822,20 @@ proc sasfit_OZ_solver {} {
     pack $w.interface -side left
     pack  $w.interface.param $w.interface.action $w.interface.assigning $w.interface.progressbar -fill y
     
-    button  $w.interface.action.calc -text calculate -command {StartOZsolver}
-    button  $w.interface.action.interrupt -text interrupt -bg red -command {InterruptOZsolver}
-    button  $w.interface.action.clear -text clear -command {ClearOZsolver}
-    button  $w.interface.action.del -text "del last" -command {pop_OZ_res}
+    button  $w.interface.action.calc -text calculate -command {
+		StartOZsolver
+	}
+    button  $w.interface.action.interrupt -text interrupt -bg red -command {
+		InterruptOZsolver
+		set ::sasfit(busy) false
+	}
+    button  $w.interface.action.clear -text clear -command {
+		ClearOZsolver
+		set ::sasfit(busy) false
+	}
+    button  $w.interface.action.del -text "del last" -command {
+		pop_OZ_res
+	}
     ComboBox $w.interface.assigning.sqplugin \
 	    -values $OZ(plugin_fct_names) \
             -text "SQ oz 1" -editable 0 -width 8

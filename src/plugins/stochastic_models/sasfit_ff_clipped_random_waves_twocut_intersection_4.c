@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_clipped_random_waves_5(scalar q, sasfit_param * param)
+scalar sasfit_ff_clipped_random_waves_twocut_intersection_4(scalar q, sasfit_param * param)
 {
     scalar *aw, res,err;
     sm_param sm_pam;
@@ -24,13 +24,13 @@ scalar sasfit_ff_clipped_random_waves_5(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((RM <= 0.0), param, "rc(%lg) <= 0",RM); // modify condition to your needs
 
 	// insert your code here
-	ALPHA = sasfit_erfinv(1-2*FP)*M_SQRT2;
+	ALPHA = sasfit_erfinv(sqrt(FP))*M_SQRT2;
 	Q=q;
-//	return gy5(q,param);
+//	return gy4(q,param);
 	sm_pam.param = param;
-	sm_pam.C11kernel=&C11kernel;
-	sm_pam.gy=&gy5;
-	sm_pam.sm_intersect=1;
+	sm_pam.C11kernel=&C11_twocut_kernel;
+	sm_pam.gy=&gy4;
+	sm_pam.sm_intersect=2;
     aw = (scalar *)malloc((lenaw)*sizeof(scalar));
     sasfit_intdeoini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
     sasfit_intdeo(&gama,0,q, aw, &res, &err, &sm_pam);
@@ -39,12 +39,12 @@ scalar sasfit_ff_clipped_random_waves_5(scalar q, sasfit_param * param)
 
     aw = (scalar *)malloc((lenaw)*sizeof(scalar));
     sasfit_intdeoini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-    sasfit_intdeo(&gamaY5,0,q, aw, &res, &err, param);
+    sasfit_intdeo(&gamaY4,0,q, aw, &res, &err, param);
     free(aw);
     return SCALE*res;
 }
 
-scalar sasfit_ff_clipped_random_waves_5_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_clipped_random_waves_twocut_intersection_4_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -52,7 +52,7 @@ scalar sasfit_ff_clipped_random_waves_5_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_clipped_random_waves_5_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_clipped_random_waves_twocut_intersection_4_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

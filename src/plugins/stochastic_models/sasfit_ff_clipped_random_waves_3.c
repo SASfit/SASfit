@@ -11,6 +11,7 @@
 scalar sasfit_ff_clipped_random_waves_3(scalar q, sasfit_param * param)
 {
     scalar *aw, res,err;
+    sm_param sm_pam;
     int intstrategy, lenaw=4000;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -26,6 +27,16 @@ scalar sasfit_ff_clipped_random_waves_3(scalar q, sasfit_param * param)
 	ALPHA = sasfit_erfinv(1-2*FP)*M_SQRT2;
 	Q=q;
 //	return gy3(q,param);
+	sm_pam.param = param;
+	sm_pam.C11kernel=&C11kernel;
+	sm_pam.gy=&gy3;
+	sm_pam.sm_intersect=1;
+    aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+    sasfit_intdeoini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+    sasfit_intdeo(&gama,0,q, aw, &res, &err, &sm_pam);
+    free(aw);
+    return SCALE*res;
+
     aw = (scalar *)malloc((lenaw)*sizeof(scalar));
     sasfit_intdeoini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
     sasfit_intdeo(&gamaY3,0,q, aw, &res, &err, param);

@@ -18,6 +18,16 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_clipped_random_waves_3.c
 	sasfit_ff_clipped_random_waves_4.c
 	sasfit_ff_clipped_random_waves_5.c
+	sasfit_ff_clipped_random_waves_twocut_1.c
+	sasfit_ff_clipped_random_waves_twocut_2.c
+	sasfit_ff_clipped_random_waves_twocut_3.c
+	sasfit_ff_clipped_random_waves_twocut_4.c
+	sasfit_ff_clipped_random_waves_twocut_5.c
+	sasfit_ff_clipped_random_waves_twocut_intersection_1.c
+	sasfit_ff_clipped_random_waves_twocut_intersection_2.c
+	sasfit_ff_clipped_random_waves_twocut_intersection_3.c
+	sasfit_ff_clipped_random_waves_twocut_intersection_4.c
+	sasfit_ff_clipped_random_waves_twocut_intersection_5.c
 	sasfit_stochastic_utils.c
 	interface.c
 )

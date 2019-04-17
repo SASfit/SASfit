@@ -61,8 +61,27 @@ scalar gy5(scalar r, sasfit_param *param) {
     return 1./(a2+gsl_pow_2(CC-BB))*(abc*gsl_sf_bessel_j0(AA*r)*exp(-BB*r)+2*BB/r*(exp(-CC*r)-exp(-BB*r)*cos(AA*r)));
 }
 
-scalar C11kernel(scalar x,sasfit_param *param) {
+scalar C11kernel(scalar x, sasfit_param *param) {
     return exp(-gsl_pow_2(ALPHA)/(1+sin(x)));
+}
+
+scalar C11_twocut_kernel(scalar x, sasfit_param *param) {
+    return exp(-gsl_pow_2(ALPHA)/(1+sin(x)))+exp(-gsl_pow_2(ALPHA)/(1-sin(x)));
+}
+
+scalar gama(scalar r, void *pam) {
+    scalar gy,C11;
+    sasfit_param * param;
+    sm_param *smpam;
+	smpam = (sm_param *) pam;
+	param = smpam->param;
+	gy = (smpam->gy)(r,param);
+	gy = (gy>1?1:gy);
+	gy = (gy<-1?-1:gy);
+    ASIN_GR=asin(gy);
+    C11=0;
+    if (abs(ASIN_GR)>sasfit_eps_get_nriq()) C11=sasfit_integrate(0,ASIN_GR,smpam->C11kernel,param);
+    return gsl_sf_bessel_j0(Q*r)*4*M_PI*gsl_pow_2(r)*(gsl_pow_int(C11,smpam->sm_intersect)/(2*M_PI)-gsl_pow_2(FP))/(FP*(1-FP));
 }
 
 scalar gamaY1(scalar r, void *pam) {
@@ -118,6 +137,58 @@ scalar gamaY5(scalar r, void *pam) {
     return gsl_sf_bessel_j0(Q*r)*4*M_PI*gsl_pow_2(r)*(sasfit_integrate(0,ASIN_GR,&C11kernel,param)/(2*M_PI)-gsl_pow_2(FP))/(FP*(1-FP));
 }
 
+scalar gamaY1_twocut(scalar r, void *pam) {
+    scalar gy;
+    sasfit_param * param;
+	param = (sasfit_param *) pam;
+	gy = gy1(r,param);
+	gy = (gy>1?1:gy);
+	gy = (gy<-1?-1:gy);
+    ASIN_GR=asin(gy);
+    return gsl_sf_bessel_j0(Q*r)*4*M_PI*gsl_pow_2(r)*(sasfit_integrate(0,ASIN_GR,&C11_twocut_kernel,param)/(2*M_PI)-gsl_pow_2(FP))/(FP*(1-FP));
+}
+
+scalar gamaY2_twocut(scalar r, void *pam) {
+    scalar gy;
+    sasfit_param * param;
+	param = (sasfit_param *) pam;
+	gy = gy2(r,param);
+	gy = (gy>1?1:gy);
+	gy = (gy<-1?-1:gy);
+    ASIN_GR=asin(gy);
+    return gsl_sf_bessel_j0(Q*r)*4*M_PI*gsl_pow_2(r)*(sasfit_integrate(0,ASIN_GR,&C11_twocut_kernel,param)/(2*M_PI)-gsl_pow_2(FP))/(FP*(1-FP));
+}
+
+scalar gamaY3_twocut(scalar r, void *pam) {
+    scalar gy;
+    sasfit_param * param;
+	param = (sasfit_param *) pam;
+	gy = gy3(r,param);
+	gy = (gy>1?1:gy);
+	gy = (gy<-1?-1:gy);
+    ASIN_GR=asin(gy);
+    return gsl_sf_bessel_j0(Q*r)*4*M_PI*gsl_pow_2(r)*(sasfit_integrate(0,ASIN_GR,&C11_twocut_kernel,param)/(2*M_PI)-gsl_pow_2(FP))/(FP*(1-FP));
+}
+scalar gamaY4_twocut(scalar r, void *pam) {
+    scalar gy;
+    sasfit_param * param;
+	param = (sasfit_param *) pam;
+	gy = gy4(r,param);
+	gy = (gy>1?1:gy);
+	gy = (gy<-1?-1:gy);
+    ASIN_GR=asin(gy);
+    return gsl_sf_bessel_j0(Q*r)*4*M_PI*gsl_pow_2(r)*(sasfit_integrate(0,ASIN_GR,&C11_twocut_kernel,param)/(2*M_PI)-gsl_pow_2(FP))/(FP*(1-FP));
+}
+scalar gamaY5_twocut(scalar r, void *pam) {
+    scalar gy;
+    sasfit_param * param;
+	param = (sasfit_param *) pam;
+	gy = gy5(r,param);
+	gy = (gy>1?1:gy);
+	gy = (gy<-1?-1:gy);
+    ASIN_GR=asin(gy);
+    return gsl_sf_bessel_j0(Q*r)*4*M_PI*gsl_pow_2(r)*(sasfit_integrate(0,ASIN_GR,&C11_twocut_kernel,param)/(2*M_PI)-gsl_pow_2(FP))/(FP*(1-FP));
+}
 double ThetaK(scalar r, sasfit_param * param) {
     scalar sigma2, mu2, mu3,mu2_r,logfp;
     sigma2=SIGMA*SIGMA;

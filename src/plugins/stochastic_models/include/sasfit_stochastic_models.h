@@ -294,6 +294,523 @@ sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_5_f(scalar
 sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_5_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_clipped_random_waves_5 ################ */
 
+/* ################ start ff_clipped_random_waves_twocut_1 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_1 CRW 1 (two-cut))
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 1 (two-cut) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_1 ################ */
+
+
+/* ################ start ff_clipped_random_waves_twocut_2 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_2 CRW 2 (two-cut)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 2 (two-cut) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_2 ################ */
+
+/* ################ start ff_clipped_random_waves_twocut_3 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_3 CRW 3 (two-cut)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 3 (two-cut) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_3 ################ */
+
+/* ################ start ff_clipped_random_waves_twocut_4 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_4 CRW 4 (two-cut)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 4 (two-cut) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_4(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_4_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_4_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_4 ################ */
+
+/* ################ start ff_clipped_random_waves_twocut_5 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_5 CRW 5 (two-cut)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 5 (two-cut) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_5(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_5_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_5_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_5 ################ */
+
+/* ################ start ff_clipped_random_waves_twocut_intersection_1 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_intersection_1 CRW 1 (two-cut intersection)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 1 (two-cut intersection) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_1(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_1_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_1
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_1_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_intersection_1 ################ */
+
+
+/* ################ start ff_clipped_random_waves_twocut_intersection_2 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_intersection_2 CRW 2 (two-cut intersection)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 2 (two-cut intersection) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_2
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_intersection_2 ################ */
+
+/* ################ start ff_clipped_random_waves_twocut_intersection_3 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_intersection_3 CRW 3 (two-cut intersection)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 3 (two-cut intersection) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_3(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_3_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_3
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_3_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_intersection_3 ################ */
+
+/* ################ start ff_clipped_random_waves_twocut_intersection_4 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_intersection_4 CRW 4 (two-cut intersection)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 4 (two-cut intersection) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_4(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_4_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_4
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_4_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_intersection_4 ################ */
+
+/* ################ start ff_clipped_random_waves_twocut_intersection_5 ################ */
+/**
+ * \defgroup ff_clipped_random_waves_twocut_intersection_5 CRW 5 (two-cut intersection)
+ * \ingroup ff_stochastic
+ *
+ * \brief \<some brief description of CRW 5 (two-cut intersection) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b scale</td>
+ *       <td>scale parameter</td>
+ *      </tr><tr>
+ *       <td>\b phi_1</td>
+ *       <td>volume fraction of solid phase</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>periodicity</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b rc</td>
+ *       <td>cut-off length</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_5(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_5_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_clipped_random_waves_twocut_intersection_5
+ *
+ * \sa sasfit_stochastic_models.h, ff_stochastic
+ */
+sasfit_stochastic_models_DLLEXP scalar sasfit_ff_clipped_random_waves_twocut_intersection_5_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_clipped_random_waves_twocut_intersection_5 ################ */
+
+
 /* ################ start ff_boolean_intersection_model ################ */
 /**
  * \defgroup ff_boolean_intersection_model boolean (intersection model)

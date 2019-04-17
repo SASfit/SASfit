@@ -53,6 +53,8 @@
 #include "include/sasfit.h"
 #include "include/SASFIT_nr.h"
 #include "include/tcl_cmds.h"
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_sf.h>
 
 /*#########################################################################*/
 /*#                                                                       #*/
@@ -75,7 +77,7 @@ char  *errstr;
    c1 = a[1];
    c4 = a[2];
    D  = a[3];
-   
+
    if (Q <= 0.0) {
       *error = TRUE;
       sprintf(errstr,
@@ -100,7 +102,7 @@ bool *error;
 char *errstr;
 {
    float I0, Rg2;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -125,7 +127,7 @@ bool *error;
 char *errstr;
 {
    float I0, Rg;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -150,7 +152,7 @@ bool *error;
 char *errstr;
 {
    float I0, Rg, u;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -172,7 +174,7 @@ char *errstr;
       sprintf(errstr,
               "Debye: Rg == 0");
       return;
-   }   
+   }
    *y = I0 * 2.0*(u-1.0+exp(-u))/(u*u);
    dyda[0] = 2.0*(u-1.0+exp(-u))/(u*u);
    dyda[1] = -4.0*I0*(u-2.0+(2.0+u)*exp(-u))/(u*u*Rg);
@@ -189,7 +191,7 @@ bool *error;
 char *errstr;
 {
    float I0, alpha, Rg2;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -881,7 +883,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     strcpy((*EP).order,Buffer);
 
 /*
- * read the index of the first point to be fitted 
+ * read the index of the first point to be fitted
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"first",0),
@@ -1000,18 +1002,18 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
 											} else {
 												DIh[i] = -1.0;
 												error = 4;
-											}; 
+											};
 										}
 
-		          break; 
+		          break;
 				}
        case 2 : { for (i=0;i<ndata;i++) {	if (Ih[i] > 0.0) {
 												 DIh[i] = sqrt(Ih[i]);
 											} else {
 												DIh[i] = -1.0;
 												error = 4;
-											}; 
-										} 
+											};
+										}
 		          break; }
        case 3 : {break;}
       default : { fprintf(stderr,"#get_EP: unknown error_type %d\n",error);
@@ -1043,7 +1045,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).ndata = ndata;
 
 /*
- * read the index of the first point to be fitted 
+ * read the index of the first point to be fitted
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"first",0),
@@ -1066,7 +1068,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
 
 
 /*
- * read the index of the first point to be fitted for Guinier fit 
+ * read the index of the first point to be fitted for Guinier fit
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"Guinierfirst",0),
@@ -1088,7 +1090,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).Guiniernpoints = npoints;
 
 /*
- * read the index of the first point to be fitted for Porod fit 
+ * read the index of the first point to be fitted for Porod fit
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"Porodfirst",0),
@@ -1121,7 +1123,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).PorodD = ftmp;
 
 /*
- * read the PorodDFit 
+ * read the PorodDFit
  */
     if (TCL_ERROR == Tcl_GetBoolean(interp,
                              Tcl_GetVar2(interp,argv[1],"porodDfit",0),
@@ -1171,7 +1173,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).Dc0 = ftmp;
 
 /*
- * read the c0fit 
+ * read the c0fit
  */
     if (TCL_ERROR == Tcl_GetBoolean(interp,
                              Tcl_GetVar2(interp,argv[1],"c0fit",0),
@@ -1678,7 +1680,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
        Tcl_Free((char *) Splitargv);
        sasfit_err("wrong # of list elements in EP(a)\n");
        return TCL_ERROR;
-    } 
+    }
     for (i=0;i<Splitargc;i++) {
        Splitcode = Tcl_GetDouble(interp,Splitargv[i],&EP[0].a[i]);
        if (Splitcode == TCL_ERROR) {
@@ -1845,40 +1847,40 @@ EP.Qmax = tx[EP.npoints-1];
 
 if (strcmp(EP.I0typestr,"Guinier") == 0) {
 /*
- * Calculation of I(0) extrapolation contribution to scattering invariant 
+ * Calculation of I(0) extrapolation contribution to scattering invariant
  */
 
-	EP.Qq0 =   EP.I0*(   pow(fabs(EP.Qmin),3.0)/3.0 
-				   - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G 
+	EP.Qq0 =   EP.I0*(   pow(fabs(EP.Qmin),3.0)/3.0
+				   - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G
 				   + 1.0/18.0*pow(fabs(EP.Qmin),7.0)/7.0 * EP.R2G*EP.R2G
-				 ) 
+				 )
 	    	 - EP.c0*pow(fabs(EP.Qmin),3.0)/3.0;
 
-   EP.DQq0 = pow(fabs(EP.DI0*(   pow(fabs(EP.Qmin),3.0)/3.0 
-			   	       - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G 
+   EP.DQq0 = pow(fabs(EP.DI0*(   pow(fabs(EP.Qmin),3.0)/3.0
+			   	       - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G
 				       + 1.0/18.0*pow(fabs(EP.Qmin),7.0)/7.0 * EP.R2G*EP.R2G
 				     ) )
 			 ,2.0)
-	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),7.0)/7.0*EP.R2G 
-		                     - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0)),2.0) 
+	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),7.0)/7.0*EP.R2G
+		                     - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0)),2.0)
 		+ pow(fabs(EP.Dc0*pow(fabs(EP.Qmin),3.0)/3.0),2.0);
    EP.DQq0 = sqrt(fabs(EP.DQq0));
 /*
  * Calculation of I(0) extrapolation contribution to integrated intensity iI = int(I(Q)*Q dQ)
  */
-   EP.iIq0 =   EP.I0*(   pow(EP.Qmin,2.0)/2.0 
-				   - 1.0/3.0*pow(EP.Qmin,4.0)/4.0*EP.R2G 
+   EP.iIq0 =   EP.I0*(   pow(EP.Qmin,2.0)/2.0
+				   - 1.0/3.0*pow(EP.Qmin,4.0)/4.0*EP.R2G
 				   + 1.0/18.0*pow(EP.Qmin,6.0)/6.0*pow(EP.R2G,2.0)
-				 ) 
+				 )
 		 - EP.c0*EP.Qmin*EP.Qmin/2.0;
 
-   EP.DiIq0 = pow(fabs(EP.DI0*(EP.Qmin*EP.Qmin/2.0 
-			    	   - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0*EP.R2G 
+   EP.DiIq0 = pow(fabs(EP.DI0*(EP.Qmin*EP.Qmin/2.0
+			    	   - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0*EP.R2G
 				       + 1.0/18.0*pow(fabs(EP.Qmin),6.0)/6.0*EP.R2G*EP.R2G
 				     ) )
 			 ,2.0)
-	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),6.0)/6.0*EP.R2G 
-		                     - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0)),2.0) 
+	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),6.0)/6.0*EP.R2G
+		                     - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0)),2.0)
 		+ pow(fabs(EP.Dc0*EP.Qmin*EP.Qmin/2.0),2.0);
    EP.DiIq0 = sqrt(fabs(EP.DiIq0));
 /*
@@ -1888,7 +1890,7 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
 	   error = TRUE;
 	   sasfit_err("StructParDataFit: EP.RG == 0\n");
    } else {
-       EP.intIq0 = EP.I0/EP.RG * sqrt(3.0*PI)/2.0 * 
+       EP.intIq0 = EP.I0/EP.RG * sqrt(3.0*PI)/2.0 *
 		           sasfit_erf(EP.Qmin*EP.RG/sqrt(3.0));
    }
    if (EP.I0 == 0.0) {
@@ -1902,7 +1904,7 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
    EP.DintIq0 = sqrt(fabs(EP.intIq0));
 } else if (strcmp(EP.I0typestr,"Zimm") == 0) {
 /*
- * Calculation of I(0) extrapolation contribution to scattering invariant 
+ * Calculation of I(0) extrapolation contribution to scattering invariant
  */
     u = EP.RG*EP.Qmin;
 	if ((1.0+1.0/3.0*u*u) == 0.0) {
@@ -1911,7 +1913,7 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
 	   return TCL_ERROR;
    }
 	EP.Qq0 =   EP.I0*3.0/pow(fabs(EP.RG),3.0) *
-		         (u-sqrt(3.0)*atan(u/sqrt(3.0))) 
+		         (u-sqrt(3.0)*atan(u/sqrt(3.0)))
 	    	 - EP.c0*pow(fabs(EP.Qmin),3.0)/3.0;
 
    EP.DQq0 =  pow(fabs(EP.DI0*EP.Qq0/EP.I0),2.0)
@@ -1920,27 +1922,27 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
 					 3.0*u/pow(EP.RG,3.0)*(1.0-1.0/(1.0+1.0/3.0*u*u))
 					 -3.0/EP.RG*EP.Qq0
 					))
-				  ,2.0) 
+				  ,2.0)
 		    + pow(fabs(EP.Dc0*pow(fabs(EP.Qmin),3.0)/3.0),2.0);
    EP.DQq0 = sqrt(fabs(EP.DQq0));
 /*
  * Calculation of I(0) extrapolation contribution to integrated intensity iI = int(I(Q)*Q dQ)
  */
-   EP.iIq0 =   EP.I0*3.0/2.0/pow(fabs(EP.RG),2.0) * (log(3.0+u*u)-log(3.0)) 
+   EP.iIq0 =   EP.I0*3.0/2.0/pow(fabs(EP.RG),2.0) * (log(3.0+u*u)-log(3.0))
 		 - EP.c0*EP.Qmin*EP.Qmin/2.0;
 
    EP.DiIq0 = pow(fabs(EP.DI0*EP.iIq0/EP.I0),2.0)
 	        + pow(fabs(EP.DR2G* (
                      3.0*EP.I0*EP.Qmin*EP.Qmin/(EP.RG*(3.0+u*u))
                     -2.0/EP.RG*EP.iIq0
-			     )),2.0) 
+			     )),2.0)
 		    + pow(fabs(EP.Dc0*EP.Qmin*EP.Qmin/2.0),2.0);
    EP.DiIq0 = sqrt(fabs(EP.DiIq0));
 /*
  * Calculation of I(0) extrapolation contribution to integral intensity intI = int(I(Q) dQ)
  */
    EP.intIq0 = EP.I0/EP.RG * sqrt(3.0) * atan(u/sqrt(3.0));
-   EP.DintIq0 =  pow(fabs(EP.I0*EP.intIq0/EP.I0),2) 
+   EP.DintIq0 =  pow(fabs(EP.I0*EP.intIq0/EP.I0),2)
 	           + pow(fabs(EP.DRG*(EP.Qmin*EP.I0/EP.RG/(1.0+1.0/3.0*u*u)-EP.intIq0)),2.0)
                + pow(fabs(EP.Dc0*EP.Qmin),2.0);
    EP.DintIq0 = sqrt(fabs(EP.intIq0));
@@ -1981,7 +1983,7 @@ if (EP.PorodD < 1.0) {
 EP.DintI = sqrt(EP.DintIq0*EP.DintIq0 + EP.DintIexp*EP.DintIexp + EP.DintIc4*EP.DintIc4);
 
 /*
- * Calculation of scattering invariant 
+ * Calculation of scattering invariant
  */
 
 EP.Qexp = 0.0;
@@ -2068,26 +2070,26 @@ if (EP.intI == 0.0) {
  */
 EP.S_V  = PI/EP.Invariant * EP.c4;
 EP.DS_V = sqrt( pow(fabs(EP.Dc4/EP.c4),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.S_V); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.S_V);
 
 /*
  * Calculation of correlation length
  */
 EP.lc  = PI*EP.iI/EP.Invariant;
 EP.Dlc = sqrt( pow(fabs(EP.DiI/EP.iI),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.lc); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.lc);
 /*
  * Calculation of correlation area Ac
  */
 EP.Ac  = 2*PI*EP.intI/EP.Invariant;
 EP.DAc = sqrt( pow(fabs(EP.DintI/EP.intI),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.Ac); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.Ac);
 /*
  * calculation of intersection length
  */
 EP.li  = 4.0/PI * EP.Invariant/EP.c4;
 EP.Dli = sqrt( pow(fabs(EP.Dc4/EP.c4),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.li); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.li);
 
 if (EP.I0 == 0.0) {
    error = TRUE;
@@ -2100,7 +2102,7 @@ if (EP.I0 == 0.0) {
 EP.VP  = 2.0*PI*PI * EP.I0/EP.Invariant;
 
 EP.DVP = sqrt( pow(fabs(EP.DI0/EP.I0),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.VP); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.VP);
 
 /*
  * calculation of Porod radius
@@ -2124,7 +2126,7 @@ if (TCL_ERROR == save_EP(clientData,interp,EP)) {
    free_dvector(tx,0,EP.Porodnpoints-1);
    free_dvector(ty,0,EP.Porodnpoints-1);
    free_dvector(tsig,0,EP.Porodnpoints-1);
-   
+
    return TCL_OK;
 }
 
@@ -2180,11 +2182,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -2276,7 +2278,7 @@ if (strcmp(EP.order,"ascending") == 0) {
    return TCL_ERROR;
 }
 /*
- * for an initial guess for the parameters EP.a[0] and EP.a[2] I fit a straight line y=a+b*x 
+ * for an initial guess for the parameters EP.a[0] and EP.a[2] I fit a straight line y=a+b*x
  * to the data I*Q^(4-D) = c0 + c4*Q^(4-D). EP.a[1] = c1 is assumed to be zero
  */
 xx   = dvector(1,EP.Porodnpoints);
@@ -2322,7 +2324,7 @@ if (error == TRUE) {
 
 /*
  * The Levenberg - Marquard Minimierung wird vorläufig nicht angewendet,
- * deshalb ist error auf TRUE gesetzt, EP.error auf 3 gesetzt und lchisq negiert 
+ * deshalb ist error auf TRUE gesetzt, EP.error auf 3 gesetzt und lchisq negiert
  */
 
 /*
@@ -2394,7 +2396,7 @@ PorodErrorHandler: if (error == TRUE) {
 error = FALSE;
 
 
-if (EP.Porodnpoints > mfit) EP.Porodchisq = chisq/(EP.Porodnpoints-mfit); 
+if (EP.Porodnpoints > mfit) EP.Porodchisq = chisq/(EP.Porodnpoints-mfit);
     else EP.Porodchisq = -1.0;
 
 EP.c0     = EP.a[0];
@@ -2458,14 +2460,14 @@ return TCL_OK;
 }
 
 // helper for guinier linear intermediate result
-void addStringList(Tcl_DString * DsBuffer, char * buf, 
+void addStringList(Tcl_DString * DsBuffer, char * buf,
                    double * arr, int start, int end)
 {
 	int i;
 	if (!DsBuffer || !buf) return;
 
 	Tcl_DStringStartSublist(DsBuffer);
-	for (i=start; i <= end; i++) 
+	for (i=start; i <= end; i++)
 	{
 		sprintf(buf,"%lg",arr[i]);
 		Tcl_DStringAppendElement(DsBuffer,buf);
@@ -2473,8 +2475,8 @@ void addStringList(Tcl_DString * DsBuffer, char * buf,
 	Tcl_DStringEndSublist(DsBuffer);
 }
 
-void forward_intermediate_guinier(Tcl_Interp * interp, 
-                                  struct extrapolPar * ep, 
+void forward_intermediate_guinier(Tcl_Interp * interp,
+                                  struct extrapolPar * ep,
                                   Tcl_DString * dynbuf,
                                   char * buf,
                                   double lchisq,
@@ -2551,7 +2553,7 @@ int Sasfit_GuinierFitCmd(clientData, interp, argc, argv)
 {
 struct extrapolPar EP;
 float  *h, *Ih, *DIh;
-float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth, 
+float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
        dyda[4], par[4], errpar[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
@@ -2582,11 +2584,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -2677,8 +2679,8 @@ if (strcmp(EP.order,"ascending") == 0) {
    return TCL_ERROR;
 }
 /*
- * for an initial guess for the parameters EP.a[0] and EP.a[1] 
- * fit a straight line y=a+b*x  to the data 
+ * for an initial guess for the parameters EP.a[0] and EP.a[1]
+ * fit a straight line y=a+b*x  to the data
  * ln(I) = ln(I0) + Rg^2 * (-Q^2/3).
  */
 xx   = dvector(1,EP.Guiniernpoints);
@@ -2702,11 +2704,11 @@ for (i=0;i<4;i++) {
 }
 fit(interp,xx,yy,EP.Guiniernpoints-k,ysig,0,&EP.a[0],&EP.a[1],&EP.err[0],&EP.err[1],&lchisq,&q,&error);
 
-forward_intermediate_guinier(interp, &EP, &DsBuffer, Buffer, 
+forward_intermediate_guinier(interp, &EP, &DsBuffer, Buffer,
 		lchisq, xx, yy, ysig, EP.Guiniernpoints-k);
 
-/* 
- * Transformation of linear parameters back to I0 and Rg2 
+/*
+ * Transformation of linear parameters back to I0 and Rg2
  */
 EP.a[0]   = exp(EP.a[0]);
 EP.err[0] = exp(EP.a[0])*EP.err[0];
@@ -2731,13 +2733,13 @@ if (error == TRUE) {
 
 
 /*
- * if (EP.error == 3) then only a straight line will be fitted 
+ * if (EP.error == 3) then only a straight line will be fitted
  * to the data in Guinier plot
  */
 
 
 if (EP.error != 3) {
- 
+
 /*
  * start fitting Guinier law y = I0 * exp(-RG2*Q^2/3) to the data y[i],
  * with EP.a[0] = I0   (active fit parameter)
@@ -2750,7 +2752,7 @@ if (EP.error != 3) {
 		     &chisq,Guinier,&alambda,&error);
    if (error == TRUE) goto GuinierErrorHandler;
    k    = 1;
-   itst = 0; 
+   itst = 0;
    while (itst < 3) {
 	if (k > 250) {
 		error = TRUE;
@@ -2885,7 +2887,7 @@ int Sasfit_ZimmFitCmd(clientData, interp, argc, argv)
 {
 struct extrapolPar EP;
 float  *h, *Ih, *DIh;
-float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth, 
+float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
        dyda[4], par[4], errpar[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
@@ -2916,11 +2918,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -3011,7 +3013,7 @@ if (strcmp(EP.order,"ascending") == 0) {
    return TCL_ERROR;
 }
 /*
- * for an initial guess for the parameters EP.a[0] and EP.a[1] I fit a straight line y=a+b*x 
+ * for an initial guess for the parameters EP.a[0] and EP.a[1] I fit a straight line y=a+b*x
  * to the data 1/I = 1/I0 + Rg^2/I0 * Q^2/3.
  */
 xx   = dvector(1,EP.Guiniernpoints);
@@ -3039,8 +3041,8 @@ for (i=0;i<4;i++) {
   errpar[i] = 0.0;
 }
 fit(interp,xx,yy,EP.Guiniernpoints-m,ysig,0,&EP.a[0],&EP.a[1],&EP.err[0],&EP.err[1],&lchisq,&q,&error);
-/* 
- * Transformation of linear parameters back to I0 and Rg2 
+/*
+ * Transformation of linear parameters back to I0 and Rg2
  */
 
 if (EP.a[0] != 0.0) {
@@ -3091,7 +3093,7 @@ if (error == TRUE) {
 
 
 if (EP.error != 3) {
- 
+
 
 /*
  * start fitting Zimm2 law y = I0 / (1+RG^2*Q^2/3) to the data y[i],
@@ -3107,7 +3109,7 @@ if (EP.error != 3) {
 				 &chisq,Zimm2,&alambda,&error);
    if (error == TRUE) goto ZimmErrorHandler;
    k    = 1;
-   itst = 0; 
+   itst = 0;
    while (itst < 3) {
 	     if (k > 250) {
 			   sasfit_err("Sasfit_ZimmFitCmd: to many interations\n");
@@ -3134,20 +3136,20 @@ if (EP.error != 3) {
 	  } else {
 	 	EP.err[i] = sqrt(covar[i][i]);
 	  }
-   } 
+   }
 }
 
 ZimmErrorHandler: if (error == TRUE) {         /*                                         */
 	    			                           /* if an error occurs in the SASFIT2mrqmin */
 						                       /* routine the results of the linear fit   */
                                                /* are used.                               */
-					
+
 	                 chisq = -lchisq;
-					 for (i=0;i<4;i++) {       
-			    	    EP.a[i]   = par[i];    
-				        EP.err[i] = errpar[i]; 
+					 for (i=0;i<4;i++) {
+			    	    EP.a[i]   = par[i];
+				        EP.err[i] = errpar[i];
 					 }
-					
+
 					 if (EP.error != 3) {
 					     alambda = -10.0;
 						 SASFIT2mrqmin(interp,x,y,sig,EP.Guiniernpoints,
@@ -3157,7 +3159,7 @@ ZimmErrorHandler: if (error == TRUE) {         /*                               
 				  }
 error = FALSE;
 
-if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit); 
+if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit);
    else EP.I0chisq = -1.0;
 
 EP.I0     = EP.a[0];
@@ -3269,11 +3271,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -3367,7 +3369,7 @@ if (strcmp(EP.order,"ascending") == 0) {
 
 if (EP.I0 <= 0.0) {
   	EP.a[0] = 100.0;
-} else {EP.a[0] = EP.I0;} 
+} else {EP.a[0] = EP.I0;}
 
 if (EP.RG <= 0.0) {
 	EP.a[1] = 100.0;
@@ -3379,7 +3381,7 @@ if (EP.RG <= 0.0) {
 
 
 if (EP.error != 3) {
- 
+
 
 /*
  * start fitting Debye law y = 2 I0 (1-u+exp(u))/u^2 to the data y[i],
@@ -3393,7 +3395,7 @@ if (EP.error != 3) {
 				 &chisq,Debye,&alambda,&error);
    if (error == TRUE) goto DebyeErrorHandler;
    k    = 1;
-   itst = 0; 
+   itst = 0;
    while (itst < 3) {
 		if (k > 250) {
 		       error = TRUE;
@@ -3420,7 +3422,7 @@ if (EP.error != 3) {
 	  } else {
 	 	EP.err[i] = sqrt(covar[i][i]);
 	  }
-   } 
+   }
 }
 
 DebyeErrorHandler: if (error == TRUE) {        /*                                         */
@@ -3436,7 +3438,7 @@ DebyeErrorHandler: if (error == TRUE) {        /*                               
 				  }
 error = FALSE;
 
-if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit); 
+if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit);
    else EP.I0chisq = -1.0;
 
 EP.I0     = EP.a[0];
@@ -3521,3 +3523,74 @@ int Sasfit_OrnsteinZernickeFitCmd(clientData, interp, argc, argv)
 	return TCL_OK;
 }
 
+/*#########################################################################*/
+/*#                                                                       #*/
+/*# Sasfit_prRM_Cmd --                                                    #*/
+/*#                                                                       #*/
+/*#      This function implements the Tcl "sasfit_ZimmFit" command.       #*/
+/*#                                                                       #*/
+/*# Results:                                                              #*/
+/*#      A standard Tcl result.                                           #*/
+/*#                                                                       #*/
+/*# Side effects:                                                         #*/
+/*#      None.                                                            #*/
+/*#                                                                       #*/
+/*#########################################################################*/
+
+int Sasfit_prEM_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+float  *h, *Ih, *DIh;
+float  *tx, *ty, **A, *r, *tsig, *x, *y, *sig, yth, dyda[4];
+float  **alpha, **covar;
+int    *lista,mfit,ma;
+float  ochisq, chisq, oalambda, alambda;
+int    i,j,k,itst;
+int nr;
+double rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_DebyeFit ?StructPar? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&h,&Ih,&DIh)) {
+   return TCL_ERROR;
+}
+tx   = dvector(0,EP.ndata-1);
+ty   = dvector(0,EP.ndata-1);
+tsig = dvector(0,EP.ndata-1);
+nr = 60;
+rmax = 2*M_PI/tx[0];
+A = dmatrix(0,EP.ndata-1,0,nr-1);
+for (i=0;i<EP.ndata;i++){
+    for (j=0;j<nr;j++) {
+        A[i][j] = rmax/nr*gsl_sf_bessel_j0(h[i]*rmax/nr*(j+1));
+    }
+}
+
+for (i=0;i<EP.npoints;i++) {
+   tx[i]   = 0.5;
+   ty[i]   = Ih[i]-EP.c0;
+}
+
+
+
+
+free_dvector(h,0,EP.ndata-1);
+free_dvector(Ih,0,EP.ndata-1);
+free_dvector(DIh,0,EP.ndata-1);
+free_dvector(tx,0,EP.ndata-1);
+free_dvector(ty,0,EP.ndata-1);
+free_dvector(tsig,0,EP.ndata-1);
+free_dmatrix(A,0,EP.ndata-1,0,nr-1);
+}

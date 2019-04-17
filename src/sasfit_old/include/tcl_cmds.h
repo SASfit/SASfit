@@ -56,7 +56,7 @@ int DLS_ExponentialFitCmd   _ANSI_ARGS_((ClientData clientData,
 
 int DLS_StretchedExpFitCmd  _ANSI_ARGS_((ClientData clientData,
                                        Tcl_Interp *interp, int argc, char **argv));
-  
+
 int DLS_CumulantCalcCmd    _ANSI_ARGS_((ClientData clientData,
                                        Tcl_Interp *interp, int argc, char **argv));
 
@@ -81,6 +81,8 @@ int Sasfit_DebyeFitCmd _ANSI_ARGS_((ClientData clientData,
 int Sasfit_OrnsteinZernickeFitCmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));
 int Sasfit_FredholmIntegrals_RegularizationCmd _ANSI_ARGS_((struct sasfit_CData *SASFIT_CData,
+                                Tcl_Interp *interp, int argc, char **argv));
+int Sasfit_prEM_Cmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));
 
 #endif

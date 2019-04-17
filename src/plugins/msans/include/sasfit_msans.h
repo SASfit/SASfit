@@ -163,7 +163,7 @@ sasfit_msans_DLLEXP scalar sasfit_ff_msas_polydisp_spheres_v(scalar q, sasfit_pa
  *       <td>correlation length</td>
  *      </tr><tr>
  *       <td>\b H</td>
- *       <td>Hurst_exponeny</td>
+ *       <td>Hurst_exponent</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>

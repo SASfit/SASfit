@@ -2996,6 +2996,7 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateCommand(interp, "sasfit_DebyeFit", (Tcl_CmdProc*) Sasfit_DebyeFitCmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_OrnsteinZernickeFit", (Tcl_CmdProc*) Sasfit_OrnsteinZernickeFitCmd, NULL, NULL);
 
+	Tcl_CreateCommand(interp, "sasfit_prEM", (Tcl_CmdProc*) Sasfit_prEM_Cmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_FredholmIntegrals_Regularization", (Tcl_CmdProc*) Sasfit_FredholmIntegrals_RegularizationCmd, (void *)SASFIT_CData, NULL);
 
 
