@@ -569,7 +569,7 @@ function(get_prerequisites2 target prerequisites_var exclude_system recurse exep
 
     if(WIN32 AND NOT UNIX) # This is how to check for cygwin, har!
       find_program(gp_dumpbin "dumpbin" PATHS ${gp_cmd_paths})
-      if(gp_dumpbin)
+      if(NOT MINGW AND gp_dumpbin)
         set(gp_tool "dumpbin")
       else() # Try harder. Maybe we're on MinGW
         set(gp_tool "objdump")
