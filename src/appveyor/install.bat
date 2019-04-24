@@ -1,4 +1,6 @@
 @echo off
+@echo.
+@echo ## Started install at: & time /t
 
 cd %APPVEYOR_BUILD_FOLDER%
 
@@ -30,5 +32,7 @@ sh -lc "pacman -Syu --noconfirm"
 @echo ## Installing required packages:
 sh -lc "pacman -S --noconfirm cmake make diffutils patch"
 
+@echo.
+@echo ## Finished install at: & time /t
 @echo off
 rem vim: set ts=2 sw=2 sts=2 tw=0:
