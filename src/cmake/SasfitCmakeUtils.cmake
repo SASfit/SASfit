@@ -82,6 +82,14 @@ endif()
 set(PLATFORM "${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}")
 string(TOLOWER ${PLATFORM} PLATFORM)
 
+function(list_paths channel description)
+    set(indent "    ")
+    message(${channel} "${description}")
+    foreach(entry ${ARGN})
+        message(${channel} "${indent}${entry}")
+    endforeach()
+endfunction()
+
 # adds given files to binary distribution file list
 # needs to be a function, because we operate on a cmake cache variable
 function(sasfit_file_list)
@@ -855,13 +863,10 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
         set(RECURSIVE TRUE)
     endif()
     message(STATUS "Searching dependencies of '${SASKIT_FILE}'")
-    if(TRUE) # for debugging
+    if(FALSE) # for debugging
         message("EXCLUDE_SYSTEM: ${EXCLUDE_SYSTEM}")
         message("RECURSIVE:      ${RECURSIVE}")
     endif()
-    message("debugging get_prerequisites:")
-    execute_process(COMMAND ls -la "/c/msys64/")
-    message("pre get_prerequisites")
     get_prerequisites2(${SASKIT_FILE} PREREQ ${EXCLUDE_SYSTEM} ${RECURSIVE} "" "")
 #    message("PREREQ: ${PREREQ}") # for debugging
     if(UNIX AND NOT APPLE) # linux
@@ -903,7 +908,7 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
         endif()
         unset(ABSFN CACHE)
     endforeach()
-    message("SASFIT_BIN_FILE_LIST: ${SASFIT_BIN_FILE_LIST}") # for debugging
+    list_paths(STATUS "Files included in binary package:" ${SASFIT_BIN_FILE_LIST})
     set(SASFIT_BIN_FILE_LIST ${SASFIT_BIN_FILE_LIST} PARENT_SCOPE)
 endfunction()
 
