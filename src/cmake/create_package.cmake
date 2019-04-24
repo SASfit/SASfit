@@ -77,6 +77,7 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
 	endif()
 endforeach()
 
+message("## DBG ## WIN32, MINGW: '${WIN32}' '${MINGW}'")
 # build zip/tar archive
 set(CPackConfigPattern "\\\\\"[^\"]+\\\\\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
@@ -91,11 +92,13 @@ replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
         "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
 	"CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\\;.\""
 )
-execute_process(COMMAND cpack --config "${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake"
-		WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
-		TIMEOUT 180.0
-		RESULT_VARIABLE CPACK_RES
-		OUTPUT_VARIABLE CPACK_OUT
-		ERROR_VARIABLE CPACK_OUT
+execute_process(COMMAND cpack
+        -D WIN32=${WIN32}
+        --config "${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake"
+	WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
+	TIMEOUT 180.0
+	RESULT_VARIABLE CPACK_RES
+	OUTPUT_VARIABLE CPACK_OUT
+	ERROR_VARIABLE CPACK_OUT
 )
 
