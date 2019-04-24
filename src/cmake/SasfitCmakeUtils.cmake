@@ -510,8 +510,11 @@ function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
     endif()
 endfunction()
 
+# modified get_prerequisites() from CMake module GetPrerequisites (v3.13.2)
+# changes: use objdump on MSYS/MinGW platform, avoid dumpbin from MS VC
+# relevant on Appveyor platform where Visual Studio tools are installed by default
 function(get_prerequisites2 target prerequisites_var exclude_system recurse exepath dirs)
-  set(verbose 1)
+  set(verbose 0)
   set(eol_char "E")
   if(ARGC GREATER 6)
     set(rpaths "${ARGV6}")
