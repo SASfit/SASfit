@@ -884,7 +884,7 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
             if(NOT ABSFN)
                 message("not found")
                 file(GLOB ABSFN "${FN}")
-			elseif(ABSFN MATCHES ".*Windows.System32.*")
+			elseif(ABSFN MATCHES ".*[Ww]indows.[Ss]ystem32.*")
 #                message("Provided by System32 folder!")
                 unset(ABSFN CACHE)
                 continue()
@@ -900,7 +900,7 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
         endif()
         unset(ABSFN CACHE)
     endforeach()
-#    message("SASFIT_BIN_FILE_LIST: ${SASFIT_BIN_FILE_LIST}") # for debugging
+    message("SASFIT_BIN_FILE_LIST: ${SASFIT_BIN_FILE_LIST}") # for debugging
     set(SASFIT_BIN_FILE_LIST ${SASFIT_BIN_FILE_LIST} PARENT_SCOPE)
 endfunction()
 
