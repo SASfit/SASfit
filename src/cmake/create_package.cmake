@@ -94,6 +94,8 @@ replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
 )
 execute_process(COMMAND cpack
         -D WIN32=${WIN32}
+        -D MYWIN32=${WIN32}
+        -D MYTEST=test_Test
         --config "${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake"
 	WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
 	TIMEOUT 180.0
