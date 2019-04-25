@@ -89,16 +89,34 @@ replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
     "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
     "CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\\;.\"")
+set(CPACK_GENERATOR TBZ2)
+if(WIN32)
+    set(CPACK_GENERATOR ZIP)
+endif()
+replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
+    "CPACK_GENERATOR ${CPackConfigPattern}"
+    "CPACK_GENERATOR \"${CPACK_GENERATOR}\"")
 execute_process(COMMAND cpack
         --config "cmake/CPackConfig.cmake"
     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
     TIMEOUT 180.0
-    RESULT_VARIABLE CPACK_RES
-    OUTPUT_VARIABLE CPACK_OUT
-    ERROR_VARIABLE CPACK_ERR
+    #RESULT_VARIABLE CPACK_RES
+    #OUTPUT_VARIABLE CPACK_OUT
+    #ERROR_VARIABLE CPACK_ERR
 )
-message("CPACK_RES: '${CPACK_RES}'")
-message("CPACK_OUT: '${CPACK_OUT}'")
-message("CPACK_ERR: '${CPACK_ERR}'")
+#message("CPACK_RES: '${CPACK_RES}'")
+#message("CPACK_OUT: '${CPACK_OUT}'")
+#message("CPACK_ERR: '${CPACK_ERR}'")
+#foreach(line ${CPACK_OUT})
+#    message(STATUS ${line})
+#endforeach()
+
+# restore CPackConfig if GIT is available
+find_package(Git)
+if(Git_FOUND)
+    message(STATUS "Restoring CPackConfig:")
+    execute_process(COMMAND git checkout "cmake/CPackConfig.cmake"
+                    WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
+endif()
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
