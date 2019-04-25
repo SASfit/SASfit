@@ -37,7 +37,7 @@ include(${SASFIT_ROOT_DIR}/src/cmake/SasfitCmakeUtils.cmake)
 #message("root dir: ${SASFIT_ROOT_DIR}")
 
 if(NOT DEFINED SASFIT_VERSION)
-	message(STATUS "SASfit Version is not set !")
+    message(STATUS "SASfit Version is not set !")
 endif(NOT DEFINED SASFIT_VERSION)
 
 # build the name of the package path (for distribution)
@@ -47,7 +47,7 @@ get_filename_component(SASFIT_PCKG_DIR "${SASFIT_PCKG_DIR}" REALPATH)
 
 # remove previously created package directory (if the same as present) and create a new one
 if(EXISTS ${SASFIT_PCKG_DIR})
-	file(REMOVE_RECURSE ${SASFIT_PCKG_DIR})
+    file(REMOVE_RECURSE ${SASFIT_PCKG_DIR})
 endif(EXISTS ${SASFIT_PCKG_DIR})
 
 file(MAKE_DIRECTORY ${SASFIT_PCKG_DIR})
@@ -58,52 +58,47 @@ file(READ ${SASFIT_LIST_FILE} SASFIT_FILE_LIST)
 
 # copy each file from the list to its destination
 foreach(REL_FILENAME ${SASFIT_FILE_LIST})
-#	message("'${REL_FILENAME}'")
-        set(SRC_FILENAME "${REL_FILENAME}")
-        if(NOT EXISTS "${SRC_FILENAME}")
-                set(SRC_FILENAME ${SASFIT_ROOT_DIR}/${REL_FILENAME})
-        else() # exists, is absolute path
-                get_filename_component(REL_FILENAME "${SRC_FILENAME}" NAME)
-		# check for system lib, place in sub dir 'lib'
-		if("${SRC_FILENAME}" MATCHES "/lib/")
-			set(REL_FILENAME "lib/${REL_FILENAME}")
-		endif()
+#    message("'${REL_FILENAME}'")
+    set(SRC_FILENAME "${REL_FILENAME}")
+    if(NOT EXISTS "${SRC_FILENAME}")
+        set(SRC_FILENAME ${SASFIT_ROOT_DIR}/${REL_FILENAME})
+    else() # exists, is absolute path
+        get_filename_component(REL_FILENAME "${SRC_FILENAME}" NAME)
+        # check for system lib, place in sub dir 'lib'
+        if("${SRC_FILENAME}" MATCHES "/lib/")
+            set(REL_FILENAME "lib/${REL_FILENAME}")
         endif()
-#	message("processing file: '${SRC_FILENAME}' '${SASFIT_PCKG_DIR}/${FILENAME}'")
-	if(EXISTS ${SRC_FILENAME})
-                configure_file(${SRC_FILENAME} ${SASFIT_PCKG_DIR}/${REL_FILENAME} COPYONLY)
-	else()
-		message("Could not copy file: ${SRC_FILENAME}")
-	endif()
+    endif()
+#    message("processing file: '${SRC_FILENAME}' '${SASFIT_PCKG_DIR}/${FILENAME}'")
+    if(EXISTS ${SRC_FILENAME})
+        configure_file(${SRC_FILENAME} ${SASFIT_PCKG_DIR}/${REL_FILENAME} COPYONLY)
+    else()
+        message("Could not copy file: ${SRC_FILENAME}")
+    endif()
 endforeach()
 
 message("## DBG ## WIN32, MINGW: '${WIN32}' '${MINGW}'")
 # build zip/tar archive
 set(CPackConfigPattern "\\\\\"[^\"]+\\\\\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-        "CPACK_PACKAGE_FILE_NAME ${CPackConfigPattern}"
-	"CPACK_PACKAGE_FILE_NAME \"${PCKG_DIR_NAME}\""
-)
+    "CPACK_PACKAGE_FILE_NAME ${CPackConfigPattern}"
+    "CPACK_PACKAGE_FILE_NAME \"${PCKG_DIR_NAME}\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-        "CPACK_CMAKE_GENERATOR ${CPackConfigPattern}"
-	"CPACK_CMAKE_GENERATOR \"${CM_GEN}\""
-)
+    "CPACK_CMAKE_GENERATOR ${CPackConfigPattern}"
+    "CPACK_CMAKE_GENERATOR \"${CM_GEN}\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-        "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
-	"CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\\;.\""
-)
+    "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
+    "CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\\;.\"")
 execute_process(COMMAND cpack
-        -D WIN32=${WIN32}
-        -D MYWIN32=${WIN32}
-        -D MYTEST=test_Test
-        --config "${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake"
-	WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
-	TIMEOUT 180.0
-	RESULT_VARIABLE CPACK_RES
-	OUTPUT_VARIABLE CPACK_OUT
-        ERROR_VARIABLE CPACK_ERR
+        --config "cmake/CPackConfig.cmake"
+    WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
+    TIMEOUT 180.0
+    RESULT_VARIABLE CPACK_RES
+    OUTPUT_VARIABLE CPACK_OUT
+    ERROR_VARIABLE CPACK_ERR
 )
 message("CPACK_RES: '${CPACK_RES}'")
 message("CPACK_OUT: '${CPACK_OUT}'")
 message("CPACK_ERR: '${CPACK_ERR}'")
 
+# vim: set ts=4 sw=4 sts=4 tw=0:
