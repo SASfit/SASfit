@@ -77,6 +77,7 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
     endif()
 endforeach()
 
+messagE("### SASFIT_PCKG_DIR: '${SASFIT_PCKG_DIR}'")
 # build zip/tar archive
 set(CPackConfigPattern "\\\\\"[^\"]+\\\\\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
