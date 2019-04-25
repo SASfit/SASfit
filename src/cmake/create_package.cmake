@@ -77,7 +77,6 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
     endif()
 endforeach()
 
-message("## DBG ## WIN32, MINGW: '${WIN32}' '${MINGW}'")
 # build zip/tar archive
 set(CPackConfigPattern "\\\\\"[^\"]+\\\\\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
@@ -100,21 +99,26 @@ execute_process(COMMAND cpack
         --config "cmake/CPackConfig.cmake"
     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src
     TIMEOUT 180.0
-    #RESULT_VARIABLE CPACK_RES
-    #OUTPUT_VARIABLE CPACK_OUT
-    #ERROR_VARIABLE CPACK_ERR
+    RESULT_VARIABLE CPACK_RES
+    OUTPUT_VARIABLE CPACK_OUT
+    ERROR_VARIABLE CPACK_OUT
 )
 #message("CPACK_RES: '${CPACK_RES}'")
 #message("CPACK_OUT: '${CPACK_OUT}'")
 #message("CPACK_ERR: '${CPACK_ERR}'")
-#foreach(line ${CPACK_OUT})
-#    message(STATUS ${line})
-#endforeach()
+foreach(line ${CPACK_OUT})
+    message(STATUS ${line})
+endforeach()
+
+if(TRUE) # output contents of CPackConfig for debugging
+    execute_process(COMMAND cat "cmake/CPackConfig.cmake"
+        WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
+endif()
 
 # restore CPackConfig if GIT is available
 find_package(Git)
 if(Git_FOUND)
-    message(STATUS "Restoring CPackConfig:")
+    execute_process(COMMAND ${CMAKE_COMMAND} -E echo_append "Restoring CPackConfig:")
     execute_process(COMMAND git checkout "cmake/CPackConfig.cmake"
                     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
 endif()

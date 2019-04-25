@@ -8,7 +8,4 @@ for dir in "$APPVEYOR_BUILD_FOLDER/.." "$APPVEYOR_BUILD_FOLDER" "$APPVEYOR_BUILD
   ls -la "$dir"
 done
 
-echo "## CPackConfig:"
-cat "$APPVEYOR_BUILD_FOLDER/src/cmake/CPackConfig.cmake"
-
 # vim: set ts=2 sw=2 sts=2 tw=0:
