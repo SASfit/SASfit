@@ -103,9 +103,14 @@ execute_process(COMMAND cpack
     OUTPUT_VARIABLE CPACK_OUT
     ERROR_VARIABLE CPACK_OUT
 )
+# some debug output
 #message("CPACK_RES: '${CPACK_RES}'")
 #message("CPACK_OUT: '${CPACK_OUT}'")
 #message("CPACK_ERR: '${CPACK_ERR}'")
+
+# Convert output to a CMake list (each list element is one line)
+STRING(REGEX REPLACE ";" "\\\\;" CPACK_OUT "${CPACK_OUT}")
+STRING(REGEX REPLACE "\n" ";" CPACK_OUT "${CPACK_OUT}")
 foreach(line ${CPACK_OUT})
     message(STATUS ${line})
 endforeach()
