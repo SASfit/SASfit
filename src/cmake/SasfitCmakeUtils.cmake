@@ -122,7 +122,7 @@ macro(sasfit_copy_plugins SHARED_TARGET SUPP_FILE_PATH SUPP_FILE)
 endmacro(sasfit_copy_plugins)
 
 macro(replace_str_in_file FILENAME PATTERN_STR REPLACE_STR)
-	message("replace_str_in_file '${FILENAME}' '${PATTERN_STR}' '${REPLACE_STR}'")
+#	message("replace_str_in_file '${FILENAME}' '${PATTERN_STR}' '${REPLACE_STR}'")
 	file(READ ${FILENAME} FILE_BODY)
 	string(REGEX REPLACE "${PATTERN_STR}" "${REPLACE_STR}"
 		FILE_BODY_NEW "${FILE_BODY}")
