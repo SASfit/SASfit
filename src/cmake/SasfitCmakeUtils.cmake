@@ -79,8 +79,12 @@ if(CMAKE_SIZEOF_VOID_P)
     endif()
 endif()
 
-set(PLATFORM "${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}")
-string(TOLOWER ${PLATFORM} PLATFORM)
+# set system platform name to a user friendly text
+string(TOLOWER "${CMAKE_SYSTEM_NAME}" PLATFORM)
+if(MINGW AND PLATFORM MATCHES "^mingw") # typically 'mingw64_nt-6.3-9600'
+    set(PLATFORM "windows")
+endif()
+set(PLATFORM "${PLATFORM}_${CMAKE_SYSTEM_PROCESSOR}")
 
 function(list_paths channel description)
     set(indent "    ")
