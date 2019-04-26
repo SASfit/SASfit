@@ -1,5 +1,13 @@
 #!/bin/sh
 
+echo
+echo "## Listing environment variables ..."
+echo
+env
+echo
+echo "## Starting build ..."
+echo
+
 cd $APPVEYOR_BUILD_FOLDER
 mkdir build && cd build && cmake ../src && make
 

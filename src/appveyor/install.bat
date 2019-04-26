@@ -34,5 +34,6 @@ sh -lc "pacman -S --noconfirm cmake make diffutils patch"
 
 @echo.
 @echo ## Finished install at: & time /t
+@echo.
 @echo off
 rem vim: set ts=2 sw=2 sts=2 tw=0:
