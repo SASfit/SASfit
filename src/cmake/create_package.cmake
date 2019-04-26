@@ -88,7 +88,7 @@ replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
     "CPACK_CMAKE_GENERATOR \"${CM_GEN}\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
     "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
-    "CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\\;.\"")
+    "CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR}\\\\;.\"")
 set(CPACK_GENERATOR TBZ2)
 if(WIN32)
     set(CPACK_GENERATOR ZIP)
