@@ -124,7 +124,7 @@ endif()
 # restore CPackConfig if GIT is available
 find_package(Git)
 if(Git_FOUND)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E echo_append "Restoring CPackConfig:")
+    execute_process(COMMAND ${CMAKE_COMMAND} -E echo_append "Restoring CPackConfig: ")
     execute_process(COMMAND git checkout "cmake/CPackConfig.cmake"
                     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
 endif()
