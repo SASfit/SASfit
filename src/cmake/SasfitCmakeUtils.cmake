@@ -124,9 +124,9 @@ endmacro(sasfit_copy_plugins)
 macro(replace_str_in_file FILENAME PATTERN_STR REPLACE_STR)
 	message("replace_str_in_file '${FILENAME}' '${PATTERN_STR}' '${REPLACE_STR}'")
 	file(READ ${FILENAME} FILE_BODY)
-	string(REGEX REPLACE ${PATTERN_STR} ${REPLACE_STR}
-		FILE_BODY_NEW ${FILE_BODY})
-	file(WRITE ${FILENAME} ${FILE_BODY_NEW})
+	string(REGEX REPLACE "${PATTERN_STR}" "${REPLACE_STR}"
+		FILE_BODY_NEW "${FILE_BODY}")
+	file(WRITE "${FILENAME}" "${FILE_BODY_NEW}")
 endmacro(replace_str_in_file)
 
 macro(get_rev_from_docs FILENAME)
