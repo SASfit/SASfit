@@ -108,7 +108,21 @@ struct extrapolPar {
    char  aname[MAXPAR][132];
 };
 
-
+typedef struct
+{
+	scalar  Rmax;
+	scalar  smooth;
+	scalar  eps;
+	scalar  chi2;
+	int     nR;
+	int     maxit;
+	char    spacing[132];
+	char    iteration_scheme[132];
+	char    smooth_type[132];
+	char    seed[132];
+	scalar  dim;
+//        char ct[STRLEN];
+} EM_param_t;
 
 float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
 /*

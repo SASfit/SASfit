@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_structural.tcl
 #
-# Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2019, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #
@@ -61,6 +61,80 @@ proc load_data_file { configarr filename
 	eval $arr(seriesLoadCmd)
 }
 
+proc EmOptionsCmd {} {
+	global EMOptions
+	if { [winfo exists .emoptions] } {destroy .emoptions}
+	toplevel .emoptions
+	set w .emoptions
+	wm geometry $w
+	wm title $w "internal parameters for EM algorithm"
+
+	set entrywidth 8
+
+	label $w.epsSmoothlabel -text "smoothing value ="
+	entry $w.epsSmoothvalue -textvariable EMOptions(smooth) -width $entrywidth
+	grid $w.epsSmoothlabel -row 0 -column 0 -sticky e
+	grid $w.epsSmoothvalue -row 0 -column 1 -sticky w
+	
+	label $w.seedlabel -text "seed"
+	ComboBox $w.seedvalue -values {"constant" "random"} \
+				-width 10 \
+				-textvariable EMOptions(seed) 
+	grid $w.seedlabel -row 0 -column 2 -sticky e
+	grid $w.seedvalue -row 0 -column 3 -sticky w
+	
+	label $w.rmaxlabel -text "Rmax ="
+	entry $w.rmaxvalue -textvariable EMOptions(Rmax)  -width $entrywidth
+	grid $w.rmaxlabel -row 1 -column 0 -sticky e
+	grid $w.rmaxvalue -row 1 -column 1 -sticky w
+	
+	label $w.nRlabel -text "nR ="
+	entry $w.nRvalue -textvariable EMOptions(nR) -width $entrywidth
+	grid $w.nRlabel -row 1 -column 2 -sticky e
+	grid $w.nRvalue -row 1 -column 3 -sticky w
+	
+	label $w.spacing_label -text "spacing"
+	ComboBox $w.spacing_value -values {"lin" "log"} \
+				-width 10 \
+				-textvariable ::EMOptions(spacing) 
+	grid $w.spacing_label -row 2 -column 0 -sticky e
+	grid $w.spacing_value -row 2 -column 1 -sticky w
+	
+	label $w.maxitlabel -text "maxit ="
+	entry $w.maxitvalue -textvariable EMOptions(maxit) -width $entrywidth
+	grid $w.maxitlabel -row 2 -column 2 -sticky e
+	grid $w.maxitvalue -row 2 -column 3 -sticky w
+	
+	label $w.intStrat_label -text "iteration scheme"
+	ComboBox $w.intStrat_value -values {"Picard" "Anderson" "GMRES"} \
+				-width 10 \
+				-textvariable ::EMOptions(IterationScheme) 
+	grid $w.intStrat_label -row 3 -column 0 -sticky e
+	grid $w.intStrat_value -row 3 -column 1 -sticky w
+	
+	label $w.epslabel -text "precision ="
+	entry $w.epsvalue -textvariable EMOptions(eps) -width $entrywidth
+	grid $w.epslabel -row 3 -column 2 -sticky e
+	grid $w.epsvalue -row 3 -column 3 -sticky w
+
+	label $w.smooth_type_label -text "smooth type"
+	ComboBox $w.smooth_type_value -values {"single" "double"} \
+				-width 10 \
+				-textvariable ::EMOptions(smooth_type) 
+	grid $w.smooth_type_label -row 4 -column 0 -sticky e
+	grid $w.smooth_type_value -row 4 -column 1 -sticky w
+	
+	label $w.chi2label -text "chi2/N ="
+	entry $w.chi2value -textvariable EMOptions(chi2) -width $entrywidth
+	grid $w.chi2label -row 4 -column 2 -sticky e
+	grid $w.chi2value -row 4 -column 3 -sticky w
+	
+	label $w.dimlabel -text "dim ="
+	entry $w.dimvalue -textvariable EMOptions(dim) -width $entrywidth
+	grid $w.dimlabel -row 5 -column 0 -sticky e
+	grid $w.dimvalue -row 6 -column 1 -sticky w
+
+}
 proc structuralParFitCmd {} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 global StructParData 
@@ -124,6 +198,9 @@ menubutton $w.menu.options -text Options -underline 0 \
 
    plot_axis_menu .structural ::IQGraph ::StructParData(plottype)
 
+   $w.menu.options.menu add command -label "EM options" \
+           -command "EmOptionsCmd"
+		   
 sasfit_menubar_build_help $w.menu.help
 pack $w.menu.file $w.menu.options -side left
 pack $w.menu.help -side right
@@ -188,9 +265,47 @@ radiobutton $w.guinierrange.lowQ.radio.zimm -text "Zimm" \
                 RefreshStructParFit
 	    } \
             -highlightthickness 0
+button $w.guinierrange.lowQ.pr -text "calculate p(r)" \
+            -command {
+                global StructParData
+                RefreshStructParFit
+	    } \
+            -highlightthickness 0
+button $w.guinierrange.lowQ.nr -text "calculate N(R)" \
+            -command {
+                global StructParData IQGraph SDGraph
+                RefreshStructParFit
+   		        sasfit_timer_start "\nStart apply"
+				set prEM [sasfit_prEM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+				sasfit_timer_stop "Apply" "finished" ""
+				
+				clearGraph_el SDGraph
+				Put_Graph_el SDGraph [lindex $prEM 0] [lindex $prEM 1]
+				
+				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
+				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
+				RefreshGraph SDGraph
+				
+				clearGraph_el IQGraph
+				set indx1 -1
+				Put_Graph_el IQGraph [lindex $prEM 2] [lindex $prEM 3]
+				
+				
+	incr indx1
+	set IQGraph(e,symbol)     [lreplace $IQGraph(e,symbol) $indx1 $indx1 none]
+	set IQGraph(e,linehide)   [lreplace $IQGraph(e,linehide) $indx1 $indx1 1]
+	set IQGraph(e,dashcolor)  [lreplace $IQGraph(e,dashcolor) $indx1 $indx1 red]
+	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
+				       $indx1 $indx1 Fit]
 
+	# draw the data (for fit mode)
+		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
+		incr indx1		
+		RefreshGraph IQGraph
+	    } \
+            -highlightthickness 0
 pack $w.guinierrange.lowQ.radio.guinier \
-     $w.guinierrange.lowQ.radio.zimm \
+     $w.guinierrange.lowQ.radio.zimm $w.guinierrange.lowQ.pr $w.guinierrange.lowQ.nr\
      -padx 2m  -pady 1m \
      -fill both -expand yes -side left -anchor w
 #pack $w.guinierrange.lowQ.radio2.debye \

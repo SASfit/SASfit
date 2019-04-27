@@ -55,6 +55,10 @@
 #include "include/tcl_cmds.h"
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_pow_int.h>
+#include <time.h>
+#include <math.h>
 
 /*#########################################################################*/
 /*#                                                                       #*/
@@ -797,6 +801,144 @@ int save_EP(clientData,interp,EP)
     return TCL_OK;
 }
 
+/*#########################################################################*/
+/*#                                                                       #*/
+/*# get_EM --                                                             #*/
+/*#                                                                       #*/
+/*#      This function reads the value of the tcl variable EMOptions      #*/
+/*#      in the C-structure EM                                            #*/
+/*#                                                                       #*/
+/*# Results: TCL_OK, TCL_ERROR                                            #*/
+/*#                                                                       #*/
+/*#########################################################################*/
+int get_EM(clientData,interp,EM)
+    ClientData         clientData;
+    Tcl_Interp         *interp;
+    EM_param_t *EM;
+
+{
+    int varint;
+    scalar varscalar;
+    const char *varstr;
+ /*
+ * read the nR
+ */
+    if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,"EMOptions","nR",0),
+                             &varint) ) {
+       sasfit_err("could not read number or R values\n");
+       return TCL_ERROR;
+    }
+    (*EM).nR = varint;
+/*
+ * read the error type
+ */
+    if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,"EMOptions","maxit",0),
+                             &varint) ) {
+       sasfit_err("could not read number or maxit\n");
+       return TCL_ERROR;
+    }
+    (*EM).maxit = varint;
+
+/*
+ * read the number Rmax
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","Rmax",0),
+                             &varscalar) ) {
+       sasfit_err("could not read Rmax\n");
+       return TCL_ERROR;
+    }
+    (*EM).Rmax = varscalar;
+
+    /*
+ * read the number dim
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","dim",0),
+                             &varscalar) ) {
+       sasfit_err("could not read dim\n");
+       return TCL_ERROR;
+    }
+    (*EM).dim = varscalar;
+
+
+/*
+ * read the number eps
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","eps",0),
+                             &varscalar) ) {
+       sasfit_err("could not read eps\n");
+       return TCL_ERROR;
+    }
+    (*EM).eps = varscalar;
+
+/*
+ * read the number chi2
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","chi2",0),
+                             &varscalar) ) {
+       sasfit_err("could not read chi2\n");
+       return TCL_ERROR;
+    }
+    (*EM).chi2 = varscalar;
+
+
+/*
+ * read the number smooth
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","smooth",0),
+                             &varscalar) ) {
+       sasfit_err("could not read smooth\n");
+       return TCL_ERROR;
+    }
+    (*EM).smooth = varscalar;
+
+/*
+ * read the string smooth_type
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","smooth_type",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read smooth_type\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).smooth_type,varstr);
+
+/*
+ * read the string IterationScheme
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","IterationScheme",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read IterationScheme\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).iteration_scheme,varstr);
+
+/*
+ * read the string spacing
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","spacing",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read spacing\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).spacing,varstr);
+
+/*
+ * read the string IterationScheme
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","seed",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read seed\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).seed,varstr);
+return TCL_OK;
+}
 
 /*#########################################################################*/
 /*#                                                                       #*/
@@ -3525,9 +3667,9 @@ int Sasfit_OrnsteinZernickeFitCmd(clientData, interp, argc, argv)
 
 /*#########################################################################*/
 /*#                                                                       #*/
-/*# Sasfit_prRM_Cmd --                                                    #*/
+/*# Sasfit_prEM_Cmd --                                                    #*/
 /*#                                                                       #*/
-/*#      This function implements the Tcl "sasfit_ZimmFit" command.       #*/
+/*#      This function implements the Tcl "sasfit_prEM_Cmd" command       #*/
 /*#                                                                       #*/
 /*# Results:                                                              #*/
 /*#      A standard Tcl result.                                           #*/
@@ -3544,17 +3686,27 @@ int Sasfit_prEM_Cmd(clientData, interp, argc, argv)
     char       **argv;
 {
 struct extrapolPar EP;
-float  *h, *Ih, *DIh;
-float  *tx, *ty, **A, *r, *tsig, *x, *y, *sig, yth, dyda[4];
-float  **alpha, **covar;
+EM_param_t EMparam;
+
+scalar  *h, *Ih, *DIh;
+scalar  *tx_k, *tx_km1, *tx_kp1, *ty, **A, *r, *dq, *dr, *tsig, *x, *y, *sig, yth, dyda[4], **S,smear;
+scalar  **alpha, **covar;
+scalar p1,p2,p3, QR, eps,chi2;
 int    *lista,mfit,ma;
-float  ochisq, chisq, oalambda, alambda;
-int    i,j,k,itst;
+int    i,j,k,l,itst;
 int nr;
-double rmax;
+scalar rmax;
 char   errstr[256],Buffer[256];
-bool   error;
+bool   error, smooth_type;
 Tcl_DString DsBuffer;
+
+const gsl_rng_type * T;
+gsl_rng * rgen;
+
+gsl_rng_env_setup();
+
+T = gsl_rng_default;
+rgen = gsl_rng_alloc (T);
 
 error = FALSE;
 
@@ -3566,31 +3718,178 @@ if (argc != 3) {
 if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&h,&Ih,&DIh)) {
    return TCL_ERROR;
 }
-tx   = dvector(0,EP.ndata-1);
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+nr = EMparam.nR;
+rmax = M_PI/h[0];
+rmax = EMparam.Rmax;
+tx_k   = dvector(0,nr-1);
+r   = dvector(0,nr-1);
+dr   = dvector(0,nr-1);
+tx_kp1   = dvector(0,nr-1);
+tx_km1   = dvector(0,nr-1);
 ty   = dvector(0,EP.ndata-1);
+dq   = dvector(0,EP.ndata-1);
 tsig = dvector(0,EP.ndata-1);
-nr = 60;
-rmax = 2*M_PI/tx[0];
 A = dmatrix(0,EP.ndata-1,0,nr-1);
+S = dmatrix(0,nr-1,0,nr-1);
 for (i=0;i<EP.ndata;i++){
     for (j=0;j<nr;j++) {
-        A[i][j] = rmax/nr*gsl_sf_bessel_j0(h[i]*rmax/nr*(j+1));
+        r[j] = rmax/nr*(j+1);
+        QR=h[i]*r[j];
+ //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
+        A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(r[j],-EMparam.dim);
     }
+    if (i==0) {dq[0]=h[0];} else {dq[i] = h[i]-h[i-1];}
 }
 
 for (i=0;i<EP.npoints;i++) {
-   tx[i]   = 0.5;
-   ty[i]   = Ih[i]-EP.c0;
+   ty[i] = Ih[i]-EP.c0;
+   Ih[i] =0;
+}
+gsl_rng_set(rgen, time(NULL));
+
+if (strcmp("single",EMparam.smooth_type)==0) {
+    smooth_type = FALSE;
+} else {
+    smooth_type = TRUE;
+}
+sasfit_out("%d %s\n",smooth_type,EMparam.smooth_type);
+
+if (strcmp("constant",EMparam.seed)==0) {
+    for (i=0;i<nr;i++) {
+        tx_k[i] = 1e-7;
+        tx_kp1[i] = 1e-7;
+        dr[i]=rmax/nr;
+    }
+} else {
+    for (i=0;i<nr;i++) {
+        tx_k[i] = gsl_rng_uniform (rgen)*1e-7;
+        tx_kp1[i] = gsl_rng_uniform (rgen)*1e-7;
+        dr[i]=rmax/nr;
+    }
 }
 
+gsl_rng_free (rgen);
 
+for (i=0;i<nr;i++) {
+    for (j=0;j<nr;j++) {
+        S[i][j]=0;
+    }
+}
+smear=EMparam.smooth;
+S[0][0]=1-smear;
+S[0][1]=smear;
+for (i=1;i<nr-1;i++) {
+    S[i][i]=1-2*smear;
+    S[i][i-1]=smear;
+    S[i][i+1]=smear;
+}
+S[nr-1][nr-2]=smear;
+S[nr-1][nr-1]=1-smear;
 
+k=0;
+do {
+    if (smooth_type) {
+        tx_km1[0] = tx_kp1[0];
+        tx_k[0]=exp(log(tx_kp1[0])*S[0][0]+log(tx_kp1[1])*S[0][1]);
+        for (i=1;i<nr-1;i++) {
+            tx_km1[i] = tx_kp1[i];
+            tx_k[i]=exp(log(tx_kp1[i-1])*S[i][i-1]+log(tx_kp1[i])*S[i][i]+log(tx_kp1[i+1])*S[i][i+1]);
+        }
+        tx_km1[nr-1] = tx_kp1[nr-1];
+        tx_k[nr-1]=exp(log(tx_kp1[nr-2])*S[nr-1][nr-2]+log(tx_kp1[nr-1])*S[nr-1][nr-1]);
+    } else {
+        for (i=0;i<nr;i++) {
+            tx_km1[i] = tx_kp1[i];
+        }
+    }
+    chi2=0;
+    for (j=0;j<EP.ndata;j++) {
+        Ih[j]=0;
+        for (l=0;l<nr;l++) Ih[j]=Ih[j]+dr[l]*tx_k[l]*A[j][l];
+        chi2=chi2+gsl_pow_2((Ih[j]-ty[j])/DIh[j]);
+//        sasfit_out("%d %d %lf %lf %lf %lf\n",k, j,(Ih[j]-ty[j])/DIh[j], Ih[j], ty[j], DIh[j]);
+    }
+    chi2=chi2/EP.ndata;
+
+    for (i=0;i<nr;i++) {
+        p3=0;
+        p1=0;
+        for (j=0;j<EP.ndata;j++) {
+            p1=p1+A[j][i]*dq[j];
+            p2=ty[j]*A[j][i];
+            p3=p3+p2*dq[j]/Ih[j];
+        }
+        tx_k[i]=tx_k[i]*p3/p1;
+    }
+
+    tx_kp1[0]=tx_k[0]*S[0][0]+tx_k[0]*S[0][1];
+    eps = gsl_pow_2(tx_kp1[0]-tx_km1[0]);
+    for (i=1;i<nr-1;i++) {
+        tx_kp1[i]=tx_k[i-1]*S[i][i-1]+tx_k[i]*S[i][i]+tx_k[i+1]*S[i][i+1];
+        eps = eps+gsl_pow_2(tx_kp1[i]-tx_km1[i]);
+//        sasfit_out("%d %d %lf %lf %lf\n",k, i,tx_kp1[i]-tx_k[i], tx_kp1[i], tx_k[i]);
+    }
+    tx_kp1[nr-1]=tx_k[nr-2]*S[nr-1][nr-2]+tx_k[nr-1]*S[nr-1][nr-1];
+    eps = eps+gsl_pow_2(tx_kp1[nr-1]-tx_km1[nr-1]);
+//    sasfit_out("MC:%d\n",k);
+    eps=sqrt(eps);
+    k++;
+// sasfit_out("it. eps chi2 %d %lg %lg\n",k, eps, chi2);
+} while (k<3 || (k<EMparam.maxit && chi2 > EMparam.chi2 && eps>EMparam.eps));
+sasfit_out("it. eps chi2 %d %lg %lg\n",k-1, eps, chi2);
+
+for (i=0;i<EP.ndata;i++){
+    Ih[i] = 0;
+    for (j=0;j<nr;j++) {
+        Ih[i] = Ih[i] + dr[j]*A[i][j]*tx_k[j];
+    }
+}
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<nr;i++) {
+    sprintf(Buffer,"%lg",r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<nr;i++) {
+	sprintf(Buffer,"%lg",tx_k[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EP.ndata;i++) {
+	sprintf(Buffer,"%lg",h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EP.ndata;i++) {
+	sprintf(Buffer,"%lg",Ih[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
 
 free_dvector(h,0,EP.ndata-1);
 free_dvector(Ih,0,EP.ndata-1);
 free_dvector(DIh,0,EP.ndata-1);
-free_dvector(tx,0,EP.ndata-1);
+free_dvector(dq,0,EP.ndata-1);
+free_dvector(r,0,nr-1);
+free_dvector(dr,0,nr-1);
+free_dvector(tx_k,0,nr-1);
+free_dvector(tx_kp1,0,nr-1);
 free_dvector(ty,0,EP.ndata-1);
 free_dvector(tsig,0,EP.ndata-1);
 free_dmatrix(A,0,EP.ndata-1,0,nr-1);
+free_dmatrix(S,0,nr-1,0,nr-1);
+return TCL_OK;
 }

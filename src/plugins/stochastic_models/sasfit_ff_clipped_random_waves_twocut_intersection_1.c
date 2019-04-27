@@ -19,8 +19,8 @@ scalar sasfit_ff_clipped_random_waves_twocut_intersection_1(scalar q, sasfit_par
 	SASFIT_CHECK_COND1((SCALE < 0.0), param, "Scale(%lg) < 0",SCALE); // modify condition to your needs
 	SASFIT_CHECK_COND1((FP <= 0.0), param, "fp(%lg) <= 0",FP); // modify condition to your needs
 	SASFIT_CHECK_COND1((FP >= 1.0), param, "fp(%lg) >= 1",FP); // modify condition to your needs
-	SASFIT_CHECK_COND1((XI <= 0.0), param, "xi(%lg) < 0",XI); // modify condition to your needs
-	SASFIT_CHECK_COND1((DD <= 0.0), param, "d(%lg) < 0",DD); // modify condition to your needs
+	SASFIT_CHECK_COND1((XI <= 0.0), param, "xi(%lg) <= 0",XI); // modify condition to your needs
+	SASFIT_CHECK_COND1((DD <= 0.0), param, "d(%lg) <= 0",DD); // modify condition to your needs
 
 	// insert your code here
 	ALPHA = sasfit_erfinv(sqrt(FP))*M_SQRT2;
