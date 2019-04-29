@@ -275,11 +275,13 @@ macro(get_git_info)
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
             OUTPUT_VARIABLE GIT_COMMIT)
         execute_process(COMMAND git show -s --format="%ad"
-                                            --date="format:%y%m%d%H%M%S"
+                                            --date=format:'%y%m%d%H%M%S'
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
             OUTPUT_VARIABLE GIT_COMMIT_DATETIME)
-        message(STATUS "This source tree is on GIT commit ${GIT_COMMIT} "
-                       "with timestamp ${GIT_COMMIT_DATETIME}.")
+        string(CONCAT gitmsg
+               "This source tree is on GIT commit ${GIT_COMMIT} "
+               "with timestamp ${GIT_COMMIT_DATETIME}.")
+        message(STATUS ${gitmsg})
     endif()
 endmacro()
 
@@ -287,7 +289,9 @@ macro(sasfit_update_version)
 
     get_git_info()
     # generate a different version in a continuous integration (CI) environment
+    message("ENV{APPVEYOR}: '$ENV{APPVEYOR}'")
     if(ENV{APPVEYOR}) # on appveyor CI
+        message("on appveyor")
         if(ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed
             # use the tag name as version string directly
             set(SASFIT_VERSION ${APPVEYOR_REPO_TAG_NAME})
@@ -300,6 +304,7 @@ macro(sasfit_update_version)
     endif()
     # store version as env var to be accessible in CI config
     set(ENV{SASFIT_VERSION} "${SASFIT_VERSION}")
+    message(STATUS "Version was determined as '${SASFIT_VERSION}'.")
 
     # let the tcl code know about the svn revision number
     file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
