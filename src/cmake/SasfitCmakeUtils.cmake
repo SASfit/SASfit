@@ -290,9 +290,9 @@ macro(sasfit_update_version)
     get_git_info()
     # generate a different version in a continuous integration (CI) environment
     message("ENV{APPVEYOR}: '$ENV{APPVEYOR}'")
-    if(ENV{APPVEYOR}) # on appveyor CI
+    if($ENV{APPVEYOR}) # on appveyor CI
         message("on appveyor")
-        if(ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed
+        if($ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed
             # use the tag name as version string directly
             set(SASFIT_VERSION ${APPVEYOR_REPO_TAG_NAME})
         else() # building because a regular commit was pushed
