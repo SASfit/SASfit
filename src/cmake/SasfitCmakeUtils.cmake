@@ -298,6 +298,8 @@ macro(sasfit_update_version)
             endif()
         endif()
     endif()
+    # store version as environment variable to be accessible in AppVeyor config
+    set(ENV{SASFIT_VERSION} "${SASFIT_VERSION}")
 
     # let the tcl code know about the svn revision number
     file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl

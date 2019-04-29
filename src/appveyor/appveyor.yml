@@ -51,4 +51,26 @@ artifacts:
   # final SASfit package
   - path: src\sasfit_*_*.zip
 
+deploy:
+    # deploy development builds on BinTray
+  - provider: BinTray
+    username: sasfit
+    api_key:
+      secure: 3NQOzWHJjEFE0+cpLnAlxRHuurVvTjwPzdGFabcT4NC+mjCHMotSufuFhgJZwBu0
+    subject: My Subject
+    repo:    development
+    package: SASfit
+    version: $(SASFIT_VERSION)
+    on:
+      branch: saskit-update
+
+    # release tags from master branch on GitHub
+  - provider: GitHub
+    description: 'Replace me with a list of changes for this release!'
+    auth_token:
+      secure: dBYE6FDKgK9EPn81N2keUSNbb6+jLqakuSbwXJrdi54LEWPLTJGqNS7On/qu3i5W
+    on:
+      branch: master
+      APPVEYOR_REPO_TAG: true
+
 # vim: set ts=2 sw=2 sts=2 tw=0:
