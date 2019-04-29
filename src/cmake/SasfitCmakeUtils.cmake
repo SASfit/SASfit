@@ -268,17 +268,34 @@ macro(sasfit_cmake_plugin)
 
 endmacro(sasfit_cmake_plugin)
 
+macro(get_git_info)
+    find_package(Git)
+    if(GIT_FOUND)
+        execute_process(COMMAND git show -s --format="%h"
+            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+            OUTPUT_VARIABLE GIT_COMMIT)
+        execute_process(COMMAND git show -s --format="%ad"
+                                            --date="format:%y%m%d%H%M%S"
+            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+            OUTPUT_VARIABLE GIT_COMMIT_DATETIME)
+        message(STATUS "This source tree is on GIT commit ${GIT_COMMIT} "
+                       "with timestamp ${GIT_COMMIT_DATETIME}.")
+    endif()
+endmacro()
 
 macro(sasfit_update_version)
 
-    if(NOT DEFINED SASFIT_VERSION)
-        set(SASFIT_VERSION "custom")
-        find_package(Mercurial)
-        if(MERCURIAL_FOUND AND IS_DIRECTORY "${SASFIT_ROOT_DIR}/.hg")
-            mercurial_hg_info(${SASFIT_ROOT_DIR} sasfit)
-            set(SASFIT_VERSION 
-                "${sasfit_HG_DATE}-${sasfit_HG_BRANCH}-${sasfit_HG_CHANGESET}")
-            message(STATUS "Current source version is '${SASFIT_VERSION}'")
+    get_git_info()
+    # generate a different version in a continuous integration (CI) environment
+    if(ENV{APPVEYOR}) # on appveyor CI
+        if(ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed
+            # use the tag name as version string directly
+            set(SASFIT_VERSION ${APPVEYOR_REPO_TAG_NAME})
+        else() # building because a regular commit was pushed
+            set(SASFIT_VERSION "${SASFIT_VERSION}dev")
+            if(GIT_COMMIT)
+                set(SASFIT_VERSION "${SASFIT_VERSION}-${GIT_COMMIT_DATETIME}-${GIT_COMMIT}")
+            endif()
         endif()
     endif()
 
@@ -291,8 +308,11 @@ macro(sasfit_update_version)
         "PROJECT_NUMBER         = ([^\n]*)"
         "PROJECT_NUMBER         = ${SASFIT_VERSION}"
     )
+    # NOTE: (TODO)
+    # above code changes have to be reverted elsewhere after build
+    # to prevent repeatedly commits of those files
 
-endmacro(sasfit_update_version)
+endmacro()
 
 # retrieves the path to the already extracted source package
 # sets result variables in parent scope:
