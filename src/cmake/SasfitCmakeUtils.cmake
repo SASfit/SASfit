@@ -91,6 +91,13 @@ else()
 endif(CMAKE_HOST_APPLE)
 string(TOLOWER "${PLATFORM}" PLATFORM)
 
+# defining some colors
+string(ASCII 27 ESC)
+set(colend  "${ESC}[m")
+set(white   "${ESC}[37m")
+set(bold    "${ESC}[1m")
+set(green   "${ESC}[32m")
+
 # Prints out all optional arguments conveniently formatted one per line
 function(list_paths channel description)
     set(indent "    ")
@@ -213,6 +220,8 @@ endmacro(sasfit_cmake_plugin_static)
 macro(sasfit_cmake_plugin)
 
 	include(SasfitSourceFiles)
+    message("")
+    message(STATUS "${bold}${green}Configuring Plugin '${PRJ_NAME}':${colend}")
 
 	set(PRJ_SOURCE ${SOURCE_${PRJ_NAME}})
 	set(LIBRARY_OUTPUT_PATH ${SRC_DIR}/lib)
@@ -325,27 +334,29 @@ endmacro()
 # retrieves the path to the already extracted source package
 # sets result variables in parent scope:
 # SOURCE_DIR: absolute path to source package directory
-# BASE_NAME:  name of the current dir,
-#             usually the base name of the package to build
-function(get_package_dir CURRENT_DIR)
+function(get_package_dir PCKG_NAME CURRENT_DIR)
     if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
         return()
     endif()
+    message("")
+    message(STATUS "${bold}${white}Looking for ${PCKG_NAME} in '${CURRENT_DIR}'${colend}")
     get_filename_component(CURRENT_DIR "${CURRENT_DIR}" REALPATH)
-    message(STATUS "get_package_dir: '${CURRENT_DIR}'")
-    get_filename_component(BASE_NAME ${CURRENT_DIR} NAME)
-    set(BASE_NAME ${BASE_NAME} PARENT_SCOPE)
-    message(STATUS "package name: '${BASE_NAME}'")
     unset(SOURCE_DIR)
     find_configure(${CURRENT_DIR}/${PLATFORM})
     #message("SOURCE_DIR: '${SOURCE_DIR}' '${SUFFIX_DIR}' '${PLATFORM}'")
-    message(STATUS "found source dir: '${SOURCE_DIR}'")
-    message(STATUS "found config file: '${CONFIG_FILE}'")
+    if(SOURCE_DIR)
+        message(STATUS "Found source dir:  '${SOURCE_DIR}'")
+    else()
+        message(STATUS "Package source dir not found.")
+    endif()
+    if(CONFIG_FILE)
+        message(STATUS "Found config file: '${CONFIG_FILE}'")
+    endif()
     set(SOURCE_DIR ${SOURCE_DIR} PARENT_SCOPE)
 endfunction()
 
 function(find_configure PCKG_PATH)
-    message(STATUS "find_configure '${PCKG_PATH}'")
+    message(STATUS "Searching configure in '${PCKG_PATH}'")
     # determine directory for PCKG_PATH containing *
     file(GLOB GLOB_RESULT "${PCKG_PATH}")
     foreach(RESULT ${GLOB_RESULT})
@@ -389,9 +400,12 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
         return()
     endif()
+    get_filename_component(BASE_NAME ${CURRENT_DIR} NAME)
+    string(TOUPPER ${BASE_NAME} PCKG_NAME)
+    message(STATUS "${PCKG_NAME} not found, building from source:")
     
     # look for existing source dir
-    get_package_dir(${CURRENT_DIR})
+    get_package_dir(${PCKG_NAME} ${CURRENT_DIR})
 
     # remove any existing source tree first
     if(IS_DIRECTORY ${SOURCE_DIR})
@@ -413,19 +427,21 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     # rename source dir to platform name
     find_configure(${CURRENT_DIR}/${BASE_NAME}*)
     if(NOT EXISTS "${SOURCE_DIR}")
-        message(STATUS "${BASE_NAME} source dir not found! Giving up.")
+        message(STATUS "${PCKG_NAME} source dir not found! Giving up.")
         return()
     endif()
     #message("SOURCE_DIR: '${SOURCE_DIR}' '${SUFFIX_DIR}' '${PLATFORM}'")
     set(TARGET ${CURRENT_DIR}/${PLATFORM})
-    message(STATUS "renaming '${SOURCE_DIR} ${TARGET}'")
+    get_filename_component(from ${SOURCE_DIR} NAME)
+    get_filename_component(to ${TARGET} NAME)
+    message(STATUS "Renaming extracted package '${from}' -> '${to}'")
     if(EXISTS ${TARGET})
         file(REMOVE_RECURSE ${TARGET})
     endif()
     file(RENAME "${SOURCE_DIR}" "${TARGET}")
 
     # look again for the source directory, should be ready now
-    get_package_dir(${CURRENT_DIR})
+    get_package_dir(${PCKG_NAME} ${CURRENT_DIR})
     # get configure options from var args of this function
     set(CONFIG_OPTIONS)
     foreach(ARGIDX RANGE 1 ${ARGC})
@@ -437,10 +453,12 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
 
     message(STATUS "Searching for patches in: '${CURRENT_DIR}'")
     # applying any patches lying around in ${CURRENT_DIR}
-    execute_process(COMMAND sh -c "for fn in $(ls -1 \"${CURRENT_DIR}\"/*.patch); do
-                                     echo \"Applying '$fn':\";
-                                     patch -p1 < \"$fn\";
-                                   done"
+    execute_process(COMMAND sh -c
+        "for fn in $(find '${CURRENT_DIR}' -maxdepth 1 -type f -name '*.patch'); do
+            pwd;
+            echo \"Applying '$fn':\";
+            patch -p1 < \"$fn\";
+        done"
                     WORKING_DIRECTORY ${WORK_DIR})
 
     # configure and build by appropriate script
@@ -456,13 +474,14 @@ function(run_cmake CURRENT_DIR CONFIG_OPTIONS)
     set(WORK_DIR ${WORK_DIR}/build)
     file(MAKE_DIRECTORY "${WORK_DIR}")
     # run configure script
-    message(STATUS "Running ${BASE_NAME} cmake with options: '${CONFIG_OPTIONS}'")
+    message(STATUS "Running ${PCKG_NAME} cmake with options:\n"
+                   "   '${CONFIG_OPTIONS}'")
 
     execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" ${CONFIG_OPTIONS} ..
                     WORKING_DIRECTORY ${WORK_DIR})
 
     # run make, i.e. build the library and install it in this local path
-    message(STATUS "Building ${BASE_NAME} ...")
+    message(STATUS "Building ${PCKG_NAME} ...")
     execute_process(COMMAND make all
                     WORKING_DIRECTORY ${WORK_DIR})
 endfunction()
@@ -471,12 +490,13 @@ function(run_configure CURRENT_DIR CONFIG_OPTIONS)
     # set general package install location
     list(APPEND CONFIG_OPTIONS --prefix=${SOURCE_DIR})
     # run configure script
-    message(STATUS "Running ${BASE_NAME} configure with options: '${CONFIG_OPTIONS}'")
+    message(STATUS "Running ${PCKG_NAME} configure with options:\n"
+                   "   '${CONFIG_OPTIONS}'")
     execute_process(COMMAND sh configure ${CONFIG_OPTIONS}
                     WORKING_DIRECTORY ${WORK_DIR})
 
     # run make, i.e. build the library and install it in this local path
-    message(STATUS "Building ${BASE_NAME} ...")
+    message(STATUS "Building ${PCKG_NAME} ...")
     execute_process(COMMAND make all
                     WORKING_DIRECTORY ${WORK_DIR})
     execute_process(COMMAND make install

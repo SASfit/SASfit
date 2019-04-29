@@ -9,8 +9,7 @@
 # TCL_LIBRARIES   = full path to the libraries
 # TCL_INCLUDE_DIRS     = where to find headers 
 
-message("find TCL")
-get_package_dir(${SASFIT_ROOT_DIR}/src/tcl)
+get_package_dir(TCL ${SASFIT_ROOT_DIR}/src/tcl)
 
 # file include dir of custom build library
 FIND_PATH(TCL_INCLUDE_DIRS

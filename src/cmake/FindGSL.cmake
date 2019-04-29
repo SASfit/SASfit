@@ -20,7 +20,7 @@
 # 
 # GSL_INCLUDE_DIRS     = where to find headers 
 
-get_package_dir(${SASFIT_ROOT_DIR}/src/gsl)
+get_package_dir(GSL ${SASFIT_ROOT_DIR}/src/gsl)
 
 # file include dir of custom build library
 FIND_PATH(GSL_INCLUDE_DIRS
@@ -85,6 +85,5 @@ set(GSL_FOUND FALSE)
 if(IS_DIRECTORY ${GSL_INCLUDE_DIRS} AND GSL_LIBRARIES)
     set(GSL_FOUND TRUE)
 endif()
-message("GSL_FOUND: '${GSL_FOUND}'")
 
 # vim: set ts=4 sw=4 sts=4 tw=0:

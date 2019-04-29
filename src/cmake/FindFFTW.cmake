@@ -44,8 +44,7 @@
 # FFTW_LINK_DIRECTORIES = link directories, useful for rpath on Unix
 # FFTW_EXE_LINKER_FLAGS = rpath on Unix
 
-message("find FFTW")
-get_package_dir(${SASFIT_ROOT_DIR}/src/fftw)
+get_package_dir(FFTW ${SASFIT_ROOT_DIR}/src/fftw)
 
 # file include dir of custom build library
 FIND_PATH(FFTW_INCLUDE_DIRS

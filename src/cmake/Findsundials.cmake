@@ -42,8 +42,7 @@
 # sundials_LINK_DIRECTORIES = link directories, useful for rpath on Unix
 # sundials_EXE_LINKER_FLAGS = rpath on Unix
 
-message("find sundials")
-get_package_dir(${SASFIT_ROOT_DIR}/src/sundials)
+get_package_dir(SUNDIALS ${SASFIT_ROOT_DIR}/src/sundials)
 
 set(sundials_INCLUDE_DIRS ${SOURCE_DIR}/include)
 
