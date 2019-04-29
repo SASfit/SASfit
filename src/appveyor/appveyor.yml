@@ -47,4 +47,8 @@ notifications:
       - sasfit-ci@ingobressler.net
     on_build_success: false
 
+artifacts:
+  # final SASfit package
+  - path: src\sasfit_*_*.zip
+
 # vim: set ts=2 sw=2 sts=2 tw=0:
