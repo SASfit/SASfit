@@ -82,9 +82,14 @@ endif()
 # set system platform name to a user friendly text
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" PLATFORM)
 if(MINGW AND PLATFORM MATCHES "^mingw") # typically 'mingw64_nt-6.3-9600'
-    set(PLATFORM "windows")
+    set(PLATFORM "Windows")
 endif()
-set(PLATFORM "${PLATFORM}_${CMAKE_SYSTEM_PROCESSOR}")
+if(CMAKE_HOST_APPLE)
+    set(PLATFORM "${PLATFORM}_${CMAKE_OSX_ARCHITECTURES}")
+else()
+    set(PLATFORM "${PLATFORM}_${CMAKE_SYSTEM_PROCESSOR}")
+endif(CMAKE_HOST_APPLE)
+string(TOLOWER "${PLATFORM}" PLATFORM)
 
 # Prints out all optional arguments conveniently formatted one per line
 function(list_paths channel description)
