@@ -139,14 +139,6 @@ macro(replace_str_in_file FILENAME PATTERN_STR REPLACE_STR)
 	file(WRITE "${FILENAME}" "${FILE_BODY_NEW}")
 endmacro(replace_str_in_file)
 
-macro(get_rev_from_docs FILENAME)
-	file(READ ${FILENAME} FILE_BODY)
-	string(LENGTH ${FILE_BODY} LEN)
-	set(PATTERN "PROJECT_NUMBER         = [a-z]?[0-9]+\\.?[0-9]*\\.?([a-z]|[0-9])*\\.?([a-z]|[0-9])*")
-	string(REGEX MATCH "${PATTERN}" LINE "${FILE_BODY}")
-	string(REGEX MATCH "[0-9]+\\.?[0-9]*\\.?([a-z]|[0-9])*\\.?([a-z]|[0-9])*" REV_NR "${LINE}")
-endmacro(get_rev_from_docs)
-
 # determine sasfit-root directory
 if(NOT DEFINED SASFIT_ROOT_DIR)
 	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
@@ -279,62 +271,26 @@ endmacro(sasfit_cmake_plugin)
 
 macro(sasfit_update_version)
 
-	set(DETERMINED_FROM_DOCS FALSE)
-	if(NOT DEFINED SASFIT_VERSION)
-                set(SASFIT_VERSION "custom")
-		find_package(Mercurial)
-                if(MERCURIAL_FOUND AND IS_DIRECTORY "${SASFIT_ROOT_DIR}/.hg")
-			mercurial_hg_info(${SASFIT_ROOT_DIR} sasfit)
-			set(SASFIT_VERSION 
-				"${sasfit_HG_DATE}-${sasfit_HG_BRANCH}-${sasfit_HG_CHANGESET}")
-			message(STATUS "Current source version is '${SASFIT_VERSION}'")
-                endif(MERCURIAL_FOUND AND IS_DIRECTORY "${SASFIT_ROOT_DIR}/.hg")
+    if(NOT DEFINED SASFIT_VERSION)
+        set(SASFIT_VERSION "custom")
+        find_package(Mercurial)
+        if(MERCURIAL_FOUND AND IS_DIRECTORY "${SASFIT_ROOT_DIR}/.hg")
+            mercurial_hg_info(${SASFIT_ROOT_DIR} sasfit)
+            set(SASFIT_VERSION 
+                "${sasfit_HG_DATE}-${sasfit_HG_BRANCH}-${sasfit_HG_CHANGESET}")
+            message(STATUS "Current source version is '${SASFIT_VERSION}'")
+        endif()
+    endif()
 
-# old SVN
-#		# try to get the revision number of the working copy (current dir)
-#		# for a correct rev number it is required to update again after commit
-#		set(SASFIT_SVN_DIRS
-#			${SASFIT_ROOT_DIR}/.svn
-#			${SASFIT_ROOT_DIR}/src/.svn
-#		)
-#		set(REV_NR 0)
-#		foreach(DIRNAME ${SASFIT_SVN_DIRS})
-#			if(EXISTS ${DIRNAME}/entries)
-#				file(STRINGS ${DIRNAME}/entries SASFIT_SVN LIMIT_COUNT 4)
-#				foreach(str ${SASFIT_SVN}) ## how to chose the last string of a string-'array' ?
-#					if(${str} GREATER ${REV_NR})
-#						set(REV_NR ${str}) # set to highest revision if available
-#					endif(${str} GREATER ${REV_NR})
-#				endforeach(str)
-#			endif(EXISTS ${DIRNAME}/entries)
-#		endforeach(DIRNAME)
-#		if(${REV_NR} EQUAL 0)
-#			# get the version number from the documentation if
-#			# everything else fails
-#			get_rev_from_docs(${SASFIT_ROOT_DIR}/src/Doxyfile)
-#			set(DETERMINED_FROM_DOCS TRUE)
-#		endif(${REV_NR} EQUAL 0)
-#		set(SASFIT_VERSION "r${REV_NR}")
-	endif(NOT DEFINED SASFIT_VERSION)
-
-	# let the tcl code know about the svn revision number
-	file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
-		"set sasfit(svn_rev) ${SASFIT_VERSION}"
-	)
-	# let the documentation know about the svn revision number
-	replace_str_in_file(${SASFIT_ROOT_DIR}/src/Doxyfile 
-		"PROJECT_NUMBER         = ([^\n]*)"
-		"PROJECT_NUMBER         = ${SASFIT_VERSION}"
-	)
-
-	# set sasfit revision number
-	if(DEFINED REV_NR)
-		if(${DETERMINED_FROM_DOCS})
-			set(SASFIT_VERSION "devel_custom")
-		else(${DETERMINED_FROM_DOCS})
-			set(SASFIT_VERSION "devel_r${REV_NR}")
-		endif(${DETERMINED_FROM_DOCS})
-	endif(DEFINED REV_NR)
+    # let the tcl code know about the svn revision number
+    file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
+        "set sasfit(svn_rev) ${SASFIT_VERSION}"
+    )
+    # let the documentation know about the svn revision number
+    replace_str_in_file(${SASFIT_ROOT_DIR}/src/Doxyfile 
+        "PROJECT_NUMBER         = ([^\n]*)"
+        "PROJECT_NUMBER         = ${SASFIT_VERSION}"
+    )
 
 endmacro(sasfit_update_version)
 
