@@ -57,10 +57,9 @@ deploy:
     username: sasfit
     api_key:
       secure: 3NQOzWHJjEFE0+cpLnAlxRHuurVvTjwPzdGFabcT4NC+mjCHMotSufuFhgJZwBu0
-    subject: My Subject
+    subject: 'My Subject'
     repo:    development
     package: SASfit
-    version: $(SASFIT_VERSION)
     on:
       branch: saskit-update
 
