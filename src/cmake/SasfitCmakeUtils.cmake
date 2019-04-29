@@ -271,17 +271,17 @@ endmacro(sasfit_cmake_plugin)
 macro(get_git_info)
     find_package(Git)
     if(GIT_FOUND)
-        execute_process(COMMAND git show -s --format="%h"
+        execute_process(COMMAND git show -s --format=%h
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-            OUTPUT_VARIABLE GIT_COMMIT)
-        execute_process(COMMAND git show -s --format="%ad"
-                                            --date=format:'%y%m%d%H%M%S'
+            OUTPUT_VARIABLE GIT_COMMIT
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        execute_process(COMMAND git show -s --format=%ad
+                                            --date=format:%y%m%d%H%M%S
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-            OUTPUT_VARIABLE GIT_COMMIT_DATETIME)
-        string(CONCAT gitmsg
-               "This source tree is on GIT commit ${GIT_COMMIT} "
-               "with timestamp ${GIT_COMMIT_DATETIME}.")
-        message(STATUS ${gitmsg})
+            OUTPUT_VARIABLE GIT_COMMIT_DATETIME
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        message(STATUS "This source tree is on GIT commit ${GIT_COMMIT} "
+                       "with timestamp ${GIT_COMMIT_DATETIME}.")
     endif()
 endmacro()
 
