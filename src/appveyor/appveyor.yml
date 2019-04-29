@@ -1,4 +1,4 @@
-version: {build}
+version: '{build}'
 
 branches:
   only:
@@ -60,6 +60,7 @@ deploy:
     subject: 'My Subject'
     repo:    development
     package: SASfit
+    version: $(SASFIT_VERSION)
     on:
       branch: saskit-update
 

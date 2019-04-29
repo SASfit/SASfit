@@ -297,9 +297,9 @@ macro(sasfit_update_version)
                 set(SASFIT_VERSION "${SASFIT_VERSION}-${GIT_COMMIT_DATETIME}-${GIT_COMMIT}")
             endif()
         endif()
-        # store version as env var to be accessible in AppVeyor config
-        set(ENV{APPVEYOR_BUILD_VERSION} "${SASFIT_VERSION}")
     endif()
+    # store version as env var to be accessible in CI config
+    set(ENV{SASFIT_VERSION} "${SASFIT_VERSION}")
 
     # let the tcl code know about the svn revision number
     file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
