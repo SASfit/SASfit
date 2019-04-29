@@ -60,7 +60,7 @@ deploy:
     subject: sasfit
     repo:    development
     package: SASfit
-    version: %SASFIT_VERSION%
+    version: '%SASFIT_VERSION%'
     on:
       branch: saskit-update
 
