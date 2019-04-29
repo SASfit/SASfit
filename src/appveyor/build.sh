@@ -3,7 +3,7 @@
 echo
 echo "## Listing environment variables ..."
 echo
-env
+env | sort
 echo
 echo "## Starting build ..."
 echo
