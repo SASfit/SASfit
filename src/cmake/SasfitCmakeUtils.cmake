@@ -86,6 +86,7 @@ if(MINGW AND PLATFORM MATCHES "^mingw") # typically 'mingw64_nt-6.3-9600'
 endif()
 set(PLATFORM "${PLATFORM}_${CMAKE_SYSTEM_PROCESSOR}")
 
+# Prints out all optional arguments conveniently formatted one per line
 function(list_paths channel description)
     set(indent "    ")
     message(${channel} "${description}")
