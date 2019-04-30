@@ -61,6 +61,7 @@ deploy:
     repo:    development
     package: SASfit
     'version: %SASFIT_VERSION%'
+    public:  true
     on:
       branch: saskit-update
 
