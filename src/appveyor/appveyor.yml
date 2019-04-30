@@ -23,8 +23,8 @@ install:
   - src\appveyor\install.bat
 
 before_build:
-  - echo "## Listing environment variables ..."
-  - sh -c 'env | sort'
+  - '@echo ## Listing environment variables ...'
+  - 'sh -c env | sort'
 
 build_script:
   - echo "## Starting build ..."
