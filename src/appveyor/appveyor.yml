@@ -19,7 +19,7 @@ environment:
       BIT: 64
 
 install:
-  - appveyor UpdateBuild
+  - appveyor UpdateBuild -Version "1234"
   - src\appveyor\install.bat
 
 before_build:
