@@ -19,11 +19,7 @@ environment:
       BIT: 64
 
 install:
-  - 'echo CD: %CD%'
-  - 'echo src/gsl/windows_%MSYS2_ARCH%'
-  - 'dir src\gsl\windows_%MSYS2_ARCH%'
   - 'dir src\gsl\'
-  - exit 1
   - src\appveyor\install.bat
 
 before_build:
@@ -38,8 +34,8 @@ after_build:
   - sh src/appveyor/after_build.sh
 
 cache:
-  - 'src/gsl/windows_%MSYS2_ARCH% -> src/gsl/gsl-*.tar.gz, src/gsl/CMakeLists.txt, src/cmake/'
-#  - saskit/saskit_windows_%MSYS2_ARCH%.exe
+  - 'src\gsl\windows_%MSYS2_ARCH% -> src\gsl\gsl-*.tar.gz, src\gsl\CMakeLists.txt, src\cmake'
+  - 'saskit\saskit_windows_%MSYS2_ARCH%.exe -> src\CMakeLists.txt, src\cmake'
 
 test:
   assemblies:
