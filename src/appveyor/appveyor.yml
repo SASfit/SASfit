@@ -19,13 +19,20 @@ environment:
       BIT: 64
 
 install:
-  # running under CI
-#  - set CI_TESTING=1
-  - '%APPVEYOR_BUILD_FOLDER%\src\appveyor\install.bat'
+  - src\appveyor\install.bat
+
+before_build:
+  - echo "## Listing environment variables ..."
+  - sh -c 'env | sort'
 
 build_script:
-  - 'sh %APPVEYOR_BUILD_FOLDER%\src\appveyor\build.sh'
-  - 'echo  => Finished build at: & time /t'
+  - echo "## Starting build ..."
+  - sh -c 'mkdir build && cd build && cmake ../src'
+  - echo "TEST: %SASFIT_VERSION%"
+  - sh -c make
+
+after_build:
+  - sh src/appveyor/after_build.sh
 
 cache:
   - 'src/gsl/windows_%MSYS2_ARCH% -> src/gsl/gsl-*.tar.gz, src/gsl/CMakeLists.txt, src/cmake/'
@@ -63,7 +70,6 @@ deploy:
     subject: sasfit
     repo:    development
     package: SASfit
-    version: '$(SASFIT_VERSION)'
     public:  true
     on:
       branch: saskit-update
