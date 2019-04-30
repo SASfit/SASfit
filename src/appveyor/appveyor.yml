@@ -28,7 +28,7 @@ before_build:
 build_script:
   - echo "## Starting build ..."
   - sh -c 'mkdir build && cd build && cmake ../src'
-  - echo "TEST: %SASFIT_VERSION%"
+  - sh -c 'echo "TEST: \"$SASFIT_VERSION\""'
   - sh -c make
 
 after_build:
