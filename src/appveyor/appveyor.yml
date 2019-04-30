@@ -19,7 +19,6 @@ environment:
       BIT: 64
 
 install:
-  - 'dir src\gsl\'
   - src\appveyor\install.bat
 
 before_build:
