@@ -27,7 +27,7 @@ before_build:
 
 build_script:
   - sh src/appveyor/build.sh
-  - 'sh -c appveyor UpdateBuild -Version "23456"'
+  - 'sh -c "appveyor UpdateBuild -Version 23456"'
   - sh -c make
 
 after_build:
