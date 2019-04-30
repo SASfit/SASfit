@@ -19,17 +19,15 @@ environment:
       BIT: 64
 
 install:
-  - appveyor UpdateBuild -Version "1234"
+  - appveyor UpdateBuild -Version "12345"
   - src\appveyor\install.bat
 
 before_build:
-  - '@echo ## Listing environment variables ...'
-  - 'sh -c env | sort'
+  - sh src/appveyor/before_build.sh
 
 build_script:
-  - echo "## Starting build ..."
-  - sh -c 'mkdir build && cd build && cmake ../src'
-  - sh -c 'env | sort'
+  - sh src/appveyor/build.sh
+  - 'sh -c appveyor UpdateBuild -Version "23456"'
   - sh -c make
 
 after_build:
