@@ -253,7 +253,7 @@ set(COMPILE_FLAGS -std=gnu99)
 if(UNIX)
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall")
 endif(UNIX)
-message("DEBUG: '${DEBUG}' OPTIM: '${OPTIM}'")
+#message("DEBUG: '${DEBUG}' OPTIM: '${OPTIM}'")
 if(DEBUG)
 	# debug
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -g")

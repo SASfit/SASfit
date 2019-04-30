@@ -449,7 +449,7 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
     get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
 
-    message(STATUS "Searching for patches in: '${CURRENT_DIR}'")
+    message(STATUS "Applying patches to ${PCKG_NAME} found in: '${CURRENT_DIR}'")
     # applying any patches lying around in ${CURRENT_DIR}
     execute_process(COMMAND sh -c
         "for fn in $(find '${CURRENT_DIR}' -maxdepth 1 -type f -name '*.patch'); do
@@ -457,7 +457,7 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
             echo \"Applying '$fn':\";
             patch -p1 < \"$fn\";
         done"
-                    WORKING_DIRECTORY ${WORK_DIR})
+        WORKING_DIRECTORY ${WORK_DIR})
 
     # configure and build by appropriate script
     if(${CONFIG_FILE} STREQUAL "configure")
