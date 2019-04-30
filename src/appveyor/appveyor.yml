@@ -31,8 +31,7 @@ build_script:
 after_build:
   - sh src/appveyor/after_build.sh
 
-cache:
-  - C:\msys64 -> appveyor/appveyor.yml, src\appveyor\install.bat
+cache: # 1GB max with free accounts
   - 'src\gsl\windows_%MSYS2_ARCH% -> src\gsl\gsl-*.tar.gz, src\gsl\CMakeLists.txt, src\cmake'
   - 'saskit\saskit_windows_%MSYS2_ARCH%.exe -> src\CMakeLists.txt, src\cmake'
 
