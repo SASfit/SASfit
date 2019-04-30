@@ -27,6 +27,9 @@ build_script:
   - 'sh %APPVEYOR_BUILD_FOLDER%\src\appveyor\build.sh'
   - 'echo  => Finished build at: & time /t'
 
+cache:
+  - 'src/gsl/windows_%MSYS2_ARCH% -> src/gsl/gsl-*.tar.gz, src/gsl/CMakeLists.txt, src/cmake/'
+
 test:
   assemblies:
     # saskit base package created by CMake
