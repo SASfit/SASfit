@@ -51,7 +51,7 @@ if(EXISTS ${SASFIT_PCKG_DIR})
 endif(EXISTS ${SASFIT_PCKG_DIR})
 
 file(MAKE_DIRECTORY ${SASFIT_PCKG_DIR})
-message("=> ${SASFIT_PCKG_DIR}")
+message(STATUS "Created directory '${SASFIT_PCKG_DIR}'.")
 
 # get the list of filenames to copy
 file(READ ${SASFIT_LIST_FILE} SASFIT_FILE_LIST)
@@ -77,7 +77,6 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
     endif()
 endforeach()
 
-messagE("### SASFIT_PCKG_DIR: '${SASFIT_PCKG_DIR}'")
 # build zip/tar archive
 set(CPackConfigPattern "\\\\\"[^\"]+\\\\\"")
 replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
