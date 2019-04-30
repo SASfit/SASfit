@@ -295,7 +295,6 @@ macro(get_git_info)
 endmacro()
 
 macro(sasfit_update_version)
-
     get_git_info()
     # generate a different version in a continuous integration (CI) environment
     if($ENV{APPVEYOR}) # on appveyor CI
@@ -326,7 +325,14 @@ macro(sasfit_update_version)
     # NOTE: (TODO)
     # above code changes have to be reverted elsewhere after build
     # to prevent repeatedly commits of those files
+endmacro()
 
+macro(set_make_arg_multicore)
+    if($ENV{NUM_LOGICAL_CORES})
+        set(MAKE_ARG_MULTICORE "-j$ENV{NUM_LOGICAL_CORES}")
+    else()
+        set(MAKE_ARG_MULTICORE "")
+    endif()
 endmacro()
 
 # retrieves the path to the already extracted source package
@@ -480,7 +486,8 @@ function(run_cmake CURRENT_DIR CONFIG_OPTIONS)
 
     # run make, i.e. build the library and install it in this local path
     message(STATUS "Building ${PCKG_NAME} ...")
-    execute_process(COMMAND make all
+    set_make_arg_multicore()
+    execute_process(COMMAND make ${MAKE_ARG_MULTICORE} all
                     WORKING_DIRECTORY ${WORK_DIR})
 endfunction()
 
@@ -495,7 +502,8 @@ function(run_configure CURRENT_DIR CONFIG_OPTIONS)
 
     # run make, i.e. build the library and install it in this local path
     message(STATUS "Building ${PCKG_NAME} ...")
-    execute_process(COMMAND make all
+    set_make_arg_multicore()
+    execute_process(COMMAND make ${MAKE_ARG_MULTICORE} all
                     WORKING_DIRECTORY ${WORK_DIR})
     execute_process(COMMAND make install
                     WORKING_DIRECTORY ${WORK_DIR})

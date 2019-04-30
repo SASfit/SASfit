@@ -17,6 +17,6 @@ echo
 echo "## Setting AppVeyor build version to '$SASFIT_VERSION'"
 echo
 appveyor UpdateBuild -Version "$SASFIT_VERSION"
-make -j$NumberOfLogicalProcessors
+make -j$NUM_LOGICAL_CORES
 
 # vim: set ts=2 sw=2 sts=2 tw=0:
