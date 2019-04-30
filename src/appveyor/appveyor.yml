@@ -32,10 +32,14 @@ after_build:
   - sh src/appveyor/after_build.sh
 
 cache: # 1GB max with free accounts
-  - 'src\gsl\windows_%MSYS2_ARCH%  -> src\gsl\gsl-*.tar.gz, src\gsl\CMakeLists.txt, src\cmake'
-  - 'src\fftw\windows_%MSYS2_ARCH% -> src\fftw\fftw-*.tar.gz, src\fftw\CMakeLists.txt, src\cmake'
-  - 'src\tcl\windows_%MSYS2_ARCH% -> src\tcl\tcl*.tar.gz, src\tcl\CMakeLists.txt, src\cmake'
-  - 'src\sundials\windows_%MSYS2_ARCH% -> src\sundials\sundials-*.tar.gz, src\sundials\CMakeLists.txt, src\cmake'
+  - 'src\gsl\windows_%MSYS2_ARCH%\include  -> src\gsl\gsl-*.tar.gz, src\gsl\CMakeLists.txt, src\cmake'
+  - 'src\gsl\windows_%MSYS2_ARCH%\lib      -> src\gsl\gsl-*.tar.gz, src\gsl\CMakeLists.txt, src\cmake'
+  - 'src\fftw\windows_%MSYS2_ARCH%\include -> src\fftw\fftw-*.tar.gz, src\fftw\CMakeLists.txt, src\cmake'
+  - 'src\fftw\windows_%MSYS2_ARCH%\lib     -> src\fftw\fftw-*.tar.gz, src\fftw\CMakeLists.txt, src\cmake'
+  - 'src\tcl\windows_%MSYS2_ARCH%\include  -> src\tcl\tcl*.tar.gz, src\tcl\CMakeLists.txt, src\cmake'
+  - 'src\tcl\windows_%MSYS2_ARCH%\lib      -> src\tcl\tcl*.tar.gz, src\tcl\CMakeLists.txt, src\cmake'
+  - 'src\sundials\windows_%MSYS2_ARCH%\include -> src\sundials\sundials-*.tar.gz, src\sundials\CMakeLists.txt, src\cmake'
+  - 'src\sundials\windows_%MSYS2_ARCH%\build   -> src\sundials\sundials-*.tar.gz, src\sundials\CMakeLists.txt, src\cmake'
   - 'saskit\saskit_windows_%MSYS2_ARCH%.exe -> src\CMakeLists.txt, src\cmake'
 
 test:
