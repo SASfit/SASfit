@@ -19,6 +19,10 @@ environment:
       BIT: 64
 
 install:
+  - 'echo CD: %CD%'
+  - 'echo src/gsl/windows_%MSYS2_ARCH%'
+  - 'dir src/gsl/windows_%MSYS2_ARCH%'
+  - 'dir src/gsl/'
   - appveyor UpdateBuild -Version "12345"
   - src\appveyor\install.bat
 
