@@ -1,6 +1,5 @@
 @echo off
 @echo.
-@echo ## Started install at: & time /t
 
 cd %APPVEYOR_BUILD_FOLDER%
 
