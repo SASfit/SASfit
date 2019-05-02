@@ -327,14 +327,6 @@ macro(sasfit_update_version)
     # to prevent repeatedly commits of those files
 endmacro()
 
-macro(set_make_arg_multicore)
-    if($ENV{NUM_LOGICAL_CORES})
-        set(MAKE_ARG_MULTICORE "-j$ENV{NUM_LOGICAL_CORES}")
-    else()
-        set(MAKE_ARG_MULTICORE "")
-    endif()
-endmacro()
-
 # retrieves the path to the already extracted source package
 # sets result variables in parent scope:
 # SOURCE_DIR: absolute path to source package directory
@@ -474,6 +466,15 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
     endif()
 endfunction()
 
+macro(get_make_job_count varname)
+    cmake_host_system_information(RESULT ncores QUERY NUMBER_OF_LOGICAL_CORES)
+    message(STATUS "CMake detected ${ncores} logical cores used for building.")
+    set(${varname} "" PARENT_SCOPE)
+    if(ncores GREATER 1)
+        set(${varname} "-j${ncores}" PARENT_SCOPE)
+    endif()
+endmacro()
+
 function(run_cmake CURRENT_DIR CONFIG_OPTIONS)
     # local build directory
     set(WORK_DIR ${WORK_DIR}/build)
@@ -487,8 +488,8 @@ function(run_cmake CURRENT_DIR CONFIG_OPTIONS)
 
     # run make, i.e. build the library and install it in this local path
     message(STATUS "Building ${PCKG_NAME} ...")
-    set_make_arg_multicore()
-    execute_process(COMMAND make ${MAKE_ARG_MULTICORE} all
+    get_make_job_count(jobcount)
+    execute_process(COMMAND make ${jobcount} all
                     WORKING_DIRECTORY ${WORK_DIR})
 endfunction()
 
@@ -503,8 +504,8 @@ function(run_configure CURRENT_DIR CONFIG_OPTIONS)
 
     # run make, i.e. build the library and install it in this local path
     message(STATUS "Building ${PCKG_NAME} ...")
-    set_make_arg_multicore()
-    execute_process(COMMAND make ${MAKE_ARG_MULTICORE} all
+    get_make_job_count(jobcount)
+    execute_process(COMMAND make ${jobcount} all
                     WORKING_DIRECTORY ${WORK_DIR})
     execute_process(COMMAND make install
                     WORKING_DIRECTORY ${WORK_DIR})
