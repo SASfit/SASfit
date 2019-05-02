@@ -85,10 +85,11 @@ if(MINGW AND PLATFORM MATCHES "^mingw") # typically 'mingw64_nt-6.3-9600'
     set(PLATFORM "Windows")
 endif()
 if(CMAKE_HOST_APPLE)
-    set(PLATFORM "${PLATFORM}_${CMAKE_OSX_ARCHITECTURES}")
-else()
-    set(PLATFORM "${PLATFORM}_${CMAKE_SYSTEM_PROCESSOR}")
-endif(CMAKE_HOST_APPLE)
+    set(PLATFORM "macos")
+endif()
+if(SYSTEM_IS_64)
+    set(PLATFORM "${PLATFORM}64")
+endif()
 string(TOLOWER "${PLATFORM}" PLATFORM)
 
 # defining some colors
