@@ -452,9 +452,6 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
         list(APPEND CONFIG_OPTIONS ${ARGV${ARGIDX}})
     endforeach()
 
-    set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
-    get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
-
     message(STATUS "Applying patches to ${PCKG_NAME} found in: '${CURRENT_DIR}'")
     # applying any patches lying around in ${CURRENT_DIR}
     execute_process(COMMAND sh -c
@@ -463,7 +460,11 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
             echo \"Applying '$fn':\";
             patch -p1 < \"$fn\";
         done"
-        WORKING_DIRECTORY ${WORK_DIR})
+        WORKING_DIRECTORY ${SOURCE_DIR})
+
+    # set working directory for next build steps configure or cmake
+    set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
+    get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
 
     # configure and build by appropriate script
     if(${CONFIG_FILE} STREQUAL "configure")
