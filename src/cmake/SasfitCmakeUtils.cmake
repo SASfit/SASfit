@@ -298,18 +298,20 @@ macro(sasfit_update_version)
     get_git_info()
     # generate a different version in a continuous integration (CI) environment
     if($ENV{APPVEYOR}) # on appveyor CI
-        if($ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed
+        if($ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed -> release
             # use the tag name as version string directly
             set(SASFIT_VERSION ${APPVEYOR_REPO_TAG_NAME})
         else() # building because a regular commit was pushed
-            set(SASFIT_VERSION "${SASFIT_VERSION}dev")
             if(GIT_COMMIT)
-                set(SASFIT_VERSION "${SASFIT_VERSION}-${GIT_COMMIT_DATETIME}-${GIT_COMMIT}")
+                set(SASFIT_VERSION "${SASFIT_VERSION}-dev${GIT_COMMIT}")
             endif()
         endif()
+        # append the build number to the regular version number for uniqueness
+        set(SASFIT_VERSION "${SASFIT_VERSION}-b$ENV{APPVEYOR_BUILD_NUMBER}")
+        # append build number for unique build in appveyor
         execute_process(COMMAND appveyor UpdateBuild -Version "${SASFIT_VERSION}")
     endif()
-    message(STATUS "Version was determined as '${SASFIT_VERSION}'.")
+    message(STATUS "SASfit version was set to '${SASFIT_VERSION}'.")
 
     # let the tcl code know about the svn revision number
     file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
