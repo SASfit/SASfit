@@ -84,7 +84,7 @@ deploy:
     auth_token:
       secure: dBYE6FDKgK9EPn81N2keUSNbb6+jLqakuSbwXJrdi54LEWPLTJGqNS7On/qu3i5W
     on:
-      branch: master
+#      branch: master
       APPVEYOR_REPO_TAG: true
 
 # vim: set ts=2 sw=2 sts=2 tw=0:
