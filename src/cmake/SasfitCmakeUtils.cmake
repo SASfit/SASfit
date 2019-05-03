@@ -475,11 +475,10 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
 endfunction()
 
 macro(get_make_job_count varname)
-    cmake_host_system_information(RESULT ncores QUERY NUMBER_OF_LOGICAL_CORES)
-    message(STATUS "CMake detected ${ncores} logical cores used for building.")
+    # using externally defined number of cores
     set(${varname} "" PARENT_SCOPE)
-    if(ncores GREATER 1)
-        set(${varname} "-j${ncores}" PARENT_SCOPE)
+    if($ENV{NUM_LOGICAL_CORES} AND $ENV{NUM_LOGICAL_CORES} GREATER 1)
+        set(${varname} "-j$ENV{NUM_LOGICAL_CORES}" PARENT_SCOPE)
     endif()
 endmacro()
 
