@@ -6,4 +6,4 @@ echo
 env | sort
 echo
 
-# vim: set ts=2 sw=2 sts=2 tw=0:
+# vim: set ts=4 sw=4 sts=4 tw=0 et:

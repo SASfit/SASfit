@@ -87,4 +87,4 @@ deploy:
 #      branch: master
       APPVEYOR_REPO_TAG: true
 
-# vim: set ts=2 sw=2 sts=2 tw=0:
+# vim: set ts=2 sw=2 sts=2 tw=0 et:

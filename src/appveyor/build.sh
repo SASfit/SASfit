@@ -16,4 +16,4 @@ echo "$0 determined $NUM_LOGICAL_CORES logical cores."
 cd "$APPVEYOR_BUILD_FOLDER" && \
 mkdir build && cd build && cmake ../src && make -j"$NUM_LOGICAL_CORES"
 
-# vim: set ts=2 sw=2 sts=2 tw=0:
+# vim: set ts=4 sw=4 sts=4 tw=0 et:

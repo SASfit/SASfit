@@ -33,4 +33,4 @@ sh -lc "pacman -S --noconfirm cmake make diffutils patch"
 
 @echo.
 @echo off
-rem vim: set ts=2 sw=2 sts=2 tw=0:
+rem vim: set ts=4 sw=4 sts=4 tw=0 et:
