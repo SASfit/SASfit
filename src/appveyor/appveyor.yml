@@ -66,12 +66,17 @@ artifacts:
   # final SASfit package
   - path: src\sasfit_*_*.zip
 
+environment:
+  BT_API:
+    secure: 3NQOzWHJjEFE0+cpLnAlxRHuurVvTjwPzdGFabcT4NC+mjCHMotSufuFhgJZwBu0
+  GH_API:
+    secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
+
 deploy:
     # deploy development builds on BinTray
   - provider: BinTray
     username: sasfit
-    api_key:
-      secure: 3NQOzWHJjEFE0+cpLnAlxRHuurVvTjwPzdGFabcT4NC+mjCHMotSufuFhgJZwBu0
+    api_key: %BT_API%
     subject: sasfit
     repo:    development
     package: SASfit
@@ -82,8 +87,7 @@ deploy:
     # release tags from master branch on GitHub
   - provider: GitHub
     description: 'Replace me with a list of changes for this release!'
-    auth_token:
-      secure: dBYE6FDKgK9EPn81N2keUSNbb6+jLqakuSbwXJrdi54LEWPLTJGqNS7On/qu3i5W
+    auth_token: %GH_API%
     on:
 #      branch: master
       APPVEYOR_REPO_TAG: true
