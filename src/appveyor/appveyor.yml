@@ -10,6 +10,10 @@ init:
 clone_depth: 1
 
 environment:
+  BT_API:
+    secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
+  GH_API:
+    secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
   matrix:
     - COMPILER: msys2
       PLATFORM: x64
@@ -65,12 +69,6 @@ notifications:
 artifacts:
   # final SASfit package
   - path: src\sasfit_*_*.zip
-
-environment:
-  BT_API:
-    secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
-  GH_API:
-    secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
 
 deploy:
     # deploy development builds on BinTray
