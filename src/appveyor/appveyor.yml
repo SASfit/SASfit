@@ -74,7 +74,7 @@ deploy:
     # deploy development builds on BinTray
   - provider: BinTray
     username: sasfit
-    api_key: %BT_API%
+    'api_key: %BT_API%'
     subject: sasfit
     repo:    development
     package: SASfit
@@ -85,7 +85,7 @@ deploy:
     # release tags from master branch on GitHub
   - provider: GitHub
     description: 'Replace me with a list of changes for this release!'
-    auth_token: %GH_API%
+    'auth_token: %GH_API%'
     on:
 #      branch: master
       APPVEYOR_REPO_TAG: true
