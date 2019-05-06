@@ -87,4 +87,7 @@ deploy:
 #      branch: master
       APPVEYOR_REPO_TAG: true
 
+after_deploy:
+  - sh src/appveyor/after_deploy.sh
+
 # vim: set ts=2 sw=2 sts=2 tw=0 et:

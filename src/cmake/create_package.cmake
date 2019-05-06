@@ -128,4 +128,7 @@ if(Git_FOUND)
                     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
 endif()
 
+# store resulting package file name in environment variable for subsequent scripts
+set(ENV{SASFIT_PACKAGE_BASENAME} "${PCKG_DIR_NAME}")
+
 # vim: set ts=4 sw=4 sts=4 tw=0:
