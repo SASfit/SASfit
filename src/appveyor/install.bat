@@ -3,10 +3,6 @@
 
 cd %APPVEYOR_BUILD_FOLDER%
 
-echo TEST START
-PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& { Get-ChildItem deploy: }"
-echo TEST END
-
 echo Compiler: %COMPILER%
 echo Architecture: %MSYS2_ARCH%
 echo Platform: %PLATFORM%
