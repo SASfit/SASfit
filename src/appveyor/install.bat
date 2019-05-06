@@ -4,9 +4,7 @@
 cd %APPVEYOR_BUILD_FOLDER%
 
 echo TEST START
-PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& { Get-ChildItem env:deploy }"
-echo TEST 1
-PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& { Get-ChildItem env:api_key }"
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& { Get-ChildItem deploy: }"
 echo TEST END
 
 echo Compiler: %COMPILER%
