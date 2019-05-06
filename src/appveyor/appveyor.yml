@@ -68,7 +68,7 @@ artifacts:
 
 environment:
   BT_API:
-    secure: 3NQOzWHJjEFE0+cpLnAlxRHuurVvTjwPzdGFabcT4NC+mjCHMotSufuFhgJZwBu0
+    secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
   GH_API:
     secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
 
