@@ -44,7 +44,7 @@ cache: # 1GB max with free accounts
   - 'src\tcl\windows64_%COMPUTERNAME%      -> src\tcl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
   #- 'src\sundials\windows64_%COMPUTERNAME%\include -> src\sundials\CMakeLists.txt, src\cmake'
   - 'src\sundials\windows64_%COMPUTERNAME% -> src\sundials\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
-  - 'saskit\saskit_windows64_%COMPUTERNAME%.exe -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+  - 'saskit\saskit_windows64.exe -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
 
 test:
   assemblies:
