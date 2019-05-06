@@ -31,15 +31,16 @@ after_build:
   - sh src/appveyor/after_build.sh
 
 cache: # 1GB max with free accounts
-  - 'src\gsl\windows64_%COMPUTERNAME%\include  -> src\gsl\gsl-*.tar.gz, src\gsl\CMakeLists.txt, src\cmake'
-  - 'src\gsl\windows64_%COMPUTERNAME%\lib      -> src\gsl\gsl-*.tar.gz, src\gsl\CMakeLists.txt, src\cmake'
-  - 'src\fftw\windows64_%COMPUTERNAME%\include -> src\fftw\fftw-*.tar.gz, src\fftw\CMakeLists.txt, src\cmake'
-  - 'src\fftw\windows64_%COMPUTERNAME%\lib     -> src\fftw\fftw-*.tar.gz, src\fftw\CMakeLists.txt, src\cmake'
-  - 'src\tcl\windows64_%COMPUTERNAME%\include  -> src\tcl\tcl*.tar.gz, src\tcl\CMakeLists.txt, src\cmake'
-  - 'src\tcl\windows64_%COMPUTERNAME%\lib      -> src\tcl\tcl*.tar.gz, src\tcl\CMakeLists.txt, src\cmake'
-  - 'src\sundials\windows64_%COMPUTERNAME%\include -> src\sundials\sundials-*.tar.gz, src\sundials\CMakeLists.txt, src\cmake'
-  - 'src\sundials\windows64_%COMPUTERNAME%\build   -> src\sundials\sundials-*.tar.gz, src\sundials\CMakeLists.txt, src\cmake'
-  - 'saskit\saskit_windows64_%COMPUTERNAME%.exe -> src\CMakeLists.txt, src\cmake'
+  # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
+  #- 'src\gsl\windows64_%COMPUTERNAME%\include  -> src\gsl\CMakeLists.txt, src\cmake'
+  - 'src\gsl\windows64_%COMPUTERNAME%      -> src\gsl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+  #- 'src\fftw\windows64_%COMPUTERNAME%\include -> src\fftw\CMakeLists.txt, src\cmake'
+  - 'src\fftw\windows64_%COMPUTERNAME%     -> src\fftw\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+  #- 'src\tcl\windows64_%COMPUTERNAME%\include  -> src\tcl\CMakeLists.txt, src\cmake'
+  - 'src\tcl\windows64_%COMPUTERNAME%      -> src\tcl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+  #- 'src\sundials\windows64_%COMPUTERNAME%\include -> src\sundials\CMakeLists.txt, src\cmake'
+  - 'src\sundials\windows64_%COMPUTERNAME% -> src\sundials\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+  - 'saskit\saskit_windows64_%COMPUTERNAME%.exe -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
 
 test:
   assemblies:
