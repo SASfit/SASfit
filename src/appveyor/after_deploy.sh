@@ -1,14 +1,14 @@
 #!/bin/sh
 # some bintray tweaks after deployment
 
-echo
-echo "Environment variables:"
-echo
-env | sort
+#echo
+#echo "Environment variables:"
+#echo
+#env | sort
 
-FN=""
-BTAPI=""
-echo curl -usasfit:$BTAPI -H Content-Type:application/json -H Accept:application/json \
+FN="$(find "$APPVEYOR_BUILD_FOLDER/src" -type f \
+    -name "*$APPVEYOR_BUILD_VERSION*" -printf '%f')"
+curl -usasfit:$BT_API -H Content-Type:application/json -H Accept:application/json \
      -X PUT -d '{ "list_in_downloads":true }' \
      https://api.bintray.com/file_metadata/sasfit/development/$FN
 
