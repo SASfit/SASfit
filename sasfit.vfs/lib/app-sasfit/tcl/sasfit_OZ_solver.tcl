@@ -612,6 +612,15 @@ proc oz_input_names {} {
 			set OZ(p5,name) K3
 			set OZ(p6,name) lambda3
 			}
+		"DLVO Hydra" {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) kappa
+			set OZ(p2,name) Z
+			set OZ(p3,name) LB
+			set OZ(p4,name) A
+			set OZ(p5,name) gHy
+			set OZ(p6,name) DH
+			}
 		default {
 			set OZ(p0,name) ""
 			set OZ(p1,name) ""
@@ -892,7 +901,7 @@ proc sasfit_OZ_solver {} {
 	    		"StarPolymer (f>10)" "StarPolymer (f<10)" "HS 3Yukawa"\
 	    		"LennardJones" "Depl-Sph-Sph" "Depl-Sph-Discs" "Depl-Sph-Rods" \
 	    		"IonicMicrogel"  \
-	    		"PenetrableSphere" "Fermi" "DLVO" "GGCM-n"} \
+	    		"PenetrableSphere" "Fermi" "DLVO" "DLVO Hydra" "GGCM-n"} \
 	    -textvariable OZ(potential) \
 	    -modifycmd {oz_input_names}  -editable 0
     grid  $w.param.potvalue\

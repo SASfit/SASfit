@@ -59,6 +59,9 @@
 #include <gsl/gsl_pow_int.h>
 #include <time.h>
 #include <math.h>
+#include "sasfit_oz.h"
+#include "sasfit_fixed_point_acc.h"
+#include <kinsol/kinsol.h>
 
 /*#########################################################################*/
 /*#                                                                       #*/
@@ -801,6 +804,125 @@ int save_EP(clientData,interp,EP)
     return TCL_OK;
 }
 
+
+int
+assign_root_Algorithm_EM(const char * token, EM_param_t * EM)
+{
+#define MAXROOTALGORITHMS 23
+    const char * RootAlgorithms[MAXROOTALGORITHMS];
+    int i,eq;
+    if (!token || !EM) return 0;
+    RootAlgorithms[0] = "Picard iteration";
+    RootAlgorithms[1] = "Mann iteration";
+    RootAlgorithms[2] = "Ishikawa iteration";
+    RootAlgorithms[3] = "Noor iteration";
+    RootAlgorithms[4] = "S iteration";
+    RootAlgorithms[5] = "SP iteration";
+    RootAlgorithms[6] = "CR iteration";
+    RootAlgorithms[7] = "Picard-S iteration";
+    RootAlgorithms[8] = "PMH iteration";
+    RootAlgorithms[9] = "Mann II iteration";
+    RootAlgorithms[10] = "Krasnoselskij iteration";
+    RootAlgorithms[11] = "S* iteration";
+    RootAlgorithms[12] = "Steffensen iteration";
+    RootAlgorithms[13] = "Anderson mixing";
+    RootAlgorithms[14] = "GMRES" ;
+    RootAlgorithms[15] = "Bi-CGStab" ;
+    RootAlgorithms[16] = "TFQMR" ;
+    RootAlgorithms[17] = "FGMRES";
+    RootAlgorithms[18] = "KINSOL_FP";
+    RootAlgorithms[MAXROOTALGORITHMS-1] = "dNewton";
+    RootAlgorithms[MAXROOTALGORITHMS-2] = "Hybrid";
+    RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
+    RootAlgorithms[MAXROOTALGORITHMS-4] = "Broyden";
+
+    i=0;
+    eq=-1;
+    while (i<MAXROOTALGORITHMS && eq != 0) {
+        eq = strcmp(token,RootAlgorithms[i]);
+        i++;
+    }
+//    if (EM->PrintProgress) sasfit_out("%s %d\n",token,i-1);
+
+    switch (i-1) {
+        case 0 :
+            EM->root_algorithm=Picard_iteration;
+            break;
+        case 1 :
+            EM->root_algorithm=Mann_iteration;
+            break;
+        case 2 :
+            EM->root_algorithm=Ishikawa_iteration;
+            break;
+        case 3 :
+            EM->root_algorithm=Noor_iteration;
+            break;
+        case 4 :
+            EM->root_algorithm=S_iteration;
+            break;
+        case 5 :
+            EM->root_algorithm=SP_iteration;
+            break;
+        case 6 :
+            EM->root_algorithm=CR_iteration;
+            break;
+        case 7 :
+            EM->root_algorithm=PicardS_iteration;
+            break;
+        case 8 :
+            EM->root_algorithm=PMH_iteration;
+            break;
+        case 9 :
+            EM->root_algorithm=MannII_iteration;
+            break;
+        case 10 :
+            EM->root_algorithm=Krasnoselskij_iteration;
+            break;
+        case 11 :
+            EM->root_algorithm=Sstar_iteration;
+            break;
+        case 12 :
+            EM->root_algorithm=Steffensen2_iteration;
+            break;
+        case 13 :
+            EM->root_algorithm=AndersonAcc;
+            break;
+        case 14 :
+            EM->root_algorithm=GMRES;
+            break;
+        case 15 :
+            EM->root_algorithm=BiCGSTAB;
+            break;
+        case 16 :
+            EM->root_algorithm=TFQMR;
+            break;
+        case 17 :
+            EM->root_algorithm=FGMRES;
+            break;
+        case 18 :
+            EM->root_algorithm=KINSOLFP;
+            break;
+        case MAXROOTALGORITHMS-1 :
+            EM->root_algorithm=dNewton;
+            break;
+        case MAXROOTALGORITHMS-2 :
+            EM->root_algorithm=Hybrid;
+            break;
+        case MAXROOTALGORITHMS-3 :
+            EM->root_algorithm=Hybrids;
+            break;
+        case MAXROOTALGORITHMS-4 :
+            EM->root_algorithm=Broyden;
+            break;
+        default :
+            EM->root_algorithm=S_iteration;
+            sasfit_out("Root finding Algorithm not found: %s. Using S iteration instead.\n", token);
+            sasfit_err("Root finding Algorithm not found: %s. Using S iteration instead.\n", token);
+            break;
+    }
+    if (i<=MAXROOTALGORITHMS) return 1;
+    return 0;
+}
 /*#########################################################################*/
 /*#                                                                       #*/
 /*# get_EM --                                                             #*/
@@ -817,7 +939,7 @@ int get_EM(clientData,interp,EM)
     EM_param_t *EM;
 
 {
-    int varint;
+    int varint, status;
     scalar varscalar;
     const char *varstr;
  /*
@@ -917,6 +1039,12 @@ int get_EM(clientData,interp,EM)
        return TCL_ERROR;
     }
     strcpy((*EM).iteration_scheme,varstr);
+
+    status = assign_root_Algorithm_EM(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, "EMOptions", "IterationScheme"), 0),EM);
+    if (status == 0) {
+            sasfit_err("Unknown Root finding Algorithm\n");
+            return TCL_ERROR;
+    }
 
 /*
  * read the string spacing
@@ -3665,6 +3793,260 @@ int Sasfit_OrnsteinZernickeFitCmd(clientData, interp, argc, argv)
 	return TCL_OK;
 }
 
+
+double EM_DR_Operator(void *EM_structure) {
+
+    EM_param_t *EMparam;
+    EMparam = (EM_param_t *)EM_structure;
+    int i,j,l, nr;
+    scalar p1,p2,p3, eps, chi2;
+/*
+    sasfit_out("EP_Operator: in: ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->in[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: out(start): ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+    sasfit_out("\n");
+*/
+    nr=EMparam->nR;
+
+
+    if (EMparam->smooth > 0) {
+        for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
+        EMparam->xwork[0]=exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[1])*EMparam->S[0][1]);
+        for (i=1;i<nr-1;i++) {
+            EMparam->xwork[i]=exp(log(EMparam->in[i-1])*EMparam->S[i][i-1]+log(EMparam->in[i])*EMparam->S[i][i]+log(EMparam->in[i+1])*EMparam->S[i][i+1]);
+        }
+        EMparam->xwork[nr-1]=exp(log(EMparam->in[nr-2])*EMparam->S[nr-1][nr-2]+log(EMparam->in[nr-1])*EMparam->S[nr-1][nr-1]);
+    } else {
+        for (i=0;i<nr;i++) {
+            EMparam->in[i] = EMparam->out[i];
+            EMparam->xwork[i] = EMparam->out[i];
+        }
+    }
+//    sasfit_out("EP_Operator: work (1st smooth): ");
+//    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+//    sasfit_out("\n");
+    for (j=0;j<EMparam->nh;j++) {
+        EMparam->Ith[j]=0;
+        for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->xwork[l]*EMparam->A[j][l];
+    }
+/*
+    sasfit_out("EP_Operator: Ith: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->Ith[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: Ih: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->Ih[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: dr: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->dr[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: dh: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->dh[i]);
+    sasfit_out("\n");
+*/
+
+    for (i=0;i<nr;i++) {
+        p3=0;
+        p1=0;
+        for (j=0;j<EMparam->nh;j++) {
+            p1=p1+EMparam->A[j][i]*EMparam->dh[j];
+            p2=EMparam->Ih[j]*EMparam->A[j][i];
+            p3=p3+p2*EMparam->dh[j]/EMparam->Ith[j];
+//            if (p3<=0 || p1<=0 || p2<=0) sasfit_out("i,j: %d,%d p1:%lg p2 %lg p3:%lg\n",i,j,p1,p2,p3);
+        }
+//        if (p3<=0 || p1<=0) sasfit_out("i: %d p1:%lg p3:%lg\n",i,p1,p3);
+        EMparam->xwork[i]=EMparam->xwork[i]*p3/p1;
+    }
+
+//    sasfit_out("EP_Operator: work (EM Operator): ");
+//    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+//    sasfit_out("\n");
+
+    EMparam->out[0]=fabs(EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1]);
+    eps = gsl_pow_2(EMparam->out[0]-EMparam->in[0]);
+    for (i=1;i<nr-1;i++) {
+        EMparam->out[i]=fabs(EMparam->xwork[i-1]*EMparam->S[i][i-1]+EMparam->xwork[i]*EMparam->S[i][i]+EMparam->xwork[i+1]*EMparam->S[i][i+1]);
+        eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
+    }
+    EMparam->out[nr-1]=fabs(EMparam->xwork[nr-2]*EMparam->S[nr-1][nr-2]+EMparam->xwork[nr-1]*EMparam->S[nr-1][nr-1]);
+
+
+//    sasfit_out("EP_Operator: out (2nd smooth): ");
+//    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+//    sasfit_out("\n");
+
+    eps = eps+gsl_pow_2(EMparam->out[nr-1]-EMparam->in[nr-1]);
+    eps=sqrt(eps);
+
+    chi2=0;
+
+    for (i=0;i<EMparam->nh;i++){
+        EMparam->Ith[i] = 0;
+        for (j=0;j<nr;j++) {
+            EMparam->Ith[i] = EMparam->Ith[i] + EMparam->dr[j]*EMparam->A[i][j]*EMparam->out[j];
+        }
+        chi2=chi2+gsl_pow_2((EMparam->Ith[i]-EMparam->Ih[i])/EMparam->DIh[i]);
+    }
+    chi2=chi2/EMparam->nh;
+//    sasfit_out("chi2:%lg\n",chi2);
+//    sasfit_out("\n");
+    return chi2;
+}
+
+
+void EM_DR_Free (void *FPd) {
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    free_dvector(EMparam->h,0,EMparam->nh-1);
+    free_dvector(EMparam->Ih,0,EMparam->nh-1);
+    free_dvector(EMparam->DIh,0,EMparam->nh-1);
+    free_dvector(EMparam->Ith,0,EMparam->nh-1);
+    free_dvector(EMparam->dh,0,EMparam->nh-1);
+    free_dvector(EMparam->Iexp,0,EMparam->nh-1);
+    free_dvector(EMparam->r,0,EMparam->nR-1);
+    free_dvector(EMparam->dr,0,EMparam->nR-1);
+    free_dvector(EMparam->xwork,0,EMparam->nR-1);
+    free_dvector(EMparam->out,0,EMparam->nR-1);
+    free_dvector(EMparam->in,0,EMparam->nR-1);
+    free_dmatrix(EMparam->A,0,EMparam->nh-1,0,EMparam->nR-1);
+    free_dmatrix(EMparam->S,0,EMparam->nR-1,0,EMparam->nR-1);
+    gsl_vector_free(EMparam->DR);
+}
+
+void EM_DR_Init (void *FPd) {
+    scalar rmax, QR;
+    int nr,nh;
+    int i,j;
+    bool smooth_type;
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    const gsl_rng_type * T;
+    gsl_rng * rgen;
+
+    gsl_rng_env_setup();
+    T = gsl_rng_default;
+    rgen = gsl_rng_alloc (T);
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    nh=EMparam->nh;
+    if (EMparam->nR <=0) {
+        EMparam->nR=EMparam->nh;
+        nr=EMparam->nR;
+    } else {
+        nr=EMparam->nR;
+    }
+
+    FixedPointData->Npoints=EMparam->nR;
+    FixedPointData->maxsteps=EMparam->maxit;
+    FixedPointData->relerror=EMparam->eps;
+    FixedPointData->failed = 0;
+    FixedPointData->interrupt = 0;
+    FixedPointData->it=0;
+    FixedPointData->root_algorithm=EMparam->root_algorithm;
+    EMparam->xwork   = dvector(0,EMparam->nR-1);
+    EMparam->r   = dvector(0,EMparam->nR-1);
+    EMparam->dr   = dvector(0,EMparam->nR-1);
+    EMparam->out   = dvector(0,EMparam->nR-1);
+    EMparam->in   = dvector(0,EMparam->nR-1);
+    FixedPointData->in = EMparam->in;
+    FixedPointData->out = EMparam->out;
+    EMparam->DR=gsl_vector_alloc(EMparam->nR);
+    FixedPointData->DR = EMparam->DR;
+    EMparam->Ith   = dvector(0,EMparam->nh-1);
+    EMparam->Ih   = dvector(0,EMparam->nh-1);
+    EMparam->dh   = dvector(0,EMparam->nh-1);
+    EMparam->A = dmatrix(0,EMparam->nh-1,0,EMparam->nR-1);
+    EMparam->S = dmatrix(0,EMparam->nR-1,0,EMparam->nR-1);
+
+
+    for (i=0;i<nh;i++){
+        if (i==0) {
+            EMparam->dh[0]=EMparam->h[0];
+        } else {
+            EMparam->dh[i] = EMparam->h[i]-EMparam->h[i-1];
+        }
+    }
+    rmax = EMparam->Rmax;
+    if (rmax <= 0) {
+        rmax = M_PI/EMparam->h[0];
+        EMparam->Rmax = rmax;
+    }
+
+    for (i=0;i<nh;i++){
+        for (j=0;j<nr;j++) {
+            EMparam->r[j] = rmax/nr*(j+1);
+            QR=EMparam->h[i]*EMparam->r[j];
+ //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
+            EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
+        }
+        EMparam->Ih[i] = EMparam->Iexp[i]-EMparam->C0;
+        EMparam->Ith[i] =0;
+    }
+
+    gsl_rng_set(rgen, time(NULL));
+
+    if (strcmp("single",EMparam->smooth_type)==0) {
+        smooth_type = FALSE;
+    } else {
+        smooth_type = TRUE;
+    }
+//sasfit_out("%d %s\n",smooth_type,EMparam.smooth_type);
+
+    if (strcmp("constant",EMparam->seed)==0) {
+        for (i=0;i<nr;i++) {
+            EMparam->xwork[i] = 1e-7;
+            EMparam->out[i] = 1e-7;
+            EMparam->in[i] = 1e-7;
+            EMparam->dr[i]=rmax/nr;
+        }
+    } else {
+        for (i=0;i<nr;i++) {
+            EMparam->xwork[i] = gsl_rng_uniform (rgen)*1e-7;
+            EMparam->out[i] = gsl_rng_uniform (rgen)*1e-7;
+            EMparam->in[i] = gsl_rng_uniform (rgen)*1e-7;
+            EMparam->dr[i]=rmax/nr;
+        }
+    }
+    gsl_rng_free (rgen);
+
+    for (i=0;i<nr;i++) {
+        for (j=0;j<nr;j++) {
+            EMparam->S[i][j]=0;
+        }
+    }
+
+    EMparam->S[0][0]=1-EMparam->smooth;
+    EMparam->S[0][1]=EMparam->smooth;
+    for (i=1;i<nr-1;i++) {
+        EMparam->S[i][i]=1-2*EMparam->smooth;
+        EMparam->S[i][i-1]=EMparam->smooth;
+        EMparam->S[i][i+1]=EMparam->smooth;
+    }
+    EMparam->S[nr-1][nr-2]=EMparam->smooth;
+    EMparam->S[nr-1][nr-1]=1-EMparam->smooth;
+
+
+    FixedPointData->KINSetMAA = 5;
+    FixedPointData->KINSetFuncNormTol = EMparam->eps;
+    FixedPointData->KINSetScaledSteptol = 0;
+    FixedPointData->KINSetNumMaxIters = EMparam->maxit;
+    FixedPointData->KINSetMaxNewtonStep = FixedPointData->Npoints*500.0;
+    FixedPointData->KINSetPrintLevel = 0;
+    FixedPointData->KINSetEtaForm=KIN_ETACHOICE2; // KIN ETACHOICE1, KIN ETACHOICE2, or KIN ETACONSTANT
+    FixedPointData->KINSetEtaConstValue = 0.1;
+    FixedPointData->KINSpilsSetMaxRestarts =20;
+    FixedPointData->KINSolStrategy=KIN_NONE;
+    FixedPointData->KINConstraints = N_VNew_Serial(FixedPointData->Npoints);
+    N_VConst_Serial(0., FixedPointData->KINConstraints);
+}
+
+
 /*#########################################################################*/
 /*#                                                                       #*/
 /*# Sasfit_prEM_Cmd --                                                    #*/
@@ -3687,35 +4069,24 @@ int Sasfit_prEM_Cmd(clientData, interp, argc, argv)
 {
 struct extrapolPar EP;
 EM_param_t EMparam;
+sasfit_fp_data FPd;
 
-scalar  *h, *Ih, *DIh;
-scalar  *tx_k, *tx_km1, *tx_kp1, *ty, **A, *r, *dq, *dr, *tsig, *x, *y, *sig, yth, dyda[4], **S,smear;
-scalar  **alpha, **covar;
 scalar p1,p2,p3, QR, eps,chi2;
-int    *lista,mfit,ma;
 int    i,j,k,l,itst;
-int nr;
 scalar rmax;
 char   errstr[256],Buffer[256];
-bool   error, smooth_type;
+bool   error;
 Tcl_DString DsBuffer;
 
-const gsl_rng_type * T;
-gsl_rng * rgen;
-
-gsl_rng_env_setup();
-
-T = gsl_rng_default;
-rgen = gsl_rng_alloc (T);
 
 error = FALSE;
 
 if (argc != 3) {
-   sasfit_err("wrong # args; should be sasfit_DebyeFit ?StructPar? ?xye_data?\n");
+   sasfit_err("wrong # args; should be sasfit_prEM ?EMOptions? ?xye_data?\n");
    return TCL_ERROR;
 }
 
-if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&h,&Ih,&DIh)) {
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
    return TCL_ERROR;
 }
 
@@ -3723,173 +4094,59 @@ if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
    return TCL_ERROR;
 }
 
-nr = EMparam.nR;
-rmax = M_PI/h[0];
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=&EM_DR_Operator;
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+FPd.PrintProgress=1;
+
+FPd.it=0;
+EM_DR_Init(&FPd);
+sasfit_out("D(R): %s algorithm: %d\n",EMparam.iteration_scheme, FPd.root_algorithm);
+sasfit_out("maxteps: %d\n",FPd.maxsteps);
+sasfit_out("R_max: %lg\n",EMparam.Rmax);
+sasfit_out("number of R bins: %d\n",EMparam.nR);
+sasfit_out("finished initialization\n");
+rmax = M_PI/EMparam.h[0];
 rmax = EMparam.Rmax;
-tx_k   = dvector(0,nr-1);
-r   = dvector(0,nr-1);
-dr   = dvector(0,nr-1);
-tx_kp1   = dvector(0,nr-1);
-tx_km1   = dvector(0,nr-1);
-ty   = dvector(0,EP.ndata-1);
-dq   = dvector(0,EP.ndata-1);
-tsig = dvector(0,EP.ndata-1);
-A = dmatrix(0,EP.ndata-1,0,nr-1);
-S = dmatrix(0,nr-1,0,nr-1);
-for (i=0;i<EP.ndata;i++){
-    for (j=0;j<nr;j++) {
-        r[j] = rmax/nr*(j+1);
-        QR=h[i]*r[j];
- //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
-        A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(r[j],-EMparam.dim);
-    }
-    if (i==0) {dq[0]=h[0];} else {dq[i] = h[i]-h[i-1];}
-}
 
-for (i=0;i<EP.npoints;i++) {
-   ty[i] = Ih[i]-EP.c0;
-   Ih[i] =0;
-}
-gsl_rng_set(rgen, time(NULL));
-
-if (strcmp("single",EMparam.smooth_type)==0) {
-    smooth_type = FALSE;
-} else {
-    smooth_type = TRUE;
-}
-sasfit_out("%d %s\n",smooth_type,EMparam.smooth_type);
-
-if (strcmp("constant",EMparam.seed)==0) {
-    for (i=0;i<nr;i++) {
-        tx_k[i] = 1e-7;
-        tx_kp1[i] = 1e-7;
-        dr[i]=rmax/nr;
-    }
-} else {
-    for (i=0;i<nr;i++) {
-        tx_k[i] = gsl_rng_uniform (rgen)*1e-7;
-        tx_kp1[i] = gsl_rng_uniform (rgen)*1e-7;
-        dr[i]=rmax/nr;
-    }
-}
-
-gsl_rng_free (rgen);
-
-for (i=0;i<nr;i++) {
-    for (j=0;j<nr;j++) {
-        S[i][j]=0;
-    }
-}
-smear=EMparam.smooth;
-S[0][0]=1-smear;
-S[0][1]=smear;
-for (i=1;i<nr-1;i++) {
-    S[i][i]=1-2*smear;
-    S[i][i-1]=smear;
-    S[i][i+1]=smear;
-}
-S[nr-1][nr-2]=smear;
-S[nr-1][nr-1]=1-smear;
-
-k=0;
-do {
-    if (smooth_type) {
-        tx_km1[0] = tx_kp1[0];
-        tx_k[0]=exp(log(tx_kp1[0])*S[0][0]+log(tx_kp1[1])*S[0][1]);
-        for (i=1;i<nr-1;i++) {
-            tx_km1[i] = tx_kp1[i];
-            tx_k[i]=exp(log(tx_kp1[i-1])*S[i][i-1]+log(tx_kp1[i])*S[i][i]+log(tx_kp1[i+1])*S[i][i+1]);
-        }
-        tx_km1[nr-1] = tx_kp1[nr-1];
-        tx_k[nr-1]=exp(log(tx_kp1[nr-2])*S[nr-1][nr-2]+log(tx_kp1[nr-1])*S[nr-1][nr-1]);
-    } else {
-        for (i=0;i<nr;i++) {
-            tx_km1[i] = tx_kp1[i];
-        }
-    }
-    chi2=0;
-    for (j=0;j<EP.ndata;j++) {
-        Ih[j]=0;
-        for (l=0;l<nr;l++) Ih[j]=Ih[j]+dr[l]*tx_k[l]*A[j][l];
-        chi2=chi2+gsl_pow_2((Ih[j]-ty[j])/DIh[j]);
-//        sasfit_out("%d %d %lf %lf %lf %lf\n",k, j,(Ih[j]-ty[j])/DIh[j], Ih[j], ty[j], DIh[j]);
-    }
-    chi2=chi2/EP.ndata;
-
-    for (i=0;i<nr;i++) {
-        p3=0;
-        p1=0;
-        for (j=0;j<EP.ndata;j++) {
-            p1=p1+A[j][i]*dq[j];
-            p2=ty[j]*A[j][i];
-            p3=p3+p2*dq[j]/Ih[j];
-        }
-        tx_k[i]=tx_k[i]*p3/p1;
-    }
-
-    tx_kp1[0]=tx_k[0]*S[0][0]+tx_k[0]*S[0][1];
-    eps = gsl_pow_2(tx_kp1[0]-tx_km1[0]);
-    for (i=1;i<nr-1;i++) {
-        tx_kp1[i]=tx_k[i-1]*S[i][i-1]+tx_k[i]*S[i][i]+tx_k[i+1]*S[i][i+1];
-        eps = eps+gsl_pow_2(tx_kp1[i]-tx_km1[i]);
-//        sasfit_out("%d %d %lf %lf %lf\n",k, i,tx_kp1[i]-tx_k[i], tx_kp1[i], tx_k[i]);
-    }
-    tx_kp1[nr-1]=tx_k[nr-2]*S[nr-1][nr-2]+tx_k[nr-1]*S[nr-1][nr-1];
-    eps = eps+gsl_pow_2(tx_kp1[nr-1]-tx_km1[nr-1]);
-//    sasfit_out("MC:%d\n",k);
-    eps=sqrt(eps);
-    k++;
-// sasfit_out("it. eps chi2 %d %lg %lg\n",k, eps, chi2);
-} while (k<3 || (k<EMparam.maxit && chi2 > EMparam.chi2 && eps>EMparam.eps));
-sasfit_out("it. eps chi2 %d %lg %lg\n",k-1, eps, chi2);
-
-for (i=0;i<EP.ndata;i++){
-    Ih[i] = 0;
-    for (j=0;j<nr;j++) {
-        Ih[i] = Ih[i] + dr[j]*A[i][j]*tx_k[j];
-    }
-}
+FP_solver(&FPd);
+sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
+sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
 
 Tcl_ResetResult(interp);
 Tcl_DStringInit(&DsBuffer);
 Tcl_DStringStartSublist(&DsBuffer);
-for (i=0;i<nr;i++) {
-    sprintf(Buffer,"%lg",r[i]);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
 	Tcl_DStringAppendElement(&DsBuffer,Buffer);
 }
 Tcl_DStringEndSublist(&DsBuffer);
 Tcl_DStringStartSublist(&DsBuffer);
-for (i=0;i<nr;i++) {
-	sprintf(Buffer,"%lg",tx_k[i]);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
 	Tcl_DStringAppendElement(&DsBuffer,Buffer);
 }
 Tcl_DStringEndSublist(&DsBuffer);
 Tcl_DStringStartSublist(&DsBuffer);
-for (i=0;i<EP.ndata;i++) {
-	sprintf(Buffer,"%lg",h[i]);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
 	Tcl_DStringAppendElement(&DsBuffer,Buffer);
 }
 Tcl_DStringEndSublist(&DsBuffer);
 Tcl_DStringStartSublist(&DsBuffer);
-for (i=0;i<EP.ndata;i++) {
-	sprintf(Buffer,"%lg",Ih[i]+EP.c0);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
 	Tcl_DStringAppendElement(&DsBuffer,Buffer);
 }
 Tcl_DStringEndSublist(&DsBuffer);
 Tcl_DStringResult(interp,&DsBuffer);
 Tcl_DStringFree(&DsBuffer);
 
-free_dvector(h,0,EP.ndata-1);
-free_dvector(Ih,0,EP.ndata-1);
-free_dvector(DIh,0,EP.ndata-1);
-free_dvector(dq,0,EP.ndata-1);
-free_dvector(r,0,nr-1);
-free_dvector(dr,0,nr-1);
-free_dvector(tx_k,0,nr-1);
-free_dvector(tx_kp1,0,nr-1);
-free_dvector(ty,0,EP.ndata-1);
-free_dvector(tsig,0,EP.ndata-1);
-free_dmatrix(A,0,EP.ndata-1,0,nr-1);
-free_dmatrix(S,0,nr-1,0,nr-1);
+EM_DR_Free(&FPd);
+
 return TCL_OK;
 }

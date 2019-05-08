@@ -40,10 +40,10 @@ GET_FILENAME_COMPONENT(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 GET_FILENAME_COMPONENT(CURRENT_DIR "${CURRENT_DIR}/.." ABSOLUTE)
 
 FIND_PATH(sasfit_oz_INCLUDE_DIR sasfit_oz.h
-    ${CURRENT_DIR}/sasfit_ff/include/
+    ${CURRENT_DIR}/sasfit_oz/include/
 )
   
-FIND_LIBRARY(sasfit_ff_LIBRARY sasfit_oz
+FIND_LIBRARY(sasfit_oz_LIBRARY sasfit_oz
     ${CURRENT_DIR}/sasfit_oz/lib/
     ${CURRENT_DIR}/sasfit_oz/lib/debug/
     ${CURRENT_DIR}/sasfit_oz/lib/release/

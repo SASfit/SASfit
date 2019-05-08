@@ -5,7 +5,7 @@
  */
 #include <sasfit_oz.h>
 
-// DerjaguinLandauVerweyOverbeek (DLVO) potential.:
+// Derjaguin-Landau-Verwey-Overbeek (DLVO) potential.:
 
 //
 // G. Nägele,
@@ -14,7 +14,7 @@
 // hera.physik.uni-konstanz.de/igk/news/workshops/Naegele.pdf?
 
 #define sigma   p[0] // Diameter of spheres in nm
-#define kappa   p[1] // reciprocal DebyeHückel screening length
+#define kappa   p[1] // reciprocal Debye-Hückel screening length
 					 // kappa^2=4 pi LB sum(rho_alpha Z_alpha^2,alpha)
 #define Z		p[2] // effective or dressed surface charge number of a colloidal particle
 #define LB 		p[3] // Bjerrum length LB = e^2/(epsilon kB T), for water at RT LB=0.71

@@ -415,10 +415,10 @@ set FitPrecision(Robertus_p)      9
 set FitPrecision(iter_4_MC)       1000
 set FitPrecision(int)             no
 
-set EMOptions(IterationScheme) Picard
+set EMOptions(IterationScheme) "Picard iteration"
 set EMOptions(spacing) lin
 set EMOptions(smooth) 1e-4
-set EMOptions(smooth_type) single
+set EMOptions(smooth_type) double
 set EMOptions(seed) constant
 set EMOptions(Rmax) 1000
 set EMOptions(nR) 100

@@ -412,9 +412,9 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
 int
 assign_pot(const char * token, sasfit_oz_data * OZD)
 {
-    #define MAXPOTENTIALS 28
+    #define MAXPOTENTIALS 29
     const char * PotentialNames[MAXPOTENTIALS];
-    int i,eq;
+    int i,eq, potindx;
     if (!token || !OZD) return 0;
     PotentialNames[0] = "HardSphere";
     PotentialNames[1] = "HS";
@@ -444,6 +444,8 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
     PotentialNames[25] = "FDM";
     PotentialNames[26] = "PenetrableSphere";
     PotentialNames[27] = "PSM";
+    PotentialNames[28] = "DLVO Hydra";
+//    PotentialNames[29] = "DLVO-H";
 
 
     i=0;
@@ -452,14 +454,16 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
         eq = strcmp(token,PotentialNames[i]);
         i++;
     }
-    if (i== MAXPOTENTIALS) {
-        if (OZD->PrintProgress)  PUTS("the potential >%s< is unknown\n",token,i-1);
+    potindx=i-1;
+    PUTS("the potential %d: >%s< should be used\n",potindx,token);
+    if (i > MAXPOTENTIALS) {
+        if (OZD->PrintProgress)  PUTS("the potential %d: >%s< is unknown\n",potindx,token);
         return 0;
     } else {
-        if (OZD->PrintProgress)  PUTS("potential name:%s, index:%d\n",token,i-1);
+        if (OZD->PrintProgress)  PUTS("potential name:%s, index:%d\n",token,potindx);
     }
-
-    switch (i-1) {
+PUTS("again: the potential %d: >%s< should be used\n",potindx,token);
+    switch(potindx) {
         case 0 :
         case 1 :
             OZD->potential=&U_Hard_Sphere;
@@ -624,6 +628,17 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
             OZD->shortrange_pot=&U_PSM;
             OZD->longrange_pot=&U_ZERO;
             break;
+        case 28 :
+            sasfit_out("I have been here\n");
+        case 29 :
+            OZD->potential=&U_DLVO_Hydra;
+            OZD->reference_pot=&U_DLVO_Hydra;
+            OZD->pertubation_pot=&U_DLVO_Hydra;
+            OZD->repulsive_pot=&U_DLVO_Hydra;
+            OZD->attractive_pot=&U_DLVO_Hydra;
+            OZD->shortrange_pot=&U_DLVO_Hydra;
+            OZD->longrange_pot=&U_DLVO_Hydra;
+            break;
         default :
             OZD->potential=&U_Hard_Sphere;
             OZD->reference_pot=&U_Hard_Sphere;
@@ -718,7 +733,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 sasfit_err("Unknown Root finding Algorithm\n");
                 return TCL_ERROR;
         }
-        
+
         status = assign_mixing_strategy(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "mixstrategy"), 0),
                    &ozd);
         if (status == 0) {
@@ -754,12 +769,12 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 ozd.KINSetMAA = 5;
         }
         if (ozd.PrintProgress) PUTS("KINSetMAA is set to %d\n", ozd.KINSetMAA);
-        
+
         if (!GET_TCL(double, &ozd.KINSetFuncNormTol, "KINSetFuncNormTol")) {
                 ozd.KINSetFuncNormTol = 1e-10;
         }
         if (ozd.PrintProgress) PUTS("KINSetFuncNormTol is set to %g\n", ozd.KINSetFuncNormTol);
-        
+
         if (!GET_TCL(double, &ozd.KINSetScaledSteptol, "KINSetScaledSteptol")) {
                 ozd.KINSetScaledSteptol = 1e-9;
         }
@@ -774,12 +789,12 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 ozd.KINSetMaxNewtonStep = ozd.Npoints*100.0;
         }
         if (ozd.PrintProgress) PUTS("KINSetMaxNewtonStep is set to %d\n", ozd.KINSetMaxNewtonStep);
-        
+
         if (!GET_TCL(int, &ozd.KINSetPrintLevel, "KINSetPrintLevel")) {
                 ozd.KINSetPrintLevel = 0;
         }
         if (ozd.PrintProgress) PUTS("KINSetPrintLevel is set to %d\n", ozd.KINSetPrintLevel);
-        
+
         status = assign_KINSetEtaForm(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "KINSetEtaForm"), 0),
                    &ozd);
         if (status == 0) {
@@ -787,7 +802,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 return TCL_ERROR;
         }
         if (ozd.PrintProgress) PUTS("KINSetEtaForm is set to %d\n", ozd.KINSetEtaForm);
-        
+
         if (!GET_TCL(double, &ozd.KINSetEtaConstValue, "KINSetEtaConstValue")) {
                 ozd.KINSetEtaConstValue = 0.1;
         }
@@ -797,7 +812,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 ozd.KINSpilsSetMaxRestarts =10;
         }
         if (ozd.PrintProgress) PUTS("KINSpilsSetMaxRestarts is set to %d\n", ozd.KINSpilsSetMaxRestarts);
-        
+
          status = assign_KINSolStrategy(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, ozname, "KINSolStrategy"), 0),
                    &ozd);
         if (status == 0) {
@@ -805,17 +820,17 @@ int sasfit_oz_calc_cmd(ClientData clientData,
                 return TCL_ERROR;
         }
         if (ozd.PrintProgress) PUTS("KINSolStrategy is set to %d\n", ozd.KINSolStrategy);
-        
-        
+
+
 
 
         // calulate
-        status =OZ_init(&ozd); 
+        status =OZ_init(&ozd);
         if (status == 0) {
                 sasfit_err("OZ initialisation error.\n");
                 return TCL_ERROR;
         }
-        status =OZ_calculation(&ozd); 
+        status =OZ_calculation(&ozd);
         if (status == TCL_ERROR) {
                 sasfit_err("OZ algorithm did not converge.\n");
                 return TCL_ERROR;

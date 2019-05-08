@@ -43,7 +43,7 @@ scalar crPY(scalar x, scalar eta) {
 }
 scalar grPY(scalar x, scalar eta) {
     scalar d, g0, mu0, a0, b0, a, b, rstar, gm, A, B, delta, C, gexpt, omega, kappa;
-	
+
 #define SIGMA 1
 #define ETA eta
 	// insert your code here
@@ -106,15 +106,15 @@ scalar BPY(scalar r,scalar eta) {
     return -br;
 }
 
-void  KINErrSASfit(int error_code, 
-                               const char *module, const char *function, 
+void  KINErrSASfit(int error_code,
+                               const char *module, const char *function,
                                char *msg, void *OZd_structure){
 
     sasfit_oz_data *OZd;
     OZd = (sasfit_oz_data*) OZd_structure;
     sasfit_out("optained error code %d from %s-%s:%s\n",error_code, module,function,msg);
-}; 
-void KINInfoSASfit(const char *module, const char *function, 
+};
+void KINInfoSASfit(const char *module, const char *function,
                                 char *msg, void *OZd_structure){
 
     sasfit_oz_data *OZd;
@@ -131,7 +131,7 @@ void KINInfoSASfit(const char *module, const char *function,
         sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",OZd->it,OZd->GNorm, nfe, nnlsi,fnorm);
         Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
     }
-}; 
+};
 /*
  * Check function return value...
  *    opt == 0 means SUNDIALS function allocates memory so check if
@@ -139,7 +139,7 @@ void KINInfoSASfit(const char *module, const char *function,
  *    opt == 1 means SUNDIALS function returns a flag so check if
  *             flag >= 0
  *    opt == 2 means function allocates memory so check if returned
- *             NULL pointer 
+ *             NULL pointer
  */
 static int check_flag(void *flagvalue, char *funcname, int opt)
 {
@@ -147,7 +147,7 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
 
   /* Check if SUNDIALS function returned NULL pointer - no memory allocated */
   if (opt == 0 && flagvalue == NULL) {
-    fprintf(stderr, 
+    fprintf(stderr,
             "\nSUNDIALS_ERROR: %s() failed - returned NULL pointer\n\n",
 	    funcname);
     return(1);
@@ -160,7 +160,7 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
       fprintf(stderr,
               "\nSUNDIALS_ERROR: %s() failed with flag = %d\n\n",
 	      funcname, *errflag);
-      return(1); 
+      return(1);
     }
   }
 
@@ -275,7 +275,6 @@ int OZ_f(gsl_vector * x, void *OZd, gsl_vector * fres) {
     OZdata = (sasfit_oz_data *) OZd;
     cp_gsl_vector_to_array(x,OZdata->G,OZdata->Npoints);
     res = OZ_step(OZdata);
-//    sasfit_out("OZ_f just has been called\n");
     cp_array_diff_to_gsl_vector(OZdata->G,x,fres,OZdata->Npoints);
     return GSL_SUCCESS;
 }
@@ -287,22 +286,10 @@ double OZ_fp(double * x, void *OZd, double * fres) {
     OZdata = (sasfit_oz_data *) OZd;
     cp_array_to_array(x,OZdata->G,OZdata->Npoints);
     Norm = OZ_step(OZdata);
-//    sasfit_out("OZ_f just has been called\n");
     for (i=0;i<OZdata->Npoints;i++) fres[i]=(OZdata->G[i]-x[i]);
     return Norm;
 }
 
-//void matvec(int n, double *y, double *z, struct ITLIN_OPT *opt)
-void matvec(int n, double *y, double *z, void *opt)
-{
-/*
-    int i,Norm;
-    cp_array_to_array(y,opt->OZd->G,n);
-    Norm = OZ_step(opt->OZd);
-    for (i=0;i<n;i++) z[i] = (opt->OZd->G[i] - y[i]);
-    if ((opt->OZd->it % 50)==0 && opt->OZd->PrintProgress == 1) sasfit_out("matvec calls=%d\n",opt->OZd->it);
-*/
-}
 
 //*****************************************************************************
 //Additional functions needed for Anderson Mixing
@@ -522,7 +509,7 @@ int OZ_init(sasfit_oz_data *OZd) {
    OZOUT  = (double*)fftw_malloc(sizeof(double)*NP);
 
  //  GAMMA_R  = gsl_vector_view_array(G,NP);
- 
+
    OZd->acc_splineOZSQ=gsl_interp_accel_alloc ();
    GAMMA_R  = gsl_vector_alloc(NP);
 
@@ -693,7 +680,7 @@ int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
     int flag;
     flag += KINSetMaxNewtonStep(kin_mem, OZd->KINSetMaxNewtonStep);
     if (OZd->PrintProgress) sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
-    
+
     flag += KINSetMAA(kin_mem, OZd->KINSetMAA);
     flag += KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
     flag += KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
@@ -705,33 +692,33 @@ int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
         flag += KINSetPrintLevel(kin_mem,OZd->KINSetPrintLevel);
     }
     if (OZd->PrintProgress) sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
-               
-    flag += KINSetEtaForm(kin_mem, OZd->KINSetEtaForm); 
+
+    flag += KINSetEtaForm(kin_mem, OZd->KINSetEtaForm);
     if (OZd->PrintProgress) sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
- 
-                
+
+
     flag += KINSetNumMaxIters(kin_mem,OZd->KINSetNumMaxIters);
     if (OZd->PrintProgress) sasfit_out("KINSetNumMaxIters(flag)=%d\n",flag);
-                
+
     flag += KINSetScaledStepTol(kin_mem,OZd->KINSetScaledSteptol);
     if (OZd->PrintProgress) sasfit_out("KINSetScaledStepTol(flag)=%d\n",flag);
 
     flag += KINSetFuncNormTol(kin_mem, OZd->KINSetFuncNormTol);
     if (OZd->PrintProgress) sasfit_out("KINSetFuncNormTol(flag)=%d\n",flag);
-                
+
  //               flag = KINSetNoInitSetup(kin_mem, TRUE);
  //               sasfit_out("KINSetNoInitSetup(flag)=%d\n",flag);
-                
+
     flag += KINSetUserData(kin_mem,OZd);
     if (OZd->PrintProgress) sasfit_out("KINSetUserData(flag)=%d\n",flag);
-                
+
  //               flag = KINSetConstraints(kin_mem, 1.0);
  //               sasfit_out("KINSetConstraints(flag)=%d\n",flag);
  return flag;
 }
 
 int FP4cr_EuRah(sasfit_oz_data *OZd) {
-    int status; 
+    int status;
     double err;
     N_Vector u, f, scale;
     void * kin_mem;
@@ -742,14 +729,14 @@ int FP4cr_EuRah(sasfit_oz_data *OZd) {
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(CEURAH,u,NP);
-                
+
 				kin_mem = KINCreate();
                 OZd->kin_mem=kin_mem;
                 KIN_sasfit_configure(kin_mem,OZd);
-                
+
    				flag = KINInit(kin_mem,OZ_EuRah_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
-                 
+
 				flag = KINSpfgmr(kin_mem, 0);
                 if (OZd->PrintProgress) sasfit_out("KINSpfgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
@@ -759,14 +746,14 @@ int FP4cr_EuRah(sasfit_oz_data *OZd) {
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
-                
+
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
 
-                
-    status = OZ_solver(OZd); 
+
+    status = OZ_solver(OZd);
     if (status != TCL_OK) {
         sasfit_err("could not solve OZ equations\n");
         return TCL_ERROR;
@@ -786,7 +773,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
     N_Vector u, f, scale;
     void * kin_mem;
     int flag, maxlrst;
-    
+
  //   TERM_CHECK termcheck = CheckOnRestart;
 
  //Variable declaration:
@@ -1757,87 +1744,87 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				gsl_matrix_free(b2);
 				gsl_permutation_free(perm);
                 break;
-        case KINSOLFP:                
+        case KINSOLFP:
                 maxlrst = MAXSTEPS/10;
 				scale = N_VNew_Serial(NP);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
-                
+
 				kin_mem = KINCreate();
                 OZd->kin_mem=kin_mem;
                 KIN_sasfit_configure(kin_mem,OZd);
-                
+
    				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
-                 
+
 				flag = KINSpgmr(kin_mem, 0);
                 if (OZd->PrintProgress) sasfit_out("KINSpgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
-                
+
 				flag = KINSol(kin_mem,u,KIN_FP,scale, scale);
                 if (flag != KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err %lg\n:",err);
-                
-                
+
+
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
-        case GMRES:                
+        case GMRES:
                 maxlrst = MAXSTEPS/10;
 				scale = N_VNew_Serial(NP);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
-                
+
 				kin_mem = KINCreate();
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
-                
+
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
-                 
+
 				flag = KINSpgmr(kin_mem, 0);
                 if (OZd->PrintProgress) sasfit_out("KINSpgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
-                
+
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
-                
-                
+
+
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
-        case FGMRES:            
+        case FGMRES:
                 maxlrst = MAXSTEPS/10;
 				scale = N_VNew_Serial(NP);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
-                
+
 				kin_mem = KINCreate();
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
-                
+
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
-                 
+
 				flag = KINSpfgmr(kin_mem, 0);
                 if (OZd->PrintProgress) sasfit_out("KINSpfgmr(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
@@ -1847,43 +1834,43 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err=%lg\n:",err);
-                
+
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
-        case BiCGSTAB:   
+        case BiCGSTAB:
                 maxlrst = MAXSTEPS/10;
 				scale = N_VNew_Serial(NP);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
-                
+
 				kin_mem = KINCreate();
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
                 KIN_sasfit_configure(kin_mem,OZd);
-                
+
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
-                 
+
 				flag = KINSpbcg(kin_mem, 0);
                 if (OZd->PrintProgress) sasfit_out("KINSpbcg(flag)=%d\n",flag);
-                
+
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
-                
+
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
-                break;      
+                break;
         case TFQMR:
                 maxlrst = MAXSTEPS/10;
 				scale = N_VNew_Serial(NP);
@@ -1891,7 +1878,7 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 kin_mem=NULL;
 				u = N_VNew_Serial(NP);
                 cp_array_to_N_Vector(G,u,NP);
-                
+
 				kin_mem = KINCreate();
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
@@ -1902,18 +1889,18 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 
 				flag = KINSptfqmr(kin_mem, 0);
                 if (OZd->PrintProgress) sasfit_out("KINSptfqmr(flag)=%d\n",flag);
-                
+
 				flag = KINSol(kin_mem,u,OZd->KINSolStrategy,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
                 if (OZd->PrintProgress) sasfit_out("KINSol(flag)=%d\n",flag);
                 KINGetFuncNorm(kin_mem, &err);
                 if (OZd->PrintProgress) sasfit_out("err: %lg\n:",err);
-                
+
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
                   if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
-                break;      
+                break;
         case AndersonAcc:
                 //To check when to switch between extend and shift
                 isMaximalDimensionOfKrylovSpaceReached = 0;
@@ -2148,17 +2135,17 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                             sasfit_out("number of OZ_step calls so far: %d\n",OZd->it);
                             sasfit_out("try now phi %lf\n",phi_actual);
                     }
-                    
+
                 }
         }
 //        sasfit_out("it %d, interrupt: %d\n",OZd->it,OZd->interrupt);
     } while (OZd->failed == 0 && fabs(phi_actual - phi_set) > 1e-8 && OZd->it < MAXSTEPS  && OZd->interrupt == 0);
  //   sasfit_out("number of OZ_step calls are: %d\n",OZd->it);
    if (OZd->failed == 1) {
-       sasfit_err("Failure in OZstep. OZ algoriythm does not converge.\n");
+       sasfit_err("Failure in OZstep. OZ algorithm does not converge.\n");
        return TCL_ERROR;
    }
-   if (OZd->it >= MAXSTEPS) { 
+   if (OZd->it >= MAXSTEPS) {
        sasfit_err("OZ algorithm reached maximum allowed number of steps\n");
        return TCL_ERROR;
    }
@@ -2213,9 +2200,9 @@ int OZ_solver_by_gsl_multroot(sasfit_oz_data *OZd,sasfit_oz_root_algorithms algo
         if (OZd->PrintProgress) sasfit_out("iterations: %d, status = %s\n", iter, gsl_strerror (status));
         if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
         if (OZd->PrintProgress) sasfit_out("residual of gamma(r)-OZ(gamma(r)):%g \n",gsl_blas_dasum(sgsl->f));
-                
+
         stoppingflag = gsl_multiroot_test_residual (sgsl->f, RELERROR);
-        
+
 //        if (status)  { /* check if solver is stuck */
 //            break;
 //       }
@@ -2262,7 +2249,7 @@ int OZ_calculation (sasfit_oz_data *OZd) {
             OZd->indx_max_appearent_sigma=NP;
 
             OZd->gate4g[igneg] = 0;
-            
+
             while (g[igneg]<0) {
                 OZd->gate4g[igneg] = 0;
                 OZd->indx_max_appearent_sigma=igneg;
@@ -2275,7 +2262,7 @@ int OZ_calculation (sasfit_oz_data *OZd) {
         if (OZd->indx_min_appearent_sigma < OZd->indx_max_appearent_sigma) {
             do  {
                 sasfit_out("try to solve next OZ with RMSA, igneg: %d\n",igneg);
-                status = OZ_solver(OZd); 
+                status = OZ_solver(OZd);
                 sasfit_out("solved OZ with RMSA, igneg: %d\n",igneg);
                 if (status != TCL_OK) {
                     sasfit_err("could not solve OZ equations\n");
@@ -2296,13 +2283,13 @@ int OZ_calculation (sasfit_oz_data *OZd) {
                 }
             } while ( OZd->indx_min_appearent_sigma !=  OZd->indx_max_appearent_sigma);
         }
-/* simple scheme            
+/* simple scheme
             for (i=igneg+1;i<NP;i++)  {
                 OZd->gate4g[i] = 1;
             }
 
             do {
-                
+
                 sasfit_out("try to solve next OZ with RMSA, igneg: %d\n",igneg);
                 status = OZ_solver(OZd);
                 sasfit_out("solved OZ with RMSA, igneg: %d\n",igneg);
@@ -2325,9 +2312,9 @@ int OZ_calculation (sasfit_oz_data *OZd) {
             } while (igneg<NP);
         return TCL_OK;
 */
-  } else { 
+  } else {
         sasfit_out("Root finding not required\n");
-        status = OZ_solver(OZd); 
+        status = OZ_solver(OZd);
         if (status != TCL_OK) {
              sasfit_err("could not solve OZ equations\n");
              return TCL_ERROR;
@@ -2349,7 +2336,7 @@ double OZ_step(sasfit_oz_data *OZd) {
     double powarg, logarg,dtmp ;
     bool doneB;
     char sBuffer[256];
-    
+
     OZ_func_one_t * tmp_potential;
     ro=6*PHI/(M_PI*gsl_pow_3(PARAM[0]));
     dk = M_PI/((NP+1.0)*dr);
@@ -2358,7 +2345,7 @@ double OZ_step(sasfit_oz_data *OZd) {
     OZd->it++;
 
     cp_array_to_array(G, Gprevious, NP);
-    
+
     if (((OZd->it*OZd->Npoints) % (100*MINDIMOZ))==0) {
         Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
         Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
@@ -2622,7 +2609,7 @@ double OZ_step(sasfit_oz_data *OZd) {
     }
     OZd->GNorm= sqrt(GNorm2);
     OZd->SNorm= sqrt(Sm);
-    if (OZd->KINSetPrintLevel == 4) {  
+    if (OZd->KINSetPrintLevel == 4) {
         sprintf(sBuffer,"storeOZstepinfo \"%d\t%lg\"",OZd->it,OZd->GNorm);
         Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
 //        sasfit_out("%d\t%lg\n",OZd->it,OZd->GNorm);
@@ -2644,7 +2631,7 @@ static int OZ_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure) {
     if (OZd->GNorm != OZd->GNorm) {
         for (i=0;i<NP;i++) G[i] = 0;
         return -1;
-    } 
+    }
     if (OZd->interrupt != 0){
         return -1;
     } else {
@@ -2656,11 +2643,9 @@ static int OZ_step_kinsolFP(N_Vector cc, N_Vector fval, void *OZd_structure) {
     sasfit_oz_data *OZd;
     int i;
     double Norm;
-    //This definition must be here (and not later), otherwise the macro G in next line is undefined
     OZd = (sasfit_oz_data*) OZd_structure;
     cp_N_Vector_to_array(cc,G,NP); //This line can in principle be omitted, but it is cleaner to have it....
                                    //....in case Kinsol and OZd get 'out of sync' (due to whatever reason)
-    //OZd = (sasfit_oz_data*) OZd_structure;
     OZ_step(OZd);
     cp_array_to_N_Vector(G,fval,NP);
     check_interrupt(OZd);
@@ -2694,7 +2679,7 @@ static int OZ_EuRah_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure)
     dydrdrho = (double*)malloc((NP)*sizeof(double));
     dydr_rhop1 = (double*)malloc((NP)*sizeof(double));
     dydr_rhom1 = (double*)malloc((NP)*sizeof(double));
-    
+
     Dphi = PHI*0.01;
     Drho = Dphi*6/M_PI/gsl_pow_3(OZd->pPot[0]);
     phiorig = PHI;
@@ -2703,19 +2688,19 @@ static int OZ_EuRah_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure)
     calc_dy(CAVITY,dydr_rhom1,dr,NP,OZd);
     for (i=0;i<NP;i++) {
         dydrhom1[i]=CAVITY[i];
-    } 
-    
+    }
+
     PHI=phiorig+Dphi;
     OZ_solver(OZd);
     calc_dy(CAVITY,dydr_rhop1,dr,NP, OZd);
     for (i=0;i<NP;i++) {
         dydrhop1[i]=CAVITY[i];
-    } 
-    
+    }
+
     PHI=phiorig;
     OZ_solver(OZd);
     calc_dy(CAVITY,dydr,dr,NP, OZd);
-    
+
     NormCr=0;
     for (i=0;i<NP;i++) {
         dydrdrho[i]=(dydr_rhop1[i]-dydr_rhom1[i])/(2*Drho);
@@ -2731,7 +2716,7 @@ static int OZ_EuRah_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure)
     free(dydrdrho);
     free(dydr_rhop1);
     free(dydr_rhom1);
-    
+
     cp_array_diff_N_Vector_to_N_Vector(CEURAH,cc,fval,NP);
     check_interrupt(OZd);
     if (OZd->GNorm != OZd->GNorm) {
@@ -2740,7 +2725,7 @@ static int OZ_EuRah_step_kinsol(N_Vector cc, N_Vector fval, void *OZd_structure)
             CEURAH[i] = 0;
         }
         return -1;
-    } 
+    }
     if (OZd->interrupt != 0){
         return -1;
     } else {
@@ -2761,7 +2746,7 @@ double PInvariantKernel(double q, void *OZd) {
 double PSInvariantKernel(double q, void *OZd) {
     double Sspline, res ,sigmaR;
     int evalOK;
-    
+
     sigmaR = ((sasfit_oz_data *) OZd)->pPot[0]*q;
     if (((sasfit_oz_data *) OZd)->OZSQakima_T==NULL) {
         Sspline = 1.0;
@@ -2898,7 +2883,7 @@ int OZ_solver (sasfit_oz_data *OZd) {
         default:
                 sasfit_err("this algorithm is planned to be implemented\n");
     }
-    
+
     if (OZd->PrintProgress) sasfit_out("Needed %d calls to OZ_step\n",OZd->it);
 
     Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
@@ -2968,12 +2953,12 @@ double compressibility_calc(double scp, void *params)
    S0=OZd->Sq0;
    OZd->F2xS_Inv = 0;
    OZd->F2_Inv = 0;
- /*  
+ /*
    Q0PQ[0] = 0;
    S0PSQ[0] = OZd->Sq0;
    for (i=1; i<=NP; i++) {
         Q0PQ[i] = k[i-1];
-        S0PSQ[i] = S[i-1]; 
+        S0PSQ[i] = S[i-1];
    }
    OZd->OZSQakima_T = gsl_spline_alloc(gsl_interp_akima,NP+1);
    gsl_spline_init(OZd->OZSQakima_T, Q0PQ, S0PSQ, NP+1);
@@ -2984,20 +2969,20 @@ double compressibility_calc(double scp, void *params)
     sasfit_intdei(&PSInvariantKernel, 0.0, //k[NP-1],
                   aw, &res, &err,OZd);
     OZd->F2xS_Inv=res;
-    sasfit_intdei(&PInvariantKernel, 0.0, //k[NP-1], 
+    sasfit_intdei(&PInvariantKernel, 0.0, //k[NP-1],
                   aw, &res, &err,OZd);
     OZd->F2_Inv=res;
     free(aw);
     gsl_spline_free(OZd->OZSQakima_T);
-       
+
    OZd->F2xS_Inv=(OZd->F2xS_Inv +Iqinf) / (1-PHI);
    OZd->F2_Inv  = OZd->F2_Inv   +Iqinf;
    sasfit_out("1: %e %e\n",OZd->F2xS_Inv, OZd->F2_Inv);
    sasfit_out("2: %e %e %e\n",OZd->F2xS_Inv/ OZd->F2_Inv-1, k[NP-1], err);
-*/  
-//  The commented code above was for testing the mass conservation. It seems, at leat as fas as the simple numerics allows to check it 
+*/
+//  The commented code above was for testing the mass conservation. It seems, at leat as fas as the simple numerics allows to check it
 //  that mass conservation seems to be fullfilled
-   
+
    r1=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    chicp=S0*OZd->beta/r1;
 
@@ -3007,7 +2992,7 @@ double compressibility_calc(double scp, void *params)
    r2=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
    if (OZd->interrupt == 1) return 0;
-   
+
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
             if (i>0) {
@@ -3031,7 +3016,7 @@ double compressibility_calc(double scp, void *params)
    r3=6.0*PHI/(M_PI*gsl_pow_3(PARAM[0]));
    OZ_solver(OZd);
    if (OZd->interrupt == 1) return 0;
-   
+
    for (i=0; i<NP-1; i++) {
        if (dU_dR[i] == GSL_NEGINF) {
             if (i>0) {
@@ -3067,7 +3052,7 @@ double compressibility_calc(double scp, void *params)
 }
 
 double mod_delta_chi(double scp, void *params)
-{   
+{
     scalar res;
     res=fabs(compressibility_calc(scp, params));
     if (res!=res || ((sasfit_oz_data *)params)->failed == 1) {
@@ -3098,7 +3083,7 @@ void root_finding (sasfit_oz_data *OZd) {
     sasfit_out("-----------------------------------------------------\n");
     sasfit_out("%s |  %s \n","self-consistency parameter" , "(chicomp-chivir)/beta");
     sasfit_out("---------------------------|-------------------------\n");
-    
+
     switch (CLOSURE) {
         case RY:
         case HMSA:
@@ -3132,7 +3117,7 @@ void root_finding (sasfit_oz_data *OZd) {
     } /* else {
             sasfit_out("No change of sign between %le and %le \n", alpha_left,alpha_right);
             sasfit_out("Try to scan the interval to find sig change or a rough minimum\n",scp_inter);
-            
+
             Fm.function = &mod_delta_chi;
             Fm.params = OZd;
             gsl_set_error_handler_off();
@@ -3226,7 +3211,7 @@ void root_finding (sasfit_oz_data *OZd) {
         root = 0.0;
         x_lo = alpha_left;
         x_hi = alpha_right;
-        
+
         F.function = &compressibility_calc;
         F.params = OZd;
 
@@ -3234,7 +3219,7 @@ void root_finding (sasfit_oz_data *OZd) {
         s = gsl_root_fsolver_alloc (Tt);
         gsl_root_fsolver_set (s, &F, x_lo, x_hi);
         sasfit_out("using %s method\n",gsl_root_fsolver_name (s));
-        
+
         sasfit_out(" --------------------------------------------------------------\n");
         sasfit_out(" iter |   lower          upper     |     root         err(est) \n");
         sasfit_out(" --------------------------------------------------------------\n");
@@ -3294,7 +3279,7 @@ int OZ_free (sasfit_oz_data *OZd) {
     free(MAYER);
     gsl_vector_free(GAMMA_R);
     gsl_interp_accel_free(OZd->acc_splineOZSQ);
-    
+
     fftw_destroy_plan(OZd->pl);
     fftw_free(OZIN);
     fftw_free(OZOUT);

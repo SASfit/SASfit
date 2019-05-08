@@ -106,7 +106,17 @@ proc EmOptionsCmd {} {
 	grid $w.maxitvalue -row 2 -column 3 -sticky w
 	
 	label $w.intStrat_label -text "iteration scheme"
-	ComboBox $w.intStrat_value -values {"Picard" "Anderson" "GMRES"} \
+	ComboBox $w.intStrat_value -values {"Picard iteration" "Mann iteration" \
+    		         "Ishikawa iteration" "Noor iteration" \
+    		         "SP iteration" "S iteration"	\
+    		         "CR iteration" "Picard-S iteration" \
+    		         "PMH iteration" "Mann II iteration" \
+    		         "Krasnoselskij iteration" \
+    		         "S* iteration" \
+				 "dNewton" "Hybrid" \
+	    		 "Hybrids (int. sc.)" "Broyden" \
+				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
+			}  \
 				-width 10 \
 				-textvariable ::EMOptions(IterationScheme) 
 	grid $w.intStrat_label -row 3 -column 0 -sticky e
@@ -132,7 +142,7 @@ proc EmOptionsCmd {} {
 	label $w.dimlabel -text "dim ="
 	entry $w.dimvalue -textvariable EMOptions(dim) -width $entrywidth
 	grid $w.dimlabel -row 5 -column 0 -sticky e
-	grid $w.dimvalue -row 6 -column 1 -sticky w
+	grid $w.dimvalue -row 5 -column 1 -sticky w
 
 }
 proc structuralParFitCmd {} {

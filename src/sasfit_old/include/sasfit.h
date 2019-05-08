@@ -41,6 +41,7 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlin.h>
 #include "SASFIT_nr.h"
+#include "sasfit_oz.h"
 
 /* enum bool { FALSE = 0, TRUE = 1 }; */
 #define float double
@@ -114,13 +115,18 @@ typedef struct
 	scalar  smooth;
 	scalar  eps;
 	scalar  chi2;
-	int     nR;
 	int     maxit;
 	char    spacing[132];
 	char    iteration_scheme[132];
 	char    smooth_type[132];
 	char    seed[132];
 	scalar  dim;
+	int     nh, nR;
+	scalar  C4, C0;
+	double *in, *out, *xwork, **A, **S;
+	double *h, *Ih, *Iexp, *DIh, *Ith, *r, *dr, *dh;
+    gsl_vector *DR;
+    sasfit_oz_root_algorithms root_algorithm;
 //        char ct[STRLEN];
 } EM_param_t;
 
@@ -144,7 +150,7 @@ float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
  *                par[i][2] = p
  *                par[i][3] = m
  *                par[i][4] =     \    characteristic lengths of a particle,
- *                par[i][5] =      \   e.g. R1, R2, eta*mu for a sperecal shell
+ *                par[i][5] =      \   e.g. R1, R2, eta*mu for a spherical shell
  *                par[i][6] =      /   or a,b,c for a parallel epiped, etc.
  *                par[i][7] = eta /    par[i][7] : scattering contrast
  *

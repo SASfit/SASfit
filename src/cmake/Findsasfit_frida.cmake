@@ -39,17 +39,17 @@
 GET_FILENAME_COMPONENT(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 GET_FILENAME_COMPONENT(CURRENT_DIR "${CURRENT_DIR}/.." ABSOLUTE)
 
-FIND_PATH(sasfit_oz_INCLUDE_DIR sasfit_frida.h
-    ${CURRENT_DIR}/sasfit_ff/include/
+FIND_PATH(sasfit_frida_INCLUDE_DIR sasfit_frida.h
+    ${CURRENT_DIR}/sasfit_frida/include/
 )
   
-FIND_LIBRARY(sasfit_ff_LIBRARY sasfit_frida
+FIND_LIBRARY(sasfit_frida_LIBRARY sasfit_frida
     ${CURRENT_DIR}/sasfit_frida/lib/
     ${CURRENT_DIR}/sasfit_frida/lib/debug/
     ${CURRENT_DIR}/sasfit_frida/lib/release/
 )
 
-IF(sasfit_ff_INCLUDE_DIR)
+IF(sasfit_frida_INCLUDE_DIR)
     SET(sasfit_frida_FOUND "YES")
     SET(sasfit_frida_INCLUDE_DIRS ${sasfit_frida_INCLUDE_DIR})
   IF(sasfit_frida_LIBRARY)
