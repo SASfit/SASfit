@@ -566,8 +566,9 @@ set sasfit(filelabel)      {}
 set sasfit(scale_types_x) {"x" "pow(x,2)" "pow(x,3)" "pow(x,4)" "log10(x)" "log(x)" \
                            "sqrt(x)" "1/x" "1/sqrt(x)" "arcsinh(x)" }
 set sasfit(scale_types_y) {"y" "pow(y,2)" "pow(y,3)" "pow(y,4)" "y*x" "y*pow(x,2)" \
-                           "y*pow(x,3)" "y*pow(x,4)" "y*pow(x,6)" "log10(y)" "log(abs(y))" \
-			   "log(abs(y*x))" "log(abs(y*pow(x,2)))" "log(abs(y*pow(x,4)))"
+                           "y*pow(x,3)" "y*pow(x,4)" "y*pow(x,6)" "y*pow(x,-2)" \
+                           "y*pow(x,-3)" "y*pow(x,-4)" "y*pow(x,-6)" "log10(y)" "log(abs(y))" \
+                           "log(abs(y*x))" "log(abs(y*pow(x,2)))" "log(abs(y*pow(x,4)))" \
                            "sqrt(abs(y))" "1/y" "1/sqrt(abs(y))" "arcsinh(y)" }
 
 proc clear_sasfit_config {sasfit_arr prefix suffixlist
@@ -3078,6 +3079,7 @@ proc SaveCmd {} {
 	      puts_arr $fid ::ozyrGraph 
 	      puts_arr $fid ::ozfrGraph 
 	      puts_arr $fid ::Detector2DIQGraph
+		  puts_arr $fid ::EMOptions
 	      close $fid
 	   }
 	   set ::sasfit(lastProjectFile) $filename

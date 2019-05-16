@@ -275,22 +275,16 @@ radiobutton $w.guinierrange.lowQ.radio.zimm -text "Zimm" \
                 RefreshStructParFit
 	    } \
             -highlightthickness 0
-button $w.guinierrange.lowQ.pr -text "calculate p(r)" \
-            -command {
-                global StructParData
-                RefreshStructParFit
-	    } \
-            -highlightthickness 0
-button $w.guinierrange.lowQ.nr -text "calculate N(R)" \
+button $w.guinierrange.lowQ.nrmuch -text "calculate N(R) using MuCh" \
             -command {
                 global StructParData IQGraph SDGraph
                 RefreshStructParFit
    		        sasfit_timer_start "\nStart apply"
-				set prEM [sasfit_prEM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+				set DRMuCh [sasfit_DR_MuCh StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
 				sasfit_timer_stop "Apply" "finished" ""
 				
 				clearGraph_el SDGraph
-				Put_Graph_el SDGraph [lindex $prEM 0] [lindex $prEM 1]
+				Put_Graph_el SDGraph [lindex $DRMuCh 0] [lindex $DRMuCh 1]
 				
 				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
 				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
@@ -298,7 +292,7 @@ button $w.guinierrange.lowQ.nr -text "calculate N(R)" \
 				
 				clearGraph_el IQGraph
 				set indx1 -1
-				Put_Graph_el IQGraph [lindex $prEM 2] [lindex $prEM 3]
+				Put_Graph_el IQGraph [lindex $DRMuCh 2] [lindex $DRMuCh 3]
 				
 				
 	incr indx1
@@ -314,8 +308,78 @@ button $w.guinierrange.lowQ.nr -text "calculate N(R)" \
 		RefreshGraph IQGraph
 	    } \
             -highlightthickness 0
+button $w.guinierrange.lowQ.nrem -text "calculate N(R) using EM" \
+            -command {
+                global StructParData IQGraph SDGraph
+                RefreshStructParFit
+   		        sasfit_timer_start "\nStart apply"
+				set DREM [sasfit_DR_EM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+				sasfit_timer_stop "Apply" "finished" ""
+				
+				clearGraph_el SDGraph
+				Put_Graph_el SDGraph [lindex $DREM 0] [lindex $DREM 1]
+				
+				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
+				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
+				RefreshGraph SDGraph
+				
+				clearGraph_el IQGraph
+				set indx1 -1
+				Put_Graph_el IQGraph [lindex $DREM 2] [lindex $DREM 3]
+				
+				
+	incr indx1
+	set IQGraph(e,symbol)     [lreplace $IQGraph(e,symbol) $indx1 $indx1 none]
+	set IQGraph(e,linehide)   [lreplace $IQGraph(e,linehide) $indx1 $indx1 1]
+	set IQGraph(e,dashcolor)  [lreplace $IQGraph(e,dashcolor) $indx1 $indx1 red]
+	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
+				       $indx1 $indx1 Fit]
+
+	# draw the data (for fit mode)
+		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
+		incr indx1		
+		RefreshGraph IQGraph
+	    } \
+            -highlightthickness 0
+
+button $w.guinierrange.lowQ.nrsdm -text "calculate N(R) using SDM" \
+            -command {
+                global StructParData IQGraph SDGraph
+                RefreshStructParFit
+   		        sasfit_timer_start "\nStart apply"
+				set DRSDM [sasfit_DR_SDM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+				sasfit_timer_stop "Apply" "finished" ""
+				
+				clearGraph_el SDGraph
+				Put_Graph_el SDGraph [lindex $DRSDM 0] [lindex $DRSDM 1]
+				
+				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
+				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
+				RefreshGraph SDGraph
+				
+				clearGraph_el IQGraph
+				set indx1 -1
+				Put_Graph_el IQGraph [lindex $DRSDM 2] [lindex $DRSDM 3]
+				
+				
+	incr indx1
+	set IQGraph(e,symbol)     [lreplace $IQGraph(e,symbol) $indx1 $indx1 none]
+	set IQGraph(e,linehide)   [lreplace $IQGraph(e,linehide) $indx1 $indx1 1]
+	set IQGraph(e,dashcolor)  [lreplace $IQGraph(e,dashcolor) $indx1 $indx1 red]
+	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
+				       $indx1 $indx1 Fit]
+
+	# draw the data (for fit mode)
+		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
+		incr indx1		
+		RefreshGraph IQGraph
+	    } \
+            -highlightthickness 0			
+			
 pack $w.guinierrange.lowQ.radio.guinier \
-     $w.guinierrange.lowQ.radio.zimm $w.guinierrange.lowQ.pr $w.guinierrange.lowQ.nr\
+     $w.guinierrange.lowQ.radio.zimm \
+	 $w.guinierrange.lowQ.nrmuch $w.guinierrange.lowQ.nrem\
+	 $w.guinierrange.lowQ.nrsdm \
      -padx 2m  -pady 1m \
      -fill both -expand yes -side left -anchor w
 #pack $w.guinierrange.lowQ.radio2.debye \
