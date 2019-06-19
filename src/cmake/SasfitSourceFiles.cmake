@@ -273,6 +273,10 @@ set(SOURCE_sasfit_fixed_point_acc
 
 set(SOURCE_sasfit_frida
 	sasfit_frida_solver.c
+	nnls.c
+	blas0.c
+	blas1_d.c
+	linpack_d.c
 )
 
 set(SOURCE_sasfit_old

@@ -109,6 +109,33 @@ struct extrapolPar {
    char  aname[MAXPAR][132];
 };
 
+
+typedef enum {
+        Idendity,
+        first_deriv_eps_b,
+        first_deriv_eps_e,
+        second_deriv_DD,
+        second_deriv_DN,
+        second_deriv_ND
+} sasfit_EM_Lmatrix_definition;
+
+typedef enum {
+        Lcorner,
+        Lcorner2,
+        GCV,
+        redchi2
+} sasfit_EM_opt_Lagrange_param_method;
+
+typedef enum {
+        MuCh,
+        SDM,
+        lin_Reg,
+        EM_smoothing,
+        EM_constant_prior,
+        EM_adaptive_prior
+} sasfit_DR_algorithm;
+
+
 typedef struct
 {
 	scalar  Rmax;
@@ -116,18 +143,27 @@ typedef struct
 	int     Nshannon;
 	scalar  Delta_r;
 	scalar  smooth;
+	scalar  Entropy;
+	scalar  redchi2;
 	scalar  eps;
 	scalar  chi2;
 	int     maxit;
+	scalar  lambda;
 	char    spacing[132];
 	char    iteration_scheme[132];
+	char    opt_Lagrange_scheme[132];
+	char    Lmatrix[132];
 	char    smooth_type[132];
-	bool    smooth_bool;
+	char    FIinv[132];
+	int     smooth_bool;
 	char    seed[132];
+	sasfit_DR_algorithm DR_algorithm;
+	sasfit_EM_opt_Lagrange_param_method optLagrange_method;
+	sasfit_EM_Lmatrix_definition defL;
 	scalar  dim;
 	int     nh, nR;
 	scalar  C4, C0;
-	double *in, *out, *xwork, **A, **S, **T3, *Ih4mC4;
+	double *in, *out, *xwork, **A, **S, **T3, *Ih4mC4, *prior;
 	double *h, *Ih, *Iexp, *DIh, *Ith, *r, *dr, *dh;
     gsl_vector *DR;
     sasfit_oz_root_algorithms root_algorithm;

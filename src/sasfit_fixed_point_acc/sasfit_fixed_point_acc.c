@@ -528,14 +528,14 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 
     FPd->failed = 0;
     FPd->interrupt = 0;
-	sasfit_out("initialization finished and start loop, algorithm: %d\n",algorithm);
+//	sasfit_out("initialization finished and start loop, algorithm: %d\n",algorithm);
 //    do {
         err=2*FPd->relerror;
 #define NITSTEP 20
         switch (algorithm) {
         case Picard_iteration:
                 n = 0;
-                sasfit_out("FPd->it:%d\tFPd->maxsteps:%d\tFPd->interrupt:%d\n",FPd->it,FPd->maxsteps,FPd->interrupt,FPd->failed);
+ //               sasfit_out("FPd->it:%d\tFPd->maxsteps:%d\tFPd->interrupt:%d\n",FPd->it,FPd->maxsteps,FPd->interrupt,FPd->failed);
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
 //                    check_interrupt_fp(FPd);
                     n++;
@@ -1725,16 +1725,17 @@ double FP_step(sasfit_fp_data *FPd) {
 	FPd->Chi2Norm = FPd->FP_Op(FPd->FPstructure);
 
 //	sasfit_out("123456789 %lg \n",FPd->Chi2Norm);
-	GNorm2 = 0;
-	KLD=0;
-	JSD=0;
+
 	sumIn=0;
 	sumOut=0;
-
     for (j=0; j < FPd->Npoints; j++) {
 		sumIn = sumIn+FPd->in[j];
 		sumOut = sumOut+FPd->out[j];
     }
+
+    GNorm2 = 0;
+	KLD=0;
+	JSD=0;
 	for (j=0; j < FPd->Npoints; j++) {
 		P=FPd->in[j]/sumIn;
 		Q=FPd->out[j]/sumOut;
@@ -1812,7 +1813,7 @@ int FP_free (sasfit_fp_data *FPd) {
 
 int FP_solver (sasfit_fp_data *FPd) {
     int i,status;
-    sasfit_out("algorithm: %d\n",FPd->root_algorithm);
+//    sasfit_out("algorithm: %d\n",FPd->root_algorithm);
     switch (FPd->root_algorithm) {
         case Picard_iteration:
                 status = FP_solver_by_iteration(FPd,Picard_iteration);

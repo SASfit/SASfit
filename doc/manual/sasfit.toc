@@ -382,8 +382,8 @@
 \contentsline {subsubsection}{\tocsubsubsection {}{8.10.1.2}{boolean (union model)}}{484}{subsubsection.2001}
 \contentsline {subsubsection}{\tocsubsubsection {}{8.10.1.3}{boolean (intersection model)}}{485}{subsubsection.2008}
 \contentsline {subsubsection}{\tocsubsubsection {}{8.10.1.4}{clipped random fields}}{486}{subsubsection.2009}
-\contentsline {paragraph}{\tocparagraph {}{}{Single threshold:}}{486}{section*.2014}
-\contentsline {paragraph}{\tocparagraph {}{}{Two-cut model:}}{487}{section*.2019}
+\contentsline {paragraph}{\tocparagraph {}{}{\textbf {Single threshold:}}}{486}{section*.2014}
+\contentsline {paragraph}{\tocparagraph {}{}{\textbf {Two-cut model:}}}{487}{section*.2019}
 \contentsline {paragraph}{\tocparagraph {}{}{Two-cut intersection model:}}{487}{section*.2023}
 \contentsline {subsection}{\tocsubsection {}{8.10.2}{Teubner-Strey}}{491}{subsection.2034}
 \contentsline {subsection}{\tocsubsection {}{8.10.3}{Debye-Anderson-Brumberger(DAB)}}{494}{subsection.2052}
