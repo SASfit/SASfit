@@ -154,7 +154,8 @@ typedef enum {
         BiCGSTAB, // routine from sundials/konsol library
         TFQMR, // routine from sundials/konsol library
         FGMRES, // routine from sundials/konsol library
-        KINSOLFP
+        KINSOLFP,
+        BIGGS_ANDREWS
 } sasfit_oz_root_algorithms;
 
 typedef struct {

@@ -115,7 +115,7 @@ proc EmOptionsCmd {} {
     		         "S* iteration" \
 				 "dNewton" "Hybrid" \
 	    		 "Hybrids (int. sc.)" "Broyden" \
-				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
+				 "Biggs_Andrews" "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
 			}  \
 				-width 16 \
 				-textvariable ::EMOptions(IterationScheme) 
@@ -151,8 +151,8 @@ proc EmOptionsCmd {} {
 	grid $w.lamvalue -row 5 -column 3 -sticky w
 	
 	label $w.linRegu_label -text "regul. matrix"
-	ComboBox $w.linRegu_value -values {"Idendity" "first deriv. (eps_b)" "first deriv. (eps_e)"
-				"second deriv. (D-D)" "second deriv. (D-N)" "second deriv. (N-D)"
+	ComboBox $w.linRegu_value -values {"Idendity" "first deriv." "first deriv. (eps_b)" "first deriv. (eps_e)"
+				"second deriv." "second deriv. (D-D)" "second deriv. (N-N)" "second deriv. (D-N)" "second deriv. (N-D)"
 			}  \
 				-width 16 \
 				-textvariable ::EMOptions(LMatrix) 
@@ -161,13 +161,40 @@ proc EmOptionsCmd {} {
 	grid $w.linRegu_value -row 6 -column 1 -sticky w
 	
 	label $w.opt_Lagrange_label -text "opt. Lagrange param."
-	ComboBox $w.opt_Lagrange_value -values {"L-corner" "L-corner2" "GCV" "red. chi2"
+	ComboBox $w.opt_Lagrange_value -values {"L-corner" "L-corner2" "GCV" "red. chi2" "manual"
 			}  \
 				-width 10 \
 				-textvariable ::EMOptions(optimumLagrange) 
 				
 	grid $w.opt_Lagrange_label -row 6 -column 2 -sticky e
 	grid $w.opt_Lagrange_value -row 6 -column 3 -sticky w
+	
+	label $w.ls_method_label -text "LS method:"
+	ComboBox $w.ls_method_value -values {"LLS" "NNLLS"
+			}  \
+				-width 16 \
+				-textvariable ::EMOptions(LLSmethod) 
+				
+	grid $w.ls_method_label -row 7 -column 0 -sticky e
+	grid $w.ls_method_value -row 7 -column 1 -sticky w
+	
+	label $w.nLagrange_label -text "number of Lagrange values"
+	entry $w.nLagrange_value -textvariable EMOptions(nLagrange) -width $entrywidth
+				
+	grid $w.nLagrange_label -row 7 -column 2 -sticky e
+	grid $w.nLagrange_value -row 7 -column 3 -sticky w	
+	
+	label $w.overrelaxation_label -text "overrelaxation param.:"
+	entry $w.overrelaxation_value -textvariable EMOptions(overrelaxation) -width $entrywidth 
+				
+	grid $w.overrelaxation_label -row 8 -column 0 -sticky e
+	grid $w.overrelaxation_value -row 8 -column 1 -sticky w
+	
+	label $w.maxkrylov_label -text "max. Krylov space dim.:"
+	entry $w.maxkrylov_value -textvariable EMOptions(maxKrylov) -width $entrywidth 
+				
+	grid $w.maxkrylov_label -row 8 -column 2 -sticky e
+	grid $w.maxkrylov_value -row 8 -column 3 -sticky w
 }
 proc structuralParFitCmd {} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -316,7 +343,10 @@ button $w.guinierrange.lowQ.nr -text "calculate N(R) using:" \
 							set DR [sasfit_DR_SDM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
 						 }
 					"lin Reg" { 
-							set DR [sasfit_DR_MEM1 StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+							set DR [sasfit_DR_linReg StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+					"MEM" { 
+							set DR [sasfit_DR_MEM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
 						 }
 					"EM (ME constant prior)" { 
 							set DR [sasfit_DR_EM_ME_const StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
@@ -354,7 +384,7 @@ button $w.guinierrange.lowQ.nr -text "calculate N(R) using:" \
             -highlightthickness 0
 ComboBox $w.guinierrange.lowQ.method -values {"MuCh" "EM (smoothing)" \
     		         "EM (ME constant prior)" "EM (ME adaptive prior)" \
-    		         "SDM" "lin Reg" }  \
+    		         "SDM" "lin Reg" "MEM"}  \
 				-width 18 \
 				-textvariable ::EMOptions(method) 
 				

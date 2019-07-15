@@ -115,6 +115,23 @@ A.~Bensafi, U.~Maschke, and M.~Benmouna.
 \newblock {\em Polymer International}, 49(2):175--183, feb 2000.
 \newblock \doi{10.1002/(sici)1097-0126(200002)49:2<175::aid-pi323>3.0.co;2-m}.
 
+\bibitem{Benvenuto2017}
+F.~Benvenuto.
+\newblock A study on regularization for discrete inverse problems with
+  model-dependent noise.
+\newblock {\em {SIAM} Journal on Numerical Analysis}, 55(5):2187--2203, jan
+  2017.
+\newblock \doi{10.1137/15m1049051}.
+
+\bibitem{Benvenuto2016}
+F.~Benvenuto, H.~Haddar, and B.~Lantz.
+\newblock A robust inversion method according to a new notion of regularization
+  for poisson data with an application to nanoparticle volume determination.
+\newblock {\em {SIAM} Journal on Applied Mathematics}, 76(1):276--292, jan
+  2016.
+\newblock \doi{10.1137/15m1024354}.
+\newblock cited By 0.
+
 \bibitem{Berk1991}
 N.~F. Berk.
 \newblock Scattering properties of the leveled-wave model of random
@@ -154,6 +171,19 @@ P.~Bevington and D.~K. Robinson.
 \newblock
   \urlprefix\url{http://catalogs.mhhe.com/mhhe/viewProductDetails.do?isbn=0072472278}.
 \newblock ISBN-10: 0072472278, ISBN-13: 978-0072472271.
+
+\bibitem{Biggs1995}
+D.~S.~C. {Biggs} and M.~{Andrews}.
+\newblock Conjugate gradient acceleration of maximum-likelihood image
+  restoration.
+\newblock {\em Electronics Letters}, 31(23):1985--1986, Nov 1995.
+\newblock \doi{10.1049/el:19951400}.
+
+\bibitem{Biggs1997}
+D.~S.~C. Biggs and M.~Andrews.
+\newblock Acceleration of iterative image restoration algorithms.
+\newblock {\em Applied Optics}, 36(8):1766, mar 1997.
+\newblock \doi{10.1364/ao.36.001766}.
 
 \bibitem{Blaurock1982}
 A.~E. Blaurock.
@@ -232,6 +262,13 @@ R.~Bracewell.
 \newblock Springer {US}, Boston, MA, 2003.
 \newblock \doi{10.1007/978-1-4419-8963-5_14}.
 
+\bibitem{Bressler2015}
+I.~Bre{\ss}ler, J.~Kohlbrecher, and A.~F. Thünemann.
+\newblock Sasfit: a tool for small-angle scattering data analysis using a
+  library of analytical expressions.
+\newblock {\em Journal of Applied Crystallography}, 48(5):1587--1598, sep 2015.
+\newblock \doi{10.1107/s1600576715016544}.
+
 \bibitem{Burchard1974}
 W.~Burchard.
 \newblock Statistics of star-shaped molecules. i. stars with polydisperse side
@@ -259,6 +296,13 @@ C.~Burger and W.~Ruland.
 \newblock Evaluation of equatorial orientation distributions.
 \newblock {\em Journal of Applied Crystallography}, 39(6):889--891, nov 2006.
 \newblock \doi{10.1107/s0021889806038957}.
+
+\bibitem{Byrne2011}
+C.~Byrne and P.~P.~B. Eggermont.
+\newblock {EM} algorithms.
+\newblock In {\em Handbook of Mathematical Methods in Imaging}, pages 271--344.
+  Springer New York, 2011.
+\newblock \doi{10.1007/978-0-387-92920-0_8}.
 
 \bibitem{Caccamo1996}
 C.~Caccamo.
@@ -300,6 +344,12 @@ E.~F. Casassa.
 \newblock {\em Journal of Polymer Science Part A: General Papers},
   3(2):605--614, feb 1965.
 \newblock \doi{10.1002/pol.1965.100030217}.
+
+\bibitem{Chae2018}
+M.~Chae, R.~Martin, and S.~G. Walker.
+\newblock On an algorithm for solving fredholm integrals of the first kind.
+\newblock {\em Statistics and Computing}, 29(4):645--654, aug 2018.
+\newblock \doi{10.1007/s11222-018-9829-z}.
 
 \bibitem{Charpentier2001}
 I.~Charpentier and N.~Jakse.
@@ -437,6 +487,13 @@ P.~Debye and A.~M. Bueche.
 \newblock {\em Journal of Applied Physics}, 20(6):518--525, jun 1949.
 \newblock \doi{10.1063/1.1698419}.
 
+\bibitem{Dempster1977}
+A.~P. Dempster, N.~M. Laird, and D.~B. Rubin.
+\newblock Maximum likelihood from incomplete data via the em algorithm.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)}, 39(1):1--38, 1977.
+\newblock \urlprefix\url{http://www.jstor.org/stable/2984875}.
+
 \bibitem{Dhont1996}
 J.~Dhont.
 \newblock {\em An Introduction to Dynamics of Colloids}.
@@ -463,6 +520,19 @@ J.~Dzubiella, A.~Jusufi, C.~N. Likos, C.~von Ferber, H.~Löwen, J.~Stellbrink,
 \newblock Phase separation in star-polymer{\textendash}colloid mixtures.
 \newblock {\em Physical Review E}, 64(1):010401, jun 2001.
 \newblock \doi{10.1103/physreve.64.010401}.
+
+\bibitem{Eggermont1999}
+P.~P.~B. Eggermont.
+\newblock Nonlinear smoothing and the {EM} algorithm for positive integral
+  equations of the first kind.
+\newblock {\em Applied Mathematics and Optimization}, 39(1):75--91, jan 1999.
+\newblock \doi{10.1007/s002459900099}.
+
+\bibitem{Eggermont1995}
+P.~P.~B. Eggermont and V.~N. LaRiccia.
+\newblock Maximum smoothed likelihood density estimation for inverse problems.
+\newblock {\em The Annals of Statistics}, 23(1):199--220, feb 1995.
+\newblock \doi{10.1214/aos/1176324463}.
 
 \bibitem{Engel2009}
 M.~Engel, B.~Stühn, J.~J. Schneider, T.~Cornelius, and M.~Naumann.
@@ -519,14 +589,6 @@ T.~Frühwirth, G.~Fritz, N.~Freiberger, and O.~Glatter.
   scattering.
 \newblock {\em Journal of Applied Crystallography}, 37(5):703--710, sep 2004.
 \newblock \doi{10.1107/s0021889804012956}.
-
-\bibitem{Frielinghaus2018}
-H.~Frielinghaus.
-\newblock Strategies for removing multiple scattering effects revisited.
-\newblock {\em Nuclear Instruments and Methods in Physics Research Section A:
-  Accelerators, Spectrometers, Detectors and Associated Equipment}, 904:9--14,
-  oct 2018.
-\newblock \doi{10.1016/j.nima.2018.07.027}.
 
 \bibitem{FFTW97}
 M.~Frigo and S.~G. Johnson.
@@ -609,6 +671,13 @@ D.~Gazzillo, A.~Giacometti, R.~G.~D. Valle, E.~Venuti, and F.~Carsughi.
 \newblock {\em The Journal of Chemical Physics}, 111(16):7636--7645, oct 1999.
 \newblock \doi{10.1063/1.480089}.
 
+\bibitem{Gazzola2018}
+S.~Gazzola, P.~C. Hansen, and J.~G. Nagy.
+\newblock {IR} tools: a {MATLAB} package of iterative regularization methods
+  and large-scale test problems.
+\newblock {\em Numerical Algorithms}, 81(3):773--811, aug 2018.
+\newblock \doi{10.1007/s11075-018-0570-7}.
+
 \bibitem{Giehm2010}
 L.~Giehm, C.~L.~P. Oliveira, G.~Christiansen, J.~S. Pedersen, and D.~E. Otzen.
 \newblock {SDS}-induced fibrillation of $\alpha$-synuclein: An alternative
@@ -621,6 +690,12 @@ O.~Glatter.
 \newblock Data evaluation in small angle scattering: Calculation of the radial
   electron density distribution by means of indirect {Fourier} transformation.
 \newblock {\em Acta Physica Austriaca}, 47:83--102, 1977.
+
+\bibitem{Goldin1991}
+A.~Goldin.
+\newblock Processing of experimental data in photon correlation spectroscopy
+  under homodyne measuring scheme.
+\newblock {\em Optika i Spectroskopija}, pages 485--489, 1991.
 
 \bibitem{Gommes2018}
 C.~J. Gommes.
@@ -753,6 +828,14 @@ B.~Hammouda, D.~F.~R. Mildner, R.~A. Bubeck, and M.~T. Malanga.
 \newblock {\em Journal of Applied Crystallography}, 19(5):320--323, oct 1986.
 \newblock \doi{10.1107/S002188988608929X}.
 
+\bibitem{Hanke2000}
+M.~Hanke.
+\newblock Iterative regularization techniques in image reconstruction.
+\newblock In D.~Colton, H.~W. Engl, A.~K. Louis, J.~R. McLaughlin, and
+  W.~Rundell, editors, {\em Surveys on Solution Methods for Inverse Problems},
+  pages 35--52. Springer Vienna, Vienna, 2000.
+\newblock \doi{10.1007/978-3-7091-6296-5_3}.
+
 \bibitem{Hanley2003}
 H.~J.~M. Hanley, C.~D. Muzny, D.~L. Ho, and C.~J. Glinka.
 \newblock A small-angle neutron scattering study of a commercial organoclay
@@ -772,6 +855,19 @@ J.-P. Hansen and I.~R. McDonald.
 \newblock {\em Theory of Simple Liquids with Applications to Soft Matter}.
 \newblock Academic Press, fourth edition, 2013.
 \newblock \doi{10.1016/B978-0-12-387032-2.00013-1}.
+
+\bibitem{Hansen2000b}
+P.~Hansen.
+\newblock The l-curve and its use in the numerical treatment of inverse
+  problems.
+\newblock In {\em InviteComputational Inverse Problems in Electrocardiology}.
+  WIT Press, 2000.
+
+\bibitem{Hansen1998}
+P.~C. Hansen.
+\newblock {\em Rank Deficient and Discrete Ill-Posed Problems}.
+\newblock Society for Industrial and Applied Mathematics, jan 1998.
+\newblock \doi{10.1137/1.9780898719697}.
 
 \bibitem{Hayter1981}
 J.~B. Hayter and J.~Penfold.
@@ -798,6 +894,14 @@ D.~Henderson and E.~W. Grundke.
 \newblock Direct correlation function: Hard sphere fluid.
 \newblock {\em The Journal of Chemical Physics}, 63(2):601--607, jul 1975.
 \newblock \doi{10.1063/1.431378}.
+
+\bibitem{Henderson2019}
+N.~C. Henderson and R.~Varadhan.
+\newblock Damped anderson acceleration with restarts and monotonicity control
+  for accelerating {EM} and {EM}-like algorithms.
+\newblock {\em Journal of Computational and Graphical Statistics}, pages 1--13,
+  may 2019.
+\newblock \doi{10.1080/10618600.2019.1594835}.
 
 \bibitem{Hermans1958}
 J.~Hermans and J.~J. Hermans.
@@ -853,6 +957,13 @@ K.~M. Hong and J.~Noolandi.
 \newblock {\em Die Makromolekulare Chemie, Rapid Communications},
   4(9):617--621, sep 1983.
 \newblock \doi{10.1002/marc.1983.030040907}.
+
+\bibitem{Horne1985}
+K.~Horne.
+\newblock Images of accretion discs - i. the eclipse mapping method.
+\newblock {\em Monthly Notices of the Royal Astronomical Society},
+  213(2):129--141, mar 1985.
+\newblock \doi{10.1093/mnras/213.2.129}.
 
 \bibitem{Hosemann1962}
 R.~Hosemann and S.~Bagchi.
@@ -1000,6 +1111,12 @@ M.~Kerker.
 \newblock {\em The Scattering of Light and Other Electromagnetic Radiation}.
 \newblock Elsevier, 1969.
 \newblock \doi{10.1016/c2013-0-06195-6}.
+
+\bibitem{Kern2016}
+M.~Kern.
+\newblock {\em Numerical Methods for Inverse Problems}.
+\newblock John Wiley {\&} Sons, Inc., may 2016.
+\newblock \doi{10.1002/9781119136941}.
 
 \bibitem{Khan2013}
 S.~Khan.
@@ -1152,6 +1269,13 @@ P.~Levitz.
   1998.
 \newblock \doi{10.1016/s0001-8686(98)00042-6}.
 
+\bibitem{Lewitt1986}
+R.~M. Lewitt and G.~Muehllehner.
+\newblock Accelerated iterative reconstruction for positron emission tomography
+  based on the {EM} algorithm for maximum likelihood estimation.
+\newblock {\em {IEEE} Transactions on Medical Imaging}, 5(1):16--22, mar 1986.
+\newblock \doi{10.1109/tmi.1986.4307734}.
+
 \bibitem{Likos2001}
 C.~N. Likos.
 \newblock Effective interactions in soft condensed matter physics.
@@ -1232,6 +1356,20 @@ A.~A. Louis, P.~G. Bolhuis, and J.~P. Hansen.
 \newblock Mean-field fluid behavior of the gaussian core model.
 \newblock {\em Physical Review E}, 62(6):7961--7972, dec 2000.
 \newblock \doi{10.1103/physreve.62.7961}.
+
+\bibitem{Lucy1974}
+L.~B. Lucy.
+\newblock An iterative technique for the rectification of observed
+  distributions.
+\newblock {\em The Astronomical Journal}, 79:745, jun 1974.
+\newblock \doi{10.1086/111605}.
+
+\bibitem{Lucy1994}
+L.~B. Lucy.
+\newblock {Optimum strategies for inverse problems in statistical astronomy.}
+\newblock {\em Astronomy and Astrophysics}, 289:983--994, Sep 1994.
+\newblock
+  \urlprefix\url{https://ui.adsabs.harvard.edu/abs/1994A&A...289..983L}.
 
 \bibitem{Lyatskaya2000}
 Y.~Lyatskaya, Y.~Liu, S.~Tristram-Nagle, J.~Katsaras, and J.~F. Nagle.
@@ -1450,6 +1588,14 @@ J.~S. Pedersen.
 \newblock {\em Journal of Applied Crystallography}, 27(4):595--608, aug 1994.
 \newblock \doi{10.1107/s0021889893013810}.
 
+\bibitem{Pedersen1997}
+J.~S. Pedersen.
+\newblock Analysis of small-angle scattering data from colloids and polymer
+  solutions: modeling and least-squares fitting.
+\newblock {\em Advances in Colloid and Interface Science}, 70(0):171--210, jul
+  1997.
+\newblock \doi{10.1016/s0001-8686(97)00312-6}.
+
 \bibitem{PedersenJApplCryst2000}
 J.~S. Pedersen.
 \newblock Form factors of block copolymer micelles with spherical, ellipsoidal
@@ -1549,6 +1695,13 @@ P.~Pieruschka and S.~Mar{\v{c}}elja.
 \newblock Statistical mechanics of random bicontinuous phases.
 \newblock {\em Journal de Physique {II}}, 2(2):235--247, feb 1992.
 \newblock \doi{10.1051/jp2:1992127}.
+
+\bibitem{Pike2002}
+R.~Pike.
+\newblock Particle sizing by laser light scattering.
+\newblock In Sabatier, R.~Pike, and Pierre, editors, {\em Scattering}, pages
+  895--919. Elsevier, London, 2002.
+\newblock \doi{10.1016/b978-012613760-6/50048-6}.
 
 \bibitem{Porod1948}
 G.~Porod.
@@ -1653,6 +1806,12 @@ L.~E. Reynolds and D.~F.~R. Mildner.
 \newblock {\em Journal of Applied Crystallography}, 17(6):411--416, dec 1984.
 \newblock \doi{10.1107/S0021889884011857}.
 
+\bibitem{Richardson1972}
+W.~H. Richardson.
+\newblock Bayesian-based iterative method of image restoration.
+\newblock {\em Journal of the Optical Society of America}, 62(1):55, jan 1972.
+\newblock \doi{10.1364/josa.62.000055}.
+
 \bibitem{Roberts1997}
 A.~P. Roberts.
 \newblock Morphology and thermal conductivity of model organic aerogels.
@@ -1738,6 +1897,13 @@ I.~C. Sanchez.
 \newblock {\em The Journal of Chemical Physics}, 101(8):7003--7006, oct 1994.
 \newblock \doi{10.1063/1.468456}.
 
+\bibitem{Santer1983}
+R.~Santer and M.~Herman.
+\newblock Particle size distributions from forward scattered light using the
+  chahine inversion scheme.
+\newblock {\em Applied Optics}, 22(15):2294, aug 1983.
+\newblock \doi{10.1364/ao.22.002294}.
+
 \bibitem{Saraf1989}
 R.~F. Saraf.
 \newblock Small-angle scattering from anisotropic systems in the guinier
@@ -1758,6 +1924,12 @@ H.~A. Scheraga, J.~T. Edsall, and J.~O. Gadd.
 \newblock {\em The Journal of Chemical Physics}, 19(9):1101--1108, sep 1951.
 \newblock \doi{10.1063/1.1748483}.
 
+\bibitem{Scherzer2011}
+O.~Scherzer, editor.
+\newblock {\em Handbook of Mathematical Methods in Imaging}.
+\newblock Springer New York, 2011.
+\newblock \doi{10.1007/978-0-387-92920-0}.
+
 \bibitem{Schmidt1970}
 P.~W. Schmidt.
 \newblock Small angle x-ray scattering from helical filaments.
@@ -1777,6 +1949,14 @@ S.~Schwartz, J.~Cain, E.~Dratz, and J.~Blasie.
   multilayers with application to data from retinal rod outer segments.
 \newblock {\em Biophysical Journal}, 15(12):1201--1233, dec 1975.
 \newblock \doi{10.1016/s0006-3495(75)85895-4}.
+
+\bibitem{Sen2014}
+D.~Sen, A.~Das, and S.~Mazumder.
+\newblock An iterative method to extract the size distribution of
+  non-interacting polydisperse spherical particles from small-angle scattering
+  data.
+\newblock {\em Journal of Applied Crystallography}, 47(2):712--718, mar 2014.
+\newblock \doi{10.1107/s1600576714003835}.
 
 \bibitem{Sharma1977}
 R.~V. Sharma and K.~C. Sharma.
@@ -1969,6 +2149,14 @@ E.~J.~J. van Rensburg.
   26(19):4805--4818, oct 1993.
 \newblock \doi{10.1088/0305-4470/26/19/014}.
 
+\bibitem{Vardi1993}
+Y.~Vardi and D.~Lee.
+\newblock From image deblurring to optimal investments: Maximum likelihood
+  solutions for positive linear inverse problems.
+\newblock {\em Journal of the Royal Statistical Society: Series B
+  (Methodological)}, 55(3):569--598, jul 1993.
+\newblock \doi{10.1111/j.2517-6161.1993.tb01925.x}.
+
 \bibitem{Verlet1980}
 L.~Verlet.
 \newblock Integral equations for classical fluids.
@@ -2119,6 +2307,13 @@ W.~J. Wiscombe.
 \newblock Improved mie scattering algorithms.
 \newblock {\em Applied Optics}, 19(9):1505--1509, may 1980.
 \newblock \doi{10.1364/AO.19.001505}.
+
+\bibitem{Yang2013}
+F.~Yang, A.~Wang, L.~Dong, and H.~Ming.
+\newblock Determination of particle-size distributions from light-scattering
+  measurement using lucy-richardson algorithm.
+\newblock {\em Optical Engineering}, 52(4):043605, apr 2013.
+\newblock \doi{10.1117/1.oe.52.4.043605}.
 
 \bibitem{Yoshizaki1980}
 T.~Yoshizaki and H.~Yamakawa.

@@ -2999,7 +2999,8 @@ SASFIT_LIB_EXPORT int Sasfit_Init(Tcl_Interp *interp)
 	Tcl_CreateCommand(interp, "sasfit_DR_EM_smoothing", (Tcl_CmdProc*) Sasfit_DR_EM_smoothing_Cmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_DR_EM_ME_const", (Tcl_CmdProc*) Sasfit_DR_EM_ME_const_Cmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_DR_EM_ME_adaptive", (Tcl_CmdProc*) Sasfit_DR_EM_ME_adaptive_Cmd, NULL, NULL);
-	Tcl_CreateCommand(interp, "sasfit_DR_MEM1", (Tcl_CmdProc*) Sasfit_DR_MEM1_Cmd, NULL, NULL);
+	Tcl_CreateCommand(interp, "sasfit_DR_linReg", (Tcl_CmdProc*) Sasfit_DR_linReg_Cmd, NULL, NULL);
+	Tcl_CreateCommand(interp, "sasfit_DR_MEM", (Tcl_CmdProc*) Sasfit_DR_MEM_Cmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_DR_MuCh", (Tcl_CmdProc*) Sasfit_DR_MuCh_Cmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_DR_SDM", (Tcl_CmdProc*) Sasfit_DR_SDM_Cmd, NULL, NULL);
 	Tcl_CreateCommand(interp, "sasfit_FredholmIntegrals_Regularization", (Tcl_CmdProc*) Sasfit_FredholmIntegrals_RegularizationCmd, (void *)SASFIT_CData, NULL);

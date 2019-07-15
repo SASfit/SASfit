@@ -88,7 +88,9 @@ int Sasfit_DR_EM_ME_const_Cmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));
 int Sasfit_DR_EM_ME_adaptive_Cmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));
-int Sasfit_DR_MEM1_Cmd _ANSI_ARGS_((ClientData clientData,
+int Sasfit_DR_MEM_Cmd _ANSI_ARGS_((ClientData clientData,
+                                Tcl_Interp *interp, int argc, char **argv));
+int Sasfit_DR_linReg_Cmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));
 int Sasfit_DR_MuCh_Cmd _ANSI_ARGS_((ClientData clientData,
                                 Tcl_Interp *interp, int argc, char **argv));

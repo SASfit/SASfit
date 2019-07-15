@@ -430,6 +430,10 @@ set EMOptions(lambda) 1
 set EMOptions(method) "EM (smoothing)"
 set EMOptions(LMatrix) "second deriv. (D-D)"
 set EMOptions(optimumLagrange)  "L-corner"
+set EMOptions(LLSmethod)  "NNLLS"
+set EMOptions(nLagrange)  200
+set EMOptions(overrelaxation) 1
+set EMOptions(maxKrylov) 5
 global FitPrecision EMOptions
 
 

@@ -453,7 +453,7 @@ int FP_solver_by_gsl_multroot(sasfit_fp_data *FPd,sasfit_oz_root_algorithms algo
 int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algorithm) {
     double err, errold;
     double alpha, beta, gama,phi_set, phi_actual;
-    double *xn, *yn, *zn, *un, *Tx, *Ty, *Tz;
+    double *xn, *yn, *zn, *un, *Tx, *Ty, *Tz, *gn, *gn1, *gn2, *xn1, *xn2, *xp1, *yn1;
     double nsoliparam[5], tol[2];
     int i,j,n,iloop,ierr;
     int  rcode,error,ms;
@@ -1321,6 +1321,103 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 free(Ty);
                 free(Tz);
                 break;
+        case BIGGS_ANDREWS:
+                xn  = (double*)malloc((FPd->Npoints)*sizeof(double));
+                xn1 = (double*)malloc((FPd->Npoints)*sizeof(double));
+                xn2 = (double*)malloc((FPd->Npoints)*sizeof(double));
+                xp1 = (double*)malloc((FPd->Npoints)*sizeof(double));
+                gn  = (double*)malloc((FPd->Npoints)*sizeof(double));
+                gn1 = (double*)malloc((FPd->Npoints)*sizeof(double));
+                gn2 = (double*)malloc((FPd->Npoints)*sizeof(double));
+                yn = (double*)malloc((FPd->Npoints)*sizeof(double));
+                iloop=0;
+                alpha=0;
+                beta=alpha;
+                gama=alpha;
+                fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
+                err = FP_step(FPd);
+                for (j=0; j < FPd->Npoints; j++) {
+                    xp1[j] = FPd->out[j];
+                    gn2[j]= gn1[j];
+                    gn1[j] = xp1[j]-xn[i];
+                    xn2[j] = xn1[j];
+                    xn1[j] = xn[j];
+                    xn[j] = xp1[j];
+                }
+                err = FP_step(FPd);
+                for (j=0; j < FPd->Npoints; j++) {
+                    xp1[j] = FPd->out[j];
+                    gn2[j]= gn1[j];
+                    gn1[j] = xp1[j]-xn[i];
+                    xn2[j] = xn1[j];
+                    xn1[j] = xn[j];
+                    xn[j] = xp1[j];
+                }
+                n=2;
+                while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
+//                    check_interrupt(OZd);
+                    n++;
+                    errold=err;
+                    beta = 0;
+                    gama = 0;
+                    for (j=0; j < FPd->Npoints; j++) {
+                        beta = beta + gn1[j]*gn2[j];
+                        gama = gama + gn2[j]*gn2[j];
+                    }
+                    if (gama==0) {
+                        alpha = 1;
+                    } else {
+                        // alpha = sqrt(beta/gama);
+                        alpha = GSL_MAX(GSL_MIN(beta/gama,1),0);
+                    }
+                    switch (FPd->KINSetMAA * (alpha >0)) {
+                        case 0:
+                            for (j=0; j < FPd->Npoints; j++) {
+                                yn[j] = xn[j];
+                                FPd->out[j] = yn[j];
+                            }
+                            break;
+                        case 1:
+                            for (j=0; j < FPd->Npoints; j++) {
+                                yn[j] = xn[j]+alpha*(xn[j]-xn1[j]);
+                                FPd->out[j] = yn[j];
+                            }
+                            break;
+                        default:
+                            for (j=0; j < FPd->Npoints; j++) {
+                                yn[j] = xn[j]+alpha*(xn[j]-xn1[j])+alpha*alpha/2.0*(xn[j]-2*xn1[j]+xn2[j]);
+                                FPd->out[j] = yn[j];
+                            }
+                    }
+                    err = FP_step(FPd);
+                    for (j=0; j < FPd->Npoints; j++) {
+                        xp1[j] = FPd->out[j];
+                        gn2[j] = gn1[j];
+                        gn1[j] = xp1[j]-xn[j];
+                        xn2[j] = xn1[j];
+                        xn1[j] = xn[j];
+                        xn[j]  = xp1[j];
+                    }
+                    if ((n % 1000)==0 && FPd->PrintProgress == 1)
+                        sasfit_out("iterations: %d, calls of FP_step=%d, err=%g, alpha=%g\n",n,FPd->it,err,alpha);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of FP solution: %g\n",err);
+                        FPd->failed = 1;
+                        for (j=0; j < FPd->Npoints; j++) {
+                            FPd->out[j]=0.0;
+                        }
+                        break;
+                    }
+                }
+                free(xn);
+                free(xn1);
+                free(xn2);
+                free(xp1);
+                free(yn);
+                free(gn);
+                free(gn1);;
+                free(gn2);
+                break;
         case KINSOLFP:
                 maxlrst = FPd->maxsteps/10;
 				scale = N_VNew_Serial(FPd->Npoints);
@@ -1700,6 +1797,9 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 //    sasfit_out("number of OZ_step calls are: %d\n",FPd->it);
    if (FPd->failed == 1) {
        sasfit_err("Failure in FPstep. FP algorithm does not converge.\n");
+       for (j=0; j < FPd->Npoints; j++) {
+            FPd->out[j]=1.0e-7;
+       }
        return TCL_ERROR;
    }
    if (FPd->it >= FPd->maxsteps) {
@@ -1871,6 +1971,9 @@ int FP_solver (sasfit_fp_data *FPd) {
                 break;
         case Hybrids:
                 status = FP_solver_by_gsl_multroot(FPd,Hybrids);
+                break;
+        case BIGGS_ANDREWS:
+                status = FP_solver_by_iteration(FPd,BIGGS_ANDREWS);
                 break;
         case KINSOLFP:
                 status = FP_solver_by_iteration(FPd,KINSOLFP);

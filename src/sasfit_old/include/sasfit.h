@@ -114,17 +114,27 @@ typedef enum {
         Idendity,
         first_deriv_eps_b,
         first_deriv_eps_e,
+        first_deriv,
         second_deriv_DD,
+        second_deriv_NN,
         second_deriv_DN,
-        second_deriv_ND
+        second_deriv_ND,
+        second_deriv
 } sasfit_EM_Lmatrix_definition;
 
 typedef enum {
         Lcorner,
         Lcorner2,
         GCV,
-        redchi2
+        redchi2,
+        manual
 } sasfit_EM_opt_Lagrange_param_method;
+
+typedef enum {
+        LLS,
+        NNLLS
+} sasfit_LLS_method;
+
 
 typedef enum {
         MuCh,
@@ -149,6 +159,7 @@ typedef struct
 	scalar  chi2;
 	int     maxit;
 	scalar  lambda;
+	scalar  overrelaxation;
 	char    spacing[132];
 	char    iteration_scheme[132];
 	char    opt_Lagrange_scheme[132];
@@ -160,12 +171,17 @@ typedef struct
 	sasfit_DR_algorithm DR_algorithm;
 	sasfit_EM_opt_Lagrange_param_method optLagrange_method;
 	sasfit_EM_Lmatrix_definition defL;
+	sasfit_LLS_method LLSmethod;
+	char    LLS_type[132];
+	int     nLagrange;
+	int     maxKrylov;
 	scalar  dim;
 	int     nh, nR;
 	scalar  C4, C0;
 	double *in, *out, *xwork, **A, **S, **T3, *Ih4mC4, *prior;
 	double *h, *Ih, *Iexp, *DIh, *Ith, *r, *dr, *dh;
-    gsl_vector *DR;
+    gsl_vector *gsl_x,*gsl_dx, *gsl_b, *gsl_S, *gsl_dS;
+    gsl_matrix *gsl_A;
     sasfit_oz_root_algorithms root_algorithm;
 
 //        char ct[STRLEN];
