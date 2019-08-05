@@ -434,6 +434,7 @@ set EMOptions(LLSmethod)  "NNLLS"
 set EMOptions(nLagrange)  200
 set EMOptions(overrelaxation) 1
 set EMOptions(maxKrylov) 5
+set EMOptions(error_weight) "on"
 global FitPrecision EMOptions
 
 

@@ -167,6 +167,7 @@ typedef struct
 	char    smooth_type[132];
 	char    FIinv[132];
 	int     smooth_bool;
+	int     em_weight;
 	char    seed[132];
 	sasfit_DR_algorithm DR_algorithm;
 	sasfit_EM_opt_Lagrange_param_method optLagrange_method;
@@ -178,8 +179,8 @@ typedef struct
 	scalar  dim;
 	int     nh, nR;
 	scalar  C4, C0;
-	double *in, *out, *xwork, **A, **S, **T3, *Ih4mC4, *prior;
-	double *h, *Ih, *Iexp, *DIh, *Ith, *r, *dr, *dh;
+	double *in, *out, *xwork, **A, **Ared, **Awork, **S, **T3, *Ih4mC4, *prior;
+	double *h, *Ih,*Ihred, *Ihwork, *Iexp, *DIh, *Ith, *Ithred, *Ithwork, *r, *dr, *dh;
     gsl_vector *gsl_x,*gsl_dx, *gsl_b, *gsl_S, *gsl_dS;
     gsl_matrix *gsl_A;
     sasfit_oz_root_algorithms root_algorithm;

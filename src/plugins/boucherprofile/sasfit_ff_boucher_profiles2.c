@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -15,7 +15,7 @@ scalar sasfit_ff_boucher_profiles2(scalar r, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND1((ALPHA <= 2.0), param, "alpha(%lg) < =2",ALPHA); // modify condition to your needs
+	SASFIT_CHECK_COND1((ALPHA <= 2.0), param, "alpha(%lg) <=2",ALPHA); // modify condition to your needs
 
 
 	// insert your code here

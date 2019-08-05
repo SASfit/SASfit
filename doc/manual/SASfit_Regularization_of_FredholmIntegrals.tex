@@ -231,8 +231,10 @@ Finally the overrelaxation parameter $\lambda^{(k)}$ was chosen according to
 \end{align}
 with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$.
 
-Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}, which supplies next to the Anderson acceleration several other very efficient algorithms to speed up the convergence rate for finding a fixed point like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993}. In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation and does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just need to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in the algorithm \ref{Biggs_Andersen}.
-\begin{algorithm}
+Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}, which supplies next to the Anderson acceleration several other very efficient algorithms to speed up the convergence rate for finding a fixed points like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993}. 
+
+In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation and does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in the algorithm \ref{Biggs_Andersen}.
+\begin{algorithm}[thb]
 \caption{Biggs-Andersen  fixed point problem acceleration of order $o=0,1,2$ }\label{Biggs_Andersen}
 \begin{algorithmic}[1]
 \Procedure{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
@@ -272,7 +274,8 @@ Another more efficient method to accelerate the convergence rate of the EM itera
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-~\\
+
+\clearpage
 
 \subsection{EM with linear and non-linear smoothing operator}~\\
 
@@ -304,7 +307,7 @@ The proper choice of the parameter $h$ arises and its selection might  follow si
 ~\\
 \subsection{EM with maximum entropy regularization and constant or adaptive prior}~\\
 The Lucy\hyp{}Richardson method \cite{Richardson1972,Lucy1974} has been extended by an additional penalty function,
-namely the entropy, by \cite{Lucy1994}. He introduces two variants, how the maximum entropy penalty can be introduced in the iteration algorithm by knowing either a fixed or assuming an adaptive prior for the solution vector. The entropy $S$ is given by
+namely the entropy, by Lucy \cite{Lucy1994}. He introduces two variants, how the maximum entropy penalty can be introduced in the iteration algorithm by knowing either a fixed or assuming an adaptive prior for the solution vector. The entropy $S$ is given by
 \begin{align}
 S&= \sum_{j=0}^{N-1} -x_j\ln\left(x_j/m_j\right) +x_j-m_j
 \end{align}
@@ -332,32 +335,14 @@ with the normalization constant $c=\sum_j \Pi_{ij}$ and a $\sigma^2$ typically b
 
 
 \section{Linear least square regularization (LLS)}
-
-\subsection{LLS regularization with identity matrix as penalty term}~\\
-
-\subsection{LLS regularization with first derivative matrix as penalty term}~\\
-
-\subsection{LLS regularization with second derivative matrix as penalty term}
-
-\section{Non-negative linear least square regularization (NNLLS)}\label{sec:NNLLS}
-
-\subsection{NNLLS regularization with identity matrix as penalty term}~\\
-
-\subsection{NNLLS regularization with first derivative matrix as penalty term}~\\
-
-\subsection{NNLLS regularization with second derivative matrix as penalty term}~\\
-
-\section{Maximum entropy method (MEM)}
-entropy $S$:
-\begin{align}
-S&= \sum_{j=0}^{N-1} -x_j\ln\left(x_j/m_j\right) +x_j-m_j
+\label{sec:LLS}
+Linear least square regularization has been implemented using the GNU scientific library (\texttt{gsl}). It supplies routines to solve ill-posed problems including a regularization term in the least squares minimization
+\begin{align}\label{eq:LLSreg}
+  \chi^2 &= || \mathbf{b} - \hat{\mathbf{A}}\mathbf{x} ||_{w}^2 + \lambda^2 || \hat{\mathbf{L}} \mathbf{x} ||^2
 \end{align}
-with $\mathbf{m}$ being the prior estimate of $\mathbf{x}$.
-
-\subsection{Jacobian and Hessian of mean square of the weighted deviations $\chi^2$}
-
-\begin{align}
-\chi^2 &= \left\| \hat{\mathbf{A}}\mathbf{x}-\mathbf{b}\right\|_w^2 \\
+Here $|| \dots ||_{w}^2$ denotes the weighted sum of squared residuals
+\begin{align}\label{eq:wSumSR}
+\left\| \hat{\mathbf{A}}\mathbf{x}-\mathbf{b}\right\|_W^2
 &= \left(\mathbf{x}^T\hat{\mathbf{A}}^T\hat{\mathbf{w}}^T-\mathbf{b}^T\hat{\mathbf{w}}^T\right)\left(\hat{\mathbf{w}}\hat{\mathbf{A}}\mathbf{x}-\hat{\mathbf{w}}\mathbf{b}\right)\\
 &= \mathbf{x}^T\hat{\mathbf{A}}^T\hat{\mathbf{w}}^T\hat{\mathbf{w}}\hat{\mathbf{A}}\mathbf{x}-2 \mathbf{x}^T\hat{\mathbf{A}}^T\hat{\mathbf{w}}^T\hat{\mathbf{w}}\mathbf{b}+\mathbf{b}^T\hat{\mathbf{w}}^T\hat{\mathbf{w}}\mathbf{b}
 \end{align}
@@ -372,6 +357,106 @@ with
   \end{pmatrix}
 \end{align}
 where $\Delta b_i$ are the experimental errors (standard deviation, Gaussian error or root-mean-square error) of the measured quantities $b_i$.
+$\hat{\mathbf{L}}$ describes the penalty contribution and $\lambda$
+ is the regularization parameter. To determine a suitable value for it automatically several routines are supplied in the \texttt{gsl} library. Several choices for the penalty term $\hat{\mathbf{L}}$ are supplied
+ In the simples case the penalty term is the identity matrix $\hat{\mathbf{L}} = \hat{\mathbf{I}}$ so that the overall length of the solution vector is also tried to be minimized. As a second choice for the penalty term is the first-order discrete derivative operator \cite{Donatelli2014}
+ \begin{align}\label{eq:first_derivative_penalty}
+   \hat{\mathbf{L}}_\mathrm{1^{st}} &=
+  \begin{pmatrix}
+    -1    & 1      &        &  \\
+          & \ddots & \ddots &  \\
+          &        & -1     & 1
+  \end{pmatrix} \in \mathbb{R}^{(N-1)\times N}
+\end{align}
+Since nonsingular regularization matrices are easier to handle than singular
+ones a common approach is to use small perturbations.
+If the perturbation is small enough the smoothing property is not deteriorated
+significantly. With a small diagonal element $\epsilon > 0$
+\begin{align}\label{eq:first_derivative_penalty_plus_epsilon}
+   \hat{\mathbf{L}}_\mathrm{1^{st}} &=
+  \begin{pmatrix}
+  \epsilon & & & \\
+    -1    & 1      &        &  \\
+          & \ddots & \ddots &  \\
+          &        & -1     & 1
+  \end{pmatrix} \mbox{ or }  \hat{\mathbf{L}}_\mathrm{1^{st}}  =
+  \begin{pmatrix}
+    -1    & 1      &        &  \\
+          & \ddots & \ddots &  \\
+          &        & -1     & 1 \\
+          & & & \epsilon \\
+  \end{pmatrix} \in \mathbb{R}^{N\times N}
+\end{align}
+The additional element $\epsilon$ forces either the
+first or last element to have small magnitude.
+A further common regularization matrix is the discrete second-order derivative \cite{Donatelli2014}
+operator
+ \begin{align}\label{eq:second_derivative_penalty}
+   \hat{\mathbf{L}}_\mathrm{2^{n}} &=
+  \begin{pmatrix}
+    -1    &  2     & -1     &        &  \\
+          & \ddots & \ddots & \ddots &  \\
+          &        & -1     & 2      & -1
+  \end{pmatrix} \in \mathbb{R}^{(N-2)\times N}
+\end{align}
+Also for this case a nonsingular squared matrix can be used as an approximation by adding one row at the top an one row at the bottom and assuming either Dirichlet boundary conditions or Neumann boundary conditions
+\begin{align}\label{eq:second_derivative_penalty_plus_DrichletNeumann}
+   \hat{\mathbf{L}}_\mathrm{2^{nd}}^\mathrm{DD} &=
+  \begin{pmatrix}
+    2   & -1     &        &        &    \\
+    -1  & 2      & -1     &        &    \\
+        & \ddots & \ddots & \ddots &    \\
+        &        &  -1    & 2      & -1 \\
+        &        &        & -1     & 2  \\
+  \end{pmatrix}  \in \mathbb{R}^{N\times N}\\
+  \mbox{or}  \nonumber \\
+  \hat{\mathbf{L}}_\mathrm{2^{nd}}^\mathrm{NN}  &=
+  \begin{pmatrix}
+     1  & -1     &        &        &  \\
+    -1  & 2      & -1     &        &  \\
+        & \ddots & \ddots & \ddots &  \\
+        &        & -1     &  2     & -1 \\
+        &        &        & -1     & 1  \\
+  \end{pmatrix} \in \mathbb{R}^{N\times N}
+\end{align}
+Also mixed boundary condition with Dirichlet boundary condition at the left end point and the Neumann boundary condition at the
+right one or  vice versa.
+\begin{align}\label{eq:second_derivative_penalty_plus_mixedDrichletNeumann}
+  \hat{\mathbf{L}}_\mathrm{2^{nd}}^\mathrm{ND}  &=
+  \begin{pmatrix}
+    2   & -1     &        &        &    \\
+    -1  & 2      & -1     &        &    \\
+        & \ddots & \ddots & \ddots &    \\
+        &        & -1     &  2     & -1 \\
+        &        &        & -1     &  1
+  \end{pmatrix} \in \mathbb{R}^{N\times N} \\
+  \mbox{or}  \nonumber\\
+   \hat{\mathbf{L}}_\mathrm{2^{nd}}^\mathrm{DN} &=
+  \begin{pmatrix}
+     1  & -1     &        &        &    \\
+    -1  & 2      &  -1    &        &    \\
+        & \ddots & \ddots & \ddots &    \\
+        &        &  -1    &  2     & -1 \\
+        &        &        & -1     & 2
+  \end{pmatrix}  \in \mathbb{R}^{N\times N}
+\end{align}
+
+\section{Non-negative linear least square regularization (NNLLS)}\label{sec:NNLLS}
+The non-negative linear least square solver used here is taken from \cite{Lawson1995a} and are also available at netlib under
+\url{http://www.netlib.org/lawson-hanson/} as Fortran source code which has been translated to C by \hyperref[https://www.netlib.org/f2c/]{f2c}. \SASfit is using this routine to solves the same ill-posed problems including a regularization term as in eq.\ \ref{eq:LLSreg} of section \ref{sec:LLS} just with an additional constrain of non-negativity.
+
+
+\clearpage
+\section{Maximum entropy method (MEM)}
+entropy $S$:
+\begin{align}
+S&= \sum_{j=0}^{N-1} -x_j\ln\left(x_j/m_j\right) +x_j-m_j
+\end{align}
+with $\mathbf{m}$ being the prior estimate of $\mathbf{x}$.
+
+\subsection{Jacobian and Hessian of mean square of the weighted deviations $\chi^2$}
+
+
 
 Jacobian of $\chi^2$
 \begin{align}
