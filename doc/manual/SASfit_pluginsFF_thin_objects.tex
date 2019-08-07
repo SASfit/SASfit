@@ -617,6 +617,33 @@ The parameters for the profile are the same than in Fig.\ \ref{fig:ellCylShIQ}a]
 \clearpage
 \subsubsection{$P_\mathrm{cs}(q)$ for cross-section of circular core and shell with linear contrast } ~\\
 \label{plugin:Pcs:cyl_LinSh}
+The model already has been used for spherical symmetric particles with the same radial profile but in spherical coordinates \ref{sect:LinShell}.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth,height=0.533\textwidth]{../images/form_factor/anisotropic/LinShellCylSketchProfile.png}
+\end{center}
+\caption{Radial profile for calculating the form factor of a thin cylindrical objects with a cross-section of a homogenous
+core and a linear scattering length density profile in the shell.  The core has a radius of $R$
+and a shell thickness is $t$ having a linear varying contrast
+profile.} \label{LinShellCylProfile}
+\end{figure}
+Form factor of a spherical shell with a core radius $R$ and a
+shell thickness of $t$. Here a linear contrast profile
+within the shell has been assumed.
+\begin{align}
+\eta(r)      & =
+\begin{cases}
+\eta_\text{c} & \text{~for~} \abs{r}<R \\
+m \abs{r} + b  & \text{~for~} \abs{r} \in [R,R+t] \\
+\eta_\text{sol}  & \text{~for~} \abs{r}>R+t
+\end{cases}\\
+m           & = (\eta_\text{sh,o}-\eta_\text{sh,i}) / t \\
+b           & = -m R + \eta_\text{sh,i} \\
+\eta_\text{sh,i}  & : \text{scattering length density at $R$} \nonumber \\
+\eta_\text{sh,o}  & : \text{scattering length density at $R+t$} \nonumber \\\
+\nonumber
+\end{align}
+The scattering intensity is then given by
 \begin{multline}\label{eq:Pcs_cyl_linsh}
  P_\mathrm{cs}(q)= \Bigg( \frac{1}{t q^2}
 \bigg\{ \pi \Big[ 2qt \big\{\left[\eta_\mathrm{c}   -\eta_\mathrm{sh,i}\right] R     J_1(qR) +  \left[\eta_\mathrm{sh,o}-\eta_\mathrm{sol}\right] (R+t) J_1\left(q(R+t)\right)\big\} \\
@@ -626,10 +653,77 @@ The parameters for the profile are the same than in Fig.\ \ref{fig:ellCylShIQ}a]
 $\mathrm{H}_\alpha(x)$ is the Struve function of order $\alpha$ and $\mathrm{J}_n(x)$ are the regular cylindrical Bessel function of order $n$.
 
 
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Selection of radial profiles of cylindrical profile with a homogeneous core and a linear shell.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_LinShellCyl.png}}
+\hfill
+\subfigure[Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsLinShCyl.png}}
+\end{center}
+\caption{Radial profiles and scattering curve for the cross-section form factor "\texttt{Pcs:linear shell cyl.}". The scattering functions have been calculated with a narrow lognormal distribution with a width of $\sigma_{R_0}=0.1$.}
+\label{fig:Pcs:cyl_fuzzy}
+\end{figure}
+
+
+\vspace{1mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Pcs:linear shell cyl.}:}
+\begin{description}
+    \item[\texttt{R\_0}] most probable radius $R_0$
+    \item[\texttt{sigma\_R0}] width $\sigma_{R_0}$ of radius distribution (LogNorm)
+    \item[\texttt{t}] thickness $t$ of the shell with linear scattering length density profile
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_c}] scattering length density of core $\eta_\mathrm{c}$
+    \item[\texttt{eta\_sh\_i}] scattering length density $\eta_\mathrm{sh,i}$ at $r=R$
+    \item[\texttt{eta\_sh\_o}] scattering length density $\eta_\mathrm{sh,o}$ at $r=R+t$
+    \item[\texttt{eta\_sol}] scattering length density $\eta_\mathrm{sol}$ of solvent
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{profile:linear shell cyl.}:}
+\begin{description}
+    \item[\texttt{R}] radius $R$
+    \item[\texttt{dummy}] not used, the profile plugin does not include a size distribution
+    \item[\texttt{t}] thickness $t$ of the shell with linear scattering length density profile
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_c}] scattering length density of core $\eta_\mathrm{c}$
+    \item[\texttt{eta\_sh\_i}] scattering length density $\eta_\mathrm{sh,i}$ at $r=R$
+    \item[\texttt{eta\_sh\_o}] scattering length density $\eta_\mathrm{sh,o}$ at $r=R+t$
+    \item[\texttt{eta\_sol}] scattering length density $\eta_\mathrm{sol}$ of solvent
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local cylindrical objects which are implemented as structure  plugins
+under "\texttt{[by plugin|thin obj.|P'(Q): local cylindrical obj.]}".
+\item As the form factor already has the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\item In case the shape factor is set to 1 or "\texttt{None}" the cross-section term can be interpreted as a perfect aligned cylindrical objects along the beam axis with a linear contrast profile of its shell
+\end{itemize}
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{$P_\mathrm{cs}(q)$ for circular cross-section folded with a Gaussian } ~\\
 \label{plugin:Pcs:cyl_fuzzy}
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Selection of radial profiles of fuzzy cylindrical profile.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_fuzzyCyl.png}}
+\hfill
+\subfigure[Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsFuzzyCyl.png}}
+\end{center}
+\caption{Radial profiles and scattering curve for the cross-section form factor "\texttt{Pcs:fuzzy cyl.}". The scattering functions have been calculated with a narrow lognormal distribution with a width of $\sigma_{R_0}=0.1$.}
+\label{fig:Pcs:cyl_fuzzy}
+\end{figure}
+
 Similar to the fuzzy sphere plugin described in section \ref{sect:FuzzySphere} also here the circular cross-section of the cylinder is folded with a Gaussian function, however, this time in two dimensions.
 \begin{align}
 \eta_\text{FuzzyCyl}\left(\abs{\mathbf{r}}\right)
@@ -656,13 +750,57 @@ easily calculated because the Fourier transform of a convolution
 is the pointwise product of the Fourier transforms according to
 the convolution theorem, i.e.
 \begin{align}\label{eq:Pcs:cyl_fuzzy}
-  P_\mathrm{cs}(q) &= \left[2\pi \Delta\eta R^2\frac{J_1(qR)}{qR} \exp\left(-\frac12 q^2\sigma^2\right)\right]^2
+  P_\mathrm{cs}(q) &= \left[2\pi \left(\eta_\text{cyl}-\eta_\text{sol}\right) R^2\frac{J_1(qR)}{qR} \exp\left(-\frac12 q^2\sigma^2\right)\right]^2
 \end{align}
 As the 2D Fourier transform of radial symmetric functions can be written as a Hankel transform of zero order \cite{Kohlbrecher2017}
 and the Hankel transform is its own inverse the scattering length density profile can be written as
 \begin{align}
-\eta_\text{circular}\left(r\right) &= \int_0^\infty \Delta\eta R^2\frac{J_1(qR)}{qR} \exp\left(-\frac12 q^2\sigma^2\right) J_0(qr) q \, \mathrm{d}q
+\eta_\text{circular}\left(r\right) &= \int_0^\infty \left(\eta_\text{cyl}-\eta_\text{sol}\right) R^2\frac{J_1(qR)}{qR} \exp\left(-\frac12 q^2\sigma^2\right) J_0(qr) q \, \mathrm{d}q \\
+&\overset{\sigma \ll R}{\approx}
+  \frac{\eta_\text{cyl}-\eta_\text{sol}}{2}\left(1-\mathrm{erf}\left(\frac{\abs{r}-R}{\sqrt{2}\sigma}\right)\right)
 \end{align}
+
+\vspace{1mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Pcs:fuzzy cyl.}:}
+\begin{description}
+    \item[\texttt{R\_0}] most probable radius $R_0$
+    \item[\texttt{sigma\_R0}] width $\sigma_{R_0}$ of radius distribution (LogNorm)
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_cyl}] scattering length density of cylindrical core $\eta_\mathrm{cyl}$
+    \item[\texttt{eta\_sol}] scattering length density of solvent/matrix $\eta_\mathrm{sol}$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{profile:fuzzy cyl.}:}
+\begin{description}
+    \item[\texttt{R}] radius $R$
+    \item[\texttt{dummy}] not used, the profile plugin does not include a size distribution
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_cyl}] scattering length density of cylindrical core $\eta_\mathrm{cyl}$
+    \item[\texttt{eta\_sol}] scattering length density of solvent/matrix $\eta_\mathrm{sol}$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local cylindrical objects which are implemented as structure  plugins
+under "\texttt{[by plugin|thin obj.|P'(Q): local cylindrical obj.]}".
+\item As the form factor already has the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\item In case the shape factor is set to 1 or "\texttt{None}" the cross-section term can be interpreted as a perfect aligned cylindrical objects along the beam axis with a fuzzy cross-section profile
+\end{itemize}
+
 
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -732,7 +870,7 @@ By this normalisation the excess scattering contribution $\beta$ is for all $\al
 \vspace{1mm}
 
 \hspace{1pt}\\
-\underline{Input parameters for \texttt{Pcs:Boucher cyl} and \texttt{Pcs:Boucher2 cyl.}:}
+\underline{Input parameters for \texttt{Pcs:Boucher cyl.} and \texttt{Pcs:Boucher2 cyl.}:}
 \begin{description}
     \item[\texttt{R\_0}] most probable radius $R_0$
     \item[\texttt{sigma\_R0}] width $\sigma_{R_0}$ of radius distribution (LogNorm)
