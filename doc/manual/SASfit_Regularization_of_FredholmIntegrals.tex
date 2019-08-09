@@ -231,7 +231,7 @@ Finally the overrelaxation parameter $\lambda^{(k)}$ was chosen according to
 \end{align}
 with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$.
 
-Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}, which supplies next to the Anderson acceleration several other very efficient algorithms to speed up the convergence rate for finding a fixed points like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993}. 
+Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}, which supplies next to the Anderson acceleration several other very efficient algorithms to speed up the convergence rate for finding a fixed points like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993}.
 
 In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation and does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in the algorithm \ref{Biggs_Andersen}.
 \begin{algorithm}[thb]
@@ -359,7 +359,7 @@ with
 where $\Delta b_i$ are the experimental errors (standard deviation, Gaussian error or root-mean-square error) of the measured quantities $b_i$.
 $\hat{\mathbf{L}}$ describes the penalty contribution and $\lambda$
  is the regularization parameter. To determine a suitable value for it automatically several routines are supplied in the \texttt{gsl} library. Several choices for the penalty term $\hat{\mathbf{L}}$ are supplied
- In the simples case the penalty term is the identity matrix $\hat{\mathbf{L}} = \hat{\mathbf{I}}$ so that the overall length of the solution vector is also tried to be minimized. As a second choice for the penalty term is the first-order discrete derivative operator \cite{Donatelli2014}
+ In the simplest case the penalty term is the identity matrix $\hat{\mathbf{L}} = \hat{\mathbf{I}}$ so that the overall length of the solution vector is also tried to be minimized. As a second choice for the penalty term is the first-order discrete derivative operator \cite{Donatelli2014}
  \begin{align}\label{eq:first_derivative_penalty}
    \hat{\mathbf{L}}_\mathrm{1^{st}} &=
   \begin{pmatrix}

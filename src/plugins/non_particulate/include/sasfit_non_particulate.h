@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_generalized_guinier_porod_law ################ */
-/** 
+/**
  * \defgroup ff_generalized_guinier_porod_law generalized Guinier-Porod Law
  * \ingroup ff_non-particulate
  *
@@ -91,11 +91,11 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_generalized_guinier_porod_law_v(s
 /* ################ stop ff_generalized_guinier_porod_law ################ */
 
 /* ################ start ff_extended_guinier_law ################ */
-/** 
+/**
  * \defgroup ff_extended_guinier_law extended Guinier law
  * \ingroup ff_non-particulate
  *
- * \brief ((a==0) ? I(Q) = I0 exp(-Ra^2Q^2/3) : I(Q) = a pi/Q^a I0 exp(-Ra^2Q^2/(3-a))); a=0: sphere, a=1: rod, a=2: lamellar 
+ * \brief ((a==0) ? I(Q) = I0 exp(-Ra^2Q^2/3) : I(Q) = a pi/Q^a I0 exp(-Ra^2Q^2/(3-a))); a=0: sphere, a=1: rod, a=2: lamellar
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -137,7 +137,7 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_extended_guinier_law_v(scalar q, 
 /* ################ stop ff_extended_guinier_law ################ */
 
 /* ################ start ff_beaucage_exppowlaw_2 ################ */
-/** 
+/**
  * \defgroup ff_beaucage_exppowlaw_2 Beaucage ExpPowLaw 2
  * \ingroup ff_non-particulate
  *
@@ -192,7 +192,7 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_beaucage_exppowlaw_2_v(scalar q, 
 /* ################ stop ff_beaucage_exppowlaw_2 ################ */
 
 /* ################ start ff_beaucage_exppowlaw ################ */
-/** 
+/**
  * \defgroup ff_beaucage_exppowlaw Beaucage ExpPowLaw
  * \ingroup ff_non-particulate
  *
@@ -256,7 +256,7 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_beaucage_exppowlaw_v(scalar q, sa
 /* ################ stop ff_beaucage_exppowlaw ################ */
 
 /* ################ start ff_spinodal ################ */
-/** 
+/**
  * \defgroup ff_spinodal Spinodal
  * \ingroup ff_non-particulate
  *
@@ -301,8 +301,60 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_spinodal_f(scalar q, sasfit_param
 sasfit_non_particulate_DLLEXP scalar sasfit_ff_spinodal_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_spinodal ################ */
 
+/* ################ start ff_spinodal ################ */
+/**
+ * \defgroup ff_spinodal2 phase separation
+ * \ingroup ff_non-particulate
+ *
+ * \brief \<some brief description of phase separation function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Imax</td>
+ *       <td>scattering intensity at peak position I(Q=Qmax)</td>
+ *      </tr><tr>
+ *       <td>\b Qmax</td>
+ *       <td>position of peak maximum</td>
+ *      </tr><tr>
+ *       <td>\b phi/gamma</td>
+ *       <td>a measure for the width of the scaling curve</td>
+ *      </tr><tr>
+ *       <td>\b d</td>
+ *       <td>d~0.06</td>
+ *      </tr><tr>
+ *       <td>\b model to calculate gamma(phi)</td>
+ *       <td> 1: plates, 2: rods, 3: spheres, otherwise gamma is input parameter </td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_spinodal2
+ *
+ * \sa sasfit_non_particulate.h, ff_non-particulate
+ */
+sasfit_non_particulate_DLLEXP scalar sasfit_ff_spinodal2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_spinodal2
+ *
+ * \sa sasfit_non_particulate.h, ff_non-particulate
+ */
+sasfit_non_particulate_DLLEXP scalar sasfit_ff_spinodal2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_spinodal2
+ *
+ * \sa sasfit_non_particulate.h, ff_non-particulate
+ */
+sasfit_non_particulate_DLLEXP scalar sasfit_ff_spinodal2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_spinodal2 ################ */
+
 /* ################ start ff_debye_anderson_brumberger ################ */
-/** 
+/**
  * \defgroup ff_debye_anderson_brumberger Debye-Anderson-Brumberger
  * \ingroup ff_non-particulate
  *
@@ -351,7 +403,7 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_debye_anderson_brumberger_v(scala
 /* ################ stop ff_debye_anderson_brumberger ################ */
 
 /* ################ start ff_g_dab ################ */
-/** 
+/**
  * \defgroup ff_g_dab gDAB
  * \ingroup ff_non-particulate
  *
@@ -400,7 +452,7 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_g_dab_v(scalar q, sasfit_param * 
 /* ################ stop ff_g_dab ################ */
 
 /* ################ start ff_ornstein_zernike ################ */
-/** 
+/**
  * \defgroup ff_ornstein_zernike Ornstein-Zernike
  * \ingroup ff_non-particulate
  *
@@ -443,7 +495,7 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_ornstein_zernike_v(scalar q, sasf
 /* ################ stop ff_ornstein_zernike ################ */
 
 /* ################ start ff_broad_peak ################ */
-/** 
+/**
  * \defgroup ff_broad_peak Broad-Peak
  * \ingroup ff_non-particulate
  *
@@ -495,7 +547,7 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_broad_peak_v(scalar q, sasfit_par
 /* ################ stop ff_broad_peak ################ */
 
 /* ################ start ff_teubner_strey ################ */
-/** 
+/**
  * \defgroup ff_teubner_strey Teubner-Strey
  * \ingroup ff_non-particulate
  *
