@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  15 AUG 2019 11:32
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.6.14)  15 AUG 2019 14:53
 entering extended mode
 **sasfit.tex
 (C:\user\SASfitGit\doc\manual\sasfit.tex
@@ -6778,20 +6778,31 @@ Overfull \hbox (6.47783pt too wide) in paragraph at lines 44--44
 
 [468
 
-] <../images/form_factor/gFF/gFF.png, id=7860, 765.3393pt x 581.0508pt>
-File: ../images/form_factor/gFF/gFF.png Graphic file (type png)
-
-<use ../images/form_factor/gFF/gFF.png>
-Package pdftex.def Info: ../images/form_factor/gFF/gFF.png used on input line 8
-6.
-(pdftex.def)             Requested size: 336.09819pt x 255.1755pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 93--94
+]
+Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
 
-) (C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_deformed_sheared_obj.tex
-[469] [470 <C:/user/SASfitGit/doc/images/form_factor/gFF/gFF.png>]
+
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
+
+ []
+
+[469]
+Underfull \hbox (badness 10000) in paragraph at lines 113--114
+
+ []
+
+<../images/form_factor/gFF/gFF.png, id=7867, 765.3393pt x 581.0508pt>
+File: ../images/form_factor/gFF/gFF.png Graphic file (type png)
+
+<use ../images/form_factor/gFF/gFF.png>
+Package pdftex.def Info: ../images/form_factor/gFF/gFF.png used on input line 1
+36.
+(pdftex.def)             Requested size: 336.09819pt x 255.1755pt.
+)
+(C:\user\SASfitGit\doc\manual\SASfit_pluginsFF_deformed_sheared_obj.tex
+[470 <C:/user/SASfitGit/doc/images/form_factor/gFF/gFF.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
@@ -9058,7 +9069,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 139.
 Here is how much of TeX's memory you used:
  31884 strings out of 494049
  592926 string characters out of 3148531
- 712352 words of memory out of 3000000
+ 713352 words of memory out of 3000000
  29809 multiletter control sequences out of 15000+200000
  36554 words of font info for 149 fonts, out of 3000000 for 9000
  876 hyphenation exceptions out of 8191
@@ -9205,7 +9216,7 @@ ogram Files (x86)/MiKTeX 2.9/fonts/type1/hoekwater/rsfs/rsfs10.pfb><C:/Program
 Files (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program Fil
 es (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1200.pfb><C:/Program Files 
 (x86)/MiKTeX 2.9/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on sasfit.pdf (659 pages, 45509149 bytes).
+Output written on sasfit.pdf (659 pages, 45509799 bytes).
 PDF statistics:
  11395 PDF objects out of 12825 (max. 8388607)
  4072 named destinations out of 4296 (max. 500000)
