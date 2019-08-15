@@ -76,7 +76,7 @@ scalar sasfit_ff_linsh_cyl(scalar q, sasfit_param * param)
     if (SIGMA_R == 0.0) {
 		Pcs=linsh_cyl(R,param);
 	} else {
-		find_LogNorm_int_range(2,R,SIGMA_R,&Rstart,&Rend,param);
+		find_LogNorm_int_range(6,R,SIGMA_R,&Rstart,&Rend,param);
 		Pcs 	= sasfit_integrate(Rstart, Rend, &linsh_cyl_core, param);
 	}
 	return Pcs;
@@ -93,7 +93,7 @@ scalar sasfit_ff_linsh_cyl_f(scalar q, sasfit_param * param)
     if (SIGMA_R == 0.0) {
 		Pcs=linsh_cyl(R,param);
 	} else {
-		find_LogNorm_int_range(2,R,SIGMA_R,&Rstart,&Rend,param);
+		find_LogNorm_int_range(6,R,SIGMA_R,&Rstart,&Rend,param);
 		Pcs 	= sasfit_integrate(Rstart, Rend, &linsh_cyl_core, param);
 	}
 	return Pcs;
