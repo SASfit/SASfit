@@ -103,6 +103,7 @@ sphere, and $\nu>1$ a prolate ellipsoids.
 \end{description}
 
 
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.768\textwidth]{../images/form_factor/Ellipsoid/ellipsoid_ii.png}
@@ -111,6 +112,64 @@ sphere, and $\nu>1$ a prolate ellipsoids.
 R$.} \label{fig:I_ellipsoid_ii}
 \end{figure}
 
+
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Spheroid with a Gamma size distribution}
+\label{sec:SpheroidSZdistr}~\\
+The Gamma-distribution or Schulz-Zimm (Flory) distribution in section \ref{sec:SZGammaDistr} or \ref{sec:SchulzZimm} has been used since many decades \cite{Schmidt1958,Aragon1976,Schmidt1984,Bartlett1992,Heinemann2000,Wagner2004,Forster2005} to analytically integrate the form factor of a spherical particle or spheroids over a size distribution. The form factor of a homogeneous randomly oriented spheroid with a gamma distribution has been calculated by Schmidt in \cite{Schmidt1958}, where he performed the integration over the size distribution analytically.
+\begin{align}\label{eq:spherid_start}
+  I(q) &= \Delta\eta^2 \int_0^\infty\int_0^1 N(R) V^2 \frac92\pi\frac{\mathrm{J}_{3/2}^2(qtR)}{(qtR)^3} \mathrm{d}y \, \mathrm{d}R\\
+       &= \Delta\eta^2 \int_0^\infty\int_0^1 \frac{1}{\theta}
+\left(\frac{R}{\theta}\right)^{k-1}
+\frac{\exp(-R/\theta)}{\Gamma(k)} \left(\frac{4}{3}\pi\nu R^3\right)^2 \frac92\pi\frac{\mathrm{J}_{3/2}^2(qtR)}{(qtR)^3} \mathrm{d}y \, \mathrm{d}R
+\end{align}
+\begin{multline}
+\label{eq:spheroid_GD}
+  I(q) = \Delta\eta^2 \int_0^1 \frac{8\nu^2}{(qt)^6} \Bigg((A-1) k (k+1)  \left(C^{-\frac{k}{2}-1} \cos (B (k+2))+1\right) \\
+                           -2 k qt\theta C^{-\frac{k}{2}-\frac{1}{2}} \sin (B(k+1))-C^{-k/2} \cos (B k)+1\Bigg) \mathrm{d}y
+\end{multline}
+with
+\begin{align}\label{eq:spheroid_tABC}
+  t &= \sqrt{1+\left(\nu^2-1\right)y^2}\\
+  \theta &= R_\mathrm{e}/(k-1)\\
+  \Delta\eta&=\eta_\mathrm{c}-\eta_\mathrm{s}\\
+  A &= 1+(qt\theta)^2\\
+  B &= \arctan\left(2qt\theta\right)\\
+  C &=4A-3
+\end{align}
+~\\
+\underline{Input Parameters for model \texttt{spheroid w. g-size distr}:}
+\begin{description}
+\item[\texttt{nu}]
+ratio between radius of the polar axes $R_\mathrm{p}$ and equatorial axis $R_\mathrm{e}$.
+\item[\texttt{R\_equatorial}] length of the equatorial semi-axes $R_\mathrm{e}$
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{k}] width parameter of the gamma distribution $(k>1)$. 
+\item[\texttt{eta\_core}] scattering length density of spheroid $\eta_\mathrm{c}$
+\item[\texttt{dummy}] not used
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\mathrm{s}$
+\end{description}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.768\textwidth]{../images/form_factor/Ellipsoid/spheroid_w_g_SD.png}
+\end{center}
+\caption{form factor of an spheroid with axis $R_\mathrm{e}$, $R_\mathrm{e}$ and $R_\mathrm{p}\nu
+R_\mathrm{e}$.Values of $\nu<1$ describe oblate ellipsoids, a value of $\nu=1$ a
+sphere, and $\nu>1$ a prolate ellipsoids. The plot show both the analytically integrated variant and the numerically averaged intensity using the same gamma size distribution.} \label{fig:I_spheroid_w_gSD}
+\end{figure}
+
+\newpage
+
+\underline{Note:}
+\begin{itemize}
+\item the width parameter needs to be larger than 1, $k>1$. The most probable size and the size parameter $\theta$ are related by $R_\mathrm{e} = (k-1) \theta$ and the variance of the distribution is $\sigma^2 = k \theta^2$
+\item The eccentricity parameter $\nu$ needs to be a nonzero positive number $\nu>0$ as well as the equatorial axis $R_\mathrm{e}>0$.
+\item compared to the numerical integration over the size distribution this analytical one is especially much faster for large $q$-values which is in the numerical variant an integration over an oscillating function and numerically more demanding.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
@@ -232,7 +291,6 @@ $$
 \end{center}
 \caption{Form factor of an ellipsoidal core shell structure including a lognormal size distribution.} \label{fig:I_ellipsoidal_core_shell}
 \end{figure}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage

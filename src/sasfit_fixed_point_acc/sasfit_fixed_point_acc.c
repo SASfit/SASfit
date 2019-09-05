@@ -1816,8 +1816,10 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 
 double FP_step(sasfit_fp_data *FPd) {
 	scalar chi2,GNorm2, KLD, JSD, sumIn, sumOut, M, P, Q;
+	EM_param_t *EMparam;
     char sBuffer[256];
 	int j;
+	FILE *fptr;
     FPd->it=FPd->it+1;
 //	sasfit_out("123 %d\n",FPd->it);
 
@@ -1829,31 +1831,49 @@ double FP_step(sasfit_fp_data *FPd) {
 	sumIn=0;
 	sumOut=0;
     for (j=0; j < FPd->Npoints; j++) {
-		sumIn = sumIn+FPd->in[j];
-		sumOut = sumOut+FPd->out[j];
+		sumIn += FPd->in[j];
+		sumOut += FPd->out[j];
     }
 
     GNorm2 = 0;
 	KLD=0;
 	JSD=0;
+	FPd->Entropy=0;
 	for (j=0; j < FPd->Npoints; j++) {
 		P=FPd->in[j]/sumIn;
 		Q=FPd->out[j]/sumOut;
 		M=0.5*(P+Q);
-		KLD=KLD+P*log(fabs(P/Q));
-		JSD=JSD+P*log(fabs(P/M))/2.+Q*log(fabs(Q/M))/2.;
+		if (P>0 && Q>0) {
+            KLD+=P*log(fabs(P/Q));
+            JSD+=P*log(fabs(P/M))/2.+Q*log(fabs(Q/M))/2.;
+            FPd->Entropy-= -FPd->out[j]*log(FPd->out[j]*FPd->Npoints/sumOut)+FPd->out[j]-sumOut/FPd->Npoints;
+		}
         GNorm2=gsl_pow_2(FPd->out[j]-FPd->in[j])+GNorm2;
     }
     FPd->gNorm= sqrt(GNorm2);
     FPd->KLD= KLD;
     FPd->JSD= JSD;
-//    sasfit_out("it. %d eps %lg chi2 %lg\n",FPd->it, GNorm2, FPd->Chi2Norm);
-//    sasfit_out("it. %d KLD %lg JSD %lg\n",FPd->it, FPd->KLD, FPd->JSD);
 
+    FPd->Sum1stDeriv=gsl_pow_2((FPd->out[1]-FPd->out[0]));
+    FPd->Sum2ndDeriv=gsl_pow_2((2*FPd->out[1]-FPd->out[0]-FPd->out[2]));
+	for (j=1; j < FPd->Npoints-1; j++) {
+		FPd->Sum1stDeriv+=gsl_pow_2((FPd->out[j]-FPd->out[j-1]));
+        FPd->Sum2ndDeriv+=gsl_pow_2((2*FPd->out[j]-FPd->out[j-1]-FPd->out[j+1]));
+    }
+    FPd->Sum1stDeriv+=gsl_pow_2((FPd->out[FPd->Npoints-1]-FPd->out[FPd->Npoints-2]));
+    EMparam = (EM_param_t *) FPd->FPstructure;
+/*
+    fptr = fopen("c:/temp/SASfit.dat","a+");
+    fprintf(fptr,"it.\t%d\teps\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+                  FPd->it, GNorm2, FPd->Chi2Norm,EMparam->Gtest,EMparam->chi2test,EMparam->JSDtest, FPd->KLD, FPd->JSD,FPd->Sum1stDeriv, FPd->Sum2ndDeriv,FPd->Entropy);
+    fclose(fptr);
+    sasfit_out("it. %d KLD %lg JSD %lg\n",FPd->it, FPd->KLD, FPd->JSD);
+*/
     if (FPd->KINSetPrintLevel == 4) {
         sprintf(sBuffer,"storeOZstepinfo \"it:%d\tgNorm:%lg\tKLD:%lg\tJSD%lg\tchi2:\"",FPd->it,FPd->gNorm, FPd->KLD, FPd->JSD,FPd->Chi2Norm);
         Tcl_EvalEx(FPd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
     }
+
 //    fp_cp_array_to_array(FPd->out, FPd->in, FPd->Npoints);
 //    sasfit_out("FP_step: ");
 //    for (j=0;j<10;j++) sasfit_out("%lg ",FPd->in[j]);
