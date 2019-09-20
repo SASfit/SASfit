@@ -185,16 +185,20 @@ and the unnormalized SESANS correlation function as
 
 The scattering intensity for a randomly distributed, self-affine two-phase system (gDAB) is given by \cite{Klimes2002,Hunter2006,Andersson2008}
 \begin{align}
-I(Q) &= \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\Gamma^2(H)\left[1+(q\xi)^2\right]^{\frac32+H}}
+I(Q) &= \frac{V_P^2\Delta\eta^2}{\left[1+(q\xi)^2\right]^{\frac32+H}}
 \end{align}
 The unnormalized autocorrelation function for this system is given by
 \begin{align}
-\tilde{\gamma}(r) &=
- \Delta\eta^2 8\xi^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma\left(H\right)}\frac{2}{\Gamma(H)}\left(\frac{r}{2\xi}\right)^H K_H\left(\frac{r}{\xi}\right)
+\tilde{\gamma}(r) &= \Delta\eta^2 V_P \gamma_0(r) \\
+                  &= \Delta\eta^2 V_P \frac{2}{\Gamma(H)}\left(\frac{r}{2\xi}\right)^H K_H\left(\frac{r}{\xi}\right) \\
+ V_P &= \left(2\xi\sqrt{\pi}\right)^3\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma\left(H\right)}
 \end{align}
 and the unnormalised SESANS correlation function
 \begin{align}
-\tilde{G}_\mathrm{gDAB}(\delta)&=  \Delta\eta^2 8\xi^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma^2\left(H\right)} 2\sqrt{\xi\delta}\left(\frac{\delta}{2\xi}\right)^{H+\frac12}K_{\frac12+H}\left(\frac{\delta}{\xi}\right)
+\tilde{G}_\mathrm{gDAB}(\delta)&=  
+\frac{\Delta\eta^2V_P^2}{2\pi\xi^2\Gamma\left(\frac32+H\right)}\left(\frac{\delta}{2\xi}\right)^{\frac12+H}K_{\frac12+H}\left(\frac{\delta}{\xi}\right)
+%8\xi^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma^2\left(H\right)}
+% 2\sqrt{\xi\delta}\left(\frac{\delta}{2\xi}\right)^{H+\frac12}K_{\frac12+H}\left(\frac{\delta}{\xi}\right)
 \label{eq:Gz_gDAB}
 \end{align}
 
@@ -219,7 +223,7 @@ and the unnormalised SESANS correlation function
 \hspace{1pt}\\
 \underline{Note:}
 \begin{itemize}
-\item the Hurst exponent needs to be in the interval $H \in (0,1]$. Values of $H>1$ will be accepted but might not have an established interpretation.
+\item the Hurst exponent needs to be in the interval $H \in (0,1]$. Values of $H>1$ as well as $H\in(-\frac12,0]$ will be accepted but might not have an established interpretation.
 \item the functions \texttt{G\_DAB(delta)} and \texttt{G\_gDAB(delta)}can be combined with a size distribution but should not be combined with a structure factor.
 \end{itemize}
 

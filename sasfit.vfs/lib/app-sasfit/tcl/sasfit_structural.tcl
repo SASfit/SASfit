@@ -178,15 +178,16 @@ proc EmOptionsCmd {} {
 	grid $w.ls_method_label -row 7 -column 0 -sticky e
 	grid $w.ls_method_value -row 7 -column 1 -sticky w
 	
-	label $w.nLagrange_label -text "number of Lagrange values"
-	entry $w.nLagrange_value -textvariable EMOptions(nLagrange) -width $entrywidth
-				
-	grid $w.nLagrange_label -row 7 -column 2 -sticky e
-	grid $w.nLagrange_value -row 7 -column 3 -sticky w	
+	label $w.em_weight_label -text "error weighted EM analysis"
+	ComboBox $w.em_weight_value -values {"on" "off"} \
+				-width 10 \
+				-textvariable ::EMOptions(error_weight) 
+	grid $w.em_weight_label -row 7 -column 2 -sticky e
+	grid $w.em_weight_value -row 7 -column 3 -sticky w	
 	
 	label $w.overrelaxation_label -text "overrelaxation param.:"
 	entry $w.overrelaxation_value -textvariable EMOptions(overrelaxation) -width $entrywidth 
-				
+						
 	grid $w.overrelaxation_label -row 8 -column 0 -sticky e
 	grid $w.overrelaxation_value -row 8 -column 1 -sticky w
 	
@@ -195,13 +196,34 @@ proc EmOptionsCmd {} {
 				
 	grid $w.maxkrylov_label -row 8 -column 2 -sticky e
 	grid $w.maxkrylov_value -row 8 -column 3 -sticky w
-	
-	label $w.em_weight_label -text "error weighted EM analysis"
-	ComboBox $w.em_weight_value -values {"on" "off"} \
-				-width 10 \
-				-textvariable ::EMOptions(error_weight) 
-	grid $w.em_weight_label -row 9 -column 0 -sticky e
-	grid $w.em_weight_value -row 9 -column 1 -sticky w
+
+	label $w.nLagrange_label -text "number of Lagrange values"
+	entry $w.nLagrange_value -textvariable EMOptions(nLagrange) -width $entrywidth
+				
+	grid $w.nLagrange_label -row 9 -column 0 -sticky e
+	grid $w.nLagrange_value -row 9 -column 1 -sticky w	
+
+	label $w.maxslope_label -text "maximum slope"
+	entry $w.maxslope_value -textvariable EMOptions(maxslope) -width $entrywidth
+				
+	grid $w.maxslope_label -row 9 -column 2 -sticky e
+	grid $w.maxslope_value -row 9 -column 3 -sticky w	
+
+
+	label $w.minLagrange_label -text "min Lagrange values"
+	entry $w.minLagrange_value -textvariable EMOptions(minLagrange) -width $entrywidth
+				
+	grid $w.minLagrange_label -row 10 -column 0 -sticky e
+	grid $w.minLagrange_value -row 10 -column 1 -sticky w	
+
+
+	label $w.maxLagrange_label -text "max Lagrange values"
+	entry $w.maxLagrange_value -textvariable EMOptions(maxLagrange) -width $entrywidth
+				
+	grid $w.maxLagrange_label -row 10 -column 2 -sticky e
+	grid $w.maxLagrange_value -row 10 -column 3 -sticky w	
+
+
 }
 proc structuralParFitCmd {} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^

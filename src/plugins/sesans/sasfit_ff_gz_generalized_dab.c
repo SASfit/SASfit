@@ -46,7 +46,7 @@ scalar sasfit_ff_gz_generalized_dab(scalar z, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((z < 0.0), param, "z(%lg) < 0",z);
 	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A); // modify condition to your needs
-//	SASFIT_CHECK_COND1((H <= 0), param, "H(%lg) <= 0",H); // modify condition to your needs
+	SASFIT_CHECK_COND1((H <= -0.5), param, "H(%lg) <= -1/2",H); // modify condition to your needs
 
 	// insert your code here
 
@@ -57,13 +57,13 @@ scalar sasfit_ff_gz_generalized_dab(scalar z, sasfit_param * param)
     V = gsl_pow_3(2*A)*M_PI*sqrt(M_PI)*gsl_sf_poch(H,1.5);
     u=z/A;
 //  G0 = V*2*A*sqrt(M_PI)*exp(gsl_sf_lngamma(0.5+H)-gsl_sf_lngamma(H));
-    G0 = V*2*A*sqrt(M_PI)*gsl_sf_poch(H,0.5);
+    G0 = V*V/(2*M_PI*gsl_pow_2(A)*(1+2*H));
     if ( ((0.5+H) - lround(0.5+H)) == 0) {
         KH = gsl_sf_bessel_Kn(lround(H+0.5),u);
     } else {
         KH = sqrt(M_PI)*pow(2*u,(H+0.5))*exp(-u)*gsl_sf_hyperg_U((H+1),2*H+2,2*u);
     }
-    Gz = KH*V*pow(2,1.5-H)*sqrt(M_PI)*pow(u,H)*sqrt(z*A)/dgamma(H);
+    Gz = KH*V*V*pow(u/2.,0.5+H)/(gsl_sf_gamma(1.5+H)*2*M_PI*A*A);
     return ETA*ETA*(Gz-G0);
     if (H>0) {
         Gz = KH*V*pow(2,1.5-H)*sqrt(M_PI)*pow(u,H)*sqrt(z*A)/gsl_sf_gamma(H);

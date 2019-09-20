@@ -432,6 +432,9 @@ set EMOptions(LMatrix) "second deriv. (D-D)"
 set EMOptions(optimumLagrange)  "L-corner"
 set EMOptions(LLSmethod)  "NNLLS"
 set EMOptions(nLagrange)  200
+set EMOptions(maxslope)  100.0
+set EMOptions(minLagrange)  1
+set EMOptions(maxLagrange)  1e12
 set EMOptions(overrelaxation) 1
 set EMOptions(maxKrylov) 5
 set EMOptions(error_weight) "on"
