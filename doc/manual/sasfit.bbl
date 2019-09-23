@@ -557,6 +557,13 @@ S.~M. Fan, G.~R. Luckhurst, and S.~J. Picken.
 \newblock {\em The Journal of Chemical Physics}, 101(4):3255--3267, aug 1994.
 \newblock \doi{10.1063/1.467573}.
 
+\bibitem{Fedorova1978}
+I.~S. Fedorova and P.~W. Schmidt.
+\newblock A general analytical method for calculating particle-dimension
+  distributions from scattering data.
+\newblock {\em Journal of Applied Crystallography}, 11(5):405--411, oct 1978.
+\newblock \doi{10.1107/s0021889878013503}.
+
 \bibitem{book:Feigin:Svergun}
 L.~A. Feigin and D.~I. Svergun.
 \newblock {\em Structure Analysis by Small-Angle X-ray and Neutron Scattering}.
@@ -583,6 +590,13 @@ P.~Fratzl.
   the collagen of bone.
 \newblock {\em Journal of Statistical Physics}, 77(1-2):125--143, 1994.
 \newblock \doi{10.1007/BF02186835}.
+
+\bibitem{Fratzl1989}
+P.~Fratzl and J.~Lebowitz.
+\newblock Universality of scaled structure functions in quenched systems
+  undergoing phase separation.
+\newblock {\em Acta Metallurgica}, 37(12):3245--3248, dec 1989.
+\newblock \doi{10.1016/0001-6160(89)90196-x}.
 
 \bibitem{Freund1993}
 R.~W. Freund.

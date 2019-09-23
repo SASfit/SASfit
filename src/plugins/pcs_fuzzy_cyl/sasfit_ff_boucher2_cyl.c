@@ -59,7 +59,7 @@ scalar sasfit_ff_boucher2_cyl(scalar q, sasfit_param * param)
     if (SIGMA_R == 0.0) {
 		Pcs=boucher2_cyl(R,param);
 	} else {
-		find_LogNorm_int_range(2,R,SIGMA_R,&Rstart,&Rend,param);
+		find_LogNorm_int_range(6,R,SIGMA_R,&Rstart,&Rend,param);
 		Pcs 	= sasfit_integrate(Rstart, Rend, &boucher2_cyl_core, param);
 	}
 	return Pcs;
@@ -76,7 +76,7 @@ scalar sasfit_ff_boucher2_cyl_f(scalar q, sasfit_param * param)
     if (SIGMA_R == 0.0) {
 		Pcs=boucher2_cyl(R,param);
 	} else {
-		find_LogNorm_int_range(2,R,SIGMA_R,&Rstart,&Rend,param);
+		find_LogNorm_int_range(6,R,SIGMA_R,&Rstart,&Rend,param);
 		Pcs 	= sasfit_integrate(Rstart, Rend, &boucher2_cyl_core, param);
 	}
 	return Pcs;
