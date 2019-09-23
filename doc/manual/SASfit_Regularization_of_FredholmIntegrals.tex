@@ -224,15 +224,14 @@ where $\mathcal{O}_\mathrm{EM}$ is the fixed point operator. It has been shown, 
 \caption{Size distribution evolution for increasing number of iterations for a constant seed value (left) and random seed values (right).\label{fig:EMNRevolution}}
 \end{figure}
 
-In figure \ref{fig:EMIQevolution} and \ref{fig:EMNRevolution} the progress of the EM-fixed point algorithm as a function of the number of iteration steps is shown. The starting values of the size distribution are assumed to be a constant (left) and random (right). In both cases the EM-scheme converges in that example finally to the same solution. However, assuming constant initial values the size distribution looks relatively smooth until the goodness-of-fit parameter approaches its final value in contrast to random seed values for the size distribution, where the initial roughness is never smoothed out by the EM scheme. In figure \ref{fig:EMgoodness_smooth_evolution} the goodness-of-fit parameters are shown as a function of iterations. For this three variants of the goodness-of-fit definitions are used, the classical $\chi^2$ of weighted sums of squared  deviations, the G-test which is directly related to the Kubler-Leibler divergency of two probability function and the Pearson's $\chi^2$-test, which is obtained by a second order Taylor expansion of the natural logarithm around 1.
+In figure \ref{fig:EMIQevolution} and \ref{fig:EMNRevolution} the progress of the EM-fixed point algorithm as a function of the number of iteration steps is shown. The starting values of the size distribution are assumed to be a constant (left) and random (right). In both cases the EM-scheme converges in that example finally to the same solution. However, assuming constant initial values the size distribution looks relatively smooth until the goodness-of-fit parameter approaches its final value in contrast to random seed values for the size distribution, where the initial roughness is never smoothed out by the EM scheme. In figure \ref{fig:EMgoodness_smooth_evolution} the goodness-of-fit parameters are shown as a function of iterations. For this three variants of the goodness-of-fit definitions are used, the classical $\chi^2$ of weighted sums of squared  deviations, the $\mathcal{G}$-test which is directly related to the Kubler-Leibler divergency of two probability function and the Pearson's $\chi^2$-test, which is obtained by a second order Taylor expansion of the natural logarithm around 1 of the  $\mathcal{G}$-test.
 \begin{align}
-\label{eq:goodnesoffit}
-  \chi^2 &= \sum_i \left(\frac{I_\mathrm{th}(q_i)-I_\mathrm{exp}(q_i)}{\Delta I_\mathrm{exp}(q_i)}\right)^2 &~ &\mbox{weighted sum of squared  deviations} \\
-  \chi^2 &= \sum_i \frac{\left(I_\mathrm{th}(q_i)-I_\mathrm{exp}(q_i)\right)^2}{I_\mathrm{th}(q_i)} &~ &\mbox{Pearson's $\chi^2$-test} \\
-  \mathcal{G} &= 2\sum_i \mathcal{I}_\mathrm{exp}(q_i)\ln\left(\frac{\mathcal{I}_\mathrm{exp}(q_i)}{\mathcal{I}_\mathrm{th}(q_i)}\right) &~ & \mbox{G-test}
+  \chi^2 &= \sum_i \left(\frac{I_\mathrm{th}(q_i)-I_\mathrm{exp}(q_i)}{\Delta I_\mathrm{exp}(q_i)}\right)^2 &~ &\mbox{weighted sum of squared  deviations} \label{eq:goodnessoffit_chi2}\\
+  \chi^2 &= \sum_i \frac{\left(I_\mathrm{th}(q_i)-I_\mathrm{exp}(q_i)\right)^2}{I_\mathrm{th}(q_i)} &~ &\mbox{Pearson's $\chi^2$-test} \label{eq:goodnessoffit_chi2test}\\
+  \mathcal{G} &= 2\sum_i \mathcal{I}_\mathrm{exp}(q_i)\ln\left(\frac{\mathcal{I}_\mathrm{exp}(q_i)}{\mathcal{I}_\mathrm{th}(q_i)}\right) &~ & \mathcal{G}\mbox{-test} \label{eq:goodnessoffit_Gtest}
 \end{align}
 with $\mathcal{I}_\mathrm{exp}(q_i)=I_\mathrm{exp}(q_i)/\sum_i I_\mathrm{exp}(q_i)$ and $\mathcal{I}_\mathrm{th}(q_i)=I_\mathrm{th}(q_i)/\sum_i I_\mathrm{th}(q_i)$.
-Furthermore the roughness of the resulting size distribution is plotted which has been described by either the sum of the first or second derivatives for all radii, i.e. $\sum_i \mathrm{d}N(R_i)/\mathrm{d}R_i$ or $\sum_i \mathrm{d}^2N(R_i)/\mathrm{d}R_i^2$.
+Furthermore the roughness of the resulting size distribution is plotted which has been described by either the sum of the squared first or second derivatives for all radii, i.e. $\sum_i \abs{\mathrm{d}N(R_i)/\mathrm{d}R_i}^2$ or $\sum_i \abs{\mathrm{d}^2N(R_i)/\mathrm{d}R_i^2}^2$.
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_0_goodness_of_fit.png}
@@ -257,7 +256,7 @@ Even though the fixed point of the EM operator does not seem to depend on the in
 
 \subsection{EM with linear and non-linear smoothing operator}~\\
 
- Without any additional smoothing the EM scheme does not converge on a stable solution for scattering curve measured several times. Several stabilization methods have been suggested. One of them is to add an additional smoothing operator into the iteration sequence. In \SASfit the smoothing operation  suggested by \cite{Eggermont1999,Eggermont1995,Byrne2011} has been implemented. They suggest to add before or/and after each normal EM step (eq.\ \ref{eq:LucyRichardsonInversionMethod}) an additional smoothing step so that the EM algorithm takes the form.
+ Without any additional smoothing the EM scheme does not converge to a stable solution for scattering curves measured several times with the same statistics. Several stabilization methods have been suggested. One of them is to add an additional smoothing operator into the iteration sequence. In \SASfit the smoothing operation  suggested by \cite{Eggermont1999,Eggermont1995,Byrne2011} has been implemented. They suggest to add before or/and after each normal EM step (eq.\ \ref{eq:LucyRichardsonInversionMethod}) an additional smoothing step so that the EM algorithm takes the form.
 \begin{align}\label{eq:smoothedEMsingle}
   x_j^{(k+1/2)} &= x_j^{(k)} + \Delta x_j^{(k)}   \\
   x_j^{(k+1)} &= \displaystyle \sum_{i=0}^{M-1} S^{(h)}_{ij} x_j^{(k+1/2)}
@@ -274,42 +273,57 @@ with the smoothing operator
     0      & 0      & 0      & \cdots & h      & 1-h
   \end{pmatrix}
 \end{align}
-whereby $0 \leq h \lessapprox 0.3$.
+whereby $0 < h \lessapprox 0.3$.
 In case of a double smoothing they suggested a nonlinear smoothing operator before each EM step so that a complete smoothed EM step reads as
 \begin{align}\label{eq:smoothedEMdouble}
   x_j^{(k+1/3)} &= \exp\left(\sum_{i=0}^{M-1} S^{(h)}_{ij} \log\left(x_j^{(k)}\right)\right)\\
   x_j^{(k+2/3)} &= x_j^{(k+1/3)} + \Delta x_j^{(k+1/3)}  \\
   x_j^{(k+1)} &= \displaystyle \sum_{i=0}^{M-1} S^{(h)}_{ij} x_j^{(k+2/3)}
 \end{align}
-The proper choice of the parameter $h$ arises and its selection might follow similar rules than for the regularization parameter in ill-posed problems.
+
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_3_goodness_of_fit.png}
+\includegraphics[width=0.48\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_3_goodness_of_fit.png}
 \hspace{0.06\textwidth}
-\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_3_NR.png}
-\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_3_goodness_of_fit.png}
+\includegraphics[width=0.42\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_3_NR.png}
+\includegraphics[width=0.48\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_3_goodness_of_fit.png}
 \hspace{0.06\textwidth}
-\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_3_NR.png}
+\includegraphics[width=0.42\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_3_NR.png}
 \caption{Roughness and goodness-of-fit parameters as well as the resulting volume distribution $N(R)R^3$ as a function of iterations for  a constant seed value (top) and random seed values (bottom) for a large smoothing parameter $h=0.3$ leading to $\chi^2=15.3$.\label{fig:EMhlarge}}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_000187_goodness_of_fit.png}
+\includegraphics[width=0.48\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_000187_goodness_of_fit.png}
 \hspace{0.06\textwidth}
-\includegraphics[width=0.44\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_000187_NR.png}
-\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_goodness_of_fit.png}
+\includegraphics[width=0.42\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_000187_NR.png}
+\includegraphics[width=0.48\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_goodness_of_fit.png}
 \hspace{0.06\textwidth}
-\includegraphics[width=0.44\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_NR.png}
+\includegraphics[width=0.42\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_NR.png}
 \caption{Roughness and goodness-of-fit parameters as well as the resulting volume distribution $N(R)R^3$ as a function of iterations for  a constant seed value (top) and random seed values (bottom) for an optimum soothing parameter $h=1.87\times 10^{-4}$ leading to $\chi^2=1$.\label{fig:EMhoptimum}}
 \end{figure}
 
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.6\textwidth]{../images/form_factor/EM/EMsmoothLcurves.png}
+\caption{Determine optimum smoothing parameter $h$ by the corner of the L-curve.\label{fig:EMhLcurve}}
+\end{figure}
+
+The proper choice of the parameter $h$ arises and its selection might follow similar strategies than for the regularization parameter in ill-posed problems. In contrast to regularization methods in this iteration scheme there is not directly a penalty term (a measure for the smoothness/roughness of the solution) involved like the sum of first or second derivatives of the solution vector or the entropy of the solution vector like in maximum entropy methods. However, these quantity can easily be calculated from the solution vector. Figure \ref{fig:EMLcurves} shows the logarithm of a penalty term, namely the sum of 1$^\mathrm{st}$ and 2$^\mathrm{nd}$ derivatives of the resulting size distribution and the entropy against the goodness-of-fit parameter from eq.\ \ref{eq:goodnessoffit_Gtest}, namely the ``$\mathcal{G}$-test'' parameter. The optimum smoothing parameter has been defined via the corner of the L-curve defined by $(\log(\mathcal{G}),\log(|| \hat{\mathbf{L}} \mathbf{x} ||^2))$, with $\hat{\mathbf{L}}$ being the first or second-order discrete derivative operator defined in eq.\ \ref{eq:first_derivative_penalty} or \ref{eq:second_derivative_penalty} and by $(\log(\mathcal{G}),\log(S))$ with $S$ being the entropy defined in eq.\ \ref{eq:EMentropy}. The corners were determined numerically as they are defined by having the maximum curvature. They are marked in fig.\ \ref{fig:EMhLcurve} by a symbols. The whole analysis does not make use of the uncertainties of the measured intensities. If the error bars are trustable and the model for the form factor is correct the weighted sum of squared deviations should be $\chi^2= 1$. This can also be used as a condition for determining the smoothing parameter $h$. In the case of the present analysed data both strategies yield similar results as can be seen in fig.\ \ref{fig:EMsmoothNRR3}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.65\textwidth]{../images/form_factor/EM/EMsmoothNRR3.png}
+\caption{The smoothing parameters has been obtained by the corners of the L-curves in fig.\ \ref{fig:EMhLcurve} and the solution of the EM iteration scheme with double smoothing is compared with the exact solution.\label{fig:EMsmoothNRR3}}
+\end{figure}
+
 ~\\
+
 \subsection{EM with maximum entropy regularization and constant or adaptive prior}~\\
 The Lucy\hyp{}Richardson method \cite{Richardson1972,Lucy1974} has been extended by an additional penalty function,
 namely the entropy, by Lucy \cite{Lucy1994}. He introduces two variants, how the maximum entropy penalty can be introduced in the iteration algorithm by knowing either a fixed or assuming an adaptive prior for the solution vector. The entropy $S$ is given by
 \begin{align}
-S&= \sum_{j=0}^{N-1} -x_j\ln\left(x_j/m_j\right) +x_j-m_j
+S&= \sum_{j=0}^{N-1} -x_j\ln\left(x_j/m_j\right) +x_j-m_j \label{eq:EMentropy}
 \end{align}
 with $\mathbf{m}$ being the prior estimate of $\mathbf{x}$. The update scheme in eq.\ \ref{eq:LucyRichardsonInversionMethod} has to be extended as
 \begin{align}
@@ -332,6 +346,20 @@ As a smoothing operator for the prior we have assumed
   \Pi_{ij} &= \frac{1}{c}\exp\left(-\frac{(i-j)^2}{2\sigma^2}\right)
 \end{align}
 with the normalization constant $c=\sum_j \Pi_{ij}$ and a $\sigma^2$ typically between $\frac12$ and 2. For large values of $\sigma^2$ the results converge to that one of a constant prior. For too small values the regularization is suppressed as the prior converges to the $k^\mathrm{th}$ iteration step.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstLcurve.png}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMadaptiveLcurve.png}
+\caption{Determine optimum smoothing parameter $\lambda$ by the corner of the L-curve, which is determined by a minimum radius of curvature.\label{fig:EMlambdaLcurve}}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstNRR3.png}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMadaptiveNRR3.png}
+\caption{The smoothing parameters has been obtained by the corners of the L-curves in fig.\ \ref{fig:EMlambdaLcurve} and the solution of the EM iteration scheme using Maximum Entropy term with constant and adaptive prior is compared with the exact solution.\label{fig:EMconstadaptiveNRR3}}
+\end{figure}
 
 
 \clearpage

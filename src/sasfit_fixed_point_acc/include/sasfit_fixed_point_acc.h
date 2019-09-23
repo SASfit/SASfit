@@ -20,8 +20,25 @@
 
 #include <nvector/nvector_serial.h>
 #include "sasfit_oz.h"
-
+#define MAX_S21 100.0
 typedef double FP_Operator (void *);
+
+typedef struct {
+        Tcl_Interp *interp;
+		scalar *Gtest;
+		scalar *chi2test;
+		scalar *chi2_error;
+		scalar *firstderiv;
+		scalar *secondderiv;
+		scalar *entropy;
+		scalar *lagrange;
+		scalar *Lradius;
+		int length;
+		scalar x1,x2,x3,u1,u2,u3,v1,v2,v3,y1,y2,y3,x21,y21,u21,v21,x31,y31,u31,v31,h21,h31,d,s21,s31,signr;
+		FP_Operator * FP_Op;
+		scalar rmin;
+		scalar optlagrange;
+} sasfit_Lcurve;
 
 typedef struct {
         Tcl_Interp *interp;

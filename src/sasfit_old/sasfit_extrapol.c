@@ -76,6 +76,8 @@
 #include "blas1_d.h"
 #include <kinsol/kinsol.h>
 
+#define REDFACTOR 1.2
+
 scalar inverse_quad_interp(scalar y, scalar x0, scalar y0, scalar x1, scalar y1, scalar x2, scalar y2) {
     scalar f0,f1,f2;
     f1=y1-y;
@@ -1279,6 +1281,38 @@ int get_EM(clientData,interp,EM)
        return TCL_ERROR;
     }
     (*EM).nLagrange = varint;
+
+/*
+ * read the string maxLagrange
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","maxLagrange",0),
+                             &varscalar) ) {
+       sasfit_err("could not read maxLagrange\n");
+       return TCL_ERROR;
+    }
+    (*EM).maxLagrange = varscalar;
+
+/*
+ * read the string minLagrange
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","minLagrange",0),
+                             &varscalar) ) {
+       sasfit_err("could not read minLagrange\n");
+       return TCL_ERROR;
+    }
+    (*EM).minLagrange = varscalar;
+/*
+ * read the string maxslope
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","maxslope",0),
+                             &varscalar) ) {
+       sasfit_err("could not read maxslope\n");
+       return TCL_ERROR;
+    }
+    (*EM).maxslope = varscalar;
 
 /*
  * read the string optimumLagrange
@@ -4155,7 +4189,7 @@ double EM_DR_DoubleSmooth_Operator(void *EM_structure) {
         if (!gsl_finite(EMparam->Ithwork[i])) EMparam->Ithwork[i]=gsl_isinf(EMparam->Ithwork[i])*DBL_MAX;
         sumIth+=EMparam->Ithwork[i]+EMparam->C4;
         sumIh +=EMparam->Ihwork[i] +EMparam->C4;
-        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])/EMparam->DIh[i]*(1+EMparam->em_weight*(EMparam->DIh[i]-1)));
+        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])*(1+EMparam->em_weight*(EMparam->DIh[i]-1))/EMparam->DIh[i]);
     }
     for (i=0;i<EMparam->nh;i++){
         if ((EMparam->Ithwork[i]+EMparam->C4 > 0)&& (EMparam->Ihwork[i]+EMparam->C4)>0) {
@@ -4187,7 +4221,7 @@ double EM_DR_EntropyConstantPrior_Operator(void *EM_structure) {
                 sasfit_out("i:%d prior:%lg\n",i,EMparam->prior[i]);
                 EMparam->prior[i]=DBL_MIN;
         }
-        if (EMparam->in[i] > 0) {
+        if (EMparam->in[i] > 0 && gsl_finite(EMparam->in[i]*log(EMparam->in[i]/EMparam->prior[i]))) {
             Entropy = Entropy-EMparam->in[i]*log(EMparam->in[i]/EMparam->prior[i]);
             NormXwork=NormXwork+EMparam->in[i];
         }
@@ -4213,7 +4247,7 @@ double EM_DR_EntropyConstantPrior_Operator(void *EM_structure) {
             EMparam->out[i]=EMparam->in[i]*(p3/p1-1.)
                                       -EMparam->in[i]*EMparam->lambda*(Entropy+log(EMparam->in[i]/EMparam->prior[i]));
         } else {
-            EMparam->out[i]=0.0;
+            EMparam->out[i]=DBL_MIN;
         }
         if (EMparam->out[i]<0 && EMparam->in[i]/fabs(EMparam->out[i])<nnlambda) nnlambda = EMparam->in[i]/fabs(EMparam->out[i]);
     }
@@ -4949,6 +4983,457 @@ double Optimum_lambda4DR_EM_ME(double lambda, void *FPd ) {
 /*#      None.                                                            #*/
 /*#                                                                       #*/
 /*#########################################################################*/
+double menger_C(double xj, double xk, double xl, double yj, double yk, double yl) {
+    double Pjk, Pkl, Plj, Ck;
+    Pjk = gsl_hypot(xk-xj, yk-yj);
+    Pkl = gsl_hypot(xl-xk, yl-yk);
+    Plj = gsl_hypot(xj-xl, yj-yl);
+    if (Pjk*Pkl*Plj == 0) return GSL_POSINF;
+    Ck = 2*(xj*yk+xk*yl+xl*yj-xj*yl-xk*yj-xl*yk)/ (Pjk*Pkl*Plj);
+    if (gsl_finite(Ck)) {
+        return Ck;
+    } else {
+        return 0;
+    }
+}
+
+double menger_r(double xj, double xk, double xl, double yj, double yk, double yl) {
+    double Pjk, Pkl, Plj, Ck, r;
+    Pjk = gsl_hypot(xk-xj, yk-yj);
+    Pkl = gsl_hypot(xl-xk, yl-yk);
+    Plj = gsl_hypot(xj-xl, yj-yl);
+    Ck = 2*(xj*yk+xk*yl+xl*yj-xj*yl-xk*yj-xl*yk);
+    if (Ck == 0) return GSL_DBL_MAX;
+    return (Pjk*Pkl*Plj)/Ck;
+}
+
+int
+sasfit_gsl_multifit_linear_lcurve (const gsl_vector * y,
+                            gsl_vector * reg_param,
+                            gsl_vector * rho, gsl_vector * eta,
+                            double lmin,
+                            double lmax,
+                            gsl_multifit_linear_workspace * work)
+{
+  const size_t n = y->size;
+  const size_t N = rho->size; /* number of points on L-curve */
+
+  if (n != work->n)
+    {
+      GSL_ERROR("y vector does not match workspace", GSL_EBADLEN);
+    }
+  else if (N < 3)
+    {
+      GSL_ERROR ("at least 3 points are needed for L-curve analysis",
+                 GSL_EBADLEN);
+    }
+  else if (N != eta->size)
+    {
+      GSL_ERROR ("size of rho and eta vectors do not match",
+                 GSL_EBADLEN);
+    }
+  else if (reg_param->size != eta->size)
+    {
+      GSL_ERROR ("size of reg_param and eta vectors do not match",
+                 GSL_EBADLEN);
+    }
+  else
+    {
+      int status = GSL_SUCCESS;
+      const size_t p = work->p;
+
+      size_t i, j;
+
+      gsl_matrix_view A = gsl_matrix_submatrix(work->A, 0, 0, n, p);
+      gsl_vector_view S = gsl_vector_subvector(work->S, 0, p);
+      gsl_vector_view xt = gsl_vector_subvector(work->xt, 0, p);
+      gsl_vector_view workp = gsl_matrix_subcolumn(work->QSI, 0, 0, p);
+      gsl_vector_view workp2 = gsl_vector_subvector(work->D, 0, p); /* D isn't used for regularized problems */
+
+      double smax = gsl_vector_get(&S.vector, 0);
+      double smin = gsl_vector_get(&S.vector, p - 1);
+      if (lmax > lmin && lmin > 0) {
+        smax = lmax;
+        smin = lmin;
+      }
+      double dr; /* residual error from projection */
+      double normy = gsl_blas_dnrm2(y);
+      double normUTy;
+
+      /* compute projection xt = U^T y */
+      gsl_blas_dgemv (CblasTrans, 1.0, &A.matrix, y, 0.0, &xt.vector);
+
+      normUTy = gsl_blas_dnrm2(&xt.vector);
+      dr = normy*normy - normUTy*normUTy;
+
+      /* calculate regularization parameters */
+      gsl_multifit_linear_lreg(smin, smax, reg_param);
+
+      for (i = 0; i < N; ++i)
+        {
+          double lambda = gsl_vector_get(reg_param, i);
+          double lambda_sq = lambda * lambda;
+
+          for (j = 0; j < p; ++j)
+            {
+              double sj = gsl_vector_get(&S.vector, j);
+              double xtj = gsl_vector_get(&xt.vector, j);
+              double f = sj / (sj*sj + lambda_sq);
+
+              gsl_vector_set(&workp.vector, j, f * xtj);
+              gsl_vector_set(&workp2.vector, j, (1.0 - sj*f) * xtj);
+            }
+
+          gsl_vector_set(eta, i, gsl_blas_dnrm2(&workp.vector));
+          gsl_vector_set(rho, i, gsl_blas_dnrm2(&workp2.vector));
+        }
+
+      if (n > p && dr > 0.0)
+        {
+          /* add correction to residual norm (see eqs 6-7 of [1]) */
+          for (i = 0; i < N; ++i)
+            {
+              double rhoi = gsl_vector_get(rho, i);
+              double *ptr = gsl_vector_ptr(rho, i);
+
+              *ptr = sqrt(rhoi*rhoi + dr);
+            }
+        }
+
+      /* restore D to identity matrix */
+      gsl_vector_set_all(work->D, 1.0);
+
+      return status;
+    }
+} /* gsl_multifit_linear_lcurve() */
+
+int
+sasfit_gsl_multifit_linear_lcorner(const gsl_vector *rho,
+                            const gsl_vector *eta,
+                             gsl_vector *MengerR,
+                             gsl_vector *slope,
+                             double maxslope,
+                            size_t *idx)
+{
+  const size_t n = rho->size;
+      double rmin2 = -1;
+      double rmin = -1;
+      double r;
+      double lslope;
+      int idx2;
+      bool init;
+
+  if (n < 3)
+    {
+      GSL_ERROR ("at least 3 points are needed for L-curve analysis",
+                 GSL_EBADLEN);
+    }
+  else if (n != eta->size)
+    {
+      GSL_ERROR ("size of rho and eta vectors do not match",
+                 GSL_EBADLEN);
+    }
+  else
+    {
+      int s = GSL_SUCCESS;
+      size_t i;
+      double x1, y1;      /* first point of triangle on L-curve */
+      double x2, y2;      /* second point of triangle on L-curve */
+      double rmin = -1.0; /* minimum radius of curvature */
+      /* initial values */
+      init = FALSE;
+      x1 = log(gsl_vector_get(rho, 0));
+      y1 = log(gsl_vector_get(eta, 0));
+
+      x2 = log(gsl_vector_get(rho, 1));
+      y2 = log(gsl_vector_get(eta, 1));
+      init = FALSE;
+      for (i = 1; i < n - 1; ++i)
+        {
+          /*
+           * The points (x1,y1), (x2,y2), (x3,y3) are the previous,
+           * current, and next point on the L-curve. We will find
+           * the circle which fits these 3 points and take its radius
+           * as an estimate of the curvature at this point.
+           */
+          double x3 = log(gsl_vector_get(rho, i + 1));
+          double y3 = log(gsl_vector_get(eta, i + 1));
+
+          lslope = (y3-y2)/(x3-x2);
+          if (fabs(lslope) < maxslope) init=TRUE;
+          if ((fabs(lslope) > maxslope) && (init==TRUE)) break;
+
+          double r = -menger_r(x1,x2,x3,y1,y2,y3);
+          gsl_vector_set(MengerR,i,r);
+          gsl_vector_set(slope,i,(y3-y2)/(x3-x2));
+          /* if d =~ 0 then there are nearly colinear points */
+          if (gsl_finite(r) && r>0)
+            {
+              /* check for smallest radius of curvature */
+              if (r < rmin || rmin < 0.0)
+                {
+                  rmin = r;
+                  *idx = i;
+                }
+            }
+
+          /* update previous/current L-curve values */
+          x1 = x2;
+          y1 = y2;
+          x2 = x3;
+          y2 = y3;
+        }
+
+      gsl_vector_set(MengerR,0,gsl_vector_get(MengerR,1));
+      gsl_vector_set(MengerR,n-1,gsl_vector_get(MengerR,n-2));
+      gsl_vector_set(slope,0,gsl_vector_get(slope,1));
+      gsl_vector_set(slope,n-1,gsl_vector_get(slope,n-2));
+sasfit_out("idx:%d, rmin:%lg\n",*idx, rmin);
+      /* check if a minimum radius was found */
+      init = FALSE;
+      for (i = 2; i < n - 2; ++i)
+        {
+        lslope = gsl_vector_get(slope,i);
+        r = gsl_vector_get(MengerR,i);
+
+        if (fabs(lslope) < maxslope) init=TRUE;
+        if ((fabs(lslope) > maxslope) && (init==TRUE)) break;
+
+         if (   r > 0
+             && gsl_vector_get(MengerR,i-1) >0
+             && gsl_vector_get(MengerR,i-2) >0
+             && gsl_vector_get(MengerR,i+1) >0
+             && gsl_vector_get(MengerR,i+2) >0 ) {
+            if (   r<gsl_vector_get(MengerR,i-1)
+                && r<gsl_vector_get(MengerR,i-2)
+                && r<gsl_vector_get(MengerR,i+1)
+                && r<gsl_vector_get(MengerR,i+2)
+                && r < 10*rmin) {
+                rmin2 = r;
+                idx2 = i;
+sasfit_out("idx2:%d, rmin2:%lg, maxslope:%lg\n",idx2, rmin2,maxslope);
+                }
+        }
+        }
+sasfit_out("idx2:%d, rmin2:%lg, maxslope:%lg\n",idx2, rmin2,maxslope);
+      if (rmin2 < 0.0)
+        {
+          if (rmin<0.0)
+          { /* possibly co-linear points */
+            GSL_ERROR("failed to find minimum radius", GSL_EINVAL);
+          }
+        } else {
+            *idx = idx2;
+        }
+      return s;
+    }
+} /* gsl_multifit_linear_lcorner() */
+
+int
+sasfit_gsl_multifit_linear_lcorner2(const gsl_vector *reg_param, const gsl_vector *rho,
+                             const gsl_vector *eta,
+                             gsl_vector *MengerR,
+                             gsl_vector *slope,
+                             double maxslope,
+                             size_t *idx)
+{
+  const size_t n = reg_param->size;
+  double r;
+  double rmin2 = -1;
+  double rmin1 = -1;
+  int idx2;
+  bool init;
+
+  if (n < 3)
+    {
+      GSL_ERROR ("at least 3 points are needed for L-curve analysis",
+                 GSL_EBADLEN);
+    }
+  else if (n != eta->size)
+    {
+      GSL_ERROR ("size of reg_param and eta vectors do not match",
+                 GSL_EBADLEN);
+    }
+  else
+    {
+      int s = GSL_SUCCESS;
+      size_t i;
+      double x1, y1, u1, u2;      /* first point of triangle on L-curve */
+      double x2, y2, v1, v2;      /* second point of triangle on L-curve */
+      double rmin = -1.0; /* minimum radius of curvature */
+      double rmin2 = -1;
+      double lslope;
+      int idx2;
+      /* initial values */
+      init = FALSE;
+      x1 = gsl_vector_get(reg_param, 0);
+      x1 = x1*x1;
+      u1 = log(gsl_vector_get(rho, 0));
+      y1 = gsl_vector_get(eta, 0);
+      v1 = log(y1);
+      y1 = y1*y1;
+
+      x2 = gsl_vector_get(reg_param, 1);
+      x2 = x2*x2;
+      u2 = log(gsl_vector_get(rho, 1));
+      y2 = gsl_vector_get(eta, 1);
+      v2 = log(y2);
+      y2 = y2*y2;
+
+      for (i = 1; i < n - 1; ++i)
+        {
+          /*
+           * The points (x1,y1), (x2,y2), (x3,y3) are the previous,
+           * current, and next point on the L-curve. We will find
+           * the circle which fits these 3 points and take its radius
+           * as an estimate of the curvature at this point.
+           */
+          double lamip1 = gsl_vector_get(reg_param, i + 1);
+          double etaip1 = gsl_vector_get(eta, i + 1);
+          double x3 = lamip1 * lamip1;
+          double y3 = etaip1 * etaip1;
+          double u3 = log(log(gsl_vector_get(rho, i+1)));
+          double v3 = log(etaip1);
+          lslope = (v3-v2)/(u3-u2);
+          if (fabs(lslope) < maxslope) init=TRUE;
+          if ((fabs(lslope) > maxslope) && (init==TRUE)) break;
+
+          double r = -menger_r(x1,x2,x3,y1,y2,y3);
+          gsl_vector_set(MengerR,i,r);
+          gsl_vector_set(slope,i,(v3-v2)/(u3-u2));
+
+          if (gsl_finite(r) && r > 0) {
+            if (   r < rmin || rmin < 0) {
+                rmin = r;
+                *idx = i;
+                }
+          }
+          /* update previous/current L-curve values */
+          x1 = x2;
+          y1 = y2;
+          x2 = x3;
+          y2 = y3;
+          u1 = u2;
+          v1 = v2;
+          u2 = u3;
+          v2 = v3;
+        }
+      gsl_vector_set(MengerR,0,gsl_vector_get(MengerR,1));
+      gsl_vector_set(MengerR,n-1,gsl_vector_get(MengerR,n-2));
+      /* check if a minimum radius was found */
+sasfit_out("idx:%d, rmin:%lg\n",*idx, rmin);
+    idx2=0;
+    init = FALSE;
+    for (i = 2; i < n - 2; ++i)
+        {
+        lslope = gsl_vector_get(slope,i);
+        r = gsl_vector_get(MengerR,i);
+        if (fabs(lslope) < maxslope) init=TRUE;
+        if ((fabs(lslope) > maxslope) && (init==TRUE)) break;
+
+        if (   gsl_vector_get(MengerR,i) > 0
+            && gsl_vector_get(MengerR,i-1) >0
+            && gsl_vector_get(MengerR,i-2) > 0
+            && gsl_vector_get(MengerR,i+1) > 0
+            && gsl_vector_get(MengerR,i+2) > 0 ) {
+            if (   gsl_vector_get(MengerR,i)<gsl_vector_get(MengerR,i-1)
+                && gsl_vector_get(MengerR,i)<gsl_vector_get(MengerR,i-2)
+                && gsl_vector_get(MengerR,i)<gsl_vector_get(MengerR,i+1)
+                && gsl_vector_get(MengerR,i)<gsl_vector_get(MengerR,i+2)
+                && r < 10*rmin) {
+                rmin2 = gsl_vector_get(MengerR,i);
+                idx2 = i;
+                }
+        }
+        }
+
+sasfit_out("idx2:%d, rmin2:%lg, maxslope:%lg\n",idx2, rmin2,maxslope);
+    if (rmin2 < 0.0)
+        {
+          if (rmin<0.0)
+          { /* possibly co-linear points */
+            GSL_ERROR("failed to find minimum radius", GSL_EINVAL);
+          }
+        } else {
+            *idx = idx2;
+        }
+    return s;
+    }
+} /* gsl_multifit_linear_lcorner2() */
+
+scalar sasfit_Lcorner(sasfit_Lcurve *L) {
+    scalar fract;
+    scalar mx2, x2, mr, r, minr;
+    int i,idx,idx2;
+    fract=0.99;
+    mx2=-1;
+    for (i=0;i<L->length;i++) {
+        x2 = L->Gtest[i];
+        if ((mx2==-1 || x2<mx2)) mx2=x2;
+    }
+sasfit_out("smallest G-test value: %lg\n",mx2);
+    mr=-1;
+    idx2 = L->length-1;
+    for (i=0;i<L->length;i++) {
+        x2 = L->Gtest[i];
+        r = L->Lradius[i]*pow(x2-mx2*fract,1);
+        if ((mr==-1 && r>0) || (r>0 && r<mr)) {
+            mr = r;
+            idx2 = i;
+        }
+    }
+sasfit_out("smallest weighted r( %d ) value: %lg, lambda: %lg\n",idx2, mr, L->lagrange[idx2] );
+    minr=-1;
+    idx = L->length-1;
+    for (i=0;i<L->length;i++) {
+        r = L->Lradius[i];
+        if ((minr==-1 && r>0) || (r>0 && r<minr)) {
+            minr = r;
+            idx = i;
+        }
+    }
+sasfit_out("smallest overall r( %d ) value: %lg, lambda: %lg\n",idx, minr,L->lagrange[idx] );
+    if (idx < 2) {
+        minr = mr;
+        idx = idx2;
+    }
+sasfit_out("smallest weighted and overall r( %d ) value: %lg with lambda: %lg\n",idx, minr,L->lagrange[idx] );
+    L->optlagrange=L->lagrange[idx];
+    idx2=0;
+    mr = -1;
+    for (i=2;i<L->length-2;i++) {
+        if (   L->Lradius[i] > 0
+            && L->Lradius[i-1] > 0
+            && L->Lradius[i-2] > 0
+            && L->Lradius[i+1] > 0
+            && L->Lradius[i+2] > 0 ) {
+            if (   L->Lradius[i]<L->Lradius[i-1]
+                && L->Lradius[i]<L->Lradius[i-2]
+                && L->Lradius[i]<L->Lradius[i+1]
+                && L->Lradius[i]<L->Lradius[i+2]
+                && L->Lradius[i]<10*minr) {
+                 mr = L->Lradius[i];
+                 idx2 = i;
+                }
+        }
+    }
+sasfit_out("smallest r( %d ) value obtained via local minima consideration: %lg using lambda: %lg\n",idx2, mr,L->lagrange[idx2] );
+    if (mr < 0.0  && idx2 < 2)
+        {
+          if (minr<0.0)
+          { /* possibly co-linear points */
+            GSL_ERROR("failed to find minimum radius", GSL_EINVAL);
+          }
+        } else {
+            idx = idx2;
+        }
+    L->optlagrange=L->lagrange[idx];
+    for (i=0;i<L->length;i++) {
+        sasfit_out("i:\t%d\tGtest:\t%lg\tchi2tes:\t%lg\tchi2_error:\t%lg\tfirstderiv:\t%lg\tsecondderiv:\t%lg\tentropy:\t%lg\tlagrange:\t%lg\tradius:\t%lg\n",
+                   i,L->Gtest[i],L->chi2test[i],L->chi2_error[i],L->firstderiv[i],L->secondderiv[i],L->entropy[i],L->lagrange[i],L->Lradius[i]);
+    }
+    return L->lagrange[idx];
+}
 
 int Sasfit_DR_EM_smoothing_Cmd(clientData, interp, argc, argv)
     ClientData clientData;
@@ -4964,6 +5449,7 @@ FILE *fptr;
 scalar p1,p2,p3, QR, eps,chi2;
 int    i,j,k,l,itst;
 scalar rmax;
+sasfit_Lcurve L;
 char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
@@ -5021,18 +5507,18 @@ rmax = EMparam.Rmax;
 #define MAX_ROOT_ITERATIONS 100
 switch (EMparam.optLagrange_method) {
  case redchi2:
-    fptr = fopen("c:/temp/SASfit.dat","a+");
+//    fptr = fopen("c:/temp/SASfit.dat","a+");
     chi2_max=Optimum_smooth4DR_EM(x_max, &FPd);
-    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
-                  x_max, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_max, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
 
     chi2_hi=Optimum_smooth4DR_EM(x_hi, &FPd);
-    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
-                  x_hi, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_hi, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
 
     chi2_lo=Optimum_smooth4DR_EM(x_lo, &FPd);
-    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
-                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
 
     while (chi2_lo > 0 && x_lo > FPd.relerror ) { // && chi2_lo < chi2_hi
         if (chi2_max > chi2_hi) {
@@ -5041,13 +5527,13 @@ switch (EMparam.optLagrange_method) {
             x_hi = x_lo;
             chi2_hi = chi2_lo;
         }
-        x_lo = x_lo/1.5;
+        x_lo = x_lo/REDFACTOR;
         chi2_lo=Optimum_smooth4DR_EM(x_lo, &FPd);
-    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
-                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
-    fflush(fptr);
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+//    fflush(fptr);
     }
-    fclose(fptr);
+//    fclose(fptr);
     sasfit_out ("x x_lo:%lg, x_max:%lg, x_hi:%lg\n", x_lo, x_max, x_hi);
     if (chi2_lo < 0 && chi2_max > 0) {
         chi2_lo = chi2_lo+EMparam.chi2;
@@ -5139,8 +5625,191 @@ switch (EMparam.optLagrange_method) {
         gsl_min_fminimizer_free (smin);
     }
     break;
- default:
+ case manual:
     FP_solver(&FPd);
+    break;
+ case Lcorner:
+ case Lcorner2:
+    L.Gtest=malloc(2*sizeof(scalar));
+    L.chi2test=malloc(2*sizeof(scalar));
+    L.chi2_error=malloc(2*sizeof(scalar));
+    L.firstderiv=malloc(2*sizeof(scalar));
+    L.secondderiv=malloc(2*sizeof(scalar));
+    L.entropy=malloc(2*sizeof(scalar));
+    L.lagrange=malloc(2*sizeof(scalar));
+    L.Lradius=malloc(2*sizeof(scalar));
+
+    chi2_max= Optimum_smooth4DR_EM(x_max, &FPd);
+    L.lagrange[0]=x_max;
+    L.Gtest[0] = EMparam.Gtest;
+    L.chi2test[0]=EMparam.chi2test;
+    L.chi2_error[0]=FPd.Chi2Norm;
+    L.firstderiv[0]=FPd.Sum1stDeriv;
+    L.secondderiv[0]=FPd.Sum2ndDeriv;
+    L.entropy[0]=FPd.Entropy;
+
+    chi2_hi = Optimum_smooth4DR_EM(x_hi, &FPd);
+    L.lagrange[1]=x_hi;
+    L.Gtest[1] = EMparam.Gtest;
+    L.chi2test[1]=EMparam.chi2test;
+    L.chi2_error[1]=FPd.Chi2Norm;
+    L.firstderiv[1]=FPd.Sum1stDeriv;
+    L.secondderiv[1]=FPd.Sum2ndDeriv;
+    L.entropy[1]=FPd.Entropy;
+
+    switch (EMparam.defL) {
+        case Idendity:
+            L.y1 = L.entropy[0];
+            L.y2 = L.entropy[1];
+            break;
+        case first_deriv_eps_b:
+        case first_deriv_eps_e:
+        case first_deriv:
+            L.y1 = L.firstderiv[0];
+            L.y2 = L.firstderiv[1];
+            break;
+        case second_deriv_DD:
+        case second_deriv_NN:
+        case second_deriv_DN:
+        case second_deriv_ND:
+        case second_deriv:
+        default:
+            L.y1 = L.secondderiv[0];
+            L.y2 = L.secondderiv[1];
+            break;
+    }
+    L.u1 = log(L.Gtest[0]);
+    L.u2 = log(L.Gtest[1]);
+    L.v1 = log(L.y1);
+    L.v2 = log(L.y2);
+    if (EMparam.optLagrange_method == Lcorner2) {
+        L.x1 = log(gsl_pow_2(L.lagrange[0]));
+        L.y1 *=L.y1;
+        L.x2 = log(gsl_pow_2(L.lagrange[1]));
+        L.y2 *=L.y2;
+    } else {
+        L.x1 = log(L.Gtest[0]);
+        L.y1 = log(L.y1);
+        L.x2 = log(L.Gtest[1]);
+        L.y2 = log(L.y2);
+    }
+    L.length=2;
+    L.rmin=-1;
+    L.optlagrange=L.lagrange[1];
+    L.s21=0;
+
+    while (x_lo > FPd.relerror && fabs(L.s21)<EMparam.maxslope) { // && chi2_lo < chi2_hi
+        x_lo = x_lo/REDFACTOR;
+        sasfit_out("start while loop L.length:%d with smooth value:%lg\n",L.length,x_lo);
+        chi2_lo=Optimum_smooth4DR_EM(x_lo, &FPd);
+        L.length=L.length+1;
+        i=L.length;
+        L.Gtest=(scalar *) realloc(L.Gtest,i*sizeof(scalar));
+        L.chi2test=(scalar *) realloc(L.chi2test,i*sizeof(scalar));
+        L.chi2_error=(scalar *) realloc(L.chi2_error,i*sizeof(scalar));
+        L.firstderiv=(scalar *) realloc(L.firstderiv,i*sizeof(scalar));
+        L.secondderiv=(scalar *) realloc(L.secondderiv,i*sizeof(scalar));
+        L.entropy=(scalar *) realloc(L.entropy,i*sizeof(scalar));
+        L.lagrange=(scalar *) realloc(L.lagrange,i*sizeof(scalar));
+        L.Lradius=(scalar *) realloc(L.Lradius,i*sizeof(scalar));
+
+        L.lagrange[i-1]=x_lo;
+        L.Gtest[i-1] = EMparam.Gtest;
+        L.chi2test[i-1]=EMparam.chi2test;
+        L.chi2_error[i-1]=FPd.Chi2Norm;
+        L.firstderiv[i-1]=FPd.Sum1stDeriv;
+        L.secondderiv[i-1]=FPd.Sum2ndDeriv;
+        L.entropy[i-1]=FPd.Entropy;
+
+//        L.x3 = log(L.Gtest[i-1]);
+        switch (EMparam.defL) {
+            case Idendity:
+                L.y3 = L.entropy[i-1];
+                break;
+            case first_deriv_eps_b:
+            case first_deriv_eps_e:
+            case first_deriv:
+                L.y3 = L.firstderiv[i-1];
+                break;
+            case second_deriv_DD:
+            case second_deriv_NN:
+            case second_deriv_DN:
+            case second_deriv_ND:
+            case second_deriv:
+            default:
+                L.y3 = L.secondderiv[i-1];
+                break;
+        }
+        L.u3 = log(L.Gtest[i-1]);
+        L.v3 = log(L.y3);
+        if (EMparam.optLagrange_method == Lcorner2) {
+            L.x3 = log(gsl_pow_2(L.lagrange[i-1]));
+            L.y3 *=L.y3;
+            L.signr = -1;
+        } else {
+            L.x3 = log(L.Gtest[i-1]);
+            L.y3 = log(L.y3);
+            L.signr = 1;
+        }
+        L.x21 = L.x2-L.x1;
+        L.y21 = L.y2-L.y1;
+        L.x31 = L.x3-L.x1;
+        L.y31 = L.y3-L.y1;
+        L.u31 = L.u3-L.u1;
+        L.u21 = L.u2-L.u1;
+        L.v31 = L.v3-L.v1;
+        L.v21 = L.v2-L.v1;
+        L.h21 = L.x21*L.x21 + L.y21*L.y21;
+        L.h31 = L.x31*L.x31 + L.y31*L.y31;
+        L.d = fabs(2.0 * (L.x21*L.y31 - L.x31*L.y21));
+        L.s21= fabs(L.y21/L.x21);
+        L.s31= fabs(L.y31/L.x31);
+        L.signr = ((L.s31>L.s21) *2-1);
+        L.s21= L.v21/L.u21;
+        L.s31= L.v31/L.u31;
+        r = L.signr*sqrt(L.h21*L.h31)*gsl_hypot(L.x3-L.x2,L.y3-L.y2) / L.d;
+        L.Lradius[i-2] = -menger_r(L.x1,L.x2,L.x3,L.y1,L.y2,L.y3);
+        sasfit_out("r=%lg menger_r:%lg L.s21 %lg  L.y31:%lg\n",r,L.Lradius[i-2],L.s21, L.y31);
+        if ((   L.Lradius[i-2] < L.rmin
+             && L.Lradius[i-2] > 0
+             && fabs(L.s21)<EMparam.maxslope)
+            || (   L.rmin == -1.0
+                && L.Lradius[i-2]>0)) {
+           L.rmin=L.Lradius[i-2];
+           L.optlagrange=L.lagrange[i-2];
+        }
+        L.x1=L.x2;
+        L.x2=L.x3;
+        L.y1=L.y2;
+        L.y2=L.y3;
+        L.u1=L.u2;
+        L.u2=L.u3;
+        L.v1=L.v2;
+        L.v2=L.v3;
+    }
+    L.Lradius[L.length-1]=L.Lradius[L.length-2];
+    L.Lradius[0]=L.Lradius[1];
+
+    if (EMparam.optLagrange_method == Lcorner) {
+        EMparam.smooth=sasfit_Lcorner(&L);
+    } else {
+        EMparam.smooth=L.optlagrange;
+    }
+    EMparam.smooth=sasfit_Lcorner(&L);
+    sasfit_out("optimimum for smooth:%lg\n",L.optlagrange);
+
+    chi2_lo=Optimum_smooth4DR_EM(EMparam.smooth, &FPd);
+    free(L.Gtest);
+    free(L.chi2test);
+    free(L.chi2_error);
+    free(L.firstderiv);
+    free(L.secondderiv);
+    free(L.entropy);
+    free(L.lagrange);
+    free(L.Lradius);
+    break;
+ default:
+    sasfit_err("no valid option to determine Lagrange parameter\n");
 }
 
 
@@ -5292,7 +5961,6 @@ EM_DR_Free(&FPd);
 return TCL_OK;
 }
 
-
 int Sasfit_DR_EM_ME_const_Cmd(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
@@ -5306,6 +5974,7 @@ sasfit_fp_data FPd;
 scalar p1,p2,p3, QR, eps,chi2;
 int    i,j,k,l,itst;
 scalar rmax;
+sasfit_Lcurve L;
 char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
@@ -5319,7 +5988,7 @@ Tcl_DString DsBuffer;
 
     gsl_function F;
     double r, sm;
-    double x_lo = 0.1, x_hi = 1, x_max=10;
+    double x_lo, x_hi, x_max=2;
     double chi2_lo, chi2_hi, chi2_max;
 
 error = FALSE;
@@ -5352,6 +6021,330 @@ FPd.PrintProgress=0;
 FPd.it=0;
 EM_DR_Init(&FPd);
 
+#define MAX_ROOT_ITERATIONS 100
+switch (EMparam.optLagrange_method) {
+ case redchi2:
+//    fptr = fopen("c:/temp/SASfit.dat","a+");
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_max=x_max/REDFACTOR;
+        chi2_max=Optimum_lambda4DR_EM_ME(x_max, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+    x_hi = x_max/REDFACTOR;
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_hi=x_hi/REDFACTOR;
+        chi2_hi=Optimum_lambda4DR_EM_ME(x_hi, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+    x_lo = x_hi/REDFACTOR;
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_lo=x_lo/REDFACTOR;
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+
+    while (chi2_lo > 0 && x_lo > FPd.relerror ) { // && chi2_lo < chi2_hi
+        if (chi2_max > chi2_hi) {
+            x_max = x_hi;
+            chi2_max = chi2_hi;
+            x_hi = x_lo;
+            chi2_hi = chi2_lo;
+        }
+        x_lo = x_lo/REDFACTOR;
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+//    fflush(fptr);
+    }
+//    fclose(fptr);
+    sasfit_out ("x x_lo:%lg, x_max:%lg, x_hi:%lg\n", x_lo, x_max, x_hi);
+    if (chi2_lo < 0 && chi2_max > 0) {
+        chi2_lo = chi2_lo+EMparam.chi2;
+        chi2_max = chi2_max+EMparam.chi2;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        solver_type = gsl_root_fsolver_brent;
+        solver = gsl_root_fsolver_alloc(solver_type);
+        status = gsl_root_fsolver_set(solver, &F, x_lo, x_hi);
+        if (status != GSL_SUCCESS) {
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        status = GSL_CONTINUE;
+        for (i = 1; i <= MAX_ROOT_ITERATIONS && status == GSL_CONTINUE; ++i) {
+        /* iterate one step of the solver */
+            status = gsl_root_fsolver_iterate(solver);
+
+        /* get the solver's current best solution and bounds */
+            r = gsl_root_fsolver_root(solver);
+            if (x_max != gsl_root_fsolver_x_upper (solver)) {
+                x_max = gsl_root_fsolver_x_upper (solver);
+                chi2_max = FPd.Chi2Norm;
+            }
+            if (x_lo != gsl_root_fsolver_x_lower (solver)) {
+                x_lo = gsl_root_fsolver_x_lower (solver);
+                chi2_lo = FPd.Chi2Norm;
+            }
+
+        /* Check to see if the solution is within 0.001 */
+            status = gsl_root_test_interval(chi2_lo, chi2_max, 0, 0.001);
+            sasfit_out("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg, r:%lg\n",i, x_lo, chi2_lo, x_max, chi2_max, r);
+            if (status == GSL_SUCCESS) sasfit_out("Converged:\n");
+        }
+
+    /* Free the solver */
+        gsl_root_fsolver_free(solver);
+
+        if (status == GSL_CONTINUE) {
+            sasfit_out("error: too many iterations");
+        } else if (status != GSL_SUCCESS) {
+//            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+    } else {
+//        x_max = 0.35;
+//        x_lo = FPd.relerror;
+//        x_hi = 1e-4;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        sasfit_out ("xx x_lo:%lg, x_max:%lg, x_hi:%lg\n", x_lo, x_max, x_hi);
+        Tmin = gsl_min_fminimizer_brent;
+        smin = gsl_min_fminimizer_alloc (Tmin);
+        sasfit_out ("xxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+        status = gsl_min_fminimizer_set (smin, &F, x_hi, x_lo, x_max);
+        if (status != GSL_SUCCESS) {
+            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        } else {
+            sasfit_out ("xxxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+            i=0;
+            do {
+                i++;
+                status = gsl_min_fminimizer_iterate (smin);
+
+                if (x_max != gsl_min_fminimizer_x_upper (smin)) {
+                    x_max = gsl_min_fminimizer_x_upper (smin);
+                    chi2_max = chi2_hi;
+                }
+                if (x_lo != gsl_min_fminimizer_x_lower (smin)) {
+                    x_lo = gsl_min_fminimizer_x_lower (smin);
+                    chi2_lo = chi2_hi;
+                }
+                x_hi = gsl_min_fminimizer_x_minimum (smin);
+                chi2_hi = FPd.Chi2Norm;
+
+                status = gsl_min_test_interval (chi2_lo, chi2_max, 0.001, 0.0);
+
+                if (status == GSL_SUCCESS) sasfit_out ("Converged:\n");
+
+                sasfit_out ("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg x_hi:%lg chi2_hi:%lg\n", i, x_lo, chi2_lo, x_max, chi2_max, x_hi, chi2_hi);
+            } while (status == GSL_CONTINUE && i < MAX_ROOT_ITERATIONS);
+            if (status == GSL_CONTINUE) {
+                sasfit_err("error: too many iterations");
+            } else if (status != GSL_SUCCESS) {
+                sasfit_err("error(%d): %s\n", status, gsl_strerror(status));
+                sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+            }
+        }
+        gsl_min_fminimizer_free (smin);
+    }
+    break;
+ case manual:
+    FP_solver(&FPd);
+    break;
+ case Lcorner:
+ case Lcorner2:
+    L.Gtest=malloc(2*sizeof(scalar));
+    L.chi2test=malloc(2*sizeof(scalar));
+    L.chi2_error=malloc(2*sizeof(scalar));
+    L.firstderiv=malloc(2*sizeof(scalar));
+    L.secondderiv=malloc(2*sizeof(scalar));
+    L.entropy=malloc(2*sizeof(scalar));
+    L.lagrange=malloc(2*sizeof(scalar));
+    L.Lradius=malloc(2*sizeof(scalar));
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_max=x_max/REDFACTOR;
+        chi2_max=Optimum_lambda4DR_EM_ME(x_max, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+
+    L.lagrange[0]=x_max;
+    L.Gtest[0] = EMparam.Gtest;
+    L.chi2test[0]=EMparam.chi2test;
+    L.chi2_error[0]=FPd.Chi2Norm;
+    L.firstderiv[0]=FPd.Sum1stDeriv;
+    L.secondderiv[0]=FPd.Sum2ndDeriv;
+    L.entropy[0]=FPd.Entropy;
+
+    x_hi = x_max/REDFACTOR;
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_hi=x_hi/REDFACTOR;
+        chi2_hi=Optimum_lambda4DR_EM_ME(x_hi, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+    x_lo=x_hi/REDFACTOR;
+
+    L.lagrange[1]=x_hi;
+    L.Gtest[1] = EMparam.Gtest;
+    L.chi2test[1]=EMparam.chi2test;
+    L.chi2_error[1]=FPd.Chi2Norm;
+    L.firstderiv[1]=FPd.Sum1stDeriv;
+    L.secondderiv[1]=FPd.Sum2ndDeriv;
+    L.entropy[1]=FPd.Entropy;
+
+    switch (EMparam.defL) {
+        case Idendity:
+            L.y1 = L.entropy[0];
+            L.y2 = L.entropy[1];
+            break;
+        case first_deriv_eps_b:
+        case first_deriv_eps_e:
+        case first_deriv:
+            L.y1 = L.firstderiv[0];
+            L.y2 = L.firstderiv[1];
+            break;
+        case second_deriv_DD:
+        case second_deriv_NN:
+        case second_deriv_DN:
+        case second_deriv_ND:
+        case second_deriv:
+        default:
+            L.y1 = L.secondderiv[0];
+            L.y2 = L.secondderiv[1];
+            break;
+    }
+    L.u1 = log(L.Gtest[0]);
+    L.u2 = log(L.Gtest[1]);
+    L.v1 = log(L.y1);
+    L.v2 = log(L.y2);
+    if (EMparam.optLagrange_method == Lcorner2) {
+        L.x1 = log(gsl_pow_2(L.lagrange[0]));
+        L.y1 *=L.y1;
+        L.x2 = log(gsl_pow_2(L.lagrange[1]));
+        L.y2 *=L.y2;
+    } else {
+        L.x1 = log(L.Gtest[0]);
+        L.y1 = log(L.y1);
+        L.x2 = log(L.Gtest[1]);
+        L.y2 = log(L.y2);
+    }
+    L.length=2;
+    L.rmin=-1;
+    L.optlagrange=L.lagrange[1];
+    L.s21=0;
+
+    while (x_lo > FPd.relerror && fabs(L.s21)<EMparam.maxslope) { // && chi2_lo < chi2_hi
+        x_lo = x_lo/REDFACTOR;
+        sasfit_out("start while loop L.length:%d with lambda value:%lg\n",L.length,x_lo);
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+        L.length=L.length+1;
+        i=L.length;
+        L.Gtest=(scalar *) realloc(L.Gtest,i*sizeof(scalar));
+        L.chi2test=(scalar *) realloc(L.chi2test,i*sizeof(scalar));
+        L.chi2_error=(scalar *) realloc(L.chi2_error,i*sizeof(scalar));
+        L.firstderiv=(scalar *) realloc(L.firstderiv,i*sizeof(scalar));
+        L.secondderiv=(scalar *) realloc(L.secondderiv,i*sizeof(scalar));
+        L.entropy=(scalar *) realloc(L.entropy,i*sizeof(scalar));
+        L.lagrange=(scalar *) realloc(L.lagrange,i*sizeof(scalar));
+        L.Lradius=(scalar *) realloc(L.Lradius,i*sizeof(scalar));
+
+        L.lagrange[i-1]=x_lo;
+        L.Gtest[i-1] = EMparam.Gtest;
+        L.chi2test[i-1]=EMparam.chi2test;
+        L.chi2_error[i-1]=FPd.Chi2Norm;
+        L.firstderiv[i-1]=FPd.Sum1stDeriv;
+        L.secondderiv[i-1]=FPd.Sum2ndDeriv;
+        L.entropy[i-1]=FPd.Entropy;
+
+//        L.x3 = log(L.Gtest[i-1]);
+        switch (EMparam.defL) {
+            case Idendity:
+                L.y3 = L.entropy[i-1];
+                break;
+            case first_deriv_eps_b:
+            case first_deriv_eps_e:
+            case first_deriv:
+                L.y3 = L.firstderiv[i-1];
+                break;
+            case second_deriv_DD:
+            case second_deriv_NN:
+            case second_deriv_DN:
+            case second_deriv_ND:
+            case second_deriv:
+            default:
+                L.y3 = L.secondderiv[i-1];
+                break;
+        }
+        L.u3 = log(L.Gtest[i-1]);
+        L.v3 = log(L.y3);
+        if (EMparam.optLagrange_method == Lcorner2) {
+            L.x3 = log(gsl_pow_2(L.lagrange[i-1]));
+            L.y3 *=L.y3;
+            L.signr = -1;
+        } else {
+            L.x3 = log(L.Gtest[i-1]);
+            L.y3 = log(L.y3);
+            L.signr = 1;
+        }
+        L.x21 = L.x2-L.x1;
+        L.y21 = L.y2-L.y1;
+        L.x31 = L.x3-L.x1;
+        L.y31 = L.y3-L.y1;
+        L.u31 = L.u3-L.u1;
+        L.u21 = L.u2-L.u1;
+        L.v31 = L.v3-L.v1;
+        L.v21 = L.v2-L.v1;
+        L.h21 = L.x21*L.x21 + L.y21*L.y21;
+        L.h31 = L.x31*L.x31 + L.y31*L.y31;
+        L.d = fabs(2.0 * (L.x21*L.y31 - L.x31*L.y21));
+        L.s21= fabs(L.y21/L.x21);
+        L.s31= fabs(L.y31/L.x31);
+        L.signr = ((L.s31>L.s21) *2-1);
+        L.s21= L.v21/L.u21;
+        L.s31= L.v31/L.u31;
+        r = L.signr*sqrt(L.h21*L.h31)*gsl_hypot(L.x3-L.x2,L.y3-L.y2) / L.d;
+        L.Lradius[i-2] = -menger_r(L.x1,L.x2,L.x3,L.y1,L.y2,L.y3);
+        sasfit_out("r=%lg menger_r:%lg L.s21 %lg  L.y31:%lg\n",r,L.Lradius[i-2],L.s21, L.y31);
+        if ((   L.Lradius[i-2] < L.rmin
+             && L.Lradius[i-2] > 0
+             && fabs(L.s21)<EMparam.maxslope)
+            || (   L.rmin == -1.0
+                && L.Lradius[i-2]>0)) {
+           L.rmin=L.Lradius[i-2];
+           L.optlagrange=L.lagrange[i-2];
+        }
+        L.x1=L.x2;
+        L.x2=L.x3;
+        L.y1=L.y2;
+        L.y2=L.y3;
+        L.u1=L.u2;
+        L.u2=L.u3;
+        L.v1=L.v2;
+        L.v2=L.v3;
+    }
+    L.Lradius[L.length-1]=L.Lradius[L.length-2];
+    L.Lradius[0]=L.Lradius[1];
+
+    if (EMparam.optLagrange_method == Lcorner) {
+        EMparam.lambda=sasfit_Lcorner(&L);
+    } else {
+        EMparam.lambda=L.optlagrange;
+    }
+    EMparam.lambda=sasfit_Lcorner(&L);
+    sasfit_out("optimum for lambda:%lg\n",L.optlagrange);
+
+    chi2_lo=Optimum_lambda4DR_EM_ME(EMparam.lambda, &FPd);
+    free(L.Gtest);
+    free(L.chi2test);
+    free(L.chi2_error);
+    free(L.firstderiv);
+    free(L.secondderiv);
+    free(L.entropy);
+    free(L.lagrange);
+    free(L.Lradius);
+    break;
+ default:
+    sasfit_err("no valid option to determine Lagrange parameter\n");
+}
+
+goto skipcodeconst;
 #define MAX_ROOT_ITERATIONS 100
 switch (EMparam.optLagrange_method) {
  case redchi2:
@@ -5463,6 +6456,7 @@ switch (EMparam.optLagrange_method) {
     FP_solver(&FPd);
 }
 
+skipcodeconst:
 
 sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
 sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
@@ -5514,6 +6508,7 @@ sasfit_fp_data FPd;
 scalar p1,p2,p3, QR, eps,chi2;
 int    i,j,k,l,itst;
 scalar rmax;
+sasfit_Lcurve L;
 char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
@@ -5561,6 +6556,330 @@ FPd.it=0;
 strcpy(EMparam.smooth_type,"Gauss");
 EM_DR_Init(&FPd);
 
+#define MAX_ROOT_ITERATIONS 100
+switch (EMparam.optLagrange_method) {
+ case redchi2:
+//    fptr = fopen("c:/temp/SASfit.dat","a+");
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_max=x_max/REDFACTOR;
+        chi2_max=Optimum_lambda4DR_EM_ME(x_max, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+    x_hi = x_max/REDFACTOR;
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_hi=x_hi/REDFACTOR;
+        chi2_hi=Optimum_lambda4DR_EM_ME(x_hi, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+    x_lo = x_hi/REDFACTOR;
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_lo=x_lo/REDFACTOR;
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+
+    while (chi2_lo > 0 && x_lo > FPd.relerror ) { // && chi2_lo < chi2_hi
+        if (chi2_max > chi2_hi) {
+            x_max = x_hi;
+            chi2_max = chi2_hi;
+            x_hi = x_lo;
+            chi2_hi = chi2_lo;
+        }
+        x_lo = x_lo/REDFACTOR;
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+//    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+//                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+//    fflush(fptr);
+    }
+//    fclose(fptr);
+    sasfit_out ("x x_lo:%lg, x_max:%lg, x_hi:%lg\n", x_lo, x_max, x_hi);
+    if (chi2_lo < 0 && chi2_max > 0) {
+        chi2_lo = chi2_lo+EMparam.chi2;
+        chi2_max = chi2_max+EMparam.chi2;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        solver_type = gsl_root_fsolver_brent;
+        solver = gsl_root_fsolver_alloc(solver_type);
+        status = gsl_root_fsolver_set(solver, &F, x_lo, x_hi);
+        if (status != GSL_SUCCESS) {
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        status = GSL_CONTINUE;
+        for (i = 1; i <= MAX_ROOT_ITERATIONS && status == GSL_CONTINUE; ++i) {
+        /* iterate one step of the solver */
+            status = gsl_root_fsolver_iterate(solver);
+
+        /* get the solver's current best solution and bounds */
+            r = gsl_root_fsolver_root(solver);
+            if (x_max != gsl_root_fsolver_x_upper (solver)) {
+                x_max = gsl_root_fsolver_x_upper (solver);
+                chi2_max = FPd.Chi2Norm;
+            }
+            if (x_lo != gsl_root_fsolver_x_lower (solver)) {
+                x_lo = gsl_root_fsolver_x_lower (solver);
+                chi2_lo = FPd.Chi2Norm;
+            }
+
+        /* Check to see if the solution is within 0.001 */
+            status = gsl_root_test_interval(chi2_lo, chi2_max, 0, 0.001);
+            sasfit_out("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg, r:%lg\n",i, x_lo, chi2_lo, x_max, chi2_max, r);
+            if (status == GSL_SUCCESS) sasfit_out("Converged:\n");
+        }
+
+    /* Free the solver */
+        gsl_root_fsolver_free(solver);
+
+        if (status == GSL_CONTINUE) {
+            sasfit_out("error: too many iterations");
+        } else if (status != GSL_SUCCESS) {
+//            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+    } else {
+//        x_max = 0.35;
+//        x_lo = FPd.relerror;
+//        x_hi = 1e-4;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        sasfit_out ("xx x_lo:%lg, x_max:%lg, x_hi:%lg\n", x_lo, x_max, x_hi);
+        Tmin = gsl_min_fminimizer_brent;
+        smin = gsl_min_fminimizer_alloc (Tmin);
+        sasfit_out ("xxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+        status = gsl_min_fminimizer_set (smin, &F, x_hi, x_lo, x_max);
+        if (status != GSL_SUCCESS) {
+            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        } else {
+            sasfit_out ("xxxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+            i=0;
+            do {
+                i++;
+                status = gsl_min_fminimizer_iterate (smin);
+
+                if (x_max != gsl_min_fminimizer_x_upper (smin)) {
+                    x_max = gsl_min_fminimizer_x_upper (smin);
+                    chi2_max = chi2_hi;
+                }
+                if (x_lo != gsl_min_fminimizer_x_lower (smin)) {
+                    x_lo = gsl_min_fminimizer_x_lower (smin);
+                    chi2_lo = chi2_hi;
+                }
+                x_hi = gsl_min_fminimizer_x_minimum (smin);
+                chi2_hi = FPd.Chi2Norm;
+
+                status = gsl_min_test_interval (chi2_lo, chi2_max, 0.001, 0.0);
+
+                if (status == GSL_SUCCESS) sasfit_out ("Converged:\n");
+
+                sasfit_out ("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg x_hi:%lg chi2_hi:%lg\n", i, x_lo, chi2_lo, x_max, chi2_max, x_hi, chi2_hi);
+            } while (status == GSL_CONTINUE && i < MAX_ROOT_ITERATIONS);
+            if (status == GSL_CONTINUE) {
+                sasfit_err("error: too many iterations");
+            } else if (status != GSL_SUCCESS) {
+                sasfit_err("error(%d): %s\n", status, gsl_strerror(status));
+                sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+            }
+        }
+        gsl_min_fminimizer_free (smin);
+    }
+    break;
+ case manual:
+    FP_solver(&FPd);
+    break;
+ case Lcorner:
+ case Lcorner2:
+    L.Gtest=malloc(2*sizeof(scalar));
+    L.chi2test=malloc(2*sizeof(scalar));
+    L.chi2_error=malloc(2*sizeof(scalar));
+    L.firstderiv=malloc(2*sizeof(scalar));
+    L.secondderiv=malloc(2*sizeof(scalar));
+    L.entropy=malloc(2*sizeof(scalar));
+    L.lagrange=malloc(2*sizeof(scalar));
+    L.Lradius=malloc(2*sizeof(scalar));
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_max=x_max/REDFACTOR;
+        chi2_max=Optimum_lambda4DR_EM_ME(x_max, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+
+    L.lagrange[0]=x_max;
+    L.Gtest[0] = EMparam.Gtest;
+    L.chi2test[0]=EMparam.chi2test;
+    L.chi2_error[0]=FPd.Chi2Norm;
+    L.firstderiv[0]=FPd.Sum1stDeriv;
+    L.secondderiv[0]=FPd.Sum2ndDeriv;
+    L.entropy[0]=FPd.Entropy;
+
+    x_hi = x_max/REDFACTOR;
+    do {
+        if (FPd.failed || FPd.it >= FPd.maxsteps) x_hi=x_hi/REDFACTOR;
+        chi2_hi=Optimum_lambda4DR_EM_ME(x_hi, &FPd);
+    } while ((FPd.failed || FPd.it >= FPd.maxsteps) && x_max > FPd.relerror );
+    x_lo=x_hi/REDFACTOR;
+
+    L.lagrange[1]=x_hi;
+    L.Gtest[1] = EMparam.Gtest;
+    L.chi2test[1]=EMparam.chi2test;
+    L.chi2_error[1]=FPd.Chi2Norm;
+    L.firstderiv[1]=FPd.Sum1stDeriv;
+    L.secondderiv[1]=FPd.Sum2ndDeriv;
+    L.entropy[1]=FPd.Entropy;
+
+    switch (EMparam.defL) {
+        case Idendity:
+            L.y1 = L.entropy[0];
+            L.y2 = L.entropy[1];
+            break;
+        case first_deriv_eps_b:
+        case first_deriv_eps_e:
+        case first_deriv:
+            L.y1 = L.firstderiv[0];
+            L.y2 = L.firstderiv[1];
+            break;
+        case second_deriv_DD:
+        case second_deriv_NN:
+        case second_deriv_DN:
+        case second_deriv_ND:
+        case second_deriv:
+        default:
+            L.y1 = L.secondderiv[0];
+            L.y2 = L.secondderiv[1];
+            break;
+    }
+    L.u1 = log(L.Gtest[0]);
+    L.u2 = log(L.Gtest[1]);
+    L.v1 = log(L.y1);
+    L.v2 = log(L.y2);
+    if (EMparam.optLagrange_method == Lcorner2) {
+        L.x1 = log(gsl_pow_2(L.lagrange[0]));
+        L.y1 *=L.y1;
+        L.x2 = log(gsl_pow_2(L.lagrange[1]));
+        L.y2 *=L.y2;
+    } else {
+        L.x1 = log(L.Gtest[0]);
+        L.y1 = log(L.y1);
+        L.x2 = log(L.Gtest[1]);
+        L.y2 = log(L.y2);
+    }
+    L.length=2;
+    L.rmin=-1;
+    L.optlagrange=L.lagrange[1];
+    L.s21=0;
+
+    while (x_lo > FPd.relerror && fabs(L.s21)<EMparam.maxslope) { // && chi2_lo < chi2_hi
+        x_lo = x_lo/REDFACTOR;
+        sasfit_out("start while loop L.length:%d with lambda value:%lg\n",L.length,x_lo);
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+        L.length=L.length+1;
+        i=L.length;
+        L.Gtest=(scalar *) realloc(L.Gtest,i*sizeof(scalar));
+        L.chi2test=(scalar *) realloc(L.chi2test,i*sizeof(scalar));
+        L.chi2_error=(scalar *) realloc(L.chi2_error,i*sizeof(scalar));
+        L.firstderiv=(scalar *) realloc(L.firstderiv,i*sizeof(scalar));
+        L.secondderiv=(scalar *) realloc(L.secondderiv,i*sizeof(scalar));
+        L.entropy=(scalar *) realloc(L.entropy,i*sizeof(scalar));
+        L.lagrange=(scalar *) realloc(L.lagrange,i*sizeof(scalar));
+        L.Lradius=(scalar *) realloc(L.Lradius,i*sizeof(scalar));
+
+        L.lagrange[i-1]=x_lo;
+        L.Gtest[i-1] = EMparam.Gtest;
+        L.chi2test[i-1]=EMparam.chi2test;
+        L.chi2_error[i-1]=FPd.Chi2Norm;
+        L.firstderiv[i-1]=FPd.Sum1stDeriv;
+        L.secondderiv[i-1]=FPd.Sum2ndDeriv;
+        L.entropy[i-1]=FPd.Entropy;
+
+//        L.x3 = log(L.Gtest[i-1]);
+        switch (EMparam.defL) {
+            case Idendity:
+                L.y3 = L.entropy[i-1];
+                break;
+            case first_deriv_eps_b:
+            case first_deriv_eps_e:
+            case first_deriv:
+                L.y3 = L.firstderiv[i-1];
+                break;
+            case second_deriv_DD:
+            case second_deriv_NN:
+            case second_deriv_DN:
+            case second_deriv_ND:
+            case second_deriv:
+            default:
+                L.y3 = L.secondderiv[i-1];
+                break;
+        }
+        L.u3 = log(L.Gtest[i-1]);
+        L.v3 = log(L.y3);
+        if (EMparam.optLagrange_method == Lcorner2) {
+            L.x3 = log(gsl_pow_2(L.lagrange[i-1]));
+            L.y3 *=L.y3;
+            L.signr = -1;
+        } else {
+            L.x3 = log(L.Gtest[i-1]);
+            L.y3 = log(L.y3);
+            L.signr = 1;
+        }
+        L.x21 = L.x2-L.x1;
+        L.y21 = L.y2-L.y1;
+        L.x31 = L.x3-L.x1;
+        L.y31 = L.y3-L.y1;
+        L.u31 = L.u3-L.u1;
+        L.u21 = L.u2-L.u1;
+        L.v31 = L.v3-L.v1;
+        L.v21 = L.v2-L.v1;
+        L.h21 = L.x21*L.x21 + L.y21*L.y21;
+        L.h31 = L.x31*L.x31 + L.y31*L.y31;
+        L.d = fabs(2.0 * (L.x21*L.y31 - L.x31*L.y21));
+        L.s21= fabs(L.y21/L.x21);
+        L.s31= fabs(L.y31/L.x31);
+        L.signr = ((L.s31>L.s21) *2-1);
+        L.s21= L.v21/L.u21;
+        L.s31= L.v31/L.u31;
+        r = L.signr*sqrt(L.h21*L.h31)*gsl_hypot(L.x3-L.x2,L.y3-L.y2) / L.d;
+        L.Lradius[i-2] = -menger_r(L.x1,L.x2,L.x3,L.y1,L.y2,L.y3);
+        sasfit_out("r=%lg menger_r:%lg L.s21 %lg  L.y31:%lg\n",r,L.Lradius[i-2],L.s21, L.y31);
+        if ((   L.Lradius[i-2] < L.rmin
+             && L.Lradius[i-2] > 0
+             && fabs(L.s21)<EMparam.maxslope)
+            || (   L.rmin == -1.0
+                && L.Lradius[i-2]>0)) {
+           L.rmin=L.Lradius[i-2];
+           L.optlagrange=L.lagrange[i-2];
+        }
+        L.x1=L.x2;
+        L.x2=L.x3;
+        L.y1=L.y2;
+        L.y2=L.y3;
+        L.u1=L.u2;
+        L.u2=L.u3;
+        L.v1=L.v2;
+        L.v2=L.v3;
+    }
+    L.Lradius[L.length-1]=L.Lradius[L.length-2];
+    L.Lradius[0]=L.Lradius[1];
+
+    if (EMparam.optLagrange_method == Lcorner) {
+        EMparam.lambda=sasfit_Lcorner(&L);
+    } else {
+        EMparam.lambda=L.optlagrange;
+    }
+    EMparam.lambda=sasfit_Lcorner(&L);
+    sasfit_out("optimum for lambda:%lg\n",L.optlagrange);
+
+    chi2_lo=Optimum_lambda4DR_EM_ME(EMparam.lambda, &FPd);
+    free(L.Gtest);
+    free(L.chi2test);
+    free(L.chi2_error);
+    free(L.firstderiv);
+    free(L.secondderiv);
+    free(L.entropy);
+    free(L.lagrange);
+    free(L.Lradius);
+    break;
+ default:
+    sasfit_err("no valid option to determine Lagrange parameter\n");
+}
+
+goto skipcodeadaptive;
 #define MAX_ROOT_ITERATIONS 100
 switch (EMparam.optLagrange_method) {
  case redchi2:
@@ -5670,7 +6989,7 @@ switch (EMparam.optLagrange_method) {
  default:
     FP_solver(&FPd);
 }
-
+skipcodeadaptive:
 
 
 
@@ -5878,6 +7197,8 @@ gsl_vector *c_lcurve;   /* regularized solution (L-curve) */
 gsl_vector *c_gcv;      /* regularized solution (GCV) */
 gsl_vector *c_reg; /* regularized solution */
 gsl_vector *reg_param;
+gsl_vector *MengerR;
+gsl_vector *slope;
 gsl_vector *rho;  /* residual norms */
 gsl_vector *eta;  /* solution norms */
 gsl_vector *nnls_rho;  /* residual norms */
@@ -5950,27 +7271,19 @@ sasfit_out("number of points in q-space has been increase and filled with zeros 
     }
 }
 
-M = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
-switch (EMparam.defL) {
-case first_deriv:
-    L = gsl_matrix_calloc(EMparam.nR-1, EMparam.nR);
-    LQR = gsl_matrix_calloc(EMparam.nR-1, EMparam.nR);
-    Ltau = gsl_vector_calloc(EMparam.nR-1);
-    Xs = gsl_matrix_calloc(GSL_MAX(EMparam.nh,EMparam.nR)-1, EMparam.nR);
-    ys = gsl_vector_calloc(GSL_MAX(EMparam.nh,EMparam.nR)-1);
-    break;
-default:
-    L = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
-    LQR = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
-    Ltau = gsl_vector_calloc(EMparam.nR);
-    Xs = gsl_matrix_calloc(GSL_MAX(EMparam.nh,EMparam.nR), EMparam.nR);
-    ys = gsl_vector_calloc(GSL_MAX(EMparam.nh,EMparam.nR));
-}
+M    = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
+L    = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
+LQR  = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
+Ltau = gsl_vector_calloc(EMparam.nR);
+Xs   = gsl_matrix_calloc(GSL_MAX(EMparam.nh,EMparam.nR), EMparam.nR);
+ys   = gsl_vector_calloc(GSL_MAX(EMparam.nh,EMparam.nR));
 
 c = gsl_vector_calloc(EMparam.nR);
 c_reg = gsl_vector_calloc(EMparam.nR);
 c_lcurve = gsl_vector_calloc(EMparam.nR);
 c_gcv = gsl_vector_calloc(EMparam.nR);
+MengerR = gsl_vector_calloc(EMparam.nLagrange);
+slope = gsl_vector_calloc(EMparam.nLagrange);
 rho = gsl_vector_calloc(EMparam.nLagrange);
 eta = gsl_vector_calloc(EMparam.nLagrange);
 reg_param = gsl_vector_calloc(EMparam.nLagrange);
@@ -5982,13 +7295,7 @@ Gvec = gsl_vector_calloc(EMparam.nLagrange);
 switch (EMparam.defL) {
  case Idendity:
     for (i=0;i<EMparam.nR;i++) {
-        for (j=0;j<EMparam.nR;j++) {
-            if (i==j) {
-                gsl_matrix_set(L,i,j,1.0);
-            } else {
-                gsl_matrix_set(L,i,j,0.0);
-            }
-        }
+        gsl_matrix_set(L,i,i,1.0);
     }
     break;
  case first_deriv_eps_e:
@@ -6007,23 +7314,32 @@ switch (EMparam.defL) {
     sasfit_out("set penalty function to >first_deriv_eps_b<\n");
     break;
  case first_deriv:
+ //   gsl_matrix_set(L,0,EMparam.nR-1,-1.0);
+ //   gsl_matrix_set(L,0,1           , 1.0);
     for (i=0;i<EMparam.nR-1;i++) {
-        gsl_matrix_set(L,i,i, -1.0);
-        gsl_matrix_set(L,i,i+1,1.0);
+        gsl_matrix_set(L,i,i,-1.0);
+        gsl_matrix_set(L,i,i+1, 1.0);
     }
-    sasfit_out("set penalty function to >first_deriv_eps_b<\n");
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,1.0);
+//    gsl_matrix_set(L,EMparam.nR-1,0, 1.0);
+    sasfit_out("set penalty function to >first_deriv<\n");
     break;
  case second_deriv:
-    gsl_matrix_set(L,0,0, 1.0);
+    gsl_matrix_set(L,0,0, 2.0);
+    gsl_matrix_set(L,0,1, -1.0);
+    gsl_matrix_set(L,0,EMparam.nR-1, -1.0);
     for (i=1;i<EMparam.nR-1;i++) {
         gsl_matrix_set(L,i,i-1,  -1.0);
         gsl_matrix_set(L,i,i,  2.0);
         gsl_matrix_set(L,i,i+1,-1.0);
     }
-    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1, 1.0);
+
+    gsl_matrix_set(L,EMparam.nR-1,0, -1.0);
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2, -1.0);
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1, 2.0);
     sasfit_out("set penalty function to >second_deriv<\n");
     break;
- case second_deriv_DN:
+ case second_deriv_ND:
     gsl_matrix_set(L,0,0,2.0);  //  case Dirichlet-Neumann
     gsl_matrix_set(L,0,1,-1.0); // case Dirichlet-Neumann
     for (i=1;i<EMparam.nR-1;i++) {
@@ -6031,11 +7347,11 @@ switch (EMparam.defL) {
         gsl_matrix_set(L,i,i  ,2.0);
         gsl_matrix_set(L,i,i+1,-1.0);
     }
-    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); //  case Dirichlet-Neumann
-    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,1.0);  //  case Dirichlet-Neumann
-    sasfit_out("set penalty function to >Dirichlet-Neumann<:second_deriv_DN\n");
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); //  case Neumann-Dirichlet
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,1.0);  //  case Neumann-Dirichlet
+    sasfit_out("set penalty function to >Neumann-Dirichlet<:second_deriv_ND\n");
     break;
- case second_deriv_ND:
+ case second_deriv_DN:
     gsl_matrix_set(L,0,0, 1.0); // case Neumann-Dirichlet
     gsl_matrix_set(L,0,1,-1.0); // case Neumann-Dirichlet
     for (i=1;i<EMparam.nR-1;i++) {
@@ -6045,7 +7361,7 @@ switch (EMparam.defL) {
     }
     gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); // case Neumann-Dirichlet
     gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,2.0);  // case Neumann-Dirichlet
-    sasfit_out("set penalty function to >Neumann-Dirichlet<:second_deriv_ND\n");
+    sasfit_out("set penalty function to >Dirichlet-Neumann<:second_deriv_DN\n");
     break;
  case second_deriv_DD:
     gsl_matrix_set(L,0,0,2.0);  // case Dirichlet-Dirichlet
@@ -6088,18 +7404,25 @@ gsl_matrix_memcpy(LQR, L);
 gsl_multifit_linear_L_decomp(LQR, Ltau);
 gsl_multifit_linear_wstdform2(LQR, Ltau, X, weights, y, Xs, ys, M, w);
 gsl_multifit_linear_svd(Xs, w);
+
 rcond = gsl_multifit_linear_rcond(w);
 sasfit_out("rcond:%lg\n",rcond);
 /* calculate L-curve and find its corner */
 switch (EMparam.optLagrange_method) {
  case Lcorner2:
-    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
-    gsl_multifit_linear_lcorner2(rho, eta, &reg_idx);
+//    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    sasfit_gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, w);
+    sasfit_gsl_multifit_linear_lcorner2(reg_param,rho, eta,MengerR,slope,EMparam.maxslope, &reg_idx);
     if (FPd.PrintProgress > 0) {
         sasfit_out("=== Regularized fit ===\n");
         sasfit_out("lambda   \t rho   \t  eta\n");
         for (j=0; j < EMparam.nLagrange; ++j) {
-            sasfit_out("i:%d\tlambda:%lg\trho:%lg\teta:%lg\n",j, gsl_vector_get(reg_param,j),gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,gsl_vector_get(eta,j));
+            sasfit_out("i\t%d\tlambda\t%lg\trho\t%lg\teta\t%lg\tMengerR\t%lg\tslope\t%lg\n",
+                       j, gsl_vector_get(reg_param,j),
+                       gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,
+                       gsl_vector_get(eta,j),
+                       gsl_vector_get(MengerR,j),
+                       gsl_vector_get(slope,j) );
         }
     }
 /* store optimal regularization parameter */
@@ -6127,13 +7450,19 @@ switch (EMparam.optLagrange_method) {
     sasfit_out("%lg\t%lg\t%lg\t%lg\n", lambda_gcv,G_gcv,gsl_pow_2(rnorm),pow(lambda_gcv * snorm, 2.0));
     break;
 case Lcorner:
-    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
-    gsl_multifit_linear_lcorner(rho, eta, &reg_idx);
+//    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    sasfit_gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, w);
+    sasfit_gsl_multifit_linear_lcorner(rho, eta,MengerR, slope,EMparam.maxslope, &reg_idx);
     if (FPd.PrintProgress > 0) {
         sasfit_out("=== Regularized fit ===\n");
         sasfit_out("lambda   \t rho   \t  eta\n");
         for (j=0; j < EMparam.nLagrange; ++j) {
-            sasfit_out("i:%d\tlambda:%lg\trho:%lg\teta:%lg\n", j, gsl_vector_get(reg_param,j),gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,gsl_vector_get(eta,j));
+            sasfit_out("i\t%d\tlambda\t%lg\trho\t%lg\teta\t%lg\tMengerR\t%lg\tslope\t%lg\n",
+                       j, gsl_vector_get(reg_param,j),
+                       gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,
+                       gsl_vector_get(eta,j),
+                       gsl_vector_get(MengerR,j),
+                       gsl_vector_get(slope,j));
        }
     }
 /* store optimal regularization parameter */
@@ -6153,7 +7482,8 @@ case manual:
     sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
     break;
 case redchi2:
-    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+//   gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    sasfit_gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, w);
     j=1;
     l2=-1;
     l1=0;
@@ -6177,13 +7507,20 @@ case redchi2:
     sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
     break;
 default:
-    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
-    gsl_multifit_linear_lcorner(rho, eta, &reg_idx);
+//   gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    sasfit_gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, w);
+    sasfit_gsl_multifit_linear_lcorner(rho, eta,MengerR, slope,EMparam.maxslope, &reg_idx);
     if (FPd.PrintProgress > 0) {
         sasfit_out("=== Regularized fit ===\n");
         sasfit_out("lambda   \t rho   \t  eta\n");
         for (j=0; j < EMparam.nLagrange; ++j) {
-            sasfit_out("i:%d\tlambda:%lg\trho:%lg\teta:%lg\n", j, gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,gsl_vector_get(rho,j),gsl_vector_get(eta,j));
+            sasfit_out("i\t%d\tlambda\t%lg\trho\t%lg\teta\t%lg\tMengerR\t%lg\tslope\t%lg\n",
+                       j,
+                       gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,
+                       gsl_vector_get(rho,j),
+                       gsl_vector_get(eta,j),
+                       gsl_vector_get(MengerR,j),
+                       gsl_vector_get(slope,j));
        }
     }
 /* store optimal regularization parameter */
@@ -6321,6 +7658,8 @@ EM_DR_Free(&FPd);
   gsl_vector_free(c_lcurve);
   gsl_vector_free(c_gcv);
   gsl_vector_free(reg_param);
+  gsl_vector_free(MengerR);
+  gsl_vector_free(slope);
   gsl_vector_free(rho);
   gsl_vector_free(eta);
   gsl_vector_free(nnls_rho);

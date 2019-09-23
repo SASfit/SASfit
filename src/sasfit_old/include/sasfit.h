@@ -175,6 +175,9 @@ typedef struct
 	sasfit_LLS_method LLSmethod;
 	char    LLS_type[132];
 	int     nLagrange;
+	double  maxLagrange;
+	double  minLagrange;
+	double  maxslope;
 	int     maxKrylov;
 	scalar  dim;
 	int     nh, nR;
@@ -184,7 +187,6 @@ typedef struct
     gsl_vector *gsl_x,*gsl_dx, *gsl_b, *gsl_S, *gsl_dS;
     gsl_matrix *gsl_A;
     sasfit_oz_root_algorithms root_algorithm;
-
 //        char ct[STRLEN];
 } EM_param_t;
 

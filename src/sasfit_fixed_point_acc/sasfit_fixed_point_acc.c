@@ -547,7 +547,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->in[j]=1e-7;
+                            FPd->in[j]=DBL_MIN;
                         }
                     }
                 }
@@ -571,7 +571,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     FPd->gNorm=err;
@@ -605,7 +605,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -675,7 +675,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -748,7 +748,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -819,7 +819,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -884,7 +884,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -961,7 +961,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -1043,7 +1043,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -1125,7 +1125,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -1200,7 +1200,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -1282,7 +1282,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                     }
                     switch (FPd->mixstrategy) {
@@ -1404,7 +1404,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
                         FPd->failed = 1;
                         for (j=0; j < FPd->Npoints; j++) {
-                            FPd->out[j]=0.0;
+                            FPd->out[j]=DBL_MIN;
                         }
                         break;
                     }
@@ -1849,6 +1849,7 @@ double FP_step(sasfit_fp_data *FPd) {
             FPd->Entropy-= -FPd->out[j]*log(FPd->out[j]*FPd->Npoints/sumOut)+FPd->out[j]-sumOut/FPd->Npoints;
 		}
         GNorm2=gsl_pow_2(FPd->out[j]-FPd->in[j])+GNorm2;
+
     }
     FPd->gNorm= sqrt(GNorm2);
     FPd->KLD= KLD;
@@ -1878,6 +1879,7 @@ double FP_step(sasfit_fp_data *FPd) {
 //    sasfit_out("FP_step: ");
 //    for (j=0;j<10;j++) sasfit_out("%lg ",FPd->in[j]);
 //    sasfit_out("\n");
+
     return FPd->gNorm;
 }
 
