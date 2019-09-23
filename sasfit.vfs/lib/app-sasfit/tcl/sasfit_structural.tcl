@@ -115,10 +115,11 @@ proc EmOptionsCmd {} {
     		         "S* iteration" \
 				 "dNewton" "Hybrid" \
 	    		 "Hybrids (int. sc.)" "Broyden" \
-				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
+				 "Biggs_Andrews" "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
 			}  \
-				-width 10 \
+				-width 16 \
 				-textvariable ::EMOptions(IterationScheme) 
+
 	grid $w.intStrat_label -row 3 -column 0 -sticky e
 	grid $w.intStrat_value -row 3 -column 1 -sticky w
 	
@@ -144,6 +145,56 @@ proc EmOptionsCmd {} {
 	grid $w.dimlabel -row 5 -column 0 -sticky e
 	grid $w.dimvalue -row 5 -column 1 -sticky w
 
+	label $w.lamlabel -text "lambda ="
+	entry $w.lamvalue -textvariable EMOptions(lambda) -width $entrywidth
+	grid $w.lamlabel -row 5 -column 2 -sticky e
+	grid $w.lamvalue -row 5 -column 3 -sticky w
+	
+	label $w.linRegu_label -text "regul. matrix"
+	ComboBox $w.linRegu_value -values {"Idendity" "first deriv." "first deriv. (eps_b)" "first deriv. (eps_e)"
+				"second deriv." "second deriv. (D-D)" "second deriv. (N-N)" "second deriv. (D-N)" "second deriv. (N-D)"
+			}  \
+				-width 16 \
+				-textvariable ::EMOptions(LMatrix) 
+				
+	grid $w.linRegu_label -row 6 -column 0 -sticky e
+	grid $w.linRegu_value -row 6 -column 1 -sticky w
+	
+	label $w.opt_Lagrange_label -text "opt. Lagrange param."
+	ComboBox $w.opt_Lagrange_value -values {"L-corner" "L-corner2" "GCV" "red. chi2" "manual"
+			}  \
+				-width 10 \
+				-textvariable ::EMOptions(optimumLagrange) 
+				
+	grid $w.opt_Lagrange_label -row 6 -column 2 -sticky e
+	grid $w.opt_Lagrange_value -row 6 -column 3 -sticky w
+	
+	label $w.ls_method_label -text "LS method:"
+	ComboBox $w.ls_method_value -values {"LLS" "NNLLS"
+			}  \
+				-width 16 \
+				-textvariable ::EMOptions(LLSmethod) 
+				
+	grid $w.ls_method_label -row 7 -column 0 -sticky e
+	grid $w.ls_method_value -row 7 -column 1 -sticky w
+	
+	label $w.nLagrange_label -text "number of Lagrange values"
+	entry $w.nLagrange_value -textvariable EMOptions(nLagrange) -width $entrywidth
+				
+	grid $w.nLagrange_label -row 7 -column 2 -sticky e
+	grid $w.nLagrange_value -row 7 -column 3 -sticky w	
+	
+	label $w.overrelaxation_label -text "overrelaxation param.:"
+	entry $w.overrelaxation_value -textvariable EMOptions(overrelaxation) -width $entrywidth 
+				
+	grid $w.overrelaxation_label -row 8 -column 0 -sticky e
+	grid $w.overrelaxation_value -row 8 -column 1 -sticky w
+	
+	label $w.maxkrylov_label -text "max. Krylov space dim.:"
+	entry $w.maxkrylov_value -textvariable EMOptions(maxKrylov) -width $entrywidth 
+				
+	grid $w.maxkrylov_label -row 8 -column 2 -sticky e
+	grid $w.maxkrylov_value -row 8 -column 3 -sticky w
 }
 proc structuralParFitCmd {} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -275,111 +326,72 @@ radiobutton $w.guinierrange.lowQ.radio.zimm -text "Zimm" \
                 RefreshStructParFit
 	    } \
             -highlightthickness 0
-button $w.guinierrange.lowQ.nrmuch -text "calculate N(R) using MuCh" \
-            -command {
-                global StructParData IQGraph SDGraph
-                RefreshStructParFit
-   		        sasfit_timer_start "\nStart apply"
-				set DRMuCh [sasfit_DR_MuCh StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
-				sasfit_timer_stop "Apply" "finished" ""
-				
-				clearGraph_el SDGraph
-				Put_Graph_el SDGraph [lindex $DRMuCh 0] [lindex $DRMuCh 1]
-				
-				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
-				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
-				RefreshGraph SDGraph
-				
-				clearGraph_el IQGraph
-				set indx1 -1
-				Put_Graph_el IQGraph [lindex $DRMuCh 2] [lindex $DRMuCh 3]
-				
-				
-	incr indx1
-	set IQGraph(e,symbol)     [lreplace $IQGraph(e,symbol) $indx1 $indx1 none]
-	set IQGraph(e,linehide)   [lreplace $IQGraph(e,linehide) $indx1 $indx1 1]
-	set IQGraph(e,dashcolor)  [lreplace $IQGraph(e,dashcolor) $indx1 $indx1 red]
-	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
-				       $indx1 $indx1 Fit]
-
-	# draw the data (for fit mode)
-		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
-		incr indx1		
-		RefreshGraph IQGraph
-	    } \
-            -highlightthickness 0
-button $w.guinierrange.lowQ.nrem -text "calculate N(R) using EM" \
-            -command {
-                global StructParData IQGraph SDGraph
-                RefreshStructParFit
-   		        sasfit_timer_start "\nStart apply"
-				set DREM [sasfit_DR_EM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
-				sasfit_timer_stop "Apply" "finished" ""
-				
-				clearGraph_el SDGraph
-				Put_Graph_el SDGraph [lindex $DREM 0] [lindex $DREM 1]
-				
-				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
-				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
-				RefreshGraph SDGraph
-				
-				clearGraph_el IQGraph
-				set indx1 -1
-				Put_Graph_el IQGraph [lindex $DREM 2] [lindex $DREM 3]
-				
-				
-	incr indx1
-	set IQGraph(e,symbol)     [lreplace $IQGraph(e,symbol) $indx1 $indx1 none]
-	set IQGraph(e,linehide)   [lreplace $IQGraph(e,linehide) $indx1 $indx1 1]
-	set IQGraph(e,dashcolor)  [lreplace $IQGraph(e,dashcolor) $indx1 $indx1 red]
-	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
-				       $indx1 $indx1 Fit]
-
-	# draw the data (for fit mode)
-		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
-		incr indx1		
-		RefreshGraph IQGraph
-	    } \
-            -highlightthickness 0
-
-button $w.guinierrange.lowQ.nrsdm -text "calculate N(R) using SDM" \
-            -command {
-                global StructParData IQGraph SDGraph
-                RefreshStructParFit
-   		        sasfit_timer_start "\nStart apply"
-				set DRSDM [sasfit_DR_SDM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
-				sasfit_timer_stop "Apply" "finished" ""
-				
-				clearGraph_el SDGraph
-				Put_Graph_el SDGraph [lindex $DRSDM 0] [lindex $DRSDM 1]
-				
-				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
-				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
-				RefreshGraph SDGraph
-				
-				clearGraph_el IQGraph
-				set indx1 -1
-				Put_Graph_el IQGraph [lindex $DRSDM 2] [lindex $DRSDM 3]
-				
-				
-	incr indx1
-	set IQGraph(e,symbol)     [lreplace $IQGraph(e,symbol) $indx1 $indx1 none]
-	set IQGraph(e,linehide)   [lreplace $IQGraph(e,linehide) $indx1 $indx1 1]
-	set IQGraph(e,dashcolor)  [lreplace $IQGraph(e,dashcolor) $indx1 $indx1 red]
-	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
-				       $indx1 $indx1 Fit]
-
-	# draw the data (for fit mode)
-		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
-		incr indx1		
-		RefreshGraph IQGraph
-	    } \
-            -highlightthickness 0			
 			
+button $w.guinierrange.lowQ.nr -text "calculate N(R) using:" \
+            -command {
+                global StructParData IQGraph SDGraph
+                RefreshStructParFit
+   		        sasfit_timer_start "\nStart apply"
+				switch $::EMOptions(method) {
+					"MuCh" {
+							set DR [sasfit_DR_MuCh StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+					"EM (smoothing)" { 
+							set DR [sasfit_DR_EM_smoothing StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+					"SDM" { 
+							set DR [sasfit_DR_SDM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+					"lin Reg" { 
+							set DR [sasfit_DR_linReg StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+					"MEM" { 
+							set DR [sasfit_DR_MEM StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+					"EM (ME constant prior)" { 
+							set DR [sasfit_DR_EM_ME_const StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+					"EM (ME adaptive prior)" { 
+							set DR [sasfit_DR_EM_ME_adaptive StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
+						 }
+				}
+				sasfit_timer_stop "Apply" "finished" ""
+				
+				clearGraph_el SDGraph
+				Put_Graph_el SDGraph [lindex $DR 0] [lindex $DR 1]
+				
+				set SDGraph(e,symbol)     [lreplace $SDGraph(e,symbol) 0 0 none]
+				set SDGraph(e,linehide)   [lreplace $SDGraph(e,linehide) 0 0 1]
+				RefreshGraph SDGraph
+				
+				clearGraph_el IQGraph
+				set indx1 -1
+				Put_Graph_el IQGraph [lindex $DR 2] [lindex $DR 3]
+				
+				
+	incr indx1
+	set IQGraph(e,symbol)     [lreplace $IQGraph(e,symbol) $indx1 $indx1 none]
+	set IQGraph(e,linehide)   [lreplace $IQGraph(e,linehide) $indx1 $indx1 1]
+	set IQGraph(e,dashcolor)  [lreplace $IQGraph(e,dashcolor) $indx1 $indx1 red]
+	set IQGraph(l,legendtext) [lreplace $IQGraph(l,legendtext) \
+				       $indx1 $indx1 Fit]
+
+	# draw the data (for fit mode)
+		Put_Graph_el IQGraph $sasfit(Q) $sasfit(I) $sasfit(DI) $sasfit(res)
+		incr indx1		
+		RefreshGraph IQGraph
+	    } \
+            -highlightthickness 0
+ComboBox $w.guinierrange.lowQ.method -values {"MuCh" "EM (smoothing)" \
+    		         "EM (ME constant prior)" "EM (ME adaptive prior)" \
+    		         "SDM" "lin Reg" "MEM"}  \
+				-width 18 \
+				-textvariable ::EMOptions(method) 
+				
+	
 pack $w.guinierrange.lowQ.radio.guinier \
      $w.guinierrange.lowQ.radio.zimm \
-	 $w.guinierrange.lowQ.nrmuch $w.guinierrange.lowQ.nrem\
-	 $w.guinierrange.lowQ.nrsdm \
+	 $w.guinierrange.lowQ.nr $w.guinierrange.lowQ.method\
      -padx 2m  -pady 1m \
      -fill both -expand yes -side left -anchor w
 #pack $w.guinierrange.lowQ.radio2.debye \

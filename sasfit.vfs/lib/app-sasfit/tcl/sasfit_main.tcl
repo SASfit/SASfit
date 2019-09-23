@@ -415,7 +415,7 @@ set FitPrecision(Robertus_p)      9
 set FitPrecision(iter_4_MC)       1000
 set FitPrecision(int)             no
 
-set EMOptions(IterationScheme) "Picard iteration"
+set EMOptions(IterationScheme) "KINSOL_FP"
 set EMOptions(spacing) lin
 set EMOptions(smooth) 1e-4
 set EMOptions(smooth_type) double
@@ -423,10 +423,17 @@ set EMOptions(seed) constant
 set EMOptions(Rmax) 1000
 set EMOptions(nR) 100
 set EMOptions(maxit) 50000
-set EMOptions(eps) 1e-10
+set EMOptions(eps) 1e-12
 set EMOptions(chi2) 1.0
 set EMOptions(dim) 3
-
+set EMOptions(lambda) 1
+set EMOptions(method) "EM (smoothing)"
+set EMOptions(LMatrix) "second deriv. (D-D)"
+set EMOptions(optimumLagrange)  "L-corner"
+set EMOptions(LLSmethod)  "NNLLS"
+set EMOptions(nLagrange)  200
+set EMOptions(overrelaxation) 1
+set EMOptions(maxKrylov) 5
 global FitPrecision EMOptions
 
 

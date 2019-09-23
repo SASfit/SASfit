@@ -57,11 +57,32 @@
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_pow_int.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_roots.h>
+#include <gsl/gsl_min.h>
+#include <gsl/gsl_spline.h>
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_blas.h>
+#include <gsl/gsl_multifit.h>
+#include <gsl/gsl_multifit_nlinear.h>
+#include <gsl/gsl_multimin.h>
 #include <time.h>
 #include <math.h>
 #include "sasfit_oz.h"
 #include "sasfit_fixed_point_acc.h"
+#include "nnls.h"
+#include "linpack_d.h"
+#include "blas1_d.h"
 #include <kinsol/kinsol.h>
+
+scalar inverse_quad_interp(scalar y, scalar x0, scalar y0, scalar x1, scalar y1, scalar x2, scalar y2) {
+    scalar f0,f1,f2;
+    f1=y1-y;
+    f2=y2-y;
+    f0=y0-y;
+    return f1*f0/(f2-f1)/(f2-f0)*x2 + f2*f0/(f1-f2)/(f1-f0)*x1 + f2*f1/(f0-f2)/(f0-f1)*x0;
+}
 
 /*#########################################################################*/
 /*#                                                                       #*/
@@ -804,11 +825,170 @@ int save_EP(clientData,interp,EP)
     return TCL_OK;
 }
 
+int assign_algoritmns(EM_param_t * EM) {
+#define MAX_DEF_L 9
+#define MAX_OPT_LAGRANGE_METHOD 5
+#define MAX_DR_METHOD 6
+#define MAX_LSS_METHOD 2
+    const char * defL[MAX_DEF_L];
+    const char * optLagrangeMethod[MAX_OPT_LAGRANGE_METHOD];
+    const char * DRmeth[MAX_DR_METHOD];
+    const char * LSSmeth[MAX_LSS_METHOD];
+    int i,eq;
+    if (!EM) return 0;
+
+    LSSmeth[0] = "LLS";
+    LSSmeth[1] = "NNLLS";
+
+    defL[0] = "Idendity";
+    defL[1] = "first deriv. (eps_b)";
+    defL[2] = "first deriv. (eps_e)";
+    defL[3] = "first deriv.";
+    defL[4] = "second deriv.";
+    defL[5] = "second deriv. (D-D)";
+    defL[6] = "second deriv. (N-N)";
+    defL[7] = "second deriv. (D-N)";
+    defL[8] = "second deriv. (N-D)";
+
+    optLagrangeMethod[0] = "L-corner"  ;
+    optLagrangeMethod[1] = "L-corner2";
+    optLagrangeMethod[2] = "GCV";
+    optLagrangeMethod[3] = "red. chi2";
+    optLagrangeMethod[4] = "manual";
+
+    DRmeth[0] = "MuCh";
+    DRmeth[1] = "EM (smoothing)";
+    DRmeth[2] = "SDM";
+    DRmeth[3] = "lin Reg";
+    DRmeth[4] = "EM (ME constant prior)";
+    DRmeth[5] = "EM (ME adaptive prior)";
+
+    i=0;
+    eq=-1;
+    while (i<MAX_LSS_METHOD && eq != 0) {
+        eq = strcmp(EM->LLS_type,LSSmeth[i]);
+        i++;
+    }
+    switch (i-1) {
+        case 0 :
+            EM->LLSmethod= LLS;
+            break;
+        case 1 :
+            EM->LLSmethod= NNLLS;
+            break;
+        default:
+            EM->LLSmethod=LLS;
+    }
+
+    i=0;
+    eq=-1;
+    while (i<MAX_DEF_L && eq != 0) {
+        eq = strcmp(EM->Lmatrix,defL[i]);
+        i++;
+    }
+    switch (i-1) {
+        case 0 :
+            EM->defL=Idendity;
+            break;
+        case 1 :
+            EM->defL=first_deriv_eps_b;
+            break;
+        case 2 :
+            EM->defL=first_deriv_eps_e;
+            break;
+        case 3 :
+            EM->defL=first_deriv;
+            break;
+        case 4 :
+            EM->defL=second_deriv;
+            break;
+        case 5 :
+            EM->defL=second_deriv_DD;
+            break;
+        case 6 :
+            EM->defL=second_deriv_NN;
+            break;
+        case 7 :
+            EM->defL=second_deriv_DN;
+            break;
+        case 8 :
+            EM->defL=second_deriv_ND;
+            break;
+        default :
+            EM->defL=second_deriv_DD;
+            sasfit_out("L matrix definition not found: %s. Using ->second deriv. (D-D)<- instead.\n", EM->Lmatrix);
+            sasfit_err("L matrix definition not found: %s. Using ->second deriv. (D-D)<- instead.\n", EM->Lmatrix);
+            break;
+    }
+sasfit_out("%s:%d - EM->defL:%d\n",EM->Lmatrix,i-1,EM->defL);
+    i=0;
+    eq=-1;
+    while (i<MAX_OPT_LAGRANGE_METHOD && eq != 0) {
+        eq = strcmp(EM->opt_Lagrange_scheme,optLagrangeMethod[i]);
+        i++;
+    }
+    switch (i-1) {
+        case 0 :
+            EM->optLagrange_method=Lcorner;
+            break;
+        case 1 :
+            EM->optLagrange_method=Lcorner2;
+            break;
+        case 2 :
+            EM->optLagrange_method=GCV;
+            break;
+        case 3 :
+            EM->optLagrange_method=redchi2;
+            break;
+        case 4 :
+            EM->optLagrange_method=manual;
+            break;
+        default :
+            EM->optLagrange_method=manual;
+            sasfit_out("Algorithm for finding optimum Lagrange parameter not found: %s\n", EM->optLagrange_method);
+            sasfit_err("Algorithm for finding optimum Lagrange parameter not found: %s\n", EM->optLagrange_method);
+            break;
+    }
+sasfit_out("%s:%d - EM->optLagrange_method:%d\n",EM->opt_Lagrange_scheme,i-1,EM->optLagrange_method);
+    i=0;
+    eq=-1;
+    while (i<MAX_DR_METHOD && eq != 0) {
+        eq = strcmp(EM->FIinv,DRmeth[i]);
+        i++;
+    }
+    switch (i-1) {
+        case 0 :
+            EM->DR_algorithm=MuCh;
+            break;
+        case 1 :
+            EM->DR_algorithm=SDM;
+            break;
+        case 2 :
+            EM->DR_algorithm=lin_Reg;
+            break;
+        case 3 :
+            EM->DR_algorithm=EM_smoothing;
+            break;
+        case 4 :
+            EM->DR_algorithm=EM_constant_prior;
+            break;
+        case 5 :
+            EM->DR_algorithm=EM_adaptive_prior;
+            break;
+        default :
+            EM->DR_algorithm=EM_constant_prior;
+            sasfit_out("Algorithm for solving Fredholm integral not found: %s\n", EM->FIinv);
+            sasfit_err("Algorithm for solving Fredholm integral not found: %s\n", EM->FIinv);
+            break;
+    }
+    sasfit_out("EM->DR_algorithm:%d\nEM->defL:%d\nEM->optLagrange_method:%d\n",EM->DR_algorithm,EM->defL, EM->optLagrange_method);
+    return 1;
+}
 
 int
 assign_root_Algorithm_EM(const char * token, EM_param_t * EM)
 {
-#define MAXROOTALGORITHMS 23
+#define MAXROOTALGORITHMS 24
     const char * RootAlgorithms[MAXROOTALGORITHMS];
     int i,eq;
     if (!token || !EM) return 0;
@@ -831,6 +1011,7 @@ assign_root_Algorithm_EM(const char * token, EM_param_t * EM)
     RootAlgorithms[16] = "TFQMR" ;
     RootAlgorithms[17] = "FGMRES";
     RootAlgorithms[18] = "KINSOL_FP";
+    RootAlgorithms[19] = "Biggs_Andrews";
     RootAlgorithms[MAXROOTALGORITHMS-1] = "dNewton";
     RootAlgorithms[MAXROOTALGORITHMS-2] = "Hybrid";
     RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
@@ -901,6 +1082,9 @@ assign_root_Algorithm_EM(const char * token, EM_param_t * EM)
             break;
         case 18 :
             EM->root_algorithm=KINSOLFP;
+            break;
+        case 19 :
+            EM->root_algorithm=BIGGS_ANDREWS;
             break;
         case MAXROOTALGORITHMS-1 :
             EM->root_algorithm=dNewton;
@@ -974,7 +1158,7 @@ int get_EM(clientData,interp,EM)
     }
     (*EM).Rmax = varscalar;
 
-    /*
+/*
  * read the number dim
  */
     if (TCL_ERROR == Tcl_GetDouble(interp,
@@ -985,6 +1169,16 @@ int get_EM(clientData,interp,EM)
     }
     (*EM).dim = varscalar;
 
+/*
+ * read the number dim
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","lambda",0),
+                             &varscalar) ) {
+       sasfit_err("could not read lambda\n");
+       return TCL_ERROR;
+    }
+    (*EM).lambda = varscalar;
 
 /*
  * read the number eps
@@ -1039,10 +1233,86 @@ int get_EM(clientData,interp,EM)
        return TCL_ERROR;
     }
     strcpy((*EM).iteration_scheme,varstr);
-
     status = assign_root_Algorithm_EM(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, "EMOptions", "IterationScheme"), 0),EM);
     if (status == 0) {
             sasfit_err("Unknown Root finding Algorithm\n");
+            return TCL_ERROR;
+    }
+/*
+ * read the string LMatrix
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","LMatrix",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read LMatrix\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).Lmatrix,varstr);
+/*
+ * read the string LSS_type
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","LLSmethod",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read LLSmethod\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).LLS_type,varstr);
+ /*
+ * read the nLagrange
+ */
+    if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,"EMOptions","nLagrange",0),
+                             &varint) ) {
+       sasfit_err("could not read number or Lagrange values\n");
+       return TCL_ERROR;
+    }
+    (*EM).nLagrange = varint;
+
+/*
+ * read the string optimumLagrange
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","optimumLagrange",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read optimumLagrange\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).opt_Lagrange_scheme,varstr);
+
+/*
+ * read the string overrelaxation
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","overrelaxation",0),
+                             &varscalar) ) {
+       sasfit_err("could not read overrelaxation\n");
+       return TCL_ERROR;
+    }
+    (*EM).overrelaxation = varscalar;
+
+/*
+ * read the string maxKrylov
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","maxKrylov",0),
+                             &varscalar) ) {
+       sasfit_err("could not read maxKrylov\n");
+       return TCL_ERROR;
+    }
+    (*EM).maxKrylov = lround(varscalar);
+
+
+/*
+ * read the string Fredholm integral inversion "method"
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","method",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read method\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).FIinv,varstr);
+
+    status = assign_algoritmns(EM);
+    if (status == 0) {
+            sasfit_err("Unknown  Algorithm\n");
             return TCL_ERROR;
     }
 
@@ -1057,7 +1327,7 @@ int get_EM(clientData,interp,EM)
     strcpy((*EM).spacing,varstr);
 
 /*
- * read the string IterationScheme
+ * read the string seed
  */
     varstr = Tcl_GetVar2(interp,"EMOptions","seed",0);
     if (NULL == varstr) {
@@ -3793,77 +4063,54 @@ int Sasfit_OrnsteinZernickeFitCmd(clientData, interp, argc, argv)
 	return TCL_OK;
 }
 
-
-double EM_DR_Operator(void *EM_structure) {
+double EM_DR_DoubleSmooth_Operator(void *EM_structure) {
 
     EM_param_t *EMparam;
     EMparam = (EM_param_t *)EM_structure;
-    int i,j,l, nr;
-    scalar p1,p2,p3, eps, chi2;
-/*
-    sasfit_out("EP_Operator: in: ");
-    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->in[i]);
-    sasfit_out("\n");
-    sasfit_out("EP_Operator: out(start): ");
-    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
-    sasfit_out("\n");
-*/
-    nr=EMparam->nR;
+    int i,j,l, nr, nh;
+    scalar p1,p2,p3,PS, NormXwork, eps, chi2, S, nnlambda;
 
+    nr=EMparam->nR;
+    nh=EMparam->nh;
 
     if ((EMparam->smooth > 0) && EMparam->smooth_bool) {
         for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
-        EMparam->xwork[0]=exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[1])*EMparam->S[0][1]);
-        for (i=1;i<nr-1;i++) {
-            EMparam->xwork[i]=exp(log(EMparam->in[i-1])*EMparam->S[i][i-1]+log(EMparam->in[i])*EMparam->S[i][i]+log(EMparam->in[i+1])*EMparam->S[i][i+1]);
+        for (i=0;i<nr;i++) {
+            EMparam->xwork[i] = 0;
+            for (j=(i>0?i-1:0);j<(i<nr-1?i+1:nr);j++) {
+                EMparam->xwork[i]=EMparam->xwork[i]+log(EMparam->in[j])*EMparam->S[i][j];
+            }
+            EMparam->xwork[i]=exp(EMparam->xwork[i]);
         }
-        EMparam->xwork[nr-1]=exp(log(EMparam->in[nr-2])*EMparam->S[nr-1][nr-2]+log(EMparam->in[nr-1])*EMparam->S[nr-1][nr-1]);
     } else {
         for (i=0;i<nr;i++) {
             EMparam->in[i] = EMparam->out[i];
             EMparam->xwork[i] = EMparam->out[i];
         }
     }
-//    sasfit_out("EP_Operator: work (1st smooth): ");
-//    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
-//    sasfit_out("\n");
-    for (j=0;j<EMparam->nh;j++) {
+
+
+    for (j=0;j<nh;j++) {
         EMparam->Ith[j]=0;
         for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->xwork[l]*EMparam->A[j][l];
     }
-/*
-    sasfit_out("EP_Operator: Ith: ");
-    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->Ith[i]);
-    sasfit_out("\n");
-    sasfit_out("EP_Operator: Ih: ");
-    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->Ih[i]);
-    sasfit_out("\n");
-    sasfit_out("EP_Operator: dr: ");
-    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->dr[i]);
-    sasfit_out("\n");
-    sasfit_out("EP_Operator: dh: ");
-    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->dh[i]);
-    sasfit_out("\n");
-*/
 
+    nnlambda = EMparam->overrelaxation*2-1;
     for (i=0;i<nr;i++) {
         p3=0;
         p1=0;
-        for (j=0;j<EMparam->nh;j++) {
+        for (j=0;j<nh;j++) {
             p1=p1+EMparam->A[j][i]*EMparam->dh[j];
             p2=EMparam->Ih[j]*EMparam->A[j][i];
             p3=p3+p2*EMparam->dh[j]/EMparam->Ith[j];
-//            if (p3<=0 || p1<=0 || p2<=0) sasfit_out("i,j: %d,%d p1:%lg p2 %lg p3:%lg\n",i,j,p1,p2,p3);
         }
-//        if (p3<=0 || p1<=0) sasfit_out("i: %d p1:%lg p3:%lg\n",i,p1,p3);
-        EMparam->xwork[i]=EMparam->xwork[i]*p3/p1;
+        EMparam->out[i]=EMparam->xwork[i]*(p3/p1-1);
+        if (EMparam->out[i]<0 && EMparam->in[i]/fabs(EMparam->out[i])<nnlambda) nnlambda = EMparam->in[i]/fabs(EMparam->out[i]);
     }
-
-//    sasfit_out("EP_Operator: work (EM Operator): ");
-//    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
-//    sasfit_out("\n");
-
-    EMparam->out[0]=fabs(EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1]);
+    for (i=0;i<nr;i++) {
+        EMparam->xwork[i] = EMparam->xwork[i] + (nnlambda+1)*0.5*EMparam->out[i];
+    }
+    EMparam->out[0] = fabs(EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1]);
     eps = gsl_pow_2(EMparam->out[0]-EMparam->in[0]);
     for (i=1;i<nr-1;i++) {
         EMparam->out[i]=fabs(EMparam->xwork[i-1]*EMparam->S[i][i-1]+EMparam->xwork[i]*EMparam->S[i][i]+EMparam->xwork[i+1]*EMparam->S[i][i+1]);
@@ -3871,26 +4118,187 @@ double EM_DR_Operator(void *EM_structure) {
     }
     EMparam->out[nr-1]=fabs(EMparam->xwork[nr-2]*EMparam->S[nr-1][nr-2]+EMparam->xwork[nr-1]*EMparam->S[nr-1][nr-1]);
 
-
-//    sasfit_out("EP_Operator: out (2nd smooth): ");
-//    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
-//    sasfit_out("\n");
-
-    eps = eps+gsl_pow_2(EMparam->out[nr-1]-EMparam->in[nr-1]);
-    eps=sqrt(eps);
+    eps=0;
+    for (i=0;i<nr;i++) {
+        EMparam->out[i] = 0;
+        for (j=(i>0?i-1:0);j<(i<nr-1?i+1:nr);j++) {
+            EMparam->out[i]=EMparam->out[i] + EMparam->xwork[j]*EMparam->S[i][j];
+        }
+        EMparam->out[i]=fabs(EMparam->out[i]);
+        eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
+    }
+    eps=sqrt(eps)/nr;
 
     chi2=0;
-
-    for (i=0;i<EMparam->nh;i++){
+    for (i=0;i<nh;i++){
         EMparam->Ith[i] = 0;
         for (j=0;j<nr;j++) {
             EMparam->Ith[i] = EMparam->Ith[i] + EMparam->dr[j]*EMparam->A[i][j]*EMparam->out[j];
         }
         chi2=chi2+gsl_pow_2((EMparam->Ith[i]-EMparam->Ih[i])/EMparam->DIh[i]);
     }
+    chi2=chi2/nh;
+    if (!gsl_finite(chi2)) chi2=DBL_MAX;
+    EMparam->redchi2=chi2;
+    return chi2;
+}
+
+double EM_DR_EntropyConstantPrior_Operator(void *EM_structure) {
+    EM_param_t *EMparam;
+    EMparam = (EM_param_t *) EM_structure;
+    int i,j,l, nr;
+    scalar p1,p2,p3, NormXwork, eps, chi2, Entropy, nnlambda;
+    nr=EMparam->nR;
+
+    Entropy=0;
+    NormXwork=0;
+    for (i=0;i<nr;i++) {
+        EMparam->in[i] =  fabs(EMparam->out[i]);
+        if (EMparam->prior[i] == 0) {
+                sasfit_out("i:%d prior:%lg\n",i,EMparam->prior[i]);
+                EMparam->prior[i]=DBL_MIN;
+        }
+        if (EMparam->in[i] > 0) {
+            Entropy = Entropy-EMparam->in[i]*log(EMparam->in[i]/EMparam->prior[i]);
+            NormXwork=NormXwork+EMparam->in[i];
+        }
+
+    }
+    Entropy=Entropy/NormXwork;
+
+    for (j=0;j<EMparam->nh;j++) {
+        EMparam->Ith[j]=0;
+        for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->in[l]*EMparam->A[j][l];
+        EMparam->Ith[j]=EMparam->Ith[j];
+    }
+
+    nnlambda = EMparam->overrelaxation*2-1;
+    for (i=0;i<nr;i++) {
+        p3=0;
+        p1=0;
+        for (j=0;j<EMparam->nh;j++) {
+            p1=p1+EMparam->A[j][i]*EMparam->dh[j];
+            p2=EMparam->Ih[j]*EMparam->A[j][i];
+            p3=p3+p2*EMparam->dh[j]/EMparam->Ith[j];
+        }
+        if (EMparam->in[i] > 0) {
+            EMparam->out[i]=EMparam->in[i]*(p3/p1-1.)
+                                      -EMparam->in[i]*EMparam->lambda*(Entropy+log(EMparam->in[i]/EMparam->prior[i]));
+        } else {
+            EMparam->out[i]=0.0;
+        }
+        if (EMparam->out[i]<0 && EMparam->in[i]/fabs(EMparam->out[i])<nnlambda) nnlambda = EMparam->in[i]/fabs(EMparam->out[i]);
+    }
+
+    eps=0;
+    for (i=0;i<nr;i++) {
+        EMparam->out[i] = EMparam->in[i] + (nnlambda+1)/2.*EMparam->out[i];
+        eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
+    }
+    eps=sqrt(eps);
+
+    chi2=0;
+    for (i=0;i<EMparam->nh;i++){
+        EMparam->Ith[i] = 0;
+        for (j=0;j<nr;j++) {
+            EMparam->Ith[i] = EMparam->Ith[i] + EMparam->dr[j]*EMparam->A[i][j]*EMparam->out[j];
+        }
+        if (EMparam->DIh[i]==0) {
+            sasfit_out("DIh[%d]=%lg\n",i,EMparam->DIh[i]);
+        }
+        chi2=chi2+gsl_pow_2((EMparam->Ith[i]-EMparam->Ih[i])/EMparam->DIh[i]);
+    }
     chi2=chi2/EMparam->nh;
-//    sasfit_out("chi2:%lg\n",chi2);
-//    sasfit_out("\n");
+    if (!gsl_finite(chi2)) chi2=DBL_MAX;
+    EMparam->redchi2=chi2;
+    return chi2;
+}
+
+double EM_DR_EntropyAdaptivePrior_Operator(void *EM_structure) {
+    EM_param_t *EMparam;
+    EMparam = (EM_param_t *) EM_structure;
+    int i,j,l, nr;
+    scalar p1,p2,p3,PS, NormXwork, eps, chi2, S, nnlambda;
+    nr=EMparam->nR;
+    for (i=0;i<nr;i++) {
+        EMparam->in[i] = fabs(EMparam->out[i]);
+    }
+
+    for (j=0;j<EMparam->nh;j++) {
+        EMparam->Ith[j]=0;
+        for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->in[l]*EMparam->A[j][l];
+    }
+
+    for (i=0;i<nr;i++) {
+        EMparam->prior[i]=0;
+        for (j=0;j<nr;j++) {
+            EMparam->prior[i]=EMparam->prior[i]+EMparam->in[j]*EMparam->S[i][j];
+        }
+        if (EMparam->prior[i] == 0) {
+//                sasfit_out("i:%d prior:%lg\n",i,EMparam->prior[i]);
+                EMparam->prior[i]=DBL_MIN;
+        }
+    }
+    S=0;
+    EMparam->Entropy=0;
+    NormXwork=0;
+    for (i=0;i<nr;i++) {
+        if (EMparam->in[i]>0) {
+            S = S+0*(EMparam->in[i]-EMparam->prior[i])-EMparam->in[i]*log(EMparam->in[i]/EMparam->prior[i]);
+            EMparam->Entropy = EMparam->Entropy + (EMparam->in[i]-EMparam->prior[i])-EMparam->in[i]*log(EMparam->in[i]/EMparam->prior[i]);
+            NormXwork=NormXwork+EMparam->in[i];
+        } else {
+            EMparam->Entropy = EMparam->Entropy + (EMparam->in[i]-EMparam->prior[i]);
+        }
+    }
+    nnlambda = EMparam->overrelaxation*2-1;
+    for (i=0;i<nr;i++) {
+        p3=0;
+        p1=0;
+        for (j=0;j<EMparam->nh;j++) {
+            p1=p1+EMparam->A[j][i]*EMparam->dh[j];
+            p2=EMparam->Ih[j]*EMparam->A[j][i];
+            p3=p3+p2*EMparam->dh[j]/EMparam->Ith[j];
+        }
+        PS=0;
+
+        for (j=0;j<nr;j++) {
+            PS=PS+EMparam->S[i][j]*EMparam->in[j]/EMparam->prior[j];
+//            if (!gsl_finite(PS)) sasfit_out("j:%d, in:%lg, prior:%lg\n",j,EMparam->in[j],EMparam->prior[j]);
+        }
+        if (EMparam->in[i]>0) {
+//            EMparam->out[i]=EMparam->in[i]+EMparam->in[i]*(p3/p1-1)
+//                                      -EMparam->in[i]*EMparam->lambda*(S/NormXwork+log(EMparam->in[i]/EMparam->prior[i])+1-PS);
+            EMparam->out[i]= EMparam->in[i]*(p3/p1-1)
+                            -EMparam->in[i]*EMparam->lambda*(S/NormXwork+log(EMparam->in[i]/EMparam->prior[i])+1-PS);
+
+        } else {
+//            EMparam->out[i]=EMparam->in[i];
+            EMparam->out[i]=0.0;
+        }
+        if (!gsl_finite(EMparam->out[i])) sasfit_out("i:%d, out:%lg, NormXwork:%lg S:%lg\n",j,EMparam->out[i],NormXwork,S);
+        if (EMparam->out[i]<0 && EMparam->in[i]/fabs(EMparam->out[i])<nnlambda) nnlambda = EMparam->in[i]/fabs(EMparam->out[i]);
+    }
+    eps = 0;
+
+    for (i=0;i<nr;i++) {
+        EMparam->out[i] = EMparam->in[i] + (nnlambda+1)/2*EMparam->out[i];
+        eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
+    }
+    eps=sqrt(eps);
+// sasfit_out("eps:%lg \n",eps);
+    chi2=0;
+    for (i=0;i<EMparam->nh;i++){
+        EMparam->Ith[i] = 0;
+        for (j=0;j<nr;j++) {
+            EMparam->Ith[i] = EMparam->Ith[i] + EMparam->dr[j]*EMparam->A[i][j]*EMparam->out[j];
+        }
+        chi2=chi2+gsl_pow_2((EMparam->Ith[i]-EMparam->Ih[i])/EMparam->DIh[i]);
+        if (!gsl_finite(EMparam->Ith[i])) EMparam->Ith[i]=gsl_isinf(EMparam->Ith[i])*DBL_MAX;
+    }
+    chi2=chi2/EMparam->nh;
+    if (!gsl_finite(chi2)) chi2=DBL_MAX;
+    EMparam->redchi2=chi2;
     return chi2;
 }
 
@@ -3910,18 +4318,24 @@ void EM_DR_Free (void *FPd) {
     free_dvector(EMparam->r,0,EMparam->nR-1);
     free_dvector(EMparam->dr,0,EMparam->nR-1);
     free_dvector(EMparam->xwork,0,EMparam->nR-1);
+    free_dvector(EMparam->prior,0,EMparam->nR-1);
     free_dvector(EMparam->out,0,EMparam->nR-1);
     free_dvector(EMparam->in,0,EMparam->nR-1);
     free_dmatrix(EMparam->A,0,EMparam->nh-1,0,EMparam->nR-1);
     free_dmatrix(EMparam->S,0,EMparam->nR-1,0,EMparam->nR-1);
-    gsl_vector_free(EMparam->DR);
+    gsl_vector_free(EMparam->gsl_x);
+    gsl_vector_free(EMparam->gsl_dx);
+    gsl_vector_free(EMparam->gsl_b);
+    gsl_vector_free(EMparam->gsl_S);
+    gsl_vector_free(EMparam->gsl_dS);
+    gsl_matrix_free(EMparam->gsl_A);
 }
 
 void EM_DR_Init (void *FPd) {
-    scalar rmax, QR;
+    scalar rmax, QR,Snorm;
     int nr,nh;
     int i,j;
-    bool smooth_type;
+    int smooth_int;
     EM_param_t *EMparam;
     sasfit_fp_data *FixedPointData;
     const gsl_rng_type * T;
@@ -3940,6 +4354,7 @@ void EM_DR_Init (void *FPd) {
     EMparam->Delta_r = 0.5*EMparam->Dmax/EMparam->Nshannon;
 
     nh=EMparam->nh;
+
     if (EMparam->nR <=0) {
         EMparam->nR=EMparam->Nshannon;
         nr=EMparam->nR;
@@ -3955,14 +4370,20 @@ void EM_DR_Init (void *FPd) {
     FixedPointData->it=0;
     FixedPointData->root_algorithm=EMparam->root_algorithm;
     EMparam->xwork   = dvector(0,EMparam->nR-1);
+    EMparam->prior   = dvector(0,EMparam->nR-1);
     EMparam->r   = dvector(0,EMparam->nR-1);
     EMparam->dr   = dvector(0,EMparam->nR-1);
     EMparam->out   = dvector(0,EMparam->nR-1);
     EMparam->in   = dvector(0,EMparam->nR-1);
     FixedPointData->in = EMparam->in;
     FixedPointData->out = EMparam->out;
-    EMparam->DR=gsl_vector_alloc(EMparam->nR);
-    FixedPointData->DR = EMparam->DR;
+    EMparam->gsl_x=gsl_vector_calloc(EMparam->nR);
+    EMparam->gsl_dx=gsl_vector_calloc(EMparam->nR);
+    EMparam->gsl_S=gsl_vector_calloc(EMparam->nR);
+    EMparam->gsl_dS=gsl_vector_calloc(EMparam->nR);
+    EMparam->gsl_b=gsl_vector_calloc(EMparam->nh);
+    EMparam->gsl_A=gsl_matrix_calloc(EMparam->nh,EMparam->nR);
+    FixedPointData->DR = EMparam->gsl_x;
     EMparam->Ith   = dvector(0,EMparam->nh-1);
     EMparam->Ih   = dvector(0,EMparam->nh-1);
     EMparam->dh   = dvector(0,EMparam->nh-1);
@@ -3981,28 +4402,25 @@ void EM_DR_Init (void *FPd) {
         rmax = EMparam->Dmax/2.0;
         EMparam->Rmax = rmax;
     }
-
-    for (i=0;i<nh;i++){
-        for (j=0;j<nr;j++) {
+    for (j=0;j<nr;j++) {
             EMparam->r[j] = rmax/nr*(j+1);
-            QR=EMparam->h[i]*EMparam->r[j];
- //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
-            EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
-        }
-        EMparam->Ih[i] = EMparam->Iexp[i]-EMparam->C0;
-        EMparam->Ith[i] =0;
+            EMparam->prior[j]=1./nr;
     }
 
     gsl_rng_set(rgen, time(NULL));
 
     if (strcmp("single",EMparam->smooth_type)==0) {
-        smooth_type = FALSE;
+        smooth_int = 0;
         EMparam->smooth_bool = FALSE;
+    } else if (strcmp("double",EMparam->smooth_type)==0) {
+        smooth_int = 1;
+        EMparam->smooth_bool = TRUE;
     } else {
-        smooth_type = TRUE;
+        smooth_int = 2;
         EMparam->smooth_bool = TRUE;
     }
-// sasfit_out("%d %s\n",smooth_type,EMparam->smooth_type);
+
+    // sasfit_out("%d %s\n",smooth_type,EMparam->smooth_type);
 
     if (strcmp("constant",EMparam->seed)==0) {
         for (i=0;i<nr;i++) {
@@ -4022,28 +4440,62 @@ void EM_DR_Init (void *FPd) {
     gsl_rng_free (rgen);
 
     for (i=0;i<nr;i++) {
+        gsl_vector_set(EMparam->gsl_x,i,EMparam->in[i]);
+        gsl_vector_set(EMparam->gsl_dx,i,EMparam->dr[i]);
         for (j=0;j<nr;j++) {
             EMparam->S[i][j]=0;
         }
     }
 
-    EMparam->S[0][0]=1-EMparam->smooth;
-    EMparam->S[0][1]=EMparam->smooth;
-    for (i=1;i<nr-1;i++) {
-        EMparam->S[i][i]=1-2*EMparam->smooth;
-        EMparam->S[i][i-1]=EMparam->smooth;
-        EMparam->S[i][i+1]=EMparam->smooth;
+//sasfit_out("smooth_int %d\n",smooth_int);
+    switch (smooth_int) {
+        case 0:
+        case 1:
+            EMparam->S[0][0]=1-EMparam->smooth;
+            EMparam->S[0][1]=EMparam->smooth;
+            for (i=1;i<nr-1;i++) {
+                EMparam->S[i][i-1]=EMparam->smooth;
+                EMparam->S[i][i]=1-2*EMparam->smooth;
+                EMparam->S[i][i+1]=EMparam->smooth;
+            }
+            EMparam->S[nr-1][nr-2]=EMparam->smooth;
+            EMparam->S[nr-1][nr-1]=1-EMparam->smooth;
+            break;
+        default: {
+            for (i=0;i<nr;i++) {
+                Snorm=0;
+                for (j=0;j<nr;j++) {
+                    EMparam->S[i][j]=exp(-0.5*gsl_pow_2((i-j)/EMparam->smooth));
+                    Snorm = Snorm + exp(-0.5*gsl_pow_2((i-j)/EMparam->smooth));
+                }
+                for (j=0;j<nr;j++) {
+                    EMparam->S[i][j]=EMparam->S[i][j]/Snorm;
+                }
+            }
+        }
     }
-    EMparam->S[nr-1][nr-2]=EMparam->smooth;
-    EMparam->S[nr-1][nr-1]=1-EMparam->smooth;
+
+    for (i=0;i<nh;i++){
+        for (j=0;j<nr;j++) {
+            QR=EMparam->h[i]*EMparam->r[j];
+ //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
+            EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
+            gsl_matrix_set(EMparam->gsl_A,i,j,EMparam->dr[j]*EMparam->A[i][j]/EMparam->DIh[i]);
+        }
+        EMparam->Ih[i] = EMparam->Iexp[i]-EMparam->C0;
+        gsl_vector_set(EMparam->gsl_b,i, EMparam->Ih[i]/ EMparam->DIh[i]);
+        EMparam->Ith[i] =0;
+    }
 
 
-    FixedPointData->KINSetMAA = 5;
+
+    FixedPointData->KINSetMAA = EMparam->maxKrylov;
     FixedPointData->KINSetFuncNormTol = EMparam->eps;
     FixedPointData->KINSetScaledSteptol = 0;
     FixedPointData->KINSetNumMaxIters = EMparam->maxit;
     FixedPointData->KINSetMaxNewtonStep = FixedPointData->Npoints*500.0;
     FixedPointData->KINSetPrintLevel = 0;
+    FixedPointData->PrintProgress = FixedPointData->KINSetPrintLevel;
     FixedPointData->KINSetEtaForm=KIN_ETACHOICE2; // KIN ETACHOICE1, KIN ETACHOICE2, or KIN ETACONSTANT
     FixedPointData->KINSetEtaConstValue = 0.1;
     FixedPointData->KINSpilsSetMaxRestarts =20;
@@ -4152,6 +4604,7 @@ double SDM_DR_Operator(void *EM_structure) {
     EM_param_t *EMparam;
     EMparam = (EM_param_t *)EM_structure;
     int i,j,l, nr;
+    scalar *W;
     scalar p1,p2,p3, eps, chi2, DeltaI, trans;
     const gsl_rng_type * T;
     gsl_rng * rgen;
@@ -4160,6 +4613,10 @@ double SDM_DR_Operator(void *EM_structure) {
     T = gsl_rng_default;
     rgen = gsl_rng_alloc (T);
     gsl_rng_set(rgen, time(NULL));
+    gsl_interp_accel *acc;
+    gsl_spline *spline;
+
+    W =  dvector(0,EMparam->nh-1);
 /*
     sasfit_out("EP_Operator: in: ");
     for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->in[i]);
@@ -4169,10 +4626,9 @@ double SDM_DR_Operator(void *EM_structure) {
     sasfit_out("\n");
 */
     nr=EMparam->nR;
-
-
     if ((EMparam->smooth > 0) && EMparam->smooth_bool) {
         for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
+        EMparam->in[0]=0;
         EMparam->xwork[0]=exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[1])*EMparam->S[0][1]);
         for (i=1;i<nr-1;i++) {
             EMparam->xwork[i]=exp(log(EMparam->in[i-1])*EMparam->S[i][i-1]+log(EMparam->in[i])*EMparam->S[i][i]+log(EMparam->in[i+1])*EMparam->S[i][i+1]);
@@ -4195,19 +4651,40 @@ double SDM_DR_Operator(void *EM_structure) {
         EMparam->Ith[j]=0;
         for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->xwork[l]*EMparam->A[j][l];
     }
-
+    for (j=0;j<EMparam->nh;j++) {
+        if (fabs(EMparam->Ith[j]) > 0 ) {
+            W[j]=(EMparam->Ih[j]-EMparam->Ith[j])/EMparam->Ith[j];
+        } else {
+            W[j]=1;
+        }
+    }
+    acc = gsl_interp_accel_alloc ();
+    spline = gsl_spline_alloc (gsl_interp_linear, EMparam->nh);
+    gsl_spline_init (spline, EMparam->h, W, EMparam->nh);
 //    sasfit_out("applying T3\n");
     for (i=0;i<EMparam->nR;i++) {
-        EMparam->xwork[i]=0;
+        if (M_PI/EMparam->r[i] < EMparam->h[0]) {
+            p1=gsl_spline_eval(spline, EMparam->h[0], acc);
+        } else if (M_PI/EMparam->r[i] > EMparam->h[EMparam->nh-1]) {
+            p1=gsl_spline_eval(spline, EMparam->h[EMparam->nh-1], acc);
+        } else {
+            p1=gsl_spline_eval(spline, M_PI/EMparam->r[i], acc);
+        }
+        EMparam->xwork[i]=EMparam->xwork[i]*(1.0+(0+1*gsl_rng_uniform(rgen))*p1);
+
+/*
         if (fabs(EMparam->Ith[EMparam->nR-1-i]) > 0 ) {
             DeltaI = (EMparam->Ih[EMparam->nR-1-i]-EMparam->Ith[EMparam->nR-1-i]);
-            trans = fabs(atan(DeltaI/EMparam->DIh[EMparam->nR-1-i]*2)/M_PI_2);
-            EMparam->xwork[i]=EMparam->in[i]*(1.0+(trans+(0.5+0.5*gsl_rng_uniform(rgen))*(1-trans))*DeltaI/EMparam->Ith[EMparam->nR-1-i]);
+            trans = fabs(atan(DeltaI/EMparam->DIh[EMparam->nR-1-i])/M_PI_2);
+            EMparam->xwork[i]=EMparam->in[i]*(1.0+(trans+(0.2+0.8*(gsl_rng_uniform(rgen)-0.2/0.8))*(1-trans))*DeltaI/EMparam->Ith[EMparam->nR-1-i]);
         } else {
             EMparam->xwork[i]=EMparam->in[i];
         }
+*/
     }
     gsl_rng_free(rgen);
+    gsl_spline_free(spline);
+    gsl_interp_accel_free(acc);
 //    EMparam->xwork[0]=0;
 
 /*
@@ -4216,12 +4693,13 @@ double SDM_DR_Operator(void *EM_structure) {
     sasfit_out("\n");
 */
     EMparam->out[0]=(EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1]);
+    EMparam->out[0]=0;
     eps = gsl_pow_2(EMparam->out[0]-EMparam->in[0]);
     for (i=1;i<nr-1;i++) {
         EMparam->out[i]=(EMparam->xwork[i-1]*EMparam->S[i][i-1]+EMparam->xwork[i]*EMparam->S[i][i]+EMparam->xwork[i+1]*EMparam->S[i][i+1]);
         eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
     }
-    EMparam->out[nr-1]=(EMparam->xwork[nr-2]*EMparam->S[nr-1][nr-2]+EMparam->xwork[nr-1]*EMparam->S[nr-1][nr-1]);
+    EMparam->out[nr-1]=0;
 
 
 //    sasfit_out("EP_Operator: out (2nd smooth): ");
@@ -4297,31 +4775,86 @@ void SDM_DR_Free (void *FPd) {
 }
 
 void SDM_DR_Init (void *FPd) {
-    scalar QR;
-    int i,j;
+    scalar QR, rmax, rmin;
+    int i,j, nh, nr;
     EM_param_t *EMparam;
     sasfit_fp_data *FixedPointData;
 
     FixedPointData = (sasfit_fp_data *)FPd;
     EMparam = (EM_param_t *) FixedPointData->FPstructure;
 
-    EMparam->nR = EMparam->nh;
     EM_DR_Init(FPd);
-    for (i=0;i<EMparam->nh;i++){
-        EMparam->r[i] = 1*0.5*M_PI/EMparam->h[EMparam->nh-1-i];
-        if (i==0) {
-            EMparam->dr[0] = EMparam->r[0];
+
+    nh = EMparam->nh;
+    nr = EMparam->nR;
+    rmax = M_PI/EMparam->h[0];
+    rmin = M_PI/EMparam->h[nh-1];
+    EMparam->Rmax = rmax;
+
+    for (j=0;j<nr;j++) {
+        EMparam->r[j] = rmin+j*(rmax-rmin)/(nr-1.0);
+        if (j==0) {
+            EMparam->dr[0] = rmin;
         } else {
-            EMparam->dr[i] = EMparam->r[i]-EMparam->r[i-1];
+            EMparam->dr[j] = EMparam->r[j] - EMparam->r[j-1];
         }
     }
-    for (i=0;i<EMparam->nh;i++){
-        for (j=0;j<EMparam->nh;j++) {
- //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
+    for (i=0;i<nh;i++){
+        for (j=0;j<nr;j++) {
             QR=EMparam->h[i]*EMparam->r[j];
             EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
         }
     }
+}
+
+double Optimum_smooth4DR_EM(double smooth, void *FPd ) {
+
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    int i,j, nr;
+    scalar Snorm;
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    nr = EMparam->nR;
+    EMparam->smooth = smooth;
+    EMparam->S[0][0]=1-EMparam->smooth;
+    EMparam->S[0][1]=EMparam->smooth;
+    for (i=1;i<nr-1;i++) {
+        EMparam->S[i][i]=1-2*EMparam->smooth;
+        EMparam->S[i][i-1]=EMparam->smooth;
+        EMparam->S[i][i+1]=EMparam->smooth;
+    }
+    EMparam->S[nr-1][nr-2]=EMparam->smooth;
+    EMparam->S[nr-1][nr-1]=1-EMparam->smooth;
+
+    FixedPointData->it=0;
+    FP_solver(FixedPointData);
+
+    sasfit_out("EM_smooth --- it: %d smooth %lg, chi2 %lg set: %lg\n",FixedPointData->it, smooth, FixedPointData->Chi2Norm, EMparam->chi2);
+    return FixedPointData->Chi2Norm-EMparam->chi2;
+
+}
+
+
+double Optimum_lambda4DR_EM_ME(double lambda, void *FPd ) {
+
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    int i, nr;
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    FixedPointData->it=0;
+    EMparam->lambda = lambda;
+
+    FP_solver(FixedPointData);
+
+    sasfit_out("EM_ME --- it: %d lambda %lg, chi2 %lg set: %lg red. chi2: %lg\n",FixedPointData->it, lambda, FixedPointData->Chi2Norm, EMparam->chi2, EMparam->redchi2);
+    return FixedPointData->Chi2Norm-EMparam->chi2;
+
 }
 
 /*#########################################################################*/
@@ -4338,7 +4871,7 @@ void SDM_DR_Init (void *FPd) {
 /*#                                                                       #*/
 /*#########################################################################*/
 
-int Sasfit_DR_EM_Cmd(clientData, interp, argc, argv)
+int Sasfit_DR_EM_smoothing_Cmd(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
     int        argc;
@@ -4355,6 +4888,17 @@ char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
 
+    int status;
+    const gsl_root_fsolver_type *solver_type;
+    gsl_root_fsolver *solver;
+
+    const gsl_min_fminimizer_type *Tmin;
+    gsl_min_fminimizer *smin;
+
+    gsl_function F;
+    double r, sm;
+    double x_lo = 0.05, x_hi = .1, x_max=.25;
+    double chi2_lo, chi2_hi, chi2_max;
 
 error = FALSE;
 
@@ -4370,27 +4914,139 @@ if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMp
 if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
    return TCL_ERROR;
 }
-
+gsl_set_error_handler_off();
 EMparam.C0 = EP.c0;
 EMparam.C4 = EP.c4;
 EMparam.nh = EP.ndata;
 FPd.FPstructure=&EMparam;
-FPd.FP_Op=&EM_DR_Operator;
+FPd.FP_Op=&EM_DR_DoubleSmooth_Operator;
 FPd.mixcoeff=0.5;
 FPd.mixstrategy=mix_const;
-FPd.PrintProgress=1;
+FPd.PrintProgress=0;
 
 FPd.it=0;
 EM_DR_Init(&FPd);
+/*
 sasfit_out("D(R): %s algorithm: %d\n",EMparam.iteration_scheme, FPd.root_algorithm);
 sasfit_out("maxteps: %d\n",FPd.maxsteps);
 sasfit_out("R_max: %lg\n",EMparam.Rmax);
 sasfit_out("number of R bins: %d\n",EMparam.nR);
 sasfit_out("finished initialization\n");
+*/
 rmax = M_PI/EMparam.h[0];
 rmax = EMparam.Rmax;
 
-FP_solver(&FPd);
+
+    #define MAX_ROOT_ITERATIONS 100
+if (EMparam.chi2>0) {
+
+    chi2_max=Optimum_smooth4DR_EM(x_max, &FPd);
+    chi2_hi=Optimum_smooth4DR_EM(x_hi, &FPd);
+    chi2_lo=Optimum_smooth4DR_EM(x_lo, &FPd);
+    while (chi2_lo > 0 && x_lo > FPd.relerror) {
+        if (chi2_max > chi2_hi) {
+            x_max = x_hi;
+            chi2_max = chi2_hi;
+            x_hi = x_lo;
+            chi2_hi = chi2_lo;
+        }
+        x_lo = x_lo/10.;
+        chi2_lo=Optimum_smooth4DR_EM(x_lo, &FPd);
+    }
+    sasfit_out ("x [%lg, %lg] %lg\n", x_lo, x_max, x_hi);
+    if (chi2_lo < 0 && chi2_max > 0) {
+        chi2_lo = chi2_lo+EMparam.chi2;
+        chi2_max = chi2_max+EMparam.chi2;
+        F.function = &Optimum_smooth4DR_EM;
+        F.params = &FPd;
+        solver_type = gsl_root_fsolver_brent;
+        solver = gsl_root_fsolver_alloc(solver_type);
+        status = gsl_root_fsolver_set(solver, &F, x_lo, x_hi);
+        if (status != GSL_SUCCESS) {
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        status = GSL_CONTINUE;
+        for (i = 1; i <= MAX_ROOT_ITERATIONS && status == GSL_CONTINUE; ++i) {
+        /* iterate one step of the solver */
+            status = gsl_root_fsolver_iterate(solver);
+
+        /* get the solver's current best solution and bounds */
+            r = gsl_root_fsolver_root(solver);
+            if (x_max != gsl_root_fsolver_x_upper (solver)) {
+                x_max = gsl_root_fsolver_x_upper (solver);
+                chi2_max = FPd.Chi2Norm;
+            }
+            if (x_lo != gsl_root_fsolver_x_lower (solver)) {
+                x_lo = gsl_root_fsolver_x_lower (solver);
+                chi2_lo = FPd.Chi2Norm;
+            }
+
+        /* Check to see if the solution is within 0.001 */
+            status = gsl_root_test_interval(chi2_lo, chi2_max, 0, 0.001);
+            sasfit_out("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg, r:%lg\n",i, x_lo, chi2_lo, x_max, chi2_max, r);
+            if (status == GSL_SUCCESS) sasfit_out("Converged:\n");
+        }
+
+    /* Free the solver */
+        gsl_root_fsolver_free(solver);
+
+        if (status == GSL_CONTINUE) {
+            sasfit_out("error: too many iterations");
+        } else if (status != GSL_SUCCESS) {
+//            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+    } else {
+        x_max = 0.3;
+        x_lo = FPd.relerror;
+        x_hi = 1e-4;
+        F.function = &Optimum_smooth4DR_EM;
+        F.params = &FPd;
+        sasfit_out ("xx %lg, %lg %lg\n", x_lo, x_max, x_hi);
+        Tmin = gsl_min_fminimizer_brent;
+        smin = gsl_min_fminimizer_alloc (Tmin);
+        sasfit_out ("xxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+        status = gsl_min_fminimizer_set (smin, &F, x_hi, x_lo, x_max);
+        if (status != GSL_SUCCESS) {
+//            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        sasfit_out ("xxxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+        i=0;
+        do {
+            i++;
+            status = gsl_min_fminimizer_iterate (smin);
+
+            if (x_max != gsl_min_fminimizer_x_upper (smin)) {
+                x_max = gsl_min_fminimizer_x_upper (smin);
+                chi2_max = chi2_hi;
+            }
+            if (x_lo != gsl_min_fminimizer_x_lower (smin)) {
+                x_lo = gsl_min_fminimizer_x_lower (smin);
+                chi2_lo = chi2_hi;
+            }
+            x_hi = gsl_min_fminimizer_x_minimum (smin);
+            chi2_hi = FPd.Chi2Norm;
+
+            status = gsl_min_test_interval (chi2_lo, chi2_max, 0.001, 0.0);
+
+            if (status == GSL_SUCCESS) sasfit_out ("Converged:\n");
+
+            sasfit_out ("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg x_hi:%lg chi2_hi:%lg\n", i, x_lo, chi2_lo, x_max, chi2_max, x_hi, chi2_hi);
+        } while (status == GSL_CONTINUE && i < MAX_ROOT_ITERATIONS);
+        if (status == GSL_CONTINUE) {
+            sasfit_err("error: too many iterations");
+        } else if (status != GSL_SUCCESS) {
+            sasfit_err("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        gsl_min_fminimizer_free (smin);
+    }
+} else {
+    FP_solver(&FPd);
+}
+
+
 sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
 sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
 
@@ -4427,6 +5083,1295 @@ EM_DR_Free(&FPd);
 
 return TCL_OK;
 }
+
+
+int Sasfit_DR_EM_ME_const_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+EM_param_t EMparam;
+sasfit_fp_data FPd;
+
+scalar p1,p2,p3, QR, eps,chi2;
+int    i,j,k,l,itst;
+scalar rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+
+    int status;
+    const gsl_root_fsolver_type *solver_type;
+    gsl_root_fsolver *solver;
+
+    const gsl_min_fminimizer_type *Tmin;
+    gsl_min_fminimizer *smin;
+
+    gsl_function F;
+    double r, sm;
+    double x_lo = 0.1, x_hi = 1, x_max=10;
+    double chi2_lo, chi2_hi, chi2_max;
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_DR_EM_ME_const ?EMOptions? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+gsl_set_error_handler_off();
+
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=&EM_DR_EntropyConstantPrior_Operator;
+
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+FPd.PrintProgress=0;
+
+FPd.it=0;
+EM_DR_Init(&FPd);
+
+#define MAX_ROOT_ITERATIONS 100
+switch (EMparam.optLagrange_method) {
+ case redchi2:
+    chi2_max=Optimum_lambda4DR_EM_ME(x_max, &FPd);
+    chi2_hi=Optimum_lambda4DR_EM_ME(x_hi, &FPd);
+    chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+    while (chi2_lo > 0 && x_lo > FPd.relerror) {
+        if (chi2_max > chi2_hi) {
+            x_max = x_hi;
+            chi2_max = chi2_hi;
+            x_hi = x_lo;
+            chi2_hi = chi2_lo;
+        }
+        x_lo = x_lo/10.;
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+    }
+    sasfit_out ("x [%lg, %lg] %lg\n", x_lo, x_max, x_hi);
+    if (chi2_lo < 0 && chi2_max > 0) {
+        chi2_lo = chi2_lo+EMparam.chi2;
+        chi2_max = chi2_max+EMparam.chi2;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        solver_type = gsl_root_fsolver_brent;
+        solver = gsl_root_fsolver_alloc(solver_type);
+        status = gsl_root_fsolver_set(solver, &F, x_lo, x_hi);
+        if (status != GSL_SUCCESS) {
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        status = GSL_CONTINUE;
+        for (i = 1; i <= MAX_ROOT_ITERATIONS && status == GSL_CONTINUE; ++i) {
+        /* iterate one step of the solver */
+            status = gsl_root_fsolver_iterate(solver);
+
+        /* get the solver's current best solution and bounds */
+            r = gsl_root_fsolver_root(solver);
+            if (x_max != gsl_root_fsolver_x_upper (solver)) {
+                x_max = gsl_root_fsolver_x_upper (solver);
+                chi2_max = FPd.Chi2Norm;
+            }
+            if (x_lo != gsl_root_fsolver_x_lower (solver)) {
+                x_lo = gsl_root_fsolver_x_lower (solver);
+                chi2_lo = FPd.Chi2Norm;
+            }
+
+        /* Check to see if the solution is within 0.001 */
+            status = gsl_root_test_interval(chi2_lo, chi2_max, 0, 0.001);
+            sasfit_out("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg, r:%lg\n",i, x_lo, chi2_lo, x_max, chi2_max, r);
+            if (status == GSL_SUCCESS) sasfit_out("Converged:\n");
+        }
+
+    /* Free the solver */
+        gsl_root_fsolver_free(solver);
+
+        if (status == GSL_CONTINUE) {
+            sasfit_out("error: too many iterations");
+        } else if (status != GSL_SUCCESS) {
+//            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+    } else {
+        x_max = 0.3;
+        x_lo = FPd.relerror;
+        x_hi = 1e-4;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        sasfit_out ("xx %lg, %lg %lg\n", x_lo, x_max, x_hi);
+        Tmin = gsl_min_fminimizer_brent;
+        smin = gsl_min_fminimizer_alloc (Tmin);
+        sasfit_out ("xxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+        status = gsl_min_fminimizer_set (smin, &F, x_hi, x_lo, x_max);
+        if (status != GSL_SUCCESS) {
+            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        } else {
+            sasfit_out ("xxxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+            i=0;
+            do {
+                i++;
+                status = gsl_min_fminimizer_iterate (smin);
+
+                if (x_max != gsl_min_fminimizer_x_upper (smin)) {
+                    x_max = gsl_min_fminimizer_x_upper (smin);
+                    chi2_max = chi2_hi;
+                }
+                if (x_lo != gsl_min_fminimizer_x_lower (smin)) {
+                    x_lo = gsl_min_fminimizer_x_lower (smin);
+                    chi2_lo = chi2_hi;
+                }
+                x_hi = gsl_min_fminimizer_x_minimum (smin);
+                chi2_hi = FPd.Chi2Norm;
+
+                status = gsl_min_test_interval (chi2_lo, chi2_max, 0.001, 0.0);
+
+                if (status == GSL_SUCCESS) sasfit_out ("Converged:\n");
+
+                sasfit_out ("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg x_hi:%lg chi2_hi:%lg\n", i, x_lo, chi2_lo, x_max, chi2_max, x_hi, chi2_hi);
+            } while (status == GSL_CONTINUE && i < MAX_ROOT_ITERATIONS);
+            if (status == GSL_CONTINUE) {
+                sasfit_err("error: too many iterations");
+            } else if (status != GSL_SUCCESS) {
+                sasfit_err("error(%d): %s\n", status, gsl_strerror(status));
+                sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+            }
+        }
+        gsl_min_fminimizer_free (smin);
+    }
+    break;
+ default:
+    FP_solver(&FPd);
+}
+
+
+sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
+sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+EM_DR_Free(&FPd);
+
+return TCL_OK;
+}
+
+int Sasfit_DR_EM_ME_adaptive_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+EM_param_t EMparam;
+sasfit_fp_data FPd;
+
+scalar p1,p2,p3, QR, eps,chi2;
+int    i,j,k,l,itst;
+scalar rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+    int status;
+    const gsl_root_fsolver_type *solver_type;
+    gsl_root_fsolver *solver;
+
+    const gsl_min_fminimizer_type *Tmin;
+    gsl_min_fminimizer *smin;
+
+    gsl_function F;
+    double r, sm;
+    double x_lo = 0.1, x_hi = 1, x_max=10;
+    double chi2_lo, chi2_hi, chi2_max;
+
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_DR_EM ?EMOptions? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+gsl_set_error_handler_off();
+
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=&EM_DR_EntropyAdaptivePrior_Operator;
+
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+FPd.PrintProgress=0;
+
+FPd.it=0;
+strcpy(EMparam.smooth_type,"Gauss");
+EM_DR_Init(&FPd);
+
+#define MAX_ROOT_ITERATIONS 100
+switch (EMparam.optLagrange_method) {
+ case redchi2:
+    chi2_max=Optimum_lambda4DR_EM_ME(x_max, &FPd);
+    chi2_hi=Optimum_lambda4DR_EM_ME(x_hi, &FPd);
+    chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+    while (chi2_lo > 0 && x_lo > FPd.relerror) {
+        if (chi2_max > chi2_hi) {
+            x_max = x_hi;
+            chi2_max = chi2_hi;
+            x_hi = x_lo;
+            chi2_hi = chi2_lo;
+        }
+        x_lo = x_lo/10.;
+        chi2_lo=Optimum_lambda4DR_EM_ME(x_lo, &FPd);
+    }
+    sasfit_out ("x [%lg, %lg] %lg\n", x_lo, x_max, x_hi);
+    if (chi2_lo < 0 && chi2_max > 0) {
+        chi2_lo = chi2_lo+EMparam.chi2;
+        chi2_max = chi2_max+EMparam.chi2;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        solver_type = gsl_root_fsolver_brent;
+        solver = gsl_root_fsolver_alloc(solver_type);
+        status = gsl_root_fsolver_set(solver, &F, x_lo, x_hi);
+        if (status != GSL_SUCCESS) {
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        status = GSL_CONTINUE;
+        for (i = 1; i <= MAX_ROOT_ITERATIONS && status == GSL_CONTINUE; ++i) {
+        /* iterate one step of the solver */
+            status = gsl_root_fsolver_iterate(solver);
+
+        /* get the solver's current best solution and bounds */
+            r = gsl_root_fsolver_root(solver);
+            if (x_max != gsl_root_fsolver_x_upper (solver)) {
+                x_max = gsl_root_fsolver_x_upper (solver);
+                chi2_max = FPd.Chi2Norm;
+            }
+            if (x_lo != gsl_root_fsolver_x_lower (solver)) {
+                x_lo = gsl_root_fsolver_x_lower (solver);
+                chi2_lo = FPd.Chi2Norm;
+            }
+
+        /* Check to see if the solution is within 0.001 */
+            status = gsl_root_test_interval(chi2_lo, chi2_max, 0, 0.001);
+            sasfit_out("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg, r:%lg\n",i, x_lo, chi2_lo, x_max, chi2_max, r);
+            if (status == GSL_SUCCESS) sasfit_out("Converged:\n");
+        }
+
+    /* Free the solver */
+        gsl_root_fsolver_free(solver);
+
+        if (status == GSL_CONTINUE) {
+            sasfit_out("error: too many iterations");
+        } else if (status != GSL_SUCCESS) {
+//            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+    } else {
+        x_max = 0.3;
+        x_lo = FPd.relerror;
+        x_hi = 1e-4;
+        F.function = &Optimum_lambda4DR_EM_ME;
+        F.params = &FPd;
+        sasfit_out ("xx %lg, %lg %lg\n", x_lo, x_max, x_hi);
+        Tmin = gsl_min_fminimizer_brent;
+        smin = gsl_min_fminimizer_alloc (Tmin);
+        sasfit_out ("xxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+        status = gsl_min_fminimizer_set (smin, &F, x_hi, x_lo, x_max);
+        if (status != GSL_SUCCESS) {
+//            sasfit_out("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        sasfit_out ("xxxx %lg %lg %lg\n", x_lo, x_max, x_hi);
+        i=0;
+        do {
+            i++;
+            status = gsl_min_fminimizer_iterate (smin);
+
+            if (x_max != gsl_min_fminimizer_x_upper (smin)) {
+                x_max = gsl_min_fminimizer_x_upper (smin);
+                chi2_max = chi2_hi;
+            }
+            if (x_lo != gsl_min_fminimizer_x_lower (smin)) {
+                x_lo = gsl_min_fminimizer_x_lower (smin);
+                chi2_lo = chi2_hi;
+            }
+            x_hi = gsl_min_fminimizer_x_minimum (smin);
+            chi2_hi = FPd.Chi2Norm;
+
+            status = gsl_min_test_interval (chi2_lo, chi2_max, 0.001, 0.0);
+
+            if (status == GSL_SUCCESS) sasfit_out ("Converged:\n");
+
+            sasfit_out ("%5d x_lo:%lg chi2_lo:%lg x_max:%lg chi2_max:%lg x_hi:%lg chi2_hi:%lg\n", i, x_lo, chi2_lo, x_max, chi2_max, x_hi, chi2_hi);
+        } while (status == GSL_CONTINUE && i < MAX_ROOT_ITERATIONS);
+        if (status == GSL_CONTINUE) {
+            sasfit_err("error: too many iterations");
+        } else if (status != GSL_SUCCESS) {
+            sasfit_err("error(%d): %s\n", status, gsl_strerror(status));
+            sasfit_err("Increasing precision parameter might help to avoid this error message.\n");
+        }
+        gsl_min_fminimizer_free (smin);
+    }
+    break;
+ default:
+    FP_solver(&FPd);
+}
+
+
+
+
+sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
+sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+EM_DR_Free(&FPd);
+
+return TCL_OK;
+}
+
+
+int sasfit_svd_linpack ( int m, int n, double a[], double u[], double s[],
+  double v[] )
+
+/******************************************************************************/
+/*
+  Purpose:
+
+    SASFIT_SVD_LINPACK gets the SVD of a matrix using a call to LINPACK.
+
+  Discussion:
+
+    The singular value decomposition of a real MxN matrix A has the form:
+
+      A = U * S * V'
+
+    where
+
+      U is MxM orthogonal,
+      S is MxN, and entirely zero except for the diagonal;
+      V is NxN orthogonal.
+
+    Moreover, the nonzero entries of S are positive, and appear
+    in order, from largest magnitude to smallest.
+
+    This routine calls the LINPACK routine DSVDC to compute the
+    factorization.
+
+  Licensing:
+
+    This code is distributed under the GNU LGPL license.
+
+  Modified:
+
+    19 June 2012
+
+  Author:
+
+    John Burkardt
+
+  Parameters:
+
+    Input, int M, N, the number of rows and columns in the matrix A.
+
+    Input, double A[M*N], the matrix whose singular value
+    decomposition we are investigating.
+
+    Output, double U[M*M], S[M*N], V[N*N], the factors
+    that form the singular value decomposition of A.
+*/
+{
+  double *a_copy;
+  double *e;
+  int i;
+  int info;
+  int j;
+  int lda;
+  int ldu;
+  int ldv;
+  int job;
+  int lwork;
+  double *sdiag;
+  double *work;
+/*
+  The correct size of E and SDIAG is min ( m+1, n).
+*/
+  a_copy = ( double * ) malloc ( m * n * sizeof ( double ) );
+  e = ( double * ) malloc ( ( m + n ) * sizeof ( double ) );
+  sdiag = ( double * ) malloc ( ( m + n )  * sizeof ( double ) );
+  work = ( double * ) malloc ( m * sizeof ( double ) );
+/*
+  Compute the eigenvalues and eigenvectors.
+*/
+  job = 11;
+  lda = m;
+  ldu = m;
+  ldv = n;
+/*
+  The input matrix is destroyed by the routine.  Since we need to keep
+  it around, we only pass a copy to the routine.
+*/
+  for ( j = 0; j < n; j++ )
+  {
+    for ( i = 0; i < m; i++ )
+    {
+      a_copy[i+j*m] = a[i+j*m];
+    }
+  }
+  info = dsvdc ( a_copy, lda, m, n, sdiag, e, u, ldu, v, ldv, work, job );
+
+  if ( info != 0 )
+  {
+    sasfit_out ( "\n" );
+    sasfit_out ( "SASFIT_SVD_LINPACK - Failure!\n" );
+    sasfit_out ( "  The SVD could not be calculated.\n" );
+    sasfit_out ( "  LINPACK routine DSVDC returned a nonzero\n" );
+    sasfit_out ( "  value of the error flag, INFO = %d\n", info );
+    return info;
+  }
+/*
+  Make the MxN matrix S from the diagonal values in SDIAG.
+*/
+  for ( j = 0; j < n; j++ )
+  {
+    for ( i = 0; i < m; i++ )
+    {
+      if ( i == j )
+      {
+        s[i+j*m] = sdiag[i];
+      }
+      else
+      {
+        s[i+j*m] = 0.0;
+      }
+    }
+  }
+/*
+  Note that we do NOT need to transpose the V that comes out of LINPACK!
+*/
+  free ( a_copy );
+  free ( e );
+  free ( sdiag );
+  free ( work );
+
+  return 0;
+}
+/******************************************************************************/
+
+
+
+int Sasfit_DR_linReg_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+EM_param_t EMparam;
+sasfit_fp_data FPd;
+
+scalar p1,p2,p3, QR, eps,chi2;
+int    i,j,k,l,itst,l0,l1,l2;
+scalar rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+gsl_matrix *L;
+gsl_vector *Gvec;
+gsl_matrix *LQR;
+gsl_vector *Ltau;
+gsl_matrix *M;
+gsl_matrix *X;
+gsl_matrix *Xs;
+gsl_vector *y;
+gsl_vector *ys;
+gsl_vector *weights;
+double **AAA, *AAmem, *bb, *xx, *wp, *zzp, *Af2c, *Amn, *U, *S, *V;
+int infoDSVDC;
+int *indexp;
+int n,m, mda, ierr;
+
+gsl_multifit_linear_workspace *w;
+gsl_vector *c;     /* OLS solution */
+gsl_vector *c_lcurve;   /* regularized solution (L-curve) */
+gsl_vector *c_gcv;      /* regularized solution (GCV) */
+gsl_vector *c_reg; /* regularized solution */
+gsl_vector *reg_param;
+gsl_vector *rho;  /* residual norms */
+gsl_vector *eta;  /* solution norms */
+gsl_vector *nnls_rho;  /* residual norms */
+gsl_vector *nnls_eta;  /* solution norms */
+double lambda_l, lambda_gcv, G_gcv;                           /* optimal regularization parameter */
+size_t reg_idx;                          /* index of optimal lambda */
+double rcond;                            /* reciprocal condition number of X */
+double chisq, rnorm, snorm;
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_DR_linReg ?EMOptions? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=NULL;
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+
+
+EM_DR_Init(&FPd);
+FPd.PrintProgress=1;
+
+if (EMparam.nR > EMparam.nh) {
+//    EMparam.nR=EMparam.nh;
+//    sasfit_out("number of points in r-space has been reduced to %d\n",EMparam.nR);
+sasfit_out("number of points in q-space has been increase and filled with zeros to %d->%d\n",EMparam.nh,EMparam.nR);
+    X = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
+    y = gsl_vector_calloc(EMparam.nR);
+    weights = gsl_vector_calloc(EMparam.nR);
+    w = gsl_multifit_linear_alloc(EMparam.nR, EMparam.nR);
+    for (i=0;i<EMparam.nh;i++) {
+        gsl_vector_set(y,i,EMparam.Ih[i]);
+        gsl_vector_set(weights,i,1./gsl_pow_2(EMparam.DIh[i]));
+        for (j=0;j<EMparam.nR;j++) {
+            gsl_matrix_set(X,i,j,EMparam.dr[j]*EMparam.A[i][j]);
+        }
+    }
+    for (i=EMparam.nh;i<EMparam.nR;i++) {
+        gsl_vector_set(y,i,0);
+        gsl_vector_set(weights,i,1.0);
+        for (j=0;j<EMparam.nR;j++) {
+            gsl_matrix_set(X,i,j,0);
+        }
+    }
+} else {
+    X = gsl_matrix_calloc(EMparam.nh, EMparam.nR);
+    y = gsl_vector_calloc(EMparam.nh);
+    weights = gsl_vector_calloc(EMparam.nh);
+    w = gsl_multifit_linear_alloc(EMparam.nh, EMparam.nR);
+    for (i=0;i<EMparam.nh;i++) {
+        gsl_vector_set(y,i,EMparam.Ih[i]);
+        gsl_vector_set(weights,i,1./gsl_pow_2(EMparam.DIh[i]));
+        for (j=0;j<EMparam.nR;j++) {
+            gsl_matrix_set(X,i,j,EMparam.dr[j]*EMparam.A[i][j]);
+        }
+    }
+}
+
+M = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
+switch (EMparam.defL) {
+case first_deriv:
+    L = gsl_matrix_calloc(EMparam.nR-1, EMparam.nR);
+    LQR = gsl_matrix_calloc(EMparam.nR-1, EMparam.nR);
+    Ltau = gsl_vector_calloc(EMparam.nR-1);
+    Xs = gsl_matrix_calloc(GSL_MAX(EMparam.nh,EMparam.nR)-1, EMparam.nR);
+    ys = gsl_vector_calloc(GSL_MAX(EMparam.nh,EMparam.nR)-1);
+    break;
+case second_deriv:
+    L = gsl_matrix_calloc(EMparam.nR-2, EMparam.nR);
+    LQR = gsl_matrix_calloc(EMparam.nR-2, EMparam.nR);
+    Ltau = gsl_vector_calloc(EMparam.nR-2);
+    Xs = gsl_matrix_calloc(GSL_MAX(EMparam.nh,EMparam.nR)-2, EMparam.nR);
+    ys = gsl_vector_calloc(GSL_MAX(EMparam.nh,EMparam.nR)-2);
+    break;
+default:
+    L = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
+    LQR = gsl_matrix_calloc(EMparam.nR, EMparam.nR);
+    Ltau = gsl_vector_calloc(EMparam.nR);
+    Xs = gsl_matrix_calloc(GSL_MAX(EMparam.nh,EMparam.nR), EMparam.nR);
+    ys = gsl_vector_calloc(GSL_MAX(EMparam.nh,EMparam.nR));
+}
+
+c = gsl_vector_calloc(EMparam.nR);
+c_reg = gsl_vector_calloc(EMparam.nR);
+c_lcurve = gsl_vector_calloc(EMparam.nR);
+c_gcv = gsl_vector_calloc(EMparam.nR);
+rho = gsl_vector_calloc(EMparam.nLagrange);
+eta = gsl_vector_calloc(EMparam.nLagrange);
+reg_param = gsl_vector_calloc(EMparam.nLagrange);
+nnls_rho = gsl_vector_calloc(EMparam.nLagrange);
+nnls_eta = gsl_vector_calloc(EMparam.nLagrange);
+Gvec = gsl_vector_calloc(EMparam.nLagrange);
+
+
+switch (EMparam.defL) {
+ case Idendity:
+    for (i=0;i<EMparam.nR;i++) {
+        for (j=0;j<EMparam.nR;j++) {
+            if (i==j) {
+                gsl_matrix_set(L,i,j,1.0);
+            } else {
+                gsl_matrix_set(L,i,j,0.0);
+            }
+        }
+    }
+    break;
+ case first_deriv_eps_e:
+    for (i=0;i<EMparam.nR-1;i++) {
+        gsl_matrix_set(L,i,i  ,-1.0);
+        gsl_matrix_set(L,i,i+1,1.0);
+    }
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,1.0e-6);
+    break;
+ case first_deriv_eps_b:
+    gsl_matrix_set(L,0,0,1.0e-6);
+    for (i=1;i<EMparam.nR;i++) {
+        gsl_matrix_set(L,i,i-1,-1.0);
+        gsl_matrix_set(L,i,i  ,1.0);
+    }
+    sasfit_out("set penalty function to >first_deriv_eps_b<\n");
+    break;
+ case first_deriv:
+    for (i=0;i<EMparam.nR-1;i++) {
+        gsl_matrix_set(L,i,i, -1.0);
+        gsl_matrix_set(L,i,i+1,1.0);
+    }
+    sasfit_out("set penalty function to >first_deriv_eps_b<\n");
+    break;
+ case second_deriv:
+    for (i=0;i<EMparam.nR-2;i++) {
+        gsl_matrix_set(L,i,i,  -1.0);
+        gsl_matrix_set(L,i,i+1, 2.0);
+        gsl_matrix_set(L,i,i+2,-1.0);
+    }
+    sasfit_out("set penalty function to >first_deriv_eps_b<\n");
+    break;
+ case second_deriv_DN:
+    gsl_matrix_set(L,0,0,2.0);  //  case Dirichlet-Neumann
+    gsl_matrix_set(L,0,1,-1.0); // case Dirichlet-Neumann
+    for (i=1;i<EMparam.nR-1;i++) {
+        gsl_matrix_set(L,i,i-1,-1.0);
+        gsl_matrix_set(L,i,i  ,2.0);
+        gsl_matrix_set(L,i,i+1,-1.0);
+    }
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); //  case Dirichlet-Neumann
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,1.0);  //  case Dirichlet-Neumann
+    sasfit_out("set penalty function to >Dirichlet-Neumann<:second_deriv_DN\n");
+    break;
+ case second_deriv_ND:
+    gsl_matrix_set(L,0,0, 1.0); // case Neumann-Dirichlet
+    gsl_matrix_set(L,0,1,-1.0); // case Neumann-Dirichlet
+    for (i=1;i<EMparam.nR-1;i++) {
+        gsl_matrix_set(L,i,i-1,-1.0);
+        gsl_matrix_set(L,i,i  ,2.0);
+        gsl_matrix_set(L,i,i+1,-1.0);
+    }
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); // case Neumann-Dirichlet
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,2.0);  // case Neumann-Dirichlet
+    sasfit_out("set penalty function to >Neumann-Dirichlet<:second_deriv_ND\n");
+    break;
+ case second_deriv_DD:
+    gsl_matrix_set(L,0,0,2.0);  // case Dirichlet-Dirichlet
+    gsl_matrix_set(L,0,1,-1.0); // case Dirichlet-Dirichlet
+    for (i=1;i<EMparam.nR-1;i++) {
+        gsl_matrix_set(L,i,i-1,-1.0);
+        gsl_matrix_set(L,i,i  ,2.0);
+        gsl_matrix_set(L,i,i+1,-1.0);
+    }
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); // case Dirichlet-Dirichlet
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,2.0);  // case Dirichlet-Dirichlet
+    sasfit_out("set penalty function to >Dirichlet-Dirichlet<:second_deriv_DD\n");
+    break;
+ case second_deriv_NN:
+    gsl_matrix_set(L,0,0,1.0);  // case Dirichlet-Dirichlet
+    gsl_matrix_set(L,0,1,-1.0); // case Dirichlet-Dirichlet
+    for (i=1;i<EMparam.nR-1;i++) {
+        gsl_matrix_set(L,i,i-1,-1.0);
+        gsl_matrix_set(L,i,i  ,2.0);
+        gsl_matrix_set(L,i,i+1,-1.0);
+    }
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); // case Neumann-Neumann
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,1.0);  // case Neumann-Neumann
+    sasfit_out("set penalty function to >Neumann-Neumann<:second_deriv_NN\n");
+    break;
+ default:
+    gsl_matrix_set(L,0,0,2.0);  // case Dirichlet-Dirichlet
+    gsl_matrix_set(L,0,1,-1.0); // case Dirichlet-Dirichlet
+    for (i=1;i<EMparam.nR-1;i++) {
+        gsl_matrix_set(L,i,i-1,-1.0);
+        gsl_matrix_set(L,i,i  ,2.0);
+        gsl_matrix_set(L,i,i+1,-1.0);
+    }
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-2,-1.0); // case Dirichlet-Dirichlet
+    gsl_matrix_set(L,EMparam.nR-1,EMparam.nR-1,2.0);  // case Dirichlet-Dirichlet
+    sasfit_out("set penalty function to >Dirichlet-Dirichlet<:default\n");
+}
+//gsl_multifit_linear_svd(X, w);
+gsl_matrix_memcpy(LQR, L);
+gsl_multifit_linear_L_decomp(LQR, Ltau);
+gsl_multifit_linear_wstdform2(LQR, Ltau, X, weights, y, Xs, ys, M, w);
+gsl_multifit_linear_svd(Xs, w);
+rcond = gsl_multifit_linear_rcond(w);
+sasfit_out("rcond:%lg\n",rcond);
+/* calculate L-curve and find its corner */
+switch (EMparam.optLagrange_method) {
+ case Lcorner2:
+    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    gsl_multifit_linear_lcorner2(rho, eta, &reg_idx);
+    if (FPd.PrintProgress > 0) {
+        sasfit_out("=== Regularized fit ===\n");
+        sasfit_out("lambda   \t rho   \t  eta\n");
+        for (j=0; j < EMparam.nLagrange; ++j) {
+            sasfit_out("i:%d\tlambda:%lg\trho:%lg\teta:%lg\n",j, gsl_vector_get(reg_param,j),gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,gsl_vector_get(eta,j));
+        }
+    }
+/* store optimal regularization parameter */
+    lambda_l = gsl_vector_get(reg_param, reg_idx);
+    sasfit_out("lambda[%d]:%lg\n",reg_idx,lambda_l);
+
+    gsl_multifit_linear_solve(lambda_l, Xs, ys, c_reg, &rnorm, &snorm, w);
+    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
+    sasfit_out("lambda_opt   \t rho   \t  eta\n");
+    sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
+    break;
+ case GCV:
+    gsl_multifit_linear_gcv(ys, reg_param, Gvec, &lambda_gcv, &G_gcv, w);
+	 	    /* regularize with lambda_gcv */
+    gsl_multifit_linear_solve(lambda_gcv, Xs, ys, c_gcv, &rnorm, &snorm, w);
+    if (FPd.PrintProgress > 0) {
+        sasfit_out("=== Regularized fit ===\n");
+        sasfit_out("lambda\tG\n");
+        for (j=0; j < EMparam.nLagrange; ++j) {
+            sasfit_out("i:%d\tlambda:%lg\tG(lambda):%lg\n", j,gsl_vector_get(reg_param,j),gsl_vector_get(Gvec,j));
+        }
+    }
+    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_gcv, M, c, w);
+    sasfit_out("lambda_opt\tG\trho\teta\n");
+    sasfit_out("%lg\t%lg\t%lg\t%lg\n", lambda_gcv,G_gcv,gsl_pow_2(rnorm),pow(lambda_gcv * snorm, 2.0));
+    break;
+case Lcorner:
+    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    gsl_multifit_linear_lcorner(rho, eta, &reg_idx);
+    if (FPd.PrintProgress > 0) {
+        sasfit_out("=== Regularized fit ===\n");
+        sasfit_out("lambda   \t rho   \t  eta\n");
+        for (j=0; j < EMparam.nLagrange; ++j) {
+            sasfit_out("i:%d\tlambda:%lg\trho:%lg\teta:%lg\n", j, gsl_vector_get(reg_param,j),gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,gsl_vector_get(eta,j));
+       }
+    }
+/* store optimal regularization parameter */
+    lambda_l = gsl_vector_get(reg_param, reg_idx);
+    sasfit_out("lambda[%d]:%lg\n",reg_idx,lambda_l);
+
+    gsl_multifit_linear_solve(lambda_l, Xs, ys, c_reg, &rnorm, &snorm, w);
+    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
+    sasfit_out("lambda_opt   \t rho   \t  eta\n");
+    sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
+    break;
+case manual:
+    lambda_l = fabs(EMparam.lambda);
+    gsl_multifit_linear_solve(lambda_l, Xs, ys, c_reg, &rnorm, &snorm, w);
+    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
+    sasfit_out("lambda_opt   \t rho   \t  eta\n");
+    sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
+    break;
+case redchi2:
+    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    j=1;
+    l2=-1;
+    l1=0;
+    l0=1;
+    do {
+        j++;
+        sasfit_out("lambda:%lg, redchi2:%lg, chi2:%lg\n",gsl_vector_get(reg_param, j),gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,EMparam.chi2);
+        l2=l1;
+        l1=l0;
+        l0=j;
+    } while (gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh > EMparam.chi2);
+
+    lambda_l = inverse_quad_interp(EMparam.chi2, gsl_vector_get(reg_param, l0),gsl_pow_2(gsl_vector_get(rho,l0))/EMparam.nh,
+                                                 gsl_vector_get(reg_param, l1),gsl_pow_2(gsl_vector_get(rho,l1))/EMparam.nh,
+                                                 gsl_vector_get(reg_param, l2),gsl_pow_2(gsl_vector_get(rho,l2))/EMparam.nh) ;
+    sasfit_out("lambda[%d]:%lg\n",j,lambda_l);
+
+    gsl_multifit_linear_solve(lambda_l, Xs, ys, c_reg, &rnorm, &snorm, w);
+    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
+    sasfit_out("lambda_opt   \t rho   \t  eta\n");
+    sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
+    break;
+default:
+    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    gsl_multifit_linear_lcorner(rho, eta, &reg_idx);
+    if (FPd.PrintProgress > 0) {
+        sasfit_out("=== Regularized fit ===\n");
+        sasfit_out("lambda   \t rho   \t  eta\n");
+        for (j=0; j < EMparam.nLagrange; ++j) {
+            sasfit_out("i:%d\tlambda:%lg\trho:%lg\teta:%lg\n", j, gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,gsl_vector_get(rho,j),gsl_vector_get(eta,j));
+       }
+    }
+/* store optimal regularization parameter */
+    lambda_l = gsl_vector_get(reg_param, reg_idx);
+    sasfit_out("lambda[%d]:%lg\n",reg_idx,lambda_l);
+
+    gsl_multifit_linear_solve(lambda_l, Xs, ys, c_reg, &rnorm, &snorm, w);
+    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
+    sasfit_out("lambda_opt   \t rho   \t  eta\n");
+    sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
+}
+
+/* regularize with nnls */
+if (EMparam.LLSmethod == NNLLS) {
+    mda = (EMparam.nR+EMparam.nh);
+    m = mda;
+    n = EMparam.nR;
+    Amn = (double *) malloc(m*n*sizeof(double));
+    U = (double *) malloc ( m * m * sizeof ( double ) );
+    S = (double *) calloc ( m * n , sizeof ( double ) );
+    V = (double *) malloc ( n * n * sizeof ( double ) );
+    AAA = (double **) malloc((EMparam.nR)*sizeof(double*));
+    for (i = 0; i < (EMparam.nR); i++) {
+       AAA[i] = (double *) malloc((EMparam.nR+EMparam.nh)*sizeof(double));
+    }
+    Af2c = (double*) malloc(mda*n*sizeof(double));
+    bb = (double*) calloc(m,sizeof(double));
+    xx = (double*) calloc(n,sizeof(double));
+    zzp = (double*) calloc(m,sizeof(double));
+    wp = (double*) calloc(n,sizeof(double));
+    indexp = (int*) calloc(n,sizeof(int));
+    for (i = 0; i < (EMparam.nh); i++) {
+        for (j = 0; j < EMparam.nR; j++) {
+            Af2c[i+mda*j] = gsl_matrix_get(X,i,j)*sqrt(gsl_vector_get(weights,i));
+            Amn[i+m*j] = gsl_matrix_get(X,i,j)*sqrt(gsl_vector_get(weights,i));
+            AAA[j][i] = gsl_matrix_get(X,i,j)*sqrt(gsl_vector_get(weights,i));
+        }
+        bb[i]=gsl_vector_get(y,i)*sqrt(gsl_vector_get(weights,i));
+    }
+
+    for (i = 0; i < (EMparam.nR); i++) {
+        for (j = 0; j < EMparam.nR; j++) {
+            Af2c[(i+EMparam.nh)+mda*j] = (EMparam.optLagrange_method==GCV?lambda_gcv:lambda_l)*gsl_matrix_get(L,i,j);
+            AAA[j][(i+EMparam.nh)]     = (EMparam.optLagrange_method==GCV?lambda_gcv:lambda_l)*gsl_matrix_get(L,i,j);
+        }
+    }
+    for (i = 0; i < EMparam.nR; i++) {
+        xx[i] = fabs(gsl_vector_get(c,i));
+    }
+
+/*
+    infoDSVDC = sasfit_svd_linpack(m,n,Amn,U,S,V);
+    for (i=0;i<(m>n?n:m);i++)
+            sasfit_out("SVD:%d info:%d gsl:%lg linpack:%lg\n",i,infoDSVDC,gsl_vector_get(w->S,i),(S[i+m*i]));
+*/
+    sasfit_out("initialized corresponding matrices and vector\ntry to perform now nnls\n");
+//    nnls_f2c(Af2c, &mda,&m,&n,bb,xx,&rnorm,wp,zzp,indexp,&ierr);
+    ierr=nnls(AAA,m,n,bb,xx,&rnorm,wp,zzp,indexp);
+    sasfit_out("finished nnls with error: %d and rnorm:%lf\n",ierr,rnorm);
+    sasfit_out("freeing now all the memory\nstart to free AA\n");
+    for (i=0; i<(EMparam.nR+0*EMparam.nh);i++) {
+//       sasfit_out("start to free AA :%d \n",i);
+       free(AAA[i]);
+//       sasfit_out("free-ed AAA: %d\n",i);
+    }
+    free(AAA);
+
+    free(Af2c);
+    sasfit_out("free-ed AA\n");
+    free(bb);
+    sasfit_out("free-ed bb\n");
+    free(wp);
+    sasfit_out("free-ed wp\n");
+    free(zzp);
+    sasfit_out("free-ed zzp\n");
+    free(indexp);
+    sasfit_out("free-ed indexp\n");
+    free(xx);
+    sasfit_out("free-ed xx\n");
+    free(Amn);
+    free(U);
+    free(S);
+    free(V);
+    for (i=0;i<EMparam.nR;i++) {
+        EMparam.out[i]=xx[i];
+    }
+} else {
+    for (i=0;i<EMparam.nR;i++) {
+        EMparam.out[i]=gsl_vector_get(c,i);
+    }
+}
+chisq = 0;
+for (i=0;i<EMparam.nh;i++) {
+    EMparam.Ith[i]=0;
+    for (j=0; j < EMparam.nR; ++j) EMparam.Ith[i]=EMparam.Ith[i]+EMparam.dr[j]*EMparam.A[i][j]*EMparam.out[j];
+    chisq=chisq+gsl_pow_2((EMparam.Ith[i]-EMparam.Ih[i])/EMparam.DIh[i]);
+}
+chisq=chisq/EMparam.nh;
+sasfit_out("chisq:%lg\n", chisq);
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+EM_DR_Free(&FPd);
+
+  gsl_multifit_linear_free(w);
+  gsl_vector_free(c);
+  gsl_vector_free(c_reg);
+  gsl_vector_free(c_lcurve);
+  gsl_vector_free(c_gcv);
+  gsl_vector_free(reg_param);
+  gsl_vector_free(rho);
+  gsl_vector_free(eta);
+  gsl_vector_free(nnls_rho);
+  gsl_vector_free(nnls_eta);
+  gsl_matrix_free(L);
+  gsl_matrix_free(X);
+  gsl_vector_free(y);
+  gsl_matrix_free(Xs);
+  gsl_matrix_free(M);
+  gsl_matrix_free(LQR);
+  gsl_vector_free(Ltau);
+  gsl_vector_free(Gvec);
+  gsl_vector_free(ys);
+  gsl_vector_free(weights);
+
+return TCL_OK;
+}
+
+double
+MEM_f (const gsl_vector *v, void *FPd)
+{
+    int i,status;
+    double xi,sumx,sump,S;
+    gsl_vector *r;
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    r = gsl_vector_alloc(EMparam->nh);
+    status = gsl_vector_memcpy(EMparam->gsl_b,r);
+    status = gsl_blas_dgemv(CblasNoTrans, 1.0, EMparam->gsl_A, v, -1.0, r);
+
+    gsl_blas_ddot(EMparam->gsl_dx,v,&sump);
+
+    for (i=0;i<EMparam->nR;i++) {
+        xi = gsl_vector_get(v,i);
+        if (fabs(xi)>0 && sump>0) {
+            gsl_vector_set(EMparam->gsl_S,i,xi*log(xi/sump));
+        } else {
+            gsl_vector_set(EMparam->gsl_S,i,0);
+        }
+    }
+    gsl_blas_ddot(EMparam->gsl_dx,EMparam->gsl_S,&S);
+    return gsl_blas_dnrm2(r)-gsl_pow_2(EMparam->lambda)*S;
+}
+
+/* The gradient of f, df = (df/dx, df/dy). */
+void
+MEM_df (const gsl_vector *v, void *FPd,
+       gsl_vector *df)
+{
+    int i,status;
+    double xi,sumx,sump,S;
+    gsl_vector *r;
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    r = gsl_vector_alloc(EMparam->nh);
+    status = gsl_vector_memcpy(EMparam->gsl_b,r);
+    status = gsl_blas_dgemv(CblasNoTrans, 1.0, EMparam->gsl_A, v, -1.0, r);
+
+    gsl_blas_ddot(EMparam->gsl_dx,v,&sump);
+
+    for (i=0;i<EMparam->nR;i++) {
+        xi = gsl_vector_get(v,i);
+        if (fabs(xi)>0 && sump>0) {
+            gsl_vector_set(EMparam->gsl_dS,i,(1+log(xi/sump))*EMparam->dr[i]);
+        } else {
+            gsl_vector_set(EMparam->gsl_dS,i,GSL_NEGINF);
+        }
+    }
+
+    status = gsl_vector_memcpy(EMparam->gsl_dS,df);
+    status = gsl_blas_dgemv(CblasTrans, 2.0, EMparam->gsl_A, r, -gsl_pow_2(EMparam->lambda), df);
+}
+
+/* Compute both f and df together. */
+void
+MEM_fdf (const gsl_vector *x, void *FPd,
+        double *f, gsl_vector *df)
+{
+    int i,status;
+    double xi,sumx,sump,S;
+    gsl_vector *r;
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    r = gsl_vector_alloc(EMparam->nh);
+    status = gsl_vector_memcpy(EMparam->gsl_b,r);
+    status = gsl_blas_dgemv(CblasNoTrans, 1.0, EMparam->gsl_A, x, -1.0, r);
+
+    gsl_blas_ddot(EMparam->gsl_dx,x,&sump);
+
+    for (i=0;i<EMparam->nR;i++) {
+        xi = gsl_vector_get(x,i);
+        if (fabs(xi)>0 && sump>0) {
+            gsl_vector_set(EMparam->gsl_dS,i,(1+log(xi/sump))*EMparam->dr[i]);
+            gsl_vector_set(EMparam->gsl_S,i,xi*log(xi/sump));
+        } else {
+            gsl_vector_set(EMparam->gsl_dS,i,GSL_NEGINF);
+            gsl_vector_set(EMparam->gsl_S,i,0);
+        }
+    }
+    gsl_blas_ddot(EMparam->gsl_dx,EMparam->gsl_S,&S);
+    *f = gsl_blas_dnrm2(r)-gsl_pow_2(EMparam->lambda)*S;
+    status = gsl_vector_memcpy(EMparam->gsl_dS,df);
+    status = gsl_blas_dgemv(CblasTrans, 2.0, EMparam->gsl_A, r, -gsl_pow_2(EMparam->lambda), df);
+}
+
+int Sasfit_DR_MEM_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+EM_param_t EMparam;
+sasfit_fp_data FPd;
+
+
+scalar rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+double chisq, rnorm, snorm;
+int i,j;
+int status;
+gsl_vector *x;
+size_t iter = 0;
+gsl_multimin_function_fdf MEM_func;
+const gsl_multimin_fdfminimizer_type *T;
+gsl_multimin_fdfminimizer *solver;
+gsl_multimin_fminimizer *simplex_solver;
+
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_DR_MEM ?EMOptions? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=NULL;
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+
+
+EM_DR_Init(&FPd);
+FPd.PrintProgress=1;
+
+x = gsl_vector_alloc (EMparam.nR);
+for (j=0; j < EMparam.nR; ++j) gsl_vector_set (x, j, EMparam.in[j]);
+
+MEM_func.n = EMparam.nR;  /* number of function components */
+MEM_func.f = &MEM_f;
+MEM_func.df = &MEM_df;
+MEM_func.fdf = &MEM_fdf;
+MEM_func.params = (void *) (&FPd);
+
+
+T = gsl_multimin_fdfminimizer_conjugate_fr;
+// T = gsl_multimin_fdfminimizer_conjugate_pr;
+// T = gsl_multimin_fdfminimizer_vector_bfgs2;
+// T = gsl_multimin_fdfminimizer_vector_bfgs;
+// T = gsl_multimin_fdfminimizer_steepest_descent;
+// T = gsl_multimin_fminimizer_nmsimplex2;
+// T = gsl_multimin_fminimizer_nmsimplex;
+// T = gsl_multimin_fminimizer_nmsimplex2rand
+
+solver = gsl_multimin_fdfminimizer_alloc (T, MEM_func.n);
+
+gsl_multimin_fdfminimizer_set (solver, &MEM_func, x, 0.01, 1e-4);
+// gsl_multimin_fminimizer_set (simplex_solver, &MEM_func, x, ss);
+do
+    {
+      iter++;
+      status = gsl_multimin_fdfminimizer_iterate (solver);
+
+      if (status)
+        break;
+
+      status = gsl_multimin_test_gradient (solver->gradient, 1e-3);
+
+      if (status == GSL_SUCCESS)
+        sasfit_out ("Minimum found after %d iterations\n", iter);
+    }
+while (status == GSL_CONTINUE && iter < 100);
+for (j=0; j < EMparam.nR; ++j) EMparam.out[j]=gsl_vector_get(solver->x, j);
+gsl_multimin_fdfminimizer_free (solver);
+gsl_vector_free (x);
+
+chisq = 0;
+for (i=0;i<EMparam.nh;i++) {
+    EMparam.Ith[i]=0;
+    for (j=0; j < EMparam.nR; ++j) EMparam.Ith[i]=EMparam.Ith[i]+EMparam.dr[j]*EMparam.A[i][j]*EMparam.out[j];
+    chisq=chisq+gsl_pow_2((EMparam.Ith[i]-EMparam.Ih[i])/EMparam.DIh[i]);
+}
+chisq=chisq/EMparam.nh;
+sasfit_out("chisq:%lg\n", chisq);
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+EM_DR_Free(&FPd);
+return TCL_OK;
+}
+
+
 
 int Sasfit_DR_MuCh_Cmd(clientData, interp, argc, argv)
     ClientData clientData;
@@ -4477,7 +6422,7 @@ sasfit_out("maxteps: %d\n",FPd.maxsteps);
 sasfit_out("R_max: %lg\n",EMparam.Rmax);
 sasfit_out("number of R bins: %d\n",EMparam.nR);
 sasfit_out("finished initialization\n");
-rmax = M_PI/EMparam.h[0];
+rmax = M_PI_2/EMparam.h[0];
 rmax = EMparam.Rmax;
 
 FP_solver(&FPd);
@@ -4567,7 +6512,7 @@ sasfit_out("maxteps: %d\n",FPd.maxsteps);
 sasfit_out("R_max: %lg\n",EMparam.Rmax);
 sasfit_out("number of R bins: %d\n",EMparam.nR);
 sasfit_out("finished initialization\n");
-rmax = M_PI/EMparam.h[0];
+
 rmax = EMparam.Rmax;
 
 FP_solver(&FPd);
