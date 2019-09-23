@@ -500,6 +500,14 @@ J.~Dhont.
 \newblock Studies in Interface Science. Elsevier Science, 1996.
 \newblock \urlprefix\url{https://books.google.ch/books?id=mmArTF5SJ9oC}.
 
+\bibitem{Donatelli2014}
+M.~Donatelli and L.~Reichel.
+\newblock Square smoothing regularization matrices with accurate boundary
+  conditions.
+\newblock {\em Journal of Computational and Applied Mathematics}, 272:334--349,
+  dec 2014.
+\newblock \doi{10.1016/j.cam.2013.08.015}.
+
 \bibitem{dozier91}
 W.~D. Dozier, J.~S. Huang, and L.~J. Fetters.
 \newblock Colloidal nature of star polymer dilute and semidilute solutions.
@@ -1223,6 +1231,13 @@ C.~G.~D. Kruif, P.~W. Rouw, W.~J. Briels, M.~H.~G. Duits, A.~Vrij, and R.~P.
   neutron-scattering study of stickiness and the structure factor.
 \newblock {\em Langmuir}, 5(2):422--428, mar 1989.
 \newblock \doi{10.1021/la00086a023}.
+
+\bibitem{Lawson1995a}
+C.~L. Lawson and R.~J. Hanson.
+\newblock 23. linear least squares with linear inequality constraints.
+\newblock In {\em Solving Least Squares Problems}, pages 158--173. Society for
+  Industrial and Applied Mathematics, jan 1995.
+\newblock \doi{10.1137/1.9781611971217.ch23}.
 
 \bibitem{Leadbetter1979}
 A.~Leadbetter and E.~Norris.

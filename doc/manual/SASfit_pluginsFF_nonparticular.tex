@@ -233,7 +233,7 @@ where $a=2\pi/d$, $b=1/\xi$, and $c=1/r_c$. Here $d$ is the quasi-periodic dista
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{CRW 2}, \texttt{CRW 3}, \texttt{CRW 4}, \texttt{CRW 5}:}\\
+\underline{Input Parameters for models \texttt{CRW 2}, \texttt{CRW 3}, \texttt{CRW 4}, \texttt{CRW 5}:}\\
 \begin{description}
 \item[\texttt{scale}] scaling factor for the intensity
 \item[\texttt{d}] quasi-periodic distance $d$
@@ -245,7 +245,7 @@ where $a=2\pi/d$, $b=1/\xi$, and $c=1/r_c$. Here $d$ is the quasi-periodic dista
 
 \underline{Note:}
 \begin{itemize}
-\item for the models 2 and 3 $r_m\neq\xi$, otherwise \SASfit returns an error message.
+\item for the models 2 and 3 $r_c\neq\xi$, otherwise \SASfit returns an error message.
 \item Instead of assuming a two-point correlation function, one also can try to inverse the scattering data back into the spectral function $f(q)$ which  e.g.\ has been realised in the software \texttt{SAXSMorph} \cite{Ingham2010}.
 \end{itemize}
 
@@ -503,9 +503,74 @@ the dimensionality of the system.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth]{spinodalIQ.png}
 \end{center}
-\caption{} \label{fig:spinodalIQ}
+\includegraphics[width=0.65\textwidth]{spinodalIQ.png}
+\caption{structure factor of the model \texttt{spinodal} for some selected values of $\gamma$.} \label{fig:phaseseparationIQ}
+\end{figure}
+
+\clearpage
+\subsection{Phase separation}
+\label{sect:phase separation}
+~\\
+
+This phenomenological model describing phase separation has been described in Fratzl et al.\ \cite{Fratzl1989}.
+They descibe a heuristic "universal" formula for the scaled structure function following
+a quench into the miscibility gap which gives very good fits to a variety of experimental observations. The
+single adjustable parameter $\gamma$, is needed to fit data for alloys, binary fluids, polymer mixtures and computer
+simulation curves, which depends essentially only on the fraction of the volume of the minority phase. Minimizing
+the ratio of "surface area to volume" of the minority phase predicts a rough morphology of the system -- its
+local character changes from spherical isolated droplets to interconnected plate-like objects as the minority
+fraction increases. By relating $\gamma$ to this microstructure they obtain the value of $\gamma$ correctly to within 10%.
+ The scattering curve $I(q)$ can be approximated by
+\begin{align}
+\label{eq:spinodal2}
+I(x=q/q_\mathrm{max}) = I_\text{max} \frac{ax^4}{x^4+c} \frac{b}{b+\left(x^2-1+d\right)^2}
+\end{align}
+with
+\begin{align}
+  x &= q/q_\text{max} \\
+  b &= \frac{4\gamma^2}{\left(1-\gamma^2\right)^2} \left(1-d\right)^2 \\
+  c &= \frac{d}{b-d(1-d)} \\
+  a &= (1+c) \left(1+\frac{d^2}{b}\right)
+\end{align}
+The position of the correlation peak at $q_\text{max}$ contain
+information about the size of the structures, which scatter. The value of $d$ seems to 
+be close to 0.06. 
+The parameter $\gamma$ can be calculated from the volume fraction of the cluster and depend on their shape
+
+\begin{align}\label{eq:gamma_phi}
+  \gamma &=
+  \begin{cases}
+    \gamma=\left[4\pi\phi(1-\phi)\right]^{-1}, & \mbox{plates, \texttt{model}}=1 \\
+    \gamma=\left[4\sqrt{\pi\phi}(1-\phi)\right]^{-1}, & \mbox{rods, \texttt{model}}=2 \\
+    \gamma=\left[2\left(\frac43\pi\right)^{2/3}\phi^{1/3}(1-\phi)\right]^{-1}, & \mbox{spheres, \texttt{model}}=3 \\
+    \gamma=\gamma, & \mbox{otherwise}.
+  \end{cases}
+\end{align}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{phase separation}:}\\
+\begin{description}
+\item[\texttt{Imax}] scattering intensity at peak position $I_\text{max}$
+\item[\texttt{Qmax}] peak maximum $q_\text{max}$
+\item[\texttt{gamma/phi}] $\gamma$: a measure for the width of the scaling curve. It can be calculated from the volume fraction $\phi$.
+\item[\texttt{d}] $d \approx 0.06$
+\item[\texttt{model}] model to calculate $\gamma(phi)$; 1: plates, 2: rods, 3: spheres, otherwise $\gamma$ is input parameter
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item for certain values of $\gamma$ far away from 1 the intensity can become negative. In this case the plugin returns with an error message.
+\end{itemize}
+
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.65\textwidth]{../images/form_factor/nonparticular/phase_separation.png}
+\end{center}
+\caption{} \label{fig:phaseseparationIQ}
 \end{figure}
 
 \clearpage

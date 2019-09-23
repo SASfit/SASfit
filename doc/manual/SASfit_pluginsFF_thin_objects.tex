@@ -74,6 +74,7 @@ can be factorize according to Porod \cite{Porod1948} in a cross
 section term $P_\text{cs}(Q)$ for the shorter or thin dimension and a
 shape factor $P'(Q)$ for the long dimension.
 \begin{align}
+\label{eq:PprimePcs}
 I(Q) &=P'(Q) P_{cs}(Q).
 \end{align}
 In this plugin the form factors of two types of thin
@@ -612,6 +613,297 @@ The parameters for the profile are the same than in Fig.\ \ref{fig:ellCylShIQ}a]
 \caption{Scattering curve for the cross-section form factor "\texttt{Pcs:ellCylSh}".}
 \label{fig:ellCylShIQ}
 \end{figure}
+
+\clearpage
+\subsubsection{$P_\mathrm{cs}(q)$ for cross-section of circular core and shell with linear contrast } ~\\
+\label{plugin:Pcs:cyl_LinSh}
+The model already has been used for spherical symmetric particles with the same radial profile but in spherical coordinates \ref{sect:LinShell}.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth,height=0.533\textwidth]{../images/form_factor/anisotropic/LinShellCylSketchProfile.png}
+\end{center}
+\caption{Radial profile for calculating the form factor of a thin cylindrical objects with a cross-section of a homogenous
+core and a linear scattering length density profile in the shell.  The core has a radius of $R$
+and a shell thickness is $t$ having a linear varying contrast
+profile.} \label{LinShellCylProfile}
+\end{figure}
+Form factor of a spherical shell with a core radius $R$ and a
+shell thickness of $t$. Here a linear contrast profile
+within the shell has been assumed.
+\begin{align}
+\eta(r)      & =
+\begin{cases}
+\eta_\text{c} & \text{~for~} \abs{r}<R \\
+m \abs{r} + b  & \text{~for~} \abs{r} \in [R,R+t] \\
+\eta_\text{sol}  & \text{~for~} \abs{r}>R+t
+\end{cases}\\
+m           & = (\eta_\text{sh,o}-\eta_\text{sh,i}) / t \\
+b           & = -m R + \eta_\text{sh,i} \\
+\eta_\text{sh,i}  & : \text{scattering length density at $R$} \nonumber \\
+\eta_\text{sh,o}  & : \text{scattering length density at $R+t$} \nonumber \\\
+\nonumber
+\end{align}
+The scattering intensity is then given by
+\begin{multline}\label{eq:Pcs_cyl_linsh}
+ P_\mathrm{cs}(q)= \Bigg( \frac{1}{t q^2}
+\bigg\{ \pi \Big[ 2qt \big\{\left[\eta_\mathrm{c}   -\eta_\mathrm{sh,i}\right] R     J_1(qR) +  \left[\eta_\mathrm{sh,o}-\eta_\mathrm{sol}\right] (R+t) J_1\left(q(R+t)\right)\big\} \\
+   + \pi\left[\eta_\mathrm{sh,i} - \eta_\mathrm{sh,o}\right]\big\{(R+t) J_1(q(R+t)-R J_1(qR) H_0(qR)) H_0\left(q(R+t)\right)  \\
+        +  R      J_0(qR)     H_1(qR) - (t+R)   J_0(q(t+R)) H_1\left(q(t+R)\right)\big\}\Big]\bigg\} \Bigg)^2
+\end{multline}
+$\mathrm{H}_\alpha(x)$ is the Struve function of order $\alpha$ and $\mathrm{J}_n(x)$ are the regular cylindrical Bessel function of order $n$.
+
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Selection of radial profiles of cylindrical profile with a homogeneous core and a linear shell.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_LinShellCyl.png}}
+\hfill
+\subfigure[Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsLinShCyl.png}}
+\end{center}
+\caption{Radial profiles and scattering curve for the cross-section form factor "\texttt{Pcs:linear shell cyl.}". The scattering functions have been calculated with a narrow lognormal distribution with a width of $\sigma_{R_0}=0.1$.}
+\label{fig:Pcs:cyl_fuzzy}
+\end{figure}
+
+
+\vspace{1mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Pcs:linear shell cyl.}:}
+\begin{description}
+    \item[\texttt{R\_0}] most probable radius $R_0$
+    \item[\texttt{sigma\_R0}] width $\sigma_{R_0}$ of radius distribution (LogNorm)
+    \item[\texttt{t}] thickness $t$ of the shell with linear scattering length density profile
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_c}] scattering length density of core $\eta_\mathrm{c}$
+    \item[\texttt{eta\_sh\_i}] scattering length density $\eta_\mathrm{sh,i}$ at $r=R$
+    \item[\texttt{eta\_sh\_o}] scattering length density $\eta_\mathrm{sh,o}$ at $r=R+t$
+    \item[\texttt{eta\_sol}] scattering length density $\eta_\mathrm{sol}$ of solvent
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{profile:linear shell cyl.}:}
+\begin{description}
+    \item[\texttt{R}] radius $R$
+    \item[\texttt{dummy}] not used, the profile plugin does not include a size distribution
+    \item[\texttt{t}] thickness $t$ of the shell with linear scattering length density profile
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_c}] scattering length density of core $\eta_\mathrm{c}$
+    \item[\texttt{eta\_sh\_i}] scattering length density $\eta_\mathrm{sh,i}$ at $r=R$
+    \item[\texttt{eta\_sh\_o}] scattering length density $\eta_\mathrm{sh,o}$ at $r=R+t$
+    \item[\texttt{eta\_sol}] scattering length density $\eta_\mathrm{sol}$ of solvent
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local cylindrical objects which are implemented as structure  plugins
+under "\texttt{[by plugin|thin obj.|P'(Q): local cylindrical obj.]}".
+\item As the form factor already has the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\item In case the shape factor is set to 1 or "\texttt{None}" the cross-section term can be interpreted as a perfect aligned cylindrical objects along the beam axis with a linear contrast profile of its shell
+\end{itemize}
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{$P_\mathrm{cs}(q)$ for circular cross-section folded with a Gaussian } ~\\
+\label{plugin:Pcs:cyl_fuzzy}
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Selection of radial profiles of fuzzy cylindrical profile.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_fuzzyCyl.png}}
+\hfill
+\subfigure[Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left.]{
+\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsFuzzyCyl.png}}
+\end{center}
+\caption{Radial profiles and scattering curve for the cross-section form factor "\texttt{Pcs:fuzzy cyl.}". The scattering functions have been calculated with a narrow lognormal distribution with a width of $\sigma_{R_0}=0.1$.}
+\label{fig:Pcs:cyl_fuzzy}
+\end{figure}
+
+Similar to the fuzzy sphere plugin described in section \ref{sect:FuzzySphere} also here the circular cross-section of the cylinder is folded with a Gaussian function, however, this time in two dimensions.
+\begin{align}
+\eta_\text{FuzzyCyl}\left(\abs{\mathbf{r}}\right)
+        &= \left(\eta_\text{circular}\star\eta_\text{Gauss}\right)(\mathbf{r}) \nonumber \\
+        &= \int_{\mathbb{R}^2}\eta_\text{circular}(\boldsymbol{\tau}) \eta_\text{Gauss}(\mathbf{r}-\boldsymbol{\tau}) d\boldsymbol{\tau}
+\end{align}
+with
+\begin{subequations}
+\begin{align}
+\eta_\text{circular}\left(\abs{\mathbf{r}}\right) &=
+\begin{cases}
+\left(\eta_\text{cyl}-\eta_\text{sol}\right) & \mbox{for~} \abs{\mathbf{r}}\leq R \\
+0 & \mbox{for~} \abs{\mathbf{r}}>R
+\end{cases} \\
+\eta_\text{Gauss}\left(\abs{\mathbf{r}}\right) &= \frac{1}{2 \pi
+\sigma^2} \exp\left[ -\frac{\mathbf{r}^2}{2\sigma^2}\right]
+\end{align}
+\end{subequations}
+The convolution has to be done in $\mathbb{R}^2$. As the circular
+cross-section of a homogeneous cylinder and Gaussian functions are radial symmetric also the
+profile of the fuzzy cylinder only depends on $\abs{\mathbf{r}}$. By
+defining the interface via a convolution the form factor can be
+easily calculated because the Fourier transform of a convolution
+is the pointwise product of the Fourier transforms according to
+the convolution theorem, i.e.
+\begin{align}\label{eq:Pcs:cyl_fuzzy}
+  P_\mathrm{cs}(q) &= \left[2\pi \left(\eta_\text{cyl}-\eta_\text{sol}\right) R^2\frac{J_1(qR)}{qR} \exp\left(-\frac12 q^2\sigma^2\right)\right]^2
+\end{align}
+As the 2D Fourier transform of radial symmetric functions can be written as a Hankel transform of zero order \cite{Kohlbrecher2017}
+and the Hankel transform is its own inverse the scattering length density profile can be written as
+\begin{align}
+\eta_\text{circular}\left(r\right) &= \int_0^\infty \left(\eta_\text{cyl}-\eta_\text{sol}\right) R^2\frac{J_1(qR)}{qR} \exp\left(-\frac12 q^2\sigma^2\right) J_0(qr) q \, \mathrm{d}q \\
+&\overset{\sigma \ll R}{\approx}
+  \frac{\eta_\text{cyl}-\eta_\text{sol}}{2}\left(1-\mathrm{erf}\left(\frac{\abs{r}-R}{\sqrt{2}\sigma}\right)\right)
+\end{align}
+
+\vspace{1mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Pcs:fuzzy cyl.}:}
+\begin{description}
+    \item[\texttt{R\_0}] most probable radius $R_0$
+    \item[\texttt{sigma\_R0}] width $\sigma_{R_0}$ of radius distribution (LogNorm)
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_cyl}] scattering length density of cylindrical core $\eta_\mathrm{cyl}$
+    \item[\texttt{eta\_sol}] scattering length density of solvent/matrix $\eta_\mathrm{sol}$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{profile:fuzzy cyl.}:}
+\begin{description}
+    \item[\texttt{R}] radius $R$
+    \item[\texttt{dummy}] not used, the profile plugin does not include a size distribution
+    \item[\texttt{dummy}] not used
+    \item[\texttt{sigma}] width of fussy interface $\sigma$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{eta\_cyl}] scattering length density of cylindrical core $\eta_\mathrm{cyl}$
+    \item[\texttt{eta\_sol}] scattering length density of solvent/matrix $\eta_\mathrm{sol}$
+\end{description}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local cylindrical objects which are implemented as structure  plugins
+under "\texttt{[by plugin|thin obj.|P'(Q): local cylindrical obj.]}".
+\item As the form factor already has the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\item In case the shape factor is set to 1 or "\texttt{None}" the cross-section term can be interpreted as a perfect aligned cylindrical objects along the beam axis with a fuzzy cross-section profile
+\end{itemize}
+
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{$P_\mathrm{cs}(q)$ for circular cross-section with a Boucher contrast profile} ~\\
+\label{plugin:Pcs:cyl_Boucher}
+\begin{figure}[htb]
+\begin{center}
+\subfigure[radial profiles with $\eta_0=\Delta\eta$ for several values of $\alpha$.
+]{
+\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/ProfileBoucherCyl.png}}
+\hfill
+\subfigure[normalized radial profiles for several values of $\alpha$ to assure $\alpha$-independent excess scattering length.
+]{
+\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/ProfileBoucher2Cyl.png}}
+\subfigure[
+Scattering curves of \texttt{Pcs:Boucher cyl} for
+several $\alpha$ with a narrow LogNormal size distribution of $\sigma = 0.15$.
+As the excess scattering lenght $\beta$ diverges for $\alpha \leq 2$ these values are not
+allowed.
+]{
+\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/PcsBoucherCyl.png}}
+\hfill
+\subfigure[ Scattering curves of \texttt{Pcs:Boucher2cyl} for
+several $\alpha$ with a narrow LogNormal size distribution of $\sigma = 0.15$.
+]{
+\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/PcsBoucher2Cyl.png}}
+\end{center}
+\caption{Two implemented cases for the radial profiles and their scattering profiles according to Boucher \cite{Boucher1983}, but now applied for cylindrical objects}
+\label{fig:cylBoucherprofilea}
+\end{figure}
+
+The idea of form factor is taken from section \ref{sect:BoucherSphere} but applied to cylindrical geometry. The cross-section term is valid for perfectly oriented cylinders with the cylinder axis pointinbg into the beam direction. In case of random oriented cylinders the cross-section term has to be multiplied by a a shape factor $P'(q)$ according to eq.\ \ref{eq:PprimePcs}.
+
+The radial profile of Boucher \cite{Boucher1983} reads as
+\begin{align}
+\eta(r) &= \eta_0
+  \begin{cases}
+    \left(1-\left(\frac{r}{R}\right)^2\right)^{\alpha/2-2}, & \mbox{if } r<=R \\
+    0, & \mbox{otherwise}.
+  \end{cases}
+\end{align}
+For cylindrical geometry the scattering intensity is calculated as
+\begin{align}\label{eq:Pcs_cylBoucher}
+  P_\mathrm{cs}(q)&= \left[\int_0^\infty 2\pi J_0(qr)r \eta(r) \mathrm{d}r\right]^2 \nonumber \\
+                  &= \beta^2 \left[ {}_0F_1\left(\frac{\alpha}{2},-\frac14q^2R^2\right)\right]^2 \\
+\end{align}
+with the excess scattering contribution $\beta$ of the cross-section profile equals to
+\begin{align}\label{eq:beta_cyl_boucher}
+  \beta & = \eta_0\pi R^2 \frac{2}{\alpha-2}
+\end{align}
+The input value $\Delta\eta$ for this profile is the scatter contrast at $r=0$, i.e.
+\begin{align}
+\eta_0&=\Delta\eta \qquad \mbox{(case \texttt{Pcs:Boucher cyl.})}
+\label{eq:eta0BoucherCyl}
+\end{align}
+The special case of $\alpha=4$ corresponds to a homogeneous circular cross-section with a scattering contrast $\Delta\eta$ for which the excess scattering contribution becomes $\beta_\mathrm{cyl}=\Delta\eta \pi R^2$.
+
+ Also a second variant of the form factor has been implemented. In the second case the excess scattering length is normalised to the one of a homogeneous circular cross-section with contrast $\Delta\eta$, so that the excess scattering length is for all $\alpha$ equal to $\beta_\mathrm{cyl}=\Delta\eta \pi R^2$. This is done by setting the contrast at $r=0$ in eq.\ \ref{eq:profileBoucherCyl} to
+\begin{align}
+\eta_0&=\Delta\eta \frac{\alpha-2}{2}  \qquad \mbox{(case \texttt{Pcs:Boucher2 cyl.})}
+\label{eq:eta0BoucherCyl2}
+\end{align}
+By this normalisation the excess scattering contribution $\beta$ is for all $\alpha$ equal to the one of a homogeneous cylinder with a scattering contrast $\Delta\eta$, i.e. $\beta_\mathrm{cyl}=\Delta\eta \pi R^2$.
+
+ The scattering function $P_\mathrm{cs}(q)$ decays at large $q$-values with a potential law of $q^{-\alpha+1}$. As the cross-section term has to be multiplied with a shape factor $P'(q)$ for cylindrical symmetric objects which decays at large $q$-values with $q^{-1}$ the parameter $\alpha$ defines the overall power law at large scattering vectors similar to section \ref{sect:BoucherSphere} using the same radial profile for spherical symmetric objects.
+
+\vspace{1mm}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{Pcs:Boucher cyl.} and \texttt{Pcs:Boucher2 cyl.}:}
+\begin{description}
+    \item[\texttt{R\_0}] most probable radius $R_0$
+    \item[\texttt{sigma\_R0}] width $\sigma_{R_0}$ of radius distribution (LogNorm)
+    \item[\texttt{dummy}] not used
+    \item[\texttt{alpha}] shape parameter $\alpha$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{Delta\_eta}] scattering length density contrast $\Delta \eta$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input parameters for \texttt{profile:Boucher cyl.} and \texttt{profile:Boucher2 cyl.}:}
+\begin{description}
+    \item[\texttt{R}] radius $R$
+    \item[\texttt{dummy}] the profile plugins do not include a size distribution
+    \item[\texttt{dummy}] not used
+    \item[\texttt{alpha}] shape parameter $\alpha$
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{dummy}] not used
+    \item[\texttt{Delta\_eta}] scattering length density contrast $\Delta \eta$
+\end{description}
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local cylindrical objects which are implemented as structure  plugins
+under "\texttt{[by plugin|thin obj.|P'(Q): local cylindrical obj.]}".
+\item As the form factor already has the width distribution included one normally uses in \SASfit as a size distribution
+the \texttt{Delta}-distribution.
+\item In case the shape factor is set to 1 or "\texttt{None}" the cross-section term can be interpreted as a perfect aligned cylindrical objects along the beam axis with a Boucher cross-section profile
+\end{itemize}
 
 
 \clearpage
@@ -1404,12 +1696,12 @@ RPA (random phase approximation) and PRISM (polymer reference interaction site m
 S_\mathrm{RPA}(q) &= \frac{1}{1+\beta P_\mathrm{WLM}(q)} \\
 S_\mathrm{PRISM}(q)  &= \frac{1}{1+\beta c(q) P_\mathrm{WLM}(q)}
 \end{align}
-with $\beta=\left(1-S(0)\right)/S(0)$. 
+with $\beta=\left(1-S(0)\right)/S(0)$.
 For the structure factor the worm-like model in section \ref{plugin:Pprime4wormPS3} has been used including an exponential contour length distribution so that
 \begin{align}\label{eq:Pwlm}
   P_\mathrm{WLM}(q) & \int_0^\infty \frac{1}{\langle L\rangle}\exp\left(-L/\langle L\rangle\right) P'(q,L,l_B) \mathrm{d}L
 \end{align}
-with $ P'(q,L,l_B)$ given by eq.\ \ref{eq:PprimePS3}. The exponential length distribution describes well the the contour length distribution of the worm-like micelles and has the additional advantage not to introduce an additional parameter. 
+with $ P'(q,L,l_B)$ given by eq.\ \ref{eq:PprimePS3}. The exponential length distribution describes well the the contour length distribution of the worm-like micelles and has the additional advantage not to introduce an additional parameter.
 
 Depending on the regime of Coulomb interaction different approximations for $c(q)$ have been favored and confirmed both by experiment and MC simulations:
 \begin{itemize}

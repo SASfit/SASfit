@@ -195,6 +195,13 @@ proc EmOptionsCmd {} {
 				
 	grid $w.maxkrylov_label -row 8 -column 2 -sticky e
 	grid $w.maxkrylov_value -row 8 -column 3 -sticky w
+	
+	label $w.em_weight_label -text "error weighted EM analysis"
+	ComboBox $w.em_weight_value -values {"on" "off"} \
+				-width 10 \
+				-textvariable ::EMOptions(error_weight) 
+	grid $w.em_weight_label -row 9 -column 0 -sticky e
+	grid $w.em_weight_value -row 9 -column 1 -sticky w
 }
 proc structuralParFitCmd {} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -24,12 +24,7 @@ scalar homo_cyl_Ampl_core(scalar x, sasfit_param *param)
 {
 	scalar A,u;
 	u = Q*x;
-	if (u==0) {
-		A = M_PI*x*x*(ETA_CORE-ETA_SOL)*2;
-	} else {
-		A = M_PI*x*x*(ETA_CORE-ETA_SOL)*2*gsl_sf_bessel_J1(u)/u;
-	}
-	return A;
+	return M_PI*x*x*(ETA_CORE-ETA_SOL)*2*sasfit_jinc(u);
 }
 
 scalar homo_cyl_I_core(scalar x, sasfit_param *param)
@@ -37,7 +32,7 @@ scalar homo_cyl_I_core(scalar x, sasfit_param *param)
 	return gsl_pow_2(homo_cyl_Ampl_core(x,param));
 }
 
-scalar Ampl_homoXS_core(scalar x, sasfit_param *param) 
+scalar Ampl_homoXS_core(scalar x, sasfit_param *param)
 {
 	scalar Pcs, u, LNdistr;
 	sasfit_param subParam;
@@ -45,7 +40,7 @@ scalar Ampl_homoXS_core(scalar x, sasfit_param *param)
 	SASFIT_ASSERT_PTR(param);
 
 	Pcs = homo_cyl_Ampl_core(x,param);
-	
+
 	sasfit_init_param( &subParam );
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_R;
@@ -58,7 +53,7 @@ scalar Ampl_homoXS_core(scalar x, sasfit_param *param)
 	return LNdistr*Pcs;
 }
 
-scalar I_homoXS_core(scalar x, sasfit_param *param) 
+scalar I_homoXS_core(scalar x, sasfit_param *param)
 {
 	scalar Pcs, u, LNdistr;
 	sasfit_param subParam;
@@ -66,7 +61,7 @@ scalar I_homoXS_core(scalar x, sasfit_param *param)
 	SASFIT_ASSERT_PTR(param);
 
 	Pcs = homo_cyl_I_core(x,param);
-	
+
 	sasfit_init_param( &subParam );
 	subParam.p[0] = 1.0;
 	subParam.p[1] = SIGMA_R;
@@ -89,7 +84,7 @@ scalar sasfit_ff_pcs_homogeneouscyl(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((SIGMA_R < 0.0), param, "sigma_t(%lg) < 0",SIGMA_R); // modify condition to your needs
 
 	// insert your code here
-	
+
 	Q = q;
 
 	if (SIGMA_R == 0.0) {
@@ -107,7 +102,7 @@ scalar sasfit_ff_pcs_homogeneouscyl_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	
+
 	Q = q;
 
 	if (SIGMA_R == 0.0) {
