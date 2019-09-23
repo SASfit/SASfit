@@ -117,7 +117,7 @@ That the $\mathcal{FAH}$ cycle is still valid using the isotropic 3 dimensional 
 \end{figure}
 
 
-\subsection{$G(z)$ of a sphere}
+\subsection{$G(\delta)$ of a sphere} ~\\
 \label{sec:Gz_sphere}
 The scattering intensity for a single sphere is given by
 \begin{align}
@@ -133,44 +133,106 @@ The unnormalized autocorrelation function for this sphere is given by
 \end{align}
 and the unnormalized SESANS correlation function
 \begin{align}
-\tilde{G}_\mathrm{sphere}(z)&= \Delta\eta^2 \pi R^4 \left(\sqrt{1-\xi^2}(2+\xi^2)-\xi^2(\xi^2-4)\ln\left(\frac{\xi}{1+\sqrt{1-\xi^2}}\right)\right)
+\begin{split}
+\tilde{G}_\mathrm{sph}(\delta)&= \Delta\eta^2 \pi R^4 \\
+&\times \left(\sqrt{1-\xi^2}(2+\xi^2)-\xi^2(\xi^2-4)\ln\left(\frac{\xi}{1+\sqrt{1-\xi^2}}\right)\right)
+\end{split}
+\label{eq:Gz_sph}
 \end{align}
-with $\xi=\frac{z}{2R}$.
+with $\xi=\frac{\delta}{2R}$.
 
-\subsection{$G(z)$ of a randomly distributed, two-phase system (DAB) }~\\
-\label{sec:Gz_DAB}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{G\_Sphere(delta)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of sphere $R$
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Note:}
+\begin{itemize}
+\item the function \texttt{G\_Sphere(delta)} can be combined with a size distribution but should not be combined with a structure factor.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/SESANS/G_Sphere.png}
+\end{center}
+\caption{Projected correlation functions of monodisperse spheres and polydisperse Spheres, both with a $R_g=24.5$nm}
+\label{fig:G_Sphere}
+\end{figure}
+
+\subsection{$G(\delta)$ of a randomly distributed, two-phase system (DAB) and its generalisation (gDAB)}~\\
+\label{sec:Gz_DAB_gDAB}
+
 The scattering intensity for a randomly distributed, two-phase system (DAB) is given by
 \cite{DebyeBueche1949,DAB1957,Andersson2008}
 \begin{align}
 I(Q) &= \frac{\left(8 \pi \xi^3 \Delta\eta\right)^2}{ \left(1+Q^2\xi^2\right)^2}
 \end{align}
-The unnormalized autocorrelation function for this sphere is given by
+The unnormalized autocorrelation function for the two-phase system reads as
 \begin{align}
 \tilde{\gamma}(r) &=
  \Delta\eta^2 8\pi\xi^3 \exp\left( -r/\xi\right)
 \end{align}
-and the unnormalized SESANS correlation function
+and the unnormalized SESANS correlation function as
 \begin{align}
-\tilde{G}_\mathrm{DAB}(z)&= 8\pi\xi^4 2\frac{z}{\xi}K_1\left(\frac{z}{\xi}\right)
+\tilde{G}_\mathrm{DAB}(\delta)&= 8\pi\xi^4 2\frac{\delta}{\xi}K_1\left(\frac{\delta}{\xi}\right)
 \end{align}
 
-\subsection{$G(z)$ of a self-affine random density distribution (gDAB) }~\\
-\label{sec:Gz_gDAB}
-The scattering intensity for a randomly distributed, two-phase system (DAB) is given by \cite{Klimes2002,Hunter2006,Andersson2008}
+The scattering intensity for a randomly distributed, self-affine two-phase system (gDAB) is given by \cite{Klimes2002,Hunter2006,Andersson2008}
 \begin{align}
-I(Q) &= \frac{\left(4 \pi \xi^3 (1+2H) \Delta\eta\right)^2}{ \left(1+Q^2\xi^2\right)^{3/2+H}}
+I(Q) &= \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\Gamma^2(H)\left[1+(q\xi)^2\right]^{\frac32+H}}
 \end{align}
 The unnormalized autocorrelation function for this system is given by
 \begin{align}
 \tilde{\gamma}(r) &=
- \Delta\eta^2 8a^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma\left(H\right)}\frac{2}{\Gamma(H)}\left(\frac{r}{2a}\right)^H K_H\left(\frac{r}{a}\right)
+ \Delta\eta^2 8\xi^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma\left(H\right)}\frac{2}{\Gamma(H)}\left(\frac{r}{2\xi}\right)^H K_H\left(\frac{r}{\xi}\right)
 \end{align}
-and the unnormalized SESANS correlation function
+and the unnormalised SESANS correlation function
 \begin{align}
-\tilde{G}_\mathrm{gDAB}(z)&=  8a^3\pi\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma^2\left(H\right)} 2\sqrt{az}\left(\frac{z}{2a}\right)^{H+\frac12}K_{\frac12+H}\left(\frac{z}{a}\right)
+\tilde{G}_\mathrm{gDAB}(\delta)&=  \Delta\eta^2 8\xi^3\pi\sqrt{\pi}\frac{\Gamma\left(\frac{3}{2}+H\right)}{\Gamma^2\left(H\right)} 2\sqrt{\xi\delta}\left(\frac{\delta}{2\xi}\right)^{H+\frac12}K_{\frac12+H}\left(\frac{\delta}{\xi}\right)
+\label{eq:Gz_gDAB}
 \end{align}
 
-\subsection{$G(z)$ for a generalized Gaussian coil (gGc) }~\\
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{G\_DAB(delta)}}:}\\
+\begin{description}
+\item[\texttt{xi}] correlation length $\xi$
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{G\_gDAB(delta)}:}\\
+\begin{description}
+\item[\texttt{xi}] correlation length $\xi$
+\item[\texttt{H}] Hurst exponent
+\item[\texttt{dummy}] not used
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Note:}
+\begin{itemize}
+\item the Hurst exponent needs to be in the interval $H \in (0,1]$. Values of $H>1$ will be accepted but might not have an established interpretation.
+\item the functions \texttt{G\_DAB(delta)} and \texttt{G\_gDAB(delta)}can be combined with a size distribution but should not be combined with a structure factor.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/SESANS/G_gDAB.png}
+\end{center}
+\caption{Projected correlation functions of the Debye-Andersson-Brumberger model and its generalisation with an Hurst exponent of $H=1$ but both with a $R_g=24.5nm$}
+\label{fig:G_gDAB}
+\end{figure}
+
+
+\subsection{$G(\delta)$ for a generalized Gaussian coil (gGc) }~\\
 \label{sec:Gz_gGc}
 The scattering intensity for a a generalized Gaussian coil (gGc) has been given by  Hammouda \cite{Hammouda,Hammouda2012,Hammouda1993,Hammouda2016} (see also section \ref{sect:generalized_gaussian_coil}) as
 \begin{align}
@@ -199,13 +261,38 @@ P(q) &= 2\int_0^1 \mathrm{d}x \; (1-x)e^{-q^2R_g^2(2\nu+1)(2\nu+2)x^{2\nu}}
 \end{align}
 The unnormalized autocorrelation function the order of integration over $x$ and  over $q$ for the Hankel transform can be changed and one gets
 \begin{align}
-\tilde{G}_\mathrm{gGc}(z) &=
- \frac{I_0 4\pi}{\nu z^2} \left(
-   w^{\frac{1}{2\nu}} \Gamma \left(1-\frac{1}{2 \nu },w\right) - w^{\frac{1}{\nu }} \Gamma \left(1-\frac{1}{\nu },w\right) \right)\\
-   w &= \frac34 \frac{z^2}{\left(2 \nu ^2+3 \nu +1\right) R_g^2}
+\tilde{G}_\mathrm{gGc}(\delta) &=
+ \frac{I_0 4\pi}{\nu \delta^2} \left(
+   w^{\frac{1}{2\nu}} \Gamma \left(1-\frac{1}{2 \nu },w\right) - w^{\frac{1}{\nu }} \Gamma \left(1-\frac{1}{\nu },w\right) \right) \label{eq:Gz_gGc}\\
+   w &= \frac34 \frac{\delta^2}{\left(2 \nu ^2+3 \nu +1\right) R_g^2}
 \end{align}
 where $\Gamma(a,x) = \int_x^\infty \mathrm{d}t \; t^{a-1} \exp(-t)$ is the upper incomplete Gamma Function.
 The limit $\tilde{G}_\mathrm{gGc}(0)$ is only finite for $\nu \in \left(0,\frac12\right)$
 \begin{align}
-\tilde{G}_\mathrm{gGc}(0) &= I_0 \frac{3 \pi }{\left(4 \nu ^4-5 \nu ^2+1\right) R_g^2} \mbox{~for~} \nu \in \left(0,\frac12\right)
-\end{align} 
+\tilde{G}_\mathrm{gGc}(0) &= I_0 \frac{3 \pi }{\left(4 \nu ^4-5 \nu ^2+1\right) R_g^2} \mbox{~for~} \nu \in \left(0,\frac12\right) \label{eq:G0_gGc}
+\end{align}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{G\_gGc(delta)}:}\\
+\begin{description}
+\item[\texttt{Rg}] radius of gyration $R_g$
+\item[\texttt{nu}] Flory exponent
+\item[\texttt{dummy}] not used
+\item[\texttt{beta\^{}2}] forward scattering or squared excess scattering length $\beta^2$
+\end{description}
+
+\hspace{1pt}\\
+\underline{Note:}
+\begin{itemize}
+\item For Flory exponents $\nu\geq \frac12$: $\tilde{G}_{gGc}(0) \rightarrow \infty$.
+\item $\nu\in \left(0,\frac12\right)$
+\item the function \texttt{G\_gGc(delta)} can be combined with a size distribution but should not be combined with a structure factor.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/SESANS/G_gGc.png}
+\end{center}
+\caption{Projected correlation functions of the generalised Gaussian coil model with $R_g=24.5nm$}
+\label{fig:G_gDAB}
+\end{figure} 

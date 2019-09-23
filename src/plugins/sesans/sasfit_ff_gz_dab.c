@@ -40,7 +40,7 @@ scalar sasfit_ff_gz_dab_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return 16*M_PI*gsl_pow_4(XI)*ETA*ETA;
 }
 
 scalar sasfit_ff_gz_dab_v(scalar q, sasfit_param * param, int dist)

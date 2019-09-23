@@ -687,6 +687,7 @@ src/sasfit_old/include/SASFIT_resolution.h
 src/sasfit_oz/CMakeLists.txt
 src/sasfit_oz/sasfit_oz_potential_depletion.c
 src/sasfit_oz/sasfit_oz_potential_dlvo.c
+src/sasfit_oz/sasfit_oz_potential_dlvo_hydra.c
 src/sasfit_oz/sasfit_oz_potential_ggcm-n.c
 src/sasfit_oz/sasfit_oz_potential_hard_sphere.c
 src/sasfit_oz/sasfit_oz_potential_ionic_microgel.c
@@ -704,6 +705,9 @@ src/sasfit_oz/include/sasfit_oz.h
 src/sasfit_oz/include/sasfit_oz_potentials.h
 src/sasfit_oz/include/sasfit_oz_shared_exports.h
 src/sasfit_oz/include/sasfit_oz_tclcmd.h
+src/sasfit_fixed_point_acc/CMakeLists.txt
+src/sasfit_fixed_point_acc/sasfit_fixed_point_acc.c
+src/sasfit_fixed_point_acc/include/sasfit_fixed_point_acc.h
 src/scripts/genStubs.tcl
 src/scripts/clean_cmake.sh
 src/scripts/addCopyrightNotice.sh

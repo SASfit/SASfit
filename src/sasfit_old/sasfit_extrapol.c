@@ -53,6 +53,15 @@
 #include "include/sasfit.h"
 #include "include/SASFIT_nr.h"
 #include "include/tcl_cmds.h"
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_sf.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_pow_int.h>
+#include <time.h>
+#include <math.h>
+#include "sasfit_oz.h"
+#include "sasfit_fixed_point_acc.h"
+#include <kinsol/kinsol.h>
 
 /*#########################################################################*/
 /*#                                                                       #*/
@@ -75,7 +84,7 @@ char  *errstr;
    c1 = a[1];
    c4 = a[2];
    D  = a[3];
-   
+
    if (Q <= 0.0) {
       *error = TRUE;
       sprintf(errstr,
@@ -100,7 +109,7 @@ bool *error;
 char *errstr;
 {
    float I0, Rg2;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -125,7 +134,7 @@ bool *error;
 char *errstr;
 {
    float I0, Rg;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -150,7 +159,7 @@ bool *error;
 char *errstr;
 {
    float I0, Rg, u;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -172,7 +181,7 @@ char *errstr;
       sprintf(errstr,
               "Debye: Rg == 0");
       return;
-   }   
+   }
    *y = I0 * 2.0*(u-1.0+exp(-u))/(u*u);
    dyda[0] = 2.0*(u-1.0+exp(-u))/(u*u);
    dyda[1] = -4.0*I0*(u-2.0+(2.0+u)*exp(-u))/(u*u*Rg);
@@ -189,7 +198,7 @@ bool *error;
 char *errstr;
 {
    float I0, alpha, Rg2;
-   
+
    if (na != 2) {
       *error  = TRUE;
       sprintf(errstr,
@@ -796,6 +805,269 @@ int save_EP(clientData,interp,EP)
 }
 
 
+int
+assign_root_Algorithm_EM(const char * token, EM_param_t * EM)
+{
+#define MAXROOTALGORITHMS 23
+    const char * RootAlgorithms[MAXROOTALGORITHMS];
+    int i,eq;
+    if (!token || !EM) return 0;
+    RootAlgorithms[0] = "Picard iteration";
+    RootAlgorithms[1] = "Mann iteration";
+    RootAlgorithms[2] = "Ishikawa iteration";
+    RootAlgorithms[3] = "Noor iteration";
+    RootAlgorithms[4] = "S iteration";
+    RootAlgorithms[5] = "SP iteration";
+    RootAlgorithms[6] = "CR iteration";
+    RootAlgorithms[7] = "Picard-S iteration";
+    RootAlgorithms[8] = "PMH iteration";
+    RootAlgorithms[9] = "Mann II iteration";
+    RootAlgorithms[10] = "Krasnoselskij iteration";
+    RootAlgorithms[11] = "S* iteration";
+    RootAlgorithms[12] = "Steffensen iteration";
+    RootAlgorithms[13] = "Anderson mixing";
+    RootAlgorithms[14] = "GMRES" ;
+    RootAlgorithms[15] = "Bi-CGStab" ;
+    RootAlgorithms[16] = "TFQMR" ;
+    RootAlgorithms[17] = "FGMRES";
+    RootAlgorithms[18] = "KINSOL_FP";
+    RootAlgorithms[MAXROOTALGORITHMS-1] = "dNewton";
+    RootAlgorithms[MAXROOTALGORITHMS-2] = "Hybrid";
+    RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
+    RootAlgorithms[MAXROOTALGORITHMS-4] = "Broyden";
+
+    i=0;
+    eq=-1;
+    while (i<MAXROOTALGORITHMS && eq != 0) {
+        eq = strcmp(token,RootAlgorithms[i]);
+        i++;
+    }
+//    if (EM->PrintProgress) sasfit_out("%s %d\n",token,i-1);
+
+    switch (i-1) {
+        case 0 :
+            EM->root_algorithm=Picard_iteration;
+            break;
+        case 1 :
+            EM->root_algorithm=Mann_iteration;
+            break;
+        case 2 :
+            EM->root_algorithm=Ishikawa_iteration;
+            break;
+        case 3 :
+            EM->root_algorithm=Noor_iteration;
+            break;
+        case 4 :
+            EM->root_algorithm=S_iteration;
+            break;
+        case 5 :
+            EM->root_algorithm=SP_iteration;
+            break;
+        case 6 :
+            EM->root_algorithm=CR_iteration;
+            break;
+        case 7 :
+            EM->root_algorithm=PicardS_iteration;
+            break;
+        case 8 :
+            EM->root_algorithm=PMH_iteration;
+            break;
+        case 9 :
+            EM->root_algorithm=MannII_iteration;
+            break;
+        case 10 :
+            EM->root_algorithm=Krasnoselskij_iteration;
+            break;
+        case 11 :
+            EM->root_algorithm=Sstar_iteration;
+            break;
+        case 12 :
+            EM->root_algorithm=Steffensen2_iteration;
+            break;
+        case 13 :
+            EM->root_algorithm=AndersonAcc;
+            break;
+        case 14 :
+            EM->root_algorithm=GMRES;
+            break;
+        case 15 :
+            EM->root_algorithm=BiCGSTAB;
+            break;
+        case 16 :
+            EM->root_algorithm=TFQMR;
+            break;
+        case 17 :
+            EM->root_algorithm=FGMRES;
+            break;
+        case 18 :
+            EM->root_algorithm=KINSOLFP;
+            break;
+        case MAXROOTALGORITHMS-1 :
+            EM->root_algorithm=dNewton;
+            break;
+        case MAXROOTALGORITHMS-2 :
+            EM->root_algorithm=Hybrid;
+            break;
+        case MAXROOTALGORITHMS-3 :
+            EM->root_algorithm=Hybrids;
+            break;
+        case MAXROOTALGORITHMS-4 :
+            EM->root_algorithm=Broyden;
+            break;
+        default :
+            EM->root_algorithm=S_iteration;
+            sasfit_out("Root finding Algorithm not found: %s. Using S iteration instead.\n", token);
+            sasfit_err("Root finding Algorithm not found: %s. Using S iteration instead.\n", token);
+            break;
+    }
+    if (i<=MAXROOTALGORITHMS) return 1;
+    return 0;
+}
+/*#########################################################################*/
+/*#                                                                       #*/
+/*# get_EM --                                                             #*/
+/*#                                                                       #*/
+/*#      This function reads the value of the tcl variable EMOptions      #*/
+/*#      in the C-structure EM                                            #*/
+/*#                                                                       #*/
+/*# Results: TCL_OK, TCL_ERROR                                            #*/
+/*#                                                                       #*/
+/*#########################################################################*/
+int get_EM(clientData,interp,EM)
+    ClientData         clientData;
+    Tcl_Interp         *interp;
+    EM_param_t *EM;
+
+{
+    int varint, status;
+    scalar varscalar;
+    const char *varstr;
+ /*
+ * read the nR
+ */
+    if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,"EMOptions","nR",0),
+                             &varint) ) {
+       sasfit_err("could not read number or R values\n");
+       return TCL_ERROR;
+    }
+    (*EM).nR = varint;
+/*
+ * read the error type
+ */
+    if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,"EMOptions","maxit",0),
+                             &varint) ) {
+       sasfit_err("could not read number or maxit\n");
+       return TCL_ERROR;
+    }
+    (*EM).maxit = varint;
+
+/*
+ * read the number Rmax
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","Rmax",0),
+                             &varscalar) ) {
+       sasfit_err("could not read Rmax\n");
+       return TCL_ERROR;
+    }
+    (*EM).Rmax = varscalar;
+
+    /*
+ * read the number dim
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","dim",0),
+                             &varscalar) ) {
+       sasfit_err("could not read dim\n");
+       return TCL_ERROR;
+    }
+    (*EM).dim = varscalar;
+
+
+/*
+ * read the number eps
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","eps",0),
+                             &varscalar) ) {
+       sasfit_err("could not read eps\n");
+       return TCL_ERROR;
+    }
+    (*EM).eps = varscalar;
+
+/*
+ * read the number chi2
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","chi2",0),
+                             &varscalar) ) {
+       sasfit_err("could not read chi2\n");
+       return TCL_ERROR;
+    }
+    (*EM).chi2 = varscalar;
+
+
+/*
+ * read the number smooth
+ */
+    if (TCL_ERROR == Tcl_GetDouble(interp,
+                             Tcl_GetVar2(interp,"EMOptions","smooth",0),
+                             &varscalar) ) {
+       sasfit_err("could not read smooth\n");
+       return TCL_ERROR;
+    }
+    (*EM).smooth = varscalar;
+
+/*
+ * read the string smooth_type
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","smooth_type",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read smooth_type\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).smooth_type,varstr);
+
+/*
+ * read the string IterationScheme
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","IterationScheme",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read IterationScheme\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).iteration_scheme,varstr);
+
+    status = assign_root_Algorithm_EM(Tcl_GetStringFromObj(sasfit_tcl_get_obj(interp, "EMOptions", "IterationScheme"), 0),EM);
+    if (status == 0) {
+            sasfit_err("Unknown Root finding Algorithm\n");
+            return TCL_ERROR;
+    }
+
+/*
+ * read the string spacing
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","spacing",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read spacing\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).spacing,varstr);
+
+/*
+ * read the string IterationScheme
+ */
+    varstr = Tcl_GetVar2(interp,"EMOptions","seed",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read seed\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).seed,varstr);
+return TCL_OK;
+}
+
 /*#########################################################################*/
 /*#                                                                       #*/
 /*# get_EP --                                                             #*/
@@ -881,7 +1153,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     strcpy((*EP).order,Buffer);
 
 /*
- * read the index of the first point to be fitted 
+ * read the index of the first point to be fitted
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"first",0),
@@ -1000,18 +1272,18 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
 											} else {
 												DIh[i] = -1.0;
 												error = 4;
-											}; 
+											};
 										}
 
-		          break; 
+		          break;
 				}
        case 2 : { for (i=0;i<ndata;i++) {	if (Ih[i] > 0.0) {
 												 DIh[i] = sqrt(Ih[i]);
 											} else {
 												DIh[i] = -1.0;
 												error = 4;
-											}; 
-										} 
+											};
+										}
 		          break; }
        case 3 : {break;}
       default : { fprintf(stderr,"#get_EP: unknown error_type %d\n",error);
@@ -1043,7 +1315,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).ndata = ndata;
 
 /*
- * read the index of the first point to be fitted 
+ * read the index of the first point to be fitted
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"first",0),
@@ -1066,7 +1338,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
 
 
 /*
- * read the index of the first point to be fitted for Guinier fit 
+ * read the index of the first point to be fitted for Guinier fit
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"Guinierfirst",0),
@@ -1088,7 +1360,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).Guiniernpoints = npoints;
 
 /*
- * read the index of the first point to be fitted for Porod fit 
+ * read the index of the first point to be fitted for Porod fit
  */
     if (TCL_ERROR == Tcl_GetInt(interp,
                              Tcl_GetVar2(interp,argv[1],"Porodfirst",0),
@@ -1121,7 +1393,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).PorodD = ftmp;
 
 /*
- * read the PorodDFit 
+ * read the PorodDFit
  */
     if (TCL_ERROR == Tcl_GetBoolean(interp,
                              Tcl_GetVar2(interp,argv[1],"porodDfit",0),
@@ -1171,7 +1443,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
     (*EP).Dc0 = ftmp;
 
 /*
- * read the c0fit 
+ * read the c0fit
  */
     if (TCL_ERROR == Tcl_GetBoolean(interp,
                              Tcl_GetVar2(interp,argv[1],"c0fit",0),
@@ -1678,7 +1950,7 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
        Tcl_Free((char *) Splitargv);
        sasfit_err("wrong # of list elements in EP(a)\n");
        return TCL_ERROR;
-    } 
+    }
     for (i=0;i<Splitargc;i++) {
        Splitcode = Tcl_GetDouble(interp,Splitargv[i],&EP[0].a[i]);
        if (Splitcode == TCL_ERROR) {
@@ -1845,40 +2117,40 @@ EP.Qmax = tx[EP.npoints-1];
 
 if (strcmp(EP.I0typestr,"Guinier") == 0) {
 /*
- * Calculation of I(0) extrapolation contribution to scattering invariant 
+ * Calculation of I(0) extrapolation contribution to scattering invariant
  */
 
-	EP.Qq0 =   EP.I0*(   pow(fabs(EP.Qmin),3.0)/3.0 
-				   - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G 
+	EP.Qq0 =   EP.I0*(   pow(fabs(EP.Qmin),3.0)/3.0
+				   - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G
 				   + 1.0/18.0*pow(fabs(EP.Qmin),7.0)/7.0 * EP.R2G*EP.R2G
-				 ) 
+				 )
 	    	 - EP.c0*pow(fabs(EP.Qmin),3.0)/3.0;
 
-   EP.DQq0 = pow(fabs(EP.DI0*(   pow(fabs(EP.Qmin),3.0)/3.0 
-			   	       - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G 
+   EP.DQq0 = pow(fabs(EP.DI0*(   pow(fabs(EP.Qmin),3.0)/3.0
+			   	       - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0 * EP.R2G
 				       + 1.0/18.0*pow(fabs(EP.Qmin),7.0)/7.0 * EP.R2G*EP.R2G
 				     ) )
 			 ,2.0)
-	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),7.0)/7.0*EP.R2G 
-		                     - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0)),2.0) 
+	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),7.0)/7.0*EP.R2G
+		                     - 1.0/3.0*pow(fabs(EP.Qmin),5.0)/5.0)),2.0)
 		+ pow(fabs(EP.Dc0*pow(fabs(EP.Qmin),3.0)/3.0),2.0);
    EP.DQq0 = sqrt(fabs(EP.DQq0));
 /*
  * Calculation of I(0) extrapolation contribution to integrated intensity iI = int(I(Q)*Q dQ)
  */
-   EP.iIq0 =   EP.I0*(   pow(EP.Qmin,2.0)/2.0 
-				   - 1.0/3.0*pow(EP.Qmin,4.0)/4.0*EP.R2G 
+   EP.iIq0 =   EP.I0*(   pow(EP.Qmin,2.0)/2.0
+				   - 1.0/3.0*pow(EP.Qmin,4.0)/4.0*EP.R2G
 				   + 1.0/18.0*pow(EP.Qmin,6.0)/6.0*pow(EP.R2G,2.0)
-				 ) 
+				 )
 		 - EP.c0*EP.Qmin*EP.Qmin/2.0;
 
-   EP.DiIq0 = pow(fabs(EP.DI0*(EP.Qmin*EP.Qmin/2.0 
-			    	   - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0*EP.R2G 
+   EP.DiIq0 = pow(fabs(EP.DI0*(EP.Qmin*EP.Qmin/2.0
+			    	   - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0*EP.R2G
 				       + 1.0/18.0*pow(fabs(EP.Qmin),6.0)/6.0*EP.R2G*EP.R2G
 				     ) )
 			 ,2.0)
-	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),6.0)/6.0*EP.R2G 
-		                     - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0)),2.0) 
+	    + pow(fabs(EP.DR2G*EP.I0*(  1.0/9.0*pow(fabs(EP.Qmin),6.0)/6.0*EP.R2G
+		                     - 1.0/3.0*pow(fabs(EP.Qmin),4.0)/4.0)),2.0)
 		+ pow(fabs(EP.Dc0*EP.Qmin*EP.Qmin/2.0),2.0);
    EP.DiIq0 = sqrt(fabs(EP.DiIq0));
 /*
@@ -1888,7 +2160,7 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
 	   error = TRUE;
 	   sasfit_err("StructParDataFit: EP.RG == 0\n");
    } else {
-       EP.intIq0 = EP.I0/EP.RG * sqrt(3.0*PI)/2.0 * 
+       EP.intIq0 = EP.I0/EP.RG * sqrt(3.0*PI)/2.0 *
 		           sasfit_erf(EP.Qmin*EP.RG/sqrt(3.0));
    }
    if (EP.I0 == 0.0) {
@@ -1902,7 +2174,7 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
    EP.DintIq0 = sqrt(fabs(EP.intIq0));
 } else if (strcmp(EP.I0typestr,"Zimm") == 0) {
 /*
- * Calculation of I(0) extrapolation contribution to scattering invariant 
+ * Calculation of I(0) extrapolation contribution to scattering invariant
  */
     u = EP.RG*EP.Qmin;
 	if ((1.0+1.0/3.0*u*u) == 0.0) {
@@ -1911,7 +2183,7 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
 	   return TCL_ERROR;
    }
 	EP.Qq0 =   EP.I0*3.0/pow(fabs(EP.RG),3.0) *
-		         (u-sqrt(3.0)*atan(u/sqrt(3.0))) 
+		         (u-sqrt(3.0)*atan(u/sqrt(3.0)))
 	    	 - EP.c0*pow(fabs(EP.Qmin),3.0)/3.0;
 
    EP.DQq0 =  pow(fabs(EP.DI0*EP.Qq0/EP.I0),2.0)
@@ -1920,27 +2192,27 @@ if (strcmp(EP.I0typestr,"Guinier") == 0) {
 					 3.0*u/pow(EP.RG,3.0)*(1.0-1.0/(1.0+1.0/3.0*u*u))
 					 -3.0/EP.RG*EP.Qq0
 					))
-				  ,2.0) 
+				  ,2.0)
 		    + pow(fabs(EP.Dc0*pow(fabs(EP.Qmin),3.0)/3.0),2.0);
    EP.DQq0 = sqrt(fabs(EP.DQq0));
 /*
  * Calculation of I(0) extrapolation contribution to integrated intensity iI = int(I(Q)*Q dQ)
  */
-   EP.iIq0 =   EP.I0*3.0/2.0/pow(fabs(EP.RG),2.0) * (log(3.0+u*u)-log(3.0)) 
+   EP.iIq0 =   EP.I0*3.0/2.0/pow(fabs(EP.RG),2.0) * (log(3.0+u*u)-log(3.0))
 		 - EP.c0*EP.Qmin*EP.Qmin/2.0;
 
    EP.DiIq0 = pow(fabs(EP.DI0*EP.iIq0/EP.I0),2.0)
 	        + pow(fabs(EP.DR2G* (
                      3.0*EP.I0*EP.Qmin*EP.Qmin/(EP.RG*(3.0+u*u))
                     -2.0/EP.RG*EP.iIq0
-			     )),2.0) 
+			     )),2.0)
 		    + pow(fabs(EP.Dc0*EP.Qmin*EP.Qmin/2.0),2.0);
    EP.DiIq0 = sqrt(fabs(EP.DiIq0));
 /*
  * Calculation of I(0) extrapolation contribution to integral intensity intI = int(I(Q) dQ)
  */
    EP.intIq0 = EP.I0/EP.RG * sqrt(3.0) * atan(u/sqrt(3.0));
-   EP.DintIq0 =  pow(fabs(EP.I0*EP.intIq0/EP.I0),2) 
+   EP.DintIq0 =  pow(fabs(EP.I0*EP.intIq0/EP.I0),2)
 	           + pow(fabs(EP.DRG*(EP.Qmin*EP.I0/EP.RG/(1.0+1.0/3.0*u*u)-EP.intIq0)),2.0)
                + pow(fabs(EP.Dc0*EP.Qmin),2.0);
    EP.DintIq0 = sqrt(fabs(EP.intIq0));
@@ -1981,7 +2253,7 @@ if (EP.PorodD < 1.0) {
 EP.DintI = sqrt(EP.DintIq0*EP.DintIq0 + EP.DintIexp*EP.DintIexp + EP.DintIc4*EP.DintIc4);
 
 /*
- * Calculation of scattering invariant 
+ * Calculation of scattering invariant
  */
 
 EP.Qexp = 0.0;
@@ -2068,26 +2340,26 @@ if (EP.intI == 0.0) {
  */
 EP.S_V  = PI/EP.Invariant * EP.c4;
 EP.DS_V = sqrt( pow(fabs(EP.Dc4/EP.c4),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.S_V); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.S_V);
 
 /*
  * Calculation of correlation length
  */
 EP.lc  = PI*EP.iI/EP.Invariant;
 EP.Dlc = sqrt( pow(fabs(EP.DiI/EP.iI),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.lc); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.lc);
 /*
  * Calculation of correlation area Ac
  */
 EP.Ac  = 2*PI*EP.intI/EP.Invariant;
 EP.DAc = sqrt( pow(fabs(EP.DintI/EP.intI),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.Ac); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.Ac);
 /*
  * calculation of intersection length
  */
 EP.li  = 4.0/PI * EP.Invariant/EP.c4;
 EP.Dli = sqrt( pow(fabs(EP.Dc4/EP.c4),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.li); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.li);
 
 if (EP.I0 == 0.0) {
    error = TRUE;
@@ -2100,7 +2372,7 @@ if (EP.I0 == 0.0) {
 EP.VP  = 2.0*PI*PI * EP.I0/EP.Invariant;
 
 EP.DVP = sqrt( pow(fabs(EP.DI0/EP.I0),2.0)
-			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.VP); 
+			  +pow(fabs(EP.DInvariant/EP.Invariant),2.0)) * fabs(EP.VP);
 
 /*
  * calculation of Porod radius
@@ -2124,7 +2396,7 @@ if (TCL_ERROR == save_EP(clientData,interp,EP)) {
    free_dvector(tx,0,EP.Porodnpoints-1);
    free_dvector(ty,0,EP.Porodnpoints-1);
    free_dvector(tsig,0,EP.Porodnpoints-1);
-   
+
    return TCL_OK;
 }
 
@@ -2180,11 +2452,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -2276,7 +2548,7 @@ if (strcmp(EP.order,"ascending") == 0) {
    return TCL_ERROR;
 }
 /*
- * for an initial guess for the parameters EP.a[0] and EP.a[2] I fit a straight line y=a+b*x 
+ * for an initial guess for the parameters EP.a[0] and EP.a[2] I fit a straight line y=a+b*x
  * to the data I*Q^(4-D) = c0 + c4*Q^(4-D). EP.a[1] = c1 is assumed to be zero
  */
 xx   = dvector(1,EP.Porodnpoints);
@@ -2322,7 +2594,7 @@ if (error == TRUE) {
 
 /*
  * The Levenberg - Marquard Minimierung wird vorläufig nicht angewendet,
- * deshalb ist error auf TRUE gesetzt, EP.error auf 3 gesetzt und lchisq negiert 
+ * deshalb ist error auf TRUE gesetzt, EP.error auf 3 gesetzt und lchisq negiert
  */
 
 /*
@@ -2394,7 +2666,7 @@ PorodErrorHandler: if (error == TRUE) {
 error = FALSE;
 
 
-if (EP.Porodnpoints > mfit) EP.Porodchisq = chisq/(EP.Porodnpoints-mfit); 
+if (EP.Porodnpoints > mfit) EP.Porodchisq = chisq/(EP.Porodnpoints-mfit);
     else EP.Porodchisq = -1.0;
 
 EP.c0     = EP.a[0];
@@ -2458,14 +2730,14 @@ return TCL_OK;
 }
 
 // helper for guinier linear intermediate result
-void addStringList(Tcl_DString * DsBuffer, char * buf, 
+void addStringList(Tcl_DString * DsBuffer, char * buf,
                    double * arr, int start, int end)
 {
 	int i;
 	if (!DsBuffer || !buf) return;
 
 	Tcl_DStringStartSublist(DsBuffer);
-	for (i=start; i <= end; i++) 
+	for (i=start; i <= end; i++)
 	{
 		sprintf(buf,"%lg",arr[i]);
 		Tcl_DStringAppendElement(DsBuffer,buf);
@@ -2473,8 +2745,8 @@ void addStringList(Tcl_DString * DsBuffer, char * buf,
 	Tcl_DStringEndSublist(DsBuffer);
 }
 
-void forward_intermediate_guinier(Tcl_Interp * interp, 
-                                  struct extrapolPar * ep, 
+void forward_intermediate_guinier(Tcl_Interp * interp,
+                                  struct extrapolPar * ep,
                                   Tcl_DString * dynbuf,
                                   char * buf,
                                   double lchisq,
@@ -2551,7 +2823,7 @@ int Sasfit_GuinierFitCmd(clientData, interp, argc, argv)
 {
 struct extrapolPar EP;
 float  *h, *Ih, *DIh;
-float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth, 
+float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
        dyda[4], par[4], errpar[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
@@ -2582,11 +2854,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -2677,8 +2949,8 @@ if (strcmp(EP.order,"ascending") == 0) {
    return TCL_ERROR;
 }
 /*
- * for an initial guess for the parameters EP.a[0] and EP.a[1] 
- * fit a straight line y=a+b*x  to the data 
+ * for an initial guess for the parameters EP.a[0] and EP.a[1]
+ * fit a straight line y=a+b*x  to the data
  * ln(I) = ln(I0) + Rg^2 * (-Q^2/3).
  */
 xx   = dvector(1,EP.Guiniernpoints);
@@ -2702,11 +2974,11 @@ for (i=0;i<4;i++) {
 }
 fit(interp,xx,yy,EP.Guiniernpoints-k,ysig,0,&EP.a[0],&EP.a[1],&EP.err[0],&EP.err[1],&lchisq,&q,&error);
 
-forward_intermediate_guinier(interp, &EP, &DsBuffer, Buffer, 
+forward_intermediate_guinier(interp, &EP, &DsBuffer, Buffer,
 		lchisq, xx, yy, ysig, EP.Guiniernpoints-k);
 
-/* 
- * Transformation of linear parameters back to I0 and Rg2 
+/*
+ * Transformation of linear parameters back to I0 and Rg2
  */
 EP.a[0]   = exp(EP.a[0]);
 EP.err[0] = exp(EP.a[0])*EP.err[0];
@@ -2731,13 +3003,13 @@ if (error == TRUE) {
 
 
 /*
- * if (EP.error == 3) then only a straight line will be fitted 
+ * if (EP.error == 3) then only a straight line will be fitted
  * to the data in Guinier plot
  */
 
 
 if (EP.error != 3) {
- 
+
 /*
  * start fitting Guinier law y = I0 * exp(-RG2*Q^2/3) to the data y[i],
  * with EP.a[0] = I0   (active fit parameter)
@@ -2750,7 +3022,7 @@ if (EP.error != 3) {
 		     &chisq,Guinier,&alambda,&error);
    if (error == TRUE) goto GuinierErrorHandler;
    k    = 1;
-   itst = 0; 
+   itst = 0;
    while (itst < 3) {
 	if (k > 250) {
 		error = TRUE;
@@ -2885,7 +3157,7 @@ int Sasfit_ZimmFitCmd(clientData, interp, argc, argv)
 {
 struct extrapolPar EP;
 float  *h, *Ih, *DIh;
-float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth, 
+float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
        dyda[4], par[4], errpar[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
@@ -2916,11 +3188,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -3011,7 +3283,7 @@ if (strcmp(EP.order,"ascending") == 0) {
    return TCL_ERROR;
 }
 /*
- * for an initial guess for the parameters EP.a[0] and EP.a[1] I fit a straight line y=a+b*x 
+ * for an initial guess for the parameters EP.a[0] and EP.a[1] I fit a straight line y=a+b*x
  * to the data 1/I = 1/I0 + Rg^2/I0 * Q^2/3.
  */
 xx   = dvector(1,EP.Guiniernpoints);
@@ -3039,8 +3311,8 @@ for (i=0;i<4;i++) {
   errpar[i] = 0.0;
 }
 fit(interp,xx,yy,EP.Guiniernpoints-m,ysig,0,&EP.a[0],&EP.a[1],&EP.err[0],&EP.err[1],&lchisq,&q,&error);
-/* 
- * Transformation of linear parameters back to I0 and Rg2 
+/*
+ * Transformation of linear parameters back to I0 and Rg2
  */
 
 if (EP.a[0] != 0.0) {
@@ -3091,7 +3363,7 @@ if (error == TRUE) {
 
 
 if (EP.error != 3) {
- 
+
 
 /*
  * start fitting Zimm2 law y = I0 / (1+RG^2*Q^2/3) to the data y[i],
@@ -3107,7 +3379,7 @@ if (EP.error != 3) {
 				 &chisq,Zimm2,&alambda,&error);
    if (error == TRUE) goto ZimmErrorHandler;
    k    = 1;
-   itst = 0; 
+   itst = 0;
    while (itst < 3) {
 	     if (k > 250) {
 			   sasfit_err("Sasfit_ZimmFitCmd: to many interations\n");
@@ -3134,20 +3406,20 @@ if (EP.error != 3) {
 	  } else {
 	 	EP.err[i] = sqrt(covar[i][i]);
 	  }
-   } 
+   }
 }
 
 ZimmErrorHandler: if (error == TRUE) {         /*                                         */
 	    			                           /* if an error occurs in the SASFIT2mrqmin */
 						                       /* routine the results of the linear fit   */
                                                /* are used.                               */
-					
+
 	                 chisq = -lchisq;
-					 for (i=0;i<4;i++) {       
-			    	    EP.a[i]   = par[i];    
-				        EP.err[i] = errpar[i]; 
+					 for (i=0;i<4;i++) {
+			    	    EP.a[i]   = par[i];
+				        EP.err[i] = errpar[i];
 					 }
-					
+
 					 if (EP.error != 3) {
 					     alambda = -10.0;
 						 SASFIT2mrqmin(interp,x,y,sig,EP.Guiniernpoints,
@@ -3157,7 +3429,7 @@ ZimmErrorHandler: if (error == TRUE) {         /*                               
 				  }
 error = FALSE;
 
-if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit); 
+if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit);
    else EP.I0chisq = -1.0;
 
 EP.I0     = EP.a[0];
@@ -3269,11 +3541,11 @@ alpha = matrix(0,ma-1,0,ma-1);
 lista = ivector(0,ma-1);
 /*
  * setting lista[] and mfit by analysing EP.active
- */ 
+ */
 j=0;
 k=1;
 for (i=0; i<ma; i++) {
-   if (EP.active[i]) { 
+   if (EP.active[i]) {
       lista[j] = i;
       j++;
    } else {
@@ -3367,7 +3639,7 @@ if (strcmp(EP.order,"ascending") == 0) {
 
 if (EP.I0 <= 0.0) {
   	EP.a[0] = 100.0;
-} else {EP.a[0] = EP.I0;} 
+} else {EP.a[0] = EP.I0;}
 
 if (EP.RG <= 0.0) {
 	EP.a[1] = 100.0;
@@ -3379,7 +3651,7 @@ if (EP.RG <= 0.0) {
 
 
 if (EP.error != 3) {
- 
+
 
 /*
  * start fitting Debye law y = 2 I0 (1-u+exp(u))/u^2 to the data y[i],
@@ -3393,7 +3665,7 @@ if (EP.error != 3) {
 				 &chisq,Debye,&alambda,&error);
    if (error == TRUE) goto DebyeErrorHandler;
    k    = 1;
-   itst = 0; 
+   itst = 0;
    while (itst < 3) {
 		if (k > 250) {
 		       error = TRUE;
@@ -3420,7 +3692,7 @@ if (EP.error != 3) {
 	  } else {
 	 	EP.err[i] = sqrt(covar[i][i]);
 	  }
-   } 
+   }
 }
 
 DebyeErrorHandler: if (error == TRUE) {        /*                                         */
@@ -3436,7 +3708,7 @@ DebyeErrorHandler: if (error == TRUE) {        /*                               
 				  }
 error = FALSE;
 
-if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit); 
+if (EP.Guiniernpoints > mfit) EP.I0chisq = chisq/(EP.Guiniernpoints-mfit);
    else EP.I0chisq = -1.0;
 
 EP.I0     = EP.a[0];
@@ -3521,3 +3793,360 @@ int Sasfit_OrnsteinZernickeFitCmd(clientData, interp, argc, argv)
 	return TCL_OK;
 }
 
+
+double EM_DR_Operator(void *EM_structure) {
+
+    EM_param_t *EMparam;
+    EMparam = (EM_param_t *)EM_structure;
+    int i,j,l, nr;
+    scalar p1,p2,p3, eps, chi2;
+/*
+    sasfit_out("EP_Operator: in: ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->in[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: out(start): ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+    sasfit_out("\n");
+*/
+    nr=EMparam->nR;
+
+
+    if (EMparam->smooth > 0) {
+        for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
+        EMparam->xwork[0]=exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[1])*EMparam->S[0][1]);
+        for (i=1;i<nr-1;i++) {
+            EMparam->xwork[i]=exp(log(EMparam->in[i-1])*EMparam->S[i][i-1]+log(EMparam->in[i])*EMparam->S[i][i]+log(EMparam->in[i+1])*EMparam->S[i][i+1]);
+        }
+        EMparam->xwork[nr-1]=exp(log(EMparam->in[nr-2])*EMparam->S[nr-1][nr-2]+log(EMparam->in[nr-1])*EMparam->S[nr-1][nr-1]);
+    } else {
+        for (i=0;i<nr;i++) {
+            EMparam->in[i] = EMparam->out[i];
+            EMparam->xwork[i] = EMparam->out[i];
+        }
+    }
+//    sasfit_out("EP_Operator: work (1st smooth): ");
+//    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+//    sasfit_out("\n");
+    for (j=0;j<EMparam->nh;j++) {
+        EMparam->Ith[j]=0;
+        for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->xwork[l]*EMparam->A[j][l];
+    }
+/*
+    sasfit_out("EP_Operator: Ith: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->Ith[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: Ih: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->Ih[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: dr: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->dr[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: dh: ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->dh[i]);
+    sasfit_out("\n");
+*/
+
+    for (i=0;i<nr;i++) {
+        p3=0;
+        p1=0;
+        for (j=0;j<EMparam->nh;j++) {
+            p1=p1+EMparam->A[j][i]*EMparam->dh[j];
+            p2=EMparam->Ih[j]*EMparam->A[j][i];
+            p3=p3+p2*EMparam->dh[j]/EMparam->Ith[j];
+//            if (p3<=0 || p1<=0 || p2<=0) sasfit_out("i,j: %d,%d p1:%lg p2 %lg p3:%lg\n",i,j,p1,p2,p3);
+        }
+//        if (p3<=0 || p1<=0) sasfit_out("i: %d p1:%lg p3:%lg\n",i,p1,p3);
+        EMparam->xwork[i]=EMparam->xwork[i]*p3/p1;
+    }
+
+//    sasfit_out("EP_Operator: work (EM Operator): ");
+//    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+//    sasfit_out("\n");
+
+    EMparam->out[0]=fabs(EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1]);
+    eps = gsl_pow_2(EMparam->out[0]-EMparam->in[0]);
+    for (i=1;i<nr-1;i++) {
+        EMparam->out[i]=fabs(EMparam->xwork[i-1]*EMparam->S[i][i-1]+EMparam->xwork[i]*EMparam->S[i][i]+EMparam->xwork[i+1]*EMparam->S[i][i+1]);
+        eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
+    }
+    EMparam->out[nr-1]=fabs(EMparam->xwork[nr-2]*EMparam->S[nr-1][nr-2]+EMparam->xwork[nr-1]*EMparam->S[nr-1][nr-1]);
+
+
+//    sasfit_out("EP_Operator: out (2nd smooth): ");
+//    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+//    sasfit_out("\n");
+
+    eps = eps+gsl_pow_2(EMparam->out[nr-1]-EMparam->in[nr-1]);
+    eps=sqrt(eps);
+
+    chi2=0;
+
+    for (i=0;i<EMparam->nh;i++){
+        EMparam->Ith[i] = 0;
+        for (j=0;j<nr;j++) {
+            EMparam->Ith[i] = EMparam->Ith[i] + EMparam->dr[j]*EMparam->A[i][j]*EMparam->out[j];
+        }
+        chi2=chi2+gsl_pow_2((EMparam->Ith[i]-EMparam->Ih[i])/EMparam->DIh[i]);
+    }
+    chi2=chi2/EMparam->nh;
+//    sasfit_out("chi2:%lg\n",chi2);
+//    sasfit_out("\n");
+    return chi2;
+}
+
+
+void EM_DR_Free (void *FPd) {
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    free_dvector(EMparam->h,0,EMparam->nh-1);
+    free_dvector(EMparam->Ih,0,EMparam->nh-1);
+    free_dvector(EMparam->DIh,0,EMparam->nh-1);
+    free_dvector(EMparam->Ith,0,EMparam->nh-1);
+    free_dvector(EMparam->dh,0,EMparam->nh-1);
+    free_dvector(EMparam->Iexp,0,EMparam->nh-1);
+    free_dvector(EMparam->r,0,EMparam->nR-1);
+    free_dvector(EMparam->dr,0,EMparam->nR-1);
+    free_dvector(EMparam->xwork,0,EMparam->nR-1);
+    free_dvector(EMparam->out,0,EMparam->nR-1);
+    free_dvector(EMparam->in,0,EMparam->nR-1);
+    free_dmatrix(EMparam->A,0,EMparam->nh-1,0,EMparam->nR-1);
+    free_dmatrix(EMparam->S,0,EMparam->nR-1,0,EMparam->nR-1);
+    gsl_vector_free(EMparam->DR);
+}
+
+void EM_DR_Init (void *FPd) {
+    scalar rmax, QR;
+    int nr,nh;
+    int i,j;
+    bool smooth_type;
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    const gsl_rng_type * T;
+    gsl_rng * rgen;
+
+    gsl_rng_env_setup();
+    T = gsl_rng_default;
+    rgen = gsl_rng_alloc (T);
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    nh=EMparam->nh;
+    if (EMparam->nR <=0) {
+        EMparam->nR=EMparam->nh;
+        nr=EMparam->nR;
+    } else {
+        nr=EMparam->nR;
+    }
+
+    FixedPointData->Npoints=EMparam->nR;
+    FixedPointData->maxsteps=EMparam->maxit;
+    FixedPointData->relerror=EMparam->eps;
+    FixedPointData->failed = 0;
+    FixedPointData->interrupt = 0;
+    FixedPointData->it=0;
+    FixedPointData->root_algorithm=EMparam->root_algorithm;
+    EMparam->xwork   = dvector(0,EMparam->nR-1);
+    EMparam->r   = dvector(0,EMparam->nR-1);
+    EMparam->dr   = dvector(0,EMparam->nR-1);
+    EMparam->out   = dvector(0,EMparam->nR-1);
+    EMparam->in   = dvector(0,EMparam->nR-1);
+    FixedPointData->in = EMparam->in;
+    FixedPointData->out = EMparam->out;
+    EMparam->DR=gsl_vector_alloc(EMparam->nR);
+    FixedPointData->DR = EMparam->DR;
+    EMparam->Ith   = dvector(0,EMparam->nh-1);
+    EMparam->Ih   = dvector(0,EMparam->nh-1);
+    EMparam->dh   = dvector(0,EMparam->nh-1);
+    EMparam->A = dmatrix(0,EMparam->nh-1,0,EMparam->nR-1);
+    EMparam->S = dmatrix(0,EMparam->nR-1,0,EMparam->nR-1);
+
+
+    for (i=0;i<nh;i++){
+        if (i==0) {
+            EMparam->dh[0]=EMparam->h[0];
+        } else {
+            EMparam->dh[i] = EMparam->h[i]-EMparam->h[i-1];
+        }
+    }
+    rmax = EMparam->Rmax;
+    if (rmax <= 0) {
+        rmax = M_PI/EMparam->h[0];
+        EMparam->Rmax = rmax;
+    }
+
+    for (i=0;i<nh;i++){
+        for (j=0;j<nr;j++) {
+            EMparam->r[j] = rmax/nr*(j+1);
+            QR=EMparam->h[i]*EMparam->r[j];
+ //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
+            EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
+        }
+        EMparam->Ih[i] = EMparam->Iexp[i]-EMparam->C0;
+        EMparam->Ith[i] =0;
+    }
+
+    gsl_rng_set(rgen, time(NULL));
+
+    if (strcmp("single",EMparam->smooth_type)==0) {
+        smooth_type = FALSE;
+    } else {
+        smooth_type = TRUE;
+    }
+//sasfit_out("%d %s\n",smooth_type,EMparam.smooth_type);
+
+    if (strcmp("constant",EMparam->seed)==0) {
+        for (i=0;i<nr;i++) {
+            EMparam->xwork[i] = 1e-7;
+            EMparam->out[i] = 1e-7;
+            EMparam->in[i] = 1e-7;
+            EMparam->dr[i]=rmax/nr;
+        }
+    } else {
+        for (i=0;i<nr;i++) {
+            EMparam->xwork[i] = gsl_rng_uniform (rgen)*1e-7;
+            EMparam->out[i] = gsl_rng_uniform (rgen)*1e-7;
+            EMparam->in[i] = gsl_rng_uniform (rgen)*1e-7;
+            EMparam->dr[i]=rmax/nr;
+        }
+    }
+    gsl_rng_free (rgen);
+
+    for (i=0;i<nr;i++) {
+        for (j=0;j<nr;j++) {
+            EMparam->S[i][j]=0;
+        }
+    }
+
+    EMparam->S[0][0]=1-EMparam->smooth;
+    EMparam->S[0][1]=EMparam->smooth;
+    for (i=1;i<nr-1;i++) {
+        EMparam->S[i][i]=1-2*EMparam->smooth;
+        EMparam->S[i][i-1]=EMparam->smooth;
+        EMparam->S[i][i+1]=EMparam->smooth;
+    }
+    EMparam->S[nr-1][nr-2]=EMparam->smooth;
+    EMparam->S[nr-1][nr-1]=1-EMparam->smooth;
+
+
+    FixedPointData->KINSetMAA = 5;
+    FixedPointData->KINSetFuncNormTol = EMparam->eps;
+    FixedPointData->KINSetScaledSteptol = 0;
+    FixedPointData->KINSetNumMaxIters = EMparam->maxit;
+    FixedPointData->KINSetMaxNewtonStep = FixedPointData->Npoints*500.0;
+    FixedPointData->KINSetPrintLevel = 0;
+    FixedPointData->KINSetEtaForm=KIN_ETACHOICE2; // KIN ETACHOICE1, KIN ETACHOICE2, or KIN ETACONSTANT
+    FixedPointData->KINSetEtaConstValue = 0.1;
+    FixedPointData->KINSpilsSetMaxRestarts =20;
+    FixedPointData->KINSolStrategy=KIN_NONE;
+    FixedPointData->KINConstraints = N_VNew_Serial(FixedPointData->Npoints);
+    N_VConst_Serial(0., FixedPointData->KINConstraints);
+}
+
+
+/*#########################################################################*/
+/*#                                                                       #*/
+/*# Sasfit_prEM_Cmd --                                                    #*/
+/*#                                                                       #*/
+/*#      This function implements the Tcl "sasfit_prEM_Cmd" command       #*/
+/*#                                                                       #*/
+/*# Results:                                                              #*/
+/*#      A standard Tcl result.                                           #*/
+/*#                                                                       #*/
+/*# Side effects:                                                         #*/
+/*#      None.                                                            #*/
+/*#                                                                       #*/
+/*#########################################################################*/
+
+int Sasfit_prEM_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+EM_param_t EMparam;
+sasfit_fp_data FPd;
+
+scalar p1,p2,p3, QR, eps,chi2;
+int    i,j,k,l,itst;
+scalar rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_prEM ?EMOptions? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=&EM_DR_Operator;
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+FPd.PrintProgress=1;
+
+FPd.it=0;
+EM_DR_Init(&FPd);
+sasfit_out("D(R): %s algorithm: %d\n",EMparam.iteration_scheme, FPd.root_algorithm);
+sasfit_out("maxteps: %d\n",FPd.maxsteps);
+sasfit_out("R_max: %lg\n",EMparam.Rmax);
+sasfit_out("number of R bins: %d\n",EMparam.nR);
+sasfit_out("finished initialization\n");
+rmax = M_PI/EMparam.h[0];
+rmax = EMparam.Rmax;
+
+FP_solver(&FPd);
+sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
+sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+EM_DR_Free(&FPd);
+
+return TCL_OK;
+}

@@ -1,6 +1,6 @@
 \section{Bi-continuous and non-particulate structures}
 
-\subsection{Stochastic models of disordered porous materials}
+\subsection{Stochastic models of disordered porous materials}~\\
 
 The stochastic models implemented base mainly on the paper from \cite{Gommes2018}, where the different existing models have been  compared. The "dead leaves"- model as well as the boolean models described here assume for simplicity spheres for the grains where the covariogram of a sphere is given by
 \begin{align}\label{eq:covariogram_sphere}
@@ -10,8 +10,8 @@ where $\Theta()$ is Heavyside's step function, taking the value 1 for a positive
 \begin{align}
   K_\mathrm{LN}(r) =& \int_0^\infty  p_\mathrm{LN}(R) K(r,R) \mathrm{d}R \nonumber\\
        \begin{split}
-            & \frac{\pi}{24} r^3 \left(1+\mathrm{Erf}\left(\frac{\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right) \\
-            & \frac{\pi}{2}\mu^2r e^{2\sigma^2} \left(1+\mathrm{Erf}\left(\frac{2\sigma^2+\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right) \\
+            =& \frac{\pi}{24} r^3 \left(1+\mathrm{Erf}\left(\frac{\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right) -\\
+            & \frac{\pi}{2}\mu^2r e^{2\sigma^2} \left(1+\mathrm{Erf}\left(\frac{2\sigma^2+\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right) +\\
             & \frac23 \pi e^{9\sigma^2/2}\mu^3\left(1+\mathrm{Erf}\left(\frac{3\sigma^2+\ln(2\mu/r)}{\sqrt{2}\sigma}\right)\right)
        \end{split} \label{eq:covariogram_sphere_LogNorm}
 \end{align}
@@ -20,12 +20,237 @@ with
   p_\mathrm{LN}(R,\mu,\sigma) &=  \frac{1}{R\sigma \sqrt{2 \pi}}\exp\left(-\frac{1}{2}\left(\frac{\ln R -
         \ln\mu}{\sigma}\right)^2\right)
 \end{align}
-\subsubsection{dead-leaves model}
-\subsubsection{boolean (union model)}
+The Debye correlation function $\gamma(r)$ needs to be expressed in terms of the covariagram function $K(r)$ and the volume fractionas $\phi_0=1-\phi_1$ of the pores or solid material. The knowledge of $\gamma(r)$ then allows to calculate the scattering intensity via
+\begin{align}
+  I_Q(q) &= I(q)/\int_0^\infty I(q) 4\pi q^2 \mathrm{d}q \\
+         &= \frac{1}{(2\pi)^3} \int_0^\infty \gamma(r) \frac{\sin qr}{qr}4\pi r^2\mathrm{d}r
+\end{align}
+
+\newpage
+\subsubsection{dead-leaves model}~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{../images/form_factor/nonparticular/dead_leaves_3D.png}
+\end{center}
+\caption{A real space realisation of a dead-leaves model \cite{Gommes2018}.} \label{fig:DeadLeaves3D}
+\end{figure}
+
+A dead-leaves model of porous material is obtained by randomly covering an
+initially empty space by pore-like or solid-like spheres, and letting
+them overlap so that only the topmost sphere is visible. The process has to be continued until the
+entire space is covered either by pore-like or solid-like spheres.
+
+For the dead leaves model the Debye correlation function is independent of the volume fraction of pores or particles and reads as
+\begin{align}\label{eq:DebyeCorrelationDeadLeaves}
+  \gamma(r) &= \frac{K_\mathrm{LN}(r)}{2K_\mathrm{LN}(0)-K_\mathrm{LN}(r)}
+\end{align}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.45\textwidth]{../images/form_factor/nonparticular/dead_leaves.png}
+\end{center}
+\caption{Dead-leaves model for different size distributions} \label{fig:DeadLeavesIQ}
+\end{figure}
+
+\underline{Input Parameters for model \texttt{dead leaves model}:}\\
+\begin{description}
+\item[\texttt{scale}] characteristic length for positional correlation $\xi$
+\item[\texttt{dummy}] not used
+\item[\texttt{mu}] median $\mu$ of LogNorm distribution
+\item[\texttt{sigma}] width $\sigma$ of LogNorm distribution
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item None
+\end{itemize}
+
+
+\newpage
+\subsubsection{boolean (union model)}~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{../images/form_factor/nonparticular/boolean_union_3D.png}
+\end{center}
+\caption{A real space realisation of a boolean union model of monodisperse spheres for $\phi_1=0.2, 0.5$, and 0.8 (taken from \cite{Gommes2018}).} \label{fig:BooleanUnion3D}
+\end{figure}
+
+The Boolean (union model) the structure is described as random positioned overlapping solid-like grains. The pore centers are positioned following a Poisson point process with density $\theta$ (average number density of grains). In the implemented model the grains are assumed being spheres with a size distribution. The geometrical covariogram is given by eq.\ \ref{eq:covariogram_sphere_LogNorm}. The corresponding Debye correlation function is than given by
+\begin{align}\label{eq:Debye_correlation_function_boolean_union}
+  \gamma(r) &= \frac{\exp\left(\theta K_\mathrm{LN}(r)\right)-1}{\exp\left(\theta K_\mathrm{LN}(0)\right)-1} \\
+            &= \frac{\exp\left(\theta K_\mathrm{LN}(r)\right)-1}{\frac{1}{\phi_0}-1}
+\end{align}
+where $\phi_0=1-\phi_1=\exp(-\theta K_\mathrm{LN}(0))$ is the volume fraction of pores.
+
+\begin{figure}[htb]
+\begin{center}
+\subfigure[Effect of volume fraction, but monodisperse spheres]{
+\includegraphics[width=0.48\textwidth]{../images/form_factor/nonparticular/BooleanUnionPhi0.png}}
+\hfill
+\subfigure[Effect of size distribution at fixed volume fraction $\phi_0=0.8$]{
+\includegraphics[width=0.48\textwidth]{../images/form_factor/nonparticular/BooleanUnionSigma.png}}
+\end{center}
+\caption{Boolean union model of spheres}
+\label{fig:BooleanUnion}
+\end{figure}
+
+
+\underline{Input Parameters for model \texttt{boolean union model}:}\\
+\begin{description}
+\item[\texttt{scale}] characteristic length for positional correlation $\xi$
+\item[\texttt{phi0}] volume fraction $\phi_0$ of pore-like phase
+\item[\texttt{mu}] median $\mu$ of LogNorm distribution
+\item[\texttt{sigma}] width $\sigma$ of LogNorm distribution
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item None
+\end{itemize}
+
+\newpage
 \subsubsection{boolean (intersection model)}
-\subsubsection{clipped Gaussian random fields}
+
+\newpage
+\subsubsection{clipped random fields} ~\\
+
+Clipped random field model are mathematically formalized geometrical models which have been applied to small angle scattering e.g.\ by \cite{Berk1991,Teubner1991,Levitz1998,Roberts1995}. These class of models describe the morphology by stochastic standing wave $S(\mathbf{r})$ defined by
+\begin{align}
+S(\mathbf{r}) &= \frac{1}{\sqrt{N\langle A^2\rangle}} \sum_{n=1}^N A_n \cos\left(\mathbf{q}_n\cdot\mathbf{r}+\phi_n\right)
+\end{align}
+$\phi_n$ and $A_n$ are independent random variables, however the squared average amplitude need to be finite. For $N\rightarrow \infty$ the properties of $S(\mathbf{r})$ becomes independent of the distribution $A_n$ and are therefore assumed to be $A_n=1/\sqrt{2}$. The phase $\phi_n$ is assumed to be uniform distributed over $(0,2\pi)$ and the direction of the random wave vector $\mathbf{q}_n$ is uniformly distributed over all solid angle $4\pi$. The distribution of the length of the wave vectors however follow a distribution $f(q)$ (spectral function), which than determines the properties of $S(\mathbf{r})$. The distribution is normalized so that $\int_0^\infty f(q) \mathrm{d}q=1$ The scattering length density $\rho(\mathbf{r})$ than takes values of $\rho_1$ or $\rho_0$ depending if $S(\mathbf{r})$ is larger or smaller than a threshold $\alpha$, which can be written as
+\begin{align}
+  \rho(\mathbf{r}) & = (\rho_1-\rho_0) \Theta(S(\mathbf{r})-\alpha) + \rho_0
+\end{align}
+It is also possible to perform the definition via two thresholds $\alpha$ and $\beta$ between which the value of $S(\mathbf{r})$ has to lay to be assigned to $\rho_1$. An extension to a three phase system is also straight forward where then the phases are assigned according to the intervals $(-\infty,\alpha)$, $(\alpha,\beta)$, and $(\beta,\infty)$.
+The two-point correlation function $g_S$ of an isotropic gaussian random field is
+\begin{align}\label{eq:gr_CGRF}
+  g_S(\mathbf{r}) &= g_S(r) = \langle S(\mathbf{r}) S(\mathbf{r}+\mathbf{x}) \rangle \\
+                  &= \int_0^\infty f(q) \frac{\sin qr}{qr} 4\pi q^2 \mathrm{d}q
+\end{align}
+
+\paragraph*{\textbf{Single threshold:}} \phantom{M}\hspace{1pt} \\
+
+For the single threshold model a two-phase system is described by a single threshold $\alpha$. The volume fraction $\phi_1$ of the solid phase with the scattering length density $\rho_1$ is than given by
+\begin{align}\label{eq:volumefraction_alpha}
+  \phi_1 & = \frac12 - \frac12\mathrm{erf}\left(\frac{\alpha}{\sqrt{2}}\right)
+\end{align}
+where $\mathrm{erf}$ is the error function and $\phi_0=1-\phi_1$ the porosity. The covariance $C_{11}(r)$ than is defined as the probability that two gaussian fields $S(\mathbf{r})$ and $S(\mathbf{r}+\mathbf{x})$ takes values larger than $\alpha$. Mathematically this is described equivalently by
+\begin{align}
+  C_{11}(r) &= \frac{1}{2\pi} \int_0^{\arcsin(g_S(r))} \exp\left[\frac{-\alpha^2}{1+\sin\theta}\right] \mathrm{d}\theta + \phi_1^2
+\end{align}
+The Debye correlation function is than given by
+\begin{align}
+  \gamma(r) &= \frac{C_{11}(r) -\phi_1^2}{\phi_1\phi_0}
+\end{align}
+from which the scattering intensity can be calculates as
+\begin{align}
+  I_Q(q) &= \frac{1}{(2\pi)^3}\int_0^\infty \gamma(r) \frac{\sin qr}{qr} 4\pi r^2 \mathrm{d}r
+\end{align}
+
+\paragraph*{\textbf{Two-cut model:}}\hspace{1pt} \\
+In the two-cut model, a solid phase is assumed where the random field has values between $-\alpha$ and $\alpha$
+\begin{align}
+  \rho(\mathbf{r}) & = (\rho_1-\rho_0) \Theta(S(\mathbf{r})-\alpha) \Theta(\alpha-S(\mathbf{r}))+ \rho_0
+\end{align}
+ The volume fraction $\phi'_1$ of the solid phase with the scattering length density $\rho_1$ is then given
+by
+\begin{align}\label{eq:Phi_1_twocut}
+  \phi'_1 &= \mathrm{erf} \left( \frac{\alpha}{\sqrt{2}}\right)
+\end{align}
+The covariance $C'_{11}(r)$ is defined as the probability that two gaussian fields S(r) and S(r+x) takes values
+between $\pm \alpha$ which is equivalent to
+\begin{align}\label{eq:C11twocut}
+  C'_{11}(r) &= \frac{1}{\pi} \int_0^{\arcsin(g_S(r))} \exp\left[\frac{-\alpha^2}{1+\sin\theta}\right] + \exp\left[\frac{-\alpha^2}{1-\sin\theta}\right]\mathrm{d}\theta + (\phi'_1)^2
+\end{align}
+
+\hspace{1pt} \\
+\paragraph*{Two-cut intersection model:}\hspace{1pt} \\
+In case of a two-cut intersection model one assumes that two independent clipped random fields with the same power spectrum must intersect to form the final structure. Therefore the probabilities have to be multiplied and the solid phase volume fraction is given by
+\begin{align}\label{eq:Phi_1_twocutintersection}
+  \phi_1 &=  \left(\phi'_1\right)^2
+\end{align}
+and
+\begin{align}\label{eq:C11twocut}
+  C_{11}(r) &=  \left(C'_{11}(r)\right)^2
+\end{align}
+
+To calculate the scattering intensity $I_Q(q)$ the spectral function $f(q)$ is assumed to be known as a parameterised function as well as its Fourier transformation, i.e. the two-point correlation function $g_S(r)$. In \SASfit four parametrisation of the two-point correlation function $g_S(r)$  have been implemented, a simplified two parameter function $ g_{S,1}(r;\xi,d)$ \cite{Gommes2008,Gommes2018} and three 3-parameter functions. For this see e.g. \cite{Quintanilla2003,Roberts1997} $g_{S,2}(r;\xi,d,r_c)$ and \cite{Pieruschka1992} $g_{S,3}(r;\xi,d,r_c)$, \cite{Jinnai2000} $ g_{S,4}(r;\xi,d,r_c)$, or \cite{Chen1998}  $g_{S,5}(r;\xi,d,r_c)$.
+\begin{align}
+  g_{S,1}(r;\xi,d)    &= \frac{1}{\cosh(r/\xi)}\frac{\sin (2\pi r/d)}{2\pi r/d}\\
+  g_{S,2}(r;\xi,d,r_c) &= \frac{\exp(-r/\xi)-r_c/\xi \exp(-r/r_c)}{1-r_c/\xi} \frac{\sin (2\pi r/d)}{2\pi r/d}\\
+\begin{split}
+ g_{S,3}(r;\xi,d,r_c) &= \frac{\sin (2\pi r/d)}{2\pi r/d} \frac{\frac{\xi}{r_c}\left(\frac{\xi}{r_c}+1\right)}{\left(\frac{\xi}{r_c}-1\right)^2}  \\
+     & \left(e^{-r/\xi}+\frac{r_c}{\xi}e^{-r/r_c} - \frac{4\xi\left(e^{-r/\xi}-e^{-r/r_c}\right)}{r\left(\frac{\xi^2}{r_c^2}-1\right)}\right)
+\end{split} \\
+\begin{split}
+  g_{S,4}(r;\xi,d,r_c) &= \frac{4bc\left(a^2+\left(b+c\right)^2\right)^2}{(b+c)r}  \\
+                      & \times \Bigg[ e^{-cr}\Bigg(\frac{a^2-b^2+c^2}{\left(4a^2b^2+\left(a^2-b^2+c^2\right)^2\right)^2} \\
+                      & + \frac{r}{4c\left(\left(a^2+b^2\right)^2+2\left(a^2-b^2\right)c^2+c^4\right)}\Bigg) \\
+                      & +\frac{e^{-br}}{ab} \Bigg( \frac{-8a^2b^2+\left(a^2+b^2\right)^2+2\left(a^2-b^2\right)c^2+c^4}{4\left(4a^2b^2+\left(a^2-b^2+c^2\right)^2\right)^2}\\
+                      & \times \sin(ar) - \frac{ab\left(a^2-b^2+c^2\right)}{\left(4a^2b^2+\left(a^2-b^2+c^2\right)^2\right)^2}\cos(ar)\Bigg) \Bigg]
+\end{split} \\
+\begin{split}
+  g_{S,5}(r;\xi,d,r_c) &= \frac{1}{a^2+(c-b)^2} \Biggl\{ (a^2+c^2-b^2)\frac{\sin (ar)}{ar} \exp(-br)  \\
+                      & +  2b \frac{\exp(-cr)-\exp(-br)\cos(ar)}{r}\Biggr\}
+\end{split}
+\end{align}
+where $a=2\pi/d$, $b=1/\xi$, and $c=1/r_c$. Here $d$ is the quasi-periodic distance responsible for the peak in the scattering data and $\xi$ the decay length of that periodic structure, responsible for the width and height of the peak. The parameter $r_c$ controls for the 2nd and 3rd model the transition to the large $q$-values a bit, whereas in the 4th and 5th model it also has a big influence at small $q$-value below the peak position given by $d$.
+
+\begin{figure}[htb]
+\centering
+  \subfigure[$r_c=80$nm]{\label{fig:rm80m}
+     \begin{minipage}[b]{.45\linewidth}
+             \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr0_80.png}\\~\\
+             \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr2_80.png}\\~\\
+             \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/IQCRW_80.png}
+     \end{minipage}
+     }
+  \subfigure[$r_m=10$nm]{\label{fig:rm10nm}
+    \begin{minipage}[b]{.45\linewidth}
+             \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr0_10.png}\\~\\
+             \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr2_10.png}\\~\\
+             \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/IQCRW_10.png}
+    \end{minipage}
+    }
+\caption{Two-point correlation functions $g_{S,1}\ldots g_{S,5}$ and corresponding scattering intensities $I_{S,1}(q)\ldots I_{S,5}(q)$} \label{fig:CRWplugin}
+\end{figure}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{CRW 1}:}
+\begin{description}
+\item[\texttt{scale}] scaling factor for the intensity
+\item[\texttt{d}] quasi-periodic distance $d$
+\item[\texttt{xi}] decay length $\xi$ of that periodic structure
+\end{description}
+
+\vspace{5mm}
+
+\underline{Input Parameters for model \texttt{CRW 2}, \texttt{CRW 3}, \texttt{CRW 4}, \texttt{CRW 5}:}\\
+\begin{description}
+\item[\texttt{scale}] scaling factor for the intensity
+\item[\texttt{d}] quasi-periodic distance $d$
+\item[\texttt{xi}] decay length $\xi$ of that periodic structure
+\item[\texttt{r\_c}] cut-off length $r_c$
+\end{description}
+
+\vspace{5mm}
+
+\underline{Note:}
+\begin{itemize}
+\item for the models 2 and 3 $r_m\neq\xi$, otherwise \SASfit returns an error message.
+\item Instead of assuming a two-point correlation function, one also can try to inverse the scattering data back into the spectral function $f(q)$ which  e.g.\ has been realised in the software \texttt{SAXSMorph} \cite{Ingham2010}.
+\end{itemize}
 
 
+\newpage
 \subsection{Teubner-Strey}
 \label{sect:TeubnerStrey}~\\
 
@@ -138,7 +363,7 @@ d^2 &= \frac{16 \pi ^2 c_2}{2 \sqrt{c_2}-c_1}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{TeubnerStrey.png}
+\includegraphics[width=0.85\textwidth]{TeubnerStrey.png}
 \end{center}
 \caption{Some typical curves for the Teubner-Strey model function} \label{fig:TeubnerStreyIq}
 \end{figure}
@@ -187,7 +412,7 @@ I(q) = I_0 \frac{1}{\left[1+(q\xi)^2\right]^2}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{DAB.png}
+\includegraphics[width=0.85\textwidth]{DAB.png}
 \end{center}
 \caption{Some typical curves for the Debye-Anderson-Brumberger model function} \label{fig:DABIq}
 \end{figure}
@@ -200,14 +425,15 @@ I(q) = I_0 \frac{1}{\left[1+(q\xi)^2\right]^2}
 \label{sect:gDAB}~\\
 The Debye-Anderson-Brumberger(DAB) model from the previous section \ref{sect:DAB} can be considered as a special case from a more general correlation function describing self-affine random density distributions \cite{Klimes2002,Hunter2006,Andersson2008}
 \begin{align}
-\gamma(r) &=
-\frac{2}{\Gamma(H)}\left(\frac{r}{2a}\right)^H K_H\left(\frac{r}{a}\right)
+\gamma_0(r) &=
+\frac{2}{\Gamma(H)}\left(\frac{r}{2\xi}\right)^H K_H\left(\frac{r}{\xi}\right) \\
+\tilde{\gamma}(r) &= \gamma_0(r) \Delta\eta^2 \int_0^\infty \gamma_0(r) 4\pi r^2 \mathrm{d}r = \frac{8\xi^3\pi^{3/2}\Gamma(3/2+H)\Delta\eta^2}{\Gamma(H)}\gamma_0(r)
 \end{align}
 where $K_n(x)$ is the modified Bessel function of the second kind
 and $\Gamma$ is the Gamma function. $H$ is the so-called Hurst
-exponent with typical valuse around $\frac12$. For $H=\frac12$ the gDAB-model results into the DAB model describes in section \ref{sect:DAB}. The scattering intensity is implemented as
+exponent with typical value around $\frac12$. For $H=\frac12$ the gDAB-model results into the DAB model describes in section \ref{sect:DAB}. The scattering intensity is implemented as
 \begin{align}
-I(q) =  \frac{\left(\Delta\eta 4\pi(1+2H)\xi^3\right)^2}{\left[1+(q\xi)^2\right]^{\frac32+H}}
+I(q) =  \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\Gamma^2(H)\left[1+(q\xi)^2\right]^{\frac32+H}}
 \end{align}
 
 
@@ -226,7 +452,7 @@ I(q) =  \frac{\left(\Delta\eta 4\pi(1+2H)\xi^3\right)^2}{\left[1+(q\xi)^2\right]
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{../images/form_factor/nonparticular/gDAB.png}
+\includegraphics[width=0.85\textwidth]{../images/form_factor/nonparticular/gDAB.png}
 \end{center}
 \caption{Some typical curves for the generalized Debye-Anderson-Brumberger model function} \label{fig:gDABIq}
 \end{figure}
@@ -240,7 +466,7 @@ I(q) =  \frac{\left(\Delta\eta 4\pi(1+2H)\xi^3\right)^2}{\left[1+(q\xi)^2\right]
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.648\textwidth,height=0.345\textwidth]{spinodal2.png}
+\includegraphics[width=0.648\textwidth]{spinodal2.png}
 \end{center}
 \caption{Schematic representation of a phase separation scheme
 resulting in a connected globule structure.} \label{Spinodal}
@@ -277,7 +503,7 @@ the dimensionality of the system.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{spinodalIQ.png}
+\includegraphics[width=0.85\textwidth]{spinodalIQ.png}
 \end{center}
 \caption{} \label{fig:spinodalIQ}
 \end{figure}
@@ -307,7 +533,7 @@ low-$Q$ limit of this emical form reproduces the Guinier law.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{OrnsteinZernicke.png}
+\includegraphics[width=0.85\textwidth]{OrnsteinZernicke.png}
 \end{center}
 \caption{Ornstein-Zernike Scattering intensity $I(q)$ for different
 correlation lengths $\xi$} \label{fig:OrnsteinZernicke}
@@ -348,7 +574,7 @@ polyelectrolytes, multiphase systems, layered structures, etc.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{BroadPeak.png}
+\includegraphics[width=0.85\textwidth]{BroadPeak.png}
 \end{center}
 \caption{Empirical form factor of Broad-Peak} \label{fig:BroadPeakIq}
 \end{figure}
@@ -359,7 +585,7 @@ polyelectrolytes, multiphase systems, layered structures, etc.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.75\textwidth,height=0.25\textwidth]{generalizedGuinier_q.png}
+\includegraphics[width=0.75\textwidth]{generalizedGuinier_q.png}
 \end{center}
 \caption{generalized Guinier approximation}
 \end{figure}
@@ -426,7 +652,7 @@ per unit area per unit mass (cm$^2$ \AA$^{-2}$ g$^{-1}$) of a sheet.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{generalizedGuinierIq.png}
+\includegraphics[width=0.85\textwidth]{generalizedGuinierIq.png}
 \end{center}
 \caption{generalized Guinier law} \label{fig:generalizedGuinierIq}
 \end{figure}
@@ -477,7 +703,7 @@ The constrains for the parameters are $R_{g2}>R_{g1}$, $3>s_1>s_2$, and $m>s_1$.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.6\textwidth]{GuinierPorodIQ.png}
+\includegraphics[width=0.85\textwidth]{GuinierPorodIQ.png}
 \end{center}
 \caption{some examples showing the behaviour of the generalized Guinier-Porod law} \label{fig:GuinierPorodIQ}
 \end{figure} 

@@ -70,12 +70,12 @@ scalar sasfit_ff_tetrahedrondoubleshell(scalar q, sasfit_param * param)
 		{
 			if (q*R[i][j] <= 0)
 			{
-			    if (i<NN) ftmp1=ftmp1+A;
-				if (i<NN+1) ftmp2=ftmp2+A;
+			    if (i<NN   && j < NN  ) ftmp1=ftmp1+A;
+				if (i<NN+1 && j < NN+1) ftmp2=ftmp2+A;
 			} else
 			{
-				if (i<NN) ftmp1 = ftmp1+A*sin(q*R[i][j])/(q*R[i][j]);
-				if (i<NN+1) ftmp2 = ftmp2+A*sin(q*R[i][j])/(q*R[i][j]);
+				if (i<NN   && j < NN  ) ftmp1 = ftmp1+A*sin(q*R[i][j])/(q*R[i][j]);
+				if (i<NN+1 && j < NN+1) ftmp2 = ftmp2+A*sin(q*R[i][j])/(q*R[i][j]);
 			}
 		}
 	}

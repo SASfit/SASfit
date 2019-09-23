@@ -7046,7 +7046,7 @@ proc build_param_gui { type actual_ap globalfit } {
 			set arrow_cmd_down "btn_cmd_global $type $p $i down"
 			set fit_cmd "fit_cmd_global $type $p $i"
 		} else {
-			bind  $entrypath <KeyPress-Return> { .analytical.adj.calc invoke }
+#			bind  $entrypath <KeyPress-Return> { .analytical.adj.calc invoke }
 			set arrow_cmd_up "btn_up_command $type $p $i"
 			set arrow_cmd_down "btn_down_command $type $p $i"
 			set fit_cmd "fit_command $type $p $i"
@@ -7630,7 +7630,15 @@ eval checkbutton $w.whichSD.fitcalc.substr "-offvalue no -onvalue yes \
 -command {
 	set_actualAP ::actualAnalytPar
       } -highlightthickness 0"
+eval checkbutton $w.whichSD.fitcalc.reset_busy "-offvalue false -onvalue true \
+-variable ::sasfit(busy) $::radio_check_button_prop \
+-text \"busy\" \
+-command {
+	set ::sasfit(busy) false
+      } -highlightthickness 0"	  
+	  
 grid configure $w.whichSD.fitcalc.fit    -column 0 -row 0 -sticky w
+grid configure $w.whichSD.fitcalc.reset_busy   -column 1 -row 0 -sticky w
 grid configure $w.whichSD.fitcalc.calc   -column 0 -row 1 -sticky w
 grid configure $w.whichSD.fitcalc.substr -column 1 -row 1 -sticky w
 

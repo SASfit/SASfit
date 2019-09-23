@@ -55,6 +55,14 @@ OZ_func_one_t U_LR_DLVO;
 OZ_func_one_t U_R_DLVO;
 OZ_func_one_t U_A_DLVO;
 
+OZ_func_one_t U_DLVO_Hydra;
+OZ_func_one_t U_Ref_DLVO_Hydra;
+OZ_func_one_t U_Pert_DLVO_Hydra;
+OZ_func_one_t U_SR_DLVO_Hydra;
+OZ_func_one_t U_LR_DLVO_Hydra;
+OZ_func_one_t U_R_DLVO_Hydra;
+OZ_func_one_t U_A_DLVO_Hydra;
+
 OZ_func_one_t U_ZERO;
 OZ_func_one_t U_Star1;
 OZ_func_one_t U_Star2;

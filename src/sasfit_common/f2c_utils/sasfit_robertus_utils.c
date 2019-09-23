@@ -42,12 +42,12 @@ int lambda_mn_f(const gsl_vector * x, void * params, gsl_vector * f);
 
 doublereal fshell_(doublereal * delrh1, doublereal * delrh2, doublereal * r__, doublereal * d__, doublereal * q);
 doublereal flinsphere_(doublereal * delrho, doublereal * r__, doublereal * d__, doublereal * q);
-doublereal form_factor__(integer * iform, 
-			doublereal * q_vector__, 
-			doublereal * radius, 
-			integer * nrho, 
-			doublereal * rho, 
-			integer * nlayer, 
+doublereal form_factor__(integer * iform,
+			doublereal * q_vector__,
+			doublereal * radius,
+			integer * nrho,
+			doublereal * rho,
+			integer * nlayer,
 			doublereal * dlayer);
 doublereal fsphere_(doublereal * delrho, doublereal * r__, doublereal * q);
 doublereal agetval_(doublereal * bl, doublereal * bh);
@@ -161,11 +161,11 @@ int sasfit_robertus_calc(sasfit_param * param, doublereal * rm, doublereal * sig
 			gsl_iter++;
 			gsl_status = gsl_multiroot_fsolver_iterate (gsl_s);
 			if (gsl_status)   {/* check if solver is stuck */
-				if (gsl_status == GSL_EBADFUNC ) 
+				if (gsl_status == GSL_EBADFUNC )
 				{
 					sasfit_param_set_err(param, DBGINFO("the iteration encountered a singular point where the function or its derivative evaluated to Inf or NaN."));
 				}
-				if (gsl_status == GSL_ENOPROG ) 
+				if (gsl_status == GSL_ENOPROG )
 				{
 					sasfit_param_set_err(param, DBGINFO("the iteration is not making any progress, preventing the algorithm from continuing."));
 				}
@@ -176,15 +176,15 @@ int sasfit_robertus_calc(sasfit_param * param, doublereal * rm, doublereal * sig
 		while (gsl_status == GSL_CONTINUE && gsl_iter < 500);
 
 /*
-		if ((gsl_status == GSL_ENOPROG) || (gsl_status == GSL_EBADFUNC) || (gsl_iter >= 1000)) 
+		if ((gsl_status == GSL_ENOPROG) || (gsl_status == GSL_EBADFUNC) || (gsl_iter >= 1000))
 		{
-			 if (gsl_iter >= 1000) 
+			 if (gsl_iter >= 1000)
 			 {
 				 sasfit_param_set_err(param, DBGINFO("solution for nonlinear equation (using gsl multi-root finder) in the initialization routine calc is poor (sum_i |f_i| > 1e-4)"));
 			 }
 		}
 */
-		for (i__ = 1; i__ <= i__1; ++i__) 
+		for (i__ = 1; i__ <= i__1; ++i__)
 		{
 			ve_1.x[i__ - 1] = (doublereal) gsl_vector_get(gsl_x,i__ - 1);
 		}
@@ -193,7 +193,7 @@ int sasfit_robertus_calc(sasfit_param * param, doublereal * rm, doublereal * sig
 		return 0;
 	}
 	return 0;
-} 
+}
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 int sasfit_robertus_deal(doublereal *rm, doublereal *sig, doublereal *phi, logical *labdas)
@@ -258,10 +258,10 @@ int set_tau__()
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ++*/
-/* PURPOSE: Set values for the stickyness parameter tau. This may be done 
+/* PURPOSE: Set values for the stickyness parameter tau. This may be done
 */
 /*          two ways. */
-/*       1: through curious function relating the particle diameters to a 
+/*       1: through curious function relating the particle diameters to a
 */
 /*          stickyness */
 /*   or  2: by reading data from a file. (Code is COMMENTED away) */
@@ -304,15 +304,15 @@ int set_tau__()
     i__1 = _BLNK__1.p;
     for (i__ = 1; i__ <= i__1; ++i__) {
 /* L20: */
-	_BLNK__1.tau[inx_(&i__, &i__) - 1] = _BLNK__1.btau * (2. / 
-		_BLNK__1.pi * atan(_BLNK__1.atau * (pa_1.r__[i__ - 1] - rm)) 
+	_BLNK__1.tau[inx_(&i__, &i__) - 1] = _BLNK__1.btau * (2. /
+		_BLNK__1.pi * atan(_BLNK__1.atau * (pa_1.r__[i__ - 1] - rm))
 		+ 1.);
     }
     i__1 = _BLNK__1.p;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = _BLNK__1.p;
 	for (j = 1; j <= i__2; ++j) {
-	    _BLNK__1.tau[inx_(&i__, &j) - 1] = (_BLNK__1.tau[inx_(&i__, &i__) 
+	    _BLNK__1.tau[inx_(&i__, &j) - 1] = (_BLNK__1.tau[inx_(&i__, &i__)
 		    - 1] + _BLNK__1.tau[inx_(&j, &j) - 1]) * .5;
 /* L40: */
 	}
@@ -354,7 +354,7 @@ int set_tau__()
 /* L1010: */
 /* L1020: */
 /* L1040: */
-} 
+}
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 int setconst_(logical * labdas)
@@ -437,17 +437,17 @@ int setconst_(logical * labdas)
 	som = 0.;
 	i__2 = _BLNK__1.p;
 	for (j = 1; j <= i__2; ++j) {
-	    som += pa_1.x[j - 1] * ve_2.la[inx_(&i__, &j) - 1] * ri_1.r2[i__ 
+	    som += pa_1.x[j - 1] * ve_2.la[inx_(&i__, &j) - 1] * ri_1.r2[i__
 		    + j * 20 - 21] * pa_1.r__[j - 1];
 /* L350: */
 	}
-	b0 = pa_1.r__[i__ - 1] * 3. * fu_1.k2 / fu_1.h2 - fu_1.pi6 * som / 
+	b0 = pa_1.r__[i__ - 1] * 3. * fu_1.k2 / fu_1.h2 - fu_1.pi6 * som /
 		fu_1.h__;
 	be_1.b[i__ - 1] = b0 * -.5 * pa_1.r__[i__ - 1];
 /* L400: */
     }
     return 0;
-} 
+}
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 int schultz_(doublereal * x0, doublereal * rmean, doublereal * sig)
@@ -534,9 +534,9 @@ int schultz_(doublereal * x0, doublereal * rmean, doublereal * sig)
 	    d__2 = zp, d__3 = d__2;
 /* Computing 4th power */
 	    d__4 = zp, d__4 *= d__4;
-	    fac = sqrt(zp / 2. / _BLNK__1.pi) / rm / (.083333333333333329 / 
-		    zp + 1. + .003472222222222222 / (d__1 * d__1) - 
-		    .0026813271604938273 / (d__3 * (d__2 * d__2)) - 
+	    fac = sqrt(zp / 2. / _BLNK__1.pi) / rm / (.083333333333333329 /
+		    zp + 1. + .003472222222222222 / (d__1 * d__1) -
+		    .0026813271604938273 / (d__3 * (d__2 * d__2)) -
 		    2.2947209362139917e-4 / (d__4 * d__4));
 /* approximation of Gamma function for large arguments */
 /*        Zie Handbook of Chemistry and Physics, Gamma function */
@@ -580,7 +580,7 @@ int schultz_(doublereal * x0, doublereal * rmean, doublereal * sig)
 	return 0;
     }
     return 0; // what should the function return here ?
-} 
+}
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 doublereal sch_(doublereal *r__, doublereal *fac, doublereal *rm, doublereal *z__)
@@ -611,7 +611,7 @@ doublereal sch_(doublereal *r__, doublereal *fac, doublereal *rm, doublereal *z_
     rf = *r__ / *rm;
     ret_val = *fac * exp(*z__ * log(rf) + (*z__ + 1.) * (1. - rf));
     return ret_val;
-} 
+}
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 doublereal fksi_(n)
@@ -653,7 +653,7 @@ integer *n;
     }
     ret_val = ret_val * _BLNK__1.pi / 6.;
     return ret_val;
-} 
+}
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 int fcn_(real *xla, real *f, integer *n, real *par)
@@ -711,7 +711,7 @@ int fcn_(real *xla, real *f, integer *n, real *par)
 /* L100: */
 	}
 	xc[i__ - 1] = som * fu_1.pi6;
-	b0 = pa_1.r__[i__ - 1] * 3. * fu_1.k2 / fu_1.h2 - xc[i__ - 1] / 
+	b0 = pa_1.r__[i__ - 1] * 3. * fu_1.k2 / fu_1.h2 - xc[i__ - 1] /
 		fu_1.h__;
 	a[i__ - 1] = 1. / fu_1.h__ + b0;
 	be_1.b[i__ - 1] = b0 * -.5 * pa_1.r__[i__ - 1];
@@ -735,16 +735,16 @@ int fcn_(real *xla, real *f, integer *n, real *par)
 	    som = 0.;
 	    i__3 = _BLNK__1.p;
 	    for (k = 1; k <= i__3; ++k) {
-		som += pa_1.x[k - 1] * (doublereal) xla[inx_(&j, &k)] * 
-			ri_1.r2[j + k * 20 - 21] / ri_1.r1[i__ + j * 20 - 21] 
-			* (a[i__ - 1] * -.5 * ri_1.rr[i__ + k * 20 - 21] - 
+		som += pa_1.x[k - 1] * (doublereal) xla[inx_(&j, &k)] *
+			ri_1.r2[j + k * 20 - 21] / ri_1.r1[i__ + j * 20 - 21]
+			* (a[i__ - 1] * -.5 * ri_1.rr[i__ + k * 20 - 21] -
 			be_1.b[i__ - 1] * pa_1.r__[k - 1] + (doublereal) xla[
 			inx_(&i__, &k)] * ri_1.r2[i__ + k * 20 - 21] / 12.);
 /* L300: */
 	    }
 	    ++iq;
-	    f[iq] = (real) (som * fu_1.pi6 + be_1.b[i__ - 1] / ri_1.r1[i__ + 
-		    j * 20 - 21] + a[i__ - 1] - _BLNK__1.tau[inx_(&i__, &j) - 
+	    f[iq] = (real) (som * fu_1.pi6 + be_1.b[i__ - 1] / ri_1.r1[i__ +
+		    j * 20 - 21] + a[i__ - 1] - _BLNK__1.tau[inx_(&i__, &j) -
 		    1] * (doublereal) xla[inx_(&i__, &j)]);
 /* L400: */
 	}
@@ -763,7 +763,7 @@ int fcn_(real *xla, real *f, integer *n, real *par)
 /* 1003 format('$Equations : ') */
 /* 1004 format('$labdas : ',i4) */
     return 0;
-} 
+}
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 integer inx_(integer * i__, integer * j)
@@ -773,7 +773,7 @@ integer inx_(integer * i__, integer * j)
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ++*/
-/*     Because ZSPOW insists an array of variables while labda really is 
+/*     Because ZSPOW insists an array of variables while labda really is
 */
 /*     a matrix inx simulates a pxp-matrix. */
 /*     The array v contains offsets - symmetry in maintained. */
@@ -849,17 +849,17 @@ int lambda_mn_f(const gsl_vector * x, void * params, gsl_vector * f)
   real xal[120];
   real FCNres[120];
   integer n;
-  int i; 
+  int i;
 
-  
+
   n = x->size;
 
   for (i=0;i<n;i++) {
-	  xal[i] = (real) gsl_vector_get(x,i); 
+	  xal[i] = (real) gsl_vector_get(x,i);
   }
   fcn_(xal,FCNres,&n,params);
   for (i=0;i<n;i++) {
-	  gsl_vector_set(f,i, (double) FCNres[i]); 
+	  gsl_vector_set(f,i, (double) FCNres[i]);
   }
   return GSL_SUCCESS;
 }
@@ -997,7 +997,7 @@ int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai
 
 /* !! NOTE !! in principle different particle electron density profiles */
 /* can be introduced through the function 'form_factor'. Caution should */
-/* be taken here as strange results may be introduced. (negative overall 
+/* be taken here as strange results may be introduced. (negative overall
 */
 /* particle radii) */
 /* For homogenous particles IFORM=1 (and dlayer(i) = 0 and dzeep=0) */
@@ -1019,7 +1019,7 @@ int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai
 /*=======================================================================
 ==*/
     *aint0 = (float)0.;
-    if (*q < (float)1e-4) {
+    if (*q < (float)1e-4*0) {
 	p43 = _BLNK__1.pi * 4. / 3.;
 	i__1 = _BLNK__1.p;
 	for (i__ = 1; i__ <= i__1; ++i__) {
@@ -1034,10 +1034,10 @@ int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai
     } else {
 	i__1 = _BLNK__1.p;
 	for (i__ = 1; i__ <= i__1; ++i__) {
-	    d__1 = pa_1.r__[i__ - 1] * .5 - deeltje_1.dzeep - 
+	    d__1 = pa_1.r__[i__ - 1] * .5 - deeltje_1.dzeep -
 		    deeltje_1.dlayer[0];
 	    a[i__ - 1] = form_factor__(&deeltje_1.iform, q, &d__1, &
-		    deeltje_1.nrho, deeltje_1.rho, &deeltje_1.nlayer, 
+		    deeltje_1.nrho, deeltje_1.rho, &deeltje_1.nlayer,
 		    deeltje_1.dlayer);
 /* Computing 2nd power */
 	    d__1 = a[i__ - 1];
@@ -1046,15 +1046,15 @@ int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai
 	}
     }
 	struct_(q, s, &ifail);
-	if (ifail != 0) 
+	if (ifail != 0)
 	{
-		if (ifail == 1) 
+		if (ifail == 1)
 		{
 			sasfit_param_set_err(param, DBGINFO("$SNAG: Complex diagonal.\n$Intens Abort - You lose."));
 			s_wsfe(&io___20);
 			do_fio(&c__1, "$SNAG: Complex diagonal.", 24L);
 			e_wsfe();
-		} else if (ifail == 2) 
+		} else if (ifail == 2)
 		{
 			sasfit_param_set_err(param, DBGINFO("$SNAG: QQ+ is not pos. def.\n$Intens Abort - You lose."));
 			s_wsfe(&io___21);
@@ -1174,21 +1174,21 @@ int qik_(doublereal * q, doublecomplex * qq)
 /* Computing 3rd power */
 	    d__7 = pa_1.r__[k - 1], d__8 = d__7;
 	    d__2 = ve_2.la[inx_(&i__, &k) - 1] * -.25 * pa_1.r__[k - 1] * (
-		    d__3 * d__3) * vrpsi[k - 1] + d__5 * (d__4 * d__4) / 
-		    fu_1.h__ * vrphi[k - 1] + d__6 * d__6 * pa_1.r__[i__ - 1] 
-		    / fu_1.h__ * 3. * vrpsi[k - 1] - d__8 * (d__7 * d__7) * 
+		    d__3 * d__3) * vrpsi[k - 1] + d__5 * (d__4 * d__4) /
+		    fu_1.h__ * vrphi[k - 1] + d__6 * d__6 * pa_1.r__[i__ - 1]
+		    / fu_1.h__ * 3. * vrpsi[k - 1] - d__8 * (d__7 * d__7) *
 		    be_1.b[i__ - 1] / pa_1.r__[i__ - 1] * 2. * vrphi[k - 1];
 /* Computing 2nd power */
 	    d__10 = pa_1.r__[k - 1];
-	    d__9 = -pa_1.r__[i__ - 1] * (d__10 * d__10) / fu_1.h__ * vrx[k - 
+	    d__9 = -pa_1.r__[i__ - 1] * (d__10 * d__10) / fu_1.h__ * vrx[k -
 		    1] * vrphi[k - 1];
 	    z__4.r = d__2, z__4.i = d__9;
-	    z__2.r = z__3.r * z__4.r - z__3.i * z__4.i, z__2.i = z__3.r * 
+	    z__2.r = z__3.r * z__4.r - z__3.i * z__4.i, z__2.i = z__3.r *
 		    z__4.i + z__3.i * z__4.r;
 	    i__4 = i__ - 1;
 	    i__5 = i__ - 1;
 	    z__5.r = cq[i__4], z__5.i = sq[i__5];
-	    z__1.r = z__2.r * z__5.r - z__2.i * z__5.i, z__1.i = z__2.r * 
+	    z__1.r = z__2.r * z__5.r - z__2.i * z__5.i, z__1.i = z__2.r *
 		    z__5.i + z__2.i * z__5.r;
 	    qq[i__3].r = z__1.r, qq[i__3].i = z__1.i;
 
@@ -1304,7 +1304,7 @@ L10:
 	goto L10;
     }
     return ret_val;
-} 
+}
 
 doublereal fsphere_(doublereal * delrho, doublereal * r__, doublereal * q)
 {
@@ -1332,18 +1332,18 @@ doublereal fsphere_(doublereal * delrho, doublereal * r__, doublereal * q)
 		q);
     }
     return ret_val;
-} 
+}
 
-doublereal form_factor__(integer * iform, 
-			doublereal * q_vector__, 
-			doublereal * radius, 
-			integer * nrho, 
-			doublereal * rho, 
-			integer * nlayer, 
+doublereal form_factor__(integer * iform,
+			doublereal * q_vector__,
+			doublereal * radius,
+			integer * nrho,
+			doublereal * rho,
+			integer * nlayer,
 			doublereal * dlayer)
 {
     /* System generated locals */
-    doublereal ret_val, d__1, d__2, d__3, d__4, d__5, d__6, d__7, d__8, d__9, 
+    doublereal ret_val, d__1, d__2, d__3, d__4, d__5, d__6, d__7, d__8, d__9,
 	    d__10;
 	doublereal Q,r,Dr;
 
@@ -1441,7 +1441,7 @@ doublereal form_factor__(integer * iform,
 	d__1 = *radius, d__2 = d__1;
 /* Computing 3rd power */
 	d__3 = *radius + dlayer[1], d__4 = d__3;
-	yzero = d__2 * (d__1 * d__1) * (rho[1] - rho[2]) + d__4 * (d__3 * 
+	yzero = d__2 * (d__1 * d__1) * (rho[1] - rho[2]) + d__4 * (d__3 *
 		d__3) * (rho[2] - rho[3]);
     } else if (*iform == 4) {
 	d__1 = rho[2] - rho[3];
@@ -1460,8 +1460,8 @@ doublereal form_factor__(integer * iform,
 	d__7 = *radius, d__8 = d__7;
 	yzero = (rho[1] - rho[2]) * (d__2 * (d__1 * d__1)) + (rho[2] - rho[3])
 		 * pow_dd(radius, &c_b85) * (rho[2] - rho[3]) / dlayer[1] * (
-		d__3 * d__3 - d__4 * d__4) + (rho[2] - *radius * (rho[2] - 
-		rho[3]) / dlayer[1]) * (d__6 * (d__5 * d__5) - d__8 * (d__7 * 
+		d__3 * d__3 - d__4 * d__4) + (rho[2] - *radius * (rho[2] -
+		rho[3]) / dlayer[1]) * (d__6 * (d__5 * d__5) - d__8 * (d__7 *
 		d__7));
     } else if (*iform == 5) {
 	d__1 = rho[1] - rho[2];
@@ -1520,7 +1520,7 @@ doublereal form_factor__(integer * iform,
 	d__3 = *radius + dlayer[1];
 	d__4 = rho[3] - rho[4];
 	d__5 = *radius + dlayer[1] + dlayer[2];
-	y = fsphere_(&d__1, radius, q_vector__) + fsphere_(&d__2, &d__3, 
+	y = fsphere_(&d__1, radius, q_vector__) + fsphere_(&d__2, &d__3,
 		q_vector__) + fsphere_(&d__4, &d__5, q_vector__);
 /* Computing 3rd power */
 	d__1 = *radius, d__2 = d__1;
@@ -1529,13 +1529,13 @@ doublereal form_factor__(integer * iform,
 /* Computing 3rd power */
 	d__5 = *radius + dlayer[1] + dlayer[2], d__6 = d__5;
 	yzero = (rho[1] - rho[2]) * (d__2 * (d__1 * d__1)) + (rho[2] - rho[3])
-		 * (d__4 * (d__3 * d__3)) + (rho[3] - rho[4]) * (d__6 * (d__5 
+		 * (d__4 * (d__3 * d__3)) + (rho[3] - rho[4]) * (d__6 * (d__5
 		* d__5));
     }
     ret_val = y;
 /*      FORM_FACTOR = Y / YZERO / PPI */
     return ret_val;
-} 
+}
 
 doublereal flinsphere_(doublereal * delrho, doublereal * r__, doublereal * d__, doublereal * q)
 {
@@ -1548,7 +1548,7 @@ doublereal flinsphere_(doublereal * delrho, doublereal * r__, doublereal * d__, 
     /* Local variables */
     static doublereal x, y, pi;
 
-/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 */
 /*        IMPLICIT NONE */
 /* FUNCTION CALCULATES THE SCATTERED AMPLITUDE FROM A HOMOGENEOUS */
@@ -1558,7 +1558,7 @@ doublereal flinsphere_(doublereal * delrho, doublereal * r__, doublereal * d__, 
     pi = atan(1.) * 4.;
     x = *r__ * *q;
     y = (*r__ + *d__) * *q;
-    ret_val = pi * 4. * *delrho / (*q * *q * *q) * (((cos(y) - cos(x)) * 2. - 
+    ret_val = pi * 4. * *delrho / (*q * *q * *q) * (((cos(y) - cos(x)) * 2. -
 	    x * sin(x) + y * sin(y)) / (x - y));
     return ret_val;
 } /* flinsphere_ */
@@ -1581,7 +1581,7 @@ doublereal fshell_(doublereal * delrh1, doublereal * delrh2, doublereal * r__, d
     d__1 = *r__ + *d__;
     ret_val = fsphere_(delrh1, r__, q) + fsphere_(delrh2, &d__1, q);
     return ret_val;
-} 
+}
 
 
 /* THIS ROUTINE NOW WORKS IN DOUBLE PRECISION !!!! */
@@ -1840,7 +1840,7 @@ int d_leqt1c__(doublecomplex * a, integer * n, integer * ia, doublecomplex * b, 
 	if (jm1 < 1) {
 	    goto L25;
 	}
-/*                                 COMPUTE U(I,J), I=1,...,J-1        
+/*                                 COMPUTE U(I,J), I=1,...,J-1
   LE1C1210*/
 	i__2 = jm1;
 	for (i__ = 1; i__ <= i__2; ++i__) {
@@ -1854,7 +1854,7 @@ int d_leqt1c__(doublecomplex * a, integer * n, integer * ia, doublecomplex * b, 
 	    for (k = 1; k <= i__3; ++k) {
 		i__4 = i__ + k * a_dim1;
 		i__5 = k + j * a_dim1;
-		z__2.r = a[i__4].r * a[i__5].r - a[i__4].i * a[i__5].i, 
+		z__2.r = a[i__4].r * a[i__5].r - a[i__4].i * a[i__5].i,
 			z__2.i = a[i__4].r * a[i__5].i + a[i__4].i * a[i__5]
 			.r;
 		z__1.r = sum->r - z__2.r, z__1.i = sum->i - z__2.i;
@@ -1881,7 +1881,7 @@ L25:
 	    for (k = 1; k <= i__3; ++k) {
 		i__4 = i__ + k * a_dim1;
 		i__5 = k + j * a_dim1;
-		z__2.r = a[i__4].r * a[i__5].r - a[i__4].i * a[i__5].i, 
+		z__2.r = a[i__4].r * a[i__5].r - a[i__4].i * a[i__5].i,
 			z__2.i = a[i__4].r * a[i__5].i + a[i__4].i * a[i__5]
 			.r;
 		z__1.r = sum->r - z__2.r, z__1.i = sum->i - z__2.i;
@@ -1900,7 +1900,7 @@ L40:
 L45:
 	    ;
 	}
-/*                                 TEST FOR ALGORITHMIC SINGULARITY   
+/*                                 TEST FOR ALGORITHMIC SINGULARITY
   LE1C1450*/
 	q = rn + p;
 	if (q == rn) {
@@ -1909,7 +1909,7 @@ L45:
 	if (j == imax) {
 	    goto L60;
 	}
-/*                                 INTERCHANGE ROWS J AND IMAX        
+/*                                 INTERCHANGE ROWS J AND IMAX
   LE1C1490*/
 	i__2 = *n;
 	for (k = 1; k <= i__2; ++k) {
@@ -1929,7 +1929,7 @@ L60:
 	if (jp1 > *n) {
 	    goto L70;
 	}
-/*                                 DIVIDE BY PIVOT ELEMENT U(J,J)     
+/*                                 DIVIDE BY PIVOT ELEMENT U(J,J)
   LE1C1590*/
 	i__2 = j + j * a_dim1;
 	temp.r = a[i__2].r, temp.i = a[i__2].i;
@@ -1949,7 +1949,7 @@ L75:
     }
     i__1 = *m;
     for (k = 1; k <= i__1; ++k) {
-/*                                 SOLVE UX = Y FOR X                 
+/*                                 SOLVE UX = Y FOR X
   LE1C1670*/
 	iw = 0;
 	i__2 = *n;
@@ -1968,7 +1968,7 @@ L75:
 	    for (j = iw; j <= i__3; ++j) {
 		i__4 = i__ + j * a_dim1;
 		i__5 = j + k * b_dim1;
-		z__2.r = a[i__4].r * b[i__5].r - a[i__4].i * b[i__5].i, 
+		z__2.r = a[i__4].r * b[i__5].r - a[i__4].i * b[i__5].i,
 			z__2.i = a[i__4].r * b[i__5].i + a[i__4].i * b[i__5]
 			.r;
 		z__1.r = sum->r - z__2.r, z__1.i = sum->i - z__2.i;
@@ -1985,7 +1985,7 @@ L88:
 	    b[i__3].r = sum->r, b[i__3].i = sum->i;
 /* L90: */
 	}
-/*                                 SOLVE LY = B FOR Y                 
+/*                                 SOLVE LY = B FOR Y
   LE1C1820*/
 	n1 = *n + 1;
 	i__2 = *n;
@@ -2001,7 +2001,7 @@ L88:
 	    for (j = jp1; j <= i__3; ++j) {
 		i__4 = i__ + j * a_dim1;
 		i__5 = j + k * b_dim1;
-		z__2.r = a[i__4].r * b[i__5].r - a[i__4].i * b[i__5].i, 
+		z__2.r = a[i__4].r * b[i__5].r - a[i__4].i * b[i__5].i,
 			z__2.i = a[i__4].r * b[i__5].i + a[i__4].i * b[i__5]
 			.r;
 		z__1.r = sum->r - z__2.r, z__1.i = sum->i - z__2.i;

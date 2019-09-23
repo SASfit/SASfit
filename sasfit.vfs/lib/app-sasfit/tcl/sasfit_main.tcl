@@ -415,7 +415,19 @@ set FitPrecision(Robertus_p)      9
 set FitPrecision(iter_4_MC)       1000
 set FitPrecision(int)             no
 
-global FitPrecision
+set EMOptions(IterationScheme) "Picard iteration"
+set EMOptions(spacing) lin
+set EMOptions(smooth) 1e-4
+set EMOptions(smooth_type) double
+set EMOptions(seed) constant
+set EMOptions(Rmax) 1000
+set EMOptions(nR) 100
+set EMOptions(maxit) 50000
+set EMOptions(eps) 1e-10
+set EMOptions(chi2) 1.0
+set EMOptions(dim) 3
+
+global FitPrecision EMOptions
 
 
 set OZ(plugin_fct_names) {"SQ oz 1" 	"SQ oz 2" 	"SQ oz 3" \

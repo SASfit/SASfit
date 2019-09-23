@@ -11,6 +11,7 @@
 #define DUMMY1 param->p[1]
 #define DUMMY2 param->p[2]
 #define ETA	param->p[3]
+#define FLAG_G0_ONLY param->p[MAXPAR-1]
 scalar sasfit_ff_gz_sphere(scalar z, sasfit_param * param)
 {
 	scalar xi,xi2,Gz,G0;
@@ -34,7 +35,7 @@ scalar sasfit_ff_gz_sphere_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return 2*M_PI*gsl_pow_4(R)*ETA*ETA;
 }
 
 scalar sasfit_ff_gz_sphere_v(scalar q, sasfit_param * param, int dist)

@@ -15,7 +15,7 @@ result is described with the help of a cross-section.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.9\textwidth,height=0.45\textwidth]{EwaldSphereTeX.png}
+\includegraphics[width=0.9\textwidth]{EwaldSphereTeX.png}
 \end{center}
 \caption{Schematic representation of a scattering process}
 \label{scatt2}
@@ -366,7 +366,7 @@ f'(E) = \frac{2}{\pi}\, \int_0^{\infty} dE'\,
 \EE
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.7441\textwidth,height=0.7858\textwidth]{FEFPFPP.png}
+\includegraphics[width=0.7441\textwidth]{FEFPFPP.png}
 \caption{Energy dependence of the real and imaginary part of the scattering length of iron:
 $Z_{\rm Fe}+ f'_{\rm Fe}(E)$ and $f''_{\rm Fe}(E)$ ($Z_{\rm Fe}=26$)}
 \label{fpfppsketch}
@@ -935,13 +935,13 @@ or also in a size ditsribution.
 \subfigure[The influence of irregular particle shapes on
 $\vert\overline{F(Q)}\vert^2 / \overline{\abs{F(Q)}^2}$ is shown for an example
 of random orientated rotational ellipsoids with the half axis $R$, $R$, $\nu R$
-for $\nu$ = 1, 0.1, and 1.3.]{\includegraphics[width=0.48\textwidth,height=0.6\textwidth]{FORMINTE.png}}
+for $\nu$ = 1, 0.1, and 1.3.]{\includegraphics[width=0.48\textwidth]{FORMINTE.png}}
 \hfill
 \subfigure[Influence of a particle size distribution
  ${\rm LogNorm}(R) = \exp\left(-(\ln\mu-\ln R)^2 / (2 \sigma^2)\right)$ of
  the widths  $\sigma$ = 0.1, 0.2, 0.3, 0.4 for $\mu=5$ nm on
 $\vert\overline{F(Q)}\vert^2 / \overline{\abs{F(Q)}^2}$.
-]{\includegraphics[width=0.48\textwidth,height=0.6\textwidth]{SIZEINTE.png}} \\
+]{\includegraphics[width=0.48\textwidth]{SIZEINTE.png}} \\
 \caption{For identical and spherical symmetric scatterers the ratio
 $\vert\overline{F(Q)}\vert^2 / \overline{\abs{F(Q)}^2} \equiv 1$.
 Interparticle interferences depend then only on the relative positions of
@@ -1076,16 +1076,3 @@ for the specific surface $S/V$ of
 \EE
 The Porod law can be applied to all systems having sharp interfaces.
 
-\subsection{Multiple Scattering}
-\cite{Schelten1980,Jensen2018,Frielinghaus2018}
-For isotropic scatterer Schelten \& Schmatz \cite{Schelten1980} gave an expression for multiple scattering based on
-Hankel transform. Here the intermediate function is defined as the projected correlation function $\tilde{G}(r)$
-known in SESANS/SEMSANS and DF-Imaging with gratings is used
-\cite{Kohlbrecher2017} which scales with the one of  Schelten \& Schmatz by $\tilde{G}(r)=\exp(\tau)/(2\pi)^2 S(q)$,
-where $\tau=\Sigma t$ is the total scattering probability.  The multiple scattering intensity $I_m(q)$ then can
-be calculated from the single scattering intensity $I_1(q)$ by
-\begin{align}
-\tilde{G}(r) &= \frac{1}{2\pi} \int_0^\infty I_1(q) J_0(qr) q \, \mathrm{d}q \\
-\tilde{G}_m(r) &= \frac{1}{\lambda^2 t}\left\{\exp\left(\lambda^2 t \tilde{G}(r)\right)-1\right\}\\
-I_m(q) &= 2\pi \int_0^\infty \tilde{G}_m(r) J_0(qr) r \, \mathrm{d}r
-\end{align}

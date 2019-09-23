@@ -8,8 +8,8 @@
 
 // define shortcuts for local parameters/variables
 #define R	param->p[0]
-#define L	param->p[1]
-#define DUMMY	param->p[2]
+#define DUMMY	param->p[1]
+#define L	param->p[2]
 #define ETA	param->p[3]
 
 scalar sasfit_ff_porodcylinder(scalar q, sasfit_param * param)

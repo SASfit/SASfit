@@ -1,7 +1,7 @@
 /*
  * Author(s) of this file:
  *  by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   07.01.2017
+ *   07.04.2019
  */
 #include <sasfit_frida.h>
 

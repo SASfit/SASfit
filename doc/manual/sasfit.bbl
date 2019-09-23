@@ -115,6 +115,13 @@ A.~Bensafi, U.~Maschke, and M.~Benmouna.
 \newblock {\em Polymer International}, 49(2):175--183, feb 2000.
 \newblock \doi{10.1002/(sici)1097-0126(200002)49:2<175::aid-pi323>3.0.co;2-m}.
 
+\bibitem{Berk1991}
+N.~F. Berk.
+\newblock Scattering properties of the leveled-wave model of random
+  morphologies.
+\newblock {\em Physical Review A}, 44(8):5069--5079, oct 1991.
+\newblock \doi{10.1103/physreva.44.5069}.
+
 \bibitem{Berndt2006}
 I.~Berndt, J.~S. Pedersen, P.~Lindner, and W.~Richtering.
 \newblock Influence of shell thickness and cross-link density on the structure
@@ -300,6 +307,13 @@ I.~Charpentier and N.~Jakse.
   simple liquids using the tangent linear method.
 \newblock {\em The Journal of Chemical Physics}, 114(5):2284--2292, feb 2001.
 \newblock \doi{10.1063/1.1332808}.
+
+\bibitem{Chen1998}
+S.-H. Chen and S.~Choi.
+\newblock Mesoscopic scale structures in self-organized surfactant solutions
+  determined by small-angle neutron scattering.
+\newblock {\em Supramolecular Science}, 5(3-4):197--206, jul 1998.
+\newblock \doi{10.1016/s0968-5677(98)80001-1}.
 
 \bibitem{Chen2006}
 W.-R. Chen, P.~D. Butler, and L.~J. Magid.
@@ -608,6 +622,20 @@ O.~Glatter.
   electron density distribution by means of indirect {Fourier} transformation.
 \newblock {\em Acta Physica Austriaca}, 47:83--102, 1977.
 
+\bibitem{Gommes2018}
+C.~J. Gommes.
+\newblock Stochastic models of disordered mesoporous materials for small-angle
+  scattering analysis and more.
+\newblock {\em Microporous and Mesoporous Materials}, 257:62--78, feb 2018.
+\newblock \doi{10.1016/j.micromeso.2017.08.009}.
+
+\bibitem{Gommes2008}
+C.~J. Gommes and A.~P. Roberts.
+\newblock Structure development of resorcinol-formaldehyde gels: Microphase
+  separation or colloid aggregation.
+\newblock {\em Physical Review E}, 77(4), apr 2008.
+\newblock \doi{10.1103/physreve.77.041409}.
+
 \bibitem{Goosen2015}
 S.~Goo{\ss}en, A.~R. Br{\'{a}}s, W.~Pyckhout-Hintzen, A.~Wischnewski,
   D.~Richter, M.~Rubinstein, J.~Roovers, P.~J. Lutz, Y.~Jeong, T.~Chang, and
@@ -865,6 +893,13 @@ T.~Ida, M.~Ando, and H.~Toraya.
 \newblock {\em Journal of Applied Crystallography}, 33(6):1311--1316, dec 2000.
 \newblock \doi{10.1107/s0021889800010219}.
 
+\bibitem{Ingham2010}
+B.~Ingham, H.~Li, E.~L. Allen, and M.~F. Toney.
+\newblock {SAXSMorph}: a program for generating representative morphologies for
+  two-phase materials from small-angle x-ray and neutron scattering data.
+\newblock {\em Journal of Applied Crystallography}, 44(1):221--224, dec 2010.
+\newblock \doi{10.1107/s0021889810048557}.
+
 \bibitem{Ishikawa1974}
 S.~Ishikawa.
 \newblock Fixed points by a new iteration method.
@@ -892,6 +927,14 @@ H.~G. Jerrard.
 \newblock Theories of streaming double refraction.
 \newblock {\em Chemical Reviews}, 59(3):345--428, jun 1959.
 \newblock \doi{10.1021/cr50027a001}.
+
+\bibitem{Jinnai2000}
+H.~Jinnai, Y.~Nishikawa, S.-H. Chen, S.~Koizumi, and T.~Hashimoto.
+\newblock Morphological characterization of bicontinuous structures in polymer
+  blends and microemulsions by the inverse-clipping method in the context of
+  the clipped-random-wave model.
+\newblock {\em Physical Review E}, 61(6):6773--6780, jun 2000.
+\newblock \doi{10.1103/physreve.61.6773}.
 
 \bibitem{Johnson}
 S.~G. Johnson.
@@ -1100,6 +1143,14 @@ H.~N. Lekkerkerker and R.~Tuinier.
   Lecture Notes in Physics}.
 \newblock Springer Netherlands, 2011.
 \newblock \doi{10.1007/978-94-007-1223-2}.
+
+\bibitem{Levitz1998}
+P.~Levitz.
+\newblock Off-lattice reconstruction of porous media: critical evaluation,
+  geometrical confinement and molecular transport.
+\newblock {\em Advances in Colloid and Interface Science}, 76-77:71--106, jul
+  1998.
+\newblock \doi{10.1016/s0001-8686(98)00042-6}.
 
 \bibitem{Likos2001}
 C.~N. Likos.
@@ -1493,6 +1544,12 @@ S.~J. Picken, J.~Aerts, R.~Visser, and M.~G. Northolt.
 \newblock {\em Macromolecules}, 23(16):3849--3854, aug 1990.
 \newblock \doi{10.1021/ma00218a021}.
 
+\bibitem{Pieruschka1992}
+P.~Pieruschka and S.~Mar{\v{c}}elja.
+\newblock Statistical mechanics of random bicontinuous phases.
+\newblock {\em Journal de Physique {II}}, 2(2):235--247, feb 1992.
+\newblock \doi{10.1051/jp2:1992127}.
+
 \bibitem{Porod1948}
 G.~Porod.
 \newblock {Die Abh{\"a}ngigkeit der R{\"o}ntgenkleinwinkelstreuung von Form und
@@ -1532,6 +1589,12 @@ P.~N. Pusey, D.~E. Koppel, D.~E. Schaefer, R.~D. Camerini-Otero, and S.~H.
   light-scattering technique.
 \newblock {\em Biochemistry}, 13(5):952--960, feb 1974.
 \newblock \doi{10.1021/bi00702a020}.
+
+\bibitem{Quintanilla2003}
+J.~Quintanilla, R.~F. Reidy, B.~P. Gorman, and D.~W. Mueller.
+\newblock Gaussian random field models of aerogels.
+\newblock {\em Journal of Applied Physics}, 93(8):4584--4589, apr 2003.
+\newblock \doi{10.1063/1.1563038}.
 
 \bibitem{scatt188}
 C.~Raman.
@@ -1589,6 +1652,19 @@ L.~E. Reynolds and D.~F.~R. Mildner.
 \newblock The elliptical average of small-angle scattering data.
 \newblock {\em Journal of Applied Crystallography}, 17(6):411--416, dec 1984.
 \newblock \doi{10.1107/S0021889884011857}.
+
+\bibitem{Roberts1997}
+A.~P. Roberts.
+\newblock Morphology and thermal conductivity of model organic aerogels.
+\newblock {\em Physical Review E}, 55(2):R1286--R1289, feb 1997.
+\newblock \doi{10.1103/physreve.55.r1286}.
+
+\bibitem{Roberts1995}
+A.~P. Roberts and M.~Teubner.
+\newblock Transport properties of heterogeneous materials derived from gaussian
+  random fields: Bounds and simulation.
+\newblock {\em Physical Review E}, 51(5):4141--4154, may 1995.
+\newblock \doi{10.1103/physreve.51.4141}.
 
 \bibitem{Robertus1989}
 C.~Robertus, W.~H. Philipse, J.~G.~H. Joosten, and Y.~K. Levine.
@@ -1821,6 +1897,12 @@ C.~V. Teixeira, H.~Amenitsch, T.~Fukushima, J.~P. Hill, W.~Jin, T.~Aida,
   nanotube formation of hexa-peri-hexabenzocoronene-based molecules.
 \newblock {\em Journal of Applied Crystallography}, 43(4):850--857, jun 2010.
 \newblock \doi{10.1107/s0021889810015736}.
+
+\bibitem{Teubner1991}
+M.~Teubner.
+\newblock Level surfaces of gaussian random fields and microemulsions.
+\newblock {\em Europhysics Letters ({EPL})}, 14(5):403--408, mar 1991.
+\newblock \doi{10.1209/0295-5075/14/5/003}.
 
 \bibitem{TeubnerStrey87}
 M.~Teubner and R.~Strey.

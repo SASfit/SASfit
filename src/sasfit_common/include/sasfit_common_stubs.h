@@ -210,6 +210,7 @@ typedef struct
 			scalar epsrel,
 			scalar *result,
 			scalar *error);  /* 116 */
+	scalar (*sasfit_erfinv) (scalar y); /* 117 */
 
 } sasfit_common_stubs_t;
 
@@ -638,6 +639,10 @@ typedef struct
 #ifndef sasfit_cubature
 #define sasfit_cubature \
 	(sasfit_common_stubs_ptr->sasfit_cubature) /* 116 */
+#endif
+#ifndef sasfit_erfinv
+#define sasfit_erfinv \
+	(sasfit_common_stubs_ptr->sasfit_erfinv) /* 117 */
 #endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 

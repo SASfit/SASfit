@@ -161,9 +161,6 @@ declare 44 generic {
 }
 
 
-
-
-
 declare 50 generic {
 	void sasfit_eps_print(void)
 }
@@ -204,7 +201,6 @@ declare 61 generic {
 declare 62 generic {
 	scalar sasfit_eps_get_comp(void)
 }
-# setter
 declare 63 generic {
 	void sasfit_eps_set_aniso(scalar value)
 }
@@ -370,4 +366,7 @@ declare 116 generic {
 			scalar epsrel,
 			scalar *result,
 			scalar *error)
+}
+declare 117 generic {
+	scalar sasfit_erfinv(scalar y)
 }
