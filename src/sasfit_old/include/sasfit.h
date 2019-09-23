@@ -154,7 +154,7 @@ typedef struct
 	scalar  Delta_r;
 	scalar  smooth;
 	scalar  Entropy;
-	scalar  redchi2;
+	scalar  redchi2,Gtest,JSDtest,chi2test;
 	scalar  eps;
 	scalar  chi2;
 	int     maxit;

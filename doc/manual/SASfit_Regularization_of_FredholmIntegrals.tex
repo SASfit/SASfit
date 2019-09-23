@@ -205,81 +205,59 @@ the EM iteration scheme or Lucy\hyp{}Richardson inversion method reads as
   x_j^{(k+1)} &= x_j^{(k)} + \Delta x_j^{(k)} = \mathcal{O}_\mathrm{EM}\left[x_j^{(k)}\right]\\
   \Delta x_j^{(k)} &= x_j^{(k)}\left[\sum_{i=0}^{M-1}\frac{A_{ij}}{\left(\displaystyle \sum_{m=0}^{M-1}A_{mj}\right)}\frac{b_i}{\displaystyle \sum_{n=0}^{N-1}A_{in}x_n^{(k)}}-1\right]
 \end{align}
-where $\mathcal{O}_\mathrm{EM}$ is the fixed point operator. There exist several very efficient algorithms to increase the convergence rate of contractive fixed point operators. A few of them are listed at the end of this section.
+where $\mathcal{O}_\mathrm{EM}$ is the fixed point operator. It has been shown, that the convergence is assured since the algorithm is guaranteed to increase the likelihood at each iteration. On the other side the algorithm is known to converge quite slow.
 
- Lewitt et al.\ \cite{Lewitt1986} have suggested to increase the convergence rate by introducing an overrelaxation parameter in the iteration loop
-\begin{align}\label{eq:OverRelaxation}
-  x_j^{(k+1)} &= x_j^{(k)} + \lambda^{(k)}\Delta x_j^{(k)}
-\end{align}
-where $\lambda^{(k)}$ is the overrelaxation parameter $(\lambda^{(k)}> 1)$ whose
-purpose is to accelerate the iterative process, and whose value is not so large as to violate the nonnegativity condition $x_j^{(k+1)} > 0$. To ensure that the overrelaxation of negative corrections to the solution vector does not decrease the value of any solution vector component below zero they suggest the following algorithm: first a pseudorelaxation parameter $\mu_j^{(k)}$ is calculated where
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_0_IQ.png}
+\hspace{0.06\textwidth}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_0_IQ.png}
+\caption{Scattering curve evolution for increasing number of iterations for a constant seed value (left) and random seed values (right).\label{fig:EMIQevolution}}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_0_NR.png}
+\hspace{0.06\textwidth}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_0_NR.png}
+\caption{Size distribution evolution for increasing number of iterations for a constant seed value (left) and random seed values (right).\label{fig:EMNRevolution}}
+\end{figure}
+
+In figure \ref{fig:EMIQevolution} and \ref{fig:EMNRevolution} the progress of the EM-fixed point algorithm as a function of the number of iteration steps is shown. The starting values of the size distribution are assumed to be a constant (left) and random (right). In both cases the EM-scheme converges in that example finally to the same solution. However, assuming constant initial values the size distribution looks relatively smooth until the goodness-of-fit parameter approaches its final value in contrast to random seed values for the size distribution, where the initial roughness is never smoothed out by the EM scheme. In figure \ref{fig:EMgoodness_smooth_evolution} the goodness-of-fit parameters are shown as a function of iterations. For this three variants of the goodness-of-fit definitions are used, the classical $\chi^2$ of weighted sums of squared  deviations, the G-test which is directly related to the Kubler-Leibler divergency of two probability function and the Pearson's $\chi^2$-test, which is obtained by a second order Taylor expansion of the natural logarithm around 1.
 \begin{align}
-\label{eq:pseudorelaxation}
-  \mu_j^{(k)} &=
-  \begin{cases}
-    \infty, & \mbox{if } x_j^{(k)} \geq 0 \\
-    \abs{\frac{x_j^{(k)}}{\Delta x_j^{(k)}}}, & \mbox{otherwise}.
-  \end{cases}
+\label{eq:goodnesoffit}
+  \chi^2 &= \sum_i \left(\frac{I_\mathrm{th}(q_i)-I_\mathrm{exp}(q_i)}{\Delta I_\mathrm{exp}(q_i)}\right)^2 &~ &\mbox{weighted sum of squared  deviations} \\
+  \chi^2 &= \sum_i \frac{\left(I_\mathrm{th}(q_i)-I_\mathrm{exp}(q_i)\right)^2}{I_\mathrm{th}(q_i)} &~ &\mbox{Pearson's $\chi^2$-test} \\
+  \mathcal{G} &= 2\sum_i \mathcal{I}_\mathrm{exp}(q_i)\ln\left(\frac{\mathcal{I}_\mathrm{exp}(q_i)}{\mathcal{I}_\mathrm{th}(q_i)}\right) &~ & \mbox{G-test}
 \end{align}
-Then they defined a critical relaxation parameter as follows:
-\begin{align}\label{eq:criticalrelaxationparameter}
-  \hat{\lambda}^{(k)} &= \min_j \mu_j^{(k)}
-\end{align}
-Finally the overrelaxation parameter $\lambda^{(k)}$ was chosen according to
-\begin{align}\label{eq:useopverrelaxationparameter}
-  \lambda^{(k)} &= \min \left[ \left(\hat{\lambda}^{(k)}-1\right)/2,\lambda^{\max}\right]
-\end{align}
-with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$.
+with $\mathcal{I}_\mathrm{exp}(q_i)=I_\mathrm{exp}(q_i)/\sum_i I_\mathrm{exp}(q_i)$ and $\mathcal{I}_\mathrm{th}(q_i)=I_\mathrm{th}(q_i)/\sum_i I_\mathrm{th}(q_i)$.
+Furthermore the roughness of the resulting size distribution is plotted which has been described by either the sum of the first or second derivatives for all radii, i.e. $\sum_i \mathrm{d}N(R_i)/\mathrm{d}R_i$ or $\sum_i \mathrm{d}^2N(R_i)/\mathrm{d}R_i^2$.
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_0_goodness_of_fit.png}
+\hspace{0.06\textwidth}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_0_goodness_of_fit.png}
+\caption{Dependency of goodness-of-fit and roughness on number of iterations for a constant seed value (left) and random seed values (right).\label{fig:EMgoodness_smooth_evolution}}
+\end{figure}
 
-Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}, which supplies next to the Anderson acceleration several other very efficient algorithms to speed up the convergence rate for finding a fixed points like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993}.
+The roughness parameter and the goodness-of-fit parameter are then combined in figure \ref{fig:EMLcurves} on loglog-scale showing somehow a similar behaviour as the L-curve in regularization techniques solving ill-posed problems. From a certain number of iterations the goodness-of-fit only improves infinitesimal but the roughness still continuous for a quite large number of iterations before it reaches the fixed point.
 
-In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation and does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in the algorithm \ref{Biggs_Andersen}.
-\begin{algorithm}[thb]
-\caption{Biggs-Andersen  fixed point problem acceleration of order $o=0,1,2$ }\label{Biggs_Andersen}
-\begin{algorithmic}[1]
-\Procedure{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
-    \State $\mathbf{g}^{(n-2)} \gets \mathbf{g}^{(n-1)}$
-    \State $\mathbf{g}^{(n-1)} \gets \mathbf{x}^{(n+1)}-\mathbf{x}^{(n)}$
-    \State $\mathbf{x}^{(n-2)} \gets \mathbf{x}^{(n-1)}$
-    \State $\mathbf{x}^{(n-1)} \gets \mathbf{x}^{(n)}$
-    \State $\mathbf{x}^{(n)} \gets \mathbf{x}^{(n+1)}$
-\EndProcedure
-\State \Comment Acceleration of the fixed point problem $\mathcal{O}[\mathbf{x}]=\mathbf{x}$
-\Procedure{Biggs\_Andersen\_acceleration}{$\mathcal{O}[]$, $\mathbf{x}^{(0)}$, o}
-\State $\alpha \gets 0$
-\State $\mathbf{x}^{(n)} \gets \mathbf{x}^{(0)}$
-\State $\mathbf{x}^{(n+1)} \gets \mathcal{O}[\mathbf{x}^{(n)}]$
-\State \Call{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
-\State $\mathbf{x}^{(n+1)} \gets \mathcal{O}[\mathbf{x}^{(n)}]$
-\State \Call{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
-\State $\mathbf{y}^{(n)} \gets  \mathbf{x}^{(n+1)}$
-\While{($\mathcal{O}[]$ not converged)}
-    \State \Comment $\alpha$ needs to be updated first
-    \State $\alpha = \frac{\left(\mathbf{g}^{(n-1)}\right)^T\mathbf{g}^{(n-2)}}{\left(\mathbf{g}^{(n-2)}\right)^T\mathbf{g}^{(n-2)}}$
-    \State $\alpha \gets \max (\min (\alpha,1),0)$
-    \State $\mathbf{x}^{(n+1)} \gets \mathcal{O}[\mathbf{y}^{(n)}]$
-    \State \Comment  guess of next virtual step $\mathbf{y}^{(n)}$ calculated up to $o^\mathrm{th}$-order
-    \If{$\alpha = 0 \wedge o=0$}
-        \State $\mathbf{y}^{(n)} \gets \mathbf{x}^{(n)}$
-    \ElsIf {$\alpha > 0 \vee o=1$}
-        \State $\mathbf{y}^{(n)} \gets \mathbf{x}^{(n)} + \alpha \left(\mathbf{x}^{(n)}-\mathbf{x}^{(n-1)}\right)$
-    \Else
-        \State $\mathbf{y}^{(n)} \gets \mathbf{x}^{(n)}\mathbf{x}^{(n)} + \alpha \left(\mathbf{x}^{(n)}-\mathbf{x}^{(n-1)}\right)
-                                                                        + \frac{\alpha^2}{2}\left(\mathbf{x}^{(n)}+2\mathbf{x}^{(n-1)}-\mathbf{x}^{(n-2)}\right)$
-    \EndIf
-    \State \Comment now all the other temporary vectors are updated
-    \State \Call{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.44\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_0_L_curve.png}
+\hspace{0.1\textwidth}
+\includegraphics[width=0.44\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_0_L_curve.png}
+\caption{L-curve showing the dependency of the roughness parameters on the goodness-of-fit parameters for a constant seed value (left) and random seed values (right).\label{fig:EMLcurves}}
+\end{figure}
 
-\EndWhile
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
+Even though the fixed point of the EM operator does not seem to depend on the initialization of the starting values but it will probably depend on the actual noise on the data, i.e. if the curve would be measured a second time with similar statistics the two curves would differ within their noise level and the EM fixed point would then very likely be slightly different, which is caused by the ill-posed nature of the Fredholm integral. Two strategies for overcoming this problem has been tested. One strategy introducing a smoothing operator into the iteration loop and a second strategy to introduce a classical regularization term in the EM scheme, which both then require a determination of the smoothing or regularization parameter.
 
-\clearpage
+~\\
 
 \subsection{EM with linear and non-linear smoothing operator}~\\
 
-The basic EM iteration should leads after long enough iteration to a similar solution than the NNLLS described in section \ref{sec:NNLLS}. Without any additional smoothing the nonnegativity constrain is not enough to obtain a stable solution. Several stabilization methods have been suggested. One of them is to add an additional smoothing operator into the iteration sequence. In \SASfit the smoothing operation  suggested by \cite{Eggermont1999,Eggermont1995,Byrne2011} has been implemented. They suggest to add before or/and after each normal EM step (eq.\ \ref{eq:LucyRichardsonInversionMethod}) an additional smoothing step so that the EM algorithm takes the form.
+ Without any additional smoothing the EM scheme does not converge on a stable solution for scattering curve measured several times. Several stabilization methods have been suggested. One of them is to add an additional smoothing operator into the iteration sequence. In \SASfit the smoothing operation  suggested by \cite{Eggermont1999,Eggermont1995,Byrne2011} has been implemented. They suggest to add before or/and after each normal EM step (eq.\ \ref{eq:LucyRichardsonInversionMethod}) an additional smoothing step so that the EM algorithm takes the form.
 \begin{align}\label{eq:smoothedEMsingle}
   x_j^{(k+1/2)} &= x_j^{(k)} + \Delta x_j^{(k)}   \\
   x_j^{(k+1)} &= \displaystyle \sum_{i=0}^{M-1} S^{(h)}_{ij} x_j^{(k+1/2)}
@@ -303,7 +281,29 @@ In case of a double smoothing they suggested a nonlinear smoothing operator befo
   x_j^{(k+2/3)} &= x_j^{(k+1/3)} + \Delta x_j^{(k+1/3)}  \\
   x_j^{(k+1)} &= \displaystyle \sum_{i=0}^{M-1} S^{(h)}_{ij} x_j^{(k+2/3)}
 \end{align}
-The proper choice of the parameter $h$ arises and its selection might  follow similar rules than for the regularization parameter in ill-posed problems.
+The proper choice of the parameter $h$ arises and its selection might follow similar rules than for the regularization parameter in ill-posed problems.
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_3_goodness_of_fit.png}
+\hspace{0.06\textwidth}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_3_NR.png}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_3_goodness_of_fit.png}
+\hspace{0.06\textwidth}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_3_NR.png}
+\caption{Roughness and goodness-of-fit parameters as well as the resulting volume distribution $N(R)R^3$ as a function of iterations for  a constant seed value (top) and random seed values (bottom) for a large smoothing parameter $h=0.3$ leading to $\chi^2=15.3$.\label{fig:EMhlarge}}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_000187_goodness_of_fit.png}
+\hspace{0.06\textwidth}
+\includegraphics[width=0.44\textwidth]{../images/form_factor/EM/EMconstant_seed_smooth_0_000187_NR.png}
+\includegraphics[width=0.46\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_goodness_of_fit.png}
+\hspace{0.06\textwidth}
+\includegraphics[width=0.44\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_NR.png}
+\caption{Roughness and goodness-of-fit parameters as well as the resulting volume distribution $N(R)R^3$ as a function of iterations for  a constant seed value (top) and random seed values (bottom) for an optimum soothing parameter $h=1.87\times 10^{-4}$ leading to $\chi^2=1$.\label{fig:EMhoptimum}}
+\end{figure}
+
 ~\\
 \subsection{EM with maximum entropy regularization and constant or adaptive prior}~\\
 The Lucy\hyp{}Richardson method \cite{Richardson1972,Lucy1974} has been extended by an additional penalty function,
@@ -334,6 +334,7 @@ As a smoothing operator for the prior we have assumed
 with the normalization constant $c=\sum_j \Pi_{ij}$ and a $\sigma^2$ typically between $\frac12$ and 2. For large values of $\sigma^2$ the results converge to that one of a constant prior. For too small values the regularization is suppressed as the prior converges to the $k^\mathrm{th}$ iteration step.
 
 
+\clearpage
 \section{Linear least square regularization (LLS)}
 \label{sec:LLS}
 Linear least square regularization has been implemented using the GNU scientific library (\texttt{gsl}). It supplies routines to solve ill-posed problems including a regularization term in the least squares minimization
@@ -399,7 +400,7 @@ operator
           &        & -1     & 2      & -1
   \end{pmatrix} \in \mathbb{R}^{(N-2)\times N}
 \end{align}
-Also for this case a nonsingular squared matrix can be used as an approximation by adding one row at the top an one row at the bottom and assuming either Dirichlet boundary conditions or Neumann boundary conditions
+Also for this case a nonsingular squared matrix can be used as an approximation by adding one row at the top and one row at the bottom and assuming either Dirichlet boundary conditions or Neumann boundary conditions
 \begin{align}\label{eq:second_derivative_penalty_plus_DrichletNeumann}
    \hat{\mathbf{L}}_\mathrm{2^{nd}}^\mathrm{DD} &=
   \begin{pmatrix}
@@ -484,6 +485,80 @@ Hessian of entropy $S$:
     0 & 0 & \dots & -\frac{1}{x_{N-1}}
   \end{pmatrix}
 \end{align}
+
+\clearpage
+\subsection{Acceleration of EM interations}
+
+There exist several very efficient algorithms to increase the convergence rate of contractive fixed point operators. A few of them are listed at the end of this section.
+
+ Lewitt et al.\ \cite{Lewitt1986} have suggested to increase the convergence rate by introducing an overrelaxation parameter in the iteration loop
+\begin{align}\label{eq:OverRelaxation}
+  x_j^{(k+1)} &= x_j^{(k)} + \lambda^{(k)}\Delta x_j^{(k)}
+\end{align}
+where $\lambda^{(k)}$ is the overrelaxation parameter $(\lambda^{(k)}> 1)$ whose
+purpose is to accelerate the iterative process, and whose value is not so large as to violate the nonnegativity condition $x_j^{(k+1)} > 0$. To ensure that the overrelaxation of negative corrections to the solution vector does not decrease the value of any solution vector component below zero they suggest the following algorithm: first a pseudorelaxation parameter $\mu_j^{(k)}$ is calculated where
+\begin{align}
+\label{eq:pseudorelaxation}
+  \mu_j^{(k)} &=
+  \begin{cases}
+    \infty, & \mbox{if } x_j^{(k)} \geq 0 \\
+    \abs{\frac{x_j^{(k)}}{\Delta x_j^{(k)}}}, & \mbox{otherwise}.
+  \end{cases}
+\end{align}
+Then they defined a critical relaxation parameter as follows:
+\begin{align}\label{eq:criticalrelaxationparameter}
+  \hat{\lambda}^{(k)} &= \min_j \mu_j^{(k)}
+\end{align}
+Finally the overrelaxation parameter $\lambda^{(k)}$ was chosen according to
+\begin{align}\label{eq:useopverrelaxationparameter}
+  \lambda^{(k)} &= \min \left[ \left(\hat{\lambda}^{(k)}-1\right)/2,\lambda^{\max}\right]
+\end{align}
+with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$.
+
+Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}, which supplies next to the Anderson acceleration several other very efficient algorithms to speed up the convergence rate for finding a fixed points like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993}.
+
+In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation and does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in the algorithm \ref{Biggs_Andersen}.
+\begin{algorithm}[thb]
+\caption{Biggs-Andersen  fixed point problem acceleration of order $o=0,1,2$ }\label{Biggs_Andersen}
+\begin{algorithmic}[1]
+\Procedure{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
+    \State $\mathbf{g}^{(n-2)} \gets \mathbf{g}^{(n-1)}$
+    \State $\mathbf{g}^{(n-1)} \gets \mathbf{x}^{(n+1)}-\mathbf{x}^{(n)}$
+    \State $\mathbf{x}^{(n-2)} \gets \mathbf{x}^{(n-1)}$
+    \State $\mathbf{x}^{(n-1)} \gets \mathbf{x}^{(n)}$
+    \State $\mathbf{x}^{(n)} \gets \mathbf{x}^{(n+1)}$
+\EndProcedure
+\State \Comment Acceleration of the fixed point problem $\mathcal{O}[\mathbf{x}]=\mathbf{x}$
+\Procedure{Biggs\_Andersen\_acceleration}{$\mathcal{O}[]$, $\mathbf{x}^{(0)}$, o}
+\State $\alpha \gets 0$
+\State $\mathbf{x}^{(n)} \gets \mathbf{x}^{(0)}$
+\State $\mathbf{x}^{(n+1)} \gets \mathcal{O}[\mathbf{x}^{(n)}]$
+\State \Call{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
+\State $\mathbf{x}^{(n+1)} \gets \mathcal{O}[\mathbf{x}^{(n)}]$
+\State \Call{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
+\State $\mathbf{y}^{(n)} \gets  \mathbf{x}^{(n+1)}$
+\While{($\mathcal{O}[]$ not converged)}
+    \State \Comment $\alpha$ needs to be updated first
+    \State $\alpha = \frac{\left(\mathbf{g}^{(n-1)}\right)^T\mathbf{g}^{(n-2)}}{\left(\mathbf{g}^{(n-2)}\right)^T\mathbf{g}^{(n-2)}}$
+    \State $\alpha \gets \max (\min (\alpha,1),0)$
+    \State $\mathbf{x}^{(n+1)} \gets \mathcal{O}[\mathbf{y}^{(n)}]$
+    \State \Comment  guess of next virtual step $\mathbf{y}^{(n)}$ calculated up to $o^\mathrm{th}$-order
+    \If{$\alpha = 0 \wedge o=0$}
+        \State $\mathbf{y}^{(n)} \gets \mathbf{x}^{(n)}$
+    \ElsIf {$\alpha > 0 \vee o=1$}
+        \State $\mathbf{y}^{(n)} \gets \mathbf{x}^{(n)} + \alpha \left(\mathbf{x}^{(n)}-\mathbf{x}^{(n-1)}\right)$
+    \Else
+        \State $\mathbf{y}^{(n)} \gets \mathbf{x}^{(n)}\mathbf{x}^{(n)} + \alpha \left(\mathbf{x}^{(n)}-\mathbf{x}^{(n-1)}\right)
+                                                                        + \frac{\alpha^2}{2}\left(\mathbf{x}^{(n)}+2\mathbf{x}^{(n-1)}-\mathbf{x}^{(n-2)}\right)$
+    \EndIf
+    \State \Comment now all the other temporary vectors are updated
+    \State \Call{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
+
+\EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
 \section{Chahine inversion scheme}
 Obtaining particle size distributions from forward scattered light using the Chahine inversion scheme has been introduced by \cite{Santer1983} and later on applied to SANS by \cite{Sen2014}.
 

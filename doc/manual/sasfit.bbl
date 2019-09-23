@@ -42,6 +42,12 @@ R.~Andersson, L.~F. van Heijkamp, I.~M. de~Schepper, and W.~G. Bouwman.
 \newblock {\em Journal of Applied Crystallography}, 41(5):868--885, sep 2008.
 \newblock \doi{10.1107/s0021889808026770}.
 
+\bibitem{Aragon1976}
+S.~R. Arag\'on.
+\newblock Theory of dynamic light scattering from polydisperse systems.
+\newblock {\em The Journal of Chemical Physics}, 64(6):2395, 1976.
+\newblock \doi{10.1063/1.432528}.
+
 \bibitem{Ariane2004}
 B.~Ariane.
 \newblock Sans study of the non-linear relaxation mechanisms in a step-strain
@@ -74,6 +80,13 @@ B.~Barboy.
   the adhesive hard-spheres model.
 \newblock {\em The Journal of Chemical Physics}, 61(8):3194--3196, oct 1974.
 \newblock \doi{10.1063/1.1682475}.
+
+\bibitem{Bartlett1992}
+P.~Bartlett and R.~H. Ottewill.
+\newblock A neutron scattering study of the structure of a bimodal colloidal
+  crystal.
+\newblock {\em The Journal of Chemical Physics}, 96(4):3306--3318, feb 1992.
+\newblock \doi{10.1063/1.461926}.
 
 \bibitem{Baxter1968}
 R.~Baxter.
@@ -903,6 +916,14 @@ J.~B. Hayter and J.~Penfold.
   structure by small-angle neutron scattering.
 \newblock {\em The Journal of Physical Chemistry}, 88(20):4589--4593, sep 1984.
 \newblock \doi{10.1021/j150664a030}.
+
+\bibitem{Heinemann2000}
+A.~Heinemann, H.~Hermann, A.~Wiedenmann, N.~Mattern, and K.~Wetzig.
+\newblock A small-angle neutron scattering model for polydisperse spherical
+  particles with diffusion zones and application to soft magnetic metallic
+  glass.
+\newblock {\em Journal of Applied Crystallography}, 33(6):1386--1392, dec 2000.
+\newblock \doi{10.1107/s0021889800013248}.
 
 \bibitem{Heinrich1988}
 G.~Heinrich, E.~Straube, and G.~Helmis.
@@ -1959,11 +1980,26 @@ O.~Scherzer, editor.
 \newblock Springer New York, 2011.
 \newblock \doi{10.1007/978-0-387-92920-0}.
 
+\bibitem{Schmidt1958}
+P.~W. Schmidt.
+\newblock The small angle x-ray scattering from polydisperse solutions of
+  ellipsoidal particles.
+\newblock {\em Acta Crystallographica}, 11(10):674--676, oct 1958.
+\newblock \doi{10.1107/s0365110x5800181x}.
+
 \bibitem{Schmidt1970}
 P.~W. Schmidt.
 \newblock Small angle x-ray scattering from helical filaments.
 \newblock {\em Journal of Applied Crystallography}, 3(4):257--264, aug 1970.
 \newblock \doi{10.1107/s0021889870006155}.
+
+\bibitem{Schmidt1984}
+P.~W. Schmidt and M.~Kalliat.
+\newblock A simple approximation for calculating the small-angle x-ray and
+  neutron scattering from polydisperse samples of independently scattering
+  uniform spheres.
+\newblock {\em Journal of Applied Crystallography}, 17(1):27--32, feb 1984.
+\newblock \doi{10.1107/s0021889884010955}.
 
 \bibitem{StreyKlineKaler1994}
 K.-V. Schubert, R.~Strey, S.~R. Kline, and E.~W. Kaler.
@@ -2233,6 +2269,14 @@ A.~Vrij.
 \newblock {\em J. Chem. Phys.}, 71(8):3267--3270, oct 1979.
 \newblock \doi{10.1063/1.438756}.
 
+\bibitem{Wagner2004}
+J.~Wagner.
+\newblock Small-angle scattering from spherical core{\textendash}shell
+  particles: an analytical scattering function for particles with
+  schulz{\textendash}flory size distribution.
+\newblock {\em Journal of Applied Crystallography}, 37(5):750--756, sep 2004.
+\newblock \doi{10.1107/s002188980401581x}.
+
 \bibitem{Wagner2005}
 W.~Wagner and J.~Kohlbrecher.
 \newblock Small-angle neutron scattering.
@@ -2376,6 +2420,14 @@ R.~Zhang, R.~M. Suter, and J.~F. Nagle.
 \newblock Theory of the structure factor of lipid bilayers.
 \newblock {\em Phys. Rev. E}, 50(6):5047--5060, Dec 1994.
 \newblock \doi{10.1103/PhysRevE.50.5047}.
+
+\bibitem{Zimm1948}
+B.~H. Zimm.
+\newblock Apparatus and methods for measurement and interpretation of the
+  angular variation of light scattering; preliminary results on polystyrene
+  solutions.
+\newblock {\em The Journal of Chemical Physics}, 16(12):1099--1116, dec 1948.
+\newblock \doi{10.1063/1.1746740}.
 
 \bibitem{zimm:1093}
 B.~H. Zimm.

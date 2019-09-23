@@ -36,8 +36,8 @@ typedef struct {
         double relerror;
         double alpha;
         double gNorm;
-		double KLD, JSD;
-        double Chi2Norm;
+		double KLD, JSD, Sum1stDeriv, Sum2ndDeriv, Entropy;
+        double Chi2Norm,Gtest, JSDtest;
         sasfit_oz_root_algorithms root_algorithm;
         sasfit_oz_mixstrategy mixstrategy;
         double *in, *out;

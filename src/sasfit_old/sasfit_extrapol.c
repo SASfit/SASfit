@@ -4077,8 +4077,8 @@ int Sasfit_OrnsteinZernickeFitCmd(clientData, interp, argc, argv)
 }
 
 double EM_DR_DoubleSmooth_Operator(void *EM_structure) {
-
     EM_param_t *EMparam;
+    scalar sumIth, sumIh;
     EMparam = (EM_param_t *)EM_structure;
     int i,j,l, nr, nh;
     scalar p1,p2,p3,PS, NormXwork, eps, chi2, S, nnlambda;
@@ -4087,18 +4087,16 @@ double EM_DR_DoubleSmooth_Operator(void *EM_structure) {
     nh=EMparam->nh;
 
     if ((EMparam->smooth > 0) && EMparam->smooth_bool) {
-        for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
-        for (i=0;i<nr;i++) {
-            EMparam->xwork[i] = 0;
-            for (j=(i>0?i-1:0);j<(i<nr-1?i+1:nr);j++) {
-                EMparam->xwork[i]=EMparam->xwork[i]+log(EMparam->in[j])*EMparam->S[i][j];
-            }
-            EMparam->xwork[i]=exp(EMparam->xwork[i]);
+        for (i=0;i<nr;i++) EMparam->in[i] = (fabs(EMparam->out[i])<=DBL_MIN?DBL_MIN:fabs(EMparam->out[i]));
+        EMparam->xwork[0] = exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[0])*EMparam->S[0][1]);
+        for (i=1;i<nr-1;i++) {
+            EMparam->xwork[i]=exp(log(EMparam->in[i-1])*EMparam->S[i][i-1]+log(EMparam->in[i])*EMparam->S[i][i]+log(EMparam->in[i+1])*EMparam->S[i][i+1]);
         }
+        EMparam->xwork[nr-1]=exp(log(EMparam->in[nr-2])*EMparam->S[nr-1][nr-2]+log(EMparam->in[nr-1])*EMparam->S[nr-1][nr-1]);
     } else {
         for (i=0;i<nr;i++) {
-            EMparam->in[i] = EMparam->out[i];
-            EMparam->xwork[i] = EMparam->out[i];
+            EMparam->in[i] = fabs(EMparam->out[i]);
+            EMparam->xwork[i] = fabs(EMparam->out[i]);
         }
     }
 
@@ -4133,25 +4131,41 @@ double EM_DR_DoubleSmooth_Operator(void *EM_structure) {
 
     eps=0;
     for (i=0;i<nr;i++) {
-        EMparam->out[i] = 0;
-        for (j=(i>0?i-1:0);j<(i<nr-1?i+1:nr);j++) {
-            EMparam->out[i]=EMparam->out[i] + EMparam->xwork[j]*EMparam->S[i][j];
+        EMparam->out[0] = EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1];
+        for (i=1;i<nr-1;i++) {
+            EMparam->out[i]=EMparam->xwork[i-1]*EMparam->S[i][i-1]+EMparam->xwork[i]*EMparam->S[i][i]+EMparam->xwork[i+1]*EMparam->S[i][i+1];
         }
-        EMparam->out[i]=fabs(EMparam->out[i]);
+        EMparam->out[nr-1]=EMparam->xwork[nr-2]*EMparam->S[nr-1][nr-2]+EMparam->xwork[nr-1]*EMparam->S[nr-1][nr-1];
+
         eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
     }
     eps=sqrt(eps)/nr;
 
-    chi2=0;
-    for (i=0;i<nh;i++){
+    chi2=0;;
+    EMparam->Gtest=0;
+    EMparam->JSDtest=0;
+    EMparam->chi2test=0;
+    sumIth=0;
+    sumIh=0;
+    for (i=0;i<EMparam->nh;i++){
         EMparam->Ithwork[i] = 0;
         for (j=0;j<nr;j++) {
             EMparam->Ithwork[i] = EMparam->Ithwork[i] + EMparam->dr[j]*EMparam->Awork[i][j]*EMparam->out[j];
         }
-        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])/EMparam->DIh[i]*(1+EMparam->em_weight*(EMparam->DIh[i]-1)));
         if (!gsl_finite(EMparam->Ithwork[i])) EMparam->Ithwork[i]=gsl_isinf(EMparam->Ithwork[i])*DBL_MAX;
+        sumIth+=EMparam->Ithwork[i]+EMparam->C4;
+        sumIh +=EMparam->Ihwork[i] +EMparam->C4;
+        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])/EMparam->DIh[i]*(1+EMparam->em_weight*(EMparam->DIh[i]-1)));
     }
-    chi2=chi2/nh;
+    for (i=0;i<EMparam->nh;i++){
+        if ((EMparam->Ithwork[i]+EMparam->C4 > 0)&& (EMparam->Ihwork[i]+EMparam->C4)>0) {
+            EMparam->Gtest+=2*(EMparam->Ihwork[i]+EMparam->C4)*log((EMparam->Ihwork[i]+EMparam->C4)/(EMparam->Ithwork[i]+EMparam->C4)*sumIth/sumIh);
+            EMparam->JSDtest+=0.5*(EMparam->Ihwork[i] +EMparam->C4)/sumIh *log((EMparam->Ihwork[i] +EMparam->C4)/sumIh /((EMparam->Ithwork[i]+EMparam->C4)/sumIth+(EMparam->Ihwork[i]+EMparam->C4)/sumIh)*2.);
+            EMparam->JSDtest+=0.5*(EMparam->Ithwork[i]+EMparam->C4)/sumIth*log((EMparam->Ithwork[i]+EMparam->C4)/sumIth/((EMparam->Ithwork[i]+EMparam->C4)/sumIth+(EMparam->Ihwork[i]+EMparam->C4)/sumIh)*2.);
+        }
+        EMparam->chi2test+=gsl_pow_2(EMparam->Ihwork[i]-EMparam->Ithwork[i])/(EMparam->Ithwork[i]+EMparam->C4);
+    }
+    chi2=chi2/EMparam->nh;
     if (!gsl_finite(chi2)) chi2=DBL_MAX;
     EMparam->redchi2=chi2;
     return chi2;
@@ -4159,6 +4173,7 @@ double EM_DR_DoubleSmooth_Operator(void *EM_structure) {
 
 double EM_DR_EntropyConstantPrior_Operator(void *EM_structure) {
     EM_param_t *EMparam;
+    scalar sumIth, sumIh;
     EMparam = (EM_param_t *) EM_structure;
     int i,j,l, nr;
     scalar p1,p2,p3, NormXwork, eps, chi2, Entropy, nnlambda;
@@ -4210,17 +4225,29 @@ double EM_DR_EntropyConstantPrior_Operator(void *EM_structure) {
     }
     eps=sqrt(eps);
 
-    chi2=0;
+    chi2=0;;
+    EMparam->Gtest=0;
+    EMparam->JSDtest=0;
+    EMparam->chi2test=0;
+    sumIth=0;
+    sumIh=0;
     for (i=0;i<EMparam->nh;i++){
         EMparam->Ithwork[i] = 0;
         for (j=0;j<nr;j++) {
             EMparam->Ithwork[i] = EMparam->Ithwork[i] + EMparam->dr[j]*EMparam->Awork[i][j]*EMparam->out[j];
         }
-        if (EMparam->DIh[i]==0) {
-            sasfit_out("DIh[%d]=%lg\n",i,EMparam->DIh[i]);
-        }
-        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])/EMparam->DIh[i]*(1+EMparam->em_weight*(EMparam->DIh[i]-1)));
         if (!gsl_finite(EMparam->Ithwork[i])) EMparam->Ithwork[i]=gsl_isinf(EMparam->Ithwork[i])*DBL_MAX;
+        sumIth+=EMparam->Ithwork[i]+EMparam->C4;
+        sumIh +=EMparam->Ihwork[i] +EMparam->C4;
+        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])/EMparam->DIh[i]*(1+EMparam->em_weight*(EMparam->DIh[i]-1)));
+    }
+    for (i=0;i<EMparam->nh;i++){
+        if ((EMparam->Ithwork[i]+EMparam->C4 > 0)&& (EMparam->Ihwork[i]+EMparam->C4)>0) {
+            EMparam->Gtest+=2*(EMparam->Ihwork[i]+EMparam->C4)*log((EMparam->Ihwork[i]+EMparam->C4)/(EMparam->Ithwork[i]+EMparam->C4)*sumIth/sumIh);
+            EMparam->JSDtest+=0.5*(EMparam->Ihwork[i] +EMparam->C4)/sumIh *log((EMparam->Ihwork[i] +EMparam->C4)/sumIh /((EMparam->Ithwork[i]+EMparam->C4)/sumIth+(EMparam->Ihwork[i]+EMparam->C4)/sumIh)*2.);
+            EMparam->JSDtest+=0.5*(EMparam->Ithwork[i]+EMparam->C4)/sumIth*log((EMparam->Ithwork[i]+EMparam->C4)/sumIth/((EMparam->Ithwork[i]+EMparam->C4)/sumIth+(EMparam->Ihwork[i]+EMparam->C4)/sumIh)*2.);
+        }
+        EMparam->chi2test+=gsl_pow_2(EMparam->Ihwork[i]-EMparam->Ithwork[i])/(EMparam->Ithwork[i]+EMparam->C4);
     }
     chi2=chi2/EMparam->nh;
     if (!gsl_finite(chi2)) chi2=DBL_MAX;
@@ -4230,6 +4257,7 @@ double EM_DR_EntropyConstantPrior_Operator(void *EM_structure) {
 
 double EM_DR_EntropyAdaptivePrior_Operator(void *EM_structure) {
     EM_param_t *EMparam;
+    scalar sumIth, sumIh;
     EMparam = (EM_param_t *) EM_structure;
     int i,j,l, nr;
     scalar p1,p2,p3,PS, NormXwork, eps, chi2, S, nnlambda;
@@ -4302,13 +4330,28 @@ double EM_DR_EntropyAdaptivePrior_Operator(void *EM_structure) {
     eps=sqrt(eps);
 // sasfit_out("eps:%lg \n",eps);
     chi2=0;
+    EMparam->Gtest=0;
+    EMparam->JSDtest=0;
+    EMparam->chi2test=0;
+    sumIth=0;
+    sumIh=0;
     for (i=0;i<EMparam->nh;i++){
         EMparam->Ithwork[i] = 0;
         for (j=0;j<nr;j++) {
             EMparam->Ithwork[i] = EMparam->Ithwork[i] + EMparam->dr[j]*EMparam->Awork[i][j]*EMparam->out[j];
         }
-        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])/EMparam->DIh[i]*(1+EMparam->em_weight*(EMparam->DIh[i]-1)));
         if (!gsl_finite(EMparam->Ithwork[i])) EMparam->Ithwork[i]=gsl_isinf(EMparam->Ithwork[i])*DBL_MAX;
+        sumIth+=EMparam->Ithwork[i]+EMparam->C4;
+        sumIh +=EMparam->Ihwork[i] +EMparam->C4;
+        chi2=chi2+gsl_pow_2((EMparam->Ithwork[i]-EMparam->Ihwork[i])/EMparam->DIh[i]*(1+EMparam->em_weight*(EMparam->DIh[i]-1)));
+    }
+    for (i=0;i<EMparam->nh;i++){
+        if ((EMparam->Ithwork[i]+EMparam->C4 > 0)&& (EMparam->Ihwork[i]+EMparam->C4)>0) {
+            EMparam->Gtest+=2*(EMparam->Ihwork[i]+EMparam->C4)*log((EMparam->Ihwork[i]+EMparam->C4)/(EMparam->Ithwork[i]+EMparam->C4)*sumIth/sumIh);
+            EMparam->JSDtest+=0.5*(EMparam->Ihwork[i] +EMparam->C4)/sumIh *log((EMparam->Ihwork[i] +EMparam->C4)/sumIh /((EMparam->Ithwork[i]+EMparam->C4)/sumIth+(EMparam->Ihwork[i]+EMparam->C4)/sumIh)*2.);
+            EMparam->JSDtest+=0.5*(EMparam->Ithwork[i]+EMparam->C4)/sumIth*log((EMparam->Ithwork[i]+EMparam->C4)/sumIth/((EMparam->Ithwork[i]+EMparam->C4)/sumIth+(EMparam->Ihwork[i]+EMparam->C4)/sumIh)*2.);
+        }
+        EMparam->chi2test+=gsl_pow_2(EMparam->Ihwork[i]-EMparam->Ithwork[i])/(EMparam->Ithwork[i]+EMparam->C4);
     }
     chi2=chi2/EMparam->nh;
     if (!gsl_finite(chi2)) chi2=DBL_MAX;
@@ -4431,7 +4474,7 @@ void EM_DR_Init (void *FPd) {
     }
 
     gsl_rng_set(rgen, time(NULL));
-
+gsl_rng_set(rgen, 815);
     if (strcmp("single",EMparam->smooth_type)==0) {
         smooth_int = 0;
         EMparam->smooth_bool = FALSE;
@@ -4916,6 +4959,7 @@ int Sasfit_DR_EM_smoothing_Cmd(clientData, interp, argc, argv)
 struct extrapolPar EP;
 EM_param_t EMparam;
 sasfit_fp_data FPd;
+FILE *fptr;
 
 scalar p1,p2,p3, QR, eps,chi2;
 int    i,j,k,l,itst;
@@ -4924,8 +4968,8 @@ char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
 #define XMAX 0.35
-#define XHI 0.1
-#define XLO 0.05
+#define XHI 0.325
+#define XLO 0.3
     int status;
     const gsl_root_fsolver_type *solver_type;
     gsl_root_fsolver *solver;
@@ -4977,19 +5021,33 @@ rmax = EMparam.Rmax;
 #define MAX_ROOT_ITERATIONS 100
 switch (EMparam.optLagrange_method) {
  case redchi2:
+    fptr = fopen("c:/temp/SASfit.dat","a+");
     chi2_max=Optimum_smooth4DR_EM(x_max, &FPd);
+    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+                  x_max, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+
     chi2_hi=Optimum_smooth4DR_EM(x_hi, &FPd);
+    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+                  x_hi, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+
     chi2_lo=Optimum_smooth4DR_EM(x_lo, &FPd);
-    while (chi2_lo > 0 && x_lo > FPd.relerror && chi2_lo < chi2_hi) {
+    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+
+    while (chi2_lo > 0 && x_lo > FPd.relerror ) { // && chi2_lo < chi2_hi
         if (chi2_max > chi2_hi) {
             x_max = x_hi;
             chi2_max = chi2_hi;
             x_hi = x_lo;
             chi2_hi = chi2_lo;
         }
-        x_lo = x_lo/10.;
+        x_lo = x_lo/1.5;
         chi2_lo=Optimum_smooth4DR_EM(x_lo, &FPd);
+    fprintf(fptr,"smooth\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
+                  x_lo, FPd.Chi2Norm,EMparam.Gtest,EMparam.chi2test,EMparam.JSDtest, FPd.KLD, FPd.JSD,FPd.Sum1stDeriv, FPd.Sum2ndDeriv,FPd.Entropy);
+    fflush(fptr);
     }
+    fclose(fptr);
     sasfit_out ("x x_lo:%lg, x_max:%lg, x_hi:%lg\n", x_lo, x_max, x_hi);
     if (chi2_lo < 0 && chi2_max > 0) {
         chi2_lo = chi2_lo+EMparam.chi2;
