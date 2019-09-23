@@ -1868,6 +1868,8 @@ double FP_step(sasfit_fp_data *FPd) {
     fprintf(fptr,"it.\t%d\teps\t%16.14lg\tchi2\t%16.14lg\tGtest\t%16.14lg\tchi2test\t%16.14lg\tJSDtest\t%16.14lg\tKLD\t%16.14lg\tJSD\t%16.14lg\tSum1st\t%16.14lg\tSum2nd\t%16.14lg\tEntropy\t%16.14lg\n",
                   FPd->it, GNorm2, FPd->Chi2Norm,EMparam->Gtest,EMparam->chi2test,EMparam->JSDtest, FPd->KLD, FPd->JSD,FPd->Sum1stDeriv, FPd->Sum2ndDeriv,FPd->Entropy);
     fclose(fptr);
+*/
+/*
     sasfit_out("it. %d KLD %lg JSD %lg\n",FPd->it, FPd->KLD, FPd->JSD);
 */
     if (FPd->KINSetPrintLevel == 4) {
