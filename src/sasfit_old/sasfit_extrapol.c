@@ -3811,7 +3811,7 @@ double EM_DR_Operator(void *EM_structure) {
     nr=EMparam->nR;
 
 
-    if (EMparam->smooth > 0) {
+    if ((EMparam->smooth > 0) && EMparam->smooth_bool) {
         for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
         EMparam->xwork[0]=exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[1])*EMparam->S[0][1]);
         for (i=1;i<nr-1;i++) {
@@ -3934,9 +3934,14 @@ void EM_DR_Init (void *FPd) {
     FixedPointData = (sasfit_fp_data *)FPd;
     EMparam = (EM_param_t *) FixedPointData->FPstructure;
 
+
+    EMparam->Dmax = M_PI/EMparam->h[0];
+    EMparam->Nshannon = lround(EMparam->h[EMparam->nh-1]/EMparam->h[0]-1);
+    EMparam->Delta_r = 0.5*EMparam->Dmax/EMparam->Nshannon;
+
     nh=EMparam->nh;
     if (EMparam->nR <=0) {
-        EMparam->nR=EMparam->nh;
+        EMparam->nR=EMparam->Nshannon;
         nr=EMparam->nR;
     } else {
         nr=EMparam->nR;
@@ -3964,7 +3969,6 @@ void EM_DR_Init (void *FPd) {
     EMparam->A = dmatrix(0,EMparam->nh-1,0,EMparam->nR-1);
     EMparam->S = dmatrix(0,EMparam->nR-1,0,EMparam->nR-1);
 
-
     for (i=0;i<nh;i++){
         if (i==0) {
             EMparam->dh[0]=EMparam->h[0];
@@ -3974,7 +3978,7 @@ void EM_DR_Init (void *FPd) {
     }
     rmax = EMparam->Rmax;
     if (rmax <= 0) {
-        rmax = M_PI/EMparam->h[0];
+        rmax = EMparam->Dmax/2.0;
         EMparam->Rmax = rmax;
     }
 
@@ -3993,10 +3997,12 @@ void EM_DR_Init (void *FPd) {
 
     if (strcmp("single",EMparam->smooth_type)==0) {
         smooth_type = FALSE;
+        EMparam->smooth_bool = FALSE;
     } else {
         smooth_type = TRUE;
+        EMparam->smooth_bool = TRUE;
     }
-//sasfit_out("%d %s\n",smooth_type,EMparam.smooth_type);
+// sasfit_out("%d %s\n",smooth_type,EMparam->smooth_type);
 
     if (strcmp("constant",EMparam->seed)==0) {
         for (i=0;i<nr;i++) {
@@ -4046,12 +4052,283 @@ void EM_DR_Init (void *FPd) {
     N_VConst_Serial(0., FixedPointData->KINConstraints);
 }
 
+double MuCh_DR_Operator(void *EM_structure) {
+
+    EM_param_t *EMparam;
+    EMparam = (EM_param_t *)EM_structure;
+    int i,j,l, nr;
+    scalar p1,p2,p3, eps, chi2;
+/*
+    sasfit_out("EP_Operator: in: ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->in[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: out(start): ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+    sasfit_out("\n");
+*/
+    nr=EMparam->nR;
+
+
+    if ((EMparam->smooth > 0) && EMparam->smooth_bool) {
+        for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
+        EMparam->xwork[0]=exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[1])*EMparam->S[0][1]);
+        for (i=1;i<nr-1;i++) {
+            EMparam->xwork[i]=exp(log(EMparam->in[i-1])*EMparam->S[i][i-1]+log(EMparam->in[i])*EMparam->S[i][i]+log(EMparam->in[i+1])*EMparam->S[i][i+1]);
+        }
+        EMparam->xwork[nr-1]=exp(log(EMparam->in[nr-2])*EMparam->S[nr-1][nr-2]+log(EMparam->in[nr-1])*EMparam->S[nr-1][nr-1]);
+    } else {
+        for (i=0;i<nr;i++) {
+            EMparam->in[i] = EMparam->out[i];
+            EMparam->xwork[i] = EMparam->out[i];
+        }
+    }
+/*
+    sasfit_out("EP_Operator: work (1st smooth): ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+    sasfit_out("\n");
+*/
+
+//    sasfit_out("calculating {Ih-T1[DR]}*Q^4-C4\n");
+    for (j=0;j<EMparam->nh;j++) {
+        EMparam->Ith[j]=0;
+        for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->xwork[l]*EMparam->A[j][l];
+        EMparam->Ih4mC4[j]=(EMparam->Ih[j]-EMparam->Ith[j])*gsl_pow_4(EMparam->h[j])-1*EMparam->C4;
+    }
+
+//    sasfit_out("applying T3\n");
+    for (i=0;i<EMparam->nR;i++) {
+        EMparam->xwork[i]=0;
+        for (j=0;j<EMparam->nh;j++) {
+            EMparam->xwork[i]=EMparam->xwork[i]+EMparam->T3[i][j]*EMparam->dh[j]/gsl_pow_2(EMparam->r[i])*EMparam->Ih4mC4[j];
+        }
+        EMparam->xwork[i]=EMparam->in[i]+EMparam->xwork[i];
+/*
+        if (EMparam->xwork[i]+EMparam->in[i]>0) {
+            EMparam->xwork[i]=EMparam->in[i]+EMparam->xwork[i];
+        } else {
+            EMparam->xwork[i]=EMparam->in[i];
+        }
+*/
+    }
+//    EMparam->xwork[0]=0;
+/*
+    sasfit_out("EP_Operator: work (after T3 Operator): ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+    sasfit_out("\n");
+*/
+    EMparam->out[0]=(EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1]);
+    eps = gsl_pow_2(EMparam->out[0]-EMparam->in[0]);
+    for (i=1;i<nr-1;i++) {
+        EMparam->out[i]=(EMparam->xwork[i-1]*EMparam->S[i][i-1]+EMparam->xwork[i]*EMparam->S[i][i]+EMparam->xwork[i+1]*EMparam->S[i][i+1]);
+        eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
+    }
+    EMparam->out[nr-1]=(EMparam->xwork[nr-2]*EMparam->S[nr-1][nr-2]+EMparam->xwork[nr-1]*EMparam->S[nr-1][nr-1]);
+
+
+//    sasfit_out("EP_Operator: out (2nd smooth): ");
+//    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+//    sasfit_out("\n");
+
+    eps = eps+gsl_pow_2(EMparam->out[nr-1]-EMparam->in[nr-1]);
+    eps=sqrt(eps);
+
+    chi2=0;
+
+    for (i=0;i<EMparam->nh;i++){
+        EMparam->Ith[i] = 0;
+        for (j=0;j<nr;j++) {
+            EMparam->Ith[i] = EMparam->Ith[i] + EMparam->dr[j]*EMparam->A[i][j]*EMparam->out[j];
+        }
+        chi2=chi2+gsl_pow_2((EMparam->Ith[i]-EMparam->Ih[i])/EMparam->DIh[i]);
+    }
+    chi2=chi2/EMparam->nh;
+ //   sasfit_out("chi2:%lg\n",chi2);
+ //   sasfit_out("\n");
+    return chi2;
+}
+
+double SDM_DR_Operator(void *EM_structure) {
+
+    EM_param_t *EMparam;
+    EMparam = (EM_param_t *)EM_structure;
+    int i,j,l, nr;
+    scalar p1,p2,p3, eps, chi2, DeltaI, trans;
+    const gsl_rng_type * T;
+    gsl_rng * rgen;
+
+    gsl_rng_env_setup();
+    T = gsl_rng_default;
+    rgen = gsl_rng_alloc (T);
+    gsl_rng_set(rgen, time(NULL));
+/*
+    sasfit_out("EP_Operator: in: ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->in[i]);
+    sasfit_out("\n");
+    sasfit_out("EP_Operator: out(start): ");
+    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+    sasfit_out("\n");
+*/
+    nr=EMparam->nR;
+
+
+    if ((EMparam->smooth > 0) && EMparam->smooth_bool) {
+        for (i=0;i<nr;i++) EMparam->in[i] = fabs(EMparam->out[i]);
+        EMparam->xwork[0]=exp(log(EMparam->in[0])*EMparam->S[0][0]+log(EMparam->in[1])*EMparam->S[0][1]);
+        for (i=1;i<nr-1;i++) {
+            EMparam->xwork[i]=exp(log(EMparam->in[i-1])*EMparam->S[i][i-1]+log(EMparam->in[i])*EMparam->S[i][i]+log(EMparam->in[i+1])*EMparam->S[i][i+1]);
+        }
+        EMparam->xwork[nr-1]=exp(log(EMparam->in[nr-2])*EMparam->S[nr-1][nr-2]+log(EMparam->in[nr-1])*EMparam->S[nr-1][nr-1]);
+    } else {
+        for (i=0;i<nr;i++) {
+            EMparam->in[i] = EMparam->out[i];
+            EMparam->xwork[i] = EMparam->out[i];
+        }
+    }
+/*
+    sasfit_out("EP_Operator: work (1st smooth): ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+    sasfit_out("\n");
+*/
+
+//    sasfit_out("calculating {Ih-T1[DR]}*Q^4-C4\n");
+    for (j=0;j<EMparam->nh;j++) {
+        EMparam->Ith[j]=0;
+        for (l=0;l<nr;l++) EMparam->Ith[j]=EMparam->Ith[j]+EMparam->dr[l]*EMparam->xwork[l]*EMparam->A[j][l];
+    }
+
+//    sasfit_out("applying T3\n");
+    for (i=0;i<EMparam->nR;i++) {
+        EMparam->xwork[i]=0;
+        if (fabs(EMparam->Ith[EMparam->nR-1-i]) > 0 ) {
+            DeltaI = (EMparam->Ih[EMparam->nR-1-i]-EMparam->Ith[EMparam->nR-1-i]);
+            trans = fabs(atan(DeltaI/EMparam->DIh[EMparam->nR-1-i]*2)/M_PI_2);
+            EMparam->xwork[i]=EMparam->in[i]*(1.0+(trans+(0.5+0.5*gsl_rng_uniform(rgen))*(1-trans))*DeltaI/EMparam->Ith[EMparam->nR-1-i]);
+        } else {
+            EMparam->xwork[i]=EMparam->in[i];
+        }
+    }
+    gsl_rng_free(rgen);
+//    EMparam->xwork[0]=0;
+
+/*
+    sasfit_out("EP_Operator: work (after SDM Operator): ");
+    for (i=0;i<10;i++) sasfit_out(" %lg ",EMparam->xwork[i]);
+    sasfit_out("\n");
+*/
+    EMparam->out[0]=(EMparam->xwork[0]*EMparam->S[0][0]+EMparam->xwork[0]*EMparam->S[0][1]);
+    eps = gsl_pow_2(EMparam->out[0]-EMparam->in[0]);
+    for (i=1;i<nr-1;i++) {
+        EMparam->out[i]=(EMparam->xwork[i-1]*EMparam->S[i][i-1]+EMparam->xwork[i]*EMparam->S[i][i]+EMparam->xwork[i+1]*EMparam->S[i][i+1]);
+        eps = eps+gsl_pow_2(EMparam->out[i]-EMparam->in[i]);
+    }
+    EMparam->out[nr-1]=(EMparam->xwork[nr-2]*EMparam->S[nr-1][nr-2]+EMparam->xwork[nr-1]*EMparam->S[nr-1][nr-1]);
+
+
+//    sasfit_out("EP_Operator: out (2nd smooth): ");
+//    for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->out[i]);
+//    sasfit_out("\n");
+
+    eps = eps+gsl_pow_2(EMparam->out[nr-1]-EMparam->in[nr-1]);
+    eps=sqrt(eps);
+
+    chi2=0;
+
+    for (i=0;i<EMparam->nh;i++){
+        EMparam->Ith[i] = 0;
+        for (j=0;j<nr;j++) {
+            EMparam->Ith[i] = EMparam->Ith[i] + EMparam->dr[j]*EMparam->A[i][j]*EMparam->out[j];
+        }
+        chi2=chi2+gsl_pow_2((EMparam->Ith[i]-EMparam->Ih[i])/EMparam->DIh[i]);
+    }
+    chi2=chi2/EMparam->nh;
+ //   sasfit_out("chi2:%lg\n",chi2);
+ //   sasfit_out("\n");
+    return chi2;
+}
+
+void MuCh_DR_Free (void *FPd) {
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+    EM_DR_Free(FPd);
+    free_dmatrix(EMparam->T3,0,EMparam->nR-1,0,EMparam->nh-1);
+    free_dvector(EMparam->Ih4mC4,0,EMparam->nh-1);
+}
+
+scalar alpha_MuCh(scalar QR) {
+    scalar QR2;
+    QR2=QR*QR;
+    if (QR2 > 0) return (1. - 2./QR2)*cos(2*QR) - (2. - 1./QR2)*sin(2*QR)/QR;
+    return GSL_POSINF;
+}
+
+void MuCh_DR_Init (void *FPd) {
+    scalar QR;
+    int i,j;
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    EM_DR_Init(FPd);
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    EMparam->T3 = dmatrix(0,EMparam->nR-1,0,EMparam->nh-1);
+    EMparam->Ih4mC4 =  dvector(0,EMparam->nh-1);
+    for (i=0;i<EMparam->nR;i++){
+        for (j=0;j<EMparam->nh;j++) {
+            QR=EMparam->h[j]*EMparam->r[i];
+            EMparam->T3[i][j] = alpha_MuCh(QR);
+        }
+    }
+    for (j=0;j<EMparam->nR;j++) {
+        EMparam->xwork[j] = 0;
+        EMparam->out[j] = 0;
+        EMparam->in[j] = 0;
+    }
+}
+
+void SDM_DR_Free (void *FPd) {
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+    EM_DR_Free(FPd);
+}
+
+void SDM_DR_Init (void *FPd) {
+    scalar QR;
+    int i,j;
+    EM_param_t *EMparam;
+    sasfit_fp_data *FixedPointData;
+
+    FixedPointData = (sasfit_fp_data *)FPd;
+    EMparam = (EM_param_t *) FixedPointData->FPstructure;
+
+    EMparam->nR = EMparam->nh;
+    EM_DR_Init(FPd);
+    for (i=0;i<EMparam->nh;i++){
+        EMparam->r[i] = 1*0.5*M_PI/EMparam->h[EMparam->nh-1-i];
+        if (i==0) {
+            EMparam->dr[0] = EMparam->r[0];
+        } else {
+            EMparam->dr[i] = EMparam->r[i]-EMparam->r[i-1];
+        }
+    }
+    for (i=0;i<EMparam->nh;i++){
+        for (j=0;j<EMparam->nh;j++) {
+ //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
+            QR=EMparam->h[i]*EMparam->r[j];
+            EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
+        }
+    }
+}
 
 /*#########################################################################*/
 /*#                                                                       #*/
-/*# Sasfit_prEM_Cmd --                                                    #*/
+/*# Sasfit_DR_EM_Cmd --                                                   #*/
 /*#                                                                       #*/
-/*#      This function implements the Tcl "sasfit_prEM_Cmd" command       #*/
+/*#      This function implements the Tcl "sasfit_DR_EM_Cmd" command      #*/
 /*#                                                                       #*/
 /*# Results:                                                              #*/
 /*#      A standard Tcl result.                                           #*/
@@ -4061,7 +4338,7 @@ void EM_DR_Init (void *FPd) {
 /*#                                                                       #*/
 /*#########################################################################*/
 
-int Sasfit_prEM_Cmd(clientData, interp, argc, argv)
+int Sasfit_DR_EM_Cmd(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
     int        argc;
@@ -4082,7 +4359,7 @@ Tcl_DString DsBuffer;
 error = FALSE;
 
 if (argc != 3) {
-   sasfit_err("wrong # args; should be sasfit_prEM ?EMOptions? ?xye_data?\n");
+   sasfit_err("wrong # args; should be sasfit_DR_EM ?EMOptions? ?xye_data?\n");
    return TCL_ERROR;
 }
 
@@ -4147,6 +4424,186 @@ Tcl_DStringResult(interp,&DsBuffer);
 Tcl_DStringFree(&DsBuffer);
 
 EM_DR_Free(&FPd);
+
+return TCL_OK;
+}
+
+int Sasfit_DR_MuCh_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+EM_param_t EMparam;
+sasfit_fp_data FPd;
+
+scalar p1,p2,p3, QR, eps,chi2;
+int    i,j,k,l,itst;
+scalar rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_DR_MuCh ?EMOptions? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=&MuCh_DR_Operator;
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+FPd.PrintProgress=1;
+
+FPd.it=0;
+MuCh_DR_Init(&FPd);
+sasfit_out("D(R): %s algorithm: %d\n",EMparam.iteration_scheme, FPd.root_algorithm);
+sasfit_out("maxteps: %d\n",FPd.maxsteps);
+sasfit_out("R_max: %lg\n",EMparam.Rmax);
+sasfit_out("number of R bins: %d\n",EMparam.nR);
+sasfit_out("finished initialization\n");
+rmax = M_PI/EMparam.h[0];
+rmax = EMparam.Rmax;
+
+FP_solver(&FPd);
+sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
+sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+MuCh_DR_Free(&FPd);
+
+return TCL_OK;
+}
+
+int Sasfit_DR_SDM_Cmd(clientData, interp, argc, argv)
+    ClientData clientData;
+    Tcl_Interp *interp;
+    int        argc;
+    char       **argv;
+{
+struct extrapolPar EP;
+EM_param_t EMparam;
+sasfit_fp_data FPd;
+
+scalar p1,p2,p3, QR, eps,chi2;
+int    i,j,k,l,itst;
+scalar rmax;
+char   errstr[256],Buffer[256];
+bool   error;
+Tcl_DString DsBuffer;
+
+
+error = FALSE;
+
+if (argc != 3) {
+   sasfit_err("wrong # args; should be sasfit_DR_SDM ?EMOptions? ?xye_data?\n");
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EP(clientData,interp,argv,&EP,&EMparam.h,&EMparam.Iexp,&EMparam.DIh)) {
+   return TCL_ERROR;
+}
+
+if (TCL_ERROR == get_EM(clientData,interp,&EMparam)) {
+   return TCL_ERROR;
+}
+
+EMparam.C0 = EP.c0;
+EMparam.C4 = EP.c4;
+EMparam.nh = EP.ndata;
+FPd.FPstructure=&EMparam;
+FPd.FP_Op=&SDM_DR_Operator;
+FPd.mixcoeff=0.5;
+FPd.mixstrategy=mix_const;
+FPd.PrintProgress=1;
+
+FPd.it=0;
+SDM_DR_Init(&FPd);
+sasfit_out("D(R): %s algorithm: %d\n",EMparam.iteration_scheme, FPd.root_algorithm);
+sasfit_out("maxteps: %d\n",FPd.maxsteps);
+sasfit_out("R_max: %lg\n",EMparam.Rmax);
+sasfit_out("number of R bins: %d\n",EMparam.nR);
+sasfit_out("finished initialization\n");
+rmax = M_PI/EMparam.h[0];
+rmax = EMparam.Rmax;
+
+FP_solver(&FPd);
+sasfit_out("it. %d eps %lg chi2 %lg\n",FPd.it, FPd.gNorm, FPd.Chi2Norm);
+sasfit_out("it. %d KLD %lg JSD %lg\n",FPd.it, FPd.KLD, FPd.JSD);
+
+Tcl_ResetResult(interp);
+Tcl_DStringInit(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+    sprintf(Buffer,"%lg",EMparam.r[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nR;i++) {
+	sprintf(Buffer,"%lg",EMparam.out[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.h[i]);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringStartSublist(&DsBuffer);
+for (i=0;i<EMparam.nh;i++) {
+	sprintf(Buffer,"%lg",EMparam.Ith[i]+EP.c0);
+	Tcl_DStringAppendElement(&DsBuffer,Buffer);
+}
+Tcl_DStringEndSublist(&DsBuffer);
+Tcl_DStringResult(interp,&DsBuffer);
+Tcl_DStringFree(&DsBuffer);
+
+SDM_DR_Free(&FPd);
 
 return TCL_OK;
 }

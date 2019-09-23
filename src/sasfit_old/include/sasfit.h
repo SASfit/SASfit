@@ -112,6 +112,9 @@ struct extrapolPar {
 typedef struct
 {
 	scalar  Rmax;
+	scalar  Dmax;
+	int     Nshannon;
+	scalar  Delta_r;
 	scalar  smooth;
 	scalar  eps;
 	scalar  chi2;
@@ -119,14 +122,16 @@ typedef struct
 	char    spacing[132];
 	char    iteration_scheme[132];
 	char    smooth_type[132];
+	bool    smooth_bool;
 	char    seed[132];
 	scalar  dim;
 	int     nh, nR;
 	scalar  C4, C0;
-	double *in, *out, *xwork, **A, **S;
+	double *in, *out, *xwork, **A, **S, **T3, *Ih4mC4;
 	double *h, *Ih, *Iexp, *DIh, *Ith, *r, *dr, *dh;
     gsl_vector *DR;
     sasfit_oz_root_algorithms root_algorithm;
+
 //        char ct[STRLEN];
 } EM_param_t;
 

@@ -24,6 +24,16 @@
 
   SASFIT_PLUGIN_INFO_DECL;
 
+  // use lookup table for ff_pcs_ellcylsh(q, param)
+  #define sasfit_ff_pcs_ellcylsh(q,p) imp_ptr->functions[0].func((q),(p))
+  #define sasfit_ff_pcs_ellcylsh_f(q,p) imp_ptr->functions[0].func_f((q),(p))
+  #define sasfit_ff_pcs_ellcylsh_v(q,p,d) imp_ptr->functions[0].func_v((q),(p),(d))
+
+  // use lookup table for sasfit_sq_p__q___rod(q, param)
+  #define sasfit_sq_p__q___rod(q,p) imp_ptr->functions[1].func((q),(p))
+  #define sasfit_sq_p__q___rod_f(q,p) imp_ptr->functions[1].func_f((q),(p))
+  #define sasfit_sq_p__q___rod_v(q,p,d) imp_ptr->functions[1].func_v((q),(p),(d))
+
 #else
 
 
