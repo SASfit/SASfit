@@ -7409,6 +7409,21 @@ rcond = gsl_multifit_linear_rcond(w);
 sasfit_out("rcond:%lg\n",rcond);
 /* calculate L-curve and find its corner */
 switch (EMparam.optLagrange_method) {
+ case GCV:
+    gsl_multifit_linear_gcv(ys, reg_param, Gvec, &lambda_gcv, &G_gcv, w);
+	 	    /* regularize with lambda_gcv */
+    gsl_multifit_linear_solve(lambda_gcv, Xs, ys, c_gcv, &rnorm, &snorm, w);
+    if (FPd.PrintProgress > 0) {
+        sasfit_out("=== Regularized fit ===\n");
+        sasfit_out("lambda\tG\n");
+        for (j=0; j < EMparam.nLagrange; ++j) {
+            sasfit_out("i:\t%d\tlambda:\t%lg\tG(lambda):\t%lg\n", j,gsl_vector_get(reg_param,j),gsl_vector_get(Gvec,j));
+        }
+    }
+    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_gcv, M, c, w);
+    sasfit_out("lambda_opt\tG\trho\teta\n");
+    sasfit_out("%lg\t%lg\t%lg\t%lg\n", lambda_gcv,G_gcv,gsl_pow_2(rnorm),pow(lambda_gcv * snorm, 2.0));
+    break;
  case Lcorner2:
 //    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
     sasfit_gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, w);
@@ -7433,21 +7448,6 @@ switch (EMparam.optLagrange_method) {
     gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
     sasfit_out("lambda_opt   \t rho   \t  eta\n");
     sasfit_out("%lg\t%lg\t%lg\n", lambda_l,gsl_pow_2(rnorm),pow(lambda_l * snorm, 2.0));
-    break;
- case GCV:
-    gsl_multifit_linear_gcv(ys, reg_param, Gvec, &lambda_gcv, &G_gcv, w);
-	 	    /* regularize with lambda_gcv */
-    gsl_multifit_linear_solve(lambda_gcv, Xs, ys, c_gcv, &rnorm, &snorm, w);
-    if (FPd.PrintProgress > 0) {
-        sasfit_out("=== Regularized fit ===\n");
-        sasfit_out("lambda\tG\n");
-        for (j=0; j < EMparam.nLagrange; ++j) {
-            sasfit_out("i:%d\tlambda:%lg\tG(lambda):%lg\n", j,gsl_vector_get(reg_param,j),gsl_vector_get(Gvec,j));
-        }
-    }
-    gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_gcv, M, c, w);
-    sasfit_out("lambda_opt\tG\trho\teta\n");
-    sasfit_out("%lg\t%lg\t%lg\t%lg\n", lambda_gcv,G_gcv,gsl_pow_2(rnorm),pow(lambda_gcv * snorm, 2.0));
     break;
 case Lcorner:
 //    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
@@ -7499,7 +7499,7 @@ case redchi2:
     lambda_l = inverse_quad_interp(EMparam.chi2, gsl_vector_get(reg_param, l0),gsl_pow_2(gsl_vector_get(rho,l0))/EMparam.nh,
                                                  gsl_vector_get(reg_param, l1),gsl_pow_2(gsl_vector_get(rho,l1))/EMparam.nh,
                                                  gsl_vector_get(reg_param, l2),gsl_pow_2(gsl_vector_get(rho,l2))/EMparam.nh) ;
-    sasfit_out("lambda[%d]:%lg\n",j,lambda_l);
+    sasfit_out("lambda_opt_%d :%lg\n",j,lambda_l);
 
     gsl_multifit_linear_solve(lambda_l, Xs, ys, c_reg, &rnorm, &snorm, w);
     gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
@@ -7552,6 +7552,66 @@ if (EMparam.LLSmethod == NNLLS) {
     zzp = (double*) calloc(m,sizeof(double));
     wp = (double*) calloc(n,sizeof(double));
     indexp = (int*) calloc(n,sizeof(int));
+
+    if (EMparam.optLagrange_method==Lcorner) {
+    for (l=0;l<EMparam.nLagrange;l++) {
+        for (i = 0; i < (EMparam.nh); i++) {
+            for (j = 0; j < EMparam.nR; j++) {
+                Af2c[i+mda*j] = gsl_matrix_get(X,i,j)*sqrt(gsl_vector_get(weights,i));
+                Amn[i+m*j] = gsl_matrix_get(X,i,j)*sqrt(gsl_vector_get(weights,i));
+                AAA[j][i] = gsl_matrix_get(X,i,j)*sqrt(gsl_vector_get(weights,i));
+            }
+            bb[i]=gsl_vector_get(y,i)*sqrt(gsl_vector_get(weights,i));
+        }
+        for (i = 0; i < (EMparam.nR); i++) {
+            for (j = 0; j < EMparam.nR; j++) {
+                Af2c[(i+EMparam.nh)+mda*j] = gsl_vector_get(reg_param,l)*gsl_matrix_get(L,i,j);
+                AAA[j][(i+EMparam.nh)]     = gsl_vector_get(reg_param,l)*gsl_matrix_get(L,i,j);
+            }
+        }
+        gsl_multifit_linear_solve(gsl_vector_get(reg_param,l), Xs, ys, c_reg, &rnorm, &snorm, w);
+        gsl_multifit_linear_wgenform2(LQR, Ltau, X, weights, y, c_reg, M, c, w);
+        for (i = 0; i < EMparam.nR; i++) {
+            xx[i] = fabs(gsl_vector_get(c,i));
+        }
+        ierr=nnls(AAA,m,n,bb,xx,&rnorm,wp,zzp,indexp);
+        for (i=0;i<EMparam.nR;i++) {
+            EMparam.out[i]=xx[i];
+        }
+        rnorm = 0;
+        for (i=0;i<EMparam.nh;i++) {
+            EMparam.Ith[i]=0;
+            for (j=0; j < EMparam.nR; ++j) EMparam.Ith[i]=EMparam.Ith[i]+EMparam.dr[j]*EMparam.A[i][j]*EMparam.out[j];
+            rnorm=rnorm+gsl_pow_2((EMparam.Ith[i]-EMparam.Ih[i])/EMparam.DIh[i]);
+        }
+        gsl_vector_set(rho,l,rnorm);
+        rnorm = 0;
+        for (i = 0; i < (EMparam.nR); i++) {
+            snorm =0;
+            for (j = 0; j < EMparam.nR; j++) {
+                snorm = snorm + gsl_matrix_get(L,i,j)*xx[j];
+            }
+            rnorm = rnorm + snorm*snorm; // gsl_pow_2(gsl_vector_get(reg_param,l)*snorm);
+        }
+        gsl_vector_set(eta,l,rnorm);
+        sasfit_out("finished %d  nnls(lambda=%lg) with error: %d and rho: %lg and eta: %lg\n",l,gsl_vector_get(reg_param,l),ierr,gsl_vector_get(rho,l),gsl_vector_get(eta,l));
+    }
+    sasfit_gsl_multifit_linear_lcorner(rho, eta, MengerR, slope,EMparam.maxslope, &reg_idx);
+    if (FPd.PrintProgress > 0) {
+    sasfit_out("=== Regularized NNLLS fit ===\n");
+    for (j=0; j < EMparam.nLagrange; ++j) {
+        sasfit_out("i\t%d\tlambda\t%lg\trho\t%lg\teta\t%lg\tMengerR\t%lg\tslope\t%lg\n",
+                j, gsl_vector_get(reg_param,j),
+                gsl_pow_2(gsl_vector_get(rho,j))/EMparam.nh,
+                gsl_vector_get(eta,j),
+                gsl_vector_get(MengerR,j),
+                gsl_vector_get(slope,j));
+    }
+    }
+/* store optimal regularization parameter */
+    lambda_l = gsl_vector_get(reg_param, reg_idx);
+    sasfit_out("lambda_opt %d:%lg\n",reg_idx,lambda_l);
+    }
     for (i = 0; i < (EMparam.nh); i++) {
         for (j = 0; j < EMparam.nR; j++) {
             Af2c[i+mda*j] = gsl_matrix_get(X,i,j)*sqrt(gsl_vector_get(weights,i));
@@ -7560,7 +7620,6 @@ if (EMparam.LLSmethod == NNLLS) {
         }
         bb[i]=gsl_vector_get(y,i)*sqrt(gsl_vector_get(weights,i));
     }
-
     for (i = 0; i < (EMparam.nR); i++) {
         for (j = 0; j < EMparam.nR; j++) {
             Af2c[(i+EMparam.nh)+mda*j] = (EMparam.optLagrange_method==GCV?lambda_gcv:lambda_l)*gsl_matrix_get(L,i,j);
@@ -7579,6 +7638,9 @@ if (EMparam.LLSmethod == NNLLS) {
     sasfit_out("initialized corresponding matrices and vector\ntry to perform now nnls\n");
 //    nnls_f2c(Af2c, &mda,&m,&n,bb,xx,&rnorm,wp,zzp,indexp,&ierr);
     ierr=nnls(AAA,m,n,bb,xx,&rnorm,wp,zzp,indexp);
+    for (i=0;i<EMparam.nR;i++) {
+        EMparam.out[i]=xx[i];
+    }
     sasfit_out("finished nnls with error: %d and rnorm:%lf\n",ierr,rnorm);
     sasfit_out("freeing now all the memory\nstart to free AA\n");
     for (i=0; i<(EMparam.nR+0*EMparam.nh);i++) {
@@ -7604,9 +7666,6 @@ if (EMparam.LLSmethod == NNLLS) {
     free(U);
     free(S);
     free(V);
-    for (i=0;i<EMparam.nR;i++) {
-        EMparam.out[i]=xx[i];
-    }
 } else {
     for (i=0;i<EMparam.nR;i++) {
         EMparam.out[i]=gsl_vector_get(c,i);

@@ -1,15 +1,15 @@
 \chapter{Numerical solution of Fredholm integrals using regularization}
-In physics many experimental data can be described theoretical by a Fredholm integral. To extract a physical interesting quantity the integral equation often has to be solved numerically. In many cases this problem becomes ill-posed and an additional regularization technique has to be included in the analysis to obtain a stable solution. A general overview about regularization techniques can be found e.g. in \cite{Hansen1998,Hansen2000b,Gazzola2018,Scherzer2011,Kern2016}.
+In physics, many experimental data can be described theoretical by a Fredholm integral. To extract a physical interesting quantity the integral equation often has to be solved numerically. In many cases, this problem becomes ill-posed and an additional regularization technique has to be included in the analysis to obtain a stable solution. A general overview about regularization techniques can be found e.g. in \cite{Hansen1998,Hansen2000b,Gazzola2018,Scherzer2011,Kern2016}.
 
-%\nocite{Benvenuto2016,Gao2016,Hansen2016,Pedersen2014,Sen2014,Blanchet2013,Mroczka2013,Paul2013,
-%Mroczka2013,Liu2012,Zhenhai2012,Bauer2011,Debski2010,Hansen2008,Santos2007,Wang2007,Stribeck2006,Vestergaard2006,Tatchev2004,
-%Hansen2003,Castellanos2002,Pike2002,Bergmann2000,Hansen2000,Hansen2000a,Elliott1999,Weyerich1999,Mittelbach1998,Mulato1998,
-%Brunner-Popela1997,Durchschlag1997,Mulato1997,Tsao1997,Gilmore1996,Hansen1996,Kline1996,Krauthauser1996,Muller1996,Mulato1996,
-%Serimaa1996,Jakes1995,Jemian1994,Ross1994,Steenstrup1994,Svergun1994,Glatter1993,Svergun1993,Morrison1992,Svergun1992,
-%Glatter1991,Goldin1991,Hansen1991,Semenyuk1991,Svergun1991,Jakes1991,Jakes1990,Bricogne1988,Glatter1988,Magnani1988,Potton1988,Potton1988a,
-%Svergun1988,Jakes1988,Thomas1987,Xu1987,Luzzati1986,Jakes1986,Livesey1985,Walter1985,Kubota1985,Bricogne1984,Glatter1984,Provencher1984,
-%Skilling1984,Britten1982,Kratky1982,Provencher1982,Provencher1982a,Taupin1982,Glatter1981,Glatter1980,Glatter1980b,Moore1980,Glatter1979,
-%Provencher1978,Glatter1977,Vonk1976,Pusey1974,Debye1915}.
+\nocite{Benvenuto2016,Gao2016,Hansen2016,Pedersen2014,Sen2014,Blanchet2013,Mroczka2013,Paul2013,
+Mroczka2013,Liu2012,Zhenhai2012,Bauer2011,Debski2010,Hansen2008,Santos2007,Wang2007,Stribeck2006,Vestergaard2006,Tatchev2004,
+Hansen2003,Castellanos2002,Pike2002,Bergmann2000,Hansen2000,Hansen2000a,Elliott1999,Weyerich1999,Mittelbach1998,Mulato1998,
+Brunner-Popela1997,Durchschlag1997,Mulato1997,Tsao1997,Gilmore1996,Hansen1996,Kline1996,Krauthauser1996,Muller1996,Mulato1996,
+Serimaa1996,Jakes1995,Jemian1994,Ross1994,Steenstrup1994,Svergun1994,Glatter1993,Svergun1993,Morrison1992,Svergun1992,
+Glatter1991,Goldin1991,Hansen1991,Semenyuk1991,Svergun1991,Jakes1991,Jakes1990,Bricogne1988,Glatter1988,Magnani1988,Potton1988,Potton1988a,
+Svergun1988,Jakes1988,Thomas1987,Xu1987,Luzzati1986,Jakes1986,Livesey1985,Walter1985,Kubota1985,Bricogne1984,Glatter1984,Provencher1984,
+Skilling1984,Britten1982,Kratky1982,Provencher1982,Provencher1982a,Taupin1982,Glatter1981,Glatter1980,Glatter1980b,Moore1980,Glatter1979,
+Provencher1978,Glatter1977,Vonk1976,Pusey1974,Debye1915,Larsen2018,Bressler2015}.
 
 \section{Problem description}
 Also scattering techniques often measure  a quantity which can be written in form of a Fredholm integral.
@@ -194,7 +194,7 @@ N_i(R_h) &= R_h^6 N_h(R_h)
 Eq.\ \ref{eq:Nh} or eq.\ \ref{eq:GRh} show, that the size distribution or decay rate distribution also depend on the $q$ and size dependent scattering function $I(q,R_h)$. Analysing intensity correlation function at different angles simultaneously normally helps to get a more stable solution for the size distribution of particles.
 
 \section{Expectation Maximization (EM)}
-The EM algorithm has been first explained in \cite{Dempster1977}. The method is an iterative fixed point method for positive defined functions. (Other fixed point techniques are described for example in \cite{Hanke2000}.) In \cite{Vardi1993} it has been shown how the EM method can be applied to solve Fredholm integrals for the domain of nonnegative real valued functions. The method described there is equivalent to the Lucy\hyp{}Richardson method \cite{Richardson1972,Lucy1974}. For calculating size distribution from scattering data the method has been applied e.g.\ by \cite{Yang2013,Benvenuto2016,Benvenuto2017}. For inverting scattering data to pair distance distribution functions the condition of nonnegativity of the involved functions does not hold anymore as both the kernel of the Fredholm integral as well as the pair distance distribution function can take negative values. In \cite{Chae2018} it has been shown, how the EM algorithm can be reformulated for non-density functions, i.e. to functions which also can take negative values.
+The EM algorithm has been first explained in \cite{Dempster1977}. The method is an iterative fixed point method for positive defined functions. (Other fixed point techniques are described for example in \cite{Hanke2000}.) In \cite{Vardi1993} it has been shown how the EM method can be applied to solve Fredholm integrals for the domain of nonnegative real valued functions. The method described there is equivalent to the Lucy\hyp{}Richardson method \cite{Richardson1972,Lucy1974}. For calculating size distribution from scattering data the method has been applied e.g.\ by \cite{Yang2013,Benvenuto2016,Benvenuto2017,Bakry2019}. For inverting scattering data to pair distance distribution functions the condition of nonnegativity of the involved functions does not hold anymore as both the kernel of the Fredholm integral as well as the pair distance distribution function can take negative values. In \cite{Chae2018} it has been shown, how the EM algorithm can be reformulated for non-density functions, i.e. to functions which also can take negative values.
 
 Writing the Fredholm integral in eq.\ \ref{eq:Fredholm} or \ref{eq:KernelScaling} in discrete form according to \ref{eq:discreteFredholm}
 \begin{align}
@@ -396,7 +396,7 @@ with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$
 
 \begin{algorithm}[bht] \footnotesize
 \caption{Biggs-Andersen  fixed point acceleration of order $o=0,1,2$ }\label{algorithm:Biggs_Andersen}
-\begin{algorithmic}[1] 
+\begin{algorithmic}[1]
 \Procedure{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
     \State $\mathbf{g}^{(n-2)} \gets \mathbf{g}^{(n-1)}$
     \State $\mathbf{g}^{(n-1)} \gets \mathbf{x}^{(n+1)}-\mathbf{x}^{(n)}$
@@ -437,7 +437,7 @@ with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$
 
 Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}. However, only the supplies Anderson acceleration speeds up the fixed point iterations whereas all the others like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993} become instable and do not converge.
 
-In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation which does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in algorithm \ref{algorithm:Biggs_Andersen}. The convergence behaviour of the different acceleration schemes are shown in fig.\ \ref{fig:EMconvergenceSpeed}. Quite good acceptation has been achieved by the overrelaxation method as well as the Biggs-Andersen method and Anderson acceleration, whereas other classical methods like GMRES, Bi-CGSab or TFQMR failed.
+In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation which does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in algorithm \ref{algorithm:Biggs_Andersen}. The convergence behaviour of the different acceleration schemes are shown in fig.\ \ref{fig:EMconvergenceSpeed}. Quite good acceleration has been achieved by the Biggs-Andersen method as well as Anderson acceleration, whereas other classical methods like GMRES, Bi-CGSab or TFQMR failed. The Picard iteration scheme and faster overrelaxation method need orders of magnitudes more iterations to reach the true fixed point solution. The preferred acceleration scheme therefore becomes the Biggs-Andersen methods.
 
 
 \begin{figure}[htb]
@@ -446,7 +446,6 @@ In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing
 \caption{Convergence behaviour of a few acceleration schemes compared to the non-accelerated Picard iteration.\label{fig:EMconvergenceSpeed}}
 \end{figure}
 
-\clearpage
 \section{Linear least square regularization (LLS)}
 \label{sec:LLS}
 Linear least square regularization has been implemented using the GNU scientific library (\texttt{gsl}). It supplies routines to solve ill-posed problems including a regularization term in the least squares minimization
@@ -553,6 +552,21 @@ right one or  vice versa.
         &        &        & -1     & 2
   \end{pmatrix}  \in \mathbb{R}^{N\times N}
 \end{align}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.45\textwidth]{../images/form_factor/EM/LLS_Lcorner.png}\hspace{0.02\textwidth}
+\includegraphics[width=0.45\textwidth]{../images/form_factor/EM/LLS_NRR3_Lcorner.png}
+\caption{The optimum Lagrange parameters $\lambda_c$ have been obtained by the corners of the L-curves for $\hat{\mathbf{L}}=\hat{\mathbf{1}}$, $\hat{\mathbf{L}}=\hat{\mathbf{L}}_\mathrm{1^{st}}$ and $\hat{\mathbf{L}}=\hat{\mathbf{L}}_\mathrm{2^{nd}}$. \label{fig:EMLcorner}}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.42\textwidth]{../images/form_factor/EM/LLS_GCVcurve.png}\hspace{0.05\textwidth}
+\includegraphics[width=0.45\textwidth]{../images/form_factor/EM/LLS_NRR3_GCVminimum.png}
+\caption{The optimum Lagrange parameters $\lambda$ have been obtained by minimizing the ``Generalized Cross Validation'' function.\label{fig:EMGCVminimum}}
+\end{figure}
+
 
 \section{Non-negative linear least square regularization (NNLLS)}\label{sec:NNLLS}
 The non-negative linear least square solver used here is taken from \cite{Lawson1995a} and are also available at netlib under
