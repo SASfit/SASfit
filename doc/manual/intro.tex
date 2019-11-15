@@ -142,15 +142,25 @@ install the \texttt{SASfit} package one has to do the following:
 
 \section{User Interface Window}
 \begin{figure}[htb]
-\centering
-  \subfigure[main window]{\label{fig:QTmainA}\includegraphics[width=0.48\textwidth]{QTmainA.png}}
-  \subfigure[popup menu]{\label{fig:QTmainB}\includegraphics[width=0.48\textwidth]{QTmainB.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmainA.png}
+   \caption{main window}
+   \label{fig:QTmainA}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmainB.png}
+   \caption{popup menu}
+   \label{fig:QTmainB}
+\end{subfigure}
 \caption{Main \SASfit graphical user interface window}
 \label{fig:QTmain}
 \end{figure}
 \sloppy
 The core \SASfit window consists of various tabs (shown in the oval
-marking in the figure \ref{fig:QTmain}(a), they are "\texttt{fit of single data set}",
+marking in the figure \ref{fig:QTmainA}, they are "\texttt{fit of single data set}",
 "\texttt{multiple data sets for global fitting}", "\texttt{residuum}", "\texttt{size
 distrib.}", "\texttt{integral structural parameters}", "\texttt{parameters of
 analytical size distrib.}", "\texttt{moments of analytical size
@@ -170,7 +180,7 @@ detector intensity is used in case of anisotropic scattering data.
 The window were the graphs are generated has options of printing the
 graph plotted view, copying the data in the ASCII format or as an
 image (wmf) format for further processing or presenting (figure
-\ref{fig:QTmain}(b)). \SASfit accepts the isotropic data in the ASCII
+\ref{fig:QTmainB}). \SASfit accepts the isotropic data in the ASCII
 format. The data can be imported as a single data set or for
 multiple data sets (several scattering curves).
 
@@ -182,12 +192,20 @@ multiple data sets (several scattering curves).
 \end{figure}
 
 \begin{figure}[htb]
-\centering
-  \subfigure[Path and format selection for new file]{\label{fig:QTNewFile}
-             \includegraphics[width=0.44\textwidth]{QTNewFile.png}}
-  \subfigure[Selecting the format columns of the file]{\label{fig:QTascii1}
-             \includegraphics[width=0.22\textwidth]{QTascii1.png}
-             \includegraphics[width=0.22\textwidth]{QTascii2.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+    \includegraphics[width=\textwidth]{QTNewFile.png}
+   \caption{Path and format selection for new file}
+   \label{fig:QTNewFile}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=0.48\textwidth]{QTascii1.png} \hfill
+   \includegraphics[width=0.48\textwidth]{QTascii2.png}
+   \caption{Selecting the format columns of the file}
+   \label{fig:QTascii1}
+\end{subfigure}
 \caption{Importing single data sets} \label{fig:QTNewFileDS}
 \end{figure}
 
@@ -195,7 +213,7 @@ The single data set option allows the user to perform operation on a
 single data file only. The file is imported via,
 \verb"[File|Single Data Set...]" (Figure \ref{fig:QTloadingSingleDS}).
 This will open a new file window as shown in figure
-\ref{fig:QTNewFileDS}(a). The location of the file could be browsed
+\ref{fig:QTNewFile}. The location of the file could be browsed
 and respectively selected. The options buttons is supplied to select
 the input format, which is performed by supplying a string such as
 \texttt{xye}. Where \texttt{x}, \texttt{y} and \texttt{e} stands for
@@ -216,13 +234,17 @@ merge files being opened.
 
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Merge window for merging different $Q$ scales into a single profile]{\label{fig:QTmergeSDS1}
-             \includegraphics[width=0.5\textwidth]{QTmergeSDS1.png}}
-  \subfigure[An example showing merged data files]{\label{fig:QTmergeSDS2}
-             \includegraphics[width=0.5\textwidth]{QTmergeSDS2.png}}
-  \subfigure[resolution parameter interface]{\label{fig:QTmergeRes}
-             \includegraphics[width=0.3\textwidth]{QTmergeRes.png}}
+\subcaptionbox{Merge window for merging different $Q$ scales into a single profile\label{fig:QTmergeSDS1}}{\includegraphics[width=0.47\textwidth]{QTmergeSDS1.png}}
+\subcaptionbox{An example showing merged data files\label{fig:QTmergeSDS2}}{\includegraphics[width=0.47\textwidth]{QTmergeSDS2.png}}
+\hfill
+\begin{subfigure}[b]{.4\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmergeRes.png}
+   \caption{resolution parameter interface}
+   \label{fig:QTmergeRes}
+\end{subfigure}
 \caption{Merging many data files to one data set} \label{fig:QTmergeSDScapt}
 \end{figure}
 
@@ -242,7 +264,7 @@ be removed by skipping the points at the beginning and at the end of
 the data files. The resolution parameters can be provided by
 pressing the resolution button and the required information such as
 sample to detector distance, collimation distance, cross section of
-the guide etc as shown in figure  \ref{fig:QTmergeSDScapt}(c) has to be entered to use
+the guide etc as shown in figure  \ref{fig:QTmergeRes} has to be entered to use
 resolution smearing during the fitting. The new button is use to
 discard all the current selections and plotted data files and starts
 a new session. The file could also be imported by pasting the
@@ -254,8 +276,9 @@ browse method.
 \section{Importing data files for multiple data sets}
 \begin{figure}[htb]
 \centering
-    \includegraphics[width=0.49\textwidth]{QTloadingMultipleDS1.png}
-    \includegraphics[width=0.49\textwidth]{QTloadingMultipleDS2.png}
+    \includegraphics[width=0.48\textwidth]{QTloadingMultipleDS1.png}
+    \hfill
+    \includegraphics[width=0.48\textwidth]{QTloadingMultipleDS2.png}
 \caption{Procedure for importing data files for multiple data sets}
 \label{fig:QTmergeMultipleDS1}
 \end{figure}
@@ -271,16 +294,21 @@ imported by first going to multiple data sets for global fitting
 as was the case for importing single data set
 as shown below.
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Path and format selection for new file ]{\label{fig:QTloadingMultipleDS3}
-             \includegraphics[width=0.6\textwidth]{QTloadingMultipleDS3.png}}
-  \subfigure[Selecting the format of the file]{\label{fig:QTloadingMultipleDS4}
-             \includegraphics[width=0.3\textwidth]{QTloadingMultipleDS4.png}}
-  \subfigure[Merge window for input of multiple data sets. Red box shows the buttons
+\subcaptionbox{Path and format selection for new file \label{fig:QTloadingMultipleDS3}}{\includegraphics[width=0.6\textwidth]{QTloadingMultipleDS3.png}}
+\hfill
+\subcaptionbox{Selecting the format of the file \label{fig:QTloadingMultipleDS4}}{\includegraphics[width=0.3\textwidth]{QTloadingMultipleDS4.png}}
+\hfill
+\begin{subfigure}[b]{.7\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTloadingMultipleDS5.png}
+   \caption{Merge window for input of multiple data sets. Red box shows the buttons
              from which additional data files could be imported.
              Whereas the features of merging the data set for different $Q$ scales
-             is similar to that for importing single data set]{\label{fig:QTloadingMultipleDS5}
-             \includegraphics[width=0.7\textwidth]{QTloadingMultipleDS5.png}}
+             is similar to that for importing single data set}
+   \label{fig:QTloadingMultipleDS5}
+\end{subfigure}
 \caption{Procedure for importing data files for multiple data sets}
 \label{fig:QTmergeMultipleDS2}
 \end{figure}
@@ -316,13 +344,13 @@ The averaging of data points therefore depends on a user-defined maximum allowed
 The second option simply skips data points equally to reduce the amount data. The parameter "percentage/100 to load" defines the amount of data to be kept. A value of 1 means all data are kept and a value of 0.5 means every second data point will be kept. In the third option one can define a distance in the $q:I(q)$-plot or $\log q: \log I(q)$ plot. The next data point, which will be plotted must have either in the linear or logarithmic plot a distance exceeding a user defined value.
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Averaging data points depending on the error bar and resulting resolution.]{\label{fig:DataReductionOptionAVG1}
-             \includegraphics[width=0.3\textwidth]{../images/GUI/DataReductionOptionAVG1.png}}
-  \subfigure[skipping data points to reduce the number of points to a certain amount.]{\label{fig:DataReductionOptionSKIP1}
-             \includegraphics[width=0.3\textwidth]{../images/GUI/DataReductionOptionAVG1.png}}
-  \subfigure[reducing the number of data points by defining a minimum distance between them to be plotted.]{\label{fig:DataReductionOptionSKIP2}
-             \includegraphics[width=0.3\textwidth]{../images/GUI/DataReductionOptionSKIP2.png}}
+\subcaptionbox{Averaging data points depending on the error bar and resulting resolution \label{fig:DataReductionOptionAVG1} }{\includegraphics[width=0.32\textwidth]{../images/GUI/DataReductionOptionAVG1.png}}
+\hfill
+\subcaptionbox{skipping data points to reduce the number of points to a certain amount \label{fig:DataReductionOptionSKIP1} }{\includegraphics[width=0.32\textwidth]{../images/GUI/DataReductionOptionAVG1.png}}
+\hfill
+\subcaptionbox{reducing the number of data points by defining a minimum distance between them to be plotted \label{fig:DataReductionOptionSKIP2} }{\includegraphics[width=0.32\textwidth]{../images/GUI/DataReductionOptionSKIP2.png}}
 \caption{GUI for input values of the two algorithms for reducing the number of data points and for one algorithm which is averaging data points.}
 \label{fig:DataReductionOption}
 \end{figure}
@@ -345,11 +373,19 @@ experiment and to know whether a given concentration and contrast
 would produce a measurable signal.
 
 \begin{figure}[htb]
-\centering
-  \subfigure[simulation of a single curve]{\label{fig:QTsimulateSDS}
-             \includegraphics[width=0.48\textwidth]{QTsimulateSDS.png}}
-  \subfigure[simulation of multiple curves]{\label{fig:QTsimulateMDS}
-             \includegraphics[width=0.48\textwidth]{QTsimulateMDS.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTsimulateSDS.png}
+   \caption{simulation of a single curve}
+   \label{fig:QTsimulateSDS}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTsimulateMDS.png}
+   \caption{simulation of multiple curves}
+   \label{fig:QTsimulateMDS}
+\end{subfigure}
 \caption{Procedure for simulating data profiles for single as well as multiple data files}
 \label{fig:QTsimulateDS}
 \end{figure}
@@ -394,10 +430,19 @@ entire file list, to be saved in the custom file for later viewing.
 
 \begin{figure}[htb]
 \centering
-  \subfigure[data with fit results]{\label{fig:QTintegralparameterTab}
-             \includegraphics[width=0.48\textwidth]{QTintegralparameterTab.png}}
-  \subfigure[entry menu with fitted parameters]{\label{fig:QTintegralparameterMenu}
-             \includegraphics[width=0.48\textwidth]{QTintegralparameterMenu.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTintegralparameterTab.png}
+   \caption{data with fit results}
+   \label{fig:QTintegralparameterTab}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTintegralparameterMenu.png}
+   \caption{entry menu with fitted parameters}
+   \label{fig:QTintegralparameterMenu}
+\end{subfigure}
 \caption{Integral fit parameters}
 \label{fig:QTintegralparameter}
 \end{figure}
@@ -421,13 +466,13 @@ consists of
 \subsection{Model dependent analysis}
 \subsubsection{Modeling a single data set}~\\
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Menu through which fitting procedure is initiated]{\label{fig:QTsinglefitTab}
-             \includegraphics[width=0.5\textwidth]{QTsinglefit1.png}}
-  \subfigure[User interface for fitting, containing different form factors and structure factor]{\label{fig:QTsinglefitEntryMenu}
-             \includegraphics[width=0.48\textwidth]{QTsinglefit2.png}}
-  \subfigure[Tab summarizing the analyzed parameters]{\label{fig:QTsinglefitParOverview}
-             \includegraphics[width=0.48\textwidth]{QTsinglefit3.png}}
+\subcaptionbox{Menu through which fitting procedure is initiated \label{fig:QTsinglefitTab} }{\includegraphics[width=0.5\textwidth]{QTsinglefit1.png}}
+\hfill
+\subcaptionbox{User interface for fitting, containing different form factors and structure factor \label{fig:QTsinglefitEntryMenu} }{\includegraphics[width=0.48\textwidth]{QTsinglefit2.png}}
+\hfill
+\subcaptionbox{Tab summarizing the analyzed parameters \label{fig:QTsinglefitParOverview} }{\includegraphics[width=0.48\textwidth]{QTsinglefit3.png}}
 \caption{Menus for fitting a single data set}
 \label{fig:QTsinglefit}
 \end{figure}
@@ -440,7 +485,7 @@ spherical shell with a core radius of $R$ and a shell thickness of
 $\Delta R$ \SASfit allows to integrate either over the core
 radius $x=R$ or the shell thickness $x=\Delta R$ by marking the
 corresponding parameter (see option {\tt distr} in Fig .
-\ref{fig:QTsinglefit}(b)). Furthermore an additional structure factor
+\ref{fig:QTsinglefitEntryMenu}). Furthermore an additional structure factor
 can be included for each scattering object. Several ways to account
 for the structure factor have been implemented like the monodisperse
 approximation (\ref{sec:SQmonodisperse}), decoupling approach
@@ -465,16 +510,15 @@ A user interface shown in Fig. \ref{fig:QTsinglefit} is supplied to
 choose between the number of scattering objects and to define
 parameter for each of them. Next to varying the different parameters
 one can mark those to be fixed or fitted (see option {\tt fit} in Fig.
-\ref{fig:QTsinglefitEntryMenu}(b)). Model dependent analysis for single files
+\ref{fig:QTsinglefitEntryMenu}). Model dependent analysis for single files
 are performed via \verb"[Calc|Single Data Set|Fit...]".
 
 \subsubsection{Modeling multiple data sets}~\\
 \begin{figure}[htb]
 \centering
-  \subfigure[Imported multiple data sets]{\label{fig:QTmultiplefit1}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefit1.png}}
-  \subfigure[Uuser interface for fitting multiple data files]{\label{fig:QTmultiplefit2}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefit2.png}}
+\subcaptionbox{Imported multiple data sets \label{fig:QTmultiplefit1}}{\includegraphics[width=0.48\textwidth]{QTmultiplefit1.png}}
+\hfill
+\subcaptionbox{User interface for fitting multiple data files \label{fig:QTmultiplefit2} }{\includegraphics[width=0.48\textwidth]{QTmultiplefit2.png}}
 \caption{Menus for fitting a simultaneously multiple data sets}
 \label{fig:QTmultiplefit}
 \end{figure}
@@ -492,19 +536,38 @@ fitting of the data is performed by calling the fitting function via
 \verb"[Calc|Multiple Data Sets|Fit...]". The user interface for multiple
 data fitting has additional feature than to that for single data
 fitting, they are pre-factor and global parameters as shown in
-figure \ref{fig:QTmultiplefit}(b) red markings.
+figure \ref{fig:QTmultiplefit} red markings.
 
 
 \begin{figure}[htb]
 \centering
-  \subfigure[]{\label{fig:QTmultiplefitUI1}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI1.png}}
-  \subfigure[]{\label{fig:QTmultiplefitUI2}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI2.png}}
-  \subfigure[]{\label{fig:QTmultiplefitUI3}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI3.png}}
-  \subfigure[]{\label{fig:QTmultiplefitUI4}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI4.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmultiplefitUI1.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+  \includegraphics[width=\textwidth]{QTmultiplefitUI2.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI2}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmultiplefitUI3.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI3}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmultiplefitUI4.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI4}
+\end{subfigure}
 \caption{Different windows showing different controlling parameters during multiple data fitting.}
 \label{fig:QTmultiplefitUI}
 \end{figure}
@@ -512,7 +575,7 @@ figure \ref{fig:QTmultiplefit}(b) red markings.
 The procedure for fitting the data set is similar to that mentioned
 in the earlier section. The only difference is to include the global
 parameters for each function included. The scattering profile shown
-in the figure \ref{fig:QTmultiplefit}(a) is for a spherical
+in the figure \ref{fig:QTmultiplefit1} is for a spherical
 monodispersed particle, both
 the profiles have identical features with a scaling factor of two.
 The user interface for fitting shows the following window in figures
@@ -530,18 +593,37 @@ scattering contrast and background. The fitting procedure can then
 be started by pressing Run fit. The figures \ref{fig:QTmultiplefitUIeg}
 show the graphs during the fitting process. The parameters of fitting for all the
 contribution can be viewed by pressing parameters of analytical size
-distributions (figure \ref{fig:QTmultiplefitUIeg}(d)).
+distributions (figure \ref{fig:QTmultiplefitUIeg4}).
 
 \begin{figure}[htb]
 \centering
-  \subfigure[]{\label{fig:QTmultiplefitUI5}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI5.png}}
-  \subfigure[]{\label{fig:QTmultiplefitUI6}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI6.png}}
-  \subfigure[]{\label{fig:QTmultiplefitUI7}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI7.png}}
-  \subfigure[]{\label{fig:QTmultiplefitUI8}
-             \includegraphics[width=0.48\textwidth]{QTmultiplefitUI8.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmultiplefitUI5.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI5}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+  \includegraphics[width=\textwidth]{QTmultiplefitUI6.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI6}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmultiplefitUI7.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI7}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{QTmultiplefitUI8.png}
+%   \caption{}
+   \label{fig:QTmultiplefitUI8}
+\end{subfigure}
 \caption{The scattering data profile and the analytical parameters obtained during the fitting process.}
 \label{fig:QTmultiplefitUIeg}
 \end{figure}

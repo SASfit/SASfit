@@ -19,6 +19,8 @@
  * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <tcl.h>
 /* Required to access the 'stat' structure fields, and TclInExit() */
 #include "tclInt.h"

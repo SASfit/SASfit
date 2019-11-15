@@ -50,7 +50,14 @@
 #define TanhSinh 8
 #define GSL_QAGS 9
 #define GSL_QNG 10
-
+#define GSL_G962D 11
+#define GSL_GAUSSLEGENDRE 12
+#define GSL_CHEBYSHEV1 13
+#define GSL_CHEBYSHEV2 14
+#define GSL_GEGENBAUER 15
+#define GSL_EXPONENTIAL 16
+#define GSL_LAGUERRE 17
+#define GSL_JACOBI 18
 // hide direct functions from plugins
 #ifndef MAKE_SASFIT_PLUGIN
 

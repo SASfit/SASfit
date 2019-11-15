@@ -51,7 +51,7 @@ Q\rangle,\sigma\right)  \int_0^\infty N(s) \abs{F(Q,s)}^2 \, \mathrm{d}s \, \mat
 &= \int_0^\infty N(s)  \int_0^\infty R_{av}\left(Q,\langle
 Q\rangle,\sigma\right) \abs{F(Q,s)}^2 \, \mathrm{d}Q \, \mathrm{d}s \label{eq:IQ}
 \end{align}
-As already mentioned in eq.\ \ref{eq:KernelScaling} also here the squared form factor is scaling with the squared sample volume, which is the case of spheres proportional to $R^6$. Therefore the distribution function to be determined often is choosen to be the intensity distribution $N(R)R^\alpha$ with $\alpha=6$ so that eq.\ \ref{eq:IQ} is slightly modified to
+As already mentioned in eq.\ \ref{eq:KernelScaling} also here the squared form factor is scaling with the squared sample volume, which is in the case of spheres proportional to $R^6$. Therefore the distribution function to be determined often is choosen to be the intensity distribution $N(R)R^\alpha$ with $\alpha=6$ so that eq.\ \ref{eq:IQ} is slightly modified to
 \begin{align}
 I_m(\langle Q\rangle) &=  \int_0^\infty N(s)s^\alpha  \int_0^\infty R_{av}\left(Q,\langle
 Q\rangle,\sigma\right) s^{-\alpha}\abs{F(Q,s)}^2 \, \mathrm{d}Q \, \mathrm{d}s
@@ -305,13 +305,13 @@ In case of a double smoothing they suggested a nonlinear smoothing operator befo
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.63\textwidth]{../images/form_factor/EM/EMsmoothLcurves.png}
+\includegraphics[width=0.65\textwidth]{../images/form_factor/EM/EMsmoothLcurves.png}
 \caption{Optimum smoothing parameter $h$ given by the corner of the L-curve.\label{fig:EMhLcurve}}
 \end{figure}
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.56\textwidth]{../images/form_factor/EM/EMsmoothNRR3.png}
+\includegraphics[width=0.6\textwidth]{../images/form_factor/EM/EMsmoothNRR3.png}
 \caption{The smoothing parameters has been obtained by the corners of the L-curves in fig.\ \ref{fig:EMhLcurve} and the solution of the EM iteration scheme with double smoothing is compared with the exact solution.\label{fig:EMsmoothNRR3}}
 \end{figure}
 
@@ -339,10 +339,11 @@ in case of a known prior. If a prior is not known a constant prior can be chosen
 \begin{align}
 \label{eq:LucyRichardsonInversionMethodMEadaptive}
   x_j^{(k+1)} &= x_j^{(k)} + \Delta x_j^{(k)} + \Delta s_j^{(k)}= \mathcal{O}_\mathrm{EM,ME,adaptive}\left[x_j^{(k)}\right]\\
-  \Delta x_j^{(k)} &= x_j^{(k)}\left[\sum_{i=0}^{M-1}\frac{A_{ij}}{\left(\displaystyle \sum_{m=0}^{M-1}A_{mj}\right)}\frac{b_i}{\displaystyle \sum_{n=0}^{N-1}A_{in}x_n^{(k)}}-1\right] \\
+  \Delta x_j^{(k)} &= x_j^{(k)}\left[\sum_{i=0}^{M-1}\frac{A_{ij}}{\left( \sum_{m=0}^{M-1}A_{mj}\right)}\frac{b_i}{ \sum_{n=0}^{N-1}A_{in}x_n^{(k)}}-1\right] \\
   \Delta s_j^{(k)} &=  \lambda x_j^{(k)}\left(-\ln\frac{x_j}{m_j^{(k)}}
                                 +\frac{1}{\sum_{j=0}^{N-1}x_j^{(k)}}\sum_{j=0}^{N-1}x_j^{(k)}\ln\frac{x_j^{(k)}}{m_j^{(k)}}
-                                -1+\sum_{j=0}^{N-1}\Pi_{ij}\frac{x_i^{(k)}}{m_i^{(k)}}\right)
+                                -1+\sum_{i=0}^{N-1}\Pi_{ij}\frac{x_i^{(k)}}{m_i^{(k)}}\right) \\
+  m_i^{(k)} &= \sum_{j=0}^{N-1}\Pi_{ij}x_j^{(k)}
 \end{align}
 As a smoothing operator for the prior
 \begin{align}\label{eq:smoothingOp4prior}
@@ -350,13 +351,13 @@ As a smoothing operator for the prior
 \end{align}
 has been assumed with the normalization constant $c=\sum_j \Pi_{ij}$ and a $\sigma^2$ typically between $\frac12$ and 2. For large values of $\sigma^2$ the results converge to that one of a constant prior. For too small values the regularization is suppressed as the prior converges to the $k^\mathrm{th}$ iteration step.
 
-The optimum regularization parameter $\lambda$ can be determined similar to the previous section via the corner in the L-curve. The L-curves for both an constant and adaptive prior are shown in fig.\ \ref{fig:EMlambdaLcurve} using the same data than shown in fig.\ \ref{fig:EMIQevolution}. The optimum Lagrange parameter in the corner are marked with a symbol. The corresponding size distribution are shown in fig.\ \ref{fig:EMconstadaptiveNRR3} together wit the exact solution and for an Lagrange parameter leading to a $\chi_r^2=1$. From the L-curves in fig.\ \ref{fig:EMlambdaLcurve} one can see, that the $\mathcal{G}$-test parameter for the constant prior varies over orders of magnitudes whereas for the adaptive prior also for a Lagrange parameter far away from its optimum value leads to a reasonable good result. Therefore the L-curve shows for the adaptive prior a much smaller range on the $x$-axis.
+The optimum regularization parameter $\lambda$ can be determined similar to the previous section via the corner in the L-curve. The L-curves for both a constant and adaptive prior are shown in fig.\ \ref{fig:EMlambdaLcurve} using the same data than shown in fig.\ \ref{fig:EMIQevolution}. The optimum Lagrange parameter in the corner are marked with a symbol. The corresponding size distribution are shown in fig.\ \ref{fig:EMconstadaptiveNRR3} together wit the exact solution and for a Lagrange parameter leading to $\chi_r^2=1$. From the L-curves in fig.\ \ref{fig:EMlambdaLcurve} one can see, that the $\mathcal{G}$-test parameter for the constant prior varies over orders of magnitudes whereas for the adaptive prior also for a Lagrange parameter far away from its optimum value leads to a reasonable good result. Therefore the L-curve shows for the adaptive prior a much smaller range on the $x$-axis.
 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.42\textwidth]{../images/form_factor/EM/EMconstLcurve.png} \hspace{0.06\textwidth}
 \includegraphics[width=0.42\textwidth]{../images/form_factor/EM/EMadaptiveLcurve.png}
-\caption{Determine optimum smoothing parameter $\lambda$ by the corner of the L-curve, which is determined by a minimum radius of curvature.\label{fig:EMlambdaLcurve}}
+\caption{Determine optimum smoothing parameter $\lambda$ by the corner of the L-curve, which is determined by a minimum radius of curvature. (left) constant prior, (right) adaptive prior\label{fig:EMlambdaLcurve}}
 \end{figure}
 
 \begin{figure}[htb]
@@ -395,7 +396,7 @@ Finally the overrelaxation parameter $\lambda^{(k)}$ was chosen according to
 with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$.
 
 \begin{algorithm}[bht] \footnotesize
-\caption{Biggs-Andersen  fixed point acceleration of order $o=0,1,2$ }\label{algorithm:Biggs_Andersen}
+\caption{Biggs-Andrews vector extrapolation acceleration of order $o=0,1,2$ }\label{algorithm:Biggs_Andrews}
 \begin{algorithmic}[1]
 \Procedure{update\_vectors}{$\mathbf{g}^{(n-2)}$,$\mathbf{g}^{(n-1)}$,$\mathbf{x}^{(n+1)}$,$\mathbf{x}^{(n)}$,$\mathbf{x}^{(n-1)}$,$\mathbf{x}^{(n-2)}$}
     \State $\mathbf{g}^{(n-2)} \gets \mathbf{g}^{(n-1)}$
@@ -405,7 +406,7 @@ with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$
     \State $\mathbf{x}^{(n)} \gets \mathbf{x}^{(n+1)}$
 \EndProcedure
 \State \Comment Acceleration of the fixed point operator $\mathcal{O}[\mathbf{x}]=\mathbf{x}$
-\Procedure{Biggs\_Andersen\_acceleration}{$\mathcal{O}[]$, $\mathbf{x}^{(0)}$, o}
+\Procedure{Biggs\_Andrews\_acceleration}{$\mathcal{O}[]$, $\mathbf{x}^{(0)}$, o}
 \State $\alpha \gets 0$
 \State $\mathbf{x}^{(n)} \gets \mathbf{x}^{(0)}$
 \State $\mathbf{x}^{(n+1)} \gets \mathcal{O}[\mathbf{x}^{(n)}]$
@@ -437,7 +438,7 @@ with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$
 
 Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}. However, only the supplies Anderson acceleration speeds up the fixed point iterations whereas all the others like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993} become instable and do not converge.
 
-In \cite{Biggs1997, Biggs1995} an acceleration process has been suggested basing on vector extrapolation which does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in algorithm \ref{algorithm:Biggs_Andersen}. The convergence behaviour of the different acceleration schemes are shown in fig.\ \ref{fig:EMconvergenceSpeed}. Quite good acceleration has been achieved by the Biggs-Andersen method as well as Anderson acceleration, whereas other classical methods like GMRES, Bi-CGSab or TFQMR failed. The Picard iteration scheme and faster overrelaxation method need orders of magnitudes more iterations to reach the true fixed point solution. The preferred acceleration scheme therefore becomes the Biggs-Andersen methods.
+In \cite{Biggs1997, Biggs1995, Biggs1998, Wang2014,Jiang2017} an acceleration process has been suggested basing on vector extrapolation which does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in algorithm \ref{algorithm:Biggs_Andrews}. The convergence behaviour of the different acceleration schemes are shown in fig.\ \ref{fig:EMconvergenceSpeed}. Quite good acceleration has been achieved by the Biggs-Andrews method as well as Anderson acceleration, whereas other classical methods like GMRES, Bi-CGSab or TFQMR failed. The Picard iteration scheme and faster overrelaxation method need orders of magnitudes more iterations to reach the true fixed point solution. The preferred acceleration scheme therefore becomes the Biggs-Andrews methods.
 
 
 \begin{figure}[htb]
@@ -462,10 +463,10 @@ with
 \begin{align}
   \hat{\mathbf{w}} &=
   \begin{pmatrix}
-    \frac{1}{\Delta b_0^2} & 0 & \dots & 0 \\
-    0 & \frac{1}{\Delta b_1^2} & \dots & 0 \\
+    \frac{1}{\Delta b_0} & 0 & \dots & 0 \\
+    0 & \frac{1}{\Delta b_1} & \dots & 0 \\
     \vdots & \vdots & \ddots & \vdots \\
-    0 & 0 & \dots & \frac{1}{\Delta b_{M-1}^2}
+    0 & 0 & \dots & \frac{1}{\Delta b_{M-1}}
   \end{pmatrix}
 \end{align}
 where $\Delta b_i$ are the experimental errors (standard deviation, Gaussian error or root-mean-square error) of the measured quantities $b_i$.

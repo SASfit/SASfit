@@ -123,8 +123,11 @@ typedef enum {
 } sasfit_EM_Lmatrix_definition;
 
 typedef enum {
-        Lcorner,
+        Lcorner_o,
         Lcorner2,
+        Lcorner_l,
+        Lcorner_w,
+        Lcorner_wo,
         GCV,
         redchi2,
         manual

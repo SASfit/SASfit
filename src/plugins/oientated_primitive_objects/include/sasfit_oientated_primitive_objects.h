@@ -310,6 +310,102 @@ sasfit_oientated_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_f(scala
 sasfit_oientated_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellipsoid_opo ################ */
 
+/* ################ start ff_superellipsoid_opo ################ */
+/**
+ * \defgroup ff_superellipsoid_opo super ellipsoid (OPO)
+ * \ingroup ff_devel
+ *
+ * \brief \<some brief description of super ellipsoid (OPO) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>length of first axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>third Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>direction of Q on detector (psi=0: direction to the right)</td>
+ *      </tr><tr>
+ *       <td>\b p</td>
+ *       <td>shape parameter, ex-ey (p>0)</td>
+ *      </tr><tr>
+ *       <td>\b q</td>
+ *       <td>shape parameter, ez (q>0)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_superellipsoid_opo
+ *
+ * \sa sasfit_oientated_primitive_objects.h, ff_devel
+ */
+sasfit_oientated_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superellipsoid_opo
+ *
+ * \sa sasfit_oientated_primitive_objects.h, ff_devel
+ */
+sasfit_oientated_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superellipsoid_opo
+ *
+ * \sa sasfit_oientated_primitive_objects.h, ff_devel
+ */
+sasfit_oientated_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superellipsoid_opo ################ */
 
 #endif // this file
 

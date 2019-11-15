@@ -382,15 +382,14 @@ obj.]}".
 \end{itemize}
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Thin Disc}"
-as the shape factor $P'(Q)$.]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/BiLayerGauss_IQa.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Thin Disc}"
+as the shape factor $P'(Q)$. \label{fig:BiLayerGaussianProfileIQa} 
+}{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/BiLayerGauss_IQa.png}}
 \hfill
-\subfigure[Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsBilayer}.
-The parameters for the profile are the same than in Fig.\ \ref{fig:BiLayerGaussianProfileIQ}a]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/BiLayerGauss_IQb.png}}
-\end{center}
+\subcaptionbox{Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsBilayer}.
+The parameters for the profile are the same than in Fig.\ \ref{fig:BiLayerGaussianProfileIQa} \label{fig:BiLayerGaussianProfileIQb} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/BiLayerGauss_IQb.png}}
 \caption{Scattering curve for the cross-section form factor "\texttt{Pcs:BilayerGaussian}". For some of the curves a distance distribution of
 the heads groups are assumed being Gaussian (see eq.\ \ref{eq:GaussDistribution}), i.e. calculating
 $\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(Q,D\right)\, \mathrm{d}D$.}
@@ -490,8 +489,7 @@ when the cross-section dimension is much smaller than the segment length
 or Kuhn length of the local cylindrical structure.
 
 \begin{figure}[htb]
-  % Requires \usepackage{graphicx}
-  \includegraphics[width=0.85\textwidth]{../images/form_factor/anisotropic/SketchdiffXSWorm.png}\\
+\includegraphics[width=1\textwidth]{../images/form_factor/anisotropic/SketchdiffXSWorm.png}\\
   \caption{Sketch of wormlike structures which represent local cylindrical structures. The cross-section $2R_\text{cs}$
   is much smaller than the Kuhn length $l_p$, which is a typical length scale where a freely jointed chain can randomly orient
   in any direction without the influence of any forces, independent of the directions taken by other segments.
@@ -541,7 +539,7 @@ the \texttt{Delta}-distribution.
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.8\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/CylindricalHomogeneousXSIQ.png}
+\includegraphics[width=0.7\textwidth,height=0.55\textwidth]{../images/form_factor/anisotropic/CylindricalHomogeneousXSIQ.png}
 \end{center}
 \caption{Scattering curve for the form factor "\texttt{Pcs:homogeneousCyl}" only (insert) and
 in combination with a structure factor "\texttt{P'(Q): Thin Rod}".}
@@ -602,14 +600,12 @@ the \texttt{Delta}-distribution.
 \end{itemize}
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Rod}" as the shape factor $P'(Q)$.]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/ellCylShIQa.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Plot of the cross section form factor $P_\text{cs}$ in combination with a structure factor "\texttt{P'(Q): Rod}" as the shape factor $P'(Q)$. \label{fig:ellCylShIQa} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/ellCylShIQa.png}}
 \hfill
-\subfigure[Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsellCylSh}.
-The parameters for the profile are the same than in Fig.\ \ref{fig:ellCylShIQ}a]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/ellCylShIQb.png}}
-\end{center}
+\subcaptionbox{[Plot of the cross section form factor $P_\text{cs}$ only according to eq.\ \ref{eq:PcsellCylSh}.
+The parameters for the profile are the same than in Fig.\ \ref{fig:ellCylShIQa} \label{fig:ellCylShIQb} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/ellCylShIQb.png}}
 \caption{Scattering curve for the cross-section form factor "\texttt{Pcs:ellCylSh}".}
 \label{fig:ellCylShIQ}
 \end{figure}
@@ -654,13 +650,11 @@ $\mathrm{H}_\alpha(x)$ is the Struve function of order $\alpha$ and $\mathrm{J}_
 
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Selection of radial profiles of cylindrical profile with a homogeneous core and a linear shell.]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_LinShellCyl.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Selection of radial profiles of cylindrical profile with a homogeneous core and a linear shell. \label{fig:Pcs:cyl_fuzzya} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_LinShellCyl.png}}
 \hfill
-\subfigure[Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left.]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsLinShCyl.png}}
-\end{center}
+\subcaptionbox{Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left. \label{fig:Pcs:cyl_fuzzyb} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsLinShCyl.png}}
 \caption{Radial profiles and scattering curve for the cross-section form factor "\texttt{Pcs:linear shell cyl.}". The scattering functions have been calculated with a narrow lognormal distribution with a width of $\sigma_{R_0}=0.1$.}
 \label{fig:Pcs:cyl_fuzzy}
 \end{figure}
@@ -713,13 +707,11 @@ the \texttt{Delta}-distribution.
 \subsubsection{$P_\mathrm{cs}(q)$ for circular cross-section folded with a Gaussian } ~\\
 \label{plugin:Pcs:cyl_fuzzy}
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Selection of radial profiles of fuzzy cylindrical profile.]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_fuzzyCyl.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Selection of radial profiles of fuzzy cylindrical profile. \label{fig:Pcs:cyl_fuzzya} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/profile_fuzzyCyl.png}}
 \hfill
-\subfigure[Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left.]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsFuzzyCyl.png}}
-\end{center}
+\subcaptionbox{Corresponding cross-section function $P_\mathrm{cs}(q)$  of the profiles shown on the left. \label{fig:Pcs:cyl_fuzzyb} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/anisotropic/PcsFuzzyCyl.png}}
 \caption{Radial profiles and scattering curve for the cross-section form factor "\texttt{Pcs:fuzzy cyl.}". The scattering functions have been calculated with a narrow lognormal distribution with a width of $\sigma_{R_0}=0.1$.}
 \label{fig:Pcs:cyl_fuzzy}
 \end{figure}
@@ -807,27 +799,19 @@ the \texttt{Delta}-distribution.
 \subsubsection{$P_\mathrm{cs}(q)$ for circular cross-section with a Boucher contrast profile} ~\\
 \label{plugin:Pcs:cyl_Boucher}
 \begin{figure}[htb]
-\begin{center}
-\subfigure[radial profiles with $\eta_0=\Delta\eta$ for several values of $\alpha$.
-]{
-\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/ProfileBoucherCyl.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{radial profiles with $\eta_0=\Delta\eta$ for several values of $\alpha$ \label{fig:cylBoucherprofile1} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/ProfileBoucherCyl.png}}
 \hfill
-\subfigure[normalized radial profiles for several values of $\alpha$ to assure $\alpha$-independent excess scattering length.
-]{
-\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/ProfileBoucher2Cyl.png}}
-\subfigure[
-Scattering curves of \texttt{Pcs:Boucher cyl} for
+\subcaptionbox{normalized radial profiles for several values of $\alpha$ to assure $\alpha$-independent excess scattering length \label{fig:cylBoucherprofile2} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/PcsBoucherCyl.png}}
+\hfill
+\subcaptionbox{Scattering curves of \texttt{Pcs:Boucher cyl} for
 several $\alpha$ with a narrow LogNormal size distribution of $\sigma = 0.15$.
 As the excess scattering lenght $\beta$ diverges for $\alpha \leq 2$ these values are not
-allowed.
-]{
-\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/PcsBoucherCyl.png}}
+allowed. \label{fig:cylBoucherprofile3} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/ProfileBoucher2Cyl.png}}
 \hfill
-\subfigure[ Scattering curves of \texttt{Pcs:Boucher2cyl} for
-several $\alpha$ with a narrow LogNormal size distribution of $\sigma = 0.15$.
-]{
-\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/PcsBoucher2Cyl.png}}
-\end{center}
+\subcaptionbox{Scattering curves of \texttt{Pcs:Boucher2cyl} for
+several $\alpha$ with a narrow LogNormal size distribution of $\sigma = 0.15$. \label{fig:cylBoucherprofile4} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/BoucherSphere/PcsBoucher2Cyl.png}}
 \caption{Two implemented cases for the radial profiles and their scattering profiles according to Boucher \cite{Boucher1983}, but now applied for cylindrical objects}
 \label{fig:cylBoucherprofilea}
 \end{figure}

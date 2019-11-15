@@ -33,7 +33,7 @@ scalar sasfit_ff_parallelepiped_opo(scalar q, sasfit_param * param)
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
     opo_init(&opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
     opod.Qmod = q;
     psi=sasfit_param_override_get_psi(PSI_DEG*M_PI/180.);

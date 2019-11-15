@@ -176,8 +176,7 @@ for $r>R_1$
 \item[\texttt{sigma3}] smearing of 2$^\text{nd}$ shell3 $\sigma_2$
 \item[\texttt{partstar}] relative distribution of parbolic:starlike profile in shell3 $x_\text{star}$;
         one usually puts a very high value in order to consider only a star-like profile.
-\item[\texttt{gamma}] for star-like profile the exponent is $\gamma=4/3$ and
-    for a constant profile $\gamma=0$
+\item[\texttt{gamma}] star-like profile: exponent is $\gamma=4/3$, constant profile: $\gamma=0$
 \item[\texttt{lparabol}] thickness of parabolic brush $L_p$ (must fit in shell3!)
 \item[\texttt{f\_brush}] scattering length density correction factor brush
 \item[\texttt{f\_core}] scattering length density correction factor core
@@ -341,14 +340,20 @@ $\eta_\text{sol}=1$, and several widths of the "fuzzy" shell}
 \label{sect:CoreShellMicrogel}
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[radial profile of a sphere with a parabolic interface]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/CoreShellMicrogel1.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/FuzzySphere/CoreShellMicrogel1.png}
+   \caption{radial profile of a sphere with a parabolic interface}
+   \label{fig:profile:CoreShellMicrogel1}
+\end{subfigure}
 \hfill
-\subfigure[radial profile of a spherical shell with parabolic interfaces]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/CoreShellMicrogel2.png}}
-\end{center}
-\caption{.....}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/FuzzySphere/CoreShellMicrogel2.png}
+   \caption{radial profile of a spherical shell with parabolic interfaces}
+   \label{fig:profile:CoreShellMicrogel2}
+\end{subfigure}
+\caption{Profiles of core-shell microgel}
 \label{fig:profile:CoreShellMicrogel}
 \end{figure}
 
@@ -416,7 +421,7 @@ I_\textrm{core,sh}(Q,W_\textrm{core},\sigma_\textrm{core},D,\sigma_\textrm{sh,in
 \vspace{5mm}
 
 \noindent
-\textbf{Input parameters for "\texttt{CoreShellMicrogel}" and "\texttt{radial profile of CoreShellMicrogel}":}
+\underline{Input parameters for "\texttt{CoreShellMicrogel}" and "\texttt{radial profile of CoreShellMicrogel}":}
 \begin{description}
     \item[\texttt{W\_core}] radius of center parts of core $W_\textrm{core}$ with homogeneous scattering length density
     \item[\texttt{sigma\_core}] interface half width of the core $\sigma_\mathrm{core}$
@@ -441,15 +446,12 @@ I_\textrm{core,sh}(Q,W_\textrm{core},\sigma_\textrm{core},D,\sigma_\textrm{sh,in
         (negative dimensions) by applying an integration over a size distribution starting from 0 on the radii.
 \end{itemize}
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Some radial profiles of spheres with a parabolic interfaces  which have been used to calculate the scattering curve in Fig.\ (b).
-]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/Example_CoreShellMicrogel1.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Some radial profiles of spheres with a parabolic interfaces  which have been used to calculate the scattering curve in Fig.\ \ref{fig:profile:Example_CoreShellMicrogel2} \label{fig:profile:Example_CoreShellMicrogel1} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/Example_CoreShellMicrogel1.png}}
 \hfill
-\subfigure[Scattering curves of the radial profiles shown in Fig.\ (a).]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/Example_CoreShellMicrogel2.png}}
-\end{center}
-\caption{The profiles and scattering curves hve been calculated with the plugin functions
+\subcaptionbox{Scattering curves of the radial profiles shown in Fig.\ \ref{fig:profile:Example_CoreShellMicrogel1}. \label{fig:profile:Example_CoreShellMicrogel2} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/Example_CoreShellMicrogel2.png}}
+\caption{The profiles and scattering curves have been calculated with the plugin functions
 "\texttt{CoreShellMicrogel}" and "\texttt{Radial Profile of CoreShellMicrogel}".}
 \label{fig:profile:Example_CoreShellMicrogel}
 \end{figure}
@@ -520,18 +522,16 @@ I_\text{LinShell}    & = \big[ \,\, (\eta_\text{c}-\eta_\text{sol}-b)F_\text{sph
 
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Some radial profiles of spheres with a linear interface profiles
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Some radial profiles of spheres with a linear interface profiles
 due to penetration of solvent into the shell which have been used to calculate
-the scattering curve in Fig.\ (b).]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/LinShell_profile.png}}
+the scattering curve in Fig.\ \ref{fig:I_LinShell2}. \label{fig:I_LinShell1} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/LinShell_profile.png}}
 \hfill
-\subfigure[Scattering curves of the radial profiles shown in Fig.\ (a).]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/LinShell_IQ.png}}
-\end{center}
+\subcaptionbox{Scattering curves of the radial profiles shown in Fig.\ \ref{fig:I_LinShell1}. \label{fig:I_LinShell2} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/LinShell_IQ.png}}
 \caption{Scattering intensity of a spherical shell with an linear shell profile. The scattering intensity has been calculated
 with a lognormal size distribution for the core radius $R_c$.}
-\label{fig:I_LinShell1}
+\label{fig:I_LinShell}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -701,15 +701,12 @@ the solvent penetrates further into the shell and for $\alpha<0$ less.
 \end{itemize}
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Some radial profiles of spheres with a exponential interfaces
-which have been used to calculate the scattering curve in Fig.\ (b).
-]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/ExpShell_profile.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Some radial profiles of spheres with a exponential interfaces
+which have been used to calculate the scattering curve in Fig.\ \ref{fig:ExpShellExample2} \label{fig:ExpShellExample1} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/ExpShell_profile.png}}
 \hfill
-\subfigure[Scattering curves of the radial profiles shown in Fig.\ (a).]{
-\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/ExpShell_IQ.png}}
-\end{center}
+\subcaptionbox{Scattering curves of the radial profiles shown in Fig.\ \ref{fig:ExpShellExample1}. \label{fig:ExpShellExample2} }{\includegraphics[width=0.48\textwidth,height=0.35\textwidth]{../images/form_factor/FuzzySphere/ExpShell_IQ.png}}
 \caption{Scattering intensity of a spherical shell with an exponential shell profile. The scattering intensity has been calculated
 with a lognormal $[\mathrm{LogNorm}(N\!=\!1,\sigma\!=\!0.05,p\!=\!1,R\!=\!30)]$ size distribution for the core radius $R_c$.
 The scattering length density of the core $\eta_\text{c}$ and the solvent $\eta_\text{sol}$ are set to 0, $\eta_\text{sh}=1$,
@@ -724,15 +721,11 @@ $\phi_\text{in}=0$,  $\phi_\text{out}=1$, and $\Delta R =10$.}
 \label{sect:BoucherSphere} ~\\
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Some radial profiles with $\eta_0=\Delta\eta$ for several values of $\alpha$.
-]{
-\includegraphics[width=0.48\textwidth]{Boucherprofile.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Some radial profiles with $\eta_0=\Delta\eta$ for several values of $\alpha$. \label{fig:Boucherprofilea1} }{\includegraphics[width=0.48\textwidth]{Boucherprofile.png}}
 \hfill
-\subfigure[Radial profiles for several values of $\alpha$ with a normalised radial profile to assure $\alpha$-independent excess scattering length.
-]{
-\includegraphics[width=0.48\textwidth]{Boucherprofile2.png}}
-\end{center}
+\subcaptionbox{Radial profiles for several values of $\alpha$ with a normalised radial profile to assure $\alpha$-independent excess scattering length. \label{fig:Boucherprofilea2} }{\includegraphics[width=0.48\textwidth]{Boucherprofile2.png}}
 \caption{The two implemented case for the radial profiles according to Boucher \cite{Boucher1983}}
 \label{fig:Boucherprofilea}
 \end{figure}
@@ -778,15 +771,11 @@ Z(x) = & \frac{
 $Z(x)$ is the excess scattering of the sub-domain of the spherical particle ranging from $r=0$ to $r=x$ relative to the excess scattering of the whole particle. The derivative $Z'(x)$ then defines the fractional contribution of a sub-shell with radius $r=x$ and thickness $\textrm{d}x$  of the spherical particle compared to its total excess scattering length of the particle.
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Fractional relative excess scattering length $Z(x)$ for several $\alpha$.
-]{
-\includegraphics[width=0.48\textwidth]{BoucherZr.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Fractional relative excess scattering length $Z(x)$ for several $\alpha$. \label{fig:BoucherZr1} }{\includegraphics[width=0.48\textwidth]{BoucherZr.png}}
 \hfill
-\subfigure[Derivative of fractional relative excess scattering length $Z'(x)$ shows which part of the particle contributes how much to the excess scattering.
-]{
-\includegraphics[width=0.48\textwidth]{BoucherZprime.png}}
-\end{center}
+\subcaptionbox{Derivative of fractional relative excess scattering length $Z'(x)$ shows which part of the particle contributes how much to the excess scattering. \label{fig:BoucherZr2} }{\includegraphics[width=0.48\textwidth]{BoucherZprime.png}}
 \caption{For $\alpha=2$ all the scattering is caused by an infinitesimal thin outer shell of the particle where all the fractional excess scattering length is located.}
 \label{fig:BoucherZr}
 \end{figure}
@@ -834,13 +823,11 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \end{itemize}
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Scattering curves of \texttt{BoucherSpheres} for several $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$. As the excess scattering length diverges for $\alpha\leq 2$ these values are not allowed.]{
-\includegraphics[width=0.48\textwidth]{BoucherSphereI(Q).png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Scattering curves of \texttt{BoucherSpheres} for several $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$. As the excess scattering length diverges for $\alpha\leq 2$ these values are not allowed. \label{fig:BoucherIQ1} }{\includegraphics[width=0.48\textwidth]{BoucherSphereI(Q).png}}
 \hfill
-\subfigure[Scattering curves of \texttt{BoucherSpheres2} for several $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$.]{
-\includegraphics[width=0.48\textwidth]{BoucherSphere2I(Q).png}}
-\end{center}
+\subcaptionbox{Scattering curves of \texttt{BoucherSpheres2} for several $\alpha$ with a narrow LogNormal size distribution with $\sigma=0.1$. \label{fig:BoucherIQ2} }{\includegraphics[width=0.48\textwidth]{BoucherSphere2I(Q).png}}
 \caption{Scattering curves for the form factors \texttt{BoucherSpheres} and \texttt{BoucherSpheres2}.}
 \label{fig:BoucherIQ}
 \end{figure}

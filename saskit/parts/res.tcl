@@ -24,6 +24,7 @@ part::create res \
             set ddir [part::destdir res]
             out::oexec [list windres -o [file join $ddir res$dotk.o] \
                 --define STATIC_BUILD \
+                --define BASE_NO_TK_ICON \
                 --include $sdir \
                 --include [file join $tcldir generic] \
                 --include [file join $tkdir generic] \

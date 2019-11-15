@@ -14,6 +14,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_cylinder_opo.c
 	sasfit_ff_parallelepiped_opo.c
 	sasfit_ff_ellipsoid_opo.c
+	sasfit_ff_superellipsoid_opo.c
 	interface.c
 )
 

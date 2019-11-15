@@ -11,7 +11,6 @@
 #include <sasfit_oz.h>
 #include <bool.h>
 #include "../sasfit_old/include/sasfit.h"
-#include "../sasfit_old/include/sasfit.h"
 #include "../sasfit_old/include/SASFIT_x_tcl.h"
 
 #include <gsl/gsl_vector.h>
@@ -26,6 +25,7 @@
 #include <kinsol/kinsol.h>
 // #include <nvector/nvector_openmp.h>
 #include <nvector/nvector_serial.h>
+//#include <kinsol/kinsol.h>
 #include <kinsol/kinsol_spgmr.h>
 #include <kinsol/kinsol_spfgmr.h>
 #include <kinsol/kinsol_spbcgs.h>
@@ -762,8 +762,8 @@ int FP4cr_EuRah(sasfit_oz_data *OZd) {
 
 int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algorithm) {
     double err, errold;
-    double alpha, beta, gama,phi_set, phi_actual;
-    double *xn, *yn, *zn, *un, *Tx, *Ty, *Tz;
+    double alpha,alpha_old, beta, gama,phi_set, phi_actual;
+    double *xn, *yn, *zn, *un, *Tx, *Ty, *Tz, *gn, *gn1, *gn2, *xn1, *xn2, *xp1, *yn1;
     double nsoliparam[5], tol[2];
     int i,j,n,iloop,ierr;
     int  rcode,error,ms;
@@ -1743,6 +1743,107 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				gsl_matrix_free(b0);
 				gsl_matrix_free(b2);
 				gsl_permutation_free(perm);
+                break;
+        case BIGGS_ANDREWS:
+                xn  = (double*)malloc((NP)*sizeof(double));
+                xn1 = (double*)malloc((NP)*sizeof(double));
+                xn2 = (double*)malloc((NP)*sizeof(double));
+                xp1 = (double*)malloc((NP)*sizeof(double));
+                gn  = (double*)malloc((NP)*sizeof(double));
+                gn1 = (double*)malloc((NP)*sizeof(double));
+                gn2 = (double*)malloc((NP)*sizeof(double));
+                yn =  (double*)malloc((NP)*sizeof(double));
+                iloop=0;
+                alpha=0;
+                alpha_old=0;
+                beta=alpha;
+                gama=alpha;
+                cp_array_to_array(G,xn,NP);
+                err = OZ_step(OZd);
+                for (j=0; j < NP; j++) {
+                    xp1[j] = G[j];
+                    gn2[j] = gn1[j];
+                    gn1[j] = xp1[j]-xn[j];
+                    xn2[j] = xn1[j];
+                    xn1[j] = xn[j];
+                    xn[j]  = xp1[j];
+                    yn[j]  = xn[j];
+                }
+                err = OZ_step(OZd);
+                for (j=0; j < NP; j++) {
+                    xp1[j] = G[j];
+                    gn2[j] = gn1[j];
+                    gn1[j] = xp1[j]-yn[j];
+                    xn2[j] = xn1[j];
+                    xn1[j] = xn[j];
+                    xn[j]  = xp1[j];
+                    yn[j]  = xn[j];
+                }
+                n=2;
+                while (OZd->it < OZd->maxsteps && err > OZd->relerror && OZd->interrupt == 0 && OZd->failed==0) {
+                    check_interrupt(OZd);
+                    n++;
+                    errold=err;
+                    beta = 0;
+                    gama = 0;
+                    for (j=0; j < NP; j++) {
+                        beta = beta + gn1[j]*gn2[j];
+                        gama = gama + gn2[j]*gn2[j];
+                    }
+                    if (gama==0) {
+                        alpha = 1;
+                    } else {
+                        if (OZd->KINSetMAA > 0) {
+                            alpha = (beta/gama);
+                        } else {
+                            alpha = GSL_SIGN(beta/gama)*sqrt(fabs(beta/gama));
+                        }
+                        alpha = GSL_MAX(GSL_MIN(alpha,(n-1.)/(n+2.0)),-(n-1.)/(n+2.0));
+                    }
+                    switch (abs(OZd->KINSetMAA) * (alpha != 0)) {
+                        case 0:
+                            for (j=0; j < NP; j++) {
+                                yn[j] = xn[j];
+                                G[j] = yn[j];
+                            }
+                            break;
+                        case 1:
+                            for (j=0; j < NP; j++) {
+                                yn[j] = xn[j]+alpha*(xn[j]-xn1[j]);
+                                G[j] = yn[j];
+                            }
+                            break;
+                        default:
+                            for (j=0; j < NP; j++) {
+                                yn[j] = xn[j]+alpha*(xn[j]-xn1[j])+alpha*alpha/2.0*(xn[j]-2*xn1[j]+xn2[j]);
+                                G[j] = yn[j];
+                            }
+                    }
+                    err = OZ_step(OZd);
+                    for (j=0; j < NP; j++) {
+                        xp1[j] = G[j];
+                        gn2[j] = gn1[j];
+                        gn1[j] = xp1[j]-yn[j];
+                        xn2[j] = xn1[j];
+                        xn1[j] = xn[j];
+                        xn[j]  = xp1[j];
+                    }
+                    if ((n % 500)==0 && OZd->PrintProgress == 1)
+                        sasfit_out("iterations: %d, calls of OZ_step=%d, err=%g, alpha=%lg, beta:%lg, gama:%lg\n",n,OZd->it,err,alpha, beta, gama);
+                    if (err != err) {
+                        sasfit_out("detected NAN for precision of OZ solution: %g\n",err);
+                        OZd->failed = 1;
+                        break;
+                    }
+                }
+                free(xn);
+                free(xn1);
+                free(xn2);
+                free(xp1);
+                free(yn);
+                free(gn);
+                free(gn1);;
+                free(gn2);
                 break;
         case KINSOLFP:
                 maxlrst = MAXSTEPS/10;
@@ -2864,6 +2965,9 @@ int OZ_solver (sasfit_oz_data *OZd) {
                 break;
         case Hybrids:
                 status = OZ_solver_by_gsl_multroot(OZd,Hybrids);
+                break;
+        case BIGGS_ANDREWS:
+                status = OZ_solver_by_iteration(OZd,BIGGS_ANDREWS);
                 break;
         case KINSOLFP:
                 status = OZ_solver_by_iteration(OZd,KINSOLFP);

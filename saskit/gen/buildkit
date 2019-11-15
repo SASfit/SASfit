@@ -13,7 +13,9 @@ set out::mode console
 
 proc out::init {component} {
     variable fh
-    set fh [open [file join $::conf::outdir $component] w]
+    set filepath [file join $::conf::outdir $component]
+    set fh [open $filepath w]
+    puts "Current log file: '$filepath'."
     fconfigure $fh -encoding binary
 }
 
@@ -919,7 +921,7 @@ proc main::_link {components {ar ""}} {
 	close $fh
 	file copy -force $oappinit $ar.o
     }  else  {
-	regsub -all -- {itcl33d.a} $L {itcl33.a} L
+	regsub -all -- {itcl3.3d.a} $L {itcl3.3.a} L
 	regsub -all -- {libitcl3.3g.a} $L {libitcl3.3.a} L
 puts "L: $L"
 	#out::oexec [concat [list [conf::x g++]] [conf::x -static] [conf::c_if debug [list -g] [list]] [list -o $target \
@@ -1105,7 +1107,10 @@ proc main::finalize2 {ar} {
 	set ddir $kitname
     }  else  {
         if {$scmd != ""} {
-            out::oexec [list $scmd $dbin]
+	    if {!$debug} {
+		# do not strip in debug mode
+		out::oexec [list $scmd $dbin]
+	    }
         }
 	if {$c=="best"} {
 	    set c "--best"

@@ -54,12 +54,12 @@
 
 #define K 5
 
-float SASFITqrombNR_V_dR(Tcl_Interp *interp, 
+float SASFITqrombNR_V_dR(Tcl_Interp *interp,
                             float a[],
-                            sasfit_function*  SD, 
+                            sasfit_function*  SD,
                             sasfit_function*  FF,
-                            float Rstart, 
-                            float Rend, 
+                            float Rstart,
+                            float Rend,
                             bool  *error)
 {
 	float ss,dss;
@@ -87,14 +87,14 @@ float SASFITqrombIQdR_old(Tcl_Interp *interp,
 		      int  *dF_dpar,
 		      float l[],
 		      float sq[],
-		      float Q, 
+		      float Q,
 		      float a[],
-		      sasfit_function*  SD, 
+		      sasfit_function*  SD,
 		      sasfit_function*  FF,
 		      sasfit_function*  SQ,
 		      int   distr,
-		      float Rstart, 
-		      float Rend, 
+		      float Rstart,
+		      float Rend,
 		      bool  *error)
 {
 	float ss,dss;
@@ -127,20 +127,20 @@ int f1D_cubature(unsigned ndim, const double *x, void *param4int,
     } else {
         return 1;
     }
-} 
+}
 
 scalar SASFITqrombIQdR(Tcl_Interp *interp,
 			int   *dF_dpar,
 			scalar l[],
 			scalar s[],
-			scalar Q, 
+			scalar Q,
 			scalar a[],
-			sasfit_function*  SD, 
+			sasfit_function*  SD,
 			sasfit_function*  FF,
 			sasfit_function*  SQ,
 			int   distr,
-			scalar Len_start, 
-			scalar Len_end, 
+			scalar Len_start,
+			scalar Len_end,
 			bool  *error)
 {
     scalar *aw, res,err;
@@ -148,9 +148,10 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
     gsl_integration_workspace * w;
     gsl_integration_cquad_workspace * wcquad;
     gsl_integration_glfixed_table * wglfixed;
+    gsl_integration_fixed_workspace * wfixed;
     gsl_function F;
     size_t neval;
-    int lenaw=4000;
+    int lenaw=4000,ierr;
     sasfit_param4int param4int;
     param4int.dF_dpar=dF_dpar;
     param4int.l=l;
@@ -162,7 +163,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
     param4int.SQ=SQ;
     param4int.distr=distr;
     param4int.error=error;
-    
+
     switch(sasfit_get_int_strategy()) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -170,7 +171,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             sasfit_intde(&IQ_IntdLen, Len_start,Len_end, aw, &res, &err,&param4int);
             free(aw);
             break;
-            } 
+            }
     case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
             aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
             sasfit_intccini(lenaw, aw);
@@ -195,12 +196,18 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             gsl_integration_workspace_free (w);
             break;
             }
+    case GSL_QNG: {
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            ierr = gsl_integration_qng (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), &res, &err, &neval);
+            break;
+            }
     case H_CUBATURE: {
             param4int.function=&IQ_IntdLen;
             cubxmin[0]=Len_start;
             cubxmax[0]=Len_end;
-            hcubature(1, &f1D_cubature,&param4int,1, cubxmin, cubxmax, 
-              10000, 0.0, sasfit_eps_get_nriq(), 
+            hcubature(1, &f1D_cubature,&param4int,1, cubxmin, cubxmax,
+              10000, 0.0, sasfit_eps_get_nriq(),
               ERROR_INDIVIDUAL, fval, ferr);
             res = fval[0];
             break;
@@ -209,8 +216,8 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             param4int.function=&IQ_IntdLen;
             cubxmin[0]=Len_start;
             cubxmax[0]=Len_end;
-            pcubature(1, &f1D_cubature, &param4int,1, cubxmin, cubxmax, 
-              10000,0.0, sasfit_eps_get_nriq(), 
+            pcubature(1, &f1D_cubature, &param4int,1, cubxmin, cubxmax,
+              10000,0.0, sasfit_eps_get_nriq(),
               ERROR_INDIVIDUAL, fval, ferr);
             res = fval[0];
             break;
@@ -219,6 +226,63 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             res = SASFITqrombIQdR_old(interp,dF_dpar,l,s,Q,a,
 		                    SD,FF,SQ,
 							distr,Len_start, Len_end,error);
+            break;
+            }
+    case GSL_GAUSSLEGENDRE: {
+            wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_robertus_p());
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            res = gsl_integration_glfixed(&F, Len_start, Len_end, wglfixed);
+            gsl_integration_glfixed_table_free(wglfixed);
+            break;
+            }
+    case GSL_CHEBYSHEV1: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_robertus_p(), Len_start, Len_end, 0, 1);
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+             ierr = gsl_integration_fixed(&F, &res, wfixed);
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_CHEBYSHEV2: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_robertus_p(), Len_start, Len_end, 0, 1);
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            ierr = gsl_integration_fixed(&F, &res, wfixed);
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_GEGENBAUER: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_robertus_p(), Len_start, Len_end, sasfit_eps_get_res(), 1);
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+             ierr = gsl_integration_fixed(&F, &res, wfixed);
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_EXPONENTIAL: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_robertus_p(), Len_start, Len_end, sasfit_eps_get_res(), 1);
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            ierr = gsl_integration_fixed(&F, &res, wfixed);
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_LAGUERRE: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_robertus_p(), Len_start, Len_end, sasfit_eps_get_res(), 1);
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            ierr = gsl_integration_fixed(&F, &res, wfixed);
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_JACOBI: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi, sasfit_eps_get_robertus_p(),
+                                                 Len_start, Len_end, sasfit_eps_get_res(), sasfit_eps_get_res());
+            F.function=&IQ_IntdLen;
+            F.params = &param4int;
+            ierr = gsl_integration_fixed(&F, &res, wfixed);
+            gsl_integration_fixed_free(wfixed);
             break;
             }
     default: {
@@ -237,14 +301,14 @@ float SASFITqrombIQSQdR(Tcl_Interp *interp,
 			int   *dF_dpar,
 			float l[],
 			float sq[],
-			float Q, 
+			float Q,
 			float a[],
-			sasfit_function*  SD, 
+			sasfit_function*  SD,
 			sasfit_function*  FF,
 			sasfit_function*  SQ,
 			int   distr,
-			float Rstart, 
-			float Rend, 
+			float Rstart,
+			float Rend,
 			bool  *error)
 {
 	float ss,dss;
@@ -279,19 +343,19 @@ float SASFITqrombIQSQdR(Tcl_Interp *interp,
 //		V = sasfit_volume(a,l,FF,distr,error);
 //		sqs[0] = pow( 3./(4.*M_PI) *  V, 1./3.);
 //		t1 = t1*sasfit_sq(Q,sqs,SQ,dF_dpar,error);
-          
+
 float SASFITqrombIQSQdR_old(Tcl_Interp *interp,
 			int   *dF_dpar,
 			float l[],
 			float sq[],
-			float Q, 
+			float Q,
 			float a[],
-			sasfit_function*  SD, 
+			sasfit_function*  SD,
 			sasfit_function*  FF,
 			sasfit_function*  SQ,
 			int   distr,
-			float Rstart, 
-			float Rend, 
+			float Rstart,
+			float Rend,
 			bool  *error)
 {
 	float ss,dss;
@@ -323,14 +387,14 @@ float SASFITqrombIQSQijdRi(Tcl_Interp *interp,
 						    float l[],
 							float len1,
 							float sq[],
-                            float Q, 
+                            float Q,
                             float a[],
-                            sasfit_function*  SD, 
+                            sasfit_function*  SD,
                             sasfit_function*  FF,
 							sasfit_function*  SQ,
                             int   distr,
-                            float Rstart, 
-                            float Rend, 
+                            float Rstart,
+                            float Rend,
                             bool  *error)
 {
 	float ss,dss;
@@ -359,14 +423,14 @@ float SASFITqrombIQSQijdRj(Tcl_Interp *interp,
 						    int   *dF_dpar,
 						    float l[],
 							float sq[],
-                            float Q, 
+                            float Q,
                             float a[],
-                            sasfit_function*  SD, 
+                            sasfit_function*  SD,
                             sasfit_function*  FF,
 							sasfit_function*  SQ,
                             int   distr,
-                            float Rstart, 
-                            float Rend, 
+                            float Rstart,
+                            float Rend,
                             bool  *error)
 {
 	float ss,dss;
@@ -397,13 +461,13 @@ float SASFITqrombSA_IQSQijdRi(Tcl_Interp *interp,
 							float len1,
 							float xav,
 							float sq[],
-                            float Q, 
+                            float Q,
                             float a[],
-                            sasfit_function*  SD, 
+                            sasfit_function*  SD,
                             sasfit_function*  FF,
 							sasfit_function*  SQ,
                             int   distr,
-                            float Rstart, 
+                            float Rstart,
                             float Rend,
                             bool  *error)
 {
@@ -434,14 +498,14 @@ float SASFITqrombSA_IQSQijdRj(Tcl_Interp *interp,
 			    float l[],
 			    float xav,
 			    float sq[],
-                            float Q, 
+                            float Q,
                             float a[],
-                            sasfit_function*  SD, 
+                            sasfit_function*  SD,
                             sasfit_function*  FF,
 			    sasfit_function*  SQ,
                             int   distr,
-                            float Rstart, 
-                            float Rend, 
+                            float Rstart,
+                            float Rend,
                             bool  *error)
 {
 	float ss,dss;
@@ -472,7 +536,7 @@ float		aa,bb,Q,Qres;
 float		*par;
 float		*Ifit;
 float		*Isubstract;
-float		*dydpar; 
+float		*dydpar;
 int			max_SD;
 sasfit_analytpar *AP;
 int			error_type;
@@ -561,7 +625,7 @@ float		aa,bb,Q,Qres;
 float		*par;
 float		*Ifit;
 float		*Isub;
-float		*dydpar; 
+float		*dydpar;
 int			max_SD;
 sasfit_analytpar *GAP;
 sasfit_commonpar *GCP;
@@ -657,7 +721,7 @@ float		Qmin,Qmax,Q,Qres;
 float		*par;
 float		*Ifit;
 float		*Isubstract;
-float		*dydpar; 
+float		*dydpar;
 int			max_SD;
 sasfit_analytpar *AP;
 int			error_type;
@@ -746,7 +810,7 @@ float		Qmin,Qmax,Q,Qres;
 float		*par;
 float		*Ifit;
 float		*Isub;
-float		*dydpar; 
+float		*dydpar;
 int			max_SD;
 sasfit_analytpar *GAP;
 sasfit_commonpar *GCP;
@@ -882,7 +946,7 @@ bool		*error;
 #undef JMAXP
 #undef JMAXELL2
 #undef JMAXPELL2
-#undef JMAXINF 
-#undef JMAXPINF 
+#undef JMAXINF
+#undef JMAXPINF
 #undef K
 

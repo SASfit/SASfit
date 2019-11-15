@@ -29,6 +29,14 @@ proc setIntStrategy2int {} {
 		"H_CUBATURE" {set ::FitPrecision(IntStrategy_int) 4}
 		"P_CUBATURE" {set ::FitPrecision(IntStrategy_int) 5}
 		"NR_QROMB" {set ::FitPrecision(IntStrategy_int) 6}
+		"GSL_QNG" {set ::FitPrecision(IntStrategy_int) 10}
+		"GSL_GAUSSLEGENDRE" {set ::FitPrecision(IntStrategy_int) 12}
+		"GSL_CHEBYSHEV1" {set ::FitPrecision(IntStrategy_int) 13}
+		"GSL_CHEBYSHEV2" {set ::FitPrecision(IntStrategy_int) 14}
+		"GSL_GEGENBAUER" {set ::FitPrecision(IntStrategy_int) 15}
+		"GSL_EXPONENTIAL" {set ::FitPrecision(IntStrategy_int) 16}
+		"GSL_LAGUERRE" {set ::FitPrecision(IntStrategy_int) 17}
+		"GSL_JACOBI" {set ::FitPrecision(IntStrategy_int) 18}
 		default {set ::FitPrecision(IntStrategy_int) 0}
 	}
 }
@@ -99,8 +107,10 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	$w.adjust_entry set [expr log10(100*$ap(par_x_X)-100)]
 	
 	label $w.intStrat_label -text "integration strategy"
-	ComboBox $w.intStrat_value -values {"OOURA_DE" "OOURA_CC" "GSL_CQUAD" "GSL_QAG" \
-										"H_CUBATURE" "P_CUBATURE" "NR_QROMB"} \
+	ComboBox $w.intStrat_value -values {"OOURA_DE" "OOURA_CC" "GSL_CQUAD" "GSL_QAG" "GSL_QNG"\
+										"H_CUBATURE" "P_CUBATURE" "NR_QROMB" \
+										"GSL_GAUSSLEGENDRE" "GSL_CHEBYSHEV1" "GSL_CHEBYSHEV2"\
+										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_LAGUERRE" "GSL_JACOBI"} \
 				-width 15 \
 				-textvariable ::FitPrecision(IntStrategy) \
 				-modifycmd setIntStrategy2int
