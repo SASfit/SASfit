@@ -25,7 +25,7 @@
 #                            Global Variables
 # some defaults
 # see sasfit-common/include/sasfit_function.h for that
-set MAXPAR 40
+set MAXPAR 100
 set ::sasfit(update_menu_during_fit) 1
 
 proc fp n1 {
