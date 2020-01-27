@@ -167,14 +167,17 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{linear polymer under shear flow}
+\subsection{linear polymer under shear flow}~\\
 \label{sect:LinearPolymerShearFlow}
 The form factors describing linear polymers under shear flow has been taken from \cite{Korolkovas2019}.
 It is assumed that the shear-vorticity plane is the same than the detector plane. In the paper three models are given. In the continuous limit the form factor is given by a double integral
 \begin{align}
   P(\mathbf{q}) & = \frac{1}{N^2}\int_0^N\mathrm{d}n\int_0^N\mathrm{d}m\: \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right)
 \end{align}
-In all three cases given in that paper the mean squared displacement function (MSD) $\langle(\mathbf{q}\cdot\mathbf{r}_{nm})\rangle/2$ was supplied as a function of $\abs{n-m}$, which in the end allows to replace the double integral by a single integral.
+In all three cases given in that paper the mean squared displacement function (MSD) $\langle(\mathbf{q}\cdot\mathbf{r}_{nm})\rangle/2$ was supplied as a function of $x=\abs{n-m}/N$, which in the end allows to replace the double integral by a single integral.
+\begin{align} \label{eq:IQ_MSD}
+ P(\mathbf{q}) & = 2\int_0^1 (1-x) \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right) \mathrm{d}x
+\end{align}
 \begin{itemize}
 \item In equilibrium an exact solution of that integral is available as in this case
 \begin{align}
@@ -186,7 +189,7 @@ with $N$ being the number of segments of the polymer, $a=(qR_g)^2$, where $R_g$ 
 \end{align}
 \item for the polymer under shear flow they approximated the MSD-function as a series of straight lines. In the case of two linear segments the MSD function reads as
     \begin{align}
-      \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}0 &=
+      \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} &=
       \begin{cases}
         b\abs{n-m}/N, & \mbox{if } \abs{n-m}/N \leq \nu \\
         c\abs{n-m}/N+(b-c)\nu, & \mbox{otherwise}.
@@ -217,7 +220,23 @@ with $N$ being the number of segments of the polymer, $a=(qR_g)^2$, where $R_g$ 
       x + \left(B_x^2q^2\cos^2(\psi-\phi_0)+B_y^2q^2\sin^2(\psi-\phi_0)\right)x^\xi
       \right)\Bigg)
     \end{multline}
+\item by applying the Rouse model \cite{Korolkovas2019} the MSD which reads as
+    \begin{multline}\label{eq:MSDlinearShearFlow}
+    \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} = \left(qR_g\right)^2 \times \\ \left[ x+\frac{\left(\cos(\psi-\phi_0)\pi^2\operatorname{Wi}_\mathrm{lin}\right)^2}{180} x^2\left(1+x-x^2/4-2x^3+x^4\right) \right]
+    \end{multline}
+    with $x=\abs{\frac{n-m}{N}}$ and the Weissenberg number $\operatorname{Wi}_\mathrm{lin}=\tau_1\dot{\gamma}$.
 \end{itemize}
+
+\subsection{ring polymer under shear flow}~\\
+Ring polymers under shear flow also can be described using the Rouse model \cite{Tsolou2010,Stephanou2019} similarly to eq.\ \ref{eq:MSDlinearShearFlow}. The mean square displacement then reads as
+\begin{align}\label{eq:MSDringShearFlow}
+\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} &= 2\left(qR_{g,\mathrm{ring}}\right)^2
+\left[ \mu+\frac{\left(\cos(\psi-\phi_0)\pi^2\operatorname{Wi}_\mathrm{ring}\right)^2}{90} \left(\mu^2+2\mu^3\right) \right]
+\end{align}
+with $\mu=x(1-x)$, $x=\abs{\frac{n-m}{N}}$, $\operatorname{Wi}_\mathrm{ring}=\tau_2\dot{\gamma}$, and $R_{g,\mathrm{ring}}^2=\frac{Nb^2}{12}=R_{g,\mathrm{lin}}^2/2$. The scattering intensity is then obtained by eq.\ \ref{eq:IQ_MSD}
+\begin{align}
+ P(\mathbf{q}) & = 2\int_0^1 (1-x) \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right) \mathrm{d}x
+\end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Sheared Cylinder according to Hayter and Penfold}
@@ -1238,11 +1257,12 @@ Z &= \left(1-\left(x(r,\theta,0)^{\frac{2}{\epsilon_2}}+y(r,\theta,0)^{\frac{2}{
 \end{tabular}
 }
 \endgroup
-  \caption{2D scattering patterns for superquadrics with scale factors are $a_1=30$nm, $a_2=20$nm, $a_3=10$nm. The scattering patterns are calculated for several detector distances (2m, 6m, 18m) and a wavelength of 0.6nm. Three orientation using Tait–Bryan angles (yaw-
+  \caption{Scattering patterns for super-quadrics with scale factors are $a_1=30$nm, $a_2=20$nm, $a_3=10$nm calculated for detector distances (2m, 6m, 18m) and a wavelength of 0.6nm are shown. Three orientation using Tait–Bryan angles (yaw-
 pitch-roll) are shown.} \label{fig:superquadricsIQ2D}
 \end{figure}
 
-\subsection{oriented superegg} ~\\
+\clearpage
+\subsection{oriented super-egg} ~\\
 
 \begin{figure}[htb]
 \begin{tabular}{ccccc}
@@ -1270,70 +1290,178 @@ F_\mathrm{SEgg}(\B{Q}) &=
    r\right)}{\hat{Q}_z} \mathrm{d}r
 \end{align}
 
-\newpage
-\subsection{oriented super-shapes} ~\\
+\clearpage
+\subsection{oriented super-shapes and rational super-shaped} ~\\
 \begin{figure}[htb]
 \begingroup
 \setlength{\tabcolsep}{1pt}
 \def\arraystretch{0.4}%
 \begin{tabular}{ccccccccc}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D5_0_30_20_20_1_1__7_0p38_75_20_20_1_1.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D3_0_1_6_6_1_1__4_0_2_2_2_1_1.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D5_0_1_6_6_1_1__4_0_2_2_2_1_1.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D7p3_0_5_5_5_5_1__4_0_5_5_5_6_2.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90.png} \\
-6m    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_30_20_20_1_1__7_0p38_75_20_20_1_1_6m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5_6m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3_6m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ3_0_1_6_6_1_1__4_0_2_2_2_1_1_6m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_1_6_6_1_1__4_0_2_2_2_1_1_6m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ7p3_0_5_5_5_5_1__4_0_5_5_5_6_2_a1b1c1_6m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma0_6m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90_6m.png}\\
- 18m   & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_30_20_20_1_1__7_0p38_75_20_20_1_1_18m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5_18m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3_18m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ3_0_1_6_6_1_1__4_0_2_2_2_1_1_18m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_1_6_6_1_1__4_0_2_2_2_1_1_18m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ7p3_0_5_5_5_5_1__4_0_5_5_5_6_2_a1b1c1_18m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma0_18m.png}
-    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D5_0_30_20_20_1_1__7_0p38_75_20_20_1_1.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D3_0_1_6_6_1_1__4_0_2_2_2_1_1.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D5_0_1_6_6_1_1__4_0_2_2_2_1_1.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D7p3_0_5_5_5_5_1__4_0_5_5_5_6_2.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShape3D4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90.png} \\
+6m    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_30_20_20_1_1__7_0p38_75_20_20_1_1_6m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5_6m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3_6m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ3_0_1_6_6_1_1__4_0_2_2_2_1_1_6m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_1_6_6_1_1__4_0_2_2_2_1_1_6m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ7p3_0_5_5_5_5_1__4_0_5_5_5_6_2_a1b1c1_6m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma0_6m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90_6m.png}\\
+ 18m   & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_30_20_20_1_1__7_0p38_75_20_20_1_1_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ3_0_1_6_6_1_1__4_0_2_2_2_1_1_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_1_6_6_1_1__4_0_2_2_2_1_1_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ7p3_0_5_5_5_5_1__4_0_5_5_5_6_2_a1b1c1_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma0_18m.png}
+    & \includegraphics[width=0.12\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90_18m.png} \\
+    & {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=5,7$ \\
+         $\alpha=0,0.38$ \\
+         $a=1,1$\\
+         $b=1,1$ \\
+         $n_1=30,75$\\
+         $n_2=20,20$\\
+         $n_3=20,20$ \\
+         $a_1=30$nm \\
+         $a_2=30$nm \\
+         $a_3=30$nm \\ $\gamma=0^\circ$
+       \end{tabular}  }
+    &  {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=6,8$ \\
+         $\alpha=0,0.4$ \\
+         $a=1,1$\\
+         $b=1,1$ \\
+         $n_1=100,200$\\
+         $n_2=40,40$\\
+         $n_3=40,40$ \\
+         $a_1=30$nm \\
+         $a_2=30$nm\\
+         $a_3=45$nm \\ $\gamma=0^\circ$
+       \end{tabular}  }
+    &  {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=1.5,4$ \\
+         $\alpha=0,0$ \\
+         $a=1,1$\\
+         $b=1,1$ \\
+         $n_1=2,2$\\
+         $n_2=12,2$\\
+         $n_3=12,2$ \\
+         $a_1=30$nm \\
+         $a_2=10$nm\\
+         $a_3=30$nm \\ $\gamma=0^\circ$
+       \end{tabular}  }
+    & {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=3,4$ \\
+         $\alpha=0,0$ \\
+         $a=1,1$\\
+         $b=1,1$ \\
+         $n_1=1,2$\\
+         $n_2=6,2$\\
+         $n_3=6,2$ \\
+         $a_1=30$nm \\
+         $a_2=30$nm \\
+         $a_3=30$nm \\ $\gamma=0^\circ$
+       \end{tabular}  }
+    & {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=5,4$ \\
+         $\alpha=0,0$ \\
+         $a=1,1$\\
+         $b=1,1$ \\
+         $n_1=1,2$\\
+         $n_2=6,2$\\
+         $n_3=6,2$ \\
+         $a_1=30$nm \\
+         $a_2=30$nm \\
+         $a_3=30$nm \\ $\gamma=0^\circ$
+       \end{tabular}  }
+    & {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=7.3,4$ \\
+         $\alpha=0,0$ \\
+         $a=5,6$\\
+         $b=1,2$ \\
+         $n_1=5,5$\\
+         $n_2=5,5$\\
+         $n_3=5,5$ \\
+         $a_1=30$nm \\
+         $a_2=30$nm \\
+         $a_3=30$nm \\ $\gamma=0^\circ$
+       \end{tabular}  }
+    & {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=4,24$ \\
+         $\alpha=0,0$ \\
+         $a=1,1$\\
+         $b=1,1$ \\
+         $n_1=2,2$\\
+         $n_2=2,8$\\
+         $n_3=2,8$ \\
+         $a_1=30$nm \\
+         $a_2=30$nm \\
+         $a_3=30$nm \\ $\gamma=0^\circ$
+       \end{tabular}  }
+    & {\small \footnotesize \scriptsize \tiny \begin{tabular}{l}
+         $m=4,24$ \\
+         $\alpha=0,0$ \\
+         $a=1,1$\\
+         $b=1,1$ \\
+         $n_1=2,2$\\
+         $n_2=2,8$\\
+         $n_3=2,8$ \\
+         $a_1=30$nm \\
+         $a_2=30$nm \\
+         $a_3=30$nm \\ $\gamma=90^\circ$
+       \end{tabular}  }
 \end{tabular}
 \endgroup
-\caption{Supershapes: The parameters for the scale factors of the shown supereggs are $a_1 = a_2 = a_3 = 4/3$. The values for $\epsilon_2=2$ and $\epsilon_1=0.4, 0.8, 1,2,5$.}
+\caption{Supershapes: The scattering patterns are calculated for detector distances of 6 and 18 m at a wavelength of $0.6$nm. The detector size is assumed to be $96\times 96$cm$^2$. The values in the last row are the input values of eq.\ \ref{eq:supershapes:parametric_r} for $r_1$ and $r_2$ (eqs.\ \ref{eq:supershapes:parametric_r1}, \ref{eq:supershapes:parametric_r2}). In the last example the incident beam direction is the $x$-directions instead of the $z$-direction.}
 \label{fig:opo_supershape}
 \end{figure}
-Super-shapes \cite{Gielis2003,Arslan2009,Fougerolle2007} are a further generalization of super-quadrics \cite{Barr1981}.
-The parametric representation in two dimensions reads as \cite{Gielis2003}
-\begin{align}
+Super-shapes \cite{Gielis2003,Arslan2009,Fougerolle2007} and rational super-shapes \cite{Blanc1996,Fougerolle2007} are a further generalization of super-quadrics \cite{Barr1981}.
+The parametric representation in two dimensions reads for super-shapes as \cite{Gielis2003}
+\begin{align} \label{eq:supershapes:parametric_r}
 r(\theta,\alpha,m,n_1,n_2,n_3,a,b) &= \left(\abs{\frac{\cos\left(\frac{m\left(\theta-\alpha\right)}{4}\right)}{a}}^{n_2}+\abs{\frac{\sin\left(\frac{m\left(\theta-\alpha\right)}{4}\right)}{b}}^{n_3}\right)^{-\frac{1}{n_1}}
 \end{align}
-The generalization to extend the 2D parametric representation into 3D is done by a spherical product and reads as
+and for rational super-shapes \cite{Blanc1996,Fougerolle2007} as
+\begin{align}\label{eq:rationalsupershapes:parametric_r}
+  r(\theta,\alpha,m,n_1,n_2,n_3,a,b) &= 2^{\frac{-1}{n_1}} \left(\frac{1}{W(\theta-\alpha)n_1}+1-\frac{1}{n_1}\right)
+\end{align}
+with
+\begin{align}
+  W(\theta) &= \frac{U(\theta)}{n_2+(1-n_2)U(\theta)} + \frac{V(\theta)}{n_3+(1-n_3)V(\theta)} \\
+  U(\theta)&= \abs{\frac{\cos\left(\frac{m\theta}{4}\right)}{a}} \quad \mbox{~and~}\quad  V(\theta)= \abs{\frac{\sin\left(\frac{m\theta}{4}\right)}{b}}
+\end{align}
+The generalization to extend the 2D parametric representation into 3D is done by a spherical product so that the parametrisation of a surface point $\B{S}$ or within the volume $\B{V}$ read as
 \begin{align}\label{eq:supershapes:parametric}
-  \left(
+\B{S} &=\left(
     \begin{array}{l}
       x(a_1,\theta,\phi) \\
       y(a_2,\theta,\phi) \\
       z(a_3,\theta,\phi) \\
     \end{array}
   \right)
- &=
+ =
  \left(
     \begin{array}{l}
      a_1 \; r_1(\theta) \cos(\theta) \; r_2(\phi) \cos(\phi)  \\
      a_2 \; r_1(\theta) \sin(\theta) \; r_2(\phi) \cos(\phi)  \\
      a_3 \; r_2(\phi)   \sin(\phi) \\
     \end{array}
-  \right)
+  \right) \\
+ \B{V} &= \tau  \B{S}
 \end{align}
 with
-\begin{align}
+\begin{align} \label{eq:supershapes:parametric_r1}
 r_1(\theta) &= r(\theta,\alpha,m,n_1,n_2,n_3,a,b) \\
+\label{eq:supershapes:parametric_r2}
 r_2(\phi)   &= r(\phi,  \beta, M,N_1,N_2,N_3,A,B)
 \end{align}
+where $\tau\in[0,1]$, $\theta\in[-\pi,\pi]$ and $\phi\in\left[-\frac{\pi}{2},\frac{\pi}{2}\right]$.
 For integer values of the degree of symmetries \cite{Fougerolle2005,Fougerolle2005a,Fougerolle2006,Fougerolle2007} have given 2 implicit representations for the super-shapes.
 \begin{align}\label{eq:SuperShapesImplicit}
 1 \geq&  \frac{x^2+y^2+z^2r_1^2(\theta)}{r_1^2(\theta)r_2^2(\phi)}  \\
@@ -1347,11 +1475,41 @@ The angles $\theta$ and $\phi$ are defined by
            & = \arctan\left(\frac{zr_1(\theta)\cos(\theta)}{x}\right)
   \end{cases}
 \end{align}
+The Jacobi determinant for both the super-shape as well as rational super-shape substitution is
+\begin{align}\label{eq:detJ_supershapes}
+\det{\M{J}} = &\det
+  \left(
+    \begin{array}{ccc}
+         \frac{\partial x(\tau,\theta,\phi)}{\partial \tau}
+       & \frac{\partial y(\tau,\theta,\phi)}{\partial \tau}
+       & \frac{\partial z(\tau,\theta,\phi)}{\partial \tau}\\
+         \frac{\partial x(\tau,\theta,\phi)}{\partial \theta}
+       & \frac{\partial y(\tau,\theta,\phi)}{\partial \theta}
+       & \frac{\partial z(\tau,\theta,\phi)}{\partial \theta} \\
+         \frac{\partial x(\tau,\theta,\phi)}{\partial \phi}
+       & \frac{\partial y(\tau,\theta,\phi)}{\partial \phi}
+       & \frac{\partial z(\tau,\theta,\phi)}{\partial \phi}
+    \end{array}
+  \right)   =
+  \tau^2 \cos (\phi ) r_1^2(\theta) r_2^3(\phi)
+\end{align}
+
+\begin{align}\label{eq:FTsupershapes}
+  F_\mathrm{SuperSh}(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{0}^1
+\mathrm{d}\tau\, \int\limits_{-\pi}^{\pi} \mathrm{d}\theta\,  \int\limits_{-\pi/2}^{\pi/2} \mathrm{d}\phi \,
+\det(\M{J})e^{\imath\B{\hat{Q}r}} \\
+&= \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-\pi}^{\pi} \mathrm{d}\theta\,  \int\limits_{-\pi/2}^{\pi/2} \mathrm{d}\phi \,
+\cos (\phi ) r_1^2(\theta) r_2^3(\phi)  \\
+&\times      \frac{2\hat{q}_s\cos \hat{q}_s + \left(\hat{q}_s^2-2\right)\sin \hat{q}_s}{\hat{q}_s^3}
+    + \imath \frac{\left(2 - \hat{q}_s^2\right)\cos \hat{q}_s-2 + 2q_s\sin \hat{q}_s}{\hat{q}_s^3} \nonumber \\
+\hat{q}_s &= \B{\hat{Q}}\B{S}=\hat{Q}_x x(1,\theta,\phi)+\hat{Q}_y y(1,\theta,\phi)+\hat{Q}_z z(1,\theta,\phi)
+\end{align}
 \clearpage
 \begin{figure}[htb]
 {\tiny
 \begin{verbatim}
-rx[theta_, m_, a_, b_, n1_, n2_, n3_] := 2^(-1/n1) (1 - 1/n1 
+rx[theta_, m_, a_, b_, n1_, n2_, n3_] := 2^(-1/n1) (1 - 1/n1
      + 1/( n1 (Abs[Cos[(m theta)/4]/a]/(n2 + (1 - n2) Abs[Cos[(m theta)/4]/a]) +
                Abs[Sin[(m theta)/4]/a]/(n2 + (1 - n2) Abs[Sin[(m theta)/4]/a]))))
 rx[theta_,m_,a_,b_,n1_,n2_,n3_] := Power[Abs[Cos[theta*m/4]/a]^n2+Abs[Sin[theta*m/4]/b]^n3,-1/n1]
@@ -1366,7 +1524,7 @@ Grid[{{
           Axes -> False, ImageSize -> {200, 200}, PlotLabel -> "superformula II (-pi,pi)"]} }],
   ParametricPlot3D[With[{r1=rx[(\[Theta]-alpha),m,a,b,n1,n2,n3], r2=rx[(\[Phi]-beta),sm,sa,sb,sn1,sn2,sn3]},
       {r1 Cos[\[Theta]] r2 Cos[\[Phi]], r1 Sin[\[Theta]] r2 Cos[\[Phi]], r2 Sin[\[Phi]]}],
-      {\[Theta], -Pi, Pi}, {\[Phi], -Pi/2, Pi/2}, Axes -> True, , AxesLabel -> {"x", "y", "z"},
+      {\[Theta], -Pi, Pi}, {\[Phi], -Pi/2, Pi/2}, Axes -> True, AxesLabel -> {"x", "y", "z"},
       BaseStyle -> {FontWeight -> "Bold",FontSize -> 80}, PlotTheme -> "Normal", Ticks -> None,
       AxesStyle -> Thickness[0.005],Exclusions -> None,ImageSize ->{800,600},MaxRecursion -> ControlActive[1,2],
       PlotPoints -> ControlActive[220,220], PlotRange -> All, Mesh -> mesh] }}],
@@ -1398,8 +1556,68 @@ Grid[{{
 \label{fig:MathematicaSphericalProductSuperShapes}
 \end{figure}
 
-$$ r^2 \cos (\phi ) \left(\left| \frac{\cos \left(\frac{m(\theta -\alpha )}{4}  \right)}{a}\right|
-   ^{n_2}+\left| \frac{\sin \left(\frac{m(\theta -\alpha )}{4}  \right)}{b}\right|
-   ^{n_3}\right)^{-\frac{2}{n1}} \left(\left| \frac{\cos \left(\frac{M(\phi -\beta)}{4}  \right)}{A}\right| ^{N_2}+\left| \frac{\sin \left(\frac{M(\phi -\beta)}{4}\right)}{B}\right| ^{N_3}\right)^{-\frac{3}{N_1}}
-$$ 
 
+
+\section{oriented super-toroid and super-helix}\label{sect:super_toroid_helix}
+
+The super-toroid and super-helix are basing on the parametric representation in eq.\ \ref{eq:supershapes:parametric_r} and the points on their surface $ \B{S}$ and in the volume $ \B{V}$ are defined as
+\begin{align}\label{eq:super_toroid_helix}
+  \B{S} &= 
+  \left(
+    \begin{array}{l}
+     a_1 \; r_1(\theta,\alpha) \cos(\theta) \; \left[r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
+     a_2 \; r_1(\theta,\alpha) \sin(\theta) \; \left[r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
+     a_3 \; \left[r_2(\phi,\beta+\gamma\theta)   \sin(\phi)+\frac{P\theta}{2\pi} \right]\\
+    \end{array}
+  \right) \\
+\B{V} &  = \left(
+    \begin{array}{l}
+      x(a_1,\tau,\theta,\phi) \\
+      y(a_2,\tau,\theta,\phi) \\
+      z(a_3,\tau,\theta,\phi) \\
+    \end{array}
+    \right) \nonumber \\
+    &=
+  \left(
+    \begin{array}{l}
+     a_1 \; r_1(\theta,\alpha) \cos(\theta) \; \left[\tau r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
+     a_2 \; r_1(\theta,\alpha) \sin(\theta) \; \left[\tau r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
+     a_3 \; \left[\tau r_2(\phi,\beta+\gamma\theta)   \sin(\phi)+\frac{P\theta}{2\pi} \right]\\
+    \end{array}
+  \right)
+\end{align}
+with
+\begin{align} \label{eq:supershapes:parametric_r1}
+r_1(\theta,\alpha) &= r(\theta,\alpha,m,n_1,n_2,n_3,a,b) \\
+\label{eq:supershapes:parametric_r2}
+r_2(\phi,\beta+\gamma\theta)   &= r(\phi,  \beta+\gamma\theta, M,N_1,N_2,N_3,A,B)
+\end{align}
+where $\tau\in[0,1]$, $\theta\in[-T\pi,T\pi]$ and $\phi\in\left[-\pi,\pi\right]$. $P$ is the pitch of the super-helix which is the height of one complete helix turn, measured parallel to the axis of the helix. $T$ describes the number of turns. For a pitch of $P=0$ and one turn ($T=1$) one obtains a super-toroid. The parameter $\gamma$ describes how many times the cross-section of the toroid/helix is twisted per turn.
+\begin{figure}[htb]
+\begin{tabular}{cc}
+& \multirow{6}{*}{\includegraphics[width=0.7\textwidth]{../images/form_factor/supershapes/twisted_helix_super_shapes_1a.png}} \\
+     \includegraphics[width=0.25\textwidth]{../images/form_factor/supershapes/twisted_helix_super_shapes_1c.png} \\
+    $r_1(\theta,\alpha)$ \\ ~\\
+    \includegraphics[width=0.25\textwidth]{../images/form_factor/supershapes/twisted_helix_super_shapes_1b.png}\\
+    $r_2(\phi,\beta+\gamma\theta)$ \\
+\end{tabular}
+\end{figure}
+The Jacobi determinant for this substitution is
+\begin{align}\label{eq:detJ_supershapes}
+\det{\M{J}} &= \det
+  \left(
+    \begin{array}{ccc}
+         \frac{\partial x(a_1,\tau,\theta,\phi)}{\partial \tau}
+       & \frac{\partial y(a_2,\tau,\theta,\phi)}{\partial \tau}
+       & \frac{\partial z(a_3,\tau,\theta,\phi)}{\partial \tau}\\
+         \frac{\partial x(a_1,\tau,\theta,\phi)}{\partial \theta}
+       & \frac{\partial y(a_2,\tau,\theta,\phi)}{\partial \theta}
+       & \frac{\partial z(a_3,\tau,\theta,\phi)}{\partial \theta} \\
+         \frac{\partial x(a_1,\tau,\theta,\phi)}{\partial \phi}
+       & \frac{\partial y(a_2,\tau,\theta,\phi)}{\partial \phi}
+       & \frac{\partial z(a_3,\tau,\theta,\phi)}{\partial \phi}
+    \end{array}
+  \right)  \nonumber \\
+  &= a_1a_2a_3
+   \tau r_1^2(\theta,\alpha) r_2^3(\phi,\beta+\gamma\theta) \left(\frac{R}{r_2(\phi,\beta+\gamma\theta)}+\tau\cos(\phi )\right)
+\end{align}

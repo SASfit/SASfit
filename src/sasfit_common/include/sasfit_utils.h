@@ -122,6 +122,8 @@ sasfit_common_DLLEXP double re_cerf_z(double x, double y);
 sasfit_common_DLLEXP double im_cerf_z(double x, double y);
 sasfit_common_DLLEXP double re_cerfi_z(double x, double y);
 sasfit_common_DLLEXP double im_cerfi_z(double x, double y);
+sasfit_common_DLLEXP double re_w_of_z(double x, double y);
+sasfit_common_DLLEXP double im_w_of_z(double x, double y);
 sasfit_common_DLLEXP int hcubature(unsigned fdim, integrand f, void *fdata,
 	      unsigned dim, const double *xmin, const double *xmax,
 	      size_t maxEval, double reqAbsError, double reqRelError,

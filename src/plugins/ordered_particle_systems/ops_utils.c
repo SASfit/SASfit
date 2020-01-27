@@ -5,8 +5,6 @@
 
 #include "include/private.h"
 #include <sasfit_error_sq.h>
-#include "include/cerf.h"
-#include "include/defs.h"
 
 
 void set_ki(ordered_particles_param *ospparam, sasfit_param *param)
@@ -375,7 +373,7 @@ void set_f_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_pa
                         default:    ospparam->f_hkl = 0;
                                     break;
         }
-        default:  
+        default:
                     sasfit_err("Unknown type of ordered mesoscopic structure\n");
                     ospparam->f_hkl = 0;
                     break;
@@ -469,7 +467,7 @@ scalar CalcDirectReciprocalLatticeVectors(ordered_particles_param *opsparam) {
                 opsparam->c[0] = 0;
                 opsparam->c[1] = 0;
                 opsparam->c[2] = 0;
-                
+
                 opsparam->ast[0] = 2*M_PI/opsparam->ad;
                 opsparam->ast[1] = -2*M_PI/opsparam->ad*cos(opsparam->lgamma)/sin(opsparam->lgamma);
                 opsparam->ast[2] = 0;
@@ -491,7 +489,7 @@ scalar CalcDirectReciprocalLatticeVectors(ordered_particles_param *opsparam) {
                 opsparam->c[0] = 0;
                 opsparam->c[1] = 0;
                 opsparam->c[2] = 0;
-                
+
                 opsparam->ast[0] = 2*M_PI/opsparam->ad;
                 opsparam->ast[1] = 0;
                 opsparam->ast[2] = 0;
@@ -557,7 +555,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->fphimax = M_PI/6.0;
                 break;
 // BCC Body-centered cubic
-        case BCC : 
+        case BCC :
                 ospparam->bd=ospparam->ad;
                 ospparam->cd=ospparam->ad;
                 ospparam->lalpha = 90*M_PI/180.;
@@ -577,7 +575,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->Omega = 4*M_PI;
                 break;
 // BCCTWIN: twinned Body-centered cubic
-        case BCCTWIN : 
+        case BCCTWIN :
                 ospparam->bd=ospparam->ad;
                 ospparam->cd=ospparam->ad;
                 ospparam->lalpha = 90*M_PI/180.;
@@ -599,7 +597,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 break;
 // FCC Face-centered cubic (also called cubic close packed)
         case Fm3m:
-        case FCC : 
+        case FCC :
                 ospparam->bd=ospparam->ad;
                 ospparam->cd=ospparam->ad;
                 ospparam->lalpha = 90*M_PI/180.;
@@ -626,7 +624,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->fphimax = M_PI*sqrt(2)/6.0;
                 break;
 // FCCTWIN twinned Face-centered cubic (also called cubic close packed)
-        case FCCTWIN : 
+        case FCCTWIN :
                 ospparam->bd=ospparam->ad;
                 ospparam->cd=ospparam->ad;
                 ospparam->lalpha = 90*M_PI/180.;
@@ -697,7 +695,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 break;
 // BCT: body centered tetragonal
         case  I4_mm:
-        case BCT : 
+        case BCT :
                 ospparam->bd=ospparam->ad;
                 ospparam->lalpha = 90*M_PI/180.;
                 ospparam->lbeta = 90*M_PI/180.;
@@ -716,7 +714,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->Omega = 4*M_PI;
                 break;
         case P6_mm:
-        case HEX : 
+        case HEX :
                 ospparam->bd=ospparam->ad;
                 ospparam->cd=0.0;
                 ospparam->lalpha = 0;
@@ -733,7 +731,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 ospparam->Omega = 2*M_PI;
                 break;
         case P4_mm:
-        case SQ  : 
+        case SQ  :
                 ospparam->bd=ospparam->ad;
                 ospparam->cd=0.0;
                 ospparam->lalpha = 0;
@@ -776,7 +774,7 @@ void init_osp(ordered_particles_param *ospparam, sasfit_param *param)
                 if (ospparam->abar > ospparam->bd) ospparam->abar=ospparam->bd;
                 ospparam->Omega = 2*M_PI;
                 break;
-        case LAM : 
+        case LAM :
                 ospparam->bd=0.0;
                 ospparam->cd=0.0;
                 ospparam->lalpha = 0;
@@ -817,9 +815,9 @@ scalar K(scalar x,ordered_particles_param *ospparam, sasfit_param *param) {
     scalar c, m;
     switch (ospparam->peak_shape_type_Selector) {
     case GAUSSIANPEAK   :   if (x > 0.1 ) {
-                                Kval = 2*creal(cerfi(C(1.0/(2.0*sqrt(x)),0)));
-                                Kval = Kval-creal(cerfi(C(1.0/(2.0*sqrt(x)),M_PI*sqrt(x))));
-                                Kval = Kval+creal(cerfi(C(-1.0/(2.0*sqrt(x)),M_PI*sqrt(x))));
+                                Kval = 2*re_cerfi_z(1.0/(2.0*sqrt(x)),0);
+                                Kval = Kval-re_cerfi_z(1.0/(2.0*sqrt(x)),M_PI*sqrt(x));
+                                Kval = Kval+re_cerfi_z(-1.0/(2.0*sqrt(x)),M_PI*sqrt(x));
                                 Kval = Kval*sqrt(M_PI/(16.0*x))*exp(-1.0/(4.0*x));
                                 return Kval;
                             } else {
@@ -827,13 +825,13 @@ scalar K(scalar x,ordered_particles_param *ospparam, sasfit_param *param) {
                                 t2 = sqrt(x);
                                 t3 = 0.1e1 / t2;
                                 t4 = t3 / 0.2e1;
-                                t5 = cimag(w_of_z(C(-t4,0)));
+                                t5 = im_w_of_z(-t4,0);
                                 t10 = t2 * M_PI;
-                                t12 = cimag(w_of_z(C(-t4,-t10)));
+                                t12 = im_w_of_z(-t4,-t10);
                                 t14 = M_PI * M_PI;
                                 t16 = exp(x * t14);
                                 t18 = t3 / t16;
-                                t22 = cimag(w_of_z(C(-t4,t10)));
+                                t22 = im_w_of_z(-t4,t10);
                                 t26 = -t1 * t5 * t3 / 0.2e1 - t1 * t12 * t18 / 0.4e1 - t1 * t22 * t18 / 0.4e1;
                                 return t26;
                                 Kval = 2-(M_PI*M_PI-4)*x+(48-12*M_PI+gsl_pow_4(M_PI))*x*x/2.0-(-1440+360*M_PI*M_PI-30*gsl_pow_4(M_PI)+gsl_pow_6(M_PI))*x*x*x/6.;
@@ -865,7 +863,7 @@ scalar K(scalar x,ordered_particles_param *ospparam, sasfit_param *param) {
                             }
                             return Kval;
                             break;
-    case PEARSON : 
+    case PEARSON :
                             c=x;
                             m=ospparam->nu;
                             if (x<1.1e-3) {
@@ -1148,7 +1146,7 @@ scalar Lq_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_par
 //    for (i=0;i<3;i++) {
 //        x2 = x2+gsl_pow_2(ospparam->q[i]-ospparam->ghkl[i]);
 //    }
-// even though  the paper shows in eq. 82 the square of the vector difference I assume 
+// even though  the paper shows in eq. 82 the square of the vector difference I assume
 // the sqare of the difference of the moduli of the two vectors needs to be used. here.
     x = ospparam->Qmod-ospparam->ghklmod;
     x2 = x*x;
@@ -1184,12 +1182,12 @@ scalar Lpsi_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_p
     nu = ospparam->nu;
     x = ospparam->Qmod*ospparam->psi_hkl;
     switch (ospparam->peak_shape_type_Selector) {
-    case GAUSSIANPEAK   :   
+    case GAUSSIANPEAK   :
                             ahkl = 4*gsl_pow_2(ospparam->ghklmod/deltapsi)/M_PI;
                             cG = 1.0/(2.0*M_PI*gsl_pow_2(ospparam->ghklmod)*K(ahkl,ospparam,param));
                             return cG * exp(-gsl_pow_2(2*x/deltapsi)/M_PI);
                             break;
-    case LORENTZIANPEAK :  
+    case LORENTZIANPEAK :
                             bhkl = 4*gsl_pow_2(ospparam->ghklmod/deltapsi);
                             cL = 1.0/(2.0*M_PI*gsl_pow_2(ospparam->ghklmod)*K(bhkl,ospparam,param));
                             return cL / (1.0+gsl_pow_2(2.0*x/deltapsi));
@@ -1199,7 +1197,7 @@ scalar Lpsi_hkl(int h, int k, int l, ordered_particles_param *ospparam, sasfit_p
                             cP = 1.0/(2.0*M_PI*gsl_pow_2(ospparam->ghklmod)*K(chkl,ospparam,param));
                             return cP*pow(1+gsl_pow_2(gsl_sf_beta(nu-0.5,0.5)*x/deltapsi),-nu);
                             break;
-    
+
     default :               sasfit_err("UNKNOWN peak shape\nInform author if this happens!\n");
                             return 0.0;
     }
@@ -1314,7 +1312,7 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
         case BCC :
         case FCC :
         case HCP :
-        case BCT :  
+        case BCT :
                 for (h=-MAXHKL;h<=MAXHKL;h++) {
                         for (k=-MAXHKL;k<=MAXHKL;k++) {
                             for (l=-MAXHKL;l<=MAXHKL;l++) {
@@ -1330,7 +1328,7 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
                     break;
         case HEX :
         case SQ  :
-        case CREC:  
+        case CREC:
                 for (h=-MAXHKL;h<=MAXHKL;h++) {
                         for (k=-MAXHKL;k<=MAXHKL;k++) {
                              set_f_hkl(h,k,l,ospparam,param);
@@ -1342,7 +1340,7 @@ scalar Lattice_Factor_iso(ordered_particles_param *ospparam, sasfit_param *param
                     }
                     Z=Z*prefactorZ;
                     break;
-        case LAM :  
+        case LAM :
                     for (h=1;h<=MAXHKL;h++) {
                         set_f_hkl(h,k,l,ospparam,param);
                         set_g_hkl(h,k,l,ospparam,param);

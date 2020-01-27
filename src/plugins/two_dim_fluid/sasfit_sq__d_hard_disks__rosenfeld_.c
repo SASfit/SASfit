@@ -9,6 +9,10 @@
 // define shortcuts for local parameters/variables
 #define R	param->p[0]
 #define ETA	param->p[1]
+#define THETA_DEG param->p[2]
+#define PHI_DEG param->p[3]
+#define PSI_DEG param->p[4]
+#define Q   param->p[MAXPAR-1]
 
 scalar sasfit_sq__d_hard_disks__rosenfeld_(scalar q, sasfit_param * param)
 {

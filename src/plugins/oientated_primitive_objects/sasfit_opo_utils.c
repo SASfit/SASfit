@@ -479,6 +479,14 @@ scalar ri(scalar theta, scalar alpha, scalar m, scalar n1, scalar n2, scalar n3,
     return pow(pow(fabs(cos((m*(theta-alpha)/4.)/a)),n2) + pow(fabs(sin((m*(theta-alpha)/4.)/b)),n3),-1/n1);
 }
 
+scalar ratri(scalar theta, scalar alpha, scalar m, scalar n1, scalar n2, scalar n3, scalar a, scalar b) {
+    scalar W, U, V;
+    U = fabs(cos(m*(theta-alpha)/4.)/a);
+    V = fabs(sin(m*(theta-alpha)/4.)/b);
+    W = U/(n2+(1-n2)*U) + V/(n3+(1-n3)*V);
+    return  pow(2,-1./n1)*(1./(W*n1)+1-1./n1); // pow(2,-1./n1)*
+}
+
 int opo_Fss_cub_dtp(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
     scalar r,theta,phi,r1,r2,DJSS3D,QR,Ir2CosQR, Ir2SinQR;
@@ -503,8 +511,37 @@ int opo_Fss_cub_dtp(unsigned ndim, const double *x, void *pam,
         Ir2CosQR = 1/3-gsl_pow_2(QR)/10.+gsl_pow_4(QR)/168.-gsl_pow_6(QR)/6480;
         Ir2SinQR = QR/4.-gsl_pow_3(QR)/36.+gsl_pow_5(QR)/960.-gsl_pow_7(QR)/50400.;
     }
-	DJSS3D = cos(phi)/(pow(pow(fabs(cos((FMM*(theta-FALPHA))/4.)/FAA),FN2) + pow(fabs(sin((FMM*(theta-FALPHA))/4.)/FBB),FN3),2/FN1)*
-                             pow(pow(fabs(cos((SMM*(phi  -SALPHA))/4.)/SAA),SN2) + pow(fabs(sin((SMM*(phi  -SALPHA))/4.)/SBB),SN3),3/SN1));
+	DJSS3D = cos(phi)*gsl_pow_2(r1)*gsl_pow_3(r2);
+    fval[0] = DJSS3D*Ir2CosQR;
+    fval[1] = DJSS3D*Ir2SinQR;
+	return 0;
+}
+
+int opo_Fratss_cub_dtp(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+    scalar r,theta,phi,r1,r2,DJSS3D,QR,Ir2CosQR, Ir2SinQR;
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+	if ((ndim < 2) || (fdim < 2)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+	theta = x[0];
+	phi   = x[1];
+	r1=ratri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
+	r2=ratri(phi,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	XX = r1*cos(theta)*r2*cos(phi);
+	YY = r1*sin(theta)*r2*cos(phi);
+	ZZ = r2*sin(phi);
+    QR = QQX*XX + QQY*YY + QQZ*ZZ;
+    if (fabs(QR)>1e-6) {
+        Ir2CosQR = (2*QR*cos(QR) + (-2 + gsl_pow_2(QR))*sin(QR))/gsl_pow_3(QR);
+        Ir2SinQR = (-2 + (2 - gsl_pow_2(QR))*cos(QR) + 2*QR*sin(QR))/gsl_pow_3(QR);
+    } else {
+        Ir2CosQR = 1/3-gsl_pow_2(QR)/10.+gsl_pow_4(QR)/168.-gsl_pow_6(QR)/6480;
+        Ir2SinQR = QR/4.-gsl_pow_3(QR)/36.+gsl_pow_5(QR)/960.-gsl_pow_7(QR)/50400.;
+    }
+	DJSS3D = cos(phi)*gsl_pow_2(r1)*gsl_pow_3(r2);
     fval[0] = DJSS3D*Ir2CosQR;
     fval[1] = DJSS3D*Ir2SinQR;
 	return 0;
@@ -514,6 +551,13 @@ scalar call_opo_Fss_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
     x[0]=x1;
     x[1]=x2;
     opo_Fss_cub_dtp(2,x,pam,2,fval);
+}
+
+scalar call_opo_Fratss_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
+    scalar fv[2], x[2];
+    x[0]=x1;
+    x[1]=x2;
+    opo_Fratss_cub_dtp(2,x,pam,2,fval);
 }
 
 int opo_Fss_cub_drtp(unsigned ndim, const double *x, void *pam,
@@ -535,8 +579,33 @@ int opo_Fss_cub_drtp(unsigned ndim, const double *x, void *pam,
 	YY = r*r1*sin(theta)*r2*cos(phi);
 	ZZ = r*r2*sin(phi);
 
-	DJSS3D = (r*r*cos(phi))/(pow(pow(fabs(cos((FMM*(theta-FALPHA))/4.)/FAA),FN2) + pow(fabs(sin((FMM*(theta-FALPHA))/4.)/FBB),FN3),2/FN1)*
-                             pow(pow(fabs(cos((SMM*(phi  -SALPHA))/4.)/SAA),SN2) + pow(fabs(sin((SMM*(phi  -SALPHA))/4.)/SBB),SN3),3/SN1));
+	DJSS3D = (r*r*cos(phi))*gsl_pow_2(r1)*gsl_pow_3(r2);
+	fval[0] = DJSS3D*cos(QQX*XX + QQY*YY + QQZ*ZZ);
+	fval[1] = DJSS3D*sin(QQX*XX + QQY*YY + QQZ*ZZ);
+//	sasfit_out("r1=%lg r2=%lg theta=%lg phi=%lg Qx=%lg Qy=%lg Qz=%lg x=%lg y=%lg z=%lg DetJ=%lg\n",r1,r2,theta,phi,QQX,QQY,QQZ,XX,YY,ZZ,DJSS3D);
+	return 0;
+}
+
+int opo_Fratss_cub_drtp(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+    scalar r,theta,phi,r1,r2,DJSS3D;
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+	if ((ndim < 3) || (fdim < 2)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+	r     = x[0];
+	theta = x[1];
+	phi   = x[2];
+	if (r==0) return 0;
+	r1=ratri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
+	r2=ratri(phi,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	XX = r*r1*cos(theta)*r2*cos(phi);
+	YY = r*r1*sin(theta)*r2*cos(phi);
+	ZZ = r*r2*sin(phi);
+
+	DJSS3D = (r*r*cos(phi))*gsl_pow_2(r1)*gsl_pow_3(r2);
 	fval[0] = DJSS3D*cos(QQX*XX + QQY*YY + QQZ*ZZ);
 	fval[1] = DJSS3D*sin(QQX*XX + QQY*YY + QQZ*ZZ);
 //	sasfit_out("r1=%lg r2=%lg theta=%lg phi=%lg Qx=%lg Qy=%lg Qz=%lg x=%lg y=%lg z=%lg DetJ=%lg\n",r1,r2,theta,phi,QQX,QQY,QQZ,XX,YY,ZZ,DJSS3D);
@@ -551,6 +620,13 @@ scalar call_opo_Fss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void
     opo_Fss_cub_drtp(3,x,pam,2,fval);
 }
 
+scalar call_opo_Fratss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
+    scalar fv[2], x[3];
+    x[0]=x1;
+    x[1]=x2;
+    x[2]=x3;
+    opo_Fratss_cub_drtp(3,x,pam,2,fval);
+}
 scalar opo_Fss_GL_3Drtp(void *pam)
   {
 	sasfit_param * param;
@@ -702,6 +778,157 @@ scalar opo_Fss_GL_3Drtp(void *pam)
     return fA*fC*fE*gsl_hypot(rs,is);
 }
 
+scalar opo_Fratss_GL_3Drtp(void *pam)
+  {
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+    int n,m,i,j,k, ndim=3, fdim=2;
+    scalar fval[2],x[3],*A_GL,*W_GL,rs,is, fa,fb,fA,fB,fc,fd,fC,fD,fe,ff,fE,fF;
+    gsl_integration_glfixed_table *t;
+    n = abs(sasfit_eps_get_robertus_p());
+    m = (n+1)>>1;
+    t=gsl_integration_glfixed_table_alloc(n);
+
+    fa=0;fb=1;
+    fA=(fb-fa)*0.5;
+    fB=(fb+fa)*0.5;
+    fc=-M_PI;fd=M_PI;
+    fC=(fd-fc)*0.5;
+    fD=(fd+fc)*0.5;
+    fe=-M_PI_2;ff=M_PI_2;
+    fE=(ff-fe)*0.5;
+    fF=(ff+fe)*0.5;
+    A_GL = t->x;
+    W_GL = t->w;
+    rs = 0;
+    is = 0;
+    if (n&1) /* n - odd */
+    {
+        call_opo_Fratss_cub_drtp(fB,fD,fF,fval,pam);
+        rs += gsl_pow_3(W_GL[0])*fval[0];
+        is += gsl_pow_3(W_GL[0])*fval[1];
+        for (i=1;i<m;i++) {
+            call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD,fF,fval,pam);
+            rs += gsl_pow_2(W_GL[0])*W_GL[i]*fval[0];
+            is += gsl_pow_2(W_GL[0])*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD,fF,fval,pam);
+            rs += gsl_pow_2(W_GL[0])*W_GL[i]*fval[0];
+            is += gsl_pow_2(W_GL[0])*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_drtp(fB,fD+fC*A_GL[0],fF,fval,pam);
+            rs += gsl_pow_2(W_GL[0])*W_GL[i]*fval[0];
+            is += gsl_pow_2(W_GL[0])*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_drtp(fB,fD-fC*A_GL[0],fF,fval,pam);
+            rs += gsl_pow_2(W_GL[0])*W_GL[i]*fval[0];
+            is += gsl_pow_2(W_GL[0])*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_drtp(fB,fD,fF+fE*A_GL[0],fval,pam);
+            rs += gsl_pow_2(W_GL[0])*W_GL[i]*fval[0];
+            is += gsl_pow_2(W_GL[0])*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_drtp(fB,fD,fF-fE*A_GL[0],fval,pam);
+            rs += gsl_pow_2(W_GL[0])*W_GL[i]*fval[0];
+            is += gsl_pow_2(W_GL[0])*W_GL[i]*fval[1];
+            for (j=1;j<m;j++) {
+                call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD+fC*A_GL[j],fF,fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD,fF+fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB,fD+fC*A_GL[i],fF+fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD-fC*A_GL[j],fF,fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD,fF-fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB,fD+fC*A_GL[i],fF-fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD+fC*A_GL[j],fF,fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD,fF+fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB,fD-fC*A_GL[i],fF+fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fF,fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD,fF-fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_drtp(fB,fD-fC*A_GL[i],fF-fE*A_GL[j],fval,pam);
+                rs += W_GL[0]*W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[0]*W_GL[i]*W_GL[j]*fval[1];
+                for (k=1;k<m;k++) {
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD+fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD+fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD-fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD+fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD-fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD+fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                }
+            }
+        }
+    }
+    else  /* n - even */
+    {
+      for (i=0;i<m;i++) {
+            for (j=0;j<m;j++) {
+                for (k=0;k<m;k++) {
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD+fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD+fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD-fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD+fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB+fA*A_GL[i],fD-fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD+fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fF+fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                    call_opo_Fratss_cub_drtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fF-fE*A_GL[k],fval,pam);
+                    rs += W_GL[k]*W_GL[i]*W_GL[j]*fval[0];
+                    is += W_GL[k]*W_GL[i]*W_GL[j]*fval[1];
+                }
+            }
+        }
+    }
+    gsl_integration_glfixed_table_free(t);
+    return fA*fC*fE*gsl_hypot(rs,is);
+}
+
 scalar opo_Fss_GL_3Dtp(void *pam)
   {
 	sasfit_param * param;
@@ -771,6 +998,84 @@ scalar opo_Fss_GL_3Dtp(void *pam)
                 rs += W_GL[i]*W_GL[j]*fval[0];
                 is += W_GL[i]*W_GL[j]*fval[1];
                 call_opo_Fss_cub_dtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+            }
+        }
+    }
+    gsl_integration_glfixed_table_free(t);
+    return fA*fC*gsl_hypot(rs,is);
+}
+
+scalar opo_Fratss_GL_3Dtp(void *pam)
+  {
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+    int n,m,i,j,k, ndim=2, fdim=2;
+    scalar fval[2],x[2],*A_GL,*W_GL,rs,is, fa,fb,fA,fB,fc,fd,fC,fD;
+    gsl_integration_glfixed_table *t;
+    n = abs(sasfit_eps_get_robertus_p());
+    m = (n+1)>>1;
+    t=gsl_integration_glfixed_table_alloc(n);
+
+    fa=-M_PI;fb=M_PI;
+    fA=(fb-fa)*0.5;
+    fB=(fb+fa)*0.5;
+    fc=-M_PI_2;fd=M_PI_2;
+    fC=(fd-fc)*0.5;
+    fD=(fd+fc)*0.5;
+    A_GL = t->x;
+    W_GL = t->w;
+    rs = 0;
+    is = 0;
+    if (n&1) /* n - odd */
+    {
+        call_opo_Fratss_cub_dtp(fB,fD,fval,pam);
+        rs += gsl_pow_2(W_GL[0])*fval[0];
+        is += gsl_pow_2(W_GL[0])*fval[1];
+        for (i=1;i<m;i++) {
+            call_opo_Fratss_cub_dtp(fB+fA*A_GL[i],fD,fval,pam);
+            rs += W_GL[0]*W_GL[i]*fval[0];
+            is += W_GL[0]*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_dtp(fB-fA*A_GL[i],fD,fval,pam);
+            rs += W_GL[0]*W_GL[i]*fval[0];
+            is += W_GL[0]*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_dtp(fB,fD+fC*A_GL[0],fval,pam);
+            rs += W_GL[0]*W_GL[i]*fval[0];
+            is += W_GL[0]*W_GL[i]*fval[1];
+            call_opo_Fratss_cub_dtp(fB,fD-fC*A_GL[0],fval,pam);
+            rs += W_GL[0]*W_GL[i]*fval[0];
+            is += W_GL[0]*W_GL[i]*fval[1];
+            for (j=1;j<m;j++) {
+                call_opo_Fratss_cub_dtp(fB+fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_dtp(fB-fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_dtp(fB+fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_dtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+            }
+        }
+    }
+    else  /* n - even */
+    {
+      for (i=0;i<m;i++) {
+            for (j=0;j<m;j++) {
+                call_opo_Fratss_cub_dtp(fB+fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_dtp(fB+fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_dtp(fB-fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += W_GL[i]*W_GL[j]*fval[0];
+                is += W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fratss_cub_dtp(fB-fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
                 rs += W_GL[i]*W_GL[j]*fval[0];
                 is += W_GL[i]*W_GL[j]*fval[1];
             }
@@ -1324,11 +1629,79 @@ scalar opo_Fsupershape(void * pam) {
             }
     case H_CUBATURE: {
             if (sasfit_eps_get_robertus_p()>0){
+                cubxmax[0] = M_PI;
+                cubxmin[0] = -M_PI;
+                cubxmax[1] = M_PI_2;
+                cubxmin[1] = -M_PI_2;
+                hcubature(2, &opo_Fss_cub_dtp,param,2, cubxmin, cubxmax,
+                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
+                sum	= gsl_hypot(fval[0],fval[1]);
+            } else {
+                cubxmax[0] = 1;
+                cubxmin[0] = 0;
+                cubxmax[1] = M_PI;
+                cubxmin[1] = -M_PI;
+                cubxmax[2] = M_PI_2;
+                cubxmin[2] = -M_PI_2;
+                hcubature(2, &opo_Fss_cub_drtp,param,3, cubxmin, cubxmax,
+                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
+                sum	= gsl_hypot(fval[0],fval[1]);
+            }
+            break;
+            }
+    case P_CUBATURE:
+    default: {
+            if (sasfit_eps_get_robertus_p()>0){
+                cubxmax[0] = M_PI;
+                cubxmin[0] = -M_PI;
+                cubxmax[1] = M_PI_2;
+                cubxmin[1] = -M_PI_2;
+                pcubature(2, &opo_Fss_cub_dtp,param,2, cubxmin, cubxmax,
+                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
+                sum	= gsl_hypot(fval[0],fval[1]);
+            } else {
+                cubxmax[0] = 1;
+                cubxmin[0] = 0;
+                cubxmax[1] = M_PI;
+                cubxmin[1] = -M_PI;
+                cubxmax[2] = M_PI_2;
+                cubxmin[2] = -M_PI_2;
+                pcubature(2, &opo_Fss_cub_drtp,param,3, cubxmin, cubxmax,
+                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
+                sum	= gsl_hypot(fval[0],fval[1]);
+            }
+            }
+    }
+//    sasfit_out("Re=%lg,Im=%lg\t",fval[0],fval[1]);
+	return sum;
+}
+
+scalar opo_Fratsupershape(void * pam) {
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+    scalar cubxmin[3], cubxmax[3], fval[2], ferr[2];
+    scalar *aw, res,err,sum;
+    int intstrategy, lenaw=4000;
+	int auswahl;
+	intstrategy = sasfit_get_int_strategy();
+//    intstrategy=OOURA_DOUBLE_EXP_QUADRATURE;
+	switch(intstrategy) {
+
+    case GSL_GAUSSLEGENDRE: {
+            if (sasfit_eps_get_robertus_p()>0){
+                sum = opo_Fratss_GL_3Dtp(pam);
+            } else {
+                sum = opo_Fratss_GL_3Drtp(pam);
+            }
+            break;
+            }
+    case H_CUBATURE: {
+            if (sasfit_eps_get_robertus_p()>0){
             cubxmax[0] = M_PI;
             cubxmin[0] = -M_PI;
             cubxmax[1] = M_PI_2;
             cubxmin[1] = -M_PI_2;
-            hcubature(2, &opo_Fss_cub_dtp,param,2, cubxmin, cubxmax,
+            hcubature(2, &opo_Fratss_cub_dtp,param,2, cubxmin, cubxmax,
                         100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
             sum	= gsl_hypot(fval[0],fval[1]);
             } else {
@@ -1338,7 +1711,7 @@ scalar opo_Fsupershape(void * pam) {
             cubxmin[1] = -M_PI;
             cubxmax[2] = M_PI_2;
             cubxmin[2] = -M_PI_2;
-            hcubature(2, &opo_Fss_cub_drtp,param,3, cubxmin, cubxmax,
+            hcubature(2, &opo_Fratss_cub_drtp,param,3, cubxmin, cubxmax,
                         100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
             sum	= gsl_hypot(fval[0],fval[1]);
             }
@@ -1351,7 +1724,7 @@ scalar opo_Fsupershape(void * pam) {
             cubxmin[0] = -M_PI;
             cubxmax[1] = M_PI_2;
             cubxmin[1] = -M_PI_2;
-            pcubature(2, &opo_Fss_cub_dtp,param,2, cubxmin, cubxmax,
+            pcubature(2, &opo_Fratss_cub_dtp,param,2, cubxmin, cubxmax,
                         100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
             sum	= gsl_hypot(fval[0],fval[1]);
 
@@ -1362,7 +1735,7 @@ scalar opo_Fsupershape(void * pam) {
             cubxmin[1] = -M_PI;
             cubxmax[2] = M_PI_2;
             cubxmin[2] = -M_PI_2;
-            pcubature(2, &opo_Fss_cub_drtp,param,3, cubxmin, cubxmax,
+            pcubature(2, &opo_Fratss_cub_drtp,param,3, cubxmin, cubxmax,
                         100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
             sum	= gsl_hypot(fval[0],fval[1]);
             }

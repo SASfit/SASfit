@@ -66,10 +66,6 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_sq_aniso_pearson.c
 	ops_utils.c
 	interface.c
-	erfcx.c
-	err_fcts.c
-	im_w_of_x.c
-	w_of_z.c
 )
 
 # add plugin path for finding 'Find*.cmake' files for new <LIBS_EXT>

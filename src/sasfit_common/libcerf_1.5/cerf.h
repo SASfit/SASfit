@@ -64,6 +64,8 @@ double         im_w_of_x(double x); // special case Im[w(x)] of real x
 double re_w_of_z( double x, double y );
 double im_w_of_z( double x, double y );
 
+void w_of_z_e( double x, double y, double *rew, double *imw );
+
 // compute erf(z), the error function of complex arguments
 double _Complex cerf  (double _Complex z);
 

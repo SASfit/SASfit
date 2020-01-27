@@ -18,11 +18,11 @@ scalar rexpQRn2(scalar x,void *pam){
 	param = (sasfit_param *) pam;
 	scalar mu;
 	mu = fabs(x);
-	return (mu+gsl_pow_4(M_PI)/180.*gsl_pow_2(mu*WI*cos(PSI))*(1+mu-mu*mu/4.-2*gsl_pow_3(mu)+gsl_pow_4(mu)));
+	return (mu*(1-mu)+gsl_pow_4(M_PI)/(1440.+0*5760.)*gsl_pow_2(mu*WI*cos(PSI))*(1-5*mu*mu+6*gsl_pow_3(mu)-2*gsl_pow_4(mu)));
 }
 
 scalar gsl_rexpQRn2(scalar x,sasfit_param * param){
-	return 2*(1-x)*exp(-gsl_pow_2(Q*RG)*rexpQRn2(x,param)*rexpQRn2(1-x,param));
+	return 2*(1-x)*exp(-2*gsl_pow_2(Q*RG)*rexpQRn2(x,param));
 }
 
 int rshearflow_kernel_cub(unsigned ndim, const double *x, void *pam,

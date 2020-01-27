@@ -438,7 +438,7 @@ set EMOptions(maxLagrange)  1e12
 set EMOptions(overrelaxation) 1
 set EMOptions(maxKrylov) 5
 set EMOptions(error_weight) "on"
-set EMOptions(Interrupt) 0"
+set EMOptions(Interrupt) 0
 set EMOptions(PrintProgress) 0
 
 global FitPrecision EMOptions
