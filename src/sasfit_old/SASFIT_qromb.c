@@ -784,7 +784,13 @@ bool		*error;
 				}
 			}
 			if (fabs(dss) > sasfit_eps_get_res()*fabs(ss)) integrate_ready = FALSE;
-			if (integrate_ready == TRUE) return ss;
+			if (integrate_ready == TRUE) {
+                    free_dvector(DDss,0,(3*MAXPAR)*max_SD-1);
+                    free_dvector(DDdss,0,(3*MAXPAR)*max_SD-1);
+                    free_matrix(DDs,0,(3*MAXPAR)*max_SD-1,0,JMAXP+1);
+                    free_matrix(DDh,0,(3*MAXPAR)*max_SD-1,0,JMAXP+1);
+                    return ss;
+			}
 		}
 		s[j+1]=s[j];
 		h[j+1]=0.25*h[j];
