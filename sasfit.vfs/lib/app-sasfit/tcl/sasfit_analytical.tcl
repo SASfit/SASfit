@@ -7804,7 +7804,9 @@ ComboBox $wdet2D_b.c_ct -textvariable Detector2DIQGraph(ct) \
 		-width 20 \
 		-values $::ColorMap(LUTnames) \
         -label "color table:" \
-		-modifycmd {change_CT_Det2D sim}
+		-modifycmd {change_CT_Det2D sim
+					change_CT_Det2D data
+		}
 
 checkbutton $wdet2D_b.r_reverseCT   -variable ::Detector2DIQGraph(reverseCT) \
 			-text "reverse CT" -command {change_CT_Det2D sim}
@@ -7873,10 +7875,16 @@ button $wdet2D_c.fit -bg "light coral" -text "Fit\n2D detector pattern" \
 		set ::SASfitinterrupt 0
 		sasfit_timer_start "\nStart fitting 2d"
 		read_HMI "C:/user/SASfitGit/D0040954.018" SANSDAniData
+		set Detector2DIQGraph(Det2DAniFN) "C:/user/SASfitGit/D0040954.018"
 		read_HMI "C:/user/SASfitGit/18m.sma" SANSDAniMask
+		set Detector2DIQGraph(Det2DMaskFN) "C:/user/SASfitGit/18m.sma"
 	    set Det2DAni [HMIgetItem SANSDAniData Counts SANSDAni i]
+		set Detector2DIQGraph(Det2DAniRaw) $Det2DAni
 		set Det2DMask [HMIgetItem SANSDAniMask Mask SANSMAni i]
-		set nPix [expr round(sqrt([HMIgetItem SANSDAniData File DataSize i]))]
+		set Detector2DIQGraph(Det2DMask) $Det2DMask
+		set Detector2DIQGraph(nPix2DMask) [HMIgetItem SANSDAniMask File DataSizeX i]
+		set nPix2DAni [expr round(sqrt([HMIgetItem SANSDAniData File DataSize i]))]
+		set Detector2DIQGraph(nPix2DAni) $nPix2DAni 
 #        puts $Det2DAni
 		
 	    if {$::sasfit(width) < $::sasfit(height)} {
@@ -7887,9 +7895,9 @@ button $wdet2D_c.fit -bg "light coral" -text "Fit\n2D detector pattern" \
 		set DMin -1e12
 		set DMax 1e12
 		set DIdat {}
-		for {set i 0} {$i < $nPix} {incr i} {
+		for {set i 0} {$i < $nPix2DAni} {incr i} {
 			set DIrow {}
-			for {set j 0} {$j < $nPix} {incr j} {
+			for {set j 0} {$j < $nPix2DAni} {incr j} {
 				set Detji [lindex [lindex $Det2DAni $i] $j]
 				set Maskji [lindex [lindex $Det2DMask $i] $j]
 				if {$Maskji==1} {
@@ -7912,16 +7920,15 @@ button $wdet2D_c.fit -bg "light coral" -text "Fit\n2D detector pattern" \
 #			puts $DIrow
 			lappend DIdat $DIrow
 		}
-		if {$DMin < 0} {
-			set DMin 0
-		}
+		set DetMin [::math::statistics::min  [join [join $DIdat]]]
+		set DetMax [::math::statistics::max  [join [join $DIdat]]]
 		set DIdat {}
-		for {set i 0} {$i < $nPix} {incr i} {
+		for {set i 0} {$i < $nPix2DAni} {incr i} {
 			set DIrow {}
-			for {set j 0} {$j < $nPix} {incr j} {
+			for {set j 0} {$j < $nPix2DAni} {incr j} {
 				set Detji [lindex [lindex $Det2DAni $i] $j]
 				set Maskji [lindex [lindex $Det2DMask $i] $j]
-				if {$Maskji==1 && $Detji > 0} {
+				if {$Maskji==1} {
 					lappend DIrow $Detji
 				} else {
 					lappend DIrow $DMin
@@ -7929,28 +7936,17 @@ button $wdet2D_c.fit -bg "light coral" -text "Fit\n2D detector pattern" \
 			}
 			lappend DIdat $DIrow
 		}
-#		puts now the whole data set
-puts "$DMax $DMin"
-		set DetMin [::math::statistics::min  [join [join $DIdat]]]
-		set DetMax [::math::statistics::max  [join [join $DIdat]]]
-		set DetMin $DMin
-		set DetMax $DMax
-#   $Detector2DIQGraph(w) setwidget  $Detector2DIQGraph(cw) 
-	    set s [::Plotchart::createIsometricPlot $Detector2DIQGraph(cwdata) \
-		[list 0.0 $nPix] \
-		[list 0.0 $nPix] noaxes] 
-	    for {set i 0} {$i < $nPix} {incr i} {
-	       for {set j 0} {$j < $nPix} {incr j} {
-		  set xll $i
-		  set yll $j
-		  set xur [expr $i+1]
-		  set yur [expr $j+1]
-		  set Dij [expr log10(1.0*([lindex [lindex $DIdat $i] $j]-$DetMin)/($DetMax-$DetMin)+1.0)/log10(256)]
-		  set ctIndx [expr round(255*$Dij)]
-#		  $s plot filled-rectangle $xll $yll $xur $yur  \
-#		      [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
-	       }   
+        set DetImage {} 
+	    for {set i 0} {$i < $nPix2DAni} {incr i} {
+		   set DetLine {}
+	       for {set j 0} {$j < $nPix2DAni} {incr j} {
+				set Dij [expr log10(255*([lindex [lindex $DIdat $i] $j]-$DetMin)/($DetMax-$DetMin)+1.0)/log10(256)]
+				lappend DetLine [expr round(255*$Dij)]	  
+	       }
+		   lappend DetImage $DetLine
 		}
+		set Detector2DIQGraph(Det2DAni) $DetImage
+		if {[catch {change_CT_Det2D data} msg]} {puts $msg}
 		sasfit_timer_stop "Plotting 2D" "finished" ""
 		}
 }

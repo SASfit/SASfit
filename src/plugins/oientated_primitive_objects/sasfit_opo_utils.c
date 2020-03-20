@@ -549,8 +549,8 @@ scalar opo_Fsth_GL_3DtpOOURA_Re_dphi(scalar phi, void * pam) {
 	sasfit_param * param;
 	param = (sasfit_param *) pam;
     theta = THETA;
-	r1=ri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
-	r2=ri(phi,SALPHA+theta*SGAMMA,SMM,SN1,SN2,SN3,SAA,SBB);
+	r1=ri(theta,FALPHA,             FMM,FN1,FN2,FN3,FAA,FBB);
+	r2=ri(phi,  SALPHA+theta*SGAMMA,SMM,SN1,SN2,SN3,SAA,SBB);
 	Asth = QQZ*PITCH*theta/(2*M_PI) +
            QQX*RADIUS*r1*cos(theta)+
            QQY*RADIUS*r1*sin(theta);
@@ -754,7 +754,7 @@ int opo_Fratss_cub_dtp(unsigned ndim, const double *x, void *pam,
         Ir2CosQR = (2*QR*cos(QR) + (-2 + gsl_pow_2(QR))*sin(QR))/gsl_pow_3(QR);
         Ir2SinQR = (-2 + (2 - gsl_pow_2(QR))*cos(QR) + 2*QR*sin(QR))/gsl_pow_3(QR);
     } else {
-        Ir2CosQR = 1/3-gsl_pow_2(QR)/10.+gsl_pow_4(QR)/168.-gsl_pow_6(QR)/6480;
+        Ir2CosQR = 1/3-gsl_pow_2(QR)/10.+gsl_pow_4(QR)/168.-gsl_pow_6(QR)/6480.;
         Ir2SinQR = QR/4.-gsl_pow_3(QR)/36.+gsl_pow_5(QR)/960.-gsl_pow_7(QR)/50400.;
     }
 	DJSS3D = cos(phi)*gsl_pow_2(r1)*gsl_pow_3(r2);
@@ -804,7 +804,7 @@ int opo_Fss_cub_drtp(unsigned ndim, const double *x, void *pam,
 
 int opo_Fsth_cub_drtp(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
-    scalar r,theta,phi,r1,r2,DJSS3D;
+    scalar r,theta,phi,r1,r2,DJSTH3D;
 	sasfit_param * param;
 	param = (sasfit_param *) pam;
 	if ((ndim < 3) || (fdim < 2)) {
@@ -814,16 +814,16 @@ int opo_Fsth_cub_drtp(unsigned ndim, const double *x, void *pam,
 	r     = x[0];
 	theta = x[1];
 	phi   = x[2];
-	if (r==0) return 0;
+//	if (r==0) return 0;
 	r1=ri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
 	r2=ri(phi,SALPHA+theta*SGAMMA,SMM,SN1,SN2,SN3,SAA,SBB);
-	XX = r1*cos(theta)*(r*r2*cos(phi)+RADIUS);
-	YY = r1*sin(theta)*(r*r2*cos(phi)+RADIUS);
-	ZZ = r*r2*sin(phi)+PITCH/(2*M_PI)*theta;
+	XX =   r1*cos(theta)*(r*r2*cos(phi)+RADIUS);
+	YY =   r1*sin(theta)*(r*r2*cos(phi)+RADIUS);
+	ZZ =                  r*r2*sin(phi)+PITCH*theta/(2*M_PI);
 
-	DJSS3D = r*gsl_pow_2(r1)*(gsl_pow_2(r2)*RADIUS+gsl_pow_3(r2)*r*cos(phi));
-	fval[0] = DJSS3D*cos(QQX*XX + QQY*YY + QQZ*ZZ);
-	fval[1] = DJSS3D*sin(QQX*XX + QQY*YY + QQZ*ZZ);
+	DJSTH3D = r*gsl_pow_2(r1)*(gsl_pow_2(r2)*RADIUS+gsl_pow_3(r2)*r*cos(phi));
+	fval[0] = DJSTH3D*cos(QQX*XX + QQY*YY + QQZ*ZZ);
+	fval[1] = DJSTH3D*sin(QQX*XX + QQY*YY + QQZ*ZZ);
 //	sasfit_out("r1=%lg r2=%lg theta=%lg phi=%lg Qx=%lg Qy=%lg Qz=%lg x=%lg y=%lg z=%lg DetJ=%lg\n",r1,r2,theta,phi,QQX,QQY,QQZ,XX,YY,ZZ,DJSS3D);
 	return 0;
 }
@@ -855,7 +855,7 @@ int opo_Fratss_cub_drtp(unsigned ndim, const double *x, void *pam,
 }
 
 scalar call_opo_Fss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
-    scalar fv[2], x[3];
+    scalar x[3];
     x[0]=x1;
     x[1]=x2;
     x[2]=x3;
@@ -863,7 +863,7 @@ scalar call_opo_Fss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void
 }
 
 scalar call_opo_Fsth_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
-    scalar fv[2], x[3];
+    scalar x[3];
     x[0]=x1;
     x[1]=x2;
     x[2]=x3;
@@ -871,7 +871,7 @@ scalar call_opo_Fsth_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, voi
 }
 
 scalar call_opo_Fratss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
-    scalar fv[2], x[3];
+    scalar x[3];
     x[0]=x1;
     x[1]=x2;
     x[2]=x3;
@@ -2172,8 +2172,10 @@ scalar opo_Fsuper_toroid_helix(void * pam) {
             sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_aniso(), aw);
             sasfit_intde(&opo_Fsth_GL_3DtpOOURA_Re_dtheta, -TURNS*M_PI, TURNS*M_PI, aw, &res, &err, param);
             fval[0]=res;
+            ferr[0]=err;
             sasfit_intde(&opo_Fsth_GL_3DtpOOURA_Im_dtheta, -TURNS*M_PI, TURNS*M_PI, aw, &res, &err, param);
             fval[1]=res;
+            ferr[1]=err;
             free(aw);
             sum	= gsl_hypot(fval[0],fval[1]);
             break;
@@ -2183,8 +2185,10 @@ scalar opo_Fsuper_toroid_helix(void * pam) {
             sasfit_intccini(lenaw, aw);
             sasfit_intcc(&opo_Fsth_GL_3DtpOOURA_Re_dtheta, -TURNS*M_PI, TURNS*M_PI, sasfit_eps_get_aniso(), lenaw, aw, &res, &err,param);
             fval[0]=res;
+            ferr[0]=err;
             sasfit_intcc(&opo_Fsth_GL_3DtpOOURA_Im_dtheta, -TURNS*M_PI, TURNS*M_PI, sasfit_eps_get_aniso(), lenaw, aw, &res, &err,param);
             fval[1]=res;
+            ferr[1]=err;
             free(aw);
             sum	= gsl_hypot(fval[0],fval[1]);
             break;

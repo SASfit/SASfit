@@ -231,9 +231,9 @@ with $N$ being the number of segments of the polymer, $a=(qR_g)^2$, where $R_g$ 
 Ring polymers under shear flow also can be described using the Rouse model \cite{Tsolou2010,Stephanou2019} similarly to eq.\ \ref{eq:MSDlinearShearFlow}. The mean square displacement then reads as
 \begin{align}\label{eq:MSDringShearFlow}
 \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} &= 2\left(qR_{g,\mathrm{ring}}\right)^2
-\left[ \mu+\frac{\left(\cos(\psi-\phi_0)\pi^2\operatorname{Wi}_\mathrm{ring}\right)^2}{90} \left(\mu^2+2\mu^3\right) \right]
+\left[ \mu+\frac{\left(\cos(\psi-\phi_0)\pi^2\operatorname{Wi}_\mathrm{ring}\right)^2}{1440} \left(\mu^2+2\mu^3\right) \right]
 \end{align}
-with $\mu=x(1-x)$, $x=\abs{\frac{n-m}{N}}$, $\operatorname{Wi}_\mathrm{ring}=\tau_2\dot{\gamma}$, and $R_{g,\mathrm{ring}}^2=\frac{Nb^2}{12}=R_{g,\mathrm{lin}}^2/2$. The scattering intensity is then obtained by eq.\ \ref{eq:IQ_MSD}
+with $\mu=x(1-x)$, $x=\abs{\frac{n-m}{N}}$, $\operatorname{Wi}_\mathrm{ring}=\tau_1\dot{\gamma}$, and $R_{g,\mathrm{ring}}^2=\frac{Nb^2}{12}=R_{g,\mathrm{lin}}^2/2$. The scattering intensity is then obtained by eq.\ \ref{eq:IQ_MSD}
 \begin{align}
  P(\mathbf{q}) & = 2\int_0^1 (1-x) \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right) \mathrm{d}x
 \end{align}
@@ -1501,8 +1501,9 @@ The Jacobi determinant for both the super-shape as well as rational super-shape 
 \det(\M{J})e^{\imath\B{\hat{Q}r}} \\
 &= \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-\pi}^{\pi} \mathrm{d}\theta\,  \int\limits_{-\pi/2}^{\pi/2} \mathrm{d}\phi \,
 \cos (\phi ) r_1^2(\theta) r_2^3(\phi)  \\
-&\times      \frac{2\hat{q}_s\cos \hat{q}_s + \left(\hat{q}_s^2-2\right)\sin \hat{q}_s}{\hat{q}_s^3}
-    + \imath \frac{\left(2 - \hat{q}_s^2\right)\cos \hat{q}_s-2 + 2q_s\sin \hat{q}_s}{\hat{q}_s^3} \nonumber \\
+&\times     \left( \frac{2\hat{q}_s\cos \hat{q}_s + \left(\hat{q}_s^2-2\right)\sin \hat{q}_s}{\hat{q}_s^3} \right.
+    \nonumber \\
+   & + \left. \imath \frac{\left(2 - \hat{q}_s^2\right)\cos \hat{q}_s-2 + 2q_s\sin \hat{q}_s}{\hat{q}_s^3}  \right) \nonumber \\
 \hat{q}_s &= \B{\hat{Q}}\B{S}=\hat{Q}_x x(1,\theta,\phi)+\hat{Q}_y y(1,\theta,\phi)+\hat{Q}_z z(1,\theta,\phi)
 \end{align}
 \clearpage
@@ -1562,11 +1563,11 @@ Grid[{{
 
 The super-toroid and super-helix are basing on the parametric representation in eq.\ \ref{eq:supershapes:parametric_r} and the points on their surface $ \B{S}$ and in the volume $ \B{V}$ are defined as
 \begin{align}\label{eq:super_toroid_helix}
-  \B{S} &= 
+  \B{S} &=
   \left(
     \begin{array}{l}
-     a_1 \; r_1(\theta,\alpha) \cos(\theta) \; \left[r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
-     a_2 \; r_1(\theta,\alpha) \sin(\theta) \; \left[r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
+     a_1 \; r_1(\theta,\alpha) \cos(\theta) \; \left[r_2(\phi,\beta+\gamma\theta)\cos(\phi) +R\right]  \\
+     a_2 \; r_1(\theta,\alpha) \sin(\theta) \; \left[r_2(\phi,\beta+\gamma\theta)\cos(\phi) +R\right]  \\
      a_3 \; \left[r_2(\phi,\beta+\gamma\theta)   \sin(\phi)+\frac{P\theta}{2\pi} \right]\\
     \end{array}
   \right) \\
@@ -1580,8 +1581,8 @@ The super-toroid and super-helix are basing on the parametric representation in 
     &=
   \left(
     \begin{array}{l}
-     a_1 \; r_1(\theta,\alpha) \cos(\theta) \; \left[\tau r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
-     a_2 \; r_1(\theta,\alpha) \sin(\theta) \; \left[\tau r_2(\phi,\beta+\gamma\theta) +R\right]\cos(\phi)  \\
+     a_1 \; r_1(\theta,\alpha) \cos(\theta) \; \left[\tau r_2(\phi,\beta+\gamma\theta)\cos(\phi) +R\right]  \\
+     a_2 \; r_1(\theta,\alpha) \sin(\theta) \; \left[\tau r_2(\phi,\beta+\gamma\theta)\cos(\phi) +R\right]  \\
      a_3 \; \left[\tau r_2(\phi,\beta+\gamma\theta)   \sin(\phi)+\frac{P\theta}{2\pi} \right]\\
     \end{array}
   \right)
@@ -1619,5 +1620,5 @@ The Jacobi determinant for this substitution is
     \end{array}
   \right)  \nonumber \\
   &= a_1a_2a_3
-   \tau r_1^2(\theta,\alpha) r_2^3(\phi,\beta+\gamma\theta) \left(\frac{R}{r_2(\phi,\beta+\gamma\theta)}+\tau\cos(\phi )\right)
+   \tau r_1^2(\theta,\alpha) r_2^2(\phi,\beta+\gamma\theta) \left[R+\tau r_2(\phi,\beta+\gamma\theta)\cos(\phi )\right]
 \end{align}

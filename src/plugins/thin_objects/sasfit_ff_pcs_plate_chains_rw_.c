@@ -17,7 +17,7 @@
 #define RG param->p[7]
 #define D param->p[8]
 
-#define SURF M_PI*gsl_pow_2(100*LC) // surface area is not really known for this cross section form factor and is fixed to be the one of a disc with a radius 100 times larger than the thickjness of the core layer
+#define SURF M_PI*gsl_pow_2(100*((LC < 1.) ?  1 : LC)) // surface area is not really known for this cross section form factor and is fixed to be the one of a disc with a radius 100 times larger than the thickjness of the core layer
 #define PCHAIN param->p[MAXPAR-3]
 #define NAGG param->p[MAXPAR-2]
 #define V_CORE param->p[MAXPAR-1]
@@ -45,12 +45,7 @@ scalar sasfit_ff_pcs_plate_chains_rw_(scalar q, sasfit_param * param)
 
 	Fc = sasfit_gauss_fc(q, RG);
 	w = sasfit_rwbrush_w(q, RG);
-	if (q * LC/2. == 0)
-	{
-		Fs = 1.0;
-	} else {
-		Fs = sin(q * LC/2.) / (q * LC/2.);
-	}
+	Fs = gsl_sf_sinc(q*LC*0.5/M_PI);
 	Fcs = Fs*Fs;
 	Scc = gsl_pow_2(w*cos(q*(LC/2.+D*RG)));
 	Ssc = w * Fs *cos(q*(LC/2.+D*RG));

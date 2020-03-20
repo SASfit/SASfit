@@ -40,34 +40,8 @@ scalar sasfit_ff_alignedcylshell(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((L < 0.0), param, "L(%lg) < 0",L); // modify condition to your needs
 
 	// insert your code here
-		if ( q == 0.0 )
-	{
-		return pow( (ETA_C - ETA_SH)*R*R*L*M_PI + (ETA_SH - ETA_SOL)*(R+DR)*(R+DR)*L*M_PI, 2);
-	}
-	if (L == 0.0)
-	{
-		return 0.0;
-	}
-	if (R+DR == 0.0)
-	{
-		return 0.0;
-	}
-
-	if (gama == M_PI/2.0)
-	{
-		return pow(2.*gsl_sf_bessel_J1(q*R     )/q *L*   R  *M_PI*(ETA_C-ETA_SH) +
-		  	       2.*gsl_sf_bessel_J1(q*(R+DR))/q *L*(R+DR)*M_PI*(ETA_SH-ETA_SOL)  ,2);
-	}
-	else if (gama == 0.0)
-	{
-		return pow(2./q*R     *R     *sin(q*L*0.5)*(ETA_C-ETA_SH)*M_PI+
-			       2./q*(R+DR)*(R+DR)*sin(q*L*0.5)*(ETA_SH-ETA_SOL)*M_PI  ,2);
-	}
-	else
-	{
-		return pow(4.*(ETA_C-ETA_SH)  *M_PI* R    *gsl_sf_bessel_J1(q* R    *sin(gama))*sin(q*L*cos(gama)/2.)*pow(q,-2.)/sin(gama)/cos(gama)+
-			       4.*(ETA_SH-ETA_SOL)*M_PI*(R+DR)*gsl_sf_bessel_J1(q*(R+DR)*sin(gama))*sin(q*L*cos(gama)/2.)*pow(q,-2.)/sin(gama)/cos(gama) ,2);
-	}
+	return gsl_pow_2(2.*(ETA_C-ETA_SH)  *M_PI* R    *R     *L*sasfit_jinc(q* R    *sin(gama))*gsl_sf_sinc(q*L*cos(gama)/2./M_PI)+
+			         2.*(ETA_SH-ETA_SOL)*M_PI*(R+DR)*(R+DR)*L*sasfit_jinc(q*(R+DR)*sin(gama))*gsl_sf_sinc(q*L*cos(gama)/2./M_PI));
 }
 
 scalar sasfit_ff_alignedcylshell_f(scalar q, sasfit_param * param)
