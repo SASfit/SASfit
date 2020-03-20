@@ -1607,7 +1607,7 @@ dnl AC_CHECK_TOOL(AR, ar)
 	    SHLIB_CFLAGS="-fno-common"
 	    if test $do64bit = yes; then
 	        do64bit_ok=yes
-	        CFLAGS="$CFLAGS -arch ppc64 -mpowerpc64 -mcpu=G5"
+	        #CFLAGS="$CFLAGS -arch ppc64 -mpowerpc64 -mcpu=G5"
 	    fi
 	    # TEA specific: use LDFLAGS_DEFAULT instead of LDFLAGS here:
 	    SHLIB_LD='${CC} -dynamiclib ${CFLAGS} ${LDFLAGS_DEFAULT}'

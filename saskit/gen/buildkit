@@ -397,6 +397,8 @@ proc conf::init {ar} {
 	Windows*    { array set X {. "" sh bash lib "" .bin .exe} }
 	default	    { array set X {} }
     }
+    if {[info exists ::env(CC)]} { set X(gcc) $::env(CC) }
+    if {[info exists ::env(CXX)]} { set X(g++) $::env(CXX) }
 }
 
 proc conf::loadconf {name {inarray "::conf"} {outarray "::conf"}} {
@@ -416,6 +418,12 @@ proc conf::loadconf {name {inarray "::conf"} {outarray "::conf"}} {
 	    set $n $inar($n)
 	    lappend vars $n
 	}
+    }
+    foreach x {CC CFLAGS} {
+        if {[info exists ::env($x)]} {
+            set $x $::env($x)
+            lappend vars $x
+        }
     }
 
     set fd [open $name]
@@ -923,9 +931,10 @@ proc main::_link {components {ar ""}} {
     }  else  {
 	regsub -all -- {itcl3.3d.a} $L {itcl3.3.a} L
 	regsub -all -- {libitcl3.3g.a} $L {libitcl3.3.a} L
-puts "L: $L"
+        puts "L: $L"
 	#out::oexec [concat [list [conf::x g++]] [conf::x -static] [conf::c_if debug [list -g] [list]] [list -o $target \
 #	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
+        puts "g++: '[conf::x g++]'"
 	out::oexec [concat [list [conf::x g++]] $LDFLAGS [conf::c_if debug [list -g] [list]] [list -o $target \
 	    [file join $dir kitInit.o] [file join $dir pwb.o] [file join $dir rechan.o] [file join $dir zlib.o] $oappinit] $L]
     }

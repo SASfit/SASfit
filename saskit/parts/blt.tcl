@@ -11,7 +11,7 @@ part::create blt \
     -buildcommand {
         conf::norelnoacmainconfigure [part::srcdir blt] --disable-shared [conf::c_norelwith tcl] \
 	       [conf::c_norelwith tk] [conf::c_disen thread threads] \
-	       [conf::c_if debug "--with-cflags=-g" "--with-cflags="]
+	       [conf::c_if debug "--with-cflags=-g $::env(CFLAGS)" "--with-cflags=$::env(CFLAGS)"]
         utils::withfile [file join [part::destdir blt] src Makefile] fc {
             if {$::tcl_platform(platform)=="windows"} {
 	        regsub -all -line "(DEFINES.*?=.*)\$" $fc "\\1 -DSTATIC_BUILD=1" fc
