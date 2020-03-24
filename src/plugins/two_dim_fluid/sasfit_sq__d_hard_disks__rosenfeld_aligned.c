@@ -14,9 +14,9 @@
 #define PSI_DEG param->p[4]
 #define Q   param->p[MAXPAR-1]
 
-scalar sasfit_sq__d_hard_disks__rosenfeld_(scalar q, sasfit_param * param)
+scalar sasfit_sq__d_hard_disks__rosenfeld_aligned(scalar q, sasfit_param * param)
 {
-    scalar A, B, Z, XI, G, _1Sq, qR;
+    scalar A, B, Z, XI, G, _1Sq, qR, psi, gamma;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -25,7 +25,11 @@ scalar sasfit_sq__d_hard_disks__rosenfeld_(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((ETA <= 0.0), param, "eta(%lg) <= 0",ETA); // modify condition to your needs
 	SASFIT_CHECK_COND1((ETA >= 1.0), param, "eta(%lg) >= 1",ETA); // modify condition to your needs
 	// insert your code here
-	qR=q*R;
+    psi   = sasfit_param_override_get_psi(PSI_DEG * M_PI/180.);
+	gamma = acos(cos(psi)*sin(THETA_DEG*M_PI/180.)*cos(PHI_DEG*M_PI/180.)
+                +sin(psi)*sin(THETA_DEG*M_PI/180.)*sin(PHI_DEG*M_PI/180.));
+	Q=q*sin(gamma);
+	qR=Q*R;
     G = 1./(1.-ETA);
     XI = (1.+ETA)/gsl_pow_3(1.-ETA);
     B=((1.-ETA)*XI-1.-3.*ETA*G)/ETA;
@@ -36,7 +40,7 @@ scalar sasfit_sq__d_hard_disks__rosenfeld_(scalar q, sasfit_param * param)
 	return 1./_1Sq;
 }
 
-scalar sasfit_sq__d_hard_disks__rosenfeld__f(scalar q, sasfit_param * param)
+scalar sasfit_sq__d_hard_disks__rosenfeld_aligned_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -44,7 +48,7 @@ scalar sasfit_sq__d_hard_disks__rosenfeld__f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_sq__d_hard_disks__rosenfeld__v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sq__d_hard_disks__rosenfeld_aligned_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
