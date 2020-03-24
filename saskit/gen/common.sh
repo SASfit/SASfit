@@ -9,12 +9,15 @@ SYSTEM_ARCH="$(uname -m)";
 
 if [ "$SYSTEM_NAME" = "Darwin" ]; then
     SYSTEM_ARCH="x86_64"
-    CXX=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^g\+\+-[0-9]+'))
-    CC=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^gcc-[0-9]+'))
-    [ -f "$CXX" ] && export CXX
-    [ -f "$CC" ] && export CC
     # make sure XQuartz is installed, e.g. 'brew cask install xquartz'
     export CFLAGS="-arch $SYSTEM_ARCH -L/usr/X11/lib -I/usr/X11/include"
+    # find optionally installed gcc package if not already defined
+    if [ ! -f "$CC" ] || [ ! -f "$CXX" ]; then
+        CC=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^gcc-(mp-)?[0-9]+' | head -n1))
+        CXX=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^g\+\+-(mp-)?[0-9]+' | head -n1))
+        [ -f "$CC" ] && export CC
+        [ -f "$CXX" ] && export CXX
+    fi
 fi;
 if uname -s | grep -q '^MINGW' ; then # do not replace backslashes in paths
     export CYGPATH=echo
