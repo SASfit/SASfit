@@ -306,12 +306,30 @@ declare 95 generic {
 declare 96 generic {
 	int sasfit_wofz(double * xi, double * yi, double * u, double * v, long * flag__)
 }
-
 declare 97 generic {
 	double re_cerf_z(double x, double y)
 }
 declare 98 generic {
 	double im_cerf_z(double x, double y)
+}
+declare 99 generic {
+	double re_cerfi_z(double x, double y)
+}
+declare 100 generic {
+	double im_cerfi_z(double x, double y)
+}
+declare 101 generic {
+	double re_w_of_z(double x, double y)
+}
+declare 102 generic {
+	double im_w_of_z(double x, double y)
+}
+declare 103 generic {
+	void w_of_z_e(double x, double y, double * rew, double * imw)
+}
+
+declare 104 generic {
+	scalar sasfit_jinc(scalar x)
 }
 
 declare 105 generic {

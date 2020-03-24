@@ -21,13 +21,153 @@
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 #   Ingo Bressler (ingo@cs.tu-berlin.de)
 
+proc scale_Det2DAni {mask} {
+global Detector2DIQGraph
+puts $mask
+if {$Detector2DIQGraph(nPix2DAni) != $Detector2DIQGraph(nPix2DMask)} {set mask nomask}
+switch $mask {
+	mask {
+		set Det2DMask $Detector2DIQGraph(Det2DMask)
+		set nPix2DAni $Detector2DIQGraph(nPix2DAni) 
+		set Det2DAni  $Detector2DIQGraph(Det2DAniRaw)
+		switch $Detector2DIQGraph(auto) {
+			auto {
+					set DMin -1e12
+					set DMax 1e12
+					set DIdat {}
+					for {set i 0} {$i < $nPix2DAni} {incr i} {
+						set DIrow {}
+						for {set j 0} {$j < $nPix2DAni} {incr j} {
+							set Detji [lindex [lindex $Det2DAni $i] $j]
+							set Maskji [lindex [lindex $Det2DMask $i] $j]
+								if {$Maskji==1} {
+									if {$DMin==-1e12 && $DMax==1e12} {
+										set DMin $Detji
+										set DMax $Detji
+									} else {
+										if {$DMax < $Detji} {
+											set DMax $Detji 
+										}
+										if {$DMin > $Detji} {
+											set DMin $Detji 
+										}
+									}
+									lappend DIrow $Detji
+								} 
+						}
+						lappend DIdat $DIrow
+					}
+					set Detector2DIQGraph(min) $DMin
+					set Detector2DIQGraph(max) $DMax
+				}
+			manual {
+				set DMin $Detector2DIQGraph(min)
+				set DMax $Detector2DIQGraph(max)
+			}
+		}
+		set DIdat {}
+		for {set i 0} {$i < $nPix2DAni} {incr i} {
+			set DIrow {}
+			for {set j 0} {$j < $nPix2DAni} {incr j} {
+				set Detji [lindex [lindex $Det2DAni $i] $j]
+				set Maskji [lindex [lindex $Det2DMask $i] $j]
+				if {$Maskji==1} {
+					if {$Detji > $DMax} {
+						lappend DIrow $DMax
+					} elseif {$Detji < $DMin} {
+						lappend DIrow $DMin
+					} else {
+						lappend DIrow $Detji
+					}
+				} else {
+					lappend DIrow $DMin
+				}
+			}
+			lappend DIdat $DIrow
+		}
+		puts "DIdat min [::math::statistics::min [join [join $DIdat]]] $DMin  max [::math::statistics::max [join [join $DIdat]]] $DMax llenght [llength [join [join $DIdat]]]"
+		set DetImage {} 
+		for {set i 0} {$i < $nPix2DAni} {incr i} {
+			set DetLine {}
+			for {set j 0} {$j < $nPix2DAni} {incr j} {
+				set Dij [expr 255*log10(255*([lindex [lindex $DIdat $i] $j]-$DMin)/($DMax-$DMin)+1.0)/log10(256)]
+				lappend DetLine [expr round($Dij)]  
+			}
+			lappend DetImage $DetLine
+		}
+		set Detector2DIQGraph(Det2DAni) $DetImage
+	}
+	default {
+		set nPix2DAni $Detector2DIQGraph(nPix2DAni) 
+		set Det2DAni $Detector2DIQGraph(Det2DAniRaw)
+		switch $Detector2DIQGraph(auto) {
+			auto {
+					set DMin -1e12
+					set DMax 1e12
+					if {$Detji > $DMax} {
+						lappend DIrow $DMax
+					} else if {$Detji < $DMin} {
+						lappend $DMin
+					} else {
+						lappend DIrow $Detji
+					}min
+					set DIdat {}
+					for {set i 0} {$i < $nPix2DAni} {incr i} {
+						set DIrow {}
+						for {set j 0} {$j < $nPix2DAni} {incr j} {
+							set Detji [lindex [lindex $Det2DAni $i] $j]
+							if {$DMin==-1e12 && $DMax==1e12} {
+								set DMin $Detji
+								set DMax $Detji
+							} else {
+								if {$DMax < $Detji} {
+									set DMax $Detji 
+								}
+								if {$DMin > $Detji} {
+									set DMin $Detji 
+								}
+							}	
+							if {$Detji > $DMax} {
+								lappend DIrow $DMax
+							} elseif {$Detji < $DMin} {
+								lappend DIrow $DMin
+							} else {
+								lappend DIrow $Detji
+							}
+						}
+#			puts $DIrow
+						lappend DIdat $DIrow
+					}
+					set Detector2DIQGraph(min) $DMin
+					set Detector2DIQGraph(max) $DMax
+				}
+			manual {
+				set DMin $Detector2DIQGraph(min)
+				set DMax $Detector2DIQGraph(max)
+			}
+		}
+		set DetImage {} 
+		for {set i 0} {$i < $nPix2DAni} {incr i} {
+			set DetLine {}
+			for {set j 0} {$j < $nPix2DAni} {incr j} {
+				set Dij [expr 255*log10(255*([lindex [lindex $DIdat $i] $j]-$DMin)/($DMax-$DMin)+1.0)/log10(256)]
+				lappend DetLine [expr round($Dij)]  
+			}
+			lappend DetImage $DetLine
+		}
+		set Detector2DIQGraph(Det2DAni) $DetImage
+	}
+}
+}
+
 proc change_CT_Det2D {type} {
 global Detector2DIQGraph
 puts $type
 switch $type {
-	sim {puts sim
-		if {[llength $Detector2DIQGraph(Det2DRes)] > 0} {
-		puts CT
+	sim {puts "plot simulation"
+		set DetMin [::math::statistics::min  [join [join $Detector2DIQGraph(Det2DRes)]]]
+		set DetMax [::math::statistics::max  [join [join $Detector2DIQGraph(Det2DRes)]]]
+		if {[llength $Detector2DIQGraph(Det2DRes)] > 0 && $DetMin < $DetMax} {
 			set width2D 512
 			set ppp [expr $width2D/$Detector2DIQGraph(nPix)]
 			set DetImage {}
@@ -49,6 +189,31 @@ switch $type {
 			$Detector2DIQGraph(s) put $DetImage
 		}
 		}
+	data {puts "plot data"
+		set DetMin [::math::statistics::min  [join [join $Detector2DIQGraph(Det2DAni)]]]
+		set DetMax [::math::statistics::max  [join [join $Detector2DIQGraph(Det2DAni)]]]
+		if {[llength $Detector2DIQGraph(Det2DAni)] > 0 && $DetMin < $DetMax} {
+			set width2D 512
+			set ppp [expr $width2D/$Detector2DIQGraph(nPix2DAni)]
+			set DetImage {}
+			for {set j [expr $Detector2DIQGraph(nPix2DAni) -1]} {$j >= 0} {incr j -1} {
+				set DetLine {}
+				for {set i 0} {$i < $Detector2DIQGraph(nPix2DAni)} {incr i} {
+					set ctIndx [lindex [lindex $Detector2DIQGraph(Det2DAni) $i] $j]
+					if {$Detector2DIQGraph(reverseCT)} {
+						set ctIndx [expr 255-$ctIndx]
+					}
+					for {set k 0} {$k < $ppp} {incr k} {
+						lappend DetLine [lindex $Detector2DIQGraph($Detector2DIQGraph(ct)) $ctIndx]
+					}
+				}
+				for {set k 0} {$k < $ppp} {incr k} {
+					lappend DetImage $DetLine
+				}	
+			}
+			$Detector2DIQGraph(sdata) put $DetImage
+		}
+	}
 }
 }
 

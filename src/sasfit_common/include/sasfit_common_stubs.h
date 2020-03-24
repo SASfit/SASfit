@@ -177,9 +177,9 @@ typedef struct
 	double (*im_cerf_z)(double x, double y); /* 98 */
 	double (*re_cerfi_z)(double x, double y); /* 99 */
 	double (*im_cerfi_z)(double x, double y); /* 100 */
-	void *reserved101; /* 101 */
-	void *reserved102; /* 102 */
-	void *reserved103; /* 103 */
+	double (*re_w_of_z)(double x, double y); /* 101 */
+	double (*im_w_of_z)(double x, double y); /* 102 */
+	void   (*w_of_z_e)(double x, double y, double *rew, double *imw); /* 103 */
 	scalar (*sasfit_jinc) (scalar x); /* 104 */
 	scalar (*find_LogNorm_int_range) (scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param); /* 105 */
 	void (*hcubature) (unsigned fdim, integrand f, void *fdata,
@@ -587,6 +587,18 @@ typedef struct
 #ifndef im_cerfi_z
 #define im_cerfi_z \
 	(sasfit_common_stubs_ptr->im_cerfi_z) /* 100 */
+#endif
+#ifndef re_w_of_z
+#define re_w_of_z \
+	(sasfit_common_stubs_ptr->re_w_of_z) /* 101 */
+#endif
+#ifndef im_w_of_z
+#define im_w_of_z \
+	(sasfit_common_stubs_ptr->im_w_of_z) /* 102 */
+#endif
+#ifndef w_of_z_e
+#define w_of_z_e \
+	(sasfit_common_stubs_ptr->w_of_z_e) /* 103 */
 #endif
 #ifndef sasfit_jinc
 #define sasfit_jinc \

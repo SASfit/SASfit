@@ -112,6 +112,15 @@ double im_w_of_z( double x, double y )
     return cimag( w_of_z( C(x,y) ) );
 }
 
+void w_of_z_e( double x, double y, double *rew, double *imw )
+{
+	cmplx w;
+    w = w_of_z( C(x,y) );
+	*rew = creal(w);
+	*imw = cimag(w);
+	return;
+}
+
 double re_cerf_z( double x, double y )
 {
     return creal( cerf( C(x,y) ) );

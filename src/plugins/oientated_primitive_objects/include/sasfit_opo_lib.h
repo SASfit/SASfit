@@ -74,5 +74,7 @@ scalar opo_Fp(opo_data *);
 scalar opo_Fc(opo_data *);
 scalar opo_Fsuperellipsoid(void *);
 scalar opo_Fsupershape(void *);
+scalar opo_Fratsupershape(void *);
+scalar opo_Fsuper_toroid_helix(void *);
 scalar opo_Fse_GQ962D(void *);
 void opo_init(opo_data *);

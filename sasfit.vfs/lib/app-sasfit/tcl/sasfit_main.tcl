@@ -25,7 +25,7 @@
 #                            Global Variables
 # some defaults
 # see sasfit-common/include/sasfit_function.h for that
-set MAXPAR 100
+set MAXPAR 50
 set ::sasfit(update_menu_during_fit) 1
 
 proc fp n1 {
@@ -40,6 +40,12 @@ proc Erik {} {
 	}
 }
 
+proc Consiglia {} {
+	global sasfit consoglia
+	if { [catch {source $sasfit(tcl)/Consiglia.tcl} result] } {
+		puts stderr "error while sourcing Consiglia.tcl: $result"
+	}
+}
 
 package require BLT
 
@@ -438,7 +444,7 @@ set EMOptions(maxLagrange)  1e12
 set EMOptions(overrelaxation) 1
 set EMOptions(maxKrylov) 5
 set EMOptions(error_weight) "on"
-set EMOptions(Interrupt) 0"
+set EMOptions(Interrupt) 0
 set EMOptions(PrintProgress) 0
 
 global FitPrecision EMOptions
@@ -841,6 +847,7 @@ CreateGraphPar ResIQGraph
 CreateGraphPar Detector2DIQGraph
 set Detector2DIQGraph(ct) CET-R1.tbl
 set Detector2DIQGraph(ct) cubehelix8
+set Detector2DIQGraph(ct) turbo.tbl
 set Detector2DIQGraph(reverseCT) 0
 foreach CTname $::ColorMap(LUTnames) {
 	set Detector2DIQGraph($CTname)     $ColorMap($CTname)
@@ -858,6 +865,13 @@ set Detector2DIQGraph(Qwidth)  0.0
 set Detector2DIQGraph(QminBS)  0.0
 set Detector2DIQGraph(BCx)  63.5
 set Detector2DIQGraph(BCy)  63.5
+set Detector2DIQGraph(Det2DRes) {{0} {0}}
+set Detector2DIQGraph(Det2DAni) {{0} {0}}
+set Detector2DIQGraph(Det2DMask) {{0} {0}}
+set Detector2DIQGraph(Det2DAniFN) ""
+set Detector2DIQGraph(Det2DMaskFN) ""
+set Detector2DIQGraph(nPix2DMask) 0
+set Detector2DIQGraph(nPix2DAni) 0
 
 set ResIQGraph(x,logscale) 0
 set ResIQGraph(y,logscale) 0
@@ -4033,6 +4047,53 @@ menu $Detector2DIQGraph(cwdata).popup -tearoff 0
 $Detector2DIQGraph(cwdata).popup add command -label "copy to clipboard" -un 0 -command {
 window_to_clipboard $Detector2DIQGraph(cwdata)
 }
+$Detector2DIQGraph(cwdata).popup add command -label "read BerSANS data file" -un 14 -command {
+	set Detector2DIQGraph(Det2DAniFN) [tk_getOpenFile -defaultextension "D*.*"    \
+                       -initialdir "$::sasfit(datadir)" \
+                       -title "Open BerSANS data file .."   \
+                    ]
+	if {![file exists $Detector2DIQGraph(Det2DAniFN)]} { return }
+	set ::sasfit(datadir) "[file dirname $Detector2DIQGraph(Det2DAniFN)]"
+
+	if {![read_HMI $Detector2DIQGraph(Det2DAniFN) SANSDAniData]} {return}
+	set Det2DAni [HMIgetItem SANSDAniData Counts SANSDAni i]
+	set Detector2DIQGraph(Det2DAniRaw) $Det2DAni
+	set nPix2DAni [expr round(sqrt([HMIgetItem SANSDAniData File DataSize i]))]
+	set Detector2DIQGraph(nPix2DAni) $nPix2DAni
+	if {$Detector2DIQGraph(nPix2DAni) != $Detector2DIQGraph(nPix2DMask)} {
+		set Detector2DIQGraph(Det2DMaskFN) [tk_getOpenFile -defaultextension ".sma"    \
+						-filetypes {{{BerSANS sma} {.sma}} {{All} {*}}} \
+                       -initialdir "$::sasfit(datadir)" \
+                       -title "Open BerSANS Mask File .."   \
+                    ]
+		if {![file exists $Detector2DIQGraph(Det2DMaskFN)]} { return }
+		set ::sasfit(datadir) "[file dirname $Detector2DIQGraph(Det2DMaskFN)]"
+		if {![read_HMI $Detector2DIQGraph(Det2DMaskFN) SANSDAniMask]} {return}
+			set Det2DMask [HMIgetItem SANSDAniMask Mask SANSMAni i]
+			set Detector2DIQGraph(Det2DMask) $Det2DMask
+			set Detector2DIQGraph(nPix2DMask) [HMIgetItem SANSDAniMask File DataSizeX i]
+	}
+	scale_Det2DAni mask
+#		puts now the whole data set
+	if {[catch {change_CT_Det2D data} msg]} {puts $msg}
+}
+
+$Detector2DIQGraph(cwdata).popup add command -label "read BerSANS mask file" -un 14 -command {
+	set Detector2DIQGraph(Det2DMaskFN) [tk_getOpenFile -defaultextension ".sma"    \
+						-filetypes {{{BerSANS sma} {.sma}} {{All} {*}}} \
+                       -initialdir "$::sasfit(datadir)" \
+                       -title "Open BerSANS Mask File .."   \
+                    ]
+	if {![file exists $Detector2DIQGraph(Det2DMaskFN)]} { return }
+	set ::sasfit(datadir) "[file dirname $Detector2DIQGraph(Det2DMaskFN)]"
+	if {![read_HMI $Detector2DIQGraph(Det2DMaskFN) SANSDAniMask]} {return}
+	set Det2DMask [HMIgetItem SANSDAniMask Mask SANSMAni i]
+	set Detector2DIQGraph(nPix2DMask) [HMIgetItem SANSDAniMask File DataSizeX i]
+	set Detector2DIQGraph(Det2DMask) $Det2DMask
+	scale_Det2DAni mask
+	if {[catch {change_CT_Det2D data} msg]} {puts $msg}
+}
+
 bind $Detector2DIQGraph(cwdata) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(cwdata).popup %X %Y }
 bind $Detector2DIQGraph(cwdata) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(cwdata).popup %X %Y }
 
@@ -4059,7 +4120,10 @@ bind $Detector2DIQGraph(w) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(w
    set s [image create photo]
    $Detector2DIQGraph(cwsim) create image  256 256 -image $s
    set Detector2DIQGraph(s) $s
-
+   
+   set sdata [image create photo]
+   $Detector2DIQGraph(cwdata) create image  256 256 -image $sdata
+   set Detector2DIQGraph(sdata) $sdata
 
 #
 #  create scattering intensity plot "GlobalFitIQGraph"

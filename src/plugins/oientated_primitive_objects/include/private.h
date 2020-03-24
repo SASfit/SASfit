@@ -71,6 +71,10 @@
 #define SN3  param->p[29]
 #define SAA  param->p[30]
 #define SBB  param->p[31]
+#define RADIUS  param->p[32]
+#define PITCH  param->p[33]
+#define SGAMMA  param->p[34]
+#define TURNS  param->p[35]
 #define XX param->p[MAXPAR-1]
 #define YY param->p[MAXPAR-2]
 #define ZZ param->p[MAXPAR-3]
@@ -78,7 +82,9 @@
 #define QQY param->p[MAXPAR-5]
 #define QQZ param->p[MAXPAR-6]
 #define RR param->p[MAXPAR-7]
+#define THETA param->p[MAXPAR-7]
 #define UU param->p[MAXPAR-8]
+#define PHI param->p[MAXPAR-8]
 
 #endif // end of file
 

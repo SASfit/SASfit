@@ -142,9 +142,9 @@ sasfit_common_stubs_t sasfit_common_stubs = {
     im_cerf_z, /* 98 */
     re_cerfi_z, /* 99 */
     im_cerfi_z, /* 100 */
-    NULL, /* 101 */
-    NULL, /* 102 */
-    NULL, /* 103 */
+    re_w_of_z, /* 101 */
+    im_w_of_z, /* 102 */
+    w_of_z_e, /* 103 */
     sasfit_jinc, /* 104 */
     find_LogNorm_int_range, /* 105 */
     hcubature, /* 106 */

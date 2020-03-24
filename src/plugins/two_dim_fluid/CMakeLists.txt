@@ -10,8 +10,10 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_sq__d_hard_disks__rosenfeld_.c
-	sasfit_sq__d_hard_disks__guo_.c
+	sasfit_sq__d_hard_disks__rosenfeld_aligned.c
+	sasfit_sq__d_hard_disks__rosenfeld_random.c
+	sasfit_sq__d_hard_disks__guo_aligned.c
+	sasfit_sq__d_hard_disks__guo_random.c
 	interface.c
 )
 

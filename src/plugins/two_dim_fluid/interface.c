@@ -7,9 +7,11 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(2)
-SASFIT_PLUGIN_EXP_ADD( sq__d_hard_disks__rosenfeld_ )
-SASFIT_PLUGIN_EXP_ADD( sq__d_hard_disks__guo_ )
+SASFIT_PLUGIN_EXP_BEGIN(4)
+SASFIT_PLUGIN_EXP_ADD( sq__d_hard_disks__rosenfeld_random )
+SASFIT_PLUGIN_EXP_ADD( sq__d_hard_disks__guo_random )
+SASFIT_PLUGIN_EXP_ADD( sq__d_hard_disks__rosenfeld_aligned )
+SASFIT_PLUGIN_EXP_ADD( sq__d_hard_disks__guo_aligned )
 
 SASFIT_PLUGIN_EXP_END
 

@@ -55,8 +55,20 @@
  *       <td>\b Wi</td>
  *       <td>Weissenberg number</td>
  *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>Flory exponent, theta-solvent nu=0.5</td>
+ *      </tr><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering</td>
+ *      </tr><tr>
+ *       <td>\b theta_0</td>
+ *       <td>flow direction</td>
+ *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>angle between q and shear direction</td>
+ *      </tr><tr>
+ *       <td>\b Delta_theta_0</td>
+ *       <td>opening angle of aperture sector</td>
  *      </tr></table>
  */
 
@@ -219,8 +231,20 @@ sasfit_shearflow_DLLEXP scalar sasfit_ff_polymer_under_shearflow2_v(scalar q, sa
  *       <td>\b Wi</td>
  *       <td>Weissenberg number</td>
  *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>Flory exponent, theta-solvent nu=0.5</td>
+ *      </tr><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering</td>
+ *      </tr><tr>
+ *       <td>\b theta_0</td>
+ *       <td>flow direction</td>
+ *      </tr><tr>
  *       <td>\b psi</td>
  *       <td>angle between q and shear direction</td>
+ *      </tr><tr>
+ *       <td>\b Delta theta_0</td>
+ *       <td>opening angle of aperture sector</td>
  *      </tr></table>
  */
 
