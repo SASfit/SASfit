@@ -303,7 +303,7 @@ is the direction of the most probable orientation $(\theta=\frac{\pi}{2};\phi=\v
 \begin{center}
 \includegraphics[width=\textwidth]{../images/form_factor/cylindrical_obj/pHP3D.png}
 \end{center}
-\caption{3D plot of the orientation distributions $2 p_\mathrm{HP}(\theta,\phi;\kappa={2})$ ({\bf \color[rgb]{1.0, 0.85, 0.0}yel-}{\bf \color[rgb]{1.0, 0.85, 0.0}low}), $p_\mathrm{HP}(\theta,\phi;\kappa{=}8)$ ({\bf\color[rgb]{0.36, 0.57, 0.9} blue}), $\frac12 p_\mathrm{HP}(\theta,\phi;\kappa{=}16)$ ({\bf\color[rgb]{1.0, 0.5, 0.0} orange}).} \label{fig:pHP3D}
+\caption{3D plot of the orientation distributions $2 p_\mathrm{HP}(\theta,\phi;\kappa={2})$ ({\bf \color[rgb]{1.0, 0.85, 0.0}yellow}), $p_\mathrm{HP}(\theta,\phi;\kappa{=}8)$ ({\bf\color[rgb]{0.36, 0.57, 0.9} blue}), $\frac12 p_\mathrm{HP}(\theta,\phi;\kappa{=}16)$ ({\bf\color[rgb]{1.0, 0.5, 0.0} orange}).} \label{fig:pHP3D}
 \end{figure}
 As the most probable direction is not the same as the flow direction, which is assumed to be the $x$-direction, and secondly that the beam is passing twice the cuette cell with flow direction $\mathbf{x}$ and $-\mathbf{x}$ we have to take the sum over two values for $\gamma^\pm$ in eq.\ \ref{eq:IQShear_pHP}. The angle $\gamma^\pm = \angle(\mathbf{Q,n}^\pm)$ between the scattering vector $\mathbf{Q}$ and the director of the cylinder axis $\mathbf{n}^\pm$ is
 \begin{align}
@@ -342,7 +342,7 @@ For the reversed direction of the flow the $x$-component of the vector $\mathbf{
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$ and $L$, so that their aspect rations stay always constant
 \item The most probable orientation is not the $\mathbf{x}$-direction but tilted by the angle $\varPhi_0$. As in a rheometer with cuette geometry the beram is passing the sample twice the forward scattering is twice as large as in the model described in the next section.
-\item As the orientation distribution is also not rotational symmetric around the direction of the most probably orientation and additional tilted against $\mathbf{x}$-axis the scattering pattern with the order parameter than the orientation distributions look slightly less oriented.
+\item As the orientation distribution is also not rotational symmetric around the direction of the most probably orientation and additional tilted against $\mathbf{x}$-axis the scattering pattern look less anisotropic than the other models in the following sections with the same order parameter $\kappa$.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -465,9 +465,11 @@ S_2(\kappa) &=
 \label{eq:S2kappa}
 \end{align}
 \begin{figure}[htb]
-\subfigure[Onsager orientation distribution for $\kappa=3$. ]{\includegraphics[width=0.55\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(3).png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Onsager orientation distribution for $\kappa=3$.  \label{fig:pOnsager3D1} }{\includegraphics[width=0.55\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(3).png}}
 \hfill
-\subfigure[Onsager orientation distribution for $\kappa=-3$. ]{\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(-3).png}}
+\subcaptionbox{Onsager orientation distribution for $\kappa=-3$. \label{fig:pOnsager3D2}}{\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/pOnsager(-3).png}}
 \caption{Orientation distributions are are all independent on $\phi$ and have for $\kappa>0$ a positive order parameter, i.e. the most probable orientation is in the $\mathbf{x}$-direction and for $\kappa<0$ a negative order parameter, i.e. the most probable orientation lies in the $\mathbf{zy}$-plane}
 \label{fig:pOnsager3D}
 \end{figure}
@@ -825,4 +827,440 @@ with the rectangle function $\Pi(x)$
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
 \item For $\abs{\kappa}<\frac{2}{\pi}$ the partial derivative $\delta /\delta\kappa$ of the model function is zero which will cause an error message in the minimization routine. This means the fitting procedure will not work in this domain of values.
-\end{itemize} 
+\end{itemize}
+
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{anisotropic form factors of oriented primitive objects}
+\label{ch:OPO}
+
+In this section The scattering amplitudes of simple geometric objects are described having an arbitrary but fixed orientation as well as those which are obtained by an isomorph linear transformation. The most simple ones are unit spheres, unit cube and unit cylinder, and their isomorph linear deformed shapes of ellipsoid,  oblique parallelepiped and  oblique cylinder for which their $\B{Q}$-dependent form factors $F(\B{Q})$ are given analytically.
+
+\noindent
+\begin{figure}[htb]
+\begin{subfigure}[b]{.3\textwidth}
+   \centering
+   \includegraphics[width=\textwidth,height=0.8\textwidth]{ELLIPSE.png}
+   \caption{ellipsoid}
+   \label{fig:opo_ell}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.3\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{PAREPIP.png}
+   \caption{parallelepiped}
+   \label{fig:opo_parep}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.3\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{ZYLINDER.png}
+   \caption{cylinder}
+   \label{fig:opo_cyl}
+\end{subfigure}
+\caption{$\B{R}$: object center,
+$a, b, c$: half axes/lengths,
+$\B{e}_a$, $\B{e}_b$, $\B{e}_c$: directions of the half axes
+}
+\label{fig:opo}
+\end{figure}
+
+The scattering amplitude $F(\B{Q})$ of an object is given by the Fourier transform of the scattering length density distribution within the object
+\begin{align}
+F(\B{Q}) &= \int_V d\B{r}\, \eta(\B{r})\, e^{\imath \B{Qr}},
+\end{align}
+where $\eta(\B{r})$ is the scattering length density distribution of the scattering object and $V$ the sample volume.
+In the following it is assumed that the particles have a homogeneous scattering length density
+$\eta_P$, embedded in a matrix of also homogeneous scattering length density $\eta_M = \eta_P-\Delta\eta$.
+The position, orientation and size of the objects is uniquely defined by the center of scattering length density $\B{R}$, the half axes $a$, $b$ and $c$, as well as the direction of the half axes $\B{e}_a$, $\B{e}_b$ and
+$\B{e}_c$. The base vectors $\B{e}_i$ are normalized $\abs{\B{e}_i}=1$ but do not need to be orthogonal to each other.  For the scattering amplitude of an individual objects one gets after a translation by $-\B{R}$ and a following change of basis $\M{D}$ from cartesian coordinates
+$O_{xyz} = \{\B{e}_x, \B{e}_y,\B{e}_z\}$
+into the coordinate system of the particle $O_{abc}=\{a\B{e}_a, b\B{e}_b,
+c\B{e}_c\}$, so that $\B{P}_{O_{abc}} = \M{D}\, \B{P}_{O_{xyz}}$
+\begin{align}
+F(\B{Q}) &=
+e^{-\imath\B{QR}}\, \Delta\eta\,
+\int\limits_{V(\B{0})} d\B{r}\, e^{\imath\B{Q}(\M{D}^{-1}\M{D}\B{r})}\\
+%&=
+%\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,
+%\int\limits_{\M{D} V(\B{0})} d\B{r}\, e^{\imath((\M{D}^{-1})^T\B{Q})\B{r}} \\
+&=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,
+\int\limits_{\M{D} V(\B{0})} d\B{r}\, e^{\imath \B{\hat{Q}}\B{r}}
+\end{align}
+with
+\begin{align}
+\displaystyle \B{\hat{Q}} = (\M{D}^{-1})^T\,\B{Q}
+= \left( \begin{array}{l} a\,\B{e}_a\B{Q}\\ b\,\B{e}_b\B{Q}\\
+c\, \B{e}_c\B{Q}
+\end{array}\right)
+\label{eq:Q:dach}
+\end{align}
+$V(\B{0})$ is the volume of the scattering object a scattering lenth density center located at the origin of the coordinate system and $\M{D} V(\B{0})$ is the volume of the unit object, i.e. unit sphere, unit cube or unit cylinder.
+The transformation matrix $\M{D}$ and its inverse $\M{D}^{-1}$ are given by
+\begin{align}
+\M{D}^{-1} &=
+\left(
+\begin{array}{ccc}
+a\, e_{ax} & b\, e_{bx} & c\, e_{cx} \\
+a\, e_{ay} & b\, e_{by} & c\, e_{cy} \\
+a\, e_{az} & b\, e_{bz} & c\, e_{cz} \\
+\end{array}
+\right) = (a\B{e}_a,b\B{e}_b,c\B{e}_c)\\
+ \B{Q}(\M{D}^{-1}\B{r}) &= ((\M{D}^{-1})^T\B{Q})\B{r} \U{,}\\
+\det(\M{D}^{-1}) &= abc\,
+( e_{ax}\, e_{by}\, e_{cz}
++ e_{ay}\, e_{bz}\, e_{cx}
++ e_{az}\, e_{bx}\, e_{cy} \nonumber \\
+&\phantom{=} - e_{az}\, e_{by}\, e_{cx}
+   - e_{ay}\, e_{bx}\, e_{cz}
+   - e_{ax}\, e_{bz}\, e_{cy})
+\end{align}
+\begin{align}
+\M{D} &= (\M{D}^{-1})^{-1} = \frac{1}{\det(\M{D}^{-1})}\,
+          (\M{D}^{-1})^{\rm adj} \nonumber \\
+&= \frac{1}{\det(\M{D}^{-1})} \, (b\B{e}_b\times c\B{e}_c,-a\B{e}_a
+\times c\B{e}_c,a\B{e}_a\times b\B{e}_b)
+\end{align}
+whereas $\det(\M{D}) \, \det(\M{D}^{-1}) = \det(\M{D}\, \M{D}^{-1}) =\det(\idty) = 1$
+
+To reorient or rotate the objects one simply changes the  direction of the base vectors $\B{e}_a$, $\B{e}_b$, $\B{e}_c$ which is done by introducing a rotation matrix $\M{R}_{\alpha\beta\gamma}$. The rotation matrix can be defined via Euler angles $\alpha$, $\beta$,and $\gamma$. Its definition depends on the convention. There exist twelve possible sequences of rotation axes, divided in two groups: proper Euler angles ($z$-$x$-$z$, $x$-$y$-$x$, $y$-$z$-$y$, $z$-$y$-$z$, $x$-$z$-$x$, $y$-$x$-$y$),
+Tait–Bryan angles ($x$-$y$-$z$, $y$-$z$-$x$, $z$-$x$-$y$, $x$-$z$-$y$, $z$-$y$-$x$, $y$-$x$-$z$). The difference between the two conventions is that Tait–Bryan angles represent rotations about three distinct axes, while proper Euler angles use the same axis for both the first and third elemental rotations. \SASfit allows internally to use any of the 12 conventions. However, as default conventions the yaw-pitch-roll is used (also named gier-nick-roll, east-north-up, north-East-Down, or $z$-$y$-$x$),  so that
+\begin{align}
+\displaystyle \B{\hat{Q}} &=
+  \left( \begin{array}{l} a\,\M{R}_{\alpha\beta\gamma}\B{e}_a\B{Q}\\
+                          b\,\M{R}_{\alpha\beta\gamma}\B{e}_b\B{Q}\\
+                          c\,\M{R}_{\alpha\beta\gamma}\B{e}_c\B{Q}
+\end{array}\right)
+\label{eq:Q:dach}
+\end{align}
+
+\subsection{oriented ellipsoid} ~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../images/form_factor/supershapes/triaxial_ellipsoid321.png}
+\end{center}
+\caption{ellipsoid with semi-axis $(a:b:c)=(3:2:1)$ and $\alpha=\beta=\gamma=0$}
+\label{fig:opo_ellipsoid}
+\end{figure}
+
+This form factor describes an oblique ellipsoid with half axis $a$, $b$, and $c$, which is obtained by an isomorph linear transformation of an unit sphere. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
+
+
+\begin{align}
+F_E(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_0^1
+dr\, r^2 \int\limits_0^{\pi} d\theta\, \sin \theta \int\limits_0^{2\pi}
+d\phi \, e^{\imath\B{\hat{Q}r}} \nonumber \\
+&=
+\displaystyle 4\, \pi\, \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\,
+\Delta\eta\, \frac{\sin \abs{\B{\hat{Q}}}-
+\abs{\B{\hat{Q}}}\cos \abs{\B{\hat{Q}}}}{\abs{\B{\hat{Q}}}^3}
+\label{eq:form:E}
+\end{align}
+
+\begin{figure}[htb] \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_0_0_18m.png}
+\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_90_0_18m.png}   \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_45_45_18m.png}
+\caption{Scattering patterns at 18m detector distance and a wavelength of $\lambda=0.6$nm. The ellipsoids are simulated with radii of $a=30$nm, $b=20$nm, and $c=10$nm. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=45^\circ,\gamma=45^\circ)$ }
+\label{fig:opo_ellipsoidIQ2D}
+\end{figure}
+
+\subsection{oriented parallelepiped} ~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../images/form_factor/supershapes/parallel_epiped321.png}
+\end{center}
+\caption{parallelepiped with half edge length $(a:b:c)=(3:2:1)$ and $\alpha=\beta=\gamma=0$}
+\label{fig:opo_cube}
+\end{figure}
+
+This form factor describes an oblique parallelepiped which is obtained by an isomorph linear transformation of an unit cube with half edge lengths of $a$, $b$, and $c$. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
+
+
+\begin{align}
+F_P(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
+dx\, \int\limits_{-1}^{1} dy\, \int\limits_{-1}^{1} dz\,
+e^{\imath\B{\hat{Q}r}} \nonumber \\
+&= \displaystyle
+8\, \det(\M{D}^{-1})\, e^{-\imath\B{QR}} \,\Delta\eta\,
+\frac{\sin \B{\hat{Q}}\, \B{e}_x}{\B{\hat{Q}}\, \B{e}_x}
+\,
+\frac{\sin \B{\hat{Q}}\, \B{e}_y}{\B{\hat{Q}}\, \B{e}_y}
+\,
+\frac{\sin \B{\hat{Q}}\, \B{e}_z}{\B{\hat{Q}}\, \B{e}_z}
+\label{eq:form:P}
+\end{align}
+
+
+\begin{figure}[htb] \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/parallelepiped_0_0_0_18m.png}
+\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/parallelepiped_0_90_0_18m.png}   \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/parallelepiped_0_45_45_18m.png}
+\caption{Scattering patterns at 18m detector distance and a wavelength of $\lambda=0.6$nm. The parallelepipeds are simulated with half edge length of $a=30$nm, $b=20$nm, and $c=10$nm. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=45^\circ,\gamma=45^\circ)$ }
+\label{fig:opo_parallelepipedIQ2D}
+\end{figure}
+
+\subsection{oriented cylinder} ~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../images/form_factor/supershapes/cylinder321.png}
+\end{center}
+\caption{cylinder with radii $a$ and $b$ and half height $c$. The axis ratios of the cylinder shown are $(a:b:c)=(3:2:1)$ and $\alpha=\beta=\gamma=0$}
+\label{fig:opo_cylinder}
+\end{figure}
+
+This form factor describes an oblique parallelepiped which is obtained by an isomorph linear transformation of an unit cylinder with radii $a$ and $b$ and half height $c$. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
+
+
+\begin{align}
+F_C(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
+dz\, \int\limits_{0}^{1} dr\, r\, \int\limits_{0}^{2\pi} d\phi \,
+e^{\imath\B{\hat{Q}r}} \nonumber \\
+&=
+4\, \pi\, \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,
+\frac{\sin\B{\hat{Q}e}_z}{\B{\hat{Q}e}_z}
+\int\limits_{0}^1 dr\,r\,
+\U{J}_0\left(r\, \sqrt{\left(\B{\hat{Q}}\B{e}_x\right)^2+
+\left(\B{\hat{Q}}\B{e}_y\right)^2}\right)
+\nonumber \\
+&= \displaystyle
+8\, \pi\,\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\,
+\Delta\eta\, \frac{\sin\B{\hat{Q}}\B{e}_z}{\B{\hat{Q}}\B{e}_z}
+\, \frac{\U{J}_1\left(\sqrt{\left(\B{\hat{Q}}\B{e}_x\right)^2+
+\left(\B{\hat{Q}}\B{e}_y\right)^2}\right)}{\sqrt{
+\left(\B{\hat{Q}}\B{e}_x\right)^2+\left(\B{\hat{Q}}\B{e}_y\right)^2}}
+\label{eq:form:C}
+\end{align}
+
+\begin{figure}[htb] \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/cylinder_0_0_0_18m.png}
+\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/cylinder_0_90_0_18m.png}   \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/cylinder_0_45_45_18m.png}
+\caption{Scattering patterns at 18m detector distance and a wavelength of $\lambda=0.6$nm. The cylinders are simulated with radii of $a=30$nm, $b=20$nm, and half height length $c=10$nm. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=45^\circ,\gamma=45^\circ)$ }
+\label{fig:opo_cylinderIQ2D}
+\end{figure}
+
+
+
+\subsection{oriented super-quadrics} ~\\
+
+\begin{figure}[htb]
+\begin{tabular}{ccccc}
+  $\epsilon_1=0.1$
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_01_01.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_01_1.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_01_2.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_01_5.png} \\
+  $\epsilon_1=1$
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_1_01.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_1_1.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_1_2.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_1_5.png} \\
+  $\epsilon_1=2$
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_2_01.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_2_1.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_2_2.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_2_5.png} \\
+  $\epsilon_1=5$
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_5_01.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_5_1.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_5_2.png}
+    & \includegraphics[width=0.2\textwidth]{../images/form_factor/supershapes/superquadric111_5_5.png} \\
+  & $\epsilon_2=0.1$ & $\epsilon_2=1$ & $\epsilon_2=2$ & $\epsilon_2=5$
+\end{tabular}
+\caption{Typical superquadrics. The parameters for scale factors are $a_1 = a_2 = a_3 = 1 $. The values for $\epsilon_2$ vary horizontally by $\epsilon_2=0.1, 1,2,5$ and vertically by $\epsilon_1=0.1, 1,2,5$.}
+\label{fig:opo_superquadrics}
+\end{figure}
+
+Super-quadrics have both a
+parametric and an implicit representation.
+The parametric representation of the surface is defined by
+\begin{align}\label{eq:superquadrics:parametric}
+  \left(
+    \begin{array}{c}
+      x(a_1,\theta,\phi) \\
+      y(a_2,\theta,\phi) \\
+      z(a_3,\theta,\phi) \\
+    \end{array}
+  \right)
+ &=
+ \left(
+    \begin{array}{c}
+     a_1 \operatorname{sgnpow}(\cos\theta,\epsilon_2)\operatorname{sgnpow}(\cos\phi,\epsilon_1)  \\
+     a_2 \operatorname{sgnpow}(\sin\theta,\epsilon_2)\operatorname{sgnpow}(\cos\phi,\epsilon_1)  \\
+     a_3 \operatorname{sgnpow}(\sin\phi,\epsilon_1) \\
+    \end{array}
+  \right)
+\end{align}
+whereas the signed power function is defined as
+\begin{align}\label{eq:sgnpow}
+  \operatorname{sgnpow}(t,\epsilon) &= \operatorname{sgn}(t)\abs{t}^\epsilon \\
+  \operatorname{sgn}(t) &=
+  \begin{cases}
+    -1&{\text{if }}x<0,\\
+     0&{\text{if }}x=0,\\
+     1&{\text{if }}x>0.
+  \end{cases}
+\end{align}
+The implicit representation is given by
+\begin{align}\label{eq:superquadrics:implicit}
+\left(
+     \left(\frac{x}{a_1}\right)^{\frac{2}{\epsilon_2}}+
+     \left(\frac{y}{a_2}\right)^{\frac{2}{\epsilon_2}}
+\right)^{\frac{\epsilon_2}{\epsilon_1}} +
+\left(\frac{z}{a_3}\right)^{\frac{2}{\epsilon_1}} &\leq 1
+\end{align}
+Super-ellipsoids are a special case of super-quadrics for which the two exponents are equal $\epsilon_1=\epsilon_2$. The implicit representation then looks as
+$\abs{\frac{x}{a_1}}^n+\abs{\frac{y}{a_2}}^n+\abs{\frac{y}{a_3}}^n\leq 1$ with $n=1/\epsilon_1=1/\epsilon_2$.
+As the asymmetric super-quadrics is obtained by a scale transform, which is a special case of an isomorph linear transform only the Fourier transform of a unit super-quadrics has to be solved. All its isomorph linear transform than can be easily calculated by linear algebra.  The Fourier transform of a unit super-quadrics ($a_1=a_2=a_3=1$) is
+\begin{align}\label{eq:FTsuperquadrics}
+  F_\mathrm{SQ}(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
+\mathrm{d}x\, \int\limits_{-Y}^{Y} \mathrm{d}y\,  \int\limits_{-Z}^{Z} \mathrm{d}z \,
+e^{\imath\B{\hat{Q}r}} \nonumber \\
+ &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
+\mathrm{d}x\, \int\limits_{-Y}^{Y} \mathrm{d}y\,
+e^{\imath\left(\hat{Q}_xx+\hat{Q}_yy\right)} 2Z\operatorname{sinc}(\hat{Q}_z Z)\nonumber \\
+Y &= \left(1-x^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{2}}\\
+Z &= \left(1-\left(x^{\frac{2}{\epsilon_2}}+y^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
+\end{align}
+To make use of numerical integration routines for multiple dimensions over hypercubes it might be convenient to perform a variable transformation using $ x(r,\theta,\phi)$ and $ y(r,\theta,\phi)$ given in eq.\ \ref{eq:superquadrics:parametric}. The Jacobi determinant for this substitution is
+\begin{align}\label{eq:detJ_superquadrics}
+  \det{\M{J}} &= \det
+  \left(
+    \begin{array}{cc}
+      \frac{\partial x(r,\theta,0)}{\partial r}      & \frac{\partial y(r,\theta,0)}{\partial r}\\
+      \frac{\partial x(r,\theta,0)}{\partial \theta} & \frac{\partial y(r,\theta,0)}{\partial \theta}
+    \end{array}
+  \right) = \epsilon_2 r \left(\abs{\cos\theta\sin\theta} \right)^{\frac{\epsilon_2}{2}}
+\end{align}
+so that
+\begin{align}
+\begin{split}
+F_\mathrm{SQ}(\B{Q}) &= 8 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,\int\limits_{0}^1
+\mathrm{d}r\, \int\limits_{0}^{\pi/2} \mathrm{d}\theta\,  \epsilon_2 r \left(\abs{\cos\theta\sin\theta} \right)^{\frac{\epsilon_2}{2}}\\
+     &\times \cos\left(\hat{Q}_xx(r,\theta,0)+\hat{Q}_yy(r,\theta,0)\right) Z\operatorname{sinc}(\hat{Q}_z Z)\nonumber \\
+Z &= \left(1-\left(x(r,\theta,0)^{\frac{2}{\epsilon_2}}+y(r,\theta,0)^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
+\end{split}
+\end{align}
+
+\begin{figure}[thb]
+\begingroup
+\setlength{\tabcolsep}{1pt}
+\def\arraystretch{0.4}%
+ \captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{$(\epsilon_1,\epsilon_2)=(1,2)$ \label{fig:superquadricsIQ2D_1}}{
+\begin{tabular}{llll}
+%\toprule  \\ %\midrule
+2m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_0_0_2m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_90_0_2m.png}  
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_45_45_2m.png}  \\
+6m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_0_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_90_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_45_45_6m.png}  \\
+18m  & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_0_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_90_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_45_45_18m.png}  \\
+%\diagbox{sampl.-det.}{$(\alpha,\beta,\gamma)$}
+     & {\small $(0^\circ,0^\circ,0^\circ)$}
+     & {\small $(0^\circ,90^\circ,0^\circ)$}
+     & {\small $(0^\circ,45^\circ,45^\circ)$}  %\bottomrule
+\end{tabular}
+}
+\hfill
+\subcaptionbox{$(\epsilon_1,\epsilon_2)=(2,0.1)$ \label{fig:superquadricsIQ2D_2}}{
+\begin{tabular}{llll}
+%\toprule
+2m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_0_0_2m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_90_0_2m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_45_45_2m.png}  \\
+6m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_0_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_90_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_45_45_6m.png}  \\
+18m  & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_0_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_90_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_01_0_45_45_18m.png}  \\
+%\diagbox{sampl.-det.}{$(\alpha,\beta,\gamma)$}
+     & {\small $(0^\circ,0^\circ,0^\circ)$}
+     & {\small $(0^\circ,90^\circ,0^\circ)$}
+     & {\small $(0^\circ,45^\circ,45^\circ)$}  %\bottomrule
+\end{tabular}
+}
+
+\vspace{5mm}
+
+\subcaptionbox{$(\epsilon_1,\epsilon_2)=(1,2)$ \label{fig:superquadricsIQ2D_3}}{
+\begin{tabular}{llll}
+%\toprule
+2m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_0_0_2m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_90_0_2m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_45_45_2m.png}  \\
+6m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_0_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_90_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_45_45_6m.png}  \\
+18m  & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_0_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_90_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_2_0_45_45_18m.png}  \\
+%\diagbox{sampl.-det.}{$(\alpha,\beta,\gamma)$}
+     & {\small $(0^\circ,0^\circ,0^\circ)$}
+     & {\small $(0^\circ,90^\circ,0^\circ)$}
+     & {\small $(0^\circ,45^\circ,45^\circ)$}  %\bottomrule
+\end{tabular}
+}
+\hfill
+\subcaptionbox{$(\epsilon_1,\epsilon_2)=(2,0.1)$ \label{fig:superquadricsIQ2D_4}}{
+\begin{tabular}{llll}
+%\toprule
+2m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_0_0_2m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_90_0_2m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_45_45_2m.png}  \\
+6m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_0_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_90_0_6m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_45_45_6m.png}  \\
+18m  & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_0_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_90_0_18m.png}
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_2_5_0_45_45_18m.png}  \\
+%\diagbox{sampl.-det.}{$(\alpha,\beta,\gamma)$}
+     & {\small $(0^\circ,0^\circ,0^\circ)$}
+     & {\small $(0^\circ,90^\circ,0^\circ)$}
+     & {\small $(0^\circ,45^\circ,45^\circ)$}  %\bottomrule
+\end{tabular}
+}
+\endgroup
+  \caption{2D scattering patterns for superquadrics with scale factors are $a_1=30$nm, $a_2=20$nm, $a_3=10$nm. The scattering patterns are calculated for several detector distances (2m, 6m, 18m) and a wavelength of 0.6nm. Three orientation using Tait–Bryan angles (yaw-
+pitch-roll) are shown.} \label{fig:superquadricsIQ2D}
+\end{figure}
+
+\subsection{oriented superegg} ~\\
+
+\begin{figure}[htb]
+\begin{tabular}{ccccc}
+     \includegraphics[width=0.18\textwidth]{../images/form_factor/supershapes/SuperEggPietHein.png}
+    & \includegraphics[width=0.18\textwidth]{../images/form_factor/supershapes/SuperEgg08.png}
+    & \includegraphics[width=0.18\textwidth]{../images/form_factor/supershapes/SuperEgg1.png}
+    & \includegraphics[width=0.18\textwidth]{../images/form_factor/supershapes/SuperEgg2.png}
+    & \includegraphics[width=0.18\textwidth]{../images/form_factor/supershapes/SuperEgg5.png} \\
+     $\epsilon_1=0.4$ & $\epsilon_1=0.8$ & $\epsilon_1=1$ & $\epsilon_1=2$ & $\epsilon_1=5$
+\end{tabular}
+\caption{Supereggs. The parameters for the scale factors of the shown supereggs are $a_1 = a_2 = a_3 = 4/3$. The values for $\epsilon_2=2$ and $\epsilon_1=0.4, 0.8, 1,2,5$.}
+\label{fig:opo_superegg}
+\end{figure}
+
+The superegg is a super-quadrics whose horizontal cross-sections are ellipses, i.e. $\epsilon_2=1$. It is defined by the inequality \cite{WeisssteinSuperEgg}
+\begin{align}
+\label{eq:superegg_implicit}
+   \left(\sqrt{\left(\frac{x}{a_1}\right)^2+\left(\frac{y}{a_2}\right)^2}\right)^{\frac{2}{\epsilon1}} + \left(\frac{z}{a_3}\right)^{\frac{2}{\epsilon1}} & \leq 1
+\end{align}
+For circular cross-sections the Fourier transform \cite{Maric2017} can be written as a single integral. For the more general case of an elliptical cross-section the Fourier transform still can be written as a single integral, however, the orientation average becomes a double integral as the cylinder symmetry get lost.
+\begin{align}
+F_\mathrm{SEgg}(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,  \nonumber \\
+ &\times \int_0^1 \frac{4 \pi  r \sin \left(\hat{Q}_z \left(1-r^{2/\epsilon_1}\right)^{\epsilon_1/2}\right) \operatorname{J}_0\left(\sqrt{\hat{Q}_x^2+\hat{Q}_y^2}
+   r\right)}{\hat{Q}_z} \mathrm{d}r
+\end{align}
+
+\subsection{oriented supershapes} 

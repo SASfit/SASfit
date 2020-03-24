@@ -293,7 +293,7 @@ assign_closure(const char * token, sasfit_oz_data * OZD)
 int
 assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
 {
-#define MAXROOTALGORITHMS 23
+#define MAXROOTALGORITHMS 24
     const char * RootAlgorithms[MAXROOTALGORITHMS];
     int i,eq;
     if (!token || !OZD) return 0;
@@ -316,6 +316,7 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
     RootAlgorithms[16] = "TFQMR" ;
     RootAlgorithms[17] = "FGMRES";
     RootAlgorithms[18] = "KINSOL_FP";
+    RootAlgorithms[19] = "Biggs_Andrews";
     RootAlgorithms[MAXROOTALGORITHMS-1] = "dNewton";
     RootAlgorithms[MAXROOTALGORITHMS-2] = "Hybrid";
     RootAlgorithms[MAXROOTALGORITHMS-3] = "Hybrids (int. sc.)";
@@ -387,6 +388,9 @@ assign_root_Algorithm(const char * token, sasfit_oz_data * OZD)
         case 18 :
             OZD->root_algorithm=KINSOLFP;
             break;
+        case 19 :
+            OZD->root_algorithm=BIGGS_ANDREWS;
+            break;
         case MAXROOTALGORITHMS-1 :
             OZD->root_algorithm=dNewton;
             break;
@@ -455,14 +459,14 @@ assign_pot(const char * token, sasfit_oz_data * OZD)
         i++;
     }
     potindx=i-1;
-    PUTS("the potential %d: >%s< should be used\n",potindx,token);
+//    PUTS("the potential %d: >%s< should be used\n",potindx,token);
     if (i > MAXPOTENTIALS) {
         if (OZD->PrintProgress)  PUTS("the potential %d: >%s< is unknown\n",potindx,token);
         return 0;
     } else {
         if (OZD->PrintProgress)  PUTS("potential name:%s, index:%d\n",token,potindx);
     }
-PUTS("again: the potential %d: >%s< should be used\n",potindx,token);
+// PUTS("again: the potential %d: >%s< should be used\n",potindx,token);
     switch(potindx) {
         case 0 :
         case 1 :

@@ -2,7 +2,7 @@
 
 \subsection{Stochastic models of disordered porous materials}~\\
 
-The stochastic models implemented base mainly on the paper from \cite{Gommes2018}, where the different existing models have been  compared. The "dead leaves"- model as well as the boolean models described here assume for simplicity spheres for the grains where the covariogram of a sphere is given by
+The stochastic models implemented base mainly on the paper from \cite{Gommes2018}, where the different existing models have been  compared. The "dead leaves"- model as well as the boolean models described for simplicity assuming spheres for the shapes of the grains, whereby the covariogram of a sphere is given by
 \begin{align}\label{eq:covariogram_sphere}
 K(r,R) &= \frac{4\pi}{3}R^3\left(1-\frac{r}{2R}\right)^2\left(1+\frac{r}{4R}\right)\Theta(2R-r)
 \end{align}
@@ -87,13 +87,19 @@ The Boolean (union model) the structure is described as random positioned overla
 where $\phi_0=1-\phi_1=\exp(-\theta K_\mathrm{LN}(0))$ is the volume fraction of pores.
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[Effect of volume fraction, but monodisperse spheres]{
-\includegraphics[width=0.48\textwidth]{../images/form_factor/nonparticular/BooleanUnionPhi0.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/nonparticular/BooleanUnionPhi0.png}
+   \caption{Dependency on volume fraction of monodisperse spheres}
+   \label{fig:BooleanUnion1}
+\end{subfigure}
 \hfill
-\subfigure[Effect of size distribution at fixed volume fraction $\phi_0=0.8$]{
-\includegraphics[width=0.48\textwidth]{../images/form_factor/nonparticular/BooleanUnionSigma.png}}
-\end{center}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/nonparticular/BooleanUnionSigma.png}
+   \caption{Dependency on size distribution at fixed volume fraction $\phi_0=0.8$}
+   \label{fig:BooleanUnion2}
+\end{subfigure}
 \caption{Boolean union model of spheres}
 \label{fig:BooleanUnion}
 \end{figure}
@@ -204,21 +210,27 @@ To calculate the scattering intensity $I_Q(q)$ the spectral function $f(q)$ is a
 where $a=2\pi/d$, $b=1/\xi$, and $c=1/r_c$. Here $d$ is the quasi-periodic distance responsible for the peak in the scattering data and $\xi$ the decay length of that periodic structure, responsible for the width and height of the peak. The parameter $r_c$ controls for the 2nd and 3rd model the transition to the large $q$-values a bit, whereas in the 4th and 5th model it also has a big influence at small $q$-value below the peak position given by $d$.
 
 \begin{figure}[htb]
-\centering
-  \subfigure[$r_c=80$nm]{\label{fig:rm80m}
-     \begin{minipage}[b]{.45\linewidth}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \begin{minipage}[b]{1\linewidth}
              \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr0_80.png}\\~\\
              \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr2_80.png}\\~\\
              \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/IQCRW_80.png}
-     \end{minipage}
-     }
-  \subfigure[$r_m=10$nm]{\label{fig:rm10nm}
-    \begin{minipage}[b]{.45\linewidth}
+   \end{minipage}
+   \caption{$r_c=80$nm}
+   \label{fig:rm80m}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \begin{minipage}[b]{1\linewidth}
              \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr0_10.png}\\~\\
              \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/gyr2_10.png}\\~\\
              \includegraphics[width=1\linewidth]{../images/form_factor/nonparticular/IQCRW_10.png}
-    \end{minipage}
-    }
+   \end{minipage}
+   \caption{$r_m=10$nm}
+   \label{fig:rm10nm}
+\end{subfigure}
 \caption{Two-point correlation functions $g_{S,1}\ldots g_{S,5}$ and corresponding scattering intensities $I_{S,1}(q)\ldots I_{S,5}(q)$} \label{fig:CRWplugin}
 \end{figure}
 
@@ -534,8 +546,8 @@ with
   a &= (1+c) \left(1+\frac{d^2}{b}\right)
 \end{align}
 The position of the correlation peak at $q_\text{max}$ contain
-information about the size of the structures, which scatter. The value of $d$ seems to 
-be close to 0.06. 
+information about the size of the structures, which scatter. The value of $d$ seems to
+be close to 0.06.
 The parameter $\gamma$ can be calculated from the volume fraction of the cluster and depend on their shape
 
 \begin{align}\label{eq:gamma_phi}

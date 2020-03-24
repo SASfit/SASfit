@@ -180,9 +180,11 @@ For the two approximations, the in principle obsolete Leadbetter and Norris one 
 A couple of models of sheared and deformed form factors are described in section \ref{sec:ShearedAndDeformed}. All these form factors have an parameter $\psi$ describing the direction of the scattering vector towards the symmetry axis of the textured sample (e.g.\ due to shear of deformation). Some of these functions have been supplied so that they become a function of $\psi$ instead of $q$, to be able to describe not sector averaged data $I(q;\psi,\ldots)$ but rather azimuthal data at a fixed scattering vector $I(\psi;q,\ldots)$. The form factor from section \ref{sect:ShearedCylinderHayterPenfold} and \ref{sect:partlyalignedCylShell} have been made available. If the azimuthal plot is supplied by an appropriate $q$-value it is often an advantage not to use the full model description but rather the approximations given by the models in the previous sections \ref{sec:Picken} and \ref{sec:azimuthalVeryLongStructures}.
 
 \begin{figure}[htb]
-\subfigure[Scattering curve $I(q)$ of a long cylinder aligned according to a Maier-Saupe orientation distribution]{\includegraphics[width=0.48\textwidth]{../images/form_factor/azimuthal/I(Q)_MS_Cylinder.png}}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{Scattering curve $I(q)$ of a long cylinder aligned according to a Maier-Saupe orientation distribution \label{fig:comparisionOfAzimuthalIntModels1} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/azimuthal/I(Q)_MS_Cylinder.png}}
 \hfill
-\subfigure[Azimuthal intensity distribution $I(\psi)$ of the same model as on the left]{\includegraphics[width=0.48\textwidth]{../images/form_factor/azimuthal/I(PSI)_MS_Cylinder.png}} \\
+\subcaptionbox{Azimuthal intensity distribution $I(\psi)$ of the same model as on the left \label{fig:comparisionOfAzimuthalIntModels2} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/azimuthal/I(PSI)_MS_Cylinder.png}}
 \caption{The approximations made by Kratky, Leadbetter and Pickens in the previous sections seems to hold in the intermediate $q$-range, but not in the Porod-regime or Guinier-regime of the cylinders}
 \label{fig:comparisionOfAzimuthalIntModels}
 \end{figure}

@@ -577,11 +577,19 @@ In \cite{Benham1980} a solution of a single helical strand which can have a seco
 \subsubsection{Fanlike helix} ~\\
 Double helices with a fanlike cross section in the plane perpendicular to the helix axis have been described by by Schmidt and Pringle \cite{Schmidt1970,Pringle1971}. The model has been generalized by Fakuda et al.\ \cite{Fukuda2002} for an arbitrarily shaped cross section and by Teixeira et al.\ \cite{Teixeira2010} to a multi radial shell with fanlike cross section.
 \begin{figure}[htb]
-\begin{center}
-  \subfigure[top on view]{\label{fig:fanhelixside1}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helicesXS.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helicesXS.png}
+   \caption{top on view}
+   \label{fig:fanhelixside1}
+\end{subfigure}
 \hfill
-  \subfigure[side view]{\label{fig:fanhelixside2}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helices3D.png}}
-\end{center}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/cylindrical_obj/fanlike_helices3D.png}
+   \caption{side view}
+   \label{fig:fanhelixside2}
+\end{subfigure}
 \caption{Double helix with strands of round cross sections.} \label{fig:fanhelix}
 \end{figure}
 
@@ -646,11 +654,19 @@ I(Q=0) &= \left(H\left(\eta_\text{h}-\eta_\text{solv}\right)\omega R^2\left(1-a^
 \subsubsection{Helix with round cross-section} ~\\
 Originally Franklin et al.\ \cite{Franklin1956} and Puigjaner et al.\ \cite{Puigjaner1974} have given the form factor of a cylinder with a groove of a double helix shape of round cross section. Fukada \cite{Fukuda2002} is discussing the form factor of the random oriented double helices alone, but with arbitrary cross-sections.
 \begin{figure}[htb]
-\begin{center}
-  \subfigure[top on view]{\label{fig:roundhelix1}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/roundhelices1.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/cylindrical_obj/roundhelices1.png}
+   \caption{top on view}
+   \label{fig:roundhelix1}
+\end{subfigure}
 \hfill
-  \subfigure[side view]{\label{fig:roundhelix2}\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/round_helices3D.png}}
-\end{center}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/cylindrical_obj/round_helices3D.png}
+   \caption{side view}
+   \label{fig:roundhelix2}
+\end{subfigure}
 \caption{Double helix with strands of round cross sections. The cross-sections are round in the plane perpendicular to the helix axis.} \label{fig:roundhelix}
 \end{figure}
 
@@ -711,12 +727,19 @@ I(Q=0) &= H^2\left(\left(\eta_\text{1}-\eta_\text{solv}\right)\pi R_1^2+\left(\e
 In this model  \cite{Lebedev2003,Avdeev2013} it is assumed that spherical beads are arranged along the path of a single helical strand. It is the product of the form factor of a sphere and the structure factor described by a helix with an infinitesimal thin single strand.
 
 \begin{figure}[htb]
-\begin{center}
-  \subfigure[side view]{\label{fig:beadshelixside1}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_1.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=0.9\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_1.png}
+   \caption{side view}
+   \label{fig:beadshelixside1}
+\end{subfigure}
 \hfill
-  \subfigure[top on view]{\label{fig:beadshelixside2}\includegraphics[width=0.4\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_2.png}}
-%\includegraphics[width=0.4\textwidth,height=0.74\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model.png}
-\end{center}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=0.9\textwidth]{../images/form_factor/cylindrical_obj/beads_helix_model_2.png}
+   \caption{top on view}
+   \label{fig:beadshelixside2}
+\end{subfigure}
 \caption{Bead model of a helix. In figure a) bead helices with different bead radius and different number of beads per turn are shown} \label{fig:beadshelix}
 \end{figure}
 
@@ -842,18 +865,16 @@ I(Q=0)&=\mathcal{L}^2
 \subsubsection{coiled superhelix} ~\\
 A coiled superhelix or coiled coil is a helix with a small repeat whose axis is slightly deformed and follows a larger more graded helical path \cite{Benham1980,Crick1953}.
 \begin{figure}[htb]
-\begin{center}
-  \subfigure[A superhelix with primary and secondary turns. The bottom one has ten times more primary turns per secondary turn than the top one]{\label{fig:superhelixcoiled1}
-  \begin{minipage}[b]{0.45\textwidth}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{[A superhelix with primary and secondary turns. The bottom one has ten times more primary turns per secondary turn than the top one \label{fig:superhelixcoiled1} }{
+\begin{minipage}[b]{0.45\textwidth}
   \includegraphics[width=\textwidth]{../images/form_factor/cylindrical_obj/superhelixcoiled1.png} \\
   \includegraphics[width=\textwidth]{../images/form_factor/cylindrical_obj/superhelixcoiled2.png}
   \end{minipage}
-  }
+}
 \hfill
-  \subfigure[A superhelix with zero pitch forms a toroidal helix]{\label{fig:superhelixcoiled2}
-  \includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/superhelixcoiled3.png}
-  }
-\end{center}
+\subcaptionbox{A superhelix with zero pitch forms a toroidal helix \label{fig:superhelixcoiled2} }{\includegraphics[width=0.45\textwidth]{../images/form_factor/cylindrical_obj/superhelixcoiled3.png}}
 \caption{Combinations of two helical orders are
 referred to as coiled coils or coiled superhelix.} \label{fig:superhelixcoiled}
 \end{figure}

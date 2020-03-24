@@ -161,7 +161,7 @@ proc EmOptionsCmd {} {
 	grid $w.linRegu_value -row 6 -column 1 -sticky w
 	
 	label $w.opt_Lagrange_label -text "opt. Lagrange param."
-	ComboBox $w.opt_Lagrange_value -values {"L-corner" "L-corner2" "GCV" "red. chi2" "manual"
+	ComboBox $w.opt_Lagrange_value -values {"L-corner (o)" "L-corner2" "L-corner (l)" "L-corner (w)" "L-corner (w+o)" "GCV" "red. chi2" "manual"
 			}  \
 				-width 10 \
 				-textvariable ::EMOptions(optimumLagrange) 
@@ -222,7 +222,16 @@ proc EmOptionsCmd {} {
 				
 	grid $w.maxLagrange_label -row 10 -column 2 -sticky e
 	grid $w.maxLagrange_value -row 10 -column 3 -sticky w	
-
+	
+	label $w.printProg_label -text "PrintProgress"
+	ComboBox $w.printProg_value -values {0 1 2 3 4 5
+			}  \
+				-width $entrywidth \
+				-textvariable ::EMOptions(PrintProgress) 
+#	entry $w.printProg_value -textvariable EMOptions(PrintProgress) -width $entrywidth
+				
+	grid $w.printProg_label -row 11 -column 0 -sticky e
+	grid $w.printProg_value -row 11 -column 1 -sticky w	
 
 }
 proc structuralParFitCmd {} {
@@ -358,9 +367,11 @@ radiobutton $w.guinierrange.lowQ.radio.zimm -text "Zimm" \
 			
 button $w.guinierrange.lowQ.nr -text "calculate N(R) using:" \
             -command {
-                global StructParData IQGraph SDGraph
+                global StructParData IQGraph SDGraph EMOptions
                 RefreshStructParFit
    		        sasfit_timer_start "\nStart apply"
+				set ::SASfitinterrupt 0
+				set EMOptions(Interrupt) 0
 				switch $::EMOptions(method) {
 					"MuCh" {
 							set DR [sasfit_DR_MuCh StructParData [list $sasfit(Q) $sasfit(I) $sasfit(DI)]]
@@ -906,6 +917,8 @@ set ::StructParData(series_outfile) $outFile
 seriesInit ::StructParData $w.loadandsave
 catch {RefreshStructParFit} {}
 
+
+
 }
 
 proc seriesInit { configarr widgetpath
@@ -1164,6 +1177,7 @@ proc seriesInterrupt { configarr
 } {
     upvar $configarr arr
 	set arr(Interrupt) 1
+	set ::EMOptions(Interrupt) 1
 	$arr(wls_wid).doall configure -text "continue: Do all"
 }
 

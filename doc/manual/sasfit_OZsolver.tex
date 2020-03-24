@@ -111,7 +111,7 @@ c(r)&= \exp\left[ -\beta u(r) +\gamma(r)+B(r)\right] - \gamma(r)-1 \\
 +\gamma(r)+B(r)\right] \label{eq:ozg(r)}
 \end{align}
 where $u(r)$ is the pair interaction potential, $\beta=1/(k_B T)$
-the inverse temperature, with $k_B$ being Boltzmann’s constant, $T$
+the inverse temperature, with $k_B$ being Boltzmann's constant, $T$
 is the absolute temperature, $\gamma(r)$ being the indirect
 correlation function and $\rho$ is the number density of the
 molecules or atoms that form the liquid. $B(r)$ is the bridge
@@ -134,7 +134,7 @@ The easiest algorithm for solving the Ornstein Zernike (OZ) equation \ref{eq:ozh
 \item Calculate the inverse Fourier transform of $\tilde{\gamma}(q)$ to get the new guess for $\gamma(r)$.
 %\item Compare the new guess of the indirect correlation function with the one used in step 1, i.e. compare $\gamma_\text{new}(r)$ %and $\gamma_\text{old}(r)$ at each grid point. If $\Norm{\gamma_\text{new}(r)-\gamma_\text{old}(r)}/\Norm{\gamma_\text{new}(r)} < %\epsilon_\text{rel}$ the solution has been found otherwise go back to the first step by using the new $\gamma_\text{new}(r)$ as a %starting value and repeat the loop until convergence. \item When the iteration loop has converged calculate $S(q)$ and $g(r)$ %according to eq.\ \ref{eq:ozSq} and eq.\ \ref{eq:ozg(r)}.
 \end{enumerate}
-%In actual practice, it turns out that this simple iteration doesn’t converge very rapidly and can have oscillations. One can improve %the convergence rate in several ways:
+%In actual practice, it turns out that this simple iteration doesn't converge very rapidly and can have oscillations. One can improve %the convergence rate in several ways:
 %\begin{enumerate}
 %\item Introduction of  Broyles mixing; specifically, before repeating the iteration, let $\gamma_\text{old}(r) = \alpha %\gamma_\text{new}(r) + (1 -\alpha)\gamma_\text{old}(r)$
 %where the mixing parameter $\alpha \in [0;1]$. A typical staring value would be 0.5.
@@ -624,8 +624,8 @@ Also here $\alpha$ can be chosen so that thermodynamic consistency is obtained.
 
 The HNC\hbox{-}SMSA (HMSA) closure from Zerah and Hansen  \cite{Zerah1986} has been proposed
 for the Lennard-Jones fluid. It interpolates between HNC and SMSA. The HMSA has
-strong theoretical basis since it can be derived from Percus’ functional expansion
-formalism and its bridge function expresses as a functional of the remormalised
+strong theoretical basis since it can be derived from Percus' functional expansion
+formalism and its bridge function expresses as a functional of the renormalised
 indirect correlation function $\gamma^*(r)=\gamma(r)-\beta u_{R}(r)$ so that
 \begin{align}
 B_\text{HMSA}(r) &= \ln
@@ -718,10 +718,20 @@ u^\text{HS}_\text{pert}(r,\sigma) &= u^\text{HS}_\text{LR}(r,\sigma) = u^\text{H
 
 \begin{figure}[htb]
 \centering
-  \subfigure[Hard Sphere potential $u^\text{HS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUHS.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{HS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfHS.png}}
-  \caption{potential $u^\text{HS}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{HS}(r,\sigma)/k_BT)-1$}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{../images/OZsolver/potentials/potUHS.png}
+   \caption{Hard Sphere potential $u^\text{HS}(r,\sigma)$}
+   \label{fig:OZUHS}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{../images/OZsolver/potentials/potfHS.png}
+   \caption{Mayer-f function of $u^\text{HS}(r,\sigma)$}
+   \label{fig:OZMeyerfHS}
+\end{subfigure}
+\caption{potential $u^\text{HS}(r,\sigma)$ and it's Mayer-f function $\exp\left(-\frac{u^\text{HS}(r,\sigma)}{k_BT}\right)-1$}
 \end{figure}
 
  \newpage
@@ -787,10 +797,12 @@ $u^\text{SHS}_\text{SR}(r)= u^\text{SHS}(r)$.
 
 \begin{figure}[htb]
 \centering
-  \subfigure[Sticky Hard Sphere potential $u^\text{SHS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUSHS.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{SHS}(r,\sigma)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfSHS.png}}
-  \caption{potential $u^\text{SHS}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{SHS}(r,\sigma)/k_BT)-1$}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{sticky hard sphere potential $u^\text{SHS}(r,\sigma)$ e\label{fig:OZUSHS} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUSHS.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{SHS}(r,\sigma)$ \label{fig:OZMeyerfSHS} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfSHS.png}}
+\caption{potential $u^\text{SHS}(r,\sigma)$ and it's Mayer-f function $\exp\left(-\frac{u^\text{SHS}(r,\sigma)}{k_BT}\right)-1$}
 \end{figure}
 
 % \vphantom{.}~\\
@@ -824,10 +836,20 @@ system as the volume integral of the potential diverges.
 
 \begin{figure}[htb]
 \centering
-  \subfigure[Soft Sphere Potential $u^\text{SSP}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUSoftSphere.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{SSP}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfSoftSphere.png}}
-  \caption{potential $u^\text{SSP}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{SSP}(r,\sigma,\ldots)/k_BT)-1$}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{../images/OZsolver/potentials/potUSoftSphere.png}
+   \caption{Soft Sphere Potential $u^\text{SSP}(r,\sigma,\ldots)$}
+   \label{fig:OZUSSP}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=\textwidth]{../images/OZsolver/potentials/potfSoftSphere.png}
+   \caption{Mayer-f function of $u^\text{SSP}(r,\sigma,\ldots)$}
+   \label{fig:OZMeyerfSSP}
+\end{subfigure}
+\caption{potential $u^\text{SSP}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp\left(-\frac{u^\text{SSP}(r,\sigma,\ldots)}{k_BT}\right)-1$}
 \end{figure}
 
 % \vphantom{.}~\\
@@ -847,11 +869,12 @@ k_\text{B} T \epsilon   & \mbox{for } r \leq \sigma \\
 \end{align}
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Potential of the Penetrable Sphere Model (PSM) $u^\text{PSM}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUPenetrableSphere.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{PSM}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfPenetrableSphere.png}}
-  \caption{potential $u^\text{PSM}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{PSM}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{Potential of the Penetrable Sphere Model (PSM) $u^\text{PSM}(r,\sigma,\ldots)$ \label{fig:OZUPSM} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUPenetrableSphere.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{PSM}(r,\sigma,\ldots)$ \label{fig:OZMeyerfPSM} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfPenetrableSphere.png}}
+\caption{potential $u^\text{PSM}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp\left(-\frac{u^\text{PSM}(r,\sigma,\ldots)}{k_BT}\right)-1$}
 \end{figure}
 
 % \vphantom{.}~\\
@@ -871,11 +894,13 @@ k_\text{B} T \epsilon \exp\left(-\alpha\left(\frac{r}{\sigma}\right)^n\right)
 \end{align}
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Potential of the Generalises Gaussian Code Model (GGCM-n) $u^\text{GGCM-n}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUGGCM-n.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{GGCM-n}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfGGCM-n.png}}
-  \caption{potential $u^\text{GGCM-n}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{GGCM-n}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{Potential of the Generalises Gaussian Code Model (GGCM-n) $u^\text{GGCM-n}(r,\sigma,\ldots)$ \label{fig:OZUGGCM} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUGGCM-n.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{GGCM-n}(r,\sigma,\ldots)$ \label{fig:OZMeyerfGGCM} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfGGCM-n.png}}
+e
+\caption{potential $u^\text{GGCM-n}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{GGCM-n}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
 
 
@@ -891,11 +916,12 @@ k_\text{B} T \epsilon
 For $\xi = 0$ the Fermi Potential goes over into the Penetrable Sphere Model.
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Fermi potential $u^\text{Fermi}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUFermi.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{Fermi}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfFermi.png}}
-  \caption{potential $u^\text{Fermi}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{Fermi}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{Fermi potential $u^\text{Fermi}(r,\sigma,\ldots)$ \label{fig:OZUFermi} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUFermi.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{Fermi}(r,\sigma,\ldots)$ \label{fig:OZMeyerfFermi} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfFermi.png}}
+\caption{potential $u^\text{Fermi}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{Fermi}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
 
 \newpage
@@ -933,11 +959,12 @@ potential becomes harder with increasing $f$, tending eventually to a hard-spher
 interaction formally obtained in the limit $f\rightarrow\infty$.
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Star potential $u^\text{star1}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUStarfGT10.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{star1}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfStarfGT10.png}}
-  \caption{potential $u^\text{star1}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{star1}(r,\sigma,f)/k_BT)-1$}
+\subcaptionbox{Star potential $u^\text{star1}(r,\sigma,f)$ \label{fig:OZUStar} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUStarfGT10.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{star1}(r,\sigma,f)$ \label{fig:OZMeyerfStar} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfStarfGT10.png}}
+\caption{potential $u^\text{star1}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{star1}(r,\sigma,f)/k_BT)-1$}
 \end{figure}
 
 The effective potential valid for $f\leq 10$ has the form
@@ -958,11 +985,12 @@ $\tau$ is a free parameter of the order and is obtained by fitting to computer
 simulation results \cite{Dzubiella2001}.
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Star potential for $u^\text{star2}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUStarfLT10.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{star2}(r,\sigma,f)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfStarfLT10.png}}
-  \caption{potential $u^\text{star2}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{star2}(r,\sigma,f)/k_BT)-1$}
+\subcaptionbox{Star potential for $u^\text{star2}(r,\sigma,f)$ \label{fig:OZUStarLT10} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUStarfLT10.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{star2}(r,\sigma,f)$ \label{fig:OZMeyerfStarLT10} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfStarfLT10.png}}
+\caption{potential $u^\text{star2}(r,\sigma)$ and it's Mayer-f function $\exp(-u^\text{star2}(r,\sigma,f)/k_BT)-1$}
 \end{figure}
 
 % \vphantom{.}~\\
@@ -997,11 +1025,12 @@ u^\text{LJ}_\text{LR}(r)  & \mbox{if } r \geq r_m
 The LJ potential is not splitted in a reference and perturbation part, i.e. the reference part is set to 0.
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Lennard-Jones potential $u^\text{LJ}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potULennardJones.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{LJ}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfLennardJones.png}}
-  \caption{potential $u^\text{LJ}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{LJ}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{Lennard-Jones potential $u^\text{LJ}(r,\sigma,\ldots)$ \label{fig:OZULJ} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potULennardJones.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{LJ}(r,\sigma,\ldots)$ \label{fig:OZMeyerfLJ} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfLennardJones.png}}
+\caption{potential $u^\text{LJ}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{LJ}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
 
 % \vphantom{.}~\\
@@ -1013,15 +1042,16 @@ The pair interaction potential of spheres by a depleting agent is implemented de
 spherical, disc-like or rod-like shapes \cite{Oversteegen2004,Lekkerkerker2011}.
 
 \begin{figure}[htb]
-\includegraphics[width=0.65\textwidth]{../images/OZsolver/potentials/DepletionSketchSphSph.png}  \caption{Attractive depletion forces between large spheres due to small spheres as depleting agent.}
+\includegraphics[width=0.75\textwidth]{../images/OZsolver/potentials/DepletionSketchSphSph.png}  \caption{Attractive depletion forces between large spheres due to small spheres as depleting agent.}
 \end{figure}
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[potential between two large spheres and spherical depleting agents $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Sph.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Sph.png}}
-  \caption{potential $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{sph}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{potential between two large spheres and spherical depleting agents $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$ \label{fig:OZUDeplSph} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Sph.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$ \label{fig:OZMeyerfDeplSph} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Sph.png}}
+\caption{potential $u^\text{depl}_\text{sph}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{sph}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
 
 The potential between two large spheres and spherical depleting agents of diameter $l$
@@ -1071,6 +1101,18 @@ u^\text{depl}_\text{sph}(r) &\mbox{for } r>=\sigma
 \end{cases}
 \end{subeqnarray}
 
+\begin{figure}[thb]
+\includegraphics[width=0.75\textwidth]{../images/OZsolver/potentials/DepletionSketchSphDiscs.png}  \caption{Attractive depletion forces between large spheres due to depletion forces of infinitesimal thin discs of diameter $D$ as a depleting agents}
+\end{figure}
+
+\begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{potential between two large spheres and disclike depleting agents $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$ \label{fig:OZUDeplDisc} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Discs.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$ \label{fig:OZMeyerfDeplDisc} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Discs.png}}
+\caption{potential $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{discs}(r,\sigma,\ldots)/k_BT)-1$}
+\end{figure}
 
 The potential between two large spheres and infinitesimal thin discs of diameter $D$
 as a depleting agents is given by
@@ -1089,11 +1131,6 @@ N_\text{II} - N_\text{III} &= \frac{\pi}{6} n_d D^2\sigma
                               \right\}
 \end{split}
 \end{align}
-
-
-\begin{figure}[htb]
-\includegraphics[width=0.65\textwidth]{../images/OZsolver/potentials/DepletionSketchSphDiscs.png}  \caption{Attractive depletion forces between large spheres due to depletion forces of infinitesimal thin discs of diameter $D$ as a depleting agents}
-\end{figure}
 
 Also a splitting of the potential in repulsive-attractive, reference-perturbation, shortrange-longrange has been implemented as
 \begin{subeqnarray}
@@ -1130,15 +1167,6 @@ u^\text{depl}_\text{discs}(r) &\mbox{for } r>=\sigma
 \end{subeqnarray}
 
 
-\begin{figure}[htb]
-\centering
-  \subfigure[potential between two large spheres and disclike depleting agents $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Discs.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Discs.png}}
-  \caption{potential $u^\text{depl}_\text{discs}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{discs}(r,\sigma,\ldots)/k_BT)-1$}
-\end{figure}
-
-
 Another depletion potential of two hard spheres of diameter $\sigma$ surrounded
 by infinitely thin hard rods of length $L$ is given by
 \begin{align}
@@ -1154,7 +1182,7 @@ N_\text{II} - N_\text{III} &= \frac{\pi}{12} n_d L^2\sigma
 \end{align}
 
 \begin{figure}[htb]
-\includegraphics[width=0.65\textwidth]{../images/OZsolver/potentials/DepletionSketchSphRods.png}  \caption{Attractive depletion forces between large spheres due to depletion forces of infinitely thin hard rods of length $L$ as depleting agent.}
+\includegraphics[width=0.75\textwidth]{../images/OZsolver/potentials/DepletionSketchSphRods.png}  \caption{Attractive depletion forces between large spheres due to depletion forces of infinitely thin hard rods of length $L$ as depleting agent.}
 \end{figure}
 
 Also a splitting of the potential in repulsive-attractive, reference-perturbation, shortrange-longrange has been implemented as
@@ -1193,11 +1221,12 @@ u^\text{depl}_\text{rods}(r) &\mbox{for } r>=\sigma
 
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[potential between two large spheres and rodlike depleting agents $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Rods.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Rods.png}}
-  \caption{potential $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{rods}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{potential between two large spheres and rodlike depleting agents $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$ \label{fig:OZUDeplRod} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUDepl-Sph-Rods.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$ \label{fig:OZMeyerfDeplRod} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfDepl-Sph-Rods.png}}
+\caption{potential $u^\text{depl}_\text{rods}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{depl}_\text{rods}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
 
 % \vphantom{.}~\\
@@ -1324,11 +1353,12 @@ u^\text{vdW}(r) & \mbox{for } r>\sigma
 \end{subeqnarray}
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[DLVO potential (Derjaguin and Landau, Verwey and Overbeek) $u^\text{DLVO}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUDLVO_a.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{DLVO}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfDLVO.png}}
-  \caption{potential $u^\text{DLVO}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{DLVO}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{DLVO potential (Derjaguin and Landau, Verwey and Overbeek) $u^\text{DLVO}(r,\sigma,\ldots)$ \label{fig:OZUDLVO} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potUDLVO_a.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{DLVO}(r,\sigma,\ldots)$ \label{fig:OZMeyerfDLVO} }{\includegraphics[width=0.48\textwidth]{../images/OZsolver/potentials/potfDLVO.png}}
+\caption{potential $u^\text{DLVO}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{DLVO}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
 
 % \vphantom{.}~\\
@@ -1380,11 +1410,12 @@ k_\text{B} T
 \end{subeqnarray}
 
 \begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
 \centering
-  \subfigure[Hard Core Yukawa potential with three linear combinations of Yukawa tails $u^\text{HC3Y}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUHC3Yukawa.png}}
-  \quad
-  \subfigure[Mayer-f function of $u^\text{HC3Y}(r,\sigma,\ldots)$]{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfHC3Yukawa.png}}
-  \caption{potential $u^\text{HC3Y}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{HC3Y}(r,\sigma,\ldots)/k_BT)-1$}
+\subcaptionbox{Hard Core Yukawa potential with three linear combinations of Yukawa tails $u^\text{HC3Y}(r,\sigma,\ldots)$ \label{fig:OZUHC3Y} }{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potUHC3Yukawa.png}}
+\hfill
+\subcaptionbox{Mayer-f function of $u^\text{HC3Y}(r,\sigma,\ldots)$ \label{fig:OZMeyerfHC3Y} }{\includegraphics[width=0.45\textwidth]{../images/OZsolver/potentials/potfHC3Yukawa.png}}
+\caption{potential $u^\text{HC3Y}(r,\sigma,\ldots)$ and it's Mayer-f function $\exp(-u^\text{HC3Y}(r,\sigma,\ldots)/k_BT)-1$}
 \end{figure}
 
 % \vphantom{.}~\\

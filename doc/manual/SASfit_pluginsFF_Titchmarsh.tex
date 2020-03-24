@@ -6,7 +6,7 @@ This generalized form factor include several special shapes like uniform spheres
 
 \begin{table}[htb]
 \centering
-\caption{Explicit expressions for $\displaystyle I(q)=\frac{1}{q^\gamma}\frac{J_\nu^2(qa)}{(qa)^\beta} \left(V_0a^\alpha\right)^2$ for several particle shapes. The values $n=\beta+1$ and $m=2\alpha-n$ where needed for the Titchmarsh transform in the paper from Fedorova}
+\caption{Explicit expressions for $\displaystyle I(q)=\frac{1}{q^\gamma}\frac{J_\nu^2(qa)}{(qa)^\beta} \left(V_0a^\alpha\right)^2$ for several particle shapes. The values $n=\beta+1$ and $m=2\alpha-n$ are used for the Titchmarsh transform in the paper from Fedorova}
 \label{tab:gFF}
 \begin{tabular}{|lL{5.5cm}|l|l|l|l|l|l|l|l|l|l|}
  \rowcolor[gray]{0.8}
@@ -57,7 +57,7 @@ in the limits of $q\rightarrow 0$ and $q\rightarrow \infty$ the scattering inten
 \lim_{q\rightarrow 0}      I(q) & = \frac{1}{q^\gamma}\frac{\left(V_0a^{\alpha}\right)^2}{(a q)^{\beta -2\nu}}\frac{4^{-\nu }}{\Gamma (\nu +1)^2} \\
 \lim_{q\rightarrow \infty} I(q) & = \frac{1}{q^\gamma}\frac{\left(V_0a^{\alpha}\right)^2}{\pi(aq)^{\beta+1}}
 \end{align}
-The parameter $\gamma$ is not necessarily required and any value of it could be replaced by a proper correction of the values for $\alpha$ and $\beta$. However, the parameter $\alpha$ was introduced to describe how the volume of the objects on which small angle scattering is sensitive scales with the parameter $a$. For a homogeneous cylinder oriented randomly with its radius in the range of the SAS experiments the object dimension is $d=3$. However, for an oriented cylinder where SAS is measured perpendicular to the cylinder axis the signal only probes the cross section and $d$ is therefore 2. If $a$ is the smaller or larger dimension of an very anisotropic object like thin local cylindrical objects or thin local planar objects the volume scales with $V_0a^\alpha l^\gamma$ where $l\gg a$ or $l\ll a$ describes the larger or smaller dimensions of the object. The overall dimension of the object is $1\leq d=\alpha+\gamma\leq3$ and should lay between 1 and 3. Furthermore the overall dimension $d$ of the object needs to be larger than $\alpha$, i.e $2\geq\gamma\geq 0$. As only the dimension $a$ is probed in the case of $l\gg a$ the larger dimension $l$ leads to a potential law behaviour at small $q$-values with $s=\gamma$. This is an additional constrain leading to the lesser generalized form factor having three input parameters either $(d,s,p)$ or $(d,\alpha,p)$.
+The parameter $\gamma$ is not necessarily required and any value of it could be replaced by a proper correction of the values for $\alpha$ and $\beta$. However, the parameter $\alpha$ was introduced to describe how the volume of the objects, on which small angle scattering is sensitive, scales with the parameter $a$. For a homogeneous cylinder oriented randomly with its radius in the range of the SAS experiments the object dimension is $d=3$. However, for an oriented cylinder where SAS is measured perpendicular to the cylinder axis the signal only probes the cross section and $d$ is therefore 2. If $a$ is the smaller or larger dimension of an very anisotropic object like thin local cylindrical objects or thin local planar objects the volume scales with $V_0a^\alpha l^\gamma$ where $l\gg a$ or $l\ll a$ describes the larger or smaller dimensions of the object. The overall dimension of the object is $1\leq d=\alpha+\gamma\leq3$ and should lay between 1 and 3. Furthermore the overall dimension $d$ of the object needs to be larger than $\alpha$, i.e $2\geq\gamma\geq 0$. As only the dimension $a$ is probed in the case of $l\gg a$ the larger dimension $l$ leads to a potential law behaviour at small $q$-values with $s=\gamma$. This is an additional constrain leading to the lesser generalized form factor having three input parameters either $(d,s,p)$ or $(d,\alpha,p)$.
 \begin{align}\label{eq:lesser_generalizedFFparameters}
 \begin{array}{rl}
   s &= \gamma \\
@@ -90,7 +90,7 @@ The other constrains on the parameters for physical meaningful two-phase models 
 \item[\texttt{sigma\_a}] width $\sigma_a$ of the size distribution (LogNorm)
 \item[\texttt{alpha}] dimensionality parameter $\alpha$ related to $a$.
 \item[\texttt{beta}] decay at large scattering vectors, $q^p$, with $p=\gamma+\beta+1$
-\item[\texttt{gamma}] additional potential law $q^\gamma$
+\item[\texttt{gamma}] additional potential law $q^{-\gamma}$
 \item[\texttt{nu}] shape parameter $\nu$
 \item[\texttt{eta}] scattering length density contrast $\Delta\eta$
 \end{description}
@@ -136,4 +136,4 @@ The other constrains on the parameters for physical meaningful two-phase models 
 \includegraphics[width=0.75\textwidth]{../images/form_factor/gFF/gFF.png}
 \end{center}
 \caption{Comparison of generalized form factor with certain geometries namely \texttt{Sphere}, \texttt{LongCylinder}, \texttt{FlatCylinder}, \texttt{cylinder (OPO)} (cylinder perp. to beam).} \label{fig:gFFIQ}
-\end{figure}
+\end{figure} 

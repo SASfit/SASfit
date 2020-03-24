@@ -7828,8 +7828,10 @@ button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 		set ::SASfitinterrupt 0
 		sasfit_timer_start "\nStart simulation 2d"
 		if {[catch {
+			set ::sasfit(busy) true
 			set Det2DRes [sasfit_2Diq ::AnalytPar {{1 1} {1 1} {1 1}} Detector2DIQGraph]
 			set Detector2DIQGraph(Det2DRes) $Det2DRes
+			set ::sasfit(busy) false
 #           puts $Det2DRes
 		} msg] } {
 			bgerror $msg
@@ -7842,7 +7844,7 @@ button $wdet2D_b.do -bg "light blue" -text  "Calculate\n2D detector pattern" \
 #	    destroy $Detector2DIQGraph(cwsim)
 #	    destroy $Detector2DIQGraph(cwdata) 
 #	    destroy $Detector2DIQGraph(cwresiduum)
-		change_CT_Det2D sim
+		if {[catch {change_CT_Det2D sim} msg]} {puts $msg}
 		
 		sasfit_timer_stop "Plotting 2D" "finished" ""
 		}

@@ -697,7 +697,7 @@ proc configOZalgorithm {} {
     		         "Krasnoselskij iteration" \
     		         "S* iteration" \
 				 "dNewton" "Hybrid" \
-	    		 "Hybrids (int. sc.)" "Broyden" \
+	    		 "Hybrids (int. sc.)" "Broyden" "Biggs_Andrews"\
 				 "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
 			} \
 	    -textvariable OZ(algorithm) -width 19  -editable 0

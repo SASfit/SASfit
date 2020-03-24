@@ -42,6 +42,8 @@ typedef struct {
 
 typedef struct {
         Tcl_Interp *interp;
+        char Tcl_Array_Name[256];
+        sasfit_timer *tm;
 		double *Ih, *DIh, *Ith, *h;
         int indx_min_appearent_sigma, indx_max_appearent_sigma;
         gsl_vector *DR;

@@ -13,17 +13,17 @@ G(t) &= \frac{t}{12\eta}\frac{1}{1-\exp(t)\Phi(t)} \\
 where the six coefficients $S_1$, $S_2$, $S_3$, $S_4$, $L_1$, and $L_2$ may be evaluated in an
 algebraic form
 \begin{align}
-L_1 &= \frac{1}{2} \frac{η + 12\eta L_2 + 2 - 24\eta S_4}{2\eta + 1} \\
+L_1 &= \frac{1}{2} \frac{\eta + 12\eta L_2 + 2 - 24\eta S_4}{2\eta + 1} \\
 S_1 &= \frac{3}{2}\eta\frac{-1+4L_2-8S_4}{2\eta +1}\\
 S_2 &= -\frac{1}{2} \frac{-\eta+8\eta L_2+1-2L_2-24\eta S_4}{2\eta +1} \\
-S_3 &= \frac{1}{12} \frac{2\eta-\eta^2+12\eta^2L_2-12\eta L_2-1-72\eta^2 S_4}{\eta (2\eta+1)}
+S_3 &= \frac{1}{12} \frac{2\eta-\eta^2+12\eta^2L_2-12\eta L_2-1-72\eta^2 S_4}{\eta(2\eta+1)}
 \end{align}
 with
 \begin{align}
 L_2 &= -3\left(Z-1\right)S_4 \\
 S_4 &= \frac{1-\eta}{36\eta\left(Z-\frac{1}{3}\right)}\left[1-\sqrt{1+\frac{Z-\frac{1}{3}}{Z-Z_\mathrm{PY}}\left(\frac{\chi}{\chi_\mathrm{PY}}-1\right)}\right]
 \end{align}
-Here, $Z_\mathrm{PY} = \frac{1+2\eta+3\eta^2}{(1−\eta)^2}$ and $\chi_\mathrm{PY} = \frac{(1−\eta)^4}{(1+2\eta)^2}$ are the compressibility factor and isothermal susceptibility arising in the PY theory. The isothermal compressibility $\chi$ and the compressibility factor $Z$ are related by
+Here, $Z_\mathrm{PY} = \frac{1+2\eta+3\eta^2}{(1-\eta)^2}$ and $\chi_\mathrm{PY} = \frac{(1-\eta)^4}{(1+2\eta)^2}$ are the compressibility factor and isothermal susceptibility arising in the PY theory. The isothermal compressibility $\chi$ and the compressibility factor $Z$ are related by
 \begin{align}
 \chi &= \left(\frac{\mathrm{d}(\rho Z)}{\mathrm{d}\rho}\right)^{-1} = \left(Z+\eta\frac{\mathrm{d} Z}{\mathrm{d}\eta}\right)^{-1}
 \label{eq:RFAend}
@@ -58,9 +58,19 @@ Z^\mathrm{CS} &= \frac{1+\eta+\eta^2-\eta^3}{\left(1-\eta\right)^3}
 \end{itemize}
 
 \begin{figure}[htb]
-\subfigure[Comparison between $S^\mathrm{PY}$ and $S^\mathrm{CS}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQCS.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/SQCS.png}
+   \caption{Comparison between $S^\mathrm{PY}$ and $S^\mathrm{CS}$}
+   \label{fig:SQ:CS1}
+\end{subfigure}
 \hfill
-\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{CS}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResCS.png}} \\
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/ResCS.png}
+   \caption{residual between $S^\mathrm{PY}$ and $S^\mathrm{CS}$}
+   \label{fig:SQ:CS2}
+\end{subfigure}
 \caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of Carnahan and Starling}
 \label{fig:SQ:CS}
 \end{figure}
@@ -92,9 +102,19 @@ which no meaningful fluid structure can be derived \cite{Haro2004}.
 \end{itemize}
 
 \begin{figure}[htb]
-\subfigure[Comparison between $S^\mathrm{PY}$ and $S^{(4,3)}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQ(4,3).png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/SQ(4,3).png}
+   \caption{Comparison between $S^\mathrm{PY}$ and $S^{(4,3)}$}
+   \label{fig:SQ:43_1}
+\end{subfigure}
 \hfill
-\subfigure[residual between $S^\mathrm{PY}$ and $S^{(4,3)}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/Res(4,3).png}} \\
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/Res(4,3).png}
+   \caption{residual between $S^\mathrm{PY}$ and $S^{(4,3)}$}
+   \label{fig:SQ:43_2}
+\end{subfigure}
 \caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of van Rensburg and S\'{a}nchez}
 \label{fig:SQ:43}
 \end{figure}
@@ -124,9 +144,19 @@ Z^\mathrm{MV} &= \frac{1 + 1.0560\eta + 1.6539\eta^2 + 0.3262\eta^3}{\left(1- 3.
 \end{itemize}
 
 \begin{figure}[htb]
-\subfigure[Comparison between $S^\mathrm{PY}$ and $S^\mathrm{MV}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQMV.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/SQMV.png}
+   \caption{Comparison between $S^\mathrm{PY}$ and $S^\mathrm{MV}$}
+   \label{fig:SQ:MV_1}
+\end{subfigure}
 \hfill
-\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{MV}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResMV.png}} \\
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/ResMV.png}
+   \caption{residual between $S^\mathrm{PY}$ and $S^\mathrm{MV}$}
+   \label{fig:SQ:MV_2}
+\end{subfigure}
 \caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of Malijevsk\'{y} and Veverka}
 \label{fig:SQ:MV}
 \end{figure}
@@ -162,9 +192,19 @@ which no meaningful fluid structure can be derived \cite{Haro2004}.
 \end{itemize}
 
 \begin{figure}[htb]
-\subfigure[Comparison between $S^\mathrm{PY}$ and $S^\mathrm{LHR}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQLHR.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/SQLHR.png}
+   \caption{Comparison between $S^\mathrm{PY}$ and $S^\mathrm{LHR}$}
+   \label{fig:SQ:LHR_1}
+\end{subfigure}
 \hfill
-\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{LHR}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResLHR.png}} \\
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/ResLHR.png}
+   \caption{residual between $S^\mathrm{PY}$ and $S^\mathrm{LHR}$}
+   \label{fig:SQ:LHR_2}
+\end{subfigure}
 \caption{Comparison between analytical PY solution of hard sphere static structure factor and rational function approximation with a compressibility factor of L\'{o}pez de Haro and Robles}
 \label{fig:SQ:LHR}
 \end{figure}
@@ -204,9 +244,19 @@ S^\mathrm{GH}(Q,\sigma,\eta) &= S^\mathrm{PY}(Q,\sigma_0,\eta_0) + \frac{6\eta}{
 \end{itemize}
 
 \begin{figure}[htb]
-\subfigure[comparison between $S^\mathrm{PY}$ and $S^\mathrm{GH}$]{\includegraphics[width=0.46\textwidth]{../images/structure_factor/HardSphere/SQGH.png}}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/SQGH.png}
+   \caption{Comparison between $S^\mathrm{PY}$ and $S^\mathrm{GH}$}
+   \label{fig:SQ:GH_1}
+\end{subfigure}
 \hfill
-\subfigure[residual between $S^\mathrm{PY}$ and $S^\mathrm{GH}$]{\includegraphics[width=0.48\textwidth]{../images/structure_factor/HardSphere/ResGH.png}} \\
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/HardSphere/ResGH.png}
+   \caption{residual between $S^\mathrm{PY}$ and $S^\mathrm{GH}$}
+   \label{fig:SQ:GH_2}
+\end{subfigure}
 \caption{Comparison between analytical PY solution of hard sphere static structure factor and thermodynamically consistent correction as described by Henderson and Grundke}
 \label{fig:SQ:GH}
 \end{figure}
@@ -294,7 +344,7 @@ In the original paper from Rosenfeld the definition of $\chi$ seems to have a ty
 Guo \cite{Guo2006} supplies the expression
 \begin{align}
 S(q) &= \frac{1}{1-\rho \tilde{c}(q,r)} \\
-\tilde{c}(q,r) &= 2\pi\sigma^2 \int_0^1 c(r′,\eta) J_0(q\sigma r′) r′ \mathrm{d}r′
+\tilde{c}(q,r) &= 2\pi\sigma^2 \int_0^1 c(r',\eta) J_0(q\sigma r') r' \mathrm{d}r'
 \end{align}
 with
 \begin{align}
@@ -330,11 +380,21 @@ a &= 0.3699\eta^4
 \end{itemize}
 
 \begin{figure}[htb]
-\centering
-  \subfigure[]{\includegraphics[width=0.43\textwidth]{../images/structure_factor/2D_hard_disk_fluid/HardDisks_low.png}}
-  \quad
-  \subfigure[]{\includegraphics[width=0.47\textwidth]{../images/structure_factor/2D_hard_disk_fluid/HardDisks_high.png}}
+\begin{subfigure}[b]{.43\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/2D_hard_disk_fluid/HardDisks_low.png}
+   \caption{surface coverage of $\eta=0.2$ and 0.5}
+   \label{fig:RosenfeldGuo1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.47\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/structure_factor/2D_hard_disk_fluid/HardDisks_high.png}
+   \caption{surface coverage of $\eta=0.75$}
+   \label{fig:RosenfeldGuo2}
+\end{subfigure}
   \caption{Comparison between Rosenfeld's and Guo's results}
+  \label{fig:RosenfeldGuo}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -351,7 +411,7 @@ The structure factor $S_N(QD)$ describing such an arrangement of $N$ particles o
 with a constant step size $D$ is given by \cite{Burchard1970} as
 \begin{align}
 S_N(QD)&=
-     \frac{2}{1-\frac{\sin⁡(QD)}{QD} )}-1-\frac{2\left[1-\left[\frac{\sin⁡(QD)}{QD}\right]^N \right]}{N\left[1-\frac{\sin⁡(QD)}{QD}\right]^2}   \frac{\sin⁡(QD)}{QD}
+    \frac{2}{1-\frac{\sin(QD)}{QD}}-1-\frac{2\left[1-\left[\frac{\sin(QD)}{QD}\right]^N\right]}{N\left[1-\frac{\sin(QD)}{QD}\right]^2}\frac{\sin(QD)}{QD}
 \end{align}
 The formula above is only real for all values of $QD$ for integer values of $N$. For non integer values $N$ a linear interpolation between $[N]$ and $[N]+1$ is taken \cite{Giehm2010}, where $[N]$ is the largest integer smaller or equal to $N$. With $w=N-[N]$ we get
 \begin{align}

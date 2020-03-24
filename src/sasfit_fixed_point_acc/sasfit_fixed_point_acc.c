@@ -24,6 +24,7 @@
 #include <kinsol/kinsol.h>
 // #include <nvector/nvector_openmp.h>
 #include <nvector/nvector_serial.h>
+//#include <kinsol/kinsol.h>
 #include <kinsol/kinsol_spgmr.h>
 #include <kinsol/kinsol_spfgmr.h>
 #include <kinsol/kinsol_spbcgs.h>
@@ -110,18 +111,44 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
 void check_interrupt_fp(sasfit_fp_data *FPd) {
     int interupt_signal;
     Tcl_Interp *interp;
-    char * fpname = Tcl_GetStringFromObj(FPd->fp_obj, 0);
+    int ival;
+
+//    char * fpname = Tcl_GetStringFromObj(FPd->fp_obj, 0);
 
     interp = FPd->interp;
-    if (!GET_TCL(int, &FPd->PrintProgress, "PrintProgress")) {
-                FPd->PrintProgress = 0;
+//    sasfit_out("testing existence of sasfit timer\n");
+    if (FPd->tm == NULL) {
+        FPd->tm = sasfit_timer_create();
+        sasfit_timer_start(FPd->tm);
+        sasfit_out("sasfit timer was not created\n");
     }
-
-    if (!GET_TCL(int, &FPd->interrupt, "interrupt")) {
-                FPd->interrupt = 1;
-    }
-    if (FPd->interrupt == 1) {
-            sasfit_out("interrupting FP solver (%d)\n",FPd->interrupt);
+//    sasfit_out("check_interrupt_fp: time:%lg\tTcl_Array_Name:%s\n",sasfit_timer_measure(FPd->tm),FPd->Tcl_Array_Name);
+    if (sasfit_timer_measure(FPd->tm) > MAXTM4UPDATE) {
+//        sasfit_out("try update\n");
+        Tcl_EvalEx(interp,"update",-1,TCL_EVAL_DIRECT);
+//        sasfit_out("try update seemed to work\n");
+//        sasfit_out("try to read PrintProgress\n");
+        if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,"EMOptions","PrintProgress",0),
+                             &ival) ) {
+            sasfit_err("could not read PrintProgress, will set it to 0\n");
+            FPd->PrintProgress = 0;
+        } else {
+            FPd->PrintProgress = ival;
+//            sasfit_out("FPd->PrintProgress=%d\n",FPd->PrintProgress);
+        }
+//        sasfit_out("reading PrintProgress seemed to work\n");
+//        sasfit_out("try to read Interrupt\n");
+        if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,"EMOptions","Interrupt",0),
+                             &ival) ) {
+            sasfit_err("could not read PrintProgress, will set it to 0\n");
+            FPd->interrupt = 0;
+        } else {
+            FPd->interrupt = ival;
+//            sasfit_out("FPd->interrupt=%d\n",FPd->interrupt);
+        }
+        sasfit_timer_start(FPd->tm);
     }
 }
 
@@ -350,6 +377,8 @@ int fp_addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 // Initialization of memory needed for computation
 int FP_init(sasfit_fp_data *FPd) {
 	FPd->it=0;
+	FPd->tm = sasfit_timer_create();
+    sasfit_timer_start(FPd->tm);
 //   not used AT THE MOMENT
 	return 1;
 }
@@ -526,8 +555,8 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
   int matrixShiftReturnValue = 0;
 
 
-    FPd->failed = 0;
-    FPd->interrupt = 0;
+  FPd->failed = 0;
+
 //	sasfit_out("initialization finished and start loop, algorithm: %d\n",algorithm);
 //    do {
         err=2*FPd->relerror;
@@ -537,7 +566,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 n = 0;
  //               sasfit_out("FPd->it:%d\tFPd->maxsteps:%d\tFPd->interrupt:%d\n",FPd->it,FPd->maxsteps,FPd->interrupt,FPd->failed);
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt_fp(FPd);
+                    check_interrupt_fp(FPd);
                     n++;
                     err = FP_step(FPd);
 //                    sasfit_out("Picard_iteration FPd->it:%d\terr:%lg\n",FPd->it,err);
@@ -556,7 +585,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 xn = (double*)malloc((FPd->Npoints)*sizeof(double));
                 n=0;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
                     n++;
                     err = FP_step(FPd);
@@ -589,7 +618,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     errold=err;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
                     n++;
@@ -653,7 +682,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                  while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(FPd);
+                    check_interrupt_fp(FPd);
                     errold=err;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
                     n++;
@@ -724,7 +753,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     errold=err;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
                     n++;
@@ -796,7 +825,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     errold=err;
                     n++;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
@@ -863,7 +892,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     errold=err;
                     n++;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
@@ -931,7 +960,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     n++;
                     errold=err;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
@@ -1013,7 +1042,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     errold=err;
                     n++;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
@@ -1095,7 +1124,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     errold=err;
                     n++;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
@@ -1177,7 +1206,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     n++;
                     errold=err;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
@@ -1252,7 +1281,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 beta=alpha;
                 gama=alpha;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     n++;
                     errold=err;
                     fp_cp_array_to_array(FPd->out,xn,FPd->Npoints);
@@ -1338,24 +1367,26 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 err = FP_step(FPd);
                 for (j=0; j < FPd->Npoints; j++) {
                     xp1[j] = FPd->out[j];
-                    gn2[j]= gn1[j];
-                    gn1[j] = xp1[j]-xn[i];
+                    gn2[j] = gn1[j];
+                    gn1[j] = xp1[j]-xn[j];
                     xn2[j] = xn1[j];
                     xn1[j] = xn[j];
-                    xn[j] = xp1[j];
+                    xn[j]  = xp1[j];
+                    yn[j]  = xn[j];
                 }
                 err = FP_step(FPd);
                 for (j=0; j < FPd->Npoints; j++) {
                     xp1[j] = FPd->out[j];
-                    gn2[j]= gn1[j];
-                    gn1[j] = xp1[j]-xn[i];
+                    gn2[j] = gn1[j];
+                    gn1[j] = xp1[j]-yn[j];
                     xn2[j] = xn1[j];
                     xn1[j] = xn[j];
-                    xn[j] = xp1[j];
+                    xn[j]  = xp1[j];
+                    yn[j]  = xn[j];
                 }
                 n=2;
                 while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
-//                    check_interrupt(OZd);
+                    check_interrupt_fp(FPd);
                     n++;
                     errold=err;
                     beta = 0;
@@ -1367,10 +1398,14 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                     if (gama==0) {
                         alpha = 1;
                     } else {
-                        // alpha = sqrt(beta/gama);
-                        alpha = GSL_MAX(GSL_MIN(beta/gama,1),0);
+                        if (FPd->KINSetMAA > 0) {
+                            alpha = beta/gama;
+                        } else {
+                            alpha = GSL_SIGN(beta/gama)*sqrt(fabs(beta/gama));
+                        };
+                        alpha = GSL_MAX(GSL_MIN(alpha,(n-1.)/(n+2.0)),-(n-1.)/(n+2.0));
                     }
-                    switch (FPd->KINSetMAA * (alpha >0)) {
+                    switch (abs(FPd->KINSetMAA) * (alpha != 0)) {
                         case 0:
                             for (j=0; j < FPd->Npoints; j++) {
                                 yn[j] = xn[j];
@@ -1393,12 +1428,13 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                     for (j=0; j < FPd->Npoints; j++) {
                         xp1[j] = FPd->out[j];
                         gn2[j] = gn1[j];
-                        gn1[j] = xp1[j]-xn[j];
+                        gn1[j] = xp1[j]-yn[j];
                         xn2[j] = xn1[j];
                         xn1[j] = xn[j];
                         xn[j]  = xp1[j];
                     }
-                    if ((n % 1000)==0 && FPd->PrintProgress == 1)
+ //                   if ((n % 500)==0 && FPd->PrintProgress == 1)
+                    if ((n % 2000)==0 )
                         sasfit_out("iterations: %d, calls of FP_step=%d, err=%g, alpha=%g\n",n,FPd->it,err,alpha);
                     if (err != err) {
                         sasfit_out("detected NAN for precision of FP solution: %g\n",err);
@@ -1615,7 +1651,7 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 			iloop=0;
 			while (FPd->it < FPd->maxsteps && err > FPd->relerror && FPd->interrupt == 0 && FPd->failed==0) {
 				n++;
-//				check_interrupt_fp(FPd);
+				check_interrupt_fp(FPd);
                     switch (FPd->mixstrategy) {
                         case mix_const:
                                     alpha=FPd->mixcoeff;
@@ -1894,7 +1930,7 @@ static int FP_step_kinsol(N_Vector cc, N_Vector fval, void *FPdata) {
     fp_cp_N_Vector_to_array(cc,FPd->out,FPd->Npoints);
     FP_step(FPd);
     fp_cp_array_diff_N_Vector_to_N_Vector(FPd->out,cc,fval,FPd->Npoints);
-//    check_interrupt_fp(FPd);
+    check_interrupt_fp(FPd);
     if (FPd->gNorm != FPd->gNorm) {
 //        for (i=0;i<NP;i++) G[i] = 0;
         return -1;
@@ -1916,11 +1952,12 @@ static int FP_step_kinsolFP(N_Vector cc, N_Vector fval, void *FPd_structure) {
                                    //....in case Kinsol and OZd get 'out of sync' (due to whatever reason)
     Norm=FP_step(FPd);
     fp_cp_array_to_N_Vector(FPd->out,fval,FPd->Npoints);
-//    check_interrupt_fp(FPd);
+    check_interrupt_fp(FPd);
     if (FPd->gNorm != FPd->gNorm) {
         for (i=0;i<FPd->Npoints;i++) FPd->out[i] = 1e-7;
         return -1;
-    } else if (FPd->interrupt != 0){
+    }
+    if (FPd->interrupt != 0){
         return -1;
     } else {
         return 0;
@@ -1932,6 +1969,7 @@ static int FP_step_kinsolFP(N_Vector cc, N_Vector fval, void *FPd_structure) {
 
 //Release of memory used for computation
 int FP_free (sasfit_fp_data *FPd) {
+    sasfit_timer_destroy(&FPd->tm);
     return TCL_OK;
 }
 
@@ -2021,7 +2059,7 @@ int FP_solver (sasfit_fp_data *FPd) {
     if (FPd->PrintProgress) sasfit_out("Needed %d calls to FP_step\n",FPd->it);
 
 //    Tcl_EvalEx(OZd->interp,"set OZ(progressbar) 1",-1,TCL_EVAL_DIRECT);
-//    Tcl_EvalEx(OZd->interp,"update",-1,TCL_EVAL_DIRECT);
+    Tcl_EvalEx(FPd->interp,"update",-1,TCL_EVAL_DIRECT);
 
     return status;
 }

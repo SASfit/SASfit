@@ -33,10 +33,19 @@ particular cases of an ellipsoid are:
 \end{itemize}
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[oblate spheroid ($R_\mathrm{p} < R_\mathrm{e} $)]{\label{fig:oblateSpheroid}\includegraphics[width=0.48\textwidth]{../images/form_factor/Ellipsoid/OblateSpheroid.png}}
-  \subfigure[prolate spheroid ($R_\mathrm{p} > R_\mathrm{e} $)]{\label{fig:prolateSpheroid}\includegraphics[width=0.48\textwidth]{../images/form_factor/Ellipsoid/ProlateSpheroid.png}}
-\end{center}
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/Ellipsoid/OblateSpheroid.png}
+   \caption{oblate spheroid ($R_\mathrm{p} < R_\mathrm{e} $)}
+   \label{fig:oblateSpheroid}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+   \includegraphics[width=1\textwidth]{../images/form_factor/Ellipsoid/ProlateSpheroid.png}
+   \caption{prolate spheroid ($R_\mathrm{p} > R_\mathrm{e} $)}
+   \label{fig:prolateSpheroid}
+\end{subfigure}
 \caption{A spheroid is an ellipsoid having two equal equatorial semi-axes $R_\mathrm{e}$. If the equatorial
 semi-axis are larger than the principal axis $R_\mathrm{p}$ the spheroid becomes oblate (a), if they are smaller
 it becomes prolate (b) and if they are equal the spheroid becomes a perfect sphere}
@@ -147,7 +156,7 @@ ratio between radius of the polar axes $R_\mathrm{p}$ and equatorial axis $R_\ma
 \item[\texttt{R\_equatorial}] length of the equatorial semi-axes $R_\mathrm{e}$
 \item[\texttt{dummy}] not used
 \item[\texttt{dummy}] not used
-\item[\texttt{k}] width parameter of the gamma distribution $(k>1)$. 
+\item[\texttt{k}] width parameter of the gamma distribution $(k>1)$.
 \item[\texttt{eta\_core}] scattering length density of spheroid $\eta_\mathrm{c}$
 \item[\texttt{dummy}] not used
 \item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\mathrm{s}$

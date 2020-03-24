@@ -1,10 +1,26 @@
 \documentclass[12pt,intlimits,fleqn,reqno,twoside,english,a4wide]{amsbook}
+\usepackage{iftex}
+\ifPDFTeX
+    \usepackage[T1]{fontenc}
+    \usepackage{babel}
+    \usepackage{lmodern}
+    \usepackage{eurosym}
+    \usepackage{selinput}
+\else
+   \ifXeTeX
+     \usepackage{fontspec}
+   \else
+     \usepackage{luatextra}
+   \fi
+   \defaultfontfeatures{Ligatures=TeX}
+\fi
 \usepackage{graphicx}
 \usepackage{emlines}
 %\usepackage[nosub]{achemso}
 %\usepackage{cd}
 \usepackage{hyphenat}
-\usepackage{subfigure}
+\usepackage{subcaption}
+%\usepackage{subfigure}
 \usepackage{subeqnarray}
 \usepackage{typearea}
 \usepackage[pdftex]{hyperref}
@@ -91,11 +107,11 @@ experiments or measurements with polarised neutrons. The global fit
 helps to determine fit parameters unambiguously which by analyzing a
 single curve would be otherwise strongly correlated. The program has
 been written to fulfill the needs at the small angle neutron
-scattering facility at PSI (\url{http://kur.web.psi.ch}). The
+scattering facility at PSI (\url{http://www.psi.ch}). The
 numerical routines have been written in C whereas the menu interface
 has been written in tcl/tk and the plotting routine with the
 extension blt. The newest {\tt SASfit} version can be downloaded
-from \url{http://kur.web.psi.ch/sans1/SANSSoft/sasfit.html}.
+from \url{http://github.com/SASfit/SASfit/}.
 \end{abstract}
 \maketitle
 

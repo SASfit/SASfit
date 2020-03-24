@@ -55,6 +55,14 @@
 #define BETA    param->p[15]*M_PI/180.
 #define GAMMA   param->p[16]*M_PI/180.
 #define PSI_DEG param->p[17]
+#define PP   param->p[18]
+#define QQ   param->p[19]
+#define XX param->p[MAXPAR-1]
+#define YY param->p[MAXPAR-2]
+#define ZZ param->p[MAXPAR-3]
+#define QQX param->p[MAXPAR-4]
+#define QQY param->p[MAXPAR-5]
+#define QQZ param->p[MAXPAR-6]
 
 #endif // end of file
 

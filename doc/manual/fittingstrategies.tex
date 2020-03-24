@@ -151,13 +151,14 @@ The correlation coefficient of the fit parameters $a_k$ and $a_l$ are given by
 \begin{align}
 r_{kl} &= \frac{C_{kl}}{\sqrt{C_{kk}C_{ll}}} = \frac{C_{kl}}{\Delta a_k \Delta a_l}
 \end{align}
-Both the non-diagonal elements of the correlation matrix $r_{k>l}$ and the confidence intervals of the fitting parameters $\Delta a_k$ are calculated when the fit converges and displayed in a GUI (fig.\ \ref{fig:FitErrors}(b)) which can be opened via a menu button as shown in fig.\ \ref{fig:FitErrors}(a).
+Both the non-diagonal elements of the correlation matrix $r_{k>l}$ and the confidence intervals of the fitting parameters $\Delta a_k$ are calculated when the fit converges and displayed in a GUI (fig.\ \ref{fig:ErrorGUI}) which can be opened via a menu button as shown in fig.\ \ref{fig:ErrorButton}.
 
 \begin{figure}[htb]
-\begin{center}
-\subfigure[menu button showing the GUI for the confidence intervals and correlation matrix]{\label{fig:ErrorButton}\includegraphics[width=0.47\textwidth]{../images/related_pages/menueConfidenceIntervall.png}}
-\subfigure[GUI displaying the fitting parameters including confidence intervals and correlation matrix]{\label{fig:ErrorGUI}\includegraphics[width=0.47\textwidth]{../images/related_pages/ConfidenceIntervallANDCorrelationMatrix.png}}
-\end{center}
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{menu button showing the GUI for the confidence intervals and correlation matrix \label{fig:ErrorButton} }{\includegraphics[width=0.47\textwidth]{../images/related_pages/menueConfidenceIntervall.png}}
+\hfill
+\subcaptionbox{GUI displaying the fitting parameters including confidence intervals and correlation matrix \label{fig:ErrorGUI} }{\includegraphics[width=0.47\textwidth]{../images/related_pages/ConfidenceIntervallANDCorrelationMatrix.png}}
 \caption{The confidence intervals are calculated at the end of the minimization procedure.}
 \label{fig:FitErrors}
 \end{figure}
