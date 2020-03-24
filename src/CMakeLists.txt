@@ -21,10 +21,10 @@ if("$ENV{MSYSTEM}" MATCHES "MINGW64") # Windows
     endif()
 endif()
 
-if(CMAKE_HOST_APPLE)
-        set(CMAKE_C_COMPILER /usr/bin/gcc)
-        set(CMAKE_CXX_COMPILER /usr/bin/g++)
-endif()
+#if(CMAKE_HOST_APPLE)
+#        set(CMAKE_C_COMPILER /usr/bin/gcc)
+#        set(CMAKE_CXX_COMPILER /usr/bin/g++)
+#endif()
 
 # get our current location and set the distribution directory name
 project(sasfit C)
