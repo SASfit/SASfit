@@ -42,7 +42,7 @@
  * \ingroup sasfit_constants
  * Maximum number of parameter values in sasfit_param
  */
-#define MAXPAR 40
+#define MAXPAR 100
 
 /**
  * \ingroup sasfit_constants

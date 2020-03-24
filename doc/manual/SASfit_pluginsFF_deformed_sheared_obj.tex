@@ -935,6 +935,7 @@ Tait–Bryan angles ($x$-$y$-$z$, $y$-$z$-$x$, $z$-$x$-$y$, $x$-$z$-$y$, $z$-$y$
 \end{array}\right)
 \label{eq:Q:dach}
 \end{align}
+\vspace{5mm}
 
 \subsection{oriented ellipsoid} ~\\
 
@@ -961,7 +962,8 @@ d\phi \, e^{\imath\B{\hat{Q}r}} \nonumber \\
 \label{eq:form:E}
 \end{align}
 
-\begin{figure}[htb] \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_0_0_18m.png}
+\begin{figure}[htb]
+\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_0_0_18m.png}
 \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_90_0_18m.png}   \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_45_45_18m.png}
 \caption{Scattering patterns at 18m detector distance and a wavelength of $\lambda=0.6$nm. The ellipsoids are simulated with radii of $a=30$nm, $b=20$nm, and $c=10$nm. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=45^\circ,\gamma=45^\circ)$ }
 \label{fig:opo_ellipsoidIQ2D}
@@ -996,7 +998,8 @@ e^{\imath\B{\hat{Q}r}} \nonumber \\
 \end{align}
 
 
-\begin{figure}[htb] \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/parallelepiped_0_0_0_18m.png}
+\begin{figure}[htb]
+\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/parallelepiped_0_0_0_18m.png}
 \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/parallelepiped_0_90_0_18m.png}   \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/parallelepiped_0_45_45_18m.png}
 \caption{Scattering patterns at 18m detector distance and a wavelength of $\lambda=0.6$nm. The parallelepipeds are simulated with half edge length of $a=30$nm, $b=20$nm, and $c=10$nm. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=45^\circ,\gamma=45^\circ)$ }
 \label{fig:opo_parallelepipedIQ2D}
@@ -1074,15 +1077,14 @@ e^{\imath\B{\hat{Q}r}} \nonumber \\
 \label{fig:opo_superquadrics}
 \end{figure}
 
-Super-quadrics have both a
-parametric and an implicit representation.
-The parametric representation of the surface is defined by
+Super-quadrics have been widely used in computer graphics \cite{Barr1981}. They have both a
+parametric and an implicit representation. The parametric representation of the surface is defined by
 \begin{align}\label{eq:superquadrics:parametric}
   \left(
     \begin{array}{c}
-      x(a_1,\theta,\phi) \\
-      y(a_2,\theta,\phi) \\
-      z(a_3,\theta,\phi) \\
+      x(\theta,\phi) \\
+      y(\theta,\phi) \\
+      z(\theta,\phi) \\
     \end{array}
   \right)
  &=
@@ -1118,14 +1120,19 @@ As the asymmetric super-quadrics is obtained by a scale transform, which is a sp
 \begin{align}\label{eq:FTsuperquadrics}
   F_\mathrm{SQ}(\B{Q}) &=
 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
-\mathrm{d}x\, \int\limits_{-Y}^{Y} \mathrm{d}y\,  \int\limits_{-Z}^{Z} \mathrm{d}z \,
+\mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,  \int\limits_{-Z(x,y)}^{Z(x,y)} \mathrm{d}z \,
 e^{\imath\B{\hat{Q}r}} \nonumber \\
  &=
-\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
-\mathrm{d}x\, \int\limits_{-Y}^{Y} \mathrm{d}y\,
-e^{\imath\left(\hat{Q}_xx+\hat{Q}_yy\right)} 2Z\operatorname{sinc}(\hat{Q}_z Z)\nonumber \\
-Y &= \left(1-x^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{2}}\\
-Z &= \left(1-\left(x^{\frac{2}{\epsilon_2}}+y^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,   \\
+& \times \int\limits_{-1}^1
+\mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,
+e^{\imath\left(\hat{Q}_xx+\hat{Q}_yy\right)} 2Z(x,y)\operatorname{sinc}(\hat{Q}_z Z(x,y))\nonumber \\
+&= \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \\
+& \times \int\limits_{-1}^1
+\mathrm{d}x\, \int\limits_{-1}^{1} \mathrm{d}s\,
+e^{\imath\left(\hat{Q}_xx+\hat{Q}_yY(x)s\right)} 2Z(x,Y(x)s)\operatorname{sinc}(\hat{Q}_z Z(x,Y(x)s))Y(x)\nonumber \\
+Y(x) &= \left(1-x^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{2}}\\
+Z(x,y) &= \left(1-\left(x^{\frac{2}{\epsilon_2}}+y^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
 \end{align}
 To make use of numerical integration routines for multiple dimensions over hypercubes it might be convenient to perform a variable transformation using $ x(r,\theta,\phi)$ and $ y(r,\theta,\phi)$ given in eq.\ \ref{eq:superquadrics:parametric}. The Jacobi determinant for this substitution is
 \begin{align}\label{eq:detJ_superquadrics}
@@ -1135,13 +1142,13 @@ To make use of numerical integration routines for multiple dimensions over hyper
       \frac{\partial x(r,\theta,0)}{\partial r}      & \frac{\partial y(r,\theta,0)}{\partial r}\\
       \frac{\partial x(r,\theta,0)}{\partial \theta} & \frac{\partial y(r,\theta,0)}{\partial \theta}
     \end{array}
-  \right) = \epsilon_2 r \left(\abs{\cos\theta\sin\theta} \right)^{\frac{\epsilon_2}{2}}
+  \right) = \epsilon_2 r \abs{\cos\theta\sin\theta}^{\epsilon_2-1}
 \end{align}
 so that
 \begin{align}
 \begin{split}
 F_\mathrm{SQ}(\B{Q}) &= 8 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,\int\limits_{0}^1
-\mathrm{d}r\, \int\limits_{0}^{\pi/2} \mathrm{d}\theta\,  \epsilon_2 r \left(\abs{\cos\theta\sin\theta} \right)^{\frac{\epsilon_2}{2}}\\
+\mathrm{d}r\, \int\limits_{0}^{\pi/2} \mathrm{d}\theta\,  \epsilon_2 r \abs{\cos\theta\sin\theta}^{\epsilon_2-1}\\
      &\times \cos\left(\hat{Q}_xx(r,\theta,0)+\hat{Q}_yy(r,\theta,0)\right) Z\operatorname{sinc}(\hat{Q}_z Z)\nonumber \\
 Z &= \left(1-\left(x(r,\theta,0)^{\frac{2}{\epsilon_2}}+y(r,\theta,0)^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
 \end{split}
@@ -1157,7 +1164,7 @@ Z &= \left(1-\left(x(r,\theta,0)^{\frac{2}{\epsilon_2}}+y(r,\theta,0)^{\frac{2}{
 \begin{tabular}{llll}
 %\toprule  \\ %\midrule
 2m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_0_0_2m.png}
-     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_90_0_2m.png}  
+     & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_90_0_2m.png}
      & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_45_45_2m.png}  \\
 6m   & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_0_0_6m.png}
      & \includegraphics[width=0.13\textwidth]{../images/form_factor/supershapes/superquadrics_1_2_0_90_0_6m.png}
@@ -1263,4 +1270,136 @@ F_\mathrm{SEgg}(\B{Q}) &=
    r\right)}{\hat{Q}_z} \mathrm{d}r
 \end{align}
 
-\subsection{oriented supershapes} 
+\newpage
+\subsection{oriented super-shapes} ~\\
+\begin{figure}[htb]
+\begingroup
+\setlength{\tabcolsep}{1pt}
+\def\arraystretch{0.4}%
+\begin{tabular}{ccccccccc}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D5_0_30_20_20_1_1__7_0p38_75_20_20_1_1.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D3_0_1_6_6_1_1__4_0_2_2_2_1_1.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D5_0_1_6_6_1_1__4_0_2_2_2_1_1.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D7p3_0_5_5_5_5_1__4_0_5_5_5_6_2.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShape3D4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90.png} \\
+6m    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_30_20_20_1_1__7_0p38_75_20_20_1_1_6m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5_6m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3_6m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ3_0_1_6_6_1_1__4_0_2_2_2_1_1_6m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_1_6_6_1_1__4_0_2_2_2_1_1_6m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ7p3_0_5_5_5_5_1__4_0_5_5_5_6_2_a1b1c1_6m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma0_6m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90_6m.png}\\
+ 18m   & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_30_20_20_1_1__7_0p38_75_20_20_1_1_18m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ6_0_100_40_40_1_1__8_0p4_200_40_40_1_1__a1b1c1p5_18m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ1p5_0_2_12_12_1_1__4_0_2_2_2_1_1__a3b1c3_18m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ3_0_1_6_6_1_1__4_0_2_2_2_1_1_18m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ5_0_1_6_6_1_1__4_0_2_2_2_1_1_18m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ7p3_0_5_5_5_5_1__4_0_5_5_5_6_2_a1b1c1_18m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma0_18m.png}
+    & \includegraphics[width=0.11\textwidth]{../images/form_factor/supershapes/SuperShapeIQ4_0_2_2_2_1_1__24_0_2_8_8_1_1__a1b1c1_gamma90_18m.png}
+\end{tabular}
+\endgroup
+\caption{Supershapes: The parameters for the scale factors of the shown supereggs are $a_1 = a_2 = a_3 = 4/3$. The values for $\epsilon_2=2$ and $\epsilon_1=0.4, 0.8, 1,2,5$.}
+\label{fig:opo_supershape}
+\end{figure}
+Super-shapes \cite{Gielis2003,Arslan2009,Fougerolle2007} are a further generalization of super-quadrics \cite{Barr1981}.
+The parametric representation in two dimensions reads as \cite{Gielis2003}
+\begin{align}
+r(\theta,\alpha,m,n_1,n_2,n_3,a,b) &= \left(\abs{\frac{\cos\left(\frac{m\left(\theta-\alpha\right)}{4}\right)}{a}}^{n_2}+\abs{\frac{\sin\left(\frac{m\left(\theta-\alpha\right)}{4}\right)}{b}}^{n_3}\right)^{-\frac{1}{n_1}}
+\end{align}
+The generalization to extend the 2D parametric representation into 3D is done by a spherical product and reads as
+\begin{align}\label{eq:supershapes:parametric}
+  \left(
+    \begin{array}{l}
+      x(a_1,\theta,\phi) \\
+      y(a_2,\theta,\phi) \\
+      z(a_3,\theta,\phi) \\
+    \end{array}
+  \right)
+ &=
+ \left(
+    \begin{array}{l}
+     a_1 \; r_1(\theta) \cos(\theta) \; r_2(\phi) \cos(\phi)  \\
+     a_2 \; r_1(\theta) \sin(\theta) \; r_2(\phi) \cos(\phi)  \\
+     a_3 \; r_2(\phi)   \sin(\phi) \\
+    \end{array}
+  \right)
+\end{align}
+with
+\begin{align}
+r_1(\theta) &= r(\theta,\alpha,m,n_1,n_2,n_3,a,b) \\
+r_2(\phi)   &= r(\phi,  \beta, M,N_1,N_2,N_3,A,B)
+\end{align}
+For integer values of the degree of symmetries \cite{Fougerolle2005,Fougerolle2005a,Fougerolle2006,Fougerolle2007} have given 2 implicit representations for the super-shapes.
+\begin{align}\label{eq:SuperShapesImplicit}
+1 \geq&  \frac{x^2+y^2+z^2r_1^2(\theta)}{r_1^2(\theta)r_2^2(\phi)}  \\
+1 \geq&  1-\frac{1}{r_2(\phi)} \sqrt{\frac{x^2+y^2+z^2}{\cos^2(\phi)\left(r_1^2(\theta)-1\right)+1}}
+\end{align}
+The angles $\theta$ and $\phi$ are defined by
+\begin{align}\label{eq:SuperShapesThetaPhi}
+  \begin{cases}
+    \theta & = \arctan\left(\frac{y}{x}\right) \\
+    \phi   & = \arctan\left(\frac{zr_1(\theta)\sin(\theta)}{y}\right) \\
+           & = \arctan\left(\frac{zr_1(\theta)\cos(\theta)}{x}\right)
+  \end{cases}
+\end{align}
+\clearpage
+\begin{figure}[htb]
+{\tiny
+\begin{verbatim}
+rx[theta_, m_, a_, b_, n1_, n2_, n3_] := 2^(-1/n1) (1 - 1/n1 
+     + 1/( n1 (Abs[Cos[(m theta)/4]/a]/(n2 + (1 - n2) Abs[Cos[(m theta)/4]/a]) +
+               Abs[Sin[(m theta)/4]/a]/(n2 + (1 - n2) Abs[Sin[(m theta)/4]/a]))))
+rx[theta_,m_,a_,b_,n1_,n2_,n3_] := Power[Abs[Cos[theta*m/4]/a]^n2+Abs[Sin[theta*m/4]/b]^n3,-1/n1]
+Manipulate[
+Grid[{{
+  Grid[{
+    {PolarPlot[With[{r1 = rx[(\[Theta] - alpha), m, a, b, n1, n2, n3]},r1],{\[Theta], -\[Pi], \[Pi]},
+          Axes -> False, ImageSize -> {200, 200}, PlotLabel -> "superformula I"]},
+    {PolarPlot[With[{r2 = rx[(\[Phi] - beta), sm, sa, sb, sn1, sn2, sn3]}, r2], {\[Phi], -\[Pi]/2, \[Pi]/2},
+          Axes -> False, ImageSize -> {200, 200}, PlotLabel -> "superformula II (-pi/2,pi/2)"]},
+    {PolarPlot[With[{r3 = rx[(\[Phi] - beta), sm, sa, sb, sn1, sn2, sn3]}, r3],{\[Phi], -\[Pi], \[Pi]},
+          Axes -> False, ImageSize -> {200, 200}, PlotLabel -> "superformula II (-pi,pi)"]} }],
+  ParametricPlot3D[With[{r1=rx[(\[Theta]-alpha),m,a,b,n1,n2,n3], r2=rx[(\[Phi]-beta),sm,sa,sb,sn1,sn2,sn3]},
+      {r1 Cos[\[Theta]] r2 Cos[\[Phi]], r1 Sin[\[Theta]] r2 Cos[\[Phi]], r2 Sin[\[Phi]]}],
+      {\[Theta], -Pi, Pi}, {\[Phi], -Pi/2, Pi/2}, Axes -> True, , AxesLabel -> {"x", "y", "z"},
+      BaseStyle -> {FontWeight -> "Bold",FontSize -> 80}, PlotTheme -> "Normal", Ticks -> None,
+      AxesStyle -> Thickness[0.005],Exclusions -> None,ImageSize ->{800,600},MaxRecursion -> ControlActive[1,2],
+      PlotPoints -> ControlActive[220,220], PlotRange -> All, Mesh -> mesh] }}],
+ {{mesh,False,"meshing",ImageSize -> Tiny},{True -> "on",False -> "off"},ControlType -> SetterBar},Delimiter,
+ {{m, 5, "m"}, 1/10, 20, 1, ImageSize -> Tiny}, Delimiter,
+ {{n1, 30, Subscript["n", 1]}, 1/100, 100, 1, ImageSize -> Tiny},
+ {{n2, 20, Subscript["n", 2]}, 0, 100, 1,ImageSize -> Tiny},
+ {{n3, 20, Subscript["n", 3]}, 0, 100, 1, ImageSize -> Tiny}, Delimiter,
+ {{alpha, 0, "alpha"}, 0, 2*Pi, 0.1, ImageSize -> Tiny}, Delimiter,
+ {{a, 1, "a"}, 0.1, 2, ImageSize -> Tiny}, {{b, 1, "b"}, 0.2, 2, ImageSize -> Tiny}, Delimiter,
+ {{sm, 7, "M"}, 1/10, 20, 1, ImageSize -> Tiny}, Delimiter,
+ {{sn1, 75, Subscript["N", 1]}, 1/100, 100, 1, ImageSize -> Tiny},
+ {{sn2, 20, Subscript["N", 2]}, 0, 100, 1, ImageSize -> Tiny},
+ {{sn3, 20, Subscript["N", 3]}, 0, 100, 1, ImageSize -> Tiny}, Delimiter,
+ {{beta, 0.23, "beta"}, 0, 2*Pi, 0.1, ImageSize -> Tiny}, Delimiter,
+ {{sa, 1, "A"}, 0.1, 2, ImageSize -> Tiny}, {{sb, 1, "B"}, 0.2, 2, ImageSize -> Tiny},
+ {{xr, 1, "x scaling"}, 0.1, 10, ImageSize -> Tiny}, {{yr, 1, "y scaling"}, 0.1, 10, ImageSize -> Tiny},
+ {{zr, 1, "z scaling"}, 0.1, 10, ImageSize -> Tiny}, ControlPlacement -> Left, AutorunSequencing -> {2, 4, 6}]
+
+\end{verbatim}
+}
+%\caption{Mathematica code visualizing the shape dependency on the input parameters. The code has been slightly adapted from %\cite{Carpenter2011}:} \label{fig:src_MathematicaSphericalProductSuperShapes}
+%\end{figure}
+%\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/supershapes/MathematicaSphericalProductSuperShapes.png}
+\end{center}
+\caption{Mathematica interface to explore visually "super-shapes" as a function of their input parameters.}
+\label{fig:MathematicaSphericalProductSuperShapes}
+\end{figure}
+
+$$ r^2 \cos (\phi ) \left(\left| \frac{\cos \left(\frac{m(\theta -\alpha )}{4}  \right)}{a}\right|
+   ^{n_2}+\left| \frac{\sin \left(\frac{m(\theta -\alpha )}{4}  \right)}{b}\right|
+   ^{n_3}\right)^{-\frac{2}{n1}} \left(\left| \frac{\cos \left(\frac{M(\phi -\beta)}{4}  \right)}{A}\right| ^{N_2}+\left| \frac{\sin \left(\frac{M(\phi -\beta)}{4}\right)}{B}\right| ^{N_3}\right)^{-\frac{3}{N_1}}
+$$ 
+

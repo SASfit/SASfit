@@ -169,3 +169,69 @@ scalar sasfit_integrate_ctm(scalar int_start,
 
 	return res;
 }
+
+double sasfit_gauss_legendre_2D_cube(double (*f)(double,double,void*),
+                                    void *pam,
+                                    double a,
+                                    double b,
+                                    double c,
+                                    double d,
+                                    const gsl_integration_glfixed_table * tbl)
+{
+    const double * const x = tbl->x;
+    const double * const w = tbl->w;
+    const int n = tbl->n;
+	double A,B,C,D,Ax,Cy,s,t;
+	int i,j, dtbl, m;
+
+	m = (n+1)>>1;
+
+	A = 0.5*(b-a);
+	B = 0.5*(b+a);
+	C = 0.5*(d-c);
+	D = 0.5*(d+c);
+
+	if(n&1) /* n - odd */
+	{
+
+		s = w[0]*w[0]*(*f)(B,D,pam);
+
+		for (j=1,t=0.0;j<m;j++)
+		{
+			Cy = C*x[j];
+			t += w[j]*((*f)(B,D+Cy,pam)+(*f)(B,D-Cy,pam));
+		}
+		s += w[0]*t;
+
+		for (i=1,t=0.0;i<m;i++)
+		{
+			Ax = A*x[i];
+			t += w[i]*((*f)(B+Ax,D,pam)+(*f)(B-Ax,D,pam));
+		}
+		s += w[0]*t;
+
+		for (i=1;i<m;i++)
+		{
+			Ax = A*x[i];
+			for (j=1;j<m;j++)
+			{
+				Cy = C*x[j];
+				s += w[i]*w[j]*( (*f)(B+Ax,D+Cy,pam)+(*f)(Ax+B,D-Cy,pam)+(*f)(B-Ax,D+Cy,pam)+(*f)(B-Ax,D-Cy,pam));
+			}
+		}
+
+	}else{ /* n - even */
+
+		s = 0.0;
+		for (i=0;i<m;i++)
+		{
+			Ax = A*x[i];
+			for (j=0;j<m;j++)
+			{
+				Cy = C*x[j];
+				s += w[i]*w[j]*( (*f)(B+Ax,D+Cy,pam)+(*f)(Ax+B,D-Cy,pam)+(*f)(B-Ax,D+Cy,pam)+(*f)(B-Ax,D-Cy,pam));
+			}
+		}
+	}
+	return C*A*s;
+}
