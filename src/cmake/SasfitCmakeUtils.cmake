@@ -302,13 +302,13 @@ macro(sasfit_update_version)
         if($ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed -> release
             # use the tag name as version string directly
             set(SASFIT_VERSION ${APPVEYOR_REPO_TAG_NAME})
-        else() # building because a regular commit was pushed
-            if(GIT_COMMIT)
-                set(SASFIT_VERSION "${SASFIT_VERSION}-dev${GIT_COMMIT}")
-            endif()
         endif()
         # append the build number to the regular version number for uniqueness
-        set(SASFIT_VERSION "${SASFIT_VERSION}-b$ENV{APPVEYOR_BUILD_NUMBER}")
+        set(SASFIT_VERSION "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
+        # building a regular commit
+        if(GIT_COMMIT AND NOT $ENV{APPVEYOR_REPO_TAG})
+            set(SASFIT_VERSION "${SASFIT_VERSION}-${GIT_COMMIT}")
+        endif()
         # append build number for unique build in appveyor
         execute_process(COMMAND appveyor UpdateBuild -Version "${SASFIT_VERSION}")
     endif()
