@@ -7,6 +7,7 @@ fi
 SYSTEM_NAME="$(uname -s)";
 SYSTEM_ARCH="$(uname -m)";
 
+export CFLAGS="" # make sure it exists, later scripts reference it
 if [ "$SYSTEM_NAME" = "Darwin" ]; then
     SYSTEM_ARCH="x86_64"
     # make sure XQuartz is installed, e.g. 'brew cask install xquartz'
