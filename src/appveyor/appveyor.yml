@@ -55,10 +55,10 @@ test:
     # final SASfit package for users
     - sasfit\src\sasfit_*_*.zip
 
-test_script:
-  - cmd: echo
 #test_script:
-# - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
+#  - cmd: echo
+##test_script:
+## - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
 
 notifications:
   - provider: Email
