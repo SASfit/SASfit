@@ -1,6 +1,11 @@
 # use glob syntax.
 syntax: glob
 
+# general file patterns to ignore
+.DS_Store
+Thumbs.db
+
+# some specific patterns to ignore
 src/_CPack_Packages*
 #src/CPackConfig.cmake
 src/plugins/*/lib/*
