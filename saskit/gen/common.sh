@@ -7,11 +7,19 @@ fi
 SYSTEM_NAME="$(uname -s)";
 SYSTEM_ARCH="$(uname -m)";
 
-export CFLAGS="" # make sure it exists, later scripts reference it
 if [ "$SYSTEM_NAME" = "Darwin" ]; then
     SYSTEM_ARCH="x86_64"
+    # find X11 headers and libs
     # make sure XQuartz is installed, e.g. 'brew cask install xquartz'
-    export CFLAGS="-arch $SYSTEM_ARCH -L/usr/X11/lib -I/usr/X11/include"
+    CFLAGS="-arch $SYSTEM_ARCH"
+    for incdir in /usr/X11/include /opt/local/include; do
+        [ -d "$incdir/X11" ] && CFLAGS="$CFLAGS -I$incdir"
+    done
+    for libdir in /usr/X11/lib /opt/local/lib; do
+        [ -f "$libdir/libX11.a" ] && CFLAGS="$CFLAGS -L$libdir"
+    done
+    # echo "CFLAGS: '$CFLAGS'"
+    export CFLAGS
     # find optionally installed gcc package if not already defined
     if [ ! -f "$CC" ] || [ ! -f "$CXX" ]; then
         CC=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^gcc-(mp-)?[0-9]+' | head -n1))
