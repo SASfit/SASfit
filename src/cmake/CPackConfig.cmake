@@ -21,7 +21,7 @@
 #   Ingo Bressler (ingo.bressler@bam.de)
 
 set(CPACK_CMAKE_GENERATOR "MSYS Makefiles")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "../Readme.txt")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "../Readme.md")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "SASfit is a SAS tool")
 set(CPACK_PACKAGE_EXECUTABLES "sasfit")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "sasfit 0.94.7")
