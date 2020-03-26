@@ -2,7 +2,7 @@ data/test.dat
 doc/manual/sasfit.pdf
 doc/manual/sasfit.bib
 plugins/groups_example.def
-Readme.txt
+Readme.md
 CHANGES.txt
 COPYING.txt
 KNOWN_BUGS.txt
