@@ -2,7 +2,7 @@ version: '{build}'
 
 branches:
   only:
-    - saskit-update
+    - master
 
 init:
   - git config --global core.autocrlf input
@@ -80,7 +80,7 @@ deploy:
     package: SASfit
     publish:  true
     on:
-      branch: saskit-update
+      branch: master
 
     # release tags from master branch on GitHub
   - provider: GitHub
