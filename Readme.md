@@ -37,6 +37,46 @@ Academic papers about SASfit have been published in:
 Building from source
 ====================
 
+Windows
+-------
+
+*(Tested with Windows 10 x64 1809)*
+
+On a fresh system, download and install the latest [MSYS2](https://www.msys2.org) (x86\_64) software distro and building platform for Windows.
+
+The following commands have to be executed in the previously installed MSYS2 shell.
+Ensure software repository mirrors and GIT version control system are up to date:
+
+    pacman -S --needed --noconfirm pacman-mirrors
+    pacman -S --needed --noconfirm git
+
+Update all packages first. Twice, because the MSYS2 window has to be closed in between and opened again, just as the updater in the shell tells you:
+
+    pacman -Syu --noconfirm
+    pacman -Syu --noconfirm
+
+Installing required packages for building SASfit:
+
+    pacman -S --noconfirm gcc cmake make diffutils patch
+
+Get a copy of the latest SASfit source code:
+
+    git clone https://github.com/SASfit/SASfit.git sasfit
+
+Create a build directory:
+
+    % cd sasfit
+    sasfit % mkdir build
+    sasfit % cd build
+
+Configure the source with CMake which builds required packages on the way:
+
+    sasfit/build % cmake ../src
+
+Finally, build SASfit itself which should generate a binary package if it was successful:
+
+    sasfit/build % make
+
 macOS
 -----
 
@@ -52,7 +92,7 @@ To avoid using macOS default gcc (which as clang actually), specify the compiler
     % export CC=/usr/local/bin/gcc-9
     % export CXX=/usr/local/bin/g++-9
 
-Get a copy of the SASfit source code:
+Get a copy of the latest SASfit source code:
 
     % git clone https://github.com/SASfit/SASfit.git sasfit
 
