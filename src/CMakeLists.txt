@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6.2)
+cmake_minimum_required(VERSION 3.0)
 
 # load some very basic settings
 get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)

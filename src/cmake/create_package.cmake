@@ -30,7 +30,7 @@
 # SASFIT_LIST_FILE - full filename (incl. path) to the file which contains
 #                  - the list of files to copy
 
-cmake_minimum_required(VERSION 2.6.2)
+cmake_minimum_required(VERSION 3.0)
 
 include(${SASFIT_ROOT_DIR}/src/cmake/SasfitCmakeUtils.cmake)
 #message("package dir: ${SASFIT_PCKG_DIR}")

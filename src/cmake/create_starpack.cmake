@@ -34,7 +34,7 @@
 # SASFIT_LIST_FILE - full filename (incl. path) to the file which contains
 #                  - the list of files to copy
 
-cmake_minimum_required(VERSION 2.6.2)
+cmake_minimum_required(VERSION 3.0)
 
 set(SASKIT_PATH ${SASFIT_ROOT_DIR}/saskit)
 set(SASKIT_FILE ${SASKIT_PATH}/${SASKIT_FILENAME})
