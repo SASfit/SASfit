@@ -112,4 +112,12 @@ Finally, build SASfit itself which should generate a binary package if it was su
 
     sasfit/build % make
 
+Common helpers
+--------------
 
+Clean the source tree from build products and other temporary files with GIT by running:
+
+    $ git clean -xdf
+
+This command removes files with are set to be ignored by GIT (*-x*), removes files in sub-directories recursively (*-d*) and does not ask questions (*-f*).
+ 
