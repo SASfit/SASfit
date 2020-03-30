@@ -30,46 +30,14 @@
 #   Ingo Bressler (ingo.bressler@bam.de)
 #
 #############################################################################
-# A Cmake module to provide utility functions often used 
-# in sasfit cmake scripts
+# A CMake module to provide utility functions and macros used elsewhere.
 #
 # This module expects to live in <sasfit-dir>/src/cmake
 
 cmake_minimum_required(VERSION 3.0)
-cmake_policy(SET CMP0011 NEW)
-cmake_policy(SET CMP0012 NEW)
 
+# replaced by file(GET_RUNTIME_DEPENDENCIES)
 include(GetPrerequisites)
-
-set(CMAKE_LEGACY_CYGWIN_WIN32 1)
-# fix processor architecture on Windows with MSYS2/MinGW64
-if(MINGW)
-    if(NOT WIN32)
-        set(WIN32 1)
-    endif()
-    if(NOT CMAKE_SYSTEM_PROCESSOR OR CMAKE_SYSTEM_PROCESSOR MATCHES "unknown")
-        set(CMAKE_SYSTEM_PROCESSOR $ENV{MSYSTEM_CARCH})
-        if(NOT CMAKE_SYSTEM_PROCESSOR)
-            set(CMAKE_SYSTEM_PROCESSOR $ENV{MSYS2_ARCH})
-        endif()
-        set(CMAKE_HOST_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR})
-    endif()
-endif()
-if(0) # some debug info, in case ...
-	message("WIN32, MINGW: ${WIN32}, ${MINGW}")
-	message("CMAKE_GENERATOR: '${CMAKE_GENERATOR}'")
-	message("CMAKE_SYSTEM_NAME: '${CMAKE_SYSTEM_NAME}' '${CMAKE_SYSTEM}'")
-	message("CMAKE_HOST_APPLE:   ${CMAKE_HOST_APPLE}")
-	message("CMAKE_SYSTEM_PROCESSOR: '${CMAKE_SYSTEM_PROCESSOR}'")
-    message("CMAKE_HOST_SYSTEM_PROCESSOR: '${CMAKE_HOST_SYSTEM_PROCESSOR}'")
-	message("CMAKE_EXECUTABLE_SUFFIX: '${CMAKE_EXECUTABLE_SUFFIX}'")
-	message("CMAKE_INSTALL_PREFIX: '${CMAKE_INSTALL_PREFIX}'")
-    message("CMAKE_SHARED_LIBRARY_SUFFIX: '${CMAKE_SHARED_LIBRARY_SUFFIX}'")
-	message("CMAKE_STATIC_LIBRARY_SUFFIX: '${CMAKE_STATIC_LIBRARY_SUFFIX}'")
-	message("CMAKE_SHARED_MODULE_SUFFIX: '${CMAKE_SHARED_MODULE_SUFFIX}'")
-	message("CMAKE_EXTRA_LINK_EXTENSIONS: '${CMAKE_EXTRA_LINK_EXTENSIONS}'")
-	message("CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES: '${CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES}'")
-endif()
 
 # check for target architecture 64bit?
 set(SYSTEM_IS_64 FALSE)
@@ -81,7 +49,7 @@ endif()
 
 # set system platform name to a user friendly text
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" PLATFORM)
-if(MINGW AND PLATFORM MATCHES "^mingw") # typically 'mingw64_nt-6.3-9600'
+if(WIN32)
     set(PLATFORM "Windows")
 endif()
 if(CMAKE_HOST_APPLE)
@@ -98,6 +66,38 @@ set(colend  "${ESC}[m")
 set(white   "${ESC}[37m")
 set(bold    "${ESC}[1m")
 set(green   "${ESC}[32m")
+
+# determine sasfit-root directory
+if(NOT DEFINED SASFIT_ROOT_DIR)
+	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}/../.." ABSOLUTE)
+endif()
+set(LIBRARY_OUTPUT_PATH ${SASFIT_ROOT_DIR}/lib)
+
+macro(dbg_cmake_vars)
+    # some debug info, in case ...
+    message(STATUS "ENV{MSYSTEM}: '$ENV{MSYSTEM}'")
+    cmake_print_variables(WIN32 MINGW MSYS UNIX)
+    cmake_print_variables(CMAKE_HOST_WIN32)
+    cmake_print_variables(CMAKE_SYSTEM_NAME)
+    cmake_print_variables(CMAKE_SYSTEM)
+    cmake_print_variables(PLATFORM)
+    cmake_print_variables(SYSTEM_IS_64)
+    cmake_print_variables(CMAKE_GENERATOR)
+    cmake_print_variables(CMAKE_HOST_APPLE)
+    cmake_print_variables(CMAKE_SYSTEM_PROCESSOR)
+    cmake_print_variables(CMAKE_HOST_SYSTEM_PROCESSOR)
+    cmake_print_variables(CMAKE_EXECUTABLE_SUFFIX)
+    cmake_print_variables(CMAKE_INSTALL_PREFIX)
+    cmake_print_variables(CMAKE_SHARED_LIBRARY_SUFFIX)
+    cmake_print_variables(CMAKE_STATIC_LIBRARY_SUFFIX)
+    cmake_print_variables(CMAKE_SHARED_MODULE_SUFFIX)
+    cmake_print_variables(CMAKE_EXTRA_LINK_EXTENSIONS)
+    cmake_print_variables(CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES)
+    cmake_print_variables(CMAKE_C_COMPILER_LAUNCHER)
+    message("ENV:")
+    execute_process(COMMAND "env" COMMAND "sort")
+endmacro()
 
 # Prints out all optional arguments conveniently formatted one per line
 function(list_paths channel description)
@@ -146,12 +146,6 @@ macro(replace_str_in_file FILENAME PATTERN_STR REPLACE_STR)
 		FILE_BODY_NEW "${FILE_BODY}")
 	file(WRITE "${FILENAME}" "${FILE_BODY_NEW}")
 endmacro(replace_str_in_file)
-
-# determine sasfit-root directory
-if(NOT DEFINED SASFIT_ROOT_DIR)
-	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
-	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}/.." ABSOLUTE)
-endif(NOT DEFINED SASFIT_ROOT_DIR)
 
 # copy shared libs to a target dir (where sasfit tcl routines will find them)
 # SHARED_TARGET: name of the cmake target whose libraries should be copied
@@ -504,7 +498,7 @@ function(run_configure CURRENT_DIR CONFIG_OPTIONS)
     # set general package install location
     list(APPEND CONFIG_OPTIONS --prefix=${SOURCE_DIR})
     # run configure script
-    message(STATUS "Running ${PCKG_NAME} configure with options:\n"
+    message(STATUS "Running ${PCKG_NAME} configure in '${WORK_DIR}' with options:\n"
                    "   '${CONFIG_OPTIONS}'")
     execute_process(COMMAND sh configure ${CONFIG_OPTIONS}
                     WORKING_DIRECTORY ${WORK_DIR})
