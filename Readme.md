@@ -57,7 +57,7 @@ Update all packages first. Twice, because the MSYS2 window has to be closed in b
 
 Installing required packages for building SASfit:
 
-    pacman -S --noconfirm gcc cmake make diffutils patch
+    pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake
 
 Get a copy of the latest SASfit source code:
 
@@ -69,9 +69,11 @@ Create a build directory:
     sasfit % mkdir build
     sasfit % cd build
 
+Close the terminal window and open the one named *MSYS2 MinGW 64-bit* in the Windows Start Menu. It should have the commands *gcc* and *cmake* in PATH.
+
 Configure the source with CMake which builds required packages on the way:
 
-    sasfit/build % cmake ../src
+    sasfit/build % cmake -G "MSYS Makefiles" ../src
 
 Finally, build SASfit itself which should generate a binary package if it was successful:
 
