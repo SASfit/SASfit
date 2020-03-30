@@ -876,69 +876,90 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
         return()
     endif()
     # init with linux settings
-    set(EXCLUDE_SYSTEM FALSE)
-    set(RECURSIVE FALSE)
-    if(WIN32)
-        set(EXCLUDE_SYSTEM TRUE)
-    elseif(UNIX AND APPLE) # osx
-        # get libx11 only and its dependencies
-        set(EXCLUDE_SYSTEM TRUE)
-        set(RECURSIVE TRUE)
-    endif()
+#    set(EXCLUDE_SYSTEM FALSE)
+#    set(RECURSIVE FALSE)
+#    if(WIN32)
+#        set(EXCLUDE_SYSTEM TRUE)
+#    elseif(UNIX AND APPLE) # osx
+#        # get libx11 only and its dependencies
+#        set(EXCLUDE_SYSTEM TRUE)
+#        set(RECURSIVE TRUE)
+#    endif()
     message(STATUS "Searching dependencies of '${SASKIT_FILE}'")
-    if(FALSE) # for debugging
-        message("EXCLUDE_SYSTEM: ${EXCLUDE_SYSTEM}")
-        message("RECURSIVE:      ${RECURSIVE}")
-    endif()
-    #get_prerequisites2(${SASKIT_FILE} PREREQ ${EXCLUDE_SYSTEM} ${RECURSIVE} "" "")
-    file(GET_RUNTIME_DEPENDENCIES
-         RESOLVED_DEPENDENCIES_VAR resolved
-         UNRESOLVED_DEPENDENCIES_VAR unresolved
-         CONFLICTING_DEPENDENCIES_PREFIX conflict
-         EXECUTABLES ${SASKIT_FILE}
-         PRE_EXCLUDE_REGEXES "^api-ms-win-")
-    cmake_print_variables(resolved)
-    cmake_print_variables(unresolved)
-    cmake_print_variables(conflict)
+    execute_process(COMMAND ldd "${SASKIT_FILE}"
+                    COMMAND awk  '!/[\\/][wW][iI][nN][dD][oO][wW][sS][\\/]|[\\?]+/ {print $3}'
+                    OUTPUT_VARIABLE ldd_stdout
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    cmake_print_variables(ldd_stdout)
+#    file(GET_RUNTIME_DEPENDENCIES
+#         RESOLVED_DEPENDENCIES_VAR resolved
+#         UNRESOLVED_DEPENDENCIES_VAR unresolved
+#         CONFLICTING_DEPENDENCIES_PREFIX conflict
+#         EXECUTABLES ${SASKIT_FILE}
+#         PRE_EXCLUDE_REGEXES "^api-ms-win-"
+ #        POST_EXCLUDE_REGEXES "[wW][iI][nN][dD][oO][wW][sS][/\\]system32"
+#    )
+#    cmake_print_variables(resolved)
+#    cmake_print_variables(unresolved)
+#    cmake_print_variables(conflict)
+#    cmake_print_variables(CMAKE_GET_RUNTIME_DEPENDENCIES_TOOL)
 
 #    message("PREREQ: ${PREREQ}") # for debugging
-    if(UNIX AND NOT APPLE) # linux
+#    if(UNIX AND NOT APPLE) # linux
         # avoid modifying LD_LIBRARY_PATH,
         # using dyn.lib.loader in sasfit.sh instead
-        list(APPEND PREREQ
-            "/lib/*-linux-gnu/ld-[0-9].[0-9][0-9].so"
+#        list(APPEND PREREQ
+#            "/lib/*-linux-gnu/ld-[0-9].[0-9][0-9].so"
 #            "/lib/*-linux-gnu/libpthread.so.[0-9]"
-            "/usr/lib/*-linux-gnu/libXrender.so.[0-9]"
-            "/usr/lib/*-linux-gnu/libXfixes.so.[0-9]"
-            )
-    elseif(WIN32)
-        find_library(pthread_LIB winpthread-1)
-#        message("found pthread'? '${pthread_LIB}'")
-        list(APPEND PREREQ "${pthread_LIB}")
-    endif()
-    message(STATUS "dependent libs:")
-    foreach(fn ${unresolved})
-        unset(absfn)
-        if(NOT EXISTS "${fn}")
-            find_file(absfn "${fn}" HINTS ENV PATH)
-            message(STATUS "Searching for '${fn}' -> '${absfn}'")
-            if(NOT absfn)
-                message(WARNING "not found")
-                file(GLOB absfn "${fn}")
-                continue()
-			elseif(absfn MATCHES ".*[Ww]indows.[Ss]ystem32.*")
-                message(STATUS "Provided by System32 folder, skipped!")
-                unset(absfn CACHE)
-                continue()
-            endif()
+#            "/usr/lib/*-linux-gnu/libXrender.so.[0-9]"
+#            "/usr/lib/*-linux-gnu/libXfixes.so.[0-9]"
+#            )
+#    elseif(WIN32)
+#        find_library(pthread_LIB winpthread-1)
+##        message("found pthread'? '${pthread_LIB}'")
+#        list(APPEND PREREQ "${pthread_LIB}")
+#    endif()
+    if (WIN32)
+        # find cygpath tool
+        find_program(cygpath name cygpath HINTS ENV PATH)
+        if(NOT EXISTS ${cygpath})
+            message(WARNING "Cygpath tool could not be found!")
         else()
-            set(absfn "${fn}")
+            message(STATUS "Using cygpath: '${cygpath}'.")
         endif()
+    endif()
+
+    message(STATUS "dependent libs:")
+    separate_arguments(libs UNIX_COMMAND ${ldd_stdout})
+    foreach(fn ${libs})
+#        unset(absfn)
+        message(STATUS "Resolving ${fn}:")
+        if(cygpath)
+            execute_process(COMMAND ${cygpath} -m "${fn}"
+                            OUTPUT_VARIABLE absfn
+                            OUTPUT_STRIP_TRAILING_WHITESPACE)
+            message(STATUS "Located at '${absfn}'.")
+        endif()
+#        if(NOT EXISTS "${fn}")
+#            find_file(absfn "${fn}" HINTS ENV PATH)
+#            message(STATUS "    absolute in '${absfn}'.")
+#            if(NOT absfn)
+#                message(WARNING "not found")
+#                file(GLOB absfn "${fn}")
+#                continue()
+#		elseif(absfn MATCHES ".*[Ww]indows.[Ss]ystem32.*")
+#               message(STATUS "Provided by System32 folder, skipped!")
+#               unset(absfn CACHE)
+#               continue()
+#          endif()
+#        else()
+#            set(absfn "${fn}")
+#        endif()
         if(EXISTS "${absfn}")
+            message(STATUS "    Exists, adding to binary files list.")
             list(APPEND SASFIT_BIN_FILE_LIST "${absfn}")
-            #message(STATUS "    ${absfn}")
         else()
-            message(WARNING "Dependency not found: '${fn}'")
+            message(WARNING "Dependency not found: '${fn}'!")
         endif()
         unset(absfn CACHE)
     endforeach()
