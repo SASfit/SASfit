@@ -12,8 +12,10 @@ then
     export PATH="/c/$MSYS2_DIR/$MSYSTEM/bin:/c/$MSYS2_DIR/opt/bin:/c/$MSYS2_DIR/usr/local/bin:/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/bin:$PATH"
     echo "PATH=$PATH"
     echo "CMD: '$0' argv: '$@'"
+    ls -la
     pid=$$
     /bin/ps -p $pid
+    echo "test"
     ps -p $pid
     which ps
     which cygpath
