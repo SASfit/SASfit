@@ -26,7 +26,8 @@ environment:
       BIT: 64
 
 install:
-  - src\appveyor\install.bat
+  - sh src/appveyor/install.sh
+#  - src\appveyor\install.bat
 
 before_build:
   - sh src/appveyor/before_build.sh
