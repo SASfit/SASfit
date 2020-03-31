@@ -12,12 +12,13 @@ then
     export PATH="/c/$MSYS2_DIR/$MSYSTEM/bin:/c/$MSYS2_DIR/opt/bin:/c/$MSYS2_DIR/usr/local/bin:/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/bin:$PATH"
     echo "PATH=$PATH"
     echo "CMD: '$0' argv: '$@'"
-    shell="$(/bin/ps -p $$ | awk "/$$/ {print \$NF}")"
-    echo $shell
-    cygpath -w $shell
-    echo "test: '$(which pacman)'"
-    ls -la /usr/bin/pacman 2>&1
-    ls -la /c/msys64/usr/bin/pacman 2>&1
+    pid=$$
+    /bin/ps -p $pid
+    eval "/bin/ps -p $pid | awk '/$pid/ {print \$NF}'"
+    cygpath -w /usr/bin/sh
+    ls -la /bin/ 2>&1
+    ls -la /usr/bin/ 2>&1
+    ls -la /c/msys64/usr/bin 2>&1
 exit 0
     sh -lc "pacman"
 
