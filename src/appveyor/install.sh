@@ -8,9 +8,9 @@ env
 
 if [ "$COMPILER" = msys2 ];
 then
-    export PATH="/$MSYSTEM/bin:/usr/bin:$PATH"
+    export PATH="/$MSYSTEM/bin:/opt/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
     echo "PATH=$PATH"
-    cd / && pwd
+    echo "test: '$(which pacman)'"
 
     # Ensure pacman mirrors and GIT are up to date:
     pacman -S --needed --noconfirm pacman-mirrors
