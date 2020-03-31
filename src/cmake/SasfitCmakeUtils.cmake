@@ -53,6 +53,7 @@ if(WIN32)
     set(PLATFORM "Windows")
 endif()
 if(CMAKE_HOST_APPLE)
+    set(MACOS TRUE)
     set(PLATFORM "macos")
 endif()
 if(SYSTEM_IS_64)
@@ -77,7 +78,7 @@ set(LIBRARY_OUTPUT_PATH ${SASFIT_ROOT_DIR}/lib)
 macro(dbg_cmake_vars)
     # some debug info, in case ...
     message(STATUS "ENV{MSYSTEM}: '$ENV{MSYSTEM}'")
-    cmake_print_variables(WIN32 MINGW MSYS UNIX)
+    cmake_print_variables(WIN32 MINGW MSYS UNIX MACOS)
     cmake_print_variables(CMAKE_HOST_WIN32)
     cmake_print_variables(CMAKE_SYSTEM_NAME)
     cmake_print_variables(CMAKE_SYSTEM)
@@ -869,42 +870,36 @@ function(get_prerequisites2 target prerequisites_var exclude_system recurse exep
   set(${prerequisites_var} ${${prerequisites_var}} PARENT_SCOPE)
 endfunction()
 
-function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
-    set(SASKIT_FILE ${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME})
-    if(NOT EXISTS "${SASKIT_FILE}")
-        message(STATUS "saskit '${SASKIT_FILE}' does not exist, not checking dependencies.")
+# Gets the path to a binary library and returns a list of libraries it depends on from non-standard locations.
+# Checks dependencies of found files recursively.
+function(get_dependent_libs out_list filename)
+    if(NOT EXISTS "${filename}")
+        message(STATUS "Library '${filename}' does not exist, not checking dependencies.")
         return()
     endif()
-    # init with linux settings
-#    set(EXCLUDE_SYSTEM FALSE)
-#    set(RECURSIVE FALSE)
-#    if(WIN32)
-#        set(EXCLUDE_SYSTEM TRUE)
-#    elseif(UNIX AND APPLE) # osx
-#        # get libx11 only and its dependencies
-#        set(EXCLUDE_SYSTEM TRUE)
-#        set(RECURSIVE TRUE)
-#    endif()
-    message(STATUS "Searching dependencies of '${SASKIT_FILE}'")
-    execute_process(COMMAND ldd "${SASKIT_FILE}"
-                    COMMAND awk  "!/[\\/][wW][iI][nN][dD][oO][wW][sS][\\/]|[\\?]+/ {print $3}"
-                    OUTPUT_VARIABLE ldd_stdout
-                    OUTPUT_STRIP_TRAILING_WHITESPACE)
-    cmake_print_variables(ldd_stdout)
-#    file(GET_RUNTIME_DEPENDENCIES
-#         RESOLVED_DEPENDENCIES_VAR resolved
-#         UNRESOLVED_DEPENDENCIES_VAR unresolved
-#         CONFLICTING_DEPENDENCIES_PREFIX conflict
-#         EXECUTABLES ${SASKIT_FILE}
-#         PRE_EXCLUDE_REGEXES "^api-ms-win-"
- #        POST_EXCLUDE_REGEXES "[wW][iI][nN][dD][oO][wW][sS][/\\]system32"
-#    )
-#    cmake_print_variables(resolved)
-#    cmake_print_variables(unresolved)
-#    cmake_print_variables(conflict)
-#    cmake_print_variables(CMAKE_GET_RUNTIME_DEPENDENCIES_TOOL)
-
-#    message("PREREQ: ${PREREQ}") # for debugging
+    message(STATUS "Searching dependencies of '${filename}':")
+    if(WIN32)
+        # new CMake command file(GET_RUNTIME_DEPENDENCIES) does not identify libwinpthread* as dependency
+        execute_process(COMMAND ldd "${filename}"
+                        COMMAND awk "!/[\\/][wW][iI][nN][dD][oO][wW][sS][\\/]|[\\?]+/ {print $3}"
+                        OUTPUT_VARIABLE dep_stdout
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        # find cygpath tool
+        find_program(cygpath name cygpath HINTS ENV PATH)
+        if(NOT EXISTS ${cygpath})
+            message(WARNING "Cygpath tool could not be found!")
+        else()
+            message(STATUS "Using cygpath: '${cygpath}'.")
+        endif()
+    elseif(MACOS)
+        execute_process(COMMAND otool -L "${filename}"
+                        COMMAND awk -F "(" "/^[[:space:]]/ { print $1 }"
+                        COMMAND grep -v "^[[:space:]]\\+/System/Library"
+                        COMMAND grep -v "^[[:space:]]\\+/usr/lib"
+                        OUTPUT_VARIABLE dep_stdout
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    endif()
+    cmake_print_variables(dep_stdout)
 #    if(UNIX AND NOT APPLE) # linux
         # avoid modifying LD_LIBRARY_PATH,
         # using dyn.lib.loader in sasfit.sh instead
@@ -914,57 +909,49 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
 #            "/usr/lib/*-linux-gnu/libXrender.so.[0-9]"
 #            "/usr/lib/*-linux-gnu/libXfixes.so.[0-9]"
 #            )
-#    elseif(WIN32)
-#        find_library(pthread_LIB winpthread-1)
-##        message("found pthread'? '${pthread_LIB}'")
-#        list(APPEND PREREQ "${pthread_LIB}")
 #    endif()
-    if (WIN32)
-        # find cygpath tool
-        find_program(cygpath name cygpath HINTS ENV PATH)
-        if(NOT EXISTS ${cygpath})
-            message(WARNING "Cygpath tool could not be found!")
-        else()
-            message(STATUS "Using cygpath: '${cygpath}'.")
-        endif()
-    endif()
 
-    message(STATUS "dependent libs:")
-    separate_arguments(libs UNIX_COMMAND ${ldd_stdout})
+    separate_arguments(libs UNIX_COMMAND ${dep_stdout})
     foreach(fn ${libs})
-#        unset(absfn)
-        message(STATUS "Resolving ${fn}:")
+        if(${fn} STREQUAL ${filename})
+            continue() # skip same file investigating right here
+        endif()
+        message(STATUS "  Resolving ${fn}:")
+        set(absfn "${fn}")
         if(cygpath)
             execute_process(COMMAND ${cygpath} -m "${fn}"
                             OUTPUT_VARIABLE absfn
                             OUTPUT_STRIP_TRAILING_WHITESPACE)
-            message(STATUS "Located at '${absfn}'.")
+            message(STATUS "    (Located at '${absfn}'.)")
         endif()
-#        if(NOT EXISTS "${fn}")
-#            find_file(absfn "${fn}" HINTS ENV PATH)
-#            message(STATUS "    absolute in '${absfn}'.")
-#            if(NOT absfn)
-#                message(WARNING "not found")
-#                file(GLOB absfn "${fn}")
-#                continue()
-#		elseif(absfn MATCHES ".*[Ww]indows.[Ss]ystem32.*")
-#               message(STATUS "Provided by System32 folder, skipped!")
-#               unset(absfn CACHE)
-#               continue()
-#          endif()
-#        else()
-#            set(absfn "${fn}")
-#        endif()
         if(EXISTS "${absfn}")
-            message(STATUS "    Exists, adding to binary files list.")
-            list(APPEND SASFIT_BIN_FILE_LIST "${absfn}")
+            list(FIND ${out_list} "${absfn}" found_idx)
+            if(found_idx LESS 0) # not found in list
+                message(STATUS "    Exists, adding to binary files list.")
+                list(APPEND ${out_list} "${absfn}")
+                message(STATUS "    Checking dependencies of just added library.")
+                get_dependent_libs(${out_list} ${absfn})
+            else()
+                message(STATUS "    Already in list, skipped.")
+            endif()
         else()
             message(WARNING "Dependency not found: '${fn}'!")
         endif()
         unset(absfn CACHE)
     endforeach()
+    set(${out_list} ${${out_list}} PARENT_SCOPE)
+endfunction()
+
+function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
+    set(SASKIT_FILE ${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME})
+    if(NOT EXISTS "${SASKIT_FILE}")
+        message(STATUS "saskit '${SASKIT_FILE}' does not exist, not checking dependencies.")
+        return()
+    endif()
+    get_dependent_libs(SASFIT_BIN_FILE_LIST ${SASKIT_FILE})
+
     list_paths(STATUS "Files included in binary package:" ${SASFIT_BIN_FILE_LIST})
     set(SASFIT_BIN_FILE_LIST ${SASFIT_BIN_FILE_LIST} PARENT_SCOPE)
 endfunction()
 
-# vim: set ts=4 sw=4 sts=4 tw=0:
+# vim: set ts=4 sw=4 sts=4 tw=0 et:
