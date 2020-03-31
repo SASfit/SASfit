@@ -11,7 +11,7 @@ project(sasfit C)
 # load custom modules for some automation
 include(SasfitCmakeUtils)
 include(SasfitSourceFiles)
-#dbg_cmake_vars()
+dbg_cmake_vars()
 
 # updates the version number in some files
 set(SASFIT_VERSION "0.94.12")
