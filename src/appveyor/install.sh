@@ -10,13 +10,14 @@ if [ "$COMPILER" = msys2 ];
 then
     set -x
     export PATH="/c/$MSYS2_DIR/$MSYSTEM/bin:/c/$MSYS2_DIR/opt/bin:/c/$MSYS2_DIR/usr/local/bin:/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/bin:$PATH"
-    echo "Showing PATH:"
     echo "PATH=$PATH"
     echo "CMD: '$0' argv: '$@'"
     echo "shell: '$(/bin/ps -p $$)'"
     echo "test: '$(which pacman)'"
     ls -la /usr/bin/pacman
+    ls -la /c/msys64/usr/bin/pacman
     which sh
+exit 0
     sh -lc "pacman"
 
     # Ensure pacman mirrors and GIT are up to date:
