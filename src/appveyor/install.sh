@@ -9,7 +9,7 @@ env
 if [ "$COMPILER" = msys2 ];
 then
     set -x
-    export PATH="/$MSYSTEM/bin:/opt/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+    export PATH="/c/$MSYS2_DIR/$MSYSTEM/bin:/c/$MSYS2_DIR/opt/bin:/c/$MSYS2_DIR/usr/local/bin:/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/bin:$PATH"
     echo "Showing PATH:"
     echo "PATH=$PATH"
     echo "CMD: '$0' argv: '$@'"
