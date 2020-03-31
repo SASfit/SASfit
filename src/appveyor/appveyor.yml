@@ -9,6 +9,9 @@ init:
 
 clone_depth: 1
 
+image:
+  - Visual Studio 2019
+
 environment:
   BT_API:
     secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
