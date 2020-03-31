@@ -14,6 +14,9 @@ then
     echo "CMD: '$0' argv: '$@'"
     pid=$$
     /bin/ps -p $pid
+    ps -p $pid
+    which ps
+    which cygpath
     eval "/bin/ps -p $pid | awk '/$pid/ {print \$NF}'"
     cygpath -w /usr/bin/sh
     ls -la /bin/ 2>&1
