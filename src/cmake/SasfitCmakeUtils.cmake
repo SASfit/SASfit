@@ -887,7 +887,7 @@ function(get_saskit_dependencies SASFIT_ROOT_DIR SASKIT_FILENAME)
 #    endif()
     message(STATUS "Searching dependencies of '${SASKIT_FILE}'")
     execute_process(COMMAND ldd "${SASKIT_FILE}"
-                    COMMAND awk  '!/[\\/][wW][iI][nN][dD][oO][wW][sS][\\/]|[\\?]+/ {print $3}'
+                    COMMAND awk  "!/[\\/][wW][iI][nN][dD][oO][wW][sS][\\/]|[\\?]+/ {print $3}"
                     OUTPUT_VARIABLE ldd_stdout
                     OUTPUT_STRIP_TRAILING_WHITESPACE)
     cmake_print_variables(ldd_stdout)
