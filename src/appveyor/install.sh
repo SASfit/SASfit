@@ -7,10 +7,10 @@ echo
 env
 
 if [ "$COMPILER" = msys2 ];
-then
+then # on Windows
     set -x
-#    export PATH="/c/$MSYS2_DIR/$MSYSTEM/bin:/c/$MSYS2_DIR/opt/bin:/c/$MSYS2_DIR/usr/local/bin:/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/bin:$PATH"
-#    echo "PATH=$PATH"
+    ROOT_DIR=/c/$MSYS2_DIR
+    export PATH="$ROOT_DIR/$MSYSTEM/bin:$ROOT_DIR/usr/bin:$ROOT_DIR/bin"
     echo "CMD: '$0' argv: '$@'"
     ls -la
     ls /c/$MSYS2_DIR/
@@ -22,9 +22,9 @@ then
     which cygpath
     eval "/bin/ps -p $pid | awk '/$pid/ {print \$NF}'"
     cygpath -w /usr/bin/sh
-    ls -la /bin/ 2>&1
-    ls -la /usr/bin/ 2>&1
-    ls -la /c/msys64/usr/bin 2>&1
+    ls -la /bin/
+    ls -la /usr/bin/
+    ls -la /c/msys64/usr/bin
 exit 0
     sh -lc "pacman"
 
