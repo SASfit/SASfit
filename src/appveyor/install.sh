@@ -1,5 +1,17 @@
 #!/bin/sh
 
+# set msys2 dir as specified here:
+# https://www.appveyor.com/docs/windows-images-software/#mingw-msys-cygwin
+ROOT_DIR="/c/$MSYS2_DIR"
+
+if [ -z "$1" ]; then # no script argument given
+    shell="$ROOT_DIR/usr/bin/sh"
+    ls -la "$shell"
+    # run this script again from MSYS2 environment
+    $shell "$0" pass
+    exit 0
+fi
+
 echo
 echo "## Installing build tools ..."
 echo
@@ -9,8 +21,9 @@ env
 if [ "$COMPILER" = msys2 ];
 then # on Windows
     set -x
-    ROOT_DIR=/c/$MSYS2_DIR
-    export PATH="$ROOT_DIR/$MSYSTEM/bin:$ROOT_DIR/usr/bin:$ROOT_DIR/bin"
+#    export PATH="/c/$MSYS2_DIR/$MSYSTEM/bin:/c/$MSYS2_DIR/opt/bin:/c/$MSYS2_DIR/usr/local/bin:/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/bin:$PATH"
+#    ROOT_DIR=/c/$MSYS2_DIR
+#    export PATH="$ROOT_DIR/$MSYSTEM/bin:$ROOT_DIR/usr/bin:$ROOT_DIR/bin"
     echo "CMD: '$0' argv: '$@'"
     ls -la
     ls /c/$MSYS2_DIR/
