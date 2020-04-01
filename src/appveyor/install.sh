@@ -5,8 +5,10 @@
 ROOT_DIR="/c/$MSYS2_DIR"
 
 if [ -z "$1" ]; then # no script argument given
+    set -x
     shell="$ROOT_DIR/usr/bin/sh"
     ls -la "$shell"
+    ls -la "$0"
     # run this script again from MSYS2 environment
     $shell "$0" pass
     exit 0
