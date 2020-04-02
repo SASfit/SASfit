@@ -1,16 +1,12 @@
 @echo off
 @echo.
 
-cd %APPVEYOR_BUILD_FOLDER%
-
 echo Compiler: %COMPILER%
 echo Architecture: %MSYS2_ARCH%
 echo Platform: %PLATFORM%
 echo MSYS2 directory: %MSYS2_DIR%
 echo MSYS2 system: %MSYSTEM%
 echo Bits: %BIT%
-
-IF NOT %COMPILER%==msys2 exit
 
 @echo.
 @echo ## Updating PATH for MSYS2/MinGW64:
