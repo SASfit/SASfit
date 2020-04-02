@@ -19,6 +19,12 @@ echo "$0 determined $NUM_LOGICAL_CORES logical cores."
 echo "uname -s: '$(uname -s)'"
 CMAKE_GENERATOR='Unix Makefiles'
 #if <Windows>; then CMAKE_GENERATOR='MSYS Makefiles'; fi
+if [ "$(uname -s)" = "Darwin" ];
+then
+    # find latest gcc and g++ compilers and set them as global variables
+    export CC=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^gcc-(mp-)?[0-9]+' | tail -n1))
+    export CXX=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^g\+\+-(mp-)?[0-9]+' | tail -n1))
+fi
 
 cd "$APPVEYOR_BUILD_FOLDER" && \
 mkdir build && cd build && cmake -G "$CMAKE_GENERATOR" ../src && make -j$NUM_LOGICAL_CORES
