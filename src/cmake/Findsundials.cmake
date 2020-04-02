@@ -44,11 +44,15 @@
 
 get_package_dir(SUNDIALS ${SASFIT_ROOT_DIR}/src/sundials)
 
+message(STATUS "DBG04")
 set(sundials_INCLUDE_DIRS ${SOURCE_DIR}/include)
 
 # search build directory
+message(STATUS "DBG05")
 file(GLOB sundials_BUILD_DIRS ${SOURCE_DIR}/*/CMakeCache.txt)
+message(STATUS "DBG06")
 list(LENGTH sundials_BUILD_DIRS NUM_DIRS)
+message(STATUS "DBG07 '${NUM_DIRS}'")
 if(NUM_DIRS GREATER 0)
         list(GET sundials_BUILD_DIRS 0 sundials_BUILD_DIR)
         get_filename_component(sundials_BUILD_DIR
@@ -56,13 +60,16 @@ if(NUM_DIRS GREATER 0)
 #        message("sundials_BUILD_DIR: '${sundials_BUILD_DIR}'")
         list(APPEND sundials_INCLUDE_DIRS ${sundials_BUILD_DIR}/include)
 endif()
+message(STATUS "DBG08")
 
 file(GLOB sundials_STATIC_LIBS ${sundials_BUILD_DIR}/src/*/*.a)
+message(STATUS "DBG09")
 
 if(sundials_STATIC_LIBS)
         set(sundials_LIBRARIES ${sundials_STATIC_LIBS})
 endif()
 
+message(STATUS "DBG10")
 list(LENGTH sundials_INCLUDE_DIRS NUM_INC_DIRS)
 set(sundials_FOUND FALSE)
 if(NUM_INC_DIRS EQUAL 2 AND sundials_LIBRARIES)
