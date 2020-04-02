@@ -17,31 +17,38 @@ environment:
     secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
   GH_API:
     secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
-  matrix:
-    - COMPILER: msys2
-      PLATFORM: x64
-      MSYS2_ARCH: x86_64
-      MSYS2_DIR: msys64
-      MSYSTEM: MINGW64
-      BIT: 64
+#  matrix:
+#    - COMPILER: msys2
+#      PLATFORM: x64
+#      MSYS2_ARCH: x86_64
+#      MSYS2_DIR: msys64
+#      MSYSTEM: MINGW64
+#      BIT: 64
 
 for:
 -
   matrix:
     only:
       - image: Visual Studio 2019
+  environment:
+      COMPILER: msys2
+      PLATFORM: x64
+      MSYS2_ARCH: x86_64
+      MSYS2_DIR: msys64
+      MSYSTEM: MINGW64
+      BIT: 64
   install:
 #  - sh src/appveyor/install.sh
-    - src\appveyor\0install_win.bat
+    - src\appveyor\0_install_win.bat
 
 before_build:
-  - sh src/appveyor/before_build.sh
+  - sh src/appveyor/2_before_build.sh
 
 build_script:
-  - sh src/appveyor/build.sh
+  - sh src/appveyor/4_build.sh
 
 after_build:
-  - sh src/appveyor/after_build.sh
+  - sh src/appveyor/6_after_build.sh
 
 cache: # 1GB max with free accounts
   # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
@@ -100,6 +107,6 @@ deploy:
       APPVEYOR_REPO_TAG: true
 
 after_deploy:
-  - sh src/appveyor/after_deploy.sh
+  - sh src/appveyor/8_after_deploy.sh
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:
