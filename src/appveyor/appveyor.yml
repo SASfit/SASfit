@@ -17,15 +17,6 @@ environment:
     secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
   GH_API:
     secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
-  matrix:
-    - DUMMY: test
-#  matrix:
-#    - COMPILER: msys2
-#      PLATFORM: x64
-#      MSYS2_ARCH: x86_64
-#      MSYS2_DIR: msys64
-#      MSYSTEM: MINGW64
-#      BIT: 64
 
 for:
 -
