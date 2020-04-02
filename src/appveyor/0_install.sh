@@ -1,45 +1,27 @@
 #!/bin/sh
 
-# set msys2 dir as specified here:
-# https://www.appveyor.com/docs/windows-images-software/#mingw-msys-cygwin
-ROOT_DIR="/c/$MSYS2_DIR"
-
-if [ -z "$1" ]; then # no script argument given
-    set -x
-    shell="$ROOT_DIR/usr/bin/sh"
-    ls -la "$shell"
-    ls -la "$0"
-    # run this script again from MSYS2 environment
-    $shell "$0" pass
-    exit 0
-fi
-
 echo
 echo "## Installing build tools ..."
 echo
 
 env
 
-if [ "$COMPILER" = msys2 ];
-then # on Windows
+#if [ "$COMPILER" = msys2 ];
+#then # on Windows
     set -x
 #    export PATH="/c/$MSYS2_DIR/$MSYSTEM/bin:/c/$MSYS2_DIR/opt/bin:/c/$MSYS2_DIR/usr/local/bin:/c/$MSYS2_DIR/usr/bin:/c/$MSYS2_DIR/bin:$PATH"
 #    ROOT_DIR=/c/$MSYS2_DIR
 #    export PATH="$ROOT_DIR/$MSYSTEM/bin:$ROOT_DIR/usr/bin:$ROOT_DIR/bin"
     echo "CMD: '$0' argv: '$@'"
     ls -la
-    ls /c/$MSYS2_DIR/
     pid=$$
     /bin/ps -p $pid
     echo "test"
     ps -p $pid
     which ps
-    which cygpath
     eval "/bin/ps -p $pid | awk '/$pid/ {print \$NF}'"
-    cygpath -w /usr/bin/sh
     ls -la /bin/
     ls -la /usr/bin/
-    ls -la /c/msys64/usr/bin
 exit 0
     sh -lc "pacman"
 
@@ -53,6 +35,6 @@ exit 0
 
     # Installing required packages:
     pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake
-fi
+#fi
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
