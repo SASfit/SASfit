@@ -48,7 +48,9 @@ message(STATUS "DBG04")
 set(sundials_INCLUDE_DIRS ${SOURCE_DIR}/include)
 
 # search build directory
-message(STATUS "DBG05")
+message(STATUS "DBG05, '${SOURCE_DIR}/*/CMakeCache.txt'")
+execute_process(COMMAND ls -la "${SOURCE_DIR}")
+execute_process(COMMAND ls -la "${SOURCE_DIR}/*/CMakeCache.txt")
 file(GLOB sundials_BUILD_DIRS ${SOURCE_DIR}/*/CMakeCache.txt)
 message(STATUS "DBG06")
 list(LENGTH sundials_BUILD_DIRS NUM_DIRS)
