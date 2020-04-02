@@ -16,7 +16,11 @@ fi
 export NUM_LOGICAL_CORES
 echo "$0 determined $NUM_LOGICAL_CORES logical cores."
 
+echo "uname -s: '$(uname -s)'"
+CMAKE_GENERATOR='Unix Makefiles'
+#if <Windows>; then CMAKE_GENERATOR='MSYS Makefiles'; fi
+
 cd "$APPVEYOR_BUILD_FOLDER" && \
-mkdir build && cd build && cmake -G "MSYS Makefiles" ../src && make -j$NUM_LOGICAL_CORES
+mkdir build && cd build && cmake -G "$CMAKE_GENERATOR" ../src && make -j$NUM_LOGICAL_CORES
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
