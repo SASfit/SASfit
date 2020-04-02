@@ -42,19 +42,19 @@
 # sundials_LINK_DIRECTORIES = link directories, useful for rpath on Unix
 # sundials_EXE_LINKER_FLAGS = rpath on Unix
 
+set(sundials_FOUND FALSE) # init result variable
 get_package_dir(SUNDIALS ${SASFIT_ROOT_DIR}/src/sundials)
 
-message(STATUS "DBG04")
+message(STATUS "[${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}] SOURCE_DIR: '${SOURCE_DIR}'")
+if(NOT SOURCE_DIR)
+    message(STATUS "done here")
+    return()
+endif()
 set(sundials_INCLUDE_DIRS ${SOURCE_DIR}/include)
 
 # search build directory
-message(STATUS "DBG05, '${SOURCE_DIR}/*/CMakeCache.txt'")
-execute_process(COMMAND ls -la "${SOURCE_DIR}")
-execute_process(COMMAND ls -la "${SOURCE_DIR}/*/CMakeCache.txt")
 file(GLOB sundials_BUILD_DIRS ${SOURCE_DIR}/*/CMakeCache.txt)
-message(STATUS "DBG06")
 list(LENGTH sundials_BUILD_DIRS NUM_DIRS)
-message(STATUS "DBG07 '${NUM_DIRS}'")
 if(NUM_DIRS GREATER 0)
         list(GET sundials_BUILD_DIRS 0 sundials_BUILD_DIR)
         get_filename_component(sundials_BUILD_DIR
@@ -73,7 +73,6 @@ endif()
 
 message(STATUS "DBG10")
 list(LENGTH sundials_INCLUDE_DIRS NUM_INC_DIRS)
-set(sundials_FOUND FALSE)
 if(NUM_INC_DIRS EQUAL 2 AND sundials_LIBRARIES)
         set(sundials_FOUND TRUE)
 endif()

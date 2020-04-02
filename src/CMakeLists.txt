@@ -147,11 +147,8 @@ message(STATUS "FFTW LIBRARIES: ${FFTW_LIBRARIES}")
 
 # sundials
 find_package(sundials QUIET REQUIRED)
-message(STATUS "DBG12")
 if(NOT sundials_FOUND)
-    message(STATUS "DBG13")
         add_subdirectory(sundials)
-    message(STATUS "DBG14")
         find_package(sundials REQUIRED)
 endif()
 message(STATUS "sundials INCLUDES:  ${sundials_INCLUDE_DIRS}")
