@@ -36,8 +36,12 @@ for:
 #  - sh src/appveyor/install.sh
     - src\appveyor\0_install_win.bat
 
-install:
-  - sh src/appveyor/0_install.sh
+-
+  matrix:
+    only:
+      - image: macos
+  install:
+    - sh src/appveyor/0_install_macos.sh
 
 before_build:
   - sh src/appveyor/2_before_build.sh

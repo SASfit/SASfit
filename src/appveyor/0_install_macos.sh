@@ -13,15 +13,14 @@ env
 #    ROOT_DIR=/c/$MSYS2_DIR
 #    export PATH="$ROOT_DIR/$MSYSTEM/bin:$ROOT_DIR/usr/bin:$ROOT_DIR/bin"
     echo "CMD: '$0' argv: '$@'"
-    ls -la
     pid=$$
     /bin/ps -p $pid
     echo "test"
     ps -p $pid
     which ps
-    eval "/bin/ps -p $pid | awk '/$pid/ {print \$NF}'"
-    ls -la /bin/
-    ls -la /usr/bin/
+    which sh
+    which brew
+    brew -h
 exit 0
     sh -lc "pacman"
 
