@@ -390,6 +390,7 @@ endfunction()
 
 # sets the given variable name to the expected source directory of the package
 function(set_package_source_dir varname workdir)
+    # TODO: hostname is different on different workers for macos on appveyor
     cmake_host_system_information(RESULT CMAKE_HOSTNAME QUERY HOSTNAME)
     set(${varname} ${workdir}/${PLATFORM}_${CMAKE_HOSTNAME} PARENT_SCOPE)
 endfunction()
