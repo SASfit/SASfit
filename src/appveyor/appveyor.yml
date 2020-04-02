@@ -3,14 +3,14 @@ version: '{build}'
 branches:
   only:
     - master
-
 init:
   - git config --global core.autocrlf input
-
 clone_depth: 1
 
 image:
   - Visual Studio 2019
+configuration:
+  - Release
 
 environment:
   BT_API:
