@@ -46,6 +46,9 @@ for:
       - image: macos
   install:
     - sh src/appveyor/0_install_macos.sh
+  artifacts:
+    # final SASfit package
+    - path: src\sasfit_*_*.tar.bz2
 
 build_script:
   - sh src/appveyor/4_build.sh
@@ -84,10 +87,6 @@ notifications:
     to:
       - sasfit-ci@ingobressler.net
     on_build_success: false
-
-artifacts:
-  # final SASfit package
-  - path: src\sasfit_*_*.tar.bz2
 
 deploy:
     # deploy development builds on BinTray
