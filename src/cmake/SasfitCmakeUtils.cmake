@@ -359,7 +359,7 @@ function(appveyor_reset_build_number)
                         -H "Authorization: Bearer $ENV{APPVEYOR_TOKEN}"
                         -H Content-Type:application/json
                         -H Accept:application/json
-                        -d "{ \"nextBuildNumber\": 37 }"
+                        -d "{ \"nextBuildNumber\": 1 }"
                         ${APPVEYOR_API_URL}/settings/build-number
     )
 endfunction()
