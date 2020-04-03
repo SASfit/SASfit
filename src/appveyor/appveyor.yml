@@ -8,8 +8,8 @@ init:
 clone_depth: 1
 
 image:
-#  - Visual Studio 2019
-  - macos
+  - Visual Studio 2019
+#  - macos
 
 environment:
   BT_API:
@@ -34,6 +34,8 @@ for:
     BIT: 64
   install:
     - src\appveyor\0_install_win.bat
+  before_build:
+    - ps: Update-AppveyorBuild -Syntax
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
