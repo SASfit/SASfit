@@ -16,6 +16,8 @@ environment:
     secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
   GH_API:
     secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
+  APPVEYOR_TOKEN:
+    secure: Ze65tHzYbKW8ll986XhBx18df/MtnyHkqsTtkM5+kr8=
   matrix:
     # dummy var enables for.matrix.only specific ENV vars below
     - DUMMY:
