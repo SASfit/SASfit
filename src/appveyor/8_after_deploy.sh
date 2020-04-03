@@ -9,7 +9,7 @@ echo "Wait for uploaded file being published:"
 # POST /content/:subject/:repo/:package/:version/publish
 # https://bintray.com/docs/api/
 out=$($CURL -X POST -d '{ "publish_wait_for_secs": -1 }' \
-      "https://api.bintray.com/content/sasfit/development/SASfit/$APPVEYOR_BUILD_VERSION/publish")
+      "https://api.bintray.com/content/sasfit/development/SASfit/$SASFIT_VERSION/publish")
 echo "    $out"
 # stop here if the artifact was not uploaded
 (echo "$out" | grep -q 'not found') && exit 1
