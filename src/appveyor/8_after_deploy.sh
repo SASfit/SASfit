@@ -16,11 +16,16 @@ echo "    $out"
 
 echo "Add uploaded file to download list:"
 FN="$(find "$APPVEYOR_BUILD_FOLDER/src" -maxdepth 1 -type f \
-    -name "*$APPVEYOR_BUILD_VERSION*" | head -n1)"
+    -name "*$SASFIT_VERSION*" | head -n1)"
 FN="${FN##*/}"
 echo "FN: '$FN'"
-$CURL -X PUT -d '{ "list_in_downloads":true }' \
-     "https://api.bintray.com/file_metadata/sasfit/development/$FN"
-echo
+if [ -f "$FN" ];
+then
+    $CURL -X PUT -d '{ "list_in_downloads":true }' \
+         "https://api.bintray.com/file_metadata/sasfit/development/$FN"
+    echo
+else
+    echo "No package file found for listing in download section of BinTray."
+fi
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:

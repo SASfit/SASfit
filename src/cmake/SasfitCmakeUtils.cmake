@@ -393,6 +393,8 @@ macro(sasfit_update_version)
             set(appveyor_build_version "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
             execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}")
             message(STATUS "Appveyor build version was set to '${appveyor_build_version}'.")
+            execute_process(COMMAND appveyor SetVariable
+                                        -Name SASFIT_VERSION -Value "${SASFIT_VERSION}")
         endif()
     endif()
     message(STATUS "SASfit version was set to '${SASFIT_VERSION}'.")

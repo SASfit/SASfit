@@ -97,6 +97,7 @@ deploy:
     subject: sasfit
     repo:    development
     package: SASfit
+    version: '%SASFIT_VERSION%' # should be set by cmake
     publish:  true
     on:
       branch: master
