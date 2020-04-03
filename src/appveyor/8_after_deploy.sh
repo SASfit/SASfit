@@ -18,7 +18,7 @@ echo "    $out"
 
 echo "Add uploaded file to download list:"
 FN="$(find "$APPVEYOR_BUILD_FOLDER/src" -maxdepth 1 -type f \
-    -name "*$APPVEYOR_BUILD_VERSION*" -printf '%f\n' | head -n1)"
+    -name "*$APPVEYOR_BUILD_VERSION*" | head -n1)"
 FN="${FN##*/}"
 echo "FN: '$FN'"
 $CURL -X PUT -d '{ "list_in_downloads":true }' \
