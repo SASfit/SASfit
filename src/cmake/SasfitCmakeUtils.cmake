@@ -61,6 +61,9 @@ if(SYSTEM_IS_64)
 endif()
 string(TOLOWER "${PLATFORM}" PLATFORM)
 
+set(VERSION_TIMESTAMP_FORMAT "%y%m%d%H%M%S")
+set(APPVEYOR_API_URL "https://ci.appveyor.com/api/projects/SASfit/sasfit")
+
 # defining some colors
 string(ASCII 27 ESC)
 set(colend  "${ESC}[m")
@@ -275,37 +278,122 @@ endmacro(sasfit_cmake_plugin)
 
 macro(get_git_info)
     find_package(Git)
-    if(GIT_FOUND)
-        execute_process(COMMAND git show -s --format=%h
-            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-            OUTPUT_VARIABLE GIT_COMMIT
-            OUTPUT_STRIP_TRAILING_WHITESPACE)
-        execute_process(COMMAND git show -s --format=%ad
-                                            --date=format:%y%m%d%H%M%S
-            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-            OUTPUT_VARIABLE GIT_COMMIT_DATETIME
-            OUTPUT_STRIP_TRAILING_WHITESPACE)
-        message(STATUS "This source tree is on GIT commit ${GIT_COMMIT} "
-                       "with timestamp ${GIT_COMMIT_DATETIME}.")
+    if(NOT GIT_FOUND)
+        return()
     endif()
+    # get the abbreviated commit hash
+    execute_process(COMMAND git show -s --format=%h
+        WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+        OUTPUT_VARIABLE GIT_COMMIT
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    # get the commit timestamp incl. seconds
+    execute_process(COMMAND git show -s --format=%ad
+                                        --date=format:${VERSION_TIMESTAMP_FORMAT}
+        WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+        OUTPUT_VARIABLE GIT_COMMIT_DATETIME
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    # get the tag if there is one
+    execute_process(COMMAND git tag --contains
+        WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+        OUTPUT_VARIABLE GIT_TAG
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    set(GIT_TAG_MSG)
+    if(GIT_TAG)
+        set(GIT_TAG_MSG " (tag: ${GIT_TAG})")
+    endif()
+    message(STATUS "This source tree is on GIT commit ${GIT_COMMIT}${GIT_TAG_MSG}"
+                   " with timestamp ${GIT_COMMIT_DATETIME}.")
 endmacro()
 
+# splits the provided string *str* at the given separator *sep*
+# and returns the second (latter) part of the two
+function(string_split_2nd str sep)
+    string(FIND ${${str}} ${sep} istart)        # get position of separator
+    #cmake_print_variables(istart)
+    math(EXPR istart "${istart}+1")          # stripping colon and quote at the front
+    string(SUBSTRING ${${str}} ${istart} -1 ${str})
+    set(${str} ${${str}} PARENT_SCOPE)
+endfunction()
+
+function(appveyor_get_latest_version)
+    find_program(curl_path name curl HINTS ENV PATH)
+    if(NOT curl_path)
+        message(FATAL_ERROR "Could not find the curl program! "
+                            "Can't configure the version, giving up!")
+    endif()
+    # get info on the last 5 builds
+    execute_process(COMMAND ${curl_path} -s ${APPVEYOR_API_URL}/history?recordsNumber=5
+                    OUTPUT_VARIABLE appveyor_last_build_json)
+    #cmake_print_variables(appveyor_last_build_json)
+    # find the version text in JSON of the last build on appveyor
+    string(REGEX MATCHALL "\"version\":\"[^\"]+\"" match_version
+                          ${appveyor_last_build_json})
+    #cmake_print_variables(match_version)
+    string(REGEX MATCHALL "\"buildNumber\":\"?[0-9]+\"?" match_buildNumber
+                          ${appveyor_last_build_json})
+    #cmake_print_variables(match_buildNumber)
+    # find a version unequal build number
+    # (both are equal at the beginning, version is changed by CMake later)
+    foreach(ver bnum IN ZIP_LISTS match_version match_buildNumber)
+        #cmake_print_variables(ver bnum)
+        string_split_2nd(ver :)
+        string_split_2nd(bnum :)
+        string(REPLACE "\"" "" ver ${ver})
+        string(REPLACE "\"" "" bnum ${bnum})
+        #cmake_print_variables(ver bnum)
+        if(NOT ${ver} STREQUAL ${bnum})
+            set(last_version ${ver})
+            break()
+        endif()
+    endforeach()
+    #cmake_print_variables(last_version)
+    set(appveyor_latest_version ${last_version} PARENT_SCOPE)
+endfunction()
+
+function(appveyor_reset_build_number)
+    # check for authentication token
+    if(NOT DEFINED ENV{APPVEYOR_TOKEN})
+        message(FATAL_ERROR "Appveyor auth token not provided, can't reset build number!")
+    endif()
+    execute_process(COMMAND ${curl_path} -s -X PUT
+                        -H "Authorization: Bearer $ENV{APPVEYOR_TOKEN}"
+                        -H Content-Type:application/json
+                        -H Accept:application/json
+                        -d "{ \"nextBuildNumber\": 37 }"
+                        ${APPVEYOR_API_URL}/settings/build-number
+    )
+endfunction()
+
+# set up a sortable version number based on the current GIT commit timestamp
+# (the commit hash does not sort multiple packages chronologically in file system)
 macro(sasfit_update_version)
     get_git_info()
-    # generate a different version in a continuous integration (CI) environment
-    if($ENV{APPVEYOR}) # on appveyor CI
-        if($ENV{APPVEYOR_REPO_TAG}) # building because a tag was pushed -> release
-            # use the tag name as version string directly
-            set(SASFIT_VERSION ${APPVEYOR_REPO_TAG_NAME})
+    if(NOT GIT_FOUND) # no GIT, use current timestamp as version
+        string(TIMESTAMP SASFIT_VERSION "${VERSION_TIMESTAMP_FORMAT}")
+    else()
+        #cmake_print_variables(GIT_FOUND GIT_COMMIT GIT_TAG GIT_COMMIT_DATETIME)
+        # default version is timestamp based
+        set(SASFIT_VERSION "${GIT_COMMIT_DATETIME}")
+        if(GIT_TAG) # use the tag name if there is one
+            set(SASFIT_VERSION ${GIT_TAG})
         endif()
-        # append the build number to the regular version number for uniqueness
-        set(SASFIT_VERSION "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
-        # building a regular commit
-        if(GIT_COMMIT AND NOT $ENV{APPVEYOR_REPO_TAG})
-            set(SASFIT_VERSION "${SASFIT_VERSION}-${GIT_COMMIT}")
+        if($ENV{APPVEYOR}) # running on appveyor CI
+            appveyor_get_latest_version()
+            #cmake_print_variables(appveyor_latest_version)
+            # strip build number from latest appveyor version
+            string(REGEX MATCH "^[^b]+" appveyor_latest_version ${appveyor_latest_version})
+            #cmake_print_variables(appveyor_latest_version)
+            # check if the new version number is different
+            if(NOT ${SASFIT_VERSION} STREQUAL ${appveyor_latest_version})
+                # is different, reset appveyor build number
+                message(STATUS "Version changed, resetting Appveyor build number.")
+                appveyor_reset_build_number()
+            endif()
+            # append build number for unique build version in appveyor
+            set(appveyor_build_version "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
+            execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}")
+            message(STATUS "Appveyor build version was set to '${appveyor_build_version}'.")
         endif()
-        # append build number for unique build in appveyor
-        execute_process(COMMAND appveyor UpdateBuild -Version "${SASFIT_VERSION}")
     endif()
     message(STATUS "SASfit version was set to '${SASFIT_VERSION}'.")
 

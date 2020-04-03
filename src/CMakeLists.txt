@@ -13,8 +13,7 @@ include(SasfitCmakeUtils)
 include(SasfitSourceFiles)
 dbg_cmake_vars()
 
-# updates the version number in some files
-set(SASFIT_VERSION "0.94.12")
+# the version number is derived from GIT, use 'git tag' for a specific one
 sasfit_update_version()
 
 # decides which packages to build afterwards
