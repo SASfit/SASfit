@@ -8,8 +8,8 @@ init:
 clone_depth: 1
 
 image:
-  - Visual Studio 2019
-#  - macos
+#  - Visual Studio 2019
+  - macos
 
 environment:
   BT_API:
