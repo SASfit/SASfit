@@ -33,8 +33,10 @@ for:
     MSYSTEM: MINGW64
     BIT: 64
   install:
-#  - sh src/appveyor/install.sh
     - src\appveyor\0_install_win.bat
+  artifacts:
+    # final SASfit package
+    - path: src\sasfit_*_*.zip
 
 -
   matrix:
@@ -86,7 +88,7 @@ notifications:
 
 artifacts:
   # final SASfit package
-  - path: src\sasfit_*_*.zip
+  - path: src\sasfit_*_*.tar.bz2
 
 deploy:
     # deploy development builds on BinTray
