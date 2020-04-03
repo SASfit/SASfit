@@ -1,5 +1,13 @@
 # Technical ToDo list
 
+- [appveyor] set up appveyor for Linux builds
+
+- [appveyor] fix caching of built external packages (GSL, ffts, sundials)
+
+- cleanup old versions and uploads on BinTray
+  - get a script for this, perhaps from:
+    https://github.com/AppImage/pkg2appimage/blob/master/bintray-tidy.sh
+
 - [CMake] determine number of cores in CMake stage, so that it configures Makefiles to always use make with '-j<#cores>' in local builds, not just in appveyor mode when it is configured explicitly from outside
   - if Makefiles can be configured by cmake accordingly has to be rsearched
   - perhaps, CMake module *ProcessorCount* helps, but not needed actually
