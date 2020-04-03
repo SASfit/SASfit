@@ -35,7 +35,8 @@ for:
   install:
     - src\appveyor\0_install_win.bat
   before_build:
-    - ps: Update-AppveyorBuild
+    - cmd: Get-Command Update-AppveyorBuild -Syntax
+    #- cmd: appveyor UpdateBuild /?
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
