@@ -342,12 +342,10 @@ function(get_package_dir PCKG_NAME CURRENT_DIR)
     else()
         message(STATUS "Package source dir not found.")
     endif()
-    message(STATUS "DBG02")
     if(CONFIG_FILE)
         message(STATUS "Found config file: '${CONFIG_FILE}'")
     endif()
     set(SOURCE_DIR ${SOURCE_DIR} PARENT_SCOPE)
-    message(STATUS "get_package_dir() end")
 endfunction()
 
 function(find_configure PCKG_PATH)
@@ -399,18 +397,15 @@ endfunction()
 
 # looks for existing source dirs and extracts the package
 function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
-    message(STATUS "build_from_source('${CURRENT_DIR}' '${CONFIG_OPTIONS}')")
     if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
         return()
     endif()
-    message(STATUS "DBG01")
     get_filename_component(BASE_NAME ${CURRENT_DIR} NAME)
     string(TOUPPER ${BASE_NAME} PCKG_NAME)
     message(STATUS "${PCKG_NAME} not found, building from source:")
     
     # look for existing source dir
     get_package_dir(${PCKG_NAME} ${CURRENT_DIR})
-    message(STATUS "DBG03")
 
     # remove any existing source tree first
     if(IS_DIRECTORY ${SOURCE_DIR})

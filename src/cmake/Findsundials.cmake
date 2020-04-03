@@ -45,9 +45,7 @@
 set(sundials_FOUND FALSE) # init result variable
 get_package_dir(SUNDIALS ${SASFIT_ROOT_DIR}/src/sundials)
 
-message(STATUS "[${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}] SOURCE_DIR: '${SOURCE_DIR}'")
-if(NOT SOURCE_DIR)
-    message(STATUS "done here")
+if(NOT SOURCE_DIR) # nothing to do
     return()
 endif()
 set(sundials_INCLUDE_DIRS ${SOURCE_DIR}/include)
@@ -59,19 +57,15 @@ if(NUM_DIRS GREATER 0)
         list(GET sundials_BUILD_DIRS 0 sundials_BUILD_DIR)
         get_filename_component(sundials_BUILD_DIR
                                "${sundials_BUILD_DIR}" DIRECTORY)
-#        message("sundials_BUILD_DIR: '${sundials_BUILD_DIR}'")
         list(APPEND sundials_INCLUDE_DIRS ${sundials_BUILD_DIR}/include)
 endif()
-message(STATUS "DBG08")
 
 file(GLOB sundials_STATIC_LIBS ${sundials_BUILD_DIR}/src/*/*.a)
-message(STATUS "DBG09")
 
 if(sundials_STATIC_LIBS)
         set(sundials_LIBRARIES ${sundials_STATIC_LIBS})
 endif()
 
-message(STATUS "DBG10")
 list(LENGTH sundials_INCLUDE_DIRS NUM_INC_DIRS)
 if(NUM_INC_DIRS EQUAL 2 AND sundials_LIBRARIES)
         set(sundials_FOUND TRUE)
