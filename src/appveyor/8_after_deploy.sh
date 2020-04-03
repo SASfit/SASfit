@@ -3,8 +3,6 @@
 
 CURL="curl -s -usasfit:$BT_API -H Content-Type:application/json -H Accept:application/json"
 
-env | sort
-
 echo "Wait for uploaded file being published:"
 #sleep 30
 # publish first?
