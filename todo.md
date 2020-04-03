@@ -1,5 +1,7 @@
 # Technical ToDo list
 
+- [appveyor] use bintray api for finding recently uploaded package files (setting them as direct download)
+
 - [appveyor] set up appveyor for Linux builds
 
 - [appveyor] fix caching of built external packages (GSL, ffts, sundials)
