@@ -19,13 +19,13 @@ FN="$(find "$APPVEYOR_BUILD_FOLDER/src" -maxdepth 1 -type f \
     -name "*$SASFIT_VERSION*" | head -n1)"
 FN="${FN##*/}"
 echo "FN: '$FN'"
-if [ -f "$FN" ];
+if [ -z "$FN" ];
 then
+    echo "No package file found for listing in download section of BinTray."
+else
     $CURL -X PUT -d '{ "list_in_downloads":true }' \
          "https://api.bintray.com/file_metadata/sasfit/development/$FN"
     echo
-else
-    echo "No package file found for listing in download section of BinTray."
 fi
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
