@@ -45,9 +45,6 @@ for:
   install:
     - sh src/appveyor/0_install_macos.sh
 
-before_build:
-  - sh src/appveyor/2_before_build.sh
-
 build_script:
   - sh src/appveyor/4_build.sh
 
