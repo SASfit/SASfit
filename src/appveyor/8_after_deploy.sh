@@ -6,10 +6,14 @@ CURL="curl -s -u sasfit:$BT_API -H Content-Type:application/json -H Accept:appli
 API_URL="https://api.bintray.com"
 PKG_PATH="sasfit/development/SASfit"
 
-# get the latest version, previously created one, probably
-latest_ver=$($CURL -X GET "$API_URL/packages/$PKG_PATH" \
-    | grep -oE 'latest_version"?:"?[^"]+' | grep -oE '[^"]+$')
-echo "Latest version on BinTray: '$latest_ver'."
+# latest version via BinTray REST API is outdated, using what it's supposed to be
+latest_ver=$SASFIT_VERSION
+if [ -z "$latest_version" ]; then
+    # get the latest version, previously created one, probably
+    latest_ver=$($CURL -X GET "$API_URL/packages/$PKG_PATH" \
+        | grep -oE 'latest_version"?:"?[^"]+' | grep -oE '[^"]+$')
+fi
+echo "Latest version queried on BinTray: '$latest_ver'."
 
 # Asynchronously publishes all unpublished content for a user’s package version.
 # https://www.jfrog.com/confluence/display/BT/Bintray+REST+API#BintrayRESTAPI-Publish/DiscardUploadedContent
@@ -27,8 +31,14 @@ $CURL -X GET "$API_URL/packages/$PKG_PATH/versions/$latest_ver/files?include_unp
 # Add uploaded files to download list, only possible for 'published' files
 for fn in $($CURL -X GET "$API_URL/packages/$PKG_PATH/versions/$latest_ver/files?include_unpublished=1" | python3 -c 'import sys, json; [print(elem["name"]) for elem in json.loads(sys.stdin.readline())]'); do
     printf "Add uploaded $fn to direct download list:\n  "
-    $CURL -X PUT -d '{ "list_in_downloads":true }' -w " HTTP Status: %{http_code}\n" \
-         "$API_URL/file_metadata/sasfit/development/$fn"
+    output=400
+    while [ "$output" = 400 ]; do
+        output="$($CURL -X PUT -d '{ "list_in_downloads":true }' -w " HTTP Status: %{http_code}\n" \
+             "$API_URL/file_metadata/sasfit/development/$fn")"
+        echo "$output"
+        output="$(echo "$output" | grep -oE '[0-9]+$')"
+        [ "$output" = 400 ] && sleep 5 # not published yet
+    done
 done
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
