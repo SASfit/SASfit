@@ -3373,7 +3373,7 @@ for (j=0;j<GCP.nmultset;j++) {
 	   if (DIh[j][i] == 0) {
 		   sasfit_err("Sasfit_global_iqCmd: zero error bar\n");
 		   error = TRUE;
-	   } else {
+	   } else if (!hide[j]){
             chisq = chisq + (Ith[j][i]-Ih[j][i])*(Ith[j][i]-Ih[j][i])/(DIh[j][i]*DIh[j][i]);
             diffR = diffR + fabs((Ith[j][i]-Ih[j][i]));
             obsR = obsR + fabs(Ih[j][i]);
@@ -3400,6 +3400,8 @@ for (j=0;j<GCP.nmultset;j++) {
 		Tcl_Free((char *) Ith);
 		Tcl_Free((char *) DIh);
 		Tcl_Free((char *) res);
+		Tcl_Free((char *) ndata);
+		Tcl_Free((char *) hide);
 		  free_ivector(ndata,0,GCP.nmultset-1); // see below
 		  sasfit_timer_destroy(&tm);
           return TCL_ERROR;
@@ -3428,6 +3430,8 @@ for (j=0;j<GCP.nmultset;j++) {
 		Tcl_Free((char *) Ith);
 		Tcl_Free((char *) DIh);
 		Tcl_Free((char *) res);
+		Tcl_Free((char *) ndata);
+		Tcl_Free((char *) hide);
 		  free_ivector(ndata,0,GCP.nmultset-1); // see below
 		  sasfit_timer_destroy(&tm);
           return TCL_ERROR;
@@ -3563,6 +3567,8 @@ Tcl_Free((char *) Ith);
 Tcl_Free((char *) DIh);
 //free_dvector(DIh,0,GCP.nmultset-1);
 Tcl_Free((char *) res);
+Tcl_Free((char *) ndata);
+Tcl_Free((char *) hide);
 //free_dvector(res,0,GCP.nmultset-1);
 free_ivector(ndata,0,GCP.nmultset-1);
 /*
@@ -4094,6 +4100,8 @@ if (error == TRUE) {
 //   Tcl_Free((char *) *Ith);
 //   Tcl_Free((char *) *DIh);
 //   Tcl_Free((char *) *res);
+//   Tcl_Free((char *) *ndata);
+//   Tcl_Free((char *) *hide);
    return TCL_ERROR;
 }
 
@@ -4125,14 +4133,15 @@ for (m=0;m<GCP.nmultset;m++) {
 	  if (DIh[m][i] == 0) {
 	     sasfit_err("Sasfit_global_iqCmd: zero error bar\n");
 	     return TCL_ERROR;
-	  }
-	  chisq = chisq + pow((Ith[m][i]-Ih[m][i])/DIh[m][i],2.0);
-      diffR = diffR + fabs((Ith[m][i]-Ih[m][i]));
-      obsR = obsR + fabs(Ih[m][i]);
-	  wdiffR=wdiffR + (Ith[m][i]-Ih[m][i])*(Ith[m][i]-Ih[m][i])/(DIh[m][i]*DIh[m][i]);
-	  wobsR=wobsR + Ih[m][i]*Ih[m][i]/(DIh[m][i]*DIh[m][i]);
-	  avgsigma = avgsigma/(DIh[m][i]*DIh[m][i]);
-      totndata++;
+	  } else if (!hide[m]) {
+	     chisq = chisq + pow((Ith[m][i]-Ih[m][i])/DIh[m][i],2.0);
+         diffR = diffR + fabs((Ith[m][i]-Ih[m][i]));
+         obsR = obsR + fabs(Ih[m][i]);
+	     wdiffR=wdiffR + (Ith[m][i]-Ih[m][i])*(Ith[m][i]-Ih[m][i])/(DIh[m][i]*DIh[m][i]);
+	     wobsR=wobsR + Ih[m][i]*Ih[m][i]/(DIh[m][i]*DIh[m][i]);
+	     avgsigma = avgsigma/(DIh[m][i]*DIh[m][i]);
+         totndata++;
+      }
    }
    Tcl_DStringEndSublist(&DsBuffer);
 }
@@ -4256,7 +4265,8 @@ Tcl_Free((char *) DIh);
 Tcl_Free((char *) DIhtrans);
 Tcl_Free((char *) Ihtrans);
 Tcl_Free((char *) res);
-
+Tcl_Free((char *) ndata);
+Tcl_Free((char *) hide);
 return TCL_OK;
 }
 
