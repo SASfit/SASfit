@@ -28,8 +28,10 @@ sleep 1 # wait a moment, BinTray does not seem to publish immediately
 echo "Files on BinTray and 'published' status:"
 $CURL -X GET "$API_URL/packages/$PKG_PATH/versions/$latest_ver/files?include_unpublished=1" | python3 -c 'import sys, json; [print(" ", elem["name"], elem["published"]) for elem in json.loads(sys.stdin.readline())]'
 
+set -x
 # Add uploaded files to download list, only possible for 'published' files
 for fn in $($CURL -X GET "$API_URL/packages/$PKG_PATH/versions/$latest_ver/files?include_unpublished=1" | python3 -c 'import sys, json; [print(elem["name"]) for elem in json.loads(sys.stdin.readline())]'); do
+    echo "Handling fn: '$fn'"
     printf "Add uploaded $fn to direct download list:\n  "
     output=400
     while [ "$output" = 400 ]; do
@@ -37,8 +39,11 @@ for fn in $($CURL -X GET "$API_URL/packages/$PKG_PATH/versions/$latest_ver/files
              "$API_URL/file_metadata/sasfit/development/$fn")"
         echo "$output"
         output="$(echo "$output" | grep -oE '[0-9]+$')"
+        echo "Testing '$output' ..."
         [ "$output" = 400 ] && sleep 5 # not published yet
     done
 done
+
+exit 0
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
