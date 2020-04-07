@@ -25,7 +25,7 @@ sh -lc "pacman -Syu --noconfirm"
 
 @echo.
 @echo ## Installing required packages:
-sh -lc "pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
+sh -lc "pacman -S --noconfirm make diffutils patch python-pip mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake"
 
 @echo.
 @echo off
