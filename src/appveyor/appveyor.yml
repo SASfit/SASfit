@@ -110,6 +110,6 @@ deploy:
       APPVEYOR_REPO_TAG: true
 
 after_deploy:
-  - sh src/appveyor/8_after_deploy.sh
+  - python3 src/appveyor/8_after_deploy.py
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:
