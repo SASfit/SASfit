@@ -33,7 +33,6 @@ for:
     MSYS2_ARCH: x86_64
     MSYS2_DIR: msys64
     MSYSTEM: MINGW64
-#    BIT: 64
     CACHEID: windows64
   install:
     - src\appveyor\0_install_win.bat
@@ -52,10 +51,6 @@ for:
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.tar.bz2
-
-before_build:
-  - python3 --version
-  - python3 -m pip install requests
 
 build_script:
   - sh src/appveyor/4_build.sh
