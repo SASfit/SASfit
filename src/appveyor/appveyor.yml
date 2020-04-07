@@ -109,7 +109,8 @@ deploy:
       APPVEYOR_REPO_TAG: true
 
 after_deploy:
-  - python3 -m pip install requests
-  - python3 src/appveyor/8_after_deploy.py
+  - python --version
+  - python -m pip install requests
+  - python src/appveyor/8_after_deploy.py
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:
