@@ -56,7 +56,8 @@ for filename in names:
         print(" ", response.json(), "Status:", response.status_code)
         tryAgain = not response.ok and 'unpublished' in response.json()['message']
         if tryAgain: # wait a moment before the next try
-            time.sleep(5)
-            print(" ", "Trying again:")
+            delay = 5
+            print(" ", "-> Trying again after {} seconds:".format(delay))
+            time.sleep(delay)
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
