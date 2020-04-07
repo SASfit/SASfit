@@ -39,6 +39,13 @@ for:
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
+  cache: # 1GB max with free accounts
+    # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
+    - 'src\gsl\%CACHEID%      -> src\gsl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+    - 'src\fftw\%CACHEID%     -> src\fftw\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+    - 'src\tcl\%CACHEID%      -> src\tcl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+    - 'src\sundials\%CACHEID% -> src\sundials\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+    - 'saskit\saskit_%CACHEID%.exe -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
 
 -
   matrix:
@@ -50,22 +57,20 @@ for:
     - sh src/appveyor/0_install_macos.sh
   artifacts:
     # final SASfit package
-    - path: src\sasfit_*_*.tar.bz2
+    - path: src/sasfit_*_*.tar.bz2
+  cache: # 1GB max with free accounts
+    # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
+    - 'src/gsl/%CACHEID%      -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'src/fftw/%CACHEID%     -> src/fftw/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'src/tcl/%CACHEID%      -> src/tcl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'src/sundials/%CACHEID% -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'saskit/saskit_%CACHEID% -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
 
 build_script:
   - sh src/appveyor/4_build.sh
 
 after_build:
   - sh src/appveyor/6_after_build.sh
-
-cache: # 1GB max with free accounts
-  # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
-  - 'src/gsl/%CACHEID%      -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
-  - 'src\fftw\%CACHEID%     -> src\fftw\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
-  - 'src\tcl\%CACHEID%      -> src\tcl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
-  - 'src\sundials\%CACHEID% -> src\sundials\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
-  - 'saskit\saskit_%CACHEID%.exe -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
-  - 'saskit\saskit_%CACHEID%* -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
 
 test:
   assemblies:
