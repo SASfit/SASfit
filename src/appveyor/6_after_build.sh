@@ -4,7 +4,7 @@
 for dir in "$APPVEYOR_BUILD_FOLDER/.." \
            "$APPVEYOR_BUILD_FOLDER" \
            "$APPVEYOR_BUILD_FOLDER/src" \
-           "$APPVEYOR_BUILD_FOLDER/../sasfit_*"; do
+           "$APPVEYOR_BUILD_FOLDER/../sasfit_"*; do
     echo "$dir:"
     ls -la "$dir"
 done
