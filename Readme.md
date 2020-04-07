@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/sasfit/development/SASfit/images/download.svg) ](https://bintray.com/sasfit/development/SASfit/_latestVersion)
+[![Download](https://api.bintray.com/packages/sasfit/development/SASfit/images/download.svg)](https://bintray.com/sasfit/development/SASfit/_latestVersion)
 [![Build status Windows](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20Visual%20Studio%202019;%20Environment:%20DUMMY=?label=Windows%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
 [![Build status macOS](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20macos;%20Environment:%20DUMMY=?label=macOS%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
 
@@ -37,6 +37,25 @@ SASfit is licensed under the GPLv3. For more details see COPYING.txt.
 Academic papers about SASfit have been published in:
 -  [J. Appl. Cryst. (2015). 48, 1587-1598](https://dx.doi.org/10.1107/S1600576715016544)
 -  [J. Appl. Cryst. (2017). 50, 1395-1403](https://dx.doi.org/10.1107/S1600576717011979)
+
+Startup issues on macOS
+=======================
+
+![sasfit.command error on macOS](doc/images/sasfit.command%20error%20on%20macOS.png)
+
+In case of this error about an unidentified developer (because we are not registered with Apple yet) one possible workaround is to remove the *quarantine* label of the downloaded file on macOS. This can be done by the following command in a Terminal window. It requires admin privileges:
+
+    % cd Downloads
+    % sudo xattr -c sasfit_*_macos64.tar.bz2
+
+If your user is not allowed to call *sudo*, you have to change to a user which does:
+
+    ~ % cd /
+    / % su admin
+    Password:...
+    / % sudo xattr -c /Users/<username>/Downloads/sasfit_*_macos64.tar.bz2
+
+Once the *quarantine* label was removed, the package can be extracted by double-clicking on it. Starting the program by clicking on the `sasfit.command` file should open it without further errors.
 
 Building from source
 ====================
