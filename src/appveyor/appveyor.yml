@@ -60,11 +60,12 @@ after_build:
 
 cache: # 1GB max with free accounts
   # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
-  - 'src\gsl\%CACHEID%      -> src\gsl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+  - 'src/gsl/%CACHEID%      -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
   - 'src\fftw\%CACHEID%     -> src\fftw\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
   - 'src\tcl\%CACHEID%      -> src\tcl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
   - 'src\sundials\%CACHEID% -> src\sundials\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
   - 'saskit\saskit_%CACHEID%.exe -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+  - 'saskit\saskit_%CACHEID%* -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
 
 test:
   assemblies:
