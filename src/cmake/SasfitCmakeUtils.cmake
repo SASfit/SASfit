@@ -480,9 +480,12 @@ endfunction()
 
 # sets the given variable name to the expected source directory of the package
 function(set_package_source_dir varname workdir)
-    # TODO: hostname is different on different workers for macos on appveyor
-    cmake_host_system_information(RESULT CMAKE_HOSTNAME QUERY HOSTNAME)
-    set(${varname} ${workdir}/${PLATFORM}_${CMAKE_HOSTNAME} PARENT_SCOPE)
+    set(${varname} ${workdir}/${PLATFORM} PARENT_SCOPE)
+    # hostname is different for each worker for macos on appveyor
+    if(NOT $ENV{APPVEYOR}) # running on appveyor CI
+        cmake_host_system_information(RESULT CMAKE_HOSTNAME QUERY HOSTNAME)
+        set(${varname} ${${varname}}_${CMAKE_HOSTNAME} PARENT_SCOPE)
+    endif()
 endfunction()
 
 # looks for existing source dirs and extracts the package
