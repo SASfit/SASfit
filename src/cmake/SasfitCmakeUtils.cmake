@@ -361,6 +361,7 @@ function(appveyor_reset_build_number)
                         -H Accept:application/json
                         -d "{ \"nextBuildNumber\": 1 }"
                         ${APPVEYOR_API_URL}/settings/build-number
+                    COMMAND_ECHO STDOUT
     )
 endfunction()
 
