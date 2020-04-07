@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # Using the BinTray REST API for some tweaks after deployment.
 # Make sure all uploaded files appear in the direct downloads section
 
