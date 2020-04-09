@@ -53,6 +53,8 @@ for:
       - image: macos
   environment:
     CACHEID: macos64
+  init:
+    - brew install p7zip
   install:
     - sh src/appveyor/0_install_macos.sh
   artifacts:
@@ -60,14 +62,11 @@ for:
     - path: src/sasfit_*_*.tar.bz2
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
-    - '$APPVEYOR_BUILD_FOLDER/src/gsl/$CACHEID -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
-    - '/Users/appveyor/projects/sasfit/src/gsl/macos64 -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'src/gsl/$CACHEID      -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'src/fftw/$CACHEID     -> src/fftw/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'src/tcl/$CACHEID      -> src/tcl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
-  on_finish:
-    - ls -la /var/folders/; ls -la /var/folders/5c; ls -la /var/folders/5c/0fwh2vd52hzbpq9xpjsfct740000gn; ls -la /var/folders/5c/0fwh2vd52hzbpq9xpjsfct740000gn/T; ls -la /var/folders/5c/0fwh2vd52hzbpq9xpjsfct740000gn/T/build-cache-logs; cat /var/folders/5c/0fwh2vd52hzbpq9xpjsfct740000gn/T/build-cache-logs/01505f7509370af16f9d12c174e7d1c8b8ce7427.log; cat /var/folders/5c/0fwh2vd52hzbpq9xpjsfct740000gn/T/build-cache-logs/357cace95b697bca885a48da3b68d1a704d3c9c7.log
 
 build_script:
   - sh src/appveyor/4_build.sh
