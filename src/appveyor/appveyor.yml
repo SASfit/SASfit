@@ -39,6 +39,7 @@ for:
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
+    - path: saskit\saskit_*.exe
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
     - 'src\gsl\%CACHEID%      -> src\gsl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
@@ -60,6 +61,7 @@ for:
   artifacts:
     # final SASfit package
     - path: src/sasfit_*_*.tar.bz2
+    - path: saskit/saskit_*
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
     - 'src/gsl/$CACHEID      -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
