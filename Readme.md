@@ -92,7 +92,8 @@ Create a build directory:
     sasfit % mkdir build
     sasfit % cd build
 
-Close the terminal window and open the one named *MSYS2 MinGW 64-bit* in the Windows Start Menu. It should have the commands *gcc* and *cmake* in PATH.
+Close the terminal window and open the one named **MSYS2 MinGW 64-bit** in the Windows Start Menu (Do not use the plain *MSYS2* terminal, it does not work as expected).
+The terminal should have the commands *gcc* and *cmake* in PATH.
 
 Configure the source with CMake which builds required packages on the way:
 
