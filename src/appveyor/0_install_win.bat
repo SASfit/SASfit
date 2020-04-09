@@ -6,7 +6,6 @@ echo Architecture: %MSYS2_ARCH%
 echo Platform: %PLATFORM%
 echo MSYS2 directory: %MSYS2_DIR%
 echo MSYS2 system: %MSYSTEM%
-echo Bits: %BIT%
 
 @echo.
 @echo ## Updating PATH for MSYS2/MinGW64:
