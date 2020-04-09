@@ -106,6 +106,7 @@ deploy:
     package: SASfit
     version: '%SASFIT_VERSION%' # should be set by cmake
     publish:  true
+    artifact: /.*\.(tar\.bz2|zip)/
     on:
       branch: master
 
