@@ -12,7 +12,7 @@ set -x
 brew update; brew upgrade; brew update; brew upgrade
 brew cleanup
 # already installed: git, cmake
-brew install gcc
+brew install gcc p7zip
 brew cask install xquartz
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
