@@ -62,10 +62,10 @@
  *       <td>forward scattering</td>
  *      </tr><tr>
  *       <td>\b theta_0</td>
- *       <td>flow direction</td>
+ *       <td>flow direction relative to horizontal (east) direction</td>
  *      </tr><tr>
  *       <td>\b psi</td>
- *       <td>angle between q and shear direction</td>
+ *       <td>angle between q and horizontal (east) direction</td>
  *      </tr><tr>
  *       <td>\b Delta_theta_0</td>
  *       <td>opening angle of aperture sector</td>
@@ -166,26 +166,32 @@ sasfit_shearflow_DLLEXP scalar sasfit_ff_polymer_under_shearflow1_v(scalar q, sa
  *       <td>\b Rg</td>
  *       <td>Radius of gyration</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b psi</td>
- *       <td>angle between q and shear direction</td>
- *      </tr><tr>
- *       <td>\b nu</td>
- *       <td>slope change (between 0-1)</td>
+ *       <td>\b x</td>
+ *       <td>position where the slope change happens (between 0-1)</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
- *       <td>x-direction</td>
+ *       <td>1st slope of MSD in flow-direction</td>
  *      </tr><tr>
  *       <td>\b beta</td>
- *       <td>z-direction</td>
+ *       <td>1st slope of MSD in vorticity-direction</td>
  *      </tr><tr>
  *       <td>\b gamma</td>
- *       <td>x-direction</td>
+ *       <td>2nd slope of MSD in flow-direction</td>
  *      </tr><tr>
  *       <td>\b delta</td>
- *       <td>z-direction</td>
+ *       <td>2nd slope of MSD in vorticity-direction</td>
+ *      </tr><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering</td>
+ *      </tr><tr>
+ *       <td>\b theta_0</td>
+ *       <td>flow direction relative to horizontal (east) direction</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>angle between q and horizontal (east) direction</td>
+ *      </tr><tr>
+ *       <td>\b Delta_theta_0</td>
+ *       <td>opening angle of aperture sector</td>
  *      </tr></table>
  */
 
@@ -342,26 +348,32 @@ sasfit_shearflow_DLLEXP scalar sasfit_ff_ring_under_shearflow1_v(scalar q, sasfi
  *       <td>\b Rg</td>
  *       <td>Radius of gyration</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b psi</td>
- *       <td>angle between q and shear direction</td>
- *      </tr><tr>
- *       <td>\b nu</td>
- *       <td>slope change (between 0-1)</td>
+ *       <td>\b x</td>
+ *       <td>position where the slope change happens (between 0-1)</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
- *       <td>x-direction</td>
+ *       <td>1st slope of MSD in flow-direction</td>
  *      </tr><tr>
  *       <td>\b beta</td>
- *       <td>z-direction</td>
+ *       <td>1st slope of MSD in vorticity-direction</td>
  *      </tr><tr>
  *       <td>\b gamma</td>
- *       <td>x-direction</td>
+ *       <td>2nd slope of MSD in flow-direction</td>
  *      </tr><tr>
  *       <td>\b delta</td>
- *       <td>z-direction</td>
+ *       <td>2nd slope of MSD in vorticity-direction</td>
+ *      </tr><tr>
+ *       <td>\b I0</td>
+ *       <td>forward scattering</td>
+ *      </tr><tr>
+ *       <td>\b theta_0</td>
+ *       <td>flow direction relative to horizontal (east) direction</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>angle between q and horizontal (east) direction</td>
+ *      </tr><tr>
+ *       <td>\b Delta_theta_0</td>
+ *       <td>opening angle of aperture sector</td>
  *      </tr></table>
  */
 

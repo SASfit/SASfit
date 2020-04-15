@@ -8,45 +8,68 @@
 
 // define shortcuts for local parameters/variables
 #define RG	param->p[0]
-#define DUMMY	param->p[1]
-#define PSI_DEG	param->p[2]
-#define NU	param->p[3]
-#define A	param->p[4]
-#define B	param->p[5]
-#define G	param->p[6]
-#define D	param->p[7]
+#define FP	param->p[1]
+#define ALPHA	param->p[2]
+#define BETA	param->p[3]
+#define GAMMA	param->p[4]
+#define DELTA	param->p[5]
+#define I0  param->p[6]
+#define THETA0_DEG	param->p[7]
+#define THETA0	(param->p[7]*M_PI/180)
+#define PSI_DEG	param->p[8]
+#define DELTA_THETA0DEG  param->p[9]
+#define DELTA_THETA0    (param->p[9]*M_PI/180.)
 #define Q   param->p[MAXPAR-1]
 #define PSI	param->p[MAXPAR-2]
 #define BB  param->p[MAXPAR-3]
 #define CC  param->p[MAXPAR-4]
-#define NORM  param->p[MAXPAR-4]
 
 scalar r2expQRn2(scalar x,void *pam){
 	sasfit_param * param;
 	param = (sasfit_param *) pam;
-	scalar mu;
+	scalar mu,cscale;
 	mu = fabs(x);
-	if (mu<=NU) {
-        return BB*mu/NORM;
+
+    cscale = sqrt(BB/(CC + 2*BB*FP - 2*CC*FP));
+
+	if (mu<=FP) {
+        return BB*mu*cscale;
+	} else if (mu>=1-FP) {
+	    return (CC - 2*CC*FP + BB*(-1 + 2*FP + mu))*cscale;
+    } else {
+	    return (BB*FP + CC*(-FP + mu))*cscale;
+	}
+
+	if (mu<=FP) {
+        return BB*mu;
 	} else {
-	    return (BB*NU + CC*(mu-NU))/NORM;
+	    return (BB*FP + CC*(mu-FP));
 	}
 }
 
 scalar gsl_r2expQRn2(scalar x,sasfit_param * param){
-    scalar t;
+    scalar t,t1;
+
     t=r2expQRn2(x,param);
-	return (1-x)*exp(-gsl_pow_2(Q*RG)*NORM*t*(1-t));
+    t1=r2expQRn2(1,param);
+
+	return 2*(1-x)*exp(-2*gsl_pow_2(Q*RG)*t*(t1-t));
 }
 
 int rshearflow2_kernel_cub(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval) {
+      unsigned fdim, double *fval)
+{
 	sasfit_param * param;
 	param = (sasfit_param *) pam;
-	if ((ndim < 1) || (fdim < 1)) {
+
+	if ((ndim < 2) || (fdim < 1)) {
 		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
 		return 1;
 	}
+
+    BB= gsl_pow_2(ALPHA*cos(x[1]+THETA0-PSI))+gsl_pow_2(BETA *sin(x[1]+THETA0-PSI));
+    CC= gsl_pow_2(GAMMA*cos(x[1]+THETA0-PSI))+gsl_pow_2(DELTA*sin(x[1]+THETA0-PSI));
+
 	fval[0]=gsl_r2expQRn2(x[0],param);
 	return 0;
 }
@@ -59,7 +82,7 @@ scalar rshearflow2_kernel_OOURA(scalar x, void *pam) {
 
 scalar sasfit_ff_ring_under_shearflow2(scalar q, sasfit_param * param)
 {	scalar *aw, res,err,sum;
-    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
+    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
     int intstrategy, lenaw=4000;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -73,9 +96,10 @@ scalar sasfit_ff_ring_under_shearflow2(scalar q, sasfit_param * param)
 
 	cubxmin[0]=0;
 	cubxmax[0]=1;
-	BB = gsl_pow_2(A*cos(PSI))+gsl_pow_2(B*sin(PSI));
-	CC = gsl_pow_2(G*cos(PSI))+gsl_pow_2(D*sin(PSI));
-    NORM = BB*NU+CC*(1-NU);
+	cubxmin[1]=-DELTA_THETA0/2.;
+	cubxmax[1]= DELTA_THETA0/2.;
+    BB= gsl_pow_2(ALPHA*cos(THETA0-PSI))+gsl_pow_2(BETA *sin(THETA0-PSI));
+    CC= gsl_pow_2(GAMMA*cos(THETA0-PSI))+gsl_pow_2(DELTA*sin(THETA0-PSI));
 
 	intstrategy = sasfit_get_int_strategy();
 //    intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
@@ -97,17 +121,19 @@ scalar sasfit_ff_ring_under_shearflow2(scalar q, sasfit_param * param)
             break;
             }
     case H_CUBATURE: {
-			hcubature(1, &rshearflow2_kernel_cub,param,1, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+			hcubature(1, &rshearflow2_kernel_cub,param,2, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
+			if (DELTA_THETA0 != 0) sum=sum/DELTA_THETA0;
             break;
             }
     case P_CUBATURE: {
-			pcubature(1, &rshearflow2_kernel_cub,param,1, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
+			pcubature(1, &rshearflow2_kernel_cub,param,2, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
+			if (DELTA_THETA0 != 0) sum=sum/DELTA_THETA0;
             break;
             }
     default: {
@@ -116,7 +142,7 @@ scalar sasfit_ff_ring_under_shearflow2(scalar q, sasfit_param * param)
             break;
             }
     }
-    return sum;
+    return I0*sum;
 }
 
 scalar sasfit_ff_ring_under_shearflow2_f(scalar q, sasfit_param * param)
