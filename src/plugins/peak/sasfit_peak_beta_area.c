@@ -56,7 +56,7 @@ scalar sasfit_peak_beta_area(scalar x, sasfit_param * param)
 
 	z = (x-xmin)/(xmax-xmin);
 
-	return BCKGR+AREA*pow(z,BALPHA-1.0)*pow(1.0-z,BBETA-1.0)/gsl_sf_beta(BALPHA,BBETA)/(xmax-xmin);
+	return BCKGR+AREA/(xmax-xmin)*pow(z,BALPHA-1.0)*pow(1.0-z,BBETA-1.0)/gsl_sf_beta(BALPHA,BBETA)/(xmax-xmin);
 }
 
 scalar sasfit_peak_beta_area_f(scalar q, sasfit_param * param)

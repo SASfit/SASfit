@@ -576,6 +576,10 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rstart = a1;
 				*Rend   = a2;
 				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_steffen8")      == 0) ) {
+				*Rstart = a1;
+				*Rend   = a2;
+				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_lognorm_fp")       == 0) ) {
 			   a4 = fabs(a4);
 			   R_0  = a4*exp(-a2*a2*(a3-moment));

@@ -37,13 +37,13 @@
 scalar sasfit_peak_kumaraswamy_area(scalar x, sasfit_param * param)
 {
 	scalar z, xmin, xmax;
-	
+
 	SASFIT_ASSERT_PTR( param );
 
 	SASFIT_CHECK_COND2((XMIN == XMAX), param, "xmin(%lg) == xmax(%lg)",XMIN,XMAX);
 	SASFIT_CHECK_COND1((ALPHA <= 0.0), param, "alpha(%lg) <= 0",ALPHA);
 	SASFIT_CHECK_COND1((BETA  <= 0.0), param, "beta(%lg) <= 0",BETA);
-	
+
 	if (XMIN>XMAX) {
 		xmin = XMAX;
 		xmax = XMIN;
@@ -57,7 +57,7 @@ scalar sasfit_peak_kumaraswamy_area(scalar x, sasfit_param * param)
 
 	z = (x-xmin)/(xmax-xmin);
 
-	return BCKGR+AREA*ALPHA*BETA*pow(z,ALPHA-1.0)*pow(1.0-pow(z,ALPHA),BETA-1.0)/(xmax-xmin);
+	return BCKGR+AREA/(xmax-xmin)*ALPHA*BETA*pow(z,ALPHA-1.0)*pow(1.0-pow(z,ALPHA),BETA-1.0)/(xmax-xmin);
 }
 
 scalar sasfit_peak_kumaraswamy_area_f(scalar q, sasfit_param * param)

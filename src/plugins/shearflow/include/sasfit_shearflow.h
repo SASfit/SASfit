@@ -166,7 +166,7 @@ sasfit_shearflow_DLLEXP scalar sasfit_ff_polymer_under_shearflow1_v(scalar q, sa
  *       <td>\b Rg</td>
  *       <td>Radius of gyration</td>
  *      </tr><tr>
- *       <td>\b x</td>
+ *       <td>\b f</td>
  *       <td>position where the slope change happens (between 0-1)</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
@@ -348,7 +348,7 @@ sasfit_shearflow_DLLEXP scalar sasfit_ff_ring_under_shearflow1_v(scalar q, sasfi
  *       <td>\b Rg</td>
  *       <td>Radius of gyration</td>
  *      </tr><tr>
- *       <td>\b x</td>
+ *       <td>\b f</td>
  *       <td>position where the slope change happens (between 0-1)</td>
  *      </tr><tr>
  *       <td>\b alpha</td>

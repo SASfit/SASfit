@@ -183,7 +183,7 @@ In all three cases given in that paper the mean squared displacement function (M
 \begin{align}
   \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} & = a \abs{n-m}/N
 \end{align}
-with $N$ being the number of segments of the polymer, $a=(qR_g)^2$, where $R_g$ is the equilibrium radius of gyration, so that
+with $N$ being the number of segments of the polymer, $a=(qR_g)^2=N\lambda^2/6$, where $\lambda$ is the Kuhn length and $R_g$  the equilibrium radius of gyration, so that
 \begin{align}
   P_\mathrm{iso}(\mathbf{q}) & = \frac{2\left(e^{-a}-1+a\right)}{a^2}
 \end{align}
@@ -208,9 +208,9 @@ with $N$ being the number of segments of the polymer, $a=(qR_g)^2$, where $R_g$ 
 \item  a semi-empirical 3-parameter formula $(B_x,B_y,\xi)$ to have a similar shape than the piecewise linear MSD function above.
     \begin{multline}
     \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} =\left(qR_g\right)^2 \times \\
-    \left(
-      \abs{\frac{n-m}{N}} + \left(B_x^2q^2\cos^2(\psi-\phi_0)+B_y^2q^2\sin^2(\psi-\phi_0)\right)\abs{\frac{n-m}{N}}^\xi
-    \right)
+    \left\{
+      \abs{\frac{n-m}{N}} + \left[B_x^2\cos^2(\psi-\phi_0)-B_y^2\sin^2(\psi-\phi_0)\right]\abs{\frac{n-m}{N}}^\xi
+    \right\}
     \end{multline}
     To get the same endpoints than the piecewise linear MSD function the amplitudes should be $B_x=\sqrt{\nu\alpha^2+(1-\nu)\gamma^2}$ and $B_y=\sqrt{\nu\beta^2+(1-\nu)\delta^2}$.
     After making use of the identity \ref{eq:2D1D_int_identity} the scattering intensity is than given by

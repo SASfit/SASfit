@@ -18,8 +18,10 @@
 gsl_interp_accel *acc_cspline;
 gsl_spline * ffakima8_T;
 gsl_spline * ffcspline8_T;
+gsl_spline * ffsteffen8_T;
 gsl_spline * sdakima8_T;
 gsl_spline * sdcspline8_T;
+gsl_spline * sdsteffen8_T;
 
 // mandatory, no adjustments necessary
 #include <sasfit_common.h>

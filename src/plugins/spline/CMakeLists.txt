@@ -12,12 +12,14 @@ set(LIBS_EXT
 set(SOURCE_${PRJ_NAME}
 	sasfit_sd_akima8.c
 	sasfit_sd_cspline8.c
+	sasfit_sd_steffen8.c
 	sasfit_ff_akima8.c
 	sasfit_ff_cspline8.c
+	sasfit_ff_steffen8.c
 	interface.c
 )
 
-# path to 'Find*.cmake' files in sasfit package, 
+# path to 'Find*.cmake' files in sasfit package,
 # relative to the location of this file
 set(REL_CMAKE_MODULE_PATH ../../cmake)
 

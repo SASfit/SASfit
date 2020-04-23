@@ -14,6 +14,9 @@
 // optional, depends on form factor implementation
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_min.h>
 
 // mandatory, no adjustments necessary
 #include <sasfit_common.h>

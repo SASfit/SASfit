@@ -1684,6 +1684,107 @@ y(x; x_0,\sigma) &= A\; \frac{\exp\left(-\frac{x-x_0}{\sigma}\right)} {\sigma\le
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{LogitNormal} ~\\
+\label{sec:Logit}
+The Logit-Normal distribution is a continuous
+probability distribution on a bounded interval of a random variable, whose logit has a normal distribution.  The probability
+density function (pdf) of the logistic  distribution is given by:
+\begin{align}
+p(x; \mu,\sigma) &= \frac{\exp\left(-\frac{\left(\operatorname{logit(x)}-\mu\right)^2}{2\sigma^2}\right)} {\sigma\sqrt{2\pi}\left(x(1-x)\right)} \\
+\operatorname{logit(x)} &= \log\left(\frac{x}{1-x}\right)
+\end{align}
+Because the pdf can be expressed in terms of the square of the
+hyperbolic secant function $\operatorname{sech}$, it is sometimes referred to as
+the sech-squared distribution. The mode, mean and median values are $x_0$.
+\vspace{1cm}
+\subsection{LogitNormal (Amplitude)} ~\\
+\label{sec:LogitAmplitude}
+\begin{align}
+y(x; A,x_\mathrm{min},x_\mathrm{max},\mu,\sigma) &= \frac{A}{c} \frac{\exp\left(-\frac{\left(\operatorname{logit(z)}-\mu\right)^2}{2\sigma^2}\right)} {\sigma\sqrt{2\pi}\left(z(1-z)\right)} \\
+z &= \frac{\left(x-x_\mathrm{min}\right)}{x_\mathrm{max}-x_\mathrm{min}}
+\end{align}
+The scaling variable $c$ is chosen so that at the mode $x_\mathrm{mode}$ of the distribution its value becomes $y(x_\mathrm{mode}; A,\ldots) = A$. The mode itself is numerically calculated as for this distribution there does not exists an analytical definition of it.
+
+ ~\\
+ 
+\underline{Required parameters:}
+\begin{description}
+    \item[amplitude] amplitude $A$ of the LogitNormal distribution
+    \item[xmin] lower bound $x_\mathrm{min}$
+    \item[xmax] upper bound $x_\mathrm{max}$
+    \item[mu] location parameters $\mu$
+    \item[sigma] width parameters $\sigma$
+    \item[backgr] offset $c_0$
+\end{description}
+
+\underline{Note}
+\begin{itemize}
+  \item the width parameter needs to be non-zero $\sigma^2 > 0$
+  \item width of the boundary interval needs to be finite, i.e.\ $\abs{x_\mathrm{max}-x_\mathrm{min}}>0$
+  \item Default (size) distribution: Monodisperse
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth]{../images/peaks/LogitNormal/LogitAmplitude.png}
+\end{center}
+\caption{Plot of \texttt{LogitNormal (Amplitude)} distribution.}
+\label{fig:LogitAmplitude}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection{LogitNormal (Area)} ~\\
+\label{sec:LogitArea}
+\begin{align}
+y(x; A,x_\mathrm{min},x_\mathrm{max},\mu,\sigma) &= \frac{A}{\left(x-x_\mathrm{min}\right)} \frac{\exp\left(-\frac{\left(\operatorname{logit(z)}-\mu\right)^2}{2\sigma^2}\right)} {\sigma\sqrt{2\pi}\left(z(1-z)\right)} \\
+z &= \frac{\left(x-x_\mathrm{min}\right)}{x_\mathrm{max}-x_\mathrm{min}}
+\end{align}
+
+\underline{Required parameters:}
+\begin{description}
+    \item[area] area $A$ below LogitNormal distribution
+    \item[xmin] lower bound $x_\mathrm{min}$
+    \item[xmax] upper bound $x_\mathrm{max}$
+    \item[mu] location parameters $\mu$
+    \item[sigma] width parameters $\sigma$
+    \item[backgr] offset $c_0$
+\end{description}
+
+\underline{Note}
+\begin{itemize}
+  \item the width parameter needs to be non-zero $\sigma^2 > 0$
+  \item width of the boundary interval needs to be finite, i.e.\ $\abs{x_\mathrm{max}-x_\mathrm{min}}>0$
+  \item Default (size) distribution: Monodisperse
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth]{../images/peaks/LogitNormal/LogitArea.png}
+\end{center}
+\caption{Plot of \texttt{LogitNormal (Area)} distribution}.
+\label{fig:LogitArea}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+
 \section{LogLogistic} ~\\
 \label{sec:LogLogistic}
 As may be indicated by the name, the loglogistic (known as the Fisk distribution in economics)

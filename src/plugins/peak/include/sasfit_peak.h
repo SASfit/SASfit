@@ -39,7 +39,7 @@
 
 
 /* ################ start peak_beta_amplitude ################ */
-/** 
+/**
  * \defgroup peak_beta_amplitude Beta Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -94,7 +94,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_beta_amplitude_v(scalar q, sasfit_param * 
 /* ################ stop peak_beta_amplitude ################ */
 
 /* ################ start peak_beta_area ################ */
-/** 
+/**
  * \defgroup peak_beta_area Beta Area
  * \ingroup ff_peak_area
  *
@@ -149,7 +149,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_beta_area_v(scalar q, sasfit_param * p, in
 /* ################ stop peak_beta_area ################ */
 
 /* ################ start peak_chi_squared_amplitude ################ */
-/** 
+/**
  * \defgroup peak_chi_squared_amplitude Chi-squared Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -204,7 +204,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_amplitude_v(scalar q, sasfit_p
 /* ################ stop peak_chi_squared_amplitude ################ */
 
 /* ################ start peak_chi_squared_area ################ */
-/** 
+/**
  * \defgroup peak_chi_squared_area Chi-squared Area
  * \ingroup ff_peak_area
  *
@@ -259,7 +259,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_chi_squared_area_v(scalar q, sasfit_param 
 /* ################ stop peak_chi_squared_area ################ */
 
 /* ################ start peak_erfc_amplitude ################ */
-/** 
+/**
  * \defgroup peak_erfc_amplitude Erfc Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -314,7 +314,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_erfc_amplitude_v(scalar q, sasfit_param * 
 /* ################ stop peak_erfc_amplitude ################ */
 
 /* ################ start peak_erfc_area ################ */
-/** 
+/**
  * \defgroup peak_erfc_area Erfc Area
  * \ingroup ff_peak_area
  *
@@ -369,7 +369,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_erfc_area_v(scalar q, sasfit_param * p, in
 /* ################ stop peak_erfc_area ################ */
 
 /* ################ start peak_error_amplitude ################ */
-/** 
+/**
  * \defgroup peak_error_amplitude Error Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -424,7 +424,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_error_amplitude_v(scalar q, sasfit_param *
 /* ################ stop peak_error_amplitude ################ */
 
 /* ################ start peak_error_area ################ */
-/** 
+/**
  * \defgroup peak_error_area Error Area
  * \ingroup ff_peak_area
  *
@@ -480,7 +480,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_error_area_v(scalar q, sasfit_param * p, i
 
 
 /* ################ start peak_exponentially_modified_gaussian_amplitude ################ */
-/** 
+/**
  * \defgroup peak_exponentially_modified_gaussian_amplitude Exponentially Modified Gaussian Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -535,7 +535,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_amplitude_
 /* ################ stop peak_exponentially_modified_gaussian_amplitude ################ */
 
 /* ################ start peak_exponentially_modified_gaussian_area ################ */
-/** 
+/**
  * \defgroup peak_exponentially_modified_gaussian_area Exponentially Modified Gaussian Area
  * \ingroup ff_peak_area
  *
@@ -590,7 +590,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_exponentially_modified_gaussian_area_v(sca
 /* ################ stop peak_exponentially_modified_gaussian_area ################ */
 
 /* ################ start peak_extreme_value_amplitude ################ */
-/** 
+/**
  * \defgroup peak_extreme_value_amplitude Extreme Value Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -645,7 +645,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_amplitude_v(scalar q, sasfit
 /* ################ stop peak_extreme_value_amplitude ################ */
 
 /* ################ start peak_extreme_value_area ################ */
-/** 
+/**
  * \defgroup peak_extreme_value_area Extreme Value Area
  * \ingroup ff_peak_area
  *
@@ -700,7 +700,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_extreme_value_area_v(scalar q, sasfit_para
 /* ################ stop peak_extreme_value_area ################ */
 
 /* ################ start peak_fatique_life_amplitude ################ */
-/** 
+/**
  * \defgroup peak_fatique_life_amplitude Fatique Life Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -755,7 +755,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_amplitude_v(scalar q, sasfit_
 /* ################ stop peak_fatique_life_amplitude ################ */
 
 /* ################ start peak_fatique_life_area ################ */
-/** 
+/**
  * \defgroup peak_fatique_life_area Fatique Life Area Area
  * \ingroup ff_peak_area
  *
@@ -810,7 +810,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_fatique_life_area_v(scalar q, sasfit_param
 /* ################ stop peak_fatique_life_area ################ */
 
 /* ################ start peak_f_variance_amplitude ################ */
-/** 
+/**
  * \defgroup peak_f_variance_amplitude F-variance Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -865,7 +865,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_amplitude_v(scalar q, sasfit_pa
 /* ################ stop peak_f_variance_amplitude ################ */
 
 /* ################ start peak_f_variance_area ################ */
-/** 
+/**
  * \defgroup peak_f_variance_area F-variance Area Area
  * \ingroup ff_peak_area
  *
@@ -920,7 +920,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_f_variance_area_v(scalar q, sasfit_param *
 /* ################ stop peak_f_variance_area ################ */
 
 /* ################ start peak_gamma_amplitude ################ */
-/** 
+/**
  * \defgroup peak_gamma_amplitude Gamma Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -975,7 +975,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gamma_amplitude_v(scalar q, sasfit_param *
 /* ################ stop peak_gamma_amplitude ################ */
 
 /* ################ start peak_gamma_area ################ */
-/** 
+/**
  * \defgroup peak_gamma_area Gamma Area
  * \ingroup ff_peak_area
  *
@@ -1030,7 +1030,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gamma_area_v(scalar q, sasfit_param * p, i
 /* ################ stop peak_gamma_area ################ */
 
 /* ################ start peak_gaussian_amplitude ################ */
-/** 
+/**
  * \defgroup peak_gaussian_amplitude Gaussian Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1085,7 +1085,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_amplitude_v(scalar q, sasfit_para
 /* ################ stop peak_gaussian_amplitude ################ */
 
 /* ################ start peak_gaussian_area ################ */
-/** 
+/**
  * \defgroup peak_gaussian_area Gaussian Area
  * \ingroup ff_peak_area
  *
@@ -1140,7 +1140,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_area_v(scalar q, sasfit_param * p
 /* ################ stop peak_gaussian_area ################ */
 
 /* ################ start peak_gaussian_lorentzian_cross_product_amplitude ################ */
-/** 
+/**
  * \defgroup peak_gaussian_lorentzian_cross_product_amplitude Gaussian-Lorentzian Cross-Product Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1195,7 +1195,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_amplitud
 /* ################ stop peak_gaussian_lorentzian_cross_product_amplitude ################ */
 
 /* ################ start peak_gaussian_lorentzian_cross_product_area ################ */
-/** 
+/**
  * \defgroup peak_gaussian_lorentzian_cross_product_area Gaussian-Lorentzian Cross-Product Area
  * \ingroup ff_peak_area
  *
@@ -1250,7 +1250,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_cross_product_area_v(s
 /* ################ stop peak_gaussian_lorentzian_cross_product_area ################ */
 
 /* ################ start peak_gaussian_lorentzian_sum_amplitude ################ */
-/** 
+/**
  * \defgroup peak_gaussian_lorentzian_sum_amplitude Gaussian-Lorentzian Sum Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1305,7 +1305,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_amplitude_v(scalar
 /* ################ stop peak_gaussian_lorentzian_sum_amplitude ################ */
 
 /* ################ start peak_gaussian_lorentzian_sum_area ################ */
-/** 
+/**
  * \defgroup peak_gaussian_lorentzian_sum_area Gaussian-Lorentzian Sum Area
  * \ingroup ff_peak_area
  *
@@ -1359,7 +1359,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gaussian_lorentzian_sum_area_v(scalar q, s
 /* ################ stop peak_gaussian_lorentzian_sum_area ################ */
 
 /* ################ start peak_generalized_gaussian1_amplitude ################ */
-/** 
+/**
  * \defgroup peak_generalized_gaussian1_amplitude generalized Gaussian1 Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1414,7 +1414,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_amplitude_v(scalar q
 /* ################ stop peak_generalized_gaussian1_amplitude ################ */
 
 /* ################ start peak_generalized_gaussian1_area ################ */
-/** 
+/**
  * \defgroup peak_generalized_gaussian1_area generalized Gaussian1 Area
  * \ingroup ff_peak_area
  *
@@ -1469,7 +1469,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian1_area_v(scalar q, sas
 /* ################ stop peak_generalized_gaussian1_area ################ */
 
 /* ################ start peak_generalized_gaussian2_area ################ */
-/** 
+/**
  * \defgroup peak_generalized_gaussian2_area generalized Gaussian2 Area
  * \ingroup ff_peak_area
  *
@@ -1524,7 +1524,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_area_v(scalar q, sas
 /* ################ stop peak_generalized_gaussian2_are ################ */
 
 /* ################ start peak_generalized_gaussian2_amplitude ################ */
-/** 
+/**
  * \defgroup peak_generalized_gaussian2_amplitude generalized Gaussian2 Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1579,7 +1579,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_gaussian2_amplitude_v(scalar q
 /* ################ stop peak_generalized_gaussian2_amplitude ################ */
 
 /* ################ start peak_generalized_maxwell_area ################ */
-/** 
+/**
  * \defgroup peak_generalized_maxwell_area generalized Maxwell Area
  * \ingroup ff_peak_area
  *
@@ -1634,7 +1634,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_area_v(scalar q, sasfi
 /* ################ stop sasfit_peak_generalized_maxwell_area ################ */
 
 /* ################ start peak_generalized_maxwell_amplitude ################ */
-/** 
+/**
  * \defgroup peak_generalized_maxwell_amplitude Maxwell Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1689,7 +1689,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_generalized_maxwell_amplitude_v(scalar q, 
 /* ################ stop peak_generalized_maxwell_amplitude ################ */
 
 /* ################ start peak_gex_amplitude ################ */
-/** 
+/**
  * \defgroup peak_gex_amplitude GEX Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1744,7 +1744,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_amplitude_v(scalar q, sasfit_param * p
 /* ################ stop peak_gex_amplitude ################ */
 
 /* ################ start peak_gex_area ################ */
-/** 
+/**
  * \defgroup peak_gex_area GEX Area
  * \ingroup ff_peak_area
  *
@@ -1799,7 +1799,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_gex_area_v(scalar q, sasfit_param * p, int
 /* ################ stop peak_gex_area ################ */
 
 /* ################ start peak_giddings_area ################ */
-/** 
+/**
  * \defgroup peak_giddings_area Giddings Area
  * \ingroup ff_peak_area
  *
@@ -1854,7 +1854,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_giddings_area_v(scalar q, sasfit_param * p
 /* ################ stop peak_giddings_area ################ */
 
 /* ################ start peak_giddings_amplitude ################ */
-/** 
+/**
  * \defgroup peak_giddings_amplitude Giddings Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -1909,7 +1909,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_giddings_amplitude_v(scalar q, sasfit_para
 /* ################ stop peak_giddings_amplitude ################ */
 
 /* ################ start peak_haarhoff_vander_linde_area ################ */
-/** 
+/**
  * \defgroup peak_haarhoff_vander_linde_area Haarhoff Van der Linde Area
  * \ingroup ff_peak_area
  *
@@ -1964,7 +1964,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_haarhoff_vander_linde_area_v(scalar q, sas
 /* ################ stop peak_haarhoff_vander_linde_area ################ */
 
 /* ################ start peak_half_gaussian_modified_gaussian_area ################ */
-/** 
+/**
  * \defgroup peak_half_gaussian_modified_gaussian_area half Gaussian modified Gaussian Area
  * \ingroup ff_peak_area
  *
@@ -2019,7 +2019,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_half_gaussian_modified_gaussian_area_v(sca
 /* ################ stop peak_half_gaussian_modified_gaussian_area ################ */
 
 /* ################ start peak_inverted_gamma_area ################ */
-/** 
+/**
  * \defgroup peak_inverted_gamma_area Inverted Gamma Area
  * \ingroup ff_peak_area
  *
@@ -2074,7 +2074,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_area_v(scalar q, sasfit_par
 /* ################ stop peak_inverted_gamma_area ################ */
 
 /* ################ start peak_inverted_gamma_amplitude ################ */
-/** 
+/**
  * \defgroup peak_inverted_gamma_amplitude Inverted Gamma Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2129,7 +2129,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_inverted_gamma_amplitude_v(scalar q, sasfi
 /* ################ stop peak_inverted_gamma_amplitude ################ */
 
 /* ################ start peak_kumaraswamy_area ################ */
-/** 
+/**
  * \defgroup peak_kumaraswamy_area Kumaraswamy Area
  * \ingroup ff_peak_area
  *
@@ -2184,7 +2184,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_area_v(scalar q, sasfit_param 
 /* ################ stop peak_kumaraswamy_area ################ */
 
 /* ################ start peak_kumaraswamy_amplitude ################ */
-/** 
+/**
  * \defgroup peak_kumaraswamy_amplitude Kumaraswamy Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2239,7 +2239,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_kumaraswamy_amplitude_v(scalar q, sasfit_p
 /* ################ stop peak_kumaraswamy_amplitude ################ */
 
 /* ################ start peak_laplace_area ################ */
-/** 
+/**
  * \defgroup peak_laplace_area Laplace Area
  * \ingroup ff_peak_area
  *
@@ -2294,7 +2294,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_laplace_area_v(scalar q, sasfit_param * p,
 /* ################ stop peak_laplace_area ################ */
 
 /* ################ start peak_laplace_amplitude ################ */
-/** 
+/**
  * \defgroup peak_laplace_amplitude Laplace Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2349,7 +2349,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_laplace_amplitude_v(scalar q, sasfit_param
 /* ################ stop peak_laplace_amplitude ################ */
 
 /* ################ start peak_logistic_area ################ */
-/** 
+/**
  * \defgroup peak_logistic_area Logistic Area
  * \ingroup ff_peak_area
  *
@@ -2404,7 +2404,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_logistic_area_v(scalar q, sasfit_param * p
 /* ################ stop peak_logistic_area ################ */
 
 /* ################ start peak_logistic_amplitude ################ */
-/** 
+/**
  * \defgroup peak_logistic_amplitude Logistic Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2458,8 +2458,119 @@ sasfit_peak_DLLEXP scalar sasfit_peak_logistic_amplitude_f(scalar q, sasfit_para
 sasfit_peak_DLLEXP scalar sasfit_peak_logistic_amplitude_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop peak_logistic_amplitude ################ */
 
+/* ################ start peak_logit_amplitude ################ */
+/**
+ * \defgroup peak_logit_amplitude LogitNormal Amplitude
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief \<some brief description of LogitNormal Amplitude function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref Delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b x_min</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b x_max</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_logit_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logit_amplitude(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logit_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logit_amplitude_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logit_amplitude
+ *
+ * \sa sasfit_peak.h, ff_peak_amplitudes
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logit_amplitude_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_logit_amplitude ################ */
+
+/* ################ start peak_logit_area ################ */
+/**
+ * \defgroup peak_logit_area LogitNormal Area
+ * \ingroup ff_peak_area
+ *
+ * \brief \<some brief description of LogitNormal Area function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref Delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b x_min</td>
+ *       <td>lower bound/td>
+ *      </tr><tr>
+ *       <td>\b x_max</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td>location parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b backgr</td>
+ *       <td>constant background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup peak_logit_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logit_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logit_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logit_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup peak_logit_area
+ *
+ * \sa sasfit_peak.h, ff_peak_area
+ */
+sasfit_peak_DLLEXP scalar sasfit_peak_logit_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop peak_logit_area ################ */
+
+
 /* ################ start peak_loglogistic_area ################ */
-/** 
+/**
  * \defgroup peak_loglogistic_area LogLogistic Area
  * \ingroup ff_peak_area
  *
@@ -2514,7 +2625,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_area_v(scalar q, sasfit_param 
 /* ################ stop peak_loglogistic_area ################ */
 
 /* ################ start peak_loglogistic_amplitude ################ */
-/** 
+/**
  * \defgroup peak_loglogistic_amplitude LogLogistic Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2569,7 +2680,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_loglogistic_amplitude_v(scalar q, sasfit_p
 /* ################ stop peak_loglogistic_amplitude ################ */
 
 /* ################ start peak_lognormal_area ################ */
-/** 
+/**
  * \defgroup peak_lognormal_area LogNormal Area
  * \ingroup ff_peak_area
  *
@@ -2624,7 +2735,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_area_v(scalar q, sasfit_param * 
 /* ################ stop peak_lognormal_area ################ */
 
 /* ################ start peak_lognormal_amplitude ################ */
-/** 
+/**
  * \defgroup peak_lognormal_amplitude LogNormal Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2679,7 +2790,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal_amplitude_v(scalar q, sasfit_par
 /* ################ stop peak_lognormal_amplitude ################ */
 
 /* ################ start peak_lognormal4parameter_area ################ */
-/** 
+/**
  * \defgroup peak_lognormal4parameter_area LogNormal4Parameter Area
  * \ingroup ff_peak_area
  *
@@ -2734,7 +2845,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_area_v(scalar q, sasfi
 /* ################ stop peak_lognormal4parameter_area ################ */
 
 /* ################ start peak_lognormal4parameter_amplitude ################ */
-/** 
+/**
  * \defgroup peak_lognormal4parameter_amplitude LogNormal4Parameter Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2789,7 +2900,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lognormal4parameter_amplitude_v(scalar q, 
 /* ################ stop peak_lognormal4parameter_amplitude ################ */
 
 /* ################ start peak_lorentzian_area ################ */
-/** 
+/**
  * \defgroup peak_lorentzian_area Lorentzian Area
  * \ingroup ff_peak_area
  *
@@ -2844,7 +2955,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_area_v(scalar q, sasfit_param *
 /* ################ stop peak_lorentzian_area ################ */
 
 /* ################ start peak_lorentzian_amplitude ################ */
-/** 
+/**
  * \defgroup peak_lorentzian_amplitude Lorentzian Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -2899,7 +3010,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_lorentzian_amplitude_v(scalar q, sasfit_pa
 /* ################ stop peak_lorentzian_amplitude ################ */
 
 /* ################ start peak_maxwell_area ################ */
-/** 
+/**
  * \defgroup peak_maxwell_area Maxwell Area
  * \ingroup ff_peak_area
  *
@@ -2954,7 +3065,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_area_v(scalar q, sasfit_param * p,
 /* ################ stop peak_maxwell_area ################ */
 
 /* ################ start peak_maxwell_amplitude ################ */
-/** 
+/**
  * \defgroup peak_maxwell_amplitude Maxwell Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3009,7 +3120,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_maxwell_amplitude_v(scalar q, sasfit_param
 /* ################ stop peak_maxwell_amplitude ################ */
 
 /* ################ start peak_pearsonIV_area ################ */
-/** 
+/**
  * \defgroup peak_pearsonIV_area PearsonIV Area
  * \ingroup ff_peak_area
  *
@@ -3064,7 +3175,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_area_v(scalar q, sasfit_param * 
 /* ################ stop peak_pearsonIV_area ################ */
 
 /* ################ start peak_pearsonIV_amplitude ################ */
-/** 
+/**
  * \defgroup peak_pearsonIV_amplitude PearsonIV Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3119,7 +3230,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonIV_amplitude_v(scalar q, sasfit_par
 /* ################ stop peak_pearsonIV_amplitude ################ */
 
 /* ################ start peak_pearsonVII_area ################ */
-/** 
+/**
  * \defgroup peak_pearsonVII_area PearsonVII Area
  * \ingroup ff_peak_area
  *
@@ -3174,7 +3285,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_area_v(scalar q, sasfit_param *
 /* ################ stop peak_pearsonVII_area ################ */
 
 /* ################ start peak_pearsonVII_amplitude ################ */
-/** 
+/**
  * \defgroup peak_pearsonVII_amplitude PearsonVII Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3229,7 +3340,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pearsonVII_amplitude_v(scalar q, sasfit_pa
 /* ################ stop peak_pearsonVII_amplitude ################ */
 
 /* ################ start peak_powerlognormal_area ################ */
-/** 
+/**
  * \defgroup peak_powerlognormal_area power LogNormal Area
  * \ingroup ff_peak_area
  *
@@ -3284,7 +3395,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_powerlognormal_area_v(scalar q, sasfit_par
 /* ################ stop peak_powerlognormal_area ################ */
 
 /* ################ start peak_powernormal_area ################ */
-/** 
+/**
  * \defgroup peak_powernormal_area power Normal Area
  * \ingroup ff_peak_area
  *
@@ -3339,7 +3450,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_powernormal_area_v(scalar q, sasfit_param 
 /* ################ stop peak_powernormal_area ################ */
 
 /* ################ start peak_pulse_area ################ */
-/** 
+/**
  * \defgroup peak_pulse_area Pulse Area
  * \ingroup ff_peak_area
  *
@@ -3394,7 +3505,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_area_v(scalar q, sasfit_param * p, i
 /* ################ stop peak_pulse_area ################ */
 
 /* ################ start peak_pulse_amplitude ################ */
-/** 
+/**
  * \defgroup peak_pulse_amplitude Pulse Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3449,7 +3560,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_amplitude_v(scalar q, sasfit_param *
 /* ################ stop peak_pulse_amplitude ################ */
 
 /* ################ start peak_pulse_with_2nd_width_area ################ */
-/** 
+/**
  * \defgroup peak_pulse_with_2nd_width_area Pulse with 2nd width term Area
  * \ingroup ff_peak_area
  *
@@ -3504,7 +3615,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_area_v(scalar q, sasf
 /* ################ stop peak_pulse_with_2nd_width_area ################ */
 
 /* ################ start peak_pulse_with_2nd_width_amplitude ################ */
-/** 
+/**
  * \defgroup peak_pulse_with_2nd_width_amplitude Pulse with 2nd width term Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3559,7 +3670,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_2nd_width_amplitude_v(scalar q,
 /* ################ stop peak_pulse_with_2nd_width_amplitude ################ */
 
 /* ################ start peak_pulse_with_power_term_area ################ */
-/** 
+/**
  * \defgroup peak_pulse_with_power_term_area Pulse with power term Area
  * \ingroup ff_peak_area
  *
@@ -3614,7 +3725,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_area_v(scalar q, sas
 /* ################ stop peak_pulse_with_power_term_area ################ */
 
 /* ################ start peak_pulse_with_power_term_amplitude ################ */
-/** 
+/**
  * \defgroup peak_pulse_with_power_term_amplitude Pulse with power term Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3669,7 +3780,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_pulse_with_power_term_amplitude_v(scalar q
 /* ################ stop peak_pulse_with_power_term_amplitude ################ */
 
 /* ################ start peak_student_t_area ################ */
-/** 
+/**
  * \defgroup peak_student_t_area Student-t Area
  * \ingroup ff_peak_area
  *
@@ -3724,7 +3835,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_student_t_area_v(scalar q, sasfit_param * 
 /* ################ stop peak_student_t_area ################ */
 
 /* ################ start peak_student_t_amplitude ################ */
-/** 
+/**
  * \defgroup peak_student_t_amplitude Student-t Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3779,7 +3890,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_student_t_amplitude_v(scalar q, sasfit_par
 /* ################ stop peak_student_t_amplitude ################ */
 
 /* ################ start peak_voigt_area ################ */
-/** 
+/**
  * \defgroup peak_voigt_area Voigt Area
  * \ingroup ff_peak_area
  *
@@ -3833,7 +3944,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_voigt_area_v(scalar q, sasfit_param * p, i
 /* ################ stop peak_voigt_area ################ */
 
 /* ################ start peak_voigt_amplitude ################ */
-/** 
+/**
  * \defgroup peak_voigt_amplitude Voigt Amplitude
  * \ingroup ff_peak_amplitudes
  *
@@ -3888,7 +3999,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_voigt_amplitude_v(scalar q, sasfit_param *
 /* ################ stop peak_voigt_amplitude ################ */
 
 /* ################ start peak_weibull_area ################ */
-/** 
+/**
  * \defgroup peak_weibull_area Weibull Area
  * \ingroup ff_peak_area
  *
@@ -3943,7 +4054,7 @@ sasfit_peak_DLLEXP scalar sasfit_peak_weibull_area_v(scalar q, sasfit_param * p,
 /* ################ stop peak_weibull_area ################ */
 
 /* ################ start peak_weibull_amplitude ################ */
-/** 
+/**
  * \defgroup peak_weibull_amplitude Weibull Amplitude
  * \ingroup ff_peak_amplitudes
  *

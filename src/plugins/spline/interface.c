@@ -7,11 +7,13 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(4)
+SASFIT_PLUGIN_EXP_BEGIN(6)
 SASFIT_PLUGIN_EXP_ADD( sd_akima8 )
 SASFIT_PLUGIN_EXP_ADD( sd_cspline8 )
+SASFIT_PLUGIN_EXP_ADD( sd_steffen8 )
 SASFIT_PLUGIN_EXP_ADD( ff_akima8 )
 SASFIT_PLUGIN_EXP_ADD( ff_cspline8 )
+SASFIT_PLUGIN_EXP_ADD( ff_steffen8 )
 
 SASFIT_PLUGIN_EXP_END
 
@@ -26,8 +28,10 @@ void do_at_init(void)
 	acc_cspline = gsl_interp_accel_alloc ();
 	sdakima8_T = gsl_spline_alloc (gsl_interp_akima, 10);
 	sdcspline8_T = gsl_spline_alloc (gsl_interp_cspline , 10);
+	sdsteffen8_T = gsl_spline_alloc (gsl_interp_steffen , 10);
 	ffakima8_T = gsl_spline_alloc (gsl_interp_akima, 10);
 	ffcspline8_T = gsl_spline_alloc (gsl_interp_cspline , 10);
+	ffsteffen8_T = gsl_spline_alloc (gsl_interp_steffen , 10);
 }
 
 #endif

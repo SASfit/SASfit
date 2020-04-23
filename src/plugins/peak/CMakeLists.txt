@@ -54,6 +54,8 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_peak_laplace_area.c
 	sasfit_peak_logistic_amplitude.c
 	sasfit_peak_logistic_area.c
+	sasfit_peak_logit_amplitude.c
+	sasfit_peak_logit_area.c
 	sasfit_peak_loglogistic_amplitude.c
 	sasfit_peak_loglogistic_area.c
 	sasfit_peak_lognormal4parameter_amplitude.c

@@ -23,11 +23,11 @@ scalar f1expQRn2(scalar x,void *pam){
 	param = (sasfit_param *) pam;
 	scalar mu;
 	mu = fabs(x);
-	return gsl_pow_2(Q*RG)*(mu+pow(mu,XI)*(gsl_pow_2(BX*cos(PSI))-gsl_pow_2(BZ*sin(PSI))));
+	return gsl_pow_2(Q*RG)*(mu+pow(mu,XI)*(GSL_SIGN(BX)*gsl_pow_2(BX*cos(PSI))+GSL_SIGN(BZ)*gsl_pow_2(BZ*sin(PSI))));
 }
 
 scalar gsl_f1expQRn2(scalar x,sasfit_param * param){
-	return (1-x)*exp(-f1expQRn2(x,param));
+	return 2*(1-x)*exp(-f1expQRn2(x,param));
 }
 
 scalar QRnm2_1(void *pam){
@@ -64,7 +64,9 @@ scalar sasfit_ff_polymer_under_shearflow1(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((RG < 0.0), param, "Rg(%lg) < 0",RG); // modify condition to your needs
+	SASFIT_CHECK_COND1((RG < 0.0), param, "Rg(%lg) < 0",RG); // modify condition to your needs);
+	SASFIT_CHECK_COND1((BX < -1.0), param, "Bx(%lg) < -1",BX); // modify condition to your needs);
+	SASFIT_CHECK_COND1((BZ < -1.0), param, "Bz(%lg) < -1",BZ); // modify condition to your needs);
 
 	// insert your code here
 

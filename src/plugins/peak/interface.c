@@ -8,7 +8,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(72)
+SASFIT_PLUGIN_EXP_BEGIN(74)
 SASFIT_PLUGIN_EXP_ADD( peak_beta_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_beta_area )
 SASFIT_PLUGIN_EXP_ADD( peak_chi_squared_amplitude )
@@ -53,6 +53,8 @@ SASFIT_PLUGIN_EXP_ADD( peak_laplace_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_laplace_area )
 SASFIT_PLUGIN_EXP_ADD( peak_logistic_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_logistic_area )
+SASFIT_PLUGIN_EXP_ADD( peak_logit_amplitude )
+SASFIT_PLUGIN_EXP_ADD( peak_logit_area )
 SASFIT_PLUGIN_EXP_ADD( peak_loglogistic_amplitude )
 SASFIT_PLUGIN_EXP_ADD( peak_loglogistic_area )
 SASFIT_PLUGIN_EXP_ADD( peak_lognormal4parameter_amplitude )

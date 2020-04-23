@@ -41,7 +41,7 @@ proc Erik {} {
 }
 
 proc Consiglia {} {
-	global sasfit consoglia
+	global sasfit consiglia
 	if { [catch {source $sasfit(tcl)/Consiglia.tcl} result] } {
 		puts stderr "error while sourcing Consiglia.tcl: $result"
 	}
