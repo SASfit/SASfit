@@ -15,6 +15,12 @@ focus .consiglia
 #	trace vdelete consiglia(Rg)  w set_WiRgCmd
 #	trace vdelete consiglia(nu)  w set_WiRgCmd
 #	trace vdelete consiglia(Wi)  w set_WiRgCmd
+#	trace vdelete consiglia(sRg)  w set_slopeRgCmd
+#	trace vdelete consiglia(f)  w set_slopeRgCmd
+#	trace vdelete consiglia(alpha)  w set_slopeRgCmd
+#	trace vdelete consiglia(beta)  w set_slopeRgCmd
+#	trace vdelete consiglia(gamma)  w set_slopeRgCmd
+#	trace vdelete consiglia(delta)  w set_slopeRgCmd
 
 
 global consiglia
@@ -175,6 +181,10 @@ grid .consiglia.v_sRglin_vorticity -column 5 -row 6
 
 grid .consiglia.l_sRgring_vorticity -column 4 -row 7 -sticky e
 grid .consiglia.v_sRgring_vorticity -column 5 -row 7
+
+trace variable consiglia(Rg)  w set_WiRgCmd
+trace variable consiglia(nu)  w set_WiRgCmd
+trace variable consiglia(Wi)  w set_WiRgCmd
 
 trace variable consiglia(sRg)  w set_slopeRgCmd
 trace variable consiglia(f)  w set_slopeRgCmd
