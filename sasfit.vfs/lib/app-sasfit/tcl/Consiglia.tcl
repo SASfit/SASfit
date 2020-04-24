@@ -53,7 +53,7 @@ proc set_WiRgCmd { name1 name2 opt } {
 	set rfac [expr [::math::special::Gamma [expr -2+1.5+2*$nu]]*([::math::special::Gamma [expr -2+0.5+2*$nu]]/(sqrt($pi)*[::math::special::Gamma [expr -2+1.5+4*$nu]])+pow(2.,1.-8*$nu)*[::math::special::Gamma [expr -2+1+6*$nu]]/([::math::special::Gamma [expr -2+1+2*$nu]]*[::math::special::Gamma [expr -2+1.5+6*$nu]])) ]
 	set rWi2 [ expr pow($pi,4)*pow($consiglia(Wi),2)/1440. ]
 	set consiglia(Rgring) [expr $consiglia(Rg)*sqrt(1.+$rfac*$rWi2) ]
-	puts "[expr 2/7.] $rfac"
+#	puts "[expr 2/7.] $rfac"
 }
 
 proc set_slopeRgCmd { name1 name2 opt } {
@@ -75,7 +75,7 @@ proc set_slopeRgCmd { name1 name2 opt } {
 
 	set consiglia(sRglinflow) [expr $consiglia(sRg)*$lfracf ]
 	set consiglia(sRglinvorticity) [expr $consiglia(sRg)*$lfracv ]
-	puts "$consiglia(sRglinflow) $consiglia(sRglinvorticity)"
+#	puts "$consiglia(sRglinflow) $consiglia(sRglinvorticity)"
 }
 
 
