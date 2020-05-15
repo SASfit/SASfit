@@ -31,7 +31,7 @@ fi
 export NUM_LOGICAL_CORES
 echo "Determined $NUM_LOGICAL_CORES logical cores."
 which cmake
-cmake --version
+cmake --help
 echo
 
 cd "$APPVEYOR_BUILD_FOLDER" && \

@@ -187,7 +187,7 @@ static sasfit_plugin_info_t plugin_import = { 0 };
  * Inserts interface definition code to a plugins <tt>interface.c</tt> file.
  */
 #define SASFIT_PLUGIN_INTERFACE \
-const sasfit_common_stubs_t * sasfit_common_stubs_ptr = 0; \
+static const sasfit_common_stubs_t * sasfit_common_stubs_ptr = 0; \
 int get_ver(void) \
 { \
 	return SASFIT_PLUGIN_VERSION; \
