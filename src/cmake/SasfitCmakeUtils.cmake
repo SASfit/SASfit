@@ -972,26 +972,28 @@ function(get_dependent_libs out_list filename)
         return()
     endif()
     message(STATUS "Searching dependencies of '${filename}':")
-    if(WIN32)
-        # new CMake command file(GET_RUNTIME_DEPENDENCIES) does not identify libwinpthread* as dependency
-        execute_process(COMMAND ldd "${filename}"
-                        COMMAND awk "!/[\\/][wW][iI][nN][dD][oO][wW][sS][\\/]|[\\?]+/ {print $3}"
-                        OUTPUT_VARIABLE dep_stdout
-                        OUTPUT_STRIP_TRAILING_WHITESPACE)
-        # find cygpath tool
-        find_program(cygpath name cygpath HINTS ENV PATH)
-        if(NOT EXISTS ${cygpath})
-            message(WARNING "Cygpath tool could not be found!")
-        else()
-            message(STATUS "Using cygpath: '${cygpath}'.")
-        endif()
-    elseif(MACOS)
+    if(MACOS)
         execute_process(COMMAND otool -L "${filename}"
                         COMMAND awk -F "(" "/^[[:space:]]/ { print $1 }"
                         COMMAND grep -v "^[[:space:]]\\+/System/Library"
                         COMMAND grep -v "^[[:space:]]\\+/usr/lib"
                         OUTPUT_VARIABLE dep_stdout
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
+    else() # win/mingw or linux
+        # new CMake command file(GET_RUNTIME_DEPENDENCIES) does not identify libwinpthread* as dependency
+        execute_process(COMMAND ldd "${filename}"
+                        COMMAND awk "!/[\\/][wW][iI][nN][dD][oO][wW][sS][\\/]|[\\?]+/ {print $3}"
+                        OUTPUT_VARIABLE dep_stdout
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        if(WIN32)
+            # find cygpath tool
+            find_program(cygpath name cygpath HINTS ENV PATH)
+            if(NOT EXISTS ${cygpath})
+                message(WARNING "Cygpath tool could not be found!")
+            else()
+                message(STATUS "Using cygpath: '${cygpath}'.")
+            endif()
+        endif()
     endif()
     cmake_print_variables(dep_stdout)
 #    if(UNIX AND NOT APPLE) # linux
