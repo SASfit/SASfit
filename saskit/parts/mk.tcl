@@ -28,7 +28,7 @@ part::create mk \
         }
     } \
     -librarycommand {
-        return [list [part::destdir mk]/mk4tcl.a]
+        return [list [part::destdir mk]/Mk4tcl.a]
     } \
     -options {debug 0 thread 0} \
     -depend {tcl} \

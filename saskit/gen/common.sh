@@ -7,6 +7,8 @@ fi
 SYSTEM_NAME="$(uname -s)";
 SYSTEM_ARCH="$(uname -m)";
 
+CMD_CC=gcc
+CMD_CXX=g++
 if [ "$SYSTEM_NAME" = "Darwin" ]; then
     SYSTEM_ARCH="x86_64"
     # find X11 headers and libs
@@ -18,16 +20,21 @@ if [ "$SYSTEM_NAME" = "Darwin" ]; then
     for libdir in /usr/X11/lib /opt/local/lib; do
         [ -f "$libdir/libX11.a" ] && CFLAGS="$CFLAGS -L$libdir"
     done
-    # echo "CFLAGS: '$CFLAGS'"
-    export CFLAGS
-    # find optionally installed gcc package if not already defined
-    if [ ! -f "$CC" ] || [ ! -f "$CXX" ]; then
-        CC=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^gcc-(mp-)?[0-9]+' | head -n1))
-        CXX=$(which $(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^g\+\+-(mp-)?[0-9]+' | head -n1))
-        [ -f "$CC" ] && export CC
-        [ -f "$CXX" ] && export CXX
-    fi
+    CMD_CC="$( echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^gcc-(mp-)?[0-9]+' | head -n1)"
+    CMD_CXX="$(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^g\+\+-(mp-)?[0-9]+' | head -n1)"
 fi;
+
+# find optionally installed gcc package if not already defined
+if [ ! -f "$CC" ] || [ ! -f "$CXX" ]; then
+    CC=$(which $CMD_CC)
+    CXX=$(which $CMD_CXX)
+    [ -f "$CC" ] && export CC
+    [ -f "$CXX" ] && export CXX
+fi
+
+# echo "CFLAGS: '$CFLAGS'"
+export CFLAGS="$CFLAGS"
+
 if uname -s | grep -q '^MINGW' ; then # do not replace backslashes in paths
     export CYGPATH=echo
 fi
