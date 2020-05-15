@@ -25,3 +25,6 @@
 - [CMake] remove duplicate Tcl package from source, can be provided by saskit source tree
   - already same Tcl tree actually
 
+- for multiple curves, they get the same colors and symbols by default?
+  Can this be changed? Chose from a color table automatically? [by Andreas]
+
