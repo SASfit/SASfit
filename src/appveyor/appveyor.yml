@@ -10,6 +10,7 @@ clone_depth: 1
 image:
   - Visual Studio 2019
   - macos
+  - Ubuntu2004
 
 environment:
   BT_API:
@@ -70,6 +71,25 @@ for:
     - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
 
+-
+  matrix:
+    only:
+      - image: Ubuntu2004
+  environment:
+    CACHEID: linux64
+  install:
+    - sudo apt-get -y install git build-essential cmake gcc libx11-dev
+  artifacts:
+    # final SASfit package
+    - path: src/sasfit_*_*.tar.bz2
+    - path: saskit/saskit_*
+  cache: # 1GB max with free accounts
+    # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
+    - 'src/gsl/$CACHEID      -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'src/fftw/$CACHEID     -> src/fftw/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'src/tcl/$CACHEID      -> src/tcl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
 build_script:
   - sh src/appveyor/4_build.sh
 
