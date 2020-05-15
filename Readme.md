@@ -134,7 +134,38 @@ Configure the source with CMake which builds required packages on the way:
 
 Finally, build SASfit itself which should generate a binary package if it was successful:
 
-    sasfit/build % make
+    sasfit/build % make -j4
+
+Linux
+-----
+
+*(Tested with Ubuntu 20.04 LTS)*
+
+On a fresh system, install the required development tools:
+
+    $ sudo apt install git build-essential cmake gcc
+
+Additionally install the X11 development packages:
+
+    $ sudo apt install libx11-dev
+
+Get a copy of the latest SASfit source code:
+
+    $ git clone https://github.com/SASfit/SASfit.git sasfit
+
+Create a build directory:
+
+    $ cd sasfit
+    sasfit $ mkdir build
+    sasfit $ cd build
+
+Configure the source with CMake which builds required packages on the way:
+
+    sasfit/build $ cmake ../src
+
+Finally, build SASfit itself which should generate a binary package if it was successful:
+
+    sasfit/build $ make -j4
 
 Common helpers
 --------------
