@@ -81,7 +81,6 @@ for:
     - echo $SHELL
     - ps -ef | grep $$ | grep -v grep
     - which cmake; cmake --version
-    - update-alternatives --get-selections | grep cmake
     - which gcc; cmake --version
     - update-alternatives --display cc
     - snap list
