@@ -87,7 +87,7 @@
  */
 #define SASFIT_PLUGIN_INFO_DECL \
 /* data structures */ \
-const sasfit_common_stubs_t * sasfit_common_stubs_ptr; \
+static const sasfit_common_stubs_t * sasfit_common_stubs_ptr; \
 sasfit_plugin_info_t * imp_ptr; \
 /* internal functions */ \
 void do_at_init(void); \
