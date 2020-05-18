@@ -80,10 +80,13 @@ for:
   install:
     - echo $SHELL
     - ps -ef | grep $$ | grep -v grep
-    - which cmake
-    - which gcc
-    - dpkg -l
-    - sudo apt-get -y install git build-essential cmake gcc libx11-dev
+    - which cmake; cmake --version
+    - update-alternatives --get-selections | grep cmake
+    - which gcc; cmake --version
+    - update-alternatives --display cc
+    - snap list
+    - sudo apt-get -y install libx11-dev
+    #- sudo apt-get -y install git build-essential cmake gcc libx11-dev
   artifacts:
     # final SASfit package
     - path: src/sasfit_*_*.tar.bz2
