@@ -328,15 +328,14 @@ function(appveyor_get_latest_version)
     # find the version text in JSON of the last build on appveyor
     string(REGEX MATCHALL "\"version\":\"[^\"]+\"" match_version
                           ${appveyor_last_build_json})
-    cmake_print_variables(match_version)
+    #cmake_print_variables(match_version)
     string(REGEX MATCHALL "\"buildNumber\":\"?[0-9]+\"?" match_buildNumber
                           ${appveyor_last_build_json})
-    cmake_print_variables(match_buildNumber)
-    cmake_print_variables(CMAKE_VERSION)
+    #cmake_print_variables(match_buildNumber)
     # find a version unequal build number
     # (both are equal at the beginning, version is changed by CMake later)
     foreach(ver bnum IN ZIP_LISTS match_version match_buildNumber)
-        cmake_print_variables(ver bnum)
+        #cmake_print_variables(ver bnum)
         string_split_2nd(ver :)
         string_split_2nd(bnum :)
         string(REPLACE "\"" "" ver ${ver})
