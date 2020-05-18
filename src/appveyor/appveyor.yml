@@ -78,12 +78,9 @@ for:
   environment:
     CACHEID: linux64
   install:
-    - echo $SHELL
-    - ps -ef | grep $$ | grep -v grep
     - which cmake; cmake --version
-    - which gcc; cmake --version
-    - update-alternatives --display cc
-    - snap list
+    - which gcc; gcc --version
+    - echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | grep gcc
     - sudo apt-get -y install libx11-dev
     #- sudo apt-get -y install git build-essential cmake gcc libx11-dev
   artifacts:
