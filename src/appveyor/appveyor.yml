@@ -78,6 +78,11 @@ for:
   environment:
     CACHEID: linux64
   install:
+    - echo $SHELL
+    - ps -ef | grep $$ | grep -v grep
+    - which cmake
+    - which gcc
+    - dpkg -l
     - sudo apt-get -y install git build-essential cmake gcc libx11-dev
   artifacts:
     # final SASfit package
