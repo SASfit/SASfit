@@ -239,7 +239,7 @@ typedef struct
 	peak_shape_type  peak_shape_type_Selector;
 } ordered_particles_param;
 
-ordered_particles_param ospParameter;
+static ordered_particles_param ospParameter;
 
 void set_ki(ordered_particles_param *, sasfit_param *);
 void set_ks(ordered_particles_param *, sasfit_param *);

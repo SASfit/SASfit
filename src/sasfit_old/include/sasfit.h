@@ -193,7 +193,7 @@ typedef struct
 //        char ct[STRLEN];
 } EM_param_t;
 
-float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
+extern float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
 /*
  * if particle_type[i][0] == 0  &&  particle_type[i][1] == 0
  * then the next 7 parameters are defined as

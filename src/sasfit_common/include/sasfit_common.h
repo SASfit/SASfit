@@ -64,7 +64,7 @@
 // global variables/storage
 
 /// Lookup table for exported sasfit_common functions.
-sasfit_common_stubs_t	sasfit_common_stubs;
+extern sasfit_common_stubs_t	sasfit_common_stubs;
 
 #endif // MAKE_SASFIT_PLUGIN
 #endif // file

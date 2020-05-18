@@ -6,13 +6,10 @@
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
-// define shortcuts for local parameters/variables
-
-opo_data opod;
-
 scalar sasfit_ff_parallelepiped_opo(scalar q, sasfit_param * param)
 {
     scalar psi;
+    opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q); // modify condition to your needs
@@ -47,6 +44,7 @@ scalar sasfit_ff_parallelepiped_opo(scalar q, sasfit_param * param)
 scalar sasfit_ff_parallelepiped_opo_f(scalar q, sasfit_param * param)
 {
     scalar psi;
+    opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");

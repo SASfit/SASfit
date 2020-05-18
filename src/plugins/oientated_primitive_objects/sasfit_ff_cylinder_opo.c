@@ -6,12 +6,10 @@
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
-// define shortcuts for local parameters/variables
-opo_data opod;
-
 scalar sasfit_ff_cylinder_opo(scalar q, sasfit_param * param)
 {
     scalar psi;
+	opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -45,6 +43,7 @@ scalar sasfit_ff_cylinder_opo(scalar q, sasfit_param * param)
 scalar sasfit_ff_cylinder_opo_f(scalar q, sasfit_param * param)
 {
     scalar psi;
+	opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
