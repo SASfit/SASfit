@@ -31,20 +31,20 @@
 #include <sasfit_common.h>
 #include <f2c.h>
 
-extern struct {
+static struct {
 	integer p, idistr;
 	doublereal atau, btau, tau[200], pi;
 } _BLNK__;
 
 #define _BLNK__1 _BLNK__
 
-extern struct {
+static struct {
 	integer li, lj;
 } wl_;
 
 #define wl_1 wl_
 
-extern union {
+static union {
 	struct {
 		integer v[20];
 		doublereal x[200], x2[200];
@@ -58,13 +58,13 @@ extern union {
 #define ve_1 (ve_._1)
 #define ve_2 (ve_._2)
 
-extern struct {
+static struct {
 	doublereal f_value__;
 } ltrap_;
 
 #define ltrap_1 ltrap_
 
-extern union {
+static union {
 	struct {
 		doublereal x[20], r__[20];
 	} _1;
@@ -76,13 +76,13 @@ extern union {
 #define pa_1 (pa_._1)
 #define pa_2 (pa_._2)
 
-extern struct {
+static struct {
 	doublereal k2, k3, h__, h2, pi12, pi6;
 } fu_;
 
 #define fu_1 fu_
 
-extern struct {
+static struct {
 	doublereal r1[400]  /* was [20][20] */,
 		   r2[400]     /* was [20][20] */,
 		   rr[400]     /* was [20][20] */;
@@ -90,13 +90,13 @@ extern struct {
 
 #define ri_1 ri_
 
-extern struct {
+static struct {
 	doublereal b[20];
 } be_;
 
 #define be_1 be_
 
-extern struct {
+static struct {
 	doublereal rho[12], dlayer[10], dzeep;
 	integer iform, nrho, nlayer;
 } deeltje_;
