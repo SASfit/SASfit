@@ -66,6 +66,7 @@
 #define SASFIT_CONCAT(a, b) a ## b
 
 /// Returns address of lookup table for exported sasfit_common functions.
+sasfit_common_DLLEXP
 const sasfit_common_stubs_t * sasfit_common_stubs_ptr();
 
 #endif // file
