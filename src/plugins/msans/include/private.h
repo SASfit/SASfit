@@ -25,24 +25,24 @@
   SASFIT_PLUGIN_INFO_DECL;
 
   // use lookup table for ff_gz_dab(q, param)
-  #define sasfit_ff_gz_dab(q,p) imp_ptr->functions[0].func((q),(p))
-  #define sasfit_ff_gz_dab_f(q,p) imp_ptr->functions[0].func_f((q),(p))
-  #define sasfit_ff_gz_dab_v(q,p,d) imp_ptr->functions[0].func_v((q),(p),(d))
+  #define sasfit_ff_gz_dab(q,p) SASFIT_PLUGIN_IMPORTS()->functions[0].func((q),(p))
+  #define sasfit_ff_gz_dab_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[0].func_f((q),(p))
+  #define sasfit_ff_gz_dab_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[0].func_v((q),(p),(d))
 
   // use lookup table for ff_gz_generalized_dab(q, param)
-  #define sasfit_ff_gz_generalized_dab(q,p) imp_ptr->functions[1].func((q),(p))
-  #define sasfit_ff_gz_generalized_dab_f(q,p) imp_ptr->functions[1].func_f((q),(p))
-  #define sasfit_ff_gz_generalized_dab_v(q,p,d) imp_ptr->functions[1].func_v((q),(p),(d))
+  #define sasfit_ff_gz_generalized_dab(q,p) SASFIT_PLUGIN_IMPORTS()->functions[1].func((q),(p))
+  #define sasfit_ff_gz_generalized_dab_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[1].func_f((q),(p))
+  #define sasfit_ff_gz_generalized_dab_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[1].func_v((q),(p),(d))
 
   // use lookup table for ff_gz_ggc(q, param)
-  #define sasfit_ff_gz_ggc(q,p) imp_ptr->functions[2].func((q),(p))
-  #define sasfit_ff_gz_ggc_f(q,p) imp_ptr->functions[2].func_f((q),(p))
-  #define sasfit_ff_gz_ggc_v(q,p,d) imp_ptr->functions[2].func_v((q),(p),(d))
+  #define sasfit_ff_gz_ggc(q,p) SASFIT_PLUGIN_IMPORTS()->functions[2].func((q),(p))
+  #define sasfit_ff_gz_ggc_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[2].func_f((q),(p))
+  #define sasfit_ff_gz_ggc_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[2].func_v((q),(p),(d))
 
   // use lookup table for ff_gz_sphere(q, param)
-  #define sasfit_ff_gz_sphere(q,p) imp_ptr->functions[3].func((q),(p))
-  #define sasfit_ff_gz_sphere_f(q,p) imp_ptr->functions[3].func_f((q),(p))
-  #define sasfit_ff_gz_sphere_v(q,p,d) imp_ptr->functions[3].func_v((q),(p),(d))
+  #define sasfit_ff_gz_sphere(q,p) SASFIT_PLUGIN_IMPORTS()->functions[3].func((q),(p))
+  #define sasfit_ff_gz_sphere_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[3].func_f((q),(p))
+  #define sasfit_ff_gz_sphere_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[3].func_v((q),(p),(d))
 
 #else
 

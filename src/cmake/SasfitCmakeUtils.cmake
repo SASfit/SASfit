@@ -255,16 +255,15 @@ macro(sasfit_cmake_plugin)
 	endforeach(LIB_EXT)
 
 	# set some compiler switches
-	set_target_properties(${PRJ_NAME} PROPERTIES COMPILE_DEFINITIONS MAKE_SASFIT_PLUGIN)
+	set_property(TARGET ${PRJ_NAME} PROPERTY COMPILE_DEFINITIONS MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
 	set(COMPILE_FLAGS)
 	if(UNIX)
 		set(COMPILE_FLAGS "-Wall")
 		if(DEFINED SASFIT_DEBUG)
-			set(COMPILE_FLAGS "${COMPILE_FLAGS} -g")
+			set(COMPILE_FLAGS "${COMPILE_FLAGS} -g") # -O0 -save-temps
 		endif(DEFINED SASFIT_DEBUG)
 	endif(UNIX)
 	set_target_properties(${PRJ_NAME} PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
-#	sasfit_build_props_unix(${PRJ_NAME} -save-temps)
 
 	# set library search paths for internal shared libraries
 	# build with the whole sasfit package controlled by a toplevel CMakeLists

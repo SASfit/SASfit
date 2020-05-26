@@ -109,7 +109,7 @@ int add_functions_to_db_and_list(Tcl_Interp * interp,
 	}
 
 	// init the plugin
-	res = plugin_api->do_init_func(&plugin_exp, &sasfit_common_stubs, &sasfit_plugin_search);
+	res = plugin_api->do_init_func(&plugin_exp, sasfit_common_stubs_ptr(), &sasfit_plugin_search);
 	if ( !res )
 	{
 		sasfit_err("Could not initialize the plugin!");

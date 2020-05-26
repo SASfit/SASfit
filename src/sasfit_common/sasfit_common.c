@@ -60,9 +60,9 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_print_param, /* 16 */
 	sasfit_copy_param, /* 17 */
 	sasfit_param_override_get_psi, /* 18 */
-	sasfit_param_override_get_psi2, /* 19 */
-	sasfit_param_override_get_2theta, /* 20 */
-	sasfit_param_override_get_lambda, /* 21 */
+	NULL, /* 19 */
+	NULL, /* 20 */
+	NULL, /* 21 */
 	sasfit_init_vector, /* 22 */
 	sasfit_free_vector, /* 23 */
 	sasfit_timer_create, /* 24 */
@@ -116,8 +116,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_eps_set_fitorsim, /* 72 */
 	sasfit_eps_set_h, /* 73 */
 	sasfit_eps_set_comp, /* 74 */
-	sasfit_set_iq_or_gz, /* 75 */
-	sasfit_get_iq_or_gz, /* 76 */
+	NULL, /* 75 */
+	NULL, /* 76 */
 	sasfit_set_int_strategy, /* 77 */
 	sasfit_get_int_strategy, /* 78 */
 	sasfit_sd_LogNorm, /* 79 */
@@ -137,28 +137,34 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_3f2, /* 93 */
 	sasfit_2f1, /* 94 */
 	sasfit_pfq, /* 95 */
-    sasfit_wofz, /* 96 */
-    re_cerf_z, /* 97 */
-    im_cerf_z, /* 98 */
-    re_cerfi_z, /* 99 */
-    im_cerfi_z, /* 100 */
-    re_w_of_z, /* 101 */
-    im_w_of_z, /* 102 */
-    w_of_z_e, /* 103 */
-    sasfit_jinc, /* 104 */
-    find_LogNorm_int_range, /* 105 */
-    hcubature, /* 106 */
-    pcubature, /* 107 */
-    sasfit_intccini, /* 108 */
-    sasfit_intcc, /* 109 */
-    sasfit_intdeiini, /* 110 */
-    sasfit_intdei, /* 111 */
-    sasfit_intdeoini, /* 112 */
-    sasfit_intdeo, /* 113 */
-    sasfit_intdeini, /* 114 */
-    sasfit_intde, /* 115 */
-    sasfit_cubature, /* 116 */
-    sasfit_erfinv, /* 117 */
+	sasfit_wofz, /* 96 */
+	re_cerf_z, /* 97 */
+	im_cerf_z, /* 98 */
+	re_cerfi_z, /* 99 */
+	im_cerfi_z, /* 100 */
+	re_w_of_z, /* 101 */
+	im_w_of_z, /* 102 */
+	w_of_z_e, /* 103 */
+	sasfit_jinc, /* 104 */
+	find_LogNorm_int_range, /* 105 */
+	hcubature, /* 106 */
+	pcubature, /* 107 */
+	sasfit_intccini, /* 108 */
+	sasfit_intcc, /* 109 */
+	sasfit_intdeiini, /* 110 */
+	sasfit_intdei, /* 111 */
+	sasfit_intdeoini, /* 112 */
+	sasfit_intdeo, /* 113 */
+	sasfit_intdeini, /* 114 */
+	sasfit_intde, /* 115 */
+	sasfit_cubature, /* 116 */
+	sasfit_erfinv, /* 117 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
+
+const sasfit_common_stubs_t * sasfit_common_stubs_ptr()
+{
+	return &sasfit_common_stubs;
+}
+

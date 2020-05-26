@@ -58,14 +58,14 @@
 #define GSL_EXPONENTIAL 16
 #define GSL_LAGUERRE 17
 #define GSL_JACOBI 18
-// hide direct functions from plugins
-#ifndef MAKE_SASFIT_PLUGIN
 
-// global variables/storage
+// helper for quoting compiler definitions
+#define __Q(x) #x
+#define SASFIT_QUOTE(x) __Q(x)
 
-/// Lookup table for exported sasfit_common functions.
-extern sasfit_common_stubs_t	sasfit_common_stubs;
+#define SASFIT_CONCAT(a, b) a ## b
 
-#endif // MAKE_SASFIT_PLUGIN
+/// Returns address of lookup table for exported sasfit_common functions.
+const sasfit_common_stubs_t * sasfit_common_stubs_ptr();
+
 #endif // file
-

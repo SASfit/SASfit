@@ -25,7 +25,7 @@
   SASFIT_PLUGIN_INFO_DECL;
 
   // use lookup table
-  #define sasfit_sq_baba_ahmed_syl(q,p) imp_ptr->functions[0].func((q),(p))
+  #define sasfit_sq_baba_ahmed_syl(q,p) SASFIT_PLUGIN_IMPORTS()->functions[0].func((q),(p))
 #else
   #include <sasfit_baba_ahmed.h>
 #endif

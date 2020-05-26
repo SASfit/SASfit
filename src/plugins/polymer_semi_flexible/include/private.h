@@ -25,34 +25,34 @@
   SASFIT_PLUGIN_INFO_DECL;
 
   // use lookup table for sq_freely_joined_chain_of_rods(q, param)
-  #define sasfit_sq_freely_joined_chain_of_rods(q,p) imp_ptr->functions[0].func((q),(p))
-  #define sasfit_sq_freely_joined_chain_of_rods_f(q,p) imp_ptr->functions[0].func_f((q),(p))
-  #define sasfit_sq_freely_joined_chain_of_rods_v(q,p,d) imp_ptr->functions[0].func_v((q),(p),(d))
+  #define sasfit_sq_freely_joined_chain_of_rods(q,p) SASFIT_PLUGIN_IMPORTS()->functions[0].func((q),(p))
+  #define sasfit_sq_freely_joined_chain_of_rods_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[0].func_f((q),(p))
+  #define sasfit_sq_freely_joined_chain_of_rods_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[0].func_v((q),(p),(d))
 
   // use lookup table for sq_koyama_worms(q, param)
-  #define sasfit_sq_koyama_worms(q,p) imp_ptr->functions[1].func((q),(p))
-  #define sasfit_sq_koyama_worms_f(q,p) imp_ptr->functions[1].func_f((q),(p))
-  #define sasfit_sq_koyama_worms_v(q,p,d) imp_ptr->functions[1].func_v((q),(p),(d))
+  #define sasfit_sq_koyama_worms(q,p) SASFIT_PLUGIN_IMPORTS()->functions[1].func((q),(p))
+  #define sasfit_sq_koyama_worms_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[1].func_f((q),(p))
+  #define sasfit_sq_koyama_worms_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[1].func_v((q),(p),(d))
 
   // use lookup table for sq_p__q___kholodenko_worm(q, param)
-  #define sasfit_sq_p__q___kholodenko_worm(q,p) imp_ptr->functions[2].func((q),(p))
-  #define sasfit_sq_p__q___kholodenko_worm_f(q,p) imp_ptr->functions[2].func_f((q),(p))
-  #define sasfit_sq_p__q___kholodenko_worm_v(q,p,d) imp_ptr->functions[2].func_v((q),(p),(d))
+  #define sasfit_sq_p__q___kholodenko_worm(q,p) SASFIT_PLUGIN_IMPORTS()->functions[2].func((q),(p))
+  #define sasfit_sq_p__q___kholodenko_worm_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[2].func_f((q),(p))
+  #define sasfit_sq_p__q___kholodenko_worm_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[2].func_v((q),(p),(d))
 
   // use lookup table for sq_p__q___worm_ps1_(q, param)
-  #define sasfit_sq_p__q___worm_ps1_(q,p) imp_ptr->functions[3].func((q),(p))
-  #define sasfit_sq_p__q___worm_ps1__f(q,p) imp_ptr->functions[3].func_f((q),(p))
-  #define sasfit_sq_p__q___worm_ps1__v(q,p,d) imp_ptr->functions[3].func_v((q),(p),(d))
+  #define sasfit_sq_p__q___worm_ps1_(q,p) SASFIT_PLUGIN_IMPORTS()->functions[3].func((q),(p))
+  #define sasfit_sq_p__q___worm_ps1__f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[3].func_f((q),(p))
+  #define sasfit_sq_p__q___worm_ps1__v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[3].func_v((q),(p),(d))
 
   // use lookup table for sq_p__q___worm_ps2_(q, param)
-  #define sasfit_sq_p__q___worm_ps2_(q,p) imp_ptr->functions[4].func((q),(p))
-  #define sasfit_sq_p__q___worm_ps2__f(q,p) imp_ptr->functions[4].func_f((q),(p))
-  #define sasfit_sq_p__q___worm_ps2__v(q,p,d) imp_ptr->functions[4].func_v((q),(p),(d))
+  #define sasfit_sq_p__q___worm_ps2_(q,p) SASFIT_PLUGIN_IMPORTS()->functions[4].func((q),(p))
+  #define sasfit_sq_p__q___worm_ps2__f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[4].func_f((q),(p))
+  #define sasfit_sq_p__q___worm_ps2__v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[4].func_v((q),(p),(d))
 
   // use lookup table for sq_p__q___worm_ps3_(q, param)
-  #define sasfit_sq_p__q___worm_ps3_(q,p) imp_ptr->functions[5].func((q),(p))
-  #define sasfit_sq_p__q___worm_ps3__f(q,p) imp_ptr->functions[5].func_f((q),(p))
-  #define sasfit_sq_p__q___worm_ps3__v(q,p,d) imp_ptr->functions[5].func_v((q),(p),(d))
+  #define sasfit_sq_p__q___worm_ps3_(q,p) SASFIT_PLUGIN_IMPORTS()->functions[5].func((q),(p))
+  #define sasfit_sq_p__q___worm_ps3__f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[5].func_f((q),(p))
+  #define sasfit_sq_p__q___worm_ps3__v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[5].func_v((q),(p),(d))
 
 #else
 

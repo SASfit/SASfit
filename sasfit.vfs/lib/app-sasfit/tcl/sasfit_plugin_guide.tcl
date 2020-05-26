@@ -753,9 +753,9 @@ proc gen_private_header { plg_name impl } {
 	set idx 0
 	foreach impf $impl {
 		append str "  // use lookup table for [lindex $impf 0](q, param)\n"
-		append str "  #define sasfit_[lindex $impf 0](q,p) imp_ptr->functions\[${idx}\].func((q),(p))\n"
-		append str "  #define sasfit_[lindex $impf 0]_f(q,p) imp_ptr->functions\[${idx}\].func_f((q),(p))\n"
-		append str "  #define sasfit_[lindex $impf 0]_v(q,p,d) imp_ptr->functions\[${idx}\].func_v((q),(p),(d))\n\n"
+		append str "  #define sasfit_[lindex $impf 0](q,p) SASFIT_PLUGIN_IMPORTS()->functions\[${idx}\].func((q),(p))\n"
+		append str "  #define sasfit_[lindex $impf 0]_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions\[${idx}\].func_f((q),(p))\n"
+		append str "  #define sasfit_[lindex $impf 0]_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions\[${idx}\].func_v((q),(p),(d))\n\n"
 		append supp_includes "  #include <[lindex $impf 1].h>\n"
 		incr idx
 	}

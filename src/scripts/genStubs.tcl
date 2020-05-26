@@ -483,7 +483,7 @@ proc genStubs::makeMacro {name decl index} {
 	    append argList ")"
 	}
     }
-    append text " \\\n\t(${name}_stubs_ptr->$lfname)"
+    append text " \\\n\t(${name}_stubs_ptr()->$lfname)"
     append text " /* $index */\n#endif\n"
     return $text
 }

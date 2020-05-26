@@ -77,19 +77,17 @@
  */
 #define SASFIT_PLUGIN_VERSION	101
 
-//
-// for export below
-//
+
+#define _SASFIT_PLUGIN_IMPORTS(name)	SASFIT_CONCAT(name, _plugin_imports)
+#define SASFIT_PLUGIN_IMPORTS		_SASFIT_PLUGIN_IMPORTS(SASFIT_PLUGIN_NAME)
 
 /** \def SASFIT_PLUGIN_INFO_DECL
  * Declares necessary interface functions and datastructures required 
  * by each plugin to work properly.
  */
 #define SASFIT_PLUGIN_INFO_DECL \
-/* data structures */ \
-static const sasfit_common_stubs_t * sasfit_common_stubs_ptr; \
-static sasfit_plugin_info_t * imp_ptr; \
 /* internal functions */ \
+sasfit_plugin_info_t * SASFIT_PLUGIN_IMPORTS(); \
 void do_at_init(void); \
 /* These functions never get imported, they are used for dynamic loading only */ \
 SASFIT_LIB_EXPORT sasfit_plugin_api_get_ver_t	get_ver; \
@@ -187,24 +185,35 @@ static sasfit_plugin_info_t plugin_import = { 0 };
  * Inserts interface definition code to a plugins <tt>interface.c</tt> file.
  */
 #define SASFIT_PLUGIN_INTERFACE \
-static const sasfit_common_stubs_t * sasfit_common_stubs_ptr = 0; \
+sasfit_plugin_info_t * SASFIT_PLUGIN_IMPORTS() \
+{ return &plugin_import; } \
 int get_ver(void) \
 { \
 	return SASFIT_PLUGIN_VERSION; \
 } \
 \
 int do_init(const sasfit_plugin_info_t ** exp_ptr, \
-	sasfit_common_stubs_t * ptr, \
+	const sasfit_common_stubs_t * ptr, \
 	sasfit_plugin_search_t * searchf) \
 { \
 	if ( !exp_ptr || !ptr || !searchf ) return 0; \
-	sasfit_common_stubs_ptr = ptr; \
+	const char * thisname = plugin_export.functions[0].name; \
+	fprintf(stderr, "%s.do_init(), get_ver: %p, plugin: '%s' %s %p\n", thisname, get_ver, \
+			SASFIT_QUOTE(SASFIT_PLUGIN_NAME), SASFIT_QUOTE(SASFIT_PLUGIN_IMPORTS), SASFIT_PLUGIN_IMPORTS() ); \
+	fprintf(stderr, "%s.do_init(), sasfit_common_stubs_ptr: %p ptr: %p\n", \
+		       	thisname, sasfit_common_stubs_ptr(), ptr); \
 	*exp_ptr = &plugin_export; \
 	do_at_init(); \
-	imp_ptr = &plugin_import; \
+	fprintf(stderr, "%s.do_init(), plugin import: %p\n", thisname, &plugin_import); \
+	fprintf(stderr, "%s.do_init(), num: %d\n", thisname, plugin_import.num); \
+	/*imp_ptr = &plugin_import;*/ \
 	/* get pointer for model functions we depend on */ \
 	/* also decides if we can get loaded successfully */ \
-	return searchf(imp_ptr); \
+	int result = searchf(&plugin_import); \
+	fprintf(stderr, "%s.do_init(), plugin search result: %d\n", thisname, result); \
+	fprintf(stderr, "%s.do_init(), plugin import: %p\n", thisname, &plugin_import); \
+	fprintf(stderr, "%s.do_init(), num: %d\n", thisname, plugin_import.num); \
+	return result; \
 } \
 
 
@@ -276,7 +285,7 @@ typedef int (sasfit_plugin_api_get_ver_t) (void);
  *   which is used to get all required model functions of other plugins from 
  *   the internal plugin database in \ref sasfit_core.
  */
-typedef int (sasfit_plugin_api_do_init_t) (const sasfit_plugin_info_t **, sasfit_common_stubs_t *, sasfit_plugin_search_t *);
+typedef int (sasfit_plugin_api_do_init_t) (const sasfit_plugin_info_t **, const sasfit_common_stubs_t *, sasfit_plugin_search_t *);
 
 /*@}*/
 #endif // file
