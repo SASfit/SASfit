@@ -66,6 +66,7 @@
 #define SASFIT_CONCAT(a, b) a ## b
 
 /// Returns address of lookup table for exported sasfit_common functions.
+/// *dllexp* does not work for plugins on windows because they are not linked against libsasfit.dll
 sasfit_common_DLLEXP
 const sasfit_common_stubs_t * sasfit_common_stubs_ptr();
 
