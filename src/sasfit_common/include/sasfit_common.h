@@ -65,6 +65,12 @@
 
 #define SASFIT_CONCAT(a, b) a ## b
 
+#ifdef SASFIT_COMMON_STUBS
+    #undef SASFIT_COMMON_STUBS
+#endif
+/// Uses the stub pointer getter from this file. Is overridden by plugin specific getter elsewhere.
+#define SASFIT_COMMON_STUBS sasfit_common_stubs_ptr
+
 /// Returns address of lookup table for exported sasfit_common functions.
 /// *dllexp* does not work for plugins on windows because they are not linked against libsasfit.dll
 sasfit_common_DLLEXP

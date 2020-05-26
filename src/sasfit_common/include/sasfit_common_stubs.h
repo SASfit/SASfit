@@ -208,158 +208,158 @@ typedef struct
 /* Slot 3 is reserved */
 #ifndef sasfit_set_msg_handler
 #define sasfit_set_msg_handler \
-	(sasfit_common_stubs_ptr()->sasfit_set_msg_handler) /* 4 */
+	(SASFIT_COMMON_STUBS()->sasfit_set_msg_handler) /* 4 */
 #endif
 #ifndef sasfit_msg
 #define sasfit_msg \
-	(sasfit_common_stubs_ptr()->sasfit_msg) /* 5 */
+	(SASFIT_COMMON_STUBS()->sasfit_msg) /* 5 */
 #endif
 #ifndef sasfit_param_set_err
 #define sasfit_param_set_err \
-	(sasfit_common_stubs_ptr()->sasfit_param_set_err) /* 6 */
+	(SASFIT_COMMON_STUBS()->sasfit_param_set_err) /* 6 */
 #endif
 #ifndef sasfit_integrate_ctm
 #define sasfit_integrate_ctm \
-	(sasfit_common_stubs_ptr()->sasfit_integrate_ctm) /* 7 */
+	(SASFIT_COMMON_STUBS()->sasfit_integrate_ctm) /* 7 */
 #endif
 #ifndef sasfit_get_lib_prefix
 #define sasfit_get_lib_prefix \
-	(sasfit_common_stubs_ptr()->sasfit_get_lib_prefix) /* 8 */
+	(SASFIT_COMMON_STUBS()->sasfit_get_lib_prefix) /* 8 */
 #endif
 #ifndef sasfit_get_lib_suffix
 #define sasfit_get_lib_suffix \
-	(sasfit_common_stubs_ptr()->sasfit_get_lib_suffix) /* 9 */
+	(SASFIT_COMMON_STUBS()->sasfit_get_lib_suffix) /* 9 */
 #endif
 #ifndef sasfit_get_maxpar
 #define sasfit_get_maxpar \
-	(sasfit_common_stubs_ptr()->sasfit_get_maxpar) /* 10 */
+	(SASFIT_COMMON_STUBS()->sasfit_get_maxpar) /* 10 */
 #endif
 #ifndef sasfit_init_fct
 #define sasfit_init_fct \
-	(sasfit_common_stubs_ptr()->sasfit_init_fct) /* 11 */
+	(SASFIT_COMMON_STUBS()->sasfit_init_fct) /* 11 */
 #endif
 #ifndef sasfit_valid_fct
 #define sasfit_valid_fct \
-	(sasfit_common_stubs_ptr()->sasfit_valid_fct) /* 12 */
+	(SASFIT_COMMON_STUBS()->sasfit_valid_fct) /* 12 */
 #endif
 #ifndef sasfit_part_diff_fct
 #define sasfit_part_diff_fct \
-	(sasfit_common_stubs_ptr()->sasfit_part_diff_fct) /* 13 */
+	(SASFIT_COMMON_STUBS()->sasfit_part_diff_fct) /* 13 */
 #endif
 #ifndef sasfit_init_param
 #define sasfit_init_param \
-	(sasfit_common_stubs_ptr()->sasfit_init_param) /* 14 */
+	(SASFIT_COMMON_STUBS()->sasfit_init_param) /* 14 */
 #endif
 #ifndef sasfit_get_param
 #define sasfit_get_param \
-	(sasfit_common_stubs_ptr()->sasfit_get_param) /* 15 */
+	(SASFIT_COMMON_STUBS()->sasfit_get_param) /* 15 */
 #endif
 #ifndef sasfit_print_param
 #define sasfit_print_param \
-	(sasfit_common_stubs_ptr()->sasfit_print_param) /* 16 */
+	(SASFIT_COMMON_STUBS()->sasfit_print_param) /* 16 */
 #endif
 #ifndef sasfit_copy_param
 #define sasfit_copy_param \
-	(sasfit_common_stubs_ptr()->sasfit_copy_param) /* 17 */
+	(SASFIT_COMMON_STUBS()->sasfit_copy_param) /* 17 */
 #endif
 #ifndef sasfit_param_override_get_psi
 #define sasfit_param_override_get_psi \
-	(sasfit_common_stubs_ptr()->sasfit_param_override_get_psi) /* 18 */
+	(SASFIT_COMMON_STUBS()->sasfit_param_override_get_psi) /* 18 */
 #endif
 /* Slot 19 is reserved */
 /* Slot 20 is reserved */
 /* Slot 21 is reserved */
 #ifndef sasfit_init_vector
 #define sasfit_init_vector \
-	(sasfit_common_stubs_ptr()->sasfit_init_vector) /* 22 */
+	(SASFIT_COMMON_STUBS()->sasfit_init_vector) /* 22 */
 #endif
 #ifndef sasfit_free_vector
 #define sasfit_free_vector \
-	(sasfit_common_stubs_ptr()->sasfit_free_vector) /* 23 */
+	(SASFIT_COMMON_STUBS()->sasfit_free_vector) /* 23 */
 #endif
 #ifndef sasfit_timer_create
 #define sasfit_timer_create \
-	(sasfit_common_stubs_ptr()->sasfit_timer_create) /* 24 */
+	(SASFIT_COMMON_STUBS()->sasfit_timer_create) /* 24 */
 #endif
 #ifndef sasfit_timer_destroy
 #define sasfit_timer_destroy \
-	(sasfit_common_stubs_ptr()->sasfit_timer_destroy) /* 25 */
+	(SASFIT_COMMON_STUBS()->sasfit_timer_destroy) /* 25 */
 #endif
 #ifndef sasfit_timer_start
 #define sasfit_timer_start \
-	(sasfit_common_stubs_ptr()->sasfit_timer_start) /* 26 */
+	(SASFIT_COMMON_STUBS()->sasfit_timer_start) /* 26 */
 #endif
 #ifndef sasfit_timer_measure
 #define sasfit_timer_measure \
-	(sasfit_common_stubs_ptr()->sasfit_timer_measure) /* 27 */
+	(SASFIT_COMMON_STUBS()->sasfit_timer_measure) /* 27 */
 #endif
 #ifndef sasfit_gammaln
 #define sasfit_gammaln \
-	(sasfit_common_stubs_ptr()->sasfit_gammaln) /* 28 */
+	(SASFIT_COMMON_STUBS()->sasfit_gammaln) /* 28 */
 #endif
 #ifndef sasfit_gamma
 #define sasfit_gamma \
-	(sasfit_common_stubs_ptr()->sasfit_gamma) /* 29 */
+	(SASFIT_COMMON_STUBS()->sasfit_gamma) /* 29 */
 #endif
 #ifndef sasfit_dgammaln_dx
 #define sasfit_dgammaln_dx \
-	(sasfit_common_stubs_ptr()->sasfit_dgammaln_dx) /* 30 */
+	(SASFIT_COMMON_STUBS()->sasfit_dgammaln_dx) /* 30 */
 #endif
 #ifndef sasfit_dgamma_dx
 #define sasfit_dgamma_dx \
-	(sasfit_common_stubs_ptr()->sasfit_dgamma_dx) /* 31 */
+	(SASFIT_COMMON_STUBS()->sasfit_dgamma_dx) /* 31 */
 #endif
 #ifndef sasfit_erf_pure
 #define sasfit_erf_pure \
-	(sasfit_common_stubs_ptr()->sasfit_erf_pure) /* 32 */
+	(SASFIT_COMMON_STUBS()->sasfit_erf_pure) /* 32 */
 #endif
 #ifndef sasfit_si
 #define sasfit_si \
-	(sasfit_common_stubs_ptr()->sasfit_si) /* 33 */
+	(SASFIT_COMMON_STUBS()->sasfit_si) /* 33 */
 #endif
 #ifndef sasfit_log1p
 #define sasfit_log1p \
-	(sasfit_common_stubs_ptr()->sasfit_log1p) /* 34 */
+	(SASFIT_COMMON_STUBS()->sasfit_log1p) /* 34 */
 #endif
 #ifndef sasfit_j1f
 #define sasfit_j1f \
-	(sasfit_common_stubs_ptr()->sasfit_j1f) /* 35 */
+	(SASFIT_COMMON_STUBS()->sasfit_j1f) /* 35 */
 #endif
 #ifndef sasfit_bessj1
 #define sasfit_bessj1 \
-	(sasfit_common_stubs_ptr()->sasfit_bessj1) /* 36 */
+	(SASFIT_COMMON_STUBS()->sasfit_bessj1) /* 36 */
 #endif
 #ifndef sasfit_rwbrush_w
 #define sasfit_rwbrush_w \
-	(sasfit_common_stubs_ptr()->sasfit_rwbrush_w) /* 37 */
+	(SASFIT_COMMON_STUBS()->sasfit_rwbrush_w) /* 37 */
 #endif
 #ifndef sasfit_rod_fc
 #define sasfit_rod_fc \
-	(sasfit_common_stubs_ptr()->sasfit_rod_fc) /* 38 */
+	(SASFIT_COMMON_STUBS()->sasfit_rod_fc) /* 38 */
 #endif
 #ifndef sasfit_sphere_fc
 #define sasfit_sphere_fc \
-	(sasfit_common_stubs_ptr()->sasfit_sphere_fc) /* 39 */
+	(SASFIT_COMMON_STUBS()->sasfit_sphere_fc) /* 39 */
 #endif
 #ifndef sasfit_gauss_fc
 #define sasfit_gauss_fc \
-	(sasfit_common_stubs_ptr()->sasfit_gauss_fc) /* 40 */
+	(SASFIT_COMMON_STUBS()->sasfit_gauss_fc) /* 40 */
 #endif
 #ifndef sasfit_polint
 #define sasfit_polint \
-	(sasfit_common_stubs_ptr()->sasfit_polint) /* 41 */
+	(SASFIT_COMMON_STUBS()->sasfit_polint) /* 41 */
 #endif
 #ifndef sasfit_qromb
 #define sasfit_qromb \
-	(sasfit_common_stubs_ptr()->sasfit_qromb) /* 42 */
+	(SASFIT_COMMON_STUBS()->sasfit_qromb) /* 42 */
 #endif
 #ifndef sasfit_trapzd
 #define sasfit_trapzd \
-	(sasfit_common_stubs_ptr()->sasfit_trapzd) /* 43 */
+	(SASFIT_COMMON_STUBS()->sasfit_trapzd) /* 43 */
 #endif
 #ifndef sasfit_g
 #define sasfit_g \
-	(sasfit_common_stubs_ptr()->sasfit_g) /* 44 */
+	(SASFIT_COMMON_STUBS()->sasfit_g) /* 44 */
 #endif
 /* Slot 45 is reserved */
 /* Slot 46 is reserved */
@@ -368,269 +368,269 @@ typedef struct
 /* Slot 49 is reserved */
 #ifndef sasfit_eps_print
 #define sasfit_eps_print \
-	(sasfit_common_stubs_ptr()->sasfit_eps_print) /* 50 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_print) /* 50 */
 #endif
 #ifndef sasfit_eps_get_aniso
 #define sasfit_eps_get_aniso \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_aniso) /* 51 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_aniso) /* 51 */
 #endif
 #ifndef sasfit_eps_get_jmax_aniso
 #define sasfit_eps_get_jmax_aniso \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_jmax_aniso) /* 52 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_jmax_aniso) /* 52 */
 #endif
 #ifndef sasfit_eps_get_res
 #define sasfit_eps_get_res \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_res) /* 53 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_res) /* 53 */
 #endif
 #ifndef sasfit_eps_get_jmax_res
 #define sasfit_eps_get_jmax_res \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_jmax_res) /* 54 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_jmax_res) /* 54 */
 #endif
 #ifndef sasfit_eps_get_nriq
 #define sasfit_eps_get_nriq \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_nriq) /* 55 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_nriq) /* 55 */
 #endif
 #ifndef sasfit_eps_get_jmax_nriq
 #define sasfit_eps_get_jmax_nriq \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_jmax_nriq) /* 56 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_jmax_nriq) /* 56 */
 #endif
 #ifndef sasfit_eps_get_sq_or_iq
 #define sasfit_eps_get_sq_or_iq \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_sq_or_iq) /* 57 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_sq_or_iq) /* 57 */
 #endif
 #ifndef sasfit_eps_get_robertus_p
 #define sasfit_eps_get_robertus_p \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_robertus_p) /* 58 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_robertus_p) /* 58 */
 #endif
 #ifndef sasfit_eps_get_iter_4_mc
 #define sasfit_eps_get_iter_4_mc \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_iter_4_mc) /* 59 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_iter_4_mc) /* 59 */
 #endif
 #ifndef sasfit_eps_get_fitorsim
 #define sasfit_eps_get_fitorsim \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_fitorsim) /* 60 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_fitorsim) /* 60 */
 #endif
 #ifndef sasfit_eps_get_h
 #define sasfit_eps_get_h \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_h) /* 61 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_h) /* 61 */
 #endif
 #ifndef sasfit_eps_get_comp
 #define sasfit_eps_get_comp \
-	(sasfit_common_stubs_ptr()->sasfit_eps_get_comp) /* 62 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_comp) /* 62 */
 #endif
 #ifndef sasfit_eps_set_aniso
 #define sasfit_eps_set_aniso \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_aniso) /* 63 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_aniso) /* 63 */
 #endif
 #ifndef sasfit_eps_set_jmax_aniso
 #define sasfit_eps_set_jmax_aniso \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_jmax_aniso) /* 64 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_jmax_aniso) /* 64 */
 #endif
 #ifndef sasfit_eps_set_res
 #define sasfit_eps_set_res \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_res) /* 65 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_res) /* 65 */
 #endif
 #ifndef sasfit_eps_set_jmax_res
 #define sasfit_eps_set_jmax_res \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_jmax_res) /* 66 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_jmax_res) /* 66 */
 #endif
 #ifndef sasfit_eps_set_nriq
 #define sasfit_eps_set_nriq \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_nriq) /* 67 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_nriq) /* 67 */
 #endif
 #ifndef sasfit_eps_set_jmax_nriq
 #define sasfit_eps_set_jmax_nriq \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_jmax_nriq) /* 68 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_jmax_nriq) /* 68 */
 #endif
 #ifndef sasfit_eps_set_sq_or_iq
 #define sasfit_eps_set_sq_or_iq \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_sq_or_iq) /* 69 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_sq_or_iq) /* 69 */
 #endif
 #ifndef sasfit_eps_set_robertus_p
 #define sasfit_eps_set_robertus_p \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_robertus_p) /* 70 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_robertus_p) /* 70 */
 #endif
 #ifndef sasfit_eps_set_iter_4_mc
 #define sasfit_eps_set_iter_4_mc \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_iter_4_mc) /* 71 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_iter_4_mc) /* 71 */
 #endif
 #ifndef sasfit_eps_set_fitorsim
 #define sasfit_eps_set_fitorsim \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_fitorsim) /* 72 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_fitorsim) /* 72 */
 #endif
 #ifndef sasfit_eps_set_h
 #define sasfit_eps_set_h \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_h) /* 73 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_h) /* 73 */
 #endif
 #ifndef sasfit_eps_set_comp
 #define sasfit_eps_set_comp \
-	(sasfit_common_stubs_ptr()->sasfit_eps_set_comp) /* 74 */
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_comp) /* 74 */
 #endif
 /* Slot 75 is reserved */
 /* Slot 76 is reserved */
 #ifndef sasfit_set_int_strategy
 #define sasfit_set_int_strategy \
-	(sasfit_common_stubs_ptr()->sasfit_set_int_strategy) /* 77 */
+	(SASFIT_COMMON_STUBS()->sasfit_set_int_strategy) /* 77 */
 #endif
 #ifndef sasfit_get_int_strategy
 #define sasfit_get_int_strategy \
-	(sasfit_common_stubs_ptr()->sasfit_get_int_strategy) /* 78 */
+	(SASFIT_COMMON_STUBS()->sasfit_get_int_strategy) /* 78 */
 #endif
 #ifndef sasfit_sd_LogNorm
 #define sasfit_sd_LogNorm \
-	(sasfit_common_stubs_ptr()->sasfit_sd_LogNorm) /* 79 */
+	(SASFIT_COMMON_STUBS()->sasfit_sd_LogNorm) /* 79 */
 #endif
 #ifndef sasfit_miev0
 #define sasfit_miev0 \
-	(sasfit_common_stubs_ptr()->sasfit_miev0) /* 80 */
+	(SASFIT_COMMON_STUBS()->sasfit_miev0) /* 80 */
 #endif
 #ifndef sasfit_dmilay
 #define sasfit_dmilay \
-	(sasfit_common_stubs_ptr()->sasfit_dmilay) /* 81 */
+	(SASFIT_COMMON_STUBS()->sasfit_dmilay) /* 81 */
 #endif
 #ifndef sasfit_th36
 #define sasfit_th36 \
-	(sasfit_common_stubs_ptr()->sasfit_th36) /* 82 */
+	(SASFIT_COMMON_STUBS()->sasfit_th36) /* 82 */
 #endif
 #ifndef sasfit_f2c_errmsg_
 #define sasfit_f2c_errmsg_ \
-	(sasfit_common_stubs_ptr()->sasfit_f2c_errmsg_) /* 83 */
+	(SASFIT_COMMON_STUBS()->sasfit_f2c_errmsg_) /* 83 */
 #endif
 #ifndef sasfit_f2c_tstbad_
 #define sasfit_f2c_tstbad_ \
-	(sasfit_common_stubs_ptr()->sasfit_f2c_tstbad_) /* 84 */
+	(SASFIT_COMMON_STUBS()->sasfit_f2c_tstbad_) /* 84 */
 #endif
 #ifndef sasfit_f2c_wrtbad_
 #define sasfit_f2c_wrtbad_ \
-	(sasfit_common_stubs_ptr()->sasfit_f2c_wrtbad_) /* 85 */
+	(SASFIT_COMMON_STUBS()->sasfit_f2c_wrtbad_) /* 85 */
 #endif
 #ifndef sasfit_f2c_wrtdim_
 #define sasfit_f2c_wrtdim_ \
-	(sasfit_common_stubs_ptr()->sasfit_f2c_wrtdim_) /* 86 */
+	(SASFIT_COMMON_STUBS()->sasfit_f2c_wrtdim_) /* 86 */
 #endif
 #ifndef sasfit_struve_h0
 #define sasfit_struve_h0 \
-	(sasfit_common_stubs_ptr()->sasfit_struve_h0) /* 87 */
+	(SASFIT_COMMON_STUBS()->sasfit_struve_h0) /* 87 */
 #endif
 #ifndef sasfit_struve_h1
 #define sasfit_struve_h1 \
-	(sasfit_common_stubs_ptr()->sasfit_struve_h1) /* 88 */
+	(SASFIT_COMMON_STUBS()->sasfit_struve_h1) /* 88 */
 #endif
 #ifndef zspow_
 #define zspow_ \
-	(sasfit_common_stubs_ptr()->zspow_) /* 89 */
+	(SASFIT_COMMON_STUBS()->zspow_) /* 89 */
 #endif
 #ifndef sasfit_robertus_deal
 #define sasfit_robertus_deal \
-	(sasfit_common_stubs_ptr()->sasfit_robertus_deal) /* 90 */
+	(SASFIT_COMMON_STUBS()->sasfit_robertus_deal) /* 90 */
 #endif
 #ifndef sasfit_robertus_calc
 #define sasfit_robertus_calc \
-	(sasfit_common_stubs_ptr()->sasfit_robertus_calc) /* 91 */
+	(SASFIT_COMMON_STUBS()->sasfit_robertus_calc) /* 91 */
 #endif
 #ifndef sasfit_robertus_subint
 #define sasfit_robertus_subint \
-	(sasfit_common_stubs_ptr()->sasfit_robertus_subint) /* 92 */
+	(SASFIT_COMMON_STUBS()->sasfit_robertus_subint) /* 92 */
 #endif
 #ifndef sasfit_3f2
 #define sasfit_3f2 \
-	(sasfit_common_stubs_ptr()->sasfit_3f2) /* 93 */
+	(SASFIT_COMMON_STUBS()->sasfit_3f2) /* 93 */
 #endif
 #ifndef sasfit_2f1
 #define sasfit_2f1 \
-	(sasfit_common_stubs_ptr()->sasfit_2f1) /* 94 */
+	(SASFIT_COMMON_STUBS()->sasfit_2f1) /* 94 */
 #endif
 #ifndef sasfit_pfq
 #define sasfit_pfq \
-	(sasfit_common_stubs_ptr()->sasfit_pfq) /* 95 */
+	(SASFIT_COMMON_STUBS()->sasfit_pfq) /* 95 */
 #endif
 #ifndef sasfit_wofz
 #define sasfit_wofz \
-	(sasfit_common_stubs_ptr()->sasfit_wofz) /* 96 */
+	(SASFIT_COMMON_STUBS()->sasfit_wofz) /* 96 */
 #endif
 #ifndef re_cerf_z
 #define re_cerf_z \
-	(sasfit_common_stubs_ptr()->re_cerf_z) /* 97 */
+	(SASFIT_COMMON_STUBS()->re_cerf_z) /* 97 */
 #endif
 #ifndef im_cerf_z
 #define im_cerf_z \
-	(sasfit_common_stubs_ptr()->im_cerf_z) /* 98 */
+	(SASFIT_COMMON_STUBS()->im_cerf_z) /* 98 */
 #endif
 #ifndef re_cerfi_z
 #define re_cerfi_z \
-	(sasfit_common_stubs_ptr()->re_cerfi_z) /* 99 */
+	(SASFIT_COMMON_STUBS()->re_cerfi_z) /* 99 */
 #endif
 #ifndef im_cerfi_z
 #define im_cerfi_z \
-	(sasfit_common_stubs_ptr()->im_cerfi_z) /* 100 */
+	(SASFIT_COMMON_STUBS()->im_cerfi_z) /* 100 */
 #endif
 #ifndef re_w_of_z
 #define re_w_of_z \
-	(sasfit_common_stubs_ptr()->re_w_of_z) /* 101 */
+	(SASFIT_COMMON_STUBS()->re_w_of_z) /* 101 */
 #endif
 #ifndef im_w_of_z
 #define im_w_of_z \
-	(sasfit_common_stubs_ptr()->im_w_of_z) /* 102 */
+	(SASFIT_COMMON_STUBS()->im_w_of_z) /* 102 */
 #endif
 #ifndef w_of_z_e
 #define w_of_z_e \
-	(sasfit_common_stubs_ptr()->w_of_z_e) /* 103 */
+	(SASFIT_COMMON_STUBS()->w_of_z_e) /* 103 */
 #endif
 #ifndef sasfit_jinc
 #define sasfit_jinc \
-	(sasfit_common_stubs_ptr()->sasfit_jinc) /* 104 */
+	(SASFIT_COMMON_STUBS()->sasfit_jinc) /* 104 */
 #endif
 #ifndef find_LogNorm_int_range
 #define find_LogNorm_int_range \
-	(sasfit_common_stubs_ptr()->find_LogNorm_int_range) /* 105 */
+	(SASFIT_COMMON_STUBS()->find_LogNorm_int_range) /* 105 */
 #endif
 #ifndef hcubature
 #define hcubature \
-	(sasfit_common_stubs_ptr()->hcubature) /* 106 */
+	(SASFIT_COMMON_STUBS()->hcubature) /* 106 */
 #endif
 #ifndef pcubature
 #define pcubature \
-	(sasfit_common_stubs_ptr()->pcubature) /* 107 */
+	(SASFIT_COMMON_STUBS()->pcubature) /* 107 */
 #endif
 #ifndef sasfit_intccini
 #define sasfit_intccini \
-	(sasfit_common_stubs_ptr()->sasfit_intccini) /* 108 */
+	(SASFIT_COMMON_STUBS()->sasfit_intccini) /* 108 */
 #endif
 #ifndef sasfit_intcc
 #define sasfit_intcc \
-	(sasfit_common_stubs_ptr()->sasfit_intcc) /* 109 */
+	(SASFIT_COMMON_STUBS()->sasfit_intcc) /* 109 */
 #endif
 #ifndef sasfit_intdeiini
 #define sasfit_intdeiini \
-	(sasfit_common_stubs_ptr()->sasfit_intdeiini) /* 110 */
+	(SASFIT_COMMON_STUBS()->sasfit_intdeiini) /* 110 */
 #endif
 #ifndef sasfit_intdei
 #define sasfit_intdei \
-	(sasfit_common_stubs_ptr()->sasfit_intdei) /* 111 */
+	(SASFIT_COMMON_STUBS()->sasfit_intdei) /* 111 */
 #endif
 #ifndef sasfit_intdeoini
 #define sasfit_intdeoini \
-	(sasfit_common_stubs_ptr()->sasfit_intdeoini) /* 112 */
+	(SASFIT_COMMON_STUBS()->sasfit_intdeoini) /* 112 */
 #endif
 #ifndef sasfit_intdeo
 #define sasfit_intdeo \
-	(sasfit_common_stubs_ptr()->sasfit_intdeo) /* 113 */
+	(SASFIT_COMMON_STUBS()->sasfit_intdeo) /* 113 */
 #endif
 #ifndef sasfit_intdeini
 #define sasfit_intdeini \
-	(sasfit_common_stubs_ptr()->sasfit_intdeini) /* 114 */
+	(SASFIT_COMMON_STUBS()->sasfit_intdeini) /* 114 */
 #endif
 #ifndef sasfit_intde
 #define sasfit_intde \
-	(sasfit_common_stubs_ptr()->sasfit_intde) /* 115 */
+	(SASFIT_COMMON_STUBS()->sasfit_intde) /* 115 */
 #endif
 #ifndef sasfit_cubature
 #define sasfit_cubature \
-	(sasfit_common_stubs_ptr()->sasfit_cubature) /* 116 */
+	(SASFIT_COMMON_STUBS()->sasfit_cubature) /* 116 */
 #endif
 #ifndef sasfit_erfinv
 #define sasfit_erfinv \
-	(sasfit_common_stubs_ptr()->sasfit_erfinv) /* 117 */
+	(SASFIT_COMMON_STUBS()->sasfit_erfinv) /* 117 */
 #endif
 
 #endif /* defined(MAKE_SASFIT_PLUGIN) */

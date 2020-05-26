@@ -81,6 +81,12 @@
 #define _SASFIT_PLUGIN_IMPORTS(name)	SASFIT_CONCAT(name, _plugin_imports)
 #define SASFIT_PLUGIN_IMPORTS		_SASFIT_PLUGIN_IMPORTS(SASFIT_PLUGIN_NAME)
 
+#define _SASFIT_COMMON_STUBS(name)	SASFIT_CONCAT(name, _stubs)
+#ifdef SASFIT_COMMON_STUBS
+    #undef SASFIT_COMMON_STUBS
+#endif
+#define SASFIT_COMMON_STUBS		_SASFIT_COMMON_STUBS(SASFIT_PLUGIN_NAME)
+
 /** \def SASFIT_PLUGIN_INFO_DECL
  * Declares necessary interface functions and datastructures required 
  * by each plugin to work properly.
@@ -88,6 +94,7 @@
 #define SASFIT_PLUGIN_INFO_DECL \
 /* internal functions */ \
 sasfit_plugin_info_t * SASFIT_PLUGIN_IMPORTS(); \
+const sasfit_common_stubs_t * SASFIT_COMMON_STUBS(); \
 void do_at_init(void); \
 /* These functions never get imported, they are used for dynamic loading only */ \
 SASFIT_LIB_EXPORT sasfit_plugin_api_get_ver_t	get_ver; \
@@ -185,8 +192,11 @@ static sasfit_plugin_info_t plugin_import = { 0 };
  * Inserts interface definition code to a plugins <tt>interface.c</tt> file.
  */
 #define SASFIT_PLUGIN_INTERFACE \
+static const sasfit_common_stubs_t * stub_ptr; /* local to the source file where this is included */ \
 sasfit_plugin_info_t * SASFIT_PLUGIN_IMPORTS() \
 { return &plugin_import; } \
+const sasfit_common_stubs_t * SASFIT_COMMON_STUBS() \
+{ return stub_ptr; } \
 int get_ver(void) \
 { \
 	return SASFIT_PLUGIN_VERSION; \
@@ -201,8 +211,9 @@ int do_init(const sasfit_plugin_info_t ** exp_ptr, \
 	fprintf(stderr, "%s.do_init(), get_ver: %p, plugin: '%s' %s %p\n", thisname, get_ver, \
 			SASFIT_QUOTE(SASFIT_PLUGIN_NAME), SASFIT_QUOTE(SASFIT_PLUGIN_IMPORTS), SASFIT_PLUGIN_IMPORTS() ); \
 	fprintf(stderr, "%s.do_init(), sasfit_common_stubs_ptr: %p ptr: %p\n", \
-		       	thisname, sasfit_common_stubs_ptr(), ptr); \
+			thisname, SASFIT_COMMON_STUBS(), ptr); \
 	*exp_ptr = &plugin_export; \
+	stub_ptr = ptr; \
 	do_at_init(); \
 	fprintf(stderr, "%s.do_init(), plugin import: %p\n", thisname, &plugin_import); \
 	fprintf(stderr, "%s.do_init(), num: %d\n", thisname, plugin_import.num); \
