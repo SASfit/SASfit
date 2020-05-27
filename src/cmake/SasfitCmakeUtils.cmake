@@ -378,9 +378,9 @@ macro(sasfit_update_version)
         endif()
         if($ENV{APPVEYOR}) # running on appveyor CI
             appveyor_get_latest_version()
-            #cmake_print_variables(appveyor_latest_version)
+            cmake_print_variables(appveyor_latest_version)
             # strip build number from latest appveyor version
-            string(REGEX MATCH "^[^b]+" appveyor_latest_version ${appveyor_latest_version})
+            string(REGEX MATCH "^[^b]+" appveyor_latest_version "${appveyor_latest_version}")
             #cmake_print_variables(appveyor_latest_version)
             # check if the new version number is different
 #            if(NOT ${SASFIT_VERSION} STREQUAL ${appveyor_latest_version})
