@@ -8,9 +8,9 @@ init:
 clone_depth: 1
 
 image:
-  - Visual Studio 2019
+#  - Visual Studio 2019
   - macos
-  - Ubuntu2004
+#  - Ubuntu2004
 
 environment:
   BT_API:
