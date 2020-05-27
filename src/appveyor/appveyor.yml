@@ -65,6 +65,7 @@ for:
     - path: saskit/saskit_*
   after_build:
     - ls -l src/sasfit_*_*.tar.bz2 saskit/saskit_*
+    - ps: Push-AppveyorArtifact saskit/saskit_*
     - echo "$PATH" | tr ':' '\n' | xargs -n 1 ls -1 2> /dev/null | grep -i appveyor | sort -uV
     - appveyor PushArtifact src/sasfit_*_*.tar.bz2
     - appveyor PushArtifact saskit/saskit_*
