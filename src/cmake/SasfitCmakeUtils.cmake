@@ -327,25 +327,25 @@ function(appveyor_get_latest_version)
     # find the version text in JSON of the last build on appveyor
     string(REGEX MATCHALL "\"version\":\"[^\"]+\"" match_version
                           ${appveyor_last_build_json})
-    cmake_print_variables(match_version)
+    #cmake_print_variables(match_version)
     string(REGEX MATCHALL "\"buildNumber\":\"?[0-9]+\"?" match_buildNumber
                           ${appveyor_last_build_json})
-    cmake_print_variables(match_buildNumber)
+    #cmake_print_variables(match_buildNumber)
     # find a version unequal build number
     # (both are equal at the beginning, version is changed by CMake later)
     foreach(ver bnum IN ZIP_LISTS match_version match_buildNumber)
-        cmake_print_variables(ver bnum)
+        #cmake_print_variables(ver bnum)
         string_split_2nd(ver :)
         string_split_2nd(bnum :)
         string(REPLACE "\"" "" ver ${ver})
         string(REPLACE "\"" "" bnum ${bnum})
-        cmake_print_variables(ver bnum)
+        #cmake_print_variables(ver bnum)
         if(NOT ${ver} STREQUAL ${bnum})
             set(last_version ${ver})
             break()
         endif()
     endforeach()
-    cmake_print_variables(last_version)
+    #cmake_print_variables(last_version)
     set(appveyor_latest_version ${last_version} PARENT_SCOPE)
 endfunction()
 
@@ -377,10 +377,10 @@ macro(sasfit_update_version)
             set(SASFIT_VERSION ${GIT_TAG})
         endif()
         if($ENV{APPVEYOR}) # running on appveyor CI
-            appveyor_get_latest_version()
-            cmake_print_variables(appveyor_latest_version)
+            #appveyor_get_latest_version()
+            #cmake_print_variables(appveyor_latest_version)
             # strip build number from latest appveyor version
-            string(REGEX MATCH "^[^b]+" appveyor_latest_version "${appveyor_latest_version}")
+            #string(REGEX MATCH "^[^b]+" appveyor_latest_version "${appveyor_latest_version}")
             #cmake_print_variables(appveyor_latest_version)
             # check if the new version number is different
 #            if(NOT ${SASFIT_VERSION} STREQUAL ${appveyor_latest_version})
@@ -390,7 +390,11 @@ macro(sasfit_update_version)
 #            endif()
             # append build number for unique build version in appveyor
             set(appveyor_build_version "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
-            execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}")
+            execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}"
+                                OUTPUT_VARIABLE stdout
+                                ERROR_VARIABLE stderr
+            )
+            cmake_print_variables(stdout stderr)
             message(STATUS "Appveyor build version was set to '${appveyor_build_version}'.")
             execute_process(COMMAND appveyor SetVariable
                                         -Name SASFIT_VERSION -Value "${SASFIT_VERSION}")
