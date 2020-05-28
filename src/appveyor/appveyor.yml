@@ -65,8 +65,9 @@ for:
     - path: saskit/saskit_*
   after_build:
     - ls -l src/sasfit_*_*.tar.bz2 saskit/saskit_*
-    - ps: Get-ChildItem src/sasfit_*_*.tar.bz2
+    - ps: (Get-Item -Path '.\').FullName
     - ps: Get-ChildItem saskit/saskit_*
+    - ps: Get-ChildItem src/sasfit_*_*.tar.bz2
     - ps: Push-AppveyorArtifact $ARTIF1
     - ps: Push-AppveyorArtifact $ARTIF2
     - appveyor PushArtifact src/sasfit_*_*.tar.bz2
