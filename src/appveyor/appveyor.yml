@@ -65,9 +65,8 @@ for:
     - path: saskit/saskit_*
   after_build:
     - ls -l src/sasfit_*_*.tar.bz2 saskit/saskit_*
-    - sh: export ARTIF1="$(ls -1 src/sasfit_*_*.tar.bz2)"
-    - sh: export ARTIF2="$(ls -1 saskit/saskit_*)"
-    - echo "$PATH" | tr ':' '\n' | xargs -n 1 ls -1 2> /dev/null | grep -i appveyor | sort -uV
+    - ps: Get-ChildItem src/sasfit_*_*.tar.bz2
+    - ps: Get-ChildItem saskit/saskit_*
     - ps: Push-AppveyorArtifact $ARTIF1
     - ps: Push-AppveyorArtifact $ARTIF2
     - appveyor PushArtifact src/sasfit_*_*.tar.bz2
