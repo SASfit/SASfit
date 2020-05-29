@@ -65,6 +65,9 @@ for:
     - path: saskit/saskit_*
   after_build:
     - ls -l src/sasfit_*_*.tar.bz2 saskit/saskit_*
+    - which appveyor
+    - echo $PATH
+    - ls /usr/local/opt
     - ps: Get-Location | select -ExpandProperty Path
     - ps: Write-Output $env:SASFIT_VERSION
     - ps: (Get-Item -Path '.').FullName
