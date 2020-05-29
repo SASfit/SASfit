@@ -390,11 +390,7 @@ macro(sasfit_update_version)
 #            endif()
             # append build number for unique build version in appveyor
             set(appveyor_build_version "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
-            execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}"
-                                OUTPUT_VARIABLE stdout
-                                ERROR_VARIABLE stderr
-            )
-            cmake_print_variables(stdout stderr)
+            execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}")
             message(STATUS "Appveyor build version was set to '${appveyor_build_version}'.")
             execute_process(COMMAND appveyor SetVariable
                                         -Name SASFIT_VERSION -Value "${SASFIT_VERSION}")
