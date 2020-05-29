@@ -55,8 +55,8 @@ for:
       - image: macos
   environment:
     CACHEID: macos64
-  init:
-    - brew install p7zip
+#  init:
+#    - brew install p7zip
   install:
     - sh src/appveyor/0_install_macos.sh
   artifacts:
