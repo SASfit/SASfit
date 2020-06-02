@@ -14,13 +14,13 @@ set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
 
 @echo.
 @echo ## Ensure pacman mirrors and GIT are up to date:
-sh -lc "pacman -S --needed --noconfirm pacman-mirrors"
-sh -lc "pacman -S --needed --noconfirm git"
+rem sh -lc "pacman -S --needed --noconfirm pacman-mirrors"
+rem sh -lc "pacman -S --needed --noconfirm git"
 
 @echo.
 @echo ## Updating packages first:
-sh -lc "pacman -Syu --noconfirm"
-sh -lc "pacman -Syu --noconfirm"
+rem sh -lc "pacman -Syu --noconfirm"
+rem sh -lc "pacman -Syu --noconfirm"
 
 @echo.
 @echo ## Installing required packages:
