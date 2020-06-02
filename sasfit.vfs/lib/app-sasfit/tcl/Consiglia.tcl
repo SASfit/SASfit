@@ -69,13 +69,17 @@ proc set_slopeRgCmd { name1 name2 opt } {
 	set b [expr $alpha*$alpha]
 	set c [expr $gamma*$gamma]
 	set lfracf [expr sqrt($c+($b-$c)*(3*$f-3*$f*$f+$f*$f*$f))]
+	set rfracf [expr (2*pow($b,4)*pow($f,2)*(-3 + 2*$f) - 6*pow($b,2)*pow($c,2)*(-1 + $f)*$f*(-1 + 2*$f) + pow($c,4)*pow(-1 + 2*$f,3))/(-2*pow($b,2)*$f + pow($c,2)*(-1 + 2*$f))]
 	set b [expr $beta*$beta]
 	set c [expr $delta*$delta]
 	set lfracv [expr sqrt($c+($b-$c)*(3*$f-3*$f*$f+$f*$f*$f))]
+	set rfracv [expr (2*pow($b,4)*pow($f,2)*(-3 + 2*$f) - 6*pow($b,2)*pow($c,2)*(-1 + $f)*$f*(-1 + 2*$f) + pow($c,4)*pow(-1 + 2*$f,3))/(-2*pow($b,2)*$f + pow($c,2)*(-1 + 2*$f))]
 
 	set consiglia(sRglinflow) [expr $consiglia(sRg)*$lfracf ]
 	set consiglia(sRglinvorticity) [expr $consiglia(sRg)*$lfracv ]
-#	puts "$consiglia(sRglinflow) $consiglia(sRglinvorticity)"
+	set consiglia(sRgringflow) [expr $consiglia(sRg)*sqrt($rfracf) ]
+	set consiglia(sRgringvorticity) [expr $consiglia(sRg)*sqrt($rfracv) ]
+	puts "$rfracv $rfracf"
 }
 
 

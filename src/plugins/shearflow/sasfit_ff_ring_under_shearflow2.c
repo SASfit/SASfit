@@ -40,11 +40,6 @@ scalar r2expQRn2(scalar x,void *pam){
 	    return (BB*FP + CC*(-FP + mu))*cscale;
 	}
 
-	if (mu<=FP) {
-        return BB*mu;
-	} else {
-	    return (BB*FP + CC*(mu-FP));
-	}
 }
 
 scalar gsl_r2expQRn2(scalar x,sasfit_param * param){
