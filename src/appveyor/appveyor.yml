@@ -8,9 +8,9 @@ init:
 clone_depth: 1
 
 image:
-#  - Visual Studio 2019
+  - Visual Studio 2019
   - macos
-#  - Ubuntu2004
+  - Ubuntu2004
 
 environment:
   BT_API:
@@ -63,9 +63,9 @@ for:
     # final SASfit package
     - path: src/sasfit_*_*.tar.bz2
     - path: saskit/saskit_*
-  after_build:
-    - ls -l src/sasfit_*_*.tar.bz2 saskit/saskit_*
-    - which appveyor
+#  after_build:
+#    - ls -l src/sasfit_*_*.tar.bz2 saskit/saskit_*
+#    - which appveyor
 #    - echo $PATH
 #    - ls /usr/local/opt
 #    - ps: Get-Location | select -ExpandProperty Path
@@ -73,8 +73,8 @@ for:
 #    - ps: (Get-Item -Path '.').FullName
 #    - ps: Get-ChildItem saskit/saskit_* | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 #    - ps: Get-ChildItem src/sasfit_*_*.tar.bz2 | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
-    - appveyor PushArtifact src/sasfit_*_*.tar.bz2
-    - appveyor PushArtifact saskit/saskit_*
+#    - appveyor PushArtifact src/sasfit_*_*.tar.bz2
+#    - appveyor PushArtifact saskit/saskit_*
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
     - 'src/gsl/$CACHEID      -> src/gsl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
