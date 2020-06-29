@@ -38,10 +38,10 @@
 
 /* ################ start sq_hard_sphere__lhr_ ################ */
 /**
- * \defgroup sq_hard_sphere__lhr_ Hard Sphere (LHR)
+ * \defgroup sq_hard_sphere__lhr_ 3D Hard Sphere (LHR)
  * \ingroup sq_plugins_hard_sphere
  *
- * \brief \<some brief description of Hard Sphere (LHR) function\>
+ * \brief \<some brief description of 3D Hard Sphere (LHR) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -80,10 +80,10 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__lhr__v(scalar q, sasfit
 
 /* ################ start sq_hard_sphere__mv_ ################ */
 /**
- * \defgroup sq_hard_sphere__mv_ Hard Sphere (MV)
+ * \defgroup sq_hard_sphere__mv_ 3D Hard Sphere (MV)
  * \ingroup sq_plugins_hard_sphere
  *
- * \brief \<some brief description of Hard Sphere (MV) function\>
+ * \brief \<some brief description of 3D Hard Sphere (MV) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -122,10 +122,10 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__mv__v(scalar q, sasfit_
 
 /* ################ start sq_hard_sphere__4_3_ ################ */
 /**
- * \defgroup sq_hard_sphere__4_3_ Hard Sphere (4,3)
+ * \defgroup sq_hard_sphere__4_3_ 3D Hard Sphere (4,3)
  * \ingroup sq_plugins_hard_sphere
  *
- * \brief \<some brief description of Hard Sphere (4,3) function\>
+ * \brief \<some brief description of 3D Hard Sphere (4,3) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -164,10 +164,10 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__4_3__v(scalar q, sasfit
 
 /* ################ start sq_hard_sphere__cs_ ################ */
 /**
- * \defgroup sq_hard_sphere__cs_ Hard Sphere (CS)
+ * \defgroup sq_hard_sphere__cs_ 3D Hard Sphere (CS)
  * \ingroup sq_plugins_hard_sphere
  *
- * \brief \<some brief description of Hard Sphere (CS) function\>
+ * \brief \<some brief description of 3D Hard Sphere (CS) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -206,10 +206,10 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__cs__v(scalar q, sasfit_
 
 /* ################ start sq_hard_sphere__gh_ ################ */
 /**
- * \defgroup sq_hard_sphere__gh_ Hard Sphere (GH)
+ * \defgroup sq_hard_sphere__gh_ 3D Hard Sphere (GH)
  * \ingroup sq_plugins_hard_sphere
  *
- * \brief \<some brief description of Hard Sphere (GH) function\>
+ * \brief \<some brief description of 3D Hard Sphere (GH) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -248,10 +248,10 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__gh__v(scalar q, sasfit_
 
 /* ################ start sq_hard_sphere__py_ ################ */
 /**
- * \defgroup sq_hard_sphere__py_ Hard Sphere (PY)
+ * \defgroup sq_hard_sphere__py_ 3D Hard Sphere (PY)
  * \ingroup sq_plugins_hard_sphere
  *
- * \brief \<some brief description of Hard Sphere (PY) function\>
+ * \brief \<some brief description of 3D Hard Sphere (PY) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *

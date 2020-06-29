@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Analytical static structure factor for hard spheres} \hspace{1pt}
+\section{Three dimensional structure factors for hard sphere systems} \hspace{1pt}
 The rational function approximation method which is wholly compatible
 with the equation of state used for the fluid has been used for expressions of the hard sphere structure factor.
 In general, integral equation theories require a closure approximations, and they lead to different equations of state if one takes
@@ -44,7 +44,7 @@ Z^\mathrm{CS} &= \frac{1+\eta+\eta^2-\eta^3}{\left(1-\eta\right)^3}
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input parameters for \texttt{Hard Sphere (CS)}:}
+\underline{Input parameters for \texttt{3D Hard Sphere (CS)}:}
 \begin{description}
     \item[\texttt{R}]  radius $R$
     \item[\texttt{eta}] volume fraction $\eta$
@@ -86,7 +86,7 @@ Z^{(4,3)} &= \frac{1+1.024385\eta+1.104537\eta^2-0.4611472\eta^3-0.7430382\eta^4
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input parameters for \texttt{Hard Sphere (4,3)}:}
+\underline{Input parameters for \texttt{3D Hard Sphere (4,3)}:}
 \begin{description}
     \item[\texttt{R}]  radius $R$
     \item[\texttt{eta}] volume fraction $\eta$
@@ -130,7 +130,7 @@ Z^\mathrm{MV} &= \frac{1 + 1.0560\eta + 1.6539\eta^2 + 0.3262\eta^3}{\left(1- 3.
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input parameters for \texttt{Hard Sphere (MV)}:}
+\underline{Input parameters for \texttt{3D Hard Sphere (MV)}:}
 \begin{description}
     \item[\texttt{R}]  radius $R$
     \item[\texttt{eta}] volume fraction $\eta$
@@ -176,7 +176,7 @@ Z^\mathrm{LHR} &= \frac{1   + 0.153555\eta
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input parameters for \texttt{Hard Sphere (LHR)}:}
+\underline{Input parameters for \texttt{3D Hard Sphere (LHR)}:}
 \begin{description}
     \item[\texttt{R}]  radius $R$
     \item[\texttt{eta}] volume fraction $\eta$
@@ -231,7 +231,7 @@ S^\mathrm{GH}(Q,\sigma,\eta) &= S^\mathrm{PY}(Q,\sigma_0,\eta_0) + \frac{6\eta}{
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input parameters for \texttt{Hard Sphere (GH)}:}
+\underline{Input parameters for \texttt{3D Hard Sphere (GH)}:}
 \begin{description}
     \item[\texttt{R}]  radius $R$
     \item[\texttt{eta}] volume fraction $\eta$
@@ -294,7 +294,7 @@ S^\mathrm{PY}(Q,R,\eta)  = & \cfrac{1}{1+24 \eta
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input parameters for \texttt{Hard Sphere (PY)}:}
+\underline{Input parameters for \texttt{3D Hard Sphere (PY)}:}
 \begin{description}
     \item[\texttt{R}]  radius $R$
     \item[\texttt{eta}] volume fraction $\eta$
@@ -324,14 +324,47 @@ U(r,\sigma) &=
 0  &\mathrm{for~}  r \geq \sigma
 \end{cases}
 \end{align}
-have been implemented in several variants.
+have been implemented in several variants. All the theories are developed for $\mathbf{q}$-vector in the plane of the two dimensional structure. However, in an experiment this plane might be tilted against the detection plane. Therefore
+in all cases two variants are implemented. One case is considering a certain direction of the normal of the two dimensional sample plane and a second one for a randomly oriented plane, i.e. the limit of a powder.
+The coordination system used to describe the normal of the 2D plane is defined in fig.\ \ref{fig:coord_SQ2D}.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/structure_factor/SQ_1D_2D/coord_SQ_2D.png}
+\end{center}
+\caption{coordination system for 2D structure factors relative to the beam direction.}
+\label{fig:coord_SQ2D}
+\end{figure}
+With the following definition for the scattering vector and the unit vector defining the direction of the 1D structure
+\begin{align}
+  \mathbf{q} &=q  \begin{pmatrix}
+               \cos \psi \\
+               \sin psi \\
+               0 \\
+             \end{pmatrix}
+   \mbox{~~and~~}
+  \mathbf{n}_\mathrm{2D} =
+    \begin{pmatrix}
+        \sin \theta \cos \phi  \\
+        \sin \theta \sin \phi \\
+        \cos \theta \\
+    \end{pmatrix} \\
+\end{align}
+the angle $\gamma$ between $\mathbf{q}$ and $ \mathbf{n}_\mathrm{2D}$ is given as
+\begin{align}
+  \cos\gamma &= \cos\psi\sin\theta\cos\phi+\sin\psi\sin\theta\sin\phi
+\end{align}
+\subsection{Two dimensional hard sphere/disks fluid according to Rosenfeld}
+~\\
+
 An analytical form of the structure factor as a function of the disk radius $R$ and surface coverage $\eta=\pi R^2 \rho$, where $\rho$ is the number density of particles, have been given by\cite{Rosenfeld1990,Guo2006}.
 Rosenfeld \cite{Rosenfeld1990} gives the expression
 \begin{align}
-\frac{1}{S(q)}-1 &= 4\eta\left(A \frac{\mathrm{J}_1^2(qR)}{(qR)^2}
-                    +B\mathrm{J}_0(qR)\frac{\mathrm{J}_1(qR)}{qR}
-                    +G\frac{\mathrm{J}_1(2qR)}{qR}
-                    \right)
+\begin{split}
+\frac{1}{S_\mathrm{Rosenfeld}(q\sin\gamma)}-1 = & 
+4\eta                
+                    \left(A \frac{\mathrm{J}_1^2(qR\sin\gamma)}{(qR\sin\gamma)^2} \right) \\
+                   & +B\mathrm{J}_0(qR\sin\gamma)\frac{\mathrm{J}_1(qR\sin\gamma)}{qR\sin\gamma} \left. +G\frac{\mathrm{J}_1(2qR\sin\gamma)}{qR\sin\gamma}  \right)
+\end{split}
 \end{align}
 with
 \begin{align}
@@ -341,10 +374,14 @@ G &= \frac{1}{1-\eta} \\
 \chi &= \frac{1+\eta}{(1-\eta)^2}
 \end{align}
 In the original paper from Rosenfeld the definition of $\chi$ seems to have a typo and has been corrected like in \cite{Engel2009}.
+
+\subsection {Two dimensional hard sphere/disks fluid according to Guo}
+~\\
+
 Guo \cite{Guo2006} supplies the expression
 \begin{align}
-S(q) &= \frac{1}{1-\rho \tilde{c}(q,r)} \\
-\tilde{c}(q,r) &= 2\pi\sigma^2 \int_0^1 c(r',\eta) J_0(q\sigma r') r' \mathrm{d}r'
+S_\mathrm{Guo}(q\sin\gamma) &= \frac{1}{1-\rho \tilde{c}(q\sin\gamma,r)} \\
+\tilde{c}(q\sin\gamma,r) &= 2\pi\sigma^2 \int_0^1 c(r',\eta) J_0(q\sin\gamma\sigma r') r' \mathrm{d}r'
 \end{align}
 with
 \begin{align}
@@ -365,13 +402,24 @@ a &= 0.3699\eta^4
 
 \vspace{5mm}
 \noindent
-\underline{Input Parameters for model \texttt{2D hard disks (Rosenfeld)} as well as}
-\underline{\texttt{2D hard disks (Guo)}:}\\
+\underline{Input Parameters for model \texttt{2D hard disks (Rosenfeld,aligned)} as well as}
+\underline{\texttt{2D hard disks (Guo,aligned)}:}\\
+\begin{description}
+\item[\texttt{R}] radius of the disc $R$
+\item[\texttt{eta}] surface coverage $\eta$
+\item[\texttt{theta}] polar angle $\theta$ (polar axis = beam axis)
+\item[\texttt{phi}] azimuthal angle $\phi$ (in detector plane towards $x$-axis)
+\item[\texttt{psi}] azimuthal angle  $\psi$ for $q$ towards $x$-axis
+\end{description}
+
+\vspace{5mm}
+\noindent
+\underline{Input Parameters for model \texttt{2D hard disks (Rosenfeld,random)} as well as}
+\underline{\texttt{2D hard disks (Guo,random)}:}\\
 \begin{description}
 \item[\texttt{R}] radius of the disc $R$
 \item[\texttt{eta}] surface coverage $\eta$
 \end{description}
-
 
 \noindent\underline{Note:}
 \begin{itemize}
@@ -397,6 +445,76 @@ a &= 0.3699\eta^4
   \label{fig:RosenfeldGuo}
 \end{figure}
 
+\clearpage
+\section{One dimensional structure factors}
+
+for one dimensional structure factors the relative orientation of the 1D structure to the detection plane is relevant. The orientation has been defined by spherical coordinates with the polar axis pointing in the horizontal direction of the detection plane.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/structure_factor/SQ_1D_2D/coord_SQ_1D.png}
+\end{center}
+\caption{coordination system for 1D structure factors relative to the detection plane.}
+\label{fig:coord1DSQ}
+\end{figure}
+With the following definition for the scattering vector and the unit vector defining the direction of the 1D structure
+\begin{align}
+  \mathbf{q} &=q  \begin{pmatrix}
+               \cos \psi \\
+               0 \\
+               \sin \psi \\
+             \end{pmatrix}
+   \mbox{~~and~~}
+  \mathbf{n}_\mathrm{1D} =  
+    \begin{pmatrix}
+        \cos \theta \\
+        \sin \theta \sin \phi  \\
+        \sin \theta \cos \phi
+    \end{pmatrix} \\
+\end{align}
+the angle $\gamma$ between $\mathbf{q}$ and $ \mathbf{n}_\mathrm{1D}$ is given as
+\begin{align}
+  \cos\gamma &= \cos\psi\cos\theta+\sin\psi\sin\theta\cos\phi
+\end{align}
+
+\subsection{Structure factor for a hard spheres potential in one dimension} \hspace{1pt}
+
+The structure factor for hard spheres in one dimension has been solved in \cite{Leutheusser1984} and also implemented in the open source software \texttt{Jscatter} \cite{Biehl2019}. The structure factor is given by
+\begin{align}
+\label{eq:SQ_HS_1D}
+  S_\mathrm{HS,1D,||}(q,\sigma,\eta) & = \frac{1}{1-\frac{\eta}{\sigma} \tilde{c}(q)} \\
+\label{eq:cQ_HS_1D}
+  \tilde{c}(q) &= -2\left(A(q)+B(q)\right) \\
+  A(q) &= \frac{\sigma}{1-\eta} \frac{\sin q\sigma}{q\sigma} \\
+  B(q) &= \frac{\eta}{\sigma}\frac{1}{\left(q\left(1-\eta\right)\right)^2}\left[1-\cos q\sigma\right]
+\end{align}
+The above equation assumes that $\mathbf{q}$ points along the one dimensional structure. In case of a certain angle $\gamma$, with $\cos \gamma=\mathbf{q}\cdot\mathbf{n}_\mathrm{1D}/(\abs{\mathbf{q}}\,\abs{\mathbf{n}_\mathrm{1D}})$, between $\mathbf{q}$ and the direction $\mathbf{n}_\mathrm{1D}$ of the one dimensional structure one has to take
+\begin{align}
+\label{eq:SQ_HS_1D}
+  S_\mathrm{HS,1D}(q,\sigma,\eta,\gamma) & = S_\mathrm{HS,1D,||}(q\cos\gamma,\sigma,\eta)
+\end{align}
+For random oriented 1D structures the orientational average of the structure factor needs to be done in principle together with the form factor as shown for example in section \ref{sect:StackedDiscs} for stacked discs. However, if the individual stacked structures are spherical symmetric like a straight chain of spheres the form factor is isotropic and the average can be performed over the structure factor only which then reads as
+\begin{align}
+\label{eq:SQ_HS_1D_random}
+  S_\mathrm{HS,1D,ran}(q,\sigma,\eta,\gamma) & = \int_0^1 S_\mathrm{HS,1D,||}(qx,\sigma,\eta) \, \mathrm{d}x
+\end{align}
+
+\subsection{One dimensional paracrystal}  \hspace{1pt}
+
+\begin{align}\label{eq:SQ1D_paracrystal}
+  S(q,\gamma) &=  1+\frac{2}{n} \sum_{k=1}^{n-1} (n-k)
+\cos(kDQ\cos(\Theta))
+     \exp\left(-\frac{k}{2}\left(Q\cos(\Theta) \sigma_D\right)^2\right)
+\end{align}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/structure_factor/SQ_1D_2D/SQ_1D.png}
+\end{center}
+\caption{structure factor of aligned for both q parallel and perpendicular to the direction of the 1D structure as well as and random oriented 1D structures.}
+\label{fig:1DSQ}
+\end{figure}
+
+\clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Structure factor of a random flight model} \hspace{1pt}
 The random flight model describes a discrete chain, where the positions of the $N$ units forming the discrete chains follow a 3D random walk. The distance between neighbouring units is constants.
