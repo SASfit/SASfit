@@ -2338,39 +2338,6 @@ switch $actualPar(SQ,typestr) {
                           set actualPar(SQ,s9,label) ""
                           set actualPar(SQ,s10,label) ""
                         }
-   "ThermalDisorder"    { set actualPar(SQ,s1,label) "N ="
-                          set actualPar(SQ,s2,label) "d ="
-                          set actualPar(SQ,s3,label) "Delta ="
-                          set actualPar(SQ,s4,label) "Nu ="
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-      "Paracrystalline" { set actualPar(SQ,s1,label) "N ="
-                          set actualPar(SQ,s2,label) "d ="
-                          set actualPar(SQ,s3,label) "Delta ="
-                          set actualPar(SQ,s4,label) "Nu ="
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-      "ModifiedCaille"  { set actualPar(SQ,s1,label) "N ="
-                          set actualPar(SQ,s2,label) "d ="
-                          set actualPar(SQ,s3,label) "eta ="
-                          set actualPar(SQ,s4,label) "Nu ="
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
  "GaussianAmplitude"    { set actualPar(SQ,s1,label) "bckgr ="
                           set actualPar(SQ,s2,label) "Ampl. ="
                           set actualPar(SQ,s3,label) "mean ="
@@ -4224,39 +4191,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(SQ,s9,label) ""
 				  set actualAnalytPar(SQ,s10,label) ""
 				}
-	   "ThermalDisorder"    { set actualAnalytPar(SQ,s1,label) "N ="
-				  set actualAnalytPar(SQ,s2,label) "d ="
-				  set actualAnalytPar(SQ,s3,label) "Delta ="
-				  set actualAnalytPar(SQ,s4,label) "Nu ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	      "Paracrystalline" { set actualAnalytPar(SQ,s1,label) "N ="
-				  set actualAnalytPar(SQ,s2,label) "d ="
-				  set actualAnalytPar(SQ,s3,label) "Delta ="
-				  set actualAnalytPar(SQ,s4,label) "Nu ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	      "ModifiedCaille"  { set actualAnalytPar(SQ,s1,label) "N ="
-				  set actualAnalytPar(SQ,s2,label) "d ="
-				  set actualAnalytPar(SQ,s3,label) "eta ="
-				  set actualAnalytPar(SQ,s4,label) "Nu ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
 	"GaussianAmplitude"     { set actualAnalytPar(SQ,s1,label) "Ampl. ="
 				  set actualAnalytPar(SQ,s2,label) "mean ="
 				  set actualAnalytPar(SQ,s3,label) "width ="
@@ -4874,51 +4808,6 @@ switch -exact $type {
                 10 {return "\n"}
                }
 	   }
-           "ThermalDisorder" {
-               switch $num {
-                 0 {return "S_TD(Q,N,d,Delta,Nu) structure factor of weakly ordered membrane stacks\nthermal disorder caused by fluctuations of bilayers around mean layer positions of equal separation"}
-                 1 {return "N: total number of layers within scattering domain \n"}
-                 2 {return "d: stacking separation\n"}
-                 3 {return "Delta: Debye-Waller temperature factor\nDelta = <(d_k-d)^2>"}
-                 4 {return "Nu: scaling constant for the additional diffuse scattering term\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "Paracrystalline" {
-               switch $num {
-                 0 {return "S_PT(Q,N,d,Delta,Nu) structure factor of weakly ordered membrane stacks\ndisorder accounting for small variation in bilayer separatios (stacking disorder)"}
-                 1 {return "N: total number of layers within scattering domain \n"}
-                 2 {return "d: stacking separation\n"}
-                 3 {return "Delta: stacking disorder parameter\n"}
-                 4 {return "Nu: scaling constant for the additional diffuse scattering term\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
-           "ModifiedCaille" {
-               switch $num {
-                 0 {return "S_MCT(Q,N,d,Delta,Nu) structure factor of weakly ordered membrane stacks\ndisorder when bilayer bending fluctuations are considered"}
-                 1 {return "N: total number of layers within scattering domain \n"}
-                 2 {return "d: stacking separation\n"}
-                 3 {return "eta: Caillé parameter, which is measure for bilayer bending fluctuations\n"}
-                 4 {return "Nu: scaling constant for the additional diffuse scattering term\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-               }
-           }
            "Correlation Hole" {
                switch $num {
                  0 {return "Correlation Hole     x=Qh\nS(Q)=1.0+3.0*eta*(x*cos(x)-sin(x))/pow(x,3.0)"}
@@ -8161,7 +8050,6 @@ None \
 				     {{Square Well Potential}} \
 				     {{Thin Square Well Potential}} \
                                      {{Square Well Potential 2}}}} \
-{lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
 {other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 		BabaAhmed BabaAhmed2}} \
 }]

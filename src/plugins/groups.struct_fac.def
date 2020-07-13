@@ -224,6 +224,15 @@
  * \modname{sq_plugins_fractal_objects}
  */
  
+  /** 
+ * \defgroup sq_plugins_multi_lamellar multi-lamellar
+ * \ingroup sq_plugins
+ *
+ * This group contains structure factor for multi-lamellar stacks of flat objects.
+ *
+ * \modname{sq_plugins_multi_lamellar}
+ */
+ 
  /** 
  * \defgroup sq_plugins_user1 user plugins
  * \ingroup sq_plugins

@@ -2218,39 +2218,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
 				}
-	   "ThermalDisorder"    { set actualPar(SQ,s1,label) "N ="
-				  set actualPar(SQ,s2,label) "d ="
-				  set actualPar(SQ,s3,label) "Delta ="
-				  set actualPar(SQ,s4,label) "Nu ="
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	      "Paracrystalline" { set actualPar(SQ,s1,label) "N ="
-				  set actualPar(SQ,s2,label) "d ="
-				  set actualPar(SQ,s3,label) "Delta ="
-				  set actualPar(SQ,s4,label) "Nu ="
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	      "ModifiedCaille"  { set actualPar(SQ,s1,label) "N ="
-				  set actualPar(SQ,s2,label) "d ="
-				  set actualPar(SQ,s3,label) "eta ="
-				  set actualPar(SQ,s4,label) "Nu ="
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
 	      "VoigtPeak"       { set actualPar(SQ,s1,label) "A ="
 				  set actualPar(SQ,s2,label) "mean ="
 				  set actualPar(SQ,s3,label) "sigma ="
@@ -3175,7 +3142,6 @@ proc analyticalGlobalSDCmd {simorfit
 					     {{Square Well Potential}} \
                                              {{Thin Square Well Potential}} \
                                              {{Square Well Potential 2}} }} \
-	{lamellar "Multi Lamellar Structures" {ThermalDisorder Paracrystalline ModifiedCaille}} \
 	{other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 			BabaAhmed BabaAhmed2}} \
 	}]

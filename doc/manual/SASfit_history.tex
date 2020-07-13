@@ -1,7 +1,22 @@
 \appendix{History}
 \begin{description}
-\item[2019-XX-XX] \SASfit 0.94.12
+\item[2020-XX-XX] \SASfit 0.94.12
     \begin{itemize}
+    \item implemented structure factors for multilamellar structures as plug-in function and added the monodisperse stacking case. In earlier version only the more practically relevant case of polydisperse case was implemented.
+    \item added structure factors for one and two dimensional hard sphere potentials both for aligned structures in a certain direction as well as for random oriented 1D structures.
+    \item the model Pcs:Plate+Chains(RW) now assumes always a non-zero surface area to avoid division by zero for zero layer thickness
+    \item fixed a memory leak, when resolution function for single data set was used
+    \item added form factor for ring polymer under shear flow in the approximation of Rousse modes
+    \item successfully updated from gsl2.5 to gsl2.6 library.
+    \item added a plugin for randomly oriented ellipsoids with a gamma-size distribution, where the integration over the size distribution can be performed analytically.
+    \item added a generalized and lesser generalised form factor according to Fedorova describing several shapes and geometries of objects depending on only one size parameter visible in the q-range of the SAS instrument
+    \item added a form factor describing the scaling function of a phase separating system after a quench in the miscibility gap
+    \item added form factor for cylinders with a fuzzy interface (Pcs:Boucher cyl., Pcs:Boucher2 cyl., Pcs:fuzzy cyl., Pcs:linear shell cyl.) and the corresponding profiles in real space ("profile:Boucher cyl.", "profile:Boucher2 cyl.", "profile:fuzzy cyl.", "profile:linear shell cyl.")
+    \item added in integral structural parameters a command for developing model-free calculations of size distributions using EM algorithms as well as Maximum Entropy methods and traditional Tikhonov regularization methods. This part is still experimental and not well documented in the manual.
+    \item bug fix for TetraheadronDoubleShell. The double sum over the number of spheres has been corrected.
+    \item bug fix in Porod cylinder as by moving the form factor to the plugin area the length parameter was assigned to the wrong index of the parameter array.
+    \item supplied those models available for SESANS analysis as multiple scattering models because the projected correlation function is directly related to the intermediate function s(r) as described in the reference paper from Schelten and Schmatz, J. Appl. Cryst. (1980). 13, 385-390
+    \item bug fix in the SESANS model of G\_gDAB(z)
     \item added form factors of clipped random waves for 5 different two-point correlation functions
     \item added form factor of a stochastic model of a boolean union model of spheres with LogNorm size distribution.
     \item added form factor of a stochastic model of a dead-leave model of spheres with LogNorm size distribution.

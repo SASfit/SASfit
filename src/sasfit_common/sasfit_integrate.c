@@ -117,7 +117,14 @@ scalar sasfit_integrate_ctm(scalar int_start,
 {
 	scalar res, errabs;
 	int err, thid;
+    scalar *aw;
+    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
+    gsl_integration_cquad_workspace * wcquad;
+    gsl_integration_glfixed_table * wglfixed;
+    gsl_integration_fixed_workspace * wfixed;
 	gsl_function F;
+    size_t neval;
+    int lenaw=4000,ierr;
 
 	SASFIT_ASSERT_PTR(param);
 	SASFIT_ASSERT_PTR(intKern_fct);
@@ -145,12 +152,59 @@ scalar sasfit_integrate_ctm(scalar int_start,
 	}
 	else if ( gsl_isinf(int_start) && gsl_isinf(int_end) ) 	// adaptive integration on infinite intervals (-\infty,+\infty)
 	{
-        	err = gsl_integration_qagi(&F, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+	    err = gsl_integration_qagi(&F, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
 	}
 	else if ( gsl_finite(int_start) && gsl_finite(int_end) ) // adaptive integration with singularities
 	                                                         // on well defined interval (a,b)
 	{
-        	err = gsl_integration_qags(&F, int_start, int_end, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+	    switch (sasfit_get_int_strategy()) {
+	        case GSL_GAUSSLEGENDRE: {
+                wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_robertus_p());
+                err = GSL_SUCCESS;
+                res = gsl_integration_glfixed(&F, int_start, int_end, wglfixed);
+                gsl_integration_glfixed_table_free(wglfixed);
+                break;
+            }
+        case GSL_CHEBYSHEV1: {
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_robertus_p(), int_start, int_end, 0, 1);
+                err = gsl_integration_fixed(&F, &res, wfixed);
+                gsl_integration_fixed_free(wfixed);
+                break;
+            }
+        case GSL_CHEBYSHEV2: {
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_robertus_p(), int_start, int_end, 0, 1);
+                err = gsl_integration_fixed(&F, &res, wfixed);
+                gsl_integration_fixed_free(wfixed);
+                break;
+            }
+        case GSL_GEGENBAUER: {
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_robertus_p(), int_start, int_end, sasfit_eps_get_aniso(), 1);
+                err = gsl_integration_fixed(&F, &res, wfixed);
+                gsl_integration_fixed_free(wfixed);
+                break;
+            }
+        case GSL_EXPONENTIAL: {
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_robertus_p(), int_start, int_end, sasfit_eps_get_aniso(), 1);
+                err = gsl_integration_fixed(&F, &res, wfixed);
+                gsl_integration_fixed_free(wfixed);
+                break;
+            }
+        case GSL_LAGUERRE: {
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_robertus_p(), int_start, int_end, sasfit_eps_get_aniso(), 1);
+                err = gsl_integration_fixed(&F, &res, wfixed);
+                gsl_integration_fixed_free(wfixed);
+                break;
+            }
+    case GSL_JACOBI: {
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi, sasfit_eps_get_robertus_p(),
+                                                     int_start, int_end, epsabs, sasfit_eps_get_aniso());
+                err = gsl_integration_fixed(&F, &res, wfixed);
+                gsl_integration_fixed_free(wfixed);
+                break;
+            }
+            default: err = gsl_integration_qags(&F, int_start, int_end, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+	    }
+
 	} else {
 		sasfit_err("Erroneous specification of integration intervals!\n");
 		err = 1; // error

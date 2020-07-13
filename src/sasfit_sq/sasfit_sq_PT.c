@@ -66,7 +66,7 @@ scalar sasfit_sq_PT(scalar q, sasfit_param * param)
 	SQ_PT = 0.0;
 	PN = 0.0;
 	NN = (int) N;
-	if (N >= 5) 
+	if (N >= 5)
 	{
 		sigma = sqrt(N);
 	} else {
@@ -75,22 +75,22 @@ scalar sasfit_sq_PT(scalar q, sasfit_param * param)
 	nsf =  (int) ceil(30.0/log(N));
 	dnsf = (int) ceil(4.0*sigma/nsf);
 
-	for (Ni = (int) (N-2.0*sigma);Ni<= (int) (N+2.0*sigma);Ni++) 
+	for (Ni = (int) (N-2.0*sigma);Ni<= (int) (N+2.0*sigma);Ni++)
 	{
 		P1 = Ni;
-		for (k=1;k<Ni;k++) 
+		for (k=1;k<Ni;k++)
 		{
 			PD = 0.0;
-			if (sigma_d == 0) 
+			if (sigma_d == 0)
 			{
-				PD = 2.0*(Ni-k)*cos(k*q*d) * exp(-k*k*q*q*Delta*Delta/2.0);
+				PD = 2.0*(Ni-k)*cos(k*q*d) * exp(-k*q*q*Delta*Delta/2.0);
 		  	} else {
 				NormPD = 0.0;
-			  	for (m=0;m<30;m++) 
+			  	for (m=0;m<30;m++)
 				{
 					Dd = d-2*sigma_d+4.0*sigma_d/30.0*m;
 					NormPD = NormPD+exp(-pow(d-Dd,2.0)/(2.0*pow(sigma_d,2.0)));
-					PD = PD + 2.0*(Ni-k)*cos(k*q*Dd) * exp(-k*k*q*q*Delta*Delta/2.0)
+					PD = PD + 2.0*(Ni-k)*cos(k*q*Dd) * exp(-k*q*q*Delta*Delta/2.0)
 						* exp(-pow(d-Dd,2.0)/(2.0*pow(sigma_d,2.0)));
 			  	}
 				PD = PD/NormPD;
