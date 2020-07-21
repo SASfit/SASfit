@@ -394,7 +394,9 @@ This form factor calculates the scattering from a randomly
 distributed (i.e. non-particulate), two-phase system based on the
 Debye-Anderson-Brumberger (DAB) \cite{DAB1957,DebyeBueche1949} model
 for such systems. The two-phase system is characterized by a single
-length scale, the correlation length $\xi$, which is a measure of
+length scale, the correlation length $\xi$\footnote{
+The Taylor series of the DAB model at small Q-values gives $I_\text{DAB}(Q\rightarrow 0,\xi) \sim 1-2\xi^2Q^2+3\xi^4Q^4$ whereas the Taylor series of a form factor in terms of the Guinier radius $R_G$ or the Guinier law at small Q-values is $I(Q\rightarrow 0)\sim I_0\exp\left(-R_G^2Q^2/3\right)\sim I_0 \left(1-R_G^2Q^2/3\right)$, so that $\xi^2=\frac{1}{6} R_G^2=\frac{5}{18} R^2=\frac{1}{3.6} R^2$
+}, which is a measure of
 the average spacing between regions of phase 1 and phase 2. The
 model also assumes smooth interfaces between the phases and hence
 exhibits Porod behavior ($I \propto q^{-4}$) at large $q$ ($q \xi
@@ -406,7 +408,7 @@ exhibits Porod behavior ($I \propto q^{-4}$) at large $q$ ($q \xi
 The macroscopic scattering cross-section in the DBA model is given
 by
 \begin{align}
-I(q) = I_0 \frac{1}{\left[1+(q\xi)^2\right]^2}
+I_\mathrm{DAB}(q) &= \frac{\left(\pi\Delta\eta\xi^3\right)^2}{\left(1+q^2\xi^2\right)^2}
 \end{align}
 
 
@@ -424,7 +426,7 @@ I(q) = I_0 \frac{1}{\left[1+(q\xi)^2\right]^2}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth]{DAB.png}
+\includegraphics[width=0.7\textwidth]{DAB.png}
 \end{center}
 \caption{Some typical curves for the Debye-Anderson-Brumberger model function} \label{fig:DABIq}
 \end{figure}
@@ -433,7 +435,7 @@ I(q) = I_0 \frac{1}{\left[1+(q\xi)^2\right]^2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
-\subsection{Generalization of the Debye-Anderson-Brumberger model (gDAB)}
+\subsection{Generalization of the Debye-Anderson-Brumberger model}
 \label{sect:gDAB}~\\
 The Debye-Anderson-Brumberger(DAB) model from the previous section \ref{sect:DAB} can be considered as a special case from a more general correlation function describing self-affine random density distributions \cite{Klimes2002,Hunter2006,Andersson2008}
 \begin{align}
@@ -464,13 +466,41 @@ I(q) =  \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\G
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.85\textwidth]{../images/form_factor/nonparticular/gDAB.png}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/nonparticular/gDAB.png}
 \end{center}
 \caption{Some typical curves for the generalized Debye-Anderson-Brumberger model function} \label{fig:gDABIq}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\clearpage
+\subsection{deformed random oriented Debye-Anderson-Brumberger model}
+\label{sect:epsilonDAB}~\\
+A second generalization of the DAB can be thought if the particles of the original model in section \ref{sect:DAB} first undergo a compression or an extensional deformation and secondly a random orientation averaging in the same way then for spheres becoming random oriented ellipsoids \ref{sect:Ellipsoid_i}. 
+\begin{align}
+   \label{eq:DABaffPLUSrnd}
+  I_{\epsilon\mathrm{DAB}}(q,\xi,\epsilon) &= \int_0^{\pi/2}I_\mathrm{DAB}\left(q\xi\sqrt{\sin^2\theta+\epsilon^2\cos^2\theta}\right) \sin\theta\, \mathrm{d}\theta \\
+  I_\mathrm{DAB}(q\xi) &= \frac{\left(\pi\Delta\eta\xi^3\right)^2}{\left(1+q^2\xi^2\right)^2}
+\end{align}
+The radial average can be done analytically and one gets for $\epsilon$ smaller and larger than 1 the expressions.
+\begin{align}\label{eq:DABaffPLUSrnd_eps_small}
+   \frac{I_{\epsilon\mathrm{DAB}}(q,\xi,\epsilon{<}1)}{\left(\pi\Delta\eta\epsilon\xi^3\right)^2} &=\frac{1}{4} \left(\frac{\log \left(\frac{p}{m}\right)}{\gamma  u^2}+\frac{2}{m p}\right) \\
+   \frac{I_{\epsilon\mathrm{DAB}}(q,\xi,\epsilon{>}1)}{\left(\pi\Delta\eta\epsilon\xi^3\right)^2} &= \frac{2 \beta^2 \tan ^{-1}(\alpha)-\beta^2 \left(\tan ^{-1}(\alpha{-}\beta)+\tan ^{-1}(\alpha{+}\beta)\right)+\alpha}{2 u^2\alpha \left(
+   \epsilon ^2 q^2 \xi ^2+1\right)} \\
+   u &= \sqrt{1+q^2\xi^2} \\
+  \alpha & =\frac{1}{u} \sqrt{\left(\epsilon^2-1\right)\left(u^2-1\right)}\\
+  \beta &=  \frac{1}{u}\sqrt{1+\epsilon^2\left(u^2-1\right)}\\
+  \gamma &= u\sqrt{\left(1-\epsilon^2\right)\left(u^2-1\right)} \\
+  m &=u^2-\gamma \\
+  p &= u^2+\gamma
+\end{align}
+The limit $q\to 0$ is given by
+\begin{align}
+  \lim_{q\to 0} I_{\epsilon DAB}(q)& = \frac{1 - \frac23 (q\xi)^2(2+\epsilon^2)}{\left(\pi\Delta\eta\epsilon\xi^3\right)^2} \\
+  R_g^2 & =  2(2+\epsilon^2)\xi^2
+\end{align}
+For values of $\epsilon<1$ the objects become disk-like and show a $q^{-2}$ scattering behaviour at small $q$-values whereas for values of $\epsilon>1$ an expected rod-like scattering behaviour of $q^{-1}$ is observed at small $q$ values.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \subsection{Spinodal}
 \label{sect:Spinodal}

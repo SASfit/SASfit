@@ -30,7 +30,7 @@
 
 /*
 double S_SquareWell2(Tcl_Interp *interp,
-			double Q, 
+			double Q,
 			double RHS,
 			double eta,
 			double epsi_div_kB,
@@ -40,7 +40,7 @@ double S_SquareWell2(Tcl_Interp *interp,
 */
 
 /**
- * structure factor of particles interacting with a square well potemtial
+ * structure factor of particles interacting with a square well potential
  * RHS: hards sphere radius
  * rho: colloid concentration
  * epsilon: square well depth

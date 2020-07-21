@@ -518,6 +518,7 @@ For random oriented 1D structures the orientational average of the structure fac
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Structure factor of a random flight model} \hspace{1pt}
 The random flight model describes a discrete chain, where the positions of the $N$ units forming the discrete chains follow a 3D random walk. The distance between neighbouring units is constants.
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.35\textwidth]{../images/structure_factor/randomflight3D.png}
@@ -525,6 +526,15 @@ The random flight model describes a discrete chain, where the positions of the $
 \caption{Random flight of $N$ particles with constant distances $D$.}
 \label{fig:randomflight3D}
 \end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/structure_factor/randomflight.png}
+\end{center}
+\caption{Random flight structure factor with $N$ steps of length $D$.}
+\label{fig:randomflight}
+\end{figure}
+
 The structure factor $S_N(QD)$ describing such an arrangement of $N$ particles on a random flight
 with a constant step size $D$ is given by \cite{Burchard1970} as
 \begin{align}
@@ -548,13 +558,7 @@ S_N(QD)&= (1-w)S_{[N]}(QD) + wS_{[N]+1}(QD)
 \item $N$ needs to be larger or equal to 1. For non-integer values of $N$ the curve is linear interpolated between the structure factor for $N$ and $N+1$.
 \end{itemize}
 
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.75\textwidth]{../images/structure_factor/randomflight.png}
-\end{center}
-\caption{Random flight structure factor with $N$ steps of length $D$.}
-\label{fig:randomflight}
-\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ordered particle systems} \hspace{1pt}
@@ -960,9 +964,9 @@ The above formula is defined for integer values of $N_k$ larger or equal 1. For 
 \begin{align} \label{eq:continuesSQTD}
 S_\mathrm{TD}(q,N_k) &= (1-w)S_{\lfloor N_k\rfloor,\mathrm{TD}}(q) + w S_{\lfloor N_k\rfloor+1,\mathrm{TD}}(q)
 \end{align}
-with $w=N_k-\lfloor N_k\rfloor$. 
+with $w=N_k-\lfloor N_k\rfloor$.
 The Bragg peaks are centered around $q_h=2\pi h/d$, where $h$ denotes
-the diffraction order. 
+the diffraction order.
 
 
 
@@ -1172,7 +1176,7 @@ disorder is a particular feature of the $L_\alpha$ (smectic A) phase
 and is caused by bilayer undulations. The particular shape of the
 Bragg peaks is given by the modified Caill\'e theory (MC).
 \cite{Caille1972} realized the impact on the structure factor, which
-in a modified version \cite{Zhang1994} of the Caill\'e theory 
+in a modified version \cite{Zhang1994} of the Caill\'e theory
 is
 \begin{multline} \label{eq:MCMonoSum}
 S_{N_k,\mathrm{MC}}(q) = N_\mathrm{diff}+ N_k \\
@@ -1280,3 +1284,212 @@ the bilayer bending rigidity
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Mass Fractal}~\\
+\label{sect:SQ4clusteraggregates}
+For a fractal object, the structure factor $S(q)$ can be calculated
+\cite{Teixeira1988,Teixeira1986,Schmidt1991,Sorensen1999,Sorensen1992,Hurd1988,Lin1989,Lin1990,Lin1990a,Lin1990b} via the pair correlation function $g(r)$, which describes the total number of
+particles within a sphere of radius $r$ centered in a central
+particle and is given (for $\dim = 3$) by
+\begin{align}
+N(r) = \Phi \int_0^r g(r) \, 4\pi r^2 \, dr
+\end{align}
+or
+\begin{align}
+\textrm{d}N(r) = \Phi  g(r) \, 4\pi r^2 \, dr \label{eq:fractdN}
+\end{align}
+On the other hand, a fractal object is characterized by a spatial
+distribution of the individual scatterers given by
+\begin{align}
+N(r) = \left( \frac{r}{r_0} \right)^D \label{eq:fractN}
+\end{align}
+where $r_0$ is the gauge of the measurement, which has
+the magnitude of the characteristic dimension of each
+individual scatterer.
+Differentiation of \ref{eq:fractN} and identification with \ref{eq:fractdN}
+gives
+\begin{align}
+\Phi g(r) = \frac{D}{4\pi r_0^D} r^{D-3}
+\end{align}
+Because $D$ is smaller than 3, $g(r)$ goes to zero at
+large $r$. This is clearly unphysical.
+At some large scale, the sample will show a
+macroscopic density. A good knowledge of the sample
+allows in general a reasonable assumption for the
+large-scale behavior of $g(r)$. Therefore a cut-off function
+$h(r,\xi)$ has to be introduced, where $\xi$ is a cut-off distance, to
+describe the behavior of the pair correlation function
+at large distances. To derive the analytical form of
+$S(q)$ within this assumption, one can use the general
+theory of liquids, where the uniform density is subtracted
+to avoid a divergence in the evaluation of $S(q)$.
+We then write
+\begin{align}
+4\pi\Phi[g(r)-1] = \frac{D}{r_0^D} \, r^{D-3} h(r,\xi)
+\label{eq:fract_g(r)-1}
+\end{align}
+The meaning of $\xi$ is only qualitative and has to be
+made precise in any particular situation. Generally
+speaking, it represents the characteristic distance
+above which the mass distribution in the sample is no
+longer described by the fractal law. In practice, it can
+represent the size of an aggregate or a correlation
+length in a disordered material.
+For isotropic systems
+\begin{align}
+S(q) = 1+4\pi\Phi\int_0^\infty [g(r)-1] \frac{\sin(qr)}{qr} \, r^2 \, dr
+\end{align}
+Combined with \ref{eq:fract_g(r)-1} one gets
+\begin{align}
+S(q) = 1 +\frac{D}{r_0^D} \int_0^\infty r^{D-3} h(r,\xi)  \frac{\sin(qr)}{qr}\, r^2 \, dr
+\label{eq:hSQ}
+\end{align}
+Several cut-off functions $h(r,\xi)$ have been discussed in the
+literature and compared by Sorensen et al.\
+\cite{Sorensen1999,Sorensen1992}.
+\begin{align}
+h_\text{Exp}(r,\xi)     &= \exp\left[-\tfrac{r}{\xi}\right] \label{eq:hExp}\\
+h_\text{Gauss}(r,\xi)   &= \exp\left[-\left(\tfrac{r}{\xi}\right)^2\right] \label{eq:hGauss}\\
+h_\text{Exp(-x$\hat{~}$a)}(r,\xi,\alpha,D) &= \exp\left[-\left(\tfrac{r}{\xi}\right)^\alpha\right] \label{eq:hExpmxa}\\
+h_\text{OverlapSph}(r,\xi)   &=
+\begin{cases}
+%\left(\frac{4}{3}\pi\xi\right)
+\left(1+\frac{r}{4\xi}\right)\left(1-\frac{r}{2\xi}\right)^2
+& \text{for } r\leq 2\xi \\
+0 & \text{for } r>2\xi
+\end{cases}
+\label{eq:hOverlapSph}
+\end{align}
+For the cut-off functions \ref{eq:hExp} and \ref{eq:hGauss} the integral \ref{eq:hSQ} can be solved
+analytically and the corresponding structure factors are given by
+\begin{align}
+S_\text{Exp}(q,\xi,D,r_0) &= 1 +  \cfrac{D \Gamma(D-1)
+\sin\left([D-1]\arctan(q \xi)\right)}{\left( q r_0\right)^D
+\left[1+\tfrac{1}{q^2\xi^2}\right]^{(D-1)/2}} \\
+S_\text{Gauss}(q,\xi,D,r_0) &= 1 +
+    \Gamma\left[\tfrac{D}{2}\right]\frac{D}{2}
+    \left(\frac{\xi}{r_0}\right)^D
+    {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{8}\right]
+\end{align}
+where $D$ is the fractal dimension, $\xi$ is a cut-off length for
+the fractal correlations, $\Gamma(x)$ is the gamma function.
+${}_1F_1\left[\right]$ is the Kummer or hypergeometric function. For
+the cut-off functions \ref{eq:hExpmxa} and \ref{eq:hOverlapSph} the
+integral \ref{eq:hSQ} is solved numerically.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/ComparingSQMassFractals.png}
+\end{center}
+\caption{Comparison of the different structure factors for mass
+fractals.} \label{fig:MassFractCompare}
+\end{figure}
+
+
+\clearpage
+\subsection{Mass Fractal (Exp Cut-Off)}
+~\\
+
+\underline{Input Parameters for model \texttt{Mass Fractal (Exp Cut-Off)}:}
+\begin{description}
+\item[\texttt{r0}] characteristic dimension of individual scattering objects $r_0$
+\item[\texttt{xi}] cut-off length for the fractal correlations $\xi$
+\item[\texttt{D}] fractal dimension $D$
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item $D$ needs to be larger than 1 ($D>1$). Physical values for $D$ are between 1 and 3 ($1<D<3$).
+\item The fractal dimension needs to be large than the size of the individual scattering objects ($r_0 < \xi$).
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/SQExpCutOff.png}
+\end{center}
+\caption{Structure factor of a mass fractal with an exponential
+cut-off function $h_\text{Exp}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)^\alpha\right]$.}
+\label{fig:SQExpCutOff}
+\end{figure}
+
+
+\clearpage
+\subsection{Mass Fractal (Exp(-x\^{}a) Cut-Off)}
+~\\
+
+\underline{Input Parameters for model \texttt{Mass Fractal (Exp(-x\^{}a) Cut-Off)}:}
+\begin{description}
+\item[\texttt{r0}] characteristic dimension of individual scattering objects $r_0$
+\item[\texttt{xi}] cut-off length for the fractal correlations $\xi$
+\item[\texttt{D}] fractal dimension $D$
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item $D$ needs to be larger than 1 ($D>1$). Physical values for $D$ are between 1 and 3 ($1<D<3$).
+\item The fractal dimension needs to be large than the size of the individual scattering objects ($r_0 < \xi$).
+\item the exponents $\alpha$ should be larger than 1, as otherwise the integral \ref{eq:hSQ} for $S(q)$ does not converges.
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/SQExp(pow(x,a))CutOff.png}
+\end{center}
+\caption{Structure factor of a mass fractal with a cut-off function
+$h_\text{Exp(-x$\hat{~}$a)}(r,\xi,\alpha) = \exp\left[-\left(\tfrac{r}{\xi}\right)^\alpha\right]$.}
+\label{fig:SQExpxaCutOff}
+\end{figure}
+
+
+\clearpage
+\subsection{Mass Fractal (Gaussian Cut-Off)}
+~\\
+
+\underline{Input Parameters for model \texttt{Mass Fractal (Gaussian Cut-Off)}:}
+\begin{description}
+\item[\texttt{r0}] characteristic dimension of individual scattering objects $r_0$
+\item[\texttt{xi}] cut-off length for the fractal correlations $\xi$
+\item[\texttt{D}] fractal dimension $D$
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item $D$ needs to be larger than 1 ($D>1$). Physical values for $D$ are between 1 and 3 ($1<D<3$).
+\item The fractal dimension needs to be large than the size of the individual scattering objects ($r_0 < \xi$).
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/SQGaussCutOff.png}
+\end{center}
+\caption{Structure factor of a mass fractal with an Gaussian
+cut-off function $h_\text{Gauss}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)^2\right]$.}
+\label{fig:SQGaussCutOff}
+\end{figure}
+
+
+\clearpage
+\subsection{Mass Fractal (OverlapSph Cut-Off)}
+~\\
+
+\underline{Input Parameters for model \texttt{Mass Fractal (OverlapSph Cut-Off)}:}
+\begin{description}
+\item[\texttt{r0}] characteristic dimension of individual scattering objects $r_0$
+\item[\texttt{xi}] cut-off length for the fractal correlations $\xi$
+\item[\texttt{D}] fractal dimension $D$
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item $D$ needs to be between 1 and 3 ($1<D<3$).
+\item The fractal dimension needs to be large than the size of the individual scattering objects ($r_0 < \xi$).
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/SQOverlapSphCutOff.png}
+\end{center}
+\caption{Structure factor of a mass fractal with a
+cut-off function $h_\text{OverlapSph}(r,\xi) = \left(1+\frac{r}{4\xi}\right)\left(1-\frac{r}{2\xi}\right)^2$ for $r\leq 2\xi$.}
+\label{fig:SQOverlappSphCutOff}
+\end{figure}
