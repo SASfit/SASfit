@@ -146,18 +146,6 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	{
 		sq->fct = sasfit_sq_SquareWell2;
 	} else
-	if ( strcmp(sq->typestr, "ThermalDisorder") == 0 )
-	{
-		sq->fct = sasfit_sq_TD;
-	} else
-	if ( strcmp(sq->typestr, "Paracrystalline") == 0 )
-	{
-		sq->fct = sasfit_sq_PT;
-	} else
-	if ( strcmp(sq->typestr, "ModifiedCaille") == 0 )
-	{
-		sq->fct = sasfit_sq_MCT;
-	} else
 	if ( strcmp(sq->typestr, "Macro Ion (HP)") == 0 )
 	{
 		sq->fct = sasfit_sq_MacroIon;
