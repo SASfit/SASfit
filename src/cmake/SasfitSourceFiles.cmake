@@ -118,15 +118,12 @@ set(SOURCE_sasfit_sq
 	sasfit_sq_HayterPenfoldMSA.c
 	sasfit_sq_LocalOrderModel.c
 	sasfit_sq_MacroIon.c
-	sasfit_sq_MCT.c
 	sasfit_sq_None.c
-	sasfit_sq_PT.c
 	sasfit_sq_RandomDistributionModel.c
 	sasfit_sq_SquareWell2.c
 	sasfit_sq_SquareWell.c
 	sasfit_sq_StickyHardSphere2.c
 	sasfit_sq_StickyHardSphere.c
-	sasfit_sq_TD.c
 	sasfit_sq_ThinDiscs.c
 	sasfit_sq_ThinCylindricalShell.c
 	sasfit_sq_ThinSphericalShell.c
