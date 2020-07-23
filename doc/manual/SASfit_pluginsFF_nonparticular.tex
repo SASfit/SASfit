@@ -496,10 +496,35 @@ The radial average can be done analytically and one gets for $\epsilon$ smaller 
 \end{align}
 The limit $q\to 0$ is given by
 \begin{align}
-  \lim_{q\to 0} I_{\epsilon DAB}(q)& = \frac{1 - \frac23 (q\xi)^2(2+\epsilon^2)}{\left(\pi\Delta\eta\epsilon\xi^3\right)^2} \\
-  R_g^2 & =  2(2+\epsilon^2)\xi^2
+  \lim_{q\to 0} \frac{I_{\epsilon DAB}(q,\xi,\epsilon)}{\left(\pi\Delta\eta\epsilon\xi^3\right)^2}& = 1 - \frac23 (q\xi)^2(2+\epsilon^2) \\
+  R_g^2 & =  \frac{\xi^2}{2(2+\epsilon^2)}
 \end{align}
 For values of $\epsilon<1$ the objects become disk-like and show a $q^{-2}$ scattering behaviour at small $q$-values whereas for values of $\epsilon>1$ an expected rod-like scattering behaviour of $q^{-1}$ is observed at small $q$ values.
+
+
+\vspace{5mm}
+
+
+\underline{Input Parameters for model \texttt{epsilonDAB}:}
+\begin{description}
+\item[\texttt{xi}] correlation length $\xi$
+\item[\texttt{epsilon}] compression or extensional deformation factor of one axis $\epsilon$
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\underline{Note:}
+\begin{itemize}
+\item None
+\end{itemize}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/nonparticular/epsilonDAB.png}
+\end{center}
+\caption{Some typical curves for a second generalized Debye-Anderson-Brumberger model function, this time extended by a compression or an extensional deformation and a subsequent random orientation averaging } \label{fig:spsilonDABIq}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \subsection{Spinodal}
@@ -529,7 +554,7 @@ the dimensionality of the system.
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Spinodal}:}\\
+\underline{Input Parameters for model \texttt{Spinodal}:}
 \begin{description}
 \item[\texttt{Imax}] scattering intensity at peak position $I_\text{max}$
 \item[\texttt{Qmax}] peak maximum $q_\text{max}$
