@@ -262,7 +262,7 @@ S^\mathrm{GH}(Q,\sigma,\eta) &= S^\mathrm{PY}(Q,\sigma_0,\eta_0) + \frac{6\eta}{
 \end{figure}
 
 \clearpage
-\subsection{Hard Sphere (PY)} ~\\
+\subsection{Hard Sphere (PY)} \label{sec:SQ:PY}~\\
 
 \noindent This is the classical analytical solution of the Percus-Yevick equations \cite{Percus1958,Wertheim1963,Vrij1979} for a hard sphere potential
 \begin{equation}
@@ -529,7 +529,7 @@ The random flight model describes a discrete chain, where the positions of the $
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.75\textwidth]{../images/structure_factor/randomflight.png}
+\includegraphics[width=0.5\textwidth]{../images/structure_factor/randomflight.png}
 \end{center}
 \caption{Random flight structure factor with $N$ steps of length $D$.}
 \label{fig:randomflight}
@@ -558,8 +558,41 @@ S_N(QD)&= (1-w)S_{[N]}(QD) + wS_{[N]+1}(QD)
 \item $N$ needs to be larger or equal to 1. For non-integer values of $N$ the curve is linear interpolated between the structure factor for $N$ and $N+1$.
 \end{itemize}
 
+\section{Extended cluster structure factor}
+\label{sec:SQec}
+This structure factor assume clusters of particles with a cluster size $\xi$, whereas the particle within a cluster interact via a hard sphere potential and a local volume fraction $\phi$. In the original paper \cite{Larsen2020} the clusters are described by a spherical form factor and a Gaussian size distribution. It was also mentioned, that the polidisperse spherical form factor can be replaced by any other form factor better describing the shape of the clusters. In this implementation of the extended cluster model we use the extended Debye-Anderson-Brumberger model from section \ref{sect:epsilonDAB} describing the scattering of the clusters.
+\begin{align}\label{eq:extendedClusterSQ}
+  S_\mathrm{ec}(q) &= S_\mathrm{PY}(q)+\left(N-S_\mathrm{PY}(q)\right)P_{\epsilon\mathrm{DAB}}(q)\\
+  P_{\epsilon\mathrm{DAB}}(q) &= I_{\epsilon\mathrm{DAB}}(q) / \left(8\pi\xi^3\epsilon\right)\\
+  N &= \frac{8\pi\xi^3\epsilon}{\frac{4}{3}\pi R^3}
+\end{align} 
+The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} and the form factor $I_{\epsilon\mathrm{DAB}}(q)$ is defined in equations \ref{eq:DABaffPLUSrnd_eps_small} and \ref{eq:DABaffPLUSrnd_eps_large}. The volume of the DAB-particle can be obtained via the correlation function $\gamma_{0,\mathrm{DAB}}(r)=\exp(-r/\xi)$ according to eq.\ \ref{eq:VolumeFromCorrelationfunction} and is for the $\epsilon$DAB model given as $V_{\epsilon\mathrm{DAB}}=8\pi\xi^3\epsilon$.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.55\textwidth]{../images/structure_factor/MassFractals/extendedclusterSQ.png}
+\end{center}
+\caption{Examples for extended cluster structure factor.}
+\label{fig:SQec}
+\end{figure}
+
+\noindent \underline{Input Parameters for model \texttt{extended cluster Sq}:}
+\begin{description}
+\item[\texttt{R}] radius of particles in cluster $D$
+\item[\texttt{phi}] local volume fraction inside cluster $\phi$
+\item[\texttt{xi}] size (correlation length) of cluster $\xi$
+\item[\texttt{epsilon}] shape parameter of cluster (<1:disc; >1:rod) $\epsilon$
+\end{description}
 
 
+\noindent\underline{Note:}
+\begin{itemize}
+\item the volume fractin needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
+\item the correlation length should be significant larger than $R$ to be physical meaningful
+\end{itemize}
+
+
+\clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ordered particle systems} \hspace{1pt}
 \label{sec:ops}
