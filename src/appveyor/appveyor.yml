@@ -78,6 +78,7 @@ for:
   environment:
     CACHEID: linux64
   install:
+    - sudo apt-get update
     - sudo apt-get -y install python3-pip #libx11-dev
   artifacts:
     # final SASfit package
