@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sq_extended_cluster_sq ################ */
-/** 
+/**
  * \defgroup sq_extended_cluster_sq extended cluster Sq
  * \ingroup sq_plugins_fractal_objects
  *
@@ -52,7 +52,7 @@
  *       <td>radius of particles in cluster</td>
  *      </tr><tr>
  *       <td>\b phi</td>
- *       <td>local volume fraction</td>
+ *       <td>local volume fraction inside cluster</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>size (correlation length) of cluster</td>

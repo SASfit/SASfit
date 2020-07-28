@@ -514,83 +514,6 @@ For random oriented 1D structures the orientational average of the structure fac
 \label{fig:1DSQ}
 \end{figure}
 
-\clearpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Structure factor of a random flight model} \hspace{1pt}
-The random flight model describes a discrete chain, where the positions of the $N$ units forming the discrete chains follow a 3D random walk. The distance between neighbouring units is constants.
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.35\textwidth]{../images/structure_factor/randomflight3D.png}
-\end{center}
-\caption{Random flight of $N$ particles with constant distances $D$.}
-\label{fig:randomflight3D}
-\end{figure}
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{../images/structure_factor/randomflight.png}
-\end{center}
-\caption{Random flight structure factor with $N$ steps of length $D$.}
-\label{fig:randomflight}
-\end{figure}
-
-The structure factor $S_N(QD)$ describing such an arrangement of $N$ particles on a random flight
-with a constant step size $D$ is given by \cite{Burchard1970} as
-\begin{align}
-S_N(QD)&=
-    \frac{2}{1-\frac{\sin(QD)}{QD}}-1-\frac{2\left[1-\left[\frac{\sin(QD)}{QD}\right]^N\right]}{N\left[1-\frac{\sin(QD)}{QD}\right]^2}\frac{\sin(QD)}{QD}
-\end{align}
-The formula above is only real for all values of $QD$ for integer values of $N$. For non integer values $N$ a linear interpolation between $[N]$ and $[N]+1$ is taken \cite{Giehm2010}, where $[N]$ is the largest integer smaller or equal to $N$. With $w=N-[N]$ we get
-\begin{align}
-S_N(QD)&= (1-w)S_{[N]}(QD) + wS_{[N]+1}(QD)
-\end{align}
-
-\noindent \underline{Input Parameters for model \texttt{random flight}:}\\
-\begin{description}
-\item[\texttt{D}] step length $D$
-\item[\texttt{n}] number of steps $N$
-\end{description}
-
-
-\noindent\underline{Note:}
-\begin{itemize}
-\item $N$ needs to be larger or equal to 1. For non-integer values of $N$ the curve is linear interpolated between the structure factor for $N$ and $N+1$.
-\end{itemize}
-
-\section{Extended cluster structure factor}
-\label{sec:SQec}
-This structure factor assume clusters of particles with a cluster size $\xi$, whereas the particle within a cluster interact via a hard sphere potential and a local volume fraction $\phi$. In the original paper \cite{Larsen2020} the clusters are described by a spherical form factor and a Gaussian size distribution. It was also mentioned, that the polidisperse spherical form factor can be replaced by any other form factor better describing the shape of the clusters. In this implementation of the extended cluster model we use the extended Debye-Anderson-Brumberger model from section \ref{sect:epsilonDAB} describing the scattering of the clusters.
-\begin{align}\label{eq:extendedClusterSQ}
-  S_\mathrm{ec}(q) &= S_\mathrm{PY}(q)+\left(N-S_\mathrm{PY}(q)\right)P_{\epsilon\mathrm{DAB}}(q)\\
-  P_{\epsilon\mathrm{DAB}}(q) &= I_{\epsilon\mathrm{DAB}}(q) / \left(8\pi\xi^3\epsilon\right)\\
-  N &= \frac{8\pi\xi^3\epsilon}{\frac{4}{3}\pi R^3}
-\end{align} 
-The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} and the form factor $I_{\epsilon\mathrm{DAB}}(q)$ is defined in equations \ref{eq:DABaffPLUSrnd_eps_small} and \ref{eq:DABaffPLUSrnd_eps_large}. The volume of the DAB-particle can be obtained via the correlation function $\gamma_{0,\mathrm{DAB}}(r)=\exp(-r/\xi)$ according to eq.\ \ref{eq:VolumeFromCorrelationfunction} and is for the $\epsilon$DAB model given as $V_{\epsilon\mathrm{DAB}}=8\pi\xi^3\epsilon$.
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.55\textwidth]{../images/structure_factor/MassFractals/extendedclusterSQ.png}
-\end{center}
-\caption{Examples for extended cluster structure factor.}
-\label{fig:SQec}
-\end{figure}
-
-\noindent \underline{Input Parameters for model \texttt{extended cluster Sq}:}
-\begin{description}
-\item[\texttt{R}] radius of particles in cluster $D$
-\item[\texttt{phi}] local volume fraction inside cluster $\phi$
-\item[\texttt{xi}] size (correlation length) of cluster $\xi$
-\item[\texttt{epsilon}] shape parameter of cluster (<1:disc; >1:rod) $\epsilon$
-\end{description}
-
-
-\noindent\underline{Note:}
-\begin{itemize}
-\item the volume fractin needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
-\item the correlation length should be significant larger than $R$ to be physical meaningful
-\end{itemize}
-
 
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1433,7 +1356,7 @@ fractals.} \label{fig:MassFractCompare}
 \underline{Note:}
 \begin{itemize}
 \item $D$ needs to be larger than 1 ($D>1$). Physical values for $D$ are between 1 and 3 ($1<D<3$).
-\item The fractal dimension needs to be large than the size of the individual scattering objects ($r_0 < \xi$).
+\item The fractal dimension needs to be larger than the size of the individual scattering objects ($r_0 < \xi$).
 \end{itemize}
 
 \begin{figure}[htb]
@@ -1441,7 +1364,7 @@ fractals.} \label{fig:MassFractCompare}
 \includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/SQExpCutOff.png}
 \end{center}
 \caption{Structure factor of a mass fractal with an exponential
-cut-off function $h_\text{Exp}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)^\alpha\right]$.}
+cut-off function $h_\text{Exp}(r,\xi) = \exp\left[-\tfrac{r}{\xi}\right]$.}
 \label{fig:SQExpCutOff}
 \end{figure}
 
@@ -1526,3 +1449,81 @@ cut-off function $h_\text{Gauss}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)
 cut-off function $h_\text{OverlapSph}(r,\xi) = \left(1+\frac{r}{4\xi}\right)\left(1-\frac{r}{2\xi}\right)^2$ for $r\leq 2\xi$.}
 \label{fig:SQOverlappSphCutOff}
 \end{figure}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Structure factor of a random flight model} \hspace{1pt}\\
+The random flight model describes a discrete chain, where the positions of the $N$ units forming the discrete chains follow a 3D random walk. The distance between neighbouring units is constants.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.35\textwidth]{../images/structure_factor/randomflight3D.png}
+\end{center}
+\caption{Random flight of $N$ particles with constant distances $D$.}
+\label{fig:randomflight3D}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../images/structure_factor/randomflight.png}
+\end{center}
+\caption{Random flight structure factor with $N$ steps of length $D$.}
+\label{fig:randomflight}
+\end{figure}
+
+The structure factor $S_N(QD)$ describing such an arrangement of $N$ particles on a random flight
+with a constant step size $D$ is given by \cite{Burchard1970} as
+\begin{align}
+S_N(QD)&=
+    \frac{2}{1-\frac{\sin(QD)}{QD}}-1-\frac{2\left[1-\left[\frac{\sin(QD)}{QD}\right]^N\right]}{N\left[1-\frac{\sin(QD)}{QD}\right]^2}\frac{\sin(QD)}{QD}
+\end{align}
+The formula above is only real for all values of $QD$ for integer values of $N$. For non integer values $N$ a linear interpolation between $[N]$ and $[N]+1$ is taken \cite{Giehm2010}, where $[N]$ is the largest integer smaller or equal to $N$. With $w=N-[N]$ we get
+\begin{align}
+S_N(QD)&= (1-w)S_{[N]}(QD) + wS_{[N]+1}(QD)
+\end{align}
+
+\noindent \underline{Input Parameters for model \texttt{random flight}:}\\
+\begin{description}
+\item[\texttt{D}] step length $D$
+\item[\texttt{n}] number of steps $N$
+\end{description}
+
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item $N$ needs to be larger or equal to 1. For non-integer values of $N$ the curve is linear interpolated between the structure factor for $N$ and $N+1$.
+\end{itemize}
+
+\subsection{Extended cluster structure factor with local hardsphere
+interactions}~\\
+\label{sec:SQec}
+This structure factor assume clusters of particles with a cluster size $\xi$, whereas the particle within a cluster interact via a hard sphere potential and a local volume fraction $\phi$. In the original paper \cite{Larsen2020} the clusters are described by a spherical form factor and a Gaussian size distribution. It was also mentioned, that the polidisperse spherical form factor can be replaced by any other form factor better describing the shape of the clusters. In this implementation of the extended cluster model we use the extended Debye-Anderson-Brumberger model from section \ref{sect:epsilonDAB} describing the scattering of the clusters.
+\begin{align}\label{eq:extendedClusterSQ}
+  S_\mathrm{ec}(q) &= S_\mathrm{PY}(q)+\left(N-S_\mathrm{PY}(q)\right)P_{\epsilon\mathrm{DAB}}(q)\\
+  P_{\epsilon\mathrm{DAB}}(q) &= I_{\epsilon\mathrm{DAB}}(q) / \left(8\pi\xi^3\epsilon\right)\\
+  N &= \frac{8\pi\xi^3\epsilon}{\frac{4}{3}\pi R^3}
+\end{align}
+The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} and the form factor $I_{\epsilon\mathrm{DAB}}(q)$ is defined in equations \ref{eq:DABaffPLUSrnd_eps_small} and \ref{eq:DABaffPLUSrnd_eps_large}. The volume of the DAB-particle can be obtained via the correlation function $\gamma_{0,\mathrm{DAB}}(r)=\exp(-r/\xi)$ according to eq.\ \ref{eq:VolumeFromCorrelationfunction} and is for the $\epsilon$DAB model given as $V_{\epsilon\mathrm{DAB}}=8\pi\xi^3\epsilon$.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.55\textwidth]{../images/structure_factor/MassFractals/extendedclusterSQ.png}
+\end{center}
+\caption{Examples for extended cluster structure factor.}
+\label{fig:SQec}
+\end{figure}
+
+\noindent \underline{Input Parameters for model \texttt{extended cluster Sq}:}
+\begin{description}
+\item[\texttt{R}] radius of particles in cluster $D$
+\item[\texttt{phi}] local volume fraction inside cluster $\phi$
+\item[\texttt{xi}] size (correlation length) of cluster $\xi$
+\item[\texttt{epsilon}] shape parameter of cluster (<1:disc; >1:rod) $\epsilon$
+\end{description}
+
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item the volume fractin needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
+\item the correlation length should be significant larger than $R$ to be physical meaningful
+\end{itemize}
