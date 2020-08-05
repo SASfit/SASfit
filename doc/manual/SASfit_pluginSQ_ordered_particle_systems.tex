@@ -1345,6 +1345,23 @@ fractals.} \label{fig:MassFractCompare}
 \clearpage
 \subsection{Mass Fractal (Exp Cut-Off)}
 ~\\
+The cut-off function for this type of fractal is given by eq.\ \ref{eq:hExp} as
+$h_\text{Exp}(r,\xi) = \exp\left[-\tfrac{r}{\xi}\right]$. Its structure factor is given analytically by
+\begin{align}
+S_\text{Exp}(q,\xi,D,r_0) &= 1 +  \cfrac{D \Gamma(D-1)
+\sin\left([D-1]\arctan(q \xi)\right)}{\left( q r_0\right)^D
+\left[1+\tfrac{1}{q^2\xi^2}\right]^{(D-1)/2}}
+\end{align}
+In the limit of $q \to 0$ the structure factor should be equal to the number $N$ of particles in the aggregate, For this type of mass fractal structure factor this limit is given by
+\begin{align}\label{eq:fractalExp}
+  N-1 & =\lim_{q\to 0}  S_\text{Exp}(q,\xi,D,r_0)-1 = D\Gamma(D) \frac{\xi^D}{r_0^D}
+\end{align}
+This allows to rewrite the structure factor also as a function of $N$ instead of $r_0$
+\begin{align}
+S_\text{Exp}(q,\xi,D,N) &= 1 +  (N-1)\cfrac{
+\sin\left([D-1]\arctan(q \xi)\right)}{(D-1)\left( q \xi\right)^D
+\left[1+\tfrac{1}{q^2\xi^2}\right]^{(D-1)/2}}
+\end{align}
 
 \underline{Input Parameters for model \texttt{Mass Fractal (Exp Cut-Off)}:}
 \begin{description}
@@ -1357,11 +1374,12 @@ fractals.} \label{fig:MassFractCompare}
 \begin{itemize}
 \item $D$ needs to be larger than 1 ($D>1$). Physical values for $D$ are between 1 and 3 ($1<D<3$).
 \item The fractal dimension needs to be larger than the size of the individual scattering objects ($r_0 < \xi$).
+\item The number of particles in the aggregate should be larger or equal to 1 $(N\geq 1)$
 \end{itemize}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/SQExpCutOff.png}
+\includegraphics[width=0.6\textwidth]{../images/structure_factor/MassFractals/SQExpCutOff.png}
 \end{center}
 \caption{Structure factor of a mass fractal with an exponential
 cut-off function $h_\text{Exp}(r,\xi) = \exp\left[-\tfrac{r}{\xi}\right]$.}
@@ -1401,6 +1419,24 @@ $h_\text{Exp(-x$\hat{~}$a)}(r,\xi,\alpha) = \exp\left[-\left(\tfrac{r}{\xi}\righ
 \subsection{Mass Fractal (Gaussian Cut-Off)}
 ~\\
 
+The cut-off function for this type of fractal is given by eq.\ \ref{eq:hGauss} as
+$h_\text{Exp}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)^2\right]$. Its structure factor is given analytically by
+\begin{align}
+S_\text{Gauss}(q,\xi,D,r_0) &= 1 +
+    \Gamma\left[\tfrac{D}{2}\right]\frac{D}{2}
+    \left(\frac{\xi}{r_0}\right)^D
+    {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{8}\right]
+\end{align}
+In the limit of $q \to 0$ the structure factor should be equal to the number $N$ of particles in the aggregate, For the mass fractal structure factor this limit is given by
+\begin{align}\label{eq:fractalGauss}
+  N-1 & =\lim_{q\to 0}  S_\text{Gauss}(q,\xi,D,r_0)-1 = \frac{D}{2}\Gamma\left( \frac{D}{2} \right) \frac{\xi^D}{r_0^D}
+\end{align}
+This allows to rewrite the structure factor also as a function of $N$ instead of $r_0$
+\begin{align}
+S_\text{Gauss}(q,\xi,D,N) &= 1 +  (N-1) {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{8}\right]
+\end{align}
+
+
 \underline{Input Parameters for model \texttt{Mass Fractal (Gaussian Cut-Off)}:}
 \begin{description}
 \item[\texttt{r0}] characteristic dimension of individual scattering objects $r_0$
@@ -1412,11 +1448,12 @@ $h_\text{Exp(-x$\hat{~}$a)}(r,\xi,\alpha) = \exp\left[-\left(\tfrac{r}{\xi}\righ
 \begin{itemize}
 \item $D$ needs to be larger than 1 ($D>1$). Physical values for $D$ are between 1 and 3 ($1<D<3$).
 \item The fractal dimension needs to be large than the size of the individual scattering objects ($r_0 < \xi$).
+\item The number of particles in the aggregate should be larger or equal to 1 $(N\geq 1)$
 \end{itemize}
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.768\textwidth]{../images/structure_factor/MassFractals/SQGaussCutOff.png}
+\includegraphics[width=0.6\textwidth]{../images/structure_factor/MassFractals/SQGaussCutOff.png}
 \end{center}
 \caption{Structure factor of a mass fractal with an Gaussian
 cut-off function $h_\text{Gauss}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)^2\right]$.}
@@ -1427,7 +1464,10 @@ cut-off function $h_\text{Gauss}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)
 \clearpage
 \subsection{Mass Fractal (OverlapSph Cut-Off)}
 ~\\
-
+In the limit of $q \to 0$ the structure factor should be equal to the number $N$ of particles in the aggregate, For the mass fractal structure factor this limit is given by
+\begin{align}\label{eq:fractalGauss}
+  N-1 & =\lim_{q\to 0}  S_\text{OverlapSph}(q,\xi,D,r_0)-1 = \frac{3D 2^D}{D^3+4D^2+3D} \,\, \frac{\xi^D}{r_0^D}
+\end{align}
 \underline{Input Parameters for model \texttt{Mass Fractal (OverlapSph Cut-Off)}:}
 \begin{description}
 \item[\texttt{r0}] characteristic dimension of individual scattering objects $r_0$
