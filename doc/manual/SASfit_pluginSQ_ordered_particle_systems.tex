@@ -1466,7 +1466,7 @@ cut-off function $h_\text{Gauss}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)
 ~\\
 In the limit of $q \to 0$ the structure factor should be equal to the number $N$ of particles in the aggregate, For the mass fractal structure factor this limit is given by
 \begin{align}\label{eq:fractalGauss}
-  N-1 & =\lim_{q\to 0}  S_\text{OverlapSph}(q,\xi,D,r_0)-1 = \frac{3D 2^D}{D^3+4D^2+3D} \,\, \frac{\xi^D}{r_0^D}
+  N-1 & =\lim_{q\to 0}  S_\text{OverlapSph}(q,\xi,D,r_0)-1 = \frac{3D 2^D}{D^3+4D^2+3D} \,\, e\frac{\xi^D}{r_0^D}
 \end{align}
 \underline{Input Parameters for model \texttt{Mass Fractal (OverlapSph Cut-Off)}:}
 \begin{description}
@@ -1566,4 +1566,4 @@ The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} an
 \begin{itemize}
 \item the volume fractin needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
 \item the correlation length should be significant larger than $R$ to be physical meaningful
-\end{itemize}
+\end{itemize} 
