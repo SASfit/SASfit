@@ -3574,7 +3574,7 @@ Tcl_Free((char *) res);
 Tcl_Free((char *) ndata);
 Tcl_Free((char *) hide);
 //free_dvector(res,0,GCP.nmultset-1);
-free_ivector(ndata,0,GCP.nmultset-1);
+//free_ivector(ndata,0,GCP.nmultset-1);
 /*
 // needs further investigation, separate+custom free-routine for TCL_ALLOC memory ..
 */
