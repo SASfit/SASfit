@@ -238,8 +238,8 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_general__trapez__area_v(scalar q
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b phi</td>
- *       <td>boundary ratio parameter</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b n1</td>
  *       <td>shape parameter of left and right edge</td>
@@ -476,8 +476,8 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_general__trapez__ampl__v(scalar 
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b phi</td>
- *       <td>boundary ratio parameter</td>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b n1</td>
  *       <td>shape parameter of left and right edge</td>

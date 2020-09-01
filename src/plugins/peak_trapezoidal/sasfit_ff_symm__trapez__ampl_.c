@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -25,8 +25,9 @@ scalar sasfit_ff_symm__trapez__ampl_(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	u=2*(DELTA+GAMMA-BETA-ALPHA);
-	u=1/u;
+	u=A;
+
+	p=0;
     if (ALPHA<=x && x<BETA) {
         p=(x-ALPHA)/(BETA-ALPHA)*u;
 	} else if (BETA<=x && x<GAMMA) {
@@ -35,7 +36,7 @@ scalar sasfit_ff_symm__trapez__ampl_(scalar x, sasfit_param * param)
 	    p=u*(DELTA-x)/(DELTA-GAMMA);
 	}
 	// insert your code here
-	return A*p+C0;
+	return p+C0;
 }
 
 scalar sasfit_ff_symm__trapez__ampl__f(scalar q, sasfit_param * param)

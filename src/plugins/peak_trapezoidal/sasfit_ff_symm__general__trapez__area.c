@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -12,7 +12,7 @@
 #define WP	fabs(param->p[2])
 #define WE	fabs(param->p[3])
 
-#define PHI	param->p[5]
+#define PHI 1
 #define N1	param->p[6]
 
 #define C0	param->p[8]
@@ -30,13 +30,13 @@ scalar sasfit_ff_symm__general__trapez__area(scalar x, sasfit_param * param)
 
 	SASFIT_CHECK_COND2((ALPHA>=BETA), param, "alpha(%lg)>=beta(%lg)",ALPHA,BETA); // modify condition to your needs
 	SASFIT_CHECK_COND2((BETA>=GAMMA), param, "beta(%lg)>=gamma(%lg)",BETA,GAMMA); // modify condition to your needs
-	SASFIT_CHECK_COND2((GAMMA>=DELTA), param, "gammma(%lg)>=delta(%lg)",GAMMA,DELTA); // modify condition to your needs
-	SASFIT_CHECK_COND1((PHI <= 0.0), param, "phi(%lg) <= 0",PHI); // modify condition to your needs
+	SASFIT_CHECK_COND2((GAMMA>=DELTA), param, "gamma(%lg)>=delta(%lg)",GAMMA,DELTA); // modify condition to your needs
+
 	SASFIT_CHECK_COND1((N1 <= 0.0), param, "n1(%lg) <= 0",N1); // modify condition to your needs
 
-	u = 2*PHI*N1*N3/(2*PHI*(BETA-ALPHA)*N3+(PHI+1)*(GAMMA-BETA)*N1*N3+2*(DELTA-GAMMA)*N1);
+	u = 2*N1*N3/(2*PHI*(BETA-ALPHA)*N3+(PHI+1)*(GAMMA-BETA)*N1*N3+2*(DELTA-GAMMA)*N1);
 	p=0;
-	if (ALPHA<=x && x<BETA) {
+	if (ALPHA<x && x<BETA) {
         p=PHI*u*pow((x-ALPHA)/(BETA-ALPHA),N1-1);
 	} else if (BETA<=x && x<GAMMA) {
 	    p=u*((PHI-1)*(GAMMA-x)/(GAMMA-BETA)+1);

@@ -3406,7 +3406,7 @@ for (j=0;j<GCP.nmultset;j++) {
 		Tcl_Free((char *) res);
 		Tcl_Free((char *) ndata);
 		Tcl_Free((char *) hide);
-		  free_ivector(ndata,0,GCP.nmultset-1); // see below
+//		  free_ivector(ndata,0,GCP.nmultset-1); // see below
 		  sasfit_timer_destroy(&tm);
           return TCL_ERROR;
 	   }
@@ -3436,7 +3436,7 @@ for (j=0;j<GCP.nmultset;j++) {
 		Tcl_Free((char *) res);
 		Tcl_Free((char *) ndata);
 		Tcl_Free((char *) hide);
-		  free_ivector(ndata,0,GCP.nmultset-1); // see below
+//		  free_ivector(ndata,0,GCP.nmultset-1); // see below
 		  sasfit_timer_destroy(&tm);
           return TCL_ERROR;
 	   }
@@ -3574,7 +3574,7 @@ Tcl_Free((char *) res);
 Tcl_Free((char *) ndata);
 Tcl_Free((char *) hide);
 //free_dvector(res,0,GCP.nmultset-1);
-free_ivector(ndata,0,GCP.nmultset-1);
+//free_ivector(ndata,0,GCP.nmultset-1);
 /*
 // needs further investigation, separate+custom free-routine for TCL_ALLOC memory ..
 */

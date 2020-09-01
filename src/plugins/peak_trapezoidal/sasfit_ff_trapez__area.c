@@ -1,6 +1,6 @@
 /*
- * Author(s) of this file:
- *   <your name> (<email address>)
+ * Author(s) of this file
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -24,8 +24,9 @@ scalar sasfit_ff_trapez__area(scalar x, sasfit_param * param)
 	SASFIT_CHECK_COND2((GAMMA>=DELTA), param, "gammma(%lg)>=delta(%lg)",GAMMA,DELTA); // modify condition to your needs
 
 	// insert your code
-	u=2*(DELTA+GAMMA-BETA-ALPHA);
-	u=1/u;
+	u=2/(DELTA+GAMMA-BETA-ALPHA);
+
+	p=0;
     if (ALPHA<=x && x<BETA) {
         p=(x-ALPHA)/(BETA-ALPHA)*u;
 	} else if (BETA<=x && x<GAMMA) {

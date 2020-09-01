@@ -1722,7 +1722,7 @@ z &= \frac{\left(x-x_\mathrm{min}\right)}{x_\mathrm{max}-x_\mathrm{min}}
 The scaling variable $c$ is chosen so that at the mode $x_\mathrm{mode}$ of the distribution its value becomes $y(x_\mathrm{mode}; A,\ldots) = A$. The mode itself is numerically calculated as for this distribution there does not exists an analytical definition of it.
 
  ~\\
- 
+
 \underline{Required parameters:}
 \begin{description}
     \item[amplitude] amplitude $A$ of the LogitNormal distribution
@@ -2511,6 +2511,94 @@ p(x) &= \frac{\Gamma(\frac{\nu+1}{2})} {\sqrt{\nu\pi}\,\Gamma(\frac{\nu}{2})} \l
 \caption{Plot of \texttt{Student-t (Area)} distribution.}
 \label{fig:Student-tArea}
 \end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Trapezoidal peak}
+\label{sec:trapezoidal}
+
+Trapezoidal distributions may be appropriate for modeling processes that can be represented by the following three stages:
+\begin{itemize}
+\item a growth stage
+\item a period of relative stability stage
+\item a decay stage
+\end{itemize}
+The trapezoidal model is probably the simplest model of this type (i.e., the growth and decline stages are linear and the stability stage is constant). The probability function is defined as
+\begin{align}
+p_\mathrm{t}(x|\alpha,\beta,\gamma,\delta) &= u
+\begin{cases}{\frac {x-\alpha}{\beta-\alpha}}&{\text{for }}\alpha\leq x<\beta\\
+             1&{\text{for }}\beta\leq x<\gamma \\
+             {\frac {\delta-x}{\delta-\gamma}}&{\text{for }}\gamma\leq x\leq \delta \\
+             {0} &{\text{otherwise }}
+\end{cases} \\
+u &= \frac {2}{\gamma+\delta-\alpha-\beta}
+\end{align}
+$\alpha$ and $\delta$ are the lower and upper bound beyond which the probability is always zero.
+ In addition, there are two sharp bending points (non-differentiable discontinuities) within the probability distribution named $\beta$ and $\gamma$, so that $\alpha\leq\beta\leq\gamma\leq\delta$.
+
+\section{Trapezoidal peak (Area)} ~\\
+\label{sec:trapezoidalArea}
+Next to the trapezoidal distribution also a symmetric variant is implemented, whereas the symmetric variant is parameterized in terms of location parameter $l$, width parameter for plateau $\sigma_p$ and width parameter for growth and decay stage $\sigma_e$.
+\begin{align}\label{eq:trapezoidalpeakArea}
+y_\mathrm{t}(x|\alpha,\beta,\gamma,\delta,A,c_0) &= A\textstyle p_\mathrm{t}(x|\alpha,\beta,\gamma,\delta) +c_0 \\
+y_\mathrm{st}(x|l,\sigma_p,\sigma_e,A,c_0) &= A \textstyle p_\mathrm{t}\left(x|l-\frac{\sigma_p+\sigma_e}{2},l-\frac{\sigma_p}{2},l+\frac{\sigma_p}{2},l+\frac{\sigma_p+\sigma_e}{2}\right) +c_0
+\end{align} 
+
+\section{Trapezoidal peak (Ampl)} ~\\
+\label{sec:trapezoidalAmpl}
+The corresponding peak function in terms of an amplitude instead of area parameter defined in the previous section is given by
+\begin{align}\label{eq:trapezoidalpeakAmpl}
+y_\mathrm{t}(x|\alpha,\beta,\gamma,\delta,A,c_0) &= \frac{A}{u}\textstyle p_\mathrm{t}(x|\alpha,\beta,\gamma,\delta) +c_0 \\
+y_\mathrm{st}(x|l,\sigma_p,\sigma_e,A,c_0) &= \frac{A}{u} \textstyle p_\mathrm{t}\left(x|l-\frac{\sigma_p+\sigma_e}{2},l-\frac{\sigma_p}{2},l+\frac{\sigma_p}{2},l+\frac{\sigma_p+\sigma_e}{2}\right) +c_0
+\end{align}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Generalized trapezoidal peak} ~\\
+\label{sec:generalizedtrapezoidal}
+
+ The generalized trapezoidal distribution allows more flexibility in modeling in the growth, relative stability, and decay stages compared to the trapezoidal distribution. Specifically, the growth and decay stages may exhibit nonlinear convex or concave behaviour. In addition, the stability stage may be linearly increasing or decreasing. The generalized trapezoid distribution \cite{Dorp2003} has the following probability density function:
+\begin{align}
+p_\mathrm{gt}(x|\alpha,\beta,\gamma,\delta,\phi,n_1,n_3) &=
+ u
+ \begin{cases}
+ \phi \left(\frac{x-\alpha}{\beta-\alpha}\right)^{n_1-1}  &{\text{for }}\alpha\leq x<\beta\\
+ \left(\phi-1\right)\frac{\gamma-x}{\gamma-\beta}+1  &{\text{for }}\beta\leq x<\gamma \\
+ \left(\frac{\delta-x}{\delta-\gamma}\right)^{n_3-1}  &{\text{for }}\gamma\leq x\leq \delta \\
+ {0} &{\text{otherwise }}
+\end{cases}
+\end{align}
+with
+\begin{align}
+u &= \frac{2 n_1 n_3}{2 \phi (\beta-\alpha) n_3+(\phi+1)(\gamma-\beta)  n_1 n_3+2(\gamma-\delta) n_1}
+\end{align}
+The generalized trapezoidal distributions inherit the four basic trapezoidal parameters $\alpha$, $\beta$, $\delta$, and $\gamma$ and need, for complete specification, two additional parameters $n_1$ and $n_3$ specifying the
+growth rate and decay rate in the first and third stage of the distribution, in
+addition to the boundary ratio parameter $\phi$ describing a linear increase or decrease in the plateau region.
+
+\section{Generalized trapezoidal peak (Area)} ~\\
+\label{sec:generalizedtrapezoidalArea}
+Next to the generalized trapezoidal distribution also a symmetric variant is implemented, whereas the symmetric variant is parameterized in terms of location parameter $l$, width parameter for plateau $\sigma_p$ and width parameter for growth and decay stage $\sigma_e$.
+\begin{align}\label{eq:generalizedtrapezoidalpeakArea}
+y_\mathrm{gt}(x|\alpha,\ldots) &= A\textstyle p_\mathrm{gt}(x|\alpha,\ldots) +c_0 \\
+y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= A \textstyle p_\mathrm{gt}\left(x|\alpha,\beta,\gamma,\delta,1,n_1,n_1\right) +c_0 \\
+\alpha &= \frac{2l-\sigma_p-\sigma_e}{2} \\
+\beta  &= \frac{2l-\sigma_p}{2} \\
+\gamma &= \frac{2l+\sigma_p}{2} \\
+\delta &= \frac{2l+\sigma_p+\sigma_e}{2}
+\end{align} 
+
+\section{Generalized trapezoidal peak (Ampl)} ~\\
+\label{sec:generalizedtrapezoidalAmpl}
+The corresponding peak function in terms of an amplitude instead of area parameter defined in the previous section is given by
+\begin{align}\label{eq:generalizedtrapezoidalpeakAmpl}
+y_\mathrm{gt}(x|\alpha,\ldots) &= \frac{A}{\max\left\{\phi u,u\right\}}\textstyle p_\mathrm{gt}(x|\alpha,\ldots) +c_0 \\
+y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= \frac{A}{\max\left\{\phi u,u\right\}} \textstyle p_\mathrm{gt}\left(x|\alpha,\beta,\gamma,\delta,1,n_1,n_1\right) +c_0 \\
+\alpha &= \frac{2l-\sigma_p-\sigma_e}{2} \\
+\beta  &= \frac{2l-\sigma_p}{2} \\
+\gamma &= \frac{2l+\sigma_p}{2} \\
+\delta &= \frac{2l+\sigma_p+\sigma_e}{2}
+\end{align}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
