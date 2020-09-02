@@ -2537,21 +2537,38 @@ u &= \frac {2}{\gamma+\delta-\alpha-\beta}
 $\alpha$ and $\delta$ are the lower and upper bound beyond which the probability is always zero.
  In addition, there are two sharp bending points (non-differentiable discontinuities) within the probability distribution named $\beta$ and $\gamma$, so that $\alpha\leq\beta\leq\gamma\leq\delta$.
 
-\section{Trapezoidal peak (Area)} ~\\
+\subsection{Trapezoidal peak (Area)} ~\\
 \label{sec:trapezoidalArea}
 Next to the trapezoidal distribution also a symmetric variant is implemented, whereas the symmetric variant is parameterized in terms of location parameter $l$, width parameter for plateau $\sigma_p$ and width parameter for growth and decay stage $\sigma_e$.
 \begin{align}\label{eq:trapezoidalpeakArea}
 y_\mathrm{t}(x|\alpha,\beta,\gamma,\delta,A,c_0) &= A\textstyle p_\mathrm{t}(x|\alpha,\beta,\gamma,\delta) +c_0 \\
 y_\mathrm{st}(x|l,\sigma_p,\sigma_e,A,c_0) &= A \textstyle p_\mathrm{t}\left(x|l-\frac{\sigma_p+\sigma_e}{2},l-\frac{\sigma_p}{2},l+\frac{\sigma_p}{2},l+\frac{\sigma_p+\sigma_e}{2}\right) +c_0
-\end{align} 
+\end{align}
 
-\section{Trapezoidal peak (Ampl)} ~\\
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../images/peaks/trapez/trapezArea.png}
+\end{center}
+\caption{Plot of \texttt{trapez (Area)} distribution.}
+\label{fig:trapezArea}
+\end{figure}
+
+\subsection{Trapezoidal peak (Ampl)} ~\\
 \label{sec:trapezoidalAmpl}
 The corresponding peak function in terms of an amplitude instead of area parameter defined in the previous section is given by
 \begin{align}\label{eq:trapezoidalpeakAmpl}
 y_\mathrm{t}(x|\alpha,\beta,\gamma,\delta,A,c_0) &= \frac{A}{u}\textstyle p_\mathrm{t}(x|\alpha,\beta,\gamma,\delta) +c_0 \\
 y_\mathrm{st}(x|l,\sigma_p,\sigma_e,A,c_0) &= \frac{A}{u} \textstyle p_\mathrm{t}\left(x|l-\frac{\sigma_p+\sigma_e}{2},l-\frac{\sigma_p}{2},l+\frac{\sigma_p}{2},l+\frac{\sigma_p+\sigma_e}{2}\right) +c_0
 \end{align}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../images/peaks/trapez/trapezAmpl.png}
+\end{center}
+\caption{Plot of \texttt{trapez (Ampl)} distribution.}
+\label{fig:trapezAmpl}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Generalized trapezoidal peak} ~\\
@@ -2576,28 +2593,52 @@ The generalized trapezoidal distributions inherit the four basic trapezoidal par
 growth rate and decay rate in the first and third stage of the distribution, in
 addition to the boundary ratio parameter $\phi$ describing a linear increase or decrease in the plateau region.
 
-\section{Generalized trapezoidal peak (Area)} ~\\
+\subsection{Generalized trapezoidal peak (Area)} ~\\
 \label{sec:generalizedtrapezoidalArea}
+
+
+\begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{\texttt{general trapez (Area)} distrib. \label{fig:generaltrapezArea} }{\includegraphics[width=0.45\textwidth]{../images/peaks/trapez/generaltrapezArea.png}}
+\hfill
+\subcaptionbox{\texttt{symm general trapez (Area)} distrib. \label{fig:symmgeneraltrapezArea} }{\includegraphics[width=0.5\textwidth]{../images/peaks/trapez/symmgeneraltrapezArea.png}}
+\caption{general trapezoidal peak}
+\end{figure}
+
 Next to the generalized trapezoidal distribution also a symmetric variant is implemented, whereas the symmetric variant is parameterized in terms of location parameter $l$, width parameter for plateau $\sigma_p$ and width parameter for growth and decay stage $\sigma_e$.
 \begin{align}\label{eq:generalizedtrapezoidalpeakArea}
 y_\mathrm{gt}(x|\alpha,\ldots) &= A\textstyle p_\mathrm{gt}(x|\alpha,\ldots) +c_0 \\
-y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= A \textstyle p_\mathrm{gt}\left(x|\alpha,\beta,\gamma,\delta,1,n_1,n_1\right) +c_0 \\
-\alpha &= \frac{2l-\sigma_p-\sigma_e}{2} \\
-\beta  &= \frac{2l-\sigma_p}{2} \\
-\gamma &= \frac{2l+\sigma_p}{2} \\
-\delta &= \frac{2l+\sigma_p+\sigma_e}{2}
-\end{align} 
+y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= A \textstyle p_\mathrm{gt}\left(x|\alpha,\beta,\gamma,\delta,1,n_1,n_1\right) +c_0 \end{align}
+\begin{align}
+\begin{array}{ll} 
+\displaystyle\alpha = \frac{2l-\sigma_p-\sigma_e}{2} & \displaystyle\qquad \beta  = \frac{2l-\sigma_p}{2} \\
+\displaystyle\gamma = \frac{2l+\sigma_p}{2}          & \displaystyle\qquad \delta = \frac{2l+\sigma_p+\sigma_e}{2}
+\end{array}
+\end{align}
 
-\section{Generalized trapezoidal peak (Ampl)} ~\\
+\subsection{Generalized trapezoidal peak (Ampl)} ~\\
+
+\begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{\texttt{general trapez (Ampl)} distrib. \label{fig:generaltrapezAmpl} }{\includegraphics[width=0.45\textwidth]{../images/peaks/trapez/generaltrapezAmpl.png}}
+\hfill
+\subcaptionbox{\texttt{symm general trapez (Ampl)} distrib. \label{fig:symmgeneraltrapezAmpl} }{\includegraphics[width=0.5\textwidth]{../images/peaks/trapez/symmgeneraltrapezAmpl.png}}
+\caption{general trapezoidal peak}
+\end{figure}
+
 \label{sec:generalizedtrapezoidalAmpl}
 The corresponding peak function in terms of an amplitude instead of area parameter defined in the previous section is given by
 \begin{align}\label{eq:generalizedtrapezoidalpeakAmpl}
 y_\mathrm{gt}(x|\alpha,\ldots) &= \frac{A}{\max\left\{\phi u,u\right\}}\textstyle p_\mathrm{gt}(x|\alpha,\ldots) +c_0 \\
-y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= \frac{A}{\max\left\{\phi u,u\right\}} \textstyle p_\mathrm{gt}\left(x|\alpha,\beta,\gamma,\delta,1,n_1,n_1\right) +c_0 \\
-\alpha &= \frac{2l-\sigma_p-\sigma_e}{2} \\
-\beta  &= \frac{2l-\sigma_p}{2} \\
-\gamma &= \frac{2l+\sigma_p}{2} \\
-\delta &= \frac{2l+\sigma_p+\sigma_e}{2}
+y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= \frac{A}{\max\left\{\phi u,u\right\}} \textstyle p_\mathrm{gt}\left(x|\alpha,\beta,\gamma,\delta,1,n_1,n_1\right) +c_0 
+\end{align}
+\begin{align}
+\begin{array}{ll} 
+\displaystyle\alpha = \frac{2l-\sigma_p-\sigma_e}{2} & \displaystyle\qquad \beta  = \frac{2l-\sigma_p}{2} \\
+\displaystyle\gamma = \frac{2l+\sigma_p}{2}          & \displaystyle\qquad \delta = \frac{2l+\sigma_p+\sigma_e}{2}
+\end{array}
 \end{align}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

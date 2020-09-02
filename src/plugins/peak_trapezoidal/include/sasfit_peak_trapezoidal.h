@@ -38,10 +38,10 @@
 
 /* ################ start ff_trapez__area ################ */
 /**
- * \defgroup ff_trapez__area trapez. Area
+ * \defgroup ff_trapez__area trapez. (Area)
  * \ingroup ff_peak_area
  *
- * \brief \<some brief description of trapez. Area function\>
+ * \brief \<some brief description of trapez. (Area) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -93,10 +93,10 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_trapez__area_v(scalar q, sasfit_
 
 /* ################ start ff_symm__trapez__area ################ */
 /**
- * \defgroup ff_symm__trapez__area symm. trapez. Area
+ * \defgroup ff_symm__trapez__area symm. trapez. (Area)
  * \ingroup ff_peak_area
  *
- * \brief \<some brief description of symm. trapez. Area function\>
+ * \brief \<some brief description of symm. trapez. (Area) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -148,10 +148,10 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_symm__trapez__area_v(scalar q, s
 
 /* ################ start ff_general__trapez__area ################ */
 /**
- * \defgroup ff_general__trapez__area general. trapez. Area
+ * \defgroup ff_general__trapez__area general. trapez. (Area)
  * \ingroup ff_peak_area
  *
- * \brief \<some brief description of general. trapez. Area function\>
+ * \brief \<some brief description of general. trapez. (Area) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -212,10 +212,10 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_general__trapez__area_v(scalar q
 
 /* ################ start ff_symm__general__trapez__area ################ */
 /**
- * \defgroup ff_symm__general__trapez__area symm. general. trapez. Area
+ * \defgroup ff_symm__general__trapez__area symm. general. trapez. (Area)
  * \ingroup ff_peak_area
  *
- * \brief \<some brief description of symm. general. trapez. Area function\>
+ * \brief \<some brief description of symm. general. trapez. (Area) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -276,10 +276,10 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_symm__general__trapez__area_v(sc
 
 /* ################ start ff_trapez__ampl_ ################ */
 /**
- * \defgroup ff_trapez__ampl_ trapez. Ampl.
+ * \defgroup ff_trapez__ampl_ trapez. (Ampl)
  * \ingroup ff_peak_amplitudes
  *
- * \brief \<some brief description of trapez. Ampl. function\>
+ * \brief \<some brief description of trapez. (Ampl) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -331,10 +331,10 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_trapez__ampl__v(scalar q, sasfit
 
 /* ################ start ff_symm__trapez__ampl_ ################ */
 /**
- * \defgroup ff_symm__trapez__ampl_ symm. trapez. Ampl.
+ * \defgroup ff_symm__trapez__ampl_ symm. trapez. (Ampl)
  * \ingroup ff_peak_amplitudes
  *
- * \brief \<some brief description of symm. trapez. Ampl. function\>
+ * \brief \<some brief description of symm. trapez. (Ampl) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -386,10 +386,10 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_symm__trapez__ampl__v(scalar q, 
 
 /* ################ start ff_general__trapez__ampl_ ################ */
 /**
- * \defgroup ff_general__trapez__ampl_ general. trapez. Ampl.
+ * \defgroup ff_general__trapez__ampl_ general. trapez. (Ampl)
  * \ingroup ff_peak_amplitudes
  *
- * \brief \<some brief description of general. trapez. Ampl. function\>
+ * \brief \<some brief description of general. trapez. (Ampl) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -450,10 +450,10 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_general__trapez__ampl__v(scalar 
 
 /* ################ start ff_symm__general__trapez__ampl_ ################ */
 /**
- * \defgroup ff_symm__general__trapez__ampl_ symm. general. trapez. Ampl.
+ * \defgroup ff_symm__general__trapez__ampl_ symm. general. trapez. (Ampl)
  * \ingroup ff_peak_amplitudes
  *
- * \brief \<some brief description of symm. general. trapez. Ampl. function\>
+ * \brief \<some brief description of symm. general. trapez. (Ampl) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
