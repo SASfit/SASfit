@@ -219,7 +219,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SD,err",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter min of the "max_SD" size distribution
  */
@@ -234,7 +234,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SD,min",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter max of the "max_SD" size distribution
  */
@@ -249,7 +249,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SD,max",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter limits of the "max_SD" size distribution
  */
@@ -278,7 +278,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SD,active",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter typestr of the "max_SD" size distribution
  */
@@ -289,7 +289,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     Tcl_SetVar2(interp,APname,"SD,typestr",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
 
-	
+
 /*
  * save parameter a of the "max_SD" size distribution
  */
@@ -319,7 +319,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SQ,err",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter min of the "max_SD" size distribution
  */
@@ -334,7 +334,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SQ,min",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter max of the "max_SD" size distribution
  */
@@ -349,7 +349,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SQ,max",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter limits of the "max_SD" size distribution
  */
@@ -378,7 +378,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,APname,"SQ,active",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter typestr of the "max_SD" size distribution
  */
@@ -389,8 +389,8 @@ int save_AP(interp,APname,AP,max_SD,alambda)
     Tcl_SetVar2(interp,APname,"SQ,typestr",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
 
-	
-	
+
+
 /*
  * save parameter calcSDFF of the "max_SD" size distribution
  */
@@ -440,7 +440,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  * save parameter <R^n> of the "max_SD" size distribution
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 	   float_to_string(sBuffer,AP[i].R_moments[0]);
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
     }
@@ -468,7 +468,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  */
 
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 	   float_to_string(sBuffer,AP[i].fp);
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
     }
@@ -482,7 +482,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  *   R_li = 3/4 li = <R^3>/<R^2>
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, AP[i].R_moments[2]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -497,7 +497,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  *   R_lc = 2/3 lc = <R^4>/<R^3>
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, AP[i].R_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -513,7 +513,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  *   R_Ac = sqrt(5/(4 pi) Ac) = sqrt(<R^5>/<R^3>)
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, AP[i].R_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -528,7 +528,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  *   R_VP = (3/(4 pi) VP)^(1/3) = (<R^6>/<R^3>)^(1/3)
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, AP[i].R_moments[3]) ) {
 			   sprintf(sBuffer,"0.0");
 		} else {
@@ -543,7 +543,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  *   R_RG = sqrt(5/3 RG) = sqrt(<R^8>/<R^6>)
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, AP[i].R_moments[6]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -563,8 +563,8 @@ int save_AP(interp,APname,AP,max_SD,alambda)
 			sumR_moments[j] = sumR_moments[j] + AP[i].R_moments[j];
 		}
 	}
-	    
-	Tcl_DStringInit(&DsBuffer);   
+
+	Tcl_DStringInit(&DsBuffer);
     float_to_string(sBuffer,sumR_moments[0]);
     Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 	Tcl_SetVar2(interp,APname,"<sumR^0>",Tcl_DStringValue(&DsBuffer),0);
@@ -582,7 +582,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
         Tcl_SetVar2(interp,APname,sBuffer,Tcl_DStringValue(&DsBuffer),0);
         Tcl_DStringFree(&DsBuffer);
     }
-    
+
 /*
  * save parameter <R^n>/<R^m> of the "max_SD" size distribution
  */
@@ -590,7 +590,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
 /*
  *   sumR_li = 3/4 li = <sumR^3>/<sumR^2>
  */
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[2]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -603,7 +603,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
 /*
  *   sumR_lc = 2/3 lc = <sumR^4>/<sumR^3>
  */
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -630,7 +630,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
 /*
  *   sumR_VP = (3/(4 pi) VP)^(1/3) = (<sumR^6>/<sumR^3>)^(1/3)
  */
-    Tcl_DStringInit(&DsBuffer);   
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -643,7 +643,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
 /*
  *   sumR_RG = sqrt(5/3 RG) = sqrt(<sumR^8>/<sumR^6>)
  */
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[6]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -657,7 +657,7 @@ int save_AP(interp,APname,AP,max_SD,alambda)
  *   sumfp = sum fp[i]
  */
 	sumfp = 0.0;
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 	    for (i=0;i<max_SD;i++) {
 			sumfp = sumfp + AP[i].fp;
 		}
@@ -709,10 +709,10 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     float_to_string(sBuffer,alambda);
     Tcl_SetVar2(interp,GlobalAPname,"alambda", sBuffer,0);
 
-	
-	
+
+
 /*
- * saves global parameter P1,P2,.... 
+ * saves global parameter P1,P2,....
  */
     for (i=0;i<(*GCP).common_i;i++) {
          sprintf(sBuffer2,"P%d",i+1);
@@ -721,8 +721,8 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
          sprintf(sBuffer2,"P%d,err",i+1);
 		 float_to_string(sBuffer,(*GCP).P_common_err[i]);
          Tcl_SetVar2(interp,GlobalAPname,sBuffer2, sBuffer,0);
-    } 
-	
+    }
+
 /*
  * saves parameter l[4] of the "max_SD" form factors
  */
@@ -867,7 +867,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SD,err",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter min of the "max_SD" size distribution
  */
@@ -882,7 +882,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SD,min",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter max of the "max_SD" size distribution
  */
@@ -897,7 +897,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SD,max",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter limits of the "max_SD" size distribution
  */
@@ -926,7 +926,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SD,active",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter typestr of the "max_SD" size distribution
  */
@@ -966,7 +966,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SQ,err",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter min of the "max_SD" size distribution
  */
@@ -981,7 +981,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SQ,min",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
-  
+
 /*
  * save parameter max of the "max_SD" size distribution
  */
@@ -996,7 +996,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SQ,max",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter limits of the "max_SD" size distribution
  */
@@ -1025,7 +1025,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
     }
     Tcl_SetVar2(interp,GlobalAPname,"SQ,active",Tcl_DStringValue(&DsBuffer),0);
     Tcl_DStringFree(&DsBuffer);
- 
+
 /*
  * save parameter typestr of the "max_SD" size distribution
  */
@@ -1085,7 +1085,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  * save parameter <R^n> of the "max_SD" size distribution
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 	   float_to_string(sBuffer,GlobalAP[i].R_moments[0]);
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
     }
@@ -1113,7 +1113,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  */
 
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 	   float_to_string(sBuffer,GlobalAP[i].fp);
        Tcl_DStringAppendElement(&DsBuffer,sBuffer);
     }
@@ -1127,7 +1127,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  *   R_li = 3/4 li = <R^3>/<R^2>
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, GlobalAP[i].R_moments[2]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1142,7 +1142,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  *   R_lc = 2/3 lc = <R^4>/<R^3>
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, GlobalAP[i].R_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1158,7 +1158,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  *   R_Ac = sqrt(5/(4 pi) Ac) = sqrt(<R^5>/<R^3>)
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, GlobalAP[i].R_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1173,7 +1173,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  *   R_VP = (3/(4 pi) VP)^(1/3) = (<R^6>/<R^3>)^(1/3)
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, GlobalAP[i].R_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1188,7 +1188,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  *   R_RG = sqrt(5/3 RG) = sqrt(<R^8>/<R^6>)
  */
     Tcl_DStringInit(&DsBuffer);
-    for (i=0;i<max_SD;i++) {   
+    for (i=0;i<max_SD;i++) {
 		if ( SASFIT_EQUAL(0.0, GlobalAP[i].R_moments[6]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1208,8 +1208,8 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
 			sumR_moments[j] = sumR_moments[j] + GlobalAP[i].R_moments[j];
 		}
 	}
-	    
-	Tcl_DStringInit(&DsBuffer);   
+
+	Tcl_DStringInit(&DsBuffer);
     float_to_string(sBuffer,sumR_moments[0]);
     Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 	Tcl_SetVar2(interp,GlobalAPname,"<sumR^0>",Tcl_DStringValue(&DsBuffer),0);
@@ -1227,7 +1227,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
         Tcl_SetVar2(interp,GlobalAPname,sBuffer,Tcl_DStringValue(&DsBuffer),0);
         Tcl_DStringFree(&DsBuffer);
     }
-    
+
 /*
  * save parameter <R^n>/<R^m> of the "max_SD" size distribution
  */
@@ -1235,7 +1235,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
 /*
  *   sumR_li = 3/4 li = <sumR^3>/<sumR^2>
  */
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[2]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1248,7 +1248,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
 /*
  *   sumR_lc = 2/3 lc = <sumR^4>/<sumR^3>
  */
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1275,7 +1275,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
 /*
  *   sumR_VP = (3/(4 pi) VP)^(1/3) = (<sumR^6>/<sumR^3>)^(1/3)
  */
-    Tcl_DStringInit(&DsBuffer);   
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[3]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1288,7 +1288,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
 /*
  *   sumR_RG = sqrt(5/3 RG) = sqrt(<sumR^8>/<sumR^6>)
  */
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 		if ( SASFIT_EQUAL(0.0, sumR_moments[6]) ) {
            sprintf(sBuffer,"0.0");
 		} else {
@@ -1302,7 +1302,7 @@ int save_GlobalAP(interp,GlobalAPname,GlobalAP,GCP,max_SD,alambda)
  *   sumfp = sum fp[i]
  */
 	sumfp = 0.0;
-    Tcl_DStringInit(&DsBuffer);  
+    Tcl_DStringInit(&DsBuffer);
 	    for (i=0;i<max_SD;i++) {
 			sumfp = sumfp + GlobalAP[i].fp;
 		}
@@ -1412,7 +1412,7 @@ const char   **Splitargv, **targv;
           free_matrix((*alpha),0,ma-1,0,ma-1);
           sasfit_err("AP(covar) is not a list");
           return TCL_ERROR;
-       } 
+       }
        for (k=0;k<ma;k++) {
            tcode = Tcl_GetDoubleD(interp,targv[k],&(*covar)[i][k]);
            if (tcode == TCL_ERROR) {
@@ -1449,7 +1449,7 @@ const char   **Splitargv, **targv;
           free_matrix((*alpha),0,ma-1,0,ma-1);
           sasfit_err("AP(alpha) is not a list");
           return TCL_ERROR;
-       } 
+       }
        for (k=0;k<ma;k++) {
            tcode = Tcl_GetDoubleD(interp,targv[k],&(*alpha)[i][k]);
            if (tcode == TCL_ERROR) {
@@ -1519,7 +1519,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
 	SF_TCL_GET(double, argv[1], "alambda", *aalambda);
 	// read the error type
 	SF_TCL_GET(int, argv[1], "error", *error_type);
-	
+
 /*
  * read scattering curve h, Ih and DIh
  */
@@ -1615,7 +1615,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
         return TCL_ERROR;
 	}
 
-  
+
 	Splitcode = Tcl_SplitList(interp,argv[3],&targc,&targv);
     if ((Splitcode == TCL_ERROR) || (nmultset!=targc)) {
        Tcl_Free((char *) Splitargv);
@@ -1753,6 +1753,8 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Ih  = dvector(0,ndata-1);
        DIh = dvector(0,ndata-1);
 	   (*Ith)[k] = dvector(0,ndata-1);
+	   for (i=0;i<ndata;i++) (*Ith)[k][i]=0;
+
        for (j=0; j < targc ;j++) {
           tcode = Tcl_GetDoubleD(interp,targv[j],&h[j]);
           if (tcode == TCL_ERROR) {
@@ -1802,7 +1804,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
 	   }
        Splitcode = Tcl_SplitList(interp,DIQargv[k],&targc,&targv);
        if (Splitcode == TCL_ERROR) {
-          free_dvector(h,0,ndata-1);  
+          free_dvector(h,0,ndata-1);
           free_dvector(res,0,ndata-1);
           free_dvector(Ih,0,ndata-1);
           free_dvector(DIh,0,ndata-1);
@@ -1871,7 +1873,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
 			  }
 		  }
 	   } else {
-          for (i=0;i<ndata;i++) res[i] = 0.0;   
+          for (i=0;i<ndata;i++) res[i] = 0.0;
 	   }
        switch (*error_type) {
           case 0 : {break;}
@@ -1879,7 +1881,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
           case 2 : { for (i=0;i<ndata;i++) DIh[i] = sqrt(fabs(Ih[i])); break; }
           case 3 : { for (i=0;i<ndata;i++) DIh[i] = 1.0; break;}
           default: { sasfit_err("#get_GlobalAP: unknown error_type %d\n",*error_type);
-                     for (i=0;i<ndata;i++) DIh[i] = 1.0; 
+                     for (i=0;i<ndata;i++) DIh[i] = 1.0;
 			break;
 		}
 	   }
@@ -1928,13 +1930,13 @@ int get_GlobalAP(Tcl_Interp       *interp,
             sasfit_err("Could not read (*GlobalCommonPar).P_common[i]\n");
             return TCL_ERROR;
 		 }
-    } 
+    }
     Tcl_Free((char *) Splitargv);
 /*
  * read the number of parameters for each contribution to get only values
  * which are actually in use
  */
-	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_ff, 
+	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_ff,
 	                    &len, argv[1],"FF,param_count");
 	if (tcl_result != TCL_OK) {
 		sasfit_free_AP(&GlobalAP);
@@ -1957,7 +1959,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) Splitargv);
        sasfit_err("wrong # of list elements in GlobalAP(FF,l)\n");
        return TCL_ERROR;
-    } 
+    }
     for (i=0;i<max_SD;i++) {
        Splitcode = Tcl_SplitList(interp,Splitargv[i],&targc,&targv);
        if ((Splitcode == TCL_ERROR) || (targc > MAXPAR)) {
@@ -1977,7 +1979,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
               return TCL_ERROR;
            }
        }
-    } 
+    }
     Tcl_Free((char *) Splitargv);
 
 
@@ -2270,7 +2272,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 
 /*
  * read parameter distr of the "max_SD" form factors
@@ -2338,7 +2340,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
  * read the number of parameters for each contribution to get only values
  * which are actually in use
  */
-	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sd, 
+	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sd,
 	                    &len, argv[1],"SD,param_count");
 	if (tcl_result != TCL_OK) {
 		sasfit_free_AP(&GlobalAP);
@@ -2507,7 +2509,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter min of the "max_SD" size distribution
  */
@@ -2548,7 +2550,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter max of the "max_SD" size distribution
  */
@@ -2589,7 +2591,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter limits of the "max_SD" size distribution
  */
@@ -2630,7 +2632,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter active of the "max_SD" size distribution
  */
@@ -2672,7 +2674,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter typestr of the "max_SD" size distribution
  */
@@ -2699,7 +2701,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
  * read the number of parameters for each contribution to get only values
  * which are actually in use
  */
-	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sq, 
+	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sq,
 	                    &len, argv[1],"SQ,param_count");
 	if (tcl_result != TCL_OK) {
 		sasfit_free_AP(&GlobalAP);
@@ -2868,7 +2870,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter min of the "max_SD" structure factor
  */
@@ -2909,7 +2911,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter max of the "max_SD" structure factor
  */
@@ -2950,7 +2952,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter limits of the "max_SD" structure factor
  */
@@ -2991,7 +2993,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter active of the "max_SD" structure factor
  */
@@ -3033,7 +3035,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter typestr of the "max_SD" structure factor
  */
@@ -3116,7 +3118,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
         }
     }
     Tcl_Free((char *) Splitargv);
-	
+
 /*
  * read parameter calcSDFF of the "max_SD" size distribution
  */
@@ -3193,7 +3195,7 @@ int get_GlobalAP(Tcl_Interp       *interp,
     if (Splitargc != max_SD) {
        sasfit_free_AP( &GlobalAP );
        Tcl_Free((char *) Splitargv);
-       sasfit_err("wrong # of list elements in GlobalAP[i](dataset), argc: %i, maxSD: %i\n", 
+       sasfit_err("wrong # of list elements in GlobalAP[i](dataset), argc: %i, maxSD: %i\n",
 		       Splitargc, max_SD);
        return TCL_ERROR;
     }

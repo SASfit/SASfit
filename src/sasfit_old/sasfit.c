@@ -3092,7 +3092,10 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	Ith = dvector(0,ndata-1);
 	Ihsubstract = dvector(0,ndata-1);
 	dydpar = dvector(0,ma-1);
-
+    for (i=0;i<ndata;i++) {
+        Ith[i] = 0;
+        Ihsubstract[i] = 0;
+    }
 	Tcl_DStringInit(&DsBuffer);
 
 	Tcl_DStringStartSublist(&DsBuffer);

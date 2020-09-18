@@ -52,7 +52,7 @@ scalar sasfit_ff_pcs_plate_chains_rw_(scalar q, sasfit_param * param)
 
     PCHAIN = NAGG*rc*rc*Fc;
 	I =   NAGG*NAGG*rs*rs*Fcs
-		+ 0*NAGG*rc*rc*Fc
+		+ NAGG*rc*rc*Fc
 		+ NAGG*(NAGG-1.)*((NAGG < 1.) ?  0 : 1)*rc*rc*Scc
 		+ 2.*NAGG*NAGG*rs*rc*Ssc;
 	return I/gsl_pow_2(SURF);

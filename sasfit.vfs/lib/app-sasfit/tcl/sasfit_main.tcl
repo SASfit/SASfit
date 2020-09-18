@@ -1049,7 +1049,7 @@ set f_close "yes"
 
 proc window_to_clipboard { window } {
   set ::sasfit(tmpclipboard) $window
-  if {[catch {$window snap -format emf CLIPBOARD}]} {
+  if {[catch {$window.draw snap -format emf CLIPBOARD}]} {
 	after 500 { old_window_to_clipboard $::sasfit(tmpclipboard)}
   }
 }

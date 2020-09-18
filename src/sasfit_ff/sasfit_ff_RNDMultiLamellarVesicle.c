@@ -29,7 +29,7 @@
 #include <gsl/gsl_randist.h>
 #include "include/sasfit_ff_utils.h"
 
-#define NRND 200
+#define NRND 20
 
 /*
 float RNDMultiLamellarVesicle(Tcl_Interp *interp,
