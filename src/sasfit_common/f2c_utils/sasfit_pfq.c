@@ -23,8 +23,8 @@ unsigned short MACHEP[4] = {0x0000,0x0000,0x0000,0x3ca0};
 float MAXNUMF = 1.7014117331926442990585209174225846272e38;
 float MACHEPF = 5.9604644775390625E-8;
 
-#include "pfq_f2c.inc"
-// #include "pfq.new.c"
+//#include "pfq_f2c.inc"
+#include "pfq.new.c"
 
 double Hypergeom0F1(double c, double x)
 {
@@ -35,7 +35,8 @@ double Hypergeom1F2(double a1, double b1, double b2, double x)
 {
 	doublereal Res1F2;
 	doublecomplex A[1], B[2], z, ret_val;
-	integer ln_pFq, ix, nsigfig, ip, iq,errorstr_len=256;
+	integer ln_pFq, ix, nsigfig, ip, iq;
+	ftnlen errorstr_len=256;
 	bool error;
 	char errorstr[256];
 //	double err;
@@ -59,8 +60,8 @@ double Hypergeom1F2(double a1, double b1, double b2, double x)
 	z.i=0;
 	z.r=x;
 
-	pfq_( &ret_val, A, B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig, &error, errorstr,&errorstr_len);
-
+	pfq_( &ret_val, A, B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig, &error, errorstr, errorstr_len);
+//    pfq_( &ret_val, A, B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig);
 	Res1F2 = ret_val.r;
 	return exp(Res1F2);
 }
@@ -186,7 +187,8 @@ double sasfit_3f2(double a1, double a2, double a3,
 
 	doublereal Res3F2;
 	doublecomplex A[3], B[2], z, ret_val;
-	integer ln_pFq, ix, nsigfig, ip, iq, errstr_len = STRLEN;
+	integer ln_pFq, ix, nsigfig, ip, iq;
+	ftnint errstr_len = STRLEN;
 
 	SASFIT_ASSERT_PTR(param);
 
@@ -210,9 +212,11 @@ double sasfit_3f2(double a1, double a2, double a3,
 	z.i = 0;
 	z.r = x;
 
+    param->errStatus=FALSE;
 	// I assume ierr is just a flag here ?
 	pfq_( &ret_val, A, B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,
-		param->errStatus, param->errStr, &errstr_len);
+		&param->errStatus, param->errStr, errstr_len);
+//    pfq_( &ret_val, A, B, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig);
 	// is errstr_len written written with the final str length afterwards ?
 	// param->errLen = errstr_len;
 
@@ -220,8 +224,8 @@ double sasfit_3f2(double a1, double a2, double a3,
 	return exp(Res3F2);
 }
 
-double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, int ip, int iq,
-                  double z_r, double z_i, int ln_pFq, int ix, double *pFq_r, double *pFq_i, int nsigfig, sasfit_param * param)
+double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, integer ip, integer iq,
+                  double z_r, double z_i, integer ln_pFq, integer ix, double *pFq_r, double *pFq_i, integer nsigfig, sasfit_param * param)
 {
 	doublecomplex *P, *Q, z, ret_val;
 	integer errstr_len = STRLEN;
@@ -240,10 +244,11 @@ double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, int ip, i
     }
   	z.i = z_i;
 	z.r = z_r;
-	pfq_( &ret_val, P, Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,&param->errStatus, param->errStr, &errstr_len);
+    param->errStatus=FALSE;
+	pfq_( &ret_val, P, Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig,&param->errStatus, param->errStr, errstr_len);
+//	pfq_( &ret_val, P, Q, &ip, &iq, &z, &ln_pFq, &ix, &nsigfig);
     *pFq_r = ret_val.r;
     *pFq_i = ret_val.i;
-    param->errStatus=FALSE;
     free(P);
     free(Q);
     return sqrt(ret_val.r*ret_val.r+ret_val.i*ret_val.i);

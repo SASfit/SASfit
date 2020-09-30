@@ -29,6 +29,7 @@
 #include <gsl/gsl_randist.h>
 #include "include/sasfit_ff_utils.h"
 
+#define NMAX 200
 
 scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 {
@@ -38,10 +39,10 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 	scalar t_sh, s_tsh, R_c, s_Rc, n, s_n, t_sol, s_tsol, Dt_sol, Delta_eta;
 	int i, j, N, p, Nav = 200;
 	static int idum = -1;
-	static gsl_rng * r; 
+	static gsl_rng * r;
 	static const gsl_rng_type * T;
 //	static float o_R_c=-1., o_t_sh=-1., o_t_sol=-1., o_Dt_sol=-1.,o_n=-1.;
-	static scalar r_i[100][3], R_i[100], tsh_i[100];
+	static scalar r_i[NMAX][3], R_i[NMAX], tsh_i[NMAX];
 	sasfit_param subParam;
 
 	SASFIT_ASSERT_PTR(param);
@@ -59,14 +60,14 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((n > 100), param, "n(%lg) > 100",n);
 	SASFIT_CHECK_COND1((s_n < 0.0), param, "s_n(%lg) < 0",s_n);
 
-	if (idum < 0) 
+	if (idum < 0)
 	{
 		idum = 1;
 		gsl_rng_env_setup();
 		T = gsl_rng_default;
 		r = gsl_rng_alloc(T);
 	}
-	if (20 < sasfit_eps_get_iter_4_mc()) 
+	if (20 < sasfit_eps_get_iter_4_mc())
 	{
 		Nav = sasfit_eps_get_iter_4_mc();
 	} else {
@@ -76,7 +77,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 	sasfit_init_param( &subParam );
 	sumt = 0.0;
 
-	for (p=0; p < Nav ;p++) 
+	for (p=0; p < Nav ;p++)
 	{
 		//  do {
 		//	  N = (int) (gsl_ran_gaussian (r,s_n)+n);
@@ -86,21 +87,21 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 		} else {
 			do {
 				N = (int) gsl_ran_lognormal(r,log(n),s_n);
-			} 
-			while ((N>200) || (N<1));
+			}
+			while ((N>NMAX) || (N<1));
 		}
 		r_i[0][0] = 0.0;
 		r_i[0][1] = 0.0;
 		r_i[0][2] = 0.0;
 
-		for (i=0; i < N ;i++) 
+		for (i=0; i < N ;i++)
 		{
 			if (s_tsh == 0.0) {
 				tsh_i[i] = t_sh;
 			} else {
 				do {
 					tsh_i[i] = gsl_ran_gaussian(r,s_tsh)+t_sh;
-				} 
+				}
 				while (tsh_i[i] <= 0);
 			}
 		}
@@ -113,10 +114,10 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 		} else {
 			do {
 				R_i[0] = gsl_ran_lognormal(r,log(R_c),s_Rc);
-			} 
+			}
 			while (R_i[0] <= 0);
 		}
-		for (i=1; i < N ;i++) 
+		for (i=1; i < N ;i++)
 		{
 			gsl_ran_dir_3d(r,&xc,&yc,&zc);
 			if (s_tsol == 0.0) {
@@ -124,7 +125,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 			} else {
 				do {
 					DRi = gsl_ran_gaussian(r,s_tsol)+t_sol;
-				} 
+				}
 				while (DRi < 0);
 			}
 			R_i[i] = R_i[i-1]+tsh_i[i-1]+DRi;
@@ -133,15 +134,15 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 			} else {
 				do {
 					Delta_s = Dt_sol*DRi*gsl_rng_uniform(r);
-				} 
+				}
 				while (Delta_s < 0);
 			}
 			r_i[i][0] = r_i[i-1][0] + Delta_s*xc;
 			r_i[i][1] = r_i[i-1][1] + Delta_s*yc;
-			r_i[i][2] = r_i[i-1][2] + Delta_s*zc; 
+			r_i[i][2] = r_i[i-1][2] + Delta_s*zc;
 		}
 		sum=0.0;
-		for (i=0; i < N ;i++) 
+		for (i=0; i < N ;i++)
 		{
 			/*
 			Fi =  K(interp,q,R_i[i]			,-Delta_eta,error)
@@ -156,7 +157,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 			Fi += sasfit_ff_sphere_f(q, &subParam);
 
 			sum = sum + Fi*Fi;
-			for (j=i+1; j < N ;j++) 
+			for (j=i+1; j < N ;j++)
 			{
 				/*
 				Fj =  K(interp,q,R_i[j]			,-Delta_eta,error)
@@ -165,7 +166,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 				subParam.p[0] = R_i[j];
 				subParam.p[3] = -Delta_eta;
 				Fj = sasfit_ff_sphere_f(q, &subParam);
-				
+
 				subParam.p[0] = R_i[j] + tsh_i[j];
 				subParam.p[3] = Delta_eta;
 				Fj += sasfit_ff_sphere_f(q, &subParam);
@@ -174,10 +175,10 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 					       +pow(r_i[i][1]-r_i[j][1],2)
 					       +pow(r_i[i][2]-r_i[j][2],2)
 						  );
-				if (rij == 0) 
+				if (rij == 0)
 				{
 					sum = sum + 2.0*Fi*Fj;
-				} else 
+				} else
 				{
 					sum = sum + 2.0*Fi*Fj*sin(q*rij)/(q*rij);
 				}
