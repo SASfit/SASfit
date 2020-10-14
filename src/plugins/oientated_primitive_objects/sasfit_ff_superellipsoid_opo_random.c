@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_superellipsoid_opo(scalar q, sasfit_param * param)
+scalar sasfit_ff_superellipsoid_opo_random(scalar q, sasfit_param * param)
 {
 	opo_data opod;
 	scalar *aw, res,err,sum;
@@ -29,7 +29,7 @@ scalar sasfit_ff_superellipsoid_opo(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 	if (A*B*C==0) return 0;
-	
+
 	opod.a = A;
 	opod.b = A*B;
 	opod.c = A*C;
@@ -52,7 +52,7 @@ scalar sasfit_ff_superellipsoid_opo(scalar q, sasfit_param * param)
 	return gsl_pow_2((ETA_P-ETA_M)*opod.detDinv*opo_Fsuperellipsoid(param));
 }
 
-scalar sasfit_ff_superellipsoid_opo_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_superellipsoid_opo_random_f(scalar q, sasfit_param * param)
 {
 	opo_data opod;
 	scalar *aw, res,err,sum;
@@ -66,7 +66,7 @@ scalar sasfit_ff_superellipsoid_opo_f(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 	if (A*B*C==0) return 0;
-	
+
 	opod.a = A;
 	opod.b = A*B;
 	opod.c = A*C;
@@ -89,7 +89,7 @@ scalar sasfit_ff_superellipsoid_opo_f(scalar q, sasfit_param * param)
 	return (ETA_P-ETA_M)*opod.detDinv*opo_Fsuperellipsoid(param);
 }
 
-scalar sasfit_ff_superellipsoid_opo_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_superellipsoid_opo_random_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

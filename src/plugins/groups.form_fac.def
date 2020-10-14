@@ -197,6 +197,15 @@
  */
  
 /** 
+ * \defgroup ff_plugins_oriented_primitive_objects oriented primitive objects
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of oriented primitive objects.
+ *
+ * \modname{ff_plugins_oriented_primitive_objects}
+ */
+ 
+/** 
  * \defgroup ff_plugins_localplanar local planar obj.
  * \ingroup ff_plugins_thin_objects
  *

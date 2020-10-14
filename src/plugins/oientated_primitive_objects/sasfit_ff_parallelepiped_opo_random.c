@@ -6,9 +6,11 @@
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
-scalar sasfit_ff_parallelepiped_opo(scalar q, sasfit_param * param)
+scalar sasfit_ff_parallelepiped_opo_random(scalar q, sasfit_param * param)
 {
-    scalar psi;
+    scalar Iavg;
+    int available, order, n, rule_max=65, i;
+    double *w, *x, *y, *z;
     opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -27,23 +29,46 @@ scalar sasfit_ff_parallelepiped_opo(scalar q, sasfit_param * param)
 	opod.b = B;
 	opod.c = C;
     opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
+    opo_setEulerAngles(&opod,0,0,0);
     opo_init(&opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
     opod.Qmod = q;
-    psi=sasfit_param_override_get_psi(PSI_DEG*M_PI/180.);
-    opod.Q[0] = q*cos(psi);
-    opod.Q[1] = q*sin(psi);
-    opod.Q[2] = 0;
-    opo_setQhat(&opod);
-	return gsl_pow_2((ETA_P-ETA_M) *opo_Fp(&opod));
+    order = sasfit_order_table ( rule_max );
+    for ( n = lround(sasfit_eps_get_robertus_p()); n <= rule_max; n++ ) {
+        available = sasfit_available_table ( n );
+        if ( available ) {
+            order = sasfit_order_table ( n );
+            break;
+        }
+    }
+
+    w = ( double * ) malloc ( order * sizeof ( double ) );
+    x = ( double * ) malloc ( order * sizeof ( double ) );
+    y = ( double * ) malloc ( order * sizeof ( double ) );
+    z = ( double * ) malloc ( order * sizeof ( double ) );
+    sasfit_ld_by_order ( order, x, y, z, w );
+    Iavg = 0;
+    for (i=0;i<order;i++) {
+        opod.Q[0] = q*x[i];
+        opod.Q[1] = q*y[i];
+        opod.Q[2] = q*z[i];
+        opo_setQhat(&opod);
+        Iavg = Iavg+w[i]*gsl_pow_2((ETA_P-ETA_M) *opo_Fp(&opod));
+    }
+    free ( x );
+    free ( y );
+    free ( z );
+    free ( w );
+    return Iavg;
 }
 
-scalar sasfit_ff_parallelepiped_opo_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_parallelepiped_opo_random_f(scalar q, sasfit_param * param)
 {
-    scalar psi;
+    scalar Iavg;
+    int available, order, n, rule_max=65, i;
+    double *w, *x, *y, *z;
     opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -55,21 +80,42 @@ scalar sasfit_ff_parallelepiped_opo_f(scalar q, sasfit_param * param)
 	opod.b = B;
 	opod.c = C;
     opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
+    opo_setEulerAngles(&opod,0,0,0);
     opo_init(&opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
     opod.Qmod = q;
-    psi=sasfit_param_override_get_psi(PSI_DEG*M_PI/180.);
-    opod.Q[0] = q*cos(psi);
-    opod.Q[1] = q*sin(psi);
-    opod.Q[2] = 0;
-    opo_setQhat(&opod);
-	return (ETA_P-ETA_M) *opo_Fp(&opod);
+    order = sasfit_order_table ( rule_max );
+    for ( n = lround(sasfit_eps_get_robertus_p()); n <= rule_max; n++ ) {
+        available = sasfit_available_table ( n );
+        if ( available ) {
+            order = sasfit_order_table ( n );
+            break;
+        }
+    }
+
+    w = ( double * ) malloc ( order * sizeof ( double ) );
+    x = ( double * ) malloc ( order * sizeof ( double ) );
+    y = ( double * ) malloc ( order * sizeof ( double ) );
+    z = ( double * ) malloc ( order * sizeof ( double ) );
+    sasfit_ld_by_order ( order, x, y, z, w );
+    Iavg = 0;
+    for (i=0;i<order;i++) {
+        opod.Q[0] = q*x[i];
+        opod.Q[1] = q*y[i];
+        opod.Q[2] = q*z[i];
+        opo_setQhat(&opod);
+        Iavg = Iavg+w[i]*(ETA_P-ETA_M) *opo_Fp(&opod);;
+    }
+    free ( x );
+    free ( y );
+    free ( z );
+    free ( w );
+    return Iavg;
 }
 
-scalar sasfit_ff_parallelepiped_opo_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_parallelepiped_opo_random_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

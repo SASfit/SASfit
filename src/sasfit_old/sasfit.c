@@ -4261,8 +4261,8 @@ free_ivector(GCP.P_common_index,0,GCP.common_i-1);
 free_dvector(GCP.P_common_err,0,GCP.common_i-1);
 
 Tcl_Free((char *) GlobalAP);
-free_ivector(ndata,0,GCP.nmultset-1);
-free_ivector(hide,0,GCP.nmultset-1);
+//free_ivector(ndata,0,GCP.nmultset-1);
+//free_ivector(hide,0,GCP.nmultset-1);
 
 Tcl_Free((char *) Isub);
 Tcl_Free((char *) h);
@@ -4274,6 +4274,7 @@ Tcl_Free((char *) Ihtrans);
 Tcl_Free((char *) res);
 Tcl_Free((char *) ndata);
 Tcl_Free((char *) hide);
+
 return TCL_OK;
 }
 

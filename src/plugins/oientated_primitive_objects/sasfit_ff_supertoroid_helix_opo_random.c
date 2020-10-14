@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_supertoroid_helix_opo(scalar q, sasfit_param * param)
+scalar sasfit_ff_supertoroid_helix_opo_random(scalar q, sasfit_param * param)
 {
 	opo_data opod;
 	scalar sum;
@@ -52,7 +52,7 @@ scalar sasfit_ff_supertoroid_helix_opo(scalar q, sasfit_param * param)
 	return gsl_pow_2((ETA_P-ETA_M)*opod.detDinv*sum);
 }
 
-scalar sasfit_ff_supertoroid_helix_opo_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_supertoroid_helix_opo_random_f(scalar q, sasfit_param * param)
 {
 	opo_data opod;
 	scalar sum;
@@ -87,7 +87,7 @@ scalar sasfit_ff_supertoroid_helix_opo_f(scalar q, sasfit_param * param)
 	return (ETA_P-ETA_M)*opod.detDinv*opo_Fsuper_toroid_helix(param);
 }
 
-scalar sasfit_ff_supertoroid_helix_opo_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_supertoroid_helix_opo_random_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

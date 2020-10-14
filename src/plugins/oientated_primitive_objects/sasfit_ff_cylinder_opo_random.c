@@ -8,7 +8,7 @@
 
 scalar sasfit_ff_cylinder_opo_random(scalar q, sasfit_param * param)
 {
-    scalar psi, Iavg;
+    scalar Iavg;
     int available, order, n, rule_max=65, i;
     double *w, *x, *y, *z;
 	opo_data opod;
@@ -87,7 +87,6 @@ scalar sasfit_ff_cylinder_opo_random_f(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
     opod.Qmod = q;
-
     order = sasfit_order_table ( rule_max );
     for ( n = lround(sasfit_eps_get_robertus_p()); n <= rule_max; n++ ) {
         available = sasfit_available_table ( n );

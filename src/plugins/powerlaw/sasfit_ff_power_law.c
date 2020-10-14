@@ -22,7 +22,7 @@ scalar sasfit_ff_power_law(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
     SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R); // modify condition to your needs
-	SASFIT_CHECK_COND1((ALPHA <= 0.0), param, "alpha(%lg) <= 0",ALPHA); // modify condition to your needs
+	SASFIT_CHECK_COND1((ALPHA <= -3.0), param, "alpha(%lg) <= -3",ALPHA); // modify condition to your needs
 	// insert your code here
 
     gsl_set_error_handler_off();

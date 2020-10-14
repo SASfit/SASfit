@@ -30,7 +30,11 @@ scalar sasfit_sq_p__q___worm_ps3_PRISM2(scalar q, sasfit_param * param)
 
 	scalar Swc,S0,cq,u,u2;
 	S0=L*L*2;
-	Swc=PS3_EXP_SD(q,param);
+	if (MONO_SD>0) {
+        Swc=PS3_EXP_SD(q,param);
+	} else {
+        Swc=sasfit_sq_p__q___worm_ps3_(q,param);
+	}
     u = q*LP;
 	u2 = u/2.0;
 	if (u==0.0) {

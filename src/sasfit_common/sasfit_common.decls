@@ -382,3 +382,16 @@ declare 116 generic {
 declare 117 generic {
 	scalar sasfit_erfinv(scalar y)
 }
+
+declare 118 generic {
+	int sasfit_available_table ( int rule )
+}
+
+declare 119 generic {
+	int sasfit_order_table ( int rule )
+}
+
+declare 120 generic {
+	void sasfit_ld_by_order ( int order, double *x, double *y, double *z, double *w )
+}
+

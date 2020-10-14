@@ -7,9 +7,11 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(2)
+SASFIT_PLUGIN_EXP_BEGIN(4)
 SASFIT_PLUGIN_EXP_ADD( ff_profile__gen__exp__sphere )
 SASFIT_PLUGIN_EXP_ADD( ff_gen__exp__sphere )
+SASFIT_PLUGIN_EXP_ADD( ff_profile__gen__gauss__sphere )
+SASFIT_PLUGIN_EXP_ADD( ff_gen__gauss__sphere )
 
 SASFIT_PLUGIN_EXP_END
 

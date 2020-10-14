@@ -1079,6 +1079,12 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3__v(scalar q, sasfit_
  *      </tr><tr>
  *       <td>\b beta</td>
  *       <td>interaction parameter</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b CLD</td>
+ *       <td>a value larger than 0 applies an exponential contour length distribution otherwise it uses a monodisperse contour length</td>
  *      </tr></table>
  */
 
@@ -1130,6 +1136,9 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_RPA_v(scalar q, sasf
  *      </tr><tr>
  *       <td>\b Rc</td>
  *       <td>correlation hole</td>
+ *      </tr><tr>
+ *       <td>\b CLD</td>
+ *       <td>a value larger than 0 applies an exponential contour length distribution otherwise it uses a monodisperse contour length</td>
  *      </tr></table>
  */
 
@@ -1181,6 +1190,9 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM1_v(scalar q, s
  *      </tr><tr>
  *       <td>\b Lc</td>
  *       <td>rod length correlation hole</td>
+ *      </tr><tr>
+ *       <td>\b CLD</td>
+ *       <td>a value larger than 0 applies an exponential contour length distribution otherwise it uses a monodisperse contour length</td>
  *      </tr></table>
  */
 
@@ -1232,6 +1244,9 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___worm_ps3_PRISM2_v(scalar q, s
  *      </tr><tr>
  *       <td>\b Rc</td>
  *       <td>correlation hole Rc=2Log(sigma)+2</td>
+ *      </tr><tr>
+ *       <td>\b CLD</td>
+ *       <td>a value larger than 0 applies an exponential contour length distribution otherwise it uses a monodisperse contour length</td>
  *      </tr></table>
  */
 

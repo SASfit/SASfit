@@ -10,7 +10,7 @@
 
 /******************************************************************************/
 
-int available_table ( int rule )
+int sasfit_available_table ( int rule )
 
 /******************************************************************************/
 /*
@@ -47,7 +47,7 @@ int available_table ( int rule )
   int rule_max = 65;
   int table[65] = {
     1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-    1,    1,    1,    1,    1,    0,    1,    0,    0,    1, 
+    1,    1,    1,    1,    1,    0,    1,    0,    0,    1,
     0,    0,    1,    0,    0,    1,    0,    0,    1,    0,
     0,    1,    0,    0,    1,    0,    0,    1,    0,    0,
     1,    0,    0,    1,    0,    0,    1,    0,    0,    1,
@@ -72,7 +72,7 @@ int available_table ( int rule )
 }
 /******************************************************************************/
 
-int gen_oh ( int code, double a, double b, double v, double *x, double *y, 
+int gen_oh ( int code, double a, double b, double v, double *x, double *y,
   double *z, double *w )
 
 /******************************************************************************/
@@ -297,7 +297,7 @@ int gen_oh ( int code, double a, double b, double v, double *x, double *y,
 }
 /******************************************************************************/
 
-void ld_by_order ( int order, double *x, double *y, double *z, double *w )
+void sasfit_ld_by_order ( int order, double *x, double *y, double *z, double *w )
 
 /******************************************************************************/
 /*
@@ -516,7 +516,7 @@ void ld0006 ( double *x, double *y, double *z, double *w )
 }
 /******************************************************************************/
 
-void ld0014 ( double *x, double *y, double *z, double *w ) 
+void ld0014 ( double *x, double *y, double *z, double *w )
 
 /******************************************************************************/
 /*
@@ -6321,7 +6321,7 @@ void ld5810 ( double *x, double *y, double *z, double *w )
 }
 /******************************************************************************/
 
-int order_table ( int rule )
+int sasfit_order_table ( int rule )
 
 /******************************************************************************/
 /*
@@ -6355,7 +6355,7 @@ int order_table ( int rule )
   int rule_max = 65;
   int table[65]= {
       6,   14,   26,   38,   50,   74,   86,  110,  146,  170,
-    194,  230,  266,  302,  350,  386,  434,  482,  530,  590, 
+    194,  230,  266,  302,  350,  386,  434,  482,  530,  590,
     650,  698,  770,  830,  890,  974, 1046, 1118, 1202, 1274,
    1358, 1454, 1538, 1622, 1730, 1814, 1910, 2030, 2126, 2222,
    2354, 2450, 2558, 2702, 2810, 2930, 3074, 3182, 3314, 3470,
@@ -6422,7 +6422,7 @@ int precision_table ( int rule )
     43,  45,  47,  49,  51,  53,  55,  57,  59,  61,
     63,  65,  67,  69,  71,  73,  75,  77,  79,  81,
     83,  85,  87,  89,  91,  93,  95,  97,  99, 101,
-   103, 105, 107, 109, 111, 113, 115, 117, 119, 121, 
+   103, 105, 107, 109, 111, 113, 115, 117, 119, 121,
    123, 125, 127, 129, 131 };
   int value;
 
@@ -6447,53 +6447,6 @@ int precision_table ( int rule )
 }
 /******************************************************************************/
 
-void timestamp ( )
-
-/******************************************************************************/
-/*
-  Purpose:
-
-    TIMESTAMP prints the current YMDHMS date as a time stamp.
-
-  Example:
-
-    31 May 2001 09:45:54 AM
-
-  Licensing:
-
-    This code is distributed under the GNU LGPL license. 
-
-  Modified:
-
-    24 September 2003
-
-  Author:
-
-    John Burkardt
-
-  Parameters:
-
-    None
-*/
-{
-# define TIME_SIZE 40
-
-  static char time_buffer[TIME_SIZE];
-  const struct tm *tm;
-  size_t len;
-  time_t now;
-
-  now = time ( NULL );
-  tm = localtime ( &now );
-
-  len = strftime ( time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm );
-
-  fprintf ( stdout, "%s\n", time_buffer );
-
-  return;
-# undef TIME_SIZE
-}
-/******************************************************************************/
 
 void xyz_to_tp ( double x, double y, double z, double *t, double *p )
 
@@ -6528,7 +6481,7 @@ void xyz_to_tp ( double x, double y, double z, double *t, double *p )
 
   fact = sqrt ( x * x + y * y );
 
-  if ( 0 < fact ) 
+  if ( 0 < fact )
   {
     ang_x = acos ( x / fact );
   }
@@ -6537,7 +6490,7 @@ void xyz_to_tp ( double x, double y, double z, double *t, double *p )
     ang_x = acos ( x );
   }
 
-  if ( y < 0 ) 
+  if ( y < 0 )
   {
     ang_x = - ang_x;
   }

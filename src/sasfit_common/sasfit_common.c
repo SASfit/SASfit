@@ -159,6 +159,19 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_intde, /* 115 */
 	sasfit_cubature, /* 116 */
 	sasfit_erfinv, /* 117 */
+	sasfit_available_table, /* 118 */
+	sasfit_order_table, /* 119 */
+	sasfit_ld_by_order, /* 120 */
+	NULL, /* 121 */
+	NULL, /* 122 */
+	NULL, /* 123 */
+	NULL, /* 124 */
+	NULL, /* 125 */
+	NULL, /* 126 */
+	NULL, /* 127 */
+	NULL, /* 128 */
+	NULL, /* 129 */
+	NULL, /* 130 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

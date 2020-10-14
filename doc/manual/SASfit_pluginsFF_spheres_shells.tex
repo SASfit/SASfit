@@ -795,13 +795,14 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}\\
+\underline{Input Parameters for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}
 \begin{description}
 \item[\texttt{R}] radius $R$
 \item[\texttt{alpha}] shape parameter of the profile $\alpha$, which is also equal to the potential law at large $Q$-values
 \item[\texttt{Delta\_eta}] scattering length density at $r=0$, $\Delta\eta=\eta(r=0)$
 \end{description}
 
+\hspace{1pt}\\
 \noindent\underline{Note for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}
 \begin{itemize}
 \item For $\alpha<4$ the scattering length density profile has a pole at $r=R$
@@ -809,13 +810,14 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \end{itemize}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{BoucherSphere2} and \texttt{Boucher profile2}:}\\
+\underline{Input Parameters for model \texttt{BoucherSphere2} and \texttt{Boucher profile2}:}
 \begin{description}
 \item[\texttt{R}] radius $R$
 \item[\texttt{alpha}] shape parameter of the profile $\alpha$, which is also equal to the potential law at large $Q$-values
 \item[\texttt{Delta\_eta}] is the average scattering length density so that the excess scattering length corresponds to the one of a homogeneous sphere with contrast $\Delta\eta$
 \end{description}
 
+\hspace{1pt}\\
 \noindent\underline{Note for model \texttt{BoucherSphere2} and \texttt{Boucher profile}:}
 \begin{itemize}
 \item For $\alpha<4$ the scattering length density profile has a pole at $r=R$
@@ -832,3 +834,165 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \label{fig:BoucherIQ}
 \end{figure}
 
+
+\subsection{Power law scattering profile (fuzzy sphere model)}
+\label{sect:PowerLawSphere} ~\\
+The power law profile looks similar to the Boucher profile and is defined as
+\begin{align}
+  \eta_\mathrm{PowLaw}(r) & = \Delta\eta
+  \begin{cases}
+    1-\left(\frac{r}{R}\right)^\alpha, & \mbox{if } r<R \\
+    0, & \mbox{otherwise}.
+  \end{cases}
+\end{align}
+The scattering amplitude and the scattering intensity are then given by
+\begin{multline}
+  F_\mathrm{PowLaw}(Q,R,\alpha)  = \frac{4 \pi  (\sin (QR)-QR \cos (QR))}{Q^3} \\
+  -\frac{4 \pi  R^3 \, _1F_2\left(\frac{\alpha
+   }{2}+\frac{3}{2};\frac{3}{2},\frac{\alpha }{2}+\frac{5}{2};-\frac{1}{4} Q^2R^2\right)}{\alpha+3}
+\end{multline}
+\begin{align}
+  I_\mathrm{PowLaw}(Q,R,\alpha) &= F^2_\mathrm{PowLaw}(Q,R,\alpha)
+\end{align}
+
+\begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{radial profiles. \label{fig:PowLawProfile} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/PowerLawSphere_profile.png}}
+\hfill
+\subcaptionbox{Scattering intensities. \label{fig:PowerLawIQ} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/PowerLawSphere_IQ.png}}
+\caption{\texttt{powLaw Sphere}-model.}
+\label{fig:PowerLaw}
+\end{figure}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item the parameter $\alpha$ needs to be larger than -3.
+  \item for $\alpha$ values smaller than 0 the radial profile has a pole at $r=0$.
+\end{itemize}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{power law Sphere} and \texttt{profile:power law Sphere}:}
+\begin{description}
+\item[\texttt{R}] radius $R$
+\item[\texttt{alpha}] power law $\alpha$ in radial profile
+\item[\texttt{Delta\_eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\subsection{Generalized Exponential scattering profile (fuzzy sphere model)}
+\label{sect:genExprSphere} ~\\
+
+In \cite{Hofstadter1956} the form factor of a variety of spherical profiles have been given. The Yukawa profiles  have been summarized in this form factor called generalized exponential sphere. The radial scattering length density profile is defined as
+\begin{align}
+\eta_\mathrm{genExp}(r)&= \Delta\eta \frac{((\alpha +3) (\alpha +4))^{\frac{\alpha +3}{2}} e^{-\frac{\sqrt{(\alpha +3) (\alpha +4)} r}{R_g}}
+   \left(\frac{r}{R_g}\right)^{\alpha }}{\Gamma (\alpha +3)}
+\end{align}
+The corresponding scattering amplitude is then calculated as
+\begin{align}
+  F_\mathrm{genExp}(Q,R_g) &= 4\pi R^3 c_\mathrm{genExp} \frac{\sin\left((\alpha+2)\arctan\left(\frac{Q R}{\sqrt{(\alpha+3)(\alpha+4)}}\right)\right)}{(\alpha+2)QR} \\
+  c_\mathrm{genExp} &= ((\alpha+3)(\alpha+4))^{\frac{\alpha+3}{2}} \left(\alpha(\alpha+7)+Q^2R^2+12\right)^{-\frac{\alpha }{2}-1}
+\end{align}
+\begin{align}
+  I_\mathrm{genExp}(Q,R,\alpha) &= F^2_\mathrm{genExp}(Q,R,\alpha)
+\end{align}
+The scattering intensity decays for large $q$-values as
+\begin{align}
+\lim_{Q\rightarrow\infty} I_\mathrm{genExp}(Q,R,\alpha) \propto Q^{-6-2\alpha}
+\end{align}
+A decay of $Q^{-4}$  therefore occurs for $\alpha=-1$. This case give formally the same scattering intensity as the Debye-Anderson-Brumberger model in section\ref{sect:DAB}.
+For certain values of $\alpha$ the form factor can be expressed by simple rational polynomials. A few examples are
+\begin{align}
+ I_\mathrm{genExp}(Q,R,\alpha=-2) &= \left(4\pi R^3\Delta\eta\frac{\arctan\left(QR/\sqrt{2}\right)}{QR/\sqrt{2}} \right)^2\\
+ I_\mathrm{genExp}(Q,R,\alpha=-1) &= \left(4\pi R^3\Delta\eta\frac{1}{1+\frac{1}{6}Q^2R^2} \right)^2\\
+ I_\mathrm{genExp}(Q,R,\alpha=0) &= \left(4\pi R^3\Delta\eta\frac{1}{\left(1+\frac{1}{12}Q^2R^2\right)^2} \right)^2\\
+ I_\mathrm{genExp}(Q,R,\alpha=1) &= \left(4\pi R^3\Delta\eta\frac{1-\frac{1}{60}Q^2R^2}{\left(1+\frac{1}{20}Q^2R^2\right)^3} \right)^2 \\
+  I_\mathrm{genExp}(Q,R,\alpha=2) &=\left(4\pi R^3\Delta\eta\frac{1-\frac{1}{30}Q^2R^2}{\left(1+\frac{1}{30}Q^2R^2\right)^4} \right)^2
+\end{align}
+
+\begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{radial profiles \label{fig:genExpprofile1} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/genExpSphere_profile.png}}
+\hfill
+\subcaptionbox{Scattering intensities \label{fig:genExpprofile2} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/genExpSphere_IQ.png}}
+\caption{\texttt{genExp Sphere}-model.}
+\label{fig:genExpprofile}
+\end{figure}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item the parameter $\alpha$ needs to be larger than -3.
+  \item for $\alpha$ values smaller than 0 the radial profile has a pole at $r=0$.
+\end{itemize}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{Gen. Exp. Sphere} and \texttt{profile:Gen. Exp.  Sphere}:}
+\begin{description}
+\item[\texttt{R}] radius of gyration $R_g$
+\item[\texttt{alpha}] shape parameter $\alpha$ of radial profile
+\item[\texttt{Delta\_eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+
+\subsection{Generalized Gaussian scattering profile (fuzzy sphere model)}
+\label{sect:genGaussSphere} ~\\
+
+In \cite{Hofstadter1956} the form factor of a variety of spherical profiles have been given. The hollow Gaussian profiles have been summarized in this form factor called generalized gaussian sphere. The radial scattering length density profile is defined as
+\begin{align}
+\eta_\mathrm{genGauss}(r)&= \Delta\eta \frac{\left(\frac{r}{R_g}\right)^\alpha
+                                             e^{-\frac{\alpha +3}{2} \frac{r^2}{R_g^2}}
+                                             2^{-\frac{\alpha+1}{2}}(3+\alpha)^{3+\alpha}
+                                            }{\Gamma \left(\frac{\alpha +3}{2}\right)}
+\end{align}
+The corresponding scattering amplitude is then calculated as
+\begin{align}
+  F_\mathrm{genGauss}(Q,R_g) &= 4\pi R_g^3 \, _1F_1\left(\frac{\alpha+3}{2},\frac{3}{2},-\frac{Rg^2Q^2}{2(\alpha+3)}\right)
+\end{align}
+\begin{align}
+  I_\mathrm{genGauss}(Q,R,\alpha) &= F^2_\mathrm{genGauss}(Q,R,\alpha)
+\end{align}
+The scattering intensity decays for large $q$-values  and for positive and not even integer values of $\alpha$ as
+\begin{align}
+\lim_{Q\rightarrow\infty} I_\mathrm{genGauss}(Q,R,\alpha) \propto Q^{-2(3+\alpha)}
+\end{align}
+For positive and even integer values of $\alpha$ the decay at large $Q$-values is
+\begin{align}
+\lim_{Q\rightarrow\infty} I_\mathrm{genGauss}(Q,R,\alpha) \propto e^{-R_g^2Q^2/(6+2\alpha)}Q^{\alpha)}
+\end{align}
+A decay of $Q^{-4}$  therefore occurs for $\alpha=-1$. 
+For certain values of $\alpha$ the form factor can be expressed simple functions. A few examples are
+\begin{align}
+ I_\mathrm{genGauss}(Q,R,\alpha=-2) &= \Delta\eta^2V^2\frac{\pi \operatorname{erf^2\left(\frac{RgQ}{\sqrt{2}}\right)}}{2R_g^2Q^2}\\
+ I_\mathrm{genGauss}(Q,R,\alpha=-1) &= \Delta\eta^2V^2 \frac{4\operatorname{D_F}^2\left(\frac{R_gQ}{2}\right)}{R_g^2Q^2} \\
+ I_\mathrm{genGauss}(Q,R,\alpha=0) &= \Delta\eta^2V^2e^{-\frac13Rg^2Q^2} \\
+ I_\mathrm{genGauss}(Q,R,\alpha=1) &= \Delta\eta^2V^2 \frac{\left(\sqrt(2)(R_g^2Q^2-4)4\operatorname{D_F}\left(\frac{R_gQ}{2}\right)-2R_gQ\right)^2}{16R_g^2Q^2} \\
+ I_\mathrm{genGauss}(Q,R,\alpha=2) &= e^{-\frac15Rg^2Q^2}\left(1-\frac{Rg^2Q^2}{15}\right)^2\\
+ I_\mathrm{genGauss}(Q,R,\alpha=4) &= e^{-\frac17Rg^2Q^2}\left(1+\frac{1}{175}Rg^2Q^2(R_g^2Q^2-70)\right)^2
+\end{align}
+where $\operatorname{D_F}(x)$ is the Dawson integral.
+\begin{figure}[htb]
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{radial profiles \label{fig:Gaussprofile1} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/genGaussSphere_profile.png}}
+\hfill
+\subcaptionbox{Scattering intensities \label{fig:genGaussprofile2} }{\includegraphics[width=0.48\textwidth]{../images/form_factor/FuzzySphere/genGaussSphere_IQ.png}}
+\caption{\texttt{genGauss Sphere}-model.}
+\label{fig:genGaussprofile}
+\end{figure}
+
+\noindent
+\underline{Note}
+\begin{itemize}
+  \item the parameter $\alpha$ needs to be larger than -3.
+  \item for $\alpha$ values smaller than 0 the radial profile has a pole at $r=0$.
+\end{itemize}
+
+\hspace{1pt}\\
+\underline{Input Parameters for model \texttt{Gen. Gauss Sphere} and \texttt{profile:Gen. Gauss  Sphere}:}
+\begin{description}
+\item[\texttt{R}] radius of gyration $R_g$
+\item[\texttt{alpha}] shape parameter $\alpha$ of radial profile
+\item[\texttt{Delta\_eta}] scattering length density contrast $\Delta\eta$
+\end{description}

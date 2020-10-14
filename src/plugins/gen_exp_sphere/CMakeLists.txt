@@ -12,6 +12,9 @@ set(LIBS_EXT
 set(SOURCE_${PRJ_NAME}
 	sasfit_ff_profile__gen__exp__sphere.c
 	sasfit_ff_gen__exp__sphere.c
+	sasfit_ff_profile__gen__gauss__sphere.c
+	sasfit_ff_gen__gauss__sphere.c
+	sasfit_ff_gen__gauss__sphere_utils.c
 	interface.c
 )
 

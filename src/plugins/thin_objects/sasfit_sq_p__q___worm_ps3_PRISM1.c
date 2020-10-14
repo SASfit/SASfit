@@ -29,7 +29,11 @@ scalar sasfit_sq_p__q___worm_ps3_PRISM1(scalar q, sasfit_param * param)
 	scalar Swc,S0,cq,sigma;
 	S0=L*L*2;
 	sigma=exp(RC/2.-2);
-	Swc=PS3_EXP_SD(q,param);
+	if (MONO_SD>0) {
+        Swc=PS3_EXP_SD(q,param);
+	} else {
+        Swc=sasfit_sq_p__q___worm_ps3_(q,param);
+	}
 	cq=gsl_sf_bessel_j0(q*RC)*exp(-gsl_pow_2(q*sigma));
 	return Swc/(1+BETA*cq*Swc/S0);
 }

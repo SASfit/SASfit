@@ -37,8 +37,8 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_profile__power_law ################ */
-/** 
- * \defgroup ff_profile__power_law profile: power law
+/**
+ * \defgroup ff_profile__power_law profile: power law Sphere
  * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief \<some brief description of profile: power law function\>
@@ -53,7 +53,7 @@
  *       <td>radius</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
- *       <td>power lae of radial profile</td>
+ *       <td>power law in radial profile</td>
  *      </tr><tr>
  *       <td>\b Deta</td>
  *       <td>scattering length density contrast</td>
@@ -83,11 +83,11 @@ sasfit_powerlaw_DLLEXP scalar sasfit_ff_profile__power_law_v(scalar q, sasfit_pa
 /* ################ stop ff_profile__power_law ################ */
 
 /* ################ start ff_power_law ################ */
-/** 
- * \defgroup ff_power_law power law
+/**
+ * \defgroup ff_power_law power law Sphere
  * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief \<some brief description of power law function\>
+ * \brief \<some brief description of power law Sphere function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -99,7 +99,7 @@ sasfit_powerlaw_DLLEXP scalar sasfit_ff_profile__power_law_v(scalar q, sasfit_pa
  *       <td>radius</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
- *       <td>power lae of radial profile</td>
+ *       <td>power law in radial profile</td>
  *      </tr><tr>
  *       <td>\b Deta</td>
  *       <td>scattering length density contrast</td>

@@ -425,6 +425,7 @@ scalar PS3_EXP_SD_core(scalar x, void * pam) {
         return NL * sasfit_sq_p__q___worm_ps3_(Q,&subParam);
 	} else {
         subParam.p[0] = x;
+        subParam.p[1] = x;
         subParam.p[2] = 0;
         NL = exp(-x/param->p[1])/param->p[1];
         return NL * sasfit_sq_p__q___rod(Q,&subParam);

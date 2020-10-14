@@ -62,6 +62,7 @@ typedef struct
 #define RC  	param->p[4]
 #define LP  	param->p[4]
 #define RP  	param->p[4]
+#define MONO_SD param->p[5]
 
 #define T_ELLSH	        param->p[0]
 #define SIGMA_T_ELLSH	fabs(param->p[1])

@@ -1,7 +1,7 @@
-int available_table ( int rule );
-int gen_oh ( int code, double a, double b, double v, double *x, double *y, 
+int sasfit_available_table ( int rule );
+int gen_oh ( int code, double a, double b, double v, double *x, double *y,
   double *z, double *w );
-void ld_by_order ( int order, double *x, double *y, double *z, double *w );
+void sasfit_ld_by_order ( int order, double *x, double *y, double *z, double *w );
 void ld0006 ( double *x, double *y, double *z, double *w );
 void ld0014 ( double *x, double *y, double *z, double *w );
 void ld0026 ( double *x, double *y, double *z, double *w );
@@ -34,7 +34,6 @@ void ld4334 ( double *x, double *y, double *z, double *w );
 void ld4802 ( double *x, double *y, double *z, double *w );
 void ld5294 ( double *x, double *y, double *z, double *w );
 void ld5810 ( double *x, double *y, double *z, double *w );
-int order_table ( int rule );
+int sasfit_order_table ( int rule );
 int precision_table ( int rule );
-void timestamp ( void );
 void xyz_to_tp ( double x, double y, double z, double *t, double *p );

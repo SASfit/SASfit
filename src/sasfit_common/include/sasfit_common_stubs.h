@@ -194,6 +194,19 @@ typedef struct
 	void (*sasfit_intde) (sasfit_func_int_t * f, double a, double b, double * aw, double * i, double * err, void * fparams); /* 115 */
 	int (*sasfit_cubature) (size_t ndim, scalar * int_start, scalar * int_end, sasfit_func_ndim_t * intKern_fct, void * param, int limit, scalar epsabs, scalar epsrel, scalar * result, scalar * error); /* 116 */
 	scalar (*sasfit_erfinv) (scalar y); /* 117 */
+	int (*sasfit_available_table) ( int rule ); /* 118 */
+	int (*sasfit_order_table) ( int rule ); /* 119 */
+	void (*sasfit_ld_by_order) ( int order, double *x, double *y, double *z, double *w ); /* 120 */
+	void *reserved121;
+	void *reserved122;
+	void *reserved123;
+	void *reserved124;
+	void *reserved125;
+	void *reserved126;
+	void *reserved127;
+	void *reserved128;
+	void *reserved129;
+	void *reserved130;
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -632,7 +645,18 @@ typedef struct
 #define sasfit_erfinv \
 	(SASFIT_COMMON_STUBS()->sasfit_erfinv) /* 117 */
 #endif
-
+#ifndef sasfit_available_table
+#define sasfit_available_table \
+	(SASFIT_COMMON_STUBS()->sasfit_available_table) /* 118 */
+#endif
+#ifndef sasfit_order_table
+#define sasfit_order_table \
+	(SASFIT_COMMON_STUBS()->sasfit_order_table) /* 119 */
+#endif
+#ifndef sasfit_ld_by_order
+#define sasfit_ld_by_order \
+	(SASFIT_COMMON_STUBS()->sasfit_ld_by_order) /* 120 */
+#endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

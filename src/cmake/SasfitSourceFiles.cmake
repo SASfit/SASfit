@@ -69,7 +69,9 @@ set(SOURCE_sasfit_common
 	multidiminte/src/multi_dim_inte.c
 	multidiminte/src/handle.c
 	multidiminte/src/multi_dim_inte.c
-)
+	multidiminte/src/Lebedev/sphere_lebedev_rule.c
+	multidiminte/src/Lebedev/sphere_lebedev_rule.h
+	)
 
 set(SOURCE_sasfit_core
 	sasfit_sd.c
