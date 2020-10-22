@@ -77,11 +77,11 @@ static integer c__4 = 4;
 static integer c__9 = 9;
 static doublereal c_b18 = .3333333333333;
 
-int 		sq_hp_init__(integer * ierr, 
-			     doublereal * t_in_c__, 
-			     doublereal * z_eff__, 
-			     doublereal * r_hs__, 
-			     doublereal * ion_in__, 
+int 		sq_hp_init__(integer * ierr,
+			     doublereal * t_in_c__,
+			     doublereal * z_eff__,
+			     doublereal * r_hs__,
+			     doublereal * ion_in__,
 			     doublereal * eta_in__);
 int 		sqcoef_(integer * ir);
 int 		sqfun_(doublereal * fval, doublereal * evar, integer * ix, integer * ir);
@@ -91,7 +91,7 @@ doublereal 	sq_hp__(doublereal * q);
 doublereal SQ_MacroIon(Tcl_Interp *interp,
 			double Q,
 			double T_IN_C,
-			double Z_EFF, 
+			double Z_EFF,
 			double RHS,
 			double ION,
 			double ETA,
@@ -118,7 +118,7 @@ scalar sasfit_sq_MacroIon(scalar q, sasfit_param * param)
 
 	sasfit_get_param(param, 5, &T_IN_C, &Z_EFF, &RHS, &ION, &ETA);
 
-	if ( (RHS_old!=RHS) || (T_IN_C_old!=T_IN_C) || (Z_EFF_old!=Z_EFF) || (ION_old!=ION)  || (ETA_old!=ETA)) 
+	if ( (RHS_old!=RHS) || (T_IN_C_old!=T_IN_C) || (Z_EFF_old!=Z_EFF) || (ION_old!=ION)  || (ETA_old!=ETA))
 	{
 		R = (doublereal) RHS;
 		T = (doublereal) T_IN_C;
@@ -127,7 +127,7 @@ scalar sasfit_sq_MacroIon(scalar q, sasfit_param * param)
 		E = (doublereal) ETA;
 		sq_hp_init__(&IERR,&T, &Z, &R, &I, &E);
 
-		if (IERR > 0) 
+		if (IERR > 0)
 		{
 			RHS_old	 = RHS;
 			T_IN_C_old = T_IN_C;
@@ -135,16 +135,16 @@ scalar sasfit_sq_MacroIon(scalar q, sasfit_param * param)
 			ION_old	 = ION;
 			ETA_old	 = ETA;
 		} else {
-			switch (IERR) 
+			switch (IERR)
 			{
 				case -1 :
 					sasfit_param_set_err(param, DBGINFO("sq_hp_init FAILED: Newton iteration non-convergent in >SQCOEF<"));
 					break;
 				case -2 :
-					sasfit_param_set_err(param, DBGINFO("sq_hp_init FAILED: Newton iteration non-convergent in >SQFUN<")); 
+					sasfit_param_set_err(param, DBGINFO("sq_hp_init FAILED: Newton iteration non-convergent in >SQFUN<"));
 					break;
 				case -3 :
-					sasfit_param_set_err(param, DBGINFO("sq_hp_init FAILED: Cannot rescale to G(1+) > 1")); 
+					sasfit_param_set_err(param, DBGINFO("sq_hp_init FAILED: Cannot rescale to G(1+) > 1"));
 					break;
 				default :
 					sasfit_param_set_err(param, DBGINFO("sq_hp_init FAILED: unknown error type in SQ_MacroIon"));
@@ -159,11 +159,11 @@ scalar sasfit_sq_MacroIon(scalar q, sasfit_param * param)
 }
 
 // Subroutine
-int sq_hp_init__(integer * ierr, 
-		doublereal * t_in_c__, 
-		doublereal * z_eff__, 
-		doublereal * r_hs__, 
-		doublereal * ion_in__, 
+int sq_hp_init__(integer * ierr,
+		doublereal * t_in_c__,
+		doublereal * z_eff__,
+		doublereal * r_hs__,
+		doublereal * ion_in__,
 		doublereal * eta_in__)
 {
     /* Initialized data */
@@ -354,7 +354,7 @@ int sq_hp_init__(integer * ierr,
     r__3 = qaz;
 /* Computing 2nd power */
     r__4 = sqhpb_1.ak / (float)2. + (float)1.;
-    sqhpb_1.gek = r__2 * (r__1 * r__1) * (float).6425 * (r__3 * r__3) / (epsi 
+    sqhpb_1.gek = r__2 * (r__1 * r__1) * (float).6425 * (r__3 * r__3) / (epsi
 	    * s_hp__1.temp * (r__4 * r__4));
     d__1 = (doublereal) sqhpb_1.eta;
     d__2 = (doublereal) od3;
@@ -378,13 +378,13 @@ L100:
     return 0;
 }
 
-// Subroutine 
+// Subroutine
 int sqcoef_(integer * ir)
 {
     /* Initialized data */
 
     static doublereal acc = (float)5e-6;
-    static integer itm = 40;
+    static integer itm = 80;
 
     /* System generated locals */
     doublereal r__1;
@@ -476,9 +476,9 @@ L400:
     }
     *ir = -3;
     return 0;
-} 
+}
 
-// Subroutine 
+// Subroutine
 int sqfun_(doublereal * fval, doublereal * evar, integer * ix, integer * ir)
 {
     /* Initialized data */
@@ -494,15 +494,15 @@ int sqfun_(doublereal * fval, doublereal * evar, integer * ix, integer * ir)
 
     /* Local variables */
     static integer ibig;
-    static doublereal ckma, eta21, eta22, eta32, skma, fund, eta2d, eta3d, 
+    static doublereal ckma, eta21, eta22, eta32, skma, fund, eta2d, eta3d,
 	    eta6d, d__;
     static integer i__;
-    static doublereal eta2d2, a1, a2, a3, b1, d2, b2, b3, p1, p2, p3, t1, t2, 
+    static doublereal eta2d2, a1, a2, a3, b1, d2, b2, b3, p1, p2, p3, t1, t2,
 	    v1, v2, v3, t3, w4, w3, w2, w1, w0, ca, fa, e12, e24, ak, g24, ck,
-	     pg, w12, w14, w15, sk, w16, pp, w13, w26, w25, w24, w36, w35, 
-	    w34, w32, w46, w56, be1, be2, dd2, be3, dd4, ak1, ak2, al1, al2, 
-	    al3, al4, al5, al6, ta1, ta2, ta3, ph1, ph2, ta4, ta5, ex1, ex2, 
-	    pp1, pp2, um1, um2, um3, um4, um5, um6, vu1, vu2, vu3, vu4, vu5, 
+	     pg, w12, w14, w15, sk, w16, pp, w13, w26, w25, w24, w36, w35,
+	    w34, w32, w46, w56, be1, be2, dd2, be3, dd4, ak1, ak2, al1, al2,
+	    al3, al4, al5, al6, ta1, ta2, ta3, ph1, ph2, ta4, ta5, ex1, ex2,
+	    pp1, pp2, um1, um2, um3, um4, um5, um6, vu1, vu2, vu3, vu4, vu5,
 	    dak, dd45, e24g, gek, fap, eta, p1p2, w3425, w3526, fun, pwk, qpw,
 	     dak2, dak4, eta2, eta3;
 
@@ -550,7 +550,7 @@ int sqfun_(doublereal * fval, doublereal * evar, integer * ix, integer * ir)
     if (sqhpb_2.sak > (float)15. && *ix == 1) {
 	ibig = 1;
     }
-    sqhpb_2.sgek = sqhpb_2.rgek * sqhpb_2.scal * exp(sqhpb_2.rak - 
+    sqhpb_2.sgek = sqhpb_2.rgek * sqhpb_2.scal * exp(sqhpb_2.rak -
 	    sqhpb_2.sak);
     gek = sqhpb_2.sgek;
     ak = sqhpb_2.sak;
@@ -609,7 +609,7 @@ int sqfun_(doublereal * fval, doublereal * evar, integer * ix, integer * ir)
 
     ex1 = exp(ak);
     ex2 = 0.;
-    if (sqhpb_2.sak < 20.) 
+    if (sqhpb_2.sak < 20.)
     {
 	ex2 = exp(-ak);
     }
@@ -621,36 +621,36 @@ int sqfun_(doublereal * fval, doublereal * evar, integer * ix, integer * ir)
 /*      A( I) */
 
     a1 = (e24 * gek * (al1 + al2 + ak1 * al3) - eta22) * dd4;
-    if (ibig != 0) 
+    if (ibig != 0)
     {
 	goto L10;
     }
     a2 = e24 * (al3 * skma + al2 * sk - al1 * ck) * dd4;
-    a3 = e24 * (eta22 * dak2 - d2 * .5 + al3 * ckma - al1 * sk + al2 * ck) * 
+    a3 = e24 * (eta22 * dak2 - d2 * .5 + al3 * ckma - al1 * sk + al2 * ck) *
 	    dd4;
 
 /*      B( I) */
 
 L10:
     b1 = (eta * 1.5 * eta2d2 - e12 * gek * (be1 + be2 + ak1 * be3)) * dd4;
-    if (ibig != 0) 
+    if (ibig != 0)
     {
 	goto L20;
     }
     b2 = e12 * (-be3 * skma - be2 * sk + be1 * ck) * dd4;
-    b3 = e12 * (d2 * .5 * eta2d - eta3d * eta2d2 * dak2 - be3 * ckma + be1 * 
+    b3 = e12 * (d2 * .5 * eta2d - eta3d * eta2d2 * dak2 - be3 * ckma + be1 *
 	    sk - be2 * ck) * dd4;
 
 /*      V( I) */
 
 L20:
     v1 = (eta21 * (eta2 - eta * 2. + 10.) * .25 - gek * (vu4 + vu5)) * dd45;
-    if (ibig != 0) 
+    if (ibig != 0)
     {
 	goto L30;
     }
     v2 = (vu4 * ck - vu5 * sk) * dd45;
-    v3 = ((eta3 - eta2 * 6. + 5.) * d__ - eta6d * (eta3 * 2. - eta2 * 3. + 
+    v3 = ((eta3 - eta2 * 6. + 5.) * d__ - eta6d * (eta3 * 2. - eta2 * 3. +
 	    eta * 18. + 10.) * dak2 + e24 * vu3 + vu4 * sk - vu5 * ck) * dd45;
 
 L30:
@@ -662,7 +662,7 @@ L30:
 /*      P( I) */
 
     p1 = (gek * (pp1 + pp2 - p1p2) - eta2d * .5) * dd2;
-    if (ibig != 0) 
+    if (ibig != 0)
     {
 	goto L40;
     }
@@ -673,7 +673,7 @@ L30:
 
 L40:
     t1 = ta3 + ta4 * a1 + ta5 * b1;
-    if (ibig != 0) 
+    if (ibig != 0)
     {
 	goto L600;
     }
@@ -697,7 +697,7 @@ L40:
 /*      Coefficients and function value. */
 
 /* CC    IF( ( IX .AND. 1) .NE. 0) GO TO 100 */
-    if (*ix - (*ix / 2 << 1) != 0) 
+    if (*ix - (*ix / 2 << 1) != 0)
     {
 	goto L100;
     }
@@ -705,11 +705,11 @@ L40:
     ca = ak2 * p1 + (b3 * p1 - b1 * p3) * 2.;
     ca = -ca / (ak2 * p2 + (b3 * p2 - b2 * p3) * 2.);
     fa = -(p1 + p2 * ca) / p3;
-    if (*ix == 2) 
+    if (*ix == 2)
     {
 	*fval = um1 * ca * ca + (um2 + um3 * fa) * ca + um4 + um5 * fa + um6 * fa * fa;
     }
-    if (*ix == 4) 
+    if (*ix == 4)
     {
 	*fval = -(p1 + p2 * ca + p3 * fa);
     }
@@ -765,7 +765,7 @@ L100:
 
 /*      Estimate the starting value of F. */
 
-    if (*ix == 1) 
+    if (*ix == 1)
     {
 	goto L200;
     }
@@ -774,7 +774,7 @@ L100:
 /*      If both GEK and AK are small, use P-W estimate. */
 
     sqhpb_2.g1 = eta2d * .5 * dd2 * exp(-gek);
-    if (sqhpb_2.sgek > 2. || sqhpb_2.sak > 1.) 
+    if (sqhpb_2.sgek > 2. || sqhpb_2.sak > 1.)
     {
 	goto L150;
     }
@@ -801,7 +801,7 @@ L250:
     i__ = 0;
 L300:
     ++i__;
-    if (i__ > itm) 
+    if (i__ > itm)
     {
 	goto L400;
     }
@@ -809,7 +809,7 @@ L300:
     fun = w0 + (w1 + (w2 + (w3 + w4 * fa) * fa) * fa) * fa;
     fund = w1 + (w2 * 2. + (w3 * 3. + w4 * 4. * fa) * fa) * fa;
     fap = fa - fun / fund;
-    if ((d__1 = (fap - fa) / fa, abs(d__1)) > acc) 
+    if ((d__1 = (fap - fa) / fa, abs(d__1)) > acc)
     {
 	goto L300;
     }
@@ -827,7 +827,7 @@ L500:
     ca = -(w16 * fa * fa + w15 * fa + w14) / (w13 * fa + w12);
     sqhpb_2.g1 = -(p1 + p2 * ca + p3 * fa);
     *fval = sqhpb_2.g1;
-    if (dabs(*fval) < (float).001) 
+    if (dabs(*fval) < (float).001)
     {
 	*fval = (float)0.;
     }
@@ -837,7 +837,7 @@ L500:
 /*      Very large screening : asymptotic solution. */
 
 L600:
-    v3 = ((eta3 - eta2 * 6. + 5.) * d__ - eta6d * (eta3 * 2. - eta2 * 3. + 
+    v3 = ((eta3 - eta2 * 6. + 5.) * d__ - eta6d * (eta3 * 2. - eta2 * 3. +
 	    eta * 18. + 10.) * dak2 + e24 * vu3) * dd45;
     t3 = ta4 * a3 + ta5 * b3 + e12 * ta2 - eta * .4 * (eta + 10.) - 1.;
     p3 = (pp1 - pp2) * dd2;
@@ -860,7 +860,7 @@ L600:
     sqhpb_2.v = v1 + v3 * fa;
     sqhpb_2.g1 = -(p1 + p3 * fa);
     *fval = sqhpb_2.g1;
-    if (dabs(*fval) < (float).001) 
+    if (dabs(*fval) < (float).001)
     {
 	*fval = (float)0.;
     }
@@ -878,7 +878,7 @@ doublereal sq_hp__(doublereal * q)
 //    double exp(), sin(), cos();
 
     /* Local variables */
-    static doublereal cosk, sink, asink, qcosk, x1, x2, e24, ak, ck, qk, sk, 
+    static doublereal cosk, sink, asink, qcosk, x1, x2, e24, ak, ck, qk, sk,
 	    ak2, q2k, qk2, qk3, gek, eta, aqk, qqk;
 
 /*       SUBROUTINE SQHCAL( NPT) */
@@ -904,7 +904,7 @@ doublereal sq_hp__(doublereal * q)
     e24 = eta * 24.;
     x1 = exp(ak);
     x2 = 0.;
-    if (sqhpb_3.sak < (float)20.) 
+    if (sqhpb_3.sak < (float)20.)
     {
 	x2 = exp(-ak);
     }
@@ -913,7 +913,7 @@ doublereal sq_hp__(doublereal * q)
     ak2 = ak * ak;
 
 
-    if (qk <= 0.) 
+    if (qk <= 0.)
     {
 	goto L100;
     }
@@ -927,14 +927,14 @@ doublereal sq_hp__(doublereal * q)
     cosk = cos(qk);
     qcosk = qk * cosk;
 
-    aqk1= (  sqhpb_3.ahp * (sink - qcosk) + 
-		     sqhpb_3.bhp * ( (qk2 * 2. - 1.) * qcosk + 
-			                  sink * 2. - 
+    aqk1= (  sqhpb_3.ahp * (sink - qcosk) +
+		     sqhpb_3.bhp * ( (qk2 * 2. - 1.) * qcosk +
+			                  sink * 2. -
 							  2. / qk
-						   ) + 
-			 eta * .5 * sqhpb_3.ahp * 
-			    (  qk3 * 24. + 
-				  (1. - qk2 * 6.) * 4. * sink - 
+						   ) +
+			 eta * .5 * sqhpb_3.ahp *
+			    (  qk3 * 24. +
+				  (1. - qk2 * 6.) * 4. * sink -
 		          (1. - qk2 * 12. + qk2 * 24. * qk2) * qcosk
 				)
 		  ) * qk3 ;

@@ -13,6 +13,9 @@
 // optional, depends on form factor implementation
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf.h>
+#include <gsl/gsl_const_num.h>
+#include "2Y_TwoYukawa.h"
+#include "2Y_OneYukawa.h"
 
 // mandatory, no adjustments necessary
 #include <sasfit_common.h>

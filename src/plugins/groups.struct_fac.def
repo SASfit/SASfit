@@ -60,6 +60,14 @@
  * \modname{sq_plugins_hard_sphere}
  */
 
+/** 
+ * \defgroup sq_plugins_yukawa Yukawa like 
+ * \ingroup sq_plugins
+ *
+ * This group contains structure factors for Yukawa like potentials
+ *
+ * \modname{sq_plugins_yukawa}
+ */ 
  
 /** 
  * \defgroup sq_plugins_oz_solver SQ calculated by OZ solver 

@@ -17,7 +17,7 @@
 
 scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
 {
-    static scalar Z1_old=-1.23456789,Z2_old=-1.23456789,K1_old=-1.23456789,K2_old=-1.23456789, phi_old=-1.23456789;
+    static scalar Z1_old=-1.23456789, K1_old=-1.23456789, phi_old=-1.23456789;
     scalar numdens,Z1, Z2;
     static scalar a, b, c, d, tmp;
 	static int debug=0, check,ok;
@@ -56,10 +56,8 @@ scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
 	}
     if(ok) {		//less restrictive, if a solution found, return it, even if the equations aren't quite satisfied
 		return SqOneYukawa(q*R*2.0, Z1, K1, PHI, a, b, c, d);
-	} else {
-	    sasfit_err("Could not solve the equations for this set of parameters\n");
-		return TCL_ERROR;
 	}
+	SASFIT_CHECK_COND1((ok==0), param, "Could not solve the equations for this set of parameters, ok(%d)\n",ok);
 }
 
 scalar sasfit_sq_one_yukawa_f(scalar q, sasfit_param * param)

@@ -7,10 +7,10 @@
  *
  */
 
-#include "2Y_OneYukawa.h"
-#include "2Y_cpoly.h"
-#include "2Y_utility.h"
-#include "2Y_PairCorrelation.h"
+#include "include/2Y_OneYukawa.h"
+#include "include/2Y_cpoly.h"
+#include "include/2Y_utility.h"
+#include "include/2Y_PairCorrelation.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

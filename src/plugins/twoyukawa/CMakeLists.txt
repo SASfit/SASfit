@@ -10,8 +10,14 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_sq___yukawa.c
+	sasfit_sq_two_yukawa.c
+	sasfit_sq_one_yukawa.c
 	interface.c
+	2Y_cpoly.c
+	2Y_OneYukawa.c
+	2Y_PairCorrelation.c
+	2Y_TwoYukawa.c
+	2Y_utility.c
 )
 
 # add plugin path for finding 'Find*.cmake' files for new <LIBS_EXT>

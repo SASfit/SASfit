@@ -5,10 +5,16 @@
 
 #ifdef MAKE_SASFIT_PLUGIN
 #include "include/private.h"
+#include "include/2Y_cpoly.h"
+#include "include/2Y_OneYukawa.h"
+#include "include/2Y_PairCorrelation.h"
+#include "include/2Y_TwoYukawa.h"
+#include "include/2Y_utility.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(1)
-SASFIT_PLUGIN_EXP_ADD( sq___yukawa )
+SASFIT_PLUGIN_EXP_BEGIN(2)
+SASFIT_PLUGIN_EXP_ADD( sq_one_yukawa )
+SASFIT_PLUGIN_EXP_ADD( sq_two_yukawa )
 
 SASFIT_PLUGIN_EXP_END
 

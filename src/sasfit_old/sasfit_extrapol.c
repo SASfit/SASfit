@@ -1,7 +1,7 @@
 /*
  * src/sasfit_old/sasfit_extrapol.c
  *
- * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ * Copyright (c) 2008-2020, Paul Scherrer Institute (PSI)
  *
  * This file is part of SASfit.
  *

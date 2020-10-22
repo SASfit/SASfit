@@ -7,38 +7,38 @@
  *
  */
 
-#include "2Y_PairCorrelation.h"
+#include "include/2Y_PairCorrelation.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-//#include <gsl/gsl_errno.h> 
+//#include <gsl/gsl_errno.h>
 //#include <gsl/gsl_fft_real.h>
 
 /*
-=================================================================================================== 
+===================================================================================================
 
  Source: J.B.Hayter: A Program for the fast bi-directional transforms
  between g(r) and S(Q), ILL internal scientific report, October 1979
- 
- The transformation between structure factor and pair correlation 
- function is given by 
- 
+
+ The transformation between structure factor and pair correlation
+ function is given by
+
  g(x) = 1 + 1 / (12*pi*phi*x) * int( [S(q)-q]*q*sin(q*x), { 0, inf } )
- 
- where phi is the volume frcation, x and q are dimensionless variables, 
+
+ where phi is the volume fraction, x and q are dimensionless variables,
  scaled by the radius a of the particles:
- 
+
  r = x * a;
  Q = q / a
- 
+
  Discretizing the integral leads to
- 
+
  x[k] = 2*pi*k / (N * dq)
  g(x[k]) = 1 + N*dq^3 / (24*pi^2*phi*k) * Im{ sum(S[n]*exp(2*pi*i*n*k/N),{n,0,N-1}) }
- 
+
  where S[n] = n*(S(q[n])-1) with q[n]=n * dq
 
-=================================================================================================== 
+===================================================================================================
 */
 
 /*
@@ -48,30 +48,30 @@ int PairCorrelation_GSL( double phi, double dq, double* Sq, double* dr, double* 
 	int n;
 	for ( n = 0; n < N; n++ )
 		data[n] = n * ( Sq[n] - 1 );
-	
+
 	// data[k] -> sum( data[n] * exp(-2*pi*i*n*k/N), {n, 0, N-1 })
 	int stride = 1;
 	int error  = gsl_fft_real_radix2_transform( data, stride, N );
-	
-	// if no errors detected 
-	if ( error == GSL_SUCCESS ) 
+
+	// if no errors detected
+	if ( error == GSL_SUCCESS )
 	{
 		double alpha = N * pow( dq, 3 ) / ( 24 * M_PI * M_PI * phi );
-	
-	
-		*dr = 2 * M_PI / ( N * dq );  
+
+
+		*dr = 2 * M_PI / ( N * dq );
 		int k;
 		double real, imag;
 		for ( k = 0; k < N; k++ )
 		{
-			// the solutions of the transform is stored in data, 
+			// the solutions of the transform is stored in data,
 			// consult GSL manual for more details
 			if ( k == 0 || k == N / 2)
-			{ 
+			{
 				real = data[k];
 				imag = 0;
 			}
-			else if ( k < N / 2 ) 
+			else if ( k < N / 2 )
 			{
 				real = data[k];
 				imag = data[N-k];
@@ -79,15 +79,15 @@ int PairCorrelation_GSL( double phi, double dq, double* Sq, double* dr, double* 
 			else if ( k > N / 2 )
 			{
 				real =  data[N-k];
-				imag = -data[k];	
+				imag = -data[k];
 			}
-			
-			if ( k == 0 ) 
+
+			if ( k == 0 )
 				gr[k] = 0;
 			else
 				gr[k] = 1. + alpha / k * (-imag);
-		} 
-	} 
+		}
+	}
 	// if N is not a power of two
 	else if ( error == GSL_EDOM )
 	{
@@ -99,7 +99,7 @@ int PairCorrelation_GSL( double phi, double dq, double* Sq, double* dr, double* 
 	}
 	// release allocated memory
 	free( data );
-	
+
 	// return error value
 	return error;
 }
@@ -115,36 +115,36 @@ int PairCorrelation( double phi, double dq, double* Sq, double* dr, double* gr, 
 	double alpha,real,imag;
 	double Pi = 3.14159265358979323846264338327950288;   /* pi */
 
-	
+
 	for ( nn = 0; nn < N; nn++ ) {
 		data[2*nn] = nn * ( Sq[nn] - 1 );
 		data[2*nn+1] = 0;
 	}
 	//	printf("start of new fft\n");
-	
+
 	// data[k] -> sum( data[n] * exp(-2*pi*i*n*k/N), {n, 0, N-1 })
 	//	int error  = gsl_fft_real_radix2_transform( data, stride, N );
 	error  = 1;
 	dfour1( data-1, N, 1 );		//N is the number of complex points
-	
+
 	//	printf("dfour1 is done\n");
-	
-	// if no errors detected 
-	if ( error == 1 ) 
+
+	// if no errors detected
+	if ( error == 1 )
 	{
 		alpha = N * pow( dq, 3 ) / ( 24 * Pi * Pi * phi );
-		
-		*dr = 2 * Pi / ( N * dq );  
+
+		*dr = 2 * Pi / ( N * dq );
 		for ( k = 0; k < N; k++ )
 		{
-			// the solutions of the transform is stored in data, 
+			// the solutions of the transform is stored in data,
 			// consult GSL manual for more details
 			if ( 2*k == 0 || 2*k == 2*N / 2)
-			{ 
+			{
 				real = data[2*k];
 				imag = 0;
 			}
-			else if ( 2*k < 2*N / 2 ) 
+			else if ( 2*k < 2*N / 2 )
 			{
 				real = data[2*k];
 				imag = data[2*k+1];
@@ -152,22 +152,22 @@ int PairCorrelation( double phi, double dq, double* Sq, double* dr, double* gr, 
 			else if ( 2*k > 2*N / 2 )
 			{
 				real =  data[2*k];
-				imag = -data[2*k+1];	
+				imag = -data[2*k+1];
 			}
-			
-			if ( k == 0 ) 
+
+			if ( k == 0 )
 				gr[k] = 0;
 			else
 //				gr[k] = 1. + alpha / k * (-imag);		//if using GSL
 				gr[k] = 1. + alpha / k * (imag);		//if using NR
-		} 
-	} 
-	
+		}
+	}
+
 	// release allocated memory
 	free( data );
-	
+
 //	printf(" done with FFT assignment -- Using Numerical Recipes, not GSL\n");
-	
+
 	// return error value
 	return error;
 }
@@ -183,7 +183,7 @@ void dfour1(double data[], unsigned long nn, int isign)
 	unsigned long n,mmax,m,j,istep,i;
 	double wtemp,wr,wpr,wpi,wi,theta;
 	double tempr,tempi;
-	
+
 	n=nn << 1;
 	j=1;
 	for (i=1;i<n;i+=2) {

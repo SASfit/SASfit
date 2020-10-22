@@ -36,10 +36,10 @@
 // - brief description
 // - description of parameters in HTML table-style
 
-/* ################ start sq___yukawa ################ */
-/** 
- * \defgroup sq___yukawa 2-Yukawa
- * \ingroup sq_plugins_devel
+/* ################ start sq_two_yukawa ################ */
+/**
+ * \defgroup sq_two_yukawa 2-Yukawa
+ * \ingroup sq_plugins_yukawa
  *
  * \brief \<some brief description of 2-Yukawa function\>
  *
@@ -67,32 +67,88 @@
  *       <td>volum fraction</td>
  *      </tr><tr>
  *       <td>\b molarity</td>
- *       <td>concentration in units mol/l. Overrides phi if lareger than 0</td>
+ *       <td>concentration in units mol/l. Overrides phi if it larger than 0</td>
  *      </tr></table>
  */
 
 /**
- * \ingroup sq___yukawa
+ * \ingroup sq_two_yukawa
  *
- * \sa sasfit_twoyukawa.h, sq_plugins_devel
+ * \sa sasfit_twoyukawa.h, sq_plugins_yukawa
  */
-sasfit_twoyukawa_DLLEXP scalar sasfit_sq___yukawa(scalar q, sasfit_param * p);
+sasfit_twoyukawa_DLLEXP scalar sasfit_sq_two_yukawa(scalar q, sasfit_param * p);
 
 /**
- * \ingroup sq___yukawa
+ * \ingroup sq_two_yukawa
  *
- * \sa sasfit_twoyukawa.h, sq_plugins_devel
+ * \sa sasfit_twoyukawa.h, sq_plugins_yukawa
  */
-sasfit_twoyukawa_DLLEXP scalar sasfit_sq___yukawa_f(scalar q, sasfit_param * p);
+sasfit_twoyukawa_DLLEXP scalar sasfit_sq_two_yukawa_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup sq___yukawa
+ * \ingroup sq_two_yukawa
  *
- * \sa sasfit_twoyukawa.h, sq_plugins_devel
+ * \sa sasfit_twoyukawa.h, sq_plugins_yukawa
  */
-sasfit_twoyukawa_DLLEXP scalar sasfit_sq___yukawa_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop sq___yukawa ################ */
+sasfit_twoyukawa_DLLEXP scalar sasfit_sq_two_yukawa_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_two_yukawa ################ */
 
+/* ################ start sq_one_yukawa ################ */
+/**
+ * \defgroup sq_one_yukawa 1-Yukawa
+ * \ingroup sq_plugins_yukawa
+ *
+ * \brief \<some brief description of 1-Yukawa function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>radius</td>
+ *      </tr><tr>
+ *       <td>\b K</td>
+ *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>Screening length in nm. The inverse screening length is Z=1/lambda</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy/td>
+ *      </tr><tr>
+ *       <td>\b phi</td>
+ *       <td>volum fraction</td>
+ *      </tr><tr>
+ *       <td>\b molarity</td>
+ *       <td>concentration in units mol/l. Overrides phi if it larger than 0</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_one_yukawa
+ *
+ * \sa sasfit_twoyukawa.h, sq_plugins_yukawa
+ */
+sasfit_twoyukawa_DLLEXP scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_one_yukawa
+ *
+ * \sa sasfit_twoyukawa.h, sq_plugins_yukawa
+ */
+sasfit_twoyukawa_DLLEXP scalar sasfit_sq_one_yukawa_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_one_yukawa
+ *
+ * \sa sasfit_twoyukawa.h, sq_plugins_yukawa
+ */
+sasfit_twoyukawa_DLLEXP scalar sasfit_sq_one_yukawa_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_one_yukawa ################ */
 
 #endif // this file
 
