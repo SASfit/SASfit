@@ -11,6 +11,8 @@ set(LIBS_EXT
 # source files
 set(SOURCE_${PRJ_NAME}
 	sasfit_sq_two_yukawa.c
+	sasfit_sq_two_yukawa_potential.c
+	sasfit_sq_two_yukawa_gr.c
 	sasfit_sq_one_yukawa.c
 	interface.c
 	2Y_cpoly.c
