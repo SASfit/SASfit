@@ -26,6 +26,7 @@
  */
 
 #include <gsl/gsl_math.h>
+#include <gsl/gsl_const_mksa.h>
 #include "include/sasfit_sq_utils.h"
 #include <f2c.h>
 
@@ -170,6 +171,12 @@ int sq_hp_init__(integer * ierr,
 
     static doublereal od3 = (float).3333333333333333;
 
+    scalar eps0=GSL_CONST_MKSA_VACUUM_PERMITTIVITY; // (8.854187817e-12)  A^2 s^4 / kg m^3  // F/m
+    scalar eps_r; // Relative permittivity
+    scalar kB=GSL_CONST_MKSA_STEFAN_BOLTZMANN_CONSTANT; // (5.67040047374e-8)  kg / K^4 s^3
+    scalar echarge = GSL_CONST_MKSA_ELECTRON_CHARGE; // 1.602176487e-19 C = A s
+    scalar lambda_B; // Bjerrum length ~ 0.7nm for epsilon_r=80 (water)
+    scalar beta;
     /* System generated locals */
     doublereal r__1, r__2, r__3, r__4;
     doublereal d__1, d__2;
@@ -197,6 +204,7 @@ int sq_hp_init__(integer * ierr,
 /*      as "GEK"=GAMMA*EXP(-K)in the present routine. */
 
 /*      John B. Hayter  ( I.L.L.) 19-AUG-81 */
+
 
 /*      Calling sequence: */
 
@@ -274,10 +282,26 @@ int sq_hp_init__(integer * ierr,
 /*       DIMENSION AA(25) */
 
 
-    s_hp__1.temp = *t_in_c__ + (float)273.15;
+    s_hp__1.temp = *t_in_c__ + 273.15;
     s_hp__1.z__ = *z_eff__;
-    s_hp__1.sighp = *r_hs__ * (float)2.;
-    sqhpb_1.eta = *eta_in__;
+    s_hp__1.sighp = *r_hs__ * 2.;
+    if (*eta_in__ <=0) {
+        sqhpb_1.eta = 1e-10;
+    } else {
+        sqhpb_1.eta = *eta_in__;
+    }
+    //
+    // A. Catenaccio et al., Chemical Physics Letters 367 (2003) 669–671
+    // https://doi.org/10.1016/S0009-2614(02)01735-9
+    //
+    eps_r =  5321./s_hp__1.temp
+           + 233.76
+           - 0.9297*s_hp__1.temp
+           + 0.1417e-2*gsl_pow_2(s_hp__1.temp)
+           - 0.8292e-6*gsl_pow_3(s_hp__1.temp);
+    beta = 1./(kB*s_hp__1.temp);
+    lambda_B = gsl_pow_2(echarge)*beta/(4*M_PI*eps0*eps_r);
+
     s_hp__1.ion = *ion_in__;
 /*       IF(NXS.EQ.35)THEN */
 /*         SIGHP=2.*AA(2)*AA(4)**0.33333333 */
@@ -337,7 +361,7 @@ int sq_hp_init__(integer * ierr,
 
     koz = s_hp__1.ion / (epsi * s_hp__1.temp);
     sqhpb_1.ak = s_hp__1.sighp * (float)50.29 * sqrt(koz);
-
+    if (sqhpb_1.ak>200) sqhpb_1.ak=200;
 /*      Calculate QAZ ( surface charge density in */
 /*      microcoulomb /cM ** 2) . */
 
@@ -379,7 +403,7 @@ L100:
 }
 
 // Subroutine
-int sqcoef_(integer * ir)
+int sqcoef_oldHP(integer * ir)
 {
     /* Initialized data */
 
@@ -421,6 +445,180 @@ int sqcoef_(integer * ir)
 /*     2 , G1, AAAAAA( 5), LLLLLL */
 
     ig = 1;
+    if (sqhpb_1.ak < sqhpb_1.eta * (float)8. + (float)1.) {
+	goto L50;
+    }
+    ig = 0;
+    sqfun_(&sqhpb_1.g1, &sqhpb_1.eta, &c__1, ir);
+    if (*ir < 0 || sqhpb_1.g1 >= (float)0.) {
+	return 0;
+    }
+L50:
+    sqhpb_1.seta = dmin(sqhpb_1.eta,(float).2);
+    if (ig == 1 && sqhpb_1.gamk < (float).15) {
+	goto L400;
+    }
+    j = 0;
+L100:
+    ++j;
+    if (j > itm) {
+	goto L200;
+    }
+    if (sqhpb_1.seta <= (float)0.) {
+	sqhpb_1.seta = sqhpb_1.eta / j;
+    }
+    if (sqhpb_1.seta > (float).6) {
+	sqhpb_1.seta = (float).35 / j;
+    }
+    e1 = sqhpb_1.seta;
+    sqfun_(&f1, &e1, &c__2, ir);
+    e2 = sqhpb_1.seta * (float)1.01;
+    sqfun_(&f2, &e2, &c__2, ir);
+    e2 = e1 - (e2 - e1) * f1 / (f2 - f1);
+    sqhpb_1.seta = e2;
+    del = (r__1 = (e2 - e1) / e1, dabs(r__1));
+    if (del > acc) {
+	goto L100;
+    }
+    sqfun_(&sqhpb_1.g1, &e2, &c__4, ir);
+    *ir = j;
+    if (ig == 1) {
+	goto L300;
+    }
+    return 0;
+L200:
+    *ir = -1;
+    return 0;
+L300:
+    if (sqhpb_1.seta >= sqhpb_1.eta) {
+	return 0;
+    }
+L400:
+    sqfun_(&sqhpb_1.g1, &sqhpb_1.eta, &c__3, ir);
+    if (*ir < 0 || sqhpb_1.g1 >= (float)0.) {
+	return 0;
+    }
+    *ir = -3;
+    return 0;
+}
+
+int sqcoef_(integer * ir)
+{
+    /* Initialized data */
+
+    static doublereal acc = (float)5e-6;
+    static integer itm = 80;
+    static doublereal fix = (float)0.5;
+
+    /* System generated locals */
+    doublereal r__1;
+
+    /* Local variables */
+    static integer j;
+    static doublereal e1, f1, e2, f2;
+    static integer ig;
+    static doublereal del;
+
+
+/*      Calculates rescaled volume fraction and correspon- */
+/*      ding coefficients for "SQHPA". */
+
+/*      John B. Hayter  (I.L.L)   14-SEP-81 */
+
+/*      On exit: */
+
+/*      SETA is the rescaled volume fraction. */
+/*      SGEK is the rescaled contact potential. */
+/*      SAK is the rescaled screening constant. */
+/*      A,B,C,F,U,V are the MSA coefficients. */
+/*      G1=G(1+) is the contact value of G(R/SIG); */
+/*      for the GILLAN condition, the difference from */
+/*      zero indicates the computational accuracy. */
+
+/*      IR > 0: Normal exit, IR is the number of itera- */
+/*              tions. */
+/*         < 0: Failed to converge */
+
+
+/*       COMMON  / SQHPB /ETA, GEK, AK, A, B, C, F */
+/*     1 , U, V, GAMK, SETA, SGEK, SAK, SCAL */
+/*     2 , G1, AAAAAA( 5), LLLLLL */
+/*
+    """
+    CALCULATES RESCALED VOLUME FRACTION AND CORRESPONDING COEFFICIENTS
+
+    This is the iterative part to find rescaling parameter to get G(1+)>0 (Gillian condition) if G(1+)>0
+
+    Returns:
+    ir,eta,gek,ak,a,b,c,f,u,v,gamk,seta,sgek,sak,scal,g1
+
+    seta IS THE RESCALED VOLUME FRACTION.
+    sgek IS THE RESCALED CONTACT POTENTIAL.
+    sak IS THE RESCALED SCREENING CONSTANT.
+    a,b,c,f,u,v ARE THE MSA COEFFICIENTS.
+    g1=G(1+) IS THE CONTACT VALUE OF G(R/SIG);
+    FOR THE GILLAN CONDITION, THE DIFFERENCE FROM
+    ZERO INDICATES THE COMPUTATIONAL ACCURACY.
+
+    IR > 0: NORMAL EXIT, IR IS THE NUMBER OF ITERATIONS.
+    < 0: FAILED TO CONVERGE.
+
+    This is a shorter version of sqcoef which is easier to understand and allows
+    no bypassing between the conditions in original code which leads to errors for harmless parameter settings.
+    The idea is the original idea (see [2]_) to calculate the MSA and to rescale if  g+<0  .
+
+*/
+    ig = 1;
+    sqfun_(&sqhpb_1.g1, &sqhpb_1.eta, &c__3, ir);
+/*
+    if ir == -2:
+        # FAILED TO CONVERGE in Newton algorithm to find zero, only in classical HP solution,
+        return ir, eta, gek, ak, a, b, c, f, u, v, gamk, seta, sgek, sak, scal, g1
+    elif ir == -4:
+        # no root found in first try
+        return ir, eta, gek, ak, a, b, c, f, u, v, gamk, seta, sgek, sak, scal, g1
+    elif g1 < 0:
+        # we have to rescale the solution in the later as here g+<0
+        pass
+    elif g1 >= 0:  # already a good solution is returned
+        return ir, eta, gek, ak, a, b, c, f, u, v, gamk, seta, sgek, sak, scal, g1
+*/
+    if (*ir < 0 || sqhpb_1.g1 >= (float)0.) {
+        return 0;
+    }
+
+    sqhpb_1.seta = dmin(sqhpb_1.eta,(float).2);
+    j=0;
+    f1=0;
+    f2=0;
+    do {
+        ++j;
+        if (j>itm) {
+            *ir = -1;
+            return 0;
+        }
+        if (sqhpb_1.seta <= (float)0.) {
+            sqhpb_1.seta = sqhpb_1.eta / j;
+        }
+        if (sqhpb_1.seta > (float).6) {
+            sqhpb_1.seta = (float).35 / j;
+        }
+        e1 = sqhpb_1.seta;
+        sqfun_(&f1, &e1, &c__2, ir);
+        e2 = sqhpb_1.seta * (float)1.01;
+        sqfun_(&f2, &e2, &c__2, ir);
+        e2 = e1 - (e2 - e1) * f1 / (f2 - f1);
+        sqhpb_1.seta = e2;
+        del = (r__1 = (e2 - e1) / e1, dabs(r__1));
+    } while (del > acc);
+    sqfun_(&sqhpb_1.g1, &e2, &c__4, ir);
+    if ((sqhpb_1.seta > 0.64) ||  (sqhpb_1.seta < sqhpb_1.eta)) {
+        *ir = -3;  // rescaling not successful
+        return 0;
+    }
+    *ir = j;
+    return 0;
+
     if (sqhpb_1.ak < sqhpb_1.eta * (float)8. + (float)1.) {
 	goto L50;
     }

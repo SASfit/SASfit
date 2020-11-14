@@ -52,7 +52,7 @@ float S_HayterPenfoldMSA(Tcl_Interp *interp,
 //		CALCULATION OF THE STRUCTURE FACTOR ,S(Q)
 //		GIVEN THE THREE REQUIRED PARAMETERS VALK, GAMMA, ETA.
 //
-//		*** NOTE ****  THIS CALCULATION REQUIRES THAT THE NUMBER OF 
+//		*** NOTE ****  THIS CALCULATION REQUIRES THAT THE NUMBER OF
 //							Q-VALUES AT WHICH THE S(Q) IS CALCULATED BE
 //							A POWER OF 2
 //
@@ -61,10 +61,10 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 {
 	static scalar gMSAWave[17];
 	scalar RHS, Z, eta, T, salt, epsilon_r;
-		
+
 	scalar Elcharge=1.6021766208e-19;		// electron charge in Coulombs (C)
-	scalar kB=1.38064852e-23;				// Boltzman constant in J/K
-	scalar FrSpPerm=8.854187817E-12;		//Permittivity of free space in C^2/(N m^2)
+	scalar kB=1.38064852e-23;				// Boltzmann constant in J/K
+	scalar FrSpPerm=8.854187817E-12;		// Permittivity of free space in C^2/(N m^2)
 
 	scalar SofQ, QQ, Qdiam;
 //	scalar gammaek;
@@ -79,17 +79,17 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 
 	diam=RHS*20.;	//now hard sphere radius RHS in nm and diam in Angstrom; old:in Angstrom  (not SI .. should force people to think in nm!!!)
 	zz = Z;			//# of charges
-	VolFrac=eta;	
+	VolFrac=eta;
 	QQ=q/10.;		//q now in nm^-1 and QQ in Angstrom^-1; old:in Angstrom^-1 (not SI .. should force people to think in nm^-1!!!)
 	Temp=T;			//in degrees Kelvin
-	csalt=salt;		//in molarity
+	csalt=salt;		//in molarity // JK: looks like (mol/l)
 	dialec=epsilon_r;// unitless
 
-	
+
 
 //////////////////////////////////////////////////////////////////////////////
-////////////// convert to USEFUL inputs in SI units													 
-//////////////	 NOTE: easiest to do EVERYTHING in SI units										 
+////////////// convert to USEFUL inputs in SI units
+//////////////	 NOTE: easiest to do EVERYTHING in SI units
 //////////////////////////////////////////////////////////////////////////////
 	Beta=1./(kB*Temp);		// in Joules^-1
 	Perm=dialec*FrSpPerm;	//in C^2/(N  m^2)
@@ -99,7 +99,7 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 	cs=csalt*6.0221415E23*1E3;	//# salt molecules/m^3
 
 //			Compute the derived values of :
-//			 Ionic strength IonSt (in C^2/m^3)  
+//			 Ionic strength IonSt (in C^2/m^3)
 // 			Kappa (Debye-Huckel screening length in m)
 //	and		gamma Exp(-k)
 	IonSt=0.5 * pow(Elcharge,2.)*(zz*VolFrac/Vp+2.*cs);
@@ -107,29 +107,29 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 //	Kappa=2/SIdiam						// Use to compare with HP paper
 	gMSAWave[5]=Beta*charge*charge/(M_PI*Perm*SIdiam*pow(2.+Kappa*SIdiam,2.));
 
-//			Finally set up dimensionless parameters 
+//			Finally set up dimensionless parameters
 	Qdiam=QQ*diam;
 	gMSAWave[6] = Kappa*SIdiam;
 	gMSAWave[4] = VolFrac;
 
 
-		
+
 //  ***************  now go to John Hayter and Jeff Penfold setup routine************
- 
-//	 *** ALL FURTHER PROGRAMS COMMENTS ARE FROM J. HAYTER 
+
+//	 *** ALL FURTHER PROGRAMS COMMENTS ARE FROM J. HAYTER
 //		  EXCEPT WHERE INDICATED  ^*
 //
-//	 
+//
 //		 ROUTINE TO CALCULATE S(Q*SIG) FOR A SCREENED COULOMB
 //		 POTENTIAL BETWEEN FINITE PARTICLES OF DIAMETER 'SIG'
 //		 AT ANY VOLUME FRACTION.  THIS ROUTINE IS MUCH MORE POWER-
 //		 FUL THAN "SQHP" AND SHOULD BE USED TO REPLACE THE LATTER
-//		 IN EXISTING PROGRAMS.  NOTE THAT THE COMMON AREA IS 
-//		 CHANGED;  IN PARTICULAR THE POTENTIAL IS PASSED 
+//		 IN EXISTING PROGRAMS.  NOTE THAT THE COMMON AREA IS
+//		 CHANGED;  IN PARTICULAR THE POTENTIAL IS PASSED
 //		 DIRECTLY AS 'GEK' = GAMMA*EXP(-K) IN THE PRESENT ROUTINE.
 //
 //	  JOHN B. HAYTER
-//			
+//
 //  ***** THIS VERSION ENTERED ON 5/30/85 BY JOHN F. BILLMAN
 //
 //		 CALLING SEQUENCE:
@@ -143,16 +143,16 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 //		NPT:  NUMBER OF VALUES OF Q*SIG
 //
 //		IERR  > 0:	NORMAL EXIT; IERR=NUMBER OF ITERATIONS
-//				 -1:	NEWTON ITERATION NON-CONVERGENT IN "SQCOEF"	
+//				 -1:	NEWTON ITERATION NON-CONVERGENT IN "SQCOEF"
 //				 -2:	NEWTON ITERATION NON-CONVERGENT IN "SQFUN"
 //				 -3:	CANNOT RESCALE TO G(1+) > 0.
 //
 //		  ALL OTHER PARAMETERS ARE TRANSMITTED THROUGH A SINGLE
 //		  NAMED COMMON AREA:
-// 
-//	  REAL*8 a,b,//,f 
+//
+//	  REAL*8 a,b,//,f
 //	  COMMON /SQHPB/ ETA,GEK,AK,A,B,C,F,U,V,GAMK,SETA,SGEK,SAK,SCAL,G1
-//																  
+//
 //	  ON ENTRY:
 //
 //		 ETA:	 VOLUME FRACTION
@@ -168,8 +168,8 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 //		 SCAL IS THE RESCALING FACTOR:  (ETA/SETA)^(1/3).
 //		 G1=G(1+), THE CONTACT VALUE OF G(R/SIG).
 //		 A.B,C,F,U,V ARE THE CONSTANTS APPEARING IN THE ANALYTIC
-//		 SOLUTION OF THE MSA [HAYTER-PENFOLD; MOL. PHYS. 42: 109 (1981)  
-// 
+//		 SOLUTION OF THE MSA [HAYTER-PENFOLD; MOL. PHYS. 42: 109 (1981)
+//
 //	  NOTES:
 //
 //		 (A)  AFTER THE FIRST CALL TO SQHPA, S(Q*SIG) MAY BE EVALUATED
@@ -180,7 +180,7 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 //				BY USING THE ROUTINE "TROGS"
 //
 //		 (C)  NO ERROR CHECKING OF INPUT PARAMETERS IS PERFORMED;
-//				IT IS THE RESPONSIBILITY OF THE CALLING PROGRAM TO 
+//				IT IS THE RESPONSIBILITY OF THE CALLING PROGRAM TO
 //				VERIFY VALIDITY.
 //
 //		SUBROUTINES CALLED BY SQHPA:
@@ -197,7 +197,7 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 
 
 //Function sqhpa(qq)  {this is where Hayter-Penfold program began}
-		
+
 
 	// FIRST CALCULATE COUPLING
 
@@ -206,7 +206,7 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 
 	// CALCULATE COEFFICIENTS, CHECK ALL IS WELL
 	// AND IF SO CALCULATE S(Q*SIG)
-								 
+
 	ierr = 0;
 	ierr = sqcoef(ierr,gMSAWave);
 	SASFIT_CHECK_COND1((ierr < 0), param, "Please report problem with error code: %f", ierr);
@@ -219,7 +219,7 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 //
-//        
+//
 //       CALCULATES VARIOUS COEFFICIENTS AND FUNCTION
 //       VALUES FOR "SQCOEF"  (USED BY "SQHPA").
 //
@@ -233,9 +233,9 @@ scalar sasfit_sq_HayterPenfoldMSA(scalar q, sasfit_param * param)
 //          4:   RETURN G(1+) FOR ETA=ETA(GILLAN).
 //
 //
-scalar sqfun(int ix, scalar ir, scalar * gMSAWave) 
+scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
 {
-	scalar acc=1.0e-6, itm=40.0;
+	scalar acc=1.0e-6, itm=80.0;
 	scalar reta,eta2,eta21,eta22,eta3,eta32,eta2d,eta2d2,eta3d,eta6d,e12,e24,ibig,rgek;
 	scalar rak,ak1,ak2,dak,dak2,dak4,d,d2,dd2,dd4,dd45,ex1,ex2,sk,ck,ckma,skma;
 	scalar al1,al2,al3,al4,al5,al6,be1,be2,be3,vu1,vu2,vu3,vu4,vu5,ph1,ph2,ta1,ta2,ta3,ta4,ta5;
@@ -262,7 +262,7 @@ scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
 //	NVAR g1=root:HayPenMSA:g1
 //	NVAR fval=root:HayPenMSA:fval
 //	NVAR evar=root:HayPenMSA:evar
-	
+
 
 //     CALCULATE CONSTANTS; NOTATION IS HAYTER PENFOLD (1981)
 
@@ -276,7 +276,7 @@ scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
       ibig=0;
 
       if (( gMSAWave[12]>15.0) && (ix==1))  ibig=1;
-       
+
 	  gMSAWave[11] = gMSAWave[5]*gMSAWave[13]*exp(gMSAWave[6]- gMSAWave[12]);
       rgek =  gMSAWave[11];
       rak =  gMSAWave[12];
@@ -286,7 +286,7 @@ scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
       dak4 = dak2*dak2;
       d = 1.0-reta;
       d2 = d*d;
-      dak = d/rak;                                                  
+      dak = d/rak;
       dd2 = 1.0/d2;
       dd4 = dd2*dd2;
       dd45 = dd4*2.0e-1;
@@ -319,7 +319,7 @@ scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
       vu5 = eta6d*(vu2+4.0*vu3);
 
 //      PHI(I)
-      
+
       ph1 = eta6d/rak;
       ph2 = d-e12*dak2;
 
@@ -379,7 +379,7 @@ scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
 	  }
 
 //       T(I)
- 
+
       t1 = ta3+ta4*a1+ta5*b1;
       if (ibig!=0) {
 
@@ -464,7 +464,7 @@ scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
 			w56 = um5*al6-al5*um6;
 			w3526 = w35+w26;
 			w3425 = w34+w25;
-       
+
 //			QUARTIC COEFFICIENTS
 
 			w4 = w16*w16-w13*w36;
@@ -550,13 +550,13 @@ scalar sqfun(int ix, scalar ir, scalar * gMSAWave)
 
 scalar sqcoef(scalar ir, scalar * gMSAWave)
 {
-	
+
 	scalar itm=40.0;
 	scalar acc=5.0E-6;
 	scalar del,e1,e2,f1=0.,f2=0.;
 	int ix,ig,ii;
 
-	           
+
       ig=1;
       if (gMSAWave[6]>=(1.0+8.0*(gMSAWave[4]))) {
 		ig=0;
@@ -572,12 +572,12 @@ scalar sqcoef(scalar ir, scalar * gMSAWave)
 	  }
       gMSAWave[10]=min(gMSAWave[4],0.20);
       if ((ig!=1) || ( gMSAWave[9]>=0.15)) {
-		ii=0;                        
+		ii=0;
 	    do {
 			ii=ii+1;
 			if(ii>itm) {
 				ir=-1;
-				return ir;		
+				return ir;
 			}
 			if (gMSAWave[10]<=0.0) {
 			    gMSAWave[10]=gMSAWave[4]/ii;
@@ -610,7 +610,7 @@ scalar sqcoef(scalar ir, scalar * gMSAWave)
 		gMSAWave[14]=gMSAWave[15];
 		e2=gMSAWave[16];
 		ir=ii;
-		if ((ig!=1) || (gMSAWave[10]>=gMSAWave[4])) { 
+		if ((ig!=1) || (gMSAWave[10]>=gMSAWave[4])) {
 		    return ir;
 		}
 	  }
@@ -636,7 +636,7 @@ scalar sqcoef(scalar ir, scalar * gMSAWave)
 //
 //    JOHN B. HAYTER  (I.L.L.)    19-AUG-81
 //
-scalar sqhcal(scalar qq, scalar * gMSAWave) 
+scalar sqhcal(scalar qq, scalar * gMSAWave)
 {
       	scalar SofQ,etaz,akz,gekz,e24,x1,x2,ck,sk,ak2,qk,q2k,qk2,qk3,qqk,sink,cosk,asink,qcosk,aqk,inter;
 
