@@ -5,7 +5,8 @@ branches:
     - master
 init:
   - git config --global core.autocrlf input
-clone_depth: 1
+clone_script:
+- sh: git clone -q --depth=1 --recursive --branch=${APPVEYOR_REPO_BRANCH} https://github.com/${APPVEYOR_REPO_NAME}.git ${APPVEYOR_BUILD_FOLDER}
 
 image:
   - Visual Studio 2019
