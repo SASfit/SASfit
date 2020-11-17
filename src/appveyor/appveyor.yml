@@ -144,5 +144,6 @@ after_deploy:
   # install packages needed by the after_deploy script
   - python3 -m pip install --user requests python-dateutil
   - python3 src/appveyor/8_after_deploy.py
+  - python3 src/appveyor/citools/appveyor_keep_builds.py 10
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:
