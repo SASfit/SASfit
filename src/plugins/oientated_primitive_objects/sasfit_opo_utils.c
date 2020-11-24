@@ -1678,6 +1678,12 @@ double opo_Fse_G962D_dxy(double x, double y, void *pam) {
     return (2*cos(QQX*x+ QQY*y)*w*opo_sinc(QQZ*w));
 }
 
+scalar call_opo_Fse_cub_dxy(scalar x1, scalar x2, scalar *fval, void *pam) {
+    fval[0] = opo_Fse_G962D_dxy(x1,x2,pam);
+    fval[1] = 0;
+}
+
+
 scalar opo_Fse_GQ962Dxy(void *pam)
   {
 	sasfit_param * param;
@@ -1735,6 +1741,92 @@ scalar opo_Fse_GQ962Dxy(void *pam)
     }
   return(q*dx);
   }
+
+scalar opo_Fse_GL_2Dxy(void *pam)
+  {
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+    int n,m,i,j,k, ndim=2, fdim=2;
+    scalar fval[2],x[2],*A_GL,*W_GL,rs,is, fa,fb,fA,fB,fc,fd,fC,fD;
+    gsl_integration_glfixed_table *t;
+    n = abs(sasfit_eps_get_gausslegendre());
+    m = (n+1)>>1;
+    t=gsl_integration_glfixed_table_alloc(n);
+
+    fa=-1;fb=1;
+    fA=(fb-fa)*0.5;
+    fB=(fb+fa)*0.5;
+    fc=-1;fd=1;
+    fC=(fd-fc)*0.5;
+    fD=(fd+fc)*0.5;
+    A_GL = t->x;
+    W_GL = t->w;
+    rs = 0;
+    is = 0;
+    if (n&1) /* n - odd */
+    {
+        call_opo_Fse_cub_dxy(fB,fD,fval,pam);
+        rs += fA*fC*gsl_pow_2(W_GL[0])*fval[0];
+        is += fA*fC*gsl_pow_2(W_GL[0])*fval[1];
+        for (i=1;i<m;i++) {
+            fc=-pow(1-pow((gsl_pow_2(fB+fA*A_GL[i])),1./PP),PP/2.);
+            fd=-fc;
+            fC=(fd-fc)*0.5;
+            fD=(fd+fc)*0.5;
+            call_opo_Fse_cub_dxy(fB+fA*A_GL[i],fD,fval,pam);
+            rs += fA*fC*W_GL[0]*W_GL[i]*fval[0];
+            is += fA*fC*W_GL[0]*W_GL[i]*fval[1];
+            call_opo_Fse_cub_dxy(fB-fA*A_GL[i],fD,fval,pam);
+            rs += fA*fC*W_GL[0]*W_GL[i]*fval[0];
+            is += fA*fC*W_GL[0]*W_GL[i]*fval[1];
+            call_opo_Fse_cub_dxy(fB,fD+fC*A_GL[0],fval,pam);
+            rs += fA*fC*W_GL[0]*W_GL[i]*fval[0];
+            is += fA*fC*W_GL[0]*W_GL[i]*fval[1];
+            call_opo_Fse_cub_dxy(fB,fD-fC*A_GL[0],fval,pam);
+            rs += fA*fC*W_GL[0]*W_GL[i]*fval[0];
+            is += fA*fC*W_GL[0]*W_GL[i]*fval[1];
+            for (j=1;j<m;j++) {
+                call_opo_Fse_cub_dxy(fB+fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fse_cub_dxy(fB-fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fse_cub_dxy(fB+fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fse_cub_dxy(fB-fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+            }
+        }
+    }
+    else  /* n - even */
+    {
+      for (i=0;i<m;i++) {
+            for (j=0;j<m;j++) {
+                fc=-pow(1-pow((gsl_pow_2(fB+fA*A_GL[i])),1/PP),PP/2);
+                fd=-fc;
+                fC=(fd-fc)*0.5;
+                fD=(fd+fc)*0.5;
+                call_opo_Fse_cub_dxy(fB+fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fse_cub_dxy(fB+fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fse_cub_dxy(fB-fA*A_GL[i],fD+fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+                call_opo_Fse_cub_dxy(fB-fA*A_GL[i],fD-fC*A_GL[j],fval,pam);
+                rs += fA*fC*W_GL[i]*W_GL[j]*fval[0];
+                is += fA*fC*W_GL[i]*W_GL[j]*fval[1];
+            }
+        }
+    }
+    gsl_integration_glfixed_table_free(t);
+    return gsl_hypot(rs,is);
+}
 
 int opo_Fse_cub_dxs(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
@@ -2071,7 +2163,8 @@ scalar opo_Fsuperellipsoid(void * pam) {
             break;
             }
     case GSL_GAUSSLEGENDRE: {
-            sum = opo_Fse_GQ962Dxy(pam);
+ //           sum = opo_Fse_GQ962Dxy(pam);
+            sum = opo_Fse_GL_2Dxy(pam);
             break;
             }
     default: {

@@ -24,8 +24,8 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
-#ifndef SASFIT_EPS_H 
-#define SASFIT_EPS_H 
+#ifndef SASFIT_EPS_H
+#define SASFIT_EPS_H
 
 /**
  * \file sasfit_eps.h
@@ -41,12 +41,12 @@
  * obsolete (or will become with future developments).
  */
 
-/** 
+/**
  * \ingroup sasfit_eps
  * Contains various numerical constants.
  */
 
-typedef struct 
+typedef struct
 {
 	scalar  aniso;
 	int     jmax_aniso;
@@ -57,7 +57,17 @@ typedef struct
 	int     sq_or_iq;
     int     iq_or_gz;
     int     int_strategy;
+    int     sphavg_strategy;
 	int     robertus_p;
+	int     gausslegendre;
+	int     chebyshev1;
+	int     chebyshev2;
+	int     gegenbauer;
+	int     exponential;
+	int     laguerre;
+	int     jacobi;
+	int     lebedev;
+	int     fibonacci;
 	int     iter_4_mc;
 	int     fitorsim;
 	scalar  h;          //!< Percentage of variation for numerical differentiation.
@@ -80,8 +90,18 @@ sasfit_common_DLLEXP scalar sasfit_eps_get_nriq(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_jmax_nriq(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_sq_or_iq(void);
 sasfit_common_DLLEXP int    sasfit_get_iq_or_gz(void);
+sasfit_common_DLLEXP int    sasfit_get_sphavg_strategy(void);
 sasfit_common_DLLEXP int    sasfit_get_int_strategy(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_robertus_p(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_gausslegendre(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_chebyshev1(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_chebyshev2(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_gegenbauer(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_exponential(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_laguerre(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_jacobi(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_lebedev(void);
+sasfit_common_DLLEXP int    sasfit_eps_get_fibonacci(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_iter_4_mc(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_fitorsim(void);
 
@@ -105,9 +125,18 @@ sasfit_common_DLLEXP void sasfit_eps_set_nriq(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_jmax_nriq(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_sq_or_iq(int value);
 sasfit_common_DLLEXP void sasfit_set_iq_or_gz(int value);
-sasfit_common_DLLEXP void sasfit_set_int_strategy(int value);
+sasfit_common_DLLEXP void sasfit_set_sphavg_strategy(int value);
 sasfit_common_DLLEXP void sasfit_set_int_strategy(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_robertus_p(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_gausslegendre(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_chebyshev1(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_chebyshev2(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_gegenbauer(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_exponential(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_laguerre(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_jacobi(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_lebedev(int value);
+sasfit_common_DLLEXP void sasfit_eps_set_fibonacci(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_iter_4_mc(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_fitorsim(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_h(scalar value);

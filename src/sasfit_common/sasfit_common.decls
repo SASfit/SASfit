@@ -237,7 +237,12 @@ declare 73 generic {
 declare 74 generic {
 	void sasfit_eps_set_comp(scalar value)
 }
-
+declare 75 generic {
+	void sasfit_set_sphavg_strategy(int value)
+}
+declare 76 generic {
+	int sasfit_get_sphavg_strategy(void)
+}
 declare 77 generic {
 	void sasfit_set_int_strategy(int value)
 }
@@ -395,3 +400,30 @@ declare 120 generic {
 	void sasfit_ld_by_order ( int order, double *x, double *y, double *z, double *w )
 }
 
+declare 121 generic {
+	int sasfit_eps_get_gausslegendre(void)
+}
+declare 122 generic {
+	int sasfit_eps_get_chebyshev1(void)
+}
+declare 123 generic {
+	int sasfit_eps_get_chebyshev2(void)
+}
+declare 124 generic {
+	int sasfit_eps_get_gegenbauer(void)
+}
+declare 125 generic {
+	int sasfit_eps_get_exponential(void)
+}
+declare 126 generic {
+	int sasfit_eps_get_laguerre(void)
+}
+declare 127 generic {
+	int sasfit_eps_get_jacobi(void)
+}
+declare 128 generic {
+	int sasfit_eps_get_lebedev(void)
+}
+declare 129 generic {
+	int sasfit_eps_get_fibonacci(void)
+}

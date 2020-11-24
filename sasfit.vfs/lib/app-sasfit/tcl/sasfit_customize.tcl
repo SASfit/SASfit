@@ -20,6 +20,16 @@
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 
+proc setSphAvgStrategy2int {} {
+	switch $::FitPrecision(IntStrategy) {
+		"GSL_2D_GAUSSLEGENDRE" {set ::FitPrecision(SphAvgStrategy_int) 0}
+		"Lebedev"  {set ::FitPrecision(SphAvgStrategy_int) 1}
+		"FIBONACCI" {set ::FitPrecision(SphAvgStrategy_int) 2}
+		"H_UBATURE" {set ::FitPrecision(SphAvgStrategy_int) 3}
+		"P_CUBATURE" {set ::FitPrecision(SphAvgStrategy_int) 4}
+		default {set ::FitPrecision(SphAvgStrategy_int) 0}
+	}
+}
 proc setIntStrategy2int {} {
 	switch $::FitPrecision(IntStrategy) {
 		"OOURA_DE" {set ::FitPrecision(IntStrategy_int) 0}
@@ -103,7 +113,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 		-from -1 -to 2.9542425096 -resolution 0.000000001 \
 		-orient horizontal \
 		-command "update_parameter_increment $analytpar $tanalytpar"
-	grid $w.adjust_entry -row 5 -column 2 -columnspan 2 -sticky ew
+	grid $w.adjust_entry -row 6 -column 0 -columnspan 4 -sticky ew
 	$w.adjust_entry set [expr log10(100*$ap(par_x_X)-100)]
 	
 	label $w.intStrat_label -text "integration strategy"
@@ -116,7 +126,51 @@ proc CustomizeCmd { analytpar tanalytpar } {
 				-modifycmd setIntStrategy2int
 	grid $w.intStrat_label -row 5 -column 0 -sticky e
 	grid $w.intStrat_value -row 5 -column 1 -sticky w
-
+    label $w.sphavgStrat_label -text "spherical average strategy"
+	ComboBox $w.sphavgStrat_value -values {"GSL_2D_GAUSSLEGENDRE" "Lebedev" "FIBONACCI"\
+										"H_CUBATURE" "P_CUBATURE" } \
+				-width 15 \
+				-textvariable ::FitPrecision(SphAvgStrategy) \
+				-modifycmd setSphAvgStrategy2int
+	grid $w.sphavgStrat_label -row 5 -column 2 -sticky e
+	grid $w.sphavgStrat_value -row 5 -column 3 -sticky w
+	
+	label $w.gsl_GL_label -text "GSL_GAUSSLEGENDRE points:"
+	entry $w.gsl_GL_value -textvariable FitPrecision(GSL_GAUSSLEGENDRE) -width $entrywidth
+	grid $w.gsl_GL_label -row 7 -column 0 -sticky e
+	grid $w.gsl_GL_value -row 7 -column 1 -sticky w
+	label $w.gsl_C1_label -text "GSL_CHEBYSHEV1 points:"
+	entry $w.gsl_C1_value -textvariable FitPrecision(GSL_CHEBYSHEV1) -width $entrywidth
+	grid $w.gsl_C1_label -row 8 -column 0 -sticky e
+	grid $w.gsl_C1_value -row 8 -column 1 -sticky w
+	label $w.gsl_C2_label -text "GSL_CHEBYSHEV2 points:"
+	entry $w.gsl_C2_value -textvariable FitPrecision(GSL_CHEBYSHEV2) -width $entrywidth
+	grid $w.gsl_C2_label -row 9 -column 0 -sticky e
+	grid $w.gsl_C2_value -row 9 -column 1 -sticky w
+	label $w.gsl_GEGB_label -text "GSL_GEGENBAUER points:"
+	entry $w.gsl_GEGB_value -textvariable FitPrecision(GSL_GEGENBAUER) -width $entrywidth
+	grid $w.gsl_GEGB_label -row 7 -column 2 -sticky e
+	grid $w.gsl_GEGB_value -row 7 -column 3 -sticky w
+	label $w.gsl_EXP_label -text "GSL_EXPONENTIAL points:"
+	entry $w.gsl_EXP_value -textvariable FitPrecision(GSL_EXPONENTIAL) -width $entrywidth
+	grid $w.gsl_EXP_label -row 8 -column 2 -sticky e
+	grid $w.gsl_EXP_value -row 8 -column 3 -sticky w
+	label $w.gsl_LAG_label -text "GSL_LAGUERRE points:"
+	entry $w.gsl_LAG_value -textvariable FitPrecision(GSL_LAGUERRE) -width $entrywidth
+	grid $w.gsl_LAG_label -row 9 -column 2 -sticky e
+	grid $w.gsl_LAG_value -row 9 -column 3 -sticky w
+	label $w.gsl_JAC_label -text "GSL_JACOBI points:"
+	entry $w.gsl_JAC_value -textvariable FitPrecision(GSL_JACOBI) -width $entrywidth
+	grid $w.gsl_JAC_label -row 10 -column 0 -sticky e
+	grid $w.gsl_JAC_value -row 10 -column 1 -sticky w
+	label $w.lebedev_label -text "Lebedev order \[1,65\]:"
+	entry $w.lebedev_value -textvariable FitPrecision(Lebedev) -width $entrywidth
+	grid $w.lebedev_label -row 13 -column 0 -sticky e
+	grid $w.lebedev_value -row 13 -column 1 -sticky w
+	label $w.finonacci_label -text "FIBONACCI points:"
+	entry $w.gibonacci_value -textvariable FitPrecision(FIBONACCI) -width $entrywidth
+	grid $w.finonacci_label -row 13 -column 2 -sticky e
+	grid $w.gibonacci_value -row 13 -column 3 -sticky w
 }
 
 proc update_parameter_increment { analytpar tanalytpar value } {

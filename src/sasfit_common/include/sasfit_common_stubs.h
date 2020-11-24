@@ -151,8 +151,8 @@ typedef struct
 	void (*sasfit_eps_set_fitorsim) (int value); /* 72 */
 	void (*sasfit_eps_set_h) (scalar value); /* 73 */
 	void (*sasfit_eps_set_comp) (scalar value); /* 74 */
-	void *reserved75;
-	void *reserved76;
+	void (*sasfit_set_sphavg_strategy) (int value); /* 75 */
+	int (*sasfit_get_sphavg_strategy) (void); /* 76 */
 	void (*sasfit_set_int_strategy) (int value); /* 77 */
 	int (*sasfit_get_int_strategy) (void); /* 78 */
 	scalar (*sasfit_sd_LogNorm) (scalar value, sasfit_param * param); /* 79 */
@@ -197,16 +197,16 @@ typedef struct
 	int (*sasfit_available_table) ( int rule ); /* 118 */
 	int (*sasfit_order_table) ( int rule ); /* 119 */
 	void (*sasfit_ld_by_order) ( int order, double *x, double *y, double *z, double *w ); /* 120 */
-	void *reserved121;
-	void *reserved122;
-	void *reserved123;
-	void *reserved124;
-	void *reserved125;
-	void *reserved126;
-	void *reserved127;
-	void *reserved128;
-	void *reserved129;
-	void *reserved130;
+	int (*sasfit_eps_get_gausslegendre) (void); /*121 */
+	int (*sasfit_eps_get_chebyshev1) (void); /*122 */
+	int (*sasfit_eps_get_chebyshev2) (void); /*123 */
+	int (*sasfit_eps_get_gegenbauer) (void); /*124 */
+	int (*sasfit_eps_get_exponential) (void); /*125 */
+	int (*sasfit_eps_get_laguerre) (void); /*126 */
+	int (*sasfit_eps_get_jacobi) (void); /*127 */
+	int (*sasfit_eps_get_lebedev) (void); /*128 */
+	int (*sasfit_eps_get_fibonacci) (void); /*129 */
+	void *reserved130; /*130 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -479,8 +479,14 @@ typedef struct
 #define sasfit_eps_set_comp \
 	(SASFIT_COMMON_STUBS()->sasfit_eps_set_comp) /* 74 */
 #endif
-/* Slot 75 is reserved */
-/* Slot 76 is reserved */
+#ifndef sasfit_set_sphavg_strategy
+#define sasfit_set_sphavg_strategy \
+	(SASFIT_COMMON_STUBS()->sasfit_set_sphavg_strategy) /* 75 */
+#endif
+#ifndef sasfit_get_sphavg_strategy
+#define sasfit_get_sphavg_strategy \
+	(SASFIT_COMMON_STUBS()->sasfit_get_sphavg_strategy) /* 76 */
+#endif
 #ifndef sasfit_set_int_strategy
 #define sasfit_set_int_strategy \
 	(SASFIT_COMMON_STUBS()->sasfit_set_int_strategy) /* 77 */
@@ -656,6 +662,42 @@ typedef struct
 #ifndef sasfit_ld_by_order
 #define sasfit_ld_by_order \
 	(SASFIT_COMMON_STUBS()->sasfit_ld_by_order) /* 120 */
+#endif
+#ifndef sasfit_eps_get_gausslegendre
+#define sasfit_eps_get_gausslegendre \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_gausslegendre) /* 121 */
+#endif
+#ifndef sasfit_eps_get_chebyshev1
+#define sasfit_eps_get_chebyshev1 \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_chebyshev1) /* 122 */
+#endif
+#ifndef sasfit_eps_get_chebyshev2
+#define sasfit_eps_get_chebyshev2 \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_chebyshev2) /* 123 */
+#endif
+#ifndef sasfit_eps_get_gegenbauer
+#define sasfit_eps_get_gegenbauer \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_gegenbauer) /* 124 */
+#endif
+#ifndef sasfit_eps_get_exponential
+#define sasfit_eps_get_exponential \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_exponential) /* 125 */
+#endif
+#ifndef sasfit_eps_get_laguerre
+#define sasfit_eps_get_laguerre \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_laguerre) /* 126 */
+#endif
+#ifndef sasfit_eps_get_jacobi
+#define sasfit_eps_get_jacobi \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_jacobi) /* 127 */
+#endif
+#ifndef sasfit_eps_get_lebedev
+#define sasfit_eps_get_lebedev \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_lebedev) /* 128 */
+#endif
+#ifndef sasfit_eps_get_fibonacci
+#define sasfit_eps_get_fibonacci \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_fibonacci) /* 129 */
 #endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 

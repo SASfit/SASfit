@@ -140,7 +140,7 @@ typedef enum
 
 //    #define DEFAULT_CONVENTION Z1_X2_Z3
     #define DEFAULT_CONVENTION Z1_Y2_X3
-    
+
 typedef struct {
     ops_Euler_convention_t convention;
     double RotationMatrix[3][3];
@@ -191,7 +191,7 @@ typedef struct
     scalar     b[3];
     scalar     c[3];
     scalar     lalpha;      // angle betwee  b and c
-    scalar     lbeta;        // agle betwee c and a 
+    scalar     lbeta;        // agle betwee c and a
     scalar     lgamma;   //  angle between a and b
     scalar     n;             // number of particle per unit cell
     scalar     positions[4][3];  // position of particles in unit cell in terms of direct cell . Maximum allowed positions aree 4 at the moment
@@ -253,5 +253,8 @@ scalar G(ordered_particles_param *, sasfit_param *);
 scalar Lattice_Factor_iso(ordered_particles_param *, sasfit_param *);
 scalar Lattice_Factor_aniso(ordered_particles_param *, sasfit_param *);
 scalar K(scalar, ordered_particles_param *, sasfit_param *);
+void ops_setEulerAngles(ordered_particles_param *, double , double ,double );
+void ops_setConvention (ordered_particles_param *, ops_Euler_convention_t);
+void init_osp(ordered_particles_param *, sasfit_param *);
 #endif // end of file
 

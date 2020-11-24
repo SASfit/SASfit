@@ -38,7 +38,7 @@ scalar sasfit_ff_ellipsoid_opo_random(scalar q, sasfit_param * param)
     opod.Qmod = q;
     order = sasfit_order_table ( rule_max );
     if (lround(sasfit_eps_get_robertus_p())>0) {
-        for ( n = lround(sasfit_eps_get_robertus_p()); n <= rule_max; n++ ) {
+        for ( n = lround(sasfit_eps_get_lebedev()); n <= rule_max; n++ ) {
             available = sasfit_available_table ( n );
             if ( available ) {
                 order = sasfit_order_table ( n );
@@ -63,7 +63,7 @@ scalar sasfit_ff_ellipsoid_opo_random(scalar q, sasfit_param * param)
         free ( z );
         free ( w );
     } else {
-        n = lround(fabs(sasfit_eps_get_robertus_p()));
+        n = lround(fabs(sasfit_eps_get_fibonacci()));
         phi = 0.5*(1.0 + sqrt(5.0));
         order = truncl( gsl_pow_int(phi, n)/sqrt(5.0) + 0.5 );
         Iavg = 0;

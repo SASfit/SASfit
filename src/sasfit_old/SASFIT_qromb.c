@@ -229,7 +229,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case GSL_GAUSSLEGENDRE: {
-            wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_robertus_p());
+            wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
             F.function=&IQ_IntdLen;
             F.params = &param4int;
             res = gsl_integration_glfixed(&F, Len_start, Len_end, wglfixed);
@@ -237,7 +237,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case GSL_CHEBYSHEV1: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_robertus_p(), Len_start, Len_end, 0, 1);
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_chebyshev1(), Len_start, Len_end, 0, 1);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
              ierr = gsl_integration_fixed(&F, &res, wfixed);
@@ -245,7 +245,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case GSL_CHEBYSHEV2: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_robertus_p(), Len_start, Len_end, 0, 1);
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_chebyshev2(), Len_start, Len_end, 0, 1);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
             ierr = gsl_integration_fixed(&F, &res, wfixed);
@@ -253,7 +253,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case GSL_GEGENBAUER: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_robertus_p(), Len_start, Len_end, sasfit_eps_get_res(), 1);
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_gegenbauer(), Len_start, Len_end, sasfit_eps_get_res(), 1);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
              ierr = gsl_integration_fixed(&F, &res, wfixed);
@@ -261,7 +261,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case GSL_EXPONENTIAL: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_robertus_p(), Len_start, Len_end, sasfit_eps_get_res(), 1);
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_exponential(), Len_start, Len_end, sasfit_eps_get_res(), 1);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
             ierr = gsl_integration_fixed(&F, &res, wfixed);
@@ -269,7 +269,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case GSL_LAGUERRE: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_robertus_p(), Len_start, Len_end, sasfit_eps_get_res(), 1);
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_laguerre(), Len_start, Len_end, sasfit_eps_get_res(), 1);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
             ierr = gsl_integration_fixed(&F, &res, wfixed);
@@ -277,7 +277,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     case GSL_JACOBI: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi, sasfit_eps_get_robertus_p(),
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi, sasfit_eps_get_jacobi(),
                                                  Len_start, Len_end, sasfit_eps_get_res(), sasfit_eps_get_res());
             F.function=&IQ_IntdLen;
             F.params = &param4int;

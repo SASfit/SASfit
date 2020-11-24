@@ -51,14 +51,14 @@ void sasfit_ap2paramlist(int              ** idx_list,
 	(*idx_list) = ivector(0,(*max_param_idx)-1);
 	(*param_list) = dvector(0,(*max_param_idx)-1);
 
-	for (i=0; i < contrib_num; i++) 
+	for (i=0; i < contrib_num; i++)
 	{
 		k = 0;
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
-			if ((ap[i].SD_active[j] == 1) && 
-			     ap[i].fitSDFF && ap[i].calcSDFF) 
+			if ((ap[i].SD_active[j] == 1) &&
+			     ap[i].fitSDFF && ap[i].calcSDFF)
 			{
 				if (gcp && ap[i].SD_index[j] != 0) {
 					if ( gcp->P_common_index[ap[i].SD_index[j]-1] < 0) {
@@ -84,10 +84,10 @@ void sasfit_ap2paramlist(int              ** idx_list,
 			}
 			k++;
 		}
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
-			if ((ap[i].FF_active[j] == 1) && 
+			if ((ap[i].FF_active[j] == 1) &&
 			     ap[i].fitSDFF && ap[i].calcSDFF)
 			{
 				if (gcp && ap[i].FF_index[j] != 0) {
@@ -114,10 +114,10 @@ void sasfit_ap2paramlist(int              ** idx_list,
 			}
 			k++;
 		}
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
-			if ((ap[i].SQ_active[j] == 1) && 
+			if ((ap[i].SQ_active[j] == 1) &&
 			     ap[i].fitSDFF && ap[i].calcSDFF)
 			{
 				if (gcp && ap[i].SQ_index[j] != 0) {
@@ -159,7 +159,7 @@ void sasfit_paramlist2ap(scalar            * param_list,
 	for (i=0; i < contrib_num; i++)
 	{
 		k = 0;
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
 			ap[i].SD_a[j] = param_list[idx];
@@ -168,7 +168,7 @@ void sasfit_paramlist2ap(scalar            * param_list,
 			}
 			k++;
 		}
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
 			ap[i].FF_l[j] = param_list[idx];
@@ -177,7 +177,7 @@ void sasfit_paramlist2ap(scalar            * param_list,
 			}
 			k++;
 		}
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
 			ap[i].SQ_s[j] = param_list[idx];
@@ -205,10 +205,10 @@ void sasfit_covar2ap(scalar ** covar,
 			P_common_index[i] = gcp->P_common_index[i];
 		}
 	}
-	 
+
 	fit_idx = 0;
 	nofit_idx = 0;
-	for (i=0; i < contrib_num; i++) 
+	for (i=0; i < contrib_num; i++)
 	{
 		for (j=0; j < MAXPAR; j++) {
 			ap[i].SD_err[j] = 0.0;
@@ -223,9 +223,9 @@ void sasfit_covar2ap(scalar ** covar,
 
 	for (i=0; i < contrib_num; i++)
 	{
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
-			if ((ap[i].SD_active[j] == 1) && 
+			if ((ap[i].SD_active[j] == 1) &&
 			     ap[i].fitSDFF && ap[i].calcSDFF)
 			{
 				if (gcp && ap[i].SD_index[j] != 0) {
@@ -241,12 +241,12 @@ void sasfit_covar2ap(scalar ** covar,
 					ap[i].SD_err[j] = sqrt(fabs(covar[fit_idx][fit_idx]));
 					fit_idx++;
 				}
-			} 
+			}
 		}
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
-			if ((ap[i].FF_active[j] == 1) && 
-			     ap[i].fitSDFF && ap[i].calcSDFF) 
+			if ((ap[i].FF_active[j] == 1) &&
+			     ap[i].fitSDFF && ap[i].calcSDFF)
 			{
 				if (gcp && ap[i].FF_index[j] != 0) {
 					ap[i].FF_err[j] = sqrt(fabs(covar[fit_idx][fit_idx]));
@@ -264,10 +264,10 @@ void sasfit_covar2ap(scalar ** covar,
 			}
 		}
 
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
-			if ((ap[i].SQ_active[j] == 1) && 
-			     ap[i].fitSDFF && ap[i].calcSDFF) 
+			if ((ap[i].SQ_active[j] == 1) &&
+			     ap[i].fitSDFF && ap[i].calcSDFF)
 			{
 				if (gcp && ap[i].SQ_index[j] != 0) {
 					ap[i].SQ_err[j] = sqrt(fabs(covar[fit_idx][fit_idx]));
@@ -304,7 +304,7 @@ void sasfit_covsrt2ap(scalar           ** covar,
 		P_common_index = ivector(0,(gcp->common_i)-1);
 		for (i=0; i < gcp->common_i; i++) P_common_index[i] = gcp->P_common_index[i];
 	}
-	 
+
 	for (i=0; i < contrib_num; i++) {
 		for (j=0; j < MAXPAR; j++) {
 			ap[i].SD_err[j] = 0.0;
@@ -319,7 +319,7 @@ void sasfit_covsrt2ap(scalar           ** covar,
 
 	for (i=0; i < contrib_num; i++) {
 		k = 0;
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
 			if (gcp && ap[i].SD_index[j] != 0) {
@@ -327,14 +327,14 @@ void sasfit_covsrt2ap(scalar           ** covar,
 				if (P_common_index[ap[i].SD_index[j]-1] > 0) {
 					P_common_index[ap[i].SD_index[j]-1] = -1;
 					gcp->P_common_err[ap[i].SD_index[j]-1] = ap[i].SD_err[j]/ap[i].SD_factor[j];
-				} 
+				}
 			} else {
 				ap[i].SD_err[j] = sqrt(fabs(covar[idx][idx]));
 			}
 			k++;
 		}
 
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
 			if (gcp && ap[i].FF_index[j] != 0) {
@@ -349,7 +349,7 @@ void sasfit_covsrt2ap(scalar           ** covar,
 			k++;
 		}
 
-		for (j=0; j < MAXPAR; j++) 
+		for (j=0; j < MAXPAR; j++)
 		{
 			idx = i*(3*MAXPAR)+k;
 			if (gcp && ap[i].SQ_index[j] != 0) {
@@ -373,11 +373,11 @@ void SASFIT_gsl_vector_x2GlobalAP_GCP(gsl_vector * x, void * params)
 {
 	int i,j,k,index;
 
-	for (j=0;j<=((sasfit_gparam*) params) -> mfit-1;j++) 
+	for (j=0;j<=((sasfit_gparam*) params) -> mfit-1;j++)
 	{
 		i = (int)floor(((sasfit_gparam*) params) -> lista[j]/(3*MAXPAR));
 		k = ((sasfit_gparam*) params) -> lista[j]-(int)floor(((sasfit_gparam*) params) -> lista[j]/(3*MAXPAR))*(3*MAXPAR);
-		if ((int)floor(k/MAXPAR) == 0) 
+		if ((int)floor(k/MAXPAR) == 0)
 		{
 	  		index = ((sasfit_gparam*) params) -> GlobalAP[i].SD_index[k-(int)floor(k/MAXPAR)*MAXPAR];
 	   	} else if ((int)floor(k/MAXPAR) == 1) {
@@ -391,13 +391,13 @@ void SASFIT_gsl_vector_x2GlobalAP_GCP(gsl_vector * x, void * params)
 			((sasfit_gparam*) params) -> GCP.P_common[index-1] = gsl_vector_get(x,j);
 	   	} else {
 	  		if ((int)floor(k/MAXPAR) == 0) {
-				((sasfit_gparam*) params) -> GlobalAP[i].SD_a[k-(int)floor(k/MAXPAR)*MAXPAR] 
+				((sasfit_gparam*) params) -> GlobalAP[i].SD_a[k-(int)floor(k/MAXPAR)*MAXPAR]
 			     		= gsl_vector_get(x,j);
 		  	} else if ((int)floor(k/MAXPAR) == 1) {
-		     		((sasfit_gparam*) params) -> GlobalAP[i].FF_l[k-(int)floor(k/MAXPAR)*MAXPAR] 
+		     		((sasfit_gparam*) params) -> GlobalAP[i].FF_l[k-(int)floor(k/MAXPAR)*MAXPAR]
 					= gsl_vector_get(x,j);
 		  	} else {
-		     		((sasfit_gparam*) params) -> GlobalAP[i].SQ_s[k-(int)floor(k/MAXPAR)*MAXPAR] 
+		     		((sasfit_gparam*) params) -> GlobalAP[i].SQ_s[k-(int)floor(k/MAXPAR)*MAXPAR]
 					= gsl_vector_get(x,j);
 		  	}
 	   	}
@@ -405,9 +405,9 @@ void SASFIT_gsl_vector_x2GlobalAP_GCP(gsl_vector * x, void * params)
 }
 
 
-int initTypeStr(sasfit_analytpar       * ap, 
-                 int                     num_ap, 
-                 const char           ** name, 
+int initTypeStr(sasfit_analytpar       * ap,
+                 int                     num_ap,
+                 const char           ** name,
                  sasfit_function_type    fctType)
 {
 	int i;
@@ -415,8 +415,8 @@ int initTypeStr(sasfit_analytpar       * ap,
 	int (*initfct) (sasfit_analytpar *) = 0;
 
 	SASFIT_ASSERT_VAL(ap && num_ap > 0 && name, TCL_ERROR);
-	
-	for (i=0; i < num_ap; i++) 
+
+	for (i=0; i < num_ap; i++)
 	{
 		SASFIT_ASSERT_VAL(name[i], TCL_ERROR);
 
@@ -447,7 +447,7 @@ int initTypeStr(sasfit_analytpar       * ap,
 	return TCL_OK;
 }
 
-Tcl_Obj * sasfit_tcl_get_obj(Tcl_Interp * interp, 
+Tcl_Obj * sasfit_tcl_get_obj(Tcl_Interp * interp,
                              const char * name1,
                              const char * name2)
 {
@@ -470,7 +470,7 @@ exit:
 }
 
 // to use this, all commands have to be rewritten for Tcl_CreateObjCommand
-int sasfit_tcl_get_arr_int(Tcl_Interp * interp, 
+int sasfit_tcl_get_arr_int(Tcl_Interp * interp,
                               int ** arr,
 			      int * length,
                               const char * name1,
@@ -587,7 +587,17 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET_F(int,    "::FitPrecision", "SQ_or_IQ", sasfit_eps_set_sq_or_iq);
 	SF_TCL_GET_F(int,    "::FitPrecision", "IQorGz_int", sasfit_set_iq_or_gz);
 	SF_TCL_GET_F(int,    "::FitPrecision", "IntStrategy_int", sasfit_set_int_strategy);
+	SF_TCL_GET_F(int,    "::FitPrecision", "SphAvgStrategy_int", sasfit_set_sphavg_strategy);
 	SF_TCL_GET_F(int,    "::FitPrecision", "Robertus_p", sasfit_eps_set_robertus_p);
+	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_GAUSSLEGENDRE", sasfit_eps_set_gausslegendre);
+	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_CHEBYSHEV1", sasfit_eps_set_chebyshev1);
+	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_CHEBYSHEV2", sasfit_eps_set_chebyshev2);
+	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_GEGENBAUER", sasfit_eps_set_gegenbauer);
+	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_EXPONENTIAL", sasfit_eps_set_exponential);
+	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_LAGUERRE", sasfit_eps_set_laguerre);
+	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_JACOBI", sasfit_eps_set_jacobi);
+	SF_TCL_GET_F(int,    "::FitPrecision", "Lebedev", sasfit_eps_set_lebedev);
+	SF_TCL_GET_F(int,    "::FitPrecision", "FIBONACCI", sasfit_eps_set_fibonacci);
 	SF_TCL_GET_F(bool, argv[1], "fit", sasfit_eps_set_fitorsim);
 	return TCL_OK;
 }
@@ -635,7 +645,7 @@ int get_AP(Tcl_Interp        *interp,
 	SF_TCL_GET(double, argv[1], "alambda", *aalambda);
 	// read the error type
 	SF_TCL_GET(int, argv[1], "error", *error_type);
-	
+
 /*
  * read scattering curve h, Ih and DIh
  */
@@ -789,7 +799,7 @@ int get_AP(Tcl_Interp        *interp,
        case 2 : { for (i=0;i<ndata;i++) DIh[i] = sqrt(fabs(Ih[i])); break; }
        case 3 : {for (i=0;i<ndata;i++) DIh[i] = 1.0; break;}
       default : { sasfit_err("#get_AP: unknown error_type %d\n",*error_type);
-                  for (i=0;i<ndata;i++) DIh[i] = 1.0; 
+                  for (i=0;i<ndata;i++) DIh[i] = 1.0;
 		break;
                 }
     }
@@ -813,7 +823,7 @@ int get_AP(Tcl_Interp        *interp,
  * read the number of parameters for each contribution to get only values
  * which are actually in use
  */
-	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_ff, 
+	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_ff,
 	                    &len, argv[1],"FF,param_count");
 	if (tcl_result != TCL_OK) {
 		sasfit_free_AP(&AP);
@@ -836,7 +846,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) Splitargv);
        sasfit_err("wrong number of list elements in the form factor parameter list\n");
        return TCL_ERROR;
-    } 
+    }
     for (i=0;i<max_SD;i++) {
        Splitcode = Tcl_SplitList(interp,Splitargv[i],&targc,&targv);
        if ((Splitcode == TCL_ERROR) || (targc > MAXPAR)) {
@@ -856,7 +866,7 @@ int get_AP(Tcl_Interp        *interp,
               return TCL_ERROR;
            }
        }
-    } 
+    }
     Tcl_Free((char *) Splitargv);
 
 /*
@@ -1000,7 +1010,7 @@ int get_AP(Tcl_Interp        *interp,
        sasfit_err("wrong # of list elements in AP(FF,limits)\n");
        return TCL_ERROR;
     }
-    for (i=0;i<max_SD;i++) 
+    for (i=0;i<max_SD;i++)
     {
        Splitcode = Tcl_SplitList(interp,Splitargv[i],&targc,&targv);
        if ((Splitcode == TCL_ERROR) || (targc > MAXPAR)) {
@@ -1010,7 +1020,7 @@ int get_AP(Tcl_Interp        *interp,
           sasfit_err("wrong # of list elements in AP[i](FF,limits)\n");
           return TCL_ERROR;
        }
-       for (j=0; j < targc ;j++) 
+       for (j=0; j < targc ;j++)
        {
            tcode = Tcl_GetBoolean(interp,targv[j],&AP[i].FF_limits[j]);
            if (tcode == TCL_ERROR) {
@@ -1133,7 +1143,7 @@ int get_AP(Tcl_Interp        *interp,
  * read the number of parameters for each contribution to get only values
  * which are actually in use
  */
-	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sd, 
+	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sd,
 	                    &len, argv[1],"SD,param_count");
 	if (tcl_result != TCL_OK) {
 		sasfit_free_AP(&AP);
@@ -1220,7 +1230,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter min of the "max_SD" size distribution
  */
@@ -1261,7 +1271,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter max of the "max_SD" size distribution
  */
@@ -1302,7 +1312,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter limits of the "max_SD" size distribution
  */
@@ -1343,7 +1353,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter active of the "max_SD" size distribution
  */
@@ -1385,7 +1395,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter typestr of the "max_SD" size distribution
  */
@@ -1411,7 +1421,7 @@ int get_AP(Tcl_Interp        *interp,
  * read the number of parameters for each contribution to get only values
  * which are actually in use
  */
-	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sq, 
+	tcl_result = sasfit_tcl_get_arr_int(interp, &param_count_sq,
 	                    &len, argv[1],"SQ,param_count");
 	if (tcl_result != TCL_OK) {
 		sasfit_free_AP(&AP);
@@ -1498,7 +1508,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter min of the "max_SD" size distribution
  */
@@ -1539,7 +1549,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
-  
+
 /*
  * read parameter max of the "max_SD" size distribution
  */
@@ -1580,7 +1590,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter limits of the "max_SD" size distribution
  */
@@ -1621,7 +1631,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter active of the "max_SD" size distribution
  */
@@ -1663,7 +1673,7 @@ int get_AP(Tcl_Interp        *interp,
        Tcl_Free((char *) targv);
     }
     Tcl_Free((char *) Splitargv);
- 
+
 /*
  * read parameter typestr of the "max_SD" size distribution
  */
@@ -1719,7 +1729,7 @@ int get_AP(Tcl_Interp        *interp,
 
 
 /*
- * read parameter Par(fit) 
+ * read parameter Par(fit)
  */
 
 

@@ -416,10 +416,21 @@ set FitPrecision(IQorGz)  "1"
 set FitPrecision(IQorGz_int)  0
 set FitPrecision(SQ_or_IQ,label)  "calculate scattering intensity"
 set FitPrecision(IntStrategy) OOURA_CC
+set FitPrecision(SphAvgStrategy) FIBONACCI
 set FitPrecision(IntStrategy_int) 1
 set FitPrecision(Robertus_p)      9
 set FitPrecision(iter_4_MC)       1000
 set FitPrecision(int)             no
+set FitPrecision(GSL_GAUSSLEGENDRE) 128
+set FitPrecision(GSL_CHEBYSHEV1) 128
+set FitPrecision(GSL_CHEBYSHEV2) 128
+set FitPrecision(GSL_GEGENBAUER) 128
+set FitPrecision(GSL_EXPONENTIAL) 128
+set FitPrecision(GSL_LAGUERRE) 128
+set FitPrecision(GSL_JACOBI) 128
+set FitPrecision(Lebedev) 32
+set FitPrecision(FIBONACCI) 1024
+
 
 set EMOptions(IterationScheme) "KINSOL_FP"
 set EMOptions(spacing) lin

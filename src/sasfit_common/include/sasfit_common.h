@@ -59,6 +59,12 @@
 #define GSL_LAGUERRE 17
 #define GSL_JACOBI 18
 
+#define SPHAVG_GSL_2D_GAUSSLEGENDRE 0
+#define SPHAVG_Lebedev 1
+#define SPHAVG_FIBONACCI 2
+#define SPHAVG_HCUBATURE 3
+#define SPHAVG_PCUBATURE 4
+
 // helper for quoting compiler definitions
 #define __Q(x) #x
 #define SASFIT_QUOTE(x) __Q(x)

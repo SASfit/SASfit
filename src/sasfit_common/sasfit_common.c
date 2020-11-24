@@ -116,8 +116,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_eps_set_fitorsim, /* 72 */
 	sasfit_eps_set_h, /* 73 */
 	sasfit_eps_set_comp, /* 74 */
-	NULL, /* 75 */
-	NULL, /* 76 */
+	sasfit_set_sphavg_strategy, /* 75 */
+	sasfit_get_sphavg_strategy, /* 76 */
 	sasfit_set_int_strategy, /* 77 */
 	sasfit_get_int_strategy, /* 78 */
 	sasfit_sd_LogNorm, /* 79 */
@@ -162,15 +162,15 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_available_table, /* 118 */
 	sasfit_order_table, /* 119 */
 	sasfit_ld_by_order, /* 120 */
-	NULL, /* 121 */
-	NULL, /* 122 */
-	NULL, /* 123 */
-	NULL, /* 124 */
-	NULL, /* 125 */
-	NULL, /* 126 */
-	NULL, /* 127 */
-	NULL, /* 128 */
-	NULL, /* 129 */
+	sasfit_eps_get_gausslegendre, /* 121 */
+	sasfit_eps_get_chebyshev1, /* 122 */
+	sasfit_eps_get_chebyshev2, /* 123 */
+	sasfit_eps_get_gegenbauer, /* 124 */
+	sasfit_eps_get_exponential, /* 125 */
+	sasfit_eps_get_laguerre, /* 126 */
+	sasfit_eps_get_jacobi, /* 127 */
+	sasfit_eps_get_lebedev, /* 128 */
+	sasfit_eps_get_fibonacci, /* 129 */
 	NULL, /* 130 */
 };
 
