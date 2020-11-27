@@ -54,6 +54,16 @@
 #define intabseps 0.0
 
 /**
+ * \def sasfit_orient_avg
+ * Shortcut for integration routine \ref sasfit_orient_avg_ctm.
+ * Assumes 1000 intervals for integration, an absolute error of 0
+ * (\ref intabseps) and a relative error as reported by
+ * \ref sasfit_eps_get_aniso.
+ */
+#define sasfit_orient_avg(fct,p) sasfit_orient_avg_ctm(fct, p, 100000, intabseps, sasfit_eps_get_aniso())
+
+
+/**
  * \def sasfit_integrate
  * Shortcut for integration routine \ref sasfit_integrate_ctm.
  * Assumes 1000 intervals for integration, an absolute error of 0
@@ -214,6 +224,7 @@ sasfit_common_DLLEXP void sasfit_int_ws_all_free(int thid);
  */
 sasfit_common_DLLEXP scalar sasfit_integrate_ctm(scalar int_start, scalar int_end, sasfit_func_one_t intKern_fct, sasfit_param * param, int limit, scalar epsabs, scalar epsrel);
 
+sasfit_common_DLLEXP scalar sasfit_orient_avg_ctm(sasfit_func_two_t intKern_fct, sasfit_param * param, int limit, scalar epsabs, scalar epsrel);
 
 sasfit_common_DLLEXP void sasfit_int_ws_init(void);
 /*@}*/

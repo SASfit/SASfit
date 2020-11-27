@@ -352,7 +352,7 @@ scalar opo_Fp(opo_data *opod) {
 scalar opo_Fc(opo_data *opod) {
     scalar Qxy;
     Qxy = sqrt(opod->Qhat[0]*opod->Qhat[0]+opod->Qhat[1]*opod->Qhat[1]);
-    return 8*M_PI*opod->detDinv
+    return 4*M_PI*opod->detDinv
                 *opo_sinc(opod->Qhat[2])
                 *opo_J1x_x(Qxy);
 }

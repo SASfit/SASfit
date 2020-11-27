@@ -85,8 +85,10 @@ declare 17 generic {
 declare 18 generic {
 	scalar sasfit_param_override_get_psi (scalar default_val)
 }
-
-
+declare 19 generic {
+	scalar sasfit_orient_avg_ctm(sasfit_func_two_t intKern_fct,
+		sasfit_param * param, int limit, scalar epsabs, scalar epsrel)
+}
 
 
 

@@ -25,11 +25,16 @@
  */
 
 
-
 // #include <omp.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
 #include "include/sasfit_common.h"
+#include "include/sasfit_function.h"
+
+typedef struct {
+    sasfit_param *param;
+    sasfit_func_two_t *Kernel_fct;
+} int_cub;
 
 //sasfit_int_workspace_t	sasfit_int_workspace;
 // = {0, NULL};
@@ -173,29 +178,60 @@ double sasfit_gauss_legendre_2D_cube(sasfit_func_two_t f,
 	return C*A*s;
 }
 
+int Kernel_cub(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+	sasfit_param * param;
+	int_cub *cub;
+	cub = (int_cub *) pam;
+	param = (sasfit_param *) cub->param;
+
+	if ((ndim < 2) || (fdim < 1)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+	fval[0]=(*cub->Kernel_fct)(x[0],x[1],param)*sin(x[0]);
+	return 0;
+}
+
+int Kernel_GL(scalar theta, scalar phi, void *pam) {
+	sasfit_param * param;
+	int_cub *cub;
+	cub = (int_cub *) pam;
+	param = (sasfit_param *) cub->param;
+	return (*cub->Kernel_fct)(theta,phi,param)*sin(theta);
+}
+
 scalar sasfit_orient_avg_ctm(
-			sasfit_func_two_t intKern_fct,
+			sasfit_func_two_t *intKern_fct,
 			sasfit_param * param,
 			int limit,
 			scalar epsabs,
 			scalar epsrel)
-{   double Iavg;
+{   double Iavg,sphi,cphi,PHI1,i_r8;
     int i;
+    double *w, *x,*y,*z, xc, yc, zc;
+    int order, rule, lambda_i;
+    double ang_x;
+    double fact,phi,theta;
+    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
     gsl_integration_glfixed_table * wglfixed;
+    int_cub cubstruct;
+
+    cubstruct.Kernel_fct=intKern_fct;
+    cubstruct.param=param;
     Iavg = 0;
+
     switch (sasfit_get_sphavg_strategy()) {
         case SPHAVG_GSL_2D_GAUSSLEGENDRE: {
                 wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
-                sasfit_gauss_legendre_2D_cube(intKern_fct, param, 0, M_PI, 0, 2*M_PI, wglfixed);
+                Iavg = sasfit_gauss_legendre_2D_cube(&Kernel_GL, &cubstruct, 0, M_PI, 0, 2*M_PI, wglfixed);
+                Iavg=Iavg/(4*M_PI);
                 gsl_integration_glfixed_table_free(wglfixed);
                 break;
             }
         case SPHAVG_Lebedev: {
-                double *w, *x,*y,*z;
-                int order, rule;
-                double ang_x;
-                double fact,phi,theta;
                 rule = sasfit_eps_get_lebedev();
+                while (!sasfit_available_table(rule) && rule < 65) rule++;
                 if (rule < 1) rule = 1;
                 if (rule > 65) rule = 65;
                 order = sasfit_order_table ( rule );
@@ -206,18 +242,9 @@ scalar sasfit_orient_avg_ctm(
                 sasfit_ld_by_order ( order, x, y, z, w );
 
                 for (i=0;i<order;i++) {
-                    phi = acos ( z[i] );
-                    fact = sqrt ( x[i] * x[i] + y[i] * y[i] );
-                    if ( 0 < fact ) {
-                        ang_x = acos ( x[i] / fact );
-                    } else {
-                        ang_x = acos ( x[i] );
-                    }
-                    if ( y[i] < 0 ) {
-                        ang_x = - ang_x;
-                    }
-                    theta = ang_x;
-                    Iavg = Iavg+w[i]* intKern_fct(theta,phi,param);
+                    phi = atan2(y[i],x[i]);
+                    theta = acos(z[i]);
+                    Iavg = Iavg+w[i]* (*intKern_fct)(theta,phi,param);
                 }
                 free ( x );
                 free ( y );
@@ -226,18 +253,65 @@ scalar sasfit_orient_avg_ctm(
                 break;
             }
         case SPHAVG_FIBONACCI: {
+                //rule = abs(sasfit_eps_get_fibonacci());
+                PHI1 = 0.5*(1.0 + sqrt(5.0));
+                //order = truncl( gsl_pow_int(PHI1, rule)/sqrt(5.0) + 0.5 ); // this is the n-th Fibonacci number F(n)
+                order = abs(sasfit_eps_get_fibonacci());
+                for (i=0;i<order;i++) {
+                    i_r8 = ( double ) ( - order + 1 + 2 * i );
+                    theta = 2.0 * M_PI * i_r8 / PHI1;
+                    lambda_i = 2*M_PI*i/PHI1;
+                    sphi = i_r8 / order;
+                    cphi = sqrt ( ( order + i_r8 ) * ( order - i_r8 ) ) / order;
+                    xc = cphi * sin ( theta );
+                    yc = cphi * cos ( theta );
+                    zc = sphi;
+                    // phi : lattitude [-pi/2;pi/2]
+                    // theta:lambda_i: longitude [0;2pi]
 
+                    // now turning lattitude and longitude coordinates into standard spherical coordinates
+                    // phi is now the rotation angle around z-axis, which was in the previous naming convention lambda_i=theta
+                    phi   = atan2(yc,xc);
+                    theta = acos(zc);
+                    // phi: polar angle [0,2*pi]
+                    // theta: azimuthal angle [0;pi]
+                    Iavg = Iavg + (*intKern_fct)(theta,phi,param);
+                }
+                Iavg = Iavg/order;
                 break;
             }
         case SPHAVG_HCUBATURE: {
-
+                cubxmin[0] = 0;
+                cubxmax[0] = M_PI;
+                cubxmin[1] = 0;
+                cubxmax[1] = 2*M_PI;
+                hcubature(1, &Kernel_cub,&cubstruct,2, cubxmin, cubxmax,
+                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        fval, ferr);
+                Iavg = fval[0]/(4*M_PI);
                 break;
             }
         case SPHAVG_PCUBATURE: {
-
+                cubxmin[0] = 0;
+                cubxmax[0] = M_PI;
+                cubxmin[1] = 0;
+                cubxmax[1] = 2*M_PI;
+                pcubature(1, &Kernel_cub,&cubstruct,2, cubxmin, cubxmax,
+                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        fval, ferr);
+                Iavg = fval[0]/(4*M_PI);
                 break;
             }
-        default: break;
+        default:
+                cubxmin[0] = 0;
+                cubxmax[0] = M_PI;
+                cubxmin[1] = 0;
+                cubxmax[1] = 2*M_PI;
+                pcubature(1, &Kernel_cub,&cubstruct,2, cubxmin, cubxmax,
+                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        fval, ferr);
+                Iavg = fval[0]/(4*M_PI);
+                break;
 	    }
 	    return Iavg;
 
@@ -245,7 +319,7 @@ scalar sasfit_orient_avg_ctm(
 scalar sasfit_integrate_ctm(scalar int_start,
 			scalar int_end,
 			sasfit_func_one_t intKern_fct,
-			sasfit_param * param,
+			sasfit_param *param,
 			int limit,
 			scalar epsabs,
 			scalar epsrel)

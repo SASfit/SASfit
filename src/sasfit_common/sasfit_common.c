@@ -60,7 +60,7 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_print_param, /* 16 */
 	sasfit_copy_param, /* 17 */
 	sasfit_param_override_get_psi, /* 18 */
-	NULL, /* 19 */
+	sasfit_orient_avg_ctm, /* 19 */
 	NULL, /* 20 */
 	NULL, /* 21 */
 	sasfit_init_vector, /* 22 */

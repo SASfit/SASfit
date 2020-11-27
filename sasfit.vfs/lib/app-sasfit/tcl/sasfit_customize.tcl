@@ -21,11 +21,12 @@
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 
 proc setSphAvgStrategy2int {} {
-	switch $::FitPrecision(IntStrategy) {
+	puts $::FitPrecision(SphAvgStrategy)
+	switch $::FitPrecision(SphAvgStrategy) {
 		"GSL_2D_GAUSSLEGENDRE" {set ::FitPrecision(SphAvgStrategy_int) 0}
 		"Lebedev"  {set ::FitPrecision(SphAvgStrategy_int) 1}
 		"FIBONACCI" {set ::FitPrecision(SphAvgStrategy_int) 2}
-		"H_UBATURE" {set ::FitPrecision(SphAvgStrategy_int) 3}
+		"H_CUBATURE" {set ::FitPrecision(SphAvgStrategy_int) 3}
 		"P_CUBATURE" {set ::FitPrecision(SphAvgStrategy_int) 4}
 		default {set ::FitPrecision(SphAvgStrategy_int) 0}
 	}

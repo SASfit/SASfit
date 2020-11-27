@@ -95,7 +95,7 @@ typedef struct
 	void (*sasfit_print_param) (sasfit_param * param); /* 16 */
 	void (*sasfit_copy_param) (sasfit_param * param, scalar * a); /* 17 */
 	scalar (*sasfit_param_override_get_psi) (scalar default_val); /* 18 */
-	void *reserved19;
+	scalar (*sasfit_orient_avg_ctm) (sasfit_func_two_t intKern_fct, sasfit_param * param, int limit, scalar epsabs, scalar epsrel); /* 7 */
 	void *reserved20;
 	void *reserved21;
 	void (*sasfit_init_vector) (scalar ** vec, int size); /* 22 */
@@ -279,7 +279,10 @@ typedef struct
 #define sasfit_param_override_get_psi \
 	(SASFIT_COMMON_STUBS()->sasfit_param_override_get_psi) /* 18 */
 #endif
-/* Slot 19 is reserved */
+#ifndef sasfit_orient_avg_ctm
+#define sasfit_orient_avg_ctm \
+	(SASFIT_COMMON_STUBS()->sasfit_orient_avg_ctm) /* 19 */
+#endif
 /* Slot 20 is reserved */
 /* Slot 21 is reserved */
 #ifndef sasfit_init_vector

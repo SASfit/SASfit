@@ -8,9 +8,10 @@
 
 // define shortcuts for local parameters/variables
 
+opo_data s_ell_opod;
+
 scalar sasfit_ff_superellipsoid_opo_random(scalar q, sasfit_param * param)
 {
-	opo_data opod;
 	scalar *aw, res,err,sum;
     scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
     int intstrategy, lenaw=4000;
@@ -25,68 +26,67 @@ scalar sasfit_ff_superellipsoid_opo_random(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((QQ <= 0.0), param, "q(%lg) <= 0",QQ); // modify condition to your needs
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(s_ell_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(s_ell_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(s_ell_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 	if (A*B*C==0) return 0;
 
-	opod.a = A;
-	opod.b = A*B;
-	opod.c = A*C;
-    opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_init(&opod);
+	s_ell_opod.a = A;
+	s_ell_opod.b = A*B;
+	s_ell_opod.c = A*C;
+    s_ell_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&s_ell_opod,ALPHA,BETA,GAMMA);
+    opo_init(&s_ell_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(s_ell_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
-    opod.Qmod = q;
+    s_ell_opod.Qmod = q;
     psi=sasfit_param_override_get_psi(PSI_DEG*M_PI/180.);
-    opod.Q[0] = q*cos(psi);
-    opod.Q[1] = q*sin(psi);
-    opod.Q[2] = 0;
-	opod.param=param;
-    opo_setQhat(&opod);
-    QQX = opod.Qhat[0];
-    QQY = opod.Qhat[1];
-    QQZ = opod.Qhat[2];
-	return gsl_pow_2((ETA_P-ETA_M)*opod.detDinv*opo_Fsuperellipsoid(param));
+    s_ell_opod.Q[0] = q*cos(psi);
+    s_ell_opod.Q[1] = q*sin(psi);
+    s_ell_opod.Q[2] = 0;
+	s_ell_opod.param=param;
+    opo_setQhat(&s_ell_opod);
+    QQX = s_ell_opod.Qhat[0];
+    QQY = s_ell_opod.Qhat[1];
+    QQZ = s_ell_opod.Qhat[2];
+	return gsl_pow_2((ETA_P-ETA_M)*s_ell_opod.detDinv*opo_Fsuperellipsoid(param));
 }
 
 scalar sasfit_ff_superellipsoid_opo_random_f(scalar q, sasfit_param * param)
 {
-	opo_data opod;
-	scalar *aw, res,err,sum;
+    scalar *aw, res,err,sum;
     scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
     int intstrategy, lenaw=4000;
     scalar psi;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(s_ell_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(s_ell_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(s_ell_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 	if (A*B*C==0) return 0;
 
-	opod.a = A;
-	opod.b = A*B;
-	opod.c = A*C;
-    opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_init(&opod);
+	s_ell_opod.a = A;
+	s_ell_opod.b = A*B;
+	s_ell_opod.c = A*C;
+    s_ell_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&s_ell_opod,ALPHA,BETA,GAMMA);
+    opo_init(&s_ell_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(s_ell_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
-    opod.Qmod = q;
+    s_ell_opod.Qmod = q;
     psi=sasfit_param_override_get_psi(PSI_DEG*M_PI/180.);
-    opod.Q[0] = q*cos(psi);
-    opod.Q[1] = q*sin(psi);
-    opod.Q[2] = 0;
-	opod.param=param;
-    opo_setQhat(&opod);
-    QQX = opod.Qhat[0];
-    QQY = opod.Qhat[1];
-    QQZ = opod.Qhat[2];
-	return (ETA_P-ETA_M)*opod.detDinv*opo_Fsuperellipsoid(param);
+    s_ell_opod.Q[0] = q*cos(psi);
+    s_ell_opod.Q[1] = q*sin(psi);
+    s_ell_opod.Q[2] = 0;
+	s_ell_opod.param=param;
+    opo_setQhat(&s_ell_opod);
+    QQX = s_ell_opod.Qhat[0];
+    QQY = s_ell_opod.Qhat[1];
+    QQZ = s_ell_opod.Qhat[2];
+	return (ETA_P-ETA_M)*s_ell_opod.detDinv*opo_Fsuperellipsoid(param);
 }
 
 scalar sasfit_ff_superellipsoid_opo_random_v(scalar q, sasfit_param * param, int dist)

@@ -7,13 +7,29 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
+opo_data ell_opod;
+
+scalar sasfit_ff_ellipsoid_opo_kernel_f(scalar theta, scalar phi, sasfit_param * param) {
+    ell_opod.Q[0] = ell_opod.Qmod*cos(phi)*sin(theta);
+    ell_opod.Q[1] = ell_opod.Qmod*sin(phi)*sin(theta);
+    ell_opod.Q[2] = ell_opod.Qmod         *cos(theta);
+    opo_setQhat(&ell_opod);
+    return (ETA_P-ETA_M) *opo_Fe(&ell_opod);
+}
+scalar sasfit_ff_ellipsoid_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
+    ell_opod.Q[0] = ell_opod.Qmod*cos(phi)*sin(theta);
+    ell_opod.Q[1] = ell_opod.Qmod*sin(phi)*sin(theta);
+    ell_opod.Q[2] = ell_opod.Qmod         *cos(theta);
+    opo_setQhat(&ell_opod);
+    return gsl_pow_2((ETA_P-ETA_M) *opo_Fe(&ell_opod));
+}
 
 scalar sasfit_ff_ellipsoid_opo_random(scalar q, sasfit_param * param)
 {
     scalar Iavg,theta,phi,i_r8,sphi,cphi;
     int available, order, n, rule_max=65, i;
     double *w, *x, *y, *z;
-    opo_data opod;
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q); // modify condition to your needs
@@ -22,64 +38,21 @@ scalar sasfit_ff_ellipsoid_opo_random(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((C <= 0.0), param, "c(%lg) <= 0",C); // modify condition to your needs
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ell_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ell_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ell_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
-	opod.a = A;
-	opod.b = B;
-	opod.c = C;
-    opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,0,0,0);
-    opo_init(&opod);
+	ell_opod.a = A;
+	ell_opod.b = B;
+	ell_opod.c = C;
+    ell_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&ell_opod,0,0,0);
+    opo_init(&ell_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(ell_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
-    opod.Qmod = q;
-    order = sasfit_order_table ( rule_max );
-    if (lround(sasfit_eps_get_robertus_p())>0) {
-        for ( n = lround(sasfit_eps_get_lebedev()); n <= rule_max; n++ ) {
-            available = sasfit_available_table ( n );
-            if ( available ) {
-                order = sasfit_order_table ( n );
-                break;
-            }
-        }
-        w = ( double * ) malloc ( order * sizeof ( double ) );
-        x = ( double * ) malloc ( order * sizeof ( double ) );
-        y = ( double * ) malloc ( order * sizeof ( double ) );
-        z = ( double * ) malloc ( order * sizeof ( double ) );
-        sasfit_ld_by_order ( order, x, y, z, w );
-        Iavg = 0;
-        for (i=0;i<order;i++) {
-            opod.Q[0] = q*x[i];
-            opod.Q[1] = q*y[i];
-            opod.Q[2] = q*z[i];
-            opo_setQhat(&opod);
-            Iavg = Iavg+w[i]*gsl_pow_2((ETA_P-ETA_M) *opo_Fe(&opod));
-        }
-        free ( x );
-        free ( y );
-        free ( z );
-        free ( w );
-    } else {
-        n = lround(fabs(sasfit_eps_get_fibonacci()));
-        phi = 0.5*(1.0 + sqrt(5.0));
-        order = truncl( gsl_pow_int(phi, n)/sqrt(5.0) + 0.5 );
-        Iavg = 0;
-        for (i=0;i<order;i++) {
-            i_r8 = ( double ) ( - order + 1 + 2 * i );
-            theta = 2.0 * M_PI * i_r8 / phi;
-            sphi = i_r8 / order;
-            cphi = sqrt ( ( order + i_r8 ) * ( order - i_r8 ) ) / order;
-            opod.Q[0] = q*cphi * sin ( theta );
-            opod.Q[1] = q*cphi * cos ( theta );
-            opod.Q[2] = q*sphi;
-            opo_setQhat(&opod);
-            Iavg = Iavg+gsl_pow_2((ETA_P-ETA_M) *opo_Fe(&opod))/order;
-        }
-    }
-    return Iavg;
+    ell_opod.Qmod = q;
+    return sasfit_orient_avg(&sasfit_ff_ellipsoid_opo_kernel,param);
 }
 
 scalar sasfit_ff_ellipsoid_opo_random_f(scalar q, sasfit_param * param)
@@ -87,52 +60,25 @@ scalar sasfit_ff_ellipsoid_opo_random_f(scalar q, sasfit_param * param)
     scalar Iavg;
     int available, order, n, rule_max=65, i;
     double *w, *x, *y, *z;
-    opo_data opod;
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ell_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ell_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ell_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
-	opod.a = A;
-	opod.b = B;
-	opod.c = C;
-    opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_init(&opod);
+	ell_opod.a = A;
+	ell_opod.b = B;
+	ell_opod.c = C;
+    ell_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&ell_opod,ALPHA,BETA,GAMMA);
+    opo_init(&ell_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(ell_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
-    opod.Qmod = q;
-    order = sasfit_order_table ( rule_max );
-    for ( n = lround(sasfit_eps_get_robertus_p()); n <= rule_max; n++ ) {
-        available = sasfit_available_table ( n );
-        if ( available ) {
-            order = sasfit_order_table ( n );
-            break;
-        }
-    }
-
-    w = ( double * ) malloc ( order * sizeof ( double ) );
-    x = ( double * ) malloc ( order * sizeof ( double ) );
-    y = ( double * ) malloc ( order * sizeof ( double ) );
-    z = ( double * ) malloc ( order * sizeof ( double ) );
-    sasfit_ld_by_order ( order, x, y, z, w );
-    Iavg = 0;
-    for (i=0;i<order;i++) {
-        opod.Q[0] = q*x[i];
-        opod.Q[1] = q*y[i];
-        opod.Q[2] = q*z[i];
-        opo_setQhat(&opod);
-        Iavg = Iavg+w[i]*(ETA_P-ETA_M) *opo_Fc(&opod);
-    }
-    free ( x );
-    free ( y );
-    free ( z );
-    free ( w );
-    return Iavg;
-	return (ETA_P-ETA_M) *opo_Fe(&opod);
+    ell_opod.Qmod = q;
+    return sasfit_orient_avg(&sasfit_ff_ellipsoid_opo_kernel,param);
 }
 
 scalar sasfit_ff_ellipsoid_opo_random_v(scalar q, sasfit_param * param, int dist)
@@ -140,6 +86,6 @@ scalar sasfit_ff_ellipsoid_opo_random_v(scalar q, sasfit_param * param, int dist
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return ell_opod.detDinv;
 }
 
