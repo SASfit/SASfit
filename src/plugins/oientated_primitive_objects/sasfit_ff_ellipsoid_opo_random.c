@@ -26,9 +26,6 @@ scalar sasfit_ff_ellipsoid_opo_kernel(scalar theta, scalar phi, sasfit_param * p
 
 scalar sasfit_ff_ellipsoid_opo_random(scalar q, sasfit_param * param)
 {
-    scalar Iavg,theta,phi,i_r8,sphi,cphi;
-    int available, order, n, rule_max=65, i;
-    double *w, *x, *y, *z;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -57,10 +54,6 @@ scalar sasfit_ff_ellipsoid_opo_random(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_ellipsoid_opo_random_f(scalar q, sasfit_param * param)
 {
-    scalar Iavg;
-    int available, order, n, rule_max=65, i;
-    double *w, *x, *y, *z;
-
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here

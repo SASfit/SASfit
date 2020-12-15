@@ -24,10 +24,6 @@ scalar sasfit_ff_parallelepiped_opo_kernel(scalar theta, scalar phi, sasfit_para
 
 scalar sasfit_ff_parallelepiped_opo_random(scalar q, sasfit_param * param)
 {
-    scalar Iavg;
-    int available, order, n, rule_max=65, i;
-    double *w, *x, *y, *z;
-
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q); // modify condition to your needs
@@ -56,10 +52,6 @@ scalar sasfit_ff_parallelepiped_opo_random(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_parallelepiped_opo_random_f(scalar q, sasfit_param * param)
 {
-    scalar Iavg;
-    int available, order, n, rule_max=65, i;
-    double *w, *x, *y, *z;
-
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(p_epiped_opod.ea,EA_X,EA_Y,EA_Z),0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");

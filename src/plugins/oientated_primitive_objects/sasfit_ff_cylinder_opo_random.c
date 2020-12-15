@@ -50,9 +50,6 @@ scalar sasfit_ff_cylinder_opo_random(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_cylinder_opo_random_f(scalar q, sasfit_param * param)
 {
-    scalar psi, Iavg;
-    int available, order, n, rule_max=65, i;
-    double *w, *x, *y, *z;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
