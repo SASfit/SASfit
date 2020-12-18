@@ -16,6 +16,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_hard_sphere__cs_.c
 	sasfit_sq_hard_sphere__gh_.c
 	sasfit_sq_hard_sphere__py_.c
+	sasfit_sq_hard_sphere_hard_shell_py.c
 	sasfit_sq_hard_sphere_utils.c
 	interface.c
 )

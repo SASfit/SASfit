@@ -7,13 +7,14 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(6)
+SASFIT_PLUGIN_EXP_BEGIN(7)
 SASFIT_PLUGIN_EXP_ADD( sq_hard_sphere__lhr_ )
 SASFIT_PLUGIN_EXP_ADD( sq_hard_sphere__mv_ )
 SASFIT_PLUGIN_EXP_ADD( sq_hard_sphere__4_3_ )
 SASFIT_PLUGIN_EXP_ADD( sq_hard_sphere__cs_ )
 SASFIT_PLUGIN_EXP_ADD( sq_hard_sphere__gh_ )
 SASFIT_PLUGIN_EXP_ADD( sq_hard_sphere__py_ )
+SASFIT_PLUGIN_EXP_ADD( sq_hard_sphere_hard_shell_py )
 
 SASFIT_PLUGIN_EXP_END
 

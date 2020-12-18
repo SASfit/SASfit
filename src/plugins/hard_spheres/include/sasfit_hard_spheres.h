@@ -288,6 +288,51 @@ sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__py__f(scalar q, sasfit_
 sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere__py__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_hard_sphere__py_ ################ */
 
+/* ################ start sq_hard_sphere_hard_shell_py ################ */
+/**
+ * \defgroup sq_hard_sphere_hard_shell_py 3D Hard Sphere Hard Shell (PY)
+ * \ingroup sq_plugins_hard_sphere
+ *
+ * \brief \<some brief description of 3D Hard Sphere Hard Shell (PY) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>radius</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>volume fraction</td>
+ *      </tr><tr>
+ *       <td>\b Delta R</td>
+ *       <td>hard shell thickness</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_hard_sphere__py_
+ *
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
+ */
+sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere_hard_shell_py(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_hard_sphere__py_
+ *
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
+ */
+sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere_hard_shell_py_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_hard_sphere__py_
+ *
+ * \sa sasfit_hard_spheres.h, sq_plugins_hard_sphere
+ */
+sasfit_hard_spheres_DLLEXP scalar sasfit_sq_hard_sphere_hard_shell_py_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_hard_sphere_hard_shell_py ################ */
+
 
 #endif // this file
 
