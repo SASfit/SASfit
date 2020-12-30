@@ -449,6 +449,7 @@ set tmpsasfit(filelabel)    [file tail [lindex $tmpsasfit(filename) 0]]
 set tmpsasfit(file,name)  {}
 set tmpsasfit(file,widcnt)     0
 set tmpsasfit(file,divisor)   {1}
+set tmpsasfit(file,multiply)  {1}
 set tmpsasfit(file,firstskip) {0}
 set tmpsasfit(file,lastskip)  {0}
 set tmpsasfit(file,hide)      {no}
@@ -479,7 +480,7 @@ if {$addsasfit(Nth,n) < $Nth} {
 
 set addsasfit(Nth,actual) $Nth
 sasfit_arr_op set addsasfit addsasfit "file," "Nth,file," [expr $Nth-1] \
-	{n name divisor firstskip lastskip hide widname widcnt \
+	{n name divisor multiply firstskip lastskip hide widname widcnt \
 	Q I DI res "res,file" "res,calc" r1 r2 lambda Dlambda l1 l2 Dd d \
 	dr_by_count dr_percent dr_loglogdist dr_mindist}
 sasfit_arr_op set addsasfit addsasfit "" "Nth," [expr $Nth-1] \
@@ -544,14 +545,14 @@ proc replace_or_append_Nth_globalfit_data {globalsasfit Nth} {
 	if {$addsasfit(Nth,n) < $Nth} {
 	   incr addsasfit(Nth,n)
 	   sasfit_arr_op lappend addsasfit addsasfit "Nth,file," "file," -1 \
-	      {n name divisor firstskip lastskip hide widname widcnt Q I DI res \
+	      {n name divisor multiply firstskip lastskip hide widname widcnt Q I DI res \
 	      "res,file" "res,calc" r1 r2 lambda Dlambda l1 l2 Dd d \
 	      dr_by_count dr_percent dr_loglogdist dr_mindist}
 	   sasfit_arr_op lappend addsasfit addsasfit "Nth," "" -1 \
 	      {filelabel hide Q I DI res "res,file" "res,calc"}
 	} else {
 	   sasfit_arr_op lset addsasfit addsasfit "Nth,file," "file," [expr $Nth-1] \
-	      {n name divisor firstskip lastskip hide widname widcnt Q I DI res "res,file" "res,calc" \
+	      {n name divisor multiply firstskip lastskip hide widname widcnt Q I DI res "res,file" "res,calc" \
 	      r1 r2 lambda Dlambda l1 l2 Dd d \
 	      dr_by_count dr_percent dr_loglogdist dr_mindist}
 	   sasfit_arr_op lset addsasfit addsasfit "Nth," "" [expr $Nth-1] \
@@ -572,7 +573,7 @@ proc remove_Nth_globalfit_data {globalsasfit Nth} {
 	}
 	set addsasfit(Nth,actual) $Nth
 	sasfit_arr_op delete addsasfit addsasfit "Nth,file," "Nth,file," [expr $Nth-1] \
-		{n name divisor firstskip lastskip hide widname widcnt Q I DI res \
+		{n name divisor multiply firstskip lastskip hide widname widcnt Q I DI res \
 		"res,calc" "res,file" r1 r2 lambda Dlambda l1 l2 Dd d \
 		dr_by_count dr_percent dr_loglogdist dr_mindist}
 	sasfit_arr_op delete addsasfit addsasfit "Nth," "Nth," [expr $Nth-1] \
@@ -592,7 +593,7 @@ proc remove_Nth_globalfit_data {globalsasfit Nth} {
 proc AddCmd {args} {
 #^^^^^^^^^^^^^^^^^^^
 global sasfit tmpsasfit AnalytPar actualAnalytPar tmpAnalytPar
-global fn hide fskip lskip divisor widname r1 r2 l1 l2 lambda Dlambda d Dd
+global fn hide fskip lskip divisor multiply widname r1 r2 l1 l2 lambda Dlambda d Dd
 global addsasfit
 global nomenu_add
 cp_arr addsasfit tmpsasfit
@@ -918,9 +919,9 @@ set w2 .addfile.lay2
 label $w2.file -text "file name:" \
       -highlightthickness 0 -justify left -anchor w
 grid  $w2.file -column 0 -row 0 -sticky w 
-label $w2.divisor -text "divisor" \
+label $w2.multiply -text "multiply" \
       -highlightthickness 0 -justify left -anchor w
-grid  $w2.divisor -column 1 -row 0 -sticky w
+grid  $w2.multiply -column 1 -row 0 -sticky w
 label $w2.skipfirst -text "skip first\nn points" \
       -highlightthickness 0 -justify left -anchor w
 grid  $w2.skipfirst -column 2 -row 0 -sticky w

@@ -7,8 +7,9 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(1)
+SASFIT_PLUGIN_EXP_BEGIN(2)
 SASFIT_PLUGIN_EXP_ADD( sq_random_flight )
+SASFIT_PLUGIN_EXP_ADD( sq_pc_random_flight )
 
 SASFIT_PLUGIN_EXP_END
 

@@ -653,7 +653,7 @@ proc clear_sasfit_file_config { sasfit_arr prefix
 } {
 	upvar $sasfit_arr sf
 	set sf(${prefix}widcnt) 0
-	clear_sasfit_config sf $prefix {name divisor firstskip \
+	clear_sasfit_config sf $prefix {name divisor multiply firstskip \
 		lastskip hide Q I DI res "res,calc" "res,file" widname r1 r2 lambda Dlambda l1 \
 		l2 Dd d dr_by_count dr_percent \
 		dr_loglogdist dr_mindist \
@@ -706,8 +706,8 @@ proc dr_set_arr {sasfit_arr prefix index data_redu_arr
 proc arr_append_dr { sasfit_arr prefix index
 } {
 	upvar $sasfit_arr sf
-	foreach suffix {name divisor firstskip lastskip hide} \
-	        varname {::fn ::divisor ::fskip ::lskip ::hide
+	foreach suffix {name divisor multiply firstskip lastskip hide} \
+	        varname {::fn ::divisor ::multiply ::fskip ::lskip ::hide
 	} {
 		lappend sf($prefix$suffix) [lindex [array get $varname $index] 1]
 	}
@@ -726,7 +726,7 @@ proc arr_append_dr { sasfit_arr prefix index
 proc equal_length_sasfit_file_config { sasfit_arr prefix
 } {
 	upvar $sasfit_arr sf
-	foreach suffix {hide firstskip lastskip divisor Q I DI res "res,calc" "res,file" r1 r2 l1 \
+	foreach suffix {hide firstskip lastskip divisor multiply Q I DI res "res,calc" "res,file" r1 r2 l1 \
 	                l2 lambda Dlambda d Dd widname
 	} {
 		if {[llength $sf(${prefix}name)] != [llength $sf($prefix$suffix)]} {
@@ -1614,6 +1614,7 @@ if {[string compare $ReadSuccess no] == 0} {
    lappend tmpsasfit(file,name) "data from clipboard"
    set tmpsasfit(file,widcnt)     0
    set tmpsasfit(file,divisor)   {1}
+   set tmpsasfit(file,multiply)  {1}
    set tmpsasfit(file,firstskip) {0}
    set tmpsasfit(file,lastskip)  {0}
    set tmpsasfit(file,hide)      {no}
@@ -2125,9 +2126,9 @@ proc show_dr_menu { index } {
 	label $w.lay1.lbl -text "data cropping and scaling: "
 
 	frame $w.lay1.div
-	label $w.lay1.div.lbl -text "divisor: "
+	label $w.lay1.div.lbl -text "multiply: "
 	entry $w.lay1.div.ntr \
-		-textvariable ::divisor($index) -width 10
+		-textvariable ::multiply($index) -width 10
 
 	frame $w.lay1.skipf
 	label $w.lay1.skipf.lbl -text "skip first n points: "
@@ -2242,6 +2243,7 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set fskip($j)   [lindex $ssasfit(file,firstskip) $i]
    set lskip($j)   [lindex $ssasfit(file,lastskip)  $i]
    set divisor($j) [lindex $ssasfit(file,divisor)   $i]
+   set multiply($j) [lindex $ssasfit(file,multiply)   $i]
    set widname($j) [lindex $ssasfit(file,widname)   $i]
    dr_set_arr ssasfit "file," $j data_redu
 
@@ -2274,8 +2276,8 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
          set resfileh [lindex $tmparr(res,file) $k]
          set rescalch [lindex $tmparr(res,calc) $k]
          lappend ssasfit(Q)   $h
-         lappend ssasfit(I)   [expr $Ih /($divisor($j)*1.0)]
-         lappend ssasfit(DI)  [expr $DIh/($divisor($j)*1.0)]
+         lappend ssasfit(I)   [expr $Ih *$multiply($j)/($divisor($j)*1.0)]
+         lappend ssasfit(DI)  [expr $DIh*$multiply($j)/($divisor($j)*1.0)]
          lappend ssasfit(res) $resh
          lappend ssasfit(res,file) $resfileh
          lappend ssasfit(res,calc) $rescalch
@@ -2337,7 +2339,7 @@ proc destroyMergeFile {widcnt} {
 proc rmMergeFileCmd {delwidcnt} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	global tmpsasfit
-	global fn hide fskip lskip divisor widname 
+	global fn hide fskip lskip divisor multiply widname 
 	global r1 r2 l1 l2 lambda Dlambda d Dd
 	global widcnt sf
 	
@@ -2350,7 +2352,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	clear_sasfit_file_config sf "file,"
 	set sf(delwid)         no
 	
-	clear_sasfit_config tmpsasfit "file," {name divisor firstskip lastskip hide \
+	clear_sasfit_config tmpsasfit "file," {name divisor multiply firstskip lastskip hide \
 		dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_errorbar dr_multerror dr_max_Dq_q}
 	
 	for {set i 0} {$i < $tmpsasfit(file,n)} {incr i} {
@@ -2376,7 +2378,7 @@ proc rmMergeFileCmd {delwidcnt} {
 		set sf(file,n) [expr $sf(file,n)-1]
 	    } else {
 		sasfit_arr_op lappend sf tmpsasfit "file," "file," $listIndex \
-			{name hide firstskip lastskip divisor widname \
+			{name hide firstskip lastskip divisor multiply widname \
 			Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd \
 			dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_error dr_multerror dr_max_Dq_q}
 	        lset sf(file,widname) $newIndex [lreplace [lindex $sf(file,widname) end] 1 1 [expr $newIndex+1]]
@@ -2384,7 +2386,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	    }
 	    incr listIndex
 	}
-	sasfit_arr_op set tmpsasfit sf "file," "file," -1 {name hide firstskip lastskip divisor \
+	sasfit_arr_op set tmpsasfit sf "file," "file," -1 {name hide firstskip lastskip divisor multiply \
 		widname Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd n\
 		dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_error dr_multerror dr_max_Dq_q}
 	
@@ -2405,7 +2407,7 @@ proc MergeFileCmd {ttmpsasfit args} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $ttmpsasfit ssasfit
 global resolution
-global fn hide fskip lskip divisor widname widcnt
+global fn hide fskip lskip divisor multiply widname widcnt
 set w2 .addfile.lay2
    if {[llength $args] == 1} {
          set i [lindex $args 0]
@@ -2420,6 +2422,7 @@ set w2 .addfile.lay2
 	      set ssasfit(filename) ""
       }
       lappend ssasfit(file,divisor)   1
+      lappend ssasfit(file,multiply)   1
       lappend ssasfit(file,firstskip) 0
       lappend ssasfit(file,lastskip)  0
       lappend ssasfit(file,hide)      no
@@ -2441,6 +2444,7 @@ set w2 .addfile.lay2
    set fskip($j)   [lindex $ssasfit(file,firstskip) $i]
    set lskip($j)   [lindex $ssasfit(file,lastskip)  $i]
    set divisor($j) [lindex $ssasfit(file,divisor)   $i]
+   set multiply($j) [lindex $ssasfit(file,multiply)   $i]
    set widname($j) [lindex $ssasfit(file,widname)   $i]
    set widcnt [lindex $widname($j) 1]
    dr_set_arr ssasfit "file," $j ::data_redu
@@ -2456,7 +2460,7 @@ set w2 .addfile.lay2
          -column 0 -row $i
 
    entry $w2.vportdivisor.frame.entry$widcnt \
-           -textvariable divisor($j) -width 10
+           -textvariable multiply($j) -width 10
    set tmph [winfo reqheight $w2.vportdivisor.frame.entry$widcnt]
    if {$h < $tmph} {set h $tmph}
    grid  $w2.vportdivisor.frame.entry$widcnt \
@@ -2551,7 +2555,7 @@ proc hsetyview {args} {
 proc MergeCmd {} {
 #^^^^^^^^^^^^^^^^
 	global sasfit tmpsasfit tmpAnalytPar
-	global fn hide fskip lskip divisor widname r1 r2 l1 l2 lambda Dlambda d Dd
+	global fn hide fskip lskip divisor multiply widname r1 r2 l1 l2 lambda Dlambda d Dd
 	global addsasfit
 	if {$sasfit(file,n) < 1} {
 		NewCmd
@@ -2654,9 +2658,9 @@ proc MergeCmd {} {
 	label $w2.file -text "file name:" \
 	      -highlightthickness 0 -justify left -anchor w
 	grid  $w2.file -column 0 -row 0 -sticky w 
-	label $w2.divisor -text "divisor" \
+	label $w2.multiply -text "multiply" \
 	      -highlightthickness 0 -justify left -anchor w
-	grid  $w2.divisor -column 1 -row 0 -sticky w
+	grid  $w2.multiply -column 1 -row 0 -sticky w
 	label $w2.skipfirst -text "skip first\nn points" \
 	      -highlightthickness 0 -justify left -anchor w
 	grid  $w2.skipfirst -column 2 -row 0 -sticky w
@@ -2810,7 +2814,7 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 } {
 	upvar $sasfit_arr localsasfit
 	global ASCIIData SESANSData ALVData IQGraph GlobalFitIQGraph
-	global fn hide fskip lskip divisor widname
+	global fn hide fskip lskip divisor multiply widname
 
 	set yscale {}
 	switch $localsasfit(actualdatatype) {
@@ -2863,7 +2867,7 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 					 }
 		   }
 
-	clear_sasfit_config localsasfit "file," {name divisor firstskip lastskip \
+	clear_sasfit_config localsasfit "file," {name divisor multiply firstskip lastskip \
 		hide dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_errorbar dr_multerror dr_max_Dq_q}
 
 	set n_no_hide 0

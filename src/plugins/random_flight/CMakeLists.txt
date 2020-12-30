@@ -11,6 +11,7 @@ set(LIBS_EXT
 # source files
 set(SOURCE_${PRJ_NAME}
 	sasfit_sq_random_flight.c
+	sasfit_sq_pc_random_flight.c
 	interface.c
 )
 
