@@ -15,6 +15,6 @@ set -x
 export HOMEBREW_NO_AUTO_UPDATE=1
 # already installed: git, cmake
 brew install gcc
-brew cask install xquartz
+brew install --cask xquartz
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
