@@ -793,7 +793,7 @@ class ReplaceRobot:
         a format suitable for the Notes section.
         """
         # TODO: look up DOI info and create full reference
-        urltitle = self.doGetTitleFromURL('http://dx.doi.org/' + doi_linktext ) # try to get title from URL
+        urltitle = self.doGetTitleFromURL('https://doi.org/' + doi_linktext ) # try to get title from URL
         refname = 'refbot%d' % refsequence
         if urltitle:
             new_text = '# {{note|%s}} %s {{doi|%s}}\n' \
