@@ -854,7 +854,7 @@ with the rectangle function $\Pi(x)$
 \section{anisotropic form factors of oriented primitive objects}
 \label{ch:OPO}
 
-In this section The scattering amplitudes of simple geometric objects are described having an arbitrary but fixed orientation as well as those which are obtained by an isomorph linear transformation. The most simple ones are unit spheres, unit cube and unit cylinder, and their isomorph linear deformed shapes of ellipsoid,  oblique parallelepiped and  oblique cylinder for which their $\B{Q}$-dependent form factors $F(\B{Q})$ are given analytically.
+In this section The scattering amplitudes of simple geometric objects are described having an arbitrary but fixed orientation as well as those which are obtained by an affine transformation. The most simple ones are unit spheres, unit cube and unit cylinder, and their affine deformed shapes of ellipsoid,  oblique parallelepiped and  oblique cylinder for which their $\B{Q}$-dependent form factors $F(\B{Q})$ are given analytically.
 
 \noindent
 \begin{figure}[htb]
@@ -956,17 +956,19 @@ Tait–Bryan angles ($x$-$y$-$z$, $y$-$z$-$x$, $z$-$x$-$y$, $x$-$z$-$y$, $z$-$y$
 \end{align}
 \vspace{5mm}
 
-\subsection{oriented ellipsoid} ~\\
+Next to the form factor of an oriented primitive object also the form factor of it fully randomly oriented version is made available. The orientational average is done by integrating over the full Ewald's sphere, which is a double integration. \SASfit supplies for this orientational average separate integration routines which can be configured via the GUI. Next to the multidimensional adaptive integration routines \texttt{pcubature} and \texttt{hcubature} from \cite{Johnson} also some other routines are supplied, which however are nonadaptive without error estimate of the integral but optimized for integrations over a sphere surface. Nevertheless, these routines often need significant less function evaluations than a conventional multidimensional integration routines. The implemented methods are a 2D-GaussLegendre integration, Lebedev \cite{Lebedev1975,Lebedev1976,Lebedev1977} and Fibonacci \cite{Niederreiter1992,Marques2013} quadrature algorithm with a fixed and configurable number of function evaluations and without error estimation of the integral.
+
+\subsection{perfect and random oriented ellipsoid} ~\\
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.6\textwidth]{../images/form_factor/supershapes/triaxial_ellipsoid321.png}
+\includegraphics[width=0.65\textwidth]{../images/form_factor/supershapes/triaxial_ellipsoid321.png}
 \end{center}
 \caption{ellipsoid with semi-axis $(a:b:c)=(3:2:1)$ and $\alpha=\beta=\gamma=0$}
 \label{fig:opo_ellipsoid}
 \end{figure}
 
-This form factor describes an oblique ellipsoid with half axis $a$, $b$, and $c$, which is obtained by an isomorph linear transformation of an unit sphere. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
+This form factor describes an oblique ellipsoid with half axis $a$, $b$, and $c$, which is obtained by an affine transformation of an unit sphere. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction. The unit vectors $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are assumed in this example pointing into the directions of the three orthogonal axis $\B{e}_x$, $\B{e}_y$, and $\B{e}_z$ and therefore represent a triaxial ellipsoid.
 
 
 \begin{align}
@@ -980,13 +982,73 @@ d\phi \, e^{\imath\B{\hat{Q}r}} \nonumber \\
 \abs{\B{\hat{Q}}}\cos \abs{\B{\hat{Q}}}}{\abs{\B{\hat{Q}}}^3}
 \label{eq:form:E}
 \end{align}
+For a random oriented ellipsoid one either can integrate over all Euler-angle, which is a tripple integration or over all orientations of $\B{Q}$, which is a double integration and performed for the randomized form factor. The corresponding scattering amplitude $F_{\mathrm{E},rnd}$ and scattering intensity $P_{\mathrm{E},rnd}$ are then given by
+\begin{align}
+F_{\mathrm{E},rnd}(Q) &= \left\langle F_E(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_E\left(Q\begin{pmatrix}
+                                       \cos(\phi)\sin(\theta) \\
+                                       \sin(\phi)\sin(\theta) \\
+                                       \cos(\theta)
+                                     \end{pmatrix}\right) \\
+P_{\mathrm{E},rnd}(Q) &= \left\langle F_E^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_E^2\left(Q\begin{pmatrix}
+                                       \cos(\phi)\sin(\theta) \\
+                                       \sin(\phi)\sin(\theta) \\
+                                       \cos(\theta)
+                                     \end{pmatrix}\right) 
+\end{align}
 
 \begin{figure}[htb]
-\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_0_0_18m.png}
-\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_90_0_18m.png}   \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_45_45_18m.png}
+\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_0_0_18m.png} \hfill
+\includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_90_0_18m.png}  \hfill \includegraphics[width=0.31\textwidth]{../images/form_factor/supershapes/ellipsoid_0_45_45_18m.png}
 \caption{Scattering patterns at 18m detector distance and a wavelength of $\lambda=0.6$nm. The ellipsoids are simulated with radii of $a=30$nm, $b=20$nm, and $c=10$nm. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=45^\circ,\gamma=45^\circ)$ }
 \label{fig:opo_ellipsoidIQ2D}
 \end{figure}
+
+~\\
+\underline{Input Parameters for model \texttt{ellipsoid (opo)}:}
+\begin{description}
+\item[\texttt{a}] length of first axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{b}] length of second axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of fsecondist axis.
+\item[\texttt{c}] length of third axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{alpha}] first Euler angle
+\item[\texttt{beta}] second Euler angle
+\item[\texttt{gamma}] third Euler angle
+\item[\texttt{psi}] direction of $\B{Q}$ on detector ($\psi=0$, $x$-direction, to the right)
+\end{description}
+
+~\\
+\underline{Input Parameters for model \texttt{ellipsoid (opo, random)}:}
+\begin{description}
+\item[\texttt{a}] length of first axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{b}] length of second axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of fsecondist axis.
+\item[\texttt{c}] length of third axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\end{description}
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be orthogonal to each other.
+\end{itemize}
 
 \subsection{oriented parallelepiped} ~\\
 
@@ -998,7 +1060,7 @@ d\phi \, e^{\imath\B{\hat{Q}r}} \nonumber \\
 \label{fig:opo_cube}
 \end{figure}
 
-This form factor describes an oblique parallelepiped which is obtained by an isomorph linear transformation of an unit cube with half edge lengths of $a$, $b$, and $c$. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
+This form factor describes an oblique parallelepiped which is obtained by an affine transformation of an unit cube with half edge lengths of $a$, $b$, and $c$. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
 
 
 \begin{align}
@@ -1034,7 +1096,7 @@ e^{\imath\B{\hat{Q}r}} \nonumber \\
 \label{fig:opo_cylinder}
 \end{figure}
 
-This form factor describes an oblique parallelepiped which is obtained by an isomorph linear transformation of an unit cylinder with radii $a$ and $b$ and half height $c$. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
+This form factor describes an oblique parallelepiped which is obtained by an affine transformation of an unit cylinder with radii $a$ and $b$ and half height $c$. The detector plane is in the $xy$-plane and the incident beam in the $-z$-direction.
 
 
 \begin{align}
@@ -1135,7 +1197,7 @@ The implicit representation is given by
 \end{align}
 Super-ellipsoids are a special case of super-quadrics for which the two exponents are equal $\epsilon_1=\epsilon_2$. The implicit representation then looks as
 $\abs{\frac{x}{a_1}}^n+\abs{\frac{y}{a_2}}^n+\abs{\frac{y}{a_3}}^n\leq 1$ with $n=1/\epsilon_1=1/\epsilon_2$.
-As the asymmetric super-quadrics is obtained by a scale transform, which is a special case of an isomorph linear transform only the Fourier transform of a unit super-quadrics has to be solved. All its isomorph linear transform than can be easily calculated by linear algebra.  The Fourier transform of a unit super-quadrics ($a_1=a_2=a_3=1$) is
+As the asymmetric super-quadrics is obtained by a scale transform, which is a special case of an affine transform only the Fourier transform of a unit super-quadrics has to be solved. All its affine transform than can be easily calculated by linear algebra.  The Fourier transform of a unit super-quadrics ($a_1=a_2=a_3=1$) is
 \begin{align}\label{eq:FTsuperquadrics}
   F_\mathrm{SQ}(\B{Q}) &=
 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1

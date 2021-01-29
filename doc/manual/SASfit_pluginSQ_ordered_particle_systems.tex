@@ -1514,8 +1514,8 @@ The random flight model describes a discrete chain, where the positions of the $
 The structure factor $S_N(QD)$ describing such an arrangement of $N$ particles on a random flight
 with a constant step size $D$ is given by \cite{Burchard1970} as
 \begin{align}
-S_N(QD)&=
-    \frac{2}{1-\frac{\sin(QD)}{QD}}-1-\frac{2\left[1-\left[\frac{\sin(QD)}{QD}\right]^N\right]}{N\left[1-\frac{\sin(QD)}{QD}\right]^2}\frac{\sin(QD)}{QD}
+S_N(QD)=& 1+2\sum_{k=1}^{k=N-1}\left(1-\frac{k}{N}\right)\left[\frac{\sin(QD)}{QD}\right]^k \\
+    &\frac{2}{1-\frac{\sin(QD)}{QD}}-1-\frac{2\left[1-\left[\frac{\sin(QD)}{QD}\right]^N\right]}{N\left[1-\frac{\sin(QD)}{QD}\right]^2}\frac{\sin(QD)}{QD}
 \end{align}
 The formula above is only real for all values of $QD$ for integer values of $N$. For non integer values $N$ a linear interpolation between $[N]$ and $[N]+1$ is taken \cite{Giehm2010}, where $[N]$ is the largest integer smaller or equal to $N$. With $w=N-[N]$ we get
 \begin{align}
@@ -1534,10 +1534,37 @@ S_N(QD)&= (1-w)S_{[N]}(QD) + wS_{[N]+1}(QD)
 \item $N$ needs to be larger or equal to 1. For non-integer values of $N$ the curve is linear interpolated between the structure factor for $N$ and $N+1$.
 \end{itemize}
 
+\subsection{ Structure factor of a random flight model with a paracrystalline like disorder parameter}~\\ \label{sec:pcRandomFlight}
+\begin{align}\label{eq:pcRFsum}
+  S_N(Q,D,\Delta) =&  1+2 \sum _{k=1}^{N-1} \left(1-\frac{k}{N}\right) \left(\frac{\sin (D Q)}{D
+   Q}\right)^k \exp \left(-\frac{1}{2} k \Delta^2 Q^2\right) \\
+   \begin{split} =& \quad
+   \frac{Q^2 D^2 e^{\Delta^2 Q^2}-\sin^2 (Q D) }{
+   \left(\sin (QD)-QD e^{\frac{\Delta^2 Q^2}{2}}\right)^2} \quad +\\
+        &  \quad
+   \frac{\sin (Q D) \left(2 Q D
+   \left(e^{-\frac{(N-1)\Delta^2  Q^2}{2}} \left(\frac{\sin (QD)}{Q
+   D}\right)^N-e^{\frac{\Delta^2 Q^2}{2}}\right)\right)}{N
+   \left(\sin (QD)-QD e^{\frac{\Delta^2 Q^2}{2}}\right)^2}
+   \end{split} \label{eq:pcRFanalytical}
+\end{align}
+
+\noindent \underline{Input Parameters for model \texttt{PC:random flight}:}\\
+\begin{description}
+\item[\texttt{D}] step length $D$
+\item[\texttt{n}] number of steps $N$
+\item[\texttt{n}] paracrystalline-like disorder parameter $\Delta$
+\end{description}
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item $N$ needs to be larger or equal to 1. For non-integer values of $N$ the curve is linear interpolated between the structure factor for $N$ and $N+1$.
+\end{itemize}
+
 \subsection{Extended cluster structure factor with local hardsphere
 interactions}~\\
 \label{sec:SQec}
-This structure factor assume clusters of particles with a cluster size $\xi$, whereas the particle within a cluster interact via a hard sphere potential and a local volume fraction $\phi$. In the original paper \cite{Larsen2020} the clusters are described by a spherical form factor and a Gaussian size distribution. It was also mentioned, that the polidisperse spherical form factor can be replaced by any other form factor better describing the shape of the clusters. In this implementation of the extended cluster model we use the extended Debye-Anderson-Brumberger model from section \ref{sect:epsilonDAB} describing the scattering of the clusters.
+This structure factor assume clusters of particles with a cluster size $\xi$, whereas the particle within a cluster interact via a hard sphere potential and a local volume fraction $\phi$. In the original paper \cite{Larsen2020} the clusters are described by a spherical form factor and a Gaussian size distribution. It was also mentioned, that the polydisperse spherical form factor can be replaced by any other form factor better describing the shape of the clusters. In this implementation of the extended cluster model we use the extended Debye-Anderson-Brumberger model from section \ref{sect:epsilonDAB} describing the scattering of the clusters.
 \begin{align}\label{eq:extendedClusterSQ}
   S_\mathrm{ec}(q) &= S_\mathrm{PY}(q)+\left(N-S_\mathrm{PY}(q)\right)P_{\epsilon\mathrm{DAB}}(q)\\
   P_{\epsilon\mathrm{DAB}}(q) &= I_{\epsilon\mathrm{DAB}}(q) / \left(8\pi\xi^3\epsilon\right)\\
@@ -1555,7 +1582,7 @@ The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} an
 
 \noindent \underline{Input Parameters for model \texttt{extended cluster Sq}:}
 \begin{description}
-\item[\texttt{R}] radius of particles in cluster $D$
+\item[\texttt{R}] radius of particles in cluster $R$
 \item[\texttt{phi}] local volume fraction inside cluster $\phi$
 \item[\texttt{xi}] size (correlation length) of cluster $\xi$
 \item[\texttt{epsilon}] shape parameter of cluster (<1:disc; >1:rod) $\epsilon$
@@ -1564,6 +1591,6 @@ The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} an
 
 \noindent\underline{Note:}
 \begin{itemize}
-\item the volume fractin needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
+\item the volume fraction needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
 \item the correlation length should be significant larger than $R$ to be physical meaningful
 \end{itemize} 

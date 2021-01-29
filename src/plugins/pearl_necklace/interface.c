@@ -8,8 +8,10 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(1)
+SASFIT_PLUGIN_EXP_BEGIN(3)
 SASFIT_PLUGIN_EXP_ADD( ff_pearl_necklace )
+SASFIT_PLUGIN_EXP_ADD( ff_pearl_necklace_ext )
+SASFIT_PLUGIN_EXP_ADD( ff_pearl_necklace_mod )
 
 SASFIT_PLUGIN_EXP_END
 

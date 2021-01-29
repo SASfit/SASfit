@@ -112,7 +112,7 @@ gsl_integration_workspace * sasfit_int_mem(int thid)
 	return sasfit_int_ws_all.ws[thid][sasfit_int_ws_all.last[thid]].ptr;
 }
 
-double sasfit_gauss_legendre_2D_cube(sasfit_func_two_t f,
+double sasfit_gauss_legendre_2D_cube(sasfit_func_two_void_t f,
                                     void *pam,
                                     double a,
                                     double b,
@@ -193,7 +193,7 @@ int Kernel_cub(unsigned ndim, const double *x, void *pam,
 	return 0;
 }
 
-int Kernel_GL(scalar theta, scalar phi, void *pam) {
+scalar Kernel_GL(scalar theta, scalar phi, void *pam) {
 	sasfit_param * param;
 	int_cub *cub;
 	cub = (int_cub *) pam;
@@ -224,6 +224,7 @@ scalar sasfit_orient_avg_ctm(
     switch (sasfit_get_sphavg_strategy()) {
         case SPHAVG_GSL_2D_GAUSSLEGENDRE: {
                 wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
+//sasfit_out("GSL_2D_GAUSSLEGENDRE order:%d\n",sasfit_eps_get_gausslegendre());
                 Iavg = sasfit_gauss_legendre_2D_cube(&Kernel_GL, &cubstruct, 0, M_PI, 0, 2*M_PI, wglfixed);
                 Iavg=Iavg/(4*M_PI);
                 gsl_integration_glfixed_table_free(wglfixed);
@@ -240,11 +241,16 @@ scalar sasfit_orient_avg_ctm(
                 y = ( double * ) malloc ( order * sizeof ( double ) );
                 z = ( double * ) malloc ( order * sizeof ( double ) );
                 sasfit_ld_by_order ( order, x, y, z, w );
-
+//sasfit_out("Lebedev order:%d\n",order);
                 for (i=0;i<order;i++) {
-                    phi = atan2(y[i],x[i]);
+                    if (x[i] == 0.0 && y[i] == 0.0) {
+                        phi=0;
+                    } else {
+                        phi=atan2(y[i],x[i]);
+                    }
                     theta = acos(z[i]);
-                    Iavg = Iavg+w[i]* (*intKern_fct)(theta,phi,param);
+                    Iavg = Iavg + w[i]*(*intKern_fct)(theta,phi,param);
+//sasfit_out("%d: x:%lf y%lf z%lf phi%lf theta%lf Iavg:%lf\n",i,x[i],y[i],z[i],phi,theta,Iavg);
                 }
                 free ( x );
                 free ( y );
@@ -257,6 +263,8 @@ scalar sasfit_orient_avg_ctm(
                 PHI1 = 0.5*(1.0 + sqrt(5.0));
                 //order = truncl( gsl_pow_int(PHI1, rule)/sqrt(5.0) + 0.5 ); // this is the n-th Fibonacci number F(n)
                 order = abs(sasfit_eps_get_fibonacci());
+
+sasfit_out("Fibonacci order:%d\n",order);
                 for (i=0;i<order;i++) {
                     i_r8 = ( double ) ( - order + 1 + 2 * i );
                     theta = 2.0 * M_PI * i_r8 / PHI1;
@@ -271,7 +279,11 @@ scalar sasfit_orient_avg_ctm(
 
                     // now turning lattitude and longitude coordinates into standard spherical coordinates
                     // phi is now the rotation angle around z-axis, which was in the previous naming convention lambda_i=theta
-                    phi   = atan2(yc,xc);
+                    if (xc == 0.0 && yc == 0.0) {
+                        phi=0;
+                    } else {
+                        phi=atan2(yc,xc);
+                    }
                     theta = acos(zc);
                     // phi: polar angle [0,2*pi]
                     // theta: azimuthal angle [0;pi]

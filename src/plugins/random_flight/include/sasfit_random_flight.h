@@ -39,7 +39,7 @@
 /* ################ start sq_random_flight ################ */
 /**
  * \defgroup sq_random_flight random flight
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_fractal_objects
  *
  * \brief \<some brief description of random flight function\>
  *
@@ -59,21 +59,21 @@
 /**
  * \ingroup sq_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins_devel
+ * \sa sasfit_random_flight.h, sq_plugins_fractal_objects
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins_devel
+ * \sa sasfit_random_flight.h, sq_plugins_fractal_objects
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins_devel
+ * \sa sasfit_random_flight.h, sq_plugins_fractal_objects
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_random_flight ################ */
@@ -82,7 +82,7 @@ sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight_v(scalar q, sasfit_pa
 /* ################ start sq_pc_random_flight ################ */
 /**
  * \defgroup sq_pc_random_flight PC random flight
- * \ingroup sq_plugins_devel
+ * \ingroup sq_plugins_fractal_objects
  *
  * \brief \<some brief description of PC random flight function\>
  *
@@ -105,21 +105,21 @@ sasfit_random_flight_DLLEXP scalar sasfit_sq_random_flight_v(scalar q, sasfit_pa
 /**
  * \ingroup sq_pc_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins_devel
+ * \sa sasfit_random_flight.h, sq_plugins_fractal_objects
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_pc_random_flight(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_pc_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins_devel
+ * \sa sasfit_random_flight.h, sq_plugins_fractal_objects
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_pc_random_flight_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_pc_random_flight
  *
- * \sa sasfit_random_flight.h, sq_plugins_devel
+ * \sa sasfit_random_flight.h, sq_plugins_fractal_objects
  */
 sasfit_random_flight_DLLEXP scalar sasfit_sq_pc_random_flight_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_random_flight ################ */

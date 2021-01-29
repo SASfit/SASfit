@@ -2,7 +2,7 @@
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
- 
+
 #include <sasfit.h>
 
 #include <sasfit_common.h>
@@ -16,7 +16,7 @@ int abc_cubature(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
 	sasfit_param *param;
 	param = (sasfit_param *) pam;
-	
+
 	fval[0] = 0;
 	if ((ndim < 2) || (fdim < 1)) {
 		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
@@ -24,7 +24,7 @@ int abc_cubature(unsigned ndim, const double *x, void *pam,
 	}
     fval[0] = Kernel_P(x,pam);
     return 0;
-} 
+}
 scalar Kernel_P_OOURA2(scalar x, void * pam) {
 	sasfit_param *param;
 	scalar gam[2];
@@ -39,7 +39,7 @@ scalar Kernel_P_OOURA1(scalar x, void * pam) {
 	sasfit_param *param;
 	scalar sum, err, *aw;
 	int lenaw;
-	
+
 	lenaw=10000;
 	param = (sasfit_param *) pam;
 	BETA = x;
@@ -50,7 +50,7 @@ scalar Kernel_P_OOURA1(scalar x, void * pam) {
 			sasfit_intde(&Kernel_P_OOURA2, 0.0, M_PI/2., aw, &sum, &err,param);
 			free(aw);
             break;
-            } 
+            }
     case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
 			aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
 			sasfit_intccini(lenaw, aw);
@@ -86,7 +86,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
     gsl_function F;
     size_t neval;
     int intstrategy, lenaw=4000;
-	
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -101,7 +101,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 	NUC = C;
 	// insert your code here
     intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
+//	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -110,7 +110,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 			sum=res;
             free(aw);
             break;
-            } 
+            }
     case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
             aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
             sasfit_intccini(lenaw, aw);
@@ -124,8 +124,8 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 			cubxmax[0]=M_PI/2.0;
 			cubxmin[1]=0;
 			cubxmax[1]=M_PI/2.0;
-			hcubature(1, &abc_cubature,param,2, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+			hcubature(1, &abc_cubature,param,2, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
             break;
@@ -135,8 +135,8 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 			cubxmax[0]=M_PI/2.0;
 			cubxmin[1]=0;
 			cubxmax[1]=M_PI/2.0;
-			pcubature(1, &abc_cubature,param,2, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
+			pcubature(1, &abc_cubature,param,2, cubxmin, cubxmax,
+				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
 				fval, ferr);
 			sum = fval[0];
             break;

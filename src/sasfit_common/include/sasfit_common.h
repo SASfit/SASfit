@@ -28,6 +28,7 @@
 #define SASFIT_COMMON_H
 
 #include "bool.h"
+#include "math.h"
 #include "sasfit_common_shared_exports.h"
 #include "sasfit_timer.h"
 #include "sasfit_constants.h"

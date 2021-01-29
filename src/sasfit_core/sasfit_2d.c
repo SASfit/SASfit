@@ -200,8 +200,11 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 
         for (j=0; j < sasfit_2d_param.num_pix;j++) {
             ry = (j-By)*sasfit_2d_param.pixelsize*1e-3;
-
-            sasfit_param_override_set_psi( atan2(ry,rx) );
+            if (ry==0 && rx==0) {
+                sasfit_param_override_set_psi( 0 );
+            } else {
+                sasfit_param_override_set_psi( atan2(ry,rx) );
+            }
 			r = sqrt(rx*rx+ry*ry);
 			TwoTheta = atan(r/sasfit_2d_param.dist);
 			Theta = 0.5*TwoTheta;
@@ -248,7 +251,11 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                                     sasfit_param_override_set_psi( atan((ry+Dry)/(rx+Drx)) );
                                 }
 */
-                                sasfit_param_override_set_psi( atan2((ry+Dry),(rx+Drx)) );
+                                if ((ry+Dry)==0&&(rx+Drx)==0) {
+                                    sasfit_param_override_set_psi( 0 );
+                                } else {
+                                    sasfit_param_override_set_psi( atan2((ry+Dry),(rx+Drx)) );
+                                }
                                 r = sqrt(gsl_pow_2(rx+Drx)+gsl_pow_2(ry+Dry));
                                 TwoTheta = atan(r/sasfit_2d_param.dist);
                                 Theta = 0.5*TwoTheta;

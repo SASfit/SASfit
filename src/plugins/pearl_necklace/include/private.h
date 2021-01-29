@@ -37,5 +37,8 @@
 // #define P0 param->p[0]
 //
 
+scalar Lambda(scalar, sasfit_param *);
+scalar LambdaExt(scalar, scalar, sasfit_param *);
+scalar Psi(scalar);
 #endif // end of file
 

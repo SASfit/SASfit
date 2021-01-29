@@ -10,7 +10,10 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_pearl_necklace.c
+	sasfit_ff_pearl_necklace_original.c
+	sasfit_ff_pearl_necklace_extended.c
+	sasfit_ff_pearl_necklace_modified.c
+	sasfit_pearl_necklace_utils.c
 	interface.c
 )
 

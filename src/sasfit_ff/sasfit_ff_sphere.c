@@ -44,12 +44,9 @@ scalar sasfit_ff_sphere_f(scalar q, sasfit_param * param)
 {
     SASFIT_ASSERT_PTR(param);
 
-    if (SASFIT_EQUAL(q, 0.0)) return ETA*4.0/3.0*M_PI*R*R*R;
-    if (SASFIT_EQUAL(R, 0.0)) return 0.0;
-
     SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
     SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R);
-
+    if (q*R<1e-4) return ETA*4.0/3.0*M_PI*R*R*R*(1 - gsl_pow_2(q*R)/10. + gsl_pow_4(q*R)/280. - gsl_pow_6(q*R)/15120.);
     return ETA*4.0*M_PI*(sin(q*R) - q*R*cos(q*R))/gsl_pow_3(q);
 }
 
