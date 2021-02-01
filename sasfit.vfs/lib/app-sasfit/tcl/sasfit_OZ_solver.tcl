@@ -51,6 +51,9 @@ proc put_OZ_res {} {
     	lappend OZ(result,r)  		$OZ(res,c,x)
     	lappend OZ(result,cr)  		$OZ(res,c,y)
     	lappend OZ(result,gr)  		$OZ(res,g,y)
+    	lappend OZ(result,gr2)  		$OZ(res,g2,y)
+    	lappend OZ(result,gr3)  		$OZ(res,g3,y)
+    	lappend OZ(result,gr4)  		$OZ(res,g4,y)
     	lappend OZ(result,hr)  		$OZ(res,h,y)
     	lappend OZ(result,gammar) 	$OZ(res,gamma,y)
     	lappend OZ(result,u,x)          $OZ(res,u,x)
@@ -94,6 +97,9 @@ proc pop_OZ_res {} {
     	set OZ(result,r)  		[lrange $OZ(result,r) 		0 [expr [llength $OZ(result,r)]		-2]]
     	set OZ(result,cr)  		[lrange $OZ(result,cr) 		0 [expr [llength $OZ(result,cr)]	-2]]
     	set OZ(result,gr)  		[lrange $OZ(result,gr) 		0 [expr [llength $OZ(result,gr)]	-2]]
+    	set OZ(result,gr2)  		[lrange $OZ(result,gr2) 		0 [expr [llength $OZ(result,gr2)]	-2]]
+    	set OZ(result,gr3)  		[lrange $OZ(result,gr3) 		0 [expr [llength $OZ(result,gr3)]	-2]]
+    	set OZ(result,gr4)  		[lrange $OZ(result,gr4) 		0 [expr [llength $OZ(result,gr4)]	-2]]
     	set OZ(result,hr)  		[lrange $OZ(result,hr) 		0 [expr [llength $OZ(result,hr)]	-2]]
     	set OZ(result,gammar)  		[lrange $OZ(result,gammar) 	0 [expr [llength $OZ(result,gammar)]	-2]]
     	set OZ(result,u,x)          	[lrange $OZ(result,u,x) 	0 [expr [llength $OZ(result,u,x)]	-2]]
@@ -270,6 +276,12 @@ proc ReplotOZsolver {} {
 	set OZ(res,gamma,y) [lindex $OZ(result,gammar) $i]
 	set OZ(res,g,x) [lindex $OZ(result,r)  $i]
 	set OZ(res,g,y) [lindex $OZ(result,gr) $i]
+	set OZ(res,g2,x) [lindex $OZ(result,r)  $i]
+	set OZ(res,g2,y) [lindex $OZ(result,gr2) $i]
+	set OZ(res,g3,x) [lindex $OZ(result,r)  $i]
+	set OZ(res,g3,y) [lindex $OZ(result,gr3) $i]
+	set OZ(res,g4,x) [lindex $OZ(result,r)  $i]
+	set OZ(res,g4,y) [lindex $OZ(result,gr4) $i]
 	set OZ(res,h,x) [lindex $OZ(result,r)  $i]
 	set OZ(res,h,y) [lindex $OZ(result,hr) $i]
 	set OZ(res,u,x) [lindex $OZ(result,u,x) $i]
@@ -820,6 +832,18 @@ proc sasfit_OZ_solver {} {
     
     set OZ(progressbar) 0
     
+	frame $w.messageframe -relief sunken -borderwidth 2 -height 5m
+	pack $w.messageframe -side bottom -fill x
+	pack propagate $w.messageframe yes
+	frame $w.messageframe.m -height 5m -width 70m
+	pack $w.messageframe.m  -fill x -expand yes
+	message $w.quickmessage -text "" \
+           -justify left -aspect 3000 -anchor w 
+	message $w.xycoordinates -text "    " \
+           -justify right -aspect 3000 -anchor e 
+	pack $w.quickmessage  -side left -fill x -expand yes -in $w.messageframe.m
+	pack $w.xycoordinates -side left -fill x -in $w.messageframe.m
+   
     checkbutton $w.interface.progressbar.label -variable OZ(PrintProgress) -text "progress:"
     ProgressBar $w.interface.progressbar.value \
     		-maximum 100 -width 40m\
@@ -1118,7 +1142,131 @@ proc sasfit_OZ_solver {} {
     bind .oztop.tab.gr.draw <ButtonPress-3> {tk_popup .oztop.tab.gr.popup %X %Y }
     bind .oztop.tab.gr.draw <Double-ButtonPress-1> {tk_popup .oztop.tab.gr.popup %X %Y }
     Blt_ZoomStack $ozgrGraph(w)
+	bind .oztop.tab.gr.draw <Motion> \
+        {
+         set xcoord [expr [winfo pointerx $ozgrGraph(w)] \
+                         -[winfo rootx    $ozgrGraph(w)] ] 
+         set ycoord [expr [winfo pointery $ozgrGraph(w)] \
+                         -[winfo rooty    $ozgrGraph(w)] ]
 
+         set ozgrGraph(c,x) $xcoord
+         set ozgrGraph(c,y) $ycoord
+         
+         $ozgrGraph(w) crosshairs configure -position @$ozgrGraph(c,x),$ozgrGraph(c,y)
+
+         if { $ozgrGraph(e,element) > 0 } {
+            set xycoord [$ozgrGraph(w) invtransform $xcoord $ycoord]
+			switch $ozgrGraph(x,type) {
+				"arcsinh(x)"  {
+					set xc [expr sinh([lindex $xycoord 0]) ]
+				}
+				"pow(x,2)"	{
+					set xc [expr pow([lindex $xycoord 0],1./2.) ]
+				}
+				"pow(x,3)" {
+					set xc [expr pow([lindex $xycoord 0],1./3.) ]
+				}
+				"pow(x,4)" {
+					set xc [expr pow([lindex $xycoord 0],1/4.) ]
+				} 
+				"log(x)" {
+					set xc [expr exp([lindex $xycoord 0] ]
+				}
+				"sqrt(x)" {
+					set xc [expr pow([lindex $xycoord 0],2) ]
+				}
+				"1/x" {
+					set xc [expr 1./([lindex $xycoord 0]) ]
+				}
+				"1/sqrt(x)" {
+					set xc [expr 1./pow([lindex $xycoord 0],2.) ]
+				}
+				default {
+					set xc [lindex $xycoord 0]
+				}
+			}
+			set xname cursor_x
+			set yname cursor_y
+			switch $ozgrGraph(y,type) {
+				arcsinh(y)  {
+					set yc [expr sinh([lindex $xycoord 1]) ]
+				}
+				pow(y,2)  {
+					set yc [expr pow([lindex $xycoord 1],1./2.) ]
+				}
+				pow(y,3)  {
+					set yc [expr pow([lindex $xycoord 1],1./3.) ]
+				}
+				pow(y,4)  {
+					set yc [expr pow([lindex $xycoord 1],1./4.) ]
+				}
+				x*y {
+					set yc [expr [lindex $xycoord 1]/$xc ]
+				}
+				y*pow(x,2) {
+					set yc [expr [lindex $xycoord 1]/($xc*$xc) ]
+				}
+				y*pow(x,3) {
+					set yc [expr [lindex $xycoord 1]/($xc*$xc*$xc) ]
+				}
+				y*pow(x,4) {
+					set yc [expr [lindex $xycoord 1]/($xc*$xc*$xc*$xc) ]
+				}
+				y*pow(x,6) {
+					set yc [expr [lindex $xycoord 1]/($xc*$xc*$xc*$xc*$xc*$xc) ]
+				}
+				y*pow(x,-2) {
+					set yc [expr [lindex $xycoord 1]*($xc*$xc) ]
+				}
+				y*pow(x,-3) {
+					set yc [expr [lindex $xycoord 1]*($xc*$xc*xc) ]
+				}
+				y*pow(x,-4) {
+					set yc [expr [lindex $xycoord 1]*($xc*$xc*$xc*$xc ]
+				}
+				y*pow(x,-6) {
+					set yc [expr [lindex $xycoord 1]*($xc*$xc*$xc*$xc*$xc*$xc) ]
+				}
+				1/y {
+					set yc [expr 1./[lindex $xycoord 1] ]
+				}
+				log(abs(y))	 {
+					set yc [expr exp([lindex $xycoord 1]) ]
+				}
+				log(abs(y*x)) {
+					set yc [expr exp([lindex $xycoord 1])/$xc ]
+				}
+				log(abs(y*pow(x,2))) {
+					set yc [expr exp([lindex $xycoord 1])/($xc*$xc) ]
+				}
+				log(abs(y*pow(x,4))) {
+					set yc [expr exp([lindex $xycoord 1])/($xc*$xc*$xc*$xc) ]
+				}
+				sqrt(abs(y)) {
+					set yc [expr pow([lindex $xycoord 1],2.0) ]
+				}
+				1/sqrt(abs(y))  {
+					set yc [expr 1./pow([lindex $xycoord 1],2.0) ]
+				}
+				default {
+					set yc [lindex $xycoord 1]
+				}
+			}
+			set idx [bisect [lindex $OZ(result,r) 0] $xc]
+			if {[catch {
+				set Dcc [expr [lindex [lindex $OZ(result,gr3) 0] $idx]/[lindex [lindex $OZ(result,gr2) 0] $idx]]
+			} msg] } {
+				set Dcc 0.0
+			}
+			if {[catch {
+				set Dcc2 [expr sqrt([lindex [lindex $OZ(result,gr4) 0] $idx]/[lindex [lindex $OZ(result,gr2) 0] $idx])]
+			} msg] } {
+				set Dcc2 0.0
+			}
+            .oztop.xycoordinates configure \
+                     -text "<Dcc>=$Dcc, sqrt(<Dcc^2>)=$Dcc2\t\t($xname,$yname)=([fp $xc],[fp $yc])"
+         }
+        }
 #
 #  create "ozcrGraph"
 #

@@ -508,6 +508,9 @@ set OZ(result,Sq) {}
 set OZ(result,r) {}
 set OZ(result,cr) {}
 set OZ(result,gr) {}
+set OZ(result,gr2) {}
+set OZ(result,gr3) {}
+set OZ(result,gr4) {}
 set OZ(result,u,x) {}
 set OZ(result,Ur) {}
 set OZ(result,label) {}

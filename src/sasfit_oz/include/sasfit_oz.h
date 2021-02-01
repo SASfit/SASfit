@@ -161,7 +161,7 @@ typedef enum {
 typedef struct {
         Tcl_Interp *interp;
         double *r, *k, *En, *G, *Gprevious,
-               *G0, *g, *g0, *c, *c_EuRah, *h,
+               *G0, *g, *g2, *g3, *g4, *g0, *c, *c_EuRah, *h,
                *cf, *cfold, *cfnew,
                *Gf,*f, *S, *S0pSq, *Q0pQ, *F2,  *ud,
                *Br, *yr, *fr;

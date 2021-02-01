@@ -665,7 +665,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
 {
     int i,status;
     char paramName[4];
-    double tmp;
+    double tg2, tg3, tg4, tmp;
     double pPot[OZMAXPAR];
     sasfit_oz_data ozd;
         // init target data structure
@@ -843,7 +843,13 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         Tcl_Obj * sx = Tcl_NewListObj(0, 0);
         Tcl_Obj * sy = Tcl_NewListObj(0, 0);
         Tcl_Obj * gx = Tcl_NewListObj(0, 0);
+        Tcl_Obj * g2x = Tcl_NewListObj(0, 0);
+        Tcl_Obj * g3x = Tcl_NewListObj(0, 0);
+        Tcl_Obj * g4x = Tcl_NewListObj(0, 0);
         Tcl_Obj * gy = Tcl_NewListObj(0, 0);
+        Tcl_Obj * g2y = Tcl_NewListObj(0, 0);
+        Tcl_Obj * g3y = Tcl_NewListObj(0, 0);
+        Tcl_Obj * g4y = Tcl_NewListObj(0, 0);
         Tcl_Obj * cx = Tcl_NewListObj(0, 0);
         Tcl_Obj * cy = Tcl_NewListObj(0, 0);
         Tcl_Obj * hx = Tcl_NewListObj(0, 0);
@@ -865,10 +871,19 @@ int sasfit_oz_calc_cmd(ClientData clientData,
 
         APPEND(s, 0.0, ozd.Sq0);
         APPEND(g, 0.0, ozd.gr0);
+        APPEND(g2, 0.0, 0.0);tg2=0;
+        APPEND(g3, 0.0, 0.0);tg3=0;
+        APPEND(g4, 0.0, 0.0);tg4=0;
         APPEND(c, 0.0, ozd.cr0);
         for (int i = 0; i < ozd.Npoints; i++) {
                 APPEND(s, ozd.k[i], ozd.S[i]);
                 APPEND(g, ozd.r[i], ozd.g[i]);
+                tg2=tg2+gsl_pow_2(ozd.r[i])*ozd.g[i]*ozd.dr;
+                tg3=tg3+gsl_pow_3(ozd.r[i])*ozd.g[i]*ozd.dr;
+                tg4=tg4+gsl_pow_4(ozd.r[i])*ozd.g[i]*ozd.dr;
+                APPEND(g2, ozd.r[i], tg2);
+                APPEND(g3, ozd.r[i], tg3);
+                APPEND(g4, ozd.r[i], tg4);
                 APPEND(c, ozd.r[i], ozd.c[i]);
                 APPEND(h, ozd.r[i], ozd.h[i]);
                 APPEND(u, ozd.r[i], ozd.ubeta[i]);
@@ -888,6 +903,9 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         SET(ozname, "res,s,y", sy);
         SET(ozname, "res,g,x", gx);
         SET(ozname, "res,g,y", gy);
+        SET(ozname, "res,g2,y", g2y);
+        SET(ozname, "res,g3,y", g3y);
+        SET(ozname, "res,g4,y", g4y);
         SET(ozname, "res,c,x", cx);
         SET(ozname, "res,c,y", cy);
         SET(ozname, "res,h,x", hx);

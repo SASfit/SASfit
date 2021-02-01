@@ -20,6 +20,34 @@
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 #   Ingo Bressler (ingo@cs.tu-berlin.de)
+proc bisect { lst val } {
+
+#    puts "Looking for $val in $lst"
+
+    set len [llength $lst]
+
+    # Initial interval - the start to the middle of the list
+    set start 0
+    set end [expr $len - 1]
+    set mid [expr $len / 2]
+    set lastmid -1
+
+    while { $mid != $lastmid } {
+        if { [expr $val <= [lindex $lst $mid]] } {
+            # val lies somewhere between the start and the mid
+            set end $mid
+
+        } else {
+            # val lies somewhere between mid and end
+            set start [expr $mid + 1]
+        }
+
+        set lastmid $mid
+        set mid [expr ($start + $end ) / 2]
+    }
+
+    return $mid
+}
 
 proc scale_Det2DAni {mask} {
 global Detector2DIQGraph
