@@ -1253,18 +1253,19 @@ proc sasfit_OZ_solver {} {
 				}
 			}
 			set idx [bisect [lindex $OZ(result,r) 0] $xc]
+			set CN [lindex [lindex $OZ(result,gr2) 0] $idx]
 			if {[catch {
-				set Dcc [expr [lindex [lindex $OZ(result,gr3) 0] $idx]/[lindex [lindex $OZ(result,gr2) 0] $idx]]
+				set Dcc [expr [lindex [lindex $OZ(result,gr3) 0] $idx]/$CN]
 			} msg] } {
 				set Dcc 0.0
 			}
 			if {[catch {
-				set Dcc2 [expr sqrt([lindex [lindex $OZ(result,gr4) 0] $idx]/[lindex [lindex $OZ(result,gr2) 0] $idx])]
+				set Dcc2 [expr [lindex [lindex $OZ(result,gr4) 0] $idx]/$CN-$Dcc*$Dcc]
 			} msg] } {
 				set Dcc2 0.0
 			}
             .oztop.xycoordinates configure \
-                     -text "<Dcc>=$Dcc, sqrt(<Dcc^2>)=$Dcc2\t\t($xname,$yname)=([fp $xc],[fp $yc])"
+                     -text "<D>=$Dcc +- [expr sqrt(abs($Dcc2))]\t\t($xname,$yname)=([fp $xc],[fp $yc])"
          }
         }
 #
