@@ -581,6 +581,29 @@ scalar Fcone_kernel_Im(scalar z, sasfit_param *param){
     return 2*M_PI*gsl_pow_2(Rz)*opo_J1x_x(q_parallel*Rz)*sin(QQZ*z);
 }
 
+scalar Fcone6_kernel_Re(scalar z, sasfit_param *param){
+    scalar q_parallel,Rz,qx2,qy2,qz2,sqrt3;
+    q_parallel = gsl_hypot(QQX,QQY);
+    Rz = 1-z*opo_Cot(TILT);
+    qx2=QQX*QQX;
+    qy2=QQY*QQY;
+    qz2=QQZ*QQZ;
+    sqrt3=sqrt(3);
+    return 4*sqrt3/(3*qy2-qx2)* (qy2*opo_sinc(QQX*Rz/sqrt3)*opo_sinc(QQY*Rz)+cos(2/sqrt3*QQX*Rz)-cos(QQZ*Rz)*cos(QQX*Rz/sqrt3))*cos(QQZ*Rz);
+}
+
+scalar Fcone6_kernel_Im(scalar z, sasfit_param *param){
+    scalar q_parallel,Rz,qx2,qy2,qz2,sqrt3;
+    q_parallel = gsl_hypot(QQX,QQY);
+    Rz = 1-z*opo_Cot(TILT);
+    qx2=QQX*QQX;
+    qy2=QQY*QQY;
+    qz2=QQZ*QQZ;
+    sqrt3=sqrt(3);
+    return 4*sqrt3/(3*qy2-qx2)* (qy2*opo_sinc(QQX*Rz/sqrt3)*opo_sinc(QQY*Rz)+cos(2/sqrt3*QQX*Rz)-cos(QQZ*Rz)*cos(QQX*Rz/sqrt3))*sin(QQZ*Rz);
+}
+
+
 scalar opo_Fcone(opo_data *opod) {
     scalar FconeRe, FconeIm;
     sasfit_param * param;
@@ -595,10 +618,15 @@ scalar opo_Fcone(opo_data *opod) {
 }
 
 scalar opo_Fcone6(opo_data *opod) {
-    scalar Qx, Qy, Qz;
-    Qx = opod->Qhat[0];
-    Qy = opod->Qhat[1];
-    Qz = opod->Qhat[2];
+    scalar Fcone6Re, Fcone6Im;
+    sasfit_param * param;
+    param = opod->param;
+    QQX = opod->Qhat[0];
+    QQY = opod->Qhat[1];
+    QQZ = opod->Qhat[2];
+    if (tan(TILT)==0) return 0;
+    Fcone6Re = 2./sqrt(3.)*tan(TILT)*(1-gsl_pow_3(1-H_R*opo_Cot(TILT)))*sasfit_integrate(0,H_R,&Fcone6_kernel_Re,param);
+    Fcone6Im = 2./sqrt(3.)*tan(TILT)*(1-gsl_pow_3(1-H_R*opo_Cot(TILT)))*sasfit_integrate(0,H_R,&Fcone6_kernel_Im,param);
 }
 
 scalar opo_Fpyramid(opo_data *opod) {

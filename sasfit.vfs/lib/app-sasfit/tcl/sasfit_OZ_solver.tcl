@@ -1265,7 +1265,7 @@ proc sasfit_OZ_solver {} {
 				set Dcc2 0.0
 			}
             .oztop.xycoordinates configure \
-                     -text "<D>=$Dcc +- [expr sqrt(abs($Dcc2))]\t\t($xname,$yname)=([fp $xc],[fp $yc])"
+                     -text "coordination number=$CN \t <D>=$Dcc +- [expr sqrt(abs($Dcc2))]\t\t($xname,$yname)=([fp $xc],[fp $yc])"
          }
         }
 #

@@ -666,7 +666,7 @@ int sasfit_oz_calc_cmd(ClientData clientData,
     int i,status;
     char paramName[4];
     double tg2, tg3, tg4, tmp;
-    double pPot[OZMAXPAR];
+    double pPot[OZMAXPAR],rho_ndensity;
     sasfit_oz_data ozd;
         // init target data structure
         i=0;
@@ -875,12 +875,14 @@ int sasfit_oz_calc_cmd(ClientData clientData,
         APPEND(g3, 0.0, 0.0);tg3=0;
         APPEND(g4, 0.0, 0.0);tg4=0;
         APPEND(c, 0.0, ozd.cr0);
+        rho_ndensity = ozd.phi/(4./3.*M_PI*gsl_pow_3(ozd.pPot[0]/2.));
+        sasfit_out("phi:%lf, rho:%lf, R=%lf\n",ozd.phi,rho_ndensity,ozd.pPot[0]/2.);
         for (int i = 0; i < ozd.Npoints; i++) {
                 APPEND(s, ozd.k[i], ozd.S[i]);
                 APPEND(g, ozd.r[i], ozd.g[i]);
-                tg2=tg2+gsl_pow_2(ozd.r[i])*ozd.g[i]*ozd.dr;
-                tg3=tg3+gsl_pow_3(ozd.r[i])*ozd.g[i]*ozd.dr;
-                tg4=tg4+gsl_pow_4(ozd.r[i])*ozd.g[i]*ozd.dr;
+                tg2=tg2+4.*M_PI*rho_ndensity*gsl_pow_2(ozd.r[i])*ozd.g[i]*ozd.dr;
+                tg3=tg3+4.*M_PI*rho_ndensity*gsl_pow_3(ozd.r[i])*ozd.g[i]*ozd.dr;
+                tg4=tg4+4.*M_PI*rho_ndensity*gsl_pow_4(ozd.r[i])*ozd.g[i]*ozd.dr;
                 APPEND(g2, ozd.r[i], tg2);
                 APPEND(g3, ozd.r[i], tg3);
                 APPEND(g4, ozd.r[i], tg4);

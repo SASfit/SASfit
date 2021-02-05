@@ -17,8 +17,8 @@ Calculations are done by iterative solution of Ornstein-Zernike equation with a 
 
 Structure OZdata is a principal element of this package which encapsulates input and output variables.
 Input variables that describe physical system itself:
-- OZD.phi   particles volume fraction;
-- OZD.pPot  array with parameters of interaction potental;
+- OZD.phi - particles volume fraction;
+- OZD.pPot - array with parameters of interaction potental;
 - OZD.potential - pointer to definition of pair potential;
 - OZD.T - temperature;
 - OZD.cl - specifies closure relation that will be used in calculation
