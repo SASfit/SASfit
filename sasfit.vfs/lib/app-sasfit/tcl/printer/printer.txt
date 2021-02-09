@@ -1,13 +1,14 @@
 =
 
 Tcl Extension for Windows
-RCS Version $Revision: 1.17 $
-RCS Last Change Date: $Date: 2004/12/28 19:21:59 $
+RCS Version $Revision: 1.20 $
+RCS Last Change Date: $Date: 2009/05/10 20:54:53 $
 Original Author: Michael I. Schwartz, mschwart@nyx.net
 Incorporates code and ideas from:
  Mark Roseman: Dialogs, Mac code, breakout of open, job, and page commands
  Andreas Sievers (Andreas.Sievers@t-mobil.de): Fixes for ISO paper calculations
  Steve Bold (stevebold@hotmail.com): Fixes for long printer names and unusual error conditions
+ Carlos Tasada (carlos.tasada@farmerswife.com) for Vista testing and Vista printing dialog.mods
 
 {LICENSE}
 
@@ -45,7 +46,7 @@ Windows 98, Windows NT 4.0, and Windows 2000 features
 The commands are:
 
 printer
- printer attr [-hDC hdc] [-get|-set|-delete]
+ printer attr [-hDC hdc] [-get|-set|-delete|-prompt]
  printer close [-hDC hdc]
  printer dialog [-hDC hdc] [select|page_setup] [-flags flagsnum]
  printer job [-hDC hdc] [start|end]
@@ -63,7 +64,7 @@ The details of each command's options follow:
 
  
  printer attr [ -hDC hdc ]
-        [[-get key-list] | [-set list_of_key_value_pairs] | [-delete key-list]]
+        [[-get key-list] | [-set list_of_key_value_pairs] | [-delete key-list] [-prompt]]
   DESCRIPTION:
    Returns a set of attribute/value pairs in dictionary order
    -hDC   Allows any HDC to be the target of the request.
@@ -77,7 +78,8 @@ The details of each command's options follow:
           The return value is the set of key/value pairs modified.
    -delete The list of keys is deleted from the attribute table. The return 
            value is the number of keys actually deleted.
-   If none of get, set, or delete are specified, the request is treated like a
+   -prompt Build the attribute list from the printer attribute dialog
+   If none of get, set, delete, or prompt are specified, the request is treated like a
    request to get all printer attributes.
   LIMITATIONS:
    Sorting is case-sensitive. Initial lower case attributes are suggested.

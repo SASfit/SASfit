@@ -40,6 +40,8 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_cone_opo_random.c
 	sasfit_ff_pyramid4_opo.c
 	sasfit_ff_pyramid4_opo_random.c
+	sasfit_ff_cone6_opo.c
+	sasfit_ff_cone6_opo_random.c
 	interface.c
 )
 

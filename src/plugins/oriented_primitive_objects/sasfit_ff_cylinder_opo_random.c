@@ -77,6 +77,6 @@ scalar sasfit_ff_cylinder_opo_random_v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return cyl_opod.detDinv;
+	return 2*M_PI*cyl_opod.detDinv;
 }
 

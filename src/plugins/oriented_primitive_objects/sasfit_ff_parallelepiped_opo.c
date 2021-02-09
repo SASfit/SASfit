@@ -71,9 +71,17 @@ scalar sasfit_ff_parallelepiped_opo_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_parallelepiped_opo_v(scalar q, sasfit_param * param, int dist)
 {
+	opo_data opod;
+	opo_set_e(opod.ea,EA_X,EA_Y,EA_Z);
+	opo_set_e(opod.eb,EB_X,EB_Y,EB_Z);
+	opo_set_e(opod.ec,EC_X,EC_Y,EC_Z);
+	opod.a = A;
+	opod.b = B;
+	opod.c = C;
+    opo_init(&opod);
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return 8*opod.detDinv;
 }
 

@@ -1062,10 +1062,29 @@ global nLengthTable
 global f_close
 set f_close "yes"
 
+proc canvas_win_to_gif_to_clipboard { img_canvas } {
+	global sasfit
+	set gif_fn "c:/temp/SASfit_2D.gif"
+	if {[catch {$img_canvas write $gif_fn -format gif} msg]} {
+		puts $msg
+		set gif_fn $sasfit(basedir)/plugins/SASfit_2D.gif
+		if {[catch {$img_canvas write $gif_fn -format gif} msg]} {
+			puts $msg
+		} else {
+			exec cmd /c start  /min  cmd /c powershell -windowstyle hidden -file $sasfit(basedir)/plugins/cp2cb.ps1 $gif_fn
+		}
+	} else {
+		exec cmd /c start  /min cmd /c powershell -windowstyle hidden -file $sasfit(basedir)/plugins/cp2cb.ps1 $gif_fn
+	}
+}
+
 proc window_to_clipboard { window } {
   set ::sasfit(tmpclipboard) $window
+  puts $window
   if {[catch {$window.draw snap -format emf CLIPBOARD}]} {
-	after 500 { old_window_to_clipboard $::sasfit(tmpclipboard)}
+    if {[catch {$window snap -format emf CLIPBOARD}]} {
+		after 500 { old_window_to_clipboard $::sasfit(tmpclipboard)}
+	}
   }
 }
 proc old_window_to_clipboard { window } {
@@ -4057,14 +4076,14 @@ zoomstack $IQGraph(w)
    pack $Detector2DIQGraph(cwsim) $Detector2DIQGraph(cwdata) $Detector2DIQGraph(cwresiduum)
 menu $Detector2DIQGraph(cwsim).popup -tearoff 0
 $Detector2DIQGraph(cwsim).popup add command -label "copy to clipboard" -un 0 -command {
-window_to_clipboard $Detector2DIQGraph(cwsim)
+	canvas_win_to_gif_to_clipboard $Detector2DIQGraph(s)
 }
 bind $Detector2DIQGraph(cwsim) <ButtonPress-3>        {tk_popup $Detector2DIQGraph(cwsim).popup %X %Y }
 bind $Detector2DIQGraph(cwsim) <Double-ButtonPress-1> {tk_popup $Detector2DIQGraph(cwsim).popup %X %Y }
 
 menu $Detector2DIQGraph(cwdata).popup -tearoff 0
 $Detector2DIQGraph(cwdata).popup add command -label "copy to clipboard" -un 0 -command {
-window_to_clipboard $Detector2DIQGraph(cwdata)
+	canvas_win_to_gif_to_clipboard $Detector2DIQGraph(sdata)
 }
 $Detector2DIQGraph(cwdata).popup add command -label "read BerSANS data file" -un 14 -command {
 	set Detector2DIQGraph(Det2DAniFN) [tk_getOpenFile -defaultextension "D*.*"    \

@@ -1,7 +1,13 @@
 
-  	michael: 1.61
+  	michael: 1.64
   Recovery from disk failure
-revision 1.61	
+revision 1.64	
+  Updated credits
+revision 1.63
+  Updated documentation
+revision 1.62
+  Added Tasada changes
+revision 1.61
   Removed all warnings from standard compilation under Tcl 8.4.7
   Rewrote printer send functionality to use WritePrinter
   Relies on DEVNAMES wDeviceOffset for printer name rather than DEVMODE.

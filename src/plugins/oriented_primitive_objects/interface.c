@@ -7,7 +7,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(28)
+SASFIT_PLUGIN_EXP_BEGIN(30)
 SASFIT_PLUGIN_EXP_ADD( ff_cylinder_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_cylinder_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_opo )
@@ -36,6 +36,8 @@ SASFIT_PLUGIN_EXP_ADD( ff_cone_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_cone_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_pyramid4_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_pyramid4_opo_random )
+SASFIT_PLUGIN_EXP_ADD( ff_cone6_opo )
+SASFIT_PLUGIN_EXP_ADD( ff_cone6_opo_random )
 
 SASFIT_PLUGIN_EXP_END
 

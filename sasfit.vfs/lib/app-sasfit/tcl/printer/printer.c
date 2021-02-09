@@ -1,13 +1,14 @@
 /****************************************************************==
 **
 ** Tcl Extension for Windows
-** RCS Version $Revision: 1.61 $
-** RCS Last Change Date: $Date: 2004/12/29 01:21:37 $
+** RCS Version $Revision: 1.64 $
+** RCS Last Change Date: $Date: 2009/05/10 20:55:08 $
 ** Original Author: Michael I. Schwartz, mschwart@nyx.net
 ** Incorporates code and ideas from:
 **  Mark Roseman: Dialogs, Mac code, breakout of open, job, and page commands
 **  Andreas Sievers (Andreas.Sievers@t-mobil.de): Fixes for ISO paper calculations
 **  Steve Bold (stevebold@hotmail.com): Fixes for long printer names and unusual error conditions
+**  Carlos Tasada (carlos.tasada@farmerswife.com) for Vista testing and Vista printing dialog.mods
 ** 
 ** {LICENSE}
 ** 
@@ -45,7 +46,7 @@
 ** The commands are:
 ** 
 ** printer
-**  printer attr [-hDC hdc] [-get|-set|-delete]
+**  printer attr [-hDC hdc] [-get|-set|-delete|-prompt]
 **  printer close [-hDC hdc]
 **  printer dialog [-hDC hdc] [select|page_setup] [-flags flagsnum]
 **  printer job [-hDC hdc] [start|end]
@@ -63,7 +64,7 @@
 **
 **  
 **  printer attr [ -hDC hdc ]
-**         [[-get key-list] | [-set list_of_key_value_pairs] | [-delete key-list]]
+**         [[-get key-list] | [-set list_of_key_value_pairs] | [-delete key-list] [-prompt]]
 **   DESCRIPTION:
 **    Returns a set of attribute/value pairs in dictionary order
 **    -hDC   Allows any HDC to be the target of the request.
@@ -77,7 +78,8 @@
 **           The return value is the set of key/value pairs modified.
 **    -delete The list of keys is deleted from the attribute table. The return 
 **            value is the number of keys actually deleted.
-**    If none of get, set, or delete are specified, the request is treated like a
+**    -prompt Build the attribute list from the printer attribute dialog
+**    If none of get, set, delete, or prompt are specified, the request is treated like a
 **    request to get all printer attributes.
 **   LIMITATIONS:
 **    Sorting is case-sensitive. Initial lower case attributes are suggested.
@@ -232,6 +234,8 @@
 ** end of the file
 ****************************************************************/
 #if defined(__WIN32__) || defined (__WIN32S__) || defined (WIN32S)
+/* Suppress Vista Warnings */
+#define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
 #include <commdlg.h>
 
@@ -1371,7 +1375,7 @@ static void RestorePrintVals (struct printer_values *ppv, PRINTDLG *pdlg, PAGESE
         GetPrintDlgAttribs(&ppv->attribs, pdlg);
         
         /* Note: if DEVMODE is not null, copies is taken from the DEVMODE structure */
-        if (ppv->pdevmode)
+        if (ppv->pdevmode )
             ppv->pdevmode->dmCopies = pdlg->nCopies;
         
     }
@@ -1516,7 +1520,7 @@ static int printer_safe (ClientData data, Tcl_Interp *interp, int argc, const ch
 ** The static data should also be used by pkg_provide, etc.
 ****************************************************************/
 /* Version information */
-static char version_string[] = "0.9.6.14";
+static char version_string[] = "0.9.6.15";
 
 /* Version command */
 static int Version(ClientData unused, Tcl_Interp *interp, int argc, const char **argv)
@@ -2867,6 +2871,12 @@ static int PrintDialog(ClientData data, Tcl_Interp *interp, int argc, const char
         ppv->pdlg.lStructSize = sizeof(PRINTDLG);
         ppv->pdlg.Flags |= PRINT_REQUIRED_SET; 
         
+        /* Vista (Win95) Fix Start */
+        /* Seems to be needed to print multiple copies */
+        ppv->pdlg.Flags |= PD_USEDEVMODECOPIES; 
+        ppv->pdlg.nCopies = (WORD)PD_USEDEVMODECOPIES; /* Value shouldn't matter */
+        /* Vista Fix End */
+        
         if ( do_flags )
         {
             /* Enable requested flags, but disable the flags we don't want to support */
@@ -3189,7 +3199,7 @@ static int PrintPage(ClientData data, Tcl_Interp *interp, int argc, const char *
     HDC hdc = 0;
     const char *hdcString = 0;
     
-    if ( strcmp(argv[0], "-hdc") == 0  || strcmp (argv[0], "-hDC") == 0 )
+    if ( argv[0] && ( strcmp(argv[0], "-hdc") == 0  || strcmp (argv[0], "-hDC") == 0 ) )
     {
         argc--;
         argv++;
@@ -3286,7 +3296,7 @@ static int PrintAttr(ClientData data, Tcl_Interp *interp, int argc, const char *
     */
     static char usage_message[] = "printer attr "
               "[-hDC hdc] "
-              "[ [-get keylist] | [-set key-value-pair list] | [-delete key-list] ]";
+              "[ [-get keylist] | [-set key-value-pair list] | [-delete key-list] | [-prompt] ]";
     
     struct printer_values * ppv = *(struct printer_values **) data;
     
@@ -3304,6 +3314,7 @@ static int PrintAttr(ClientData data, Tcl_Interp *interp, int argc, const char *
     int do_get = 0;
     int do_set = 0;
     int do_delete = 0;
+    int do_prompt = 0;
     int i;
     
     /*
@@ -3364,6 +3375,10 @@ static int PrintAttr(ClientData data, Tcl_Interp *interp, int argc, const char *
                 return TCL_ERROR;
             }      
         }
+        else if ( strcmp(argv[0], "-prompt") == 0 )
+        {
+            do_prompt = 1;
+        }
         else if ( strcmp(argv[0], "-hdc") == 0  || strcmp (argv[0], "-hDC") == 0 )
         {
             i++;
@@ -3373,16 +3388,16 @@ static int PrintAttr(ClientData data, Tcl_Interp *interp, int argc, const char *
     }
     
     /* Check for any illegal implementations */
-    if ( do_set + do_get + do_delete > 1 )
+    if ( do_set + do_get + do_delete + do_prompt > 1 )
     {
         Tcl_AppendResult(interp, "\nCannot use two options from "
-                         "-get, -set, and -delete in same request.\n", 
+                         "-get, -set, -delete, and -prompt in same request.\n", 
                          usage_message, 
                          0);
         if (keys)
             Tcl_Free((char *)keys);
         return TCL_ERROR;
-    }
+    } 
     
     if ( hdcString )
     {
@@ -3532,6 +3547,52 @@ static int PrintAttr(ClientData data, Tcl_Interp *interp, int argc, const char *
         
         /* Here we should modify the DEVMODE by calling ResetDC */
         ResetDC(ppv->hDC, ppv->pdevmode);
+    } 
+    else if ( do_prompt ) 
+    {
+        DWORD dwRet;
+        HANDLE hPrinter;
+        PRINTER_DEFAULTS pd = {0, 0, 0};
+        
+        pd.DesiredAccess = PRINTER_ALL_ACCESS;
+        pd.pDevMode = ppv->pdevmode;
+        
+        OpenPrinter (ppv->pdevmode->dmDeviceName, &hPrinter, &pd);
+        dwRet = DocumentProperties (
+                                    GetActiveWindow(), hPrinter, ppv->pdevmode->dmDeviceName,
+                                    ppv->pdevmode, ppv->pdevmode, DM_PROMPT | DM_IN_BUFFER | DM_OUT_BUFFER);
+        if ( dwRet == IDCANCEL ) 
+        {
+            /* The dialog was canceled. Don't do anything */
+        } 
+        else 
+        {
+            if (dwRet != IDOK) {
+                ppv->errorCode = GetLastError();
+                sprintf(msgbuf, "printer attr -prompt: Cannot retrieve printer attributes: %ld (%ld)", (long) ppv->errorCode, dwRet);
+                Tcl_SetResult (interp, msgbuf, TCL_VOLATILE);
+                ClosePrinter(hPrinter);
+                return TCL_ERROR;
+            }
+            
+            ppv->pdevmode->dmFields |= DM_PAPERSIZE;
+            if (ppv->pdevmode->dmPaperLength && ppv->pdevmode->dmPaperWidth) {
+                ppv->pdevmode->dmFields |= DM_PAPERWIDTH | DM_PAPERLENGTH;
+            }
+            SetDevModeAttribs (&ppv->attribs, ppv->pdevmode);
+            
+            dwRet = DocumentProperties(GetActiveWindow(),hPrinter, ppv->pdevmode->dmDeviceName,
+                                       ppv->pdevmode,ppv->pdevmode,DM_IN_BUFFER | DM_OUT_BUFFER);
+            if (dwRet != IDOK) {
+                ppv->errorCode = GetLastError();
+                sprintf(msgbuf, "printer attr -prompt: Cannot set printer attributes: %ld", (long) ppv->errorCode);
+                Tcl_SetResult (interp, msgbuf, TCL_VOLATILE);
+                ClosePrinter(hPrinter);
+                return TCL_ERROR;
+            }
+            ResetDC(hPrinter, ppv->pdevmode);
+        }
+        ClosePrinter(hPrinter);
     }
     
     /* This is the "get" part, used for all cases of the command */

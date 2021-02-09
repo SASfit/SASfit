@@ -384,6 +384,7 @@ scalar opo_Fpyramid4_Re(opo_data *opod) {
     K4 = opo_sinc(q3*H_R)*sin(q3*H_R)-opo_sinc(q4*H_R)*sin(-q4*H_R);
 
     if (tan(TILT)==0) return 0;
+goto labelPy4Re;
     if (fabs(Qx)<= EPS_OH && fabs(Qy)> EPS_OH && fabs(Qz) > EPS_OH) {
         return (4*cos(TILT)*(-(H_R*gsl_pow_3(Qy)*gsl_pow_3(cos(TILT))*cos(H_R*Qz)*cos(Qy - H_R*Qy*opo_Cot(TILT))) +
             gsl_pow_2(Qz)*gsl_pow_3(sin(TILT))*(Qy*cos(Qy) - Qy*cos(H_R*Qz)*cos(Qy - H_R*Qy*opo_Cot(TILT)) + sin(Qy)) +
@@ -451,6 +452,7 @@ scalar opo_Fpyramid4_Re(opo_data *opod) {
             2*(gsl_pow_2(Qx) + gsl_pow_2(Qy))*gsl_pow_2(Qz)*gsl_pow_2(cos(TILT))*gsl_pow_2(sin(TILT)) +
             gsl_pow_4(Qz)*gsl_pow_4(sin(TILT))));
     }
+labelPy4Re:
     return H_R/(Qx*Qy) * (cos(Qx-Qy)*K1+sin(Qx-Qy)*K2-cos(Qx+Qy)*K3-sin(Qx+Qy)*K4);
 }
 
@@ -470,7 +472,7 @@ scalar opo_Fpyramid4_Im(opo_data *opod) {
     K3 =  opo_sinc(q3*H_R)*sin(q3*H_R)+opo_sinc(q4*H_R)*sin(-q4*H_R);
     K4 = -opo_sinc(q3*H_R)*cos(q3*H_R)+opo_sinc(q4*H_R)*cos(-q4*H_R);
 
-
+//goto labelPy4Im;
     if (tan(TILT)==0) return 0;
     if (fabs(Qx) <= EPS_OH && fabs(Qy)> EPS_OH && fabs(Qz) > EPS_OH) {
         return (-4*H_R*gsl_pow_3(Qy)*gsl_pow_4(cos(TILT))*cos(Qy - H_R*Qy*opo_Cot(TILT))*sin(H_R*Qz) +
@@ -552,6 +554,7 @@ scalar opo_Fpyramid4_Im(opo_data *opod) {
             (Qx*Qy*((Qx - Qy)*cos(TILT) - Qz*sin(TILT))*((Qx + Qy)*cos(TILT) - Qz*sin(TILT))*
             ((Qx - Qy)*cos(TILT) + Qz*sin(TILT))*((Qx + Qy)*cos(TILT) + Qz*sin(TILT)));
     }
+labelPy4Im:
     return H_R/(Qx*Qy) * (cos(Qx-Qy)*K1+sin(Qx-Qy)*K2-cos(Qx+Qy)*K3-sin(Qx+Qy)*K4);
 }
 
@@ -562,45 +565,73 @@ scalar opo_Fpyramid4(opo_data *opod) {
 scalar Fcone_kernel_Re(scalar z, sasfit_param *param){
     scalar q_parallel,Rz;
     q_parallel = gsl_hypot(QQX,QQY);
-    if ((M_PI_2/TILT-lroundf(M_PI_2/TILT))==0) {
-        Rz = 1;
-    } else {
-        Rz = 1-z*opo_Cot(TILT);
-    }
+    Rz = 1-z*opo_Cot(TILT);
     return 2*M_PI*gsl_pow_2(Rz)*opo_J1x_x(q_parallel*Rz)*cos(QQZ*z);
 }
 
 scalar Fcone_kernel_Im(scalar z, sasfit_param *param){
     scalar q_parallel,Rz;
     q_parallel = gsl_hypot(QQX,QQY);
-    if ((M_PI_2/TILT-lroundf(M_PI_2/TILT))==0) {
-        Rz = 1;
-    } else {
-        Rz = 1-z*opo_Cot(TILT);
-    }
+    Rz = 1-z*opo_Cot(TILT);
     return 2*M_PI*gsl_pow_2(Rz)*opo_J1x_x(q_parallel*Rz)*sin(QQZ*z);
 }
 
 scalar Fcone6_kernel_Re(scalar z, sasfit_param *param){
-    scalar q_parallel,Rz,qx2,qy2,qz2,sqrt3;
-    q_parallel = gsl_hypot(QQX,QQY);
+    scalar Rz,Rz2,Rz4,Rz6,sqrt3,qx2,qx4,qy2,qy4,qz2;
     Rz = 1-z*opo_Cot(TILT);
+    Rz2=Rz*Rz;
+    Rz4=Rz2*Rz2;
+    Rz6=Rz4*Rz2;
     qx2=QQX*QQX;
+    qx4=qx2*qx2;
     qy2=QQY*QQY;
+    qy4=qy2*qy2;
     qz2=QQZ*QQZ;
     sqrt3=sqrt(3);
-    return 4*sqrt3/(3*qy2-qx2)* (qy2*opo_sinc(QQX*Rz/sqrt3)*opo_sinc(QQY*Rz)+cos(2/sqrt3*QQX*Rz)-cos(QQZ*Rz)*cos(QQX*Rz/sqrt3))*cos(QQZ*Rz);
+    if (fabs(QQX)<gsl_pow_2(EPS_OH) && fabs(QQY)<gsl_pow_2(EPS_OH)) {
+        return 2*sqrt3*Rz2*cos(QQZ*Rz);
+    } else if (fabs(QQX)<EPS_OH && fabs(QQY)<EPS_OH) {
+        return ((Rz2*(24494400 - 3402000*(qx2 + qy2)*Rz2 + 158760*gsl_pow_2(qx2 + qy2)*Rz4 -
+            135*(73*qx4*qy2 + 93*qx2*qy4)*Rz6 + 319*qx4*qy4*Rz4*Rz4))/
+            (4.0824e6*sqrt3))*cos(QQZ*Rz);
+    } else if (fabs(QQX-sqrt3*QQY)<EPS_OH) {
+        return ((6*QQX*QQY*Rz2*cos(2*QQY*Rz) + sqrt3*(5 - (5 + 6*qy2*Rz2)*cos(2*QQY*Rz) + 4*QQY*Rz*sin(2*QQY*Rz)) -
+            6*QQX*Rz*sin(QQY*Rz)*opo_sinc(QQY*Rz))/(6.*qy2))*cos(QQZ*Rz);
+    } else if (fabs(QQX+sqrt3*QQY)<EPS_OH) {
+        return ((3*QQX - (3*QQX + 5*sqrt3*QQY + 6*qy2*(QQX + sqrt3*QQY)*Rz2)*cos(2*QQY*Rz) + sqrt3*QQY*(5 + 4*QQY*Rz*sin(2*QQY*Rz)))/
+            (6.*QQY*qy2))*cos(QQZ*Rz);
+    } else {
+        return 4*sqrt3/(3*qy2-qx2)* (qy2*Rz*Rz*opo_sinc(QQX*Rz/sqrt3)*opo_sinc(QQY*Rz)+cos(2/sqrt3*QQX*Rz)-cos(QQY*Rz)*cos(QQX*Rz/sqrt3))*cos(QQZ*Rz);
+    }
 }
 
 scalar Fcone6_kernel_Im(scalar z, sasfit_param *param){
-    scalar q_parallel,Rz,qx2,qy2,qz2,sqrt3;
-    q_parallel = gsl_hypot(QQX,QQY);
+    scalar Rz,Rz2,Rz4,Rz6,sqrt3,qx2,qx4,qy2,qy4,qz2;
     Rz = 1-z*opo_Cot(TILT);
+    Rz2=Rz*Rz;
+    Rz4=Rz2*Rz2;
+    Rz6=Rz4*Rz2;
     qx2=QQX*QQX;
+    qx4=qx2*qx2;
     qy2=QQY*QQY;
+    qy4=qy2*qy2;
     qz2=QQZ*QQZ;
     sqrt3=sqrt(3);
-    return 4*sqrt3/(3*qy2-qx2)* (qy2*opo_sinc(QQX*Rz/sqrt3)*opo_sinc(QQY*Rz)+cos(2/sqrt3*QQX*Rz)-cos(QQZ*Rz)*cos(QQX*Rz/sqrt3))*sin(QQZ*Rz);
+    if (fabs(QQX)<gsl_pow_2(EPS_OH) && fabs(QQY)<gsl_pow_2(EPS_OH)) {
+        return 2*sqrt3*Rz2*sin(QQZ*Rz);
+    } else if (fabs(QQX)<EPS_OH && fabs(QQY)<EPS_OH) {
+        return ((Rz2*(24494400 - 3402000*(qx2 + qy2)*Rz2 + 158760*gsl_pow_2(qx2 + qy2)*Rz4 -
+            135*(73*qx4*qy2 + 93*qx2*qy4)*Rz6 + 319*qx4*qy4*Rz4*Rz4))/
+            (4.0824e6*sqrt3))*sin(QQZ*Rz);
+    } else if (fabs(QQX-sqrt3*QQY)<EPS_OH) {
+        return ((6*QQX*QQY*Rz2*cos(2*QQY*Rz) + sqrt3*(5 - (5 + 6*qy2*Rz2)*cos(2*QQY*Rz) + 4*QQY*Rz*sin(2*QQY*Rz)) -
+            6*QQX*Rz*sin(QQY*Rz)*opo_sinc(QQY*Rz))/(6.*qy2))*sin(QQZ*Rz);
+    } else if (fabs(QQX+sqrt3*QQY)<EPS_OH) {
+        return ((3*QQX - (3*QQX + 5*sqrt3*QQY + 6*qy2*(QQX + sqrt3*QQY)*Rz2)*cos(2*QQY*Rz) + sqrt3*QQY*(5 + 4*QQY*Rz*sin(2*QQY*Rz)))/
+            (6.*QQY*qy2))*sin(QQZ*Rz);
+    } else {
+        return 4*sqrt3/(3*qy2-qx2)* (qy2*Rz*Rz*opo_sinc(QQX*Rz/sqrt3)*opo_sinc(QQY*Rz)+cos(2/sqrt3*QQX*Rz)-cos(QQY*Rz)*cos(QQX*Rz/sqrt3))*sin(QQZ*Rz);
+    }
 }
 
 
@@ -612,8 +643,8 @@ scalar opo_Fcone(opo_data *opod) {
     QQY = opod->Qhat[1];
     QQZ = opod->Qhat[2];
     if (tan(TILT)==0) return 0;
-    FconeRe = M_PI/3.*tan(TILT)*(1-gsl_pow_3(1-H_R*opo_Cot(TILT)))*sasfit_integrate(0,H_R,&Fcone_kernel_Re,param);
-    FconeIm = M_PI/3.*tan(TILT)*(1-gsl_pow_3(1-H_R*opo_Cot(TILT)))*sasfit_integrate(0,H_R,&Fcone_kernel_Im,param);
+    FconeRe = sasfit_integrate(0,H_R,&Fcone_kernel_Re,param);
+    FconeIm = sasfit_integrate(0,H_R,&Fcone_kernel_Im,param);
     return gsl_hypot(FconeRe,FconeIm);
 }
 
@@ -625,8 +656,9 @@ scalar opo_Fcone6(opo_data *opod) {
     QQY = opod->Qhat[1];
     QQZ = opod->Qhat[2];
     if (tan(TILT)==0) return 0;
-    Fcone6Re = 2./sqrt(3.)*tan(TILT)*(1-gsl_pow_3(1-H_R*opo_Cot(TILT)))*sasfit_integrate(0,H_R,&Fcone6_kernel_Re,param);
-    Fcone6Im = 2./sqrt(3.)*tan(TILT)*(1-gsl_pow_3(1-H_R*opo_Cot(TILT)))*sasfit_integrate(0,H_R,&Fcone6_kernel_Im,param);
+    Fcone6Re = sasfit_integrate(0,H_R,&Fcone6_kernel_Re,param);
+    Fcone6Im = sasfit_integrate(0,H_R,&Fcone6_kernel_Im,param);
+    return gsl_hypot(Fcone6Re,Fcone6Im);
 }
 
 scalar opo_Fpyramid(opo_data *opod) {

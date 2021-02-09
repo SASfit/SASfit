@@ -2,6 +2,7 @@ data/test.dat
 doc/manual/sasfit.pdf
 doc/manual/sasfit.bib
 plugins/groups_example.def
+plugins/cp2cb.ps1
 Readme.md
 CHANGES.txt
 COPYING.txt

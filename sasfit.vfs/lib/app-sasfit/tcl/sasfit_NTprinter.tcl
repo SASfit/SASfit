@@ -37,7 +37,7 @@ proc init_printer { } {
    if { "$printer_vars(OS)" == "windows" && 
 	 [ catch { load $sasfit(tcl)/printer/printer.dll } result ] } {
 	puts stderr "error while loading $sasfit(tcl)/printer/printer.dll: $result"
-      return $result
+ #     return $result
    }
 
   set printer_vars(have_gdi) 1

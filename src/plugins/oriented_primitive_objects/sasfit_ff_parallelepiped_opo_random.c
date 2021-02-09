@@ -76,6 +76,6 @@ scalar sasfit_ff_parallelepiped_opo_random_v(scalar q, sasfit_param * param, int
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return p_epiped_opod.detDinv;
+	return 8.*p_epiped_opod.detDinv;
 }
 
