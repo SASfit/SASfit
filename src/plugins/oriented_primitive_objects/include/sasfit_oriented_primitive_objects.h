@@ -51,7 +51,7 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -63,7 +63,7 @@
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -75,7 +75,7 @@
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -142,7 +142,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_v(scalar 
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -154,7 +154,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_v(scalar 
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -166,7 +166,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_v(scalar 
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -221,7 +221,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_random_v(
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -233,7 +233,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_random_v(
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -245,7 +245,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_random_v(
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -312,7 +312,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_v(s
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -324,7 +324,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_v(s
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -336,7 +336,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_v(s
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -391,7 +391,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_ran
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -403,7 +403,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_ran
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -415,7 +415,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_ran
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -482,7 +482,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_v(scalar
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -494,7 +494,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_v(scalar
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -506,7 +506,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_v(scalar
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -561,7 +561,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_random_v
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -573,7 +573,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_random_v
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -585,7 +585,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_random_v
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -658,7 +658,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_v(s
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -670,7 +670,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_v(s
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -682,7 +682,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_v(s
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -755,7 +755,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_ran
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -767,7 +767,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_ran
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -779,7 +779,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_ran
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -888,7 +888,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supershape_opo_v(scala
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -900,7 +900,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supershape_opo_v(scala
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -912,7 +912,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supershape_opo_v(scala
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -1021,7 +1021,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supershape_opo_random_
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -1033,7 +1033,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supershape_opo_random_
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -1045,7 +1045,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supershape_opo_random_
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -1166,7 +1166,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supertoroid_helix_opo_
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -1178,7 +1178,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supertoroid_helix_opo_
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -1190,7 +1190,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supertoroid_helix_opo_
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -1311,7 +1311,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supertoroid_helix_opo_
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -1323,7 +1323,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supertoroid_helix_opo_
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -1335,7 +1335,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_supertoroid_helix_opo_
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -1444,7 +1444,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rationalsupershape_opo
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -1456,7 +1456,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rationalsupershape_opo
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -1468,7 +1468,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rationalsupershape_opo
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>length of third axis</td>
+ *       <td>length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -1577,58 +1577,64 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rationalsupershape_opo
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td></td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
- *       <td></td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b ea_y</td>
- *       <td></td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b ea_z</td>
- *       <td></td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td></td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
- *       <td></td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b eb_y</td>
- *       <td></td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b eb_z</td>
- *       <td></td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td></td>
+ *       <td>length of third axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
- *       <td></td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b ec_y</td>
- *       <td></td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b ex_z</td>
- *       <td></td>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b eta_p</td>
- *       <td></td>
+ *       <td>scattering length density of particle</td>
  *      </tr><tr>
  *       <td>\b eta_m</td>
- *       <td></td>
+ *       <td>scattering length density of matrix</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
- *       <td></td>
+ *       <td>first Euler angle</td>
  *      </tr><tr>
  *       <td>\b beta</td>
- *       <td></td>
+ *       <td>second Euler angle</td>
  *      </tr><tr>
  *       <td>\b gamma</td>
- *       <td></td>
+ *       <td>third Euler angle</td>
  *      </tr><tr>
  *       <td>\b psi</td>
- *       <td></td>
+ *       <td>direction of Q on detector (psi=0: direction to the right)</td>
+ *      </tr><tr>
+ *       <td>\b tilt</td>
+ *       <td>tilt angle of conical side wall of unit cone</td>
+ *      </tr><tr>
+ *       <td>\b H_R</td>
+ *       <td>height of unit 6-fold symmetric cone</td>
  *      </tr></table>
  */
 
@@ -1668,7 +1674,64 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_tetrahedra__opo__v(sca
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td></td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b tilt</td>
+ *       <td>tilt angle of conical side wall of unit cone</td>
+ *      </tr><tr>
+ *       <td>\b H_R</td>
+ *       <td>height of unit 6-fold symmetric cone</td>
  *      </tr></table>
  */
 
@@ -2118,7 +2181,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_hexahedra__opo_random_
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -2130,7 +2193,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_hexahedra__opo_random_
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -2174,7 +2237,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_hexahedra__opo_random_
  *       <td>\b tilt</td>
  *       <td>tilt angle of conical side wall of unit cone</td>
  *      </tr><tr>
- *       <td>\b H</td>
+ *       <td>\b H_R</td>
  *       <td>hight of unit cone</td>
  *      </tr></table>
  */
@@ -2215,7 +2278,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cone_opo_v(scalar q, s
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -2227,7 +2290,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cone_opo_v(scalar q, s
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -2271,7 +2334,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cone_opo_v(scalar q, s
  *       <td>\b tilt</td>
  *       <td>tilt angle of conical side wall of unit cone</td>
  *      </tr><tr>
- *       <td>\b H</td>
+ *       <td>\b H_R</td>
  *       <td>hight of unit cone</td>
  *      </tr></table>
  */
@@ -2368,7 +2431,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cone_opo_random_v(scal
  *       <td>\b tilt</td>
  *       <td>tilt angle of conical side wall of unit pyramid4</td>
  *      </tr><tr>
- *       <td>\b H</td>
+ *       <td>\b H_R</td>
  *       <td>hight of unit pyramid4</td>
  *      </tr></table>
  */
@@ -2465,7 +2528,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_pyramid4_opo_v(scalar 
  *       <td>\b tilt</td>
  *       <td>tilt angle of conical side wall of unit pyramid4</td>
  *      </tr><tr>
- *       <td>\b H</td>
+ *       <td>\b H_R</td>
  *       <td>hight of unit pyramid4</td>
  *      </tr></table>
  */
@@ -2506,7 +2569,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_pyramid4_opo_random_v(
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -2518,7 +2581,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_pyramid4_opo_random_v(
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -2562,8 +2625,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_pyramid4_opo_random_v(
  *       <td>\b tilt</td>
  *       <td>tilt angle of conical side wall of unit cone</td>
  *      </tr><tr>
- *       <td>\b H</td>
- *       <td>hight of unit cone</td>
+ *       <td>\b H_R</td>
+ *       <td>height of unit 6-fold symmetric cone</td>
  *      </tr></table>
  */
 
@@ -2603,7 +2666,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cone6_opo_v(scalar q, 
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td>length of first axis</td>
+ *       <td>length of first half axis</td>
  *      </tr><tr>
  *       <td>\b ea_x</td>
  *       <td>x component of first axis (will be normalized to 1)</td>
@@ -2615,7 +2678,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cone6_opo_v(scalar q, 
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b b</td>
- *       <td>length of second axis</td>
+ *       <td>length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -2659,8 +2722,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cone6_opo_v(scalar q, 
  *       <td>\b tilt</td>
  *       <td>tilt angle of conical side wall of unit cone</td>
  *      </tr><tr>
- *       <td>\b H</td>
- *       <td>hight of unit cone</td>
+ *       <td>\b H_R</td>
+ *       <td>height of unit 6-fold symmetric cone</td>
  *      </tr></table>
  */
 

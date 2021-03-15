@@ -63,17 +63,17 @@ scalar sasfit_ff_CoPolymerMicelleSphericalProfile(scalar q, sasfit_param * param
 
 	Fc = sasfit_sphere_fc(q, Rc);
 
-	// calculate minimum neccassary tmin for fully collapsed corona 
+	// calculate minimum neccessary tmin for fully collapsed corona
 	tmin = pow(Rc*Rc*Rc+3.0/4.0/M_PI*Vsh*Nagg,1./3.)-Rc;
 
-	if (tmin >= t) 
+	if (tmin >= t)
 	{
-		// if requested thickness is choosen to small it will be expanded to that one of a 
+		// if requested thickness is choosen to small it will be expanded to that one of a
 		alpha_min = 0.0;
 		sasfit_param_set_err(param, DBGINFO("Compact shell is required: thickness will be set to t=%lf and alpha_min=0.0 (q=%lf)"),tmin,q);
 	} else {
 		Vshtot = 4.0/(3.0-alpha)*M_PI*pow(Rc+t,3.0-alpha)-4.0/(3.-alpha)*M_PI*pow(Rc,3.0-alpha)/pow(Rc,-alpha);
-		if ( Vshtot < (Nagg*Vsh) ) 
+		if ( Vshtot < (Nagg*Vsh) )
 		{
 			c0 = 4.0*M_PI*Rc*Rc*Rc/(Nagg*Vsh);
 			tmp  = c0*pow(Rc/(Rc+t),c0) * log(Rc/(Rc+t));
@@ -93,11 +93,11 @@ scalar sasfit_ff_CoPolymerMicelleSphericalProfile(scalar q, sasfit_param * param
 	// the above calculations are needed to get around some unphysical constrains
 
 	Pc = Fc*Fc;
-	if ((tmin == 0.0) || (b_sh==0.0)) 
+	if ((tmin == 0.0) || (b_sh==0.0))
 	{
 		Fsh = Psh = 0.0;
-	} 
-	else 
+	}
+	else
 	{
 		param->p[MAXPAR-1] = q;
 		param->p[6] = alpha_min; // temporarily set

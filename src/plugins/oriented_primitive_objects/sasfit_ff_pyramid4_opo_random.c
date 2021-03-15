@@ -12,6 +12,9 @@ scalar sasfit_ff_pyramid4_opo_kernel_Re_f(scalar theta, scalar phi, sasfit_param
     pyramid4_opod.Q[1] = pyramid4_opod.Qmod*sin(phi)*sin(theta);
     pyramid4_opod.Q[2] = pyramid4_opod.Qmod         *cos(theta);
     opo_setQhat(&pyramid4_opod);
+    QQX = pyramid4_opod.Qhat[0];
+    QQY = pyramid4_opod.Qhat[1];
+    QQZ = pyramid4_opod.Qhat[2];
     return (ETA_P-ETA_M)*pyramid4_opod.detDinv*opo_Fpyramid4_Re(&pyramid4_opod);
 }
 scalar sasfit_ff_pyramid4_opo_kernel_Im_f(scalar theta, scalar phi, sasfit_param * param) {
@@ -19,6 +22,9 @@ scalar sasfit_ff_pyramid4_opo_kernel_Im_f(scalar theta, scalar phi, sasfit_param
     pyramid4_opod.Q[1] = pyramid4_opod.Qmod*sin(phi)*sin(theta);
     pyramid4_opod.Q[2] = pyramid4_opod.Qmod         *cos(theta);
     opo_setQhat(&pyramid4_opod);
+    QQX = pyramid4_opod.Qhat[0];
+    QQY = pyramid4_opod.Qhat[1];
+    QQZ = pyramid4_opod.Qhat[2];
     return (ETA_P-ETA_M)*pyramid4_opod.detDinv*opo_Fpyramid4_Im(&pyramid4_opod);
 }
 scalar sasfit_ff_pyramid4_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
@@ -26,6 +32,9 @@ scalar sasfit_ff_pyramid4_opo_kernel(scalar theta, scalar phi, sasfit_param * pa
     pyramid4_opod.Q[1] = pyramid4_opod.Qmod*sin(phi)*sin(theta);
     pyramid4_opod.Q[2] = pyramid4_opod.Qmod         *cos(theta);
     opo_setQhat(&pyramid4_opod);
+    QQX = pyramid4_opod.Qhat[0];
+    QQY = pyramid4_opod.Qhat[1];
+    QQZ = pyramid4_opod.Qhat[2];
     return gsl_pow_2((ETA_P-ETA_M)*pyramid4_opod.detDinv*opo_Fpyramid4(&pyramid4_opod));
 }
 

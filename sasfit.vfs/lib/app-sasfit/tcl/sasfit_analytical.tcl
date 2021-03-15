@@ -6149,76 +6149,76 @@ switch -exact $type {
            }
           "DISC+Chains(RW)_Lc" {
               switch $num {
-                 0 {return "disc with Gaussian chains attached, the micelle consists of block copolymers\nthe aggregation number Nagg is calculated from the core thickness L_core and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "L_core: thickness of the disc core\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg"}
+                0 {return "disc with Gaussian chains attached, the micelle consists of block copolymers\nthe aggregation number Nagg is calculated from the core thickness L_core and the molecular volume V_core of the copolymer block unit in the core"}
+                1 {return "L_core: thickness of the disc core\n"}
+                2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                4 {return "eta_core: scattering length density of spherical core\n"}
+                5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
+                6 {return "eta_sol: scattering length density of solvent\n"}
+                7 {return "xsolv_core: amount of solvent in core\n"}
+				8 {return "Rg: gyration radius of polymer chains in the corona\n"}
+                9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg"}
                 10 {return "D: disc diameter\n"}
               }
            }
           "DISC+Chains(RW)_nagg" {
               switch $num {
-                 0 {return "disc with Gaussian chains attached, the micelle consists of block copolymers\nthe core thickness L_core is calculated from the aggregation number Nagg and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "nagg: specific aggregation number\nnumber of chains per surface area"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg"}
+                0 {return "disc with Gaussian chains attached, the micelle consists of block copolymers\nthe core thickness L_core is calculated from the aggregation number Nagg and the molecular volume V_core of the copolymer block unit in the core"}
+                1 {return "nagg: specific aggregation number\nnumber of chains per surface area"}
+                2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                4 {return "eta_core: scattering length density of spherical core\n"}
+                5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
+                6 {return "eta_sol: scattering length density of solvent\n"}
+                7 {return "xsolv_core: amount of solvent in core\n"}
+				8 {return "Rg: gyration radius of polymer chains in the corona\n"}
+                9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for L_core>>Rg"}
                 10 {return "D: disc diameter\n"}
               }
            }
           "ELL+Chains(RW)" {
               switch $num {
-                 0 {return "ellipsoid with Gaussian chains attached\nin contrast to the form factor *_Rc and *_Nagg this one does not necassary consist of copolymers"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "n_agg: specific aggregation number\nnumber of chains per surface area"}
-                 3 {return "V_brush: molecular volume of single chain in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
+                0 {return "ellipsoid with Gaussian chains attached\nin contrast to the form factor *_Rc and *_Nagg this one does not necassary consist of copolymers"}
+                1 {return "R_core: core radius\n"}
+                2 {return "n_agg: specific aggregation number\nnumber of chains per surface area"}
+                3 {return "V_brush: molecular volume of single chain in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                4 {return "eta_core: scattering length density of spherical core\n"}
+                5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
+                6 {return "eta_sol: scattering length density of solvent\n"}
+                7 {return "xsolv_core: amount of solvent in core\n"}
+				8 {return "Rg: gyration radius of polymer chains in the corona\n"}
+                9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
                 10 {return "epsilon: eccentricity of the ellipsoid (R,R,epsilon*R)\n"}
               }
            }
           "ELL+Chains(RW)_Rc" {
               switch $num {
-                 0 {return "ellipsoid with Gaussian chains attached, the micelle consists of block copolymers\nthe aggregation number Nagg is calculated from the core radius R_core and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
+                0 {return "ellipsoid with Gaussian chains attached, the micelle consists of block copolymers\nthe aggregation number Nagg is calculated from the core radius R_core and the molecular volume V_core of the copolymer block unit in the core"}
+                1 {return "R_core: core radius\n"}
+                2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                4 {return "eta_core: scattering length density of spherical core\n"}
+                5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
+                6 {return "eta_sol: scattering length density of solvent\n"}
+                7 {return "xsolv_core: amount of solvent in core\n"}
+				8 {return "Rg: gyration radius of polymer chains in the corona\n"}
+                9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
                 10 {return "epsilon: eccentricity of the ellipsoid (R,R,epsilon*R)\n"}
               }
            }
           "ELL+Chains(RW)_Nagg" {
               switch $num {
-                 0 {return "ellipsoid with Gaussian chains attached, the micelle consists of block copolymers\nthe core radius R_core is calculated from the aggregation number Nagg and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "N_agg: aggregation number of copolymer molecules per micelle\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
+                0 {return "ellipsoid with Gaussian chains attached, the micelle consists of block copolymers\nthe core radius R_core is calculated from the aggregation number Nagg and the molecular volume V_core of the copolymer block unit in the core"}
+                1 {return "N_agg: aggregation number of copolymer molecules per micelle\n"}
+                2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
+                4 {return "eta_core: scattering length density of spherical core\n"}
+                5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
+                6 {return "eta_sol: scattering length density of solvent\n"}
+                7 {return "xsolv_core: amount of solvent in core\n"}
+				8 {return "Rg: gyration radius of polymer chains in the corona\n"}
+				9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
                 10 {return "epsilon: eccentricity of the ellipsoid (R,R,epsilon*R)\n"}
               }
            }

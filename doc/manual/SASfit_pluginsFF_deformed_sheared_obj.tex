@@ -984,12 +984,12 @@ F_\mathrm{E}(\B{Q}) &=
 \end{align}
 For a random oriented ellipsoid one either can integrate over all Euler-angle, which is a tripple integration or over all orientations of $\B{Q}$, which is a double integration and performed for the randomized form factor. The corresponding scattering amplitude $F_{\mathrm{E},rnd}$ and scattering intensity $P_{\mathrm{E},rnd}$ are then given by
 \begin{align}
-F_{\mathrm{E},rnd}(Q) &= \left\langle F_\mathrm{E}(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_E\left(Q\begin{pmatrix}
+F_{\mathrm{E,rnd}}(Q) &= \left\langle F_\mathrm{E}(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_E\left(Q\begin{pmatrix}
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
                                      \end{pmatrix}\right) \\
-P_{\mathrm{E},rnd}(Q) &= \left\langle F_\mathrm{E}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_E^2\left(Q\begin{pmatrix}
+P_{\mathrm{E,rnd}}(Q) &= \left\langle F_\mathrm{E}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_E^2\left(Q\begin{pmatrix}
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
@@ -1087,12 +1087,12 @@ e^{\imath\B{\hat{Q}r}} \nonumber \\
 \end{align}
 For a random oriented parallelepiped the orientation average is done over all directions of $\B{Q}$. The corresponding scattering amplitude $F_{\mathrm{E},rnd}$ and scattering intensity $P_{\mathrm{E},rnd}$ are then given by
 \begin{align}
-F_{\mathrm{P},rnd}(Q) &= \left\langle F_\mathrm{P}(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_P\left(Q\begin{pmatrix}
+F_{\mathrm{P,rnd}}(Q) &= \left\langle F_\mathrm{P}(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_P\left(Q\begin{pmatrix}
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
                                      \end{pmatrix}\right) \\
-P_{\mathrm{P},rnd}(Q) &= \left\langle F_\mathrm{P}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_P^2\left(Q\begin{pmatrix}
+P_{\mathrm{P,rnd}}(Q) &= \left\langle F_\mathrm{P}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_P^2\left(Q\begin{pmatrix}
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
@@ -1203,12 +1203,12 @@ e^{\imath\B{\hat{Q}r}} \nonumber \\
 
 For a random oriented oblique cylinder the orientation average is done over all directions of $\B{Q}$. The corresponding scattering amplitude $F_{\mathrm{C},rnd}$ and scattering intensity $P_{\mathrm{C},rnd}$ are then given by
 \begin{align}
-F_{\mathrm{C},rnd}(Q) &= \left\langle F_\mathrm{C}(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_\mathrm{C}\left(Q\begin{pmatrix}
+F_{\mathrm{C,rnd}}(Q) &= \left\langle F_\mathrm{C}(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_\mathrm{C}\left(Q\begin{pmatrix}
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
                                      \end{pmatrix}\right) \\
-P_{\mathrm{C},rnd}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_\mathrm{C}^2\left(Q\begin{pmatrix}
+P_{\mathrm{C,rnd}}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_\mathrm{C}^2\left(Q\begin{pmatrix}
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
@@ -1271,21 +1271,34 @@ P_{\mathrm{C},rnd}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} =
 \end{itemize}
 
 \subsection{oriented and random oriented cone} ~\\
-\cite{Renaud2009}
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{../images/form_factor/oriented_primitive_opbjects/cone.png}
 \end{center}
-\caption{unit cone of radius $R=1$, height $H_R$ and  tilting angle $\alpha$.}
+\caption{unit cone of radius $R=1$, height $H_R$ and  tilting angle $\alpha_\mathrm{tilt}$.}
 \label{fig:opo_cone}
 \end{figure}
 
-
+The basic formula for the form factor of a  blunted cone has been taken from \cite{Renaud2009}. The difference to that version is that the affine transformation from above is used to scale the size of the cone. This is also the reason why the ratio of the height and radius $H_R=\frac{H}{R}$ is used as an input parameter instead of $H$ and $R$ separately, i.e.\ a unit cone is assumed to have a radius of $R=1$. The overall size is then scaled with the input parameters $a$, $b$ and $c$. The shape does not has inversion symmetry and is therefore a complex function. The phase factor is taken so that the base plane lies in the $xy$-plane according to fig.\ \ref{fig:opo_cone}. The form factor of the cone according to \cite{Renaud2009} is given as
 \begin{align}\label{eq:opo_cone}
-  F_\mathrm{cone}(\mathbf{Q},R,H,\alpha_\mathrm{tilt}) & = \int_0^H2\pi R_z^2 \frac{J_1\left(q_\parallel R_z\right)}{q_\parallel R_z}  e^{\imath \tilde{Q}_z z} \\
+  F_\mathrm{cone}(\mathbf{Q},R,H,\alpha_\mathrm{tilt}) & = \int_0^H2\pi R_z^2 \frac{J_1\left(q_\parallel R_z\right)}{q_\parallel R_z}  e^{\imath \tilde{Q}_z z} \mathrm{d}z\\
   q_\parallel &= \sqrt{\tilde{Q}_x^2+\tilde{Q}_y^2} \\
   R_z &=R-z\cot(\alpha_\mathrm{tilt}) \\
   \frac{H}{R} &< \tan(\alpha_\mathrm{tilt})
+\end{align}
+For a random oriented oblique cone the orientation average is done over all directions of $\B{Q}$. The corresponding scattering amplitude $F_{\mathrm{cone},rnd}$ and scattering intensity $P_{\mathrm{cone},rnd}$ are then given by
+\begin{align}
+F_{\mathrm{cone,rnd}}(Q) &= \left\langle F_\mathrm{cone}(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_\mathrm{cone}\left(Q\begin{pmatrix}
+                                       \cos(\phi)\sin(\theta) \\
+                                       \sin(\phi)\sin(\theta) \\
+                                       \cos(\theta)
+                                     \end{pmatrix}\right) \\
+P_{\mathrm{cone,rnd}}(Q) &= \left\langle F_\mathrm{cone}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_\mathrm{cone}^2\left(Q\begin{pmatrix}
+                                       \cos(\phi)\sin(\theta) \\
+                                       \sin(\phi)\sin(\theta) \\
+                                       \cos(\theta)
+                                     \end{pmatrix}\right)
 \end{align}
 
 \begin{figure}[htb]
@@ -1295,23 +1308,87 @@ P_{\mathrm{C},rnd}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} =
 \label{fig:opo_coneIQ2D}
 \end{figure}
 
+~\\
+\underline{Input Parameters for model \texttt{cone (opo)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{b}] length of second half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{c}] length of third axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{alpha}] first Euler angle
+\item[\texttt{beta}] second Euler angle
+\item[\texttt{gamma}] third Euler angle
+\item[\texttt{psi}] direction of $\B{Q}$ on detector ($\psi=0$, $x$-direction, to the right)
+\item[\texttt{tilt}] tilt angle $\alpha_\mathrm{tilt}$ of conical side wall of unit cone
+\item[\texttt{H\_R}] height of unit cone $H_R$
+\end{description}
+
+\begin{figure}[htb]
+\includegraphics[width=0.481\textwidth]{../images/form_factor/oriented_primitive_opbjects/coneOPOoblique.png} \hfill
+\includegraphics[width=0.481\textwidth]{../images/form_factor/oriented_primitive_opbjects/coneOPOcompare.png}
+\caption{scattering curved of an oblique \texttt{cone (OPO,random)} (left) and a comparison of a \texttt{cone (OPO,random)} with a random oriented solid cylinder \texttt{Cylinder} form factor (right)}
+\label{fig:opo_coneIQrandom}
+\end{figure}
+
+~\\
+\underline{Input Parameters for model \texttt{cone (opo, random)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{b}] length of second half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{c}] length of third axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{tilt}] tilt angle $\alpha_\mathrm{tilt}$ of conical side wall of unit cone
+\item[\texttt{H\_R}] height of unit cone $H_R$
+\end{description}
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
+\item $a$ and $b$ are the half axis or radii of the elliptical base and $cH_R$ the full height of the cone.
+\item the volume of the oblique cone is $$V_\mathrm{cone}=\frac{\pi}{3}\tan(\alpha_\mathrm{tilt})\left[1-\left(1-\frac{H_\mathrm{R}}{\tan(\alpha_\mathrm{tilt})}\right)^3\right] \det(\M{D}^{-1})$$
+\end{itemize}
+
 \subsection{oriented and random oriented cone with 6-fold symmetry} ~\\
-\cite{Renaud2009}
+
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.9\textwidth]{../images/form_factor/oriented_primitive_opbjects/cone6.png}
+\includegraphics[width=0.95\textwidth]{../images/form_factor/oriented_primitive_opbjects/cone6.png}
 \end{center}
-\caption{unit cone with 6-fold symmetry, diameter of $2R=2$, height $H_R$ and tilting angle $\alpha$.}
+\caption{unit cone with 6-fold symmetry (blunted hexagonal pyramid), diameter of $2R=2$, height $H_R$ and tilting angle $\alpha_\mathrm{tilt}$.}
 \label{fig:opo_cone6}
 \end{figure}
 
-
+The basic formula for the form factor of a cone with a 6-fold symmetry (blunted hexagonal pyramid) has been taken from \cite{Renaud2009}. The difference to that version is that the affine transformation from above is used to scale the size of the cone. This is also the reason why the ratio of the height and radius $H_R=\frac{H}{R}$ is used as an input parameter instead of $H$ and $R$ separately, i.e.\ a unit 6-fold symmetric cone is assumed to have a radius of $R=1$. The overall size is then scaled with the input parameters $a$, $b$ and $c$. The shape does not has inversion symmetry and is therefore a complex function. The phase factor is taken so that the base plane lies in the $xy$-plane according to fig.\ \ref{fig:opo_cone6}. The form factor of the cone according to \cite{Renaud2009} is given as
 \begin{align}\label{eq:opo_cone6}
 \begin{split}
    F_\mathrm{cone6}(\mathbf{Q},R,H,\alpha_\mathrm{tilt})
-     & = \frac{4\sqrt{3}}{3\tilde{Q}_y^2-\tilde{Q}_x^2} \Bigg[\tilde{Q}_y^2R_z^2  \frac{\sin\left(\tilde{Q}_x R_z/\sqrt{3}\right)}{\tilde{Q}_x R_z/\sqrt{3}} \frac{\sin(\tilde{Q}_y R_z)}{\tilde{Q}_y R_z} \\
+     & = \frac{4\sqrt{3}}{3\tilde{Q}_y^2-\tilde{Q}_x^2} \int_0^H \Bigg[\tilde{Q}_y^2R_z^2  \frac{\sin\left(\tilde{Q}_x R_z/\sqrt{3}\right)}{\tilde{Q}_x R_z/\sqrt{3}} \frac{\sin(\tilde{Q}_y R_z)}{\tilde{Q}_y R_z} \\
      &  + \cos\left(2\tilde{Q}_x R_z/\sqrt{3}\right) -\cos(\tilde{Q}_y R_z)\cos\left(\tilde{Q}_x R_z/\sqrt{3}\right) \Bigg] \\
-     & \times e^{\imath \tilde{Q}_z z}
+     & \times e^{\imath \tilde{Q}_z z} \mathrm{d}z
 \end{split} \\
   R_z &=R-z\cot(\alpha_\mathrm{tilt}) \\
   \frac{H}{R} &< \tan(\alpha_\mathrm{tilt})
@@ -1323,6 +1400,70 @@ P_{\mathrm{C},rnd}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} =
 \caption{Scattering patterns at 18m detector distance and a wavelength of $\lambda=0.6$nm. The cones with 6-fold symmetry are simulated with half axis length of $a=30$nm, $b=20$nm, and $c=10$nm and $\alpha_\mathrm{tilt}=\arctan(2)$ and $H_R=2$. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=45^\circ,\gamma=45^\circ)$ }
 \label{fig:opo_coneIQ2D}
 \end{figure}
+
+~\\
+\underline{Input Parameters for model \texttt{cone6 (opo)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{b}] length of second half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{c}] length of third axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{alpha}] first Euler angle
+\item[\texttt{beta}] second Euler angle
+\item[\texttt{gamma}] third Euler angle
+\item[\texttt{psi}] direction of $\B{Q}$ on detector ($\psi=0$, $x$-direction, to the right)
+\item[\texttt{tilt}] tilt angle $\alpha_\mathrm{tilt}$ of conical side wall of unit cone
+\item[\texttt{H\_R}] height $H_R$ of unit 6-fold symmetric cone
+\end{description}
+
+\begin{figure}[htb]
+\includegraphics[width=0.481\textwidth]{../images/form_factor/oriented_primitive_opbjects/cone6OPOoblique.png} \hfill
+\includegraphics[width=0.481\textwidth]{../images/form_factor/oriented_primitive_opbjects/cone6OPOcompare.png}
+\caption{scattering curved of an oblique \texttt{cone6 (OPO,random)} (left) and a comparison of a \texttt{cone6 (OPO,random)} with a random oriented solid cylinder \texttt{Cylinder} form factor and a random oriented parallelepiped \texttt{parallelepiped\_abc} (right)}
+\label{fig:opo_cone6IQrandom}
+\end{figure}
+
+~\\
+\underline{Input Parameters for model \texttt{cone6 (opo, random)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{b}] length of second half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{c}] length of third half axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{tilt}] tilt angle $\alpha_\mathrm{tilt}$ of conical side wall of unit cone
+\item[\texttt{H\_R}] height $H_R$ of unit 6-fold symmetric cone
+\end{description}
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
+\item $a$ and $b$ are the half axis or radii of the elliptical base and $cH_R$ the full height of the cone.
+\item the volume of the oblique 6-fold symmetric cone is $$V_\mathrm{cone}=\frac{2\tan(\alpha_\mathrm{tilt})}{\sqrt{3}}\left[1-\left(1-\frac{H_\mathrm{R}}{\tan(\alpha_\mathrm{tilt})}\right)^3\right] \det(\M{D}^{-1})$$
+\end{itemize}
 
 \subsection{oriented and random oriented tetrahedron} ~\\
 \cite{Renaud2009}
@@ -1337,7 +1478,7 @@ P_{\mathrm{C},rnd}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} =
 
 \begin{align}\label{eq:opo_tetrah}
 \begin{split}
- F_\mathrm{th}(\mathbf{Q},R,H,\alpha) & = \frac{H}{\sqrt{3}\tilde{Q}_x\left(\tilde{Q}_x^2-3\tilde{Q}_y^2\right)} e^{\imath\tilde{Q}_zR\tan(\alpha)/\sqrt{3}} \quad \times\\
+ F_\mathrm{th}(\mathbf{Q},R,H,\alpha) & = \frac{\sqrt{3}H}{\tilde{Q}_x\left(\tilde{Q}_x^2-3\tilde{Q}_y^2\right)} e^{\imath\tilde{Q}_zR\tan(\alpha)/\sqrt{3}} \quad \times\\
      &  \Bigg\{-\left(\tilde{Q}_x+\sqrt{3}\tilde{Q}_y\right) \frac{\sin(q_1H)}{q_1H}e^{\imath q_1L}  +\\
      & \left(-\tilde{Q}_x+\sqrt{3}\tilde{Q}_y\right)\frac{\sin(q_2H)}{q_2H}e^{-\imath q_2L} +2\tilde{Q}_x \frac{\sin(q_3H)}{q_3H}e^{\imath q_3L}\Bigg\}
 \end{split} \\

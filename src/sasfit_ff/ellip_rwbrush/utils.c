@@ -36,44 +36,36 @@ scalar f1(scalar q, scalar r)
 
 scalar r_ell(scalar r, scalar epsilon, scalar alpha)
 {
-	return r*sqrt(pow(sin(alpha),2.0)+pow(epsilon*cos(alpha),2.0));
+	return r*gsl_hypot(sin(alpha),epsilon*cos(alpha));
 }
 
 scalar sasfit_ff_ellip_rwbrush_ssc_core(scalar alpha, sasfit_param *param)
 {
-        scalar w, u;
+    scalar w, u;
 
-        SASFIT_ASSERT_PTR(param);
+    SASFIT_ASSERT_PTR(param);
 
-        w       = sasfit_rwbrush_w(V[Q], V[RG]);
+    w       = sasfit_rwbrush_w(V[Q], V[RG]);
 	u 	= V[Q] * (r_ell(V[R],V[EPSILON],alpha)+V[D]*V[RG]);
 
-	if (SASFIT_EQUAL(u, 0.0)) {
-		return w*f1(V[Q],r_ell(V[R],V[EPSILON],alpha))*sin(alpha);
-	} else {
-		return w*f1(V[Q],r_ell(V[R],V[EPSILON],alpha))*sin(u)/u*sin(alpha);
-	}
+	return w*f1(V[Q],r_ell(V[R],V[EPSILON],alpha))*gsl_sf_bessel_j0(u)*sin(alpha);
 }
 
 scalar sasfit_ff_ellip_rwbrush_scc_core(scalar alpha, sasfit_param *param)
 {
-        scalar w, u;
+    scalar w, u;
 
-        SASFIT_ASSERT_PTR(param);
+    SASFIT_ASSERT_PTR(param);
 
-        w       = sasfit_rwbrush_w(V[Q], V[RG]);
+    w       = sasfit_rwbrush_w(V[Q], V[RG]);
 	u 	= V[Q] * (r_ell(V[R],V[EPSILON],alpha)+V[D]*V[RG]);
-	if (SASFIT_EQUAL(u, 0.0)) {
-		return w*w * sin(alpha);
-	} else {
-		return w*w * sin(u)/u * sin(u)/u * sin(alpha);
-	}
+	return gsl_pow_2(w*gsl_sf_bessel_j0(u)) * sin(alpha);
 }
 
 scalar sasfit_ff_ellip_rwbrush_fs_core(scalar alpha, sasfit_param *param)
 {
-        SASFIT_ASSERT_PTR(param);
+    SASFIT_ASSERT_PTR(param);
 
-	return pow(f1(V[Q],r_ell(V[R],V[EPSILON],alpha)),2.0)*sin(alpha);
+	return gsl_pow_2(f1(V[Q],r_ell(V[R],V[EPSILON],alpha)))*sin(alpha);
 }
 

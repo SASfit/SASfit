@@ -57,11 +57,6 @@
 #else
 
   #include <sasfit_thin_objects.h>
-  #include <sasfit_thin_objects.h>
-  #include <sasfit_thin_objects.h>
-  #include <sasfit_thin_objects.h>
-  #include <sasfit_thin_objects.h>
-  #include <sasfit_thin_objects.h>
 
 #endif
 

@@ -31,6 +31,9 @@ scalar sasfit_ff_cone6_opo_kernel(scalar theta, scalar phi, sasfit_param * param
     cone6_opod.Q[1] = cone6_opod.Qmod*sin(phi)*sin(theta);
     cone6_opod.Q[2] = cone6_opod.Qmod         *cos(theta);
     opo_setQhat(&cone6_opod);
+    QQX = cone6_opod.Qhat[0];
+    QQY = cone6_opod.Qhat[1];
+    QQZ = cone6_opod.Qhat[2];
     return gsl_pow_2((ETA_P-ETA_M)*cone6_opod.detDinv*opo_Fcone6(&cone6_opod));
 }
 
@@ -39,9 +42,9 @@ scalar sasfit_ff_cone6_opo_random(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) <= 0",A); // modify condition to your needs
-	SASFIT_CHECK_COND1((B < 0.0), param, "b(%lg) <= 0",B); // modify condition to your needs
-	SASFIT_CHECK_COND1((C < 0.0), param, "c(%lg) <= 0",C); // modify condition to your needs
+	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A); // modify condition to your needs
+	SASFIT_CHECK_COND1((B < 0.0), param, "b(%lg) < 0",B); // modify condition to your needs
+	SASFIT_CHECK_COND1((C < 0.0), param, "c(%lg) < 0",C); // modify condition to your needs
 	SASFIT_CHECK_COND1((H_R > tan(TILT)&&tan(TILT)>0&&!gsl_isnan(tan(TILT))), param, "H/R > tan(TILT) (%lg)",tan(TILT));
 
 	// insert your code here
@@ -81,7 +84,6 @@ scalar sasfit_ff_cone6_opo_random_f(scalar q, sasfit_param * param)
 	cone6_opod.c = C;
 	cone6_opod.param = param;
     opo_setConvention(&cone6_opod,yaw_pitch_roll);
- //   cone6_opod.Rotation.convention =Z1_X2_Y3;
     opo_setEulerAngles(&cone6_opod,0,0,0);
     opo_init(&cone6_opod);
 

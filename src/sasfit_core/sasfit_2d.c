@@ -205,7 +205,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
             } else {
                 sasfit_param_override_set_psi( atan2(ry,rx) );
             }
-			r = sqrt(rx*rx+ry*ry);
+			r = gsl_hypot(rx,ry);
 			TwoTheta = atan(r/sasfit_2d_param.dist);
 			Theta = 0.5*TwoTheta;
 			Q=4.0*M_PI*sin(Theta)/sasfit_2d_param.lambda;
@@ -256,7 +256,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
                                 } else {
                                     sasfit_param_override_set_psi( atan2((ry+Dry),(rx+Drx)) );
                                 }
-                                r = sqrt(gsl_pow_2(rx+Drx)+gsl_pow_2(ry+Dry));
+                                r = gsl_hypot(rx+Drx,ry+Dry);
                                 TwoTheta = atan(r/sasfit_2d_param.dist);
                                 Theta = 0.5*TwoTheta;
                                 Q=4.0*M_PI*sin(Theta)/sasfit_2d_param.lambda;
@@ -309,10 +309,10 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 				Imin = DetIth[i][j];
 				Imax = DetIth[i][j];
 			} else {
-				if ((DetIth[i][j] < Imin) && (sasfit_2d_param.qminbs<Deth[i][j])) {
+				if ((DetIth[i][j] < Imin) && (sasfit_2d_param.qminbs<=Deth[i][j])) {
 					Imin=DetIth[i][j];
 				}
-				if ((DetIth[i][j] > Imax) && (sasfit_2d_param.qminbs<Deth[i][j])) {
+				if ((DetIth[i][j] > Imax) && (sasfit_2d_param.qminbs<=Deth[i][j])) {
 					Imax=DetIth[i][j];
 				}
 			}
@@ -341,7 +341,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 	for (i=0;i<sasfit_2d_param.num_pix;i++) {
 		Tcl_DStringStartSublist(&DsBuffer);
 		for (j=0;j<sasfit_2d_param.num_pix;j++) {
-            if (sasfit_2d_param.qminbs < Deth[i][j]) {
+            if (sasfit_2d_param.qminbs <= Deth[i][j]) {
                 DetIth[i][j] = (DetIth[i][j]-Imin)/(Imax-Imin);
             } else {
                 DetIth[i][j] = 0.0;
