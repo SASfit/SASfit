@@ -104,12 +104,12 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 	     param->kernelSelector == SPHERE_RMA_RC_SMOOTH )
 	{
 		b_c  = Vc	* rho_c;	// Vc  * Drho_c
-		b_sh = Vsh	* rho_sh;	// Vsh * Drho_sh
+		b_sh = fabs(Vsh)	* rho_sh;	// Vsh * Drho_sh
 		smoothie = exp(-0.5 * q*q * rho_solv*rho_solv);	// rho_solv == sigma
 	} else
 	{
 		b_c  = Vc	* (rho_c  - rho_solv);
-		b_sh = Vsh	* (rho_sh - rho_solv);
+		b_sh = fabs(Vsh)	* (rho_sh - rho_solv);
 	}
 
 	if ((t == 0.0) || (b_sh == 0.0))
@@ -143,10 +143,11 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
+	if (Vsh<0) return Nagg * b_sh * b_sh * Plocal;
 	return  Nagg*Nagg	* b_c  * b_c  * Pc +
 		Nagg*(Nagg-1.0) * b_sh * b_sh * Psh * ((Nagg < 1) ?  0 : 1) +
 		2.0*Nagg*Nagg	* b_c  * b_sh * Fc * Fsh +
-		Nagg		* b_sh * b_sh * Plocal;
+		Nagg * b_sh * b_sh * Plocal;
 }
 
 scalar sasfit_ff_Sphere_R_ma_Profile_v(scalar q, sasfit_param * param, int distr)

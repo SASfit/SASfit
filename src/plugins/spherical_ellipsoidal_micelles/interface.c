@@ -26,13 +26,14 @@ SASFIT_PLUGIN_EXP_ADD( ff_ell_chains_rw__rc )
 SASFIT_PLUGIN_EXP_END
 
 // import functions from other plugins
-SASFIT_PLUGIN_IMP_BEGIN( 6 )
+SASFIT_PLUGIN_IMP_BEGIN( 7 )
 SASFIT_PLUGIN_IMP_ADD( sq_freely_joined_chain_of_rods )
 SASFIT_PLUGIN_IMP_ADD( sq_koyama_worms )
 SASFIT_PLUGIN_IMP_ADD( sq_p__q___kholodenko_worm )
 SASFIT_PLUGIN_IMP_ADD( sq_p__q___worm_ps1_ )
 SASFIT_PLUGIN_IMP_ADD( sq_p__q___worm_ps2_ )
 SASFIT_PLUGIN_IMP_ADD( sq_p__q___worm_ps3_ )
+SASFIT_PLUGIN_IMP_ADD( ff_generalized_gaussian_coil )
 SASFIT_PLUGIN_IMP_END
 
 SASFIT_PLUGIN_INTERFACE

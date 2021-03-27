@@ -54,6 +54,12 @@
   #define sasfit_sq_p__q___worm_ps3__f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[5].func_f((q),(p))
   #define sasfit_sq_p__q___worm_ps3__v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[5].func_v((q),(p),(d))
 
+  // use lookup table for sasfit_ff_generalized_gaussian_coil(q, param)
+  #define sasfit_ff_generalized_gaussian_coil(q,p) SASFIT_PLUGIN_IMPORTS()->functions[6].func((q),(p))
+  #define sasfit_ff_generalized_gaussian_coil_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[6].func_f((q),(p))
+  #define sasfit_ff_generalized_gaussian_coil_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[6].func_v((q),(p),(d))
+
+
 #else
 
   #include <sasfit_thin_objects.h>

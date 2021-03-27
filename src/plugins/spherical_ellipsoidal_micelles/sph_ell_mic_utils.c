@@ -461,14 +461,14 @@ scalar sasfit_ff_Sphere_R_ma_Profile_ave_core(scalar x, sasfit_param * param)
 
 scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 {
-	scalar Plocal, Psh, Fsh, Fc, Pc, Vc, V, S, Nagg, b_c, b_sh;
+	scalar Plocal, Psh, Fsh, Fc, Pc, Vc, V, S, Nagg, b_c, b_sh, exvol;
 	scalar smoothie = 1.0;
 	scalar Rc, n_agg, Vsh, rho_c, rho_sh, rho_solv, alpha, t, Rm, L, b, xsolv_core, res1, res2;
 	sasfit_param subParam;
 
 	SASFIT_ASSERT_PTR(param);
 
-	sasfit_get_param(param, 11, EMPTY, EMPTY, &Vsh, &rho_c, &rho_sh, &rho_solv, &alpha, &t, &L, &b, &xsolv_core);
+	sasfit_get_param(param, 12, EMPTY, EMPTY, &Vsh, &rho_c, &rho_sh, &rho_solv, &alpha, &t, &L, &b, &xsolv_core,&exvol);
 
 	switch( param->kernelSelector )
 	{
@@ -486,7 +486,7 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 			break;
 		case SPHERE_2ND_RMA_RC:
 			Rc	= param->p[0];
-			Vc	= param->p[1]-Vsh;
+			Vc	= param->p[1]-fabs(Vsh);
 			SASFIT_CHECK_COND1((Vc <= 0.0), param, "Vc(%lg) < 0",Vc);
 			if (Rc == 0.0) return 0.0;
 			Fc = sasfit_sphere_fc(q, Rc) * smoothie;
@@ -528,12 +528,12 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 	     param->kernelSelector == SPHERE_RMA_RC_SMOOTH )
 	{
 		b_c  = Vc	* rho_c;	// Vc  * Drho_c
-		b_sh = Vsh	* rho_sh;	// Vsh * Drho_sh
+		b_sh = fabs(Vsh) * rho_sh;	// Vsh * Drho_sh
 		smoothie = exp(-0.5 * q*q * rho_solv*rho_solv);	// rho_solv == sigma
 	} else
 	{
 		b_c  = Vc	* (rho_c  - rho_solv);
-		b_sh = Vsh	* (rho_sh - rho_solv);
+		b_sh = fabs(Vsh) * (rho_sh - rho_solv);
 	}
 
 	if ((t == 0.0) || (b_sh == 0.0))
@@ -557,20 +557,34 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param)
 		Fsh = (res1/res2) * smoothie;
 		Psh = Fsh*Fsh;
 	}
-	sasfit_init_param( &subParam );
-	subParam.p[0] = b;
-	subParam.p[1] = L;
-	subParam.p[2] = 0;
+	switch (lround(fabs(exvol))) {
+	    case 0:
+	        sasfit_init_param( &subParam );
+            subParam.p[0] = b;
+            subParam.p[1] = L;
+            subParam.p[2] = 0.0;
+            Plocal =  sasfit_sq_p__q___worm_ps3_(q, &subParam)/(L*L);
+            break;
+	    case 1:
+	        sasfit_init_param( &subParam );
+            subParam.p[0] = b;
+            subParam.p[1] = L;
+            subParam.p[2] = 1.0;
+            Plocal =  sasfit_sq_p__q___worm_ps3_(q, &subParam)/(L*L);
+            break;
+        default:
+            sasfit_init_param( &subParam );
+            subParam.p[0] = L;
+            subParam.p[1] = b;
+            subParam.p[2] = 1.0;
+            Plocal = sasfit_ff_generalized_gaussian_coil(q,&subParam);
+	}
 
-	//Plocal = WormLikeChainEXV(interp,q,1.0,L,b,0.0,error);
-	Plocal =  sasfit_sq_p__q___worm_ps2_(q, &subParam)/(L*L);
-
-	SASFIT_CHECK_SUB_ERR(param, subParam);
-
+	if (Vsh<0) return Nagg * b_sh * b_sh * Plocal;
 	return  Nagg*Nagg	* b_c  * b_c  * Pc +
 		Nagg*(Nagg-1.0) * b_sh * b_sh * Psh * ((Nagg < 1) ?  0 : 1) +
 		2.0*Nagg*Nagg	* b_c  * b_sh * Fc * Fsh +
-		Nagg		* b_sh * b_sh * Plocal;
+		Nagg * b_sh * b_sh * Plocal;
 }
 
 scalar sasfit_ff_Sphere_R_ma_Profile_v(scalar q, sasfit_param * param, int distr)
@@ -579,12 +593,12 @@ scalar sasfit_ff_Sphere_R_ma_Profile_v(scalar q, sasfit_param * param, int distr
 
 	if ( param->kernelSelector == SPHERE_RMA_NAGG )
 	{
-		     if (distr == 0) return           q * param->p[1];
+        if (distr == 0) return q * param->p[1];
 		else if (distr == 1) return param->p[0] * q;
 		else                 return param->p[0] * param->p[1];
 	} else
 	{
-		     if ( distr == 0 ) q =           q + param->p[7];
+        if ( distr == 0 ) q = q + param->p[7];
 		else if ( distr == 7 ) q = param->p[0] + q;
 		else                   q = param->p[0] + param->p[7];
 

@@ -40,17 +40,24 @@ scalar sasfit_ff_generalized_gaussian_coil_2(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_generalized_gaussian_coil_2_f(scalar q, sasfit_param * param)
 {
+    scalar u,i0,beta;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+    u = (2.0*NU+1.0)*(2.0*NU+2.0)*q*q*RG*RG/6.0;
+	beta = B_P - V*ETA_S;
+	i0 = beta*beta;
+	 u = (2.0*NU+1.0)*(2.0*NU+2.0)*q*q*RG*RG/6.0;
+
+	if (q*RG<0.1) return sqrt(i0)*(1-u/(1+2*NU)+u*u/(2*(1+4*NU)));
+	return sqrt(i0)*(gsl_sf_gamma(1.0/(2.*NU))-gsl_sf_gamma_inc(1.0/(2.*NU),u)) /(2*NU*pow(u,1/(2*NU)));
 }
 
-scalar sasfit_ff_generalized_gaussian_coil_2_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_generalized_gaussian_coil_2_v(scalar x, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return gsl_pow_3(x);
 }
 

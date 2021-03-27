@@ -1,4 +1,5 @@
 \documentclass[12pt,intlimits,fleqn,reqno,twoside,english,a4wide]{amsbook}
+
 \usepackage{iftex}
 \usepackage[utf8]{inputenc}
 \ifPDFTeX
@@ -51,8 +52,21 @@
 %\usepackage{smartdiagram}
 %\usepackage[T1]{fontenc}
 %\usepackage{titlesec}
-\setcounter{tocdepth}{3}
-\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{5}
+\expandafter\def\csname r@tocindent4\endcsname{0pt}
+%\newcommand\subsubsubsection{\@startsection{paragraph}{4}{0pt}{-2.5ex\@plus -1ex \@minus -.25ex}{1.25ex \@plus .25ex}{\normalfont\normalsize\rmfamily\mdseries\itshape}}
+%\newcommand\subsubsubsubsection{\@startsection{subparagraph}{5}{0pt}{-2.5ex\@plus -1ex \@minus -.25ex}{1.25ex \@plus .25ex}{\normalfont\normalsize\rmfamily\mdseries\itshape}}
+%\makeatother
+%\newsectionstyle[\subsubsection][4]{\subsubsubsection} \renewsectionstyle[\subsubsection]{\paragraph}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+            {-2.5ex\@plus -1ex \@minus -.25ex}%
+            {1.25ex \@plus .25ex}%
+            {\normalfont\normalsize\mdseries\itshape}}
+\makeatother
+
 \setlength{\mathindent}{0pt}
 %\DeclareGraphicsRule{.png}{bmp}{}{}
 \typearea{12}

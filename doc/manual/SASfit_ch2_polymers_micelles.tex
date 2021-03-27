@@ -317,8 +317,8 @@ corona and the core are consistent with the composition and density
 of the two separate block units of the copolymer.
 
 \vspace{3mm}
-\subsubsection{Micelles with a homogeneous core and Gaussian chains on the surface}
-\label{Chains(RW)} ~\\
+\subsubsection{Micelles with a homogeneous core and Gaussian chains on the surface}~\\
+\label{Chains(RW)}
 %\phantomsection
 %\addcontentsline{toc}{subsubsection}{\indexname}
 %\printindex
@@ -351,10 +351,9 @@ density of the surrounding solvent. The functions $P_\text{core}(q)$, $P_\text{b
 $S_\text{brush-core}(q)$, and $S_\text{brush-brush}(q)$ are all 1 for $q=0$. The definitions
 of these four functions depend on the shape of the core and are given below.
 
-\vspace{5mm}
-
-\subsubsection{Spherical core:} \label{sect:SphericalMicelles}
-\vspace{5mm}
+\noindent
+\paragraph{spherical core:}
+~\\
 \begin{align}
 P_\text{core}(q,R_\text{core}) &= \Phi^2(qR_\text{core}) \\
 \Phi(qR) &= 3\frac{\sin(qR)-qR\cos(qR)}{(qR)^3}
@@ -494,9 +493,9 @@ R_\text{core} &= \left( \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
 into the core is mimicked by $d\sim 1$ for $R_\text{core}\gg R_g$
 \end{description}
 
-\clearpage \noindent \subsubsection{ellipsoidal core with
-semi-axis $(R,R,\epsilon R)$:} \label{sect:ELLMicelles}
-\vspace{5mm}
+\clearpage
+\noindent\paragraph{ellipsoidal core with
+semi-axis $(R,R,\epsilon R)$:}
 \begin{align}
 P_\text{core}(q,R_\text{core},\epsilon) &= \int_0^{\pi/2}\Phi^2[qr(R_\text{core},\epsilon,\alpha)] \, \sin\alpha \, d\alpha \\
 \text{with~} \, r(R_\text{core},\epsilon,\alpha) &= R_\text{core}\sqrt{\sin^2\alpha+\epsilon^2\cos^2\alpha} \nonumber
@@ -551,10 +550,10 @@ where the surface of the core is given by
 \begin{align}
 S  &=
 \begin{cases}
- 2\pi R_\text{core}^2 \left(1+\frac{\text{arctanh}(\sin({\ae}))}{\sin({\ae})}\right)& \text{for~} \epsilon < 1 \\
- 2\pi R_\text{core}^2 \left(1+\frac{\ae}{\tan({\ae})}\right) & \text{for~} \epsilon \geq 1
+ 2\pi R_\text{core}^2 \left(1+\frac{\operatorname{arctanh}(\sin(\text{\ae}))}{\sin(\text{\ae})}\right)& \text{for~} \epsilon < 1 \\
+ 2\pi R_\text{core}^2 \left(1+\frac{\text{\ae}}{\tan(\text{\ae})}\right) & \text{for~} \epsilon \geq 1
 \end{cases} \\
-{\ae} &=
+\text{\ae} &=
 \begin{cases}
  \arccos(\epsilon) & \text{for~} \epsilon < 1 \\
  \arccos(1/\epsilon) & \text{for~} \epsilon \geq 1
@@ -653,8 +652,7 @@ $(R_\text{core},R_\text{core},\epsilon R_\text{core})$
 
 
 \clearpage
-\noindent
-\subsubsection{cylindrical core with radius $R_\text{core}$ and height $H$:}
+\noindent\paragraph{cylindrical core with radius $R_\text{core}$ and height $H$:}
 \label{sect:CylMicelles}
 ~\\
 \begin{align}
@@ -814,9 +812,7 @@ into the core is mimicked by $d\sim 1$ for $R_\text{core}\gg R_g$
 
 \clearpage
 \noindent
-\subsubsection{wormlike micelles with circular cross-section:}
-\label{sect:WormLikeMicelles}
-~\\
+\paragraph{wormlike micelles with circular cross-section:}
 The form factors for a worm-like micelles are approximated by the form factor of the Kholodenko-worm
 according to section \ref{sect:KholodenkoWorm} where the scattering length density profile across the worm segments are
 described by those of a rod-like micelle \ref{sect:RodLikeMicelles}.
@@ -976,10 +972,7 @@ R_\text{core} &= \sqrt{ \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
 
 
 \clearpage
-\noindent
-\subsubsection{micelles with rod-like core:}
-\label{sect:RodLikeMicelles}
-~\\
+\noindent\paragraph{micelles with rod-like core:}
 The form factors for micelles with a rod-like core are an approximations of the form factors of micelles
 with a cylindrical core where $H\gg R_\text{core}+d R_g$. The corresponding function in
 eq.\ \ref{eq:micelle} are given by
@@ -1180,8 +1173,7 @@ following paragraphs.
 \vspace{5mm}
 
 \noindent
-\subsubsection{spherical core:}
-\label{sect:SPHERE+R_ma}~\\
+\paragraph{spherical core:}
 
 \begin{align}
 F_\text{core}(q,R) &= 3\frac{\sin(qR)-qR\cos(qR)}{(qR)^3}
@@ -1336,8 +1328,7 @@ R_\text{core} &= \left( \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
 \vspace{5mm}
 
 \noindent
-\subsubsection{rodlike core:}
-\label{sect:ROD+R_ma}~\\
+\paragraph{rodlike core:}
 In case of a rod-like micelle the form factor can be separated in two terms $I(q) =
 P_H(q)P_\text{cs}(q)$ as already in shown in eq. \ref{eq:rodlikeFF}. The cross-term contribution to the scattering
 intensity is given by
@@ -1529,10 +1520,8 @@ REFERENCES:\\
 
 
 \clearpage
-\subsubsection{spherical Micelles with a homogeneous core
-and a corona of semi-flexible interacting self-avoiding chains}~\\
 
-\subsection{Sphere with Gaussian chains attached} ~\\
+\subsubsection{Sphere with Gaussian chains attached} ~\\
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.75\textwidth]{agghalf.png}
@@ -1587,7 +1576,7 @@ Non-penetrating of the chains into the core region is mimicked by $d\approx 1$ f
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
-\subsection{Sphere with Gaussian chains attached (block copolymer micelle)} ~\\
+\subsubsection{Sphere with Gaussian chains attached (block copolymer micelle)} ~\\
 
 This form factor is the same than for \texttt{SphereWithGaussChains}. It has only been slightly re-parametrised.
 Instead of the core radius $R$ and excess scattering lengths $\rho_s$ and $\rho_c$  the
@@ -1633,3 +1622,6 @@ or in \AA$^3$ in case $Q$ is given in \AA$^{-1}$.
 \item[\texttt{Rg}] gyration radius of chain $R_g$
 \item[\texttt{d}] for non-penetration of the chains into the core region $d\approx 1$.
 \end{description}
+
+
+\subsection{spherical Micelles with a corona of semi-flexible interacting self-avoiding chains}

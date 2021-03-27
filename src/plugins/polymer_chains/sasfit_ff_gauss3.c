@@ -40,17 +40,29 @@ scalar sasfit_ff_gauss3(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_gauss3_f(scalar q, sasfit_param * param)
 {
+    scalar u,I0, na, beta, Vol;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
+	na 	= 6.0221415e23;
+	Vol	= MW/RHO_P/na;
+	beta	= B_P - Vol*ETA_S;
+	I0=beta*beta;
+	u = gsl_pow_2(q*RG);
 	// insert your code here
-	return 0.0;
+	if (u < 1e-6) {
+        return sqrt(I0)*(1-u/2.+u*u/6.-u*u*u/24.+u*u*u*u/120.);
+    } else {
+        return sqrt(I0)*(1-exp(u))/u;
+    }
 }
 
 scalar sasfit_ff_gauss3_v(scalar q, sasfit_param * param, int dist)
 {
+    scalar rho;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	rho=8/3/M_SQRTPI;
+	return 4/3.*M_PI*gsl_pow_3(RG/rho);
 }
 

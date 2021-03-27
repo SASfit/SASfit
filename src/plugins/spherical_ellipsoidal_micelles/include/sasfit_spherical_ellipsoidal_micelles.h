@@ -397,14 +397,17 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_saw_
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
- *       <td>\b L</td>
+ *       <td>\b L (RG)</td>
  *       <td>contour length of polymer in shell</td>
  *      </tr><tr>
- *       <td>\b b</td>
+ *       <td>\b b (nu)</td>
  *       <td>Kuhn length of polymer in shell</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
  *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol = 0 without excluded volume, exvol = 1 with excluded volume, otherwise use of generalized Gaussian coil</td>
  *      </tr>
  */
 
@@ -467,14 +470,17 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_r__a_nagg_v
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
- *       <td>\b L</td>
- *       <td>contour length of polymer in shell</td>
+ *       <td>\b L/Rg </td>
+ *       <td>contour length of polymer in shell or gyration radius</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>Kuhn length of polymer in shell</td>
+ *       <td>\b b/nu </td>
+ *       <td>Kuhn length of polymer in shell or Flory exponent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
  *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol = 0 without excluded volume, exvol = 1 with excluded volume, otherwise use of generalized Gaussian coil</td>
  *      </tr>
  */
 
@@ -537,14 +543,17 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_r__a_v(scal
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
- *       <td>\b L</td>
- *       <td>contour length of polymer in shell</td>
+ *       <td>\b L/Rg </td>
+ *       <td>contour length of polymer in shell or gyration radius</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>Kuhn length of polymer in shell</td>
+ *       <td>\b b/nu </td>
+ *       <td>Kuhn length of polymer in shell or Flory exponent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
  *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol = 0 without excluded volume, exvol = 1 with excluded volume, otherwise use of generalized Gaussian coil</td>
  *      </tr>
  */
 
@@ -607,11 +616,17 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_r__a_rc_v(s
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
- *       <td>\b L</td>
- *       <td>contour length of polymer in shell</td>
+ *       <td>\b L/Rg </td>
+ *       <td>contour length of polymer in shell or gyration radius</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>Kuhn length of polymer in shell</td>
+ *       <td>\b b/nu </td>
+ *       <td>Kuhn length of polymer in shell or Flory exponent</td>
+ *      </tr><tr>
+ *       <td>\b xsolv_core</td>
+ *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol = 0 without excluded volume, exvol = 1 with excluded volume, otherwise use of generalized Gaussian coil</td>
  *      </tr>
  */
 
@@ -674,14 +689,17 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_smooth_inte
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
- *       <td>\b L</td>
- *       <td>contour length of polymer in shell</td>
+ *       <td>\b L/Rg </td>
+ *       <td>contour length of polymer in shell or gyration radius</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>Kuhn length of polymer in shell</td>
+ *       <td>\b b/nu </td>
+ *       <td>Kuhn length of polymer in shell or Flory exponent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
  *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b exvol</td>
+ *       <td>excluded volume parameter \n exvol = 0 without excluded volume, exvol = 1 with excluded volume, otherwise use of generalized Gaussian coil</td>
  *      </tr>
  */
 
