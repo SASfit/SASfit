@@ -209,9 +209,6 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_rw__
  *      </tr><tr>
  *       <td>\b d</td>
  *       <td>value should be around 1, non-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg</td>
- *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
  *      </tr></table>
  */
 
@@ -251,7 +248,31 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_rw__
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b Nagg</td>
- *       <td></td>
+ *       <td>aggregation number of copolymer molecules per micelle</td>
+ *      </tr><tr>
+ *       <td>\b V_core</td>
+ *       <td>molecular volume of the copolymer block unit inside core in [nm^3] for Q in nm^-1 and in [A^3] for Q in A^-1</td>
+ *      </tr><tr>
+ *       <td>\b V_brush</td>
+ *       <td>molecular volume of the copolymer block unit in corona in [nm^3] for Q in nm^-1 and in [A^3] for Q in A^-1</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of spherical core</td>
+ *      </tr><tr>
+ *       <td>\b eta_brush</td>
+ *       <td>scattering length density of a Gaussian chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b eta_solvc</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b xsolv_core</td>
+ *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
  *      </tr></table>
  */
 
@@ -290,8 +311,32 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_saw_
  *
  * \par Required parameters:
  *      <table border="0"><tr>
- *       <td>\b Rc</td>
- *       <td></td>
+ *       <td>\b R_core</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b n_agg</td>
+ *       <td>specific aggregation number, number of chains per surface area</td>
+ *      </tr><tr>
+ *       <td>\b V_brush</td>
+ *       <td>molecular volume of the copolymer block unit in corona in [nm^3] for Q in nm^-1 and in [A^3] for Q in A^-1</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of spherical core</td>
+ *      </tr><tr>
+ *       <td>\b eta_brush</td>
+ *       <td>scattering length density of a Gaussian chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b eta_solvc</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b xsolv_core</td>
+ *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
  *      </tr></table>
  */
 
@@ -331,10 +376,31 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_saw_
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b R_core</td>
- *       <td></td>
+ *       <td>core radius</td>
  *      </tr><tr>
- *       <td>\b n_agg</td>
- *       <td></td>
+ *       <td>\b V_core</td>
+ *       <td>molecular volume of the copolymer block unit inside core in [nm^3] for Q in nm^-1 and in [A^3] for Q in A^-1</td>
+ *      </tr><tr>
+ *       <td>\b V_brush</td>
+ *       <td>molecular volume of the copolymer block unit in corona in [nm^3] for Q in nm^-1 and in [A^3] for Q in A^-1</td>
+ *      </tr><tr>
+ *       <td>\b eta_core</td>
+ *       <td>scattering length density of spherical core</td>
+ *      </tr><tr>
+ *       <td>\b eta_brush</td>
+ *       <td>scattering length density of a Gaussian chain in corona</td>
+ *      </tr><tr>
+ *       <td>\b eta_solvc</td>
+ *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b xsolv_core</td>
+ *       <td>amount of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b L</td>
+ *       <td>contour length</td>
+ *      </tr><tr>
+ *       <td>\b lb</td>
+ *       <td>Kuhn length</td>
  *      </tr></table>
  */
 

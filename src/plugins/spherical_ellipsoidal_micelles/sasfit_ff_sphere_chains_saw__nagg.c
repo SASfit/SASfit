@@ -17,7 +17,9 @@ scalar sasfit_ff_sphere_chains_saw__nagg(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((NAGG < 0.0), param, "Nagg(%lg) < 0",NAGG); // modify condition to your needs
 
 	// insert your code here
-	return 0.0;
+
+    param->kernelSelector = SPHERE_SAW_NAGG;
+	return sasfit_sphere_SAWbrush(q,param);
 }
 
 scalar sasfit_ff_sphere_chains_saw__nagg_f(scalar q, sasfit_param * param)

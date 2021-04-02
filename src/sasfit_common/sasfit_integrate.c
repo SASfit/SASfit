@@ -33,7 +33,8 @@
 
 typedef struct {
     sasfit_param *param;
-    sasfit_func_two_t *Kernel_fct;
+    sasfit_func_two_t *Kernel2D_fct;
+    sasfit_func_one_t *Kernel1D_fct;
 } int_cub;
 
 //sasfit_int_workspace_t	sasfit_int_workspace;
@@ -178,7 +179,31 @@ double sasfit_gauss_legendre_2D_cube(sasfit_func_two_void_t f,
 	return C*A*s;
 }
 
-int Kernel_cub(unsigned ndim, const double *x, void *pam,
+
+int Kernel_cub_1D(unsigned ndim, const double *x, void *pam,
+      unsigned fdim, double *fval) {
+	sasfit_param * param;
+	int_cub *cub;
+	cub = (int_cub *) pam;
+	param = (sasfit_param *) cub->param;
+
+	if ((ndim < 1) || (fdim < 1)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 1;
+	}
+	fval[0]=(*cub->Kernel1D_fct)(x[0],param);
+	return 0;
+}
+
+scalar Kernel_1D(scalar x, void *pam) {
+	sasfit_param * param;
+	int_cub *cub;
+	cub = (int_cub *) pam;
+	param = (sasfit_param *) cub->param;
+	return (*cub->Kernel1D_fct)(x,param);
+}
+
+int Kernel_cub_2D(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
 	sasfit_param * param;
 	int_cub *cub;
@@ -189,7 +214,7 @@ int Kernel_cub(unsigned ndim, const double *x, void *pam,
 		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
 		return 1;
 	}
-	fval[0]=(*cub->Kernel_fct)(x[0],x[1],param)*sin(x[0]);
+	fval[0]=(*cub->Kernel2D_fct)(x[0],x[1],param)*sin(x[0]);
 	return 0;
 }
 
@@ -198,7 +223,7 @@ scalar Kernel_GL(scalar theta, scalar phi, void *pam) {
 	int_cub *cub;
 	cub = (int_cub *) pam;
 	param = (sasfit_param *) cub->param;
-	return (*cub->Kernel_fct)(theta,phi,param)*sin(theta);
+	return (*cub->Kernel2D_fct)(theta,phi,param)*sin(theta);
 }
 
 scalar sasfit_orient_avg_ctm(
@@ -217,7 +242,7 @@ scalar sasfit_orient_avg_ctm(
     gsl_integration_glfixed_table * wglfixed;
     int_cub cubstruct;
 
-    cubstruct.Kernel_fct=intKern_fct;
+    cubstruct.Kernel2D_fct=intKern_fct;
     cubstruct.param=param;
     Iavg = 0;
 
@@ -297,7 +322,7 @@ sasfit_out("Fibonacci order:%d\n",order);
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                hcubature(1, &Kernel_cub,&cubstruct,2, cubxmin, cubxmax,
+                hcubature(1, &Kernel_cub_2D,&cubstruct,2, cubxmin, cubxmax,
                         limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
                 Iavg = fval[0]/(4*M_PI);
@@ -308,7 +333,7 @@ sasfit_out("Fibonacci order:%d\n",order);
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                pcubature(1, &Kernel_cub,&cubstruct,2, cubxmin, cubxmax,
+                pcubature(1, &Kernel_cub_2D,&cubstruct,2, cubxmin, cubxmax,
                         limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
                 Iavg = fval[0]/(4*M_PI);
@@ -319,7 +344,7 @@ sasfit_out("Fibonacci order:%d\n",order);
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                pcubature(1, &Kernel_cub,&cubstruct,2, cubxmin, cubxmax,
+                pcubature(1, &Kernel_cub_2D,&cubstruct,2, cubxmin, cubxmax,
                         limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
                 Iavg = fval[0]/(4*M_PI);
@@ -339,6 +364,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
 	scalar res, errabs;
 	int err, thid;
     scalar *aw;
+    int_cub cubstruct;
     scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
     gsl_integration_cquad_workspace * wcquad;
     gsl_integration_glfixed_table * wglfixed;
@@ -350,6 +376,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
 	SASFIT_ASSERT_PTR(param);
 	SASFIT_ASSERT_PTR(intKern_fct);
 
+//	sasfit_out("integration strategy:%d\n",sasfit_get_int_strategy());
 	if ( gsl_finite(int_start) && gsl_finite(int_end) &&
 	     (int_end - int_start) == 0.0 )
 	// nothing to integrate, test for an eps instead of 0 ? (which?)
@@ -360,6 +387,9 @@ scalar sasfit_integrate_ctm(scalar int_start,
 	sasfit_int_occupy(limit,thid);
 	F.params = param;
 	F.function = (double (*) (double, void*)) intKern_fct;
+
+    cubstruct.Kernel1D_fct=intKern_fct;
+    cubstruct.param=param;
 
 	gsl_set_error_handler_off();
 
@@ -384,6 +414,40 @@ scalar sasfit_integrate_ctm(scalar int_start,
                 err = GSL_SUCCESS;
                 res = gsl_integration_glfixed(&F, int_start, int_end, wglfixed);
                 gsl_integration_glfixed_table_free(wglfixed);
+                break;
+            }
+            case H_CUBATURE: {
+                cubxmin[0] = int_start;
+                cubxmax[0] = int_end;
+                err=hcubature(1, &Kernel_cub_1D,&cubstruct,1, cubxmin, cubxmax,
+                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        fval, ferr);
+                res = fval[0];
+                break;
+            }
+            case P_CUBATURE: {
+                cubxmin[0] = int_start;
+                cubxmax[0] = int_end;
+                err=pcubature(1, &Kernel_cub_1D,&cubstruct,1, cubxmin, cubxmax,
+                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        fval, ferr);
+                res = fval[0];
+                break;
+                }
+            case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
+                aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
+                sasfit_intccini(lenaw, aw);
+                sasfit_intcc(&Kernel_1D,int_start,int_end,epsrel, lenaw, aw, &res, &ferr[0],&cubstruct);
+                err=0;
+                free(aw);
+                break;
+            }
+            case OOURA_DOUBLE_EXP_QUADRATURE: {
+                aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+                sasfit_intdeini(lenaw, GSL_DBL_MIN, epsrel, aw);
+                sasfit_intde(&Kernel_1D,int_start,int_end, aw, &res, &ferr[0],&cubstruct);
+                err=0;
+                free(aw);
                 break;
             }
             case GSL_CHEBYSHEV1: {

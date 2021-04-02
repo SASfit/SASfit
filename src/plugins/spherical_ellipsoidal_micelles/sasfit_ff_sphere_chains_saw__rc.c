@@ -19,7 +19,9 @@ scalar sasfit_ff_sphere_chains_saw__rc(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((N_AGG < 0.0), param, "n_agg(%lg) < 0",N_AGG); // modify condition to your needs
 
 	// insert your code here
-	return 0.0;
+
+    param->kernelSelector = SPHERE_SAW_RC;
+	return sasfit_sphere_SAWbrush(q,param);
 }
 
 scalar sasfit_ff_sphere_chains_saw__rc_f(scalar q, sasfit_param * param)

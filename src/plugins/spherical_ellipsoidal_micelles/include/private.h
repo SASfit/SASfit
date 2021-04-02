@@ -78,5 +78,6 @@ scalar sasfit_ff_Sphere_R_ma_Profile(scalar, sasfit_param *);
 scalar sasfit_ff_ellip_rwbrush(scalar, sasfit_param *);
 scalar sasfit_ff_ellip_rwbrush_rc(scalar, sasfit_param *);
 scalar sasfit_ff_ellip_rwbrush_nagg(scalar, sasfit_param *);
+scalar sasfit_sphere_SAWbrush(scalar, sasfit_param *);
 #endif // end of file
 

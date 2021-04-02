@@ -143,8 +143,8 @@ B*L)/(RG*RG*RG*RG)/L/(p1-p2);
 		}
 	} else { // with excluded volume effects: EXVOL >= 1
 		if (L>4*B) {
-			RG = sqrt(falpha2(L,B)*L*B/6.0);
-//			RG = sqrt(falpha2(L,B)*fRg2(L,B));
+//			RG = sqrt(falpha2(L,B)*L*B/6.0);
+			RG = sqrt(falpha2(L,B)*fRg2(L,B));
 			if (L>10.0*B) {
 				CLB = a4/pow(L/B,p3);
 			} else {

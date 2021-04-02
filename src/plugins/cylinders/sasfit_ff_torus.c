@@ -30,7 +30,7 @@ scalar sasfit_Torus_core_int_r(scalar r, void *pam)
 
 	s = Q/(2.0*M_PI);
 	Q_2=Q/2.0;
-	gamma = NU*sqrt(ATOT*ATOT - (r-R)*(r-R));
+	gamma = NU*sqrt(ATOT*ATOT - gsl_pow_2(r-R));
 
 	if (THETA == 0.0)
 	{

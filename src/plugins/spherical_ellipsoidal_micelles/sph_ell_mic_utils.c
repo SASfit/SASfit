@@ -72,18 +72,20 @@ scalar XI(scalar Q, scalar R, scalar H, scalar alpha)
 
 scalar sasfit_ff_P18(scalar Q, scalar Rg)
 {
-        scalar u;
-        u = Q*Q * Rg*Rg;
-        if ( u == 0 ) return 1.0;
-
-        return 2*(exp(-u)+u-1.0) / (u*u);
+    scalar u;
+    u = Q*Q * Rg*Rg;
+	if (u < 1e-6) {
+        return (1-u/3.+gsl_pow_2(u)/12.-gsl_pow_3(u)/60.+gsl_pow_4(u)/360.);
+    } else {
+        return 2.0 * (u-1.0+exp(-u))/(u*u);
+    }
 }
 
 scalar f1(scalar q, scalar r)
 {
 	scalar u = q*r;
     if (fabs(u)<1e-4) return (1 - gsl_pow_2(u)/10. + gsl_pow_4(u)/280. - gsl_pow_6(u)/15120.);
-	return 3*(sin(u)-u*cos(u))/(u*u*u);
+	return 3*(sin(u)-u*cos(u))/gsl_pow_3(u);
 }
 
 scalar r_ell(scalar r, scalar epsilon, scalar alpha)
@@ -111,7 +113,7 @@ scalar sasfit_ff_ellip_rwbrush_scc_core(scalar alpha, sasfit_param *param)
 
     w       = sasfit_rwbrush_w(VV[Q], VV[RG]);
 	u 	= VV[Q] * (r_ell(VV[R],VV[EPSILON],alpha)+VV[D]*VV[RG]);
-	return w*w * gsl_pow_2(gsl_sf_bessel_j0(u)) * sin(alpha);
+	return gsl_pow_2(w*gsl_sf_bessel_j0(u)) * sin(alpha);
 }
 
 scalar sasfit_ff_ellip_rwbrush_fs_core(scalar alpha, sasfit_param *param)
@@ -309,10 +311,10 @@ scalar sasfit_Pthirtynine(scalar q, sasfit_param * param)
 	sasfit_init_param( &subParam );
 	subParam.p[0] = b;
 	subParam.p[1] = L;
-	subParam.p[2] = 0;
+	subParam.p[2] = 1;
 
 	//P_ch  = WormLikeChainEXV(interp,q,1.0,L,b,0.0,error)/(1.+nu*Ptwentyone(pow(q*Rg,2.)));
-	P_ch  = sasfit_sq_p__q___worm_ps2_(q, &subParam)/(L*L)/(1.+nu*Ptwentyone(pow(q*Rg,2.)));
+	P_ch  = sasfit_sq_p__q___worm_ps3_(q, &subParam)/(L*L)/(1.+nu*Ptwentyone(pow(q*Rg,2.)));
 
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
@@ -340,13 +342,7 @@ scalar sasfit_ff_SphereWithGaussChains(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R);
 	SASFIT_CHECK_COND1((Rg < 0.0), param, "Rg(%lg) < 0",Rg);
 
-	if (q * R == 0)
-	{
-		PHI = 1;
-	} else
-	{
-		PHI = 3 * ((sin(q * R) - q * R * cos(q * R)) / pow(q * R, 3));
-	}
+	PHI = Fone(q,R);
 
 	Fs = PHI*PHI;
 	w = sasfit_rwbrush_w(q, Rg);
@@ -606,8 +602,32 @@ scalar sasfit_ff_Sphere_R_ma_Profile_v(scalar q, sasfit_param * param, int distr
 	}
 }
 
+scalar fRg2(scalar cl,scalar lb)
+// the radius of gyration of ideal semiflexible chains.
+{
+	scalar nb;
+	nb = cl/lb;
+	return cl*lb/6.0*(1.-1.5/nb
+		               +1.5/gsl_pow_2(nb)
+					   -0.75/gsl_pow_3(nb)
+					   *(1.-exp(-2*nb)));
+}
 
-scalar sasfit_ff_Sphere_SAWbrush(scalar q, sasfit_param * param)
+scalar falpha2(scalar cl, scalar lb)
+//
+// alpha^2(x) is the expansion coefficient originating from excluded-volume interactions
+//
+{
+	scalar epsilon = 0.170;
+	scalar nb;
+	nb = cl/lb;
+	return pow( 1.0
+	              + gsl_pow_2(nb/3.12)
+				  + gsl_pow_3(nb/8.67)
+				 ,epsilon/3.0);
+}
+
+scalar sasfit_sphere_SAWbrush(scalar q, sasfit_param * param)
 {
 	scalar s, R, Mthirtynine, sigma, nu, Nc, rhos, rhoc, S, V, b, V_core, Nagg, res;
 	scalar Rc, n_agg, V_brush, eta_core, eta_brush, eta_solv, xsolv_core, Rg, L;
@@ -615,10 +635,20 @@ scalar sasfit_ff_Sphere_SAWbrush(scalar q, sasfit_param * param)
 
         SASFIT_ASSERT_PTR(param);
 
-	sasfit_get_param(param, 10, EMPTY, EMPTY, &V_brush, &eta_core, &eta_brush, &eta_solv, &xsolv_core, &Rg, &L, &b);
+	sasfit_get_param(param, 9, EMPTY, EMPTY, &V_brush, &eta_core, &eta_brush, &eta_solv, &xsolv_core, &L, &b);
 
 	SASFIT_CHECK_COND1((L <= 0.0), param, "L(%lg) <= 0",L);
 	SASFIT_CHECK_COND1((b < 0.0), param, "b(%lg) < 0",b);
+
+// with excluded volume effects: EXVOL >= 1
+/*
+    if (L>4*b) {
+        Rg = sqrt(falpha2(L,b)*L*b/6.0);
+    } else {
+        Rg = sqrt(fRg2(L,b)*falpha2(L,b));
+    }
+*/
+    Rg = sqrt(falpha2(L,b)*fRg2(L,b));
 
 	switch( param->kernelSelector )
 	{
