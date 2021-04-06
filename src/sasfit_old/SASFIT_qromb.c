@@ -169,6 +169,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
             sasfit_intde(&IQ_IntdLen, Len_start,Len_end, aw, &res, &err,&param4int);
+            ierr = 0;
             free(aw);
             break;
             }
@@ -176,6 +177,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
             sasfit_intccini(lenaw, aw);
             sasfit_intcc(&IQ_IntdLen, Len_start,Len_end, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&param4int);
+            ierr =  0;
             free(aw);
             break;
             }
@@ -183,7 +185,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             wcquad = gsl_integration_cquad_workspace_alloc(lenaw);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
-            gsl_integration_cquad (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), wcquad, &res, &err,&neval);
+            ierr = gsl_integration_cquad (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), wcquad, &res, &err,&neval);
             gsl_integration_cquad_workspace_free(wcquad);
             break;
             }
@@ -191,7 +193,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             w = gsl_integration_workspace_alloc(lenaw);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
-            gsl_integration_qag (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), lenaw, 3,
+            ierr = gsl_integration_qag (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), lenaw, 3,
                         w, &res, &err);
             gsl_integration_workspace_free (w);
             break;
@@ -206,7 +208,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             param4int.function=&IQ_IntdLen;
             cubxmin[0]=Len_start;
             cubxmax[0]=Len_end;
-            hcubature(1, &f1D_cubature,&param4int,1, cubxmin, cubxmax,
+            ierr = hcubature(1, &f1D_cubature,&param4int,1, cubxmin, cubxmax,
               10000, 0.0, sasfit_eps_get_nriq(),
               ERROR_INDIVIDUAL, fval, ferr);
             res = fval[0];
@@ -216,7 +218,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             param4int.function=&IQ_IntdLen;
             cubxmin[0]=Len_start;
             cubxmax[0]=Len_end;
-            pcubature(1, &f1D_cubature, &param4int,1, cubxmin, cubxmax,
+            ierr = pcubature(1, &f1D_cubature, &param4int,1, cubxmin, cubxmax,
               10000,0.0, sasfit_eps_get_nriq(),
               ERROR_INDIVIDUAL, fval, ferr);
             res = fval[0];
@@ -227,12 +229,14 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
 		                    SD,FF,SQ,
 							distr,Len_start, Len_end,error);
             break;
+            ierr = *error;
             }
     case GSL_GAUSSLEGENDRE: {
             wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
             F.function=&IQ_IntdLen;
             F.params = &param4int;
             res = gsl_integration_glfixed(&F, Len_start, Len_end, wglfixed);
+            ierr = 0;
             gsl_integration_glfixed_table_free(wglfixed);
             break;
             }
@@ -240,7 +244,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_chebyshev1(), Len_start, Len_end, 0, 1);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
-             ierr = gsl_integration_fixed(&F, &res, wfixed);
+            ierr = gsl_integration_fixed(&F, &res, wfixed);
             gsl_integration_fixed_free(wfixed);
             break;
             }
@@ -256,7 +260,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_gegenbauer(), Len_start, Len_end, sasfit_eps_get_res(), 1);
             F.function=&IQ_IntdLen;
             F.params = &param4int;
-             ierr = gsl_integration_fixed(&F, &res, wfixed);
+            ierr = gsl_integration_fixed(&F, &res, wfixed);
             gsl_integration_fixed_free(wfixed);
             break;
             }
@@ -290,7 +294,7 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
             break;
             }
     }
-    if (err < 0) {
+    if (ierr > 0) {
         sasfit_err("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
     }
     return res;

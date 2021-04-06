@@ -65,6 +65,15 @@
 #define SPHAVG_FIBONACCI 2
 #define SPHAVG_HCUBATURE 3
 #define SPHAVG_PCUBATURE 4
+#define MC_MISER 5
+#define MC_VEGAS 6
+#define MC_PLAIN 7
+
+#define CUB_HCUBATURE 0
+#define CUB_PCUBATURE 1
+#define CUB_MC_MISER 2
+#define CUB_MC_VEGAS 3
+#define CUB_MC_PLAIN 4
 
 // helper for quoting compiler definitions
 #define __Q(x) #x

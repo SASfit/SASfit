@@ -28,6 +28,9 @@ proc setSphAvgStrategy2int {} {
 		"FIBONACCI" {set ::FitPrecision(SphAvgStrategy_int) 2}
 		"H_CUBATURE" {set ::FitPrecision(SphAvgStrategy_int) 3}
 		"P_CUBATURE" {set ::FitPrecision(SphAvgStrategy_int) 4}
+		"MC_MISER" {set ::FitPrecision(SphAvgStrategy_int) 5}
+		"MC_VEGAS" {set ::FitPrecision(SphAvgStrategy_int) 6}
+		"MC_PLAIN" {set ::FitPrecision(SphAvgStrategy_int) 7}
 		default {set ::FitPrecision(SphAvgStrategy_int) 0}
 	}
 }
@@ -129,7 +132,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.intStrat_value -row 5 -column 1 -sticky w
     label $w.sphavgStrat_label -text "spherical average strategy"
 	ComboBox $w.sphavgStrat_value -values {"GSL_2D_GAUSSLEGENDRE" "Lebedev" "FIBONACCI"\
-										"H_CUBATURE" "P_CUBATURE" } \
+										"H_CUBATURE" "P_CUBATURE" "MC_MISER" "MC_VEGAS" "MC_PLAIN"} \
 				-width 15 \
 				-textvariable ::FitPrecision(SphAvgStrategy) \
 				-modifycmd setSphAvgStrategy2int

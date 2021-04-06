@@ -236,14 +236,11 @@ int sasfit_cubature(size_t ndim,
 	int i,method, key;
 
 	switch (sasfit_get_int_strategy()) {
-	    case OOURA_DOUBLE_EXP_QUADRATURE : break;
-        case OOURA_CLENSHAW_CURTIS_QUADRATURE : break;
-        case GSL_CQUAD : break;
-        case GSL_QAG : break;
-        case H_CUBATURE : break;
-        case P_CUBATURE : break;
-        case Sphere_Lebedev : break;
-        case TanhSinh : break;
+        case CUB_HCUBATURE : break;
+        case CUB_PCUBATURE : break;
+        case CUB_MC_PLAIN : break;
+        case CUB_MC_VEGAS : break;
+        case CUB_MC_MISER : break;
         default : break;
 	}
 

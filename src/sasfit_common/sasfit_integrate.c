@@ -26,6 +26,11 @@
 
 
 // #include <omp.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_monte.h>
+#include <gsl/gsl_monte_plain.h>
+#include <gsl/gsl_monte_miser.h>
+#include <gsl/gsl_monte_vegas.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
 #include "include/sasfit_common.h"
@@ -226,6 +231,15 @@ scalar Kernel_GL(scalar theta, scalar phi, void *pam) {
 	return (*cub->Kernel2D_fct)(theta,phi,param)*sin(theta);
 }
 
+scalar Kernel_MC2D(scalar *k, size_t dim, void *pam) {
+	sasfit_param * param;
+	int_cub *cub;
+	cub = (int_cub *) pam;
+	param = (sasfit_param *) cub->param;
+	if (dim <2) sasfit_err("wrong dimension for using Kernel_MC2D (%d), dim needs to be dim>=2\n",dim);
+	return (*cub->Kernel2D_fct)(k[0],k[1],param)*sin(k[0]);
+}
+
 scalar sasfit_orient_avg_ctm(
 			sasfit_func_two_t *intKern_fct,
 			sasfit_param * param,
@@ -241,12 +255,90 @@ scalar sasfit_orient_avg_ctm(
     scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
     gsl_integration_glfixed_table * wglfixed;
     int_cub cubstruct;
+    const gsl_rng_type *T;
+    gsl_rng *r;
+    size_t calls;
 
     cubstruct.Kernel2D_fct=intKern_fct;
     cubstruct.param=param;
     Iavg = 0;
 
     switch (sasfit_get_sphavg_strategy()) {
+        case MC_PLAIN: {
+                cubxmin[0] = 0;
+                cubxmax[0] = M_PI;
+                cubxmin[1] = 0;
+                cubxmax[1] = 2*M_PI;
+                gsl_monte_function G = { &Kernel_MC2D, 2, &cubstruct };
+                calls = sasfit_eps_get_iter_4_mc();
+                gsl_rng_env_setup ();
+                T = gsl_rng_default;
+                r = gsl_rng_alloc (T);
+                gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(2);
+                gsl_monte_plain_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_plain,
+                               &fval[0], &ferr[0]);
+                i=1;
+                do
+                {
+                    gsl_monte_plain_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_plain,
+                                   &fval[0], &ferr[0]);
+                    i++;
+                } while (i<10 && (ferr[0]/fval[0]>sasfit_eps_get_aniso()));
+                sasfit_out("PLAIN: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                gsl_monte_plain_free (s_plain);
+                Iavg = fval[0]/(4*M_PI);
+                break;
+            }
+        case MC_VEGAS: {
+                cubxmin[0] = 0;
+                cubxmax[0] = M_PI;
+                cubxmin[1] = 0;
+                cubxmax[1] = 2*M_PI;
+                gsl_monte_function G = { &Kernel_MC2D, 2, &cubstruct };
+                calls = sasfit_eps_get_iter_4_mc();
+                gsl_rng_env_setup ();
+                T = gsl_rng_default;
+                r = gsl_rng_alloc (T);
+                gsl_monte_vegas_state *s_vegas = gsl_monte_vegas_alloc(2);
+                gsl_monte_vegas_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
+                               &fval[0], &ferr[0]);
+                i=1;
+                do
+                {
+                    gsl_monte_vegas_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
+                                   &fval[0], &ferr[0]);
+                    i++;
+                } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || ferr[0]/fval[0]>sasfit_eps_get_aniso()));
+                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                gsl_monte_vegas_free (s_vegas);
+                Iavg = fval[0]/(4*M_PI);
+                break;
+            }
+        case MC_MISER: {
+                cubxmin[0] = 0;
+                cubxmax[0] = M_PI;
+                cubxmin[1] = 0;
+                cubxmax[1] = 2*M_PI;
+                gsl_monte_function G = { &Kernel_MC2D, 2, &cubstruct };
+                calls = sasfit_eps_get_iter_4_mc();
+                gsl_rng_env_setup ();
+                T = gsl_rng_default;
+                r = gsl_rng_alloc (T);
+                gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(2);
+                gsl_monte_miser_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_miser,
+                               &fval[0], &ferr[0]);
+                i=1;
+                do
+                {
+                    gsl_monte_miser_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_miser,
+                                   &fval[0], &ferr[0]);
+                    i++;
+                } while (i<10 && ferr[0]/fval[0]>sasfit_eps_get_aniso());
+                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                gsl_monte_miser_free (s_miser);
+                Iavg = fval[0]/(4*M_PI);
+                break;
+            }
         case SPHAVG_GSL_2D_GAUSSLEGENDRE: {
                 wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
 //sasfit_out("GSL_2D_GAUSSLEGENDRE order:%d\n",sasfit_eps_get_gausslegendre());
@@ -289,7 +381,7 @@ scalar sasfit_orient_avg_ctm(
                 //order = truncl( gsl_pow_int(PHI1, rule)/sqrt(5.0) + 0.5 ); // this is the n-th Fibonacci number F(n)
                 order = abs(sasfit_eps_get_fibonacci());
 
-sasfit_out("Fibonacci order:%d\n",order);
+// sasfit_out("Fibonacci order:%d\n",order);
                 for (i=0;i<order;i++) {
                     i_r8 = ( double ) ( - order + 1 + 2 * i );
                     theta = 2.0 * M_PI * i_r8 / PHI1;
