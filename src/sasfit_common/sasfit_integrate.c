@@ -26,6 +26,7 @@
 
 
 // #include <omp.h>
+#include <stddef.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_plain.h>
@@ -231,7 +232,7 @@ scalar Kernel_GL(scalar theta, scalar phi, void *pam) {
 	return (*cub->Kernel2D_fct)(theta,phi,param)*sin(theta);
 }
 
-scalar Kernel_MC2D(scalar *k, size_t dim, void *pam) {
+scalar Kernel_MC2D(scalar *k, unsigned int dim, void *pam) {
 	sasfit_param * param;
 	int_cub *cub;
 	cub = (int_cub *) pam;
@@ -257,7 +258,7 @@ scalar sasfit_orient_avg_ctm(
     int_cub cubstruct;
     const gsl_rng_type *T;
     gsl_rng *r;
-    size_t calls;
+    unsigned int calls;
     gsl_monte_function GMC;
     cubstruct.Kernel2D_fct=intKern_fct;
     cubstruct.param=param;
