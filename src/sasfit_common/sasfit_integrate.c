@@ -258,9 +258,12 @@ scalar sasfit_orient_avg_ctm(
     const gsl_rng_type *T;
     gsl_rng *r;
     size_t calls;
-
+    gsl_monte_function GMC;
     cubstruct.Kernel2D_fct=intKern_fct;
     cubstruct.param=param;
+    GMC.f = &Kernel_MC2D;
+    GMC.params=&cubstruct;
+    GMC.dim=2;
     Iavg = 0;
 
     switch (sasfit_get_sphavg_strategy()) {
@@ -269,18 +272,17 @@ scalar sasfit_orient_avg_ctm(
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                gsl_monte_function G = { &Kernel_MC2D, 2, &cubstruct };
                 calls = sasfit_eps_get_iter_4_mc();
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
                 gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(2);
-                gsl_monte_plain_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_plain,
+                gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_plain,
                                &fval[0], &ferr[0]);
                 i=1;
                 do
                 {
-                    gsl_monte_plain_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_plain,
+                    gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_plain,
                                    &fval[0], &ferr[0]);
                     i++;
                 } while (i<10 && (ferr[0]/fval[0]>sasfit_eps_get_aniso()));
@@ -294,18 +296,17 @@ scalar sasfit_orient_avg_ctm(
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                gsl_monte_function G = { &Kernel_MC2D, 2, &cubstruct };
                 calls = sasfit_eps_get_iter_4_mc();
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
                 gsl_monte_vegas_state *s_vegas = gsl_monte_vegas_alloc(2);
-                gsl_monte_vegas_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
+                gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
                                &fval[0], &ferr[0]);
                 i=1;
                 do
                 {
-                    gsl_monte_vegas_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
+                    gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
                                    &fval[0], &ferr[0]);
                     i++;
                 } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || ferr[0]/fval[0]>sasfit_eps_get_aniso()));
@@ -319,18 +320,17 @@ scalar sasfit_orient_avg_ctm(
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                gsl_monte_function G = { &Kernel_MC2D, 2, &cubstruct };
                 calls = sasfit_eps_get_iter_4_mc();
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
                 gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(2);
-                gsl_monte_miser_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_miser,
+                gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_miser,
                                &fval[0], &ferr[0]);
                 i=1;
                 do
                 {
-                    gsl_monte_miser_integrate (&G, cubxmin, cubxmax, 2, calls/10, r, s_miser,
+                    gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_miser,
                                    &fval[0], &ferr[0]);
                     i++;
                 } while (i<10 && ferr[0]/fval[0]>sasfit_eps_get_aniso());
