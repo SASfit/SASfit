@@ -12,10 +12,6 @@ requiredEnvVars = ("CLOUDSMITH_KEY",)
 for vname in requiredEnvVars:
     assertEnvVarExists(vname)
 
-for item in os.environ.items():
-    print(item)
-sys.exit()
-
 os.environ["CLOUDSMITH_ORG"] = "sasfit"
 os.environ["CLOUDSMITH_REPO"] = "build"
 os.environ["PCKG_NAME"] = os.environ["CACHEID"]
