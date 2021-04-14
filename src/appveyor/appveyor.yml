@@ -152,7 +152,6 @@ after_deploy:
   # cleanup AppVeyor history
   - python3 src/appveyor/citools/appveyor_keep_builds.py 10 --verbose
   # replacing BinTray with cloudsmith.io
-  - sh env
   - python3 src/appveyor/8_cloudsmith_upload.py
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:
