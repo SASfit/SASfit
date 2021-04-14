@@ -24,6 +24,8 @@ environment:
     secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
   APPVEYOR_TOKEN:
     secure: Ze65tHzYbKW8ll986XhBx18df/MtnyHkqsTtkM5+kr8=
+  CLOUDSMITH_KEY:
+    secure: W/Nf9rURGNNqj4clwDkiWqVQ83eLVynha1nhtey0c8gqbVjQCAs/fJEqX528UScL
   matrix:
     # dummy var enables for.matrix.only specific ENV vars below
     - DUMMY:
