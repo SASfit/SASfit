@@ -34,6 +34,18 @@ proc setSphAvgStrategy2int {} {
 		default {set ::FitPrecision(SphAvgStrategy_int) 0}
 	}
 }
+proc setCubatureStrategy2int {} {
+	puts $::FitPrecision(CubatureStrategy)
+	switch $::FitPrecision(CubatureStrategy) {
+		"H_CUBATURE" {set ::FitPrecision(SphAvgStrategy_int) 0}
+		"P_CUBATURE" {set ::FitPrecision(SphAvgStrategy_int) 1}
+		"MC_MISER" {set ::FitPrecision(SphAvgStrategy_int) 2}
+		"MC_VEGAS" {set ::FitPrecision(SphAvgStrategy_int) 3}
+		"MC_PLAIN" {set ::FitPrecision(SphAvgStrategy_int) 4}
+		default {set ::FitPrecision(SphAvgStrategy_int) 0}
+	}
+}
+
 proc setIntStrategy2int {} {
 	switch $::FitPrecision(IntStrategy) {
 		"OOURA_DE" {set ::FitPrecision(IntStrategy_int) 0}
@@ -51,6 +63,9 @@ proc setIntStrategy2int {} {
 		"GSL_EXPONENTIAL" {set ::FitPrecision(IntStrategy_int) 16}
 		"GSL_LAGUERRE" {set ::FitPrecision(IntStrategy_int) 17}
 		"GSL_JACOBI" {set ::FitPrecision(IntStrategy_int) 18}
+		"MC_MISER" {set ::FitPrecision(IntStrategy_int) 19}
+		"MC_VEGAS" {set ::FitPrecision(IntStrategy_int) 20}
+		"MC_PLAIN" {set ::FitPrecision(IntStrategy_int) 21}
 		default {set ::FitPrecision(IntStrategy_int) 0}
 	}
 }

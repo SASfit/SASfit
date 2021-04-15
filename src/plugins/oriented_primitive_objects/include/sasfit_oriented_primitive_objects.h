@@ -547,6 +547,194 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_random_f
 sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_random_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_ellipsoid_opo_random ################ */
 
+/* ################ start ff_superegg_opo ################ */
+/**
+ * \defgroup ff_superegg_opo superegg (OPO)
+ * \ingroup ff_plugins_oriented_primitive_objects
+ *
+ * \brief some brief description of superegg (OPO) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third half axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>third Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>direction of Q on detector (psi=0: direction to the right)</td>
+ *      </tr><tr>
+ *       <td>\b eps1</td>
+ *       <td>shape parameter (eps1>0, eps1=1:circular, eps1<1:rectangular)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_superegg_opo
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superegg_opo
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superegg_opo
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superegg_opo ################ */
+
+/* ################ start ff_superegg_opo_random ################ */
+/**
+ * \defgroup ff_superegg_opo_random superegg (OPO,random)
+ * \ingroup ff_plugins_oriented_primitive_objects
+ *
+ * \brief some brief description of superegg (OPO,random) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third half axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b eps1</td>
+ *       <td>shape parameter (eps1>0, eps1=1:circular, eps1<1:rectangular)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_superegg_opo_random
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_random(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superegg_opo_random
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_random_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superegg_opo_random
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_random_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superegg_opo_random ################ */
+
 /* ################ start ff_superellipsoid_opo ################ */
 /**
  * \defgroup ff_superellipsoid_opo super ellipsoid (OPO)
@@ -740,6 +928,200 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_ran
  */
 sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_random_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_superellipsoid_opo_random ################ */
+
+/* ################ start ff_superquadrics_opo ################ */
+/**
+ * \defgroup ff_superquadrics_opo superquadrics (OPO)
+ * \ingroup ff_plugins_oriented_primitive_objects
+ *
+ * \brief some brief description of superquadrics (OPO) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third half axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>third Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>direction of Q on detector (psi=0: direction to the right)</td>
+ *      </tr><tr>
+ *       <td>\b p</td>
+ *       <td>shape parameter, ex-ey (p>0)</td>
+ *      </tr><tr>
+ *       <td>\b q</td>
+ *       <td>shape parameter, ez (q>0)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_superquadrics_opo
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superquadrics_opo(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superquadrics_opo
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superquadrics_opo_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superquadrics_opo
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superquadrics_opo_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superquadrics_opo ################ */
+
+/* ################ start ff_superquadrics_opo_random ################ */
+/**
+ * \defgroup ff_superquadrics_opo_random superquadrics (OPO,random)
+ * \ingroup ff_plugins_oriented_primitive_objects
+ *
+ * \brief some brief description of superquadrics (OPO,random) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third half axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b p</td>
+ *       <td>shape parameter, ex-ey (p>0)</td>
+ *      </tr><tr>
+ *       <td>\b q</td>
+ *       <td>shape parameter, ez (q>0)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_superquadrics_opo_random
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superquadrics_opo_random(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superquadrics_opo_random
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superquadrics_opo_random_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_superquadrics_opo_random
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superquadrics_opo_random_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_superquadrics_opo_random ################ */
 
 /* ################ start ff_supershape_opo ################ */
 /**

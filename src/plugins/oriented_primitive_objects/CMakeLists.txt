@@ -18,8 +18,12 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_parallelepiped_opo_random.c
 	sasfit_ff_ellipsoid_opo.c
 	sasfit_ff_ellipsoid_opo_random.c
+	sasfit_ff_superegg_opo.c
+	sasfit_ff_superegg_opo_random.c
 	sasfit_ff_superellipsoid_opo.c
 	sasfit_ff_superellipsoid_opo_random.c
+	sasfit_ff_superquadrics_opo.c
+	sasfit_ff_superquadrics_opo_random.c
 	sasfit_ff_supershape_opo.c
 	sasfit_ff_supershape_opo_random.c
 	sasfit_ff_supertoroid_helix_opo.c

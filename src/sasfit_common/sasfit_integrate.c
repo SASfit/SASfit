@@ -268,7 +268,7 @@ scalar sasfit_orient_avg_ctm(
     Iavg = 0;
 
     switch (sasfit_get_sphavg_strategy()) {
-        case MC_PLAIN: {
+        case SPHAVG_MC_PLAIN: {
                 cubxmin[0] = 0;
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
@@ -292,7 +292,7 @@ scalar sasfit_orient_avg_ctm(
                 Iavg = fval[0]/(4*M_PI);
                 break;
             }
-        case MC_VEGAS: {
+        case SPHAVG_MC_VEGAS: {
                 cubxmin[0] = 0;
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
@@ -316,7 +316,7 @@ scalar sasfit_orient_avg_ctm(
                 Iavg = fval[0]/(4*M_PI);
                 break;
             }
-        case MC_MISER: {
+        case SPHAVG_MC_MISER: {
                 cubxmin[0] = 0;
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;

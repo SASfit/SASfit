@@ -7,15 +7,19 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(30)
+SASFIT_PLUGIN_EXP_BEGIN(34)
 SASFIT_PLUGIN_EXP_ADD( ff_cylinder_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_cylinder_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_ellipsoid_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_ellipsoid_opo_random )
+SASFIT_PLUGIN_EXP_ADD( ff_superegg_opo )
+SASFIT_PLUGIN_EXP_ADD( ff_superegg_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_superellipsoid_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_superellipsoid_opo_random )
+SASFIT_PLUGIN_EXP_ADD( ff_superquadrics_opo )
+SASFIT_PLUGIN_EXP_ADD( ff_superquadrics_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_supershape_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_supershape_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_supertoroid_helix_opo )

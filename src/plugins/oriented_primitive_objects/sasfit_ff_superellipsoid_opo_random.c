@@ -15,6 +15,9 @@ scalar sasfit_ff_superellipsoid_opo_kernel_f(scalar theta, scalar phi, sasfit_pa
     s_ell_opod.Q[1] = s_ell_opod.Qmod*sin(phi)*sin(theta);
     s_ell_opod.Q[2] = s_ell_opod.Qmod         *cos(theta);
     opo_setQhat(&s_ell_opod);
+    QQX = s_ell_opod.Qhat[0];
+    QQY = s_ell_opod.Qhat[1];
+    QQZ = s_ell_opod.Qhat[2];
     return (ETA_P-ETA_M)*s_ell_opod.detDinv*opo_Fsuperellipsoid(param);
 }
 scalar sasfit_ff_superellipsoid_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
@@ -22,15 +25,14 @@ scalar sasfit_ff_superellipsoid_opo_kernel(scalar theta, scalar phi, sasfit_para
     s_ell_opod.Q[1] = s_ell_opod.Qmod*sin(phi)*sin(theta);
     s_ell_opod.Q[2] = s_ell_opod.Qmod         *cos(theta);
     opo_setQhat(&s_ell_opod);
+    QQX = s_ell_opod.Qhat[0];
+    QQY = s_ell_opod.Qhat[1];
+    QQZ = s_ell_opod.Qhat[2];
     return gsl_pow_2((ETA_P-ETA_M)*s_ell_opod.detDinv*opo_Fsuperellipsoid(param));
 }
 
 scalar sasfit_ff_superellipsoid_opo_random(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
-    int intstrategy, lenaw=4000;
-    scalar psi;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q); // modify condition to your needs
@@ -49,15 +51,15 @@ scalar sasfit_ff_superellipsoid_opo_random(scalar q, sasfit_param * param)
 	s_ell_opod.a = A;
 	s_ell_opod.b = A*B;
 	s_ell_opod.c = A*C;
+	s_ell_opod.param = param;
     s_ell_opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&s_ell_opod,ALPHA,BETA,GAMMA);
+    opo_setEulerAngles(&s_ell_opod,0,0,0);
     opo_init(&s_ell_opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(s_ell_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
-
     s_ell_opod.Qmod = q;
+
     return sasfit_orient_avg(&sasfit_ff_superellipsoid_opo_kernel,param);
-	return gsl_pow_2((ETA_P-ETA_M)*s_ell_opod.detDinv*opo_Fsuperellipsoid(param));
 }
 
 scalar sasfit_ff_superellipsoid_opo_random_f(scalar q, sasfit_param * param)
@@ -73,6 +75,7 @@ scalar sasfit_ff_superellipsoid_opo_random_f(scalar q, sasfit_param * param)
 	s_ell_opod.a = A;
 	s_ell_opod.b = A*B;
 	s_ell_opod.c = A*C;
+	s_ell_opod.param = param;
     s_ell_opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&s_ell_opod,ALPHA,BETA,GAMMA);
     opo_init(&s_ell_opod);

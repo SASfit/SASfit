@@ -1517,7 +1517,7 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
   \frac{H}{R} & < \frac{\tan(\alpha)}{\sqrt{3}}
 \end{align}
 
-\subsection{oriented super-quadrics} ~\\
+\subsection{oriented superellipsoid} ~\\
 
 \begin{figure}[htb]
 \begin{tabular}{ccccc}
@@ -1547,9 +1547,9 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
 \label{fig:opo_superquadrics}
 \end{figure}
 
-Super-quadrics have been widely used in computer graphics \cite{Barr1981}. They have both a
-parametric and an implicit representation. The parametric representation of the surface is defined by
-\begin{align}\label{eq:superquadrics:parametric}
+Superellipsoids belong to a class of shapes named superquadrics. The class of superquadrics have been widely used in computer graphics and were introduced by \cite{Barr1981}. This class of shapes also include next to superellipsoids so called superhyperboloids and supertoroids. They all have both a
+parametric and an implicit representation. The parametric representation of the surface of a superellipsoid is defined by
+\begin{align}\label{eq:superellipsoid:parametric}
   \left(
     \begin{array}{c}
       x(a_1\theta,\phi) \\
@@ -1577,18 +1577,20 @@ whereas the signed power function is defined as
   \end{cases}
 \end{align}
 The implicit representation is given by
-\begin{align}\label{eq:superquadrics:implicit}
+\begin{align}\label{eq:superellipsoid:implicit}
 \left(
-     \left(\frac{x}{a_1}\right)^{\frac{2}{\epsilon_2}}+
-     \left(\frac{y}{a_2}\right)^{\frac{2}{\epsilon_2}}
+     \abs{\frac{x}{a_1}}^{\frac{2}{\epsilon_2}}+
+     \abs{\frac{y}{a_2}}^{\frac{2}{\epsilon_2}}
 \right)^{\frac{\epsilon_2}{\epsilon_1}} +
-\left(\frac{z}{a_3}\right)^{\frac{2}{\epsilon_1}} &\leq 1
+\abs{\frac{z}{a_3}}^{\frac{2}{\epsilon_1}} &\leq 1
 \end{align}
-Super-ellipsoids are a special case of super-quadrics for which the two exponents are equal $\epsilon_1=\epsilon_2$. The implicit representation then looks as
+A supersphere is a special case of superellipsoid for which the two exponents are equal $\epsilon_1=\epsilon_2$. The implicit representation then reads as
 $\abs{\frac{x}{a_1}}^n+\abs{\frac{y}{a_2}}^n+\abs{\frac{y}{a_3}}^n\leq 1$ with $n=1/\epsilon_1=1/\epsilon_2$.
-As the asymmetric super-quadrics is obtained by a scale transform, which is a special case of an affine transform only the Fourier transform of a unit super-quadrics has to be solved. All its affine transform than can be easily calculated by linear algebra.  The Fourier transform of a unit super-quadrics ($a_1=a_2=a_3=1$) is
-\begin{align}\label{eq:FTsuperquadrics}
-  F_\mathrm{SQ}(\B{Q}) &=
+Another special case is the superegg for which one exponent is equal $\epsilon_1=1$ and the implicit representation then reads as
+$\left(\abs{\frac{x}{a_1}}^2+\abs{\frac{y}{a_2}}^2\right)^{1/\epsilon_2}+\abs{\frac{y}{a_3}}^{2/\epsilon_2}\leq 1$.
+As the asymmetric superellipsoid is obtained by a scale transform, which is a special case of an affine transform only the Fourier transform of a unit superellipsoid has to be solved. All its affine transform than can be easily calculated by linear algebra.  The Fourier transform of a unit super-quadrics ($a_1=a_2=a_3=1$) is
+\begin{align}\label{eq:FTsuperellipsoid}
+  F_\mathrm{SEll}(\B{Q}) &=
 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
 \mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,  \int\limits_{-Z(x,y)}^{Z(x,y)} \mathrm{d}z \,
 e^{\imath\B{\hat{Q}r}} \nonumber \\
@@ -1604,7 +1606,7 @@ e^{\imath\left(\hat{Q}_xx+\hat{Q}_yY(x)s\right)} 2Z(x,Y(x)s)\operatorname{sinc}(
 Y(x) &= \left(1-x^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{2}}\\
 Z(x,y) &= \left(1-\left(x^{\frac{2}{\epsilon_2}}+y^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
 \end{align}
-To make use of numerical integration routines for multiple dimensions over hypercubes it might be convenient to perform a variable transformation using $ x(r,\theta,\phi)$ and $ y(r,\theta,\phi)$ given in eq.\ \ref{eq:superquadrics:parametric}. The Jacobi determinant for this substitution is
+To make use of numerical integration routines for multiple dimensions over hypercubes it might be convenient to perform a variable transformation using $ x(r,\theta,\phi)$ and $ y(r,\theta,\phi)$ given in eq.\ \ref{eq:superellipsoid:parametric}. The Jacobi determinant for this substitution is
 \begin{align}\label{eq:detJ_superquadrics}
   \det{\M{J}} &= \det
   \left(
@@ -1617,7 +1619,7 @@ To make use of numerical integration routines for multiple dimensions over hyper
 so that
 \begin{align}
 \begin{split}
-F_\mathrm{SQ}(\B{Q}) &= 8 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,\int\limits_{0}^1
+F_\mathrm{SEll}(\B{Q}) &= 8 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,\int\limits_{0}^1
 \mathrm{d}r\, \int\limits_{0}^{\pi/2} \mathrm{d}\theta\,  \epsilon_2 r \abs{\cos\theta\sin\theta}^{\epsilon_2-1}\\
      &\times \cos\left(\hat{Q}_xx(r,\theta,0)+\hat{Q}_yy(r,\theta,0)\right) Z\operatorname{sinc}(\hat{Q}_z Z)\nonumber \\
 Z &= \left(1-\left(x(r,\theta,0)^{\frac{2}{\epsilon_2}}+y(r,\theta,0)^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
@@ -1728,7 +1730,7 @@ pitch-roll) are shown.} \label{fig:superquadricsIQ2D}
 \label{fig:opo_superegg}
 \end{figure}
 
-The superegg is a super-quadrics whose horizontal cross-sections are ellipses, i.e. $\epsilon_2=1$. It is defined by the inequality \cite{WeisssteinSuperEgg}
+The superegg is a superellipsoid whose horizontal cross-sections are ellipses, i.e. $\epsilon_2=1$. It is defined by the inequality \cite{WeisssteinSuperEgg}
 \begin{align}
 \label{eq:superegg_implicit}
    \left(\sqrt{\left(\frac{x}{a_1}\right)^2+\left(\frac{y}{a_2}\right)^2}\right)^{\frac{2}{\epsilon1}} + \left(\frac{z}{a_3}\right)^{\frac{2}{\epsilon1}} & \leq 1
@@ -1740,7 +1742,13 @@ F_\mathrm{SEgg}(\B{Q}) &=
  &\times \int_0^1 \frac{4 \pi  r \sin \left(\hat{Q}_z \left(1-r^{2/\epsilon_1}\right)^{\epsilon_1/2}\right) \operatorname{J}_0\left(\sqrt{\hat{Q}_x^2+\hat{Q}_y^2}
    r\right)}{\hat{Q}_z} \mathrm{d}r
 \end{align}
-
+Alternatively by using a different variable transformation the form factor can also be written as \cite{Maric2017}
+\begin{align}
+F_\mathrm{SEgg}(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,  \nonumber \\
+ &\times \int_0^1 4 \pi  r^2(z) \frac{\operatorname{J}_1\left(r(z)\sqrt{\hat{Q}_x^2+\hat{Q}_y^2}\right) }{r(z)\sqrt{\hat{Q}_x^2+\hat{Q}_y^2}} \cos\left(z\hat{Q}_z\right)  \mathrm{d}z \\
+ r(z) &=\left(1-z^{2/\epsilon_1}\right)^{\epsilon_1/2}
+\end{align}
 \clearpage
 \subsection{oriented super-shapes and rational super-shaped} ~\\
 \begin{figure}[htb]

@@ -59,21 +59,20 @@
 #define GSL_EXPONENTIAL 16
 #define GSL_LAGUERRE 17
 #define GSL_JACOBI 18
+#define GSL_MC_MISER 19
+#define GSL_MC_VEGAS 20
+#define GSL_MC_PLAIN 21
 
 #define SPHAVG_GSL_2D_GAUSSLEGENDRE 0
 #define SPHAVG_Lebedev 1
 #define SPHAVG_FIBONACCI 2
 #define SPHAVG_HCUBATURE 3
 #define SPHAVG_PCUBATURE 4
-#define MC_MISER 5
-#define MC_VEGAS 6
-#define MC_PLAIN 7
+#define SPHAVG_MC_MISER 5
+#define SPHAVG_MC_VEGAS 6
+#define SPHAVG_MC_PLAIN 7
 
-#define CUB_HCUBATURE 0
-#define CUB_PCUBATURE 1
-#define CUB_MC_MISER 2
-#define CUB_MC_VEGAS 3
-#define CUB_MC_PLAIN 4
+
 
 // helper for quoting compiler definitions
 #define __Q(x) #x

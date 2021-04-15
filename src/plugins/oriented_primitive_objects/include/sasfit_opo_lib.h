@@ -69,6 +69,7 @@ void opo_setDetDinv(opo_data*);
 void opo_setDetD(opo_data*);
 void opo_setQhat(opo_data*);
 void opo_RotateAxis(opo_data*);
+int opo_check_orthogonal(opo_data *);
 scalar opo_Fe(opo_data *);
 scalar opo_Fp(opo_data *);
 scalar opo_Fc(opo_data *);

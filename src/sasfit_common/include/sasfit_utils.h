@@ -70,7 +70,7 @@
  * (\ref intabseps) and a relative error as reported by
  * \ref sasfit_eps_get_aniso.
  */
-#define sasfit_integrate(a,b,fct,p) sasfit_integrate_ctm(a, b, fct, p, 1000, intabseps, sasfit_eps_get_aniso())
+#define sasfit_integrate(a,b,fct,p) sasfit_integrate_ctm(a, b, fct, p, 10000, intabseps, sasfit_eps_get_aniso())
 
 /**
  * \def SASFIT_MAX_WS_PER_THREAD
@@ -160,8 +160,6 @@ sasfit_common_DLLEXP int sasfit_cubature(size_t ndim,
 			scalar *int_end,
 			sasfit_func_ndim_t *intKern_fct,
 			void * param,
-			int limit,
-			scalar epsabs,
 			scalar epsrel,
 			scalar *result,
 			scalar *error);

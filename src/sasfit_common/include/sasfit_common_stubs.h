@@ -192,7 +192,7 @@ typedef struct
 	void (*sasfit_intdeo) (sasfit_func_int_t * f, double a, double omega, double * aw, double * i, double * err, void * fparams); /* 113 */
 	void (*sasfit_intdeini) (int lenaw, double tiny, double eps, double * aw); /* 114 */
 	void (*sasfit_intde) (sasfit_func_int_t * f, double a, double b, double * aw, double * i, double * err, void * fparams); /* 115 */
-	int (*sasfit_cubature) (size_t ndim, scalar * int_start, scalar * int_end, sasfit_func_ndim_t * intKern_fct, void * param, int limit, scalar epsabs, scalar epsrel, scalar * result, scalar * error); /* 116 */
+	int (*sasfit_cubature) (size_t ndim, scalar * int_start, scalar * int_end, sasfit_func_ndim_t * intKern_fct, void * param, scalar epsrel, scalar * result, scalar * error); /* 116 */
 	scalar (*sasfit_erfinv) (scalar y); /* 117 */
 	int (*sasfit_available_table) ( int rule ); /* 118 */
 	int (*sasfit_order_table) ( int rule ); /* 119 */

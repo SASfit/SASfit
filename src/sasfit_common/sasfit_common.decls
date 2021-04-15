@@ -380,8 +380,6 @@ declare 116 generic {
 			scalar *int_end,
 			sasfit_func_ndim_t *intKern_fct,
 			void * param,
-			int limit,
-			scalar epsabs,
 			scalar epsrel,
 			scalar *result,
 			scalar *error)

@@ -223,9 +223,7 @@ int sasfit_cubature(size_t ndim,
 			scalar *int_end,
 			sasfit_func_ndim_t *intKern_fct,
 			void * param,
-			int limit,
 			scalar epsabs,
-			scalar epsrel,
 			scalar *result,
 			scalar *error) {
 
@@ -233,14 +231,16 @@ int sasfit_cubature(size_t ndim,
     gmdi_function_or_constant   fc;
     gmdi_multi_var_function     mvf;
     int                         ret = 0;
+    int limit = 10000;
+    scalar epsrel = 0;
 	int i,method, key;
 
 	switch (sasfit_get_int_strategy()) {
-        case CUB_HCUBATURE : break;
-        case CUB_PCUBATURE : break;
-        case CUB_MC_PLAIN : break;
-        case CUB_MC_VEGAS : break;
-        case CUB_MC_MISER : break;
+        case H_CUBATURE : break;
+        case P_CUBATURE : break;
+        case GSL_MC_PLAIN : break;
+        case GSL_MC_VEGAS : break;
+        case GSL_MC_MISER : break;
         default : break;
 	}
 

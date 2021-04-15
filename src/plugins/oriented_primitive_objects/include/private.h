@@ -59,6 +59,8 @@
 #define H_R  param->p[19]
 #define PP   param->p[18]
 #define QQ   param->p[19]
+#define EPS1 param->p[18]
+#define EPS2 param->p[19]
 #define FMM  param->p[18]
 #define FALPHA  param->p[19]
 #define FN1  param->p[20]

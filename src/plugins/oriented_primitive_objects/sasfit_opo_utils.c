@@ -227,6 +227,18 @@ void opo_setRotationMatrix(opo_data *opod) {
         }
     }
 }
+int opo_check_orthogonal(opo_data *opod){
+    scalar a,b,c;
+    int i;
+    a=0;b=0;c=0;
+    for (i=0;i<3;i++) {
+        a=a+opod->ea[i]*opod->eb[i];
+        b=b+opod->ea[i]*opod->ec[i];
+        c=c+opod->eb[i]*opod->ec[i];
+    }
+    if (fabs(a)+fabs(b)+fabs(c)<=sasfit_eps_get_comp() ) return TRUE;
+    return FALSE;
+}
 
 int opo_set_e(double *e, double ex, double ey, double ez) {
     scalar emod;
