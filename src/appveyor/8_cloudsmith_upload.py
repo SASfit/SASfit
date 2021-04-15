@@ -17,6 +17,7 @@ os.environ["CLOUDSMITH_REPO"] = "build"
 os.environ["PCKG_NAME"] = os.environ["CACHEID"]
 os.environ["PCKG_VERSION"] = os.environ["SASFIT_VERSION"]
 os.environ["PCKG_DESCR"] = "SASfit development build"
+print("TEST SASFIT_PACKAGE_FILE:", os.environ["SASFIT_PACKAGE_FILE"])
 
 uploadFile(Path(sys.argv[1]).resolve())
 
