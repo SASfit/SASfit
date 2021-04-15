@@ -4,8 +4,16 @@
 [![Build status macOS](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20macos;%20Environment:%20DUMMY=?label=macOS%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
 [![Build status Linux](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20Ubuntu2004;%20Environment:%20DUMMY=?label=Linux%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
 
-SASfit for fitting small-angle scattering curves
-================================================
+- [SASfit for fitting small-angle scattering curves](#sasfit-for-fitting-small-angle-scattering-curves)
+   1. [Startup issues on macOS](#startup-issues-on-macos)
+   2. [Building from source](#building-from-source)
+      - [Windows](#windows)
+      - [macOS](#macos)
+      - [Linux](#linux)
+      - [Common helpers](#common-helpers)
+   3. [Sponsors](#sponsors)
+
+# SASfit for fitting small-angle scattering curves
 
 SASfit has been written for analyzing and plotting small angle scattering data. 
 It can calculate integral structural parameters like radius of gyration, scattering invariant, 
@@ -40,8 +48,7 @@ Academic papers about SASfit have been published in:
 -  [J. Appl. Cryst. (2015). 48, 1587-1598](https://dx.doi.org/10.1107/S1600576715016544)
 -  [J. Appl. Cryst. (2017). 50, 1395-1403](https://dx.doi.org/10.1107/S1600576717011979)
 
-Startup issues on macOS
-=======================
+## Startup issues on macOS
 
 ![sasfit.command error on macOS](doc/images/sasfit.command%20error%20on%20macOS.png)
 
@@ -59,11 +66,9 @@ If your user is not allowed to call *sudo*, you have to change to a user which d
 
 Once the *quarantine* label was removed, the package can be extracted by double-clicking on it. Starting the program by clicking on the `sasfit.command` file should open it without further errors.
 
-Building from source
-====================
+## Building from source
 
-Windows
--------
+### Windows
 
 *(Tested with Windows 10 x64 1809)*
 
@@ -105,8 +110,7 @@ Finally, build SASfit itself which should generate a binary package if it was su
 
     sasfit/build % make
 
-macOS
------
+### macOS
 
 *(Tested with Catalina 10.15)*
 
@@ -138,8 +142,7 @@ Finally, build SASfit itself which should generate a binary package if it was su
 
     sasfit/build % make -j4
 
-Linux
------
+### Linux
 
 *(Tested with Ubuntu 20.04 LTS)*
 
@@ -169,8 +172,7 @@ Finally, build SASfit itself which should generate a binary package if it was su
 
     sasfit/build $ make -j4
 
-Common helpers
---------------
+### Common helpers
 
 Clean the source tree from build products and other temporary files with GIT by running:
 
@@ -178,6 +180,8 @@ Clean the source tree from build products and other temporary files with GIT by 
 
 This command removes files with are set to be ignored by GIT (*-x*), removes files in sub-directories recursively (*-d*) and does not ask questions (*-f*).
  
+## Sponsors
+
 [![Hosted By: Cloudsmith](https://img.shields.io/badge/OSS%20hosting%20by-cloudsmith-blue?logo=cloudsmith&style=flat)](https://cloudsmith.com)
 
 Package repository hosting is graciously provided by [Cloudsmith](https://cloudsmith.com).
