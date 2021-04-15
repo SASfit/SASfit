@@ -17,8 +17,7 @@ os.environ["CLOUDSMITH_REPO"] = "build"
 os.environ["PCKG_NAME"] = os.environ["CACHEID"]
 os.environ["PCKG_VERSION"] = os.environ["SASFIT_VERSION"]
 os.environ["PCKG_DESCR"] = "SASfit development build"
-print("TEST SASFIT_PACKAGE_FILE:", os.environ["SASFIT_PACKAGE_FILE"])
 
-uploadFile(Path(sys.argv[1]).resolve())
+uploadFile(Path(os.environ["SASFIT_PACKAGE_FILE"]).resolve())
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
