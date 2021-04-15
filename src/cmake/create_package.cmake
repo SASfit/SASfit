@@ -114,9 +114,9 @@ execute_process(COMMAND cpack
     ERROR_VARIABLE CPACK_OUT
 )
 # some debug output
-#message("CPACK_RES: '${CPACK_RES}'")
-#message("CPACK_OUT: '${CPACK_OUT}'")
-#message("CPACK_ERR: '${CPACK_ERR}'")
+message("CPACK_RES: '${CPACK_RES}'")
+message("CPACK_OUT: '${CPACK_OUT}'")
+message("CPACK_ERR: '${CPACK_ERR}'")
 
 # Convert output to a CMake list (each list element is one line)
 STRING(REGEX REPLACE ";" "\\\\;" CPACK_OUT "${CPACK_OUT}")
@@ -126,13 +126,16 @@ foreach(line ${CPACK_OUT})
 endforeach()
 
 if(TRUE) # output contents of CPackConfig for debugging
+    message("output contents of CPackConfig")
     execute_process(COMMAND cat "cmake/CPackConfig.cmake"
         WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
 endif()
 
+message("restore CPackConfig with git?")
 # restore CPackConfig if GIT is available
 find_package(Git)
 if(Git_FOUND)
+    message("  yes!")
     execute_process(COMMAND ${CMAKE_COMMAND} -E echo_append "Restoring CPackConfig: ")
     execute_process(COMMAND git checkout "cmake/CPackConfig.cmake"
                     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
