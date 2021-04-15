@@ -13,8 +13,8 @@ clone_script:
 - ps: git submodule update --init --recursive
 
 image:
-  - Visual Studio 2019
   - macos
+  - Visual Studio 2019
   - Ubuntu2004
 
 environment:
@@ -24,6 +24,8 @@ environment:
     secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
   APPVEYOR_TOKEN:
     secure: Ze65tHzYbKW8ll986XhBx18df/MtnyHkqsTtkM5+kr8=
+  CLOUDSMITH_KEY:
+    secure: W/Nf9rURGNNqj4clwDkiWqVQ83eLVynha1nhtey0c8gqbVjQCAs/fJEqX528UScL
   matrix:
     # dummy var enables for.matrix.only specific ENV vars below
     - DUMMY:
@@ -149,5 +151,7 @@ after_deploy:
   - python3 src/appveyor/8_after_deploy.py
   # cleanup AppVeyor history
   - python3 src/appveyor/citools/appveyor_keep_builds.py 10 --verbose
+  # replacing BinTray with cloudsmith.io
+  - python3 src/appveyor/8_cloudsmith_upload.py
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:

@@ -125,7 +125,8 @@ foreach(line ${CPACK_OUT})
     message(STATUS ${line})
 endforeach()
 
-if(TRUE) # output contents of CPackConfig for debugging
+if(FALSE) # output contents of CPackConfig for debugging
+    message(STATUS "Contents of CPackConfig:")
     execute_process(COMMAND cat "cmake/CPackConfig.cmake"
         WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
 endif()
@@ -138,7 +139,14 @@ if(Git_FOUND)
                     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
 endif()
 
-# store resulting package file name in environment variable for subsequent scripts
-set(ENV{SASFIT_PACKAGE_BASENAME} "${PCKG_DIR_NAME}")
+if($ENV{APPVEYOR}) # running on appveyor CI
+    # check work dir of cpack process for generated package file
+    file(GLOB SASFIT_PACKAGE_FILE LIST_DIRECTORIES false
+        "${SASFIT_ROOT_DIR}/src/${PCKG_DIR_NAME}*")
+    message(STATUS "Setting AppVeyor variable SASFIT_PACKAGE_FILE:")
+    message(STATUS "    '${SASFIT_PACKAGE_FILE}'")
+    execute_process(COMMAND appveyor SetVariable
+                    -Name SASFIT_PACKAGE_FILE -Value "${SASFIT_PACKAGE_FILE}")
+endif()
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
