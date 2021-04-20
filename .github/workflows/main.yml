@@ -33,6 +33,7 @@ jobs:
         with:
           repository: SASfit/sasfit.github.io
           path: webpage
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: List current directory structure
         run: |
