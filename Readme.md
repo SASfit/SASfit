@@ -77,7 +77,7 @@ The latest changes and versions of the program can be found in the
 
 ## Startup issues on macOS
 
-![sasfit.command error on macOS](doc/images/sasfit.command%20error%20on%20macOS.png)
+![sasfit.command error on macOS](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/images/sasfit.command%20error%20on%20macOS.png)
 
 In case of this error about an unidentified developer (because we are not registered with Apple yet) one possible workaround is to remove the *quarantine* label of the downloaded file on macOS. This can be done by the following command in a Terminal window. It requires admin privileges:
 
