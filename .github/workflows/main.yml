@@ -55,6 +55,7 @@ jobs:
           git config user.name "${{ secrets.GH_USER }}"
           git config user.email "${{ secrets.GH_EMAIL }}"
           git commit -m "updated index" index.md
+        continue-on-error: true
 
       - name: Generate TOC to show on left side
         run: |
