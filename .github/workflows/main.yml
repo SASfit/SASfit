@@ -49,7 +49,5 @@ jobs:
           cd webpage
           git config user.name "${{ secrets.GH_USER }}"
           git config user.email "${{ secrets.GH_EMAIL }}"
-          #git config --list
-          #git remote add gh-token "https://${{ secrets.GH_USER }}:${{ secrets.GH_TOKEN }}@github.com/:user/:repo.git"
-          echo "$(git config remote.origin.url | awk -F'://' '{print $2}')"
-          #git commit -m "updated index" index.md && git push gh-token
+          git remote add gh-token "https://${{ secrets.GH_USER }}:${{ secrets.GH_TOKEN }}@$(git config remote.origin.url | awk -F'://' '{print $2}')"
+          git commit -m "updated index" index.md && git push gh-token
