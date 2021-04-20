@@ -7,8 +7,8 @@ branches:
 skip_commits:
   files:
     - .github/*
-    - *.md
-    - *.txt
+    - '*.md'
+    - '*.txt'
 
 init:
   - git config --global core.autocrlf input
