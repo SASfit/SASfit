@@ -56,5 +56,5 @@ jobs:
       - name: Push updates to webpage repo
         run: |
           cd webpage
-          git remote add gh-token "https://${{ secrets.GH_TOKEN }}@$(git config remote.origin.url | awk -F'://' '{print $2}')"
+          git remote add gh-token "https://${{ secrets.GH_USER }}:${{ secrets.GH_TOKEN }}@$(git config remote.origin.url | awk -F'://' '{print $2}')"
           git push gh-token
