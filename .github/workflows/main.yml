@@ -45,7 +45,9 @@ jobs:
           ls -la webpage
 
       - name: Copy over readme content
-        run: cat "webpage/index.head" "main/Readme.md" > "webpage/index.md"
+        run: |
+          cp "webpage/index.head" "webpage/index.md"
+          sed -n '/^#/,$p' "main/Readme.md" >> "webpage/index.md"
 
       - name: Commit updated index to webpage repo
         run: |
