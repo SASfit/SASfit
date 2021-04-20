@@ -56,9 +56,13 @@ jobs:
           git config user.email "${{ secrets.GH_EMAIL }}"
           git commit -m "updated index" index.md
 
+      - name: Generate TOC to show on left side
+        run: |
+          cd webpage
+          python3 -v
+          pip
+
       - name: Push updates to webpage repo
         run: |
           cd webpage
           git push
-          #git remote add gh-token "https://${{ secrets.GH_USER }}:${{ secrets.GH_TOKEN }}@$(git config remote.origin.url | awk -F'://' '{print $2}')"
-          #git push gh-token
