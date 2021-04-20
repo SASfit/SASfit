@@ -8,7 +8,7 @@ on:
   push:
     branches: [ master ]
     paths:
-    - '.github/*'
+    - '.github/**'
     - '*.md'
 
   # Allows you to run this workflow manually from the Actions tab
