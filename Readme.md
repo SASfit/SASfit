@@ -4,15 +4,6 @@
 [![Build status macOS](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20macos;%20Environment:%20DUMMY=?label=macOS%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
 [![Build status Linux](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20Ubuntu2004;%20Environment:%20DUMMY=?label=Linux%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
 
-- [SASfit for fitting small-angle scattering curves](#sasfit-for-fitting-small-angle-scattering-curves)
-   1. [Startup issues on macOS](#startup-issues-on-macos)
-   2. [Building from source](#building-from-source)
-      - [Windows](#windows)
-      - [macOS](#macos)
-      - [Linux](#linux)
-      - [Common helpers](#common-helpers)
-   3. [Sponsors](#sponsors)
-
 # A Software package for fitting small-angle scattering curves
 
 **SASfit** has been written for analyzing and plotting small angle scattering data.
