@@ -3,6 +3,13 @@ version: '{build}'
 branches:
   only:
     - master
+
+skip_commits:
+  files:
+    - .github/*
+    - *.md
+    - *.txt
+
 init:
   - git config --global core.autocrlf input
 # https://github.com/appveyor/ci/issues/899#issuecomment-567280434
