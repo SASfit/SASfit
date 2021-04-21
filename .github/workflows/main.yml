@@ -59,6 +59,7 @@ jobs:
       - name: Commit updated index to webpage repo
         run: |
           cd webpage
+          git add _includes; git add -u
           git config user.name "${{ secrets.GH_USER }}"
           git config user.email "${{ secrets.GH_EMAIL }}"
           git commit -m "updated index and TOC" . || true
