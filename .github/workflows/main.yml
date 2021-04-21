@@ -1,0 +1,68 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+    paths:
+    - '.github/**'
+    - '*.md'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  update_webpage:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout source tree
+        uses: actions/checkout@v2
+        with:
+          path: main
+
+      - name: Checkout webpage repo
+        uses: actions/checkout@v2
+        with:
+          repository: SASfit/sasfit.github.io
+          path: webpage
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: List current directory structure
+        run: |
+          echo "Current path: '$(pwd)':"
+          ls -la
+          echo 'main:'
+          ls -la main
+          echo 'webpage:'
+          ls -la webpage
+
+      - name: Copy over readme content
+        run: |
+          cp "webpage/index.head" "webpage/index.md"
+          sed -n '/^#/,$p' "main/Readme.md" >> "webpage/index.md"
+
+      - name: Generate TOC to show on left side
+        run: |
+          cd webpage
+          pip install md-toc
+          python3 -m md_toc github index.md | tail -n+2 | sed 's/\(\s*- \)/\1{:.toc}/' > toc.md
+
+      - name: Commit updated index to webpage repo
+        run: |
+          cd webpage
+          git config user.name "${{ secrets.GH_USER }}"
+          git config user.email "${{ secrets.GH_EMAIL }}"
+          git commit -m "updated index and TOC" *.md || true
+
+      - name: Push updates to webpage repo
+        run: |
+          cd webpage
+          git push
