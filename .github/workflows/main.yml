@@ -53,14 +53,14 @@ jobs:
         run: |
           cd webpage
           pip install md-toc
-          python3 -m md_toc github index.md | tail -n+2 | sed 's/\(\s*- \)/\1{:.toc}/' > toc.md
+          python3 -m md_toc github index.md | tail -n+2 | sed 's/\(\s*- \)/\1{:.toc}/' > _includes/toc.md
 
       - name: Commit updated index to webpage repo
         run: |
           cd webpage
           git config user.name "${{ secrets.GH_USER }}"
           git config user.email "${{ secrets.GH_EMAIL }}"
-          git commit -m "updated index and TOC" *.md || true
+          git commit -m "updated index and TOC" . || true
 
       - name: Push updates to webpage repo
         run: |
