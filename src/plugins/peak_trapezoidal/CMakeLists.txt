@@ -12,10 +12,12 @@ set(LIBS_EXT
 set(SOURCE_${PRJ_NAME}
 	sasfit_ff_trapez__area.c
 	sasfit_ff_symm__trapez__area.c
+	sasfit_ff_smoothed_symm_trapez_area.c
 	sasfit_ff_general__trapez__area.c
 	sasfit_ff_symm__general__trapez__area.c
 	sasfit_ff_trapez__ampl_.c
 	sasfit_ff_symm__trapez__ampl_.c
+	sasfit_ff_smoothed_symm_trapez_ampl.c
 	sasfit_ff_general__trapez__ampl_.c
 	sasfit_ff_symm__general__trapez__ampl_.c
 	interface.c

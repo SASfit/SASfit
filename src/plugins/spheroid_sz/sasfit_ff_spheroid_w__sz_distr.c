@@ -41,11 +41,6 @@ scalar sasfit_ff_spheroid_w_sz_distr_f_core(scalar y, void * pam) {
         return V0*(3*pow(A,-0.5 - K/2.)*gsl_pow_int(THETA,3)*(-(K*qttheta*cos(B*(1 + K))) + sqrt(A)*sin(B*K)))/gsl_pow_int(qttheta,3);
     }
 }
-int sasfit_ff_spheroid_w_sz_distr_f_cubature(unsigned ndim, const double *y, void *pam,
-      unsigned fdim, double *fval) {
-    fval[0] = sasfit_ff_spheroid_w_sz_distr_f_core(*y, pam);
-    return 0;
-}
 
 scalar sasfit_ff_spheroid_w_sz_distr_core(scalar y, void * pam) {
     scalar qttheta,QT, V02;
@@ -75,11 +70,6 @@ scalar sasfit_ff_spheroid_w_sz_distr_core(scalar y, void * pam) {
 //            (-(A*cos(B*K)) + K*qttheta*((1 + K)*qttheta*cos(B*(2 + K)) - 2*sqrt(A)*sin(B*(1 + K))))))/(2.*gsl_pow_int(Q*T,6));
 }
 
-int sasfit_ff_spheroid_w_sz_distr_cubature(unsigned ndim, const double *y, void *pam,
-      unsigned fdim, double *fval) {
-    fval[0] = sasfit_ff_spheroid_w_sz_distr_core(*y, pam);
-    return 0;
-}
 scalar sasfit_ff_spheroid_w_sz_distr_f_sasfitint(scalar y, sasfit_param *pam) {
     return sasfit_ff_spheroid_w_sz_distr_f_core(y, pam);
 }
@@ -89,71 +79,19 @@ scalar sasfit_ff_spheroid_w_sz_distr_sasfitint(scalar y, sasfit_param *pam) {
 
 scalar sasfit_ff_spheroid_w__sz_distr(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-    size_t neval;
-    int intstrategy, ndim, lenaw=4000;
+	scalar sum;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R_EQUATORIAL <= 0.0), param, "R_equatorial(%lg) <= 0",R_EQUATORIAL); // modify condition to your needs
 	SASFIT_CHECK_COND1((K <= 1.0), param, "k(%lg) <= 1",K); // modify condition to your needs
-
-/*
-	if (NU<0) {
-        NU = fabs(NU);
-        return gsl_pow_2(sasfit_ff_spheroid_w__sz_distr_f(q,param));
-	}
-*/
-
 	SASFIT_CHECK_COND1((NU <= 0.0), param, "nu(%lg) <= 0",NU); // modify condition to your needs
 
     THETA = R_EQUATORIAL/(K-1);
 
-    cubxmin[0]=0;
-	cubxmax[0]=1;
-	ndim=1;
     Q=q;
-	intstrategy = sasfit_get_int_strategy();
-    intstrategy = OOURA_DOUBLE_EXP_QUADRATURE;
-	// insert your code here
-    switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&sasfit_ff_spheroid_w_sz_distr_core, cubxmin[0],cubxmax[0], aw, &res, &err, param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&sasfit_ff_spheroid_w_sz_distr_core, cubxmin[0],cubxmax[0], sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			hcubature(1, &sasfit_ff_spheroid_w_sz_distr_cubature,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &sasfit_ff_spheroid_w_sz_distr_cubature,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-            sum=sasfit_integrate(0.0, 1.0, &sasfit_ff_spheroid_w_sz_distr_sasfitint, param);
-            break;
-            }
-    }
+	sum=sasfit_integrate(0.0, 1.0, &sasfit_ff_spheroid_w_sz_distr_sasfitint, param);
 	return gsl_pow_2(ETA_CORE-ETA_SOLV)*sum;
 
 	return gsl_pow_2(ETA_CORE-ETA_SOLV)*sasfit_integrate(0,1,&sasfit_ff_spheroid_w_sz_distr_sasfitint,param);
@@ -161,59 +99,14 @@ scalar sasfit_ff_spheroid_w__sz_distr(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_spheroid_w__sz_distr_f(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-    size_t neval;
-    int intstrategy, ndim, lenaw=4000;
+	scalar sum;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
     THETA = R_EQUATORIAL/(K-1);
-
-    cubxmin[0]=0;
-	cubxmax[0]=1;
-	ndim=1;
     Q=q;
-	intstrategy = sasfit_get_int_strategy();
-    intstrategy = OOURA_DOUBLE_EXP_QUADRATURE;
-	// insert your code here
-    switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&sasfit_ff_spheroid_w_sz_distr_f_core, cubxmin[0],cubxmax[0], aw, &res, &err, param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&sasfit_ff_spheroid_w_sz_distr_f_core, cubxmin[0],cubxmax[0], sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			hcubature(1, &sasfit_ff_spheroid_w_sz_distr_f_cubature,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &sasfit_ff_spheroid_w_sz_distr_f_cubature,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-            sum=sasfit_integrate(0.0, 1.0, &sasfit_ff_spheroid_w_sz_distr_f_sasfitint, param);
-            break;
-            }
-    }
+	sum=sasfit_integrate(0.0, 1.0, &sasfit_ff_spheroid_w_sz_distr_f_sasfitint, param);
 	return (ETA_CORE-ETA_SOLV)*sum;
 
 }

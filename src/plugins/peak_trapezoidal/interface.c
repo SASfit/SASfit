@@ -7,13 +7,15 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(8)
+SASFIT_PLUGIN_EXP_BEGIN(10)
 SASFIT_PLUGIN_EXP_ADD( ff_trapez__area )
 SASFIT_PLUGIN_EXP_ADD( ff_symm__trapez__area )
+SASFIT_PLUGIN_EXP_ADD( ff_smoothed_symm_trapez_area )
 SASFIT_PLUGIN_EXP_ADD( ff_general__trapez__area )
 SASFIT_PLUGIN_EXP_ADD( ff_symm__general__trapez__area )
 SASFIT_PLUGIN_EXP_ADD( ff_trapez__ampl_ )
 SASFIT_PLUGIN_EXP_ADD( ff_symm__trapez__ampl_ )
+SASFIT_PLUGIN_EXP_ADD( ff_smoothed_symm_trapez_ampl )
 SASFIT_PLUGIN_EXP_ADD( ff_general__trapez__ampl_ )
 SASFIT_PLUGIN_EXP_ADD( ff_symm__general__trapez__ampl_ )
 

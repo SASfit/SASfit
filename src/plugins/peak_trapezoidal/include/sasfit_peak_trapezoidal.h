@@ -146,12 +146,67 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_symm__trapez__area_f(scalar q, s
 sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_symm__trapez__area_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_symm__trapez__area ################ */
 
+/* ################ start ff_smoothed_symm_trapez_area ################ */
+/**
+ * \defgroup ff_smoothed_symm_trapez_area smoothed symm. trapez. (Area)
+ * \ingroup ff_peak_area
+ *
+ * \brief some brief description of smoothed symm. trapez. (Area) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of peak</td>
+ *      </tr><tr>
+ *       <td>\b w1</td>
+ *       <td>1st width parameter</td>
+ *      </tr><tr>
+ *       <td>\b w2</td>
+ *       <td>wnd width parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>smooth parameter</td>
+ *      </tr><tr>
+ *       <td>\b c0</td>
+ *       <td>background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_smoothed_symm_trapez_area
+ *
+ * \sa sasfit_peak_trapezoidal.h, ff_peak_area
+ */
+sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_smoothed_symm_trapez_area(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_smoothed_symm_trapez_area
+ *
+ * \sa sasfit_peak_trapezoidal.h, ff_peak_area
+ */
+sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_smoothed_symm_trapez_area_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_smoothed_symm_trapez_area
+ *
+ * \sa sasfit_peak_trapezoidal.h, ff_peak_area
+ */
+sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_smoothed_symm_trapez_area_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_smoothed_symm_trapez_area ################ */
+
 /* ################ start ff_general__trapez__area ################ */
 /**
  * \defgroup ff_general__trapez__area general. trapez. (Area)
  * \ingroup ff_peak_area
  *
- * \brief \<some brief description of general. trapez. (Area) function\>
+ * \brief some brief description of general. trapez. (Area) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -334,7 +389,7 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_trapez__ampl__v(scalar q, sasfit
  * \defgroup ff_symm__trapez__ampl_ symm. trapez. (Ampl)
  * \ingroup ff_peak_amplitudes
  *
- * \brief \<some brief description of symm. trapez. (Ampl) function\>
+ * \brief some brief description of symm. trapez. (Ampl) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -384,12 +439,67 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_symm__trapez__ampl__f(scalar q, 
 sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_symm__trapez__ampl__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_symm__trapez__ampl_ ################ */
 
+/* ################ start ff_smoothed_symm_trapez_ampl ################ */
+/**
+ * \defgroup ff_smoothed_symm_trapez_ampl smoothed symm. trapez. (Ampl)
+ * \ingroup ff_peak_amplitudes
+ *
+ * \brief some brief description of smoothed symm. trapez. (Ampl) function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>ampl</td>
+ *      </tr><tr>
+ *       <td>\b center</td>
+ *       <td>center of peak</td>
+ *      </tr><tr>
+ *       <td>\b w1</td>
+ *       <td>1st width parameter</td>
+ *      </tr><tr>
+ *       <td>\b w2</td>
+ *       <td>wnd width parameter</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>smooth parameter</td>
+ *      </tr><tr>
+ *       <td>\b c0</td>
+ *       <td>background</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_smoothed_symm_trapez_ampl
+ *
+ * \sa sasfit_peak_trapezoidal.h, ff_peak_amplitudes
+ */
+sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_smoothed_symm_trapez_ampl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_smoothed_symm_trapez_ampl
+ *
+ * \sa sasfit_peak_trapezoidal.h, ff_peak_amplitudes
+ */
+sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_smoothed_symm_trapez_ampl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_smoothed_symm_trapez_ampl
+ *
+ * \sa sasfit_peak_trapezoidal.h, ff_peak_amplitudes
+ */
+sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_smoothed_symm_trapez_ampl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_smoothed_symm_trapez_ampl ################ */
+
 /* ################ start ff_general__trapez__ampl_ ################ */
 /**
  * \defgroup ff_general__trapez__ampl_ general. trapez. (Ampl)
  * \ingroup ff_peak_amplitudes
  *
- * \brief \<some brief description of general. trapez. (Ampl) function\>
+ * \brief some brief description of general. trapez. (Ampl) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -453,7 +563,7 @@ sasfit_peak_trapezoidal_DLLEXP scalar sasfit_ff_general__trapez__ampl__v(scalar 
  * \defgroup ff_symm__general__trapez__ampl_ symm. general. trapez. (Ampl)
  * \ingroup ff_peak_amplitudes
  *
- * \brief \<some brief description of symm. general. trapez. (Ampl) function\>
+ * \brief some brief description of symm. general. trapez. (Ampl) function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
