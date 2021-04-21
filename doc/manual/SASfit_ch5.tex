@@ -2645,9 +2645,37 @@ y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= \frac{A}{\max\left\{\phi u,u\rig
 \clearpage
 \section{smoothed symmetric trapezoidal peak} ~\\
 \label{sec:smoothedsymmetrictrapezoidal}
-This peak describes the convolution of two unit boxes of width $w_1$ and $w_2$, which results in a trapezoidal shape. 
+This peak describes the convolution of two unit boxes of width $\Pi((x-x_0)/w_1)$ and $\Pi((x-x_0)/w_2)$, which results in a trapezoidal shape. Additional another convolution with a Gaussian function of width $\sigma$ is performed for smoothing shape corners of the trapezoidal peak.
+\begin{align}
+y_\mathrm{sst}(x|w_1,\ldots) &= p_\mathrm{G}(x-x_0,\sigma) \ast \left[\Pi((x-x_0)/w_1) \ast \Pi((x-x_0)/w_2)\right] \\
+\Pi(x) &= \displaystyle \operatorname {rect} (x)
+        = \left\{{\begin{array}{rl}0,&{\text{if }}|x|>{\frac {1}{2}}\\
+                                   {\frac {1}{2}},&{\text{if }}|x|={\frac {1}{2}}\\
+                                   1,&{\text{if }}|x|<{\frac {1}{2}}
+                  \end{array}}
+           \right.  \\
+p_\mathrm{G}(x,\sigma) &= \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{x^2}{2\sigma^2}\right)
+\end{align}
+The operator $\ast$ denotes the standard convolution operator in mathematics. Both convolution integrals can be solved analytically. An amplitude as well as an area normalized variants are available.
 \subsection{smoothed symmetric trapezoidal peak (Area)} ~\\
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth]{../images/peaks/trapez/smoothedtrapezArea.png}
+\end{center}
+\caption{Plot of \texttt{smoothed symm.\ trapez (Area)} distribution.}
+\label{fig:smoothedsymmtrapeztArea}
+\end{figure}
+
 \subsection{smoothed symmetric trapezoidal peak (Ampl)} ~\\
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6824\textwidth]{../images/peaks/trapez/smoothedtrapezAmpl.png}
+\end{center}
+\caption{Plot of \texttt{smoothed symm.\ trapez (Ampl)} distribution.}
+\label{fig:smoothedsymmtrapeztAmpl}
+\end{figure}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Voigt} ~\\
