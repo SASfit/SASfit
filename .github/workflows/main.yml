@@ -53,6 +53,7 @@ jobs:
         run: |
           cd webpage
           pip install md-toc
+          mkdir -p _includes
           python3 -m md_toc github index.md | tail -n+2 | sed 's/\(\s*- \)/\1{:.toc}/' > _includes/toc.md
 
       - name: Commit updated index to webpage repo
