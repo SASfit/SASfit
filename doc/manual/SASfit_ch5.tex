@@ -2647,7 +2647,7 @@ y_\mathrm{sgt}(x|l,\sigma_p,\sigma_e,\ldots) &= \frac{A}{\max\left\{\phi u,u\rig
 \label{sec:smoothedsymmetrictrapezoidal}
 This peak describes the convolution of two unit boxes of width $\Pi((x-x_0)/w_1)$ and $\Pi((x-x_0)/w_2)$, which results in a trapezoidal shape. Additional another convolution with a Gaussian function of width $\sigma$ is performed for smoothing shape corners of the trapezoidal peak.
 \begin{align}
-y_\mathrm{sst}(x|w_1,\ldots) &= p_\mathrm{G}(x-x_0,\sigma) \ast \left[\Pi((x-x_0)/w_1) \ast \Pi((x-x_0)/w_2)\right] \\
+y_\mathrm{sst}(x|w_1,\ldots) &= p_\mathrm{G}(x-x_0,\sigma) \ast \left[\Pi((x-x_0)/w_1) \ast \Pi((x-x_0)/w_2)\right] +c_0\\
 \Pi(x) &= \displaystyle \operatorname {rect} (x)
         = \left\{{\begin{array}{rl}0,&{\text{if }}|x|>{\frac {1}{2}}\\
                                    {\frac {1}{2}},&{\text{if }}|x|={\frac {1}{2}}\\
@@ -2657,7 +2657,9 @@ y_\mathrm{sst}(x|w_1,\ldots) &= p_\mathrm{G}(x-x_0,\sigma) \ast \left[\Pi((x-x_0
 p_\mathrm{G}(x,\sigma) &= \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{x^2}{2\sigma^2}\right)
 \end{align}
 The operator $\ast$ denotes the standard convolution operator in mathematics. Both convolution integrals can be solved analytically. An amplitude as well as an area normalized variants are available.
+
 \subsection{smoothed symmetric trapezoidal peak (Area)} ~\\
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.6824\textwidth]{../images/peaks/trapez/smoothedtrapezArea.png}
@@ -2666,7 +2668,10 @@ The operator $\ast$ denotes the standard convolution operator in mathematics. Bo
 \label{fig:smoothedsymmtrapeztArea}
 \end{figure}
 
+This function contains next to the two width parameter $w_1$ and $w_2$ also a smoothing parameter $\sigma$, a location parameter $x_0$ as well as a scaling parameter $A$ defining the area below the curve $y(x)$ and an offset or background parameter $c_0$. The function is define over the whole domain of real numbers.
+
 \subsection{smoothed symmetric trapezoidal peak (Ampl)} ~\\
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.6824\textwidth]{../images/peaks/trapez/smoothedtrapezAmpl.png}
@@ -2675,6 +2680,7 @@ The operator $\ast$ denotes the standard convolution operator in mathematics. Bo
 \label{fig:smoothedsymmtrapeztAmpl}
 \end{figure}
 
+This function contains next to the two width parameter $w_1$ and $w_2$ also a smoothing parameter $\sigma$, a location parameter $x_0$ as well as a scaling parameter $A$ so that $y(x_0)=A+c_0$ and an offset or background parameter $c_0$. The function is define over the whole domain of real numbers.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
