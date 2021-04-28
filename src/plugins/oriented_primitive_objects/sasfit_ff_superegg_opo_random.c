@@ -67,7 +67,6 @@ scalar sasfit_ff_superegg_opo_random(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((B < 0.0), param, "b(%lg) < 0",B); // modify condition to your needs
 	SASFIT_CHECK_COND1((C < 0.0), param, "c(%lg) < 0",C); // modify condition to your needs
 	SASFIT_CHECK_COND1((PP <= 0.0), param, "p(%lg) <= 0",PP); // modify condition to your needs
-	SASFIT_CHECK_COND1((QQ <= 0.0), param, "q(%lg) <= 0",QQ); // modify condition to your needs
 
 	// insert your code here
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(s_egg_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");

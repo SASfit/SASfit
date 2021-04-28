@@ -122,8 +122,8 @@ sasfit_triax_ellip_shell_DLLEXP scalar sasfit_ff_carved_triax_ellip_shell_v(scal
  *       <td>\b t</td>
  *       <td>shell thickness</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b sigma</td>
+ *       <td>width of LogNorm size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_c</td>
  *       <td>core scattering length density</td>

@@ -3,13 +3,13 @@
 /*
  * Copyright (C) 2013 Hong Xu
  * All rights reserved.
- * 
+ *
  * This file is part of MultiDimInte.
  *
  * MultiDimInte is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * MultiDimInte is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
  * details.
@@ -31,6 +31,18 @@ typedef enum
     GMDI_INTE_FUNCTIONS_QNG = 1, /*!< [gsl_integration_qng](http://www.gnu.org/software/gsl/manual/html_node/QNG-non_002dadaptive-Gauss_002dKronrod-integration.html) */
     GMDI_INTE_FUNCTIONS_QAG, /*!< [gsl_integration_qag](http://www.gnu.org/software/gsl/manual/html_node/QAG-adaptive-integration.html#QAG-adaptive-integration) */
     GMDI_INTE_FUNCTIONS_QAGS, /*!< [gsl_integration_qags](https://www.gnu.org/software/gsl/doc/html/integration.html#qags-adaptive-integration-with-singularities */
+    GDMI_INTE_FUNCTIONS_TANHSINH,
+    GDMI_INTE_FUNCTIONS_LEBEDEV,
+    GDMI_INTE_FUNCTIONS_OOURA_DE,
+    GDMI_INTE_FUNCTIONS_OOURA_CC,
+    GDMI_INTE_FUNCTIONS_CQUAD,
+    GDMI_INTE_FUNCTIONS_GAUSSLEGENDRE,
+    GDMI_INTE_FUNCTIONS_CHEBYSHEV1,
+    GDMI_INTE_FUNCTIONS_CHEBYSHEV2,
+    GDMI_INTE_FUNCTIONS_GEGENBAUER,
+    GDMI_INTE_FUNCTIONS_EXPONENTIAL,
+    GDMI_INTE_FUNCTIONS_LAGUERRE,
+    GDMI_INTE_FUNCTIONS_GSL_JACOBI,
 } GMDI_INTE_FUNCTIONS;
 
 /*!

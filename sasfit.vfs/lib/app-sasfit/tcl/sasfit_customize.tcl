@@ -139,7 +139,8 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	ComboBox $w.intStrat_value -values {"OOURA_DE" "OOURA_CC" "GSL_CQUAD" "GSL_QAG" "GSL_QNG"\
 										"H_CUBATURE" "P_CUBATURE" "NR_QROMB" \
 										"GSL_GAUSSLEGENDRE" "GSL_CHEBYSHEV1" "GSL_CHEBYSHEV2"\
-										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_LAGUERRE" "GSL_JACOBI"} \
+										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_LAGUERRE" "GSL_JACOBI"\
+										"MC_MISER" "MC_VEGAS" "MC_PLAIN"} \
 				-width 15 \
 				-textvariable ::FitPrecision(IntStrategy) \
 				-modifycmd setIntStrategy2int

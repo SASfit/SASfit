@@ -287,7 +287,7 @@ scalar sasfit_orient_avg_ctm(
                                    &fval[0], &ferr[0]);
                     i++;
                 } while (i<10 && (ferr[0]/fval[0]>sasfit_eps_get_aniso()));
-                sasfit_out("PLAIN: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+ //               sasfit_out("PLAIN: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_plain_free (s_plain);
                 Iavg = fval[0]/(4*M_PI);
                 break;
@@ -311,7 +311,7 @@ scalar sasfit_orient_avg_ctm(
                                    &fval[0], &ferr[0]);
                     i++;
                 } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || ferr[0]/fval[0]>sasfit_eps_get_aniso()));
-                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+//                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_vegas_free (s_vegas);
                 Iavg = fval[0]/(4*M_PI);
                 break;
@@ -335,7 +335,7 @@ scalar sasfit_orient_avg_ctm(
                                    &fval[0], &ferr[0]);
                     i++;
                 } while (i<10 && ferr[0]/fval[0]>sasfit_eps_get_aniso());
-                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+//                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_miser_free (s_miser);
                 Iavg = fval[0]/(4*M_PI);
                 break;

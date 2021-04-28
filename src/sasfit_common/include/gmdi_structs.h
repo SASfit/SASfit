@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2013 Hong Xu
  * All rights reserved.
- * 
+ *
  * This file is part of MultiDimInte.
  *
  * MultiDimInte is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * MultiDimInte is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
  * details.
@@ -46,6 +46,11 @@ typedef struct struct_gmdi_one_inte_param
     struct
     {
         gsl_integration_workspace *         giw;    /* integration workspace for this dimension */
+        gsl_integration_cquad_workspace *   gcw;
+        gsl_integration_fixed_workspace *   gfw;
+        gsl_integration_glfixed_table *     glft;
+        double *                            aw;
+        int                                 lenaw;
     } intern;
 
 } gmdi_one_inte_param;
