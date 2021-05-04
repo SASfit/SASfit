@@ -42,6 +42,7 @@
 #include <gsl/gsl_multifit_nlin.h>
 #include "SASFIT_nr.h"
 #include "sasfit_oz.h"
+#include "sasfit_function.h"
 
 /* enum bool { FALSE = 0, TRUE = 1 }; */
 #define float double
@@ -193,6 +194,7 @@ typedef struct
 //        char ct[STRLEN];
 } EM_param_t;
 
+
 //float Par[(MAX_SIZE_DISTRIBUTIONS+1)][3*MAXPAR];
 /*
  * if particle_type[i][0] == 0  &&  particle_type[i][1] == 0
@@ -229,7 +231,27 @@ typedef struct
 /* float ParActive[(MAX_SIZE_DISTRIBUTIONS+1)][7];
 float Q[MAX_DATA_POINTS], IQ[MAX_DATA_POINTS], IQerror[MAX_DATA_POINTS];
 */
+typedef struct {
+    Tcl_Interp *interp;
+    int   * dF_dpar;
+    scalar * l;
+    scalar * s;
+    scalar Vav;
+    scalar Q;
+    scalar * a;
+    sasfit_function*  SD;
+    sasfit_function*  FF;
+    sasfit_function*  SQ;
+    int   distr;
+    bool  *error;
+} SQij_param;
 
+typedef struct {
+    void *param;
+    sasfit_func_ndim_t *KernelnD_fct;
+    sasfit_func_two_t *Kernel2D_fct;
+    sasfit_func_one_t *Kernel1D_fct;
+} multint_cub;
 
 void which_len(Tcl_Interp *, float, float *, int , bool *);
 float I_Cyl_core(Tcl_Interp *, float, float, float, float, bool *);

@@ -721,6 +721,34 @@ scalar IQSQij_core(Tcl_Interp *interp,
    return Fij;
 }
 
+double IQSQij_core_cub(const double* v, size_t n, void* p ){
+    SQij_param *param4SQij;
+    param4SQij = (SQij_param *)p;
+    if (n!=2) sasfit_err("wrong dimension of input parameters");
+    return IQSQij_core(param4SQij->interp,
+		     param4SQij->dF_dpar,
+		     param4SQij->l,
+		     param4SQij->s,
+		     v[0],
+		     v[1],
+		     param4SQij->Q,
+		     param4SQij->a,
+		     param4SQij->SD,
+		     param4SQij->FF,
+		     param4SQij->SQ,
+		     param4SQij->distr,
+		     param4SQij->error);
+}
+
+scalar Kernel_Nth_V_Moment(double *x, size_t dim, void *pam)
+{
+	sasfit_param * param;
+	multint_cub *cub;
+	cub = (multint_cub *) pam;
+	param = (sasfit_param *) cub->param;
+	return (*cub->KernelnD_fct)(x,dim,param);
+}
+
 
 scalar CalcNth_V_Moment(Tcl_Interp *interp,
 		       scalar a[],
@@ -836,7 +864,25 @@ scalar IQSQij_SA_core(Tcl_Interp *interp,
    return Fij;
 }
 
-
+double IQSQijSA_core_cub(const double* v, size_t n, void* p ){
+    SQij_param *param4SQij;
+    param4SQij = (SQij_param *)p;
+    if (n!=2) sasfit_err("wrong dimension of input parameters");
+    return IQSQij_SA_core(param4SQij->interp,
+		     param4SQij->dF_dpar,
+		     param4SQij->l,
+		     param4SQij->s,
+		     v[0],
+		     v[1],
+		     param4SQij->Vav,
+		     param4SQij->Q,
+		     param4SQij->a,
+		     param4SQij->SD,
+		     param4SQij->FF,
+		     param4SQij->SQ,
+		     param4SQij->distr,
+		     param4SQij->error);
+}
 scalar integral_IQ_int_core( Tcl_Interp *interp,
 			    int dF_dpar[],
 			    scalar l[],
@@ -854,7 +900,9 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                 bool  *error)
 /*############################################################################*/
 {
-	scalar res,res2,restot,Vav, Vx;
+    scalar cubmin[2], cubmax[2];
+    SQij_param param4SQij;
+	scalar res,res2,intErr,restot,Vav, Vx;
 	char FF_typestr[132];
 	char strtmp[256];
 
@@ -1052,7 +1100,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                res2 = SASFITqrombIQdR(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
-			       sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;
 			   } else {
 				   restot = res + res2*res2/a[0]*(sasfit_sq(Q,s,SQ,dF_dpar,error)-1.0);
@@ -1068,7 +1116,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 		                    SD,FF,SQ,
 							distr,Rstart,Rend,error);
 			   if (*error == TRUE) {
-				   sasfit_err("For this formfactor only the monodisperse approximation for calculating a structure factor is implemented (1)\n");
+				   sasfit_err("For this form factor only the monodisperse approximation for calculating a structure factor is implemented (1)\n");
 				   return res;
 			   }
 		       if (sasfit_eps_get_sq_or_iq() >= 0) return res;
@@ -1076,7 +1124,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 		                    SD,FF,SQ,
 							distr,Rstart,Rend,error);
 			   if (*error == TRUE) {
-				   sasfit_err("For this formfactor only the monodisperse approximation for calculating a structure factor is implemented (2)\n");
+				   sasfit_err("For this form factor only the monodisperse approximation for calculating a structure factor is implemented (2)\n");
 				   return res;
 			   }
 			   return res;
@@ -1087,10 +1135,27 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 			   strcpy(strtmp,"<F> ");
                strcat(strtmp,FF_typestr);
 	       FF->compute_f = TRUE;
-               res2 = SASFITqrombIQSQijdRj(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
+               cubmin[0]=Rstart;
+               cubmin[1]=Rstart;
+               cubmax[0]=Rend;
+               cubmax[1]=Rend;
+                param4SQij.interp=interp;
+                param4SQij.dF_dpar=dF_dpar;
+                param4SQij.l=l;
+                param4SQij.s=s;
+                param4SQij.Vav= Vav;
+                param4SQij.Q=Q;
+                param4SQij.a=a;
+                param4SQij.SD=SD;
+                param4SQij.FF=FF;
+                param4SQij.SQ=SQ;
+                param4SQij.distr=distr;
+                param4SQij.error=error;
+                sasfit_cubature(2,cubmin,cubmax,&IQSQij_core_cub,&param4SQij,sasfit_eps_get_nriq(),&res2,&intErr);
+//               res2 = SASFITqrombIQSQijdRj(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
-			       sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;
 			   } else {
 				   restot = res + res2/a[0];
@@ -1108,17 +1173,35 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 
 			   Vav = CalcNth_V_Moment(interp,a,l,SD,FF,distr,1,error);
 			   if (*error == TRUE) {
-				   sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+				   sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 				   return res;
 			   }
 
 			   strcpy(strtmp,"<F> ");
                strcat(strtmp,FF_typestr);
+
 	       FF->compute_f = TRUE;
-               res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
+               cubmin[0]=Rstart;
+               cubmin[1]=Rstart;
+               cubmax[0]=Rend;
+               cubmax[1]=Rend;
+                param4SQij.interp=interp;
+                param4SQij.dF_dpar=dF_dpar;
+                param4SQij.l=l;
+                param4SQij.s=s;
+                param4SQij.Vav= Vav;
+                param4SQij.Q=Q;
+                param4SQij.a=a;
+                param4SQij.SD=SD;
+                param4SQij.FF=FF;
+                param4SQij.SQ=SQ;
+                param4SQij.distr=distr;
+                param4SQij.error=error;
+                sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_nriq(),&res2,&intErr);
+              // res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
-			       sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;
 			   } else {
 				   restot = res + res2/a[0];
@@ -1137,17 +1220,30 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 			   Vav = CalcNth_V_Moment(interp,a,l,SD,FF,distr,1,error);
 //			   Vx  = Calculate_Vx_Moment(interp,a,l,SD,FF,distr,1,error);
 			   if (*error == TRUE) {
-				   sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+				   sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 				   return res;
 			   }
 
 			   strcpy(strtmp,"<F> ");
                strcat(strtmp,FF_typestr);
 	       FF->compute_f = TRUE;
-               res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
+                param4SQij.interp=interp;
+                param4SQij.dF_dpar=dF_dpar;
+                param4SQij.l=l;
+                param4SQij.s=s;
+                param4SQij.Vav= Vav;
+                param4SQij.Q=Q;
+                param4SQij.a=a;
+                param4SQij.SD=SD;
+                param4SQij.FF=FF;
+                param4SQij.SQ=SQ;
+                param4SQij.distr=distr;
+                param4SQij.error=error;
+               *error=sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_nriq(),&res2,&intErr);
+//               res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
-			       sasfit_err("For this formfactor only the monodisperse or eventually the local monodisperse aproach for calculating a structure factor is implemented\n");
+			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;
 			   } else {
 				   restot = res + res2/a[0];
@@ -1697,37 +1793,6 @@ scalar HTIQGlobal_OOURA(scalar Q, void *GIP) {
 //        IQ_t(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,error_type,error);
 //        IQ_t_global_calc(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,error);
         IQ_t_global(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,error);
-        if (*error) return 0;
-//        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
-//        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;
-        return (*Ifit)*Q*bessj0(Q*z)/(2*M_PI);
-}
-
-scalar HTIQ_OOURA_delete_afterwards(scalar Q, void *GIP) {
-        Tcl_Interp *interp;
-	    scalar z;
-        scalar *par;
-        scalar *Ifit;
-		scalar *Isub;
-        scalar *dydpar;
-        int   max_SD;
-        sasfit_analytpar *AP;
-        int   error_type;
-        bool  *error;
-        scalar Qres;
-
-        interp = (( sasfit_GzIntStruct *) GIP)->interp;
-        z = (( sasfit_GzIntStruct *) GIP)->z;
-        par = (( sasfit_GzIntStruct *) GIP)->par;
-        Ifit = (( sasfit_GzIntStruct *) GIP)->Ifit;
-        Isub = (( sasfit_GzIntStruct *) GIP)->Isub;
-        dydpar = (( sasfit_GzIntStruct *) GIP)->dydpar;
-        max_SD = (( sasfit_GzIntStruct *) GIP)->max_SD;
-        AP = (( sasfit_GzIntStruct *) GIP)->AP;
-        error_type = ((sasfit_GzIntStruct *) GIP)->error_type;
-        error = (( sasfit_GzIntStruct *) GIP)->error;
-        Qres = (( sasfit_GzIntStruct *) GIP)->Qres;
-        IQ_t(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,AP,error_type,error);
         if (*error) return 0;
 //        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
 //        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;

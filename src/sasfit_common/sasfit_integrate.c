@@ -32,6 +32,7 @@
 #include <gsl/gsl_monte_plain.h>
 #include <gsl/gsl_monte_miser.h>
 #include <gsl/gsl_monte_vegas.h>
+#include <sys/time.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
 #include "include/sasfit_common.h"
@@ -232,7 +233,20 @@ scalar Kernel_GL(scalar theta, scalar phi, void *pam) {
 	return (*cub->Kernel2D_fct)(theta,phi,param)*sin(theta);
 }
 
-scalar Kernel_MC2D(scalar *k, unsigned int dim, void *pam) {
+double Kernel_MC1D(double *k, size_t dim, void *pam) {
+	sasfit_param * param;
+	int_cub *cub;
+	cub = (int_cub *) pam;
+	param = (sasfit_param *) cub->param;
+	if (dim !=1) {
+            sasfit_err("wrong dimension for using Kernel_MC1D (%d), dim needs to be dim>=2\n",dim);
+            return 0;
+	}
+	return (*cub->Kernel1D_fct)(k[0],param);
+}
+
+
+double Kernel_MC2D(double *k, size_t dim, void *pam) {
 	sasfit_param * param;
 	int_cub *cub;
 	cub = (int_cub *) pam;
@@ -259,6 +273,9 @@ scalar sasfit_orient_avg_ctm(
     const gsl_rng_type *T;
     gsl_rng *r;
     unsigned int calls;
+    struct timeval tv; // Seed generation based on time
+    gettimeofday(&tv,0);
+    unsigned long mySeed = tv.tv_sec + tv.tv_usec;
     gsl_monte_function GMC;
     cubstruct.Kernel2D_fct=intKern_fct;
     cubstruct.param=param;
@@ -273,10 +290,11 @@ scalar sasfit_orient_avg_ctm(
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                calls = sasfit_eps_get_iter_4_mc();
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
+                gsl_rng_set(r, mySeed);
                 gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(2);
                 gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_plain,
                                &fval[0], &ferr[0]);
@@ -297,10 +315,11 @@ scalar sasfit_orient_avg_ctm(
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                calls = sasfit_eps_get_iter_4_mc();
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
+                gsl_rng_set(r, mySeed);
                 gsl_monte_vegas_state *s_vegas = gsl_monte_vegas_alloc(2);
                 gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
                                &fval[0], &ferr[0]);
@@ -321,10 +340,11 @@ scalar sasfit_orient_avg_ctm(
                 cubxmax[0] = M_PI;
                 cubxmin[1] = 0;
                 cubxmax[1] = 2*M_PI;
-                calls = sasfit_eps_get_iter_4_mc();
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
+                gsl_rng_set(r, mySeed);
                 gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(2);
                 gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_miser,
                                &fval[0], &ferr[0]);
@@ -465,6 +485,20 @@ scalar sasfit_integrate_ctm(scalar int_start,
 	gsl_function F;
     size_t neval;
     int lenaw=4000,ierr;
+    const gsl_rng_type *T;
+    gsl_rng *r;
+    unsigned int calls;
+    gsl_monte_function GMC;;
+    int done=0;
+    int i;
+    cubstruct.Kernel1D_fct=intKern_fct;
+    cubstruct.param=param;
+    GMC.f = &Kernel_MC1D;
+    GMC.params=&cubstruct;
+    GMC.dim=1;
+    struct timeval tv; // Seed generation based on time
+    gettimeofday(&tv,0);
+    unsigned long mySeed = tv.tv_sec + tv.tv_usec;
 
 	SASFIT_ASSERT_PTR(param);
 	SASFIT_ASSERT_PTR(intKern_fct);
@@ -578,6 +612,72 @@ scalar sasfit_integrate_ctm(scalar int_start,
                                                      int_start, int_end, epsabs, sasfit_eps_get_aniso());
                 err = gsl_integration_fixed(&F, &res, wfixed);
                 gsl_integration_fixed_free(wfixed);
+                break;
+            }
+            case GSL_MC_PLAIN: {
+                cubxmin[0] = int_start;
+                cubxmax[0] = int_end;
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                gsl_rng_env_setup ();
+                T = gsl_rng_default;
+                r = gsl_rng_alloc (T);
+                gsl_rng_set(r, mySeed);
+                gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(GMC.dim);
+                gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_plain,
+                                &res, &ferr[0]);
+                i=1;
+                do
+                {
+                    err=gsl_monte_plain_integrate  (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_plain,
+                                    &res, &ferr[0]);
+                    i++;
+                } while (i<10 && (ferr[0]/res>sasfit_eps_get_aniso()));
+ //               sasfit_out("PLAIN: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                gsl_monte_plain_free (s_plain);
+                break;
+            }
+            case GSL_MC_MISER: {
+                cubxmin[0] = int_start;
+                cubxmax[0] = int_end;
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                gsl_rng_env_setup ();
+                T = gsl_rng_default;
+                r = gsl_rng_alloc (T);
+                gsl_rng_set(r, mySeed);
+                gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(GMC.dim);
+                gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_miser,
+                                &res, &ferr[0]);
+                i=1;
+                do
+                {
+                    err=gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_miser,
+                                    &res, &ferr[0]);
+                    i++;
+                } while (i<10 && ferr[0]/res>sasfit_eps_get_aniso());
+//                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                gsl_monte_miser_free (s_miser);
+                break;
+            }
+            case GSL_MC_VEGAS: {
+                cubxmin[0] = int_start;
+                cubxmax[0] = int_end;
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                gsl_rng_env_setup ();
+                T = gsl_rng_default;
+                r = gsl_rng_alloc (T);
+                gsl_rng_set(r, mySeed);
+                gsl_monte_vegas_state *s_vegas = gsl_monte_vegas_alloc(GMC.dim);
+                gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_vegas,
+                                &res, &ferr[0]);
+                i=1;
+                do
+                {
+                    err=gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_vegas,
+                                    &res, &ferr[0]);
+                    i++;
+                } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) ||  ferr[0]/res>sasfit_eps_get_aniso()));
+//                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                gsl_monte_vegas_free (s_vegas);
                 break;
             }
             default: err = gsl_integration_qags(&F, int_start, int_end, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);

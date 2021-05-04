@@ -49,8 +49,8 @@ scalar sasfit_sq(scalar q, scalar * a, sasfit_function * sq, int * dparam, int *
    	if (SASFIT_EQUAL(a[0], 0.0)) a[0] = sasfit_eps_get_nriq();
 	// the structure factors are often not defined for a[0]=0 (division by zero)
 	// However, this limiting case is needed for scaling approx,
-	// local monodisperse approx., partical structure factors, etc..
-	// As long as this limiting case is not treated in the struture factor functions
+	// local monodisperse approx., partial structure factors, etc..
+	// As long as this limiting case is not treated in the structure factor functions
 	// itself this very poor work around above is required.
 
 	// copy the supplied parameters

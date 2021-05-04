@@ -54,19 +54,13 @@
 #include <gsl/gsl_monte_miser.h>
 #include <gsl/gsl_monte_vegas.h>
 #include <gsl/gsl_integration.h>
+#include <sys/time.h>
 #include "../../include/sasfit_common.h"
 #include "gmdi.h"
 #include "gmdi_structs.h"
-
+#include "sasfit.h"
 #define CALL_GSL_FUNCTION(gf, x)                    gf.function((x), gf.params)
 #define CALL_GMDI_MULTI_VAR_FUNCTION(gmvf, x)       gmvf.function((x), gmvf.n, gmvf.params)
-
-typedef struct {
-    sasfit_param *param;
-    sasfit_func_ndim_t *KernelnD_fct;
-    sasfit_func_two_t *Kernel2D_fct;
-    sasfit_func_one_t *Kernel1D_fct;
-} multint_cub;
 
 /*
  * Evaluate gmdi_function_or_constant according to their type.
@@ -245,7 +239,7 @@ static double big_g(double x, void * p)
 
     for (i = 0; i < params->n; ++ i)
     {
-        sasfit_out("alloc:dim:%d int_type:%d\n",i,params->oip[i].inte_func);
+//        sasfit_out("alloc:dim:%d int_type:%d\n",i,params->oip[i].inte_func);
         switch( params->oip[i].inte_func) {
             case GDMI_INTE_FUNCTIONS_OOURA_DE :
                 params->oip[i].intern.lenaw=4000;
@@ -361,7 +355,7 @@ void free_ws_4_gmdi (gmdi_inte_handle handle)
 
     for (i = 0; i < params->n; ++ i)
     {
-        sasfit_out("free:dim:%d int_type:%d\n",i,params->oip[i].inte_func);
+//        sasfit_out("free:dim:%d int_type:%d\n",i,params->oip[i].inte_func);
         if (params->oip[i].intern.gcw!=NULL) gsl_integration_cquad_workspace_free(params->oip[i].intern.gcw);
         if (params->oip[i].intern.aw!=NULL) free(params->oip[i].intern.aw);
         if (params->oip[i].intern.giw!=NULL) gsl_integration_workspace_free(params->oip[i].intern.giw);
@@ -421,21 +415,16 @@ void gmdi_get_version(int * major, int * minor, int * subminor)
 */
 int Kernel_cub_nD(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
-	sasfit_param * param;
 	multint_cub *cub;
 	cub = (multint_cub *) pam;
-	param = (sasfit_param *) cub->param;
-
-	fval[0]=(*cub->KernelnD_fct)(x,ndim,param);
+	fval[0]=(*cub->KernelnD_fct)(x,ndim,cub->param);
 	return 0;
 }
 
-scalar Kernel_MCnD(double *x, size_t dim, void *pam) {
-	sasfit_param * param;
+scalar Kernel_MCnD(scalar *x, size_t dim, void *pam) {
 	multint_cub *cub;
 	cub = (multint_cub *) pam;
-	param = (sasfit_param *) cub->param;
-	return (*cub->KernelnD_fct)(x,dim,param);
+	return (*cub->KernelnD_fct)(x,dim,cub->param);
 }
 
 int sasfit_cubature(size_t ndim,
@@ -471,6 +460,9 @@ int sasfit_cubature(size_t ndim,
     GMC.f = &Kernel_MCnD;
     GMC.params=&cubstruct;
     GMC.dim=ndim;
+    struct timeval tv; // Seed generation based on time
+    gettimeofday(&tv,0);
+    unsigned long mySeed = tv.tv_sec + tv.tv_usec;
 
     done=0;
 	switch (sasfit_get_int_strategy()) {
@@ -491,10 +483,11 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case GSL_MC_PLAIN :
-                calls = sasfit_eps_get_iter_4_mc();
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
+                gsl_rng_set(r, mySeed);
                 gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(ndim);
                 gsl_monte_plain_integrate (&GMC, int_start, int_end, ndim, calls/10, r, s_plain,
                                 result, error);
@@ -510,11 +503,11 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case GSL_MC_VEGAS :
-                calls = sasfit_eps_get_iter_4_mc();
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
-
+                gsl_rng_set(r, mySeed);
                 gsl_monte_vegas_state *s_vegas = gsl_monte_vegas_alloc(ndim);
                 gsl_monte_vegas_integrate (&GMC, int_start, int_end, ndim, calls/10, r, s_vegas,
                                 result, error);
@@ -530,11 +523,11 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case GSL_MC_MISER :
-                calls = sasfit_eps_get_iter_4_mc();
+                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
-
+                gsl_rng_set(r, mySeed);
                 gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(ndim);
                 gsl_monte_miser_integrate (&GMC, int_start, int_end, ndim, calls/10, r, s_miser,
                                 result, error);
