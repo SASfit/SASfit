@@ -20,8 +20,8 @@ clone_script:
 - ps: git submodule update --init --recursive
 
 image:
-  - macos
-  - Visual Studio 2019
+#  - macos
+#  - Visual Studio 2019
   - Ubuntu2004
 
 environment:
@@ -90,6 +90,8 @@ for:
   environment:
     CACHEID: linux64
   install:
+    - sudo ls -la /etc/apt/sources.list.d/
+    - for fn in /etc/apt/sources.list.d/*; do echo $fn; cat $fn; done
     - sudo apt-get update
     - sudo apt-get -y install python3-pip #libx11-dev
   artifacts:
