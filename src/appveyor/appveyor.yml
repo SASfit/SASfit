@@ -20,8 +20,8 @@ clone_script:
 - ps: git submodule update --init --recursive
 
 image:
-#  - macos
-#  - Visual Studio 2019
+  - macos
+  - Visual Studio 2019
   - Ubuntu2004
 
 environment:
@@ -148,7 +148,7 @@ after_deploy:
   - python3 -m pip install --user requests python-dateutil
   # cleanup AppVeyor history
   - python3 src/appveyor/citools/appveyor_keep_builds.py 10 --verbose
-  # replacing BinTray with cloudsmith.io
+  # upload binary packages to cloudsmith.io
   - python3 src/appveyor/8_cloudsmith_upload.py
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:
