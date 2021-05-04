@@ -92,7 +92,7 @@ for:
   install:
     - sudo rm -f /etc/apt/sources.list.d/*.*
     - sudo ls -la /etc/apt/sources.list.d/
-    - for fn in /etc/apt/sources.list.d/*; do echo $fn; cat $fn; done
+#    - for fn in /etc/apt/sources.list.d/*; do echo $fn; cat $fn; done
     - sudo apt-get update
     - sudo apt-get -y install python3-pip #libx11-dev
   artifacts:
