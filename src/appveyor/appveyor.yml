@@ -147,7 +147,7 @@ on_success:
   # install packages needed by the after_deploy script
   - python3 -m pip install --user requests python-dateutil
   # cleanup AppVeyor history
-  - python3 src/appveyor/citools/appveyor_keep_builds.py 10 --verbose
+  - python3 src/appveyor/citools/appveyor_keep_builds.py 10
   # upload binary packages to cloudsmith.io
   - python3 src/appveyor/8_cloudsmith_upload.py
 
