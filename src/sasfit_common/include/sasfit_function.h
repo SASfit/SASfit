@@ -140,6 +140,7 @@ typedef struct
 	bool               errStatus;      //!< True, if an error occured. False otherwise.
 	double             *xarr;            //!< hack for OZ solver
 	double             *yarr;            //!< hack for OZ solver
+	void *             moreparam;
 } sasfit_param;
 
 /**

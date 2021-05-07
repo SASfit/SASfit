@@ -170,13 +170,14 @@ dx' \nonumber
 %\end{subequations}
 where $V_{i,x}$ is given by
 \BE
-V_{i,av} = \frac{\int_0^\infty N_i(x;\B{l}_i) V_i(\B{a}_i,x) dx}{\int_0^\infty N_i(x;\B{l}_i) dx}
+V_{i,x} = \frac{\int_0^\infty \int_0^\infty N_i(x;\B{l}_i)N_i(x';\B{l}_i) V_i(\B{a}_i,x,x') dx dx'}{\left(\int_0^\infty N_i(x;\B{l}_i) dx\right)^2}
 \EE
 and $V_i(\B{a}_i,x,x')$ by
 \BE
 \overline{V}_i(\B{a}_i,x,x') = \frac{4}{3}\pi \left(\frac{1}{2}\left(\oldsqrt[3]{\frac{3}{4\pi}V_i(\B{a}_i,x)}+\oldsqrt[3]{\frac{3}{4\pi}V_i(\B{a}_i,x')}\right)\right)^3
 \EE
-and the monodisperse structure factor is evaluated for the radius
+Furthermore the structure factor is calculated for a slightly different volume ftaction namely $\eta_{i,x}=\eta_i\frac{V_{i,x}}{V_{i,av}$
+The monodisperse structure factor is evaluated for the radius
 $(R_i(\B{a}_i,x)+R_i(\B{a}_i,x'))/2$. $n_i$ and $R_i(\B{a}_i,x)$ have the same
 definition as those in eq.\ \ref{eq:ni} and \ref{eq:Ri}.
 

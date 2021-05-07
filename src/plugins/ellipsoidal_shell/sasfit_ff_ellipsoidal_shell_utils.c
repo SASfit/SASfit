@@ -60,6 +60,37 @@ int ellip_shell_cubature(unsigned ndim, const double *x, void *pam,
     return 0;
 }
 
+scalar ellip_shell_mint(const double *x, size_t ndim, void *pam) {
+	sasfit_param subParam;
+	sasfit_init_param( &subParam );
+	sasfit_param *param;
+	cubature_param *cparam;
+	cparam = (cubature_param *) pam;
+	param = cparam->param;
+
+	if ((ndim < 1)) {
+		sasfit_err("false dimensions ndim:%d\n",ndim);
+		return 1;
+	}
+	if ((ndim < 2) || (SIGMA==0)) {
+		LNDISTR = 1;
+		NU = 1;
+	} else {
+		subParam.p[0] = 1.0;
+		subParam.p[1] = SIGMA;
+		subParam.p[2] = 1.0;
+		subParam.p[3] = 1.0;
+		NU=x[1];
+		LNDISTR = sasfit_sd_LogNorm(NU, &subParam);
+		SASFIT_CHECK_SUB_ERR(param, subParam);
+		if ( subParam.errStatus != FALSE ) {
+			sasfit_err("LogNormError: SIGMA:%lf\n",SIGMA);
+			return 1;
+		}
+	}
+	MU = x[0];
+    return (cparam->func)(param);
+}
 
 scalar Kernel_P_OOURA2(scalar x, void * pam) {
 	sasfit_param subParam;

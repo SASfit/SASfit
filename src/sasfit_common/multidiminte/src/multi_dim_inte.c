@@ -432,7 +432,7 @@ int sasfit_cubature(size_t ndim,
 			scalar *int_end,
 			sasfit_func_ndim_t *intKern_fct,
 			void * param,
-			scalar epsabs,
+			scalar epsrel,
 			scalar *result,
 			scalar *error) {
 
@@ -444,7 +444,7 @@ int sasfit_cubature(size_t ndim,
     int done;
     size_t limit = 4000;
     ((gmdi_multi_dim_inte_param *) handle)->neval=limit;
-    scalar epsrel = 0;
+    scalar epsabs = 0;
 	int i,method, key;
 	scalar Iavg;
 
@@ -465,10 +465,11 @@ int sasfit_cubature(size_t ndim,
     unsigned long mySeed = tv.tv_sec + tv.tv_usec;
 
     done=0;
+    *error=0;
 	switch (sasfit_get_int_strategy()) {
         case H_CUBATURE :
                 hcubature(1, &Kernel_cub_nD,&cubstruct,ndim, int_start, int_end,
-                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        ndim*limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
                 *result = fval[0];
                 *error = ferr[0];
@@ -476,34 +477,26 @@ int sasfit_cubature(size_t ndim,
                 break;
         case P_CUBATURE :
                 pcubature(1, &Kernel_cub_nD,&cubstruct,ndim, int_start, int_end,
-                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        ndim*limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
                 *result = fval[0];
                 *error = ferr[0];
                 done=1;
                 break;
         case GSL_MC_PLAIN :
-                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
                 gsl_rng_set(r, mySeed);
                 gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(ndim);
-                gsl_monte_plain_integrate (&GMC, int_start, int_end, ndim, calls/10, r, s_plain,
+                gsl_monte_plain_integrate (&GMC, int_start, int_end, ndim, calls, r, s_plain,
                                 result, error);
-                i=1;
-                do
-                {
-                    gsl_monte_plain_integrate  (&GMC, int_start, int_end, ndim, calls/10, r, s_plain,
-                                    result, error);
-                    i++;
-                } while (i<10 && ((*error)/(*result)>sasfit_eps_get_aniso()));
- //               sasfit_out("PLAIN: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_plain_free (s_plain);
                 done=1;
                 break;
         case GSL_MC_VEGAS :
-                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
@@ -517,28 +510,20 @@ int sasfit_cubature(size_t ndim,
                     gsl_monte_vegas_integrate (&GMC, int_start, int_end, ndim, calls/10, r, s_vegas,
                                     result, error);
                     i++;
-                } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || (*error)/(*result)>sasfit_eps_get_aniso()));
+                } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || (*error)/(*result)>epsrel));
 //                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_vegas_free (s_vegas);
                 done=1;
                 break;
         case GSL_MC_MISER :
-                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
                 gsl_rng_set(r, mySeed);
                 gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(ndim);
-                gsl_monte_miser_integrate (&GMC, int_start, int_end, ndim, calls/10, r, s_miser,
+                gsl_monte_miser_integrate (&GMC, int_start, int_end, ndim, calls, r, s_miser,
                                 result, error);
-                i=1;
-                do
-                {
-                    gsl_monte_miser_integrate (&GMC, int_start, int_end, ndim, calls/10, r, s_miser,
-                                    result, error);
-                    i++;
-                } while (i<10 && (*error)/(*result)>sasfit_eps_get_aniso());
-//                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_miser_free (s_miser);
                 done=1;
                 break;
@@ -586,10 +571,12 @@ int sasfit_cubature(size_t ndim,
                 break;
 	}
 	if (done) {
-        if (ferr[0] >= epsabs) {
-            ret = 1;
-        }
         gmdi_free_inte_handle(handle);
+        if ((*error)/(*result) >= epsrel) {
+            ret = 1;
+            sasfit_err("integration (sasfit_cubature) failed with the required precision, err/res=%le>eps=%le\n",(*error)/(*result),epsrel);
+            return SASFIT_RETURNVAL_ON_ERROR;
+        }
         return ret;
 	}
 
@@ -617,12 +604,14 @@ int sasfit_cubature(size_t ndim,
     *result = gmdi_handle_get_result(handle);
     *error = gmdi_handle_get_abserr(handle);
 
-    if (*error >= epsabs)
+    gmdi_free_inte_handle(handle);
+
+    if ((*error)/(*result) >= epsrel)
     {
         ret = 1;
+        sasfit_err("integration (sasfit_cubature) failed with the required precision, err/res=%le>eps=%le\n",(*error)/(*result),epsrel);
+        return SASFIT_RETURNVAL_ON_ERROR;
     }
-
-    gmdi_free_inte_handle(handle);
 
     return ret;
 }

@@ -1151,7 +1151,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                 param4SQij.SQ=SQ;
                 param4SQij.distr=distr;
                 param4SQij.error=error;
-                sasfit_cubature(2,cubmin,cubmax,&IQSQij_core_cub,&param4SQij,sasfit_eps_get_nriq(),&res2,&intErr);
+                sasfit_cubature(2,cubmin,cubmax,&IQSQij_core_cub,&param4SQij,sasfit_eps_get_aniso(),&res2,&intErr);
 //               res2 = SASFITqrombIQSQijdRj(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
@@ -1197,7 +1197,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                 param4SQij.SQ=SQ;
                 param4SQij.distr=distr;
                 param4SQij.error=error;
-                sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_nriq(),&res2,&intErr);
+                sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_aniso(),&res2,&intErr);
               // res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
@@ -1239,7 +1239,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                 param4SQij.SQ=SQ;
                 param4SQij.distr=distr;
                 param4SQij.error=error;
-               *error=sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_nriq(),&res2,&intErr);
+               *error=sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_aniso(),&res2,&intErr);
 //               res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {

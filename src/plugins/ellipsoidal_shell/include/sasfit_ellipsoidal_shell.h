@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_ellipsoidal_shell_0 ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_0 ellipsoidal shell
  * \ingroup ff_spheroid_obj
  *
@@ -97,7 +97,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0_v(scalar q,
 /* ################ stop ff_ellipsoidal_shell_0 ################ */
 
 /* ################ start ff_ellipsoidal_shell_0t ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_0t ellipsoidal shell (t)
  * \ingroup ff_spheroid_obj
  *
@@ -157,7 +157,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0t_v(scalar q
 /* ################ stop ff_ellipsoidal_shell_0t ################ */
 
 /* ################ start ff_ellipsoidal_shell_rp ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_rp ellipsoidal shell (Rp)
  * \ingroup ff_spheroid_obj
  *
@@ -217,7 +217,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_v(scalar q
 /* ################ stop ff_ellipsoidal_shell_rp ################ */
 
 /* ################ start ff_ellipsoidal_shell_rp_t ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_rp_t ellipsoidal shell (Rp t)
  * \ingroup ff_spheroid_obj
  *
@@ -277,7 +277,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_t_v(scalar
 /* ################ stop ff_ellipsoidal_shell_rp_t ################ */
 
 /* ################ start ff_ellipsoidal_shell_re ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_re ellipsoidal shell (Re)
  * \ingroup ff_spheroid_obj
  *
@@ -337,7 +337,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_v(scalar q
 /* ################ stop ff_ellipsoidal_shell_re ################ */
 
 /* ################ start ff_ellipsoidal_shell_re_t ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_re_t ellipsoidal shell (Re t)
  * \ingroup ff_spheroid_obj
  *
@@ -397,7 +397,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_t_v(scalar
 /* ################ stop ff_ellipsoidal_shell_re_t ################ */
 
 /* ################ start ff_ellipsoidal_shell_2 ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_2 ellipsoidal shell (Re Rp)
  * \ingroup ff_spheroid_obj
  *
@@ -457,7 +457,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_2_v(scalar q,
 /* ################ stop ff_ellipsoidal_shell_2 ################ */
 
 /* ################ start ff_ellipsoidal_shell_2t ################ */
-/** 
+/**
  * \defgroup ff_ellipsoidal_shell_2t ellipsoidal shell (Re Rp t)
  * \ingroup ff_spheroid_obj
  *
@@ -518,7 +518,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_2t_v(scalar q
 /* ################ stop ff_ellipsoidal_shell_2t ################ */
 
 /* ################ start ff_spheroid_R ################ */
-/** 
+/**
  * \defgroup ff_spheroid_R spheroid R
  * \ingroup ff_spheroid_obj
  *
@@ -578,7 +578,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_R_v(scalar q, sasfit_p
 /* ################ stop ff_spheroid_R ################ */
 
 /* ################ start ff_spheroid_V ################ */
-/** 
+/**
  * \defgroup ff_spheroid_V spheroid V
  * \ingroup ff_spheroid_obj
  *
@@ -638,7 +638,7 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_spheroid_V_v(scalar q, sasfit_p
 /* ################ stop ff_spheroid_V ################ */
 
 /* ################ start ff_spheroid_nu ################ */
-/** 
+/**
  * \defgroup ff_spheroid_nu spheroid nu
  * \ingroup ff_spheroid_obj
  *
