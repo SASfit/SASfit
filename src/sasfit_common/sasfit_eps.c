@@ -121,7 +121,14 @@ sasfit_common_DLLEXP
 int sasfit_get_iq_or_gz(void) {
 	return sasfit_eps.iq_or_gz;
 }
-
+sasfit_common_DLLEXP
+scalar sasfit_eps_get_alpha(void) {
+	return sasfit_eps.alpha;
+}
+sasfit_common_DLLEXP
+scalar sasfit_eps_get_beta(void) {
+	return sasfit_eps.beta;
+}
 sasfit_common_DLLEXP
 void sasfit_set_int_strategy(int value) {
 	sasfit_eps.int_strategy = value;
@@ -221,6 +228,14 @@ void sasfit_eps_set_h(scalar value) {
 	sasfit_eps.h = value;
 }
 sasfit_common_DLLEXP
+void sasfit_eps_set_alpha(scalar value) {
+	sasfit_eps.alpha = value;
+}
+sasfit_common_DLLEXP
+void sasfit_eps_set_beta(scalar value) {
+	sasfit_eps.beta = value;
+}
+sasfit_common_DLLEXP
 void sasfit_eps_set_comp(scalar value) {
 	sasfit_eps.comparison = value;
 }
@@ -249,6 +264,8 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
 	sasfit_out("GSL_EXPONENTIAL points:   %d\n", fitp->exponential);
 	sasfit_out("GSL_LAGUERRE points:      %d\n", fitp->laguerre);
 	sasfit_out("GSL_JACOBI points:        %d\n", fitp->jacobi);
+	sasfit_out("alpha:               %f\n", fitp->alpha);
+	sasfit_out("beta :               %f\n", fitp->beta);
 	sasfit_out("Lebedev order [1,64]:     %d\n", fitp->lebedev);
 	sasfit_out("FIBONACCI points:         %d\n", fitp->fibonacci);
 	sasfit_out("iter_4_MC:       %d\n", fitp->iter_4_mc);

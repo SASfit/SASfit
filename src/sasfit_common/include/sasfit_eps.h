@@ -70,6 +70,8 @@ typedef struct
 	int     fibonacci;
 	int     iter_4_mc;
 	int     fitorsim;
+	scalar  alpha;
+	scalar  beta;
 	scalar  h;          //!< Percentage of variation for numerical differentiation.
 	scalar  comparison; //!< Tolerance value for tests if two numbers are equal.
 } sasfit_eps_t;
@@ -104,6 +106,8 @@ sasfit_common_DLLEXP int    sasfit_eps_get_lebedev(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_fibonacci(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_iter_4_mc(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_fitorsim(void);
+sasfit_common_DLLEXP scalar sasfit_eps_get_alpha(void);
+sasfit_common_DLLEXP scalar sasfit_eps_get_beta(void);
 
 sasfit_common_DLLEXP scalar sasfit_eps_get_comp(void);
 /**
@@ -141,6 +145,8 @@ sasfit_common_DLLEXP void sasfit_eps_set_iter_4_mc(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_fitorsim(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_h(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_comp(scalar value);
+sasfit_common_DLLEXP void sasfit_eps_set_alpha(scalar value);
+sasfit_common_DLLEXP void sasfit_eps_set_beta(scalar value);
 
 /**
  * \ingroup sasfit_eps

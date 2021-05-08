@@ -299,42 +299,42 @@ static double big_g(double x, void * p)
                 params->oip[i].intern.gcw=NULL;
                 params->oip[i].intern.giw=NULL;
                 params->oip[i].intern.glft=NULL;
-                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev,sasfit_eps_get_chebyshev1(),inte_limit_low,inte_limit_high,1,1);
+                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev,sasfit_eps_get_chebyshev1(),inte_limit_low,inte_limit_high,sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 break;
             case GDMI_INTE_FUNCTIONS_CHEBYSHEV2 :
                 params->oip[i].intern.aw=NULL;
                 params->oip[i].intern.gcw=NULL;
                 params->oip[i].intern.giw=NULL;
                 params->oip[i].intern.glft=NULL;
-                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2,sasfit_eps_get_chebyshev2(),inte_limit_low,inte_limit_high,1,1);
+                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2,sasfit_eps_get_chebyshev2(),inte_limit_low,inte_limit_high,sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 break;
             case GDMI_INTE_FUNCTIONS_GEGENBAUER :
                 params->oip[i].intern.aw=NULL;
                 params->oip[i].intern.gcw=NULL;
                 params->oip[i].intern.giw=NULL;
                 params->oip[i].intern.glft=NULL;
-                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer,sasfit_eps_get_gegenbauer(),inte_limit_low,inte_limit_high,1,1);
+                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer,sasfit_eps_get_gegenbauer(),inte_limit_low,inte_limit_high,sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 break;
             case GDMI_INTE_FUNCTIONS_EXPONENTIAL :
                 params->oip[i].intern.aw=NULL;
                 params->oip[i].intern.gcw=NULL;
                 params->oip[i].intern.giw=NULL;
                 params->oip[i].intern.glft=NULL;
-                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential,sasfit_eps_get_exponential(),inte_limit_low,inte_limit_high,1,1);
+                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential,sasfit_eps_get_exponential(),inte_limit_low,inte_limit_high,sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 break;
             case GDMI_INTE_FUNCTIONS_LAGUERRE :
                 params->oip[i].intern.aw=NULL;
                 params->oip[i].intern.gcw=NULL;
                 params->oip[i].intern.giw=NULL;
                 params->oip[i].intern.glft=NULL;
-                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre,sasfit_eps_get_laguerre(),inte_limit_low,inte_limit_high,1,1);
+                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre,sasfit_eps_get_laguerre(),inte_limit_low,inte_limit_high,sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 break;
             case GDMI_INTE_FUNCTIONS_GSL_JACOBI :
                 params->oip[i].intern.aw=NULL;
                 params->oip[i].intern.gcw=NULL;
                 params->oip[i].intern.giw=NULL;
                 params->oip[i].intern.glft=NULL;
-                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi,sasfit_eps_get_jacobi(),inte_limit_low,inte_limit_high,1,1);
+                params->oip[i].intern.gfw = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi,sasfit_eps_get_jacobi(),inte_limit_low,inte_limit_high,sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 break;
             default :
                 params->oip[i].intern.aw=NULL;

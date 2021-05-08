@@ -139,7 +139,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	ComboBox $w.intStrat_value -values {"OOURA_DE" "OOURA_CC" "GSL_CQUAD" "GSL_QAG" "GSL_QNG"\
 										"H_CUBATURE" "P_CUBATURE" "NR_QROMB" \
 										"GSL_GAUSSLEGENDRE" "GSL_CHEBYSHEV1" "GSL_CHEBYSHEV2"\
-										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_LAGUERRE" "GSL_JACOBI"\
+										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_JACOBI"\
 										"MC_MISER" "MC_VEGAS" "MC_PLAIN"} \
 				-width 15 \
 				-textvariable ::FitPrecision(IntStrategy) \
@@ -175,14 +175,22 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	entry $w.gsl_EXP_value -textvariable FitPrecision(GSL_EXPONENTIAL) -width $entrywidth
 	grid $w.gsl_EXP_label -row 8 -column 2 -sticky e
 	grid $w.gsl_EXP_value -row 8 -column 3 -sticky w
-	label $w.gsl_LAG_label -text "GSL_LAGUERRE points:"
-	entry $w.gsl_LAG_value -textvariable FitPrecision(GSL_LAGUERRE) -width $entrywidth
-	grid $w.gsl_LAG_label -row 9 -column 2 -sticky e
-	grid $w.gsl_LAG_value -row 9 -column 3 -sticky w
+#	label $w.gsl_LAG_label -text "GSL_LAGUERRE points:"
+#	entry $w.gsl_LAG_value -textvariable FitPrecision(GSL_LAGUERRE) -width $entrywidth
+#	grid $w.gsl_LAG_label -row 9 -column 2 -sticky e
+#	grid $w.gsl_LAG_value -row 9 -column 3 -sticky w
 	label $w.gsl_JAC_label -text "GSL_JACOBI points:"
 	entry $w.gsl_JAC_value -textvariable FitPrecision(GSL_JACOBI) -width $entrywidth
-	grid $w.gsl_JAC_label -row 10 -column 0 -sticky e
-	grid $w.gsl_JAC_value -row 10 -column 1 -sticky w
+	grid $w.gsl_JAC_label -row 9 -column 2 -sticky e
+	grid $w.gsl_JAC_value -row 9 -column 3 -sticky w
+	label $w.gsl_ALPHA_label -text "GSL_ALPHA parameter:"
+	entry $w.gsl_ALPHA_value -textvariable FitPrecision(GSL_ALPHA) -width $entrywidth
+	grid $w.gsl_ALPHA_label -row 11 -column 0 -sticky e
+	grid $w.gsl_ALPHA_value -row 11 -column 1 -sticky w
+	label $w.gsl_BETA_label -text "GSL_BETA parameter:"
+	entry $w.gsl_BETA_value -textvariable FitPrecision(GSL_BETA) -width $entrywidth
+	grid $w.gsl_BETA_label -row 11 -column 2 -sticky e
+	grid $w.gsl_BETA_value -row 11 -column 3 -sticky w
 	label $w.lebedev_label -text "Lebedev order \[1,65\]:"
 	entry $w.lebedev_value -textvariable FitPrecision(Lebedev) -width $entrywidth
 	grid $w.lebedev_label -row 13 -column 0 -sticky e

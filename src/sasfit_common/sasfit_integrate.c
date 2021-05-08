@@ -484,7 +484,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
     gsl_integration_fixed_workspace * wfixed;
 	gsl_function F;
     size_t neval;
-    int lenaw=4000,ierr;
+    int lenaw=10000,ierr;
     const gsl_rng_type *T;
     gsl_rng *r;
     unsigned int calls;
@@ -578,38 +578,38 @@ scalar sasfit_integrate_ctm(scalar int_start,
                 break;
             }
             case GSL_CHEBYSHEV1: {
-                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_chebyshev1(), int_start, int_end, 0, 1);
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_chebyshev1(), int_start, int_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 err = gsl_integration_fixed(&F, &res, wfixed);
                 gsl_integration_fixed_free(wfixed);
                 break;
             }
             case GSL_CHEBYSHEV2: {
-                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_chebyshev2(), int_start, int_end, 0, 1);
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_chebyshev2(), int_start, int_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 err = gsl_integration_fixed(&F, &res, wfixed);
                 gsl_integration_fixed_free(wfixed);
                 break;
             }
             case GSL_GEGENBAUER: {
-                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_gegenbauer(), int_start, int_end, sasfit_eps_get_aniso(), 1);
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_gegenbauer(), int_start, int_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 err = gsl_integration_fixed(&F, &res, wfixed);
                 gsl_integration_fixed_free(wfixed);
                 break;
             }
             case GSL_EXPONENTIAL: {
-                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_exponential(), int_start, int_end, sasfit_eps_get_aniso(), 1);
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_exponential(), int_start, int_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 err = gsl_integration_fixed(&F, &res, wfixed);
                 gsl_integration_fixed_free(wfixed);
                 break;
             }
             case GSL_LAGUERRE: {
-                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_laguerre(), int_start, int_end, sasfit_eps_get_aniso(), 1);
+                wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_laguerre(), int_start, int_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 err = gsl_integration_fixed(&F, &res, wfixed);
                 gsl_integration_fixed_free(wfixed);
                 break;
             }
             case GSL_JACOBI: {
                 wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi, sasfit_eps_get_jacobi(),
-                                                     int_start, int_end, epsabs, sasfit_eps_get_aniso());
+                                                     int_start, int_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
                 err = gsl_integration_fixed(&F, &res, wfixed);
                 gsl_integration_fixed_free(wfixed);
                 break;

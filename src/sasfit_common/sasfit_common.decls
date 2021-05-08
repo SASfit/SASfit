@@ -427,3 +427,15 @@ declare 128 generic {
 declare 129 generic {
 	int sasfit_eps_get_fibonacci(void)
 }
+declare 130 generic {
+	scalar sasfit_eps_get_alpha(void)
+}
+declare 131 generic {
+	scalar sasfit_eps_get_beta(void)
+}
+declare 132 generic {
+	void sasfit_eps_set_alpha(scalar value)
+}
+declare 133 generic {
+	void sasfit_eps_set_beta(scalar value)
+}

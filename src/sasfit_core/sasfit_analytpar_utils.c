@@ -598,7 +598,17 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_JACOBI", sasfit_eps_set_jacobi);
 	SF_TCL_GET_F(int,    "::FitPrecision", "Lebedev", sasfit_eps_set_lebedev);
 	SF_TCL_GET_F(int,    "::FitPrecision", "FIBONACCI", sasfit_eps_set_fibonacci);
+	SF_TCL_GET_F(double, "::FitPrecision", "GSL_ALPHA", sasfit_eps_set_alpha);
+	SF_TCL_GET_F(double, "::FitPrecision", "GSL_BETA", sasfit_eps_set_beta);
 	SF_TCL_GET_F(bool, argv[1], "fit", sasfit_eps_set_fitorsim);
+	if (sasfit_eps_get_alpha() <= -1) {
+        sasfit_err("alpha=&lg<=-1, will be set to -0.9\n",sasfit_eps_get_alpha());
+        sasfit_eps_set_alpha(-0.9);
+	}
+	if (sasfit_eps_get_beta() <= -1) {
+        sasfit_err("beta=&lg<=-1, will be set to -0.9\n",sasfit_eps_get_beta());
+        sasfit_eps_set_beta(-0.9);
+	}
 	return TCL_OK;
 }
 

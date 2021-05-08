@@ -206,7 +206,10 @@ typedef struct
 	int (*sasfit_eps_get_jacobi) (void); /*127 */
 	int (*sasfit_eps_get_lebedev) (void); /*128 */
 	int (*sasfit_eps_get_fibonacci) (void); /*129 */
-	void *reserved130; /*130 */
+	scalar (*sasfit_eps_get_alpha) (void); /*130 */
+	scalar (*sasfit_eps_get_beta) (void); /*131 */
+	void (*sasfit_eps_set_alpha) (scalar value); /* 132 */
+	void (*sasfit_eps_set_beta) (scalar value); /* 133 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -701,6 +704,22 @@ typedef struct
 #ifndef sasfit_eps_get_fibonacci
 #define sasfit_eps_get_fibonacci \
 	(SASFIT_COMMON_STUBS()->sasfit_eps_get_fibonacci) /* 129 */
+#endif
+#ifndef sasfit_eps_get_alpha
+#define sasfit_eps_get_alpha \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_alpha) /* 130 */
+#endif
+#ifndef sasfit_eps_get_beta
+#define sasfit_eps_get_beta \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_beta) /* 131 */
+#endif
+#ifndef sasfit_eps_set_alpha
+#define sasfit_eps_set_alpha \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_alpha) /* 132 */
+#endif
+#ifndef sasfit_eps_set_beta
+#define sasfit_eps_set_beta \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_set_beta) /* 133 */
 #endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 

@@ -171,7 +171,10 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_eps_get_jacobi, /* 127 */
 	sasfit_eps_get_lebedev, /* 128 */
 	sasfit_eps_get_fibonacci, /* 129 */
-	NULL, /* 130 */
+	sasfit_eps_get_alpha, /* 130 */
+	sasfit_eps_get_beta, /* 131 */
+	sasfit_eps_set_alpha, /* 132 */
+	sasfit_eps_set_beta, /* 133 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
