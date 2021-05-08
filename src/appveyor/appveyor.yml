@@ -30,7 +30,7 @@ environment:
   GH_API:
     secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
   APPVEYOR_TOKEN:
-    secure: Ze65tHzYbKW8ll986XhBx18df/MtnyHkqsTtkM5+kr8=
+    secure: mdkr0G05WlB+R6OUbrgfvMACBjlmZce0VZCjB8mfnMA=
   CLOUDSMITH_KEY:
     secure: W/Nf9rURGNNqj4clwDkiWqVQ83eLVynha1nhtey0c8gqbVjQCAs/fJEqX528UScL
   matrix:
@@ -142,12 +142,12 @@ deploy:
 #      branch: master
       APPVEYOR_REPO_TAG: true
 
-after_deploy:
+on_success:
   - python3 --version
   # install packages needed by the after_deploy script
   - python3 -m pip install --user requests python-dateutil
   # cleanup AppVeyor history
-  - python3 src/appveyor/citools/appveyor_keep_builds.py 10 --verbose
+  - python3 src/appveyor/citools/appveyor_keep_builds.py 10
   # upload binary packages to cloudsmith.io
   - python3 src/appveyor/8_cloudsmith_upload.py
 
