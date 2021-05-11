@@ -20,12 +20,10 @@ scalar sasfit_ff_superegg_opo(scalar q, sasfit_param * param)
     scalar psi;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q); // modify condition to your needs
 	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((B < 0.0), param, "b(%lg) < 0",B); // modify condition to your needs
 	SASFIT_CHECK_COND1((C < 0.0), param, "c(%lg) < 0",C); // modify condition to your needs
-	SASFIT_CHECK_COND1((PP <= 0.0), param, "p(%lg) <= 0",PP); // modify condition to your needs
-	SASFIT_CHECK_COND1((QQ <= 0.0), param, "q(%lg) <= 0",QQ); // modify condition to your needs
+	SASFIT_CHECK_COND1((EPS1 <= 0.0), param, "eps1(%lg) <= 0",EPS1); // modify condition to your needs
 
 	// insert your code here
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");

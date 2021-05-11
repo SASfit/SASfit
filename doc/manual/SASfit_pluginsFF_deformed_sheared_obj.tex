@@ -1726,7 +1726,7 @@ pitch-roll) are shown.} \label{fig:superquadricsIQ2D}
     & \includegraphics[width=0.18\textwidth]{../images/form_factor/supershapes/SuperEgg5.png} \\
      $\epsilon_1=0.4$ & $\epsilon_1=0.8$ & $\epsilon_1=1$ & $\epsilon_1=2$ & $\epsilon_1=5$
 \end{tabular}
-\caption{Supereggs. The parameters for the scale factors of the shown supereggs are $a_1 = a_2 = a_3 = 4/3$. The values for $\epsilon_2=2$ and $\epsilon_1=0.4, 0.8, 1,2,5$.}
+\caption{Supereggs. The parameters for the scale factors of the shown supereggs are $a = b = \frac34 c $. The values for $\epsilon_2=2$ and $\epsilon_1=0.4, 0.8, 1,2,5$.}
 \label{fig:opo_superegg}
 \end{figure}
 
@@ -1749,6 +1749,94 @@ F_\mathrm{SEgg}(\B{Q}) &=
  &\times \int_0^1 4 \pi  r^2(z) \frac{\operatorname{J}_1\left(r(z)\sqrt{\hat{Q}_x^2+\hat{Q}_y^2}\right) }{r(z)\sqrt{\hat{Q}_x^2+\hat{Q}_y^2}} \cos\left(z\hat{Q}_z\right)  \mathrm{d}z \\
  r(z) &=\left(1-z^{2/\epsilon_1}\right)^{\epsilon_1/2}
 \end{align}
+
+\begin{figure}[htb]
+\begin{center}
+\begin{tabular}{llllll}
+%\toprule
+{\small $(0^\circ,0^\circ,0^\circ)$}   
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_0p1.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_0p4.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_1p0.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_2p0.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_5p0.png}  \\
+{\small $(0^\circ,90^\circ,0^\circ)$}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_90_0_18m_0p1.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_90_0_18m_0p4.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_90_0_18m_1p0.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_90_0_18m_2p0.png}
+     & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_90_0_18m_5p0.png}  \\
+{\small $(\alpha,\beta,\gamma)$}
+     & {\small $\epsilon_1=0.1$}
+     & {\small $\epsilon_1=0.4$}
+     & {\small $\epsilon_1=1.0$}
+     & {\small $\epsilon_1=2.0$}
+     & {\small $\epsilon_1=5.0$}  %\bottomrule
+\end{tabular}
+\end{center}
+\caption{oriented superegg model with half axis length of $a=10$nm, $b=\mu a=20$nm, and $c=\nu a=30$nm and the corresponding axis pointing into $\B{e}_a=\B{e}_x$,$\B{e}_b=\B{e}_y$, and $\B{e}_c=\B{e}_z$. The scattering patterns have been calculated for two sets of Euler angles using Tait–Bryan angles (yaw-pitch-roll). \label{fig:SuperEgg2D}}
+\end{figure}
+
+\underline{Input Parameters for model \texttt{superegg (OPO)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{mu}] scaling factor of second half axis ($b=\mu a$) compared to first half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{nu}] scaling factor of third half axis ($c=\nu a$) compared to first half axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{alpha}] first Euler angle
+\item[\texttt{beta}] second Euler angle
+\item[\texttt{gamma}] third Euler angle
+\item[\texttt{psi}] direction of $\B{Q}$ on detector ($\psi=0$, $x$-direction, to the right)
+\item[\texttt{eps1}] shape parameter $\epsilon_1$
+\end{description}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/supershapes/supereggIQ.png}
+\end{center}
+\caption{random oriented superegg model with parameters to test it against simple models like sphere, cylinder, and triaxial ellipsoid \label{fig:SuperEggIQ}}
+\end{figure}
+
+~\\
+\underline{Input Parameters for model \texttt{superegg (OPO, random)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{mu}] scaling factor of second half axis ($b=\mu a$) compared to first half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{nu}] scaling factor of third half axis ($c=\nu a$) compared to first half axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{eps1}] shape parameter $\epsilon_1$
+\end{description}
+
+\noindent\underline{Note:}
+\begin{itemize}
+\item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
+\item shape parameter $\epsilon_1$ needs to be a positive non-zero number, $\epsilon_1>0$ 
+\end{itemize}
+
 \clearpage
 \subsection{oriented super-shapes and rational super-shaped} ~\\
 \begin{figure}[htb]

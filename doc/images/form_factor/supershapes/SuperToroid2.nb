@@ -1,0 +1,649 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     27586,        641]
+NotebookOptionsPosition[     27142,        623]
+NotebookOutlinePosition[     27484,        638]
+CellTagsIndexPosition[     27441,        635]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"rx", "[", 
+   RowBox[{
+   "\[Theta]_", ",", "m_", ",", "a_", ",", "b_", ",", "n1_", ",", "n2_", ",", 
+    "n3_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"2", "^", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "1"}], "/", "n1"}], ")"}]}], " ", 
+   RowBox[{"(", 
+    RowBox[{"1", "-", 
+     RowBox[{"1", "/", "n1"}], "+", 
+     RowBox[{"1", "/", 
+      RowBox[{"(", 
+       RowBox[{"n1", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Abs", "[", 
+            RowBox[{
+             RowBox[{"Cos", "[", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"m", " ", "\[Theta]"}], ")"}], "/", "4"}], "]"}], "/",
+              "a"}], "]"}], "/", 
+           RowBox[{"(", 
+            RowBox[{"n2", "+", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"1", "-", "n2"}], ")"}], " ", 
+              RowBox[{"Abs", "[", 
+               RowBox[{
+                RowBox[{"Cos", "[", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"m", " ", "\[Theta]"}], ")"}], "/", "4"}], "]"}], 
+                "/", "a"}], "]"}]}]}], ")"}]}], "+", 
+          RowBox[{
+           RowBox[{"Abs", "[", 
+            RowBox[{
+             RowBox[{"Sin", "[", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"m", " ", "\[Theta]"}], ")"}], "/", "4"}], "]"}], "/",
+              "a"}], "]"}], "/", 
+           RowBox[{"(", 
+            RowBox[{"n2", "+", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"1", "-", "n2"}], ")"}], " ", 
+              RowBox[{"Abs", "[", 
+               RowBox[{
+                RowBox[{"Sin", "[", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"m", " ", "\[Theta]"}], ")"}], "/", "4"}], "]"}], 
+                "/", "a"}], "]"}]}]}], ")"}]}]}], ")"}]}], ")"}]}]}], 
+    ")"}]}]}], "\n", 
+ RowBox[{
+  RowBox[{"rx", "[", 
+   RowBox[{
+   "\[Theta]_", ",", "m_", ",", "a_", ",", "b_", ",", "n1_", ",", "n2_", ",", 
+    "n3_"}], "]"}], ":=", 
+  RowBox[{"Power", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"Abs", "[", 
+       RowBox[{
+        RowBox[{"Cos", "[", 
+         RowBox[{"\[Theta]", "*", 
+          RowBox[{"m", "/", "4"}]}], "]"}], "/", "a"}], "]"}], "^", "n2"}], 
+     "+", 
+     RowBox[{
+      RowBox[{"Abs", "[", 
+       RowBox[{
+        RowBox[{"Sin", "[", 
+         RowBox[{"\[Theta]", "*", 
+          RowBox[{"m", "/", "4"}]}], "]"}], "/", "b"}], "]"}], "^", "n3"}]}], 
+    ",", 
+    RowBox[{
+     RowBox[{"-", "1"}], "/", "n1"}]}], "]"}]}], "\n", 
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Grid", "[", 
+    RowBox[{"{", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Grid", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"PolarPlot", "[", 
+            RowBox[{
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"r1", "=", 
+                 RowBox[{"rx", "[", 
+                  RowBox[{
+                   RowBox[{"\[Theta]", "-", "alpha"}], ",", "m", ",", "a", 
+                   ",", "b", ",", "n1", ",", "n2", ",", "n3"}], "]"}]}], 
+                "}"}], ",", "r1"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"\[Theta]", ",", 
+               RowBox[{"-", "\[Pi]"}], ",", "\[Pi]"}], "}"}], ",", 
+             RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+             RowBox[{"ImageSize", "\[Rule]", 
+              RowBox[{"{", 
+               RowBox[{"200", ",", "200"}], "}"}]}], ",", 
+             RowBox[{"PlotLabel", "\[Rule]", "\"\<superformula I\>\""}]}], 
+            "]"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"PolarPlot", "[", 
+            RowBox[{
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"r2", "=", 
+                 RowBox[{"rx", "[", 
+                  RowBox[{
+                   RowBox[{"\[Phi]", "-", "gamma"}], ",", "sm", ",", "sa", 
+                   ",", "sb", ",", "sn1", ",", "sn2", ",", "sn3"}], "]"}]}], 
+                "}"}], ",", "r2"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"\[Phi]", ",", 
+               RowBox[{
+                RowBox[{"-", "\[Pi]"}], "/", "2"}], ",", 
+               RowBox[{"\[Pi]", "/", "2"}]}], "}"}], ",", 
+             RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+             RowBox[{"ImageSize", "\[Rule]", 
+              RowBox[{"{", 
+               RowBox[{"200", ",", "200"}], "}"}]}], ",", 
+             RowBox[{
+             "PlotLabel", "\[Rule]", 
+              "\"\<superformula II (-pi/2,pi/2)\>\""}]}], "]"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"PolarPlot", "[", 
+            RowBox[{
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"r3", "=", 
+                 RowBox[{"rx", "[", 
+                  RowBox[{
+                   RowBox[{"\[Phi]", "-", "gamma"}], ",", "sm", ",", "sa", 
+                   ",", "sb", ",", "sn1", ",", "sn2", ",", "sn3"}], "]"}]}], 
+                "}"}], ",", "r3"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"\[Phi]", ",", 
+               RowBox[{"-", "\[Pi]"}], ",", "\[Pi]"}], "}"}], ",", 
+             RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+             RowBox[{"ImageSize", "\[Rule]", 
+              RowBox[{"{", 
+               RowBox[{"200", ",", "200"}], "}"}]}], ",", 
+             RowBox[{
+             "PlotLabel", "\[Rule]", "\"\<superformula II (-pi,pi)\>\""}]}], 
+            "]"}], "}"}]}], "}"}], "]"}], ",", 
+       RowBox[{"ParametricPlot3D", "[", 
+        RowBox[{
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"r1", "=", 
+              RowBox[{"rx", "[", 
+               RowBox[{
+                RowBox[{"\[Theta]", "-", "alpha"}], ",", "m", ",", "a", ",", 
+                "b", ",", "n1", ",", "n2", ",", "n3"}], "]"}]}], ",", 
+             RowBox[{"r2", "=", 
+              RowBox[{"rx", "[", 
+               RowBox[{
+                RowBox[{"\[Phi]", "-", 
+                 RowBox[{"\[Theta]", "*", "beta"}], "-", "gamma"}], ",", "sm",
+                 ",", "sa", ",", "sb", ",", "sn1", ",", "sn2", ",", "sn3"}], 
+               "]"}]}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"xr", "*", "r1", " ", 
+              RowBox[{"Cos", "[", "\[Theta]", "]"}], " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"r2", " ", 
+                 RowBox[{"Cos", "[", "\[Phi]", "]"}]}], "+", "R"}], ")"}]}], 
+             ",", 
+             RowBox[{"yr", "*", "r1", " ", 
+              RowBox[{"Sin", "[", "\[Theta]", "]"}], " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"r2", " ", 
+                 RowBox[{"Cos", "[", "\[Phi]", "]"}]}], "+", "R"}], ")"}]}], 
+             ",", 
+             RowBox[{
+              RowBox[{"zr", "*", "r2", " ", 
+               RowBox[{"Sin", "[", "\[Phi]", "]"}]}], "+", 
+              RowBox[{"P", "*", "\[Theta]"}]}]}], "}"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"\[Theta]", ",", 
+           RowBox[{
+            RowBox[{"-", "T"}], "*", "Pi"}], ",", 
+           RowBox[{"T", "*", "Pi"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"\[Phi]", ",", 
+           RowBox[{"-", "Pi"}], ",", "Pi"}], "}"}], ",", 
+         RowBox[{"Axes", "\[Rule]", "True"}], ",", 
+         RowBox[{"AxesLabel", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"\"\<x\>\"", ",", "\"\<y\>\"", ",", "\"\<z\>\""}], "}"}]}],
+          ",", 
+         RowBox[{"BaseStyle", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"FontWeight", "\[Rule]", "\"\<Bold\>\""}], ",", 
+            RowBox[{"FontSize", "\[Rule]", "80"}]}], "}"}]}], ",", 
+         RowBox[{"PlotTheme", "\[Rule]", "\"\<Normal\>\""}], ",", 
+         RowBox[{"Ticks", "\[Rule]", "True"}], ",", 
+         RowBox[{"AxesStyle", "\[Rule]", 
+          RowBox[{"Thickness", "[", "0.005", "]"}]}], ",", 
+         RowBox[{"Exclusions", "\[Rule]", "None"}], ",", 
+         RowBox[{"ImageSize", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"1200", ",", "800"}], "}"}]}], ",", 
+         RowBox[{"MaxRecursion", "\[Rule]", 
+          RowBox[{"ControlActive", "[", 
+           RowBox[{"1", ",", "2"}], "]"}]}], ",", 
+         RowBox[{"PlotPoints", "\[Rule]", 
+          RowBox[{"ControlActive", "[", 
+           RowBox[{"80", ",", "80"}], "]"}]}], ",", 
+         RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+         RowBox[{"ViewPoint", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"2.3", ",", "2.4", ",", "1.5"}], "}"}]}], ",", 
+         RowBox[{"Mesh", "\[Rule]", "mesh"}]}], "]"}]}], "}"}], "}"}], "]"}], 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"mesh", ",", "False", ",", "\"\<meshing\>\"", ",", 
+       RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"True", "\[Rule]", "\"\<on\>\""}], ",", 
+       RowBox[{"False", "\[Rule]", "\"\<off\>\""}]}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "SetterBar"}]}], "}"}], ",", 
+   "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"m", ",", "4", ",", "\"\<m\>\""}], "}"}], ",", 
+     RowBox[{"1", "/", "10"}], ",", "20", ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n1", ",", "4", ",", 
+       RowBox[{"Subscript", "[", 
+        RowBox[{"\"\<n\>\"", ",", "1"}], "]"}]}], "}"}], ",", 
+     RowBox[{"1", "/", "100"}], ",", "100", ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n2", ",", "4", ",", 
+       RowBox[{"Subscript", "[", 
+        RowBox[{"\"\<n\>\"", ",", "2"}], "]"}]}], "}"}], ",", "0", ",", "100",
+      ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n3", ",", "4", ",", 
+       RowBox[{"Subscript", "[", 
+        RowBox[{"\"\<n\>\"", ",", "3"}], "]"}]}], "}"}], ",", "0", ",", "100",
+      ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"alpha", ",", "0", ",", "\"\<alpha\>\""}], "}"}], ",", "0", ",", 
+     RowBox[{"2", "*", "Pi"}], ",", "0.1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", ",", "1", ",", "\"\<a\>\""}], "}"}], ",", "0.1", ",", "2", 
+     ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"b", ",", "1", ",", "\"\<b\>\""}], "}"}], ",", "0.2", ",", "2", 
+     ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sm", ",", "4", ",", "\"\<M\>\""}], "}"}], ",", 
+     RowBox[{"1", "/", "10"}], ",", "20", ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sn1", ",", "2", ",", 
+       RowBox[{"Subscript", "[", 
+        RowBox[{"\"\<N\>\"", ",", "1"}], "]"}]}], "}"}], ",", 
+     RowBox[{"1", "/", "100"}], ",", "100", ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sn2", ",", "5", ",", 
+       RowBox[{"Subscript", "[", 
+        RowBox[{"\"\<N\>\"", ",", "2"}], "]"}]}], "}"}], ",", "0", ",", "100",
+      ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sn3", ",", "5", ",", 
+       RowBox[{"Subscript", "[", 
+        RowBox[{"\"\<N\>\"", ",", "3"}], "]"}]}], "}"}], ",", "0", ",", "100",
+      ",", "1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"beta", ",", "2", ",", "\"\<beta\>\""}], "}"}], ",", "0", ",", 
+     "100", ",", "0.1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"gamma", ",", "0", ",", "\"\<gamma\>\""}], "}"}], ",", "0", ",",
+      "100", ",", "0.1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sa", ",", "1", ",", "\"\<A\>\""}], "}"}], ",", "0.1", ",", "2",
+      ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"sb", ",", "1", ",", "\"\<B\>\""}], "}"}], ",", "0.2", ",", "2",
+      ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"xr", ",", "1", ",", "\"\<x scaling\>\""}], "}"}], ",", "0.1", 
+     ",", "10", ",", "0", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"yr", ",", "1", ",", "\"\<y scaling\>\""}], "}"}], ",", "0.1", 
+     ",", "10", ",", "0", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"zr", ",", "1", ",", "\"\<z scaling\>\""}], "}"}], ",", "0.1", 
+     ",", "10", ",", "0", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"R", ",", "4", ",", "\"\<R\>\""}], "}"}], ",", "0.1", ",", "50",
+      ",", "0", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"P", ",", "0", ",", "\"\<P\>\""}], "}"}], ",", "0.0", ",", "50",
+      ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"T", ",", "1", ",", "\"\<T\>\""}], "}"}], ",", "0.1", ",", "10",
+      ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}]}], "}"}], ",", 
+   RowBox[{"ControlPlacement", "\[Rule]", "Left"}], ",", 
+   RowBox[{"AutorunSequencing", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"2", ",", "4", ",", "6"}], "}"}]}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.7846073919565496`*^9, 3.7846073919721704`*^9}, {
+   3.7846074405159254`*^9, 3.784607464837612*^9}, {3.784607523092721*^9, 
+   3.7846075317129483`*^9}, {3.7846075930728226`*^9, 
+   3.7846075934517317`*^9}, {3.7846077727837615`*^9, 3.784607774926536*^9}, {
+   3.784608210501696*^9, 3.7846082170944953`*^9}, {3.784608287232793*^9, 
+   3.784608302278142*^9}, {3.7846091998447533`*^9, 3.7846092319257026`*^9}, {
+   3.784609411899039*^9, 3.7846094983141766`*^9}, {3.784609575891914*^9, 
+   3.784609584975174*^9}, {3.784609850105712*^9, 3.784609958719442*^9}, {
+   3.784610072157509*^9, 3.7846101535806217`*^9}, {3.7846102580018234`*^9, 
+   3.784610283448973*^9}, {3.7846103274102297`*^9, 3.7846103277382812`*^9}, {
+   3.7846104181277432`*^9, 3.7846104341101866`*^9}, {3.7846107018210893`*^9, 
+   3.7846107139030066`*^9}, {3.7846162810903196`*^9, 3.7846163406915226`*^9}, 
+   3.784616386057161*^9, 3.784621637174099*^9, {3.7846277725346737`*^9, 
+   3.784627772722185*^9}, {3.784627972396824*^9, 3.7846279830864496`*^9}, {
+   3.7846280474218655`*^9, 3.784628059612698*^9}, 3.7846281135838823`*^9, {
+   3.784628593744135*^9, 3.7846286307234554`*^9}, 3.78463224767997*^9, {
+   3.786685761781642*^9, 3.7866858328984113`*^9}, 3.7866858655211077`*^9, {
+   3.786685905612096*^9, 3.786685906306246*^9}, {3.786685947292552*^9, 
+   3.786685947912326*^9}, {3.786685992076603*^9, 3.7866859961597247`*^9}, {
+   3.7867263582334447`*^9, 3.7867263625383453`*^9}, {3.786782115188609*^9, 
+   3.7867821358545303`*^9}, {3.7869414207105107`*^9, 3.786941423035941*^9}, 
+   3.786941477740389*^9, {3.786941988499968*^9, 3.786941992608427*^9}, {
+   3.7869422871615705`*^9, 3.7869424447687826`*^9}, 3.78694254192945*^9, {
+   3.7869479407244873`*^9, 3.786947945791354*^9}, 3.792137359010351*^9, {
+   3.7924685218122025`*^9, 
+   3.792468546350487*^9}},ExpressionUUID->"f7afb5e4-d139-4a61-bff9-\
+519c4e2c5236"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`a$$ = 1, $CellContext`alpha$$ = 
+    0, $CellContext`b$$ = 1, $CellContext`beta$$ = 0, $CellContext`gamma$$ = 
+    0, $CellContext`m$$ = 4, $CellContext`mesh$$ = False, $CellContext`n1$$ = 
+    2, $CellContext`n2$$ = 2, $CellContext`n3$$ = 2, $CellContext`P$$ = 
+    0, $CellContext`R$$ = 1.9999999999999873`, $CellContext`sa$$ = 
+    0.20000000000000284`, $CellContext`sb$$ = 1, $CellContext`sm$$ = 
+    4, $CellContext`sn1$$ = 15, $CellContext`sn2$$ = 15, $CellContext`sn3$$ = 
+    15, $CellContext`T$$ = 1, $CellContext`xr$$ = 10, $CellContext`yr$$ = 
+    10, $CellContext`zr$$ = 10, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`mesh$$], False, "meshing", ImageSize -> Tiny}, {
+      True -> "on", False -> "off"}}, {{
+       Hold[$CellContext`m$$], 4, "m"}, 
+      Rational[1, 10], 20, 1}, {{
+       Hold[$CellContext`n1$$], 4, 
+       Subscript["n", 1]}, 
+      Rational[1, 100], 100, 1}, {{
+       Hold[$CellContext`n2$$], 4, 
+       Subscript["n", 2]}, 0, 100, 1}, {{
+       Hold[$CellContext`n3$$], 4, 
+       Subscript["n", 3]}, 0, 100, 1}, {{
+       Hold[$CellContext`alpha$$], 0, "alpha"}, 0, 2 Pi, 0.1}, {{
+       Hold[$CellContext`a$$], 1, "a"}, 0.1, 2}, {{
+       Hold[$CellContext`b$$], 1, "b"}, 0.2, 2}, {{
+       Hold[$CellContext`sm$$], 4, "M"}, 
+      Rational[1, 10], 20, 1}, {{
+       Hold[$CellContext`sn1$$], 2, 
+       Subscript["N", 1]}, 
+      Rational[1, 100], 100, 1}, {{
+       Hold[$CellContext`sn2$$], 5, 
+       Subscript["N", 2]}, 0, 100, 1}, {{
+       Hold[$CellContext`sn3$$], 5, 
+       Subscript["N", 3]}, 0, 100, 1}, {{
+       Hold[$CellContext`beta$$], 2, "beta"}, 0, 100, 0.1}, {{
+       Hold[$CellContext`gamma$$], 0, "gamma"}, 0, 100, 0.1}, {{
+       Hold[$CellContext`sa$$], 1, "A"}, 0.1, 2}, {{
+       Hold[$CellContext`sb$$], 1, "B"}, 0.2, 2}, {{
+       Hold[$CellContext`xr$$], 1, "x scaling"}, 0.1, 10, 0}, {{
+       Hold[$CellContext`yr$$], 1, "y scaling"}, 0.1, 10, 0}, {{
+       Hold[$CellContext`zr$$], 1, "z scaling"}, 0.1, 10, 0}, {{
+       Hold[$CellContext`R$$], 4, "R"}, 0.1, 50, 0}, {{
+       Hold[$CellContext`P$$], 0, "P"}, 0., 50}, {{
+       Hold[$CellContext`T$$], 1, "T"}, 0.1, 10}}, Typeset`size$$ = {
+    1409., {397., 403.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`mesh$4881$$ = 
+    False, $CellContext`m$4886$$ = 0, $CellContext`n1$4887$$ = 
+    0, $CellContext`n2$4888$$ = 0, $CellContext`n3$4889$$ = 
+    0, $CellContext`alpha$4890$$ = 0, $CellContext`a$4891$$ = 
+    0, $CellContext`b$4892$$ = 0, $CellContext`sm$4893$$ = 
+    0, $CellContext`sn1$4894$$ = 0, $CellContext`sn2$4895$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`a$$ = 1, $CellContext`alpha$$ = 
+        0, $CellContext`b$$ = 1, $CellContext`beta$$ = 
+        2, $CellContext`gamma$$ = 0, $CellContext`m$$ = 
+        4, $CellContext`mesh$$ = False, $CellContext`n1$$ = 
+        4, $CellContext`n2$$ = 4, $CellContext`n3$$ = 4, $CellContext`P$$ = 
+        0, $CellContext`R$$ = 4, $CellContext`sa$$ = 1, $CellContext`sb$$ = 
+        1, $CellContext`sm$$ = 4, $CellContext`sn1$$ = 2, $CellContext`sn2$$ = 
+        5, $CellContext`sn3$$ = 5, $CellContext`T$$ = 1, $CellContext`xr$$ = 
+        1, $CellContext`yr$$ = 1, $CellContext`zr$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`mesh$$, $CellContext`mesh$4881$$, False], 
+        Hold[$CellContext`m$$, $CellContext`m$4886$$, 0], 
+        Hold[$CellContext`n1$$, $CellContext`n1$4887$$, 0], 
+        Hold[$CellContext`n2$$, $CellContext`n2$4888$$, 0], 
+        Hold[$CellContext`n3$$, $CellContext`n3$4889$$, 0], 
+        Hold[$CellContext`alpha$$, $CellContext`alpha$4890$$, 0], 
+        Hold[$CellContext`a$$, $CellContext`a$4891$$, 0], 
+        Hold[$CellContext`b$$, $CellContext`b$4892$$, 0], 
+        Hold[$CellContext`sm$$, $CellContext`sm$4893$$, 0], 
+        Hold[$CellContext`sn1$$, $CellContext`sn1$4894$$, 0], 
+        Hold[$CellContext`sn2$$, $CellContext`sn2$4895$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Grid[{{
+          Grid[{{
+             PolarPlot[
+              
+              With[{$CellContext`r1 = $CellContext`rx[$CellContext`\[Theta] - \
+$CellContext`alpha$$, $CellContext`m$$, $CellContext`a$$, $CellContext`b$$, \
+$CellContext`n1$$, $CellContext`n2$$, $CellContext`n3$$]}, $CellContext`r1], \
+{$CellContext`\[Theta], -Pi, Pi}, Axes -> False, ImageSize -> {200, 200}, 
+              PlotLabel -> "superformula I"]}, {
+             PolarPlot[
+              
+              With[{$CellContext`r2 = $CellContext`rx[$CellContext`\[Phi] - \
+$CellContext`gamma$$, $CellContext`sm$$, $CellContext`sa$$, \
+$CellContext`sb$$, $CellContext`sn1$$, $CellContext`sn2$$, \
+$CellContext`sn3$$]}, $CellContext`r2], {$CellContext`\[Phi], (-Pi)/2, Pi/2}, 
+              Axes -> False, ImageSize -> {200, 200}, PlotLabel -> 
+              "superformula II (-pi/2,pi/2)"]}, {
+             PolarPlot[
+              
+              With[{$CellContext`r3 = $CellContext`rx[$CellContext`\[Phi] - \
+$CellContext`gamma$$, $CellContext`sm$$, $CellContext`sa$$, \
+$CellContext`sb$$, $CellContext`sn1$$, $CellContext`sn2$$, \
+$CellContext`sn3$$]}, $CellContext`r3], {$CellContext`\[Phi], -Pi, Pi}, Axes -> 
+              False, ImageSize -> {200, 200}, PlotLabel -> 
+              "superformula II (-pi,pi)"]}}], 
+          ParametricPlot3D[
+           
+           With[{$CellContext`r1$ = $CellContext`rx[$CellContext`\[Theta] - \
+$CellContext`alpha$$, $CellContext`m$$, $CellContext`a$$, $CellContext`b$$, \
+$CellContext`n1$$, $CellContext`n2$$, $CellContext`n3$$], $CellContext`r2$ = \
+$CellContext`rx[$CellContext`\[Phi] - $CellContext`\[Theta] \
+$CellContext`beta$$ - $CellContext`gamma$$, $CellContext`sm$$, \
+$CellContext`sa$$, $CellContext`sb$$, $CellContext`sn1$$, $CellContext`sn2$$, \
+$CellContext`sn3$$]}, {$CellContext`xr$$ $CellContext`r1$ 
+             Cos[$CellContext`\[Theta]] ($CellContext`r2$ 
+               Cos[$CellContext`\[Phi]] + $CellContext`R$$), \
+$CellContext`yr$$ $CellContext`r1$ 
+             Sin[$CellContext`\[Theta]] ($CellContext`r2$ 
+               Cos[$CellContext`\[Phi]] + $CellContext`R$$), \
+$CellContext`zr$$ $CellContext`r2$ 
+              Sin[$CellContext`\[Phi]] + $CellContext`P$$ $CellContext`\
+\[Theta]}], {$CellContext`\[Theta], (-$CellContext`T$$) Pi, $CellContext`T$$ 
+            Pi}, {$CellContext`\[Phi], -Pi, Pi}, Axes -> True, 
+           AxesLabel -> {"x", "y", "z"}, 
+           BaseStyle -> {FontWeight -> "Bold", FontSize -> 80}, PlotTheme -> 
+           "Normal", Ticks -> True, AxesStyle -> Thickness[0.005], Exclusions -> 
+           None, ImageSize -> {1200, 800}, MaxRecursion -> 
+           ControlActive[1, 2], PlotPoints -> ControlActive[80, 80], 
+           PlotRange -> All, ViewPoint -> {2.3, 2.4, 1.5}, 
+           Mesh -> $CellContext`mesh$$]}}], 
+      "Specifications" :> {{{$CellContext`mesh$$, False, "meshing", ImageSize -> 
+          Tiny}, {True -> "on", False -> "off"}, ControlType -> SetterBar}, 
+        Delimiter, {{$CellContext`m$$, 4, "m"}, 
+         Rational[1, 10], 20, 1, ImageSize -> Tiny}, 
+        Delimiter, {{$CellContext`n1$$, 4, 
+          Subscript["n", 1]}, 
+         Rational[1, 100], 100, 1, ImageSize -> Tiny}, {{$CellContext`n2$$, 4, 
+          Subscript["n", 2]}, 0, 100, 1, ImageSize -> 
+         Tiny}, {{$CellContext`n3$$, 4, 
+          Subscript["n", 3]}, 0, 100, 1, ImageSize -> Tiny}, 
+        Delimiter, {{$CellContext`alpha$$, 0, "alpha"}, 0, 2 Pi, 0.1, 
+         ImageSize -> Tiny}, 
+        Delimiter, {{$CellContext`a$$, 1, "a"}, 0.1, 2, ImageSize -> 
+         Tiny}, {{$CellContext`b$$, 1, "b"}, 0.2, 2, ImageSize -> Tiny}, 
+        Delimiter, {{$CellContext`sm$$, 4, "M"}, 
+         Rational[1, 10], 20, 1, ImageSize -> Tiny}, 
+        Delimiter, {{$CellContext`sn1$$, 2, 
+          Subscript["N", 1]}, 
+         Rational[1, 100], 100, 1, ImageSize -> 
+         Tiny}, {{$CellContext`sn2$$, 5, 
+          Subscript["N", 2]}, 0, 100, 1, ImageSize -> 
+         Tiny}, {{$CellContext`sn3$$, 5, 
+          Subscript["N", 3]}, 0, 100, 1, ImageSize -> Tiny}, 
+        Delimiter, {{$CellContext`beta$$, 2, "beta"}, 0, 100, 0.1, ImageSize -> 
+         Tiny}, Delimiter, {{$CellContext`gamma$$, 0, "gamma"}, 0, 100, 0.1, 
+         ImageSize -> Tiny}, 
+        Delimiter, {{$CellContext`sa$$, 1, "A"}, 0.1, 2, ImageSize -> 
+         Tiny}, {{$CellContext`sb$$, 1, "B"}, 0.2, 2, ImageSize -> 
+         Tiny}, {{$CellContext`xr$$, 1, "x scaling"}, 0.1, 10, 0, ImageSize -> 
+         Tiny}, {{$CellContext`yr$$, 1, "y scaling"}, 0.1, 10, 0, ImageSize -> 
+         Tiny}, {{$CellContext`zr$$, 1, "z scaling"}, 0.1, 10, 0, ImageSize -> 
+         Tiny}, {{$CellContext`R$$, 4, "R"}, 0.1, 50, 0, ImageSize -> 
+         Tiny}, {{$CellContext`P$$, 0, "P"}, 0., 50, ImageSize -> 
+         Tiny}, {{$CellContext`T$$, 1, "T"}, 0.1, 10, ImageSize -> Tiny}}, 
+      "Options" :> {ControlPlacement -> Left, AutorunSequencing -> {2, 4, 6}},
+       "DefaultOptions" :> {}],
+     ImageSizeCache->{1714., {482., 488.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.7924685534074016`*^9},ExpressionUUID->"cef7a2fe-cb96-4a71-bbcd-\
+89c171aa3158"]
+}, Open  ]]
+},
+WindowSize->{1904, 998},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.1 for Microsoft Windows (64-bit) (March 13, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 16525, 415, 316, "Input", "ExpressionUUID" -> \
+"f7afb5e4-d139-4a61-bff9-519c4e2c5236"],
+Cell[17108, 439, 10018, 181, 987, "Output", "ExpressionUUID" -> \
+"cef7a2fe-cb96-4a71-bbcd-89c171aa3158"]
+}, Open  ]]
+}
+]
+*)
+

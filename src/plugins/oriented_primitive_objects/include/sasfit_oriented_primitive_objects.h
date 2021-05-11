@@ -572,8 +572,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_random_v
  *       <td>\b ea_z</td>
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>length of second half axis</td>
+ *       <td>\b mu=b/a</td>
+ *       <td>b=mu*a: length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -584,8 +584,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_ellipsoid_opo_random_v
  *       <td>\b eb_z</td>
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b c</td>
- *       <td>length of third half axis</td>
+ *       <td>\b nu=c/a=</td>
+ *       <td>c=nu*a: length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -666,8 +666,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_v(scalar 
  *       <td>\b ea_z</td>
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>length of second half axis</td>
+ *       <td>\b mu=b/a=</td>
+ *       <td>b=nu*a: length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -678,8 +678,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_v(scalar 
  *       <td>\b eb_z</td>
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b c</td>
- *       <td>length of third half axis</td>
+ *       <td>\b nu=c/a=</td>
+ *       <td>c=nu*a: length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -760,8 +760,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_random_v(
  *       <td>\b ea_z</td>
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>length of second half axis</td>
+ *       <td>\b mu=b/a</td>
+ *       <td>b=mu*a: length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -772,8 +772,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_random_v(
  *       <td>\b eb_z</td>
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b c</td>
- *       <td>length of third half axis</td>
+ *       <td>\b nu</td>
+ *       <td>b=nu*a: length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
