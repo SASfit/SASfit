@@ -149,7 +149,7 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
         sasfit_intcc(big_g,
                 inte_limit_low,
                 inte_limit_high,
-                oip->epsabs,
+                oip->epsrel,
                 oip->intern.lenaw,
                 oip->intern.aw,
                 params->intern.results + params->intern.dim,
@@ -244,7 +244,7 @@ static double big_g(double x, void * p)
             case GDMI_INTE_FUNCTIONS_OOURA_DE :
                 params->oip[i].intern.lenaw=4000;
                 params->oip[i].intern.aw = (scalar *)malloc((params->oip[i].intern.lenaw)*sizeof(scalar));
-                sasfit_intdeini(params->oip[i].intern.lenaw, GSL_DBL_MIN, params->oip[i].epsabs, params->oip[i].intern.aw);
+                sasfit_intdeini(params->oip[i].intern.lenaw, GSL_DBL_MIN, params->oip[i].epsrel, params->oip[i].intern.aw);
                 params->oip[i].intern.gcw=NULL;
                 params->oip[i].intern.giw=NULL;
                 params->oip[i].intern.glft=NULL;
