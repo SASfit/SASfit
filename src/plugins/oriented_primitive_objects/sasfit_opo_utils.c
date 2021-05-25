@@ -1026,7 +1026,7 @@ int opo_Fss_cub_dtp(unsigned ndim, const double *x, void *pam,
 	theta = x[0];
 	phi   = x[1];
 	r1=ri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
-	r2=ri(phi,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	r2=ri(phi  ,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
 	XX = r1*cos(theta)*r2*cos(phi);
 	YY = r1*sin(theta)*r2*cos(phi);
 	ZZ = r2*sin(phi);
@@ -1885,12 +1885,12 @@ int opo_Fse_cub_dru(unsigned ndim, const double *x, void *pam,
 	}
 	RR=x[0];
 	UU=x[1];
-	XX = RR*pow(gsl_pow_2(cos(UU)),PP/2.)*GSL_SIGN(cos(UU));
-	YY = RR*pow(gsl_pow_2(sin(UU)),PP/2.)*GSL_SIGN(sin(UU));
+	XX = RR*pow(fabs(cos(UU)),PP)*GSL_SIGN(cos(UU));
+	YY = RR*pow(fabs(sin(UU)),PP)*GSL_SIGN(sin(UU));
 	DJ2D=PP*RR*pow(fabs(cos(UU)*sin(UU)),PP-1);
-	w = pow(1 - pow(pow(gsl_pow_2(XX),1./PP) + pow(gsl_pow_2(YY),1./PP),PP/QQ),QQ/2.);
-	w = pow(1 - pow(pow(gsl_pow_2(XX),1./PP) + pow(gsl_pow_2(YY),1./PP),PP/QQ),QQ/2.);
+	w = pow(1 - pow(pow(fabs(XX),2./PP) + pow(fabs(YY),2./PP),PP/QQ),QQ/2.);
     fval[0] = DJ2D*(2*cos(QQX*XX+QQY*YY)*w*opo_sinc(QQZ*w));
+//    fval[1] = DJ2D*(2*sin(QQX*XX+QQY*YY)*w*opo_sinc(QQZ*w));
 	return 0;
 }
 
@@ -1910,7 +1910,7 @@ int opo_Fse_cub_dxs(unsigned ndim, const double *x, void *pam,
 		fval[0] = 0;
 		return 0;
 	}
-    w = pow(1 - pow(pow(XX*XX,1/PP) + pow(YY*YY,1/PP),PP/QQ),QQ/2.);
+    w = pow(1. - pow(pow(XX*XX,1./PP) + pow(YY*YY,1./PP),PP/QQ),QQ/2.);
     fval[0] = (2*cos(QQX*XX+ QQY*YY)*w*opo_sinc(QQZ*w))*DJ;
     return 0;
 }
@@ -1964,17 +1964,23 @@ scalar opo_Fsuperellipsoid(void * pam) {
     int intstrategy, lenaw=4000;
 	cubxmax[0] = 1;
 	cubxmin[0] = -1;
-	int auswahl;
-	intstrategy = sasfit_get_int_strategy();
-//    intstrategy=OOURA_DOUBLE_EXP_QUADRATURE;
-    auswahl = sasfit_eps_get_robertus_p();
-    switch (auswahl>0) {
-        case 0:
+	int auswahl=1;
+    switch (auswahl) {
+        case 1:
             cubxmax[1] = 1;
             cubxmin[1] = -1;
-            sasfit_cubature(2,cubxmin,cubxmax,&opo_Fse_cub_dxy_core,pam,sasfit_eps_get_aniso(),&res,&err);
+            sasfit_cubature(2,cubxmin,cubxmax,&opo_Fse_cub_dxs_core,pam,sasfit_eps_get_aniso(),&res,&err);
             break;
-        case 1:
+        case 2:
+            cubxmax[0] = 1;
+            cubxmin[0] = 0;
+            cubxmax[1] = M_PI_2;
+            cubxmin[1] = 0;
+            sasfit_cubature(2,cubxmin,cubxmax,&opo_Fse_cub_dru_core,pam,sasfit_eps_get_aniso(),&res,&err);
+            err=4*err;
+            res=4*res;
+            break;
+        case 3:
             cubxmax[0] = 1;
             cubxmin[0] = 0;
             cubxmax[1] = M_PI;
@@ -1983,10 +1989,28 @@ scalar opo_Fsuperellipsoid(void * pam) {
             err=2*err;
             res=2*res;
             break;
+        case 4:
+            cubxmax[0] = 1;
+            cubxmin[0] = 0;
+            cubxmax[1] = M_PI*2;
+            cubxmin[1] = 0;
+            sasfit_cubature(2,cubxmin,cubxmax,&opo_Fse_cub_dru_core,pam,sasfit_eps_get_aniso(),&res,&err);
+            err=1*err;
+            res=1*res;
+            break;
+        case 5:
+            cubxmax[0] = 1;
+            cubxmin[0] = 0;
+            cubxmax[1] = M_PI;
+            cubxmin[1] = -M_PI;
+            sasfit_cubature(2,cubxmin,cubxmax,&opo_Fse_cub_dru_core,pam,sasfit_eps_get_aniso(),&res,&err);
+            err=1*err;
+            res=1*res;
+            break;
         default:
             cubxmax[1] = 1;
             cubxmin[1] = -1;
-            sasfit_cubature(2,cubxmin,cubxmax,&opo_Fse_cub_dxs_core,pam,sasfit_eps_get_aniso(),&res,&err);
+            sasfit_cubature(2,cubxmin,cubxmax,&opo_Fse_cub_dxy_core,pam,sasfit_eps_get_aniso(),&res,&err);
             break;
     }
     return res;

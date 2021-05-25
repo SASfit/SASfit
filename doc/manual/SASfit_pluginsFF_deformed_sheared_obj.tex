@@ -1588,43 +1588,8 @@ A supersphere is a special case of superellipsoid for which the two exponents ar
 $\abs{\frac{x}{a_1}}^n+\abs{\frac{y}{a_2}}^n+\abs{\frac{y}{a_3}}^n\leq 1$ with $n=1/\epsilon_1=1/\epsilon_2$.
 Another special case is the superegg for which one exponent is equal $\epsilon_1=1$ and the implicit representation then reads as
 $\left(\abs{\frac{x}{a_1}}^2+\abs{\frac{y}{a_2}}^2\right)^{1/\epsilon_2}+\abs{\frac{y}{a_3}}^{2/\epsilon_2}\leq 1$.
-As the asymmetric superellipsoid is obtained by a scale transform, which is a special case of an affine transform only the Fourier transform of a unit superellipsoid has to be solved. All its affine transform than can be easily calculated by linear algebra.  The Fourier transform of a unit super-quadrics ($a_1=a_2=a_3=1$) is
-\begin{align}\label{eq:FTsuperellipsoid}
-  F_\mathrm{SEll}(\B{Q}) &=
-\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
-\mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,  \int\limits_{-Z(x,y)}^{Z(x,y)} \mathrm{d}z \,
-e^{\imath\B{\hat{Q}r}} \nonumber \\
- &=
-\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,   \\
-& \times \int\limits_{-1}^1
-\mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,
-e^{\imath\left(\hat{Q}_xx+\hat{Q}_yy\right)} 2Z(x,y)\operatorname{sinc}(\hat{Q}_z Z(x,y))\nonumber \\
-&= \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \\
-& \times \int\limits_{-1}^1
-\mathrm{d}x\, \int\limits_{-1}^{1} \mathrm{d}s\,
-e^{\imath\left(\hat{Q}_xx+\hat{Q}_yY(x)s\right)} 2Z(x,Y(x)s)\operatorname{sinc}(\hat{Q}_z Z(x,Y(x)s))Y(x)\nonumber \\
-Y(x) &= \left(1-x^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{2}}\\
-Z(x,y) &= \left(1-\left(x^{\frac{2}{\epsilon_2}}+y^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
-\end{align}
-To make use of numerical integration routines for multiple dimensions over hypercubes it might be convenient to perform a variable transformation using $ x(r,\theta,\phi)$ and $ y(r,\theta,\phi)$ given in eq.\ \ref{eq:superellipsoid:parametric}. The Jacobi determinant for this substitution is
-\begin{align}\label{eq:detJ_superquadrics}
-  \det{\M{J}} &= \det
-  \left(
-    \begin{array}{cc}
-      \frac{\partial x(r,\theta,0)}{\partial r}      & \frac{\partial y(r,\theta,0)}{\partial r}\\
-      \frac{\partial x(r,\theta,0)}{\partial \theta} & \frac{\partial y(r,\theta,0)}{\partial \theta}
-    \end{array}
-  \right) = \epsilon_2 r \abs{\cos\theta\sin\theta}^{\epsilon_2-1}
-\end{align}
-so that
-\begin{align}
-\begin{split}
-F_\mathrm{SEll}(\B{Q}) &= 8 \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,\int\limits_{0}^1
-\mathrm{d}r\, \int\limits_{0}^{\pi/2} \mathrm{d}\theta\,  \epsilon_2 r \abs{\cos\theta\sin\theta}^{\epsilon_2-1}\\
-     &\times \cos\left(\hat{Q}_xx(r,\theta,0)+\hat{Q}_yy(r,\theta,0)\right) Z\operatorname{sinc}(\hat{Q}_z Z)\nonumber \\
-Z &= \left(1-\left(x(r,\theta,0)^{\frac{2}{\epsilon_2}}+y(r,\theta,0)^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
-\end{split}
-\end{align}
+As the asymmetric superellipsoid is obtained by a scale transform, which is a special case of an affine transform only the Fourier transform of a unit superellipsoid has to be solved. All its affine transform than can be easily calculated by linear algebra.
+
 
 \begin{figure}[thb]
 \begingroup
@@ -1713,6 +1678,27 @@ Z &= \left(1-\left(x(r,\theta,0)^{\frac{2}{\epsilon_2}}+y(r,\theta,0)^{\frac{2}{
   \caption{Scattering patterns for super-quadrics with scale factors are $a_1=30$nm, $a_2=20$nm, $a_3=10$nm calculated for detector distances (2m, 6m, 18m) and a wavelength of 0.6nm are shown. Three orientation using Tait–Bryan angles (yaw-
 pitch-roll) are shown.} \label{fig:superquadricsIQ2D}
 \end{figure}
+
+The Fourier transform of a unit super-quadrics ($a_1=a_2=a_3=1$) is
+\begin{align}\label{eq:FTsuperellipsoid}
+  F_\mathrm{SEll}(\B{Q}) &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \int\limits_{-1}^1
+\mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,  \int\limits_{-Z(x,y)}^{Z(x,y)} \mathrm{d}z \,
+e^{\imath\B{\hat{Q}r}} \nonumber \\
+ &=
+\det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\,   \\
+& \times \int\limits_{-1}^1
+\mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,
+e^{\imath\left(\hat{Q}_xx+\hat{Q}_yy\right)} 2Z(x,y)\operatorname{sinc}(\hat{Q}_z Z(x,y))\nonumber \\
+&= \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \\
+& \times \int\limits_{-1}^1
+\mathrm{d}x\, \int\limits_{-1}^{1} \mathrm{d}s\,
+e^{\imath\left(\hat{Q}_xx+\hat{Q}_yY(x)s\right)} 2Z(x,Y(x)s)\operatorname{sinc}(\hat{Q}_z Z(x,Y(x)s))Y(x)\nonumber \\
+Y(x) &= \left(1-x^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{2}}\\
+Z(x,y) &= \left(1-\left(x^{\frac{2}{\epsilon_2}}+y^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
+\end{align}
+
+
 
 \clearpage
 \subsection{oriented super-egg} ~\\
