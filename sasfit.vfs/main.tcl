@@ -22,6 +22,7 @@
 # Author(s) of this file:
 #   Ingo Bressler (ingo@cs.tu-berlin.de)
 
+#encoding system utf-8
 if {[catch {package require starkit} result]
 } {
 	set thisdir [file dirname [info script]]
@@ -54,6 +55,7 @@ package require -exact BWidget 1.2.1
 # (useful if executable is not in same dir with data&doc&plugins dir)
 if { $argc > 0 } {
 	set ::sasfit_basedir [lindex $argv 0]
+	puts $::sasfit_basedir
 }
 
 # final sasfit application

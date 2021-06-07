@@ -3919,7 +3919,6 @@ proc sasfitmenu {} {
    global AnalytPar GlobalAnalytPar
    global FitPrecision
    global zoomMod
-
    # Blt_ZoomStack modifier, see
    # saskit/kit/lib/blt2.4/graph.tcl, line 85
    set zoomMod "Control-"
@@ -3930,11 +3929,11 @@ proc sasfitmenu {} {
    frame .top -relief raised -bd 2 
    pack .top -fill x -side top
    sasfit_menubar_build .top
-
 frame .obW 
    pack .obW -fill both -expand yes 
 #------------------------------------------------------------------------------
 #                           Creat quick message bar
+
 
 frame .messageframe -relief sunken -borderwidth 2 -height 5m
    pack .messageframe -side bottom -fill x
