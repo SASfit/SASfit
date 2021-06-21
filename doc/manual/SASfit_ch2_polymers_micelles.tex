@@ -74,7 +74,7 @@ these cases when $k = 1$. These deviations are reduced to
 less than 3\% of the calculated intensity using $k= 1.06$.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{Beaucage}:}\\
+\uline{Input Parameters for model \texttt{Beaucage}:}\\
 \begin{description}
 \item[\texttt{G}] $G$ is the Guinier pre-factor of the larger structure
 \item[\texttt{B}] $B$ is a pre-factor specific to the type of power-law scattering:
@@ -120,7 +120,7 @@ new parameters over local Guinier and power-law fits.
 
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{Beaucage2}:}\\
+\uline{Input Parameters for model \texttt{Beaucage2}:}\\
 \begin{description}
 \item[\texttt{G}] Guinier pre-factor $G_i$
 \item[\texttt{B}] pre-factor $B_i$, specific to the type of power-law scattering:
@@ -131,7 +131,7 @@ $B_i$ is defined according to the regime in which the exponent $P_i$ falls.
 $P > 3$. For weak power-law decays, $k$ deviates slightly from 1
 \item[\texttt{P}] scaling exponent of the power law assigned to the larger structure $R_{g,i}$
 \end{description}
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 For calculating a summation over $n$ interrelated structural levels one has to use global fitting. For \texttt{R\_i} and \texttt{R\_i+1} one has to define global parameters, let say P1 and P2 in the first scattering contribution. In the second scattering contribution one has to use for \texttt{R\_i} the same global parameter P2 as for \texttt{R\_i+1} in the previous scattering contribution. The global parameters for \texttt{R\_i} in one scattering contribution and the global parameter for \texttt{R\_i+1} in the previous scattering contribution have to be the same. By this an arbitrary number of interrelated structural levels can be calculated.
 
 \begin{figure}[htb]
@@ -183,7 +183,7 @@ applied in the pseudo-continuous limit.
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{WormLikeChainEXV}:}\\
+\uline{Input Parameters for model \texttt{WormLikeChainEXV}:}\\
 \begin{description}
 \item[\texttt{R}] radius $R$ of cylindrical core with uniform scattering length density
 \item[\texttt{l}] Kuhn length\footnote{The Kuhn length $l$ is related to the length $a$ of
@@ -254,7 +254,7 @@ P(Q,L,l,R) = P_0(Q,L,l)\, P_{cs}(Q,R)
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{KholodenkoWorm}:}\\
+\uline{Input Parameters for model \texttt{KholodenkoWorm}:}\\
 \begin{description}
 \item[\texttt{R}] radius $R$ of cylindrical core with uniform scattering length density
 \item[\texttt{l}] Kuhn length\footnote{The Kuhn length $l$ is related to the length $a$ of
@@ -416,7 +416,7 @@ lengths
 \vspace{3mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{SPHERE+Chains(RW)}:}\\
+\uline{Input Parameters for model \texttt{SPHERE+Chains(RW)}:}\\
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
@@ -447,7 +447,7 @@ N_\text{agg} &= (1-x_\text{solv,core}) \frac{4}{3}\pi R_\text{core}^3  / V_\text
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{SPHERE+Chains(RW)\_Rc}:}
+\uline{Input Parameters for model \texttt{SPHERE+Chains(RW)\_Rc}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -479,7 +479,7 @@ R_\text{core} &= \left( \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{SPHERE+Chains(RW)\_Nagg}:}
+\uline{Input Parameters for model \texttt{SPHERE+Chains(RW)\_Nagg}:}
 \begin{description}
 \item[\texttt{N\_agg}] aggregation number
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -571,7 +571,7 @@ lengths
 \vspace{3mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{ELL+Chains(RW)}:}\\
+\uline{Input Parameters for model \texttt{ELL+Chains(RW)}:}\\
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
@@ -602,7 +602,7 @@ The excess scattering lengths and aggregation number in eq.\
 \beta_\text{brush} &= V_\text{brush} (\eta_\text{brush}-\eta_\text{solv}) \\
 N_\text{agg} &= (1-x_\text{solv,core}) \frac{4}{3}\pi \epsilon R_\text{core}^3  / V_\text{core}
 \end{align}
-\underline{Input Parameters for model \texttt{ELL+Chains(RW)\_Rc}:}
+\uline{Input Parameters for model \texttt{ELL+Chains(RW)\_Rc}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -634,7 +634,7 @@ The excess scattering lengths and the core radius $R_\text{core}$ needed in eq.\
 R_\text{core} &= \left( \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
                         \, \frac{3}{4\pi\epsilon}\right)^{1/3}
 \end{align}
-\underline{Input Parameters for model \texttt{ELL+Chains(RW)\_Nagg}:}
+\uline{Input Parameters for model \texttt{ELL+Chains(RW)\_Nagg}:}
 \begin{description}
 \item[\texttt{N\_agg}] aggregation number
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -729,7 +729,7 @@ one can calculate the excess scattering lengths by
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{CYL+Chains(RW)}:}
+\uline{Input Parameters for model \texttt{CYL+Chains(RW)}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
@@ -761,7 +761,7 @@ N_\text{agg} &= (1-x_\text{solv,core}) \pi  R_\text{core}^2 H  / V_\text{core}
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{CYL+Chains(RW)\_Rc}:}
+\uline{Input Parameters for model \texttt{CYL+Chains(RW)\_Rc}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -794,7 +794,7 @@ R_\text{core} &= \sqrt{ \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
 
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{CYL+Chains(RW)\_Nagg}:}
+\uline{Input Parameters for model \texttt{CYL+Chains(RW)\_Nagg}:}
 \begin{description}
 \item[\texttt{N\_agg}] aggregation number
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -892,7 +892,7 @@ one can calculate the excess scattering lengths by
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{WORM+Chains(RW)}:}
+\uline{Input Parameters for model \texttt{WORM+Chains(RW)}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
@@ -923,7 +923,7 @@ N_\text{agg} &= (1-x_\text{solv,core}) \pi  R_\text{core}^2 L  / V_\text{core}
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{CYL+Chains(RW)\_Rc}:}
+\uline{Input Parameters for model \texttt{CYL+Chains(RW)\_Rc}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -955,7 +955,7 @@ R_\text{core} &= \sqrt{ \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
 
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{CYL+Chains(RW)\_Nagg}:}
+\uline{Input Parameters for model \texttt{CYL+Chains(RW)\_Nagg}:}
 \begin{description}
 \item[\texttt{N\_agg}] aggregation number
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -1013,7 +1013,7 @@ $R_\text{core} = 2 n_\text{agg} V_\text{core} / (1-x_\text{solv,core})$
 
 \vspace{3mm}
 
-\underline{Input Parameters for model \texttt{ROD+Chains(RW)}:}\\
+\uline{Input Parameters for model \texttt{ROD+Chains(RW)}:}\\
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
@@ -1032,7 +1032,7 @@ into the core is mimicked by $d\sim 1$ for $R_\text{core}\gg R_g$
 \vspace{10mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{ROD+Chains(RW)\_Rc}:}\\
+\uline{Input Parameters for model \texttt{ROD+Chains(RW)\_Rc}:}\\
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -1051,7 +1051,7 @@ into the core is mimicked by $d\sim 1$ for $R_\text{core}\gg R_g$
 \vspace{3mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{ROD+Chains(RW)\_nagg}:} \\
+\uline{Input Parameters for model \texttt{ROD+Chains(RW)\_nagg}:} \\
 \begin{description}
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -1244,7 +1244,7 @@ lengths
 \vspace{3mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{SPHERE+R$\hat{~}$-a}:}
+\uline{Input Parameters for model \texttt{SPHERE+R$\hat{~}$-a}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
@@ -1275,7 +1275,7 @@ N_\text{agg} &= (1-x_\text{solv,core}) \frac{4}{3}\pi R_\text{core}^3  / V_\text
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{SPHERE+R$\hat{~}$-a\_Rc}:}
+\uline{Input Parameters for model \texttt{SPHERE+R$\hat{~}$-a\_Rc}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -1307,7 +1307,7 @@ R_\text{core} &= \left( \frac{N_\text{agg} V_\text{core}}{1-x_\text{solv,core}}
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{SPHERE+R$\hat{~}$-a\_Nagg}:}
+\uline{Input Parameters for model \texttt{SPHERE+R$\hat{~}$-a\_Nagg}:}
 \begin{description}
 \item[\texttt{N\_agg}] aggregation number
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -1423,7 +1423,7 @@ lengths
 \vspace{3mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{ROD+R$\hat{~}$-a}:}
+\uline{Input Parameters for model \texttt{ROD+R$\hat{~}$-a}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
@@ -1454,7 +1454,7 @@ N_\text{agg} &=  2\pi R_\text{core}^2H   \, \frac{1-x_\text{solv,core}}{V_\text{
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{ROD+R$\hat{~}$-a\_Rc}:}
+\uline{Input Parameters for model \texttt{ROD+R$\hat{~}$-a\_Rc}:}
 \begin{description}
 \item[\texttt{R\_core}] core radius
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -1485,7 +1485,7 @@ R_\text{core} &=  \frac{2 n_\text{agg}\, V_\text{core}}{1-x_\text{solv,core}}
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{ROD+R$\hat{~}$-a\_nagg}:}
+\uline{Input Parameters for model \texttt{ROD+R$\hat{~}$-a\_nagg}:}
 \begin{description}
 \item[\texttt{n\_agg}] specific aggregation number (number of chains per surface area)
 \item[\texttt{V\_core}] molecular volume of single block unit in the micellar core
@@ -1555,7 +1555,7 @@ Non-penetrating of the chains into the core region is mimicked by $d\approx 1$ f
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{SphereWithGaussChains}:}\\
+\uline{Input Parameters for model \texttt{SphereWithGaussChains}:}\\
 \begin{description}
 \item[\texttt{R}] radius of core $R$
 \item[\texttt{Rg}] gyration radius of chain $R_g$
@@ -1606,7 +1606,7 @@ or in \AA$^3$ in case $Q$ is given in \AA$^{-1}$.
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{BlockCopolymerMicelle}:}\\
+\uline{Input Parameters for model \texttt{BlockCopolymerMicelle}:}\\
 \begin{description}
 \item[\texttt{Vpolym\_c}] volume of a single block unit of the chains in the core $V_\text{polym,c}$,
      it should be given in units of nm$^3$ in case $Q$ is given in nm$^{-1}$ and in units of \AA$^3$

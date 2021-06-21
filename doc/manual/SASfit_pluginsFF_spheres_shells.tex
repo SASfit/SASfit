@@ -156,7 +156,7 @@ for $r>R_1$
 
 
 \vspace{5mm}
-\noindent \underline{Input Parameters for model \texttt{JuelichCoreShell}:}
+\noindent \uline{Input Parameters for model \texttt{JuelichCoreShell}:}
 \begin{description}
 \item[\texttt{C}] scaling constant $C$
 \item[\texttt{Mcore}] molecular weight core (g/mol) $M_\text{core}$
@@ -287,7 +287,7 @@ R &=\text{radius of the fuzzy sphere} \nonumber\\
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{FuzzySphere} and \texttt{radial profile of FuzzySphere}:}\\
+\uline{Input Parameters for model \texttt{FuzzySphere} and \texttt{radial profile of FuzzySphere}:}\\
 \begin{description}
 \item[\texttt{R}] radius of the fuzzy sphere  $R$
 \item[\texttt{sigma}] thickness of the fuzzy shell $\sigma$
@@ -298,7 +298,7 @@ density of solvent $\eta_\text{sol}$
 %\item[\texttt{xi}] correlation length of the fluctuations $\xi$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item This form factor is only defined for positive radii $R>0$.
 \item For $\sigma = 0$ the limiting case of a simple hard sphere
@@ -421,7 +421,7 @@ I_\textrm{core,sh}(Q,W_\textrm{core},\sigma_\textrm{core},D,\sigma_\textrm{sh,in
 \vspace{5mm}
 
 \noindent
-\underline{Input parameters for "\texttt{CoreShellMicrogel}" and "\texttt{radial profile of CoreShellMicrogel}":}
+\uline{Input parameters for "\texttt{CoreShellMicrogel}" and "\texttt{radial profile of CoreShellMicrogel}":}
 \begin{description}
     \item[\texttt{W\_core}] radius of center parts of core $W_\textrm{core}$ with homogeneous scattering length density
     \item[\texttt{sigma\_core}] interface half width of the core $\sigma_\mathrm{core}$
@@ -435,7 +435,7 @@ I_\textrm{core,sh}(Q,W_\textrm{core},\sigma_\textrm{core},D,\sigma_\textrm{sh,in
 \end{description}
 
 \noindent
-\underline{Note}
+\uline{Note}
 \begin{itemize}
   \item If one like to simulate a simple step profile one should set $D=0$ and
         $\sigma_\mathrm{core}=\sigma_\mathrm{sh,in}$. The last equality
@@ -504,7 +504,7 @@ I_\text{LinShell}    & = \big[ \,\, (\eta_\text{c}-\eta_\text{sol}-b)F_\text{sph
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{LinShell} and \texttt{radial profile of LinShell}:}\\
+\uline{Input Parameters for model \texttt{LinShell} and \texttt{radial profile of LinShell}:}\\
 \begin{description}
 \item[\texttt{R}] radius of core $R$
 \item[\texttt{dR}] thickness of the shell $\Delta R$
@@ -515,7 +515,7 @@ I_\text{LinShell}    & = \big[ \,\, (\eta_\text{c}-\eta_\text{sol}-b)F_\text{sph
 \item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\text{sol}$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item $x_\text{in,sol}$ and $x_\text{out,sol}$ are only physical for values between 0 and 1.
 \end{itemize}
@@ -598,7 +598,7 @@ I_\text{LinShell2}    & = \big[ \,\, (\eta_\text{c}-\eta_\text{sol}-b)F_\text{sp
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{LinShell2} and \texttt{radial profile of LinShell2}:}\\
+\uline{Input Parameters for model \texttt{LinShell2} and \texttt{radial profile of LinShell2}:}\\
 \begin{description}
 \item[\texttt{Rtot}] total overall radius $R_\text{tot}$
 \item[\texttt{dR}] thickness of the shell $\Delta R$
@@ -610,7 +610,7 @@ I_\text{LinShell2}    & = \big[ \,\, (\eta_\text{c}-\eta_\text{sol}-b)F_\text{sp
 \end{description}
 
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item $x_\text{in,sol}$ and $x_\text{out,sol}$ are only physical for values between 0 and 1.
 \end{itemize}
@@ -681,7 +681,7 @@ R_c &=\text{core radius} \nonumber\\
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{ExpShell}:}\\
+\uline{Input Parameters for model \texttt{ExpShell}:}\\
 \begin{description}
 \item[\texttt{R\_core}] radius of core  $R_c$
 \item[\texttt{DR}] thickness of the shell $\Delta R$
@@ -695,7 +695,7 @@ the solvent penetrates further into the shell and for $\alpha<0$ less.
 \item[\texttt{eta\_solvent}] scattering length density of solvent $\eta_\text{sol}$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item $\phi_\text{in}$ and $\phi_\text{out}$ are only physical for values between 0 and 1.
 \end{itemize}
@@ -795,7 +795,7 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}
+\uline{Input Parameters for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}
 \begin{description}
 \item[\texttt{R}] radius $R$
 \item[\texttt{alpha}] shape parameter of the profile $\alpha$, which is also equal to the potential law at large $Q$-values
@@ -803,14 +803,14 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \end{description}
 
 \hspace{1pt}\\
-\noindent\underline{Note for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}
+\noindent\uline{Note for model \texttt{BoucherSphere} and \texttt{Boucher profile}:}
 \begin{itemize}
 \item For $\alpha<4$ the scattering length density profile has a pole at $r=R$
 \item For $\alpha \leq 2$ the excess scattering length of the overall particle diverges and are therefore forbidden values.
 \end{itemize}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{BoucherSphere2} and \texttt{Boucher profile2}:}
+\uline{Input Parameters for model \texttt{BoucherSphere2} and \texttt{Boucher profile2}:}
 \begin{description}
 \item[\texttt{R}] radius $R$
 \item[\texttt{alpha}] shape parameter of the profile $\alpha$, which is also equal to the potential law at large $Q$-values
@@ -818,7 +818,7 @@ making use of the fact that the bessel function can be expressed in terms of gen
 \end{description}
 
 \hspace{1pt}\\
-\noindent\underline{Note for model \texttt{BoucherSphere2} and \texttt{Boucher profile}:}
+\noindent\uline{Note for model \texttt{BoucherSphere2} and \texttt{Boucher profile}:}
 \begin{itemize}
 \item For $\alpha<4$ the scattering length density profile has a pole at $r=R$
 \item There is no restriction for the input values of $\alpha$ in the form factor but in the profile, which only allows values for $\alpha>2$.  $\alpha$-values below 2 do not have a standard physical interpretation.
@@ -866,14 +866,14 @@ The scattering amplitude and the scattering intensity are then given by
 \end{figure}
 
 \noindent
-\underline{Note}
+\uline{Note}
 \begin{itemize}
   \item the parameter $\alpha$ needs to be larger than -3.
   \item for $\alpha$ values smaller than 0 the radial profile has a pole at $r=0$.
 \end{itemize}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{power law Sphere} and \texttt{profile:power law Sphere}:}
+\uline{Input Parameters for model \texttt{power law Sphere} and \texttt{profile:power law Sphere}:}
 \begin{description}
 \item[\texttt{R}] radius $R$
 \item[\texttt{alpha}] power law $\alpha$ in radial profile
@@ -921,14 +921,14 @@ For certain values of $\alpha$ the form factor can be expressed by simple ration
 \end{figure}
 
 \noindent
-\underline{Note}
+\uline{Note}
 \begin{itemize}
   \item the parameter $\alpha$ needs to be larger than -3.
   \item for $\alpha$ values smaller than 0 the radial profile has a pole at $r=0$.
 \end{itemize}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{Gen. Exp. Sphere} and \texttt{profile:Gen. Exp.  Sphere}:}
+\uline{Input Parameters for model \texttt{Gen. Exp. Sphere} and \texttt{profile:Gen. Exp.  Sphere}:}
 \begin{description}
 \item[\texttt{R}] radius of gyration $R_g$
 \item[\texttt{alpha}] shape parameter $\alpha$ of radial profile
@@ -983,14 +983,14 @@ where $\operatorname{D_F}(x)$ is the Dawson integral.
 \end{figure}
 
 \noindent
-\underline{Note}
+\uline{Note}
 \begin{itemize}
   \item the parameter $\alpha$ needs to be larger than -3.
   \item for $\alpha$ values smaller than 0 the radial profile has a pole at $r=0$.
 \end{itemize}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{Gen. Gauss Sphere} and \texttt{profile:Gen. Gauss  Sphere}:}
+\uline{Input Parameters for model \texttt{Gen. Gauss Sphere} and \texttt{profile:Gen. Gauss  Sphere}:}
 \begin{description}
 \item[\texttt{R}] radius of gyration $R_g$
 \item[\texttt{alpha}] shape parameter $\alpha$ of radial profile

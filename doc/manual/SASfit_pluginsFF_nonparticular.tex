@@ -53,7 +53,7 @@ For the dead leaves model the Debye correlation function is independent of the v
 \caption{Dead-leaves model for different size distributions} \label{fig:DeadLeavesIQ}
 \end{figure}
 
-\underline{Input Parameters for model \texttt{dead leaves model}:}\\
+\uline{Input Parameters for model \texttt{dead leaves model}:}\\
 \begin{description}
 \item[\texttt{scale}] characteristic length for positional correlation $\xi$
 \item[\texttt{dummy}] not used
@@ -63,7 +63,7 @@ For the dead leaves model the Debye correlation function is independent of the v
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -105,7 +105,7 @@ where $\phi_0=1-\phi_1=\exp(-\theta K_\mathrm{LN}(0))$ is the volume fraction of
 \end{figure}
 
 
-\underline{Input Parameters for model \texttt{boolean union model}:}\\
+\uline{Input Parameters for model \texttt{boolean union model}:}\\
 \begin{description}
 \item[\texttt{scale}] characteristic length for positional correlation $\xi$
 \item[\texttt{phi0}] volume fraction $\phi_0$ of pore-like phase
@@ -115,7 +115,7 @@ where $\phi_0=1-\phi_1=\exp(-\theta K_\mathrm{LN}(0))$ is the volume fraction of
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -236,7 +236,7 @@ where $a=2\pi/d$, $b=1/\xi$, and $c=1/r_c$. Here $d$ is the quasi-periodic dista
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{CRW 1}:}
+\uline{Input Parameters for model \texttt{CRW 1}:}
 \begin{description}
 \item[\texttt{scale}] scaling factor for the intensity
 \item[\texttt{d}] quasi-periodic distance $d$
@@ -245,7 +245,7 @@ where $a=2\pi/d$, $b=1/\xi$, and $c=1/r_c$. Here $d$ is the quasi-periodic dista
 
 \vspace{5mm}
 
-\underline{Input Parameters for models \texttt{CRW 2}, \texttt{CRW 3}, \texttt{CRW 4}, \texttt{CRW 5}:}\\
+\uline{Input Parameters for models \texttt{CRW 2}, \texttt{CRW 3}, \texttt{CRW 4}, \texttt{CRW 5}:}\\
 \begin{description}
 \item[\texttt{scale}] scaling factor for the intensity
 \item[\texttt{d}] quasi-periodic distance $d$
@@ -255,7 +255,7 @@ where $a=2\pi/d$, $b=1/\xi$, and $c=1/r_c$. Here $d$ is the quasi-periodic dista
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item for the models 2 and 3 $r_c\neq\xi$, otherwise \SASfit returns an error message.
 \item Instead of assuming a two-point correlation function, one also can try to inverse the scattering data back into the spectral function $f(q)$ which  e.g.\ has been realised in the software \texttt{SAXSMorph} \cite{Ingham2010}.
@@ -354,7 +354,7 @@ d^2 &= \frac{16 \pi ^2 c_2}{2 \sqrt{c_2}-c_1}
 \end{align}
 
 
-\underline{Input Parameters for model \texttt{Teubner-Strey}:}\\
+\uline{Input Parameters for model \texttt{Teubner-Strey}:}\\
 \begin{description}
 \item[\texttt{xi}] characteristic length for positional correlation $\xi$
 \item[\texttt{d}] characteristic domain size $d$
@@ -367,7 +367,7 @@ d^2 &= \frac{16 \pi ^2 c_2}{2 \sqrt{c_2}-c_1}
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -412,13 +412,13 @@ I_\mathrm{DAB}(q) &= \frac{\left(\pi\Delta\eta\xi^3\right)^2}{\left(1+q^2\xi^2\r
 \end{align}
 
 
-\underline{Input Parameters for model \texttt{Debye-Anderson-Brumberger}:}\\
+\uline{Input Parameters for model \texttt{Debye-Anderson-Brumberger}:}\\
 \begin{description}
 \item[\texttt{xi}] correlation length $\xi$
 \item[\texttt{eta}] scattering length density contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -451,14 +451,14 @@ I(q) =  \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\G
 \end{align}
 
 
-\underline{Input Parameters for model \texttt{gDAB}:}\\
+\uline{Input Parameters for model \texttt{gDAB}:}\\
 \begin{description}
 \item[\texttt{xi}] correlation length $\xi$
 \item[\texttt{H}] Hurst exponent $H$
 \item[\texttt{eta}] scattering length density contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -506,14 +506,14 @@ For values of $\epsilon<1$ the objects become disk-like and show a $q^{-2}$ scat
 \vspace{5mm}
 
 
-\underline{Input Parameters for model \texttt{epsilonDAB}:}
+\uline{Input Parameters for model \texttt{epsilonDAB}:}
 \begin{description}
 \item[\texttt{xi}] correlation length $\xi$
 \item[\texttt{epsilon}] compression or extensional deformation factor of one axis $\epsilon$
 \item[\texttt{eta}] scattering length density contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -555,14 +555,14 @@ the dimensionality of the system.
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Spinodal}:}
+\uline{Input Parameters for model \texttt{Spinodal}:}
 \begin{description}
 \item[\texttt{Imax}] scattering intensity at peak position $I_\text{max}$
 \item[\texttt{Qmax}] peak maximum $q_\text{max}$
 \item[\texttt{gamma}] exponent $\gamma$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -618,7 +618,7 @@ The parameter $\gamma$ can be calculated from the volume fraction of the cluster
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{phase separation}:}\\
+\uline{Input Parameters for model \texttt{phase separation}:}\\
 \begin{description}
 \item[\texttt{Imax}] scattering intensity at peak position $I_\text{max}$
 \item[\texttt{Qmax}] peak maximum $q_\text{max}$
@@ -627,7 +627,7 @@ The parameter $\gamma$ can be calculated from the volume fraction of the cluster
 \item[\texttt{model}] model to calculate $\gamma(\phi)$; 1: plates, 2: rods, 3: spheres, otherwise $\gamma$ is input parameter
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item for certain values of $\gamma$ far away from 1 the intensity can become negative. In this case the plugin returns with an error message.
 \end{itemize}
@@ -658,7 +658,7 @@ out as $\gamma(r) \simeq \frac{1}{r}exp(-r/\xi)$. Note that the
 low-$Q$ limit of this emical form reproduces the Guinier law.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{OrnsteinZernike}:}\\
+\uline{Input Parameters for model \texttt{OrnsteinZernike}:}\\
 \begin{description}
 \item[\texttt{I0}] forward scattering $I_0$ at $q=0$.
 \item[\texttt{xi}] correlation length $\xi$
@@ -690,7 +690,7 @@ Here the peak position is related to the $d$-spacing as $q_0 =
 polyelectrolytes, multiphase systems, layered structures, etc.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{Broad-Peak}:}\\
+\uline{Input Parameters for model \texttt{Broad-Peak}:}\\
 \begin{description}
 \item[\texttt{I0}] scattering intensity $I(q)$ at $q=q_0$.
 \item[\texttt{xi}] correlation length $\xi$
@@ -699,7 +699,7 @@ polyelectrolytes, multiphase systems, layered structures, etc.
 \end{description}
 
 \hspace{1pt}\\
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item For $q_0=0$, $m=2$ and $p=1$ one gets the Ornstein-Zernike model.
 \item For $q_0=0$, $m=2$ and $p=2$ The Broad-Peak model is identical to the Debye-Anderson-Brumberger model.
@@ -769,7 +769,7 @@ per unit area per unit mass (cm$^2$ \AA$^{-2}$ g$^{-1}$) of a sheet.
 
 \newpage
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{generalized Guinier law}:}\\
+\uline{Input Parameters for model \texttt{generalized Guinier law}:}\\
 \begin{description}
 \item[\texttt{I0}] scaling factor $I0$.
 \item[\texttt{a}]  dimensionality parameter $\alpha$ for potential law at small
@@ -778,7 +778,7 @@ per unit area per unit mass (cm$^2$ \AA$^{-2}$ g$^{-1}$) of a sheet.
 \end{description}
 
 \hspace{1pt}\\
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item parameter constrain: $3>\alpha\geq 0$
 \end{itemize}
@@ -816,7 +816,7 @@ D   &= G_1 \exp\left(-\frac{Q_1^2 R_{g1}^2}{3-s_1}\right) Q_1^{m-s_1}
 The constrains for the parameters are $R_{g2}>R_{g1}$, $3>s_1>s_2$, and $m>s_1$. The reason for that is, that the functions and their derivatives used in \ref{eq:generalizedGuinierPorod} are strongly monotonic decaying and the constrains are required to get a continuous function and derivative at $Q_1$ and $Q_2$.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{generalized Guinier-Porod law}:}\\
+\uline{Input Parameters for model \texttt{generalized Guinier-Porod law}:}\\
 \begin{description}
 \item[\texttt{G2}] scaling factor $G_2$.
 \item[\texttt{s2}] potential law for the small $Q$-region, $s_2$ is a dimensionality parameter
@@ -827,7 +827,7 @@ The constrains for the parameters are $R_{g2}>R_{g1}$, $3>s_1>s_2$, and $m>s_1$.
 \end{description}
 
 \hspace{1pt}\\
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item parameter constrain: $R_{g2}>R_{g1}$
 \item parameter constrain: $3>s_1>s_2$

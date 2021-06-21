@@ -14,7 +14,7 @@ I_\mathrm{deg}(\psi) &= A + B\sin^2\left((\psi-\delta)\frac{\pi}{180}\right) + C
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{A+Bsin2+Csin4 (deg)} and \texttt{A+Bsin2+Csin4 (rad)}:}\\
+\uline{Input Parameters for models \texttt{A+Bsin2+Csin4 (deg)} and \texttt{A+Bsin2+Csin4 (rad)}:}\\
 \begin{description}
 \item[\texttt{A}] isotropic scattering intensity $A$
 \item[\texttt{B}] anisotropic $\sin^2$-dependent scattering intensity $B$
@@ -22,7 +22,7 @@ I_\mathrm{deg}(\psi) &= A + B\sin^2\left((\psi-\delta)\frac{\pi}{180}\right) + C
 \item[\texttt{delta}] offset of deformation direction $\delta$ in degree or radian
 \end{description}
 
-\noindent \underline{Note:}
+\noindent \uline{Note:}
 None.
 
 
@@ -43,7 +43,7 @@ I_\mathrm{rad}(\psi) &= \left(\left(\frac{\cos(\psi-\delta)}{A}\right)^2 + \left
 I_\mathrm{deg}(\psi) &= \left(\left(\frac{\cos\left((\psi-\delta)\frac{\pi}{180}\right)}{A}\right)^2 + \left(\frac{\sin\left((\psi-\delta)\frac{\pi}{180}\right)}{B}\right)^2\right)^{-N/2}+C
 \end{align}
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{elliptically averaged (deg)}} \underline{and} \underline{\texttt{elliptically averaged (rad)}:}\\
+\uline{Input Parameters for models \texttt{elliptically averaged (deg)}} \uline{and} \uline{\texttt{elliptically averaged (rad)}:}\\
 \begin{description}
 \item[\texttt{A}] semi-axis along $\psi-\delta=0$ of iso-contours in reciprocal space
 \item[\texttt{B}] semi-axis along $\psi-\delta=\pi/2$ of iso-contours in reciprocal space
@@ -51,7 +51,7 @@ I_\mathrm{deg}(\psi) &= \left(\left(\frac{\cos\left((\psi-\delta)\frac{\pi}{180}
 \item[\texttt{delta}] direction of the polarisation $\delta$ in degree or radian
 \end{description}
 
-\noindent \underline{Note:}
+\noindent \uline{Note:}
 The reciprocal value of $A$ and $B$ are related to the corresponding correlation length of the scattering object in that direction.
 
 
@@ -77,7 +77,7 @@ where $\lambda$ is the degree of compression. The final model function is than n
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{affine shrinkage (deg)} and \texttt{affine shrinkage (rad)}:}\\
+\uline{Input Parameters for models \texttt{affine shrinkage (deg)} and \texttt{affine shrinkage (rad)}:}\\
 \begin{description}
 \item[\texttt{I0}] flat background $I_0$
 \item[\texttt{A}] Amplitude $A$ of the angle dependent intensity
@@ -85,7 +85,7 @@ where $\lambda$ is the degree of compression. The final model function is than n
 \item[\texttt{delta}] offset of shrinkage direction $\delta$ in degree or radian
 \end{description}
 
-\noindent \underline{Note:}
+\noindent \uline{Note:}
 $\lambda$ needs to be a positive nonzero number. $\lambda=1$: no shrinkage, $\lambda>1$: shrinkage, $0<\lambda<1$: swelling.
 
 
@@ -112,7 +112,7 @@ The final model function is than normalized on the average intensity so that the
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{MaierSaupe (deg)} and \texttt{MaierSaupe (rad)}:}\\
+\uline{Input Parameters for models \texttt{MaierSaupe (deg)} and \texttt{MaierSaupe (rad)}:}\\
 \begin{description}
 \item[\texttt{I0}] flat background $I_0$
 \item[\texttt{A}] Amplitude $A$ of the angle dependent intensity
@@ -120,7 +120,7 @@ The final model function is than normalized on the average intensity so that the
 \item[\texttt{delta}] offset $\delta$ in degree or radian
 \end{description}
 
-\noindent \underline{Note:}
+\noindent \uline{Note:}
 For $\kappa=0$ the azimuthal intensity is flat, for $\kappa>0$ the highest intensity is in the direction $\psi-\delta=0$ and for $\kappa<0$ in the direction $\psi-\delta=\pi/2$
 
 \begin{figure}[htb]
@@ -151,8 +151,8 @@ with $\chi = \psi-\delta$.  The final model function is than normalized on the a
 For the two approximations, the in principle obsolete Leadbetter and Norris one and the correct Kratky approximation, the Maier-Saupe and the Onsager orientation distribution have been implemented.
 
 \hspace{1pt}\\
-\underline{Input Parameters for models} \\
-\underline{\texttt{azimuthal (long cyl.,MS,K,deg)}}, \underline{\texttt{azimuthal (long cyl.,MS,K,rad)}}, \underline{\texttt{azimuthal (long cyl.,Onsager,K,deg)}}, \underline{\texttt{azimuthal (long cyl.,Onsager,K,rad)}}, \underline{\texttt{azimuthal (long cyl.,MS,LN,deg)}}, \underline{\texttt{azimuthal (long cyl.,MS,LN,rad)}}, \underline{\texttt{azimuthal (long cyl.,Onsager,LN,deg)}}, \underline{\texttt{azimuthal (long cyl.,Onsager,LN,rad)}:}\\
+\uline{Input Parameters for models} \\
+\uline{\texttt{azimuthal (long cyl.,MS,K,deg)}}, \uline{\texttt{azimuthal (long cyl.,MS,K,rad)}}, \uline{\texttt{azimuthal (long cyl.,Onsager,K,deg)}}, \uline{\texttt{azimuthal (long cyl.,Onsager,K,rad)}}, \uline{\texttt{azimuthal (long cyl.,MS,LN,deg)}}, \uline{\texttt{azimuthal (long cyl.,MS,LN,rad)}}, \uline{\texttt{azimuthal (long cyl.,Onsager,LN,deg)}}, \uline{\texttt{azimuthal (long cyl.,Onsager,LN,rad)}:}\\
 \begin{description}
 \item[\texttt{I0}] flat background $I_0$
 \item[\texttt{A}] Amplitude $A$ of the angle dependent intensity
@@ -161,7 +161,7 @@ For the two approximations, the in principle obsolete Leadbetter and Norris one 
 \end{description}
 
 \newpage
-\noindent \underline{Note:}
+\noindent \uline{Note:}
 \begin{itemize}
   \item The integrals for $\mathcal{I}_\mathrm{K}(\chi)$ and $\mathcal{I}_\mathrm{LN}(\chi)$ around $\chi\simeq\pi/2$ become numerical unstable and are fixed to the value at $(1-10^{-4})\pi/2$.
   \item For the Maier-Saupe orientation distribution in the Kratky approximation the analytical solution given by \cite{Mills2008} has been implemented.
@@ -191,7 +191,7 @@ A couple of models of sheared and deformed form factors are described in section
 
 \hspace{1pt}\\
 The input parameters are the same as those in \ref{sect:ShearedCylinderHayterPenfold} and \ref{sect:partlyalignedCylShell}, except that $q$ and $\psi$ have been exchanged.\\
-\underline{Input Parameters for model}\\ \underline{\texttt{Sheared Cylinders (Maier-Saupe) azimuthal}}, \underline{\texttt{Sheared Cylinders (Gauss) azimuthal}}, \underline{\texttt{Sheared Cylinders (Boltzmann) azimuthal}}, \underline{\texttt{Sheared Cylinders (Onsager) azimuthal}}, \underline{\texttt{Sheared Cylinders (Heavyside) azimuthal}}, \underline{\texttt{Sheared Cylinders (Hayter-Penfold) azimuthal}}:\\
+\uline{Input Parameters for model}\\ \uline{\texttt{Sheared Cylinders (Maier-Saupe) azimuthal}}, \uline{\texttt{Sheared Cylinders (Gauss) azimuthal}}, \uline{\texttt{Sheared Cylinders (Boltzmann) azimuthal}}, \uline{\texttt{Sheared Cylinders (Onsager) azimuthal}}, \uline{\texttt{Sheared Cylinders (Heavyside) azimuthal}}, \uline{\texttt{Sheared Cylinders (Hayter-Penfold) azimuthal}}:\\
 \begin{description}
 \item[\texttt{R}] radius of cylinders $R$
 \item[\texttt{t}] shell thickness $t$
@@ -206,7 +206,7 @@ The input parameters are the same as those in \ref{sect:ShearedCylinderHayterPen
 
 \vspace{5mm}
 
-\underline{Input Parameters for model}\\ \underline{\texttt{Sheared Spheroids (Maier-Saupe) azimuthal}}, \underline{\texttt{Sheared Spheroids (Gauss) azimuthal}}, \underline{\texttt{Sheared Spheroids (Boltzmann) azimuthal}}, \underline{\texttt{Sheared Spheroids (Onsager) azimuthal}}, \underline{\texttt{Sheared Spheroids (Heavyside) azimuthal}}, \underline{\texttt{Sheared Spheroids (Hayter-Penfold) azimuthal}}:\\
+\uline{Input Parameters for model}\\ \uline{\texttt{Sheared Spheroids (Maier-Saupe) azimuthal}}, \uline{\texttt{Sheared Spheroids (Gauss) azimuthal}}, \uline{\texttt{Sheared Spheroids (Boltzmann) azimuthal}}, \uline{\texttt{Sheared Spheroids (Onsager) azimuthal}}, \uline{\texttt{Sheared Spheroids (Heavyside) azimuthal}}, \uline{\texttt{Sheared Spheroids (Hayter-Penfold) azimuthal}}:\\
 \begin{description}
 \item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
 \item[\texttt{t}] shell thickness $t$
@@ -221,7 +221,7 @@ The input parameters are the same as those in \ref{sect:ShearedCylinderHayterPen
 
 \vspace{5mm}
 
-\noindent \underline{Note:}
+\noindent \uline{Note:}
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
 \item The numerics becomes instable at large $q$-values and t the same time high order parameters.

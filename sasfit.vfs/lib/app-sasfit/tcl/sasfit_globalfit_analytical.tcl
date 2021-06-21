@@ -2130,72 +2130,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(SQ,s9,label) ""
 				  set actualPar(SQ,s10,label) ""
 				}
-	   "Hard Sphere"        { set actualPar(SQ,s1,label) "RHS ="
-				  set actualPar(SQ,s2,label) "fp ="
-				  set actualPar(SQ,s3,label) ""
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	   "Sticky Hard Sphere" { set actualPar(SQ,s1,label) "RHS ="
-				  set actualPar(SQ,s2,label) "tau ="
-				  set actualPar(SQ,s3,label) "fp ="
-				  set actualPar(SQ,s4,label) ""
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	 "Sticky Hard Sphere 2" { set actualPar(SQ,s1,label) "RHS ="
-				  set actualPar(SQ,s2,label) "tau ="
-				  set actualPar(SQ,s3,label) "Delta ="
-				  set actualPar(SQ,s4,label) "fp ="
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"Square Well Potential" { set actualPar(SQ,s1,label) "RHS ="
-				  set actualPar(SQ,s2,label) "eta ="
-				  set actualPar(SQ,s3,label) "epsi/kBT ="
-				  set actualPar(SQ,s4,label) "lambda ="
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-   "Thin Square Well Potential" { set actualPar(SQ,s1,label) "RHS ="
-				  set actualPar(SQ,s2,label) "phi ="
-				  set actualPar(SQ,s3,label) "U/kT ="
-				  set actualPar(SQ,s4,label) "epsilon ="
-				  set actualPar(SQ,s5,label) ""
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
-	"Square Well Potential 2" { set actualPar(SQ,s1,label) "RHS ="
-				  set actualPar(SQ,s2,label) "eta ="
-				  set actualPar(SQ,s3,label) "epsi/kB ="
-				  set actualPar(SQ,s4,label) "Delta ="
-				  set actualPar(SQ,s5,label) "T ="
-				  set actualPar(SQ,s6,label) ""
-				  set actualPar(SQ,s7,label) ""
-				  set actualPar(SQ,s8,label) ""
-				  set actualPar(SQ,s9,label) ""
-				  set actualPar(SQ,s10,label) ""
-				}
 	   "Cylinder(PRISM)"    { set actualPar(SQ,s1,label) "R ="
 				  set actualPar(SQ,s2,label) "L ="
 				  set actualPar(SQ,s3,label) "nu ="
@@ -3136,12 +3070,6 @@ proc analyticalGlobalSDCmd {simorfit
 	set selected_sq [dropdownl_add_entries_old $sqmenu ::actualGlobalAnalytPar ::tmpGlobalAnalytPar \
 		    update_datasets_multi $root_btn_sq $root_btn_sd SQ { \
 	None \
-	{sticky "Hard & Sticky Hard Sphere" {{{Hard Sphere}} 
-                                             {{Sticky Hard Sphere}} \
-                                             {{Sticky Hard Sphere 2}} \
-					     {{Square Well Potential}} \
-                                             {{Thin Square Well Potential}} \
-                                             {{Square Well Potential 2}} }} \
 	{other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 			BabaAhmed BabaAhmed2}} \
 	}]

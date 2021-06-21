@@ -110,10 +110,6 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 		sq->fct = sasfit_sq_None;
 		sq->F_identifier = SQ_id_None;
 	} else
-	if ( strcmp(sq->typestr, "Hard Sphere") == 0 )
-	{
-		sq->fct = sasfit_sq_HardSphere;
-	} else
 	if ( strcmp(sq->typestr, "Correlation Hole") == 0 )
 	{
 		sq->fct = sasfit_sq_CorrelationHole;
@@ -125,26 +121,6 @@ int sasfit_sq_init(sasfit_analytpar * ap)
 	if ( strcmp(sq->typestr, "Cylinder(PRISM)") == 0 )
 	{
 		sq->fct = sasfit_sq_Cylinder_PRISM;
-	} else
-	if ( strcmp(sq->typestr, "Sticky Hard Sphere") == 0 )
-	{
-		sq->fct = sasfit_sq_StickyHardSphere;
-	} else
-	if ( strcmp(sq->typestr, "Sticky Hard Sphere 2") == 0 )
-	{
-		sq->fct = sasfit_sq_StickyHardSphere2;
-	} else
-	if ( strcmp(sq->typestr, "Square Well Potential") == 0 )
-	{
-		sq->fct = sasfit_sq_SquareWell;
-	} else
-	if ( strcmp(sq->typestr, "Thin Square Well Potential") == 0 )
-	{
-		sq->fct = sasfit_sq_ThinSquareWell;
-	} else
-	if ( strcmp(sq->typestr, "Square Well Potential 2") == 0 )
-	{
-		sq->fct = sasfit_sq_SquareWell2;
 	} else
 	if ( strcmp(sq->typestr, "Macro Ion (HP)") == 0 )
 	{

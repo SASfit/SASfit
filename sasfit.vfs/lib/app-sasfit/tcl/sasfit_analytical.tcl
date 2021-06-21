@@ -2249,73 +2249,6 @@ switch $actualPar(SQ,typestr) {
                           set actualPar(SQ,s9,label) ""
                           set actualPar(SQ,s10,label) ""
                         }
-   "Hard Sphere"        { set actualPar(SQ,s1,label) "RHS ="
-                          set actualPar(SQ,s2,label) "fp ="
-                          set actualPar(SQ,s3,label) ""
-                          set actualPar(SQ,s4,label) ""
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-   "Sticky Hard Sphere" { set actualPar(SQ,s1,label) "RHS ="
-                          set actualPar(SQ,s2,label) "tau ="
-                          set actualPar(SQ,s3,label) "fp ="
-                          set actualPar(SQ,s4,label) ""
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
- "Sticky Hard Sphere 2" { set actualPar(SQ,s1,label) "RHS ="
-                          set actualPar(SQ,s2,label) "tau ="
-                          set actualPar(SQ,s3,label) "Delta ="
-                          set actualPar(SQ,s4,label) "fp ="
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-"Square Well Potential" { set actualPar(SQ,s1,label) "RHS ="
-                          set actualPar(SQ,s2,label) "eta ="
-                          set actualPar(SQ,s3,label) "epsi/kBT ="
-                          set actualPar(SQ,s4,label) "lambda ="
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-"Thin Square Well Potential" \
-                        { set actualPar(SQ,s1,label) "RHS ="
-                          set actualPar(SQ,s2,label) "phi ="
-                          set actualPar(SQ,s3,label) "U/kT ="
-                          set actualPar(SQ,s4,label) "epsilon ="
-                          set actualPar(SQ,s5,label) ""
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
-"Square Well Potential 2" { set actualPar(SQ,s1,label) "RHS ="
-                          set actualPar(SQ,s2,label) "eta ="
-                          set actualPar(SQ,s3,label) "epsi/kB ="
-                          set actualPar(SQ,s4,label) "Delta ="
-                          set actualPar(SQ,s5,label) "T ="
-                          set actualPar(SQ,s6,label) ""
-                          set actualPar(SQ,s7,label) ""
-                          set actualPar(SQ,s8,label) ""
-                          set actualPar(SQ,s9,label) ""
-                          set actualPar(SQ,s10,label) ""
-                        }
    "Cylinder(PRISM)"    { set actualPar(SQ,s1,label) "R ="
                           set actualPar(SQ,s2,label) "L ="
                           set actualPar(SQ,s3,label) "nu ="
@@ -4098,77 +4031,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(SQ,s9,label) ""
 				  set actualAnalytPar(SQ,s10,label) ""
 				}
-	   "Hard Sphere"        { set actualAnalytPar(SQ,s1,label) "RHS ="
-				  set actualAnalytPar(SQ,s2,label) "fp ="
-				  set actualAnalytPar(SQ,s3,label) ""
-				  set actualAnalytPar(SQ,s4,label) ""
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	   "Sticky Hard Sphere" {
-				  set actualAnalytPar(SQ,s1,label) "RHS ="
-				  set actualAnalytPar(SQ,s2,label) "tau ="
-				  set actualAnalytPar(SQ,s3,label) "fp ="
-				  set actualAnalytPar(SQ,s4,label) ""
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	 "Sticky Hard Sphere 2" {
-				  set actualAnalytPar(SQ,s1,label) "RHS ="
-				  set actualAnalytPar(SQ,s2,label) "tau ="
-				  set actualAnalytPar(SQ,s3,label) "Delta ="
-				  set actualAnalytPar(SQ,s4,label) "fp ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	 "Square Well Potential" {
-				  set actualAnalytPar(SQ,s1,label) "RHS ="
-				  set actualAnalytPar(SQ,s2,label) "eta ="
-				  set actualAnalytPar(SQ,s3,label) "epsi/kBT ="
-				  set actualAnalytPar(SQ,s4,label) "lambda ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-    "Thin Square Well Potential" {
-				  set actualAnalytPar(SQ,s1,label) "RHS ="
-				  set actualAnalytPar(SQ,s2,label) "phi ="
-				  set actualAnalytPar(SQ,s3,label) "U/kT ="
-				  set actualAnalytPar(SQ,s4,label) "epsilon ="
-				  set actualAnalytPar(SQ,s5,label) ""
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
-	 "Square Well Potential 2" {
-				  set actualAnalytPar(SQ,s1,label) "RHS ="
-				  set actualAnalytPar(SQ,s2,label) "eta ="
-				  set actualAnalytPar(SQ,s3,label) "epsi/kB ="
-				  set actualAnalytPar(SQ,s4,label) "Delta ="
-				  set actualAnalytPar(SQ,s5,label) "T ="
-				  set actualAnalytPar(SQ,s6,label) ""
-				  set actualAnalytPar(SQ,s7,label) ""
-				  set actualAnalytPar(SQ,s8,label) ""
-				  set actualAnalytPar(SQ,s9,label) ""
-				  set actualAnalytPar(SQ,s10,label) ""
-				}
 	   "Cylinder(PRISM)"    { set actualAnalytPar(SQ,s1,label) "R ="
 				  set actualAnalytPar(SQ,s2,label) "L ="
 				  set actualAnalytPar(SQ,s3,label) "nu ="
@@ -4688,96 +4550,6 @@ switch -exact $type {
                 10 {return "no structure factor\n"}
               }
            }
-           "Hard Sphere" { 
-              switch $num {
-                 0 {return "S(Q,RHS,fp)\n"}
-                 1 {return "RHS: hard sphere repulsion radius\n"}
-                 2 {return "fp: volume fraction\n"}
-                 3 {return "\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Sticky Hard Sphere" { 
-              switch $num {
-                 0 {return "S(Q,RHS,tau,fp)\n"}
-                 1 {return "RHS: hard sphere repulsion radius\n"}
-                 2 {return "tau: stickiness\n"}
-                 3 {return "fp: volume fraction\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Sticky Hard Sphere 2" { 
-              switch $num {
-                 0 {return "S(Q,RHS,tau,fp)\n"}
-                 1 {return "RHS: hard sphere repulsion radius\n"}
-                 2 {return "tau: stickiness\n"}
-                 3 {return "Delta: width of stickiness potential\n"}
-                 4 {return "fp: volume fraction\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Square Well Potential" { 
-              switch $num {
-                 0 {return "S_SquareWell(Q,RHS,eta,epsi/kBT,lambda)\n"}
-                 1 {return "RHS: hard sphere repulsion radius\n"}
-                 2 {return "eta: colloid volume fraction\n"}
-                 3 {return "epsi/kBT: square well depth in terms of kBT\n"}
-                 4 {return "lambda: relative square well width, lambda should be larger than 1\ntotal width Delta = 2 RHS (lambda-1)"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Thin Square Well Potential" { 
-              switch $num {
-                 0 {return "S_ThinSquareWell(Q,RHS,phi,U/kT,epsilon)\n"}
-                 1 {return "RHS: hard sphere repulsion radius\n"}
-                 2 {return "phi: volume fraction\n"}
-                 3 {return "U/kT: square well depth in terms of kT\n"}
-                 4 {return "epsilon: relative square well width, epsilon should be between 0 and 0.05\nepsilon = DeltaR/(2RHS+DeltaR)"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Square Well Potential 2" { 
-              switch $num {
-                 0 {return "S_SquareWell2(Q,RHS,eta,epsi/kB,Delta,T)\n"}
-                 1 {return "RHS: hard sphere repulsion radius\n"}
-                 2 {return "eta: colloid volume fraction\n"}
-                 3 {return "epsi/kB: square well depth in K\n"}
-                 4 {return "Delta: square well width\n"}
-                 5 {return "T: temperature in K\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
            "Cylinder(PRISM)" {
                switch $num {
                  0 {return "S_Cyl(Q,R,L,nu) structure factor for cylinders\n"}
@@ -4939,36 +4711,6 @@ switch -exact $type {
                  2 {return "\n"}
                  3 {return "\n"}
                  4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           HardSphere { 
-              switch $num {
-                 0 {return "F(Q,R) = S(Q,RHS,fp) * K(Q,R,eta)^2\n"}
-                 1 {return "R: radius\n"}
-                 2 {return "RHS: hard sphere repulsion radius\n"}
-                 3 {return "fp: volume fraction\n"}
-                 4 {return "eta: scattering contrast\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           StickyHardSphere { 
-              switch $num {
-                 0 {return "F(Q,R) = S(Q,RHS,tau,fp) * K(Q,R,eta)^2\n"}
-                 1 {return "R: radius\n"}
-                 2 {return "RHS: hard sphere repulsion radius\n"}
-                 3 {return "tau: stickiness\n"}
-                 4 {return "fp: volume fraction\n"}
                  5 {return "\n"}
                  6 {return "\n"}
                  7 {return "\n"}
@@ -8044,12 +7786,6 @@ set ::sasfit(SQ,root_menu) $sqmenu
 set selected_sq [dropdownl_add_entries_old $sqmenu ::actualAnalytPar ::tmpAnalytPar \
 	update_datasets_single $root_btn_sq $root_btn_sd SQ { \ 
 None \ 
-{sticky "Hard & Sticky Hard Sphere" {{{Hard Sphere}} \
-                                     {{Sticky Hard Sphere}} \
-                                     {{Sticky Hard Sphere 2}} \ 
-				     {{Square Well Potential}} \
-				     {{Thin Square Well Potential}} \
-                                     {{Square Well Potential 2}}}} \
 {other "other" {Cylinder(PRISM) RPA {{Critical Scattering}} {{Macro Ion (HP)}} {{Hayter Penfold RMSA}} \
 		BabaAhmed BabaAhmed2}} \
 }]

@@ -21,13 +21,13 @@ with $\DS \lim_{q=0}I_\text{Disc}(q,R) = \pi^2R^4\Delta\eta^2$
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Disc}:}
+\uline{Input Parameters for model \texttt{Disc}:}
 \begin{description}
 \item[\texttt{R}] radius of disc $R$
 \item[\texttt{eta}] scattering contrast $\Delta\eta$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item none
 \end{itemize}
@@ -64,13 +64,13 @@ with $\DS \text{Si}(x)=\int_0^x\!\frac{\sin t}{t}\,\,dt$ and $\DS
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Rod}:}
+\uline{Input Parameters for model \texttt{Rod}:}
 \begin{description}
 \item[\texttt{L}] length of rod $L$
 \item[\texttt{eta}] scattering contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item none
 \end{itemize}
@@ -116,14 +116,14 @@ $\mathrm{J}_n(x)$ are the regular cylindrical Bessel function of order $n$.
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{LongCylinder}:}
+\uline{Input Parameters for model \texttt{LongCylinder}:}
 \begin{description}
 \item[\texttt{R}] radius of cylinder $R$
 \item[\texttt{L}] length of cylinder $L$
 \item[\texttt{eta}] scattering contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The approximation is valid for $L>2R$
 \end{itemize}
@@ -168,14 +168,14 @@ $\mathrm{H}_\alpha(x)$ is the Struve function of order $\alpha$ and $\mathrm{J}_
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{FlatCylinder}:}
+\uline{Input Parameters for model \texttt{FlatCylinder}:}
 \begin{description}
 \item[\texttt{R}] radius of cylinder $R$
 \item[\texttt{L}] length of cylinder $L$
 \item[\texttt{eta}] scattering contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The approximation is valid for $L<2R$
 \end{itemize}
@@ -218,14 +218,14 @@ p(x) &=
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{PorodCylinder}:}
+\uline{Input Parameters for model \texttt{PorodCylinder}:}
 \begin{description}
 \item[\texttt{R}] radius of cylinder $R$
 \item[\texttt{L}] length of cylinder $L$
 \item[\texttt{eta}] scattering contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item less good approximation  for $L \sim 2R$
 \end{itemize}
@@ -262,14 +262,14 @@ I_\text{cyl} = 16 (\pi R^2 L)^2 \Delta\eta^2 \int_0^1 \left(
 \end{align}
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Cylinder}:}
+\uline{Input Parameters for model \texttt{Cylinder}:}
 \begin{description}
 \item[\texttt{R}] radius of cylinder $R$
 \item[\texttt{L}] length of cylinder $L$
 \item[\texttt{eta}] scattering contrast $\Delta\eta$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item None
 \end{itemize}
@@ -343,7 +343,7 @@ I_\text{CylShell2} =
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{CylShell1}, \texttt{CylShell2} and \texttt{LongCylShell}:}\\
+\uline{Input Parameters for models \texttt{CylShell1}, \texttt{CylShell2} and \texttt{LongCylShell}:}\\
 \begin{description}
 \item[\texttt{R}] core radius $R$
 \item[\texttt{t}] shell thickness $t$
@@ -353,7 +353,7 @@ I_\text{CylShell2} =
 \item[\texttt{eta\_solv}] scattering length density $\eta_\text{solv}$ of solvent
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The approximation for a long cylindrical shell (\texttt{LongCylShell}) only holds for $L \gg 2R$.
 \end{itemize}
@@ -420,7 +420,7 @@ I_\text{ellCylShell2}(q) = \frac{2}{\pi}\int_0^{\frac{\pi}{2}} \!\!  \int_0^{\fr
 \vspace{5mm}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{ellCylShell1} and \texttt{ellCylShell2}:}\\
+\uline{Input Parameters for models \texttt{ellCylShell1} and \texttt{ellCylShell2}:}\\
 \begin{description}
 \item[\texttt{R}] core radius $R$
 \item[\texttt{epsilon}] eccentricity $\epsilon$ of cross-section
@@ -468,7 +468,7 @@ The implemented approximation is the following
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{Pcs:ellCylSh}:}\\
+\uline{Input Parameters for model \texttt{Pcs:ellCylSh}:}\\
 \begin{description}
 \item[\texttt{R}] core radius $R$
 \item[\texttt{epsilon}] eccentricity $\epsilon$ of cross-section
@@ -619,7 +619,7 @@ I(Q=0) &= \left(H\left(\eta_\text{h}-\eta_\text{solv}\right)\omega R^2\left(1-a^
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{fanlike helix}:}\\
+\uline{Input Parameters for model \texttt{fanlike helix}:}\\
 \begin{description}
 \item[\texttt{R}] external helix radius $R$
 \item[\texttt{a}] inner helix radius $aR$, with $0\leq a\leq 1$
@@ -633,7 +633,7 @@ I(Q=0) &= \left(H\left(\eta_\text{h}-\eta_\text{solv}\right)\omega R^2\left(1-a^
 \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\text{solv}$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item The helix is assumed to be stiff and long so that it scattering intensity can be factorized in a cross-section contribution and a shape contribution, whereas the shape contribution can be described by an infinitesimal thin rod of length $H$.
 \item $R$, $P$, and $H$ are only physical for values larger than 0.
@@ -692,7 +692,7 @@ I(Q=0) &= H^2\left(\left(\eta_\text{1}-\eta_\text{solv}\right)\pi R_1^2+\left(\e
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{helix with round XS}:}\\
+\uline{Input Parameters for model \texttt{helix with round XS}:}\\
 \begin{description}
 \item[\texttt{R\_1}] radius of first strand thickness $R_1$
 \item[\texttt{delta\_1}] distance of first strand to helix axis $\delta_1$
@@ -706,7 +706,7 @@ I(Q=0) &= H^2\left(\left(\eta_\text{1}-\eta_\text{solv}\right)\pi R_1^2+\left(\e
 \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\text{solv}$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item The helix is assumed to be stiff and long so that it scattering intensity can be factorized in a cross-section contribution and a shape contribution, whereas the shape contribution can be described by an infinitesimal thin rod of length $H$.
 \item $R_1$, $R_2$, $\delta_1$, $\delta_2$ $P$, and $H$ are only physical for values larger than 0.
@@ -777,7 +777,7 @@ I(Q=0) &= \left(H\frac{nH}{P}\frac{4\pi}{3}R^3\left(\eta_\text{b}-\eta_\text{sol
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{beads helix}:}\\
+\uline{Input Parameters for model \texttt{beads helix}:}\\
 \begin{description}
 \item[\texttt{R}] radius of monomer units/beads $R$
 \item[\texttt{D}] mean diameter of helix $D$
@@ -791,7 +791,7 @@ I(Q=0) &= \left(H\frac{nH}{P}\frac{4\pi}{3}R^3\left(\eta_\text{b}-\eta_\text{sol
 \item[\texttt{eta\_solv}] scattering length density of solvent $\eta_\text{solv}$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item The helix is assumed to be stiff and long so that it scattering intensity can be factorized in a cross-section contribution and a shape contribution, whereas the shape contribution can be described by an infinitesimal thin rod of length $H$.
 \item $R$, $P$, $D$, $H$, and $n$ are only physical for values larger than 0.
@@ -831,7 +831,7 @@ I(Q=0)&=\mathcal{L}^2
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{straight superhelix}:}\\
+\uline{Input Parameters for model \texttt{straight superhelix}:}\\
 \begin{description}
 \item[\texttt{R\_1}] distance to the helix axis $R_1$
 \item[\texttt{dummy}] not used
@@ -845,7 +845,7 @@ I(Q=0)&=\mathcal{L}^2
 \item[\texttt{dummy}] not used
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the model assumes an infinitesimal thin single helical strand.
 \item $R_1$, $P$, and $H$ are only physical for values larger than 0.
@@ -930,7 +930,7 @@ I(Q=0)&=\mathcal{L}^2
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{coiled superhelix}:}\\
+\uline{Input Parameters for model \texttt{coiled superhelix}:}\\
 \begin{description}
 \item[\texttt{R\_1}] distance to the primary helix axis $R_1$
 \item[\texttt{R\_2}] distance to the primary helix axis $R_1$
@@ -944,7 +944,7 @@ I(Q=0)&=\mathcal{L}^2
 \item[\texttt{dummy}] not used
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the model assumes an infinitesimal thin single helical strand with an additional secondary coiling.
 \item $R_1$,$R_2$, $P$, $N_\mathrm{2nd}$ and $N$ are only physical for values larger than 0.

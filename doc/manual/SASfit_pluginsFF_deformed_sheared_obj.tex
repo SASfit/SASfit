@@ -39,7 +39,7 @@ q_\perp &= q \sin(\psi-\theta_0)
 \end{align}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{reptating chain}:}\\
+\uline{Input Parameters for models \texttt{reptating chain}:}\\
 \begin{description}
 \item[\texttt{I0}] forward scattering $I_0$
 \item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
@@ -49,7 +49,7 @@ q_\perp &= q \sin(\psi-\theta_0)
 \item[\texttt{psi}] $\mathbf{q}$-direction $\psi$ in the detector plane in degree
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The model only converges for $\lambda >1$.
 \end{itemize}
@@ -125,7 +125,7 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 \end{figure}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{WE: deformed polym. netw.}:}\\
+\uline{Input Parameters for models \texttt{WE: deformed polym. netw.}:}\\
 \begin{description}
 \item[\texttt{I0}] forward scattering $I_0$
 \item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
@@ -138,7 +138,7 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 \end{description}
 
 \hspace{1pt}\\
-\underline{Input Parameters for models \texttt{HSH: deformed polym. netw.}:}\\
+\uline{Input Parameters for models \texttt{HSH: deformed polym. netw.}:}\\
 \begin{description}
 \item[\texttt{I0}] forward scattering $I_0$
 \item[\texttt{Rg}] radius of gyration of unstretched polymer $R_g$
@@ -151,7 +151,7 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 \item[\texttt{delta}] stretching direction in the detector plane $\delta$ in degree
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item for large $q$-values the integration routines might fail to converge.
 \end{itemize}
@@ -344,7 +344,7 @@ For the reversed direction of the flow the $x$-component of the vector $\mathbf{
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Cylinders (HayterPenfold)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Cylinders (HayterPenfold)}:}\\
 \begin{description}
 \item[\texttt{R}] radius of cylinders $R$
 \item[\texttt{t}] shell thickness $t$
@@ -357,7 +357,7 @@ For the reversed direction of the flow the $x$-component of the vector $\mathbf{
 \item[{\texttt{kappa}}] orientation distribution parameter $\kappa$
 \end{description}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$ and $L$, so that their aspect rations stay always constant
 \item The most probable orientation is not the $\mathbf{x}$-direction but tilted by the angle $\varPhi_0$. As in a rheometer with cuette geometry the beram is passing the sample twice the forward scattering is twice as large as in the model described in the next section.
@@ -545,7 +545,7 @@ with $D(x)$ being Dawson's integral $D(x)=e^{-x^2}\int_0^x e^{y^2} \mathrm{d}y =
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Cylinders (Maier-Saupe)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Cylinders (Maier-Saupe)}:}\\
 \begin{description}
 \item[\texttt{R}] radius of cylinders $R$
 \item[\texttt{t}] shell thickness $t$
@@ -560,7 +560,7 @@ with $D(x)$ being Dawson's integral $D(x)=e^{-x^2}\int_0^x e^{y^2} \mathrm{d}y =
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Spheroids (Maier-Saupe)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Spheroids (Maier-Saupe)}:}\\
 \begin{description}
 \item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
 \item[\texttt{t}] shell thickness $t$
@@ -575,7 +575,7 @@ with $D(x)$ being Dawson's integral $D(x)=e^{-x^2}\int_0^x e^{y^2} \mathrm{d}y =
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
 \end{itemize}
@@ -602,7 +602,7 @@ where $L_\nu(x)$ is the modified Struve function.
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Cylinders (Onsager)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Cylinders (Onsager)}:}\\
 \begin{description}
 \item[\texttt{R}] radius of cylinders $R$
 \item[\texttt{t}] shell thickness $t$
@@ -617,7 +617,7 @@ where $L_\nu(x)$ is the modified Struve function.
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Spheroids (Onsager}:}\\
+\uline{Input Parameters for model \texttt{Sheared Spheroids (Onsager}:}\\
 \begin{description}
 \item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
 \item[\texttt{t}] shell thickness $t$
@@ -632,7 +632,7 @@ where $L_\nu(x)$ is the modified Struve function.
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
 \end{itemize}
@@ -663,7 +663,7 @@ c_\mathrm{B} &= \frac{2\left(1-\kappa \exp\left(-\frac{\pi}{2}\kappa\right)\righ
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Cylinders (Boltzmann)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Cylinders (Boltzmann)}:}\\
 \begin{description}
 \item[\texttt{R}] radius of cylinders $R$
 \item[\texttt{t}] shell thickness $t$
@@ -678,7 +678,7 @@ c_\mathrm{B} &= \frac{2\left(1-\kappa \exp\left(-\frac{\pi}{2}\kappa\right)\righ
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Spheroids (Boltzmann)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Spheroids (Boltzmann)}:}\\
 \begin{description}
 \item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
 \item[\texttt{t}] shell thickness $t$
@@ -693,7 +693,7 @@ c_\mathrm{B} &= \frac{2\left(1-\kappa \exp\left(-\frac{\pi}{2}\kappa\right)\righ
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
 \end{itemize}
@@ -734,7 +734,7 @@ c_\mathrm{G} & =
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Cylinders (Gauss)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Cylinders (Gauss)}:}\\
 \begin{description}
 \item[\texttt{R}] radius of cylinders $R$
 \item[\texttt{t}] shell thickness $t$
@@ -749,7 +749,7 @@ c_\mathrm{G} & =
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Spheroids (Gauss)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Spheroids (Gauss)}:}\\
 \begin{description}
 \item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
 \item[\texttt{t}] shell thickness $t$
@@ -764,7 +764,7 @@ c_\mathrm{G} & =
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
 \end{itemize}
@@ -812,7 +812,7 @@ with the rectangle function $\Pi(x)$
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Cylinders (Heaviside)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Cylinders (Heaviside)}:}\\
 \begin{description}
 \item[\texttt{R}] radius of cylinders $R$
 \item[\texttt{t}] shell thickness $t$
@@ -827,7 +827,7 @@ with the rectangle function $\Pi(x)$
 
 \vspace{5mm}
 
-\underline{Input Parameters for model \texttt{Sheared Spheroids (Heaviside)}:}\\
+\uline{Input Parameters for model \texttt{Sheared Spheroids (Heaviside)}:}\\
 \begin{description}
 \item[\texttt{R\_equatorial}] equatorial semi-axes of spheroids $R_\mathrm{e}$
 \item[\texttt{t}] shell thickness $t$
@@ -842,7 +842,7 @@ with the rectangle function $\Pi(x)$
 
 \vspace{5mm}
 
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item The size distribution is taken simultaneously over all parameters $R$, $t$, $L$, and $R_\mathrm{e}$, $t$, $R_\mathrm{p}$ respectively, so that their aspect ratios always stay constant.
 \item For $\abs{\kappa}<\frac{2}{\pi}$ the partial derivative $\delta /\delta\kappa$ of the model function is zero which will cause an error message in the minimization routine. This means the fitting procedure will not work in this domain of values.
@@ -1003,7 +1003,7 @@ P_{\mathrm{E,rnd}}(Q) &= \left\langle F_\mathrm{E}^2(\B{Q})\right\rangle_\B{Q} =
 \label{fig:opo_ellipsoidIQ2D}
 \end{figure}
 ~\\
-\underline{Input Parameters for model \texttt{ellipsoid (opo)}:}
+\uline{Input Parameters for model \texttt{ellipsoid (opo)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1034,7 +1034,7 @@ P_{\mathrm{E,rnd}}(Q) &= \left\langle F_\mathrm{E}^2(\B{Q})\right\rangle_\B{Q} =
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{ellipsoid (opo, random)}:}
+\uline{Input Parameters for model \texttt{ellipsoid (opo, random)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1052,7 +1052,7 @@ P_{\mathrm{E,rnd}}(Q) &= \left\langle F_\mathrm{E}^2(\B{Q})\right\rangle_\B{Q} =
 \item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
 \item the volume of the oblique ellipsoid is $V_\mathrm{E}=\frac43\det(\M{D}^{-1})$
@@ -1107,7 +1107,7 @@ P_{\mathrm{P,rnd}}(Q) &= \left\langle F_\mathrm{P}^2(\B{Q})\right\rangle_\B{Q} =
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{parallelepiped (opo)}:}
+\uline{Input Parameters for model \texttt{parallelepiped (opo)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1137,7 +1137,7 @@ P_{\mathrm{P,rnd}}(Q) &= \left\langle F_\mathrm{P}^2(\B{Q})\right\rangle_\B{Q} =
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{parallelepiped (opo, random)}:}
+\uline{Input Parameters for model \texttt{parallelepiped (opo, random)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1155,7 +1155,7 @@ P_{\mathrm{P,rnd}}(Q) &= \left\langle F_\mathrm{P}^2(\B{Q})\right\rangle_\B{Q} =
 \item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
 \item the volume of the oblique parallelepiped is $V_\mathrm{P}=8\det(\M{D}^{-1})$
@@ -1215,7 +1215,7 @@ P_{\mathrm{C,rnd}}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} =
                                      \end{pmatrix}\right)
 \end{align}
 ~\\
-\underline{Input Parameters for model \texttt{cylinder (opo)}:}
+\uline{Input Parameters for model \texttt{cylinder (opo)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1246,7 +1246,7 @@ P_{\mathrm{C,rnd}}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} =
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{cylinder (opo, random)}:}
+\uline{Input Parameters for model \texttt{cylinder (opo, random)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1264,7 +1264,7 @@ P_{\mathrm{C,rnd}}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} =
 \item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
 \item the volume of the oblique cylinder is $V_\mathrm{C}=2\pi\det(\M{D}^{-1})$
@@ -1309,7 +1309,7 @@ P_{\mathrm{cone,rnd}}(Q) &= \left\langle F_\mathrm{cone}^2(\B{Q})\right\rangle_\
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{cone (opo)}:}
+\uline{Input Parameters for model \texttt{cone (opo)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1341,7 +1341,7 @@ P_{\mathrm{cone,rnd}}(Q) &= \left\langle F_\mathrm{cone}^2(\B{Q})\right\rangle_\
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{cone (opo, random)}:}
+\uline{Input Parameters for model \texttt{cone (opo, random)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1365,7 +1365,7 @@ P_{\mathrm{cone,rnd}}(Q) &= \left\langle F_\mathrm{cone}^2(\B{Q})\right\rangle_\
 \item[\texttt{H\_R}] height of unit cone $H_R$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
 \item $a$ and $b$ are the half axis or radii of the elliptical base and $cH_R$ the full height of the cone.
@@ -1402,7 +1402,7 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{cone6 (opo)}:}
+\uline{Input Parameters for model \texttt{cone6 (opo)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1434,7 +1434,7 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{cone6 (opo, random)}:}
+\uline{Input Parameters for model \texttt{cone6 (opo, random)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1458,7 +1458,7 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
 \item[\texttt{H\_R}] height $H_R$ of unit 6-fold symmetric cone
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
 \item $a$ and $b$ are the half axis or radii of the elliptical base and $cH_R$ the full height of the cone.
@@ -1740,7 +1740,7 @@ F_\mathrm{SEgg}(\B{Q}) &=
 \begin{center}
 \begin{tabular}{llllll}
 %\toprule
-{\small $(0^\circ,0^\circ,0^\circ)$}   
+{\small $(0^\circ,0^\circ,0^\circ)$}
      & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_0p1.png}
      & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_0p4.png}
      & \includegraphics[width=0.15\textwidth]{../images/form_factor/supershapes/superegg_0_0_0_18m_1p0.png}
@@ -1763,7 +1763,7 @@ F_\mathrm{SEgg}(\B{Q}) &=
 \caption{oriented superegg model with half axis length of $a=10$nm, $b=\mu a=20$nm, and $c=\nu a=30$nm and the corresponding axis pointing into $\B{e}_a=\B{e}_x$,$\B{e}_b=\B{e}_y$, and $\B{e}_c=\B{e}_z$. The scattering patterns have been calculated for two sets of Euler angles using Tait–Bryan angles (yaw-pitch-roll). \label{fig:SuperEgg2D}}
 \end{figure}
 
-\underline{Input Parameters for model \texttt{superegg (OPO)}:}
+\uline{Input Parameters for model \texttt{superegg (OPO)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1794,7 +1794,7 @@ F_\mathrm{SEgg}(\B{Q}) &=
 \end{figure}
 
 ~\\
-\underline{Input Parameters for model \texttt{superegg (OPO, random)}:}
+\uline{Input Parameters for model \texttt{superegg (OPO, random)}:}
 \begin{description}
 \item[\texttt{a}] length of first half axis
 \item[\texttt{ea\_x}] $x$-component of fist axis.
@@ -1817,10 +1817,10 @@ F_\mathrm{SEgg}(\B{Q}) &=
 \item[\texttt{eps1}] shape parameter $\epsilon_1$
 \end{description}
 
-\noindent\underline{Note:}
+\noindent\uline{Note:}
 \begin{itemize}
 \item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
-\item shape parameter $\epsilon_1$ needs to be a positive non-zero number, $\epsilon_1>0$ 
+\item shape parameter $\epsilon_1$ needs to be a positive non-zero number, $\epsilon_1>0$
 \end{itemize}
 
 \clearpage

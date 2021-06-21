@@ -61,6 +61,15 @@
  */
 
 /** 
+ * \defgroup sq_plugins_sticky_hard_sphere HS plus shoulder or well in 1D/2D/3D
+ * \ingroup sq_plugins
+ *
+ * This group contains structure factors for hard sphere potentials with a shoulder or well in 1D,2D, and 3D
+ *
+ * \modname{sq_plugins_sticky_hard_sphere}
+ */
+
+/** 
  * \defgroup sq_plugins_yukawa Yukawa like 
  * \ingroup sq_plugins
  *

@@ -30,10 +30,10 @@
 
 /*
 double S_StickyHardSphere(Tcl_Interp *interp,
-			double Q, 
+			double Q,
 			double RHS,
 			double tau,
-			double fp, 
+			double fp,
 			bool  *error)
 */
 
@@ -59,7 +59,7 @@ scalar sasfit_sq_StickyHardSphere(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((fp < 0.0), param, "fp(%lg) < 0",fp);
 	SASFIT_CHECK_COND1((fp >= 1.0), param, "fp(%lg) >= 1",fp);
 
-	if (fp == 0.0) 
+	if (fp == 0.0)
 	{
 		return 1.0;
 	}
@@ -67,7 +67,13 @@ scalar sasfit_sq_StickyHardSphere(scalar q, sasfit_param * param)
 	kappa = 2.0*q*RHS;
 	epsi = tau+(fp/(1.0-fp));
 	gama = fp*(1+fp/2.0)/(3.0*pow(1.0-fp,2.0));
-	lamb = 6.0/fp*(epsi-sqrt(epsi*epsi-gama));
+
+	SASFIT_CHECK_COND1((epsi*epsi-gama<0),param,"tau(%lg) is too small",tau);
+    if (epsi*epsi-gama>=0) {
+        lamb = 6.0/fp*(epsi-sqrt(epsi*epsi-gama));
+    } else {
+        lamb = 6.0/fp*(epsi);
+    }
 	mu = lamb*fp*(1-fp);
 	beta = -(3.*fp*pow(2.+fp,2.0)-2.*mu*(1.+7.*fp+fp*fp)+mu*mu*(2.+fp)) / (2.*pow(1.-fp,4.));
 	alpha = pow(1.+2.*fp-mu,2.)/pow(1-fp,4.);

@@ -30,12 +30,12 @@
 
 /*
 REFERENCE:\\
-C. Regnaut and J.C. Ravey, 
-Application of the adhesive sphere model to the structure of colloidal suspensions, 
+C. Regnaut and J.C. Ravey,
+Application of the adhesive sphere model to the structure of colloidal suspensions,
 J. Chem. Phys. 91 (2) (1989), 1211-1221
 
-C. Regnaut and J.C. Ravey, 
-Erratum: Application of the adhesive sphere model to the structure of colloidal suspensions, 
+C. Regnaut and J.C. Ravey,
+Erratum: Application of the adhesive sphere model to the structure of colloidal suspensions,
 J. Chem. Phys. 92 (5) (1990), 3250
 */
 
@@ -59,8 +59,8 @@ scalar sasfit_sq_StickyHardSphere2(scalar q, sasfit_param * param)
 		   SQ,kappa,
 		   l1,l2,ltmp,lambda,
 		   alpha,beta,
-		   mu,phi,sigma, 
-		   I0,I1,I2, 
+		   mu,phi,sigma,
+		   I0,I1,I2,
 		   J0,J1,J2;
 
 	SASFIT_ASSERT_PTR( param );
@@ -70,7 +70,7 @@ scalar sasfit_sq_StickyHardSphere2(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((FP <= 0.0), param, "fp(%lg) <= 0",FP);
 	SASFIT_CHECK_COND1((FP >= 1.0), param, "fp(%lg) >= 1",FP);
 
-	if (FP == 0.0) 
+	if (FP == 0.0)
 	{
 		return 1.0;
 	}
@@ -80,10 +80,15 @@ scalar sasfit_sq_StickyHardSphere2(scalar q, sasfit_param * param)
 	phi = FP*pow(sigma/(2*RHS),3.0);
 
 	ltmp = 6.0*(TAU/phi+1.0/(1.0-phi));
+	SASFIT_CHECK_COND1((gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi) < 0),param,"tau(%lg) is too small",TAU);
+if (gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi) >= 0) {
 	l1 = ltmp + sqrt(gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi));
 	l2 = ltmp - sqrt(gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi));
-	
-	if (fabs(l1) < fabs(l2)) 
+} else {
+    l1 = ltmp;
+    l2 = ltmp;
+}
+	if (fabs(l1) < fabs(l2))
 	{
 		lambda = l1;
 	} else {

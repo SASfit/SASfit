@@ -28,7 +28,7 @@ At the moment all the analytical models for projected correlation functions SESA
 This function uses the analytical expression for projected correlation function $\tilde{G}_\mathrm{sph}(\delta)$ of monodisperse spheres as given in eq.\ \ref{eq:Gz_sph} together with eq.\ \ref{eq:MSAS_via_Gz} to calculate the scattering intensity considering multiple scattering effects.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{MSAS Spheres}:}\\
+\uline{Input Parameters for model \texttt{MSAS Spheres}:}\\
 \begin{description}
 \item[\texttt{R}] radius of sphere $R$
 \item[\texttt{dummy}] not used
@@ -39,7 +39,7 @@ This function uses the analytical expression for projected correlation function 
 \end{description}
 
 \hspace{1pt}\\
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item the function \texttt{MSAS Spheres} should not be combined with a size distribution nor a structure factor.
 \end{itemize}
@@ -58,7 +58,7 @@ This function uses the analytical expression for projected correlation function 
 This function uses the analytical expression for projected correlation function $\tilde{G}_\mathrm{sph}(\delta)$ of monodisperse spheres as given in eq.\ \ref{eq:Gz_sph} and first integrating this function over a LogNormal distribution before combining it with eq.\ \ref{eq:MSAS_via_Gz} to calculate the scattering intensity considering multiple scattering effects.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{MSAS polydisp. Spheres}:}\\
+\uline{Input Parameters for model \texttt{MSAS polydisp. Spheres}:}\\
 \begin{description}
 \item[\texttt{mu}] mean radius of sphere $\mu$
 \item[\texttt{sigma}] LogNorm width parameter $\sigma$
@@ -69,7 +69,7 @@ This function uses the analytical expression for projected correlation function 
 \end{description}
 
 \hspace{1pt}\\
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item the function \texttt{MSAS polydisp. Spheres} should not be combined with a size distribution nor a structure factor.
 \end{itemize}
@@ -88,7 +88,7 @@ This function uses the analytical expression for projected correlation function 
 This function uses the analytical expression for projected correlation function $\tilde{G}_\mathrm{gGc}(\delta)$ of a generalised Gaussian polymer coil as given in eq.\ \ref{eq:Gz_gGc} and \ref{eq:G0_gGc} together with eq.\ \ref{eq:MSAS_via_Gz} to calculate the scattering intensity considering multiple scattering effects.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{MSAS gGc}:}\\
+\uline{Input Parameters for model \texttt{MSAS gGc}:}\\
 \begin{description}
 \item[\texttt{Rg}] radius of gyration $R_g$
 \item[\texttt{nu}] Flory exponent $\nu$
@@ -99,7 +99,7 @@ This function uses the analytical expression for projected correlation function 
 \end{description}
 
 \hspace{1pt}\\
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item the function \texttt{MSAS gGc} should not be combined with a size distribution nor a structure factor.
 \item $\nu \in \left(0,\frac12\right)$
@@ -119,7 +119,7 @@ This function uses the analytical expression for projected correlation function 
 This function uses the analytical expression for projected correlation function $\tilde{G}_\mathrm{gDAB}(\delta)$ of self-affine random distribution model as given in eq.\ \ref{eq:Gz_gDAB} together with eq.\ \ref{eq:MSAS_via_Gz} to calculate the scattering intensity considering multiple scattering effects.
 
 \hspace{1pt}\\
-\underline{Input Parameters for model \texttt{MSAS gDAB}:}\\
+\uline{Input Parameters for model \texttt{MSAS gDAB}:}\\
 \begin{description}
 \item[\texttt{xi}] correlation length $\xi$
 \item[\texttt{H}] Hurst exponent $H$
@@ -130,7 +130,7 @@ This function uses the analytical expression for projected correlation function 
 \end{description}
 
 \hspace{1pt}\\
-\underline{Note:}
+\uline{Note:}
 \begin{itemize}
 \item the function \texttt{MSAS gDAB} should not be combined with a size distribution nor a structure factor.
 \item $H$ needs to be positive and non-zero: $H > 0$
