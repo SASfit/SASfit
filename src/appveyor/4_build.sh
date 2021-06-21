@@ -48,7 +48,7 @@ fi
 export NUM_LOGICAL_CORES=1
 echo "Determined $NUM_LOGICAL_CORES logical cores."
 echo
-
+git clean -xdf
 cd "$APPVEYOR_BUILD_FOLDER" && \
 mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DDEBUG=TRUE ../src && make -j$NUM_LOGICAL_CORES
 
