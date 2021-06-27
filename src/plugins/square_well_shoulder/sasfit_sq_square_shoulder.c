@@ -168,10 +168,10 @@ int findB1B2(double complex *B1, double complex *B2,sasfit_param *param) {
         break;
 
       status =
-        gsl_multiroot_test_residual (s->f, 1e-7);
+        gsl_multiroot_test_residual (s->f, 1e-8);
     }
-  while (status == GSL_CONTINUE && iter < 1000);
-  sasfit_out("iter=%d\n",iter);
+  while (status == GSL_CONTINUE && iter < 2000);
+//  sasfit_out("iter=%d\n",iter);
 //  printf ("status = %s\n", gsl_strerror (status));
   x_init[0]=gsl_vector_get(s->x,0);
   x_init[1]=gsl_vector_get(s->x,1);
@@ -179,7 +179,7 @@ int findB1B2(double complex *B1, double complex *B2,sasfit_param *param) {
   x_init[3]=gsl_vector_get(s->x,3);
   *B1 = gsl_vector_get (s->x, 0) + I*gsl_vector_get (s->x, 1);
   *B2 = gsl_vector_get (s->x, 2) + I*gsl_vector_get (s->x, 3);
-  sasfit_out("rB1=%lg, iB1=%lg, rB2=%lg, iB2=%lg\n",gsl_vector_get (x, 0),gsl_vector_get (x, 1),gsl_vector_get (x, 2),gsl_vector_get (x, 3));
+//  sasfit_out("rB1=%lg, iB1=%lg, rB2=%lg, iB2=%lg\n",gsl_vector_get (x, 0),gsl_vector_get (x, 1),gsl_vector_get (x, 2),gsl_vector_get (x, 3));
 
   gsl_multiroot_fsolver_free (s);
   gsl_vector_free (x);
@@ -218,7 +218,8 @@ scalar sasfit_sq_square_shoulder(scalar q, sasfit_param * param)
 	Gm = s*F*cexp(-s)/(1+12*ETA*F*cexp(-s));
 
 	cS = 1 - 2*M_PI*rho*(Gp-Gm)/(I*q*2*RHS);
-	sasfit_out("rB1=%lg, iB1=%lg, rB2=%lg, iB2=%lg\n",creal(B1),cimag(B1),creal(B2),cimag(B2));
+	cS = 1 - 12*ETA*(Gp-Gm)/(I*q*2*RHS);
+//	sasfit_out("rB1=%lg, iB1=%lg, rB2=%lg, iB2=%lg\n",creal(B1),cimag(B1),creal(B2),cimag(B2));
 	return creal(cS);
 }
 
