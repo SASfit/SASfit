@@ -514,7 +514,7 @@ For random oriented 1D structures the orientational average of the structure fac
 \label{fig:1DSQ}
 \end{figure}
 
-\clearpage 
+\clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{three dimensional structure factor for sticky hard sphere systems} \hspace{1pt}
 \label{sec:sHS}
@@ -540,7 +540,7 @@ $\tau$, characterizes the adhesive strength.
 \eta &= f_p \left(\frac{2R_\text{HS}+\Delta}{2R_\text{HS}}\right)^3\\
 \epsilon &= \tau+\frac{\eta}{1-\eta} \\
 \gamma &= f_p\frac{1+\eta/2}{3\left(1-\eta\right)^2} \\
-\lambda &= \frac{6}{\eta} \left(\epsilon-\sqrt{\epsilon^2-\gamma}\right)\\
+\lambda &= \frac{6}{\eta} \left(\epsilon-\sqrt{\epsilon^2-\gamma}\right) \label{eq:sHS_lambda}\\
 \mu &= \lambda \eta (1-\eta) \\
 \beta &= -\frac{3\eta \left(2+\eta\right)^2-2\mu \left(1+7\eta+\eta^2\right)+\mu^2(2+\eta)}{2\left(1-\eta\right)^4}\\
 \alpha &= \frac{\left(1+2\eta-\mu\right)^2}{\left(1-\eta\right)^4}\\[5mm]
@@ -556,8 +556,6 @@ C(q) = & 2\frac{\eta\lambda}{\kappa}\sin\kappa
 \end{align}
 \end{subequations}
 
-
-
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.768\textwidth]{../images/structure_factor/HardSphere/StickyHardSphere1.png}
@@ -567,9 +565,23 @@ stickiness parameters $\tau$.}
 \label{fig:SQStickyHardSphere1}
 \end{figure}
 
+~\\
+\uline{Input Parameters for the structure factor model \texttt{sticky hard sphere}:}
+\begin{description}
+\item[\texttt{RHS}] hard sphere radius
+\item[\texttt{fp}] volume fraction $f_p$
+\item[\texttt{tau}] stickiness parameter $\tau$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item for stickiness parameters close to zero the root in eq.\ \ref{eq:sHS_lambda} becomes complex and is considered as a critical point where the system phase separates.
+\end{itemize}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Sticky Hard Sphere ($2^\text{nd}$ version)} \cite{Regnaut1989,Regnaut1990}~\\
+\subsection{Sticky Hard Sphere ($2^\text{nd}$ version)}~\\
 
 In Baxter's model of adhesive hard spheres the pair interaction
 potential $U(r)$ is replaced by
@@ -581,9 +593,7 @@ potential $U(r)$ is replaced by
       0         & \text{for} \quad r>\sigma
    \end{cases}
 \end{equation}
-
-
-
+The structure factor for this potential has been implemented according to  \cite{Regnaut1989,Regnaut1990} as
 \begin{align}
 \sigma &= 2R_\text{HS}+\Delta \\
 \kappa & = q \sigma \\
@@ -594,17 +604,20 @@ potential $U(r)$ is replaced by
                         \frac{\tau}{\phi}+\frac{1}{1-\phi}
                       \right]^2
                    -\frac{12}{\phi}\frac{1+\frac{\phi}{2}}{\left(1-\phi\right)^{2}}
-                } \\
+                } \label{eq:sHS2_lambda}\\
    \lambda & =
        \begin{cases}
            \lambda_+ & \mbox{for }\lambda_+ < \abs{\lambda_-} \\
            \lambda_- & \mbox{otherwise}
        \end{cases}
-\\[5mm]
+\end{align}
+\begin{align}
 \mu & = \lambda \phi (1-\phi) \\
 A & = \frac12 \; \frac{1+2 \phi-\mu}{\left(1-\phi\right)^2} \\
 B & = \frac{\sigma}{2} \frac{\mu-3\phi}{2 \left(1-\phi\right)^2 } \\
-C & = -A\sigma^2-B\sigma+\lambda\sigma^2/12 \\
+C & = -A\sigma^2-B\sigma+\lambda\sigma^2/12
+\end{align}
+\begin{align}
 I_n(\kappa) &= \int_0^1 x^n \cos(\kappa x)\; dx \\
 J_n(\kappa) &= \int_0^1 x^n \sin(\kappa x)\; dx \\
 \alpha & = 1-12 f_p \left( C\sigma^{-2}I_0(\kappa) + B\sigma^{-1} I_1(\kappa) +AI_2(\kappa) \right)\\
@@ -622,9 +635,22 @@ stickiness parameters $\tau$.}
 \label{fig:SQStickyHardSphere2}
 \end{figure}
 
+~\\
+\uline{Input Parameters for the structure factor model \texttt{Sticky Hard Sphere 2}:}
+\begin{description}
+\item[\texttt{RHS}] hard sphere radius
+\item[\texttt{fp}] volume fraction $f_p$
+\item[\texttt{tau}] stickiness parameter $\tau$
+\item[\texttt{Delta}] width $\Delta$ of stickiness potential
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item for stickiness parameters close to zero the root in eq.\ \ref{eq:sHS2_lambda} becomes complex and is considered as a critical point where the system phase separates.
+\end{itemize}
 
 
-\subsection{Square Well Potential}  \cite{Sharma1977}~\\
+\subsection{Square Well Potential}  ~\\
 
 The Square well potential can be written as
 \begin{equation}
@@ -637,7 +663,7 @@ U(r) =
 \end{equation}
 where $\lambda$ and $\epsilon$ correspond to the breadth and the
 depth of the square well potential. The structure factor $S(Q)$ is
-then given by the following relations:
+then given by the following relations \cite{Sharma1977}:
 \begin{subequations}
 \begin{align}
 S(Q)  = & \frac{1}{1-C(Q)} \\
@@ -656,10 +682,6 @@ where $\alpha$, $\beta$ and $\gamma$ are given by
 \end{align}
 \end{subequations}
 ~\\
-NOTE:\\
-Values for the depth of $\epsilon>1.5k_BT$ and for the volume
-fraction of $\eta> 0.08$ may give unphysical results when
-compared to Monte Carlo simulations according to \cite{Sharma1977}.
 
 \begin{figure}[htb]
 \begin{center}
@@ -669,9 +691,24 @@ compared to Monte Carlo simulations according to \cite{Sharma1977}.
 \label{fig:SquareWell1}
 \end{figure}
 
+~\\
+\uline{Input Parameters for the structure factor model \texttt{Square Well Potential}:}
+\begin{description}
+\item[\texttt{RHS}] hard sphere radius
+\item[\texttt{fp}] volume fraction $f_p$
+\item[\texttt{epsi/kT}]square well depth $\epsilon/k_BT$ in units of $k_BT$
+\item[\texttt{lambda}] relative square well width $\lambda>1$, $\Delta=2R_{HS}(\lambda-1)$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item Values for the depth of $\epsilon>1.5k_BT$ and for the volume
+fraction of $\eta> 0.08$ may give unphysical results when
+compared to Monte Carlo simulations according to \cite{Sharma1977}.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\clearpage
 \subsection{Square Well Potential 2} ~\\
 
 The Square well potential can be written as
@@ -701,7 +738,19 @@ concentration, which is related to the colloid volume fraction
 $\eta$ by $\eta=\pi\rho\sigma^3/6$.
 
 
+~\\
+\uline{Input Parameters for the structure factor model \texttt{Square Well Potential 2}:}
+\begin{description}
+\item[\texttt{RHS}] hard sphere radius
+\item[\texttt{fp}] volume fraction $f_p$
+\item[\texttt{epsi/kT}]square well depth $\epsilon/k_BT$ in units of $k_BT$
+\item[\texttt{Delta}] square well width $\Delta$
+\end{description}
 
+\noindent\uline{Note:}
+\begin{itemize}
+\item .
+\end{itemize}
 
 
 
