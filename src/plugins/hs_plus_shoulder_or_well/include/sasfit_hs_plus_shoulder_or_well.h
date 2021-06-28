@@ -314,21 +314,21 @@ sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_thin_square_well_potenti
  *
  * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
  */
-sasfit_two_piecewise_constant_DLLEXP scalar sasfit_sq_two_piecewise_constant(scalar q, sasfit_param * p);
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_two_piecewise_constant(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_two_piecewise_constant
  *
  * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
  */
-sasfit_square_two_piecewise_constant_DLLEXP scalar sasfit_sq_two_piecewise_constant_f(scalar q, sasfit_param * p);
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_two_piecewise_constant_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_two_piecewise_constant
  *
  * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
  */
-sasfit_two_piecewise_constant_DLLEXP scalar sasfit_sq_two_piecewise_constant_v(scalar q, sasfit_param * p, int dist);
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_two_piecewise_constant_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_two_piecewise_constant ################ */
 
 #endif // this file

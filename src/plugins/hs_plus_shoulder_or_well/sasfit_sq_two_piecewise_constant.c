@@ -186,7 +186,7 @@ int findB1B2(double complex *B1, double complex *B2,sasfit_param *param) {
   return status;
 }
 
-scalar sasfit_sq_square_shoulder(scalar q, sasfit_param * param)
+scalar sasfit_sq_two_piecewise_constant(scalar q, sasfit_param * param)
 {
     scalar rho;
     double complex cS,Gp, Gm, F, R0, R1, R2, s, B1, B2;
@@ -223,7 +223,7 @@ scalar sasfit_sq_square_shoulder(scalar q, sasfit_param * param)
 	return creal(cS);
 }
 
-scalar sasfit_sq_square_shoulder_f(scalar q, sasfit_param * param)
+scalar sasfit_sq_two_piecewise_constant_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -231,7 +231,7 @@ scalar sasfit_sq_square_shoulder_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_sq_square_shoulder_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sq_two_piecewise_constant_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

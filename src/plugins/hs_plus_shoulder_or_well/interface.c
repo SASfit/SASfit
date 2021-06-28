@@ -13,7 +13,7 @@ SASFIT_PLUGIN_EXP_ADD( sq_sticky_hard_sphere_2 )
 SASFIT_PLUGIN_EXP_ADD( sq_square_well_potential )
 SASFIT_PLUGIN_EXP_ADD( sq_square_well_potential_2 )
 SASFIT_PLUGIN_EXP_ADD( sq_thin_square_well_potential )
-SASFIT_PLUGIN_EXP_ADD( sq_two_piecewise_constant }
+SASFIT_PLUGIN_EXP_ADD( sq_two_piecewise_constant )
 
 SASFIT_PLUGIN_EXP_END
 
