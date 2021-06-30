@@ -98,9 +98,12 @@ fi
 #$TCLSH gen/buildkit linkfinal -tcl=$TCLPATTERN -itcl -thread -sqlite -sqlite3 -tclcompiler -tbcload -tls $TCLX $EXPECT -tdom -compression=$UPX -binary=console -resfile=current || exit 1
 #$TCLSH gen/buildkit linkfinal -tcl=$TCLPATTERN -thread -compression=$UPX -binary=tiny -resfile=current || exit 1
 
+debugarg=""
+[ -z "$SASKIT_DEBUG" ] || debugarg="-debug"
+
 TCLPATTERN=8.4*
 # nonthreaded
-$TCLSH gen/buildkit build -tcl=$TCLPATTERN -tk=$TCLPATTERN -blt -compression=none -binary=all -resfile=current || exit 1
+$TCLSH gen/buildkit build $debugarg -tcl=$TCLPATTERN -tk=$TCLPATTERN -blt -compression=none -binary=all -resfile=current || exit 1
 #$TCLSH gen/buildkit linkfinal -tcl=$TCLPATTERN -tk=$TCLPATTERN -tile -sqlite -sqlite3 -tbcload -tls $TCLX $EXPECT -compression=$UPX -binary=gui $TX -resfile=current || exit 1
 #$TCLSH gen/buildkit compile res -resfile=current || exit 1
 #$TCLSH gen/buildkit linkfinal -tcl=$TCLPATTERN -itcl -sqlite -sqlite3 -tclcompiler -tbcload -tls $TCLX $EXPECT -tdom $TCLUDP $PGTCL -compression=$UPX -binary=console -resfile=current || exit 1
