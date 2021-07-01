@@ -107,29 +107,19 @@ for:
     - 'src/tcl/$CACHEID      -> src/tcl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+
 build_script:
   - sh src/appveyor/4_build.sh
 
 after_build:
   - sh src/appveyor/6_after_build.sh
 
-test:
-  assemblies:
-    # saskit base package created by CMake
-    - sasfit\saskit\saskit_*.exe
-    # assembled SASfit library combined with saskit base package
-    - sasfit\sasfit.exe
-    # final SASfit package for users
-    - sasfit\src\sasfit_*_*.zip
-
 test_script:
-  - echo This is my custom test script
-  - sh -c "echo 'test script with shell'"
-  - ls
   - pwd
-  - env
+  - ls
+  - echo Testing for the SASfit executable > /dev/null
   - sh -c "[ -f sasfit.exe ]"
-  - sh -c "[ -f sasfit_.exe ]"
+  - sh -c "[ -f $SASFIT_PACKAGE_FILE ]"
 #test_script:
 #  - cmd: echo
 ##test_script:
