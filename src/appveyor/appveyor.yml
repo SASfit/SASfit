@@ -119,7 +119,6 @@ test:
     - sasfit\saskit\saskit_*.exe
     # assembled SASfit library combined with saskit base package
     - sasfit\sasfit.exe
-    - sasfit\sasfit_.exe
     # final SASfit package for users
     - sasfit\src\sasfit_*_*.zip
 
@@ -127,6 +126,9 @@ test_script:
   - echo This is my custom test script
   - sh -c "echo 'test script with shell'"
   - ls
+  - env
+  - [ -f sasfit\sasfit.exe ]
+  - [ -f sasfit\sasfit_.exe ]
 #test_script:
 #  - cmd: echo
 ##test_script:
