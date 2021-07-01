@@ -127,8 +127,8 @@ test_script:
   - sh -c "echo 'test script with shell'"
   - ls
   - env
-  - [ -f sasfit\sasfit.exe ]
-  - [ -f sasfit\sasfit_.exe ]
+  - sh -c "[ -f sasfit\sasfit.exe ]"
+  - sh -c "[ -f sasfit\sasfit_.exe ]"
 #test_script:
 #  - cmd: echo
 ##test_script:
