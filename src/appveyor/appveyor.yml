@@ -123,8 +123,7 @@ test_script:
   - sh -c 'echo "Test4 ,$DUMMY,"'
   - echo Testing for the SASfit executable
   - sh -c "[ -f sasfit.exe ]"
-  - sh -c '[ -f $SASFIT_PACKAGE_FILE ]'
-  - sh -c 'echo [ -f "$SASFIT_PACKAGE_FILE" ]'
+  - sh -c '[ -f "$SASFIT_PACKAGE_FILE" ]'
 #test_script:
 #  - cmd: echo
 ##test_script:
