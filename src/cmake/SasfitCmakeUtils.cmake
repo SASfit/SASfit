@@ -364,6 +364,7 @@ function(appveyor_reset_build_number)
 endfunction()
 
 function(appveyor_set_var varname value)
+    message("appveyor_set_var: '$ENV{APPVEYOR}'")
     if(NOT ENV{APPVEYOR}) # abort if not running on appveyor CI
         message(STATUS "Not on AppVeyor CI, not setting environment var '${varname}'.")
         return()
