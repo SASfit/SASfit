@@ -340,7 +340,8 @@ if(CREATE_BINARY)
         COMMENT "Creating sasfit package ..."
 		VERBATIM
 	)
-
+	appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
+	appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
 endif(CREATE_BINARY)
 
 if(CREATE_SOURCE)

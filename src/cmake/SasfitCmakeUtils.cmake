@@ -363,6 +363,18 @@ function(appveyor_reset_build_number)
     )
 endfunction()
 
+function(appveyor_set_var varname value)
+    if(NOT ENV{APPVEYOR}) # abort if not running on appveyor CI
+        message(STATUS "Not on AppVeyor CI, not setting environment var '${varname}'.")
+        return()
+    endif()
+    message(STATUS "Setting AppVeyor variable ${varname} = ${value}")
+    execute_process(COMMAND appveyor SetVariable
+                    -Name "${varname}" -Value "${value}"
+                    RESULT_VARIABLE result)
+    message(STATUS "    -> '${result}'")
+endfunction()
+
 # set up a sortable version number based on the current GIT commit timestamp
 # (the commit hash does not sort multiple packages chronologically in file system)
 macro(sasfit_update_version)

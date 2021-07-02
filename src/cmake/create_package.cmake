@@ -139,14 +139,9 @@ if(Git_FOUND)
                     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src)
 endif()
 
-if($ENV{APPVEYOR}) # running on appveyor CI
-    # check work dir of cpack process for generated package file
-    file(GLOB SASFIT_PACKAGE_FILE LIST_DIRECTORIES false
-        "${SASFIT_ROOT_DIR}/src/${PCKG_DIR_NAME}*")
-    message(STATUS "Setting AppVeyor variable SASFIT_PACKAGE_FILE:")
-    message(STATUS "    '${SASFIT_PACKAGE_FILE}'")
-    execute_process(COMMAND appveyor SetVariable
-                    -Name SASFIT_PACKAGE_FILE -Value "${SASFIT_PACKAGE_FILE}")
-endif()
+# check work dir of cpack process for generated package file
+file(GLOB SASFIT_PACKAGE_FILE LIST_DIRECTORIES false
+    "${SASFIT_ROOT_DIR}/src/${PCKG_DIR_NAME}*")
+appveyor_set_var(SASFIT_PACKAGE_FILE "${SASFIT_PACKAGE_FILE}")
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
