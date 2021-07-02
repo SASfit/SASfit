@@ -115,19 +115,14 @@ after_build:
   - sh src/appveyor/6_after_build.sh
 
 test_script:
-  - pwd
-  - ls
-  - sh -c 'echo "Test1 ,$SASFIT_PACKAGE_FILE,"'
-  - sh -c 'echo "Test2 ,$SASFIT_EXEC,"'
-  - sh -c 'echo "Test3 ,$SASFIT_SASKIT_EXEC,"'
-  - sh -c 'echo "Test4 ,$DUMMY,"'
-  - echo Testing for the SASfit executable
-  - sh -c "[ -f sasfit.exe ]"
+  - echo "Testing for the SASfit executable $SASFIT_EXEC"
+  - sh -c '[ -f "$SASFIT_EXEC" ]'
+  - echo "Testing for the saskit executable $SASFIT_SASKIT_EXEC"
+  - sh -c '[ -f "$SASFIT_SASKIT_EXEC" ]'
+  - echo "Testing for the SASfit package $SASFIT_PACKAGE_FILE"
   - sh -c '[ -f "$SASFIT_PACKAGE_FILE" ]'
-#test_script:
-#  - cmd: echo
-##test_script:
-## - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
+  - echo "Negative test:"
+  - sh -c '[ -f "$SASFIT_PACKAGE_FILEtest" ]'
 
 notifications:
   - provider: Email
