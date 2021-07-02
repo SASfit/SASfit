@@ -116,13 +116,11 @@ after_build:
 
 test_script:
   - echo "Testing for the SASfit executable $SASFIT_EXEC"
-  - sh -c '[ -f "$SASFIT_EXEC" ]'
+  - sh -c '[ -f "$SASFIT_EXEC" ] && echo success!'
   - echo "Testing for the saskit executable $SASFIT_SASKIT_EXEC"
-  - sh -c '[ -f "$SASFIT_SASKIT_EXEC" ]'
+  - sh -c '[ -f "$SASFIT_SASKIT_EXEC" ] && echo success!'
   - echo "Testing for the SASfit package $SASFIT_PACKAGE_FILE"
-  - sh -c '[ -f "$SASFIT_PACKAGE_FILE" ]'
-  - echo "Negative test:"
-  - sh -c '[ -f "$SASFIT_PACKAGE_FILEtest" ]'
+  - sh -c '[ -f "$SASFIT_PACKAGE_FILE" ] && echo success!'
 
 notifications:
   - provider: Email
