@@ -79,7 +79,7 @@ endif()
 set(LIBRARY_OUTPUT_PATH ${SASFIT_ROOT_DIR}/lib)
 
 macro(dbg_cmake_vars)
-    # some debug info, in case ...
+    # some debug info, just in case ...
     message(STATUS "ENV{MSYSTEM}: '$ENV{MSYSTEM}'")
     cmake_print_variables(WIN32 MINGW MSYS UNIX MACOS)
     cmake_print_variables(CMAKE_HOST_WIN32)
@@ -99,7 +99,7 @@ macro(dbg_cmake_vars)
     cmake_print_variables(CMAKE_EXTRA_LINK_EXTENSIONS)
     cmake_print_variables(CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES)
     cmake_print_variables(CMAKE_C_COMPILER_LAUNCHER)
-    message("ENV:")
+    message(STATUS "ENV:")
     execute_process(COMMAND "env" COMMAND "sort")
 endmacro()
 

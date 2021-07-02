@@ -60,7 +60,7 @@ execute_process(COMMAND ${SASKIT_FILE} "${SASKIT_PATH}/sdx.kit" wrap ${SASFIT_EX
 )
 if(SASKIT_RES EQUAL 0 OR SASKIT_RES STREQUAL "Process terminated due to timeout")
         message(STATUS "Successfully created executable '${SASFIT_EXEC}'")
-else(SASKIT_RES EQUAL 0 OR SASKIT_RES STREQUAL "Process terminated due to timeout")
+else()
         message(STATUS "An error occured while creating executable '${SASFIT_EXEC}'!")
         message("return value: '${SASKIT_RES}'")
         message("output: '${SASKIT_OUT}'")
