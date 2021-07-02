@@ -117,9 +117,14 @@ after_build:
 test_script:
   - pwd
   - ls
-  - echo Testing for the SASfit executable > /dev/null
+  - echo "Test1: '$SASFIT_PACKAGE_FILE'"
+  - echo "Test2: '$SASFIT_EXEC'"
+  - echo "Test3: '$SASFIT_SASKIT_EXEC'"
+  - echo "Test4: '$DUMMY'"
+  - echo Testing for the SASfit executable
   - sh -c "[ -f sasfit.exe ]"
-  - sh -c "[ -f $SASFIT_PACKAGE_FILE ]"
+  - sh -c '[ -f $SASFIT_PACKAGE_FILE ]'
+  - sh -c '[ -f "$SASFIT_PACKAGE_FILE" ]'
 #test_script:
 #  - cmd: echo
 ##test_script:
