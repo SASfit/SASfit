@@ -20,9 +20,9 @@ clone_script:
 - ps: git submodule update --init --recursive
 
 image:
-    #  - macos
+  - macos
   - Visual Studio 2019
-    #  - Ubuntu2004
+  - Ubuntu2004
 
 environment:
   BT_API:
