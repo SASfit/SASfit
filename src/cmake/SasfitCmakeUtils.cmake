@@ -372,7 +372,9 @@ function(appveyor_set_var varname value)
     execute_process(COMMAND appveyor SetVariable
                     -Name "${varname}" -Value "${value}"
                     RESULT_VARIABLE result)
-    message(STATUS "    -> '${result}'")
+    if(NOT "${result}" EQUAL 0)
+        message(STATUS "    -> '${result}'")
+    endif()
 endfunction()
 
 # set up a sortable version number based on the current GIT commit timestamp
