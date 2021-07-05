@@ -108,11 +108,13 @@ for:
     - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
 
-      #build_script:
-      #  - sh src/appveyor/4_build.sh
+build_script:
+  - echo
+    #  - sh src/appveyor/4_build.sh
 
-      #after_build:
-      #  - sh src/appveyor/6_after_build.sh
+after_build:
+  - echo
+    #  - sh src/appveyor/6_after_build.sh
 
 test_script:
   - sh -c 'echo "SHELL: $SHELL"'
