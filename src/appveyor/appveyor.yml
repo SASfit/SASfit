@@ -121,6 +121,11 @@ test_script:
   - sh -c '[ -f "$SASFIT_SASKIT_EXEC" ] && echo success!'
   - echo "Testing for the SASfit package $SASFIT_PACKAGE_FILE"
   - sh -c '[ -f "$SASFIT_PACKAGE_FILE" ] && echo success!'
+  # another test, different syntax
+  - >- sh -c '
+    echo "Testing for the SASfit executable $SASFIT_EXEC" &&
+    echo "done $SHELL"
+    '
 
 notifications:
   - provider: Email
