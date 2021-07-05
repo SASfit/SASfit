@@ -119,6 +119,7 @@ after_build:
 # another test, different syntax
 test_script:
     - sh -c 'echo "Testing for the SASfit $SHELL executable $SASFIT_EXEC: $(if [ -f "$SASFIT_EXEC" ]; then echo success!; else echo failure!; fi)"'
+    - sh -c '. src/appveyor/7_testing.sh; testIfExists "$SASFIT_EXEC" "the SASfit executable"'
 
     #  - echo "Testing for the SASfit executable $SASFIT_EXEC"
     #  - sh -c '[ -f "$SASFIT_EXEC" ] && echo success!'
