@@ -117,12 +117,10 @@ after_build:
     #  - sh src/appveyor/6_after_build.sh
 
 # another test, different syntax
-test_script: >-
-    sh -c 'echo "SHELL: $SHELL"'
-    sh -c '
-      echo "Testing for the SASfit executable $SASFIT_EXEC" && \\
-      echo "done $SHELL"
-    '
+test_script:
+    - sh -c 'echo "SHELL: $SHELL"'
+    - >-
+        sh -c 'echo "Testing for the SASfit $SHELL executable $SASFIT_EXEC"'
 
     #  - echo "Testing for the SASfit executable $SASFIT_EXEC"
     #  - sh -c '[ -f "$SASFIT_EXEC" ] && echo success!'
