@@ -118,9 +118,7 @@ after_build:
 
 # another test, different syntax
 test_script:
-    - sh -c 'echo "SHELL: $SHELL"'
-    - >-
-        sh -c 'echo "Testing for the SASfit $SHELL executable $SASFIT_EXEC"'
+    - sh -c 'echo "Testing for the SASfit $SHELL executable $SASFIT_EXEC: $(if [ -f "$SASFIT_EXEC" ]; then echo success!; else echo failure!; fi)"'
 
     #  - echo "Testing for the SASfit executable $SASFIT_EXEC"
     #  - sh -c '[ -f "$SASFIT_EXEC" ] && echo success!'
