@@ -20,9 +20,9 @@ clone_script:
 - ps: git submodule update --init --recursive
 
 image:
-  - Ubuntu2004
+    #  - Ubuntu2004
   - Visual Studio 2019
-  - macos
+    #  - macos
 
 environment:
   BT_API:
@@ -108,24 +108,25 @@ for:
     - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
 
-build_script:
-  - sh src/appveyor/4_build.sh
+      #build_script:
+      #  - sh src/appveyor/4_build.sh
 
-after_build:
-  - sh src/appveyor/6_after_build.sh
+      #after_build:
+      #  - sh src/appveyor/6_after_build.sh
 
 test_script:
+  - sh -c 'echo "SHELL: $SHELL"'
+  - >- # another test, different syntax
+    sh -c "
+      echo \"Testing for the SASfit executable $SASFIT_EXEC\" &&
+      echo \"done $SHELL\"
+    "
   - echo "Testing for the SASfit executable $SASFIT_EXEC"
   - sh -c '[ -f "$SASFIT_EXEC" ] && echo success!'
   - echo "Testing for the saskit executable $SASFIT_SASKIT_EXEC"
   - sh -c '[ -f "$SASFIT_SASKIT_EXEC" ] && echo success!'
   - echo "Testing for the SASfit package $SASFIT_PACKAGE_FILE"
   - sh -c '[ -f "$SASFIT_PACKAGE_FILE" ] && echo success!'
-  - >- # another test, different syntax
-    sh -c '
-      echo "Testing for the SASfit executable $SASFIT_EXEC" &&
-      echo "done $SHELL"
-    '
 
 notifications:
   - provider: Email
