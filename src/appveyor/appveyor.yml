@@ -22,7 +22,7 @@ clone_script:
 image:
   - Visual Studio 2019
   - Ubuntu2004
-    #  - macos
+  - macos
 
 environment:
   BT_API:
@@ -110,17 +110,17 @@ for:
 
 build_script:
   - echo build
-    #  - sh src/appveyor/4_build.sh
+    - sh src/appveyor/4_build.sh
 
 after_build:
   - echo aft build
-    #  - sh src/appveyor/6_after_build.sh
+    - sh src/appveyor/6_after_build.sh
 
 # another test, different syntax
 test_script:
-    #    - sh -c 'echo "Testing for the SASfit $SHELL executable $SASFIT_EXEC: $(if [ -f "$SASFIT_EXEC" ]; then echo success!; else echo failure!; fi)"'
     - sh -c '. src/appveyor/7_testing.sh; testIfExists "$SASFIT_EXEC" "the SASfit executable"'
     - sh -c '. src/appveyor/7_testing.sh; testIfExists "$SASFIT_SASKIT_EXEC" "the saskit executable"'
+    - sh -c '. src/appveyor/7_testing.sh; testIfExists "$SASFIT_PACKAGE_FILE" "the SASfit package"'
 
     #  - echo "Testing for the SASfit executable $SASFIT_EXEC"
     #  - sh -c '[ -f "$SASFIT_EXEC" ] && echo success!'
