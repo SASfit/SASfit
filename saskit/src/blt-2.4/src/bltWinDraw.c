@@ -167,7 +167,7 @@ Blt_GetSystemPalette(void)
  */
 HFONT
 CreateRotatedFont(
-    unsigned long fontId,	/* Font identifier (actually a Tk_Font) */
+    Font fontId,	/* Font identifier (actually a Tk_Font) */
     double theta)
 {				/* Number of degrees to rotate font */
     TkFontAttributes *faPtr;	/* Set of attributes to match. */
