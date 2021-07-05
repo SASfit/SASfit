@@ -109,11 +109,9 @@ for:
     - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
 
 build_script:
-  - echo build
     - sh src/appveyor/4_build.sh
 
 after_build:
-  - echo aft build
     - sh src/appveyor/6_after_build.sh
 
 # another test, different syntax
