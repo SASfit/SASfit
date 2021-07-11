@@ -753,9 +753,58 @@ $\eta$ by $\eta=\pi\rho\sigma^3/6$.
 \end{itemize}
 
 \subsection{Structure factor of fluids interacting via piece-wise constant potentials
-with a hard core}
-\cite{Santos_2012,Santos_2013}
+and a hard core}~\\
 
+The approach of Santos et al.\ \cite{Santos_2012,Santos_2013} allows to obtain for molecules interacting via potentials with a hard-core plus $n=2$ piece-wise constant sections of different widths and heights a structure factor using a(semi-analytical) rational-function approximation method. The interaction potential with two piecewise constant domains can be written as
+\begin{equation}
+U(r) =
+ \begin{cases}
+      \infty    & \text{for} \quad 0<r\leq\sigma \\
+      \epsilon_1 & \text{for} \quad \sigma<r\leq\sigma\lambda_1 \\
+      \epsilon_2 & \text{for} \quad \sigma\lambda_1<r\leq\sigma\lambda_2 \\
+      0         & \text{for} \quad r>\sigma\lambda_2
+   \end{cases}
+\end{equation}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{../images/structure_factor/piecewise_constant_HS/piecewise_constant_2.png}
+\end{center}
+\caption{hard core piece-wise constant interaction potential.}
+\label{fig:Upiecewiseconstant}
+\end{figure}
+Negative values in $\epsilon_1$ or $\epsilon_2$ describes wells and positive values shoulders in the potential. A closure relation is not required in their derivation for calculating the structure factor.
+\begin{align}
+  S(q) &= 1+ \rho\int d\mathbf{r} e^{-\imath \mathbf{qr}}\left[g(r)-1\right] \\
+       &= 1 - 12\eta\Re\left[\left.\frac{G(s)-G(-s)}{s}\right|_{s=\imath q}\right]
+\end{align}
+where $\rho$ is the number density and $\eta=\rho \frac{\pi}{6} (2R_\mathrm{HS})^3$ the volume fraction. The Laplace transform of $rg(r)$ has been written in terms of an auxiliary function $F(s)$ through
+\begin{align}
+  G(s) &= s \frac{F(s)e^{-s}}{1+12\eta F(s)e^{-s}}
+\end{align}
+where
+\begin{align}
+F(s) &= R_0(s) + R_1(s)e^{-(\lambda_1-1)s} + R_2(s)e^{-(\lambda_2-1)s} \\
+R_j(s) &= -\frac{1}{12\eta}\frac{A_j + B_js}{1 + S_1s + S_2s^2 + S_3s^3}, \qquad j=0,1,2 \\
+S_1 &= -1+B_0-C^{(1)} \\
+S_2 &=\frac12 - B_0+C^{(1)} +\frac12 C^{(2)} \\
+S_3 &=-\frac{1-2\eta}{12\eta}+\frac12B_0-\frac12C^{(1)}-\frac12C^{(2)}-\frac16C^{(3)} \\
+B_0 &= C^{(1)}+\frac{\eta/2}{1+2\eta}\left(6C^{(2)}+4C^{(3)}+C^{(4)}\right)+\frac{1+\eta/2}{1+2\eta}\\
+C^{(k)}&=\sum_{j=1}^2\left[A_j\left(\lambda_j-1\right)^k-kB_j\left(\lambda_j-1\right)^{k-1}\right]\\
+A_0&=e^{-\beta\epsilon_1}\\
+A_1&=e^{-\beta\epsilon_2}-e^{-\beta\epsilon_1}\\
+A_2&=1-e^{-\beta\epsilon_2}  
+\end{align}
+with $\beta=1/k_BT$. The above defined parameters all can be expressed in terms of $B_1$ and $B_2$. These two last parameters are obtained by solving the coupled sets of equations:
+\begin{align}
+  \frac{B_1}{S_3} =& \left[e^{\beta(\epsilon_1-\epsilon_2)}\right] \sum_{\nu=1}^3\frac{s_\nu e^{(\lambda_1-1)s_\nu}}{S_1+2S_2s_\nu+3S_3s_\nu^2} \nonumber\\
+   & \times (A_0+B_0s_\nu)\\
+   \frac{B_2}{S_3} =&\left(e^{\beta\epsilon_2}-1\right)  \sum_{\nu=1}^3\frac{s_\nu e^{(\lambda_2-1)s_\nu}}{S_1+2S_2s_\nu+3S_3s_\nu^2} \nonumber\\
+   & \times \left(A_0+B_0s_\nu+\left(A_1+B_1s_\nu\right)e^{-(\lambda_1-1)s_\nu}\right)
+\end{align}
+where $s_\nu (\nu=1,2,3)$ are the roots of the equation
+\begin{align}
+  1+S_1s_\nu+S_2s_\nu^2+S_3s_\nu^3&=0 
+\end{align}
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ordered particle systems} \hspace{1pt}
