@@ -277,31 +277,33 @@ endmacro(sasfit_cmake_plugin)
 
 macro(get_git_info)
     find_package(Git)
-    if(NOT GIT_FOUND)
-        return()
+    if(NOT EXISTS "${SASFIT_ROOT_DIR}/.git")
+        set(GIT_FOUND FALSE)
     endif()
-    # get the abbreviated commit hash
-    execute_process(COMMAND git show -s --format=%h
-        WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-        OUTPUT_VARIABLE GIT_COMMIT
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
-    # get the commit timestamp incl. seconds
-    execute_process(COMMAND git show -s --format=%ad
-                                        --date=format:${VERSION_TIMESTAMP_FORMAT}
-        WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-        OUTPUT_VARIABLE GIT_COMMIT_DATETIME
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
-    # get the tag if there is one
-    execute_process(COMMAND git tag --contains
-        WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-        OUTPUT_VARIABLE GIT_TAG
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
-    set(GIT_TAG_MSG)
-    if(GIT_TAG)
-        set(GIT_TAG_MSG " (tag: ${GIT_TAG})")
+    if(GIT_FOUND)
+        # get the abbreviated commit hash
+        execute_process(COMMAND git show -s --format=%h
+            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+            OUTPUT_VARIABLE GIT_COMMIT
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        # get the commit timestamp incl. seconds
+        execute_process(COMMAND git show -s --format=%ad
+                                            --date=format:${VERSION_TIMESTAMP_FORMAT}
+            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+            OUTPUT_VARIABLE GIT_COMMIT_DATETIME
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        # get the tag if there is one
+        execute_process(COMMAND git tag --contains
+            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+            OUTPUT_VARIABLE GIT_TAG
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        set(GIT_TAG_MSG)
+        if(GIT_TAG)
+            set(GIT_TAG_MSG " (tag: ${GIT_TAG})")
+        endif()
+        message(STATUS "This source tree is on GIT commit ${GIT_COMMIT}${GIT_TAG_MSG}"
+                       " with timestamp ${GIT_COMMIT_DATETIME}.")
     endif()
-    message(STATUS "This source tree is on GIT commit ${GIT_COMMIT}${GIT_TAG_MSG}"
-                   " with timestamp ${GIT_COMMIT_DATETIME}.")
 endmacro()
 
 # splits the provided string *str* at the given separator *sep*
