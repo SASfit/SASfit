@@ -1,0 +1,93 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+script:
+  - echo "script section"
+  - rm -Rf appdir | true
+AppDir:
+  path: appdir
+  app_info:
+    id: SASfit
+    name: SASfit
+    icon: sasfit_icon
+    version: latest
+    exec: sasfit-src/saskit/bin/ubuntu-nonthreaded/dqkit-all.bin
+    exec_args: $APPDIR/sasfit-src/sasfit.vfs/main.tcl $@
+  before_bundle: |
+    echo "before_bundle"
+    if [ -d sasfit-src ]; then
+      echo
+    #      cd sasfit-src && git checkout . && git clean -xdf
+    else
+      git clone /mnt/hgfs/shared/sasfit-code sasfit-src
+    fi
+  after_bundle:
+    - echo "after_bundle"
+    - cd "$APPDIR"
+    - mkdir -p usr/share/icons && cp sasfit-src/doc/images/sasfit_icon.svg usr/share/icons/
+    - cd sasfit-src && mkdir -p b && cd b && cmake -D CREATE_BINARY=FALSE ../src && make -j $(grep processor /proc/cpuinfo | wc -l)
+    - export TCLSH="$APPDIR/sasfit-src/src/tcl/linux64/bin/tclsh8.4"
+    - cd "$APPDIR/sasfit-src/saskit" && sh gen/common.sh
+    #- cd "$APPDIR/.." && mv built_sasfit-src.tar.gz built_sasfit-src_old.tar.gz && tar zcvf built_sasfit-src.tar.gz "$(basename $APPDIR)/sasfit-src"
+    #- killall appimage-builder
+  before_runtime:
+    - echo "before_runtime"
+  after_runtime:
+    - echo "after_runtime"
+      # create the ld in /tmp for the other binaries to work
+    - ($APPDIR/AppRun <(echo exit)) || true
+      # reassemble the combined tcl interpreter with the redirected ld
+    - export TCLSH="$APPDIR/sasfit-src/src/tcl/linux64/bin/tclsh8.4"
+    - (cd "$APPDIR/sasfit-src/saskit" && $TCLSH gen/buildkit finalize -tcl=*.* -tk=*.* -blt -compression=none -binary=all -resfile=current)
+    #- killall appimage-builder
+  apt:
+    arch:
+    - amd64
+    allow_unauthenticated: false
+    sources:
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal main restricted
+      key_url: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920D1991BC93C
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal universe
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-updates universe
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal multiverse
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-updates multiverse
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security main restricted
+    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security universe
+    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security multiverse
+    include:
+    - libgcc-s1:amd64
+  files:
+    include:
+    - sasfit-src/doc/images/sasfit_icon*
+    - sasfit-src/doc/manual/sasfit.pdf
+    - sasfit-src/data/test.dat
+    - sasfit-src/plugins/*
+    - sasfit-src/sasfit.vfs/**
+    - sasfit-src/saskit/**
+    - sasfit-src/src/**
+    - sasfit-src/Readme.md
+    - sasfit-src/sasfit.sh
+    - sasfit-src/config.ini
+    - sasfit-src/Copyright_notice.txt
+    - sasfit-src/KNOWN_BUGS.txt
+    - sasfit-src/CHANGES.txt
+    - sasfit-src/examples.zip
+    - sasfit-src/COPYING.txt
+    exclude:
+    - opt/libc/usr/share/doc
+    - usr/lib/x86_64-linux-gnu/gconv
+    - usr/share/man
+    - usr/share/doc/*/README.*
+    - usr/share/doc/*/changelog.*
+    - usr/share/doc/*/NEWS.*
+    - usr/share/doc/*/TODO.*
+    - usr/include
+  test:
+    ubuntu-xenial:
+      image: appimagecrafters/tests-env:ubuntu-xenial
+      command: ./AppRun
+      use_host_x: true
+AppImage:
+  arch: x86_64
+  update-information: guess
