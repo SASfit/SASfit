@@ -45,7 +45,6 @@ else # macOS or Linux
 
 fi
 
-export NUM_LOGICAL_CORES=1
 echo "Determined $NUM_LOGICAL_CORES logical cores."
 echo
 
