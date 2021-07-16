@@ -1,44 +1,56 @@
 # appimage-builder recipe see https://appimage-builder.readthedocs.io for details
 version: 1
 script:
-  - echo "script section"
-  - rm -Rf appdir | true
+  - echo "Removing any existing appdir '$APPDIR'"
+  - rm -Rf "$APPDIR" | true
 AppDir:
-  path: appdir
+  # assuming this file resides in sasfit/src/,
+  # addresses the package dir created by CMake previously
+  path: ../../sasfit_210715150658_linux64_debug
   app_info:
     id: SASfit
     name: SASfit
     icon: sasfit_icon
     version: latest
-    exec: sasfit-src/saskit/bin/ubuntu-nonthreaded/dqkit-all.bin
-    exec_args: $APPDIR/sasfit-src/sasfit.vfs/main.tcl $@
+    exec: saskit
+    exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle: |
     echo "before_bundle"
-    if [ -d sasfit-src ]; then
-      echo
-    #      cd sasfit-src && git checkout . && git clean -xdf
-    else
-      git clone /mnt/hgfs/shared/sasfit-code sasfit-src
-    fi
   after_bundle:
     - echo "after_bundle"
-    - cd "$APPDIR"
-    - mkdir -p usr/share/icons && cp sasfit-src/doc/images/sasfit_icon.svg usr/share/icons/
-    - cd sasfit-src && mkdir -p b && cd b && cmake -D CREATE_BINARY=FALSE ../src && make -j $(grep processor /proc/cpuinfo | wc -l)
-    - export TCLSH="$APPDIR/sasfit-src/src/tcl/linux64/bin/tclsh8.4"
-    - cd "$APPDIR/sasfit-src/saskit" && sh gen/common.sh
-    #- cd "$APPDIR/.." && mv built_sasfit-src.tar.gz built_sasfit-src_old.tar.gz && tar zcvf built_sasfit-src.tar.gz "$(basename $APPDIR)/sasfit-src"
-    #- killall appimage-builder
+    # adjustments to the current layout CMake prepares
+    - (cd "$APPDIR" && rm -Rf sasfit sasfit.sh lib) # files not needed anymore, FIXME
+    - cd .. # changing to SASfit root dir
+    - cp -R sasfit.vfs "$APPDIR"/
+    # FIXME: generate proper icons from the svg
+    - mkdir -p "$APPDIR"/usr/share/icons && cp doc/images/sasfit_icon.svg "$APPDIR"/usr/share/icons/
+    # Copy the saskit dqkit to let it get the proper libc interpreter update
+    - cp saskit/build/*/dqkit/dqkit.bin "$APPDIR"/saskit
+    #- killall appimage-builder; exit
+    #- export TCLSH="$APPDIR/sasfit-src/src/tcl/linux64/bin/tclsh8.4"
+    #- cd "$APPDIR/sasfit-src/saskit" && sh gen/common.sh
   before_runtime:
     - echo "before_runtime"
-  after_runtime:
-    - echo "after_runtime"
-      # create the ld in /tmp for the other binaries to work
-    - ($APPDIR/AppRun <(echo exit)) || true
-      # reassemble the combined tcl interpreter with the redirected ld
-    - export TCLSH="$APPDIR/sasfit-src/src/tcl/linux64/bin/tclsh8.4"
-    - (cd "$APPDIR/sasfit-src/saskit" && $TCLSH gen/buildkit finalize -tcl=*.* -tk=*.* -blt -compression=none -binary=all -resfile=current)
-    #- killall appimage-builder
+  after_runtime: |
+    echo "after_runtime"
+    cd .. # changing to SASfit root dir
+    #
+    # copy modified dqkit back to the saskit source for reassembling
+    SASKIT_BUILD_PATH="$(find saskit/build/ -mindepth 1 -maxdepth 1 -type d)"
+    SF_DEBUG="$(echo $SASKIT_BUILD_PATH | grep -o debug || true)"
+    [ -z "$SF_DEBUG" ] || SF_DEBUG="-$SF_DEBUG"
+    echo "SF_DEBUG: '$SF_DEBUG', SASKIT_BUILD_PATH: '$SASKIT_BUILD_PATH'"
+    cp "$APPDIR"/saskit "$SASKIT_BUILD_PATH"/dqkit/dqkit.bin
+    export TCLSH="$(readlink -f src/tcl/linux64/bin/tclsh8.4)"
+    #
+    # create the ld in /tmp for the other binaries to work
+    ("$APPDIR"/AppRun <(echo exit)) || true
+    #
+    # reassemble the combined tcl interpreter with the redirected ld
+    (cd saskit && $TCLSH gen/buildkit finalize $SF_DEBUG -tcl=*.* -tk=*.* -blt -compression=none -binary=all -resfile=current)
+    #
+    # copy the reassembled tcl interpreter back into the app dir
+    cp saskit/bin/*/dqkit-all.bin "$APPDIR"/saskit
   apt:
     arch:
     - amd64
@@ -56,7 +68,8 @@ AppDir:
     - sourceline: deb http://security.ubuntu.com/ubuntu focal-security universe
     - sourceline: deb http://security.ubuntu.com/ubuntu focal-security multiverse
     include:
-    - libgcc-s1:amd64
+    - libgcc-s1
+    - libstdc++6
   files:
     include:
     - sasfit-src/doc/images/sasfit_icon*
