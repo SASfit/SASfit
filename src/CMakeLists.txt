@@ -17,9 +17,6 @@ dbg_cmake_vars()
 sasfit_update_version()
 
 # decides which packages to build afterwards
-if(NOT DEFINED CREATE_SOURCE)
-	set(CREATE_SOURCE FALSE)
-endif(NOT DEFINED CREATE_SOURCE)
 if(NOT DEFINED CREATE_BINARY)
 	set(CREATE_BINARY TRUE)
 endif(NOT DEFINED CREATE_BINARY)
