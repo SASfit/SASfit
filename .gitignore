@@ -27,6 +27,7 @@ src/tcl/windows_*
 src/tcl/linux_*
 src/tcl/darwin_*
 src/bckp_*
+src/Doxyfile
 sasfit.vfs/lib/app-sasfit/plugins/groups.*
 sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
 sasfit.vfs/lib/Sasfit/sasfit.so

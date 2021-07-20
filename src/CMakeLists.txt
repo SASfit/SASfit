@@ -22,6 +22,33 @@ if(NOT DEFINED CREATE_BINARY)
 endif(NOT DEFINED CREATE_BINARY)
 
  #############################################################
+### A target for source code documentation using doxygen    ###
+ #############################################################
+
+option(DOCS_ONLY "Prepare documentation only, do not build preliminary tools" OFF)
+
+add_custom_command(OUTPUT Doxyfile
+    COMMAND ${CMAKE_COMMAND} -E copy Doxyfile.template.txt Doxyfile
+    COMMAND ${CMAKE_COMMAND} -D FILENAME=Doxyfile
+    -D PATTERN='\(PROJECT_NUMBER[ \\t]*= ?\)[ \\t]*'
+        -D REPLACEMENT='\\1${SASFIT_VERSION}'
+        -P cmake/replace_text_in_file.cmake
+    WORKING_DIRECTORY ${CURRENT_DIR}
+    DEPENDS Doxyfile.template.txt)
+
+add_custom_target(docs
+    COMMAND doxygen
+    DEPENDS Doxyfile
+    WORKING_DIRECTORY ${CURRENT_DIR}
+    SOURCES Doxyfile
+    BYPRODUCTS ${CURRENT_DIR}/../doc/html
+    COMMENT "Requires *doxygen* to be installed and optionally *graphviz*.")
+
+if(DOCS_ONLY)
+    return() # skip further targets (which build trigger building stuff ...)
+endif()
+
+ #############################################################
 ### determine platform specific properties                  ###
 ### get the static list of files (platform independent tcl) ###
  #############################################################

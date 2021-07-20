@@ -143,14 +143,6 @@ macro(sasfit_copy_plugins SHARED_TARGET SUPP_FILE_PATH SUPP_FILE)
 	sasfit_copy_libs(plugins "${CMAKE_SHARED_MODULE_PREFIX}" ${SHARED_TARGET} "${CMAKE_SHARED_MODULE_SUFFIX}" ${SUPP_FILE_PATH} ${SUPP_FILE})
 endmacro(sasfit_copy_plugins)
 
-macro(replace_str_in_file FILENAME PATTERN_STR REPLACE_STR)
-#	message("replace_str_in_file '${FILENAME}' '${PATTERN_STR}' '${REPLACE_STR}'")
-	file(READ ${FILENAME} FILE_BODY)
-	string(REGEX REPLACE "${PATTERN_STR}" "${REPLACE_STR}"
-		FILE_BODY_NEW "${FILE_BODY}")
-	file(WRITE "${FILENAME}" "${FILE_BODY_NEW}")
-endmacro(replace_str_in_file)
-
 # copy shared libs to a target dir (where sasfit tcl routines will find them)
 # SHARED_TARGET: name of the cmake target whose libraries should be copied
 # REL_TARGET_DIR: path of target directory, relative to sasfit-root dir
@@ -421,14 +413,6 @@ macro(sasfit_update_version)
     file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
         "set sasfit(svn_rev) ${SASFIT_VERSION}"
     )
-    # let the documentation know about the svn revision number
-    replace_str_in_file(${SASFIT_ROOT_DIR}/src/Doxyfile 
-        "PROJECT_NUMBER         = ([^\n]*)"
-        "PROJECT_NUMBER         = ${SASFIT_VERSION}"
-    )
-    # NOTE: (TODO)
-    # above code changes have to be reverted elsewhere after build
-    # to prevent repeatedly commits of those files
 endmacro()
 
 # retrieves the path to the already extracted source package
