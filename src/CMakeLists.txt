@@ -31,7 +31,6 @@ endif(NOT DEFINED CREATE_BINARY)
 
 # original file containing all required sasfit filenames WITHOUT binaries build by cmake
 set(SASFIT_BIN_LIST_FILE ${CMAKE_MODULE_PATH}/create_bin_package.list)
-set(SASFIT_SRC_LIST_FILE ${CMAKE_MODULE_PATH}/create_source_package.list)
 set(SASFIT_PCKG_SCRIPT ${CMAKE_MODULE_PATH}/create_package.cmake)
 set(SASFIT_STARPACK_SCRIPT ${CMAKE_MODULE_PATH}/create_starpack.cmake)
 
@@ -39,7 +38,6 @@ set(SASFIT_STARPACK_SCRIPT ${CMAKE_MODULE_PATH}/create_starpack.cmake)
 # (binaries built will be added later)
 set(BIN_FILE_LIST "")
 file(STRINGS ${SASFIT_BIN_LIST_FILE} BIN_FILE_LIST)
-file(STRINGS ${SASFIT_SRC_LIST_FILE} SASFIT_SRC_FILE_LIST)
 
 
 # add runtime files required on Windows with Visual Studio only 
@@ -343,29 +341,5 @@ if(CREATE_BINARY)
 	appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
 	appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
 endif(CREATE_BINARY)
-
-if(CREATE_SOURCE)
-
-	 ####################################
-	### create a sasfit source package ###
-	 ####################################
-
-	# write the list of filenames to a temporary file
-    # (workaround for shell command length restrictions)
-	set(SASFIT_LIST_FILE ${SASFIT_SRC_LIST_FILE}.tmp)
-	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_SRC_FILE_LIST}")
-
-	# copies all files required for a valid source distribution into a separate directory
-	add_custom_target(sasfit_source ALL
-		${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
-				-D SASFIT_PCKG_DIR_POSTFIX:STRING=source
-				-D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
-				-D CM_GEN:STRING=${CMAKE_GENERATOR}
-				-D SASFIT_VERSION:STRING=${SASFIT_VERSION}
-				-P ${SASFIT_PCKG_SCRIPT}
-        COMMENT "Copying sasfit source files to a separate directory ..."
-		VERBATIM
-	)
-endif(CREATE_SOURCE)
 
 # vim: set ts=4 sw=4 sts=4 tw=0:

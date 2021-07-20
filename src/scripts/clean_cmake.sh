@@ -6,7 +6,6 @@ IFS=$'\n';
 for name in $(find . -name "CMakeCache.txt";
               find . -name "cmake_install.cmake";
               find . -name "create_bin_package.list.tmp";
-              find . -name "create_source_package.list.tmp";
               find . -name "_CPack_Packages";
               find . -name "*.dir";
               find . -name "*.sln";
