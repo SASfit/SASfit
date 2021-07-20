@@ -32,7 +32,8 @@
 
 cmake_minimum_required(VERSION 3.0)
 
-include(${SASFIT_ROOT_DIR}/src/cmake/SasfitCmakeUtils.cmake)
+set(CMAKE_MODULE_PATH ${SASFIT_ROOT_DIR}/src/cmake)
+include(SasfitCmakeUtils)
 #message("package dir: ${SASFIT_PCKG_DIR}")
 #message("root dir: ${SASFIT_ROOT_DIR}")
 
@@ -88,23 +89,28 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
 endforeach()
 
 # build zip/tar archive
-set(CPackConfigPattern "\\\\\"[^\"]+\\\\\"")
-replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-    "CPACK_PACKAGE_FILE_NAME ${CPackConfigPattern}"
-    "CPACK_PACKAGE_FILE_NAME \"${PCKG_DIR_NAME}\"")
-replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-    "CPACK_CMAKE_GENERATOR ${CPackConfigPattern}"
-    "CPACK_CMAKE_GENERATOR \"${CM_GEN}\"")
-replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-    "CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
-    "CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR};.\"")
 set(CPACK_GENERATOR TBZ2)
 if(WIN32)
     set(CPACK_GENERATOR ZIP)
 endif()
-replace_str_in_file(${SASFIT_ROOT_DIR}/src/cmake/CPackConfig.cmake
-    "CPACK_GENERATOR ${CPackConfigPattern}"
-    "CPACK_GENERATOR \"${CPACK_GENERATOR}\"")
+set(CPackConfigPattern "\\\"[^\\\"]+\\\"")
+execute_process(COMMAND ${CMAKE_COMMAND} -D FILENAME=${CMAKE_MODULE_PATH}/CPackConfig.cmake
+    -D "PATTERN=CPACK_PACKAGE_FILE_NAME ${CPackConfigPattern}"
+    -D "REPLACEMENT=CPACK_PACKAGE_FILE_NAME \"${PCKG_DIR_NAME}\""
+    -P ${CMAKE_MODULE_PATH}/replace_text_in_file.cmake)
+execute_process(COMMAND ${CMAKE_COMMAND} -D FILENAME=${CMAKE_MODULE_PATH}/CPackConfig.cmake
+    -D "PATTERN=CPACK_CMAKE_GENERATOR ${CPackConfigPattern}"
+    -D "REPLACEMENT=CPACK_CMAKE_GENERATOR \"${CM_GEN}\""
+    -P ${CMAKE_MODULE_PATH}/replace_text_in_file.cmake)
+execute_process(COMMAND ${CMAKE_COMMAND} -D FILENAME=${CMAKE_MODULE_PATH}/CPackConfig.cmake
+    -D "PATTERN=CPACK_INSTALLED_DIRECTORIES ${CPackConfigPattern}"
+    -D "REPLACEMENT=CPACK_INSTALLED_DIRECTORIES \"${SASFIT_PCKG_DIR};.\""
+    -P ${CMAKE_MODULE_PATH}/replace_text_in_file.cmake)
+execute_process(COMMAND ${CMAKE_COMMAND} -D FILENAME=${CMAKE_MODULE_PATH}/CPackConfig.cmake
+    -D "PATTERN=CPACK_GENERATOR ${CPackConfigPattern}"
+    -D "REPLACEMENT=CPACK_GENERATOR \"${CPACK_GENERATOR}\""
+    -P ${CMAKE_MODULE_PATH}/replace_text_in_file.cmake)
+
 execute_process(COMMAND cpack
         --config "cmake/CPackConfig.cmake"
     WORKING_DIRECTORY ${SASFIT_ROOT_DIR}/src

@@ -30,18 +30,16 @@ option(DOCS_ONLY "Prepare documentation only, do not build preliminary tools" OF
 add_custom_command(OUTPUT Doxyfile
     COMMAND ${CMAKE_COMMAND} -E copy Doxyfile.template.txt Doxyfile
     COMMAND ${CMAKE_COMMAND} -D FILENAME=Doxyfile
-    -D PATTERN='\(PROJECT_NUMBER[ \\t]*= ?\)[ \\t]*'
-        -D REPLACEMENT='\\1${SASFIT_VERSION}'
+    -D "PATTERN=\\(PROJECT_NUMBER[ \\\\t]*= ?\\)[ \\\\t]*"
+        -D "REPLACEMENT=\\\\1${SASFIT_VERSION}"
         -P cmake/replace_text_in_file.cmake
     WORKING_DIRECTORY ${CURRENT_DIR}
     DEPENDS Doxyfile.template.txt)
 
 add_custom_target(docs
-    COMMAND doxygen
-    DEPENDS Doxyfile
+    COMMAND doxygen DEPENDS Doxyfile
     WORKING_DIRECTORY ${CURRENT_DIR}
-    SOURCES Doxyfile
-    BYPRODUCTS ${CURRENT_DIR}/../doc/html
+    SOURCES Doxyfile BYPRODUCTS ${CURRENT_DIR}/../doc/html
     COMMENT "Requires *doxygen* to be installed and optionally *graphviz*.")
 
 if(DOCS_ONLY)

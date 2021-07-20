@@ -9,7 +9,7 @@
 # in a text file *FILENAME* with a given replacement text *REPLACEMENT*.
 # Those variables should be provided by -D argument when running it with cmake.
 
-message("In file '${FILENAME}' replacing '${PATTERN}' by '${REPLACEMENT}'.")
+message("In file '${FILENAME}'\n  replacing '${PATTERN}' by '${REPLACEMENT}'.")
 file(READ ${FILENAME} FILE_BODY)
 string(REGEX REPLACE "${PATTERN}" "${REPLACEMENT}"
     FILE_BODY_NEW "${FILE_BODY}")
