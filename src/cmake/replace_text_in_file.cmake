@@ -3,7 +3,7 @@
 # Copyright 2021 Ingo Breßler (ingo.bressler@bam.de)
 #
 # This file is subject to the terms and conditions defined in
-# file 'LICENSE.txt', which is part of this source code package.
+# file 'COPYING.txt', which is part of this source code package.
 #
 # A CMake script to replace a matching regular expression *PATTERN*
 # in a text file *FILENAME* with a given replacement text *REPLACEMENT*.
