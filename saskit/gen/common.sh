@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+
+scriptPath="$(dirname "$(realpath "$0")")"
+findCmdInPath="$(realpath "$scriptPath/../../src/scripts/findCmdInPath.sh")"
 
 if [ "x$TCLSH" = "x" ]; then
     TCLSH=tclsh
@@ -20,8 +23,8 @@ if [ "$SYSTEM_NAME" = "Darwin" ]; then
     for libdir in /usr/X11/lib /opt/local/lib; do
         [ -f "$libdir/libX11.a" ] && CFLAGS="$CFLAGS -L$libdir"
     done
-    CMD_CC="$( echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^gcc-(mp-)?[0-9]+' | head -n1)"
-    CMD_CXX="$(echo $PATH | tr ':' '\n' | xargs -n 1 ls -1 | egrep '^g\+\+-(mp-)?[0-9]+' | head -n1)"
+    CMD_CC="$( $findCmdInPath '/gcc(-(mp-)?[0-9]+)?$')"
+    CMD_CXX="$($findCmdInPath '/g\+\+(-(mp-)?[0-9]+)?$')"
 fi;
 
 # find optionally installed gcc package if not already defined
