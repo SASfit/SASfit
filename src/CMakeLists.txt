@@ -30,7 +30,7 @@ option(DOCS_ONLY "Prepare documentation only, do not build preliminary tools" OF
 add_custom_command(OUTPUT Doxyfile
     COMMAND ${CMAKE_COMMAND} -E copy Doxyfile.template.txt Doxyfile
     COMMAND ${CMAKE_COMMAND} -D FILENAME=Doxyfile
-    -D "PATTERN=\\(PROJECT_NUMBER[ \\\\t]*= ?\\)[ \\\\t]*"
+        -D "PATTERN=\\(PROJECT_NUMBER[ \\\\t]*= ?\\)[ \\\\t]*"
         -D "REPLACEMENT=\\\\1${SASFIT_VERSION}"
         -P cmake/replace_text_in_file.cmake
     WORKING_DIRECTORY ${CURRENT_DIR}
@@ -315,7 +315,6 @@ if(CREATE_BINARY)
 		message(STATUS "Using a starpack with debug symbols.")
 		set(DEBUG_SUFFIX "_debug")
 	endif(DEBUG)
-#	set(SASFIT_VERSION "${SASFIT_VERSION}${DEBUG_SUFFIX}")
 
 	set(SASFIT_PCKG_DIR_POSTFIX ${PLATFORM}${DEBUG_SUFFIX})
 	set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
