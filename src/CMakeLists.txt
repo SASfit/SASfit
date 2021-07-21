@@ -309,13 +309,6 @@ endforeach(PLUGIN_NAME)
  ####################################
 
 if(CREATE_BINARY)
-
-	# selects libstdc++5 version of saskit
-	set(LIBSTDC_VER "")
-	if(DEFINED USE_STDC5)
-		set(LIBSTDC_VER "_stdc++5")
-	endif(DEFINED USE_STDC5)
-
 	# selects debug version if desired
 	set(DEBUG_SUFFIX "")
 	if(DEBUG)
@@ -324,7 +317,7 @@ if(CREATE_BINARY)
 	endif(DEBUG)
 #	set(SASFIT_VERSION "${SASFIT_VERSION}${DEBUG_SUFFIX}")
 
-	set(SASFIT_PCKG_DIR_POSTFIX ${PLATFORM}${LIBSTDC_VER}${DEBUG_SUFFIX})
+	set(SASFIT_PCKG_DIR_POSTFIX ${PLATFORM}${DEBUG_SUFFIX})
 	set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
 
 	sasfit_file_list(${SASFIT_BIN_FILE_LIST} ${SASFIT_EXEC_FILENAME})
