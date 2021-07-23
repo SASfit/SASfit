@@ -25,7 +25,7 @@ endif(NOT DEFINED CREATE_BINARY)
 ### A target for source code documentation using doxygen    ###
  #############################################################
 
-option(DOCS_ONLY "Prepare documentation only, do not build preliminary tools" OFF)
+option(DOCS_ONLY "Build documentation only, do not build the program" OFF)
 
 add_custom_command(OUTPUT Doxyfile
     COMMAND ${CMAKE_COMMAND} -E copy Doxyfile.template.txt Doxyfile
