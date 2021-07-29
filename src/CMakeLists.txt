@@ -337,31 +337,29 @@ if(CREATE_BINARY)
     file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
 
     if(NOT IS_LINUX)
-    add_custom_target(sasfit_binary ALL
-        ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
-                -D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
-                -D SASFIT_EXEC_FILENAME:STRING=${SASFIT_EXEC_FILENAME}
-                -D SASFIT_DEBUG:BOOL=${DEBUG}
-                -P ${SASFIT_STARPACK_SCRIPT}
-        DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
-        COMMENT "Creating sasfit binary ..."
-        VERBATIM
-    )
-    appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
+            add_custom_target(sasfit_binary ALL
+                ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
+                        -D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
+                        -D SASFIT_EXEC_FILENAME:STRING=${SASFIT_EXEC_FILENAME}
+                        -D SASFIT_DEBUG:BOOL=${DEBUG}
+                        -P ${SASFIT_STARPACK_SCRIPT}
+                DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
+                COMMENT "Creating sasfit binary ..."
+                VERBATIM)
+            appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
 
-    add_custom_target(sasfit_binary_package ALL
-        ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
-                -D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
-                -D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
-                -D CM_GEN:STRING=${CMAKE_GENERATOR}
-                -D WIN32=${WIN32}
-                -D SASFIT_VERSION:STRING=${SASFIT_VERSION}
-                -P ${SASFIT_PCKG_SCRIPT}
-        DEPENDS sasfit_binary
-        COMMENT "Creating sasfit package ..."
-        VERBATIM
-    )
+            add_custom_target(sasfit_binary_package ALL
+                ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
+                        -D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
+                        -D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
+                        -D CM_GEN:STRING=${CMAKE_GENERATOR}
+                        -D WIN32=${WIN32}
+                        -D SASFIT_VERSION:STRING=${SASFIT_VERSION}
+                        -P ${SASFIT_PCKG_SCRIPT}
+                DEPENDS sasfit_binary
+                COMMENT "Creating sasfit package ..."
+                VERBATIM)
     endif()
 endif(CREATE_BINARY)
 
-# vim: set ts=4 sw=4 sts=4 tw=0:
+# vim: set et ts=4 sw=4 sts=4 tw=0:
