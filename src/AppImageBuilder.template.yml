@@ -78,6 +78,7 @@ AppDir:
     - sasfit.vfs/**
     - @SASFIT_BIN_FILE_LIST_FORMATTED@
     exclude:
+    - sasfit.vfs/lib/app-sasfit/tcl/*.zip
     - opt/libc/usr/share/doc
     - usr/lib/x86_64-linux-gnu/gconv
     - usr/share/man
