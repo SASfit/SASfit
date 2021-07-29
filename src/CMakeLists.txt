@@ -59,21 +59,18 @@ set(SASFIT_STARPACK_SCRIPT ${CMAKE_MODULE_PATH}/create_starpack.cmake)
 
 # copy the binary package file list to a temporary list file 
 # (binaries built will be added later)
-set(BIN_FILE_LIST "")
 file(STRINGS ${SASFIT_BIN_LIST_FILE} BIN_FILE_LIST)
-
+sasfit_add2pckg(${BIN_FILE_LIST})
 
 # add runtime files required on Windows with Visual Studio only 
 # TODO ::: (ATTENTION!, depends on Visual Studio Version, here 2005) ::: TODO
 if(MSVC80)
 	message(STATUS "\n   Assuming 'msvcr80.dll' and 'Microsoft.VC80.CRT.manifest' in\n   '${SASFIT_ROOT_DIR}'\n")
-	sasfit_file_list(${BIN_FILE_LIST}
+	sasfit_add2pckg(
 		msvcr80.dll
 		Microsoft.VC80.CRT.manifest
 	)
-else(MSVC80)
-	sasfit_file_list(${BIN_FILE_LIST})
-endif(MSVC80)
+endif()
 
 if(CMAKE_HOST_APPLE)
 	add_definitions(-DMACOSX)
@@ -317,20 +314,29 @@ if(CREATE_BINARY)
 	endif(DEBUG)
 
 	set(SASFIT_PCKG_DIR_POSTFIX ${PLATFORM}${DEBUG_SUFFIX})
-	set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
-
-	sasfit_file_list(${SASFIT_BIN_FILE_LIST} ${SASFIT_EXEC_FILENAME})
+    if(NOT IS_LINUX)
+		set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
+		sasfit_add2pckg(${SASFIT_EXEC_FILENAME})
+		if(IS_MACOS)
+			sasfit_add2pckg(${SASFIT_EXEC_FILENAME}.sh)
+		endif()
+	endif()
 
 	# set the saskit filename, chose the debug version if required
 	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
     build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
     message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
-    get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
+	appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
+
+    if(NOT IS_LINUX)
+        get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
+	endif()
 	# write the list of filenames to a temporary file
     # (workaround for shell command length restrictions)
 	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
 	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
 
+    if(NOT IS_LINUX)
 	add_custom_target(sasfit_binary ALL
 		${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
 				-D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
@@ -341,6 +347,8 @@ if(CREATE_BINARY)
         COMMENT "Creating sasfit binary ..."
 		VERBATIM
 	)
+	appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
+
 	add_custom_target(sasfit_binary_package ALL
 		${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
 				-D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
@@ -353,8 +361,7 @@ if(CREATE_BINARY)
         COMMENT "Creating sasfit package ..."
 		VERBATIM
 	)
-	appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
-	appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
+    endif()
 endif(CREATE_BINARY)
 
 # vim: set ts=4 sw=4 sts=4 tw=0:

@@ -74,14 +74,9 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
         get_filename_component(subdir "${REL_FILENAME}" DIRECTORY)
         message("copying '${SRC_FILENAME}' -> '${SASFIT_PCKG_DIR}/${subdir}'")
         file(COPY ${SRC_FILENAME} DESTINATION ${SASFIT_PCKG_DIR}/${subdir} FOLLOW_SYMLINK_CHAIN)
-        if(REL_FILENAME STREQUAL "sasfit.sh")
-            if(CMAKE_HOST_APPLE)
-                # SASfit startup script needs to end with .command on macOS
-                file(RENAME "${SASFIT_PCKG_DIR}/${REL_FILENAME}" "${SASFIT_PCKG_DIR}/sasfit.command")
-            elseif(WIN32)
-                # sasfit.sh not needed on Windows
-                file(REMOVE "${SASFIT_PCKG_DIR}/${REL_FILENAME}")
-            endif()
+        if(IS_MACOS AND REL_FILENAME STREQUAL "sasfit.sh")
+			# SASfit startup script needs to end with .command on macOS
+			file(RENAME "${SASFIT_PCKG_DIR}/${REL_FILENAME}" "${SASFIT_PCKG_DIR}/sasfit.command")
         endif() # sasfit.sh
     else()
         message("Could not copy file: ${SRC_FILENAME}")

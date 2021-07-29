@@ -120,11 +120,10 @@ endfunction()
 
 # adds given files to binary distribution file list
 # needs to be a function, because we operate on a cmake cache variable
-function(sasfit_file_list)
-	set(SASFIT_BIN_FILE_LIST ${ARGN}
-		CACHE STRING "files part of a sasfit binary package" FORCE
-	)
-endfunction(sasfit_file_list)
+function(sasfit_add2pckg)
+	set(SASFIT_BIN_FILE_LIST ${SASFIT_BIN_FILE_LIST} ${ARGN}
+        CACHE STRING "files part of a sasfit binary package" FORCE)
+endfunction()
 
 # ensure that the dir doesn't exist before creating it
 macro(sasfit_assert_dir)
@@ -164,9 +163,7 @@ macro(sasfit_copy_libs REL_TARGET_DIR PREFIX SHARED_TARGET SUFFIX)
 	set(SUPP_CMD "")
 	if(${ARGC} GREATER 5)
 		set(SUPP_CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${ARGV4}/${ARGV5}" "${TARGET_DIR}")
-		sasfit_file_list(${SASFIT_BIN_FILE_LIST}
-			${REL_TARGET_DIR}/${ARGV5}
-		)
+		sasfit_add2pckg(${REL_TARGET_DIR}/${ARGV5})
 	endif(${ARGC} GREATER 5)
 	set(CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${SHARED_LIB_FULL_NAME}" "${TARGET_DIR}/${SHARED_TARGET}${SUFFIX}")
 	add_custom_command(TARGET ${SHARED_TARGET} POST_BUILD
@@ -177,9 +174,7 @@ macro(sasfit_copy_libs REL_TARGET_DIR PREFIX SHARED_TARGET SUFFIX)
 
 	if(NOT ${SHARED_TARGET} STREQUAL "sasfit")
 		# add this binary to the list of files to copy for a working package
-		sasfit_file_list(${SASFIT_BIN_FILE_LIST}
-			${REL_TARGET_DIR}/${SHARED_TARGET}${SUFFIX}
-		)
+		sasfit_add2pckg(${REL_TARGET_DIR}/${SHARED_TARGET}${SUFFIX})
 	endif(NOT ${SHARED_TARGET} STREQUAL "sasfit")
 endmacro(sasfit_copy_libs)
 
