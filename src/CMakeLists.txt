@@ -338,25 +338,29 @@ if(CREATE_BINARY)
             CONTENT "${AppImageBuilderCfg}"
             @ONLY NEWLINE_STYLE LF)
         # find the final AppImage file name to set an AppVeyor variable to test its existence
-        file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake CONTENT "
-            cmake_minimum_required(VERSION 3.0)
-            set(CMAKE_MODULE_PATH \"\${SASFIT_ROOT_DIR}/src/cmake\")
-            include(SasfitCmakeUtils)
-            file(GLOB SASFIT_EXEC_FILENAME RELATIVE \"\${SASFIT_ROOT_DIR}\"
-                \${SASFIT_ROOT_DIR}/*.AppImage)
-            message(\"Found SASFIT_EXEC_FILENAME: '\${SASFIT_EXEC_FILENAME}'\")
-            appveyor_set_var(SASFIT_EXEC \"\${SASFIT_ROOT_DIR}/\${SASFIT_EXEC_FILENAME}\")
-            appveyor_set_var(SASFIT_PACKAGE_FILE \"\${SASFIT_ROOT_DIR}/\${SASFIT_EXEC_FILENAME}\")
-            " @ONLY NEWLINE_STYLE LF)
+        set(SASFIT_EXEC_FILENAME "SASfit-${SASFIT_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
+        #file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake CONTENT "
+        #    cmake_minimum_required(VERSION 3.0)
+        #    set(CMAKE_MODULE_PATH \"\${SASFIT_ROOT_DIR}/src/cmake\")
+        #    include(SasfitCmakeUtils)
+        #    file(GLOB SASFIT_EXEC_FILENAME RELATIVE \"\${SASFIT_ROOT_DIR}\"
+        #        \${SASFIT_ROOT_DIR}/*.AppImage)
+        #    message(\"Found SASFIT_EXEC_FILENAME: '\${SASFIT_EXEC_FILENAME}'\")
+        #    appveyor_set_var(SASFIT_EXEC \"\${SASFIT_ROOT_DIR}/\${SASFIT_EXEC_FILENAME}\")
+        #    appveyor_set_var(SASFIT_PACKAGE_FILE \"\${SASFIT_ROOT_DIR}/\${SASFIT_EXEC_FILENAME}\")
+        #    " @ONLY NEWLINE_STYLE LF)
         # build the AppImage at the end and set the AppImage file name
         add_custom_target(sasfit_binary ALL
             appimage-builder --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml --skip-tests
-            COMMAND ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
-                -P ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake
+            #COMMAND ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
+            #    -P ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake
             DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
+            BYPRODUCT ${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
             COMMENT "Creating sasfit binary ..."
             VERBATIM)
+        appveyor_set_var(SASFIT_EXEC ${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME})
+        appveyor_set_var(SASFIT_PACKAGE_FILE ${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME})
     else()
         appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
         get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
