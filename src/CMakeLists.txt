@@ -351,7 +351,7 @@ if(CREATE_BINARY)
         #    " @ONLY NEWLINE_STYLE LF)
         # build the AppImage at the end and set the AppImage file name
         add_custom_target(sasfit_binary ALL
-            appimage-builder --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml --skip-tests
+            appimage-builder --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml --skip-tests # FIXME, test tests on appveyor!
             #COMMAND ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
             #    -P ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake
             DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
