@@ -355,7 +355,7 @@ if(CREATE_BINARY)
             #COMMAND ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
             #    -P ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake
             DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
-            BYPRODUCT ${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}
+            BYPRODUCTS ${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
             COMMENT "Creating sasfit binary ..."
             VERBATIM)
