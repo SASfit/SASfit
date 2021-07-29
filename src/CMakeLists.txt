@@ -18,7 +18,7 @@ sasfit_update_version()
 
 # decides which packages to build afterwards
 if(NOT DEFINED CREATE_BINARY)
-	set(CREATE_BINARY TRUE)
+    set(CREATE_BINARY TRUE)
 endif(NOT DEFINED CREATE_BINARY)
 
  #############################################################
@@ -65,23 +65,23 @@ sasfit_add2pckg(${BIN_FILE_LIST})
 # add runtime files required on Windows with Visual Studio only 
 # TODO ::: (ATTENTION!, depends on Visual Studio Version, here 2005) ::: TODO
 if(MSVC80)
-	message(STATUS "\n   Assuming 'msvcr80.dll' and 'Microsoft.VC80.CRT.manifest' in\n   '${SASFIT_ROOT_DIR}'\n")
-	sasfit_add2pckg(
-		msvcr80.dll
-		Microsoft.VC80.CRT.manifest
-	)
+    message(STATUS "\n   Assuming 'msvcr80.dll' and 'Microsoft.VC80.CRT.manifest' in\n   '${SASFIT_ROOT_DIR}'\n")
+    sasfit_add2pckg(
+        msvcr80.dll
+        Microsoft.VC80.CRT.manifest
+    )
 endif()
 
 if(CMAKE_HOST_APPLE)
-	add_definitions(-DMACOSX)
-	add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
-	set(CMAKE_OSX_ARCHITECTURES ${CMAKE_SYSTEM_PROCESSOR})
-	if(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
-		# assuming os is recent enough to understand x64
-		# GSL build environment does not support multiple "-arch" 
-		set(CMAKE_OSX_ARCHITECTURES x86_64)
-	endif(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
-	message(STATUS "Bulding on MacOS for: ${CMAKE_OSX_ARCHITECTURES}")
+    add_definitions(-DMACOSX)
+    add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
+    set(CMAKE_OSX_ARCHITECTURES ${CMAKE_SYSTEM_PROCESSOR})
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
+        # assuming os is recent enough to understand x64
+        # GSL build environment does not support multiple "-arch" 
+        set(CMAKE_OSX_ARCHITECTURES x86_64)
+    endif(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
+    message(STATUS "Bulding on MacOS for: ${CMAKE_OSX_ARCHITECTURES}")
 endif(CMAKE_HOST_APPLE)
 
 
@@ -92,31 +92,31 @@ endif(CMAKE_HOST_APPLE)
 # platform specific properties
 IF(WIN32) # for Windows
 
-	ADD_DEFINITIONS(
-		-DUSE_CLOCK	 # see etime_.c
-		-DMSDOS
-		-DNO_ONEXIT
-		-DNO_FPINIT
-		-DCONFLICTING_ISATTY
-		-DNO_FUNCTION_MACRO
-	)
+    ADD_DEFINITIONS(
+        -DUSE_CLOCK     # see etime_.c
+        -DMSDOS
+        -DNO_ONEXIT
+        -DNO_FPINIT
+        -DCONFLICTING_ISATTY
+        -DNO_FUNCTION_MACRO
+    )
 
-	IF(MSVC80)
-		# suppress warnings about usage of old non-limited string functions
-		# has to be fixed later
-		add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
-		add_definitions(-DINTEGER_STAR_8) # see f2c/f2c.h
-	ELSE(MSVC80) # NOT MSVC80
-#			add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
-	ENDIF(MSVC80)
+    IF(MSVC80)
+        # suppress warnings about usage of old non-limited string functions
+        # has to be fixed later
+        add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
+        add_definitions(-DINTEGER_STAR_8) # see f2c/f2c.h
+    ELSE(MSVC80) # NOT MSVC80
+#            add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
+    ENDIF(MSVC80)
 
 ENDIF(WIN32) # for Windows
 
 # for Unix/Linux
 IF(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-#	ADD_DEFINITIONS(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
-	ADD_DEFINITIONS(-DINTEGER_STAR_8 ) # see f2c/f2c.h
-	add_definitions(-UNO_LONGLONG_AND_NO_LONGINT)
+#    ADD_DEFINITIONS(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
+    ADD_DEFINITIONS(-DINTEGER_STAR_8 ) # see f2c/f2c.h
+    add_definitions(-UNO_LONGLONG_AND_NO_LONGINT)
 ENDIF(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 
 
@@ -125,8 +125,8 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
  ###############################
 
 add_definitions(
-	-DSASFIT_LIB_SUFFIX="${CMAKE_SHARED_MODULE_SUFFIX}"
-	-DSASFIT_LIB_PREFIX="${CMAKE_SHARED_MODULE_PREFIX}"
+    -DSASFIT_LIB_SUFFIX="${CMAKE_SHARED_MODULE_SUFFIX}"
+    -DSASFIT_LIB_PREFIX="${CMAKE_SHARED_MODULE_PREFIX}"
 )
 
 
@@ -172,8 +172,8 @@ message(STATUS "sundials INCLUDES:  ${sundials_INCLUDE_DIRS}")
 message(STATUS "sundials LIBRARIES: ${sundials_LIBRARIES}")
 
 add_definitions(
-	-DUSE_TCL_STUBS
-	-DUSE_TK_STUBS
+    -DUSE_TCL_STUBS
+    -DUSE_TK_STUBS
 )
 
 # openMP
@@ -206,28 +206,28 @@ add_definitions(
 set(SRC_FILES "")
 set(SF_INC_DIRS "")
 foreach(SF_MODULE f2c sasfit_common sasfit_sd sasfit_sq sasfit_ff sasfit_core sasfit_old sasfit_oz sasfit_fixed_point_acc sasfit_frida)
-	if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
-		foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
-			list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")
-		endforeach(SRC_FILE)
-		if(${SF_MODULE} MATCHES "f2c")
-			list(APPEND SF_INC_DIRS "${SF_MODULE}")
-		else(${SF_MODULE} MATCHES "f2c")
-			list(APPEND SF_INC_DIRS "${SF_MODULE}/include")
-		endif(${SF_MODULE} MATCHES "f2c")
-	endif(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
+    if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
+        foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
+            list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")
+        endforeach(SRC_FILE)
+        if(${SF_MODULE} MATCHES "f2c")
+            list(APPEND SF_INC_DIRS "${SF_MODULE}")
+        else(${SF_MODULE} MATCHES "f2c")
+            list(APPEND SF_INC_DIRS "${SF_MODULE}/include")
+        endif(${SF_MODULE} MATCHES "f2c")
+    endif(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
 endforeach(SF_MODULE)
 
 include_directories(
-	${SF_INC_DIRS}
-	${TCL_INCLUDE_DIRS}
-	${GSL_INCLUDE_DIRS}
-	${FFTW_INCLUDE_DIRS}
-	${sundials_INCLUDE_DIRS}
+    ${SF_INC_DIRS}
+    ${TCL_INCLUDE_DIRS}
+    ${GSL_INCLUDE_DIRS}
+    ${FFTW_INCLUDE_DIRS}
+    ${sundials_INCLUDE_DIRS}
 )
 
 add_library(sasfit SHARED
-	${SRC_FILES}
+    ${SRC_FILES}
 )
 
 target_link_libraries(sasfit
@@ -242,50 +242,50 @@ target_link_libraries(sasfit
 #sasfit_build_props_unix(sasfit "-save-temps")
 set(COMPILE_FLAGS -std=gnu99)
 if(UNIX)
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall")
+    set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall")
 endif(UNIX)
 #message("DEBUG: '${DEBUG}' OPTIM: '${OPTIM}'")
 if(DEBUG)
-	# debug
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} -g")
+    # debug
+    set(COMPILE_FLAGS "${COMPILE_FLAGS} -g")
 elseif(OPTIM)
-	# non-debug optimized
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} -march=native -O2 -pipe -fomit-frame-pointer -fforce-addr")
+    # non-debug optimized
+    set(COMPILE_FLAGS "${COMPILE_FLAGS} -march=native -O2 -pipe -fomit-frame-pointer -fforce-addr")
 else(DEBUG)
-	# general purpose binary
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer -fforce-addr")
+    # general purpose binary
+    set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer -fforce-addr")
 endif(DEBUG)
 
 set_target_properties(sasfit PROPERTIES
-	COMPILE_FLAGS "${COMPILE_FLAGS}"
-	MACOSX_RPATH FALSE # cmake 3 compatibility
+    COMPILE_FLAGS "${COMPILE_FLAGS}"
+    MACOSX_RPATH FALSE # cmake 3 compatibility
 )
 
 sasfit_copy_shared_libs(sasfit "sasfit.vfs/lib/Sasfit")
 
 if(DEFINED WITH_STATIC)
 
-	set(SRC_FILES)
-	foreach(SF_MODULE f2c sasfit_common)
-		if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
-			foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
-				list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")
-			endforeach(SRC_FILE)
-		endif(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
-	endforeach(SF_MODULE)
+    set(SRC_FILES)
+    foreach(SF_MODULE f2c sasfit_common)
+        if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
+            foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
+                list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")
+            endforeach(SRC_FILE)
+        endif(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
+    endforeach(SF_MODULE)
 
-	add_library(sasfit_common_stat STATIC
-		${SRC_FILES}
-	)
+    add_library(sasfit_common_stat STATIC
+        ${SRC_FILES}
+    )
 
-	if(UNIX)
-		if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
-			# required for static builds on 64bit
-			set(COMPILE_FLAGS "${COMPILE_FLAGS} -fPIC")
-		endif(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
-	endif(UNIX)
-	set_target_properties(sasfit_common_stat PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
-	set_target_properties(sasfit_common_stat PROPERTIES COMPILE_DEFINITIONS STATIC_ENABLED)
+    if(UNIX)
+        if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+            # required for static builds on 64bit
+            set(COMPILE_FLAGS "${COMPILE_FLAGS} -fPIC")
+        endif(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+    endif(UNIX)
+    set_target_properties(sasfit_common_stat PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
+    set_target_properties(sasfit_common_stat PROPERTIES COMPILE_DEFINITIONS STATIC_ENABLED)
 
 endif(DEFINED WITH_STATIC)
 
@@ -298,7 +298,7 @@ add_subdirectory(plugins)
 
 message(STATUS "The binary package will include the following plugins: ")
 foreach(PLUGIN_NAME ${SASFIT_PLUGINS_INCLUDED})
-	message(STATUS "* ${PLUGIN_NAME}")
+    message(STATUS "* ${PLUGIN_NAME}")
 endforeach(PLUGIN_NAME)
 
  ####################################
@@ -306,61 +306,61 @@ endforeach(PLUGIN_NAME)
  ####################################
 
 if(CREATE_BINARY)
-	# selects debug version if desired
-	set(DEBUG_SUFFIX "")
-	if(DEBUG)
-		message(STATUS "Using a starpack with debug symbols.")
-		set(DEBUG_SUFFIX "_debug")
-	endif(DEBUG)
+    # selects debug version if desired
+    set(DEBUG_SUFFIX "")
+    if(DEBUG)
+        message(STATUS "Using a starpack with debug symbols.")
+        set(DEBUG_SUFFIX "_debug")
+    endif(DEBUG)
 
-	set(SASFIT_PCKG_DIR_POSTFIX ${PLATFORM}${DEBUG_SUFFIX})
+    set(SASFIT_PCKG_DIR_POSTFIX ${PLATFORM}${DEBUG_SUFFIX})
     if(NOT IS_LINUX)
-		set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
-		sasfit_add2pckg(${SASFIT_EXEC_FILENAME})
-		if(IS_MACOS)
-			sasfit_add2pckg(${SASFIT_EXEC_FILENAME}.sh)
-		endif()
-	endif()
+        set(SASFIT_EXEC_FILENAME sasfit${CMAKE_EXECUTABLE_SUFFIX})
+        sasfit_add2pckg(${SASFIT_EXEC_FILENAME})
+        if(IS_MACOS)
+            sasfit_add2pckg(${SASFIT_EXEC_FILENAME}.sh)
+        endif()
+    endif()
 
-	# set the saskit filename, chose the debug version if required
-	set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
+    # set the saskit filename, chose the debug version if required
+    set(SASKIT_FILENAME "saskit_${SASFIT_PCKG_DIR_POSTFIX}${CMAKE_EXECUTABLE_SUFFIX}")
     build_saskit("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
     message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
-	appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
+    appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
 
     if(NOT IS_LINUX)
         get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
-	endif()
-	# write the list of filenames to a temporary file
+    endif()
+    # write the list of filenames to a temporary file
     # (workaround for shell command length restrictions)
-	set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
-	file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
+    set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
+    file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
 
     if(NOT IS_LINUX)
-	add_custom_target(sasfit_binary ALL
-		${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
-				-D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
-				-D SASFIT_EXEC_FILENAME:STRING=${SASFIT_EXEC_FILENAME}
-				-D SASFIT_DEBUG:BOOL=${DEBUG}
-				-P ${SASFIT_STARPACK_SCRIPT}
-		DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
+    add_custom_target(sasfit_binary ALL
+        ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
+                -D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
+                -D SASFIT_EXEC_FILENAME:STRING=${SASFIT_EXEC_FILENAME}
+                -D SASFIT_DEBUG:BOOL=${DEBUG}
+                -P ${SASFIT_STARPACK_SCRIPT}
+        DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
         COMMENT "Creating sasfit binary ..."
-		VERBATIM
-	)
-	appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
+        VERBATIM
+    )
+    appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
 
-	add_custom_target(sasfit_binary_package ALL
-		${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
-				-D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
-				-D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
-				-D CM_GEN:STRING=${CMAKE_GENERATOR}
-				-D WIN32=${WIN32}
-				-D SASFIT_VERSION:STRING=${SASFIT_VERSION}
-				-P ${SASFIT_PCKG_SCRIPT}
-		DEPENDS sasfit_binary
+    add_custom_target(sasfit_binary_package ALL
+        ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR} 
+                -D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
+                -D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
+                -D CM_GEN:STRING=${CMAKE_GENERATOR}
+                -D WIN32=${WIN32}
+                -D SASFIT_VERSION:STRING=${SASFIT_VERSION}
+                -P ${SASFIT_PCKG_SCRIPT}
+        DEPENDS sasfit_binary
         COMMENT "Creating sasfit package ..."
-		VERBATIM
-	)
+        VERBATIM
+    )
     endif()
 endif(CREATE_BINARY)
 
