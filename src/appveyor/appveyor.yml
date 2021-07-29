@@ -96,6 +96,8 @@ for:
     - sudo sed -i -e '/bintray.com/d' /etc/apt/sources.list
     - sudo apt-get update
     - sudo apt-get -y install python3-pip #libx11-dev
+    # Install AppImage-Builder and requirements
+    - sudo apt install -y python3-pip python3-setuptools patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace fuse
     - sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
   artifacts:
     # final SASfit package
