@@ -98,7 +98,7 @@ for:
     - sudo apt-get -y install python3-pip #libx11-dev
   artifacts:
     # final SASfit package
-    - path: src/sasfit_*_*.tar.bz2
+    - path: SASfit*.AppImage
     - path: saskit/saskit_*
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever

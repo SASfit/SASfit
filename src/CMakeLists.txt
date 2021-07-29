@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.18)
 
 # load some basic settings
 get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
@@ -328,37 +328,63 @@ if(CREATE_BINARY)
     message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
     appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
 
-    if(NOT IS_LINUX)
+    list_paths("" ${SASFIT_BIN_FILE_LIST})
+    cmake_print_variables(CMAKE_BINARY_DIR)
+    if(IS_LINUX)
+        # add SASFIT_BIN_FILE_LIST to the included files in AppImageBuilder config
+        string(JOIN "\n    - " SASFIT_BIN_FILE_LIST_FORMATTED ${SASFIT_BIN_FILE_LIST})
+        file(READ ${SASFIT_ROOT_DIR}/src/AppImageBuilder.template.yml AppImageBuilderCfg)
+        file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/AppImageBuilder.yml
+            CONTENT "${AppImageBuilderCfg}"
+            @ONLY NEWLINE_STYLE LF)
+        # find the final AppImage file name to set an AppVeyor variable to test its existence
+        file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake CONTENT "
+            cmake_minimum_required(VERSION 3.0)
+            set(CMAKE_MODULE_PATH \"\${SASFIT_ROOT_DIR}/src/cmake\")
+            include(SasfitCmakeUtils)
+            file(GLOB SASFIT_EXEC_FILENAME RELATIVE \"\${SASFIT_ROOT_DIR}\"
+                \${SASFIT_ROOT_DIR}/*.AppImage)
+            message(\"Found SASFIT_EXEC_FILENAME: '\${SASFIT_EXEC_FILENAME}'\")
+            appveyor_set_var(SASFIT_EXEC \"\${SASFIT_ROOT_DIR}/\${SASFIT_EXEC_FILENAME}\")
+            appveyor_set_var(SASFIT_PACKAGE_FILE \"\${SASFIT_ROOT_DIR}/\${SASFIT_EXEC_FILENAME}\")
+            " @ONLY NEWLINE_STYLE LF)
+        # build the AppImage at the end and set the AppImage file name
+        add_custom_target(sasfit_binary ALL
+            appimage-builder --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml --skip-tests
+            COMMAND ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
+                -P ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake
+            DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
+            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+            COMMENT "Creating sasfit binary ..."
+            VERBATIM)
+    else()
+        appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
         get_saskit_dependencies("${SASFIT_ROOT_DIR}" "${SASKIT_FILENAME}")
-    endif()
-    # write the list of filenames to a temporary file
-    # (workaround for shell command length restrictions)
-    set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
-    file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
+        add_custom_target(sasfit_binary ALL
+            ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
+                    -D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
+                    -D SASFIT_EXEC_FILENAME:STRING=${SASFIT_EXEC_FILENAME}
+                    -D SASFIT_DEBUG:BOOL=${DEBUG}
+                    -P ${SASFIT_STARPACK_SCRIPT}
+            DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
+            COMMENT "Creating sasfit binary ..."
+            VERBATIM)
 
-    if(NOT IS_LINUX)
-            add_custom_target(sasfit_binary ALL
-                ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
-                        -D SASKIT_FILENAME:STRING=${SASKIT_FILENAME}
-                        -D SASFIT_EXEC_FILENAME:STRING=${SASFIT_EXEC_FILENAME}
-                        -D SASFIT_DEBUG:BOOL=${DEBUG}
-                        -P ${SASFIT_STARPACK_SCRIPT}
-                DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
-                COMMENT "Creating sasfit binary ..."
-                VERBATIM)
-            appveyor_set_var(SASFIT_EXEC "${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}")
-
-            add_custom_target(sasfit_binary_package ALL
-                ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
-                        -D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
-                        -D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
-                        -D CM_GEN:STRING=${CMAKE_GENERATOR}
-                        -D WIN32=${WIN32}
-                        -D SASFIT_VERSION:STRING=${SASFIT_VERSION}
-                        -P ${SASFIT_PCKG_SCRIPT}
-                DEPENDS sasfit_binary
-                COMMENT "Creating sasfit package ..."
-                VERBATIM)
+        # write the list of filenames to a temporary file
+        # (workaround for shell command length restrictions)
+        set(SASFIT_LIST_FILE ${SASFIT_BIN_LIST_FILE}.tmp)
+        file(WRITE ${SASFIT_LIST_FILE} "${SASFIT_BIN_FILE_LIST}")
+        add_custom_target(sasfit_binary_package ALL
+            ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
+                    -D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
+                    -D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
+                    -D CM_GEN:STRING=${CMAKE_GENERATOR}
+                    -D WIN32=${WIN32}
+                    -D SASFIT_VERSION:STRING=${SASFIT_VERSION}
+                    -P ${SASFIT_PCKG_SCRIPT}
+            DEPENDS sasfit_binary
+            COMMENT "Creating sasfit package ..."
+            VERBATIM)
     endif()
 endif(CREATE_BINARY)
 
