@@ -96,6 +96,7 @@ for:
     - sudo sed -i -e '/bintray.com/d' /etc/apt/sources.list
     - sudo apt-get update
     - sudo apt-get -y install python3-pip #libx11-dev
+    - sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
