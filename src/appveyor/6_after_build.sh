@@ -5,6 +5,7 @@ for dir in "$APPVEYOR_BUILD_FOLDER/.." \
            "$APPVEYOR_BUILD_FOLDER" \
            "$APPVEYOR_BUILD_FOLDER/src" \
            "$APPVEYOR_BUILD_FOLDER/../sasfit_"*; do
+    [ -d "$dir" ] || continue
     echo "$dir:"
     ls -la "$dir"
 done
