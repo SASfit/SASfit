@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -16,8 +16,9 @@
 #define DUMMY param->p[1]
 #define ETA	param->p[2]
 #define LAMBDA1	param->p[3]
-#define TAU1	param->p[4]
-#define E1_KBT	log(12*TAU1*(LAMBDA1-1)*2*RHS/(LAMBDA1*2*RHS))
+//#define TAU1	param->p[4]
+//#define E1_KBT	log(12*TAU1*(LAMBDA1-1)*2*RHS/(LAMBDA1*2*RHS))
+#define E1_KBT	param->p[4]
 #define LAMBDA2	param->p[5]
 #define E2_KBT	param->p[6]
 

@@ -263,6 +263,7 @@ set(SOURCE_sasfit_oz
 	sasfit_oz_potential_HS_3Yukawa.c
 	sasfit_oz_potential_FermiDistributionModel.c
 	sasfit_oz_potential_square_well.c
+	sasfit_oz_potential_piecewise_constant_HS.c
 	sasfit_oz_tclcmd.c
 )
 

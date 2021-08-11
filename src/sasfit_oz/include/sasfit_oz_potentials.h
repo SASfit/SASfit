@@ -102,3 +102,11 @@ OZ_func_one_t U_LR_DepletionOfSpheresByRods;
 OZ_func_one_t U_Ref_DepletionOfSpheresByRods;
 OZ_func_one_t U_Pert_DepletionOfSpheresByRods;
 
+OZ_func_one_t U_Piecewise_Constant_HS;
+OZ_func_one_t U_R_Piecewise_Constant_HS;
+OZ_func_one_t U_A_Piecewise_Constant_HS;
+OZ_func_one_t U_SR_Piecewise_Constant_HS;
+OZ_func_one_t U_LR_Piecewise_Constant_HS;
+OZ_func_one_t U_Ref_Piecewise_Constant_HS;
+OZ_func_one_t U_Pert_Piecewise_Constant_HS;
+

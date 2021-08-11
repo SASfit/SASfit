@@ -97,7 +97,7 @@ if [catch {set SASFitVersionNo $sasfit(svn_rev)}] {
 	set SASFitVersionNo devel
 }
 set sasfit(version) "version $SASFitVersionNo"
-set sasfit(author) "written by Joachim Kohlbrecher (LNS,PSI)"
+set sasfit(author) "written by Joachim Kohlbrecher (PSI)"
 set sasfit(authorname) ""
 
 set sasfit(width) [expr [winfo vrootwidth .]*7/9]
@@ -177,7 +177,7 @@ label $w.frame.right.prog.info.l2 -text $sasfit(version) -font {Helvetica 10}
 pack $w.frame.right.prog.info.l1 $w.frame.right.prog.info.l2
 
 label $w.frame.right.address.line1 -text \
-"Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
+"Copyright (c) 2008-2021, Paul Scherrer Institute (PSI)
 Laboratory for Neutron Scattering and Imaging
 CH-5232 Villigen PSI, Switzerland"
 entry $w.frame.right.address.url

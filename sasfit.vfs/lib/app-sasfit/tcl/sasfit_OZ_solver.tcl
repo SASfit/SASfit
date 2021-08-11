@@ -507,6 +507,15 @@ proc oz_input_names {} {
 			set OZ(p5,name) ""
 			set OZ(p6,name) ""
 			}
+		PiecewiseConstant {
+			set OZ(p0,name) diameter
+			set OZ(p1,name) epsilon1
+			set OZ(p2,name) delta1
+			set OZ(p3,name) epsilon2
+			set OZ(p4,name) delta2
+			set OZ(p5,name) epsilon3
+			set OZ(p6,name) delta3
+			}
 		SoftSphere {
 			set OZ(p0,name) diameter
 			set OZ(p1,name) epsilon
@@ -921,7 +930,7 @@ proc sasfit_OZ_solver {} {
     grid  $w.param.clvalue\
 	    -column 1 -row 0
     ComboBox $w.param.potvalue \
-	    -values {"HardSphere" "StickyHardSphere" "SquareWell" "SoftSphere" \
+	    -values {"HardSphere" "StickyHardSphere" "SquareWell" "PiecewiseConstant" "SoftSphere" \
 	    		"StarPolymer (f>10)" "StarPolymer (f<10)" "HS 3Yukawa"\
 	    		"LennardJones" "Depl-Sph-Sph" "Depl-Sph-Discs" "Depl-Sph-Rods" \
 	    		"IonicMicrogel"  \
