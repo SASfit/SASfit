@@ -641,7 +641,7 @@ function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
             message(STATUS "${fn}")
             execute_process(COMMAND ${CMAKE_COMMAND} -E cat "${fn}")
         endforeach()
-        execute_process(COMMAND ${CMAKE_C_COMPILER} --version
+        execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpspecs
                         COMMAND_ECHO STDOUT)
         return()
     endif()
