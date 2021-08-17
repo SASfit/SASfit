@@ -641,8 +641,6 @@ function(build_saskit SASFIT_ROOT_DIR SASKIT_FILENAME)
             message(STATUS "${fn}")
             execute_process(COMMAND ${CMAKE_COMMAND} -E cat "${fn}")
         endforeach()
-        execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpspecs
-                        COMMAND_ECHO STDOUT)
         return()
     endif()
     list(GET fileList 0 DQKIT_FILE)
