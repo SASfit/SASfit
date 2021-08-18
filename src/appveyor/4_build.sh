@@ -35,6 +35,10 @@ fi
 echo "Determined $NUM_LOGICAL_CORES logical cores."
 echo
 
+pacman -Q
+echo
+exit
+
 cd "$APPVEYOR_BUILD_FOLDER" && \
 mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" ../src && make -j$NUM_LOGICAL_CORES
 
