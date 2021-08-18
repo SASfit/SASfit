@@ -791,7 +791,7 @@ TkMacOSXModifierState(void)
  *
  * Results:
  *	A bitwise inclusive OR of a subset of the following:
- *	Button1Mask, ShiftMask, LockMask, ControlMask, Mod*Mask.
+ *	Button1Mask, ShiftMask, LockMask, ControlMaskX11, Mod*Mask.
  *
  * Side effects:
  *	None.
@@ -847,7 +847,7 @@ ButtonModifiers2State(UInt32 buttonState, UInt32 keyModifiers)
 	state |= ShiftMask;
     }
     if (keyModifiers & controlKey) {
-	state |= ControlMask;
+	state |= ControlMaskX11;
     }
     if (keyModifiers & cmdKey) {
 	state |= Mod1Mask;		/* command key */
