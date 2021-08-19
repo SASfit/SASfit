@@ -15,11 +15,13 @@
 #define RHS	param->p[0]
 #define DUMMY param->p[1]
 #define ETA	param->p[2]
-#define LAMBDA1	param->p[3]
+#define DELTA1	param->p[3]
+#define LAMBDA1	(fabs(DELTA1)+fabs(2*RHS))/fabs(2*RHS)
 //#define TAU1	param->p[4]
 //#define E1_KBT	log(12*TAU1*(LAMBDA1-1)*2*RHS/(LAMBDA1*2*RHS))
 #define E1_KBT	param->p[4]
-#define LAMBDA2	param->p[5]
+#define DELTA2	param->p[5]
+#define LAMBDA2	(fabs(DELTA1)+fabs(DELTA2)+fabs(2*RHS))/fabs(2*RHS)
 #define E2_KBT	param->p[6]
 
 // #define A0 exp(-E1_KBT)
