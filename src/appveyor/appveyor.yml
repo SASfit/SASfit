@@ -16,13 +16,14 @@ init:
   - git config --global advice.detachedHead false
 # https://github.com/appveyor/ci/issues/899#issuecomment-567280434
 clone_script:
-  - cmd: git clone --depth=2 --recursive --branch=%APPVEYOR_REPO_BRANCH% https://github.com/%APPVEYOR_REPO_NAME%.git %APPVEYOR_BUILD_FOLDER%
+  - sh: git clone --depth=2 --recursive --branch=$APPVEYOR_REPO_BRANCH https://github.com/$APPVEYOR_REPO_NAME.git $APPVEYOR_BUILD_FOLDER
   - ps: cd $env:APPVEYOR_BUILD_FOLDER
   - ps: git checkout -qf $env:APPVEYOR_REPO_COMMIT
   - ps: git submodule update --init --recursive
+  - sh: exit 1
 
 image:
-    #- Visual Studio 2019
+    - Visual Studio 2019
     - Ubuntu2004
     #- macos
 
