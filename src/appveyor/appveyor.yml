@@ -16,8 +16,8 @@ init:
   - git config --global advice.detachedHead false
 # https://github.com/appveyor/ci/issues/899#issuecomment-567280434
 clone_script:
-  - sh -c 'git clone --depth=2 --recursive --branch=$APPVEYOR_REPO_BRANCH https://github.com/$APPVEYOR_REPO_NAME.git $APPVEYOR_BUILD_FOLDER'
-  - sh -c 'cd $env:APPVEYOR_BUILD_FOLDER && git checkout -qf $APPVEYOR_REPO_COMMIT && git submodule update --init --recursive'
+  - sh -c 'git clone --depth=1 --recursive --branch=$APPVEYOR_REPO_BRANCH https://github.com/$APPVEYOR_REPO_NAME.git $APPVEYOR_BUILD_FOLDER'
+  - sh -c 'cd $APPVEYOR_BUILD_FOLDER && git checkout -qf $APPVEYOR_REPO_COMMIT && git submodule update --init --recursive'
   - sh -c 'exit 1'
 
 image:
