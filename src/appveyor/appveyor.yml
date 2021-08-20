@@ -53,6 +53,7 @@ for:
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
+      name: sasfit_package_win
     - path: saskit\saskit_*.exe
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
@@ -73,6 +74,7 @@ for:
   artifacts:
     # final SASfit package
     - path: src/sasfit_*_*.tar.bz2
+      name: sasfit_package_macos
     - path: saskit/saskit_*
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
@@ -104,6 +106,7 @@ for:
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
+      name: sasfit_package_lin
     - path: saskit/saskit_*
   cache: # 1GB max with free accounts
     # do not use src packages zip/tar.gz as dependencies, checksum calc needs forever
@@ -134,8 +137,8 @@ notifications:
 deploy:
     # release tags from master branch on GitHub
   - provider: GitHub
-    release: v$(SASFIT_VERSION) $(SASFIT_VERSION_DATE)
-    description: 'Replace me with a list of changes for this release!'
+    description: $(APPVEYOR_REPO_COMMIT_MESSAGE)
+    artifact: sasfit_package_win, sasfit_package_macos, sasfit_package_lin
     auth_token:
       secure: gGEY6+MYCtyZer31PvpBH0+lK3pCURM2xw41wmlXE9LQtK+ecMN0bT0TCGMXv6gQ
     on:
