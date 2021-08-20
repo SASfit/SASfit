@@ -23,8 +23,8 @@ clone_script:
 
 image:
   - Visual Studio 2019
-  - Ubuntu2004
-  - macos
+    #- Ubuntu2004
+    #- macos
 
 environment:
   BT_API:
