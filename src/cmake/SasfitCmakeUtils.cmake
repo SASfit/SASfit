@@ -401,7 +401,7 @@ macro(sasfit_update_version)
                     list(APPEND SASFIT_VERSION_DESCR ${ln})
                 endif()
             endforeach()
-            list(JOIN SASFIT_VERSION_DESCR "\n" SASFIT_VERSION_DESCR)
+            list(JOIN SASFIT_VERSION_DESCR "\\n" SASFIT_VERSION_DESCR)
         endif()
         if($ENV{APPVEYOR}) # running on appveyor CI
             # show appveyor path (for debugging CI)
