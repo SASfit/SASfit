@@ -20,12 +20,11 @@ clone_script:
   - ps: cd $env:APPVEYOR_BUILD_FOLDER
   - ps: git checkout -qf $env:APPVEYOR_REPO_COMMIT
   - ps: git submodule update --init --recursive
-  - sh -c 'exit 1'
 
 image:
     - Visual Studio 2019
     - Ubuntu2004
-    #- macos
+    - macos
 
 environment:
   BT_API:
