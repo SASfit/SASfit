@@ -386,20 +386,9 @@ macro(sasfit_update_version)
             set(SASFIT_VERSION ${GIT_TAG})
         endif()
         if($ENV{APPVEYOR}) # running on appveyor CI
-            #appveyor_get_latest_version()
-            #cmake_print_variables(appveyor_latest_version)
-            # strip build number from latest appveyor version
-            #string(REGEX MATCH "^[^b]+" appveyor_latest_version "${appveyor_latest_version}")
-            #cmake_print_variables(appveyor_latest_version)
-            # check if the new version number is different
-#            if(NOT ${SASFIT_VERSION} STREQUAL ${appveyor_latest_version})
-#                # is different, reset appveyor build number
-#                message(STATUS "Version changed, resetting Appveyor build number.")
-#                appveyor_reset_build_number()
-#            endif()
             # show appveyor path (for debugging CI)
-            message("show appveyor path:")
-            execute_process(COMMAND which appveyor)
+            #message("show appveyor path:")
+            #execute_process(COMMAND which appveyor)
             # append build number for unique build version in appveyor
             set(appveyor_build_version "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
             execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}")
