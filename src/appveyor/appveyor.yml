@@ -22,7 +22,7 @@ clone_script:
 
 image:
     #- Visual Studio 2019
-    - Ubuntu2004
+  - Ubuntu2004
       #- macos
 
 environment:
@@ -137,7 +137,8 @@ notifications:
 deploy:
     # release tags from master branch on GitHub
   - provider: GitHub
-    description: '$(SASFIT_VERSION_DESCR)'
+    description: |
+        $(SASFIT_VERSION_DESCR)
     artifact: sasfit_package_win, sasfit_package_macos, sasfit_package_lin
     auth_token:
       secure: gGEY6+MYCtyZer31PvpBH0+lK3pCURM2xw41wmlXE9LQtK+ecMN0bT0TCGMXv6gQ
