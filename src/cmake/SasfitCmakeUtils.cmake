@@ -418,6 +418,9 @@ macro(sasfit_update_version)
         endif()
     endif()
     message(STATUS "SASfit version was set to '${SASFIT_VERSION}'.")
+    if(GIT_TAG AND NOT SASFIT_VERSION_DESCR)
+        message(WARNING "No ChangeLog found for version ${SASFIT_VERSION} in CHANGES.txt!")
+    endif()
 
     # let the tcl code know about the svn revision number
     file(WRITE ${SASFIT_ROOT_DIR}/sasfit.vfs/lib/app-sasfit/tcl/sasfit_svn_rev.tcl
