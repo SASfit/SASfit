@@ -13,6 +13,7 @@ skip_commits:
 
 init:
   - git config --global core.autocrlf input
+  - git config --global advice.detachedHead false
 # https://github.com/appveyor/ci/issues/899#issuecomment-567280434
 clone_script:
 - ps: git clone -q --depth=1 --recursive --branch=$env:APPVEYOR_REPO_BRANCH https://github.com/$env:APPVEYOR_REPO_NAME.git $env:APPVEYOR_BUILD_FOLDER
