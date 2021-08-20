@@ -28,8 +28,6 @@ image:
 environment:
   BT_API:
     secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
-  GH_API:
-    secure: 4YhqXzROm8WOjGMaeLJZj5fQi/yEV+o3XqgSdnGsYORTeAfCNODt3kmuTaPvAsaM
   APPVEYOR_TOKEN:
     secure: mdkr0G05WlB+R6OUbrgfvMACBjlmZce0VZCjB8mfnMA=
   CLOUDSMITH_KEY:
@@ -136,10 +134,11 @@ notifications:
 deploy:
     # release tags from master branch on GitHub
   - provider: GitHub
+    release: v$(SASFIT_VERSION) $(SASFIT_VERSION_DATE)
     description: 'Replace me with a list of changes for this release!'
-    auth_token: '%GH_API%'
+    auth_token:
+      secure: gGEY6+MYCtyZer31PvpBH0+lK3pCURM2xw41wmlXE9LQtK+ecMN0bT0TCGMXv6gQ
     on:
-#      branch: master
       APPVEYOR_REPO_TAG: true
 
 on_success:
