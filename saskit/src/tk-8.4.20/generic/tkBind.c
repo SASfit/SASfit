@@ -21,6 +21,7 @@
 
 #if !(defined(__WIN32__) || defined(MAC_OSX_TK)) /* UNIX */
 #include "tkUnixInt.h"
+#define ControlMaskX11 ControlMask
 #endif
 
 
