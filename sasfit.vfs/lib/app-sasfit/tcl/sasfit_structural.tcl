@@ -65,90 +65,158 @@ proc EmOptionsCmd {} {
 	global EMOptions
 	if { [winfo exists .emoptions] } {destroy .emoptions}
 	toplevel .emoptions
-	set w .emoptions
-	wm geometry $w
-	wm title $w "internal parameters for EM algorithm"
+	set wr .emoptions
+	wm geometry $wr
+	wm title $wr "internal parameters for EM algorithm"
 
+	frame $wr.title -relief raised -bd 2
+	frame $wr.general -relief flat -bd 2
+	frame $wr.internal -relief flat -bd 2
+	pack $wr.title $wr.general $wr.internal -fill x -pady 2m 
+	label $wr.title.methodlabel -text "method:"
+	ComboBox $wr.title.method -values {"MuCh" "EM (smoothing)" \
+    		         "EM (ME constant prior)" "EM (ME adaptive prior)" \
+    		         "SDM" "lin Reg" "MEM"}  \
+				-width 18 \
+				-textvariable ::EMOptions(method)  \
+				-modifycmd {
+						switch $::EMOptions(method) {
+  						   "EM (smoothing)"         {.emoptions.notebook raise 1}
+						   "EM (ME constant prior)" {.emoptions.notebook raise 2}
+						   "EM (ME adaptive prior)" {.emoptions.notebook raise 3}
+						   "lin Reg"                {.emoptions.notebook raise 4}
+						   default                  {.emoptions.notebook raise 5}
+						}
+				}
+	
+#	grid  $wr.title.methodlabel -row 0 -column 0 -sticky e
+#	grid  $wr.title.method -row 0 -column 1 -sticky w
+	pack $wr.title.methodlabel $wr.title.method -side left
+	set w [NoteBook $wr.notebook]
+	pack $w
+	set em_smooth_f   [$w insert 1 1  -text "EM (smoothing)"         -state normal ]
+	set em_const_f    [$w insert 2 2  -text "EM (ME constant prior)" -state normal ]
+	set em_adaptive_f [$w insert 3 3  -text "EM (ME adaptive prior)" -state normal ]
+	set lin_reg_f     [$w insert 4 4  -text "lin Reg"                -state normal ]
+	set missing_f     [$w insert 5 5  -text "missing"                -state normal ]
+	switch $::EMOptions(method) {
+		"EM (smoothing)"         {.emoptions.notebook raise 1}
+		"EM (ME constant prior)" {.emoptions.notebook raise 2}
+		"EM (ME adaptive prior)" {.emoptions.notebook raise 3}
+		"lin Reg"                {.emoptions.notebook raise 4}
+		default                  {.emoptions.notebook raise 5}
+	}
 	set entrywidth 8
-
-	label $w.epsSmoothlabel -text "smoothing value ="
-	entry $w.epsSmoothvalue -textvariable EMOptions(smooth) -width $entrywidth
-	grid $w.epsSmoothlabel -row 0 -column 0 -sticky e
-	grid $w.epsSmoothvalue -row 0 -column 1 -sticky w
-	
-	label $w.seedlabel -text "seed"
-	ComboBox $w.seedvalue -values {"constant" "random"} \
-				-width 10 \
-				-textvariable EMOptions(seed) 
-	grid $w.seedlabel -row 0 -column 2 -sticky e
-	grid $w.seedvalue -row 0 -column 3 -sticky w
-	
-	label $w.rmaxlabel -text "Rmax ="
+	set w  $wr.general
+	label $w.rmaxlabel -text "          Rmax ="
 	entry $w.rmaxvalue -textvariable EMOptions(Rmax)  -width $entrywidth
-	grid $w.rmaxlabel -row 1 -column 0 -sticky e
-	grid $w.rmaxvalue -row 1 -column 1 -sticky w
+	grid $w.rmaxlabel -row 0 -column 0 -sticky e
+	grid $w.rmaxvalue -row 0 -column 1 -sticky w
 	
-	label $w.nRlabel -text "nR ="
+	label $w.nRlabel -text "       nR ="
 	entry $w.nRvalue -textvariable EMOptions(nR) -width $entrywidth
-	grid $w.nRlabel -row 1 -column 2 -sticky e
-	grid $w.nRvalue -row 1 -column 3 -sticky w
+	grid $w.nRlabel -row 0 -column 2 -sticky e
+	grid $w.nRvalue -row 0 -column 3 -sticky w
 	
-	label $w.spacing_label -text "spacing"
+	label $w.spacing_label -text "            spacing:"
 	ComboBox $w.spacing_value -values {"lin" "log"} \
 				-width 10 \
 				-textvariable ::EMOptions(spacing) 
-	grid $w.spacing_label -row 2 -column 0 -sticky e
-	grid $w.spacing_value -row 2 -column 1 -sticky w
-	
-	label $w.maxitlabel -text "maxit ="
-	entry $w.maxitvalue -textvariable EMOptions(maxit) -width $entrywidth
-	grid $w.maxitlabel -row 2 -column 2 -sticky e
-	grid $w.maxitvalue -row 2 -column 3 -sticky w
-	
-	label $w.intStrat_label -text "iteration scheme"
-	ComboBox $w.intStrat_value -values {"Picard iteration" "Mann iteration" \
-    		         "Ishikawa iteration" "Noor iteration" \
-    		         "SP iteration" "S iteration"	\
-    		         "CR iteration" "Picard-S iteration" \
-    		         "PMH iteration" "Mann II iteration" \
-    		         "Krasnoselskij iteration" \
-    		         "S* iteration" \
-				 "dNewton" "Hybrid" \
-	    		 "Hybrids (int. sc.)" "Broyden" \
-				 "Biggs_Andrews" "Anderson mixing" "KINSOL_FP" "GMRES" "Bi-CGStab" "TFQMR" "FGMRES" 
-			}  \
-				-width 16 \
-				-textvariable ::EMOptions(IterationScheme) 
+	grid $w.spacing_label -row 1 -column 0 -sticky e
+	grid $w.spacing_value -row 1 -column 1 -sticky w
 
-	grid $w.intStrat_label -row 3 -column 0 -sticky e
-	grid $w.intStrat_value -row 3 -column 1 -sticky w
-	
-	label $w.epslabel -text "precision ="
-	entry $w.epsvalue -textvariable EMOptions(eps) -width $entrywidth
-	grid $w.epslabel -row 3 -column 2 -sticky e
-	grid $w.epsvalue -row 3 -column 3 -sticky w
+	label $w.nLagrange_label -text "number of Lagrange values"
+	entry $w.nLagrange_value -textvariable EMOptions(nLagrange) -width $entrywidth
+				
+	grid $w.nLagrange_label -row 2 -column 0 -sticky e
+	grid $w.nLagrange_value -row 2 -column 1 -sticky w	
 
-	label $w.smooth_type_label -text "smooth type"
-	ComboBox $w.smooth_type_value -values {"single" "double"} \
-				-width 10 \
-				-textvariable ::EMOptions(smooth_type) 
-	grid $w.smooth_type_label -row 4 -column 0 -sticky e
-	grid $w.smooth_type_value -row 4 -column 1 -sticky w
+	label $w.maxslope_label -text "maximum slope"
+	entry $w.maxslope_value -textvariable EMOptions(maxslope) -width $entrywidth
+				
+	grid $w.maxslope_label -row 2 -column 2 -sticky e
+	grid $w.maxslope_value -row 2 -column 3 -sticky w	
+
+
+	label $w.minLagrange_label -text "min Lagrange values"
+	entry $w.minLagrange_value -textvariable EMOptions(minLagrange) -width $entrywidth
+				
+	grid $w.minLagrange_label -row 3 -column 0 -sticky e
+	grid $w.minLagrange_value -row 3 -column 1 -sticky w	
+
+
+	label $w.maxLagrange_label -text "       max Lagrange values"
+	entry $w.maxLagrange_value -textvariable EMOptions(maxLagrange) -width $entrywidth
+				
+	grid $w.maxLagrange_label -row 3 -column 2 -sticky e
+	grid $w.maxLagrange_value -row 3 -column 3 -sticky w	
 	
-	label $w.chi2label -text "chi2/N ="
-	entry $w.chi2value -textvariable EMOptions(chi2) -width $entrywidth
-	grid $w.chi2label -row 4 -column 2 -sticky e
-	grid $w.chi2value -row 4 -column 3 -sticky w
-	
+
 	label $w.dimlabel -text "dim ="
 	entry $w.dimvalue -textvariable EMOptions(dim) -width $entrywidth
 	grid $w.dimlabel -row 5 -column 0 -sticky e
 	grid $w.dimvalue -row 5 -column 1 -sticky w
 
+    label $w.opt_Lagrange_label -text "opt. Lagrange param."
+	ComboBox $w.opt_Lagrange_value -values {"L-corner (o)" "L-corner2" "L-corner (l)" "L-corner (w)" "L-corner (w+o)" "GCV" "red. chi2" "manual"
+			}  \
+				-width 10 \
+				-textvariable ::EMOptions(optimumLagrange) 
+				
+	grid $w.opt_Lagrange_label -row 5 -column 2 -sticky e
+	grid $w.opt_Lagrange_value -row 5 -column 3 -sticky w
+	
+	
+	label $w.chi2label -text "chi2/N ="
+	entry $w.chi2value -textvariable EMOptions(chi2) -width $entrywidth
+	grid $w.chi2label -row 6 -column 0 -sticky e
+	grid $w.chi2value -row 6 -column 1 -sticky w
+	
 	label $w.lamlabel -text "lambda ="
 	entry $w.lamvalue -textvariable EMOptions(lambda) -width $entrywidth
-	grid $w.lamlabel -row 5 -column 2 -sticky e
-	grid $w.lamvalue -row 5 -column 3 -sticky w
+	grid $w.lamlabel -row 6 -column 2 -sticky e
+	grid $w.lamvalue -row 6 -column 3 -sticky w
+	
+	set w $em_smooth_f
+	label $w.epsSmoothlabel -text "smoothing value ="
+	entry $w.epsSmoothvalue -textvariable EMOptions(smooth) -width $entrywidth
+	grid  $w.epsSmoothlabel -row 1 -column 0 -sticky e
+	grid  $w.epsSmoothvalue -row 1 -column 1 -sticky w
+	
+	label $w.seedlabel -text "seed"
+	ComboBox $w.seedvalue -values {"constant" "random"} \
+				-width 10 \
+				-textvariable EMOptions(seed) 
+	grid $w.seedlabel -row 1 -column 2 -sticky e
+	grid $w.seedvalue -row 1 -column 3 -sticky w
+	
+	label $w.maxitlabel -text "maxit ="
+	entry $w.maxitvalue -textvariable EMOptions(maxit) -width $entrywidth
+	grid $w.maxitlabel -row 3 -column 2 -sticky e
+	grid $w.maxitvalue -row 3 -column 3 -sticky w
+	
+	label $w.intStrat_label -text "iteration scheme"
+	ComboBox $w.intStrat_value -values {"Picard iteration" "Mann iteration" \
+				 "Biggs_Andrews" "Anderson mixing" "KINSOL_FP"  
+			}  \
+				-width 16 \
+				-textvariable ::EMOptions(IterationScheme) 
+
+	grid $w.intStrat_label -row 4 -column 0 -sticky e
+	grid $w.intStrat_value -row 4 -column 1 -sticky w
+	
+	label $w.epslabel -text "precision ="
+	entry $w.epsvalue -textvariable EMOptions(eps) -width $entrywidth
+	grid $w.epslabel -row 4 -column 2 -sticky e
+	grid $w.epsvalue -row 4 -column 3 -sticky w
+
+	label $w.smooth_type_label -text "smooth type"
+	ComboBox $w.smooth_type_value -values {"single" "double"} \
+				-width 10 \
+				-textvariable ::EMOptions(smooth_type) 
+	grid $w.smooth_type_label -row 5 -column 0 -sticky e
+	grid $w.smooth_type_value -row 5 -column 1 -sticky w
+	
 	
 	label $w.linRegu_label -text "regul. matrix"
 	ComboBox $w.linRegu_value -values {"Idendity" "first deriv." "first deriv. (eps_b)" "first deriv. (eps_e)"
@@ -157,17 +225,9 @@ proc EmOptionsCmd {} {
 				-width 16 \
 				-textvariable ::EMOptions(LMatrix) 
 				
-	grid $w.linRegu_label -row 6 -column 0 -sticky e
-	grid $w.linRegu_value -row 6 -column 1 -sticky w
+	grid $w.linRegu_label -row 7 -column 0 -sticky e
+	grid $w.linRegu_value -row 7 -column 1 -sticky w
 	
-	label $w.opt_Lagrange_label -text "opt. Lagrange param."
-	ComboBox $w.opt_Lagrange_value -values {"L-corner (o)" "L-corner2" "L-corner (l)" "L-corner (w)" "L-corner (w+o)" "GCV" "red. chi2" "manual"
-			}  \
-				-width 10 \
-				-textvariable ::EMOptions(optimumLagrange) 
-				
-	grid $w.opt_Lagrange_label -row 6 -column 2 -sticky e
-	grid $w.opt_Lagrange_value -row 6 -column 3 -sticky w
 	
 	label $w.ls_method_label -text "LS method:"
 	ComboBox $w.ls_method_value -values {"LLS" "NNLLS"
@@ -175,53 +235,29 @@ proc EmOptionsCmd {} {
 				-width 16 \
 				-textvariable ::EMOptions(LLSmethod) 
 				
-	grid $w.ls_method_label -row 7 -column 0 -sticky e
-	grid $w.ls_method_value -row 7 -column 1 -sticky w
+	grid $w.ls_method_label -row 8 -column 0 -sticky e
+	grid $w.ls_method_value -row 8 -column 1 -sticky w
 	
 	label $w.em_weight_label -text "error weighted EM analysis"
 	ComboBox $w.em_weight_value -values {"on" "off"} \
 				-width 10 \
 				-textvariable ::EMOptions(error_weight) 
-	grid $w.em_weight_label -row 7 -column 2 -sticky e
-	grid $w.em_weight_value -row 7 -column 3 -sticky w	
+	grid $w.em_weight_label -row 8 -column 2 -sticky e
+	grid $w.em_weight_value -row 8 -column 3 -sticky w	
 	
 	label $w.overrelaxation_label -text "overrelaxation param.:"
 	entry $w.overrelaxation_value -textvariable EMOptions(overrelaxation) -width $entrywidth 
 						
-	grid $w.overrelaxation_label -row 8 -column 0 -sticky e
-	grid $w.overrelaxation_value -row 8 -column 1 -sticky w
+	grid $w.overrelaxation_label -row 9 -column 0 -sticky e
+	grid $w.overrelaxation_value -row 9 -column 1 -sticky w
 	
 	label $w.maxkrylov_label -text "max. Krylov space dim.:"
 	entry $w.maxkrylov_value -textvariable EMOptions(maxKrylov) -width $entrywidth 
 				
-	grid $w.maxkrylov_label -row 8 -column 2 -sticky e
-	grid $w.maxkrylov_value -row 8 -column 3 -sticky w
+	grid $w.maxkrylov_label -row 9 -column 2 -sticky e
+	grid $w.maxkrylov_value -row 9 -column 3 -sticky w
 
-	label $w.nLagrange_label -text "number of Lagrange values"
-	entry $w.nLagrange_value -textvariable EMOptions(nLagrange) -width $entrywidth
-				
-	grid $w.nLagrange_label -row 9 -column 0 -sticky e
-	grid $w.nLagrange_value -row 9 -column 1 -sticky w	
-
-	label $w.maxslope_label -text "maximum slope"
-	entry $w.maxslope_value -textvariable EMOptions(maxslope) -width $entrywidth
-				
-	grid $w.maxslope_label -row 9 -column 2 -sticky e
-	grid $w.maxslope_value -row 9 -column 3 -sticky w	
-
-
-	label $w.minLagrange_label -text "min Lagrange values"
-	entry $w.minLagrange_value -textvariable EMOptions(minLagrange) -width $entrywidth
-				
-	grid $w.minLagrange_label -row 10 -column 0 -sticky e
-	grid $w.minLagrange_value -row 10 -column 1 -sticky w	
-
-
-	label $w.maxLagrange_label -text "max Lagrange values"
-	entry $w.maxLagrange_value -textvariable EMOptions(maxLagrange) -width $entrywidth
-				
-	grid $w.maxLagrange_label -row 10 -column 2 -sticky e
-	grid $w.maxLagrange_value -row 10 -column 3 -sticky w	
+	
 	
 	label $w.printProg_label -text "PrintProgress"
 	ComboBox $w.printProg_value -values {0 1 2 3 4 5
@@ -230,8 +266,96 @@ proc EmOptionsCmd {} {
 				-textvariable ::EMOptions(PrintProgress) 
 #	entry $w.printProg_value -textvariable EMOptions(PrintProgress) -width $entrywidth
 				
-	grid $w.printProg_label -row 11 -column 0 -sticky e
-	grid $w.printProg_value -row 11 -column 1 -sticky w	
+	grid $w.printProg_label -row 12 -column 0 -sticky e
+	grid $w.printProg_value -row 12 -column 1 -sticky w	
+
+	set w $em_const_f
+#	label $w.epsSmoothlabel -text "smoothing value ="
+#	entry $w.epsSmoothvalue -textvariable EMOptions(smooth) -width $entrywidth
+#	grid  $w.epsSmoothlabel -row 1 -column 0 -sticky e
+#	grid  $w.epsSmoothvalue -row 1 -column 1 -sticky w
+	
+	label $w.seedlabel -text "seed"
+	ComboBox $w.seedvalue -values {"constant" "random"} \
+				-width 10 \
+				-textvariable EMOptions(seed) 
+	grid $w.seedlabel -row 1 -column 2 -sticky e
+	grid $w.seedvalue -row 1 -column 3 -sticky w
+	
+	label $w.maxitlabel -text "maxit ="
+	entry $w.maxitvalue -textvariable EMOptions(maxit) -width $entrywidth
+	grid $w.maxitlabel -row 3 -column 2 -sticky e
+	grid $w.maxitvalue -row 3 -column 3 -sticky w
+	
+	label $w.intStrat_label -text "iteration scheme"
+	ComboBox $w.intStrat_value -values {"Picard iteration" "Mann iteration" \
+    		         "Biggs_Andrews" "Anderson mixing" "KINSOL_FP"  
+			}  \
+				-width 16 \
+				-textvariable ::EMOptions(IterationScheme) 
+
+	grid $w.intStrat_label -row 4 -column 0 -sticky e
+	grid $w.intStrat_value -row 4 -column 1 -sticky w
+	
+	label $w.epslabel -text "precision ="
+	entry $w.epsvalue -textvariable EMOptions(eps) -width $entrywidth
+	grid $w.epslabel -row 4 -column 2 -sticky e
+	grid $w.epsvalue -row 4 -column 3 -sticky w
+
+	label $w.smooth_type_label -text "smooth type"
+	ComboBox $w.smooth_type_value -values {"single" "double"} \
+				-width 10 \
+				-textvariable ::EMOptions(smooth_type) 
+	grid $w.smooth_type_label -row 5 -column 0 -sticky e
+	grid $w.smooth_type_value -row 5 -column 1 -sticky w
+	
+	
+	label $w.linRegu_label -text "regul. matrix"
+	ComboBox $w.linRegu_value -values {"Idendity" "first deriv." "first deriv. (eps_b)" "first deriv. (eps_e)"
+				"second deriv." "second deriv. (D-D)" "second deriv. (N-N)" "second deriv. (D-N)" "second deriv. (N-D)"
+			}  \
+				-width 16 \
+				-textvariable ::EMOptions(LMatrix) 
+				
+	grid $w.linRegu_label -row 7 -column 0 -sticky e
+	grid $w.linRegu_value -row 7 -column 1 -sticky w
+	
+	label $w.opt_Lagrange_label -text "opt. Lagrange param."
+	ComboBox $w.opt_Lagrange_value -values {"L-corner (o)" "L-corner2" "L-corner (l)" "L-corner (w)" "L-corner (w+o)" "GCV" "red. chi2" "manual"
+			}  \
+				-width 10 \
+				-textvariable ::EMOptions(optimumLagrange) 
+				
+	grid $w.opt_Lagrange_label -row 7 -column 2 -sticky e
+	grid $w.opt_Lagrange_value -row 7 -column 3 -sticky w
+	
+	label $w.ls_method_label -text "LS method:"
+	ComboBox $w.ls_method_value -values {"LLS" "NNLLS"
+			}  \
+				-width 16 \
+				-textvariable ::EMOptions(LLSmethod) 
+				
+	grid $w.ls_method_label -row 8 -column 0 -sticky e
+	grid $w.ls_method_value -row 8 -column 1 -sticky w
+	
+	label $w.em_weight_label -text "error weighted EM analysis"
+	ComboBox $w.em_weight_value -values {"on" "off"} \
+				-width 10 \
+				-textvariable ::EMOptions(error_weight) 
+	grid $w.em_weight_label -row 8 -column 2 -sticky e
+	grid $w.em_weight_value -row 8 -column 3 -sticky w	
+	
+	label $w.overrelaxation_label -text "overrelaxation param.:"
+	entry $w.overrelaxation_value -textvariable EMOptions(overrelaxation) -width $entrywidth 
+						
+	grid $w.overrelaxation_label -row 9 -column 0 -sticky e
+	grid $w.overrelaxation_value -row 9 -column 1 -sticky w
+	
+	label $w.maxkrylov_label -text "max. Krylov space dim.:"
+	entry $w.maxkrylov_value -textvariable EMOptions(maxKrylov) -width $entrywidth 
+				
+	grid $w.maxkrylov_label -row 9 -column 2 -sticky e
+	grid $w.maxkrylov_value -row 9 -column 3 -sticky w
 
 }
 proc structuralParFitCmd {} {

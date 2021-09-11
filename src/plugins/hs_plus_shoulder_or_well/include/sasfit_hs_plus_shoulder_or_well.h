@@ -289,23 +289,23 @@ sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_thin_square_well_potenti
  *       <td>\b RHS</td>
  *       <td>hard sphere repulsion radius</td>
  *      </tr><tr>
- *       <td>\b DUMMY</td>
+ *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>volume fraction</td>
  *      </tr><tr>
- *       <td>\b lambda1</td>
- *       <td>relative square shoulder width, lambda>0, total width Delta=2RHS(lambda-1)</td>
+ *       <td>\b delta1</td>
+ *       <td>first piecewise constant segment</td>
  *      </tr><tr>
  *       <td>\b E1/kBT</td>
- *       <td>square well depth in units of kBT</td>
+ *       <td>depth/hight of first piecewise segment in units of kBT</td>
  *      </tr><tr>
- *       <td>\b lambda2</td>
- *       <td>relative square shoulder width, lambda>0, total width Delta=2RHS(lambda-1)</td>
+ *       <td>\b delkta2</td>
+ *       <td> second piecewise constant segment</td>
  *      </tr><tr>
  *       <td>\b E2/kBT</td>
- *       <td>square well depth in units of kBT</td>
+ *       <td>depth/hight of second piecewise segment in units of kBT</td>
  *      </tr></table>
  */
 

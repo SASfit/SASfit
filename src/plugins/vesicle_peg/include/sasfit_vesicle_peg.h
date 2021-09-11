@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_vesicle__pegulated_ ################ */
-/** 
+/**
  * \defgroup ff_vesicle__pegulated_ Vesicle (pegulated)
  * \ingroup ff_devel
  *
@@ -52,10 +52,13 @@
  *       <td>\b R</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b sigma</td>
+ *       <td>\b sigma_R</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b D</td>
+ *       <td>\b T</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b sigma_T</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b Rg</td>

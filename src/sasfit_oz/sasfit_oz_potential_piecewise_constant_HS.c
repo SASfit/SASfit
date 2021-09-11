@@ -22,9 +22,9 @@
         return GSL_POSINF;
     } else if (d>=SIGMA&&d<SIGMA+fabs(DELTA1)) {
         return kb*temp*EPSILON1;
-    } else if (d>=SIGMA+fabs(DELTA1)&&d<SIGMA+fabs(DELTA2)) {
+    } else if (d>=SIGMA+fabs(DELTA1)&&d<SIGMA+fabs(DELTA1)+fabs(DELTA2)) {
         return kb*temp*EPSILON2;
-    } else if (d>=SIGMA+fabs(DELTA2)&&d<SIGMA+fabs(DELTA3)) {
+    } else if (d>=SIGMA+fabs(DELTA1)+fabs(DELTA2)&&d<SIGMA+fabs(DELTA1)+fabs(DELTA2)+fabs(DELTA3)) {
         return kb*temp*EPSILON3;
     } else {
         return 0.0;

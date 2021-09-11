@@ -79,7 +79,7 @@
 
 #define NRES 30
 #define n_percent 0.1
-#define Nint 20
+#define Nint 100
 
 
 
@@ -579,6 +579,22 @@ void find_integration_range(Tcl_Interp *interp,
 			} else if ( (strcmp(func_descr->name,"sd_steffen8")      == 0) ) {
 				*Rstart = a1;
 				*Rend   = a2;
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_metalog_0_inf")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = a1*a5;
+				*n_intervals = Nint;
+			}  else if ( (strcmp(func_descr->name,"sd_metalog_bl_bu")      == 0) ) {
+				*Rstart = a2;
+				*Rend   = a3;
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_metalog_0_bu")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = a3;
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_metalog_bl_inf")      == 0) ) {
+				*Rstart = a2;
+				*Rend   = a1*a5;
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_lognorm_fp")       == 0) ) {
 			   a4 = fabs(a4);
