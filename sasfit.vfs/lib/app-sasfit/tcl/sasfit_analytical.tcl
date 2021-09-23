@@ -8007,7 +8007,7 @@ if {[winfo exists $w.adj.step]} {
                     set ::stepfit(itst) 0
                     set ::stepfit(k)    0
                     set ::stepfit(ochisq) $::stepfit(chisq)
-                 } elseif {$::stepfit(itst) < 2} {
+                 } elseif {$::stepfit(itst) < $::FitPrecision(maxoptimizationfailure)} {
                     incr ::stepfit(k)
                     set ::stepfit(ochisq) $::stepfit(chisq)
                     set ::stepfit(oalambda) $::AnalytPar(alambda)
@@ -8197,7 +8197,7 @@ if {[winfo exists $w.adj.run]} {
                   set ::stepfit(k)    0
                   set ::stepfit(ochisq) $::stepfit(chisq)
 
-                  while {($::stepfit(itst) < 2) && ($continue_fit == "yes")} {
+                  while {($::stepfit(itst) < $::FitPrecision(maxoptimizationfailure)) && ($continue_fit == "yes")} {
                      incr ::stepfit(k)
                      set ::stepfit(ochisq) $::stepfit(chisq)
                      set ::stepfit(oalambda) $::AnalytPar(alambda)

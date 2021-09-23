@@ -40,17 +40,19 @@ scalar dyatan (scalar y, void *pam) {
 scalar mk(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     SASFIT_CHECK_COND2((n < k), param, "n(%d) < k(%d)",n,k);
     SASFIT_CHECK_COND1((k < 2), param, "k(%d) < 2(%d)",k);
+    scalar logity;
+    logity = log(y/(1-y));
     switch (k) {
     case 2: return (y*(1-y))/a[1];
             break;
-    case 3: return 1./(a[1]/(y*(1-y))+a[2]*((y-0.5)/(y*(1-y))+log(y/(1-y))));
+    case 3: return 1./(a[1]/(y*(1-y))+a[2]*((y-0.5)/(y*(1-y))+logity));
             break;
-    case 4: return 1./(a[1]/(y*(1-y))+a[2]*((y-0.5)/(y*(1-y))+log(y/(1-y)))+a[3]);
+    case 4: return 1./(a[1]/(y*(1-y))+a[2]*((y-0.5)/(y*(1-y))+logity)+a[3]);
             break;
     default:if (k % 2 == 1) {
                 return 1./(1./mk(k-1,y,a,n,param)+a[k-1]*(k-1)/2.*gsl_pow_int(y-0.5,(k-3)/2));
             } else {
-                return 1./(1./mk(k-1,y,a,n,param)+a[k-1]*(gsl_pow_int(y-0.5,k/2-1)/(y*(1-y))+(k/2-1)*gsl_pow_int(y-0.5,k/2-2)*log(y/(1-y))));
+                return 1./(1./mk(k-1,y,a,n,param)+a[k-1]*(gsl_pow_int(y-0.5,k/2-1)/(y*(1-y))+(k/2-1)*gsl_pow_int(y-0.5,k/2-2)*logity));
             }
             break;
     }
@@ -83,16 +85,44 @@ scalar MLogit(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     mpara = (metalog_param *) param->moreparam;
     bu = mpara->bu;
     bl = mpara->bl;
-    yt = (mpara->ytrans)(y,param);
-    if (yt==0) return bl;
-    if (yt==1) return bu;
+//    yt = (mpara->ytrans)(y,param);
+    if (y<=0) return bl;
+    if (y>=1) return bu;
     expM = exp(Mk(k,y,a,n,param));
     if (gsl_finite(expM)) {
+        return (bl+bu*expM)/(1+expM);
         return bu+(bl-bu)/(1+expM);
     } else {
         return bu;
     }
-    return (bl+bu*expM)/(1+expM);
+}
+
+scalar MLog(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
+    scalar bu,bl,expM,yt;
+    metalog_param *mpara;
+    mpara = (metalog_param *) param->moreparam;
+    bu = mpara->bu;
+    bl = mpara->bl;
+//    yt = (mpara->ytrans)(y,param);
+    if (y==0) return bl;
+    if (y==1) return bu;
+    expM = exp(Mk(k,y,a,n,param));
+    return bl+expM;
+
+}
+
+scalar MNLog(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
+    scalar bu,bl,expmM,yt;
+    metalog_param *mpara;
+    mpara = (metalog_param *) param->moreparam;
+    bu = mpara->bu;
+    bl = mpara->bl;
+//    yt = (mpara->ytrans)(y,param);
+//    if (yt==1) return bu;
+    if (y==1) return bu;
+    expmM = exp(-Mk(k,y,a,n,param));
+    return bu-expmM;
+
 }
 
 scalar mLogit(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
@@ -101,8 +131,9 @@ scalar mLogit(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     mpara = (metalog_param *) param->moreparam;
     bu = mpara->bu;
     bl = mpara->bl;
-    yt = (mpara->ytrans)(y,param);
-    if (yt==0 || yt==1) return 0;
+//    yt = (mpara->ytrans)(y,param);
+//    if (yt==0 || yt==1) return 0;
+    if (y==0 || y==1) return 0;
     expM = exp(Mk(k,y,a,n,param));
     if (gsl_finite(expM)) {
         return mk(k,y,a,n,param)*gsl_pow_2(1+expM)/((bu-bl)*expM);
@@ -112,6 +143,36 @@ scalar mLogit(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
 
 }
 
+scalar mLog(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
+    scalar bu,bl, expmM, yt;
+    metalog_param *mpara;
+    mpara = (metalog_param *) param->moreparam;
+    bu = mpara->bu;
+    bl = mpara->bl;
+//    yt = (mpara->ytrans)(y,param);
+//    if (yt==0) return 0;
+    if (y==0) return 0;
+    expmM = exp(-Mk(k,y,a,n,param));
+    return mk(k,y,a,n,param)*expmM;
+}
+
+scalar mNLog(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
+    scalar bu,bl, expM, yt;
+    metalog_param *mpara;
+    mpara = (metalog_param *) param->moreparam;
+    bu = mpara->bu;
+    bl = mpara->bl;
+//    yt = (mpara->ytrans)(y,param);
+//    if (yt==1) return 0;
+    if (y==1) return 0;
+    expM = exp(Mk(k,y,a,n,param));
+    if (gsl_finite(expM)) {
+        return mk(k,y,a,n,param)*expM;
+    } else {
+        return 0;
+    }
+
+}
 double
 root_metalog_f (double y, void *rootp)
 {
@@ -157,9 +218,9 @@ root_metalog_Logit_f (double y, void *rootp)
   sasfit_param * param;
   metalog_param *mpara;
   scalar yt;
-  yt = (mpara->ytrans)(y,param);
   param = (sasfit_param *) rootp ;
   mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
   return MLogit(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
 }
 
@@ -169,9 +230,9 @@ root_metalog_Logit_df (double y, void *rootp)
   sasfit_param * param;
   metalog_param *mpara;
   scalar yt;
-  yt = (mpara->ytrans)(y,param);
   param = (sasfit_param *) rootp ;
   mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
 
   return (mpara->dytrans)(y,param)/mLogit(mpara->n,yt,mpara->a,mpara->n,param);
 }
@@ -183,13 +244,95 @@ root_metalog_Logit_fdf (double y, void *rootp,
   sasfit_param * param;
   metalog_param *mpara;
   scalar yt;
-  yt = (mpara->ytrans)(y,param);
   param = (sasfit_param *) rootp ;
   mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
 
   *F = MLogit(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
   *dF =  (mpara->dytrans)(y,param)/mLogit(mpara->n,yt,mpara->a,mpara->n,param);
 }
+
+double
+root_metalog_Log_f (double y, void *rootp)
+{
+  sasfit_param * param;
+  metalog_param *mpara;
+  scalar yt;
+  param = (sasfit_param *) rootp ;
+  mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
+  return MLog(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
+}
+
+double
+root_metalog_Log_df (double y, void *rootp)
+{
+  sasfit_param * param;
+  metalog_param *mpara;
+  scalar yt;
+  param = (sasfit_param *) rootp ;
+  mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
+
+  return (mpara->dytrans)(y,param)/mLog(mpara->n,yt,mpara->a,mpara->n,param);
+}
+
+void
+root_metalog_Log_fdf (double y, void *rootp,
+               double *F, double *dF)
+{
+  sasfit_param * param;
+  metalog_param *mpara;
+  scalar yt;
+  param = (sasfit_param *) rootp ;
+  mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
+
+  *F = MLog(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
+  *dF =  (mpara->dytrans)(y,param)/mLog(mpara->n,yt,mpara->a,mpara->n,param);
+}
+
+
+double
+root_metalog_NLog_f (double y, void *rootp)
+{
+  sasfit_param * param;
+  metalog_param *mpara;
+  scalar yt;
+  param = (sasfit_param *) rootp ;
+  mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
+  return MNLog(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
+}
+
+double
+root_metalog_NLog_df (double y, void *rootp)
+{
+  sasfit_param * param;
+  metalog_param *mpara;
+  scalar yt;
+  param = (sasfit_param *) rootp ;
+  mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
+
+  return (mpara->dytrans)(y,param)/mNLog(mpara->n,yt,mpara->a,mpara->n,param);
+}
+
+void
+root_metalog_NLog_fdf (double y, void *rootp,
+               double *F, double *dF)
+{
+  sasfit_param * param;
+  metalog_param *mpara;
+  scalar yt;
+  param = (sasfit_param *) rootp ;
+  mpara = (metalog_param *) param->moreparam;
+  yt = (mpara->ytrans)(y,param);
+
+  *F = MNLog(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
+  *dF =  (mpara->dytrans)(y,param)/mNLog(mpara->n,yt,mpara->a,mpara->n,param);
+}
+
 
 void assign_metalog_par(scalar x, metalog_param *mp, sasfit_param *param)
 {
@@ -254,13 +397,17 @@ scalar find_root_brent_metalog(gsl_function *F) {
     gsl_set_error_handler_off ();
     T = gsl_root_fsolver_brent;
     s = gsl_root_fsolver_alloc (T);
-    if (fabs((F->function)(yroot,F->params))<sasfit_eps_get_aniso()) {
+    gsl_root_fsolver_set (s, F, 1e-10, 1-1e-10);
+    /*
+    if (fabs((F->function)(yroot,F->params
+                           ))<sasfit_eps_get_aniso()) {
         return yroot;
     } else if ((F->function)(yroot*0.99,F->params)*(F->function)(yroot*1.01,F->params)<0) {
         gsl_root_fsolver_set (s, F, yroot*0.99, yroot*1.01);
     } else {
         gsl_root_fsolver_set (s, F, 1e-10, 1-1e-10);
     }
+    */
     iter = 0;
     do
     {
@@ -285,18 +432,21 @@ scalar metalogPDF(scalar x, sasfit_param *param) {
     gsl_function F;
     gsl_function_fdf FDF;
     scalar y;
+    int how;
     param->moreparam=&mp;
 
     assign_metalog_par(x, &mp,param);
 
-    if (x<=BL || x>=BU) return 0;
+//    if (x<=BL || x>=BU) return 0;
     F.function = &root_metalog_f;
     F.params=param;
     FDF.f   = &root_metalog_f;
     FDF.df  = &root_metalog_df;
     FDF.fdf = &root_metalog_fdf;
     FDF.params=param;
-    if (sasfit_eps_get_robertus_p()==0) {
+    how = sasfit_eps_get_robertus_p();
+    how=0;
+    if (how==0) {
         mp.ytrans=&ylin;
         mp.dytrans=&dylin;
         y = find_root_brent_metalog(&F);
@@ -306,11 +456,7 @@ scalar metalogPDF(scalar x, sasfit_param *param) {
         y = find_root_steffenson_metalog(&FDF);
     }
 
-    if (gsl_finite(pow(x,-ALPHA))) {
-        return mk(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
-    } else {
-        return 0;
-    }
+    return mk(mp.n,y,mp.a,mp.n,param);
 }
 
 
@@ -318,12 +464,16 @@ scalar metalogLogitPDF(scalar x, sasfit_param *param) {
     metalog_param mp;
     gsl_function F;
     scalar y;
-    assign_metalog_par(x, &mp,param);
     param->moreparam=&mp;
+    assign_metalog_par(x, &mp,param);
 
     if (x<=BL || x>=BU) return 0;
+    return metalogPDF(log(x-BL)-log(BU-x),param);
+
     F.function = &root_metalog_Logit_f;
     F.params=param;
+    mp.ytrans=&ylin;
+    mp.dytrans=&dylin;
     y = find_root_brent_metalog(&F);
     if (gsl_finite(pow(x,-ALPHA))) {
         return mLogit(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
@@ -336,15 +486,17 @@ scalar metalogLogPDF(scalar x, sasfit_param *param) {
     metalog_param mp;
     gsl_function F;
     scalar y;
+    mp.ytrans=&ylin;
+    mp.dytrans=&dylin;
     assign_metalog_par(x, &mp,param);
     param->moreparam=&mp;
 
     if (x<=BL || x>=BU) return 0;
-    F.function = &root_metalog_Logit_f;
+    F.function = &root_metalog_Log_f;
     F.params=param;
     y = find_root_brent_metalog(&F);
     if (gsl_finite(pow(x,-ALPHA))) {
-        return mLogit(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
+        return mLog(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
     } else {
         return 0;
     }
@@ -354,15 +506,17 @@ scalar metalogNLogPDF(scalar x, sasfit_param *param) {
     metalog_param mp;
     gsl_function F;
     scalar y;
+    mp.ytrans=&ylin;
+    mp.dytrans=&dylin;
     assign_metalog_par(x, &mp,param);
     param->moreparam=&mp;
 
     if (x<=BL || x>=BU) return 0;
-    F.function = &root_metalog_Logit_f;
+    F.function = &root_metalog_NLog_f;
     F.params=param;
     y = find_root_brent_metalog(&F);
     if (gsl_finite(pow(x,-ALPHA))) {
-        return mLogit(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
+        return mNLog(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
     } else {
         return 0;
     }

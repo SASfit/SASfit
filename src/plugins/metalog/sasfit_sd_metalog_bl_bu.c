@@ -17,9 +17,14 @@ scalar sasfit_sd_metalog_bl_bu(scalar x, sasfit_param * param)
 	SASFIT_CHECK_COND1((BL < 0.0), param, "bl(%lg) < 0",BL); // modify condition to your needs
 	SASFIT_CHECK_COND1((BU < 0.0), param, "bu(%lg) < 0",BU); // modify condition to your needs
 	SASFIT_CHECK_COND2((BL == BU), param, "bl(%lg) == bu(%lf)",BL, BU); // modify condition to your needs
-	SASFIT_CHECK_COND1((A1 < 0.0), param, "a1(%lg) < 0",A1); // modify condition to your needs
 	// insert your code here
-	return metalogLogitPDF(x, param);
+
+	if (x<=BL||x>=BU) return 0;
+	if (gsl_finite(pow(x,-ALPHA))) {
+        return N*metalogLogitPDF(x, param)*pow(x,-ALPHA);
+    } else {
+        return 0;
+    }
 }
 
 scalar sasfit_sd_metalog_bl_bu_f(scalar q, sasfit_param * param)

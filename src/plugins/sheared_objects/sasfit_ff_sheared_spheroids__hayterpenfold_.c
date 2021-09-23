@@ -14,7 +14,7 @@ scalar sasfit_ff_sheared_spheroids__hayterpenfold_(scalar q, sasfit_param * para
 	scalar *aw, res,err,sum;
     scalar cubxmin[3], cubxmax[3], fval[1], ferr[1];
     size_t neval;
-    int intstrategy, ndim, lenaw=4000;
+    int intstrategy, ndim, lenaw=4000, ierr;
 	cubature_param cparam;
 
 
@@ -46,8 +46,10 @@ scalar sasfit_ff_sheared_spheroids__hayterpenfold_(scalar q, sasfit_param * para
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &alignedEllSh;
-
 	cparam.p1 = &pHayterPenfold;
+
+    ierr = sasfit_cubature(ndim,cubxmin,cubxmax,&partly_aligned_sasfit_cubature,&cparam,sasfit_eps_get_aniso(), &sum,&err);
+    return sum;
 
 	intstrategy = sasfit_get_int_strategy();
 //	intstrategy=P_CUBATURE;

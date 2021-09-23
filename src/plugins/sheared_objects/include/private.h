@@ -94,6 +94,9 @@ scalar pLegendre(scalar x, scalar y, sasfit_param * param);
 
 int partly_aligned_cubature(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval);
+
+scalar partly_aligned_sasfit_cubature(const double *x, size_t ndim, void *pam);
+
 int partly_aligned_cubature_u_phi(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval);
 int random_oriented_cubature(unsigned ndim, const double *x, void *pam,

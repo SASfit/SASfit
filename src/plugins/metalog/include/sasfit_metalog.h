@@ -51,11 +51,11 @@
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
  *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
@@ -133,7 +133,7 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_inf_v(scalar q, sasfit_param * 
  *       <td>dummy</td>
  *      </tr><tr>
  *       <td>\b bu</td>
- *       <td>upper bouind</td>
+ *       <td>upper bound</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
  *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
@@ -208,10 +208,10 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_bu_v(scalar q, sasfit_param * p
  *       <td></td>
  *      </tr><tr>
  *       <td>\b bl</td>
- *       <td></td>
+ *       <td>lower bound</td>
  *      </tr><tr>
  *       <td>\b bu</td>
- *       <td></td>
+ *       <td>upper bound</td>
  *      </tr><tr>
  *       <td>\b alpha</td>
  *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>

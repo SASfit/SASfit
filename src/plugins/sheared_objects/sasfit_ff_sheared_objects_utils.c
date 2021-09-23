@@ -288,6 +288,13 @@ scalar alignedCylShell(sasfit_cubature_g *gam, sasfit_param * param)
                                                 *2*gsl_sf_bessel_j0(Q*L*cos(gama)/2.) ,lround(P));
 }
 
+scalar partly_aligned_sasfit_cubature(const double *x, size_t ndim, void *pam) {
+    scalar fval;
+    int ierr;
+    ierr = partly_aligned_cubature(ndim, x, pam,1,&fval);
+    return fval;
+}
+
 int partly_aligned_cubature(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
 	sasfit_param subParam;

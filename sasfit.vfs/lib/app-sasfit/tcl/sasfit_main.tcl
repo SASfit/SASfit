@@ -421,6 +421,7 @@ set FitPrecision(IntStrategy_int) 4
 set FitPrecision(SphAvgStrategy_int) 2
 set FitPrecision(Robertus_p)      9
 set FitPrecision(iter_4_MC)       1001
+set FitPrecision(maxoptimizationfailure)      4
 set FitPrecision(int)             no
 set FitPrecision(GSL_GAUSSLEGENDRE) 128
 set FitPrecision(GSL_CHEBYSHEV1) 128

@@ -79,7 +79,7 @@
 
 #define NRES 30
 #define n_percent 0.1
-#define Nint 100
+#define Nint 1001
 
 
 
@@ -233,14 +233,17 @@ void find_integration_range(Tcl_Interp *interp,
 	      *Rend = R_n;
 		  if (*n_intervals > 4000) {
 			  if ((R_n-R_0) < R_0) {
-		      *Rend = R_n;
-				  *Rstart = 2.0*R_0-R_n;
-				  *n_intervals = Nint;
+                *Rend = R_n;
+                *Rstart = 2.0*R_0-R_n;
+                *n_intervals = Nint;
 //sasfit_out("Rstart: %f\n",Rstart);
-			  } else {
+			  }
+			  /*
+            else {
 			sasfit_err("#find_integration_range: too many (%d) integration interval: >%s(%lg,%lg,%lg,%lg)<\n",*n_intervals,SD_typestr,a1,a2,a3,a4);
 		    *error = TRUE;
 			  }
+            */
 		  }
 //sasfit_out("find_integration_rangef, rstart: %lg, rend: %lg, n_intervals: %d, Nint: %d\n",*Rstart,*Rend,*n_intervals, Nint);
 	      return;
@@ -308,6 +311,7 @@ void find_integration_range(Tcl_Interp *interp,
 	      *n_intervals =  abs((int)ceil(R_n/(R_0-R_50))) * Nint;
 	      *Rstart = 0.0;
 	      *Rend = R_n;
+/*
 		  if (*n_intervals > 500) {
 			  if ((R_n-R_0) < R_0) {
 		      *Rend = R_n;
@@ -319,6 +323,7 @@ void find_integration_range(Tcl_Interp *interp,
 				return;
 			  }
 		  }
+*/
 		  if (R2end > *Rend) *Rend = R2end;
 		  if (R2end < *Rend) *Rstart = R2start;
 	   }
@@ -537,10 +542,12 @@ void find_integration_range(Tcl_Interp *interp,
 		*Rend   = R_n+tmp;
 		if ((R_n+tmp) < R_max)  *Rstart=(R_max-(R_n+tmp));
 		*n_intervals = Nint * n;
+		/*
 	   if (n>Nint) {
-			sasfit_err("#find_integration_range: to many (%d) integration interval: >%s(%lg,%lg,%lg)<\n",*n_intervals,SD_typestr,a1,a2,a3);
+			sasfit_err("#find_integration_range: too many (%d) integration interval: >%s(%lg,%lg,%lg)<\n",*n_intervals,SD_typestr,a1,a2,a3);
 		    *error = TRUE;
 	   }
+	   */
 	} else {
 		if ( Tcl_GetInt(sasfit_env_get_interp(), SD_typestr, &funcid)
 			  != TCL_OK )
@@ -581,20 +588,20 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rend   = a2;
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_metalog_0_inf")      == 0) ) {
-				*Rstart = 0;
-				*Rend   = a1*a5;
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
 			}  else if ( (strcmp(func_descr->name,"sd_metalog_bl_bu")      == 0) ) {
-				*Rstart = a2;
-				*Rend   = a3;
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_metalog_0_bu")      == 0) ) {
 				*Rstart = 0;
-				*Rend   = a3;
+				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_metalog_bl_inf")      == 0) ) {
-				*Rstart = a2;
-				*Rend   = a1*a5;
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_lognorm_fp")       == 0) ) {
 			   a4 = fabs(a4);
@@ -615,6 +622,7 @@ void find_integration_range(Tcl_Interp *interp,
 			      *n_intervals =  abs((int)ceil(R_n/(R_0-R_50))) * Nint;
 			      *Rstart = 0.0;
 			      *Rend = R_n;
+/*
 				  if (*n_intervals > 500) {
 					  if ((R_n-R_0) < R_0) {
 				      *Rend = R_n;
@@ -625,6 +633,7 @@ void find_integration_range(Tcl_Interp *interp,
 				    *error = TRUE;
 					  }
 				  }
+*/
 			      return;
 			   }
 			} else {
