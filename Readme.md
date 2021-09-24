@@ -207,6 +207,10 @@ Clean the source tree from build products and other temporary files with GIT by 
 
 This command removes files with are set to be ignored by GIT (*-x*), removes files in sub-directories recursively (*-d*) and does not ask questions (*-f*).
  
+## To do
+
+[A list of technical details to be fixed or changed in mid-term scope is documented in `todo.md`](todo.md).
+
 ## Sponsors
 
 [![Hosted By: Cloudsmith](https://github.com/SASfit/SASfit/raw/master/doc/images/badge_cloudsmith.svg)](https://cloudsmith.com)
