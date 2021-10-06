@@ -8,16 +8,7 @@
 #include <gsl/gsl_roots.h>
 
 #define MAXROOTITER 500
-typedef struct
-{
-	scalar  a[10];      //!< Parameter of a function.
-	size_t  n;         //!< Length of the error message.
-	scalar  bl;
-	scalar  bu;
-	scalar  x;
-	double (*ytrans)(double, void *);
-	double (*dytrans)(double, void *);
-} metalog_param;
+
 
 scalar ylin (scalar y, void *pam) {
     return y;
@@ -40,19 +31,20 @@ scalar dyatan (scalar y, void *pam) {
 scalar mk(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     SASFIT_CHECK_COND2((n < k), param, "n(%d) < k(%d)",n,k);
     SASFIT_CHECK_COND1((k < 2), param, "k(%d) < 2(%d)",k);
-    scalar logity;
+    scalar logity,y1my;
     logity = log(y/(1-y));
+    y1my = (y*(1-y));
     switch (k) {
     case 2: return (y*(1-y))/a[1];
             break;
-    case 3: return 1./(a[1]/(y*(1-y))+a[2]*((y-0.5)/(y*(1-y))+logity));
+    case 3: return 1./(a[1]/y1my+a[2]*((y-0.5)/y1my+logity));
             break;
-    case 4: return 1./(a[1]/(y*(1-y))+a[2]*((y-0.5)/(y*(1-y))+logity)+a[3]);
+    case 4: return 1./(a[1]/y1my+a[2]*((y-0.5)/y1my+logity)+a[3]);
             break;
-    default:if (k % 2 == 1) {
+    default:if (GSL_IS_ODD(k)) {
                 return 1./(1./mk(k-1,y,a,n,param)+a[k-1]*(k-1)/2.*gsl_pow_int(y-0.5,(k-3)/2));
             } else {
-                return 1./(1./mk(k-1,y,a,n,param)+a[k-1]*(gsl_pow_int(y-0.5,k/2-1)/(y*(1-y))+(k/2-1)*gsl_pow_int(y-0.5,k/2-2)*logity));
+                return 1./(1./mk(k-1,y,a,n,param)+a[k-1]*(gsl_pow_int(y-0.5,k/2-1)/y1my+(k/2-1)*gsl_pow_int(y-0.5,k/2-2)*logity));
             }
             break;
     }
@@ -70,7 +62,7 @@ scalar Mk(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
             break;
     case 4: return a[0]+a[1]*logity+a[2]*(y-0.5)*logity+a[3]*(y-0.5);
             break;
-    default:if (k % 2 == 1) {
+    default:if (GSL_IS_ODD(k)) {
                 return Mk(k-1,y,a,n,param)+a[k-1]*gsl_pow_int(y-0.5,(k-1)/2);
             } else {
                 return Mk(k-1,y,a,n,param)+a[k-1]*gsl_pow_int(y-0.5,k/2-1)*logity;
@@ -105,7 +97,6 @@ scalar MLog(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     bl = mpara->bl;
 //    yt = (mpara->ytrans)(y,param);
     if (y==0) return bl;
-    if (y==1) return bu;
     expM = exp(Mk(k,y,a,n,param));
     return bl+expM;
 
@@ -475,11 +466,7 @@ scalar metalogLogitPDF(scalar x, sasfit_param *param) {
     mp.ytrans=&ylin;
     mp.dytrans=&dylin;
     y = find_root_brent_metalog(&F);
-    if (gsl_finite(pow(x,-ALPHA))) {
-        return mLogit(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
-    } else {
-        return 0;
-    }
+    return mLogit(mp.n,y,mp.a,mp.n,param);
 }
 
 scalar metalogLogPDF(scalar x, sasfit_param *param) {
@@ -495,11 +482,7 @@ scalar metalogLogPDF(scalar x, sasfit_param *param) {
     F.function = &root_metalog_Log_f;
     F.params=param;
     y = find_root_brent_metalog(&F);
-    if (gsl_finite(pow(x,-ALPHA))) {
-        return mLog(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
-    } else {
-        return 0;
-    }
+    return mLog(mp.n,y,mp.a,mp.n,param);
 }
 
 scalar metalogNLogPDF(scalar x, sasfit_param *param) {
@@ -515,9 +498,5 @@ scalar metalogNLogPDF(scalar x, sasfit_param *param) {
     F.function = &root_metalog_NLog_f;
     F.params=param;
     y = find_root_brent_metalog(&F);
-    if (gsl_finite(pow(x,-ALPHA))) {
-        return mNLog(mp.n,y,mp.a,mp.n,param)*pow(x,-ALPHA);
-    } else {
-        return 0;
-    }
+    return mNLog(mp.n,y,mp.a,mp.n,param);
 }

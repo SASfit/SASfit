@@ -452,7 +452,7 @@ set EMOptions(lambda) 1
 set EMOptions(method) "EM (smoothing)"
 set EMOptions(LMatrix) "second deriv. (D-D)"
 set EMOptions(optimumLagrange)  "L-corner"
-set EMOptions(LLSmethod)  "NNLLS"
+set EMOptions(LLSmethod)  "LLS"
 set EMOptions(nLagrange)  200
 set EMOptions(maxslope)  100.0
 set EMOptions(minLagrange)  1
