@@ -62,12 +62,18 @@ typedef struct
 } metalog_param;
 
 scalar metalogPDF(scalar, sasfit_param *);
-scalar metalogLogitPDF(scalar, sasfit_param *);
-scalar MLog(int , scalar , scalar *, size_t , sasfit_param *);
-scalar MLogit(int , scalar , scalar *, size_t , sasfit_param *);
-
 scalar metalogLogPDF(scalar, sasfit_param *);
 scalar metalogNLogPDF(scalar, sasfit_param *);
+scalar metalogLogitPDF(scalar, sasfit_param *);
+scalar Mk(int , scalar , scalar *, size_t , sasfit_param *);
+scalar MLog(int , scalar , scalar *, size_t , sasfit_param *);
+scalar MNLog(int , scalar , scalar *, size_t , sasfit_param *);
+scalar MLogit(int , scalar , scalar *, size_t , sasfit_param *);
+
 void assign_metalog_par(scalar, metalog_param *, sasfit_param *);
+scalar find_root_brent_metalog(gsl_function *);
+scalar ylin (scalar, void *);
+scalar dylin (scalar, void *);
+double root_metalog_f (double, void *);
 #endif // end of file
 

@@ -7,13 +7,8 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(6)
-SASFIT_PLUGIN_EXP_ADD( ff_metalog_sphere )
-SASFIT_PLUGIN_EXP_ADD( ff_metaloglog_sphere )
-SASFIT_PLUGIN_EXP_ADD( ff_metaloglogit_sphere )
-SASFIT_PLUGIN_EXP_ADD( sd_metalog_0_inf )
-SASFIT_PLUGIN_EXP_ADD( sd_metalog_0_bu )
-SASFIT_PLUGIN_EXP_ADD( sd_metalog_bl_bu )
+SASFIT_PLUGIN_EXP_BEGIN(1)
+SASFIT_PLUGIN_EXP_ADD( sq_simple_sq_power_law )
 
 SASFIT_PLUGIN_EXP_END
 

@@ -8,12 +8,12 @@
 
 // define shortcuts for local parameters/variables
 
-scalar metalogLogit_sphere(scalar y, sasfit_param *param) {
+scalar metalog_sphere(scalar y, sasfit_param *param) {
     metalog_param *mpara;
 	scalar u,fsp,qmod,Rc;
     mpara = (metalog_param *) param->moreparam;
 	qmod = Q;
-	Rc = MLogit(10 , y ,mpara->a , 10 , param);
+	Rc = Mk(10 , y ,mpara->a , 10 , param);
 	u=qmod*Rc;
 	if (fabs(u)<1e-6) {
 		fsp = 1 - gsl_pow_2(u)/10. + gsl_pow_4(u)/280. - gsl_pow_6(u)/15120. + gsl_pow_8(u)/1.33056e6
@@ -23,9 +23,11 @@ scalar metalogLogit_sphere(scalar y, sasfit_param *param) {
 	}
 	return N*pow(Rc,6-ALPHA)*gsl_pow_2(4./3.*M_PI* fsp);
 }
-scalar sasfit_ff_metaloglogit_sphere(scalar q, sasfit_param * param)
+scalar sasfit_ff_metalog_sphere(scalar q, sasfit_param * param)
 {
     metalog_param mp;
+    gsl_function F;
+    scalar ystart,yend;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -36,19 +38,21 @@ scalar sasfit_ff_metaloglogit_sphere(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND2((BL == BU), param, "bl(%lg) == bu(%lf)",BL, BU); // modify condition to your needs
 
 	Q = q;
+
+    mp.ytrans=&ylin;
+	mp.dytrans=&dylin;
+    F.function = &root_metalog_f;
+    F.params=param;
     param->moreparam=&mp;
-    assign_metalog_par(0, &mp,param);
-	/*
-    if (gsl_finite(pow(x,-ALPHA))) {
-        return N*metalogPDF(x, param)*pow(x,-ALPHA);
-    } else {
-        return 0;
-    }
-	*/
-	return sasfit_integrate(0,1,&metalogLogit_sphere,param);
+    assign_metalog_par(BL, &mp,param);
+	ystart = find_root_brent_metalog(&F);
+	mp.x = BU;
+	yend = find_root_brent_metalog(&F);
+	sasfit_out("ystart=%lf, yend=%lf\n",ystart,yend);
+	return sasfit_integrate(ystart,yend,&metalog_sphere,param);
 }
 
-scalar sasfit_ff_metaloglogit_sphere_f(scalar q, sasfit_param * param)
+scalar sasfit_ff_metalog_sphere_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -56,7 +60,7 @@ scalar sasfit_ff_metaloglogit_sphere_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_metalog_sphere_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

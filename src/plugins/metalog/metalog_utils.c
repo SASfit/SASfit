@@ -388,7 +388,7 @@ scalar find_root_brent_metalog(gsl_function *F) {
     gsl_set_error_handler_off ();
     T = gsl_root_fsolver_brent;
     s = gsl_root_fsolver_alloc (T);
-    gsl_root_fsolver_set (s, F, 1e-10, 1-1e-10);
+    gsl_root_fsolver_set (s, F, 2*DBL_EPSILON, 1-2*DBL_EPSILON);
     /*
     if (fabs((F->function)(yroot,F->params
                            ))<sasfit_eps_get_aniso()) {
@@ -446,7 +446,6 @@ scalar metalogPDF(scalar x, sasfit_param *param) {
         mp.dytrans=&dyatan;
         y = find_root_steffenson_metalog(&FDF);
     }
-
     return mk(mp.n,y,mp.a,mp.n,param);
 }
 
@@ -459,7 +458,7 @@ scalar metalogLogitPDF(scalar x, sasfit_param *param) {
     assign_metalog_par(x, &mp,param);
 
     if (x<=BL || x>=BU) return 0;
-    return metalogPDF(log(x-BL)-log(BU-x),param);
+ //   return metalogPDF(log(x-BL)-log(BU-x),param);
 
     F.function = &root_metalog_Logit_f;
     F.params=param;
