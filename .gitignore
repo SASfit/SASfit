@@ -34,6 +34,7 @@ sasfit.vfs/lib/Sasfit/sasfit.so
 plugins/*.h
 plugins/*.so
 plugins/*.dll
+plugins/*.dylib
 sasfit.vfs/lib/Sasfit/sasfit.dll
 sasfit.exe
 build

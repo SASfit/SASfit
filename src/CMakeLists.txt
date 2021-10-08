@@ -261,7 +261,7 @@ set_target_properties(sasfit PROPERTIES
     MACOSX_RPATH FALSE # cmake 3 compatibility
 )
 
-sasfit_copy_shared_libs(sasfit "sasfit.vfs/lib/Sasfit")
+sasfit_copy_lib(sasfit "sasfit.vfs/lib/Sasfit")
 
 if(DEFINED WITH_STATIC)
 

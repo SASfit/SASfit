@@ -135,48 +135,51 @@ macro(sasfit_assert_dir)
 endmacro(sasfit_assert_dir)
 
 # copy shared libs to a target dir (where sasfit tcl routines will find them)
-macro(sasfit_copy_shared_libs SHARED_TARGET REL_TARGET_DIR)
-	sasfit_copy_libs(${REL_TARGET_DIR} "${CMAKE_SHARED_LIBRARY_PREFIX}" ${SHARED_TARGET} "${CMAKE_SHARED_LIBRARY_SUFFIX}")
-endmacro(sasfit_copy_shared_libs)
+# targetname: name of the cmake target whose libraries should be copied
+# targetdir: path of target directory, relative to sasfit-root dir
+# ARG3: absolute path to supplementary file to copy [optional]
+# ARG4: filename of supplementary file to copy [optional]
+macro(sasfit_copy_lib targetname targetdir)
+    sasfit_assert_dir(${SASFIT_ROOT_DIR}/${targetdir})
+    # find out what kind of target we got -> different file names on different platforms
+    get_target_property(target_type ${targetname} TYPE)
+    if(target_type STREQUAL MODULE_LIBRARY)
+        set(PREFIX ${CMAKE_SHARED_MODULE_PREFIX})
+        set(SUFFIX ${CMAKE_SHARED_MODULE_SUFFIX})
+        #message("module!")
+    elseif(target_type STREQUAL SHARED_LIBRARY)
+        set(PREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
+        set(SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
+        #message("shared!")
+    elseif(target_type STREQUAL STATIC_LIBRARY)
+        set(PREFIX ${CMAKE_STATIC_LIBRARY_PREFIX})
+        set(SUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
+        #message("static!")
+    endif()
+    set(filepath_src "${LIBRARY_OUTPUT_PATH}/${PREFIX}${targetname}${SUFFIX}")
+    set(filepath_dst "${targetname}${SUFFIX}")
+    set(filepath_dst "${targetdir}/${PREFIX}${targetname}${SUFFIX}")
+    if(target_type STREQUAL MODULE_LIBRARY OR ${targetname} STREQUAL sasfit)
+        set(filepath_dst "${targetdir}/${targetname}${SUFFIX}")
+    endif()
 
-macro(sasfit_copy_static_libs STATIC_TARGET REL_TARGET_DIR)
-	sasfit_copy_libs(${REL_TARGET_DIR} "${CMAKE_STATIC_LIBRARY_PREFIX}" ${STATIC_TARGET} "${CMAKE_STATIC_LIBRARY_SUFFIX}")
-endmacro(sasfit_copy_static_libs)
-
-# copy plugin (shared lib) to a target dir (where sasfit tcl routines will find them)
-macro(sasfit_copy_plugins SHARED_TARGET SUPP_FILE_PATH SUPP_FILE)
-	sasfit_copy_libs(plugins "${CMAKE_SHARED_MODULE_PREFIX}" ${SHARED_TARGET} "${CMAKE_SHARED_MODULE_SUFFIX}" ${SUPP_FILE_PATH} ${SUPP_FILE})
-endmacro(sasfit_copy_plugins)
-
-# copy shared libs to a target dir (where sasfit tcl routines will find them)
-# SHARED_TARGET: name of the cmake target whose libraries should be copied
-# REL_TARGET_DIR: path of target directory, relative to sasfit-root dir
-# ARG2: absolute path to supplementary file to copy [optional]
-# ARG3: filename of supplementary file to copy [optional]
-macro(sasfit_copy_libs REL_TARGET_DIR PREFIX SHARED_TARGET SUFFIX)
-	set(TARGET_DIR ${SASFIT_ROOT_DIR}/${REL_TARGET_DIR})
-	sasfit_assert_dir(${TARGET_DIR})
-	set(SHARED_LIB_NAME ${PREFIX}${SHARED_TARGET}${SUFFIX})
-	set(SHARED_LIB_FULL_NAME ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/${SHARED_LIB_NAME})
-
-	# add additional copy command if a 2nd file was provided
-	set(SUPP_CMD "")
-	if(${ARGC} GREATER 5)
-		set(SUPP_CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${ARGV4}/${ARGV5}" "${TARGET_DIR}")
-		sasfit_add2pckg(${REL_TARGET_DIR}/${ARGV5})
-	endif(${ARGC} GREATER 5)
-	set(CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${SHARED_LIB_FULL_NAME}" "${TARGET_DIR}/${SHARED_TARGET}${SUFFIX}")
-	add_custom_command(TARGET ${SHARED_TARGET} POST_BUILD
-			${CMD}
-			${SUPP_CMD}
-			VERBATIM
-	)
-
-	if(NOT ${SHARED_TARGET} STREQUAL "sasfit")
-		# add this binary to the list of files to copy for a working package
-		sasfit_add2pckg(${REL_TARGET_DIR}/${SHARED_TARGET}${SUFFIX})
-	endif(NOT ${SHARED_TARGET} STREQUAL "sasfit")
-endmacro(sasfit_copy_libs)
+    # add additional copy command if a 2nd file was provided
+    set(SUPP_CMD "")
+    if(${ARGC} GREATER 3)
+        set(SUPP_CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${ARGV2}/${ARGV3}" "${SASFIT_ROOT_DIR}/${targetdir}")
+        sasfit_add2pckg(${targetdir}/${ARGV3})
+    endif()
+    set(CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${filepath_src}" "${SASFIT_ROOT_DIR}/${filepath_dst}")
+    add_custom_command(TARGET ${targetname} POST_BUILD
+            ${CMD}
+            ${SUPP_CMD}
+            VERBATIM
+    )
+    if(NOT ${targetname} STREQUAL "sasfit")
+        # add this binary to the list of files to copy for a working package
+        sasfit_add2pckg(${filepath_dst})
+    endif()
+endmacro()
 
 macro(sasfit_cmake_plugin_static)
 
@@ -224,6 +227,7 @@ macro(sasfit_cmake_plugin)
     endif()
 
 	add_library(${PRJ_NAME} MODULE ${PRJ_SOURCE})
+	add_library(${PRJ_NAME}_shared SHARED ${PRJ_SOURCE})
 
 	find_package(sasfit_common REQUIRED)
 	find_package(f2c REQUIRED)
@@ -249,6 +253,7 @@ macro(sasfit_cmake_plugin)
 
 	# set some compiler switches
 	set_property(TARGET ${PRJ_NAME} PROPERTY COMPILE_DEFINITIONS MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
+	set_property(TARGET ${PRJ_NAME}_shared PROPERTY COMPILE_DEFINITIONS MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
 	set(COMPILE_FLAGS)
 	if(UNIX)
 		set(COMPILE_FLAGS "-Wall")
@@ -257,10 +262,12 @@ macro(sasfit_cmake_plugin)
 		endif(DEFINED SASFIT_DEBUG)
 	endif(UNIX)
 	set_target_properties(${PRJ_NAME} PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
+	set_target_properties(${PRJ_NAME}_shared PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
 
 	# set library search paths for internal shared libraries
 	# build with the whole sasfit package controlled by a toplevel CMakeLists
-	sasfit_copy_plugins(${PRJ_NAME} "${SRC_DIR}/include" "${PRJ_NAME}.h")
+	sasfit_copy_lib(${PRJ_NAME}        plugins "${SRC_DIR}/include" "${PRJ_NAME}.h")
+	sasfit_copy_lib(${PRJ_NAME}_shared plugins)
 
 	if(DEFINED WITH_STATIC)
 		sasfit_cmake_plugin_static()
