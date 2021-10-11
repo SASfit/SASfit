@@ -271,12 +271,12 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_f(scalar q, sasfit_pa
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metaloglogit_sphere ################ */
 
-/* ################ start sd_metalog_0_inf ################ */
+/* ################ start sd_metalog_log_clipped ################ */
 /**
- * \defgroup sd_metalog_0_inf metalog_0_inf
+ * \defgroup sd_metalog_log_clipped metalog_log_clipped
  * \ingroup sd_plugins
  *
- * \brief \<some brief description of metalog_0_inf function\>
+ * \brief \<some brief description of metalog_log_clipped function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -285,84 +285,6 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_pa
  *      <table border="0"><tr>
  *       <td>\b N</td>
  *       <td></td>
- *      </tr><tr>
- *       <td>\b bl</td>
- *       <td>lower bound</td>
- *      </tr><tr>
- *       <td>\b bu</td>
- *       <td>upper bound</td>
- *      </tr><tr>
- *       <td>\b alpha</td>
- *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
- *      </tr><tr>
- *       <td>\b a1</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a2</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a3</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a4</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a5</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a6</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a7</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a8</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a9</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b a10</td>
- *       <td></td>
- *      </tr></table>
- */
-
-/**
- * \ingroup sd_metalog_0_inf
- *
- * \sa sasfit_metalog.h, sd_plugins
- */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_inf(scalar q, sasfit_param * p);
-
-/**
- * \ingroup sd_metalog_0_inf
- *
- * \sa sasfit_metalog.h, sd_plugins
- */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_inf_f(scalar q, sasfit_param * p);
-
-/**
- * \ingroup sd_metalog_0_inf
- *
- * \sa sasfit_metalog.h, sd_plugins
- */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_inf_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop sd_metalog_0_inf ################ */
-
-/* ################ start sd_metalog_0_bu ################ */
-/**
- * \defgroup sd_metalog_0_bu metalog_0_bu
- * \ingroup sd_plugins
- *
- * \brief \<some brief description of metalog_0_bu function\>
- *
- * <more detailed documentation, see 'doxygen' docs>
- *
- *
- * \par Required parameters:
- *      <table border="0"><tr>
- *       <td>\b N</td>
- *       <td>scaling factor</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -406,33 +328,111 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_inf_v(scalar q, sasfit_param * 
  */
 
 /**
- * \ingroup sd_metalog_0_bu
+ * \ingroup sd_metalog_log_clipped
  *
  * \sa sasfit_metalog.h, sd_plugins
  */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_bu(scalar q, sasfit_param * p);
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped(scalar q, sasfit_param * p);
 
 /**
- * \ingroup sd_metalog_0_bu
+ * \ingroup sd_metalog_log_clipped
  *
  * \sa sasfit_metalog.h, sd_plugins
  */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_bu_f(scalar q, sasfit_param * p);
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup sd_metalog_0_bu
+ * \ingroup sd_metalog_log_clipped
  *
  * \sa sasfit_metalog.h, sd_plugins
  */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_bu_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop sd_metalog_0_bu ################ */
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sd_metalog_log_clipped ################ */
 
-/* ################ start sd_metalog_bl_bu ################ */
+/* ################ start sd_metalog_clipped ################ */
 /**
- * \defgroup sd_metalog_bl_bu metalog_bl_bu
+ * \defgroup sd_metalog_clipped metalog_clipped
  * \ingroup sd_plugins
  *
- * \brief \<some brief description of metalog_bl_bu function\>
+ * \brief \<some brief description of metalog_clipped function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td>scaling factor</td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sd_metalog_clipped
+ *
+ * \sa sasfit_metalog.h, sd_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sd_metalog_clipped
+ *
+ * \sa sasfit_metalog.h, sd_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sd_metalog_clipped
+ *
+ * \sa sasfit_metalog.h, sd_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sd_metalog_clipped ################ */
+
+/* ################ start sd_metalog_logit ################ */
+/**
+ * \defgroup sd_metalog_logit metalog_logit
+ * \ingroup sd_plugins
+ *
+ * \brief \<some brief description of metalog_logit function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -484,26 +484,26 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_0_bu_v(scalar q, sasfit_param * p
  */
 
 /**
- * \ingroup sd_metalog_bl_bu
+ * \ingroup sd_metalog_logit
  *
  * \sa sasfit_metalog.h, sd_plugins
  */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_bl_bu(scalar q, sasfit_param * p);
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit(scalar q, sasfit_param * p);
 
 /**
- * \ingroup sd_metalog_bl_bu
+ * \ingroup sd_metalog_logit
  *
  * \sa sasfit_metalog.h, sd_plugins
  */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_bl_bu_f(scalar q, sasfit_param * p);
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup sd_metalog_bl_bu
+ * \ingroup sd_metalog_logit
  *
  * \sa sasfit_metalog.h, sd_plugins
  */
-sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_bl_bu_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop sd_metalog_bl_bu ################ */
+sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sd_metalog_logit ################ */
 
 
 #endif // this file
