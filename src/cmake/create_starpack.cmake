@@ -43,12 +43,12 @@ set(SASFIT_EXEC ${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME})
 message(STATUS "Creating Starpack ...")
 
 if(NOT EXISTS "${SASKIT_FILE}")
-        return()
+    return()
 endif()
 message(STATUS "Using ${SASKIT_FILE}")
 if(NOT WIN32)
-        execute_process(COMMAND chmod u+x,g+x,o+x ${SASKIT_FILE})
-endif(NOT WIN32)
+    execute_process(COMMAND chmod u+x,g+x,o+x ${SASKIT_FILE})
+endif()
 file(REMOVE ${SASFIT_EXEC})
 configure_file(${SASKIT_FILE} ${SASKIT_FILE}_rt COPYONLY)
 execute_process(COMMAND ${SASKIT_FILE} "${SASKIT_PATH}/sdx.kit" wrap ${SASFIT_EXEC_FILENAME} -runtime ${SASKIT_FILE}_rt
@@ -59,12 +59,12 @@ execute_process(COMMAND ${SASKIT_FILE} "${SASKIT_PATH}/sdx.kit" wrap ${SASFIT_EX
                 ERROR_VARIABLE SASKIT_OUT
 )
 if(SASKIT_RES EQUAL 0 OR SASKIT_RES STREQUAL "Process terminated due to timeout")
-        message(STATUS "Successfully created executable '${SASFIT_EXEC}'")
+    message(STATUS "Successfully created executable '${SASFIT_EXEC}'")
 else()
-        message(STATUS "An error occured while creating executable '${SASFIT_EXEC}'!")
-        message("return value: '${SASKIT_RES}'")
-        message("output: '${SASKIT_OUT}'")
+    message(STATUS "An error occured while creating executable '${SASFIT_EXEC}'!")
+    message("return value: '${SASKIT_RES}'")
+    message("output: '${SASKIT_OUT}'")
 endif()
 file(REMOVE ${SASKIT_FILE}_rt)
 
-# vim: set ts=4 sw=4 sts=4 tw=0:
+# vim: set et ts=4 sw=4 sts=4 tw=0:
