@@ -62,6 +62,7 @@ set(SASFIT_STARPACK_SCRIPT ${CMAKE_MODULE_PATH}/create_starpack.cmake)
 # copy the binary package file list to a temporary list file 
 # (binaries built will be added later)
 file(STRINGS ${SASFIT_BIN_LIST_FILE} BIN_FILE_LIST)
+unset(SASFIT_BIN_FILE_LIST CACHE)
 sasfit_add2pckg(${BIN_FILE_LIST})
 
 # add runtime files required on Windows with Visual Studio only 
@@ -325,7 +326,6 @@ if(CREATE_BINARY)
     message(STATUS "Using saskit file: '${SASKIT_FILENAME}'")
     appveyor_set_var(SASFIT_SASKIT_EXEC "${SASFIT_ROOT_DIR}/saskit/${SASKIT_FILENAME}")
 
-    list_paths("" ${SASFIT_BIN_FILE_LIST})
     cmake_print_variables(CMAKE_BINARY_DIR)
     if(IS_LINUX)
         # add SASFIT_BIN_FILE_LIST to the included files in AppImageBuilder config
