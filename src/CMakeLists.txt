@@ -19,7 +19,7 @@ sasfit_update_version()
 # decides which packages to build afterwards
 if(NOT DEFINED CREATE_BINARY)
     set(CREATE_BINARY TRUE)
-endif(NOT DEFINED CREATE_BINARY)
+endif()
 
  #############################################################
 ### A target for source code documentation using doxygen    ###
@@ -35,13 +35,15 @@ add_custom_command(OUTPUT Doxyfile
         -P cmake/replace_text_in_file.cmake
     WORKING_DIRECTORY ${CURRENT_DIR}
     BYPRODUCTS Doxyfile
-    DEPENDS Doxyfile.template.txt)
+    DEPENDS Doxyfile.template.txt
+)
 
 add_custom_target(docs
     COMMAND doxygen DEPENDS Doxyfile
     WORKING_DIRECTORY ${CURRENT_DIR}
     SOURCES Doxyfile BYPRODUCTS ${CURRENT_DIR}/../doc/html
-    COMMENT "Requires *doxygen* to be installed and optionally *graphviz*.")
+    COMMENT "Requires *doxygen* to be installed and optionally *graphviz*."
+)
 
 if(DOCS_ONLY)
     return() # skip further targets (which build trigger building stuff ...)
@@ -82,8 +84,7 @@ if(CMAKE_HOST_APPLE)
         set(CMAKE_OSX_ARCHITECTURES x86_64)
     endif(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
     message(STATUS "Bulding on MacOS for: ${CMAKE_OSX_ARCHITECTURES}")
-endif(CMAKE_HOST_APPLE)
-
+endif()
 
  #####################
 ### OPTIONS for f2c ###
@@ -91,7 +92,6 @@ endif(CMAKE_HOST_APPLE)
 
 # platform specific properties
 IF(WIN32) # for Windows
-
     ADD_DEFINITIONS(
         -DUSE_CLOCK     # see etime_.c
         -DMSDOS
@@ -100,25 +100,22 @@ IF(WIN32) # for Windows
         -DCONFLICTING_ISATTY
         -DNO_FUNCTION_MACRO
     )
-
     IF(MSVC80)
         # suppress warnings about usage of old non-limited string functions
         # has to be fixed later
         add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
         add_definitions(-DINTEGER_STAR_8) # see f2c/f2c.h
-    ELSE(MSVC80) # NOT MSVC80
-#            add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
-    ENDIF(MSVC80)
-
-ENDIF(WIN32) # for Windows
+    ELSE() # NOT MSVC80
+#        add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
+    ENDIF()
+ENDIF() # for Windows
 
 # for Unix/Linux
 IF(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 #    ADD_DEFINITIONS(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
     ADD_DEFINITIONS(-DINTEGER_STAR_8 ) # see f2c/f2c.h
     add_definitions(-UNO_LONGLONG_AND_NO_LONGINT)
-ENDIF(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-
+ENDIF()
 
  ###############################
 ### OPTIONS for sasfit_common ###
@@ -146,8 +143,8 @@ message(STATUS "GSL LIBRARIES: ${GSL_LIBRARIES}")
 # TCL
 find_package(TCL QUIET REQUIRED)
 if(NOT TCL_FOUND)
-        add_subdirectory(tcl)
-        find_package(TCL REQUIRED)
+    add_subdirectory(tcl)
+    find_package(TCL REQUIRED)
 endif()
 message(STATUS "TCL INCLUDES:  ${TCL_INCLUDE_DIRS}")
 message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
@@ -156,8 +153,8 @@ message(STATUS "TCL SH: ${TCL_SH}")
 # FFTW
 find_package(FFTW QUIET REQUIRED)
 if(NOT FFTW_FOUND)
-        add_subdirectory(fftw)
-        find_package(FFTW REQUIRED)
+    add_subdirectory(fftw)
+    find_package(FFTW REQUIRED)
 endif()
 message(STATUS "FFTW INCLUDES:  ${FFTW_INCLUDE_DIRS}")
 message(STATUS "FFTW LIBRARIES: ${FFTW_LIBRARIES}")
@@ -165,8 +162,8 @@ message(STATUS "FFTW LIBRARIES: ${FFTW_LIBRARIES}")
 # sundials
 find_package(sundials QUIET REQUIRED)
 if(NOT sundials_FOUND)
-        add_subdirectory(sundials)
-        find_package(sundials REQUIRED)
+    add_subdirectory(sundials)
+    find_package(sundials REQUIRED)
 endif()
 message(STATUS "sundials INCLUDES:  ${sundials_INCLUDE_DIRS}")
 message(STATUS "sundials LIBRARIES: ${sundials_LIBRARIES}")
@@ -180,26 +177,26 @@ add_definitions(
 #find_package(OpenMP QUIET)
 
 #if(OPENMP_FOUND)
-#        message(STATUS "Enabling OpenMP support")
-#        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-#        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-#        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-#        message(STATUS "OpenMP_C_FLAGS: '${OpenMP_C_FLAGS}'")
-#        message(STATUS "OpenMP_CXX_FLAGS: '${OpenMP_CXX_FLAGS}'")
-#        message(STATUS "OpenMP_EXE_LINKER_FLAGS: '${OpenMP_EXE_LINKER_FLAGS}'")
-#        set(OpenMP_LIB)
-#        if(WIN32)
-#            # gather required libraries
-#            execute_process(COMMAND ${CMAKE_C_COMPILER} -print-file-name=libgomp.a
-#                            OUTPUT_VARIABLE OpenMP_LIB)
-#            string(STRIP "${OpenMP_LIB}" OpenMP_LIB)
-#            get_filename_component(OpenMP_LIB "${OpenMP_LIB}" REALPATH)
-#            find_library(pthread_LIB pthread)
-#            list(APPEND OpenMP_LIB "${pthread_LIB}")
-#        endif()
-#        message(STATUS "OpenMP LIBRARIES: '${OpenMP_LIB}'")
+#    message(STATUS "Enabling OpenMP support")
+#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+#    message(STATUS "OpenMP_C_FLAGS: '${OpenMP_C_FLAGS}'")
+#    message(STATUS "OpenMP_CXX_FLAGS: '${OpenMP_CXX_FLAGS}'")
+#    message(STATUS "OpenMP_EXE_LINKER_FLAGS: '${OpenMP_EXE_LINKER_FLAGS}'")
+#    set(OpenMP_LIB)
+#    if(WIN32)
+#        # gather required libraries
+#        execute_process(COMMAND ${CMAKE_C_COMPILER} -print-file-name=libgomp.a
+#                        OUTPUT_VARIABLE OpenMP_LIB)
+#        string(STRIP "${OpenMP_LIB}" OpenMP_LIB)
+#        get_filename_component(OpenMP_LIB "${OpenMP_LIB}" REALPATH)
+#        find_library(pthread_LIB pthread)
+#        list(APPEND OpenMP_LIB "${pthread_LIB}")
+#    endif()
+#    message(STATUS "OpenMP LIBRARIES: '${OpenMP_LIB}'")
 #else()
-#        message(STATUS "Disabling OpenMP support")
+#    message(STATUS "Disabling OpenMP support")
 #endif()
 
 # get a list of all source files and prepare include dirs
@@ -209,14 +206,14 @@ foreach(SF_MODULE f2c sasfit_common sasfit_sd sasfit_sq sasfit_ff sasfit_core sa
     if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
         foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
             list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")
-        endforeach(SRC_FILE)
+        endforeach()
         if(${SF_MODULE} MATCHES "f2c")
             list(APPEND SF_INC_DIRS "${SF_MODULE}")
-        else(${SF_MODULE} MATCHES "f2c")
+        else()
             list(APPEND SF_INC_DIRS "${SF_MODULE}/include")
-        endif(${SF_MODULE} MATCHES "f2c")
-    endif(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
-endforeach(SF_MODULE)
+        endif()
+    endif()
+endforeach()
 
 include_directories(
     ${SF_INC_DIRS}
@@ -231,11 +228,11 @@ add_library(sasfit SHARED
 )
 
 target_link_libraries(sasfit
-        ${TCL_LIBRARIES}
-        ${GSL_STATIC_LIBRARIES}
-        ${FFTW_LIBRARIES}
-        ${sundials_LIBRARIES}
-#        ${OpenMP_LIB}
+    ${TCL_LIBRARIES}
+    ${GSL_STATIC_LIBRARIES}
+    ${FFTW_LIBRARIES}
+    ${sundials_LIBRARIES}
+#    ${OpenMP_LIB}
 )
 
 # configure build flags, assumes gcc-style flags on all platforms
@@ -243,7 +240,7 @@ target_link_libraries(sasfit
 set(COMPILE_FLAGS -std=gnu99)
 if(UNIX)
     set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall")
-endif(UNIX)
+endif()
 #message("DEBUG: '${DEBUG}' OPTIM: '${OPTIM}'")
 if(DEBUG)
     # debug
@@ -251,10 +248,10 @@ if(DEBUG)
 elseif(OPTIM)
     # non-debug optimized
     set(COMPILE_FLAGS "${COMPILE_FLAGS} -march=native -O2 -pipe -fomit-frame-pointer -fforce-addr")
-else(DEBUG)
+else()
     # general purpose binary
     set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer -fforce-addr")
-endif(DEBUG)
+endif()
 
 set_target_properties(sasfit PROPERTIES
     COMPILE_FLAGS "${COMPILE_FLAGS}"
@@ -270,9 +267,9 @@ if(DEFINED WITH_STATIC)
         if(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
             foreach(SRC_FILE ${SOURCE_${SF_MODULE}})
                 list(APPEND SRC_FILES "${SF_MODULE}/${SRC_FILE}")
-            endforeach(SRC_FILE)
-        endif(IS_DIRECTORY ${CURRENT_DIR}/${SF_MODULE})
-    endforeach(SF_MODULE)
+            endforeach()
+        endif()
+    endforeach()
 
     add_library(sasfit_common_stat STATIC
         ${SRC_FILES}
@@ -282,12 +279,12 @@ if(DEFINED WITH_STATIC)
         if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
             # required for static builds on 64bit
             set(COMPILE_FLAGS "${COMPILE_FLAGS} -fPIC")
-        endif(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
-    endif(UNIX)
+        endif()
+    endif()
     set_target_properties(sasfit_common_stat PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
     set_target_properties(sasfit_common_stat PROPERTIES COMPILE_DEFINITIONS STATIC_ENABLED)
 
-endif(DEFINED WITH_STATIC)
+endif()
 
  #############
 ### Plugins ###
@@ -299,7 +296,7 @@ add_subdirectory(plugins)
 message(STATUS "The binary package will include the following plugins: ")
 foreach(PLUGIN_NAME ${SASFIT_PLUGINS_INCLUDED})
     message(STATUS "* ${PLUGIN_NAME}")
-endforeach(PLUGIN_NAME)
+endforeach()
 
  ####################################
 ### create a sasfit binary package ###
@@ -311,7 +308,7 @@ if(CREATE_BINARY)
     if(DEBUG)
         message(STATUS "Using a starpack with debug symbols.")
         set(DEBUG_SUFFIX "_debug")
-    endif(DEBUG)
+    endif()
 
     set(SASFIT_PCKG_DIR_POSTFIX ${PLATFORM}${DEBUG_SUFFIX})
     if(NOT IS_LINUX)
@@ -390,6 +387,6 @@ if(CREATE_BINARY)
             COMMENT "Creating sasfit package ..."
             VERBATIM)
     endif()
-endif(CREATE_BINARY)
+endif()
 
 # vim: set et ts=4 sw=4 sts=4 tw=0:
