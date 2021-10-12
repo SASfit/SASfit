@@ -131,13 +131,7 @@ macro(sasfit_assert_dir)
 	endif(${ARGC} GREATER 0)
 endmacro(sasfit_assert_dir)
 
-# copy shared libs to a target dir (where sasfit tcl routines will find them)
-# targetname: name of the cmake target whose libraries should be copied
-# targetdir: path of target directory, relative to sasfit-root dir
-# ARG3: absolute path to supplementary file to copy [optional]
-# ARG4: filename of supplementary file to copy [optional]
-macro(sasfit_copy_lib targetname targetdir)
-    sasfit_assert_dir(${SASFIT_ROOT_DIR}/${targetdir})
+function(get_target_output_path targetname)
     # find out what kind of target we got -> different file names on different platforms
     get_target_property(target_type ${targetname} TYPE)
     if(target_type STREQUAL MODULE_LIBRARY)
@@ -153,7 +147,22 @@ macro(sasfit_copy_lib targetname targetdir)
         set(SUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
         #message("static!")
     endif()
-    set(filepath_src "${LIBRARY_OUTPUT_PATH}/${PREFIX}${targetname}${SUFFIX}")
+    set(${targetname}_output_path
+        "${LIBRARY_OUTPUT_PATH}/${PREFIX}${targetname}${SUFFIX}" PARENT_SCOPE)
+    set(${targetname}_output_prefix ${PREFIX} PARENT_SCOPE)
+    set(${targetname}_output_suffix ${SUFFIX} PARENT_SCOPE)
+endfunction()
+
+# copy shared libs to a target dir (where sasfit tcl routines will find them)
+# targetname: name of the cmake target whose libraries should be copied
+# targetdir: path of target directory, relative to sasfit-root dir
+# ARG3: absolute path to supplementary file to copy [optional]
+# ARG4: filename of supplementary file to copy [optional]
+macro(sasfit_copy_lib targetname targetdir)
+    sasfit_assert_dir(${SASFIT_ROOT_DIR}/${targetdir})
+    get_target_output_path(${targetname})
+    set(PREFIX ${${targetname}_output_prefix})
+    set(SUFFIX ${${targetname}_output_suffix})
     set(filepath_dst "${targetname}${SUFFIX}")
     set(filepath_dst "${targetdir}/${PREFIX}${targetname}${SUFFIX}")
     if(target_type STREQUAL MODULE_LIBRARY OR ${targetname} STREQUAL sasfit)
@@ -166,7 +175,7 @@ macro(sasfit_copy_lib targetname targetdir)
         set(SUPP_CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${ARGV2}/${ARGV3}" "${SASFIT_ROOT_DIR}/${targetdir}")
         sasfit_add2pckg(${targetdir}/${ARGV3})
     endif()
-    set(CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${filepath_src}" "${SASFIT_ROOT_DIR}/${filepath_dst}")
+    set(CMD COMMAND ${CMAKE_COMMAND} ARGS -E copy "${${targetname}_output_path}" "${SASFIT_ROOT_DIR}/${filepath_dst}")
     add_custom_command(TARGET ${targetname} POST_BUILD
             ${CMD}
             ${SUPP_CMD}
