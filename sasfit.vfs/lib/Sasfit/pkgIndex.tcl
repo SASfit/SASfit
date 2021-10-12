@@ -21,5 +21,8 @@
 #   Ingo Bressler (ingo@cs.tu-berlin.de)
 
 set thisdir [file dirname [info script]]
-
-package ifneeded sasfit 1.0 [list load [file join $thisdir sasfit[info sharedlibextension]] sasfit]
+set libdir [file normalize [file join $thisdir .. .. .. lib]]
+set libpath [file join $libdir libsasfit[info sharedlibextension]]
+#puts stderr "thisdir: '$thisdir'"
+#puts stderr "libdir:  '$libdir'"
+package ifneeded sasfit 1.0 [list load $libpath sasfit]

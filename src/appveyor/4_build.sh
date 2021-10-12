@@ -36,6 +36,6 @@ echo "Determined $NUM_LOGICAL_CORES logical cores."
 echo
 
 cd "$APPVEYOR_BUILD_FOLDER" && \
-mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" ../src && make -j$NUM_LOGICAL_CORES
+mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE ../src && make -j$NUM_LOGICAL_CORES
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
