@@ -249,10 +249,15 @@ macro(sasfit_cmake_plugin)
 			target_link_libraries(${PRJ_NAME}_shared ${${LIB_EXT}_LIBRARIES})
 		endif()
 	endforeach(LIB_EXT)
-
 	# set some compiler switches
-	set_property(TARGET ${PRJ_NAME} PROPERTY COMPILE_DEFINITIONS MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
-	set_property(TARGET ${PRJ_NAME}_shared PROPERTY COMPILE_DEFINITIONS MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
+	set_property(TARGET ${PRJ_NAME} PROPERTY COMPILE_DEFINITIONS
+		MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
+	set_property(TARGET ${PRJ_NAME}_shared PROPERTY COMPILE_DEFINITIONS
+		MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
+	# important: add the exports definition for the _shared target too,
+	#            only the main target (without _shared) is queried for in header files
+	target_compile_definitions(${PRJ_NAME}_shared PRIVATE ${PRJ_NAME}_EXPORTS)
+
 	set(COMPILE_FLAGS)
 	if(UNIX)
 		set(COMPILE_FLAGS "-Wall")

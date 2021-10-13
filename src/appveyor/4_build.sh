@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env dash
 
 echo
 echo "## Starting build on '$(uname -s)' ..."
@@ -7,11 +7,11 @@ echo
 NUM_LOGICAL_CORES=1
 CMAKE_GENERATOR='Unix Makefiles'
 
-scriptPath="$(dirname "$(realpath "$0")")"
-findCmdInPath="$(realpath "$scriptPath/../../src/scripts/findCmdInPath.sh")"
+findCmdInPath="$(realpath "$(dirname "$0")/../../src/scripts/findCmdInPath.sh")"
 
 if uname -s | grep -qi '^mingw64'; # Windows
 then
+    # assumes to be run on Windows in a 'MSYS2 MinGW 64-bit' shell
     WMIC="$(command -v wmic)"
     if [ -x "$WMIC" ]; then
         NUM_LOGICAL_CORES="$($WMIC cpu get /format:list \
@@ -28,8 +28,8 @@ else # macOS or Linux
         NUM_LOGICAL_CORES="$(awk '/processor/' /proc/cpuinfo | wc -l)"
     fi
     # find latest gcc and g++ compilers and set them as global variables
-    [ -f "$CC" ]  || export CC="$( $findCmdInPath '/gcc(-(mp-)?[0-9]+)?$')"
-    [ -f "$CXX" ] || export CXX="$($findCmdInPath '/g\+\+(-(mp-)?[0-9]+)?$')"
+    [ -f "$CC" ]  || export CC="$( "$findCmdInPath" '/gcc(-(mp-)?[0-9]+)?$')"
+    [ -f "$CXX" ] || export CXX="$("$findCmdInPath" '/g\+\+(-(mp-)?[0-9]+)?$')"
 fi
 
 echo "Determined $NUM_LOGICAL_CORES logical cores."
