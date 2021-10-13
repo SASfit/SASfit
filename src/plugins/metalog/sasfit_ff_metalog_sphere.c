@@ -48,7 +48,7 @@ scalar sasfit_ff_metalog_sphere(scalar q, sasfit_param * param)
 	ystart = find_root_brent_metalog(&F);
 	mp.x = BU;
 	yend = find_root_brent_metalog(&F);
-	sasfit_out("ystart=%lf, yend=%lf\n",ystart,yend);
+//	sasfit_out("ystart=%lf, yend=%lf\n",ystart,yend);
 	return sasfit_integrate(ystart,yend,&metalog_sphere,param);
 }
 

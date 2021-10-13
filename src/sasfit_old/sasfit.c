@@ -587,19 +587,19 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rstart = a1;
 				*Rend   = a2;
 				*n_intervals = Nint;
-			} else if ( (strcmp(func_descr->name,"sd_metalog_0_inf")      == 0) ) {
+			} else if ( (strcmp(func_descr->name,"sd_metalog_logit")      == 0) ) {
 				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
-			}  else if ( (strcmp(func_descr->name,"sd_metalog_bl_bu")      == 0) ) {
+			}  else if ( (strcmp(func_descr->name,"sd_metalog_clipped")      == 0) ) {
 				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
-			} else if ( (strcmp(func_descr->name,"sd_metalog_0_bu")      == 0) ) {
-				*Rstart = 0;
+			} else if ( (strcmp(func_descr->name,"sd_metalog_log_clipped")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
-			} else if ( (strcmp(func_descr->name,"sd_metalog_bl_inf")      == 0) ) {
+			} else if ( (strcmp(func_descr->name,"sd_metalog_nlog_clipped")      == 0) ) {
 				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
