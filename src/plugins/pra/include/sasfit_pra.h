@@ -49,15 +49,13 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b b</td>
- *       <td>bond length of the
-polycondensates</td>
+ *       <td>bond length of the polycondensates</td>
  *      </tr><tr>
  *       <td>\b f</td>
  *       <td>functionality</td>
  *      </tr><tr>
  *       <td>\b nw</td>
- *       <td>weight-average number of the complex units per
-the polyelectrolyte complex</td>
+ *       <td>weight-average number of the complex units per polyelectrolyte complex</td>
  *      </tr></table>
  */
 
