@@ -38,7 +38,7 @@
 
 /* ################ start ff_metalog_sphere ################ */
 /**
- * \defgroup ff_metalog_sphere metalog Sphere
+ * \defgroup ff_metalog_sphere metalog (clipped) Sphere
  * \ingroup ff_plugins
  *
  * \brief \<some brief description of metalog Sphere function\>
@@ -286,8 +286,8 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_pa
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper bound</td>

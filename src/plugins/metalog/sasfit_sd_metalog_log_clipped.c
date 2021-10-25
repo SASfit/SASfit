@@ -11,15 +11,11 @@
 scalar sasfit_sd_metalog_log_clipped(scalar x, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-	SASFIT_CHECK_COND1((A1 < 0.0), param, "a1(%lg) < 0",A1); // modify condition to your needs
 
-    param->p[1]=0;
-
-	SASFIT_CHECK_COND1((BU <= 0.0), param, "bu(%lg) <= 0",BU); // modify condition to your needs
 	SASFIT_CHECK_COND2((BL == BU), param, "bl(%lg) == bu(%lf)",BL, BU); // modify condition to your needs
 
 	// insert your code here
-	if (x<=0||x>=BU) return 0;
+	if (x<=BL||x>=BU) return 0;
 	if (gsl_finite(pow(x,-ALPHA))) {
         return N*metalogLogPDF(x, param)*pow(x,-ALPHA);
     } else {

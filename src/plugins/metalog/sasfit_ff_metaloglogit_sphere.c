@@ -30,9 +30,6 @@ scalar sasfit_ff_metaloglogit_sphere(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((ALPHA> 6.0), param, "alpha(%lg) > 6",ALPHA); // modify condition to your needs
-	SASFIT_CHECK_COND1((N < 0.0), param, "N(%lg) < 0",N); // modify condition to your needs
-	SASFIT_CHECK_COND1((BL < 0.0), param, "bl(%lg) < 0",BL); // modify condition to your needs
-	SASFIT_CHECK_COND1((BU < 0.0), param, "bu(%lg) < 0",BU); // modify condition to your needs
 	SASFIT_CHECK_COND2((BL == BU), param, "bl(%lg) == bu(%lf)",BL, BU); // modify condition to your needs
 
 	Q = q;

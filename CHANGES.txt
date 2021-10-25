@@ -1,4 +1,5 @@
-0.94.12 2021-08-xx
+﻿0.94.12 2021-10-xx
+- update to FFTW 3.3.10
 - supply of a piecewise constant potential for OZ solver
 - moved sticky hard sphere and square well structure factors into the plugin menue folder. 
   The order of parameters changed slightly to be a bit more consistent
