@@ -2344,8 +2344,8 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_sq_aniso_pearson_v(scala
  *       <td>\b a</td>
  *       <td>lattice constant</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b b</td>
+ *       <td>lattice constant b</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -2419,8 +2419,8 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_crec_aniso_lorentzian_v(
  *       <td>\b a</td>
  *       <td>lattice constant</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b b</td>
+ *       <td>lattice constant b</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -2494,8 +2494,8 @@ sasfit_ordered_particle_systems_DLLEXP scalar sasfit_sq_crec_aniso_gaussian_v(sc
  *       <td>\b a</td>
  *       <td>lattice constant</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td>dummy</td>
+ *       <td>\b b</td>
+ *       <td>lattice constant b</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>

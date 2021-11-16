@@ -5123,17 +5123,182 @@ sasfit_gsl_multifit_linear_lcurve (const gsl_vector * y,
 } /* gsl_multifit_linear_lcurve() */
 
 int
+sasfit_gsl_multifit_linear_corner_golden_rule (const gsl_vector * y,
+                            gsl_vector * reg_param,
+                            gsl_vector * rho, gsl_vector * eta,
+                            double lmin,
+                            double lmax,
+                            double *lopt,
+                            gsl_multifit_linear_workspace * work)
+{
+  const size_t n = y->size, maxDO1=100, maxDO2=100;
+  size_t DO1, DO2;
+  const size_t N = rho->size; /* number of points on L-curve */
+  double l[4],x[4],Px[4],Py[4],C[4], epsterm=0.01,phi;
+  double lambda, lambda_sq;
+  phi=(1.0 + sqrt(5))/2.0;
+
+  if (n != work->n)
+    {
+      GSL_ERROR("y vector does not match workspace", GSL_EBADLEN);
+    }
+  else if (N < 3)
+    {
+      GSL_ERROR ("at least 3 points are needed for L-curve analysis",
+                 GSL_EBADLEN);
+    }
+  else if (N != eta->size)
+    {
+      GSL_ERROR ("size of rho and eta vectors do not match",
+                 GSL_EBADLEN);
+    }
+  else if (reg_param->size != eta->size)
+    {
+      GSL_ERROR ("size of reg_param and eta vectors do not match",
+                 GSL_EBADLEN);
+    }
+  else
+    {
+      int status = GSL_SUCCESS;
+      const size_t p = work->p;
+
+      size_t i, j;
+
+      gsl_matrix_view A = gsl_matrix_submatrix(work->A, 0, 0, n, p);
+      gsl_vector_view S = gsl_vector_subvector(work->S, 0, p);
+      gsl_vector_view xt = gsl_vector_subvector(work->xt, 0, p);
+      gsl_vector_view workp = gsl_matrix_subcolumn(work->QSI, 0, 0, p);
+      gsl_vector_view workp2 = gsl_vector_subvector(work->D, 0, p); /* D isn't used for regularized problems */
+
+      double smax = gsl_vector_get(&S.vector, 0);
+      double smin = gsl_vector_get(&S.vector, p - 1);
+      sasfit_out("---------- suggested range for lambda from %lg to %lg ++++++++++\n",smin,smax);
+      if (lmax > lmin && lmin > 0) {
+        smax = lmax;
+        smin = lmin;
+      }
+      l[0]=smin*smin;
+      l[3]=smax*smax;
+      x[0] = log10(l[0]);
+      x[3] = log10(l[3]);
+      x[1]=(x[3]+phi*x[0])/(1+phi);
+      l[1]=pow(10,x[1]);
+      x[2] = x[0]+(x[3]-x[1]);
+      l[2]=pow(10,x[2]);
+      double dr; /* residual error from projection */
+      double normy = gsl_blas_dnrm2(y);
+      double normUTy;
+
+      /* compute projection xt = U^T y */
+      gsl_blas_dgemv (CblasTrans, 1.0, &A.matrix, y, 0.0, &xt.vector);
+
+      normUTy = gsl_blas_dnrm2(&xt.vector);
+      dr = normy*normy - normUTy*normUTy;
+
+      /* calculate regularization parameters */
+
+#define L_CURVE_P \
+          lambda_sq = lambda * lambda;\
+          for (j = 0; j < p; ++j) { \
+              double sj = gsl_vector_get(&S.vector, j); \
+              double xtj = gsl_vector_get(&xt.vector, j); \
+              double f = sj / (sj*sj + lambda_sq); \
+              gsl_vector_set(&workp.vector, j, f * xtj); \
+              gsl_vector_set(&workp2.vector, j, (1.0 - sj*f) * xtj); \
+          } \
+          gsl_vector_set(rho, i, gsl_blas_dnrm2(&workp2.vector)); \
+          if (n > p && dr > 0.0) { \
+            Px[i] = log10(gsl_pow_2(gsl_vector_get(rho, i))+dr); \
+          } else { \
+            Px[i] = log10(gsl_pow_2(gsl_vector_get(rho, i))); \
+          } \
+          gsl_vector_set(eta, i, gsl_blas_dnrm2(&workp.vector)); \
+          Py[i] = log10(gsl_pow_2(gsl_vector_get(eta, i)));
+
+      for (i = 0; i < 4; ++i)
+        {
+          double lambda = sqrt(l[i]);
+          L_CURVE_P
+        }
+      DO1=0;
+      do {
+        C[1] = menger_C(Px[0],Px[1],Px[2],Py[0],Py[1],Py[2]);
+        C[2] = menger_C(Px[1],Px[2],Px[3],Py[1],Py[2],Py[3]);
+        DO2=0;
+        do {
+            l[3]=l[2];
+            x[3]=x[2];
+            Px[3]=Px[2];
+            Py[3]=Py[2];
+            l[2]=l[1];
+            x[2]=x[1];
+            Px[2]=Px[1];
+            Py[2]=Py[1];
+
+            x[1]=(x[3]+phi*x[0])/(1+phi);
+            l[1]=pow(10,x[1]);
+            i = 1;
+            lambda = sqrt(l[i]);
+            L_CURVE_P
+            C[2] = menger_C(Px[1],Px[2],Px[3],Py[1],Py[2],Py[3]);
+            DO2++;
+        } while (C[2]<=0 && DO2<=maxDO2);
+        if (C[1]>C[2]) {
+            *lopt = l[1]; // store lambda
+            l[3]=l[2];
+            x[3]=x[2];
+            Px[3]=Px[2];
+            Py[3]=Py[2];
+            l[2]=l[1];
+            x[2]=x[1];
+            Px[2]=Px[1];
+            Py[2]=Py[1];
+
+            x[1]=(x[3]+phi*x[0])/(1+phi);
+            l[1]=pow(10,x[1]);
+            i=1;
+            lambda = sqrt(l[i]);
+            L_CURVE_P // only P[1] is recalculated
+        } else {
+            *lopt = l[2]; // store lambda
+            l[0]=l[1];
+            x[0]=x[1];
+            Px[0]=Px[1];
+            Py[0]=Py[1];
+            l[1]=l[2];
+            x[1]=x[2];
+            Px[1]=Px[2];
+            Py[1]=Py[2];
+
+            x[2]=(x[0]+(x[3]-x[1]));
+            l[2]=pow(10,x[2]);
+            i=2;
+            lambda = sqrt(l[i]);
+            L_CURVE_P // only P[2] is recalculated
+        }
+        DO1++;
+        sasfit_out(">>>>>>  lopt:%lg <<<<<<<<<<<<\n",sqrt(*lopt));
+      } while ((l[3]-l[0])/l[3]>=epsterm && DO1<maxDO1);
+      /* restore D to identity matrix */
+      gsl_vector_set_all(work->D, 1.0);
+      *lopt = sqrt(*lopt);
+      return status;
+    }
+} /* sasfit_gsl_multifit_linear_corner_golden_rule() */
+
+int
 sasfit_bspline_lcorner(const gsl_vector *rho,
                        const gsl_vector *eta,
+                             gsl_vector *lambda,
                              gsl_vector *Brho,
                              gsl_vector *Beta,
-                             gsl_vector *lambda)
+                             gsl_vector *Blambda)
 {
     const size_t n = rho->size;
-    #define NCOEFFS  22
+    #define NCOEFFS  12 // sasfit_eps_get_robertus_p()
     #define NBREAK   (NCOEFFS - 2)
-    const size_t ncoeffs = NCOEFFS;
-    const size_t nbreak = NBREAK;
+    size_t ncoeffs = NCOEFFS;
+    size_t nbreak = NBREAK;
     size_t i, j;
     gsl_bspline_workspace *bw;
     gsl_vector *B;
@@ -5162,9 +5327,13 @@ sasfit_bspline_lcorner(const gsl_vector *rho,
         /* use uniform breakpoints on [0, 15] */
         gsl_bspline_knots_uniform(log(gsl_vector_min(rho)), log(gsl_vector_max(rho)), bw);
           /* construct the fit matrix X */
+        gsl_permutation * perm = gsl_permutation_alloc(n);
+        gsl_permutation * rank = gsl_permutation_alloc(n);
+        gsl_sort_vector_index (perm, rho);
         for (i = 0; i < n; ++i) {
-            gsl_vector_set(x,i,log(gsl_vector_get(rho,i)));
-            gsl_vector_set(y,i,log(gsl_vector_get(eta,i)));
+            gsl_vector_set(x,i,log(gsl_vector_get(rho,gsl_permutation_get(perm,i))));
+            gsl_vector_set(y,i,log(gsl_vector_get(eta,gsl_permutation_get(perm,i))));
+            gsl_vector_set(Blambda,i,gsl_vector_get(lambda,gsl_permutation_get(perm,i)));
             double xi = gsl_vector_get(x, i);
 
       /* compute B_j(xi) for all j */
@@ -5186,11 +5355,7 @@ sasfit_bspline_lcorner(const gsl_vector *rho,
             gsl_multifit_linear_est(B, c, cov, &yi, &yerr);
             gsl_vector_set(Brho,i,exp(xi));
             gsl_vector_set(Beta,i,exp(yi));
-
         }
-        gsl_sort_vector2(Brho, Beta);
-        gsl_vector_reverse(Brho);
-        gsl_vector_reverse(Beta);
         gsl_bspline_free(bw);
         gsl_vector_free(B);
         gsl_vector_free(x);
@@ -5199,6 +5364,8 @@ sasfit_bspline_lcorner(const gsl_vector *rho,
         gsl_vector_free(c);
         gsl_vector_free(w);
         gsl_matrix_free(cov);
+        gsl_permutation_free (perm);
+        gsl_permutation_free (rank);
         gsl_multifit_linear_free(mw);
     }
 }
@@ -5260,7 +5427,7 @@ sasfit_gsl_multifit_linear_lcorner(const gsl_vector *rho,
           if (fabs(lslope) < maxslope) init=TRUE;
           if ((fabs(lslope) > maxslope) && (init==TRUE)) break;
 
-          double r = -menger_r(x1,x2,x3,y1,y2,y3);
+          double r = menger_r(x1,x2,x3,y1,y2,y3);
           gsl_vector_set(MengerR,i,r);
           gsl_vector_set(slope,i,(y3-y2)/(x3-x2));
           /* if d =~ 0 then there are nearly colinear points */
@@ -7335,7 +7502,7 @@ struct extrapolPar EP;
 EM_param_t EMparam;
 sasfit_fp_data FPd;
 
-scalar p1,p2,p3, QR, eps,chi2;
+scalar p1,p2,p3, QR, eps,chi2,lambda_opt;
 int    i,j,k,l,itst,l0,l1,l2;
 scalar rmax;
 char   errstr[256],Buffer[256];
@@ -7361,11 +7528,11 @@ gsl_vector *c;     /* OLS solution */
 gsl_vector *c_lcurve;   /* regularized solution (L-curve) */
 gsl_vector *c_gcv;      /* regularized solution (GCV) */
 gsl_vector *c_reg; /* regularized solution */
-gsl_vector *reg_param;
+gsl_vector *reg_param, *Breg_param;
 gsl_vector *MengerR;
 gsl_vector *slope;
-gsl_vector *rho;  /* residual norms */
-gsl_vector *eta;  /* solution norms */
+gsl_vector *rho, *Brho;  /* residual norms */
+gsl_vector *eta, *Beta;  /* solution norms */
 gsl_vector *nnls_rho;  /* residual norms */
 gsl_vector *nnls_eta;  /* solution norms */
 double lambda_l, lambda_gcv, G_gcv;                           /* optimal regularization parameter */
@@ -7452,7 +7619,10 @@ MengerR = gsl_vector_calloc(EMparam.nLagrange);
 slope = gsl_vector_calloc(EMparam.nLagrange);
 rho = gsl_vector_calloc(EMparam.nLagrange);
 eta = gsl_vector_calloc(EMparam.nLagrange);
+Brho = gsl_vector_calloc(EMparam.nLagrange);
+Beta = gsl_vector_calloc(EMparam.nLagrange);
 reg_param = gsl_vector_calloc(EMparam.nLagrange);
+Breg_param = gsl_vector_calloc(EMparam.nLagrange);
 nnls_rho = gsl_vector_calloc(EMparam.nLagrange);
 nnls_eta = gsl_vector_calloc(EMparam.nLagrange);
 Gvec = gsl_vector_calloc(EMparam.nLagrange);
@@ -7591,7 +7761,10 @@ switch (EMparam.optLagrange_method) {
     sasfit_out("%lg\t%lg\t%lg\t%lg\n", lambda_gcv,G_gcv,gsl_pow_2(rnorm),pow(lambda_gcv * snorm, 2.0));
     break;
  case Lcorner2:
-//    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    sasfit_gsl_multifit_linear_corner_golden_rule(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, &lambda_opt, w);
+    sasfit_out(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+    sasfit_out("\t lambda_opt=%lf\n",lambda_opt);
+    sasfit_out("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
     sasfit_gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, w);
     sasfit_gsl_multifit_linear_lcorner2(reg_param,rho, eta,MengerR,slope,EMparam.maxslope, &reg_idx);
     if (FPd.PrintProgress > 0) {
@@ -7619,9 +7792,13 @@ case Lcorner_o:
 case Lcorner_l:
 case Lcorner_w:
 case Lcorner_wo:
-//    gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, w);
+    sasfit_gsl_multifit_linear_corner_golden_rule(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, &lambda_opt, w);
+    sasfit_out(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+    sasfit_out("\t lambda_opt=%lf\n",lambda_opt);
+    sasfit_out("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
     sasfit_gsl_multifit_linear_lcurve(ys, reg_param, rho, eta, EMparam.minLagrange, EMparam.maxLagrange, w);
-    sasfit_gsl_multifit_linear_lcorner(rho, eta,MengerR, slope,EMparam.optLagrange_method,EMparam.maxslope, &reg_idx);
+    sasfit_bspline_lcorner(rho, eta, reg_param, Brho, Beta, Breg_param);
+    sasfit_gsl_multifit_linear_lcorner(Brho, Beta,MengerR, slope,EMparam.optLagrange_method,EMparam.maxslope, &reg_idx);
     if (FPd.PrintProgress > 0) {
         sasfit_out("=== Regularized fit ===\n");
         sasfit_out("lambda   \t rho   \t  eta\n");
@@ -7635,7 +7812,7 @@ case Lcorner_wo:
        }
     }
 /* store optimal regularization parameter */
-    lambda_l = gsl_vector_get(reg_param, reg_idx);
+    lambda_l = gsl_vector_get(Breg_param, reg_idx);
     sasfit_out("lambda[%d]:%lg\n",reg_idx,lambda_l);
 
     gsl_multifit_linear_solve(lambda_l, Xs, ys, c_reg, &rnorm, &snorm, w);
@@ -7772,7 +7949,7 @@ if (EMparam.LLSmethod == NNLLS) {
                 sasfit_out("finished %d  nnls(lambda=%lg) with error: %d and rho: %lg and eta: %lg\n",l,gsl_vector_get(reg_param,l),ierr,gsl_vector_get(rho,l),gsl_vector_get(eta,l));
         }
     }
-    sasfit_bspline_lcorner(rho,eta,rho,eta,reg_param);
+    sasfit_bspline_lcorner(rho,eta,reg_param,Brho,Beta,Breg_param);
     sasfit_gsl_multifit_linear_lcorner(rho, eta, MengerR, slope,EMparam.optLagrange_method,EMparam.maxslope, &reg_idx);
     if (FPd.PrintProgress > 0) {
     sasfit_out("=== Regularized NNLLS fit ===\n");
@@ -7894,10 +8071,13 @@ EM_DR_Free(&FPd);
   gsl_vector_free(c_lcurve);
   gsl_vector_free(c_gcv);
   gsl_vector_free(reg_param);
+  gsl_vector_free(Breg_param);
   gsl_vector_free(MengerR);
   gsl_vector_free(slope);
   gsl_vector_free(rho);
   gsl_vector_free(eta);
+  gsl_vector_free(Brho);
+  gsl_vector_free(Beta);
   gsl_vector_free(nnls_rho);
   gsl_vector_free(nnls_eta);
   gsl_matrix_free(L);
