@@ -431,16 +431,18 @@ double complex cS(scalar q, double complex B1, double complex A1, double complex
 
 	s = I*q*2*RHS;
 	R0 = -1/(12*ETA) *(A0+B0(B1,A1,B2,A2,param)*s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
-	R1 = -1/(12*ETA) *(A1+B1             *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
-	R2 = -1/(12*ETA) *(A2+B2             *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
-	F  = R0+R1*cexp(-(LAMBDA1-1)*s)+R2*cexp(-(LAMBDA2-1)*s);
+	R1 = -1/(12*ETA) *(A1+B1                   *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
+	R2 = -1/(12*ETA) *(A2+B2                   *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
+	F  = R0+R1*cexp(-(LAMBDA1-1)*s)
+	       +R2*cexp(-(LAMBDA2-1)*s);
 	Gp = s*F*cexp(-s)/(1+12*ETA*F*cexp(-s));
 
 	s = -I*q*2*RHS;
 	R0 = -1/(12*ETA) *(A0+B0(B1,A1,B2,A2,param)*s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
-	R1 = -1/(12*ETA) *(A1+B1             *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
-	R2 = -1/(12*ETA) *(A2+B2             *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
-	F  = R0+R1*cexp(-(LAMBDA1-1)*s)+R2*cexp(-(LAMBDA2-1)*s);
+	R1 = -1/(12*ETA) *(A1+B1                   *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
+	R2 = -1/(12*ETA) *(A2+B2                   *s)/(1+SS1*s+SS2*s*s+SS3*s*s*s);
+	F  = R0+R1*cexp(-(LAMBDA1-1)*s)
+	       +R2*cexp(-(LAMBDA2-1)*s);
 	Gm = s*F*cexp(-s)/(1+12*ETA*F*cexp(-s));
 
 //	cS = 1 - 2*M_PI*rho*(Gp-Gm)/(I*q*2*RHS);
@@ -492,7 +494,7 @@ scalar sasfit_sq_two_piecewise_constant(scalar q, sasfit_param * param)
 	    cS = (SQ_piecewiseRFA1(q,param)+SQ_piecewiseRFA2(q,param))/2.;
 	}
 
-	if (fabs(cimag(cS))*1e8>fabs(creal(cS))) {
+	if (fabs(cimag(cS))*1e6>fabs(creal(cS))) {
         sasfit_out("q=%lf, Re(S):%lg, Im(S):%lg\n",q,creal(cS),cimag(cS));
 	}
 	return creal(cS);
