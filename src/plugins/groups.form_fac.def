@@ -429,6 +429,24 @@
  *
  * \modname{ff_peak_amplitudes}
  */
+
+/** 
+ * \defgroup ff_peak_amplitudes_a_m A-M 
+ * \ingroup ff_peak_amplitudes
+ *
+ * This group contains peak functions A-M normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes_a_m}
+ */
+
+/** 
+ * \defgroup ff_peak_amplitudes_n_z N-Z 
+ * \ingroup ff_peak_amplitudes
+ *
+ * This group contains peak functions N-Z normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes_n_z}
+ */ 
  
 /** 
  * \defgroup ff_peak_area Area Functions 
@@ -437,4 +455,22 @@
  * This group contains peak functions normalized on area.
  *
  * \modname{ff_peak_area}
+ */
+ 
+ /** 
+ * \defgroup ff_peak_area_a_m A-M 
+ * \ingroup ff_peak_area
+ *
+ * This group contains peak functions A-M normalized on area.
+ *
+ * \modname{ff_peak_area_a_m}
+ */
+ 
+ /** 
+ * \defgroup ff_peak_area_n_z N-Z
+ * \ingroup ff_peak_area
+ *
+ * This group contains peak functions N-Z normalized on area.
+ *
+ * \modname{ff_peak_area_n_z}
  */

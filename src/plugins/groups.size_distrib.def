@@ -58,3 +58,38 @@
  * \modname{sd_plugins}
  */
 
+/** 
+ * \defgroup sd_plugins_quantile quantile distribution functions
+ * \ingroup sd_plugins
+ *
+ * This group contains size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile}
+ */
+
+/** 
+ * \defgroup sd_plugins_quantile_unbounded unbounded
+ * \ingroup sd_plugins_quantile
+ *
+ * This group contains unbounded size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile_unbounded}
+ */
+ 
+ /** 
+ * \defgroup sd_plugins_quantile_semibounded semibounded
+ * \ingroup sd_plugins_quantile
+ *
+ * This group contains semibounded size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile_semibounded}
+ */
+ 
+ /** 
+ * \defgroup sd_plugins_quantile_bounded bounded
+ * \ingroup sd_plugins_quantile
+ *
+ * This group contains bounded size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile_bounded}
+ */
