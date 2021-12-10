@@ -39,9 +39,10 @@ proc sasfit_load_plugins { plugin_paths } {
 	puts "done. Loaded $groups_num group(s).\n"
 
 	set lib_files {}
+	set pattern "[sasfit_get_lib_prefix]sasfit_*[sasfit_get_lib_suffix]"
 	foreach plugin_path $plugin_paths {
 		puts "Searching for plugins in '$plugin_path'\n"
-		foreach lib_file [glob -nocomplain -directory $plugin_path sasfit_*[sasfit_get_lib_suffix]] {
+		foreach lib_file [glob -nocomplain -directory $plugin_path $pattern] {
 			lappend lib_files $lib_file
 		}
 	}
@@ -49,6 +50,7 @@ proc sasfit_load_plugins { plugin_paths } {
 		puts "no plugins found in '$plugin_paths'"
 		return
 	}
+	set prefix_len [string length "[sasfit_get_lib_prefix]"]
 
 #	puts [time {
 	set file_count [llength $lib_files]
@@ -59,7 +61,7 @@ proc sasfit_load_plugins { plugin_paths } {
 		set lib_file [lindex $lib_files $filenr]
 		incr filenr
 
-		set basename [file rootname [file tail $lib_file]]
+		set basename [string range [file rootname [file tail $lib_file]] $prefix_len end]
 		set header_file [file join $plugin_path "$basename.h"]
 
 		puts "-----\nparsing header file: $header_file"
