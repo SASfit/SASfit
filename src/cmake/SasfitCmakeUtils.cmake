@@ -232,8 +232,7 @@ macro(sasfit_cmake_plugin)
         file(MAKE_DIRECTORY "${LIBRARY_OUTPUT_PATH}")
     endif()
 
-	add_library(${PRJ_NAME} MODULE ${PRJ_SOURCE})
-	add_library(${PRJ_NAME}_shared SHARED ${PRJ_SOURCE})
+	add_library(${PRJ_NAME} SHARED ${PRJ_SOURCE})
 
 	find_package(sasfit_common REQUIRED)
 	find_package(f2c REQUIRED)
@@ -252,20 +251,13 @@ macro(sasfit_cmake_plugin)
 		# add library to link list
 		if(${LIB_EXT}_STATIC_LIBRARIES)
 			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_STATIC_LIBRARIES})
-			target_link_libraries(${PRJ_NAME}_shared ${${LIB_EXT}_STATIC_LIBRARIES})
 		else()
 			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_LIBRARIES})
-			target_link_libraries(${PRJ_NAME}_shared ${${LIB_EXT}_LIBRARIES})
 		endif()
 	endforeach(LIB_EXT)
 	# set some compiler switches
 	set_property(TARGET ${PRJ_NAME} PROPERTY COMPILE_DEFINITIONS
 		MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
-	set_property(TARGET ${PRJ_NAME}_shared PROPERTY COMPILE_DEFINITIONS
-		MAKE_SASFIT_PLUGIN;SASFIT_PLUGIN_NAME=${PRJ_NAME})
-	# important: add the exports definition for the _shared target too,
-	#            only the main target (without _shared) is queried for in header files
-	target_compile_definitions(${PRJ_NAME}_shared PRIVATE ${PRJ_NAME}_EXPORTS)
 
 	set(COMPILE_FLAGS)
 	if(UNIX)
@@ -275,12 +267,10 @@ macro(sasfit_cmake_plugin)
 		endif(DEFINED SASFIT_DEBUG)
 	endif(UNIX)
 	set_target_properties(${PRJ_NAME} PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
-	set_target_properties(${PRJ_NAME}_shared PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
 
 	# set library search paths for internal shared libraries
 	# build with the whole sasfit package controlled by a toplevel CMakeLists
 	sasfit_copy_lib(${PRJ_NAME}        plugins "${SRC_DIR}/include" "${PRJ_NAME}.h")
-	sasfit_copy_lib(${PRJ_NAME}_shared plugins)
 
 	if(DEFINED WITH_STATIC)
 		sasfit_cmake_plugin_static()
