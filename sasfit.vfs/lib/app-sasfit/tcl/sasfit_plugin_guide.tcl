@@ -107,10 +107,10 @@ you provide here"
 	label $p.imptext -text "Select plugin functions to import"
 	label $p.imptext_in -text "import:"
 	label $p.imptext_out -text "available:"
-	listbox $p.impin -height 5 -yscrollcommand "$p.impin_yscr set" -xscrollcommand "$p.impin_xscr set"
+	listbox $p.impin -height 15 -selectmode multiple -yscrollcommand "$p.impin_yscr set" -xscrollcommand "$p.impin_xscr set"
 	scrollbar $p.impin_yscr -command "$p.impin yview"
 	scrollbar $p.impin_xscr -command "$p.impin xview" -orient horizontal
-	listbox $p.impout -height 5 -yscrollcommand "$p.impout_yscr set" -xscrollcommand "$p.impout_xscr set"
+	listbox $p.impout -height 15 -selectmode multiple -yscrollcommand "$p.impout_yscr set" -xscrollcommand "$p.impout_xscr set"
 	scrollbar $p.impout_yscr -command "$p.impout yview"
 	scrollbar $p.impout_xscr -command "$p.impout xview" -orient horizontal
 	foreach f [lsort -dictionary [get_all_func]] {

@@ -599,7 +599,39 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
-			} else if ( (strcmp(func_descr->name,"sd_metalog_nlog_clipped")      == 0) ) {
+			} else if ( (strcmp(func_descr->name,"sd_g_n_pdf")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_l_pdf")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_c_pdf")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_n_pdf_b")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_l_pdf_b")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_c_pdf_b")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_n_pdf_s")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_l_pdf_s")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_g_c_pdf_s")      == 0) ) {
 				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;

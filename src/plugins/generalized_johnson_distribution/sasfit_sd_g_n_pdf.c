@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -27,7 +27,8 @@ scalar sasfit_sd_g_n_pdf(scalar x, sasfit_param * param)
 	SASFIT_CHECK_COND1((U < 0.0), param, "u(%lg) < 0",U); // modify condition to your needs
 
 	// insert your code here
-	return 1/(DELTA*exp(gsl_pow_2(-(DELTA*GAMMA) + asinh((x - XI)/LAMBDA))/(2.*gsl_pow_2(DELTA)))*
+	if (x<=L || x>=U) return 0;
+	return N/(DELTA*exp(gsl_pow_2(-(DELTA*GAMMA) + asinh((x - XI)/LAMBDA))/(2.*gsl_pow_2(DELTA)))*
      LAMBDA*sqrt(2*M_PI)*sqrt(1 + gsl_pow_2(x - XI)/gsl_pow_2(LAMBDA)));
 }
 
@@ -39,7 +40,7 @@ scalar sasfit_sd_g_n_pdf_f(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return (1 + gsl_sf_erf((-(DELTA*GAMMA) + asinh((x - XI)/LAMBDA))/(sqrt(2)*DELTA)))/2.;
+	return N*(1 + gsl_sf_erf((-(DELTA*GAMMA) + asinh((x - XI)/LAMBDA))/(sqrt(2)*DELTA)))/2.;
 }
 
 scalar sasfit_sd_g_n_pdf_v(scalar p, sasfit_param * param, int dist)
@@ -50,6 +51,6 @@ scalar sasfit_sd_g_n_pdf_v(scalar p, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return XI + LAMBDA*sinh(DELTA*(GAMMA + sqrt(2)*sasfit_erfinv(-1 + 2*p)));
+	return (XI + LAMBDA*sinh(DELTA*(GAMMA + sqrt(2)*sasfit_erfinv(-1 + 2*p))))/N;
 }
 
