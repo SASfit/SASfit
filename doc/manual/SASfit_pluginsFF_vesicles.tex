@@ -21,18 +21,67 @@ In this section some specialized spherical multi-shell structures are summarized
 \label{fig:pegylated_vesicle}
 \end{figure}
 
-In pharmaceutical applications these vesicles are decorated with PEG molecules to increase their circulation time in a living body, as they give them a sort of stealth properties against the immune system. depending on the synthesis procedure the PEG molecules are either attached on both sides or mainly from the outside as shown in fig.\ \ref{fig:pegylated_vesicle}.
+In pharmaceutical applications these vesicles are sometimes  decorated with PEG molecules to increase their circulation time in a living body, as they give them a sort of stealth properties against the immune system. depending on the synthesis procedure the PEG molecules are either attached on both sides or mainly from the outside as shown in fig.\ \ref{fig:pegylated_vesicle}.
 
 The dimension in the vesicle are typically such, that the thickness of the bilayer is much smaller than the overall diameter of a micelle. Therefore next to a full 3D Fourier transform of the scattering length density profile also an approximation factorizing the contribution of the small object dimension and from the large object dimension can be performed. For very thin random orientated particles the form factor can be factorize according to Porod \cite{Porod1948} in a cross
-section term $P_\text{cs}(Q)$ for the shorter or thin dimension and a shape factor $P'(Q)$ for the long dimension. For a small number of of cross-section types and shapes such functions are suppled in section \ref{plugin:Pcs4planar} and \ref{plugin:Pprime4planar} developed to describe the scattering of local planar objects.
+section term $P_\text{cs}(Q)$ for the shorter or thin dimension and a shape factor $P'(Q)$ for the long dimension. For a small number of of cross-section types and shapes these functions are supplied in section \ref{plugin:Pcs4planar} and \ref{plugin:Pprime4planar}. In the cases discussed in this section knowledge about molecular properties are tried to taken into account by parameterizing the model by known molecular properties following the concept developed for block copolymer micelles \cite{PedersenGerstenberg96}.
 
 ~\\
 
 \subsubsection{PEGylated liposome with piecewise constant bilayer scattering length density profile} ~\\
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../images/form_factor/vesicles/vesiclePEGpiecewconst.png}
+\end{center}
+\caption{scheme of pegylated vesicle with PEG molecules attached in as well outside the vesicle but otherwise a piecewise constant scattering cross section of the membrane}
+\label{fig:vesiclePEGpiecewconst}
+\end{figure}
+This version of a pegylated vesicle is following the formalism used in \cite{Arleth2010} and \cite{Nielsen2018}. The lipid bilayer is described in by spherical multi-shell model. Inside and outside the shell is solvent and the shell itself is formed by the lipids. The head groups point towards the solvent and the tail groups form the core like a centro-symmetric cross-section as shown in fig.\ \ref{fig:vesiclePEGpiecewconst}. The scattering intensity can be described as
+\begin{align}\label{eq:vesicePEGsphsh}
+  I(q) &= I_\mathrm{vv}(q) + I_\mathrm{chain}(q) + I_\mathrm{oo}(q) + I_\mathrm{ii}(q) + I_\mathrm{io}(q) +  I_\mathrm{vo}(q) + I_\mathrm{vi}(q)
+\end{align}
+where $I_\mathrm{vv}(q)$ is the scattering from the lipid vesicles themselves and $I_\mathrm{chain}(q)$ is the scattering from the PEG-chains alone. The next terms, $I_\mathrm{ii}(q)$ and $I_\mathrm{oo}(q)$, are the interference terms
+between PEG chains attached to the inner surface of the
+vesicles and between the PEG chains on the outer surface,
+respectively, while $ I_\mathrm{io}(q)$ is the inter-interference between the
+inner and outer PEG chains. Furthermore, the terms $I_\mathrm{vi}(q)$ and $I_\mathrm{vo}(q)$ are the interference
+cross-terms of the inner and outer chains with the bilayer.
+These seven terms can be written as
+\begin{align}
+ I_\mathrm{chain}(q) &= (n_\mathrm{i}+n_\mathrm{o})\beta_\mathrm{PEG}^2 \; 2 \frac{\exp\left(-q^2R_g^2\right)-1+q^2R_g^2}{(qR_g)^4} \label{eq:vesiclePEG7chain}\\
+ I_\mathrm{oo}(q) &= n_\mathrm{o}(n_\mathrm{o}-1)\beta_\mathrm{PEG}^2 \left[\frac{1-\exp\left(-q^2R_g^2\right)}{q^2R_g^2}\right]^2\left[\frac{\sin\left(q(R_\mathrm{o}-R_g)\right)}{q(R_\mathrm{o}-R_g)}\right]^2 \label{eq:vesiclePEG7oo}\\
+ I_\mathrm{ii}(q) &=  n_\mathrm{i}(n_\mathrm{i}-1)\beta_\mathrm{PEG}^2 \left[\frac{1-\exp\left(-q^2R_g^2\right)}{q^2R_g^2}\right]^2\left[\frac{\sin\left(q(R_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-R_g)}\right]^2 \label{eq:vesiclePEG7ii}\\
+  I_\mathrm{io}(q) &= 2 n_\mathrm{i}n_\mathrm{o}\beta_\mathrm{PEG}^2 \left[\frac{1-\exp\left(-q^2R_g^2\right)}{q^2R_g^2}\right]^2 \nonumber \\
+  &\qquad \left[\frac{\sin\left(q(R_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-R_g)}\right] \left[\frac{\sin\left(q(R_\mathrm{o}-R_g)\right)}{q(R_\mathrm{o}-R_g)}\right]
+ \label{eq:vesiclePEG7io}\\
+ F_\mathrm{sp}(q,R) &= 3\frac{\sin qR - qR\cos qR}{(qR)^3} \nonumber \\
+ F_\mathrm{bi,m}(q) &= (\eta_\mathrm{h}-\eta_\mathrm{sol})\left( \frac43\pi (R_\mathrm{o}+H_\mathrm{o})^3 F_\mathrm{sp}(q,R_\mathrm{o}+H_\mathrm{o}) -  \frac43\pi R_\mathrm{o}^3 F_\mathrm{sp}(q,R_\mathrm{o}) \right) \nonumber \\
+ & \qquad (\eta_\mathrm{t}-\eta_\mathrm{sol}) \left(\frac43\pi R_\mathrm{o}^3 F_\mathrm{sp}(q,R_\mathrm{o}) - \frac43\pi R_\mathrm{i}^3 F_\mathrm{sp}(q,R_\mathrm{i}) \right) \nonumber \\
+ & \qquad (\eta_\mathrm{h}-\eta_\mathrm{sol}) \left(\frac43\pi R_\mathrm{i}^3 F_\mathrm{sp}(q,R_\mathrm{i}) - \frac43\pi (R_\mathrm{i}-H_\mathrm{i})^3 F_\mathrm{sp}(q,R_\mathrm{i}-H_\mathrm{i})\right) \nonumber \\
+ I_\mathrm{vv}(q) &= F_\mathrm{bi,m}^2(q) \label{eq:vesiclePEG7vv} \\
+ I_\mathrm{vi}(q) &= 2 n_\mathrm{i}\beta_\mathrm{PEG} F_\mathrm{bi,m}(q) \frac{\sin\left(q(R_\mathrm{i}-H_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-H_\mathrm{i}-R_g)} \label{eq:vesiclePEG7vi} \\
+ I_\mathrm{vo}(q) &= 2 n_\mathrm{o}\beta_\mathrm{PEG} F_\mathrm{bi,m}(q) \frac{\sin\left(q(R_\mathrm{o}+H_\mathrm{o}+R_g)\right)}{q(R_\mathrm{o}+H_\mathrm{o}+R_g)} \label{eq:vesiclePEG7vo} \\
+\end{align}
+The seven term are parameterized by the radius of gyration $R_g$ of the PEG molecules, the thickness of the lipid head group layer on the inner side of the vesicle membrane $H_\mathrm{i}$, as well as at the outside $H_\mathrm{o}$, the radius pointing to the interface between head and tail group layer at the inside $R_\mathrm{i}$ and its counter part at the outside of the vesicle $R_\mathrm{o}$. Further parameters are the excess scattering length of the PEG molecules $\beta_\mathrm{PEG}$ and the numbers of molecules $n_\mathrm{i}$ attached inside to the lipids and $n_\mathrm{o}$ attached outside to the lipids. $\eta_\mathrm{h}$, $\eta_\mathrm{t}$, and $\eta_\mathrm{sol}$ are the scattering length densities of the lipid head group, of the lipid tail group and of the solvent.
 
-This version of a pegylated vesicle is following the formalism used in \cite{Arleth2010} and \cite{Nielsen2018}.
+These parameters now needs to be expressed by known properties of the involved macro molecules. Scattering length densities are typically calculated from the known chemical sum formula and the bulk density of the molecules. The sum formula allows to calculated the molecular mass as well as the overall scattering length of the molecule, which then would allow to calculate the scattering length density of the molecule. However, in a solvent the molecular volume might change. Therefore volumetric measurements of the molecular volume in the used solvent are more precise and preferable, if available. Also literature values for the molecular volume of the head group $V_\mathrm{h}$ separated from the molecular volume of the tail group $V_\mathrm{t}$ are available.
 
+These molecular volumes then can be used to determine the number of lipids per vesicle and the relative volume of the head group shells and the tail core in the membrane layer. If the thickness $T$ of the tail group layer and the radius of the vesicle $R$ are given the other quantities can be calculatred by
+\begin{align}
+R_\mathrm{i} &= R-\frac T2 \\
+R_\mathrm{o} &= R+\frac T2 \\
+n_\mathrm{l,i} &= \frac43 \frac{\pi}{V_\mathrm{t}} \left(R^3-R_\mathrm{i}^3\right) \\
+n_\mathrm{l,o} &= \frac43 \frac{\pi}{V_\mathrm{t}} \left(R_\mathrm{o}^3-R^3\right) \\
+V_\mathrm{v,h,i} &= n_\mathrm{l,i} V_\mathrm{h} \\
+V_\mathrm{v,h,o} &= n_\mathrm{l,o} V_\mathrm{h} \\
+n_\mathrm{i} &= n_\mathrm{l,i} f_\mathrm{PEG,i} \\
+n_\mathrm{o} &= n_\mathrm{l,o} f_\mathrm{PEG,o} \\
+H_\mathrm{i} & =  R - \frac T2 - \frac12 \left[\left(2R-T\right)^3 - \left(12R^2T-6RT^2+T^3\right)\frac{V_\mathrm{h}}{V_\mathrm{t}}\right]^{1/3} \\
+H_\mathrm{o} & = -R - \frac T2 + \frac12 \left[\left(2R+T\right)^3 + \left(12R^2T+6RT^2+T^3\right)\frac{V_\mathrm{h}}{V_\mathrm{t}}\right]^{1/3}
+\end{align}
+Further model input parameters are the fraction of lipids decorated inside the vesicle $f_\mathrm{PEG,i}$ and outside the vesicle  $f_\mathrm{PEG,o}$
+In this model it is assumed that neither the tail layer nor the head group layers contain any solvent. The distance of the center of mass fo the attached PEG molecules is assumed to be equal to its radius of gyration $R_g$.
 ~\\
 \subsubsection{PEGylated liposome with approximate gaussian scattering length density profile} ~\\
 
-In practise it could be shown \cite{Pabst2002,Brzustowicz2005} that at least for x-rays the scattering length density profiles across a membrane are better modelled by a gaussian scattering length density profile. 
+In practise it could be shown \cite{Pabst2002,Brzustowicz2005} that at least for x-rays the scattering length density profiles across a membrane are better modelled by a gaussian scattering length density profile. In this model it is assumed that both the tail group layer as well as the head group layers do not contain any solvent. 
