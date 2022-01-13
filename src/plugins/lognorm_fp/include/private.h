@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   <your name> (<email address>)
  */
 
 #ifndef LOGNORM_FP_PRIVATE_H

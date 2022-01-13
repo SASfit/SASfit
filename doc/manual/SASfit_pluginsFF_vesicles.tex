@@ -29,13 +29,7 @@ section term $P_\text{cs}(Q)$ for the shorter or thin dimension and a shape fact
 ~\\
 
 \subsubsection{PEGylated liposome with piecewise constant bilayer scattering length density profile} ~\\
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.5\textwidth]{../images/form_factor/vesicles/vesiclePEGpiecewconst.png}
-\end{center}
-\caption{scheme of pegylated vesicle with PEG molecules attached in as well outside the vesicle but otherwise a piecewise constant scattering cross section of the membrane}
-\label{fig:vesiclePEGpiecewconst}
-\end{figure}
+
 This version of a pegylated vesicle is following the formalism used in \cite{Arleth2010} and \cite{Nielsen2018}. The lipid bilayer is described in by spherical multi-shell model. Inside and outside the shell is solvent and the shell itself is formed by the lipids. The head groups point towards the solvent and the tail groups form the core like a centro-symmetric cross-section as shown in fig.\ \ref{fig:vesiclePEGpiecewconst}. The scattering intensity can be described as
 \begin{align}\label{eq:vesicePEGsphsh}
   I(q) &= I_\mathrm{vv}(q) + I_\mathrm{chain}(q) + I_\mathrm{oo}(q) + I_\mathrm{ii}(q) + I_\mathrm{io}(q) +  I_\mathrm{vo}(q) + I_\mathrm{vi}(q)
@@ -54,15 +48,23 @@ These seven terms can be written as
   I_\mathrm{io}(q) &= 2 n_\mathrm{i}n_\mathrm{o}\beta_\mathrm{PEG}^2 \left[\frac{1-\exp\left(-q^2R_g^2\right)}{q^2R_g^2}\right]^2 \nonumber \\
   &\qquad \left[\frac{\sin\left(q(R_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-R_g)}\right] \left[\frac{\sin\left(q(R_\mathrm{o}-R_g)\right)}{q(R_\mathrm{o}-R_g)}\right]
  \label{eq:vesiclePEG7io}\\
- F_\mathrm{sp}(q,R) &= 3\frac{\sin qR - qR\cos qR}{(qR)^3} \nonumber \\
+ F_\mathrm{sp}(q,R) &= 3\frac{\sin qR - qR\cos qR}{(qR)^3}  \\
  F_\mathrm{bi,m}(q) &= (\eta_\mathrm{h}-\eta_\mathrm{sol})\left( \frac43\pi (R_\mathrm{o}+H_\mathrm{o})^3 F_\mathrm{sp}(q,R_\mathrm{o}+H_\mathrm{o}) -  \frac43\pi R_\mathrm{o}^3 F_\mathrm{sp}(q,R_\mathrm{o}) \right) \nonumber \\
- & \qquad (\eta_\mathrm{t}-\eta_\mathrm{sol}) \left(\frac43\pi R_\mathrm{o}^3 F_\mathrm{sp}(q,R_\mathrm{o}) - \frac43\pi R_\mathrm{i}^3 F_\mathrm{sp}(q,R_\mathrm{i}) \right) \nonumber \\
+ & \qquad (\eta_\mathrm{t}-\eta_\mathrm{sol}) \left(\frac43\pi R_\mathrm{o}^3 F_\mathrm{sp}(q,R_\mathrm{o}) - \frac43\pi R_\mathrm{i}^3 F_\mathrm{sp}(q,R_\mathrm{i}) \right) \\
  & \qquad (\eta_\mathrm{h}-\eta_\mathrm{sol}) \left(\frac43\pi R_\mathrm{i}^3 F_\mathrm{sp}(q,R_\mathrm{i}) - \frac43\pi (R_\mathrm{i}-H_\mathrm{i})^3 F_\mathrm{sp}(q,R_\mathrm{i}-H_\mathrm{i})\right) \nonumber \\
  I_\mathrm{vv}(q) &= F_\mathrm{bi,m}^2(q) \label{eq:vesiclePEG7vv} \\
  I_\mathrm{vi}(q) &= 2 n_\mathrm{i}\beta_\mathrm{PEG} F_\mathrm{bi,m}(q) \frac{\sin\left(q(R_\mathrm{i}-H_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-H_\mathrm{i}-R_g)} \label{eq:vesiclePEG7vi} \\
  I_\mathrm{vo}(q) &= 2 n_\mathrm{o}\beta_\mathrm{PEG} F_\mathrm{bi,m}(q) \frac{\sin\left(q(R_\mathrm{o}+H_\mathrm{o}+R_g)\right)}{q(R_\mathrm{o}+H_\mathrm{o}+R_g)} \label{eq:vesiclePEG7vo} \\
 \end{align}
 The seven term are parameterized by the radius of gyration $R_g$ of the PEG molecules, the thickness of the lipid head group layer on the inner side of the vesicle membrane $H_\mathrm{i}$, as well as at the outside $H_\mathrm{o}$, the radius pointing to the interface between head and tail group layer at the inside $R_\mathrm{i}$ and its counter part at the outside of the vesicle $R_\mathrm{o}$. Further parameters are the excess scattering length of the PEG molecules $\beta_\mathrm{PEG}$ and the numbers of molecules $n_\mathrm{i}$ attached inside to the lipids and $n_\mathrm{o}$ attached outside to the lipids. $\eta_\mathrm{h}$, $\eta_\mathrm{t}$, and $\eta_\mathrm{sol}$ are the scattering length densities of the lipid head group, of the lipid tail group and of the solvent.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/vesicles/vesiclePEGpiecewconst.png}
+\end{center}
+\caption{scheme of pegylated vesicle with PEG molecules attached in as well outside the vesicle but otherwise a piecewise constant scattering cross section of the membrane}
+\label{fig:vesiclePEGpiecewconst}
+\end{figure}
 
 These parameters now needs to be expressed by known properties of the involved macro molecules. Scattering length densities are typically calculated from the known chemical sum formula and the bulk density of the molecules. The sum formula allows to calculated the molecular mass as well as the overall scattering length of the molecule, which then would allow to calculate the scattering length density of the molecule. However, in a solvent the molecular volume might change. Therefore volumetric measurements of the molecular volume in the used solvent are more precise and preferable, if available. Also literature values for the molecular volume of the head group $V_\mathrm{h}$ separated from the molecular volume of the tail group $V_\mathrm{t}$ are available.
 
@@ -80,8 +82,58 @@ H_\mathrm{i} & =  R - \frac T2 - \frac12 \left[\left(2R-T\right)^3 - \left(12R^2
 H_\mathrm{o} & = -R - \frac T2 + \frac12 \left[\left(2R+T\right)^3 + \left(12R^2T+6RT^2+T^3\right)\frac{V_\mathrm{h}}{V_\mathrm{t}}\right]^{1/3}
 \end{align}
 Further model input parameters are the fraction of lipids decorated inside the vesicle $f_\mathrm{PEG,i}$ and outside the vesicle  $f_\mathrm{PEG,o}$
-In this model it is assumed that neither the tail layer nor the head group layers contain any solvent. The distance of the center of mass fo the attached PEG molecules is assumed to be equal to its radius of gyration $R_g$.
+In this model it is assumed that neither the tail layer nor the head group layers contain any solvent. The distance of the center of mass for the attached PEG molecules is assumed to be equal to its radius of gyration $R_g$.
 ~\\
-\subsubsection{PEGylated liposome with approximate gaussian scattering length density profile} ~\\
+\subsubsection{PEGylated liposome with smeared scattering length density profile} ~\\
 
-In practise it could be shown \cite{Pabst2002,Brzustowicz2005} that at least for x-rays the scattering length density profiles across a membrane are better modelled by a gaussian scattering length density profile. In this model it is assumed that both the tail group layer as well as the head group layers do not contain any solvent. 
+In practise it could be shown \cite{Pabst2002,Brzustowicz2005} that at least for x-rays the scattering length density profiles across a membrane are better modelled by a smooth transition and gaussian scattering length density profile have been suggested and successfully been used. However, using Gaussian profiles the use of known molecular parameters like molecular volume are not so straight forward to be integrated as constrains for the input parameters.
+Here we therefore introduce a smooth transition between the scattering length density of the hydrocarbon chain and the phospholipid head group as well as between the head group and the solvent. The transition can be performed with any sigmoidal function which smoothly varies between 0 and 1. In practice all cumulative distribution functions are such functions and are therefore typically used for this task are
+\begin{align}
+  w_\mathrm{logistic}(x) &=\frac{1}{1+\exp(-x)} \\
+  w_\mathrm{Laplace}(x) &= \begin{cases}
+                             \frac12 \exp(x), & \mbox{if } x\geq 0 \\
+                             1-\frac12 \exp(-x), & \mbox{otherwise}.
+                           \end{cases}  \\
+  w_\mathrm{Cauchy}(x) &= \frac{1}{\pi}\arctan(x)+\frac12  \\
+  w_\mathrm{Normal}(x) &=\frac12 \left[1+\operatorname{erf}(x/\sqrt{2})\right]  \\
+  w_\mathrm{Rayleigh}(x) &= \begin{cases}
+                             0, & \mbox{if } x\leq 0 \\
+                             1-\exp\left(-x/\sqrt{2}\right), & \mbox{otherwise}.
+                           \end{cases} \\
+  w_\mathrm{algebraic}(x) &=\frac12 + \frac12 \frac{x}{\sqrt{1+x^2}} \qquad\mbox{algebraic transition function}\\
+  w_\mathrm{Fermi}(x) &=1-\frac{1}{1+\exp(x)} \\
+  w_\mathrm{Gudermannian}(x) &=\frac{2}{\pi}\arctan\left(\tanh(x/2)\right)+\frac12\\
+  w_\mathrm{tanh}(x) &=\frac12 + \frac12 \tanh(x)
+\end{align}
+These transition function are here used to describe the rise and fall of the scattering length density profiles at interfaces.
+The scattering length density profile $\eta_{\mathrm{l},i}(x)$ of layer $i$ is then given by
+\begin{align} \label{eq:thinlayersprofile}
+  \eta_{\mathrm{l,type},i}(x) &=  \left(\eta_i-\eta_\mathrm{sol}\right) w_{\mathrm{type},i}\left(\frac{x-R_{i}}{\sigma_{i}}\right)  \left[1- w_{\mathrm{type},i+1}\left(\frac{x-R_{i+1}}{\sigma_{i+1}}\right)\right]
+\end{align}
+The falling profile $\left[1- w_{\mathrm{type},i+1}\left(\frac{x-R_{i+1}}{\sigma_{i+1}}\right)\right]$ of the $i^\mathrm{th}$-layer is assumed being of the same type and with the same input parameters as the rising profile $w_{\mathrm{type},i+1}\left(\frac{x-R_{i+1}}{\sigma_{i+1}}\right)$ of the $(i+1)^\mathrm{th}$-layer. By this we assume within the overlap region a mixture of the elements of both layers, with a smooth transition.
+
+The scattering intensity for a smoothed profile contains the same contribution as for a piecewise constant profile according to equation \ref{eq:vesicePEGsphsh}. However, the scattering contribution $I_\mathrm{vv}(q)$, as well as $I_\mathrm{vi}(q)$ $I_\mathrm{vo}(q)$ from the lipid vesicle needs to be calculated of layers with a smooth scattering length density profile according to eq.\ \ref{eq:thinlayersprofile}. In the following we use $w_\mathrm{Laplace}(x)$ as for such a profile all needed Fourier transformations can be calculated analytically.
+\begin{figure}[htb]
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+    \includegraphics[width=\textwidth]{../images/form_factor/vesicles/vesicle_profile1.png}
+    \includegraphics[width=\textwidth]{../images/form_factor/vesicles/vesicle_profile2.png}
+   \caption{head groups with positive contrast and tail group with negative contrast relative to solvent. Top picture is calculated with smeared interfaces and bottom one with sharp interfaces.}
+   \label{fig:vesicle_profile12}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\textwidth}
+   \centering
+    \includegraphics[width=\textwidth]{../images/form_factor/vesicles/vesicle_profile3.png}
+    \includegraphics[width=\textwidth]{../images/form_factor/vesicles/vesicle_profile4.png}
+   \caption{head and tail group have both positive contrast relative to solvent.Top picture is calculated with smeared interfaces and bottom one with sharp interfaces.}
+   \label{fig:vesicle_profile34}
+\end{subfigure}
+\caption{scattering length density profiles across liposome membrane} \label{fig:vesicle_profiles}
+\end{figure}
+The scattering length density profile of a lipid bilayer $\eta_\mathrm{bilayer}(r)$ then reads as
+\begin{align}\label{eq:eta_bilayer_smoothed}
+  \eta_\mathrm{bilayer}(r) & =  \eta_{\mathrm{l,Laplace},ih}(r,\sigma_{ih},R_{ih},\sigma_{ih},R_{it},\eta_h,\eta_\mathrm{sol}) \nonumber \\
+   & \qquad + \eta_{\mathrm{l,Laplace},t}(r,\sigma_{ih},R_{it},\sigma_{oh},R_{ot},\eta_t,\eta_\mathrm{sol}) \\
+   & \qquad + \eta_{\mathrm{l,Laplace},oh}(r,\sigma_{oh},R_{ot},\sigma_{oh},R_{oh},\eta_h,\eta_\mathrm{sol}) \nonumber
+\end{align} 

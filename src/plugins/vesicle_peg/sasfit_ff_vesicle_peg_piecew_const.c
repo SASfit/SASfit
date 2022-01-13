@@ -11,16 +11,18 @@
 #define SIGMA_R	fabs(param->p[1])
 #define T	param->p[2]
 #define SIGMA_T	fabs(param->p[3])
-#define RG	param->p[4]
-#define F_PEG_I	param->p[5]
-#define F_PEG_O	param->p[6]
-#define V_PEG	param->p[7]
-#define ETA_PEG	param->p[8]
-#define V_HEAD	param->p[9]
-#define ETA_HEAD	param->p[10]
-#define V_TAIL	param->p[11]
-#define ETA_TAIL	param->p[12]
-#define ETA_SOL	param->p[13]
+
+#define RG	param->p[6]
+#define F_PEG_I	param->p[7]
+#define F_PEG_O	param->p[8]
+#define V_PEG	param->p[9]
+#define ETA_PEG	param->p[10]
+#define V_HEAD	param->p[11]
+#define ETA_HEAD	param->p[12]
+#define V_TAIL	param->p[13]
+#define ETA_TAIL	param->p[14]
+#define ETA_SOL	param->p[15]
+
 
 #define Q   param->p[MAXPAR-1]
 #define HO   param->p[MAXPAR-2]

@@ -10,13 +10,15 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
+	sasfit_sd_std_lognorm.c
+	sasfit_sd_shifted_lognorm.c
 	sasfit_sd_lognorm_fp.c
+	sasfit_sd_bilognorm.c
 	interface.c
 )
 
-# path to 'Find*.cmake' files in sasfit package, 
-# relative to the location of this file
-set(REL_CMAKE_MODULE_PATH ../../cmake)
+# add plugin path for finding 'Find*.cmake' files for new <LIBS_EXT>
+set(REL_CMAKE_MODULE_PATH .)
 
 #                                                       #
 ### no adjustments required below this line (usually) ###
@@ -27,7 +29,7 @@ project(${PRJ_NAME} C)
 set(LIB_IS_PLUGIN true)
 
 set(SRC_DIR ${${PRJ_NAME}_SOURCE_DIR})
-set(CMAKE_MODULE_PATH ${SRC_DIR}/${REL_CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${SRC_DIR}/${MODULE_PATH}")
 
 include(SasfitCmakeUtils)
 sasfit_cmake_plugin()

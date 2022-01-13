@@ -61,6 +61,12 @@
  *       <td>\b sigma_T</td>
  *       <td>width of LogNorm thickness distribution</td>
  *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
  *       <td>\b Rg</td>
  *       <td>radius of gyration of attached PEG molecules</td>
  *      </tr><tr>
@@ -140,6 +146,12 @@ sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_piecew_const_v(scalar q, 
  *      </tr><tr>
  *       <td>\b sigma_T</td>
  *       <td>width of LogNorm thickness distribution</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b Rg</td>
  *       <td>radius of gyration of attached PEG molecules</td>
@@ -221,6 +233,12 @@ sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_piecew_const_thin_approx_
  *       <td>\b sigma_T</td>
  *       <td>width of LogNorm thickness distribution</td>
  *      </tr><tr>
+ *       <td>\b sigma_i</td>
+ *       <td>smearing width parameter of membrane interfaces inside vesicle</td>
+ *      </tr><tr>
+ *       <td>\b sigma_o</td>
+ *       <td>smearing width parameter of membrane interfaces outside vesicle</td>
+ *      </tr><tr>
  *       <td>\b Rg</td>
  *       <td>radius of gyration of attached PEG molecules</td>
  *      </tr><tr>
@@ -300,6 +318,12 @@ sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_gaussian_v(scalar q, sasf
  *      </tr><tr>
  *       <td>\b sigma_T</td>
  *       <td>width of LogNorm thickness distribution</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b Rg</td>
  *       <td>radius of gyration of attached PEG molecules</td>
