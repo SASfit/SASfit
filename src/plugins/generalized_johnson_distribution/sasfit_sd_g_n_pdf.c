@@ -51,6 +51,6 @@ scalar sasfit_sd_g_n_pdf_v(scalar p, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return (XI + LAMBDA*sinh(DELTA*(GAMMA + sqrt(2)*sasfit_erfinv(-1 + 2*p))))/N;
+	return (XI + LAMBDA*sinh(DELTA*(GAMMA + sqrt(2)*sasfit_erfinv(2*p-1))))/N;
 }
 

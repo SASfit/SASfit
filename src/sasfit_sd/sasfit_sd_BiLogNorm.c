@@ -52,17 +52,13 @@ scalar sasfit_sd_BiLogNorm(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR( param );
 
 	sasfit_init_param( &subParam );
-	subParam.p[0] = param->p[4];	// N2
+	subParam.p[0] = param->p[0]*param->p[4];	// N2
 	subParam.p[1] = param->p[5];	// s2
 	subParam.p[2] = param->p[6];	// p2
 	subParam.p[3] = param->p[7];	// m2
 
-	LNf = sasfit_sd_LogNorm(x, &subParam);
-
 	SASFIT_CHECK_SUB_ERR(param, subParam);
-
-	LNf = LNf + sasfit_sd_LogNorm(x, param);
-
+	LNf = sasfit_sd_LogNorm(x, &subParam)+ sasfit_sd_LogNorm(x, param);
 	return LNf;
 }
 

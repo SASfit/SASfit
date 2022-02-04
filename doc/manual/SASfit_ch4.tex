@@ -1,6 +1,38 @@
 \chapter{Size Distributions}
 \label{sizedistribution}
 
+Several distribution functions are supplied in \SASfit for smearing parameters. In principle any parameter of the form factor can be assigned with a distribution function. It does not need to be a parameter describing a size or length quantity of the scattering object. As also the inclusion of the structure factor is effected by the size distribution details about this can be found in section \ref{sec:structurefactorapproaches}. In the simplest case, let say a distribution of radii $N(R)$ is needed to describe a system, the integration to be performed is
+\begin{align}
+I(q) &= \int_0^\infty N\, f(x) P(q,x) \; \mathrm{d}x \label{eq:NRintegration}
+\end{align}
+which is an improper integral with an upper bound approaching infinity. The distribution function available are all probability distribution functions $\operatorname{f}$ normalized on 1 for the definition range between $0$ and $\infty$ and $N$ as the scaling factor. Specialized code for such integrals are available and also implemented in {\SASfitd} However, in cases where the size distribution shows a very narrow peak these algorithm might miss the peak. Therefore for all distribution functions it has been tried to find proper finite lower and upper integration limits and using. The routine for finding a suitable integration range also takes into account, that the form factor can scale with up to the $6^\mathrm{th}$ power of its size parameter. Therefore at the moment for each size distribution also the internal function for finding the proper integration limits needs to be extended.
+
+Another way of performing the integration is to make use of the quantile distribution function. For many analytically available  probability distribution function $f(x)$ also their cumulative distribution function
+\begin{align}
+F(x)&=\int_{-\infty}^x f(x') \;\mathrm{d}x'=p
+\end{align} 
+and quantile distribution function 
+\begin{align}
+Q(p)&=(F(x))^{-1}(p)=x,
+\end{align} 
+which is the inverse of the cumulative distribution function $F(x)$.
+The quantile density function is then given by
+\begin{align}
+q(p)=\mathrm{d}Q(p)/\mathrm{d}p=\mathrm{d}x/\mathrm{d}p
+\end{align}
+and its reciprocal is related to the probability distribution function by 
+\begin{align}
+1/q(p)=f(F(x))
+\end{align}
+ We therefore can write the integral \ref{eq:NRintegration} as
+\begin{align}
+I(q) &= \int_0^\infty N\, f(x) P(q,x) \; \mathrm{d}x \\
+     &= \int_{0}^{\infty} N\, f(F(x)) P(q,x) \; \mathrm{d}x \\
+     &= \int_{F(0)}^{F(\infty)} N\, f(p) P(q,Q(p)) q(p) \; \mathrm{d}p \\
+     &= \int_{F(0)}^{1} N\, P(q,Q(p)) \; \mathrm{d}p 
+\end{align} 
+By this variable transformation the integral become a propoer integral over the box $(F(0);1)$ and behaves well both for very sharp as well as broad probability distribution functions.
+ 
 \section{Delta} \hspace{1pt} \\
 \label{sec:Delta}
 Choosing \texttt{Delta} as a size distribution simply scales the form factor with a constant value $N$

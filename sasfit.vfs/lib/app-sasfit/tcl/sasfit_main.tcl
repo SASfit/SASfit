@@ -660,7 +660,7 @@ proc clear_sasfit_file_config { sasfit_arr prefix
 } {
 	upvar $sasfit_arr sf
 	set sf(${prefix}widcnt) 0
-	clear_sasfit_config sf $prefix {name divisor multiply firstskip \
+	clear_sasfit_config sf $prefix {name divisor multiply weight firstskip \
 		lastskip hide Q I DI res "res,calc" "res,file" widname r1 r2 lambda Dlambda l1 \
 		l2 Dd d dr_by_count dr_percent \
 		dr_loglogdist dr_mindist \
@@ -713,8 +713,8 @@ proc dr_set_arr {sasfit_arr prefix index data_redu_arr
 proc arr_append_dr { sasfit_arr prefix index
 } {
 	upvar $sasfit_arr sf
-	foreach suffix {name divisor multiply firstskip lastskip hide} \
-	        varname {::fn ::divisor ::multiply ::fskip ::lskip ::hide
+	foreach suffix {name divisor multiply weight firstskip lastskip hide} \
+	        varname {::fn ::divisor ::multiply ::weight ::fskip ::lskip ::hide
 	} {
 		lappend sf($prefix$suffix) [lindex [array get $varname $index] 1]
 	}
@@ -733,7 +733,7 @@ proc arr_append_dr { sasfit_arr prefix index
 proc equal_length_sasfit_file_config { sasfit_arr prefix
 } {
 	upvar $sasfit_arr sf
-	foreach suffix {hide firstskip lastskip divisor multiply Q I DI res "res,calc" "res,file" r1 r2 l1 \
+	foreach suffix {hide firstskip lastskip divisor multiply weight Q I DI res "res,calc" "res,file" r1 r2 l1 \
 	                l2 lambda Dlambda d Dd widname
 	} {
 		if {[llength $sf(${prefix}name)] != [llength $sf($prefix$suffix)]} {
@@ -1641,6 +1641,7 @@ if {[string compare $ReadSuccess no] == 0} {
    set tmpsasfit(file,widcnt)     0
    set tmpsasfit(file,divisor)   {1}
    set tmpsasfit(file,multiply)  {1}
+   set tmpsasfit(file,weight)  {1}
    set tmpsasfit(file,firstskip) {0}
    set tmpsasfit(file,lastskip)  {0}
    set tmpsasfit(file,hide)      {no}
@@ -2156,6 +2157,11 @@ proc show_dr_menu { index } {
 	entry $w.lay1.div.ntr \
 		-textvariable ::multiply($index) -width 10
 
+	frame $w.lay1.weight
+	label $w.lay1.weight.lbl -text "weight: "
+	entry $w.lay1.weight.ntr \
+		-textvariable ::weight($index) -width 10
+
 	frame $w.lay1.skipf
 	label $w.lay1.skipf.lbl -text "skip first n points: "
 	entry $w.lay1.skipf.ntr \
@@ -2167,8 +2173,9 @@ proc show_dr_menu { index } {
 		-textvariable ::lskip($index) -width 10
 
 	pack $w.lay1.lbl -anchor nw
-	pack $w.lay1.div $w.lay1.skipf $w.lay1.skipl -anchor e
+	pack $w.lay1.div $w.lay1.weight $w.lay1.skipf $w.lay1.skipl -anchor e
 	pack $w.lay1.div.lbl $w.lay1.div.ntr -side left
+	pack $w.lay1.weight.lbl $w.lay1.weight.ntr -side left
 	pack $w.lay1.skipf.lbl $w.lay1.skipf.ntr -side left
 	pack $w.lay1.skipl.lbl $w.lay1.skipl.ntr -side left
 	data_redu_menu $w $index
@@ -2269,7 +2276,8 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
    set fskip($j)   [lindex $ssasfit(file,firstskip) $i]
    set lskip($j)   [lindex $ssasfit(file,lastskip)  $i]
    set divisor($j) [lindex $ssasfit(file,divisor)   $i]
-   set multiply($j) [lindex $ssasfit(file,multiply)   $i]
+   set multiply($j) [lindex $ssasfit(file,multiply) $i]
+   set weight($j) [lindex $ssasfit(file,weight)     $i]
    set widname($j) [lindex $ssasfit(file,widname)   $i]
    dr_set_arr ssasfit "file," $j data_redu
 
@@ -2303,7 +2311,7 @@ for {set i 0} {$i < $ssasfit(file,n)} {incr i} {
          set rescalch [lindex $tmparr(res,calc) $k]
          lappend ssasfit(Q)   $h
          lappend ssasfit(I)   [expr $Ih *$multiply($j)/($divisor($j)*1.0)]
-         lappend ssasfit(DI)  [expr $DIh*$multiply($j)/($divisor($j)*1.0)]
+         lappend ssasfit(DI)  [expr $DIh*$multiply($j)/($weight($j)*$divisor($j)*1.0)]
          lappend ssasfit(res) $resh
          lappend ssasfit(res,file) $resfileh
          lappend ssasfit(res,calc) $rescalch
@@ -2352,6 +2360,7 @@ proc destroyMergeFile {widcnt} {
     set wid .addfile.lay2
     destroy $wid.vportfile.frame.text$widcnt
     destroy $wid.vportdivisor.frame.entry$widcnt
+    destroy $wid.vportweight.frame.entry$widcnt
     destroy $wid.vportsfirst.frame.entry$widcnt
     destroy $wid.vportslast.frame.entry$widcnt
     destroy $wid.vporthide.frame.checkbutton$widcnt
@@ -2365,7 +2374,7 @@ proc destroyMergeFile {widcnt} {
 proc rmMergeFileCmd {delwidcnt} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	global tmpsasfit
-	global fn hide fskip lskip divisor multiply widname 
+	global fn hide fskip lskip divisor multiply weight widname 
 	global r1 r2 l1 l2 lambda Dlambda d Dd
 	global widcnt sf
 	
@@ -2378,7 +2387,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	clear_sasfit_file_config sf "file,"
 	set sf(delwid)         no
 	
-	clear_sasfit_config tmpsasfit "file," {name divisor multiply firstskip lastskip hide \
+	clear_sasfit_config tmpsasfit "file," {name divisor multiply weight firstskip lastskip hide \
 		dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_errorbar dr_multerror dr_max_Dq_q}
 	
 	for {set i 0} {$i < $tmpsasfit(file,n)} {incr i} {
@@ -2404,7 +2413,7 @@ proc rmMergeFileCmd {delwidcnt} {
 		set sf(file,n) [expr $sf(file,n)-1]
 	    } else {
 		sasfit_arr_op lappend sf tmpsasfit "file," "file," $listIndex \
-			{name hide firstskip lastskip divisor multiply widname \
+			{name hide firstskip lastskip divisor multiply weight widname \
 			Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd \
 			dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_error dr_multerror dr_max_Dq_q}
 	        lset sf(file,widname) $newIndex [lreplace [lindex $sf(file,widname) end] 1 1 [expr $newIndex+1]]
@@ -2412,7 +2421,7 @@ proc rmMergeFileCmd {delwidcnt} {
 	    }
 	    incr listIndex
 	}
-	sasfit_arr_op set tmpsasfit sf "file," "file," -1 {name hide firstskip lastskip divisor multiply \
+	sasfit_arr_op set tmpsasfit sf "file," "file," -1 {name hide firstskip lastskip divisor multiply weight \
 		widname Q I DI res "res,file" "res,calc" r1 r2 l1 l2 lambda Dlambda d Dd n\
 		dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_error dr_multerror dr_max_Dq_q}
 	
@@ -2433,7 +2442,7 @@ proc MergeFileCmd {ttmpsasfit args} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 upvar $ttmpsasfit ssasfit
 global resolution
-global fn hide fskip lskip divisor multiply widname widcnt
+global fn hide fskip lskip divisor multiply weight widname widcnt
 set w2 .addfile.lay2
    if {[llength $args] == 1} {
          set i [lindex $args 0]
@@ -2449,6 +2458,7 @@ set w2 .addfile.lay2
       }
       lappend ssasfit(file,divisor)   1
       lappend ssasfit(file,multiply)   1
+      lappend ssasfit(file,weight)   1
       lappend ssasfit(file,firstskip) 0
       lappend ssasfit(file,lastskip)  0
       lappend ssasfit(file,hide)      no
@@ -2470,7 +2480,8 @@ set w2 .addfile.lay2
    set fskip($j)   [lindex $ssasfit(file,firstskip) $i]
    set lskip($j)   [lindex $ssasfit(file,lastskip)  $i]
    set divisor($j) [lindex $ssasfit(file,divisor)   $i]
-   set multiply($j) [lindex $ssasfit(file,multiply)   $i]
+   set multiply($j) [lindex $ssasfit(file,multiply) $i]
+   set weight($j)  [lindex $ssasfit(file,weight)    $i]
    set widname($j) [lindex $ssasfit(file,widname)   $i]
    set widcnt [lindex $widname($j) 1]
    dr_set_arr ssasfit "file," $j ::data_redu
@@ -2490,6 +2501,13 @@ set w2 .addfile.lay2
    set tmph [winfo reqheight $w2.vportdivisor.frame.entry$widcnt]
    if {$h < $tmph} {set h $tmph}
    grid  $w2.vportdivisor.frame.entry$widcnt \
+         -column 0 -row $i
+
+   entry $w2.vportweight.frame.entry$widcnt \
+           -textvariable weight($j) -width 10
+   set tmph [winfo reqheight $w2.vportweight.frame.entry$widcnt]
+   if {$h < $tmph} {set h $tmph}
+   grid  $w2.vportweight.frame.entry$widcnt \
          -column 0 -row $i
 
    entry $w2.vportsfirst.frame.entry$widcnt \
@@ -2533,6 +2551,7 @@ button $w2.vportres.frame.resbutton$widcnt \
 
    grid rowconfigure $w2.vportfile.frame    $i -minsize $h
    grid rowconfigure $w2.vportdivisor.frame $i -minsize $h
+   grid rowconfigure $w2.vportweight.frame  $i -minsize $h
    grid rowconfigure $w2.vportsfirst.frame  $i -minsize $h 
    grid rowconfigure $w2.vportslast.frame   $i -minsize $h
    grid rowconfigure $w2.vporthide.frame    $i -minsize $h
@@ -2570,6 +2589,7 @@ proc scrollform_resize {win} {
 proc hsetyview {args} {
   eval .addfile.lay2.vportfile    yview $args
   eval .addfile.lay2.vportdivisor yview $args
+  eval .addfile.lay2.vportweight  yview $args
   eval .addfile.lay2.vportsfirst  yview $args
   eval .addfile.lay2.vportslast   yview $args
   eval .addfile.lay2.vporthide    yview $args
@@ -2581,7 +2601,7 @@ proc hsetyview {args} {
 proc MergeCmd {} {
 #^^^^^^^^^^^^^^^^
 	global sasfit tmpsasfit tmpAnalytPar
-	global fn hide fskip lskip divisor multiply widname r1 r2 l1 l2 lambda Dlambda d Dd
+	global fn hide fskip lskip divisor multiply weight widname r1 r2 l1 l2 lambda Dlambda d Dd
 	global addsasfit
 	if {$sasfit(file,n) < 1} {
 		NewCmd
@@ -2687,17 +2707,20 @@ proc MergeCmd {} {
 	label $w2.multiply -text "multiply" \
 	      -highlightthickness 0 -justify left -anchor w
 	grid  $w2.multiply -column 1 -row 0 -sticky w
+	label $w2.weight -text "weight" \
+	      -highlightthickness 0 -justify left -anchor w
+	grid  $w2.weight -column 2 -row 0 -sticky w
 	label $w2.skipfirst -text "skip first\nn points" \
 	      -highlightthickness 0 -justify left -anchor w
-	grid  $w2.skipfirst -column 2 -row 0 -sticky w
+	grid  $w2.skipfirst -column 3 -row 0 -sticky w
 	label $w2.skiplast -text "skip last\npoints" \
 	      -highlightthickness 0 -justify left -anchor w
-	grid  $w2.skiplast -column 3 -row 0 -sticky w
+	grid  $w2.skiplast -column 4 -row 0 -sticky w
 	label $w2.hide -text "hide" \
 	      -highlightthickness 0 -justify left -anchor w
-	grid  $w2.hide -column 4 -row 0 -sticky w
+	grid  $w2.hide -column 5 -row 0 -sticky w
 	frame $w2.resframe
-	grid  $w2.resframe -column 6 -row 0 -sticky w
+	grid  $w2.resframe -column 7 -row 0 -sticky w
 	checkbutton $w2.resframe.geom -text "calc resolution\nfrom geometrical values (on)\ntake values from data file (off)" \
 	      -variable tmpAnalytPar(geometrical/datafile) \
 	      -onvalue yes -offvalue no \
@@ -2707,7 +2730,7 @@ proc MergeCmd {} {
 	set canvasheight 160
 
 	scrollbar $w2.sbar -command "hsetyview"
-	grid   $w2.sbar -column 7 -row 1 -sticky ns
+	grid   $w2.sbar -column 8 -row 1 -sticky ns
 	grid rowconfigure $w2 1 -weight 2 -minsize $canvasheight
 
 	canvas $w2.vportfile -width 1  -height $canvasheight \
@@ -2724,37 +2747,44 @@ proc MergeCmd {} {
 	$w2.vportdivisor create window 0 0 -anchor nw -window $w2.vportdivisor.frame
 	bind $w2.vportdivisor.frame <Configure> "scrollform_resize $w2.vportdivisor"
 
+	canvas $w2.vportweight -width 1 -height $canvasheight \
+	       -highlightthickness 0 -yscrollcommand "$w2.sbar set"
+	grid   $w2.vportweight -column 2 -row 1
+	frame  $w2.vportweight.frame
+	$w2.vportweight create window 0 0 -anchor nw -window $w2.vportweight.frame
+	bind $w2.vportweight.frame <Configure> "scrollform_resize $w2.vportweight"
+
 	canvas $w2.vportsfirst -width 1 -height $canvasheight \
 	       -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-	grid   $w2.vportsfirst -column 2 -row 1
+	grid   $w2.vportsfirst -column 3 -row 1
 	frame  $w2.vportsfirst.frame
 	$w2.vportsfirst create window 0 0 -anchor nw -window $w2.vportsfirst.frame
 	bind $w2.vportsfirst.frame <Configure> "scrollform_resize $w2.vportsfirst"
 
 	canvas $w2.vportslast -width 1 -height $canvasheight \
 	       -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-	grid   $w2.vportslast -column 3 -row 1
+	grid   $w2.vportslast -column 4 -row 1
 	frame  $w2.vportslast.frame
 	$w2.vportslast create window 0 0 -anchor nw -window $w2.vportslast.frame
 	bind $w2.vportslast.frame <Configure> "scrollform_resize $w2.vportslast"
 
 	canvas $w2.vporthide -width 1 -height $canvasheight \
 	       -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-	grid   $w2.vporthide -column 4 -row 1
+	grid   $w2.vporthide -column 5 -row 1
 	frame  $w2.vporthide.frame
 	$w2.vporthide create window 0 0 -anchor nw -window $w2.vporthide.frame
 	bind $w2.vporthide.frame <Configure> "scrollform_resize $w2.vporthide"
 
 	canvas $w2.vportdel -width 1 -height $canvasheight \
 	       -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-	grid   $w2.vportdel -column 5 -row 1
+	grid   $w2.vportdel -column 6 -row 1
 	frame  $w2.vportdel.frame
 	$w2.vportdel create window 0 0 -anchor nw -window $w2.vportdel.frame
 	bind $w2.vportdel.frame <Configure> "scrollform_resize $w2.vportdel"
 
 	canvas $w2.vportres -width 1 -height $canvasheight \
 	       -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-	grid   $w2.vportres -column 6 -row 1
+	grid   $w2.vportres -column 7 -row 1
 	frame  $w2.vportres.frame
 	$w2.vportres create window 0 0 -anchor nw -window $w2.vportres.frame
 	bind $w2.vportres.frame <Configure> "scrollform_resize $w2.vportres"
@@ -2823,7 +2853,7 @@ proc addfileResizeCmd { origHeight canvasHeight newHeight } {
 	set canvasHeight [expr $canvasHeight + ($newHeight - $origHeight)]
 	if {$canvasHeight < 0} { return }
 	grid rowconfigure $w2 1 -minsize $canvasHeight
-	foreach w [list $w2.vportfile $w2.vportdivisor $w2.vportsfirst $w2.vportslast \
+	foreach w [list $w2.vportfile $w2.vportdivisor $w2.vportweight $w2.vportsfirst $w2.vportslast \
 		$w2.vporthide $w2.vportdel $w2.vportres \
 	] {
 		$w configure -height $canvasHeight
@@ -2840,7 +2870,7 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 } {
 	upvar $sasfit_arr localsasfit
 	global ASCIIData SESANSData ALVData IQGraph GlobalFitIQGraph
-	global fn hide fskip lskip divisor multiply widname
+	global fn hide fskip lskip divisor multiply weight widname
 
 	set yscale {}
 	switch $localsasfit(actualdatatype) {
@@ -2893,7 +2923,7 @@ proc merge_cmd_apply { sasfit_arr isGlobal
 					 }
 		   }
 
-	clear_sasfit_config localsasfit "file," {name divisor multiply firstskip lastskip \
+	clear_sasfit_config localsasfit "file," {name divisor multiply weight firstskip lastskip \
 		hide dr_by_count dr_percent dr_loglogdist dr_mindist dr_by_errorbar dr_multerror dr_max_Dq_q}
 
 	set n_no_hide 0

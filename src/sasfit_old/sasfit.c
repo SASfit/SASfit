@@ -271,6 +271,7 @@ void find_integration_range(Tcl_Interp *interp,
 	      *n_intervals =  abs((int)ceil(R_n/(R_0-R_50))) * Nint;
 	      *Rstart = 0.0;
 	      *Rend = R_n;
+/*
 		  if (*n_intervals > 500) {
 			  if ((R_n-R_0) < R_0) {
 		      *Rend = R_n;
@@ -282,6 +283,7 @@ void find_integration_range(Tcl_Interp *interp,
 				return;
 			  }
 		  }
+*/
 	   }
 
 	   a1=a[4];
@@ -567,6 +569,56 @@ void find_integration_range(Tcl_Interp *interp,
                 *Rstart = a[1];
                 *Rend = a[3];
                 *n_intervals = Nint;
+			} else if (strcmp(func_descr->name,"sd_bilognorm")      == 0) {
+                a4 = fabs(a4);
+                R_0  = a4*exp(-a2*a2*(a3-moment));
+                R_n  = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
+                R_50 = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/50.0)));
+                if (SASFIT_EQUAL(R_50, 0.0)) {
+                    sasfit_err("#find_integration_range: can't guess good integration interval: >%s(%lg,%lg,%lg,%lg)<\n",SD_typestr,a1,a2,a3,a4);
+                    sasfit_out("find_integration_range: ");
+                    sasfit_out("can't guess good integration interval\n");
+                    sasfit_out("find_integration_range: >%s(%lg,%lg,%lg,%lg)<\n", SD_typestr,a1,a2,a3,a4);
+                    *Rstart=0.0;
+                    *Rend = 100.0;
+                    *n_intervals = 500;
+                    *error = TRUE;
+                    return;
+                } else {
+                    *n_intervals =  abs((int)ceil(R_n/(R_0-R_50))) * Nint;
+                    *Rstart = 0.0;
+                    *Rend = R_n;
+                }
+                a1=a[4];
+                a2=a[5];
+                a3=a[6];
+                a4=a[7];
+                R2_0 = R_0;
+                R2_n = R_n;
+                R2_50 = R_50;
+                R2start = *Rstart;
+                R2end = *Rend;
+
+                R_0  = a4*exp(-a2*a2*(a3-moment));
+                R_n  = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
+                R_50 = a4*exp(-a2*a2*(a3-moment)+sqrt(2.0*a2*a2*log(100.0/50.0)));
+                if (SASFIT_EQUAL(R_50, 0.0)) {
+                    sasfit_err("#find_integration_range: can't guess good integration interval: >%s(%lg,%lg,%lg,%lg)<\n",SD_typestr,a1,a2,a3,a4);
+                    sasfit_out("find_integration_range: ");
+                    sasfit_out("can't guess good integration interval\n");
+                    sasfit_out("find_integration_range: >%s(%lg,%lg,%lg,%lg)<\n", SD_typestr,a1,a2,a3,a4);
+                    *Rstart=0.0;
+                    *Rend = 100.0;
+                    *n_intervals = 500;
+                    *error = TRUE;
+                    return;
+                } else {
+                    *n_intervals =  abs((int)ceil(R_n/(R_0-R_50))) * Nint;
+                    *Rstart = 0.0;
+                    *Rend = R_n;
+                    if (R2end > *Rend) *Rend = R2end;
+                    if (R2end < *Rend) *Rstart = R2start;
+                }
 			} else if (strcmp(func_descr->name,"sd_fractal_series2")      == 0) {
                 *Rstart = a[1];
                 *Rend = a[5];
@@ -668,6 +720,55 @@ void find_integration_range(Tcl_Interp *interp,
 */
 			      return;
 			   }
+			} else if ( (strcmp(func_descr->name,"sd_shifted_lognorm")       == 0) ) {
+			   a4 = fabs(a4);
+			   R_0  = a3;
+			   R_n  = (a4+a3)*exp(-a2*a2*(1-moment)+sqrt(2.0*a2*a2*log(100.0/n_percent)));
+			   R_50 = (a4+a3)*exp(-a2*a2*(1-moment)+sqrt(2.0*a2*a2*log(100.0/50.0)));
+			   if (SASFIT_EQUAL(R_50, a3)) {
+				  sasfit_err("#find_integration_range: can't guess good integration interval: >%s(%lg,%lg,%lg,%lg)<\n",SD_typestr,a1,a2,a3,a4);
+			      sasfit_out("find_integration_range: ");
+			      sasfit_out("can't guess good integration interval\n");
+			      sasfit_out("find_integration_range: >%s(%lg,%lg,%lg,%lg)<\n", SD_typestr,a1,a2,a3,a4);
+			      *Rstart=0.0;
+			      *Rend = 100.0;
+			      *n_intervals = 500;
+			      *error = TRUE;
+			      return;
+			   } else {
+			      *n_intervals =  abs((int)ceil(R_n/(R_0-R_50))) * Nint;
+			      *Rstart = a3;
+			      *Rend = R_n;
+/*
+				  if (*n_intervals > 500) {
+					  if ((R_n-R_0) < R_0) {
+				      *Rend = R_n;
+						  *Rstart = 2.0*R_0-R_n;
+						  *n_intervals = Nint;
+					  } else {
+					sasfit_err("#find_integration_range: too many (%d) integration interval: >%s(%lg,%lg,%lg,%lg)<\n",*n_intervals,SD_typestr,a1,a2,a3,a4);
+				    *error = TRUE;
+					  }
+				  }
+*/
+			      return;
+			   }
+			} else if ( (strcmp(func_descr->name,"sd_johnson_sn")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_johnson_sl")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_johnson_sb")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_johnson_su")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
 			} else {
 				*n_intervals = 10*Nint;
 				*Rstart = 0.0;
@@ -1847,12 +1948,8 @@ scalar HTIQGlobal_OOURA(scalar Q, void *GIP) {
         error_type = ((sasfit_GzIntStruct *) GIP)->error_type;
         error = (( sasfit_GzIntStruct *) GIP)->error;
         Qres = (( sasfit_GzIntStruct *) GIP)->Qres;
-//        IQ_t(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,error_type,error);
-//        IQ_t_global_calc(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,error);
         IQ_t_global(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,GAP,GCP,error_type,error);
         if (*error) return 0;
-//        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
-//        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;
         return (*Ifit)*Q*bessj0(Q*z)/(2*M_PI);
 }
 
@@ -2284,7 +2381,7 @@ bool  dy,dy2,active;
               Tmp3Ifit += TmpIfit;
 		   }
 	   }
-	   if ((dx != 0.0)) dydpar[k] = 0.0*dydpar[k] + (Tmp2Ifit - Tmp3Ifit)/(2.0*dx);
+	   if ((dx != 0.0)) dydpar[k] = 1.0*dydpar[k] + (Tmp2Ifit - Tmp3Ifit)/(2.0*dx);
    }
 
 
@@ -2659,7 +2756,7 @@ bool  dy,dy2,active;
               Tmp3Ifit += TmpIfit;
 		   }
 	   }
-	   if ((dx != 0.0)) dydpar[k] = 0.0*dydpar[k] + (Tmp2Ifit - Tmp3Ifit)/(2.0*dx);
+	   if ((dx != 0.0)) dydpar[k] = 1.0*dydpar[k] + (Tmp2Ifit - Tmp3Ifit)/(2.0*dx);
    }
 
 

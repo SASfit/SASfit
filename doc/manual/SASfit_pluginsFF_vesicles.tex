@@ -42,11 +42,11 @@ inner and outer PEG chains. Furthermore, the terms $I_\mathrm{vi}(q)$ and $I_\ma
 cross-terms of the inner and outer chains with the bilayer.
 These seven terms can be written as
 \begin{align}
- I_\mathrm{chain}(q) &= (n_\mathrm{i}+n_\mathrm{o})\beta_\mathrm{PEG}^2 \; 2 \frac{\exp\left(-q^2R_g^2\right)-1+q^2R_g^2}{(qR_g)^4} \label{eq:vesiclePEG7chain}\\
- I_\mathrm{oo}(q) &= n_\mathrm{o}(n_\mathrm{o}-1)\beta_\mathrm{PEG}^2 \left[\frac{1-\exp\left(-q^2R_g^2\right)}{q^2R_g^2}\right]^2\left[\frac{\sin\left(q(R_\mathrm{o}-R_g)\right)}{q(R_\mathrm{o}-R_g)}\right]^2 \label{eq:vesiclePEG7oo}\\
- I_\mathrm{ii}(q) &=  n_\mathrm{i}(n_\mathrm{i}-1)\beta_\mathrm{PEG}^2 \left[\frac{1-\exp\left(-q^2R_g^2\right)}{q^2R_g^2}\right]^2\left[\frac{\sin\left(q(R_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-R_g)}\right]^2 \label{eq:vesiclePEG7ii}\\
-  I_\mathrm{io}(q) &= 2 n_\mathrm{i}n_\mathrm{o}\beta_\mathrm{PEG}^2 \left[\frac{1-\exp\left(-q^2R_g^2\right)}{q^2R_g^2}\right]^2 \nonumber \\
-  &\qquad \left[\frac{\sin\left(q(R_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-R_g)}\right] \left[\frac{\sin\left(q(R_\mathrm{o}-R_g)\right)}{q(R_\mathrm{o}-R_g)}\right]
+ I_\mathrm{chain}(q) &= (n_\mathrm{i}+n_\mathrm{o})\beta_\mathrm{PEG}^2 \; 2 \frac{e^{-q^2R_g^2}-1+q^2R_g^2}{(qR_g)^4} \label{eq:vesiclePEG7chain}\\
+ I_\mathrm{oo}(q) &= n_\mathrm{o}(n_\mathrm{o}-1)\beta_\mathrm{PEG}^2 \left[\frac{1-e^{-q^2R_g^2}}{q^2R_g^2}\right]^2\left[\frac{\sin\left(q(R_\mathrm{o}+H_\mathrm{o}+R_g)\right)}{q(R_\mathrm{o}+H_\mathrm{o}+R_g)}\right]^2 \label{eq:vesiclePEG7oo}\\
+ I_\mathrm{ii}(q) &=  n_\mathrm{i}(n_\mathrm{i}-1)\beta_\mathrm{PEG}^2 \left[\frac{1-e^{-q^2R_g^2}}{q^2R_g^2}\right]^2\left[\frac{\sin\left(q(R_\mathrm{i}-H_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-H_\mathrm{i}-R_g)}\right]^2 \label{eq:vesiclePEG7ii}\\
+  I_\mathrm{io}(q) &= 2 n_\mathrm{i}n_\mathrm{o}\beta_\mathrm{PEG}^2 \left[\frac{1-e^{-q^2R_g^2}}{q^2R_g^2}\right]^2 \nonumber \\
+  &\qquad \left[\frac{\sin\left(q(R_\mathrm{i}-H_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-H_\mathrm{i}-R_g)}\right] \left[\frac{\sin\left(q(R_\mathrm{o}+H_\mathrm{o}+R_g)\right)}{q(R_\mathrm{o}+H_\mathrm{o}+R_g)}\right]
  \label{eq:vesiclePEG7io}\\
  F_\mathrm{sp}(q,R) &= 3\frac{\sin qR - qR\cos qR}{(qR)^3}  \\
  F_\mathrm{bi,m}(q) &= (\eta_\mathrm{h}-\eta_\mathrm{sol})\left( \frac43\pi (R_\mathrm{o}+H_\mathrm{o})^3 F_\mathrm{sp}(q,R_\mathrm{o}+H_\mathrm{o}) -  \frac43\pi R_\mathrm{o}^3 F_\mathrm{sp}(q,R_\mathrm{o}) \right) \nonumber \\
@@ -55,6 +55,7 @@ These seven terms can be written as
  I_\mathrm{vv}(q) &= F_\mathrm{bi,m}^2(q) \label{eq:vesiclePEG7vv} \\
  I_\mathrm{vi}(q) &= 2 n_\mathrm{i}\beta_\mathrm{PEG} F_\mathrm{bi,m}(q) \frac{\sin\left(q(R_\mathrm{i}-H_\mathrm{i}-R_g)\right)}{q(R_\mathrm{i}-H_\mathrm{i}-R_g)} \label{eq:vesiclePEG7vi} \\
  I_\mathrm{vo}(q) &= 2 n_\mathrm{o}\beta_\mathrm{PEG} F_\mathrm{bi,m}(q) \frac{\sin\left(q(R_\mathrm{o}+H_\mathrm{o}+R_g)\right)}{q(R_\mathrm{o}+H_\mathrm{o}+R_g)} \label{eq:vesiclePEG7vo} \\
+ \beta_\mathrm{PEG} &= \left(\eta_\mathrm{PEG}-\eta_\mathrm{sol}\right) V_\mathrm{PEG}
 \end{align}
 The seven term are parameterized by the radius of gyration $R_g$ of the PEG molecules, the thickness of the lipid head group layer on the inner side of the vesicle membrane $H_\mathrm{i}$, as well as at the outside $H_\mathrm{o}$, the radius pointing to the interface between head and tail group layer at the inside $R_\mathrm{i}$ and its counter part at the outside of the vesicle $R_\mathrm{o}$. Further parameters are the excess scattering length of the PEG molecules $\beta_\mathrm{PEG}$ and the numbers of molecules $n_\mathrm{i}$ attached inside to the lipids and $n_\mathrm{o}$ attached outside to the lipids. $\eta_\mathrm{h}$, $\eta_\mathrm{t}$, and $\eta_\mathrm{sol}$ are the scattering length densities of the lipid head group, of the lipid tail group and of the solvent.
 
@@ -62,7 +63,7 @@ The seven term are parameterized by the radius of gyration $R_g$ of the PEG mole
 \begin{center}
 \includegraphics[width=0.7\textwidth]{../images/form_factor/vesicles/vesiclePEGpiecewconst.png}
 \end{center}
-\caption{scheme of pegylated vesicle with PEG molecules attached in as well outside the vesicle but otherwise a piecewise constant scattering cross section of the membrane}
+\caption{scheme of PEGylated vesicle with PEG molecules attached in as well outside the vesicle but otherwise a piecewise constant scattering cross section of the membrane}
 \label{fig:vesiclePEGpiecewconst}
 \end{figure}
 
@@ -81,7 +82,7 @@ n_\mathrm{o} &= n_\mathrm{l,o} f_\mathrm{PEG,o} \\
 H_\mathrm{i} & =  R - \frac T2 - \frac12 \left[\left(2R-T\right)^3 - \left(12R^2T-6RT^2+T^3\right)\frac{V_\mathrm{h}}{V_\mathrm{t}}\right]^{1/3} \\
 H_\mathrm{o} & = -R - \frac T2 + \frac12 \left[\left(2R+T\right)^3 + \left(12R^2T+6RT^2+T^3\right)\frac{V_\mathrm{h}}{V_\mathrm{t}}\right]^{1/3}
 \end{align}
-Further model input parameters are the fraction of lipids decorated inside the vesicle $f_\mathrm{PEG,i}$ and outside the vesicle  $f_\mathrm{PEG,o}$
+Further model input parameters are the fraction of lipids decorated with PEG inside the vesicle $f_\mathrm{PEG,i}$ and outside the vesicle  $f_\mathrm{PEG,o}$.
 In this model it is assumed that neither the tail layer nor the head group layers contain any solvent. The distance of the center of mass for the attached PEG molecules is assumed to be equal to its radius of gyration $R_g$.
 ~\\
 \subsubsection{PEGylated liposome with smeared scattering length density profile} ~\\
@@ -136,4 +137,42 @@ The scattering length density profile of a lipid bilayer $\eta_\mathrm{bilayer}(
   \eta_\mathrm{bilayer}(r) & =  \eta_{\mathrm{l,Laplace},ih}(r,\sigma_{ih},R_{ih},\sigma_{ih},R_{it},\eta_h,\eta_\mathrm{sol}) \nonumber \\
    & \qquad + \eta_{\mathrm{l,Laplace},t}(r,\sigma_{ih},R_{it},\sigma_{oh},R_{ot},\eta_t,\eta_\mathrm{sol}) \\
    & \qquad + \eta_{\mathrm{l,Laplace},oh}(r,\sigma_{oh},R_{ot},\sigma_{oh},R_{oh},\eta_h,\eta_\mathrm{sol}) \nonumber
-\end{align} 
+\end{align}
+The scattering amplitude is the Fourier transform of this profile
+\begin{align}
+  F_\mathrm{bilayer}(q) &=  \int_0^{\infty} 4\pi r^2  \eta_\mathrm{bilayer}(r) \frac{\sin qr}{qr}\mathrm{d}r
+\end{align}
+and can be performed fully analytically but is quite lengthy and has been obtained by a symbolic algebra software \cite{Mathematica_12_1}. The overall volume of the tail groups as well as those of the headgroups in and outside the vesicles are obtained by integrating \ref{eq:thinlayersprofile} and using a scattering length density contrast of 1
+\begin{align}\label{eq:V_of_thinlayersprofile}
+  V_{ih} &=  \int_0^{\infty} 4\pi r^2  \eta_{\mathrm{l,Laplace},ih}(r) \mathrm{d}r \\
+  V_{t}  &=  \int_0^{\infty} 4\pi r^2  \eta_{\mathrm{l,Laplace},t}(r)  \mathrm{d}r \\
+  V_{oh} &=  \int_0^{\infty} 4\pi r^2  \eta_{\mathrm{l,Laplace},oh}(r) \mathrm{d}r
+\end{align}
+As the form factor is parameterized in terms of the molecular volume of the head $V_\mathrm{head}$ and tail $V_\mathrm{tail}$ groups of a lipid molecule the following constrains needs to be fulfilled
+\begin{align}
+  \frac{V_{ih}}{\frac12 V_{t}} &= \frac{V_\mathrm{head}}{V_\mathrm{tail}} \\
+  \frac{V_{oh}}{\frac12 V_{t}} &= \frac{V_\mathrm{head}}{V_\mathrm{tail}}
+\end{align}
+This is done by adapting the head group layer widths $H_{i}$ and $H_{o}$ using a root finding algorithm. Hereby $H_{i}= R-R_{i}$ and $H_{o}=R_{o}-R$ according to the sketch in fig.\ \ref{fig:vesiclePEGpiecewconst}.
+
+\vspace{5mm}
+\hspace{1pt}\\
+\uline{Input Parameters for model \texttt{BilayeredVesicle}:}\\
+\begin{description}
+\item[\texttt{R}] vesicle radius $R$ (center of vesicle to center of lipid bilayer)
+\item[\texttt{sigma\_R}] size distribution width parameter $\sigma_{R}$
+\item[\texttt{T}] thickness of centrail tail layer $T$
+\item[\texttt{sigma\_T}] size distribution width parameter $\sigma_T$
+\item[\texttt{sigma\_i}] smearing width parameter of membrane interface inside vesicle
+\item[\texttt{sigma\_o}] smearing width parameter of membrane interface outside vesicle
+\item[\texttt{Rg}] radius of gyration of attached PEG molecules
+\item[\texttt{f\_PEG\_i}] fraction of PEG decorated inner lipids where PEG is pointing towards inside of vesicle
+\item[\texttt{f\_PEG\_o}] fraction of PEG decorated outer lipids where PEG is pointing towards outside of vesicle
+\item[\texttt{V\_PEG}] molecular volume of PEG $V_\text{PEG}$
+\item[\texttt{eta\_PEG}] scattering length density of PEG $\eta_\text{PEG}$
+\item[\texttt{V\_head}] molecular volume of lipid head group $V_\text{h}$
+\item[\texttt{eta\_head}] scattering length density of lipid head group $\eta_\text{h}$
+\item[\texttt{V\_tail}] molecular volume of lipid tail group $V_\text{t}$
+\item[\texttt{eta\_tail}] scattering length density of lipid tail group $\eta_\text{t}$
+\item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\text{sol}$
+\end{description} 

@@ -10,7 +10,7 @@
 SASFIT_PLUGIN_EXP_BEGIN(4)
 SASFIT_PLUGIN_EXP_ADD( ff_vesicle_peg_piecew_const )
 SASFIT_PLUGIN_EXP_ADD( ff_vesicle_peg_piecew_const_thin_approx )
-SASFIT_PLUGIN_EXP_ADD( ff_vesicle_peg_gaussian )
+SASFIT_PLUGIN_EXP_ADD( ff_vesicle_peg_laplace )
 SASFIT_PLUGIN_EXP_ADD( ff_vesicle_peg_gaussian_thin_approx )
 
 SASFIT_PLUGIN_EXP_END

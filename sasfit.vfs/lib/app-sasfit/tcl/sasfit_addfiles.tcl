@@ -450,6 +450,7 @@ set tmpsasfit(file,name)  {}
 set tmpsasfit(file,widcnt)     0
 set tmpsasfit(file,divisor)   {1}
 set tmpsasfit(file,multiply)  {1}
+set tmpsasfit(file,weight)    {1}
 set tmpsasfit(file,firstskip) {0}
 set tmpsasfit(file,lastskip)  {0}
 set tmpsasfit(file,hide)      {no}
@@ -480,7 +481,7 @@ if {$addsasfit(Nth,n) < $Nth} {
 
 set addsasfit(Nth,actual) $Nth
 sasfit_arr_op set addsasfit addsasfit "file," "Nth,file," [expr $Nth-1] \
-	{n name divisor multiply firstskip lastskip hide widname widcnt \
+	{n name divisor multiply weight firstskip lastskip hide widname widcnt \
 	Q I DI res "res,file" "res,calc" r1 r2 lambda Dlambda l1 l2 Dd d \
 	dr_by_count dr_percent dr_loglogdist dr_mindist}
 sasfit_arr_op set addsasfit addsasfit "" "Nth," [expr $Nth-1] \
@@ -494,12 +495,14 @@ sasfit_arr_op set addsasfit addsasfit "" "Nth," [expr $Nth-1] \
 #proc save_actual_globalfit_data {globalsasfit} {
 ##^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #	upvar $globalsasfit tmpsasfit
-#	global fn hide fskip lskip divisor widname 
+#	global fn hide fskip lskip divisor multiply weight widname 
 #
 #	set tmpsasfit(file,hide)      {}
 #	set tmpsasfit(file,firstskip) {}
 #	set tmpsasfit(file,lastskip)  {}
 #	set tmpsasfit(file,divisor)   {}
+#	set tmpsasfit(file,multiply)  {}
+#	set tmpsasfit(file,weight)    {}
 #	set tmpsasfit(file,name)      {}
 #
 #	set n_no_hide 0
@@ -513,6 +516,8 @@ sasfit_arr_op set addsasfit addsasfit "" "Nth," [expr $Nth-1] \
 #	   lappend tmpsasfit(file,firstskip) $fskip($j)
 #	   lappend tmpsasfit(file,lastskip)  $lskip($j)
 #	   lappend tmpsasfit(file,divisor)   $divisor($j)
+#	   lappend tmpsasfit(file,multiply)  $multiply($j)
+#	   lappend tmpsasfit(file,weight)    $weight($j)
 #	   lappend tmpsasfit(file,name)      $fn($j)
 #	}
 #	replace_or_append_Nth_globalfit_data tmpsasfit $tmpsasfit(Nth,actual)
@@ -545,14 +550,14 @@ proc replace_or_append_Nth_globalfit_data {globalsasfit Nth} {
 	if {$addsasfit(Nth,n) < $Nth} {
 	   incr addsasfit(Nth,n)
 	   sasfit_arr_op lappend addsasfit addsasfit "Nth,file," "file," -1 \
-	      {n name divisor multiply firstskip lastskip hide widname widcnt Q I DI res \
+	      {n name divisor multiply weight firstskip lastskip hide widname widcnt Q I DI res \
 	      "res,file" "res,calc" r1 r2 lambda Dlambda l1 l2 Dd d \
 	      dr_by_count dr_percent dr_loglogdist dr_mindist}
 	   sasfit_arr_op lappend addsasfit addsasfit "Nth," "" -1 \
 	      {filelabel hide Q I DI res "res,file" "res,calc"}
 	} else {
 	   sasfit_arr_op lset addsasfit addsasfit "Nth,file," "file," [expr $Nth-1] \
-	      {n name divisor multiply firstskip lastskip hide widname widcnt Q I DI res "res,file" "res,calc" \
+	      {n name divisor multiply weight firstskip lastskip hide widname widcnt Q I DI res "res,file" "res,calc" \
 	      r1 r2 lambda Dlambda l1 l2 Dd d \
 	      dr_by_count dr_percent dr_loglogdist dr_mindist}
 	   sasfit_arr_op lset addsasfit addsasfit "Nth," "" [expr $Nth-1] \
@@ -573,7 +578,7 @@ proc remove_Nth_globalfit_data {globalsasfit Nth} {
 	}
 	set addsasfit(Nth,actual) $Nth
 	sasfit_arr_op delete addsasfit addsasfit "Nth,file," "Nth,file," [expr $Nth-1] \
-		{n name divisor multiply firstskip lastskip hide widname widcnt Q I DI res \
+		{n name divisor multiply weight firstskip lastskip hide widname widcnt Q I DI res \
 		"res,calc" "res,file" r1 r2 lambda Dlambda l1 l2 Dd d \
 		dr_by_count dr_percent dr_loglogdist dr_mindist}
 	sasfit_arr_op delete addsasfit addsasfit "Nth," "Nth," [expr $Nth-1] \
@@ -593,7 +598,7 @@ proc remove_Nth_globalfit_data {globalsasfit Nth} {
 proc AddCmd {args} {
 #^^^^^^^^^^^^^^^^^^^
 global sasfit tmpsasfit AnalytPar actualAnalytPar tmpAnalytPar
-global fn hide fskip lskip divisor multiply widname r1 r2 l1 l2 lambda Dlambda d Dd
+global fn hide fskip lskip divisor multiply weight  widname r1 r2 l1 l2 lambda Dlambda d Dd
 global addsasfit
 global nomenu_add
 cp_arr addsasfit tmpsasfit
@@ -922,15 +927,18 @@ grid  $w2.file -column 0 -row 0 -sticky w
 label $w2.multiply -text "multiply" \
       -highlightthickness 0 -justify left -anchor w
 grid  $w2.multiply -column 1 -row 0 -sticky w
+label $w2.weight -text "weight" \
+      -highlightthickness 0 -justify left -anchor w
+grid  $w2.weight -column 2 -row 0 -sticky w
 label $w2.skipfirst -text "skip first\nn points" \
       -highlightthickness 0 -justify left -anchor w
-grid  $w2.skipfirst -column 2 -row 0 -sticky w
+grid  $w2.skipfirst -column 3 -row 0 -sticky w
 label $w2.skiplast -text "skip last\npoints" \
       -highlightthickness 0 -justify left -anchor w
-grid  $w2.skiplast -column 3 -row 0 -sticky w
+grid  $w2.skiplast -column 4 -row 0 -sticky w
 label $w2.hide -text "hide" \
       -highlightthickness 0 -justify left -anchor w
-grid  $w2.hide -column 4 -row 0 -sticky w
+grid  $w2.hide -column 5 -row 0 -sticky w
 frame $w2.resframe
 grid  $w2.resframe -column 6 -row 0 -sticky w
 checkbutton $w2.resframe.geom -text "calc resolution\nfrom geometrical values (on)\ntake values from data file (off)" \
@@ -961,37 +969,44 @@ frame  $w2.vportdivisor.frame
 $w2.vportdivisor create window 0 0 -anchor nw -window $w2.vportdivisor.frame
 bind $w2.vportdivisor.frame <Configure> "scrollform_resize $w2.vportdivisor"
 
+canvas $w2.vportweight -width 1 -height $canvasheight \
+       -highlightthickness 0 -yscrollcommand "$w2.sbar set"
+grid   $w2.vportweight -column 2 -row 1
+frame  $w2.vportweight.frame
+$w2.vportweight create window 0 0 -anchor nw -window $w2.vportweight.frame
+bind $w2.vportweight.frame <Configure> "scrollform_resize $w2.vportweight"
+
 canvas $w2.vportsfirst -width 1 -height $canvasheight \
        -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-grid   $w2.vportsfirst -column 2 -row 1
+grid   $w2.vportsfirst -column 3 -row 1
 frame  $w2.vportsfirst.frame
 $w2.vportsfirst create window 0 0 -anchor nw -window $w2.vportsfirst.frame
 bind $w2.vportsfirst.frame <Configure> "scrollform_resize $w2.vportsfirst"
 
 canvas $w2.vportslast -width 1 -height $canvasheight \
        -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-grid   $w2.vportslast -column 3 -row 1
+grid   $w2.vportslast -column 4 -row 1
 frame  $w2.vportslast.frame
 $w2.vportslast create window 0 0 -anchor nw -window $w2.vportslast.frame
 bind $w2.vportslast.frame <Configure> "scrollform_resize $w2.vportslast"
 
 canvas $w2.vporthide -width 1 -height $canvasheight \
        -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-grid   $w2.vporthide -column 4 -row 1
+grid   $w2.vporthide -column 5 -row 1
 frame  $w2.vporthide.frame
 $w2.vporthide create window 0 0 -anchor nw -window $w2.vporthide.frame
 bind $w2.vporthide.frame <Configure> "scrollform_resize $w2.vporthide"
 
 canvas $w2.vportdel -width 1 -height $canvasheight \
        -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-grid   $w2.vportdel -column 5 -row 1
+grid   $w2.vportdel -column 6 -row 1
 frame  $w2.vportdel.frame
 $w2.vportdel create window 0 0 -anchor nw -window $w2.vportdel.frame
 bind $w2.vportdel.frame <Configure> "scrollform_resize $w2.vportdel"
 
 canvas $w2.vportres -width 1 -height $canvasheight \
        -highlightthickness 0 -yscrollcommand "$w2.sbar set"
-grid   $w2.vportres -column 6 -row 1
+grid   $w2.vportres -column 7 -row 1
 frame  $w2.vportres.frame
 $w2.vportres create window 0 0 -anchor nw -window $w2.vportres.frame
 bind $w2.vportres.frame <Configure> "scrollform_resize $w2.vportres"

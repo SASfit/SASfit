@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sd_std_lognorm ################ */
-/** 
+/**
  * \defgroup sd_std_lognorm std LogNorm
  * \ingroup sd_plugins_quantile_semibounded
  *
@@ -85,7 +85,7 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_std_lognorm_v(scalar q, sasfit_param *
 /* ################ stop sd_std_lognorm ################ */
 
 /* ################ start sd_shifted_lognorm ################ */
-/** 
+/**
  * \defgroup sd_shifted_lognorm shifted LogNorm
  * \ingroup sd_plugins_quantile_semibounded
  *
@@ -103,7 +103,7 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_std_lognorm_v(scalar q, sasfit_param *
  *       <td>width parameter</td>
  *      </tr><tr>
  *       <td>\b x0</td>
- *       <td>shift of distrivbution</td>
+ *       <td>shift of distribution</td>
  *      </tr><tr>
  *       <td>\b mu</td>
  *       <td>location parameter</td>
@@ -133,7 +133,7 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_shifted_lognorm_v(scalar q, sasfit_par
 /* ################ stop sd_shifted_lognorm ################ */
 
 /* ################ start sd_lognorm_fp ################ */
-/** 
+/**
  * \defgroup sd_lognorm_fp LogNorm_fp
  * \ingroup sd_plugins_quantile_semibounded
  *
@@ -190,11 +190,11 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_lognorm_fp_v(scalar q, sasfit_param * 
 /* ################ stop sd_lognorm_fp ################ */
 
 /* ################ start sd_bilognorm ################ */
-/** 
- * \defgroup sd_bilognorm BiLogNorm
+/**
+ * \defgroup sd_bilognorm shifted BiLogNorm
  * \ingroup sd_plugins_quantile_semibounded
  *
- * \brief \<some brief description of BiLogNorm function\>
+ * \brief \<some brief description of shifted BiLogNorm function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -224,6 +224,9 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_lognorm_fp_v(scalar q, sasfit_param * 
  *      </tr><tr>
  *       <td>\b mu_2</td>
  *       <td>second location parameter</td>
+ *      </tr><tr>
+ *       <td>\b shift</td>
+ *       <td>shift of bilognorm</td>
  *      </tr></table>
  */
 

@@ -208,12 +208,12 @@ sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_piecew_const_thin_approx_
 /* ################ stop ff_vesicle_peg_piecew_const_thin_approx ################ */
 
 
-/* ################ start ff_vesicle_peg_gaussian ################ */
+/* ################ start ff_vesicle_peg_laplace ################ */
 /**
- * \defgroup ff_vesicle_peg_gaussian vesicle (PEG, Gaussian)
+ * \defgroup ff_vesicle_peg_laplace vesicle (PEG, Laplace)
  * \ingroup ff_devel
  *
- * \brief Vesicle (PEGylated w. piecewise constant profile)
+ * \brief Vesicle (PEGylated w. laplacian profile)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -272,26 +272,26 @@ sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_piecew_const_thin_approx_
  */
 
 /**
- * \ingroup ff_vesicle_peg_gaussian
+ * \ingroup ff_vesicle_peg_laplace
  *
  * \sa sasfit_vesicle_peg.h, ff_devel
  */
-sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_gaussian(scalar q, sasfit_param * p);
+sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_laplace(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_vesicle_peg_gaussian
+ * \ingroup ff_vesicle_peg_laplace
  *
  * \sa sasfit_vesicle_peg.h, ff_devel
  */
-sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_gaussian_f(scalar q, sasfit_param * p);
+sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_laplace_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_vesicle_peg_gaussian
+ * \ingroup ff_vesicle_peg_laplace
  *
  * \sa sasfit_vesicle_peg.h, ff_devel
  */
-sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_gaussian_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_vesicle_gaussian_const ################ */
+sasfit_vesicle_peg_DLLEXP scalar sasfit_ff_vesicle_peg_laplace_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_vesicle_peg_laplace ################ */
 
 
 /* ################ start ff_vesicle_peg_gaussian_thin_approx ################ */
