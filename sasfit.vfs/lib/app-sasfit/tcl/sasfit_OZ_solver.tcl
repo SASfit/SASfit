@@ -1032,6 +1032,8 @@ proc sasfit_OZ_solver {} {
     set ozSQGraph(w) .oztop.tab.sq.draw
     set ozSQGraph(e,element) 0
     CreateGraph ozSQGraph
+	set ozSQGraph(sorting) no
+	set ozSQGraph(checking) no
     set ozSQGraph(x,logscale) 0
     set ozSQGraph(y,logscale) 0
     set ozSQGraph(x,type)     x
@@ -1096,6 +1098,8 @@ proc sasfit_OZ_solver {} {
     set ozgrGraph(w) .oztop.tab.gr.draw
     set ozgrGraph(e,element) 0
     CreateGraph ozgrGraph
+	set ozgrGraph(sorting) no
+	set ozgrGraph(checking) no
     set ozgrGraph(x,logscale) 0
     set ozgrGraph(y,logscale) 0
     set ozgrGraph(x,type)     x
@@ -1285,6 +1289,8 @@ proc sasfit_OZ_solver {} {
     set ozcrGraph(w) .oztop.tab.cr.draw
     set ozcrGraph(e,element) 0
     CreateGraph ozcrGraph
+	set ozcrGraph(sorting) no
+	set ozcrGraph(checking) no
     set ozcrGraph(x,logscale) 0
     set ozcrGraph(y,logscale) 0
     set ozcrGraph(x,type)     x
@@ -1349,6 +1355,8 @@ proc sasfit_OZ_solver {} {
     set ozgammarGraph(w) .oztop.tab.gammar.draw
     set ozgammarGraph(e,element) 0
     CreateGraph ozgammarGraph
+	set ozgammarGraph(sorting) no
+	set ozgammarGraph(checking) no
     set ozgammarGraph(x,logscale) 0
     set ozgammarGraph(y,logscale) 0
     set ozgammarGraph(x,type)     x
@@ -1413,6 +1421,8 @@ proc sasfit_OZ_solver {} {
     set ozhrGraph(w) .oztop.tab.hr.draw
     set ozhrGraph(e,element) 0
     CreateGraph ozhrGraph
+	set ozhrGraph(sorting) no
+	set ozhrGraph(checking) no
     set ozhrGraph(x,logscale) 0
     set ozhrGraph(y,logscale) 0
     set ozhrGraph(x,type)     x
@@ -1477,7 +1487,9 @@ proc sasfit_OZ_solver {} {
     set ozbetaUrGraph(w) .oztop.tab.betaUr.draw
     set ozbetaUrGraph(e,element) 0
     CreateGraph ozbetaUrGraph
-    set oznetaUrGraph(x,logscale) 0
+	set ozbetaURGraph(sorting) no
+	set ozbetaURGraph(checking) no
+    set ozbetaUrGraph(x,logscale) 0
     set ozbetaUrGraph(y,logscale) 0
     set ozbetaUrGraph(x,type)     x
     set ozbetaUrGraph(y,type)     y
@@ -1541,6 +1553,8 @@ proc sasfit_OZ_solver {} {
     set ozfrGraph(w) .oztop.tab.fr.draw
     set ozfrGraph(e,element) 0
     CreateGraph ozfrGraph
+	set ozfrGraph(sorting) no
+	set ozfrGraph(checking) no
     set ozfrGraph(x,logscale) 0
     set ozfrGraph(y,logscale) 0
     set ozfrGraph(x,type)     x
@@ -1606,6 +1620,8 @@ proc sasfit_OZ_solver {} {
     set ozBrGraph(w) .oztop.tab.br.draw
     set ozBrGraph(e,element) 0
     CreateGraph ozBrGraph
+	set ozBrGraph(sorting) no
+	set ozBrGraph(checking) no
     set ozBrGraph(x,logscale) 0
     set ozBrGraph(y,logscale) 0
     set ozBrGraph(x,type)     x
@@ -1670,6 +1686,8 @@ proc sasfit_OZ_solver {} {
     set ozyrGraph(w) .oztop.tab.yr.draw
     set ozyrGraph(e,element) 0
     CreateGraph ozyrGraph
+	set ozyrGraph(sorting) no
+	set ozyrGraph(checking) no
     set ozyrGraph(x,logscale) 0
     set ozyrGraph(y,logscale) 0
     set ozyrGraph(x,type)     x

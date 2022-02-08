@@ -1373,11 +1373,11 @@ u^\text{HC3Y}(r,\ldots) &=
 \begin{cases}
 \infty                                                                  & \mbox{for } r<   \sigma \\
 k_\text{B} T
-\displaystyle \sum_{i=1}^{N=3} K_i\frac{\exp\left(-\lambda_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma}& \mbox{for } r >= \sigma
+\displaystyle \sum_{i=1}^{N=3} -K_i\frac{\exp\left(-Z_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma}& \mbox{for } r >= \sigma
 \end{cases}
 \end{align}
 The sign of $K_i$ defines, if the potential is
-repulsive ($K_i>0$) or attractive ($K_i<0$) and the modulus of $\abs{K_i}$ defines the strength of the interaction. $\lambda_i$ defines the range of the interaction and should be always a positive number.
+repulsive ($K_i<0$) or attractive ($K_i>0$) and the modulus of $\abs{K_i}$ defines the strength of the interaction. $Z_i=1/\lambda_i$ defines the range of the interaction and should be always a positive number. $\lambda_i$ is the screening length.
 
 
 Also a splitting of the potential in repulsive-attractive, reference-perturbation, shortrange-longrange has been implemented as
@@ -1398,14 +1398,14 @@ u^\text{HC3Y}_\text{R}(r,\ldots) &=&
 \begin{cases}
 \infty & \mbox{for } r<\sigma \\
 k_\text{B} T
-\displaystyle \sum_{\forall K_i>0} K_i\frac{\exp\left(-\lambda_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma} & \mbox{for } r\geq\sigma
+\displaystyle \sum_{\forall K_i<0} -K_i\frac{\exp\left(-Z_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma} & \mbox{for } r\geq\sigma
 \end{cases}\\
 u^\text{HC3Y}_\text{A}(r,\ldots) &=&
 \begin{cases}
 k_\text{B} T
-\displaystyle \sum_{\forall K_i<0} K_i & \mbox{for } r<\sigma \\
+\displaystyle \sum_{\forall K_i>0} -K_i & \mbox{for } r<\sigma \\
 k_\text{B} T
-\displaystyle \sum_{\forall K_i<0} K_i\frac{\exp\left(-\lambda_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma} & \mbox{for } r\geq\sigma
+\displaystyle \sum_{\forall K_i>0} -K_i\frac{\exp\left(-Z_i\left(\frac{r}{\sigma}-1\right)\right)}{r/\sigma} & \mbox{for } r\geq\sigma
 \end{cases}
 \end{subeqnarray}
 

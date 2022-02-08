@@ -466,10 +466,10 @@ set EMOptions(PrintProgress) 0
 global FitPrecision EMOptions
 
 
-set OZ(plugin_fct_names) {"SQ oz 1" 	"SQ oz 2" 	"SQ oz 3" \
-			  "SQ oz 4" 	"SQ oz 5" 	"SQ oz 6"}
+set OZ(plugin_fct_names) {	"SQ oz 1" 	"SQ oz 2" 	"SQ oz 3" \
+							"SQ oz 4" 	"SQ oz 5" 	"SQ oz 6"}
 set OZ(plugin_C_names) {"sq_sq_oz_1" 	"sq_sq_oz_2" 	"sq_sq_oz_3" \
-			"sq_sq_oz_4" 	"sq_sq_oz_5" 	"sq_sq_oz_6"}
+						"sq_sq_oz_4" 	"sq_sq_oz_5" 	"sq_sq_oz_6"}
 set OZ(closure) Percus-Yevick
 set OZ(potential) "HardSphere"
 #set OZ(closure) "Hypernetted-Chain"

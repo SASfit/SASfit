@@ -191,97 +191,98 @@ proc Put_Graph_el {GraphPar xdata args } {
 			lappend resdata 0.0
 		}
 	}
-#
-# check if all entries are numbers
-#
-
-	set tx {}
-	set ty {}
-	set tdy {}
-	set tr {}
-	foreach x $xdata y $ydata dy $dydata r $resdata {
-	    if {[catch {expr $x}]==0 &&
-                [catch {expr $y}]==0 &&
-                [catch {expr $dy}]==0 &&
-                [catch {expr $r}]==0 
-	       } {
-		   lappend tx $x
-		   lappend ty $y
-		   lappend tdy $dy
-		   lappend tr $r
-	       } else {
+#	if {$Par(checking)} 
+	if {yes} {
+	#
+	# check if all entries are numbers
+	#
+		set tx {}
+		set ty {}
+		set tr {}
+		foreach x $xdata y $ydata dy $dydata r $resdata {
+			if {[catch {expr $x}]==0 &&
+					[catch {expr $y}]==0 &&
+					[catch {expr $dy}]==0 &&
+					[catch {expr $r}]==0 
+			} {
+				lappend tx $x
+				lappend ty $y
+				lappend tdy $dy
+				lappend tr $r
+			} else {
 # puts "$x $y"
-	       }
-	}
-	set xdata $tx
-	set ydata $ty
-	set dydata $tdy
-	set resdata $tr
+			}
+		}
+		set xdata $tx
+		set ydata $ty
+		set dydata $tdy
+		set resdata $tr
 
 #
 # multiplying with prefactor
 #
-	set Par(x,factor) [expr abs($Par(x,factor))]
-	set Par(y,factor) [expr abs($Par(y,factor))]
-	if {$Par(y,factor) != 1.0} {
-	    set tmpdata {}
-	    set tmpddata {}
-	    foreach y $ydata e $dydata {
-                if {$Par(y,factor) == 0} {
-		    set factor 1.0
-		} else {
-		    set factor $Par(y,factor)
-		}
-		lappend tmpdata  [expr $y*$factor]
-                if {$e != -1.0} {
+		set Par(x,factor) [expr abs($Par(x,factor))]
+		set Par(y,factor) [expr abs($Par(y,factor))]
+		if {$Par(y,factor) != 1.0} {
+			set tmpdata {}
+			set tmpddata {}
+			foreach y $ydata e $dydata {
+				if {$Par(y,factor) == 0} {
+					set factor 1.0
+				} else {
+					set factor $Par(y,factor)
+				}
+				lappend tmpdata  [expr $y*$factor]
+				if {$e != -1.0} {
                     # don't scale the uncertainty placeholder value
-		    lappend tmpddata [expr $e*$factor]
-                }
-	    }
-	    set ydata  $tmpdata
-	    set dydata $tmpddata
-	}
-	if {$Par(x,factor) != 1.0} {
-	    set tmpdata {}
-	    set tmprdata {}
-	    foreach x $xdata r $resdata {
-                if {$Par(x,factor) == 0} {
-		    set factor 1.0
-		} else {
-		    set factor $Par(x,factor)
+					lappend tmpddata [expr $e*$factor]
+				}
+			}
+			set ydata  $tmpdata
+			set dydata $tmpddata
 		}
-		lappend tmpdata  [expr $x*$factor]
-		lappend tmprdata [expr $r*$factor]
-	    }
-	    set xdata   $tmpdata
-	    set resdata $tmprdata
-	}
+		if {$Par(x,factor) != 1.0} {
+			set tmpdata {}
+			set tmprdata {}
+			foreach x $xdata r $resdata {
+				if {$Par(x,factor) == 0} {
+					set factor 1.0
+				} else {
+					set factor $Par(x,factor)
+				}
+				lappend tmpdata  [expr $x*$factor]
+				lappend tmprdata [expr $r*$factor]
+			}
+			set xdata   $tmpdata
+			set resdata $tmprdata
+		}
 #
 # all data which are too small will be set to zero
 #
-	set tmpydata $ydata
-	set ydata {}
-	foreach y $tmpydata {
-	    if {[catch {expr 0+$y}]} {
-		lappend ydata 0.0
-	    } else {
-		lappend ydata $y
-	    }
+		set tmpydata $ydata
+		set ydata {}
+		foreach y $tmpydata {
+			if {[catch {expr 0+$y}]} {
+				lappend ydata 0.0
+			} else {
+				lappend ydata $y
+			}
+		}
 	}
-
+    if {$Par(sorting)} {
 	#
 	# sorting {xdata ydata dydata} by increasing values of xdata
 	#
-	set ind [lsort_index $xdata]
-	set xdata [lmindex $xdata $ind]
-	set ydata [lmindex $ydata $ind]
-	if { [llength $dydata] == [llength $ind] } {
-		set dydata [lmindex $dydata $ind]
+		set ind [lsort_index $xdata]
+		set xdata [lmindex $xdata $ind]
+		set ydata [lmindex $ydata $ind]
+		if { [llength $dydata] == [llength $ind] } {
+			set dydata [lmindex $dydata $ind]
+		}
+		if { [llength $resdata] == [llength $ind] } {
+			set resdata [lmindex $resdata $ind]
+		}
 	}
-	if { [llength $resdata] == [llength $ind] } {
-		set resdata [lmindex $resdata $ind]
-	}
-
 	# 
 	# create new element for displaying data
 	# options are set to default values (see procedure CreateGraphPar)
@@ -447,6 +448,8 @@ proc CreateGraphPar {GraphPar} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	upvar $GraphPar Par
 
+	set Par(sorting)		   yes
+	set Par(checking)		   yes
 	set Par(symbolselection)   [list square circle diamond plus cross splus scross triangle]
 	set Par(colorselection)    [list black red green blue cyan magenta yellow violet purple orange pink gray]
 	set Par(fitrange)          no

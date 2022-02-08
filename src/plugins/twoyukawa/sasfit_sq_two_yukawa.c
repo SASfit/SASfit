@@ -37,6 +37,7 @@ scalar sasfit_sq_two_yukawa(scalar q, sasfit_param * param)
 	    numdens = PHI / (4 / 3. * M_PI * gsl_pow_3(R));
 	    MOLARITY = numdens/(GSL_CONST_NUM_AVOGADRO*1e-24);
 	}
+	if (PHI==0) return 1;
 	Z1 = 1./LAMBDA1;
 	Z2 = 1./LAMBDA2;
     if(fabs(Z1) < 0.001) Z1 = 0.001;			// values near zero are very bad for the calculation

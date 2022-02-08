@@ -1,41 +1,42 @@
 \chapter{Size Distributions}
 \label{sizedistribution}
 
-Several distribution functions are supplied in \SASfit for smearing parameters. In principle any parameter of the form factor can be assigned with a distribution function. It does not need to be a parameter describing a size or length quantity of the scattering object. As also the inclusion of the structure factor is effected by the size distribution details about this can be found in section \ref{sec:structurefactorapproaches}. In the simplest case, let say a distribution of radii $N(R)$ is needed to describe a system, the integration to be performed is
+Several distribution functions are supplied in \SASfit for smearing parameters. In principle any parameter of the form factor can be assigned with a distribution function. It does not need to be a parameter describing a size or length quantity of the scattering object. As also the inclusion of the structure factor is effected by the size distribution details about this can be found in section \ref{sec:structurefactorapproaches}. In the simplest case, let say a distribution of radii $N  f_\mathrm{pdf}(x)$ is needed to describe a system, the integration to be performed is
 \begin{align}
-I(q) &= \int_0^\infty N\, f(x) P(q,x) \; \mathrm{d}x \label{eq:NRintegration}
+I(q) &= \int_0^\infty N\, f_\mathrm{pdf}(x) P(q,x) \; \mathrm{d}x \label{eq:NRintegration}
 \end{align}
-which is an improper integral with an upper bound approaching infinity. The distribution function available are all probability distribution functions $\operatorname{f}$ normalized on 1 for the definition range between $0$ and $\infty$ and $N$ as the scaling factor. Specialized code for such integrals are available and also implemented in {\SASfitd} However, in cases where the size distribution shows a very narrow peak these algorithm might miss the peak. Therefore for all distribution functions it has been tried to find proper finite lower and upper integration limits and using. The routine for finding a suitable integration range also takes into account, that the form factor can scale with up to the $6^\mathrm{th}$ power of its size parameter. Therefore at the moment for each size distribution also the internal function for finding the proper integration limits needs to be extended.
+which is an improper integral with an upper bound approaching infinity. The distribution function available are all probability distribution functions normalized on 1 for the definition range between $0$ and $\infty$ and $N$ is the scaling factor describing typically the number density of particles if the scattering intensity is given in units of 1/cm. Specialized code for such integrals are available and also implemented in {\SASfitd} However, in cases where the size distribution shows a very narrow peak these algorithm might miss the peak. Therefore for all distribution functions it has been tried to find proper finite lower and upper integration limits. The routine for finding a suitable integration range also takes into account, that the form factor can scale with up to the $6^\mathrm{th}$ power of its size parameter. Therefore at the moment for each size distribution also the internal function for finding the proper integration limits needs to be extended.
 
-Another way of performing the integration is to make use of the quantile distribution function. For many analytically available  probability distribution function $f(x)$ also their cumulative distribution function
+Another way of performing the integration is to make use of the quantile distribution function. For many analytically available  probability distribution function $f_\mathrm{pdf}(x)$ also their cumulative distribution function $F_\mathrm{cdf}(x)$ is analytically known
 \begin{align}
-F(x)&=\int_{-\infty}^x f(x') \;\mathrm{d}x'=p
-\end{align} 
-and quantile distribution function 
-\begin{align}
-Q(p)&=(F(x))^{-1}(p)=x,
-\end{align} 
-which is the inverse of the cumulative distribution function $F(x)$.
-The quantile density function is then given by
-\begin{align}
-q(p)=\mathrm{d}Q(p)/\mathrm{d}p=\mathrm{d}x/\mathrm{d}p
+F_\mathrm{cdf}(x)&=\int_{-\infty}^x f_\mathrm{pdf}(x') \;\mathrm{d}x'=p
 \end{align}
-and its reciprocal is related to the probability distribution function by 
+as well as its quantile distribution function
 \begin{align}
-1/q(p)=f(F(x))
+Q_\mathrm{qdf}(p)&=(F_\mathrm{cdf}(x))^{-1}(p)=x,
+\end{align}
+which is the inverse of the cumulative distribution function $F(x)$.
+The quantile density function $\mathfrak{q}_\mathrm{qdf}(p)$ is then given by
+\begin{align}
+\mathfrak{q}_\mathrm{qdf}(p)=\frac{\mathrm{d}Q_\mathrm{qdf}(p)}{\mathrm{d}p}=\frac{\mathrm{d}x}{\mathrm{d}p}
+\end{align}
+and its reciprocal is related to the probability distribution function by
+\begin{align}
+\frac{1}{\mathfrak{q}_\mathrm{qdf}(p)}=f_\mathrm{pdf}(F_\mathrm{cdf}(x))
 \end{align}
  We therefore can write the integral \ref{eq:NRintegration} as
 \begin{align}
-I(q) &= \int_0^\infty N\, f(x) P(q,x) \; \mathrm{d}x \\
-     &= \int_{0}^{\infty} N\, f(F(x)) P(q,x) \; \mathrm{d}x \\
-     &= \int_{F(0)}^{F(\infty)} N\, f(p) P(q,Q(p)) q(p) \; \mathrm{d}p \\
-     &= \int_{F(0)}^{1} N\, P(q,Q(p)) \; \mathrm{d}p 
-\end{align} 
-By this variable transformation the integral become a propoer integral over the box $(F(0);1)$ and behaves well both for very sharp as well as broad probability distribution functions.
- 
+I(q) &= \int_0^\infty N\, f_\mathrm{pdf}(x) P(q,x) \; \mathrm{d}x \\
+     &= \int_{0}^{\infty} N\, f_\mathrm{pdf}(F_\mathrm{cdf}(x)) P(q,x) \; \mathrm{d}x \\
+     &= \int_{F_\mathrm{cdf}(0)}^{F_\mathrm{cdf}(\infty)} N\, f_\mathrm{pdf}(p) P(q,Q_\mathrm{qdf}(p)) \mathfrak{q}_\mathrm{qdf}(p) \; \mathrm{d}p \\
+     &= \int_{F_\mathrm{cdf}(0)}^{1} N\, P(q,Q_\mathrm{qdf}(p) \; \mathrm{d}p
+\end{align}
+By this variable transformation the integral become a proper integral over the box $(F_\mathrm{cdf}(0);1)$ and behaves well both for very sharp as well as broad probability distribution functions as the integration is performed over the cumulative value $\mathrm{d}p$ of the probability distribution.
+
+\clearpage
 \section{Delta} \hspace{1pt} \\
 \label{sec:Delta}
-Choosing \texttt{Delta} as a size distribution simply scales the form factor with a constant value $N$
+Choosing \texttt{Delta} as a size distribution simply scales the form factor with a constant value $N$ without performing any integration.
 
 \vspace{5mm}
 \uline{Input Parameters for size distribution \texttt{Delta}:}
@@ -43,13 +44,13 @@ Choosing \texttt{Delta} as a size distribution simply scales the form factor wit
 \item[\texttt{N}] particle number density $N$
 \end{description}
 
-\clearpage
+
 
 \section{Uniform distribution} \hspace{1pt} \\
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.744\textwidth]{Uniform.png}
+\includegraphics[width=0.5\textwidth]{Uniform.png}
 \end{center}
 \caption{Uniform distribution function. $x_\text{min},x_\text{max} \in
 (-\infty,\infty)$, $x_\text{max}>x_\text{min}$, $x_\text{min}\leq x \leq x_\text{max}$} \label{Uniform}
@@ -149,10 +150,14 @@ and the $m^\text{th}$ moment $\langle X^m\rangle$ of the \texttt{LogNorm} distri
 \mu^m \, e^{\frac{1}{2} \sigma^2 m (2 - 2 p + m)}.
 \label{eq:nMoment:LogNormal}
 \end{align}
-The comulative distribution function is given by
+The cumulative distribution function is given by
 \begin{align}
-F_\textrm{LogNorm} &=
-1/2 \textrm{erf}\left[\frac{(p-1) \sigma^2 + \ln(x/\mu)}{\sqrt{2} \sigma}\right]
+F_\textrm{LogNorm}(X) &=
+1/2 \textrm{erf}\left[\frac{(p-1) \sigma^2 + \ln(X/\mu)}{\sqrt{2} \sigma}\right] = Y
+\end{align}
+and its quantile function by
+\begin{align}
+Q_\textrm{LogNorm}(Y) &= \mu\exp\left(\sqrt{2} \sigma\operatorname{erf}^{-1}(2Y)-(p-1) \sigma^2\right) = X
 \end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

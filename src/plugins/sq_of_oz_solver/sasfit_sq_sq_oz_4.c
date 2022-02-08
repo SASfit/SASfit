@@ -19,7 +19,7 @@ scalar sasfit_sq_sq_oz_4(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R < 0.0), param, "R(%lg) < 0",R); // modify condition to your needs
 
-	if (sq3akima_T==NULL) {
+	if (sq4akima_T==NULL) {
         return 1.0;
 	} else {
 	     evalOK=gsl_spline_eval_e(sq4akima_T,q*2*R,acc_spline4,&res);
