@@ -8,12 +8,13 @@
 
 // define shortcuts for local parameters/variables
 #define N	param->p[0]
-#define L	param->p[1]
-#define U	param->p[2]
-#define XI	param->p[3]
-#define LAMBDA	param->p[4]
-#define DELTA	param->p[5]
-#define GAMMA	param->p[6]
+#define L	GSL_MIN(param->p[1],param->p[2])
+#define U	GSL_MAX(param->p[1],param->p[2])
+#define ALPHA	param->p[3]
+#define XI	param->p[4]
+#define LAMBDA	fabs(param->p[5])
+#define DELTA	fabs(param->p[6])
+#define GAMMA	param->p[7]
 
 scalar median_sd_johnson_sb(scalar x, sasfit_param * param) {
     return LAMBDA/(1 + exp(GAMMA/DELTA)) + XI;
@@ -26,18 +27,16 @@ scalar sasfit_sd_johnson_sb(scalar x, sasfit_param * param)
      */
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND1((x < 0.0), param, "x(%lg) < 0",x);
-	SASFIT_CHECK_COND1((L < 0.0), param, "l(%lg) < 0",L); // modify condition to your needs
-	SASFIT_CHECK_COND1((U < 0.0), param, "u(%lg) < 0",U); // modify condition to your needs
 	SASFIT_CHECK_COND1((XI < 0.0), param, "xi(%lg) < 0",XI); // modify condition to your needs
 	SASFIT_CHECK_COND1((LAMBDA <= 0.0), param, "lambda(%lg) <= 0",LAMBDA); // modify condition to your needs
-	SASFIT_CHECK_COND1((DELTA < 0.0), param, "delta(%lg) < 0",DELTA); // modify condition to your needs
-	SASFIT_CHECK_COND1((GAMMA < 0.0), param, "gamma(%lg) < 0",GAMMA); // modify condition to your needs
 
 	// insert your code here
+
+	if (x==0 && ALPHA > 0) return 0;
 	if (x<=XI) return 0;
 	if (x>=LAMBDA+XI) return 0;
-	return (DELTA*LAMBDA*exp(-gsl_pow_int(GAMMA + DELTA*log((x - XI)/(LAMBDA - x + XI)),2)/2.))/(sqrt(2*M_PI)*(x - XI)*(LAMBDA - x + XI));
+	return N*(DELTA*LAMBDA*exp(-gsl_pow_int(GAMMA + DELTA*log((x - XI)/(LAMBDA - x + XI)),2)/2.))/(sqrt(2*M_PI)*(x - XI)*(LAMBDA - x + XI))
+            *pow(x,-ALPHA);
 }
 
 scalar sasfit_sd_johnson_sb_f(scalar x, sasfit_param * param)

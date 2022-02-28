@@ -185,7 +185,7 @@ void find_integration_range(Tcl_Interp *interp,
 	scalar R_n, R_50,R_0,R_max, tmp;
 	scalar R2_n, R2_50,R2_0, R2start, R2end;
 	int   n;
-	scalar a1,a2,a3,a4,a5;
+	scalar a1,a2,a3,a4,a5,a6;
 	int funcid;
 	sasfit_param subParam;
 	const sasfit_plugin_func_t * func_descr;
@@ -197,6 +197,7 @@ void find_integration_range(Tcl_Interp *interp,
 	a3=a[2];
 	a4=a[3];
 	a5=a[4];
+	a6=a[5];
 
 	sasfit_init_param( &subParam );
 	subParam.p[0] = a[0];
@@ -754,19 +755,19 @@ void find_integration_range(Tcl_Interp *interp,
 			      return;
 			   }
 			} else if ( (strcmp(func_descr->name,"sd_johnson_sn")      == 0) ) {
-				*Rstart = GSL_MIN(a2,a3);
-				*Rend   = GSL_MAX(a2,a3);
-				*n_intervals = Nint;
-			} else if ( (strcmp(func_descr->name,"sd_johnson_sl")      == 0) ) {
-				*Rstart = GSL_MIN(a2,a3);
+				*Rstart = GSL_MAX(GSL_MIN(a2,a3),DBL_EPSILON);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_johnson_sb")      == 0) ) {
-				*Rstart = GSL_MIN(a2,a3);
-				*Rend   = GSL_MAX(a2,a3);
+				*Rstart = a5+DBL_EPSILON ;
+				*Rend   = a5+a6-DBL_EPSILON;
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_johnson_sl")      == 0) ) {
+				*Rstart = a5+DBL_EPSILON ;
+				*Rend   = GSL_MAX(3*(a5+DBL_EPSILON),a3);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_johnson_su")      == 0) ) {
-				*Rstart = GSL_MIN(a2,a3);
+				*Rstart = GSL_MAX(GSL_MIN(a2,a3),DBL_EPSILON);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
 			} else {

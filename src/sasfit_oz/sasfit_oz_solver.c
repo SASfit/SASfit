@@ -3199,16 +3199,16 @@ void root_finding (sasfit_oz_data *OZd) {
                 alpha_left=0.05;
                 break;
         case BPGG:
-                alpha_right=5.6;
-                alpha_left=0;
+                alpha_right=4;
+                alpha_left=0.5;
                 break;
         case CJVM:
                 alpha_right=1.4;
-                alpha_left=0;
+                alpha_left=1e-10;
                 break;
         case BB:
-                alpha_right=2.3;
-                alpha_left=-0.5;
+                alpha_right=1.0;
+                alpha_left= 0.001;
                 break;
     }
     refold=compressibility_calc(alpha_right, OZd);
@@ -3264,19 +3264,19 @@ void root_finding (sasfit_oz_data *OZd) {
             alpha_right = 0.6-(0.63-0.05)/28.*(i-1);
         }
         if (CLOSURE==BPGG) {
-            refnew=compressibility_calc(5.601-0.2*i, OZd);
-            alpha_left  = 5.601-0.2*i;
-            alpha_right = 5.601-0.2*(i-1);
+            refnew=compressibility_calc(4-3.5/28.*i, OZd);
+            alpha_left  = 4-3.5/28.*i;
+            alpha_right = 4-3.5/28.*(i-1);
         }
         if (CLOSURE==CJVM) {
-            refnew=compressibility_calc(0.001+0.05*i, OZd);
-            alpha_right  = 0.001+0.05*i;
-            alpha_left = 0.001+0.05*(i-1);
+            refnew=compressibility_calc(1e-10+1.4/28.*i, OZd);
+            alpha_right  = 1.4/28.+1e-10 +1.4/28.*i;
+            alpha_left = 1.4/28.+1e-10+1.4/28.*(i-1);
         }
         if (CLOSURE==BB) {
-            refnew=compressibility_calc(-0.5+0.1*i, OZd);
-            alpha_right  = -0.5+0.1*i;
-            alpha_left = -0.5+0.1*(i-1);
+            refnew=compressibility_calc(0.001+1./28.*i, OZd);
+            alpha_right  = 0.001+1.4/28+1.4/28*i;
+            alpha_left = 0.001+1.4/28+1.4/28.0*(i-1);
         }
         sasfit_out("          % 15e  |   % 15e \n", alpha_left , refnew/OZd->beta);
 

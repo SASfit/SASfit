@@ -52,10 +52,13 @@
  *       <td></td>
  *      </tr><tr>
  *       <td>\b l</td>
- *       <td></td>
+ *       <td>lower bound</td>
  *      </tr><tr>
  *       <td>\b u</td>
- *       <td></td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td></td>
@@ -98,7 +101,7 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_v(scalar q, sasfit
  * \defgroup sd_johnson_sb Johnson SB
  * \ingroup sd_plugins_quantile_bounded
  *
- * \brief \<some brief description of Johnson SB function\>
+ * \brief \< some brief description of Johnson SB function \>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -108,17 +111,20 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_v(scalar q, sasfit
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b l</td>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b u</td>
+ *       <td>\b dummy</td>
  *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
- *       <td></td>
+ *       <td>lower bound: xi</td>
  *      </tr><tr>
  *       <td>\b lambda</td>
- *       <td></td>
+ *       <td>upper bound: xi+lambda</td>
  *      </tr><tr>
  *       <td>\b delta</td>
  *       <td></td>
@@ -133,21 +139,21 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_v(scalar q, sasfit
  *
  * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_bounded
  */
-sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb(scalar q, sasfit_param * p);
+sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb(scalar x, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sb
  *
  * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_bounded
  */
-sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_f(scalar q, sasfit_param * p);
+sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_f(scalar x, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sb
  *
  * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_bounded
  */
-sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_v(scalar q, sasfit_param * p, int dist);
+sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_v(scalar y, sasfit_param * p, int dist);
 /* ################ stop sd_johnson_sb ################ */
 
 /* ################ start sd_johnson_su ################ */
@@ -166,10 +172,13 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_v(scalar q, sasfit
  *       <td></td>
  *      </tr><tr>
  *       <td>\b l</td>
- *       <td></td>
+ *       <td>lower bound</td>
  *      </tr><tr>
  *       <td>\b u</td>
- *       <td></td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td></td>
@@ -223,10 +232,13 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_su_v(scalar q, sasfit
  *       <td></td>
  *      </tr><tr>
  *       <td>\b l</td>
- *       <td></td>
+ *       <td>lower bound</td>
  *      </tr><tr>
  *       <td>\b u</td>
- *       <td></td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td></td>

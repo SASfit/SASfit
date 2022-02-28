@@ -675,8 +675,8 @@ proc update_ozmenu {} {
 	   set OZ(KINSetNumMaxIters) [lindex OZ(result,KINSetNumMaxIters)  $idx]
 	   set OZ(KINSetPrintLevel) [lindex OZ(result,KINSetPrintLevel)  $idx]
 	   set OZ(KINSetEtaForm) [lindex OZ(result,KINSetEtaForm)  $idx]
-	   set OZ(KINSolStrategy) [lindex OZ(result,KINSolStrategy)  $idx
-	   set OZ(KINSetMaxNewtonStep) [lindex OZ(result,KINSetMaxNewtonStep)  $idx
+	   set OZ(KINSolStrategy) [lindex OZ(result,KINSolStrategy)  $idx]
+	   set OZ(KINSetMaxNewtonStep) [lindex OZ(result,KINSetMaxNewtonStep)  $idx]
 	   set OZ(KINSpilsSetMaxRestarts) [lindex OZ(result,KINSpilsSetMaxRestarts) $idx] 
 
        set OZ(phi)	[lindex $OZ(result,phi) $idx]
