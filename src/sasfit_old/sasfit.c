@@ -791,7 +791,24 @@ void find_integration_range(Tcl_Interp *interp,
 }
 
 scalar IQ_IntdLen(scalar x, void *param4int) {
-
+//sasfit_out("executing now now: IQ_IntdLen\n");
+	float sqs[MAXPAR], V, SQ;
+	int j;
+	SQ=1;
+    if (((sasfit_param4int *)param4int)->withSQ) {
+        for (j=0;j<MAXPAR;j++) sqs[j]=((sasfit_param4int *)param4int)->s[j];
+        V = sasfit_volume(x,
+                          ((sasfit_param4int *)param4int)->l,
+                          ((sasfit_param4int *)param4int)->FF,
+                          ((sasfit_param4int *)param4int)->distr,
+                          &((sasfit_param4int *)param4int)->error);
+        sqs[0] = pow( 3./(4.*M_PI) *  V, 1./3.);
+        SQ=sasfit_sq(((sasfit_param4int *)param4int)->Q,
+                     sqs,
+                     ((sasfit_param4int *)param4int)->SQ,
+                     ((sasfit_param4int *)param4int)->dF_dpar,
+                     &((sasfit_param4int *)param4int)->error);
+    }
     return IQ_core( ((sasfit_param4int *)param4int)->interp,
                     ((sasfit_param4int *)param4int)->dF_dpar,
                     ((sasfit_param4int *)param4int)->l,
@@ -803,7 +820,8 @@ scalar IQ_IntdLen(scalar x, void *param4int) {
                     ((sasfit_param4int *)param4int)->FF,
                     ((sasfit_param4int *)param4int)->SQ,
                     ((sasfit_param4int *)param4int)->distr,
-                    ((sasfit_param4int *)param4int)->error);
+                    &((sasfit_param4int *)param4int)->error)
+            *SQ;
 }
 scalar IQ_core(Tcl_Interp *interp,
 	      int *dF_dpar,
@@ -1431,7 +1449,6 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         bool  *error;
         scalar Icalc, *l, *s, *a, z;
 
-
         interp = (( sasfit_param4int *) param4int)->interp;
         dF_dpar = (( sasfit_param4int *) param4int)->dF_dpar;
         z = (( sasfit_param4int *) param4int)->z;
@@ -1443,7 +1460,7 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         Rstart = (( sasfit_param4int *) param4int)->Rstart;
         Rend = ((sasfit_param4int *) param4int)->Rend;
         nintervals = ((sasfit_param4int *) param4int)->nintervals;
-        error = (( sasfit_param4int *) param4int)->error;
+        *error = (( sasfit_param4int *) param4int)->error;
         l = (( sasfit_param4int *) param4int)->l;
         a = (( sasfit_param4int *) param4int)->a;
         s = (( sasfit_param4int *) param4int)->s;
@@ -1478,6 +1495,7 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
     if (sasfit_get_iq_or_gz() == 0) {
         return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
     } else {
+        param4int.interp=interp;
         param4int.dF_dpar=dF_dpar;
         param4int.l=l;
         param4int.s=s;
@@ -1490,7 +1508,7 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
         param4int.Rend=Rend;
         param4int.nintervals=nintervals;
         param4int.distr=distr;
-        param4int.error=error;
+        param4int.error=*error;
 
         lenaw=4000;
 

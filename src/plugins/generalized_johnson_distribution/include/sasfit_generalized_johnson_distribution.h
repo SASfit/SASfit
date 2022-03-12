@@ -58,6 +58,9 @@
  *       <td>\b u</td>
  *       <td>upper bound</td>
  *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
+ *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
  *      </tr><tr>
@@ -114,6 +117,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_v(scalar
  *      </tr><tr>
  *       <td>\b u</td>
  *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
@@ -172,6 +178,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_v(scalar
  *       <td>\b u</td>
  *       <td>upper bound</td>
  *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
+ *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
  *      </tr><tr>
@@ -228,6 +237,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_v(scalar
  *      </tr><tr>
  *       <td>\b u</td>
  *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
@@ -286,6 +298,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_s_v(scal
  *       <td>\b u</td>
  *       <td>upper bound</td>
  *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
+ *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
  *      </tr><tr>
@@ -342,6 +357,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_s_v(scal
  *      </tr><tr>
  *       <td>\b u</td>
  *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
@@ -400,6 +418,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_s_v(scal
  *       <td>\b u</td>
  *       <td>upper bound</td>
  *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
+ *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
  *      </tr><tr>
@@ -457,6 +478,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_b_v(scal
  *       <td>\b u</td>
  *       <td>upper bound</td>
  *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
+ *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>
  *      </tr><tr>
@@ -513,6 +537,9 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_b_v(scal
  *      </tr><tr>
  *       <td>\b u</td>
  *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>location parameter</td>

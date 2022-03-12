@@ -25,8 +25,8 @@
  *   Ingo Bressler (ingo@cs.tu-berlin.de)
  */
 
-#ifndef SASFIT_ANALYTPAR_H 
-#define SASFIT_ANALYTPAR_H 
+#ifndef SASFIT_ANALYTPAR_H
+#define SASFIT_ANALYTPAR_H
 
 #include <gsl/gsl_vector.h>
 #include "sasfit_core_shared_exports.h"
@@ -52,7 +52,8 @@ typedef struct
     scalar Rstart;
     scalar Rend;
     int   nintervals;
-    bool  *error;
+    bool  error;
+    bool withSQ;
     scalar (* function) (scalar x, void * params);
 } param4int;
 typedef param4int sasfit_param4int;
@@ -194,9 +195,9 @@ sasfit_core_DLLEXP void sasfit_covar2ap(scalar ** covar, sasfit_analytpar * ap, 
 sasfit_core_DLLEXP void sasfit_covsrt2ap(scalar ** covar, sasfit_analytpar * ap, sasfit_commonpar * gcp, int contrib_num);
 sasfit_core_DLLEXP void SASFIT_gsl_vector_x2GlobalAP_GCP(gsl_vector * x, void * params);
 
-int initTypeStr(sasfit_analytpar     *  ap, 
-                int                     num_ap, 
-                const char           ** name, 
+int initTypeStr(sasfit_analytpar     *  ap,
+                int                     num_ap,
+                const char           ** name,
                 sasfit_function_type    fctType);
 
 int get_AP(Tcl_Interp       *interp,
@@ -213,7 +214,7 @@ int get_AP(Tcl_Interp       *interp,
 
 /**
  * \ingroup sasfit_core_int
- * Gets some TCL variables from the interpreter regarding precision of 
+ * Gets some TCL variables from the interpreter regarding precision of
  * (non-GSL) integration and numerical limits.
  * \param interp Current interpreter.
  * \param argv TCL-supplied list of variable names.
@@ -229,24 +230,24 @@ Tcl_Obj * sasfit_tcl_get_obj(Tcl_Interp * interp,
  * \param interp Current Tcl interpreter.
  * \param val Address to store the value.
  * \param name1 Name of the variable in Tcl code.
- * \param name2 Name of the entry if \e name1 is an array 
+ * \param name2 Name of the entry if \e name1 is an array
  *              (optional, NULL otherwise).
  */
-int sasfit_tcl_get_int(Tcl_Interp * interp, int * val, 
+int sasfit_tcl_get_int(Tcl_Interp * interp, int * val,
                        const char * name1, const char * name2);
 
 /**
  * Gets a single value of type \e double from Tcl environment.
  * \sa sasfit_tcl_get_int
  */
-int sasfit_tcl_get_double(Tcl_Interp * interp, double * val, 
+int sasfit_tcl_get_double(Tcl_Interp * interp, double * val,
                           const char * name1, const char * name2);
 
 /**
  * Gets a single value of type \e boolean from Tcl environment.
  * \sa sasfit_tcl_get_int
  */
-int sasfit_tcl_get_bool(Tcl_Interp * interp, int * val, 
+int sasfit_tcl_get_bool(Tcl_Interp * interp, int * val,
                         const char * name1, const char * name2);
 
 /**
@@ -257,24 +258,24 @@ int sasfit_tcl_get_bool(Tcl_Interp * interp, int * val,
  *              (optional, NULL otherwise).
  * \param val Value to store in the Tcl variable.
  */
-int sasfit_tcl_set_int(Tcl_Interp * interp, 
-                       const char * name1, const char * name2, 
+int sasfit_tcl_set_int(Tcl_Interp * interp,
+                       const char * name1, const char * name2,
                        int val);
 
 /**
  * Sets a Tcl variable to a single value of type \e double.
  * \sa sasfit_tcl_set_int
  */
-int sasfit_tcl_set_double(Tcl_Interp * interp, 
-                          const char * name1, const char * name2, 
+int sasfit_tcl_set_double(Tcl_Interp * interp,
+                          const char * name1, const char * name2,
                           double val);
 
 /**
  * Sets a Tcl variable to a single value of type \e boolean.
  * \sa sasfit_tcl_set_int
  */
-int sasfit_tcl_set_bool(Tcl_Interp * interp, 
-                        const char * name1, const char * name2, 
+int sasfit_tcl_set_bool(Tcl_Interp * interp,
+                        const char * name1, const char * name2,
                         int val);
 
 int sasfit_tcl_get_arr_int(Tcl_Interp * interp,

@@ -125,13 +125,18 @@ float SASFITqrombIQdR_old(Tcl_Interp *interp,
 	return 0.0;
 }
 
-int f1D_cubature(unsigned ndim, const double *x, void *param4int,
-      unsigned fdim, double *fval) {
+int f1D_cubature(unsigned ndim,
+                 const double *x,
+                 void *param4int,
+                 unsigned fdim,
+                 double *fval) {
+//    sasfit_out("executing now: f1D_cubature\n");
     fval[0] = (*((sasfit_param4int *)param4int)->function)(x[0],param4int);
+//    sasfit_out("just called : (*((sasfit_param4int *)param4int)->function)(x[0],param4int)\n");
     if (((sasfit_param4int *)param4int)->error) {
-        return 0;
+        return TRUE;
     } else {
-        return 1;
+        return FALSE;
     }
 }
 
@@ -150,6 +155,293 @@ double qrKernel_MC1D(double *k, size_t dim, void *pam) {
 	return (*cub->Kernel1D_fct)(k[0],cub->param);
 }
 
+void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) {
+
+    scalar *aw;
+    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
+    gsl_integration_workspace * w;
+    gsl_integration_cquad_workspace * wcquad;
+    gsl_integration_glfixed_table * wglfixed;
+    gsl_integration_fixed_workspace * wfixed;
+    gsl_function F;
+    size_t neval;
+    int lenaw=4000;
+    const gsl_rng_type *T;
+    gsl_rng *r;
+    unsigned int calls;
+    gsl_monte_function GMC;
+    int done=0;
+    int i;
+    qrombint_cub cubstruct;
+    cubstruct.Kernel1D_fct=&IQ_IntdLen;
+    cubstruct.param=param4int;
+    GMC.f = &qrKernel_MC1D;
+    GMC.params=&cubstruct;
+    GMC.dim=1;
+    struct timeval tv; // Seed generation based on time
+    gettimeofday(&tv,0);
+    unsigned long mySeed = tv.tv_sec + tv.tv_usec;
+    int ierr;
+
+    *res = 0;
+    *err=0;
+
+    switch(sasfit_get_int_strategy()) {
+    case OOURA_DOUBLE_EXP_QUADRATURE: {
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intde(&IQ_IntdLen,
+                         ((sasfit_param4int *)param4int)->Rstart,
+                         ((sasfit_param4int *)param4int)->Rend,
+                         aw, res, err, param4int);
+            ((sasfit_param4int *)param4int)->error = 0;
+            free(aw);
+            break;
+            }
+    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
+            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
+            sasfit_intccini(lenaw, aw);
+            sasfit_intcc(&IQ_IntdLen,
+                         ((sasfit_param4int *)param4int)->Rstart,
+                         ((sasfit_param4int *)param4int)->Rend,
+                         sasfit_eps_get_nriq(),
+                         lenaw, aw, res, err,param4int);
+            ((sasfit_param4int *)param4int)->error = 0;
+            free(aw);
+            break;
+            }
+    case GSL_CQUAD: {
+            wcquad = gsl_integration_cquad_workspace_alloc(lenaw);
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ((sasfit_param4int *)param4int)->error = gsl_integration_cquad (&F,
+                                                                            ((sasfit_param4int *)param4int)->Rstart,
+                                                                            ((sasfit_param4int *)param4int)->Rend,
+                                                                            0, sasfit_eps_get_nriq(),
+                                                                            wcquad, res, err,&neval);
+            gsl_integration_cquad_workspace_free(wcquad);
+            break;
+            }
+    case GSL_QAG: {
+            w = gsl_integration_workspace_alloc(lenaw);
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ((sasfit_param4int *)param4int)->error = gsl_integration_qag (&F,
+                                                                          ((sasfit_param4int *)param4int)->Rstart,
+                                                                          ((sasfit_param4int *)param4int)->Rend,
+                                                                          0, sasfit_eps_get_nriq(), lenaw, 3,
+                                                                          w, res, err);
+            gsl_integration_workspace_free (w);
+            break;
+            }
+    case GSL_QNG: {
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ((sasfit_param4int *)param4int)->error = gsl_integration_qng (&F,
+                                                                          ((sasfit_param4int *)param4int)->Rstart,
+                                                                          ((sasfit_param4int *)param4int)->Rend,
+                                                                          0, sasfit_eps_get_nriq(),
+                                                                          res, err, &neval);
+            break;
+            }
+    case H_CUBATURE: {
+            ((sasfit_param4int *)param4int)->function=&IQ_IntdLen;
+            cubxmin[0]=((sasfit_param4int *)param4int)->Rstart;
+            cubxmax[0]=((sasfit_param4int *)param4int)->Rend;
+            ((sasfit_param4int *)param4int)->error = hcubature(1, &f1D_cubature,param4int,
+                                                               1, cubxmin, cubxmax,
+                                                               10000, 0.0, sasfit_eps_get_nriq(),
+              ERROR_INDIVIDUAL, fval, ferr);
+            *res = fval[0];
+            *err = ferr[0];
+            break;
+            }
+    case P_CUBATURE: {
+            ((sasfit_param4int *)param4int)->function=&IQ_IntdLen;
+            cubxmin[0]=((sasfit_param4int *)param4int)->Rstart;
+            cubxmax[0]=((sasfit_param4int *)param4int)->Rend;
+            ((sasfit_param4int *)param4int)->error = pcubature(1, &f1D_cubature, param4int,
+                                                               1, cubxmin, cubxmax,
+                                                               10000,0.0, sasfit_eps_get_nriq(),
+                                                               ERROR_INDIVIDUAL, fval, ferr);
+            *res = fval[0];
+            *err=ferr[0];
+            break;
+            }
+    case NR_QROMB: {
+            *res = SASFITqrombIQdR_old(((sasfit_param4int *)param4int)->interp,
+                                      ((sasfit_param4int *)param4int)->dF_dpar,
+                                      ((sasfit_param4int *)param4int)->l,
+                                      ((sasfit_param4int *)param4int)->s,
+                                      ((sasfit_param4int *)param4int)->Q,
+                                      ((sasfit_param4int *)param4int)->a,
+                                      ((sasfit_param4int *)param4int)->SD,
+                                      ((sasfit_param4int *)param4int)->FF,
+                                      ((sasfit_param4int *)param4int)->SQ,
+                                      ((sasfit_param4int *)param4int)->distr,
+                                      ((sasfit_param4int *)param4int)->Rstart,
+                                      ((sasfit_param4int *)param4int)->Rend,
+                                      &ierr);
+            ((sasfit_param4int *)param4int)->error = ierr;
+            break;
+            }
+    case GSL_GAUSSLEGENDRE: {
+            wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            *res = gsl_integration_glfixed(&F, ((sasfit_param4int *)param4int)->Rstart, ((sasfit_param4int *)param4int)->Rend,
+                                          wglfixed);
+            ierr = 0;
+            ((sasfit_param4int *)param4int)->error = ierr;
+            gsl_integration_glfixed_table_free(wglfixed);
+            break;
+            }
+    case GSL_CHEBYSHEV1: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_chebyshev1(),
+                                                 ((sasfit_param4int *)param4int)->Rstart, ((sasfit_param4int *)param4int)->Rend,
+                                                 sasfit_eps_get_alpha(), sasfit_eps_get_beta());
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ierr = gsl_integration_fixed(&F, res, wfixed);
+            ((sasfit_param4int *)param4int)->error = ierr;
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_CHEBYSHEV2: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_chebyshev2(),
+                                                 ((sasfit_param4int *)param4int)->Rstart, ((sasfit_param4int *)param4int)->Rend,
+                                                  sasfit_eps_get_alpha(), sasfit_eps_get_beta());
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ierr = gsl_integration_fixed(&F, res, wfixed);
+            ((sasfit_param4int *)param4int)->error = ierr;
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_GEGENBAUER: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_gegenbauer(),
+                                                 ((sasfit_param4int *)param4int)->Rstart, ((sasfit_param4int *)param4int)->Rend,
+                                                  sasfit_eps_get_alpha(), sasfit_eps_get_beta());
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ierr = gsl_integration_fixed(&F, res, wfixed);
+            ((sasfit_param4int *)param4int)->error = ierr;
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_EXPONENTIAL: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_exponential(),
+                                                 ((sasfit_param4int *)param4int)->Rstart, ((sasfit_param4int *)param4int)->Rend,
+                                                 sasfit_eps_get_alpha(), sasfit_eps_get_beta());
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ierr = gsl_integration_fixed(&F, res, wfixed);
+            ((sasfit_param4int *)param4int)->error = ierr;
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_LAGUERRE: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_laguerre(),
+                                                 ((sasfit_param4int *)param4int)->Rstart, ((sasfit_param4int *)param4int)->Rend,
+                                                  sasfit_eps_get_alpha(), sasfit_eps_get_beta());
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ierr = gsl_integration_fixed(&F, res, wfixed);
+            ((sasfit_param4int *)param4int)->error = ierr;
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_JACOBI: {
+            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi, sasfit_eps_get_jacobi(),
+                                                 ((sasfit_param4int *)param4int)->Rstart, ((sasfit_param4int *)param4int)->Rend,
+                                                  sasfit_eps_get_alpha(), sasfit_eps_get_beta());
+            F.function=&IQ_IntdLen;
+            F.params = param4int;
+            ierr = gsl_integration_fixed(&F, res, wfixed);
+            ((sasfit_param4int *)param4int)->error = ierr;
+            gsl_integration_fixed_free(wfixed);
+            break;
+            }
+    case GSL_MC_PLAIN: {
+        cubxmin[0] = ((sasfit_param4int *)param4int)->Rstart;
+        cubxmax[0] = ((sasfit_param4int *)param4int)->Rend;
+        calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+        gsl_rng_env_setup ();
+        T = gsl_rng_default;
+        r = gsl_rng_alloc (T);
+        gsl_rng_set(r, mySeed);
+        gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(GMC.dim);
+        gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls, r, s_plain,
+                        res, &ferr[0]);
+        gsl_monte_plain_free (s_plain);
+        if (ferr[0]/(*res)>sasfit_eps_get_nriq()) {
+            ierr=1;
+            ((sasfit_param4int *)param4int)->error = ierr;
+            sasfit_err("\nGSL_MC_PLAIN integration failed with the required precision err/res=%le>eps_nriq=%lf\n",ferr[0]/(*res),sasfit_eps_get_nriq());
+        }
+        break;
+        }
+    case GSL_MC_MISER: {
+        cubxmin[0] = ((sasfit_param4int *)param4int)->Rstart;
+        cubxmax[0] = ((sasfit_param4int *)param4int)->Rend;
+        calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+        gsl_rng_env_setup ();
+        T = gsl_rng_default;
+        r = gsl_rng_alloc (T);
+        gsl_rng_set(r, mySeed);
+        gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(GMC.dim);
+        gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls, r, s_miser,
+                            res, &ferr[0]);
+        gsl_monte_miser_free (s_miser);
+        if (ferr[0]/(*res)>sasfit_eps_get_nriq()) {
+            ierr=1;
+            ((sasfit_param4int *)param4int)->error = ierr;
+            sasfit_err("\nGSL_MC_MISER integration failed with the required precision err/res=%lf>eps_nriq=%lf\n",ferr[0]/(*res),sasfit_eps_get_nriq());
+        }
+        break;
+        }
+    case GSL_MC_VEGAS: {
+        cubxmin[0] = ((sasfit_param4int *)param4int)->Rstart;
+        cubxmax[0] = ((sasfit_param4int *)param4int)->Rend;
+        calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+        gsl_rng_env_setup ();
+        T = gsl_rng_default;
+        r = gsl_rng_alloc (T);
+        gsl_rng_set(r, mySeed);
+        gsl_monte_vegas_state *s_vegas = gsl_monte_vegas_alloc(GMC.dim);
+        gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_vegas,
+                        res, &ferr[0]);
+        i=1;
+        do
+        {
+            gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_vegas,
+                            res, &ferr[0]);
+            i++;
+        } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) ||  ferr[0]/(*res)>sasfit_eps_get_nriq()));
+//              sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+        gsl_monte_vegas_free (s_vegas);
+        if (ferr[0]/(*res)>sasfit_eps_get_nriq()) {
+            ierr=1;
+            ((sasfit_param4int *)param4int)->error = ierr;
+            sasfit_err("\nGSL_MC_VEGAS integration failed with the required precision err/res=%lg>eps_nriq=%lg\n",ferr[0]/(*res),sasfit_eps_get_nriq());
+        }
+        break;
+        }
+    default: {
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+            sasfit_intde(&IQ_IntdLen,
+                         ((sasfit_param4int *)param4int)->Rstart,
+                         ((sasfit_param4int *)param4int)->Rend,
+                         aw, res, err,param4int);
+            ierr = 0;
+            ((sasfit_param4int *)param4int)->error = ierr;
+            free(aw);
+            break;
+            }
+    }
+}
+
 scalar SASFITqrombIQdR(Tcl_Interp *interp,
 			int   *dF_dpar,
 			scalar l[],
@@ -164,31 +456,8 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
 			scalar Len_end,
 			bool  *error)
 {
-    scalar *aw, res,err;
-    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
-    gsl_integration_workspace * w;
-    gsl_integration_cquad_workspace * wcquad;
-    gsl_integration_glfixed_table * wglfixed;
-    gsl_integration_fixed_workspace * wfixed;
-    gsl_function F;
-    size_t neval;
-    int lenaw=4000,ierr;
     sasfit_param4int param4int;
-    const gsl_rng_type *T;
-    gsl_rng *r;
-    unsigned int calls;
-    gsl_monte_function GMC;
-    int done=0;
-    int i;
-    qrombint_cub cubstruct;
-    cubstruct.Kernel1D_fct=&IQ_IntdLen;
-    cubstruct.param=&param4int;
-    GMC.f = &qrKernel_MC1D;
-    GMC.params=&cubstruct;
-    GMC.dim=1;
-    struct timeval tv; // Seed generation based on time
-    gettimeofday(&tv,0);
-    unsigned long mySeed = tv.tv_sec + tv.tv_usec;
+    scalar res,err;
     param4int.dF_dpar=dF_dpar;
     param4int.l=l;
     param4int.s=s;
@@ -198,259 +467,18 @@ scalar SASFITqrombIQdR(Tcl_Interp *interp,
     param4int.FF=FF;
     param4int.SQ=SQ;
     param4int.distr=distr;
-    param4int.error=error;
-    err=0;
-
-    switch(sasfit_get_int_strategy()) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&IQ_IntdLen, Len_start,Len_end, aw, &res, &err,&param4int);
-            ierr = 0;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&IQ_IntdLen, Len_start,Len_end, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&param4int);
-            ierr =  0;
-            free(aw);
-            break;
-            }
-    case GSL_CQUAD: {
-            wcquad = gsl_integration_cquad_workspace_alloc(lenaw);
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_cquad (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), wcquad, &res, &err,&neval);
-            gsl_integration_cquad_workspace_free(wcquad);
-            break;
-            }
-    case GSL_QAG: {
-            w = gsl_integration_workspace_alloc(lenaw);
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_qag (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), lenaw, 3,
-                        w, &res, &err);
-            gsl_integration_workspace_free (w);
-            break;
-            }
-    case GSL_QNG: {
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_qng (&F, Len_start, Len_end, 0, sasfit_eps_get_nriq(), &res, &err, &neval);
-            break;
-            }
-    case H_CUBATURE: {
-            param4int.function=&IQ_IntdLen;
-            cubxmin[0]=Len_start;
-            cubxmax[0]=Len_end;
-            ierr = hcubature(1, &f1D_cubature,&param4int,1, cubxmin, cubxmax,
-              10000, 0.0, sasfit_eps_get_nriq(),
-              ERROR_INDIVIDUAL, fval, ferr);
-            res = fval[0];
-            err = ferr[0];
-            break;
-            }
-    case P_CUBATURE: {
-            param4int.function=&IQ_IntdLen;
-            cubxmin[0]=Len_start;
-            cubxmax[0]=Len_end;
-            ierr = pcubature(1, &f1D_cubature, &param4int,1, cubxmin, cubxmax,
-              10000,0.0, sasfit_eps_get_nriq(),
-              ERROR_INDIVIDUAL, fval, ferr);
-            res = fval[0];
-            err=ferr[0];
-            break;
-            }
-    case NR_QROMB: {
-            res = SASFITqrombIQdR_old(interp,dF_dpar,l,s,Q,a,
-		                    SD,FF,SQ,
-							distr,Len_start, Len_end,error);
-            break;
-            ierr = *error;
-            }
-    case GSL_GAUSSLEGENDRE: {
-            wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            res = gsl_integration_glfixed(&F, Len_start, Len_end, wglfixed);
-            ierr = 0;
-            gsl_integration_glfixed_table_free(wglfixed);
-            break;
-            }
-    case GSL_CHEBYSHEV1: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev, sasfit_eps_get_chebyshev1(), Len_start, Len_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_fixed(&F, &res, wfixed);
-            gsl_integration_fixed_free(wfixed);
-            break;
-            }
-    case GSL_CHEBYSHEV2: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_chebyshev2, sasfit_eps_get_chebyshev2(), Len_start, Len_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_fixed(&F, &res, wfixed);
-            gsl_integration_fixed_free(wfixed);
-            break;
-            }
-    case GSL_GEGENBAUER: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_gegenbauer, sasfit_eps_get_gegenbauer(), Len_start, Len_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_fixed(&F, &res, wfixed);
-            gsl_integration_fixed_free(wfixed);
-            break;
-            }
-    case GSL_EXPONENTIAL: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_exponential, sasfit_eps_get_exponential(), Len_start, Len_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_fixed(&F, &res, wfixed);
-            gsl_integration_fixed_free(wfixed);
-            break;
-            }
-    case GSL_LAGUERRE: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_laguerre, sasfit_eps_get_laguerre(), Len_start, Len_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_fixed(&F, &res, wfixed);
-            gsl_integration_fixed_free(wfixed);
-            break;
-            }
-    case GSL_JACOBI: {
-            wfixed = gsl_integration_fixed_alloc(gsl_integration_fixed_jacobi, sasfit_eps_get_jacobi(),
-                                                 Len_start, Len_end, sasfit_eps_get_alpha(), sasfit_eps_get_beta());
-            F.function=&IQ_IntdLen;
-            F.params = &param4int;
-            ierr = gsl_integration_fixed(&F, &res, wfixed);
-            gsl_integration_fixed_free(wfixed);
-            break;
-            }
-    case GSL_MC_PLAIN: {
-        cubxmin[0] = Len_start;
-        cubxmax[0] = Len_end;
-        calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
-        gsl_rng_env_setup ();
-        T = gsl_rng_default;
-        r = gsl_rng_alloc (T);
-        gsl_rng_set(r, mySeed);
-        gsl_monte_plain_state *s_plain = gsl_monte_plain_alloc(GMC.dim);
-        gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls, r, s_plain,
-                        &res, &ferr[0]);
-        gsl_monte_plain_free (s_plain);
-        if (ferr[0]/res>sasfit_eps_get_aniso()) {
-            ierr=1;
-            sasfit_err("\nGSL_MC_PLAIN integration failed with the required precision err/res=%le>eps_ani=%le\n",ferr[0]/res,sasfit_eps_get_aniso());
-        }
-        break;
-        }
-    case GSL_MC_MISER: {
-        cubxmin[0] = Len_start;
-        cubxmax[0] = Len_end;
-        calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
-        gsl_rng_env_setup ();
-        T = gsl_rng_default;
-        r = gsl_rng_alloc (T);
-        gsl_rng_set(r, mySeed);
-        gsl_monte_miser_state *s_miser = gsl_monte_miser_alloc(GMC.dim);
-        gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls, r, s_miser,
-                            &res, &ferr[0]);
-        gsl_monte_miser_free (s_miser);
-        if (ferr[0]/res>sasfit_eps_get_aniso()) {
-            ierr=1;
-            sasfit_err("\nGSL_MC_MISER integration failed with the required precision err/res=%lf>eps_ani=%lf\n",ferr[0]/res,sasfit_eps_get_aniso());
-        }
-        break;
-        }
-    case GSL_MC_VEGAS: {
-        cubxmin[0] = Len_start;
-        cubxmax[0] = Len_end;
-        calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
-        gsl_rng_env_setup ();
-        T = gsl_rng_default;
-        r = gsl_rng_alloc (T);
-        gsl_rng_set(r, mySeed);
-        gsl_monte_vegas_state *s_vegas = gsl_monte_vegas_alloc(GMC.dim);
-        gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_vegas,
-                        &res, &ferr[0]);
-        i=1;
-        do
-        {
-            err=gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, GMC.dim, calls/10, r, s_vegas,
-                            &res, &ferr[0]);
-            i++;
-        } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) ||  ferr[0]/res>sasfit_eps_get_aniso()));
-//              sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
-        gsl_monte_vegas_free (s_vegas);
-        if (ferr[0]/res>sasfit_eps_get_aniso()) {
-            ierr=1;
-            sasfit_err("\nGSL_MC_VEGAS integration failed with the required precision err/res=%lf>eps_ani=%lf\n",ferr[0]/res,sasfit_eps_get_aniso());
-        }
-        }
-    default: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&IQ_IntdLen, Len_start,Len_end, aw, &res, &err,&param4int);
-            ierr = 0;
-            free(aw);
-            break;
-            }
-    }
-    if (ierr > 0) {
+    param4int.error=*error;
+    param4int.withSQ=FALSE;
+    param4int.Rstart=Len_start;
+    param4int.Rend=Len_end;
+    param4int.interp=interp;
+    SASfitNRIQSQintcore(&param4int,&res,&err);
+    if (param4int.error > 0) {
         sasfit_err("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
     }
     return res;
 }
 
-
-float SASFITqrombIQSQdR(Tcl_Interp *interp,
-			int   *dF_dpar,
-			float l[],
-			float sq[],
-			float Q,
-			float a[],
-			sasfit_function*  SD,
-			sasfit_function*  FF,
-			sasfit_function*  SQ,
-			int   distr,
-			float Rstart,
-			float Rend,
-			bool  *error)
-{
-	float ss,dss;
-	float s[JMAXP+1],h[JMAXP+1];
-	int j;
-
-	h[1]=1.0;
-	for (j=1;j<=JMAX;j++) {
-		s[j]=SASFITtrapzdIQSQdR(interp,dF_dpar,l,sq,Q,a,SD,FF,SQ,distr,Rstart,Rend,j,error);
-		if (*error) return 0.0;
-		if (j >= K) {
-			SASFITpolint(interp,&h[j-K],&s[j-K],K,0.0,&ss,&dss,error);
-			if (*error) return 0.0;
-			if (fabs(dss) <= sasfit_eps_get_nriq()*fabs(ss)) return ss;
-		}
-		s[j+1]=s[j];
-		h[j+1]=0.25*h[j];
-	}
-	return ss;
-	sasfit_err("Too many steps in routine SASFITqrombIQSQdR\n");
-	*error = TRUE;
-	return 0.0;
-}
-//	float sqs[MAXPAR];
-//	static float s;
-//	static int it;
-//	int j;
-
-//	for (j=0;j<MAXPAR;j++) sqs[j]=sq[j];
-//		t1 = IQ_core(interp,dF_dpar,l,sqs,a,Q,aa,SD,FF,SQ,distr,error)		;
-//		if (*error) return 0.0;
-//		V = sasfit_volume(a,l,FF,distr,error);
-//		sqs[0] = pow( 3./(4.*M_PI) *  V, 1./3.);
-//		t1 = t1*sasfit_sq(Q,sqs,SQ,dF_dpar,error);
 
 float SASFITqrombIQSQdR_old(Tcl_Interp *interp,
 			int   *dF_dpar,
@@ -486,6 +514,43 @@ float SASFITqrombIQSQdR_old(Tcl_Interp *interp,
 	sasfit_err("Too many steps in routine SASFITqrombIQSQdR\n");
 	*error = TRUE;
 	return 0.0;
+}
+
+scalar SASFITqrombIQSQdR(Tcl_Interp *interp,
+			int   *dF_dpar,
+			scalar l[],
+			scalar s[],
+			scalar Q,
+			scalar a[],
+			sasfit_function*  SD,
+			sasfit_function*  FF,
+			sasfit_function*  SQ,
+			int   distr,
+			scalar Len_start,
+			scalar Len_end,
+			bool  *error)
+{
+    sasfit_param4int param4int;
+    scalar res,err;
+    param4int.dF_dpar=dF_dpar;
+    param4int.l=l;
+    param4int.s=s;
+    param4int.Q=Q;
+    param4int.a=a;
+    param4int.SD=SD;
+    param4int.FF=FF;
+    param4int.SQ=SQ;
+    param4int.distr=distr;
+    param4int.error=*error;
+    param4int.withSQ=TRUE;
+    param4int.Rstart=Len_start;
+    param4int.Rend=Len_end;
+    param4int.interp=interp;
+    SASfitNRIQSQintcore(&param4int,&res,&err);
+    if (param4int.error > 0) {
+        sasfit_err("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
+    }
+    return res;
 }
 
 

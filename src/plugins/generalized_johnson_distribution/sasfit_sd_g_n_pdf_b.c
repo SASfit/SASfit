@@ -10,10 +10,11 @@
 #define N	param->p[0]
 #define L	param->p[1]
 #define U	param->p[2]
-#define XI	param->p[3]
-#define LAMBDA	param->p[4]
-#define DELTA	param->p[5]
-#define GAMMA	param->p[6]
+#define ALPHA param->p[3]
+#define XI	param->p[4]
+#define LAMBDA	param->p[5]
+#define DELTA	param->p[6]
+#define GAMMA	param->p[7]
 
 scalar sasfit_sd_g_n_pdf_b(scalar x, sasfit_param * param)
 {
@@ -26,11 +27,12 @@ scalar sasfit_sd_g_n_pdf_b(scalar x, sasfit_param * param)
 	SASFIT_CHECK_COND1((L < 0.0), param, "l(%lg) < 0",L); // modify condition to your needs
 	SASFIT_CHECK_COND1((U < 0.0), param, "u(%lg) < 0",U); // modify condition to your needs
 	// insert your code here
+	if (x==0 && ALPHA > 0) return 0;
 	if (x<=L || x>=U) return 0;
 	return -N*(exp(-gsl_pow_2(DELTA*GAMMA + asinh((XI - sqrt(2)*sasfit_erfinv((L + U - 2*x)/(L - U)))/
              LAMBDA))/(2.*gsl_pow_2(DELTA)) + gsl_pow_2(sasfit_erfinv((L + U - 2*x)/(L - U))))/
      (DELTA*LAMBDA*(L - U)*sqrt(1 + gsl_pow_2(XI - sqrt(2)*sasfit_erfinv((L + U - 2*x)/(L - U)))/
-          gsl_pow_2(LAMBDA))));
+          gsl_pow_2(LAMBDA))))*pow(x,-ALPHA);
 }
 
 scalar sasfit_sd_g_n_pdf_b_f(scalar x, sasfit_param * param)
