@@ -8,13 +8,10 @@
 
 // define shortcuts for local parameters/variables
 #define N	param->p[0]
-#define L	GSL_MIN(param->p[1],param->p[2])
-#define U	GSL_MAX(param->p[1],param->p[2])
-#define ALPHA	param->p[3]
-#define XI	param->p[4]
-#define LAMBDA	fabs(param->p[5])
-#define DELTA	fabs(param->p[6])
-#define GAMMA	param->p[7]
+#define XI	param->p[3]
+#define LAMBDA	fabs(param->p[4])
+#define DELTA	fabs(param->p[5])
+#define GAMMA	param->p[6]
 
 scalar median_sd_johnson_sb(scalar x, sasfit_param * param) {
     return LAMBDA/(1 + exp(GAMMA/DELTA)) + XI;
@@ -32,11 +29,9 @@ scalar sasfit_sd_johnson_sb(scalar x, sasfit_param * param)
 
 	// insert your code here
 
-	if (x==0 && ALPHA > 0) return 0;
 	if (x<=XI) return 0;
 	if (x>=LAMBDA+XI) return 0;
-	return N*(DELTA*LAMBDA*exp(-gsl_pow_int(GAMMA + DELTA*log((x - XI)/(LAMBDA - x + XI)),2)/2.))/(sqrt(2*M_PI)*(x - XI)*(LAMBDA - x + XI))
-            *pow(x,-ALPHA);
+	return N*(DELTA*LAMBDA*exp(-gsl_pow_int(GAMMA + DELTA*log((x - XI)/(LAMBDA - x + XI)),2)/2.))/(sqrt(2*M_PI)*(x - XI)*(LAMBDA - x + XI));
 }
 
 scalar sasfit_sd_johnson_sb_f(scalar x, sasfit_param * param)
@@ -47,7 +42,7 @@ scalar sasfit_sd_johnson_sb_f(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	if (x>=LAMBDA+XI) return 1.0;
+	if (x>=LAMBDA+XI) return 0.0;
 	if (XI<x && x< LAMBDA/2+XI) {
             return gsl_sf_erfc((-GAMMA + DELTA*log(-1 + LAMBDA/(x - XI)))/sqrt(2))/2.;
 	}

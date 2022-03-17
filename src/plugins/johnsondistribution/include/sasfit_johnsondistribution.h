@@ -57,9 +57,6 @@
  *       <td>\b u</td>
  *       <td>upper bound</td>
  *      </tr><tr>
- *       <td>\b alpha</td>
- *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
- *      </tr><tr>
  *       <td>\b xi</td>
  *       <td></td>
  *      </tr><tr>
@@ -116,9 +113,6 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_v(scalar q, sasfit
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
- *      </tr><tr>
- *       <td>\b alpha</td>
- *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>lower bound: xi</td>
@@ -177,9 +171,6 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_v(scalar y, sasfit
  *       <td>\b u</td>
  *       <td>upper bound</td>
  *      </tr><tr>
- *       <td>\b alpha</td>
- *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
- *      </tr><tr>
  *       <td>\b xi</td>
  *       <td></td>
  *      </tr><tr>
@@ -236,9 +227,6 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_su_v(scalar q, sasfit
  *      </tr><tr>
  *       <td>\b u</td>
  *       <td>upper bound</td>
- *      </tr><tr>
- *       <td>\b alpha</td>
- *       <td>number, volume, intensity distribution (alpha:0,3,6)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td></td>

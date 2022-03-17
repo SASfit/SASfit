@@ -759,12 +759,12 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_johnson_sb")      == 0) ) {
-				*Rstart = a5+DBL_EPSILON ;
-				*Rend   = a5+a6-DBL_EPSILON;
+				*Rstart = a4+DBL_EPSILON ;
+				*Rend   = a4+a5-DBL_EPSILON;
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_johnson_sl")      == 0) ) {
-				*Rstart = a5+DBL_EPSILON ;
-				*Rend   = GSL_MAX(3*(a5+DBL_EPSILON),a3);
+				*Rstart = a4+DBL_EPSILON ;
+				*Rend   = GSL_MAX(3*(a4+DBL_EPSILON),a3);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_johnson_su")      == 0) ) {
 				*Rstart = GSL_MAX(GSL_MIN(a2,a3),DBL_EPSILON);

@@ -10,11 +10,10 @@
 #define N	param->p[0]
 #define L	GSL_MIN(param->p[1],param->p[2])
 #define U	GSL_MAX(param->p[1],param->p[2])
-#define ALPHA	param->p[3]
-#define XI	param->p[4]
-#define LAMBDA	fabs(param->p[5])
-#define DELTA	fabs(param->p[6])
-#define GAMMA	param->p[7]
+#define XI	param->p[3]
+#define LAMBDA	fabs(param->p[4])
+#define DELTA	fabs(param->p[5])
+#define GAMMA	param->p[6]
 
 scalar mean_sd_johnson_su(scalar x, sasfit_param * param) {
     return ((-exp(-(-1 - 2*DELTA*GAMMA)/(2.*gsl_pow_int(DELTA,2))) +
@@ -74,9 +73,9 @@ scalar sasfit_sd_johnson_su(scalar x, sasfit_param * param)
 
 	// insert your code here
 
-	if (x==0 && ALPHA > 0) return 0;
+	if (x<=L || x>=U) return 0;
 	z = (x-XI)/LAMBDA;
-	return N*DELTA/(LAMBDA*sqrt(2*M_PI)*sqrt(z*z+1))*exp(-0.5*gsl_pow_2(GAMMA+DELTA*gsl_asinh(z)))*pow(x,-ALPHA);
+	return N*DELTA/(LAMBDA*sqrt(2*M_PI)*sqrt(z*z+1))*exp(-0.5*gsl_pow_2(GAMMA+DELTA*gsl_asinh(z)));
 }
 
 scalar sasfit_sd_johnson_su_f(scalar x, sasfit_param * param)
