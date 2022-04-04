@@ -1,4 +1,5 @@
-// Example of a standalone program employing a SASfit plugin
+// test.c
+// Example of a standalone program employing a precompiled SASfit plugin from its binary package
 // no need to build SASfit itself from source, just the binary plugins and libsasfit should suffice
 // but SASfit source code is required (where this example lives), e.g. via `git clone ...`
 //
@@ -8,6 +9,9 @@
 //   gcc-11 -I../plugins -I../../sasfit-code/src/sasfit_common/include -I../../sasfit-code/src/sasfit_core/include -I../../sasfit-code/saskit/src/tcl-8.4.20/generic/ -I../../sasfit-code/src/gsl/macos64/include/ -I../../sasfit-code/src/f2c/ -L../lib -lsasfit -L../plugins  -lsasfit_fuzzysphere_shared  -o test test.c
 // run it like that:
 //   DYLD_LIBRARY_PATH=../plugins/:../lib/ ./test
+//
+// Windows, minGW64; in a directory with 'test.c' parallel to sasfit binary dir
+// gcc -I../sasfit_220317104242_windows64/plugins/ -I/y/shared/sasfit-code/src/sasfit_common/include -I/y/shared/sasfit-code/src/sasfit_core/include -I/y/shared/sasfit-code/src/gsl/macos64/include/ -I/y/shared/sasfit-code/src/f2c -L../sasfit_220317104242_windows64/lib -lsasfit -L../sasfit_220317104242_windows64/plugins/ -lsasfit_fuzzysphere -o test test.c
 
 #include <stdio.h> // for printf
 #include <string.h> // for strcpy
