@@ -70,6 +70,7 @@ typedef struct
  * Resets a sasfit_plugin_api_t structure to default values.
  * \param plugin_api Pointer to a sasfit plugin API record.
  */
+sasfit_core_DLLEXP
 void sasfit_plugin_api_reset(sasfit_plugin_api_t * plugin_api);
 
 /**
@@ -79,6 +80,7 @@ void sasfit_plugin_api_reset(sasfit_plugin_api_t * plugin_api);
  * \param func_ptr Pointer to the API function of the plugin.
  * \sa sasfit_plugin_api_t
  */
+sasfit_core_DLLEXP
 void sasfit_plugin_api_set(sasfit_plugin_api_t * plugin_api, int idx, void * func_ptr);
 
 /**
@@ -89,6 +91,7 @@ void sasfit_plugin_api_set(sasfit_plugin_api_t * plugin_api, int idx, void * fun
  * \returns True, if all plugin API function were loaded successfully and the
  *          plugin system version match with that in the plugin.
  */
+sasfit_core_DLLEXP
 int sasfit_plugin_api_is_valid(sasfit_plugin_api_t * plugin_api);
 
 /**
@@ -96,6 +99,7 @@ int sasfit_plugin_api_is_valid(sasfit_plugin_api_t * plugin_api);
  * Pointers are printed as hexadecimal numbers.
  * \param plugin_api API record to print.
  */
+sasfit_core_DLLEXP
 void sasfit_plugin_api_print(sasfit_plugin_api_t * plugin_api);
 
 /*
@@ -187,6 +191,7 @@ int add_functions_to_db_and_list(Tcl_Interp *          interp,
  *          \ref SASFIT_PLUGIN_DEP_ERR, if at least one requested function
  *          was not found.
  */
+sasfit_core_DLLEXP
 sasfit_plugin_search_t sasfit_plugin_search;
 
 /**
