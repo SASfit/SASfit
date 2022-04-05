@@ -773,12 +773,11 @@ void find_integration_range(Tcl_Interp *interp,
 			} else {
 				*n_intervals = 10*Nint;
 				*Rstart = 0.0;
-				*Rend = 10.0*a4;
-				sasfit_err("#find_integration_range: unknown size distribution: >%s<\n",SD_typestr);
+				*Rend = GSL_POSINF;
 				sasfit_out("find_integration_range: ");
-				sasfit_out("unknown size distribution >%s<\n",func_descr->name);
-				sasfit_out("if this error occurs inform send a bug report!\n");
-				*error = TRUE;
+				sasfit_out("size distribution >%s< without optimized integration range\n",func_descr->name);
+				sasfit_out("an optimized integration range can be implemented in the function find_integration_range (sasfit.c)!\n");
+				*error = FALSE;
 			}
 		}
 	}

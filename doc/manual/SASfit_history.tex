@@ -1,7 +1,32 @@
 \appendix{History}
 \begin{description}
-\item[2020-XX-XX] \SASfit 0.94.12
+\item[2022-03-XX] \SASfit 0.94.12
     \begin{itemize}
+        \item added a new form factor of PEGylated vesicle with smoothed interfaces
+    \item added metalog size distribution as well as the Johnson's family of distributions (SN, SL, SB, SU) and its generalization
+    \item update to FFTW 3.3.10
+    \item supply of a piecewise constant potential for OZ solver
+    \item moved sticky hard sphere and square well structure factors into the plugin menu folder. 
+            The order of parameters changed slightly to be a bit more consistent
+    \item added RLCA and DLCA structure factors for aggregates, which include nearest neighbor correlations
+    \item supply of internal multidimensional integration routines, which can be configured via GUI
+    \item supply of internal orientation average integration routines, which can be configured via GUI
+    \item added form factor of super-ellipsoid
+    \item added form factor of super-egg
+    \item update to gsl 2.7
+    \item update to FFTW 3.3.9
+    \item use under Widows systems a powershell script to copy a 2D image to the clipboard as the previous code does not work anymore under MSYS2. A similar solution might be available under Unix and MacOS
+    \item added form factor for an octahedron
+    \item added form factor for an tetrahedron
+    \item added form factor for a cone with six-fold symmetry
+    \item added form factor for a cone
+    \item added form factor for a rectangular base pyramid
+    \item added perl necklace model both with stiff rodlike connections as well as "freely connected rods" 
+    \item extended "random flight" structure model by introducing an uncertainty parameter for the step width identical to the paracrystalline model for lamellar structures
+    \item for merging files a multiplier instead of divisor is used now
+    \item added structure factor for a 2-Yukawa potential in MSA approximation
+    \item added a parameter choosing for some of the wormlike micelle structure factors either a polydisperse or a monodisperse contour length
+    \item added three more radial profiles of spherical symmetric objects showing a Porod-law different from $q^{-4}$
     \item added a trapezoidal peak function and its generalized as well as its symmetric variant
     \item added some cluster models from \cite{Larsen2020}
     \item implemented a modified DAB model assuming a deformation and subsequent random orientation average of the standard DAB model

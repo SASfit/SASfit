@@ -83,6 +83,7 @@ derive useful information from the SAS scattering data.
         child { node[concept color=ProcessBlue] {scattering invariant} }
         child { node[concept color=ProcessBlue] {specific surface} }
         child { node[concept color=ProcessBlue] {correlation length} }
+        child { node[concept color=ProcessBlue] {size distr. retrieval algorithm} }
         child { node[concept color=ProcessBlue] {etc.} }
     }
     child[concept color=Blue,text=white] { node[concept] {simple DLS analysis} }
@@ -111,32 +112,6 @@ derive useful information from the SAS scattering data.
 \label{fig:mindmapSASfit}
 \end{figure}
 
-
-\section{System Requirements And Software Installation}
-
-{\tt SASfit} is a program for analyzing small angle scattering data.
-The numerical fitting routines are written in C and the menu
-interface in {\tt tcl/tk}. For the plotting of the data the {\tt
-tcl} extension {\tt blt} has been used. The last version 0.85 of
-{\tt SASfit} has been tested with the {\tt tcl/tk} version 8.3 and
-the {\tt blt} version 2.4s. \\
-
-\noindent
-\SASfit is available for users analysing data taken at PSI. \\
-\SASfit has been developed at the Paul Scherrer Institute (PSI) and remains \copyright\ of PSI. \\
-\SASfit is provided to users of the PSI facilities.\\
-\SASfit is provided "as is", and with no warranty. \\
-
-\section{Installation Procedure} ~\\
-
-\verb"SASfit" has has been compiled with tcl/tk 8.4 and Blt 2.4. To
-install the \texttt{SASfit} package one has to do the following:
-\begin{enumerate}
-\item Download the zip-file "sasfit.zip" from the \texttt{SASfit}-home page\\
-\verb"http://kur.web.psi.ch/sans1/SANSSoft/sasfit.html"
-\item extract the contents of the zip file. A new subdirectory called \verb"sasfit" will be generated, which contains all required files.
-\item Execute the program  \texttt{./sasfit/sasfit.exe}
-\end{enumerate}
 
 \chapter{Quick Start Tour}
 

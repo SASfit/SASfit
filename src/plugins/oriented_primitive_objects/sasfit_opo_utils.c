@@ -396,7 +396,7 @@ scalar opo_Fpyramid4_Re(opo_data *opod) {
     K4 = opo_sinc(q3*H_R)*sin(q3*H_R)-opo_sinc(q4*H_R)*sin(-q4*H_R);
 
     if (tan(TILT)==0) return 0;
-goto labelPy4Re;
+//goto labelPy4Re;
     if (fabs(Qx)<= EPS_OH && fabs(Qy)> EPS_OH && fabs(Qz) > EPS_OH) {
         return (4*cos(TILT)*(-(H_R*gsl_pow_3(Qy)*gsl_pow_3(cos(TILT))*cos(H_R*Qz)*cos(Qy - H_R*Qy*opo_Cot(TILT))) +
             gsl_pow_2(Qz)*gsl_pow_3(sin(TILT))*(Qy*cos(Qy) - Qy*cos(H_R*Qz)*cos(Qy - H_R*Qy*opo_Cot(TILT)) + sin(Qy)) +
@@ -683,6 +683,7 @@ scalar opo_Fpyramid(opo_data *opod) {
 
 scalar Ftetrahedron_kernel_Re(opo_data *opod) {
     scalar Qx,Qx2,Qy,Qy2,Qz,Qz2,L,q1,q2,q3,qzR,sqrt3;
+    scalar T1p, T1m, T2p, T2m, T3, Tre, Tim;
     sasfit_param * param;
     param = opod->param;
     Qx = opod->Qhat[0];
@@ -691,6 +692,18 @@ scalar Ftetrahedron_kernel_Re(opo_data *opod) {
     Qy2=Qy*Qy;
     Qz = opod->Qhat[2];
     Qz2=Qz*Qz;
+/*
+    T1p=4*Qx*Qy*Qz*(cos(sqrt(2)*Qx)+cos(sqrt(2)*Qy));
+    T1m=4*Qx*Qy*Qz*(cos(sqrt(2)*Qx)-cos(sqrt(2)*Qy));
+    T2p= Qy*( Qx*Qx-Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qx)
+        +Qx*(-Qx*Qx+Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qy);
+    T2m= Qy*( Qx*Qx-Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qx)
+        -Qx*(-Qx*Qx+Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qy);
+    T3 =Qx*Qy*(gsl_pow_4(Qx)+gsl_pow_2(Qy*Qy-2*Qz*Qz)-2*Qx*Qx*(Qy*Qy+2*Qz*Qz));
+    Tre=T1p*sin(Qz)-sqrt(2)*T2p*cos(Qz);
+    Tim=T1m*cos(Qz)+sqrt(2)*T2m*sin(Qz);
+    return (4./T3)*Tre;
+*/
     sqrt3=sqrt(3.0);
     qzR=Qz*tan(TILT)/sqrt3;
     q1 = 0.5*((sqrt3*Qx-Qy)*opo_Cot(TILT)-Qz);
@@ -712,8 +725,44 @@ scalar Ftetrahedron_kernel_Re(opo_data *opod) {
                 3*Qy*(Qz + Qy*opo_Cot(TILT))*sin((2*sqrt3*Qy - 3*H_R*Qz - 3*H_R*Qy*opo_Cot(TILT))/6.)))/gsl_pow_2(Qz + Qy*opo_Cot(TILT)))/(3.*Qy2);
         }
     } else if (fabs(Qx-sqrt3*Qy)<EPS_OH) {
+        return ((3*sqrt3*H_R*Qy*cos((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*cos((2*Qy)/sqrt3 + (H_R*Qz)/2. - H_R*Qy*opo_Cot(TILT))*opo_Cot(TILT))/(Qz - 2*Qy*opo_Cot(TILT)) +
+            cos((Qz*tan(TILT))/sqrt3)*((sqrt3*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*sin(TILT)*
+            (-8*Qy*cos(TILT) + Qz*sin(TILT))*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) -
+            (sqrt3*cos((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*(4*Qy*cos(TILT) + Qz*sin(TILT)))/3.)*sin(TILT)*
+           sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.))/(4*Qy*cos(TILT) + Qz*sin(TILT)) -
+            (3*sqrt3*H_R*Qy*opo_Cot(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+           sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/(Qz - 2*Qy*opo_Cot(TILT)) -
+            (6*Qy*sin(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+            (2*Qy*cos(TILT) - Qz*sin(TILT))) + sin((Qz*tan(TILT))/sqrt3)*
+            ((-3*Qy*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*(-2 + sqrt3*H_R*opo_Cot(TILT))*
+           sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/(Qz - 2*Qy*opo_Cot(TILT)) +
+            sqrt3*((3*Qy*sin(2*TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+              sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) +
+           sin(TILT)*((sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.)*
+                 sin((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*(4*Qy*cos(TILT) + Qz*sin(TILT)))/3.))/
+               (4*Qy*cos(TILT) + Qz*sin(TILT)) + (sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+                 sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/(2*Qy*cos(TILT) - Qz*sin(TILT))))))/
+            (3.*gsl_pow_2(Qy));
         return -999999.;
     } else if (fabs(Qx+sqrt3*Qy)<EPS_OH) {
+        return ((3*sqrt3*H_R*Qy*cos((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*cos((2*Qy)/sqrt3 + (H_R*Qz)/2. - H_R*Qy*opo_Cot(TILT))*opo_Cot(TILT))/(Qz - 2*Qy*opo_Cot(TILT)) +
+            cos((Qz*tan(TILT))/sqrt3)*((sqrt3*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*sin(TILT)*
+           (-8*Qy*cos(TILT) + Qz*sin(TILT))*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) -
+            (sqrt3*cos((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*(4*Qy*cos(TILT) + Qz*sin(TILT)))/3.)*sin(TILT)*
+           sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.))/(4*Qy*cos(TILT) + Qz*sin(TILT)) -
+            (3*sqrt3*H_R*Qy*opo_Cot(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+           sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/(Qz - 2*Qy*opo_Cot(TILT)) -
+            (6*Qy*sin(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+            (2*Qy*cos(TILT) - Qz*sin(TILT))) + sin((Qz*tan(TILT))/sqrt3)*
+            ((-3*Qy*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*(-2 + sqrt3*H_R*opo_Cot(TILT))*
+           sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/(Qz - 2*Qy*opo_Cot(TILT)) +
+            sqrt3*((3*Qy*sin(2*TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+              sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) +
+           sin(TILT)*((sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.)*
+                 sin((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*(4*Qy*cos(TILT) + Qz*sin(TILT)))/3.))/
+               (4*Qy*cos(TILT) + Qz*sin(TILT)) + (sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+                 sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/(2*Qy*cos(TILT) - Qz*sin(TILT))))))/
+            (3.*gsl_pow_2(Qy));
         return -9999999.;
     } else {
         return sqrt3*H_R/(Qx*(Qx2-3*Qy2))*(
@@ -726,6 +775,7 @@ scalar Ftetrahedron_kernel_Re(opo_data *opod) {
 
 scalar Ftetrahedron_kernel_Im(opo_data *opod) {
     scalar Qx,Qx2,Qy,Qy2,Qz,Qz2,L,q1,q2,q3,qzR,sqrt3;
+    scalar T1p, T1m, T2p, T2m, T3, Tre, Tim;
     sasfit_param * param;
     param = opod->param;
     Qx = opod->Qhat[0];
@@ -734,6 +784,18 @@ scalar Ftetrahedron_kernel_Im(opo_data *opod) {
     Qy2=Qy*Qy;
     Qz = opod->Qhat[2];
     Qz2=Qz*Qz;
+/*
+    T1p=4*Qx*Qy*Qz*(cos(sqrt(2)*Qx)+cos(sqrt(2)*Qy));
+    T1m=4*Qx*Qy*Qz*(cos(sqrt(2)*Qx)-cos(sqrt(2)*Qy));
+    T2p= Qy*( Qx*Qx-Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qx)
+        +Qx*(-Qx*Qx+Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qy);
+    T2m= Qy*( Qx*Qx-Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qx)
+        -Qx*(-Qx*Qx+Qy*Qy+2*Qz*Qz)*sin(sqrt(2)*Qy);
+    T3 =Qx*Qy*(gsl_pow_4(Qx)+gsl_pow_2(Qy*Qy-2*Qz*Qz)-2*Qx*Qx*(Qy*Qy+2*Qz*Qz));
+    Tre=T1p*sin(Qz)-sqrt(2)*T2p*cos(Qz);
+    Tim=T1m*cos(Qz)+sqrt(2)*T2m*sin(Qz);
+    return (4./T3)*Tim;
+*/
     sqrt3=sqrt(3.0);
     qzR=Qz*tan(TILT)/sqrt3;
     q1 = 0.5*((sqrt3*Qx-Qy)*opo_Cot(TILT)-Qz);
@@ -758,13 +820,55 @@ scalar Ftetrahedron_kernel_Im(opo_data *opod) {
                 sqrt3*sin((-2*sqrt3*Qy + 3*H_R*Qz + 3*H_R*Qy*opo_Cot(TILT))/6.))))/gsl_pow_2(Qy*cos(TILT) + Qz*sin(TILT))))/(3.*Qy2) +
                 (sqrt3*H_R*(sin(Qy/sqrt3) + sin(Qy/sqrt3 - H_R*Qz - H_R*Qy*opo_Cot(TILT))))/gsl_pow_2(Qy + Qz*tan(TILT));
         }
-    }
-
-    return sqrt3*H_R/(Qx*(Qx2-3*Qy2))*(
+    } else if (fabs(Qx-sqrt3*Qy)<EPS_OH) {
+        return (sin((Qz*tan(TILT))/sqrt3)*((-3*sqrt3*H_R*Qy*cos((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+           cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*opo_Cot(TILT))/(-Qz + 2*Qy*opo_Cot(TILT)) +
+        (sqrt3*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*sin(TILT)*(-8*Qy*cos(TILT) + Qz*sin(TILT))*
+           sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) -
+        (sqrt3*cos((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*(4*Qy*cos(TILT) + Qz*sin(TILT)))/3.)*sin(TILT)*
+           sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.))/(4*Qy*cos(TILT) + Qz*sin(TILT)) +
+        (3*sqrt3*H_R*Qy*opo_Cot(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+           sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/(-Qz + 2*Qy*opo_Cot(TILT)) -
+        (6*Qy*sin(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+         (2*Qy*cos(TILT) - Qz*sin(TILT))) + cos((Qz*tan(TILT))/sqrt3)*
+      ((-3*Qy*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*(-2 + sqrt3*H_R*opo_Cot(TILT))*
+           sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/(-Qz + 2*Qy*opo_Cot(TILT)) +
+        sqrt3*((3*Qy*(H_R*cos(TILT)*cos((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*(-2*Qy*cos(TILT) + Qz*sin(TILT)) -
+                sin(2*TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+            gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) + sin(TILT)*
+            (-((sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.)*sin((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*
+                       (4*Qy*cos(TILT) + Qz*sin(TILT)))/3.))/(4*Qy*cos(TILT) + Qz*sin(TILT))) -
+              (sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+               (2*Qy*cos(TILT) - Qz*sin(TILT))))))/(3.*gsl_pow_2(Qy));
+        return -999999.;
+    } else if (fabs(Qx+sqrt3*Qy)<EPS_OH) {
+        return (sin((Qz*tan(TILT))/sqrt3)*((-3*sqrt3*H_R*Qy*cos((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+           cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*opo_Cot(TILT))/(-Qz + 2*Qy*opo_Cot(TILT)) +
+        (sqrt3*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*sin(TILT)*(-8*Qy*cos(TILT) + Qz*sin(TILT))*
+           sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) -
+        (sqrt3*cos((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*(4*Qy*cos(TILT) + Qz*sin(TILT)))/3.)*sin(TILT)*
+           sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.))/(4*Qy*cos(TILT) + Qz*sin(TILT)) +
+        (3*sqrt3*H_R*Qy*opo_Cot(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*
+           sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/(-Qz + 2*Qy*opo_Cot(TILT)) -
+        (6*Qy*sin(TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+         (2*Qy*cos(TILT) - Qz*sin(TILT))) + cos((Qz*tan(TILT))/sqrt3)*
+      ((-3*Qy*cos(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.)*(-2 + sqrt3*H_R*opo_Cot(TILT))*
+           sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))/(-Qz + 2*Qy*opo_Cot(TILT)) +
+        sqrt3*((3*Qy*(H_R*cos(TILT)*cos((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*(-2*Qy*cos(TILT) + Qz*sin(TILT)) -
+                sin(2*TILT)*sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.))*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+            gsl_pow_int(-2*Qy*cos(TILT) + Qz*sin(TILT),2) + sin(TILT)*
+            (-((sin((H_R*(Qz + 4*Qy*opo_Cot(TILT)))/2.)*sin((1.0/sin(2*TILT)*(3*H_R*cos(TILT) - 2*sqrt3*sin(TILT))*
+                       (4*Qy*cos(TILT) + Qz*sin(TILT)))/3.))/(4*Qy*cos(TILT) + Qz*sin(TILT))) -
+              (sin((H_R*(Qz - 2*Qy*opo_Cot(TILT)))/2.)*sin(((2*sqrt3 - 3*H_R*opo_Cot(TILT))*(-Qz + 2*Qy*opo_Cot(TILT))*tan(TILT))/6.))/
+               (2*Qy*cos(TILT) - Qz*sin(TILT))))))/(3.*gsl_pow_2(Qy));
+        return -9999999.;
+    } else {
+        return sqrt3*H_R/(Qx*(Qx2-3*Qy2))*(
                     -( Qx+sqrt3*Qy)*opo_sinc(q1*H_R) * (sin(qzR+q1*L))
                     +(-Qx+sqrt3*Qy)*opo_sinc(q2*H_R) * (sin(qzR-q2*L))
                     +2*Qx          *opo_sinc(q3*H_R) * (sin(qzR+q3*L))
                     );
+    }
 }
 
 scalar opo_Ftetrahedron(opo_data *opod) {
@@ -787,7 +891,7 @@ scalar opo_Fcubooctahedron(opo_data *opod) {
     Qz = opod->Qhat[2];
 }
 scalar ri(scalar theta, scalar alpha, scalar m, scalar n1, scalar n2, scalar n3, scalar a, scalar b) {
-    return pow(pow(fabs(cos((m*(theta-alpha)/4.)/a)),n2) + pow(fabs(sin((m*(theta-alpha)/4.)/b)),n3),-1/n1);
+    return pow(pow(fabs(cos((m*(theta-alpha)/4.)/a)),n2) + pow(fabs(sin((m*(theta-alpha)/4.)/b)),n3),-1.0/n1);
 }
 
 scalar ratri(scalar theta, scalar alpha, scalar m, scalar n1, scalar n2, scalar n3, scalar a, scalar b) {
@@ -1043,6 +1147,58 @@ int opo_Fss_cub_dtp(unsigned ndim, const double *x, void *pam,
     fval[1] = DJSS3D*Ir2SinQR;
 	return 0;
 }
+scalar opo_ReFss_cub_dtp(const double *x, size_t ndim, void * pam)
+{
+    scalar r,theta,phi,r1,r2,DJSS3D,QR,Ir2CosQR;
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+	if ((ndim < 2)) {
+		sasfit_out("false dimensions ndim:%d\n",ndim);
+		return 1;
+	}
+	theta = x[0];
+	phi   = x[1];
+	r1=ri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
+	r2=ri(phi  ,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	XX = r1*cos(theta)*r2*cos(phi);
+	YY = r1*sin(theta)*r2*cos(phi);
+	ZZ = r2*sin(phi);
+    QR = QQX*XX + QQY*YY + QQZ*ZZ;
+    if (fabs(QR)>1e-6) {
+        Ir2CosQR = (2*QR*cos(QR) + (-2 + gsl_pow_2(QR))*sin(QR))/gsl_pow_3(QR);
+    } else {
+        Ir2CosQR = 1/3-gsl_pow_2(QR)/10.+gsl_pow_4(QR)/168.-gsl_pow_6(QR)/6480;
+    }
+	DJSS3D = cos(phi)*gsl_pow_2(r1)*gsl_pow_3(r2);
+    Ir2CosQR = DJSS3D*Ir2CosQR;
+    return Ir2CosQR;
+}
+scalar opo_ImFss_cub_dtp(const double *x, size_t ndim, void * pam)
+{
+    scalar r,theta,phi,r1,r2,DJSS3D,QR, Ir2SinQR;
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+	if ((ndim < 2)) {
+		sasfit_out("false dimensions ndim:%d\n",ndim);
+		return 1;
+	}
+	theta = x[0];
+	phi   = x[1];
+	r1=ri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
+	r2=ri(phi  ,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	XX = r1*cos(theta)*r2*cos(phi);
+	YY = r1*sin(theta)*r2*cos(phi);
+	ZZ = r2*sin(phi);
+    QR = QQX*XX + QQY*YY + QQZ*ZZ;
+    if (fabs(QR)>1e-6) {
+        Ir2SinQR = (-2 + (2 - gsl_pow_2(QR))*cos(QR) + 2*QR*sin(QR))/gsl_pow_3(QR);
+    } else {
+        Ir2SinQR = QR/4.-gsl_pow_3(QR)/36.+gsl_pow_5(QR)/960.-gsl_pow_7(QR)/50400.;
+    }
+	DJSS3D = cos(phi)*gsl_pow_2(r1)*gsl_pow_3(r2);
+    Ir2SinQR = DJSS3D*Ir2SinQR;
+    return Ir2SinQR;
+}
 
 int opo_Fratss_cub_dtp(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
@@ -1073,6 +1229,58 @@ int opo_Fratss_cub_dtp(unsigned ndim, const double *x, void *pam,
     fval[1] = DJSS3D*Ir2SinQR;
 	return 0;
 }
+scalar opo_ReFratss_cub_dtp(const double *x, size_t ndim, void * pam)
+{
+    scalar r,theta,phi,r1,r2,DJSS3D,QR, Ir2CosQR;
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+	if ((ndim < 2)) {
+		sasfit_out("false dimensions ndim:%d\n",ndim);
+		return 1;
+	}
+	theta = x[0];
+	phi   = x[1];
+	r1=ratri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
+	r2=ratri(phi,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	XX = r1*cos(theta)*r2*cos(phi);
+	YY = r1*sin(theta)*r2*cos(phi);
+	ZZ = r2*sin(phi);
+    QR = QQX*XX + QQY*YY + QQZ*ZZ;
+    if (fabs(QR)>1e-6) {
+        Ir2CosQR = (2*QR*cos(QR) + (-2 + gsl_pow_2(QR))*sin(QR))/gsl_pow_3(QR);
+    } else {
+        Ir2CosQR = 1/3-gsl_pow_2(QR)/10.+gsl_pow_4(QR)/168.-gsl_pow_6(QR)/6480.;
+    }
+	DJSS3D = cos(phi)*gsl_pow_2(r1)*gsl_pow_3(r2);
+    Ir2CosQR = DJSS3D*Ir2CosQR;
+	return Ir2CosQR;
+}
+scalar opo_ImFratss_cub_dtp(const double *x, size_t ndim, void * pam)
+{
+    scalar r,theta,phi,r1,r2,DJSS3D,QR, Ir2SinQR;
+	sasfit_param * param;
+	param = (sasfit_param *) pam;
+	if ((ndim < 2)) {
+		sasfit_out("false dimensions ndim:%d\n",ndim);
+		return 1;
+	}
+	theta = x[0];
+	phi   = x[1];
+	r1=ratri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
+	r2=ratri(phi,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	XX = r1*cos(theta)*r2*cos(phi);
+	YY = r1*sin(theta)*r2*cos(phi);
+	ZZ = r2*sin(phi);
+    QR = QQX*XX + QQY*YY + QQZ*ZZ;
+    if (fabs(QR)>1e-6) {
+        Ir2SinQR = (-2 + (2 - gsl_pow_2(QR))*cos(QR) + 2*QR*sin(QR))/gsl_pow_3(QR);
+    } else {
+        Ir2SinQR = QR/4.-gsl_pow_3(QR)/36.+gsl_pow_5(QR)/960.-gsl_pow_7(QR)/50400.;
+    }
+	DJSS3D = cos(phi)*gsl_pow_2(r1)*gsl_pow_3(r2);
+    Ir2SinQR = DJSS3D*Ir2SinQR;
+	return Ir2SinQR;
+}
 scalar call_opo_Fss_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
     scalar fv[2], x[2];
     x[0]=x1;
@@ -1101,7 +1309,7 @@ int opo_Fss_cub_drtp(unsigned ndim, const double *x, void *pam,
 	phi   = x[2];
 	if (r==0) return 0;
 	r1=ri(theta,FALPHA,FMM,FN1,FN2,FN3,FAA,FBB);
-	r2=ri(phi,SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
+	r2=ri(phi,  SALPHA,SMM,SN1,SN2,SN3,SAA,SBB);
 	XX = r*r1*cos(theta)*r2*cos(phi);
 	YY = r*r1*sin(theta)*r2*cos(phi);
 	ZZ = r*r2*sin(phi);
@@ -1646,7 +1854,7 @@ scalar opo_Fss_GL_3Dtp(void *pam)
     int n,m,i,j,k, ndim=2, fdim=2;
     scalar fval[2],x[2],*A_GL,*W_GL,rs,is, fa,fb,fA,fB,fc,fd,fC,fD;
     gsl_integration_glfixed_table *t;
-    n = abs(sasfit_eps_get_robertus_p());
+    n = abs( sasfit_eps_get_gausslegendre() );
     m = (n+1)>>1;
     t=gsl_integration_glfixed_table_alloc(n);
 
@@ -2025,8 +2233,8 @@ scalar opo_Fsupershape(void * pam) {
 	int auswahl;
 	intstrategy = sasfit_get_int_strategy();
 //    intstrategy=OOURA_DOUBLE_EXP_QUADRATURE;
-	switch(intstrategy) {
 
+	switch(intstrategy) {
     case GSL_GAUSSLEGENDRE: {
             if (sasfit_eps_get_robertus_p()>0){
                 sum = opo_Fss_GL_3Dtp(pam);
@@ -2057,8 +2265,7 @@ scalar opo_Fsupershape(void * pam) {
             }
             break;
             }
-    case P_CUBATURE:
-    default: {
+    case P_CUBATURE:{
             if (sasfit_eps_get_robertus_p()>0){
                 cubxmax[0] = M_PI;
                 cubxmin[0] = -M_PI;
@@ -2076,6 +2283,34 @@ scalar opo_Fsupershape(void * pam) {
                 cubxmin[2] = -M_PI_2;
                 pcubature(2, &opo_Fss_cub_drtp,param,3, cubxmin, cubxmax,
                         100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
+                sum	= gsl_hypot(fval[0],fval[1]);
+            }
+            break;
+            }
+    default: {
+            if (sasfit_eps_get_robertus_p()>0){
+                cubxmax[0] = M_PI;
+                cubxmin[0] = -M_PI;
+                cubxmax[1] = M_PI_2;
+                cubxmin[1] = -M_PI_2;
+                sasfit_cubature(2,cubxmin,cubxmax,&opo_ReFss_cub_dtp,pam,sasfit_eps_get_aniso(),&res,&err);
+                fval[0]=res;
+                sasfit_cubature(2,cubxmin,cubxmax,&opo_ImFss_cub_dtp,pam,sasfit_eps_get_aniso(),&res,&err);
+                fval[1]=res;
+                sum	= gsl_hypot(fval[0],fval[1]);
+            } else {
+                cubxmax[0] = 1;
+                cubxmin[0] = 0;
+                cubxmax[1] = M_PI;
+                cubxmin[1] = -M_PI;
+                cubxmax[2] = M_PI_2;
+                cubxmin[2] = -M_PI_2;
+                pcubature(2, &opo_Fss_cub_drtp,param,3, cubxmin, cubxmax,
+                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED, fval, ferr);
+ //               sasfit_cubature(2,cubxmin,cubxmax,&opo_ReFss_cub_drtp,pam,sasfit_eps_get_aniso(),&res,&err);
+                fval[0]=res;
+//                sasfit_cubature(2,cubxmin,cubxmax,&opo_ImFss_cub_drtp,pam,sasfit_eps_get_aniso(),&res,&err);
+                fval[1]=res;
                 sum	= gsl_hypot(fval[0],fval[1]);
             }
             }

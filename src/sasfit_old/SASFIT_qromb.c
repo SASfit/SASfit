@@ -185,7 +185,31 @@ void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) 
 
     *res = 0;
     *err=0;
-
+    if ( gsl_finite(((sasfit_param4int *)param4int)->Rstart) &&
+          gsl_isinf(((sasfit_param4int *)param4int)->Rend) )	// adaptive integration on infinite intervals (a,+\infty)
+	{
+	    switch(sasfit_get_int_strategy()) {
+            case OOURA_DOUBLE_EXP_QUADRATURE: {
+                aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+                sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
+                sasfit_intdei(&IQ_IntdLen,
+                         ((sasfit_param4int *)param4int)->Rstart,
+                         aw, res, err, param4int);
+                ((sasfit_param4int *)param4int)->error = 0;
+                free(aw);
+                break;
+            }
+            default:
+                w = gsl_integration_workspace_alloc(lenaw);
+                F.function=&IQ_IntdLen;
+                F.params = param4int;
+                ((sasfit_param4int *)param4int)->error = gsl_integration_qagiu(&F,
+                                                                           ((sasfit_param4int *)param4int)->Rstart,
+                                                                            0, sasfit_eps_get_nriq(), lenaw,
+                                                                            w, res, err);
+                gsl_integration_workspace_free (w);
+	    }
+	}
     switch(sasfit_get_int_strategy()) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));

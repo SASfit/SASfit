@@ -1,5 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{LogNorm\_fp} \hspace{1pt}
+\section{LogNorm} \hspace{1pt}
+\label{sec:sd_lognorm}
+The logbnormal distribution is a heavy-right-trailed distribution defined on a left-bounded interval. 
+\subsection{LogNorm\_fp} \hspace{1pt}
 \label{sec:sd_lognorm_fp}
 
 The \texttt{LogNorm} distribution is a continuous distribution in which the logarithm of a variable
@@ -190,4 +193,86 @@ cm$^{-2}$.}
 \label{tab:volumefraction}
 \end{table}
 
+\subsection{bi-LogNorm}\hspace{1pt}
+\label{sec:sd_bilognorm}
 
+\subsection{shifted LogNorm}\hspace{1pt}
+\label{sec:sd_shiftedlognorm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{metalog distribution} \hspace{1pt}
+\label{sec:sd_metalog}
+
+The quantile function of the metalog distribution $Q(y)=M_{k}(y)$ is defined as \cite{Keelin2011,Keelin2016,Keelin2019}
+\begin{flalign}
+%\scriptsize
+ M_{k}(y) &=
+ \left\{{\begin{array}{ll}
+    a_{1}+a_{2}\ln {y \over {1-y}}, &  k=2\\
+    a_{1}+a_{2}\ln {y \over {1-y}} +a_{3}(y-\frac12)\ln {y \over {1-y}}, & k=3 \\
+    a_{1}+a_{2}\ln {y \over {1-y}} +a_{3}(y-\frac12)\ln {y \over {1-y}}+a_{4}(y-\frac12), & k=4 \\
+    M_{k-1}(y)+a_{k}(y-\frac12)^{k-1 \over 2}, &{\mbox{odd }}k\geq 5 \\
+    M_{k-1}(y)+a_{k}(y-\frac12)^{{k \over 2}-1}\ln {y \over {1-y}},  &{\mbox{even }}k\geq 6 \\
+ \end{array}}\right.
+\end{flalign}
+and its PDF $p(x)=m_k(y)$ with $x=M_{k}(y)$ reads as
+\begin{flalign}
+%\scriptsize
+ m_{k}(y)&=
+\left\{{\begin{array}{ll}
+    {y(1-y) \over {a_{2}}}, & k=2 \\
+    \left({a_{2} \over {y(1-y)}}+a_{3}\left({y-\frac12 \over {y(1-y)}}+\ln {y \over {1-y}}\right)\right)^{-1}, & k=3\\
+    \left({a_{2} \over {y(1-y)}}+a_{3}\left({y-\frac12 \over {y(1-y)}}+\ln {y \over {1-y}}\right)+a_{4}\right)^{-1}, &k=4\\
+    \left({1 \over {m_{k-1}(y)}}+a_{k}{k-1 \over 2}(y-\frac12)^{(k-3)/2}\right)^{-1}, & \mbox{odd } k\geq 5\\
+    \left({1 \over {m_{k-1}(y)}}+a_{k}\left({(y-\frac12)^{\frac{k}{2}-1} \over {y(1-y)}}+({k \over 2}-1)(y-\frac12)^{(\frac{k}{2}-2)}\ln {y \over {1-y}}\right)\right)^{-1}, &\mbox{even } k\geq 6\\
+    \end{array}}\right.
+\end{flalign}
+The metalog PDF as defined above is an unbounded distribution. In case of describing a size distribution it needs to be bounded (Logit metalog) or at least semi-bounded (bounded below, Log metalog). This can be easily done by a transformation of $z(x) = \ln \left(x-b_l\right)$ for a distribution with a lower bound $b_l$ or $z(x)=\ln\left(\frac{x-b_l}{b_u-x}\right)$ with a lower bound $b_l$ and an upper bound $b_u$, where $z$ is then metalog-distributed. The corresponding quantile functions and PDF then reads as
+\begin{eqnarray}
+   M_k^{\log}(y) &=&  \left\{{\begin{array}{ll}
+    b_l+e^{M_k(y)}, & 0<y<1 \\
+    b_l, & y=0\\
+    \end{array}}\right.\\
+   m_k^{\log}(y) &=&  \left\{{\begin{array}{ll}
+    m_k(y)e^{-M_k(y)}, & 0<y<1 \\
+    0, & y=0\\
+    \end{array}}\right.\\
+   M_k^{\mathrm{logit}}(y) &=&  \left\{{\begin{array}{ll}
+    \frac{b_l+b_ue^{M_k(y)}}{1+e^{M_k(y)}}, & 0<y<1 \\
+    b_l, & y=0\\
+    b_u, & y=1\\
+    \end{array}}\right.\\
+   m_k^{\mathrm{logit}}(y) &=&  \left\{{\begin{array}{ll}
+    m_k(y)\frac{\left(1+e^{M_k(y)}\right)^2}{(b_u-b_l)e^{M_k(y)}}, & 0<y<1 \\
+    0, & y=0\\
+    0, & y=1\\
+    \end{array}}\right.
+ \end{eqnarray}
+ 
+\subsection{unbounded metalog distribution}\hspace{1pt}
+\label{sec:sd_unboundedmetalog}
+
+\subsection{semi-bounded metalog distribution}\hspace{1pt}
+\label{sec:sd_semiboundedmetalog}
+
+\subsection{bounded metalog distribution}\hspace{1pt}
+\label{sec:sd_boundedmetalog}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Johnson's distribution} \hspace{1pt}
+\label{sec:sd_Johnson}
+
+\subsection{Johnson $S_B$}\hspace{1pt}
+\label{sec:sd_johnsonSB}
+
+\subsection{Johnson $S_L$}\hspace{1pt}
+\label{sec:sd_johnsonSL}
+
+\subsection{Johnson $S_U$}\hspace{1pt}
+\label{sec:sd_johnsonSU}
+
+\subsection{Johnson $S_N$}\hspace{1pt}
+\label{sec:sd_johnsonSN}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{generalized Johnson's distribution} \hspace{1pt}
+\label{sec:sd_gneralizedJohnson}

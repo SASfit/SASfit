@@ -1,7 +1,9 @@
-﻿0.94.12 2021-10-xx
+﻿0.94.12 2022-03-xx
+- added a new form factor of PEGylated vesicle with smoothed interfaces
+- added metalog size distribution as well as the Johnson's family of distributions (SN, SL, SB, SU) and its generalization
 - update to FFTW 3.3.10
 - supply of a piecewise constant potential for OZ solver
-- moved sticky hard sphere and square well structure factors into the plugin menue folder. 
+- moved sticky hard sphere and square well structure factors into the plugin menu folder. 
   The order of parameters changed slightly to be a bit more consistent
 - added RLCA and DLCA structure factors for aggregates, which include nearest neighbor correlations
 - supply of internal multidimensional integration routines, which can be configured via GUI
@@ -10,13 +12,13 @@
 - added form factor of super-egg
 - update to gsl 2.7
 - update to FFTW 3.3.9
-- use under Widows systems a powershell script to copy a 2D image to the clipoard as the previous code does not work anymore under MSYS2. A similar solution might be available under Unix and MacOS
+- use under Widows systems a powershell script to copy a 2D image to the clipboard as the previous code does not work anymore under MSYS2. A similar solution might be available under Unix and MacOS
 - added form factor for an octahedron
 - added form factor for an tetrahedron
 - added form factor for a cone with six-fold symmetry
 - added form factor for a cone
 - added form factor for a rectangular base pyramid 
-- added perl necklage model both with stiff rodlike connections as well as "freely connected rods" conections
+- added perl necklace model both with stiff rodlike connections as well as "freely connected rods" 
 - extended "random flight" structure model by introducing an uncertainty parameter for the step width identical to the paracrystalline model for lamellar structures
 - for merging files a multiplier instead of divisor is used now
 - added structure factor for a 2-Yukawa potential in MSA approximation

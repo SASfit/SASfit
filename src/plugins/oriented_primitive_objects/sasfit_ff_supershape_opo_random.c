@@ -14,6 +14,9 @@ scalar sasfit_ff_supershape_opo_kernel_f(scalar theta, scalar phi, sasfit_param 
     s_shape_opod.Q[1] = s_shape_opod.Qmod*sin(phi)*sin(theta);
     s_shape_opod.Q[2] = s_shape_opod.Qmod         *cos(theta);
     opo_setQhat(&s_shape_opod);
+    QQX = s_shape_opod.Qhat[0];
+    QQY = s_shape_opod.Qhat[1];
+    QQZ = s_shape_opod.Qhat[2];
     return (ETA_P-ETA_M)*s_shape_opod.detDinv*opo_Fsupershape(param);
 }
 scalar sasfit_ff_supershape_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
@@ -21,6 +24,9 @@ scalar sasfit_ff_supershape_opo_kernel(scalar theta, scalar phi, sasfit_param * 
     s_shape_opod.Q[1] = s_shape_opod.Qmod*sin(phi)*sin(theta);
     s_shape_opod.Q[2] = s_shape_opod.Qmod         *cos(theta);
     opo_setQhat(&s_shape_opod);
+    QQX = s_shape_opod.Qhat[0];
+    QQY = s_shape_opod.Qhat[1];
+    QQZ = s_shape_opod.Qhat[2];
     return gsl_pow_2((ETA_P-ETA_M)*s_shape_opod.detDinv*opo_Fsupershape(param));
 }
 

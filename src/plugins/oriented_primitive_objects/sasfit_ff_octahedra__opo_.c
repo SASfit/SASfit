@@ -19,7 +19,7 @@ scalar sasfit_ff_octahedra__opo_(scalar q, sasfit_param * param)
 
 	// insert your code here
 
-	return gsl_pow_2(sasfit_ff_tetrahedra__opo__f(q,param));
+	return gsl_pow_2(sasfit_ff_octahedra__opo__f(q,param));
 }
 
 scalar sasfit_ff_octahedra__opo__f(scalar q, sasfit_param * param)
@@ -54,6 +54,7 @@ scalar sasfit_ff_octahedra__opo__f(scalar q, sasfit_param * param)
     opod.Q[2] = 0;
     opo_setQhat(&opod);
 	// insert your code here
+
 	return (ETA_P-ETA_M) *opod.detDinv*opo_FOH(&opod);
 }
 

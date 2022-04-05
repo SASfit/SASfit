@@ -47,7 +47,7 @@ scalar sasfit_ff_tetrahedra__opo_random_(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((B < 0.0), param, "b(%lg) < 0",B); // modify condition to your needs
 	SASFIT_CHECK_COND1((C < 0.0), param, "c(%lg) < 0",C); // modify condition to your needs
-	SASFIT_CHECK_COND1((H_R > tan(TILT)&&tan(TILT)>0&&!gsl_isnan(tan(TILT))), param, "H/R > tan(TILT) (%lg)",tan(TILT));
+	SASFIT_CHECK_COND1((H_R > tan(TILT)/sqrt(3)&&tan(TILT)>0&&!gsl_isnan(tan(TILT))), param, "H/R > tan(TILT)/sqrt(3) (%lg)",tan(TILT)/sqrt(3));
 
 	// insert your code here
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(tetrahedron_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
