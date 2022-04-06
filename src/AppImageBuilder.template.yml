@@ -1,8 +1,13 @@
-# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+# src/AppImageBuilder.template.yml
+# An appimage-builder recipe for SASfit, see https://appimage-builder.readthedocs.io for details
+#
+# Install AppImage-Builder and requirements:
+#   https://appimage-builder.readthedocs.io/en/latest/intro/install.html#debian-ubuntu
+#
 # To be called like this from SASfit root source dir:
 #   appimage-builder --recipe src/AppImageBuilder.yml
 # For cleanup during consecutive runs:
-#   rm -Rf ../sasfit_*_linux64* && (cd saskit && rm -Rf build/*/dqkit saskit_* bin) && sh src/appveyor/4_build.sh
+#   (cd saskit && ./saskit_linux64 gen/buildkit cleanupall && rm saskit_linux64 && rm -Rf ../appdir)
 version: 1
 AppDir:
   # assuming this file resides in sasfit/src/,
@@ -17,36 +22,41 @@ AppDir:
     exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle:
     - echo "Running appimage-build in '$(pwd)'"
-  after_bundle:
-    - echo "after_bundle"
+  after_bundle: |
+    echo "after_bundle"
     #
     # adjustments to the current layout CMake prepares
-    - (cd "$APPDIR" && rm -Rf sasfit sasfit.sh lib) # files not needed anymore, FIXME
+    (cd "$APPDIR" && rm -Rf sasfit sasfit.sh) # files not needed anymore, FIXME
     #
     # FIXME: generate proper icons from the svg
-    - mkdir -p "$APPDIR"/usr/share/icons/hicolor/512x512/apps
-    - cp doc/images/sasfit_icon_w512.png "$APPDIR"/usr/share/icons/hicolor/512x512/apps/sasfit.png
+    mkdir -p "$APPDIR"/usr/share/icons/hicolor/512x512/apps
+    cp doc/images/sasfit_icon_w512.png "$APPDIR"/usr/share/icons/hicolor/512x512/apps/sasfit.png
     #
     # Copy the saskit dqkit to let it get the proper libc interpreter update
-    - cp saskit/build/*/dqkit/dqkit.bin "$APPDIR"/saskit
+    SASKIT_BUILD_PATH="$(find saskit/build/ -mindepth 1 -maxdepth 1 -type d | grep -- $(uname -n)-)"
+    echo "  Using SASKIT_BUILD_PATH: '$SASKIT_BUILD_PATH'"
+    cp "$SASKIT_BUILD_PATH"/dqkit/dqkit.bin "$APPDIR"/saskit
   before_runtime:
     - echo "before_runtime"
+    - rm -Rf "$APPDIR"/runtime
+    # for debugging, show interpreter with 'patchelf --print-interpreter ...'
   after_runtime: |
     echo "after_runtime"
     #
     # copy modified dqkit back to the saskit source for reassembling
-    SASKIT_BUILD_PATH="$(find saskit/build/ -mindepth 1 -maxdepth 1 -type d)"
+    SASKIT_BUILD_PATH="$(find saskit/build/ -mindepth 1 -maxdepth 1 -type d | grep "$(uname -n)-")"
+    echo "  Using SASKIT_BUILD_PATH: '$SASKIT_BUILD_PATH'"
     SF_DEBUG="$(echo $SASKIT_BUILD_PATH | grep -o debug || true)"
+    # echo "SF_DEBUG: '$SF_DEBUG', SASKIT_BUILD_PATH: '$SASKIT_BUILD_PATH'"
     [ -z "$SF_DEBUG" ] || SF_DEBUG="-$SF_DEBUG"
-    echo "SF_DEBUG: '$SF_DEBUG', SASKIT_BUILD_PATH: '$SASKIT_BUILD_PATH'"
     cp "$APPDIR"/saskit "$SASKIT_BUILD_PATH"/dqkit/dqkit.bin
     export TCLSH="$(readlink -f src/tcl/linux64/bin/tclsh8.4)"
     #
-    # create the ld in /tmp for the other binaries to work
-    ("$APPDIR"/AppRun <(echo exit)) || true
-    #
     # reassemble the combined tcl interpreter with the redirected ld
-    (cd saskit && $TCLSH gen/buildkit finalize $SF_DEBUG -tcl=*.* -tk=*.* -blt -compression=none -binary=all -resfile=current)
+    (cd saskit && \
+     rm -f lib64 && \
+     ln -s "$APPDIR"/runtime/default/lib64 . && \
+     $TCLSH gen/buildkit finalize $SF_DEBUG -tcl=*.* -tk=*.* -blt -compression=none -binary=all -resfile=current)
     #
     # copy the reassembled tcl interpreter back into the app dir
     cp saskit/bin/*/dqkit-all.bin "$APPDIR"/saskit
