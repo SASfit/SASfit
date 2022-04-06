@@ -62,6 +62,6 @@ for f in $NAMES; do
 	$ZIP $DIR/$FIRST
     else
 	rm -f $DIR/$f $DIR/$f.*
-	ln $S$FIRST$Z $DIR/$f$Z
+	cp $S$FIRST$Z $DIR/$f$Z
     fi
 done

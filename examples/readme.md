@@ -16,7 +16,7 @@ Run it like that:
 
 ## Windows 10 (and later, with minGW64)
 
-In a directory with 'test.c' parallel to sasfit binary dir:
+In a directory with `test.c` parallel to sasfit binary dir:
 
     gcc -I../sasfit_220317104242_windows64/plugins/ -I/y/shared/sasfit-code/src/sasfit_common/include -I/y/shared/sasfit-code/src/sasfit_core/include -I/y/shared/sasfit-code/src/gsl/macos64/include/ -I/y/shared/sasfit-code/src/f2c -L../sasfit_220317104242_windows64/lib -lsasfit -L../sasfit_220317104242_windows64/plugins/ -lsasfit_fuzzysphere -o test test.c
 
