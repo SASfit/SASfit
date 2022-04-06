@@ -9,6 +9,7 @@ Thumbs.db
 */.svn
 *.swp
 /*.dll
+*.AppImage
 
 # some specific patterns to ignore
 CMakeFiles
@@ -29,12 +30,15 @@ w
 m
 sasfit
 doc/wikibot/pywikipedia/login-data/*.data
+appimage-builder-cache
+appdir
 
 # saskit
 saskit/install
 saskit/build
 saskit/out
 saskit/bin
+saskit/lib64
 saskit/src/itcl-3.3/tclconfig/tclconfig
 saskit/src/tcl-8.4.13/lib/Mk4tcl/Mk4tcl.so
 saskit/src/tcl-8.4.13/lib/Mk4tcl/pkgIndex.tcl
