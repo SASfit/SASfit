@@ -12,7 +12,6 @@
 #include <gsl/gsl_sf.h>
 
 #include "bool.h"
-#include "tcl.h"
 #undef float
 
 #include "f2c.h"
