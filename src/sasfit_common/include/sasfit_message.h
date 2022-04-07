@@ -70,7 +70,6 @@
  * convenience).
  */
 #define sasfit_out(format, ...) sasfit_msg(CHAN_INFO, format, ##__VA_ARGS__)
-//#define sasfit_err(format, ...) sasfit_error(format, ##__VA_ARGS__)
 
 /**
  * Available channels for output messages.
