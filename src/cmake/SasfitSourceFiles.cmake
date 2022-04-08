@@ -51,6 +51,7 @@ set(SOURCE_sasfit_common
 	sasfit_error_common.c
 	sasfit_eps.c
 	sasfit_plugin_func.c
+	sasfit_plugin_api.c
 	sasfit_common.c
 	f2c_utils/sasfit_dmilay.c
 	f2c_utils/sasfit_struve_h0h1.c
@@ -84,7 +85,6 @@ set(SOURCE_sasfit_core
 	sasfit_error_core.c
 	sasfit_core.c
 	sasfit_plugin_backend.c
-	sasfit_plugin_api.c
 	sasfit_plugin_db.c
 	sasfit_tclcmd.c
 	sasfit_2d.c

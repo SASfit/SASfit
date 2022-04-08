@@ -48,10 +48,10 @@ saskit/*.dll
 saskit/old_saskit
 
 # example
-/examples/dll/libsasfit_fuzzysphere.dll
-/examples/dll/libsasfit.dll
-/examples/example_sasfit_ff_fuzzysphere_so.exe
-/examples/example_sasfit_ff_fuzzysphere_stat.exe
+/examples/example_sasfit_ff_fuzzysphere
+/examples/example_sasfit_ff_fuzzysphere.exe
+/examples/libsasfit_fuzzysphere.dll
+/examples/libsasfit.dll
 
 # sasfit internal
 /src/sasfit_common/f2c_utils/acpa.c
