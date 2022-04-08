@@ -19,8 +19,9 @@ extern sasfit_plugin_api_do_init_t do_init;
          
 void myprint(const char * format, va_list argptr)
 {
-    printf("beginMyprint\n");
-    printf("endMyprint\n=================\n");
+    printf(" ++ beginMyPrint ++\n");
+    vprintf(format, argptr);
+    printf(" ++ endMyPrint ++\n");
 }
 
 int main()
@@ -43,8 +44,9 @@ int main()
     sasfit_param param;     // configure parameters
     sasfit_init_param(&param);
 
-    sasfit_set_msg_handler(CHAN_INFO, 1, myprint);
-    sasfit_set_msg_handler(CHAN_ERR, 1, myprint);
+    // optional
+    sasfit_set_msg_handler(CHAN_INFO, 0, myprint);
+    sasfit_set_msg_handler(CHAN_ERR, 0, myprint);
 
     param.p[0] = 2.5;       // R
     param.p[1] = 0.8;       // sigma
