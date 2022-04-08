@@ -7,7 +7,6 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define A	param->p[0]
 
 scalar sasfit_ff_dodecahedra__opo_random_(scalar q, sasfit_param * param)
 {
