@@ -28,8 +28,7 @@
 #include <string.h>
 #include <sasfit_common.h>
 #include <sasfit_plugin.h>
-#include "include/sasfit_core.h"
-#include "include/sasfit_plugin_backend.h"
+#include "include/sasfit_plugin_api.h"
 
 // clean function pointer/references
 void sasfit_plugin_api_reset(sasfit_plugin_api_t * plugin_api)
