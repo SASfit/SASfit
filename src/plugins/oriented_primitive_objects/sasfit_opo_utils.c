@@ -379,13 +379,98 @@ scalar opo_Fprism3(opo_data *opod) {
     Qz = opod->Qhat[2];
 }
 
+scalar opo_ReFpyramid4(scalar Qx, scalar Qy, scalar Qz, sasfit_param * param) {
+    scalar K1, K2, K3, K4, q1, q2, q3, q4;
+
+    q1 = 0.5*((Qx-Qy)*opo_Cot(TILT)+Qz);
+    q2 = 0.5*((Qx-Qy)*opo_Cot(TILT)-Qz);
+    q3 = 0.5*((Qx+Qy)*opo_Cot(TILT)+Qz);
+    q4 = 0.5*((Qx+Qy)*opo_Cot(TILT)-Qz);
+    K1 = opo_sinc(q1*H_R)*cos(q1*H_R)+opo_sinc(q2*H_R)*cos(-q2*H_R);
+    K2 = opo_sinc(q1*H_R)*sin(q1*H_R)-opo_sinc(q2*H_R)*sin(-q2*H_R);
+    K3 = opo_sinc(q3*H_R)*cos(q3*H_R)+opo_sinc(q4*H_R)*cos(-q4*H_R);
+    K4 = opo_sinc(q3*H_R)*sin(q3*H_R)-opo_sinc(q4*H_R)*sin(-q4*H_R);
+
+    if (tan(TILT)==0) return 0;
+//goto labelPy4Re;
+    if (fabs(Qx)<= EPS_OH && fabs(Qy)> EPS_OH && fabs(Qz) > EPS_OH) {
+        return (4*cos(TILT)*(-(H_R*gsl_pow_3(Qy)*gsl_pow_3(cos(TILT))*cos(H_R*Qz)*cos(Qy - H_R*Qy*opo_Cot(TILT))) +
+            gsl_pow_2(Qz)*gsl_pow_3(sin(TILT))*(Qy*cos(Qy) - Qy*cos(H_R*Qz)*cos(Qy - H_R*Qy*opo_Cot(TILT)) + sin(Qy)) +
+            gsl_pow_2(Qy)*gsl_pow_2(cos(TILT))*sin(TILT)*(-(Qy*cos(Qy)) + Qy*cos(H_R*Qz)*cos(Qy - H_R*Qy*opo_Cot(TILT)) + sin(Qy)) +
+            Qy*Qz*cos(TILT)*cos(Qy - H_R*Qy*opo_Cot(TILT))*gsl_pow_2(sin(TILT))*(H_R*Qz*cos(H_R*Qz) - 2*sin(H_R*Qz))) -
+            4*sin(TILT)*(cos(TILT)*cos(H_R*Qz)*(gsl_pow_2(Qy)*gsl_pow_2(cos(TILT)) + gsl_pow_2(Qz)*gsl_pow_2(sin(TILT))) +
+            Qz*(H_R*cos(TILT) - sin(TILT))*(-(gsl_pow_2(Qy)*gsl_pow_2(cos(TILT))) + gsl_pow_2(Qz)*gsl_pow_2(sin(TILT)))*sin(H_R*Qz))*
+            sin(Qy - H_R*Qy*opo_Cot(TILT)))/(Qy*gsl_pow_2(gsl_pow_2(Qy)*gsl_pow_2(cos(TILT)) - gsl_pow_2(Qz)*gsl_pow_2(sin(TILT))));
+    } else if (fabs(Qx) > EPS_OH && fabs(Qy) <= EPS_OH && fabs(Qz) > EPS_OH) {
+        return (4*cos(TILT)*(-(H_R*gsl_pow_3(Qx)*gsl_pow_3(cos(TILT))*cos(H_R*Qz)*cos(Qx - H_R*Qx*opo_Cot(TILT))) +
+            gsl_pow_2(Qz)*gsl_pow_3(sin(TILT))*(Qx*cos(Qx) - Qx*cos(H_R*Qz)*cos(Qx - H_R*Qx*opo_Cot(TILT)) + sin(Qx)) +
+            gsl_pow_2(Qx)*gsl_pow_2(cos(TILT))*sin(TILT)*(-(Qx*cos(Qx)) + Qx*cos(H_R*Qz)*cos(Qx - H_R*Qx*opo_Cot(TILT)) + sin(Qx)) +
+            Qx*Qz*cos(TILT)*cos(Qx - H_R*Qx*opo_Cot(TILT))*gsl_pow_2(sin(TILT))*(H_R*Qz*cos(H_R*Qz) - 2*sin(H_R*Qz))) -
+            4*sin(TILT)*(cos(TILT)*cos(H_R*Qz)*(gsl_pow_2(Qx)*gsl_pow_2(cos(TILT)) + gsl_pow_2(Qz)*gsl_pow_2(sin(TILT))) +
+            Qz*(H_R*cos(TILT) - sin(TILT))*(-(gsl_pow_2(Qx)*gsl_pow_2(cos(TILT))) + gsl_pow_2(Qz)*gsl_pow_2(sin(TILT)))*sin(H_R*Qz))*
+            sin(Qx - H_R*Qx*opo_Cot(TILT)))/(Qx*gsl_pow_2(gsl_pow_2(Qx)*gsl_pow_2(cos(TILT)) - gsl_pow_2(Qz)*gsl_pow_2(sin(TILT))));
+    } else if (fabs(Qx) > EPS_OH && fabs(Qy)> EPS_OH && fabs(Qz) <= EPS_OH) {
+        if (fabs(opo_Cot(TILT))<=EPS_OH) {
+            return -((H_R*(H_R*(-2*TILT + M_PI)*Qy*cos(Qy)*sin(Qx) + (H_R*(-2*TILT + M_PI)*Qx*cos(Qx) - 4*sin(Qx))*sin(Qy)))/(Qx*Qy));
+        } else if (fabs(Qx-Qy)<=EPS_OH) {
+            return (-4*H_R*(Qx - 2*Qy)*Qy - 2*(Qx - Qy)*Qy*cos(2*Qy*(-1 + H_R*opo_Cot(TILT)))*(H_R - tan(TILT)) +
+                (2*Qy*(-Qx + Qy)*cos(2*Qy) + (3*Qx - 5*Qy)*sin(2*Qy) + 3*Qx*sin(2*Qy*(-1 + H_R*opo_Cot(TILT))) +
+                5*Qy*sin(2*Qy - 2*H_R*Qy*opo_Cot(TILT)))*tan(TILT))/(2.*gsl_pow_4(Qy));
+        } else if (fabs(Qx+Qy)<=EPS_OH) {
+            return (4*H_R*Qy*(Qx + 2*Qy) + 2*Qy*(Qx + Qy)*cos(2*Qy*(-1 + H_R*opo_Cot(TILT)))*(H_R - tan(TILT)) +
+                2*Qy*(Qx + Qy)*cos(2*Qy)*tan(TILT) - (3*Qx + 5*Qy)*(sin(2*Qy) + sin(2*Qy*(-1 + H_R*opo_Cot(TILT))))*
+                tan(TILT))/(2.*gsl_pow_4(Qy));
+        } else {
+            return (2*((Qx + Qy)*sin(Qx - Qy) + (Qx + Qy)*sin((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) -
+                (Qx - Qy)*(sin(Qx + Qy) - sin(Qx + Qy - H_R*(Qx + Qy)*opo_Cot(TILT))))*tan(TILT))/
+                (Qx*(Qx - Qy)*Qy*(Qx + Qy));
+        }
+    } else if  (fabs(Qx)<=EPS_OH && fabs(Qy)<= EPS_OH && fabs(Qz) > EPS_OH) {
+        return (8*Qz*opo_Cot(TILT)*(1 + cos(H_R*Qz)*(-1 + H_R*opo_Cot(TILT))) + 4*
+            (gsl_pow_2(Qz) - 2*H_R*gsl_pow_2(Qz)*opo_Cot(TILT) + (-2 + gsl_pow_2(H_R)*gsl_pow_2(Qz))*gsl_pow_2(opo_Cot(TILT)))*sin(H_R*Qz))/gsl_pow_3(Qz);
+    } else if  (fabs(Qx) <= EPS_OH && fabs(Qy) > EPS_OH && fabs(Qz) <= EPS_OH) {
+        if (fabs(opo_Cot(TILT))<=EPS_OH) {
+            return (H_R*(4*sin(Qy) - H_R*(-2*TILT + M_PI)*(Qy*cos(Qy) + sin(Qy))))/Qy;
+        } else {
+            return (-4*(Qy*cos(Qy) + Qy*cos(Qy - H_R*Qy*opo_Cot(TILT))*(-1 + H_R*opo_Cot(TILT)) - sin(Qy) + sin(Qy - H_R*Qy*opo_Cot(TILT)))*
+                tan(TILT))/gsl_pow_3(Qy);
+        }
+    } else if  (fabs(Qx) > EPS_OH && fabs(Qy) <= EPS_OH && fabs(Qz) <= EPS_OH) {
+        if (fabs(opo_Cot(TILT))<=EPS_OH) {
+            return (H_R*(4*sin(Qx) - H_R*(-2*TILT + M_PI)*(Qx*cos(Qx) + sin(Qx))))/Qx;
+        } else {
+            return (-4*(Qx*cos(Qx) + Qx*cos(Qx - H_R*Qx*opo_Cot(TILT))*(-1 + H_R*opo_Cot(TILT)) - sin(Qx) + sin(Qx - H_R*Qx*opo_Cot(TILT)))*
+                tan(TILT))/gsl_pow_3(Qx);
+        }
+    } else if  (fabs(Qx) <= EPS_OH && fabs(Qy) <= EPS_OH && fabs(Qz) <= EPS_OH) {
+        return (4*H_R*(3 + H_R*opo_Cot(TILT)*(-3 + H_R*opo_Cot(TILT))))/3.;
+    } else {
+        return (sin(TILT)*(-2*Qz*gsl_pow_2(cos(TILT))*(gsl_pow_2(Qx + Qy)*cos((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) -
+            gsl_pow_2(Qx - Qy)*cos(Qx + Qy - H_R*(Qx + Qy)*opo_Cot(TILT)))*sin(TILT)*sin(H_R*Qz) -
+            4*gsl_pow_2(Qz)*cos(TILT)*gsl_pow_2(sin(TILT))*
+            (-(Qy*cos(Qy)*sin(Qx)) - Qx*cos(Qx)*sin(Qy) +
+            (cos(H_R*Qz)*((Qx - Qy)*sin((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) -
+            (Qx + Qy)*sin((Qx + Qy)*(-1 + H_R*opo_Cot(TILT)))))/2.) +
+            4*gsl_pow_3(Qz)*gsl_pow_3(sin(TILT))*sin(H_R*Qz)*sin(Qx - H_R*Qx*opo_Cot(TILT))*sin(Qy - H_R*Qy*opo_Cot(TILT)) +
+            2*(Qx - Qy)*(Qx + Qy)*gsl_pow_3(cos(TILT))*
+            ((Qx + Qy)*sin(Qx - Qy) + (-Qx + Qy)*sin(Qx + Qy) +
+            cos(H_R*Qz)*((Qx + Qy)*sin((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) +
+            (Qx - Qy)*sin(Qx + Qy - H_R*(Qx + Qy)*opo_Cot(TILT))))))/
+            (Qx*Qy*(gsl_pow_2(gsl_pow_2(Qx) - gsl_pow_2(Qy))*gsl_pow_4(cos(TILT)) -
+            2*(gsl_pow_2(Qx) + gsl_pow_2(Qy))*gsl_pow_2(Qz)*gsl_pow_2(cos(TILT))*gsl_pow_2(sin(TILT)) +
+            gsl_pow_4(Qz)*gsl_pow_4(sin(TILT))));
+    }
+    return H_R/(Qx*Qy) * (cos(Qx-Qy)*K1+sin(Qx-Qy)*K2-cos(Qx+Qy)*K3-sin(Qx+Qy)*K4);
+}
+
 scalar opo_Fpyramid4_Re(opo_data *opod) {
-    scalar Qx, Qy, Qz, K1, K2, K3, K4,q1,q2,q3,q4;
+    scalar Qx, Qy, Qz, K1, K2, K3, K4, q1,q2,q3,q4;
     sasfit_param * param;
     param = opod->param;
     Qx = opod->Qhat[0];
     Qy = opod->Qhat[1];
     Qz = opod->Qhat[2];
+    return opo_ReFpyramid4(Qx,Qy,Qz,param);
     q1 = 0.5*((Qx-Qy)*opo_Cot(TILT)+Qz);
     q2 = 0.5*((Qx-Qy)*opo_Cot(TILT)-Qz);
     q3 = 0.5*((Qx+Qy)*opo_Cot(TILT)+Qz);
@@ -468,13 +553,109 @@ labelPy4Re:
     return H_R/(Qx*Qy) * (cos(Qx-Qy)*K1+sin(Qx-Qy)*K2-cos(Qx+Qy)*K3-sin(Qx+Qy)*K4);
 }
 
+scalar opo_ImFpyramid4(scalar Qx, scalar Qy, scalar Qz, sasfit_param * param) {
+    scalar K1, K2, K3, K4, q1, q2, q3, q4;
+    q1 = 0.5*((Qx-Qy)*opo_Cot(TILT)+Qz);
+    q2 = 0.5*((Qx-Qy)*opo_Cot(TILT)-Qz);
+    q3 = 0.5*((Qx+Qy)*opo_Cot(TILT)+Qz);
+    q4 = 0.5*((Qx+Qy)*opo_Cot(TILT)-Qz);
+    K1 =  opo_sinc(q1*H_R)*sin(q1*H_R)+opo_sinc(q2*H_R)*sin(-q2*H_R);
+    K2 = -opo_sinc(q1*H_R)*cos(q1*H_R)+opo_sinc(q2*H_R)*cos(-q2*H_R);
+    K3 =  opo_sinc(q3*H_R)*sin(q3*H_R)+opo_sinc(q4*H_R)*sin(-q4*H_R);
+    K4 = -opo_sinc(q3*H_R)*cos(q3*H_R)+opo_sinc(q4*H_R)*cos(-q4*H_R);
+
+    if (tan(TILT)==0) return 0;
+    if (fabs(Qx) <= EPS_OH && fabs(Qy)> EPS_OH && fabs(Qz) > EPS_OH) {
+        return (-4*H_R*gsl_pow_3(Qy)*gsl_pow_4(cos(TILT))*cos(Qy - H_R*Qy*opo_Cot(TILT))*sin(H_R*Qz) +
+            4*gsl_pow_3(Qz)*gsl_pow_4(sin(TILT))*(sin(Qy) - cos(H_R*Qz)*sin(Qy - H_R*Qy*opo_Cot(TILT))) +
+            Qy*Qz*gsl_pow_2(sin(2*TILT))*(-2*cos(Qy) - Qy*sin(Qy) + cos(Qy - H_R*Qy*opo_Cot(TILT))*(2*cos(H_R*Qz) + H_R*Qz*sin(H_R*Qz)) +
+            Qy*cos(H_R*Qz)*sin(Qy - H_R*Qy*opo_Cot(TILT))) + 4*gsl_pow_2(Qz)*cos(TILT)*gsl_pow_3(sin(TILT))*
+            (-(Qy*cos(Qy - H_R*Qy*opo_Cot(TILT))*sin(H_R*Qz)) + (H_R*Qz*cos(H_R*Qz) - sin(H_R*Qz))*sin(Qy - H_R*Qy*opo_Cot(TILT))) +
+            4*gsl_pow_2(Qy)*gsl_pow_3(cos(TILT))*sin(TILT)*(Qy*cos(Qy - H_R*Qy*opo_Cot(TILT))*sin(H_R*Qz) -
+            (H_R*Qz*cos(H_R*Qz) + sin(H_R*Qz))*sin(Qy - H_R*Qy*opo_Cot(TILT))))/
+            (Qy*gsl_pow_2(gsl_pow_2(Qy)*gsl_pow_2(cos(TILT)) - gsl_pow_2(Qz)*gsl_pow_2(sin(TILT))));
+    } else if (fabs(Qx) > EPS_OH && fabs(Qy) <= EPS_OH && fabs(Qz) > EPS_OH) {
+        return (-4*H_R*gsl_pow_3(Qx)*gsl_pow_4(cos(TILT))*cos(Qx - H_R*Qx*opo_Cot(TILT))*sin(H_R*Qz) +
+            4*gsl_pow_3(Qz)*gsl_pow_4(sin(TILT))*(sin(Qx) - cos(H_R*Qz)*sin(Qx - H_R*Qx*opo_Cot(TILT))) +
+            Qx*Qz*gsl_pow_2(sin(2*TILT))*(-2*cos(Qx) - Qx*sin(Qx) + cos(Qx - H_R*Qx*opo_Cot(TILT))*(2*cos(H_R*Qz) + H_R*Qz*sin(H_R*Qz)) +
+            Qx*cos(H_R*Qz)*sin(Qx - H_R*Qx*opo_Cot(TILT))) + 4*gsl_pow_2(Qz)*cos(TILT)*gsl_pow_3(sin(TILT))*
+            (-(Qx*cos(Qx - H_R*Qx*opo_Cot(TILT))*sin(H_R*Qz)) + (H_R*Qz*cos(H_R*Qz) - sin(H_R*Qz))*sin(Qx - H_R*Qx*opo_Cot(TILT))) +
+            4*gsl_pow_2(Qx)*gsl_pow_3(cos(TILT))*sin(TILT)*(Qx*cos(Qx - H_R*Qx*opo_Cot(TILT))*sin(H_R*Qz) -
+            (H_R*Qz*cos(H_R*Qz) + sin(H_R*Qz))*sin(Qx - H_R*Qx*opo_Cot(TILT))))/
+            (Qx*gsl_pow_2(gsl_pow_2(Qx)*gsl_pow_2(cos(TILT)) - gsl_pow_2(Qz)*gsl_pow_2(sin(TILT))));
+    } else if (fabs(Qx) > EPS_OH && fabs(Qy) > EPS_OH && fabs(Qz) <= EPS_OH) {
+        if (fabs(opo_Cot(TILT))<=EPS_OH) {
+            return (-2*gsl_pow_2(H_R)*Qz*(H_R*(-2*TILT + M_PI)*Qy*cos(Qy)*sin(Qx) +
+                (H_R*(-2*TILT + M_PI)*Qx*cos(Qx) - 3*sin(Qx))*sin(Qy)))/(3.*Qx*Qy);
+        } else if (fabs(Qx-Qy)<=EPS_OH) {
+            return (Qz*(-(gsl_pow_2(H_R)*(Qx - 2*Qy)*gsl_pow_2(Qy)) -
+                H_R*(Qx - Qy)*gsl_pow_2(Qy)*cos(2*Qy*(-1 + H_R*opo_Cot(TILT)))*(H_R - tan(TILT)) +
+                H_R*Qy*(-2*Qx + 3*Qy)*sin(2*Qy - 2*H_R*Qy*opo_Cot(TILT))*tan(TILT) +
+                sin(H_R*Qy*opo_Cot(TILT))*(Qy*(-Qx + Qy)*cos(Qy*(2 - H_R*opo_Cot(TILT))) +
+                (2*Qx - 3*Qy)*sin(Qy*(2 - H_R*opo_Cot(TILT))))*gsl_pow_2(tan(TILT))))/gsl_pow_5(Qy);
+        } else if (fabs(Qx+ Qy)<=EPS_OH) {
+            return (Qz*(gsl_pow_2(H_R)*gsl_pow_2(Qy)*(Qx + 2*Qy) + H_R*gsl_pow_2(Qy)*(Qx + Qy)*cos(2*Qy*(-1 + H_R*opo_Cot(TILT)))*
+                (H_R - tan(TILT)) + H_R*Qy*(2*Qx + 3*Qy)*sin(2*Qy - 2*H_R*Qy*opo_Cot(TILT))*tan(TILT) +
+                sin(H_R*Qy*opo_Cot(TILT))*(Qy*(Qx + Qy)*cos(Qy*(2 - H_R*opo_Cot(TILT))) -
+                (2*Qx + 3*Qy)*sin(Qy*(2 - H_R*opo_Cot(TILT))))*gsl_pow_2(tan(TILT))))/gsl_pow_5(Qy);
+        } else {
+            return (2*Qz*tan(TILT)*(H_R*(Qx - Qy)*gsl_pow_2(Qx + Qy)*sin((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) +
+                H_R*gsl_pow_2(Qx - Qy)*(Qx + Qy)*sin(Qx + Qy - H_R*(Qx + Qy)*opo_Cot(TILT)) +
+                (-4*Qx*Qy*cos(Qx)*cos(Qy) + gsl_pow_2(Qx + Qy)*cos((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) -
+                gsl_pow_2(Qx)*cos((Qx + Qy)*(-1 + H_R*opo_Cot(TILT))) + 2*Qx*Qy*cos((Qx + Qy)*(-1 + H_R*opo_Cot(TILT))) -
+                gsl_pow_2(Qy)*cos((Qx + Qy)*(-1 + H_R*opo_Cot(TILT))) - 2*gsl_pow_2(Qx)*sin(Qx)*sin(Qy) -
+                2*gsl_pow_2(Qy)*sin(Qx)*sin(Qy))*tan(TILT)))/(Qx*gsl_pow_2(Qx - Qy)*Qy*gsl_pow_2(Qx + Qy));
+        }
+    } else if  (fabs(Qx) <= EPS_OH && fabs(Qy) <= EPS_OH && fabs(Qz) > EPS_OH) {
+        return (4*(gsl_pow_2(Qz) - 2*gsl_pow_2(opo_Cot(TILT)) - cos(H_R*Qz)*(gsl_pow_2(Qz) - 2*H_R*gsl_pow_2(Qz)*opo_Cot(TILT) +
+            (-2 + gsl_pow_2(H_R)*gsl_pow_2(Qz))*gsl_pow_2(opo_Cot(TILT))) + 2*Qz*opo_Cot(TILT)*(-1 + H_R*opo_Cot(TILT))*sin(H_R*Qz)))/gsl_pow_3(Qz);
+    } else if  (fabs(Qx) <= EPS_OH && fabs(Qy) > EPS_OH && fabs(Qz) <= EPS_OH) {
+        if (fabs(opo_Cot(TILT))<=EPS_OH) {
+            return (2*gsl_pow_2(H_R)*Qz*(3*sin(Qy) - H_R*(-2*TILT + M_PI)*(Qy*cos(Qy) + sin(Qy))))/(3.*Qy);
+        } else {
+            return (-4*Qz*(2*cos(Qy) + cos(Qy - H_R*Qy*opo_Cot(TILT))*(-2 + H_R*gsl_pow_2(Qy)*opo_Cot(TILT)*(-1 + H_R*opo_Cot(TILT))) +
+                Qy*(sin(Qy) + (-1 + 2*H_R*opo_Cot(TILT))*sin(Qy - H_R*Qy*opo_Cot(TILT))))*gsl_pow_2(tan(TILT)))/gsl_pow_4(Qy);
+        }
+    } else if  (fabs(Qx) > EPS_OH && fabs(Qy) <= EPS_OH && fabs(Qz) <= EPS_OH) {
+        if (fabs(opo_Cot(TILT)) <= EPS_OH) {
+            return (2*gsl_pow_2(H_R)*Qz*(3*sin(Qx) - H_R*(-2*TILT + M_PI)*(Qx*cos(Qx) + sin(Qx))))/(3.*Qx);
+        } else {
+            return (-4*(Qx*cos(Qx) + Qx*cos(Qx - H_R*Qx*opo_Cot(TILT))*(-1 + H_R*opo_Cot(TILT)) - sin(Qx) + sin(Qx - H_R*Qx*opo_Cot(TILT)))*
+                tan(TILT))/gsl_pow_3(Qx);
+        }
+    } else if  (fabs(Qx) <= EPS_OH && fabs(Qy) <= EPS_OH && fabs(Qz) <= EPS_OH) {
+        return (4*H_R*(3 + H_R*opo_Cot(TILT)*(-3 + H_R*opo_Cot(TILT))))/3.;
+    } else {
+        return (-2*sin(TILT)*(-2*Qz*gsl_pow_2(cos(TILT))*sin(TILT)*
+            (sin(Qx)*(-(cos(Qy)*cos(H_R*Qz)*(-2*Qx*Qy*cos(H_R*Qy*opo_Cot(TILT))*sin(H_R*Qx*opo_Cot(TILT)) +
+            (gsl_pow_2(Qx) + gsl_pow_2(Qy))*cos(H_R*Qx*opo_Cot(TILT))*sin(H_R*Qy*opo_Cot(TILT)))) +
+            sin(Qy)*(-gsl_pow_2(Qx) - gsl_pow_2(Qy) +
+            cos(H_R*Qz)*((gsl_pow_2(Qx) + gsl_pow_2(Qy))*cos(H_R*Qx*opo_Cot(TILT))*cos(H_R*Qy*opo_Cot(TILT)) +
+            2*Qx*Qy*sin(H_R*Qx*opo_Cot(TILT))*sin(H_R*Qy*opo_Cot(TILT))))) +
+            cos(Qx)*(-(cos(H_R*Qz)*sin(Qy)*((gsl_pow_2(Qx) + gsl_pow_2(Qy))*cos(H_R*Qy*opo_Cot(TILT))*
+            sin(H_R*Qx*opo_Cot(TILT)) - 2*Qx*Qy*cos(H_R*Qx*opo_Cot(TILT))*sin(H_R*Qy*opo_Cot(TILT)))) +
+            cos(Qy)*(-2*Qx*Qy + cos(H_R*Qz)*(2*Qx*Qy*cos(H_R*Qx*opo_Cot(TILT))*cos(H_R*Qy*opo_Cot(TILT)) +
+            (gsl_pow_2(Qx) + gsl_pow_2(Qy))*sin(H_R*Qx*opo_Cot(TILT))*sin(H_R*Qy*opo_Cot(TILT)))))) +
+            2*gsl_pow_3(Qz)*gsl_pow_3(sin(TILT))*(-(sin(Qx)*sin(Qy)) +
+            cos(H_R*Qz)*sin(Qx - H_R*Qx*opo_Cot(TILT))*sin(Qy - H_R*Qy*opo_Cot(TILT))) -
+            (gsl_pow_2(Qx) - gsl_pow_2(Qy))*gsl_pow_3(cos(TILT))*sin(H_R*Qz)*
+            ((Qx + Qy)*sin((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) + (Qx - Qy)*sin(Qx + Qy - H_R*(Qx + Qy)*opo_Cot(TILT))) +
+            gsl_pow_2(Qz)*cos(TILT)*gsl_pow_2(sin(TILT))*sin(H_R*Qz)*
+            ((Qx - Qy)*sin((Qx - Qy)*(-1 + H_R*opo_Cot(TILT))) + (Qx + Qy)*sin(Qx + Qy - H_R*(Qx + Qy)*opo_Cot(TILT)))))/
+            (Qx*Qy*((Qx - Qy)*cos(TILT) - Qz*sin(TILT))*((Qx + Qy)*cos(TILT) - Qz*sin(TILT))*
+            ((Qx - Qy)*cos(TILT) + Qz*sin(TILT))*((Qx + Qy)*cos(TILT) + Qz*sin(TILT)));
+    }
+    return H_R/(Qx*Qy) * (cos(Qx-Qy)*K1+sin(Qx-Qy)*K2-cos(Qx+Qy)*K3-sin(Qx+Qy)*K4);
+}
+
 scalar opo_Fpyramid4_Im(opo_data *opod) {
-    scalar Qx, Qy, Qz, K1, K2, K3, K4,q1,q2,q3,q4;
+    scalar Qx, Qy, Qz, K1, K2, K3, K4, q1, q2, q3, q4;
     sasfit_param * param;
     param = opod->param;
     Qx = opod->Qhat[0];
     Qy = opod->Qhat[1];
     Qz = opod->Qhat[2];
+    return opo_ImFpyramid4(Qx,Qy,Qz,param);
     q1 = 0.5*((Qx-Qy)*opo_Cot(TILT)+Qz);
     q2 = 0.5*((Qx-Qy)*opo_Cot(TILT)-Qz);
     q3 = 0.5*((Qx+Qy)*opo_Cot(TILT)+Qz);

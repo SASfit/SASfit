@@ -19,9 +19,6 @@
 #define N	param->p[9]
 
 
-
-
-
 scalar sasfit_ff_doubleshellchain(scalar q, sasfit_param * param)
 {
 	scalar A, w, R12, ftmp1, ftmp2, Detac, Deta1, Deta2, Kval1, Kval2, Kval3;
@@ -35,11 +32,12 @@ scalar sasfit_ff_doubleshellchain(scalar q, sasfit_param * param)
 	Detac = (ETA_C-ETA_SOL);
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((N <= 0.0), param, "n(%lg) <= 0",N);
+	SASFIT_CHECK_COND1((N < 0.0), param, "n(%lg) < 0",N);
 	SASFIT_CHECK_COND1((fabs(X_SOL_SH2-0.5) > 0.5), param, "|X_SOL_SH2 - 0.5|(%lg) > 0.5",fabs(X_SOL_SH2-0.5));
 	SASFIT_CHECK_COND1(((2*(R_C+DR1+DR2)+L) <= 0.0), param, "(2*(Rc+DR1+DR2)+L)(%lg) <= 0",(2*(R_C+DR1+DR2)+L));
 	SASFIT_CHECK_COND1(((fabs(Detac)+fabs(Deta1)+fabs(Deta2)) <= 0.0), param, "(|Detac|+|Deta1|+|Deta2|)(%lg) <= 0",(fabs(Detac)+fabs(Deta1)+fabs(Deta2)));
 
+	if (N==0) return 0.0;
 	sasfit_init_param( &subParam );
 
 	Kval1 = sphere_f(q,R_C+DR1+DR2,Deta2);
@@ -65,21 +63,8 @@ scalar sasfit_ff_doubleshellchain(scalar q, sasfit_param * param)
 			}
 		}
 	}
-	ftmp2 = ftmp1;
+	ftmp2=0.0;
 	if (w!=0) {
-        for (i=NN; i < NN+1 ;i++)
-        {
-            for (j=0; j < NN ;j++)
-            {
-                R12 = fabs(j-i)*(2.0*(R_C+DR1+DR2)+L);
-                if (q*R12 <= 0)
-                {
-                    ftmp2 = ftmp2 + A*A;
-                } else {
-                    ftmp2 = ftmp2+A*A*sin(q*R12)/(q*R12);
-                }
-            }
-        }
         for (i=0; i < NN+1 ;i++)
         {
             for (j=NN; j < NN+1 ;j++)
