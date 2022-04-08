@@ -50,12 +50,12 @@ typedef int (sasfit_plugin_api_get_ver_t) (void);
 
 /**
  * Plugin interface Function to call for initialization of a plugin.
- * - It passes a pointer to a set of model functions this plugin provides 
- *   (sasfit_plugin_info_t structure).
- * - It gets a pointer to the lookup table with all functions provided by 
+ * - It expects a storage location for a pointer to a set of model functions
+ *   this plugin provides (sasfit_plugin_info_t structure).
+ * - It expects a pointer to the lookup table with all functions provided by
  *   \ref sasfit_common (sasfit_common_stubs_t structure).
- * - It gets a pointer to a function (sasfit_plugin_search_t) in \ref sasfit_core 
- *   which is used to get all required model functions of other plugins from 
+ * - It gets a pointer to a function (sasfit_plugin_search_t) in \ref sasfit_core
+ *   which is used to get all required model functions of other plugins from
  *   the internal plugin database in \ref sasfit_core.
  */
 typedef int (sasfit_plugin_api_do_init_t) (const sasfit_plugin_info_t **,
