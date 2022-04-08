@@ -11,7 +11,11 @@ However, the source code files of SASfit are required for its header files which
     │   └── examples
     └── sasfit_package (extracted binary package)
 
-## macOS 11 (and later)
+## Makefile included
+
+A Makefile is provided as an example and for convenience. That should build and run the example with a single call of `make` in a terminal window, provided that the build tools and the SASfit packages are present. Make sure to adjust the **PACKAGE_DIR** to match the extracted binary package of SASfit.
+
+## Details for macOS 11 (and later)
 
 Build it like that from subdir *examples*:
 
@@ -22,7 +26,7 @@ Run it like that:
 
     $ DYLD_LIBRARY_PATH=../../sasfit_package/plugins/:../../sasfit_package/lib/ ./example_sasfit_ff_fuzzysphere
 
-## Windows 10 (and later, with minGW64)
+## Details for Windows 10 (and later, with minGW64)
 
 With the same directory structure as for macOS:
 
