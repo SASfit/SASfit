@@ -204,9 +204,6 @@ intdeo
 #include <sasfit_sd.h>
 #include <sasfit_sq.h>
 
-#include <tcl.h>
-
-
 #include <sasfit.h>
 #include <sasfit_common.h>
 #include <sasfit_core.h>

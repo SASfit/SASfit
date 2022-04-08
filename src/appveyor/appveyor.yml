@@ -100,7 +100,7 @@ for:
     - sudo apt-get -y install python3-pip #libx11-dev
     # Install AppImage-Builder and requirements
     # https://appimage-builder.readthedocs.io/en/latest/intro/install.html#debian-ubuntu
-    - sudo apt install -y python3-pip python3-setuptools patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace fuse
+    - sudo apt install -y python3-pip python3-setuptools patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace fuse appstream
     - sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
     - sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
     - sudo chmod +x /usr/local/bin/appimagetool
