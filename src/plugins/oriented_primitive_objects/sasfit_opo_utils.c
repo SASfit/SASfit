@@ -379,6 +379,148 @@ scalar opo_Fprism3(opo_data *opod) {
     Qz = opod->Qhat[2];
 }
 
+double complex opo_CmplxFpyramid4(scalar qx, scalar qy, scalar qz, sasfit_param * param) {
+    scalar H;
+    double complex Res;
+    int iwhere;
+    H = H_R;
+    Res = 0;
+    iwhere = 0;
+            // && fabs(qz) > EPS_OH
+    if (fabs(qx)<= EPS_OH && fabs(qy)> EPS_OH && fabs(fabs(qy)-fabs(qz*tan(TILT))) > EPS_OH) {
+        iwhere =1;
+        Res =  (4*sin(TILT)*(I*gsl_pow_int(qz,3)*gsl_pow_int(sin(TILT),3)*(sin(qy) - cexp(I*H*qz)*sin(qy - H*qy*opo_Cot(TILT))) +
+            qy*qz*gsl_pow_int(cos(TILT),2)*sin(TILT)*((-I)*(2*cos(qy) + qy*sin(qy)) +
+            cexp(I*H*qz)*(((2*I) + H*qz)*cos(qy - H*qy*opo_Cot(TILT)) + I*qy*sin(qy - H*qy*opo_Cot(TILT)))) +
+            gsl_pow_int(qz,2)*cos(TILT)*gsl_pow_int(sin(TILT),2)*(qy*cos(qy) + sin(qy) -
+            cexp(I*H*qz)*(qy*cos(qy - H*qy*opo_Cot(TILT)) + (1 - I*H*qz)*sin(qy - H*qy*opo_Cot(TILT)))) +
+            gsl_pow_int(qy,2)*gsl_pow_int(cos(TILT),3)*(-(qy*cos(qy)) + sin(qy) -
+            cexp(I*H*qz)*(qy*cos(qy - H*qy*opo_Cot(TILT))*(-1 + H*opo_Cot(TILT)) + (1 + I*H*qz)*sin(qy - H*qy*opo_Cot(TILT))))))/
+            (qy*gsl_pow_int(gsl_pow_int(qy,2)*gsl_pow_int(cos(TILT),2) - gsl_pow_int(qz,2)*gsl_pow_int(sin(TILT),2),2));
+
+            // && fabs(qz) > EPS_OH
+    } else if (fabs(qx)> EPS_OH && fabs(qy) <= EPS_OH && fabs(fabs(qx)-fabs(qz*tan(TILT))) > EPS_OH) {
+        iwhere =2;
+        Res = (4*sin(TILT)*(I*gsl_pow_int(qz,3)*gsl_pow_int(sin(TILT),3)*(sin(qx) - cexp(I*H*qz)*sin(qx - H*qx*opo_Cot(TILT))) +
+            qx*qz*gsl_pow_int(cos(TILT),2)*sin(TILT)*((-I)*(2*cos(qx) + qx*sin(qx)) +
+            cexp(I*H*qz)*(((2*I) + H*qz)*cos(qx - H*qx*opo_Cot(TILT)) + I*qx*sin(qx - H*qx*opo_Cot(TILT)))) +
+            gsl_pow_int(qz,2)*cos(TILT)*gsl_pow_int(sin(TILT),2)*(qx*cos(qx) + sin(qx) -
+            cexp(I*H*qz)*(qx*cos(qx - H*qx*opo_Cot(TILT)) + (1 - I*H*qz)*sin(qx - H*qx*opo_Cot(TILT)))) +
+            gsl_pow_int(qx,2)*gsl_pow_int(cos(TILT),3)*(-(qx*cos(qx)) + sin(qx) -
+            cexp(I*H*qz)*(qx*cos(qx - H*qx*opo_Cot(TILT))*(-1 + H*opo_Cot(TILT)) + (1 + I*H*qz)*sin(qx - H*qx*opo_Cot(TILT))))))/
+            (qx*gsl_pow_int(gsl_pow_int(qx,2)*gsl_pow_int(cos(TILT),2) - gsl_pow_int(qz,2)*gsl_pow_int(sin(TILT),2),2));
+
+    } else if (fabs(qx)> EPS_OH && fabs(qy)> EPS_OH && fabs(qz) > EPS_OH && fabs(qx-qy-qz*tan(TILT)) <= EPS_OH) {
+        iwhere =3;
+        Res = (2*cexp(I*H*qz)*qz*cos(qz*(H - tan(TILT)))*(2*H*gsl_pow_int(qy,2) + 2*qy*(I - qy + H*qz)*tan(TILT) +
+            (I - 2*qy)*qz*gsl_pow_int(tan(TILT),2)) + 4*sin(qy + qz*tan(TILT))*(qy + qz*tan(TILT))*
+            (((-I) + qy)*qz*sin(qy)*tan(TILT) + cos(qy)*(qy + I*qy*qz*tan(TILT))) +
+            4*cos(qy + qz*tan(TILT))*(qy*qz*tan(TILT)*(((-I) + qy)*cos(qy) + (qz*tan(TILT))/cexp(I*qy)) +
+            sin(qy)*(-gsl_pow_int(qy,2) - qz*tan(TILT)*((3 + I*qy)*qy + qz*tan(TILT)))) +
+            2*cexp(I*H*qz)*(qz*tan(TILT)*((-I)*qz*cos((-1 + H*opo_Cot(TILT))*(qz + 2*qy*opo_Cot(TILT))*tan(TILT))*tan(TILT) -
+            sin((-1 + H*opo_Cot(TILT))*(qz + 2*qy*opo_Cot(TILT))*tan(TILT))*(2*qy + qz*tan(TILT))) +
+            sin(qz*(H - tan(TILT)))*(2*gsl_pow_int(qy,2)*(1 - I*H*qz) +
+            qz*tan(TILT)*(2*qy*(2 + I*qy - I*H*qz) + (qz + (2*I)*qy*qz)*tan(TILT)))))/
+            (4.*gsl_pow_int(qy,2)*qz*gsl_pow_int(qy + qz*tan(TILT),2));
+
+    } else if (fabs(qx)> EPS_OH && fabs(qy)> EPS_OH && fabs(qz) > EPS_OH && fabs(qx-qy+qz*tan(TILT)) <= EPS_OH) {
+        iwhere =4;
+        Res = (-2*cexp(I*H*qz)*qz*cos(qz*(H - tan(TILT)))*(-2*H*gsl_pow_int(qy,2) + 2*qy*(I + qy + H*qz)*tan(TILT) -
+            (I + 2*qy)*qz*gsl_pow_int(tan(TILT),2)) + 4*sin(qy - qz*tan(TILT))*(qy - qz*tan(TILT))*
+            ((I + qy)*qz*sin(qy)*tan(TILT) + qy*cos(qy)*(-1 - I*qz*tan(TILT))) +
+            4*cos(qy - qz*tan(TILT))*(qy*qz*tan(TILT)*((I + qy)*cos(qy) - cexp(I*qy)*qz*tan(TILT)) +
+            sin(qy)*(gsl_pow_int(qy,2) + qz*tan(TILT)*(I*qy*((3*I) + qy) + qz*tan(TILT)))) +
+            2*cexp(I*H*qz)*(-(qz*tan(TILT)*(I*qz*cos(2*qy + H*qz - 2*H*qy*opo_Cot(TILT) - qz*tan(TILT))*tan(TILT) +
+            sin(2*qy + H*qz - 2*H*qy*opo_Cot(TILT) - qz*tan(TILT))*(-2*qy + qz*tan(TILT)))) +
+            sin(qz*(H - tan(TILT)))*(2*gsl_pow_int(qy,2)*(1 - I*H*qz) +
+            qz*tan(TILT)*((2*I)*qy*((2*I) + qy + H*qz) + (qz - (2*I)*qy*qz)*tan(TILT)))))/
+            (4.*gsl_pow_int(qy,2)*qz*gsl_pow_int(qy - qz*tan(TILT),2));
+
+    } else if (fabs(qx)> EPS_OH && fabs(qy)> EPS_OH && fabs(qz) > EPS_OH && fabs(qx+qy-qz*tan(TILT)) <= EPS_OH) {
+        iwhere =5;
+        Res = (4*qy*sin(qz*tan(TILT))*(qy + I*((2*I) + qy)*qz*tan(TILT)) +
+            4*qz*tan(TILT)*(qy*(I + qy)*cos(qz*tan(TILT)) - qy*sin(2*qy - qz*tan(TILT)) -
+            qz*(cexp(I*qy)*qy - sin(qy))*(cos(qy - qz*tan(TILT)) - I*sin(qy - qz*tan(TILT)))*tan(TILT)) -
+            (2*I)*cexp(I*H*qz)*(qz*tan(TILT)*((2*I)*qy*sin((-1 + H*opo_Cot(TILT))*(-2*qy + qz*tan(TILT))) +
+            qz*(cos(2*qy + H*qz - 2*H*qy*opo_Cot(TILT) - qz*tan(TILT)) - I*sin(2*qy + H*qz - 2*H*qy*opo_Cot(TILT) - qz*tan(TILT)))*
+            tan(TILT)) + qz*cos(qz*(H - tan(TILT)))*((2*I)*H*gsl_pow_int(qy,2) - (2*I)*qy*(I + qy + H*qz)*tan(TILT) +
+            (-1 + (2*I)*qy)*qz*gsl_pow_int(tan(TILT),2)) +
+            sin(qz*(H - tan(TILT)))*(2*gsl_pow_int(qy,2)*(I + H*qz) +
+            qz*tan(TILT)*(-2*qy*((2*I) + qy + H*qz) + (I + 2*qy)*qz*tan(TILT)))))/
+            (4.*gsl_pow_int(qy,2)*qz*gsl_pow_int(qy - qz*tan(TILT),2));
+
+    } else if (fabs(qx)> EPS_OH && fabs(qy)> EPS_OH && fabs(qz) > EPS_OH && fabs(qx+qy+qz*tan(TILT)) <= EPS_OH) {
+        iwhere =6;
+        Res = (qy*sin(qz*tan(TILT))*(qy + (2 + I*qy)*qz*tan(TILT)) +
+            qz*tan(TILT)*(qy*((-I) + qy)*cos(qz*tan(TILT)) - qy*sin(2*qy + qz*tan(TILT)) -
+            qz*sin(H*qy*opo_Cot(TILT))*(cos(2*qy - H*qy*opo_Cot(TILT) + qz*tan(TILT)) + I*sin(2*qy - H*qy*opo_Cot(TILT) + qz*tan(TILT)))*
+            tan(TILT)) + cexp(I*H*qz)*qy*(qz*sin((-1 + H*opo_Cot(TILT))*(-2*qy - qz*tan(TILT)))*tan(TILT) +
+            sin(qz*(H - tan(TILT)))*(qy - I*H*qy*qz + qz*(2 + I*qy - I*H*qz)*tan(TILT)) +
+            qz*cos(qz*(H - tan(TILT)))*(H*qy + (I - qy + H*qz)*tan(TILT))))/(gsl_pow_int(qy,2)*qz*gsl_pow_int(qy + qz*tan(TILT),2));
+
+    } else if (fabs(qx)<= EPS_OH && fabs(qy)> EPS_OH && fabs(qz) > EPS_OH && fabs(qy-qz*tan(TILT)) <= EPS_OH) {
+        iwhere =7;
+        Res = (qz*cos(qz*tan(TILT))*((-I)*qz - opo_Cot(TILT)) +
+            I*cexp(I*H*qz)*qz*cos(qz*(H - tan(TILT)))*(-1 + H*opo_Cot(TILT))*(-qz + (I + H*qz)*opo_Cot(TILT)) +
+            cexp(I*H*qz)*(gsl_pow_int(qz,2) + opo_Cot(TILT)*(qz*(I - 2*H*qz) + opo_Cot(TILT) + H*qz*((-I) + H*qz)*opo_Cot(TILT)))*
+            sin(qz*(H - tan(TILT))) + (gsl_pow_int(qz,2) + I*qz*opo_Cot(TILT) + gsl_pow_int(opo_Cot(TILT),2))*sin(qz*tan(TILT)))/gsl_pow_int(qz,3);
+
+    } else if (fabs(qx)> EPS_OH && fabs(qy) <= EPS_OH && fabs(qz) > EPS_OH && fabs(qx-qz*tan(TILT)) <= EPS_OH) {
+        iwhere =8;
+        Res =  (qz*cos(qz*tan(TILT))*((-I)*qz - opo_Cot(TILT)) +
+            I*cexp(I*H*qz)*qz*cos(qz*(H - tan(TILT)))*(-1 + H*opo_Cot(TILT))*(-qz + (I + H*qz)*opo_Cot(TILT)) +
+            cexp(I*H*qz)*(gsl_pow_int(qz,2) + opo_Cot(TILT)*(qz*(I - 2*H*qz) + opo_Cot(TILT) + H*qz*((-I) + H*qz)*opo_Cot(TILT)))*
+            sin(qz*(H - tan(TILT))) + (gsl_pow_int(qz,2) + I*qz*opo_Cot(TILT) + gsl_pow_int(opo_Cot(TILT),2))*sin(qz*tan(TILT)))/gsl_pow_int(qz,3);
+
+    } else if (fabs(qx)<= EPS_OH && fabs(qy)> EPS_OH && fabs(qz) > EPS_OH && fabs(qy+qz*tan(TILT)) <= EPS_OH) {
+        iwhere =9;
+        Res = (qz*cos(qz*tan(TILT))*((-I)*qz - opo_Cot(TILT)) +
+            I*cexp(I*H*qz)*qz*cos(qz*(H - tan(TILT)))*(-1 + H*opo_Cot(TILT))*(-qz + (I + H*qz)*opo_Cot(TILT)) +
+            cexp(I*H*qz)*(gsl_pow_int(qz,2) + opo_Cot(TILT)*(qz*(I - 2*H*qz) + opo_Cot(TILT) + H*qz*((-I) + H*qz)*opo_Cot(TILT)))*
+            sin(qz*(H - tan(TILT))) + (gsl_pow_int(qz,2) + I*qz*opo_Cot(TILT) + gsl_pow_int(opo_Cot(TILT),2))*sin(qz*tan(TILT)))/gsl_pow_int(qz,3);
+
+    } else if (fabs(qx) > EPS_OH && fabs(qy) <= EPS_OH && fabs(qz) > EPS_OH && fabs(qx+qz*tan(TILT)) <= EPS_OH){
+        iwhere =10;
+        Res = (qz*cos(qz*tan(TILT))*((-I)*qz - opo_Cot(TILT)) +
+            I*cexp(I*H*qz)*qz*cos(qz*(H - tan(TILT)))*(-1 + H*opo_Cot(TILT))*(-qz + (I + H*qz)*opo_Cot(TILT)) +
+            cexp(I*H*qz)*(gsl_pow_int(qz,2) + opo_Cot(TILT)*(qz*(I - 2*H*qz) + opo_Cot(TILT) + H*qz*((-I) + H*qz)*opo_Cot(TILT)))*
+            sin(qz*(H - tan(TILT))) + (gsl_pow_int(qz,2) + I*qz*opo_Cot(TILT) + gsl_pow_int(opo_Cot(TILT),2))*sin(qz*tan(TILT)))/gsl_pow_int(qz,3);
+
+    } else if (fabs(qx) <= EPS_OH && fabs(qy)<= EPS_OH && fabs(qz) > EPS_OH) {
+        iwhere =11;
+        Res = ((0+I*4)*gsl_pow_int(qz,2) + 8*qz*opo_Cot(TILT) - (0+I*8)*gsl_pow_int(opo_Cot(TILT),2) +
+            4*cexp(I*H*qz)*(I*qz + ((1+I*1) - I*H*qz)*opo_Cot(TILT))*(-qz + ((1+I*1) + H*qz)*opo_Cot(TILT)))/
+            gsl_pow_int(qz,3);
+
+    } else if (fabs(qx) <= EPS_OH && fabs(qy)<= EPS_OH && fabs(qz) <= EPS_OH) {
+        iwhere =12;
+        Res = (4*H*(3 + H*opo_Cot(TILT)*(-3 + H*opo_Cot(TILT))))/3.;
+
+    } else if (fabs(qz) <= EPS_OH && (fabs(fabs(qy)-fabs(qx))<= EPS_OH) ) {
+        iwhere =13;
+        Res = (2*(H*qy - cos(qy*(2 - H*opo_Cot(TILT)))*sin(H*qy*opo_Cot(TILT))*tan(TILT)))/gsl_pow_int(qy,3);
+
+    } else {
+        iwhere =14;
+        Res = (sin(TILT)*((I*4)*qz*gsl_pow_int(cos(TILT),2)*sin(TILT)*
+            (-2*qx*qy*cos(qx)*cos(qy) + (cexp(I*H*qz)*(gsl_pow_int(qx + qy,2)*cos((qx - qy)*(-1 + H*opo_Cot(TILT))) -
+            gsl_pow_int(qx - qy,2)*cos((qx + qy)*(-1 + H*opo_Cot(TILT)))))/2. - (gsl_pow_int(qx,2) + gsl_pow_int(qy,2))*sin(qx)*sin(qy)) +
+            2*(qx - qy)*(qx + qy)*gsl_pow_int(cos(TILT),3)*(2*qy*cos(qy)*sin(qx) - 2*qx*cos(qx)*sin(qy) +
+            cexp(I*H*qz)*((qx + qy)*sin((qx - qy)*(-1 + H*opo_Cot(TILT))) + (-qx + qy)*sin((qx + qy)*(-1 + H*opo_Cot(TILT))))) +
+            (I*4)*gsl_pow_int(qz,3)*gsl_pow_int(sin(TILT),3)*(sin(qx)*sin(qy) -
+            cexp(I*H*qz)*sin(qx - H*qx*opo_Cot(TILT))*sin(qy - H*qy*opo_Cot(TILT))) +
+            2*gsl_pow_int(qz,2)*cos(TILT)*gsl_pow_int(sin(TILT),2)*(2*qy*cos(qy)*sin(qx) + 2*qx*cos(qx)*sin(qy) -
+            cexp(I*H*qz)*((qx - qy)*sin((qx - qy)*(-1 + H*opo_Cot(TILT))) + (qx + qy)*sin(qx + qy - H*(qx + qy)*opo_Cot(TILT))))))/
+            (qx*qy*((qx - qy)*cos(TILT) - qz*sin(TILT))*((qx - qy)*cos(TILT) + qz*sin(TILT))*
+            (gsl_pow_int(qx + qy,2)*gsl_pow_int(cos(TILT),2) - gsl_pow_int(qz,2)*gsl_pow_int(sin(TILT),2)));
+    }
+    if (!gsl_finite(Res)) {
+        sasfit_out("where:=%d, Qx:=%lf, Qy:=%lf, Qz:=%lf\n",iwhere,qx,qy,qz);
+        if (iwhere==1) {sasfit_out("TILT=%lf, hypot:%lf\n",TILT,gsl_hypot(qy,qz*tan(TILT)));}
+    }
+    return Res;
+}
+
 scalar opo_ReFpyramid4(scalar Qx, scalar Qy, scalar Qz, sasfit_param * param) {
     scalar K1, K2, K3, K4, q1, q2, q3, q4;
 
@@ -752,6 +894,15 @@ labelPy4Im:
 }
 
 scalar opo_Fpyramid4(opo_data *opod) {
+    scalar Qx, Qy, Qz;
+    double complex cFPyramid4;
+    sasfit_param * param;
+    param = opod->param;
+    Qx = opod->Qhat[0];
+    Qy = opod->Qhat[1];
+    Qz = opod->Qhat[2];
+    cFPyramid4 = opo_CmplxFpyramid4(Qx,Qy,Qz,param);
+    return cabs(cFPyramid4);
     return gsl_hypot(opo_Fpyramid4_Re(opod),opo_Fpyramid4_Im(opod));
 }
 

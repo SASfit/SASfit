@@ -1,3 +1,5 @@
+#include <float.h>
+#include <complex.h>
 typedef enum
 {
 //  Proper Euler angles
@@ -89,6 +91,7 @@ scalar opo_Fpyramid4_Re(opo_data *);
 scalar opo_Fpyramid4_Im(opo_data *);
 scalar opo_ReFpyramid4(scalar, scalar, scalar, sasfit_param *);
 scalar opo_ImFpyramid4(scalar, scalar, scalar, sasfit_param *);
+double complex opo_CmplxFpyramid4(scalar, scalar, scalar, sasfit_param *);
 scalar opo_Fsuperellipsoid(void *);
 scalar opo_Fsupershape(void *);
 scalar opo_Fratsupershape(void *);

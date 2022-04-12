@@ -2323,7 +2323,58 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_octahedra__opo_random_
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td></td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>third Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b psi</td>
+ *       <td>direction of Q on detector (psi=0: direction to the right)</td>
  *      </tr></table>
  */
 
@@ -2363,7 +2414,46 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo__v(sc
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b a</td>
- *       <td></td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
  *      </tr></table>
  */
 

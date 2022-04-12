@@ -47,12 +47,14 @@ scalar sasfit_ff_pyramid4_opo_random(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((B <= 0.0), param, "b(%lg) <= 0",B); // modify condition to your needs
 	SASFIT_CHECK_COND1((C <= 0.0), param, "c(%lg) <= 0",C); // modify condition to your needs
 	SASFIT_CHECK_COND1((H_R >= tan(TILT)&&tan(TILT)>0&&!gsl_isnan(tan(TILT))), param, "H/R >= tan(TILT) (%lg)",tan(TILT));
+	SASFIT_CHECK_COND1((H_R < 0, param, "H/R(%lf) < 0",H_R);
 
 	// insert your code here
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(pyramid4_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(pyramid4_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(pyramid4_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
+    if (H_R==0) return 0;
 	pyramid4_opod.a = A;
 	pyramid4_opod.b = B;
 	pyramid4_opod.c = C;

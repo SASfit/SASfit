@@ -12,12 +12,27 @@
 opo_data dh_opod;
 
 scalar sasfit_ff_dodecahedra_opo_kernel_f(scalar theta, scalar phi, sasfit_param * param) {
+    double complex FRD;
+    scalar Qx,Qy,Qz;
     dh_opod.Q[0] = dh_opod.Qmod*cos(phi)*sin(theta);
     dh_opod.Q[1] = dh_opod.Qmod*sin(phi)*sin(theta);
     dh_opod.Q[2] = dh_opod.Qmod         *cos(theta);
     opo_setQhat(&dh_opod);
-    return (ETA_P-ETA_M) *dh_opod.detDinv*opo_FOH(&dh_opod);
+    Qx = dh_opod.Qhat[0];
+    Qy = dh_opod.Qhat[1];
+    Qz = dh_opod.Qhat[2];
+    H_R = 1- DBL_EPSILON;
+    param->p[18]=45; // this is TILT
+    FRD =  opo_CmplxFpyramid4(Qx,Qy, Qz,param) * cexp( I*Qz)
+          +opo_CmplxFpyramid4(Qx,Qy,-Qz,param) * cexp(-I*Qz)
+          +opo_CmplxFpyramid4(Qx,Qz, Qy,param) * cexp( I*Qy)
+          +opo_CmplxFpyramid4(Qx,Qz,-Qy,param) * cexp(-I*Qy)
+          +opo_CmplxFpyramid4(Qz,Qy, Qx,param) * cexp( I*Qx)
+          +opo_CmplxFpyramid4(Qz,Qy,-Qx,param) * cexp(-I*Qx)
+          +8*opo_sinc(Qx)*opo_sinc(Qy)*opo_sinc(Qz);
+    return (ETA_P-ETA_M) *dh_opod.detDinv*cabs(FRD);
 }
+
 scalar sasfit_ff_dodecahedra_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
     return gsl_pow_2(sasfit_ff_dodecahedra_opo_kernel_f(theta,phi,param));
 }

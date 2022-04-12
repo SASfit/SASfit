@@ -5,7 +5,6 @@
 
 #include "include/private.h"
 #include <sasfit_error_ff.h>
-#include "complex.h"
 
 // define shortcuts for local parameters/variables
 
@@ -63,15 +62,15 @@ scalar sasfit_ff_dodecahedra__opo__f(scalar q, sasfit_param * param)
     Qx = opod.Qhat[0];
     Qy = opod.Qhat[1];
     Qz = opod.Qhat[2];
-    H_R = 1;
-    param->p[18]=atan(1); // this is TILT
-    FRD =  (opo_ReFpyramid4(Qx,Qy, Qz,param) + I*opo_ImFpyramid4(Qx,Qy, Qz,param)) * cexp( I*Qz)
-          +(opo_ReFpyramid4(Qx,Qy,-Qz,param) + I*opo_ImFpyramid4(Qx,Qy,-Qz,param)) * cexp(-I*Qz)
-          +(opo_ReFpyramid4(Qx,Qz, Qy,param) + I*opo_ImFpyramid4(Qx,Qz, Qy,param)) * cexp( I*Qy)
-          +(opo_ReFpyramid4(Qx,Qz,-Qy,param) + I*opo_ImFpyramid4(Qx,Qz,-Qy,param)) * cexp(-I*Qy)
-          +(opo_ReFpyramid4(Qz,Qy, Qx,param) + I*opo_ImFpyramid4(Qz,Qy, Qx,param)) * cexp( I*Qx)
-          +(opo_ReFpyramid4(Qz,Qy,-Qx,param) + I*opo_ImFpyramid4(Qz,Qy,-Qx,param)) * cexp(-I*Qx)
-          +opo_sinc(Qx)*opo_sinc(Qy)*opo_sinc(Qz);
+    H_R = 1-DBL_EPSILON;
+    param->p[18]=45; // this is TILT
+    FRD =  opo_CmplxFpyramid4(Qx,Qy, Qz,param) * cexp( I*Qz)
+          +opo_CmplxFpyramid4(Qx,Qy,-Qz,param) * cexp(-I*Qz)
+          +opo_CmplxFpyramid4(Qx,Qz, Qy,param) * cexp( I*Qy)
+          +opo_CmplxFpyramid4(Qx,Qz,-Qy,param) * cexp(-I*Qy)
+          +opo_CmplxFpyramid4(Qz,Qy, Qx,param) * cexp( I*Qx)
+          +opo_CmplxFpyramid4(Qz,Qy,-Qx,param) * cexp(-I*Qx)
+          +8*opo_sinc(Qx)*opo_sinc(Qy)*opo_sinc(Qz);
     return (ETA_P-ETA_M) *opod.detDinv*cabs(FRD);
 }
 
@@ -80,6 +79,8 @@ scalar sasfit_ff_dodecahedra__opo__v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+    H_R = 1-DBL_EPSILON;
+    param->p[18]=45;
+	return (4*H_R*(3 + H_R*opo_Cot(TILT)*(-3 + H_R*opo_Cot(TILT))))/3.*opod.detDinv;
 }
 

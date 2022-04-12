@@ -6,7 +6,6 @@
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
-#define EPS_OH 1e-4
 scalar OH_A(scalar Q1, scalar Q2) {
     scalar Q12, Q22, Q23,Q24;
     Q12=Q1*Q1;
