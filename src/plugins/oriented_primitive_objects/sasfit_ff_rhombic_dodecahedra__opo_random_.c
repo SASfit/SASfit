@@ -11,7 +11,7 @@
 
 opo_data dh_opod;
 
-scalar sasfit_ff_dodecahedra_opo_kernel_f(scalar theta, scalar phi, sasfit_param * param) {
+scalar sasfit_ff_rhombic_dodecahedra_opo_kernel_f(scalar theta, scalar phi, sasfit_param * param) {
     double complex FRD;
     scalar Qx,Qy,Qz;
     dh_opod.Q[0] = dh_opod.Qmod*cos(phi)*sin(theta);
@@ -33,11 +33,11 @@ scalar sasfit_ff_dodecahedra_opo_kernel_f(scalar theta, scalar phi, sasfit_param
     return (ETA_P-ETA_M) *dh_opod.detDinv*cabs(FRD);
 }
 
-scalar sasfit_ff_dodecahedra_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
-    return gsl_pow_2(sasfit_ff_dodecahedra_opo_kernel_f(theta,phi,param));
+scalar sasfit_ff_rhombic_dodecahedra_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
+    return gsl_pow_2(sasfit_ff_rhombic_dodecahedra_opo_kernel_f(theta,phi,param));
 }
 
-scalar sasfit_ff_dodecahedra__opo_random_(scalar q, sasfit_param * param)
+scalar sasfit_ff_rhombic_dodecahedra__opo_random_(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -61,10 +61,10 @@ scalar sasfit_ff_dodecahedra__opo_random_(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND(SASFIT_EQUAL(dh_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
     dh_opod.Qmod = q;
-    return sasfit_orient_avg(&sasfit_ff_dodecahedra_opo_kernel,param);
+    return sasfit_orient_avg(&sasfit_ff_rhombic_dodecahedra_opo_kernel,param);
 }
 
-scalar sasfit_ff_dodecahedra__opo_random__f(scalar q, sasfit_param * param)
+scalar sasfit_ff_rhombic_dodecahedra__opo_random__f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -72,7 +72,7 @@ scalar sasfit_ff_dodecahedra__opo_random__f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_dodecahedra__opo_random__v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_rhombic_dodecahedra__opo_random__v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

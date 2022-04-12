@@ -34,8 +34,8 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_tetrahedra__opo_random_.c
 	sasfit_ff_octahedra__opo_.c
 	sasfit_ff_octahedra__opo_random_.c
-	sasfit_ff_dodecahedra__opo_.c
-	sasfit_ff_dodecahedra__opo_random_.c
+	sasfit_ff_rhombic_dodecahedra__opo_.c
+	sasfit_ff_rhombic_dodecahedra__opo_random_.c
 	sasfit_ff_icosahedra__opo_.c
 	sasfit_ff_icosahedra__opo_random_.c
 	sasfit_ff_hexahedra__opo_.c

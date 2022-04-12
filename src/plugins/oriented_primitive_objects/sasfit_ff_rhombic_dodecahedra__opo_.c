@@ -8,7 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
-scalar sasfit_ff_dodecahedra__opo_(scalar q, sasfit_param * param)
+scalar sasfit_ff_rhombic_dodecahedra__opo_(scalar q, sasfit_param * param)
 {
 	opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -23,10 +23,10 @@ scalar sasfit_ff_dodecahedra__opo_(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
-    return gsl_pow_2(sasfit_ff_dodecahedra__opo__f(q,param));
+    return gsl_pow_2(sasfit_ff_rhombic_dodecahedra__opo__f(q,param));
 }
 
-scalar sasfit_ff_dodecahedra__opo__f(scalar q, sasfit_param * param)
+scalar sasfit_ff_rhombic_dodecahedra__opo__f(scalar q, sasfit_param * param)
 {
     scalar Qx,Qy,Qz;
     double complex FRD;
@@ -74,13 +74,22 @@ scalar sasfit_ff_dodecahedra__opo__f(scalar q, sasfit_param * param)
     return (ETA_P-ETA_M) *opod.detDinv*cabs(FRD);
 }
 
-scalar sasfit_ff_dodecahedra__opo__v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_rhombic_dodecahedra__opo__v(scalar q, sasfit_param * param, int dist)
 {
+	opo_data opod;
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
     H_R = 1-DBL_EPSILON;
     param->p[18]=45;
+	opod.a = A;
+	opod.b = B;
+	opod.c = C;
+	opod.param = param;
+    opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
+    opo_init(&opod);
 	return (4*H_R*(3 + H_R*opo_Cot(TILT)*(-3 + H_R*opo_Cot(TILT))))/3.*opod.detDinv;
 }
 

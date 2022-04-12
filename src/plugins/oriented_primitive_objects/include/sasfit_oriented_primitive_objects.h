@@ -2309,12 +2309,12 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_octahedra__opo_random_
 sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_octahedra__opo_random__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_octahedra__opo_random_ ################ */
 
-/* ################ start ff_dodecahedra__opo_ ################ */
+/* ################ start ff_rhombic_dodecahedra__opo_ ################ */
 /**
- * \defgroup ff_dodecahedra__opo_ Dodecahedron (OPO)
+ * \defgroup ff_dodecahedra__opo_ rhombic Dodecahedron (OPO)
  * \ingroup ff_plugins_oriented_primitive_objects
  *
- * \brief \<some brief description of Dodecahedron (OPO) function\>
+ * \brief \<some brief description of rhombic Dodecahedron (OPO) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2379,33 +2379,33 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_octahedra__opo_random_
  */
 
 /**
- * \ingroup ff_dodecahedra__opo_
+ * \ingroup ff_rhombic_dodecahedra__opo_
  *
  * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
  */
-sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo_(scalar q, sasfit_param * p);
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rhombic_dodecahedra__opo_(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_dodecahedra__opo_
+ * \ingroup ff_rhombic_dodecahedra__opo_
  *
  * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
  */
-sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo__f(scalar q, sasfit_param * p);
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rhombic_dodecahedra__opo__f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_dodecahedra__opo_
+ * \ingroup ff_rhombic_dodecahedra__opo_
  *
  * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
  */
-sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo__v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_dodecahedra__opo_ ################ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rhombic_dodecahedra__opo__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_rhombic_dodecahedra__opo_ ################ */
 
-/* ################ start ff_dodecahedra__opo_random_ ################ */
+/* ################ start ff_rhombic_dodecahedra__opo_random_ ################ */
 /**
- * \defgroup ff_dodecahedra__opo_random_ Dodecahedron (OPO,random)
+ * \defgroup ff_rhombic_dodecahedra__opo_random_ rhombic Dodecahedron (OPO,random)
  * \ingroup ff_plugins_oriented_primitive_objects
  *
- * \brief \<some brief description of Dodecahedron (OPO,random) function\>
+ * \brief \<some brief description of rhombic Dodecahedron (OPO,random) function\>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -2458,26 +2458,26 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo__v(sc
  */
 
 /**
- * \ingroup ff_dodecahedra__opo_random_
+ * \ingroup ff_rhombic_dodecahedra__opo_random_
  *
  * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
  */
-sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo_random_(scalar q, sasfit_param * p);
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rhombic_dodecahedra__opo_random_(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_dodecahedra__opo_random_
+ * \ingroup ff_rhombic_dodecahedra__opo_random_
  *
  * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
  */
-sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo_random__f(scalar q, sasfit_param * p);
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rhombic_dodecahedra__opo_random__f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_dodecahedra__opo_random_
+ * \ingroup ff_rhombic_dodecahedra__opo_random_
  *
  * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
  */
-sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_dodecahedra__opo_random__v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_dodecahedra__opo_random_ ################ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_rhombic_dodecahedra__opo_random__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_rhombic_dodecahedra__opo_random_ ################ */
 
 /* ################ start ff_icosahedra__opo_ ################ */
 /**
