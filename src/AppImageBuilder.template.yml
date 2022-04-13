@@ -25,7 +25,8 @@ AppDir:
     env | sort
     ls -la
   after_bundle: |
-    echo "  [2] after_bundle, APPDIR: '$APPDIR'"
+    [ -z "$APPDIR" ] && export APPDIR="$(readlink -f appdir)"
+    echo "  [2] after_bundle '$APPDIR'"
     ls -la
     #
     # adjustments to the current layout CMake prepares
@@ -89,11 +90,11 @@ AppDir:
     EOF
     appstreamcli validate "$METAINFO_PATH"
   before_runtime: |
-    echo "  [3] before_runtime"
+    echo "  [3] before_runtime '$APPDIR'"
     rm -Rf "$APPDIR"/runtime
     # for debugging, show interpreter with 'patchelf --print-interpreter ...'
   after_runtime: |
-    echo "  [4] after_runtime"
+    echo "  [4] after_runtime '$APPDIR'"
     #
     # copy modified dqkit back to the saskit source for reassembling
     SASKIT_BUILD_PATH="$(find saskit/build/ -mindepth 1 -maxdepth 1 -type d | grep "$(uname -n)-")"
