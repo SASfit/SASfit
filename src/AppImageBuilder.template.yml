@@ -22,6 +22,7 @@ AppDir:
     exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle: |
     echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
+    env | sort
   after_bundle: |
     echo "  [2] after_bundle, APPDIR: '$APPDIR'"
     #
