@@ -21,9 +21,9 @@ AppDir:
     exec: saskit
     exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle: |
-    echo "  [1] before_bundle, running appimage-build in '$(pwd)'"
+    echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
   after_bundle: |
-    echo "  [2] after_bundle"
+    echo "  [2] after_bundle, APPDIR: '$APPDIR'"
     #
     # adjustments to the current layout CMake prepares
     (cd "$APPDIR" && rm -Rf sasfit sasfit.sh) # files not needed anymore, FIXME
@@ -55,7 +55,6 @@ AppDir:
     EOF
     desktop-file-validate "$DESKTOP_PATH"
     # Create freedesktop upstream metainfo file
-    env | sort
     mkdir -p "$APPDIR"/usr/share/metainfo
     METAINFO_PATH="$APPDIR/usr/share/metainfo/${SF_ID}.appdata.xml"
     cat << EOF > "$METAINFO_PATH"
