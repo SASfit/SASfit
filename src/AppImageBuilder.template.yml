@@ -90,10 +90,12 @@ AppDir:
     EOF
     appstreamcli validate "$METAINFO_PATH"
   before_runtime: |
+    [ -z "$APPDIR" ] && export APPDIR="$(readlink -f appdir)"
     echo "  [3] before_runtime '$APPDIR'"
     rm -Rf "$APPDIR"/runtime
     # for debugging, show interpreter with 'patchelf --print-interpreter ...'
   after_runtime: |
+    [ -z "$APPDIR" ] && export APPDIR="$(readlink -f appdir)"
     echo "  [4] after_runtime '$APPDIR'"
     #
     # copy modified dqkit back to the saskit source for reassembling
