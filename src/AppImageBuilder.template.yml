@@ -26,6 +26,7 @@ AppDir:
     ls -la
   after_bundle: |
     echo "  [2] after_bundle, APPDIR: '$APPDIR'"
+    ls -la
     #
     # adjustments to the current layout CMake prepares
     (cd "$APPDIR" && rm -Rf sasfit sasfit.sh) # files not needed anymore, FIXME
