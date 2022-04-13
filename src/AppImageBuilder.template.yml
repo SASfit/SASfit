@@ -23,6 +23,7 @@ AppDir:
   before_bundle: |
     echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
     env | sort
+    ls -la
   after_bundle: |
     echo "  [2] after_bundle, APPDIR: '$APPDIR'"
     #
