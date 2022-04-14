@@ -12,7 +12,7 @@ version: 1
 AppDir:
   # assuming this file resides in sasfit/src/,
   # addresses the package dir created by CMake previously
-  path: appdir
+  path: ./appdir
   app_info:
     id: org.sasfit.SASfit
     name: SASfit
