@@ -92,6 +92,10 @@ In case of this error about an unidentified developer (because we are not regist
 
 ![Open sasfit.command on macOS](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/images/sasfit.command%20open.png)
 
+Opening a downloaded package for the first time in this way, you might have to confirm this security exception with an admin account (won't pop-up when opening it the 2nd time or later):
+
+![Confirm Security Exception for opening sasfit.command on macOS](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/images/sasfit.command%20open%20secpref.png)
+
 #### Solution B
 
 Another workaround is to remove the *quarantine* label of the downloaded file on macOS. This can be done by the following command in a Terminal window. It requires admin privileges:
