@@ -22,12 +22,9 @@ AppDir:
     exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle: |
     echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
-    env | sort
-    ls -la
   after_bundle: |
     [ -z "$APPDIR" ] && export APPDIR="$(readlink -f appdir)"
     echo "  [2] after_bundle '$APPDIR'"
-    ls -la
     #
     # adjustments to the current layout CMake prepares
     (cd "$APPDIR" && rm -Rf sasfit sasfit.sh) # files not needed anymore, FIXME
