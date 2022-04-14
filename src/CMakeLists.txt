@@ -333,7 +333,7 @@ if(CREATE_BINARY)
     if(IS_LINUX)
         # add SASFIT_BIN_FILE_LIST to the included files in AppImageBuilder config
         string(JOIN "\n    - " SASFIT_BIN_FILE_LIST_FORMATTED ${SASFIT_BIN_FILE_LIST})
-        set(SASFIT_APPIMAGE_APPDIR "${SASFIT_ROOT_DIR}/appdir")
+        set(SASFIT_APPIMAGE_APPDIR "${SASFIT_ROOT_DIR}/AppDir") # default dir by appimage-builder
         file(READ ${SASFIT_ROOT_DIR}/src/AppImageBuilder.template.yml AppImageBuilderCfg)
         file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/AppImageBuilder.yml
             CONTENT "${AppImageBuilderCfg}"
