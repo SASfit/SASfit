@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: update_webpage
 
 # Controls when the action will run. 
 on:
@@ -47,7 +45,8 @@ jobs:
       - name: Copy over readme content
         run: |
           cp "webpage/index.head" "webpage/index.md"
-          sed -n '/^#/,$p' "main/Readme.md" >> "webpage/index.md"
+          # filter initial badges icons and links from section titles
+          sed -n '/^#/,$p' "main/Readme.md" | sed -E 's/(^#+[[:space:]]*)\[([[:alnum:][:space:]]+)\].*$/\1\2/' >> "webpage/index.md"
 
       - name: Generate TOC to show on left side
         run: |
