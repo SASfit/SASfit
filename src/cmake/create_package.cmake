@@ -83,6 +83,9 @@ foreach(REL_FILENAME ${SASFIT_FILE_LIST})
     endif()
 endforeach()
 
+# try to fix file permissions, might be read-only depending on the build system
+execute_process(COMMAND chmod -Rf u+w,g+w "${SASFIT_PCKG_DIR}")
+
 # build zip/tar archive
 set(CPACK_GENERATOR TBZ2)
 if(WIN32)
