@@ -59,27 +59,42 @@ Academic papers about SASfit have been published in:
 
 If SASfit has been significant in your research, and you would like to acknowledge the project in your academic publication, we suggest citing one of the aforementioned publications.
 
-## Documentation
+## [The Manual](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/manual/sasfit.pdf)
 
 There is a comprehensive manual included the software package with a jumble of formulas used by SASfit.
 It evolves with the program to cover most of the implemented models and functions.
 The latest version can also be [viewed online](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/manual/sasfit.pdf).
 
-### Videos
+## [Videos](https://www.youtube.com/user/SASfitTeam)
 
-Some tutorial videos can be found [in our channel on YouTube](https://www.youtube.com/user/SASfitTeam).
-[An introduction on a simple single curve fit](https://www.youtube.com/watch?v=r_ybV4_K1r0) for example.
+For introduction and demonstration of the program and its main features, some tutorial videos can be found [in our YouTube channel](https://www.youtube.com/user/SASfitTeam):
+
+- [Introducing SASfit](https://www.youtube.com/watch?v=4ONwKQB1AC0)
+- [SASfit demo fitting dense spherical particles SAS data](https://www.youtube.com/watch?v=LwTmc38X3X0)
+- plus somewhat older videos
 
 ## Versions and Changes
 
-The latest changes and versions of the program can be found in the
+The latest stable changes and versions of the program can be found in the
 [Releases section at GitHub](https://github.com/SASfit/SASfit/releases).
 
-## Startup issues on macOS
+Up to date development snapshots for all supported platforms can be found [on cloudsmith](https://cloudsmith.io/~sasfit/repos/build/groups/) (this link is also placed at the top on this page).
+
+## MacOS Startup issues
+
+### *SASfit is from an unidentified developer*
 
 ![sasfit.command error on macOS](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/images/sasfit.command%20error%20on%20macOS.png)
 
-In case of this error about an unidentified developer (because we are not registered with Apple yet) one possible workaround is to remove the *quarantine* label of the downloaded file on macOS. This can be done by the following command in a Terminal window. It requires admin privileges:
+#### Solution A
+
+In case of this error about an unidentified developer (because we are not registered with Apple yet) it *should* work to **right-click -> Open** on the file `sasfit.command` to get a dialog with an **Open** button:
+
+![Open sasfit.command on macOS](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/images/sasfit.command%20open.png)
+
+#### Solution B
+
+Another workaround is to remove the *quarantine* label of the downloaded file on macOS. This can be done by the following command in a Terminal window. It requires admin privileges:
 
     % cd Downloads
     % sudo xattr -c sasfit_*_macos64.tar.bz2
