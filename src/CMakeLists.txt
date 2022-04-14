@@ -333,10 +333,12 @@ if(CREATE_BINARY)
     if(IS_LINUX)
         # add SASFIT_BIN_FILE_LIST to the included files in AppImageBuilder config
         string(JOIN "\n    - " SASFIT_BIN_FILE_LIST_FORMATTED ${SASFIT_BIN_FILE_LIST})
+        set(SASFIT_APPIMAGE_APPDIR "${SASFIT_ROOT_DIR}/appdir")
         file(READ ${SASFIT_ROOT_DIR}/src/AppImageBuilder.template.yml AppImageBuilderCfg)
         file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/AppImageBuilder.yml
             CONTENT "${AppImageBuilderCfg}"
             @ONLY NEWLINE_STYLE LF)
+        message("${AppImageBuilderCfg}")
         # find the final AppImage file name to set an AppVeyor variable to test its existence
         set(SASFIT_EXEC_FILENAME "SASfit-${SASFIT_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
         #file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake CONTENT "

@@ -12,7 +12,7 @@ version: 1
 AppDir:
   # assuming this file resides in sasfit/src/,
   # addresses the package dir created by CMake previously
-  path: ./appdir
+  path: "@SASFIT_APPIMAGE_APPDIR@"
   app_info:
     id: org.sasfit.SASfit
     name: SASfit
@@ -23,7 +23,7 @@ AppDir:
   before_bundle: |
     echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
   after_bundle: |
-    [ -z "$APPDIR" ] && export APPDIR="$(readlink -f appdir)"
+    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [2] after_bundle '$APPDIR'"
     #
     # adjustments to the current layout CMake prepares
@@ -87,12 +87,12 @@ AppDir:
     EOF
     appstreamcli validate "$METAINFO_PATH"
   before_runtime: |
-    [ -z "$APPDIR" ] && export APPDIR="$(readlink -f appdir)"
+    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [3] before_runtime '$APPDIR'"
     rm -Rf "$APPDIR"/runtime
     # for debugging, show interpreter with 'patchelf --print-interpreter ...'
   after_runtime: |
-    [ -z "$APPDIR" ] && export APPDIR="$(readlink -f appdir)"
+    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [4] after_runtime '$APPDIR'"
     #
     # copy modified dqkit back to the saskit source for reassembling
