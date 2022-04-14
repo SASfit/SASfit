@@ -338,7 +338,6 @@ if(CREATE_BINARY)
         file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/AppImageBuilder.yml
             CONTENT "${AppImageBuilderCfg}"
             @ONLY NEWLINE_STYLE LF)
-        message("${AppImageBuilderCfg}")
         # find the final AppImage file name to set an AppVeyor variable to test its existence
         set(SASFIT_EXEC_FILENAME "SASfit-${SASFIT_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
         #file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake CONTENT "
@@ -353,7 +352,7 @@ if(CREATE_BINARY)
         #    " @ONLY NEWLINE_STYLE LF)
         # build the AppImage at the end and set the AppImage file name
         add_custom_target(sasfit_binary ALL
-            appimage-builder --log DEBUG --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml --skip-tests # FIXME, run tests on appveyor!
+            appimage-builder --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml --skip-tests # FIXME, run tests on appveyor!
             #COMMAND ${CMAKE_COMMAND} -D SASFIT_ROOT_DIR:PATH=${SASFIT_ROOT_DIR}
             #    -P ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake
             DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
