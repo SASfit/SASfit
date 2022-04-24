@@ -205,6 +205,13 @@ void find_integration_range(Tcl_Interp *interp,
 	subParam.p[2] = a[2];
 	subParam.p[3] = a[3];
 	subParam.p[4] = a[4];
+	subParam.p[5] = a[5];
+	subParam.p[6] = a[6];
+	subParam.p[7] = a[7];
+	subParam.p[8] = a[8];
+	subParam.p[9] = a[9];
+	subParam.p[10] = a[10];
+	subParam.p[11] = a[11];
 
 	if ( (strcmp(SD_typestr,"LogNorm")          == 0) ||
 	     (strcmp(SD_typestr,"d LogNorm / d a1") == 0) ||
@@ -688,6 +695,43 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_gb")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = fabs(a3)/pow(1-(1.0/(1+exp(-a4))),1./a2);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_wgb1")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = fabs(a3);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_wgb2")      == 0) ) {
+				*Rstart = 0;
+				if (GSL_SIGN((fabs(a2)*fabs(a5)+a4+moment-1)/(fabs(a2)*fabs(a6)-a4-moment+1)) < 0) {
+                    sasfit_err("#find_integration_range: can't guess good integration interval: >%s(%lg,%lg,%lg,%lg,%lg,%lg)<\n","sd_wgb2",a1,a2,a3,a4,a5,a5);
+                    sasfit_out("find_integration_range: ");
+                    sasfit_out("can't guess good integration interval\n");
+                    sasfit_out("find_integration_range: >%s(%lg,%lg,%lg,%lg,%lg,%lg)<\n","sd_wgb2",a1,a2,a3,a4,a5,a6);
+                    sasfit_out("find_integration_range: >%s(%lg,%lg,%lg,%lg,%lg,%lg)<\n","sd_wgb2",a1,a2,a3,a4,a5,a6);
+                    *Rstart=0.0;
+                    *Rend = 1000.0;
+                    *n_intervals = 500;
+                    *error = TRUE;
+                    return;
+				}
+				R_max   = fabs(a3)*pow(fabs((fabs(a2)*fabs(a5)+a4+moment-1)/(fabs(a2)*fabs(a6)-a4-moment+1)),1./fabs(a2));
+				R_n = fabs(R_max);
+                n = 1;
+                tmp = 1.0;
+                if (R_max > 0.0)  tmp=R_max;
+                while ( ((pow(n*R_n+tmp,moment) * func_descr->func(n*R_n+tmp, &subParam) ) >
+                            (pow(R_max,moment)     * n_percent / 100.0
+					 * func_descr->func(R_max, &subParam)) ) && (n < Nint-1)) {
+                    n++;
+                }
+                R_n = n*R_n;
+                *Rstart = 0.0;
+                *Rend   = R_n+tmp;
+                if ((R_n+tmp) < R_max)  *Rstart=(R_max-(R_n+tmp));
+                *n_intervals = 1001;
 			} else if ( (strcmp(func_descr->name,"sd_lognorm_fp")       == 0) ) {
 			   a4 = fabs(a4);
 			   R_0  = a4*exp(-a2*a2*(a3-moment));
