@@ -528,17 +528,20 @@ double erfcx(double x)
                                        : 2*exp(x*x) - erfcx_y100(400/(4-x)));
 } // erfcx
 
-// using Newton iteration scheme for calculating inverse erfcx
+// using Newton iteration scheme for root finding to get inverse erfcx (f(x)=erfcx(x)-y==0)
+//    x_{n+1} = x_n − f(x_n)/f′(x_n)
 double erfcxinv(double y)
 {
     double x;
     int i;
     const double ispi = 0.56418958354775628694807945156; // 1 / sqrt(pi)
+    // guessing starting value
     if (y<=1) {
         x = ispi/y;
     } else {
         x= -sqrt(log(y));
     }
+    // just do 7 Newton iterations
     for (i=1;i<=7;i++) {
         x = x - (erfcx(x) - y)/(2*x*erfcx(x) - 2*ispi);
     }

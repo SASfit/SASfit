@@ -734,7 +734,11 @@ void find_integration_range(Tcl_Interp *interp,
                 *n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_skew_normal")      == 0) ) {
 				*Rstart = 0;
-				*Rend   = a3+10*a2;
+				*Rend   = a3+20*a2;
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_exponentially_modified_gaussian")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = a3+a4+20*gsl_hypot(a2,a4);
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_lognorm_fp")       == 0) ) {
 			   a4 = fabs(a4);
