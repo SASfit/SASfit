@@ -731,7 +731,11 @@ void find_integration_range(Tcl_Interp *interp,
                 *Rstart = 0.0;
                 *Rend   = R_n+tmp;
                 if ((R_n+tmp) < R_max)  *Rstart=(R_max-(R_n+tmp));
-                *n_intervals = 1001;
+                *n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_skew_normal")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = a3+10*a2;
+				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_lognorm_fp")       == 0) ) {
 			   a4 = fabs(a4);
 			   R_0  = a4*exp(-a2*a2*(a3-moment));

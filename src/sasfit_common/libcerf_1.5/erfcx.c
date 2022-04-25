@@ -7,11 +7,11 @@
  *   using a novel algorithm that is much faster than DERFC of SLATEC.
  *   This function is used in the computation of Faddeeva, Dawson, and
  *   other complex error functions.
- * 
+ *
  * Copyright:
  *   (C) 2012 Massachusetts Institute of Technology
  *   (C) 2013 Forschungszentrum Jülich GmbH
- * 
+ *
  * Licence:
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -20,17 +20,17 @@
  *   distribute, sublicense, and/or sell copies of the Software, and to
  *   permit persons to whom the Software is furnished to do so, subject to
  *   the following conditions:
- * 
+ *
  *   The above copyright notice and this permission notice shall be
  *   included in all copies or substantial portions of the Software.
- * 
+ *
  *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  *   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
  *   LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  *   OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- *   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+ *   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * Authors:
  *   Steven G. Johnson, Massachusetts Institute of Technology, 2012, core author
@@ -497,13 +497,13 @@ double erfcx(double x)
     // inspired by a similar transformation in the octave-forge/specfun
     // erfcx by Soren Hauberg, results in much faster Chebyshev convergence
     // than other simple transformations I have examined.
-    // 
+    //
     // b) Instead of using a single Chebyshev polynomial for the entire
     // [0,1] y interval, we break the interval up into 100 equal
     // subintervals, with a switch/lookup table, and use much lower
     // degree Chebyshev polynomials in each subinterval. This greatly
     // improves performance in my tests.
-    // 
+    //
     // For x < 0, we use the relationship erfcx(-x) = 2 exp(x^2) - erfc(x),
     // with the usual checks for overflow etcetera.
 
@@ -524,6 +524,23 @@ double erfcx(double x)
         return erfcx_y100(400/(4+x));
     }
     else
-        return x < -26.7 ? HUGE_VAL : (x < -6.1 ? 2*exp(x*x) 
+        return x < -26.7 ? HUGE_VAL : (x < -6.1 ? 2*exp(x*x)
                                        : 2*exp(x*x) - erfcx_y100(400/(4-x)));
 } // erfcx
+
+// using Newton iteration scheme for calculating inverse erfcx
+double erfcxinv(double y)
+{
+    double x;
+    int i;
+    const double ispi = 0.56418958354775628694807945156; // 1 / sqrt(pi)
+    if (y<=1) {
+        x = ispi/y;
+    } else {
+        x= -sqrt(log(y));
+    }
+    for (i=1;i<=7;i++) {
+        x = x - (erfcx(x) - y)/(2*x*erfcx(x) - 2*ispi);
+    }
+    return x;
+}

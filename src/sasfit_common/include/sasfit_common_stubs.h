@@ -121,8 +121,8 @@ typedef struct
 	scalar (*sasfit_qromb) (scalar a, scalar b, sasfit_func_one_t * trapzd_fct, sasfit_param * param); /* 42 */
 	scalar (*sasfit_trapzd) (scalar a, scalar b, scalar n, sasfit_func_one_t * trapzd_fct, sasfit_param * param); /* 43 */
 	scalar (*sasfit_g) (scalar fp, scalar a); /* 44 */
-	void *reserved45;
-	void *reserved46;
+	scalar (*erfcx) (scalar x); /* 45 */
+	scalar (*erfcxinv) (scalar y); /* 46 */
 	void *reserved47;
 	void *reserved48;
 	void *reserved49;
@@ -380,8 +380,14 @@ typedef struct
 #define sasfit_g \
 	(SASFIT_COMMON_STUBS()->sasfit_g) /* 44 */
 #endif
-/* Slot 45 is reserved */
-/* Slot 46 is reserved */
+#ifndef erfcx
+#define erfcx \
+	(SASFIT_COMMON_STUBS()->erfcx) /* 44 */
+#endif
+#ifndef erfcxinv
+#define erfcxinv \
+	(SASFIT_COMMON_STUBS()->erfcxinv) /* 46 */
+#endif
 /* Slot 47 is reserved */
 /* Slot 48 is reserved */
 /* Slot 49 is reserved */

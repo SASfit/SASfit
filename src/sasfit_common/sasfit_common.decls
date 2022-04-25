@@ -161,6 +161,12 @@ declare 43 generic {
 declare 44 generic {
 	scalar sasfit_g(scalar fp, scalar a)
 }
+declare 45 generic {
+	scalar erfcx(scalar x)
+}
+declare 46 generic {
+	scalar erfcxinv(scalar y)
+}
 
 
 declare 50 generic {

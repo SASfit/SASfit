@@ -86,8 +86,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_qromb, /* 42 */
 	sasfit_trapzd, /* 43 */
 	sasfit_g, /* 44 */
-	NULL, /* 45 */
-	NULL, /* 46 */
+	erfcx, /* 45 */
+	erfcxinv, /* 46 */
 	NULL, /* 47 */
 	NULL, /* 48 */
 	NULL, /* 49 */
