@@ -107,7 +107,7 @@ double sasfit_2f1(double a, double b,
     // Computing the Hypergeometric Function
     // Journal of Computational Physics,
     // 1997, 137, 79 - 100
-    // http://dx.doi.org/10.1006/jcph.1997.5794
+    // https://doi.org/10.1006/jcph.1997.5794
     double coeff1, coeff2, w;
     gsl_sf_result  c1,c2,c3,c4,arg;
     if (x<-1) {
