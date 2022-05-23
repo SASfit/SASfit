@@ -10,16 +10,16 @@
 #define N	param->p[0]
 #define SIGMA	fabs(param->p[1])
 #define MU	param->p[2]
-#define TAU	param->p[3]
+#define TAU	fabs(param->p[3])
 
 scalar CDFnormal(scalar x, scalar mu, scalar sigma) {
     scalar z;
     z = (x-mu)/sigma;
-	return 0.5*(1+gsl_sf_erf(z/sqrt(2)));
+	return 0.5*(1+gsl_sf_erf(z/sqrt(2.)));
 }
 
 scalar fpdf1(scalar x, sasfit_param *param) {
-    return SIGMA/TAU*sqrt(M_PI/2.)*exp(0.5*gsl_pow_2(SIGMA/TAU)-(x-MU)/TAU)*gsl_sf_erfc(1./sqrt(2)*(SIGMA/TAU-(x-MU)/SIGMA));
+    return SIGMA/TAU*sqrt(M_PI/2.0)*exp(0.5*gsl_pow_2(SIGMA/TAU)-(x-MU)/TAU)*gsl_sf_erfc(1./sqrt(2)*(SIGMA/TAU-(x-MU)/SIGMA));
 }
 scalar fpdf2(scalar x, sasfit_param *param) {
     scalar z;
@@ -39,7 +39,6 @@ scalar sasfit_sd_exponentially_modified_gaussian(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((SIGMA == 0.0), param, "sigma(%lg) == 0",SIGMA); // modify condition to your needs
-	SASFIT_CHECK_COND1((TAU < 0.0), param, "tau(%lg) < 0",TAU); // modify condition to your needs
 
 	// insert your code here
 	z=1/sqrt(2.)*(SIGMA/TAU-(x-MU)/SIGMA);
@@ -57,7 +56,7 @@ scalar sasfit_sd_exponentially_modified_gaussian(scalar x, sasfit_param * param)
                 break;
 	    default: fpdf = fpdf3(x,param) ;
 	}
-	return N*fpdf/(1-sasfit_sd_exponentially_modified_gaussian_f(0,param));
+	return N*fpdf/(SIGMA*sqrt(M_PI/2.)*2.*(1-sasfit_sd_exponentially_modified_gaussian_f(0,param)));
 }
 
 scalar sasfit_sd_exponentially_modified_gaussian_f(scalar x, sasfit_param * param)

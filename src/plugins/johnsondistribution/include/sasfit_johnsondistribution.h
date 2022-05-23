@@ -39,7 +39,7 @@
 /* ################ start sd_johnson_sn ################ */
 /**
  * \defgroup sd_johnson_sn Johnson SN
- * \ingroup sd_plugins_quantile_unbounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of Johnson SN function\>
  *
@@ -74,21 +74,21 @@
 /**
  * \ingroup sd_johnson_sn
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sn
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sn
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_johnson_sn ################ */
@@ -96,7 +96,7 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_v(scalar q, sasfit
 /* ################ start sd_johnson_sb ################ */
 /**
  * \defgroup sd_johnson_sb Johnson SB
- * \ingroup sd_plugins_quantile_bounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \< some brief description of Johnson SB function \>
  *
@@ -131,21 +131,21 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sn_v(scalar q, sasfit
 /**
  * \ingroup sd_johnson_sb
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb(scalar x, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sb
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_f(scalar x, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sb
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_v(scalar y, sasfit_param * p, int dist);
 /* ################ stop sd_johnson_sb ################ */
@@ -153,7 +153,7 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_v(scalar y, sasfit
 /* ################ start sd_johnson_su ################ */
 /**
  * \defgroup sd_johnson_su Johnson SU
- * \ingroup sd_plugins_quantile_unbounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of Johnson SU function\>
  *
@@ -188,21 +188,21 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sb_v(scalar y, sasfit
 /**
  * \ingroup sd_johnson_su
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_su(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_su
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_su_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_su
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_su_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_johnson_su ################ */
@@ -210,7 +210,7 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_su_v(scalar q, sasfit
 /* ################ start sd_johnson_sl ################ */
 /**
  * \defgroup sd_johnson_sl Johnson SL
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of Johnson SL function\>
  *
@@ -245,21 +245,21 @@ sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_su_v(scalar q, sasfit
 /**
  * \ingroup sd_johnson_sl
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sl
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_johnson_sl
  *
- * \sa sasfit_johnsondistribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_johnsondistribution.h, sd_plugins_johnson
  */
 sasfit_johnsondistribution_DLLEXP scalar sasfit_sd_johnson_sl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_johnson_sl ################ */

@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sd_skew_normal ################ */
-/** 
+/**
  * \defgroup sd_skew_normal skew normal
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_normal
  *
  * \brief \<some brief description of skew normal function\>
  *
@@ -65,21 +65,21 @@
 /**
  * \ingroup sd_skew_normal
  *
- * \sa sasfit_skew_normal.h, sd_plugins
+ * \sa sasfit_skew_normal.h, sd_plugins_normal
  */
 sasfit_skew_normal_DLLEXP scalar sasfit_sd_skew_normal(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_skew_normal
  *
- * \sa sasfit_skew_normal.h, sd_plugins
+ * \sa sasfit_skew_normal.h, sd_plugins_normal
  */
 sasfit_skew_normal_DLLEXP scalar sasfit_sd_skew_normal_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_skew_normal
  *
- * \sa sasfit_skew_normal.h, sd_plugins
+ * \sa sasfit_skew_normal.h, sd_plugins_normal
  */
 sasfit_skew_normal_DLLEXP scalar sasfit_sd_skew_normal_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_skew_normal ################ */

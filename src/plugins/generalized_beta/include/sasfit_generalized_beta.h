@@ -39,7 +39,7 @@
 /* ################ start sd_wgb1 ################ */
 /**
  * \defgroup sd_wgb1 WGB1
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_beta
  *
  * \brief \< weighted generalized beta distribution of first kind \>
  *
@@ -71,21 +71,21 @@
 /**
  * \ingroup sd_wgb1
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_wgb1
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb1_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_wgb1
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb1_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_wgb1 ################ */
@@ -93,7 +93,7 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb1_v(scalar q, sasfit_param * 
 /* ################ start sd_wgb2 ################ */
 /**
  * \defgroup sd_wgb2 WGB2
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_beta
  *
  * \brief \< weighted generalized beta distribution of second kind \>
  *
@@ -125,21 +125,21 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb1_v(scalar q, sasfit_param * 
 /**
  * \ingroup sd_wgb2
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_wgb2
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_wgb2
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_wgb2 ################ */
@@ -147,7 +147,7 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2_v(scalar q, sasfit_param * 
 /* ################ start sd_gb ################ */
 /**
  * \defgroup sd_gb GB
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_beta
  *
  * \brief \< generalized beta distribution \>
  *
@@ -179,21 +179,21 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2_v(scalar q, sasfit_param * 
 /**
  * \ingroup sd_gb
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_gb(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_gb
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_gb_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_gb
  *
- * \sa sasfit_generalized_beta.h, sd_plugins
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
  */
 sasfit_generalized_beta_DLLEXP scalar sasfit_sd_gb_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_gb ################ */

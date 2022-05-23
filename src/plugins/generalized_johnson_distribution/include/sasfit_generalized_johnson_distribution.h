@@ -39,7 +39,7 @@
 /* ################ start sd_g_n_pdf ################ */
 /**
  * \defgroup sd_g_n_pdf G_N J_PDF
- * \ingroup sd_plugins_quantile_unbounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_N J_PDF function\>
  *
@@ -75,21 +75,21 @@
 /**
  * \ingroup sd_g_n_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_n_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_n_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_n_pdf ################ */
@@ -97,7 +97,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_v(scalar
 /* ################ start sd_g_l_pdf ################ */
 /**
  * \defgroup sd_g_l_pdf G_L J_PDF
- * \ingroup sd_plugins_quantile_unbounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_L J_PDF function\>
  *
@@ -132,21 +132,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_v(scalar
 /**
  * \ingroup sd_g_l_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_l_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_l_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_l_pdf ################ */
@@ -154,7 +154,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_v(scalar
 /* ################ start sd_g_c_pdf ################ */
 /**
  * \defgroup sd_g_c_pdf G_C J_PDF
- * \ingroup sd_plugins_quantile_unbounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_C J_PDF function\>
  *
@@ -189,21 +189,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_v(scalar
 /**
  * \ingroup sd_g_c_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_c_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_c_pdf
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_unbounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_c_pdf ################ */
@@ -211,7 +211,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_v(scalar
 /* ################ start sd_g_n_pdf_s ################ */
 /**
  * \defgroup sd_g_n_pdf_s G_N J_PDF_S
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_N J_PDF_S function\>
  *
@@ -246,21 +246,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_v(scalar
 /**
  * \ingroup sd_g_n_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_s(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_n_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_s_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_n_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_s_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_n_pdf_s ################ */
@@ -268,7 +268,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_s_v(scal
 /* ################ start sd_g_l_pdf_s ################ */
 /**
  * \defgroup sd_g_l_pdf_s G_L J_PDF_S
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_L J_PDF_S function\>
  *
@@ -303,21 +303,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_s_v(scal
 /**
  * \ingroup sd_g_l_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_s(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_l_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_s_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_l_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_s_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_l_pdf_s ################ */
@@ -325,7 +325,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_s_v(scal
 /* ################ start sd_g_c_pdf_s ################ */
 /**
  * \defgroup sd_g_c_pdf_s G_C PDF_S
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_C PDF_S function\>
  *
@@ -360,21 +360,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_s_v(scal
 /**
  * \ingroup sd_g_c_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_s(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_c_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_s_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_c_pdf_s
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_s_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_c_pdf_s ################ */
@@ -382,7 +382,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_s_v(scal
 /* ################ start sd_g_n_pdf_b ################ */
 /**
  * \defgroup sd_g_n_pdf_b G_N PDF_B
- * \ingroup sd_plugins_quantile_bounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_N PDF_B function\>
  *
@@ -417,21 +417,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_s_v(scal
 /**
  * \ingroup sd_g_n_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_b(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_n_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_b_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_n_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_b_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_n_pdf_b ################ */
@@ -439,7 +439,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_b_v(scal
 /* ################ start sd_g_l_pdf_b ################ */
 /**
  * \defgroup sd_g_l_pdf_b G_L PDF_B
- * \ingroup sd_plugins_quantile_bounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_L PDF_B function\>
  *
@@ -474,21 +474,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_n_pdf_b_v(scal
 /**
  * \ingroup sd_g_l_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_b(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_l_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_b_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_l_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_b_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_l_pdf_b ################ */
@@ -496,7 +496,7 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_b_v(scal
 /* ################ start sd_g_c_pdf_b ################ */
 /**
  * \defgroup sd_g_c_pdf_b G_C PDF_B
- * \ingroup sd_plugins_quantile_bounded
+ * \ingroup sd_plugins_johnson
  *
  * \brief \<some brief description of G_C PDF_B function\>
  *
@@ -531,21 +531,21 @@ sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_l_pdf_b_v(scal
 /**
  * \ingroup sd_g_c_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_b(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_c_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_b_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_g_c_pdf_b
  *
- * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_quantile_bounded
+ * \sa sasfit_generalized_johnson_distribution.h, sd_plugins_johnson
  */
 sasfit_generalized_johnson_distribution_DLLEXP scalar sasfit_sd_g_c_pdf_b_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_g_c_pdf_b ################ */

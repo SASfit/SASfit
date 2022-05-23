@@ -39,7 +39,7 @@
 /* ################ start sd_std_lognorm ################ */
 /**
  * \defgroup sd_std_lognorm std LogNorm
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_lognormal
  *
  * \brief \<some brief description of std LogNorm function\>
  *
@@ -65,21 +65,21 @@
 /**
  * \ingroup sd_std_lognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_std_lognorm(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_std_lognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_std_lognorm_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_std_lognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_std_lognorm_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_std_lognorm ################ */
@@ -87,7 +87,7 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_std_lognorm_v(scalar q, sasfit_param *
 /* ################ start sd_shifted_lognorm ################ */
 /**
  * \defgroup sd_shifted_lognorm shifted LogNorm
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_lognormal
  *
  * \brief \<some brief description of shifted LogNorm function\>
  *
@@ -113,21 +113,21 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_std_lognorm_v(scalar q, sasfit_param *
 /**
  * \ingroup sd_shifted_lognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_shifted_lognorm(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_shifted_lognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_shifted_lognorm_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_shifted_lognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_shifted_lognorm_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_shifted_lognorm ################ */
@@ -135,7 +135,7 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_shifted_lognorm_v(scalar q, sasfit_par
 /* ################ start sd_lognorm_fp ################ */
 /**
  * \defgroup sd_lognorm_fp LogNorm_fp
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_lognormal
  *
  * \brief \<some brief description of LogNorm_fp function\>
  *
@@ -170,21 +170,21 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_shifted_lognorm_v(scalar q, sasfit_par
 /**
  * \ingroup sd_lognorm_fp
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_lognorm_fp(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_lognorm_fp
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_lognorm_fp_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_lognorm_fp
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_lognorm_fp_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_lognorm_fp ################ */
@@ -192,7 +192,7 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_lognorm_fp_v(scalar q, sasfit_param * 
 /* ################ start sd_bilognorm ################ */
 /**
  * \defgroup sd_bilognorm shifted BiLogNorm
- * \ingroup sd_plugins_quantile_semibounded
+ * \ingroup sd_plugins_lognormal
  *
  * \brief \<some brief description of shifted BiLogNorm function\>
  *
@@ -233,21 +233,21 @@ sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_lognorm_fp_v(scalar q, sasfit_param * 
 /**
  * \ingroup sd_bilognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_bilognorm(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_bilognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_bilognorm_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_bilognorm
  *
- * \sa sasfit_lognorm_fp.h, sd_plugins_quantile_semibounded
+ * \sa sasfit_lognorm_fp.h, sd_plugins_lognormal
  */
 sasfit_lognorm_fp_DLLEXP scalar sasfit_sd_bilognorm_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_bilognorm ################ */

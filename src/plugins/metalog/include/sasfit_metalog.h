@@ -95,21 +95,21 @@
 /**
  * \ingroup ff_metalog_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_sphere ################ */
@@ -173,21 +173,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere_v(scalar q, sasfit_param *
 /**
  * \ingroup ff_metaloglog_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglog_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglog_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metaloglog_sphere ################ */
@@ -252,21 +252,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere_v(scalar q, sasfit_para
 /**
  * \ingroup ff_metaloglogit_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglogit_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglogit_sphere
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, ff_plugins
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metaloglogit_sphere ################ */
@@ -274,7 +274,7 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_pa
 /* ################ start sd_metalog_log_clipped ################ */
 /**
  * \defgroup sd_metalog_log_clipped metalog_log_clipped
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_metalog
  *
  * \brief \<some brief description of metalog_log_clipped function\>
  *
@@ -330,21 +330,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_pa
 /**
  * \ingroup sd_metalog_log_clipped
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_metalog_log_clipped
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_metalog_log_clipped
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_metalog_log_clipped ################ */
@@ -352,7 +352,7 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped_v(scalar q, sasfit_pa
 /* ################ start sd_metalog_clipped ################ */
 /**
  * \defgroup sd_metalog_clipped metalog_clipped
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_metalog
  *
  * \brief \<some brief description of metalog_clipped function\>
  *
@@ -408,21 +408,21 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_log_clipped_v(scalar q, sasfit_pa
 /**
  * \ingroup sd_metalog_clipped
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_metalog_clipped
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_metalog_clipped
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_metalog_clipped ################ */
@@ -430,7 +430,7 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped_v(scalar q, sasfit_param 
 /* ################ start sd_metalog_logit ################ */
 /**
  * \defgroup sd_metalog_logit metalog_logit
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_metalog
  *
  * \brief \<some brief description of metalog_logit function\>
  *
@@ -486,21 +486,21 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_clipped_v(scalar q, sasfit_param 
 /**
  * \ingroup sd_metalog_logit
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_metalog_logit
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_metalog_logit
  *
- * \sa sasfit_metalog.h, sd_plugins
+ * \sa sasfit_metalog.h, sd_plugins_metalog
  */
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_metalog_logit ################ */

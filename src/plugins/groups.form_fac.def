@@ -431,6 +431,16 @@
  */
 
 /** 
+ * \defgroup ff_peak_amplitudes_generalized generalized 
+ * \ingroup ff_peak_amplitudes
+ *
+ * This group contains peak functions using generalized distribution functions which than are normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes_generalized}
+ */
+
+
+/** 
  * \defgroup ff_peak_amplitudes_a_m A-M 
  * \ingroup ff_peak_amplitudes
  *
@@ -455,6 +465,15 @@
  * This group contains peak functions normalized on area.
  *
  * \modname{ff_peak_area}
+ */
+ 
+ /** 
+ * \defgroup ff_peak_area_generalized generalized 
+ * \ingroup ff_peak_area
+ *
+ * This group contains peak functions using generalized distribution functions which than are normalized on area.
+ *
+ * \modname{ff_peak_area_generalized}
  */
  
  /** 

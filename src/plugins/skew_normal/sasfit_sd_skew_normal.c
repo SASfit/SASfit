@@ -619,7 +619,7 @@ scalar phi(scalar x) {
 }
 
 scalar PHI(scalar x) {
-	return 0.5*(1+gsl_sf_erf(x/sqrt(2)));
+	return 0.5*(1+gsl_sf_erf(x/sqrt(2.)));
 }
 
 scalar skewness(sasfit_param *param) {
@@ -648,10 +648,14 @@ scalar sasfit_sd_skew_normal(scalar x, sasfit_param * param)
     scalar z;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND1((OMEGA <= 0.0), param, "omega(%lg) <= 0",OMEGA); // modify condition to your needs
+	SASFIT_CHECK_COND1((OMEGA == 0.0), param, "omega(%lg) == 0",OMEGA); // modify condition to your needs
 	// insert your code here
 	z=(x-XI)/OMEGA;
-	return N*2.0/OMEGA*phi(z)*PHI(ALPHA*z)/(1-sasfit_sd_skew_normal_f(0,param));
+	if ((1.0-sasfit_sd_skew_normal_f(0,param))==0) {
+        sasfit_out("z:%lf alpha:%lf Towen(z,alpha):%lg\n",z,ALPHA,tfn(z,ALPHA));
+        sasfit_out("norm:%lg\n",(1.0-sasfit_sd_skew_normal_f(0,param)));
+	}
+	return N*2.0/OMEGA*phi(z)*PHI(ALPHA*z)/(1.0-sasfit_sd_skew_normal_f(0,param));
 }
 
 scalar sasfit_sd_skew_normal_f(scalar x, sasfit_param * param)
@@ -661,7 +665,8 @@ scalar sasfit_sd_skew_normal_f(scalar x, sasfit_param * param)
 
 	// insert your code here
 	z=(x-XI)/OMEGA;
-	return PHI(z)-2*tfn(z,ALPHA);
+	if (ALPHA==0) return PHI(z);
+	return PHI(z)-2*tfn(z,fabs(ALPHA));
 }
 
 scalar sasfit_sd_skew_normal_v(scalar q, sasfit_param * param, int dist)

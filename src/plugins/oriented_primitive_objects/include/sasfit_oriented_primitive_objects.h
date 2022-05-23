@@ -2311,7 +2311,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_octahedra__opo_random_
 
 /* ################ start ff_rhombic_dodecahedra__opo_ ################ */
 /**
- * \defgroup ff_rhombic_odecahedra__opo_ rhombic Dodecahedron (OPO)
+ * \defgroup ff_rhombic_dodecahedra__opo_ rhombic Dodecahedron (OPO)
  * \ingroup ff_plugins_oriented_primitive_objects
  *
  * \brief \<some brief description of rhombic Dodecahedron (OPO) function\>

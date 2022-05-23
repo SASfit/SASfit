@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sd_exponentially_modified_gaussian ################ */
-/** 
+/**
  * \defgroup sd_exponentially_modified_gaussian exponentially modified Gaussian
- * \ingroup sd_plugins
+ * \ingroup sd_plugins_normal
  *
  * \brief \<some brief description of exponentially modified Gaussian function\>
  *
@@ -65,21 +65,21 @@
 /**
  * \ingroup sd_exponentially_modified_gaussian
  *
- * \sa sasfit_exponentially_modified_gaussian.h, sd_plugins
+ * \sa sasfit_exponentially_modified_gaussian.h, sd_plugins_normal
  */
 sasfit_exponentially_modified_gaussian_DLLEXP scalar sasfit_sd_exponentially_modified_gaussian(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_exponentially_modified_gaussian
  *
- * \sa sasfit_exponentially_modified_gaussian.h, sd_plugins
+ * \sa sasfit_exponentially_modified_gaussian.h, sd_plugins_normal
  */
 sasfit_exponentially_modified_gaussian_DLLEXP scalar sasfit_sd_exponentially_modified_gaussian_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_exponentially_modified_gaussian
  *
- * \sa sasfit_exponentially_modified_gaussian.h, sd_plugins
+ * \sa sasfit_exponentially_modified_gaussian.h, sd_plugins_normal
  */
 sasfit_exponentially_modified_gaussian_DLLEXP scalar sasfit_sd_exponentially_modified_gaussian_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_exponentially_modified_gaussian ################ */

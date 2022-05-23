@@ -59,8 +59,74 @@
  */
 
 /** 
- * \defgroup sd_plugins_quantile quantile distribution functions
+ * \defgroup sd_plugins_devel under development
  * \ingroup sd_plugins
+ *
+ * This group contains size distributions under development
+ *
+ * \modname{sd_plugins_devel}
+ */
+
+/** 
+ * \defgroup sd_plugins_metalog metalog
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of metalog distributions
+ *
+ * \modname{sd_plugins_metalog}
+ */
+
+/** 
+ * \defgroup sd_plugins_normal normal
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of normal distributions
+ *
+ * \modname{sd_plugins_normal}
+ */
+
+/** 
+ * \defgroup sd_plugins_lognormal lognormal
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of lognormal distributions
+ *
+ * \modname{sd_plugins_lognormal}
+ */
+
+
+/** 
+ * \defgroup sd_plugins_generalized generalized
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of generalized distributions
+ *
+ * \modname{sd_plugins_generalized}
+ */
+
+
+/** 
+ * \defgroup sd_plugins_johnson Johnson
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of Johnson distributions
+ *
+ * \modname{sd_plugins_johnson}
+ */
+
+/** 
+ * \defgroup sd_plugins_beta beta
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of beta distributions
+ *
+ * \modname{sd_plugins_beta}
+ */
+
+
+/** 
+ * \defgroup sd_plugins_quantile quantile distribution functions
+ * \ingroup sd_plugins_devel
  *
  * This group contains size distributions for wich next to the PDF also  the CDF as well as QDF are known
  *
