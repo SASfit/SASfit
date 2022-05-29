@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_GENERALIZED_DISTRIBUTIONS_H

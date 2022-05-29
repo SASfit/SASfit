@@ -396,6 +396,33 @@ scalar sasfit_orient_avg_ctm(
                 free ( w );
                 break;
             }
+        case SPHAVG_SPHERICAL_T_DESIGN: {
+                rule = sasfit_eps_get_spherical_t_design();
+                while (!sasfit_available_sph_t_table(rule) && rule < 137) rule++;
+                if (rule < 1) rule = 1;
+                if (rule > 136) rule = 136;
+                order = sasfit_sph_t_order_table ( rule );
+                x = ( double * ) malloc ( order * sizeof ( double ) );
+                y = ( double * ) malloc ( order * sizeof ( double ) );
+                z = ( double * ) malloc ( order * sizeof ( double ) );
+                sasfit_sph_t_by_order ( order, x, y, z );
+//sasfit_out("spherical-t design order:%d\n",order);
+                for (i=0;i<order;i++) {
+                    if (x[i] == 0.0 && y[i] == 0.0) {
+                        phi=0;
+                    } else {
+                        phi=atan2(y[i],x[i]);
+                    }
+                    theta = acos(z[i]);
+                    Iavg = Iavg + (*intKern_fct)(theta,phi,param);
+//sasfit_out("%d: x:%lf y%lf z%lf phi%lf theta%lf Iavg:%lf\n",i,x[i],y[i],z[i],phi,theta,Iavg);
+                }
+                Iavg = Iavg/order;
+                free ( x );
+                free ( y );
+                free ( z );
+                break;
+            }
         case SPHAVG_FIBONACCI: {
                 //rule = abs(sasfit_eps_get_fibonacci());
                 PHI1 = 0.5*(1.0 + sqrt(5.0));

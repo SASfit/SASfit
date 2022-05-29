@@ -445,3 +445,15 @@ declare 132 generic {
 declare 133 generic {
 	void sasfit_eps_set_beta(scalar value)
 }
+declare 134 generic {
+	int sasfit_eps_get_spherical_t_design(void)
+}
+declare 135 generic {
+	int sasfit_available_sph_t_table(int rule)
+}
+declare 136 generic {
+	int sasfit_sph_t_order_table(int rule)
+}
+declare 137 generic {
+	void sasfit_sph_t_by_order( int order, double *x, double *y, double *z)
+}

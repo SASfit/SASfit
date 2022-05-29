@@ -71,6 +71,7 @@
 #define SPHAVG_MC_MISER 5
 #define SPHAVG_MC_VEGAS 6
 #define SPHAVG_MC_PLAIN 7
+#define SPHAVG_SPHERICAL_T_DESIGN 8
 
 
 

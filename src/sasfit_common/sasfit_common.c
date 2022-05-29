@@ -175,6 +175,10 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_eps_get_beta, /* 131 */
 	sasfit_eps_set_alpha, /* 132 */
 	sasfit_eps_set_beta, /* 133 */
+	sasfit_eps_get_spherical_t_design, /* 134 */
+	sasfit_available_sph_t_table, /* 135 */
+	sasfit_sph_t_order_table, /* 136*/
+	sasfit_sph_t_by_order, /* 137 */
 };
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

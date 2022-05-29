@@ -210,6 +210,10 @@ typedef struct
 	scalar (*sasfit_eps_get_beta) (void); /*131 */
 	void (*sasfit_eps_set_alpha) (scalar value); /* 132 */
 	void (*sasfit_eps_set_beta) (scalar value); /* 133 */
+	int (*sasfit_eps_get_spherical_t_design) (void); /*134 */
+	int (*sasfit_available_sph_t_table) ( int rule ); /*135 */
+    int (*sasfit_sph_t_order_table) ( int rule ); /*136 */
+    void (*sasfit_sph_t_by_order) ( int order, double *x, double *y, double *z); /*137 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -727,6 +731,24 @@ typedef struct
 #define sasfit_eps_set_beta \
 	(SASFIT_COMMON_STUBS()->sasfit_eps_set_beta) /* 133 */
 #endif
+#ifndef sasfit_eps_get_spherical_t_design
+#define sasfit_eps_get_spherical_t_design \
+	(SASFIT_COMMON_STUBS()->sasfit_eps_get_spherical_t_design) /* 134 */
+#endif
+#ifndef sasfit_available_sph_t_table
+#define sasfit_available_sph_t_table \
+	(SASFIT_COMMON_STUBS()->sasfit_available_sph_t_table) /* 135 */
+#endif
+#ifndef sasfit_sph_t_order_table
+#define sasfit_sph_t_order_table \
+	(SASFIT_COMMON_STUBS()->sasfit_sph_t_order_table) /* 136 */
+#endif
+#ifndef sasfit_sph_t_by_order
+#define sasfit_sph_t_by_order \
+	(SASFIT_COMMON_STUBS()->sasfit_sph_t_by_order) /* 137 */
+#endif
+
+
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

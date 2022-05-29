@@ -31,6 +31,7 @@ proc setSphAvgStrategy2int {} {
 		"MC_MISER" {set ::FitPrecision(SphAvgStrategy_int) 5}
 		"MC_VEGAS" {set ::FitPrecision(SphAvgStrategy_int) 6}
 		"MC_PLAIN" {set ::FitPrecision(SphAvgStrategy_int) 7}
+		"spherical_t_design"  {set ::FitPrecision(SphAvgStrategy_int) 8}
 		default {set ::FitPrecision(SphAvgStrategy_int) 0}
 	}
 }
@@ -148,7 +149,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.intStrat_value -row 5 -column 1 -sticky w
     label $w.sphavgStrat_label -text "spherical average strategy"
 	ComboBox $w.sphavgStrat_value -values {"GSL_2D_GAUSSLEGENDRE" "Lebedev" "FIBONACCI"\
-										"H_CUBATURE" "P_CUBATURE" "MC_MISER" "MC_VEGAS" "MC_PLAIN"} \
+										"H_CUBATURE" "P_CUBATURE" "MC_MISER" "MC_VEGAS" "MC_PLAIN" "spherical_t_design"} \
 				-width 15 \
 				-textvariable ::FitPrecision(SphAvgStrategy) \
 				-modifycmd setSphAvgStrategy2int
@@ -199,6 +200,10 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	entry $w.gibonacci_value -textvariable FitPrecision(FIBONACCI) -width $entrywidth
 	grid $w.finonacci_label -row 13 -column 2 -sticky e
 	grid $w.gibonacci_value -row 13 -column 3 -sticky w
+	label $w.sphericaltdesign_label -text "spherical-t design, order \[1,136\]:"
+	entry $w.sphericaltdesign_value -textvariable FitPrecision(spherical_t_design) -width $entrywidth
+	grid $w.sphericaltdesign_label -row 14 -column 0 -sticky e
+	grid $w.sphericaltdesign_value -row 14 -column 1 -sticky w
 }
 
 proc update_parameter_increment { analytpar tanalytpar value } {

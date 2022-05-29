@@ -33,6 +33,7 @@ typedef enum
     GMDI_INTE_FUNCTIONS_QAGS, /*!< [gsl_integration_qags](https://www.gnu.org/software/gsl/doc/html/integration.html#qags-adaptive-integration-with-singularities */
     GDMI_INTE_FUNCTIONS_TANHSINH,
     GDMI_INTE_FUNCTIONS_LEBEDEV,
+    GDMI_INTE_FUNCTIONS_SPHERICAL_T_DESIGN,
     GDMI_INTE_FUNCTIONS_OOURA_DE,
     GDMI_INTE_FUNCTIONS_OOURA_CC,
     GDMI_INTE_FUNCTIONS_CQUAD,

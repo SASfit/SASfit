@@ -94,6 +94,10 @@ int sasfit_eps_get_lebedev(void) {
 	return sasfit_eps.lebedev;
 }
 sasfit_common_DLLEXP
+int sasfit_eps_get_spherical_t_design(void) {
+	return sasfit_eps.spherical_t_design;
+}
+sasfit_common_DLLEXP
 int sasfit_eps_get_fibonacci(void) {
 	return sasfit_eps.fibonacci;
 }
@@ -212,6 +216,10 @@ void sasfit_eps_set_lebedev(int value) {
 	sasfit_eps.lebedev = value;
 }
 sasfit_common_DLLEXP
+void sasfit_eps_set_spherical_t_design(int value) {
+	sasfit_eps.spherical_t_design = value;
+}
+sasfit_common_DLLEXP
 void sasfit_eps_set_fibonacci(int value) {
 	sasfit_eps.fibonacci = value;
 }
@@ -267,6 +275,7 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
 	sasfit_out("alpha:               %f\n", fitp->alpha);
 	sasfit_out("beta :               %f\n", fitp->beta);
 	sasfit_out("Lebedev order [1,64]:     %d\n", fitp->lebedev);
+	sasfit_out("spherical_t design, order [1,137]: %d\n", fitp->spherical_t_design);
 	sasfit_out("FIBONACCI points:         %d\n", fitp->fibonacci);
 	sasfit_out("iter_4_MC:       %d\n", fitp->iter_4_mc);
 	sasfit_out("fitorsim:        %d\n", fitp->fitorsim);
