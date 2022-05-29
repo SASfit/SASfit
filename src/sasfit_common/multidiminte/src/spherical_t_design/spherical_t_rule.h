@@ -71,8 +71,8 @@ void N100_M5100_Tetra ( double *x, double *y, double *z);
 void N114_M6612_Ico ( double *x, double *y, double *z);
 void N124_M7812_Ico ( double *x, double *y, double *z);
 void Design_21000_200_random_xyz ( double *x, double *y, double *z);
-void Design_130000_500_random_xyz ( double *x, double *y, double *z);
-void Design_520000_1000_random_xyz ( double *x, double *y, double *z);
+//void Design_130000_500_random_xyz ( double *x, double *y, double *z);
+//void Design_520000_1000_random_xyz ( double *x, double *y, double *z);
 /*
 void Design_5200_100_random_xyz ( double *x, double *y, double *z);
 void Design_5200_100_spiral_xyz ( double *x, double *y, double *z);

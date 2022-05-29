@@ -400,7 +400,7 @@ scalar sasfit_orient_avg_ctm(
                 rule = sasfit_eps_get_spherical_t_design();
                 while (!sasfit_available_sph_t_table(rule) && rule < 137) rule++;
                 if (rule < 1) rule = 1;
-                if (rule > 136) rule = 136;
+                if (rule > 133) rule = 133;
                 order = sasfit_sph_t_order_table ( rule );
                 x = ( double * ) malloc ( order * sizeof ( double ) );
                 y = ( double * ) malloc ( order * sizeof ( double ) );

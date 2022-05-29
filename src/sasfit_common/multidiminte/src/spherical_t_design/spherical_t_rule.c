@@ -74,18 +74,22 @@ int sasfit_available_sph_t_table ( int rule )
 /******************************************************************************/
 // #include "Design_xxx_xxxx.h" // this needs too much memory
 #include "Nxxx_Mxxxx.h"
-void Design_130000_500_random_xyz ( double *x, double *y, double *z ) {
-  #include "Design_130000_500_random_xyz.h"
-  return;
-}
 void Design_21000_200_random_xyz ( double *x, double *y, double *z ) {
   #include "Design_21000_200_random_xyz.h"
   return;
 }
+/*
+void Design_130000_500_random_xyz ( double *x, double *y, double *z ) {
+  #include "Design_130000_500_random_xyz.h"
+  return;
+}
+*/
+/*
 void Design_520000_1000_random_xyz ( double *x, double *y, double *z ) {
   #include "Design_520000_1000_random_xyz.h"
   return;
 }
+*/
 void sasfit_sph_t_by_order ( int order, double *x, double *y, double *z )
 
 /******************************************************************************/
@@ -407,6 +411,7 @@ void sasfit_sph_t_by_order ( int order, double *x, double *y, double *z )
   {
     Design_21000_200_spiral_xyz ( x, y, z );
   } */
+  /*
   else if ( order == 130000 )
   {
     Design_130000_500_random_xyz ( x, y, z );
@@ -415,6 +420,7 @@ void sasfit_sph_t_by_order ( int order, double *x, double *y, double *z )
   {
     Design_520000_1000_random_xyz ( x, y, z );
   }
+  */
 /*  else if ( order == 1002000 )
   {
     Design_1002000_1000_random_xyz ( x, y, z );
