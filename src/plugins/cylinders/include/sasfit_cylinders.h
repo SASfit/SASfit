@@ -405,7 +405,7 @@ sasfit_cylinders_DLLEXP scalar sasfit_ff_longcylshell_v(scalar q, sasfit_param *
  *       <td>shell thickness</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of ellipsoid</td>
+ *       <td>stretching factor of ellipsoid</td>
  *      </tr><tr>
  *       <td>\b L</td>
  *       <td>cylinder length</td>
@@ -463,7 +463,7 @@ sasfit_cylinders_DLLEXP scalar sasfit_ff_ellcylshell1_v(scalar q, sasfit_param *
  *       <td>shell thickness</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of ellipsoid</td>
+ *       <td>stretching factor of ellipsoid</td>
  *      </tr><tr>
  *       <td>\b L</td>
  *       <td>cylinder length</td>
@@ -707,7 +707,7 @@ sasfit_cylinders_DLLEXP scalar sasfit_ff_alignedcylshell_v(scalar q, sasfit_para
  *       <td>shell thickness of tube shell</td>
  *      </tr><tr>
  *       <td>\b nu</td>
- *       <td>eccentricity of elliptical torus cross-section</td>
+ *       <td>stretching factor of elliptical torus cross-section</td>
  *      </tr><tr>
  *       <td>\b eta_c</td>
  *       <td>scattering length density of core</td>

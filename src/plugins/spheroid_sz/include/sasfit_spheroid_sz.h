@@ -50,7 +50,7 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b nu</td>
- *       <td>eccentricity, R_polar=nu*R_equatorial</td>
+ *       <td>stretching factor, R_polar=nu*R_equatorial</td>
  *      </tr><tr>
  *       <td>\b R_equatorial</td>
  *       <td>most probable equatorial semi axis</td>

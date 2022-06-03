@@ -123,7 +123,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_homoxs_v(scalar q, sasfit_pa
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity</td>
+ *       <td>stretching factor</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -312,7 +312,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_disc_sd_bilayergauss_v(scalar q, sas
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity</td>
+ *       <td>stretching factor</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>
@@ -802,7 +802,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_p__q___thin_spherical_shell_v(scalar
  *       <td>most probable radius</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity</td>
+ *       <td>stretching factor</td>
  *      </tr><tr>
  *       <td>\b sigma_R</td>
  *       <td>width of radius distribution (LogNorm)</td>
@@ -1486,7 +1486,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_homogeneouscyl_v(scalar q, sasfi
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of elliptical cross-section</td>
+ *       <td>stretching factor of elliptical cross-section</td>
  *      </tr><tr>
  *       <td>\b t0</td>
  *       <td>most probable shell thickness</td>
@@ -1553,7 +1553,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_pcs_ellcylsh_v(scalar q, sasfit_para
  *       <td>width of core radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of elliptical cross-section</td>
+ *       <td>stretching factor of elliptical cross-section</td>
  *      </tr><tr>
  *       <td>\b t0</td>
  *       <td>most probable shell thickness</td>
@@ -1624,7 +1624,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_rod_sd_ellcylsh_v(scalar q, sasfit_p
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of elliptical cross-section</td>
+ *       <td>stretching factor of elliptical cross-section</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>shell thickness</td>
@@ -1691,7 +1691,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps1_sd_ellcylsh_v(scalar q, sas
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of elliptical cross-section</td>
+ *       <td>stretching factor of elliptical cross-section</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>shell thickness</td>
@@ -1759,7 +1759,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps2_sd_ellcylsh_v(scalar q, sas
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of elliptical cross-section</td>
+ *       <td>stretching factor of elliptical cross-section</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>shell thickness</td>
@@ -1828,7 +1828,7 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps3_sd_ellcylsh_v(scalar q, sas
  *       <td>width of radius distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of elliptical cross-section</td>
+ *       <td>stretching factor of elliptical cross-section</td>
  *      </tr><tr>
  *       <td>\b t</td>
  *       <td>shell thickness</td>

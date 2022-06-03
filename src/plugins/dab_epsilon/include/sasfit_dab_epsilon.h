@@ -53,7 +53,7 @@
  *       <td>correlation length</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity</td>
+ *       <td>stretching factor</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td>dummy</td>

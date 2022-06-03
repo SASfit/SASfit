@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_rodlike_micelle_plusprism ################ */
-/** 
+/**
  * \defgroup ff_rodlike_micelle_plusprism Rodlike_Micelle_PlusPrism
  * \ingroup ff_user2
  *
@@ -53,7 +53,7 @@
  *       <td>radius</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity</td>
+ *       <td>stretching factor</td>
  *      </tr><tr>
  *       <td>\b L</td>
  *       <td>length of cylinder</td>

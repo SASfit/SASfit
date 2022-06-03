@@ -34,7 +34,7 @@
 #include "utils.h"
 
 /*
-float P_Ellipsoid_RWbrush(Tcl_Interp *interp, 
+float P_Ellipsoid_RWbrush(Tcl_Interp *interp,
 			float Q,
 			float Rc,		// core radius
 			float n_agg,		// aggregation number of chains per surfacearea
@@ -45,7 +45,7 @@ float P_Ellipsoid_RWbrush(Tcl_Interp *interp,
 			float xsolv_core,// amount of solvent in core
 			float Rg,		// gyration radius of chain
 			float d,			// correction factor should be chosen close to 1
-			float epsilon,	// eccentricity of ellipsoidal micelle (R,R,epsilon*R)
+			float epsilon,	// stretching factor of ellipsoidal micelle (R,R,epsilon*R)
 			bool *error)
 
 

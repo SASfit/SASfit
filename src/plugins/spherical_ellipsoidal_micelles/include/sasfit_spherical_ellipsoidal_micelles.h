@@ -832,7 +832,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_2nd_r__a_rc
  *       <td>value should be around 1, non-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of the ellipsoid (R,R,epsilon*R)</td>
+ *       <td>stretching factor of the ellipsoid (R,R,epsilon*R)</td>
  *      </tr>
  */
 
@@ -899,7 +899,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_ell_chains_rw__nag
  *       <td>value should be around 1, non-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of the ellipsoid (R,R,epsilon*R)</td>
+ *       <td>stretching factor of the ellipsoid (R,R,epsilon*R)</td>
  *      </tr>
  */
 
@@ -966,7 +966,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_ell_chains_rw__v(s
  *       <td>value should be around 1, non-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg</td>
  *      </tr><tr>
  *       <td>\b epsilon</td>
- *       <td>eccentricity of the ellipsoid (R,R,epsilon*R)</td>
+ *       <td>stretching factor of the ellipsoid (R,R,epsilon*R)</td>
  *      </tr>
  */
 

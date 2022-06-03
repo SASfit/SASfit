@@ -579,7 +579,7 @@ r(R,\epsilon,\phi) &=& R\sqrt{\sin^2\phi+\epsilon^2\cos^2\phi}
 \begin{description}
     \item[\texttt{R\_0}] most probable radius $R_0$
     \item[\texttt{sigm\_R0}] width $\sigma_{R_0}$ of radius distribution (LogNorm)
-    \item[\texttt{epsilon}] eccentricity $\epsilon$ of elliptical cross-section
+    \item[\texttt{epsilon}] stretching factor $\epsilon$ of elliptical cross-section
     \item[\texttt{t}] most probable shell thickness $t$
     \item[\texttt{dummy}] width $\sigma_t$ of shell thickness distribution (LogNorm)
     \item[\texttt{dummy}] not used
@@ -995,7 +995,7 @@ under "\texttt{[by plugin|thin obj.|Pcs(Q): local planar obj.]}".
 \begin{center}
 \includegraphics[width=0.596\textwidth,height=0.449\textwidth]{../images/form_factor/anisotropic/Ellipsoid_hollow.png}
 \end{center}
-\caption{Sketch of a thin ellipsoidal shell with a radius $R$ and eccentricity $\epsilon$. The thickness of the shell is assumed to be much smaller than the two radii of the elliptical shell.}
+\caption{Sketch of a thin ellipsoidal shell with a radius $R$ and stretching factor $\epsilon$. The thickness of the shell is assumed to be much smaller than the two radii of the elliptical shell.}
 \label{fig:ThinEllipsoidalShell}
 \end{figure}
 
@@ -1013,7 +1013,7 @@ with $\mathrm{j}_0$ being the regular spherical Bessel function of zeroth order.
 \uline{Input parameters for \texttt{P'(Q): Thin Ellipsoidal Shell}:}
 \begin{description}
     \item[\texttt{R}] most probable radius $R$
-    \item[\texttt{epsilon}] eccentricity $\epsilon$
+    \item[\texttt{epsilon}] stretching factor $\epsilon$
     \item[\texttt{sima\_R}] width $\sigma_R$ of radius distribution (LogNorm)
 \end{description}
 
@@ -1802,7 +1802,7 @@ In this form factor the cross section term of a lipid bilayer (eq.\ \ref{eq:PcsB
 \item[\texttt{sigma\_t}] width of distance distribution $\sigma_t$
 \item[\texttt{R0}] most probable disc radius $R_0$
 \item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
-\item[\texttt{epsilon}] eccentricity
+\item[\texttt{epsilon}] stretching factor
 \item[\texttt{dummy}] not used
 \item[\texttt{sigma\_out}] width of scattering density distribution in the head groups of the lipids forming the outer layers of the bilayer $\sigma_\mathrm{out}$
 \item[\texttt{b\_out}] excess scattering length of the head groups $b_\mathrm{out}$
@@ -1827,7 +1827,7 @@ In this form factor the cross section term of a homogeneous plate (eq.\ \ref{eq:
 \item[\texttt{sigma\_t}] width of thickness distribution $\sigma_t$
 \item[\texttt{R0}] most probable disc radius $R_0$
 \item[\texttt{sigma\_R0}] width of radii distribution $\sigma_{R_0}$
-\item[\texttt{epsilon}] eccentricity
+\item[\texttt{epsilon}] stretching factor
 \item[\texttt{dummy}] not used
 \item[\texttt{eta\_l}] scattering length density of layer $\eta_\mathrm{l}$
 \item[\texttt{eta\_sol}] scattering length density of solvent $\eta_\mathrm{sol}$
@@ -1904,7 +1904,7 @@ In this form factor the cross section term of a homogeneous plate (eq.\ \ref{Rod
 \begin{description}
 \item[\texttt{R0}] most probable core radius $R_0$
 \item[\texttt{sigma\_R0}] width of core radius distribution $\sigma_{R_0}$  (LogNorm)
-\item[\texttt{epsilon}] eccentricity $\epsilon$ of the elliptical cross-section
+\item[\texttt{epsilon}] stretching factor $\epsilon$ of the elliptical cross-section
 \item[\texttt{T0}] most probable shell thickness $t_0$
 \item[\texttt{sigma\_t0}] width of thickness distribution $\sigma_{t_0}$ (LogNorm)
 \item[\texttt{L0}] most probable rod length $L_0$
