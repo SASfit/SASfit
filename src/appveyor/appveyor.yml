@@ -108,7 +108,7 @@ for:
     - sudo ln /dev/null /dev/snd
     # check if the image loads:
     - docker pull appimagecrafters/tests-env:ubuntu-bionic
-    - exit 1
+    - docker pull appimagecrafters/tests-env:centos-7
 #    - docker image ls
 #    - sudo service docker status
 #    - sudo apt-get -y install containerd docker.io
