@@ -2194,6 +2194,9 @@ proc ReadOptionsCmd {} {
 		BerSANS {HMIOptionsCmd}
 		SESANS  {SESANSOptionsCmd}
 		ALV5000 {ALVOptionsCmd} 
+		default {set sasfit(actualdatatype) Ascii
+				 AsciiOptionsCmd
+				}
 	}
 }
 
@@ -2217,7 +2220,18 @@ proc NewCmd {} {
 	frame .openfile.layout3
 
 	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii BerSANS SESANS ALV5000]
-
+	$format entryconfigure 0 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+	$format entryconfigure 1 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+	$format entryconfigure 2 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+	$format entryconfigure 3 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
 	.openfile.layout1.format configure -highlightthickness 0
 	label .openfile.layout1.label -text "File Format:" -highlightthickness 0
 	pack .openfile.layout1.label .openfile.layout1.format -side left -fill x
@@ -2631,7 +2645,19 @@ proc MergeCmd {} {
 	frame .addfile.layout3
 
 	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii BerSANS SESANS ALV5000]
-
+	$format entryconfigure 0 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+	$format entryconfigure 1 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+	$format entryconfigure 2 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+	$format entryconfigure 3 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+		   
 	$w.layout1.format configure -highlightthickness 0
 	label $w.layout1.label -text "File Format:" \
 	      -width 12 -highlightthickness 0

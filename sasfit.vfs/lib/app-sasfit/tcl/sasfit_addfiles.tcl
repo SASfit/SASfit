@@ -336,6 +336,18 @@ frame .openfile.layout3
 
 set format [tk_optionMenu .openfile.layout1.format tmpsasfit(actualdatatype) \
                            Ascii BerSANS SESANS ALV5000]
+$format entryconfigure 0 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+$format entryconfigure 1 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+$format entryconfigure 2 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+$format entryconfigure 3 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
 .openfile.layout1.format configure -highlightthickness 0
 label .openfile.layout1.label -text "File Format:" -highlightthickness 0
 pack .openfile.layout1.label .openfile.layout1.format -side left -fill x
@@ -702,7 +714,7 @@ Button $w.layout1.previous -text Previous -highlightthickness 0 \
               $nomenu_add invoke [expr $tmpsasfit(Nth,actual_optionMenu)-2]
 	   }
        }
-setTooltip $w.layout1.previous "display the next data set"
+setTooltip $w.layout1.previous "display the previous data set"
 Button $w.layout1.add -text Add -highlightthickness 0 \
        -padx 1m -pady 1m \
        -repeatinterval 100 \
@@ -721,29 +733,29 @@ Button $w.layout1.add -text Add -highlightthickness 0 \
            if {$tmpsasfit(error)} {
               blt::beep
            } else {
-		if {[llength $tmpsasfit(filename)] > 0} {
-			.addfile.lay1.layout1.read invoke
-		} else { return }
-              $nomenu_add add radiobutton \
+			if {[llength $tmpsasfit(filename)] > 0} {
+				.addfile.lay1.layout1.read invoke
+			} else { return }
+            $nomenu_add add radiobutton \
                  -variable  tmpsasfit(Nth,actual_optionMenu) \
                  -label $tmpsasfit(Nth,n)
-              $nomenu_add activate [expr $tmpsasfit(Nth,n)-1]
-              $nomenu_add entryconfigure active -command {
-                      global addsasfit tmpsasfit
-                      merge_cmd_apply tmpsasfit 1
-                      set tmpsasfit(Nth,actual) $tmpsasfit(Nth,actual_optionMenu)
-                      foreach twidname $tmpsasfit(file,widname) {
-                         set w2 .addfile.lay2
-                         set widcnt [lindex $twidname 1]
-                         destroyMergeFile $widcnt
-                      }
-                      get_Nth_globalfit_data tmpsasfit $tmpsasfit(Nth,actual)
-                      for {set i 0} {$i < $tmpsasfit(file,n)} {incr i} {
-                         MergeFileCmd tmpsasfit $i
-                      }
-              }
-              $nomenu_add invoke active
-	  }
+			$nomenu_add activate [expr $tmpsasfit(Nth,n)-1]
+			$nomenu_add entryconfigure active -command {
+				global addsasfit tmpsasfit
+				merge_cmd_apply tmpsasfit 1
+				set tmpsasfit(Nth,actual) $tmpsasfit(Nth,actual_optionMenu)
+				foreach twidname $tmpsasfit(file,widname) {
+					set w2 .addfile.lay2
+					set widcnt [lindex $twidname 1]
+					destroyMergeFile $widcnt
+				}
+				get_Nth_globalfit_data tmpsasfit $tmpsasfit(Nth,actual)
+				for {set i 0} {$i < $tmpsasfit(file,n)} {incr i} {
+					MergeFileCmd tmpsasfit $i
+				}
+			}
+			$nomenu_add invoke active
+		   }
        }
 setTooltip $w.layout1.add "add another data set"
 Button $w.layout1.delete -text Remove -highlightthickness 0 \
@@ -826,6 +838,18 @@ frame .addfile.layout3
 set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) \
                            Ascii BerSANS SESANS ALV5000]
 $w.layout1.format configure -highlightthickness 0
+$format entryconfigure 0 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+$format entryconfigure 1 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+$format entryconfigure 2 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
+$format entryconfigure 3 -command {
+           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   }
 label $w.layout1.label -text "File Format:" \
       -width 12 -highlightthickness 0
 button $w.layout1.option -text "Options..." -command ReadOptionsCmd \
