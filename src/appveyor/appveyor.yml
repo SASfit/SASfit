@@ -104,8 +104,11 @@ for:
     - sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
     - sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
     - sudo chmod +x /usr/local/bin/appimagetool
+    # fix docker error about missing snd device:
     - sudo ln /dev/null /dev/snd
-    - sudo ls -la /dev/
+    # check if the image loads:
+    - docker pull appimagecrafters/tests-env:ubuntu-bionic
+    - exit 1
 #    - docker image ls
 #    - sudo service docker status
 #    - sudo apt-get -y install containerd docker.io
