@@ -104,11 +104,8 @@ for:
     - sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
     - sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
     - sudo chmod +x /usr/local/bin/appimagetool
-    - sudo apt-mark showhold
-    - sudo dpkg -l | grep containerd
-    - sudo apt-get -y install containerd
-    - sudo apt-get -y install docker.io
-    - sudo adduser $(whoami) docker'
+    - sudo apt-get -y install containerd docker.io
+    - sudo adduser $(whoami) docker
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
