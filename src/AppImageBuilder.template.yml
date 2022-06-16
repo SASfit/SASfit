@@ -171,4 +171,6 @@ AppDir:
       use_host_x: True
 AppImage:
   arch: x86_64
-  update-information: guess
+  # Set update info as soon as releases are uploaded to GitHub
+  # https://github.com/AppImage/AppImageSpec/blob/master/draft.md#update-information
+  #update-information: guess
