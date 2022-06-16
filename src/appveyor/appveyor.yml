@@ -107,10 +107,10 @@ for:
     - sudo apt-get -y install containerd docker.io
     - sudo adduser $(whoami) docker
     - groups
-    - docker image ls || true
-    - sudo service docker start || true
-    - sudo systemctl status docker.service || true
+    - docker image ls || /usr/bin/true
+    - sudo service docker start || /usr/bin/true
     - sudo journalctl -xeu docker.service | tail -n500
+    - sudo systemctl status docker.service || /usr/bin/true
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
