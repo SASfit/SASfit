@@ -35,6 +35,8 @@ fi
 
 echo "Determined $NUM_LOGICAL_CORES logical cores."
 echo
+echo "TEST docker: $(which docker); $(groups)"
+docker image ls
 
 cd "$APPVEYOR_BUILD_FOLDER" && \
 mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE "$scriptdir/.." && make -j$NUM_LOGICAL_CORES
