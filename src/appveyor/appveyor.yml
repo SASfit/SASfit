@@ -106,6 +106,7 @@ for:
     - sudo chmod +x /usr/local/bin/appimagetool
     - sudo apt-mark showhold
     - sudo dpkg -l | grep containerd
+    - sudo apt-get -y install containerd
     - sudo apt-get -y install docker.io
     - sudo adduser $(whoami) docker'
   artifacts:
