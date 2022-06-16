@@ -104,13 +104,15 @@ for:
     - sudo pip3 install git+https://github.com/AppImageCrafters/appimage-builder.git
     - sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
     - sudo chmod +x /usr/local/bin/appimagetool
-    - sudo apt-get -y install containerd docker.io
-    - sudo adduser $(whoami) docker
-    - groups
-    - docker image ls || /usr/bin/true
-    - sudo service docker start || /usr/bin/true
-    - sudo journalctl -xeu docker.service | tail -n500
-    - sudo systemctl status docker.service || /usr/bin/true
+    - docker image ls
+    - sudo service docker status
+#    - sudo apt-get -y install containerd docker.io
+#    - sudo adduser $(whoami) docker
+#    - groups
+#    - docker image ls || /usr/bin/true
+#    - sudo service docker start || /usr/bin/true
+#    - sudo journalctl -xeu docker.service | tail -n500
+#    - sudo systemctl status docker.service || /usr/bin/true
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
