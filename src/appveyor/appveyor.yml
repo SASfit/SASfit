@@ -106,6 +106,8 @@ for:
     - sudo chmod +x /usr/local/bin/appimagetool
     - sudo apt-get -y install containerd docker.io
     - sudo adduser $(whoami) docker
+    - groups
+    - docker image ls
     - sudo service docker status
   artifacts:
     # final SASfit package
