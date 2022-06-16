@@ -7,7 +7,7 @@
 # To be called like this from SASfit root source dir:
 #   appimage-builder --recipe src/AppImageBuilder.yml
 # For cleanup during consecutive runs:
-#   (cd saskit && ./saskit_linux64 gen/buildkit cleanupall && rm saskit_linux64 && rm -Rf ../appdir)
+#   (cd saskit && ./saskit_linux64 gen/buildkit cleanupall && rm saskit_linux64 && rm -Rf ../appdir ../appimage* ../*.AppImage)
 version: 1
 AppDir:
   # assuming this file resides in sasfit/src/,
@@ -147,29 +147,39 @@ AppDir:
     - usr/share/doc/*/TODO.*
     - usr/include
   test:
-    # Tests require docker to be installed and its socket (e.g. /run/docker.sock)
-    # being accessible for the current user (being in the 'docker' group)
-    # for Ubuntu: 'apt install docker.io && adduser $(whoami) docker'
+    # - Tests require docker to be installed and its socket (e.g. /run/docker.sock)
+    #   being accessible for the current user (being in the 'docker' group)
+    #   for Ubuntu: 'apt install docker.io && adduser $(whoami) docker'
+    # - if network fails inside the docker container, try restarting docker svc on host
+    # - Running SASfit on a headless server/container requires a virtual screen, xvfb is used here
+    #   The program is started as usual and killed after 10 seconds which is considered a success.
+    #   On failure, it would not start and return other errors and return codes.
+    # - testing an old Ubuntu LTS and Redhat compatible CentOS only
     ubuntu:
-      image: appimagecrafters/tests-env:ubuntu-xenial
-      command: sh -c 'timeout 10 ./AppRun; [ "$?" -eq 124 ]'
-      use_host_x: true
-    debian:
-      image: appimagecrafters/tests-env:debian-stable
-      command: sh -c 'timeout 10 ./AppRun; [ "$?" -eq 124 ]'
-      use_host_x: True
+      image: appimagecrafters/tests-env:ubuntu-bionic
+      before_command: sh -c 'apt-get update && apt-get install -y xvfb'
+      command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
+      use_host_x: False
+#    debian:
+#      image: appimagecrafters/tests-env:debian-stable
+#      before_command: sh -c '. /etc/os-release; sed -i "s/stable/$VERSION_CODENAME/g" /etc/apt/sources.list; apt-get update && apt-get install -y xvfb'
+#      command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
+#      use_host_x: False
     centos:
       image: appimagecrafters/tests-env:centos-7
-      command: sh -c 'timeout 10 ./AppRun; [ "$?" -eq 124 ]'
-      use_host_x: True
-    fedora:
-      image: appimagecrafters/tests-env:fedora-30
-      command: sh -c 'timeout 10 ./AppRun; [ "$?" -eq 124 ]'
-      use_host_x: True
-    arch:
-      image: appimagecrafters/tests-env:archlinux-latest
-      command: sh -c 'timeout 10 ./AppRun; [ "$?" -eq 124 ]'
-      use_host_x: True
+      before_command: sh -c 'yum install -y xorg-x11-server-Xvfb which'
+      command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
+      use_host_x: False
+#    fedora:
+#      image: appimagecrafters/tests-env:fedora-30
+#      before_command: sh -c 'yum install -y xorg-x11-server-Xvfb'
+#      command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
+#      use_host_x: False
+#    arch:
+#      image: appimagecrafters/tests-env:archlinux-latest
+#      before_command: sh -c 'rm -Rf /etc/pacman.d/gnupg; pacman-key --init; pacman-key --populate; pacman -Syy --noconfirm archlinux-keyring; pacman --noconfirm -Syyu; pacman --noconfirm -S xorg-server-xvfb'
+#      command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
+#      use_host_x: False
 AppImage:
   arch: x86_64
   # Set update info as soon as releases are uploaded to GitHub
