@@ -109,6 +109,7 @@ for:
     - groups
     - docker image ls || true
     - sudo service docker start || true
+    - sudo systemctl status docker.service || true
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
