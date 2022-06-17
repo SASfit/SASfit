@@ -109,7 +109,7 @@ for:
     # pull docker img now, prevents errors later
     #- docker pull appimagecrafters/tests-env:ubuntu-bionic
     #- docker pull appimagecrafters/tests-env:centos-7
-    - for img in $(awk '/^[^#]*appimagecrafters/{print $2}' AppImageBuilder.template.yml); do docker pull "$img"; done
+    - for img in $(awk '/^[^#]*appimagecrafters/{print $2}' src/AppImageBuilder.template.yml); do docker pull "$img"; done
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
