@@ -89,7 +89,7 @@ AppDir:
   before_runtime: |
     [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [3] before_runtime '$APPDIR'"
-    #rm -Rf "$APPDIR"/runtime
+    rm -Rf "$APPDIR"/runtime
     # for debugging, show interpreter with 'patchelf --print-interpreter ...'
   after_runtime: |
     [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
