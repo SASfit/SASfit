@@ -106,18 +106,10 @@ for:
     - sudo chmod +x /usr/local/bin/appimagetool
     # fix docker error about missing snd device:
     - sudo ln /dev/null /dev/snd
-    # check if the image loads:
-    - docker pull appimagecrafters/tests-env:ubuntu-bionic
-    - docker pull appimagecrafters/tests-env:centos-7
-#    - docker image ls
-#    - sudo service docker status
-#    - sudo apt-get -y install containerd docker.io
-#    - sudo adduser $(whoami) docker
-#    - groups
-#    - docker image ls || /usr/bin/true
-#    - sudo service docker start || /usr/bin/true
-#    - sudo journalctl -xeu docker.service | tail -n500
-#    - sudo systemctl status docker.service || /usr/bin/true
+    # pull docker img now, prevents errors later
+    #- docker pull appimagecrafters/tests-env:ubuntu-bionic
+    #- docker pull appimagecrafters/tests-env:centos-7
+    - for img in $(awk '/^[^#]*appimagecrafters/{print $2}' AppImageBuilder.template.yml); do docker pull "$img"; done
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage
