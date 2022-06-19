@@ -22,7 +22,7 @@ scalar sasfit_sq__d_hard_disks__rosenfeld_random_x(scalar x, sasfit_param * para
 	A=(1.+(2.*ETA-1.)*XI+2*ETA*G)/ETA;
 	_1Sq= 1.+4.*ETA*(A*gsl_pow_2(sasfit_jinc(qR))
                     +B*gsl_sf_bessel_J0(qR)*sasfit_jinc(qR)
-                    +G*0.5*sasfit_jinc(2.*qR));
+                    +G*2*sasfit_jinc(2.*qR));
 	return 1./_1Sq;
 }
 
