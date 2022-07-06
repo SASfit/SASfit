@@ -573,6 +573,7 @@ scalar SASFITqrombIQSQdR(Tcl_Interp *interp,
     SASfitNRIQSQintcore(&param4int,&res,&err);
     if (param4int.error > 0) {
         sasfit_err("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
+        sasfit_out("Integration Int[N(R)I(Q,R),R=0,Infty] did not converged for Q=%lf",Q);
     }
     return res;
 }

@@ -34,7 +34,7 @@ scalar sasfit_ff_doubleshellchain(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((N < 0.0), param, "n(%lg) < 0",N);
 	SASFIT_CHECK_COND1((fabs(X_SOL_SH2-0.5) > 0.5), param, "|X_SOL_SH2 - 0.5|(%lg) > 0.5",fabs(X_SOL_SH2-0.5));
-	SASFIT_CHECK_COND1(((2*(R_C+DR1+DR2)+L) <= 0.0), param, "(2*(Rc+DR1+DR2)+L)(%lg) <= 0",(2*(R_C+DR1+DR2)+L));
+	SASFIT_CHECK_COND1(((2*(R_C+DR1+DR2)+L) < 0.0), param, "(2*(Rc+DR1+DR2)+L)(%lg) < 0",(2*(R_C+DR1+DR2)+L));
 	SASFIT_CHECK_COND1(((fabs(Detac)+fabs(Deta1)+fabs(Deta2)) <= 0.0), param, "(|Detac|+|Deta1|+|Deta2|)(%lg) <= 0",(fabs(Detac)+fabs(Deta1)+fabs(Deta2)));
 
 	if (N==0) return 0.0;
@@ -59,7 +59,7 @@ scalar sasfit_ff_doubleshellchain(scalar q, sasfit_param * param)
 			{
 				ftmp1 = ftmp1 + A*A;
 			} else {
-				ftmp1 = ftmp1+A*A*sin(q*R12)/(q*R12);
+				ftmp1 = ftmp1+A*A*gsl_sf_bessel_j0(q*R12);
 			}
 		}
 	}
@@ -74,7 +74,7 @@ scalar sasfit_ff_doubleshellchain(scalar q, sasfit_param * param)
                 {
                     ftmp2 = ftmp2 + A*A;
                 } else {
-                    ftmp2 = ftmp2+A*A*sin(q*R12)/(q*R12);
+                    ftmp2 = ftmp2+A*A*gsl_sf_bessel_j0(q*R12);
                 }
             }
         }

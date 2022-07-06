@@ -858,6 +858,7 @@ scalar IQ_IntdLen(scalar x, void *param4int) {
                           ((sasfit_param4int *)param4int)->distr,
                           &((sasfit_param4int *)param4int)->error);
         sqs[0] = pow( 3./(4.*M_PI) *  V, 1./3.);
+        sqs[0] = x;
         SQ=sasfit_sq(((sasfit_param4int *)param4int)->Q,
                      sqs,
                      ((sasfit_param4int *)param4int)->SQ,
@@ -1333,6 +1334,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
 			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
+			       sasfit_out("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;
 			   } else {
 				   restot = res + res2*res2/a[0]*(sasfit_sq(Q,s,SQ,dF_dpar,error)-1.0);
@@ -1344,11 +1346,13 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 			   }
 			  }
 	case 2  : {
-			res = SASFITqrombIQSQdR(interp,dF_dpar,l,s,Q,a,
+    	       FF->compute_f = FALSE;
+			   res = SASFITqrombIQSQdR(interp,dF_dpar,l,s,Q,a,
 		                    SD,FF,SQ,
 							distr,Rstart,Rend,error);
 			   if (*error == TRUE) {
 				   sasfit_err("For this form factor only the monodisperse approximation for calculating a structure factor is implemented (1)\n");
+				   sasfit_out("For this form factor only the monodisperse approximation for calculating a structure factor is implemented (1)\n");
 				   return res;
 			   }
 		       if (sasfit_eps_get_sq_or_iq() >= 0) return res;
@@ -1357,11 +1361,14 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 							distr,Rstart,Rend,error);
 			   if (*error == TRUE) {
 				   sasfit_err("For this form factor only the monodisperse approximation for calculating a structure factor is implemented (2)\n");
+				   sasfit_out("For this form factor only the monodisperse approximation for calculating a structure factor is implemented (2)\n");
 				   return res;
 			   }
 			   return res;
 			  }
-	case 3  : {res = SASFITqrombIQdR(interp,dF_dpar,l,s,Q,a,
+	case 3  : {
+                FF->compute_f = FALSE;
+                res = SASFITqrombIQdR(interp,dF_dpar,l,s,Q,a,
 		                    SD,FF,SQ,
 							distr,Rstart,Rend,error);
 			   strcpy(strtmp,"<F> ");
@@ -1388,6 +1395,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 	       FF->compute_f = FALSE;
 			   if (*error == TRUE) {
 			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
+			       sasfit_out("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;
 			   } else {
 				   restot = res + res2/a[0];

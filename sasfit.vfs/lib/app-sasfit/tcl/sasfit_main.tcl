@@ -789,6 +789,7 @@ proc zero_sasfit {argsasfit} {
 zero_sasfit sasfit
 
 set sasfit(export,actualdatatype) Ascii
+set sasfit(converttodatatype) Clipboard
 set sasfit(export,filename) ""
 set sasfit(export,blt) ""
 
@@ -2199,6 +2200,165 @@ proc ReadOptionsCmd {} {
 				}
 	}
 }
+#------------------------------------------------------------------------------
+#                     menu for converting data files
+#
+proc ConvertCmd {} {
+#^^^^^^^^^^^^^^^^
+	global sasfit
+	if {[winfo exists .openfile]} {destroy .openfile}
+	toplevel .openfile
+	wm geometry .openfile
+	wm title .openfile "Convert Files"
+	raise .openfile
+	grab  .openfile
+	focus .openfile
+
+	set datatype $sasfit(actualdatatype)
+	frame .openfile.layout1a
+	frame .openfile.layout1b
+	frame .openfile.layout2
+	frame .openfile.layout3
+
+	set informat [tk_optionMenu .openfile.layout1a.informat sasfit(actualdatatype) Ascii BerSANS SESANS ALV5000]
+	set outformat [tk_optionMenu .openfile.layout1b.outformat sasfit(converttodatatype) Clipboard TabSeparated csv]
+	
+	.openfile.layout1a.informat configure -highlightthickness 0
+	label .openfile.layout1a.labelin -text "Input File Format:" -highlightthickness 0
+	pack .openfile.layout1a.labelin .openfile.layout1a.informat -side left -fill x
+
+	.openfile.layout1b.outformat configure -highlightthickness 0
+	label .openfile.layout1b.labelout -text "Output File Format:" -highlightthickness 0
+	pack .openfile.layout1b.labelout .openfile.layout1b.outformat -side left -fill x
+	
+	label .openfile.layout2.label -text "  File Names:"  -highlightthickness 0
+	entry .openfile.layout2.entry -width 40 -relief sunken -highlightthickness 0 \
+                              -textvariable sasfit(convertfilename)
+	button .openfile.layout2.browse -text "Browse..." -highlightthickness 0 \
+	       -command {BrowseCmd .openfile sasfit(convertfilename) \
+	                           sasfit(actualdatatype) ReadData }
+	pack .openfile.layout2.label .openfile.layout2.entry \
+	     .openfile.layout2.browse  -side left -padx 2
+
+	button .openfile.layout3.read -text OK -command \
+	{
+		global tmpsasfit sasfit data2clip
+		cp_arr sasfit tmpsasfit
+		set tmpfnlist $tmpsasfit(convertfilename)
+		set errornessFiles {}
+		set data2clip(Q) {}
+		set data2clip(I) {}
+		set data2clip(DI) {}
+		set data2clip(res,file) {}
+		set data2clip(res,calc) {}
+		set data2clip(res) {}
+		foreach fin $tmpfnlist {
+			if {![file exists $fin]} { continue }
+			set tmpsasfit(filename) $fin
+			set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
+			if {[string equal "$tmpval" "no"] } {
+				lappend data2clip(Q)        $tmpsasfit(Q)
+				lappend data2clip(I)        $tmpsasfit(I)
+				lappend data2clip(DI)       $tmpsasfit(DI)
+				set data2clip(res,file)		 $tmpsasfit(res,file)
+				set data2clip(res,calc) [sasfit_res $resolution(lambda)  \
+					$resolution(Dlambda) \
+					$resolution(r1)      \
+					$resolution(l1)      \
+					$resolution(r2)      \
+					$resolution(l2)      \
+					$resolution(d)       \
+					$resolution(Dd)      \
+					$tmpsasfit(Q)       \
+					]	
+				if {[info exist tmpAnalytPar(geometrical/datafile)]} {
+					if {$tmpAnalytPar(geometrical/datafile)} {
+						lappend data2clip(res) $data2clip(res,calc)
+					} else {
+						lappend data2clip(res) $data2clip(res,file)
+					}
+				} else {
+					lappend data2clip(res) $data2clip(res,calc)
+				}
+			} else {
+				lappend errornessFiles  $tmpsasfit(filename)
+			}
+		}
+		if {[llength $errornessFiles] > 0} {
+			set msgtxt ""
+			set indx 1
+			foreach fin  $errornessFiles {
+				set msgtxt "$msgtxt\n$indx\. $fin"
+				incr indx
+			}
+			tk_messageBox -icon error \
+                        -message "Could not read data files:\n$msgtxt\n\nPlease review the input format options !"
+		}
+
+		for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
+			set  xdata($i)  [lindex $data2clip(Q)   $i]
+			set  ydata($i)  [lindex $data2clip(I)   $i]
+			set dydata($i)  [lindex $data2clip(DI)  $i]
+			set resdata($i) [lindex $data2clip(res) $i]
+		}
+		clipboard clear
+		set max 0
+		for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
+			set tmax [llength $xdata($i)]
+			if {$tmax > $max} { set max $tmax }
+			set tmax [llength $ydata($i)]
+			if {$tmax > $max} { set max $tmax }
+			set tmax [llength $dydata($i)]
+			if {$tmax > $max} { set max $tmax }
+		}
+		for {set k 0} {$k < $max} {incr k} {
+		set line ""
+		for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
+			if {[llength [lindex $xdata($i) $k]] != 0 } {
+				append line [format "%g\t" [lindex $xdata($i) $k]]
+				append line [format "%g\t" [lindex $ydata($i) $k]]
+				set dy  [lindex $dydata($i) $k]
+				if {$dy > 0} {
+					append line [format "%g\t" $dy]
+				} else {
+					append line [format "%g\t" -1]
+				}
+				append line [format "%g\t" [lindex $resdata($i) $k]]
+			} else { append line "\t\t\t\t" }
+		}
+		clipboard append "$line\n"
+}
+
+
+
+
+
+
+
+		
+		catch {destroy .openfile}
+	} -highlightthickness 0
+	button .openfile.layout3.option -text "Options..." -command ReadOptionsCmd \
+	       -highlightthickness 0
+	button .openfile.layout3.dismiss -text Cancel \
+	       -highlightthickness 0 -command \
+	{
+		if {[winfo exist .asciioptions]} {
+			destroy .asciioptions
+		}
+		destroy .openfile
+		set sasfit(filename) ""
+	}
+	pack .openfile.layout3.read .openfile.layout3.option  \
+	     .openfile.layout3.dismiss \
+	     -side left -padx 6 -fill x -expand yes 
+
+	pack .openfile.layout1a .openfile.layout1b .openfile.layout2 .openfile.layout3 \
+	     -fill x -pady 2 -pady 6
+	
+	bind .openfile <KeyPress-Return> ".openfile.layout3.read invoke"
+	bind .openfile <KeyPress-Escape> ".openfile.layout3.dismiss invoke"
+}
 
 #------------------------------------------------------------------------------
 #                     menu for reading data files
@@ -2220,18 +2380,7 @@ proc NewCmd {} {
 	frame .openfile.layout3
 
 	set format [tk_optionMenu .openfile.layout1.format sasfit(actualdatatype) Ascii BerSANS SESANS ALV5000]
-	$format entryconfigure 0 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
-		   }
-	$format entryconfigure 1 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
-		   }
-	$format entryconfigure 2 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
-		   }
-	$format entryconfigure 3 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
-		   }
+	
 	.openfile.layout1.format configure -highlightthickness 0
 	label .openfile.layout1.label -text "File Format:" -highlightthickness 0
 	pack .openfile.layout1.label .openfile.layout1.format -side left -fill x
@@ -2646,16 +2795,20 @@ proc MergeCmd {} {
 
 	set format [tk_optionMenu $w.layout1.format tmpsasfit(actualdatatype) Ascii BerSANS SESANS ALV5000]
 	$format entryconfigure 0 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   global sasfit tmpsasfit
+           set sasfit(actualdatatype) $tmpsasfit(actualdatatype)
 		   }
 	$format entryconfigure 1 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   global sasfit tmpsasfit
+           set sasfit(actualdatatype) $tmpsasfit(actualdatatype)
 		   }
 	$format entryconfigure 2 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   global sasfit tmpsasfit
+           set sasfit(actualdatatype) $tmpsasfit(actualdatatype)
 		   }
 	$format entryconfigure 3 -command {
-           set ::sasfit(actualdatatype) $::tmpsasfit(actualdatatype)
+		   global sasfit tmpsasfit
+           set sasfit(actualdatatype) $tmpsasfit(actualdatatype)
 		   }
 		   
 	$w.layout1.format configure -highlightthickness 0
@@ -2688,11 +2841,14 @@ proc MergeCmd {} {
 								$tmpsasfit(Q)       \
 								]
 							lappend tmpsasfit(file,res,calc) $tmpsasfit(res,calc)
-
-							if {$tmpAnalytPar(geometrical/datafile)} {
-								lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
+							if {[info exist tmpAnalytPar(geometrical/datafile)]} {
+								if {$tmpAnalytPar(geometrical/datafile)} {
+									lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
+								} else {
+									lappend tmpsasfit(file,res) $tmpsasfit(res,file)
+								}
 							} else {
-								lappend tmpsasfit(file,res) $tmpsasfit(res,file)
+								lappend tmpsasfit(file,res) $tmpsasfit(res,calc)
 							}
 							incr tmpsasfit(file,n)
 							MergeFileCmd tmpsasfit
@@ -3943,6 +4099,8 @@ proc sasfit_menubar_build { p } {
 			      set ::tkcon_visible 1
 		      }
 		}
+      $p.tools.menu add command -label "conversion" \
+	      -command {ConvertCmd} -underline 0
       $p.tools.menu add command -label "create new plugin" \
 	      -command "sasfit_plugin_guide $p" -underline 0
 
