@@ -858,7 +858,7 @@ scalar IQ_IntdLen(scalar x, void *param4int) {
                           ((sasfit_param4int *)param4int)->distr,
                           &((sasfit_param4int *)param4int)->error);
         sqs[0] = pow( 3./(4.*M_PI) *  V, 1./3.);
-        sqs[0] = x;
+        if (sqs[0]==0 && x>0) sqs[0] = x;
         SQ=sasfit_sq(((sasfit_param4int *)param4int)->Q,
                      sqs,
                      ((sasfit_param4int *)param4int)->SQ,
