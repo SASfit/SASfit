@@ -19,7 +19,7 @@ scalar sq_MassFractOverlapSph_core(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param);
 
     h	= (1.+x/(4.*XI))*pow(1.-x/(2.*XI),2.);
-
+    return D/pow(R0,D)*pow(x,D-1.)* h *gsl_sf_bessel_j0(Q*x);
     return D/pow(R0,D)*pow(x,D-3.)* h *x*x*sin(Q*x)/(Q*x);
 }
 
@@ -33,7 +33,7 @@ scalar sasfit_sq_mass_fractal__overapsph_cut_off_(scalar q, sasfit_param * param
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R0 <= 0.0), param, "r0(%lg) <= 0",R0); // modify condition to your needs
 	SASFIT_CHECK_COND1((XI <= 0.0), param, "xi(%lg) <= 0",XI); // modify condition to your needs
-	SASFIT_CHECK_COND1((D <= 0.0), param, "D(%lg) <= 0",D); // modify condition to your needs
+	SASFIT_CHECK_COND1((D <= 1.0), param, "D(%lg) <= 1",D); // modify condition to your needs
 
 	// insert your code here
 

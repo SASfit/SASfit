@@ -33,7 +33,7 @@
 
 static struct {
 	integer p, idistr;
-	doublereal atau, btau, tau[200], pi;
+	doublereal atau, btau, tau[400], pi;
 } _BLNK__;
 
 #define _BLNK__1 _BLNK__
@@ -47,11 +47,11 @@ static struct {
 static union {
 	struct {
 		integer v[20];
-		doublereal x[200], x2[200];
+		doublereal x[400], x2[400];
 	} _1;
 	struct {
 		integer v[20];
-		doublereal la[200], l2[200];
+		doublereal la[400], l2[400];
 	} _2;
 } ve_;
 

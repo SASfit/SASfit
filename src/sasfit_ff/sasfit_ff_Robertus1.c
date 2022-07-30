@@ -31,21 +31,6 @@
 
 static logical c_false = FALSE_;
 
-/*
-double Robertus1(Tcl_Interp *interp,
-					double Q,
-					double Rmean,
-					double dR,
-					double sigma,
-					double btau,
-					double P,
-					double fp,
-						  double eta_core,
-						  double eta_shell,
-						double x_solvent,
-						double eta_solvent,
-					bool  *error)
-*/
 scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 {
 	static doublereal Rmean_old=-1.0;
@@ -103,20 +88,20 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 	lfp = fp*(0.873 +P*5.65E-5-P*P*5.272E-9)/0.873;
 
 	deeltje_1.rho[0] = leta_core - leta_sol;
-	if ((lDR == 0.) || ((leta_sh-leta_sol) == 0.0))
+	if (lDR == 0.)
 	{
-		deeltje_1.iform = 1;
-		deeltje_1.rho[1] = 0.;
-		deeltje_1.rho[2] = 0.;
-		deeltje_1.dlayer[0] = 0.;
-		deeltje_1.nlayer = 0;
-		deeltje_1.nrho = 2;
+		deeltje_1.iform = (integer) 1;
+		deeltje_1.rho[1] = (doublereal) 0.;
+		deeltje_1.rho[2] = (doublereal) 0.;
+		deeltje_1.dlayer[0] = (doublereal) 0.;
+		deeltje_1.nlayer = (integer) 0;
+		deeltje_1.nrho = (integer) 2;
 	}
 	else {
-		deeltje_1.iform = -1;
-		deeltje_1.nlayer = 1;
+		deeltje_1.iform = -(integer) 1;
+		deeltje_1.nlayer = (integer) 1;
 		deeltje_1.dlayer[0] = lDR;
-		deeltje_1.nrho = 2;
+		deeltje_1.nrho = (integer) 2;
 		deeltje_1.rho[1] = (1.0- lx_sol)*(leta_sh-leta_sol);
 	}
 
@@ -144,9 +129,13 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 		rm  = 2.*(doublereal) lRmean;
 		sig = (doublereal) sigma;
 		phi = (doublereal) lfp;
-		_BLNK__1.idistr = 1;
-		_BLNK__1.pi = atan(1.) * 4.;
-		_BLNK__1.p = sasfit_eps_get_robertus_p();
+		_BLNK__1.idistr = (integer) 1;
+		_BLNK__1.pi = (doublereal) M_PI;
+		_BLNK__1.p = (integer) sasfit_eps_get_robertus_p();
+		if (_BLNK__1.p < 3 || _BLNK__1.p > 15) {
+            sasfit_out("sasfit_eps_get_robertus_p():%d p:%d\n",sasfit_eps_get_robertus_p(), _BLNK__1.p);
+            _BLNK__1.p=15;
+		}
 		_BLNK__1.atau = (doublereal) 0;
 		_BLNK__1.btau = (doublereal) fabs(btau);
 		/* L5: */
@@ -172,6 +161,7 @@ scalar sasfit_ff_Robertus1(scalar q, sasfit_param * param)
 	x0 = 6.*fp/M_PI/pow(rm,3.)/(1+sig*sig)/(1+sig);
 //	res = ai/x0;
 	res = ai;
+	sasfit_out("%lf %lf %lf\n",q,ai,aint0);
 //	if (dummy < 0) res = ai/aint0;
 	if (sasfit_eps_get_sq_or_iq() < 0) res = ai/aint0;
 	return res;

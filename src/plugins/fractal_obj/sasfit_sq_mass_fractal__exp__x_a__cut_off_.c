@@ -21,6 +21,7 @@ scalar sq_MassFractExp_mpow_x_a_core(scalar x, sasfit_param * param)
 
 	h = exp(-pow(x/XI,ALPHA));
 
+	return D/pow(R0,D)*pow(x,D-1.)* h * gsl_sf_bessel_j0(Q*x);
 	return D/pow(R0,D)*pow(x,D-3.)* h * x*x*sin(Q*x)/(Q*x);
 }
 
@@ -52,7 +53,8 @@ scalar sasfit_sq_mass_fractal__exp__x_a__cut_off_(scalar q, sasfit_param * param
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((R0 <= 0.0), param, "r0(%lg) <= 0",R0); // modify condition to your needs
 	SASFIT_CHECK_COND1((XI <= 0.0), param, "xi(%lg) <= 0",XI); // modify condition to your needs
-	SASFIT_CHECK_COND1((D <= 0.0), param, "D(%lg) <= 0",D); // modify condition to your needs
+	SASFIT_CHECK_COND1((D <= 1.0), param, "D(%lg) <= 1",D); // modify condition to your needs
+	SASFIT_CHECK_COND1((D > 3.0), param, "D(%lg) > 3",D); // modify condition to your needs
 	SASFIT_CHECK_COND1((ALPHA < 0.0), param, "alpha(%lg) < 0",ALPHA); // modify condition to your needs
 
 	// insert your code here

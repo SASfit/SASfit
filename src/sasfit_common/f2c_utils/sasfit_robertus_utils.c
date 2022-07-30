@@ -125,7 +125,7 @@ int sasfit_robertus_calc(sasfit_param * param, doublereal * rm, doublereal * sig
     n = _BLNK__1.p * (_BLNK__1.p + 1) / 2;
     sasfit_robertus_deal(rm, sig, phi, &c_true);
     nsig = 5;
-    itmax = 15000;
+    itmax = 50000;
     i__1 = n;
     for (i__ = 1; i__ <= i__1; ++i__) {
  	    xla[i__ - 1] = (real) ve_1.x[i__ - 1];
@@ -823,8 +823,7 @@ int sasfit_robertus_show_tau()
 
 /* LOCAL variables : */
 /* FUNCTION calls */
-/*=======================================================================
-==*/
+/*=========================================================================*/
     i__1 = _BLNK__1.p;
     for (ih = 1; ih <= i__1; ++ih) {
 	i__2 = _BLNK__1.p;
@@ -988,7 +987,7 @@ int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai
 	static cilist io___22 = { 0, 6, 0, "(a)", 0 };
 
 	SASFIT_ASSERT_VAL(param, -1);
-
+    sasfit_out("I am now in sasfit_robertus_subint\n");
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ++*/
 /* PURPOSE : */
@@ -1020,6 +1019,7 @@ int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai
 ==*/
     *aint0 = (float)0.;
     if (*q < (float)1e-4*0) {
+    sasfit_out("sasfit_robertus_subint q<0?, %lf\n",q);
 	p43 = _BLNK__1.pi * 4. / 3.;
 	i__1 = _BLNK__1.p;
 	for (i__ = 1; i__ <= i__1; ++i__) {
@@ -1033,12 +1033,19 @@ int sasfit_robertus_subint(sasfit_param * param, doublereal * q, doublereal * ai
 	}
     } else {
 	i__1 = _BLNK__1.p;
+	sasfit_out("robertus p: %d %d\n",i__1,_BLNK__1.p);
+	if (_BLNK__1.p < 3) {
+            sasfit_out("sasfit_eps_get_robertus_p():%d\n",sasfit_eps_get_robertus_p());
+            _BLNK__1.p=15;
+            i__1 = _BLNK__1.p;
+    }
 	for (i__ = 1; i__ <= i__1; ++i__) {
 	    d__1 = pa_1.r__[i__ - 1] * .5 - deeltje_1.dzeep -
 		    deeltje_1.dlayer[0];
-	    a[i__ - 1] = form_factor__(&deeltje_1.iform, q, &d__1, &
-		    deeltje_1.nrho, deeltje_1.rho, &deeltje_1.nlayer,
+	    a[i__ - 1] = form_factor__(&deeltje_1.iform, q, &d__1, &deeltje_1.nrho, deeltje_1.rho, &deeltje_1.nlayer,
 		    deeltje_1.dlayer);
+        sasfit_out("%lf %lf\n",q,form_factor__(&deeltje_1.iform, q, &d__1, &deeltje_1.nrho, deeltje_1.rho, &deeltje_1.nlayer,
+		    deeltje_1.dlayer));
 /* Computing 2nd power */
 	    d__1 = a[i__ - 1];
 	    *aint0 += d__1 * d__1 * pa_1.x[i__ - 1];
@@ -1323,7 +1330,7 @@ doublereal fsphere_(doublereal * delrho, doublereal * r__, doublereal * q)
 /* GLOBAL : */
 /* LOCAL  : */
 
-    pi = atan(1.) * 4.;
+    pi = M_PI;
     rq = *r__ * *q;
     if (*q < 1e-7) {
 	ret_val = pi * 4. * *delrho * *r__ * *r__ * *r__ / 3.;
@@ -1381,7 +1388,7 @@ doublereal form_factor__(integer * iform,
     --dlayer;
     --rho;
 
-	pi = atan(1.) * 4.;
+	pi = M_PI;
     ppi = pi * 4. / 3.;
 	if (*iform == -1) {
 		Q = (*q_vector__);
@@ -1555,7 +1562,7 @@ doublereal flinsphere_(doublereal * delrho, doublereal * r__, doublereal * d__, 
 /* SPHERE OF RADIUS R , WITH A LINEAR DECREASING ELECTRON DENSITY */
 /* OVER A DISTANCE D , AT SCATTERING VECTOR Q */
 
-    pi = atan(1.) * 4.;
+    pi = M_PI;
     x = *r__ * *q;
     y = (*r__ + *d__) * *q;
     ret_val = pi * 4. * *delrho / (*q * *q * *q) * (((cos(y) - cos(x)) * 2. -
@@ -1767,7 +1774,7 @@ doublereal fshell_(doublereal * delrh1, doublereal * delrh2, doublereal * r__, d
 int d_leqt1c__(doublecomplex * a, integer * n, integer * ia, doublecomplex * b, integer * m, integer * ib, integer * ijob, doublereal * wa, integer * ier)
 {
     /* Initialized data */
-
+sasfit_out("n:%d, ia:%d, m:%d, ib:%d, ijob:%d\n",*n, *ia, *m, *ib, *ijob);
     static doublereal zero = 0.;
     static doublereal one = 1.;
 
@@ -1820,13 +1827,14 @@ int d_leqt1c__(doublecomplex * a, integer * n, integer * ia, doublecomplex * b, 
 	for (j = 1; j <= i__2; ++j) {
 	    i__3 = i__ + j * a_dim1;
 	    temp.r = a[i__3].r, temp.i = a[i__3].i;
-	    p = z_abs(&temp);
+	    p = (doublereal) (z_abs(&temp));
 	    if (p > big) {
 		big = p;
 	    }
 /* L5: */
 	}
 	if (big == zero) {
+        sasfit_out("d_leqt1c__:division by zero \n");
 	    goto L105;
 	}
 	wa[i__] = one / big;
@@ -1904,6 +1912,7 @@ L45:
   LE1C1450*/
 	q = rn + p;
 	if (q == rn) {
+        sasfit_out("d_leqt1c__:q==rn \n");
 	    goto L105;
 	}
 	if (j == imax) {
