@@ -111,6 +111,7 @@ AppDir:
     #
     # copy the reassembled tcl interpreter back into the app dir
     cp saskit/bin/*/dqkit-all.bin "$APPDIR"/saskit
+    find "$APPDIR" -type f
   apt:
     arch:
     - amd64
