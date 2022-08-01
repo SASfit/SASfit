@@ -22,7 +22,6 @@ AppDir:
     exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle: |
     echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
-    find "$APPDIR" -type f
   after_bundle: |
     [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [2] after_bundle '$APPDIR'"
