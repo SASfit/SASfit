@@ -150,6 +150,8 @@ scalar StackDiscs_core(scalar theta, sasfit_param * param)
             SQ = SQ+2.0/tn * (tn-k)*cos(k*D*tmp) * exp(-k*gsl_pow_2(tmp*SIGMA)/2.0);
         }
     }
+    bess = 2*sasfit_jinc(bessarg);
+/*
 	if (bessarg != 0.0)
 	{
 		bess=2.0*sasfit_bessj1(bessarg)/bessarg;
@@ -157,7 +159,11 @@ scalar StackDiscs_core(scalar theta, sasfit_param * param)
 	{
 		bess =1.0;
 	}
+*/
+	f_t = gsl_sf_bessel_j0(sinarg1)*bess;
+	f_c = gsl_sf_bessel_j0(sinarg2)*bess;
 
+/*
 	if (sinarg1 != 0.0)
 	{
 		f_t = sin(sinarg1)/sinarg1*bess;
@@ -173,7 +179,7 @@ scalar StackDiscs_core(scalar theta, sasfit_param * param)
 	{
 		f_c = bess;
 	}
-
+*/
 	return    (ETA_L * (V_t*f_t - V_c*f_c) + ETA_C * V_c*f_c)
 		* (ETA_L * (V_t*f_t - V_c*f_c) + ETA_C * V_c*f_c)
 		* SQ*sin(theta);
