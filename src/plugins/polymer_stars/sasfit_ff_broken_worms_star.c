@@ -29,36 +29,30 @@ typedef struct
 // define shortcuts for local parameters/variables
 
 
-scalar xg(scalar x, void *pam) {
+scalar xg(scalar x, sasfit_param * param) {
 	scalar rn2,rn4,K;
-	sasfit_param * param;
 	koyama_param *cparam;
-	cparam = (koyama_param *) pam;
-	param = cparam->param;
+	cparam = param->moreparam;
 	rn2=cparam->rn2;
 	rn4=cparam->rn4;
 	K=cparam->K;
 	return sqrt((2.*rn2/gsl_pow_2(LB))*sqrt(10.*fabs(1.-3./5.*K)));
 }
 
-scalar xf(scalar x, void *pam) {
+scalar xf(scalar x, sasfit_param * param) {
 	scalar rn2,rn4,K;
-	sasfit_param * param;
 	koyama_param *cparam;
-	cparam = (koyama_param *) pam;
-	param = cparam->param;
+	cparam = param->moreparam;
 	rn2=cparam->rn2;
 	rn4=cparam->rn4;
 	K=cparam->K;
-	return (2*rn2/gsl_pow_2(LB)) - gsl_pow_2(xg(x,pam))/2.0;
+	return (2*rn2/gsl_pow_2(LB)) - gsl_pow_2(xg(x,param))/2.0;
 }
 
-scalar phi(scalar x, void *pam) {
+scalar phi(scalar x, sasfit_param *param) {
 	scalar s,t;
-	sasfit_param * param;
 	koyama_param *cparam;
-	cparam = (koyama_param *) pam;
-	param = cparam->param;
+	cparam = param->moreparam;
 	s=cparam->s;
 
 	t=x*LB/2.;
@@ -69,48 +63,48 @@ scalar phi(scalar x, void *pam) {
 
 
 	if (fabs(cparam->rn2) <= sasfit_eps_get_nriq()) {
-		cparam->K=1;
+		cparam->K=5./3.;
 	} else {
 		cparam->K=cparam->rn4/gsl_pow_2(cparam->rn2);
 	}
 //	sasfit_out("::phi: x: %lf, rn2=%lf, rn4=%lf, K=%lf\n",x, cparam->rn2,cparam->rn4,cparam->K);
-	return exp(-s*s/3.*xf(x,pam)) * gsl_sf_bessel_j0(fabs(s*xg(x,pam)));
+	return exp(-s*s/3.*xf(x,param)) * gsl_sf_bessel_j0(fabs(s*xg(x,param)));
 }
 
-scalar koyama_worm_Pkernel(scalar x, void *pam) {
+scalar koyama_worm_Pkernel(scalar x, sasfit_param *param) {
 	koyama_param *cparam;
-	cparam = (koyama_param *) pam;
-	return 2*phi(x,pam)*(cparam->X - x)/gsl_pow_2(cparam->X);
+	cparam = param->moreparam;
+	return 2*phi(x,param)*(cparam->X - x)/gsl_pow_2(cparam->X);
 }
 
 int koyama_worm_Pkernel_cub(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
-	koyama_param *cparam;
-	cparam = (koyama_param *) pam;
+	sasfit_param *sparam;
+	sparam = (sasfit_param *) pam;
 	if ((ndim < 1) || (fdim < 1)) {
 		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
 		return 1;
 	}
-	fval[0]=koyama_worm_Pkernel(x[0],pam);
+	fval[0]=koyama_worm_Pkernel(x[0],sparam);
 //	sasfit_out("::koyama_worm_kernel_cub: x[0]:%lf fval[0]:%lf\n",x[0],fval[0]);
 	return 0;
 }
 
-scalar koyama_worm_Fkernel(scalar x, void *pam) {
+scalar koyama_worm_Fkernel(scalar x, sasfit_param *param) {
 	koyama_param *cparam;
-	cparam = (koyama_param *) pam;
-	return 1*phi(x,pam)/cparam->X;
+	cparam = param->moreparam;
+	return 1*phi(x,param)/cparam->X;
 }
 
 int koyama_worm_Fkernel_cub(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
-	koyama_param *cparam;
-	cparam = (koyama_param *) pam;
+	sasfit_param *sparam;
+	sparam = (sasfit_param *) pam;
 	if ((ndim < 1) || (fdim < 1)) {
 		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
 		return 1;
 	}
-	fval[0]=koyama_worm_Fkernel(x[0],pam);
+	fval[0]=koyama_worm_Fkernel(x[0],sparam);
 //	sasfit_out("::koyama_worm_kernel_cub: x[0]:%lf fval[0]:%lf\n",x[0],fval[0]);
 	return 0;
 }
@@ -137,7 +131,12 @@ scalar sasfit_ff_broken_worms_star(scalar q, sasfit_param * param)
 	cubxmin[0]=0;
 	cubxmin[0]=cparam.X;
 	intstrategy = sasfit_get_int_strategy();
+    param->moreparam=&cparam;
+    PNW=sasfit_integrate(0.0,cparam.X, &koyama_worm_Pkernel, param);
+    FNW=sasfit_integrate(0.0,cparam.X, &koyama_worm_Fkernel, param);
+	return (PNW+(F-1)*FNW*FNW)*I0/F;
 //	intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
+/*
 	switch(intstrategy) {
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -183,12 +182,14 @@ scalar sasfit_ff_broken_worms_star(scalar q, sasfit_param * param)
             }
     default: {
 //		    sasfit_out("This is default sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0,cparam.X, &koyama_worm_kernel, &cparam);
-            return 999.;
+            param.moreparam=&cparam;
+            PNW=sasfit_integrate(0.0,cparam.X, &koyama_worm_Pkernel, &param);
+            FNW=sasfit_integrate(0.0,cparam.X, &koyama_worm_Fkernel, &param);
             break;
             }
     }
 	return (PNW+(F-1)*FNW*FNW)*I0/F;
+*/
 }
 
 scalar sasfit_ff_broken_worms_star_f(scalar q, sasfit_param * param)
