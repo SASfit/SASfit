@@ -57,34 +57,10 @@ scalar sasfit_ff_StackDiscs_core(scalar theta, sasfit_param * param)
 		SQ = SQ+2.0/tn * (tn-k)*cos(k*D*tmp) * exp(-k*gsl_pow_2(tmp*sigma_D)/2.0);
 	}
 	bess=2.0*sasfit_jinc(bessarg);
-/*
-	if (bessarg != 0.0)
-	{
-		bess=2.0*sasfit_bessj1(bessarg)/bessarg;
-	} else
-	{
-		bess =1.0;
-	}
-*/
+
 	f_t = gsl_sf_bessel_j0(sinarg1)*bess;
 	f_c = gsl_sf_bessel_j0(sinarg2)*bess;
-/*
-	if (sinarg1 != 0.0)
-	{
-		f_t = sin(sinarg1)/sinarg1*bess;
-	} else
-	{
-		f_t = bess;
-	}
 
-	if (sinarg2 != 0.0)
-	{
-		f_c = sin(sinarg2)/sinarg2*bess;
-	} else
-	{
-		f_c = bess;
-	}
-*/
 	return    (eta_l * (V_t*f_t - V_c*f_c) + eta_c * V_c*f_c)
 		* (eta_l * (V_t*f_t - V_c*f_c) + eta_c * V_c*f_c)
 		* SQ*sin(theta);

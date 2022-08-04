@@ -33,10 +33,10 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol);
 
 /*
 float WormLikeChainEXV(Tcl_Interp *interp,
-		float Q, 
-		  float S0, 
+		float Q,
+		  float S0,
 		  float RL,
-		float RRL, 
+		float RRL,
 		float R,
 		  bool  *error)
 */
@@ -72,13 +72,7 @@ scalar sasfit_ff_WormLikeChainEXV(scalar q, sasfit_param * param)
 	arg = q*R;
 	i_exvol = 1;
 
-	if (arg == 0.0) 
-	{
-		fxs = 1.0;
-	} else 
-	{
-		fxs = pow((2.0*sasfit_bessj1(arg)/arg),2.0);
-	}
+	fxs = gsl_pow_2(2.0*sasfit_jinc(arg));
 
 	if (RL == 0.0) RL=1e-6;
 	if (RLL == 0.0) RLL=1e-6;
@@ -103,15 +97,15 @@ scalar s_exv_app__(scalar * q)
 	/* Computing 2nd power */
 	r__1 = *q;
 	x = r__1 * r__1;
-	if (x < 0.01) 
+	if (x < 0.01)
 	{
 		s_deb__ = 1.0 - x * 0.333333333;
-	} else 
+	} else
 	{
-		if (x > 74.0) 
+		if (x > 74.0)
 		{
 			aexp = 0.0;
-		} else 
+		} else
 		{
 			aexp = exp(-x);
 		}
@@ -121,7 +115,7 @@ scalar s_exv_app__(scalar * q)
 		s_deb__ = (aexp + x - 1.0) * 2.0 / (r__1 * r__1);
 	}
 	w = (tanh((*q - 1.6251) / 0.13939) + 1.0) * 0.5;
-	if (*q < 0.3) 
+	if (*q < 0.3)
 	{
 		w = 0.0;
 		goto L10;
@@ -183,7 +177,7 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 	i_exvol__ = *i_exvol;
 	scale = 1.0;
 	kk = 0;
-	if (k > 10.0) 
+	if (k > 10.0)
 	{
 		k_mem__ = k;
 		k = 10.0;
@@ -192,13 +186,13 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 
 /*     R_G^2 OF DEBYE FUNCTION */
 
-	if (i_exvol__ == 0) 
+	if (i_exvol__ == 0)
 	{
 		aexp = l * (float)2.;
-		if (aexp > (float)74.) 
+		if (aexp > (float)74.)
 		{
 			aexp = (float)0.;
-		} else 
+		} else
 		{
 			aexp = exp(-aexp);
 		}
@@ -208,17 +202,17 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 
 		u = s2 * k * k;
 		aexp = u;
-		if (aexp > 74.0) 
+		if (aexp > 74.0)
 		{
 			aexp = 0.0;
-		} else 
+		} else
 		{
 			aexp = exp(-aexp);
 		}
-		if (u < 0.01) 
+		if (u < 0.01)
 		{
 			f_debye__ = 1.0 - u * 0.333333333;
-		} else 
+		} else
 		{
 			/* Computing 2nd power */
 			r__1 = u;
@@ -229,10 +223,10 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 
 	} else {
 		aexp = l * 2.0;
-		if (aexp > 74.0) 
+		if (aexp > 74.0)
 		{
 			aexp = 0.;
-		} else 
+		} else
 		{
 			aexp = exp(-aexp);
 		}
@@ -261,10 +255,10 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 
 /*     WEIGHT CHI */
 
-	if (i_exvol__ == 0) 
+	if (i_exvol__ == 0)
 	{
 		psi = pi * s2 * k / (l * 2.0);
-	} else 
+	} else
 	{
 		d__1 = (pi / (r__1 = l * 1.103, fabs(r__1)));
 		d__2 = s2;
@@ -273,10 +267,10 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 	/* Computing 5th power */
 	r__1 = psi, r__2 = r__1, r__1 *= r__1;
 	aexp = 1.0 / (r__2 * (r__1 * r__1));
-	if (aexp > 74.0) 
+	if (aexp > 74.0)
 	{
 		chi = 0.0;
-	} else 
+	} else
 	{
 		chi = exp(-aexp);
 	}
@@ -290,27 +284,27 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 /*     CALCULATE A'S */
 
 	aexp = 40.0 / (l * 4.0);
-	if (aexp > 74.0) 
+	if (aexp > 74.0)
 	{
 		aexp = 0.0;
-	} else 
+	} else
 	{
 		aexp = exp(-aexp);
 	}
 	aexp1 = l * 2.0;
-	if (aexp1 > 74.0) 
+	if (aexp1 > 74.0)
 	{
 		aexp1 = 0.0;
-	} else 
+	} else
 	{
 		aexp1 = exp(-aexp1);
 	}
-	for (i__ = 2; i__ <= 5; ++i__) 
+	for (i__ = 2; i__ <= 5; ++i__)
 	{
 		aa[i__ - 2] = 0.0;
-		for (ii = 0; ii <= 2; ++ii) 
+		for (ii = 0; ii <= 2; ++ii)
 		{
-			if (ii == 0) 
+			if (ii == 0)
 			{
 				aa[i__ - 2] += a1[i__ + (ii << 2) - 2] / pow(l, ii) * aexp;
 			} else {
@@ -321,15 +315,15 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 
 /*     CALULATE B'S */
 
-	for (i__ = 0; i__ <= 2; ++i__) 
+	for (i__ = 0; i__ <= 2; ++i__)
 	{
 		bb[i__] = 0.0;
-		for (ii = 0; ii <= 2; ++ii) 
+		for (ii = 0; ii <= 2; ++ii)
 		{
-			if (ii == 0) 
+			if (ii == 0)
 			{
 				bb[i__] += b1[i__ + ii * 3] / pow(l, ii);
-			} else 
+			} else
 			{
 				bb[i__] = bb[i__] + b1[i__ + ii * 3] / pow(l, ii) + b2[i__ + ii * 3 - 3] * pow(l, ii) * aexp1;
 			}
@@ -340,11 +334,11 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 
 	f1 = 0.0;
 	f2 = 0.0;
-	for (i__ = 2; i__ <= 5; ++i__) 
+	for (i__ = 2; i__ <= 5; ++i__)
 	{
 		f1 += aa[i__ - 2] * pow(psi, i__);
 	}
-	for (i__ = 0; i__ <= 2; ++i__) 
+	for (i__ = 0; i__ <= 2; ++i__)
 	{
 		f2 += bb[i__] / pow(psi, i__);
 	}
@@ -355,18 +349,18 @@ scalar s_kp_exv__(scalar *q, scalar *rl, scalar *rll, int *i_exvol)
 	/*      REDUCE GAMMA BY TRIAL AND ERROR FOR EXCL. VOLUME EFFECTS */
 
 	/*       WRITE(*,*)K,FGAMMA */
-	if (i_exvol__ == 1) 
+	if (i_exvol__ == 1)
 	{
 		fgamma = scale * (fgamma - 1.0) + 1.0;
 	}
 
 /*     LARGE ARGUMENT EXPANSION */
 
-	if (kk == 0) 
+	if (kk == 0)
 	{
 		ret_val = f_ip__ * fgamma;
 		return ret_val;
-	} else 
+	} else
 	{
 		const__ = (f_ip__ * fgamma - pi / (l * 10.0)) * 100.0;
 		ret_val = pi / (k_mem__ * l) + const__ / (k_mem__ * k_mem__);

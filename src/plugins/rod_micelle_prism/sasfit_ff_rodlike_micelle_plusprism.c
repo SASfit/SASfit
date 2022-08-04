@@ -56,7 +56,7 @@ scalar beta_cq(scalar q, sasfit_param *param)
 		B2 = (Vp+Ap*Rp)/Vp;
 		B3 = (gsl_pow_2(Vp)+2.0*Rp*Ap*Vp+1.0/3.0*gsl_pow_2(Rp*Ap))/gsl_pow_2(Vp);
 		S0 = gsl_pow_4(1.0-PHI)/(1.0+2.0*(B2-2.0)*PHI+(3.0*B3-8.0*B2+6.0)*gsl_pow_2(PHI));
-	} 
+	}
 	if ( (int) (fabs(fmod(HOW,10))+0.5) == 4) {
 		Rp = M_PI*r/4.0+(L+2*T)/4.0;
 		Vp = sasfit_ff_rodlike_micelle_plusprism_v(q,param,0);
@@ -70,7 +70,7 @@ scalar beta_cq(scalar q, sasfit_param *param)
 		B3 = (gsl_pow_2(Vp)+2.0*Rp*Ap*Vp+1.0/(12.0*M_PI)*gsl_pow_3(Ap))/gsl_pow_2(Vp);
 		S0 = gsl_pow_4(1.0-PHI)/(1.0+2.0*(B2-2.0)*PHI+(3.0*B3-8.0*B2+6.0)*gsl_pow_2(PHI));
 	}
- 
+
 	if ( (int) (fabs(fmod(HOW,10))+0.5) == 5) {
 		S0 = 1.0/(1.0+2.0*PAR*PHI);
 	}
@@ -118,7 +118,7 @@ scalar AcylSHell(scalar x, sasfit_param *param)
 	if (u1!=0) {
 		Ain = Ain*2.0*gsl_sf_bessel_J1(u1)/u1;
 	}
-	
+
 	if (v2==0) {
 		Aout = 1;
 	} else {
@@ -126,7 +126,7 @@ scalar AcylSHell(scalar x, sasfit_param *param)
 	}
 	if (u2!=0) {
 		Aout = Aout*2.0*gsl_sf_bessel_J1(u2)/u2;
-	} 
+	}
 
 	A = b1*Ain+b2*Aout;
 	return A;
@@ -142,28 +142,9 @@ scalar PcylSHell(sasfit_param *param)
 	v2 = Q*(L*0.5+T)*cos(ALPHA);
 	b1 = M_PI*R*R*EPSILON*L*(ETA_CORE-ETA_SH);
 	b2 = M_PI*(R+T)*(R+T)*EPSILON*(L+2*T)*(ETA_SH-ETA_SOL);
-	if (v1==0) {
-		Ain = 1;
-	} else {
-		Ain = sin(v1)/v1;
-	}
-	if (u1!=0) {
-		J1 = sasfit_bessj1(u1);
-//		J1 = gsl_sf_bessel_J1(u1);
-		Ain = Ain*2.0*J1/u1;
-	}
-	
-	if (v2==0) {
-		Aout = 1;
-	} else {
-		Aout = sin(v2)/v2;
-	}
-	if (u2!=0) {
-		J1 = sasfit_bessj1(u2);
-//		J1 = gsl_sf_bessel_J1(u2);
-		Aout = Aout*2.0*J1/u2;
-	} 
 
+	Ain  = gsl_sf_bessel_j0(v1)*2*sasfit_jinc(u1);
+	Aout = gsl_sf_bessel_j0(v2)*2*sasfit_jinc(u2);
 
 	A = b1*Ain+b2*Aout;
 	return A*A;
@@ -175,29 +156,17 @@ scalar PcylSHellCS(scalar x,sasfit_param *param)
 
 	u1 = Q*r(R,EPSILON,x);
 	u2 = Q*(r(R,EPSILON,x)+T);
-	
+
 	b1 = M_PI*R*R*EPSILON*(ETA_CORE-ETA_SH);
 	b2 = M_PI*(R+T)*(R+T)*EPSILON*(ETA_SH-ETA_SOL);
 
-	if (u1 == 0.0) {
-		Ain = 1.0;
-	} else {
-//		J1 = sasfit_bessj1(u1);
-		J1 = gsl_sf_bessel_J1(u1);
-		Ain = 2.0*J1/u1;
-	}
-	if (u2 == 0.0) {
-		Aout = 1.0;
-	} else {
-//		J1 = sasfit_bessj1(u2);
-		J1 = gsl_sf_bessel_J1(u2);
-		Aout = 2.0*J1/u2;
-	}
+	Ain  = 2*sasfit_jinc(u1);
+	Aout = 2*sasfit_jinc(u2);
 
 	A = b1*Ain+b2*Aout;
 	return A*A;
 }
-scalar P_cs(scalar q, sasfit_param *param) 
+scalar P_cs(scalar q, sasfit_param *param)
 {
 	Q = q;
 	if (EPSILON == 1.0) {
@@ -210,12 +179,12 @@ scalar RM_PRISM_theta(scalar x,sasfit_param * param)
 {
 	THETA = x;
 	return PcylSHell(param);
-} 
+}
 
 scalar RM_PRISM_alpha(scalar x,sasfit_param * param)
 {
 	ALPHA = x;
-	
+
 	if (EPSILON == 1.0) {
 		return RM_PRISM_theta(1.0,param)*sin(ALPHA);
 	} else {

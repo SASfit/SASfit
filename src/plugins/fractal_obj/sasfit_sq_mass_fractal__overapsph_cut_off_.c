@@ -34,6 +34,7 @@ scalar sasfit_sq_mass_fractal__overapsph_cut_off_(scalar q, sasfit_param * param
 	SASFIT_CHECK_COND1((R0 <= 0.0), param, "r0(%lg) <= 0",R0); // modify condition to your needs
 	SASFIT_CHECK_COND1((XI <= 0.0), param, "xi(%lg) <= 0",XI); // modify condition to your needs
 	SASFIT_CHECK_COND1((D <= 1.0), param, "D(%lg) <= 1",D); // modify condition to your needs
+	SASFIT_CHECK_COND1((D > 3.0), param, "D(%lg) 3",D); // modify condition to your needs
 
 	// insert your code here
 
