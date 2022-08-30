@@ -3,6 +3,10 @@
  *   <your name> (<email address>)
  */
 
+
+ // M. Lattuada et al. / Journal of Colloid and Interface Science 268 (2003) 106–120
+ // doi:10.1016/j.jcis.2003.07.027
+
 #include "include/private.h"
 #include <sasfit_error_sq.h>
 

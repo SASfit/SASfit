@@ -1,5 +1,9 @@
-﻿0.94.12 2022-03-xx
-- first test of spherical-t design for integration over the surface of a sphere
+﻿0.94.12 2022-08-xx
+- changed lognorm_fp-size distribution as plugin and included now also the other cases as decribed in the manual. So far only the shape 1 was implemented. 
+- renaming dodecahedra into rhombic dodecahedra
+- added size distribution plugin based on generalized beta distribution
+- added added skewed gaussian and exponentially modified gaussian size distribution
+- added spherical-t design algorithm for integration over the surface of a sphere
 - added a new form factor of PEGylated vesicle with smoothed interfaces
 - added metalog size distribution as well as the Johnson's family of distributions (SN, SL, SB, SU) and its generalization
 - update to FFTW 3.3.10
