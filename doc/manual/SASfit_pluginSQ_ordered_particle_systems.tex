@@ -792,7 +792,7 @@ B_0 &= C^{(1)}+\frac{\eta/2}{1+2\eta}\left(6C^{(2)}+4C^{(3)}+C^{(4)}\right)+\fra
 C^{(k)}&=\sum_{j=1}^2\left[A_j\left(\lambda_j-1\right)^k-kB_j\left(\lambda_j-1\right)^{k-1}\right]\\
 A_0&=e^{-\beta\epsilon_1}\\
 A_1&=e^{-\beta\epsilon_2}-e^{-\beta\epsilon_1}\\
-A_2&=1-e^{-\beta\epsilon_2}  
+A_2&=1-e^{-\beta\epsilon_2}
 \end{align}
 with $\beta=1/k_BT$. The above defined parameters all can be expressed in terms of $B_1$ and $B_2$. These two last parameters are obtained by solving the coupled sets of equations:
 \begin{align}
@@ -803,7 +803,7 @@ with $\beta=1/k_BT$. The above defined parameters all can be expressed in terms 
 \end{align}
 where $s_\nu (\nu=1,2,3)$ are the roots of the equation
 \begin{align}
-  1+S_1s_\nu+S_2s_\nu^2+S_3s_\nu^3&=0 
+  1+S_1s_\nu+S_2s_\nu^2+S_3s_\nu^3&=0
 \end{align}
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1884,3 +1884,126 @@ The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} an
 \item the volume fraction needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
 \item the correlation length should be significant larger than $R$ to be physical meaningful
 \end{itemize} 
+
+\subsection{Mass fractal with nearest neighbor perturbations}~\\
+\label{sec:SQmassfractalInclNN}
+The fractal aggregate with nearest neighbor perturbations has been derived by\cite{Dimon1986}. The structure factor was tested against other models by \cite{Larsen2020} and reads as
+\begin{align}\label{eq:SQmfNN}
+  S(q) &= 1+z_1\operatorname{sinc}(2qR) + z_A \int_{2R}^\infty r^{D-1}\exp(-r/\xi)\operatorname{sinc}(qr) \, \mathrm{d}r \\
+  z_A &= \frac{N-z_1-1}{\displaystyle \int_{2R}^\infty \exp(-r/\xi) \, \mathrm{d}r}
+\end{align}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.55\textwidth]{../images/structure_factor/MassFractals/MFinclNN.pdf}
+\end{center}
+\caption{Examples for mass fractal aggregates with nearest neighbor perturbations.}
+\label{fig:SQ_MF_NN}
+\end{figure}
+
+\noindent \uline{Input Parameters for model \texttt{mass fractal incl nn pertubation}:}
+\begin{description}
+\item[\texttt{R}] radius of particles in cluster $R$
+\item[\texttt{z1}] number of particles in first shell $z_1$
+\item[\texttt{xi}] size (correlation length) of cluster $\xi$
+\item[\texttt{D}] fractal dimension $D$
+\item[\texttt{N}] number of particles in the fractal aggregate $N$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item Certain combinations of parameters can lead to nonphysical negative values for the structure factor.
+\item The correlation length of the cluster $\xi$ should scale with the fractal dimension $D$ and the cluster mass, i.e. $z_1$, $N$ as well as $D$.
+\item Also the fractal dimension $D$ should increase with the number of nearest neighbors $z_1$.
+\end{itemize} 
+
+\subsection{aggregate with nearest neighbor perturbations}
+The diffusion limited cluster (DLC) aggregates and reaction limited cluster (RLC) aggregates with nearest neighbor perturbations have been derived and compared with Monte Carlo cluster–cluster aggregation simulations in \cite{Lattuada2003}.  The model only has two parameters, the particle radius $R$ and the number of particles in the aggregate $N$.
+The particle–particle correlation function $g(r)$ has been parameterised as follows
+\begin{align}\label{eq:DLCARLCSinclNN_gr}
+  g(r) &=
+   \begin{cases}
+     0, & \mbox{if } r<2R \\
+     \frac{N_{nn}}{4\pi(2R)^2}\delta(r-2R), & \mbox{if } r=2R \\
+     \frac{a}{R^{b+3}}r^b, & \mbox{if } 2R<r<4R \\
+     \frac{c}{R^{D}}r^{D-3}\exp\left(-\left(\frac{r}{\xi}\right)^\gamma\right), & \mbox{otherwise}.
+   \end{cases}
+\end{align}
+$D$ is the fractal dimension and is set to $D=1.85$ or $D=2.05$ for DLCA or RLCA. The parameters $a$, $b$, and $\gamma$ as well as the number of nearest neighbor $N_{nn}$ have been calculated using the approximation
+\begin{align}
+F(N) &= d\frac{(N-e)^m}{(N-e)^m+f}
+\label{eq:F(i)}
+\end{align}
+and the values given in the table \ref{ClusterParameters}. The cut-off length or correlation length is obtained
+\begin{align}\label{eq:xiMFinclNN}
+  \xi &= \frac{h}{k_f^{1/D}}R N^{1/D} 
+\end{align}
+with $h = 0.957$ and 0.91 and $k_f = 0.46$ and 0.33 for DLCA and RLCA, respectively. $N$ is the number of particles in the cluster aggregate. The remaining parameter $c$ is given by
+\begin{align}\label{eq:MFinclNN_c}
+  c & = \frac{N-1-N_{nn}-\frac{4\pi a}{b+3}\left(4^{b+3}-2^{b+3}\right)}{
+              \frac{4\pi}{\gamma}\left(\frac{\xi}{R}\right)^D\Gamma\left(\frac{D}{\gamma}\right)
+              \left(1-\Gamma_\mathrm{inc}\left(\left(\frac{4R}{\xi}\right)^\gamma,\frac{D}{\gamma}\right)\right)}
+\end{align}
+where $\Gamma()$ and $\Gamma_\mathrm{inc}()$ are the gamma and the incomplete gamma function, respectively.
+\begin{table}[htb]
+\caption{Values of the parameters $d$, $e$, $f$ , and $m$ to be used in Eq. \ref{eq:F(i)} to compute
+the parameters of the particle–particle correlation function: $N_{nn}$, $a$, $b$, and
+$\gamma$ as a function of the number of particles per cluster $N$, for both DLCA and
+RLCA}
+\label{ClusterParameters}
+\begin{tabular}{cccccc}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  parameter of the  & Aggregation & $d$ & $e$ & $f$ & $m$ \\
+    $g(r)$ function & mechanism   &     &     &     & \\
+  \hline
+  $N_{nn}$ & DLCA & 2.0342 & 1.1477 & 0.9997 & 1 \\
+           & RLCA & 2.0415 & 1.1511 & 1.0086 & 1 \\
+           &  &  & &  &   \\
+  $a$      & DLCA & 0.0095 & 4.1292 & 0.1997 & 2 \\
+           & RLCA & 0.0138 & 2.7544 & 4.1792 & 2 \\
+           &  &  & &  &   \\
+  $b$\tablefootnote{The parameter $b$ is 0 for DLCA clusters with $N < 7$ and
+for RLCA clusters with $N < 10$.}    & DLCA & 0.6425 & 6.2352 & 5.1747 & 1 \\
+           & RLCA & 0.4857 & 9.6836 & 11.6665 & 1 \\
+           &  &  & &  &   \\
+  $\gamma$ & DLCA & 2.1976 & 3.8377 & -0.1784 & 1 \\
+           & RLCA & 2.16   & 0.1966 & -3.5926 & 2 \\
+  \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{DLC aggregate with nearest neighbor perturbations}~\\
+\label{sec:SQ_DLCA_incl_NN}
+This model assumes a fractal dimension of $D=1.85$. All other parameters like $z_1$ and $\xi$ have been obtained by fitting them according to MC simulation results. All other relations and parameters are available in \cite{Lattuada2003}.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.55\textwidth]{../images/structure_factor/MassFractals/DLCAinclNN.pdf}
+\end{center}
+\caption{Examples for DLC aggregate with nearest neighbor perturbations.}
+\label{fig:SQ_DLCA_NN}
+\end{figure}
+
+\noindent \uline{Input Parameters for model \texttt{DLCA incl nn pertubation}:}
+\begin{description}
+\item[\texttt{R}] radius of particles in cluster $R$
+\item[\texttt{N}] number of particles in the fractal aggregate $N$
+\end{description}
+
+\subsubsection{RLC aggregate with nearest neighbor perturbations}~\\
+\label{sec:SQ_RLCA_incl_NN}
+The reaction limited cluster (RLC) aggregates with nearest neighbor perturbations has been derived  and compared with Monte Carlo cluster–cluster aggregation simulations by \cite{Lattuada2003}. . It only has two parameters, the particle radius $R$ and the number of particles in the aggregate $N$. This model assumes a fractal dimension of $D=2.05$. All other parameters like $z_1$ and $\xi$ have been obtained by fitting them according to MC simulation results. All other relations and parameters are available in \cite{Lattuada2003}.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.55\textwidth]{../images/structure_factor/MassFractals/RLCAinclNN.pdf}
+\end{center}
+\caption{Examples for RLC aggregate with nearest neighbor perturbations.}
+\label{fig:SQ_RLCA_NN}
+\end{figure}
+
+\noindent \uline{Input Parameters for model \texttt{RLCA incl nn pertubation}:}
+\begin{description}
+\item[\texttt{R}] radius of particles in cluster $R$
+\item[\texttt{N}] number of particles in the fractal aggregate $N$
+\end{description}

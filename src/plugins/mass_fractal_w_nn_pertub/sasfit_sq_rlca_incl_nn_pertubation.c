@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
  // M. Lattuada et al. / Journal of Colloid and Interface Science 268 (2003) 106–120
