@@ -198,6 +198,7 @@ proc Put_Graph_el {GraphPar xdata args } {
 	#
 		set tx {}
 		set ty {}
+		set tdy {}
 		set tr {}
 		foreach x $xdata y $ydata dy $dydata r $resdata {
 			if {[catch {expr $x}]==0 &&

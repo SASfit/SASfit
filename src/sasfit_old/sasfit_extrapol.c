@@ -3159,7 +3159,7 @@ float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
 float  **alpha, **covar;
 int    *lista,mfit,ma;
 float  ochisq, chisq, lchisq, oalambda, alambda,q;
-int    i,j,k,itst;
+int    i,j,k,kpos, itst;
 char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
@@ -3288,12 +3288,14 @@ xx   = dvector(1,EP.Guiniernpoints);
 yy   = dvector(1,EP.Guiniernpoints);
 ysig = dvector(1,EP.Guiniernpoints);
 k = 0;
+kpos=0;
 for (i=0;i<=EP.Guiniernpoints-1;i++) {
-   if (y[i] <= 0.0) {
+   if (fabs(y[i]) == 0.0) {
       k++;
+      if (y[i] > 0.0) kpos++;
    } else {
       xx[i+1-k]   = -x[i]*x[i]/3.0;
-      yy[i+1-k]   = log(y[i]);
+      yy[i+1-k]   = log(fabs(y[i]));
       ysig[i+1-k] = 1.0;
    }
 }
@@ -3314,7 +3316,7 @@ forward_intermediate_guinier(interp, &EP, &DsBuffer, Buffer,
 EP.a[0]   = exp(EP.a[0]);
 EP.err[0] = exp(EP.a[0])*EP.err[0];
 EP.err[1] = EP.err[1];
-
+if (kpos == 0) EP.a[0]=-EP.a[0];
 for (i=0;i<4;i++) {
    par[i]    = EP.a[i];
    errpar[i] = EP.err[i];
@@ -3354,7 +3356,7 @@ if (EP.error != 3) {
    if (error == TRUE) goto GuinierErrorHandler;
    k    = 1;
    itst = 0;
-   while (itst < 3) {
+   while (itst < 5) {
 	if (k > 250) {
 		error = TRUE;
 		goto GuinierErrorHandler;
@@ -3493,7 +3495,7 @@ float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
 float  **alpha, **covar;
 int    *lista,mfit,ma;
 float  ochisq, chisq, lchisq, oalambda, alambda,q;
-int    i,j,k,m,itst;
+int    i,j,k,kpos,m,itst;
 char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
@@ -3630,7 +3632,7 @@ for (i=0;i<=EP.Guiniernpoints-1;i++) {
        ysig[i+1-m] = sig[i];
 	}
 }
-if ((EP.I0 > 0.0) && (EP.RG > 0.0)) {
+if ((EP.I0 != 0.0) ) {
   	EP.a[0] = 1.0/EP.I0;
     EP.a[1] = EP.RG*EP.RG/EP.I0;
 } else {
@@ -3667,7 +3669,7 @@ if (EP.a[0] != 0.0) {
 lchisq = 0.0;
 for (i=0;i<EP.Guiniernpoints-m;i++) {
    Zimm2(xx[i+1],EP.a,&yth,dyda,ma,&error,errstr);
-   lchisq = lchisq + pow( (yth-yy[i+1])/ysig[i+1] ,2.0)/(EP.Guiniernpoints-m-mfit);
+   lchisq = lchisq + gsl_pow_2( (yth-yy[i+1])/ysig[i+1] )/(EP.Guiniernpoints-m-mfit);
 }
 
 for (i=0;i<4;i++) {
@@ -3702,8 +3704,8 @@ if (EP.error != 3) {
  *      EP.a[1] = RG   (active fit parameter)
  */
 
-   EP.a[0] = fabs(EP.a[0]);
-   EP.a[1] = fabs(EP.a[1]);
+   EP.a[0] = EP.a[0];
+   EP.a[1] = EP.a[1];
    alambda = -1.0;
    SASFIT2mrqmin(interp,x,y,sig,EP.Guiniernpoints,
 	             EP.a,ma,lista,mfit,covar,alpha,
@@ -3711,7 +3713,7 @@ if (EP.error != 3) {
    if (error == TRUE) goto ZimmErrorHandler;
    k    = 1;
    itst = 0;
-   while (itst < 3) {
+   while (itst < 5) {
 	     if (k > 250) {
 			   sasfit_err("Sasfit_ZimmFitCmd: to many interations\n");
 		       error = TRUE;
