@@ -11,8 +11,8 @@
 #define SIGMA	fabs(param->p[1])
 #define P	param->p[2]
 #define MU	param->p[3]
-#define LENGTH2	param->p[4]
-#define LENGTH3	param->p[5]
+#define LENGTH2	fabs(param->p[4])
+#define LENGTH3	fabs(param->p[5])
 #define SHAPE	param->p[6]
 #define N param->p[MAXPAR-1]
 
@@ -30,8 +30,8 @@ scalar sasfit_sd_lognorm_fp(scalar X, sasfit_param * param)
 	SASFIT_CHECK_COND1((SIGMA <= 0.0), param, "sigma(%lg) <= 0",SIGMA); // modify condition to your needs
 	SASFIT_CHECK_COND1((P < 0.0), param, "p(%lg) < 0",P); // modify condition to your needs
 	SASFIT_CHECK_COND1((MU <= 0.0), param, "mu(%lg) <= 0",MU); // modify condition to your needs
-	SASFIT_CHECK_COND1((LENGTH2 <= 0.0), param, "length2(%lg) <= 0",LENGTH2); // modify condition to your needs
-	SASFIT_CHECK_COND1((LENGTH3 <= 0.0), param, "length3(%lg) <= 0",LENGTH3); // modify condition to your needs
+	SASFIT_CHECK_COND1((LENGTH2 < 0.0), param, "length2(%lg) < 0",LENGTH2); // modify condition to your needs
+	SASFIT_CHECK_COND1((LENGTH3 < 0.0), param, "length3(%lg) < 0",LENGTH3); // modify condition to your needs
 
 	// insert your code here
 
