@@ -62,7 +62,7 @@ for:
     - 'src\fftw\%CACHEID%     -> src\fftw\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
     - 'src\tcl\%CACHEID%      -> src\tcl\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
     - 'src\sundials\%CACHEID% -> src\sundials\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
-    - 'saskit\saskit_%CACHEID%.exe -> src\CMakeLists.txt, src\cmake, src\CMakeLists.txt'
+    - 'saskit\saskit_%CACHEID%.exe -> src/appveyor, src\cmake, src\CMakeLists.txt'
 
 -
   matrix:
@@ -83,7 +83,7 @@ for:
     - 'src/fftw/$CACHEID     -> src/fftw/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'src/tcl/$CACHEID      -> src/tcl/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
     - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
-    - 'saskit/saskit_$CACHEID -> src/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
+    - 'saskit/saskit_$CACHEID -> src/appveyor, src/cmake, src/CMakeLists.txt'
 
 -
   matrix:
