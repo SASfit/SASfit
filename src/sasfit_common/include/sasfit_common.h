@@ -62,6 +62,8 @@
 #define GSL_MC_MISER 19
 #define GSL_MC_VEGAS 20
 #define GSL_MC_PLAIN 21
+#define TANHSINH_1 22
+#define TANHSINH_2 23
 
 #define SPHAVG_GSL_2D_GAUSSLEGENDRE 0
 #define SPHAVG_Lebedev 1

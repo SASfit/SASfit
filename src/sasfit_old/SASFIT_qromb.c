@@ -27,6 +27,7 @@
 #include "../sasfit_common/cubature/cubature.h"
 #include <math.h>
 #include <sasfit.h>
+#include "../sasfit_common/multidiminte/src/tanhsinh/tanhsinh.h"
 #include "include/SASFIT_nr.h"
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_math.h>
@@ -232,6 +233,26 @@ void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) 
                          lenaw, aw, res, err,param4int);
             ((sasfit_param4int *)param4int)->error = 0;
             free(aw);
+            break;
+            }
+    case TANHSINH_1: {
+            unsigned num_eval;
+            *res = tanhsinh_quad(&IQ_IntdLen, param4int,
+                     ((sasfit_param4int *)param4int)->Rstart,
+                     ((sasfit_param4int *)param4int)->Rend,
+                     sasfit_eps_get_nriq(),
+                     err, &num_eval);
+            ((sasfit_param4int *)param4int)->error = 0;
+            break;
+            }
+    case TANHSINH_2: {
+            int n =10;
+            *res = qthsh(&IQ_IntdLen, param4int,
+                     ((sasfit_param4int *)param4int)->Rstart,
+                     ((sasfit_param4int *)param4int)->Rend,
+                     n,
+                     sasfit_eps_get_nriq(), err);
+            ((sasfit_param4int *)param4int)->error = 0;
             break;
             }
     case GSL_CQUAD: {

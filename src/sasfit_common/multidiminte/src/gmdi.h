@@ -31,7 +31,8 @@ typedef enum
     GMDI_INTE_FUNCTIONS_QNG = 1, /*!< [gsl_integration_qng](http://www.gnu.org/software/gsl/manual/html_node/QNG-non_002dadaptive-Gauss_002dKronrod-integration.html) */
     GMDI_INTE_FUNCTIONS_QAG, /*!< [gsl_integration_qag](http://www.gnu.org/software/gsl/manual/html_node/QAG-adaptive-integration.html#QAG-adaptive-integration) */
     GMDI_INTE_FUNCTIONS_QAGS, /*!< [gsl_integration_qags](https://www.gnu.org/software/gsl/doc/html/integration.html#qags-adaptive-integration-with-singularities */
-    GDMI_INTE_FUNCTIONS_TANHSINH,
+    GDMI_INTE_FUNCTIONS_TANHSINH_1,
+    GDMI_INTE_FUNCTIONS_TANHSINH_2,
     GDMI_INTE_FUNCTIONS_LEBEDEV,
     GDMI_INTE_FUNCTIONS_SPHERICAL_T_DESIGN,
     GDMI_INTE_FUNCTIONS_OOURA_DE,

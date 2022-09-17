@@ -54,6 +54,7 @@
 #include <gsl/gsl_monte_miser.h>
 #include <gsl/gsl_monte_vegas.h>
 #include <gsl/gsl_integration.h>
+#include "tanhsinh/tanhsinh.h"
 #include <sys/time.h>
 #include "../../include/sasfit_common.h"
 #include "gmdi.h"
@@ -155,6 +156,25 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
                 params->intern.results + params->intern.dim,
                 params->intern.abserrs + params->intern.dim,
                 params);
+        ret=GSL_SUCCESS;
+        break;
+    case GDMI_INTE_FUNCTIONS_TANHSINH_1:
+        unsigned num_eval;
+        *(params->intern.results + params->intern.dim) = tanhsinh_quad(&big_g, params,
+            inte_limit_low,
+            inte_limit_high,
+            oip->epsrel,
+            params->intern.abserrs + params->intern.dim, &num_eval);
+        ret=GSL_SUCCESS;
+        break;
+    case GDMI_INTE_FUNCTIONS_TANHSINH_2:
+        int n =10;
+        *(params->intern.results + params->intern.dim) = qthsh(&big_g, params,
+            inte_limit_low,
+            inte_limit_high,
+            n,
+            oip->epsrel,
+            params->intern.abserrs + params->intern.dim);
         ret=GSL_SUCCESS;
         break;
     case GDMI_INTE_FUNCTIONS_CQUAD:
@@ -529,6 +549,12 @@ int sasfit_cubature(size_t ndim,
                 break;
         case OOURA_DOUBLE_EXP_QUADRATURE :
                 integration_strategy = GDMI_INTE_FUNCTIONS_OOURA_DE;
+                break;
+        case TANHSINH_1 :
+                integration_strategy = GDMI_INTE_FUNCTIONS_TANHSINH_1;
+                break;
+        case TANHSINH_2 :
+                integration_strategy = GDMI_INTE_FUNCTIONS_TANHSINH_2;
                 break;
         case OOURA_CLENSHAW_CURTIS_QUADRATURE :
                 integration_strategy = GDMI_INTE_FUNCTIONS_OOURA_CC;

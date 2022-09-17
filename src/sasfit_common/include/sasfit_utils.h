@@ -133,6 +133,8 @@ sasfit_common_DLLEXP void sasfit_ld_by_order ( int order, double *x, double *y, 
 sasfit_common_DLLEXP int sasfit_available_sph_t_table ( int rule );
 sasfit_common_DLLEXP int sasfit_sph_t_order_table ( int rule );
 sasfit_common_DLLEXP void sasfit_sph_t_by_order ( int order, double *x, double *y, double *z);
+
+sasfit_common_DLLEXP scalar sasfit_hankel(int algorithm, double (*f)(double, void *), double x, void *fparams);
 sasfit_common_DLLEXP scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param);
 sasfit_common_DLLEXP double re_cerf_z(double x, double y);
 sasfit_common_DLLEXP double im_cerf_z(double x, double y);
@@ -230,6 +232,7 @@ sasfit_common_DLLEXP scalar sasfit_integrate_ctm(scalar int_start, scalar int_en
 sasfit_common_DLLEXP scalar sasfit_orient_avg_ctm(sasfit_func_two_t intKern_fct, sasfit_param * param, int limit, scalar epsabs, scalar epsrel);
 
 sasfit_common_DLLEXP void sasfit_int_ws_init(void);
+
 /*@}*/
 #endif // MAKE_SASFIT_PLUGIN
 #endif // file

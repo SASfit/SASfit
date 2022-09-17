@@ -214,6 +214,7 @@ typedef struct
 	int (*sasfit_available_sph_t_table) ( int rule ); /*135 */
     int (*sasfit_sph_t_order_table) ( int rule ); /*136 */
     void (*sasfit_sph_t_by_order) ( int order, double *x, double *y, double *z); /*137 */
+    scalar (*sasfit_hankel) (int algorithm, double (*f)(double q, void *par), double x, void *fparams); /* 138 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -746,6 +747,10 @@ typedef struct
 #ifndef sasfit_sph_t_by_order
 #define sasfit_sph_t_by_order \
 	(SASFIT_COMMON_STUBS()->sasfit_sph_t_by_order) /* 137 */
+#endif
+#ifndef sasfit_hankel
+#define sasfit_hankel \
+	(SASFIT_COMMON_STUBS()->sasfit_hankel) /* 138 */
 #endif
 
 

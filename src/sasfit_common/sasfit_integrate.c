@@ -37,6 +37,7 @@
 #include <gsl/gsl_errno.h>
 #include "include/sasfit_common.h"
 #include "include/sasfit_function.h"
+#include "include/sasfit_hankel.h"
 
 typedef struct {
     sasfit_param *param;
@@ -713,3 +714,26 @@ scalar sasfit_integrate_ctm(scalar int_start,
 	return res;
 }
 
+typedef struct
+{
+	void   *fparams; //!< Flag to enable overriding.
+	double (* function) (double x, void * fparams);
+} sasfit_param_FBT;
+
+double f_FBT(double x, void *FBTparams) {
+    sasfit_param_FBT *FBT_param;
+    FBT_param = (sasfit_param_FBT *) FBTparams;
+    return x*  FBT_param->function(x,FBT_param->fparams);
+}
+
+scalar sasfit_hankel(int algorithm, sasfit_func_one_void f, double x, void *fparams) {
+    sasfit_param_FBT FBTparam;
+    switch (algorithm) {
+        case 0: FBTparam.fparams=fparams;
+                FBTparam.function=&f_FBT;
+//                return sasfit_FBT(x, f_FBT, &FBTparam);
+                break;
+        default:
+    }
+    return f(x,fparams)*x;
+}

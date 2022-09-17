@@ -63,13 +63,17 @@ set(SOURCE_sasfit_common
 	f2c_utils/sasfit_pfq.c
 	cubature/hcubature.c
 	cubature/pcubature.c
+	Ogata/FBT.cpp
+	Ogata/sasfit_FBT.cpp
+	Ogata/FBT.h
 	libcerf_1.5/erfcx.c
 	libcerf_1.5/err_fcts.c
 	libcerf_1.5/im_w_of_x.c
 	libcerf_1.5/w_of_z.c
 	multidiminte/src/multi_dim_inte.c
 	multidiminte/src/handle.c
-	multidiminte/src/multi_dim_inte.c
+	multidiminte/src/tanhsinh/tanhsinh.c
+	multidiminte/src/tanhsinh/tanhsinh.h
 	multidiminte/src/Lebedev/sphere_lebedev_rule.c
 	multidiminte/src/Lebedev/sphere_lebedev_rule.h	
 	multidiminte/src/spherical_t_design/Design_1002000_1000_random.h

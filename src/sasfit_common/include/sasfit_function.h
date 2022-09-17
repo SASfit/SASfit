@@ -168,6 +168,10 @@ typedef scalar  sasfit_func_one_t (scalar, sasfit_param *);
 /**
  * Prototype of a monte carlo function with one array-value argument.
  */
+ typedef scalar  sasfit_func_one_void (scalar, void *);
+/**
+ * Prototype of a function with one array-value argument and void * parameter.
+ */
 typedef scalar  sasfit_func_monte_t (scalar *, size_t, sasfit_param *);
 /**
  * Prototype of a volume function with one single-value argument.
