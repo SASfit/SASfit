@@ -734,6 +734,7 @@ scalar sasfit_hankel(int algorithm, sasfit_func_one_void f, double x, void *fpar
 //                return sasfit_FBT(x, f_FBT, &FBTparam);
                 break;
         default:
+                break;
     }
     return f(x,fparams)*x;
 }
