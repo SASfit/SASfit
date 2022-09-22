@@ -89,9 +89,11 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
     gmdi_one_inte_param *               oip = params->oip + params->intern.dim;
 
     int                                 ret;
+    int                                 n =10;
 
     double                              inte_limit_low  = call_gmdi_function_or_constant(&oip->x0, params->intern.x);
     double                              inte_limit_high = call_gmdi_function_or_constant(&oip->x1, params->intern.x);
+    unsigned num_eval;
 
     gsl_function                        gf;
 
@@ -159,7 +161,6 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
         ret=GSL_SUCCESS;
         break;
     case GDMI_INTE_FUNCTIONS_TANHSINH_1:
-        unsigned num_eval;
         *(params->intern.results + params->intern.dim) = tanhsinh_quad(&big_g, params,
             inte_limit_low,
             inte_limit_high,
@@ -168,7 +169,6 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
         ret=GSL_SUCCESS;
         break;
     case GDMI_INTE_FUNCTIONS_TANHSINH_2:
-        int n =10;
         *(params->intern.results + params->intern.dim) = qthsh(&big_g, params,
             inte_limit_low,
             inte_limit_high,
