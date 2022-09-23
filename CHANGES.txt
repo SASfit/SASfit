@@ -1,4 +1,12 @@
 ﻿0.94.12 2022-08-xx
+- bugfix in calculating integral structural parameter. 
+  In certain (unphysical) cases the fit as well as the plot of the fit result crashed.
+- bugfix for star polymer with rigid arms
+- due to flexible integration routines some of them calculate the function to integrate 
+  at its integration limits. For mass fractals this caused an error using these integration routines. 
+  There might be more such cases. The mass fractal plugins have been debugged.
+- corrected in "sq 2D hard disks Rosenfeld" bug: $J_1(2x)/x = 2jinc(2x)$ instead 
+  $J_1(2x)/x = 1/2 jinc(2x)$
 - changed lognorm_fp-size distribution as plugin and included now also the other cases as decribed in the manual. So far only the shape 1 was implemented. 
 - renaming dodecahedra into rhombic dodecahedra
 - added size distribution plugin based on generalized beta distribution
