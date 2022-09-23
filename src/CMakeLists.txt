@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
 include(CMakePrintHelpers)
 
 # get our current location and set the distribution directory name
-project(sasfit C)
+project(sasfit C CXX)
 
 # load custom modules for some automation
 include(SasfitCmakeUtils)

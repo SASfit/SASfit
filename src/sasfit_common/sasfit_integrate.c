@@ -731,7 +731,7 @@ scalar sasfit_hankel(int algorithm, sasfit_func_one_void f, double x, void *fpar
     switch (algorithm) {
         case 0: FBTparam.fparams=fparams;
                 FBTparam.function=&f_FBT;
-//                return sasfit_FBT(x, f_FBT, &FBTparam);
+                return sasfit_FBT(x, f_FBT, &FBTparam);
                 break;
         default:
                 break;
