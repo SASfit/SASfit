@@ -44,6 +44,7 @@
 //
 scalar exp_kappa(scalar, scalar, sasfit_param *);
 scalar mode_kappa(sasfit_param *);
+scalar erf_kappa(scalar, sasfit_param *);
 
 #endif // end of file
 

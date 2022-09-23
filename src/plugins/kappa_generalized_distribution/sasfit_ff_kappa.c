@@ -17,10 +17,10 @@ scalar erf_kernel(scalar x, sasfit_param * param) {
 }
 
 scalar erf_kappa(scalar x, sasfit_param * param) {
-    if (kappa == 0) return gsl_sf_erf(x);
-    if (kappa > 0 && kappa < 1)
+    if (KAPPA == 0) return gsl_sf_erf(x);
+    if (KAPPA > 0 && KAPPA < 1)
         return (2+KAPPA)*sqrt(2*KAPPA/M_PI)*exp(gsl_sf_lngamma(0.5/KAPPA+0.25)-gsl_sf_lngamma(0.5/KAPPA-0.25))
-                * sasfit_integrate(&erf_kernel,0,x,param);
+                * sasfit_integrate(0,x,&erf_kernel,param);
 }
 
 scalar mode_kappa(sasfit_param * param) {
