@@ -458,5 +458,5 @@ declare 137 generic {
 	void sasfit_sph_t_by_order( int order, double *x, double *y, double *z)
 }
 declare 138 generic {
-	scalar sasfit_hankel(int algorithm, double (*f)(double q, void *par), double x, void *fparams)
+	scalar sasfit_hankel(int algorithm, double nu, double (*f)(double q, void *par), double x, void *fparams)
 }

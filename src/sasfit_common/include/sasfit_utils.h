@@ -134,7 +134,7 @@ sasfit_common_DLLEXP int sasfit_available_sph_t_table ( int rule );
 sasfit_common_DLLEXP int sasfit_sph_t_order_table ( int rule );
 sasfit_common_DLLEXP void sasfit_sph_t_by_order ( int order, double *x, double *y, double *z);
 
-sasfit_common_DLLEXP scalar sasfit_hankel(int algorithm, double (*f)(double, void *), double x, void *fparams);
+sasfit_common_DLLEXP scalar sasfit_hankel(int algorithm, double nu, double (*f)(double, void *), double x, void *fparams);
 sasfit_common_DLLEXP scalar find_LogNorm_int_range(scalar dim, scalar x0, scalar sigma, scalar *Xstart, scalar *Xend, sasfit_param *param);
 sasfit_common_DLLEXP double re_cerf_z(double x, double y);
 sasfit_common_DLLEXP double im_cerf_z(double x, double y);

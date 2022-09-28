@@ -1,7 +1,13 @@
 \appendix{History}
 \begin{description}
-\item[2022-03-XX] \SASfit 0.94.12
+\item[2022-10-XX] \SASfit 0.94.12
     \begin{itemize}
+    \item bugfix in calculating integral structural parameter. 
+          In certain (unphysical) cases the fit as well as the plot of the fit result crashed.
+    \item bugfix for star polymer with rigid arms
+    \item  due to flexible integration routines some of them calculate the function to integrate at its integration limits. For mass fractals this caused an error using these integration routines. There might be more such cases. The mass fractal plugins have been debugged.
+    \item  corrected in "sq 2D hard disks Rosenfeld" bug: $J_1(2x)/x = 2\operatorname{jinc}(2x)$ instead $J_1(2x)/x = 1/2 \operatorname{jinc}(2x)$
+    \item changed lognorm\_fp-size distribution as plugin and included now also the other cases as decribed in the manual. So far only the shape 1 was implemented.
     \item renaming dodecahedra into rhombic dodecahedra
     \item added size distribution plugin based on generalized beta distribution
     \item added added skewed gaussian and exponentially modified gaussian size distribution

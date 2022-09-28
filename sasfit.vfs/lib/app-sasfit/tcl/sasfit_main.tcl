@@ -2252,9 +2252,11 @@ proc ConvertCmd {} {
 		set data2clip(res,file) {}
 		set data2clip(res,calc) {}
 		set data2clip(res) {}
+		set data2clip(filenames) {}
 		foreach fin $tmpfnlist {
 			if {![file exists $fin]} { continue }
 			set tmpsasfit(filename) $fin
+			lappend data2clip(filenames) $fin
 			set tmpval [ReadFileCmd tmpsasfit /norefreshdata]
 			if {[string equal "$tmpval" "no"] } {
 				lappend data2clip(Q)        $tmpsasfit(Q)
@@ -2271,15 +2273,16 @@ proc ConvertCmd {} {
 					$resolution(Dd)      \
 					$tmpsasfit(Q)       \
 					]	
-				if {[info exist tmpAnalytPar(geometrical/datafile)]} {
-					if {$tmpAnalytPar(geometrical/datafile)} {
-						lappend data2clip(res) $data2clip(res,calc)
-					} else {
-						lappend data2clip(res) $data2clip(res,file)
-					}
-				} else {
-					lappend data2clip(res) $data2clip(res,calc)
-				}
+#				if {[info exist tmpAnalytPar(geometrical/datafile)]} {
+#					if {$tmpAnalytPar(geometrical/datafile)} {
+#						lappend data2clip(res) $data2clip(res,calc)
+#					} else {
+#						lappend data2clip(res) $data2clip(res,file)
+#					}
+#				} else {
+#					lappend data2clip(res) $data2clip(res,file)
+#				}
+				lappend data2clip(res) $data2clip(res,file)
 			} else {
 				lappend errornessFiles  $tmpsasfit(filename)
 			}
@@ -2300,42 +2303,59 @@ proc ConvertCmd {} {
 			set  ydata($i)  [lindex $data2clip(I)   $i]
 			set dydata($i)  [lindex $data2clip(DI)  $i]
 			set resdata($i) [lindex $data2clip(res) $i]
+			set filen($i)   [lindex $data2clip(filenames) $i]
 		}
-		clipboard clear
-		set max 0
-		for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
-			set tmax [llength $xdata($i)]
-			if {$tmax > $max} { set max $tmax }
-			set tmax [llength $ydata($i)]
-			if {$tmax > $max} { set max $tmax }
-			set tmax [llength $dydata($i)]
-			if {$tmax > $max} { set max $tmax }
-		}
-		for {set k 0} {$k < $max} {incr k} {
-		set line ""
-		for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
-			if {[llength [lindex $xdata($i) $k]] != 0 } {
-				append line [format "%g\t" [lindex $xdata($i) $k]]
-				append line [format "%g\t" [lindex $ydata($i) $k]]
-				set dy  [lindex $dydata($i) $k]
-				if {$dy > 0} {
-					append line [format "%g\t" $dy]
-				} else {
-					append line [format "%g\t" -1]
+		switch $sasfit(converttodatatype) {
+			Clipboard 	 {
+				clipboard clear
+				set max 0
+				for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
+					set tmax [llength $xdata($i)]
+					if {$tmax > $max} { set max $tmax }
+					set tmax [llength $ydata($i)]
+					if {$tmax > $max} { set max $tmax }
+					set tmax [llength $dydata($i)]
+					if {$tmax > $max} { set max $tmax }
+					set tmax [llength $resdata($i)]
+					if {$tmax > $max} { set max $tmax }
 				}
-				append line [format "%g\t" [lindex $resdata($i) $k]]
-			} else { append line "\t\t\t\t" }
+				for {set k 0} {$k < $max} {incr k} {
+					set line ""
+					for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
+						if {[llength [lindex $xdata($i) $k]] != 0 } {
+							append line [format "%g\t" [lindex $xdata($i) $k]]
+							append line [format "%g\t" [lindex $ydata($i) $k]]
+							set dy  [lindex $dydata($i) $k]
+							if {$dy > 0} {
+								append line [format "%g\t" $dy]
+							} else {
+								append line [format "%g\t" -1]
+							}
+							append line [format "%g\t" [lindex $resdata($i) $k]]
+						} else { append line "\t\t\t\t" }
+					}
+					clipboard append "$line\n"
+				}
+			}
+			TabSeparated {
+				for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
+					set fid [open $filen($i).dat w]
+					for {set k 0} {$k < [llength $dydata($i)]} {incr k} {
+						puts $fid "[lindex $xdata($i) $k]\t[lindex $ydata($i) $k]\t[lindex $dydata($i) $k]\t[lindex $resdata($i) $k]"
+					}
+					close $fid
+				}
+			}
+			csv {
+				for {set i 0} {$i < [llength $data2clip(DI)]} {incr i} {
+					set fid [open $filen($i).csv w]
+					for {set k 0} {$k < [llength $dydata($i)]} {incr k} {
+						puts $fid "[lindex $xdata($i) $k]\t[lindex $ydata($i) $k]\t[lindex $dydata($i) $k]\t[lindex $resdata($i) $k]"
+					}
+					close $fid
+				}
+			}
 		}
-		clipboard append "$line\n"
-}
-
-
-
-
-
-
-
-		
 		catch {destroy .openfile}
 	} -highlightthickness 0
 	button .openfile.layout3.option -text "Options..." -command ReadOptionsCmd \

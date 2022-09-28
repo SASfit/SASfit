@@ -10,8 +10,10 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff___generalized_gamma_distribution__area_.c
-	sasfit_ff___generalized_gamma_distribution__ampl_.c
+	sasfit_ff_kappa_generalized_gamma_distribution__area_.c
+	sasfit_ff_kappa_generalized_gamma_distribution__ampl_.c
+	sasfit_ff_kappa_logistic_distribution__area_.c
+	sasfit_ff_kappa_logistic_distribution__ampl_.c
 	sasfit_ff_kappa.c
 	interface.c
 )

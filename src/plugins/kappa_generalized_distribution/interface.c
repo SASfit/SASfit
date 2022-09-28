@@ -7,9 +7,11 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(2)
-SASFIT_PLUGIN_EXP_ADD( ff___generalized_gamma_distribution__area_ )
-SASFIT_PLUGIN_EXP_ADD( ff___generalized_gamma_distribution__ampl_ )
+SASFIT_PLUGIN_EXP_BEGIN(4)
+SASFIT_PLUGIN_EXP_ADD( ff_kappa_generalized_gamma_distribution__area_ )
+SASFIT_PLUGIN_EXP_ADD( ff_kappa_generalized_gamma_distribution__ampl_ )
+SASFIT_PLUGIN_EXP_ADD( ff_kappa_logistic_distribution__area_ )
+SASFIT_PLUGIN_EXP_ADD( ff_kappa_logistic_distribution__ampl_ )
 
 SASFIT_PLUGIN_EXP_END
 

@@ -41,8 +41,9 @@
 #define ALPHA	param->p[4]
 #define BETA	param->p[5]
 #define NU	param->p[6]
+#define LAMBDA	param->p[6]
 //
-scalar exp_kappa(scalar, scalar, sasfit_param *);
+scalar exp_kappa(scalar, sasfit_param *);
 scalar mode_kappa(sasfit_param *);
 scalar erf_kappa(scalar, sasfit_param *);
 

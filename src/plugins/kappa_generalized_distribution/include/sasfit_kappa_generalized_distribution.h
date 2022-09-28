@@ -36,9 +36,9 @@
 // - brief description
 // - description of parameters in HTML table-style
 
-/* ################ start ff___generalized_gamma_distribution__area_ ################ */
+/* ################ start ff_kappa_generalized_gamma_distribution__area_ ################ */
 /**
- * \defgroup ff___generalized_gamma_distribution__area_ kappa-generalized gamma distribution (area)
+ * \defgroup ff_kappa_generalized_gamma_distribution__area_ kappa-generalized gamma distribution (area)
  * \ingroup ff_peak_area_generalized
  *
  * \brief \<some brief description of kappa-generalized gamma distribution (area) function\>
@@ -73,30 +73,30 @@
  */
 
 /**
- * \ingroup ff___generalized_gamma_distribution__area_
+ * \ingroup ff_kappa_generalized_gamma_distribution__area_
  *
  * \sa sasfit_kappa_generalized_distribution.h, ff_peak_area_generalized
  */
-sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff___generalized_gamma_distribution__area_(scalar q, sasfit_param * p);
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_generalized_gamma_distribution__area_(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff___generalized_gamma_distribution__area_
+ * \ingroup ff_kappa_generalized_gamma_distribution__area_
  *
  * \sa sasfit_kappa_generalized_distribution.h, ff_peak_area_generalized
  */
-sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff___generalized_gamma_distribution__area__f(scalar q, sasfit_param * p);
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_generalized_gamma_distribution__area__f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff___generalized_gamma_distribution__area_
+ * \ingroup ff_kappa_generalized_gamma_distribution__area_
  *
  * \sa sasfit_kappa_generalized_distribution.h, ff_peak_area_generalized
  */
-sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff___generalized_gamma_distribution__area__v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff___generalized_gamma_distribution__area_ ################ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_generalized_gamma_distribution__area__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_kappa_generalized_gamma_distribution__area_ ################ */
 
-/* ################ start ff___generalized_gamma_distribution__ampl_ ################ */
+/* ################ start ff_kappa_generalized_gamma_distribution__ampl_ ################ */
 /**
- * \defgroup ff___generalized_gamma_distribution__ampl_ kappa-generalized gamma distribution (ampl)
+ * \defgroup ff_kappa_generalized_gamma_distribution__ampl_ kappa-generalized gamma distribution (ampl)
  * \ingroup ff_peak_amplitudes_generalized
  *
  * \brief \<some brief description of kappa-generalized gamma distribution (ampl) function\>
@@ -131,26 +131,142 @@ sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff___generalized_gamm
  */
 
 /**
- * \ingroup ff___generalized_gamma_distribution__ampl_
+ * \ingroup ff_kappa_generalized_gamma_distribution__ampl_
  *
  * \sa sasfit_kappa_generalized_distribution.h, ff_peak_amplitudes_generalized
  */
-sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff___generalized_gamma_distribution__ampl_(scalar q, sasfit_param * p);
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_generalized_gamma_distribution__ampl_(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff___generalized_gamma_distribution__ampl_
+ * \ingroup ff_kappa_generalized_gamma_distribution__ampl_
  *
  * \sa sasfit_kappa_generalized_distribution.h, ff_peak_amplitudes_generalized
  */
-sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff___generalized_gamma_distribution__ampl__f(scalar q, sasfit_param * p);
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_generalized_gamma_distribution__ampl__f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff___generalized_gamma_distribution__ampl_
+ * \ingroup ff_kappa_generalized_gamma_distribution__ampl_
  *
  * \sa sasfit_kappa_generalized_distribution.h, ff_peak_amplitudes_generalized
  */
-sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff___generalized_gamma_distribution__ampl__v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff___generalized_gamma_distribution__ampl_ ################ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_generalized_gamma_distribution__ampl__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_kappa_generalized_gamma_distribution__ampl_ ################ */
+
+/* ################ start ff_kappa_logistic_distribution__area_ ################ */
+/**
+ * \defgroup ff_kappa_logistic_distribution__area_ kappa-logistic distribution (area)
+ * \ingroup ff_peak_area_generalized
+ *
+ * \brief \<some brief description of kappa-logistic distribution (area) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>area</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>kappa: 0 <= kappa < 1</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>alpha: shape parameter: alpha >0</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>beta: rate parameter: beta>0</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>lambda > 0</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_kappa_logistic_distribution__area_
+ *
+ * \sa sasfit_kappa_generalized_distribution.h, ff_peak_area_generalized
+ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_logistic_distribution__area_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_kappa_logistic_distribution__area_
+ *
+ * \sa sasfit_kappa_generalized_distribution.h, ff_peak_area_generalized
+ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_logistic_distribution__area__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_kappa_logistic_distribution__area_
+ *
+ * \sa sasfit_kappa_generalized_distribution.h, ff_peak_area_generalized
+ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_logistic_distribution__area__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_kappa_logistic_distribution__area_ ################ */
+
+/* ################ start ff_kappa_logistic_distribution__ampl_ ################ */
+/**
+ * \defgroup ff_kappa_logistic_distribution__ampl_ kappa-logistic distribution (ampl)
+ * \ingroup ff_peak_amplitudes_generalized
+ *
+ * \brief \<some brief description of kappa-logistic distribution (ampl) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b A</td>
+ *       <td>amplitude</td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td>width parameter</td>
+ *      </tr><tr>
+ *       <td>\b xi</td>
+ *       <td>shift parameter</td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td>kappa: 0 <= kappa < 1</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>alpha: shape parameter: alpha > 0</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>beta: rate parameter: beta>0</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>lambda > 0</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_kappa_logistic_distribution__ampl_
+ *
+ * \sa sasfit_kappa_generalized_distribution.h, ff_peak_amplitudes_generalized
+ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_logistic_distribution__ampl_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_kappa_logistic_distribution__ampl_
+ *
+ * \sa sasfit_kappa_generalized_distribution.h, ff_peak_amplitudes_generalized
+ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_logistic_distribution__ampl__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_kappa_logistic_distribution__ampl_
+ *
+ * \sa sasfit_kappa_generalized_distribution.h, ff_peak_amplitudes_generalized
+ */
+sasfit_kappa_generalized_distribution_DLLEXP scalar sasfit_ff_kappa_logistic_distribution__ampl__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_kappa_logistic_distribution__ampl_ ################ */
 
 
 #endif // this file

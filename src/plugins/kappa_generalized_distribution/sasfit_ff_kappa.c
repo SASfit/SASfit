@@ -6,14 +6,20 @@
 #include "include/private.h"
 #include <sasfit_error_ff.h>
 
-scalar exp_kappa(scalar kappa, scalar x, sasfit_param * param) {
-    if (kappa == 0) return exp(x);
-    if (kappa > 0 && kappa < 1) return pow(sqrt(1+gsl_pow_2(kappa*x))+kappa*x,1./kappa);
-    return exp(gsl_asinh(kappa*x)/kappa);
+scalar exp_kappa(scalar x, sasfit_param * param) {
+    if (KAPPA == 0) return exp(x);
+    if (KAPPA > 0 && KAPPA < 1) return pow(sqrt(1+gsl_pow_2(KAPPA*x))+KAPPA*x,1./KAPPA);
+    return exp(gsl_asinh(KAPPA*x)/KAPPA);
+}
+
+scalar ln_kappa(scalar x, sasfit_param * param) {
+    if (KAPPA == 0) return log(x);
+    if (KAPPA > 0 && KAPPA < 1) return (pow(x,KAPPA)-pow(x,-KAPPA))/(2*KAPPA);
+    return sinh(KAPPA*log(x))/KAPPA;
 }
 
 scalar erf_kernel(scalar x, sasfit_param * param) {
-    return exp_kappa(KAPPA,-x*x,param);
+    return exp_kappa(-x*x,param);
 }
 
 scalar erf_kappa(scalar x, sasfit_param * param) {

@@ -161,11 +161,12 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
         ret=GSL_SUCCESS;
         break;
     case GDMI_INTE_FUNCTIONS_TANHSINH_1:
-        *(params->intern.results + params->intern.dim) = tanhsinh_quad(&big_g, params,
+        *(params->intern.results + params->intern.dim) = TanhSinhQuad(&big_g, params,
             inte_limit_low,
             inte_limit_high,
+            n,
             oip->epsrel,
-            params->intern.abserrs + params->intern.dim, &num_eval);
+            params->intern.abserrs + params->intern.dim);
         ret=GSL_SUCCESS;
         break;
     case GDMI_INTE_FUNCTIONS_TANHSINH_2:

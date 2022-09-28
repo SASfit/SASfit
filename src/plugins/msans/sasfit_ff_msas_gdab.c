@@ -29,6 +29,20 @@ scalar i1_gdab(scalar r, void * pam)
 	return gsl_sf_bessel_J0(Q*r)*imr*r/(2*M_PI*T);
 }
 
+scalar ihankel_gdab(scalar r, void * pam)
+{
+    scalar i1rmir0,i10, imr, k0,k02;
+    sasfit_param * param;
+	param = (sasfit_param *) pam;
+	k0=2*M_PI/LAMBDA;
+	k02=k0*k0;
+	i10=sasfit_ff_gz_generalized_dab_f(0,param);
+	i1rmir0=SIGMATOT*sasfit_ff_gz_generalized_dab(r,param)/i10*gsl_pow_2(2*M_PI)*T;
+	i10=SIGMATOT*gsl_pow_2(2*M_PI)*T;
+	imr = k02*(exp(i1rmir0/k02)-exp(-i10/k02));
+	return imr/(2*M_PI*T);
+}
+
 scalar sasfit_ff_msas_gdab(scalar q, sasfit_param * param)
 {
     scalar *aw, res,err,eps_nriq;
@@ -46,12 +60,22 @@ scalar sasfit_ff_msas_gdab(scalar q, sasfit_param * param)
 
 	// insert your code here
 	Q=q;
-	aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-	eps_nriq=sasfit_eps_get_nriq();
+	switch (sasfit_eps_get_robertus_p()) {
+	    case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+	        res = sasfit_hankel(sasfit_eps_get_robertus_p(),0,&ihankel_gdab,q,param);
+	        break;
+        default:
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            eps_nriq=sasfit_eps_get_nriq();
 //	eps_nriq=1e-60;
-    sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
-    sasfit_intdeo(&i1_gdab,0,q, aw, &res, &err, param);
-    free(aw);
+            sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
+            sasfit_intdeo(&i1_gdab,0,q, aw, &res, &err, param);
+            free(aw);
+	}
 	return res;
 }
 

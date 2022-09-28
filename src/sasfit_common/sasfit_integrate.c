@@ -35,6 +35,7 @@
 #include <sys/time.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_errno.h>
+#include <gsl/gsl_sf.h>
 #include "include/sasfit_common.h"
 #include "include/sasfit_function.h"
 #include "include/sasfit_hankel.h"
@@ -718,20 +719,43 @@ typedef struct
 {
 	void   *fparams; //!< Flag to enable overriding.
 	double (* function) (double x, void * fparams);
+	double nu;
 } sasfit_param_FBT;
 
 double f_FBT(double x, void *FBTparams) {
     sasfit_param_FBT *FBT_param;
     FBT_param = (sasfit_param_FBT *) FBTparams;
-    return x*  FBT_param->function(x,FBT_param->fparams);
+    return x*FBT_param->function(x,FBT_param->fparams);
 }
 
-scalar sasfit_hankel(int algorithm, sasfit_func_one_void f, double x, void *fparams) {
+double intdeo_FBT(double x, void *FBTparams) {
+    sasfit_param_FBT *FBT_param;
+    FBT_param = (sasfit_param_FBT *) FBTparams;
+    return x*gsl_sf_bessel_Jnu(FBT_param->nu,x) * FBT_param->function(x,FBT_param->fparams);
+}
+
+scalar sasfit_hankel(int algorithm, double nu, sasfit_func_one_void f, double x, void *fparams) {
     sasfit_param_FBT FBTparam;
+    FBTparam.fparams=fparams;
+    FBTparam.function=&f_FBT;
+    FBTparam.nu=nu;
     switch (algorithm) {
-        case 0: FBTparam.fparams=fparams;
-                FBTparam.function=&f_FBT;
+        case 0: sasfit_set_FBT(nu, 0, 10, 1.0);
                 return sasfit_FBT(x, f_FBT, &FBTparam);
+                break;
+        case 1: sasfit_set_FBT(nu, 1, 10, 1.0);
+                return sasfit_FBT(x, f_FBT, &FBTparam);
+                break;
+        case 2: sasfit_set_FBT(nu, 2, 10, 1.0);
+                return sasfit_FBT(x, f_FBT, &FBTparam);
+                break;
+        case 3: scalar *aw, res,err,eps_nriq;
+                int lenaw=4000;
+                aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+                eps_nriq=sasfit_eps_get_nriq();
+                sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
+                sasfit_intdeo(&intdeo_FBT,0,x, aw, &res, &err, &FBTparam);
+                free(aw);
                 break;
         default:
                 break;

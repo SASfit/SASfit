@@ -35,7 +35,8 @@ extern "C" {
 double tanhsinh_quad(double (*f)(double, void *), void *,
                      double, double, double,
                      double *, unsigned *);
-double qthsh(double (*f)(double, void *), void *, double, double, int, double, double *);
+double TanhSinhQuad(double (*f)(double, void *), void *, double, double, int, double, double *); 
+double qthsh(       double (*f)(double, void *), void *, double, double, int, double, double *);
 #ifdef __cplusplus
 }
 #endif

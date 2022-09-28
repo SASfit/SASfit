@@ -200,6 +200,34 @@ void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) 
                 free(aw);
                 break;
             }
+            case TANHSINH_1: {
+                int n =10;
+                *res = TanhSinhQuad(&IQ_IntdLen, param4int,
+                     ((sasfit_param4int *)param4int)->Rstart,
+                     ((sasfit_param4int *)param4int)->Rend,
+                     n,
+                     sasfit_eps_get_nriq(), err);
+/*
+            unsigned num_eval;
+            *res = tanhsinh_quad(&IQ_IntdLen, param4int,
+                     ((sasfit_param4int *)param4int)->Rstart,
+                     ((sasfit_param4int *)param4int)->Rend,
+                     sasfit_eps_get_nriq(),
+                     err, &num_eval);
+*/
+                ((sasfit_param4int *)param4int)->error = 0;
+                break;
+                }
+            case TANHSINH_2: {
+                int n =10;
+                *res = qthsh(&IQ_IntdLen, param4int,
+                     ((sasfit_param4int *)param4int)->Rstart,
+                     ((sasfit_param4int *)param4int)->Rend,
+                     n,
+                     sasfit_eps_get_nriq(), err);
+                ((sasfit_param4int *)param4int)->error = 0;
+                break;
+                }
             default:
                 w = gsl_integration_workspace_alloc(lenaw);
                 F.function=&IQ_IntdLen;
@@ -236,12 +264,20 @@ void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) 
             break;
             }
     case TANHSINH_1: {
+            int n =10;
+            *res = TanhSinhQuad(&IQ_IntdLen, param4int,
+                     ((sasfit_param4int *)param4int)->Rstart,
+                     ((sasfit_param4int *)param4int)->Rend,
+                     n,
+                     sasfit_eps_get_nriq(), err);
+/*
             unsigned num_eval;
             *res = tanhsinh_quad(&IQ_IntdLen, param4int,
                      ((sasfit_param4int *)param4int)->Rstart,
                      ((sasfit_param4int *)param4int)->Rend,
                      sasfit_eps_get_nriq(),
                      err, &num_eval);
+*/
             ((sasfit_param4int *)param4int)->error = 0;
             break;
             }
