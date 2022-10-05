@@ -18,7 +18,7 @@ void sasfit_set_FBT(double nu, int option, int N, double Q) {
     ogata = FBT(nu, option, N, Q);
 }
 
-scalar sasfit_FBT(scalar x, sasfit_func_one_void intKern_fct, void *param){
+scalar sasfit_FBT(scalar x, double (*intKern_fct)(double, void *), void * fparams){
 
-	return ogata.fbt(std::bind(intKern_fct, std::placeholders::_1, param),x);
+	return ogata.fbt(std::bind(intKern_fct, std::placeholders::_1, fparams),x);
 } // test function to transform data allows to send anything else to the function

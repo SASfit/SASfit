@@ -180,8 +180,13 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_sph_t_order_table, /* 136*/
 	sasfit_sph_t_by_order, /* 137 */
 	sasfit_hankel, /* 138 */
+	sasfit_get_h_Ogata, /* 139 */
+	sasfit_get_N_Ogata, /* 140 */
+	sasfit_set_h_Ogata, /* 141 */
+	sasfit_set_N_Ogata, /* 142 */
+	sasfit_set_hankel_strategy, /* 143 */
+	sasfit_get_hankel_strategy, /* 144 */
 };
-
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 
 const sasfit_common_stubs_t * sasfit_common_stubs_ptr()

@@ -88,8 +88,8 @@ FBT::FBT(double _nu, int _option, int _N, double _Q){
    xi.push_back( zeros[i]/M_PI );
    Jp1.push_back( gsl_sf_bessel_Jn(nu+1.,M_PI*xi[i]) ); //The functions gsl_sf_bessel_Jn and gsl_sf_bessel_Yn return the result of the Bessel functions of the first and second kinds respectively
    w.push_back( gsl_sf_bessel_Yn(nu,M_PI*xi[i])/Jp1[i] );
-   
-   
+
+
  }
 
   acknowledgement();
@@ -116,7 +116,7 @@ double FBT::ogatat(std::function<double (double) > f, double q, double h){
   int N = this->N;
 
   double knots, Jnu, psip, F;
-  
+
   double val = 0;
 
   //try{
@@ -133,7 +133,7 @@ double FBT::ogatat(std::function<double (double) > f, double q, double h){
       };
 
       knots = M_PI/h*get_psi( h*xi[i] );
-      Jnu = gsl_sf_bessel_Jn(nu,knots);     
+      Jnu = gsl_sf_bessel_Jn(nu,knots);
       F = f_for_ogata(knots, f, q);
       val += M_PI*w[i]*F*Jnu*psip;
 
@@ -197,11 +197,13 @@ double FBT::get_hu(std::function<double (double) > f, double q){
 
 
   int status;
-  int iter = 0, max_iter = 100;
+  int iter = 0, max_iter = 1000;
   const gsl_min_fminimizer_type *T;
   gsl_min_fminimizer *s;
   double m = Q;
   double a = Q/10, b = 10*Q;
+  a=Q/100;
+  b = 100*Q;
   gsl_function F;
 
   F.function = &f_for_get_hu;
@@ -231,7 +233,7 @@ double FBT::get_hu(std::function<double (double) > f, double q){
 
     }
   while (status == GSL_CONTINUE && iter < max_iter);
-  
+
   gsl_min_fminimizer_free (s);
 
   double hu = m/zero1*M_PI;

@@ -25,8 +25,8 @@ private:
   std::vector<double> xi;
   std::vector<double> Jp1;
   std::vector<double> w;
-  
-  
+
+
 
 
 

@@ -20,7 +20,8 @@ scalar sasfit_sq_hard_sphere_hard_shell_py(scalar q, sasfit_param * param)
 
     sasfit_init_param( &subParam );
 	subParam.p[0] = R+DELTA_R;
-    subParam.p[1] = ETA;
+    subParam.p[1] = ETA*gsl_pow_3(1+DELTA_R/R);
+    if (!gsl_finite(subParam.p[1])) subParam.p[1] = ETA;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);

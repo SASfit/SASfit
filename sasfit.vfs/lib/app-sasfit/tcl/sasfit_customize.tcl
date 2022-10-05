@@ -73,6 +73,20 @@ proc setIntStrategy2int {} {
 	}
 }
 
+
+proc setHankelStrategy2int {} {
+	puts $::FitPrecision(HankelStrategy)
+	switch $::FitPrecision(HankelStrategy) {
+		"OOURA_DEO" 	{set ::FitPrecision(HankelStrategy_int) 0}
+		"OGATA_2005"	{set ::FitPrecision(HankelStrategy_int) 1}
+		"FBT0" 			{set ::FitPrecision(HankelStrategy_int) 2}
+		"FBT1" 			{set ::FitPrecision(HankelStrategy_int) 3}
+		"FBT2" 			{set ::FitPrecision(HankelStrategy_int) 4}
+		"GSL_QAWF"		{set ::FitPrecision(HankelStrategy_int) 5}
+		default 		{set ::FitPrecision(HankelStrategy_int) 0}
+	}
+}
+
 #-------------------------------------------------------------------------
 #   setting some parameters for the fitting routine
 #
@@ -135,7 +149,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 		-from -1 -to 2.9542425096 -resolution 0.000000001 \
 		-orient horizontal \
 		-command "update_parameter_increment $analytpar $tanalytpar"
-	grid $w.adjust_entry -row 6 -column 0 -columnspan 4 -sticky ew
+	grid $w.adjust_entry -row 7 -column 0 -columnspan 4 -sticky ew
 	$w.adjust_entry set [expr log10(100*$ap(par_x_X)-100)]
 	
 	label $w.intStrat_label -text "integration strategy"
@@ -159,34 +173,42 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.sphavgStrat_label -row 5 -column 2 -sticky e
 	grid $w.sphavgStrat_value -row 5 -column 3 -sticky w
 	
+	label $w.hankelStrat_label -text "Hankel transform strategy"
+	ComboBox $w.hankelStrat_value -values {"OOURA_DEO" "OGATA_2005" "FBT0" "FBT1" "FBT2" "GSL_QAWF"} \
+				-width 15 \
+				-textvariable ::FitPrecision(HankelStrategy) \
+				-modifycmd setHankelStrategy2int
+	grid $w.hankelStrat_label -row 6 -column 0 -sticky e
+	grid $w.hankelStrat_value -row 6 -column 1 -sticky w
+	
 	label $w.gsl_GL_label -text "GSL_GAUSSLEGENDRE points:"
 	entry $w.gsl_GL_value -textvariable FitPrecision(GSL_GAUSSLEGENDRE) -width $entrywidth
-	grid $w.gsl_GL_label -row 7 -column 0 -sticky e
-	grid $w.gsl_GL_value -row 7 -column 1 -sticky w
+	grid $w.gsl_GL_label -row 8 -column 0 -sticky e
+	grid $w.gsl_GL_value -row 8 -column 1 -sticky w
 	label $w.gsl_C1_label -text "GSL_CHEBYSHEV1 points:"
 	entry $w.gsl_C1_value -textvariable FitPrecision(GSL_CHEBYSHEV1) -width $entrywidth
-	grid $w.gsl_C1_label -row 8 -column 0 -sticky e
-	grid $w.gsl_C1_value -row 8 -column 1 -sticky w
+	grid $w.gsl_C1_label -row 9 -column 0 -sticky e
+	grid $w.gsl_C1_value -row 9 -column 1 -sticky w
 	label $w.gsl_C2_label -text "GSL_CHEBYSHEV2 points:"
 	entry $w.gsl_C2_value -textvariable FitPrecision(GSL_CHEBYSHEV2) -width $entrywidth
-	grid $w.gsl_C2_label -row 9 -column 0 -sticky e
-	grid $w.gsl_C2_value -row 9 -column 1 -sticky w
+	grid $w.gsl_C2_label -row 10 -column 0 -sticky e
+	grid $w.gsl_C2_value -row 10 -column 1 -sticky w
 	label $w.gsl_GEGB_label -text "GSL_GEGENBAUER points:"
 	entry $w.gsl_GEGB_value -textvariable FitPrecision(GSL_GEGENBAUER) -width $entrywidth
-	grid $w.gsl_GEGB_label -row 7 -column 2 -sticky e
-	grid $w.gsl_GEGB_value -row 7 -column 3 -sticky w
+	grid $w.gsl_GEGB_label -row 8 -column 2 -sticky e
+	grid $w.gsl_GEGB_value -row 8 -column 3 -sticky w
 	label $w.gsl_EXP_label -text "GSL_EXPONENTIAL points:"
 	entry $w.gsl_EXP_value -textvariable FitPrecision(GSL_EXPONENTIAL) -width $entrywidth
-	grid $w.gsl_EXP_label -row 8 -column 2 -sticky e
-	grid $w.gsl_EXP_value -row 8 -column 3 -sticky w
+	grid $w.gsl_EXP_label -row 9 -column 2 -sticky e
+	grid $w.gsl_EXP_value -row 9 -column 3 -sticky w
 #	label $w.gsl_LAG_label -text "GSL_LAGUERRE points:"
 #	entry $w.gsl_LAG_value -textvariable FitPrecision(GSL_LAGUERRE) -width $entrywidth
-#	grid $w.gsl_LAG_label -row 9 -column 2 -sticky e
-#	grid $w.gsl_LAG_value -row 9 -column 3 -sticky w
+#	grid $w.gsl_LAG_label -row 10 -column 2 -sticky e
+#	grid $w.gsl_LAG_value -row 10 -column 3 -sticky w
 	label $w.gsl_JAC_label -text "GSL_JACOBI points:"
 	entry $w.gsl_JAC_value -textvariable FitPrecision(GSL_JACOBI) -width $entrywidth
-	grid $w.gsl_JAC_label -row 9 -column 2 -sticky e
-	grid $w.gsl_JAC_value -row 9 -column 3 -sticky w
+	grid $w.gsl_JAC_label -row 10 -column 2 -sticky e
+	grid $w.gsl_JAC_value -row 10 -column 3 -sticky w
 	label $w.gsl_ALPHA_label -text "GSL_ALPHA parameter:"
 	entry $w.gsl_ALPHA_value -textvariable FitPrecision(GSL_ALPHA) -width $entrywidth
 	grid $w.gsl_ALPHA_label -row 11 -column 0 -sticky e
@@ -197,16 +219,26 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.gsl_BETA_value -row 11 -column 3 -sticky w
 	label $w.lebedev_label -text "Lebedev order \[1,65\]:"
 	entry $w.lebedev_value -textvariable FitPrecision(Lebedev) -width $entrywidth
-	grid $w.lebedev_label -row 13 -column 0 -sticky e
-	grid $w.lebedev_value -row 13 -column 1 -sticky w
+	grid $w.lebedev_label -row 12 -column 0 -sticky e
+	grid $w.lebedev_value -row 12 -column 1 -sticky w
 	label $w.finonacci_label -text "FIBONACCI points:"
 	entry $w.gibonacci_value -textvariable FitPrecision(FIBONACCI) -width $entrywidth
-	grid $w.finonacci_label -row 13 -column 2 -sticky e
-	grid $w.gibonacci_value -row 13 -column 3 -sticky w
+	grid $w.finonacci_label -row 12 -column 2 -sticky e
+	grid $w.gibonacci_value -row 12 -column 3 -sticky w
 	label $w.sphericaltdesign_label -text "spherical-t design, order \[1,136\]:"
 	entry $w.sphericaltdesign_value -textvariable FitPrecision(spherical_t_design) -width $entrywidth
-	grid $w.sphericaltdesign_label -row 14 -column 0 -sticky e
-	grid $w.sphericaltdesign_value -row 14 -column 1 -sticky w
+	grid $w.sphericaltdesign_label -row 13 -column 0 -sticky e
+	grid $w.sphericaltdesign_value -row 13 -column 1 -sticky w
+	
+	label $w.ogata_2005_N_label -text "N_Ogata >= 2 \[default: 50\]"
+	entry $w.ogata_2005_N_value -textvariable FitPrecision(N_Ogata) -width $entrywidth
+	grid $w.ogata_2005_N_label -row 14 -column 0 -sticky e
+	grid $w.ogata_2005_N_value -row 14 -column 1 -sticky w
+	
+	label $w.ogata_2005_h_label -text "h_Ogata \[default: 0.01\]:"
+	entry $w.ogata_2005_h_value -textvariable FitPrecision(h_Ogata) -width $entrywidth
+	grid $w.ogata_2005_h_label -row 14 -column 2 -sticky e
+	grid $w.ogata_2005_h_value -row 14 -column 3 -sticky w
 }
 
 proc update_parameter_increment { analytpar tanalytpar value } {

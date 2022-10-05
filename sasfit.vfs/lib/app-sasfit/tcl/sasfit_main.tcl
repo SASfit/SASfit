@@ -417,8 +417,12 @@ set FitPrecision(IQorGz_int)  0
 set FitPrecision(SQ_or_IQ,label)  "calculate scattering intensity"
 set FitPrecision(IntStrategy) P_CUBATURE
 set FitPrecision(SphAvgStrategy) FIBONACCI
+set FitPrecision(HankelStrategy) OOURA_DEO
+set FitPrecision(N_Ogata) 50
+set FitPrecision(h_Ogata) 0.01 
 set FitPrecision(IntStrategy_int) 4
 set FitPrecision(SphAvgStrategy_int) 2
+set FitPrecision(HankelStrategy_int) 0
 set FitPrecision(Robertus_p)      9
 set FitPrecision(iter_4_MC)       1001
 set FitPrecision(maxoptimizationfailure)      4
@@ -437,6 +441,7 @@ set FitPrecision(spherical_t_design) 42
 set FitPrecision(FIBONACCI) 1024
 setIntStrategy2int
 setSphAvgStrategy2int
+setHankelStrategy2int
 
 set EMOptions(IterationScheme) "KINSOL_FP"
 set EMOptions(spacing) lin

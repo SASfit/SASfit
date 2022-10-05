@@ -460,3 +460,21 @@ declare 137 generic {
 declare 138 generic {
 	scalar sasfit_hankel(int algorithm, double nu, double (*f)(double q, void *par), double x, void *fparams)
 }
+declare 139 generic {
+	scalar sasfit_get_h_Ogata(void)
+}
+declare 140 generic {
+	scalar sasfit_get_N_Ogata(void)
+}
+declare 141 generic {
+	void sasfit_set_h_Ogata(scalar value)
+}
+declare 142 generic {
+	void sasfit_set_N_Ogata(scalar value)
+}
+declare 143 generic {
+	void sasfit_set_hankel_strategy(int value)
+}
+declare 144 generic {
+	int sasfit_get_hankel_strategy(void)
+}

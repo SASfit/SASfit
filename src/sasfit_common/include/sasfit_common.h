@@ -75,6 +75,12 @@
 #define SPHAVG_MC_PLAIN 7
 #define SPHAVG_SPHERICAL_T_DESIGN 8
 
+#define HANKEL_OOURA_DEO    0
+#define HANKEL_OGATA_2005   1
+#define HANKEL_FBT0   2
+#define HANKEL_FBT1   3
+#define HANKEL_FBT2   4
+#define HANKEL_GSL_QAWF 5
 
 
 // helper for quoting compiler definitions

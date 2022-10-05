@@ -25,4 +25,4 @@
  */
 
 void sasfit_set_FBT(double nu, int option, int N, double Q) ;
-scalar sasfit_FBT(scalar x, sasfit_func_one_void intKern_fct, void *param) ;
+scalar sasfit_FBT(scalar x, double (*intKern_fct)(double, void *), void *) ;

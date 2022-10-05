@@ -152,6 +152,31 @@ int sasfit_get_sphavg_strategy(void) {
 }
 
 sasfit_common_DLLEXP
+void sasfit_set_hankel_strategy(int value) {
+	sasfit_eps.hankel_strategy = value;
+}
+sasfit_common_DLLEXP
+int sasfit_get_hankel_strategy(void) {
+	return sasfit_eps.hankel_strategy;
+}
+
+sasfit_common_DLLEXP
+void sasfit_set_h_Ogata(scalar value) {
+	sasfit_eps.h_Ogata = value;
+}
+sasfit_common_DLLEXP
+scalar sasfit_get_h_Ogata(void) {
+	return sasfit_eps.h_Ogata;
+}
+sasfit_common_DLLEXP
+void sasfit_set_N_Ogata(scalar value) {
+	sasfit_eps.N_Ogata = value;
+}
+sasfit_common_DLLEXP
+scalar sasfit_get_N_Ogata(void) {
+	return sasfit_eps.N_Ogata;
+}
+sasfit_common_DLLEXP
 void sasfit_eps_set_aniso(scalar value) {
 	sasfit_eps.aniso = value;
 }
@@ -264,7 +289,10 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
     sasfit_out("IQorGz_int       %d\n", fitp->iq_or_gz);
     sasfit_out("IntStrategy_int  %d\n", fitp->int_strategy);
     sasfit_out("SphAvgStrategy_int  %d\n", fitp->sphavg_strategy);
-	sasfit_out("Robertus_p:      %d\n", fitp->robertus_p);
+    sasfit_out("Hankel_int          %d\n", fitp->hankel_strategy);
+	sasfit_out("N_Ogfata:           %f\n", fitp->N_Ogata);
+	sasfit_out("h_Ogata:            %f\n", fitp->h_Ogata);
+	sasfit_out("Robertus_p:         %d\n", fitp->robertus_p);
 	sasfit_out("GSL_GAUSSLEGENDRE points: %d\n", fitp->gausslegendre);
 	sasfit_out("GSL_CHEBYSHEV1 points:    %d\n", fitp->chebyshev1);
 	sasfit_out("GSL_CHEBYSHEV2 points:    %d\n", fitp->chebyshev2);

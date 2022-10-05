@@ -718,47 +718,123 @@ scalar sasfit_integrate_ctm(scalar int_start,
 typedef struct
 {
 	void   *fparams; //!< Flag to enable overriding.
-	double (* function) (double x, void * fparams);
+	double (* function) (double x, void *);
 	double nu;
+	double Q;
 } sasfit_param_FBT;
 
-double f_FBT(double x, void *FBTparams) {
+void *FBTparams_static;
+double f_FBT(double Qr,void *FBT_param_void) {
     sasfit_param_FBT *FBT_param;
-    FBT_param = (sasfit_param_FBT *) FBTparams;
-    return x*FBT_param->function(x,FBT_param->fparams);
+    FBT_param = (sasfit_param_FBT *) FBT_param_void;
+    return Qr/gsl_pow_2(FBT_param->Q) * FBT_param->function(Qr/FBT_param->Q,FBT_param->fparams);
 }
 
-double intdeo_FBT(double x, void *FBTparams) {
+double intdeo_FBT(double r, void *FBTparams) {
     sasfit_param_FBT *FBT_param;
     FBT_param = (sasfit_param_FBT *) FBTparams;
-    return x*gsl_sf_bessel_Jnu(FBT_param->nu,x) * FBT_param->function(x,FBT_param->fparams);
+    return r*gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*r) * FBT_param->function(r,FBT_param->fparams);
 }
 
-scalar sasfit_hankel(int algorithm, double nu, sasfit_func_one_void f, double x, void *fparams) {
+scalar DEtransform(scalar t) {
+    return t * tanh(M_PI / 2. * sinh(t));
+}
+
+scalar deriv_DEtransform(scalar t){
+    scalar res;
+    res = 1. / cosh(M_PI / 2. * sinh(t));
+    res = M_PI / 2. * t * cosh(t) * res * res + tanh(M_PI / 2. * sinh(t));
+    return res;
+}
+
+scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fparams) {
+    scalar *aw, res,err,eps_nriq;
+    scalar zeros_PI, phi_dot,y_k,w_nv_k,J_nv, sum,nv,h;
+    unsigned int i;
+    int lenaw=4000;
+    scalar a, abserr, phi0, res0;
+    size_t limit = 4000;
     sasfit_param_FBT FBTparam;
     FBTparam.fparams=fparams;
-    FBTparam.function=&f_FBT;
+    FBTparam.function=f;
     FBTparam.nu=nu;
-    switch (algorithm) {
-        case 0: sasfit_set_FBT(nu, 0, 10, 1.0);
-                return sasfit_FBT(x, f_FBT, &FBTparam);
-                break;
-        case 1: sasfit_set_FBT(nu, 1, 10, 1.0);
-                return sasfit_FBT(x, f_FBT, &FBTparam);
-                break;
-        case 2: sasfit_set_FBT(nu, 2, 10, 1.0);
-                return sasfit_FBT(x, f_FBT, &FBTparam);
-                break;
-        case 3: scalar *aw, res,err,eps_nriq;
-                int lenaw=4000;
+    FBTparam.Q=x;
+    FBTparams_static = &FBTparam;
+    switch (sasfit_get_hankel_strategy()) {
+        case HANKEL_OOURA_DEO: {
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            eps_nriq=sasfit_eps_get_nriq();
+            sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
+            sasfit_intdeo(&intdeo_FBT,0, FBTparam.Q, aw, &res, &err, &FBTparam);
+            free(aw);
+            break;
+        }
+        case HANKEL_OGATA_2005: {
+            sum = 0.0;
+            nv = fabs(nu);
+            h = sasfit_get_h_Ogata();
+            for (i=1;i<=sasfit_get_N_Ogata();i++) {
+                zeros_PI = gsl_sf_bessel_zero_Jnu(nv,i) / M_PI;
+                phi_dot = deriv_DEtransform(h * zeros_PI);
+                y_k = DEtransform(h*zeros_PI) * M_PI / h;
+                w_nv_k = gsl_sf_bessel_Ynu(nv, zeros_PI * M_PI) / gsl_sf_bessel_Jnu(nv + 1, zeros_PI * M_PI);
+                J_nv = gsl_sf_bessel_Jnu(nv, y_k);
+                res = M_PI / gsl_pow_2(x) * w_nv_k * y_k *f(y_k / x,fparams) * J_nv * phi_dot;
+                sum = sum+res;
+            }
+            if (nv==0) {
+                res = sum;
+            } else {
+                res = sum * pow(GSL_SIGN(nu + 0.0001),nu);  // +0.1 to give 1 for phase=0
+            }
+            break;
+        }
+        case HANKEL_FBT0: {
+            sasfit_set_FBT(nu, 0, sasfit_get_N_Ogata(), 1.0);
+            res = sasfit_FBT(x, f_FBT, &FBTparam);
+            break;
+        }
+        case HANKEL_FBT1: {
+            sasfit_set_FBT(nu, 1, sasfit_get_N_Ogata(), 1.0);
+            res = sasfit_FBT(x, f_FBT, &FBTparam);
+            break;
+        }
+        case HANKEL_FBT2: {
+            sasfit_set_FBT(nu, 2, sasfit_get_N_Ogata(), 1.0);
+            res = sasfit_FBT(x, f_FBT, &FBTparam);
+            break;
+        }
+        case HANKEL_GSL_QAWF: {
+            phi0 = M_PI/4*(1+nu/2);
+            a=5*(2*M_PI)-phi0;
+
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            eps_nriq=sasfit_eps_get_nriq();
+            sasfit_intdeini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
+            sasfit_intde(&intdeo_FBT,0, a, aw, &res0, &err, &FBTparam);
+            free(aw);
+
+            gsl_function F;
+            F.params = &FBTparam;
+            F.function = (double (*) (double, void*)) &intdeo_FBT;
+            gsl_integration_workspace * w = gsl_integration_workspace_alloc (limit);
+            gsl_integration_workspace * w_cycle = gsl_integration_workspace_alloc (limit);
+            gsl_integration_qawo_table * wf=gsl_integration_qawo_table_alloc (FBTparam.Q, 1.0, GSL_INTEG_COSINE, 20);
+            int status= gsl_integration_qawf (&F,a,eps_nriq,limit,w, w_cycle, wf, &res, &abserr);
+            gsl_integration_qawo_table_free (wf);
+            gsl_integration_workspace_free(w);
+            gsl_integration_workspace_free(w_cycle);
+            res = res+res0;
+            break;
+        }
+        default:{
                 aw = (scalar *)malloc((lenaw)*sizeof(scalar));
                 eps_nriq=sasfit_eps_get_nriq();
                 sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
-                sasfit_intdeo(&intdeo_FBT,0,x, aw, &res, &err, &FBTparam);
+                sasfit_intdeo(&intdeo_FBT,0, FBTparam.Q, aw, &res, &err, &FBTparam);
                 free(aw);
                 break;
-        default:
-                break;
+        }
     }
-    return f(x,fparams)*x;
+    return res;
 }

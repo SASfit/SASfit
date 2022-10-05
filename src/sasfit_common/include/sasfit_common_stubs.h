@@ -214,7 +214,13 @@ typedef struct
 	int (*sasfit_available_sph_t_table) ( int rule ); /*135 */
     int (*sasfit_sph_t_order_table) ( int rule ); /*136 */
     void (*sasfit_sph_t_by_order) ( int order, double *x, double *y, double *z); /*137 */
-    scalar (*sasfit_hankel) (int algorithm, double nu, double (*f)(double q, void *par), double x, void *fparams); /* 138 */
+    scalar (*sasfit_hankel) (double nu, double (*f)(double q, void *par), double x, void *fparams); /* 138 */
+	scalar (*sasfit_get_h_Ogata) (void); /* 139 */
+	scalar (*sasfit_get_N_Ogata) (void); /* 140 */
+	void (*sasfit_set_h_Ogata) (scalar value); /* 141 */
+	void (*sasfit_set_N_Ogata) (scalar value); /* 142 */
+	void (*sasfit_set_hankel_strategy) (int value); /* 143 */
+	int (*sasfit_get_hankel_strategy) (void); /* 144 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -752,8 +758,30 @@ typedef struct
 #define sasfit_hankel \
 	(SASFIT_COMMON_STUBS()->sasfit_hankel) /* 138 */
 #endif
-
-
+#ifndef sasfit_get_h_Ogata
+#define sasfit_get_h_Ogata \
+	(SASFIT_COMMON_STUBS()->sasfit_get_h_Ogata) /* 139 */
+#endif
+#ifndef sasfit_get_N_Ogata
+#define sasfit_get_N_Ogata \
+	(SASFIT_COMMON_STUBS()->sasfit_get_N_Ogata) /* 140 */
+#endif
+#ifndef sasfit_set_h_Ogata
+#define sasfit_set_h_Ogata \
+	(SASFIT_COMMON_STUBS()->sasfit_set_h_Ogata) /* 141 */
+#endif
+#ifndef sasfit_set_N_Ogata
+#define sasfit_set_N_Ogata \
+	(SASFIT_COMMON_STUBS()->sasfit_set_N_Ogata) /* 142 */
+#endif
+#ifndef sasfit_set_hankel_strategy
+#define sasfit_set_hankel_strategy \
+	(SASFIT_COMMON_STUBS()->sasfit_set_hankel_strategy) /* 143 */
+#endif
+#ifndef sasfit_get_hankel_strategy
+#define sasfit_get_hankel_strategy \
+	(SASFIT_COMMON_STUBS()->sasfit_get_hankel_strategy) /* 144 */
+#endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
