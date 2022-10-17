@@ -38,6 +38,12 @@
 #include <gsl/gsl_sf.h>
 #include "include/sasfit_common.h"
 #include "include/sasfit_function.h"
+#include "include/kk51Hankel.h"
+#include "include/kk101Hankel.h"
+#include "include/kk201Hankel.h"
+#include "include/wa801Hankel.h"
+#include "include/kk101CosSin.h"
+#include "include/kk201CosSin.h"
 #include "include/sasfit_hankel.h"
 
 typedef struct {
@@ -727,6 +733,7 @@ void *FBTparams_static;
 double f_FBT(double Qr,void *FBT_param_void) {
     sasfit_param_FBT *FBT_param;
     FBT_param = (sasfit_param_FBT *) FBT_param_void;
+    return Qr*FBT_param->function(Qr,FBT_param->fparams);
     return Qr/gsl_pow_2(FBT_param->Q) * FBT_param->function(Qr/FBT_param->Q,FBT_param->fparams);
 }
 
@@ -736,14 +743,33 @@ double intdeo_FBT(double r, void *FBTparams) {
     return r*gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*r) * FBT_param->function(r,FBT_param->fparams);
 }
 
+double intQAWF_FBT(double x, void *FBTparams) {
+    scalar phi0;
+    sasfit_param_FBT *FBT_param;
+    FBT_param = (sasfit_param_FBT *) FBTparams;
+    phi0 = M_PI_4*(1.+FBT_param->nu*2.);
+    if (gsl_finite(1./cos(x*FBT_param->Q))) {
+        return (x+phi0/FBT_param->Q)*FBT_param->function((x+phi0/FBT_param->Q),FBT_param->fparams)
+            * gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0)
+            / cos(x*FBT_param->Q);
+    } else {
+        return (x+phi0/FBT_param->Q)*FBT_param->function((x+phi0/FBT_param->Q),FBT_param->fparams)
+            * ( gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0+1e-3)
+                    / cos(x*FBT_param->Q+1e-3) +
+                gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0-1e-3)
+                    / cos(x*FBT_param->Q-1e-3) )/2.;
+    }
+    return (x+phi0/FBT_param->Q)*sqrt(M_2_PI/((x+phi0/FBT_param->Q)*FBT_param->Q))* FBT_param->function((x+phi0/FBT_param->Q),FBT_param->fparams);
+}
+
 scalar DEtransform(scalar t) {
-    return t * tanh(M_PI / 2. * sinh(t));
+    return t * tanh(M_PI_2 * sinh(t));
 }
 
 scalar deriv_DEtransform(scalar t){
     scalar res;
-    res = 1. / cosh(M_PI / 2. * sinh(t));
-    res = M_PI / 2. * t * cosh(t) * res * res + tanh(M_PI / 2. * sinh(t));
+    res = 1. / cosh(M_PI_2 * sinh(t));
+    res = M_PI_2 * t * cosh(t) * res * res + tanh(M_PI_2 * sinh(t));
     return res;
 }
 
@@ -752,8 +778,115 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
     scalar zeros_PI, phi_dot,y_k,w_nv_k,J_nv, sum,nv,h;
     unsigned int i;
     int lenaw=4000;
+    int status;
     scalar a, abserr, phi0, res0;
     size_t limit = 4000;
+    scalar lambda;
+    static const scalar WJ0Fast[61] = {
+            3.30220475766E-04, -1.18223623458E-03,  2.01879495264E-03, -2.13218719891E-03,
+            1.60839063172E-03, -9.09156346708E-04,  4.37889252738E-04, -1.55298878782E-04,
+            7.98411962729E-05,  4.37268394072E-06,  3.94253441247E-05,  4.02675924344E-05,
+            5.66053344653E-05,  7.25774926389E-05,  9.55412535465E-05,  1.24699163157E-04,
+            1.63262166579E-04,  2.13477133718E-04,  2.79304232173E-04,  3.65312787897E-04,
+            4.77899413107E-04,  6.25100170825E-04,  8.17726956451E-04,  1.06961339341E-03,
+            1.39920928148E-03,  1.83020380399E-03,  2.39417015791E-03,  3.13158560774E-03,
+            4.09654426763E-03,  5.35807925630E-03,  7.00889482693E-03,  9.16637526490E-03,
+            1.19891721272E-02,  1.56755740646E-02,  2.04953856060E-02,  2.67778388247E-02,
+            3.49719672729E-02,  4.55975312615E-02,  5.93498881451E-02,  7.69179091244E-02,
+            9.91094769804E-02,  1.26166963993E-01,  1.57616825575E-01,  1.89707800260E-01,
+            2.13804195282E-01,  2.08669340316E-01,  1.40250562745E-01, -3.65385242807E-02,
+            -2.98004010732E-01, -4.21898149249E-01,  5.94373771266E-02,  5.29621428353E-01,
+            -4.41362405166E-01,  1.90355040550E-01, -6.19966386785E-02,  1.87255115744E-02,
+            -5.68736766738E-03,  1.68263510609E-03, -4.38587145792E-04,  8.59117336292E-05,
+            -9.15853765160E-06 };
+    static const scalar aJ0Fast = -5.08250000000E+00, sJ0Fast = 1.16638303862E-01;
+
+    static const scalar WJ0[120] = {
+            9.62801364263E-07, -5.02069203805E-06,  1.25268783953E-05, -1.99324417376E-05,
+            2.29149033546E-05, -2.04737583809E-05,  1.49952002937E-05, -9.37502840980E-06,
+            5.20156955323E-06, -2.62939890538E-06,  1.26550848081E-06, -5.73156151923E-07,
+            2.76281274155E-07, -1.09963734387E-07,  7.38038330280E-08, -9.31614600001E-09,
+            3.87247135578E-08,  2.10303178461E-08,  4.10556513877E-08,  4.13077946246E-08,
+            5.68828741789E-08,  6.59543638130E-08,  8.40811858728E-08,  1.01532550003E-07,
+            1.26437360082E-07,  1.54733678097E-07,  1.91218582499E-07,  2.35008851918E-07,
+            2.89750329490E-07,  3.56550504341E-07,  4.39299297826E-07,  5.40794544880E-07,
+            6.66136379541E-07,  8.20175040653E-07,  1.01015545059E-06,  1.24384500153E-06,
+            1.53187399787E-06,  1.88633707689E-06,  2.32307100992E-06,  2.86067883258E-06,
+            3.52293208580E-06,  4.33827546442E-06,  5.34253613351E-06,  6.57906223200E-06,
+            8.10198829111E-06,  9.97723263578E-06,  1.22867312381E-05,  1.51305855976E-05,
+            1.86329431672E-05,  2.29456891669E-05,  2.82570465155E-05,  3.47973610445E-05,
+            4.28521099371E-05,  5.27705217882E-05,  6.49856943660E-05,  8.00269662180E-05,
+            9.85515408752E-05,  1.21361571831E-04,  1.49454562334E-04,  1.84045784500E-04,
+            2.26649641428E-04,  2.79106748890E-04,  3.43716968725E-04,  4.23267056591E-04,
+            5.21251001943E-04,  6.41886194381E-04,  7.90483105615E-04,  9.73420647376E-04,
+            1.19877439042E-03,  1.47618560844E-03,  1.81794224454E-03,  2.23860214971E-03,
+            2.75687537633E-03,  3.39471308297E-03,  4.18062141752E-03,  5.14762977308E-03,
+            6.33918155348E-03,  7.80480111772E-03,  9.61064602702E-03,  1.18304971234E-02,
+            1.45647517743E-02,  1.79219149417E-02,  2.20527911163E-02,  2.71124775541E-02,
+            3.33214363101E-02,  4.08864842127E-02,  5.01074356716E-02,  6.12084049407E-02,
+            7.45146949048E-02,  9.00780900611E-02,  1.07940155413E-01,  1.27267746478E-01,
+            1.46676027814E-01,  1.62254276550E-01,  1.68045766353E-01,  1.52383204788E-01,
+            1.01214136498E-01, -2.44389126667E-03, -1.54078468398E-01, -3.03214415655E-01,
+            -2.97674373379E-01,  7.93541259524E-03,  4.26273267393E-01,  1.00032384844E-01,
+            -4.94117404043E-01,  3.92604878741E-01, -1.90111691178E-01,  7.43654896362E-02,
+            -2.78508428343E-02,  1.09992061155E-02, -4.69798719697E-03,  2.12587632706E-03,
+            -9.81986734159E-04,  4.44992546836E-04, -1.89983519162E-04,  7.31024164292E-05,
+            -2.40057837293E-05,  6.23096824846E-06, -1.12363896552E-06,  1.04470606055E-07 };
+    static const scalar aJ0=-8.38850000000E+00, sJ0 = 9.0422646867E-02;
+
+    static const scalar WJ1Fast[47] = {
+            3.17926147465E-06, -9.73811660718E-06,  1.64866227408E-05, -1.81501261160E-05,
+            1.87556556369E-05, -1.46550406038E-05,  1.53799733803E-05, -6.95628273934E-06,
+            1.41881555665E-05,  3.41445665537E-06,  2.13941715512E-05,  2.34962369042E-05,
+            4.84340283290E-05,  7.33732978590E-05,  1.27703784430E-04,  2.08120025730E-04,
+            3.49803898913E-04,  5.79107814687E-04,  9.65887918451E-04,  1.60401273703E-03,
+            2.66903777685E-03,  4.43111590040E-03,  7.35631696247E-03,  1.21782796293E-02,
+            2.01097829218E-02,  3.30096953061E-02,  5.37143591532E-02,  8.60516613299E-02,
+            1.34267607144E-01,  2.00125033067E-01,  2.74027505792E-01,  3.18168749246E-01,
+            2.41655667461E-01, -5.40549161658E-02, -4.46912952135E-01, -1.92231885629E-01,
+            5.52376753950E-01, -3.57429049025E-01,  1.41510519002E-01, -4.61421935309E-02,
+            1.48273761923E-02, -5.07479209193E-03,  1.83829713749E-03, -6.67742804324E-04,
+            2.21277518118E-04, -5.66248732755E-05,  7.88229202853E-06 };
+    static const scalar aJ1Fast = -3.05078187595E+00, sJ1Fast = 1.10599010095E-01;
+
+    static const scalar WJ1[140] = {
+            -6.76671159511E-14,  3.39808396836E-13, -7.43411889153E-13,  8.93613024469E-13,
+            -5.47341591896E-13, -5.84920181906E-14,  5.20780672883E-13, -6.92656254606E-13,
+             6.88908045074E-13, -6.39910528298E-13,  5.82098912530E-13, -4.84912700478E-13,
+             3.54684337858E-13, -2.10855291368E-13,  1.00452749275E-13,  5.58449957721E-15,
+            -5.67206735175E-14,  1.09107856853E-13, -6.04067500756E-14,  8.84512134731E-14,
+             2.22321981827E-14,  8.38072239207E-14,  1.23647835900E-13,  1.44351787234E-13,
+             2.94276480713E-13,  3.39965995918E-13,  6.17024672340E-13,  8.25310217692E-13,
+             1.32560792613E-12,  1.90949961267E-12,  2.93458179767E-12,  4.33454210095E-12,
+             6.55863288798E-12,  9.78324910827E-12,  1.47126365223E-11,  2.20240108708E-11,
+             3.30577485691E-11,  4.95377381480E-11,  7.43047574433E-11,  1.11400535181E-10,
+             1.67052734516E-10,  2.50470107577E-10,  3.75597211630E-10,  5.63165204681E-10,
+             8.44458166896E-10,  1.26621795331E-09,  1.89866561359E-09,  2.84693620927E-09,
+             4.26886170263E-09,  6.40104325574E-09,  9.59798498616E-09,  1.43918931885E-08,
+             2.15798696769E-08,  3.23584600810E-08,  4.85195105813E-08,  7.27538583183E-08,
+             1.09090191748E-07,  1.63577866557E-07,  2.45275193920E-07,  3.67784458730E-07,
+             5.51470341585E-07,  8.26916206192E-07,  1.23991037294E-06,  1.85921554669E-06,
+             2.78777669034E-06,  4.18019870272E-06,  6.26794044911E-06,  9.39858833064E-06,
+             1.40925408889E-05,  2.11312291505E-05,  3.16846342900E-05,  4.75093313246E-05,
+             7.12354794719E-05,  1.06810848460E-04,  1.60146590551E-04,  2.40110903628E-04,
+             3.59981158972E-04,  5.39658308918E-04,  8.08925141201E-04,  1.21234066243E-03,
+             1.81650387595E-03,  2.72068483151E-03,  4.07274689463E-03,  6.09135552241E-03,
+             9.09940027636E-03,  1.35660714813E-02,  2.01692550906E-02,  2.98534800308E-02,
+             4.39060697220E-02,  6.39211368217E-02,  9.16763946228E-02,  1.28368795114E-01,
+             1.73241920046E-01,  2.19830379079E-01,  2.51193131178E-01,  2.32380049895E-01,
+             1.17121080205E-01, -1.17252913088E-01, -3.52148528535E-01, -2.71162871370E-01,
+             2.91134747110E-01,  3.17192840623E-01, -4.93075681595E-01,  3.11223091821E-01,
+            -1.36044122543E-01,  5.12141261934E-02, -1.90806300761E-02,  7.57044398633E-03,
+            -3.25432753751E-03,  1.49774676371E-03, -7.24569558272E-04,  3.62792644965E-04,
+            -1.85907973641E-04,  9.67201396593E-05, -5.07744171678E-05,  2.67510121456E-05,
+            -1.40667136728E-05,  7.33363699547E-06, -3.75638767050E-06,  1.86344211280E-06,
+            -8.71623576811E-07,  3.61028200288E-07, -1.05847108097E-07, -1.51569361490E-08,
+             6.67633241420E-08, -8.33741579804E-08,  8.31065906136E-08, -7.53457009758E-08,
+             6.48057680299E-08, -5.37558016587E-08,  4.32436265303E-08, -3.37262648712E-08,
+             2.53558687098E-08, -1.81287021528E-08,  1.20228328586E-08, -7.10898040664E-09,
+             3.53667004588E-09, -1.36030600198E-09,  3.52544249042E-10, -4.53719284366E-11 };
+    static const scalar aJ1=-7.91001919000E+00, sJ1 =  8.7967143957E-02;
+
     sasfit_param_FBT FBTparam;
     FBTparam.fparams=fparams;
     FBTparam.function=f;
@@ -777,36 +910,40 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
                 zeros_PI = gsl_sf_bessel_zero_Jnu(nv,i) / M_PI;
                 phi_dot = deriv_DEtransform(h * zeros_PI);
                 y_k = DEtransform(h*zeros_PI) * M_PI / h;
-                w_nv_k = gsl_sf_bessel_Ynu(nv, zeros_PI * M_PI) / gsl_sf_bessel_Jnu(nv + 1, zeros_PI * M_PI);
+                // w_nv_k = gsl_sf_bessel_Ynu(nv, zeros_PI * M_PI) / gsl_sf_bessel_Jnu(nv + 1, zeros_PI * M_PI);
+                w_nv_k = 2./ (gsl_pow_2(M_PI*gsl_sf_bessel_Jnu(nv+1,zeros_PI*M_PI)) * zeros_PI);
                 J_nv = gsl_sf_bessel_Jnu(nv, y_k);
-                res = M_PI / gsl_pow_2(x) * w_nv_k * y_k *f(y_k / x,fparams) * J_nv * phi_dot;
+                res =  w_nv_k * y_k * (*f)(y_k / x,fparams) * J_nv * phi_dot;
                 sum = sum+res;
             }
+            // sum = 0.5 / gsl_pow_2(x) * sum;
+            sum = M_PI / gsl_pow_2(x) * sum;
             if (nv==0) {
                 res = sum;
             } else {
-                res = sum * pow(GSL_SIGN(nu + 0.0001),nu);  // +0.1 to give 1 for phase=0
+                res = sum * pow(GSL_SIGN(nu),nu);
             }
             break;
         }
         case HANKEL_FBT0: {
-            sasfit_set_FBT(nu, 0, sasfit_get_N_Ogata(), 1.0);
+            sasfit_set_FBT(nu, 0, sasfit_get_N_Ogata(), 1.0e-2);
             res = sasfit_FBT(x, f_FBT, &FBTparam);
             break;
         }
         case HANKEL_FBT1: {
-            sasfit_set_FBT(nu, 1, sasfit_get_N_Ogata(), 1.0);
+            sasfit_set_FBT(nu, 1, sasfit_get_N_Ogata(), 1.0e-2);
             res = sasfit_FBT(x, f_FBT, &FBTparam);
             break;
         }
         case HANKEL_FBT2: {
-            sasfit_set_FBT(nu, 2, sasfit_get_N_Ogata(), 1.0);
+            sasfit_set_FBT(nu, 2, sasfit_get_N_Ogata(), 1.0e-2);
             res = sasfit_FBT(x, f_FBT, &FBTparam);
             break;
         }
         case HANKEL_GSL_QAWF: {
-            phi0 = M_PI/4*(1+nu/2);
-            a=5*(2*M_PI)-phi0;
+            phi0 = M_PI/4.*(1.+nu*2.);
+
+            a=gsl_sf_bessel_zero_Jnu(nv,lround(sasfit_get_N_Ogata()))/FBTparam.Q;
 
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             eps_nriq=sasfit_eps_get_nriq();
@@ -816,15 +953,140 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
 
             gsl_function F;
             F.params = &FBTparam;
-            F.function = (double (*) (double, void*)) &intdeo_FBT;
+            F.function = (double (*) (double, void*)) &intQAWF_FBT;
             gsl_integration_workspace * w = gsl_integration_workspace_alloc (limit);
             gsl_integration_workspace * w_cycle = gsl_integration_workspace_alloc (limit);
-            gsl_integration_qawo_table * wf=gsl_integration_qawo_table_alloc (FBTparam.Q, 1.0, GSL_INTEG_COSINE, 20);
-            int status= gsl_integration_qawf (&F,a,eps_nriq,limit,w, w_cycle, wf, &res, &abserr);
+            gsl_integration_qawo_table * wf=gsl_integration_qawo_table_alloc (FBTparam.Q, 1.0, GSL_INTEG_COSINE, 200);
+            status = gsl_integration_qawf (&F,a-phi0/FBTparam.Q,eps_nriq,limit,w, w_cycle, wf, &res, &abserr);
+            if (status != GSL_SUCCESS) sasfit_out("Q:%lf\n",FBTparam.Q);
             gsl_integration_qawo_table_free (wf);
             gsl_integration_workspace_free(w);
             gsl_integration_workspace_free(w_cycle);
             res = res+res0;
+            break;
+        }
+        case HANKEL_GUPTASARMA_97_FAST: {
+            if (!(nu==0 || nu==1)) {
+                sasfit_err("GUPTASARMA_97_FAST strategy is only available for Hankel transforms J0 and J1\n");
+                return 0;
+            }
+            if (nu==0) {
+                res = 0;
+                for (i=0;i<61;i++) {
+                    lambda =pow(10.0E0,(aJ0Fast + i*sJ0Fast))/x;
+                    res = res+(*f)(lambda,fparams)*lambda*WJ0Fast[i]/x;
+                }
+            } else {
+                res = 0;
+                for (i=0;i<47;i++) {
+                    lambda =pow(10.0E0,(aJ1Fast + i*sJ1Fast))/x;
+                    res = res+(*f)(lambda,fparams)*lambda*WJ0Fast[i]/x;
+                }
+            }
+            break;
+        }
+        case HANKEL_GUPTASARMA_97: {
+            if (!(nu==0 || nu==1)) {
+                sasfit_err("GUPTASARMA_97_FAST strategy is only available for Hankel transforms J0 and J1\n");
+                return 0;
+            }
+            if (nu==0) {
+                res = 0;
+                for (i=0;i<120;i++) {
+                    lambda =pow(10.0E0,(aJ0 + i*sJ0))/x;
+                    res = res+(*f)(lambda,fparams)*lambda*WJ0[i]/x;
+                }
+            } else {
+                res = 0;
+                for (i=0;i<140;i++) {
+                    lambda =pow(10.0E0,(aJ1 + i*sJ1))/x;
+                    res = res+(*f)(lambda,fparams)*lambda*WJ1[i]/x;
+                }
+            }
+            break;
+        }
+        case HANKEL_KEY_51: {
+            if (!(nu==0 || nu==1)) {
+                sasfit_err("KEY_51 strategy is only available for Hankel transforms J0 and J1\n");
+                return 0;
+            }
+            if (nu==0) {
+                res = 0;
+                for (i=0;i<51;i++) {
+                    lambda =KK51Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*KK51Hankel[i][1]/x;
+                }
+            } else {
+                res = 0;
+                for (i=0;i<51;i++) {
+                    lambda =KK51Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*KK51Hankel[i][2]/x;
+                }
+            }
+            break;
+        }
+        case HANKEL_KEY_101: {
+            if (!(nu==0 || nu==1)) {
+                sasfit_err("KEY_101 strategy is only available for Hankel transforms J0 and J1\n");
+                return 0;
+            }
+            if (nu==0) {
+                res = 0;
+                for (i=0;i<101;i++) {
+                    lambda =KK101Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*KK101Hankel[i][1]/x;
+                }
+            } else {
+                res = 0;
+                for (i=0;i<101;i++) {
+                    lambda =KK101Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*KK101Hankel[i][2]/x;
+                }
+            }
+            break;
+        }
+        case HANKEL_KEY_201: {
+            if (!(nu==0 || nu==1)) {
+                sasfit_err("KEY_201 strategy is only available for Hankel transforms J0 and J1\n");
+                return 0;
+            }
+            if (nu==0) {
+                res = 0;
+                for (i=0;i<201;i++) {
+                    lambda =KK201Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*KK201Hankel[i][1]/x;
+                }
+            } else {
+                res = 0;
+                for (i=0;i<201;i++) {
+                    lambda =KK201Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*KK201Hankel[i][2]/x;
+                }
+            }
+            break;
+        }
+        case HANKEL_ANDERSON_801: {
+            if (!(nu==0 || nu==1)) {
+                sasfit_err("WA_801 strategy is only available for Hankel transforms J0 and J1\n");
+                return 0;
+            }
+            if (nu==0) {
+                res = 0;
+                for (i=0;i<801;i++) {
+                    lambda =WA801Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*WA801Hankel[i][1]/x;
+                }
+            } else {
+                res = 0;
+                for (i=0;i<801;i++) {
+                    lambda =WA801Hankel[i][0]/x;
+                    res = res+(*f)(lambda,fparams)*lambda*WA801Hankel[i][2]/x;
+                }
+            }
+            break;
+        }
+        case HANKEL_QWE: {
+            res = sasfit_qwe(0, f, x, fparams, 100, sasfit_eps_get_nriq(), DBL_MIN);
             break;
         }
         default:{

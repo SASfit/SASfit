@@ -141,6 +141,8 @@ typedef struct
 	double             *xarr;            //!< hack for OZ solver
 	double             *yarr;            //!< hack for OZ solver
 	void *             moreparam;
+	scalar             more_p[MAXPAR];      //!< more Parameter of a function.
+	double (*function)(double, void *);
 } sasfit_param;
 
 /**

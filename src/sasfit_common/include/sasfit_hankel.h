@@ -26,3 +26,4 @@
 
 void sasfit_set_FBT(double nu, int option, int N, double Q) ;
 scalar sasfit_FBT(scalar x, double (*intKern_fct)(double, void *), void *) ;
+scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparams, int nIntervalsMax, scalar rtol, scalar atol);

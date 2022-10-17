@@ -81,6 +81,13 @@
 #define HANKEL_FBT1   3
 #define HANKEL_FBT2   4
 #define HANKEL_GSL_QAWF 5
+#define HANKEL_GUPTASARMA_97 6
+#define HANKEL_GUPTASARMA_97_FAST 7
+#define HANKEL_KEY_51 8
+#define HANKEL_KEY_101 9
+#define HANKEL_KEY_201 10
+#define HANKEL_ANDERSON_801 11
+#define HANKEL_QWE 12
 
 
 // helper for quoting compiler definitions
