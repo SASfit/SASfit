@@ -88,6 +88,7 @@
 #define HANKEL_KEY_201 10
 #define HANKEL_ANDERSON_801 11
 #define HANKEL_QWE 12
+#define HANKEL_CHAVE 13
 
 
 // helper for quoting compiler definitions

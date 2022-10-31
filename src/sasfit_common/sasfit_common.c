@@ -186,6 +186,10 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_set_N_Ogata, /* 142 */
 	sasfit_set_hankel_strategy, /* 143 */
 	sasfit_get_hankel_strategy, /* 144 */
+	sasfit_get_MSASthickness, /* 145 */
+	sasfit_get_MSASlambda, /* 146 */
+	sasfit_set_MSASthickness, /* 147 */
+	sasfit_set_MSASlambda, /* 148 */
 };
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 

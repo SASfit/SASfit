@@ -221,6 +221,10 @@ typedef struct
 	void (*sasfit_set_N_Ogata) (scalar value); /* 142 */
 	void (*sasfit_set_hankel_strategy) (int value); /* 143 */
 	int (*sasfit_get_hankel_strategy) (void); /* 144 */
+	scalar (*sasfit_get_MSASthickness) (void); /* 145 */
+	scalar (*sasfit_get_MSASlambda) (void); /* 146 */
+	void (*sasfit_set_MSASthickness) (scalar value); /* 147 */
+	void (*sasfit_set_MSASlambda) (scalar value); /* 148 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -781,6 +785,22 @@ typedef struct
 #ifndef sasfit_get_hankel_strategy
 #define sasfit_get_hankel_strategy \
 	(SASFIT_COMMON_STUBS()->sasfit_get_hankel_strategy) /* 144 */
+#endif
+#ifndef sasfit_get_MSASthickness
+#define sasfit_get_MSASthickness \
+	(SASFIT_COMMON_STUBS()->sasfit_get_MSASthickness) /* 145 */
+#endif
+#ifndef sasfit_get_MSASlambda
+#define sasfit_get_MSASlambda \
+	(SASFIT_COMMON_STUBS()->sasfit_get_MSASlambda) /* 146 */
+#endif
+#ifndef sasfit_set_MSASthickness
+#define sasfit_set_MSASthickness \
+	(SASFIT_COMMON_STUBS()->sasfit_set_MSASthickness) /* 147 */
+#endif
+#ifndef sasfit_set_MSASlambda
+#define sasfit_set_MSASlambda \
+	(SASFIT_COMMON_STUBS()->sasfit_set_MSASlambda) /* 148 */
 #endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 

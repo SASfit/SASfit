@@ -45,6 +45,7 @@
 #include "include/kk101CosSin.h"
 #include "include/kk201CosSin.h"
 #include "include/sasfit_hankel.h"
+#include "../sasfit_common/multidiminte/src/tanhsinh/tanhsinh.h"
 
 typedef struct {
     sasfit_param *param;
@@ -557,20 +558,79 @@ scalar sasfit_integrate_ctm(scalar int_start,
 
 	if ( gsl_isinf(int_start) && gsl_finite(int_end) ) 	// adaptive integration on infinite intervals (-\infty,b)
 	{
-        	err = gsl_integration_qagil(&F, int_end, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+	    switch (sasfit_get_int_strategy()) {
+	        case TANHSINH_1: {
+	            res = TanhSinhQuad(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
+	        case TANHSINH_2: {
+	            res = qthsh(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
+            default : {
+                err = gsl_integration_qagil(&F, int_end, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+            }
+	    }
 	}
 	else if ( gsl_finite(int_start) && gsl_isinf(int_end) )	// adaptive integration on infinite intervals (a,+\infty)
 	{
-        	err = gsl_integration_qagiu(&F, int_start, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+	    switch (sasfit_get_int_strategy()) {
+	        case TANHSINH_1: {
+	            res = TanhSinhQuad(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
+	        case TANHSINH_2: {
+	            res = qthsh(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
+            case OOURA_DOUBLE_EXP_QUADRATURE: {
+                aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+                sasfit_intdeiini(lenaw, GSL_DBL_MIN, epsrel, aw);
+                sasfit_intdei(&Kernel_1D,int_start, aw, &res, &ferr[0],&cubstruct);
+                free(aw);
+                break;
+            }
+            default :{
+                err = gsl_integration_qagiu(&F, int_start, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+            }
+        }
 	}
 	else if ( gsl_isinf(int_start) && gsl_isinf(int_end) ) 	// adaptive integration on infinite intervals (-\infty,+\infty)
 	{
-	    err = gsl_integration_qagi(&F, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+	    switch (sasfit_get_int_strategy()) {
+	        case TANHSINH_1: {
+	            res = TanhSinhQuad(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
+	        case TANHSINH_2: {
+	            res = qthsh(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
+            default : {
+                err = gsl_integration_qagi(&F, epsabs, epsrel, limit, sasfit_int_mem(thid), &res, &errabs);
+            }
+	    }
 	}
 	else if ( gsl_finite(int_start) && gsl_finite(int_end) ) // adaptive integration with singularities
 	                                                         // on well defined interval (a,b)
 	{
 	    switch (sasfit_get_int_strategy()) {
+	        case TANHSINH_1: {
+	            res = TanhSinhQuad(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
+	        case TANHSINH_2: {
+	            res = qthsh(&Kernel_1D, &cubstruct,
+                            int_start,int_end,7,epsrel,&ferr[0]);
+                break;
+	        }
 	        case GSL_GAUSSLEGENDRE: {
                 wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
                 err = GSL_SUCCESS;
@@ -600,7 +660,6 @@ scalar sasfit_integrate_ctm(scalar int_start,
                 aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
                 sasfit_intccini(lenaw, aw);
                 sasfit_intcc(&Kernel_1D,int_start,int_end,epsrel, lenaw, aw, &res, &ferr[0],&cubstruct);
-                err=0;
                 free(aw);
                 break;
             }
@@ -608,7 +667,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
                 aw = (scalar *)malloc((lenaw)*sizeof(scalar));
                 sasfit_intdeini(lenaw, GSL_DBL_MIN, epsrel, aw);
                 sasfit_intde(&Kernel_1D,int_start,int_end, aw, &res, &ferr[0],&cubstruct);
-                err=0;
+                err=ferr[0];
                 free(aw);
                 break;
             }
@@ -957,7 +1016,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             gsl_integration_workspace * w = gsl_integration_workspace_alloc (limit);
             gsl_integration_workspace * w_cycle = gsl_integration_workspace_alloc (limit);
             gsl_integration_qawo_table * wf=gsl_integration_qawo_table_alloc (FBTparam.Q, 1.0, GSL_INTEG_COSINE, 200);
-            status = gsl_integration_qawf (&F,a-phi0/FBTparam.Q,eps_nriq,limit,w, w_cycle, wf, &res, &abserr);
+            status = gsl_integration_qawf (&F,a-phi0/FBTparam.Q,eps_nriq*3,limit,w, w_cycle, wf, &res, &abserr);
             if (status != GSL_SUCCESS) sasfit_out("Q:%lf\n",FBTparam.Q);
             gsl_integration_qawo_table_free (wf);
             gsl_integration_workspace_free(w);
@@ -1086,7 +1145,11 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             break;
         }
         case HANKEL_QWE: {
-            res = sasfit_qwe(0, f, x, fparams, 100, sasfit_eps_get_nriq(), DBL_MIN);
+            res = sasfit_qwe(0, f, x, fparams, 200, sasfit_eps_get_nriq()*10, DBL_MIN);
+            break;
+        }
+        case HANKEL_CHAVE: {
+            res = sasfit_HankelChave(0, f,x, fparams, 200, sasfit_eps_get_nriq()*10, DBL_MIN);
             break;
         }
         default:{

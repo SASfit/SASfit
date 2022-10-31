@@ -39,7 +39,7 @@ void FBT::citation(){
 // Deconstructor
 FBT::~FBT(){
   //jn_zeros0.~vector<double>();
-  citation();
+//  citation();
 };
 
 // Constructor
@@ -92,7 +92,7 @@ FBT::FBT(double _nu, int _option, int _N, double _Q){
 
  }
 
-  acknowledgement();
+//  acknowledgement();
 
 };
 

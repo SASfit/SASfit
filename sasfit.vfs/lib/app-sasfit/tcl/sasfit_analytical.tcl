@@ -8381,10 +8381,32 @@ if {$simulate && [winfo exists $w.adj.calc]} {
 
 proc setIQorGz2int {} {
 	switch $::FitPrecision(IQorGz) {
-		"1" {set ::FitPrecision(IQorGz_int) 0} 
-		"Exp(H{...}/2pi)" {set ::FitPrecision(IQorGz_int) 1}
-		"H{...}/2pi" {set ::FitPrecision(IQorGz_int) 2}
-		default {set ::FitPrecision(IQorGz_int) 0}
+		"1" {set ::FitPrecision(IQorGz_int) 0
+			pack forget $::FitPrecision(MSASw).lambdaval
+			pack forget $::FitPrecision(MSASw).lambdatxt
+			pack forget $::FitPrecision(MSASw).thicknessval
+			pack forget $::FitPrecision(MSASw).thicknesstxt} 
+		"Exp(H{...}/2pi)" {set ::FitPrecision(IQorGz_int) 1
+			pack forget $::FitPrecision(MSASw).lambdaval
+			pack forget $::FitPrecision(MSASw).lambdatxt
+			pack forget $::FitPrecision(MSASw).thicknessval
+			pack forget $::FitPrecision(MSASw).thicknesstxt}
+		"H{...}/2pi" {set ::FitPrecision(IQorGz_int) 2
+			pack forget $::FitPrecision(MSASw).lambdaval
+			pack forget $::FitPrecision(MSASw).lambdatxt
+			pack forget $::FitPrecision(MSASw).thicknessval
+			pack forget $::FitPrecision(MSASw).thicknesstxt}
+		"MSAS" {set ::FitPrecision(IQorGz_int) 3
+			pack $::FitPrecision(MSASw).thicknessval \
+		    $::FitPrecision(MSASw).thicknesstxt \
+		    $::FitPrecision(MSASw).lambdaval \
+		    $::FitPrecision(MSASw).lambdatxt \
+		    -padx 1m -pady 1m -side right}
+		default {set ::FitPrecision(IQorGz_int) 0
+			pack forget $::FitPrecision(MSASw).lambdaval
+			pack forget $::FitPrecision(MSASw).lambdatxt
+			pack forget $::FitPrecision(MSASw).thicknessval
+			pack forget $::FitPrecision(MSASw).thicknesstxt}
 	}
 }
 
@@ -8392,7 +8414,8 @@ proc analytical_widgets_bottom { w simulate isGlobal
 } {
 	frame $w.adj -relief groove -borderwidth 1
 	frame $w.progress 
-	pack $w.progress $w.adj -fill both -side bottom
+	frame $w.msas 
+	pack $w.msas $w.progress $w.adj -fill both -side bottom
 
 	# online help in the 'status-bar'
 	message [quick_message_window] -text "" \
@@ -8477,7 +8500,7 @@ proc analytical_widgets_bottom { w simulate isGlobal
         ProgressBar $w.progress.value \
 	    		-maximum 100\
 				-type normal -variable ::SASfitprogressbar 
-		ComboBox $w.progress.iq_gz -values {"1" "Exp(H{...}/2pi)" "H{...}/2pi"} \
+		ComboBox $w.progress.iq_gz -values {"1" "Exp(H{...}/2pi)" "H{...}/2pi" "MSAS"} \
 				-width 12 \
 				-textvariable ::FitPrecision(IQorGz) \
 				-label "transform:" \
@@ -8486,6 +8509,21 @@ proc analytical_widgets_bottom { w simulate isGlobal
     	pack $w.progress.interrupt -padx 3 -pady 5 -side left 
         pack $w.progress.iq_gz -padx 3 -pady 5 -side right 
         pack $w.progress.value -padx 3 -pady 5 -side right -fill x -expand yes
+		label $w.msas.lambdatxt -text "lambda:" -width 7
+		entry $w.msas.lambdaval \
+			-textvariable ::FitPrecision(MSASlambda) \
+			-width 5
+		label $w.msas.thicknesstxt -text "t:" -width 2
+		entry $w.msas.thicknessval \
+			-textvariable ::FitPrecision(MSASthickness) \
+			-width 5	
+		pack $w.msas.thicknessval \
+		     $w.msas.thicknesstxt \
+		     $w.msas.lambdaval \
+		     $w.msas.lambdatxt \
+		     -padx 1m -pady 1m -side right
+		set ::FitPrecision(MSASw) $w.msas
+		setIQorGz2int
         set ::SASfitprogressbar 0
         set ::SASfitinterrupt 0
 }

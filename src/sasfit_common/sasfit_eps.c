@@ -177,6 +177,22 @@ scalar sasfit_get_N_Ogata(void) {
 	return sasfit_eps.N_Ogata;
 }
 sasfit_common_DLLEXP
+void sasfit_set_MSASthickness(scalar value) {
+	sasfit_eps.MSASthickness = value;
+}
+sasfit_common_DLLEXP
+scalar sasfit_get_MSASthickness(void) {
+	return sasfit_eps.MSASthickness;
+}
+sasfit_common_DLLEXP
+void sasfit_set_MSASlambda(scalar value) {
+	sasfit_eps.MSASlambda = value;
+}
+sasfit_common_DLLEXP
+scalar sasfit_get_MSASlambda(void) {
+	return sasfit_eps.MSASlambda;
+}
+sasfit_common_DLLEXP
 void sasfit_eps_set_aniso(scalar value) {
 	sasfit_eps.aniso = value;
 }
@@ -292,6 +308,8 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
     sasfit_out("Hankel_int          %d\n", fitp->hankel_strategy);
 	sasfit_out("N_Ogfata:           %f\n", fitp->N_Ogata);
 	sasfit_out("h_Ogata:            %f\n", fitp->h_Ogata);
+	sasfit_out("MSASthickness:      %f\n", fitp->MSASthickness);
+	sasfit_out("MSASlambda:         %f\n", fitp->MSASlambda);
 	sasfit_out("Robertus_p:         %d\n", fitp->robertus_p);
 	sasfit_out("GSL_GAUSSLEGENDRE points: %d\n", fitp->gausslegendre);
 	sasfit_out("GSL_CHEBYSHEV1 points:    %d\n", fitp->chebyshev1);

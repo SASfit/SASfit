@@ -1499,6 +1499,51 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
    }
 }
 
+scalar IQ4HT(scalar Q, sasfit_param *param) {
+        Tcl_Interp *interp;
+        int *dF_dpar;
+        sasfit_function*  SD;
+        sasfit_function*  FF;
+        sasfit_function*  SQ;
+        int   distr;
+        int   SQ_how;
+		scalar Rstart, Rend;
+        int   nintervals;
+        bool  error;
+        scalar Icalc, *l, *s, *a, z;
+        sasfit_param4int *param4int;
+        error = FALSE;
+        param4int = ( sasfit_param4int *) param->moreparam;
+        interp    = param4int->interp;
+        dF_dpar   = param4int->dF_dpar;
+        SD = param4int->SD;
+        FF = param4int->FF;
+        SQ = param4int->SQ;
+        SQ_how = param4int->SQ_how;
+        distr  = param4int->distr;
+        Rstart = param4int->Rstart;
+        Rend   = param4int->Rend;
+        nintervals = param4int->nintervals;
+        l = param4int->l;
+        a = param4int->a;
+        s = param4int->s;
+        Icalc = integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,&error);
+        param4int->error=error;
+        return (Icalc);
+}
+
+scalar IQ4HT_Hankel(scalar Q, sasfit_param *param) {
+        sasfit_param4int *param4int;
+        param4int = ( sasfit_param4int *) param->moreparam;
+        return IQ4HT(Q,param)*Q*bessj0(Q*param4int->z);
+}
+
+scalar IQ4HTvoid(scalar Q, void *fparam) {
+    sasfit_param *param;
+    param = (sasfit_param *) fparam;
+    return IQ4HT(Q,param);
+}
+
 scalar HTIQ_OOURA(scalar Q, void *param4int) {
         Tcl_Interp *interp;
         int *dF_dpar;
@@ -1509,9 +1554,10 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         int   SQ_how;
 		scalar Rstart, Rend;
         int   nintervals;
-        bool  *error;
+        int  error;
         scalar Icalc, *l, *s, *a, z;
 
+        error = FALSE;
         interp = (( sasfit_param4int *) param4int)->interp;
         dF_dpar = (( sasfit_param4int *) param4int)->dF_dpar;
         z = (( sasfit_param4int *) param4int)->z;
@@ -1523,12 +1569,12 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         Rstart = (( sasfit_param4int *) param4int)->Rstart;
         Rend = ((sasfit_param4int *) param4int)->Rend;
         nintervals = ((sasfit_param4int *) param4int)->nintervals;
-        *error = (( sasfit_param4int *) param4int)->error;
         l = (( sasfit_param4int *) param4int)->l;
         a = (( sasfit_param4int *) param4int)->a;
         s = (( sasfit_param4int *) param4int)->s;
-        Icalc = integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
-        if (*error) return 0;
+        Icalc = integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,&error);
+        (( sasfit_param4int *) param4int)->error = error;
+//        if (error) return 0;
 //        *((( sasfit_GzIntStruct *)GIP)->Ifit) = *Ifit;
 //        *((( sasfit_GzIntStruct *)GIP)->Isub) = *Isub;
         return (Icalc)*Q*bessj0(Q*z)/(2*M_PI);
@@ -1552,58 +1598,54 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
                 bool  *error)
 {
     sasfit_param4int param4int;
-    scalar *aw, Gz, Xi, err;
+    sasfit_param param;
+    scalar Gz, Xi, err;
+    scalar *aw;
     int lenaw;
 
-    if (sasfit_get_iq_or_gz() == 0) {
-        return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
-    } else {
-        param4int.interp=interp;
-        param4int.dF_dpar=dF_dpar;
-        param4int.l=l;
-        param4int.s=s;
-        param4int.Q=Q;
-        param4int.a=a;
-        param4int.SD=SD;
-        param4int.FF=FF;
-        param4int.SQ=SQ;
-        param4int.Rstart=Rstart;
-        param4int.Rend=Rend;
-        param4int.nintervals=nintervals;
-        param4int.distr=distr;
-        param4int.error=*error;
+    switch (sasfit_get_iq_or_gz()) {
+        case 0 : {
+            return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
+            break;}
+        case 1:
+        case 2:{
+            if (Q==0) return 0;
+            param4int.interp=interp;
+            param4int.dF_dpar=dF_dpar;
+            param4int.l=l;
+            param4int.s=s;
+            param4int.a=a;
+            param4int.SD=SD;
+            param4int.FF=FF;
+            param4int.SQ=SQ;
+            param4int.Rstart=Rstart;
+            param4int.Rend=Rend;
+            param4int.nintervals=nintervals;
+            param4int.distr=distr;
+            param4int.SQ_how=SQ_how;
+            param.moreparam=&param4int;
 
-        lenaw=4000;
-
-        aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-        if ((sasfit_get_iq_or_gz()!=3) && (sasfit_get_iq_or_gz()!=4)) {
-            param4int.z = 0;
-            if (Qres <=0) {
-                sasfit_intdeiini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-                sasfit_intdei(&HTIQ_OOURA, 0.0, aw, &Xi, &err,&param4int);
+            if (Qres<=0) {
+                param4int.z = 0;
+                Xi = sasfit_integrate(0,GSL_POSINF,&IQ4HT_Hankel,&param)/(2*M_PI);
+                param4int.z = Q;
+                Gz = sasfit_hankel(0,&IQ4HTvoid,Q,&param)/(2*M_PI);
             } else {
-                sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-                sasfit_intde(&HTIQ_OOURA, 0.0, Qres, aw, &Xi, &err,&param4int);
+                param4int.z = 0;
+                Xi = sasfit_integrate(0,Qres,&IQ4HT_Hankel,&param)/(2*M_PI);
+                param4int.z = Q;
+                Gz = sasfit_integrate(GSL_DBL_MIN,Qres,&IQ4HT_Hankel,&param)/(2*M_PI);
             }
-        }
-        param4int.z = Q;
-        if (Qres <=0) {
-            sasfit_intdeoini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intdeo(&HTIQ_OOURA, 0.0, Q, aw, &Gz, &err,&param4int);
-        } else {
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&HTIQ_OOURA, 0.0, Qres, aw, &Gz, &err,&param4int);
-        }
-
-//           sasfit_out("z:%lf, Gz:%lf, exp(Gz-Xi):%lf\n",GIP.z,Gz,*Ifit);
-        free(aw) ;
-//      Here only (Gz-Xi) is returned as at this stage the contribution of different scattering species is still a linear combination
-//      Only at the very end, when all contributions are summed up the exponential is taken. (see IQ() and IQ_Global())
-        if ((sasfit_get_iq_or_gz()==3) || (sasfit_get_iq_or_gz()==4)) {
-            return Gz;
-        } else {
-            return (Gz-Xi);
-        }
+            *error = param4int.error;
+//            sasfit_out("Gz(%lg)-Xi(%lg)\n",Gz,Xi);
+            return Gz-Xi;
+            break;}
+        case 3: {
+            return 0;
+            break;}
+        default: {
+            return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
+            break;}
     }
 }
 

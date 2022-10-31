@@ -74,6 +74,8 @@ typedef struct
 	int     fitorsim;
     scalar  N_Ogata;
     scalar  h_Ogata;
+    scalar  MSASthickness;
+    scalar  MSASlambda;
 	scalar  alpha;
 	scalar  beta;
 	scalar  h;          //!< Percentage of variation for numerical differentiation.
@@ -101,6 +103,8 @@ sasfit_common_DLLEXP int    sasfit_get_int_strategy(void);
 sasfit_common_DLLEXP int    sasfit_get_hankel_strategy(void);
 sasfit_common_DLLEXP scalar sasfit_get_h_Ogata(void);
 sasfit_common_DLLEXP scalar sasfit_get_N_Ogata(void);
+sasfit_common_DLLEXP scalar sasfit_get_MSASthickness(void);
+sasfit_common_DLLEXP scalar sasfit_get_MSASlambda(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_robertus_p(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_gausslegendre(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_chebyshev1(void);
@@ -142,6 +146,8 @@ sasfit_common_DLLEXP void sasfit_set_int_strategy(int value);
 sasfit_common_DLLEXP void sasfit_set_hankel_strategy(int value);
 sasfit_common_DLLEXP void sasfit_set_h_Ogata(scalar value);
 sasfit_common_DLLEXP void sasfit_set_N_Ogata(scalar value);
+sasfit_common_DLLEXP void sasfit_set_MSASthickness(scalar value);
+sasfit_common_DLLEXP void sasfit_set_MSASlambda(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_robertus_p(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_gausslegendre(int value);
 sasfit_common_DLLEXP void sasfit_eps_set_chebyshev1(int value);

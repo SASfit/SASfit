@@ -478,3 +478,15 @@ declare 143 generic {
 declare 144 generic {
 	int sasfit_get_hankel_strategy(void)
 }
+declare 145 generic {
+	scalar sasfit_get_MSASthickness(void)
+}
+declare 146 generic {
+	scalar sasfit_get_MSASlambda(void)
+}
+declare 147 generic {
+	void sasfit_set_MSASthickness(scalar value)
+}
+declare 148 generic {
+	void sasfit_set_MSASlambda(scalar value)
+}

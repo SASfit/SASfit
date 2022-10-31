@@ -414,6 +414,8 @@ set FitPrecision(JMAXresolution)  18
 set FitPrecision(SQ_or_IQ)        1
 set FitPrecision(IQorGz)  "1"
 set FitPrecision(IQorGz_int)  0
+set FitPrecision(MSASlambda)  1.0
+set FitPrecision(MSASthickness)  0.1
 set FitPrecision(SQ_or_IQ,label)  "calculate scattering intensity"
 set FitPrecision(IntStrategy) P_CUBATURE
 set FitPrecision(SphAvgStrategy) FIBONACCI
