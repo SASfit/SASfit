@@ -123,6 +123,30 @@ The interpretation of the parameters $R$ and $R_w$ can be summarized as:
 
 The parameters $R$ and $R_w$ are calculated like the $Q_\text{factor}$-parameter after each calculation of the scattering curve. They are displayed and updated together with other goodness-of-fit parameters in the red marked area of the screen shot shown in fig.\ \ref{fig:GoodnessParGUI}. The goodness-of-fit parameters are not minimized. The parameter which is minimized is the $\chi^2$-value, defined in eq.\ \ref{eq:chi2}. The other goodness-of-fit parameters are than calculated after each fitting step or after evaluating the theoretical scattering curve via the "Apply"-button.
 
+\subsection{other methods to compare similarity or distance between theory and data}
+
+\begin{itemize}
+  \item  \href{https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence}{Kullback-Leibler divergency} and  \href{https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence}{Jensen–Shannon divergence}
+$$D_\mathrm{KL}(P\|Q)=\sum_{i=1}^np_i\log {\frac{p_i}{q_i}}$$
+$$D_\mathrm{JS}(P\|Q)=\frac12 D_\mathrm{KL}(P\|Q)+\frac12 D_\mathrm{KL}(Q\|P)=\frac12 \sum_{i=1}^n \left(p_i-q_i\right)\left(\log p_i - \log q_i\right)$$
+  \item  \href{https://en.wikipedia.org/wiki/Chi-squared_divergence}{chi-squared divergence}
+$$ D_{\chi^2}= \sum_{i=1}^n\frac{\left(p_i-q_i\right)^2}{q_i}$$
+  \item \href{https://en.wikipedia.org/wiki/Hellinger_distance}{Hellinger distance}
+$$H(P,Q)={\frac {1}{\sqrt {2}}}\;{\sqrt {\sum _{i=1}^{k}({\sqrt {p_{i}}}-{\sqrt {q_{i}}})^{2}}}$$
+$$H^{2}(P,Q)=1-\sum_{i=1}^{k}{\sqrt {p_{i}q_{i}}}$$
+  \item  \href{https://en.wikipedia.org/wiki/R%C3%A9nyi_entropy#R%C3%A9nyi_divergence}{Rényi divergence of order $\alpha$}:
+      $$D_{\alpha }(P\|Q)={\frac {1}{\alpha -1}}\log \left(\sum _{i=1}^{n}{\frac {p_{i}^{\alpha }}{q_{i}^{\alpha -1}}}\right)$$
+    \begin{description}
+        \item[$\alpha=0$] $D_{0}(P\|Q)=-\log Q(\{i:p_{i}>0\})$ : minus the log probability under $Q$ that $p_i > 0$
+        \item[$\alpha=1/2$] $D_{1/2}(P\|Q)=-2\log \sum_{i=1}^n\sqrt{p_iq_i}$ : minus twice the logarithm of the Bhattacharyya coefficient; (Nielsen \& Boltz (2010))
+        \item[$\alpha=1$] $D_{1}(P\|Q)=\sum_{i=1}^np_i\log {\frac{p_i}{q_i}}$ : the Kullback–Leibler divergence;
+        \item[$\alpha=2$] $D_{2}(P\|Q)=\log {\Big \langle }{\frac {p_{i}}{q_{i}}}{\Big \rangle }$ : the log of the expected ratio of the probabilities
+        \item[$\alpha=\infty$] $D_\infty (P\|Q)=\log \sup_i\frac {p_i}{q_i}$ : the log of the maximum ratio of the probabilities
+    \end{description}
+  \item \href{https://visualstudiomagazine.com/articles/2021/08/16/wasserstein-distance.aspx}{Wasserstein distance}
+\end{itemize}
+
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.712\textwidth]{../images/related_pages/goodnessOFfitPAR.png}

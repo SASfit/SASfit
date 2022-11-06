@@ -51,7 +51,9 @@
 
 scalar sinc(scalar);
 scalar Kernel_P(const double *, void *);
+scalar KernelSphAvg_P(scalar, scalar, sasfit_param *);
 int K_cubature(unsigned , const double *, void *, unsigned , double *);
+scalar K_SphAvg_P(const double *, size_t, void *);
 
 #endif // end of file
 

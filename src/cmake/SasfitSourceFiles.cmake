@@ -71,6 +71,7 @@ set(SOURCE_sasfit_common
 	libcerf_1.5/err_fcts.c
 	libcerf_1.5/im_w_of_x.c
 	libcerf_1.5/w_of_z.c
+	sasfit_divergence/sasfit_divergence.c
 	multidiminte/src/multi_dim_inte.c
 	multidiminte/src/handle.c
 	multidiminte/src/tanhsinh/tanhsinh.c

@@ -32,6 +32,14 @@ scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * param)
     intstrategy = sasfit_get_int_strategy();
 //	intstrategy = P_CUBATURE;
 
+    cubxmin[0]=0;
+    cubxmax[0]=M_PI/2.0;
+    cubxmin[1]=0;
+    cubxmax[1]=M_PI/2.0;
+    find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], param);
+    sasfit_cubature(3, cubxmin, cubxmax, &K_SphAvg_P, param,sasfit_eps_get_nriq(),&fval[0],&ferr[0]);
+    sum = fval[0];
+    return gsl_pow_2(ETA)*sum;
 	switch(intstrategy) {
 		// ERROR_INDIVIDUAL, ERROR_PAIRED, ERROR_L2
     case H_CUBATURE: {

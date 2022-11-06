@@ -12,6 +12,10 @@
 // define shortcuts for local parameters/variables
 #define NU	param->p[3]
 
+scalar abc_SphAvg(scalar theta, scalar phi, sasfit_param * param) {
+    return KernelSphAvg_P(theta,phi,param);
+}
+
 int abc_cubature(unsigned ndim, const double *x, void *pam,
       unsigned fdim, double *fval) {
 	sasfit_param *param;
@@ -100,6 +104,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 	NUB = B;
 	NUC = C;
 	// insert your code here
+	return sasfit_orient_avg(&abc_SphAvg,param);
     intstrategy = sasfit_get_int_strategy();
 //	intstrategy=P_CUBATURE;
 	switch(intstrategy) {
