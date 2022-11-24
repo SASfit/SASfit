@@ -10,6 +10,24 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
+scalar sasfit_ff_parallelepiped_abc2_Pnu(scalar x, sasfit_param * param) {
+	scalar LNdistr;
+	sasfit_param subParam;
+	sasfit_init_param( &subParam );
+
+	subParam.p[0] = 1.0;
+	subParam.p[1] = SIGMA;
+	subParam.p[2] = 1.0;
+	subParam.p[3] = 1.0;
+	LNdistr = sasfit_sd_LogNorm(x, &subParam);
+	SASFIT_CHECK_SUB_ERR(param, subParam);
+	if ( subParam.errStatus != FALSE ) return 42;
+    sasfit_copy_param(&subParam,param->p);
+
+	subParam.p[0] = x*A;
+	subParam.p[1] = x*B;
+	return LNdistr*sasfit_ff_parallelepiped_abc(Q,&subParam);
+}
 
 scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * param)
 {
@@ -29,50 +47,24 @@ scalar sasfit_ff_parallelepiped_abc2(scalar q, sasfit_param * param)
 	Q=q;
 	NUDIM = 2;
 	// insert your code here
-    intstrategy = sasfit_get_int_strategy();
-//	intstrategy = P_CUBATURE;
 
     cubxmin[0]=0;
     cubxmax[0]=M_PI/2.0;
     cubxmin[1]=0;
     cubxmax[1]=M_PI/2.0;
     find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], param);
-    sasfit_cubature(3, cubxmin, cubxmax, &K_SphAvg_P, param,sasfit_eps_get_nriq(),&fval[0],&ferr[0]);
-    sum = fval[0];
-    return gsl_pow_2(ETA)*sum;
-	switch(intstrategy) {
-		// ERROR_INDIVIDUAL, ERROR_PAIRED, ERROR_L2
-    case H_CUBATURE: {
-			cubxmin[0]=0;
-			cubxmax[0]=M_PI/2.0;
-			cubxmin[1]=0;
-			cubxmax[1]=M_PI/2.0;
-			find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], param);
-			hcubature(1, &K_cubature,param,3, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			cubxmin[0]=0;
-			cubxmax[0]=M_PI/2.0;
-			cubxmin[1]=0;
-			cubxmax[1]=M_PI/2.0;
-			find_LogNorm_int_range(4,1,SIGMA,&cubxmin[2], &cubxmax[2], param);
-			pcubature(1, &K_cubature,param,3, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_L2,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-		    sasfit_err("no valid sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0,M_PI/2.0,&Psi_kernel,param);;
-            break;
-            }
+
+    if (   (sasfit_get_int_strategy()==H_CUBATURE   &&sasfit_get_sphavg_strategy()==SPHAVG_HCUBATURE)
+        || (sasfit_get_int_strategy()==P_CUBATURE   &&sasfit_get_sphavg_strategy()==SPHAVG_PCUBATURE)
+        || (sasfit_get_int_strategy()==GSL_MC_MISER &&sasfit_get_sphavg_strategy()==SPHAVG_MC_MISER)
+        || (sasfit_get_int_strategy()==GSL_MC_VEGAS &&sasfit_get_sphavg_strategy()==SPHAVG_MC_VEGAS)
+        || (sasfit_get_int_strategy()==GSL_MC_PLAIN &&sasfit_get_sphavg_strategy()==SPHAVG_MC_PLAIN)
+        ) {
+        sasfit_cubature(3,cubxmin,cubxmax,&K_SphAvg_P, param, sasfit_eps_get_nriq(),
+				&fval[0], &ferr[0]);
+        return fval[0];
     }
-	return gsl_pow_2(ETA)*sum;
+    return sasfit_integrate(cubxmin[2], cubxmax[2], &sasfit_ff_parallelepiped_abc2_Pnu, param);
 }
 
 scalar sasfit_ff_parallelepiped_abc2_f(scalar q, sasfit_param * param)

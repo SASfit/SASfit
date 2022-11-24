@@ -201,8 +201,10 @@ pack $w.frame.right.sasfit.right.author1 $w.frame.right.sasfit.right.author2 -an
 label $w.frame.right.notice.line5 -text \
 "J. Appl. Cryst. (2015). 48, 1587-1598
 doi:10.1107/S1600576715016544
-J. Appl. Cryst. (2017). 50, 
-doi:10.1107/S1600576717011979"
+J. Appl. Cryst. (2017). 50, 1395-1403 
+doi:10.1107/S1600576717011979
+J. Appl. Cryst. (2022). 55, 
+doi:10.1107/S1600576722009037"
 
 pack $w.frame.right.notice.line5
 
@@ -873,6 +875,7 @@ CreateGraphPar IQGraph
 CreateGraphPar GlobalFitIQGraph
 CreateGraphPar ResIQGraph
 CreateGraphPar Detector2DIQGraph
+CreateGraphPar DivergenceGraph
 set Detector2DIQGraph(ct) CET-R1.tbl
 set Detector2DIQGraph(ct) cubehelix8
 set Detector2DIQGraph(ct) turbo.tbl
@@ -4172,7 +4175,7 @@ proc sasfitmenu {} {
    frame .top -relief raised -bd 2 
    pack .top -fill x -side top
    sasfit_menubar_build .top
-frame .obW 
+   frame .obW 
    pack .obW -fill both -expand yes 
 #------------------------------------------------------------------------------
 #                           Creat quick message bar
@@ -4629,7 +4632,12 @@ zoomstack $SDGraph(w)
 	set ::sasfit(isp_name) "isp"
 	set ::sasfit(par_name) "par"
 	set ::sasfit(mom_name) "mom"
-
+	set ::sasfit(div_name) "divegence"
+	
+	create_tab_text divergency $::sasfit(div_name) \
+		"parameters for\ngoodness of fit" \
+		::DivergencyPar 
+		
 	create_tab_text analytmoments $::sasfit(mom_name) \
 		"moments of_analytical_size distrib." \
 		::AnalytPar ::GlobalAnalytPar

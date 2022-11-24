@@ -70,6 +70,7 @@
 #include "include/SASFIT_resolution.h"
 #include "include/tcl_cmds.h"
 #include <sasfit_common.h>
+#include <sasfit_divergence.h>
 #include <sasfit_plugin.h>
 #include <sasfit_core.h>
 #include <sasfit_plugin_backend.h>

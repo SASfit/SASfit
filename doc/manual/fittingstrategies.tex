@@ -127,15 +127,27 @@ The parameters $R$ and $R_w$ are calculated like the $Q_\text{factor}$-parameter
 
 \begin{itemize}
   \item  \href{https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence}{Kullback-Leibler divergency} and  \href{https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence}{Jensen–Shannon divergence}
-$$D_\mathrm{KL}(P\|Q)=\sum_{i=1}^np_i\log {\frac{p_i}{q_i}}$$
-$$D_\mathrm{JS}(P\|Q)=\frac12 D_\mathrm{KL}(P\|Q)+\frac12 D_\mathrm{KL}(Q\|P)=\frac12 \sum_{i=1}^n \left(p_i-q_i\right)\left(\log p_i - \log q_i\right)$$
+\begin{align}
+    D_\mathrm{KL}(P\|Q)&=\sum_{i=1}^np_i\log {\frac{p_i}{q_i}}-p_i+q_i \\
+    D_\mathrm{JS}(P\|Q)&=\frac12 D_\mathrm{KL}(P\|Q)+\frac12 D_\mathrm{KL}(Q\|P) \nonumber \\
+                       &=\frac12 \sum_{i=1}^n \left(p_i-q_i\right)\left(\log p_i - \log q_i\right)
+\end{align}
   \item  \href{https://en.wikipedia.org/wiki/Chi-squared_divergence}{chi-squared divergence}
-$$ D_{\chi^2}= \sum_{i=1}^n\frac{\left(p_i-q_i\right)^2}{q_i}$$
+\begin{align}
+    D_{\chi^2}&= \sum_{i=1}^n\frac{\left(p_i-q_i\right)^2}{q_i}
+\end{align}
   \item \href{https://en.wikipedia.org/wiki/Hellinger_distance}{Hellinger distance}
-$$H(P,Q)={\frac {1}{\sqrt {2}}}\;{\sqrt {\sum _{i=1}^{k}({\sqrt {p_{i}}}-{\sqrt {q_{i}}})^{2}}}$$
-$$H^{2}(P,Q)=1-\sum_{i=1}^{k}{\sqrt {p_{i}q_{i}}}$$
+\begin{align}
+    H(P,Q)&={\frac {1}{\sqrt {2}}}\;{\sqrt {\sum _{i=1}^{k}({\sqrt {p_{i}}}-{\sqrt {q_{i}}})^{2}}}
+\end{align}
+  \item \href{https://en.wikipedia.org/wiki/Hellinger_distance}{squared Hellinger distance}
+\begin{align}
+    H^{2}(P,Q)&=1-\sum_{i=1}^{k}{\sqrt {p_{i}q_{i}}}
+\end{align}
   \item  \href{https://en.wikipedia.org/wiki/R%C3%A9nyi_entropy#R%C3%A9nyi_divergence}{Rényi divergence of order $\alpha$}:
-      $$D_{\alpha }(P\|Q)={\frac {1}{\alpha -1}}\log \left(\sum _{i=1}^{n}{\frac {p_{i}^{\alpha }}{q_{i}^{\alpha -1}}}\right)$$
+\begin{align}
+    D_{\alpha }(P\|Q)&={\frac {1}{\alpha -1}}\log \left(\sum _{i=1}^{n}{\frac {p_{i}^{\alpha }}{q_{i}^{\alpha -1}}}\right)
+\end{align}
     \begin{description}
         \item[$\alpha=0$] $D_{0}(P\|Q)=-\log Q(\{i:p_{i}>0\})$ : minus the log probability under $Q$ that $p_i > 0$
         \item[$\alpha=1/2$] $D_{1/2}(P\|Q)=-2\log \sum_{i=1}^n\sqrt{p_iq_i}$ : minus twice the logarithm of the Bhattacharyya coefficient; (Nielsen \& Boltz (2010))
@@ -143,7 +155,16 @@ $$H^{2}(P,Q)=1-\sum_{i=1}^{k}{\sqrt {p_{i}q_{i}}}$$
         \item[$\alpha=2$] $D_{2}(P\|Q)=\log {\Big \langle }{\frac {p_{i}}{q_{i}}}{\Big \rangle }$ : the log of the expected ratio of the probabilities
         \item[$\alpha=\infty$] $D_\infty (P\|Q)=\log \sup_i\frac {p_i}{q_i}$ : the log of the maximum ratio of the probabilities
     \end{description}
-  \item \href{https://visualstudiomagazine.com/articles/2021/08/16/wasserstein-distance.aspx}{Wasserstein distance}
+  \item \href{https://github.com/stegua/ot1d}{Wasserstein distance} %https://pkomiske.github.io/Wasserstein/ %https://visualstudiomagazine.com/articles/2021/08/16/wasserstein-distance.aspx
+  \item \href{https://en.wikipedia.org/wiki/Canberra_distance}{Canberra distance}:
+\begin{align}
+    D_{CD}&= \sum_{i=1}^n\frac{\abs{p_i-q_i}}{\abs{p_i}+\abs{q_i}}
+\end{align}
+  \item \href{https://en.wikipedia.org/wiki/Cosine_similarity}{Cosine distance}
+\begin{align}
+    D_{\cos}&= 1-\frac{\sum_{i=1}^n p_iq_i}{\sqrt{\sum_{i=1}^n p_i^2}\sqrt{\sum_{i=1}^n q_i^2}}
+\end{align}
+
 \end{itemize}
 
 

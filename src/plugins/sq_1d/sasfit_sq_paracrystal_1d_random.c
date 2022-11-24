@@ -54,7 +54,7 @@ scalar sasfit_sq_paracrystal_1d_random(scalar q, sasfit_param * param)
     TN = lround(NN);
     tn = TN;
 
-    if (SIGMA < 0) {
+    if (SIGMA <= 0) {
         Q = q;
         SQ = sasfit_integrate(0,M_PI_2,&sasfit_sq_paracrystal_1d_random_tinySigma_sasfit,param);
         TN++;

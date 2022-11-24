@@ -1,0 +1,6 @@
+include *.pxd
+include *.pyd
+include *.h
+include OT1D_test.py
+include basic_test.py
+include OT1D.hpp

@@ -1,6 +1,6 @@
 # src/cmake/SasfitSourceFiles.cmake
 #
-# Copyright (c) 2008-2011, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2022, Paul Scherrer Institute (PSI)
 #
 # All rights reserved.
 #
@@ -28,6 +28,7 @@
 #
 # Author(s) of this file:
 #   Ingo Bressler (ingo.bressler@bam.de)
+#   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 #
 #############################################################################
 # A Cmake module to provide utility functions often used
@@ -71,7 +72,11 @@ set(SOURCE_sasfit_common
 	libcerf_1.5/err_fcts.c
 	libcerf_1.5/im_w_of_x.c
 	libcerf_1.5/w_of_z.c
-	sasfit_divergence/sasfit_divergence.c
+	sasfit_compare_dist/sasfit_compare.c
+	sasfit_compare_dist/sasfit_correlation.c
+	sasfit_compare_dist/ot1d/include/OT1D.hpp
+	sasfit_compare_dist/ot1d/include/parasort.h
+	sasfit_compare_dist/ot1d/include/pdqsort.h
 	multidiminte/src/multi_dim_inte.c
 	multidiminte/src/handle.c
 	multidiminte/src/tanhsinh/tanhsinh.c
@@ -171,7 +176,7 @@ set(SOURCE_sasfit_common
 	multidiminte/src/spherical_t_design/N124_M7812_Ico.h
 	multidiminte/src/spherical_t_design/spherical_t_rule.c
 	multidiminte/src/spherical_t_design/spherical_t_rule.h
-	)
+)
 
 set(SOURCE_sasfit_core
 	sasfit_sd.c
