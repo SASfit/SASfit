@@ -198,13 +198,11 @@ pack $w.frame.right.sasfit.left.writtenby $w.frame.right.sasfit.left.contribs -a
 pack $w.frame.right.sasfit.right.author1 $w.frame.right.sasfit.right.author2 -anchor w
 
 
-label $w.frame.right.notice.line5 -text \
-"J. Appl. Cryst. (2015). 48, 1587-1598
-doi:10.1107/S1600576715016544
-J. Appl. Cryst. (2017). 50, 1395-1403 
-doi:10.1107/S1600576717011979
-J. Appl. Cryst. (2022). 55, 
-doi:10.1107/S1600576722009037"
+label $w.frame.right.notice.line5 -justify left -text \
+"References:
+\[1\] J. Appl. Cryst. (2015). 48, 1587-1598, doi:10.1107/S1600576715016544
+\[2\] J. Appl. Cryst. (2017). 50, 1395-1403, doi:10.1107/S1600576717011979
+\[3\] J. Appl. Cryst. (2022). 55, doi:10.1107/S1600576722009037"
 
 pack $w.frame.right.notice.line5
 

@@ -15,12 +15,19 @@
 #define PHI	param->p[5]
 #define MOLARITY	param->p[6]
 
+#define MAXSTORE 12
 scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
 {
-    static scalar Z1_old=-1.23456789, K1_old=-1.23456789, phi_old=-1.23456789;
+    static scalar Z1_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789},
+                  K1_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789},
+                 phi_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789};
     scalar numdens,Z1, Z2;
-    static scalar a, b, c, d, tmp;
-	static int debug=0, check,ok;
+    static scalar a[MAXSTORE], b[MAXSTORE], c[MAXSTORE], d[MAXSTORE], tmp;
+	static int debug=0, check, ok, foundone, foundnext=0, foundidx;
+	int i;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -41,14 +48,25 @@ scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
 	Z1 = 1./LAMBDA1;
     if(fabs(Z1) < 0.001) Z1 = 0.001;			// values near zero are very bad for the calculation
 	if(fabs(K1) < 0.001) K1 = 0.001;			// values near zero are very bad for the calculation
-
-	if (K1_old!=K1 || Z1_old != Z1 || phi_old!= PHI) {
-        K1_old = K1;
-        Z1_old = Z1;
-        phi_old = PHI;
-        ok = Y_SolveEquations( Z1, K1, PHI, &a, &b, &c, &d, debug );
+    foundone=FALSE;
+    for (i=0;i<MAXSTORE;i++) {
+        if (K1_old[i] == K1 && Z1_old[i] == Z1 && phi_old[i] == PHI) {
+            foundidx = i;
+            foundone = TRUE;
+            ok=TRUE;
+            break;
+        }
+    }
+	if (!foundone) {
+        foundidx=foundnext;
+        foundnext++;
+        if (foundnext>=MAXSTORE) foundnext=0;
+        K1_old[foundidx] = K1;
+        Z1_old[foundidx] = Z1;
+        phi_old[foundidx] = PHI;
+        ok = Y_SolveEquations( Z1, K1, PHI, &a[foundidx], &b[foundidx], &c[foundidx], &d[foundidx], debug );
         if( ok ) {
-            check = Y_CheckSolution( Z1, K1, PHI, a, b, c, d );
+            check = Y_CheckSolution( Z1, K1, PHI, a[foundidx], b[foundidx], c[foundidx], d[foundidx] );
 //		if(debug) {
 //			sprintf(buf, "solution = (%g, %g, %g, %g) check = %d\r", a, b, c, d, check )
 //			XOPNotice(buf);
@@ -56,7 +74,7 @@ scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
         }
 	}
     if(ok) {		//less restrictive, if a solution found, return it, even if the equations aren't quite satisfied
-		return SqOneYukawa(q*R*2.0, Z1, K1, PHI, a, b, c, d);
+		return SqOneYukawa(q*R*2.0, Z1, K1, PHI, a[foundidx], b[foundidx], c[foundidx], d[foundidx]);
 	}
 	SASFIT_CHECK_COND1((ok==0), param, "Could not solve the equations for this set of parameters, ok(%d)\n",ok);
 }
