@@ -20,14 +20,14 @@
 
 // adjust the project name below
 // *_EXPORTS is set by cmake if build as shared library
-#if defined(sasfit_clusteryukwa_EXPORTS)
-	#ifdef sasfit_clusteryukwa_DLLEXP
-	#undef sasfit_clusteryukwa_DLLEXP
+#if defined(sasfit_clusteryukawa_EXPORTS)
+	#ifdef sasfit_clusteryukawa_DLLEXP
+	#undef sasfit_clusteryukawa_DLLEXP
 	#endif
-	#define sasfit_clusteryukwa_DLLEXP SASFIT_LIB_EXPORT
-#elif !defined(sasfit_clusteryukwa_DLLEXP)
+	#define sasfit_clusteryukawa_DLLEXP SASFIT_LIB_EXPORT
+#elif !defined(sasfit_clusteryukawa_DLLEXP)
 	// is set somewhere else for export as non-plugin
-	#define sasfit_clusteryukwa_DLLEXP SASFIT_LIB_IMPORT
+	#define sasfit_clusteryukawa_DLLEXP SASFIT_LIB_IMPORT
 #endif
 
 // general information about the form factor here
@@ -79,21 +79,21 @@
  *
  * \sa sasfit_clusteryukwa.h, sq_plugins_devel
  */
-sasfit_clusteryukwa_DLLEXP scalar sasfit_sq_clusteryukawa(scalar q, sasfit_param * p);
+sasfit_clusteryukawa_DLLEXP scalar sasfit_sq_clusteryukawa(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_clusteryukawa
  *
  * \sa sasfit_clusteryukwa.h, sq_plugins_devel
  */
-sasfit_clusteryukwa_DLLEXP scalar sasfit_sq_clusteryukawa_f(scalar q, sasfit_param * p);
+sasfit_clusteryukawa_DLLEXP scalar sasfit_sq_clusteryukawa_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sq_clusteryukawa
  *
  * \sa sasfit_clusteryukwa.h, sq_plugins_devel
  */
-sasfit_clusteryukwa_DLLEXP scalar sasfit_sq_clusteryukawa_v(scalar q, sasfit_param * p, int dist);
+sasfit_clusteryukawa_DLLEXP scalar sasfit_sq_clusteryukawa_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_clusteryukawa ################ */
 
 

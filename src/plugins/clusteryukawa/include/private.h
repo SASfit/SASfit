@@ -3,8 +3,8 @@
  *   <your name> (<email address>)
  */
 
-#ifndef CLUSTERYUKWA_PRIVATE_H
-#define CLUSTERYUKWA_PRIVATE_H
+#ifndef CLUSTERYUKAWA_PRIVATE_H
+#define CLUSTERYUKAWA_PRIVATE_H
 
 /*
  * Header file for the implementation of the form factor itself.
@@ -125,7 +125,7 @@
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_clusteryukwa.h"
+#include "sasfit_clusteryukawa.h"
 
 //
 // add local defines here:

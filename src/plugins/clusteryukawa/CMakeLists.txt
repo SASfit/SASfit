@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 # the project name
-set(PRJ_NAME sasfit_clusteryukwa)
+set(PRJ_NAME sasfit_clusteryukawa)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
