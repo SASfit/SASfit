@@ -61,16 +61,19 @@ scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
         foundidx=foundnext;
         foundnext++;
         if (foundnext>=MAXSTORE) foundnext=0;
-        K1_old[foundidx] = K1;
-        Z1_old[foundidx] = Z1;
-        phi_old[foundidx] = PHI;
         ok = Y_SolveEquations( Z1, K1, PHI, &a[foundidx], &b[foundidx], &c[foundidx], &d[foundidx], debug );
         if( ok ) {
             check = Y_CheckSolution( Z1, K1, PHI, a[foundidx], b[foundidx], c[foundidx], d[foundidx] );
+            K1_old[foundidx] = K1;
+            Z1_old[foundidx] = Z1;
+            phi_old[foundidx] = PHI;
 //		if(debug) {
 //			sprintf(buf, "solution = (%g, %g, %g, %g) check = %d\r", a, b, c, d, check )
 //			XOPNotice(buf);
 //		}
+        } else {
+            foundidx--;
+            if (foundnext<0) foundnext=MAXSTORE-1;
         }
 	}
     if(ok) {		//less restrictive, if a solution found, return it, even if the equations aren't quite satisfied

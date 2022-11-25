@@ -15,12 +15,29 @@
 #define PHI	param->p[5]
 #define MOLARITY	param->p[6]
 
+#define MAXSTORE 16
 scalar sasfit_sq_two_yukawa(scalar q, sasfit_param * param)
 {
-    static scalar Z1_old=-1.23456789,Z2_old=-1.23456789,K1_old=-1.23456789,K2_old=-1.23456789,phi_old=-1.23456789;
+
+    static scalar Z1_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789},
+                  K1_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789},
+                  Z2_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789},
+                  K2_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789},
+                 phi_old[MAXSTORE]={-1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789, -1.23456789,
+                                    -1.23456789, -1.23456789, -1.23456789, -1.23456789};
     scalar numdens,Z1, Z2;
-    static scalar a, b, c1, c2, d1, d2, tmp;
-	static int debug=0, check,ok;
+    static scalar a[MAXSTORE], b[MAXSTORE], c1[MAXSTORE], d1[MAXSTORE], c2[MAXSTORE], d2[MAXSTORE], tmp;
+	static int debug=0, check, ok, foundone, foundnext=0, foundidx;
+	int i;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -57,23 +74,41 @@ scalar sasfit_sq_two_yukawa(scalar q, sasfit_param * param)
         K1=0.001*K2;
         Z1=2*Z2;
 	}
-	if (K1_old!=K1 || K2_old!=K2 || Z1_old != Z1 || Z2_old != Z2 || phi_old!= PHI) {
-        K1_old = K1;
-        K2_old = K2;
-        Z1_old = Z1;
-        Z2_old = Z2;
-        phi_old = PHI;
-        ok = TY_SolveEquations( Z1, Z2, K1, K2, PHI, &a, &b, &c1, &c2, &d1, &d2, debug );
+
+    foundone=FALSE;
+    for (i=0;i<MAXSTORE;i++) {
+        if (K1_old[i] == K1 && Z1_old[i] == Z1 && K2_old[i] == K2 && Z2_old[i] == Z2 &&phi_old[i] == PHI) {
+            foundidx = i;
+            foundone = TRUE;
+            ok=TRUE;
+            break;
+        }
+    }
+
+    if (!foundone) {
+        foundidx=foundnext;
+        foundnext++;
+        if (foundnext>=MAXSTORE) foundnext=0;
+        ok = TY_SolveEquations( Z1, Z2, K1, K2,  PHI, &a[foundidx], &b[foundidx], &c1[foundidx], &c2[foundidx], &d1[foundidx], &d2[foundidx],  debug );
         if( ok ) {
-            check = TY_CheckSolution( Z1, Z2, K1, K2, PHI, a, b, c1, c2, d1, d2 );
+            check = TY_CheckSolution( Z1, Z2, K1, K2, PHI, a[foundidx], b[foundidx], c1[foundidx], c2[foundidx], d1[foundidx], d2[foundidx] );
 //		if(debug) {
-//			sprintf(buf, "solution = (%g, %g, %g, %g, %g, %g) check = %d\r", a, b, c1, c2, d1, d2, check );
+//			sprintf(buf, "solution = (%g, %g, %g, %g) check = %d\r", a, b, c, d, check )
 //			XOPNotice(buf);
 //		}
+            K1_old[foundidx] = K1;
+            Z1_old[foundidx] = Z1;
+            K2_old[foundidx] = K2;
+            Z2_old[foundidx] = Z2;
+            phi_old[foundidx] = PHI;
+        } else {
+            foundidx--;
+            if (foundnext<0) foundnext=MAXSTORE-1;
         }
 	}
+
     if(ok) {		//less restrictive, if a solution found, return it, even if the equations aren't quite satisfied
-		return SqTwoYukawa(q*R*2.0, Z1, Z2, K1, K2, PHI, a, b, c1, c2, d1, d2);
+		return SqTwoYukawa(q*R*2.0, Z1, Z2, K1, K2, PHI, a[foundidx], b[foundidx], c1[foundidx], c2[foundidx], d1[foundidx], d2[foundidx]);
 	}
 	SASFIT_CHECK_COND1((ok==0), param, "Could not solve the equations for this set of parameters, ok(%d)\n",ok);
 }

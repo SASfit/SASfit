@@ -30,8 +30,8 @@ set(CPACK_PACKAGE_VENDOR "PSI")
 set(CPACK_PACKAGE_VERSION "0.94.7")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "94.7")
-set(CPACK_INSTALLED_DIRECTORIES "C:/Users/kohlbrecher/switchdrive/sasfit_221031074055_windows64_debug;.")
-set(CPACK_PACKAGE_FILE_NAME "sasfit_221031074055_windows64_debug")
+set(CPACK_INSTALLED_DIRECTORIES "C:/Users/kohlbrecher/switchdrive/sasfit_221123151851_windows64_debug;.")
+set(CPACK_PACKAGE_FILE_NAME "sasfit_221123151851_windows64_debug")
 set(CPACK_GENERATOR "ZIP")
 
 # vim: set ts=4 sw=4 sts=4 tw=0:
