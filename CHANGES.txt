@@ -1,4 +1,5 @@
 ﻿0.94.12 2022-08-xx
+- the 1-Yukawa and 2-Yukawa structure factor stores now some previously calculated coeffecients 
 - bugfix in calculating integral structural parameter. 
   In certain (unphysical) cases the fit as well as the plot of the fit result crashed.
 - bugfix for star polymer with rigid arms
