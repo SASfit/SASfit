@@ -67,6 +67,10 @@ scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
             K1_old[foundidx] = K1;
             Z1_old[foundidx] = Z1;
             phi_old[foundidx] = PHI;
+//		if(debug) {
+//			sprintf(buf, "solution = (%g, %g, %g, %g) check = %d\r", a, b, c, d, check )
+//			XOPNotice(buf);
+//		}
         } else {
             foundidx--;
             if (foundnext<0) foundnext=MAXSTORE-1;
