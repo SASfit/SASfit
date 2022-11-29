@@ -555,7 +555,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
     cubstruct.param=param;
 
 	gsl_set_error_handler_off();
-
+    err = GSL_SUCCESS;
 	if ( gsl_isinf(int_start) && gsl_finite(int_end) ) 	// adaptive integration on infinite intervals (-\infty,b)
 	{
 	    switch (sasfit_get_int_strategy()) {
@@ -667,7 +667,6 @@ scalar sasfit_integrate_ctm(scalar int_start,
                 aw = (scalar *)malloc((lenaw)*sizeof(scalar));
                 sasfit_intdeini(lenaw, GSL_DBL_MIN, epsrel, aw);
                 sasfit_intde(&Kernel_1D,int_start,int_end, aw, &res, &ferr[0],&cubstruct);
-                err=ferr[0];
                 free(aw);
                 break;
             }

@@ -17,15 +17,21 @@
 #define ALPHA   param->p[MAXPAR-4]
 
 scalar Acapt(scalar t, sasfit_param *param) {
-    return cos(Q*cos(ALPHA*(R*t+H+L/2.)))*(1-t*t)*sasfit_jinc(Q*R*sin(ALPHA*sqrt(1-t*t)));
+    return cos(Q*cos(ALPHA)*(RCAP*t+H+L/2.))*(1-t*t)*sasfit_jinc(Q*RCAP*sin(ALPHA)*sqrt(1-t*t));
 }
 
 scalar Acapped(scalar alpha, sasfit_param *param) {
     scalar Acyl, Acap;
     ALPHA=alpha;
     Acyl=M_PI*R*R*L*gsl_sf_bessel_j0(Q*L/2.*cos(alpha))*2*sasfit_jinc(Q*R*sin(alpha));
-    Acap=4*M_PI*R*R*R*sasfit_integrate(-H/RCAP,1,&Acapt,param);
-    return gsl_pow_int(Acyl+Acap,lround(P))*sin(alpha);
+    if (RCAP==0) {
+        Acap = 0;
+    } else if (-H/RCAP==1) {
+        Acap = 0;
+    } else {
+        Acap=4*M_PI*RCAP*RCAP*RCAP*sasfit_integrate(-H/RCAP,1,&Acapt,param);
+    }
+    return gsl_pow_int(ETA*(Acyl+Acap),lround(P))*sin(alpha);
 }
 
 scalar sasfit_ff_capped_cylinder(scalar q, sasfit_param * param)
@@ -41,8 +47,9 @@ scalar sasfit_ff_capped_cylinder(scalar q, sasfit_param * param)
 	RCAP = gsl_hypot(H,R);
 	Q=q;
 	P=2;
-	if (R*L) return 0.0;
-	return ETA*ETA*sasfit_integrate(0,M_PI_2,&Acapped, param);
+	ALPHA=0;
+	if (R==0 && L==0 && RCAP==0) return 0.0;
+	return sasfit_integrate(0,M_PI_2,&Acapped, param);
 }
 
 scalar sasfit_ff_capped_cylinder_f(scalar q, sasfit_param * param)
