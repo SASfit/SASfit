@@ -22,7 +22,7 @@
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ *   Ingo Bressler (ingo.bressler@bam.de)
  */
 
 #include <stdlib.h>

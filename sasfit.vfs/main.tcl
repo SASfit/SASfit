@@ -20,7 +20,7 @@
 # along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
 
 # Author(s) of this file:
-#   Ingo Bressler (ingo@cs.tu-berlin.de)
+#   Ingo Bressler (ingo.bressler@bam.de)
 
 #encoding system utf-8
 if {[catch {package require starkit} result]

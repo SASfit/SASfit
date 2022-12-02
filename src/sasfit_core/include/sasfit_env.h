@@ -21,7 +21,7 @@
 
 /*
  * Author(s) of this file:
- *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ *   Ingo Bressler (ingo.bressler@bam.de)
  *    Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 

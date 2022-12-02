@@ -19,7 +19,7 @@
 
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
-#   Ingo Bressler (ingo@cs.tu-berlin.de)
+#   Ingo Bressler (ingo.bressler@bam.de)
 
 
 # This file contains the declarations for all supported public

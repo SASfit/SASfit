@@ -22,7 +22,7 @@
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
- *   Ingo Bressler (ingo@cs.tu-berlin.de)
+ *   Ingo Bressler (ingo.bressler@bam.de)
  */
 
 /* MIEV0.f -- translated by f2c (version 20041007).
