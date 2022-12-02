@@ -1,0 +1,3 @@
+[submodule "src/appveyor/citools"]
+	path = src/appveyor/citools
+	url = https://github.com/ibressler/citools.git
