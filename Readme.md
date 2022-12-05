@@ -56,6 +56,7 @@ Academic papers about SASfit have been published in:
 
 -  [J. Appl. Cryst. (2015). 48, 1587-1598](https://dx.doi.org/10.1107/S1600576715016544)
 -  [J. Appl. Cryst. (2017). 50, 1395-1403](https://dx.doi.org/10.1107/S1600576717011979)
+-  [J. Appl. Cryst. (2022). 55, 1677-1688](https://dx.doi.org/10.1107/S1600576722009037}
 
 If SASfit has been significant in your research, and you would like to acknowledge the project in your academic publication, we suggest citing one of the aforementioned publications.
 

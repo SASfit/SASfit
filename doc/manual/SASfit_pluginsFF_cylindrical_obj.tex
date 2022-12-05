@@ -302,7 +302,7 @@ The scattering length density contrast is set to 1.}
 
 To different versions for a random oriented cylindrical shell with a
 circular cross-section has been implemented. One without  \texttt{CylShell1}
-and one with \texttt{CylShell2} capped ends. For very long cylinders a faster
+and one with \texttt{CylShell2} capped flat ends. For very long cylinders a faster
 approximation for the uncapped version can be used \texttt{LongCylShell}
 
 \begin{align}
@@ -394,7 +394,7 @@ I_\text{CylShell2} =
 
 To different versions for a random oriented cylindrical shell with
 an elliptical cross-section has been implemented. One without
-\texttt{ellCylShell1} and one with \texttt{ellCylShell2} capped
+\texttt{ellCylShell1} and one with \texttt{ellCylShell2} capped flat
 ends.
 
 \begin{align}
@@ -443,7 +443,7 @@ I_\text{ellCylShell2}(q) = \frac{2}{\pi}\int_0^{\frac{\pi}{2}} \!\!  \int_0^{\fr
 \begin{center}
 \includegraphics[width=0.65\textwidth]{../images/form_factor/cylindrical_obj/ellCylShell1_2.png}
 \end{center}
-\caption{Scattering intensity of a cylinder with elliptical cross-section with and without capped ends.}
+\caption{Scattering intensity of a cylinder with elliptical cross-section with and without capped flat ends.}
 \label{fig:ellCylShell1_2}
 \end{figure}
 
@@ -486,6 +486,59 @@ The implemented approximation is the following
 The exact solutions \texttt{ellCylShell1} (dotted lines) are compared
 with \texttt{Pcs:ellCylSh} (solid lines), which is only valid for very long cylinders $L \gg 2R$. }
 \label{fig:Pcs_ellCylShell}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{Random oriented solid cylinder with circular cross-section and globular end caps}
+\label{sect:capped_cylinder}
+~\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/capped_cylinder.pdf}
+\end{center}
+\caption{solid cylinders with circular cross-section and globular end caps}
+\label{fig:capped_cylinder}
+\end{figure}
+
+The scattering from cylinders with globular end caps have been studied by \cite{Kaya:aj5008,Kaya:aj5016}.
+There form factor also contain the special case of hemispherical end-caps given by \cite{Cusack1981}. They obtain for the scattering amplitude the expression
+\begin{align}\label{eq:CappedCylinders}
+\begin{split}
+  F(Q,r,L,h,\theta) &= \pi r^2 L \frac{QL/2 \cos(\theta)}{QL/2 \cos(\theta)} \frac{2\operatorname{J}_1(Qr\sin(\theta))}{Qr\sin(\theta)} \\
+  & + 4\pi R^3 \int_{-h/R}^1 \mathrm{d}t \; \cos\left(Q(Rt+h+L/2)\cos(\theta)\right)\\
+  & \times (1-t^2) \frac{\operatorname{J}_1\left(QR\sin(\theta)\sqrt{1-t^2}\right)}{QR\sin(\theta)\sqrt{1-t^2}}
+\end{split}
+\end{align}
+Here $r$ is the radius of the cylinder, $R=\sqrt{h^2+r^2}$ the radius of the globular end caps, $h$ the offset of the globular end cap from the end of the cylinder and $L$ is the length of the cylinder. For $h>0$ the end caps are barbel like and for $h<0$ they are flat.
+
+The scattering intensity of a random oriented cylinder with globular end caps reads as
+\begin{align}\label{eq:randomoriented_cappedcylinders}
+  I(Q) &= \int_0^{\pi/2} \abs{F(Q,r,L,h,\theta)}^2 \sin\theta \; \mathrm{d}\theta
+\end{align}
+\hspace{1pt}\\
+\uline{Input Parameters for model \texttt{capped\_cylinder}:}\\
+\begin{description}
+\item[\texttt{r}] cylinder radius $r$
+\item[\texttt{h}] center offset of cap from surface $h$. ($h<0$: flat end cap, $h>0$: barbel end caps)
+\item[\texttt{L}] cylinder length $L$
+\item[\texttt{eta}] scattering length density $\eta$ of cylinder
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item $r$ and $L$ are only physical for values larger than 0.
+\item the integration algorithm can be configured via GUI (via \texttt{integration strategy})
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/capped_cylinder_IQ.pdf}
+\end{center}
+\caption{scattering curves of random oriented capped cylinders with circular cross-section and globular end caps}
+\label{fig:capped_cylinder_IQ}
 \end{figure}
 
 
