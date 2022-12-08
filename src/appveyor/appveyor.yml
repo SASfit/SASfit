@@ -3,7 +3,8 @@ version: '{build}'
 branches:
   only:
     - master
-    - /\d+\.\d+\.\d+/
+      # test with: echo 0.94.12-rc.1 | grep -oE '\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d)?$'
+    - /\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d)?$/
 
 skip_commits:
   files:
