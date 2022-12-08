@@ -100,7 +100,7 @@ for:
     - sudo sed -i -e '/bintray.com/d' /etc/apt/sources.list
     - dpkg -l | grep -i python3
     - sudo apt-get update
-    - sudo apt-get upgrade python3-requests python3-urllib3 dpkg
+    - sudo apt-get -y upgrade python3-requests python3-urllib3 dpkg
     - dpkg -l | grep -i python3
     # Install AppImage-Builder and requirements
     # https://appimage-builder.readthedocs.io/en/latest/intro/install.html#debian-ubuntu
