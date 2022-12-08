@@ -1,4 +1,4 @@
-﻿0.94.12 2022-08-xx
+﻿0.94.12 2022-12-08
 - added form factor of cylinder with globular end caps
 - the 1-Yukawa and 2-Yukawa structure factor stores now some previously calculated coeffecients, which make it a bit more efficient.
 - bugfix in calculating integral structural parameter. 
