@@ -1,16 +1,19 @@
 \appendix{History}
 \begin{description}
-\item[2022-12-08] \SASfit 0.94.12
+\item[2022-12-09] \SASfit 0.94.12
     \begin{itemize}
-    \item bugfix in calculating integral structural parameter. 
-          In certain (unphysical) cases the fit as well as the plot of the fit result crashed.
+    \item made a variable substitution for the integration in\texttt{ sasfit\_orient\_avg} to get more homogeneously distributed points on a spherical surface
+    \item added form factor of cylinder with globular end caps
+    \item the 1-Yukawa and 2-Yukawa structure factor stores now some previously calculated coefficients, which make it a bit more efficient.
+    \item bugfix in calculating integral structural parameter.
+          In certain (nonphysical) cases the fit as well as the plot of the fit result crashed.
     \item bugfix for star polymer with rigid arms
     \item  due to flexible integration routines some of them calculate the function to integrate at its integration limits. For mass fractals this caused an error using these integration routines. There might be more such cases. The mass fractal plugins have been debugged.
     \item  corrected in "sq 2D hard disks Rosenfeld" bug: $J_1(2x)/x = 2\operatorname{jinc}(2x)$ instead $J_1(2x)/x = 1/2 \operatorname{jinc}(2x)$
-    \item changed lognorm\_fp-size distribution as plugin and included now also the other cases as decribed in the manual. So far only the shape 1 was implemented.
+    \item changed lognorm\_fp-size distribution as plugin and included now also the other cases as described in the manual. So far only the shape 1 was implemented.
     \item renaming dodecahedra into rhombic dodecahedra
     \item added size distribution plugin based on generalized beta distribution
-    \item added added skewed gaussian and exponentially modified gaussian size distribution
+    \item added skewed gaussian and exponentially modified gaussian size distribution
     \item added spherical-t design algorithm for integration over the surface of a sphere
     \item added a new form factor of PEGylated vesicle with smoothed interfaces
     \item added metalog size distribution as well as the Johnson's family of distributions (SN, SL, SB, SU) and its generalization
