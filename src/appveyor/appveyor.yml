@@ -28,7 +28,6 @@ image:
   - Ubuntu2004
     #  - macos
 
-
 environment:
   BT_API:
     secure: 0SIbW51d73pYhmh4CehqtmGdksH4jBCD4uyTpeJPsNEx7fF5dGAikfSDVlR6HLGX
@@ -36,6 +35,9 @@ environment:
     secure: mdkr0G05WlB+R6OUbrgfvMACBjlmZce0VZCjB8mfnMA=
   CLOUDSMITH_KEY:
     secure: W/Nf9rURGNNqj4clwDkiWqVQ83eLVynha1nhtey0c8gqbVjQCAs/fJEqX528UScL
+  SF_DEPLOY_KEY:
+    secure: Rk/Mvhk39ehsqEHCkQgzLexiYWgT1i2ubKKsIMkq1iBcXL6v7l0zfpiTdoJgjRPlarRHeBsStA16dzKkd+2MMRaMCOx5x9CdW4AxV0cZ5/TENZug3odJ60cURF+0BLUWcwAbQDGUEbzjJUkEBH2WqTFYPUAHb59oX8LKttXh66vQ83KUrEKhLI+4yqKU7iZ0Fgt6o/YD+VpDPIkidsnTq4++mFupcmcrV+e+1Nw3wTidmiEzJFsi7zO8TtcnWcB02DsIUpZl8DCCbktaYb7ydbnYOyPdaxmZnr/3bJpNDW3esqGyHE/8aJXDGPFAg156cw6pHFHv6mGj+WgYOnv7dUAVoDcLnca+bkXCJcAmbUbJ5Ovqihbc46ZDqF9AoKEHjLbP3PfchVd5xaBYwSSI+psU779V70jfi1kSkIbLuEBPGSSv3af4F9APCR92rA/elWvFYXrAFnnQrbS5e3jmxjzZzVaSNZEvQTQoerdUBeHdef9BBFqIv1S12zACajOsWZW60PIsKkMPjaCz3edtOA==
+
   matrix:
     # dummy var enables for.matrix.only specific ENV vars below
     - DUMMY:
@@ -95,6 +97,8 @@ for:
   environment:
     CACHEID: linux64
   install:
+    # install ssh deploy key
+    - echo "${priv_key}" | tr " " "\n" >> $HOME/.ssh/id_rsa
     # cleaning up unused package sources first
     - sudo rm -f /etc/apt/sources.list.d/*.*
     - sudo ls -la /etc/apt/sources.list.d/
