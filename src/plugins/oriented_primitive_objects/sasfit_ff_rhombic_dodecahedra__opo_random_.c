@@ -61,6 +61,8 @@ scalar sasfit_ff_rhombic_dodecahedra__opo_random_(scalar q, sasfit_param * param
     SASFIT_CHECK_COND(SASFIT_EQUAL(dh_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
     dh_opod.Qmod = q;
+    sasfit_param_set_polar_theta(M_PI);
+    sasfit_param_set_polar_phi(2*M_PI);
     return sasfit_orient_avg(&sasfit_ff_rhombic_dodecahedra_opo_kernel,param);
 }
 

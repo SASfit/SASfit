@@ -87,6 +87,8 @@ scalar sasfit_ff_superegg_opo_random(scalar q, sasfit_param * param)
     if (fabs(B-1)<=sasfit_eps_get_comp() && opo_check_orthogonal(&s_egg_opod)) {
         return sasfit_integrate(0,1,sasfit_ff_superegg_circ_opo_kernel,param);
     }  else {
+        sasfit_param_set_polar_theta(M_PI);
+        sasfit_param_set_polar_phi(2*M_PI);
         return sasfit_orient_avg(&sasfit_ff_superegg_opo_kernel,param);
     }
 }
@@ -116,6 +118,8 @@ scalar sasfit_ff_superegg_opo_random_f(scalar q, sasfit_param * param)
     if (fabs(B-1)<=sasfit_eps_get_comp() && opo_check_orthogonal(&s_egg_opod)) {
         return sasfit_integrate(0,1,sasfit_ff_superegg_circ_opo_kernel_f,param);
     }  else {
+        sasfit_param_set_polar_theta(M_PI);
+        sasfit_param_set_polar_phi(2*M_PI);
         return sasfit_orient_avg(&sasfit_ff_superegg_opo_kernel_f,param);
     }
 }

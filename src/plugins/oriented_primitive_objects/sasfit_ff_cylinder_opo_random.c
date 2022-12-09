@@ -45,6 +45,8 @@ scalar sasfit_ff_cylinder_opo_random(scalar q, sasfit_param * param)
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(cyl_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
     cyl_opod.Qmod = q;
+    sasfit_param_set_polar_theta(M_PI_2);
+    sasfit_param_set_polar_phi(M_PI_2);
     return sasfit_orient_avg(&sasfit_ff_cylinder_opo_kernel,param);
 }
 
@@ -69,6 +71,8 @@ scalar sasfit_ff_cylinder_opo_random_f(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND(SASFIT_EQUAL(cyl_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
     cyl_opod.Qmod = q;
+    sasfit_param_set_polar_theta(M_PI_2);
+    sasfit_param_set_polar_phi(M_PI_2);
     return sasfit_orient_avg(&sasfit_ff_cylinder_opo_kernel_f,param);
 }
 

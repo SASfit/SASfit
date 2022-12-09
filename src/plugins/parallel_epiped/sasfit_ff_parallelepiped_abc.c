@@ -27,6 +27,8 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 	NUB = B;
 	NUC = C;
 	// insert your code here
+    sasfit_param_set_polar_theta(M_PI_2);
+    sasfit_param_set_polar_phi(M_PI_2);
 	return sasfit_orient_avg(&KernelSphAvg_P,param);
 }
 

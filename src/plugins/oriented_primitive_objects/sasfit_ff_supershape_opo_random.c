@@ -55,6 +55,8 @@ scalar sasfit_ff_supershape_opo_random(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND(SASFIT_EQUAL(s_shape_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
     s_shape_opod.Qmod = q;
+    sasfit_param_set_polar_theta(M_PI);
+    sasfit_param_set_polar_phi(2*M_PI);
     return sasfit_orient_avg(&sasfit_ff_supershape_opo_kernel,param);
 }
 

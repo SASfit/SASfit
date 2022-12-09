@@ -319,7 +319,7 @@ scalar sasfit_orient_avg_ctm(
                     gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_plain,
                                    &fval[0], &ferr[0]);
                     i++;
-                } while (i<10 && (ferr[0]/fval[0]>sasfit_eps_get_aniso()));
+                } while (i<10);
  //               sasfit_out("PLAIN: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_plain_free (s_plain);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
@@ -344,8 +344,8 @@ scalar sasfit_orient_avg_ctm(
                     gsl_monte_vegas_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_vegas,
                                    &fval[0], &ferr[0]);
                     i++;
-                } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || ferr[0]/fval[0]>sasfit_eps_get_aniso()));
-//                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || fabs(ferr[0]/fval[0])>sasfit_eps_get_aniso()));
+//                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,fabs(ferr[0]/fval[0]));
                 gsl_monte_vegas_free (s_vegas);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));;
                 break;
@@ -369,8 +369,8 @@ scalar sasfit_orient_avg_ctm(
                     gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_miser,
                                    &fval[0], &ferr[0]);
                     i++;
-                } while (i<=10 && ferr[0]/fval[0]>sasfit_eps_get_aniso());
-//                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
+                } while (i<=10);
+//                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,fabs(ferr[0]/fval[0]));
                 gsl_monte_miser_free (s_miser);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;

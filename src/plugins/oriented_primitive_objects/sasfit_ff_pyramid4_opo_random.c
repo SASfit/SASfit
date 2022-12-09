@@ -65,6 +65,8 @@ scalar sasfit_ff_pyramid4_opo_random(scalar q, sasfit_param * param)
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(pyramid4_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
     pyramid4_opod.Qmod = q;
+    sasfit_param_set_polar_theta(M_PI);
+    sasfit_param_set_polar_phi(2*M_PI);
     return sasfit_orient_avg(&sasfit_ff_pyramid4_opo_kernel,param);
 }
 
@@ -90,6 +92,8 @@ scalar sasfit_ff_pyramid4_opo_random_f(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND(SASFIT_EQUAL(pyramid4_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
     pyramid4_opod.Qmod = q;
+    sasfit_param_set_polar_theta(M_PI);
+    sasfit_param_set_polar_phi(2*M_PI);
     return gsl_hypot(sasfit_orient_avg(&sasfit_ff_pyramid4_opo_kernel_Re_f,param),sasfit_orient_avg(&sasfit_ff_pyramid4_opo_kernel_Im_f,param));
 }
 
