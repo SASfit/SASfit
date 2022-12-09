@@ -190,6 +190,10 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_get_MSASlambda, /* 146 */
 	sasfit_set_MSASthickness, /* 147 */
 	sasfit_set_MSASlambda, /* 148 */
+	sasfit_param_set_polar_phi, /* 149 */
+	sasfit_param_get_polar_phi, /* 150 */
+	sasfit_param_set_polar_theta, /* 151 */
+	sasfit_param_get_polar_theta, /* 152 */
 };
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 

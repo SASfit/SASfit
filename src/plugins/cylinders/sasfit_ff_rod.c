@@ -29,11 +29,7 @@ scalar sasfit_ff_rod(scalar q, sasfit_param * param)
 		Gmma = gsl_sf_Si(u)/u;
 	}
     u2 = u/2.0;
-	if (u==0.0) {
-		IP = L*L;
-	} else {
-		IP = L*L*(2.0*Gmma-gsl_pow_2(gsl_sf_bessel_j0(u2)) );
-	}
+	IP = L*L*(2.0*Gmma-gsl_pow_2(gsl_sf_bessel_j0(u2)) );
 	return ETA*ETA*IP;
 }
 
@@ -42,7 +38,7 @@ scalar sasfit_ff_rod_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return L;
+	return 0;
 }
 
 scalar sasfit_ff_rod_v(scalar q, sasfit_param * param, int dist)

@@ -208,14 +208,42 @@ int sasfit_get_maxpar()
 
 
 sasfit_param_override_t	sasfit_param_override_psi;
+sasfit_param_override_t	sasfit_param_polar;
 
 void sasfit_param_override_init (void)
 {
 	sasfit_param_override_psi.override  = FALSE;
 	sasfit_param_override_psi.value     = 0.0;
 	sasfit_param_override_psi.value2    = 0.0;
-
+	sasfit_param_override_psi.value3    = 0.0;
+	sasfit_param_override_psi.value4    = 0.0;
+	sasfit_param_polar.override  = FALSE;
+	sasfit_param_polar.value     = M_PI;
+	sasfit_param_polar.value2    = 2*M_PI;
+	sasfit_param_polar.value3    = 0.0;
+	sasfit_param_polar.value4    = 0.0;
 }
+
+void sasfit_param_set_polar_phi (scalar new_value)
+{
+	sasfit_param_polar.value2    = new_value;
+}
+
+scalar sasfit_param_get_polar_phi (void)
+{
+	return sasfit_param_polar.value2;
+}
+
+void sasfit_param_set_polar_theta (scalar new_value)
+{
+	sasfit_param_polar.value    = new_value;
+}
+
+scalar sasfit_param_get_polar_theta (void)
+{
+	return sasfit_param_polar.value;
+}
+
 
 void sasfit_param_override_set_psi2 (scalar new_value)
 {

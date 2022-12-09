@@ -23,7 +23,7 @@
 
 scalar ell_rad(scalar radius, scalar epsilo, scalar t, scalar theta)
 {
-	return sqrt((radius+t)*(radius+t)*sin(theta)*sin(theta)+(epsilo*radius+t)*(epsilo*radius+t)*cos(theta)*cos(theta));
+	return gsl_hypot((radius+t)*sin(theta),(epsilo*radius+t)*cos(theta));
 }
 
 scalar AcylSHell(sasfit_param *param)
@@ -123,4 +123,23 @@ int A_cub2(unsigned ndim, const double *x, void *pam, unsigned fdim, double *fva
     }
 	fval[0]=AcylSHell(param)*sin(ALPHA)*ftmp;
 	return 0;
+}
+
+scalar A_ellcyl(const double *x, size_t ndim, void *pam) {
+	sasfit_param * param;
+	scalar ftmp;
+	param = (sasfit_param *) pam;
+	if ((ndim < 1)) {
+		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return 0;
+	}
+	ALPHA=x[0];
+    if (ndim == 1) {
+        THETA=0;
+        ftmp=1;
+    } else {
+        THETA=x[1];
+        ftmp=2.0/M_PI;
+    }
+	return AcylSHell(param)*sin(ALPHA)*ftmp;
 }

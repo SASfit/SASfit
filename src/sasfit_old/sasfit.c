@@ -1137,6 +1137,7 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
     scalar cubmin[2], cubmax[2];
     SQij_param param4SQij;
 	scalar res,res2,intErr,restot,Vav, Vx;
+	static int testFavg=0;
 	char FF_typestr[132];
 	char strtmp[256];
 
@@ -1333,6 +1334,15 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
 	       FF->compute_f = TRUE;
                res2 = SASFITqrombIQdR(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
+               if (res2==0) {
+                    testFavg++;
+                    if (testFavg>=3) {
+                        *error=TRUE;
+                        sasfit_out("Scattering amplitude seems to be zero. \n");
+                    }
+               } else {
+                   testFavg = 0;
+               }
 			   if (*error == TRUE) {
 			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       sasfit_out("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
@@ -1394,6 +1404,15 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                 sasfit_cubature(2,cubmin,cubmax,&IQSQij_core_cub,&param4SQij,sasfit_eps_get_aniso(),&res2,&intErr);
 //               res2 = SASFITqrombIQSQijdRj(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
+               if (res2==0) {
+                    testFavg++;
+                    if (testFavg>=3) {
+                        *error=TRUE;
+                        sasfit_out("Scattering amplitude seems to be zero. \n");
+                    }
+               } else {
+                   testFavg = 0;
+               }
 			   if (*error == TRUE) {
 			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       sasfit_out("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
@@ -1441,6 +1460,15 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                 sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_aniso(),&res2,&intErr);
               // res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
+               if (res2==0) {
+                    testFavg++;
+                    if (testFavg>=3) {
+                        *error=TRUE;
+                        sasfit_out("Scattering amplitude seems to be zero. \n");
+                    }
+               } else {
+                   testFavg = 0;
+               }
 			   if (*error == TRUE) {
 			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;
@@ -1483,6 +1511,15 @@ scalar integral_IQ_int_core( Tcl_Interp *interp,
                *error=sasfit_cubature(2,cubmin,cubmax,&IQSQijSA_core_cub,&param4SQij,sasfit_eps_get_aniso(),&res2,&intErr);
 //               res2 = SASFITqrombSA_IQSQijdRj(interp,dF_dpar,l,Vav,s,Q,a,SD,FF,SQ,distr,Rstart,Rend,error);
 	       FF->compute_f = FALSE;
+               if (res2==0) {
+                    testFavg++;
+                    if (testFavg>=3) {
+                        *error=TRUE;
+                        sasfit_out("Scattering amplitude seems to be zero. \n");
+                    }
+               } else {
+                   testFavg = 0;
+               }
 			   if (*error == TRUE) {
 			       sasfit_err("For this form factor only the monodisperse or eventually the local monodisperse approach for calculating a structure factor is implemented\n");
 			       return res;

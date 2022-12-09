@@ -22,10 +22,13 @@
 /*
  * Author(s) of this file:
  *   Ingo Bressler (ingo.bressler@bam.de)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 
 // #include <omp.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <stddef.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_monte.h>
@@ -230,7 +233,8 @@ int Kernel_cub_2D(unsigned ndim, const double *x, void *pam,
 		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
 		return 1;
 	}
-	fval[0]=(*cub->Kernel2D_fct)(x[0],x[1],param)*sin(x[0]);
+	fval[0]=(*cub->Kernel2D_fct)(acos(x[0]),2*M_PI*x[1],param);
+//	fval[0]=(*cub->Kernel2D_fct)(x[0],x[1],param)*sin(x[0]);
 	return 0;
 }
 
@@ -239,7 +243,8 @@ scalar Kernel_GL(scalar theta, scalar phi, void *pam) {
 	int_cub *cub;
 	cub = (int_cub *) pam;
 	param = (sasfit_param *) cub->param;
-	return (*cub->Kernel2D_fct)(theta,phi,param)*sin(theta);
+	return (*cub->Kernel2D_fct)(acos(theta),2*M_PI*phi,param);
+//	return (*cub->Kernel2D_fct)(theta,phi,param)*sin(theta);
 }
 
 double Kernel_MC1D(double *k, size_t dim, void *pam) {
@@ -261,7 +266,8 @@ double Kernel_MC2D(double *k, size_t dim, void *pam) {
 	cub = (int_cub *) pam;
 	param = (sasfit_param *) cub->param;
 	if (dim <2) sasfit_err("wrong dimension for using Kernel_MC2D (%d), dim needs to be dim>=2\n",dim);
-	return (*cub->Kernel2D_fct)(k[0],k[1],param)*sin(k[0]);
+	return (*cub->Kernel2D_fct)(acos(k[0]),2*M_PI*k[1],param);
+//	return (*cub->Kernel2D_fct)(k[0],k[1],param)*sin(k[0]);
 }
 
 scalar sasfit_orient_avg_ctm(
@@ -295,11 +301,11 @@ scalar sasfit_orient_avg_ctm(
 
     switch (sasfit_get_sphavg_strategy()) {
         case SPHAVG_MC_PLAIN: {
-                cubxmin[0] = 0;
-                cubxmax[0] = M_PI;
+                cubxmax[0] = 1;
+                cubxmin[0] = cos(sasfit_param_get_polar_theta());
                 cubxmin[1] = 0;
-                cubxmax[1] = 2*M_PI;
-                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
@@ -316,15 +322,15 @@ scalar sasfit_orient_avg_ctm(
                 } while (i<10 && (ferr[0]/fval[0]>sasfit_eps_get_aniso()));
  //               sasfit_out("PLAIN: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_plain_free (s_plain);
-                Iavg = fval[0]/(4*M_PI);
+                Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
             }
         case SPHAVG_MC_VEGAS: {
-                cubxmin[0] = 0;
-                cubxmax[0] = M_PI;
+                cubxmax[0] = 1;
+                cubxmin[0] = cos(sasfit_param_get_polar_theta());
                 cubxmin[1] = 0;
-                cubxmax[1] = 2*M_PI;
-                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
@@ -341,15 +347,15 @@ scalar sasfit_orient_avg_ctm(
                 } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || ferr[0]/fval[0]>sasfit_eps_get_aniso()));
 //                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_vegas_free (s_vegas);
-                Iavg = fval[0]/(4*M_PI);
+                Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));;
                 break;
             }
         case SPHAVG_MC_MISER: {
-                cubxmin[0] = 0;
-                cubxmax[0] = M_PI;
+                cubxmax[0] = 1;
+                cubxmin[0] = cos(sasfit_param_get_polar_theta());
                 cubxmin[1] = 0;
-                cubxmax[1] = 2*M_PI;
-                calls = gsl_min(sasfit_eps_get_iter_4_mc(),50);
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
                 gsl_rng_env_setup ();
                 T = gsl_rng_default;
                 r = gsl_rng_alloc (T);
@@ -363,17 +369,20 @@ scalar sasfit_orient_avg_ctm(
                     gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, 2, calls/10, r, s_miser,
                                    &fval[0], &ferr[0]);
                     i++;
-                } while (i<10 && ferr[0]/fval[0]>sasfit_eps_get_aniso());
+                } while (i<=10 && ferr[0]/fval[0]>sasfit_eps_get_aniso());
 //                sasfit_out("MISER: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_miser_free (s_miser);
-                Iavg = fval[0]/(4*M_PI);
+                Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
             }
         case SPHAVG_GSL_2D_GAUSSLEGENDRE: {
                 wglfixed = gsl_integration_glfixed_table_alloc(sasfit_eps_get_gausslegendre());
 //sasfit_out("GSL_2D_GAUSSLEGENDRE order:%d\n",sasfit_eps_get_gausslegendre());
-                Iavg = sasfit_gauss_legendre_2D_cube(&Kernel_GL, &cubstruct, 0, M_PI, 0, 2*M_PI, wglfixed);
-                Iavg=Iavg/(4*M_PI);
+                Iavg = sasfit_gauss_legendre_2D_cube(&Kernel_GL, &cubstruct,
+                                                     1, cos(sasfit_param_get_polar_theta()),
+                                                     0, sasfit_param_get_polar_phi()/(2*M_PI),
+                                                     wglfixed);
+                Iavg=-Iavg/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 gsl_integration_glfixed_table_free(wglfixed);
                 break;
             }
@@ -467,36 +476,36 @@ scalar sasfit_orient_avg_ctm(
                 break;
             }
         case SPHAVG_HCUBATURE: {
-                cubxmin[0] = 0;
-                cubxmax[0] = M_PI;
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
                 cubxmin[1] = 0;
-                cubxmax[1] = 2*M_PI;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
                 hcubature(1, &Kernel_cub_2D,&cubstruct,2, cubxmin, cubxmax,
                         limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
-                Iavg = fval[0]/(4*M_PI);
+                Iavg = -fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
             }
         case SPHAVG_PCUBATURE: {
-                cubxmin[0] = 0;
-                cubxmax[0] = M_PI;
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
                 cubxmin[1] = 0;
-                cubxmax[1] = 2*M_PI;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
                 pcubature(1, &Kernel_cub_2D,&cubstruct,2, cubxmin, cubxmax,
                         limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
-                Iavg = fval[0]/(4*M_PI);
+                Iavg = -fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
             }
         default:
-                cubxmin[0] = 0;
-                cubxmax[0] = M_PI;
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
                 cubxmin[1] = 0;
-                cubxmax[1] = 2*M_PI;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
                 pcubature(1, &Kernel_cub_2D,&cubstruct,2, cubxmin, cubxmax,
                         limit, epsabs, epsrel, ERROR_PAIRED,
                         fval, ferr);
-                Iavg = fval[0]/(4*M_PI);
+                Iavg = -fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
 	    }
 	    return Iavg;

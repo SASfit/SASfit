@@ -12,21 +12,8 @@
 // define shortcuts for local parameters/variables
 #define NU	param->p[3]
 
-scalar abc_SphAvg(scalar theta, scalar phi, sasfit_param * param) {
-    return KernelSphAvg_P(theta,phi,param);
-}
-
 scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-    gsl_integration_workspace * w;
-    gsl_integration_cquad_workspace * wcquad;
-    gsl_integration_glfixed_table * wglfixed;
-    gsl_function F;
-    size_t neval;
-    int intstrategy, lenaw=4000;
-
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -40,7 +27,7 @@ scalar sasfit_ff_parallelepiped_abc(scalar q, sasfit_param * param)
 	NUB = B;
 	NUC = C;
 	// insert your code here
-	return sasfit_orient_avg(&abc_SphAvg,param);
+	return sasfit_orient_avg(&KernelSphAvg_P,param);
 }
 
 scalar sasfit_ff_parallelepiped_abc_f(scalar q, sasfit_param * param)
@@ -48,7 +35,7 @@ scalar sasfit_ff_parallelepiped_abc_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	sasfit_err("sasfit_ff_parallelepiped_abc_f not implemented\n");
+	sasfit_err("sasfit_ff_parallelepiped_abc_f not implemented yet\n");
 	return 0.0;
 }
 

@@ -23,6 +23,7 @@
 
 scalar sasfit_ff_ellcylshell1(scalar q, sasfit_param * param)
 {   scalar *aw, res,err,sum;
+    int ierr;
     scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
     int intstrategy, lenaw=4000,ndim;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -41,55 +42,13 @@ scalar sasfit_ff_ellcylshell1(scalar q, sasfit_param * param)
 	cubxmax[0]=M_PI_2;
 	cubxmin[1]=0;
 	cubxmax[1]=M_PI_2;
-
-	intstrategy = sasfit_get_int_strategy();
-    intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&A_alpha,0,M_PI_2, aw, &res, &err, param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&A_alpha, 0,M_PI_2, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-            ndim=2;
-            if (EPSILON == 1.0) ndim=1;
-			hcubature(1, &A_cub2,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-            ndim=2;
-            if (EPSILON == 1.0) ndim=1;
-			pcubature(1, &A_cub2,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("This is default sasfit_integrate routine\n");
-            sum=sasfit_integrate(0.0,M_PI_2, &A_alpha_sasfit, param);
-            break;
-            }
-    }
-    return sum;
+    ierr = sasfit_cubature(2,cubxmin,cubxmax,&A_ellcyl,param,sasfit_eps_get_nriq(),&res, &err);
+    return res;
 }
 
 scalar sasfit_ff_ellcylshell1_f(scalar q, sasfit_param * param)
-{   scalar *aw, res,err,sum;
+{   int ierr;
+    scalar *aw, res,err,sum;
     scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
     int intstrategy, lenaw=4000,ndim;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -103,57 +62,26 @@ scalar sasfit_ff_ellcylshell1_f(scalar q, sasfit_param * param)
 	cubxmin[1]=0;
 	cubxmax[1]=M_PI_2;
 
-	intstrategy = sasfit_get_int_strategy();
-    intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&A_alpha,0,M_PI_2, aw, &res, &err, param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&A_alpha, 0,M_PI_2, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-            ndim=2;
-            if (EPSILON == 1.0) ndim=1;
-			hcubature(1, &A_cub2,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-            ndim=2;
-            if (EPSILON == 1.0) ndim=1;
-			pcubature(1, &A_cub2,param,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("This is default sasfit_integrate routine\n");
-            sum=sasfit_integrate(0.0,M_PI_2, &A_alpha_sasfit, param);
-            break;
-            }
-    }
-    return sum;
+    ierr = sasfit_cubature(2,cubxmin,cubxmax,&A_ellcyl,param,sasfit_eps_get_nriq(),&res, &err);
+    return res;
 }
 
-scalar sasfit_ff_ellcylshell1_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_ellcylshell1_v(scalar x, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return M_PI*(R+T)*(R*EPSILON+T)*L;
+	switch (dist) {
+    case 0: // R	param->p[0]
+        return M_PI*(x+T)*(x*EPSILON+T)*L;
+    case 1: // T	param->p[1]
+        return M_PI*(R+x)*(R*EPSILON+x)*L;
+    case 2: // EPSILON	param->p[2]
+        return M_PI*(R+T)*(R*x+T)*L;
+    case 3: // L	param->p[3]
+        return M_PI*(R+T)*(R*EPSILON+T)*x;
+    default:
+        return M_PI*(R+T)*(R*EPSILON+T)*L;
+	}
 }
 

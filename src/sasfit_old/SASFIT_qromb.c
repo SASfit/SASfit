@@ -207,14 +207,6 @@ void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) 
                      ((sasfit_param4int *)param4int)->Rend,
                      n,
                      sasfit_eps_get_nriq(), err);
-/*
-            unsigned num_eval;
-            *res = tanhsinh_quad(&IQ_IntdLen, param4int,
-                     ((sasfit_param4int *)param4int)->Rstart,
-                     ((sasfit_param4int *)param4int)->Rend,
-                     sasfit_eps_get_nriq(),
-                     err, &num_eval);
-*/
                 ((sasfit_param4int *)param4int)->error = 0;
                 break;
                 }
@@ -270,14 +262,6 @@ void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) 
                      ((sasfit_param4int *)param4int)->Rend,
                      n,
                      sasfit_eps_get_nriq(), err);
-/*
-            unsigned num_eval;
-            *res = tanhsinh_quad(&IQ_IntdLen, param4int,
-                     ((sasfit_param4int *)param4int)->Rstart,
-                     ((sasfit_param4int *)param4int)->Rend,
-                     sasfit_eps_get_nriq(),
-                     err, &num_eval);
-*/
             ((sasfit_param4int *)param4int)->error = 0;
             break;
             }

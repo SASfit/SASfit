@@ -225,6 +225,10 @@ typedef struct
 	scalar (*sasfit_get_MSASlambda) (void); /* 146 */
 	void (*sasfit_set_MSASthickness) (scalar value); /* 147 */
 	void (*sasfit_set_MSASlambda) (scalar value); /* 148 */
+	void (*sasfit_param_set_polar_phi) (scalar new_value); /* 149 */
+	scalar (*sasfit_param_get_polar_phi) (void); /* 150 */
+	void (*sasfit_param_set_polar_theta) (scalar new_value); /* 151 */
+	scalar (*sasfit_param_get_polar_theta) (void); /* 152 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -801,6 +805,22 @@ typedef struct
 #ifndef sasfit_set_MSASlambda
 #define sasfit_set_MSASlambda \
 	(SASFIT_COMMON_STUBS()->sasfit_set_MSASlambda) /* 148 */
+#endif
+#ifndef sasfit_param_set_polar_phi
+#define sasfit_param_set_polar_phi \
+	(SASFIT_COMMON_STUBS()->sasfit_param_set_polar_phi) /* 149 */
+#endif
+#ifndef sasfit_param_get_polar_phi
+#define sasfit_param_get_polar_phi \
+	(SASFIT_COMMON_STUBS()->sasfit_param_get_polar_phi) /* 150 */
+#endif
+#ifndef sasfit_param_set_polar_theta
+#define sasfit_param_set_polar_theta \
+	(SASFIT_COMMON_STUBS()->sasfit_param_set_polar_theta) /* 151 */
+#endif
+#ifndef sasfit_param_get_polar_theta
+#define sasfit_param_get_polar_theta \
+	(SASFIT_COMMON_STUBS()->sasfit_param_get_polar_theta) /* 152 */
 #endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 

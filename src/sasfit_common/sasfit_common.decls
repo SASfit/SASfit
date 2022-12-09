@@ -490,3 +490,15 @@ declare 147 generic {
 declare 148 generic {
 	void sasfit_set_MSASlambda(scalar value)
 }
+declare 149 generic {
+	void sasfit_param_set_polar_phi(scalar new_value)
+}
+declare 150 generic {
+	scalar sasfit_param_get_polar_phi(void)
+}
+declare 151 generic {
+	void sasfit_param_set_polar_theta(scalar new_value)
+}
+declare 152 generic {
+	scalar sasfit_param_get_polar_theta(void)
+}

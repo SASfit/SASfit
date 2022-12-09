@@ -51,5 +51,6 @@ scalar A_theta(scalar, void *);
 scalar A_alpha(scalar, void *);
 scalar A_alpha_sasfit(scalar, sasfit_param *);
 int A_cub2(unsigned, const double *, void *, unsigned, double *);
+double A_ellcyl(const double *, size_t, void *);
 #endif // end of file
 

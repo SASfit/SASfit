@@ -149,11 +149,23 @@ scalar sasfit_ff_ellcylshell2_f(scalar q, sasfit_param * param)
     return sum;
 }
 
-scalar sasfit_ff_ellcylshell2_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_ellcylshell2_v(scalar x, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return M_PI*(R+T)*(R*EPSILON+T)*(L+T);;
+
+	switch (dist) {
+    case 0: // R	param->p[0]
+        return M_PI*(x+T)*(x*EPSILON+T)*L;
+    case 1: // T	param->p[1]
+        return M_PI*(R+x)*(R*EPSILON+x)*L;
+    case 2: // EPSILON	param->p[2]
+        return M_PI*(R+T)*(R*x+T)*L;
+    case 3: // L	param->p[3]
+        return M_PI*(R+T)*(R*EPSILON+T)*x;
+    default:
+        return M_PI*(R+T)*(R*EPSILON+T)*L;
+	}
 }
 

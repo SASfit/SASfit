@@ -219,6 +219,11 @@ typedef struct
 /** Initialize all parameter override data structures. */
 sasfit_common_DLLEXP void sasfit_param_override_init (void);
 
+sasfit_common_DLLEXP void sasfit_param_set_polar_phi (scalar new_value);
+sasfit_common_DLLEXP void sasfit_param_set_polar_theta (scalar new_value);
+sasfit_common_DLLEXP scalar sasfit_param_get_polar_phi (void);
+sasfit_common_DLLEXP scalar sasfit_param_get_polar_theta (void);
+
 /**
  * Sets the new wavelength \f$ \lambda\f$ of an anisotropic model function.
  * Enables override of previous parameter value.

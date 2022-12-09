@@ -402,7 +402,7 @@ K_\text{ellCyl}(q,\Delta\eta,R,\epsilon,L,t,\phi,\alpha) &= \pi \epsilon R(\epsi
 \Delta \eta \\
     & \times \frac{2J_1\left(q r(R,\epsilon,t,\phi,\alpha) \right)}{q r(R,\epsilon,t,\phi,\alpha)}
     \frac{\sin(q \frac{L}{2}\cos(\alpha))}{q\frac{L}{2}\cos(\alpha)} \nonumber \\
-r(R,\epsilon,t,\phi,\alpha) &= \sqrt{(R+t)^2\sin^2(\phi)+(\epsilon R+t)^2\cos^2(\phi)} \sin(\alpha)
+r(R,\epsilon,t,\phi,\alpha) &= \sqrt{(R+t)^2\sin^2(\phi)+(\epsilon R+t)^2\cos^2(\phi)}
 \end{align}
 
 \begin{align}
@@ -518,6 +518,7 @@ The scattering intensity of a random oriented cylinder with globular end caps re
 \begin{align}\label{eq:randomoriented_cappedcylinders}
   I(Q) &= \int_0^{\pi/2} \abs{F(Q,r,L,h,\theta)}^2 \sin\theta \; \mathrm{d}\theta
 \end{align}
+
 \hspace{1pt}\\
 \uline{Input Parameters for model \texttt{capped\_cylinder}:}\\
 \begin{description}
@@ -530,6 +531,7 @@ The scattering intensity of a random oriented cylinder with globular end caps re
 \noindent\uline{Note:}
 \begin{itemize}
 \item $r$ and $L$ are only physical for values larger than 0.
+\item $h$ can be positive or negative depending on the direction of the offset.
 \item the integration algorithm can be configured via GUI (via \texttt{integration strategy})
 \end{itemize}
 
@@ -558,9 +560,9 @@ The scattering intensity of a random oriented cylinder with globular end caps re
 \caption{} \label{torus}
 \end{figure}
 \begin{align}
-F_\text{torus}(Q,\Theta,R,x,\nu,\Delta\eta) & = \int_{R-x}^{R+x}
+F_\text{torus}(Q,\Theta,R,x,\nu,\Delta\eta) & = \int_{\operatorname{max}\{0,R-x\}}^{R+x}
 4\pi r \Delta\eta \frac{J_0(Qr\sin\Theta) \sin(
-Q\gamma(r)\cos\Theta)}{Q\cos(\Theta)} \; dr
+Q\gamma(r)\cos\Theta)}{Q\cos(\Theta)} \; dr \label{eq:torus1}
 \end{align}
 \begin{align}
 \text{with } \gamma(r) &= \nu \sqrt{x^2-(r-R)^2}
@@ -587,11 +589,29 @@ F_\text{torus}(Q,\Theta,R,x,\nu,\Delta\eta)  = 2\pi\int_{-x}^{x}
 \end{align}
 with $R_{(\pm)} = R\pm\nu\sqrt{x^2-z^2}$
 
+\hspace{1pt}\\
+\uline{Input Parameters for model \texttt{torus}:}\\
+\begin{description}
+\item[\texttt{R}] distance between center of tube to center of torus $R$
+\item[\texttt{a}] radius of tube core
+\item[\texttt{Delta\_a}] shell thickness of tube shell $\Delta a$
+\item[\texttt{nu}] stretching factor of elliptical torus cross-section $\nu$
+\item[\texttt{eta\_c}] scattering length density of core $\eta_c$
+\item[\texttt{eta\_sh}] scattering length density of shell $\eta_{sh}$
+\item[\texttt{eta\_sol}] scattering length density of core $\eta_{sol}$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item the integration algorithm can be configured via GUI (via \texttt{integration strategy})
+\item for $R-a-\Delta a <0$ the integration in \ref{eq:torus1} starts at 0 as a lower limit. In the extreme case $R=0$ the form factor is the one of an elliptical shell.
+\end{itemize}
+
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.6\textwidth]{../images/form_factor/cylindrical_obj/Torus.png}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/Torus.png}
 \end{center}
-\caption{Scattering intensity of a torus. }
+\caption{Scattering intensity of a torus.}
 \label{fig:Torus}
 \end{figure}
 
@@ -907,7 +927,7 @@ I(Q=0)&=\mathcal{L}^2
 \begin{center}
 \includegraphics[width=0.7\textwidth]{../images/form_factor/cylindrical_obj/helix_straightIQ.png}
 \end{center}
-\caption{Normalized scattering curves of single stranded infinitesimal thin stranded helices.}
+\caption{Normalized scattering curves of single infinitesimal thin stranded helices.}
 \label{fig:helixstraightIQ}
 \end{figure}
 
