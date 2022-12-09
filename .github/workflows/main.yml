@@ -34,7 +34,6 @@ jobs:
           repository: SASfit/sasfit.github.io
           path: webpage
           ssh-key: ${{ secrets.DEPLOY_SASFIT_GITHUB_IO }}
-          #token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List current directory structure
         run: |
