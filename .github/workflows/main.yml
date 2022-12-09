@@ -31,7 +31,7 @@ jobs:
         with:
           repository: SASfit/sasfit.github.io
           path: webpage
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List current directory structure
         run: |
@@ -59,9 +59,9 @@ jobs:
         run: |
           cd webpage
           git add _includes; git add -u
-          git config user.name "${{ secrets.GH_USER }}"
-          git config user.email "${{ secrets.GH_EMAIL }}"
-          git commit -m "updated index and TOC" . || true
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git commit -m "Updated index and TOC from SASfit source" . || true
 
       - name: Push updates to webpage repo
         run: |
