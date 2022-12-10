@@ -259,6 +259,14 @@ double Kernel_MC1D(double *k, size_t dim, void *pam) {
 	return (*cub->Kernel1D_fct)(k[0],param);
 }
 
+double Kernel_cubature(const double *k, size_t dim, void *pam) {
+	sasfit_param * param;
+	int_cub *cub;
+	cub = (int_cub *) pam;
+	param = (sasfit_param *) cub->param;
+	if (dim <2) sasfit_err("wrong dimension for using Kernel_MC2D (%d), dim needs to be dim>=2\n",dim);
+	return (*cub->Kernel2D_fct)(acos(k[0]),2*M_PI*k[1],param);
+}
 
 double Kernel_MC2D(double *k, size_t dim, void *pam) {
 	sasfit_param * param;
@@ -279,7 +287,7 @@ scalar sasfit_orient_avg_ctm(
 {   double Iavg,sphi,cphi,PHI1,i_r8;
     int i;
     double *w, *x,*y,*z, xc, yc, zc;
-    int order, rule, lambda_i;
+    int order, rule, lambda_i, itmp;
     double ang_x;
     double fact,phi,theta;
     scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
@@ -497,6 +505,61 @@ scalar sasfit_orient_avg_ctm(
                 Iavg = -fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
             }
+        case SPHAVG_OOURA_DOUBLE_EXP_QUADRATURE:
+                itmp = sasfit_get_int_strategy();
+                sasfit_set_int_strategy(OOURA_DOUBLE_EXP_QUADRATURE);
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                sasfit_cubature(2,cubxmin,cubxmax,&Kernel_cubature,&cubstruct,epsrel,fval, ferr);
+                Iavg=-fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                sasfit_set_int_strategy(itmp);
+                break;
+        case SPHAVG_OOURA_CLENSHAW_CURTIS_QUADRATURE:
+                itmp = sasfit_get_int_strategy();
+                sasfit_set_int_strategy(OOURA_CLENSHAW_CURTIS_QUADRATURE);
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                sasfit_cubature(2,cubxmin,cubxmax,&Kernel_cubature,&cubstruct,epsrel,fval, ferr);
+                Iavg=-fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                sasfit_set_int_strategy(itmp);
+                break;
+        case SPHAVG_GSL_CQUAD:
+                itmp = sasfit_get_int_strategy();
+                sasfit_set_int_strategy(GSL_CQUAD);
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                sasfit_cubature(2,cubxmin,cubxmax,&Kernel_cubature,&cubstruct,epsrel,fval, ferr);
+                Iavg=-fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                sasfit_set_int_strategy(itmp);
+                break;
+        case SPHAVG_TANHSINH_1:
+                itmp = sasfit_get_int_strategy();
+                sasfit_set_int_strategy(TANHSINH_1);
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                sasfit_cubature(2,cubxmin,cubxmax,&Kernel_cubature,&cubstruct,epsrel,fval, ferr);
+                Iavg=-fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                sasfit_set_int_strategy(itmp);
+                break;
+        case SPHAVG_TANHSINH_2:
+                itmp = sasfit_get_int_strategy();
+                sasfit_set_int_strategy(TANHSINH_2);
+                cubxmin[0] = 1;
+                cubxmax[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                sasfit_cubature(2,cubxmin,cubxmax,&Kernel_cubature,&cubstruct,epsrel,fval, ferr);
+                Iavg=-fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                sasfit_set_int_strategy(itmp);
+                break;
         default:
                 cubxmin[0] = 1;
                 cubxmax[0] = cos(sasfit_param_get_polar_theta());
