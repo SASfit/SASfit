@@ -154,8 +154,6 @@ deploy:
     artifact: sasfit_package_win, sasfit_package_macos, sasfit_package_lin
     auth_token:
       secure: DFCyoA1EuoMYAxhTES5QlyOyAw/UEj+zBnCdqn8WSUFcsY+rZHmqbO/7CAfv/zNN
-      # secure: foGS5nC9Kj8CIEPoGp9pjEiqsIyCfitunDYNmjmmX7+QwHQVIbVJHnuyWjOeA1KF
-      # secure: Yhf+TWiz65SaShkmdidgyHhZdVGUTWjY6wK0/vkqtk807KZK/2zGFbfu5nIIegJUazdHZmovHOKkhIHJJCcxlUXSyOrL+Adj5xTNE0cAzVdUDMidyenzC06GIbcXVKyy
     on:
       APPVEYOR_REPO_TAG: true
 
