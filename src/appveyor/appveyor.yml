@@ -148,7 +148,7 @@ notifications:
 deploy:
     # release tags from master branch on GitHub
   - provider: GitHub
-    release: v$(SASFIT_VERSION_DESCR) $(SASFIT_RELEASE_DATE)
+    release: v$(SASFIT_VERSION) $(SASFIT_RELEASE_DATE)
     description: $(SASFIT_VERSION_DESCR)
     artifact: sasfit_package_win, sasfit_package_macos, sasfit_package_lin
     auth_token: # for_sasfit_releases
