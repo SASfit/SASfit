@@ -26,7 +26,7 @@ authors:
       and Testing, 12205 Berlin, Germany
 identifiers:
   - type: doi
-    value: 10.5072/zenodo.1135455
+    value: 10.5072/zenodo.
     description: SASfit package concept DOI
   - type: doi
     value: 10.1107/S1600576722009037
