@@ -295,6 +295,12 @@ macro(get_git_info)
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
             OUTPUT_VARIABLE GIT_COMMIT_DATETIME
             OUTPUT_STRIP_TRAILING_WHITESPACE)
+        # get the commit date (for github release date)
+        execute_process(COMMAND git show -s --format=%ad
+                                            --date=format:%y-%m-%d
+            WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
+            OUTPUT_VARIABLE GIT_COMMIT_DATE
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
         # get the tag if there is one
         execute_process(COMMAND git tag --contains
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
@@ -389,7 +395,7 @@ macro(sasfit_update_version)
     if(NOT GIT_FOUND) # no GIT, use current timestamp as version
         string(TIMESTAMP SASFIT_VERSION "${VERSION_TIMESTAMP_FORMAT}")
     else()
-        #cmake_print_variables(GIT_FOUND GIT_COMMIT GIT_TAG GIT_COMMIT_DATETIME)
+        #cmake_print_variables(GIT_FOUND GIT_COMMIT GIT_TAG GIT_COMMIT_DATE GIT_COMMIT_DATETIME)
         # default version is timestamp based
         set(SASFIT_VERSION "${GIT_COMMIT_DATETIME}")
         set(SASFIT_VERSION_DESCR)
@@ -421,6 +427,8 @@ macro(sasfit_update_version)
             set(appveyor_build_version "${SASFIT_VERSION}b$ENV{APPVEYOR_BUILD_NUMBER}")
             execute_process(COMMAND appveyor UpdateBuild -Version "${appveyor_build_version}")
             message(STATUS "Appveyor build version was set to '${appveyor_build_version}'.")
+            execute_process(COMMAND appveyor SetVariable
+                                        -Name SASFIT_RELEASE_DATE -Value "${GIT_COMMIT_DATE}")
             execute_process(COMMAND appveyor SetVariable
                                         -Name SASFIT_VERSION -Value "${SASFIT_VERSION}")
             execute_process(COMMAND appveyor SetVariable
