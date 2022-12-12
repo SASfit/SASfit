@@ -1,0 +1,70 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: SASfit
+message: >-
+  A curve fitting program for small-angle scattering
+  curves, mostly from SAXS and SANS experiments in
+  analytical or biological chemistry.
+type: software
+authors:
+  - given-names: Joachim
+    family-names: Kohlbrecher
+    email: joachim.kohlbrecher@psi.ch
+    affiliation: >-
+      Laboratory for Neutron Scattering and Imaging,
+      Paul Scherrer Institut, 5232 Villigen PSI,
+      Switzerland
+    orcid: 'https://orcid.org/0000-0001-5879-6943'
+  - given-names: Ingo
+    family-names: Breßler
+    orcid: 'https://orcid.org/0000-0002-2012-0056'
+    email: ingo.bressler@bam.de
+    affiliation: >-
+      BAM Federal Institute for Materials Research
+      and Testing, 12205 Berlin, Germany
+identifiers:
+  - type: doi
+    value: 10.5072/zenodo.1135455
+    description: SASfit package concept DOI
+  - type: doi
+    value: 10.1107/S1600576722009037
+    description: >-
+      Latest paper: Updates in SASfit for fitting
+      analytical expressions and numerical models to
+      small-angle scattering patterns
+  - type: doi
+    value: 10.1107/S1600576717011979
+    description: >-
+      Paper: Transformation cycle between the
+      spherically symmetric correlation function,
+      projected correlation function and differential
+      cross section as implemented in SASfit
+  - type: doi
+    value: 10.1107/S1600576715016544
+    description: >-
+      Paper: SASfit: a tool for small-angle
+      scattering data analysis using a library of
+      analytical expressions
+repository-code: 'https://github.com/SASfit/SASfit'
+url: 'https://sasfit.org'
+repository-artifact: 'https://cloudsmith.io/~sasfit/repos/build/'
+abstract: >-
+  Small-angle scattering is an increasingly common
+  method for characterizing particle ensembles in a
+  wide variety of sample types and for diverse areas
+  of application. SASfit has been one of the most
+  comprehensive and flexible curve-fitting programs
+  for decades, with many specialized tools for
+  various fields.
+keywords:
+  - small-angle scattering
+  - SAS
+  - SAXS
+  - SANS
+  - numerical models
+  - structure factors
+  - form factors
+  - regularization
+license: GPL-3.0
