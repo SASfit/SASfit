@@ -28,7 +28,7 @@ params = {
     "access_token": os.environ["ZENODO_TOKEN"]
 }
 
-baseurl = "https://sandbox.zenodo.org/api"
+baseurl = "https://sandbox.zenodo.org/api" # FIXME
 prefix = "[zenodo]"
 
 def out(*args, **kwargs):
