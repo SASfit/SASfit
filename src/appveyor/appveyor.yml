@@ -24,9 +24,9 @@ clone_script:
   - ps: git submodule update --init --recursive
 
 image:
-    #  - Visual Studio 2019
+  - Visual Studio 2019
   - Ubuntu2004
-    #  - macos
+  - macos
 
 environment:
   BT_API:
@@ -35,6 +35,8 @@ environment:
     secure: mdkr0G05WlB+R6OUbrgfvMACBjlmZce0VZCjB8mfnMA=
   CLOUDSMITH_KEY:
     secure: W/Nf9rURGNNqj4clwDkiWqVQ83eLVynha1nhtey0c8gqbVjQCAs/fJEqX528UScL
+  ZENODO_TOKEN:
+    secure: BVfwDrJ9LVX6yaJZlzI/avFFHuOGL/Wc8kXfP+8QqFj2E1Zk6A5uM0Rs+0I2MNrlaXGRZoSbHzlMgR+5oTaVmQ==
 
   matrix:
     # dummy var enables for.matrix.only specific ENV vars below
@@ -165,5 +167,7 @@ on_success:
   - python3 src/appveyor/citools/appveyor_keep_builds.py 10
   # upload binary packages to cloudsmith.io
   - python3 src/appveyor/8_cloudsmith_upload.py
+  # upload to zenodo each binary, if all binaries are in place finalize by publishing zenodo record
+  - python3 src/appveyor/9_zenodo_upload.py
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:

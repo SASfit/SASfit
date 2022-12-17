@@ -297,7 +297,7 @@ macro(get_git_info)
             OUTPUT_STRIP_TRAILING_WHITESPACE)
         # get the commit date (for github release date)
         execute_process(COMMAND git show -s --format=%ad
-                                            --date=format:%y-%m-%d
+                                            --date=format:%Y-%m-%d
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
             OUTPUT_VARIABLE GIT_COMMIT_DATE
             OUTPUT_STRIP_TRAILING_WHITESPACE)
