@@ -5,7 +5,7 @@ branches:
     - master
       # test with: echo 0.94.12-rc.1 | grep -oE '\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d)?$'
       # see https://semver.org/
-    - /\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d)?$/
+    - /\d+\.\d+\.\d+(-(alpha|beta|rc)\d)?$/
 
 skip_commits:
   files:
