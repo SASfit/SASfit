@@ -12,6 +12,10 @@ from citools.helpers import assertEnvVarExists, downloadFile
 from requests import put, post, get, delete # for HTTP requests
 from citools.helpers import makeRequest, sha256, UploadWithProgress
 
+if os.environ.get('APPVEYOR_REPO_TAG', '').lower() != 'true':
+    print("Not on a tagged version! Giving up.")
+    sys.exit()
+
 requiredEnvVars = ("SASFIT_PACKAGE_FILE", "SASFIT_VERSION", "SASFIT_RELEASE_DATE",
                    "ZENODO_TOKEN",)
 
