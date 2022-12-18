@@ -7,6 +7,7 @@ from copy import deepcopy
 from pathlib import Path
 from pprint import pprint, pformat
 from time import sleep
+import yaml
 from citools.helpers import assertEnvVarExists, downloadFile
 from requests import put, post, get, delete # for HTTP requests
 from citools.helpers import makeRequest, sha256, UploadWithProgress
@@ -19,6 +20,16 @@ for vname in requiredEnvVars:
 
 #verbose = bool(int(os.environ["ZENODO_DEBUG"]))
 verbose = True
+# get some initial meta data from CITATION.cff, such as GitHub project URL
+cff = "../../CITATION.cff"
+with open(cff, 'r') as fh:
+    cffdata = yaml.safe_load(fh)
+    ghUrl = cffdata['repository-code']
+    ghUserProject = '/'.join(ghUrl.split('/')[-2:])
+if verbose:
+    print(cff)
+    pprint(cffdata)
+
 packagefile = Path(os.environ["SASFIT_PACKAGE_FILE"]).resolve()
 packagever  = os.environ["SASFIT_VERSION"]
 packagedate = os.environ["SASFIT_RELEASE_DATE"]
@@ -57,12 +68,16 @@ def delAllFilesInDraft():
                                      json={})
         out(response)
 
-def updatedMetaData(record):
-    newmeta = deepcopy(record['metadata'])
+def updatedMetaData(oldmeta):
+    newmeta = deepcopy(oldmeta)
     newmeta['publication_date'] = packagedate
     newmeta['version'] = packagever
-    ghurl = newmeta['related_identifiers'][0]['identifier']
-    newmeta['related_identifiers'][0]['identifier'] = ghurl[:ghurl.rfind('/')] +'/'+ packagever
+    newmeta['license'] = cffdata['license']
+    newmeta['related_identifiers'] = [{
+            'identifier': ghUrl +'/tree/'+ packagever,
+            'relation': 'isSupplementTo', 'scheme': 'url'}]
+    newmeta['upload_type'] = cffdata['type']
+    newmeta['access_right'] = 'open'
     return newmeta
 
 def calcChecksum(filepath, method):
@@ -105,7 +120,7 @@ if verbose:
 newmeta = None
 if draft is not None:
     # Update meta data for the new version
-    newmeta = updatedMetaData(draft)
+    newmeta = updatedMetaData(draft['metadata'])
     if draft['metadata']['version'] != newmeta['version']:
         # delete existing draft since it does not match current version
         response, code = makeRequest(delete, draft['links']['self'], "",
@@ -121,14 +136,23 @@ if draft is None:
     parent = getRecord(state='published')
     if verbose:
         out("Parent record:", parent)
-    # FIXME: if there is none yet, create one with metadata
-    response, code = makeRequest(post, parent['links']['self'], "/actions/newversion",
-                                 params=dict(access_token=token),
-                                 json={}) # returns the parent record
-    if verbose:
-        out("Derived a new version record: Status", code)
-    # Update the draft
-    draft = getRecord()
+    if parent is not None and 'links' in parent:
+        response, code = makeRequest(post, parent['links']['self'], "/actions/newversion",
+                                     params=dict(access_token=token),
+                                     json={}) # returns the parent record
+        # Update the draft
+        draft = getRecord()
+    else: # if there is none yet, create one with metadata
+        draft, _ = makeRequest(post, baseurl, f"/deposit/depositions",
+                               params=dict(access_token=token), json={})
+        # get initial meta data from cff file
+        from cffconvert.cli.create_citation import create_citation
+        metadata = json.loads(create_citation(cff, None).as_zenodo())
+        print(f"Meta data from '{cff}':")
+        pprint(metadata)
+        # update the meta data with current version and more details
+        newmeta = updatedMetaData(metadata)
+        draft = updateMeta(draft, newmeta, verbose=verbose)
 
 if verbose:
     out("Current draft:", draft)
@@ -137,7 +161,7 @@ if draft is None: # still!
     out("Could not get or create a draft record! Aborting.")
     sys.exit()
 
-newmeta = updatedMetaData(draft)
+newmeta = updatedMetaData(draft['metadata'])
 
 # work around empty files listing in record (although they are in the bucket)
 # and missing bucket link
@@ -163,7 +187,8 @@ basename = packagefile.name[:packagefile.name.find(packagever)+len(packagever)]
 zipballfn = Path(basename + '_source.zip')
 if ('files' not in draft
     or zipballfn.name not in [file['filename'] for file in draft['files']]):
-    downloadFile("https://api.github.com/repos/SASfit/SASfit/zipball/"+packagever, zipballfn)
+    if not zipballfn.is_file():
+        downloadFile("https://api.github.com/repos/"+ghUserProject+"/zipball/"+packagever, zipballfn)
     uploadFile(draft, zipballfn, verbose=verbose)
 
 # Upload file if it does not exist there yet

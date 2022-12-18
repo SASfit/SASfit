@@ -162,7 +162,7 @@ deploy:
 on_success:
   - python3 --version
   # install packages needed by the after_deploy script
-  - python3 -m pip install --user requests python-dateutil
+  - python3 -m pip install --user requests python-dateutil cffconvert pyyaml
   # cleanup AppVeyor history
   - python3 src/appveyor/citools/appveyor_keep_builds.py 10
   # upload binary packages to cloudsmith.io
