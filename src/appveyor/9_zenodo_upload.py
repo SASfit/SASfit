@@ -176,7 +176,10 @@ if ('files' not in draft
                                  json={})
     if verbose:
         out("Uploaded temp file:", response) # the uploaded file info
-    os.remove(tmpfn)
+    try:
+        os.remove(tmpfn) # may fail on Windows: file in use
+    except PermissionError:
+        pass
 
 draft = updateMeta(draft, newmeta, verbose=verbose)
 
@@ -200,7 +203,7 @@ uploadFile(draft, packagefile, verbose=verbose)
 draft = updateMeta(draft, newmeta, verbose=verbose)
 # Remove all files not matching the current version
 for file in draft['files']:
-    if re.search(r'_'+packagever.replace('.',r'\.')+r'[_\.]', file['filename']) is None:
+    if re.search(r'[_-]'+packagever.replace('.',r'\.')+r'[_-\.]', file['filename']) is None:
         response, code = makeRequest(delete, file['links']['self'], f"",
                                      params=dict(access_token=token), json={})
         out(f"Deleted '{file['filename']}':", code)
