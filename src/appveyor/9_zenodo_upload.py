@@ -20,16 +20,6 @@ for vname in requiredEnvVars:
 
 #verbose = bool(int(os.environ["ZENODO_DEBUG"]))
 verbose = True
-# get some initial meta data from CITATION.cff, such as GitHub project URL
-cff = "../../CITATION.cff"
-with open(cff, 'r') as fh:
-    cffdata = yaml.safe_load(fh)
-    ghUrl = cffdata['repository-code']
-    ghUserProject = '/'.join(ghUrl.split('/')[-2:])
-if verbose:
-    print(cff)
-    pprint(cffdata)
-
 packagefile = Path(os.environ["SASFIT_PACKAGE_FILE"]).resolve()
 packagever  = os.environ["SASFIT_VERSION"]
 packagedate = os.environ["SASFIT_RELEASE_DATE"]
@@ -45,7 +35,17 @@ prefix = "[zenodo]"
 def out(*args, **kwargs):
     print(prefix, *[(pformat(obj) if isinstance(obj, dict) else obj) for obj in args])
 
-out(f"Running for package version {packagever} at {packagedate}.")
+out(f"Running for package version {packagever} at {packagedate} in path {os.getcwd()}.")
+
+# get some initial meta data from CITATION.cff, such as GitHub project URL
+cff = "CITATION.cff"
+with open(cff, 'r') as fh:
+    cffdata = yaml.safe_load(fh)
+    ghUrl = cffdata['repository-code']
+    ghUserProject = '/'.join(ghUrl.split('/')[-2:])
+if verbose:
+    print(cff)
+    pprint(cffdata)
 
 def getRecord(state='draft', verbose=False):
     reclst, code = makeRequest(get, baseurl, f"/deposit/depositions",
