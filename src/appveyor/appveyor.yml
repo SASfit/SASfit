@@ -24,8 +24,9 @@ clone_script:
   - ps: git submodule update --init --recursive
 
 image:
-  - Visual Studio 2019
+  # Linux first since its faster and there is more time for source snapshot upload to zenodo later
   - Ubuntu2004
+  - Visual Studio 2019
   - macos
 
 environment:
