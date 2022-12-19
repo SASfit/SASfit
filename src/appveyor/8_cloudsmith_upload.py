@@ -7,6 +7,10 @@ from pathlib import Path
 from citools.helpers import assertEnvVarExists
 from citools.cloudsmith import uploadFile
 
+if os.environ.get('APPVEYOR_REPO_TAG', '').lower() == 'true':
+    print("No cloudsmith for a tagged version! Going to Zenodo instead….")
+    sys.exit()
+
 requiredEnvVars = ("CLOUDSMITH_KEY",)
 
 for vname in requiredEnvVars:
