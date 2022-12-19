@@ -1,4 +1,4 @@
-﻿0.94.12 2022-12-18
+﻿0.94.12 2022-12-19
 - made a variable substitution for the integration in sasfit_orient_avg to get more homogeneously distributed points on a spherical surface 
 - added form factor of cylinder with globular end caps
 - the 1-Yukawa and 2-Yukawa structure factor stores now some previously calculated coefficients, which make it a bit more efficient.
