@@ -26,12 +26,14 @@
 #define ALPHA	param->p[MAXPAR-6]
 
 void pitchangle(sasfit_param * param) {
-scalar x;
+    scalar x;
+    x = R2/P/(2*M_PI);
+    if (gsl_posinf()==x) ALPHA =  M_PI_2;
+    if (gsl_neginf()==x) ALPHA = -M_PI_2;
 	if (fabs(P) < 1e-6) {
-		x = 2*M_PI*R1/P;
-		ALPHA = M_PI/2. 
-		       - x 
-			   + gsl_pow_3(x)/3. 
+		ALPHA = M_PI_2
+		       - x
+			   + gsl_pow_3(x)/3.
 		       - gsl_pow_5(x)/5.;
 	} else {
 		ALPHA = atan(x);
@@ -42,84 +44,42 @@ scalar r2(scalar g1, scalar g2, void * pam) {
 sasfit_param *param;
 	param = (sasfit_param *) pam;
 	return 2*(R2*R2+R1*R1+R2*R1*(cos(N*g2)+cos(N*g1)))
-		 + gsl_pow_2(A*(g1-g2)) 
-		 - 2*cos(g1-g2) * (R2*R2+R2*R1*(cos(N*g1)+cos(N*g2)) + R1*R1*(cos(N*g2)*cos(N*g1)+sin(N*g2)*sin(N*g1)*gsl_pow_2(cos(ALPHA)))) 
-		 - 2*sin(g1-g2) * (R2*R1*cos(ALPHA)*(sin(N*g2)-sin(N*g1))-R1*R1*cos(ALPHA)*sin(g1-g2))
+		 + gsl_pow_2(A*(g1-g2))
+		 - 2*cos(g1-g2) * (R2*R2+ R2*R1*(cos(N*g1)+cos(N*g2))
+                                + R1*R1*(cos(N*g2)*cos(N*g1)
+                                        + sin(N*g2)*sin(N*g1)*gsl_pow_2(cos(ALPHA))))
+		 - 2*sin(g1-g2) * ( R2*R1*cos(ALPHA)*(sin(N*g2)-sin(N*g1))
+                           -R1*R1*cos(ALPHA)*sin(g1-g2))
 		 - 2*R1*R1*sin(N*g1)*sin(N*g2)*gsl_pow_2(sin(ALPHA))
-		 + 2*A*R1*sin(ALPHA)*(sin(N*g2)-sin(N*g1))*(g1-g2)
-		;
+		 + 2*A*R1*sin(ALPHA)*(sin(N*g2)-sin(N*g1))*(g1-g2);
 }
 
-scalar sqrt_f(scalar gamma, void * pam) {
+scalar sqrt_f(scalar gamma, sasfit_param *param) {
 	scalar f;
-	sasfit_param *param;
-	param = (sasfit_param *) pam;
-	f = R2*R2 + gsl_pow_2(R1*N) + R1*R1*(gsl_pow_2(cos(N*gamma))+gsl_pow_2(sin(N*gamma)*cos(ALPHA)))
-		 + A*A + 2*R2*R1*cos(N*gamma)+2*R1*R1*N*cos(ALPHA);
+	f =   R2*R2
+        + gsl_pow_2(R1*N)
+        + R1*R1*(gsl_pow_2(cos(N*gamma))+gsl_pow_2(sin(N*gamma)*cos(ALPHA)))
+		+ A*A
+		+ 2*R2*R1*cos(N*gamma)
+		+ 2*R1*R1*N*cos(ALPHA);
 	return sqrt(fabs(f));
 }
 
-scalar Kernel_coiled(const double *gam, void * pam) {
+scalar f2D_cubature(const double *x, size_t ndim, void *pam) {
 	sasfit_param *param;
 	param = (sasfit_param *) pam;
-	return sqrt_f(gam[0],pam)*sqrt_f(gam[1],pam)*sinc(Q*sqrt(fabs(r2(gam[0],gam[1],pam)))) / (L*L);
-}
-
-
-scalar Kernel_coiled_OOURA2(scalar x, void * pam) {
-	sasfit_param *param;
-	param = (sasfit_param *) pam;
-	GAM2 = x;
-	return sqrt_f(GAM1,pam)*sqrt_f(GAM2,pam)*sinc(Q*sqrt(fabs(r2(GAM1,GAM2,pam)))) / (L*L);
-}
-
-scalar Kernel_coiled_OOURA1(scalar x, void * pam) {
-	sasfit_param *param;
-	scalar sum, err, *aw;
-	int lenaw;
-	
-	lenaw=10000;
-	param = (sasfit_param *) pam;
-	GAM1 = x;
-	switch(sasfit_get_int_strategy()) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-			sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-			sasfit_intde(&Kernel_coiled_OOURA2, 0.0, TURNS*2*M_PI, aw, &sum, &err,param);
-			free(aw);
-            break;
-            } 
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-			sasfit_intccini(lenaw, aw);
-			sasfit_intcc(&Kernel_coiled_OOURA2, 0.0, TURNS*2*M_PI, sasfit_eps_get_nriq(), lenaw, aw, &sum, &err,param);
-			free(aw);
-            break;
-            }
-	}
-	return sum;
-}
-
-int f2D_cubature(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval) {
-	fval[0] = 0;
-	if ((ndim < 2) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+	if (ndim < 2) {
+		sasfit_out("false dimensions ndim:%d\n",ndim);
 		return 1;
 	}
-    fval[0] = Kernel_coiled(x,pam);
-    return 0;
-} 
+    return sqrt_f(x[0],param)*sqrt_f(x[1],param)*sinc(Q*sqrt(fabs(r2(x[0],x[1],param))));
+}
 
 scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
 {
-	scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-	scalar sum, err, *aw;
-	int lenaw,intstrategy;
-	
-	lenaw=10000;
-    
-	
+	scalar cubxmin[2], cubxmax[2], res, err;
+	int ierr;
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -133,58 +93,19 @@ scalar sasfit_ff_superhelices_coiled(scalar q, sasfit_param * param)
 	Q=q;
 	A = P/(2.*M_PI);
 	pitchangle(param);
-	
-	aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-	sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-	sasfit_intde(&sqrt_f, 0.0, TURNS*2*M_PI, aw, &sum, &err,param);
-    free(aw);
-	L = sum;
-	
-    intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-			sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-			sasfit_intde(&Kernel_coiled_OOURA1, 0.0, TURNS*2*M_PI, aw, &sum, &err,param);
-			free(aw);
-            break;
-            } 
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-			sasfit_intccini(lenaw, aw);
-			sasfit_intcc(&Kernel_coiled_OOURA1, 0.0, TURNS*2*M_PI, sasfit_eps_get_nriq(), lenaw, aw, &sum, &err,param);
-			free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			cubxmin[0]=0;
-			cubxmax[0]=2*M_PI*TURNS;
-			cubxmin[1]=0;
-			cubxmax[1]=2*M_PI*TURNS;
-			hcubature(1, &f2D_cubature,param,2, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {	
-			cubxmin[0]=0;
-			cubxmax[0]=2*M_PI*TURNS;
-			cubxmin[1]=0;
-			cubxmax[1]=2*M_PI*TURNS;
-			pcubature(1, &f2D_cubature,param,2, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-            sasfit_err("Unknown integration strategy\n");
-            break;
-            }
-    }
-    return sum*L*L;
+
+    L=sasfit_integrate(0.0, TURNS*2*M_PI,&sqrt_f,param);
+    sasfit_out("L:%.5lg\n",L);
+
+    cubxmin[0]=0;
+    cubxmax[0]=2*M_PI*TURNS;
+    cubxmin[1]=0;
+    cubxmax[1]=2*M_PI*TURNS;
+    ierr = sasfit_cubature(2,cubxmin,cubxmax,&f2D_cubature,param,sasfit_eps_get_nriq(), &res, &err);
+
+    sasfit_out("res:%.8lg, err:%.12lg, ierr:%d\n",res,err,ierr);
+
+    return res;
 }
 
 scalar sasfit_ff_superhelices_coiled_f(scalar q, sasfit_param * param)
@@ -197,18 +118,12 @@ scalar sasfit_ff_superhelices_coiled_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_superhelices_coiled_v(scalar q, sasfit_param * param, int dist)
 {
-	scalar sum, err, *aw;
-	int lenaw;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
 	A = P/(2.*M_PI);
 	pitchangle(param);
-	
-	sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-	sasfit_intde(&sqrt_f, 0.0, TURNS, aw, &sum, &err,param);
-    free(aw);
-	L = sum;
-	return L;
+
+	return  sasfit_integrate(0.0, TURNS*2*M_PI,&sqrt_f,param);;
 }
 

@@ -60,10 +60,9 @@ scalar sasfit_ff_ellip_shell_2_core_MU(scalar x, sasfit_param * param)
 
 scalar sasfit_ff_ellipsoidal_shell_2(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-    size_t neval;
-    int intstrategy, ndim, lenaw=4000;
+    int ierr,ndim;
+	scalar res,err;
+    scalar cubxmin[2], cubxmax[2];
 	cubature_param cparam;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -97,54 +96,15 @@ scalar sasfit_ff_ellipsoidal_shell_2(scalar q, sasfit_param * param)
 	cparam.ndim=ndim;
 	cparam.func = &sasfit_ff_ellip_shell_2_core;
 
-	intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&Kernel_P_OOURA1, cubxmin[0],cubxmax[0], aw, &res, &err, &cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&Kernel_P_OOURA1, cubxmin[0],cubxmax[0], sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			hcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_ellip_shell_2_core_MU, param);
-            break;
-            }
-    }
-	return sum;
+    ierr = sasfit_cubature(ndim,cubxmin,cubxmax,&ellip_shell_cubature,&cparam,sasfit_eps_get_nriq(), &res, &err);
+    return res;
 }
 
 scalar sasfit_ff_ellipsoidal_shell_2_f(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-    size_t neval;
-    int intstrategy, ndim, lenaw=4000;
+    int ierr,ndim;
+	scalar res,err;
+    scalar cubxmin[2], cubxmax[2];
 	cubature_param cparam;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -178,46 +138,8 @@ scalar sasfit_ff_ellipsoidal_shell_2_f(scalar q, sasfit_param * param)
 	cparam.ndim=ndim;
 	cparam.func = &sasfit_ff_ellip_shell_2_core;
 
-	intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&Kernel_P_OOURA1, cubxmin[0],cubxmax[0], aw, &res, &err, &cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&Kernel_P_OOURA1, cubxmin[0],cubxmax[0], sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			hcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_ellip_shell_2_core_MU, param);
-            break;
-            }
-    }
-	return sum;
+    ierr = sasfit_cubature(ndim,cubxmin,cubxmax,&ellip_shell_cubature,&cparam,sasfit_eps_get_nriq(), &res, &err);
+    return res;
 }
 
 scalar sasfit_ff_ellipsoidal_shell_2_v(scalar q, sasfit_param * param, int dist)

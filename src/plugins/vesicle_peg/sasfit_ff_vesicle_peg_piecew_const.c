@@ -131,37 +131,7 @@ scalar vesicle_pegulated_kernel_dQT(scalar x, sasfit_param * param)
     subParam.p[0] = 1.0;
     return vesicle_pegulated(v,2,param)*LNdistr;
 }
-scalar sasfit_ff_vesicle__pegulated_kernelOOuraDEO_dT(scalar x, sasfit_param * param)
-{
-    scalar v[2];
-	scalar LNdistr;
-	sasfit_param subParam;
-	subParam.p[0] = 1.0;
-	subParam.p[1] = SIGMA_T;
-	subParam.p[2] = 1.0;
-	subParam.p[3] = T;
-	TINT=x;
-    v[0]=RINT;
-    v[1]=TINT;
-	LNdistr = sasfit_sd_LogNorm(x, &subParam);
-	return LNdistr*vesicle_pegulated(v,2,param);
-}
-double vesicle_pegulated_kernelOOuraDEO_dR (double x, void *p) {
-    sasfit_param * param;
-	scalar LNdistr,TStart,TEnd;
-	sasfit_param subParam;
-    param = (sasfit_param *) p;
 
-    RINT = x;
-	subParam.p[0] = 1.0;
-	subParam.p[1] = SIGMA_R;
-	subParam.p[2] = 1.0;
-	subParam.p[3] = R;
-
-	LNdistr = sasfit_sd_LogNorm(x, &subParam);
-	find_LogNorm_int_range(2, T, SIGMA_T, &TStart, &TEnd, param);
-	return LNdistr*sasfit_integrate(TStart,TEnd,&sasfit_ff_vesicle__pegulated_kernelOOuraDEO_dT,param);
-}
 scalar sasfit_ff_vesicle_peg_piecew_const(scalar q, sasfit_param * param)
 {
     int lenaw = 4000;
@@ -203,17 +173,7 @@ scalar sasfit_ff_vesicle_peg_piecew_const(scalar q, sasfit_param * param)
 	if (RStart==REnd && TStart==TEnd) return vesicle_pegulated(v,2,param);
     if (RStart==REnd ) return sasfit_integrate(TStart,TEnd,vesicle_pegulated_kernel_dQT,param);
     if (TStart==TEnd) return sasfit_integrate(RStart,REnd,vesicle_pegulated_kernel_dQR,param);
-//    if (   sasfit_get_int_strategy()==OOURA_CLENSHAW_CURTIS_QUADRATURE
-//        || sasfit_get_int_strategy()==OOURA_DOUBLE_EXP_QUADRATURE      ) {
-//        aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-//        sasfit_intdeoini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-//        sasfit_intdeo(&vesicle_pegulated_kernelOOuraDEO_dR, RStart, q, aw, &res, &err,param);
-//        sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-//        sasfit_intde(&vesicle_pegulated_kernelOOuraDEO_dR, RStart, REnd, aw, &res, &err,param);
-//        res2D=res;
-//        free(aw);
-//        return res2D;
-//    }
+
     intstart[0]=RStart;
     intend[0]  =REnd;
     intstart[1]=TStart;

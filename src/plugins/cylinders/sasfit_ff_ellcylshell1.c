@@ -21,11 +21,18 @@
 #define ALPHA param->p[MAXPAR-4]
 #define P param->p[MAXPAR-5]
 
+scalar ell_cylshell1_avg(scalar theta, scalar phi, sasfit_param *param) {
+    scalar x[2];
+    x[0]=theta;
+    x[1]=phi;
+    return A_ellcyl(x,2,param);
+}
+
 scalar sasfit_ff_ellcylshell1(scalar q, sasfit_param * param)
-{   scalar *aw, res,err,sum;
-    int ierr;
-    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-    int intstrategy, lenaw=4000,ndim;
+{   int ierr;
+    scalar res,err;
+    scalar cubxmin[2], cubxmax[2];
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -38,32 +45,38 @@ scalar sasfit_ff_ellcylshell1(scalar q, sasfit_param * param)
     Q=q;
     P=2;
     TYPE_SHELL=0;
-	cubxmin[0]=0;
-	cubxmax[0]=M_PI_2;
-	cubxmin[1]=0;
-	cubxmax[1]=M_PI_2;
-    ierr = sasfit_cubature(2,cubxmin,cubxmax,&A_ellcyl,param,sasfit_eps_get_nriq(),&res, &err);
-    return res;
+    if (EPSILON==1) {
+        cubxmin[0]=0;
+        cubxmax[0]=M_PI_2;
+        ierr = sasfit_cubature(1,cubxmin,cubxmax,&A_ellcyl,param,sasfit_eps_get_nriq(),&res, &err);
+        return res;
+    } else {
+        sasfit_param_set_polar_phi(M_PI_2);
+        sasfit_param_set_polar_theta(M_PI_2);
+        return sasfit_orient_avg(&ell_cylshell1_avg,param);
+    }
 }
 
 scalar sasfit_ff_ellcylshell1_f(scalar q, sasfit_param * param)
 {   int ierr;
-    scalar *aw, res,err,sum;
-    scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
-    int intstrategy, lenaw=4000,ndim;
+    scalar res,err;
+    scalar cubxmin[2], cubxmax[2];
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
     Q=q;
     P=1;
     TYPE_SHELL=0;
-	cubxmin[0]=0;
-	cubxmax[0]=M_PI_2;
-	cubxmin[1]=0;
-	cubxmax[1]=M_PI_2;
-
-    ierr = sasfit_cubature(2,cubxmin,cubxmax,&A_ellcyl,param,sasfit_eps_get_nriq(),&res, &err);
-    return res;
+    if (EPSILON==1) {
+        cubxmin[0]=0;
+        cubxmax[0]=M_PI_2;
+        ierr = sasfit_cubature(1,cubxmin,cubxmax,&A_ellcyl,param,sasfit_eps_get_nriq(),&res, &err);
+        return res;
+    } else {
+        sasfit_param_set_polar_phi(M_PI_2);
+        sasfit_param_set_polar_theta(M_PI_2);
+        return sasfit_orient_avg(&ell_cylshell1_avg,param);
+    }
 }
 
 scalar sasfit_ff_ellcylshell1_v(scalar x, sasfit_param * param, int dist)

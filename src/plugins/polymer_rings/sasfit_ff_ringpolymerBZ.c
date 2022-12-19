@@ -16,22 +16,17 @@
 #define EPS param->p[MAXPAR-3]
 #define MU  param->p[MAXPAR-4]
 
-scalar Kernel_P_OOURA_BZ(scalar x, void * pam) {
-	sasfit_param *param;
-	param = (sasfit_param *) pam;
+scalar Kernel_P_BZ(scalar x, sasfit_param * param) {
 	return 2*(1-x)*exp(-MU*pow(x*(1-x),1+EPS)/ (pow(1-x,1+EPS)+pow(x,1+EPS)) );
 }
-scalar Kernel_KEPS_OOURA_BZ(scalar x, void * pam) {
-	sasfit_param *param;
-	param = (sasfit_param *) pam;
+
+scalar Kernel_KEPS_BZ(scalar x, sasfit_param * param) {
 	return pow(x*(1-x),1+EPS)*(1-x)/ (pow(1-x,1+EPS)+pow(x,1+EPS));
 }
 
 scalar sasfit_ff_ringpolymerBZ(scalar q, sasfit_param * param)
 {
-    scalar u;
-    scalar *aw, res,err,sum;
-    int intstrategy, ndim, lenaw=4000;
+    scalar sum;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -42,38 +37,8 @@ scalar sasfit_ff_ringpolymerBZ(scalar q, sasfit_param * param)
     EPS = 2*NU-1;
     Q = q;
 
-    intstrategy = sasfit_get_int_strategy();
-	intstrategy=OOURA_DOUBLE_EXP_QUADRATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&Kernel_KEPS_OOURA_BZ, 0,1, aw, &res, &err, param);
-            KEPS = res;
-            MU = gsl_pow_2(q*RG)/(6*KEPS);
-            sasfit_intde(&Kernel_P_OOURA_BZ, 0,1, aw, &res, &err, param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&Kernel_KEPS_OOURA_BZ, 0,1, aw, &res, &err, param);
-            KEPS = res;
-            MU = gsl_pow_2(q*RG)/(6*KEPS);
-            sasfit_intcc(&Kernel_P_OOURA_BZ, 0,1, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_ellip_shell_0_core_MU, param);
-            break;
-            }
-    }
+    KEPS = sasfit_integrate(0,1,&Kernel_KEPS_BZ,param);
+    sum = sasfit_integrate(0,1,&Kernel_P_BZ,param);
     return sum*I0;
 }
 

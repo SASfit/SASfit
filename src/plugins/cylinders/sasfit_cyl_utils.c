@@ -46,85 +46,6 @@ scalar AcylSHell(sasfit_param *param)
 	return gsl_pow_int(A,lround(P));
 }
 
-scalar A_theta(scalar x, void *pam)
-{
-    sasfit_param * param;
-	param = (sasfit_param *) pam;
-
-	THETA = x;
-	return AcylSHell(param);
-}
-
-scalar A_theta_sasfit(scalar x, sasfit_param *param)
-{
-    return A_theta(x, param);
-}
-
-scalar A_alpha(scalar x, void *pam)
-{   scalar *aw, res,err,sum;
-    int intstrategy, lenaw=4000;
-    sasfit_param * param;
-	param = (sasfit_param *) pam;
-
-	ALPHA = x;
-
-	if (EPSILON == 1.0) {
-		return A_theta(0.0,param)*sin(ALPHA);
-	}
-
-    intstrategy = sasfit_get_int_strategy();
-    intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&A_theta,0,M_PI_2, aw, &res, &err, param);
-			sum=res*2.0/M_PI*sin(ALPHA);;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&A_theta, 0,M_PI_2, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res*2.0/M_PI*sin(ALPHA);;
-            free(aw);
-            break;
-            }
-    default: {
-//		    sasfit_out("This is default sasfit_integrate routine\n");
-            sum=sasfit_integrate(0.0,M_PI/2.0,&A_theta_sasfit,param)*2.0/M_PI*sin(ALPHA);
-            break;
-            }
-    }
-    return sum;
-}
-
-scalar A_alpha_sasfit(scalar x, sasfit_param *param)
-{
-    return A_alpha(x, param);
-}
-
-int A_cub2(unsigned ndim, const double *x, void *pam, unsigned fdim, double *fval) {
-	sasfit_param * param;
-	scalar ftmp;
-	param = (sasfit_param *) pam;
-	if ((ndim < 1) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
-		return 1;
-	}
-	ALPHA=x[0];
-    if (ndim == 1) {
-        THETA=0;
-        ftmp=1;
-    } else {
-        THETA=x[1];
-        ftmp=2.0/M_PI;
-    }
-	fval[0]=AcylSHell(param)*sin(ALPHA)*ftmp;
-	return 0;
-}
-
 scalar A_ellcyl(const double *x, size_t ndim, void *pam) {
 	sasfit_param * param;
 	scalar ftmp;
@@ -139,7 +60,7 @@ scalar A_ellcyl(const double *x, size_t ndim, void *pam) {
         ftmp=1;
     } else {
         THETA=x[1];
-        ftmp=2.0/M_PI;
+        ftmp=1.0/(4*M_PI);
     }
 	return AcylSHell(param)*sin(ALPHA)*ftmp;
 }

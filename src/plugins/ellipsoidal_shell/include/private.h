@@ -63,10 +63,8 @@ typedef struct
 #define NUMAX	param->p[MAXPAR-10]
 
 scalar F_EllSh(sasfit_param *param);
-int ellip_shell_cubature(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval);
+scalar ellip_shell_cubature(const double *x, size_t ndim, void *pam);
 scalar ellip_shell_mint(const double *x, size_t ndim, void *pam);
-scalar Kernel_P_OOURA1(scalar x, void * pam);
 
 #endif // end of file
 

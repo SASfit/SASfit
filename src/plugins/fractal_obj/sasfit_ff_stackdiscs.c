@@ -36,18 +36,6 @@ scalar StackDiscs_core(scalar theta, sasfit_param * param)
 	sinarg1 = Q*(T/2.0+H)*cos(theta);
 	sinarg2 = Q*T/2.0*cos(theta);
 
-/*
-	    BB = Q*D;
-	    AA = gsl_pow_2(Q*SIGMA)/2.;
-	    A = exp(AA*gsl_pow_2(cos(theta)));
-	    A2 = A*A;
-	    A4 = A2*A2;
-	    An = gsl_pow_int(A,lround(tn));
-	    sasfit_out("Q:%lg, theta:%lg, AA:%lg, BB:%lg, Z:%lg, N:%lg\n",Q,theta,AA,BB,(An*(4*A2 + (-1 + A4)*tn -
-            2*A*(1 - tn + A2*(1 + tn))*cos(BB*cos(theta))) +
-            2*A*(cos(BB*(-1 + tn)*cos(theta)) +
-            A*(-2*cos(BB*tn*cos(theta)) + A*cos(BB*(1 + tn)*cos(theta))))),(An*tn*gsl_pow_2(1 + A2 - 2*A*cos(BB*cos(theta)))));
-*/
     if (sasfit_eps_get_robertus_p()<0){
 	if (fabs(theta-M_PI_2)<sasfit_eps_get_nriq()) {
         BB = Q*D;
@@ -151,63 +139,16 @@ scalar StackDiscs_core(scalar theta, sasfit_param * param)
         }
     }
     bess = 2*sasfit_jinc(bessarg);
-/*
-	if (bessarg != 0.0)
-	{
-		bess=2.0*sasfit_bessj1(bessarg)/bessarg;
-	} else
-	{
-		bess =1.0;
-	}
-*/
 	f_t = gsl_sf_bessel_j0(sinarg1)*bess;
 	f_c = gsl_sf_bessel_j0(sinarg2)*bess;
-
-/*
-	if (sinarg1 != 0.0)
-	{
-		f_t = sin(sinarg1)/sinarg1*bess;
-	} else
-	{
-		f_t = bess;
-	}
-
-	if (sinarg2 != 0.0)
-	{
-		f_c = sin(sinarg2)/sinarg2*bess;
-	} else
-	{
-		f_c = bess;
-	}
-*/
 	return    (ETA_L * (V_t*f_t - V_c*f_c) + ETA_C * V_c*f_c)
 		* (ETA_L * (V_t*f_t - V_c*f_c) + ETA_C * V_c*f_c)
 		* SQ*sin(theta);
 }
 
-scalar StackDiscs_OOURA(scalar theta, void * pam)
-{
-    sasfit_param * param;
-    param = (sasfit_param *) pam;
-    return StackDiscs_core(theta,param);
-}
-int StackDiscs_cub(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval) {
-    sasfit_param * param;
-    param = (sasfit_param *) pam;
-	if ((ndim < 1) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
-		return 1;
-	}
-	fval[0] = StackDiscs_core(x[0],param);
-	return 0;
-}
 scalar sasfit_ff_stackdiscs(scalar q, sasfit_param * param)
 {
     scalar w,ftmp1,ftmp2;
-    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
-    scalar *aw, res,err,sum;
-    int intstrategy, lenaw=4000;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -219,93 +160,17 @@ scalar sasfit_ff_stackdiscs(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((SIGMA == 0.0), param, "sigma(%lg) == 0",SIGMA); // modify condition to your needs
 	SASFIT_CHECK_COND1((D < 0.0), param, "D(%lg) < 0",D); // modify condition to your needs
 
-//	Q = 1;
-//	NN = lround(floor(N));
-//	return StackDiscs_core(q,param);
 	// insert your code here
 	Q = q;
 
-    cubxmin[0]=0;
-    cubxmax[0]=M_PI_2;
-    switch(intstrategy) {
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-        aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-        sasfit_intccini(lenaw, aw);
-
-        NN = lround(floor(N));
-        w = N-floor(N);
-        sasfit_intcc(&StackDiscs_OOURA,cubxmin[0], cubxmax[0], sasfit_eps_get_aniso(), lenaw, aw, &ftmp1, &err,param);
-        NN=lround(floor(N))+1;
-        if (w>0) {
-            sasfit_intcc(&StackDiscs_OOURA,cubxmin[0], cubxmax[0], sasfit_eps_get_aniso(), lenaw, aw, &ftmp2, &err,param);
-        } else {
-            ftmp2=0;
-        }
-        free(aw);
-        break;
-        }
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-        aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-        sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_aniso(), aw);
-        NN = lround(floor(N));
-        w = N-floor(N);
-        sasfit_intde(&StackDiscs_OOURA,cubxmin[0], cubxmax[0], aw, &ftmp1, &err, param);
-        NN=lround(floor(N))+1;
-        if (w>0) {
-            sasfit_intde(&StackDiscs_OOURA,cubxmin[0], cubxmax[0], aw, &ftmp2, &err, param);
-        } else {
-            ftmp2=0;
-        }
-        free(aw);
-        break;
-        }
-    case P_CUBATURE: {
-        NN = lround(floor(N));
-        w = N-floor(N);
-        pcubature(1, &StackDiscs_cub,param,1, cubxmin, cubxmax,
-                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
-                        fval, ferr);
-        ftmp1 = fval[0];
-        NN=lround(floor(N))+1;
-        if (w>0) {
-            pcubature(1, &StackDiscs_cub,param,1, cubxmin, cubxmax,
-                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
-                        fval, ferr);
-            ftmp2 = fval[0];
-        } else {
-            ftmp2=0;
-        }
-        break;
-        }
-    case H_CUBATURE: {
-        NN = lround(floor(N));
-        w = N-floor(N);
-        pcubature(1, &StackDiscs_cub,param,1, cubxmin, cubxmax,
-                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
-                        fval, ferr);
-        ftmp1 = fval[0];
-        NN=lround(floor(N))+1;
-        if (w>0) {
-            pcubature(1, &StackDiscs_cub,param,1, cubxmin, cubxmax,
-                        100000, 0.0, sasfit_eps_get_aniso(), ERROR_PAIRED,
-                        fval, ferr);
-            ftmp2 = fval[0];
-        } else {
-            ftmp2=0;
-        }
-        break;
-        }
-    default: {
-        NN = lround(floor(N));
-        w = N-floor(N);
-        ftmp1=sasfit_integrate(0.0, M_PI/2.0, StackDiscs_core, param);
-        NN=lround(floor(N))+1;
-        if (w>0) {
-            ftmp2=sasfit_integrate(0.0, M_PI/2.0, StackDiscs_core, param);
-        } else {
-            ftmp2=0;
-        }
-    }
+    NN = lround(floor(N));
+    w = N-floor(N);
+    ftmp1 = sasfit_integrate(0,M_PI_2, &StackDiscs_core,param);
+    NN=lround(floor(N))+1;
+    if (w>0) {
+        ftmp2 = sasfit_integrate(0,M_PI_2, &StackDiscs_core,param);
+    } else {
+        ftmp2=0;
     }
     return (1-w)*ftmp1+w*ftmp2;
 }
