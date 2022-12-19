@@ -38,6 +38,7 @@ scalar sasfit_ff_ringpolymerBZ(scalar q, sasfit_param * param)
     Q = q;
 
     KEPS = sasfit_integrate(0,1,&Kernel_KEPS_BZ,param);
+    MU = gsl_pow_2(q*RG)/(6*KEPS);
     sum = sasfit_integrate(0,1,&Kernel_P_BZ,param);
     return sum*I0;
 }

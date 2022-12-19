@@ -165,10 +165,10 @@ scalar sasfit_ff_stackdiscs(scalar q, sasfit_param * param)
 
     NN = lround(floor(N));
     w = N-floor(N);
-    ftmp1 = sasfit_integrate(0,M_PI_2, &StackDiscs_core,param);
+    ftmp1 = sasfit_integrate(1e6*GSL_DBL_MIN,M_PI_2, &StackDiscs_core,param);
     NN=lround(floor(N))+1;
     if (w>0) {
-        ftmp2 = sasfit_integrate(0,M_PI_2, &StackDiscs_core,param);
+        ftmp2 = sasfit_integrate(1e6*GSL_DBL_MIN,M_PI_2, &StackDiscs_core,param);
     } else {
         ftmp2=0;
     }
