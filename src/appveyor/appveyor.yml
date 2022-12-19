@@ -5,7 +5,7 @@ branches:
     - master
       # test with: echo 0.94.12-rc.1 | grep -oE '\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d)?$'
       # see https://semver.org/
-    - /\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d)?$/
+    - /\d+\.\d+\.\d+(-(alpha|beta|rc)\d+)?$/
 
 skip_commits:
   files:
@@ -24,9 +24,10 @@ clone_script:
   - ps: git submodule update --init --recursive
 
 image:
-    #  - Visual Studio 2019
+  # Linux first since its faster and there is more time for source snapshot upload to zenodo later
   - Ubuntu2004
-    #  - macos
+  - Visual Studio 2019
+  - macos
 
 environment:
   BT_API:
@@ -35,8 +36,8 @@ environment:
     secure: mdkr0G05WlB+R6OUbrgfvMACBjlmZce0VZCjB8mfnMA=
   CLOUDSMITH_KEY:
     secure: W/Nf9rURGNNqj4clwDkiWqVQ83eLVynha1nhtey0c8gqbVjQCAs/fJEqX528UScL
-  SF_DEPLOY_KEY:
-    secure: Rk/Mvhk39ehsqEHCkQgzLexiYWgT1i2ubKKsIMkq1iBcXL6v7l0zfpiTdoJgjRPlarRHeBsStA16dzKkd+2MMRaMCOx5x9CdW4AxV0cZ5/TENZug3odJ60cURF+0BLUWcwAbQDGUEbzjJUkEBH2WqTFYPUAHb59oX8LKttXh66vQ83KUrEKhLI+4yqKU7iZ0Fgt6o/YD+VpDPIkidsnTq4++mFupcmcrV+e+1Nw3wTidmiEzJFsi7zO8TtcnWcB02DsIUpZl8DCCbktaYb7ydbnYOyPdaxmZnr/3bJpNDW3esqGyHE/8aJXDGPFAg156cw6pHFHv6mGj+WgYOnv7dUAVoDcLnca+bkXCJcAmbUbJ5Ovqihbc46ZDqF9AoKEHjLbP3PfchVd5xaBYwSSI+psU779V70jfi1kSkIbLuEBPGSSv3af4F9APCR92rA/elWvFYXrAFnnQrbS5e3jmxjzZzVaSNZEvQTQoerdUBeHdef9BBFqIv1S12zACajOsWZW60PIsKkMPjaCz3edtOA==
+  ZENODO_TOKEN:
+    secure: ki7GAxwdqxTVUG/tVfsHEL5IVidtwLuOMPbQ2By5GwyJNt5/fEZG+2Zam5vNZEGk4nOloBWow3Bt6efx85yBYg==
 
   matrix:
     # dummy var enables for.matrix.only specific ENV vars below
@@ -150,20 +151,24 @@ notifications:
 deploy:
     # release tags from master branch on GitHub
   - provider: GitHub
+    tag: $(SASFIT_VERSION)
+    release: v$(SASFIT_VERSION) $(SASFIT_RELEASE_DATE)
     description: $(SASFIT_VERSION_DESCR)
     artifact: sasfit_package_win, sasfit_package_macos, sasfit_package_lin
-    auth_token: # for_sasfit_releases
-      secure: Yhf+TWiz65SaShkmdidgyHhZdVGUTWjY6wK0/vkqtk807KZK/2zGFbfu5nIIegJUazdHZmovHOKkhIHJJCcxlUXSyOrL+Adj5xTNE0cAzVdUDMidyenzC06GIbcXVKyy
+    auth_token:
+      secure: DFCyoA1EuoMYAxhTES5QlyOyAw/UEj+zBnCdqn8WSUFcsY+rZHmqbO/7CAfv/zNN
     on:
       APPVEYOR_REPO_TAG: true
 
 on_success:
   - python3 --version
   # install packages needed by the after_deploy script
-  - python3 -m pip install --user requests python-dateutil
+  - python3 -m pip install --user requests python-dateutil cffconvert pyyaml
   # cleanup AppVeyor history
   - python3 src/appveyor/citools/appveyor_keep_builds.py 10
   # upload binary packages to cloudsmith.io
   - python3 src/appveyor/8_cloudsmith_upload.py
+  # upload to zenodo each binary, if all binaries are in place finalize by publishing zenodo record
+  - python3 src/appveyor/9_zenodo_upload.py
 
 # vim: set ts=2 sw=2 sts=2 tw=0 et:
