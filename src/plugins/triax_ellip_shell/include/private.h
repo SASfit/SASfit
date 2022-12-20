@@ -67,8 +67,6 @@ typedef struct
 #define ETA_SH	param->p[6]
 #define ETA_SOL	param->p[7]
 
-int triax_ellip_shell_cubature(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval);
-scalar Kernel_P_OOURA1(scalar x, void * pam);
+scalar triax_ellip_shell_cubature(const double *x, size_t ndim, void *pam);
 #endif // end of file
 

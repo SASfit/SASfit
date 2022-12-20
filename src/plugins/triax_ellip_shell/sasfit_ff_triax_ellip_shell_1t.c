@@ -59,7 +59,7 @@ scalar sasfit_ff_triax_ellip_shell_1t_core(sasfit_param * param)
 	}
 
 	f_sh  = 4./3.*M_PI*(A+T)*(B+T)*(C+T)*(ETA_SH-ETA_SOL);
-	if (u_sh != 0.0) 
+	if (u_sh != 0.0)
 	{
 		f_sh  = f_sh * 3*(sin(u_sh)-u_sh*cos(u_sh))/pow(u_sh,3);
 	}
@@ -67,73 +67,19 @@ scalar sasfit_ff_triax_ellip_shell_1t_core(sasfit_param * param)
 	return LNDISTR*gsl_sf_pow_int(f_sh+f_c, lround(P));
 }
 
-
-scalar sasfit_ff_triax_ellip_shell_1t_core_NU(scalar x, sasfit_param * param)
-{
-	sasfit_param subParam;
-	sasfit_init_param( &subParam );
-	if (SIGMA==0) {
-		LNDISTR = 1;
-		NU = 1;
-	} else {
-		subParam.p[0] = 1.0;
-		subParam.p[1] = SIGMA;
-		subParam.p[2] = 1.0;
-		subParam.p[3] = 1.0;
-		LNDISTR = sasfit_sd_LogNorm(x, &subParam);
-		NU=x;
-		SASFIT_CHECK_SUB_ERR(param, subParam);
-		if ( subParam.errStatus != FALSE ) {
-			sasfit_out("LogNormError: SIGMA:%lf\n",SIGMA);
-			return 1;
-		}
-	}
-	return sasfit_ff_triax_ellip_shell_1t_core(param);
-}
-scalar sasfit_ff_triax_ellip_shell_1t_core_y(scalar y, sasfit_param * param)
-{
-	scalar res;
-
-	SASFIT_ASSERT_PTR(param);
-
-	Y = y;
-	if (SIGMA == 0) {
-		NU = 1;
-		LNDISTR = 1;
-		res = sasfit_ff_triax_ellip_shell_1t_core(param);
-	} else {
-		res = sasfit_integrate(NUMIN, NUMAX, sasfit_ff_triax_ellip_shell_1t_core_NU, param);
-	}
-
-	return res;
-}
-
-scalar sasfit_ff_triax_ellip_shell_1t_core_x(scalar x, sasfit_param * param)
-{
-	scalar res;
-
-	SASFIT_ASSERT_PTR(param);
-
-	X = x;
-
-	res = sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_1t_core_y, param);
-
-	return res;
-}
-
 scalar sasfit_ff_triax_ellip_shell_1t(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[3], cubxmax[3], fval[1], ferr[1];
-    size_t neval;
-    int intstrategy, ndim, lenaw=4000;
+    int ierr;
+	scalar res,err;
+    scalar cubxmin[3], cubxmax[3];
+    size_t ndim;
 	cubature_param cparam;
-	
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-	
+
 	NU = 1;
 	LNDISTR=1.0;
-	
+
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A);
 	SASFIT_CHECK_COND1((B < 0.0), param, "b(%lg) < 0",B);
@@ -151,7 +97,7 @@ scalar sasfit_ff_triax_ellip_shell_1t(scalar q, sasfit_param * param)
 		ndim  =3;
 		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
-	
+
 	cubxmin[0]=0;
 	cubxmax[0]=1;
 	cubxmin[1]=0;
@@ -163,62 +109,25 @@ scalar sasfit_ff_triax_ellip_shell_1t(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &sasfit_ff_triax_ellip_shell_1t_core;
-	
-	intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&Kernel_P_OOURA1, cparam.cubxmin[0], cparam.cubxmax[0], aw, &res, &err, &cparam);
-			sum=res;
-            free(aw);
-            break;
-            } 
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&Kernel_P_OOURA1, cparam.cubxmin[0], cparam.cubxmax[0], sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			hcubature(1, &triax_ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &triax_ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_1t_core_x, param);
-            break;
-            }
-    }
-	return sum;
+
+	ierr = sasfit_cubature(ndim, cubxmin,cubxmax,triax_ellip_shell_cubature,&cparam,sasfit_eps_get_nriq(),&res,&err);
+
+	return res;
 }
 
 scalar sasfit_ff_triax_ellip_shell_1t_f(scalar q, sasfit_param * param)
 {
-	scalar *aw, res,err,sum;
-    scalar cubxmin[3], cubxmax[3], fval[1], ferr[1];
-    size_t neval;
-    int intstrategy, ndim, lenaw=4000;
+    int ierr;
+	scalar res,err;
+    scalar cubxmin[3], cubxmax[3];
+    size_t ndim;
 	cubature_param cparam;
-	
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
-	
+
 	NU = 1;
 	LNDISTR=1.0;
-	
+
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A);
 	SASFIT_CHECK_COND1((B < 0.0), param, "b(%lg) < 0",B);
@@ -236,7 +145,7 @@ scalar sasfit_ff_triax_ellip_shell_1t_f(scalar q, sasfit_param * param)
 		ndim  =3;
 		find_LogNorm_int_range(6,1,SIGMA,&NUMIN, &NUMAX, param);
 	}
-	
+
 	cubxmin[0]=0;
 	cubxmax[0]=1;
 	cubxmin[1]=0;
@@ -248,47 +157,10 @@ scalar sasfit_ff_triax_ellip_shell_1t_f(scalar q, sasfit_param * param)
 	cparam.cubxmax=cubxmax;
 	cparam.ndim=ndim;
 	cparam.func = &sasfit_ff_triax_ellip_shell_1t_core;
-	
-	intstrategy = sasfit_get_int_strategy();
-	intstrategy=P_CUBATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&Kernel_P_OOURA1, cparam.cubxmin[0], cparam.cubxmax[0], aw, &res, &err, &cparam);
-			sum=res;
-            free(aw);
-            break;
-            } 
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&Kernel_P_OOURA1, cparam.cubxmin[0], cparam.cubxmax[0], sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			hcubature(1, &triax_ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &triax_ellip_shell_cubature,&cparam,ndim, cubxmin, cubxmax, 
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED, 
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("ise default sasfit_integrate routine\n");
-            sum=sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_1t_core_x, param);
-            break;
-            }
-    }
-	return sum;
+
+	ierr = sasfit_cubature(ndim, cubxmin,cubxmax,triax_ellip_shell_cubature,&cparam,sasfit_eps_get_nriq(),&res,&err);
+
+	return res;
 }
 
 scalar sasfit_ff_triax_ellip_shell_1t_v(scalar x, sasfit_param * param, int dist)
@@ -298,7 +170,7 @@ scalar sasfit_ff_triax_ellip_shell_1t_v(scalar x, sasfit_param * param, int dist
 	nu1=exp(0.5*SIGMA*SIGMA*1*1);
 	nu2=exp(0.5*SIGMA*SIGMA*2*2);
 	nu3=exp(0.5*SIGMA*SIGMA*3*3);
-	
+
 	V = (T*T*T+A*T*T)*nu3+(C*T*T+B*T*T+A*C*T+A*B*T)*nu2+(B*C*T+A*B*C)*nu1;
 	V=V*4./3.*M_PI;
 	return V;

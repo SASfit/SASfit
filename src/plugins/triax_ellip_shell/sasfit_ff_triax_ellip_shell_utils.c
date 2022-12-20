@@ -30,19 +30,17 @@
 
 // define shortcuts for local parameters/variables
 
-int triax_ellip_shell_cubature(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval) {
+scalar triax_ellip_shell_cubature(const scalar *x, size_t ndim, void *pam) {
 	sasfit_param subParam;
 	sasfit_init_param( &subParam );
 	sasfit_param *param;
 	cubature_param *cparam;
 	cparam = (cubature_param *) pam;
 	param = cparam->param;
-	
-	fval[0] = 0;
+
 	if ((ndim < 2) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
-		return 1;
+		sasfit_err("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+		return -1;
 	}
 	if ((ndim < 3) || (SIGMA==0)) {
 		LNDISTR = 1;
@@ -56,97 +54,11 @@ int triax_ellip_shell_cubature(unsigned ndim, const double *x, void *pam,
 		LNDISTR = sasfit_sd_LogNorm(NU, &subParam);
 		SASFIT_CHECK_SUB_ERR(param, subParam);
 		if ( subParam.errStatus != FALSE ) {
-			sasfit_out("LogNormError: SIGMA:%lf\n",SIGMA);
-			return 1;
+			sasfit_err("LogNormError: SIGMA:%lf\n",SIGMA);
+			return -1;
 		}
 	}
 	X = x[0];
 	Y = x[1];
-    fval[0] = (cparam->func)(param);
-    return 0;
-}
-
-
-scalar Kernel_P_OOURA3(scalar x, void * pam) {
-	sasfit_param subParam;
-	sasfit_init_param( &subParam );
-	sasfit_param *param;
-	cubature_param *cparam;
-	cparam = (cubature_param *) pam;
-	param = cparam->param;
-	
-	if (SIGMA==0) {
-		LNDISTR = 1;
-		NU = 1;
-	} else {
-		subParam.p[0] = 1.0;
-		subParam.p[1] = SIGMA;
-		subParam.p[2] = 1.0;
-		subParam.p[3] = 1.0;
-		LNDISTR = sasfit_sd_LogNorm(x, &subParam);
-		NU=x;
-		SASFIT_CHECK_SUB_ERR(param, subParam);
-		if ( subParam.errStatus != FALSE ) {
-			sasfit_out("LogNormError: SIGMA:%lf\n",SIGMA);
-			return 1;
-		}
-	}
-	return  (cparam->func)(param);
-} 
-scalar Kernel_P_OOURA2(scalar x, void * pam) {
-	sasfit_param *param;
-	cubature_param *cparam;
-	cparam = (cubature_param *) pam;
-	param = cparam->param;
-	scalar sum, err, *aw;
-	int lenaw;
-	
-	lenaw=10000;
-	Y = x;
-	switch(sasfit_get_int_strategy()) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-			sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-			sasfit_intde(&Kernel_P_OOURA3, cparam->cubxmin[2], cparam->cubxmax[2], aw, &sum, &err,pam);
-			free(aw);
-            break;
-            } 
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-			sasfit_intccini(lenaw, aw);
-			sasfit_intcc(&Kernel_P_OOURA3, cparam->cubxmin[2], cparam->cubxmax[2], sasfit_eps_get_nriq(), lenaw, aw, &sum, &err,pam);
-			free(aw);
-            break;
-            }
-	}
-	return sum;
-}
-
-scalar Kernel_P_OOURA1(scalar x, void * pam) {
-	sasfit_param *param;
-	cubature_param *cparam;
-	cparam = (cubature_param *) pam;
-	param = cparam->param;
-	scalar sum, err, *aw;
-	int lenaw;
-	
-	lenaw=10000;
-	X = x;
-	switch(sasfit_get_int_strategy()) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-			sasfit_intdeini(lenaw,GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-			sasfit_intde(&Kernel_P_OOURA2, cparam->cubxmin[1], cparam->cubxmax[1], aw, &sum, &err,pam);
-			free(aw);
-            break;
-            } 
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-			aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-			sasfit_intccini(lenaw, aw);
-			sasfit_intcc(&Kernel_P_OOURA2, cparam->cubxmin[1], cparam->cubxmax[1], sasfit_eps_get_nriq(), lenaw, aw, &sum, &err,pam);
-			free(aw);
-            break;
-            }
-	}
-	return sum;
+    return (cparam->func)(param);
 }

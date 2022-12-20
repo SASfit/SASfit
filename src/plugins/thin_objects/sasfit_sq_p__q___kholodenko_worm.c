@@ -52,26 +52,6 @@ scalar sasfit_sq_Pprime_KholodenkoWorm_core(scalar x, sasfit_param *param)
     return 2.0/(3.0*N) * (1.0-x/(3.0*N)) * fy;
 }
 
-scalar sasfit_sq_Pprime_KholodenkoWorm_OOURA(scalar x, void * pam)
-{
-	sasfit_param *param;
-	param = (sasfit_param *) pam;
-	return sasfit_sq_Pprime_KholodenkoWorm_core(x,param);
-}
-
-int sasfit_sq_Pprime_KholodenkoWorm_cubature(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval)
-{
-	sasfit_param *param;
-	param = (sasfit_param *) pam;
-    fval[0] = 0;
-	if ((ndim < 1) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
-		return 1;
-	}
-	fval[0] = sasfit_sq_Pprime_KholodenkoWorm_core(x[0],param);
-	return 0;
-}
 scalar sasfit_sq_p__q___kholodenko_worm(scalar q, sasfit_param * param)
 {
     scalar *aw, res,err,sum;
@@ -91,72 +71,21 @@ scalar sasfit_sq_p__q___kholodenko_worm(scalar q, sasfit_param * param)
 	}
 
 	Q = q;
-	cubxmin[0]=0;
-	cubxmax[0]=3.0*N;;
 
     if (N > 1) {
         if (q > 10.*M_PI/LB) {
-            return L*L*M_PI/(L*q);
+            sum=L*L*M_PI/(L*q);
+        } else {
+            sum=L*L*sasfit_integrate(0.0, 3.0*N, sasfit_sq_Pprime_KholodenkoWorm_core,param);
         }
     } else {
         if (q > 10.*M_PI/L) {
-            return L*L*M_PI/(L*q);
+            sum=L*L*M_PI/(L*q);
+        } else {
+            sum=L*L*sasfit_integrate(0.0, 3.0*N, sasfit_sq_Pprime_KholodenkoWorm_core,param);
         }
     }
-    intstrategy = sasfit_get_int_strategy();
-	intstrategy=H_CUBATURE;
-	switch(intstrategy) {
-    case H_CUBATURE: {
-			hcubature(1, &sasfit_sq_Pprime_KholodenkoWorm_cubature,param,1, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = L*L*fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &sasfit_sq_Pprime_KholodenkoWorm_cubature,param,1, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = L*L*fval[0];
-            break;
-            }
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
- //       sasfit_out("this is the OOURA_DOUBLE_EXP_QUADRATURE integration routine\n");
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&sasfit_sq_Pprime_KholodenkoWorm_OOURA, 0.0,3.0*N, aw, &res, &err, param);
-			sum=L*L*res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-//        sasfit_out("this is the OOURA_CLENSHAW_CURTIS_QUADRATURE integration routine\n");
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&sasfit_sq_Pprime_KholodenkoWorm_OOURA, 0.0,3.0*N, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=L*L*res;
-            free(aw);
-            break;
-            }
-    default: {
-//		    sasfit_out("this is the default sasfit_integrate routine\n");
-            if (N > 1) {
-                if (q > 10.*M_PI/LB) {
-                    sum=L*L*M_PI/(L*q);
-                } else {
-                    sum=L*L*sasfit_integrate(0.0, 3.0*N, sasfit_sq_Pprime_KholodenkoWorm_core,param);
-                }
-            } else {
-                if (q > 10.*M_PI/L) {
-                    sum=L*L*M_PI/(L*q);
-                } else {
-                    sum=L*L*sasfit_integrate(0.0, 3.0*N, sasfit_sq_Pprime_KholodenkoWorm_core,param);
-                }
-            }
-            break;
-            }
-    }
-//    sasfit_out("q:%lf\t I(q):%lf\n",q,sum);
+
     return sum;
 }
 
