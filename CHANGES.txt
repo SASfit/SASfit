@@ -1,4 +1,8 @@
 ﻿0.94.12 2022-12-19
+- some older plugins are now using the new integration routines supplied in SASfit: 
+	ellcylshell, torus, ellipsoidal shell, superhelices, stacked discs, ring polymers, 
+	triaxial ellipsoidal shell, carved triaxial ellipsoidal shell, kholodenko worm,
+	rind and linear polymer under shearflow, sheared spheroids, sheared cylinders
 - made a variable substitution for the integration in sasfit_orient_avg to get more homogeneously distributed points on a spherical surface 
 - added form factor of cylinder with globular end caps
 - the 1-Yukawa and 2-Yukawa structure factor stores now some previously calculated coefficients, which make it a bit more efficient.

@@ -75,24 +75,22 @@ scalar koyama_worm_kernel(scalar x, void *pam) {
 	return 2*phi(x,pam)*(cparam->X - x)/gsl_pow_2(cparam->X);
 }
 
-int koyama_worm_kernel_cub(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval) {
+scalar koyama_worm_kernel_cub(const double *x, size_t ndim, void *pam) {
 	koyama_param *cparam;
 	cparam = (koyama_param *) pam;
-	if ((ndim < 1) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
-		return 1;
+	if (ndim < 1) {
+		sasfit_err("false dimensions ndim:%d\n",ndim);
+		return -1;
 	}
-	fval[0]=koyama_worm_kernel(x[0],pam);
-//	sasfit_out("::koyama_worm_kernel_cub: x[0]:%lf fval[0]:%lf\n",x[0],fval[0]);
-	return 0;
+	return koyama_worm_kernel(x[0],pam);
 }
 
 scalar sasfit_sq_koyama_worms(scalar q, sasfit_param * param)
-{	scalar *aw, res,err,sum, X;
-    scalar cubxmin[1], cubxmax[1], fval[1], ferr[1];
+{
+    int ierr;
+    scalar res,err, X;
+    scalar cubxmin[1], cubxmax[1];
 	koyama_param cparam;
-    int intstrategy, lenaw=4000;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -108,49 +106,10 @@ scalar sasfit_sq_koyama_worms(scalar q, sasfit_param * param)
 	cparam.X = 2*L/LB;
 	cubxmin[0]=0;
 	cubxmin[0]=cparam.X;
-//	sasfit_out("::sasfit_ff_koyama_worm: q: %lf X:%lf s:%lf\n",q, cparam.X, cparam.s);
-	intstrategy = sasfit_get_int_strategy();
-	intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&koyama_worm_kernel,0,cparam.X, aw, &res, &err, &cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&koyama_worm_kernel, 0,cparam.X, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,&cparam);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-			hcubature(1, &koyama_worm_kernel_cub,&cparam,1, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &koyama_worm_kernel_cub,&cparam,1, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("This is default sasfit_integrate routine\n");
-//            sum=sasfit_integrate(0.0,cparam.X, &koyama_worm_kernel, &cparam);
-sum=999;
-            break;
-            }
-    }
-	sasfit_out("::sasfit_ff_koyama_worm: q:%lf sum: %lf\n",q, sum);
-	return sum*L*L;
+
+	ierr = sasfit_cubature(1,cubxmin, cubxmax,&koyama_worm_kernel_cub,&cparam , sasfit_eps_get_nriq(),&res,&err);
+
+	return res*L*L;
 }
 
 scalar sasfit_sq_koyama_worms_f(scalar q, sasfit_param * param)
