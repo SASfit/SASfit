@@ -1,4 +1,4 @@
-﻿0.94.12 2022-12-19
+﻿0.94.12 2023-01-07
 - improved numerical stability of wormlike structure factor according to Koyama
 - some older plugins are now using the new integration routines supplied in SASfit: 
 	ellcylshell, torus, ellipsoidal shell, superhelices, stacked discs, ring polymers, 

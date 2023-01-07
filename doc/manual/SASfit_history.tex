@@ -1,7 +1,12 @@
 \appendix{History}
 \begin{description}
-\item[2022-12-19] \SASfit 0.94.12
+\item[2023-01-07] \SASfit 0.94.12
     \begin{itemize}
+    \item improved numerical stability of wormlike structure factor according to Koyama
+    \item  some older plugins are now using the new integration routines supplied in \SASfit:
+	ellcylshell, torus, ellipsoidal shell, superhelices, stacked discs, ring polymers,
+	triaxial ellipsoidal shell, carved triaxial ellipsoidal shell, kholodenko worm,
+	ring and linear polymer under shearflow, sheared spheroids, sheared cylinders, koyama worm
     \item made a variable substitution for the integration in\texttt{ sasfit\_orient\_avg} to get more homogeneously distributed points on a spherical surface
     \item added form factor of cylinder with globular end caps
     \item the 1-Yukawa and 2-Yukawa structure factor stores now some previously calculated coefficients, which make it a bit more efficient.
