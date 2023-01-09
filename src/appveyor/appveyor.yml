@@ -22,11 +22,6 @@ clone_script:
   - ps: cd $env:APPVEYOR_BUILD_FOLDER
   - ps: git checkout -qf $env:APPVEYOR_REPO_COMMIT
   - ps: git submodule update --init --recursive
-  # show some info on cache dependencies for comparison
-  - sh -c 'ls -la src/gsl/CMakeLists.txt src/CMakeLists.txt src/cmake'
-  - ps: Get-FileHash src\gsl\CMakeLists.txt | Format-List
-  - ps: Get-FileHash src\cmake | Format-List
-  - ps: Get-FileHash src\CMakeLists.txt | Format-List
 
 image:
   # Linux first since its faster and there is more time for source snapshot upload to zenodo later
