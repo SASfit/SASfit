@@ -135,7 +135,7 @@ scalar which_x(koyama_param *cparam) {
     gsl_function F;
     scalar MAXEXP, scaling;
     param = cparam->param;
-    MAXEXP = -log(GSL_DBL_MIN*10000);
+    MAXEXP = -log(GSL_DBL_MIN*1e10);
     scaling = cparam->s*cparam->s/3.0;
     if (!gsl_finite(MAXEXP/scaling)) return cparam->X;
     if (x_func(cparam->X) <= MAXEXP/scaling) return cparam->X;
@@ -146,7 +146,7 @@ scalar which_x(koyama_param *cparam) {
     F.function = &root_x;
     F.params = cparam;
 
-//    sasfit_out("max:%lg maxexp:%lg scaling:%lg\n",cparam->max_negargExp,-log(GSL_DBL_MIN*10000),cparam->s*cparam->s/3.0);
+//    sasfit_out("max:%lg maxexp:%lg scaling:%lg\n",cparam->max_negargExp,-log(GSL_DBL_MIN*1e10),cparam->s*cparam->s/3.0);
 
     T = gsl_root_fsolver_brent;
     s = gsl_root_fsolver_alloc (T);
