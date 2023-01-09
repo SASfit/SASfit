@@ -21,7 +21,8 @@ scalar sasfit_ff_koyama_worm(scalar q, sasfit_param * param)
 
 	// insert your code here
 	if (q==0) return I0;
-//	sasfit_out("%lf %lg\n",q,I0/(L*L)*sasfit_sq_koyama_worms(q,param));
+	if (!gsl_finite(sasfit_sq_koyama_worms(q,param)))
+            sasfit_out("q:%lf I(q):%lg\n",q,I0/(L*L)*sasfit_sq_koyama_worms(q,param));
 	return I0/(L*L)*sasfit_sq_koyama_worms(q,param);
 }
 

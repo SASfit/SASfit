@@ -654,11 +654,11 @@ double qthsh(double (*f)(double, void *), void *par, double a, double b, int n, 
 // quad: Tanh-Sinh, Sinh-Sinh and Exp-Sinh quadrature formula
 	// https://www.genivia.com/qthsh.html
 	// Dr. Robert A. van Engelen
-	
+
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <math.h>
-	
+
 	// compile with -DFAST to accellerate with modest descrease in accuracy
 	#ifdef FAST
 	#define FUDGE1 160
@@ -667,15 +667,15 @@ double qthsh(double (*f)(double, void *), void *par, double a, double b, int n, 
 	#define FUDGE1 10
 	#define FUDGE2 1
 	#endif
-	
+
 	#define sign(x) (((x)>0)-((x)<0))
-	
+
 	double exp_sinh_opt_d(double (*f)(double, void *), void *par, double a, double eps, double d) {
 		int ev = 2;
 		// const double base = 2; // 2 or 3 or exp(1) for example
 		double h2 = f(a + d/2,par) - f(a + d*2,par)*4;
 		int i = 1, j = 32; // j=32 is optimal to search for r
-		
+
 		if (isfinite(h2) && fabs(h2) > 1e-5) { // if |h2| > 2^-16
 			double r, fl, fr, h, s = 0, lfl, lfr, lr = 2;
 		do { // find max j such that fl and fr are finite
@@ -721,7 +721,7 @@ double qthsh(double (*f)(double, void *), void *par, double a, double b, int n, 
 	}
 	return d;
 	}
-	
+
 	// integrate function f, range a..b, max levels n (2 to 7, 6 is recommended), relative error tolerance eps, estimated relative error err
 	// https://hub.fastgit.org/Robert-van-Engelen/Tanh-Sinh/blob/main/quad.c
 	double TanhSinhQuad(double (*f)(double, void *), void *par, double a, double b, int n, double eps, double *err) {
@@ -819,10 +819,12 @@ double qthsh(double (*f)(double, void *), void *par, double a, double b, int n, 
 			s += p;
 			++k;
 		} while (fabs(v) > tol*fabs(s) && k <= n);
-	// if the estimated relative error is desired, then return it
+	// if the estimated  error is desired, then return it
 	if (err != NULL)
-	*err = fabs(v)/(FUDGE2*fabs(s)+eps);
-	// result with estimated relative error err
+	*err = fabs(v)/(FUDGE2*fabs(s)+eps)*sign*d*s*h;
+	// result with estimated absolute error err
+	// *err = fabs(v)/(FUDGE2*fabs(s)+eps);
+	// result with estimated absolute error err
 	return sign*d*s*h;
 	}
 

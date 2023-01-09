@@ -89,7 +89,7 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
     gmdi_one_inte_param *               oip = params->oip + params->intern.dim;
 
     int                                 ret;
-    int                                 n =10;
+    int                                 n =15;
 
     double                              inte_limit_low  = call_gmdi_function_or_constant(&oip->x0, params->intern.x);
     double                              inte_limit_high = call_gmdi_function_or_constant(&oip->x1, params->intern.x);
