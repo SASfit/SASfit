@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CURRENT_DIR}/cmake)
 include(CMakePrintHelpers)
 
 # get our current location and set the distribution directory name
-project(sasfit C CXX)
+project(SASfit C CXX)
 
 # load custom modules for some automation
 include(SasfitCmakeUtils)
@@ -338,7 +338,7 @@ if(CREATE_BINARY)
             CONTENT "${AppImageBuilderCfg}"
             @ONLY NEWLINE_STYLE LF)
         # find the final AppImage file name to set an AppVeyor variable to test its existence
-        set(SASFIT_EXEC_FILENAME "SASfit-${SASFIT_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
+        set(SASFIT_EXEC_FILENAME "${CMAKE_PROJECT_NAME}-${SASFIT_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
         #file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/sasfit_exec_filename.cmake CONTENT "
         #    cmake_minimum_required(VERSION 3.0)
         #    set(CMAKE_MODULE_PATH \"\${SASFIT_ROOT_DIR}/src/cmake\")
