@@ -717,16 +717,6 @@ function(get_dependent_libs out_list filename)
         endif()
     endif()
     cmake_print_variables(dep_stdout)
-#    if(UNIX AND NOT APPLE) # linux
-        # avoid modifying LD_LIBRARY_PATH,
-        # using dyn.lib.loader in sasfit.sh instead
-#        list(APPEND PREREQ
-#            "/lib/*-linux-gnu/ld-[0-9].[0-9][0-9].so"
-#            "/lib/*-linux-gnu/libpthread.so.[0-9]"
-#            "/usr/lib/*-linux-gnu/libXrender.so.[0-9]"
-#            "/usr/lib/*-linux-gnu/libXfixes.so.[0-9]"
-#            )
-#    endif()
 
     separate_arguments(libs UNIX_COMMAND ${dep_stdout})
     foreach(fn ${libs})
