@@ -191,7 +191,7 @@ draft = updateMeta(draft, newmeta, verbose=verbose)
 # wget -c -O sasfit_0.94.11.zip https://api.github.com/repos/SASfit/SASfit/zipball/0.94.11
 # figure out the base filename for the source package to download and store
 basename = packagefile.name[:packagefile.name.find(packagever)+len(packagever)]
-zipballfn = Path(basename + '_source.zip')
+zipballfn = Path(basename + '-source.zip')
 if ('files' not in draft
     or zipballfn.name not in [file['filename'] for file in draft['files']]):
     if not zipballfn.is_file():

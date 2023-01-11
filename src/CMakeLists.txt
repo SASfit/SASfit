@@ -338,6 +338,7 @@ if(CREATE_BINARY)
             CONTENT "${AppImageBuilderCfg}"
             @ONLY NEWLINE_STYLE LF)
         # find the final AppImage file name to set an AppVeyor variable to test its existence
+        # see also PCKG_DIR_NAME in cmake/create_package.cmake
         set(SASFIT_EXEC_FILENAME "${CMAKE_PROJECT_NAME}-${SASFIT_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
         # build the AppImage at the end and set the AppImage file name
         add_custom_target(sasfit_binary ALL
