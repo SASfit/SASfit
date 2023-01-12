@@ -213,7 +213,10 @@ for file in draft['files']:
         out(f"Deleted '{file['filename']}':", code)
 
 draft = updateMeta(draft, newmeta, verbose=verbose)
-if len(draft['files']) == 4: # perhaps, check with AppVeyor API to check for current number of jobs done
+# check that all expected packages are present
+if all([any([(pckg in fn.lower())
+             for pckg in ("windows", "macos", "appimage", "source")])
+        for fn in draft['files']]):
     # finalize this record
     published, code = makeRequest(post, draft['links']['self'], '/actions/publish',
                                   params=dict(access_token=token),
