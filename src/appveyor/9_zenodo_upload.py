@@ -214,7 +214,7 @@ for file in draft['files']:
 
 draft = updateMeta(draft, newmeta, verbose=verbose)
 # check that all expected packages are present
-if all([any([(pckg in fn.lower())
+if all([any([(pckg in fn['filename'].lower())
              for pckg in ("windows", "macos", "appimage", "source")])
         for fn in draft['files']]):
     # finalize this record
