@@ -215,9 +215,9 @@ for file in draft['files']:
 draft = updateMeta(draft, newmeta, verbose=verbose)
 # check that all expected packages are present
 packages = ("windows", "macos", "appimage", "source")
-if len(draft['files']) == len(packages)
+if (len(draft['files']) == len(packages)
     and all([any([(pckg in fn['filename'].lower()) for pckg in packages])
-             for fn in draft['files']]):
+             for fn in draft['files']])):
     # finalize this record
     published, code = makeRequest(post, draft['links']['self'], '/actions/publish',
                                   params=dict(access_token=token),
