@@ -1,4 +1,5 @@
 [![Latest Download](doc/images/badge_latest_build.svg)](https://cloudsmith.io/~sasfit/repos/build/packages/?q=version:latest)
+[![SASfit on Zenodo](https://zenodo.org/badge/doi/10.5281/zenodo.7530356.svg)](https://doi.org/10.5281/zenodo.7530356)
 
 [![Build status Windows](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20Visual%20Studio%202019;%20Environment:%20DUMMY=?label=Windows%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
 [![Build status macOS](https://img.shields.io/appveyor/job/build/SASfit/sasfit/Image:%20macos;%20Environment:%20DUMMY=?label=macOS%20build)](https://ci.appveyor.com/project/SASfit/sasfit)
