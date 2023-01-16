@@ -33,7 +33,8 @@ params = {
     "access_token": os.environ["ZENODO_TOKEN"]
 }
 
-baseurl = "https://sandbox.zenodo.org/api" # FIXME
+#baseurl = "https://sandbox.zenodo.org/api" # for testing
+baseurl = "https://zenodo.org/api"
 prefix = "[zenodo]"
 
 def out(*args, **kwargs):
@@ -213,7 +214,11 @@ for file in draft['files']:
         out(f"Deleted '{file['filename']}':", code)
 
 draft = updateMeta(draft, newmeta, verbose=verbose)
-if len(draft['files']) == 4: # perhaps, check with AppVeyor API to check for current number of jobs done
+# check that all expected packages are present
+packages = ("windows", "macos", "appimage", "source")
+if (len(draft['files']) == len(packages)
+    and all([any([(pckg in fn['filename'].lower()) for pckg in packages])
+             for fn in draft['files']])):
     # finalize this record
     published, code = makeRequest(post, draft['links']['self'], '/actions/publish',
                                   params=dict(access_token=token),

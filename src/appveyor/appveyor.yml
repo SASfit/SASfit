@@ -37,7 +37,8 @@ environment:
   CLOUDSMITH_KEY:
     secure: W/Nf9rURGNNqj4clwDkiWqVQ83eLVynha1nhtey0c8gqbVjQCAs/fJEqX528UScL
   ZENODO_TOKEN:
-    secure: ki7GAxwdqxTVUG/tVfsHEL5IVidtwLuOMPbQ2By5GwyJNt5/fEZG+2Zam5vNZEGk4nOloBWow3Bt6efx85yBYg==
+    # secure: ki7GAxwdqxTVUG/tVfsHEL5IVidtwLuOMPbQ2By5GwyJNt5/fEZG+2Zam5vNZEGk4nOloBWow3Bt6efx85yBYg==
+    secure: KIU1ZKtCu17ytSmm2ZVuzYEW9lqQ0FDi2JMiUQ8twNfZbJJH9Aoys8wKqGqQyq1r1BDcPK8rBORinCCqoslecA==
 
   matrix:
     # dummy var enables for.matrix.only specific ENV vars below
