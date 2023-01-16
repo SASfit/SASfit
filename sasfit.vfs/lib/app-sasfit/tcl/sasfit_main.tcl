@@ -101,12 +101,12 @@ set sasfit(author) "written by Joachim Kohlbrecher (PSI)"
 set sasfit(authorname) ""
 
 set sasfit(width) [expr [winfo vrootwidth .]*7/9]
-if {$sasfit(width) > 780} {
-   set sasfit(width) 780
+if {$sasfit(width) > 860 } {
+   set sasfit(width) 860
 }
 set sasfit(height) [expr [winfo vrootheight .]*7/9]
-if {$sasfit(height) > 460} {
-   set sasfit(height) 460
+if {$sasfit(height) > 580} {
+   set sasfit(height) 580
 } 
 
 proc set_title_analytical {analytpar_file isGlobal
@@ -142,17 +142,25 @@ wm geometry $w
 wm title .about [concat $sasfit(progname) "- About"]
 raise $w
 focus $w
-image create photo LNSLogo -file $sasfit(tcl)/images/lns-logo_e.gif
-button $w.logo -image LNSLogo  -command {destroy .about}
-frame $w.frame
-button $w.ok -text OK -command {destroy .about}
-pack $w.logo $w.frame $w.ok
+image create photo SASfitLogo -file $sasfit(tcl)/images/sasfit_icon_text_w160_whitebg.gif
+frame $w.logo
+button $w.logo.b -image SASfitLogo  -command {destroy .about}
+frame $w.logo.info  -relief solid -borderwidth 2
+label $w.logo.info.l1 -text www.$sasfit(progname).org -font {Helvetica 14}
+label $w.logo.info.l2 -text $sasfit(version) -font {Helvetica 10}
 
-frame $w.frame.left 
+frame $w.frame
+button $w.ok -text OK -command {destroy .about} -padx 20 -padx 20 -font {Helvetica 14}
+pack $w.logo $w.frame $w.ok -padx 15 -pady 5
+pack $w.logo.b $w.logo.info -side left -expand yes -fill x -pady 10 -padx 20
+pack $w.logo.info.l1 $w.logo.info.l2 
+
+frame $w.frame.left
 frame $w.frame.right
+frame $w.frame.left.logo
+frame $w.frame.left.prog  
 pack  $w.frame.left $w.frame.right -side left -expand yes -fill both -pady 10
-image create photo SASfitLogo -file $sasfit(tcl)/images/sasfit_logo.gif
-button $w.frame.left.sasfitlogo -image SASfitLogo  -command "$w.ok invoke"
+pack  $w.frame.left.logo $w.frame.left.prog -side left -expand yes -fill both -pady 10
 bind $w <KeyPress-Return> "$w.ok invoke"
 if { $is_init } {
 	# close all sasfit if the startup window is exited (only OK is valid)
@@ -167,14 +175,10 @@ frame $w.frame.right.address
 frame $w.frame.right.sasfit
 frame $w.frame.right.notice
 frame $w.frame.right.textbox
-pack $w.frame.right.prog $w.frame.right.address $w.frame.right.sasfit \
+pack $w.frame.right.address $w.frame.right.sasfit \
 	$w.frame.right.notice $w.frame.right.textbox -ipady 5
 
-frame $w.frame.right.prog.info -relief solid -borderwidth 2
-pack $w.frame.right.prog.info
-label $w.frame.right.prog.info.l1 -text $sasfit(progname) -font {Helvetica 14}
-label $w.frame.right.prog.info.l2 -text $sasfit(version) -font {Helvetica 10}
-pack $w.frame.right.prog.info.l1 $w.frame.right.prog.info.l2
+
 
 label $w.frame.right.address.line1 -text \
 "Copyright (c) 2008-2021, Paul Scherrer Institute (PSI)
@@ -211,7 +215,7 @@ text $w.frame.right.textbox.box -yscrollcommand "$w.frame.right.textbox.sb set"
 set filehandler [open [file join $sasfit(tcl) .. COPYING.txt] RDONLY]
 $w.frame.right.textbox.box insert end [read $filehandler]
 close $filehandler
-$w.frame.right.textbox.box configure -state disabled -wrap none -width 74 -height 16
+$w.frame.right.textbox.box configure -state disabled -wrap word -width 60 -height 16
 scrollbar $w.frame.right.textbox.sb -orient vertical -command "$w.frame.right.textbox.box yview"
 
 pack $w.frame.right.textbox.box $w.frame.right.textbox.sb -fill y -side left
@@ -241,6 +245,7 @@ source $::sasfit(tcl)/sasfit_plugin_guide.tcl
 source $::sasfit(tcl)/sasfit_batch.tcl
 source $::sasfit(tcl)/sasfit_OZ_solver.tcl
 source $::sasfit(tcl)/sasfit_cubehelix.tcl
+source $::sasfit(tcl)/sasfit_goodness.tcl
 
 sasfit_load_plugins $::sasfit(plugins)
 
@@ -940,6 +945,18 @@ set CollectSDGraph(y,logscale) 0
 
 create_AnalytPar AnalytPar
 create_GlobalAnalytPar GlobalAnalytPar
+
+set DivergencyPar(div_name) {"Euclidean_L2_d" "City_block_L1_d" "Minkowski_Lp_d" "Chebyshev_Linfty_d" \
+                             "Sorensen_d"  "Gower_d" "Soergel_d" "Kulczynski_d" "Cranberra_d" "Lorentzian_d"\
+							 "Intersection_d" "Intersection_s"  "Wave_Hedges_d" "Czekanowski_s" "Czekanowski_d" \
+							 "Motyka_s" "Motyka_d" "Kulczynski_s" "Ruzicka_s" "Tanimoto_d" "InnerProduct_s" \
+							 "HarmonicMean_s" "Cosine_s" "KumarHassebrook_s" "Jaccard_s" "Jaccard_d" "Dice_s" \
+							 "Dice_d" "Fidelity_s" "Bhattacharyya_d" "Hellinger_d" "SquaredChord_d" "SquaredChord_s" \
+							 "Matusita_d" "SquaredEuclidean_d" "PearsonChi2_d" "NeymanChi2_d" "SquaredChi2_d" \
+							 "ProbabilisticSymmetricChi2_d" "Divergence_d" "Clark_d" "AdditiveSymmetricChi2_d" \
+							 "KullbackLeibler_d" "Jeffreys_d" "Kdivergence_d" "Topsoe_d" "JensenShannon_d" \
+							 "Jensen_d" "Taneja_d" "KumarJohnson_d" "AvgL1Linf_d"}
+CreateDivergencyParDataTab DivergencyPar
 
 set StructParData(w)          "123"
 set StructParData(GraphName)  "StructParData"
@@ -3418,6 +3435,22 @@ proc SaveAsCmd {} {
 
 }
 
+proc RefreshDivergencyParDataTab {DDivergencyPar args} {
+	upvar $DDivergencyPar ap
+
+	analytpar_get_text ap
+        catch {moments_get_text ap}
+
+	set n $::sasfit(div_name)
+	tab_text_update ap $n
+
+	# reconfigure copy command
+	$ap(${n}_w).popup entryconfigure 0 -command \
+		"tab_text_copy2clipboard_cmd $DDivergencyPar ${n}"
+	$ap(${n}_w).popup entryconfigure 1 -command \
+		"tab_text_copy2file_cmd $DDivergencyPar ${n}"
+}
+
 proc RefreshAnalytParDataTab {AAnalytPar args} {
 	upvar $AAnalytPar ap
 
@@ -4632,9 +4665,6 @@ zoomstack $SDGraph(w)
 	set ::sasfit(mom_name) "mom"
 	set ::sasfit(div_name) "divegence"
 	
-	create_tab_text divergency $::sasfit(div_name) \
-		"parameters for\ngoodness of fit" \
-		::DivergencyPar 
 		
 	create_tab_text analytmoments $::sasfit(mom_name) \
 		"moments of_analytical_size distrib." \
@@ -4654,7 +4684,13 @@ zoomstack $SDGraph(w)
 	RefreshStructParDataTab
 	RefreshAnalytParDataTab AnalytPar
 
-
+#
+#  create Divergency parameter info page, i.e. goodness of fit parameter page
+#
+	create_tab_text divergency $::sasfit(div_name) \
+		"parameters for\ngoodness of fit" \
+		::DivergencyPar 
+		
 bind $IQGraph(w) <Enter> \
         {
          .quickmessage configure -text "scattering intensity I(Q)"
