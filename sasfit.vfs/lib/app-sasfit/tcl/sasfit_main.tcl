@@ -1,6 +1,6 @@
 # sasfit.vfs/lib/app-sasfit/tcl/sasfit_main.tcl
 #
-# Copyright (c) 2008-2018, Paul Scherrer Institute (PSI)
+# Copyright (c) 2008-2023, Paul Scherrer Institute (PSI)
 #
 # This file is part of SASfit.
 #
@@ -181,7 +181,7 @@ pack $w.frame.right.address $w.frame.right.sasfit \
 
 
 label $w.frame.right.address.line1 -text \
-"Copyright (c) 2008-2021, Paul Scherrer Institute (PSI)
+"Copyright (c) 2008-2023, Paul Scherrer Institute (PSI)
 Laboratory for Neutron Scattering and Imaging
 CH-5232 Villigen PSI, Switzerland"
 entry $w.frame.right.address.url
@@ -3433,22 +3433,6 @@ proc SaveAsCmd {} {
        set sasfit(datadir) "[file dirname [lindex $Name 0]]"
    }
 
-}
-
-proc RefreshDivergencyParDataTab {DDivergencyPar args} {
-	upvar $DDivergencyPar ap
-
-	analytpar_get_text ap
-        catch {moments_get_text ap}
-
-	set n $::sasfit(div_name)
-	tab_text_update ap $n
-
-	# reconfigure copy command
-	$ap(${n}_w).popup entryconfigure 0 -command \
-		"tab_text_copy2clipboard_cmd $DDivergencyPar ${n}"
-	$ap(${n}_w).popup entryconfigure 1 -command \
-		"tab_text_copy2file_cmd $DDivergencyPar ${n}"
 }
 
 proc RefreshAnalytParDataTab {AAnalytPar args} {

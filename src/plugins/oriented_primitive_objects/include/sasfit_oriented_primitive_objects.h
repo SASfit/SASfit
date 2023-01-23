@@ -232,8 +232,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_random_v(
  *       <td>\b ea_z</td>
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>length of second half axis</td>
+ *       <td>\b mu=b/a</td>
+ *       <td>b=mu*a: length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -244,8 +244,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_random_v(
  *       <td>\b eb_z</td>
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b c</td>
- *       <td>length of third half axis</td>
+ *       <td>\b nu=c/a</td>
+ *       <td>c=nu*a: length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -323,8 +323,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_v(s
  *       <td>\b ea_z</td>
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>length of second half axis</td>
+ *       <td>\b mu=b/a</td>
+ *       <td>b=mu*a: length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -335,8 +335,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_parallelepiped_opo_v(s
  *       <td>\b eb_z</td>
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b c</td>
- *       <td>length of third half axis</td>
+ *       <td>\b nu=c/a</td>
+ *       <td>c=nu*a: length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -773,7 +773,7 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_random_v(
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
  *       <td>\b nu</td>
- *       <td>b=nu*a: length of third half axis</td>
+ *       <td>c=nu*a: length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -802,11 +802,11 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superegg_opo_random_v(
  *       <td>\b psi</td>
  *       <td>direction of Q on detector (psi=0: direction to the right)</td>
  *      </tr><tr>
- *       <td>\b p</td>
- *       <td>shape parameter, ex-ey (p>0)</td>
+ *       <td>\b eps_2</td>
+ *       <td>shape parameter, ex-ey (eps_2>0)</td>
  *      </tr><tr>
- *       <td>\b q</td>
- *       <td>shape parameter, ez (q>0)</td>
+ *       <td>\b eps_1</td>
+ *       <td>shape parameter, ez (eps_1>0)</td>
  *      </tr></table>
  */
 
@@ -857,8 +857,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_v(s
  *       <td>\b ea_z</td>
  *       <td>z component of first axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b b</td>
- *       <td>length of second half axis</td>
+ *       <td>\b mu=b/a</td>
+ *       <td>b=mu*a: length of second half axis</td>
  *      </tr><tr>
  *       <td>\b eb_x</td>
  *       <td>x component of second axis (will be normalized to 1)</td>
@@ -869,8 +869,8 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_v(s
  *       <td>\b eb_z</td>
  *       <td>z component of second axis (will be normalized to 1)</td>
  *      </tr><tr>
- *       <td>\b c</td>
- *       <td>length of third half axis</td>
+ *       <td>\b nu</td>
+ *       <td>c=nu*a: length of third half axis</td>
  *      </tr><tr>
  *       <td>\b ec_x</td>
  *       <td>x component of third axis (will be normalized to 1)</td>
@@ -899,11 +899,11 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_superellipsoid_opo_v(s
  *       <td>\b dummy</td>
  *       <td>dummy</td>
  *      </tr><tr>
- *       <td>\b p</td>
- *       <td>shape parameter, ex-ey (p>0)</td>
+ *       <td>\b eps_2</td>
+ *       <td>shape parameter, ex-ey (eps_2>0)</td>
  *      </tr><tr>
- *       <td>\b q</td>
- *       <td>shape parameter, ez (q>0)</td>
+ *       <td>\b eps_1</td>
+ *       <td>shape parameter, ez (eps_1>0)</td>
  *      </tr></table>
  */
 

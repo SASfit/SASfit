@@ -38,8 +38,8 @@ scalar sasfit_ff_parallelepiped_opo_random(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(p_epiped_opod.ec,EC_X,EC_Y,EC_Z),0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
 	p_epiped_opod.a = A;
-	p_epiped_opod.b = B;
-	p_epiped_opod.c = C;
+	p_epiped_opod.b = A*B;
+	p_epiped_opod.c = A*C;
     p_epiped_opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&p_epiped_opod,0,0,0);
     opo_init(&p_epiped_opod);

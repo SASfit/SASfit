@@ -24,8 +24,8 @@ scalar sasfit_ff_parallelepiped_opo(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
 	opod.a = A;
-	opod.b = B;
-	opod.c = C;
+	opod.b = A*B;
+	opod.c = A*C;
     opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
     opo_init(&opod);
