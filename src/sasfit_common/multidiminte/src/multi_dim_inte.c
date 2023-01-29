@@ -48,6 +48,7 @@
 #include <gsl/gsl_errno.h>
 #include <stddef.h>
 #include <gsl/gsl_rng.h>
+#include <gsl/gsl_qrng.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_plain.h>
@@ -57,6 +58,7 @@
 #include "tanhsinh/tanhsinh.h"
 #include <sys/time.h>
 #include "../../include/sasfit_common.h"
+#include "../../quasimontecarlo/quasimontecarlo.h"
 #include "gmdi.h"
 #include "gmdi_structs.h"
 #include "sasfit.h"
@@ -474,6 +476,7 @@ int sasfit_cubature(size_t ndim,
     multint_cub cubstruct;
     const gsl_rng_type *T;
     gsl_rng *r;
+    gsl_qrng* qrng;
     unsigned int calls;
     gsl_monte_function GMC;
     cubstruct.KernelnD_fct=intKern_fct;
@@ -502,6 +505,46 @@ int sasfit_cubature(size_t ndim,
                         fval, ferr);
                 *result = fval[0];
                 *error = ferr[0];
+                done=1;
+                break;
+        case GSL_QMC_NIEDERREITER_2 :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                qrng = gsl_qrng_alloc(gsl_qrng_niederreiter_2, ndim);
+                quasi_monte_state* s_niederreiter_2 = quasi_monte_alloc(ndim);
+                quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_niederreiter_2,
+                                result, error);
+                quasi_monte_free(s_niederreiter_2);
+                gsl_qrng_free(qrng);
+                done=1;
+                break;
+        case GSL_QMC_SOBOL :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                qrng = gsl_qrng_alloc(gsl_qrng_sobol, ndim);
+                quasi_monte_state* s_sobol = quasi_monte_alloc(ndim);
+                quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_sobol,
+                                result, error);
+                quasi_monte_free(s_sobol);
+                gsl_qrng_free(qrng);
+                done=1;
+                break;
+        case GSL_QMC_HALTON :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                qrng = gsl_qrng_alloc(gsl_qrng_halton, ndim);
+                quasi_monte_state* s_halton = quasi_monte_alloc(ndim);
+                quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_halton,
+                                result, error);
+                quasi_monte_free(s_halton);
+                gsl_qrng_free(qrng);
+                done=1;
+                break;
+        case GSL_QMC_REVERSEHALTON :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                qrng = gsl_qrng_alloc(gsl_qrng_reversehalton, ndim);
+                quasi_monte_state* s_r_halton = quasi_monte_alloc(ndim);
+                quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_r_halton,
+                                result, error);
+                quasi_monte_free(s_r_halton);
+                gsl_qrng_free(qrng);
                 done=1;
                 break;
         case GSL_MC_PLAIN :

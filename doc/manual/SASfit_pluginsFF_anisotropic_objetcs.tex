@@ -106,7 +106,7 @@ Tait–Bryan angles ($x$-$y$-$z$, $y$-$z$-$x$, $z$-$x$-$y$, $x$-$z$-$y$, $z$-$y$
 \end{align}
 \vspace{5mm}
 
-Next to the form factor of an oriented primitive object also the form factor of it fully randomly oriented version is made available. The orientational average is done by integrating over the full Ewald's sphere, which is a double integration. \SASfit supplies for this orientational average separate integration routines which can be configured via the GUI. Next to the multidimensional adaptive integration routines \texttt{pcubature} and \texttt{hcubature} from \cite{Johnson2017} also some other routines are supplied, which however are nonadaptive without error estimate of the integral but optimized for integrations over a sphere surface. Nevertheless, these routines often need significant less function evaluations than a conventional multidimensional integration routines. The implemented methods are a 2D-GaussLegendre integration, Lebedev \cite{Lebedev1975,Lebedev1976,Lebedev1977} and Fibonacci \cite{Niederreiter1992,Marques2013} quadrature algorithm with a fixed and configurable number of function evaluations and without error estimation of the integral.
+Next to the form factor of an oriented primitive object also the form factor of it fully randomly oriented version is made available. The orientational average is done by integrating over the full Ewald's sphere, which is a double integration. \SASfit supplies for this orientational average separate integration routines which can be configured via the GUI. Next to the multidimensional adaptive integration routines \texttt{pcubature} and \texttt{hcubature} from \cite{Johnson2017} also some other routines are supplied, which however are nonadaptive without error estimate of the integral but optimized for integrations over a sphere surface. Nevertheless, these routines often need significant less function evaluations than a conventional multidimensional integration routines. The implemented methods are a 2D-GaussLegendre integration, Lebedev \cite{Lebedev1975,Lebedev1976,Lebedev1977} and Fibonacci \cite{Niederreiter1992,Marques_2013} quadrature algorithm with a fixed and configurable number of function evaluations and without error estimation of the integral.
 
 \subsection{perfect and random oriented ellipsoid} ~\\
 
@@ -840,7 +840,7 @@ e^{\imath\B{\hat{Q}r}} \nonumber \\
 & \times \int\limits_{-1}^1
 \mathrm{d}x\, \int\limits_{-Y(x)}^{Y(x)} \mathrm{d}y\,
 e^{\imath\left(\hat{Q}_xx+\hat{Q}_yy\right)} 2Z(x,y)\operatorname{sinc}(\hat{Q}_z Z(x,y))\nonumber \\
-&= \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \\
+&= \det(\M{D}^{-1})\, e^{-\imath\B{QR}}\, \Delta\eta\, \label{eq:superellipsoid_IQ} \\
 & \times \int\limits_{-1}^1
 \mathrm{d}x\, \int\limits_{-1}^{1} \mathrm{d}s\,
 e^{\imath\left(\hat{Q}_xx+\hat{Q}_yY(x)s\right)} 2Z(x,Y(x)s)\operatorname{sinc}(\hat{Q}_z Z(x,Y(x)s))Y(x)\nonumber \\
@@ -848,6 +848,62 @@ Y(x) &= \left(1-x^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{2}}\\
 Z(x,y) &= \left(1-\left(x^{\frac{2}{\epsilon_2}}+y^{\frac{2}{\epsilon_2}}\right)^{\frac{\epsilon_2}{\epsilon_1}}\right)^{\frac{\epsilon_1}{2}}
 \end{align}
 
+\uline{Input Parameters for model \texttt{superellipsoid (OPO)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{mu}] scaling factor of second half axis ($b=\mu a$) compared to first half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{nu}] scaling factor of third half axis ($c=\nu a$) compared to first half axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{alpha}] first Euler angle
+\item[\texttt{beta}] second Euler angle
+\item[\texttt{gamma}] third Euler angle
+\item[\texttt{psi}] direction of $\B{Q}$ on detector ($\psi=0$, $x$-direction, to the right)
+\item[\texttt{eps\_2}] shape parameter $\epsilon_2$
+\item[\texttt{eps\_1}] shape parameter $\epsilon_1$
+\end{description}
+
+~\\
+\uline{Input Parameters for model \texttt{superellipsoid (OPO, random)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{mu}] scaling factor of second half axis ($b=\mu a$) compared to first half axis
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{nu}] scaling factor of third half axis ($c=\nu a$) compared to first half axis
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{eps\_2}] shape parameter $\epsilon_2$
+\item[\texttt{eps\_1}] shape parameter $\epsilon_1$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
+\item shape parameter $\epsilon_1$ needs to be a positive non-zero number, $\epsilon_1>0$
+\item shape parameter $\epsilon_2$ needs to be a positive non-zero number, $\epsilon_2>0$
+\item The integration strategy for the double integral in eq.\ \ref{eq:superellipsoid_IQ} can be configured via a menu interface as well as the integration routine for the random orientational average.
+\end{itemize}
 
 
 \clearpage

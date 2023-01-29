@@ -9,7 +9,7 @@
 \label{fig:EllipsoidalObjects}
 \end{figure}
 
-The plugin "\texttt{ellipsoidal obj.}" contains form factors of ellipsoidal object with rotational symmetry, which are called ellipsoid of revolution or spheroid, as well as triaxial ellipsoidal objects. The three axes of the ellipsoids are assumed to be orthogonal. Because of the non-spherical symmetry of the objects an orientational average has to be performed for random oriented ellipsoids, which requires for spheroids a single integration and for triaxial ellipsoids a double integration. An optional integration over the size distribution would than slow down the numerical evaluation of the scattering intensity and care has to be taken, to use an appropriate integration routine. At the moment \SASfit makes use of the \texttt{pcubature} algorithm from Steven G. Johnson \cite{Johnson} instead of nested 1-dimensional integration routines used so far. Due to \SASfit internals an optional integration over the size distribution was realized via the form factor itself instead of including it via the GUI to profit from the speed-up of routines optimized for multi-dimensional integration.
+The plugin "\texttt{ellipsoidal obj.}" contains form factors of ellipsoidal object with rotational symmetry, which are called ellipsoid of revolution or spheroid, as well as triaxial ellipsoidal objects. The three axes of the ellipsoids are assumed to be orthogonal. Because of the non-spherical symmetry of the objects an orientational average has to be performed for random oriented ellipsoids, which requires for spheroids a single integration and for triaxial ellipsoids a double integration. An optional integration over the size distribution would than slow down the numerical evaluation of the scattering intensity and care has to be taken, to use an appropriate integration routine. At the moment \SASfit makes use of the \texttt{pcubature} algorithm from Steven G. Johnson \cite{Johnson2017} instead of nested 1-dimensional integration routines used so far. Due to \SASfit internals an optional integration over the size distribution was realized via the form factor itself instead of including it via the GUI to profit from the speed-up of routines optimized for multi-dimensional integration.
 
 \subsection{Ellipsoid of revolution or spheroid}
 \label{sec:Spheroid}~\\
@@ -215,7 +215,7 @@ $\oldsqrt[3]{V\frac{3}{4\pi}}$.} \label{fig:I_ellipsoid_i}
 \clearpage
 \subsection{Ellipsoidal core shell structure}
 \label{sect:EllipsoidalCoreShell} ~\\
-For these form factor plugins a size distribution parameter has been included directly in the form factor to avoid applying nested numerical integration routines. A routine for multi-dimensional integration (\texttt{pcubature} \cite{Johnson}) has been used instead.
+For these form factor plugins a size distribution parameter has been included directly in the form factor to avoid applying nested numerical integration routines. A routine for multi-dimensional integration (\texttt{pcubature} \cite{Johnson2017}) has been used instead.
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{../images/form_factor/Ellipsoid/ellipsoidalShell.png}
@@ -305,7 +305,7 @@ $$
 \clearpage
 \subsection{triaxial ellipsoidal core shell structure}
 \label{sect:triaxEllShell1} ~\\
-Also for these form factor plugins a size distribution parameter has been included directly in the form factor similar to the ellipsoidal shell of revolution to avoid applying nested numerical integration routines. As for the triaxial ellipsoid already a double integration for the orientational averaging is required it becomes even more important to have an optimized integration routine for including an additional size distribution, i.e an additional integration. The routine for multi-dimensional integration  (\texttt{pcubature} \cite{Johnson}) has been used.
+Also for these form factor plugins a size distribution parameter has been included directly in the form factor similar to the ellipsoidal shell of revolution to avoid applying nested numerical integration routines. As for the triaxial ellipsoid already a double integration for the orientational averaging is required it becomes even more important to have an optimized integration routine for including an additional size distribution, i.e an additional integration. The routine for multi-dimensional integration  (\texttt{pcubature} \cite{Johnson2017}) has been used.
 
 \begin{figure}[htb]
 \begin{center}

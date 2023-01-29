@@ -176,6 +176,8 @@ set(SOURCE_sasfit_common
 	multidiminte/src/spherical_t_design/N124_M7812_Ico.h
 	multidiminte/src/spherical_t_design/spherical_t_rule.c
 	multidiminte/src/spherical_t_design/spherical_t_rule.h
+	quasimontecarlo/quasimontecarlo.h
+	quasimontecarlo/quasimontecarlo.c
 )
 
 set(SOURCE_sasfit_core

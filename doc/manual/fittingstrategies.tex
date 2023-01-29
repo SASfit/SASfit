@@ -228,6 +228,48 @@ The given value for the confidence interval of the fit parameters should not be 
 \item where parameters are strongly correlated
 \end{itemize}
 
+\clearpage
+\section{references to numerical strategies \SASfit make use of}
+
+\subsection{integration or quadrature strategies} ~\\
+
+In \SASfit several tasks require specialized integration routines. At the moment \SASfit supplies the function \texttt{sasfit\_integrate()}, \texttt{sasfit\_cubature()},
+\texttt{sasfit\_orient\_avg()}, and \texttt{sasfit\_hankel()}.
+\texttt{sasfit\_integrate()} performs one-dimensional integrations and \texttt{sasfit\_cubature()} multidimensional integrations over multi-dimensional cubes. \texttt{sasfit\_orient\_avg()} performs efficient integrations over the surface of a sphere to perform orientational averages. \texttt{sasfit\_hankel()} supplies highly optimized routines for Bessel or Hankel transforms containing oscillatory Bessel functions in the integrand. The window for fitting or simulating data (fig.\ \ref{fig:CustomizeIntGUI}) has a menu option under \texttt{[Options|Customize...]} opening a window to configure the internal integration routines.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{../images/GUI/CustomizeWindow.pdf}
+\end{center}
+\caption{Menu for configuring internal integration routines in \SASfit}
+\label{fig:CustomizeIntGUI}
+\end{figure}
+
+\texttt{sasfit\_integrate()}  and \texttt{sasfit\_cubature()} have the same configuration options. For multidimensional integrations either specialized algorithms or nested calls of one dimensional integration routines are used. Possible options for them are
+\begin{description}
+   \item[\texttt{OOURA\_DE}] This is an implementation of an double-exponential quadrature algorithm from \cite{Mori1990,Mori2001}
+   \item[\texttt{OOURA\_CC}] Clenshaw-Curtis-quadrature \url{???}
+   \item[\texttt{TANSINH\_1}] TanSinh quadrature \url{???}
+   \item[\texttt{TANSINH\_2}] TanSinh quadrature \url{???}
+   \item[\texttt{GSL\_QUAD}] quad integration routine from gsl \cite{Galassi2021}
+   \item[\texttt{GSL\_QAG}] QAQ integration routine from gsl \cite{Galassi2021}
+   \item[\texttt{GSL\_QNQ}] QNQ integration routine from gsl \cite{Galassi2021}
+   \item[\texttt{H\_CUBATURE}] multidimensional integration routine \texttt{hcubature} from \cite{Johnson2017}
+   \item[\texttt{P\_CUBATURE}] multidimensional integration routine \texttt{pcubature} from \cite{Johnson2017}
+   \item[\texttt{GSL\_LEGENDRE}] Gauss-Legendre quadrature using gsl library  \cite{Galassi2021}
+   \item[\texttt{MC\_MISER}] Monte-Carlo integration algorithm Miser using gsl library  \cite{Galassi2021}
+   \item[\texttt{MC\_VEGAS}]  Monte-Carlo integration algorithm Vegas using gsl library  \cite{Galassi2021}
+   \item[\texttt{MC\_PLAIN}]  plain Monte-Carlo integration algorithm using gsl library  \cite{Galassi2021}
+\end{description}
+
+\begin{itemize}
+  \item cubature \cite{Genz1980,Berntsen1991} and \cite{Clenshaw1960}
+  \item spherical $t$-design \cite{Graef2011,Hardin1996}
+  \item Fibonacci grid \cite{Swinbank2006,Marques_2013}
+  \item Lebedev integration \cite{Lebedev1975,Lebedev1976,Lebedev1977}
+  \item double-exponential integration \cite{Mori1990,Ooura_1991,Mori2001}
+  \item multi-dimensional adaptive integration (cubature) \cite{Johnson2017,Galassi2021}
+  \item Hankel transform \cite{Chave1983,Anderson1989,Ooura_1991,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}
+\end{itemize}
 
 \clearpage
 \section{Fitting strategies}

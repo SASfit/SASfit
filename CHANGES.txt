@@ -1,5 +1,6 @@
 ﻿0.94.13 2023-xx-xx
-- 
+- Supplied quasi Monte Carlo (QMC) integration routines using the quasi number generators from gsl. 
+  QMC integration might converge faster than MC integration. 
 0.94.12 2023-01-07
 - improved numerical stability of wormlike structure factor according to Koyama
 - some older plugins are now using the new integration routines supplied in SASfit: 

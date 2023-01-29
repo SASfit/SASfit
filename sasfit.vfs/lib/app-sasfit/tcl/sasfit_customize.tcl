@@ -37,6 +37,10 @@ proc setSphAvgStrategy2int {} {
 		"GSL_CQUAD" {set ::FitPrecision(SphAvgStrategy_int) 11}
 		"TANHSINH_1" {set ::FitPrecision(SphAvgStrategy_int) 12}
 		"TANHSINH_2" {set ::FitPrecision(SphAvgStrategy_int) 13}
+		"QMC_NIEDERREITER_2" {set ::FitPrecision(SphAvgStrategy_int) 14}
+		"QMC_SOBOL" {set ::FitPrecision(SphAvgStrategy_int) 15}
+		"QMC_HALTON" {set ::FitPrecision(SphAvgStrategy_int) 16}
+		"QMC_REVERSEHALTON" {set ::FitPrecision(SphAvgStrategy_int) 17}
 		default {set ::FitPrecision(SphAvgStrategy_int) 0}
 	}
 }
@@ -56,8 +60,6 @@ proc setIntStrategy2int {} {
 	switch $::FitPrecision(IntStrategy) {
 		"OOURA_DE" {set ::FitPrecision(IntStrategy_int) 0}
 		"OOURA_CC" {set ::FitPrecision(IntStrategy_int) 1}
-		"TANHSINH_1" {set ::FitPrecision(IntStrategy_int) 22}
-		"TANHSINH_2" {set ::FitPrecision(IntStrategy_int) 23}
 		"GSL_CQUAD" {set ::FitPrecision(IntStrategy_int) 2}
 		"GSL_QAG" {set ::FitPrecision(IntStrategy_int) 3}
 		"H_CUBATURE" {set ::FitPrecision(IntStrategy_int) 4}
@@ -74,6 +76,12 @@ proc setIntStrategy2int {} {
 		"MC_MISER" {set ::FitPrecision(IntStrategy_int) 19}
 		"MC_VEGAS" {set ::FitPrecision(IntStrategy_int) 20}
 		"MC_PLAIN" {set ::FitPrecision(IntStrategy_int) 21}
+		"TANHSINH_1" {set ::FitPrecision(IntStrategy_int) 22}
+		"TANHSINH_2" {set ::FitPrecision(IntStrategy_int) 23}
+		"QMC_NIEDERREITER_2" {set ::FitPrecision(IntStrategy_int) 24}
+		"QMC_SOBOL" {set ::FitPrecision(IntStrategy_int) 25}
+		"QMC_HALTON" {set ::FitPrecision(IntStrategy_int) 26}
+		"QMC_REVERSEHALTON" {set ::FitPrecision(IntStrategy_int) 27}
 		default {set ::FitPrecision(IntStrategy_int) 0}
 	}
 }
@@ -171,7 +179,8 @@ proc CustomizeCmd { analytpar tanalytpar } {
 										"H_CUBATURE" "P_CUBATURE" "NR_QROMB" \
 										"GSL_GAUSSLEGENDRE" "GSL_CHEBYSHEV1" "GSL_CHEBYSHEV2"\
 										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_JACOBI"\
-										"MC_MISER" "MC_VEGAS" "MC_PLAIN"} \
+										"MC_MISER" "MC_VEGAS" "MC_PLAIN" "QMC_NIEDERREITER_2" \
+										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON"} \
 				-width 15 \
 				-textvariable ::FitPrecision(IntStrategy) \
 				-modifycmd setIntStrategy2int
@@ -179,7 +188,10 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.intStrat_value -row 5 -column 1 -sticky w
     label $w.sphavgStrat_label -text "spherical average strategy"
 	ComboBox $w.sphavgStrat_value -values {"GSL_2D_GAUSSLEGENDRE" "Lebedev" "FIBONACCI"\
-										"H_CUBATURE" "P_CUBATURE" "MC_MISER" "MC_VEGAS" "MC_PLAIN" "spherical_t_design" "OOURA_DE" "OOURA_CC" "GSL_CQUAD" "TANHSINH_1" "TANHSINH_2"} \
+										"H_CUBATURE" "P_CUBATURE" "MC_MISER" "MC_VEGAS" "MC_PLAIN" \
+										"spherical_t_design" "OOURA_DE" "OOURA_CC" "GSL_CQUAD" \
+										"TANHSINH_1" "TANHSINH_2" "QMC_NIEDERREITER_2" \
+										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON"} \
 				-width 15 \
 				-textvariable ::FitPrecision(SphAvgStrategy) \
 				-modifycmd setSphAvgStrategy2int
