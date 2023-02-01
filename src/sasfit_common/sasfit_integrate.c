@@ -48,8 +48,9 @@
 #include "include/kk101CosSin.h"
 #include "include/kk201CosSin.h"
 #include "include/sasfit_hankel.h"
-#include "../sasfit_common/multidiminte/src/tanhsinh/tanhsinh.h"
-#include "../sasfit_common/quasimontecarlo/quasimontecarlo.h"
+#include "multidiminte/src/tanhsinh/tanhsinh.h"
+#include "quasimontecarlo/quasimontecarlo.h"
+#include "quasimontecarlo/Burley2020Scrambling/genpoints.h"
 
 typedef struct {
     sasfit_param *param;
@@ -324,6 +325,7 @@ scalar sasfit_orient_avg_ctm(
                 gsl_monte_plain_integrate (&GMC, cubxmin, cubxmax, 2, calls, r, s_plain,
                                &fval[0], &ferr[0]);
                 gsl_monte_plain_free (s_plain);
+                gsl_rng_free(r);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
             }
@@ -339,6 +341,7 @@ scalar sasfit_orient_avg_ctm(
                                 &fval[0], &ferr[0]);
                 quasi_monte_free(s_niederreiter_2);
                 gsl_qrng_free(qrng);
+                gsl_rng_free(r);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
         case SPHAVG_QMC_SOBOL :
@@ -353,6 +356,7 @@ scalar sasfit_orient_avg_ctm(
                                 &fval[0], &ferr[0]);
                 quasi_monte_free(s_sobol);
                 gsl_qrng_free(qrng);
+                gsl_rng_free(r);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
         case SPHAVG_QMC_HALTON :
@@ -367,6 +371,7 @@ scalar sasfit_orient_avg_ctm(
                                 &fval[0], &ferr[0]);
                 quasi_monte_free(s_halton);
                 gsl_qrng_free(qrng);
+                gsl_rng_free(r);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
         case SPHAVG_QMC_REVERSEHALTON :
@@ -381,6 +386,55 @@ scalar sasfit_orient_avg_ctm(
                                 &fval[0], &ferr[0]);
                 quasi_monte_free(s_r_halton);
                 gsl_qrng_free(qrng);
+                gsl_rng_free(r);
+                Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                break;
+        case SPHAVG_RQMC_SOBOL_RDS :
+                cubxmax[0] = 1;
+                cubxmin[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                quasi_monte_state* s_sobol_rds = quasi_monte_alloc(2);
+                randomized_quasi_monte_integrate(&GMC, cubxmin, cubxmax, 2, calls, epsrel, epsabs, &genpoint_sobol_rds, s_sobol_rds,
+                                &fval[0], &ferr[0]);
+                quasi_monte_free(s_sobol_rds);
+                Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                break;
+        case SPHAVG_RQMC_SOBOL_OWEN :
+                cubxmax[0] = 1;
+                cubxmin[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                quasi_monte_state* s_sobol_owen = quasi_monte_alloc(2);
+                randomized_quasi_monte_integrate(&GMC, cubxmin, cubxmax, 2, calls, epsrel, epsabs, &genpoint_sobol_owen, s_sobol_owen,
+                                &fval[0], &ferr[0]);
+                quasi_monte_free(s_sobol_owen);
+                Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                break;
+        case SPHAVG_RQMC_FAURE05_OWEN :
+                cubxmax[0] = 1;
+                cubxmin[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                quasi_monte_state* s_faure05_owen = quasi_monte_alloc(2);
+                randomized_quasi_monte_integrate(&GMC, cubxmin, cubxmax, 2, calls, epsrel, epsabs, &genpoint_faure05_owen, s_faure05_owen,
+                                &fval[0], &ferr[0]);
+                quasi_monte_free(s_faure05_owen);
+                Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
+                break;
+        case SPHAVG_RQMC_LAINE_KARRAS :
+                cubxmax[0] = 1;
+                cubxmin[0] = cos(sasfit_param_get_polar_theta());
+                cubxmin[1] = 0;
+                cubxmax[1] = sasfit_param_get_polar_phi()/(2*M_PI);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                quasi_monte_state* s_laine_karras = quasi_monte_alloc(2);
+                randomized_quasi_monte_integrate(&GMC, cubxmin, cubxmax, 2, calls, epsrel, epsabs, &genpoint_laine_karras, s_laine_karras,
+                                &fval[0], &ferr[0]);
+                quasi_monte_free(s_laine_karras);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
         case SPHAVG_MC_VEGAS: {
@@ -405,6 +459,7 @@ scalar sasfit_orient_avg_ctm(
                 } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || fabs(ferr[0]/fval[0])>sasfit_eps_get_aniso()));
 //                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,fabs(ferr[0]/fval[0]));
                 gsl_monte_vegas_free (s_vegas);
+                gsl_rng_free(r);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));;
                 break;
             }
@@ -422,6 +477,7 @@ scalar sasfit_orient_avg_ctm(
                 gsl_monte_miser_integrate (&GMC, cubxmin, cubxmax, 2, calls, r, s_miser,
                                &fval[0], &ferr[0]);
                 gsl_monte_miser_free (s_miser);
+                gsl_rng_free(r);
                 Iavg = fval[0]/((1-cos(sasfit_param_get_polar_theta()))*sasfit_param_get_polar_phi()/(2*M_PI));
                 break;
             }

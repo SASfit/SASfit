@@ -178,6 +178,15 @@ set(SOURCE_sasfit_common
 	multidiminte/src/spherical_t_design/spherical_t_rule.h
 	quasimontecarlo/quasimontecarlo.h
 	quasimontecarlo/quasimontecarlo.c
+	quasimontecarlo/Burley2020Scrambling/faure05.cpp
+	quasimontecarlo/Burley2020Scrambling/faure05.h
+	quasimontecarlo/Burley2020Scrambling/genpoints.cpp
+	quasimontecarlo/Burley2020Scrambling/genpoints.h
+	quasimontecarlo/Burley2020Scrambling/owenhash.h
+	quasimontecarlo/Burley2020Scrambling/pcg.h
+	quasimontecarlo/Burley2020Scrambling/radicalinverse.h
+	quasimontecarlo/Burley2020Scrambling/sobol.cpp
+	quasimontecarlo/Burley2020Scrambling/sobol.h
 )
 
 set(SOURCE_sasfit_core

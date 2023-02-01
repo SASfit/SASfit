@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 David Zaslavsky <diazona@ellipsix.net>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,7 +19,9 @@
 #define _QUASIMONTECARLO_H_INCLUDE
 
 #include <gsl/gsl_monte.h>
+#include <gsl/gsl_rng.h>
 #include <gsl/gsl_qrng.h>
+#include "stdint.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,11 +30,14 @@ extern "C" {
 typedef struct {
   size_t dim;
   double *x;
+  unsigned long seed;
 } quasi_monte_state;
 
 quasi_monte_state* quasi_monte_alloc(size_t dim);
 int quasi_monte_init(quasi_monte_state* s);
 int quasi_monte_integrate(gsl_monte_function* f, const double xl[], const double xu[], size_t dim, size_t max_calls, double max_relerr, double max_abserr, gsl_qrng* r, quasi_monte_state* state, double* result, double* abserr);
+int randomized_quasi_monte_integrate(gsl_monte_function* f, const double xl[], const double xu[], size_t dim, size_t max_calls, double max_relerr, double max_abserr,void (*rqrnd)(uint32_t n, uint32_t dim, uint32_t seed, double* x), quasi_monte_state* state, double* result, double* abserr);
+
 void quasi_monte_free(quasi_monte_state* s);
 
 #ifdef __cplusplus

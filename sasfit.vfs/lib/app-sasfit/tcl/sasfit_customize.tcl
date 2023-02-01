@@ -41,6 +41,10 @@ proc setSphAvgStrategy2int {} {
 		"QMC_SOBOL" {set ::FitPrecision(SphAvgStrategy_int) 15}
 		"QMC_HALTON" {set ::FitPrecision(SphAvgStrategy_int) 16}
 		"QMC_REVERSEHALTON" {set ::FitPrecision(SphAvgStrategy_int) 17}
+		"RQMC_SOBOL_RDS" {set ::FitPrecision(SphAvgStrategy_int) 18}
+		"RQMC_SOBOL_OWEN" {set ::FitPrecision(SphAvgStrategy_int) 19}
+		"RQMC_FAURE05_OWEN" {set ::FitPrecision(SphAvgStrategy_int) 20}
+		"RQMC_LAINE_KARRAS" {set ::FitPrecision(SphAvgStrategy_int) 21}
 		default {set ::FitPrecision(SphAvgStrategy_int) 0}
 	}
 }
@@ -82,6 +86,10 @@ proc setIntStrategy2int {} {
 		"QMC_SOBOL" {set ::FitPrecision(IntStrategy_int) 25}
 		"QMC_HALTON" {set ::FitPrecision(IntStrategy_int) 26}
 		"QMC_REVERSEHALTON" {set ::FitPrecision(IntStrategy_int) 27}
+		"RQMC_SOBOL_RDS" {set ::FitPrecision(IntStrategy_int) 28}
+		"RQMC_SOBOL_OWEN" {set ::FitPrecision(IntStrategy_int) 29}
+		"RQMC_FAURE05_OWEN" {set ::FitPrecision(IntStrategy_int) 30}
+		"RQMC_LAINE_KARRAS" {set ::FitPrecision(IntStrategy_int) 31}
 		default {set ::FitPrecision(IntStrategy_int) 0}
 	}
 }
@@ -180,7 +188,8 @@ proc CustomizeCmd { analytpar tanalytpar } {
 										"GSL_GAUSSLEGENDRE" "GSL_CHEBYSHEV1" "GSL_CHEBYSHEV2"\
 										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_JACOBI"\
 										"MC_MISER" "MC_VEGAS" "MC_PLAIN" "QMC_NIEDERREITER_2" \
-										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON"} \
+										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON" "RQMC_SOBOL_RDS" \
+										"RQMC_SOBOL_OWEN" "RQMC_FAURE05_OWEN" "RQMC_LAINE_KARRAS"} \
 				-width 15 \
 				-textvariable ::FitPrecision(IntStrategy) \
 				-modifycmd setIntStrategy2int
@@ -191,7 +200,8 @@ proc CustomizeCmd { analytpar tanalytpar } {
 										"H_CUBATURE" "P_CUBATURE" "MC_MISER" "MC_VEGAS" "MC_PLAIN" \
 										"spherical_t_design" "OOURA_DE" "OOURA_CC" "GSL_CQUAD" \
 										"TANHSINH_1" "TANHSINH_2" "QMC_NIEDERREITER_2" \
-										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON"} \
+										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON" "RQMC_SOBOL_RDS" \
+										"RQMC_SOBOL_OWEN" "RQMC_FAURE05_OWEN" "RQMC_LAINE_KARRAS"} \
 				-width 15 \
 				-textvariable ::FitPrecision(SphAvgStrategy) \
 				-modifycmd setSphAvgStrategy2int

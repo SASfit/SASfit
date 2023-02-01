@@ -1,0 +1,21 @@
+This supplemental material contains implementations of various point sequences described in
+Practical Hash-based Owen Scrambling, Burley 2020
+
+There is both a command-line point generator (genpoints) and a PyQt5 visualizer (viewpoints.py).
+
+The sequences supported are:
+
+random       - using PCG32
+sobol        - Sobol' sequence, up to 5 dimensions
+sobol_rds    - Sobol' w/ random digit scrambling
+sobol_owen   - Sobol' w/ Owen scrambling and shuffling
+laine_karras - 1D radical-inverse sequence shuffled with Laine-Karras hash
+faure_05     - (0,5) sequence from Faure 1982
+
+In the visualizer, there is an additional sequence listed, sobol_owen_decorrelated.
+In that sequence, a different seed is used from the v dimension which results in a
+different shuffling which decorrelates the u and v axes.
+
+The FFT uses code provided by Andrew Kensler.
+
+To build, use make.

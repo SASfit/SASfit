@@ -38,8 +38,8 @@ scalar triax_ellip_shell_cubature(const scalar *x, size_t ndim, void *pam) {
 	cparam = (cubature_param *) pam;
 	param = cparam->param;
 
-	if ((ndim < 2) || (fdim < 1)) {
-		sasfit_err("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+	if ((ndim < 2) ) {
+		sasfit_err("false dimensions ndim:%d\n",ndim);
 		return -1;
 	}
 	if ((ndim < 3) || (SIGMA==0)) {

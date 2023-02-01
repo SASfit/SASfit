@@ -59,6 +59,7 @@
 #include <sys/time.h>
 #include "../../include/sasfit_common.h"
 #include "../../quasimontecarlo/quasimontecarlo.h"
+#include "../../quasimontecarlo/Burley2020Scrambling/genpoints.h"
 #include "gmdi.h"
 #include "gmdi_structs.h"
 #include "sasfit.h"
@@ -508,7 +509,7 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case GSL_QMC_NIEDERREITER_2 :
-                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
                 qrng = gsl_qrng_alloc(gsl_qrng_niederreiter_2, ndim);
                 quasi_monte_state* s_niederreiter_2 = quasi_monte_alloc(ndim);
                 quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_niederreiter_2,
@@ -518,7 +519,7 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case GSL_QMC_SOBOL :
-                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
                 qrng = gsl_qrng_alloc(gsl_qrng_sobol, ndim);
                 quasi_monte_state* s_sobol = quasi_monte_alloc(ndim);
                 quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_sobol,
@@ -528,7 +529,7 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case GSL_QMC_HALTON :
-                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
                 qrng = gsl_qrng_alloc(gsl_qrng_halton, ndim);
                 quasi_monte_state* s_halton = quasi_monte_alloc(ndim);
                 quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_halton,
@@ -538,13 +539,45 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case GSL_QMC_REVERSEHALTON :
-                calls = gsl_max(sasfit_eps_get_iter_4_mc(),50);
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
                 qrng = gsl_qrng_alloc(gsl_qrng_reversehalton, ndim);
                 quasi_monte_state* s_r_halton = quasi_monte_alloc(ndim);
                 quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, qrng, s_r_halton,
                                 result, error);
                 quasi_monte_free(s_r_halton);
                 gsl_qrng_free(qrng);
+                done=1;
+                break;
+        case GSL_RQMC_SOBOL_RDS :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
+                quasi_monte_state* s_sobol_rds = quasi_monte_alloc(ndim);
+                randomized_quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, &genpoint_sobol_rds, s_sobol_rds,
+                                result, error);
+                quasi_monte_free(s_sobol_rds);
+                done=1;
+                break;
+        case GSL_RQMC_SOBOL_OWEN :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
+                quasi_monte_state* s_sobol_owen = quasi_monte_alloc(ndim);
+                randomized_quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, &genpoint_sobol_owen, s_sobol_owen,
+                                result, error);
+                quasi_monte_free(s_sobol_owen);
+                done=1;
+                break;
+        case GSL_RQMC_FAURE05_OWEN :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
+                quasi_monte_state* s_faure05_owen = quasi_monte_alloc(ndim);
+                randomized_quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, &genpoint_faure05_owen, s_faure05_owen,
+                                result, error);
+                quasi_monte_free(s_faure05_owen);
+                done=1;
+                break;
+        case GSL_RQMC_LAINE_KARRAS :
+                calls = gsl_max(sasfit_eps_get_iter_4_mc(),20);
+                quasi_monte_state* s_laine_karras = quasi_monte_alloc(ndim);
+                randomized_quasi_monte_integrate(&GMC, int_start, int_end, ndim, calls, epsrel, epsabs, &genpoint_laine_karras, s_laine_karras,
+                                result, error);
+                quasi_monte_free(s_laine_karras);
                 done=1;
                 break;
         case GSL_MC_PLAIN :
@@ -557,6 +590,7 @@ int sasfit_cubature(size_t ndim,
                 gsl_monte_plain_integrate (&GMC, int_start, int_end, ndim, calls, r, s_plain,
                                 result, error);
                 gsl_monte_plain_free (s_plain);
+                gsl_rng_free(r);
                 done=1;
                 break;
         case GSL_MC_VEGAS :
@@ -577,6 +611,7 @@ int sasfit_cubature(size_t ndim,
                 } while (i<10 && ((fabs (gsl_monte_vegas_chisq (s_vegas) - 1.0) > 0.5) || (*error)/(*result)>epsrel));
 //                sasfit_out("VEGAS: number of calls:%d\t ferr/fval=%lf\n",i*calls/10,ferr[0]/fval[0]);
                 gsl_monte_vegas_free (s_vegas);
+                gsl_rng_free(r);
                 done=1;
                 break;
         case GSL_MC_MISER :
@@ -589,6 +624,7 @@ int sasfit_cubature(size_t ndim,
                 gsl_monte_miser_integrate (&GMC, int_start, int_end, ndim, calls, r, s_miser,
                                 result, error);
                 gsl_monte_miser_free (s_miser);
+                gsl_rng_free(r);
                 done=1;
                 break;
         case OOURA_DOUBLE_EXP_QUADRATURE :
