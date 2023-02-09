@@ -637,18 +637,19 @@ int sasfit_cubature(size_t ndim,
                 break;
         case SG_SMOLYAK_CLENSHAW_CURTIS: // sparse_grid_cc
         case SG_CLENSHAW_CURTIS_LINEAR: // ccl_order
-                k = sasfit_eps_get_robertus_p();
+                k = GSL_MAX(1,sasfit_eps_get_robertus_p());
                 n = nwspgr_size ( ccl_order, ndim, k );
                 x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
                 w = ( double * ) malloc ( n * sizeof ( double ) );
 
                 nwspgr ( cc, ccl_order, ndim, k, n, &n2, x, w );
+//                sasfit_out("number of points in sparse grid (SG_CLENSHAW_CURTIS_LINEAR): %d, %d\n",n,n2);
                 *result = 0;
                 x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
                 for (i=0;i<n2;i++) {
                     wt = 1;
                     for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
                         wt = wt/(int_end[j]-int_start[j]);
                     }
                     wt = wt*w[i];
@@ -660,18 +661,19 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case SG_CLENSHAW_CURTIS_SLOW: // ccs_order
-                k = sasfit_eps_get_robertus_p();
+                k = GSL_MAX(1,sasfit_eps_get_robertus_p());
                 n = nwspgr_size ( ccs_order, ndim, k );
                 x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
                 w = ( double * ) malloc ( n * sizeof ( double ) );
 
                 nwspgr ( cc, ccs_order, ndim, k, n, &n2, x, w );
+//                sasfit_out("number of points in sparse grid (SG_CLENSHAW_CURTIS_SLOW): %d, %d\n",n,n2);
                 *result = 0;
                 x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
                 for (i=0;i<n2;i++) {
                     wt = 1;
                     for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
                         wt = wt/(int_end[j]-int_start[j]);
                     }
                     wt = wt*w[i];
@@ -683,18 +685,19 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case SG_CLENSHAW_CURTIS_EXP: // cce_order
-                k = sasfit_eps_get_robertus_p();
+                k = GSL_MAX(1,sasfit_eps_get_robertus_p());
                 n = nwspgr_size ( cce_order, ndim, k );
                 x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
                 w = ( double * ) malloc ( n * sizeof ( double ) );
 
                 nwspgr ( cc, cce_order, ndim, k, n, &n2, x, w );
+//                sasfit_out("number of points in sparse grid (SG_CLENSHAW_CURTIS_EXP): %d, %d\n",n,n2);
                 *result = 0;
                 x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
                 for (i=0;i<n2;i++) {
                     wt = 1;
                     for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
                         wt = wt/(int_end[j]-int_start[j]);
                     }
                     wt = wt*w[i];
@@ -706,18 +709,19 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case SG_GAUSS_LEGENDRE: // gqu
-                k = sasfit_eps_get_robertus_p();
+                k = GSL_MIN(GSL_MAX(1,sasfit_eps_get_robertus_p()),25);
                 n = nwspgr_size ( gqu_order, ndim, k );
                 x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
                 w = ( double * ) malloc ( n * sizeof ( double ) );
 
                 nwspgr ( gqu, gqu_order, ndim, k, n, &n2, x, w );
-                result = 0;
+//                sasfit_out("number of points in sparse grid (SG_GAUSS_LEGENDRE): %d, %d\n",n,n2);
+                *result = 0;
                 x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
                 for (i=0;i<n2;i++) {
                     wt = 1;
                     for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
                         wt = wt/(int_end[j]-int_start[j]);
                     }
                     wt = wt*w[i];
@@ -729,18 +733,19 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case SG_GAUSS_HERMITE: //gqn
-                k = sasfit_eps_get_robertus_p();
+                k = GSL_MIN(GSL_MAX(1,sasfit_eps_get_robertus_p()),25);
                 n = nwspgr_size ( gqn_order, ndim, k );
                 x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
                 w = ( double * ) malloc ( n * sizeof ( double ) );
 
                 nwspgr ( gqn, gqn_order, ndim, k, n, &n2, x, w );
-                result = 0;
+//                sasfit_out("number of points in sparse grid (SG_GAUSS_HERMITE): %d, %d\n",n,n2);
+                *result = 0;
                 x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
                 for (i=0;i<n2;i++) {
                     wt = 1;
                     for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
                         wt = wt/(int_end[j]-int_start[j]);
                     }
                     wt = wt*w[i];
@@ -752,22 +757,23 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case SG_KONROD_PATTERSON: //kpn
-                k = sasfit_eps_get_robertus_p();
+                k = GSL_MIN(GSL_MAX(1,sasfit_eps_get_robertus_p()),25);
                 n = nwspgr_size ( kpn_order, ndim, k );
                 x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
                 w = ( double * ) malloc ( n * sizeof ( double ) );
 
                 nwspgr ( kpn, kpn_order, ndim, k, n, &n2, x, w );
-                result = 0;
+//                sasfit_out("number of points in sparse grid (SG_KONROD_PATTERSON): %d, %d\n",n,n2);
+                *result = 0;
                 x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
                 for (i=0;i<n2;i++) {
                     wt = 1;
                     for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
                         wt = wt/(int_end[j]-int_start[j]);
                     }
                     wt = wt*w[i];
-                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) *wt;
+                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) * wt;
                 }
                 free(x);
                 free(x_ab);
