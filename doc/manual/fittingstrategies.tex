@@ -247,9 +247,9 @@ In \SASfit several tasks require specialized integration routines. At the moment
 \texttt{sasfit\_integrate()}  and \texttt{sasfit\_cubature()} have the same configuration options. For multidimensional integrations either specialized algorithms or nested calls of one dimensional integration routines are used. Possible options for them are
 \begin{description}
    \item[\texttt{OOURA\_DE}] This is an implementation of an double-exponential quadrature algorithm from \cite{Mori1990,Mori2001}
-   \item[\texttt{OOURA\_CC}] Clenshaw-Curtis-quadrature \url{???}
-   \item[\texttt{TANSINH\_1}] TanSinh quadrature \url{???}
-   \item[\texttt{TANSINH\_2}] TanSinh quadrature \url{???}
+   \item[\texttt{OOURA\_CC}] Clenshaw-Curtis-Quadrature using Chebyshev Series Expansion (\url{https://www.kurims.kyoto-u.ac.jp/~ooura/intcc.html})
+   \item[\texttt{TANHSINH\_1}] TanhSinh quadrature \cite{Engelen2021,Engelen}
+   \item[\texttt{TANHSINH\_2}] TanhSinh quadrature \cite{Engelen2021,Engelena}
    \item[\texttt{GSL\_QUAD}] quad integration routine from gsl \cite{Galassi2021}
    \item[\texttt{GSL\_QAG}] QAQ integration routine from gsl \cite{Galassi2021}
    \item[\texttt{GSL\_QNQ}] QNQ integration routine from gsl \cite{Galassi2021}
@@ -259,17 +259,59 @@ In \SASfit several tasks require specialized integration routines. At the moment
    \item[\texttt{MC\_MISER}] Monte-Carlo integration algorithm Miser using gsl library  \cite{Galassi2021}
    \item[\texttt{MC\_VEGAS}]  Monte-Carlo integration algorithm Vegas using gsl library  \cite{Galassi2021}
    \item[\texttt{MC\_PLAIN}]  plain Monte-Carlo integration algorithm using gsl library  \cite{Galassi2021}
+   \item[\texttt{QMC\_HOLTON}] quasi Monte Carlo integration \cite{Zaslavsky2023} using the \texttt{gsl\_qrng\_halton} quasi random number generator from gsl \cite{Galassi2021}.
+   \item[\texttt{QMC\_REVERSEHALTON}] quasi Monte Carlo integration \cite{Zaslavsky2023} using the \texttt{gsl\_qrng\_reversehalton} quasi random number generator from gsl \cite{Galassi2021}.
+   \item[\texttt{QMC\_SOBOL}] quasi Monte Carlo integration \cite{Zaslavsky2023} using the \texttt{gsl\_qrng\_sobol} quasi random number generator from gsl \cite{Galassi2021}.
+   \item[\texttt{QMC\_NIEDERREITER\_2}] quasi Monte Carlo integration \cite{Zaslavsky2023} using the reverse \texttt{gsl\_qrng\_niederreiter\_2} quasi random number generator from gsl \cite{Galassi2021}.
+   \item[\texttt{RQMC\_SOBOL\_RDS}] randomized quasi Monte Carlo integration using the quasi random Sobol sequence with additional random digit scrambling \cite{Burley2020Scrambling}
+   \item[\texttt{RQMC\_SOBOL\_OWEN}] randomized quasi Monte Carlo integration using the quasi random using Owen-scrambled Sobol sequence \cite{Burley2020Scrambling,Owen1995}
+   \item[\texttt{RQMC\_FAURE05}] randomized quasi Monte Carlo integration using Owen-scrambled Faure (0,5) sequence \cite{Burley2020Scrambling,Owen1995}.
+   \item[\texttt{RQMC\_LAINE\_KARRAS}] randomized quasi Monte Carlo integration using Laine-Karras hash method mentioned in \cite{Burley2020Scrambling} and given as C source code in its supplement information.
 \end{description}
 
-\begin{itemize}
-  \item cubature \cite{Genz1980,Berntsen1991} and \cite{Clenshaw1960}
-  \item spherical $t$-design \cite{Graef2011,Hardin1996}
-  \item Fibonacci grid \cite{Swinbank2006,Marques_2013}
-  \item Lebedev integration \cite{Lebedev1975,Lebedev1976,Lebedev1977}
-  \item double-exponential integration \cite{Mori1990,Ooura_1991,Mori2001}
-  \item multi-dimensional adaptive integration (cubature) \cite{Johnson2017,Galassi2021}
-  \item Hankel transform \cite{Chave1983,Anderson1989,Ooura_1991,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}
-\end{itemize}
+\texttt{sasfit\_orient\_avg()}
+\begin{description}
+\item[\texttt{GSL\_2D\_GAUSSLEGENDRE}]
+\item[\texttt{Lebedev}]
+\item[\texttt{FIBONACCI}]
+\item[\texttt{HCUBATURE}]
+\item[\texttt{PCUBATURE}]
+\item[\texttt{spherical\_t\_design}]
+\item[\texttt{OOURA\_DE}]
+\item[\texttt{OOURA\_CC}]
+\item[\texttt{GSL\_CQUAD}]
+\item[\texttt{TANHSINH\_1}]
+\item[\texttt{TANHSINH\_2}]
+\item[\texttt{MC\_VEGAS}]
+\item[\texttt{MC\_MISER}]
+\item[\texttt{MC\_PLAIN}]
+\item[\texttt{QMC\_NIEDERREITER\_2}]
+\item[\texttt{QMC\_SOBOL}]
+\item[\texttt{QMC\_HALTON}]
+\item[\texttt{QMC\_REVERSEHALTON}]
+\item[\texttt{RQMC\_SOBOL\_RDS}]
+\item[\texttt{RQMC\_SOBOL\_OWEN}]
+\item[\texttt{RQMC\_FAURE05\_OWEN}]
+\item[\texttt{RQMC\_LAINE\_KARRAS}]
+\end{description}
+
+ \texttt{sasfit\_hankel()} \cite{Chave1983,Anderson1989,Ooura_1991,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}
+\begin{description} 
+\item[\texttt{OOURA\_DEO}]
+\item[\texttt{OGATA\_2005}]
+\item[\texttt{FBT0}]
+\item[\texttt{FBT1}]
+\item[\texttt{FBT2}]
+\item[\texttt{GSL\_QAWF}]
+\item[\texttt{GUPTASARMA\_97}]
+\item[\texttt{GUPTASARMA\_97\_FAST}]
+\item[\texttt{KEY\_51}]
+\item[\texttt{KEY\_101}]
+\item[\texttt{KEY\_201}]
+\item[\texttt{ANDERSON\_801}]
+\item[\texttt{QWE}]
+\item[\texttt{CHAVE}]
+\end{description}
 
 \clearpage
 \section{Fitting strategies}

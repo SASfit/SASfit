@@ -74,8 +74,8 @@
 #include "sasfit_oz.h"
 #include "sasfit_fixed_point_acc.h"
 #include "nnls.h"
-#include "linpack_d.h"
-#include "blas1_d.h"
+#include "../sasfit_jburkardt/include/linpack_d.h"
+#include "../sasfit_jburkardt/include/blas1_d.h"
 #include <kinsol/kinsol.h>
 
 #define REDFACTOR 1.2

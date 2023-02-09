@@ -90,6 +90,15 @@ proc setIntStrategy2int {} {
 		"RQMC_SOBOL_OWEN" {set ::FitPrecision(IntStrategy_int) 29}
 		"RQMC_FAURE05_OWEN" {set ::FitPrecision(IntStrategy_int) 30}
 		"RQMC_LAINE_KARRAS" {set ::FitPrecision(IntStrategy_int) 31}
+		"SG_SMOLYAK" {set ::FitPrecision(IntStrategy_int) 32}
+		"SG_CC_SMOLYAK" {set ::FitPrecision(IntStrategy_int) 33}
+		"SG_SMOLYAK_CLENSHAW_CURTIS" {set ::FitPrecision(IntStrategy_int) 34}
+		"SG_CLENSHAW_CURTIS_LINEAR" {set ::FitPrecision(IntStrategy_int) 35}
+		"SG_CLENSHAW_CURTIS_SLOW" {set ::FitPrecision(IntStrategy_int) 36}
+		"SG_CLENSHAW_CURTIS_EXP" {set ::FitPrecision(IntStrategy_int) 37}
+		"SG_GAUSS_LEGENDRE" {set ::FitPrecision(IntStrategy_int) 38}
+		"SG_GAUSS_HERMITE" {set ::FitPrecision(IntStrategy_int) 39}
+		"SG_KONROD_PATTERSON" {set ::FitPrecision(IntStrategy_int) 40}
 		default {set ::FitPrecision(IntStrategy_int) 0}
 	}
 }
@@ -189,8 +198,12 @@ proc CustomizeCmd { analytpar tanalytpar } {
 										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_JACOBI"\
 										"MC_MISER" "MC_VEGAS" "MC_PLAIN" "QMC_NIEDERREITER_2" \
 										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON" "RQMC_SOBOL_RDS" \
-										"RQMC_SOBOL_OWEN" "RQMC_FAURE05_OWEN" "RQMC_LAINE_KARRAS"} \
-				-width 15 \
+										"RQMC_SOBOL_OWEN" "RQMC_FAURE05_OWEN" "RQMC_LAINE_KARRAS" \
+										"SG_SMOLYAK" "SG_CC_SMOLYAK" "SG_SMOLYAK_CLENSHAW_CURTIS" \
+										"SG_CLENSHAW_CURTIS_LINEAR" "SG_CLENSHAW_CURTIS_SLOW" \
+										"SG_CLENSHAW_CURTIS_EXP" "SG_GAUSS_LEGENDRE" \
+										"SG_GAUSS_HERMITE" "SG_KONROD_PATTERSON" } \
+				-width 25 \
 				-textvariable ::FitPrecision(IntStrategy) \
 				-modifycmd setIntStrategy2int
 	grid $w.intStrat_label -row 5 -column 0 -sticky e
@@ -202,7 +215,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 										"TANHSINH_1" "TANHSINH_2" "QMC_NIEDERREITER_2" \
 										"QMC_SOBOL" "QMC_HALTON" "QMC_REVERSEHALTON" "RQMC_SOBOL_RDS" \
 										"RQMC_SOBOL_OWEN" "RQMC_FAURE05_OWEN" "RQMC_LAINE_KARRAS"} \
-				-width 15 \
+				-width 25 \
 				-textvariable ::FitPrecision(SphAvgStrategy) \
 				-modifycmd setSphAvgStrategy2int
 	grid $w.sphavgStrat_label -row 5 -column 2 -sticky e
@@ -210,7 +223,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	
 	label $w.hankelStrat_label -text "Hankel transform strategy"
 	ComboBox $w.hankelStrat_value -values {"OOURA_DEO" "OGATA_2005" "FBT0" "FBT1" "FBT2" "GSL_QAWF" "GUPTASARMA_97_FAST" "GUPTASARMA_97" "KEY_51" "KEY_101" "KEY_201" "ANDERSON_801" "QWE"  "CHAVE"} \
-				-width 15 \
+				-width 25 \
 				-textvariable ::FitPrecision(HankelStrategy) \
 				-modifycmd setHankelStrategy2int
 	grid $w.hankelStrat_label -row 6 -column 0 -sticky e

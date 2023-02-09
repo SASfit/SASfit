@@ -72,6 +72,15 @@
 #define GSL_RQMC_SOBOL_OWEN 29
 #define GSL_RQMC_FAURE05_OWEN 30
 #define GSL_RQMC_LAINE_KARRAS 31
+#define SG_SMOLYAK 32
+#define SG_CC_SMOLYAK 33
+#define SG_SMOLYAK_CLENSHAW_CURTIS 34 // sparse_grid_cc
+#define SG_CLENSHAW_CURTIS_LINEAR 35 // ccl_order
+#define SG_CLENSHAW_CURTIS_SLOW 36 // ccs_order
+#define SG_CLENSHAW_CURTIS_EXP 37 // cce_order
+#define SG_GAUSS_LEGENDRE 38 // gqu
+#define SG_GAUSS_HERMITE 39 //gqn
+#define SG_KONROD_PATTERSON 40 //kpn
 
 #define SPHAVG_GSL_2D_GAUSSLEGENDRE 0
 #define SPHAVG_Lebedev 1

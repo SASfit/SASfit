@@ -389,9 +389,16 @@ set(SOURCE_sasfit_fixed_point_acc
 set(SOURCE_sasfit_frida
 	sasfit_frida_solver.c
 	nnls.c
+)
+
+set(SOURCE_sasfit_jburkardt
 	blas0.c
 	blas1_d.c
 	linpack_d.c
+	sparse_grid_cc.c
+	sparse_grid_hw.c
+	smolyak.c
+	jburkardt_utils.c
 )
 
 set(SOURCE_sasfit_old

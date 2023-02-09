@@ -44,6 +44,7 @@
 
 //#include "config.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <gsl/gsl_errno.h>
 #include <stddef.h>
@@ -63,6 +64,10 @@
 #include "gmdi.h"
 #include "gmdi_structs.h"
 #include "sasfit.h"
+#include "smolpack.h"
+#include "sparse_grid_hw.h"
+#include "sparse_grid_cc.h"
+#include "smolpack.h"
 #define CALL_GSL_FUNCTION(gf, x)                    gf.function((x), gf.params)
 #define CALL_GMDI_MULTI_VAR_FUNCTION(gmvf, x)       gmvf.function((x), gmvf.n, gmvf.params)
 
@@ -472,6 +477,9 @@ int sasfit_cubature(size_t ndim,
 	int i,method, key;
 	scalar Iavg;
 
+    int n , n2, k, j;
+    double *x, *w, *x_ab, wt;
+
 	scalar fval[1], ferr[1];
     gsl_integration_glfixed_table * wglfixed;
     multint_cub cubstruct;
@@ -625,6 +633,156 @@ int sasfit_cubature(size_t ndim,
                                 result, error);
                 gsl_monte_miser_free (s_miser);
                 gsl_rng_free(r);
+                done=1;
+                break;
+        case SG_SMOLYAK_CLENSHAW_CURTIS: // sparse_grid_cc
+        case SG_CLENSHAW_CURTIS_LINEAR: // ccl_order
+                k = sasfit_eps_get_robertus_p();
+                n = nwspgr_size ( ccl_order, ndim, k );
+                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
+                w = ( double * ) malloc ( n * sizeof ( double ) );
+
+                nwspgr ( cc, ccl_order, ndim, k, n, &n2, x, w );
+                *result = 0;
+                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
+                for (i=0;i<n2;i++) {
+                    wt = 1;
+                    for (j=0;j<ndim;j++) {
+                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        wt = wt/(int_end[j]-int_start[j]);
+                    }
+                    wt = wt*w[i];
+                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) *wt;
+                }
+                free(x);
+                free(x_ab);
+                free(w);
+                done=1;
+                break;
+        case SG_CLENSHAW_CURTIS_SLOW: // ccs_order
+                k = sasfit_eps_get_robertus_p();
+                n = nwspgr_size ( ccs_order, ndim, k );
+                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
+                w = ( double * ) malloc ( n * sizeof ( double ) );
+
+                nwspgr ( cc, ccs_order, ndim, k, n, &n2, x, w );
+                *result = 0;
+                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
+                for (i=0;i<n2;i++) {
+                    wt = 1;
+                    for (j=0;j<ndim;j++) {
+                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        wt = wt/(int_end[j]-int_start[j]);
+                    }
+                    wt = wt*w[i];
+                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) *wt;
+                }
+                free(x);
+                free(x_ab);
+                free(w);
+                done=1;
+                break;
+        case SG_CLENSHAW_CURTIS_EXP: // cce_order
+                k = sasfit_eps_get_robertus_p();
+                n = nwspgr_size ( cce_order, ndim, k );
+                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
+                w = ( double * ) malloc ( n * sizeof ( double ) );
+
+                nwspgr ( cc, cce_order, ndim, k, n, &n2, x, w );
+                *result = 0;
+                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
+                for (i=0;i<n2;i++) {
+                    wt = 1;
+                    for (j=0;j<ndim;j++) {
+                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        wt = wt/(int_end[j]-int_start[j]);
+                    }
+                    wt = wt*w[i];
+                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) *wt;
+                }
+                free(x);
+                free(x_ab);
+                free(w);
+                done=1;
+                break;
+        case SG_GAUSS_LEGENDRE: // gqu
+                k = sasfit_eps_get_robertus_p();
+                n = nwspgr_size ( gqu_order, ndim, k );
+                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
+                w = ( double * ) malloc ( n * sizeof ( double ) );
+
+                nwspgr ( gqu, gqu_order, ndim, k, n, &n2, x, w );
+                result = 0;
+                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
+                for (i=0;i<n2;i++) {
+                    wt = 1;
+                    for (j=0;j<ndim;j++) {
+                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        wt = wt/(int_end[j]-int_start[j]);
+                    }
+                    wt = wt*w[i];
+                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) *wt;
+                }
+                free(x);
+                free(x_ab);
+                free(w);
+                done=1;
+                break;
+        case SG_GAUSS_HERMITE: //gqn
+                k = sasfit_eps_get_robertus_p();
+                n = nwspgr_size ( gqn_order, ndim, k );
+                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
+                w = ( double * ) malloc ( n * sizeof ( double ) );
+
+                nwspgr ( gqn, gqn_order, ndim, k, n, &n2, x, w );
+                result = 0;
+                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
+                for (i=0;i<n2;i++) {
+                    wt = 1;
+                    for (j=0;j<ndim;j++) {
+                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        wt = wt/(int_end[j]-int_start[j]);
+                    }
+                    wt = wt*w[i];
+                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) *wt;
+                }
+                free(x);
+                free(x_ab);
+                free(w);
+                done=1;
+                break;
+        case SG_KONROD_PATTERSON: //kpn
+                k = sasfit_eps_get_robertus_p();
+                n = nwspgr_size ( kpn_order, ndim, k );
+                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
+                w = ( double * ) malloc ( n * sizeof ( double ) );
+
+                nwspgr ( kpn, kpn_order, ndim, k, n, &n2, x, w );
+                result = 0;
+                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
+                for (i=0;i<n2;i++) {
+                    wt = 1;
+                    for (j=0;j<ndim;j++) {
+                        x_ab[j]=int_start[j] + x[i+j*i]*(int_end[j]-int_start[j]);
+                        wt = wt/(int_end[j]-int_start[j]);
+                    }
+                    wt = wt*w[i];
+                    *result = *result + Kernel_MCnD(x_ab,ndim,&cubstruct) *wt;
+                }
+                free(x);
+                free(x_ab);
+                free(w);
+                done=1;
+                break;
+        case SG_SMOLYAK :
+                *result = int_smolyak (ndim, GSL_MAX(3,GSL_MIN(abs(sasfit_eps_get_robertus_p()),47+ndim)) , int_start, int_end,
+                                       &Kernel_MCnD, &cubstruct, 0 );
+                *error = 0;
+                done=1;
+                break;
+        case SG_CC_SMOLYAK :
+                *result = cc_int_smolyak (ndim, GSL_MAX(3,GSL_MIN(abs(sasfit_eps_get_robertus_p()),11+ndim)) , int_start, int_end,
+                                       &Kernel_MCnD, &cubstruct, 0 );
                 done=1;
                 break;
         case OOURA_DOUBLE_EXP_QUADRATURE :

@@ -2429,7 +2429,11 @@ int opo_Fse_cub_dru(unsigned ndim, const double *x, void *pam,
 	YY = RR*pow(fabs(sin(UU)),PP)*GSL_SIGN(sin(UU));
 	DJ2D=PP*RR*pow(fabs(cos(UU)*sin(UU)),PP-1);
 	w = pow(1 - pow(pow(fabs(XX),2./PP) + pow(fabs(YY),2./PP),PP/QQ),QQ/2.);
-    fval[0] = DJ2D*(2*cos(QQX*XX+QQY*YY)*w*opo_sinc(QQZ*w));
+	if (gsl_finite(w)) {
+        fval[0] = DJ2D*(2*cos(QQX*XX+QQY*YY)*w*opo_sinc(QQZ*w));
+	} else {
+	    fval[0] = 0;
+	}
 //    fval[1] = DJ2D*(2*sin(QQX*XX+QQY*YY)*w*opo_sinc(QQZ*w));
 	return 0;
 }
@@ -2444,14 +2448,18 @@ int opo_Fse_cub_dxs(unsigned ndim, const double *x, void *pam,
 		return 1;
 	}
 	XX = x[0];
-	DJ = pow(1-pow(XX*XX,1./PP),PP/2.);
+	DJ = pow(1-pow(gsl_pow_2(XX),1./PP),PP/2.);
 	YY = DJ*x[1];
-	if (fabs(x[0])>1 || fabs(YY)>1 || fabs(x[1])>1) {
+	if (fabs(x[0])>=1 || fabs(YY)>1 || fabs(x[1])>1) {
 		fval[0] = 0;
 		return 0;
 	}
-    w = pow(1. - pow(pow(XX*XX,1./PP) + pow(YY*YY,1./PP),PP/QQ),QQ/2.);
-    fval[0] = (2*cos(QQX*XX+ QQY*YY)*w*opo_sinc(QQZ*w))*DJ;
+    w = pow(1. - pow(pow(gsl_pow_2(XX),1./PP) + pow(YY*YY,1./PP),PP/QQ),QQ/2.);
+    if (gsl_finite(w)) {
+        fval[0] = (2*cos(QQX*XX+ QQY*YY)*w*opo_sinc(QQZ*w))*DJ;
+    } else {
+        fval[0]=0;
+    }
     return 0;
 }
 
@@ -2466,14 +2474,15 @@ int opo_Fse_cub_dxy(unsigned ndim, const double *x, void *pam,
 	}
 	XX = x[0];
 	YY = x[1];
-	if (fabs(XX)>1 || fabs(YY)>1 || fabs(YY)>pow(1-pow(XX*XX,1/PP),PP/2)) {
-		fval[0] = 0;
-		return 0;
-	}
+
     w = pow(1 - pow(pow(gsl_pow_2(XX),1/PP) + pow(gsl_pow_2(YY),1/PP),PP/QQ),QQ/2.);
-    fval[0] = (2*cos(QQX*XX+ QQY*YY)*w*opo_sinc(QQZ*w));
+    if (gsl_finite(w)) {
+         fval[0] = (2*cos(QQX*XX+ QQY*YY)*w*opo_sinc(QQZ*w));
+    } else {
+        fval[0]=0;
+    }
     return 0;
-	}
+}
 
 
 scalar opo_Fse_cub_dxy_core(const double *x, size_t dim, void * pam)
@@ -2505,6 +2514,7 @@ scalar opo_Fsuperellipsoid(void * pam) {
 	cubxmax[0] = 1;
 	cubxmin[0] = -1;
 	int auswahl=1;
+	auswahl = sasfit_eps_get_robertus_p();
     switch (auswahl) {
         case 1:
             cubxmax[1] = 1;
