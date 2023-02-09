@@ -17,8 +17,9 @@ get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 #OPTION(MPI_ENABLE OFF)      # mpi framework not needed
 #add_subdirectory(sundials-2.6.2)
 # required for static builds on 64bit Linux
-if(UNIX AND SYSTEM_IS_64)
-    list(APPEND CONFIGURE_OPTIONS --with-pic)
+if(UNIX AND (${CMAKE_SIZEOF_VOID_P} EQUAL 8))
+    # required for static builds on 64bit
+    set(COMPILE_FLAGS "${COMPILE_FLAGS} -fPIC")
 endif()
 
 get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
