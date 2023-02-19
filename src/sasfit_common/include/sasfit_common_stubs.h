@@ -229,6 +229,8 @@ typedef struct
 	scalar (*sasfit_param_get_polar_phi) (void); /* 150 */
 	void (*sasfit_param_set_polar_theta) (scalar new_value); /* 151 */
 	scalar (*sasfit_param_get_polar_theta) (void); /* 152 */
+	void (*sasfit_set_sg_level) (int value); /* 153 */
+	int (*sasfit_get_sg_level) (void); /* 154 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -821,6 +823,14 @@ typedef struct
 #ifndef sasfit_param_get_polar_theta
 #define sasfit_param_get_polar_theta \
 	(SASFIT_COMMON_STUBS()->sasfit_param_get_polar_theta) /* 152 */
+#endif
+#ifndef sasfit_set_sg_level
+#define sasfit_set_sg_level \
+	(SASFIT_COMMON_STUBS()->sasfit_set_sg_level) /* 153 */
+#endif
+#ifndef sasfit_get_sg_level
+#define sasfit_get_sg_level \
+	(SASFIT_COMMON_STUBS()->sasfit_get_sg_level) /* 154 */
 #endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 

@@ -121,6 +121,19 @@
 #define HANKEL_CHAVE 13
 
 
+typedef struct {
+    double *x;
+    double *w;
+    double *x_ab;
+    double wt;
+    double volume_ndim;
+    int dim;
+    int k;
+    int n ;
+    int n2;
+    int int_strategy;
+} cub_grid_struct;
+
 // helper for quoting compiler definitions
 #define __Q(x) #x
 #define SASFIT_QUOTE(x) __Q(x)

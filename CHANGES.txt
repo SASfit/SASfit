@@ -1,8 +1,8 @@
 ﻿0.94.13 2023-xx-xx
-- Supplied (randomized) quasi Monte Carlo (R)QMC integration routines using the quasi number generators from gsl. 
-  (R)QMC integration might converge faster than MC integration. Scrambled quasi random numbers for RQMC has been 
-  implemented using routines from B. Burley http://jcgt.org/published/0009/04/01/ 
- - reparametrized plugins "parallelepiped (OPO,random)" and "superellipsoid (OPO,random)"
+- keep memory of previous sparse grid and only renew it if neccessary
+- Supplied several spars-grid quadrature routines to sasfit_cubature
+- Supplied (randomized) quasi Monte Carlo (R)QMC integration routines using the quasi number generators from gsl. (R)QMC integration might converge faster than MC integration. Scrambled quasi random numbers for RQMC has been implemented using routines from B. Burley http://jcgt.org/published/0009/04/01/ 
+- reparametrized plugins "parallelepiped (OPO,random)" and "superellipsoid (OPO,random)"
  
 0.94.12 2023-01-07
 - improved numerical stability of wormlike structure factor according to Koyama

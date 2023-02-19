@@ -72,6 +72,7 @@ typedef struct
 	int     fibonacci;
 	int     iter_4_mc;
 	int     fitorsim;
+	int     sg_level;
     scalar  N_Ogata;
     scalar  h_Ogata;
     scalar  MSASthickness;
@@ -120,6 +121,7 @@ sasfit_common_DLLEXP int    sasfit_eps_get_iter_4_mc(void);
 sasfit_common_DLLEXP int    sasfit_eps_get_fitorsim(void);
 sasfit_common_DLLEXP scalar sasfit_eps_get_alpha(void);
 sasfit_common_DLLEXP scalar sasfit_eps_get_beta(void);
+sasfit_common_DLLEXP int sasfit_get_sg_level(void);
 
 sasfit_common_DLLEXP scalar sasfit_eps_get_comp(void);
 /**
@@ -165,6 +167,7 @@ sasfit_common_DLLEXP void sasfit_eps_set_h(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_comp(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_alpha(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_beta(scalar value);
+sasfit_common_DLLEXP void sasfit_set_sg_level(int value);
 
 /**
  * \ingroup sasfit_eps

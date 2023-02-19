@@ -203,7 +203,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 										"SG_CLENSHAW_CURTIS_LINEAR" "SG_CLENSHAW_CURTIS_SLOW" \
 										"SG_CLENSHAW_CURTIS_EXP" "SG_GAUSS_LEGENDRE" \
 										"SG_GAUSS_HERMITE" "SG_KONROD_PATTERSON" } \
-				-width 25 \
+				-width 30 \
 				-textvariable ::FitPrecision(IntStrategy) \
 				-modifycmd setIntStrategy2int
 	grid $w.intStrat_label -row 5 -column 0 -sticky e
@@ -270,13 +270,17 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.lebedev_label -row 12 -column 0 -sticky e
 	grid $w.lebedev_value -row 12 -column 1 -sticky w
 	label $w.finonacci_label -text "FIBONACCI points:"
-	entry $w.gibonacci_value -textvariable FitPrecision(FIBONACCI) -width $entrywidth
+	entry $w.fibonacci_value -textvariable FitPrecision(FIBONACCI) -width $entrywidth
 	grid $w.finonacci_label -row 12 -column 2 -sticky e
-	grid $w.gibonacci_value -row 12 -column 3 -sticky w
+	grid $w.fibonacci_value -row 12 -column 3 -sticky w
 	label $w.sphericaltdesign_label -text "spherical-t design, order \[1,136\]:"
 	entry $w.sphericaltdesign_value -textvariable FitPrecision(spherical_t_design) -width $entrywidth
 	grid $w.sphericaltdesign_label -row 13 -column 0 -sticky e
 	grid $w.sphericaltdesign_value -row 13 -column 1 -sticky w
+	label $w.sg_level_label -text "Sparse-Grid level:"
+	entry $w.sg_level_value -textvariable FitPrecision(SG_Level) -width $entrywidth
+	grid $w.sg_level_label -row 13 -column 2 -sticky e
+	grid $w.sg_level_value -row 13 -column 3 -sticky w
 	
 	label $w.ogata_2005_N_label -text "N_Ogata >= 2 \[default: 50\]"
 	entry $w.ogata_2005_N_value -textvariable FitPrecision(N_Ogata) -width $entrywidth

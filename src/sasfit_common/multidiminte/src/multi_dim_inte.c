@@ -464,7 +464,6 @@ int sasfit_cubature(size_t ndim,
 			scalar epsrel,
 			scalar *result,
 			scalar *error) {
-
     gmdi_inte_handle            handle = gmdi_create_inte_handle(ndim);
     gmdi_function_or_constant   fc;
     gmdi_multi_var_function     mvf;
@@ -477,8 +476,13 @@ int sasfit_cubature(size_t ndim,
 	int i,method, key;
 	scalar Iavg;
 
-    int n , n2, k, j;
-    double *x, *w, *x_ab, wt, volume_ndim;
+    int  k, j;
+
+    double *x=NULL, *w=NULL, *x_ab=NULL;
+    double wt, volume_ndim;
+    int n , n2;
+    static cub_grid_struct *cg=NULL;
+    static cub_grid_struct cg_static;
 
 	scalar fval[1], ferr[1];
     gsl_integration_glfixed_table * wglfixed;
@@ -639,189 +643,418 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case SG_SMOLYAK_CLENSHAW_CURTIS: // sparse_grid_cc   [-1;1]
-                k = GSL_MAX(1,sasfit_eps_get_robertus_p());
-                n = sparse_grid_cfn_size ( ndim, k );
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=sasfit_get_int_strategy();
+                    cg->dim = ndim;
+                    cg->k = GSL_MAX(1,sasfit_get_sg_level());
+                    cg->n = sparse_grid_cfn_size ( cg->dim, cg->k );
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    sparse_grid_cc ( cg->dim, cg->k, cg->n, cg->w, cg->x );
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MAX(1,sasfit_get_sg_level());
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==sasfit_get_int_strategy()))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
+                        free(cg->x);
+                        free(cg->x_ab);
+                        free(cg->w);
 
-                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
-                w = ( double * ) malloc ( n * sizeof ( double ) );
-
-                sparse_grid_cc ( ndim, k, n, w, x );
+                        cg->int_strategy=sasfit_get_int_strategy();
+                        cg->dim = ndim;
+                        cg->k = k;
+                        cg->n = sparse_grid_cfn_size ( cg->dim, cg->k );
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        sparse_grid_cc ( cg->dim, cg->k, cg->n, cg->w, cg->x );
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                    }
+                }
                 *result = 0;
                 *error = 0;
-                wt = 0;
-                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
-                for (i=0;i<n;i++) {
-                    for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + (1+x[j+i*ndim])*(int_end[j]-int_start[j])/2.;
+                cg->wt=0;
+                for (i=0;i<cg->n;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + (1+cg->x[j+i*cg->dim])*(int_end[j]-int_start[j])/2.;
                     }
-                    wt += w[i];
-                    *result = (*result) + 0.5*Kernel_MCnD(x_ab,ndim,&cubstruct) *w[i];
+                    cg->wt += cg->w[i];
+                    *result = (*result) + 0.5*Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) *cg->w[i];
                 }
-                // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
+                // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,cg->wt);
                 *result *= volume_ndim;
-                free(x);
-                free(x_ab);
-                free(w);
                 done=1;
                 break;
         case SG_CLENSHAW_CURTIS_LINEAR: // ccl_order [0,1]
-                k = GSL_MAX(1,sasfit_eps_get_robertus_p());
-                n = nwspgr_size ( ccl_order, ndim, k );
-                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
-                w = ( double * ) malloc ( n * sizeof ( double ) );
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=sasfit_get_int_strategy();
+                    cg->dim = ndim;
+                    cg->k = GSL_MAX(1,sasfit_get_sg_level());
+                    cg->n = nwspgr_size ( ccl_order, cg->dim, cg->k );
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    nwspgr ( cc, ccl_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MAX(1,sasfit_get_sg_level());
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==sasfit_get_int_strategy()))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
 
-                nwspgr ( cc, ccl_order, ndim, k, n, &n2, x, w );
+                        free(cg->x);
+                        free(cg->x_ab);
+                        free(cg->w);
+
+                        cg->int_strategy=sasfit_get_int_strategy();
+                        cg->dim = ndim;
+                        cg->k = k;
+                        cg->n = nwspgr_size ( ccl_order, cg->dim, cg->k );
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        nwspgr ( cc, ccl_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                        fflush(stdout);
+                    }
+                }
 //                sasfit_out("number of points in sparse grid (SG_CLENSHAW_CURTIS_LINEAR): %d, %d\n",n,n2);
                 *result = 0;
                 *error = 0;
-                wt = 0;
-                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
-                for (i=0;i<n2;i++) {
-                    for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
+                cg->wt = 0;
+                for (i=0;i<cg->n2;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
                     }
-                    wt += w[i];
-                    *result = (*result) + Kernel_MCnD(x_ab,ndim,&cubstruct) *w[i];
+                    cg->wt += cg->w[i];
+                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) *cg->w[i];
                 }
                 // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
                 *result *= volume_ndim;
-                free(x);
-                free(x_ab);
-                free(w);
                 done=1;
                 break;
         case SG_CLENSHAW_CURTIS_SLOW: // ccs_order  [0,1]
-                k = GSL_MAX(1,sasfit_eps_get_robertus_p());
-                n = nwspgr_size ( ccs_order, ndim, k );
-                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
-                w = ( double * ) malloc ( n * sizeof ( double ) );
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=SG_CLENSHAW_CURTIS_SLOW;
+                    cg->dim = ndim;
+                    cg->k = GSL_MAX(1,sasfit_get_sg_level());
+                    cg->n = nwspgr_size ( ccs_order, cg->dim, cg->k );
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    nwspgr ( cc, ccs_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MAX(1,sasfit_get_sg_level());
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==SG_CLENSHAW_CURTIS_SLOW))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
 
-                nwspgr ( cc, ccs_order, ndim, k, n, &n2, x, w );
+                        free(cg->x);
+                        free(cg->x_ab);
+                        free(cg->w);
+
+                        cg->int_strategy=SG_CLENSHAW_CURTIS_SLOW;
+                        cg->dim = ndim;
+                        cg->k = GSL_MAX(1,sasfit_get_sg_level());
+                        cg->n = nwspgr_size ( ccs_order, cg->dim, cg->k );
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        nwspgr ( cc, ccs_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                        fflush(stdout);
+                    }
+                }
 //                sasfit_out("number of points in sparse grid (SG_CLENSHAW_CURTIS_SLOW): %d, %d\n",n,n2);
                 *result = 0;
                 *error = 0;
-                wt = 0;
-                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
-                for (i=0;i<n2;i++) {
-                    for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
+                cg->wt = 0;
+                for (i=0;i<cg->n2;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
                     }
-                    wt += w[i];
-                    *result = (*result) + Kernel_MCnD(x_ab,ndim,&cubstruct) *w[i];
+                    cg->wt += cg->w[i];
+                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) * cg->w[i];
                 }
                 // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
                 *result *= volume_ndim;
-                free(x);
-                free(x_ab);
-                free(w);
                 done=1;
                 break;
         case SG_CLENSHAW_CURTIS_EXP: // cce_order  [0,1]
-                k = GSL_MAX(1,sasfit_eps_get_robertus_p());
-                n = nwspgr_size ( cce_order, ndim, k );
-                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
-                w = ( double * ) malloc ( n * sizeof ( double ) );
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=SG_CLENSHAW_CURTIS_EXP;
+                    cg->dim = ndim;
+                    cg->k = GSL_MAX(1,sasfit_get_sg_level());
+                    cg->n = nwspgr_size ( cce_order, cg->dim, cg->k );
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    nwspgr ( cc, cce_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MAX(1,sasfit_get_sg_level());
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==SG_CLENSHAW_CURTIS_EXP))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
 
-                nwspgr ( cc, cce_order, ndim, k, n, &n2, x, w );
+                        free(cg->x);
+                        free(cg->x_ab);
+                        free(cg->w);
+
+                        cg->int_strategy=SG_CLENSHAW_CURTIS_EXP;
+                        cg->dim = ndim;
+                        cg->k = GSL_MAX(1,sasfit_get_sg_level());
+                        cg->n = nwspgr_size ( cce_order, cg->dim, cg->k );
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        nwspgr ( cc, cce_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                        fflush(stdout);
+                    }
+                }
 //                sasfit_out("number of points in sparse grid (SG_CLENSHAW_CURTIS_EXP): %d, %d\n",n,n2);
                 *result = 0;
                 *error = 0;
-                wt = 0;
-                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
-                for (i=0;i<n2;i++) {
-                    for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
+                cg->wt = 0;
+                for (i=0;i<cg->n2;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
                     }
-                    wt += w[i];
-                    *result = (*result) + Kernel_MCnD(x_ab,ndim,&cubstruct) *w[i];
+                    cg->wt += cg->w[i];
+                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) * cg->w[i];
                 }
                 // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
                 *result *= volume_ndim;
-                free(x);
-                free(x_ab);
-                free(w);
                 done=1;
                 break;
         case SG_GAUSS_LEGENDRE: // gqu  [0,1]
-                k = GSL_MIN(GSL_MAX(1,sasfit_eps_get_robertus_p()),25);
-                n = nwspgr_size ( gqu_order, ndim, k );
-                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
-                w = ( double * ) malloc ( n * sizeof ( double ) );
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=SG_GAUSS_LEGENDRE;
+                    cg->dim = ndim;
+                    cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                    cg->n = nwspgr_size ( gqu_order, cg->dim, cg->k );
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    nwspgr ( gqu, gqu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==SG_GAUSS_LEGENDRE))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
 
-                nwspgr ( gqu, gqu_order, ndim, k, n, &n2, x, w );
+                        free(cg->x);
+                        free(cg->x_ab);
+                        free(cg->w);
+
+                        cg->int_strategy=SG_GAUSS_LEGENDRE;
+                        cg->dim = ndim;
+                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                        cg->n = nwspgr_size ( gqu_order, cg->dim, cg->k );
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        nwspgr ( gqu, gqu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                        fflush(stdout);
+                    }
+                }
+
 //                sasfit_out("number of points in sparse grid (SG_GAUSS_LEGENDRE): %d, %d\n",n,n2);
                 *result = 0;
                 *error = 0;
-                wt = 0;
-                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
-                for (i=0;i<n2;i++) {
-                    for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
+                cg->wt = 0;
+                for (i=0;i<cg->n2;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
                     }
-                    wt += w[i];
-                    *result = (*result) + Kernel_MCnD(x_ab,ndim,&cubstruct) *w[i];
+                    cg->wt += cg->w[i];
+                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) *cg->w[i];
                 }
                 // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
                 *result *= volume_ndim;
-                free(x);
-                free(x_ab);
-                free(w);
                 done=1;
                 break;
         case SG_GAUSS_HERMITE: //gqu  [0,1]
-                k = GSL_MIN(GSL_MAX(1,sasfit_eps_get_robertus_p()),25);
-                n = nwspgr_size ( gqu_order, ndim, k );
-                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
-                w = ( double * ) malloc ( n * sizeof ( double ) );
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=SG_GAUSS_HERMITE;
+                    cg->dim = ndim;
+                    cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                    cg->n = nwspgr_size ( gqu_order, cg->dim, cg->k );
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    nwspgr ( gqu, gqu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==SG_GAUSS_HERMITE))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
 
-                nwspgr ( gqu, gqu_order, ndim, k, n, &n2, x, w );
+                        free(cg->x);
+                        free(cg->x_ab);
+                        free(cg->w);
+
+                        cg->int_strategy=SG_GAUSS_HERMITE;
+                        cg->dim = ndim;
+                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                        cg->n = nwspgr_size ( gqu_order, cg->dim, cg->k );
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        nwspgr ( gqu, gqu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                        fflush(stdout);
+                    }
+                }
 //                sasfit_out("number of points in sparse grid (SG_GAUSS_HERMITE): %d, %d\n",n,n2);
                 *result = 0;
                 *error = 0;
-                wt = 0;
-                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
-                for (i=0;i<n2;i++) {
-                    for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
+                cg->wt = 0;
+                for (i=0;i<cg->n2;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
                     }
-                    wt += w[i];
-                    *result = (*result) + Kernel_MCnD(x_ab,ndim,&cubstruct) *w[i];
+                    cg->wt += cg->w[i];
+                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) *cg->w[i];
                 }
                 // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
                 *result *= volume_ndim;
-                free(x);
-                free(x_ab);
-                free(w);
                 done=1;
                 break;
         case SG_KONROD_PATTERSON: //kpu  [0,1]
-                k = GSL_MIN(GSL_MAX(1,sasfit_eps_get_robertus_p()),25);
-                n = nwspgr_size ( kpu_order, ndim, k );
-                x = ( double * ) malloc ( ndim * n * sizeof ( double ) );
-                w = ( double * ) malloc ( n * sizeof ( double ) );
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=SG_KONROD_PATTERSON;
+                    cg->dim = ndim;
+                    cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                    cg->n = nwspgr_size ( kpu_order, cg->dim, cg->k );
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    nwspgr ( kpu, kpu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==SG_KONROD_PATTERSON))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
 
-                nwspgr ( kpu, kpu_order, ndim, k, n, &n2, x, w );
+                        free(cg->x);
+                        free(cg->x_ab);
+                        free(cg->w);
+
+                        cg->int_strategy=SG_KONROD_PATTERSON;
+                        cg->dim = ndim;
+                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
+                        cg->n = nwspgr_size ( kpu_order, cg->dim, cg->k );
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
+                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        nwspgr ( kpu, kpu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                        fflush(stdout);
+                    }
+                }
 //                sasfit_out("number of points in sparse grid (SG_KONROD_PATTERSON): %d, %d\n",n,n2);
                 *result = 0;
                 *error = 0;
-                wt = 0;
-                x_ab = ( double * ) malloc ( ndim * sizeof ( double ) );
-                for (i=0;i<n2;i++) {
-                    for (j=0;j<ndim;j++) {
-                        x_ab[j]=int_start[j] + x[j+i*ndim]*(int_end[j]-int_start[j]);
+                cg->wt = 0;
+                for (i=0;i<cg->n2;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
                     }
-                    wt += w[i];
-                    *result = (*result) + Kernel_MCnD(x_ab,ndim,&cubstruct) *w[i];
+                    cg->wt += cg->w[i];
+                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) *cg->w[i];
                 }
                 // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
                 *result *= volume_ndim;
-                free(x);
-                free(x_ab);
-                free(w);
                 done=1;
                 break;
         case SG_SMOLYAK :
-                *result = int_smolyak (ndim, GSL_MAX(3,GSL_MIN(abs(sasfit_eps_get_robertus_p()),47+ndim)) , int_start, int_end,
+                *result = int_smolyak (ndim, GSL_MAX(3,GSL_MIN(abs(sasfit_get_sg_level()),47+ndim)) , int_start, int_end,
                                        &Kernel_MCnD, &cubstruct, 0 );
                 *error = 0;
                 *error = 0;
@@ -829,7 +1062,7 @@ int sasfit_cubature(size_t ndim,
                 done=1;
                 break;
         case SG_CC_SMOLYAK :
-                *result = cc_int_smolyak (ndim, GSL_MAX(3,GSL_MIN(abs(sasfit_eps_get_robertus_p()),11+ndim)) , int_start, int_end,
+                *result = cc_int_smolyak (ndim, GSL_MAX(3,GSL_MIN(abs(sasfit_get_sg_level()),11+ndim)) , int_start, int_end,
                                        &Kernel_MCnD, &cubstruct, 0 );
                 *error = 0;
                 *result *= volume_ndim;

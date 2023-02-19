@@ -141,6 +141,10 @@ sasfit_common_DLLEXP
 int sasfit_get_int_strategy(void) {
 	return sasfit_eps.int_strategy;
 }
+sasfit_common_DLLEXP
+int sasfit_get_sg_level(void) {
+	return sasfit_eps.sg_level;
+}
 
 sasfit_common_DLLEXP
 void sasfit_set_sphavg_strategy(int value) {
@@ -288,6 +292,10 @@ sasfit_common_DLLEXP
 void sasfit_eps_set_comp(scalar value) {
 	sasfit_eps.comparison = value;
 }
+sasfit_common_DLLEXP
+void sasfit_set_sg_level(int value) {
+	sasfit_eps.sg_level = value;
+}
 
 
 
@@ -308,6 +316,7 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
     sasfit_out("Hankel_int          %d\n", fitp->hankel_strategy);
 	sasfit_out("N_Ogfata:           %f\n", fitp->N_Ogata);
 	sasfit_out("h_Ogata:            %f\n", fitp->h_Ogata);
+	sasfit_out("Spars-Grid-level:   %d\n", fitp->sg_level);
 	sasfit_out("MSASthickness:      %f\n", fitp->MSASthickness);
 	sasfit_out("MSASlambda:         %f\n", fitp->MSASlambda);
 	sasfit_out("Robertus_p:         %d\n", fitp->robertus_p);

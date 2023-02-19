@@ -502,3 +502,9 @@ declare 151 generic {
 declare 152 generic {
 	scalar sasfit_param_get_polar_theta(void)
 }
+declare 153 generic {
+	void sasfit_set_sg_level(scalar new_value)
+}
+declare 154 generic {
+	scalar sasfit_get_sg_level(void)
+}

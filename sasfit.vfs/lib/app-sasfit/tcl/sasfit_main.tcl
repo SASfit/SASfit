@@ -445,6 +445,7 @@ set FitPrecision(GSL_ALPHA) 1
 set FitPrecision(GSL_BETA) 1
 set FitPrecision(Lebedev) 32
 set FitPrecision(spherical_t_design) 42
+set FitPrecision(SG_Level) 8
 set FitPrecision(FIBONACCI) 1024
 setIntStrategy2int
 setSphAvgStrategy2int

@@ -599,6 +599,7 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_JACOBI", sasfit_eps_set_jacobi);
 	SF_TCL_GET_F(int,    "::FitPrecision", "Lebedev", sasfit_eps_set_lebedev);
 	SF_TCL_GET_F(int,    "::FitPrecision", "spherical_t_design", sasfit_eps_set_spherical_t_design);
+	SF_TCL_GET_F(int,    "::FitPrecision", "SG_Level", sasfit_set_sg_level);
 	SF_TCL_GET_F(int,    "::FitPrecision", "FIBONACCI", sasfit_eps_set_fibonacci);
 	SF_TCL_GET_F(double, "::FitPrecision", "GSL_ALPHA", sasfit_eps_set_alpha);
 	SF_TCL_GET_F(double, "::FitPrecision", "GSL_BETA", sasfit_eps_set_beta);
