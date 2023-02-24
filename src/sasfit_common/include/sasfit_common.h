@@ -79,8 +79,8 @@
 #define SG_CLENSHAW_CURTIS_SLOW 36 // ccs_order
 #define SG_CLENSHAW_CURTIS_EXP 37 // cce_order
 #define SG_GAUSS_LEGENDRE 38 // gqu
-#define SG_GAUSS_HERMITE 39 //gqn
-#define SG_KONROD_PATTERSON 40 //kpn
+#define SG_KONROD_PATTERSON 39 //kpn
+#define SG_FROLOV 40
 
 #define SPHAVG_GSL_2D_GAUSSLEGENDRE 0
 #define SPHAVG_Lebedev 1

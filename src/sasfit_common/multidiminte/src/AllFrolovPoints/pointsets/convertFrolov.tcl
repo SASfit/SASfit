@@ -1,5 +1,6 @@
 source sasfit_readData.tcl
 set infid [open Frolov.c w]
+puts $infid "#include <stdlib.h>"
 create_ASCIIData sparse
 for {set dim 2} {$dim <=6} {incr dim} { 
 	for {set level 1} {$level <=16} {incr level} { 
@@ -32,7 +33,7 @@ puts $infid "\tif (dim<2||dim>6||level<1||level>16) return 2;"
 for {set dim 2} {$dim <=6} {incr dim} { 
 	for {set level 1} {$level <=16} {incr level} {
 		puts $infid "\tif (dim==$dim && level==$level) \{"
-		puts $infid "\t\treturn Frolov_${dim}_${level}_basis (x,w,npoints);"
+		puts $infid "\t\treturn Frolov_${dim}_${level}_basic (x,w,npoints);"
 		if {$dim==6 && $level == 16} {
 			puts $infid "\t\}"
 		} else {

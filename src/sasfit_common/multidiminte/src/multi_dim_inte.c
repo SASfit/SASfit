@@ -68,6 +68,7 @@
 #include "sparse_grid_hw.h"
 #include "sparse_grid_cc.h"
 #include "smolpack.h"
+#include "Frolov.h"
 #define CALL_GSL_FUNCTION(gf, x)                    gf.function((x), gf.params)
 #define CALL_GMDI_MULTI_VAR_FUNCTION(gmvf, x)       gmvf.function((x), gmvf.n, gmvf.params)
 
@@ -935,65 +936,6 @@ int sasfit_cubature(size_t ndim,
                 *result *= volume_ndim;
                 done=1;
                 break;
-        case SG_GAUSS_HERMITE: //gqu  [0,1]
-                if (cg == NULL) {
-                    cg = &cg_static;
-                    cg->int_strategy=SG_GAUSS_HERMITE;
-                    cg->dim = ndim;
-                    cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
-                    cg->n = nwspgr_size ( gqu_order, cg->dim, cg->k );
-                    cg->n2=cg->n;
-                    cg->volume_ndim=volume_ndim;
-                    cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
-                    cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
-                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
-                    nwspgr ( gqu, gqu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
-                    sasfit_out("first call to generate grid\n");
-                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
-                    fflush(stdout);
-                } else {
-                    k=GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
-                    if (!(ndim==cg->dim &&
-                        cg->k==k &&
-                        cg->int_strategy==SG_GAUSS_HERMITE))
-                    {
-                        sasfit_out("generate new sparse-grid\n");
-
-                        free(cg->x);
-                        free(cg->x_ab);
-                        free(cg->w);
-
-                        cg->int_strategy=SG_GAUSS_HERMITE;
-                        cg->dim = ndim;
-                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),25);
-                        cg->n = nwspgr_size ( gqu_order, cg->dim, cg->k );
-                        cg->n2=cg->n;
-                        cg->volume_ndim=volume_ndim;
-                        cg->x = ( double * ) malloc ( cg->dim * cg->n * sizeof ( double ) );
-                        cg->w = ( double * ) malloc ( cg->n * sizeof ( double ) );
-                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
-                        nwspgr ( gqu, gqu_order, cg->dim, cg->k, cg->n, &cg->n2, cg->x, cg->w );
-                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy());
-                        fflush(stdout);
-                        sasfit_out("generated new one .... done\n");
-                        fflush(stdout);
-                    }
-                }
-//                sasfit_out("number of points in sparse grid (SG_GAUSS_HERMITE): %d, %d\n",n,n2);
-                *result = 0;
-                *error = 0;
-                cg->wt = 0;
-                for (i=0;i<cg->n2;i++) {
-                    for (j=0;j<cg->dim;j++) {
-                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
-                    }
-                    cg->wt += cg->w[i];
-                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) *cg->w[i];
-                }
-                // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
-                *result *= volume_ndim;
-                done=1;
-                break;
         case SG_KONROD_PATTERSON: //kpu  [0,1]
                 if (cg == NULL) {
                     cg = &cg_static;
@@ -1048,6 +990,85 @@ int sasfit_cubature(size_t ndim,
                     }
                     cg->wt += cg->w[i];
                     *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) *cg->w[i];
+                }
+                // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
+                *result *= volume_ndim;
+                done=1;
+                break;
+        case SG_FROLOV: //gqu  [0,1]
+                if (ndim<2 || ndim>6) {
+                    sasfit_err("Frolov sparse grids are only available for dimensions 2 to 6 in SASfit so far\n");
+                    break;
+                }
+                if (cg == NULL) {
+                    cg = &cg_static;
+                    cg->int_strategy=SG_FROLOV;
+                    cg->dim = ndim;
+                    cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),16);
+                    cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                    cg->w = ( double * ) malloc (  sizeof ( double ) );
+                    cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);
+                    sasfit_out("Frolov status:%d",i);
+                    fflush(stdout);
+                    if (cg->x == NULL) {
+                        sasfit_err("could not allocate memory for Frolov sparse grid (k*dim)-points=%d, weight:%lf\n",ndim*cg->k,cg->w[0]);
+                        fflush(stdout);
+                        free(cg->w);
+                        free(cg->x_ab);
+                        cg=NULL;
+                        break;
+                    };
+                    cg->n2=cg->n;
+                    cg->volume_ndim=volume_ndim;
+                    sasfit_out("first call to generate grid\n");
+                    sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
+                    fflush(stdout);
+                } else {
+                    k=GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),16);
+                    if (!(ndim==cg->dim &&
+                        cg->k==k &&
+                        cg->int_strategy==SG_FROLOV))
+                    {
+                        sasfit_out("generate new sparse-grid\n");
+
+                        free(cg->x);
+                        free(cg->w);
+                        free(cg->x_ab);
+
+                        cg->int_strategy=SG_FROLOV;
+                        cg->dim = ndim;
+                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),16);
+                        cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
+                        cg->w = ( double * ) malloc (  sizeof ( double ) );
+                        cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);
+                        sasfit_out("Frolov status:%d",i);
+                        fflush(stdout);
+                        if (cg->x == NULL) {
+                            sasfit_err("could not allocate memory for Frolov sparse grid (k*dim)-points=%d, weight:%lf\n",ndim*cg->k,cg->w[0]);
+                            fflush(stdout);
+                            free(cg->w);
+                            free(cg->x_ab);
+                            cg=NULL;
+                            break;
+                        };
+                        cg->n2=cg->n;
+                        cg->volume_ndim=volume_ndim;
+                        sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d, weight:%lf\n",cg->dim, cg->n,k,cg->int_strategy,sasfit_get_int_strategy(),cg->w[0]);
+                        fflush(stdout);
+                        sasfit_out("generated new one .... done\n");
+                        fflush(stdout);
+                    }
+                }
+//                sasfit_out("number of points in sparse grid (SG_FROLOV): %d, %d\n",n,n2);
+                *result = 0;
+                *error = 0;
+                cg->wt = 0;
+                for (i=0;i<cg->n2;i++) {
+                    for (j=0;j<cg->dim;j++) {
+                        cg->x_ab[j]=int_start[j] + cg->x[j+i*cg->dim]*(int_end[j]-int_start[j]);
+                    }
+                    cg->wt += cg->w[0];
+                    *result = (*result) + Kernel_MCnD(cg->x_ab,cg->dim,&cubstruct) * cg->w[0];
                 }
                 // sasfit_out("volume:%lf\t sum w[i]=%lf\n",volume_ndim,wt);
                 *result *= volume_ndim;

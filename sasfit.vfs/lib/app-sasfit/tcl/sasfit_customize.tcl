@@ -97,8 +97,8 @@ proc setIntStrategy2int {} {
 		"SG_CLENSHAW_CURTIS_SLOW" {set ::FitPrecision(IntStrategy_int) 36}
 		"SG_CLENSHAW_CURTIS_EXP" {set ::FitPrecision(IntStrategy_int) 37}
 		"SG_GAUSS_LEGENDRE" {set ::FitPrecision(IntStrategy_int) 38}
-		"SG_GAUSS_HERMITE" {set ::FitPrecision(IntStrategy_int) 39}
-		"SG_KONROD_PATTERSON" {set ::FitPrecision(IntStrategy_int) 40}
+		"SG_KONROD_PATTERSON" {set ::FitPrecision(IntStrategy_int) 39}
+		"SG_FROLOV" {set ::FitPrecision(IntStrategy_int) 40}
 		default {set ::FitPrecision(IntStrategy_int) 0}
 	}
 }
@@ -202,7 +202,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 										"SG_SMOLYAK" "SG_CC_SMOLYAK" "SG_SMOLYAK_CLENSHAW_CURTIS" \
 										"SG_CLENSHAW_CURTIS_LINEAR" "SG_CLENSHAW_CURTIS_SLOW" \
 										"SG_CLENSHAW_CURTIS_EXP" "SG_GAUSS_LEGENDRE" \
-										"SG_GAUSS_HERMITE" "SG_KONROD_PATTERSON" } \
+										"SG_KONROD_PATTERSON" "SG_FROLOV"} \
 				-width 30 \
 				-textvariable ::FitPrecision(IntStrategy) \
 				-modifycmd setIntStrategy2int
