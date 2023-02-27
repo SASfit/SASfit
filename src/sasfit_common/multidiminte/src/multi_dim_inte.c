@@ -1142,7 +1142,7 @@ int sasfit_cubature(size_t ndim,
         gmdi_free_inte_handle(handle);
         if ((*error)/(*result) >= epsrel) {
             ret = 1;
-            sasfit_err("integration (sasfit_cubature) failed with the required precision, err/res=%le>eps=%le\n",(*error)/(*result),epsrel);
+            // sasfit_err("integration (sasfit_cubature) failed with the required precision, err/res=%le>eps=%le\n",(*error)/(*result),epsrel);
             return SASFIT_RETURNVAL_ON_ERROR;
         }
         return ret;

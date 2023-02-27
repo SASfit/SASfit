@@ -2514,7 +2514,7 @@ scalar opo_Fsuperellipsoid(void * pam) {
 	cubxmax[0] = 1;
 	cubxmin[0] = -1;
 	int auswahl=1;
-	auswahl = sasfit_eps_get_robertus_p();
+//	auswahl = sasfit_eps_get_robertus_p();
     switch (auswahl) {
         case 1:
             cubxmax[1] = 1;
