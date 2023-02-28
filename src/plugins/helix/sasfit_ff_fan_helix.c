@@ -25,9 +25,9 @@
 #define QN param->p[MAXPAR-2]
 #define	N param->p[MAXPAR-3]
 
-scalar bessfct(scalar r, sasfit_param * param) 
+scalar bessfct(scalar r, sasfit_param * param)
 {
-	return r*gsl_sf_bessel_Jn(lround(N),Q*r*sqrt(1.0-QN*QN));
+	return r*gsl_sf_bessel_Jn(lround(N),Q*r*sqrt(fabs(1.0-QN*QN)));
 }
 
 scalar gn2(scalar q, int n, sasfit_param * param)
@@ -37,7 +37,7 @@ scalar gn2(scalar q, int n, sasfit_param * param)
 	u=q*R;
 	if (u==0.0) return 0.0;
 	qn=n*b/u;
-	if (qn >= 1.0) return 0.0;
+	GSL_MIN(qn,1.0);
 	Q=q;
 	QN = qn;
 	N=n;
@@ -63,7 +63,7 @@ scalar sasfit_ff_fan_helix(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((A >= 1.0), param, "a(%lg) >= 1",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((P <= 0.0), param, "P(%lg) < 0",P); // modify condition to your needs
 	SASFIT_CHECK_COND1((H < 0.0), param, "H(%lg) < 0",H); // modify condition to your needs
-	
+
 	// insert your code here
 	prefac =  gsl_pow_2(2.0/(R*R*(1.0-A*A)));
 	sum = prefac*gn2(q,0,param);
@@ -81,6 +81,8 @@ scalar sasfit_ff_fan_helix(scalar q, sasfit_param * param)
 		sumold=sum;
 	}
 	return thinrod_helix(q,H)*sum*gsl_pow_2(sasfit_ff_fan_helix_v(R,param,0)*(ETA_H-ETA_SOLV));
+    // thinrod_helix(q,H) is replacing pi/(q*H) in original paper to account for finite length of helix
+    // lim_{q->infty} thinrod_helix(q,H) = H^2  * pi/(q*H) = H*pi/q
 }
 
 scalar sasfit_ff_fan_helix_f(scalar q, sasfit_param * param)
