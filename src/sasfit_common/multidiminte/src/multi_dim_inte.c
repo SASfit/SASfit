@@ -1004,7 +1004,7 @@ int sasfit_cubature(size_t ndim,
                     cg = &cg_static;
                     cg->int_strategy=SG_FROLOV;
                     cg->dim = ndim;
-                    cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),16);
+                    cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),14);
                     cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
                     cg->w = ( double * ) malloc (  sizeof ( double ) );
                     cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);
@@ -1024,7 +1024,7 @@ int sasfit_cubature(size_t ndim,
                     sasfit_out("dim=%d, n=%d, k=%d, int_strategy:%d,%d\n",cg->dim, cg->n,cg->k,cg->int_strategy,sasfit_get_int_strategy());
                     fflush(stdout);
                 } else {
-                    k=GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),16);
+                    k=GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),14);
                     if (!(ndim==cg->dim &&
                         cg->k==k &&
                         cg->int_strategy==SG_FROLOV))
@@ -1037,7 +1037,7 @@ int sasfit_cubature(size_t ndim,
 
                         cg->int_strategy=SG_FROLOV;
                         cg->dim = ndim;
-                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),16);
+                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),14);
                         cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
                         cg->w = ( double * ) malloc (  sizeof ( double ) );
                         cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);

@@ -220,7 +220,7 @@ double *Frolov_2_15_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_15_basic.inc"
+//        #include "Frolov_2_15_basic.inc"
 	}
 	return x;
 }
@@ -235,7 +235,7 @@ double *Frolov_2_16_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_16_basic.inc"
+//        #include "Frolov_2_16_basic.inc"
 	}
 	return x;
 }
@@ -460,7 +460,7 @@ double *Frolov_3_15_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_15_basic.inc"
+//        #include "Frolov_3_15_basic.inc"
 	}
 	return x;
 }
@@ -475,7 +475,7 @@ double *Frolov_3_16_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_16_basic.inc"
+//        #include "Frolov_3_16_basic.inc"
 	}
 	return x;
 }
@@ -700,7 +700,7 @@ double *Frolov_4_15_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_15_basic.inc"
+//        #include "Frolov_4_15_basic.inc"
 	}
 	return x;
 }
@@ -715,7 +715,7 @@ double *Frolov_4_16_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_16_basic.inc"
+//        #include "Frolov_4_16_basic.inc"
 	}
 	return x;
 }
@@ -940,7 +940,7 @@ double *Frolov_5_15_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_15_basic.inc"
+//        #include "Frolov_5_15_basic.inc"
 	}
 	return x;
 }
@@ -955,7 +955,7 @@ double *Frolov_5_16_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_16_basic.inc"
+//        #include "Frolov_5_16_basic.inc"
 	}
 	return x;
 }
@@ -1180,7 +1180,7 @@ double *Frolov_6_15_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_15_basic.inc"
+//        #include "Frolov_6_15_basic.inc"
 	}
 	return x;
 }
@@ -1195,13 +1195,13 @@ double *Frolov_6_16_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_16_basic.inc"
+//        #include "Frolov_6_16_basic.inc"
 	}
 	return x;
 }
 
 double *Frolov(int dim, int level, double *w, int *npoints, int *status) {
-	if (dim<2||dim>6||level<1||level>16) {
+	if (dim<2||dim>6||level<1||level>14) {
         *status = 2;
         return NULL;
 	}
