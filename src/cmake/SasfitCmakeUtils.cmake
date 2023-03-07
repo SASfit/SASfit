@@ -38,6 +38,7 @@ cmake_minimum_required(VERSION 3.0)
 
 # replaced by file(GET_RUNTIME_DEPENDENCIES)
 include(GetPrerequisites)
+include(CMakePrintHelpers)
 
 # check for target architecture 64bit?
 set(SYSTEM_IS_64 FALSE)
@@ -69,6 +70,13 @@ endif()
 set(VERSION_TIMESTAMP_FORMAT "%y%m%d%H%M%S")
 set(APPVEYOR_API_URL "https://ci.appveyor.com/api/projects/SASfit/sasfit")
 
+# determine sasfit-root directory
+if(NOT DEFINED SASFIT_ROOT_DIR)
+	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}/../.." ABSOLUTE)
+endif()
+set(LIBRARY_OUTPUT_PATH ${SASFIT_ROOT_DIR}/lib)
+
 # defining some colors
 string(ASCII 27 ESC)
 set(colend  "${ESC}[m")
@@ -76,12 +84,10 @@ set(white   "${ESC}[37m")
 set(bold    "${ESC}[1m")
 set(green   "${ESC}[32m")
 
-# determine sasfit-root directory
-if(NOT DEFINED SASFIT_ROOT_DIR)
-	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
-	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}/../.." ABSOLUTE)
-endif()
-set(LIBRARY_OUTPUT_PATH ${SASFIT_ROOT_DIR}/lib)
+function(messageSection text)
+    message("")
+    message(STATUS "${bold}${white}${text}${colend}")
+endfunction()
 
 macro(dbg_cmake_vars)
     # some debug info, just in case ...
@@ -254,6 +260,12 @@ macro(sasfit_cmake_plugin)
 		else()
 			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_LIBRARIES})
 		endif()
+        if(FALSE) # CMAKE_HOST_APPLE
+            # seems to be needed on macOS
+            list(GET ${LIB_EXT}_LIBRARIES 0 LIB)
+            get_filename_component(LIB_DIR ${LIB} DIRECTORY)
+            target_link_directories(${PRJ_NAME} PUBLIC ${LIB_DIR})
+        endif()
 	endforeach(LIB_EXT)
 	# set some compiler switches
 	set_property(TARGET ${PRJ_NAME} PROPERTY COMPILE_DEFINITIONS
@@ -453,8 +465,7 @@ function(get_package_dir PCKG_NAME CURRENT_DIR)
     if(NOT EXISTS ${CURRENT_DIR} OR NOT DEFINED PLATFORM)
         return()
     endif()
-    message("")
-    message(STATUS "${bold}${white}Looking for ${PCKG_NAME} in '${CURRENT_DIR}'${colend}")
+    messageSection("Looking for ${PCKG_NAME} in '${CURRENT_DIR}'")
     get_filename_component(CURRENT_DIR "${CURRENT_DIR}" REALPATH)
     unset(SOURCE_DIR)
     set_package_source_dir(PCKG_SRC_DIR ${CURRENT_DIR})

@@ -137,6 +137,8 @@ AppDir:
     - libgcc-s1
     - libstdc++6
     - libc6
+    - libgsl27
+    - libfftw3-3
   files:
     include:
     - sasfit.vfs/**

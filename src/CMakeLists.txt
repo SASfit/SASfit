@@ -133,13 +133,12 @@ add_definitions(
  ########################
 
 # GSL
-find_package(GSL QUIET REQUIRED)
+messageSection("Looking for GSL:")
+find_package(GSL REQUIRED)
+cmake_print_variables(GSL_FOUND GSL_LIBRARIES)
 if(NOT GSL_FOUND)
-    add_subdirectory(gsl)
-    find_package(GSL REQUIRED)
+    return()
 endif()
-message(STATUS "GSL INCLUDES:  ${GSL_INCLUDE_DIRS}")
-message(STATUS "GSL LIBRARIES: ${GSL_LIBRARIES}")
 
 # TCL
 find_package(TCL QUIET REQUIRED)
@@ -152,13 +151,12 @@ message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
 message(STATUS "TCL SH: ${TCL_SH}")
 
 # FFTW
-find_package(FFTW QUIET REQUIRED)
-if(NOT FFTW_FOUND)
-    add_subdirectory(fftw)
-    find_package(FFTW REQUIRED)
+messageSection("Looking for FFTW3:")
+find_package(FFTW3 QUIET REQUIRED)
+cmake_print_variables(FFTW3_FOUND FFTW3_INCLUDE_DIRS FFTW3_fftw3_LIBRARY)
+if(NOT FFTW3_FOUND)
+    return()
 endif()
-message(STATUS "FFTW INCLUDES:  ${FFTW_INCLUDE_DIRS}")
-message(STATUS "FFTW LIBRARIES: ${FFTW_LIBRARIES}")
 
 # sundials
 find_package(sundials QUIET REQUIRED)
@@ -220,7 +218,7 @@ include_directories(
     ${SF_INC_DIRS}
     ${TCL_INCLUDE_DIRS}
     ${GSL_INCLUDE_DIRS}
-    ${FFTW_INCLUDE_DIRS}
+    ${FFTW3_INCLUDE_DIRS}
     ${sundials_INCLUDE_DIRS}
 )
 
@@ -230,11 +228,16 @@ add_library(sasfit SHARED
 
 target_link_libraries(sasfit
     ${TCL_LIBRARIES}
-    ${GSL_STATIC_LIBRARIES}
-    ${FFTW_LIBRARIES}
+    ${GSL_LIBRARIES}
+    ${FFTW3_fftw3_LIBRARY}
     ${sundials_LIBRARIES}
 #    ${OpenMP_LIB}
 )
+if(FALSE) # CMAKE_HOST_APPLE
+    # seems to be needed on macOS
+    get_filename_component(GSL_LIBRARY_DIR ${GSL_LIBRARY} DIRECTORY)
+    target_link_directories(sasfit PUBLIC ${GSL_LIBRARY_DIR})
+endif()
 
 # configure build flags, assumes gcc-style flags on all platforms
 #sasfit_build_props_unix(sasfit "-save-temps")
@@ -374,6 +377,7 @@ if(CREATE_BINARY)
                     -D CMAKE_PROJECT_NAME:STRING=${CMAKE_PROJECT_NAME}
                     -D SASFIT_PCKG_DIR_POSTFIX:STRING=${SASFIT_PCKG_DIR_POSTFIX}
                     -D SASFIT_LIST_FILE:FILEPATH=${SASFIT_LIST_FILE}
+                    -D SASFIT_OUTPUT_PATH:FILEPATH=${sasfit_output_path}
                     -D CM_GEN:STRING=${CMAKE_GENERATOR}
                     -D WIN32=${WIN32}
                     -D SASFIT_VERSION:STRING=${SASFIT_VERSION}
