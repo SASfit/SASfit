@@ -40,7 +40,7 @@ double *Frolov_2_3_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_3_basic.inc"
+        // #include "Frolov_2_3_basic.inc"
 	}
 	return x;
 }
@@ -55,7 +55,7 @@ double *Frolov_2_4_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_4_basic.inc"
+        // #include "Frolov_2_4_basic.inc"
 	}
 	return x;
 }
@@ -70,7 +70,7 @@ double *Frolov_2_5_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_5_basic.inc"
+        // #include "Frolov_2_5_basic.inc"
 	}
 	return x;
 }
@@ -85,7 +85,7 @@ double *Frolov_2_6_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_6_basic.inc"
+        // #include "Frolov_2_6_basic.inc"
 	}
 	return x;
 }
@@ -100,7 +100,7 @@ double *Frolov_2_7_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_7_basic.inc"
+        // #include "Frolov_2_7_basic.inc"
 	}
 	return x;
 }
@@ -115,7 +115,7 @@ double *Frolov_2_8_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_8_basic.inc"
+        // #include "Frolov_2_8_basic.inc"
 	}
 	return x;
 }
@@ -130,7 +130,7 @@ double *Frolov_2_9_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_9_basic.inc"
+        // #include "Frolov_2_9_basic.inc"
 	}
 	return x;
 }
@@ -145,7 +145,7 @@ double *Frolov_2_10_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_10_basic.inc"
+        // #include "Frolov_2_10_basic.inc"
 	}
 	return x;
 }
@@ -160,7 +160,7 @@ double *Frolov_2_11_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_11_basic.inc"
+        // #include "Frolov_2_11_basic.inc"
 	}
 	return x;
 }
@@ -175,7 +175,7 @@ double *Frolov_2_12_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_12_basic.inc"
+        // #include "Frolov_2_12_basic.inc"
 	}
 	return x;
 }
@@ -190,7 +190,7 @@ double *Frolov_2_13_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_13_basic.inc"
+        // #include "Frolov_2_13_basic.inc"
 	}
 	return x;
 }
@@ -205,7 +205,7 @@ double *Frolov_2_14_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_2_14_basic.inc"
+        // #include "Frolov_2_14_basic.inc"
 	}
 	return x;
 }
@@ -250,7 +250,7 @@ double *Frolov_3_1_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_1_basic.inc"
+        // #include "Frolov_3_1_basic.inc"
 	}
 	return x;
 }
@@ -265,7 +265,7 @@ double *Frolov_3_2_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_2_basic.inc"
+        // #include "Frolov_3_2_basic.inc"
 	}
 	return x;
 }
@@ -280,7 +280,7 @@ double *Frolov_3_3_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_3_basic.inc"
+        // #include "Frolov_3_3_basic.inc"
 	}
 	return x;
 }
@@ -295,7 +295,7 @@ double *Frolov_3_4_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_4_basic.inc"
+        // #include "Frolov_3_4_basic.inc"
 	}
 	return x;
 }
@@ -310,7 +310,7 @@ double *Frolov_3_5_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_5_basic.inc"
+        // #include "Frolov_3_5_basic.inc"
 	}
 	return x;
 }
@@ -325,7 +325,7 @@ double *Frolov_3_6_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_6_basic.inc"
+        // #include "Frolov_3_6_basic.inc"
 	}
 	return x;
 }
@@ -340,7 +340,7 @@ double *Frolov_3_7_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_7_basic.inc"
+        // #include "Frolov_3_7_basic.inc"
 	}
 	return x;
 }
@@ -355,7 +355,7 @@ double *Frolov_3_8_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_8_basic.inc"
+        // #include "Frolov_3_8_basic.inc"
 	}
 	return x;
 }
@@ -370,7 +370,7 @@ double *Frolov_3_9_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_9_basic.inc"
+        // #include "Frolov_3_9_basic.inc"
 	}
 	return x;
 }
@@ -385,7 +385,7 @@ double *Frolov_3_10_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_10_basic.inc"
+        // #include "Frolov_3_10_basic.inc"
 	}
 	return x;
 }
@@ -400,7 +400,7 @@ double *Frolov_3_11_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_11_basic.inc"
+        // #include "Frolov_3_11_basic.inc"
 	}
 	return x;
 }
@@ -415,7 +415,7 @@ double *Frolov_3_12_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_12_basic.inc"
+        // #include "Frolov_3_12_basic.inc"
 	}
 	return x;
 }
@@ -430,7 +430,7 @@ double *Frolov_3_13_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_13_basic.inc"
+        // #include "Frolov_3_13_basic.inc"
 	}
 	return x;
 }
@@ -445,7 +445,7 @@ double *Frolov_3_14_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_3_14_basic.inc"
+        // #include "Frolov_3_14_basic.inc"
 	}
 	return x;
 }
@@ -490,7 +490,7 @@ double *Frolov_4_1_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_1_basic.inc"
+        // #include "Frolov_4_1_basic.inc"
 	}
 	return x;
 }
@@ -505,7 +505,7 @@ double *Frolov_4_2_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_2_basic.inc"
+        // #include "Frolov_4_2_basic.inc"
 	}
 	return x;
 }
@@ -520,7 +520,7 @@ double *Frolov_4_3_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_3_basic.inc"
+        // #include "Frolov_4_3_basic.inc"
 	}
 	return x;
 }
@@ -535,7 +535,7 @@ double *Frolov_4_4_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_4_basic.inc"
+        // #include "Frolov_4_4_basic.inc"
 	}
 	return x;
 }
@@ -550,7 +550,7 @@ double *Frolov_4_5_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_5_basic.inc"
+        // #include "Frolov_4_5_basic.inc"
 	}
 	return x;
 }
@@ -565,7 +565,7 @@ double *Frolov_4_6_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_6_basic.inc"
+        // #include "Frolov_4_6_basic.inc"
 	}
 	return x;
 }
@@ -580,7 +580,7 @@ double *Frolov_4_7_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_7_basic.inc"
+        // #include "Frolov_4_7_basic.inc"
 	}
 	return x;
 }
@@ -595,7 +595,7 @@ double *Frolov_4_8_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_8_basic.inc"
+        // #include "Frolov_4_8_basic.inc"
 	}
 	return x;
 }
@@ -610,7 +610,7 @@ double *Frolov_4_9_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_9_basic.inc"
+        // #include "Frolov_4_9_basic.inc"
 	}
 	return x;
 }
@@ -625,7 +625,7 @@ double *Frolov_4_10_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_10_basic.inc"
+        // #include "Frolov_4_10_basic.inc"
 	}
 	return x;
 }
@@ -640,7 +640,7 @@ double *Frolov_4_11_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_11_basic.inc"
+        // #include "Frolov_4_11_basic.inc"
 	}
 	return x;
 }
@@ -655,7 +655,7 @@ double *Frolov_4_12_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_12_basic.inc"
+        // #include "Frolov_4_12_basic.inc"
 	}
 	return x;
 }
@@ -670,7 +670,7 @@ double *Frolov_4_13_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_13_basic.inc"
+        // #include "Frolov_4_13_basic.inc"
 	}
 	return x;
 }
@@ -685,7 +685,7 @@ double *Frolov_4_14_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_4_14_basic.inc"
+        // #include "Frolov_4_14_basic.inc"
 	}
 	return x;
 }
@@ -730,7 +730,7 @@ double *Frolov_5_1_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_1_basic.inc"
+        // #include "Frolov_5_1_basic.inc"
 	}
 	return x;
 }
@@ -745,7 +745,7 @@ double *Frolov_5_2_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_2_basic.inc"
+        // #include "Frolov_5_2_basic.inc"
 	}
 	return x;
 }
@@ -760,7 +760,7 @@ double *Frolov_5_3_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_3_basic.inc"
+        // #include "Frolov_5_3_basic.inc"
 	}
 	return x;
 }
@@ -775,7 +775,7 @@ double *Frolov_5_4_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_4_basic.inc"
+        // #include "Frolov_5_4_basic.inc"
 	}
 	return x;
 }
@@ -790,7 +790,7 @@ double *Frolov_5_5_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_5_basic.inc"
+        // #include "Frolov_5_5_basic.inc"
 	}
 	return x;
 }
@@ -805,7 +805,7 @@ double *Frolov_5_6_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_6_basic.inc"
+        // #include "Frolov_5_6_basic.inc"
 	}
 	return x;
 }
@@ -820,7 +820,7 @@ double *Frolov_5_7_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_7_basic.inc"
+        // #include "Frolov_5_7_basic.inc"
 	}
 	return x;
 }
@@ -835,7 +835,7 @@ double *Frolov_5_8_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_8_basic.inc"
+        // #include "Frolov_5_8_basic.inc"
 	}
 	return x;
 }
@@ -850,7 +850,7 @@ double *Frolov_5_9_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_9_basic.inc"
+        // #include "Frolov_5_9_basic.inc"
 	}
 	return x;
 }
@@ -865,7 +865,7 @@ double *Frolov_5_10_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_10_basic.inc"
+        // #include "Frolov_5_10_basic.inc"
 	}
 	return x;
 }
@@ -880,7 +880,7 @@ double *Frolov_5_11_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_11_basic.inc"
+        // #include "Frolov_5_11_basic.inc"
 	}
 	return x;
 }
@@ -895,7 +895,7 @@ double *Frolov_5_12_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_12_basic.inc"
+        // #include "Frolov_5_12_basic.inc"
 	}
 	return x;
 }
@@ -910,7 +910,7 @@ double *Frolov_5_13_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_13_basic.inc"
+        // #include "Frolov_5_13_basic.inc"
 	}
 	return x;
 }
@@ -925,7 +925,7 @@ double *Frolov_5_14_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_5_14_basic.inc"
+        // #include "Frolov_5_14_basic.inc"
 	}
 	return x;
 }
@@ -970,7 +970,7 @@ double *Frolov_6_1_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_1_basic.inc"
+        // #include "Frolov_6_1_basic.inc"
 	}
 	return x;
 }
@@ -985,7 +985,7 @@ double *Frolov_6_2_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_2_basic.inc"
+        // #include "Frolov_6_2_basic.inc"
 	}
 	return x;
 }
@@ -1000,7 +1000,7 @@ double *Frolov_6_3_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_3_basic.inc"
+        // #include "Frolov_6_3_basic.inc"
 	}
 	return x;
 }
@@ -1015,7 +1015,7 @@ double *Frolov_6_4_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_4_basic.inc"
+        // #include "Frolov_6_4_basic.inc"
 	}
 	return x;
 }
@@ -1030,7 +1030,7 @@ double *Frolov_6_5_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_5_basic.inc"
+        // #include "Frolov_6_5_basic.inc"
 	}
 	return x;
 }
@@ -1045,7 +1045,7 @@ double *Frolov_6_6_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_6_basic.inc"
+        // #include "Frolov_6_6_basic.inc"
 	}
 	return x;
 }
@@ -1060,7 +1060,7 @@ double *Frolov_6_7_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_7_basic.inc"
+        // #include "Frolov_6_7_basic.inc"
 	}
 	return x;
 }
@@ -1075,7 +1075,7 @@ double *Frolov_6_8_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_8_basic.inc"
+        // #include "Frolov_6_8_basic.inc"
 	}
 	return x;
 }
@@ -1090,7 +1090,7 @@ double *Frolov_6_9_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_9_basic.inc"
+        // #include "Frolov_6_9_basic.inc"
 	}
 	return x;
 }
@@ -1105,7 +1105,7 @@ double *Frolov_6_10_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_10_basic.inc"
+        // #include "Frolov_6_10_basic.inc"
 	}
 	return x;
 }
@@ -1120,7 +1120,7 @@ double *Frolov_6_11_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_11_basic.inc"
+        // #include "Frolov_6_11_basic.inc"
 	}
 	return x;
 }
@@ -1135,7 +1135,7 @@ double *Frolov_6_12_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_12_basic.inc"
+        // #include "Frolov_6_12_basic.inc"
 	}
 	return x;
 }
@@ -1150,7 +1150,7 @@ double *Frolov_6_13_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_13_basic.inc"
+        // #include "Frolov_6_13_basic.inc"
 	}
 	return x;
 }
@@ -1165,7 +1165,7 @@ double *Frolov_6_14_basic ( double *w, int *npoints, int *status) {
         return NULL;
 	} else {
 	    *status = 0;
-        #include "Frolov_6_14_basic.inc"
+        // #include "Frolov_6_14_basic.inc"
 	}
 	return x;
 }
