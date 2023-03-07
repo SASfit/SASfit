@@ -7,7 +7,7 @@ echo
 NUM_LOGICAL_CORES=1
 CMAKE_GENERATOR='Unix Makefiles'
 
-scriptdir="$(realpath "$(dirname "$0")")"
+scriptdir="$(cd "$(dirname "$0")" && pwd -P)"
 findCmdInPath="$scriptdir/../scripts/findCmdInPath.sh"
 
 if uname -s | grep -qi '^mingw64'; # Windows
