@@ -330,6 +330,8 @@ if(CREATE_BINARY)
 
     cmake_print_variables(CMAKE_BINARY_DIR)
     if(IS_LINUX)
+        # cleanup local linux build from $HOME with
+        # (cd /mnt/hgfs/shared/sasfit-code && rm -Rf AppDir appimage-build build && cd saskit && ./saskit_linux64 gen/buildkit cleanupall && rm -f saskit_linux64)
         # add SASFIT_BIN_FILE_LIST to the included files in AppImageBuilder config
         string(JOIN "\n    - " SASFIT_BIN_FILE_LIST_FORMATTED ${SASFIT_BIN_FILE_LIST})
         set(SASFIT_APPIMAGE_APPDIR "${SASFIT_ROOT_DIR}/AppDir") # default dir by appimage-builder
