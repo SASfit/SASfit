@@ -84,6 +84,7 @@ AppDir:
         </screenshot>
       </screenshots>
       <categories><category>Science</category></categories>
+      <content_rating type="oars-1.1"/>
     </component>
     EOF
     appstreamcli validate "$METAINFO_PATH"
@@ -121,21 +122,23 @@ AppDir:
     - amd64
     allow_unauthenticated: false
     sources:
-    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal main restricted
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ jammy main restricted
       key_url: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920D1991BC93C
-    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted
-    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal universe
-    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-updates universe
-    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal multiverse
-    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-updates multiverse
-    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
-    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security main restricted
-    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security universe
-    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security multiverse
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ jammy-updates main restricted
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ jammy universe
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ jammy-updates universe
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ jammy multiverse
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ jammy-updates multiverse
+    - sourceline: deb http://us.archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse
+    - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted
+    - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security universe
+    - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security multiverse
     include:
     - libgcc-s1
     - libstdc++6
     - libc6
+    - libgsl27
+    - libfftw3-3
   files:
     include:
     - sasfit.vfs/**

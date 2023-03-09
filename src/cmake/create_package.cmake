@@ -57,6 +57,9 @@ message(STATUS "Created directory '${SASFIT_PCKG_DIR}'.")
 # get the list of filenames to copy
 file(READ ${SASFIT_LIST_FILE} SASFIT_FILE_LIST)
 
+string(REGEX MATCH "[^;]*${SASFIT_OUTPUT_PATH}" LIB_SASFIT "${SASFIT_FILE_LIST}")
+get_dependent_libs(SASFIT_FILE_LIST ${SASFIT_ROOT_DIR}/${LIB_SASFIT})
+
 # copy each file from the list to its destination
 foreach(REL_FILENAME ${SASFIT_FILE_LIST})
 #    message("'${REL_FILENAME}'")

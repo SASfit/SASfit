@@ -27,7 +27,7 @@ image:
   # Linux first since its faster and there is more time for source snapshot upload to zenodo later
   - Ubuntu2004
   - Visual Studio 2019
-  - macos
+  - macos-bigsur
 
 environment:
   BT_API:
@@ -74,7 +74,7 @@ for:
 -
   matrix:
     only:
-      - image: macos
+      - image: macos-bigsur
   environment:
     CACHEID: macos64
   install:
@@ -99,6 +99,7 @@ for:
   environment:
     CACHEID: linux64
   install:
+<<<<<<< HEAD
     # install ssh deploy key
     - echo "${SF_DEPLOY_KEY}" | tr " " "\n" >> $HOME/.ssh/id_rsa
     # cleaning up unused package sources first
@@ -118,6 +119,9 @@ for:
     #- docker pull appimagecrafters/tests-env:ubuntu-bionic
     #- docker pull appimagecrafters/tests-env:centos-7
     - for img in $(awk '/^[^#]*appimagecrafters/{print $2}' src/AppImageBuilder.template.yml); do docker pull "$img"; done
+=======
+    - sh src/appveyor/0_install_linux.sh
+>>>>>>> cb515dedcc7bb78fd4dab1fb5ca9d2895390588c
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage

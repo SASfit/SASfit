@@ -49,11 +49,11 @@ message(STATUS "Using ${SASKIT_FILE}")
 if(NOT WIN32)
     execute_process(COMMAND chmod u+x,g+x,o+x ${SASKIT_FILE})
 endif()
-file(REMOVE ${SASFIT_EXEC})
+file(REMOVE ${SASFIT_EXEC} ${SASKIT_FILE}_rt)
 configure_file(${SASKIT_FILE} ${SASKIT_FILE}_rt COPYONLY)
 execute_process(COMMAND ${SASKIT_FILE} "${SASKIT_PATH}/sdx.kit" wrap ${SASFIT_EXEC_FILENAME} -runtime ${SASKIT_FILE}_rt
                 WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
-                TIMEOUT 80.0
+                TIMEOUT 100.0
                 RESULT_VARIABLE SASKIT_RES
                 OUTPUT_VARIABLE SASKIT_OUT
                 ERROR_VARIABLE SASKIT_OUT

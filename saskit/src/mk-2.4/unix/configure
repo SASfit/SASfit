@@ -4266,12 +4266,14 @@ _ACEOF
       # speed up the sed processing (if there are no `@' at all, there
       # is no need to browse any of the substitutions).
       # These are the two extra sed commands mentioned above.
-      (echo ':t
-  /@[a-zA-Z_][a-zA-Z_0-9]*@/!b' && cat $tmp/subs.frag) >$tmp/subs-$ac_sed_frag.sed
+      frag="$(cat $tmp/subs.frag)"
+      echo ':t
+  /@[a-zA-Z_][a-zA-Z_0-9]*@/!b' > $tmp/subs-$ac_sed_frag.sed
+      [ -z "$frag" ] || cat $tmp/subs.frag >> $tmp/subs-$ac_sed_frag.sed
       if test -z "$ac_sed_cmds"; then
-	ac_sed_cmds="sed -f $tmp/subs-$ac_sed_frag.sed"
+        ac_sed_cmds="sed -f $tmp/subs-$ac_sed_frag.sed"
       else
-	ac_sed_cmds="$ac_sed_cmds | sed -f $tmp/subs-$ac_sed_frag.sed"
+        ac_sed_cmds="$ac_sed_cmds | sed -f $tmp/subs-$ac_sed_frag.sed"
       fi
       ac_sed_frag=`expr $ac_sed_frag + 1`
       ac_beg=$ac_end
