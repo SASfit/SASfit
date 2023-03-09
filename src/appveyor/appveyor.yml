@@ -25,9 +25,9 @@ clone_script:
 
 image:
   # Linux first since its faster and there is more time for source snapshot upload to zenodo later
-  #- Ubuntu2004
+  - Ubuntu2004
   - Visual Studio 2019
-  #- macos-bigsur
+  - macos-bigsur
 
 environment:
   BT_API:

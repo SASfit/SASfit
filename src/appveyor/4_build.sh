@@ -21,7 +21,6 @@ then
             | tr -d '[:space:]' )"
     fi
     CMAKE_GENERATOR='MSYS Makefiles'
-    export LDFLAGS="-fuse-ld=lld"
 else # macOS or Linux
     # determine number of computing cores
     if [ "$(uname -s)" = "Darwin" ]; then # on macOS
