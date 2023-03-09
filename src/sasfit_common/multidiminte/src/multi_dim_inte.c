@@ -995,9 +995,9 @@ int sasfit_cubature(size_t ndim,
                 *result *= volume_ndim;
                 done=1;
                 break;
-        case SG_FROLOV: //gqu  [0,1]
-                if (ndim<2 || ndim>6) {
-                    sasfit_err("Frolov sparse grids are only available for dimensions 2 to 6 in SASfit so far\n");
+        case SG_FROLOV:
+                if (ndim<2 || ndim>10) {
+                    sasfit_err("Frolov sparse grids are only available for dimensions 2 to 10 in SASfit so far\n");
                     break;
                 }
                 if (cg == NULL) {
@@ -1007,6 +1007,7 @@ int sasfit_cubature(size_t ndim,
                     cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),14);
                     cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
                     cg->w = ( double * ) malloc (  sizeof ( double ) );
+
                     cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);
                     sasfit_out("Frolov status:%d",i);
                     fflush(stdout);

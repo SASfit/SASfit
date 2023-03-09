@@ -19,5 +19,6 @@ brew update
 # already installed: git, cmake
 brew install gcc # for xquartz libstc++ compat.
 brew install --cask xquartz
+brew install zlib
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:

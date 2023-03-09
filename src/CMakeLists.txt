@@ -174,6 +174,9 @@ add_definitions(
     -DUSE_TK_STUBS
 )
 
+# zlib
+find_package(ZLIB QUIET REQUIRED)
+
 # openMP
 #find_package(OpenMP QUIET)
 
@@ -222,6 +225,7 @@ include_directories(
     ${GSL_INCLUDE_DIRS}
     ${FFTW_INCLUDE_DIRS}
     ${sundials_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
 )
 
 add_library(sasfit SHARED
@@ -233,6 +237,7 @@ target_link_libraries(sasfit
     ${GSL_STATIC_LIBRARIES}
     ${FFTW_LIBRARIES}
     ${sundials_LIBRARIES}
+	${ZLIB_LIBRARIES}
 #    ${OpenMP_LIB}
 )
 
