@@ -17,7 +17,7 @@ set -x
 # -> requiring explicit update: https://github.com/Homebrew/discussions/discussions/691
 brew update
 # already installed: git, cmake
-brew install gsl fftw gcc # GCC for xquartz libstc++ compat.
+brew install cmake gcc g++ gsl fftw # GCC for xquartz libstc++ compat.
 brew install --cask xquartz
 
 # vim: set ts=4 sw=4 sts=4 tw=0 et:
