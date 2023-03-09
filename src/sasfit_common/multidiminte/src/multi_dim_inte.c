@@ -1037,7 +1037,7 @@ int sasfit_cubature(size_t ndim,
 
                         cg->int_strategy=SG_FROLOV;
                         cg->dim = ndim;
-                        cg->k = GSL_MIN(GSL_MAX(2,sasfit_get_sg_level()),14);
+                        cg->k = GSL_MIN(GSL_MAX(1,sasfit_get_sg_level()),14);
                         cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
                         cg->w = ( double * ) malloc (  sizeof ( double ) );
                         cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);
