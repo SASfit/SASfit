@@ -33,8 +33,14 @@
 #define DELTA_B	param->p[1]
 #define DELTA_C	param->p[2]
 #define T	param->p[3]
+#ifdef ETA_C
+   #undef ETA_C
+#endif // ETA_C
 #define ETA_C	param->p[4]
 #define ETA_SH_DRY	param->p[5]
+#ifdef ETA_SOL
+   #undef ETA_SOL
+#endif // ETA_SOL
 #define ETA_SOL	param->p[6]
 #define PHI	param->p[7]
 #define V_POL_AP	param->p[8]
@@ -70,7 +76,7 @@ scalar sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2_core(scalar y, sasfit_param *
 	}
 
 	f_sh  = 4./3.*M_PI*(A+T)*(b+T)*(c+T)*(eta_sh-ETA_SOL);
-	if (u_sh != 0.0) 
+	if (u_sh != 0.0)
 	{
 		f_sh  = f_sh * 3*(sin(u_sh)-u_sh*cos(u_sh))/pow(u_sh,3);
 	}
@@ -112,7 +118,7 @@ scalar sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2(scalar q, sasfit_param * para
 
 	param->p[MAXPAR-1] = q;	  // Q
 	param->p[MAXPAR-2] = 2.0; // pow
-	
+
 	b = A + DELTA_B;
 	c = b + DELTA_C;
 	param->p[MAXPAR-4] = b;
@@ -126,7 +132,7 @@ scalar sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2(scalar q, sasfit_param * para
 	n = PHI/((1.0+V_POL_AP)*4./3.*M_PI*A*b*c);
 
 	res = sasfit_integrate(0.0, 1.0, sasfit_ff_triax_ellip_shell_sq_baba_ahmed_2_core_x, param);
-	
+
 	sasfit_init_param(&subParam);
 	subParam.p[0] = ALPHA * pow(A*b*c, 1.0/3.0); // R_ref
 	subParam.p[1] = ALPHA;

@@ -1009,7 +1009,7 @@ int sasfit_cubature(size_t ndim,
                     cg->w = ( double * ) malloc (  sizeof ( double ) );
 
                     cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);
-                    sasfit_out("Frolov status:%d",i);
+                    sasfit_out("Frolov status:%d\n",i);
                     fflush(stdout);
                     if (cg->x == NULL) {
                         sasfit_err("could not allocate memory for Frolov sparse grid (k*dim)-points=%d, weight:%lf\n",ndim*cg->k,cg->w[0]);
@@ -1042,7 +1042,7 @@ int sasfit_cubature(size_t ndim,
                         cg->x_ab = ( double * ) malloc ( cg->dim * sizeof ( double ) );
                         cg->w = ( double * ) malloc (  sizeof ( double ) );
                         cg->x=Frolov(cg->dim,cg->k,&cg->w[0],&cg->n,&i);
-                        sasfit_out("Frolov status:%d",i);
+                        sasfit_out("Frolov status:%d\n",i);
                         fflush(stdout);
                         if (cg->x == NULL) {
                             sasfit_err("could not allocate memory for Frolov sparse grid (k*dim)-points=%d, weight:%lf\n",ndim*cg->k,cg->w[0]);

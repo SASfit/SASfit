@@ -105,7 +105,7 @@ typedef enum {
 
 int check_interrupt4calc(Tcl_Interp *interp, bool *error) {
     int interupt_signal;
-    char *sBuffer;
+    const char *sBuffer;
 
     sBuffer = Tcl_GetVar(interp,"::SASfitinterrupt",TCL_GLOBAL_ONLY);
     sscanf(sBuffer,"%d",&interupt_signal);

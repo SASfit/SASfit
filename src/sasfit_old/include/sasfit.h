@@ -49,28 +49,12 @@
 
 /* #define PI M_PI */
 #ifndef PI
-#define PI 3.1415926536
+#define PI 3.14159265358979323846
 #endif
 #define MAX_DATA_POINTS 5000
 #define MAX_SIZE_DISTRIBUTIONS 16
 #define INTEGRAL_PRECISION 1e-6
 #define NCYLINT 500
-
-/*
-struct Gparam {
-	sasfit_analytpar *GlobalAP;
-    sasfit_commonpar GCP;
-    Tcl_Interp *interp;
-	int    ma;
-	int    mfit,*ndata;
-	int    max_SD;
-	int    error_type;
-	float  **h, **Ih, **DIh, **Ith, **res;
-	float  *a;
-    int    *lista;
-	bool   error;
-};
-*/
 
 struct extrapolPar {
    float a[MAXPAR];

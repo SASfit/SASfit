@@ -222,9 +222,8 @@ int cp_array_diff_N_Vector_to_N_Vector(double *src1,  N_Vector src2, N_Vector ta
     return GSL_SUCCESS;
 }
 
-int cp_array_diff_to_gsl_vector(double *src1, gsl_vector *src2, gsl_vector *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+int cp_array_diff_to_gsl_vector(double *src1, const gsl_vector *src2, gsl_vector *target, int dimsrc) {
+    int i;
     if (dimsrc != target->size) return GSL_FAILURE;
     for (i=0;i<dimsrc;i++)  {
             gsl_vector_set(target,i,src1[i]-gsl_vector_get(src2,i));
@@ -233,8 +232,7 @@ int cp_array_diff_to_gsl_vector(double *src1, gsl_vector *src2, gsl_vector *targ
 }
 
 int cp_array_diff_array_to_gsl_vector(double *src1, double *src2,  gsl_vector *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+    int i;
     if (dimsrc != target->size) return GSL_FAILURE;
     for (i=0;i<dimsrc;i++)  {
             gsl_vector_set(target,i,src1[i]-src2[i]);
@@ -243,8 +241,7 @@ int cp_array_diff_array_to_gsl_vector(double *src1, double *src2,  gsl_vector *t
 }
 
 int cp_array_diff_array_to_array(double *src1, double *src2,  double *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+    int i;
     for (i=0;i<dimsrc;i++)  {
             target[i]=src1[i]-src2[i];
     }
@@ -252,8 +249,7 @@ int cp_array_diff_array_to_array(double *src1, double *src2,  double *target, in
 }
 
 int cp_array_to_gsl_vector(double *src, gsl_vector *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+    int i;
     if (dimsrc != target->size) return GSL_FAILURE;
     for (i=0;i<dimsrc;i++)  {
             gsl_vector_set(target,i,src[i]);
@@ -269,7 +265,7 @@ int cp_array_to_array(double *src, double *target, int dim) {
     return GSL_SUCCESS;
 }
 
-int OZ_f(gsl_vector * x, void *OZd, gsl_vector * fres) {
+int OZ_f(const gsl_vector * x, void *OZd, gsl_vector * fres) {
     double res;
     sasfit_oz_data *OZdata;
     OZdata = (sasfit_oz_data *) OZd;

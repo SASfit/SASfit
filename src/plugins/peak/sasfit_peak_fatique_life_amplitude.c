@@ -18,19 +18,25 @@
 #define GAMMA	param->p[4]
 #define BACKGR	param->p[5]
 
+scalar peak_fatique_life_area(scalar x, void *pam) {
+    sasfit_param *param;
+    param = (sasfit_param *) pam;
+    return sasfit_peak_fatique_life_area(x,param);
+}
+
 scalar fatique_mode(sasfit_param * param) {
     scalar alpha,a1,a2,a3,a4,a5,a6, mode;
     scalar t1,t2,t6,t12,t16,t19,t25;
-    
+
     sasfit_param tmpparam;
     scalar mean, variance, Xmin, Xmax;
     int status;
     int iter = 0, max_iter = 100;
-    const gsl_min_fminimizer_type *T;    
+    const gsl_min_fminimizer_type *T;
     gsl_min_fminimizer *s;
     gsl_function F;
     alpha=GAMMA;
-    
+
     t1 = gsl_pow_2(GAMMA);
     t2 = t1 * t1;
     t6 = t2 * t1;
@@ -49,10 +55,10 @@ scalar fatique_mode(sasfit_param * param) {
     } else {
         sasfit_out("a1 <0: a1:%lg\n",a1);
     }
-    
+
     gsl_set_error_handler_off();
-    F.function = &sasfit_peak_fatique_life_area;
-    
+    F.function = &peak_fatique_life_area;
+
     tmpparam.p[0] = -1.0;
     tmpparam.p[1] = 0.0;
     tmpparam.p[2] = 0.0;
@@ -62,7 +68,7 @@ scalar fatique_mode(sasfit_param * param) {
     F.params = &tmpparam;
 
     gsl_set_error_handler_off();
-    
+
     T = gsl_min_fminimizer_brent;
 //    T = gsl_min_fminimizer_quad_golden;
     s = gsl_min_fminimizer_alloc (T);
@@ -81,24 +87,24 @@ scalar fatique_mode(sasfit_param * param) {
       Xmin = gsl_min_fminimizer_x_lower (s);
       Xmax = gsl_min_fminimizer_x_upper (s);
 
-      status 
+      status
         = gsl_min_test_interval (Xmin, Xmax, 1e-6*variance, 0.0);
 //      sasfit_out("iter: %d mode:%lf\n",iter, mode);
 
     } while (status == GSL_CONTINUE && iter < max_iter);
 
     gsl_min_fminimizer_free (s);
-    
+
     if (status == GSL_SUCCESS) return mode;
     sasfit_out("could not find mode for fartique life distribution\n");
-    
 
- /*   
+
+ /*
 
     a3 = (4 - 4*pow(alpha,2) + (Complex(0,2)*(Complex(0,1) + Sqrt(3))*(4 + 7*Power(alpha,2) + Power(alpha,4)))/
-         Power(-8 + 6*Power(alpha,2) - (21*Power(alpha,4))/2. - Power(alpha,6) + 
-           (3*Sqrt(3)*Sqrt(-(Power(alpha,2)*(64 + 64*Power(alpha,2) + 92*Power(alpha,4) + 9*Power(alpha,6)))))/2.,0.3333333333333333) - 
-        Power(2,0.6666666666666666)*(1 + Complex(0,1)*Sqrt(3))*Power(-16 + 12*Power(alpha,2) - 21*Power(alpha,4) - 2*Power(alpha,6) + 
+         Power(-8 + 6*Power(alpha,2) - (21*Power(alpha,4))/2. - Power(alpha,6) +
+           (3*Sqrt(3)*Sqrt(-(Power(alpha,2)*(64 + 64*Power(alpha,2) + 92*Power(alpha,4) + 9*Power(alpha,6)))))/2.,0.3333333333333333) -
+        Power(2,0.6666666666666666)*(1 + Complex(0,1)*Sqrt(3))*Power(-16 + 12*Power(alpha,2) - 21*Power(alpha,4) - 2*Power(alpha,6) +
            3*Sqrt(3)*Sqrt(-(Power(alpha,2)*(64 + 64*Power(alpha,2) + 92*Power(alpha,4) + 9*Power(alpha,6)))),0.3333333333333333))/12.;
     if (mode <=0 && a3>0)
 */
@@ -121,7 +127,7 @@ scalar sasfit_peak_fatique_life_amplitude(scalar x, sasfit_param * param)
     AMPLITUDE = 1;
     mode=fatique_mode(param)*BETA+X0;
 	res = tmpAmpl*sasfit_peak_fatique_life_area(x,param)/sasfit_peak_fatique_life_area(mode,param)+tmpBackgr;
-    
+
     BACKGR=tmpBackgr;
     AMPLITUDE=tmpAmpl;
     return res;

@@ -1208,11 +1208,12 @@ double *Frolov(int dim, int level, double *w, int *npoints, int *status) {
     char path[256];
     char filename[256];
     char line[1024];
-    char *res;
+    const char *res;
 	gzFile gzfp;
 	int i, j, ndim;
 	double val, *data;
 	char *poi = NULL;
+	Tcl_Interp *interp;
 	int nc;
 
 	*status = 0;
@@ -1220,13 +1221,16 @@ double *Frolov(int dim, int level, double *w, int *npoints, int *status) {
         *status = 2;
         return NULL;
 	}
-	res = getcwd(path, sizeof(path));
-    if (res) {
-        sasfit_err("The current working directory is: %s\n", path);
+//	res = getcwd(path, sizeof(path));
+	interp = sasfit_env_get_interp();
+	res = Tcl_GetVar(interp,"::sasfit_basedir",TCL_GLOBAL_ONLY);
+    sasfit_out("The current working directory is: %s\n", res);
+    if (res==NULL) {
         *status = 3;
         return NULL;
     }
-    sprintf(filename, "%s/plugins/FrolovPoints/Frolov_%d_%d_basic.dat.gz",path, dim, level);
+    sprintf(filename, "%s/plugins/FrolovPoints/Frolov_%d_%d_basic.dat.gz",res, dim, level);
+    sasfit_out("The current filename is: %s\n", filename);
     gzfp = gzopen(filename, "r"); // open the gzipped file
     if (!gzfp) {
 		sasfit_err("Error opening %s\n", filename);
@@ -1241,7 +1245,7 @@ double *Frolov(int dim, int level, double *w, int *npoints, int *status) {
     sscanf(line, "%d", npoints); // getting number of nodes
     gzgets( gzfp, line, sizeof(line) );
     sscanf(line, "%lf", w); // getting weight
-    sasfit_out("dim:%d, nodes:%d, weight:%lf: %s\n",ndim,*npoints,*w);
+    sasfit_out("dim:%d, nodes:%d, weight:%lf\n",ndim,*npoints,*w);
 	data = (double *)malloc(ndim* (*npoints) * sizeof(double)); // allocate memory for the data
     for (i = 0; i < *npoints; i++) { // read in the data
         gzgets( gzfp, line, sizeof(line) );

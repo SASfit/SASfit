@@ -182,8 +182,8 @@ typedef struct
 	void (*w_of_z_e) (double x, double y, double * rew, double * imw); /* 103 */
 	scalar (*sasfit_jinc) (scalar x); /* 104 */
 	scalar (*find_LogNorm_int_range) (scalar dim, scalar x0, scalar sigma, scalar * Xstart, scalar * Xend, sasfit_param * param); /* 105 */
-	void (*hcubature) (unsigned fdim, integrand f, void * fdata, unsigned dim, const double * xmin, const double * xmax, size_t maxEval, double reqAbsError, double reqRelError, error_norm norm, double * val, double * err); /* 106 */
-	void (*pcubature) (unsigned fdim, integrand f, void * fdata, unsigned dim, const double * xmin, const double * xmax, size_t maxEval, double reqAbsError, double reqRelError, error_norm norm, double * val, double * err); /* 107 */
+	int (*hcubature) (unsigned fdim, integrand f, void * fdata, unsigned dim, const double * xmin, const double * xmax, size_t maxEval, double reqAbsError, double reqRelError, error_norm norm, double * val, double * err); /* 106 */
+	int (*pcubature) (unsigned fdim, integrand f, void * fdata, unsigned dim, const double * xmin, const double * xmax, size_t maxEval, double reqAbsError, double reqRelError, error_norm norm, double * val, double * err); /* 107 */
 	void (*sasfit_intccini) (int lenw, double * w); /* 108 */
 	void (*sasfit_intcc) (sasfit_func_int_t * f, double a, double b, double eps, int lenw, double * w, double * i, double * err, void * fparams); /* 109 */
 	void (*sasfit_intdeiini) (int lenaw, double tiny, double eps, double * aw); /* 110 */

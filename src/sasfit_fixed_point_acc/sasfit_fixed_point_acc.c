@@ -182,8 +182,7 @@ int fp_cp_array_diff_N_Vector_to_N_Vector(double *src1,  N_Vector src2, N_Vector
 }
 
 int fp_cp_array_diff_to_gsl_vector(double *src1, const gsl_vector *src2, gsl_vector *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+    int i;
     if (dimsrc != target->size) return GSL_FAILURE;
     for (i=0;i<dimsrc;i++)  {
             gsl_vector_set(target,i,src1[i]-gsl_vector_get(src2,i));
@@ -192,8 +191,7 @@ int fp_cp_array_diff_to_gsl_vector(double *src1, const gsl_vector *src2, gsl_vec
 }
 
 int fp_cp_array_diff_array_to_gsl_vector(double *src1, double *src2,  gsl_vector *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+    int i;
     if (dimsrc != target->size) return GSL_FAILURE;
     for (i=0;i<dimsrc;i++)  {
             gsl_vector_set(target,i,src1[i]-src2[i]);
@@ -202,8 +200,7 @@ int fp_cp_array_diff_array_to_gsl_vector(double *src1, double *src2,  gsl_vector
 }
 
 int fp_cp_array_diff_array_to_array(double *src1, double *src2,  double *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+    int i;
     for (i=0;i<dimsrc;i++)  {
             target[i]=src1[i]-src2[i];
     }
@@ -211,8 +208,7 @@ int fp_cp_array_diff_array_to_array(double *src1, double *src2,  double *target,
 }
 
 int fp_cp_array_to_gsl_vector(double *src, gsl_vector *target, int dimsrc) {
-    int i,errno;
-    errno=0;
+    int i;
     if (dimsrc != target->size) return GSL_FAILURE;
     for (i=0;i<dimsrc;i++)  {
             gsl_vector_set(target,i,src[i]);
