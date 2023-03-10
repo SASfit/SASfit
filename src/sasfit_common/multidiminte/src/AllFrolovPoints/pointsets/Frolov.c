@@ -1217,7 +1217,7 @@ double *Frolov(int dim, int level, double *w, int *npoints, int *status) {
 	int nc;
 
 	*status = 0;
-	if (dim<2||dim>10||level<1||level>18) {
+	if (dim<2||dim>6||level<1||level>18) {
         *status = 2;
         return NULL;
 	}
