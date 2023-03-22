@@ -187,7 +187,7 @@ scalar FrJnu(scalar r, sasfit_param * param) {
 }
 
 scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparams, int nIntervalsMax, scalar rtol, scalar atol) {
-	int nDelay = 1;
+	int nDelay;
 	int nTerms, i,k,n;
 	scalar *S, *extrap, *relErr, *absErr;
 	scalar prev,amin,amax,rmin, Fi, aux2, aux1, ddff,res;
@@ -198,7 +198,8 @@ scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparam
 	param.more_p[1] = x;
     param.moreparam=fparams;
 	prev=0;
-	amax=gsl_sf_bessel_zero_Jnu(nu,nDelay);
+	nDelay = 1;
+	amax=gsl_sf_bessel_zero_Jnu(nu,nDelay)/param.more_p[1];
 	amin=DBL_MIN;
 	amin=amax*sasfit_eps_get_nriq();
 	prev = prev + sasfit_integrate(amin,amax,&FrJnu,&param);
@@ -211,7 +212,7 @@ scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparam
     converged = FALSE;
 	for (i=nDelay+1;i<=nTerms;i++) {
         amin=amax;
-        amax=gsl_sf_bessel_zero_Jnu(nu,i);
+        amax=gsl_sf_bessel_zero_Jnu(nu,i)/param.more_p[1];
         Fi = sasfit_integrate(amin,amax,&FrJnu,&param);
 
         n = i-nDelay;
@@ -232,7 +233,8 @@ scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparam
         if (n > 1) {
                 absErr[n] = fabs( extrap[n] - extrap[n-1]);
                 relErr[n] = absErr[n] / fabs(extrap[n]) ;
-                converged   = relErr[n] < rtol + atol/fabs(extrap[n]);
+                if (relErr[n] < rtol + atol/fabs(extrap[n]))
+                    converged   = TRUE;
         }
         if (converged) break;
     }
@@ -413,12 +415,13 @@ scalar sasfit_HankelChave(scalar order, double (*f)(double, void *), scalar r, v
 	param.more_p[0] = order;
 	param.more_p[1] = r;
     param.moreparam=fparams;
-    b=Zeroj(1,order)*sasfit_eps_get_nriq();
+    b=0;
+    b=Zeroj(1,order)/r*rerr;
     last=0;
     s=calloc(nIntervalsMax+1,sizeof(scalar));
     for (nzero = 1;nzero<=nIntervalsMax;nzero++) { //%upper limit is arbitrary and should never be reached
         a = b;
-        b = Zeroj(nzero,order);
+        b = Zeroj(nzero,order)/r;
         s[nzero] = sasfit_integrate(a,b,&FrJnu,&param);
         Sum = Padesum(s,nzero);
         if (fabs(Sum - last) <= rerr*fabs(Sum) + aerr) {
