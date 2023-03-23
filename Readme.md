@@ -135,7 +135,7 @@ Update all packages first. Twice, because the MSYS2 window has to be closed in b
 
 Installing required packages for building SASfit:
 
-    pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake
+    pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-python-pip mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl mingw-w64-x86_64-zlib
 
 Get a copy of the latest SASfit source code:
 
@@ -164,7 +164,7 @@ Finally, build SASfit itself which should generate a binary package if it was su
 
 On a fresh system, install the required development tools with [Homebrew](https://brew.sh):
 
-    % brew install git cmake gcc
+    % brew install git cmake gcc gsl fftw zlib
     % brew cask install xquartz 
 
 To avoid using macOS default gcc (which as clang actually), specify the compiler by the following environment variables:
@@ -200,7 +200,11 @@ On a fresh system, install the required development tools:
 
 Additionally install the X11 development packages:
 
-    $ sudo apt install libx11-dev
+    $ sudo apt install libx11-dev 
+
+As well as gsl and fftw3 library
+	
+	$ sudo apt install libgsl-dev libfftw3-dev
 
 Get a copy of the latest SASfit source code:
 
