@@ -324,16 +324,7 @@ set no_update_entries $::sasfit(no_update_entries)
 for {set i 1} {$i <= [array size a1]} {incr i} {
    set nel [array nextelement a1 $searchID]
    if {[lsearch $no_update_entries $nel] >= 0} { continue }
-#   puts $fid "set $arr\($nel\) \{$a1($nel)\}"
-   if {[llength $a1($nel)] > 1} {
-       puts $fid "set $arr\($nel\) \{$a1($nel)\}"
-   } elseif {[llength [lindex $a1($nel) 0]] > 1} {
-       puts $fid "set $arr\($nel\) \{$a1($nel)\}"
-   } elseif { [string compare \" [string index [concat $a1($nel)] 0]] == 0} {
-       puts $fid "set $arr\($nel\) $a1($nel)"
-   } else {
-       puts $fid "set $arr\($nel\) \"$a1($nel)\""
-   }
+   puts $fid "set $arr\($nel\) \{$a1($nel)\}"
 }
 array donesearch a1 $searchID
 return 1
