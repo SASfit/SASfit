@@ -17,10 +17,10 @@ if [ "$SYSTEM_NAME" = "Darwin" ]; then
     # find X11 headers and libs
     # make sure XQuartz is installed, e.g. 'brew cask install xquartz'
     CFLAGS="-arch $SYSTEM_ARCH"
-    for incdir in /usr/X11/include /opt/local/include; do
+    for incdir in /usr/local/include /usr/X11/include /opt/local/include; do
         [ -d "$incdir/X11" ] && CFLAGS="$CFLAGS -I$incdir"
     done
-    for libdir in /usr/X11/lib /opt/local/lib; do
+    for libdir in /usr/local/lib/ /usr/X11/lib /opt/local/lib; do
         [ -f "$libdir/libX11.a" ] && CFLAGS="$CFLAGS -L$libdir"
     done
     CMD_CC="$( $findCmdInPath '/gcc(-(mp-)?[0-9]+)?$')"
