@@ -10,6 +10,7 @@ Thumbs.db
 *.swp
 /*.dll
 *.AppImage
+.ipynb_checkpoints
 
 # some specific patterns to ignore
 CMakeFiles
