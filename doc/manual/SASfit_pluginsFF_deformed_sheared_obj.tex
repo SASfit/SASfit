@@ -167,45 +167,157 @@ The retraction coefficient is for short times $\gamma(t=0)=1$ and becomes larger
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{linear polymer under shear flow}~\\
-\label{sect:LinearPolymerShearFlow}
+\subsection{polymer under shear flow}~\\
+\label{sect:PolymerShearFlow}
+
+This plugin is implemented for a certain experimental setup of a quenched shear sample using two different configuration. The sample has a disc shape of a few mm in diameter and was sheared in a cone-plate geometry. Therefore, the vorticity, flow and gradient direction are well described in a cylindrical coordinate system $\mathbf{e}_\rho$, $\mathbf{e}_\varphi$, and $\mathbf{e}_z$. The normal of the disc represents the gradient direction of the sheared sample $\mathbf{e}_z=\mathbf{e}_g$. The radial direction $\mathbf{e}_\rho=\mathbf{e}_v$ represents the vorticity direction and the azimuth direction the flow direction $\mathbf{e}_\varphi=\mathbf{e}_f$.
+\begin{enumerate}
+\item In one experimental geometry the normal $\mathbf{e}_g$ (gradient direction) of the disc shaped sample is parallel to the incoming neutron beam $\mathbf{e}_n$. To separate the deformation in flow and vorticity direction apertures with a sector shape and two opposite openings of 45 degree each as marked in the image below are used. In this geometry the scattering in this setup is sensitive to in vorticity and flow direction only.\\[3mm]
+
+    \includegraphics[width=0.85\textwidth]{../images/form_factor/deformed_sheared/sample1.png} \\
+
+\item In a second setup a fully opened circular aperture (no sectors) of the same diameter as the sample is mounted and turned with the sample around the vertical axis by an angle $\theta_0$. Depending on the turning angle $\theta_0$ the horizontal detector direction probes a mixture of the averaged flow/vorticity contribution and the scattering in gradient direction. The contributions depend on the projection of the scattering vector onto the plane of the disc and to the normal of the disc being the gradient direction \\[3mm]
+
+   \noindent  \includegraphics[width=0.377\textwidth]{../images/form_factor/deformed_sheared/mag_tilted_sample.pdf} ~
+    \includegraphics[width=0.5\textwidth]{../images/form_factor/deformed_sheared/tilted_sample.pdf} \\
+    
+    \end{enumerate}
+
+
 The form factors describing linear polymers under shear flow has been taken from \cite{Korolkovas2019}.
-It is assumed that the shear-vorticity plane is the same than the detector plane. In the paper three models are given. In the continuous limit the form factor is given by a double integral
+In the original paper it is assumed that the shear-vorticity plane is the same than the detector plane. We slightly extend it here to any orientation defined by proper Euler angles.
+
+The form factor of polymers is deduced from the mean squared distance (MSD) $\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle/2$ within a polymer chain and is given by a double integral
 \begin{align}
   P(\mathbf{q}) & = \frac{1}{N^2}\int_0^N\mathrm{d}n\int_0^N\mathrm{d}m\: \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right)
 \end{align}
-In all three cases given in that paper the mean squared displacement function (MSD) $\langle(\mathbf{q}\cdot\mathbf{r}_{nm})\rangle/2$ was supplied as a function of $x=\abs{n-m}/N$, which in the end allows to replace the double integral by a single integral.
+If the mean squared distance function (MSD) $\langle(\mathbf{q}\cdot\mathbf{r}_{nm})\rangle/2$ can be written as a function of $\nu=\left|n-m\right|/N$, one can replace the double integral by a single integral.
 \begin{align} \label{eq:IQ_MSD}
- P(\mathbf{q}) & = 2\int_0^1 (1-x) \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right) \mathrm{d}x
+ P(\mathbf{q}) & = 2\int_0^1 (1-\nu) \exp\left(-\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}\right) \mathrm{d}\nu
 \end{align}
+Here the polymer consists if $N$ flexible units where $\mathbf{r}_{nm}$ is the vectorial distance between the centers of the $n^\mathrm{th}$ and $m^\mathrm{th}$ monomer unit.
+The scattering vector in the laboratory system is
+\begin{align}
+\mathbf{q} &= q
+\left(
+    \begin{array}{c}
+        \cos(\phi) \\
+        \sin(\phi) \\
+        0 \\
+    \end{array}
+\right)
+\end{align}
+The vectorial distance between  $\mathbf{r}_{nm}$ in defined here in the coordination system of the applied flow
+\begin{align}
+\mathbf{r}_{nm} &= x_{v,nm} \mathbf{e}_{v,nm} + z_{f,nm} \mathbf{e}_{f} + y_{g,nm} \mathbf{e}_{g}
+\end{align}
+The averages to be taken are then
+\begin{align}
+\begin{split} \label{MSDfull}
+ \langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle  & = q_v^2 \langle x_{v,nm}^2\rangle + q_f^2 \langle z_{f,nm}^2\rangle + q_g^2 \langle y_{g,nm}^2\rangle + \\
+ & 2q_v q_f \langle x_{v,nm} z_{f,nm}\rangle + 2q_v q_g \langle x_{v,nm} y_{g,nm}\rangle + 2q_fq_g \langle z_{f,nm}y_{g,nm}\rangle
+ \end{split}
+\end{align}
+with
+\begin{align}
+  q_g &= \mathbf{q}\cdot \mathbf{e}_g \label{eq:eg} \\
+  q_f &= \mathbf{q}\cdot \mathbf{e}_f \label{eq:ef} \\
+  q_v &= \mathbf{q}\cdot \mathbf{e}_v \label{eq:ev}
+\end{align}
+The unit vectors $\mathbf{e}_g$, $\mathbf{e}_f$, and $\mathbf{e}_v$ are determined by the sample orientation and will be defined later on. In the following it is assumed, that the mixed terms in eq.\ \ref{MSDfull} are negligible (this is exactly true for an undeformed linear polymer in equilibrium) and only the squared terms (which are symmetric for the undeformed polymer) contribute to the mean squared internal distance so that eq.\ \ref{MSDfull} simplifies to
+\begin{align} \label{MSDused}
+ \langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle  & = q_v^2 \langle x_{v,nm}^2\rangle + q_f^2 \langle z_{f,nm}^2\rangle + q_g^2 \langle y_{g,nm}^2\rangle
+ \end{align}
+An undeformed linear polymer in equilibrium has an exact solution for the MSD
+\begin{align}\label{MSDequilibrium}
+  \langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle/2 & = a |n-m|/N
+\end{align}
+and is a straight line with a slope $a=q^2R_g^2=q^2N\lambda^2/6$ , where $\lambda$ is the
+Kuhn length and $R_g$ the equilibrium radius of gyration. $N$ is the number of Kuhn segments of a single polymer chain. This leads to the scattering function
+\begin{align}
+  P_\mathrm{lin,iso}(\mathbf{q}) & = \frac{2\left(e^{-a}-1+a\right)}{a^2}
+\end{align}
+
+\subsection{linear polymer under shear flow}~\\
+\label{sect:LinearPolymerShearFlow}
+
+For a sheared linear polymer the mean squared distance MSD in the flow, vorticity and gradient direction has been approximated in \cite{Korolkovas2019} by a piecewise linear approximation and with a limitation to just two segments.
+The approximation of the MSD by a series of two straight lines reads as
+\begin{align}\label{eq:2straightlines}
+\frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2}  &=
+\begin{cases}
+  b|n-m|/N, & \mbox{if } |n-m|/N<f \\
+  c|n-m|/N+(b-c)f, & \mbox{otherwise}.
+\end{cases}
+\end{align}
+with $f\in (0,1)$. Depending on the orientation of the sample one probes in a certain scattering direction the contribution of the different projections of the shear axis on $\mathbf{q}$ (only diagonal contributions are assumed). The slopes are give by
+\begin{align}
+  b &= R_g^2 \left[\alpha^2q_f^2+\beta^2 q_v^2+\gamma^2 q_g^2\right] \label{eq:slope_b} \\
+  c &= R_g^2 \left[A^2q_f^2+B^2 q_v^2+\mathit{\Gamma}^2 q_g^2\right] \label{eq:slope_c}
+\end{align}
+The form factor for such a slope in the MSD is given by
+\begin{multline}\label{eq:slopes_bc_PQ}
+P_\mathrm{lin,2}(q,R_g,\alpha,\beta,\gamma,A,B,\mathit{\Gamma}) = \frac{2}{b^2}\Bigg(b-1+\exp\left(-fb\right) \times \\
+    \left\{1+\left[\frac{b^2}{c^2}-1\right]\exp\left((f-1)c\right)+(1-f)\frac{b(b-c)}{c}\right\}\Bigg)
+\end{multline}
+with a radius of gyration $R_{g,\mathrm{lin}}$
+\begin{align}\label{eq:Rglin_straight}
+  R_{g,\mathrm{lin,2}} &= R_{g}\sqrt{c+(b-c)\left(3f-3f^2+f^3\right)}
+\end{align}
+
+
+The parametrization above does not automatically preserve the contour length of the polymer.
+
+The last missing part is to define the orientation of the three shear vectors to get the projection $q_g$,$q_f$, $q_v$ of of them on $\mathbf{q}$ (eqs.\ \ref{eq:eg}-\ref{eq:ev}) as they are needed to calculate the slopes $b$ and $c$ in eq.\ \ref{eq:slope_b} and \ref{eq:slope_c}.
+
+To values for these vectors are obtained by rotation of the laboratory axis into the shear coordination system. This can be done by using Euler angles. For the chosen coordination system proper Euler angles using $z$-$y$-$z$ convention using the angles $\varphi$, $\theta$, $\psi$ are well suited \cite{reference.wolfram_2022_eulerangles}. Lets $\mathbf{M}_{\varphi,\theta,\psi}$ be the rotation matrix, then the shear vector are given by
+\begin{align}\label{eq:rotated_shear_vectors}
+  \mathbf{e}_f &= \mathbf{M}_{\varphi,\theta,\psi} \; \mathbf{e}_x \\
+  \mathbf{e}_v &= \mathbf{M}_{\varphi,\theta,\psi} \; \mathbf{e}_y \\
+  \mathbf{e}_g &= \mathbf{M}_{\varphi,\theta,\psi} \; \mathbf{e}_z
+\end{align}
+where $\mathbf{e}_x=(1,0,0)^T$, $\mathbf{e}_y=(0,1,0)^T$, and $\mathbf{e}_z=(0,0,1)^T$. The Euler matrix $\mathbf{M}_{\varphi,\theta,\psi}$ using $z$-$y$-$z$ convention reads as
+\begin{align}
+\mathbf{M}_{\varphi,\theta,\psi} &=
+\left(
+\begin{array}{ccc}
+ c_{\theta } c_{\psi } c_{\varphi }-s_{\psi } s_{\varphi } & -c_{\theta } c_{\varphi } s_{\psi }-c_{\psi } s_{\varphi } & c_{\varphi } s_{\theta } \\
+ c_{\theta } c_{\psi } s_{\varphi }+c_{\varphi } s_{\psi } & c_{\psi } c_{\varphi }-c_{\theta } s_{\psi } s_{\varphi } & s_{\theta } s_{\varphi } \\
+ -c_{\psi } s_{\theta } & s_{\theta } s_{\psi } & c_{\theta } \\
+\end{array}
+\right)
+\end{align}
+with $c_x=\cos(x)$ and $s_x=\sin(x)$.
+By defining the shear vectors via a rotation matrix of the cartesian unit vectors the form factor now also depends on the Euler angles so that it becomes a function of $P(q,R_g,\alpha,\beta,\gamma,A,B,\mathit{\Gamma},\varphi,\theta,\psi)$.,
+
+At least for the cases 1 and 2 mentioned at the beginning this allows to simply integrate over the orientations of the shear vectors defined by the turning angle of the sample and apertures shapes used.
+
+For the case 1 the axis are shown in fig.\ \ref{fig:EulerCase1}. In this setup the sample is already placed with its gradient direction parallel to the beam. The aperture in front of the sample has only aperture opening of sector with for example $\Delta\varphi=45^\circ=\pi/4$. As the two sectors are not aligned to the $x$-axis but turned by $\varphi_0$ the aperture smearing can be included by
+\begin{align}\label{eq:case1}
+  I_{\mathrm{lin},2,\mathrm{a}}(\mathbf{q}) & = 2\int_{\varphi_0-\Delta\varphi/2}^{\varphi_0+\Delta\varphi/2} P_\mathrm{lin,2}(q,R_g,\alpha,\beta,\gamma,A,B,\mathit{\Gamma},\varphi,\theta=0,\psi=0) \;\mathrm{d}\varphi
+\end{align}
+As the scattering intensity is symmetric and the second sector is turned by $\pi$ it produces the same scattering contribution as the first one.
+
+Also the second case, where the sample has been rotated in the beam by an angle $\theta_0$ can easily be described. In that case the aperture in front of the sample has a full circular opening as shown in fig.\ \ref{fig:EulerCase2}, but is turned in the beam around the vertical $y$-axis by $\theta_0$. Therefore the scattering intensity for case 2 is given by
+\begin{align}\label{eq:case1}
+  I_{\mathrm{lin},2,\mathrm{b}}(\mathbf{q}) & = \int_{0}^{2\pi} P_\mathrm{lin,2}(q,R_g,\alpha,\beta,\gamma,A,B,\mathit{\Gamma},\varphi=0,\theta=\theta_0,\psi) \;\mathrm{d}\psi
+\end{align}
+
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\textwidth]{../images/form_factor/deformed_sheared/Euler_case1.png}
+  \caption{used coordination axis and Euler angles for case 1}\label{fig:EulerCase1}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=.9\textwidth]{../images/form_factor/deformed_sheared/Euler_case2.png}
+  \caption{used coordination axis and Euler angles for case 2}\label{fig:EulerCase2}
+\end{figure}
+
 \begin{itemize}
-\item In equilibrium an exact solution of that integral is available as in this case
-\begin{align}
-  \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} & = a \abs{n-m}/N
-\end{align}
-with $N$ being the number of segments of the polymer, $a=(qR_g)^2=N\lambda^2/6$, where $\lambda$ is the Kuhn length and $R_g$  the equilibrium radius of gyration, so that
-\begin{align}
-  P_\mathrm{iso}(\mathbf{q}) & = \frac{2\left(e^{-a}-1+a\right)}{a^2}
-\end{align}
-\item for the polymer under shear flow they approximated the MSD-function as a series of straight lines. In the case of two linear segments the MSD function reads as
-    \begin{align}
-      \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} &=
-      \begin{cases}
-        b\abs{n-m}/N, & \mbox{if } \abs{n-m}/N \leq \nu \\
-        c\abs{n-m}/N+(b-c)\nu, & \mbox{otherwise}.
-      \end{cases}
-    \end{align}
-    with $0<(\nu<N_1/N)<1$. To account for the deformation of the polymer $b$ and $c$ are described by
-    \begin{align}
-      b &= R_g^2\left[(\alpha q \cos^2(\psi-\phi_0))+(\beta q \sin^2(\psi-\phi_0))\right] \\
-      c &= R_g^2\left[(\gamma q \cos^2(\psi-\phi_0))+(\delta q \sin^2(\psi-\phi_0))\right]
-    \end{align}
-    which gives four fitting parameters $(\alpha,\beta,\gamma,\delta)$. $R_g$ is the equilibrium radius of gyration, $\psi$ the direction if the scattering vector in the detector plane and $\phi_0$ the flow-direction. The form factor can be calculated also analytical and is given by
-    \begin{align}
-      P(\mathrm{q}) & = \frac{2}{b^2}\left(b-1+e^{-\nu b} \left\{1+\left[\frac{b^2}{c^2}-1\right]e^{(\nu-1)c}+
-                        (1-\nu)\frac{b}{c}(b-c)\right\}\right)
-    \end{align}
-\item  a semi-empirical 3-parameter formula $(B_x,B_y,\xi)$ to have a similar shape than the piecewise linear MSD function above.
+\item  a semi-empirical 3-parameter formula $(B_x,B_y,\xi)$ to have a similar shape then the piecewise linear MSD function above.
     \begin{multline}
     \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} =\left(qR_g\right)^2 \times \\
     \left\{
@@ -227,7 +339,9 @@ with $N$ being the number of segments of the polymer, $a=(qR_g)^2=N\lambda^2/6$,
     with $x=\abs{\frac{n-m}{N}}$ and the Weissenberg number $\operatorname{Wi}_\mathrm{lin}=\tau_1\dot{\gamma}$.
 \end{itemize}
 
-\subsection{ring polymer under shear flow}~\\
+\subsection{Ring polymer under shear flow}~\\
+\label{sect:RingPolymerShearFlow}
+
 Ring polymers under shear flow also can be described using the Rouse model \cite{Tsolou2010,Stephanou2019} similarly to eq.\ \ref{eq:MSDlinearShearFlow}. The mean square displacement then reads as
 \begin{align}\label{eq:MSDringShearFlow}
 \frac{\langle(\mathbf{q}\cdot\mathbf{r}_{nm})^2\rangle}{2} &= 2\left(qR_{g,\mathrm{ring}}\right)^2
@@ -239,6 +353,8 @@ with $\mu=x(1-x)$, $x=\abs{\frac{n-m}{N}}$, $\operatorname{Wi}_\mathrm{ring}=\ta
 \end{align}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+
+
 \subsection{Sheared Cylinder according to Hayter and Penfold}
 \label{sect:ShearedCylinderHayterPenfold}
 \hspace{1pt}\\
