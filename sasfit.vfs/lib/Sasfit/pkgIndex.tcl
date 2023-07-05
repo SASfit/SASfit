@@ -21,7 +21,7 @@
 #   Ingo Bressler (ingo@cs.tu-berlin.de)
 
 set thisdir [file dirname [info script]]
-set libdir [file normalize [file join $thisdir .. .. .. lib]]
+set libdir [file normalize [file join $thisdir .. .. ..]]
 set libpath [file join $libdir libsasfit[info sharedlibextension]]
 #puts stderr "thisdir: '$thisdir'"
 #puts stderr "libdir:  '$libdir'"
