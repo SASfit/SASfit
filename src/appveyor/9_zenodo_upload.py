@@ -151,8 +151,13 @@ if draft is None:
         draft, _ = makeRequest(post, baseurl, f"/deposit/depositions",
                                params=dict(access_token=token), json={})
         # get initial meta data from cff file
-        from cffconvert.cli.create_citation import create_citation
-        metadata = json.loads(create_citation(cff, None).as_zenodo())
+        creators = [{"affiliation": author["affiliation"],
+                     "name": f'{author["family-names"]}, {author["given-names"]}',
+                     "orcid": author["orcid"].split("/")[-1]}
+                     for author in cffdata["authors"]]
+        metadata = dict(creators=creators, description=cffdata["abstract"],
+                        keywords=cffdata["keywords"], license={"id": cffdata["license"]},
+                        title=cffdata["title"])
         print(f"Meta data from '{cff}':")
         pprint(metadata)
         # update the meta data with current version and more details
