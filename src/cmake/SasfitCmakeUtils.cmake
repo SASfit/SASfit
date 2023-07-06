@@ -255,11 +255,7 @@ macro(sasfit_cmake_plugin)
 			include_directories(${${LIB_EXT}_INCLUDE_DIRS})
 		endif()
 		# add library to link list
-		if(${LIB_EXT}_STATIC_LIBRARIES)
-			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_STATIC_LIBRARIES})
-		else()
-			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_LIBRARIES})
-		endif()
+		target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_LIBRARIES})
         if(FALSE) # CMAKE_HOST_APPLE
             # seems to be needed on macOS
             list(GET ${LIB_EXT}_LIBRARIES 0 LIB)
