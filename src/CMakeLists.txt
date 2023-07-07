@@ -246,7 +246,9 @@ endif()
 
 # configure build flags, assumes gcc-style flags on all platforms
 #sasfit_build_props_unix(sasfit "-save-temps")
-set(COMPILE_FLAGS -std=gnu99)
+set(CMAKE_C_FLAGS -std=gnu99 ${CMAKE_C_FLAGS})
+set(CMAKE_CXX_FLAGS -std=gnu++11 ${CMAKE_CXX_FLAGS})
+set(COMPILE_FLAGS)
 if(UNIX)
     set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall")
 endif()

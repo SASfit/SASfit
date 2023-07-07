@@ -75,7 +75,7 @@ if(NOT DEFINED SASFIT_ROOT_DIR)
 	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 	GET_FILENAME_COMPONENT(SASFIT_ROOT_DIR "${SASFIT_ROOT_DIR}/../.." ABSOLUTE)
 endif()
-set(LIBRARY_OUTPUT_PATH ${SASFIT_ROOT_DIR}/lib)
+set(LIBRARY_OUTPUT_PATH ${SASFIT_ROOT_DIR})
 
 # defining some colors
 string(ASCII 27 ESC)
@@ -153,8 +153,8 @@ function(get_target_output_path targetname)
         set(SUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
         #message("static!")
     endif()
-    set(${targetname}_output_path
-        "${LIBRARY_OUTPUT_PATH}/${PREFIX}${targetname}${SUFFIX}" PARENT_SCOPE)
+    string(JOIN "/" tmp_path ${LIBRARY_OUTPUT_PATH} ${PREFIX}${targetname}${SUFFIX})
+    set(${targetname}_output_path ${tmp_path} PARENT_SCOPE)
     set(${targetname}_output_prefix ${PREFIX} PARENT_SCOPE)
     set(${targetname}_output_suffix ${SUFFIX} PARENT_SCOPE)
 endfunction()
@@ -255,11 +255,7 @@ macro(sasfit_cmake_plugin)
 			include_directories(${${LIB_EXT}_INCLUDE_DIRS})
 		endif()
 		# add library to link list
-		if(${LIB_EXT}_STATIC_LIBRARIES)
-			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_STATIC_LIBRARIES})
-		else()
-			target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_LIBRARIES})
-		endif()
+		target_link_libraries(${PRJ_NAME} ${${LIB_EXT}_LIBRARIES})
         if(FALSE) # CMAKE_HOST_APPLE
             # seems to be needed on macOS
             list(GET ${LIB_EXT}_LIBRARIES 0 LIB)
