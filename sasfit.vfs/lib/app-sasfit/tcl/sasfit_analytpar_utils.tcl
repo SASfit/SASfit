@@ -57,7 +57,117 @@ proc get_list_values {value count} {
 proc init_analytpar {AnalytPar isGlobal} {
 
 	upvar $AnalytPar Par
-
+	set Par(chisq) 0
+	set Par(reducedchisq) 0
+	
+	set Par(Euclidean_L2_d) 0		;# 1
+	set Par(Euclidean_L2_d_list) {}
+	set Par(City_block_L1_d) 0		;# 2
+	set Par(City_block_L1_d_list) {}
+	set Par(Minkowski_Lp_d) 0		;# 3
+	set Par(Minkowski_Lp_d_list) {}
+	set Par(Chebyshev_Linf_d) 0		;# 4
+	set Par(Chebyshev_Linf_d_list) {}
+	set Par(Sorensen_d) 0			;# 5
+	set Par(Sorensen_d_list) {}
+	set Par(Gower_d) 0				;# 6
+	set Par(Gower_d_list) {}
+	set Par(Soergel_d) 0			;# 7
+	set Par(Soergel_d_list) {}
+	set Par(Kulczynski_d) 0			;# 8
+	set Par(Kulczynski_d_list) {}
+	set Par(Canberra_d) 0			;# 9
+	set Par(Canberra_d_list) {}
+	set Par(Lorentzian_d) 0			;# 10
+	set Par(Lorentzian_d_list) {}
+	set Par(Intersection_d) 0		;# 11a
+	set Par(Intersection_d_list) {}
+	set Par(Intersection_s) 0		;# 11b
+	set Par(Intersection_s_list) {}
+	set Par(Wave_Hedges_d) 0		;# 12
+	set Par(Wave_Hedges_d_list) {}
+	set Par(Czekanowski_s) 0		;# 13a
+	set Par(Czekanowski_s_list) {}
+	set Par(Czekanowski_d) 0		;# 13b
+	set Par(Czekanowski_d_list) {}
+	set Par(Motyka_s) 0				;# 14a
+	set Par(Motyka_s_list) {}
+	set Par(Motyka_d) 0				;# 14b
+	set Par(Motyka_d_list) {}
+	set Par(Kulczynski_s) 0			;# 15
+	set Par(Kulczynski_s_list) {}
+	set Par(Ruzicka_s) 0			;# 16
+	set Par(Ruzicka_s_list) {}
+	set Par(Tanimoto_d) 0			;# 17
+	set Par(Tanimoto_d_list) {}
+	set Par(InnerProduct_s) 0		;# 18
+	set Par(InnerProduct_s_list) {}
+	set Par(HarmonicMean_s) 0		;# 19
+	set Par(HarmonicMean_s_list) {}
+	set Par(Cosine_s) 0				;# 20
+	set Par(Cosine_s_list) {}
+	set Par(KumarHassebrook_s) 0	;# 21
+	set Par(KumarHassebrook_s_list) {}
+	set Par(Jaccard_s) 0			;# 22a
+	set Par(Jaccard_s_list) {}
+	set Par(Jaccard_d) 0			;# 22b
+	set Par(Jaccard_d_list) {}
+	set Par(Dice_s) 0				;# 23a
+	set Par(Dice_s_list) {}
+	set Par(Dice_d) 0				;# 23b
+	set Par(Dice_d_list) {}
+	set Par(Fidelity_s) 0			;# 24
+	set Par(Fidelity_s_list) {}
+	set Par(Bhattacharyya_d) 0		;# 25
+	set Par(Bhattacharyya_d_list) {}
+	set Par(Hellinger_d) 0			;# 26
+	set Par(Hellinger_d_list) {}
+	set Par(SquaredChord_d) 0		;# 28a
+	set Par(SquaredChord_d_list) {}
+	set Par(SquaredChord_s) 0		;# 28b
+	set Par(SquaredChord_s_list) {}
+	set Par(Matusita_d) 0			;# 27
+	set Par(Matusita_d_list) {}
+	set Par(SquaredEuclidean_d) 0	;# 29
+	set Par(SquaredEuclidean_d_list) {}
+	set Par(PearsonChi2_d) 0		;# 30
+	set Par(PearsonChi2_d_list) {}
+	set Par(NeymanChi2_d) 0			;# 31
+	set Par(NeymanChi2_d_list) {}
+	set Par(SquaredChi2_d) 0		;# 32
+	set Par(SquaredChi2_d_list) {}
+	set Par(ProbabilisticSymmetricChi2_d) 0	;# 33
+	set Par(ProbabilisticSymmetricChi2_d_list) {}
+	set Par(Divergence_d) 0			;# 34
+	set Par(Divergence_d_list) {}
+	set Par(Clark_d) 0				;# 35
+	set Par(Clark_d_list) {}
+	set Par(AdditiveSymmetricChi2_d) 0		;# 36
+	set Par(AdditiveSymmetricChi2_d_list) {}
+	set Par(KullbackLeibler_d) 0	;# 37
+	set Par(KullbackLeibler_d_list) {}
+	set Par(Jeffreys_d) 0			;# 38
+	set Par(Jeffreys_d_list) {}
+	set Par(Kdivergence_d) 0		;# 39
+	set Par(Kdivergence_d_list) {}
+	set Par(Topsoe_d) 0				;# 40
+	set Par(Topsoe_d_list) {}
+	set Par(JensenShannon_d) 0		;# 41
+	set Par(JensenShannon_d_list) {}
+	set Par(Jensen_d) 0				;# 42
+	set Par(Jensen_d_list) {}
+	set Par(Taneja_d) 0				;# 43
+	set Par(Taneja_d_list) {}
+	set Par(KumarJohnson_d) 0		;# 44
+	set Par(KumarJohnson_d_list) {}
+	set Par(AvgL1Linf_d) 0			;# 45
+	set Par(AvgL1Linf_d_list) {}
+	
+	set Par(Q) 0
+	set Par(R) 0
+	set Par(wR) 0
+    set Par(varianceOFfit) 0
+	
 	foreach type {SD SQ FF} {
 
 		set Par($type,param_count)	{}

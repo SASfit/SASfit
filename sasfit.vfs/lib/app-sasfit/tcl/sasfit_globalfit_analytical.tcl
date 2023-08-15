@@ -277,12 +277,6 @@ proc create_GlobalAnalytPar {AnalytPar
 	set Par(w_MomentsAnalytPar) ""
 	set Par(GraphName)  AnalytPar
 
-	set Par(chisq) 0
-	set Par(reducedchisq) 0
-	set Par(Q) 0
-	set Par(R) 0
-	set Par(wR) 0
-        set Par(varianceOFfit) 0
 	set Par(common_i) 0
 	set Par(common_names) {NONE NEW}
 

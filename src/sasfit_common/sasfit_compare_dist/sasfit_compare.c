@@ -24,6 +24,11 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
+#ifdef MACOSX
+#include <sys/malloc.h>
+#else
+#include <malloc.h>
+#endif
 
 #include "../include/sasfit_common.h"
 #include "../include/sasfit_function.h"
@@ -35,9 +40,6 @@
 // 2007
 // International Journal of Mathematical Models and Methods in Applied Sciences , Vol. 1, No. 4
 
-double sasfit_compare(double *p, double*q, int dim, sasfit_distance_metric_struct *compare, sasfit_param *param) {
-	return -1;
-};
 
 double sasfit_Euclidian_L2_d(double *p, double *q, int dim){
 // 1. Euclidean L2
@@ -130,7 +132,7 @@ double sasfit_Kulczynski_d(double *p, double *q, int dim){
 		DK=DK+fabs(p[i]-q[i]);
 		tmp=tmp+GSL_MIN(p[i],q[i]);
 	}
-// %%%%%%%%%%% IF CONDITION NEEDS to checked %%%%%%%%%%%%%
+// %%%%%%%%%%% IF CONDITION NEEDS to be checked %%%%%%%%%%%%%
 	if (tmp==0) return 0;
 	return DK/tmp;
 }
@@ -143,7 +145,7 @@ double sasfit_Canberra_d(double *p, double *q, int dim){
     DCD=0;
     for (i=0;i<dim;i++) {
         sum = p[i]+q[i];
-// %%%%%%%%%%% IF CONDITION NEEDS to checked %%%%%%%%%%%%%
+// %%%%%%%%%%% IF CONDITION NEEDS to be checked %%%%%%%%%%%%%
         if (sum!=0) DCD = DCD+fabs(p[i]-q[i])/sum;
     }
     return DCD;
@@ -207,7 +209,7 @@ double sasfit_Czekanowski_s(double *p, double *q, int dim){
         } else if (fabs(p[i])<fabs(q[i])){
             tmp=tmp+p[i];
         } else {
-            tmp=tmp+p[i];
+            tmp=tmp+q[i];
         }
 		DC=DC+(p[i]+q[i]);
 	}
@@ -245,7 +247,7 @@ double sasfit_Motyka_s(double *p, double *q, int dim){
             tmp=tmp+p[i];
         }
 	}
-// %%%%%%%%%%% IF CONDITION NEEDS to checked %%%%%%%%%%%%%
+// %%%%%%%%%%% IF CONDITION NEEDS to be checked %%%%%%%%%%%%%
 	if (SM==0) return 0;
 	return tmp/SM;
 }
@@ -572,7 +574,7 @@ double sasfit_Topsoe_d(double *p, double *q, int dim){
 	return DT;
 }
 
-double sasfit_JensenShannon(double *p, double *q, int dim){
+double sasfit_JensenShannon_d(double *p, double *q, int dim){
 // 41. Jensen-Shannon
     return 0.5*sasfit_Topsoe_d(p,q,dim);
 }
@@ -614,23 +616,6 @@ double sasfit_AvgL1Linf_d(double *p, double *q, int dim){
 // 45. Avg(L1 ,L∞)
     return (sasfit_CityBlock_L1_d(p,q,dim)+sasfit_Chebyshev_Linf_d(p,q,dim))/2.;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -834,4 +819,231 @@ double sasfit_CosineDistance(double *p, double *q, int dim){
     }
     if (normp*normq!=0) return 1-DCosD/sqrt(normp*normq);
     return 1;
+}
+
+double sasfit_compare(double *p, double*q, int dim,
+                      sasfit_distance_metric_struct *compare, sasfit_param *param) {
+    double *pnorm, *qnorm;
+    double totq, totp;
+    double compareval;
+    int i;
+
+    pnorm = ( double * ) malloc ( dim * sizeof ( double ) );
+    qnorm = ( double * ) malloc ( dim * sizeof ( double ) );
+
+    if (compare->normalize2one == one_strategy) {
+        totq=0;
+        totp=0;
+        for (i=0;i<dim;i++) {
+            totp=totp+p[i];
+            totq=totq+q[i];
+        }
+    } else {
+        totp=1;
+        totq=1;
+    }
+    for (i=0;i<dim;i++) {
+        pnorm[i]=p[i]/totp;
+        qnorm[i]=q[i]/totq;
+    }
+    switch (compare->metric_type) {
+        case Euclidean_L2_d:
+            compareval = sasfit_Euclidian_L2_d(pnorm, qnorm, dim);
+            break;
+        case City_block_L1_d:
+            compareval = sasfit_CityBlock_L1_d(pnorm, qnorm, dim);
+            break;
+        case Minkowski_Lp_d:
+            compareval = sasfit_Minkowski_Lp_d(pnorm, qnorm, dim,compare->k);
+            break;
+        case Chebyshev_Linf_d:
+            compareval = sasfit_Chebyshev_Linf_d(pnorm, qnorm, dim);
+            break;
+        case Sorensen_d:
+            compareval = sasfit_Sorensen_d(pnorm, qnorm, dim);
+            break;
+        case Gower_d:
+            compareval = sasfit_Gower_d(pnorm, qnorm, dim);
+            break;
+        case Soergel_d:
+            compareval = sasfit_Soergel_d(pnorm, qnorm, dim);
+            break;
+        case Kulczynski_d:
+            compareval = sasfit_Kulczynski_d(pnorm, qnorm, dim);
+            break;
+        case Canberra_d:
+            compareval = sasfit_Canberra_d(pnorm, qnorm, dim);
+            break;
+        case Lorentzian_d:
+            compareval = sasfit_Lorentzian_d(pnorm, qnorm, dim);
+            break;
+        case Intersection_d:
+            compareval = sasfit_Intersection_d(pnorm, qnorm, dim);
+            break;
+        case Intersection_s:
+            compareval = sasfit_Intersection_s(pnorm, qnorm, dim);
+            break;
+        case Wave_Hedges_d:
+            compareval = sasfit_Wave_Hedges_d(pnorm, qnorm, dim);
+            break;
+        case Czekanowski_s:
+            compareval = sasfit_Czekanowski_s(pnorm, qnorm, dim);
+            break;
+        case Czekanowski_d:
+            compareval = sasfit_Czekanowski_d(pnorm, qnorm, dim);
+            break;
+        case Motyka_s:
+            compareval = sasfit_Motyka_s(pnorm, qnorm, dim);
+            break;
+        case Motyka_d:
+            compareval = sasfit_Motyka_d(pnorm, qnorm, dim);
+            break;
+        case Kulczynski_s:
+            compareval = sasfit_Kulczynski_s(pnorm, qnorm, dim);
+            break;
+        case Ruzicka_s:
+            compareval = sasfit_Ruzicka_s(pnorm, qnorm, dim);
+            break;
+        case Tanimoto_d:
+            compareval = sasfit_Tanimoto_d(pnorm, qnorm, dim);
+            break;
+        case InnerProduct_s:
+            compareval = sasfit_InnerProduct_s(pnorm, qnorm, dim);
+            break;
+        case HarmonicMean_s:
+            compareval = sasfit_HarmonicMean_s(pnorm, qnorm, dim);
+            break;
+        case Cosine_s:
+            compareval = sasfit_Cosine_s(pnorm, qnorm, dim);
+            break;
+        case KumarHassebrook_s:
+            compareval = sasfit_KumarHassebrook_s(pnorm, qnorm, dim);
+            break;
+        case Jaccard_s:
+            compareval = sasfit_Jaccard_s(pnorm, qnorm, dim);
+            break;
+        case Jaccard_d:
+            compareval = sasfit_Jaccard_d(pnorm, qnorm, dim);
+            break;
+        case Dice_s:
+            compareval = sasfit_Dice_s(pnorm, qnorm, dim);
+            break;
+        case Dice_d:
+            compareval = sasfit_Dice_d(pnorm, qnorm, dim);
+            break;
+        case Fidelity_s:
+            compareval = sasfit_Fidelity_s(pnorm, qnorm, dim);
+            break;
+        case Bhattacharyya_d:
+            compareval = sasfit_Bhattacharyya_d(pnorm, qnorm, dim);
+            break;
+        case Hellinger_d:
+            compareval = sasfit_Hellinger_d(pnorm, qnorm, dim);
+            break;
+        case SquaredChord_d:
+            compareval = sasfit_SquaredChord_d(pnorm, qnorm, dim);
+            break;
+        case SquaredChord_s:
+            compareval = sasfit_SquaredChord_s(pnorm, qnorm, dim);
+            break;
+        case Matusita_d:
+            compareval = sasfit_Matusita_d(pnorm, qnorm, dim);
+            break;
+        case SquaredEuclidean_d:
+            compareval = sasfit_SquaredEuclidean_d(pnorm, qnorm, dim);
+            break;
+        case PearsonChi2_d:
+            compareval = sasfit_PearsonChi2_d(pnorm, qnorm, dim);
+            break;
+        case NeymanChi2_d:
+            compareval = sasfit_NeymanChi2_d(pnorm, qnorm, dim);
+            break;
+        case SquaredChi2_d:
+            compareval = sasfit_SquaredChi2_d(pnorm, qnorm, dim);
+            break;
+        case ProbabilisticSymmetricChi2_d:
+            compareval = sasfit_ProbabilisticSymmetricChi2_d(pnorm, qnorm, dim);
+            break;
+        case Divergence_d:
+            compareval = sasfit_Divergence_d(pnorm, qnorm, dim);
+            break;
+        case Clark_d:
+            compareval = sasfit_Clark_d(pnorm, qnorm, dim);
+            break;
+        case AdditiveSymmetricChi2_d:
+            compareval = sasfit_AdditiveSymmetricChi2_d(pnorm, qnorm, dim);
+            break;
+        case KullbackLeibler_d:
+            compareval = sasfit_KullbackLeibler_d(pnorm, qnorm, dim);
+            break;
+        case Jeffreys_d:
+            compareval = sasfit_Jeffreys_d(pnorm, qnorm, dim);
+            break;
+        case Kdivergence_d:
+            compareval = sasfit_Kdivergence_d(pnorm, qnorm, dim);
+            break;
+        case Topsoe_d:
+            compareval = sasfit_Topsoe_d(pnorm, qnorm, dim);
+            break;
+        case JensenShannon_d:
+            compareval = sasfit_JensenShannon_d(pnorm, qnorm, dim);
+            break;
+        case Jensen_d:
+            compareval = sasfit_Jensen_d(pnorm, qnorm, dim);
+            break;
+        case Taneja_d:
+            compareval = sasfit_Taneja_d(pnorm, qnorm, dim);
+            break;
+        case KumarJohnson_d:
+            compareval = sasfit_KumarJohnson_d(pnorm, qnorm, dim);
+            break;
+        case AvgL1Linf_d:
+            compareval = sasfit_AvgL1Linf_d(pnorm, qnorm, dim);
+            break;
+        default:
+    }
+    free(qnorm);
+    free(pnorm);
+	return -1;
+};
+
+double sasfit_weighted_compare(double *p, double*q, double *sigma, int dim,
+                      sasfit_distance_metric_struct *compare, sasfit_param *param) {
+    double *wp, *wq;
+    double comparevalue;
+    int i;
+
+    wp = ( double * ) malloc ( dim * sizeof ( double ) );
+    wq = ( double * ) malloc ( dim * sizeof ( double ) );
+    for (i=0;i<dim;i++) {
+        if (sigma[i]>0) {
+            wp[i]=p[i]/sigma[i];
+            wq[i]=q[i]/sigma[i];
+        } else {
+            sasfit_err("input error, error vector \"sigma\" needs to be a vector of positive numbers larger than 0!");
+        }
+    }
+    comparevalue = sasfit_compare(wp, wq, dim, compare, param);
+    free(wq);
+    free(wp);
+    return comparevalue;
+}
+
+double sasfit_compare_strategies(double *x, double *p, double*q, double *sigma, int dim,
+                      sasfit_distance_metric_struct *compare, sasfit_param *param) {
+
+    double comparevalue;
+
+    return comparevalue;
+}
+
+double sasfit_compare_pre_treat(double *px, double *p, double *sigma_p, int dim_p,
+                                double *qx, double *q, double *sigma_q, int dim_q,
+                                double *px_out, double *p_out, double *sigma_p_out, int dim_p_out,
+                                double *qx_out, double *q_out, double *sigma_q_out, int dim_q_out,
+                                sasfit_distance_metric_struct *compare, sasfit_param *param) {
+
+    double comparevalue;
+
+    return comparevalue;
 }

@@ -29,12 +29,12 @@ typedef enum
 	Euclidean_L2_d, 				//1
 	City_block_L1_d,				//2
 	Minkowski_Lp_d,					//3
-	Chebyshev_Linfty_d,				//4
+	Chebyshev_Linf_d,				//4
 	Sorensen_d,						//5
 	Gower_d,						//6
 	Soergel_d,						//7
 	Kulczynski_d,					//8
-	Cranberra_d,					//9
+	Canberra_d,			    		//9
 	Lorentzian_d,					//10
 	Intersection_d,					//11a
 	Intersection_s,					//11b
@@ -79,10 +79,32 @@ typedef enum
 	AvgL1Linf_d,					//45
 } sasfit_distance_metric_type;
 
+typedef enum
+{
+    one_strategy,
+    none_strategy,
+    weighted_strategy,
+    loglog_strategy
+} sasfit_compare_strategy_type;
+
+typedef enum
+{
+    linlin_scale,
+    linlog_scale,
+    loglog_scale,
+    Porod_scale, // x^4, y*x^4
+    SIBYLS_scale, // x^3, y*x^3
+    Kratky_scale, // x, y*x^2
+    Holtzer_scale, // x, y*x
+    Debye_Bueche_scale, // x, sqrt(y)
+} sasfit_compare_scale_type;
+
+
 typedef struct
 {
 	sasfit_distance_metric_type	metric_type;
-	bool normalize2one;
+	sasfit_compare_strategy_type normalize2one;
+	scalar k;
 } sasfit_distance_metric_struct;
 
 double sasfit_Euclidian_L2_d				(double *, double *, int);	//1
@@ -97,7 +119,7 @@ double sasfit_Canberra_d					(double *, double *, int);	//9
 double sasfit_Lorentzian_d					(double *, double *, int);	//10
 double sasfit_Intersection_d				(double *, double *, int);	//11a
 double sasfit_Intersection_s				(double *, double *, int);	//11b
-double sasfit_Wave_Hedges_d						(double *, double *, int);	//12
+double sasfit_Wave_Hedges_d					(double *, double *, int);	//12
 double sasfit_Czekanowski_s					(double *, double *, int);	//13a
 double sasfit_Czekanowski_d					(double *, double *, int);	//13a
 double sasfit_Motyka_s						(double *, double *, int);	//14a

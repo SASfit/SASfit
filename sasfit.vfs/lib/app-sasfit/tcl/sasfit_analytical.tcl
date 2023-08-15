@@ -50,7 +50,7 @@ proc create_AnalytPar {AnalytPar} {
 	set Par(geometrical/datafile) yes
 	set Par(w_MomentsAnalytPar) ""
 	set Par(GraphName)  AnalytPar
-	
+
 	init_analytpar Par 0; # not global
 	add_analytpar Par 0; # not global
 	
