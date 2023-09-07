@@ -1001,6 +1001,7 @@ double sasfit_compare(double *p, double*q, int dim,
             compareval = sasfit_AvgL1Linf_d(pnorm, qnorm, dim);
             break;
         default:
+	    break;
     }
     free(qnorm);
     free(pnorm);
