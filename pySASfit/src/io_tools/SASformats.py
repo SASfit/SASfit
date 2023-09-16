@@ -5,6 +5,17 @@ import errno
 import os, sys
 import re
 
+def readBerSANStrans(BerSANStransfile):
+    events = {}
+    with open(BerSANStransfile) as file:
+        file.readline()
+        file.readline()
+        file.readline()
+        for x in file:
+            f = x.split(",")
+            events[f[1].strip()] = f[2].strip()
+    return events
+
 class SANSdata:
     __doc__ = """
     SANSdata(inputfn) needs as an argument a string to a valid filename inputfn.
@@ -25,6 +36,7 @@ class SANSdata:
     fformat = ''
     infn = ''
     BerSANS = {}
+    transmission = {}
     
     def deadtimecorrection(self, moni, etime, dt):
         return moni / (1.0 - dt/etime * moni)
@@ -43,7 +55,7 @@ class SANSdata:
         if np.sum(detector_counts) == 0 :
             raise RuntimeError(f'{self.infn} seems to be empty. Sum({np.sum(detector_counts)})')
         self.BerSANS = {}
-        self.BerSANS.update({"DetCounts":detector_counts})
+        self.BerSANS.update({"%Counts,DetCounts":detector_counts})
         self.BerSANS.update({"%File,Type"       : "SANSDRawhdf" })
         self.BerSANS.update({"%File,FileName"   : self.basename})
         self.BerSANS.update({"%File,DataSize"   : 16384})
@@ -110,21 +122,21 @@ class SANSdata:
         if 'entry1/sample/magnet_z' in HDF.keys():
             self.BerSANS.update({"%Sample,Z_Magnet"      : round(HDF['entry1/sample/magnet_z'][0],3)})
         if 'entry1/sample/magnet_z_null' in HDF.keys():
-            self.BerSANS.update({"%Sample,Z_MagnetNull"  : round(HDF['entry1/sample/magnet_z'][0],3)})
+            self.BerSANS.update({"%Sample,Z_MagnetNull"  : round(HDF['entry1/sample/magnet_z_null'][0],3)})
         if 'entry1/sample/magnet_omega' in HDF.keys():
             self.BerSANS.update({"%Sample,Omega_Magnet"  : round(HDF['entry1/sample/magnet_omega'][0],3)})
         if 'entry1/sample/position' in HDF.keys():
             self.BerSANS.update({"%Sample,Position"      : round(HDF['entry1/sample/position'][0],3)})
         if 'entry1/sample/position_null' in HDF.keys():
-            self.BerSANS.update({"%Sample,PositionSoftZero" : round(HDF['entry1/sample/position_null'][0],3)})
+            self.BerSANS.update({"%Sample,PositionNull" : round(HDF['entry1/sample/position_null'][0],3)})
         if 'entry1/sample/named_position' in HDF.keys():
             self.BerSANS.update({"%Sample,SamplePosName" : round(HDF['entry1/sample/named_position'][0],3)})                                                                           
         if 'entry1/sample/stick_rotation' in HDF.keys():
             self.BerSANS.update({"%Sample,Dom"           : round(HDF['entry1/sample/stick_rotation'][0],3)})
-        if 'entry1/sample/goni+ometer_theta' in HDF.keys():
+        if 'entry1/sample/goniometer_theta' in HDF.keys():
             self.BerSANS.update({"%Sample,Theta"         : round(HDF['entry1/sample/goniometer_theta'][0],3)})
         if 'entry1/sample/goniometer_theta_null' in HDF.keys():
-            self.BerSANS.update({"%Sample,ThetaSoftZero" : round(HDF['entry1/sample/goniometer_theta_null'][0],3)})
+            self.BerSANS.update({"%Sample,ThetaNull" : round(HDF['entry1/sample/goniometer_theta_null'][0],3)})
         
         if 'entry1/SANS/detector/counting_time' in HDF.keys():
             time=max([0.1,HDF['entry1/SANS/detector/counting_time'][0]])
@@ -172,15 +184,23 @@ class SANSdata:
             self.BerSANS.update({"%Setup,Beamstop"   : HDF['entry1/SANS/beam_stop/out_flag'][0]})
         if 'entry1/SANS/beam_stop/x_position' in HDF.keys():
             self.BerSANS.update({"%Setup,BeamstopX"  : round(HDF['entry1/SANS/beam_stop/x_position'][0],2)})
+        if 'entry1/SANS/beam_stop/x_null' in HDF.keys():
+            self.BerSANS.update({"%Setup,BeamstopXNull"  : round(HDF['entry1/SANS/beam_stop/x_null'][0],2)})
         if 'entry1/SANS/beam_stop/y_position' in HDF.keys():
             self.BerSANS.update({"%Setup,BeamstopY"  : round(HDF['entry1/SANS/beam_stop/y_position'][0],2)})
+        if 'entry1/SANS/beam_stop/y_null' in HDF.keys():
+            self.BerSANS.update({"%Setup,BeamstopYNull"  : round(HDF['entry1/SANS/beam_stop/y_null'][0],2)})
         if 'entry1/SANS/detector/x_position' in HDF.keys():
             self.BerSANS.update({"%Setup,SD"         : round(HDF['entry1/SANS/detector/x_position'][0]/1000,2)})
+        if 'entry1/SANS/detector/x_null' in HDF.keys():
+            self.BerSANS.update({"%Setup,SDNull"     : round(HDF['entry1/SANS/detector/x_null'][0]/1000,2)})
         if 'entry1/SANS/detector/y_position' in HDF.keys():
             self.BerSANS.update({"%Setup,SY"         : round(HDF['entry1/SANS/detector/y_position'][0]/1000,2)})
+        if 'entry1/SANS/detector/y_null' in HDF.keys():
+            self.BerSANS.update({"%Setup,SYNull"     : round(HDF['entry1/SANS/detector/y_null'][0]/1000,2)})
 
         if 'entry1/SANS/detector/counting_time' in HDF.keys():
-            time=max([0.1,HDF['entry1/SANS/detector/counting_time'][0]])
+            time=max([0.001,float(HDF['entry1/SANS/detector/counting_time'][0])])
         if 'entry1/SANS/integrated_beam/counts' in HDF.keys():
             self.BerSANS.update({"%Counter,ProtonBeam":round(pbeam,2)})
         if 'entry1/SANS/monitor1/counts' in HDF.keys():
@@ -200,11 +220,11 @@ class SANSdata:
         if 'entry1/SANS/monitor_8/counts' in HDF.keys():
             self.BerSANS.update({"%Counter,Moni8" : int(moni8)})
         if 'entry1/SANS/detector/counting_time' in HDF.keys():
-            self.BerSANS.update({"%Counter,Time" : HDF['entry1/SANS/detector/counting_time'][0]})
+            self.BerSANS.update({"%Counter,Time" : round(time,3)})
         self.BerSANS.update({"%Counter,Sum"         : np.sum(detector_counts)})
-        self.BerSANS.update({"%Counter,Sum/Time"    : round(np.sum(detector_counts)/time,max([4,4-np.log10(np.sum(detector_counts)/time)]))})
-        self.BerSANS.update({"%Counter,Sum/Moni1"   : round(np.sum(detector_counts)/moni1,max([4,4-np.log10(np.sum(detector_counts)/moni1)]))})
-        self.BerSANS.update({"%Counter,Sum/Moni2"   : round(np.sum(detector_counts)/moni2,max([4,4-np.log10(np.sum(detector_counts)/moni2)]))}) 
+        self.BerSANS.update({"%Counter,Sum/Time"    : round(np.sum(detector_counts)/time, int(round(max([4,4-np.log10(np.sum(detector_counts)/time )]),0)))})
+        self.BerSANS.update({"%Counter,Sum/Moni1"   : round(np.sum(detector_counts)/moni1,int(round(max([4,4-np.log10(np.sum(detector_counts)/moni1)]),0)))})
+        self.BerSANS.update({"%Counter,Sum/Moni2"   : round(np.sum(detector_counts)/moni2,int(round(max([4,4-np.log10(np.sum(detector_counts)/moni2)]),0)))}) 
 
     
     def getHDFinstr(self):
@@ -282,16 +302,11 @@ class SANSdata:
             self.BerSANS.update({'%File,DataSizeY':DataSizeX})
         return np.zeros((DataSizeX,DataSizeX))
 
-    def readBerSANStrans(self,BerSANStransfile):
-        events = {}
-        with open(BerSANStransfile) as file:
-            file.readline()
-            file.readline()
-            file.readline()
-            for x in file:
-                f = x.split(",")
-                events[f[1].strip()] = f[2].strip()
-        return events
+    def BerSANStrans(self,BerSANStransfile):
+        if not os.path.isfile(BerSANStransfile):
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), BerSANStransfile)
+        self.transmssion = readBerSANStrans(BerSANStransfile)
+        return
 
     def readBerSANS(self):
         group='%Comment'
