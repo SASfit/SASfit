@@ -63,27 +63,27 @@ class SANSdata:
         self.BerSANS.update({"%File,DataSizeY"  : 128})
         self.BerSANS.update({"%File,Definition" : str(HDF['entry1/definition'][0].decode('UTF-8'))})
         if 'entry1/SANS/name' in HDF.keys():
-            self.BerSANS.update({"%File:Instrument": HDF['entry1/SANS/name'][0].decode(encoding='UTF-8')})
+            self.BerSANS.update({"%File,Instrument": HDF['entry1/SANS/name'][0].decode(encoding='UTF-8')})
         if 'entry1/SANS/SINQ/name' in HDF.keys():
-            self.BerSANS.update({"%File:Source" : HDF['entry1/SANS/SINQ/name'][0].decode('UTF-8')})
+            self.BerSANS.update({"%File,Source" : HDF['entry1/SANS/SINQ/name'][0].decode('UTF-8')})
         if 'entry1/user/name' in HDF.keys():
-            self.BerSANS.update({"%File:User" : HDF['entry1/user/name'][0].decode(encoding='UTF-8')})
+            self.BerSANS.update({"%File,User" : HDF['entry1/user/name'][0].decode(encoding='UTF-8')})
         if 'entry1/proposal_user/email' in HDF.keys():
-            self.BerSANS.update({"%File:Email" : HDF['entry1/proposal_user/email'][0].decode(encoding='UTF-8')})
+            self.BerSANS.update({"%File,Email" : HDF['entry1/proposal_user/email'][0].decode(encoding='UTF-8')})
         if 'entry1/proposal_id' in HDF.keys():
-            self.BerSANS.update({"%File:ProposalID" : HDF['entry1/proposal_id'][0].decode('UTF-8')})
+            self.BerSANS.update({"%File,ProposalID" : HDF['entry1/proposal_id'][0].decode('UTF-8')})
         if 'entry1/proposal_title' in HDF.keys():
-            self.BerSANS.update({"%File:ProposalTitle" : HDF['entry1/proposal_title'][0].decode('UTF-8')})
+            self.BerSANS.update({"%File,ProposalTitle" : HDF['entry1/proposal_title'][0].decode('UTF-8')})
         if 'entry1/title' in HDF.keys():
-            self.BerSANS.update({"%File:Title=" : HDF['entry1/title'][0].decode('UTF-8')})
+            self.BerSANS.update({"%File,Title=" : HDF['entry1/title'][0].decode('UTF-8')})
         if 'entry1/start_time' in HDF.keys():
-            self.BerSANS.update({"%File:FromDate" : HDF['entry1/start_time'][0].decode('UTF-8')[:10]})
+            self.BerSANS.update({"%File,FromDate" : HDF['entry1/start_time'][0].decode('UTF-8')[:10]})
         if 'entry1/start_time' in HDF.keys():
-            self.BerSANS.update({"%File:FromTime" : HDF['entry1/start_time'][0].decode('UTF-8')[11:]})
+            self.BerSANS.update({"%File,FromTime" : HDF['entry1/start_time'][0].decode('UTF-8')[11:]})
         if 'entry1/end_time' in HDF.keys():
-            self.BerSANS.update({"%File:ToDate" : HDF['entry1/end_time'][0].decode('UTF-8')[:10]})
+            self.BerSANS.update({"%File,ToDate" : HDF['entry1/end_time'][0].decode('UTF-8')[:10]})
         if 'entry1/end_time' in HDF.keys():
-            self.BerSANS.update({"%File:ToTime" : HDF['entry1/end_time'][0].decode('UTF-8')[11:]})
+            self.BerSANS.update({"%File,ToTime" : HDF['entry1/end_time'][0].decode('UTF-8')[11:]})
         
         if 'entry1/sample/name' in HDF.keys():
             self.BerSANS.update({"%Sample,SampleName"    : HDF['entry1/sample/name'][0].decode('UTF-8')})

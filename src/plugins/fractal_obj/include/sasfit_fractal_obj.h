@@ -673,8 +673,14 @@ sasfit_fractal_obj_DLLEXP scalar sasfit_ff_dumbbellshell_v(scalar q, sasfit_para
  *       <td>\b R1</td>
  *       <td>R1: radius of first sphere</td>
  *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
  *       <td>\b R2</td>
- *       <td>R2: radiuis of second sphere</td>
+ *       <td>R2: radius of second sphere</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b eta_0</td>
  *       <td>eta0: SLD of solvent</td>
@@ -708,6 +714,66 @@ sasfit_fractal_obj_DLLEXP scalar sasfit_ff_two_attached_spheres_f(scalar q, sasf
  */
 sasfit_fractal_obj_DLLEXP scalar sasfit_ff_two_attached_spheres_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_two_attached_spheres ################ */
+
+
+/* ################ start ff_two_attached_spheres_w_distr ################ */
+/** 
+ * \defgroup ff_two_attached_spheres_w_distr two_attached_spheres(distr)
+ * \ingroup ff_clusters
+ *
+ * \brief \<some brief description of two_attached_spheres(distr) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R1</td>
+ *       <td>R1: radius of first sphere</td>
+ *      </tr><tr>
+ *       <td>\b sigma1</td>
+ *       <td>width of lognormal distribution for R1</td>
+ *      </tr><tr>
+ *       <td>\b R2</td>
+ *       <td>R2: radius of second sphere</td>
+ *      </tr><tr>
+ *       <td>\b sigma2</td>
+ *       <td>width of lognormal distribution for R2</td>
+ *      </tr><tr>
+ *       <td>\b eta_0</td>
+ *       <td>eta0: SLD of solvent</td>
+ *      </tr><tr>
+ *       <td>\b eta_1</td>
+ *       <td>eta1: SLD of first sphere</td>
+ *      </tr><tr>
+ *       <td>\b eta_2</td>
+ *       <td>eta2: SLD of second sphere</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_two_attached_spheres_w_distr
+ *
+ * \sa sasfit_fractal_obj.h, ff_clusters
+ */
+sasfit_fractal_obj_DLLEXP scalar sasfit_ff_two_attached_spheres_w_distr(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_two_attached_spheres_w_distr
+ *
+ * \sa sasfit_fractal_obj.h, ff_clusters
+ */
+sasfit_fractal_obj_DLLEXP scalar sasfit_ff_two_attached_spheres_w_distr_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_two_attached_spheres_w_distr
+ *
+ * \sa sasfit_fractal_obj.h, ff_clusters
+ */
+sasfit_fractal_obj_DLLEXP scalar sasfit_ff_two_attached_spheres_w_distr_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_two_attached_spheres_w_distr ################ */
+
 
 /* ################ start ff_doubleshellchain ################ */
 /** 

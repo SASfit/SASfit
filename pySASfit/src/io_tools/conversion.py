@@ -17,8 +17,10 @@ import re
 #from pySASfit.src.io_tools.SASformats import SANSdata
 
 
-def rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=[],transmissionfile=''):
+def rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=[],transmissionfile='',wl=''):
     Data = SANSdata(FullFileNameHDF)
+    if wl != '':
+        Data.BerSANS.update({"%Setup,Lambda":float(wl)})
     transD = {}
     if os.path.isfile(transmissionfile):
         transD = readBerSANStrans(transmissionfile)
@@ -101,8 +103,8 @@ def rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=[],transmissionfile=''):
 
 Data_path = 'C:\\Users\\kohlbrecher\\switchdrive\\SANS\\user\\Kenneth\\'
 year = '2023'
-from_number = 54262
-to_number = 54600
+from_number = 54263
+to_number = 54359
 
 Ignore = []
 
@@ -110,10 +112,14 @@ for filenumber in range(to_number-from_number+1):
     HDF_filename = f"sans{year}n%06d"%(filenumber+from_number)
     HMI_filename = "D%07d"%(filenumber+from_number)+'.001'
     try:
+        lambdaoverwrite=''
+        if filenumber+from_number >= 54360 and filenumber+from_number <= 54383:
+            lambdaoverwrite = '1.3026'
         rawhdf2hmi(
             Data_path + HDF_filename + '.hdf',
             Data_path + HMI_filename + '.001',
-            transmissionfile = f'{Data_path}transmissions.dat'
+            transmissionfile = f'{Data_path}transmissions.dat',
+            wl=lambdaoverwrite
         )
     except Exception:
         print(f'ignoring file number {filenumber+from_number}')

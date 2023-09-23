@@ -24,6 +24,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_stackdiscs.c
 	sasfit_ff_dumbbellshell.c
 	sasfit_ff_two_attached_spheres.c
+	sasfit_ff_two_attached_spheres_w_distr.c
 	sasfit_ff_doubleshellchain.c
 	sasfit_ff_tetrahedrondoubleshell.c
 	interface.c
