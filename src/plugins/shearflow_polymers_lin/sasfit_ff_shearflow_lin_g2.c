@@ -7,10 +7,21 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
+scalar p_psi(scalar psi, sasfit_param *param) {
+    scalar legendre_P2, legendre_P4;
+//    legendre_P2 = gsl_sf_legendre_P2(cos(psi));
+//    legendre_P4 = gsl_sf_legendre_Plm(0,4,cos(psi));
+    legendre_P2 = 0.5*(3*gsl_pow_2(cos(psi))-1);
+    legendre_P4 = (35*gsl_pow_4(cos(psi))-
+                   30*gsl_pow_2(cos(psi))+3)/8.;
+    return 1 + (2*2+1)*0.5 * P2 * legendre_P2
+             + (2*4+1)*0.5 * P4 * legendre_P4;
+}
+
 scalar sasfit_ff_shearflow_lin_g2_psi(scalar psi, sasfit_param * param) {
     PSI=psi;
     calc_QFVG(param);
-    return sasfit_ff_shearflow_lin_core(param);
+    return sasfit_ff_shearflow_lin_core(param)*p_psi(psi-PSI_0_DEG*M_PI/180.,param);
 }
 
 scalar sasfit_ff_shearflow_lin_g2(scalar q, sasfit_param * param)

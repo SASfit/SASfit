@@ -73,19 +73,19 @@
  *       <td>\b C</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b phi</td>
+ *       <td>\b phi (deg)</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b theta</td>
+ *       <td>\b theta (deg)</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b psi</td>
+ *       <td>\b psi (deg)</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b varphi</td>
+ *       <td>\b varphi (deg)</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
+ *       <td>\b dummy(</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b dummy</td>
@@ -244,13 +244,13 @@ sasfit_shearflow_polymers_lin_DLLEXP scalar sasfit_ff_shearflow_lin_g1_v(scalar 
  *       <td>\b C</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
+ *       <td>\b psi_0 (deg)</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
+ *       <td>\b P2</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
+ *       <td>\b P4</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b varphi (deg)</td>
