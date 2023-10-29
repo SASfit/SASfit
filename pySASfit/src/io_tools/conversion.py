@@ -15,110 +15,8 @@ import os
 import sys
 import re
 import pprint
-#from pySASfit.src.io_tools.SASformats import SANSdata
-
-
-def rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=[],Tfiles={},thickness={},rwl=''):
-    Data = SANSdata(FullFileNameHDF)
-    wlHDF = float(Data.BerSANS["%Setup,Lambda"])
-    transmissionfile = ""
-    for key, val in Tfiles.items():
-        if abs(key-wlHDF)/wlHDF < 0.05:
-            transmissionfile = val
-            #print(f"Tfiles: {key}:{val}")
-    if rwl != '':
-        Data.BerSANS.update({"%Setup,Lambda":float(rwl)})
-    transD = {}
-    if os.path.isfile(transmissionfile):
-        transD = readBerSANStrans(transmissionfile)
-#    print(f"filename for transmission {transmissionfile}")
-    if Data.BerSANS['%File,Type'] != 'SANSDRawhdf':
-        raise RuntimeError('input file needs to be raw data from SANS-1.')
-    BERSANS = open(Data_path+ HMI_filename, 'w', encoding="utf-8")
-    resFile = {
-        key: val 
-        for key, val in Data.BerSANS.items() 
-        if re.search("^%File", key)
-    }
-    resSetup = {
-        key: val 
-        for key, val in Data.BerSANS.items() 
-        if re.search("^%Setup", key)
-    }
-    resSample = {
-        key: val 
-        for key, val in Data.BerSANS.items() 
-        if re.search("^%Sample", key)
-    }
-    resCounter = {
-        key: val 
-        for key, val in Data.BerSANS.items() 
-        if re.search("^%Counter", key)
-    }
-    resHistory = {
-        key: val 
-        for key, val in Data.BerSANS.items() 
-        if re.search("^%History", key)
-    }
-    BERSANS.write('%File\n')
-    for key, val in resFile.items():
-        f = key.split(",")
-        if val=='SANSDRawhdf':
-            val = 'SANSDRaw'
-        if len(f) > 1:
-            if f[1]=='FileName':
-                fn=os.path.basename(FullFileNameHMI)
-                f = fn.split('.')
-                BERSANS.write(f'FileName={f[0]}\n')
-            else:
-                BERSANS.write(f'{f[1]}={val}\n')
-    BERSANS.write('%Setup\n')
-    for key, val in resSetup.items():
-        f = key.split(",")
-        if len(f) > 1:
-            BERSANS.write(f'{f[1]}={val}\n')
-    BERSANS.write('%Sample\n')
-    for key, val in resSample.items():
-        f = key.split(",")
-        if len(f) > 1:
-            BERSANS.write(f'{f[1]}={val}\n')
-    BERSANS.write('%Counter\n')
-    for key, val in resCounter.items():
-        f = key.split(",")
-        if len(f) > 1:
-            BERSANS.write(f'{f[1]}={val}\n')
-    BERSANS.write('%History\n')
-    for key, val in resHistory.items():
-        f = key.split(",")
-        if len(f) > 1:
-            BERSANS.write(f'{f[1]}={val}\n')
-    if f'{Data.BerSANS["%Sample,SampleName"]}' in transD.keys():
-        BERSANS.write(f'Transmission={transD[Data.BerSANS["%Sample,SampleName"]]}\n') 
-    if "%History,Attenuation" not in Data.BerSANS.keys():
-        BERSANS.write('Attenuation=1\n') 
-    if "%History,Probability" not in Data.BerSANS.keys():
-        BERSANS.write('Probability=0\n') 
-    if "%History,Scaling" not in Data.BerSANS.keys():
-        if Data.BerSANS["%Sample,SampleName"] in thickness.keys():
-            BERSANS.write(f'Scaling={float(thickness[Data.BerSANS["%Sample,SampleName"]])/10.}\n')
-        elif re.search('1mm',Data.BerSANS["%Sample,SampleName"]):
-            BERSANS.write('Scaling=0.1\n')
-        elif re.search('2mm',Data.BerSANS["%Sample,SampleName"]):
-            BERSANS.write('Scaling=0.2\n')
-        elif re.search('4mm',Data.BerSANS["%Sample,SampleName"]):
-            BERSANS.write('Scaling=0.4\n')
-        else:
-            BERSANS.write('Scaling=0.1\n')
-    BERSANS.write('%Counts\n')
-    try:
-        DetData = Data.BerSANS['%Counts,DetCounts']
-    except Exception:
-       print("No DetData")
-    for j in range(int(Data.BerSANS['%File,DataSizeY'])):
-        for i in range(int(Data.BerSANS['%File,DataSizeX'])//8):
-            BERSANS.write(f'{DetData[j,i*8+0]},{DetData[j,i*8+1]},{DetData[j,i*8+2]},{DetData[j,i*8+3]},'+
-                          f'{DetData[j,i*8+4]},{DetData[j,i*8+5]},{DetData[j,i*8+6]},{DetData[j,i*8+7]}\n')
-            
+import tkinter
+from PSISANS1toHMI import rawhdf2hmi
 
 Data_path = 'C:\\Users\\kohlbrecher\\switchdrive\\SANS\\user\\Maiz\\'
 year = '2023'
@@ -129,7 +27,8 @@ SkipF = [ ]
 exec(open(f'{Data_path}thickness.py').read())
 transD = readBerSANStrans(f'{Data_path}transmission.dat')
 pp = pprint.PrettyPrinter(indent=4)
-pp.pprint(thicknessD)
+#pp.pprint(thicknessD)
+"""
 for filenumber in range(to_number-from_number+1):
     HDF_filename = f"sans{year}n%06d"%(filenumber+from_number)
     HMI_filename = "D%07d"%(filenumber+from_number)+'.001'
@@ -147,3 +46,54 @@ for filenumber in range(to_number-from_number+1):
     except Exception:
         print(f'ignoring file number {filenumber+from_number}')
         continue
+"""
+
+
+gui_python_tcl_var = {}
+gui = tkinter.Tk()
+
+def adddict(*args):
+    print(len(args))
+    if len(args) >=2:
+        gui_python_tcl_var.update({args[0]:args[1]})
+    if len(args)>=4:
+        gui_python_tcl_var.update({args[2]:args[3]})
+    if len(args)>=6:
+        gui_python_tcl_var.update({args[4]:args[5]})
+        
+
+# register it as a tcl command:
+tcl_command_name = "adddict"
+python_function = adddict
+cmd = gui.createcommand(tcl_command_name, python_function)
+
+
+def register(my_python_function, tcl_cmd_name=None):
+    if tcl_cmd_name is None:
+        tcl_cmd_name = my_python_function.__name__
+    tcl_cmd = gui.register(my_python_function)
+    gui.eval('catch {rename ' + tcl_cmd_name + ' ""}')
+    gui.call('rename', tcl_cmd, tcl_cmd_name)
+    return tcl_cmd_name
+
+# Python variable access function definitions
+def set_pyvar(var_name, var_value):
+         globals()[var_name] = var_value
+
+def get_pyvar(var_name):
+    return globals()[var_name]
+
+# Register the access functions
+register(set_pyvar)
+register(get_pyvar)
+register(rawhdf2hmi)
+
+def disable_event():
+   pass
+gui.tk.eval(open(f'{os.path.dirname(__file__)}{os.sep}PSI2HMI.tcl','r').read())
+#Disable the Close Window Control Icon
+#gui.protocol("WM_DELETE_WINDOW", disable_event)
+gui.mainloop()
+
+pp.pprint(gui_python_tcl_var)
+print(gui_python_tcl_var, gui_python_tcl_var['q'])
