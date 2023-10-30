@@ -183,6 +183,55 @@ sasfit_cylinders_DLLEXP scalar sasfit_ff_porodcylinder_f(scalar q, sasfit_param 
 sasfit_cylinders_DLLEXP scalar sasfit_ff_porodcylinder_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_porodcylinder ################ */
 
+/* ################ start ff_porodcylinder_v2 ################ */
+/**
+ * \defgroup ff_porodcylinder_v2 PorodCylinder_v2
+ * \ingroup ff_plugins_cylindrical_obj
+ *
+ * \brief \<some brief description of PorodCylinder_v2 function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R</td>
+ *       <td>cylinder radius</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>cylinder length L=nu*R</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>scattering length density contrast</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_porodcylinder_v2
+ *
+ * \sa sasfit_cylinders.h, ff_plugins_cylindrical_obj
+ */
+sasfit_cylinders_DLLEXP scalar sasfit_ff_porodcylinder_v2(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_porodcylinder_v2
+ *
+ * \sa sasfit_cylinders.h, ff_plugins_cylindrical_obj
+ */
+sasfit_cylinders_DLLEXP scalar sasfit_ff_porodcylinder_v2_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_porodcylinder_v2
+ *
+ * \sa sasfit_cylinders.h, ff_plugins_cylindrical_obj
+ */
+sasfit_cylinders_DLLEXP scalar sasfit_ff_porodcylinder_v2_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_porodcylinder_v2 ################ */
+
 /* ################ start ff_longcylinder ################ */
 /**
  * \defgroup ff_longcylinder LongCylinder

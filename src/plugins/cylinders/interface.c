@@ -1,16 +1,17 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifdef MAKE_SASFIT_PLUGIN
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(13)
+SASFIT_PLUGIN_EXP_BEGIN(14)
 SASFIT_PLUGIN_EXP_ADD( ff_rod )
 SASFIT_PLUGIN_EXP_ADD( ff_disc )
 SASFIT_PLUGIN_EXP_ADD( ff_porodcylinder )
+SASFIT_PLUGIN_EXP_ADD( ff_porodcylinder_v2 )
 SASFIT_PLUGIN_EXP_ADD( ff_longcylinder )
 SASFIT_PLUGIN_EXP_ADD( ff_flatcylinder )
 SASFIT_PLUGIN_EXP_ADD( ff_cylinder )

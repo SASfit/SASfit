@@ -13,6 +13,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_rod.c
 	sasfit_ff_disc.c
 	sasfit_ff_porodcylinder.c
+	sasfit_ff_porodcylinder_v2.c
 	sasfit_ff_longcylinder.c
 	sasfit_ff_flatcylinder.c
 	sasfit_ff_cylinder.c
