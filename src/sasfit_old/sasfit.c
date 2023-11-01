@@ -427,7 +427,7 @@ void find_integration_range(Tcl_Interp *interp,
 		    (strcmp(SD_typestr,"d Gaussian / d a1") == 0) ||
 		    (strcmp(SD_typestr,"d Gaussian / d a2") == 0) ||
 		    (strcmp(SD_typestr,"d Gaussian / d a3") == 0)   ) {
-	   R_max = 0.5*a3+0.5*sqrt(a3*a3+24.0*a2*a2);
+	   R_max = 0.5*a3+0.5*sqrt(a3*a3+4*moment*a2*a2);
 	   R_n = R_max;
 	   n = 1;
 	   tmp = 1.0;
