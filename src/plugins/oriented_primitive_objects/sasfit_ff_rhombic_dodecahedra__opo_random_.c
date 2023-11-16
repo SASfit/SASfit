@@ -52,8 +52,8 @@ scalar sasfit_ff_rhombic_dodecahedra__opo_random_(scalar q, sasfit_param * param
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(dh_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
 	dh_opod.a = A;
-	dh_opod.b = B;
-	dh_opod.c = C;
+	dh_opod.b = B*A;
+	dh_opod.c = C*A;
     dh_opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&dh_opod,0,0,0);
     opo_init(&dh_opod);

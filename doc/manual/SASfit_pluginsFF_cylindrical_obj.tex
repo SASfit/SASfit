@@ -546,6 +546,86 @@ The scattering intensity of a random oriented cylinder with globular end caps re
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 
+\subsection{Cylinders packed in a hexagonal lattice with paracrystalline distortion}
+\label{sect:CylHex_paracrystalline}
+\hspace{1pt}\\
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../images/form_factor/cylindrical_obj/HEXcyl.pdf}
+\end{center}
+\caption{hexagonal packed long cylinders}
+\label{fig:hex_long_cylinder}
+\end{figure}
+Hashimoto has given in \cite{Hashimoto1994} an analytical expression for hexagonal packed infinite long cylinders with a paracrystalline disorder. In a first case the scattering perpendicular to the cylinder axis is derived but also the random oriented case is given, where simply a Lorentz factor of $q^{-1}$ needs to be multiplied \cite{Shibayama1989,Glatter1982}.
+In principle the two cases can be considered as the case of very thin rod-like structures as discussed in \ref{sec:very_anisotropic_particles}. For such thin random orientated particles the form factor can be factorized  in a cross-section term $P_\text{cs}(Q)$ for the shorter or thin dimension and a shape factor $P'(Q)$ for the long dimension.
+\begin{align}
+\label{eq:PprimePcs}
+I(Q) &=P'(Q) P_{cs}(Q).
+\end{align}
+The cross section term for cylinder-symmetric structures is the zero order Hankel transform of the radial scattering length density profile $\eta(\rho)$
+\begin{align}\label{eq:PcsHankel}
+  P_{cs}(Q) & \abs{\int_0^\infty \eta(\rho) \rho\operatorname{J}_0(Q\rho)}^2
+\end{align}
+The cross-section term alone describes the scattering perpendicular to the cylinder axes and has to be used if the cylinder axis is perfectly aligned to the beam direction, i.e.\ perpendicular to the scattering vector, as e.g.\ done in \cite{Penttilae2019} to analyse textured wood samples.
+In \cite{Hashimoto1994,Penttilae2019} the cross section term $P_{cs}(Q)$ is named $P_{cs}=I_\mathrm{cyl}(Q)$. The given model assumes, that also for the aligned cases only the cylinder axis are aligned to the beam axis but otherwise random orientations around that axis is assumed.
+\begin{subequations}
+\begin{align}
+\label{eq:CylHEXparacrystal}
+  I_\mathrm{cyl}(Q) &= \frac{1}{2\pi}\int_0^\infty I_\perp(Q,\psi) \mathrm{d}\psi\\
+  I_\perp(Q,\psi) &= \langle \abs{F_\mathrm{cs}(Q)^2}\rangle + \abs{\langle F_\mathrm{cs}(Q)\rangle}^2 \left(S(Q)-1\right)\\
+  F_\mathrm{cs}(Q,R) &= \int_0^\infty \eta(\rho) \rho\operatorname{J}_0(Q\rho) \mathrm{d}\rho = \pi R^2 \frac{\operatorname{J}_1(Qr)}{QR} \\
+  S(Q) &= Z_1 Z_2  \\
+  Z_k &= \frac{1-\abs{F_k}^2}{1-2\abs{F_k}\cos\left(\mathbf{Q}\mathbf{a}_k\right) + \abs{F_k}^2} \\
+  F_k &= \exp\left( -\frac12 \left(\frac{\Delta a}{a}\right)^2\left[\left(\mathbf{Q}\mathbf{a}_1\right)^2 + \left(\mathbf{Q}\mathbf{a}_2\right)^2\right]\right) \\
+  \mathbf{Q}\mathbf{a}_1 &= -aQ\cos\left(\psi-\pi/6\right)\\
+  \mathbf{Q}\mathbf{a}_2 &=  aQ\sin\left(\psi\right)
+\end{align}
+\end{subequations}
+The lattice constant $a$ is assumed to have a certain paracrystalline distortion quantified by $\Delta a$. The structure factor of the hexagonal lattice has been introduced using the decoupling approach \cite{Kotlarchyk1983}, which involves two averages $\langle \abs{F_\mathrm{cs}(Q)^2}\rangle$ and $\abs{\langle F_\mathrm{cs}(Q)\rangle}^2$ of the cross-section amplitude. In case of a Gaussian distribution (see \ref{sec:GaussSD}) of cylinder radii with $\overline{R}$ being the maximum of the Gaussian distribution and $\Delta R=\sigma$ the width parameter according to eq.\ \ref{eq:GaussDistribution} so that
+\begin{align}
+\langle F_\mathrm{cs}(Q)\rangle &= \int_0^\infty \text{Gauss}(R,1,\Delta R,\overline{R}) F_\mathrm{cs}(Q,R) \mathrm{d}R \\
+\langle F_\mathrm{cs}^2(Q)\rangle &= \int_0^\infty \text{Gauss}(R,1,\Delta R,\overline{R}) F_\mathrm{cs}^2(Q,R) \mathrm{d}R
+\end{align}
+To suppress the upturn in the structure factor at small $Q$-values a modification of the lattice factor $Z_k$  has been suggested in \cite{Penttilae2019} by approximating the lattice factor by
+\begin{align}\label{eq:modifiedZk}
+  Z_k &=
+  \begin{cases}
+        Z_k(Q_0), & 	\text{if $Q \leq  Q_0$} \\
+        Z_k(Q) 	, & 	\text{if $Q >     Q_0$}
+  \end{cases} \\
+  Q_0 &= 7.061\times 10^{-5} a^2 - 0.007413a + 0.2465
+\end{align}
+The polynominal dependencies of $Q_0$ has been determined in \cite{Penttilae2019}, where they found, that it is also almost independent on $\Delta a$.
+
+~\\
+\subsubsection{Scattering perpendicular to hexagonal packed cylinder} ~\\
+
+\hspace{1pt}\\
+\uline{Input Parameters for model \texttt{torus}:}\\
+\begin{description}
+\item[\texttt{R}] avg.\ cylinder radius $R$
+\item[\texttt{dR\_ratio}] Gaussian width parameter $\Delta R$ divided by average radius $\Delta R/R$
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{a}] lattice parameter $a$
+\item[\texttt{da\_ratio}] paracrystalline distortion parameter $\Delta a$ divided by lattice constant $\Delta a/a$
+\item[\texttt{version(S(Q)}] flag
+\item[\texttt{L}] length of cylinder $L$
+\item[\texttt{sigma\_L}] LogNorm width parameter for cylinder Length $\sigma_\mathrm{L}$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item the integration algorithm can be configured via GUI (via \texttt{integration strategy})
+\item for $R-a-\Delta a <0$ the integration in \ref{eq:torus1} starts at 0 as a lower limit. In the extreme case $R=0$ the form factor is the one of an elliptical shell.
+\end{itemize}
+
+~\\
+\subsubsection{Scattering of randomly oriented bundles of hexagonal packed cylinder} ~\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+
 \subsection{Torus with elliptical shell cross-section}  \cite{Kawaguchi2001,Forster1999}
 \label{sect:Torus}
 \hspace{1pt}\\
