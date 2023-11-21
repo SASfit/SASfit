@@ -480,7 +480,7 @@ P_{\mathrm{cone,rnd}}(Q) &= \left\langle F_\mathrm{cone}^2(\B{Q})\right\rangle_\
 \item[\texttt{gamma}] third Euler angle
 \item[\texttt{psi}] direction of $\B{Q}$ on detector ($\psi=0$, $x$-direction, to the right)
 \item[\texttt{tilt}] tilt angle $\alpha_\mathrm{tilt}$ of conical side wall of unit cone
-\item[\texttt{H\_R}] height of unit cone $H_R$
+\item[\texttt{H\_R}] height of unit cone $H_R=H/R$
 \end{description}
 
 \begin{figure}[htb]
@@ -511,7 +511,7 @@ P_{\mathrm{cone,rnd}}(Q) &= \left\langle F_\mathrm{cone}^2(\B{Q})\right\rangle_\
 \item[\texttt{dummy}] not used
 \item[\texttt{dummy}] not used
 \item[\texttt{dummy}] not used
-\item[\texttt{tilt}] tilt angle $\alpha_\mathrm{tilt}$ of conical side wall of unit cone
+\item[\texttt{tilt}] tilt angle $\alpha_\mathrm{tilt}$ of conical side wall of aunit cone
 \item[\texttt{H\_R}] height of unit cone $H_R$
 \end{description}
 
@@ -628,7 +628,7 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
 
 \begin{align}\label{eq:opo_tetrah}
 \begin{split}
- F_\mathrm{th}(\mathbf{Q},R,H,\alpha) & = \frac{\sqrt{3}H}{\tilde{Q}_x\left(\tilde{Q}_x^2-3\tilde{Q}_y^2\right)} e^{\imath\tilde{Q}_zR\tan(\alpha)/\sqrt{3}} \quad \times\\
+ F_\mathrm{th}(\mathbf{Q},R,H,\alpha) & = \frac{H}{\sqrt{3}\tilde{Q}_x\left(\tilde{Q}_x^2-3\tilde{Q}_y^2\right)} e^{\imath\tilde{Q}_zR\tan(\alpha)/\sqrt{3}} \quad \times\\
      &  \Bigg\{-\left(\tilde{Q}_x+\sqrt{3}\tilde{Q}_y\right) \frac{\sin(q_1H)}{q_1H}e^{\imath q_1L}  +\\
      & \left(-\tilde{Q}_x+\sqrt{3}\tilde{Q}_y\right)\frac{\sin(q_2H)}{q_2H}e^{-\imath q_2L} +2\tilde{Q}_x \frac{\sin(q_3H)}{q_3H}e^{\imath q_3L}\Bigg\}
 \end{split} \\
@@ -639,8 +639,14 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
   \frac{H}{R} & < \frac{\tan(\alpha)}{\sqrt{3}}
 \end{align}
 
-\subsection{oriented and random oriented squared pyramid} ~\\
-\cite{Renaud2009}
+\noindent\uline{Note:}
+\begin{itemize}
+\item the volume of the tetrahedron is
+$$V_\mathrm{th}=\frac{8}{3} \tan(\alpha) \left[R^3 - \left(R-\frac{\sqrt{3}H}{\tan(\alpha)}\right)^3 \right]  $$
+\end{itemize}
+
+\subsection{oriented and random oriented square basis pyramid} ~\\
+The form factor of a square basis pyramid has been taken from \cite{Renaud2009}.
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{../images/form_factor/oriented_primitive_opbjects/pyramid4.png}
@@ -666,6 +672,51 @@ The basic formula for the form factor of a cone with a 6-fold symmetry (blunted 
   K_4 &= -\imath \frac{\sin(q_3H)}{q_3H} e^{\imath q_3H}+\imath \frac{\sin(q_4H)}{q_4H} e^{-\imath q_4H}\\
   \frac{H}{R} & < \frac{\tan(\alpha)}{\sqrt{3}}
 \end{align}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
+\item $a$ and $b$ are the half axis or radii of the elliptical base and $cH_R$ the full height of the cone.
+\item the volume of the square basis pyramid: is
+$$V_\mathrm{th}=\frac{1}{3} \tan(\alpha) \left[R^3 - \left(R-\frac{H}{\tan(\alpha)}\right)^3 \right]  $$
+\end{itemize}
+
+
+\subsection{oriented and random oriented octahedron}
+~\\
+The octahedron can be represented as two regular pyramids with a quadrilateral base connected through this base.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.4\textwidth]{../images/form_factor/oriented_primitive_opbjects/Octahedron.pdf}
+\end{center}
+\caption{sketch of a regular octahedron composed of two regular pyramids with edge lengths of $2a$}
+\label{fig:opo_octahedron}
+\end{figure}
+
+\subsection{oriented and random oriented rhombic dodecahedron}
+~\\
+
+A rhombic dodecahedraon is composed of 6 pyramids with an edge length of $2R$ and height $R$ and one cube with an edge length of $2R$ \cite{Jones2010}. A rhombic dodecahedron is constructed by aligning the base of each pyramid with the faces of the cube.
+
+\begin{figure}[htb]
+\begin{tabular}{ccc}
+\multirow{2}{*}{\includegraphics[width=0.55\textwidth]{../images/form_factor/oriented_primitive_opbjects/Rhombic_dodecahedron_4color.png}} & & \\
+&\includegraphics[width=0.2\textwidth,height=0.2\textwidth]{../images/form_factor/oriented_primitive_opbjects/RhombicDodecahedron2.pdf}
+&\includegraphics[width=0.2\textwidth,height=0.2\textwidth]{../images/form_factor/oriented_primitive_opbjects/RhombicDodecahedron4.pdf} \\
+&\includegraphics[width=0.2\textwidth,height=0.2\textwidth]{../images/form_factor/oriented_primitive_opbjects/RhombicDodecahedron3.pdf}
+&\includegraphics[width=0.2\textwidth,height=0.2\textwidth]{../images/form_factor/oriented_primitive_opbjects/RhombicDodecahedron5.pdf}\\
+\end{tabular}
+\caption{sketch of a rhombic dodecahedron composed of 12 pyramids with an edge length of $2R$ and height $R$}
+\label{fig:opo_rhombic_dodecahedron}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/oriented_primitive_opbjects/RhombicDodecahedron.pdf}
+\end{center}
+\caption{comparison of a random oriented rhombic dodecahedron and a sphere of the same volume}
+\label{fig:opo_rhombic_dodecahedron_IQ}
+\end{figure}
 
 \subsection{oriented superellipsoid} ~\\
 

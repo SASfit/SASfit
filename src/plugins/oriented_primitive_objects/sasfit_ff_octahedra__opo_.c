@@ -38,9 +38,9 @@ scalar sasfit_ff_octahedra__opo__f(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
     SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
-	opod.a = A;
-	opod.b = B;
-	opod.c = C;
+	oh_opod.a = A/M_SQRT2;
+	oh_opod.b = B*oh_opod.a;
+	oh_opod.c = C*oh_opod.a;
     opod.Rotation.convention = yaw_pitch_roll;
     opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
     opo_init(&opod);
@@ -55,23 +55,32 @@ scalar sasfit_ff_octahedra__opo__f(scalar q, sasfit_param * param)
     opo_setQhat(&opod);
 	// insert your code here
 
-	return (ETA_P-ETA_M) *opod.detDinv*opo_FOH(&opod);
+	return 4.0/3.0*(ETA_P-ETA_M) *opod.detDinv*opo_FOH(&opod);
 }
 
 scalar sasfit_ff_octahedra__opo__v(scalar q, sasfit_param * param, int dist)
-{	opo_data opod;
-	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+{
+    if (dist == 0) {
+	    oh_opod.a = x/M_SQRT2;
+	} else {
+	    oh_opod.a = A/M_SQRT2;
+	}
+	if (dist == 4) {
+	    oh_opod.b = x*oh_opod.a;
+	} else {
+	    oh_opod.b = B*oh_opod.a;
+	}
+	if (dist == 8) {
+	    oh_opod.c = x*oh_opod.a;
+	} else {
+	    oh_opod.c = C*oh_opod.a;
+	}
+    oh_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&oh_opod,ALPHA,BETA,GAMMA);
+    opo_init(&oh_opod);
 
-	// insert your code here
-    opod.a = A;
-	opod.b = B;
-	opod.c = C;
-    opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_init(&opod);
+    SASFIT_CHECK_COND(SASFIT_EQUAL(oh_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
-
-	return 4./3.*opod.detDinv;
+	return 4./3.*oh_opod.detDinv;
 }
 

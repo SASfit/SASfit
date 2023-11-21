@@ -101,9 +101,11 @@ scalar sasfit_ff_tetrahedra__opo_random__f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_tetrahedra__opo_random__v(scalar q, sasfit_param * param, int dist)
 {
+    scalar TanAlpha;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return tetrahedron_opod.detDinv;
+	TanAlpha=2*sqrt(2);
+	return 8.0/3.0*TanAlpha*(gsl_pow_3(1)-gsl_pow_3(1-sqrt(3)*H_R/TanAlpha))*tetrahedron_opod.detDinv;
 }
 

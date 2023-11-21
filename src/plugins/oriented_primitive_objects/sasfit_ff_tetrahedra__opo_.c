@@ -68,6 +68,7 @@ scalar sasfit_ff_tetrahedra__opo__f(scalar q, sasfit_param * param)
 scalar sasfit_ff_tetrahedra__opo__v(scalar q, sasfit_param * param, int dist)
 {
 	opo_data opod;
+	scalar TanAlpha;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
@@ -79,7 +80,7 @@ scalar sasfit_ff_tetrahedra__opo__v(scalar q, sasfit_param * param, int dist)
     opo_init(&opod);
 
     SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
-
-	return 4./3.*opod.detDinv;
+    TanAlpha=2*sqrt(2);
+	return 8./3.*TanAlpha*(gsl_pow_3(1)-gsl_pow_3(1-sqrt(3)*H_R/TanAlpha))*opod.detDinv;
 }
 
