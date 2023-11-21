@@ -7,14 +7,14 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-opo_data oh_opod;
+opo_data ohr_opod;
 
 scalar sasfit_ff_octahedra_opo_kernel_f(scalar theta, scalar phi, sasfit_param * param) {
-    oh_opod.Q[0] = oh_opod.Qmod*cos(phi)*sin(theta);
-    oh_opod.Q[1] = oh_opod.Qmod*sin(phi)*sin(theta);
-    oh_opod.Q[2] = oh_opod.Qmod         *cos(theta);
-    opo_setQhat(&oh_opod);
-    return 4.0/3.0*(ETA_P-ETA_M) *oh_opod.detDinv*opo_FOH(&oh_opod);
+    ohr_opod.Q[0] = ohr_opod.Qmod*cos(phi)*sin(theta);
+    ohr_opod.Q[1] = ohr_opod.Qmod*sin(phi)*sin(theta);
+    ohr_opod.Q[2] = ohr_opod.Qmod         *cos(theta);
+    opo_setQhat(&ohr_opod);
+    return 4.0/3.0*(ETA_P-ETA_M) *ohr_opod.detDinv*opo_FOH(&ohr_opod);
 }
 scalar sasfit_ff_octahedra_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
     return gsl_pow_2(sasfit_ff_octahedra_opo_kernel_f(theta,phi,param));
@@ -31,20 +31,20 @@ scalar sasfit_ff_octahedra__opo_random_(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((C <= 0.0), param, "c(%lg) <= 0",C); // modify condition to your needs
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ohr_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ohr_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ohr_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
-	oh_opod.a = A/M_SQRT2;
-	oh_opod.b = B*oh_opod.a;
-	oh_opod.c = C*oh_opod.a;
-    oh_opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&oh_opod,0,0,0);
-    opo_init(&oh_opod);
+	ohr_opod.a = A/M_SQRT2;
+	ohr_opod.b = B*ohr_opod.a;
+	ohr_opod.c = C*ohr_opod.a;
+    ohr_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&ohr_opod,0,0,0);
+    opo_init(&ohr_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(oh_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(ohr_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
-    oh_opod.Qmod = q;
+    ohr_opod.Qmod = q;
     sasfit_param_set_polar_theta(M_PI);
     sasfit_param_set_polar_phi(2*M_PI);
     return sasfit_orient_avg(&sasfit_ff_octahedra_opo_kernel,param);
@@ -60,23 +60,23 @@ scalar sasfit_ff_octahedra__opo_random__f(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((C <= 0.0), param, "c(%lg) <= 0",C); // modify condition to your needs
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ohr_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ohr_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(ohr_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
-	oh_opod.a = A/M_SQRT2;
-	oh_opod.b = B*oh_opod.a;
-	oh_opod.c = C*oh_opod.a;
-    oh_opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&oh_opod,0,0,0);
-    opo_init(&oh_opod);
+	ohr_opod.a = A/M_SQRT2;
+	ohr_opod.b = B*ohr_opod.a;
+	ohr_opod.c = C*ohr_opod.a;
+    ohr_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&ohr_opod,0,0,0);
+    opo_init(&ohr_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(oh_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(ohr_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be linear dependent");
 
-    oh_opod.Qmod = q;
+    ohr_opod.Qmod = q;
     sasfit_param_set_polar_theta(M_PI);
     sasfit_param_set_polar_phi(2*M_PI);
-    return oh_opod.detDinv*sasfit_orient_avg(&sasfit_ff_octahedra_opo_kernel_f,param);
+    return ohr_opod.detDinv*sasfit_orient_avg(&sasfit_ff_octahedra_opo_kernel_f,param);
 }
 
 scalar sasfit_ff_octahedra__opo_random__v(scalar x, sasfit_param * param, int dist)
@@ -85,26 +85,26 @@ scalar sasfit_ff_octahedra__opo_random__v(scalar x, sasfit_param * param, int di
 
 	// insert your code here
     if (dist == 0) {
-	    oh_opod.a = x/M_SQRT2;
+	    ohr_opod.a = x/M_SQRT2;
 	} else {
-	    oh_opod.a = A/M_SQRT2;
+	    ohr_opod.a = A/M_SQRT2;
 	}
 	if (dist == 4) {
-	    oh_opod.b = x*oh_opod.a;
+	    ohr_opod.b = x*ohr_opod.a;
 	} else {
-	    oh_opod.b = B*oh_opod.a;
+	    ohr_opod.b = B*ohr_opod.a;
 	}
 	if (dist == 8) {
-	    oh_opod.c = x*oh_opod.a;
+	    ohr_opod.c = x*ohr_opod.a;
 	} else {
-	    oh_opod.c = C*oh_opod.a;
+	    ohr_opod.c = C*ohr_opod.a;
 	}
-    oh_opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&oh_opod,ALPHA,BETA,GAMMA);
-    opo_init(&oh_opod);
+    ohr_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&ohr_opod,ALPHA,BETA,GAMMA);
+    opo_init(&ohr_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(oh_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(ohr_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
-	return 4./3.*oh_opod.detDinv;
+	return 4./3.*ohr_opod.detDinv;
 }
 

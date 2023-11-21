@@ -8,6 +8,7 @@
 
 // define shortcuts for local parameters/variables
 
+opo_data oh_opod;
 scalar sasfit_ff_octahedra__opo_(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -25,7 +26,6 @@ scalar sasfit_ff_octahedra__opo_(scalar q, sasfit_param * param)
 scalar sasfit_ff_octahedra__opo__f(scalar q, sasfit_param * param)
 {
     scalar psi;
-	opo_data opod;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
@@ -34,31 +34,31 @@ scalar sasfit_ff_octahedra__opo__f(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((C <= 0.0), param, "c(%lg) <= 0",C); // modify condition to your needs
 
 	// insert your code here
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
-	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.ea,EA_X,EA_Y,EA_Z),0.0),param,"vector [EA_X,EA_Y,EA_Z] must have a norm != 0");
+	SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.eb,EB_X,EB_Y,EB_Z),0.0),param,"vector [EB_X,EB_Y,EB_Z] must have a norm != 0");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(opo_set_e(oh_opod.ec,EC_X,EC_Y,EC_Z),0.0),param,"vector [EC_X,EC_Y,EC_Z] must have a norm != 0");
 
 	oh_opod.a = A/M_SQRT2;
 	oh_opod.b = B*oh_opod.a;
 	oh_opod.c = C*oh_opod.a;
-    opod.Rotation.convention = yaw_pitch_roll;
-    opo_setEulerAngles(&opod,ALPHA,BETA,GAMMA);
-    opo_init(&opod);
+    oh_opod.Rotation.convention = yaw_pitch_roll;
+    opo_setEulerAngles(&oh_opod,ALPHA,BETA,GAMMA);
+    opo_init(&oh_opod);
 
-    SASFIT_CHECK_COND(SASFIT_EQUAL(opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
+    SASFIT_CHECK_COND(SASFIT_EQUAL(oh_opod.detDinv,0.0),param,"vectors ea, eb, ec seem to be not linear independent");
 
-    opod.Qmod = q;
+    oh_opod.Qmod = q;
     psi=sasfit_param_override_get_psi(PSI_DEG*M_PI/180.);
-    opod.Q[0] = q*cos(psi);
-    opod.Q[1] = q*sin(psi);
-    opod.Q[2] = 0;
-    opo_setQhat(&opod);
+    oh_opod.Q[0] = q*cos(psi);
+    oh_opod.Q[1] = q*sin(psi);
+    oh_opod.Q[2] = 0;
+    opo_setQhat(&oh_opod);
 	// insert your code here
 
-	return 4.0/3.0*(ETA_P-ETA_M) *opod.detDinv*opo_FOH(&opod);
+	return 4.0/3.0*(ETA_P-ETA_M) *oh_opod.detDinv*opo_FOH(&oh_opod);
 }
 
-scalar sasfit_ff_octahedra__opo__v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_ff_octahedra__opo__v(scalar x, sasfit_param * param, int dist)
 {
     if (dist == 0) {
 	    oh_opod.a = x/M_SQRT2;
