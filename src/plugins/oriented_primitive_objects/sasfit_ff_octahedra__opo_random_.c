@@ -14,7 +14,7 @@ scalar sasfit_ff_octahedra_opo_kernel_f(scalar theta, scalar phi, sasfit_param *
     ohr_opod.Q[1] = ohr_opod.Qmod*sin(phi)*sin(theta);
     ohr_opod.Q[2] = ohr_opod.Qmod         *cos(theta);
     opo_setQhat(&ohr_opod);
-    return 4.0/3.0*(ETA_P-ETA_M) *ohr_opod.detDinv*opo_FOH(&ohr_opod);
+    return (ETA_P-ETA_M) *ohr_opod.detDinv*opo_FOH(&ohr_opod);
 }
 scalar sasfit_ff_octahedra_opo_kernel(scalar theta, scalar phi, sasfit_param * param) {
     return gsl_pow_2(sasfit_ff_octahedra_opo_kernel_f(theta,phi,param));
@@ -76,7 +76,7 @@ scalar sasfit_ff_octahedra__opo_random__f(scalar q, sasfit_param * param)
     ohr_opod.Qmod = q;
     sasfit_param_set_polar_theta(M_PI);
     sasfit_param_set_polar_phi(2*M_PI);
-    return ohr_opod.detDinv*sasfit_orient_avg(&sasfit_ff_octahedra_opo_kernel_f,param);
+    return sasfit_orient_avg(&sasfit_ff_octahedra_opo_kernel_f,param);
 }
 
 scalar sasfit_ff_octahedra__opo_random__v(scalar x, sasfit_param * param, int dist)

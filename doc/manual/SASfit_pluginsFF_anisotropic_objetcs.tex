@@ -84,7 +84,7 @@ a\, e_{az} & b\, e_{bz} & c\, e_{cz} \\
 + e_{az}\, e_{bx}\, e_{cy} \nonumber \\
 &\phantom{=} - e_{az}\, e_{by}\, e_{cx}
    - e_{ay}\, e_{bx}\, e_{cz}
-   - e_{ax}\, e_{bz}\, e_{cy})
+   - e_{ax}\, e_{bz}\, e_{cy}) \label{eq:detDm1}
 \end{align}
 \begin{align}
 \M{D} &= (\M{D}^{-1})^{-1} = \frac{1}{\det(\M{D}^{-1})}\,
@@ -357,12 +357,12 @@ F_{\mathrm{C,rnd}}(Q) &= \left\langle F_\mathrm{C}(\B{Q})\right\rangle_\B{Q} = \
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
-                                     \end{pmatrix}\right) \\
+                                     \end{pmatrix}\right) \label{eq:opo_rnd_cylF}\\
 P_{\mathrm{C,rnd}}(Q) &= \left\langle F_\mathrm{C}^2(\B{Q})\right\rangle_\B{Q} = \int_0^\pi\mathrm{d}\theta \int_0^{2\pi}\mathrm{d}\phi \; F_\mathrm{C}^2\left(Q\begin{pmatrix}
                                        \cos(\phi)\sin(\theta) \\
                                        \sin(\phi)\sin(\theta) \\
                                        \cos(\theta)
-                                     \end{pmatrix}\right)
+                                     \end{pmatrix}\right) \label{eq:opo_rnd_cylF2}
 \end{align}
 ~\\
 \uline{Input Parameters for model \texttt{cylinder (opo)}:}
@@ -687,11 +687,88 @@ $$V_\mathrm{th}=\frac{1}{3} \tan(\alpha) \left[R^3 - \left(R-\frac{H}{\tan(\alph
 The octahedron can be represented as two regular pyramids with a quadrilateral base connected through this base.
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.4\textwidth]{../images/form_factor/oriented_primitive_opbjects/Octahedron.pdf}
+\includegraphics[width=0.6\textwidth]{../images/form_factor/oriented_primitive_opbjects/Octahedron.png}
 \end{center}
-\caption{sketch of a regular octahedron composed of two regular pyramids with edge lengths of $2a$}
+\caption{sketch of a regular octahedron  composed of two regular pyramids with edge lengths of $2a$}
 \label{fig:opo_octahedron}
 \end{figure}
+The form factor of a regular octahedron \cite{Li2011} with an edge length of $\sqrt{2}$  reads as
+\begin{align}\label{eq:FF_RegularOctahedron}
+  F_\mathrm{rOH}(\mathbf{Q}) &= \frac{V_\mathrm{rOH}}{Q_x^2-Q_y^2} \left(h(Q_y,Q_z)+h(Q_z,Q_x)\right)\\
+  V_\mathrm{rOH} &= \frac{4}{3} \\
+  h(Q_1,Q_2) &= 8\frac{Q_1\sin Q_1 - Q_2\sin Q_2}{Q_1^2-Q_2^2}
+\end{align}
+To be consistent with the length definition of the other oriented primitive objects having an half axis length of $a$, $b$, and $c$ we can use $\hat{\mathbf{Q}}$ as defined in \ref{eq:Q:dach} and $\det(\M{D}^{-1})$ as defined in \ref{eq:detDm1} to also include an affine deformation and finally get
+\begin{align}\label{eq:FFOctahedron}
+  F_\mathrm{OH}(\mathbf{Q}) &=  \left(\eta_p-\eta_m\right) \frac{\det(\M{D}^{-1})}{2\sqrt{2}}F_\mathrm{rOH}(\hat{\mathbf{Q}}/\sqrt{2}) \\
+  P_\mathrm{OH}(\mathbf{Q}) &=F_\mathrm{OH}^2(\hat{\mathbf{Q}})
+\end{align}
+with $\eta_p$ being the scattering length density of the particle and $\eta_m$ that one of the matrix.
+
+For a random oriented oblique octahedron the orientation average is done over all directions of $\B{Q}$. The corresponding scattering amplitude $F_{\mathrm{OH},rnd}(Q)$ and scattering intensity $P_{\mathrm{OH},rnd}(Q)$ are then calculated in the same way as in eqs.\ \ref{eq:opo_rnd_cylF} and \ref{eq:opo_rnd_cylF2}.
+
+\begin{figure}[htb]
+\includegraphics[width=0.31\textwidth]{../images/form_factor/oriented_primitive_opbjects/octahedron_0_0_0.pdf} \hfill
+\includegraphics[width=0.31\textwidth]{../images/form_factor/oriented_primitive_opbjects/octahedron_0_90_0.pdf}  \hfill \includegraphics[width=0.31\textwidth]{../images/form_factor/oriented_primitive_opbjects/octahedron_0_0_90.pdf}
+\caption{2D scattering patterns of an oriented octahedron. The octahedrons are simulated with half axis length of $a=1.5b=5c$. The Tait–Bryan angles (yaw-pitch-roll) are $(\alpha=0^\circ,\beta=0^\circ,\gamma=0^\circ)$, $(\alpha=0^\circ,\beta=90^\circ,\gamma=0^\circ)$, and $(\alpha=0^\circ,\beta=0^\circ,\gamma=90^\circ)$ }
+\label{fig:opo_coneIQ2D}
+\end{figure}
+
+~\\
+\uline{Input Parameters for model \texttt{octahedron (opo)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{nu}] length of second half axis $b=\nu a$
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{mu}] length of third half axis $c=\mu a$
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\item[\texttt{alpha}] first Euler angle
+\item[\texttt{beta}] second Euler angle
+\item[\texttt{gamma}] third Euler angle
+\item[\texttt{psi}] direction of $\B{Q}$ on detector ($\psi=0$, $x$-direction, to the right)
+\end{description}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/oriented_primitive_opbjects/octahedronIQ.pdf}
+\end{center}
+\caption{Scattering curves of an octahedron compared to a sphere of the same volume of $10^4$nm$^3$.}
+\label{fig:opo_octahedronIQ}
+\end{figure}
+~\\
+\uline{Input Parameters for model \texttt{octahedron (opo, random)}:}
+\begin{description}
+\item[\texttt{a}] length of first half axis
+\item[\texttt{ea\_x}] $x$-component of fist axis.
+\item[\texttt{ea\_y}] $y$-component of fist axis.
+\item[\texttt{ea\_z}] $z$-component of fist axis.
+\item[\texttt{nu}] length of second half axis $b=\nu a$
+\item[\texttt{eb\_x}] $x$-component of second axis.
+\item[\texttt{eb\_y}] $y$-component of second axis.
+\item[\texttt{eb\_z}] $z$-component of second axis.
+\item[\texttt{mu}] length of third half axis $c=\mu a$
+\item[\texttt{ec\_x}] $x$-component of third axis.
+\item[\texttt{ec\_y}] $y$-component of third axis.
+\item[\texttt{ec\_z}] $z$-component of third axis.
+\item[\texttt{eta\_p}] scattering length density $\eta_p$ of particle
+\item[\texttt{eta\_m}] scattering length density $\eta_m$ of matrix
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item the unit vector $\B{e}_a$, $\B{e}_b$, and $\B{e}_c$ are internally normalized to 1 and need to be linear independent.
+\item the volume of the oblique octahedron is $V_\mathrm{OH}=\frac{\sqrt{2}}{3}8\det(\M{D}^{-1})$
+\end{itemize}
 
 \subsection{oriented and random oriented rhombic dodecahedron}
 ~\\

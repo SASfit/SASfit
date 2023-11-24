@@ -13,7 +13,7 @@ scalar sasfit_ff_octahedra__opo_(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND1((q <= 0.0), param, "q(%lg) <= 0",q);
+	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((A <= 0.0), param, "a(%lg) <= 0",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((B <= 0.0), param, "b(%lg) <= 0",B); // modify condition to your needs
 	SASFIT_CHECK_COND1((C <= 0.0), param, "c(%lg) <= 0",C); // modify condition to your needs
@@ -55,7 +55,7 @@ scalar sasfit_ff_octahedra__opo__f(scalar q, sasfit_param * param)
     opo_setQhat(&oh_opod);
 	// insert your code here
 
-	return 4.0/3.0*(ETA_P-ETA_M) *oh_opod.detDinv*opo_FOH(&oh_opod);
+	return (ETA_P-ETA_M) *oh_opod.detDinv*opo_FOH(&oh_opod);
 }
 
 scalar sasfit_ff_octahedra__opo__v(scalar x, sasfit_param * param, int dist)
