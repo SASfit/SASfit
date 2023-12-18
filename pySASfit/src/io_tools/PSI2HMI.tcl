@@ -76,8 +76,8 @@ pack .top -side top -fill x
 frame .top.in 
 pack .top.in -side top -pady 4 -fill x
 
-puts [get_pyvar gui_python_tcl_var]
-puts [adddict q 124]
+#puts [get_pyvar Tfiles_tcl]
+#puts [adddict q 124]
 frame .top.in.indirdata
 frame .top.in.outdirdata
 frame .top.in.drive
@@ -235,7 +235,7 @@ checkbutton .top.in.wltrans.trans2active -text ":use" -variable active2 \
 label .top.in.wltrans.trans2fn  -width 46 -anchor w\
 		-textvariable trans2dataname
 button .top.in.wltrans.trans2select -text "select..." \
-       -command { global active2 strans2data trans2dataname wl2 outdirdata 
+       -command { global active2 trans2data trans2dataname wl2 outdirdata 
                   set tmpstr [tk_getOpenFile -initialdir $outdirdata \
                                              -title "select transmission file for lambda=$wl2"]
                   if {[string length $tmpstr] > 0} {
@@ -260,6 +260,9 @@ grid .top.in.wltrans.label1 .top.in.wltrans.wl1 .top.in.wltrans.trans1active .to
 grid .top.in.wltrans.label2 .top.in.wltrans.wl2 .top.in.wltrans.trans2active .top.in.wltrans.trans2select .top.in.wltrans.trans2fn
 button .top.in.convert.action -text "convert" \
             -command { global number startnumber endnumber output input continuously stopconvert
+                       global trans1data trans1dataname wl1 outdirdata active1
+                       global trans2data trans2dataname wl2 active2
+
                        for {set number $startnumber} {
                                 $number <= $endnumber} {
                                             incr number} {
@@ -290,7 +293,11 @@ button .top.in.convert.action -text "convert" \
                               set outname [file tail $output]
                               # catch {eval exec "${home}/hdf2hmi ${home}/sansstore.dic $input $output $outname"} msg
                               # catch {eval exec "python ${home}/PSISANS1toHMI.py $input $output"} msg
-                              rawhdf2hmi $input $output
+                              set Trans_path "C:/Users/kohlbrecher/switchdrive/SANS/user/Genix/raw/"
+                              set T8 ${Trans_path}trans8A.txt
+                              adddict_Tfiles 0.8 $T8
+                              catch {rawhdf2hmi_tcl $input $output} msg 
+                              puts "msg from tcl call >rawhdf2hmi_tcl $input $output<"
                               #puts "python ${home}/PSISANS1toHMI.py $input $output"
                               #puts $msg
                           } else {

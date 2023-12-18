@@ -2,7 +2,7 @@
 
 \section{Non spherical-symmetric randomly oriented particles}
 \label{sec:anisotropic_randomlyoriented_particles}
-\subsection{Rectangular parallelepiped}
+\subsection{Rectangular parallelepiped}~\\
 \label{sec:reccuboid}
 In a rectangular parallelepiped, all angles are right angles, and opposite faces of a parallelepiped are equal. Also the terms rectangular cuboid or orthogonal parallelepiped are used to designate this polyhedron. Four variants of rectangular parallelepipeds have been implemented, where either none, one, two, or all three axis have a common size distribution.
 \begin{figure}[htb]
@@ -54,7 +54,9 @@ with
 
 \noindent\uline{Note:}
 \begin{itemize}
-\item None
+\item The form factor is needs especially for large $q$-values quite some computational resources. In case of a parallelepiped with edge length differing a lot in size faster approximations are available \ref{sec:ribbon} which make use of approximations used for thin or flat objects like in \ref{sec:very_anisotropic_particles}.
+\item The integration routine for orientational average can be configured via the GUI interface.
+\item One version is assuming a monodisperse size distribution and the other three already have included a lognormal distribution either for one edge length, or simultaneous size distribution for either two or three edge lengthes.
 \end{itemize}
 
 \begin{figure}[htb]
@@ -63,6 +65,51 @@ with
 \end{center}
 \caption{Scattering curves for parallelepiped with optional size distribution a single edge length (\texttt{parallelepiped\_abc1}), of a surface area (\texttt{parallelepiped\_abc1}), or volume \texttt{parallelepiped\_abc3}.}
 \label{fig:IQparallelepiped}
+\end{figure}
+
+\subsection{Ribbon} ~\\
+\label{sec:ribbon}
+A ribbon is called here a long and thin parallelepiped, where the parallelepiped is parametrized like in section \ref{sec:reccuboid}. However, now  the three edge lengths ($A$, $B$, $C$) differ a lot in length. In such a case the form factor can be factorized like for thin or flat objects as discussed in \ref{sec:very_anisotropic_particles}. The form factor of this plugin has been taken from \cite{Su2014} for a long straight ribbon with edge length $C \gg B \gg A$.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=\textwidth]{../images/form_factor/anisotropic/ribbon.pdf}
+\end{center}
+\caption{Long and thin ribbon with edge lengthes $C \gg B \gg A$.}
+\label{fig:ribbon}
+\end{figure}
+
+The form factor of a straight long and thin ribbon reads as
+\begin{align}\label{eq:ribbon_mono}
+  I_\mathrm{ribbon}(q) &= P'(q,C) \frac{(\Delta\eta AB)^2}{2} \left[\frac{\sin(qA/2)}{qA/2}\right]^2 {}_1F_2\left(\frac12;\frac32,2;-q^2B^2/4\right) \\
+  P'(q,C) &= C^2 \left(2 \frac{\operatorname{Si}(qC)}{qC}-\frac{\sin^2(qC/2)}{(qC/2)^2}\right)
+\end{align}
+where $_1F_2$ is a hypergeometric function and $\operatorname{Si}$ the sinus integral. $P'(q,C)$ is the form factor of an infinitesimal thin rod \ref{eq:PprimeRod}. Instead of the function for the thin rod one also could use the one of a wormlike structure \ref{plugin:Pprime4koyama}, if the $q$-range is sufficient and the ribbon is bended like a wormlike structure. Due to the approximate factorization \cite{Su2014} the shape of the cross-section changes slightly from a regular rectangle of thickness $A$ and width $B$ to a rectangle with its two ends rounded.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/anisotropic/ribbon_monoIQ.pdf}
+\end{center}
+\caption{Comparison of scattering curves from a ribbon (red) and a parallelepiped (blue) with edge lengthes ($A=10\mathrm{nm}, B=30\mathrm{nm}, C=300\mathrm{nm}$)}
+\label{fig:ribbon_monoIQ}
+\end{figure}
+
+As the form factor can be factorized due to its three dimensions which differ a lot in lengthes, size distributions can be easily implemented. Assuming a gamma distribution for the two smaller dimensions the integration can be even performed analytically.
+\begin{align}\label{eq:ribbon_w_sd}
+  I_\mathrm{ribbonSD}(q) &= P'(q,C) \frac{\Delta\eta^2}{2}
+  \int_0^\infty p_\Gamma(A;A_0,\sigma_A) A^2 \left[\frac{\sin(qA/2)}{qA/2}\right]^2 \mathrm{d}A \; \times\nonumber \\
+ &\phantom{=} \; \int_0^\infty p_\Gamma(B;B_0,\sigma_B) B^2 {}_1F_2\left(\frac12;\frac32,2;-q^2B^2/4\right) \mathrm{d}B \\
+   &= \Delta\eta^2 P'(q,C) \frac{2}{q^2}\left\{1-\Re\left[\left(1+\frac{\imath q \sigma_A^2}{A_0}\right)^{(A_0/\sigma_A)^2}\right]\right\} \; \times \nonumber\\
+   &\phantom{=} \; \left(B_0^2+\sigma_B^2\right) {}_3F_2\left(\frac12,1+\frac{B_0^2}{2\sigma_B^2},\frac32+\frac{B_0^2}{2\sigma_B^2};\frac32,2;-q^2\sigma_B^4/B_0^2\right) \\
+  p_\Gamma(x;x_0,\sigma) &=
+              \frac{\exp(-x_0 x/\sigma^2)
+                    \left(x_0 x/\sigma^2\right)^{x_0^2/\sigma^2}
+                   }{x\Gamma(x_0^2/\sigma^2)}
+\end{align}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/anisotropic/ribbon_wSDIQ.pdf}
+\end{center}
+\caption{Comparison of scattering curves from a ribbon (red) with a size distribution in $B$ and $A$ (green) as well as a parallelepiped (blue) with size distribution in $A$.}
+\label{fig:ribbon_w_sd_IQ}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

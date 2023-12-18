@@ -1,5 +1,21 @@
 \appendix{History}
 \begin{description}
+\item[2023-xx-xx] \SASfit 0.94.13
+    \begin{itemize}
+    \item added a pySASfit source subdirectory containing several tools like io routines for some data formats used at PSI as well as a python library accessing all plugins directly in python without recompiling the SASfit source tree
+    \item added a plugin form factor for a second reparameterized version of PorodCylinder
+    \item implemented a form factor for fibres consisting of solid cylinders packed in a two-dimensional hexagonal paracrystalline order.
+    \item implemented an approximation of a long thin ribbon and a second one with an additional gamma distribution for two of its shorter edge lengths. An approximation assuming C>>B>>A for the edge length is assumed
+    \item implemented form factor of two more oriented primitive objects, one of a rhombic dodecahedron and a second one of an octahedron together with their random oriented variant.
+    \item corrected scaling factor of parallelepiped plugins to get proper absolute scaled values.
+    \item bugfix in Chawe and QWE algorithm to calculate Hankel transform
+    \item added a routine for optimized Frolov sparse-grids to extend the algorithm for sasfit\_cubature (https://ins.uni-bonn.de/content/software-frolov)
+    \item keep memory of previous sparse grid and only renew it if neccessary
+    \item Supplied several spars-grid quadrature routines to sasfit\_cubature
+    \item Supplied (randomized) quasi Monte Carlo (R)QMC integration routines using the quasi number generators from gsl. (R)QMC integration might converge faster than MC integration.
+    \item Scrambled quasi random numbers for RQMC has been implemented using routines from B. Burley http://jcgt.org/published/0009/04/01/
+    \item reparametrized plugins "parallelepiped (OPO,random)" and "superellipsoid (OPO,random)"
+    \end{itemize}
 \item[2023-01-07] \SASfit 0.94.12
     \begin{itemize}
     \item improved numerical stability of wormlike structure factor according to Koyama

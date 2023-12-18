@@ -15,11 +15,18 @@ scalar sinc(scalar x) {
 	}
 }
 
+scalar KernelSphAvg_F(scalar theta, scalar phi , sasfit_param * param) {
+
+	return sinc(Q*NUA/2.0*sin(theta)*cos(phi)) *
+           sinc(Q*NUB/2.0*sin(theta)*sin(phi)) *
+           sinc(Q*NUC/2.0*cos(theta))*NUA*NUB*NUC*ETA ;
+}
+
 scalar KernelSphAvg_P(scalar theta, scalar phi , sasfit_param * param) {
 
-	return 2./M_PI * gsl_pow_2(sinc(Q*NUA/2.0*sin(theta)*cos(phi)) *
-				               sinc(Q*NUB/2.0*sin(theta)*sin(phi)) *
-							   sinc(Q*NUC/2.0*cos(theta))*NUA*NUB*NUC*ETA) ;
+	return gsl_pow_2(sinc(Q*NUA/2.0*sin(theta)*cos(phi)) *
+                     sinc(Q*NUB/2.0*sin(theta)*sin(phi)) *
+                     sinc(Q*NUC/2.0*cos(theta))*NUA*NUB*NUC*ETA) ;
 }
 
 scalar Kernel_P(const double *gam , void * pam) {

@@ -51,8 +51,10 @@ class SANSdata:
         HDF = h5py.File(self.infn)
         detector_counts=np.array(HDF['entry1/SANS/detector/counts'])    
         if detector_counts.shape != (128,128):
+            HDF.close()
             raise RuntimeError(f'can\'t convert {self.infn} as it has the shape {detector_counts.shape}')
         if np.sum(detector_counts) == 0 :
+            HDF.close()
             raise RuntimeError(f'{self.infn} seems to be empty. Sum({np.sum(detector_counts)})')
         self.BerSANS = {}
         self.BerSANS.update({"%Counts,DetCounts":detector_counts})
@@ -226,19 +228,24 @@ class SANSdata:
         self.BerSANS.update({"%Counter,Sum/Time"    : round(np.sum(detector_counts)/time, int(round(max([4,4-np.log10(np.sum(detector_counts)/time )]),0)))})
         self.BerSANS.update({"%Counter,Sum/Moni1"   : round(np.sum(detector_counts)/moni1,int(round(max([4,4-np.log10(np.sum(detector_counts)/moni1)]),0)))})
         self.BerSANS.update({"%Counter,Sum/Moni2"   : round(np.sum(detector_counts)/moni2,int(round(max([4,4-np.log10(np.sum(detector_counts)/moni2)]),0)))}) 
-
+        HDF.close()
     
     def getHDFinstr(self):
         HDF = h5py.File(self.infn)
         if 'entry1/definition' in HDF.keys():
             definition=str(HDF['entry1/definition'][0].decode('ASCII'))
         else:
+            HDF.close()
             raise RuntimeError(f'{self.infn} is not a NeXus file')
         if definition != 'NXsas':
+            HDF.close()
             raise RuntimeError(f'{self.infn} is not of type "NXsas" but "{definition}"')
         if 'entry1/SANS/name' in HDF.keys():
-            return str(HDF['entry1/SANS/name'][0].decode('ASCII'))
+            tmpstr = str(HDF['entry1/SANS/name'][0].decode('ASCII'))
+            HDF.close()
+            return tmpstr
         else:
+            HDF.close()
             return "UNKNOWN"
             
     def analyse(self):
@@ -249,6 +256,9 @@ class SANSdata:
                 self.getSANS1hdf()
         elif self.ext == '.001':
             self.fformat = 'BerSANSRaw1'
+            self.readBerSANS()
+        elif self.ext == '.sma':
+            self.fformat = 'BerSANSmask1'
             self.readBerSANS()
         elif len(self.ext) == 4 and all(c in BerSANSextchr for c in self.ext):
             self.readBerSANS()
@@ -353,8 +363,8 @@ class SANSdata:
                         raise RuntimeError(f'Unknown File Format >{self.BerSANS["%File,Type"]}<')
                 if group=='%Errors':
                     if self.BerSANS['%File,Type'] == 'SANSDAni':
-                        if not len(x)>=80:
-                            print(x.strip())
+                        #if not len(x)>=80:
+                        #    print(x.strip())
                         if npix == 0:
                             DetErrors = self.ObtainEmptyDetectorArray()
                         f = list(self.slices(x[0:79],10,10,10,10,10,10,10,10))
@@ -367,7 +377,7 @@ class SANSdata:
                 if group=='%Mask':
                     if self.BerSANS['%File,Type'] == 'SANSMAni':
                         if not len(x)>=int(self.BerSANS['%File,DataSizeX']):
-                            print(x.strip())
+                            #print(x.strip())
                             raise RuntimeError(f'Definition of Mask smaller than detector x-size: {self.BerSANS["%File,DataSizeX"]}')
                         if npix == 0:
                             DetMask = self.ObtainEmptyDetectorArray()
@@ -401,3 +411,4 @@ class SANSdata:
             self.BerSANS.update({"%Errors,DetErrors":DetErrors})
         elif self.BerSANS['%File,Type'] == 'SANSMAni':
             self.BerSANS.update({"%Mask,DetMask":DetMask})
+            #self.BerSANS.update({"%Mask,DetMask":np.flipud(DetMask)})

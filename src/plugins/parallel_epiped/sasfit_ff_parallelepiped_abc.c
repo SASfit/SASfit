@@ -37,8 +37,14 @@ scalar sasfit_ff_parallelepiped_abc_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	sasfit_err("sasfit_ff_parallelepiped_abc_f not implemented yet\n");
-	return 0.0;
+	Q=q;
+	NUA = A;
+	NUB = B;
+	NUC = C;
+	// insert your code here
+    sasfit_param_set_polar_theta(M_PI_2);
+    sasfit_param_set_polar_phi(M_PI_2);
+	return sasfit_orient_avg(&KernelSphAvg_F,param);
 }
 
 scalar sasfit_ff_parallelepiped_abc_v(scalar q, sasfit_param * param, int dist)

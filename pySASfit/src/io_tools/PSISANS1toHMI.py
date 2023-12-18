@@ -28,15 +28,15 @@ def rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=None, Tfiles=None, thick
     wlHDF = float(Data.BerSANS["%Setup,Lambda"])
     transmissionfile = ""
     for key, val in Tfiles.items():
-        if abs(key-wlHDF)/wlHDF < 0.05:
+        if abs(float(key)-wlHDF)/wlHDF < 0.05:
             transmissionfile = val
-            #print(f"Tfiles: {key}:{val}")
+            print(f"Tfiles: {key}:{val}")
     if rwl != '':
         Data.BerSANS.update({"%Setup,Lambda":float(rwl)})
     transD = {}
     if os.path.isfile(transmissionfile):
         transD = readBerSANStrans(transmissionfile)
-#    print(f"filename for transmission {transmissionfile}")
+    #print(f"filename for transmission {transmissionfile}")
     if Data.BerSANS['%File,Type'] != 'SANSDRawhdf':
         raise RuntimeError('input file needs to be raw data from SANS-1.')
     BERSANS = open(FullFileNameHMI, 'w', encoding="utf-8")
@@ -118,15 +118,20 @@ def rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=None, Tfiles=None, thick
     try:
         DetData = Data.BerSANS['%Counts,DetCounts']
     except Exception:
-       print("No DetData")
+        raise RuntimeError(f'no data available')
     for j in range(int(Data.BerSANS['%File,DataSizeY'])):
         for i in range(int(Data.BerSANS['%File,DataSizeX'])//8):
             BERSANS.write(f'{DetData[j,i*8+0]},{DetData[j,i*8+1]},{DetData[j,i*8+2]},{DetData[j,i*8+3]},'+
                           f'{DetData[j,i*8+4]},{DetData[j,i*8+5]},{DetData[j,i*8+6]},{DetData[j,i*8+7]}\n')
 
-
-# rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=None, Tfiles=None, thickness=None, rwl='')
+"""
 try:
-    rawhdf2hmi(sys.argv[1], sys.argv[2])
+    Trans_path = 'C:\\Users\\kohlbrecher\\switchdrive\\SANS\\user\\Genix\\raw\\'
+    T8 = readBerSANStrans(f'{Trans_path}trans8A.txt')
+    print(T8)
+    Tfilenames = {0.80 : f'{Trans_path}trans8A.txt' }
+    rawhdf2hmi(sys.argv[1], sys.argv[2],Tfiles=Tfilenames)
 except Exception:
-    pass
+    print(f'Could not read {Trans_path}trans8A.txt')
+rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Ignore=None, Tfiles=None, thickness=None, rwl='')
+"""

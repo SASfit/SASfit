@@ -250,6 +250,6 @@ double sasfit_pfq(double *p_r, double *p_i,  double *q_r, double *q_i, integer i
     *pFq_i = ret_val.i;
     free(P);
     free(Q);
-    return sqrt(ret_val.r*ret_val.r+ret_val.i*ret_val.i);
+    return gsl_hypot(ret_val.r,ret_val.i);
 }
 #define float double

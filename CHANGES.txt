@@ -1,9 +1,14 @@
 ﻿0.94.13 2023-xx-xx
+- implemented a form factor for fibres consisting of solid cylinders packed in a two-dimensional hexagonal paracrystalline order.
+- implemented an approximation of a long thin ribbon and a second one with an additional gamma distribution for two of its shorter edge lengths. An approximation assuming C>>B>>A for the edge length is assumed
+- implemented form factors of two more oriented primitive objects, one of a rhombic dodecahedron and a second one of an octahedron together with their radom oriented variant. 
+- corrected scaling factor of parallelepiped plugins to get proper absolute scaled values. 
 - bugfix in Chawe and QWE algorithm to calculate Hankel transform
 - added a routine for optimized Frolov sparse-grids to extend the algorithm for sasfit_cubature (https://ins.uni-bonn.de/content/software-frolov)
 - keep memory of previous sparse grid and only renew it if neccessary
 - Supplied several spars-grid quadrature routines to sasfit_cubature
-- Supplied (randomized) quasi Monte Carlo (R)QMC integration routines using the quasi number generators from gsl. (R)QMC integration might converge faster than MC integration. Scrambled quasi random numbers for RQMC has been implemented using routines from B. Burley http://jcgt.org/published/0009/04/01/ 
+- Supplied (randomized) quasi Monte Carlo (R)QMC integration routines using the quasi number generators from gsl. (R)QMC integration might converge faster than MC integration. 
+- Scrambled quasi random numbers for RQMC has been implemented using routines from B. Burley http://jcgt.org/published/0009/04/01/ 
 - reparametrized plugins "parallelepiped (OPO,random)" and "superellipsoid (OPO,random)"
  
 0.94.12 2023-01-07

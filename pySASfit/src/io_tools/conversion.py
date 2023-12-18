@@ -18,16 +18,24 @@ import pprint
 import tkinter
 from PSISANS1toHMI import rawhdf2hmi
 
-Data_path = 'C:\\Users\\kohlbrecher\\switchdrive\\SANS\\user\\Maiz\\'
+Data_path = 'C:/Users/kohlbrecher/switchdrive/SANS/user/Genix/raw/'
 year = '2023'
-from_number = 55388
-to_number = 55580
+from_number = 84927
+to_number = 85114
 
 SkipF = [ ]
+
+"""
+rawhdf2hmi("C:/Users/kohlbrecher/switchdrive/SANS/user/Genix/raw/sans2023n085152.hdf", "C:/Users/kohlbrecher/switchdrive/SANS/user/Genix/raw/D0085152.001", Tfiles={0.80:"C:/Users/kohlbrecher/switchdrive/SANS/user/Genix/raw/trans8A.txt"})
+
 exec(open(f'{Data_path}thickness.py').read())
-transD = readBerSANStrans(f'{Data_path}transmission.dat')
+print(f'try to read {Data_path}trans8A.txt')
+if not os.path.isfile(f'{Data_path}trans8A.txt'):
+    raise RuntimeError(f'file {Data_path}trans8A.txt does not exists!')
+transD = readBerSANStrans(f'{Data_path}trans8A.txt')
 pp = pprint.PrettyPrinter(indent=4)
 #pp.pprint(thicknessD)
+"""
 """
 for filenumber in range(to_number-from_number+1):
     HDF_filename = f"sans{year}n%06d"%(filenumber+from_number)
@@ -49,22 +57,28 @@ for filenumber in range(to_number-from_number+1):
 """
 
 
-gui_python_tcl_var = {}
+Tfiles_tcl = {}
 gui = tkinter.Tk()
 
-def adddict(*args):
-    print(len(args))
+def rawhdf2hmi_tcl (FullFileNameHDF, FullFileNameHMI):
+    global Tfiles_tcl
+    #rawhdf2hmi(FullFileNameHDF, FullFileNameHMI Tfiles=None, thickness=None, rwl='')
+    rawhdf2hmi(FullFileNameHDF, FullFileNameHMI, Tfiles=Tfiles_tcl)
+
+def adddict_Tfiles(*args):
+    global Tfiles_tcl
+    #print(len(args))
     if len(args) >=2:
-        gui_python_tcl_var.update({args[0]:args[1]})
+        Tfiles_tcl.update({args[0]:args[1]})
     if len(args)>=4:
-        gui_python_tcl_var.update({args[2]:args[3]})
+        Tfiles_tcl.update({args[2]:args[3]})
     if len(args)>=6:
-        gui_python_tcl_var.update({args[4]:args[5]})
+        Tfiles_tcl.update({args[4]:args[5]})
         
 
 # register it as a tcl command:
-tcl_command_name = "adddict"
-python_function = adddict
+tcl_command_name = "adddict_Tfiles"
+python_function = adddict_Tfiles
 cmd = gui.createcommand(tcl_command_name, python_function)
 
 
@@ -86,7 +100,7 @@ def get_pyvar(var_name):
 # Register the access functions
 register(set_pyvar)
 register(get_pyvar)
-register(rawhdf2hmi)
+register(rawhdf2hmi_tcl)
 
 def disable_event():
    pass
@@ -94,6 +108,3 @@ gui.tk.eval(open(f'{os.path.dirname(__file__)}{os.sep}PSI2HMI.tcl','r').read())
 #Disable the Close Window Control Icon
 #gui.protocol("WM_DELETE_WINDOW", disable_event)
 gui.mainloop()
-
-pp.pprint(gui_python_tcl_var)
-print(gui_python_tcl_var, gui_python_tcl_var['q'])
