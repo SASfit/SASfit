@@ -10,7 +10,8 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_paracryst_hex_cyl.c
+	sasfit_ff_paracryst_hex_cyl_rnd.c
+	sasfit_ff_paracryst_hex_cyl_perp.c
 	interface.c
 )
 

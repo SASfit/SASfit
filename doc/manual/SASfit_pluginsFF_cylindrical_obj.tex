@@ -570,12 +570,11 @@ The cross-section term alone describes the scattering perpendicular to the cylin
 In \cite{Hashimoto1994,Penttilae2019} the cross section term $P_{cs}(Q)$ is named $P_{cs}=I_\mathrm{cyl}(Q)$. The given model assumes, that also for the aligned cases only the cylinder axis are aligned to the beam axis but otherwise random orientations around that axis is assumed.
 \begin{subequations}
 \begin{align}
-\label{eq:CylHEXparacrystal}
-  I_\mathrm{cyl}(Q) &= \frac{1}{2\pi}\int_0^\infty I_\perp(Q,\psi) \mathrm{d}\psi\\
+  I_\mathrm{cyl}(Q) &= \frac{1}{2\pi}\int_0^\infty I_\perp(Q,\psi) \mathrm{d}\psi \label{eq:paracystalHEXcylperp} \\
   I_\perp(Q,\psi) &= \langle \abs{F_\mathrm{cs}(Q)^2}\rangle + \abs{\langle F_\mathrm{cs}(Q)\rangle}^2 \left(S(Q)-1\right)\\
   F_\mathrm{cs}(Q,R) &= \int_0^\infty \eta(\rho) \rho\operatorname{J}_0(Q\rho) \mathrm{d}\rho = \pi R^2 \frac{\operatorname{J}_1(Qr)}{QR} \\
   S(Q) &= Z_1 Z_2  \\
-  Z_k &= \frac{1-\abs{F_k}^2}{1-2\abs{F_k}\cos\left(\mathbf{Q}\mathbf{a}_k\right) + \abs{F_k}^2} \\
+  Z_k &= \frac{1-\abs{F_k}^2}{1-2\abs{F_k}\cos\left(\mathbf{Q}\mathbf{a}_k\right) + \abs{F_k}^2}  \label{eq:paraHEXZkvers_1} \\
   F_k &= \exp\left( -\frac12 \left(\frac{\Delta a}{a}\right)^2\left[\left(\mathbf{Q}\mathbf{a}_1\right)^2 + \left(\mathbf{Q}\mathbf{a}_2\right)^2\right]\right) \\
   \mathbf{Q}\mathbf{a}_1 &= -aQ\cos\left(\psi-\pi/6\right)\\
   \mathbf{Q}\mathbf{a}_2 &=  aQ\sin\left(\psi\right)
@@ -590,18 +589,28 @@ To suppress the upturn in the structure factor at small $Q$-values a modificatio
 \begin{align}\label{eq:modifiedZk}
   Z_k &=
   \begin{cases}
-        Z_k(Q_0), & 	\text{if $Q \leq  Q_0$} \\
-        Z_k(Q) 	, & 	\text{if $Q >     Q_0$}
+        Z_k(Q_0), & 	\text{if $Q \leq  Q_0$}  \\
+        Z_k(Q) 	, & 	\text{if $Q >     Q_0$} 
   \end{cases} \\
   Q_0 &= 7.061\times 10^{-5} a^2 - 0.007413a + 0.2465
 \end{align}
 The polynominal dependencies of $Q_0$ has been determined in \cite{Penttilae2019}, where they found, that it is also almost independent on $\Delta a$.
 
 ~\\
-\subsubsection{Scattering perpendicular to hexagonal packed cylinder} ~\\
+\subsubsection{Scattering perpendicular to paracrystalline hexagonal packed cylinders} ~\\
+
+For the scattering of the hexagonal packed cylinders perpendicular to the cylinder axes the intensity is given by eq.\ \ref{eq:paracystalHEXcylperp}. If the correction of the lattice factor in eq.\ \ref{eq:modifiedZk} is used or not can be set via a flag parameter. If \texttt{vers}$\le0$ the corrected lattice factor is used otherwise the original one in eq.\ \ref{eq:paraHEXZkvers_1}.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/paracrystHEXcyl_perp.pdf}
+\end{center}
+\caption{Scattering intensity perpendicular to paracrystalline hexagonal packed cylinders.}
+\label{fig:paracrystHEXcyl_perpIQ}
+\end{figure}
 
 \hspace{1pt}\\
-\uline{Input Parameters for model \texttt{torus}:}\\
+\uline{Input Parameters for model \texttt{paracryst\_hex\_cyl\_perp}:}\\
 \begin{description}
 \item[\texttt{R}] avg.\ cylinder radius $R$
 \item[\texttt{dR\_ratio}] Gaussian width parameter $\Delta R$ divided by average radius $\Delta R/R$
@@ -609,9 +618,7 @@ The polynominal dependencies of $Q_0$ has been determined in \cite{Penttilae2019
 \item[\texttt{dummy}] not used
 \item[\texttt{a}] lattice parameter $a$
 \item[\texttt{da\_ratio}] paracrystalline distortion parameter $\Delta a$ divided by lattice constant $\Delta a/a$
-\item[\texttt{version(S(Q))}] flag
-\item[\texttt{L}] length of cylinder $L$
-\item[\texttt{sigma\_L}] LogNorm width parameter for cylinder Length $\sigma_\mathrm{L}$
+\item[\texttt{vers.}] flag how the structure factor is calculated
 \end{description}
 
 \noindent\uline{Note:}
@@ -620,8 +627,36 @@ The polynominal dependencies of $Q_0$ has been determined in \cite{Penttilae2019
 \end{itemize}
 
 ~\\
-\subsubsection{Scattering of randomly oriented bundles of hexagonal packed cylinder} ~\\
+\subsubsection{Scattering of randomly oriented bundles of paracrystalline hexagonal packed cylinders} ~\\
 
+The random oriented version of the previous form factor is in principle also able to probe the length of the cylinders. The form factor is given by eq.\ \ref{eq:PprimePcs} with the cross-section term of eq.\ \ref{eq:paracystalHEXcylperp} and $P'(Q)$ given by eq.\ \ref{eq:PprimeRod} describing the scattering of a thin rod with a LogNorm length distribution. As for the previous version a parameter is introduced to define if the correction of the lattice factor in eq.\ \ref{eq:modifiedZk} is used or not. The version  can be set via a flag parameter. If \texttt{vers}$\le0$ the corrected lattice factor is used otherwise the original one in eq.\ \ref{eq:paraHEXZkvers_1}.
+
+\hspace{1pt}\\
+\uline{Input Parameters for model \texttt{paracryst\_hex\_cyl\_rnd}:}\\
+\begin{description}
+\item[\texttt{R}] avg.\ cylinder radius $R$
+\item[\texttt{dR\_ratio}] Gaussian width parameter $\Delta R$ divided by average radius $\Delta R/R$
+\item[\texttt{dummy}] not used
+\item[\texttt{dummy}] not used
+\item[\texttt{a}] lattice parameter $a$
+\item[\texttt{da\_ratio}] paracrystalline distortion parameter $\Delta a$ divided by lattice constant $\Delta a/a$
+\item[\texttt{version(S(Q))}] flag
+\item[\texttt{L}] mode of cylinder length distribution $L$
+\item[\texttt{sigma\_L}] LogNorm width parameter for cylinder length $\sigma_\mathrm{L}$
+\end{description}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{../images/form_factor/cylindrical_obj/paracrystHEXcyl_rnd.pdf}
+\end{center}
+\caption{Scattering intensity randomly oriented bundles of paracrystalline hexagonal packed cylinders.}
+\label{fig:paracrystHEXcyl_rndIQ}
+\end{figure}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item the integration algorithm can be configured via GUI (via \texttt{integration strategy})
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 

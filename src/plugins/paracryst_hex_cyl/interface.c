@@ -7,8 +7,9 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(1)
-SASFIT_PLUGIN_EXP_ADD( ff_paracryst_hex_cyl )
+SASFIT_PLUGIN_EXP_BEGIN(2)
+SASFIT_PLUGIN_EXP_ADD( ff_paracryst_hex_cyl_rnd )
+SASFIT_PLUGIN_EXP_ADD( ff_paracryst_hex_cyl_perp )
 
 SASFIT_PLUGIN_EXP_END
 

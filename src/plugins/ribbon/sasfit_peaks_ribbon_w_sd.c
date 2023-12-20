@@ -21,7 +21,7 @@ scalar sasfit_peaks_ribbon_w_sd(scalar q, sasfit_param * param)
 {
     scalar rod, xs;
     sasfit_param subParam;
-    scalar Res3F2, pFq_r, pFq_i, ResA;
+    scalar Res3F2, pFq_r, pFq_i, ResA,RgA2, RgB2;
 	scalar pr[3],pi[3],qr[2], qi[2], zi, zr;
 	int ln_pFq, ix, nsigfig, ip, iq;
     double complex ctmp;
@@ -29,8 +29,9 @@ scalar sasfit_peaks_ribbon_w_sd(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((A < 0.0), param, "A(%lg) < 0",A); // modify condition to your needs
-	SASFIT_CHECK_COND1((SIGMA_A < 0.0), param, "sigma_a(%lg) < 0",SIGMA_A); // modify condition to your needs
+	SASFIT_CHECK_COND1((A <= 0.0), param, "A(%lg) <= 0",A); // modify condition to your needs
+	SASFIT_CHECK_COND1((SIGMA_A <= 0.0), param, "sigma_a(%lg) <= 0",SIGMA_A); // modify condition to your needs
+	// SASFIT_CHECK_COND2((A <= sqrt(2)*SIGMA_A), param, "A<=sqrt(2)sigma_a(%lg)",A, SIGMA_A); // modify condition to your needs
 	SASFIT_CHECK_COND1((B < 0.0), param, "B(%lg) < 0",B); // modify condition to your needs
 	SASFIT_CHECK_COND1((SIGMA_B < 0.0), param, "sigma_B(%lg) < 0",SIGMA_B); // modify condition to your needs
 	SASFIT_CHECK_COND1((C < 0.0), param, "C(%lg) < 0",C); // modify condition to your needs
@@ -61,7 +62,11 @@ scalar sasfit_peaks_ribbon_w_sd(scalar q, sasfit_param * param)
 	zi=0;
 	zr=-gsl_pow_2(q*SIGMA_B*SIGMA_B/B);
 
-	if (sqrt(q*q*(B*B+2*SIGMA_B*SIGMA_B)) > 100) {
+	RgB2 = gsl_pow_4(B)+5*gsl_pow_2(B*SIGMA_B)+6*gsl_pow_4(SIGMA_B);
+	RgB2 = RgB2/(8*B*B);
+	RgA2 = gsl_pow_4(A)+5*gsl_pow_2(A*SIGMA_A)+6*gsl_pow_4(SIGMA_A);
+	RgA2 = RgA2/(4*A*A);
+	if (sqrt(q*q*RgB2) > 100) {
         Res3F2 = 2*B/(q*(B*B+SIGMA_B*SIGMA_B));
 /*
         Res3F2 = ((2*B*gsl_pow_int(q,2))/(gsl_pow_int(B,2) + gsl_pow_int(SIGMA_B,2)) +
@@ -76,7 +81,7 @@ scalar sasfit_peaks_ribbon_w_sd(scalar q, sasfit_param * param)
       (gsl_pow_int(M_PI,1.5)*gsl_pow_int(SIGMA_B,(2*gsl_pow_int(B,2))/gsl_pow_int(SIGMA_B,2))))/
    gsl_pow_int(q,3);
 */
-	} else if ((q*sqrt(B*B+SIGMA_B*SIGMA_B)) < M_PI*1e-1) {
+	} else if ((q*sqrt(RgB2)) < 1e-2) {
 	    Res3F2 = 1  -q*q*(B*B+2*SIGMA_B*SIGMA_B)
                         *(B*B+3*SIGMA_B*SIGMA_B)/(24*gsl_pow_2(B))
                     +gsl_pow_4(q)*(B*B+2*SIGMA_B*SIGMA_B)
@@ -90,7 +95,7 @@ scalar sasfit_peaks_ribbon_w_sd(scalar q, sasfit_param * param)
             Res3F2 = 2*B/(q*(B*B+SIGMA_B*SIGMA_B));
 	    }
 	}
-	if (q*sqrt(A*A+SIGMA_A*SIGMA_A) < 1e-6) {
+	if (q*sqrt(RgA2) < 1e-4) {
         ResA = (A*A+SIGMA_A*SIGMA_A);
     } else {
         ctmp = 1 + I*q*gsl_pow_2(SIGMA_A)/A;

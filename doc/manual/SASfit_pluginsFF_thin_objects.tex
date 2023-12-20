@@ -55,7 +55,7 @@ with
 \noindent\uline{Note:}
 \begin{itemize}
 \item The form factor is needs especially for large $q$-values quite some computational resources. In case of a parallelepiped with edge length differing a lot in size faster approximations are available \ref{sec:ribbon} which make use of approximations used for thin or flat objects like in \ref{sec:very_anisotropic_particles}.
-\item The integration routine for orientational average can be configured via the GUI interface.
+\item The integration routine for orientational average can be configured via the GUI interface. The orientational averaging is typically the time consuming task and a test of the different integration algorithms for orientational averaging might differ significantly in computational time.
 \item One version is assuming a monodisperse size distribution and the other three already have included a lognormal distribution either for one edge length, or simultaneous size distribution for either two or three edge lengthes.
 \end{itemize}
 
@@ -111,6 +111,33 @@ As the form factor can be factorized due to its three dimensions which differ a 
 \caption{Comparison of scattering curves from a ribbon (red) with a size distribution in $B$ and $A$ (green) as well as a parallelepiped (blue) with size distribution in $A$.}
 \label{fig:ribbon_w_sd_IQ}
 \end{figure}
+
+\noindent \uline{Input Parameters for model \texttt{ribbon\_mono}:}\\
+\begin{description}
+\item[\texttt{A}] thickness $A$
+\item[\texttt{dummy}] not used
+\item[\texttt{B}] depth $B$
+\item[\texttt{dummy}] not used
+\item[\texttt{C}] length $C$
+\item[\texttt{dummy}] not used
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\noindent \uline{Input Parameters for models \texttt{ribbon\_w\_sd}:}\\
+\begin{description}
+\item[\texttt{A}] thickness $A_0$
+\item[\texttt{sigma\_A}] width parameter of gamma size distribution $\sigma_A$
+\item[\texttt{B}] depth $B_0$
+\item[\texttt{sigma\_B}] width parameter of gamma size distribution $\sigma_B$
+\item[\texttt{C}] length $C$
+\item[\texttt{dummy}] not used
+\item[\texttt{eta}] scattering length density contrast $\Delta\eta$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item The polydisperse version still shows some numerical instabilities for very narrow and very broad distributions for with large $\sigma_B/B_0$ as well as very small $q$-values
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
