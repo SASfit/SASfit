@@ -174,6 +174,8 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 						rij = sqrt(pow(r_i[i][0][k]-r_i[j][0][k],2)
 							+pow(r_i[i][1][k]-r_i[j][1][k],2)
 							+pow(r_i[i][2][k]-r_i[j][2][k],2));
+                        sumt = sumt + Fi*Fj*gsl_sf_bessel_j0(q*rij);
+/*
 						if (rij == 0)
 						{
 							sumt = sumt + Fi*Fj;
@@ -181,6 +183,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle(scalar q, sasfit_param * param)
 						{
 							sumt = sumt + Fi*Fj*sin(q*rij)/(q*rij);
 						}
+*/
 					}
 				}
 			}
