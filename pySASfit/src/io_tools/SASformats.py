@@ -86,6 +86,15 @@ class SANSdata:
             self.BerSANS.update({"%File,ToDate" : HDF['entry1/end_time'][0].decode('UTF-8')[:10]})
         if 'entry1/end_time' in HDF.keys():
             self.BerSANS.update({"%File,ToTime" : HDF['entry1/end_time'][0].decode('UTF-8')[11:]})
+            
+        if 'entry1/SANS/detector/x_pixel_size' in HDF.keys():
+            self.BerSANS.update({"%Detector,PixelSizeX" : HDF['entry1/SANS/detector/x_pixel_size'][0].decode('UTF-8')})
+            self.BerSANS.update({"%Detector,PixelSizeXUnit": HDF['entry1/SANS/detector/x_pixel_size'].attrs['units'].decode('UTF-8')})
+        if 'entry1/SANS/detector/y_pixel_size' in HDF.keys():
+            self.BerSANS.update({"%Detector,PixelSizeY" : HDF['entry1/SANS/detector/y_pixel_size'][0].decode('UTF-8')})
+            self.BerSANS.update({"%Detector,PixelSizeYUnit": HDF['entry1/SANS/detector/y_pixel_size'].attrs['units'].decode('UTF-8')})
+        if 'entry1/SANS/detector/x_position' in HDF.keys():
+            self.BerSANS.update({"%Detector,Distance":round(HDF['entry1/SANS/detector/x_position'][0]/1000,4)})
         
         if 'entry1/sample/name' in HDF.keys():
             self.BerSANS.update({"%Sample,SampleName"    : HDF['entry1/sample/name'][0].decode('UTF-8')})

@@ -1,5 +1,9 @@
 import numpy as np
 import cv2
+import fabio
+import pyFAI, pyFAI.azimuthalIntegrator, pyFAI.detectors
+from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
+from pyFAI.gui import jupyter
 from SASformats import SANSdata
 import polarTransform as pT
 from scipy.ndimage import geometric_transform
@@ -13,7 +17,7 @@ class SASazimuthal:
     
     The `SASazimuthal` class is used for calculating azimuthal averages of 2D data. It provides
     different methods for calculating the azimuthal average, such as using OpenCV (`cv2`), Scipy
-    (`scipy`), meshgrid (`meshgrid`), or a custom implementation called `polarTransform`. The
+    (`scipy`), meshgrid (`meshgrid`), pyFAI ('pyFAI') or a custom implementation called `polarTransform`. The
     class takes a 2D array as input and calculates the azimuthal average using the specified
     method. It also provides methods for converting between Cartesian and polar coordinates, as
     well as calculating the intensity profile along the azimuthal direction.
@@ -26,7 +30,7 @@ class SASazimuthal:
     __email__ = "joachim.kohlbrecher@psi.ch"
     __status__ = "Production"
     
-    algorithms = ["cv2", "scipy", "meshgrid", 'polarTransform']
+    algorithms = ["cv2", "scipy", "meshgrid", 'polarTransform', 'pyFAI']
     cartimg = []
     polarimg = []
     backcartimg = []
@@ -35,13 +39,15 @@ class SASazimuthal:
     mode = "polarTransform"
     center = [1,1]
     Rrange = [0,128]
+    distance = 1
+    pixelsize = [7.5, 7.5]
     order = 0
     polarres=360
     visibility = 0
     MSvisibility = 0
     offset = 0
 
-    def __init__(self, array2D, mode=None, center=None,Rrange=None, polarres=None, order=None):
+    def __init__(self, array2D, mode=None, center=None,Rrange=None, polarres=None, order=None, distance=None, pixelsize=None):
         try:
             self.cartimg = np.asarray(array2D)
             if self.cartimg.ndim != 2:
@@ -54,8 +60,10 @@ class SASazimuthal:
             raise RuntimeError(f'unknown methods for calculating polar image')
         else:
             self.mode = mode
+            if mode == "pyFAI" and distance == None and pixelsize == None:
+                raise RuntimeError(f'for the methods pyFAI both the sample detector distance as well as the pixel size needs to be supplied')
         if center == None:
-            self.center = [self.cartimg.shape[0]/2,self.cartimg.shape[1]/2]
+            self.center = [self.cartimg.shape[0]/2.,self.cartimg.shape[1]/2.]
         else:
             self.center = center
         if Rrange == None:
@@ -79,6 +87,8 @@ class SASazimuthal:
         elif self.mode == "scipy":
             self.polarres = self.cartimg.shape[1]
             self.azimuthal_average_scipy()
+        elif self.mode == "pyFAI":
+            self.azimuthal_average_pyFAI()
         else:
             self.azimuthal_average_meshgrid()
     
@@ -86,24 +96,27 @@ class SASazimuthal:
         ThisMin = np.min(self.cartimg)
         fig, ax = plt.subplots(1,3,figsize=(10, 3))
         fig.tight_layout()
-        im = ax[0].imshow(np.log(1+self.cartimg-ThisMin), interpolation='none',cmap='turbo',origin='upper')
+        im = ax[0].imshow(np.log1p(self.cartimg-ThisMin), interpolation='none',cmap='turbo',origin='upper')
         plt.colorbar(im, ax=ax[0])
-        im = ax[1].imshow(np.log(1+self.polarimg-ThisMin), interpolation='none',cmap='turbo',origin='upper',aspect=self.polarimg.shape[1]/self.polarimg.shape[0])
+        im = ax[1].imshow(np.log1p(self.polarimg-ThisMin), interpolation='none',cmap='turbo',origin='upper',aspect=self.polarimg.shape[1]/self.polarimg.shape[0])
         plt.colorbar(im, ax=ax[1])
         ax[2].plot(self.psi,self.Ipsi)
         ax[2].set_ylim([0,1.2*np.max(self.Ipsi)])
         
-        def MaierSaupe(x, A, Ibckg, kappa, Offset):
-            kappa = np.abs(kappa)
+        def MaierSaupe(x, A1, A2, Ibckg, kappa1, kappa2, Offset):
+            kappa1 = np.abs(kappa1)
+            kappa1 = np.abs(kappa2)
             I0 = np.abs(Ibckg)
-            MSnorm = integrate.quad(lambda x: np.exp(np.abs(kappa)*np.cos(x)**2), 0, np.pi/2.)
-            return I0+np.abs(A)*np.pi/(2.0*MSnorm[0])* np.exp(np.abs(kappa)*np.cos((x-Offset)*np.pi/180)**2)
+            MSnorm1 = integrate.quad(lambda x: np.exp(np.abs(kappa1)*np.cos(x)**2), 0, np.pi/2.)
+            MSnorm2 = integrate.quad(lambda x: np.exp(np.abs(kappa2)*np.cos(x)**2), 0, np.pi/2.)
+            return I0+np.abs(A1)*np.pi/(2.0*MSnorm1[0])* np.exp(np.abs(kappa1)*np.cos((x-Offset)*np.pi/180)**2) \
+                     +np.abs(A2)*np.pi/(2.0*MSnorm2[0])* np.exp(np.abs(kappa2)*np.cos((x-Offset)*np.pi/180)**2)
         
-        parameters, covariance = curve_fit(MaierSaupe, self.psi, self.Ipsi, p0=[np.average(self.Ipsi),0.2*np.average(self.Ipsi),0.5, 0])
-        while  parameters[3] > 180:
-            parameters[3] = parameters[3]-180
-        while  parameters[3] < 0:
-            parameters[3] = parameters[3]+180
+        parameters, covariance = curve_fit(MaierSaupe, self.psi, self.Ipsi, p0=[0.4*np.average(self.Ipsi),0.5*np.average(self.Ipsi),0.1*np.average(self.Ipsi),0.5,0.1, 0])
+        while  parameters[5] > 180:
+            parameters[5] = parameters[5]-180
+        while  parameters[5] < 0:
+            parameters[5] = parameters[5]+180
         parameters, covariance = curve_fit(MaierSaupe, self.psi, self.Ipsi, p0=parameters)
         #pp.pprint(parameters)
         ax[2].plot(self.psi, MaierSaupe(self.psi, *parameters))
@@ -119,7 +132,8 @@ class SASazimuthal:
         print(self.MSvisibility, MSmax, MSmin)
         self.offset = parameters[3]
         print(f"psi_shape{self.psi.shape}")
-        ax[2].text(30.0, 0.05*np.max(self.Ipsi), f"mode={self.mode}\noffset={np.round(parameters[3],3)}\nMaier-Saupe aspect ratio={np.round(self.MSvisibility,3)}\ndata aspect ratio={np.round(self.visibility,3)}",backgroundcolor='orange',fontsize='x-small')
+        ax[2].set(title=f"mode={self.mode}\noffset={np.round(parameters[3],3)}\nMaier-Saupe aspect ratio={np.round(self.MSvisibility,3)}\ndata aspect ratio={np.round(self.visibility,3)}")
+        #ax[2].text(30.0, 0.05*np.max(self.Ipsi), f"mode={self.mode}\noffset={np.round(parameters[3],3)}\nMaier-Saupe aspect ratio={np.round(self.MSvisibility,3)}\ndata aspect ratio={np.round(self.visibility,3)}",backgroundcolor='orange',fontsize='x-small')
         print(f"mode = {self.mode}")
         print(f"shapeCart = {self.cartimg.shape}")
         print(f"shapePolar = {self.polarimg.shape}")
@@ -232,6 +246,42 @@ class SASazimuthal:
         self.topolar()
         self.calc_Ipsi()
 
+    def azimuthal_average_pyFAI(self):
+        """_summary_
+
+        updates:
+            self.polarimg, self.psi, self.Ipsi
+        """
+        """
+        self.polarimg, FAISettings = pyFAI (self.cartimg,
+                                                           center=(self.center[0],self.cartimg.shape[1]-self.center[1]-1),
+                                                           angleSize=self.polarres,
+                                                           radiusSize=self.cartimg.shape[1],
+                                                           initialRadius=0,
+                                                           finalRadius=self.cartimg.shape[1],
+                                                           order=self.order,
+                                                           useMultiThreading=True)
+        """
+        detector = pyFAI.detectors.Detector(self.pixelsize[0]/1000,self.pixelsize[1]/1000)
+        detector.max_shape=self.cartimg.shape
+        ai = AzimuthalIntegrator(dist=self.distance, detector=detector)
+        ai.poni1=ai.pixel1*(self.cartimg.shape[0]-self.center[0]-1)
+        #ai.poni1=ai.pixel1*self.center[0]
+        ai.poni2=ai.pixel2*(self.cartimg.shape[1]-self.center[1]-1)
+        ai.poni2=ai.pixel2*(self.center[1])
+        self.polarimg, tth, self.psi = ai.integrate2d(self.cartimg, self.cartimg.shape[1], self.polarres,unit="2th_deg")
+        self.polarimg = np.flipud(self.polarimg)
+        self.psi, self.Ipsi = ai.integrate_radial(self.cartimg, self.polarres, \
+                                                  npt_rad=self.cartimg.shape[1], \
+                                                  correctSolidAngle=True, azimuth_range=(-180,180),\
+                                                  radial_range=(ai.pixel1*self.Rrange[0]*1e3,ai.pixel2*self.Rrange[1]*1e3),\
+                                                  method='csr', radial_unit='r_mm')
+        self.Ipsi = self.Ipsi*(self.Rrange[1]-self.Rrange[0])
+        self.psi = ((-self.psi)+360) % 360
+        ind = np.argsort(self.psi)
+        self.psi = self.psi[ind]
+        self.Ipsi = self.Ipsi[ind]
+        
     def azimuthal_average(Data_array, Rmin=20,Rmax=50,zero=(-999,-999),slices=128):
         sorted_data=[]
         data = np.array(Data_array)
@@ -269,88 +319,14 @@ MaskBerSANS = ThisMask.BerSANS['%Mask,DetMask']
 ThisMin=np.min(np.where(1- MaskBerSANS,ThisData.BerSANS["%Counts,DetCounts"],ThisMax))
 MaskedData=np.where(1- MaskBerSANS,ThisData.BerSANS["%Counts,DetCounts"],ThisMin)
 
-AIntcv2 = SASazimuthal(MaskedData,mode='cv2',center=[61.3,62.42], Rrange=[30,50], order=0, polarres=128)
+
+AIntcv2 = SASazimuthal(MaskedData,mode='cv2',center=[61.3,62.42], Rrange=[45,50], order=0, polarres=128)
 AIntcv2.showresults()
-AIntscipy = SASazimuthal(MaskedData,mode='scipy',center=[61.3,62.42], Rrange=[30,50], order=0, polarres=360)
+AIntscipy = SASazimuthal(MaskedData,mode='scipy',center=[61.3,62.42], Rrange=[45,50], order=0, polarres=360)
 AIntscipy.showresults()
-AIntpolarTransform = SASazimuthal(MaskedData,mode='polarTransform',center=[61.3,62.42], Rrange=[30,50], order=0, polarres=360)
+AIntpolarTransform = SASazimuthal(MaskedData,mode='polarTransform',center=[61.3,62.42], Rrange=[45,50], order=0, polarres=360)
 AIntpolarTransform.showresults()
-AIntmeshgrid = SASazimuthal(MaskedData,mode='meshgrid',center=[61.3,62.42], Rrange=[30,50],polarres=360)
+AIntmeshgrid = SASazimuthal(MaskedData,mode='meshgrid',center=[61.3,62.42], Rrange=[45,50],polarres=360)
 AIntmeshgrid.showresults()
-
-
-"""
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
-pp.pprint(ThisMask.fformat)
-MaskBerSANS = ThisMask.BerSANS['%Mask,DetMask']
-ThisMin=np.min(np.where(1- MaskBerSANS,ThisData.BerSANS["%Counts,DetCounts"],ThisMax))
-MaskedData=np.where(1- MaskBerSANS,ThisData.BerSANS["%Counts,DetCounts"],ThisMin)
-pimg, psi, Ipsi, DIpsi = azimuthal_average_cv2(MaskedData,Rmin=30, Rmax=50,zero=(61.3,62.42))
-pimg[:,27:29] = ThisMin
-pimg[:,51:53] = ThisMin
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
-import scipy.integrate as integrate
-fig, ax = plt.subplots(3,2,figsize=(10, 7))
-fig.tight_layout()
-im = ax[1,0].imshow(np.log(1+MaskedData-ThisMin), interpolation='none',cmap='Paired',origin='upper')
-plt.colorbar(im, ax=ax[1, 0])
-im = ax[0,1].imshow(np.log(1+pimg-ThisMin), interpolation='none',cmap='turbo',origin='upper')
-plt.colorbar(im, ax=ax[0, 1])
-#im = ax[1,1].imshow(np.log(1+pimg[:,30:60]-ThisMin), interpolation='none',cmap='turbo',origin='upper',aspect=1/4)
-#plt.colorbar(im, ax=ax[1, 1])
-ax[0,0].plot(psi,Ipsi)
-ax[0,0].set_ylim([0,1.2*np.max(Ipsi)])
-print(np.dot(Ipsi,np.log(Ipsi)))
-def MaierSaupe(x, A, Ibckg, kappa, Offset):
-    kappa = np.abs(kappa)
-    I0 = np.abs(Ibckg)
-    MSnorm = integrate.quad(lambda x: np.exp(np.abs(kappa)*np.cos(x)**2), 0, np.pi/2.)
-    return I0+np.abs(A)*np.pi/(2.0*MSnorm[0])* np.exp(np.abs(kappa)*np.cos((x-Offset)*np.pi/180)**2)
-parameters, covariance = curve_fit(MaierSaupe, psi, Ipsi, p0=[np.average(Ipsi),0.2*np.average(Ipsi),0.5, 0])
-while  parameters[3] > 180:
-    parameters[3] = parameters[3]-180
-while  parameters[3] < 0:
-    parameters[3] = parameters[3]+180
-pp.pprint(parameters)
-ax[0,0].plot(psi, MaierSaupe(psi, *parameters))
-MSmin = np.min(MaierSaupe(psi, *parameters))
-MSmax = np.max(MaierSaupe(psi, *parameters))
-visibility = (MSmax-MSmin)/(MSmin)
-ax[0,0].text(30.0, 1.5, f"offset={np.round(parameters[3],3)}\naspect ratio={np.round(visibility,3)}", bbox=dict(facecolor='orange', alpha=0.5))
-MSmin = np.min(MaierSaupe(psi, *parameters))
-MSmax = np.max(MaierSaupe(psi, *parameters))
-visibility = (MSmax-MSmin)/(MSmin)
-print(f"offset={np.round(parameters[3],5)}  aspectration={np.round(visibility,5)}")
-#pimg, psi, Ipsi, DIpsi = azimuthal_average_polarTransform(MaskedData,Rmin=30, Rmax=50,zero=(61.3,62.42))
-pimg, psi, Ipsi, DIpsi = azimuthal_average_scipy(MaskedData,Rmin=30, Rmax=50,zero=[61.3,62.42],order=0)
-pimg[:,27:29] = ThisMin
-pimg[:,51:53] = ThisMin
-newPimg, ptSettings = pT.convertToCartesianImage(pimg,imageSize=[128,128],order=0,useMultiThreading=True)
-ax[2,0].plot(psi,Ipsi)
-ax[2,0].set_ylim([0,1.2*np.max(Ipsi)])
-parameters, covariance = curve_fit(MaierSaupe, psi, Ipsi, p0=[np.average(Ipsi),0.2*np.average(Ipsi),0.5, 0])
-while  parameters[3] > 180:
-    parameters[3] = parameters[3]-180
-while  parameters[3] < 0:
-    parameters[3] = parameters[3]+180
-ax[2,0].plot(psi, MaierSaupe(psi, *parameters))
-MSmin = np.min(MaierSaupe(psi, *parameters))
-MSmax = np.max(MaierSaupe(psi, *parameters))
-visibility = (MSmax-MSmin)/(MSmin)
-ax[2,0].text(30.0, 1.5, f"offset={np.round(parameters[3],3)}\naspect ratio={np.round(visibility,3)}", bbox=dict(facecolor='orange', alpha=1))
-MSmin = np.min(MaierSaupe(psi, *parameters))
-MSmax = np.max(MaierSaupe(psi, *parameters))
-visibility = (MSmax-MSmin)/(MSmin)
-print(f"offset={np.round(parameters[3],5)}  aspectration={np.round(visibility,5)}")
-im = ax[2,1].imshow(np.log(1+pimg),cmap='turbo',interpolation='none',aspect=128/128)
-plt.colorbar(im, ax=ax[2, 1])
-im = ax[1,1].imshow(np.log(1+newPimg), interpolation='none',cmap='turbo',origin='upper')
-plt.colorbar(im, ax=ax[1, 1])
-plt.show()
-pimg = img2polar(MaskedData, [61.3,62.42], int(64*np.sqrt(2)), initial_radius = None, phase_width = 360)
-plt.imshow(np.log(1+np.flipud(np.transpose(pimg))), interpolation='none',cmap='turbo',origin='upper',aspect=int(64*np.sqrt(2))/360)
-plt.show()
-"""
+AIntmeshgrid = SASazimuthal(MaskedData,mode='pyFAI',center=[61.3,62.42], Rrange=[45,50],polarres=180, pixelsize=[7.5,7.5], distance=ThisData.BerSANS["%Setup,SD"])
+AIntmeshgrid.showresults()
