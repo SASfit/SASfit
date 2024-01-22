@@ -1,16 +1,23 @@
 import numpy as np
+import sys
+import os
+try:
+    from SASformats import SANSdata
+except:
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.getcwd()), '..')))
+    from pySASfit.io_tools.SASformats import SANSdata
 import cv2
 import fabio
 import pyFAI, pyFAI.azimuthalIntegrator, pyFAI.detectors
 from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
 from pyFAI.gui import jupyter
-from SASformats import SANSdata
 import polarTransform as pT
 from scipy.ndimage import geometric_transform
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import scipy.integrate as integrate
+
 class SASazimuthal:
     __doc__ = """
     SASazimuthal(method) needs as an argument a string to a valid method for calculating azimuthal data.
@@ -23,7 +30,7 @@ class SASazimuthal:
     well as calculating the intensity profile along the azimuthal direction.
     """
     __author__ = "Joachim Kohlbrecher"
-    __copyright__ = "Copyright 2023, The SASfit Project"
+    __copyright__ = "Copyright 2024 The SASfit Project"
     __license__ = "GPL"
     __version__ = "1.0"
     __maintainer__ = "Joachim Kohlbrecher"
@@ -46,6 +53,12 @@ class SASazimuthal:
     visibility = 0
     MSvisibility = 0
     offset = 0
+    MSparameters = []
+    MScovariance = []
+    MSIpsi = []
+    SMIpsi = []
+    name = 'unknown'
+    output=None
 
     def __init__(self, array2D, mode=None, center=None,Rrange=None, polarres=None, order=None, distance=None, pixelsize=None):
         try:
@@ -91,7 +104,45 @@ class SASazimuthal:
             self.azimuthal_average_pyFAI()
         else:
             self.azimuthal_average_meshgrid()
+        self.calcAnsisotropy()
     
+    def calcAnsisotropy(self):
+        def MaierSaupe2(x, A1, A2, Ibckg, kappa1, kappa2, Offset):
+            kappa1 = np.abs(kappa1)
+            kappa1 = np.abs(kappa2)
+            I0 = np.abs(Ibckg)
+            MSnorm1 = integrate.quad(lambda x: np.exp(np.abs(kappa1)*np.cos(x)**2), 0, np.pi/2.)
+            MSnorm2 = integrate.quad(lambda x: np.exp(np.abs(kappa2)*np.cos(x)**2), 0, np.pi/2.)
+            return I0+np.abs(A1)*np.pi/(2.0*MSnorm1[0])* np.exp(np.abs(kappa1)*np.cos((x-Offset)*np.pi/180)**2) \
+                     +np.abs(A2)*np.pi/(2.0*MSnorm2[0])* np.exp(np.abs(kappa2)*np.cos((x-Offset)*np.pi/180)**2)
+        def MaierSaupe1(x, A1, Ibckg, kappa1, Offset):
+            kappa1 = np.abs(kappa1)
+            I0 = np.abs(Ibckg)
+            MSnorm1 = integrate.quad(lambda x: np.exp(np.abs(kappa1)*np.cos(x)**2), 0, np.pi/2.)
+            return I0+np.abs(A1)*np.pi/(2.0*MSnorm1[0])* np.exp(np.abs(kappa1)*np.cos((x-Offset)*np.pi/180)**2) 
+        from pySASfit.tools.smearing import smooth_data_gaussian_filter1d_wrap, smooth_data_fft
+        #self.SMIpsi = smooth_data_savgol_n(self.Ipsi, 15, 2)
+        self.SMIpsi = smooth_data_gaussian_filter1d_wrap(self.Ipsi, 3)
+        #self.SMIpsi = smooth_data_fft(self.Ipsi, 0.1*np.average(self.Ipsi))
+        Dmin = np.min(self.SMIpsi)
+        Dmax = np.max(self.SMIpsi)
+        Davg = np.average(self.SMIpsi)
+        self.MSparameters, self.MScovariance = curve_fit(MaierSaupe1, self.psi, self.Ipsi, p0=[Dmax-Dmin,Dmin,0.3, self.psi[self.SMIpsi.argmax()]])
+        while  self.MSparameters[3] > 180:
+            self.MSparameters[3] = self.MSparameters[3]-180
+        while  self.MSparameters[3] < 0:
+            self.MSparameters[3] = self.MSparameters[3]+180
+        self.MSparameters, self.MScovariance = curve_fit(MaierSaupe1, self.psi, self.Ipsi, p0=self.MSparameters)
+        self.visibility = (Dmax-Dmin)/(Davg) 
+        #print(self.visibility, Dmax, Dmin)
+        self.MSIpsi = MaierSaupe1(self.psi, *self.MSparameters)
+        MSmin = np.min(self.MSIpsi)
+        MSmax = np.max(self.MSIpsi)
+        MSavg = np.average(self.MSIpsi)
+        self.MSvisibility = (MSmax-MSmin)/(MSavg)
+        #print(self.MSvisibility, MSmax, MSmin)
+        self.offset = self.MSparameters[3]
+        
     def showresults(self):
         ThisMin = np.min(self.cartimg)
         fig, ax = plt.subplots(1,3,figsize=(10, 3))
@@ -102,51 +153,34 @@ class SASazimuthal:
         plt.colorbar(im, ax=ax[1])
         ax[2].plot(self.psi,self.Ipsi)
         ax[2].set_ylim([0,1.2*np.max(self.Ipsi)])
+        ax[2].plot(self.psi, self.MSIpsi)
+        ax[2].plot(self.psi, self.SMIpsi)
         
-        def MaierSaupe(x, A1, A2, Ibckg, kappa1, kappa2, Offset):
-            kappa1 = np.abs(kappa1)
-            kappa1 = np.abs(kappa2)
-            I0 = np.abs(Ibckg)
-            MSnorm1 = integrate.quad(lambda x: np.exp(np.abs(kappa1)*np.cos(x)**2), 0, np.pi/2.)
-            MSnorm2 = integrate.quad(lambda x: np.exp(np.abs(kappa2)*np.cos(x)**2), 0, np.pi/2.)
-            return I0+np.abs(A1)*np.pi/(2.0*MSnorm1[0])* np.exp(np.abs(kappa1)*np.cos((x-Offset)*np.pi/180)**2) \
-                     +np.abs(A2)*np.pi/(2.0*MSnorm2[0])* np.exp(np.abs(kappa2)*np.cos((x-Offset)*np.pi/180)**2)
+        #print(f"psi_shape{self.psi.shape}")
+        ax[2].set(title=f"mode={self.mode}\noffset={np.round(self.MSparameters[3],3)}\nkappa={np.round(self.MSparameters[2],3)}\nMaier-Saupe aspect ratio={np.round(self.MSvisibility,3)}\ndata aspect ratio={np.round(self.visibility,3)}")
+        #ax[2].text(30.0, 0.05*np.max(self.Ipsi), f"mode={self.mode}\noffset={np.round(self.MSparameters[3],3)}\nMaier-Saupe aspect ratio={np.round(self.MSvisibility,3)}\ndata aspect ratio={np.round(self.visibility,3)}",backgroundcolor='orange',fontsize='x-small')
+        #print(f"mode = {self.mode}")
+        #print(f"shapeCart = {self.cartimg.shape}")
+        #print(f"shapePolar = {self.polarimg.shape}")
+        #print(f"center = {self.center}")
+        #print(f"Rrange = {self.Rrange}")
+        #print(f"order = {self.order}")
+        #print(f"polarres = {self.polarres}")
+        #print(f"visibility = {self.visibility}")
+        #print(f"MSvisibility = {self.MSvisibility}")
+        #print(f"offset = {self.offset}")
+        #print(f"min,max (psi) = {np.min(self.psi)},{np.max(self.psi)}")
+        #plt.tight_layout()
+        if self.output == "show":
+            plt.show()
+        elif self.output == "png":
+            plt.savefig(f"{self.name}.png", bbox_inches="tight")
+        elif self.output == "png":
+            plt.savefig(f"{self.name}.pdf", bbox_inches="tight")
+        else:
+            pass
         
-        parameters, covariance = curve_fit(MaierSaupe, self.psi, self.Ipsi, p0=[0.4*np.average(self.Ipsi),0.5*np.average(self.Ipsi),0.1*np.average(self.Ipsi),0.5,0.1, 0])
-        while  parameters[5] > 180:
-            parameters[5] = parameters[5]-180
-        while  parameters[5] < 0:
-            parameters[5] = parameters[5]+180
-        parameters, covariance = curve_fit(MaierSaupe, self.psi, self.Ipsi, p0=parameters)
-        #pp.pprint(parameters)
-        ax[2].plot(self.psi, MaierSaupe(self.psi, *parameters))
-        Dmin = np.min(self.Ipsi)
-        Dmax = np.max(self.Ipsi)
-        Davg = np.average(self.Ipsi)
-        self.visibility = (Dmax-Dmin)/(Davg) 
-        print(self.visibility, Dmax, Dmin)
-        MSmin = np.min(MaierSaupe(self.psi, *parameters))
-        MSmax = np.max(MaierSaupe(self.psi, *parameters))
-        MSavg = np.average(MaierSaupe(self.psi, *parameters))
-        self.MSvisibility = (MSmax-MSmin)/(MSavg)
-        print(self.MSvisibility, MSmax, MSmin)
-        self.offset = parameters[3]
-        print(f"psi_shape{self.psi.shape}")
-        ax[2].set(title=f"mode={self.mode}\noffset={np.round(parameters[3],3)}\nMaier-Saupe aspect ratio={np.round(self.MSvisibility,3)}\ndata aspect ratio={np.round(self.visibility,3)}")
-        #ax[2].text(30.0, 0.05*np.max(self.Ipsi), f"mode={self.mode}\noffset={np.round(parameters[3],3)}\nMaier-Saupe aspect ratio={np.round(self.MSvisibility,3)}\ndata aspect ratio={np.round(self.visibility,3)}",backgroundcolor='orange',fontsize='x-small')
-        print(f"mode = {self.mode}")
-        print(f"shapeCart = {self.cartimg.shape}")
-        print(f"shapePolar = {self.polarimg.shape}")
-        print(f"center = {self.center}")
-        print(f"Rrange = {self.Rrange}")
-        print(f"order = {self.order}")
-        print(f"polarres = {self.polarres}")
-        print(f"visibility = {self.visibility}")
-        print(f"MSvisibility = {self.MSvisibility}")
-        print(f"offset = {self.offset}")
-        print(f"min,max (psi) = {np.min(self.psi)},{np.max(self.psi)}")
-        plt.show()
-
+          
     def img2polar(self):
         def polar2cart(r, theta,center):
             x = r  * np.cos(theta) + center[0]
