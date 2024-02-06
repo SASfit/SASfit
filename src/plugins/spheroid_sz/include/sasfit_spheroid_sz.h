@@ -98,5 +98,58 @@ sasfit_spheroid_sz_DLLEXP scalar sasfit_ff_spheroid_w__sz_distr_v(scalar q, sasf
 /* ################ stop ff_spheroid_w__sz_distr ################ */
 
 
+/* ################ start ff_spheroid_w_dbl_sz_distr ################ */
+/**
+ * \defgroup ff_spheroid_w_dbl_sz_distr spheroid w. double g-size distr
+ * \ingroup ff_spheroid_obj
+ *
+ * \brief \<some brief description of spheroid w. double gamma size distr function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b R_polar</td>
+ *       <td>most probable polar radius</td>
+ *      </tr><tr>
+ *       <td>\b k_polar</td>
+ *       <td>width parameter of gamma SD</td>
+ *      </tr><tr>
+ *       <td>\b R_equatorial</td>
+ *       <td>most probable equatorial radius</td>
+ *      </tr><tr>
+ *       <td>\b k_equatorial</td>
+ *       <td>width parameter of gamma SD</td>
+ *      </tr><tr>
+ *       <td>\b Delta_eta</td>
+ *       <td>scattering length density contrast</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_spheroid_w_dbl_sz_distr
+ *
+ * \sa sasfit_spheroid.h, ff_spheroid_obj
+ */
+sasfit_spheroid_sz_DLLEXP scalar sasfit_ff_spheroid_w_dbl_sz_distr(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_spheroid_w_dbl_sz_distr
+ *
+ * \sa sasfit_spheroid.h, ff_spheroid_obj
+ */
+sasfit_spheroid_sz_DLLEXP scalar sasfit_ff_spheroid_w_dbl_sz_distr_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_spheroid_w__double_g_size_distr
+ *
+ * \sa sasfit_spheroid.h, ff_spheroid_obj
+ */
+sasfit_spheroid_sz_DLLEXP scalar sasfit_ff_spheroid_w_dbl_sz_distr_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_spheroid_w_dbl_sz_distr ################ */
+
+
 #endif // this file
 

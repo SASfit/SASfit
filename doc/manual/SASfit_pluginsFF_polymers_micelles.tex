@@ -237,14 +237,19 @@ $\nu$ is the excluded volume parameter from the Flory mean field theory and typi
 \end{description}
 
 \vspace{5mm}
-\uline{Input Parameters for model \texttt{generalized Gaussian coil}:}
+\noindent \uline{Input Parameters for model \texttt{generalized Gaussian coil}:}
 \begin{description}
 \item[\texttt{Rg}] radius of gyration $R_g$
-\item[\texttt{nu}] excluded volume parameter $\nu\in [1/2;1]$
+\item[\texttt{nu}] excluded volume parameter $\nu>0$
 \item[\texttt{I0}] forward scattering $I_0$ for $q=0$
 \end{description}
 \vspace{5mm}
 
+\noindent \uline{Note:}
+\begin{itemize}
+\item For large $q$-values to model decays with the law $\propto q^{-1/\nu}$ for $q \rightarrow 0$
+\end{itemize}
+\vspace{5mm}
 
 \subsubsection{generalized Gaussian coil 2} \cite{Hammouda,Hammouda2012}
 \label{sect:generalized_gaussian_coil2}
@@ -266,13 +271,19 @@ U&= \left(2\nu+1\right)\left(2\nu+2\right)\frac{q^2R_G^2}{6}
 \end{align}
 
 \vspace{5mm}
-\uline{Input Parameters for model \texttt{generalized Gaussian coil 2}:}
+\noindent \uline{Input Parameters for model \texttt{generalized Gaussian coil 2}:}
 \begin{description}
 \item[\texttt{Rg}] radius of gyration $R_g$
 \item[\texttt{b\_p}] scattering length of polymer $b_p$ in [cm]
 \item[\texttt{V}] molecular volume of a single polymer molecule $V$ in [cm$^3$]
 \item[\texttt{eta\_s}] scattering length density of solvent $\eta_\text{s}$ in [cm$^{-2}$]
 \end{description}
+\vspace{5mm}
+
+\noindent \uline{Note:}
+\begin{itemize}
+\item For large $q$-values to model decays with the law $\propto q^{-1/\nu}$ for $q \rightarrow 0$
+\end{itemize}
 \vspace{5mm}
 
 \subsubsection{generalized Gaussian coil 3} \cite{Hammouda,Hammouda2012}
@@ -295,7 +306,7 @@ U&= \left(2\nu+1\right)\left(2\nu+2\right)\frac{q^2R_G^2}{6}
 \end{align}
 
 \vspace{5mm}
-\uline{Input Parameters for model \texttt{generalized Gaussian coil 3}:}
+\noindent \uline{Input Parameters for model \texttt{generalized Gaussian coil 3}:}
 \begin{description}
 \item[\texttt{Rg}] radius of gyration $R_g$
 \item[\texttt{b\_p}] scattering length of polymer $b_p$ in [cm]
@@ -303,6 +314,12 @@ U&= \left(2\nu+1\right)\left(2\nu+2\right)\frac{q^2R_G^2}{6}
 \item[\texttt{rho\_p}] mass density of polymer $\rho_p$ in [g cm$^{-3}$]
 \item[\texttt{eta\_s}] scattering length density of solvent $\eta_\text{s}$ in [cm$^{-2}$]
 \end{description}
+\vspace{5mm}
+
+\noindent \uline{Note:}
+\begin{itemize}
+\item For large $q$-values to model decays with the law $\propto q^{-1/\nu}$ for $q \rightarrow 0$
+\end{itemize}
 \vspace{5mm}
 
 \begin{figure}[htb]

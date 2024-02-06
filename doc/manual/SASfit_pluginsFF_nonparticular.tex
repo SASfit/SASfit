@@ -446,8 +446,8 @@ The Debye-Anderson-Brumberger(DAB) model from the previous section \ref{sect:DAB
 where $K_n(x)$ is the modified Bessel function of the second kind
 and $\Gamma$ is the Gamma function. $H$ is the so-called Hurst
 exponent with typical value around $\frac12$. For $H=\frac12$ the gDAB-model results into the DAB model describes in section \ref{sect:DAB}. The scattering intensity is implemented as
-\begin{align}
-I(q) =  \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\Gamma^2(H)\left[1+(q\xi)^2\right]^{\frac32+H}}
+\begin{align} \label{eq:gDAB}
+I_\mathrm{gDAB}(q) =  \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\Gamma^2(H)\left[1+(q\xi)^2\right]^{\frac32+H}}
 \end{align}
 
 
@@ -455,12 +455,15 @@ I(q) =  \frac{\pi^3\left(\left(2\xi\right)^3\Gamma(3/2+H)\Delta\eta\right)^2}{\G
 \begin{description}
 \item[\texttt{xi}] correlation length $\xi$
 \item[\texttt{H}] Hurst exponent $H$
+\item[\texttt{dummy}] not used
 \item[\texttt{eta}] scattering length density contrast $\Delta\eta$
 \end{description}
 
 \uline{Note:}
 \begin{itemize}
-\item None
+\item For comparison with other models the relation of $\xi$ to the radius of gyration $R_g$ might be useful: $R_g^2=\xi^2 \frac32 (3+2H)$
+\item $H$ is constraint to $H>-3/2$
+\item For large $q$-values to model decays with the law $\propto q^{-3-2H}$
 \end{itemize}
 
 

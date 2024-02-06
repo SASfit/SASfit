@@ -451,6 +451,56 @@ sasfit_non_particulate_DLLEXP scalar sasfit_ff_g_dab_f(scalar q, sasfit_param * 
 sasfit_non_particulate_DLLEXP scalar sasfit_ff_g_dab_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_g_dab ################ */
 
+
+/* ################ start ff_def_g_dab ################ */
+/**
+ * \defgroup ff_def_g_dab def. gDAB
+ * \ingroup ff_non-particulate
+ *
+ * \brief affine stretched and random oriented gDAb model
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b xi</td>
+ *       <td>correlation length</td>
+ *      </tr><tr>
+ *       <td>\b H</td>
+ *       <td>Hurst exponent</td>
+ *      </tr><tr>
+ *       <td>\b epsilon</td>
+ *       <td>stretching factor</td>
+ *      </tr><tr>
+ *       <td>\b eta</td>
+ *       <td>scattering length density contrast</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_def_g_dab
+ *
+ * \sa sasfit_non_particulate.h, ff_non-particulate
+ */
+sasfit_non_particulate_DLLEXP scalar sasfit_ff_def_g_dab(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_def_g_dab
+ *
+ * \sa sasfit_non_particulate.h, ff_non-particulate
+ */
+sasfit_non_particulate_DLLEXP scalar sasfit_ff_def_g_dab_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_def_g_dab
+ *
+ * \sa sasfit_non_particulate.h, ff_non-particulate
+ */
+sasfit_non_particulate_DLLEXP scalar sasfit_ff_def_g_dab_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_def_g_dab ################ */
+
 /* ################ start ff_ornstein_zernike ################ */
 /**
  * \defgroup ff_ornstein_zernike Ornstein-Zernike

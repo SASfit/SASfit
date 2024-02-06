@@ -11,6 +11,7 @@ set(LIBS_EXT
 # source files
 set(SOURCE_${PRJ_NAME}
 	sasfit_ff_spheroid_w__sz_distr.c
+	sasfit_ff_spheroid_w_dbl_sz_distr.c
 	interface.c
 )
 

@@ -94,7 +94,15 @@
  * \modname{sd_plugins_lognormal}
  */
 
-
+/** 
+ * \defgroup sd_plugins_gamma gamma
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of gamma distributions
+ *
+ * \modname{sd_plugins_gamma}
+ */
+ 
 /** 
  * \defgroup sd_plugins_generalized generalized
  * \ingroup sd_plugins

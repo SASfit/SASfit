@@ -401,6 +401,7 @@ set(SOURCE_sasfit_jburkardt
 	sparse_grid_hw.c
 	smolyak.c
 	jburkardt_utils.c
+	cdflib.c
 )
 
 set(SOURCE_sasfit_old
