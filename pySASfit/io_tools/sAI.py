@@ -3,9 +3,11 @@ import sys
 import os
 try:
     from SASformats import SANSdata
+    import smoothing
 except:
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.getcwd()), '..')))
     from pySASfit.io_tools.SASformats import SANSdata
+    import pySASfit.tools.smoothing
 import cv2
 import fabio
 import pyFAI, pyFAI.azimuthalIntegrator, pyFAI.detectors
@@ -120,7 +122,7 @@ class SASazimuthal:
             I0 = np.abs(Ibckg)
             MSnorm1 = integrate.quad(lambda x: np.exp(np.abs(kappa1)*np.cos(x)**2), 0, np.pi/2.)
             return I0+np.abs(A1)*np.pi/(2.0*MSnorm1[0])* np.exp(np.abs(kappa1)*np.cos((x-Offset)*np.pi/180)**2) 
-        from pySASfit.tools.smearing import smooth_data_gaussian_filter1d_wrap, smooth_data_fft
+        from pySASfit.tools.smoothing import smooth_data_gaussian_filter1d_wrap, smooth_data_fft
         #self.SMIpsi = smooth_data_savgol_n(self.Ipsi, 15, 2)
         self.SMIpsi = smooth_data_gaussian_filter1d_wrap(self.Ipsi, 3)
         #self.SMIpsi = smooth_data_fft(self.Ipsi, 0.1*np.average(self.Ipsi))
