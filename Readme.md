@@ -84,6 +84,11 @@ Up to date development snapshots for all supported platforms can be found [on cl
 
 ## MacOS Startup issues
 
+### *no display name and no $DISPLAY environment variable*
+
+It is very likely that the XQuartz package is missing which is a requirement for SASfit to run on modern macOS. You can download its package from here: https://www.xquartz.org/releases/index.html
+Descriptions on using *macports* or *homebrew* for installing it can be found there too.
+
 ### *SASfit is from an unidentified developer*
 
 ![sasfit.command error on macOS](https://raw.githubusercontent.com/SASfit/SASfit/master/doc/images/sasfit.command%20error%20on%20macOS.png)
