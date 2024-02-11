@@ -46,3 +46,26 @@ To describe a short range attractive and long range repulsive interaction Liu et
   \item For nonphysical or no solution an error message is returned.
   \item For values close to $Z_1=Z_2$ the separately implemented structure factor a single Yukawa interaction potential should be used.
 \end{itemize} 
+
+\subsection{Hayter-Penfold structure factor for a screened coulomb interaction (single Yukawa, RMSA)} 
+
+This structure factor has been published in \cite{Hayter1981,Hansen1982}. The original Fortran code has been translates to C by f2c and is used for this plugin.
+The repulsive potential used is that one between two identical spherical macroions is given by
+\begin{align}\label{eq:HP_RMSA_potential}
+  \frac{U_\mathrm{HP}(x)}{k_BT} &= 
+  \begin{cases}
+    \gamma\frac{\exp(-kx)}{x}, & \mbox{if } x > 1 \\
+    \infty, & \mbox{otherwise}.
+  \end{cases} \\
+  x &= r/\sigma \\
+  \sigma &= 2R \\
+  k&=\kappa\sigma \\
+  K&=q\sigma\\
+  k_bT&: \mbox{ thermal energy}\\
+  \gamma &=\frac{\pi\epsilon_0\epsilon\sigma}{k_BT}\Psi_0^2  \exp(k) \mbox{ dimensionless coupling constant} \\
+  \gamma \exp(-k) & \mbox{  contact potential for macroion pair in unit of $k_B T$}
+  \Psi_0 &= z e/(\pi\epsilon\epsilon_0 R(2+\kappa R)) \mbox{surface potential of the particle} \\
+  \kappa&=1/\lambda \mbox{ inverse screening length with } \kappa^2=4\pi\lambda_B\sum_i n_iz_i\\
+  \lambda_B&= \frac{e^2}{4\pi\epsilon_0\epsilon_r k_BT} \mbox{ Bjerrum length}
+\end{align} 
+with  $e$ being the elementary charge, $\epsilon_r$ relative dielectric constant of the medium, $\epsilon_0$ is the vacuum permittivity, $n_i$ number density of ion $i$ with charge $z_i$ in units of $e$. 

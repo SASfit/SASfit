@@ -27,7 +27,8 @@ image:
   # Linux first since its faster and there is more time for source snapshot upload to zenodo later
   - Ubuntu2004
   - Visual Studio 2019
-  - macos-bigsur
+  - macos-monterey
+  #- macos-bigsur
 
 environment:
   BT_API:
@@ -74,7 +75,7 @@ for:
 -
   matrix:
     only:
-      - image: macos-bigsur
+      - image: macos-monterey
   environment:
     CACHEID: macos64
   install:

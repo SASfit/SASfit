@@ -408,6 +408,7 @@ int sqcoef_oldHP(integer * ir)
     /* Initialized data */
 
     static doublereal acc = (float)5e-6;
+    static doublereal fix = (float)5e-1;
     static integer itm = 80;
 
     /* System generated locals */
@@ -444,61 +445,46 @@ int sqcoef_oldHP(integer * ir)
 /*     1 , U, V, GAMK, SETA, SGEK, SAK, SCAL */
 /*     2 , G1, AAAAAA( 5), LLLLLL */
 
-    ig = 1;
-    if (sqhpb_1.ak < sqhpb_1.eta * (float)8. + (float)1.) {
-	goto L50;
-    }
-    ig = 0;
+
     sqfun_(&sqhpb_1.g1, &sqhpb_1.eta, &c__1, ir);
-    if (*ir < 0 || sqhpb_1.g1 >= (float)0.) {
-	return 0;
+    if (*ir == -2) {
+        // FAILED TO CONVERGE in Newton algorith to find zero, only in classical HP solution,
+        return 0;
     }
-L50:
+    if (*ir == -4) {
+        // no root found in first try
+        return 0;
+    }
+    if (sqhpb_1.g1 >= (float)0.) {
+        // already a good solution is returned
+        return 0;
+    }
     sqhpb_1.seta = dmin(sqhpb_1.eta,(float).2);
-    if (ig == 1 && sqhpb_1.gamk < (float).15) {
-	goto L400;
-    }
-    j = 0;
-L100:
-    ++j;
-    if (j > itm) {
-	goto L200;
-    }
-    if (sqhpb_1.seta <= (float)0.) {
-	sqhpb_1.seta = sqhpb_1.eta / j;
-    }
-    if (sqhpb_1.seta > (float).6) {
-	sqhpb_1.seta = (float).35 / j;
-    }
-    e1 = sqhpb_1.seta;
-    sqfun_(&f1, &e1, &c__2, ir);
-    e2 = sqhpb_1.seta * (float)1.01;
-    sqfun_(&f2, &e2, &c__2, ir);
-    e2 = e1 - (e2 - e1) * f1 / (f2 - f1);
-    sqhpb_1.seta = e2;
-    del = (r__1 = (e2 - e1) / e1, dabs(r__1));
-    if (del > acc) {
-	goto L100;
+    //  find a rescaled eta with g+>=0 for strong coupling or low volume fraction
+    j=0;
+    f1=0;
+    f2=0;
+    while (TRUE) {
+        j++;
+        if (j>itm) return 0;
+        if (sqhpb_1.seta <= 0.0) sqhpb_1.seta = sqhpb_1.eta / j; //  g+<0 -> rescale eta
+        if (sqhpb_1.seta > 0.6) sqhpb_1.seta = 0.35 / j;  // rescaled eta>0.6 rescale to smaller value
+        e1 = sqhpb_1.seta; // e1 first eta
+        // ix=2  RETURN FUNCTION TO SOLVE FOR ETA(GILLAN)
+        sqfun_(&f1, &e1, &c__2, ir);
+        e2 = sqhpb_1.seta * 1.01; // increase scaled eta
+        sqfun_(&f2, &e2, &c__2, ir);
+        e2 = e1 - (e2 - e1) * f1 / (f2 - f1);  // new approximation for scaled eta
+        sqhpb_1.seta = e2; // save for next iteration or as result
+        del = fabs((e2 - e1) / e1);  // relative change
+        if (del < acc) break;
     }
     sqfun_(&sqhpb_1.g1, &e2, &c__4, ir);
+     if ((sqhpb_1.seta > 0.64) || (sqhpb_1.seta < sqhpb_1.eta)) {
+        *ir = -3;  // rescaling not successful
+        return 0;
+     }
     *ir = j;
-    if (ig == 1) {
-	goto L300;
-    }
-    return 0;
-L200:
-    *ir = -1;
-    return 0;
-L300:
-    if (sqhpb_1.seta >= sqhpb_1.eta) {
-	return 0;
-    }
-L400:
-    sqfun_(&sqhpb_1.g1, &sqhpb_1.eta, &c__3, ir);
-    if (*ir < 0 || sqhpb_1.g1 >= (float)0.) {
-	return 0;
-    }
-    *ir = -3;
     return 0;
 }
 
