@@ -137,10 +137,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_TripleLayeredHomogeneousCentroSymmetricXS;
 	} else
-	if ( strcmp(ff->typestr, "SphereWithGaussChains") == 0 )
-	{
-		ff->fct = sasfit_ff_SphereWithGaussChains;
-	} else
 	if ( strcmp(ff->typestr, "BiLayeredVesicle") == 0 )
 	{
 		ff->fct = sasfit_ff_BiLayeredVesicle;
@@ -288,10 +284,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_DLS_Sphere_RDG;
 	} else
-	if ( strcmp(ff->typestr, "P39") == 0 )
-	{
-		ff->fct = sasfit_ff_P39;
-	} else
 	if ( strcmp(ff->typestr, "SphereShell_compr") == 0 )
 	{
 		ff->fct 	= sasfit_ff_Shellcompr;
@@ -320,25 +312,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	if ( strcmp(ff->typestr, "JuelichMicelle") == 0 )
 	{
 		ff->fct = sasfit_ff_JuelichDoubleShell;
-	} else
-	if ( strcmp(ff->typestr, "BlockCopolymerMicelle") == 0 )
-	{
-		ff->fct = sasfit_ff_BlockCopolymerMicelle;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+Chains(RW)") == 0 )
-	{
-		ff->fct = sasfit_ff_old_Sphere_RWbrush;
-		ff->params.kernelSelector = SPHERE_RWBRUSH;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+Chains(RW)_Rc") == 0 )
-	{
-		ff->fct = sasfit_ff_old_Sphere_RWbrush;
-		ff->params.kernelSelector = SPHERE_RWBRUSH_RC;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+Chains(RW)_Nagg") == 0 )
-	{
-		ff->fct = sasfit_ff_old_Sphere_RWbrush;
-		ff->params.kernelSelector = SPHERE_RWBRUSH_NAGG;
 	} else
 	if (strcmp(ff->typestr, "CopolymerMicelleRod") == 0 )
 	{
@@ -485,63 +458,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_francois;
 	} else
-	if ( strcmp(ff->typestr, "SPHERE+R^-a") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_R_ma_Profile;
-		ff->fct_v = sasfit_ff_Sphere_R_ma_Profile_v;
-		ff->params.kernelSelector = SPHERE_RMA;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+R^-a_Rc") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_R_ma_Profile;
-		ff->fct_v = sasfit_ff_Sphere_R_ma_Profile_v;
-		ff->params.kernelSelector = SPHERE_RMA_RC;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE_smooth_interface+R^-a_Rc") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_R_ma_Profile;
-		ff->params.kernelSelector = SPHERE_RMA_RC_SMOOTH;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE_smooth_interface+R^-a_Nagg") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_R_ma_Profile;
-		ff->params.kernelSelector = SPHERE_RMA_NAGG_SMOOTH;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+R^-a_Nagg") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_R_ma_Profile;
-		ff->fct_v = sasfit_ff_Sphere_R_ma_Profile_v;
-		ff->params.kernelSelector = SPHERE_RMA_NAGG;
-	} else
-	if ( strcmp(ff->typestr, "CopolymerMicelleR^-a") == 0 )
-	{
-		ff->fct = sasfit_ff_CoPolymerMicelleSphericalProfile;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+Chains(SAW)") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_SAWbrush;
-		ff->params.kernelSelector = SPHERE_SAW;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+Chains(SAW)_Nagg") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_SAWbrush;
-		ff->params.kernelSelector = SPHERE_SAW_NAGG;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+Chains(SAW)_Rc") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_SAWbrush;
-		ff->params.kernelSelector = SPHERE_SAW_RC;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+R^-a_Manuela") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_R_ma_Profile_Manuela;
-		ff->params.kernelSelector = SPHERE_RMA_MANU1;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+R^-a_Manuela2") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_R_ma_Profile_Manuela;
-		ff->params.kernelSelector = SPHERE_RMA_MANU2;
-	} else
 	if ( strcmp(ff->typestr, "homogenousXS") == 0 )
 	{
 		ff->fct = sasfit_ff_homogenousXS;
@@ -596,10 +512,6 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	{
 		ff->fct = sasfit_ff_triaxEllShell1;
 		ff->fct_v = sasfit_ff_triaxEllShell1_v;
-	} else
-	if ( strcmp(ff->typestr, "SPHERE+Exp_Rc") == 0 )
-	{
-		ff->fct = sasfit_ff_Sphere_Exp_Profile_Rc;
 	} else
 	if ( strcmp(ff->typestr, "Background") == 0 )
 	{

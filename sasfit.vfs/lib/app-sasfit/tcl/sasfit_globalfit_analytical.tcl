@@ -1605,99 +1605,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) "x_solvent ="
 				  set actualPar(FF,l10,label) "eta_solvent ="
 				}
-	"SphereWithGaussChains" { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "Rg ="
-				  set actualPar(FF,l3,label) "d ="
-				  set actualPar(FF,l4,label) "Nagg ="
-				  set actualPar(FF,l5,label) "rc ="
-				  set actualPar(FF,l6,label) "rs ="
-				  set actualPar(FF,l7,label) ""
-				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	"BlockCopolymerMicelle" { set actualPar(FF,l1,label) "Vpolym,c ="
-				  set actualPar(FF,l2,label) "xsolv_c ="
-				  set actualPar(FF,l3,label) "Vpoly,sh ="
-				  set actualPar(FF,l4,label) "eta_polym,c ="
-				  set actualPar(FF,l5,label) "eta_polym,sh ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "Nagg ="
-				  set actualPar(FF,l8,label) "Rg ="
-				  set actualPar(FF,l9,label) "d ="
-				  set actualPar(FF,l10,label) ""
-				}
-	"SPHERE+Chains(SAW)" \
-				{ set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "n_agg"
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) "xsolv_core ="
-				  set actualPar(FF,l8,label) "Rg ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE+Chains(SAW)_Rc" \
-				{ set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "xsolv_core ="
-				  set actualPar(FF,l8,label) "Rg ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE+Chains(SAW)_Nagg" \
-				{ set actualPar(FF,l1,label) "Nagg ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "xsolv_core ="
-				  set actualPar(FF,l8,label) "Rg ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE+Chains(RW)"     { set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "n_agg"
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_solv ="
-				  set actualPar(FF,l7,label) "xsolv_core ="
-				  set actualPar(FF,l8,label) "Rg ="
-				  set actualPar(FF,l9,label) "d ="
-				  set actualPar(FF,l10,label) ""
-				}
-	"SPHERE+Chains(RW)_Rc" \
-				{ set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "xsolv_core ="
-				  set actualPar(FF,l8,label) "Rg ="
-				  set actualPar(FF,l9,label) "d ="
-				  set actualPar(FF,l10,label) ""
-				}
-	"SPHERE+Chains(RW)_Nagg" \
-				{ set actualPar(FF,l1,label) "Nagg ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "xsolv_core ="
-				  set actualPar(FF,l8,label) "Rg ="
-				  set actualPar(FF,l9,label) "d ="
-				  set actualPar(FF,l10,label) ""
-				}
 	"DISC+Chains(RW)"     \
 				{ set actualPar(FF,l1,label) "L_core ="
 				  set actualPar(FF,l2,label) "n_agg"
@@ -1865,96 +1772,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l8,label) "Rg ="
 				  set actualPar(FF,l9,label) "l ="
 				  set actualPar(FF,l10,label) "L ="
-				}
-	"SPHERE+Exp_Rc"         { set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "x_solv_c ="
-				  set actualPar(FF,l8,label) "alpha ="
-				  set actualPar(FF,l9,label) "t ="
-				  set actualPar(FF,l10,label) "x_out ="
-				}
-	"SPHERE+R^-a"           { set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "n_agg ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "t ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE+R^-a_Rc"        { set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "t ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE_smooth_interface+R^-a_Rc" {
-				  set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "Deta_core ="
-				  set actualPar(FF,l5,label) "Deta_brush ="
-				  set actualPar(FF,l6,label) "sigma ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "t ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE+R^-a_Manuela"   { set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "D_eta_core ="
-				  set actualPar(FF,l5,label) "D_eta_brush ="
-				  set actualPar(FF,l6,label) "r_SiOx / mol. ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "t ="
-				  set actualPar(FF,l9,label) "a ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE+R^-a_Manuela2"  { set actualPar(FF,l1,label) "R_core ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "D_eta_core ="
-				  set actualPar(FF,l5,label) "D_eta_brush ="
-				  set actualPar(FF,l6,label) "r_SiOx / mol. ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "t ="
-				  set actualPar(FF,l9,label) "a ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE+R^-a_Nagg"      { set actualPar(FF,l1,label) "Nagg ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "eta_core ="
-				  set actualPar(FF,l5,label) "eta_brush ="
-				  set actualPar(FF,l6,label) "eta_sol ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "t ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
-				}
-	"SPHERE_smooth_interface+R^-a_Nagg" { 
-				  set actualPar(FF,l1,label) "Nagg ="
-				  set actualPar(FF,l2,label) "V_core ="
-				  set actualPar(FF,l3,label) "V_brush ="
-				  set actualPar(FF,l4,label) "Deta_core ="
-				  set actualPar(FF,l5,label) "Deta_brush ="
-				  set actualPar(FF,l6,label) "sigma ="
-				  set actualPar(FF,l7,label) "alpha ="
-				  set actualPar(FF,l8,label) "t ="
-				  set actualPar(FF,l9,label) "L ="
-				  set actualPar(FF,l10,label) "b ="
 				}
 	"ROD+R^-a"              { set actualPar(FF,l1,label) "R_core ="
 				  set actualPar(FF,l2,label) "n_agg ="
@@ -2929,20 +2746,6 @@ proc analyticalGlobalSDCmd {simorfit
 				       SphereShell_compr}} \ 
 	{polymers_micelles "polymers & micelles" { \ 
 						  {spherical "spherical & ellipsoidal micelles" { \
-									  {SPHERE+Chains(RW)_Nagg Delta} \ 
-									  {SPHERE+Chains(RW)_Rc Delta} \
-									  {SPHERE+Chains(RW) Delta} \ 
-									  {SPHERE+Chains(SAW)_Nagg Delta} \
-									  {SPHERE+Chains(SAW)_Rc Delta} \ 
-									  {SPHERE+Chains(SAW) Delta} \
-									  {SPHERE+Exp_Rc Delta} \
-									  {SPHERE+R^-a_Nagg Delta} \ 
-									  {SPHERE+R^-a_Rc Delta} \
-									  {SPHERE+R^-a Delta} \ 
-									  {SPHERE_smooth_interface+R^-a_Nagg Delta} \ 
-									  {SPHERE_smooth_interface+R^-a_Rc Delta} \
-									  {SPHERE+R^-a_Manuela Delta} \
-									  {SPHERE+R^-a_Manuela2 Delta} \
 									  {ELL+Chains(RW)_Nagg Delta} \ 
 									  {ELL+Chains(RW)_Rc Delta} \
 									  {ELL+Chains(RW) Delta} \ 
@@ -3022,7 +2825,6 @@ proc analyticalGlobalSDCmd {simorfit
 					Andrea1 \
 					{A(B) Monodisperse} \ 
 					{B(B) Monodisperse} \
-					{P39 Monodisperse} \
 					{julia "Julia's form factors" {{TripleLayeredXS_ULV Monodisperse}}} } } \ 
 	}]
 

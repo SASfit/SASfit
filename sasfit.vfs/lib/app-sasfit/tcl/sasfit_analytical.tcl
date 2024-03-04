@@ -5304,36 +5304,6 @@ switch -exact $type {
                 10 {return "rhosolv: scattering length density of solvent cm^-2\n"}
               }
            }
-           Francois1 { 
-              switch $num {
-                 0 {return "??\n"}
-                 1 {return "Rc\n"}
-                 2 {return "Rm\n"}
-                 3 {return "nu:\n"}
-                 4 {return "L: contour length\n"}
-                 5 {return "b: Kuhn length\n"}
-                 6 {return "Nagg: aggregation number\n"}
-                 7 {return "Drho: contrast\n"}
-                 8 {return "K: scaling parameter\n"}
-                 9 {return "exvol=1 with excluded volume\nexvol=0 without excluded volume"}
-                10 {return "\n"}
-              }
-           }
-           "CopolymerMicelleR^-a" { 
-              switch $num {
-                 0 {return "??\n"}
-                 1 {return "Rc\n"}
-                 2 {return "Vc\n"}
-                 3 {return "rho_c\n"}
-                 4 {return "Vsh\n"}
-                 5 {return "rho_sh\n"}
-                 6 {return "t\n"}
-                 7 {return "alpha\n"}
-                 8 {return "L\n"}
-                 9 {return "b\n"}
-                10 {return "ro_solv\n"}
-              }
-           }
            CopolymerMicelleRod { 
               switch $num {
                  0 {return "Formfactor of very long cylindrical block copolymer micelles\n"}
@@ -5545,21 +5515,6 @@ switch -exact $type {
               }
            }
            "B(B)" { 
-              switch $num {
-                 0 {return "\n"}
-                 1 {return "\n"}
-                 2 {return "\n"}
-                 3 {return "\n"}
-                 4 {return "\n"}
-                 5 {return "\n"}
-                 6 {return "\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "P39" { 
               switch $num {
                  0 {return "\n"}
                  1 {return "\n"}
@@ -5799,81 +5754,6 @@ switch -exact $type {
                 10 {return "eta_solvent: scattering length density of solvent\n"}
               }
 			}
-          "SphereWithGaussChains" { 
-              switch $num {
-                 0 {return "Form factor of spherical block copolymer micelles:\nA dense spherical core surrounded by a shell of dissolved polymer chains"}
-                 1 {return "R: core radius\n"}
-                 2 {return "Rg: gyration radius of polymer chain\n"}
-                 3 {return "d: ?? set to 1\n"}
-                 4 {return "Nagg: aggregation number\n"}
-                 5 {return "rc : excess scattering length of the block in the chain\n"}
-                 6 {return "rs : excess scattering length of the block in the core\n"}
-                 7 {return "\n"}
-                 8 {return "\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-          "BlockCopolymerMicelle" { 
-              switch $num {
-                 0 {return "Form factor of spherical block copolymer micelles:\nA dense spherical core surrounded by a shell of dissolved polymer chains"}
-                 1 {return "Vpolym,c: volume of a block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 2 {return "xsolv_c: amount of solvent inside the core, value should be within \[0,1)\n"}
-                 3 {return "Vpolym,sh:  volume of a block unit in the shell\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_polym,c: scattering length density block units in core\n"}
-                 5 {return "eta_polym,sh: scattering length density of block units in shell\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "Nagg: aggregation number\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the shell\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
-                10 {return "\n"}
-              }
-           }
-          "SPHERE+Chains(RW)" {
-              switch $num {
-                 0 {return "sphere with Gaussian chains attached\nin contrast to the form factor *_Rc and *_Nagg this one does not necassary consist of copolymers"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "n_agg: specific aggregation number\nnumber of chains per surface area"}
-                 3 {return "V_brush: molecular volume of single chain in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of the block unit in the spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
-                10 {return "\n"}
-              }
-           }
-          "SPHERE+Chains(RW)_Rc" {
-              switch $num {
-                 0 {return "sphere with Gaussian chains attached, the micelle consists of block copolymers\nthe aggregation number Nagg is calculated from the core radius R_core and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
-                10 {return "\n"}
-              }
-           }
-          "SPHERE+Chains(RW)_Nagg" {
-              switch $num {
-                 0 {return "sphere with Gaussian chains attached, the micelle consists of block copolymers\nthe core radius R_core is calculated from the aggregation number Nagg and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "N_agg: aggregation number of copolymer molecules per micelle\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "d: value should be around 1\nnon-penetration of the chains into the core is mimicked by d~1 for R_core>>Rg"}
-                10 {return "\n"}
-              }
-           }
           "DISC+Chains(RW)" {
               switch $num {
                  0 {return "disc with Gaussian chains attached\nin contrast to the form factor *_Lc and *_nagg this one does not necassary consist of copolymers"}
@@ -6099,111 +5979,6 @@ switch -exact $type {
                 10 {return "L: contour length\n"}
               }
            }
-          "SPHERE+Chains(SAW)" {
-              switch $num {
-                 0 {return "sphere with corona of semi-flexible interacting self-avoiding chains\nin contrast to the form factor *_Rc and *_Nagg this one does not neccassary consist of copolymers"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "n_agg: specific aggregation number\nnumber of chains per surface area"}
-                 3 {return "V_brush: molecular volume of single chain in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "L: contour length polymer chain in corona\n(Rg^2=L*b/6 for RW and Rg^2=Lb/6-(b/2)^2+b^3/(4L)(1+b/(2L) exp(-2L/b)-1) for OSF theory (SAW)"}
-                10 {return "b: Kuhn length of polymer chain in corona\n"}
-              }
-           }
-          "SPHERE+Chains(SAW)_Rc" {
-              switch $num {
-                 0 {return "sphere with corona of semi-flexible interacting self-avoiding chains\nthe aggregation number Nagg is calculated from the core radius R_core and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "L: contour length polymer chain in corona\n(Rg^2=L*b/6 for RW and Rg^2=Lb/6-(b/2)^2+b^3/(4L)(1+b/(2L) exp(-2L/b)-1) for OSF theory (SAW)"}
-                10 {return "b: Kuhn length of polymer chain in corona\n"}
-              }
-           }
-          "SPHERE+Chains(SAW)_Nagg" {
-              switch $num {
-                 0 {return "sphere with corona of semi-flexible interacting self-avoiding chains\nthe core radius R_core is calculated from the aggregation number Nagg and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "N_agg: aggregation number of copolymer molecules per micelle\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "xsolv_core: amount of solvent in core\n"}
-		 8 {return "Rg: gyration radius of polymer chains in the corona\n"}
-                 9 {return "L: contour length polymer chain in corona\n(Rg^2=L*b/6 for RW and Rg^2=Lb/6-(b/2)^2+b^3/(4L)(1+b/(2L) exp(-2L/b)-1) for OSF theory (SAW)"}
-                10 {return "b: Kuhn length of polymer chain in corona\n"}
-              }
-           }
-          "SPHERE+Exp_Rc" {
-              switch $num {
-                 0 {return "sphere with a radial profile of \nthe aggregation number Nagg is calculated from the core radius R_core and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "\n"}
-                 8 {return "alpha: exponent of radial profile (r^-alpha)\nalpha=2: polyelectrolyte, alpha=4/3: star-like polymer, alpha=0: compact shell"}
-		 9 {return "t: shell thickness\n"}
-                 10 {return "x_out:\n"}
-              }
-           }
-          "SPHERE+R^-a" {
-              switch $num {
-                 0 {return "sphere with a radial profile r^-alpha\nin contrast to the form factor *_Rc and *_Nagg this one does not neccassary consist of copolymers"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "n_agg: specific aggregation number\nnumber of chains per surface area"}
-                 3 {return "V_brush: molecular volume of single chain in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "alpha: exponent of radial profile (r^-alpha)\nalpha=2: polyelectrolyte, alpha=4/3: star-like polymer, alpha=0: compact shell"}
-		 8 {return "t: shell thickness\n"}
-                 9 {return "L: contour length of polymer in shell\n"}
-                10 {return "b: Kuhn length of polymer in shell\n"}
-              }
-           }
-          "SPHERE+R^-a_Rc" {
-              switch $num {
-                 0 {return "sphere with a radial profile of r^-alpha, the micelle consists of block copolymers\nthe aggregation number Nagg is calculated from the core radius R_core and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "R_core: core radius\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "alpha: exponent of radial profile (r^-alpha)\nalpha=2: polyelectrolyte, alpha=4/3: star-like polymer, alpha=0: compact shell"}
-		 8 {return "t: shell thickness\n"}
-                 9 {return "L: contour length of polymer in shell\n"}
-                10 {return "b: Kuhn length of polymer in shell\n"}
-              }
-           }
-          "SPHERE+R^-a_Nagg" {
-              switch $num {
-                 0 {return "sphere with a radial profile r^-alpha, the micelle consists of block copolymers\nthe core radius R_core is calculated from the aggregation number Nagg and the molecular volume V_core of the copolymer block unit in the core"}
-                 1 {return "N_agg: aggregation number of copolymer molecules per micelle\n"}
-                 2 {return "V_core: molecular volume of the copolymer block unit inside core\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 3 {return "V_brush: molecular volume of the copolymer block unit in corona\n in \[nm^3\] for Q in nm^-1 and in \[A^3\] for Q in A^-1"}
-                 4 {return "eta_core: scattering length density of spherical core\n"}
-                 5 {return "eta_brush: scattering length density of a Gaussian chain in corona\n"}
-                 6 {return "eta_sol: scattering length density of solvent\n"}
-                 7 {return "alpha: exponent of radial profile (r^-alpha)\nalpha=2: polyelectrolyte, alpha=4/3: star-like polymer, alpha=0: compact shell"}
-		 8 {return "t: shell thickness\n"}
-                 9 {return "L: contour length of polymer in shell\n"}
-                10 {return "b: Kuhn length of polymer in shell\n"}
-              }
-           }
           "ROD+R^-a" {
               switch $num {
                  0 {return "rod with a radial profile r^-alpha\nin contrast to the form factor *_Rc and *_Nagg this one does not neccassary consist of copolymers"}
@@ -6352,36 +6127,6 @@ switch -exact $type {
                  8 {return "\n"}
                  9 {return "\n"}
                 10 {return "\n"}
-              }
-           }
-           "Andrea1" { 
-              switch $num {
-                 0 {return "F^2(Q,R,dR,c,core) = I_sphereshell(Q,R,dR,c,core)\n"}
-                 1 {return "R: radius of spheres\n"}
-                 2 {return "dR: thickness of first shell\n"}
-                 3 {return "c: amount of H2O\n"}
-                 4 {return "core: scattering lengths density of core\n"}
-                 5 {return "dR2: thickness of outer shell\n"}
-                 6 {return "shell1: scattering length density of shell 1\n"}
-                 7 {return "shell2: scattering length density of shell 2\n"}
-                 8 {return "c2: amount of solvent in shell 2\n"}
-                 9 {return "\n"}
-                10 {return "\n"}
-              }
-           }
-           "Simon1" { 
-              switch $num {
-                 0 {return "spherical shell with Gaussian chains attached\nmass fraction ratio of Solutol:Capriol:Miglyol=60:20:20 "}
-                 1 {return "Nagg: aggregation number of Solutol molecules per vesicle\n"}
-                 2 {return "Rg: radius of gyration of hydrophilic part of Solutol\n"}
-                 3 {return "d: correction factor should be close to 1\n"}
-                 4 {return "rho_solv: scattering lengths density of solvent\n"}
-                 5 {return "rho_core: scattering length density of Miglyol core\n"}
-                 6 {return "b_A_h: scattering length of hydrophilic part of Solutol\n"}
-                 7 {return "V_A_h: Volume of hydrophilic part of Solutol\n"}
-                 8 {return "b_A_l: scattering length of lipophilic part of Solutol\n"}
-                 9 {return "V_A_l: volume of lipophilic part of Solutol\n"}
-                10 {return "rho_B: scattering length density of Capriol\n"}
               }
            }
            "DoubleShell_withSD" { 
@@ -7653,25 +7398,9 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 		       SphereShell_compr }} \ 
 {polymers_micelles "polymers & micelles" {\ 
 				  {spherical "spherical & ellipsoidal micelles" { \
-							  {SPHERE+Chains(RW)_Nagg Delta} \ 
-							  {SPHERE+Chains(RW)_Rc Delta} \
-							  {SPHERE+Chains(RW) Delta} \ 
-							  {SPHERE+Chains(SAW)_Nagg Delta} \
-							  {SPHERE+Chains(SAW)_Rc Delta} \ 
-							  {SPHERE+Chains(SAW) Delta} \
-							  {SPHERE+Exp_Rc Delta} \
-							  {SPHERE+R^-a_Nagg Delta} \ 
-							  {SPHERE+R^-a_Rc Delta} \
-							  {SPHERE+R^-a Delta} \ 
-							  {SPHERE_smooth_interface+R^-a_Nagg Delta} \ 
-							  {SPHERE_smooth_interface+R^-a_Rc Delta} \
-							  {SPHERE+R^-a_Manuela Delta} \
-							  {SPHERE+R^-a_Manuela2 Delta} \
 							  {ELL+Chains(RW)_Nagg Delta} \ 
 							  {ELL+Chains(RW)_Rc Delta} \
 							  {ELL+Chains(RW) Delta} \ 
-							  {SphereWithGaussChains Delta} \
-							  {BlockCopolymerMicelle Delta} \
 							  }} \ 
 				  {cylindrical "cylindrical & rod-like micelles" { \
 							  {CYL+Chains(RW)_Nagg Delta} \ 

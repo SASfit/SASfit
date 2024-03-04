@@ -256,9 +256,7 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_background.c
 	sasfit_ff_BiLayeredVesicle.c
 	sasfit_ff_BiLayerGauss.c
-	sasfit_ff_BlockCopolymerMicelle.c
 	sasfit_ff_BroadPeak.c
-	sasfit_ff_CoPolymerMicelleSphericalProfile.c
 	sasfit_ff_cyl_mic.c
 	cyl_rwbrush/utils.c
 	cyl_rwbrush/sasfit_ff_cyl_rwbrush.c
@@ -319,7 +317,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_MLVesicleFrielinghaus.c
 	sasfit_ff_MultiLamellarVesicle.c
 	sasfit_ff_OrnsteinZernike.c
-	sasfit_ff_P39.c
 	sasfit_ff_RNDMultiLamellarVesicle2.c
 	sasfit_ff_RNDMultiLamellarVesicle.c
 	sasfit_ff_Robertus1.c
@@ -332,13 +329,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_Rod_RWbrush.c
 	sasfit_ff_shearedCylinder.c
 	sasfit_ff_Shellcompr.c
-	sasfit_ff_SphellWithGaussChainsSimon1.c
-	sasfit_ff_Sphere_Exp_Profile_Rc.c
-	sasfit_ff_Sphere_R_ma_Profile.c
-	sasfit_ff_Sphere_R_ma_Profile_Manuela.c
-	sasfit_ff_Sphere_RWbrush.c
-	sasfit_ff_Sphere_SAWbrush.c
-	sasfit_ff_SphereWithGaussChains.c
 	sasfit_ff_spherical_shell.c
 	sasfit_ff_Spinodal.c
 	sasfit_ff_StackDiscs.c
@@ -361,7 +351,6 @@ set(SOURCE_sasfit_ff
 	sasfit_ff_Worm_RWbrush.c
 	sasfit_ff_worm_w_gauss_chains.c
 	sasfit_planar_gausschains.c
-	sasfit_Pthirtynine.c
 )
 
 set(SOURCE_sasfit_oz
