@@ -32,9 +32,9 @@
 scalar Fone(scalar q, scalar R)
 {
 	scalar F;
-	if( (q*R) == 0.0 ) 
+	if( fabs(q*R) <= 1e-4 )
 	{
-		F = 1.0;
+		F = (1 - gsl_pow_2(q*R)/10. + gsl_pow_4(q*R)/280. - gsl_pow_6(q*R)/15120.);
 	} else {
 		F = 3.0*(sin(q*R) - q*R*cos(q*R))/pow(q*R, 3.0);
 	}
@@ -49,23 +49,23 @@ scalar V(scalar R)
 scalar Sg(scalar q, scalar Rc, scalar s)
 {
 	scalar S;
-	if(q == 0.0) 
+	if(q == 0.0)
 	{
 		S = 1.0;
-	} 
+	}
 	else if (Rc == 0.0)
 	{
 		S = exp(-pow(q*s,2.0)/2.0);
-	} 
-	else if ((s == 0.0) && (q*Rc != 0.0)) 
+	}
+	else if ((s == 0.0) && (q*Rc != 0.0))
 	{
 		S = sin(q*Rc)/(q*Rc);
-	} else 
+	} else
 	{
-		S = pow(q*Rc*(4.*Rc*s+sqrt(2.*M_PI)*(pow(Rc,2.)+pow(s,2.))),-1.) * 
-			( 2.*Rc*s*sin(q*Rc)  +  sqrt(2*M_PI)*exp(-pow(q*s,2.)/2.) * 
-			  (q*Rc*pow(s,2.)*cos(q*Rc)+pow(Rc,2.)*sin(q*Rc)) + 
-			   2.*sqrt(2.)*gsl_sf_dawson(q*s/sqrt(2.)) * 
+		S = pow(q*Rc*(4.*Rc*s+sqrt(2.*M_PI)*(pow(Rc,2.)+pow(s,2.))),-1.) *
+			( 2.*Rc*s*sin(q*Rc)  +  sqrt(2*M_PI)*exp(-pow(q*s,2.)/2.) *
+			  (q*Rc*pow(s,2.)*cos(q*Rc)+pow(Rc,2.)*sin(q*Rc)) +
+			   2.*sqrt(2.)*gsl_sf_dawson(q*s/sqrt(2.)) *
 			   (pow(Rc,2.)*cos(q*Rc)-q*Rc*pow(s,2.)*sin(q*Rc))
 			);
 	}
@@ -80,7 +80,7 @@ scalar Ac(scalar q, scalar Rc, scalar R, scalar s)
 	return A;
 }
 
-scalar Scc(scalar q, scalar Rc, scalar R, scalar s) 
+scalar Scc(scalar q, scalar Rc, scalar R, scalar s)
 {
 	scalar S;
 	S = pow(Ac(q, Rc, R, s),2);
@@ -96,7 +96,7 @@ scalar Ssc(scalar q, scalar Rc, scalar R, scalar s)
 scalar Ptwentyone(scalar x) // is identical to "F_Debye"
 {
 	scalar P;
-	if(x == 0.0) 
+	if(x == 0.0)
 	{
 		P = 1.0;
 	} else {
@@ -106,14 +106,14 @@ scalar Ptwentyone(scalar x) // is identical to "F_Debye"
 }
 
 /*
-double Pthirtynine(Tcl_Interp *interp, 
-				   double q, 
-				   double Nc, 
-				   double Rg, 
-				   double R, 
+double Pthirtynine(Tcl_Interp *interp,
+				   double q,
+				   double Nc,
+				   double Rg,
+				   double R,
 				   double Rc,
 				   double s,
-				   double nu, 
+				   double nu,
 				   double Mthirtynine,
 				   double rhos,
 				   double rhoc,
@@ -145,8 +145,8 @@ scalar sasfit_Pthirtynine(scalar q, sasfit_param * param)
 	P0_ch = 1./(1.+nu);
 
 	P =    pow(rhos,2)*pow(Fone(q,R),2)
-		+  Nc*pow(rhoc,2)*P_ch  
-		+  Nc*(Nc-P0_ch)*pow(rhoc,2)*Scc(q, Rc, R, s)  
+		+  Nc*pow(rhoc,2)*P_ch
+		+  Nc*(Nc-P0_ch)*pow(rhoc,2)*Scc(q, Rc, R, s)
 		+  2*Nc*rhos*rhoc*Ssc(q, Rc, R, s)  ;
 // The factor 1/pow(Mthirtynine,2) is skipped here compared to the paper from J.S. Pedersen as P39 shall be in absolute units
 

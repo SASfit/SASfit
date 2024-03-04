@@ -37,107 +37,107 @@
  * Functions which are not (yet) available as plugins are declared here.
  */
 
-/** 
- * \defgroup spheres_shells sphere & spherical shells 
+/**
+ * \defgroup spheres_shells sphere & spherical shells
  * \ingroup form_fac
- * 
+ *
  * This group contains scattering functions for shperical objects
  *
  */
 
-/** 
+/**
  * \defgroup ellipsoidal_obj ellipsoidal obj.
  * \ingroup form_fac
- * 
+ *
  * This group contains scattering functions for ellipsoidal objects
  *
  */
 
-/** 
- * \defgroup polymers_micelles polymers & micelles 
+/**
+ * \defgroup polymers_micelles polymers & micelles
  * \ingroup form_fac
- * 
+ *
  * This group contains scattering functions for polymers and micelles objects
  *
  */
 
-/** 
+/**
  * \defgroup polymers_chains polymer chains
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for polymers chains
  *
  */
 
-/** 
+/**
  * \defgroup polymers_stars polymer stars
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for starlike structures
  *
  */
 
-/** 
+/**
  * \defgroup polymers_rings polymer rings
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for ringlike structures
  *
  */
 
-/** 
+/**
  * \defgroup polymers_sp_and_ell_micelles spherical & ellipsoidal micelles
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for spherical & ellipsoidal micelles
  *
  */
 
-/** 
+/**
  * \defgroup polymers_cyl_and_rod_micelles cylindrical & rod-like micelles
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for cylindrical & rod-like micelles
  *
  */
 
-/** 
+/**
  * \defgroup polymers_local_planar_micelles local planar micelles (sheets, ULV)
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for local planar micelles (sheets, ULV)
  *
  */
 
-/** 
+/**
  * \defgroup polymers_wormlike wormlike structures
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for wormlike structures
  *
  */
 
 
-/** 
+/**
  * \defgroup polymers_nonparticular non-particular structures
  * \ingroup polymers_micelles
- * 
+ *
  * This group contains scattering functions for non-particular structures
  *
  */
 
-/** 
+/**
  * \defgroup cluster_obj clusters
  * \ingroup form_fac
- * 
+ *
  * This group contains scattering functions for clusters
  *
  */
 
-/** 
+/**
  * \defgroup cylindrical_obj cylindrical obj.
  * \ingroup form_fac
- * 
+ *
  * This group contains scattering functions for cylindrical objects
  *
  */
@@ -197,11 +197,11 @@ sasfit_ff_DLLEXP scalar sasfit_ff_IsuperparamagneticFFpsiTISANE1(scalar q, sasfi
 sasfit_ff_DLLEXP scalar sasfit_ff_JuelichCoreShell(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_JuelichDoubleShell(scalar q, sasfit_param * param);
 
-/** 
+/**
  * \defgroup ff_sphere Sphere
  * \ingroup spheres_shells
  *
- * \brief Scattering function for a sphere 
+ * \brief Scattering function for a sphere
  *
  *
  * \image html form_factor/spherical/sphere.png "Sphere with diameter 2R"
@@ -216,7 +216,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_JuelichDoubleShell(scalar q, sasfit_param * pa
  * \f]
  * The forward scattering for \f$Q=0\f$ is given by
  * \f[
- *	\displaystyle \lim_{Q=0}I_\textbf{Sphere}(Q,R) =\left( \frac{4}{3}\pi R^3 \Delta\eta \right)^2 
+ *	\displaystyle \lim_{Q=0}I_\textbf{Sphere}(Q,R) =\left( \frac{4}{3}\pi R^3 \Delta\eta \right)^2
  * \f]
  *
  *
@@ -250,24 +250,24 @@ sasfit_ff_DLLEXP scalar sasfit_ff_sphere(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_sphere_f(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_sphere_v(scalar q, sasfit_param * param, int distr);
 
-/** 
+/**
  * \defgroup ff_spherical_shells Spherical Shells
  * \ingroup spheres_shells
  *
- * \brief Scattering function for spherical shells 
+ * \brief Scattering function for spherical shells
  *
- * Three different parametrisations of spherical shells have been implemented 
- * \ref shell_i "\c Spherical \c Shell \c i", 
- * \ref shell_ii "\c Spherical \c Shell \c ii" 
+ * Three different parametrisations of spherical shells have been implemented
+ * \ref shell_i "\c Spherical \c Shell \c i",
+ * \ref shell_ii "\c Spherical \c Shell \c ii"
  * and \ref shell_iii "\c Spherical \c Shell \c iii".
- * 
+ *
  * \section shell_i Spherical Shell i
  *
  * \image html form_factor/spherical/shell1.png "Spherical shell i"
  * \image latex form_factor/spherical/shell1.eps "Spherical shell i"
  *
  * This implementation of a spherical shell is parametrised with an inner radius \f$ R_2 \f$ and outer
- * radius \f$ R_1 \f$. The scattering contrast relative to the matrix of the core is \f$ \mu \Delta \eta \f$ 
+ * radius \f$ R_1 \f$. The scattering contrast relative to the matrix of the core is \f$ \mu \Delta \eta \f$
  * and the one of the shell \f$\Delta\eta\f$.
  * \f[
  *		I_{Shell1}(Q,R_1,R_2,\Delta\eta,\mu)=
@@ -280,7 +280,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_sphere_v(scalar q, sasfit_param * param, int d
  * The forward scattering for \f$Q=0\f$ is given by
  * \f[
  *   \lim_{Q=0}I_{Shell1}(Q,R_1,R_2,\Delta\eta,\mu) =
- *   \left(\frac{4}{3}\pi \Delta\eta \left[ R_1^3 - R_2^3(1-\mu)\right]\right)^2 
+ *   \left(\frac{4}{3}\pi \Delta\eta \left[ R_1^3 - R_2^3(1-\mu)\right]\right)^2
  * \f]
  *
  * \par Required parameters:
@@ -298,7 +298,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_sphere_v(scalar q, sasfit_param * param, int d
  *       <td> scattering length density difference between core and matrix relative to the shell contrast \f$\mu\f$</td>
  *      </tr></table>
  *
- * \note This formfactor is selected by setting the variable \c param->kernelSelector  to \c SPH_SHELL1  
+ * \note This formfactor is selected by setting the variable \c param->kernelSelector  to \c SPH_SHELL1
  * in the argument of the calling function.
  *
  * \image html form_factor/spherical/shell_i_P.png "Scattering intensity of spherical shell with outer radius of R1=14nm and inner radius of R2=11.2nm. The scattering length density contrast the shell is set to 1 and the one of the core to -1, -0.5, and 2."
@@ -311,7 +311,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_sphere_v(scalar q, sasfit_param * param, int d
  * \image latex form_factor/spherical/shell2.eps "Spherical shell ii"
  *
  * This implementation of a spherical shell is parametrised with an outer radius \f$ R \f$ and an inner
- * radius \f$ \nu R \f$. The scattering contrast relative to the matrix of the core is \f$ \mu \Delta \eta \f$ 
+ * radius \f$ \nu R \f$. The scattering contrast relative to the matrix of the core is \f$ \mu \Delta \eta \f$
  * and the one of the shell \f$\Delta\eta\f$.
  * \f[
  *		I_{Shell2}(Q,R,\nu,\Delta\eta,\mu)=
@@ -325,7 +325,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_sphere_v(scalar q, sasfit_param * param, int d
  * \f[
  *   \lim_{Q=0}I_{Shell2}(Q,R,R,\Delta\eta,\mu) =
  *          \left(\frac{4}{3}\pi \Delta\eta \left[ R^3 - \nu^3
- *                 R^3(1-\mu)\right]\right)^2 
+ *                 R^3(1-\mu)\right]\right)^2
  * \f]
  *
  * \par Required parameters:
@@ -343,7 +343,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_sphere_v(scalar q, sasfit_param * param, int d
  *       <td> scattering length density difference between core and matrix relative to the shell contrast \f$\mu\f$</td>
  *      </tr></table>
  *
- * \note This formfactor is selected by setting the variable \c param->kernelSelector  to \c SPH_SHELL2  
+ * \note This formfactor is selected by setting the variable \c param->kernelSelector  to \c SPH_SHELL2
  * in the argument of the calling function.
  *
  * \image html form_factor/spherical/shell_ii_P.png "Scattering intensity of spherical shell with outer radius of R=14nm and inner radius of nu R=11.2nm. The scattering length density contrast the shell is set to 1 and the one of the core to -1, -0.5, and 2."
@@ -388,7 +388,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_sphere_v(scalar q, sasfit_param * param, int d
  *       <td> scattering length density difference between shell and matrix \f$\Delta\eta_2\f$</td>
  *      </tr></table>
  *
- * \note This formfactor is selected by setting the variable \c param->kernelSelector  to \c SPH_SHELL3  
+ * \note This formfactor is selected by setting the variable \c param->kernelSelector  to \c SPH_SHELL3
  * in the argument of the calling function.
  *
  * \image html form_factor/spherical/shell_iii_P.png "Scattering intensity of spherical shell with core radius of R=11.2nm and shell thickness of dR=2.8nm. The scattering length density contrast the shell is set to 1 and the one of the core to -1, -0.5, and 2."
@@ -449,7 +449,7 @@ sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_Exp_Profile_Rc(scalar q, sasfit_param *
 sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_R_ma_Profile(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_R_ma_Profile_v(scalar q, sasfit_param * param, int distr);
 sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_R_ma_Profile_Manuela(scalar q, sasfit_param * param);
-sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_RWbrush(scalar q, sasfit_param * param);
+sasfit_ff_DLLEXP scalar sasfit_ff_old_Sphere_RWbrush(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Sphere_SAWbrush(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_SphereWithGaussChains(scalar q, sasfit_param * param);
 sasfit_ff_DLLEXP scalar sasfit_ff_Spinodal(scalar q, sasfit_param * param);

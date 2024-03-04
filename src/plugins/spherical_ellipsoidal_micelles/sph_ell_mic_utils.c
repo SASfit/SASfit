@@ -276,7 +276,7 @@ scalar Ac(scalar q, scalar Rc, scalar R, scalar s)
 scalar Scc(scalar q, scalar Rc, scalar R, scalar s)
 {
 	scalar S;
-	S = pow(Ac(q, Rc, R, s),2);
+	S = gsl_pow_2(Ac(q, Rc, R, s));
 	return S;
 }
 
@@ -293,7 +293,7 @@ scalar Ptwentyone(scalar x) // is identical to "F_Debye"
 	{
 		P = 1.0;
 	} else {
-		P = 2*(x-1+exp(-x))/pow(x,2);
+		P = 2*(x+gsl_expm1(-x))/gsl_pow_2(x);
 	}
 	return P;
 }
@@ -313,8 +313,7 @@ scalar sasfit_Pthirtynine(scalar q, sasfit_param * param)
 	subParam.p[1] = L;
 	subParam.p[2] = 1;
 
-	//P_ch  = WormLikeChainEXV(interp,q,1.0,L,b,0.0,error)/(1.+nu*Ptwentyone(pow(q*Rg,2.)));
-	P_ch  = sasfit_sq_p__q___worm_ps3_(q, &subParam)/(L*L)/(1.+nu*Ptwentyone(pow(q*Rg,2.)));
+	P_ch  = sasfit_sq_p__q___worm_ps3_(q, &subParam)/(L*L)/(1.+nu*Ptwentyone(gsl_pow_2(q*Rg)));
 
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 
@@ -348,14 +347,8 @@ scalar sasfit_ff_SphereWithGaussChains(scalar q, sasfit_param * param)
 	w = sasfit_rwbrush_w(q, Rg);
 	Fc = sasfit_gauss_fc(q, Rg);
 
-	if (q * (R + d * Rg) == 0)
-	{
-		sinc_x = 1.0;
-	} else
-	{
-		sinc_x = sin(q * (R + d * Rg)) / (q * (R + d * Rg));
-	}
-	Scc = pow(w*sinc_x, 2);
+	sinc_x=gsl_sf_bessel_j0(q * (R + d * Rg));
+	Scc = gsl_pow_2(w*sinc_x);
 	Ssc = PHI * w * sinc_x;
 
 	I = Nagg*Nagg*rs*rs*Fs
@@ -402,7 +395,7 @@ scalar sasfit_ff_Sphere_RWbrush(scalar q, sasfit_param * param)
 			V_core		= param->p[1];
 
 			R = Rc;
-			SASFIT_CHECK_COND1((V_core < 0.0), param, "V_core(%lg) < 0",V_core);
+			SASFIT_CHECK_COND1((V_core <= 0.0), param, "V_core(%lg) <= 0",V_core);
 			Nagg = 4./3.*M_PI*R*R*R*(1-xsolv_core)/V_core;
 
 			rs = V_core * (eta_core  - eta_solv);
@@ -423,6 +416,7 @@ scalar sasfit_ff_Sphere_RWbrush(scalar q, sasfit_param * param)
 
 	rc = V_brush * (eta_brush - eta_solv);
 
+    sasfit_out("q=%lf,62=%d, R=%lf, Rg=%lf, d=%lf, Nagg=%lf, rc=%lf,rs=%lf\n",q,param->kernelSelector,R,Rg,d,Nagg,rc,rs);
 	sasfit_init_param( &subParam );
 	subParam.p[0] = R;
 	subParam.p[1] = Rg;
@@ -691,16 +685,10 @@ scalar sasfit_sphere_SAWbrush(scalar q, sasfit_param * param)
 	s = Rg;
 	R = Rc;
 	Mthirtynine = rhos + Nc*rhoc;
-/* ?? not used here ...
-	if (Rg == 0.0)
-	{
-		sigma = Nc/4.;
-	}
-*/
+
 	sigma = Nc*pow(Rg,2.)/(4.*pow(R+Rg,2.));
 	nu = 1.4*pow(sigma,1.04);
 
-	//return Pthirtynine(interp,q, Nc, Rg, R, Rc, s, nu, Mthirtynine, rhos, rhoc, b, L,error);
 	sasfit_init_param( &subParam );
 	subParam.p[0] = Nc;
 	subParam.p[1] = Rg;
@@ -714,7 +702,6 @@ scalar sasfit_sphere_SAWbrush(scalar q, sasfit_param * param)
 	subParam.p[9] = b;
 	subParam.p[10]= L;
 
-//	return SphereWithGaussChains(interp,q,R,Rg,d,Nagg,rc,rs,error);
 	res = sasfit_Pthirtynine(q, &subParam);
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 

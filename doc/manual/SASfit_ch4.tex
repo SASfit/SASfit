@@ -169,21 +169,21 @@ Q_\textrm{LogNorm}(Y) &= \mu\exp\left(\sqrt{2} \sigma\operatorname{erf}^{-1}(2Y)
 \begin{center}
 \includegraphics[width=0.876\textwidth]{SZ.png}
 \end{center}
-\caption{The $\text{SZ}(X,N,X_a,k)$ distribution function. Valid
+\caption{The $\operatorname{SZ}(X,N,X_a,k)$ distribution function. Valid
 parameter ranges: $X \in [0,\infty)$, $X_a \in (0,\infty)$,
 $k=X_a^2/\sigma^2 > 0$} \label{fig:SchulzZimm}
 \end{figure}
 
 A function commonly used to present polymer molecular weight distributions is the Schulz-Zimm function \cite{Zimm1948}
 \begin{equation}
-\textrm{SZ}_n(X,N,X_a,k) =  \frac{N}{X_a}
+\operatorname{SZ}_n(X,N,X_a,k) =  \frac{N}{X_a}
 \left(\frac{X}{X_a}\right)^{k-1}
 \frac{k^k\exp(-kX/X_a)}{\Gamma(k)}
 \label{eq:SZn(M)}
 \end{equation}
 ~\\
-$\text{SZ}_n(X,N,X_a,k)$ is normalized so that $\int_0^\infty\!
-\text{SZ}_n(X,N,X_a,k)\,dX = N$.
+$\operatorname{SZ}_n(X,N,X_a,k)$ is normalized so that $\int_0^\infty\!
+\operatorname{SZ}_n(X,N,X_a,k)\,dX = N$.
 In polymer science $X$ would be the molecular weight $M$,
 $\overline{M}_n=X_a$, and $\overline{M}_w=\overline{M}_n\frac{k+1}{k}$,
 and $\Gamma(k)$ is the gamma function.
@@ -199,27 +199,29 @@ X_\textrm{mean} &= X_a \\
 \label{eq:SZstatparam}
 \end{align}
 \end{subequations}
+The number distribution as well as the weight distribution described below can be expressed by a gamma distribution described in eq.\ \ref{GammaSDEq} by $\operatorname{SZ}_n(X,N,X_a,k)=\operatorname{gammaSD}(x,N,X_a(1-1/k),R_a^2/k)$.
+
 The corresponding weight distribution is
 \begin{equation}
-\textrm{SZ}_w(X,N,X_a,k) = \frac{X}{X_a}\textrm{SZ}_n(X,N,X_a,k)
+\operatorname{SZ}_w(X,N,X_a,k) = \frac{X}{X_a}\operatorname{SZ}_n(X,N,X_a,k)
 =  \frac{N X^k \left(\frac{k}{X_a}\right)^{k+1} e^{-\frac{kX}{X_a}}}{\Gamma(k+1)}
 \end{equation}
 ~\\
-Also $\textrm{SZ}_w(X,N,X_a,k)$ is normalized so that $\int_0^\infty\!
-\textrm{SZ}_w(X,N,X_a,k)\,dX = N$.
+Also $\operatorname{SZ}_w(X,N,X_a,k)$ is normalized so that $\int_0^\infty\!
+\operatorname{SZ}_w(X,N,X_a,k)\,dX = N$.
 The mode, mean, variance and
 $m^\textrm{th}$-moment of the weight distribution are given by
 \begin{subequations}
 \begin{align}
-X_\textrm{mode} &= X_a\\
-X_\textrm{mean} &= X_a \frac{1+k}{k}\\
-\textrm{Var}\left(X\right)&=\sigma^2 = X_a^2\frac{1+k}{k^2} \\
+X_\mathrm{mode} &= X_a\\
+X_\mathrm{mean} &= X_a \frac{1+k}{k}\\
+\operatorname{Var}\left(X\right)&=\sigma^2 = X_a^2\frac{1+k}{k^2} \\
 \left\langle X^m \right\rangle &=
 \left(\frac{X_a}{k}\right)^m  \frac{\Gamma \left(k+m+1\right)}{\Gamma \left(k+1\right)}
 \label{eq:SZFstatparam}
 \end{align}
 \end{subequations}
-
+The weight distribution can be expressed by a gamma distribution described in eq.\ \ref{GammaSDEq} by $\text{SZ}_w(X,N,X_a,k)=\text{gammaSD}(x,N,X_a,R_a^2(1+k)/k^2)$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -230,33 +232,32 @@ X_\textrm{mean} &= X_a \frac{1+k}{k}\\
 The Gamma distribution is a two parameter continuous distribution with
 a scale parameter $\theta$ and a shape parameter $k$.
 \begin{equation}
-\text{gammaSD}(x,N,x_\text{mode},\sigma) =  \frac{N}{\theta}
-\left(\frac{x}{\theta}\right)^{k-1}
-\frac{\exp(-x/\theta)}{\Gamma(k)} \label{GammaSDEq}
+\text{gammaSD}(x,N,\theta,\kappa) =  \frac{N}{\theta}
+\left(\frac{x}{\theta}\right)^{\kappa-1}
+\frac{\exp(-x/\theta)}{\Gamma(\kappa)} \label{GammaSDEq}
 \end{equation}
-The mean $x_\text{mean}$, mode $x_\text{mode}$ and variane $\sigma^2$
+The mean $x_\text{mean}$, mode $x_\text{mode}$ and variance $\sigma^2$
 of the distribution are given by
 \begin{align}
-x_\text{mean}   &= k\theta \\
-x_\text{mode}   &= (k-1)\theta \text{ for } k\geq 1 \\
-\sigma^2        &= k\theta^2
+x_\text{mean}   &= \kappa\theta \\
+x_\text{mode}   &= (\kappa-1)\theta \text{ for } \kappa\geq 1 \\
+\sigma^2        &= \kappa\theta^2
 \end{align}
-The gamma distribution is more flexible than the exponential or $\xi^2$ distribution
+The gamma distribution is more flexible than the exponential or $\chi^2$ distribution
 function which are special cases of the gamma distribution function.
-When $k$ is large, the gamma distribution closely approximates a normal distribution
+When $\kappa$ is large, the gamma distribution closely approximates a normal distribution
 with the advantage that the gamma distribution has density only for positive real
-numbers. For small values of $k$ the distribution becomes a right tailed distribution.
-The gamm distribution is equivalent to the Schulz-Zimm distribution (sec.\ \ref{sec:SchulzZimm}), which is using the mean value instead of $\theta=x_\mathrm{mean}/k$ for the parametrization. Also the Pearson III \ref{sec:PearsonIIIdist} is just another name for this distribution.
+numbers. For small values of $\kappa$ the distribution becomes a right tailed distribution.
+The gamma distribution is equivalent to the Schulz-Zimm distribution $\operatorname{SZ}_n()$ (sec.\ \ref{sec:SchulzZimm}), which is using the mean value instead of $\theta=x_\mathrm{mean}/\kappa$ for the parametrization. Also the Pearson III \ref{sec:PearsonIIIdist} is just another name for this distribution.
 
 The $m^\text{th}$ moment $\langle X^m\rangle$ of the size distribution is given by
 \begin{align}
-\langle X^m\rangle = \theta^m \frac{\Gamma(k+m)}{\Gamma(k)} .
+\langle X^m\rangle = \theta^m \frac{\Gamma(\kappa+m)}{\Gamma(\kappa)} .
 \end{align}
-In the present version the Gamma distribution is parametrised as a function
+In the present version the Gamma distribution is re-parameterised as a function
 of the mode and variance, i.e.
-with
 \begin{align}
-k=\frac{x_\text{mode} \sqrt{x_\text{mode}^2+4
+\kappa=\frac{x_\text{mode} \sqrt{x_\text{mode}^2+4
    \sigma^2}+x_\text{mode}^2+2 \sigma ^2}{2 \sigma^2}
 \end{align}
  and
@@ -264,14 +265,14 @@ k=\frac{x_\text{mode} \sqrt{x_\text{mode}^2+4
  \theta = \frac{1}{2}
    \left(\sqrt{x_\text{mode}^2+4 \sigma ^2}-x_\text{mode}\right)
 \end{align}
-$\text{gammaSD}(R,N,R_m,\sigma)$ is normalized so that
-$\int_0^\infty\! \text{gammaSD}(R,N,R_m,\sigma)\,dR = N$.
+$\text{gammaSD}(x,N,x_\mathrm{mode},\sigma)$ is normalized so that
+$\int_0^\infty\! \text{gammaSD}(x,N,x_\mathrm{mode},\sigma)\,\mathrm{d}x = N$.
 
 \vspace{5mm}
-\noindent \uline{Input Parameters for model \texttt{Sphere}:}
+\noindent \uline{Input parameters for the size distribution \texttt{gammaSD}:}
 \begin{description}
 \item[\texttt{N}]  $N$
-\item[\texttt{mode}] mod of the distribution (maximum, most probable size) $x_\text{mode}>0$
+\item[\texttt{mode}] mode of the distribution (maximum, most probable size) $x_\mathrm{mode}>0$
 \item[\texttt{sigma}] width parameter $\sigma>0$. The variance of the distribution is $\sigma^2$.
 \end{description}
 
@@ -447,7 +448,7 @@ $$
 $$
 where $\xi > 0$ and $\xi > 0$
 
-Remark I: For reliability issues the Weibull dist ribution is used
+Remark I: For reliability issues the Weibull distribution is used
 with the variable $t = \mu - x$, the time, which is strictly
 positive. Thus the support is positive - in contrast to the use in
 extreme value theory.

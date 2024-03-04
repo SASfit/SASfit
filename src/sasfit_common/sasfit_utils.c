@@ -224,7 +224,7 @@ scalar sasfit_rwbrush_w(scalar Q, scalar R)
             return (1 - u/10. + u2/60.)/(1. + (2.*u)/5 + u2/20.);
     }
 
-	return (1 - exp(-u)) / u;
+	return (-gsl_expm1(-u)) / u;
 }
 
 scalar sasfit_jinc(scalar x) {
@@ -260,9 +260,11 @@ scalar sasfit_rod_fc(scalar Q, scalar R)
 scalar sasfit_sphere_fc(scalar Q, scalar R)
 {
     scalar u2,u4;
-	scalar u  = Q * R;
+	scalar u;
+	u = Q * R;
     u2=u*u;
     u4=u2*u2;
+
 
 	if (fabs(u) <= 1.0e-4)
 	{
@@ -284,7 +286,7 @@ scalar sasfit_gauss_fc(scalar Q, scalar R)
 	{
 		res = 1.0-u/3.+u2/12.-u3/60.+u4/360.;
 	} else {
-        res = 2 * (exp(-u) - 1 + u) / (u*u);
+        res = 2 * (gsl_expm1(-u) + u) / u2;
 	}
 	return res;
 }

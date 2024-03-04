@@ -64,7 +64,7 @@
  *       <td>\b eta_brush</td>
  *       <td>scattering length density of a Gaussian chain in corona</td>
  *      </tr><tr>
- *       <td>\b eta_solvc</td>
+ *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
@@ -131,7 +131,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_rw__
  *       <td>\b eta_brush</td>
  *       <td>scattering length density of a Gaussian chain in corona</td>
  *      </tr><tr>
- *       <td>\b eta_solvc</td>
+ *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
@@ -198,7 +198,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_rw__
  *       <td>\b eta_brush</td>
  *       <td>scattering length density of a Gaussian chain in corona</td>
  *      </tr><tr>
- *       <td>\b eta_solvc</td>
+ *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
@@ -262,7 +262,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_rw__
  *       <td>\b eta_brush</td>
  *       <td>scattering length density of a Gaussian chain in corona</td>
  *      </tr><tr>
- *       <td>\b eta_solvc</td>
+ *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
@@ -326,7 +326,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_saw_
  *       <td>\b eta_brush</td>
  *       <td>scattering length density of a Gaussian chain in corona</td>
  *      </tr><tr>
- *       <td>\b eta_solvc</td>
+ *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>
@@ -390,7 +390,7 @@ sasfit_spherical_ellipsoidal_micelles_DLLEXP scalar sasfit_ff_sphere_chains_saw_
  *       <td>\b eta_brush</td>
  *       <td>scattering length density of a Gaussian chain in corona</td>
  *      </tr><tr>
- *       <td>\b eta_solvc</td>
+ *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
  *      </tr><tr>
  *       <td>\b xsolv_core</td>

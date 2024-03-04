@@ -327,17 +327,17 @@ int sasfit_ff_init(sasfit_analytpar * ap)
 	} else
 	if ( strcmp(ff->typestr, "SPHERE+Chains(RW)") == 0 )
 	{
-		ff->fct = sasfit_ff_Sphere_RWbrush;
+		ff->fct = sasfit_ff_old_Sphere_RWbrush;
 		ff->params.kernelSelector = SPHERE_RWBRUSH;
 	} else
 	if ( strcmp(ff->typestr, "SPHERE+Chains(RW)_Rc") == 0 )
 	{
-		ff->fct = sasfit_ff_Sphere_RWbrush;
+		ff->fct = sasfit_ff_old_Sphere_RWbrush;
 		ff->params.kernelSelector = SPHERE_RWBRUSH_RC;
 	} else
 	if ( strcmp(ff->typestr, "SPHERE+Chains(RW)_Nagg") == 0 )
 	{
-		ff->fct = sasfit_ff_Sphere_RWbrush;
+		ff->fct = sasfit_ff_old_Sphere_RWbrush;
 		ff->params.kernelSelector = SPHERE_RWBRUSH_NAGG;
 	} else
 	if (strcmp(ff->typestr, "CopolymerMicelleRod") == 0 )

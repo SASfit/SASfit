@@ -34,19 +34,8 @@ scalar F_PSI(scalar Q, scalar R, scalar H, scalar alpha)
         xR = Q*R*sin(alpha);
         xH = Q*H*cos(alpha)/2.0;
 
-        if (xR == 0.0) 
-	{
-                PSIres = 1.0;
-        } else {
-                PSIres = 2.0*gsl_sf_bessel_J1(xR)/xR;
-        }
+        PSIres = 2.0*sasfit_jinc(xR)*gsl_sf_bessel_j0(xH);
 
-        if (xH == 0.0) 
-	{
-                PSIres = PSIres;
-        } else {
-                PSIres = PSIres * sin(xH)/xH;
-        }
 
         return PSIres;
 }
@@ -60,19 +49,9 @@ scalar XI(scalar Q, scalar R, scalar H, scalar alpha)
 
         if ((R+H) == 0.0) return 0.0;
 
-        if (xR == 0.0)
-	{
-                XIres = R/(R+H) * cos(xH);
-        } else {
-                XIres = R/(R+H) * 2.0*gsl_sf_bessel_J1(xR)/xR * cos(xH);
-        }
+        XIres = R/(R+H) * 2.0*sasfit_jinc(xR) * cos(xH);
 
-        if (xH == 0.0)
-	{
-                XIres = XIres + H/(R+H) * gsl_sf_bessel_J0(xR);
-        } else {
-                XIres = XIres + H/(R+H) * gsl_sf_bessel_J0(xR)*sin(xH)/xH;
-        }
+        XIres = XIres + H/(R+H) * gsl_sf_bessel_J0(xR)*gsl_sf_bessel_j0(xH);
 
         return XIres;
 }

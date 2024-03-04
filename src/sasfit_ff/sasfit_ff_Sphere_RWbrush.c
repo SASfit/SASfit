@@ -26,10 +26,11 @@
  */
 
 #include <gsl/gsl_math.h>
+#include <gsl/gsl_sf.h>
 #include "include/sasfit_ff_utils.h"
 
 /*
-float P_Sphere_RWbrush(Tcl_Interp *interp, 
+float P_Sphere_RWbrush(Tcl_Interp *interp,
 			float q,
 			float Rc,		// core radius
 			float n_agg,		// aggregation number of chains per surface area
@@ -42,13 +43,13 @@ float P_Sphere_RWbrush(Tcl_Interp *interp,
 			float d,			// correction factor should be chosen close to 1
 			bool *error)
 */
-scalar sasfit_ff_Sphere_RWbrush(scalar q, sasfit_param * param)
+scalar sasfit_ff_old_Sphere_RWbrush(scalar q, sasfit_param * param)
 {
 	scalar rc, rs, R, Nagg, S, V, res, V_core;
 	scalar Rc, n_agg, V_brush, eta_core, eta_brush, eta_solv, xsolv_core, Rg, d;
 	sasfit_param subParam;
 
-        SASFIT_ASSERT_PTR(param);
+    SASFIT_ASSERT_PTR(param);
 
 	sasfit_get_param(param, 9, EMPTY, EMPTY, &V_brush, &eta_core, &eta_brush, &eta_solv, &xsolv_core, &Rg, &d);
 
@@ -61,7 +62,7 @@ scalar sasfit_ff_Sphere_RWbrush(scalar q, sasfit_param * param)
 	{
 		case SPHERE_RWBRUSH:
 			Rc		= param->p[0];
-			n_agg		= param->p[1];
+			n_agg	= param->p[1];
 
 			V = 4./3. * M_PI * pow(Rc,3.);
 			S = 4.*M_PI*Rc*Rc;
@@ -76,11 +77,11 @@ scalar sasfit_ff_Sphere_RWbrush(scalar q, sasfit_param * param)
 			break;
 		case SPHERE_RWBRUSH_RC:
 			Rc		= param->p[0];
-			V_core		= param->p[1];
-
 			R = Rc;
-			SASFIT_CHECK_COND1((V_core < 0.0), param, "V_core(%lg) < 0",V_core);
-			Nagg = 4./3.*M_PI*R*R*R*(1-xsolv_core)/V_core;
+			V_core	= param->p[1];
+
+			SASFIT_CHECK_COND1((V_core <= 0.0), param, "V_core(%lg) <= 0",V_core);
+			Nagg = 4./3.*M_PI*gsl_pow_3(Rc)*(1-xsolv_core)/V_core;
 
 			rs = V_core * (eta_core  - eta_solv);
 			break;
@@ -99,9 +100,9 @@ scalar sasfit_ff_Sphere_RWbrush(scalar q, sasfit_param * param)
 	}
 
 	rc = V_brush * (eta_brush - eta_solv);
-
+    // sasfit_out("q=%lf,62=%d, R=%lf, Rg=%lf, d=%lf, Nagg=%lf, rc=%lf,rs=%lf\n",q,param->kernelSelector,R,Rg,d,Nagg,rc,rs);
 	sasfit_init_param( &subParam );
-	subParam.p[0] = R; 
+	subParam.p[0] = R;
 	subParam.p[1] = Rg;
 	subParam.p[2] = d;
 	subParam.p[3] = Nagg;

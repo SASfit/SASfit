@@ -12,7 +12,7 @@
 #define V_BRUSH	param->p[2]
 #define ETA_CORE	param->p[3]
 #define ETA_BRUSH	param->p[4]
-#define ETA_SOLVC	param->p[5]
+#define ETA_SOLV	param->p[5]
 #define XSOLV_CORE	param->p[6]
 #define RG	param->p[7]
 #define D	param->p[8]
@@ -29,9 +29,9 @@ scalar sasfit_ff_sphere_chains_rw__rc(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((XSOLV_CORE < 0.0), param, "xsolv_core(%lg) < 0",XSOLV_CORE); // modify condition to your needs
 	SASFIT_CHECK_COND1((XSOLV_CORE >= 1.0), param, "xsolv_core(%lg) >= 1",XSOLV_CORE); // modify condition to your needs
 	SASFIT_CHECK_COND1((RG < 0.0), param, "Rg(%lg) < 0",RG); // modify condition to your needs
-	SASFIT_CHECK_COND1((D < 0.0), param, "d(%lg) < 0",D); // modify condition to your needs
+	SASFIT_CHECK_COND1((D <= 0.0), param, "d(%lg) <= 0",D); // modify condition to your needs
 
-	// insert your code herehere
+	// insert your code here
 
 	param->kernelSelector = SPHERE_RWBRUSH_RC;
 	return sasfit_ff_Sphere_RWbrush(q,param);
