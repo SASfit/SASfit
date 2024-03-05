@@ -1615,7 +1615,7 @@ S_\text{Exp}(q,\xi,D,r_0) &= 1 +  \cfrac{D \Gamma(D-1)
 S_\text{Gauss}(q,\xi,D,r_0) &= 1 +
     \Gamma\left[\tfrac{D}{2}\right]\frac{D}{2}
     \left(\frac{\xi}{r_0}\right)^D
-    {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{8}\right]
+    {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{4}\right]
 \end{align}
 where $D$ is the fractal dimension, $\xi$ is a cut-off length for
 the fractal correlations, $\Gamma(x)$ is the gamma function.
@@ -1715,7 +1715,7 @@ $h_\text{Exp}(r,\xi) = \exp\left[-\left(\tfrac{r}{\xi}\right)^2\right]$. Its str
 S_\text{Gauss}(q,\xi,D,r_0) &= 1 +
     \Gamma\left[\tfrac{D}{2}\right]\frac{D}{2}
     \left(\frac{\xi}{r_0}\right)^D
-    {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{8}\right]
+    {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{4}\right]
 \end{align}
 In the limit of $q \to 0$ the structure factor should be equal to the number $N$ of particles in the aggregate, For the mass fractal structure factor this limit is given by
 \begin{align}\label{eq:fractalGauss}
@@ -1723,7 +1723,7 @@ In the limit of $q \to 0$ the structure factor should be equal to the number $N$
 \end{align}
 This allows to rewrite the structure factor also as a function of $N$ instead of $r_0$
 \begin{align}
-S_\text{Gauss}(q,\xi,D,N) &= 1 +  (N-1) {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{8}\right]
+S_\text{Gauss}(q,\xi,D,N) &= 1 +  (N-1) {}_1F_1\left[\tfrac{D}{2},\tfrac{3}{2},-\tfrac{q^2\xi^2}{4}\right]
 \end{align}
 
 
@@ -1883,7 +1883,7 @@ The structure factor $S_\mathrm{PY}(q)$ is described in sec.\ \ref{sec:SQ:PY} an
 \begin{itemize}
 \item the volume fraction needs to be positive and smaller or equal 1:$\phi\in [0,1]$.
 \item the correlation length should be significant larger than $R$ to be physical meaningful
-\end{itemize} 
+\end{itemize}
 
 \subsection{Mass fractal with nearest neighbor perturbations}~\\
 \label{sec:SQmassfractalInclNN}
@@ -1915,7 +1915,7 @@ The fractal aggregate with nearest neighbor perturbations has been derived by\ci
 \item Certain combinations of parameters can lead to nonphysical negative values for the structure factor.
 \item The correlation length of the cluster $\xi$ should scale with the fractal dimension $D$ and the cluster mass, i.e. $z_1$, $N$ as well as $D$.
 \item Also the fractal dimension $D$ should increase with the number of nearest neighbors $z_1$.
-\end{itemize} 
+\end{itemize}
 
 \subsection{aggregate with nearest neighbor perturbations}~\\
 
@@ -1937,7 +1937,7 @@ F(N) &= d\frac{(N-e)^m}{(N-e)^m+f}
 \end{align}
 and the values given in the table \ref{ClusterParameters}. The cut-off length or correlation length is obtained
 \begin{align}\label{eq:xiMFinclNN}
-  \xi &= \frac{h}{k_f^{1/D}}R N^{1/D} 
+  \xi &= \frac{h}{k_f^{1/D}}R N^{1/D}
 \end{align}
 with $h = 0.957$ and 0.91 and $k_f = 0.46$ and 0.33 for DLCA and RLCA, respectively. $N$ is the number of particles in the cluster aggregate. The remaining parameter $c$ is given by
 \begin{align}\label{eq:MFinclNN_c}
@@ -2011,4 +2011,4 @@ The reaction limited cluster (RLC) aggregates with nearest neighbor perturbation
 \begin{description}
 \item[\texttt{R}] radius of particles in cluster $R$
 \item[\texttt{N}] number of particles in the fractal aggregate $N$
-\end{description}
+\end{description} 
