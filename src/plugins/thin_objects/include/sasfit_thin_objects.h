@@ -1398,6 +1398,49 @@ sasfit_thin_objects_DLLEXP scalar sasfit_sq_koyama_worms_f(scalar q, sasfit_para
 sasfit_thin_objects_DLLEXP scalar sasfit_sq_koyama_worms_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_koyama_worms ################ */
 
+/* ################ start sq_gGC ################ */
+/**
+ * \defgroup sq_gGC  P'(Q): gGC
+ * \ingroup sq_plugins_pprimelocalcylindrical
+ *
+ * \brief \<some brief description of gGC (generalized Gaussian Coil) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration</td>
+ *      </tr><tr>
+ *       <td>\b nu</td>
+ *       <td>flory exponent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_gGC
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_gGC(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_gGC
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_gGC_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_gGC
+ *
+ * \sa sasfit_more_worms.h, sq_plugins_pprimelocalcylindrical
+ */
+sasfit_thin_objects_DLLEXP scalar sasfit_sq_gGC_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_gGC ################ */
+
+
 /* ################ start ff_pcs_homogeneouscyl ################ */
 /**
  * \defgroup ff_pcs_homogeneouscyl Pcs:homogeneousCyl

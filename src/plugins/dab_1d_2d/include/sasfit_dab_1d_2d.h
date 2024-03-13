@@ -37,9 +37,9 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_dab_2d ################ */
-/** 
+/**
  * \defgroup ff_dab_2d DAB_2D
- * \ingroup ff_plugins_pcslocalplanar
+ * \ingroup ff_plugins_pcslocalcylindrical
  *
  * \brief \<some brief description of DAB_2D function\>
  *
@@ -52,6 +52,9 @@
  *       <td>\b xi</td>
  *       <td>correlation length</td>
  *      </tr><tr>
+ *       <td>\b H</td>
+ *       <td>Hurst exponent</td>
+ *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering contrast</td>
  *      </tr></table>
@@ -60,29 +63,29 @@
 /**
  * \ingroup ff_dab_2d
  *
- * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalcylindrical
  */
 sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_2d(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_dab_2d
  *
- * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalcylindrical
  */
 sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_2d_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_dab_2d
  *
- * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalplanar
+ * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalcylindrical
  */
 sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_2d_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_dab_2d ################ */
 
 /* ################ start ff_dab_1d ################ */
-/** 
+/**
  * \defgroup ff_dab_1d DAB_1D
- * \ingroup ff_plugins_pcslocalcylindrical
+ * \ingroup ff_plugins_pcslocalplanar
  *
  * \brief \<some brief description of DAB_1D function\>
  *
@@ -95,6 +98,9 @@ sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_2d_v(scalar q, sasfit_param * p, in
  *       <td>\b xi</td>
  *       <td>correlation length</td>
  *      </tr><tr>
+ *       <td>\b H</td>
+ *       <td>Hurst exponent</td>
+ *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering contrast</td>
  *      </tr></table>
@@ -103,21 +109,21 @@ sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_2d_v(scalar q, sasfit_param * p, in
 /**
  * \ingroup ff_dab_1d
  *
- * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalplanar
  */
 sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_1d(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_dab_1d
  *
- * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalplanar
  */
 sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_1d_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_dab_1d
  *
- * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalcylindrical
+ * \sa sasfit_dab_1d_2d.h, ff_plugins_pcslocalplanar
  */
 sasfit_dab_1d_2d_DLLEXP scalar sasfit_ff_dab_1d_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_dab_1d ################ */

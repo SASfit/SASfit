@@ -19,6 +19,8 @@ scalar sasfit_ff_cyl_chains_rw_(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((N_AGG < 0.0), param, "n_agg(%lg) < 0",N_AGG); // modify condition to your needs
 
 	// insert your code here
+	R_CORE=PARAM0;
+	N_AGG=PARAM1;
 	return 0.0;
 }
 

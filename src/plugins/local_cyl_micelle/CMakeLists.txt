@@ -29,6 +29,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_rod_exp_rc.c
 	sasfit_ff_rod_exp.c
 	interface.c
+	utils_loc_cyl.c
 )
 
 # add plugin path for finding 'Find*.cmake' files for new <LIBS_EXT>

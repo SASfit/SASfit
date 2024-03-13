@@ -36,6 +36,21 @@
 // add local defines here:
 // #define P0 param->p[0]
 //
+#define PARAM0 param->p[0]
+#define PARAM1 param->p[1]
+#define V_BRUSH param->p[2]
+#define ETA_CORE param->p[3]
+#define ETA_BRUSH param->p[4]
+#define ETA_SOLV param->p[5]
+#define XSOLV_CORE param->p[6]
+#define RG param->p[7]
+#define D param->p[8]
+#define H  param->p[9]
+#define NAGG param->p[MAXPAR-5]
+#define N_AGG param->p[MAXPAR-4]
+#define V_CORE param->p[MAXPAR-3]
+#define R param->p[MAXPAR-2]
+#define Q param->p[MAXPAR-1]
 
 #endif // end of file
 

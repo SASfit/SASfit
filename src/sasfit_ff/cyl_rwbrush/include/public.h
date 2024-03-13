@@ -28,6 +28,35 @@
 #ifndef CYL_RWBRUSH_PUBLIC_H
 #define CYL_RWBRUSH_PUBLIC_H
 
+#define CYL_RWBRUSH_BODY_VARS \
+	scalar r_core, r_chain, pcyl
+
+
+#define CYL_RWBRUSH_BODY \
+	do { \
+		r_core  = V[NAGG]*V[V_CORE]  * (V[ETA_CORE] - V[ETA_SOLV]); \
+		r_chain =         V[V_BRUSH] * (V[ETA_BRUSH]- V[ETA_SOLV]); \
+	\
+		pcyl =        pow(r_core,2.0) * sasfit_integrate(0.0, M_PI_2, sasfit_ff_cyl_rwbrush_fs_core, param); \
+		pcyl = pcyl + V[NAGG]*r_chain*r_chain * sasfit_ff_P18(q, V[RG]); \
+		pcyl = pcyl + V[NAGG]*(V[NAGG]-1.)*r_chain*r_chain * sasfit_integrate(0.0, M_PI_2, sasfit_ff_cyl_rwbrush_scc_core, param)*((V[NAGG] < 1) ?  0 : 1); \
+		pcyl = pcyl + 2.*V[NAGG]*r_core*r_chain * sasfit_integrate(0.0, M_PI_2, sasfit_ff_cyl_rwbrush_ssc_core, param); \
+	} while(0)
+
+
+scalar F_PSI(scalar Q, scalar R, scalar H, scalar alpha);
+
+scalar XI(scalar Q, scalar R, scalar H, scalar alpha);
+
+scalar sasfit_ff_P18(scalar Q, scalar Rg);
+
+scalar sasfit_ff_cyl_rwbrush_fs_core(scalar alpha, sasfit_param *param);
+
+scalar sasfit_ff_cyl_rwbrush_scc_core(scalar alpha, sasfit_param *param);
+
+scalar sasfit_ff_cyl_rwbrush_ssc_core(scalar alpha, sasfit_param *param);
+
+
 sasfit_ff_DLLEXP scalar sasfit_ff_cyl_rwbrush(scalar q, sasfit_param * param);
 
 sasfit_ff_DLLEXP scalar sasfit_ff_cyl_rwbrush_nagg(scalar q, sasfit_param * param);

@@ -7,7 +7,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(33)
+SASFIT_PLUGIN_EXP_BEGIN(34)
 SASFIT_PLUGIN_EXP_ADD( ff_disc_sd_homoxs )
 SASFIT_PLUGIN_EXP_ADD( ff_ellsh_sd_homoxs )
 SASFIT_PLUGIN_EXP_ADD( ff_cylsh_sd_homoxs )
@@ -46,11 +46,14 @@ SASFIT_PLUGIN_EXP_ADD( sq_p__q___worm_ps3_PRISM3 )
 SASFIT_PLUGIN_EXP_ADD( sq_p__q___kholodenko_worm )
 SASFIT_PLUGIN_EXP_ADD( sq_freely_joined_chain_of_rods )
 SASFIT_PLUGIN_EXP_ADD( sq_koyama_worms )
+SASFIT_PLUGIN_EXP_ADD( sq_gGC )
 
 SASFIT_PLUGIN_EXP_END
 
 // import functions from other plugins
-SASFIT_PLUGIN_IMP_NONE
+SASFIT_PLUGIN_IMP_BEGIN( 1 )
+SASFIT_PLUGIN_IMP_ADD( ff_generalized_gaussian_coil )
+SASFIT_PLUGIN_IMP_END
 
 SASFIT_PLUGIN_INTERFACE
 
