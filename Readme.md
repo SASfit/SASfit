@@ -84,6 +84,12 @@ Up to date development snapshots for all supported platforms can be found [on cl
 
 ## MacOS Startup issues
 
+As of March 13th '24 [the latest SASfit development binary package](https://cloudsmith.io/~sasfit/repos/build/packages/?q=version%3A240306081722) was tested successfully (single-fit -> simulate single curve -> plots curve) on the following macOS (Intel) versions:
+
+- Sonoma 14.4
+- Ventura 13.6
+- Monterey 12.7
+
 ### *no display name and no $DISPLAY environment variable*
 
 It is very likely that the XQuartz package is missing which is a requirement for SASfit to run on modern macOS. You can download its package from here: [https://www.xquartz.org/releases/index.html](https://www.xquartz.org/releases/index.html)
