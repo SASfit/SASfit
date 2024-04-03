@@ -15,10 +15,10 @@ skip_commits:
 
 init:
   - sh -c '
-      echo 1
-      echo 2
-      which python3
-      echo done
+      echo 1;
+      echo 2;
+      which python3;
+      echo done;
     '
   - git config --global core.autocrlf input
   - git config --global advice.detachedHead false
