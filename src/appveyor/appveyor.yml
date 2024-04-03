@@ -25,8 +25,8 @@ clone_script:
 
 image:
   # Linux first since its faster and there is more time for source snapshot upload to zenodo later
-  - Ubuntu2004
-  - Visual Studio 2019
+  #- Ubuntu2004
+  #- Visual Studio 2019
   - macos-sonoma
 
 environment:
@@ -145,8 +145,13 @@ deploy:
 
 on_success:
   - python3 --version
+  # create venv first to get a mutable environment (relevant on macOS sonoma)
+  - python3 -m venv --system-site-packages --upgrade-deps pyvenv-deploy
+  - source pyvenv-deploy/bin/activate
   # install packages needed by the after_deploy script
-  - python3 -m pip install --user requests python-dateutil pyyaml
+  - which pip
+  - which python3
+  - pip install requests python-dateutil pyyaml
   # cleanup AppVeyor history
   - python3 src/appveyor/citools/appveyor_keep_builds.py 10
   # upload binary packages to cloudsmith.io
