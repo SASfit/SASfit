@@ -117,8 +117,10 @@ build_script:
       python3 --version
       # create venv first to get a mutable environment (relevant on macOS sonoma)
       python3 -m venv --system-site-packages --upgrade-deps pyvenv-deploy
-      ls pyvenv-deploy
-      ls pyvenv-deploy/bin
+      # activate the venv
+      ./pyvenv-deploy/bin/Activate.ps1
+      # install packages in it
+      pip list
   - exit 1
   - sh src/appveyor/4_build.sh
 
