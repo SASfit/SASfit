@@ -377,6 +377,15 @@
  */ 
 
 /** 
+ * \defgroup ff_sans specially for SANS 
+ * \ingroup ff_plugins
+ *
+ * This group should contains tools specially for SANS.
+ *
+ * \modname{ff_sans}
+ */
+ 
+/** 
  * \defgroup ff_user1 user plugins 1 
  * \ingroup ff_plugins
  *

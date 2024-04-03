@@ -38,7 +38,7 @@
 //
 
 #define RG	param->p[0]
-#define FP	    param->p[1]
+#define FP	    fabs(param->p[1])
 #define ALPHA	param->p[2]
 #define BETA	param->p[3]
 #define GAMMA	param->p[4]

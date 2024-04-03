@@ -39,7 +39,7 @@
 /* ################ start ff_tiltsans1 ################ */
 /**
  * \defgroup ff_tiltsans1 tiltSANS1
- * \ingroup ff_user1
+ * \ingroup ff_sans
  *
  * \brief \<some brief description of tiltSANS1 function\>
  *
@@ -63,21 +63,21 @@
 /**
  * \ingroup ff_tiltsans1
  *
- * \sa sasfit_tiltsans1.h, ff_user1
+ * \sa sasfit_tiltsans1.h, ff_sans
  */
 sasfit_tiltsans1_DLLEXP scalar sasfit_ff_tiltsans1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_tiltsans1
  *
- * \sa sasfit_tiltsans1.h, ff_user1
+ * \sa sasfit_tiltsans1.h, ff_sans
  */
 sasfit_tiltsans1_DLLEXP scalar sasfit_ff_tiltsans1_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_tiltsans1
  *
- * \sa sasfit_tiltsans1.h, ff_user1
+ * \sa sasfit_tiltsans1.h, ff_sans
  */
 sasfit_tiltsans1_DLLEXP scalar sasfit_ff_tiltsans1_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_tiltsans1 ################ */
