@@ -95,7 +95,7 @@ for:
 -
   matrix:
     only:
-      - image: Ubuntu2004
+      - image: Ubuntu2204
   environment:
     CACHEID: linux64
   install:
