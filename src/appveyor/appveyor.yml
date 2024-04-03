@@ -14,10 +14,6 @@ skip_commits:
     - '*.txt'
 
 init:
-  - ps: |
-      python3 --version
-      # create venv first to get a mutable environment (relevant on macOS sonoma)
-      python3 -m venv --system-site-packages --upgrade-deps pyvenv-deploy
   - git config --global core.autocrlf input
   - git config --global advice.detachedHead false
 # https://github.com/appveyor/ci/issues/899#issuecomment-567280434
@@ -117,10 +113,16 @@ for:
     - 'src/sundials/$CACHEID -> src/sundials/CMakeLists.txt, src/cmake, src/CMakeLists.txt'
 
 build_script:
-    - sh src/appveyor/4_build.sh
+  - ps: |
+      python3 --version
+      # create venv first to get a mutable environment (relevant on macOS sonoma)
+      python3 -m venv --system-site-packages --upgrade-deps pyvenv-deploy
+      ls pyvenv-deploy
+  - exit 1
+  - sh src/appveyor/4_build.sh
 
 after_build:
-    - sh src/appveyor/6_after_build.sh
+  - sh src/appveyor/6_after_build.sh
 
 # another test, different syntax
 test_script:
