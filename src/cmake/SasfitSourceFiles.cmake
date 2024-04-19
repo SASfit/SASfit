@@ -36,7 +36,7 @@
 #
 # This module expects to live in <sasfit-dir>/src/cmake
 
-cmake_minimum_required(VERSION 3.0)
+# cmake_minimum_required(VERSION 3.0)
 cmake_policy(SET CMP0011 NEW)
 
 set(SOURCE_sasfit_common

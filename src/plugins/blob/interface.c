@@ -7,9 +7,10 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(2)
+SASFIT_PLUGIN_EXP_BEGIN(3)
 SASFIT_PLUGIN_EXP_ADD( ff_blob__star_ )
 SASFIT_PLUGIN_EXP_ADD( ff_blob__dendrimer_ )
+SASFIT_PLUGIN_EXP_ADD( ff_blob__beaucage_ )
 
 SASFIT_PLUGIN_EXP_END
 

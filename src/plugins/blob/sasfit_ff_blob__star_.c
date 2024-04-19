@@ -35,7 +35,7 @@ scalar sasfit_ff_blob__star_(scalar q, sasfit_param * param)
     qb = q*2*RG/sqrt(F);
     c =  fabs(pow(2,2 - 1/NU)*pow(F,0.5/NU)*M_PI*pow(RG,-1/NU)
         *cos(M_PI/(2*NU))*gsl_sf_gamma(mu));
-    blob = fabs(4*M_PI*ALPHA*gsl_sf_gamma(mu)/qb*sin(mu*atan(qb))/pow(1 + qb*qb,mu/2.)/c);
+    blob = ALPHA*fabs(4*M_PI*gsl_sf_gamma(mu)/qb*sin(mu*atan(qb))/pow(1 + qb*qb,mu/2.)/c);
 	return blob;
 }
 

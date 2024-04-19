@@ -529,6 +529,115 @@ For values of $\epsilon<1$ the objects become disk-like and show a $q^{-2}$ scat
 \caption{Some typical curves for a second generalized Debye-Anderson-Brumberger model function, this time extended by a compression or an extensional deformation and a subsequent random orientation averaging } \label{fig:spsilonDABIq}
 \end{figure}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection{Blob}
+\label{sect:Blob}
+~\\
+
+So called blob-scattering has been introduced to describe density fluctuations mainly within different polymer models like for star polymer using scaling concepts of \cite{DaoudCotton82} as described in \cite{dozier91} or similar for star-burst dendrimers in \cite{Rathgeber2002}, which shows almost the same features than the fractal model of \cite{beaucage95,beaucage96}. All three models have been scaled so that at large $q$-values they are all proportional to $\lim_{q\to\infty} I(q) = c_{P} q^{-P}$ or $\lim_{q\to\infty} I(q) = c_{\nu} q^{-1/\nu}$
+
+~\\
+\subsubsection{blob (beaucage)}
+\label{sect:Blob(Beaucage)}
+~\\
+
+This model is taken from \cite{beaucage95,beaucage96} and reads as
+\begin{align}\label{eq:blob_beaucage}
+  I_\mathrm{b,Beau} &= c_P  \left(\frac{\left[\operatorname{erf}\left(q R_g/\sqrt{6}\right)\right]^3}{q} \right)^P
+\end{align}
+
+\vspace{3mm}
+
+\uline{Input Parameters for model \texttt{blob (beaucage)}:}
+\begin{description}
+\item[\texttt{Rg}] radius of gyration $R_g$
+\item[\texttt{P}] potential law $P$
+\item[\texttt{dummy}] unused
+\item[\texttt{c\_P}] scaling parameter $c_P$
+\end{description}
+
+\uline{Note:}
+\begin{itemize}
+\item $R_g>0$ and $q\geq 0$ 
+\end{itemize}
+
+
+~\\
+\subsubsection{blob (star)}
+\label{sect:Blob(star)}
+~\\
+
+This blob model has been introduced for star polymers by Dozier in \cite{dozier91} and reads after doing the scaling at large $q$-values as
+\begin{align}\label{eq:blob_star}
+  I_\mathrm{b,star}(q) &= \frac{c_\nu}{c_N}  \frac{4 \pi \Gamma(\mu)}{q_b} \frac{\sin(\mu\arctan(q_b))}{(1 + q_b^2)^{\mu/2}} \\
+  \mu &= \frac{1}{\nu}-1 \\
+  q_b &= \frac{2}{\sqrt{f}} q R_g  \\
+  c_N &= \abs{2^{1-\mu} f^{1/(2\nu)} \pi R_g^{-1/\nu}
+        \cos(\pi/(2\nu))\Gamma(\mu)}
+\end{align}
+
+\vspace{3mm}
+
+\uline{Input Parameters for model \texttt{blob (star)}:}
+\begin{description}
+\item[\texttt{Rg}] radius of gyration $R_g$
+\item[\texttt{nu}] Flory-Huggins parameter $\frac13<\nu\leq 1$
+\item[\texttt{f}] number of arms $f$
+\item[\texttt{c\_nu}] scaling parameter $c_\nu$
+\end{description}
+
+\uline{Note:}
+\begin{itemize}
+\item $R_g>0$ and $q\geq 0$
+\item $\frac13<\nu\leq 1$
+\item $\displaystyle \lim_{q\to\infty} I_\mathrm{b,star}(q) = c_{\nu} q^{-1/\nu}$
+\end{itemize}
+
+
+~\\
+\subsubsection{blob (dendrimer)}
+\label{sect:Blob(dendriner)}
+~\\
+
+This blob model has been introduced for star-burst dendrimers in \cite{Rathgeber2002} and reads after doing the scaling at large $q$-values as
+\begin{align}\label{eq:blob_dendrimer}
+  I_\mathrm{b,dendrimer}(q) &= \frac{c_\nu}{c_N}  
+  \frac{4 \pi \Gamma(\mu)}{q_b} \frac{\sin(\mu\arctan(q_b))}{(1 + q_b^2)^{\mu/2}} \\
+  \mu &= \frac{1}{\nu}-1 \\
+  q_b &= \frac{q \xi}{\left[\operatorname{erf}\left(q R_g/\sqrt{6}\right)\right]^3}  \\
+  c_N &= \abs{4\pi \xi^{-1/\nu} \cos(\pi/(2\nu))\Gamma(\mu)}
+\end{align}
+In the limiting case of $\xi/R_g \rightarrow \infty$ the intensity converges to
+\begin{align}\label{eq:blob_star_dendrimerLimit}
+  \lim_{\frac{\xi}{R_g}\to\infty} I_\mathrm{b,dendrimer}(q) &= I_\mathrm{b,Beau}(q,P=\frac{1}{\nu})
+\end{align}
+
+\vspace{3mm}
+
+\uline{Input Parameters for model \texttt{blob (dendrimer)}:}
+\begin{description}
+\item[\texttt{Rg}] radius of gyration $R_g$
+\item[\texttt{nu}] Flory-Huggins parameter $\frac13<\nu\leq 1$
+\item[\texttt{xi}] correlation length $\xi$
+\item[\texttt{c\_nu}] scaling parameter $c_\nu$
+\end{description}
+
+\uline{Note:}
+\begin{itemize}
+\item $R_g>0$, $\xi>0$, and $q\geq 0$
+\item $\frac13<\nu\leq 1$
+\item $\displaystyle \lim_{q\to\infty} I_\mathrm{b,dendrimer}(q) = c_{\nu} q^{-1/\nu}$
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/nonparticular/blob.pdf}
+\end{center}
+\caption{Comparison of scattering models for blob scattering.} \label{fig:blobIQ}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \subsection{Spinodal}

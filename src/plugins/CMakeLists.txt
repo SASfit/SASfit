@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+# cmake_minimum_required(VERSION 3.0)
 
 # assuming we live in <sasfit-root>/src/plugins
 get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)

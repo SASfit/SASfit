@@ -180,9 +180,8 @@ This plugin is implemented for a certain experimental setup of a quenched shear 
 
    \noindent  \includegraphics[width=0.377\textwidth]{../images/form_factor/deformed_sheared/mag_tilted_sample.pdf} ~
     \includegraphics[width=0.5\textwidth]{../images/form_factor/deformed_sheared/tilted_sample.pdf} \\
-    
-    \end{enumerate}
 
+\end{enumerate}
 
 The form factors describing linear polymers under shear flow has been taken from \cite{Korolkovas2019}.
 In the original paper it is assumed that the shear-vorticity plane is the same than the detector plane. We slightly extend it here to any orientation defined by proper Euler angles.
@@ -240,6 +239,19 @@ Kuhn length and $R_g$ the equilibrium radius of gyration. $N$ is the number of K
 
 \subsection{linear polymer under shear flow}~\\
 \label{sect:LinearPolymerShearFlow}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=.8\textwidth]{../images/form_factor/deformed_sheared/Euler_case1.png}
+  \caption{used coordination axis and Euler angles for case 1}\label{fig:EulerCase1}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=.9\textwidth]{../images/form_factor/deformed_sheared/Euler_case2.png}
+  \caption{used coordination axis and Euler angles for case 2}\label{fig:EulerCase2}
+\end{figure}
+
 
 For a sheared linear polymer the mean squared distance MSD in the flow, vorticity and gradient direction has been approximated in \cite{Korolkovas2019} by a piecewise linear approximation and with a limitation to just two segments.
 The approximation of the MSD by a series of two straight lines reads as
@@ -302,19 +314,31 @@ Also the second case, where the sample has been rotated in the beam by an angle 
 \begin{align}\label{eq:case1}
   I_{\mathrm{lin},2,\mathrm{b}}(\mathbf{q}) & = \int_{0}^{2\pi} P_\mathrm{lin,2}(q,R_g,\alpha,\beta,\gamma,A,B,\mathit{\Gamma},\varphi=0,\theta=\theta_0,\psi) \;\mathrm{d}\psi
 \end{align}
-
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=.8\textwidth]{../images/form_factor/deformed_sheared/Euler_case1.png}
-  \caption{used coordination axis and Euler angles for case 1}\label{fig:EulerCase1}
-\end{figure}
-
+The intensity for $\theta=0$ should not depend on the azimuthal angle $\psi$. However, in some case a certain anisotropy has been seen like shown in fig.\  \ref{fig:offcentered}.
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=.9\textwidth]{../images/form_factor/deformed_sheared/Euler_case2.png}
-  \caption{used coordination axis and Euler angles for case 2}\label{fig:EulerCase2}
+  \includegraphics[width=.66\textwidth]{../images/form_factor/deformed_sheared/offcentered.pdf}
+  \caption{effect of off-centered samples in front of aperture}
+  \label{fig:offcentered}
 \end{figure}
+
+To account for a possible off-centered sample the azimuthal integration would need to be done including a certain orientation probability distribution $p(\psi,\psi_0,S_2,S_4)$ of the flow direction.
+\begin{align}\label{eq:case1offcentered}
+  I_2(\mathbf{q}) & = \frac{1}{2\pi}\int_{0}^{2\pi}  f(\psi-\psi_0,S_2,S_4) \; P_\mathrm{lin}(q,R_g,\alpha,\beta,\gamma,A,B,\mathit{\Gamma},\varphi=0,\theta,\psi) \;\mathrm{d}\psi
+\end{align}
+The orientation distribution function is simply described in terms of Legendre polynomials.
+\begin{align}
+f(\psi) &= \sum_l c_l P_l(\cos\psi) = \sum_l \frac{2l+1}{2} S_l P_l(\cos\psi)
+\end{align}
+with the first three Legendre polynomials defined by
+\begin{subequations}
+\begin{align}
+P_0(\cos\psi) &= 1\\
+P_1(\cos\psi) &= \cos\psi\ \\
+P_2(\cos\psi) &= \frac{1}{2}\left(3\cos^2\psi-1\right)
+\end{align}
+\end{subequations}
+As the orientation distribution was assumed to be symmetric to $\psi_0$ only odd terms have been considered. In practice the off centered alignment could be sufficiently good corrected for using just the $P_0(\cos\psi)$ and $P_2(\cos\psi)$ with $c_0=1$ and $c_2$ and $\psi_0$ being fit parameters.
 
 \begin{itemize}
 \item  a semi-empirical 3-parameter formula $(B_x,B_y,\xi)$ to have a similar shape then the piecewise linear MSD function above.

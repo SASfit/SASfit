@@ -624,7 +624,7 @@ proc gen_cmakelists { plg_name fl } {
 		append func_files "\tsasfit_[lindex $f 1].c\n"
 	}
 	set str \
-"cmake_minimum_required(VERSION 3.0)
+"# cmake_minimum_required(VERSION 3.0)
 
 # the project name
 set(PRJ_NAME sasfit_$plg_name)

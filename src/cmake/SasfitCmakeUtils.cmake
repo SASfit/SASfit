@@ -34,7 +34,7 @@
 #
 # This module expects to live in <sasfit-dir>/src/cmake
 
-cmake_minimum_required(VERSION 3.0)
+# cmake_minimum_required(VERSION 3.0)
 
 # replaced by file(GET_RUNTIME_DEPENDENCIES)
 include(GetPrerequisites)

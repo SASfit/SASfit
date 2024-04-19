@@ -50,15 +50,15 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b Rg</td>
- *       <td>radius of guration</td>
+ *       <td>radius of gyration</td>
  *      </tr><tr>
  *       <td>\b nu</td>
- *       <td>Flory-Huggins parameter (1/3<nu<1)</td>
+ *       <td>Flory-Huggins parameter (1/3<nu<=1)</td>
  *      </tr><tr>
  *       <td>\b f</td>
  *       <td>number of arms</td>
  *      </tr><tr>
- *       <td>\b alpha</td>
+ *       <td>\b c_nu</td>
  *       <td>scaling parameter</td>
  *      </tr></table>
  */
@@ -102,12 +102,12 @@ sasfit_blob_DLLEXP scalar sasfit_ff_blob__star__v(scalar q, sasfit_param * p, in
  *       <td>radius of gyration</td>
  *      </tr><tr>
  *       <td>\b nu</td>
- *       <td>Flory–Huggins parameter (1/3<nu<1)</td>
+ *       <td>Flory–Huggins parameter (1/3<nu<=1)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>effective blob radius</td>
  *      </tr><tr>
- *       <td>\b alpha</td>
+ *       <td>\b c_nu</td>
  *       <td>scaling parameter</td>
  *      </tr></table>
  */
@@ -133,6 +133,55 @@ sasfit_blob_DLLEXP scalar sasfit_ff_blob__dendrimer__f(scalar q, sasfit_param * 
  */
 sasfit_blob_DLLEXP scalar sasfit_ff_blob__dendrimer__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_blob__dendrimer_ ################ */
+
+/* ################ start ff_blob__beaucage_ ################ */
+/**
+ * \defgroup ff_blob__beaucage_ blob (beaucage)
+ * \ingroup ff_non-particulate
+ *
+ * \brief \<some brief description of blob (beaucage) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rg</td>
+ *       <td>radius of gyration</td>
+ *      </tr><tr>
+ *       <td>\b P</td>
+ *       <td>potential law</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b c_P</td>
+ *       <td>scaling parameter</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_blob__beaucage_
+ *
+ * \sa sasfit_blob.h, ff_non-particulate
+ */
+sasfit_blob_DLLEXP scalar sasfit_ff_blob__beaucage_(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_blob__beaucage_
+ *
+ * \sa sasfit_blob.h, ff_non-particulate
+ */
+sasfit_blob_DLLEXP scalar sasfit_ff_blob__beaucage__f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_blob__beaucage_
+ *
+ * \sa sasfit_blob.h, ff_non-particulate
+ */
+sasfit_blob_DLLEXP scalar sasfit_ff_blob__beaucage__v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_blob__beaucage_ ################ */
 
 
 #endif // this file

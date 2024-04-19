@@ -12,6 +12,7 @@ set(LIBS_EXT
 set(SOURCE_${PRJ_NAME}
 	sasfit_ff_blob__star_.c
 	sasfit_ff_blob__dendrimer_.c
+	sasfit_ff_blob__beaucage_.c
 	interface.c
 )
 
