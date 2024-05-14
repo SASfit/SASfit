@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -30,7 +30,7 @@ scalar sasfit_ff_boucher_sphere2_f(scalar q, sasfit_param * param)
 
 	// insert your code here
  //   beta = DELTA_ETA*gsl_pow_3(R)*sqrt(M_PI)*M_PI*exp(gsl_sf_lngamma(ALPHA/2.-1)-gsl_sf_lngamma(ALPHA/2.+0.5));
-    
+
 //   beta = DELTA_ETA*gsl_pow_3(R*sqrt(M_PI))*gsl_sf_gamma(ALPHA/2.-1)/gsl_sf_gamma(ALPHA/2.+0.5);
    beta  = DELTA_ETA*gsl_pow_3(R)*4./3.*M_PI;
     if (q*R == 0) return beta;

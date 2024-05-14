@@ -70,6 +70,11 @@ scalar MLog(int , scalar , scalar *, size_t , sasfit_param *);
 scalar MNLog(int , scalar , scalar *, size_t , sasfit_param *);
 scalar MLogit(int , scalar , scalar *, size_t , sasfit_param *);
 
+scalar mk(int , scalar , scalar *, size_t , sasfit_param *);
+scalar mLog(int , scalar , scalar *, size_t , sasfit_param *);
+scalar mNLog(int , scalar , scalar *, size_t , sasfit_param *);
+scalar mLogit(int , scalar , scalar *, size_t , sasfit_param *);
+
 void assign_metalog_par(scalar, metalog_param *, sasfit_param *);
 scalar find_root_brent_metalog(gsl_function *);
 scalar ylin (scalar, void *);

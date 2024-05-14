@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -21,7 +21,7 @@ scalar sasfit_ff_spinodal(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((QMAX < 0.0), param, "Qmax(%lg) < 0",QMAX); // modify condition to your needs
 
 	// insert your code here
-    
+
     tmp = q/QMAX;
 	c = GAMMA/2.+pow(tmp,2.+GAMMA);
 

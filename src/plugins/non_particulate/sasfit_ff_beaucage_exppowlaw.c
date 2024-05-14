@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -33,9 +33,9 @@ scalar sasfit_ff_beaucage_exppowlaw(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((PS < 0.0), param, "Ps(%lg) < 0",PS); // modify condition to your needs
 
 	// insert your code here
-    
-    
-	scalar x, xs, xsub, k, ks, tmp, qsub; 
+
+
+	scalar x, xs, xsub, k, ks, tmp, qsub;
 
 	x 	= q*RG;
 	xs 	= q*RS;
@@ -46,7 +46,7 @@ scalar sasfit_ff_beaucage_exppowlaw(scalar q, sasfit_param * param)
 	tmp  = gsl_pow_3( gsl_sf_erf(x *k /sqrt(6.))) / q;
 	qsub = gsl_pow_3( gsl_sf_erf(xs*ks/sqrt(6.))) / q;
 
-	return   G* exp(-x *x /3.0)   + B *exp(-xsub*xsub/3.)*pow(tmp,P) + 
+	return   G* exp(-x *x /3.0)   + B *exp(-xsub*xsub/3.)*pow(tmp,P) +
                  GS*exp(-xs*xs/3.0) + BS*  pow(qsub,PS);
 }
 

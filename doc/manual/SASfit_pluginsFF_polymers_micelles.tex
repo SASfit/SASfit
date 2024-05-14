@@ -966,9 +966,28 @@ The form factors of freely joined chain of rigid rods by Hermans and Hermans \ci
 \end{description}
 
 \clearpage
-\subsection{hyperbranched polymer}
-\label{sect:hyperbranched_polymers}
+\subsection{branched polymer}
+\label{sect:branched_polymers}
 ~\\
+Polymers can be synthesized in a large variety of architectures, like architectures of linear polymers, rings, branched polymers, dendrimers, combs, ladders, cross-linked polymers, etc. A few possible architectures are sketched in fig.\ \ref{fig:polymer_architectures}.
+
+\begin{figure}[htb]
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_branched/polymer_architectures.pdf}
+\caption{Some categories of polymer architectures}
+\label{fig:polymer_architectures}
+\end{figure}
+
+
+~\\
+\subsubsection{random $f$-functional polycondensates}
+\label{sect:ff_functional_homopolycondensates}
+~\\
+\cite{Kajiwara1970,Burchard2015,Burchard2015a,Burchard1977}
+\begin{align}\label{eq:f-functionalHomoPolym}
+  I_{f-\mathrm{pc}} &= \frac{I_0}{1+Rg^2q^2/3} \\
+  R_g^2 &= \frac{1}{2}\sigma^2 \left(\frac{\alpha(f-1)}{1-\alpha(f-1)}+\frac{\alpha}{1+\alpha}\right) 
+\end{align}
+where $f$ is the functionality, $\alpha$ the fraction of functionalities which have reacted and $\sigma^2$ may be defined as the mean-square distance between two units directly connected by a link.
 
 ~\\
 \subsubsection{hyperbranched polymer: fractal approach}
@@ -977,17 +996,6 @@ The form factors of freely joined chain of rigid rods by Hermans and Hermans \ci
 
 \cite{Burchard2004}
 
-~\\
-\subsubsection{random $f$-functional homopolycondensates}
-\label{sect:ff_functional_homopolycondensates}
-~\\
-
-\cite{Kajiwara1970}
-\begin{align}\label{eq:f-functionalHomoPolym}
-  I &= ?
-\end{align}
-where $f$ is the functionality, $\alpha$ the fraction of functionalities which have reacted and $\sigma^2$ may be defined as the mean-square distance between two units
-directly connected by a link.
 
 ~\\
 \subsubsection{Hyper-branched $AB_2$ polymers perturbed by excluded
@@ -998,17 +1006,75 @@ volume interaction}
 \cite{Burchard2015,Burchard2015a}
 
 ~\\
-\subsubsection{regular comb}
+\subsubsection{comb}
+\label{sect:com}
+~\\
+Casassa and Berry have developed a model polymers with a comb-like architecture \cite{Casassa1966}. They assume sufficiently dilute solution at the Flory temperature, where the molecular configuration is described by random flight statistics. They describe in their paper three version, a regular, a random and a heterogenous comb architecture.
+
+The form factor of a regular comb reads as \cite{Casassa1966,von_Ferber_2013}
+\begin{align}\label{eq:comb_regular}
+  I_\mathrm{comb,reg}(q) &=  \frac{2}{x^2}\left(A_\mathrm{reg}+B_\mathrm{reg}+C_\mathrm{reg}\right)\\
+  A_\mathrm{reg} &= x-1+e^{-x\lambda}\\
+  B_\mathrm{reg} &= \left(1-e^{-x(1-\lambda)/\zeta} \right)\left(\zeta+2\frac{1-e^{-x\lambda \zeta/(\zeta+1)}}{1-e^{x\lambda/(\zeta+1)}}\right)\\
+  C_\mathrm{reg} &=  \left(1-e^{-x(1-\lambda)/\zeta} \right)^2 \\ &\phantom{=} \qquad \left(\frac{(\zeta-1)\left(e^{x\lambda/(\zeta+1)}-1\right)-\left(1-e^{-x\lambda(\zeta-1)/(\zeta+1)}\right)}{\left(1-e^{x\lambda/(\zeta+1)}\right)^2}\right) \nonumber
+  \end{align}
+with
+\begin{align}
+  x & = q^2a^2 \\
+  a^2 = N l_b^2 /6 \\
+  N &= N_0+\zeta n_\zeta \\
+  \lambda &= N_0/N
+\end{align}
+where $l_b$ is the length of a polymer chain element, $\zeta$ the number of side branches equally spaced along the back-bone, $N$ the total number of chain (Kuhn) elements, $N_0$ the chain elements in the back-bone, $n_\zeta$ the number of chain elements in the side branch. $a$ would be the radius of gyration of a linear polymer withe the same number of chain elements than the comb shaped polymer.
+
+The form factor of a random comb reads as \cite{Casassa1966}
+\begin{align}\label{eq:comb_random}
+  I_\mathrm{comb,rnd}(q) &=  \frac{2}{x^2}\left(A_\mathrm{rnd}+B_\mathrm{rnd}+C_\mathrm{rnd}\right)\\
+  A_\mathrm{rnd} &= x + \left(e^{-x\lambda}-1\right)\\
+  B_\mathrm{rnd} &= \left(1-e^{-x(1-\lambda)/\zeta}\right)\zeta\left[1+\frac{2}{x\lambda}\left(e^{-x\lambda}-1\right)\right]\\
+  C_\mathrm{rnd} &= \left(1-e^{-x(1-\lambda)/\zeta}\right)^2 \left[\frac{x\lambda+\left(e^{-x\lambda}-1\right)}{x^2\lambda^2/(\zeta(\zeta-1))}\right]
+\end{align}
+
+The third case discussed in \cite{Casassa1966} includes a binomial distributed random $\zeta$-branched comb, which they name heterogenous. The averaged random form factor (heterogeneous comb) reads as
+\begin{align}\label{eq:comb_h}
+  I_\mathrm{comb,h}(q) &=  \frac{2}{\bar{x}^2}\frac{1}{1+(1-\bar{\lambda})^2/\bar{\zeta}}\left(A_\mathrm{h}+B_\mathrm{h}+C_\mathrm{h}\right)\\
+  A_\mathrm{h} &= \bar{x} + \left(e^{-\bar{x}\bar{\lambda}}-1\right)\\
+  B_\mathrm{h} &= \left(1-e^{-\bar{x}(1-\bar{\lambda})/\bar{\zeta}}\right)\bar{\zeta}\left[1+\frac{2}{\bar{x}\bar{\lambda}}\left(e^{-\bar{x}\bar{\lambda}}-1\right)\right]\\
+  C_\mathrm{h} &= \left(1-e^{-\bar{x}(1-\bar{\lambda})/\bar{\zeta}}\right)^2 \left[\frac{\bar{x}\bar{\lambda}+\left(e^{-\bar{x}\bar{\lambda}}-1\right)}{\bar{x}^2\bar{\lambda}^2/\bar{\zeta}^2}\right]
+\end{align}
+where $\bar{x}$, $\bar{\lambda}$, and $\bar{\lambda}$ are averaged accordingly (details see \cite{Casassa1966}).
+In fig.\ \ref{fig:comb} The scattering intensity of am comb with 10 branches is shown. The differences between the models are hardly visible in the Loglog presentation, however, in the Kratky plot they become visible.
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../images/form_factor/polymer_branched/comb.pdf}
+\end{center}
+\caption{Scattering of a comb in a Kratky and Loglog plot.}
+\label{fig:comb}
+\end{figure}
+
+\noindent \uline{Input Parameters for models \texttt{comb (regular)}, \texttt{comb (random)}, and \texttt{comb} \texttt{(heterogeneous)}:}\\
+\begin{description}
+\item[\texttt{a}] radius of gyration of a linear chain with the same number of polymer units $a$ as the comb
+\item[\texttt{zeta}] functionality or number of branches $\zeta$
+\item[\texttt{lambda}] density of side chains $\lambda$
+\item[\texttt{I0}] forward scattering $I_0$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item $0\leq \lambda \leq 1$
+\item $\zeta > 1$
+\item $a>0$
+\end{itemize}
+
+~\\
+\subsubsection{bottle-brush polymer}
 \label{sect:com_regular}
 ~\\
-The form factor of a regular comb has been derived in \cite{Casassa1965}. The typos of the derived equations have been corrected in \cite{von_Ferber_2013}.The form factor reads as
-\begin{align}\label{eq:comb_regular}
-  I_\mathrm{comb,reg}(q) &=  \frac{2}{x^2}\left(A+B+C\right)\\
-  A &= x-1+e^{-x\lambda}\\
-  B &= \left(1-e^{-x(1-\lambda)/f} \right)\left(f+2\frac{1-e^{-x\lambda f/(f+1)}}{1-e^{x\lambda/(f+1)}}\right)\\
-  C &=  \left(1-e^{-x(1-\lambda)/f} \right)^2 \\ &\phantom{=} \qquad \left(\frac{(f-1)\left(e^{x\lambda/(f+1)}-1\right)-\left(1-e^{-x\lambda(f-1)/(f+1)}\right)}{\left(1-e^{x\lambda/(f+1)}\right)^2}\right) \nonumber\\
-  x & = q^2Nb^2/6 \\
-  N & N_0+fn_b \\
-  \lambda & = N_0/N
-\end{align} 
-where $b$ is the Kuhn length, $f$ the number of side branches equally spaced along the back-bone, $N$ the total number of chain (Kuhn) elements, $N_0$ chain elements in the back-bone, $n_b$ number of chain elements in the side branch.
+\cite{Hsu2007,Hsu2008}
+
+~\\
+\subsubsection{soft sphere model}
+\label{sect:soft sphere}
+~\\
+\cite{Savin2004,Burchard,Burchard1982}

@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -18,7 +18,7 @@ scalar sasfit_sq_solid_angle_correction(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((LAMBDA < 0.0), param, "lambda(%lg) < 0",LAMBDA); // modify condition to your needs
 	SASFIT_CHECK_COND1((T0 <= 0.0), param, "T0(%lg) <= 0",T0); // modify condition to your needs
-	
+
 	// insert your code here
 	TwoTheta = 2*asin(q*LAMBDA/(4*M_PI));
 	return gsl_pow_3(cos(TwoTheta))*pow(T0,0.5+0.5/cos(TwoTheta))/T0;

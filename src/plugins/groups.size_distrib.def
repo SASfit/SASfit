@@ -68,6 +68,15 @@
  */
 
 /** 
+ * \defgroup sd_plugins_try T-R{Y} family
+ * \ingroup sd_plugins_devel
+ *
+ * This group contains the different types of distributions belonging to T-R{Y} family
+ *
+ * \modname{sd_plugins_try}
+ */
+ 
+/** 
  * \defgroup sd_plugins_metalog metalog
  * \ingroup sd_plugins
  *

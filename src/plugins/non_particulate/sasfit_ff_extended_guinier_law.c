@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -19,7 +19,7 @@ scalar sasfit_ff_extended_guinier_law(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((A  < 0.0), param, "a(%lg) < 0",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((A  >= 3.0), param, "a(%lg) >= 3",A); // modify condition to your needs
 	SASFIT_CHECK_COND1((RA < 0.0), param, "Ra(%lg) < 0",RA); // modify condition to your needs
-	
+
 
 	SASFIT_ASSERT_PTR(param);
 

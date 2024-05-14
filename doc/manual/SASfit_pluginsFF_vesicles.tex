@@ -86,9 +86,10 @@ Further model input parameters are the fraction of lipids decorated with PEG ins
 In this model it is assumed that neither the tail layer nor the head group layers contain any solvent. The distance of the center of mass for the attached PEG molecules is assumed to be equal to its radius of gyration $R_g$.
 ~\\
 \subsubsection{PEGylated liposome with smeared scattering length density profile} ~\\
-
+\label{sec:PEGylatedVesicle}
 In practise it could be shown \cite{Pabst2002,Brzustowicz2005} that at least for x-rays the scattering length density profiles across a membrane are better modelled by a smooth transition and gaussian scattering length density profile have been suggested and successfully been used. However, using Gaussian profiles the use of known molecular parameters like molecular volume are not so straight forward to be integrated as constrains for the input parameters.
 Here we therefore introduce a smooth transition between the scattering length density of the hydrocarbon chain and the phospholipid head group as well as between the head group and the solvent. The transition can be performed with any sigmoidal function which smoothly varies between 0 and 1. In practice all cumulative distribution functions are such functions and are therefore typically used for this task are
+\begin{subequations}
 \begin{align}
   w_\mathrm{logistic}(x) &=\frac{1}{1+\exp(-x)} \\
   w_\mathrm{Laplace}(x) &= \begin{cases}
@@ -106,6 +107,7 @@ Here we therefore introduce a smooth transition between the scattering length de
   w_\mathrm{Gudermannian}(x) &=\frac{2}{\pi}\arctan\left(\tanh(x/2)\right)+\frac12\\
   w_\mathrm{tanh}(x) &=\frac12 + \frac12 \tanh(x)
 \end{align}
+\end{subequations}
 These transition function are here used to describe the rise and fall of the scattering length density profiles at interfaces.
 The scattering length density profile $\eta_{\mathrm{l},i}(x)$ of layer $i$ is then given by
 \begin{align} \label{eq:thinlayersprofile}

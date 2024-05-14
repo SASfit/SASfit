@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -22,7 +22,7 @@ scalar SQ_N_pc_random_flight(long NN, sasfit_param * param)
 		DD2 = D*D;
 		DELTA2 = DELTA*DELTA;
 		NN2 = N*N;
-		return NN - ((DD2 + 3*DELTA2)*(-1 + NN2)*Q*Q)/18. + 
+		return NN - ((DD2 + 3*DELTA2)*(-1 + NN2)*Q*Q)/18. +
 		  ((-1 + NN)*(1 + NN)*(-4*DD2*DD2 + 5*gsl_pow_2(DD2 + 3*DELTA2)*NN)*gsl_pow_4(Q))/2160.;
 	}
 

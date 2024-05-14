@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -13,13 +13,13 @@
 #define I0	param->p[3]
 #define Q	param->p[MAXPAR-1]
 
-scalar sroggc_core(scalar mu,sasfit_param * param) 
+scalar sroggc_core(scalar mu,sasfit_param * param)
 {
 	scalar RG_av;
 	sasfit_param subParam;
 	RG_av = sqrt(gsl_pow_2(RG_P*mu)+ gsl_pow_2(RG_E)*(1-mu*mu));
 	subParam.p[0] = RG_av;
-	subParam.p[1] = NU;		
+	subParam.p[1] = NU;
 	subParam.p[2] = I0;
 	return sasfit_ff_generalized_gaussian_coil(Q,&subParam);
 }

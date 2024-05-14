@@ -1,5 +1,5 @@
-\chapter{Absolute intensities, moments and volume fractions}
-\label{ch:absint}
+\chapter{Special topics}
+\label{ch:special}
 
 \section{Fitting absolute intensities}
 
@@ -449,3 +449,252 @@ Only a very limited number of form factor can be selected by this
 parameter. For other form factors the plugin needs to be extended or
 an routine calculating the volume for the specific form factor needs
 to be implemented.
+
+\section{How to use quantile distribution function in SAS}
+
+The quantile distribution and quantile density distribution are typically named $Q(y)$ and $q(y)$. To not mix them with the scattering vector the character for the scattering vector in this section will be $h$.
+\begin{figure}[htb]
+\begin{center}
+\begin{tikzpicture}[->,>=stealth,shorten >=5pt,auto,node distance=1cm,
+  thick,main node/.style={circle,fill=blue!20,draw,
+  font=\sffamily\large\bfseries,minimum size=45mm}]
+
+  \node[main node] (px) at (0,0) {$p(x)=\left(Q(y);\frac{1}{q(y)}\right)$};
+  \node[main node] (Fx) at (0,-9.5) {$F(x)=\left(Q(y);y\right)$};
+  \node[main node] (Qy) at (10,-9.5) {$Q(y)=\left(F(x);x\right)$};
+  \node[main node] (qy) at (10,0) {$q(y)=\left(F(x);\frac{1}{p(x)}\right)$};
+   \pgfsetarrowsend{latex}
+  \pgfsetlinewidth{0.5ex}
+  \path[every node/.style={font=\sffamily\large,
+  		fill=white,inner sep=1pt}]
+  	% Right-hand-side arrows rendered from top to bottom to
+  	% achieve proper rendering of labels over arrows.
+
+    (px) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ F(x)=\displaystyle \int_{x'\leq x} f(x')\, \mathrm{d}x'$} (Fx)
+         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ q(y)=\displaystyle \frac{1}{p(x)}=\displaystyle \frac{1}{p(Q(y))}$} (qy)
+
+    (Fx) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ p(x) = \displaystyle\frac{\mathrm{d}F(x)}{\mathrm{d}x}$} (px)
+         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ F^{-1}(x)=Q(y)=x$} (Qy)
+
+    (Qy) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ Q^{-1}(y)=F(x)=y$} (Fx)
+         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ \displaystyle\frac{\mathrm{d}Q(y)}{\mathrm{d}y}=q(y)$} (qy)
+
+    (qy) edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,above] { $ p(x)=\displaystyle\frac{1}{q(y)}=\displaystyle\frac{1}{q(F(x))}$} (px)
+         edge [bend right=10] node[outer sep=6pt,pos=0.5,sloped,below] { $ Q(y)=\displaystyle \int_{0}^y q(y')\, \mathrm{d}y'$} (Qy);
+\end{tikzpicture}
+\end{center}
+\caption{Transformation cycle between $p(x)$, $F(x)$, $Q(y)$ and $q(Y)$.}\label{fig:pFQqcycle}
+\end{figure}
+
+In this chapter we discuss briefly how the concept of quantile distribution function can be used in small angle scattering. The quantile function $Q(p)$ is used in statistics and is directly related to the probability $p(x)$ and cumulative distribution $F(x)$. The probability distribution function is a non-negative Lebesgue-integrable function and its integral over its entire domain $\mathfrak{D}$ is 1.
+\begin{align}\label{eq:pdf}
+  p(x) & \geq 0 \quad \forall x \in \mathfrak{D} \\
+  \int_{\mathfrak{D}} p(x) \, \mathrm{d}x &= 1
+\end{align}
+where the domain $\mathfrak{D}$ can be all real number or a half bounded or a two side bounded interval.
+The cumulative distribution function is defined as the integral below $p(x)$ until the value $x$, i.e.
+\begin{align}\label{eq:cdf}
+  F(x) & = y =\int_{x'\leq x} p(x')\, \mathrm{d}x' \quad \forall x \in \mathfrak{D}
+\end{align}
+The cumulative distribution function is strictly monotonic and in many practical cases relevant for small angle scattering also continuous as the practical relevant probability function do not have poles. The quantile distribution function is now simply the inverse of the cumulative distribution function, i.e.
+\begin{align}\label{eq:qdf}
+  Q(y) &= F^{-1}(y) = x
+\end{align}
+and is as well strictly monotonic. Its derivation, the quantile density distribution function, is related to the probability distribution by
+\begin{align}\label{eq:qddf}
+  q(y) & = \frac{\mathrm{d}x}{\mathrm{d}y} = \frac{\mathrm{d}Q(y)}{\mathrm{d}y} \\
+  p(x) &= \frac{1}{q(y)} = \frac{1}{q\left(F(x)\right)}
+\end{align}
+
+\subsection{use of quantile distribution function to describe size distributions} ~\\
+
+A standard task in the modelling of small angle scattering data is to smear the scattering model due to a size distribution.
+If $A(h;\B{a}_i,x))$ is the scattering amplitude of a model, $\B{a}_i$ its parameters and $x$ the parameter with a distribution the typical size averages to perform are
+\begin{align}\label{eq:avgSAS}
+  \left\langle A(h;\B{a}_i,x)\right\rangle & = N \int_0^\infty p(x) A(h;\B{a}_i,x))\, \mathrm{d}x \\
+  \left\langle A^2(h;\B{a}_i,x)\right\rangle & = N \int_0^\infty p(x) A^2(h;\B{a}_i,x))\, \mathrm{d}x  \label{eq:polydispersity}
+\end{align}
+$N$ is the overall scaling factor and describes for standards form factor the overall number density of particles. At the moment \SASfit is actually performing the integration over the probability distribution function. Initial test have shown an issues for cases with a very narrow size distribution. Numerical integrals over the semi-infinite interval $(a,\infty)$ can be mapped onto the semi-open interval $(0,1]$ using the transformation $x = a + (1-t)/t$,so that
+\begin{align}
+\int_{a}^{\infty}  f(x) \, \mathrm{d}x= \int_0^1  f(a + (1-t)/t)/t^2 \, \mathrm{d}x
+\end{align}
+which than can be solved efficiently with adaptive quadrature algorithms. However, if the probability distribution is very narrow the algorithms might miss the range for which the probability distribution $p(x)$ is significantly larger than 0.
+On the other side the chose a meaningful integration range requires both a knowledge about the behaviour of the chosen probability function as well as of the form factor itself. The scattering intensity of spherical objects scales with their squared volume, i.e. with $R^6$ in case of solid spheres with radius $R$, or with $R^4$ for thin hollow spheres or even $L^2$ for long cylinders of length $L$. \SASfit has internally a routine, which calculates the mode of $p(x)x^6$, i.e. the most probable size $x_{m_6}$ in the intensity distribution $D_I(x)=x^6 p(x)$ and then calculates those size values $[a;b]$ below and above $x_{x_6}$, where the intensity distribution drops below $10^{-6}$.
+\begin{align}\label{eq:findintegrationrange}
+x_{m_6} &= \underset{x\in \mathbb{R}^+}{\arg\max} \left(x^6p(x)\right)=\left\{x\in\mathbb{R}^+: s^6 p(s) \leq x^6 p(x) \mbox{ for all } s\in \mathbb{R}^+\right\} \\
+  a &= \max\left\{\inf\left\{x\in \mathbb{R}^+:x_{m_6}^6 p(x_{m_6})10^{-6}=x^6 p(x) \wedge x<x_{m_6}\right\};0\right\}\\
+  b &= \sup\left\{x\in \mathbb{R}^+:x_{m_6}^6 p(x_{m_6})10^{-6}=x^6 p(x)\right\}
+\end{align}
+As the scattering intensities of objects scale with up to the sixth power of its length $A^2(q;\B{a}_i,x) \propto x^6$ all distribution functions $p(x)$ needs to decay faster than the $7^\mathrm{th}$ power otherwise the integral in \ref{eq:polydispersity} becomes improper and diverges. Alternatively the size distribution needs to be artificially clipped by an upper bound.
+
+A work-around to avoid the calculation of the lower and upper integration bound would be the use of quantile distribution function, if they are known analytically for the used probability distribution function. Using quantile distribution functions the integral can be rewritten as
+\begin{align}\label{eq:SDwQDF}
+  N \int_0^\infty p(x) A^n(h;\B{a}_i,x)\, \mathrm{d}x & = N \int_0^\infty p(Q(y)) A^n(h;\B{a}_i,Q(y)) \, \mathrm{d}x \\
+   & = N \int_0^1 A^n(h;\B{a}_i,Q(y)) \, \mathrm{d}y
+\end{align}
+by a change of variables using $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q(y)/\mathrm{d}y=1/q(y)$ and $F(x)=y$. $n=[1,2]$ depending if the average scattering amplitude $(n=1)$ or the average scattering intensity $(n=2)$ needs to be calculated. The change of variable like above has the additional side effect that now the integration over semi-infinite interval for the size distribution becomes an integral with finite limits over the cumulative  distribution $y$ from  0  to  1. Furthermore, by doing this transformation the quadrature behaves numerically well for both very sharp and very broad distributions for all distribution functions decaying fast enough so that the integral in eq.\ \ref{eq:SDwQDF} stays finite. In \SASfit only those size distribution are supplied, which fulfill this condition for any form factor. The reason, that for some distribution functions  the integral diverges is, that the form factor scale typically with the squared volume of the particle, i.e. with up to the 6-th power of its size parameter. Therefore, already in the past it was suggested to use instead of the number density distribution $p(x)$ the volume $D_v(x)=p(x)x^3$ or intensity distribution $D_v(x)=p(x)x^6$ \cite{Glatter1980}. The third and sixth power have been chosen due to the assumption, that the volume scales with the third power of its size parameter which, however, would need an adjustment in case of objects with different scaling behaviour.
+Applying this strategy using quantile distribution functions would in combination of a distribution proportional to $p_\alpha(x) = c_\alpha x^\alpha p(x)$ then reads as
+\begin{align}\label{eq:intensity_alpha_quantile}
+N  \int_0^\infty p(x) A^n(h;\B{a}_i,x)\, \mathrm{d}x & = N \int_0^\infty \underbrace{p(x) x^\alpha}_{=p_\alpha(x)/c_\alpha} x^{-\alpha} A^n(h;\B{a}_i,x)\, \mathrm{d}x & = \\
+   &= \frac{N}{c_\alpha}\int_0^\infty p_\alpha(Q_\alpha(y)) Q^{-\alpha}_\alpha(y) A^n(h;\B{a}_i,Q_\alpha(y))\, \mathrm{d}x\\
+   &= \frac{N}{c_\alpha} \int_0^1 Q^{-\alpha}_\alpha(y) A^n(h;\B{a}_i,Q_\alpha(y))\, \mathrm{d}y
+\end{align}
+with  $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q_\alpha(y)/\mathrm{d}y=q_\alpha$, $1/q_\alpha(y)=p_\alpha(Q_\alpha(y))$, and $x=Q_\alpha(y)$. $c_\alpha$ is needed so that $p_\alpha(x)$ is again a probability distribution function is normalized to 1, but on the other side the overall scaling factor $N$ stays the same. For this one needs to define $c_\alpha$ as
+\begin{align}
+                   & p_\alpha(x) = c_\alpha x^\alpha p(x) \\
+\Rightarrow \qquad & \int_0^\infty p_\alpha(x) x^{-\alpha}\, \mathrm{d}x = c_\alpha \int_0^\infty p(x)\, \mathrm{d}x \\
+\Leftrightarrow \qquad & c_\alpha = \int_0^1 Q_\alpha^{-\alpha}(y) \, \mathrm{d}y
+\end{align}
+
+
+\subsection{highly flexible quantile distribution function used as scattering length distribution profiles} ~\\
+
+In \ref{sec:PEGylatedVesicle} sigmoidal functions have been used to generate a smoothed interface between phase boundaries, in that case between water, head groups of lipids and tail groups of lipids. For that specific case the Laplace cumulative distribution function has been used. Actually new more flexible distribution functions are developed in terms of quantile distribution functions. Both presentation can be used to introduce smooth profiles as will be shown below.
+
+As described in \ref{sec:very_anisotropic_particles} the scattering intensity for very thin random orientated particles the form factor can be factorize according to Porod \cite{Porod1948} in a cross section term $P_\text{cs}(h)$ for the shorter or thin dimension and a shape factor $P'(h)$ for the long dimension.
+\begin{align}
+\label{eq:PprimePcs}
+I(h) &=P'(h) P_{cs}(h).
+\end{align}
+The cross-section form factors can be easily calculated if the
+scattering length density contrast profile
+$\Delta\eta_\textrm{cs}(x)$ is known. For structures with a local
+planar geometry and a symmetric cross-section the form factor is
+given by
+\begin{align}
+P_\textrm{cs}^\textrm{1D} (h) = \abs{2\int_0^\infty
+\Delta\eta_\textrm{cs}(x) \cos(hx) \, \textrm{d}x}^2
+\label{Pcs:1D}
+\end{align}
+In case of local cylindrical particles with a centro-symmetric
+scattering length density distribution the form factor is given by
+\begin{align}
+P_\textrm{cs}^\textrm{2D} (Q) = \abs{2\pi\int_0^\infty
+\Delta\eta_\textrm{cs}(x) \textrm{J}_0(hx)x \,
+\textrm{d}x}^2 \label{Pcs:2D}
+\end{align}
+The form factor of spherical symmetric objects the scattering intensity reads as
+\begin{align}
+  P_\textrm{cs}^\mathrm{3D}(h) & = \abs{ \int_0^\infty \Delta\eta_\textrm{cs}(x)4\pi x^2 \frac{\sin (hx)}{hx}\,\mathrm{d}x }^2
+\label{Pcs:3D}
+\end{align}
+We assume now, that the scattering length density distribution of a typically multi-shell model with boundary between phase $i$ and $i+1$ at position $x_i$ is smoothed by a falling transition function from 1 to 0 in phase $i$ and a raising transition function in phase $i+1$ from 0 to 1 multiplied by the corresponding scattering  length density differences to the solvent, i.e.
+\begin{align}\label{eq:smoothedDetaCS}
+  \Delta\eta_\textrm{cs}(x) &= \sum_i \Delta\eta_i (1-F_i(x,\mu_i)) + \Delta\eta_{i+1} F_i(x,\mu_i)
+\end{align}
+where $\mu_i$ are the position of the $i^\mathrm{th}$ phase boundary as well as the mean values of the cumulative distribution functions $F_i(x=\mu_i,\mu_i)=\frac12$. By choosing the same cumulative distribution function $(1-F_i)$ for the falling phase $i$ and $F_i$ for the neighbouring raising phase $i+1$ the sum of both stays equal 1 everywhere, so that it could be interpreted as a local volume fraction of the corresponding phases. We then obtain for the scattering intensities of the 1D, 2D and 3D profiles
+\begin{align}
+  P_\textrm{cs}^\mathrm{1D}(h) & = \abs{\sum_i  \int_0^\infty \left[\Delta\eta_i\left(1-F_i(x,\mu_i)\right) +\Delta\eta_{i+1} F_i(x,\mu_i)\right] 2\cos (hx)\,\mathrm{d}x }^2 \\
+  P_\textrm{cs}^\mathrm{2D}(h) & = \abs{\sum_i  \int_0^\infty \left[\Delta\eta_i\left(1-F_i(x,\mu_i)\right) +\Delta\eta_{i+1} F_i(x,\mu_i)\right] 2\pi x \textrm{J}_0(hx)\,\mathrm{d}x }^2 \\
+  P_\textrm{cs}^\mathrm{3D}(h) & = \abs{\sum_i  \int_0^\infty \left[\Delta\eta_i\left(1-F_i(x,\mu_i)\right) +\Delta\eta_{i+1} F_i(x,\mu_i)\right] 4\pi x^2\frac{\sin hx}{hx}\,\mathrm{d}x }^2
+\end{align}
+In those case where not the cumulative distribution is known analytically but the quantile distribution function the integrals can be rewritten by variable transformation using $x=Q_i(y_i)$ and $\mathrm{d}x/\mathrm{d}y_i=\mathrm{d}Q(y_i)/\mathrm{d}y_i=q(y_i)$ and result in
+\begin{align}
+  P_\textrm{cs}^\mathrm{1D}(h) & = \abs{\sum_i  \int_0^1 \left[\Delta\eta_i\left(1-y_i\right) +\Delta\eta_{i+1} y_i\right] 2\cos (hQ_i(y_i))q_i(y_i)\,\mathrm{d}y_i }^2 \\
+  P_\textrm{cs}^\mathrm{2D}(h) & = \abs{\sum_i  \int_0^1 \left[\Delta\eta_i\left(1-y_i\right) +\Delta\eta_{i+1} y_i\right] 2\pi Q_i(y_i) \textrm{J}_0(hQ_i(y_i))q_i(y_i)\,\mathrm{d}y_i }^2 \\
+  P_\textrm{cs}^\mathrm{3D}(h) & = \abs{\sum_i  \int_0^1 \left[\Delta\eta_i\left(1-y_i\right) +\Delta\eta_{i+1} y_i\right] 4\pi Q_i^2(y_i)\frac{\sin hQ_i(y_i)}{hQ_i(y_i)}q_i(y_i)\,\mathrm{d}y_i }^2
+\end{align}
+where $\mu_i=Q_i\left(\frac12\right)$.
+
+
+\subsection{List of some selected quantile distribution function to describe size distributions} ~\\
+
+Quantile distribution functions of a few standard distributions used in small angle scattering analysis belonging to a probability distribution decaying fast enough to serve as a number distribution function are listed in the following:
+\begin{itemize}
+\item[Normal]
+\begin{align}
+p_\mathrm{normal}(x) &= {\frac {1}{\sigma {\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({\frac {x-\mu }{\sigma }}\right)^{2}} \\
+F_\mathrm{normal}(x) &= \Phi \left({\frac {x-\mu }{\sigma }}\right)={\frac {1}{2}}\left[1+\operatorname {erf} \left({\frac {x-\mu }{\sigma {\sqrt {2}}}}\right)\right]\\
+Q_\mathrm{normal}(y) &=   \mu +\sigma {\sqrt {2}}\operatorname {erf} ^{-1}(2y-1)
+\end{align}
+\item[lognormal]
+\begin{align}
+p_\mathrm{lognormal}(x) &= {\frac {1}{\ x\sigma {\sqrt {2\pi \ }}\ }}\ \exp \left(-{\frac {\left(\ln x-\mu \ \right)^{2}}{2\sigma ^{2}}}\right) \\
+F_\mathrm{lognormal}(x) &=  {\frac {\ 1\ }{2}}\left[1+\operatorname {erf} \left({\frac {\ \ln x-\mu \ }{\sigma {\sqrt {2\ }}}}\right)\right]=\Phi \left({\frac {\ln(x)-\mu }{\sigma }}\right)\\
+Q_\mathrm{lognormal}(y) &=  \exp \left(\mu +{\sqrt {2\sigma ^{2}}}\operatorname {erf} ^{-1}(2y-1)\right)\
+\end{align}
+\item[Weibull]
+\begin{align}
+p_\mathrm{Weibull}(x)&={\begin{cases}{\frac {k}{\lambda }}\left({\frac {x}{\lambda }}\right)^{k-1}e^{-(x/\lambda )^{k}},&x\geq 0,\\0,&x<0.\end{cases}} \\
+F_\mathrm{Weibull}(x)&={\begin{cases}1-e^{-(x/\lambda )^{k}},&x\geq 0,\\0,&x<0.\end{cases}} \\
+Q_\mathrm{Weibull}(y)&=\lambda (-\ln(1-y))^{\frac {1}{k}}
+\end{align}
+\item[Gamma]
+\begin{align}
+p_\mathrm{Gamma}(x)&={\frac {1}{\Gamma (k)\theta ^{k}}}x^{k-1}e^{-x/\theta } \\
+F_\mathrm{Gamma}(x)&={\frac {1}{\Gamma (k)}}\gamma \left(k,{\frac {x}{\theta }}\right) \\
+Q_\mathrm{Gamma}(y) &= \gamma^{-1}\left(k,y\Gamma(k)\right)\theta
+\end{align}
+where
+$\gamma^{-1}(s,y)$ is the inverse of the lower incomplete gamma function
+$\gamma(s,x)$
+\item[beta]
+\begin{align}
+p_\mathrm{beta}(x) &=\frac {x^{\alpha -1}(1-x)^{\beta -1}}{\mathrm {B} (\alpha ,\beta )}
+\end{align}
+where $\mathrm {B} (\alpha ,\beta )={\frac {\Gamma (\alpha )\Gamma (\beta )}{\Gamma (\alpha +\beta )}}$ and
+$\Gamma$ is the Gamma function.
+\begin{align}
+F_\mathrm{beta}(x) &=I_{x}(\alpha ,\beta )
+\end{align}
+where $I_{x}(\alpha ,\beta )$ is the regularized incomplete beta function. The beta distribution is bounded for values $x\in [0;1]$.
+\begin{align}
+Q_\mathrm{beta}(y) &= I^{-1}_{y}(\alpha ,\beta )
+\end{align}
+\item[uniform]
+\item[triangular]
+\end{itemize}
+
+\subsection{MetaLog distribution} ~\\
+
+A distribution function designed to be very flexible is the metalog distribution.
+The quantile function of the metalog distribution $Q(y)=M_{k}(y)$ is defined as \cite{Keelin2011,Keelin2016,Keelin2019}
+\begin{align}
+%\scriptsize
+ M_{k}(y) &=
+ \left\{{\begin{array}{ll}
+    a_{1}+a_{2}\ln {y \over {1-y}},&  k=2\\
+    a_{1}+a_{2}\ln {y \over {1-y}} +a_{3}(y-\frac12)\ln {y \over {1-y}},& k=3 \\
+    a_{1}+a_{2}\ln {y \over {1-y}} +a_{3}(y-\frac12)\ln {y \over {1-y}}+a_{4}(y-\frac12),& k=4 \\
+    M_{k-1}(y)+a_{k}(y-\frac12)^{k-1 \over 2},&{\mbox{odd}}\wedge k\geq 5 \\
+    M_{k-1}(y)+a_{k}(y-\frac12)^{{k \over 2}-1}\ln {y \over {1-y}}, &{\mbox{even}}\wedge k\geq 6 \\
+ \end{array}}\right. \label{eq:Mk}
+\end{align}
+and its PDF $p(x)=m_k(y)$ with $x=M_{k}(y)$ reads as
+\begin{align}
+\label{eq:mk}
+ m_{k}(y) &=
+\left\{
+  \begin{array}{ll}
+    {y(1-y) \over {a_{2}}}, & k=2 \\
+    \left({a_{2} \over {y(1-y)}}+a_{3}\left({y-\frac12 \over {y(1-y)}}+\ln {y \over {1-y}}\right)\right)^{-1}, & k=3\\
+    \left({a_{2} \over {y(1-y)}}+a_{3}\left({y-\frac12 \over {y(1-y)}}+\ln {y \over {1-y}}\right)+a_{4}\right)^{-1}, &k=4\\
+    \left({1 \over {m_{k-1}(y)}}+a_{k}{\frac{k-1}{2}}(y-\frac12)^{(k-3)/2}\right)^{-1}, & \mbox{odd} \wedge  k\geq 5\\
+    \left({1 \over {m_{k-1}(y)}}+a_{k}\left({(y-\frac12)^{\frac{k}{2}-1} \over {y(1-y)}}+({k \over 2}-1)(y-\frac12)^{(\frac{k}{2}-2)}\ln {y \over {1-y}}\right)\right)^{-1}, &\mbox{even} \wedge  k\geq 6\\
+ \end{array}
+\right.
+\end{align}
+The metalog PDF as defined above is an unbounded distribution. In case of describing a size distribution it needs to be bounded (Logit metalog) or at least semi-bounded (bounded below, Log metalog). This can be easily done by a transformation of $z(x) = \ln \left(x-b_l\right)$ for a distribution with a lower bound $b_l$ or $z(x)=\ln\left(\frac{x-b_l}{b_u-x}\right)$ with a lower bound $b_l$ and an upper bound $b_u$, where $z$ is then metalog-distributed.
+The corresponding quantile functions and PDF read as
+\begin{eqnarray}
+   M_k^{\log}(y) &=&  \left\{{\begin{array}{ll}
+    b_l+e^{M_k(y)}, & 0<y<1 \\
+    b_l, & y=0\\
+    \end{array}}\right. \label{eq:MkLog}\\
+   m_k^{\log}(y) &=&  \left\{{\begin{array}{ll}
+    m_k(y)e^{-M_k(y)}, & 0<y<1 \\
+    0, & y=0\\
+    \end{array}}\right. \label{eq:mkLog}\\
+   M_k^{\mathrm{logit}}(y) &=&  \left\{{\begin{array}{ll}
+    \frac{b_l+b_ue^{M_k(y)}}{1+e^{M_k(y)}}, & 0<y<1 \\
+    b_l, & y=0\\
+    b_u, & y=1\\
+    \end{array}}\right. \label{eq:MkLogit}\\
+   m_k^{\mathrm{logit}}(y) &=&  \left\{{\begin{array}{ll}
+    m_k(y)\frac{\left(1+e^{M_k(y)}\right)^2}{(b_u-b_l)e^{M_k(y)}}, & 0<y<1 \\
+    0, & y=0\\
+    0, & y=1\\
+    \end{array}}\right. \label{eq:mkLogit}
+ \end{eqnarray}
+
+\subsection{use of quantile distribution function to describe scattering length density profiles} 

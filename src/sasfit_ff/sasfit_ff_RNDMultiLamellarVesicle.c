@@ -27,6 +27,7 @@
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_randist.h>
+#include <gsl/gsl_specfunc.h>
 #include "include/sasfit_ff_utils.h"
 
 #define NRND 20

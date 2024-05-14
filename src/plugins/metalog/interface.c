@@ -7,9 +7,10 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(6)
+SASFIT_PLUGIN_EXP_BEGIN(7)
 SASFIT_PLUGIN_EXP_ADD( ff_metalog_sphere )
 SASFIT_PLUGIN_EXP_ADD( ff_metaloglog_sphere )
+SASFIT_PLUGIN_EXP_ADD( ff_metaloglog_profile_sphere )
 SASFIT_PLUGIN_EXP_ADD( ff_metaloglogit_sphere )
 SASFIT_PLUGIN_EXP_ADD( sd_metalog_clipped )
 SASFIT_PLUGIN_EXP_ADD( sd_metalog_log_clipped )

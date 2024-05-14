@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -28,7 +28,7 @@ scalar sasfit_ff_def_g_dab(scalar q, sasfit_param * param)
 
 	// insert your code here
 	if (EPSILON==1) return sasfit_ff_g_dab(q,param);
-	Q=q; 
+	Q=q;
 	return sasfit_integrate(0,M_PI_2,def_g_dab,param);
 }
 

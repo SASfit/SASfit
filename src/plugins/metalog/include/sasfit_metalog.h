@@ -505,6 +505,84 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_f(scalar q, sasfit_param * 
 sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_metalog_logit ################ */
 
+/* ################ start ff_metaloglog_profile_sphere ################ */
+/**
+ * \defgroup ff_metaloglog_profile_sphere metalogLog profile4Sphere
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of metalogLog profile for Sphere function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metaloglog_profile_sphere
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_profile_sphere(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metaloglog_profile_sphere
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_profile_sphere_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metaloglog_profile_sphere
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_profile_sphere_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metaloglog_profile_sphere ################ */
+
 
 #endif // this file
 

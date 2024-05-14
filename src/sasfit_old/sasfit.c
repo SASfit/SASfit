@@ -79,7 +79,7 @@
 //#include <omp.h>
 
 #define NRES 30
-#define n_percent 0.1
+#define n_percent 0.0001
 #define Nint 1001
 
 

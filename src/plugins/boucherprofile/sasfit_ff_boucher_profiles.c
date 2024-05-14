@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -17,7 +17,7 @@ scalar sasfit_ff_boucher_profiles(scalar r, sasfit_param * param)
 
 	// insert your code here
 	if (fabs(r)>fabs(R)) {
-        return 0; 
+        return 0;
     } else {
         return DELTA_ETA*pow((1-gsl_pow_2(r/R)),ALPHA/2.-2);
     }

@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #include "include/private.h"
@@ -26,12 +26,12 @@ scalar sasfit_ff_boucher_sphere(scalar q, sasfit_param * param)
 scalar sasfit_ff_boucher_sphere_f(scalar q, sasfit_param * param)
 {
     scalar beta;
-    
+
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
  //   beta = DELTA_ETA*gsl_pow_3(R)*sqrt(M_PI)*M_PI*exp(gsl_sf_lngamma(ALPHA/2.-1)-gsl_sf_lngamma(ALPHA/2.+0.5));
-    
+
     beta = DELTA_ETA*gsl_pow_3(R*sqrt(M_PI))*gsl_sf_gamma(ALPHA/2.-1)/gsl_sf_gamma(ALPHA/2.+0.5);
     if (q*R == 0) return beta;
 	return beta*gsl_sf_hyperg_0F1(0.5*(ALPHA+1),-gsl_pow_2(q*R/2.));
