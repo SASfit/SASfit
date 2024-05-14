@@ -16,7 +16,9 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_metalog_sphere.c
 	sasfit_ff_metaloglog_sphere.c
 	sasfit_ff_metaloglogit_sphere.c
-	sasfit_ff_metaloglog_profile_sphere.c
+	sasfit_ff_metalog_log_profile_sphere.c
+	sasfit_ff_metalog_logit_profile_sphere.c
+	sasfit_ff_metalog_clipped_profile_sphere.c
 	metalog_utils.c
 	interface.c
 )
