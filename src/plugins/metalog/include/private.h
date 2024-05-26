@@ -76,9 +76,21 @@ scalar mNLog(int , scalar , scalar *, size_t , sasfit_param *);
 scalar mLogit(int , scalar , scalar *, size_t , sasfit_param *);
 
 void assign_metalog_par(scalar, metalog_param *, sasfit_param *);
-scalar find_root_brent_metalog(gsl_function *);
-scalar ylin (scalar, void *);
-scalar dylin (scalar, void *);
+scalar find_root_f_metalog(gsl_function *);
+scalar find_root_f_metalog_Log(gsl_function *);
+scalar find_root_f_metalog_Logit(gsl_function *);
+scalar find_root_fdf_metalog(gsl_function_fdf *);
+scalar find_root_fdf_metalog_Log(gsl_function_fdf *);
+scalar find_root_fdf_metalog_Logit(gsl_function_fdf *);
 double root_metalog_f (double, void *);
+double root_metalog_Log_f (double, void *);
+double root_metalog_Logit_f (double, void *);
+double root_metalog_df (double, void *);
+double root_metalog_Log_df (double, void *);
+double root_metalog_Logit_df (double, void *);
+void root_metalog_fdf (double, void *, double *, double *);
+void root_metalog_Log_fdf (double, void *, double *, double *);
+void root_metalog_Logit_fdf (double, void *, double *, double *);
+
 #endif // end of file
 

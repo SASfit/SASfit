@@ -36,7 +36,7 @@
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_deformed_random_oriented_generalized_gaussian_coil.h"
+#include "sasfit_def_rnd_oriented_gGc.h"
 
 //
 // add local defines here:

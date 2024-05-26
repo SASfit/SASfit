@@ -8,7 +8,7 @@
 
 // functions to mark for export
 SASFIT_PLUGIN_EXP_BEGIN(1)
-SASFIT_PLUGIN_EXP_ADD( ff_stretched_random_oriented_generalized_gaussian_coil )
+SASFIT_PLUGIN_EXP_ADD( ff_def_rnd_oriented_gGc )
 
 SASFIT_PLUGIN_EXP_END
 

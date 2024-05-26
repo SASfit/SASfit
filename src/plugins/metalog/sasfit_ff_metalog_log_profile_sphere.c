@@ -35,13 +35,11 @@ scalar sasfit_ff_metalog_log_profile_sphere_f(scalar q, sasfit_param * param)
 	Q = q;
 	param->p[1]=0;
 
-    mp.ytrans=&ylin;
-	mp.dytrans=&dylin;
-    F.function = &root_metalog_f;
+    F.function = &root_metalog_Log_f;
     F.params=param;
     param->moreparam=&mp;
     assign_metalog_par(BU, &mp,param);
-	yend = find_root_brent_metalog(&F);
+	yend = find_root_f_metalog(&F);
 
 	return sasfit_integrate(0,yend,&metalog_log_profile_sphere,param);
 }

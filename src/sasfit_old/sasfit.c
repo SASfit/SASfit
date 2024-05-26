@@ -733,6 +733,22 @@ void find_integration_range(Tcl_Interp *interp,
                 *Rend   = R_n+tmp;
                 if ((R_n+tmp) < R_max)  *Rstart=(R_max-(R_n+tmp));
                 *n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_p_guwelop")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = 2*func_descr->func_v(1-sasfit_eps_get_nriq(), &subParam,0);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_egu_w_l")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = 2*func_descr->func_v(1-sasfit_eps_get_nriq(), &subParam,0);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_w_l_e_")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = 2*func_descr->func_v(1-sasfit_eps_get_nriq(), &subParam,0);
+				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_n_l_c_")      == 0) ) {
+				*Rstart = 0;
+				*Rend   = 2*func_descr->func_v(1-sasfit_eps_get_nriq(), &subParam,0);
+				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_skew_normal")      == 0) ) {
 				*Rstart = 0;
 				if (a4<0) {

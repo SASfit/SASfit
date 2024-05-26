@@ -7,7 +7,7 @@
 #include <sasfit_error_sd.h>
 #include <gsl/gsl_roots.h>
 
-#define MAXROOTITER 500
+#define MAXROOTITER 5000
 
 
 scalar ylin (scalar y, void *pam) {
@@ -269,8 +269,8 @@ root_metalog_Log_df (double y, void *rootp)
 }
 
 void
-root_metalog_Log_fdf (double y, void *rootp,
-               double *F, double *dF)
+root_metalog_Log_fdf (double y,  void *rootp,
+                      double *F, double *dF  )
 {
   sasfit_param * param;
   metalog_param *mpara;
@@ -279,7 +279,7 @@ root_metalog_Log_fdf (double y, void *rootp,
   mpara = (metalog_param *) param->moreparam;
   yt = (mpara->ytrans)(y,param);
 
-  *F = MLog(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
+  *F  =   MLog(mpara->n,yt,mpara->a,mpara->n,param)-mpara->x;
   *dF =  (mpara->dytrans)(y,param)/mLog(mpara->n,yt,mpara->a,mpara->n,param);
 }
 
@@ -343,22 +343,28 @@ void assign_metalog_par(scalar x, metalog_param *mp, sasfit_param *param)
     mp->bu=BU;
 }
 
-scalar find_root_steffenson_metalog(gsl_function_fdf *FDF) {
+scalar find_root_fdf_metalog(gsl_function_fdf *FDF) {
     const gsl_root_fdfsolver_type *T;
     gsl_root_fdfsolver *s;
     int status;
     size_t i, iter;
-    scalar yroot, y0, y_lo, y_hi;
+    scalar y0, y_lo, y_hi;
+    static scalar yroot=0.5;
     sasfit_param * param;
     metalog_param *mpara;
     param = (sasfit_param *) FDF->params;
     mpara = (metalog_param *) param->moreparam;
+    mpara->ytrans=&yatan;
+	mpara->dytrans=&dyatan;
+	yroot = gsl_max(yroot,1e-2);
+	yroot = gsl_min(yroot,1-1e-2);
     gsl_set_error_handler_off ();
-    T = gsl_root_fdfsolver_steffenson;
-    T = gsl_root_fdfsolver_newton;
-    T = gsl_root_fdfsolver_secant;
+    switch (sasfit_eps_get_robertus_p()) {
+        case 4:     T = gsl_root_fdfsolver_secant;break;
+        case 5:     T = gsl_root_fdfsolver_newton;break;
+        default:    T = gsl_root_fdfsolver_steffenson;
+    }
     s = gsl_root_fdfsolver_alloc (T);
-    yroot=0.0;
     gsl_root_fdfsolver_set (s, FDF, yroot);
     iter=0;
     do
@@ -372,33 +378,35 @@ scalar find_root_steffenson_metalog(gsl_function_fdf *FDF) {
     }
     while (status == GSL_CONTINUE && iter < MAXROOTITER);
     if (iter >= MAXROOTITER) {
-        sasfit_out(".");
+        sasfit_err("could not find root within MAXROOTITER=%d iterations\n",MAXROOTITER);
     }
     gsl_root_fdfsolver_free (s);
     return (mpara->ytrans)(yroot,param);
 }
 
-scalar find_root_brent_metalog(gsl_function *F) {
+scalar find_root_f_metalog(gsl_function *F) {
     const gsl_root_fsolver_type *T;
     gsl_root_fsolver *s;
     int status;
     size_t i, iter;
     scalar y0, y_lo, y_hi;
     static scalar yroot=0.5;
+	yroot = gsl_max(yroot,1e-2);
+	yroot = gsl_min(yroot,1-1e-2);
     gsl_set_error_handler_off ();
-    T = gsl_root_fsolver_brent;
-    s = gsl_root_fsolver_alloc (T);
-    gsl_root_fsolver_set (s, F, 2*DBL_EPSILON, 1-2*DBL_EPSILON);
-    /*
-    if (fabs((F->function)(yroot,F->params
-                           ))<sasfit_eps_get_aniso()) {
-        return yroot;
-    } else if ((F->function)(yroot*0.99,F->params)*(F->function)(yroot*1.01,F->params)<0) {
-        gsl_root_fsolver_set (s, F, yroot*0.99, yroot*1.01);
-    } else {
-        gsl_root_fsolver_set (s, F, 1e-10, 1-1e-10);
+    sasfit_param * param;
+    metalog_param *mpara;
+    param = (sasfit_param *) F->params;
+    mpara = (metalog_param *) param->moreparam;
+    mpara->ytrans=&ylin;
+	mpara->dytrans=&dylin;
+    switch (sasfit_eps_get_robertus_p()) {
+        case 1:     T = gsl_root_fsolver_brent;break;
+        case 2:     T = gsl_root_fsolver_falsepos;break;
+        default:    T = gsl_root_fsolver_bisection;
     }
-    */
+    s = gsl_root_fsolver_alloc (T);
+    gsl_root_fsolver_set (s, F, 2*gsl_max(DBL_EPSILON,sasfit_eps_get_res()), 1-2*gsl_max(DBL_EPSILON,sasfit_eps_get_res()));
     iter = 0;
     do
     {
@@ -412,7 +420,7 @@ scalar find_root_brent_metalog(gsl_function *F) {
     }
     while (status == GSL_CONTINUE && iter < MAXROOTITER);
     if (iter >= MAXROOTITER) {
-        sasfit_out(".");
+        sasfit_err("could not find root within MAXROOTITER=%d iterations\n",MAXROOTITER);
     }
     gsl_root_fsolver_free (s);
     return yroot;
@@ -435,16 +443,11 @@ scalar metalogPDF(scalar x, sasfit_param *param) {
     FDF.df  = &root_metalog_df;
     FDF.fdf = &root_metalog_fdf;
     FDF.params=param;
-    how = sasfit_eps_get_robertus_p();
-    how=0;
-    if (how==0) {
-        mp.ytrans=&ylin;
-        mp.dytrans=&dylin;
-        y = find_root_brent_metalog(&F);
+
+    if (sasfit_eps_get_robertus_p()<=3) {
+        y = find_root_f_metalog(&F);
     } else {
-        mp.ytrans=&yatan;
-        mp.dytrans=&dyatan;
-        y = find_root_steffenson_metalog(&FDF);
+        y = find_root_fdf_metalog(&FDF);
     }
     return mk(mp.n,y,mp.a,mp.n,param);
 }
@@ -462,9 +465,7 @@ scalar metalogLogitPDF(scalar x, sasfit_param *param) {
 
     F.function = &root_metalog_Logit_f;
     F.params=param;
-    mp.ytrans=&ylin;
-    mp.dytrans=&dylin;
-    y = find_root_brent_metalog(&F);
+    y = find_root_f_metalog(&F);
     return mLogit(mp.n,y,mp.a,mp.n,param);
 }
 
@@ -472,15 +473,13 @@ scalar metalogLogPDF(scalar x, sasfit_param *param) {
     metalog_param mp;
     gsl_function F;
     scalar y;
-    mp.ytrans=&ylin;
-    mp.dytrans=&dylin;
     assign_metalog_par(x, &mp,param);
     param->moreparam=&mp;
 
     if (x<=BL || x>=BU) return 0;
     F.function = &root_metalog_Log_f;
     F.params=param;
-    y = find_root_brent_metalog(&F);
+    y = find_root_f_metalog(&F);
     return mLog(mp.n,y,mp.a,mp.n,param);
 }
 
@@ -488,14 +487,12 @@ scalar metalogNLogPDF(scalar x, sasfit_param *param) {
     metalog_param mp;
     gsl_function F;
     scalar y;
-    mp.ytrans=&ylin;
-    mp.dytrans=&dylin;
     assign_metalog_par(x, &mp,param);
     param->moreparam=&mp;
 
     if (x<=BL || x>=BU) return 0;
     F.function = &root_metalog_NLog_f;
     F.params=param;
-    y = find_root_brent_metalog(&F);
+    y = find_root_f_metalog(&F);
     return mNLog(mp.n,y,mp.a,mp.n,param);
 }

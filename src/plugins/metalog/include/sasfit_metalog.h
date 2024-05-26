@@ -742,5 +742,243 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere_v(scalar q, sa
 /* ################ stop ff_metalog_log_profile_sphere ################ */
 
 
+/* ################ start ff_metalog_clipped_profile ################ */
+/**
+ * \defgroup ff_metalog_clipped_profile metalog_clipped profile
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of metalog_clipped profile function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_clipped_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_clipped_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_clipped_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_clipped_profile_sphere ################ */
+
+
+/* ################ start ff_metalog_logit_profile ################ */
+/**
+ * \defgroup ff_metalog_logit_profile metalog_logit profile
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of metalog_logit profile function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_logit_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_logit_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_logit_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_logit_profile ################ */
+
+
+/* ################ start ff_metalog_log_profile ################ */
+/**
+ * \defgroup ff_metalog_log_profile metalog_log profile
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of metalog_log profile function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_log_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_log_profile
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_log_profile_
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_log_profile ################ */
+
+
+
 #endif // this file
 

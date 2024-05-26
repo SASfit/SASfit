@@ -411,8 +411,8 @@ set ColorMap(LUTnames) [concat $rgb_filenames $gpf_filenames $NCAR_CT_filenames 
 
 set FitPrecision(epsNRIQ)         1e-10
 set FitPrecision(epsanisotropic)  1e-5
-set FitPrecision(epsresolution)   1e-3
-set FitPrecision(h)               1e-2
+set FitPrecision(epsresolution)   1e-5
+set FitPrecision(h)               1e-5
 set FitPrecision(JMAXNRIQ)        18
 set FitPrecision(JMAXanisotropic) 18
 set FitPrecision(JMAXresolution)  18

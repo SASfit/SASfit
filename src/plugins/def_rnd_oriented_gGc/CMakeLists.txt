@@ -1,7 +1,7 @@
 # cmake_minimum_required(VERSION 3.0)
 
 # the project name
-set(PRJ_NAME sasfit_deformed_random_oriented_generalized_gaussian_coil)
+set(PRJ_NAME sasfit_def_rnd_oriented_gGc)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
@@ -10,7 +10,7 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_stretched_random_oriented_generalized_gaussian_coil.c
+	sasfit_ff_def_rnd_oriented_gGc.c
 	interface.c
 )
 

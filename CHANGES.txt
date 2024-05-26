@@ -1,4 +1,6 @@
 ﻿0.94.13 2023-xx-xx
+- implemended form factor for a brached polymer with comb shape
+- added a scattering function describing blob scattering
 - implemented a form factor for fibres consisting of solid cylinders packed in a two-dimensional hexagonal paracrystalline order.
 - implemented an approximation of a long thin ribbon and a second one with an additional gamma distribution for two of its shorter edge lengths. An approximation assuming C>>B>>A for the edge length is assumed
 - implemented form factors of two more oriented primitive objects, one of a rhombic dodecahedron and a second one of an octahedron together with their radom oriented variant. 
