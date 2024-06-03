@@ -16,7 +16,7 @@ scalar sasfit_ff_metalog_clipped_profile(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	if (x>=BU) return 0;
-
+    return N*(1-sasfit_sd_metalog_clipped_v(x,param,DISTRIBUTION_CUMULATIVE));
 	param->p[1]=0;
     param->moreparam=&mp;
     F.params=param;

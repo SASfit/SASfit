@@ -105,7 +105,7 @@ typedef enum {
                   // where \delta_j is a step of size \sqrt\epsilon |x_j| with
                   // \epsilon being the machine precision
                   // (\epsilon \approx 2.22 \times 10^-16).
-                  // The order of convergence of Newtons algorithm is quadratic,
+                  // The order of convergence of Newton's algorithm is quadratic,
                   // but the finite differences require n^2 function evaluations
                   // on each iteration. The algorithm may become unstable if the
                   // finite differences are not a good approximation to the true

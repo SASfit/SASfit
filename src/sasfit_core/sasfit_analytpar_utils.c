@@ -578,6 +578,7 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 
 	SF_TCL_GET_F(double, "::FitPrecision", "epsNRIQ", sasfit_eps_set_nriq);
 	SF_TCL_GET_F(double, "::FitPrecision", "h", sasfit_eps_set_h);
+	SF_TCL_GET_F(int,    "::FitPrecision", "rootalg_int", sasfit_set_rootalg);
 	SF_TCL_GET_F(double, "::FitPrecision", "epsanisotropic", sasfit_eps_set_aniso);
 	SF_TCL_GET_F(double, "::FitPrecision", "epsresolution", sasfit_eps_set_res);
 	SF_TCL_GET_F(int,    "::FitPrecision", "JMAXNRIQ", sasfit_eps_set_jmax_nriq);

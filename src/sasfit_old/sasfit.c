@@ -749,7 +749,11 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rstart = 0;
 				*Rend   = 2*func_descr->func_v(1-sasfit_eps_get_nriq(), &subParam,0);
 				*n_intervals = Nint;
-			} else if ( (strcmp(func_descr->name,"sd_skew_normal")      == 0) ) {
+			} else if ( (strcmp(func_descr->name,"sd_n_u_gl__")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
+			}else if ( (strcmp(func_descr->name,"sd_skew_normal")      == 0) ) {
 				*Rstart = 0;
 				if (a4<0) {
                     *Rend   = a3+5*a2;

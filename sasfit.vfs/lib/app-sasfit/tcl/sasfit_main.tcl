@@ -413,6 +413,8 @@ set FitPrecision(epsNRIQ)         1e-10
 set FitPrecision(epsanisotropic)  1e-5
 set FitPrecision(epsresolution)   1e-5
 set FitPrecision(h)               1e-5
+set FitPrecision(rootalg)         Steffensen
+set FitPrecision(rootalg_int)     5
 set FitPrecision(JMAXNRIQ)        18
 set FitPrecision(JMAXanisotropic) 18
 set FitPrecision(JMAXresolution)  18
@@ -450,6 +452,7 @@ set FitPrecision(FIBONACCI) 1024
 setIntStrategy2int
 setSphAvgStrategy2int
 setHankelStrategy2int
+setRootAlg2int
 
 set EMOptions(IterationScheme) "KINSOL_FP"
 set EMOptions(spacing) lin

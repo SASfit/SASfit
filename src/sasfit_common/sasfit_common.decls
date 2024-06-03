@@ -508,3 +508,12 @@ declare 153 generic {
 declare 154 generic {
 	scalar sasfit_get_sg_level(void)
 }
+declare 155 generic {
+	void sasfit_set_rootalg(scalar new_value)
+}
+declare 156 generic {
+	scalar sasfit_get_rootalg(void)
+}
+declare 157 generic {
+    scalar sasfit_invert_func_v(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, sasfit_param *param)
+}

@@ -120,6 +120,23 @@
 #define HANKEL_QWE 12
 #define HANKEL_CHAVE 13
 
+#define ROOTALG_BISECTION       0
+#define ROOTALG_FALSE_POSITION  1
+#define ROOTALG_BRENT           2
+#define ROOTALG_NEWTON          3
+#define ROOTALG_SECANT          4
+#define ROOTALG_STEFFENSON      5
+
+#define DISTRIBUTION_QUANTILE        0
+#define DISTRIBUTION_QUANTILE_DENS   1
+#define DISTRIBUTION_PROBABILITY     2
+#define DISTRIBUTION_CUMULATIVE      3
+#define DISTRIBUTION_MODE            4
+#define DISTRIBUTION_MEAN            5
+#define DISTRIBUTION_VARIANCE        6
+#define DISTRIBUTION_MEDIAN          7
+#define DISTRIBUTION_SKEWNESS        8
+#define DISTRIBUTION_EXCESS_KURTOSIS 9
 
 typedef struct {
     double *x;

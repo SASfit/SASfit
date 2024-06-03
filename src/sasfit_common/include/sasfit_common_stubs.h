@@ -231,6 +231,9 @@ typedef struct
 	scalar (*sasfit_param_get_polar_theta) (void); /* 152 */
 	void (*sasfit_set_sg_level) (int value); /* 153 */
 	int (*sasfit_get_sg_level) (void); /* 154 */
+	void (*sasfit_set_rootalg) (int value); /* 155 */
+	int (*sasfit_get_rootalg) (void); /* 156 */
+	scalar (*sasfit_invert_func_v) (scalar, sasfit_func_vol_t *, int, scalar, scalar, sasfit_param *);  /* 157 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -832,6 +835,19 @@ typedef struct
 #define sasfit_get_sg_level \
 	(SASFIT_COMMON_STUBS()->sasfit_get_sg_level) /* 154 */
 #endif
+#ifndef sasfit_set_rootalg
+#define sasfit_set_rootalg \
+	(SASFIT_COMMON_STUBS()->sasfit_set_rootalg) /* 155 */
+#endif
+#ifndef sasfit_get_rootalg
+#define sasfit_get_rootalg \
+	(SASFIT_COMMON_STUBS()->sasfit_get_rootalg) /* 156 */
+#endif
+#ifndef sasfit_invert_func_v
+#define sasfit_invert_func_v \
+	(SASFIT_COMMON_STUBS()->sasfit_invert_func_v) /* 157 */
+#endif
+
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

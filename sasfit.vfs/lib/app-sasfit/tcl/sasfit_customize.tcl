@@ -20,6 +20,19 @@
 # Author(s) of this file:
 #   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
 
+proc setRootAlg2int {} {
+	puts $::FitPrecision(rootalg)
+	switch $::FitPrecision(rootalg) {
+		"bisection" {set ::FitPrecision(rootalg_int) 0}
+		"false position"  {set ::FitPrecision(rootalg_int) 1}
+		"Brent-Dekker" {set ::FitPrecision(rootalg_int) 2}
+		"Newton" {set ::FitPrecision(rootalg_int) 3}
+		"secant" {set ::FitPrecision(rootalg_int) 4}
+		"Steffenson" {set ::FitPrecision(rootalg_int) 5}
+		default {set ::FitPrecision(rootalg_int) 5}
+	}
+}
+
 proc setSphAvgStrategy2int {} {
 	puts $::FitPrecision(SphAvgStrategy)
 	switch $::FitPrecision(SphAvgStrategy) {
@@ -283,14 +296,29 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.sg_level_value -row 13 -column 3 -sticky w
 	
 	label $w.ogata_2005_N_label -text "N_Ogata >= 2 \[default: 50\]"
-	entry $w.ogata_2005_N_value -textvariable FitPrecision(N_Ogata) -width $entrywidth
+	entry $w.ogata_2005_N_value -textvariable ::FitPrecision(N_Ogata) -width $entrywidth
 	grid $w.ogata_2005_N_label -row 14 -column 0 -sticky e
 	grid $w.ogata_2005_N_value -row 14 -column 1 -sticky w
 	
 	label $w.ogata_2005_h_label -text "h_Ogata \[default: 0.01\]:"
-	entry $w.ogata_2005_h_value -textvariable FitPrecision(h_Ogata) -width $entrywidth
+	entry $w.ogata_2005_h_value -textvariable ::FitPrecision(h_Ogata) -width $entrywidth
 	grid $w.ogata_2005_h_label -row 14 -column 2 -sticky e
 	grid $w.ogata_2005_h_value -row 14 -column 3 -sticky w
+
+	label $w.root_label -text "root finding alg.:"
+	ComboBox $w.root_value -values {"bisection" "false position"	"Brent-Dekker" "Newton" 				"secant" "Steffenson"} \
+				-width 25 \
+				-textvariable ::FitPrecision(rootalg) \
+				-modifycmd setRootAlg2int
+	grid $w.root_label -row 15 -column 0 -sticky e
+	grid $w.root_value -row 15 -column 1 -sticky w
+
+
+	label $w.h_label -text "h (rel. step for differentiation):"
+	entry $w.h_value -textvariable ::FitPrecision(h) -width $entrywidth
+	grid $w.h_label -row 15 -column 2 -sticky e
+	grid $w.h_value -row 15 -column 3 -sticky w
+	
 }
 
 proc update_parameter_increment { analytpar tanalytpar value } {

@@ -196,6 +196,9 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_param_get_polar_theta, /* 152 */
 	sasfit_set_sg_level, /* 153 */
 	sasfit_get_sg_level, /* 154 */
+	sasfit_set_rootalg, /* 155 */
+	sasfit_get_rootalg, /* 156 */
+	sasfit_invert_func_v, /* 157 */
 };
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 

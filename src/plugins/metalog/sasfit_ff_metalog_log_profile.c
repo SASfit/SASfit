@@ -29,7 +29,7 @@ scalar sasfit_ff_metalog_log_profile(scalar x, sasfit_param * param)
     FDF.fdf = &root_metalog_Log_fdf;
     param->moreparam=&mp;
     assign_metalog_par(x, &mp,param);
-    if (sasfit_eps_get_robertus_p()>3) {
+    if (sasfit_get_rootalg()>3) {
         return N*(1-find_root_fdf_metalog(&FDF));
     } else {
         return N*(1-find_root_f_metalog(&F));

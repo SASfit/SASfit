@@ -88,6 +88,7 @@ static int FP_step_kinsol(N_Vector, N_Vector, void *);
 static int FP_step_kinsolFP(N_Vector, N_Vector, void *);
 double FP_step(sasfit_fp_data *);
 int FP_solver_by_iteration(sasfit_fp_data *, sasfit_oz_root_algorithms );
+
 //Modified 29.4.2019
 
 #endif // SASFIT_FP

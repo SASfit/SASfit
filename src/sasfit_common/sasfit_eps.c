@@ -110,6 +110,10 @@ int sasfit_eps_get_fitorsim(void) {
 	return sasfit_eps.fitorsim;
 }
 sasfit_common_DLLEXP
+int sasfit_get_rootalg(void) {
+	return sasfit_eps.rootalg;
+}
+sasfit_common_DLLEXP
 scalar sasfit_eps_get_h(void) {
 	return sasfit_eps.h;
 }
@@ -281,6 +285,10 @@ void sasfit_eps_set_h(scalar value) {
 	sasfit_eps.h = value;
 }
 sasfit_common_DLLEXP
+void sasfit_set_rootalg(int value) {
+	sasfit_eps.rootalg = value;
+}
+sasfit_common_DLLEXP
 void sasfit_eps_set_alpha(scalar value) {
 	sasfit_eps.alpha = value;
 }
@@ -334,6 +342,7 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
 	sasfit_out("FIBONACCI points:         %d\n", fitp->fibonacci);
 	sasfit_out("iter_4_MC:       %d\n", fitp->iter_4_mc);
 	sasfit_out("fitorsim:        %d\n", fitp->fitorsim);
+	sasfit_out("rootalg:         %d\n", fitp->rootalg);
 	sasfit_out("h:               %f\n", fitp->h);
 	sasfit_out("eps_comparison:  %f\n", fitp->comparison);
 }

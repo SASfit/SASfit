@@ -145,6 +145,7 @@ typedef struct
 	double (*function)(double, void *);
 } sasfit_param;
 
+
 /**
  * Data structure to override single parameter values.
  * This is a temporary solution, because probably it gets obsolete when
@@ -361,6 +362,33 @@ sasfit_common_DLLEXP int sasfit_valid_fct(sasfit_function * f);
  * \sa sasfit_function
  */
 sasfit_common_DLLEXP scalar sasfit_part_diff_fct(scalar x, sasfit_function * f, int dparam);
+
+#include <gsl/gsl_roots.h>
+
+#define MAXROOTITER 15000
+
+typedef struct {
+        int dist;
+        scalar u;
+        scalar vguess;
+        scalar bl;
+        scalar bu;
+        gsl_function F;
+        gsl_function_fdf FDF;
+        sasfit_func_vol_t * func;
+        const gsl_root_fdfsolver_type *Td;
+        gsl_root_fdfsolver *sd;
+        const gsl_root_fsolver_type *T;
+        gsl_root_fsolver *s;
+        int status;
+        size_t i, iter;
+        scalar y0, y_lo, y_hi;
+        double (*f_trans)(double, void *);
+        double (*f_inv)(double, void *);
+        double (*df_trans)(double, void *);
+        sasfit_param *param;
+} sasfit_invert_param;
+sasfit_common_DLLEXP  scalar sasfit_invert_func_v(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, sasfit_param *param);
 
 /*@}*/
 #endif // MAKE_SASFIT_PLUGIN

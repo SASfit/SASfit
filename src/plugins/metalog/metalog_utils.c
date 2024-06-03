@@ -359,10 +359,11 @@ scalar find_root_fdf_metalog(gsl_function_fdf *FDF) {
 	yroot = gsl_max(yroot,1e-2);
 	yroot = gsl_min(yroot,1-1e-2);
     gsl_set_error_handler_off ();
-    switch (sasfit_eps_get_robertus_p()) {
-        case 4:     T = gsl_root_fdfsolver_secant;break;
-        case 5:     T = gsl_root_fdfsolver_newton;break;
-        default:    T = gsl_root_fdfsolver_steffenson;
+    switch (sasfit_get_rootalg()) {
+        case ROOTALG_SECANT:     T = gsl_root_fdfsolver_secant;break;
+        case ROOTALG_NEWTON:     T = gsl_root_fdfsolver_newton;break;
+        case ROOTALG_STEFFENSON:
+        default:                 T = gsl_root_fdfsolver_steffenson;
     }
     s = gsl_root_fdfsolver_alloc (T);
     gsl_root_fdfsolver_set (s, FDF, yroot);
@@ -400,10 +401,11 @@ scalar find_root_f_metalog(gsl_function *F) {
     mpara = (metalog_param *) param->moreparam;
     mpara->ytrans=&ylin;
 	mpara->dytrans=&dylin;
-    switch (sasfit_eps_get_robertus_p()) {
-        case 1:     T = gsl_root_fsolver_brent;break;
-        case 2:     T = gsl_root_fsolver_falsepos;break;
-        default:    T = gsl_root_fsolver_bisection;
+    switch (sasfit_get_rootalg()) {
+        case ROOTALG_BRENT:             T = gsl_root_fsolver_brent;break;
+        case ROOTALG_FALSE_POSITION:    T = gsl_root_fsolver_falsepos;break;
+        case ROOTALG_BISECTION:
+        default:                        T = gsl_root_fsolver_bisection;
     }
     s = gsl_root_fsolver_alloc (T);
     gsl_root_fsolver_set (s, F, 2*gsl_max(DBL_EPSILON,sasfit_eps_get_res()), 1-2*gsl_max(DBL_EPSILON,sasfit_eps_get_res()));
