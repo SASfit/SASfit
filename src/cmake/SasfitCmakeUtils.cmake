@@ -637,8 +637,6 @@ function(run_configure CURRENT_DIR CONFIG_OPTIONS)
                    "   '${CONFIG_OPTIONS}'")
     execute_process(COMMAND sh configure ${CONFIG_OPTIONS}
                     WORKING_DIRECTORY ${WORK_DIR})
-    #execute_process(COMMAND ls -la WORKING_DIRECTORY ${WORK_DIR})
-    #execute_process(COMMAND cat config.log WORKING_DIRECTORY ${WORK_DIR})
 
     # run make, i.e. build the library and install it in this local path
     message(STATUS "Building ${PCKG_NAME} ...")
