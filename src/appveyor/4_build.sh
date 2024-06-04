@@ -25,8 +25,8 @@ else # macOS or Linux
     # determine number of computing cores
     if [ "$(uname -s)" = "Darwin" ]; then # on macOS
         NUM_LOGICAL_CORES="$(sysctl -n hw.ncpu)"
-        export CC=/usr/local/bin/gcc-13
-        export CXX=/usr/local/bin/g++-13
+        #export CC=/usr/local/bin/gcc-13
+        #export CXX=/usr/local/bin/g++-13
     else # on Linux
         NUM_LOGICAL_CORES="$(awk '/processor/' /proc/cpuinfo | wc -l)"
     fi
