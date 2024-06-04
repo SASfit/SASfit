@@ -7,6 +7,9 @@
 
 cmake_minimum_required(VERSION 3.0)
 
+# breaks Tcl build (esp. configure) with gcc-14 otherwise
+set(ENV{CFLAGS} -Wno-error=implicit-int)
+
 # set up options for configure script
 set(CONFIGURE_OPTIONS
     --enable-static
