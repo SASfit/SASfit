@@ -25,8 +25,8 @@ else # macOS or Linux
     # determine number of computing cores
     if [ "$(uname -s)" = "Darwin" ]; then # on macOS
         NUM_LOGICAL_CORES="$(sysctl -n hw.ncpu)"
-        export CC=/usr/local/bin/gcc-13
-        export CXX=/usr/local/bin/g++-13
+        export CC=$(which gcc)
+        export CXX=$(which g++)
     else # on Linux
         NUM_LOGICAL_CORES="$(awk '/processor/' /proc/cpuinfo | wc -l)"
     fi
@@ -36,7 +36,6 @@ else # macOS or Linux
 fi
 
 echo "Determined $NUM_LOGICAL_CORES logical cores."
-echo
 
 cd "$APPVEYOR_BUILD_FOLDER" && \
 mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE "$scriptdir/.." && make -j$NUM_LOGICAL_CORES

@@ -23,8 +23,11 @@ if [ "$SYSTEM_NAME" = "Darwin" ]; then
     for libdir in /usr/local/lib/ /usr/X11/lib /opt/local/lib; do
         [ -f "$libdir/libX11.a" ] && CFLAGS="$CFLAGS -L$libdir"
     done
-    CMD_CC="$( $findCmdInPath '/gcc(-(mp-)?[0-9]+)?$')"
-    CMD_CXX="$($findCmdInPath '/g\+\+(-(mp-)?[0-9]+)?$')"
+    #CMD_CC="$( $findCmdInPath '/gcc(-(mp-)?[0-9]+)?$')"
+    #CMD_CXX="$($findCmdInPath '/g\+\+(-(mp-)?[0-9]+)?$')"
+    CC=$(which gcc)
+    CXX=$(which g++)
+    CFLAGS="$CFLAGS -Wno-deprecated-non-prototype -Wno-implicit-function-declaration"
 fi;
 
 # find optionally installed gcc package if not already defined
