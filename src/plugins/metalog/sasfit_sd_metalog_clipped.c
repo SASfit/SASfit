@@ -42,7 +42,8 @@ scalar sasfit_sd_metalog_clipped_v(scalar u, sasfit_param * param, int dist)
 		// case 5: mean
 		// case 5: variance
 		// case 6: median
-		// case 7:
+		// case 7: skewness
+		// case 8: excess kurtosis
 
 	switch (dist) {
         case DISTRIBUTION_QUANTILE:
