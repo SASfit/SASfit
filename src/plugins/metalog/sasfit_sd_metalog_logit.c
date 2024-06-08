@@ -17,7 +17,7 @@ scalar sasfit_sd_metalog_logit(scalar x, sasfit_param * param)
 
 	if (x<=BL||x>=BU) return 0;
 	if (gsl_finite(pow(x,-ALPHA))) {
-        return N*metalogLogitPDF(x, param)*pow(x,-ALPHA);
+        return sasfit_invert_func_v(x,&sasfit_sd_metalog_logit_v,DISTRIBUTION_PROBABILITY,0,1, param)*pow(x,-ALPHA);
     } else {
         return 0;
     }
@@ -31,11 +31,54 @@ scalar sasfit_sd_metalog_logit_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_sd_metalog_logit_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sd_metalog_logit_v(scalar u, sasfit_param * param, int dist)
 {
+    scalar Qy,qy,px,Fx,x,y,v;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+		// insert your code here
+		// case 0: quantile distribution function Q(y)=x
+		// case 1: quantile density distribution function q(y)=dQ(y)/dy = 1/p(y)
+		// case 2: probability distribution function p(x)
+		// case 3: cumulative distribution function F(x)=y
+		// case 4: mode
+		// case 5: mean
+		// case 5: variance
+		// case 6: median
+		// case 7: skewness
+		// case 8: excess kurtosis
 
-	// insert your code here
-	return 0.0;
+	switch (dist) {
+        case DISTRIBUTION_QUANTILE:
+                y = u;
+                Qy =  MLogit(10, y, &param->p[4], 10, BL, BU, param);
+                return Qy;
+        case DISTRIBUTION_QUANTILE_DENS: y = u;
+                qy =  mLogit(10, y, &param->p[4], 10, BL, BU, param);
+                return qy;
+        case DISTRIBUTION_PROBABILITY:
+                x = u;
+                y = sasfit_invert_func_v(x,&sasfit_sd_metalog_logit_v,DISTRIBUTION_QUANTILE,0,1, param);
+                px = 1.0/sasfit_sd_metalog_logit_v(u,param,DISTRIBUTION_QUANTILE_DENS);
+                return N*px;
+        case DISTRIBUTION_CUMULATIVE:
+                x = u;
+                y = sasfit_invert_func_v(x,&sasfit_sd_metalog_logit_v,DISTRIBUTION_QUANTILE,0,1, param);
+                Fx = y;
+                return N*Fx;
+        case DISTRIBUTION_MODE:
+
+        case DISTRIBUTION_MEAN:
+
+        case DISTRIBUTION_VARIANCE:
+
+        case DISTRIBUTION_MEDIAN:
+
+        case DISTRIBUTION_SKEWNESS:
+
+        case DISTRIBUTION_EXCESS_KURTOSIS:
+
+        default: sasfit_err("parameter distr=%d not defined",dist);
+    }
+    return 0;
 }
 

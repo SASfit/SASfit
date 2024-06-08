@@ -2094,10 +2094,21 @@ double root_invert_f(double v, void *rootp) {
     return (ipar.func)((ipar.f_trans)(v,param),param,ipar.dist)-ipar.u;
 }
 double root_invert_df(double v, void *rootp) {
-    if (v!=0) {
-        return (root_invert_f(v*(1+sasfit_eps_get_h()),rootp)-root_invert_f(v*(1-sasfit_eps_get_h()),rootp))/(2*v*sasfit_eps_get_h());
+    scalar vt;
+    sasfit_param *param;
+    param = (sasfit_param *) rootp;
+    if (ipar.dist == DISTRIBUTION_CUMULATIVE) {
+        vt = (ipar.f_trans)(v,rootp);
+        return (ipar.df_trans)(v,rootp) / (ipar.func)(vt,param,DISTRIBUTION_PROBABILITY);
+    } else if (ipar.dist == DISTRIBUTION_QUANTILE) {
+        vt = (ipar.f_trans)(v,rootp);
+        return (ipar.df_trans)(v,rootp) / (ipar.func)(vt,param,DISTRIBUTION_QUANTILE_DENS);
     } else {
-        return (root_invert_f(sasfit_eps_get_h(),rootp)-root_invert_f(-sasfit_eps_get_h(),rootp))/(2*sasfit_eps_get_h());
+        if (v!=0) {
+            return (root_invert_f(v*(1+sasfit_eps_get_h()),rootp)-root_invert_f(v*(1-sasfit_eps_get_h()),rootp))/(2*v*sasfit_eps_get_h());
+        } else {
+            return (root_invert_f(sasfit_eps_get_h(),rootp)-root_invert_f(-sasfit_eps_get_h(),rootp))/(2*sasfit_eps_get_h());
+        }
     }
 }
 

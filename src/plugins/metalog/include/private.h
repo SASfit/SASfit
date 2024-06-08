@@ -49,48 +49,17 @@
 #define A9	param->p[12]
 #define A10	param->p[13]
 #define Q   param->p[MAXPAR-1]
-//
-typedef struct
-{
-	scalar  a[10];      //!< Parameter of a function.
-	size_t  n;         //!< Length of the error message.
-	scalar  bl;
-	scalar  bu;
-	scalar  x;
-	double (*ytrans)(double, void *);
-	double (*dytrans)(double, void *);
-} metalog_param;
 
-scalar metalogPDF(scalar, sasfit_param *);
-scalar metalogLogPDF(scalar, sasfit_param *);
-scalar metalogNLogPDF(scalar, sasfit_param *);
-scalar metalogLogitPDF(scalar, sasfit_param *);
 scalar Mk(int , scalar , scalar *, size_t , sasfit_param *);
-scalar MLog(int , scalar , scalar *, size_t , sasfit_param *);
-scalar MNLog(int , scalar , scalar *, size_t , sasfit_param *);
-scalar MLogit(int , scalar , scalar *, size_t , sasfit_param *);
+scalar MLog(int , scalar , scalar *, size_t , scalar, sasfit_param *);
+scalar MNLog(int , scalar , scalar *, size_t , scalar, sasfit_param *);
+scalar MLogit(int , scalar , scalar *, size_t , scalar, scalar, sasfit_param *);
 
 scalar mk(int , scalar , scalar *, size_t , sasfit_param *);
 scalar mLog(int , scalar , scalar *, size_t , sasfit_param *);
 scalar mNLog(int , scalar , scalar *, size_t , sasfit_param *);
-scalar mLogit(int , scalar , scalar *, size_t , sasfit_param *);
+scalar mLogit(int , scalar , scalar *, size_t ,  scalar, scalar, sasfit_param *);
 
-void assign_metalog_par(scalar, metalog_param *, sasfit_param *);
-scalar find_root_f_metalog(gsl_function *);
-scalar find_root_f_metalog_Log(gsl_function *);
-scalar find_root_f_metalog_Logit(gsl_function *);
-scalar find_root_fdf_metalog(gsl_function_fdf *);
-scalar find_root_fdf_metalog_Log(gsl_function_fdf *);
-scalar find_root_fdf_metalog_Logit(gsl_function_fdf *);
-double root_metalog_f (double, void *);
-double root_metalog_Log_f (double, void *);
-double root_metalog_Logit_f (double, void *);
-double root_metalog_df (double, void *);
-double root_metalog_Log_df (double, void *);
-double root_metalog_Logit_df (double, void *);
-void root_metalog_fdf (double, void *, double *, double *);
-void root_metalog_Log_fdf (double, void *, double *, double *);
-void root_metalog_Logit_fdf (double, void *, double *, double *);
 
 #endif // end of file
 

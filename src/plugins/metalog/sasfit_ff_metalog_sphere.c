@@ -9,11 +9,9 @@
 // define shortcuts for local parameters/variables
 
 scalar metalog_sphere(scalar y, sasfit_param *param) {
-    metalog_param *mpara;
 	scalar u,fsp,qmod,Rc;
-    mpara = (metalog_param *) param->moreparam;
 	qmod = Q;
-	Rc = Mk(10 , y ,mpara->a , 10 , param);
+	Rc = Mk(10 , y ,&param->p[4] , 10 , param);
 	u=qmod*Rc;
 	if (fabs(u)<1e-6) {
 		fsp = 1 - gsl_pow_2(u)/10. + gsl_pow_4(u)/280. - gsl_pow_6(u)/15120. + gsl_pow_8(u)/1.33056e6
@@ -25,8 +23,6 @@ scalar metalog_sphere(scalar y, sasfit_param *param) {
 }
 scalar sasfit_ff_metalog_sphere(scalar q, sasfit_param * param)
 {
-    metalog_param mp;
-    gsl_function F;
     scalar ystart,yend;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -36,14 +32,8 @@ scalar sasfit_ff_metalog_sphere(scalar q, sasfit_param * param)
 
 	Q = q;
 
-    F.function = &root_metalog_f;
-    F.params=param;
-    param->moreparam=&mp;
-    assign_metalog_par(0, &mp,param);
-	ystart = find_root_f_metalog(&F);
-	mp.x = BU;
-	yend = find_root_f_metalog(&F);
-//	sasfit_out("ystart=%lf, yend=%lf\n",ystart,yend);
+	ystart = sasfit_invert_func_v(BL,&sasfit_sd_metalog_clipped_v,DISTRIBUTION_QUANTILE,0,1,param);
+	yend   = sasfit_invert_func_v(BU,&sasfit_sd_metalog_clipped_v,DISTRIBUTION_QUANTILE,0,1,param);
 	return sasfit_integrate(ystart,yend,&metalog_sphere,param);
 }
 

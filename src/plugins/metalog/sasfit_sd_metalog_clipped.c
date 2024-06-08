@@ -15,7 +15,8 @@ scalar sasfit_sd_metalog_clipped(scalar x, sasfit_param * param)
 	SASFIT_CHECK_COND2((BL == BU), param, "bl(%lg) == bu(%lf)",BL, BU); // modify condition to your needs
 
     if (gsl_finite(pow(x,-ALPHA))) {
-        return N*metalogPDF(x, param)*pow(x,-ALPHA);
+        return sasfit_invert_func_v(x,&sasfit_sd_metalog_clipped_v,DISTRIBUTION_PROBABILITY,0,1, param)*pow(x,-ALPHA);
+//        return N*metalogPDF(x, param)*pow(x,-ALPHA);
     } else {
         return 0;
     }
@@ -56,7 +57,7 @@ scalar sasfit_sd_metalog_clipped_v(scalar u, sasfit_param * param, int dist)
         case DISTRIBUTION_PROBABILITY:
                 x = u;
                 y = sasfit_invert_func_v(x,&sasfit_sd_metalog_clipped_v,DISTRIBUTION_QUANTILE,0,1, param);
-                px = 1.0/sasfit_sd_metalog_clipped_v(u,param,1);
+                px = 1.0/sasfit_sd_metalog_clipped_v(u,param,DISTRIBUTION_QUANTILE_DENS);
                 return N*px;
         case DISTRIBUTION_CUMULATIVE:
                 x = u;
