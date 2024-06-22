@@ -31,7 +31,7 @@ scalar sasfit_ff_metalog_log_profile_sphere_f(scalar q, sasfit_param * param)
 	Q = q;
 	param->p[1]=0; // lower bound is zero
 
-	yend = sasfit_invert_func_v(BU,&sasfit_sd_metalog_log_clipped_v,DISTRIBUTION_QUANTILE,BL,BU,param);
+	yend = sasfit_invert_func_v(BU,&sasfit_sd_metalog_log_clipped_v,DISTRIBUTION_QUANTILE,0,1,param);
 
 	return sasfit_integrate(0,yend,&metalog_log_profile_sphere,param);
 }

@@ -1,7 +1,7 @@
 # cmake_minimum_required(VERSION 3.0)
 
 # the project name
-set(PRJ_NAME sasfit_guwelop)
+set(PRJ_NAME sasfit_t_r_y)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
@@ -10,9 +10,23 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_sd_p_guwelop.c
-	sasfit_ff_guwelop_sphere.c
-	sasfit_ff_guwelop_profile.c
+	sasfit_sd_fgld_.c
+	sasfit_ff_fgld_profile.c
+	sasfit_ff_fgld_profile_sphere.c
+	sasfit_ff_fgld_sphere.c
+	sasfit_sd_egu_w_l.c
+	sasfit_ff_egu_w_l_profile.c
+	sasfit_ff_egu_w_l_profile_sphere.c
+	sasfit_ff_egu_w_l_sphere.c
+	sasfit_sd_g_c_e__.c
+	sasfit_sd_ll_l_gl__.c
+	sasfit_sd_p_w_gl__.c
+	sasfit_sd_n_u_gl__.c
+	sasfit_sd_u_e_gl__.c
+	t_lindley_y_utils.c
+	sasfit_sd_w_l_e_.c
+	sasfit_sd_n_l_c_.c
+	sasfit_sd_e_l_ll_.c
 	interface.c
 )
 

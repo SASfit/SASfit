@@ -64,13 +64,19 @@
  *       <td></td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 
@@ -124,13 +130,19 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0_v(scalar q,
  *       <td>width of LogNormal size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 
@@ -184,13 +196,19 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_0t_v(scalar q
  *       <td>width of LogNormal size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 
@@ -244,13 +262,19 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_v(scalar q
  *       <td>width of LogNormal size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 
@@ -304,13 +328,19 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_rp_t_v(scalar
  *       <td>width of LogNormal size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 
@@ -364,13 +394,19 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_v(scalar q
  *       <td>width of LogNormal size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 
@@ -424,13 +460,19 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_re_t_v(scalar
  *       <td>width of LogNormal size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 
@@ -485,13 +527,19 @@ sasfit_ellipsoidal_shell_DLLEXP scalar sasfit_ff_ellipsoidal_shell_2_v(scalar q,
  *       <td>width of LogNormal size distribution</td>
  *      </tr><tr>
  *       <td>\b eta_core</td>
- *       <td>scattering length density of core</td>
+ *       <td>scattering length density of compact core</td>
  *      </tr><tr>
  *       <td>\b eta_shell</td>
- *       <td>scattering length density of shell</td>
+ *       <td>scattering length density of compact shell</td>
  *      </tr><tr>
  *       <td>\b eta_solv</td>
  *       <td>scattering length density of solvent</td>
+ *      </tr><tr>
+ *       <td>\b x_core</td>
+ *       <td>volume fraction of solvent in core</td>
+ *      </tr><tr>
+ *       <td>\b x_shell</td>
+ *       <td>volume fraction of solvent in shell</td>
  *      </tr></table>
  */
 

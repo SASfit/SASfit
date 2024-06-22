@@ -7,12 +7,12 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
-#define R_PRINCIPLE	param->p[0]*NU
-#define R_EQUATORIAL	param->p[1]*NU
-#define T	param->p[3]
-#define RP param->p[0]
-#define RE param->p[1]
-#define TT param->p[3]
+#define R_PRINCIPLE	    fabs(param->p[0]*NU)
+#define R_EQUATORIAL	fabs(param->p[1]*NU)
+#define T	fabs(param->p[3])
+#define RP fabs(param->p[0])
+#define RE fabs(param->p[1])
+#define TT fabs(param->p[3])
 
 scalar sasfit_ff_ellip_shell_2_core(sasfit_param * param) {
 	A = R_PRINCIPLE;

@@ -17,12 +17,15 @@ scalar f_sph(scalar x) {
 
 scalar F_EllSh(sasfit_param * param) {
 	scalar xc, xt, Vc, Vt;
+	scalar eta_core, eta_shell;
 	xc = Q*sqrt(gsl_pow_2(A*MU)+ gsl_pow_2(B)*(1-MU*MU));
 	xt = Q*sqrt(gsl_pow_2((A+TNU)*MU)+ gsl_pow_2(B+TNU)*(1-MU*MU));
 	Vc = 4./3.*M_PI*A*gsl_pow_2(B);
 	Vt = 4./3.*M_PI*(A+TNU)*gsl_pow_2(B+TNU);
-	return 	(ETA_CORE-ETA_SHELL)*Vc*f_sph(xc)+
-			(ETA_SHELL-ETA_SOLV)*Vt*f_sph(xt);
+	eta_core  = ETA_CORE *(1-X_CORE ) + ETA_SOLV*X_CORE;
+	eta_shell = ETA_SHELL*(1-X_SHELL) + ETA_SOLV*X_SHELL;
+	return 	(eta_core-eta_shell)*Vc*f_sph(xc)+
+			(eta_shell-ETA_SOLV)*Vt*f_sph(xt);
 }
 
 scalar ellip_shell_cubature(const double *x, size_t ndim,  void *pam) {

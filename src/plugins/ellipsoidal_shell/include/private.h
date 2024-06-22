@@ -47,10 +47,12 @@ typedef struct
 	int ndim;
 } cubature_param;
 
-#define SIGMA	param->p[4]
+#define SIGMA	    fabs(param->p[4])
 #define ETA_CORE	param->p[5]
 #define ETA_SHELL	param->p[6]
 #define ETA_SOLV	param->p[7]
+#define X_CORE      param->p[8]
+#define X_SHELL     param->p[9]
 #define Q	param->p[MAXPAR-1]
 #define P	param->p[MAXPAR-2]
 #define NU	param->p[MAXPAR-3]

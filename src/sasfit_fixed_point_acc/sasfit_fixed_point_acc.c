@@ -2099,10 +2099,10 @@ double root_invert_df(double v, void *rootp) {
     param = (sasfit_param *) rootp;
     if (ipar.dist == DISTRIBUTION_CUMULATIVE) {
         vt = (ipar.f_trans)(v,rootp);
-        return (ipar.df_trans)(v,rootp) / (ipar.func)(vt,param,DISTRIBUTION_PROBABILITY);
+        return (ipar.func)(vt,param,DISTRIBUTION_PROBABILITY)/(ipar.df_trans)(v,rootp);
     } else if (ipar.dist == DISTRIBUTION_QUANTILE) {
         vt = (ipar.f_trans)(v,rootp);
-        return (ipar.df_trans)(v,rootp) / (ipar.func)(vt,param,DISTRIBUTION_QUANTILE_DENS);
+        return (ipar.func)(vt,param,DISTRIBUTION_QUANTILE_DENS)/(ipar.df_trans)(v,rootp);
     } else {
         if (v!=0) {
             return (root_invert_f(v*(1+sasfit_eps_get_h()),rootp)-root_invert_f(v*(1-sasfit_eps_get_h()),rootp))/(2*v*sasfit_eps_get_h());
@@ -2124,8 +2124,8 @@ void sasfit_invert_free(void) {
     ipar.sd = NULL;
 }
 
-int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, sasfit_param *param) {
-    scalar Delta;
+int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, scalar *vguess, sasfit_param *param) {
+    scalar Delta, vl, vu, vgl, vgu;
     int status;
     ipar.u=u;
     ipar.bu=gsl_max(bu,bl);
@@ -2140,11 +2140,12 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
     ipar.dist=dist;
     Delta = 2*gsl_max(DBL_EPSILON,sasfit_eps_get_res());
     ipar.vguess = gsl_max(ipar.vguess,
-                          (ipar.bl!=0.0)?ipar.bl*(1.01)
+                          (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*0.01)
                                         :         0.01);
     ipar.vguess = gsl_min(ipar.vguess,
-                          (ipar.bu!=0.0)?ipar.bu*(0.99)
-                                        :         0.99);
+                          (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*0.01)
+                                        :         -0.01);
+//    ipar.vguess = (ipar.bu-ipar.bl)/2.0;
     ipar.F.function  = &root_invert_f;
     ipar.F.params    = param;
     ipar.FDF.f       = &root_invert_f;
@@ -2163,31 +2164,31 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
                                 ipar.T = gsl_root_fsolver_brent;
                                 ipar.s = gsl_root_fsolver_alloc (ipar.T);
                                 ipar.sd = NULL;
-                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F),
-                                                              (ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,
-                                                                      ipar.bu*(1-Delta));
-                                sasfit_out("status:%d\n",status);
+                                vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
+                                                    :Delta;
+                                vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
+                                                    :-Delta;
+                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
                                 while (status != GSL_SUCCESS && Delta < 1./100.) {
-                                    sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,(ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,ipar.bu*(1-Delta),
-                                                                            (*ipar.F.function)((ipar.bl!=0.0)
-                                                                                               ?ipar.bl*(1+Delta)
-                                                                                               :Delta,param),
-                                                                            (*ipar.F.function)(ipar.bu*(1-Delta),param));
                                     Delta = Delta*10;
-                                    status = gsl_root_fsolver_set(ipar.s, &(ipar.F),
-                                                                  (ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                                :Delta,
-                                                                   ipar.bu*(1-Delta));
+                                    vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
+                                                        :Delta;
+                                    vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
+                                                        :-Delta;
+                                    status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
                                 }
                                 if (status != GSL_SUCCESS) {
-                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,(ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,ipar.bu*(1-Delta),
-                                                                            (*ipar.F.function)((ipar.bl!=0.0)
-                                                                                               ?ipar.bl*(1+Delta)
-                                                                                               :Delta,param),
-                                                                            (*ipar.F.function)(ipar.bu*(1-Delta),param));
+                                        vl = (*ipar.F.function)(vgl,param);
+
+                                        vu = (*ipar.F.function)(vgu,param);
+                                        if ((vl<0 && vu <0) || (vu==0)) {
+                                            *vguess = bu;
+                                            return GSL_EOVRFLW;
+                                        } else if ((vl>0 && vu >0) || (vl==0)) {
+                                            *vguess = bl;
+                                            return GSL_EUNDRFLW;
+                                        }
+                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,vgl,vgu,vl,vu,param);
                                         sasfit_err("%s\n",gsl_strerror (status));
                                 }
                                 return status;
@@ -2199,31 +2200,31 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
                                 ipar.T = gsl_root_fsolver_falsepos;
                                 ipar.s = gsl_root_fsolver_alloc (ipar.T);
                                 ipar.sd = NULL;
-                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F),
-                                                            (ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                          :Delta,
-                                                            ipar.bu*(1-Delta));
-                                sasfit_out("status:%d, GSL_SUCCESS:%d\n",status,GSL_SUCCESS);
+                                vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
+                                                    :Delta;
+                                vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
+                                                    :-Delta;
+                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
                                 while (status != GSL_SUCCESS && Delta < 1./100.) {
-                                    sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,(ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,ipar.bu*(1-Delta),
-                                                                            (*ipar.F.function)((ipar.bl!=0.0)
-                                                                                               ?ipar.bl*(1+Delta)
-                                                                                               :Delta,param),
-                                                                            (*ipar.F.function)(ipar.bu*(1-Delta),param));
                                     Delta = Delta*10;
-                                    status = gsl_root_fsolver_set(ipar.s, &(ipar.F),
-                                                                  (ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                                :Delta,
-                                                                   ipar.bu*(1-Delta));
+                                    vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
+                                                        :Delta;
+                                    vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
+                                                        :-Delta;
+                                    status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
                                 }
                                 if (status != GSL_SUCCESS) {
-                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,(ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,ipar.bu*(1-Delta),
-                                                                            (*ipar.F.function)((ipar.bl!=0.0)
-                                                                                               ?ipar.bl*(1+Delta)
-                                                                                               :Delta,param),
-                                                                            (*ipar.F.function)(ipar.bu*(1-Delta),param));
+                                        vl = (*ipar.F.function)(vgl,param);
+
+                                        vu = (*ipar.F.function)(vgu,param);
+                                        if ((vl<0 && vu <0) || (vu==0)) {
+                                            *vguess = bu;
+                                            return GSL_EOVRFLW;
+                                        } else if ((vl>0 && vu >0) || (vl==0)) {
+                                            *vguess = bl;
+                                            return GSL_EUNDRFLW;
+                                        }
+                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,vgl,vgu,vl,vu,param);
                                         sasfit_err("%s\n",gsl_strerror (status));
                                 }
                                 return status;
@@ -2234,31 +2235,32 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
                                 ipar.T = gsl_root_fsolver_bisection;
                                 ipar.s = gsl_root_fsolver_alloc (ipar.T);
                                 ipar.sd = NULL;
-                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F),
-                                                              (ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,
-                                                              ipar.bu*(1-Delta));
-                                sasfit_out("status:%d\n",status);
+                                vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
+                                                    :Delta;
+                                vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
+                                                    :-Delta;
+                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
                                 while (status != GSL_SUCCESS && Delta < 1./100.) {
-                                    sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,(ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,ipar.bu*(1-Delta),
-                                                                            (*ipar.F.function)((ipar.bl!=0.0)
-                                                                                               ?ipar.bl*(1+Delta)
-                                                                                               :Delta,param),
-                                                                            (*ipar.F.function)(ipar.bu*(1-Delta),param));
                                     Delta = Delta*10;
-                                    status = gsl_root_fsolver_set(ipar.s, &(ipar.F),
-                                                                  (ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                                :Delta,
-                                                                   ipar.bu*(1-Delta));
+                                    vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
+                                                        :Delta;
+                                    vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
+                                                        :-Delta;
+                                    Delta = Delta*10;
+                                    status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
                                 }
                                 if (status != GSL_SUCCESS) {
-                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,(ipar.bl!=0.0)?ipar.bl*(1+Delta)
-                                                                            :Delta,ipar.bu*(1-Delta),
-                                                                            (*ipar.F.function)((ipar.bl!=0.0)
-                                                                                               ?ipar.bl*(1+Delta)
-                                                                                               :Delta,param),
-                                                                            (*ipar.F.function)(ipar.bu*(1-Delta),param));
+                                        vl = (*ipar.F.function)(vgl,param);
+
+                                        vu = (*ipar.F.function)(vgu,param);
+                                        if ((vl<0 && vu <0) || (vu==0)) {
+                                            *vguess = bu;
+                                            return GSL_EOVRFLW;
+                                        } else if ((vl>0 && vu >0) || (vl==0)) {
+                                            *vguess = bl;
+                                            return GSL_EUNDRFLW;
+                                        }
+                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,vgl,vgu,vl,vu,param);
                                         sasfit_err("%s\n",gsl_strerror (status));
                                 }
                                 return status;
@@ -2325,7 +2327,12 @@ void sasfit_invert_step() {
 }
 
 scalar sasfit_invert_func_v(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, sasfit_param *param) {
-    if (sasfit_invert_set(u, func, dist, bl, bu, param)) {
+    scalar vguess;
+    int status;
+    status = sasfit_invert_set(u, func, dist, bl, bu, &vguess, param);
+    if (status == GSL_EOVRFLW || status == GSL_EUNDRFLW) return vguess;
+
+    if (status) {
         sasfit_err("could not initialize inversion method %d\n",sasfit_get_rootalg());
         return 0;
     }

@@ -28,9 +28,43 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf.h>
 #include "include/sasfit_common.h"
+#include "../sasfit_jburkardt/include/cdflib.h"
+
+// sasfit_gammaincinv computes the inverse lower incomplete gamma function using cdflib from John Burkardt.
+scalar sasfit_gammaincinv(scalar a, scalar y) {
+    scalar x, x0, p, q;
+    int ierr;
+    x0=0;
+    p = y;
+    q=1-y;
+    gamma_inc_inv(&a, &x, &x0, &p, &q, &ierr);
+    switch (ierr) {
+      case -2: sasfit_out("a <= 0\n");
+               break;
+      case -3: sasfit_out("No solution was obtained. The ratio Q/A is too large.\n");
+               break;
+      case -4: sasfit_out("p + q != 1\n");
+               break;
+      case -6: sasfit_out("20 iterations were performed. The most recent value obtained\n");
+               sasfit_out("for x is given.  This cannot occur if x0 <= 0.\n");
+               break;
+      case -7: sasfit_out("Iteration failed. No value is given for x.\n");
+               sasfit_out("This may occur when x is approximately 0.\n");
+               x=0;
+               break;
+      case -8: sasfit_out("A value for x has been obtained, but the routine is not certain\n");
+               sasfit_out("of its accuracy.  Iteration cannot be performed in this\n");
+               sasfit_out("case. If x0 <= 0, this can occur only when p or q is\n");
+               sasfit_out("approximately 0. If x0 is positive then this can occur when a is\n");
+               sasfit_out("exceedingly close to x and a is extremely large (say a .GE. 1.E20).\n");
+               break;
+    }
+    return x;
+}
 
 
-/* Function to calculate inverse error function.  Rational approximation
+/*
+Function to calculate inverse error function.  Rational approximation
 is used to generate an initial approximation, which is then improved to
 full accuracy by two steps of Newton's method.  Code is a direct
 translation of the erfinv m file in matlab version 2.0.
@@ -43,6 +77,7 @@ Date:  February 1996
 #define MAXDOUBLE DBL_MAX
 
 #define CENTRAL_RANGE 0.7
+
 scalar sasfit_erfinv(scalar y)
 {
         double x,z,num,dem; /*working variables */

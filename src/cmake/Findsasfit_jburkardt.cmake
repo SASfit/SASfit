@@ -43,7 +43,7 @@ FIND_PATH(sasfit_jburkardt_INCLUDE_DIR sasfit_jburkardt.h
     ${CURRENT_DIR}/sasfit_jburkardt/include/
 )
   
-FIND_LIBRARY(sasfit_frida_LIBRARY sasfit_jburkardt
+FIND_LIBRARY(sasfit_jburkardt_LIBRARY sasfit_jburkardt
     ${CURRENT_DIR}/sasfit_jburkardt/lib/
     ${CURRENT_DIR}/sasfit_jburkardt/lib/debug/
     ${CURRENT_DIR}/sasfit_jburkardt/lib/release/

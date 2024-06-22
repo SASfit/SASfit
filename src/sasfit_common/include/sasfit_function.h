@@ -365,7 +365,7 @@ sasfit_common_DLLEXP scalar sasfit_part_diff_fct(scalar x, sasfit_function * f, 
 
 #include <gsl/gsl_roots.h>
 
-#define MAXROOTITER 15000
+#define MAXROOTITER 30000
 
 typedef struct {
         int dist;

@@ -75,7 +75,6 @@ scalar sasfit_ff_ellipsoidal_shell_0(scalar q, sasfit_param * param)
 
 	Q = q;		// Q
 	P = 2.0;	// pow
-	SIGMA = 0;
 	if (SIGMA==0) {
 		ndim=1;
 		NUMIN = 1;
@@ -118,7 +117,6 @@ scalar sasfit_ff_ellipsoidal_shell_0_f(scalar q, sasfit_param * param)
 
 	Q = q;		// Q
 	P = 1.0;	// pow
-	SIGMA = 0;
 	if (SIGMA==0) {
 		ndim=1;
 		NUMIN = 1;

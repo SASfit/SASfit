@@ -35,7 +35,7 @@ double algdiv ( double *a, double *b )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -138,7 +138,7 @@ double alnrel ( double *a )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -209,7 +209,7 @@ double apser ( double *a, double *b, double *x, double *eps )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -290,7 +290,7 @@ double bcorr ( double *a0, double *b0 )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -376,7 +376,7 @@ double beta ( double a, double b )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -413,7 +413,7 @@ double beta_asym ( double *a, double *b, double *lambda, double *eps )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -584,7 +584,7 @@ double beta_frac ( double *a, double *b, double *x, double *y, double *lambda,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -705,7 +705,7 @@ void beta_grat ( double *a, double *b, double *x, double *y, double *w,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -814,7 +814,7 @@ void beta_inc ( double *a, double *b, double *x, double *y, double *w,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1078,7 +1078,7 @@ void beta_inc_values ( int *n_data, double *a, double *b, double *x,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1188,7 +1188,7 @@ double beta_log ( double *a0, double *b0 )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1328,7 +1328,7 @@ double beta_pser ( double *a, double *b, double *x, double *eps )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1351,7 +1351,7 @@ double beta_pser ( double *a, double *b, double *x, double *eps )
   int i,m;
 
   bpser = 0.0e0;
-  if(*x == 0.0e0) 
+  if(*x == 0.0e0)
   {
     return bpser;
   }
@@ -1446,7 +1446,7 @@ double beta_rcomp ( double *a, double *b, double *x, double *y )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1600,7 +1600,7 @@ double beta_rcomp1 ( int *mu, double *a, double *b, double *x, double *y )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1756,7 +1756,7 @@ double beta_up ( double *a, double *b, double *x, double *y, int *n,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1862,7 +1862,7 @@ void binomial_cdf_values ( int *n_data, int *a, double *b, int *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -1975,7 +1975,7 @@ void cdfbet ( int *which, double *p, double *q, double *x, double *y,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -2342,7 +2342,7 @@ void cdfbin ( int *which, double *p, double *q, double *s, double *xn,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -2714,7 +2714,7 @@ void cdfchi ( int *which, double *p, double *q, double *x, double *df,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -3012,7 +3012,7 @@ void cdfchn ( int *which, double *p, double *q, double *x, double *df,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -3287,7 +3287,7 @@ void cdff ( int *which, double *p, double *q, double *f, double *dfn,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -3655,7 +3655,7 @@ void cdffnc ( int *which, double *p, double *q, double *f, double *dfn,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -3978,7 +3978,7 @@ void cdfgam ( int *which, double *p, double *q, double *x, double *shape,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -4275,7 +4275,7 @@ void cdfnbn ( int *which, double *p, double *q, double *s, double *xn,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -4640,7 +4640,7 @@ void cdfnor ( int *which, double *p, double *q, double *x, double *mean,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -4835,7 +4835,7 @@ void cdfpoi ( int *which, double *p, double *q, double *s, double *xlam,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5075,7 +5075,7 @@ void cdf_t ( int *which, double *p, double *q, double *t, double *df,
 
 //****************************************************************************80
 //
-//  renamed cdft -> cdf_t to avoind conflict with another library 
+//  renamed cdft -> cdf_t to avoind conflict with another library
 //  Purpose:
 //
 //    CDF_T evaluates the CDF of the T distribution.
@@ -5098,7 +5098,7 @@ void cdf_t ( int *which, double *p, double *q, double *t, double *df,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5346,7 +5346,7 @@ void chi_noncentral_cdf_values ( int *n_data, double *x, double *lambda,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5468,7 +5468,7 @@ void chi_square_cdf_values ( int *n_data, int *a, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5569,7 +5569,7 @@ void cumbet ( double *x, double *y, double *a, double *b, double *cum,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5631,7 +5631,7 @@ void cumbin ( double *s, double *xn, double *pr, double *ompr,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5687,7 +5687,7 @@ void cumchi ( double *x, double *df, double *cum, double *ccum )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5742,7 +5742,7 @@ void cumchn ( double *x, double *df, double *pnonc, double *cum,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -5835,7 +5835,7 @@ void cumchn ( double *x, double *df, double *pnonc, double *cum,
 //  of freedom.
 //
   icent = fifidint ( xnonc );
-  if ( icent == 0 ) 
+  if ( icent == 0 )
   {
     icent = 1;
   }
@@ -5967,7 +5967,7 @@ void cumf ( double *f, double *dfn, double *dfd, double *cum, double *ccum )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6062,7 +6062,7 @@ void cumfnc ( double *f, double *dfn, double *dfd, double *pnonc,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6221,7 +6221,7 @@ void cumgam ( double *x, double *a, double *cum, double *ccum )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6275,7 +6275,7 @@ void cumnbn ( double *s, double *xn, double *pr, double *ompr,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6336,7 +6336,7 @@ void cumnor ( double *arg, double *result, double *ccum )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6506,7 +6506,7 @@ void cumpoi ( double *s, double *xlam, double *cum, double *ccum )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6550,7 +6550,7 @@ void cumt ( double *t, double *df, double *cum, double *ccum )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6624,7 +6624,7 @@ double dbetrm ( double *a, double *b )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6667,7 +6667,7 @@ double dexpm1 ( double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6745,7 +6745,7 @@ double dinvnr ( double *p, double *q )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6839,7 +6839,7 @@ void dinvr ( int *status, double *x, double *fx,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6880,7 +6880,7 @@ void dinvr ( int *status, double *x, double *fx,
 //    if F(X) < Y.
 //
 {
-  E0000 ( 0, status, x, fx, qleft, qhi, NULL, NULL, NULL, NULL, NULL, 
+  E0000 ( 0, status, x, fx, qleft, qhi, NULL, NULL, NULL, NULL, NULL,
     NULL, NULL );
 
   return;
@@ -6904,7 +6904,7 @@ double dlanor ( double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -6940,7 +6940,7 @@ double dlanor ( double *x )
   double xx2;
 
   xx = fabs ( *x );
-  if ( xx < 5.0e0 ) 
+  if ( xx < 5.0e0 )
   {
     ftnstop ( "DLANOR: Argument too small.");
   }
@@ -6979,7 +6979,7 @@ double dpmpar ( int *i )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7051,7 +7051,7 @@ void dstinv ( double *zsmall, double *zbig, double *zabsst,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7110,7 +7110,7 @@ void dstinv ( double *zsmall, double *zbig, double *zabsst,
 //     QRZERO.
 //
 {
-  E0000 ( 1, NULL, NULL, NULL, NULL, NULL, zabsst, zabsto, zbig, zrelst, 
+  E0000 ( 1, NULL, NULL, NULL, NULL, NULL, zabsst, zabsto, zbig, zrelst,
     zrelto, zsmall, zstpmu);
 
   return;
@@ -7142,7 +7142,7 @@ double dstrem ( double *z )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7184,7 +7184,7 @@ double dstrem ( double *z )
 //            0.347320283765002252252252252252D12
 //            -0.123696021422692744542517103493D14
 //
-    if(*z <= 0.0e0) 
+    if(*z <= 0.0e0)
     {
       ftnstop ( "Zero or negative argument in DSTREM" );
     }
@@ -7219,7 +7219,7 @@ void dstzr ( double *zxlo, double *zxhi, double *zabstl, double *zreltl )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7284,7 +7284,7 @@ double dt1 ( double *p, double *q, double *df )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7354,7 +7354,7 @@ void dzror ( int *status, double *x, double *fx, double *xlo,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7425,7 +7425,7 @@ static void E0000 ( int IENTRY, int *status, double *x, double *fx,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7446,7 +7446,7 @@ static void E0000 ( int IENTRY, int *status, double *x, double *fx,
 DINVR:
     if(*status > 0) goto S310;
     qcond = !qxmon(small,*x,big);
-    if(qcond) 
+    if(qcond)
     {
       ftnstop(" SMALL, X, BIG not monotone in INVR");
     }
@@ -7649,7 +7649,7 @@ static void E0001 ( int IENTRY, int *status, double *x, double *fx,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7830,7 +7830,7 @@ void erf_values ( int *n_data, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7908,7 +7908,7 @@ double error_f ( double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -7991,7 +7991,7 @@ double error_fc ( int *ind, double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8120,7 +8120,7 @@ double esum ( int *mu, double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8173,7 +8173,7 @@ double eval_pol ( double a[], int *n, double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8220,7 +8220,7 @@ double exparg ( int *l )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8288,7 +8288,7 @@ void f_cdf_values ( int *n_data, int *a, int *b, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8396,7 +8396,7 @@ void f_noncentral_cdf_values ( int *n_data, int *a, int *b, double *lambda,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8510,7 +8510,7 @@ double fifdint ( double a )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8538,7 +8538,7 @@ double fifdmax1 ( double a, double b )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8578,7 +8578,7 @@ double fifdmin1 ( double a, double b )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8594,11 +8594,11 @@ double fifdmin1 ( double a, double b )
 {
   double value;
 
-  if ( a < b ) 
+  if ( a < b )
   {
     value = a;
   }
-  else 
+  else
   {
     value = b;
   }
@@ -8616,7 +8616,7 @@ double fifdsign ( double mag, double sign )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8645,7 +8645,7 @@ long fifidint ( double a )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8677,7 +8677,7 @@ long fifmod ( long a, long b )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8713,7 +8713,7 @@ double fpser ( double *a, double *b, double *x, double *eps )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8743,7 +8743,7 @@ double fpser ( double *a, double *b, double *x, double *eps )
     if(*a <= 1.e-3**eps) goto S10;
     fpser = 0.0e0;
     t = *a*log(*x);
-    if(t < exparg(&K1)) 
+    if(t < exparg(&K1))
     {
       return fpser;
     }
@@ -8778,7 +8778,7 @@ void ftnstop ( char *msg )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8805,7 +8805,7 @@ double gam1 ( double *a )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -8880,7 +8880,7 @@ void gamma_inc ( double *a, double *x, double *ans, double *qans, int *ind )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -9313,7 +9313,7 @@ void gamma_inc_inv ( double *a, double *x, double *x0, double *p, double *q,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -9688,7 +9688,7 @@ void gamma_inc_values ( int *n_data, double *a, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -9774,7 +9774,7 @@ double gamma_ln1 ( double *a )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -9842,7 +9842,7 @@ double gamma_log ( double *a )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -9919,7 +9919,7 @@ void gamma_rat1 ( double *a, double *x, double *r, double *p, double *q,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -10061,7 +10061,7 @@ void gamma_values ( int *n_data, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -10142,7 +10142,7 @@ double gamma_x ( double *a )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -10307,7 +10307,7 @@ double gsumln ( double *a, double *b )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -10391,7 +10391,7 @@ int ipmpar ( int *i )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -10801,7 +10801,7 @@ void negative_binomial_cdf_values ( int *n_data, int *f, int *s, double *p,
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -10918,7 +10918,7 @@ void normal_cdf_values ( int *n_data, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11000,7 +11000,7 @@ void poisson_cdf_values ( int *n_data, double *a, int *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11099,7 +11099,7 @@ double psi ( double *xx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11283,7 +11283,7 @@ void psi_values ( int *n_data, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11357,7 +11357,7 @@ double rcomp ( double *a, double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11408,7 +11408,7 @@ double rexp ( double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11453,7 +11453,7 @@ double rlog ( double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11518,7 +11518,7 @@ double rlog1 ( double *x )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11583,7 +11583,7 @@ void student_cdf_values ( int *n_data, int *a, double *x, double *fx )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //
@@ -11674,7 +11674,7 @@ double stvaln ( double *p )
 //
 //  Licensing:
 //
-//    This code is distributed under the MIT license. 
+//    This code is distributed under the MIT license.
 //
 //  Modified:
 //

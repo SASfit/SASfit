@@ -49,8 +49,9 @@ scalar sasfit_ff_spheroid_nu(scalar q, sasfit_param * param)
 
 	Q = q;		// Q
 	P = 2.0;	// pow
-	SIGMA = 0;
 	T = 0;
+	X_CORE = 0;
+	X_SHELL = 0;
 	if (SIGMA==0) {
 		ndim=1;
 		NUMIN = 1;
@@ -91,8 +92,9 @@ scalar sasfit_ff_spheroid_nu_f(scalar q, sasfit_param * param)
 
 	Q = q;		// Q
 	P = 1.0;	// pow
-	SIGMA = 0;
 	T = 0.0;
+	X_CORE = 0;
+	X_SHELL = 0;
 	if (SIGMA==0) {
 		ndim=1;
 		NUMIN = 1;
