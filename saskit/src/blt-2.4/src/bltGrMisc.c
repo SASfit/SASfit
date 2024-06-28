@@ -276,12 +276,10 @@ StringToColorPair(clientData, interp, tkwin, string, widgRec, offset)
 	    result = TCL_OK;
 	    break;
 	case 1:
-	    result = GetColorPair(interp, tkwin, colors[0], "", &sample,
-		allowDefault);
+	    result = GetColorPair(interp, tkwin, colors[0], "", &sample, allowDefault);
 	    break;
 	case 2:
-	    result = GetColorPair(interp, tkwin, colors[0], colors[1],
-		&sample, allowDefault);
+	    result = GetColorPair(interp, tkwin, colors[0], colors[1], &sample, allowDefault);
 	    break;
 	default:
 	    result = TCL_ERROR;

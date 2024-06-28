@@ -1454,8 +1454,7 @@ RestoreNode(TreeCmd *cmdPtr, int argc, CONST84 char **argv, RestoreData *dataPtr
     Blt_Free(elemArr);
     if (!(dataPtr->flags & RESTORE_NO_TAGS)) {
 	/* Parse the tag list. */
-	if (Tcl_SplitList(cmdPtr->interp, argv[1], &nElem, &elemArr) 
-	    != TCL_OK) {
+	if (Tcl_SplitList(cmdPtr->interp, argv[1], &nElem, &elemArr) != TCL_OK) {
 	    return TCL_ERROR;
 	}
 	for (i = 0; i < nElem; i++) {

@@ -2605,8 +2605,7 @@ GetTags(table, object, context, list)
 	     * tabs can share the strings. It's likely that they will.  The
 	     * down side is that the same string is split over an over again. 
 	     */
-	    if (Tcl_SplitList((Tcl_Interp *)NULL, tabPtr->tags, &nNames, 
-		      &names) == TCL_OK) {
+	    if (Tcl_SplitList((Tcl_Interp *)NULL, tabPtr->tags, &nNames, &names) == TCL_OK) {
 		for (p = names; *p != NULL; p++) {
 		    Blt_ListAppend(list, MakeTag(setPtr, *p), 0);
 		}
