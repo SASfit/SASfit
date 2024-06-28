@@ -111,7 +111,7 @@ static int AddEnsemblePart _ANSI_ARGS_((Tcl_Interp *interp,
 
 static void DeleteEnsemble _ANSI_ARGS_((ClientData clientData));
 
-static int FindEnsemble _ANSI_ARGS_((Tcl_Interp *interp, char **nameArgv,
+static int FindEnsemble _ANSI_ARGS_((Tcl_Interp *interp, CONST84 char **nameArgv,
     int nameArgc, Ensemble** ensDataPtr));
 
 static int CreateEnsemblePart _ANSI_ARGS_((Tcl_Interp *interp,
@@ -211,7 +211,7 @@ Itcl_CreateEnsemble(interp, ensName)
     Tcl_Interp *interp;            /* interpreter to be updated */
     CONST char* ensName;           /* name of the new ensemble */
 {
-    char **nameArgv = NULL;
+    CONST84 char **nameArgv = NULL;
     int nameArgc;
     Ensemble *parentEnsData;
     Tcl_DString buffer;
@@ -318,7 +318,7 @@ Itcl_AddEnsemblePart(interp, ensName, partName, usageInfo,
     ClientData clientData;         /* client data associated with part */
     Tcl_CmdDeleteProc *deleteProc; /* procedure used to destroy client data */
 {
-    char **nameArgv = NULL;
+    CONST84 char **nameArgv = NULL;
     int nameArgc;
     Ensemble *ensData;
     EnsemblePart *ensPart;
@@ -395,7 +395,7 @@ Itcl_GetEnsemblePart(interp, ensName, partName, infoPtr)
     CONST char *partName;          /* name of the desired part */
     Tcl_CmdInfo *infoPtr;          /* returns: info associated with part */
 {
-    char **nameArgv = NULL;
+    CONST84 char **nameArgv = NULL;
     int nameArgc;
     Ensemble *ensData;
     EnsemblePart *ensPart;
@@ -507,7 +507,7 @@ Itcl_GetEnsembleUsage(interp, ensName, objPtr)
     CONST char *ensName;         /* name of the ensemble */
     Tcl_Obj *objPtr;       /* returns: summary of usage info */
 {
-    char **nameArgv = NULL;
+    CONST84 char **nameArgv = NULL;
     int nameArgc;
     Ensemble *ensData;
     Itcl_InterpState state;
@@ -956,7 +956,7 @@ DeleteEnsemble(clientData)
 static int
 FindEnsemble(interp, nameArgv, nameArgc, ensDataPtr)
     Tcl_Interp *interp;            /* interpreter containing the ensemble */
-    char **nameArgv;               /* path of names leading to ensemble */
+    CONST84 char **nameArgv;               /* path of names leading to ensemble */
     int nameArgc;                  /* number of strings in nameArgv */
     Ensemble** ensDataPtr;         /* returns: ensemble data */
 {

@@ -1150,7 +1150,7 @@ Itcl_ScopedVarResolver(interp, name, contextNs, flags, rPtr)
     Tcl_Var *rPtr;             /* returns: resolved variable */
 {
     int namec;
-    char **namev;
+    CONST84 char **namev;
     Tcl_Interp *errs;
     Tcl_CmdInfo cmdInfo;
     ItclObject *contextObj;

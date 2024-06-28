@@ -399,7 +399,7 @@ TCL_EXTERN(int)		Itcl_ChangeMemberFunc _ANSI_ARGS_((
 #ifndef Itcl_DeleteMemberFunc_TCL_DECLARED
 #define Itcl_DeleteMemberFunc_TCL_DECLARED
 /* 56 */
-TCL_EXTERN(void)	Itcl_DeleteMemberFunc _ANSI_ARGS_((CONST char* cdata));
+TCL_EXTERN(void)	Itcl_DeleteMemberFunc _ANSI_ARGS_((char* cdata));
 #endif
 #ifndef Itcl_CreateMemberCode_TCL_DECLARED
 #define Itcl_CreateMemberCode_TCL_DECLARED
@@ -412,7 +412,7 @@ TCL_EXTERN(int)		Itcl_CreateMemberCode _ANSI_ARGS_((
 #ifndef Itcl_DeleteMemberCode_TCL_DECLARED
 #define Itcl_DeleteMemberCode_TCL_DECLARED
 /* 58 */
-TCL_EXTERN(void)	Itcl_DeleteMemberCode _ANSI_ARGS_((CONST char* cdata));
+TCL_EXTERN(void)	Itcl_DeleteMemberCode _ANSI_ARGS_((char* cdata));
 #endif
 #ifndef Itcl_GetMemberCode_TCL_DECLARED
 #define Itcl_GetMemberCode_TCL_DECLARED
@@ -853,9 +853,9 @@ typedef struct ItclIntStubs {
     int (*itcl_CreateProc) _ANSI_ARGS_((Tcl_Interp* interp, ItclClass * cdefn, CONST char* name, CONST char* arglist, CONST char* body)); /* 53 */
     int (*itcl_CreateMemberFunc) _ANSI_ARGS_((Tcl_Interp* interp, ItclClass * cdefn, CONST char* name, CONST char* arglist, CONST char* body, ItclMemberFunc** mfuncPtr)); /* 54 */
     int (*itcl_ChangeMemberFunc) _ANSI_ARGS_((Tcl_Interp* interp, ItclMemberFunc* mfunc, CONST char* arglist, CONST char* body)); /* 55 */
-    void (*itcl_DeleteMemberFunc) _ANSI_ARGS_((CONST char* cdata)); /* 56 */
+    void (*itcl_DeleteMemberFunc) _ANSI_ARGS_((char* cdata)); /* 56 */
     int (*itcl_CreateMemberCode) _ANSI_ARGS_((Tcl_Interp* interp, ItclClass * cdefn, CONST char* arglist, CONST char* body, ItclMemberCode** mcodePtr)); /* 57 */
-    void (*itcl_DeleteMemberCode) _ANSI_ARGS_((CONST char* cdata)); /* 58 */
+    void (*itcl_DeleteMemberCode) _ANSI_ARGS_((char* cdata)); /* 58 */
     int (*itcl_GetMemberCode) _ANSI_ARGS_((Tcl_Interp* interp, ItclMember* member)); /* 59 */
     void *reserved60;
     int (*itcl_EvalMemberCode) _ANSI_ARGS_((Tcl_Interp * interp, ItclMemberFunc * mfunc, ItclMember * member, ItclObject * contextObj, int objc, Tcl_Obj *CONST objv[])); /* 61 */

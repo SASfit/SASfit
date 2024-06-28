@@ -247,14 +247,14 @@ declare 55 generic {
         CONST char* arglist, CONST char* body)
 }
 declare 56 generic {
-    void Itcl_DeleteMemberFunc (CONST char* cdata)
+    void Itcl_DeleteMemberFunc (char* cdata)
 }
 declare 57 generic {
     int Itcl_CreateMemberCode (Tcl_Interp* interp, ItclClass *cdefn, \
         CONST char* arglist, CONST char* body, ItclMemberCode** mcodePtr)
 }
 declare 58 generic {
-    void Itcl_DeleteMemberCode (CONST char* cdata)
+    void Itcl_DeleteMemberCode (char* cdata)
 }
 declare 59 generic {
     int Itcl_GetMemberCode (Tcl_Interp* interp, ItclMember* member)
