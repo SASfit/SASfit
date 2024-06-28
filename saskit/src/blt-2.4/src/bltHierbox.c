@@ -1082,7 +1082,7 @@ static void DrawButton _ANSI_ARGS_((Hierbox *hboxPtr, Tree * treePtr,
 static void DisplayHierbox _ANSI_ARGS_((ClientData clientData));
 static void HierboxInstCmdDeleteProc _ANSI_ARGS_((ClientData clientdata));
 static int HierboxInstCmd _ANSI_ARGS_((ClientData clientdata,
-	Tcl_Interp *interp, int argc, char **argv));
+	Tcl_Interp *interp, int argc, CONST84 char **argv));
 static void EventuallyRedraw _ANSI_ARGS_((Hierbox *hboxPtr));
 static void SelectCmdProc _ANSI_ARGS_((ClientData clientData));
 static void EventuallyInvokeSelectCmd _ANSI_ARGS_((Hierbox *hboxPtr));
@@ -1160,7 +1160,7 @@ StringToScrollMode(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ScrollModeToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1237,7 +1237,7 @@ StringToButton(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ButtonToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1363,7 +1363,7 @@ StringToImages(clientData, interp, tkwin, string, widgRec, offset)
     imageArr = NULL;
     if ((string != NULL) && (*string != '\0')) {
 	int nNames;
-	char **nameArr;
+	CONST84 char **nameArr;
 
 	if (Tcl_SplitList(interp, string, &nNames, &nameArr) != TCL_OK) {
 	    return TCL_ERROR;
@@ -1409,7 +1409,7 @@ StringToImages(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ImagesToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1488,7 +1488,7 @@ StringToSeparator(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 SeparatorToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -2259,7 +2259,7 @@ FindPath(hboxPtr, rootPtr, path)
 	return FindComponent(rootPtr, path);
     } 
     if (hboxPtr->separator == SEPARATOR_LIST) {
-	char **nameArr;
+	CONST84 char **nameArr;
 	int nComp;
 	register int i;
 
@@ -3205,11 +3205,10 @@ GetTags(table, object, context, list)
     treePtr = (Tree *) object;
     if (treePtr->entryPtr->tags != NULL) {
 	int nNames;
-	char **names;
+	CONST84 char **names;
 	register char **p;
 
-	if (Tcl_SplitList((Tcl_Interp *)NULL, treePtr->entryPtr->tags, &nNames,
-		&names) == TCL_OK) {
+	if (Tcl_SplitList((Tcl_Interp *)NULL, treePtr->entryPtr->tags, &nNames, &names) == TCL_OK) {
 	    for (p = names; *p != NULL; p++) {
 		Blt_ListAppend(list, Tk_GetUid(*p), 0);
 	    }
@@ -3309,7 +3308,7 @@ ConfigureEntry(hboxPtr, entryPtr, argc, argv, flags)
     Hierbox *hboxPtr;
     Entry *entryPtr;
     int argc;
-    char **argv;
+    CONST84 char **argv;
     int flags;
 {
     GC newGC;
@@ -3926,7 +3925,7 @@ ConfigureHierbox(interp, hboxPtr, argc, argv, flags)
     Hierbox *hboxPtr;		/* Information about widget; may or may not
 			         * already have values for some fields. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
     int flags;
 {
     XGCValues gcValues;
@@ -5492,7 +5491,7 @@ ButtonConfigureOp(hboxPtr, interp, argc, argv)
     Hierbox *hboxPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     /* Figure out where the option value pairs begin */
     argc -= 3;
@@ -5544,7 +5543,7 @@ ButtonOp(hboxPtr, interp, argc, argv)
     Hierbox *hboxPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -5825,7 +5824,7 @@ ConfigureOpOp(hboxPtr, interp, argc, argv)
     Hierbox *hboxPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int nIds, nOpts;
     char **options;
@@ -6520,7 +6519,7 @@ EntryOp(hboxPtr, interp, argc, argv)
     Hierbox *hboxPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -7194,7 +7193,7 @@ InsertOp(hboxPtr, interp, argc, argv)
     Hierbox *hboxPtr;
     Tcl_Interp *interp;
     int argc;			/* Not used. */
-    char **argv;
+    CONST84 char **argv;
 {
     Tree *rootPtr, *nodePtr, *parentPtr;
     int position;
@@ -7204,7 +7203,7 @@ InsertOp(hboxPtr, interp, argc, argv)
     register int i, l;
     int nOpts;
     char **options;
-    char **nameArr;
+    CONST84 char **nameArr;
 
     rootPtr = hboxPtr->rootPtr;
     if ((argv[2][0] == '-') && (strcmp(argv[2], "-at") == 0)) {
@@ -8185,7 +8184,7 @@ SelectionOp(hboxPtr, interp, argc, argv)
     Hierbox *hboxPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -8408,7 +8407,7 @@ HierboxInstCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Information about the widget. */
     Tcl_Interp *interp;		/* Interpreter to report errors back to. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Vector of argument strings. */
+    CONST84 char **argv;		/* Vector of argument strings. */
 {
     Blt_Op proc;
     Hierbox *hboxPtr = clientData;
@@ -8652,7 +8651,7 @@ EntrySelectionOp(hboxPtr, interp, argc, argv)
     Hierbox *hboxPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

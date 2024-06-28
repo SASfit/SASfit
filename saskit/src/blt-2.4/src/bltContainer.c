@@ -556,7 +556,7 @@ CmdSearch(display, window, searchPtr)
 {
     Blt_Chain *chainPtr;
     int cmdArgc;
-    char **cmdArgv;
+    CONST84 char *CONST *cmdArgv;
 
     if (XGetCommand(display, window, &cmdArgv, &cmdArgc)) {
 	char *string;
@@ -925,7 +925,7 @@ StringToXID(clientData, interp, parent, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 XIDToString(clientData, parent, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window parent;		/* Not used. */
@@ -1161,7 +1161,7 @@ ConfigureContainer(interp, cntrPtr, argc, argv, flags)
 			         * may not already have values for
 			         * some fields. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
     int flags;
 {
     XGCValues gcValues;
@@ -1668,7 +1668,7 @@ ContainerInstCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Information about the widget. */
     Tcl_Interp *interp;		/* Interpreter to report errors back to. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Vector of argument strings. */
+    CONST84 char **argv;		/* Vector of argument strings. */
 {
     Blt_Op proc;
     Container *cntrPtr = clientData;

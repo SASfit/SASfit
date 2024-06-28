@@ -413,7 +413,7 @@ ConfigureBusy(interp, busyPtr, argc, argv)
     Tcl_Interp *interp;
     Busy *busyPtr;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Tk_Cursor oldCursor;
 
@@ -1142,7 +1142,7 @@ BusyCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Interpreter-specific data. */
     Tcl_Interp *interp;		/* Interpreter associated with command */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

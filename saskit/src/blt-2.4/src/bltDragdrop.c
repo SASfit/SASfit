@@ -1060,7 +1060,7 @@ ConfigureToken(interp, srcPtr, argc, argv)
     Tcl_Interp *interp;
     Source *srcPtr;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Token *tokenPtr;
 
@@ -1280,7 +1280,7 @@ ConfigureSource(interp, srcPtr, argc, argv, flags)
     Tcl_Interp *interp;		/* current interpreter */
     register Source *srcPtr;	/* drag&drop source widget record */
     int argc;			/* number of arguments */
-    char **argv;		/* argument strings */
+    CONST84 char **argv;		/* argument strings */
     int flags;			/* flags controlling interpretation */
 {
     unsigned long gcMask;
@@ -1744,7 +1744,7 @@ OverTarget(srcPtr, x, y)
     int virtX, virtY;
     int dummy;
     AnyWindow *newPtr, *oldPtr;
-    char **elemArr;
+    CONST84 char **elemArr;
     int nElems;
     char *data;
     int result;

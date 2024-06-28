@@ -1279,7 +1279,7 @@ StringToCoordinates(clientData, interp, tkwin, string, widgRec, offset)
 {
     Marker *markerPtr = (Marker *)widgRec;
     int nExprs;
-    char **exprArr;
+    CONST84 char **exprArr;
     int result;
 
     nExprs = 0;
@@ -1313,7 +1313,7 @@ StringToCoordinates(clientData, interp, tkwin, string, widgRec, offset)
  * ----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 CoordinatesToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -4265,13 +4265,13 @@ ConfigureOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Marker *markerPtr;
     int flags = TK_CONFIG_ARGV_ONLY;
     char *oldName;
     int nNames, nOpts;
-    char **options;
+    CONST84 char **options;
     register int i;
     int under;
 
@@ -4768,7 +4768,7 @@ Blt_MarkerOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

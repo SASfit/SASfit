@@ -614,7 +614,7 @@ extern void Blt_MapMarkers _ANSI_ARGS_((Graph *graphPtr));
 extern void Blt_MapGrid _ANSI_ARGS_((Graph *graphPtr));
 extern void Blt_UpdateCrosshairs _ANSI_ARGS_((Graph *graphPtr));
 extern void Blt_DestroyPens _ANSI_ARGS_((Graph *graphPtr));
-extern int Blt_GetPen _ANSI_ARGS_((Graph *graphPtr, char *name, 
+extern int Blt_GetPen _ANSI_ARGS_((Graph *graphPtr, CONST84 char *name, 
 	Blt_Uid classUid, Pen **penPtrPtr));
 extern Pen *Blt_BarPen _ANSI_ARGS_((char *penName));
 extern Pen *Blt_LinePen _ANSI_ARGS_((char *penName));
@@ -625,19 +625,19 @@ extern int Blt_InitBarPens _ANSI_ARGS_((Graph *graphPtr));
 extern void Blt_FreePen _ANSI_ARGS_((Graph *graphPtr, Pen *penPtr));
 
 extern int Blt_VirtualAxisOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 extern int Blt_AxisOp _ANSI_ARGS_((Graph *graphPtr, int margin, int argc, 
-	char **argv));
+	CONST84 char **argv));
 extern int Blt_ElementOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv, Blt_Uid classUid));
+	int argc, CONST84 char **argv, Blt_Uid classUid));
 extern int Blt_GridOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 extern int Blt_CrosshairsOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 extern int Blt_MarkerOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 extern int Blt_PenOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 extern int Blt_PointInPolygon _ANSI_ARGS_((Point2D *samplePtr, 
 	Point2D *screenPts, int nScreenPts));
 extern int Blt_RegionInPolygon _ANSI_ARGS_((Extents2D *extsPtr, Point2D *points,
@@ -645,7 +645,7 @@ extern int Blt_RegionInPolygon _ANSI_ARGS_((Extents2D *extsPtr, Point2D *points,
 extern int Blt_PointInSegments _ANSI_ARGS_((Point2D *samplePtr, 
 	Segment2D *segments, int nSegments, double halo));
 extern int Blt_PostScriptOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 extern int Blt_GraphUpdateNeeded _ANSI_ARGS_((Graph *graphPtr));
 extern int Blt_DefaultAxes _ANSI_ARGS_((Graph *graphPtr));
 extern Axis *Blt_GetFirstAxis _ANSI_ARGS_((Blt_Chain *chainPtr));

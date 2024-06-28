@@ -2387,7 +2387,7 @@ Blt_TupleCreateTrace(
 	CONST char **keys;
 	int nKeys;
 
-	if (Tcl_SplitList(clientPtr->interp, keyList, &nKeys, (char ***)&keys) 
+	if (Tcl_SplitList(clientPtr->interp, keyList, &nKeys, (CONST84 char ***)&keys) 
 	    != TCL_OK) {
 	    Blt_Free(tracePtr);
 	    return NULL;

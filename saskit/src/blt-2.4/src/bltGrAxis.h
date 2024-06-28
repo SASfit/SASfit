@@ -169,7 +169,7 @@ typedef struct {
 				 * no axis lines or ticks are
 				 * drawn. */
 
-    char **limitsFormats;	/* One or two strings of sprintf-like
+    CONST84 char **limitsFormats;	/* One or two strings of sprintf-like
 				 * formats describing how to display
 				 * virtual axis limits. If NULL,
 				 * display no limits. */

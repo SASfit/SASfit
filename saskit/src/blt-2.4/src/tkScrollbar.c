@@ -805,7 +805,7 @@ ConfigureScrollbar(interp, scrollPtr, argc, argv, flags)
 					 * may not already have values for
 					 * some fields. */
     int argc;			/* Number of valid entries in argv. */
-    char **argv;		/* Arguments. */
+    CONST84 char **argv;		/* Arguments. */
     int flags;			/* Flags to pass to
 					 * Tk_ConfigureWidget. */
 {

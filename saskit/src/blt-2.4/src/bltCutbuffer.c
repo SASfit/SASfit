@@ -218,7 +218,7 @@ CutbufferCmd(clientData, interp, argc, argv)
 				 * interpreter.*/
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     Tk_Window tkwin;
     Blt_Op proc;

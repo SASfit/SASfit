@@ -305,7 +305,7 @@ static void ScrollbarEventProc _ANSI_ARGS_((ClientData clientData,
 static int ScrollbarPosition _ANSI_ARGS_((Scrollbar *scrollPtr,
 	int x, int y));
 static int ScrollbarWidgetCmd _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *, int argc, char **argv));
+	Tcl_Interp *, int argc, CONST84 char **argv));
 
 /*
  *--------------------------------------------------------------
@@ -437,7 +437,7 @@ ScrollbarWidgetCmd(clientData, interp, argc, argv)
 					 * widget. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     register Scrollbar *scrollPtr = clientData;
     char string[200];
@@ -806,7 +806,7 @@ ConfigureScrollbar(interp, scrollPtr, argc, argv, flags)
 					 * may not already have values for
 					 * some fields. */
     int argc;			/* Number of valid entries in argv. */
-    char **argv;		/* Arguments. */
+    CONST84 char **argv;		/* Arguments. */
     int flags;			/* Flags to pass to
 					 * Tk_ConfigureWidget. */
 {

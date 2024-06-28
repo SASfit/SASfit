@@ -1183,7 +1183,7 @@ Blt_FontToPostScript(tokenPtr, font)
 	       0);
 	if (fontInfo != NULL) {
 	    int nProps;
-	    char **propArr = NULL;
+	    CONST84 char **propArr = NULL;
 
 	    if (Tcl_SplitList(interp, fontInfo, &nProps, &propArr) == TCL_OK) {
 		int newSize;

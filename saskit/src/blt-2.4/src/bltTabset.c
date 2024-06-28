@@ -233,28 +233,28 @@ extern Tk_CustomOption bltTileOption;
 extern Tk_CustomOption bltUidOption;
 
 static int StringToImage _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 static char *ImageToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtrPtr));
 
 static int StringToWindow _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 static char *WindowToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtrPtr));
 
 static int StringToSide _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 static char *SideToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtrPtr));
 
 static int StringToSlant _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 static char *SlantToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
@@ -2596,7 +2596,7 @@ GetTags(table, object, context, list)
 	Blt_ListAppend(list, MakeTag(setPtr, tabPtr->name), 0);
 	if (tabPtr->tags != NULL) {
 	    int nNames;
-	    char **names;
+	    CONST84 char **names;
 	    register char **p;
 	    
 	    /* 
@@ -2804,7 +2804,7 @@ ConfigureTabset(interp, setPtr, argc, argv, flags)
 			         * may not already have values for
 			         * some fields. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
     int flags;
 {
     XGCValues gcValues;
@@ -3260,7 +3260,7 @@ InsertOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;			/* Not used. */
-    char **argv;
+    CONST84 char **argv;
 {
     Tab *tabPtr;
     register int i;
@@ -3785,10 +3785,10 @@ TabConfigureOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int nTabs, nOpts, result;
-    char **options;
+    CONST84 char **options;
     register int i;
     Tab *tabPtr;
 
@@ -4034,7 +4034,7 @@ TabOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -4155,7 +4155,7 @@ PerforationOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -5729,7 +5729,7 @@ TabsetInstCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Information about the widget. */
     Tcl_Interp *interp;		/* Interpreter to report errors back to. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Vector of argument strings. */
+    CONST84 char **argv;		/* Vector of argument strings. */
 {
     Blt_Op proc;
     Tabset *setPtr = clientData;

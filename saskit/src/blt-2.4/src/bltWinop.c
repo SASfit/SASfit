@@ -511,7 +511,7 @@ ConvolveOp(clientData, interp, argc, argv)
     Blt_ColorImage srcImage, destImage;
     Filter2D filter;
     int nValues;
-    char **valueArr;
+    CONST84 char **valueArr;
     double *kernel;
     double value, sum;
     register int i;
@@ -1036,7 +1036,7 @@ ImageOp(clientData, interp, argc, argv)
     ClientData clientData;	/* Main window of interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     Blt_Op proc;
     int result;
@@ -1087,7 +1087,7 @@ WinopCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Main window of interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     Blt_Op proc;
     int result;

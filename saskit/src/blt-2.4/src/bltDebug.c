@@ -104,8 +104,7 @@ DebugProc(clientData, interp, level, command, proc, cmdClientData,
     Tcl_CmdProc *proc;		/* Not used. */
     ClientData cmdClientData;	/* Not used. */
     int argc;
-    char **argv;		/* Command after parsing, but before
-				 * evaluation */
+    CONST84 char *CONST *argv;	/* Command after parsing, but before evaluation */
 {
     static unsigned char traceStack[200];
     register int i;

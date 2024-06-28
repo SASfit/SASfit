@@ -220,7 +220,7 @@ static void FrameCmdDeletedProc _ANSI_ARGS_((
 static void FrameEventProc _ANSI_ARGS_((ClientData clientData,
 	XEvent *eventPtr));
 static int FrameWidgetCmd _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, int argc, char **argv));
+	Tcl_Interp *interp, int argc, CONST84 char **argv));
 static void MapFrame _ANSI_ARGS_((ClientData clientData));
 
 static Blt_TileChangedProc TileChangedProc;
@@ -558,7 +558,7 @@ FrameWidgetCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Information about frame widget. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     register Frame *framePtr = (Frame *) clientData;
     int result;
@@ -726,7 +726,7 @@ ConfigureFrame(interp, framePtr, argc, argv, flags)
     register Frame *framePtr;	/* Information about widget;  may or may
 				 * not already have values for some fields. */
     int argc;			/* Number of valid entries in argv. */
-    char **argv;		/* Arguments. */
+    CONST84 char **argv;		/* Arguments. */
     int flags;			/* Flags to pass to Tk_ConfigureWidget. */
 {
 #if (TK_MAJOR_VERSION > 4)

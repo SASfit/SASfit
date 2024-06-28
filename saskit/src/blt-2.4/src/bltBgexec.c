@@ -404,7 +404,7 @@ static Blt_SwitchSpec switchSpecs[] =
 };
 
 static char *VariableProc _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, char *part1, char *part2, int flags));
+	Tcl_Interp *interp, CONST84 char *part1, CONST84 char *part2, int flags));
 static void TimerProc _ANSI_ARGS_((ClientData clientData));
 static void StdoutProc _ANSI_ARGS_((ClientData clientData, int mask));
 static void StderrProc _ANSI_ARGS_((ClientData clientData, int mask));
@@ -1504,8 +1504,8 @@ static char *
 VariableProc(
     ClientData clientData,	/* File output information. */
     Tcl_Interp *interp,
-    char *part1,
-    char *part2,		/* Not Used. */
+    CONST84 char *part1,
+    CONST84 char *part2,		/* Not Used. */
     int flags)
 {
     if (flags & TRACE_FLAGS) {

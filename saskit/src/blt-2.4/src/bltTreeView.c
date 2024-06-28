@@ -2466,7 +2466,7 @@ GetTags(
 {
     TreeView *tvPtr;
     int nNames;
-    char **names;
+    CONST84 char **names;
     register char **p;
 
     tvPtr = Blt_GetBindingData(table);

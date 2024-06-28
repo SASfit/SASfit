@@ -941,7 +941,7 @@ StringToBitmap(interp, tkwin, symbolPtr, string)
     char *string;
 {
     Pixmap bitmap, mask;
-    char **elemArr;
+    CONST84 char **elemArr;
     int nElems;
     int result;
 
@@ -986,7 +986,7 @@ StringToBitmap(interp, tkwin, symbolPtr, string)
 }
 
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 PatternToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;
@@ -1167,7 +1167,7 @@ or the name of a bitmap", (char *)NULL);
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 SymbolToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;
@@ -1268,7 +1268,7 @@ linear, step, natural, or quadratic", (char *)NULL);
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 SmoothToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1367,7 +1367,7 @@ NameOfPenDir(penDir)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 PenDirToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */

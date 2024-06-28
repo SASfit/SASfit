@@ -1006,11 +1006,11 @@ Blt_GetOp(interp, nSpecs, specArr, operPos, argc, argv, flags)
     int operPos;		/* Index of the operation name argument */
     int argc;			/* Number of arguments in the argument vector.
 				 * This includes any prefixed arguments */
-    char *argv[];		/* Argument vector */
+    CONST84 char *argv[];		/* Argument vector */
     int flags;			/*  */
 {
     Blt_OpSpec *specPtr;
-    char *string;
+    CONST84 char *string;
     register int i;
     register int n;
 
@@ -1278,7 +1278,7 @@ static int
 Crc32Cmd(
    ClientData clientData,
    Tcl_Interp *interp, 
-   int argc, char **argv)
+   int argc, CONST84 char **argv)
 {
     register unsigned int crc;
     char buf[200];

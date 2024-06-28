@@ -35,7 +35,7 @@
 #include "bltTile.h"
 
 static int StringToFill _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
 static char *FillToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
@@ -46,7 +46,7 @@ Tk_CustomOption bltFillOption =
 };
 
 static int StringToPad _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 static char *PadToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
 	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
@@ -57,7 +57,7 @@ Tk_CustomOption bltPadOption =
 };
 
 static int StringToDistance _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
 static char *DistanceToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
@@ -78,7 +78,7 @@ Tk_CustomOption bltAnyDistanceOption =
 };
 
 static int StringToCount _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
 static char *CountToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
@@ -94,7 +94,7 @@ Tk_CustomOption bltPositiveCountOption =
 };
 
 static int StringToDashes _ANSI_ARGS_((ClientData, Tcl_Interp *, Tk_Window,
-	char *, char *, int));
+	CONST84 char *, char *, int));
 static char *DashesToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
@@ -104,7 +104,7 @@ Tk_CustomOption bltDashesOption =
 };
 
 static int StringToShadow _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
-	Tk_Window tkwin, char *string, char *widgRec, int offset));
+	Tk_Window tkwin, CONST84 char *string, char *widgRec, int offset));
 static char *ShadowToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
 	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
@@ -114,7 +114,7 @@ Tk_CustomOption bltShadowOption =
 };
 
 static int StringToUid _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
 static char *UidToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
@@ -125,7 +125,7 @@ Tk_CustomOption bltUidOption =
 };
 
 static int StringToState _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
 static char *StateToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
@@ -136,7 +136,7 @@ Tk_CustomOption bltStateOption =
 };
 
 static int StringToList _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
-	Tk_Window tkwin, char *string, char *widgRec, int flags));
+	Tk_Window tkwin, CONST84 char *string, char *widgRec, int flags));
 static char *ListToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
@@ -146,7 +146,7 @@ Tk_CustomOption bltListOption =
 };
 
 static int StringToTile _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
-	Tk_Window tkwin, char *value, char *widgRec, int flags));
+	Tk_Window tkwin, CONST84 char *value, char *widgRec, int flags));
 static char *TileToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
 	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
@@ -550,7 +550,7 @@ StringToPad(clientData, interp, tkwin, string, widgRec, offset)
     Blt_Pad *padPtr = (Blt_Pad *)(widgRec + offset);
     int nElem;
     int pad, result;
-    char **padArr;
+    CONST84  char **padArr;
 
     if (Tcl_SplitList(interp, string, &nElem, &padArr) != TCL_OK) {
 	return TCL_ERROR;
@@ -657,7 +657,7 @@ StringToShadow(clientData, interp, tkwin, string, widgRec, offset)
     dropOffset = 0;
     if ((string != NULL) && (string[0] != '\0')) {
 	int nElem;
-	char **elemArr;
+	CONST84 char **elemArr;
 
 	if (Tcl_SplitList(interp, string, &nElem, &elemArr) != TCL_OK) {
 	    return TCL_ERROR;
@@ -780,7 +780,7 @@ GetDashes(interp, string, dashesPtr)
 	dashesPtr->values[4] = 0;
     } else {
 	int nValues;
-	char **strArr;
+	CONST84 char **strArr;
 	long int value;
 	register int i;
 
@@ -1043,7 +1043,7 @@ StringToList(clientData, interp, tkwin, string, widgRec, offset)
     int offset;			/* Offset of field in record */
 {
     char ***listPtr = (char ***)(widgRec + offset);
-    char **elemArr;
+    CONST84 char **elemArr;
     int nElem;
 
     if (*listPtr != NULL) {
@@ -1243,7 +1243,7 @@ Blt_ConfigureWidgetComponent(interp, parent, resName, className, specsPtr,
     char className[];
     Tk_ConfigSpec *specsPtr;
     int argc;
-    char *argv[];
+    CONST84 char *argv[];
     char *widgRec;
     int flags;
 {

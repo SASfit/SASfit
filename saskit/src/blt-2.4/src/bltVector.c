@@ -1637,7 +1637,7 @@ VectorCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Interpreter-specific data. */
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
 

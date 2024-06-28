@@ -199,7 +199,7 @@ DoSwitch(interp, specPtr, string, record)
 	    break;
 
 	case BLT_SWITCH_LIST:
-	    if (Tcl_SplitList(interp, string, &count, (char ***)ptr) 
+	    if (Tcl_SplitList(interp, string, &count, (CONST84 char ***)ptr)
 		!= TCL_OK) {
 		return TCL_ERROR;
 	    }

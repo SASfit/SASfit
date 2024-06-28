@@ -455,12 +455,13 @@ Blt_ParseQuotes(interp, string, termChar, flags, termPtr, parsePtr)
 				 * (usually double-quote, but sometimes
 				 * right-paren or something else). */
     int flags;			/* Flags to pass to nested Tcl_Eval calls. */
-    char **termPtr;		/* Store address of terminating character
+    CONST84 char **termPtr;		/* Store address of terminating character
 				 * here. */
     ParseValue *parsePtr;	/* Information about where to place
 				 * fully-substituted result of parse. */
 {
-    register char *src, *dest, c;
+    register CONST84 char *src;
+    register char *dest, c;
     char *lastChar = string + strlen(string);
 
     src = string;

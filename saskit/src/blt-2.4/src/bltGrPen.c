@@ -108,7 +108,7 @@ StringToColor(clientData, interp, tkwin, string, widgRec, offset)
  *
  *----------------------------------------------------------------------
  */
-static char *
+static CONST84_RETURN char *
 NameOfColor(colorPtr)
     XColor *colorPtr;
 {
@@ -134,7 +134,7 @@ NameOfColor(colorPtr)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ColorToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -206,7 +206,7 @@ StringToPen(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 PenToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -365,7 +365,7 @@ Blt_CreatePen(graphPtr, penName, classUid, nOpts, options)
 int
 Blt_GetPen(graphPtr, name, classUid, penPtrPtr)
     Graph *graphPtr;
-    char *name;
+    CONST84 char *name;
     Blt_Uid classUid;
     Pen **penPtrPtr;
 {
@@ -475,13 +475,13 @@ ConfigureOp(interp, graphPtr, argc, argv)
     Tcl_Interp *interp;
     Graph *graphPtr;
     int argc;
-    char *argv[];
+    CONST84 char *argv[];
 {
     int flags;
     Pen *penPtr;
     int nNames, nOpts;
     int redraw;
-    char **options;
+    CONST84 char **options;
     register int i;
 
     /* Figure out where the option value pairs begin */
@@ -694,7 +694,7 @@ Blt_PenOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
 

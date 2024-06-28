@@ -869,7 +869,7 @@ static Graph *
 CreateGraph(interp, argc, argv, classUid)
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
     Blt_Uid classUid;
 {
     Graph *graphPtr;
@@ -974,7 +974,7 @@ XAxisOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int margin;
 
@@ -988,7 +988,7 @@ X2AxisOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int margin;
 
@@ -1002,7 +1002,7 @@ YAxisOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int margin;
 
@@ -1016,7 +1016,7 @@ Y2AxisOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int margin;
 
@@ -1030,7 +1030,7 @@ BarOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     return Blt_ElementOp(graphPtr, interp, argc, argv, bltBarElementUid);
 }
@@ -1041,7 +1041,7 @@ LineOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     return Blt_ElementOp(graphPtr, interp, argc, argv, bltLineElementUid);
 }
@@ -1052,7 +1052,7 @@ ElementOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     return Blt_ElementOp(graphPtr, interp, argc, argv, graphPtr->classUid);
 }
@@ -1062,7 +1062,7 @@ ConfigureOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int flags;
 
@@ -1870,7 +1870,7 @@ Blt_GraphInstCmdProc(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

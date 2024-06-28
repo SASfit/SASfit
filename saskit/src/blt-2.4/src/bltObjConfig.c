@@ -1272,7 +1272,7 @@ DoConfig(interp, tkwin, specPtr, objPtr, widgRec)
 
 	case BLT_CONFIG_LIST: 
 	    {
-		char **argv;
+		CONST84 char **argv;
 		int argc;
 		
 		if (Tcl_SplitList(interp, Tcl_GetString(objPtr), &argc, &argv) 

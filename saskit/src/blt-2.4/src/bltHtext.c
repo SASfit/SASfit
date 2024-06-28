@@ -67,10 +67,10 @@ extern Tk_CustomOption bltDistanceOption;
 extern Tk_CustomOption bltTileOption;
 
 static int StringToWidth _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
 static int StringToHeight _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
 static char *WidthHeightToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProc));
@@ -86,7 +86,7 @@ static Tk_CustomOption heightOption =
 };
 
 static int StringToJustify _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 static char *JustifyToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
@@ -3891,7 +3891,7 @@ AppendOp(htPtr, interp, argc, argv)
     HText *htPtr;		/* Hypertext widget */
     Tcl_Interp *interp;		/* Interpreter associated with widget */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     Line *linePtr;
     EmbeddedWidget *winPtr;
@@ -4035,7 +4035,7 @@ ConfigureOp(htPtr, interp, argc, argv)
     HText *htPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     char *itemPtr;
     Tk_ConfigSpec *specsPtr;
@@ -4370,7 +4370,7 @@ TextWidgetCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Information about hypertext widget. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     Blt_Op proc;
     int result;
