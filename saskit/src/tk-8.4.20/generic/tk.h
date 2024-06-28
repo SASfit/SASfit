@@ -318,7 +318,7 @@ typedef struct Tk_SavedOptions {
 typedef int (Tk_OptionParseProc) _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *value, char *widgRec,
 	int offset));
-typedef char *(Tk_OptionPrintProc) _ANSI_ARGS_((ClientData clientData,
+typedef CONST84_RETURN char *(Tk_OptionPrintProc) _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 
