@@ -13,7 +13,7 @@ SYSTEM_ARCH="$(uname -m)";
 CMD_CC=gcc
 CMD_CXX=g++
 if [ "$SYSTEM_NAME" = "Darwin" ]; then
-    SYSTEM_ARCH="x86_64"
+    SYSTEM_ARCH="$(uname -m)"
     # find X11 headers and libs
     # make sure XQuartz is installed, e.g. 'brew cask install xquartz'
     CFLAGS="-arch $SYSTEM_ARCH"
