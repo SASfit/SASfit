@@ -34,9 +34,11 @@ fi;
 if [ ! -f "$CC" ] || [ ! -f "$CXX" ]; then
     CC=$(which $CMD_CC)
     CXX=$(which $CMD_CXX)
-    [ -f "$CC" ] && export CC
-    [ -f "$CXX" ] && export CXX
 fi
+[ -f "$CC" ] && export CC
+[ -f "$CXX" ] && export CXX
+echo "Using CC =$CC"
+echo "Using CXX=$CXX"
 
 # echo "CFLAGS: '$CFLAGS'"
 export CFLAGS="$CFLAGS"
