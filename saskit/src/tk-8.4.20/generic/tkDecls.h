@@ -98,7 +98,7 @@ EXTERN int		Tk_CanvasTagsParseProc _ANSI_ARGS_((
 				Tk_Window tkwin, CONST char *value,
 				char *widgRec, int offset));
 /* 19 */
-EXTERN char *		Tk_CanvasTagsPrintProc _ANSI_ARGS_((
+EXTERN CONST84_RETURN char *		Tk_CanvasTagsPrintProc _ANSI_ARGS_((
 				ClientData clientData, Tk_Window tkwin,
 				char *widgRec, int offset,
 				Tcl_FreeProc **freeProcPtr));
@@ -948,7 +948,7 @@ typedef struct TkStubs {
     double (*tk_CanvasPsY) _ANSI_ARGS_((Tk_Canvas canvas, double y)); /* 16 */
     void (*tk_CanvasSetStippleOrigin) _ANSI_ARGS_((Tk_Canvas canvas, GC gc)); /* 17 */
     int (*tk_CanvasTagsParseProc) _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp, Tk_Window tkwin, CONST char *value, char *widgRec, int offset)); /* 18 */
-    char * (*tk_CanvasTagsPrintProc) _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProcPtr)); /* 19 */
+    CONST84_RETURN char * (*tk_CanvasTagsPrintProc) _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProcPtr)); /* 19 */
     Tk_Window (*tk_CanvasTkwin) _ANSI_ARGS_((Tk_Canvas canvas)); /* 20 */
     void (*tk_CanvasWindowCoords) _ANSI_ARGS_((Tk_Canvas canvas, double x, double y, short *screenXPtr, short *screenYPtr)); /* 21 */
     void (*tk_ChangeWindowAttributes) _ANSI_ARGS_((Tk_Window tkwin, unsigned long valueMask, XSetWindowAttributes *attsPtr)); /* 22 */

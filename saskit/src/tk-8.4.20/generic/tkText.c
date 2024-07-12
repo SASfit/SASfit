@@ -163,7 +163,7 @@ int tkTextDebug = 0;
 static int		WrapModeParseProc _ANSI_ARGS_((ClientData clientData,
 			    Tcl_Interp *interp, Tk_Window tkwin,
 			    CONST char *value, char *widgRec, int offset));
-static char *		WrapModePrintProc _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *		WrapModePrintProc _ANSI_ARGS_((ClientData clientData,
 			    Tk_Window tkwin, char *widgRec, int offset,
 			    Tcl_FreeProc **freeProcPtr));
 
@@ -255,7 +255,7 @@ WrapModeParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *--------------------------------------------------------------
  */
 
-static char *
+static CONST84_RETURN char *
 WrapModePrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;		/* Ignored. */
     Tk_Window tkwin;			/* Window containing canvas widget. */

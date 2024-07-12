@@ -126,7 +126,7 @@ TkStateParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *--------------------------------------------------------------
  */
 
-char *
+CONST84_RETURN char *
 TkStatePrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;		/* Ignored. */
     Tk_Window tkwin;			/* Window containing canvas widget. */
@@ -228,7 +228,7 @@ TkOrientParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *--------------------------------------------------------------
  */
 
-char *
+CONST84_RETURN char *
 TkOrientPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;		/* Ignored. */
     Tk_Window tkwin;			/* Window containing canvas widget. */
@@ -392,7 +392,7 @@ badTSOffset:
  *----------------------------------------------------------------------
  */
 
-char *
+CONST84_RETURN char *
 TkOffsetPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* not used */
     Tk_Window tkwin;		/* not used */
@@ -493,7 +493,7 @@ TkPixelParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *----------------------------------------------------------------------
  */
 
-char *
+CONST84_RETURN char *
 TkPixelPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* not used */
     Tk_Window tkwin;		/* not used */
